@@ -2,93 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A01817E288E
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 16:23:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E7F7E288F
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 16:23:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r01QC-0005RJ-OM; Mon, 06 Nov 2023 10:21:48 -0500
+	id 1r01Qm-0005qA-FX; Mon, 06 Nov 2023 10:22:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1r01QB-0005Qb-0l
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:21:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1r01Q9-0002Kb-AJ
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:21:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699284104;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8i/UXXwHaZ2UQubk7AUm81jSZIt41f90v+IPe02EN6U=;
- b=RrBgLRSvDd6yMmqjqdi1QQsxbuNYJI1Sx30HJaM+GrhFfdgGiBlhSRGbVfK1iJoHgHx8Cq
- +gnNU3kB9CAa86WLal6+E+1ZYS4pBfGUJBG4K0GDDZjk2GYYZasvrWZ3PUHGfaTQzaHu7M
- SWyzOCa6aEtGIpggHw6hpPUQBvcyycg=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-214-yAzVcwCdMOibV8NVSk-ZNw-1; Mon, 06 Nov 2023 10:21:42 -0500
-X-MC-Unique: yAzVcwCdMOibV8NVSk-ZNw-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-1cc281f1214so37168185ad.2
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 07:21:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jerry.zhangjian@sifive.com>)
+ id 1r01QV-0005o1-5L
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:22:10 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jerry.zhangjian@sifive.com>)
+ id 1r01QO-0002Mo-1n
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 10:22:06 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1cc5fa0e4d5so41889055ad.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 07:21:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1699284118; x=1699888918; darn=nongnu.org;
+ h=mime-version:subject:references:in-reply-to:message-id:to:from:date
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=sBsD9TocCL73ern+0Doz4BRDVe7LWWw1DfGdaCODFCc=;
+ b=a4enxUM0p4QG89Kv4tT8yHF77Nbow6KbJ5iz9AdFPoAH/fAOw2ECvZHbukokuHURFt
+ g/LKRhtOE+lnTuCTrnk4Ky6MzPJ7U3nOOpuYxLpVwyHVzQko0aSN8oC5z4Q8DUHST5K+
+ vYMD5fzHW+FWku1rs6N17AYdbPfkyL1Y9PzVgxBaFI8vfGfLOrJOXKpRSmdDQfms5/8l
+ ZmRGcKoaUyXOYYCgwAgCdB6eQV5uyefNaGamTyXqMxc1dQQTT3bt9YflFu0hmSZY1w6X
+ eQkKcx20OOMigYNliHV8PJ58pcbbFW/AgM8bEbpIEILc6Jn0vNJSRvHB6ry8ageai5uz
+ BQmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699284101; x=1699888901;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8i/UXXwHaZ2UQubk7AUm81jSZIt41f90v+IPe02EN6U=;
- b=v9thbmL6Y7ItN+02cjOvjOipB1VZC1FfutJ+rU/bdVg5i87QDzwOk7K8Jo3mSEITQh
- 8EngQ6Ub7BfHV2NqIIWkhCfAFFHGfGDCN/RyuKjzJDAIKIizcEUS8DOWWyDND8LDavV+
- wnO5irz1XAqEzm7vPkwVaL8Gnh/HFXy9lLoLuzF+3BcKSD7bjcj5EY/zUAUif6kJDtX4
- wYONwrbvXuM/c4t7u3kW1FsHlUZDiyyWyZGw7hwdYs5RLI8xjoRT547uoIKiEn6YbnjH
- 7AKDuxvh2iuh4aVkp17G0rHeJvOSZjzbAyCtPZ1N9PzaCkfu1eNMChfsdiwM5GfLzxnl
- ZClw==
-X-Gm-Message-State: AOJu0YwuBeFAANoApe9gdOtittef/mVJJV8JGu+tpXu3CwMZ2JriWxjV
- a6SuVoXW0aAjqSneSdMrNNgvG5OHNIvBwOqRD0eG88yx7eQSXnZDRHzEHot5jPtlX+8GpdwZDUE
- ZgOuxc9Hd2tZiO00=
-X-Received: by 2002:a17:902:e544:b0:1cc:5c8f:4056 with SMTP id
- n4-20020a170902e54400b001cc5c8f4056mr23414541plf.42.1699284101158; 
- Mon, 06 Nov 2023 07:21:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGvX+ksW7QdWA2ucsdQH4F2sWi1Mr+Sk2XsvX3fbv96bXTHLBHen2pqs+BFqQdRwOXFKHWwpA==
-X-Received: by 2002:a17:902:e544:b0:1cc:5c8f:4056 with SMTP id
- n4-20020a170902e54400b001cc5c8f4056mr23414515plf.42.1699284100824; 
- Mon, 06 Nov 2023 07:21:40 -0800 (PST)
-Received: from smtpclient.apple ([115.96.199.186])
- by smtp.gmail.com with ESMTPSA id
- l9-20020a170902d34900b001bb0eebd90asm6013944plk.245.2023.11.06.07.21.38
+ d=1e100.net; s=20230601; t=1699284118; x=1699888918;
+ h=mime-version:subject:references:in-reply-to:message-id:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=sBsD9TocCL73ern+0Doz4BRDVe7LWWw1DfGdaCODFCc=;
+ b=m2psUZkvfH+JOQWUuOeec9oS3WVuwLSGTTsgJMevFEJxGgBvrYHxsah2/b8bTAzUL0
+ HIm202jUyKUomkFrC3dwChwuo0Nzp6jrPG/SLSbtqVu2oSQ9IISW6bnppV0pptRjLC86
+ ymZ/OGTQ+37CwBM0CbEDtcBGwgO+V7npuIbxzlvRhppNTpXrszA3J2VoMpyJXv9gUeEC
+ BWSMZuNoDJKweuGgF/F+Vylto6wGF2z4FoMy19PdmTjPhBYCfUexaBDcyLeU4+t2GLTo
+ Eed89Igs0FmXe1HaqGv24YRL5JTcdxTugMczioza6BZG2JljiK/pQeIRwL7REIXyta6r
+ +vrQ==
+X-Gm-Message-State: AOJu0Yzetb/Hpcs6sCTSAJn/8WhTpRVkkI3NEhLotPl2VhZfpV36yBhv
+ ywKfVlkR2mkijsPdZPh+nhYsMw==
+X-Google-Smtp-Source: AGHT+IEr2wMMSePQV6t4tUCml3398TZ6HkIgpCj89I2GnTFGN2R0eDoYraSV5CcUpaIK1G/f+Md/Aw==
+X-Received: by 2002:a17:903:20d4:b0:1cc:2dad:7ae9 with SMTP id
+ i20-20020a17090320d400b001cc2dad7ae9mr24268861plb.32.1699284118130; 
+ Mon, 06 Nov 2023 07:21:58 -0800 (PST)
+Received: from [127.0.0.1] (111-249-81-178.dynamic-ip.hinet.net.
+ [111.249.81.178]) by smtp.gmail.com with ESMTPSA id
+ f1-20020a170902860100b001c61901ed2esm6001426plo.219.2023.11.06.07.21.55
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 06 Nov 2023 07:21:40 -0800 (PST)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
-Subject: Re: [PATCH] tests/acpi/bios-tables-test: do not write new blobs
- unless there are changes
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <6F3F2E64-DA3E-43FC-848F-3C3DCE0937EF@redhat.com>
-Date: Mon, 6 Nov 2023 20:51:37 +0530
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <5BCC84EF-9559-43C1-879B-E90E6383EBC6@redhat.com>
-References: <20231102081624.25229-1-anisinha@redhat.com>
- <20231106151511.57c1e397@imammedo.users.ipa.redhat.com>
- <6F3F2E64-DA3E-43FC-848F-3C3DCE0937EF@redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.4)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ Mon, 06 Nov 2023 07:21:57 -0800 (PST)
+Date: Mon, 6 Nov 2023 23:21:48 +0800
+From: Jerry ZJ <jerry.zhangjian@sifive.com>
+To: alistair.francis@wdc.com, palmer@dabbelt.com, 
+ frank.chang@sifive.com, qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-ID: <b1df8107-d0f1-4827-94bd-3f8c7cd3ea57@Spark>
+In-Reply-To: <c2901c07-9eef-449c-857a-6d2553aeb170@ventanamicro.com>
+References: <20231106111440.59995-1-jerry.zhangjian@sifive.com>
+ <c2901c07-9eef-449c-857a-6d2553aeb170@ventanamicro.com>
+Subject: Re: [PATCH] target/riscv: don't enable Zfa by default
+X-Readdle-Message-ID: b1df8107-d0f1-4827-94bd-3f8c7cd3ea57@Spark
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="65490491_7ee28cfa_135e7"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=jerry.zhangjian@sifive.com; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,134 +91,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--65490491_7ee28cfa_135e7
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
+We do have some cases that failed. SiFive e-series cores (https://static.dev.sifive.com/SiFive-E21-Manual-v1p0.pdf) do not have F extension (For example: rv32imc_zicsr_zifencei_zba_zbb). When we use the corresponding extension options to configure QEMU, i.e., rv32, i=true, m=true, a=true, c=true, Zicsr=true, Zifencei=true, zba=true, zbb=true, the QEMU will have the following error.
+Zfa extension requires F extension
 
-> On 06-Nov-2023, at 8:43 PM, Ani Sinha <anisinha@redhat.com> wrote:
->=20
->=20
->=20
->> On 06-Nov-2023, at 7:45 PM, Igor Mammedov <imammedo@redhat.com> =
-wrote:
->>=20
->> On Thu,  2 Nov 2023 13:46:24 +0530
->> Ani Sinha <anisinha@redhat.com> wrote:
->>=20
->>> When dumping table blobs using rebuild-expected-aml.sh, table blobs =
-from all
->>> test variants are dumped regardless of whether there are any actual =
-changes to
->>> the tables or not. This creates lot of new files for various test =
-variants that
->>> are not part of the git repository. This is because we do not check =
-in all table
->>> blobs for all test variants into the repository. Only those blobs =
-for those
->>> variants that are different from the generic test-variant agnostic =
-blob are
->>> checked in.
->>>=20
->>> This change makes the test smarter by checking if at all there are =
-any changes
->>> in the tables from the checked-in gold master blobs.
->>=20
->>> If there are no changes, no new files are written for test variants.
->>> However, existing files continue to be overwritten regardless of =
-whether there are changes.
->>> Hence, new files will be generated only when there are actual =
-changes in the tables.
->>=20
->> You lost me in those 3 sentences. Perhaps rephrasing and adding =
-examples
->> wold make it readable. (aka what's (not)writen and when)
->=20
-> OK I will try in v2.
->=20
->>=20
->>=20
->>> This would make analyzing changes to tables less confusing and there =
-would
->>> be no need to clean useless untracked files when there are no table =
-changes.
->>=20
->> what happens if an absolutely new table has been introduced which
->> is not mentioned in tests yet (will it be dumped or not)?
->=20
-> When a new table is introduced, there is no existing data to compare =
-the tables with. In this case, it will result in assertion in the =
-following line:
->=20
->>    g_assert(exp_sdt.aml_file);
->=20
-> I am not sure what to do in this case except to unconditionally dump =
-all tables. Maybe introduce another flag? Not sure.
+IMHO, we should not enable Zfa extension by default, especially when Zfa requires F to be enabled implicitly.
 
-Oh wait, this patch works as is since we have said in =
-bios-tables-test.c:
+Best Regards,
+Jerry ZJ
+SiFive Inc. Taiwan
+On Nov 6, 2023 at 22:55 +0800, Daniel Henrique Barboza <dbarboza@ventanamicro.com>, wrote:
+>
+>
+> On 11/6/23 08:14, Jerry Zhang Jian wrote:
+> > - Zfa requires F, we should not assume all CPUs have F extension
+> > support.
+>
+> We do not have a case where this happen, do we? The default CPUs have F
+> enabled (see misa_ext_cfgs[] in target/riscv/tcg/tcg-cpu.c), so zfa being
+> enable isn't a problem for them. Vendor CPUs might not have F enabled, but
+> they don't use the default values for extensions, so they're not affected.
+> Having zfa enabled by default does not hurt the default CPU setups we have.
+>
+> I am not a fan of these defaults for rv64 and so on, but once we set them to
+> 'true' people can complain if we set them to 'false' because it might break
+> existing configs in the wild. We need a strong case (i.e. a bug) to do so.
+>
+>
+> Thanks,
+>
+> Daniel
+>
+>
+> >
+> > Signed-off-by: Jerry Zhang Jian <jerry.zhangjian@sifive.com>
+> > ---
+> > target/riscv/cpu.c | 2 +-
+> > 1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> > index ac4a6c7eec..c9f11509c8 100644
+> > --- a/target/riscv/cpu.c
+> > +++ b/target/riscv/cpu.c
+> > @@ -1247,7 +1247,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+> > MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
+> > MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpause, true),
+> > MULTI_EXT_CFG_BOOL("zawrs", ext_zawrs, true),
+> > - MULTI_EXT_CFG_BOOL("zfa", ext_zfa, true),
+> > + MULTI_EXT_CFG_BOOL("zfa", ext_zfa, false),
+> > MULTI_EXT_CFG_BOOL("zfh", ext_zfh, false),
+> > MULTI_EXT_CFG_BOOL("zfhmin", ext_zfhmin, false),
+> > MULTI_EXT_CFG_BOOL("zve32f", ext_zve32f, false),
 
->  add empty files for new tables, if any, under tests/data/acpi =20
+--65490491_7ee28cfa_135e7
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-So for new tables the lengths will not match and the table should be =
-dumped. I need to test this case once.=20
+<html xmlns=3D=22http://www.w3.org/1999/xhtml=22>
+<head>
+<title></title>
+</head>
+<body>
+<div name=3D=22messageBodySection=22>
+<div dir=3D=22auto=22>We do have some cases that failed. Si=46ive e-serie=
+s cores (<a href=3D=22https://static.dev.sifive.com/Si=46ive-E21-Manual-v=
+1p0.pdf=22 target=3D=22=5Fblank=22>https://static.dev.sifive.com/Si=46ive=
+-E21-Manual-v1p0.pdf</a>) do not have =46 extension (=46or example: rv32i=
+mc=5Fzicsr=5Fzifencei=5Fzba=5Fzbb). When we use the corresponding extensi=
+on options to configure QEMU, i.e., rv32, i=3Dtrue, m=3Dtrue, a=3Dtrue, c=
+=3Dtrue, Zicsr=3Dtrue, Zifencei=3Dtrue, zba=3Dtrue, zbb=3Dtrue, the QEMU =
+will have the following error.<br />
+<span style=3D=22color:=23e6edf3;background-color:rgba(110, 118, 129, 0.4=
+);font-family:ui-monospace, S=46Mono-Regular, S=46 Mono, Menlo, Consolas,=
+ Liberation Mono, monospace;font-size: 11.9px=22>Zfa extension requires =46=
+ extension</span><span style=3D=22font-size: 11.9px=22><br /></span><br /=
+>
+IMHO, we should not enable Zfa extension by default, especially when Zfa =
+requires =46 to be enabled implicitly.</div>
+</div>
+<div name=3D=22messageSignatureSection=22><br />
+<div class=3D=22match=46ont=22>Best Regards,
+<div>Jerry ZJ</div>
+<div><b>Si=46ive Inc. Taiwan</b></div>
+</div>
+</div>
+<div name=3D=22messageReplySection=22>On Nov 6, 2023 at 22:55 +0800, Dani=
+el Henrique Barboza &lt;dbarboza=40ventanamicro.com&gt;, wrote:<br />
+<blockquote type=3D=22cite=22 style=3D=22border-left-color: grey; border-=
+left-width: thin; border-left-style: solid; margin: 5px 5px;padding-left:=
+ 10px;=22><br />
+<br />
+On 11/6/23 08:14, Jerry Zhang Jian wrote:<br />
+<blockquote type=3D=22cite=22>- Zfa requires =46, we should not assume al=
+l CPUs have =46 extension<br />
+support.<br /></blockquote>
+<br />
+We do not have a case where this happen, do we=3F The default CPUs have =46=
+<br />
+enabled (see misa=5Fext=5Fcfgs=5B=5D in target/riscv/tcg/tcg-cpu.c), so z=
+fa being<br />
+enable isn't a problem for them. Vendor CPUs might not have =46 enabled, =
+but<br />
+they don't use the default values for extensions, so they're not affected=
+.<br />
+Having zfa enabled by default does not hurt the default CPU setups we hav=
+e.<br />
+<br />
+I am not a fan of these defaults for rv64 and so on, but once we set them=
+ to<br />
+'true' people can complain if we set them to 'false' because it might bre=
+ak<br />
+existing configs in the wild. We need a strong case (i.e. a bug) to do so=
+.<br />
+<br />
+<br />
+Thanks,<br />
+<br />
+Daniel<br />
+<br />
+<br />
+<blockquote type=3D=22cite=22><br />
+Signed-off-by: Jerry Zhang Jian &lt;jerry.zhangjian=40sifive.com&gt;<br /=
+>
+---<br />
+target/riscv/cpu.c =7C 2 +-<br />
+1 file changed, 1 insertion(+), 1 deletion(-)<br />
+<br />
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c<br />
+index ac4a6c7eec..c9f11509c8 100644<br />
+--- a/target/riscv/cpu.c<br />
++++ b/target/riscv/cpu.c<br />
+=40=40 -1247,7 +1247,7 =40=40 const RISCVCPUMultiExtConfig riscv=5Fcpu=5F=
+extensions=5B=5D =3D =7B<br />
+MULTI=5FEXT=5FC=46G=5FBOOL(=22zihintntl=22, ext=5Fzihintntl, true),<br />=
 
->=20
->>=20
->>>=20
->>> CC: peter.maydell@linaro.org
->>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->>> ---
->>> tests/qtest/bios-tables-test.c | 14 +++++++++++++-
->>> 1 file changed, 13 insertions(+), 1 deletion(-)
->>>=20
->>> diff --git a/tests/qtest/bios-tables-test.c =
-b/tests/qtest/bios-tables-test.c
->>> index 9f4bc15aab..743b509e93 100644
->>> --- a/tests/qtest/bios-tables-test.c
->>> +++ b/tests/qtest/bios-tables-test.c
->>> @@ -109,6 +109,7 @@ static const char *iasl;
->>> #endif
->>>=20
->>> static int verbosity_level;
->>> +static GArray *load_expected_aml(test_data *data);
->>>=20
->>> static bool compare_signature(const AcpiSdtTable *sdt, const char =
-*signature)
->>> {
->>> @@ -241,21 +242,32 @@ static void test_acpi_fadt_table(test_data =
-*data)
->>>=20
->>> static void dump_aml_files(test_data *data, bool rebuild)
->>> {
->>> -    AcpiSdtTable *sdt;
->>> +    AcpiSdtTable *sdt, *exp_sdt;
->>>    GError *error =3D NULL;
->>>    gchar *aml_file =3D NULL;
->>> +    test_data exp_data =3D {};
->>>    gint fd;
->>>    ssize_t ret;
->>>    int i;
->>>=20
->>> +    exp_data.tables =3D load_expected_aml(data);
->>>    for (i =3D 0; i < data->tables->len; ++i) {
->>>        const char *ext =3D data->variant ? data->variant : "";
->>>        sdt =3D &g_array_index(data->tables, AcpiSdtTable, i);
->>> +        exp_sdt =3D &g_array_index(exp_data.tables, AcpiSdtTable, =
-i);
->>>        g_assert(sdt->aml);
->>> +        g_assert(exp_sdt->aml);
->>>=20
->>>        if (rebuild) {
->>>            aml_file =3D g_strdup_printf("%s/%s/%.4s%s", data_dir, =
-data->machine,
->>>                                       sdt->aml, ext);
->>> +            if (!g_file_test(aml_file, G_FILE_TEST_EXISTS) &&
->>> +                sdt->aml_len =3D=3D exp_sdt->aml_len &&
->>> +                !memcmp(sdt->aml, exp_sdt->aml, sdt->aml_len)) {
->>> +                /* identical tables, no need to write new files */
->>> +                g_free(aml_file);
->>> +                continue;
->>> +            }
->>>            fd =3D g_open(aml_file, O_WRONLY|O_TRUNC|O_CREAT,
->>>                        S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
->>>            if (fd < 0) {
+MULTI=5FEXT=5FC=46G=5FBOOL(=22zihintpause=22, ext=5Fzihintpause, true),<b=
+r />
+MULTI=5FEXT=5FC=46G=5FBOOL(=22zawrs=22, ext=5Fzawrs, true),<br />
+- MULTI=5FEXT=5FC=46G=5FBOOL(=22zfa=22, ext=5Fzfa, true),<br />
++ MULTI=5FEXT=5FC=46G=5FBOOL(=22zfa=22, ext=5Fzfa, false),<br />
+MULTI=5FEXT=5FC=46G=5FBOOL(=22zfh=22, ext=5Fzfh, false),<br />
+MULTI=5FEXT=5FC=46G=5FBOOL(=22zfhmin=22, ext=5Fzfhmin, false),<br />
+MULTI=5FEXT=5FC=46G=5FBOOL(=22zve32f=22, ext=5Fzve32f, false),<br /></blo=
+ckquote>
+</blockquote>
+</div>
+</body>
+</html>
+
+--65490491_7ee28cfa_135e7--
 
 
