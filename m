@@ -2,69 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D42B7E206A
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:53:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF6747E2038
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:42:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzxuJ-0003Vq-0J; Mon, 06 Nov 2023 06:36:39 -0500
+	id 1qzxyg-0006pm-Am; Mon, 06 Nov 2023 06:41:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hsp.cat7@gmail.com>)
- id 1qzxuH-0003V2-3U
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:36:37 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qzxyZ-0006pL-DB
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:41:03 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hsp.cat7@gmail.com>)
- id 1qzxuF-0003PF-94
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:36:36 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-53f9af41444so7387380a12.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:36:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qzxyX-0004WV-6y
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:41:03 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-408382da7f0so32760795e9.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:41:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699270594; x=1699875394; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=mBbyElX34CKK1zi5gagq0XPgAxuuNu+5Eo8xogL8Kdo=;
- b=OJBOOL4FQ4hSTGK5KYXMPWRTtssUSdIxlMyJP8dweVGJBMeSMTJzTfckxozKtQJNMe
- P4xpu2j/BmDJYhHS/toECiig6bhhyXHIuNoD/sLxcoEneOs5hLSLuIsnqAjTzI7ftbsK
- q01qrj9bdMJUZzyRdZpI56SvKBB8L96KedMck5mHmXSzzJ6uv9JTU7tIPCc1pf5V4Ii3
- 53QKkFgeS3/vyj6Dy8suJUmmbXg0VhavMFtcQiaT3iz3MXNjUA7ICG1lx2bUv3T5mBlf
- RHJtjoghZBY6OvqLqC9NjmQRY3oXBU2U9CUFaGdWBBeM3Lmv0HHihCYZAJX2ppyLUobw
- j6zA==
+ d=linaro.org; s=google; t=1699270859; x=1699875659; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Yh45PbVxzxA+q4SI23iPclVM0xFG9E5Q42am3KRe+Sc=;
+ b=c7wdVvX8mGKifsm3l2w1fJODJhGyZx78Ry9pPIHgtR9kD1svHvLJlr7A9Fnu8+QveA
+ zEKrxXuecrD6e1OPeOAav95Z4ix8lxFP62SdaC7OBJHm3iogcFIQO87E3pF6yS2O3GsN
+ sTDklz7z1GJjh9vkfFTFjzrEm7QZ8KY2oCx/jWZUKvmmrIPn11/Vpmv3NQUd/bqOhlKt
+ 1iJtLxexybMFquDTVXizmNB8UJunkvXps1hNAZDnZVh5hOOt0aR0XIJ/FBh3PTkm6PaA
+ jyA0ob+s7orWOziNNiMLG8eKXIz2zHZvnijnon4LRb1yrC7HEEfQ88Lnhb99pBo7X80l
+ UyYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699270594; x=1699875394;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mBbyElX34CKK1zi5gagq0XPgAxuuNu+5Eo8xogL8Kdo=;
- b=GpwWtZ6g/yJ3jwb7LxY+GuFZCEsb+/40anG6YgPCiVl2v+ZxfzFj3dzzpxNaeReOzL
- dJK1gvI7kOlXLaL+6eHib6CjLVzbIBtlVLj+HoBuPEHLNN21uoPuWUC59dnQIGKm28B9
- EBRkUkvgPmaggQv+GHCHWmU3pm9kvrxlLuvCawJ0BuGM8DGkokZ7LFu6rOZukblcfRsG
- AUE9zdTPfDw03lyq3woi6sk+7sVab6kyFhwEG5gXSJw2xsBLcbDvgILQcLzbbAyjFGQO
- ZdzN85/urXpdjyrtuhE/euTPuYI3mrHGMsDwoTwceTaVreQGizXLw9/VqdiO5MtU+VHJ
- wJ3g==
-X-Gm-Message-State: AOJu0Yz7E09wkPU9HzUEY0ssYWMck1FXaJWSeP++B1pXhJBLFAw2LOHo
- BfG239ce6HIOPhn19LJFvAjbzcYoKKujYUTUCrcr4OLhfg8=
-X-Google-Smtp-Source: AGHT+IEsgjGVoHmAiGKITqNO3MWfvboeNf0j3Y7zHOu0tnVwT4NzNH1Jkya33wJmqHrel8S+E3JYfQWp7Gu8SM7F4iw=
-X-Received: by 2002:a05:6402:717:b0:53e:10a1:21d with SMTP id
- w23-20020a056402071700b0053e10a1021dmr22210088edx.35.1699270593626; Mon, 06
- Nov 2023 03:36:33 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699270859; x=1699875659;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=Yh45PbVxzxA+q4SI23iPclVM0xFG9E5Q42am3KRe+Sc=;
+ b=rS88yY4iOp1HV5YnyUXYBr/Q/RluunKIDdZ1K7llLwPZe4ik/x291bwQhS0DK212cK
+ IbZJYIq3Kcex3ZNuovSmb/4r1oDOWmqO7tYAYwwBtEHEI5t+xar32yjGHWbEEH/B9S4K
+ uRb+33MpAe7leUYMczNpEEaDwtoPNO8JtX4uF+5fLZ5mBNHFqM4DRmam+wqmL+BVJx42
+ itU+RGakec+Vg/J6uOKRtQOTThte7ItHFRUPZMzHM3zwv5YBehaDQZitAtEJJY/OH8jB
+ HYvkhlsAOISaoT5diyPaDaKpFNyik99hMWlgrammDcY4lkyTcNJNb7dEFBTkk72TlPQ/
+ LnRQ==
+X-Gm-Message-State: AOJu0YwRESUp5AOvtUKPCeT2R680MOuRyBE7ozSS8JAjpJghtI9egjkx
+ 4G75jS5wxkXSXo43mK0G99cPkigC3U1KJzyHzotewA==
+X-Google-Smtp-Source: AGHT+IHUvCYnN2J92oFId3RitRWdUly9SvR5wObkmpvpCv3sv5HhJa8bNayc6cdBEr/zW3Sd8mZyMQ==
+X-Received: by 2002:a05:600c:524f:b0:406:5463:3f51 with SMTP id
+ fc15-20020a05600c524f00b0040654633f51mr24136506wmb.25.1699270859409; 
+ Mon, 06 Nov 2023 03:40:59 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ m36-20020a05600c3b2400b004075d5664basm12064321wms.8.2023.11.06.03.40.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 06 Nov 2023 03:40:59 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id A8D075F79F;
+ Mon,  6 Nov 2023 11:40:58 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>
+Subject: Re: [PATCH 24/29] plugins: add an API to read registers
+In-Reply-To: <333fbdf6-9f5b-41c3-99ce-8808c542d485@daynix.com> (Akihiko
+ Odaki's message of "Mon, 6 Nov 2023 19:56:57 +0900 (24 minutes, 55
+ seconds ago)")
+References: <20231103195956.1998255-1-alex.bennee@linaro.org>
+ <20231103195956.1998255-25-alex.bennee@linaro.org>
+ <e9c6bb21-678e-44d5-b34d-e7a840a1b7b0@daynix.com>
+ <87il6fdyaq.fsf@draig.linaro.org>
+ <94da2184-2586-458e-9362-fa913ca68fb5@daynix.com>
+ <874jhzdur3.fsf@draig.linaro.org>
+ <333fbdf6-9f5b-41c3-99ce-8808c542d485@daynix.com>
+User-Agent: mu4e 1.11.24; emacs 29.1
+Date: Mon, 06 Nov 2023 11:40:58 +0000
+Message-ID: <87msvrcdo5.fsf@draig.linaro.org>
 MIME-Version: 1.0
-From: Howard Spoelstra <hsp.cat7@gmail.com>
-Date: Mon, 6 Nov 2023 12:36:20 +0100
-Message-ID: <CABLmASE+b5CmTyBB4vGqR7w=4cV5mXN5pg0cp6crzq6K4_zEGQ@mail.gmail.com>
-Subject: Re: Error detecting linker while compiling qemu-system-ppc on macOS
-To: BALATON Zoltan <balaton@eik.bme.hu>,
- qemu-devel qemu-devel <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="0000000000001c496306097a44f7"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=hsp.cat7@gmail.com; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,102 +102,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000001c496306097a44f7
-Content-Type: text/plain; charset="UTF-8"
+Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 
-Hello,
+(re-adding qemu-devel which my mail client dropped a few messages ago, sorr=
+y)
 
-macOS seems to use
-'/Library/Frameworks/Python.framework/Versions/3.11/bin/python3'
-hsp@MacOSVentura qemu-ppc % ./configure --target-list=ppc-softmmu
-Using './build' as the directory for build output
-python determined to be
-'/Library/Frameworks/Python.framework/Versions/3.11/bin/python3'
-python version: Python 3.11.0
+> On 2023/11/06 19:46, Alex Benn=C3=A9e wrote:
+>> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+>>=20
+>>> On 2023/11/06 18:30, Alex Benn=C3=A9e wrote:
+>>>> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+>>>>
+>>>>> On 2023/11/04 4:59, Alex Benn=C3=A9e wrote:
+>>>>>> We can only request a list of registers once the vCPU has been
+>>>>>> initialised so the user needs to use either call the find function on
+>>>>>> vCPU initialisation or during the translation phase. We don't expose
+>>>>>> the reg number to the plugin instead hiding it behind an opaque
+>>>>>> handle. This allows for a bit of future proofing should the internals
+>>>>>> need to be changed while also being hashed against the CPUClass so we
+>>>>>> can handle different register sets per-vCPU in hetrogenous situation=
+s.
+>>>>>> Having an internal state within the plugins also allows us to expand
+>>>>>> the interface in future (for example providing callbacks on register
+>>>>>> change if the translator can track changes).
+>>>>>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1706
+>>>>>> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>>>>> Based-on: <20231025093128.33116-18-akihiko.odaki@daynix.com>
+>>>>>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>>>>>> +struct qemu_plugin_register;
+>>>>>> +
+>>>>>> +/**
+>>>>>> + * typedef qemu_plugin_reg_descriptor - register descriptions
+>>>>>> + *
+>>>>>> + * @name: register name
+>>>>>> + * @handle: opaque handle for retrieving value with qemu_plugin_rea=
+d_register
+>>>>>> + * @feature: optional feature descriptor, can be NULL
+>>>>>> + */
+>>>>>> +typedef struct {
+>>>>>> +    char name[32];
+>>>>>> +    struct qemu_plugin_register *handle;
+>>>>>> +    const char *feature;
+>>>>>> +} qemu_plugin_reg_descriptor;
+>>>>>> +
+>>>>>> +/**
+>>>>>> + * qemu_plugin_find_registers() - return register list
+>>>>>> + * @vcpu_index: vcpu to query
+>>>>>> + * @reg_pattern: register name pattern
+>>>>>> + *
+>>>>>> + * Returns a GArray of qemu_plugin_reg_descriptor or NULL. Caller
+>>>>>> + * frees. As the register set of a given vCPU is only available once
+>>>>>> + * the vCPU is initialised if you want to monitor registers from the
+>>>>>> + * start you should call this from a qemu_plugin_register_vcpu_init=
+_cb()
+>>>>>> + * callback.
+>>>>>> + */
+>>>>>> +GArray * qemu_plugin_find_registers(unsigned int vcpu_index, const =
+char *reg_pattern);
+>>>>>
+>>>>> A pattern may be convenient for humans but not for machine. My
+>>>>> motivation to introduce the feature is to generate traces consumable
+>>>>> by trace-based simulators. Such a plugin needs an exact match of
+>>>>> registers.
+>>>> That's true - but we don't have any such users in the code base.
+>>>> However
+>>>> for exact matches the details are in qemu_plugin_reg_descriptor so you
+>>>> can always filter there if you want.
+>>>
+>>> I designed the feature to read registers for users outside of the code
+>>> base so the code base has no practical user.
+>>> I added the feature to log register values to execlog but it's only
+>>> for demonstration and it is useless for practical use;
+>> I wouldn't say its useless - and it is important to have in-tree
+>> code to
+>> exercise the various parts of the API we expose.
+>
+> I mean it is useless except for demonstration. Having some code for
+> demonstration is good but we shouldn't overfit the API to it.
+>
+>> To be clear is your objection just to the way
+>> qemu_plugin_find_registers() works or the whole concept of using a
+>> handle instead of the register number? I'm certainly open to better ways
+>> of doing the former but as explained in the commit I think the handle
+>> based approach is a more hygienic interface that gives us scope to
+>> improve it going forward.
+>
+> Yes, my major concern is that the pattern matching.
 
-I had both python 3.11 and 3.12 installed through brew. I now removed 3.11.
-When building with
---python=/usr/local/Cellar/python@3.12/3.12.0/bin/python3.12 I get:
+OK. Another potential consumer I thought about during implementing the
+internal API was HMP which would also benefit from a more human wildcard
+type search. So I think the resolution of this is having two APIs, one
+returning a list of qemu_plugin_reg_descriptor and one returning a
+single descriptor only with an exact match.
 
-hsp@MacOSVentura qemu-ppc % ./configure --target-list=ppc-softmmu
---python=/usr/local/Cellar/python@3.12/3.12.0/bin/python3.12
-Using './build' as the directory for build output
-python determined to be '/usr/local/Cellar/python@3.12/3.12.0/bin/python3.12'
-python version: Python 3.12.0
+I thought exposing features and registers in two calls was a bit clunky
+though so how about:
 
-And configure succeeds.
+  struct qemu_plugin_reg_descriptor *
+    qemu_plugin_find_register(unsigned int vcpu_index,
+                              const char *name,
+                              const char *gdb_feature);
 
+which will only reply on an exact match (although I still think
+register names are unique enough you can get away without gdb_feature).
 
+> I'm fine with the use of a pointer instead of the register number. A
+> pointer is indeed more random for each run so it will prevent the user
+> from hardcoding it.
+>
+>> As we are so close to soft-freeze I suggest I re-spin the series to
+>> include 1-12/29 and the windows bits and we can work on a better API for
+>> the 9.0 release.
+>
+> I'm not in haste either and fine to delay it for the 9.0 release.
 
+OK I'll get as much as I can merged now and leave the final API bits for
+when the tree opens up. I don't suppose you have any idea why:
 
-On Mon, 6 Nov 2023, Howard Spoelstra wrote:
+  target/riscv: Use GDBFeature for dynamic XML
 
-Hi all,
+caused a regression? The XML generated looks identical but the
+communication diverges with the riscv-csr response:
 
-I'm getting a error while compiling on macOS (Intel). It seems linker
-detection is passed an unknown argument "--version", whereas "-v" works OK?
-See log below.
+  gdbstub_io_command Received: qXfer:features:read:riscv-csr.xm   gdbstub_i=
+o_command Received: qXfer:features:read:riscv-csr.xm
+  gdbstub_io_binaryreply 0x0000: 6c 3c 3f 78  6d 6c 20 76  65 7   gdbstub_i=
+o_binaryreply 0x0000: 6c 3c 3f 78  6d 6c 20 76  65 7
+  gdbstub_io_binaryreply 0x0010: 31 2e 30 22  3f 3e 3c 21  44 4   gdbstub_i=
+o_binaryreply 0x0010: 31 2e 30 22  3f 3e 3c 21  44 4
+  gdbstub_io_binaryreply 0x0020: 66 65 61 74  75 72 65 20  53 5   gdbstub_i=
+o_binaryreply 0x0020: 66 65 61 74  75 72 65 20  53 5
+  gdbstub_io_binaryreply 0x0030: 67 64 62 2d  74 61 72 67  65 7   gdbstub_i=
+o_binaryreply 0x0030: 67 64 62 2d  74 61 72 67  65 7
+  gdbstub_io_binaryreply 0x0040: 3c 66 65 61  74 75 72 65  20 6   gdbstub_i=
+o_binaryreply 0x0040: 3c 66 65 61  74 75 72 65  20 6
+  gdbstub_io_binaryreply 0x0050: 72 67 2e 67  6e 75 2e 67  64 6   gdbstub_i=
+o_binaryreply 0x0050: 72 67 2e 67  6e 75 2e 67  64 6
+  gdbstub_io_binaryreply 0x0060: 2e 63 73 72  22 3e 3c 72  65 6   gdbstub_i=
+o_binaryreply 0x0060: 2e 63 73 72  22 3e 3c 72  65 6
+  gdbstub_io_binaryreply 0x0070: 22 66 66 6c  61 67 73 22  20 6   gdbstub_i=
+o_binaryreply 0x0070: 22 66 66 6c  61 67 73 22  20 6
+  gdbstub_io_binaryreply 0x0080: 3d 22 36 34  22 20 72 65  67 6   gdbstub_i=
+o_binaryreply 0x0080: 3d 22 36 34  22 20 72 65  67 6
+  gdbstub_io_binaryreply 0x0090: 22 2f 3e 3c  72 65 67 20  6e 6 | gdbstub_i=
+o_binaryreply 0x0090: 22 20 74 79  70 65 3d 22  69 6
+  gdbstub_io_binaryreply 0x00a0: 6d 22 20 62  69 74 73 69  7a 6 | gdbstub_i=
+o_binaryreply 0x00a0: 65 67 20 6e  61 6d 65 3d  22 6
+  gdbstub_io_binaryreply 0x00b0: 72 65 67 6e  75 6d 3d 22  36 3 | gdbstub_i=
+o_binaryreply 0x00b0: 74 73 69 7a  65 3d 22 36  34 2
+  gdbstub_io_binaryreply 0x00c0: 67 20 6e 61  6d 65 3d 22  66 6 | gdbstub_i=
+o_binaryreply 0x00c0: 6d 3d 22 36  38 22 20 74  79 7
+  gdbstub_io_binaryreply 0x00d0: 74 73 69 7a  65 3d 22 36  34 2 | gdbstub_i=
+o_binaryreply 0x00d0: 22 2f 3e 3c  72 65 67 20  6e 6
+  gdbstub_io_binaryreply 0x00e0: 6d 3d 22 36  39 22 2f 3e  3c 7 | gdbstub_i=
+o_binaryreply 0x00e0: 73 72 22 20  62 69 74 73  69 7
+  gdbstub_io_binaryreply 0x00f0: 65 3d 22 63  79 63 6c 65  22 2 | gdbstub_i=
+o_binaryreply 0x00f0: 20 72 65 67  6e 75 6d 3d  22 3
+  gdbstub_io_binaryreply 0x0100: 65 3d 22 36  34 22 20 72  65 6 | gdbstub_i=
+o_binaryreply 0x0100: 65 3d 22 69  6e 74 22 2f  3e 3
+  gdbstub_io_binaryreply 0x0110: 31 33 38 22  2f 3e 3c 72  65 6 | gdbstub_i=
+o_binaryreply 0x0110: 6d 65 3d 22  63 79 63 6c  65 2
+  gdbstub_io_binaryreply 0x0120: 22 74 69 6d  65 22 20 62  69 7 | gdbstub_i=
+o_binaryreply 0x0120: 7a 65 3d 22  36 34 22 20  72 6
+  gdbstub_io_binaryreply 0x0130: 36 34 22 20  72 65 67 6e  75 6 | gdbstub_i=
+o_binaryreply 0x0130: 33 31 33 38  22 20 74 79  70 6
+  gdbstub_io_binaryreply 0x0140: 22 2f 3e 3c  72 65 67 20  6e 6 | gdbstub_i=
+o_binaryreply 0x0140: 2f 3e 3c 72  65 67 20 6e  61 6
+  gdbstub_io_binaryreply 0x0150: 73 74 72 65  74 22 20 62  69 7 | gdbstub_i=
+o_binaryreply 0x0150: 65 22 20 62  69 74 73 69  7a 6
+  gdbstub_io_binaryreply 0x0160: 36 34 22 20  72 65 67 6e  75 6 | gdbstub_i=
+o_binaryreply 0x0160: 72 65 67 6e  75 6d 3d 22  33 3
+  gdbstub_io_binaryreply 0x0170: 22 2f 3e 3c  2f 66 65 61  74 7 | gdbstub_i=
+o_binaryreply 0x0170: 70 65 3d 22  69 6e 74 22  2f 3
+                                                                > gdbstub_i=
+o_binaryreply 0x0180: 61 6d 65 3d  22 69 6e 73  74 7
+                                                                > gdbstub_i=
+o_binaryreply 0x0190: 74 73 69 7a  65 3d 22 36  34 2
+                                                                > gdbstub_i=
+o_binaryreply 0x01a0: 6d 3d 22 33  31 34 30 22  20 7
+                                                                > gdbstub_i=
+o_binaryreply 0x01b0: 6e 74 22 2f  3e 3c 2f 66  65 6
+  gdbstub_io_command Received: qTStatus                           gdbstub_i=
+o_command Received: qTStatus
+  gdbstub_io_reply Sent:                                          gdbstub_i=
+o_reply Sent:=20
+  gdbstub_io_command Received: ?                                  gdbstub_i=
+o_command Received: ?
+  gdbstub_io_reply Sent: T05thread:p2003b4.2003b4;              | gdbstub_i=
+o_reply Sent: T05thread:p2011b6.2011b6;
 
-See also
-https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg10375.html and
-the tickets listed in there. It should work with meson 1.2.x according to
-Rene's ticket to Meson and you can install that from homebrew but it seems
-it's not picked up. Why is it using
-/Users/hsp/src/qemu-ppc/build/pyvenv/bin/python3.11
-? How many pythons do you8 have on macOS? What does which python tell you
-and does it work better when you add
---python=/path/to/python/that/homebrew/meson/uses ? Regards, BALATON Zoltan
+Was this the reason for the misa_max cleanups?
 
---0000000000001c496306097a44f7
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">
-<pre style=3D"margin:0em">Hello,
-
-macOS seems to use &#39;/Library/Frameworks/Python.framework/Versions/3.11/=
-bin/python3&#39;<br>hsp@MacOSVentura qemu-ppc % ./configure --target-list=
-=3Dppc-softmmu<br>Using &#39;./build&#39; as the directory for build output=
-<br>python determined to be &#39;/Library/Frameworks/Python.framework/Versi=
-ons/3.11/bin/python3&#39;<br>python version: Python 3.11.0<br><br>I had bot=
-h python 3.11 and 3.12 installed through brew. I now removed 3.11.<br>When =
-building with --python=3D/usr/local/Cellar/python@3.12/3.12.0/bin/python3.1=
-2 I get:
-
-hsp@MacOSVentura qemu-ppc % ./configure --target-list=3Dppc-softmmu --pytho=
-n=3D/usr/local/Cellar/python@3.12/3.12.0/bin/python3.12 <br>Using &#39;./bu=
-ild&#39; as the directory for build output<br>python determined to be &#39;=
-/usr/local/Cellar/python@3.12/3.12.0/bin/python3.12&#39;<br>python version:=
- Python 3.12.0<br><br></pre><pre style=3D"margin:0em">And configure succeed=
-s.<br></pre><pre style=3D"margin:0em"><br>
-
-On Mon, 6 Nov 2023, Howard Spoelstra wrote:
-</pre><blockquote style=3D"border-left:0.2em solid rgb(85,85,238);margin:0e=
-m;padding-left:0.85em"><pre style=3D"margin:0em">Hi all,
-
-I&#39;m getting a error while compiling on macOS (Intel). It seems linker
-detection is passed an unknown argument &quot;--version&quot;, whereas &quo=
-t;-v&quot; works OK?
-See log below.
-</pre></blockquote><pre style=3D"margin:0em"></pre><tt>See also=20
-</tt><tt><a rel=3D"nofollow" href=3D"https://lists.nongnu.org/archive/html/=
-qemu-devel/2023-10/msg10375.html">https://lists.nongnu.org/archive/html/qem=
-u-devel/2023-10/msg10375.html</a>
-</tt><tt>and the tickets listed in there. It should work with meson 1.2.x a=
-ccording=20
-</tt><tt>to Rene&#39;s ticket to Meson and you can install that from homebr=
-ew but it=20
-</tt><tt>seems it&#39;s not picked up. Why is it using=20
-</tt><tt>/Users/hsp/src/qemu-ppc/build/pyvenv/bin/python3.11 ? How many pyt=
-hons do=20
-</tt><tt>you8 have on macOS? What does which python tell you and does it wo=
-rk=20
-</tt><tt>better when you add --python=3D/path/to/python/that/homebrew/meson=
-/uses ?
-</tt>Regards,
-BALATON Zoltan
-
-</div>
-
---0000000000001c496306097a44f7--
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
