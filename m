@@ -2,80 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F8A7E2C6B
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 19:54:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3BB87E2CB7
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 20:17:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r04jk-0006pd-1I; Mon, 06 Nov 2023 13:54:12 -0500
+	id 1r054H-0007pp-Od; Mon, 06 Nov 2023 14:15:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r04jh-0006Rw-Bb
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:54:09 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r054F-0007pY-Q7
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 14:15:23 -0500
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r04jf-0001gB-Gi
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 13:54:08 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5406c099cebso7993282a12.2
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 10:54:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r054A-0005hF-Nd
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 14:15:23 -0500
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2c50d1b9f22so64711121fa.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 11:15:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699296845; x=1699901645; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AWyNCT41O/cD+GcfrlVN7Nm3WeuSnMVYzvPDZMqtGO0=;
- b=bQI04tvYkCn+79uGHoYjDS8/qdl19kXQ0bITOQrr5lzh1c1tUedpQlwYxxj0KM1YYe
- oQg9m22bpjjcXoOSt7G81SeYYeD5OdtRZIoVdCedHH5MF/hLtyOyioyKA/Q1evi4CSvg
- hlMv1XwXKp8J2kO60LnXXmHWP5F9Q0QSecwXwwqTOk2jmTjFD5OFiK/baEKX1FlZ1p2H
- WmkhMLKhFrLcJRkBSbGOqKTng5p6mgdrLQtT+efbD/LBl7fEXRvq7pOgmY0z14DttDSo
- 2nkrel3IQe1SWfbsqOs6RLJ3CjlU44bn+A2UoTsz8MbJ8SbtJSSYphtvSUIFUIEMtUb4
- ohww==
+ d=linaro.org; s=google; t=1699298117; x=1699902917; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Qmj8n16WRX5qkSaR82mhwTNhyAAZT1HBdA/s8U4MLR0=;
+ b=Pw4/iqxXVIWHHJFOOekeItQYbAq61f4PkYr5RAbRLQ+ZKBzDE3l53PvCMEkEslFl8e
+ MsUu8L8PQCJXX+219EXwXgzZ00dhqXsXPiEPBCXYX6Av+vdgxqBz7A2jPm05i73aFjtg
+ 8kOrTd/PTELDdFtSBmYNTISKzqxq9gDFMo9XNIvd5YsphBllZPbldDs3EJ2Sq/YrsCR0
+ npRRY1q1Lrt2qkPSQMPzCQy3Quaq2Sb3x9pyxNKl7LBPequLy9kKMj0K+jZQInuRbHji
+ WLPoxQDW53c6/wwewCGtws3pwH9bC9tA2ekhzoJmAPX/bszwdJMfdzbItMqOva+wg0f/
+ aslw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699296845; x=1699901645;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AWyNCT41O/cD+GcfrlVN7Nm3WeuSnMVYzvPDZMqtGO0=;
- b=Zj1/dD9NqY4waEQAH/sn4TRo0cdDENgRqey9ZwACZccoblEF8CVX5PwaEyMTIHBrgW
- rKzjVSEInyahYBmgeLteB34/HkSFVxZKqmodAE8ESkrB9nPhAZFoz0Z1OURAcrIvF9kN
- F3N6RfkLwrA9n8hgmLKTzB3SZND7ghUYOy11hQb2LsRkXvsxIYQ0tT3s+H5mZX+1bvQ2
- egn6GONKw1ZcCYmfoixYCm9KSK3jCLbnDljdFC5cGY0LIGzsvktlcjqgnGu2NAuAG9HW
- aEel8Jneey7GVl/x0l6M+q+YtKqoESTWgYkrZFaW6fI4yDKAqs7Y1PfolICY190vur70
- X63Q==
-X-Gm-Message-State: AOJu0YxQYWxBgtC+b2TgD4WxDAR7p4R4DifT+8f7yZhovn+yhn4o12eV
- yMt2JD6vv2ZeBE+L4Kfhokq7NQ==
-X-Google-Smtp-Source: AGHT+IGfxBF0JQROFXZVJvr+6lwnJSM+FfX8Z9WRIE5M1FGyXvI2yTBjeQlKaSwTJB7AFHHzQZ0ipg==
-X-Received: by 2002:a17:907:94d3:b0:9d4:2080:61d2 with SMTP id
- dn19-20020a17090794d300b009d4208061d2mr15141015ejc.2.1699296845428; 
- Mon, 06 Nov 2023 10:54:05 -0800 (PST)
-Received: from [192.168.69.115] ([176.172.125.26])
- by smtp.gmail.com with ESMTPSA id
- q23-20020a1709064c9700b0099bcdfff7cbsm134356eju.160.2023.11.06.10.54.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Nov 2023 10:54:05 -0800 (PST)
-Message-ID: <1b1ea848-e3f9-501a-e01b-ba438baad60d@linaro.org>
-Date: Mon, 6 Nov 2023 19:54:03 +0100
+ d=1e100.net; s=20230601; t=1699298117; x=1699902917;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Qmj8n16WRX5qkSaR82mhwTNhyAAZT1HBdA/s8U4MLR0=;
+ b=md1XZvYtbK+cPpPm7NovBs1MVzQEPTt9V/pW/R2vjzaI81Q8dmWdZ27K6OpPMVui2g
+ 2f+GunMP3wmuw7F10nHpwao8EICnPlvw8Ikeab6Aq9ZG+8mDy9UnIx1Zh9vbMdU7Zrbs
+ OCVFt+CzIlTb64hV7dLfRoOjZu+iX7r/zh6hfzt2Or0s/FSYEnQ6m1bAiwZ7wYvLxYkz
+ MNUL5YferN2wt+omt9Lt9+4j6qPt3jj3gDmlUDZy0P4A89RXDpGenxiEI0mzVIOwVMhb
+ QSX7qgbNYtOPSj/SF96N5rLd9zo/lF5cMymB7lEXkPNtxuCsf1EnszYzkrL7GjdosZnH
+ GJhw==
+X-Gm-Message-State: AOJu0Ywga9nSsWC2uofPADxFNCbbvN2W5ZcR/gcLL/vn7vHc34dSWbSD
+ LfePc5r5KByNh9mmiYM7j3tSIA==
+X-Google-Smtp-Source: AGHT+IEsyCtcnAJ2ZtB2LhBi0FQuoL2770BX1Ynq5KjVEDvfMVETda1z0cH6D1vPKIFpVtcFaNDggQ==
+X-Received: by 2002:a2e:9d55:0:b0:2c5:1674:8d79 with SMTP id
+ y21-20020a2e9d55000000b002c516748d79mr23848326ljj.21.1699298116756; 
+ Mon, 06 Nov 2023 11:15:16 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ d8-20020a05600c34c800b0040770ec2c19sm13569630wmq.10.2023.11.06.11.15.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 06 Nov 2023 11:15:16 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id C393D65565;
+ Mon,  6 Nov 2023 19:15:15 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Jason Wang <jasowang@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, virtio-fs@redhat.com,
+ Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Kevin Wolf <kwolf@redhat.com>, Erik Schilling <erik.schilling@linaro.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH v6 0/6] virtio: cleanup vhost-user-generic and reduce c&p
+Date: Mon,  6 Nov 2023 19:15:09 +0000
+Message-Id: <20231106191515.2801863-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v2 23/35] tcg/ppc: Sink tcg_to_bc usage into tcg_out_bc
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com
-References: <20231028194522.245170-1-richard.henderson@linaro.org>
- <20231028194522.245170-24-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231028194522.245170-24-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.085,
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,15 +106,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/10/23 21:45, Richard Henderson wrote:
-> Rename the current tcg_out_bc function to tcg_out_bc_lab, and
-> create a new function that takes an integer displacement + link.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   tcg/ppc/tcg-target.c.inc | 28 +++++++++++++++++-----------
->   1 file changed, 17 insertions(+), 11 deletions(-)
+A lot of our vhost-user stubs are large chunks of boilerplate that do
+(mostly) the same thing. This series continues the cleanups by
+splitting the vhost-user-base and vhost-user-generic implementations.
+After adding a new vq_size property the rng, gpio and i2c vhost-user
+devices become simple specialisations of the common base defining the
+ID, number of queues and potentially the config handling.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I've also added Manos' vhost-user-sound while I was at it.
+
+Changes
+-------
+
+v6
+  - re-base to current master
+  - make vhost-user-device abstract
+  - mention abstractness in docs
+
+v5
+  - addressing comments and tags
+  - improved the docs
+
+v4
+  - dropped the F_TRANSPORT work for another series
+  - added vhost-user-sound
+
+Alex Bennée (5):
+  virtio: split into vhost-user-base and vhost-user-device
+  hw/virtio: derive vhost-user-rng from vhost-user-base
+  hw/virtio: derive vhost-user-gpio from vhost-user-base
+  hw/virtio: derive vhost-user-i2c from vhost-user-base
+  docs/system: add a basic enumeration of vhost-user devices
+
+Manos Pitsidianakis (1):
+  hw/virtio: add vhost-user-snd and virtio-snd-pci devices
+
+ docs/system/devices/vhost-user-rng.rst        |   2 +
+ docs/system/devices/vhost-user.rst            |  65 ++-
+ ...{vhost-user-device.h => vhost-user-base.h} |  21 +-
+ include/hw/virtio/vhost-user-gpio.h           |  23 +-
+ include/hw/virtio/vhost-user-i2c.h            |  14 +-
+ include/hw/virtio/vhost-user-rng.h            |  11 +-
+ include/hw/virtio/vhost-user-snd.h            |  26 ++
+ hw/virtio/vhost-user-base.c                   | 345 +++++++++++++++
+ hw/virtio/vhost-user-device-pci.c             |  10 +-
+ hw/virtio/vhost-user-device.c                 | 337 +--------------
+ hw/virtio/vhost-user-gpio.c                   | 406 +-----------------
+ hw/virtio/vhost-user-i2c.c                    | 272 +-----------
+ hw/virtio/vhost-user-rng.c                    | 278 +-----------
+ hw/virtio/vhost-user-snd-pci.c                |  75 ++++
+ hw/virtio/vhost-user-snd.c                    |  67 +++
+ hw/virtio/Kconfig                             |   5 +
+ hw/virtio/meson.build                         |  23 +-
+ 17 files changed, 690 insertions(+), 1290 deletions(-)
+ rename include/hw/virtio/{vhost-user-device.h => vhost-user-base.h} (71%)
+ create mode 100644 include/hw/virtio/vhost-user-snd.h
+ create mode 100644 hw/virtio/vhost-user-base.c
+ create mode 100644 hw/virtio/vhost-user-snd-pci.c
+ create mode 100644 hw/virtio/vhost-user-snd.c
+
+-- 
+2.39.2
 
 
