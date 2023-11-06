@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C797E2E0D
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD267E2E0C
 	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 21:19:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r062R-0006lG-TE; Mon, 06 Nov 2023 15:17:35 -0500
+	id 1r063N-0007E9-Tr; Mon, 06 Nov 2023 15:18:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r062P-0006kU-OA
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 15:17:33 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r063M-0007DZ-2J
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 15:18:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r062K-0002y1-R4
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 15:17:33 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r063J-0003DS-Sw
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 15:18:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699301847;
+ s=mimecast20190719; t=1699301909;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=86R1i0xcm6sO2rxpXLLody0Ei4aaPDW3Nh+PbfcEaxY=;
- b=ZoooPzMqo2v0Jgg7RCwR1J0kZo1siSAQiHPpVLOMXB1W9R/Kvn2mCRBwDfubvSncTFve6E
- R6M71DCYhrSOUWw+cV2E1FHSzPCMCrJnutU5zyINtKZe3X+0SAFn28XYLLbcm3qxSeA0cB
- wlPXLB/L1t0nN1IBWRmAztHRPz5tzJ8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=H8dhqD0fI5442CJOnqmmDHi+YK8Xea/crdEhD76Fznc=;
+ b=C1nNgahpJ3KDmy996Xk5/oojQ5+YtQZkcu7C2aJc/QO3va/1bgxqJyON+rkY7hnRwF6Fs5
+ Rpj5xWBSOFniNk335qxuYMEDTK9jw0VSr1+zTTDnRPTMNdyt50+GBcVIMsrL6zDqKu/4Ao
+ KINeYj6h3+TMBhAdrBe1UZLnEWri3WE=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-16-A31LDI2OMnitoviMkwnWUg-1; Mon, 06 Nov 2023 15:17:25 -0500
-X-MC-Unique: A31LDI2OMnitoviMkwnWUg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4095fcbba0aso31154995e9.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 12:17:24 -0800 (PST)
+ us-mta-474-1ew4z2KPNTGyrK93sD4OQQ-1; Mon, 06 Nov 2023 15:18:26 -0500
+X-MC-Unique: 1ew4z2KPNTGyrK93sD4OQQ-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2c506abc320so42397071fa.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 12:18:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699301844; x=1699906644;
+ d=1e100.net; s=20230601; t=1699301905; x=1699906705;
  h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
+ :references:cc:to:content-language:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=86R1i0xcm6sO2rxpXLLody0Ei4aaPDW3Nh+PbfcEaxY=;
- b=DgGThMyw3RzhmdSFipYmv9NapyqKxPuy/KITB+7XAmR7MIB4p2Lc9RyE7UgoNo34qF
- 6zx8QHMmvRnAUAm+aq2f1M+WItdaU/sNVEvon5OiIJTElhEUoODBtw4V5RVE/VPBC4IS
- VHYP6ffwwnVjol7v3HBsF3TDDbQXzTQSvAJRoAIXqzD/QhE0VAOmeXNch/NMqYrZHxOG
- FTSE/yxTbMKhTP3Go7KMfUnNM+96h1wt7cOYtOixsZGGXKUjCnuhOnWz7KKrngsbm/1S
- YKZ1MjTZy+hEDRivSgQ0jx5zc4k+picoGQeLL6AiT2rT3rpxI4gaAMnZ7wpsDskufNrd
- feCA==
-X-Gm-Message-State: AOJu0YwQaGcCmQ+PjHbs4tZoOXyzWp06Yb0ewLNITul8Qyfz4dggLg6p
- tRHm2hzvh2RZQDEm/1uBdoJY9LZZJCYrmgkNSnp98gDB0+yLW0eGOeO+Y9iMvMfI3ybq/W2OLd/
- ns/mAFAR+3Px67gw=
-X-Received: by 2002:a1c:750a:0:b0:401:be70:53b6 with SMTP id
- o10-20020a1c750a000000b00401be7053b6mr672601wmc.15.1699301843754; 
- Mon, 06 Nov 2023 12:17:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGLJJSay70oIJrrug2yMGR79qyBFwJsMRouDuLyb+jlOIJqGD1/DvpuIjuf3MBOIEC0AIpJiQ==
-X-Received: by 2002:a1c:750a:0:b0:401:be70:53b6 with SMTP id
- o10-20020a1c750a000000b00401be7053b6mr672587wmc.15.1699301843294; 
- Mon, 06 Nov 2023 12:17:23 -0800 (PST)
+ bh=H8dhqD0fI5442CJOnqmmDHi+YK8Xea/crdEhD76Fznc=;
+ b=tZqt5DRK8bOEVIKZJgPi4DT/y9T+76y4H+FeAXJQJ/QNWdFxTVqVVFtw/vYZXHjkCZ
+ 7IKs3HOgKfxfC1PXrHq1uX8PLlrgfQSo/AzLpulJG4Ne5BBFe17NL4SJy/LQLEhbnZe/
+ 6mrBak5BMZ+t8zvvtp7UyLdFH1mvGzr3X62hkbRIwJNURftV+hMdhMjlW27IadMXvdTn
+ 6ehHXpEuRHJuw0+Uvxu2G7DiOQvZFutOBdeCo05JEw2gcoOeyFWjwqHV8WBn/ay83Y3m
+ o/UL1OJUBjpDMivIZWICP/shhrwNe05OXAQfZYSuAxpSOsDcJQYcFn+B8XFFrL21pUKR
+ Z/lg==
+X-Gm-Message-State: AOJu0Yym7GK2n1MBkl3B1uh/o1lZNeAxESmTGM4y6xBb9nsK99A6RMKI
+ F8yWsvuTyi9iUzFZFRvNakI2fcyz2eLzyO1Ykhsk+0QCPoBLPPx7D1T4+aw+tH2CHwbLsnG7voe
+ g98c3wMlAV1wkrRw=
+X-Received: by 2002:a2e:8558:0:b0:2c5:2423:e225 with SMTP id
+ u24-20020a2e8558000000b002c52423e225mr21422000ljj.6.1699301905277; 
+ Mon, 06 Nov 2023 12:18:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFUMXFlUEcVLCCwDDfcfI/05CPz+1d2oF8bn/gOt26D3cnHyjgpVBx5Yjqbn5yEnsZCHBCS8Q==
+X-Received: by 2002:a2e:8558:0:b0:2c5:2423:e225 with SMTP id
+ u24-20020a2e8558000000b002c52423e225mr21421988ljj.6.1699301904800; 
+ Mon, 06 Nov 2023 12:18:24 -0800 (PST)
 Received: from ?IPV6:2003:cb:c723:8300:17ef:a8f2:1ed1:81e6?
  (p200300cbc723830017efa8f21ed181e6.dip0.t-ipconnect.de.
  [2003:cb:c723:8300:17ef:a8f2:1ed1:81e6])
  by smtp.gmail.com with ESMTPSA id
- p6-20020a05600c358600b004053a6b8c41sm13100903wmq.12.2023.11.06.12.17.22
+ p6-20020a05600c358600b004053a6b8c41sm13100903wmq.12.2023.11.06.12.18.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Nov 2023 12:17:22 -0800 (PST)
-Message-ID: <475a2592-4af6-4a5b-9642-fbcb7ccec912@redhat.com>
-Date: Mon, 6 Nov 2023 21:17:21 +0100
+ Mon, 06 Nov 2023 12:18:24 -0800 (PST)
+Message-ID: <8644ddc8-f7d7-45f5-acab-b4758611d443@redhat.com>
+Date: Mon, 6 Nov 2023 21:18:23 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] target/s390x: Fix CLC corrupting cc_src
+Subject: Re: [PATCH v2 3/5] target/s390x: Fix LAALG not updating cc_src
+Content-Language: en-US
 To: Ilya Leoshkevich <iii@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
  qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
  qemu-stable@nongnu.org
 References: <20231106093605.1349201-1-iii@linux.ibm.com>
- <20231106093605.1349201-2-iii@linux.ibm.com>
-Content-Language: en-US
+ <20231106093605.1349201-4-iii@linux.ibm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -123,18 +123,19 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20231106093605.1349201-2-iii@linux.ibm.com>
+In-Reply-To: <20231106093605.1349201-4-iii@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -151,46 +152,73 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 06.11.23 10:31, Ilya Leoshkevich wrote:
-> CLC updates cc_src before accessing the second operand; if the latter
-> is inaccessible, the former ends up containing a bogus value.
+> LAALG uses op_laa() and wout_addu64(). The latter expects cc_src to be
+> set, but the former does not do it. This can lead to assertion failures
+> if something sets cc_src to neither 0 nor 1 before.
 > 
-> Fix by reading cc_src into a temporary first.
+> Fix by introducing op_laa_addu64(), which sets cc_src, and using it for
+> LAALG.
 > 
-> Fixes: 4f7403d52b1c ("target-s390: Convert CLC")
-> Closes: https://gitlab.com/qemu-project/qemu/-/issues/1865
+> Fixes: 4dba4d6fef61 ("target/s390x: Use atomic operations for LOAD AND OP")
 > Cc: qemu-stable@nongnu.org
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 > ---
->   target/s390x/tcg/translate.c | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
+>   target/s390x/tcg/insn-data.h.inc |  2 +-
+>   target/s390x/tcg/translate.c     | 19 +++++++++++++++++--
+>   2 files changed, 18 insertions(+), 3 deletions(-)
 > 
+> diff --git a/target/s390x/tcg/insn-data.h.inc b/target/s390x/tcg/insn-data.h.inc
+> index 0bfd88d3c3a..2f07f39d9cb 100644
+> --- a/target/s390x/tcg/insn-data.h.inc
+> +++ b/target/s390x/tcg/insn-data.h.inc
+> @@ -442,7 +442,7 @@
+>       D(0xebe8, LAAG,    RSY_a, ILA, r3, a2, new, in2_r1, laa, adds64, MO_TEUQ)
+>   /* LOAD AND ADD LOGICAL */
+>       D(0xebfa, LAAL,    RSY_a, ILA, r3_32u, a2, new, in2_r1_32, laa, addu32, MO_TEUL)
+> -    D(0xebea, LAALG,   RSY_a, ILA, r3, a2, new, in2_r1, laa, addu64, MO_TEUQ)
+> +    D(0xebea, LAALG,   RSY_a, ILA, r3, a2, new, in2_r1, laa_addu64, addu64, MO_TEUQ)
+>   /* LOAD AND AND */
+>       D(0xebf4, LAN,     RSY_a, ILA, r3_32s, a2, new, in2_r1_32, lan, nz32, MO_TESL)
+>       D(0xebe4, LANG,    RSY_a, ILA, r3, a2, new, in2_r1, lan, nz64, MO_TEUQ)
 > diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-> index 4bae1509f50..a0d6a2a35dd 100644
+> index a0d6a2a35dd..62ab2be8b12 100644
 > --- a/target/s390x/tcg/translate.c
 > +++ b/target/s390x/tcg/translate.c
-> @@ -2007,6 +2007,7 @@ static DisasJumpType op_cksm(DisasContext *s, DisasOps *o)
->   static DisasJumpType op_clc(DisasContext *s, DisasOps *o)
->   {
->       int l = get_field(s, l1);
-> +    TCGv_i64 src;
->       TCGv_i32 vl;
->       MemOp mop;
+> @@ -2677,17 +2677,32 @@ static DisasJumpType op_kxb(DisasContext *s, DisasOps *o)
+>       return DISAS_NEXT;
+>   }
 >   
-> @@ -2016,9 +2017,11 @@ static DisasJumpType op_clc(DisasContext *s, DisasOps *o)
->       case 4:
->       case 8:
->           mop = ctz32(l + 1) | MO_TE;
-> -        tcg_gen_qemu_ld_tl(cc_src, o->addr1, get_mem_index(s), mop);
-> +        /* Do not update cc_src yet: loading cc_dst may cause an exception. */
-> +        src = tcg_temp_new_i64();
-> +        tcg_gen_qemu_ld_tl(src, o->addr1, get_mem_index(s), mop);
->           tcg_gen_qemu_ld_tl(cc_dst, o->in2, get_mem_index(s), mop);
-> -        gen_op_update2_cc_i64(s, CC_OP_LTUGTU_64, cc_src, cc_dst);
-> +        gen_op_update2_cc_i64(s, CC_OP_LTUGTU_64, src, cc_dst);
->           return DISAS_NEXT;
->       default:
->           vl = tcg_constant_i32(l);
+> -static DisasJumpType op_laa(DisasContext *s, DisasOps *o)
+> +static DisasJumpType help_laa(DisasContext *s, DisasOps *o, bool addu64)
+>   {
+>       /* The real output is indeed the original value in memory;
+>          recompute the addition for the computation of CC.  */
+>       tcg_gen_atomic_fetch_add_i64(o->in2, o->in2, o->in1, get_mem_index(s),
+>                                    s->insn->data | MO_ALIGN);
+>       /* However, we need to recompute the addition for setting CC.  */
+> -    tcg_gen_add_i64(o->out, o->in1, o->in2);
+> +    if (addu64) {
+> +        tcg_gen_movi_i64(cc_src, 0);
+> +        tcg_gen_add2_i64(o->out, cc_src, o->in1, cc_src, o->in2, cc_src);
+> +    } else {
+> +        tcg_gen_add_i64(o->out, o->in1, o->in2);
+> +    }
+>       return DISAS_NEXT;
+>   }
+>   
+> +static DisasJumpType op_laa(DisasContext *s, DisasOps *o)
+> +{
+> +    return help_laa(s, o, false);
+> +}
+> +
+> +static DisasJumpType op_laa_addu64(DisasContext *s, DisasOps *o)
+> +{
+> +    return help_laa(s, o, true);
+> +}
+> +
+>   static DisasJumpType op_lan(DisasContext *s, DisasOps *o)
+>   {
+>       /* The real output is indeed the original value in memory;
 
 Reviewed-by: David Hildenbrand <david@redhat.com>
 
