@@ -2,80 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E647E2433
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 14:19:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 282BE7E2594
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 14:33:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzzUb-0005Pc-Vy; Mon, 06 Nov 2023 08:18:14 -0500
+	id 1qzziV-0005aE-EB; Mon, 06 Nov 2023 08:32:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qzzUZ-0005Nf-Ss
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 08:18:12 -0500
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qzzUX-0000RA-Ri
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 08:18:11 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qzziP-0005Zf-4R
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 08:32:29 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qzziM-0003fM-K4
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 08:32:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699277545;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=bwXoB6XGjoify4VlIQJqF1P7oTKODjmcgNCkWhvzbnQ=;
+ b=ColQxJOdx7/YVDMxrnnN7ak1g+Ie6mH7FzVkYkYDb9yY3EIz0uR8TAjO5qRW4vZ/wuWFbV
+ a/M8f4f8j6r3LzndG8gawwJPWIPR6ZELWi1eDsSq/+EPV7UakJDoDwjYbeFiknR/A8m5f3
+ W/eMtZnwrA9S3+5dxDt6NI+ncFSbReE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-397-aQDHBnfpPAqBL9GHCiQWWQ-1; Mon,
+ 06 Nov 2023 08:32:23 -0500
+X-MC-Unique: aQDHBnfpPAqBL9GHCiQWWQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 077571FE46;
- Mon,  6 Nov 2023 13:18:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1699276686; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=12IfxXmkhGkj4DqROHGHnXiO7Yj5dpAToesWxRk9Qh4=;
- b=uO5bGaI7wSCSNs8TU4MqeFjPfDQOkPZ3kN9tLH09ORX3KY4OXcp67mDG5+8vw8oXe8wdPe
- g/jyX2RwGO7lQFaUHiwNeU5cf9Z2fLXV7gTKAcPvd/QHZu0+13kQlRRjB5z2djUgVUjvRY
- K/o4NH7JAYQCzhnEOnfAjjRvfQLYp48=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1699276686;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=12IfxXmkhGkj4DqROHGHnXiO7Yj5dpAToesWxRk9Qh4=;
- b=DpH8wI7fRPH2GLXOQc7msxB6KR7SpR+f3qh91FjeSeHLYb/DCklGrcWUztLtlSJwbDqcTy
- oLscIHF/BgkE0GCg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8DF2D138E5;
- Mon,  6 Nov 2023 13:18:05 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id r5eWFo3nSGU8ZwAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 06 Nov 2023 13:18:05 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>, =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, Juan Quintela
- <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>, Claudio Fontana
- <cfontana@suse.de>, Nikolay Borisov <nborisov@suse.com>
-Subject: Re: [PATCH v2 16/29] migration/ram: Add support for 'fixed-ram'
- migration restore
-In-Reply-To: <ZUJn/5GuRXcudsiF@x1n>
-References: <20231023203608.26370-1-farosas@suse.de>
- <20231023203608.26370-17-farosas@suse.de> <ZTjjMiMkmnPMccjq@redhat.com>
- <87r0lieqxm.fsf@suse.de> <ZUFPlqgFx/2MeCj8@x1n>
- <ZUIZ1g5UahLu4pXh@redhat.com> <ZUJe0xb2Q0HgzBX+@x1n>
- <ZUJgiHa2gTCdhWZ1@redhat.com> <ZUJn/5GuRXcudsiF@x1n>
-Date: Mon, 06 Nov 2023 10:18:03 -0300
-Message-ID: <871qd3dnqs.fsf@suse.de>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 255C6380450C
+ for <qemu-devel@nongnu.org>; Mon,  6 Nov 2023 13:32:23 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.31])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 180B9502B;
+ Mon,  6 Nov 2023 13:32:21 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: stefanha@redhat.com,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 00/10] Gpu patches
+Date: Mon,  6 Nov 2023 17:32:09 +0400
+Message-ID: <20231106133219.2173660-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,112 +79,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-> On Wed, Nov 01, 2023 at 02:28:24PM +0000, Daniel P. Berrang=C3=A9 wrote:
->> On Wed, Nov 01, 2023 at 10:21:07AM -0400, Peter Xu wrote:
->> > On Wed, Nov 01, 2023 at 09:26:46AM +0000, Daniel P. Berrang=C3=A9 wrot=
-e:
->> > > On Tue, Oct 31, 2023 at 03:03:50PM -0400, Peter Xu wrote:
->> > > > On Wed, Oct 25, 2023 at 11:07:33AM -0300, Fabiano Rosas wrote:
->> > > > > >> +static int parse_ramblock_fixed_ram(QEMUFile *f, RAMBlock *b=
-lock, ram_addr_t length)
->> > > > > >> +{
->> > > > > >> +    g_autofree unsigned long *bitmap =3D NULL;
->> > > > > >> +    struct FixedRamHeader header;
->> > > > > >> +    size_t bitmap_size;
->> > > > > >> +    long num_pages;
->> > > > > >> +    int ret =3D 0;
->> > > > > >> +
->> > > > > >> +    ret =3D fixed_ram_read_header(f, &header);
->> > > > > >> +    if (ret < 0) {
->> > > > > >> +        error_report("Error reading fixed-ram header");
->> > > > > >> +        return -EINVAL;
->> > > > > >> +    }
->> > > > > >> +
->> > > > > >> +    block->pages_offset =3D header.pages_offset;
->> > > > > >
->> > > > > > Do you think it is worth sanity checking that 'pages_offset' i=
-s aligned
->> > > > > > in some way.
->> > > > > >
->> > > > > > It is nice that we have flexibility to change the alignment in=
- future
->> > > > > > if we find 1 MB is not optimal, so I wouldn't want to force 1M=
-B align
->> > > > > > check htere. Perhaps we could at least sanity check for alignm=
-ent at
->> > > > > > TARGET_PAGE_SIZE, to detect a gross data corruption problem ?
->> > > > > >
->> > > > >=20
->> > > > > I don't see why not. I'll add it.
->> > > >=20
->> > > > Is there any explanation on why that 1MB offset, and how the numbe=
-r is
->> > > > chosen?  Thanks,
->> > >=20
->> > > The fixed-ram format is anticipating the use of O_DIRECT.
->> > >=20
->> > > With O_DIRECT both the buffers in memory, and the file handle offset
->> > > have alignment requirements. The buffer alignments are usually page
->> > > sized, and QEMU RAM blocks will trivially satisfy those.
->> > >=20
->> > > The file handle offset alignment varies per filesystem. While you can
->> > > query the alignment for the FS holding the file with statx(), that is
->> > > not appropriate todo. If a user saves/restores QEMU state to file, we
->> > > must assume there is a chance the user will copy the saved state to a
->> > > different filesystem.
->> > >=20
->> > > IOW, we want alignment to satisfy the likely worst case.
->> > >=20
->> > > Picking 1 MB is a nice round number that is large enough that it is
->> > > almost certainly going to satisfy any filesystem alignment. In fact
->> > > it is likely massive overkill. None the less 1 MB is also still tiny
->> >=20
->> > Is that calculated by something like max of possible host (small) page
->> > sizes?  I've no idea what's it for all archs, the max small page size =
-I'm
->> > aware of is 64K, but I don't know a lot archs.
->>=20
->> It wasn't anything as precise as that. It is literally just "1MB" looks
->> large enough that we don't need to spend time to investigate per arch
->> page sizes.
->
-> IMHO we need that precision on reasoning and document it, even if not on
-> the exact number we prefer, which can be prone to change later.  Otherwise
-> that value will be a pure magic soon after a few years or even less, it'll
-> be more of a challenge later to figure things out.
->
->>=20
->> Having said that I'm now having slight self-doubt wrt huge pages, though
->> I swear we investigated it last year when first discussing this feature.
->> The guest memory will of course already be suitably aligned, but I'm
->> wondering if the filesystem I/O places any offset alignment constraints
->> related to non-default page size.
->
-> AFAIU direct IO is about pinning the IO buffers, playing the role of fs
-> cache instead.  If my understanding is correct, huge pages shouldn't be a
-> problem for such pinning, because it's legal to pin partial of a huge pag=
-e.
->
-> After the partial huge pages pinned, they should be treated as normal fs
-> buffers when doing block IO.  And then the offset of file should, per my
-> understanding, not relevant to what is the type of backend of that user
-> buffer anymore that triggers read()/write().
->
-> But maybe I missed something, if so that will need to be part of
-> documentation of 1MB magic value, IMHO.  We may want to double check with
-> that by doing fixed-ram migration on e.g. 1GB hugetlb memory-backend-file
-> with 1MB file offset per-ramblock.
+The following changes since commit d762bf97931b58839316b68a570eecc6143c9e3e:
 
-Does anyone have any indication that we need to relate the aligment to
-the page size? All I find online points to device block size being the
-limiting factor for filesystems. There's also raw_probe_alignment() at
-file-posix.c which seems to check up to 4k and recommend to disable
-O_DIRECT if an alignment is not found.
+  Merge tag 'pull-target-arm-20231102' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-11-03 10:04:12 +0800)
 
-Note that we shouldn't have any problems changing the alignment we
-choose since we have a pointer to the start of the aligned region which
-goes along with the fixed-ram header. We could even do some probing like
-the block layer does if we wanted.
+are available in the Git repository at:
+
+  https://gitlab.com/marcandre.lureau/qemu.git tags/gpu-pull-request
+
+for you to fetch changes up to 10b9ddbc83b94986cbdf989e26fb7269fb2e9f72:
+
+  Revert "virtio-gpu: block migration of VMs with blob=true" (2023-11-06 17:30:01 +0400)
+
+----------------------------------------------------------------
+GPU pull request
+
+Includes:
+- [PATCH] virtio-gpu-rutabaga: Add empty interface to fix arm64 crash
+- [PATCH v2 0/4] Misc ati-vga patches
+- [PATCH v2 0/5] virtio-gpu: add blob migration support
+
+----------------------------------------------------------------
+
+BALATON Zoltan (4):
+  ati-vga: Fix aperture sizes
+  ati-vga: Support unaligned access to GPIO DDC registers
+  ati-vga: Add 30 bit palette access register
+  ati-vga: Implement fallback for pixman routines
+
+Cong Liu (1):
+  virtio-gpu-rutabaga: Add empty interface to fix arm64 crash
+
+Marc-André Lureau (5):
+  virtio-gpu: block migration of VMs with blob=true
+  virtio-gpu: factor out restore mapping
+  virtio-gpu: move scanout restoration to post_load
+  virtio-gpu: add virtio-gpu/blob vmstate subsection
+  Revert "virtio-gpu: block migration of VMs with blob=true"
+
+ hw/display/ati_int.h                 |   2 +
+ hw/display/ati_regs.h                |   2 +
+ hw/display/ati.c                     |  61 +++++++---
+ hw/display/ati_2d.c                  |  75 ++++++++----
+ hw/display/ati_dbg.c                 |   2 +
+ hw/display/virtio-gpu-pci-rutabaga.c |   1 +
+ hw/display/virtio-gpu.c              | 174 ++++++++++++++++++++++-----
+ 7 files changed, 250 insertions(+), 67 deletions(-)
+
+-- 
+2.41.0
+
 
