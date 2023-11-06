@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA70E7E1A43
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 07:35:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CDDC7E1A77
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 07:47:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztCV-0008U9-2c; Mon, 06 Nov 2023 01:35:07 -0500
+	id 1qztMo-0001kb-HR; Mon, 06 Nov 2023 01:45:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qztCP-0008Sn-04
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:35:01 -0500
-Received: from mail-qt1-x82d.google.com ([2607:f8b0:4864:20::82d])
+ (Exim 4.90_1) (envelope-from <hsp.cat7@gmail.com>)
+ id 1qztMk-0001kQ-TC
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:45:42 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qztCL-0005jE-Q5
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:35:00 -0500
-Received: by mail-qt1-x82d.google.com with SMTP id
- d75a77b69052e-418201cb9e9so28316961cf.0
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:34:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <hsp.cat7@gmail.com>)
+ id 1qztMj-0007jT-5r
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:45:42 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-53b32dca0bfso8233474a12.0
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:45:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699252496; x=1699857296; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fGpUp2UKUSvGL6EstICtpjvo6BfeSIzz8tXe6SxfjNQ=;
- b=jiSKxJ9t4lDBgiGBHqjRj5VcYY2MuY6T9U5EfkO85e5oB5hfPtx41OiKhql7uNi/cO
- 9DbC2qSIb0RTBjHhHUqKqSkikr6dTZGOc7kkpduPNhd5NU9n022kjlKQDDQ2vvOqPM5V
- xMM8FUpqwR0Kuh29Ux2FbgduIAkZD1dLzSrQtRUySIB2XxGQwJ5grd0sn9e7iNzfYnol
- jvAyjOp2uhuM3GiCGUeqMKYf6A5EsQ8TR9/bCaPOjVUaBdTszGx8GMcqw4st/RouzF2a
- 53+QQsjq3xJZO7Jnz68XR/IuzHS/sjHJbphBKUlpjdx1orV5/DQxjUFs6RgZWcmm/fRq
- Mhrg==
+ d=gmail.com; s=20230601; t=1699253139; x=1699857939; darn=nongnu.org;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=U+AqvDxTeRtd5HBrV0965pMk2bMFdHFuO6m8bfS4Juk=;
+ b=bn0tPasQN7zX2+/UzxEiL6ryu9NqvJr5yEOOKH7pD9g5Tf4IGE5olBy8xF6h9IvJ6j
+ Wly+RvUV9L0r7vfJHggztdNJ5nokb0hC94ztZ56Bzbli2Mx8LEoCnFtK/3T/ltGeOh0I
+ mvgWffjGzCthsDjcbFcy7TD+vT9wP0V/MRCb1UY/OKmbxzkO+XudGUiNfBU3w1YI301F
+ guVbOMuYrhnZvlwoi5STUvvUCwm7Gby4004edNSzXZbZlmWIFYufmCxyeK+1jGCnnA9Y
+ 4IJagmge4YT0Rmy1HXqAn6ODzMjMIjqBM77nidn4F1scbMXU/SElDeNOXNH81TFMR4aF
+ tXPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699252496; x=1699857296;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fGpUp2UKUSvGL6EstICtpjvo6BfeSIzz8tXe6SxfjNQ=;
- b=M3Ni6eYnt7M99SKfjH/+L42WRMuKcqi/zpplku8cSMZ2ACmjQ/ufQfCLdvaBke/NeU
- tTlTOou3brtTFg0k0AsfaGJCWCVihi2Vgf1wQArNE9/8vOHztAEAfQb/QtPefhiZjRmw
- ellmCYJ2gyVKkVC0Cqwr4vqrUBc25nIy2I2+DpFmVavl1pgTaRsI92WY2ZHC7uXh0MW8
- VQxorkrDhwPgtXYq8m/EO0YiNoRJoSbNdISw3ZqQLHf2RaSgb++62qJQ/6a8a2TdfXdH
- dU7HdRRn6rQjdmrF3np6ige/JYloyAeAJ8xlTSKNt2gW2ZImMmE7oRwS/i50LToX6Gz6
- gV+w==
-X-Gm-Message-State: AOJu0YwW4fH0lEmXIV7ABswqUoFPmc2EQVEgGOAWYXPfEZ3Sbdz4+RMI
- 3lxYndpL8iyPEIacpbJ5tgRxqznDEYM4QaA5DTM=
-X-Google-Smtp-Source: AGHT+IF5FN9w+Tj3VzY095rG3wmtmd0EIV+NT7KmxXLNmKFYdeHyaPUjvsFE6JBRm+jj7YDmDKavTbHp2pwa4Il+mX8=
-X-Received: by 2002:a05:622a:3:b0:41c:cd2a:f066 with SMTP id
- x3-20020a05622a000300b0041ccd2af066mr36744512qtw.34.1699252496388; Sun, 05
- Nov 2023 22:34:56 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699253139; x=1699857939;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=U+AqvDxTeRtd5HBrV0965pMk2bMFdHFuO6m8bfS4Juk=;
+ b=b53Ew8PJE/IHHP/N4YExHxSosDZ2xASLpk+9CdlOw5S9YpGAciWOtnhzFmWv0BjeT0
+ 1u6BNSZ9ZOPXi/IhXKqdMp6vqopydIZTk/e1+W0b6muhY4w6PgHLK8zcpsnvMef6cdVg
+ XtVV+V4Xg15pMEX7E1aJTpKHkEo4CDN+Z3I0ct0wiGpWS0QkGD6dac2fPXzrMQ9WUAiE
+ k5oKSk7RpLs4A7p7CLKgGK9Lh+0VEs38MV0qbj8wkwzzaNTLd9s853BzhO2ku0fjTUqa
+ Nz1fx0rOd3EyH4rkJanuB60sVRw8lk15l9jrtSRUqvgzOjfNEmOKgsQUA9AtzLjRKLHA
+ VjAg==
+X-Gm-Message-State: AOJu0Yz6oj8xYUo1yPSEPKFnztBvIMm0mNTLkKchpVPQ+jS/TuwnRu5i
+ aV+bUclHoQMj4WxVSlDXWs+YZJG91IBWIVHc92NTI8Vfb+c=
+X-Google-Smtp-Source: AGHT+IEtJ+gf1vn+0KSPgw1vTiiThrKWCG4tMA3SLi6vyft1mv4GKEMqkHMrCBixIC+53zrOXJu50lL3TV2VJbyBwPA=
+X-Received: by 2002:a50:d68c:0:b0:544:3cd4:5c50 with SMTP id
+ r12-20020a50d68c000000b005443cd45c50mr6221640edi.14.1699253138695; Sun, 05
+ Nov 2023 22:45:38 -0800 (PST)
 MIME-Version: 1.0
-References: <6f8b1f96-4520-49d5-8a09-b2935ab4bd9d@t-online.de>
- <20231105172552.8405-1-vr_qemu@t-online.de>
-In-Reply-To: <20231105172552.8405-1-vr_qemu@t-online.de>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 6 Nov 2023 10:34:45 +0400
-Message-ID: <CAJ+F1CKjY0V_qZ6cjxLVCpM2PcCtKpGGB+jH8jB4Skh5WmbnXA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] hw/audio/hda-codec: fix multiplication overflow
-To: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, M_O_Bz <M_O_Bz@163.com>, linwei6@ruijie.com.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82d;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+References: <cover.1672868854.git.balaton@eik.bme.hu>
+ <4162db13bd1da9c6ddd77f185cef738e44790467.1672868854.git.balaton@eik.bme.hu>
+ <b821c773-a443-c70b-5d4c-787284028f8a@ilande.co.uk>
+ <389d8398-2b77-a64e-7034-79123da6cb86@eik.bme.hu>
+ <CABLmASHE7iiqHnOZxCfaqvz5zwUipG5vunHG_UK8krXu71HOgw@mail.gmail.com>
+ <bd0e4431-c5ec-2ef5-d847-8c59aa8cc55c@eik.bme.hu>
+ <ab9e33e5-70fc-0a76-c548-16ec787ea1af@ilande.co.uk>
+ <ed8ee369-c9a8-7853-3b65-7361fefc3c63@eik.bme.hu>
+ <ca5240e6-e00d-6213-22d6-f7b43d8bed18@ilande.co.uk>
+ <CABLmASGc6fybw7mL5JHUCukwoB6KjGaaWHct5mi20A2vXZhtaA@mail.gmail.com>
+In-Reply-To: <CABLmASGc6fybw7mL5JHUCukwoB6KjGaaWHct5mi20A2vXZhtaA@mail.gmail.com>
+From: Howard Spoelstra <hsp.cat7@gmail.com>
+Date: Mon, 6 Nov 2023 07:45:25 +0100
+Message-ID: <CABLmASHL3etTk7b1Tbg6rcZD+qGZXcPBkAR0+tcJP+EJdXF63Q@mail.gmail.com>
+Subject: Error detecting linker while compiling qemu-system-ppc on macOS
+To: qemu-devel qemu-devel <qemu-devel@nongnu.org>
+Content-Type: multipart/alternative; boundary="000000000000b729480609763305"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=hsp.cat7@gmail.com; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,107 +92,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Nov 5, 2023 at 9:26=E2=80=AFPM Volker R=C3=BCmelin <vr_qemu@t-onlin=
-e.de> wrote:
->
-> After a relatively short time, there is an multiplication overflow
-> when multiplying (now - buft_start) with hda_bytes_per_second().
-> While the uptime now - buft_start only overflows after 2**63 ns
-> =3D 292.27 years, this happens hda_bytes_per_second() times faster
-> with the multiplication. At 44100 samples/s * 2 channels
-> * 2 bytes/channel =3D 176400 bytes/s that is 14.52 hours. After the
-> multiplication overflow the affected audio stream stalls.
->
-> Replace the multiplication and following division with muldiv64()
-> to prevent a multiplication overflow.
->
-> Fixes: 280c1e1cdb ("audio/hda: create millisecond timers that handle IO")
-> Reported-by: M_O_Bz <m_o_bz@163.com>
-> Signed-off-by: Volker R=C3=BCmelin <vr_qemu@t-online.de>
+--000000000000b729480609763305
+Content-Type: text/plain; charset="UTF-8"
 
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+Hi all,
 
-> ---
->  hw/audio/hda-codec.c | 29 +++++++++++++++++++++--------
->  1 file changed, 21 insertions(+), 8 deletions(-)
->
-> diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
-> index b9ad1f4c39..f756e419bb 100644
-> --- a/hw/audio/hda-codec.c
-> +++ b/hw/audio/hda-codec.c
-> @@ -22,6 +22,7 @@
->  #include "hw/qdev-properties.h"
->  #include "intel-hda.h"
->  #include "migration/vmstate.h"
-> +#include "qemu/host-utils.h"
->  #include "qemu/module.h"
->  #include "intel-hda-defs.h"
->  #include "audio/audio.h"
-> @@ -189,9 +190,9 @@ struct HDAAudioState {
->      bool     use_timer;
->  };
->
-> -static inline int64_t hda_bytes_per_second(HDAAudioStream *st)
-> +static inline uint32_t hda_bytes_per_second(HDAAudioStream *st)
->  {
-> -    return 2LL * st->as.nchannels * st->as.freq;
-> +    return 2 * (uint32_t)st->as.nchannels * (uint32_t)st->as.freq;
->  }
->
->  static inline void hda_timer_sync_adjust(HDAAudioStream *st, int64_t tar=
-get_pos)
-> @@ -222,12 +223,18 @@ static void hda_audio_input_timer(void *opaque)
->
->      int64_t now =3D qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
->
-> -    int64_t buft_start =3D st->buft_start;
-> +    int64_t uptime =3D now - st->buft_start;
->      int64_t wpos =3D st->wpos;
->      int64_t rpos =3D st->rpos;
-> +    int64_t wanted_rpos;
->
-> -    int64_t wanted_rpos =3D hda_bytes_per_second(st) * (now - buft_start=
-)
-> -                          / NANOSECONDS_PER_SECOND;
-> +    if (uptime <=3D 0) {
-> +        /* wanted_rpos <=3D 0 */
-> +        goto out_timer;
-> +    }
-> +
-> +    wanted_rpos =3D muldiv64(uptime, hda_bytes_per_second(st),
-> +                           NANOSECONDS_PER_SECOND);
->      wanted_rpos &=3D -4; /* IMPORTANT! clip to frames */
->
->      if (wanted_rpos <=3D rpos) {
-> @@ -286,12 +293,18 @@ static void hda_audio_output_timer(void *opaque)
->
->      int64_t now =3D qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
->
-> -    int64_t buft_start =3D st->buft_start;
-> +    int64_t uptime =3D now - st->buft_start;
->      int64_t wpos =3D st->wpos;
->      int64_t rpos =3D st->rpos;
-> +    int64_t wanted_wpos;
-> +
-> +    if (uptime <=3D 0) {
-> +        /* wanted_wpos <=3D 0 */
-> +        goto out_timer;
-> +    }
->
-> -    int64_t wanted_wpos =3D hda_bytes_per_second(st) * (now - buft_start=
-)
-> -                          / NANOSECONDS_PER_SECOND;
-> +    wanted_wpos =3D muldiv64(uptime, hda_bytes_per_second(st),
-> +                           NANOSECONDS_PER_SECOND);
->      wanted_wpos &=3D -4; /* IMPORTANT! clip to frames */
->
->      if (wanted_wpos <=3D wpos) {
-> --
-> 2.35.3
->
->
+I'm getting a error while compiling on macOS (Intel). It seems linker
+detection is passed an unknown argument "--version", whereas "-v" works OK?
+See log below.
+
+Thanks for looking into this,
+Howard
+
+Build started at 2023-11-06T07:29:19.181487
+Main binary: /Users/hsp/src/qemu-ppc/build/pyvenv/bin/python3.11
+Build Options: -Db_pie=false -Ddocs=disabled -Dplugins=true '--native-file
+config-meson.cross'
+Python system: Darwin
+The Meson build system
+Version: 0.63.3
+Source dir: /Users/hsp/src/qemu-ppc
+Build dir: /Users/hsp/src/qemu-ppc/build
+Build type: native build
+Project name: qemu
+Project version: 8.1.50
+-----
+Detecting compiler via: cc -m64 -mcx16 --version
+compiler returned <Popen: returncode: 0 args: ['cc', '-m64', '-mcx16',
+'--version']>
+compiler stdout:
+Apple clang version 15.0.0 (clang-1500.0.40.1)
+Target: x86_64-apple-darwin22.6.0
+Thread model: posix
+InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+
+compiler stderr:
+
+Running command: cc -m64 -mcx16 -E -dM -
+-----
+Detecting linker via: cc -m64 -mcx16 -Wl,--version
+linker returned <Popen: returncode: 1 args: ['cc', '-m64', '-mcx16',
+'-Wl,--version']>
+linker stdout:
+
+linker stderr:
+ld: unknown options: --version
+clang: error: linker command failed with exit code 1 (use -v to see
+invocation)
+
+-----
+Detecting Apple linker via: cc -m64 -mcx16 -Wl,-v
+linker stdout:
+
+linker stderr:
+@(#)PROGRAM:ld  PROJECT:dyld-1015.7
+BUILD 18:48:43 Aug 22 2023
+configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386
+x86_64 x86_64h armv6m armv7k armv7m armv7em
+will use ld-classic for: armv6 armv7 armv7s arm64_32 i386 armv6m armv7k
+armv7m armv7em
+LTO support using: LLVM version 15.0.0 (static support for 29, runtime is
+29)
+TAPI support using: Apple TAPI version 15.0.0 (tapi-1500.0.12.3)
+Library search paths:
+/usr/local/lib
+Framework search paths:
+ld: Undefined symbols:
+  _main, referenced from:
+      <initial-undefines>
+clang: error: linker command failed with exit code 1 (use -v to see
+invocation)
 
 
---=20
-Marc-Andr=C3=A9 Lureau
+../meson.build:1:0: ERROR: Unable to detect linker for compiler `cc -m64
+-mcx16 -Wl,--version`
+stdout:
+stderr: ld: unknown options: --version
+clang: error: linker command failed with exit code 1 (use -v to see
+invocation)
+
+--000000000000b729480609763305
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hi all,</div><div><br></div><div>I&#39;m getting a er=
+ror while compiling on macOS (Intel). It seems linker detection is passed a=
+n unknown argument &quot;--version&quot;, whereas &quot;-v&quot; works OK?<=
+/div><div>See log below.</div><div><br></div><div>Thanks for looking into t=
+his,<br></div><div>Howard<br></div><div><br></div><div>Build started at 202=
+3-11-06T07:29:19.181487<br>Main binary: /Users/hsp/src/qemu-ppc/build/pyven=
+v/bin/python3.11<br>Build Options: -Db_pie=3Dfalse -Ddocs=3Ddisabled -Dplug=
+ins=3Dtrue &#39;--native-file config-meson.cross&#39;<br>Python system: Dar=
+win<br>The Meson build system<br>Version: 0.63.3<br>Source dir: /Users/hsp/=
+src/qemu-ppc<br>Build dir: /Users/hsp/src/qemu-ppc/build<br>Build type: nat=
+ive build<br>Project name: qemu<br>Project version: 8.1.50<br>-----<br>Dete=
+cting compiler via: cc -m64 -mcx16 --version<br>compiler returned &lt;Popen=
+: returncode: 0 args: [&#39;cc&#39;, &#39;-m64&#39;, &#39;-mcx16&#39;, &#39=
+;--version&#39;]&gt;<br>compiler stdout:<br>Apple clang version 15.0.0 (cla=
+ng-1500.0.40.1)<br>Target: x86_64-apple-darwin22.6.0<br>Thread model: posix=
+<br>InstalledDir: /Library/Developer/CommandLineTools/usr/bin<br><br>compil=
+er stderr:<br><br>Running command: cc -m64 -mcx16 -E -dM -<br>-----<br>Dete=
+cting linker via: cc -m64 -mcx16 -Wl,--version<br>linker returned &lt;Popen=
+: returncode: 1 args: [&#39;cc&#39;, &#39;-m64&#39;, &#39;-mcx16&#39;, &#39=
+;-Wl,--version&#39;]&gt;<br>linker stdout:<br><br>linker stderr:<br>ld: unk=
+nown options: --version <br>clang: error: linker command failed with exit c=
+ode 1 (use -v to see invocation)<br><br>-----<br>Detecting Apple linker via=
+: cc -m64 -mcx16 -Wl,-v<br>linker stdout:<br><br>linker stderr:<br>@(#)PROG=
+RAM:ld =C2=A0PROJECT:dyld-1015.7<br>BUILD 18:48:43 Aug 22 2023<br>configure=
+d to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x8=
+6_64h armv6m armv7k armv7m armv7em<br>will use ld-classic for: armv6 armv7 =
+armv7s arm64_32 i386 armv6m armv7k armv7m armv7em<br>LTO support using: LLV=
+M version 15.0.0 (static support for 29, runtime is 29)<br>TAPI support usi=
+ng: Apple TAPI version 15.0.0 (tapi-1500.0.12.3)<br>Library search paths:<b=
+r>	/usr/local/lib<br>Framework search paths:<br>ld: Undefined symbols:<br>=
+=C2=A0 _main, referenced from:<br>=C2=A0 =C2=A0 =C2=A0 &lt;initial-undefine=
+s&gt;<br>clang: error: linker command failed with exit code 1 (use -v to se=
+e invocation)<br><br><br>../meson.build:1:0: ERROR: Unable to detect linker=
+ for compiler `cc -m64 -mcx16 -Wl,--version`<br>stdout: <br>stderr: ld: unk=
+nown options: --version <br>clang: error: linker command failed with exit c=
+ode 1 (use -v to see invocation)<br><br><br></div></div>
+
+--000000000000b729480609763305--
 
