@@ -2,75 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA6A47E1B27
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:26:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 633CC7E1B8D
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:55:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztyr-0005dC-Nt; Mon, 06 Nov 2023 02:25:05 -0500
+	id 1qzuQH-0007xa-JD; Mon, 06 Nov 2023 02:53:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qztyn-0005Or-Dp
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:25:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qzuQB-0007xH-Pd
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:53:20 -0500
+Received: from smtpout1.mo529.mail-out.ovh.net ([178.32.125.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qztyk-0006VF-Kg
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:25:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699255498;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6kBUA9yGxtLPPI3qJQwdmQleDbF7xoQOdD4TcKeoWhI=;
- b=JU+8YO1ITEkXQUk0uz2rnNOTs0VzOE5htxbZQG96C2K+wbuEgKlVDCbfboHQzBxBTLCuoL
- tGBxZ6j9EctTnIOf8z5xjjnU2VBgMmQBgCTtjZxvuPBknLowFp7mLBDyLvHdGjVIRr9QOf
- 0/O3FIoqhByR1UJhKVRrwwjzlnmcZSo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-17-1kgZbn1CM320OPPL2YeEsQ-1; Mon,
- 06 Nov 2023 02:24:54 -0500
-X-MC-Unique: 1kgZbn1CM320OPPL2YeEsQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5EE7F1C29EA1;
- Mon,  6 Nov 2023 07:24:54 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5005840C6EB9;
- Mon,  6 Nov 2023 07:24:53 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: stefanha@gmail.com,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 23/23] build-sys: make pixman actually optional
-Date: Mon,  6 Nov 2023 11:23:12 +0400
-Message-ID: <20231106072313.1742543-24-marcandre.lureau@redhat.com>
-In-Reply-To: <20231106072313.1742543-1-marcandre.lureau@redhat.com>
-References: <20231106072313.1742543-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qzuQA-0003o7-7J
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:53:19 -0500
+Received: from mxplan5.mail.ovh.net (unknown [10.108.16.128])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 48AE920365;
+ Mon,  6 Nov 2023 07:53:07 +0000 (UTC)
+Received: from kaod.org (37.59.142.106) by DAG6EX1.mxp5.local (172.16.2.51)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Mon, 6 Nov
+ 2023 08:53:06 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-106R00621b0714a-0b6f-49ae-baa3-d73507d54f05,
+ 210A19B55432F04E894651E454F511AC748DDD6E) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 88.179.9.154
+Date: Mon, 6 Nov 2023 08:53:03 +0100
+From: Greg Kurz <groug@kaod.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+CC: <qemu-devel@nongnu.org>, <quintela@redhat.com>, <peterx@redhat.com>,
+ <farosas@suse.de>, <leobras@redhat.com>
+Subject: Re: [PATCH 20/71] hw/9pfs: Constify VMState
+Message-ID: <20231106085303.3a309407@bahia>
+In-Reply-To: <20231106065827.543129-21-richard.henderson@linaro.org>
+References: <20231106065827.543129-1-richard.henderson@linaro.org>
+ <20231106065827.543129-21-richard.henderson@linaro.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.106]
+X-ClientProxiedBy: DAG1EX1.mxp5.local (172.16.2.1) To DAG6EX1.mxp5.local
+ (172.16.2.51)
+X-Ovh-Tracer-GUID: 1f73c948-7cb8-4a8d-92eb-eb0688e6311f
+X-Ovh-Tracer-Id: 11196793099747825958
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedruddufedguddufecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhfogggtgfhisehtjeertdertddvnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeegkeejtdevgeekieelffdvtedvvdegtdduudeigffhhffgvdfhgeejteekheefkeenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddruddtiedpkeekrddujeelrdelrdduheegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeoghhrohhugheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehrihgthhgrrhgurdhhvghnuggvrhhsohhnsehlihhnrghrohdrohhrghdpqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdpqhhuihhnthgvlhgrsehrvgguhhgrthdrtghomhdpphgvthgvrhigsehrvgguhhgrthdrtghomhdpfhgrrhhoshgrshesshhushgvrdguvgdplhgvohgsrhgrshesrhgvughhrghtrdgtohhmpdfovfetjfhoshhtpehmohehvdelpdhmohguvgepshhmthhpohhuth
+Received-SPF: pass client-ip=178.32.125.2; envelope-from=groug@kaod.org;
+ helo=smtpout1.mo529.mail-out.ovh.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,29 +72,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On Sun,  5 Nov 2023 22:57:36 -0800
+Richard Henderson <richard.henderson@linaro.org> wrote:
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
----
- meson.build | 3 ---
- 1 file changed, 3 deletions(-)
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
 
-diff --git a/meson.build b/meson.build
-index ad1e0155ee..a35cd860aa 100644
---- a/meson.build
-+++ b/meson.build
-@@ -817,9 +817,6 @@ if not get_option('pixman').auto() or have_system or have_tools
-   pixman = dependency('pixman-1', required: get_option('pixman'), version:'>=0.21.8',
-                       method: 'pkg-config')
- endif
--if not pixman.found() and (have_system or have_tools)
--  error('FIXME: pixman is currently required')
--endif
- 
- zlib = dependency('zlib', required: true)
- 
+Acked-by: Greg Kurz <groug@kaod.org>
+
+>  hw/9pfs/virtio-9p-device.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/9pfs/virtio-9p-device.c b/hw/9pfs/virtio-9p-device.c
+> index 5f522e68e9..efa41cfd73 100644
+> --- a/hw/9pfs/virtio-9p-device.c
+> +++ b/hw/9pfs/virtio-9p-device.c
+> @@ -237,7 +237,7 @@ static const VMStateDescription vmstate_virtio_9p = {
+>      .name = "virtio-9p",
+>      .minimum_version_id = 1,
+>      .version_id = 1,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_VIRTIO_DEVICE,
+>          VMSTATE_END_OF_LIST()
+>      },
+
+
+
 -- 
-2.41.0
-
+Greg
 
