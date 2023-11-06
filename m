@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 116317E2973
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 17:12:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 510847E297F
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 17:13:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r02DC-0008Da-EQ; Mon, 06 Nov 2023 11:12:26 -0500
+	id 1r02Dk-0000E3-O3; Mon, 06 Nov 2023 11:13:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r02D9-0008Co-J4
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 11:12:23 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r02D7-0003XR-6q
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 11:12:23 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1cc9b626a96so22226795ad.2
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 08:12:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699287140; x=1699891940; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5goKHWyeuFy/ivXB5+wzUlXySj3e57WmOnN64CKOVQc=;
- b=ZH4f7TYvI8zAkXNr9wYrj2LjpQYLa+62QGqrXqhgdaXO8cTGAig0Ich5pENsI6oo+5
- L6Cz7KbG833twHgTQXOeTWDiquI58MoCWD7wJFK7HjZl3SBqgLpNlKYoWzqtzU7m5+yA
- TpsAn+S1pWLX1dfFm2o8jtDHsBP9lilKRA3U59e5AjmwSrn1h/8kLm+73Io3YK4iIpD2
- bDNuvPw339jsZlLqo9OopY0V+rwK6+j3DA5IkVD0maUw21t2MofGvChR3p6Lj7T/dKDU
- JPLSYrKl0V/4FpLjdTyfoko3JnLB04uO6G9Keb4pLQtanhP3twTZLMe5pQg1UThOJs79
- iZUQ==
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1r02Di-00005W-2W
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 11:12:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1r02Dd-0003c5-SZ
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 11:12:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699287172;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Jgl4T7B+8J7r8Bxki0Mu/a5d/tmsLTiKScjHEttnYXE=;
+ b=JOm1MF5Lu4qNnCMrI3wrAR9xXpA1MsD5vJNClqvIXdOjERINBt76/i+OmKHfM+bltF+gvc
+ 6OiI9x+n2Go7PXCcQ8a36wfV7g/QmLjcECJnih2P29mXNvIgm06ePd3b/BDfKElrmpKN80
+ 9bB3KhEhaMSrgtmBp8rMbPYe6NHtGRU=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-65-3jnuXwtFNsOLTGSYjQ7yVg-1; Mon, 06 Nov 2023 11:12:42 -0500
+X-MC-Unique: 3jnuXwtFNsOLTGSYjQ7yVg-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-41cc9224395so50965491cf.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 08:12:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699287140; x=1699891940;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5goKHWyeuFy/ivXB5+wzUlXySj3e57WmOnN64CKOVQc=;
- b=pCe3OA6k76AQT+MUK80IaU4EB5Ms7xXyCDJSaPV/nXXzW/89XsH0j4h6OOAO7fg1dR
- 5BFaOnT/qlU1OAqT0he8x8vVQ0m/qlx+7EoOyUjRjHGEy4WWGb9zvXXaOGbSqptDbxyB
- f5pea+S1XBCWa+FrFXC4XRwuz6U5mXTBgVdvyGGvSt701Y48iEnFH3pqz8YtoKi1sZpI
- 4atB3Dn63ODxjT0W3WH1AIkJLac/rVF9tIYUHu9wio0EljcRibDSR9Wla/gAlrxtVbs0
- hEE3CtzidIMphPYdGuNoCD1EF46j/4G9q1TrkGt2LnnnbpSZMe9ASw9BSbTSZCANFapI
- sHfw==
-X-Gm-Message-State: AOJu0Yy0fcrhVBvsDMRryfEl8JR+PlRq67oQ+x+NQTlSoEDSrJYu3afE
- KNSXSK0CNk31ZNG6jTsMgGj5BQ==
-X-Google-Smtp-Source: AGHT+IEM6x8eEVA+m3dZIsD5snzdcmPsMrwlHppZzRcq0iePdY3K02Bn1Ve7T8jc61vMHPMaPA5S6Q==
-X-Received: by 2002:a17:903:2808:b0:1cc:31c4:377b with SMTP id
- kp8-20020a170903280800b001cc31c4377bmr18535674plb.63.1699287139722; 
- Mon, 06 Nov 2023 08:12:19 -0800 (PST)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- e4-20020a170902d38400b001bc930d4517sm6072709pld.42.2023.11.06.08.12.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Nov 2023 08:12:19 -0800 (PST)
-Message-ID: <ed50d5e8-faa9-4857-a223-3945a5db5f33@linaro.org>
-Date: Mon, 6 Nov 2023 08:12:17 -0800
+ d=1e100.net; s=20230601; t=1699287160; x=1699891960;
+ h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Jgl4T7B+8J7r8Bxki0Mu/a5d/tmsLTiKScjHEttnYXE=;
+ b=sqxNRZw96RKKqA2h5Ahfu9alcto4QKFImBEw3/xLqY+xAEnxatztfXhkweWd8NyySd
+ TtOEmdcxHbr4QHILJ+ZgBtxHpIuHTuY4vbxINqBhwfFJvc01Zqe+TTexL/J13E6G6N6+
+ EjJDxTavghk2Bc8OVaG1KOhXzWkY8uyvsfejhi7oIzhTnjsCsxmDiEL1sraRS73xCFUv
+ 67ufLu3l0npz3VU4so5WzNT1kSjQuMkUwVAIPBnuaCbjPrCEcudzbKy38OGQ7fehVg8Y
+ XCu3ykT1S1N/D87gMPWn71ZO/8+iEa16EwkR+V7wUHSG0xTdBc68KuJIfzKy3rxPpvv7
+ uu0A==
+X-Gm-Message-State: AOJu0YxTVVjPhZ1R/9+c0QcBnsEi7BSl59XxgCxy8BLPhSFy79t5PacA
+ d5OLxR6ikOhxKlRu6GwloqNkUSZYhmAA1Eg1oRV7PKlTpwzVjsEdwm9FTR8EZ5agUCltIBACY0o
+ TxxPTgk+D2MTzZjPez04hUcyvb7bVbGarZzZxOnQ=
+X-Received: by 2002:a05:622a:1004:b0:403:a8fa:b4f5 with SMTP id
+ d4-20020a05622a100400b00403a8fab4f5mr36361377qte.4.1699287160312; 
+ Mon, 06 Nov 2023 08:12:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH39NekZqBm2IPq+vJ3xaaUDz9ARErRczhMvM5um9czsGHH8/iYkrtFNEN2G3svtb8Hy/43hul5Gy1zu50aHuY=
+X-Received: by 2002:a05:622a:1004:b0:403:a8fa:b4f5 with SMTP id
+ d4-20020a05622a100400b00403a8fab4f5mr36361357qte.4.1699287160065; Mon, 06 Nov
+ 2023 08:12:40 -0800 (PST)
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 6 Nov 2023 08:12:38 -0800
+From: Andrea Bolognani <abologna@redhat.com>
+References: <20231016152704.221611-1-victortoso@redhat.com>
+ <20231016152704.221611-5-victortoso@redhat.com>
+ <CABJz62O9YKuRHqW2_WUijzY5PfqmjxDjbU=7-O4cp0OO+JQi3g@mail.gmail.com>
+ <hlu7dit5w6oxjz6ib423ak3ptzppdvuvltymzinxb3v2o2mwwa@xyfns7sv77gj>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] tests/tcg/s390x: Test CLC with inaccessible second
- operand
-Content-Language: en-US
-To: Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-References: <20231106093605.1349201-1-iii@linux.ibm.com>
- <20231106093605.1349201-3-iii@linux.ibm.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231106093605.1349201-3-iii@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+In-Reply-To: <hlu7dit5w6oxjz6ib423ak3ptzppdvuvltymzinxb3v2o2mwwa@xyfns7sv77gj>
+Date: Mon, 6 Nov 2023 08:12:38 -0800
+Message-ID: <CABJz62Pnixs87S-8ot3bST523_BXs50SinEri_w71EkPExr8Nw@mail.gmail.com>
+Subject: Re: [PATCH v2 04/11] qapi: golang: Generate qapi's alternate types in
+ Go
+To: Victor Toso <victortoso@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ John Snow <jsnow@redhat.com>, 
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=abologna@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,17 +99,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/6/23 01:31, Ilya Leoshkevich wrote:
-> Add a small test to prevent regressions.
-> 
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> ---
->   tests/tcg/s390x/Makefile.target |  1 +
->   tests/tcg/s390x/clc.c           | 48 +++++++++++++++++++++++++++++++++
->   2 files changed, 49 insertions(+)
->   create mode 100644 tests/tcg/s390x/clc.c
+On Mon, Nov 06, 2023 at 04:52:12PM +0100, Victor Toso wrote:
+> On Mon, Nov 06, 2023 at 07:28:04AM -0800, Andrea Bolognani wrote:
+> > On a partially related note: while I haven't yet looked closely at
+> > how much effort you've dedicated to producing pretty output, from a
+> > quick look at generate_struct_type() it seems that the answer is "not
+> > zero". I think it would be fine to simplify things there and produce
+> > ugly output, under the assumption that gofmt will be called on the
+> > generated code immediately afterwards. The C generator doesn't have
+> > this luxury, but we should take advantage of it.
+>
+> Yes, I wholeheartedly agree. The idea of the generator producing
+> a well formatted Go code came from previous review. I didn't want
+> to introduce gofmt and friends to QEMU build system, perhaps it
+> wasn't a big deal but I find it foreign to QEMU for a generated
+> code that QEMU itself would not use.
+>
+> See: https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg01188.html
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Noted.
 
-r~
+Whether or not requiring a pass through gofmt is an issue kind of
+depends on how we end up shipping these files.
+
+What seems the most probable to me is that we'll have a separate repo
+where we dump the generated files and that Go users will consume via
+a regular 'import'. Your existing qapi-go repo follows this model. In
+this context, gofmt is never going to be called as part of the QEMU
+build process so it doesn't really matter.
+
+But maybe there was a discussion around this that I've missed :)
+
+-- 
+Andrea Bolognani / Red Hat / Virtualization
+
 
