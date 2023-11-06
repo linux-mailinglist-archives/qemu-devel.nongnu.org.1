@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF307E2D5B
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 20:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA2B7E2D53
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 20:56:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r05h9-0006lX-La; Mon, 06 Nov 2023 14:55:35 -0500
+	id 1r05g7-0005eP-5j; Mon, 06 Nov 2023 14:54:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+aa7b7dce24b49c47a83c+7379+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1r05gq-0006ML-0D; Mon, 06 Nov 2023 14:55:16 -0500
+ id 1r05g1-0005Xk-MS; Mon, 06 Nov 2023 14:54:25 -0500
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+aa7b7dce24b49c47a83c+7379+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1r05gj-00065l-LU; Mon, 06 Nov 2023 14:55:13 -0500
+ id 1r05fy-00065d-9L; Mon, 06 Nov 2023 14:54:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=GlXzCO3XdZ21RHsZxfP3RgbC823eeizUvksRPyKhf1o=; b=RAUGPMsu100KfZb039B1zNPPkr
- cnY3LL3SvbpR9CyekIYZvvCjkmeb6oCjI1mGH3a11Yj47QP6Nc7dY6lddHZeoLur9u37Ym3tqo4HL
- H+xpOMm1Z2rVr76YsT5Q2WEWSlnT5urIIFGrvZnrIGayTZeot4bBeLNJphF+5Ke2+mH2hVlApSOpw
- k97BXrAIzeO23Apx4Kcfdhouw0PP8Dc+tEKdMtYpHJ8ZN7MOxHqVb/BkDPpS0CIaLhEcT2rC/jPJF
- agqYepClQ/BkaconP80L6s0IEHAtzlwfCRodn1TqzSfpq5bFVMq0MlvqdRbXt2R04i2ThcRcHFwmX
- LYXKOxLA==;
+ bh=9F94s85N161zpHncvzHPgHeV1YSdfSxyasD9KuzjSZQ=; b=bgZYgx5/6fVBDmshDfQfGpcoJa
+ hEcGronT1Mrlm/GMtUt25KwxrxYJq5G9pAKwgZVawUSKTyL/pPZGyahE6hBfZ8QQN7r8xXvu2Sr5c
+ U0CtRd6bWjvZ32F0V9KEuxtlOUxQzw2vkpRjJaIyJUEEdpZ4AvNgaS+5aEPqljEsOj4WNuuZSXgKn
+ g17T87x+Cq1NKfAAT6rwTs3/6JnKwG51uBAN1i9bUNBIO4ZyV4BrnS28Ah+9zvJkb2KltpBfxMke/
+ mI4hd3/a9SrEmVGQK+xZjpZUFZJ7DmCM9Bk4p0Xj4I4wxYtIPNQuGDzuDS8usmtXrsph43j8pPj+V
+ I7YADE3g==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
- id 1r05fb-00AkFh-2f; Mon, 06 Nov 2023 19:54:00 +0000
+ id 1r05fb-00AkFi-2f; Mon, 06 Nov 2023 19:54:00 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96.2 #2 (Red
- Hat Linux)) id 1r05fa-001GNT-1j; Mon, 06 Nov 2023 19:53:58 +0000
+ Hat Linux)) id 1r05fa-001GNZ-1y; Mon, 06 Nov 2023 19:53:58 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -83,10 +83,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org
-Subject: [PATCH for-8.3 v2 14/46] hw/mips/loongson3_virt: use
- pci_init_nic_devices()
-Date: Mon,  6 Nov 2023 19:49:19 +0000
-Message-ID: <20231106195352.301038-15-dwmw2@infradead.org>
+Subject: [PATCH for-8.3 v2 15/46] hw/ppc/prep: use pci_init_nic_devices()
+Date: Mon,  6 Nov 2023 19:49:20 +0000
+Message-ID: <20231106195352.301038-16-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106195352.301038-1-dwmw2@infradead.org>
 References: <20231106195352.301038-1-dwmw2@infradead.org>
@@ -121,26 +120,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
+Previously, the first PCI NIC would be placed in PCI slot 3 and the rest
+would be dynamically assigned. Even if the user overrode the default NIC
+type and made it something other than PCNet.
+
+Now, the first PCNet NIC (that is, anything not explicitly specified
+to be anything different) will go to slot 3 even if it isn't the first
+NIC specified on the commnd line. And anything else will be dynamically
+assigned.
+
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/mips/loongson3_virt.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ hw/ppc/prep.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index 33eae01eca..caedde2df0 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -451,9 +451,7 @@ static inline void loongson3_virt_devices_init(MachineState *machine,
-         usb_create_simple(usb_bus_find(-1), "usb-tablet");
+diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
+index 137276bcb9..1a6cd05c61 100644
+--- a/hw/ppc/prep.c
++++ b/hw/ppc/prep.c
+@@ -241,7 +241,6 @@ static void ibm_40p_init(MachineState *machine)
+     ISADevice *isa_dev;
+     ISABus *isa_bus;
+     void *fw_cfg;
+-    int i;
+     uint32_t kernel_base = 0, initrd_base = 0;
+     long kernel_size = 0, initrd_size = 0;
+     char boot_device;
+@@ -336,10 +335,9 @@ static void ibm_40p_init(MachineState *machine)
+         /* XXX: s3-trio at PCI_DEVFN(2, 0) */
+         pci_vga_init(pci_bus);
+ 
+-        for (i = 0; i < nb_nics; i++) {
+-            pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic,
+-                                i == 0 ? "3" : NULL);
+-        }
++        /* First PCNET device at PCI_DEVFN(3, 0) */
++        pci_init_nic_in_slot(pci_bus, mc->default_nic, NULL, "3");
++        pci_init_nic_devices(pci_bus, mc->default_nic);
      }
  
--    for (i = 0; i < nb_nics; i++) {
--        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
--    }
-+    pci_init_nic_devices(pci_bus, mc->default_nic);
- }
- 
- static void mips_loongson3_virt_init(MachineState *machine)
+     /* Prepare firmware configuration for OpenBIOS */
 -- 
 2.41.0
 
