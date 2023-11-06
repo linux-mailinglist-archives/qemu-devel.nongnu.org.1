@@ -2,73 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 977847E25BF
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 14:34:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 117957E2636
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 14:59:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzzj7-0005ts-Ue; Mon, 06 Nov 2023 08:33:14 -0500
+	id 1r006Z-0007b0-3Y; Mon, 06 Nov 2023 08:57:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qzzj5-0005tj-Nu
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 08:33:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <ivarhol-21@enst.fr>)
+ id 1r006W-0007aS-BC; Mon, 06 Nov 2023 08:57:24 -0500
+Received: from zproxy4.enst.fr ([2001:660:330f:2::df])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qzzj4-0003mX-46
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 08:33:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699277588;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wejLd0ksZslhsMWnUNkqRj7s1m2x0WcJ69rXE5PY0KI=;
- b=Ff1Pr7ueqeJAHiox6ZFWhjckaGzLG+/LNxBlkAeVSATZpRGUcnLINnFNBpg/tQoanrlX/v
- 3Io7jqyq2me1Yg8oQhBp+NohqeD0Acjnc/+8kBbdSkvj8rpS9gDOZhPkRAjVqmvadZwKab
- Sms9gwRH95fGjnCpoA7TA67ErlIymGw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-85-vF0lLvjVPHGTJcZ6ULhAQQ-1; Mon, 06 Nov 2023 08:33:06 -0500
-X-MC-Unique: vF0lLvjVPHGTJcZ6ULhAQQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 53A9B101B049
- for <qemu-devel@nongnu.org>; Mon,  6 Nov 2023 13:33:05 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 334FE1C060B1;
- Mon,  6 Nov 2023 13:33:03 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PULL 10/10] Revert "virtio-gpu: block migration of VMs with
- blob=true"
-Date: Mon,  6 Nov 2023 17:32:19 +0400
-Message-ID: <20231106133219.2173660-11-marcandre.lureau@redhat.com>
-In-Reply-To: <20231106133219.2173660-1-marcandre.lureau@redhat.com>
-References: <20231106133219.2173660-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <ivarhol-21@enst.fr>)
+ id 1r006U-0008Lz-Ew; Mon, 06 Nov 2023 08:57:24 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy4.enst.fr (Postfix) with ESMTP id 8E65120607;
+ Mon,  6 Nov 2023 14:57:16 +0100 (CET)
+Received: from zproxy4.enst.fr ([IPv6:::1])
+ by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id cOsY3OnJ6v-4; Mon,  6 Nov 2023 14:57:16 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy4.enst.fr (Postfix) with ESMTP id 1C16E205F7;
+ Mon,  6 Nov 2023 14:57:16 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy4.enst.fr 1C16E205F7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1699279036;
+ bh=k8D20BWyjJjiJ1XukyijOfCLVXq8WqVZg8rLnZRPjZw=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=MMUcJxsfJt7eYyQbGx+ZhO1+ziQ/X3+We8FkaOeq9Lp7mdN/4axo50Qqcsc6OTVP3
+ 7EhV+OHJRgsP7fpRJldKtSYg/6SmX8gcvPKiG0sGob/ZSJw2R8Mhn3oIFCSfCxhe3/
+ EINIe72wU2HRL5Xo2U11Xfe3H97jAAjoyiFtwo1o=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy4.enst.fr ([IPv6:::1])
+ by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id LW4Sy1VxqVSO; Mon,  6 Nov 2023 14:57:15 +0100 (CET)
+Received: from zmail-tp2.enst.fr (zmail-tp2.enst.fr [137.194.2.199])
+ by zproxy4.enst.fr (Postfix) with ESMTP id AE04D20578;
+ Mon,  6 Nov 2023 14:57:15 +0100 (CET)
+Date: Mon, 6 Nov 2023 14:57:15 +0100 (CET)
+From: =?utf-8?B?SW7DqHM=?= Varhol <ines.varhol@telecom-paris.fr>
+To: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Cc: Arnaud Minier <arnaud.minier@telecom-paris.fr>, alistair@alistair23.me, 
+ peter maydell <peter.maydell@linaro.org>
+Message-ID: <1353832942.8123338.1699279035562.JavaMail.zimbra@enst.fr>
+Subject: Adding support of ARM board B-L475E-IOT01A using STM32L475 SoC
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [137.194.2.223]
+X-Mailer: Zimbra 9.0.0_GA_4564 (ZimbraWebClient - FF119 (Linux)/9.0.0_GA_4571)
+Thread-Index: nKl23wLJrfRlX/NmoX4VoM60upk07w==
+Thread-Topic: Adding support of ARM board B-L475E-IOT01A using STM32L475 SoC
+Received-SPF: pass client-ip=2001:660:330f:2::df;
+ envelope-from=ivarhol-21@enst.fr; helo=zproxy4.enst.fr
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,64 +78,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+Hello,
 
-If we decide to apply this patch (for easier backporting reasons), we
-can now revert it.
+Along with my fellow student Arnaud Minier, we're looking to implement supp=
+ort for a new ARM board for a university project.
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Acked-by: Peter Xu <peterx@redhat.com>
----
- hw/display/virtio-gpu.c | 14 --------------
- 1 file changed, 14 deletions(-)
+As of now we've have implemented a minimal version for the machine and the =
+SoC without any syscfg, timers or usart implementation.=20
+We have looked at the relevant informations about the procedure to submit a=
+ patch, however we aren't sure if we should submit a patch now already,=20
+as a way to get acquainted with the procedure and expectations, or if we sh=
+ould rather implement more peripherals and submit the patch all at once.
 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 1ab662db72..2707bceea8 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -26,7 +26,6 @@
- #include "hw/virtio/virtio-gpu-pixman.h"
- #include "hw/virtio/virtio-bus.h"
- #include "hw/qdev-properties.h"
--#include "migration/blocker.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
- #include "qapi/error.h"
-@@ -41,8 +40,6 @@ virtio_gpu_find_check_resource(VirtIOGPU *g, uint32_t resource_id,
- 
- static void virtio_gpu_reset_bh(void *opaque);
- 
--static Error *blob_mig_blocker;
--
- void virtio_gpu_update_cursor_data(VirtIOGPU *g,
-                                    struct virtio_gpu_scanout *s,
-                                    uint32_t resource_id)
-@@ -1463,14 +1460,6 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
-             error_setg(errp, "blobs and virgl are not compatible (yet)");
-             return;
-         }
--
--        if (!blob_mig_blocker) {
--            error_setg(&blob_mig_blocker,
--                       "virtio-gpu blob VMs are currently not migratable.");
--        }
--        if (migrate_add_blocker(blob_mig_blocker, errp)) {
--            return;
--        }
-     }
- 
-     if (!virtio_gpu_base_device_realize(qdev,
-@@ -1497,9 +1486,6 @@ static void virtio_gpu_device_unrealize(DeviceState *qdev)
- {
-     VirtIOGPU *g = VIRTIO_GPU(qdev);
- 
--    if (virtio_gpu_blob_enabled(g->parent_obj.conf)) {
--        migrate_del_blocker(blob_mig_blocker);
--    }
-     g_clear_pointer(&g->ctrl_bh, qemu_bh_delete);
-     g_clear_pointer(&g->cursor_bh, qemu_bh_delete);
-     g_clear_pointer(&g->reset_bh, qemu_bh_delete);
--- 
-2.41.0
+For further details about project, the end-goal is to emulate a maximum of =
+peripherals and be able to display an emulated LED matrix driven by the QEM=
+U-emulated board.
 
+How we're proceding for now is replicating code designed for the stm32f405 =
+SoC and other specific stm32f4xx code and adapting it for the stm32l475 SoC=
+ (both are Cortex-M4 SoC).=20
+Is it alright if the patch commits reflect this copy-paste then incremental=
+y change details procedure ?
+
+
+Of course, we would greatly appreciate any guidance, suggestions, or insigh=
+ts you may offer regarding our current progress and the best course of acti=
+on.=20
+Moreover, if there are other pertinent issues we should consider, we are ea=
+ger to learn and adapt our approach accordingly.
+
+Thank you for your time and consideration.
+
+Best regards,
+
+In=C3=A8s Varhol
 
