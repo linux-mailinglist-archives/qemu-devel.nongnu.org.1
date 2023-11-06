@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C73C7E205F
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:52:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE717E205B
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:51:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzy2w-0002I9-Ds; Mon, 06 Nov 2023 06:45:34 -0500
+	id 1qzy6D-0007nV-G6; Mon, 06 Nov 2023 06:48:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzy2u-0002HD-Bp
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:45:32 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzy69-0007fh-C4
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:48:53 -0500
 Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzy2s-0005Cb-NZ
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:45:32 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzy67-0005Yl-Q2
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:48:53 -0500
 Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-32d849cc152so3027061f8f.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:45:30 -0800 (PST)
+ ffacd0b85a97d-32daeed7771so2260854f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:48:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699271129; x=1699875929; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OtpMWqJgQmyK9oo87z+/dmy0LjL6tPcvJpCxuznxJKg=;
- b=ZGuHa0G/XgWogkipxro9H7ycU6Mj4SSCxKM0SvFpOOtcCSWF7h9/9rJSk4+d0J5kbR
- 9PLoLPUTaxZtd/mvn2Ka72Ejo9H2XrlU5W5VM93wjv1uCw/NXXSxJzZAIZrptC9FXo50
- 3HIzNoFPaZYTd+jzDgnN6yG0AKIYyQhz1g4TWdqrzqbUiCwYUWIxdddfnrpef30nF0ee
- iQdEb3MHmMKvfuJ4AqcKdgOq2Gy1pNqoqn8m16+Y0F1BknL1vA6kw/BToKtkrqLM0wEw
- zC56hswxM9QfuswZSDoKm0ZaHYwiQ19STa4DHweZxd3gdJz8nQzwmRKXCX/kvGilxY/C
- RJdQ==
+ d=linaro.org; s=google; t=1699271330; x=1699876130; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=sBGTGX02jhQOKGxROPSlWdbV/6HszDTwcl/KIC2ZBgE=;
+ b=eJqDUZIaoui3a78kz1Cb5GGO+zL0OHbpf2JLgyBsRX9uDFZC6n0k5YpBmBdgFkiRn6
+ I6eCrg8Q8Wv1XLvxe0aIIoKANVfM+xy13fMMiMipTjsseqKoA1WiMUdRbpYBsrj1ajMp
+ te+NuatdDdfIkcA+9MnL1TNY1uRTixwcJxTM3kS4vvA9VDgW7Fh1bw+QCOsX+GNPbiWv
+ WffjgBRHEzBnW2eYRFD8wAB9kMIqarUSwOT17Uj75rcXFrzOLc0SP4IC9Q+g/hhPtlcw
+ pviNqTT2ICZj94BNVu1wXRmuKoZHRNUfSNh8q4pul8zlVDHiSDQuBOw0GjU0mx3MPSM4
+ uQHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699271129; x=1699875929;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OtpMWqJgQmyK9oo87z+/dmy0LjL6tPcvJpCxuznxJKg=;
- b=Gg+S27He7EkP+67Hb6AYjdv8EAengWQsFstCFwI3/I43zVjSUWTG+LUMQPEzbp/o5R
- CNuVhfKl275XNkLzaU4a7DXpaTPVmyuvFNvQckv7/5KO+AcW87QcoK618QTv1l07AM1G
- dxb9dTWXi2royPV537+zdtZdEr2xOBBNGUgSwblj9jOrXunOrHtn7q0bSuAw2Zrpc7gf
- Scl1Q1TteMkr4hHBDCvyGIfnzvi9/Dqcacxdr/Xwi4nFrEaGb5LmF0SMSYxMn1XZ1HOA
- LSOSZVlSwq8JyNnNrEK2T87L877tAzGE4JE5V3jbKcwhhIjv+eiARDJwXws+jgANybBv
- oYGw==
-X-Gm-Message-State: AOJu0YzG2utCYw6u9hQR8nShjFVZ+2qx0GubHDpbu944GD+05j28X16L
- ptRVd59gOcX/q82fTXMacHObqhhTSrTtP2qtHNE=
-X-Google-Smtp-Source: AGHT+IEeLRMFdfUoqZjk6MBLJcBzTosCvjrkTRgR2MSHqVMJyZNEakL0s0r7BTTvkzzomxQcNGypcQ==
-X-Received: by 2002:adf:d1c9:0:b0:32d:a0d3:d681 with SMTP id
- b9-20020adfd1c9000000b0032da0d3d681mr24726960wrd.43.1699271128939; 
- Mon, 06 Nov 2023 03:45:28 -0800 (PST)
-Received: from m1x-phil.lan (176-131-220-199.abo.bbox.fr. [176.131.220.199])
- by smtp.gmail.com with ESMTPSA id
- i8-20020adfb648000000b0032f7cfac0fesm6384945wre.51.2023.11.06.03.45.27
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 Nov 2023 03:45:28 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
- Halil Pasic <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-s390x@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/4] target/s390x/cpu: Restrict CPUS390XState declaration to
- 'cpu.h'
-Date: Mon,  6 Nov 2023 12:44:59 +0100
-Message-ID: <20231106114500.5269-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231106114500.5269-1-philmd@linaro.org>
-References: <20231106114500.5269-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1699271330; x=1699876130;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=sBGTGX02jhQOKGxROPSlWdbV/6HszDTwcl/KIC2ZBgE=;
+ b=G/iJXCpBZGSNQx1f2AWkDIsDhkErvJgTTovfRFJ/HFghvrrCL9XM+kvTB2WE0vEI2M
+ D0IHCF/8fvkF8knkgLSgG2jBjc0khgoQmN+3hH591iJN8Q9IJjVBM85kE9nJflDE3ANr
+ yf6n7FsKppc8qASTnBTqxtasBJpDhguzchMBMlpkMQRMGvLz013iWaW6okBfzV2X9+jo
+ moW7pVAOenG+f+8FRd7e9NknQkECJO+63xdgG3pLKn3CQwBYvrxyoW3TXMIHbZhUVGZp
+ T+2qnDiMLvbjOTzz4K10xLU0JohrcW/hquYI/SxtDcWuY7ocwb5t4ggEwx9g4I1hvIvT
+ mMqg==
+X-Gm-Message-State: AOJu0YwXtDDwS7KRNA5Za7dRgeF0a8DVZevCQnVQx3XeI8dw4N58dah9
+ uk0OcVNzr6iZSZy9g/5IFd32qw==
+X-Google-Smtp-Source: AGHT+IGHvxTZDDs9OAT8zAdw2GCM9ufnPvaAKH4Vpiny5o3RyG74lqWyr+eDW1q45VYWkYp6YdEIQw==
+X-Received: by 2002:a5d:5e0a:0:b0:32f:dcce:bf38 with SMTP id
+ ce10-20020a5d5e0a000000b0032fdccebf38mr78112wrb.62.1699271330359; 
+ Mon, 06 Nov 2023 03:48:50 -0800 (PST)
+Received: from [192.168.69.115] (176-131-220-199.abo.bbox.fr.
+ [176.131.220.199]) by smtp.gmail.com with ESMTPSA id
+ m1-20020a056000180100b0031980783d78sm9230335wrh.54.2023.11.06.03.48.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 06 Nov 2023 03:48:50 -0800 (PST)
+Message-ID: <1507130a-006a-8adc-3acf-359e3f7c0998@linaro.org>
+Date: Mon, 6 Nov 2023 12:48:48 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 01/71] migration: Make VMStateDescription.subsections const
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
+References: <20231106065827.543129-1-richard.henderson@linaro.org>
+ <20231106065827.543129-2-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231106065827.543129-2-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
  envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.085,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,52 +93,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"target/s390x/cpu-qom.h" has to be target-agnostic. However, it
-currently declares CPUS390XState, which is target-specific.
-Move that declaration to "cpu.h".
+On 6/11/23 07:57, Richard Henderson wrote:
+> Allow the array of pointers to itself be const.
+> Propagate this through the copies of this field.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   include/migration/vmstate.h |  2 +-
+>   migration/savevm.c          | 12 ++++++------
+>   migration/vmstate.c         | 15 +++++++++------
+>   3 files changed, 16 insertions(+), 13 deletions(-)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/s390x/cpu-qom.h | 2 --
- target/s390x/cpu.h     | 4 ++--
- 2 files changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/target/s390x/cpu-qom.h b/target/s390x/cpu-qom.h
-index fcd70daddf..ccf126b7a9 100644
---- a/target/s390x/cpu-qom.h
-+++ b/target/s390x/cpu-qom.h
-@@ -33,8 +33,6 @@ OBJECT_DECLARE_CPU_TYPE(S390CPU, S390CPUClass, S390_CPU)
- typedef struct S390CPUModel S390CPUModel;
- typedef struct S390CPUDef S390CPUDef;
- 
--typedef struct CPUArchState CPUS390XState;
--
- typedef enum cpu_reset_type {
-     S390_CPU_RESET_NORMAL,
-     S390_CPU_RESET_INITIAL,
-diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
-index 110902fa3c..942589c597 100644
---- a/target/s390x/cpu.h
-+++ b/target/s390x/cpu.h
-@@ -55,7 +55,7 @@ typedef struct PSW {
-     uint64_t addr;
- } PSW;
- 
--struct CPUArchState {
-+typedef struct CPUArchState {
-     uint64_t regs[16];     /* GP registers */
-     /*
-      * The floating point registers are part of the vector registers.
-@@ -157,7 +157,7 @@ struct CPUArchState {
-     /* currently processed sigp order */
-     uint8_t sigp_order;
- 
--};
-+} CPUS390XState;
- 
- static inline uint64_t *get_freg(CPUS390XState *cs, int nr)
- {
--- 
-2.41.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
