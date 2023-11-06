@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6887E2068
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:53:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0827E7E207D
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:54:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzy9s-00078c-0f; Mon, 06 Nov 2023 06:52:44 -0500
+	id 1qzyAc-0000ZZ-K8; Mon, 06 Nov 2023 06:53:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzy9q-00077P-6e
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:52:42 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzyAb-0000Wm-1Z
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:53:29 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzy9n-0006cc-Qw
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:52:41 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-32fb1c35fe0so1950946f8f.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:52:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzyAZ-0006nX-CJ
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:53:28 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-4084e49a5e5so38397405e9.3
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:53:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699271557; x=1699876357; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699271605; x=1699876405; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ExO0Fs8YeM9VzNso1RrCMwRqdhhOnWSbgYPYG52EB3o=;
- b=lB479w7O2FfAGb+wW36mQmgNRaIljJZ10ngFZFZhi/Aibff+8HCIpKCUfqcHayIf1+
- KMGW4PnS/pPy0gX1yN4mY1LBA7tagz+MBQSXjH6uD7Ya7UMZlrnskFPOC51EExKya+4/
- F9XQOxT4XR3+g7ZyiML4ZAAduAjwWPa9OoYt6ZJONPYuimYeQst5jD8f/zH97ujFGyiz
- ZIrjaOe8+vMrCRTBwVNGUbOb+mPkkDwuL0I0rpYvnqUzu5kD5H4GkDo3qybFLMtvf+1C
- H6CW1iUjyjTbKS8yeInXfRNCxiZ0HgClgL64db3wfSzlnQYwhaeOTLC2f3m0P+6OQAhc
- XDXA==
+ bh=oCYvkfn1ciyM5BknWtAEgXJWGjMAeu4VlK1sBNiXJxg=;
+ b=KRp/6/+ya0Ef/bcDaCxcGS19zBk4oaONWNCXWtI9PpR+Nas1hmk37/51R0jiGq2YG9
+ lxW/ksPTea3opav7SxXx2RFQIXqU3YZfGm7DXon8L5AdE3Y6/rZS9DY3DmnXvcSjkUYg
+ Z3d/T9yoV3G5Cekn6W6SW8ZSLVmdGCgEVxZZYqosITEo9lwapWI63GOc9ovaicCneOKQ
+ /gpy2bWhn960xz6aNKCxoo0y1BT3arIqRR5TX36rlJb9hemzpsfq6eifyiswmm8+8CKM
+ W1wqCRiGeICnUg1wt4817XKOXYKC7smNYJ6nn1H8cHSrb9ANz6enuEAnXzITCqFElykz
+ JScQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699271557; x=1699876357;
+ d=1e100.net; s=20230601; t=1699271605; x=1699876405;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ExO0Fs8YeM9VzNso1RrCMwRqdhhOnWSbgYPYG52EB3o=;
- b=Zss4526nLFNTciS5CkkskwId31jc7XHSR8hJDLUti7zzzazspH+5IgHT6Eic4Dgo2o
- Nub0mGPNY8hsnqbKR4I7N2OKM7/giNsWFnxC9uSMm7x/C9Y73AArKhOouH8V8Z5gBrOi
- wJUUxHub5pTPQrP5v2RM29daXwn1fKyjxkpuHxtLec5waBeC2ZwbYnB8RyoGXgLA7bSV
- Mcs1vyE+/AJYggowWBEJP+aLigZ+AH9jkjsDiSZdODosnhN+LpZHG90Hkmi6OTdzTyX0
- Ldk+wjbs3hrcigQwOo9wvhLUyJhr198P7F3HGQZXyFqkGMr2OcDfL+2C0q4jOwXsQPcJ
- H4oA==
-X-Gm-Message-State: AOJu0Yz8/KIe6Ztb6vxQX9GLJwpqyakP1r3pdPKz1H8U5dVmc3vgAhK0
- UGg1OP9i6/39gdoRPvl6SFd/G8KbrtMJU57frvI=
-X-Google-Smtp-Source: AGHT+IE4f4TtFXcFiMmIhLmfDsDtgtr1emLmyZ6vsc3DCKcol5kKjyWjOHXqdMX0yViUeN9oU/Vw3w==
-X-Received: by 2002:adf:d1e8:0:b0:32f:7d50:267e with SMTP id
- g8-20020adfd1e8000000b0032f7d50267emr23960776wrd.9.1699271556853; 
- Mon, 06 Nov 2023 03:52:36 -0800 (PST)
+ bh=oCYvkfn1ciyM5BknWtAEgXJWGjMAeu4VlK1sBNiXJxg=;
+ b=ppJycuamxEJt4bbzO9EkpiPL9bEUQdRSSWP4LDwB+c1zkfyk+yT9vSz3M/rCcBohpc
+ Zye7N0Z+1XIhrkvPS0KwlAdRa/6Iu4ScRrP3WcOzY8xaDBkExehumFM6zkyfD7Kp/CBC
+ HKc8uyOur5C+rEO2NB9aQJeOV6eHEUGF3WV84UJSoV9PByPFeOiQVMpYPYlZaz+OLWWJ
+ ysnCmFK/l0wWMSRPA9Rmx6U0ZuOuacgS7UpsTFe+S9c1PkYR3TM5+sunYi/XTHFJEdDZ
+ kB1vgCATXZrLmlGgZ7dKkVKFciBsV334J+oBI2AneXkFhM2eIZad9S1gG6SIfnrVo9bw
+ 6Zmw==
+X-Gm-Message-State: AOJu0Yy7JLNCOPT21dg8UYm6qy7b/E4j7uTE7y493meKwC1zMoyYJx2E
+ 47w8ZkkcIdw1CCk4RzhWu8YrXoW5q9d2DetsBNQ=
+X-Google-Smtp-Source: AGHT+IGCauuVOp+52D3TYcV6kGN6bTmFJ4r+F8SB40vcL3C7N9ZbkJc+FNi10Ptxjr0WuUIWAoqU5g==
+X-Received: by 2002:a5d:47a1:0:b0:32f:a48f:3654 with SMTP id
+ 1-20020a5d47a1000000b0032fa48f3654mr12960328wrb.65.1699271604842; 
+ Mon, 06 Nov 2023 03:53:24 -0800 (PST)
 Received: from [192.168.69.115] (176-131-220-199.abo.bbox.fr.
  [176.131.220.199]) by smtp.gmail.com with ESMTPSA id
- g2-20020a056000118200b0032dcb08bf94sm9260507wrx.60.2023.11.06.03.52.35
+ n7-20020adfe347000000b0032fb17c65desm9230450wrj.19.2023.11.06.03.53.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Nov 2023 03:52:36 -0800 (PST)
-Message-ID: <fb485028-8cfe-6de4-d91a-9ca46c3f4f2a@linaro.org>
-Date: Mon, 6 Nov 2023 12:52:34 +0100
+ Mon, 06 Nov 2023 03:53:24 -0800 (PST)
+Message-ID: <4e08b280-e9b5-1a7d-2872-8a3fac787710@linaro.org>
+Date: Mon, 6 Nov 2023 12:53:22 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 46/71] hw/pci-host: Constify VMState
+Subject: Re: [PATCH 18/71] hw/arm: Constify VMState
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
 References: <20231106065827.543129-1-richard.henderson@linaro.org>
- <20231106065827.543129-47-richard.henderson@linaro.org>
+ <20231106065827.543129-19-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231106065827.543129-47-richard.henderson@linaro.org>
+In-Reply-To: <20231106065827.543129-19-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -51
 X-Spam_score: -5.2
 X-Spam_bar: -----
@@ -93,21 +93,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/11/23 07:58, Richard Henderson wrote:
+On 6/11/23 07:57, Richard Henderson wrote:
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   hw/pci-host/astro.c      |  4 ++--
->   hw/pci-host/bonito.c     |  2 +-
->   hw/pci-host/designware.c | 10 +++++-----
->   hw/pci-host/dino.c       |  2 +-
->   hw/pci-host/gpex.c       |  2 +-
->   hw/pci-host/gt64120.c    |  2 +-
->   hw/pci-host/i440fx.c     |  2 +-
->   hw/pci-host/ppce500.c    |  6 +++---
->   hw/pci-host/q35.c        |  2 +-
->   hw/pci-host/raven.c      |  2 +-
->   hw/pci-host/versatile.c  |  2 +-
->   11 files changed, 18 insertions(+), 18 deletions(-)
+>   hw/arm/armsse.c          |  2 +-
+>   hw/arm/armv7m.c          |  2 +-
+>   hw/arm/highbank.c        |  2 +-
+>   hw/arm/integratorcp.c    |  6 +++---
+>   hw/arm/musicpal.c        | 14 +++++++-------
+>   hw/arm/pxa2xx.c          | 18 +++++++++---------
+>   hw/arm/pxa2xx_gpio.c     |  2 +-
+>   hw/arm/pxa2xx_pic.c      |  2 +-
+>   hw/arm/smmuv3.c          |  8 ++++----
+>   hw/arm/spitz.c           |  8 ++++----
+>   hw/arm/stellaris.c       |  6 +++---
+>   hw/arm/strongarm.c       | 12 ++++++------
+>   hw/arm/versatilepb.c     |  2 +-
+>   hw/arm/virt-acpi-build.c |  2 +-
+>   hw/arm/z2.c              |  4 ++--
+>   15 files changed, 45 insertions(+), 45 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
