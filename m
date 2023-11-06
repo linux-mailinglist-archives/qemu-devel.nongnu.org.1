@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E279C7E2A81
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 17:59:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A0F7E2A8A
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 17:59:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r02vx-00039G-7S; Mon, 06 Nov 2023 11:58:43 -0500
+	id 1r02wj-0004GM-Tt; Mon, 06 Nov 2023 11:59:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r02vo-00034E-15
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 11:58:33 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r02wd-0004Ag-R9
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 11:59:24 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r02vm-00044t-8Z
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 11:58:31 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r02wc-0004Ak-B7
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 11:59:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699289908;
+ s=mimecast20190719; t=1699289961;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Wz2/nqqymEd4fJQYC4omBlDDLHXLR110uKJ/JL5VrAg=;
- b=RFOYYMJFQV5jLRnI0hDfBEZd3hhUBMMTT39z28bj1EGWXRcrircfc9+Z+6ymVH6UzuDonS
- cFDkz8L1S9GRvO6U3crnb5cZcbtvvSmdrqcniC8PdUZj57MJV2yDnqkEGLZWu3wgf8ePdU
- e4bHY7f8IItS3/6tSVTyS+qwXtt0p14=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ZFJz7E7pAKgxG6wYH08T5PtR59Z/udkMLNmLFz3fQXs=;
+ b=T0skjLYTT1eIhjqgvuBKBrSYPupB+cRZP76O62HsVT4nxDDGAOKXBYDw2TH+DYWnhPnKln
+ JDOWb+hWadCYg96fe38g68i5pp9c8tBn8H36GDH97no/onnaMBD126spNwbVUdirv1zRpq
+ lKIjA7M5ulwD9ejJfb5emTe4qGTbZHQ=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-486-GXuxDOkdP_ad_OatqIakRw-1; Mon, 06 Nov 2023 11:58:27 -0500
-X-MC-Unique: GXuxDOkdP_ad_OatqIakRw-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-66d08175882so55349456d6.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 08:58:27 -0800 (PST)
+ us-mta-138-y9iZEVVWNemrUOKMa5T4rw-1; Mon, 06 Nov 2023 11:59:18 -0500
+X-MC-Unique: y9iZEVVWNemrUOKMa5T4rw-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-66fbd02d104so58898456d6.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 08:59:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699289907; x=1699894707;
+ d=1e100.net; s=20230601; t=1699289958; x=1699894758;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Wz2/nqqymEd4fJQYC4omBlDDLHXLR110uKJ/JL5VrAg=;
- b=UbIdowfS608ZF44vmTIWSnS13Ju4L5QrKjh81Pnn9JboUMEl/o5ttHC66mB9mTEhv7
- HHFzF87931puO3HOUXSVV8ZsHDOUoFSHPGdHBQnnvo/qpqtv3WSb7GkaRBHaz6EratwG
- i7X9t2oecoUXEsX03FTjrpj5Svy2+2WfW7BG4Odl7KyTpLpxGB25eEs+nCdh1IqpJnxx
- 5cbrIwGZzCAcUwjcTKxKoujnAvDyhhOn7cKSQgNpZQyGxhLA6DMfNL2JnInZgFksCB5q
- SOJUgwYd6hLglisMKH7OUQxqSXhnYshhnJKRjRf4K/MqjF2xnui3eKTNzBCAujUWMOMN
- vqKQ==
-X-Gm-Message-State: AOJu0YyfV/REMWY9602aXaIgBchMoPSibBC61Qs55qSpyaofZYK3EWBX
- ZmqgV6+hTiG0Q25SrrfjoYKYyIjjv/Vkta9K41HDaiXyPMcaefq5qwiHqRcLNiKzDceHTyNfRfH
- MkaS8Z9jOl8qD8rI=
-X-Received: by 2002:a05:6214:3009:b0:66d:65ae:18f6 with SMTP id
- ke9-20020a056214300900b0066d65ae18f6mr33805744qvb.50.1699289906946; 
- Mon, 06 Nov 2023 08:58:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGFNzR0hWXneL7zgWaP2fEn6LN6uJa+e53C9lb5vg+BW6T29LdhjOb/7017J9tOl0Y47rQ6qg==
-X-Received: by 2002:a05:6214:3009:b0:66d:65ae:18f6 with SMTP id
- ke9-20020a056214300900b0066d65ae18f6mr33805725qvb.50.1699289906612; 
- Mon, 06 Nov 2023 08:58:26 -0800 (PST)
+ bh=ZFJz7E7pAKgxG6wYH08T5PtR59Z/udkMLNmLFz3fQXs=;
+ b=NEDTanPJoM05PWoWrAKVJNhRjZUa1er6PqY/pR9eBGI9534PC02bQsBFG+ASXaaJ6y
+ Q+DeUSOjSe8Xo+z1OSj44IRFHQA3000+2FqIqYv5Tb7Z14zT8cA3clUbTipmVxV5Ft4o
+ kLJS0o2zk0JOmsgJxuWRjX+glo+qrK/CkFdwjgULNQEh3fvx3TWTjo6ZBQ4hH7FtgReK
+ uner1m2L9Wn4gywkDw/x7Mvh8Bq7UVTnaQWdAFecjd+LyIPNagm2cT0kYJeKcL7WYhH1
+ dcjTYNzxH0Vhaw6Fev6B1zrToFUnxGwUSvn47jzfSBIGZ+O+BL+0RrhOligW32eU6Tpd
+ CWvA==
+X-Gm-Message-State: AOJu0YxNTz1HthnRQEMV92oYyAVIWCJhX+Ska0uTtLNMdBhrWmN9r3Af
+ CwRbH4WkoUFwb3oT0T1kCzZTtXpeUunuml6Bn/KAPNCC8R2bQ2FHV1GSvEKb+XVUYWTaWrxQJ6A
+ c/HLPCfruTyPLPpw=
+X-Received: by 2002:a05:6214:76e:b0:66d:3716:4e11 with SMTP id
+ f14-20020a056214076e00b0066d37164e11mr40779101qvz.38.1699289957923; 
+ Mon, 06 Nov 2023 08:59:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGVARghf0pRKeq50FS0FO2Lzfj1NFCEIXhErg+nVsRZZPDSSSu3ODzWPn6nietTTI0u5mAFZA==
+X-Received: by 2002:a05:6214:76e:b0:66d:3716:4e11 with SMTP id
+ f14-20020a056214076e00b0066d37164e11mr40779091qvz.38.1699289957701; 
+ Mon, 06 Nov 2023 08:59:17 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- k1-20020a0cfd61000000b006616fbcc077sm3584120qvs.129.2023.11.06.08.58.24
+ k1-20020a0cfd61000000b006616fbcc077sm3584120qvs.129.2023.11.06.08.59.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Nov 2023 08:58:26 -0800 (PST)
-Message-ID: <2241cab7-4903-4af8-9670-3731e799a560@redhat.com>
-Date: Mon, 6 Nov 2023 17:58:24 +0100
+ Mon, 06 Nov 2023 08:59:17 -0800 (PST)
+Message-ID: <f4e86e43-0dba-4ed8-9086-9dde228da65e@redhat.com>
+Date: Mon, 6 Nov 2023 17:59:14 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 19/41] vfio/container: Move iova_ranges to base
- container
+Subject: Re: [PATCH v4 20/41] vfio/container: Implement attach/detach_device
 Content-Language: en-US
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
  joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
  jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com
+ yi.y.sun@intel.com, chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>
 References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
- <20231102071302.1818071-20-zhenzhong.duan@intel.com>
+ <20231102071302.1818071-21-zhenzhong.duan@intel.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231102071302.1818071-20-zhenzhong.duan@intel.com>
+In-Reply-To: <20231102071302.1818071-21-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
@@ -106,11 +105,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/2/23 08:12, Zhenzhong Duan wrote:
-> Meanwhile remove the helper function vfio_free_container as it
-> only calls g_free now.
+> From: Eric Auger <eric.auger@redhat.com>
 > 
-> No functional change intended.
+> No fucntional change intended.
 > 
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
 
@@ -121,145 +122,75 @@ Thanks,
 C.
 
 
+
 > ---
->   include/hw/vfio/vfio-common.h         |  1 -
->   include/hw/vfio/vfio-container-base.h |  1 +
->   hw/vfio/common.c                      |  5 +++--
->   hw/vfio/container-base.c              |  3 +++
->   hw/vfio/container.c                   | 19 ++++++-------------
->   5 files changed, 13 insertions(+), 16 deletions(-)
+>   hw/vfio/common.c    | 16 ++++++++++++++++
+>   hw/vfio/container.c | 12 +++++-------
+>   2 files changed, 21 insertions(+), 7 deletions(-)
 > 
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index b1c9fe711b..b9e5a0e64b 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -82,7 +82,6 @@ typedef struct VFIOContainer {
->       unsigned iommu_type;
->       QLIST_HEAD(, VFIOHostDMAWindow) hostwin_list;
->       QLIST_HEAD(, VFIOGroup) group_list;
-> -    GList *iova_ranges;
->   } VFIOContainer;
->   
->   typedef struct VFIOHostDMAWindow {
-> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-> index 80e4a993c5..9658ffb526 100644
-> --- a/include/hw/vfio/vfio-container-base.h
-> +++ b/include/hw/vfio/vfio-container-base.h
-> @@ -48,6 +48,7 @@ typedef struct VFIOContainerBase {
->       QLIST_HEAD(, VFIORamDiscardListener) vrdl_list;
->       QLIST_ENTRY(VFIOContainerBase) next;
->       QLIST_HEAD(, VFIODevice) device_list;
-> +    GList *iova_ranges;
->   } VFIOContainerBase;
->   
->   typedef struct VFIOGuestIOMMU {
 > diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index be623e544b..8ef2e7967d 100644
+> index 8ef2e7967d..483ba82089 100644
 > --- a/hw/vfio/common.c
 > +++ b/hw/vfio/common.c
-> @@ -637,9 +637,10 @@ static void vfio_listener_region_add(MemoryListener *listener,
->               goto fail;
->           }
+> @@ -1498,3 +1498,19 @@ retry:
 >   
-> -        if (container->iova_ranges) {
-> +        if (bcontainer->iova_ranges) {
->               ret = memory_region_iommu_set_iova_ranges(giommu->iommu_mr,
-> -                    container->iova_ranges, &err);
-> +                                                      bcontainer->iova_ranges,
-> +                                                      &err);
->               if (ret) {
->                   g_free(giommu);
->                   goto fail;
-> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-> index 7f508669f5..0177f43741 100644
-> --- a/hw/vfio/container-base.c
-> +++ b/hw/vfio/container-base.c
-> @@ -54,6 +54,7 @@ void vfio_container_init(VFIOContainerBase *bcontainer, VFIOAddressSpace *space,
->       bcontainer->error = NULL;
->       bcontainer->dirty_pages_supported = false;
->       bcontainer->dma_max_mappings = 0;
-> +    bcontainer->iova_ranges = NULL;
->       QLIST_INIT(&bcontainer->giommu_list);
->       QLIST_INIT(&bcontainer->vrdl_list);
+>       return info;
 >   }
-> @@ -70,4 +71,6 @@ void vfio_container_destroy(VFIOContainerBase *bcontainer)
->           QLIST_REMOVE(giommu, giommu_next);
->           g_free(giommu);
->       }
 > +
-> +    g_list_free_full(bcontainer->iova_ranges, g_free);
->   }
+> +int vfio_attach_device(char *name, VFIODevice *vbasedev,
+> +                       AddressSpace *as, Error **errp)
+> +{
+> +    const VFIOIOMMUOps *ops = &vfio_legacy_ops;
+> +
+> +    return ops->attach_device(name, vbasedev, as, errp);
+> +}
+> +
+> +void vfio_detach_device(VFIODevice *vbasedev)
+> +{
+> +    if (!vbasedev->bcontainer) {
+> +        return;
+> +    }
+> +    vbasedev->bcontainer->ops->detach_device(vbasedev);
+> +}
 > diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-> index c8088a8174..721c0d7375 100644
+> index 721c0d7375..6bacf38222 100644
 > --- a/hw/vfio/container.c
 > +++ b/hw/vfio/container.c
-> @@ -308,7 +308,7 @@ bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
->   }
->   
->   static bool vfio_get_info_iova_range(struct vfio_iommu_type1_info *info,
-> -                                     VFIOContainer *container)
-> +                                     VFIOContainerBase *bcontainer)
+> @@ -873,8 +873,8 @@ static int vfio_device_groupid(VFIODevice *vbasedev, Error **errp)
+>    * @name and @vbasedev->name are likely to be different depending
+>    * on the type of the device, hence the need for passing @name
+>    */
+> -int vfio_attach_device(char *name, VFIODevice *vbasedev,
+> -                       AddressSpace *as, Error **errp)
+> +static int vfio_legacy_attach_device(const char *name, VFIODevice *vbasedev,
+> +                                     AddressSpace *as, Error **errp)
 >   {
->       struct vfio_info_cap_header *hdr;
->       struct vfio_iommu_type1_info_cap_iova_range *cap;
-> @@ -326,8 +326,8 @@ static bool vfio_get_info_iova_range(struct vfio_iommu_type1_info *info,
->   
->           range_set_bounds(range, cap->iova_ranges[i].start,
->                            cap->iova_ranges[i].end);
-> -        container->iova_ranges =
-> -            range_list_insert(container->iova_ranges, range);
-> +        bcontainer->iova_ranges =
-> +            range_list_insert(bcontainer->iova_ranges, range);
->       }
->   
->       return true;
-> @@ -475,12 +475,6 @@ static void vfio_get_iommu_info_migration(VFIOContainer *container,
->       }
+>       int groupid = vfio_device_groupid(vbasedev, errp);
+>       VFIODevice *vbasedev_iter;
+> @@ -914,14 +914,10 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
+>       return ret;
 >   }
 >   
-> -static void vfio_free_container(VFIOContainer *container)
-> -{
-> -    g_list_free_full(container->iova_ranges, g_free);
-> -    g_free(container);
-> -}
+> -void vfio_detach_device(VFIODevice *vbasedev)
+> +static void vfio_legacy_detach_device(VFIODevice *vbasedev)
+>   {
+>       VFIOGroup *group = vbasedev->group;
+>   
+> -    if (!vbasedev->bcontainer) {
+> -        return;
+> -    }
 > -
->   static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
->                                     Error **errp)
->   {
-> @@ -560,7 +554,6 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
->   
->       container = g_malloc0(sizeof(*container));
->       container->fd = fd;
-> -    container->iova_ranges = NULL;
->       bcontainer = &container->bcontainer;
->       vfio_container_init(bcontainer, space, &vfio_legacy_ops);
->   
-> @@ -597,7 +590,7 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
->               bcontainer->dma_max_mappings = 65535;
->           }
->   
-> -        vfio_get_info_iova_range(info, container);
-> +        vfio_get_info_iova_range(info, bcontainer);
->   
->           vfio_get_iommu_info_migration(container, info);
->           g_free(info);
-> @@ -649,7 +642,7 @@ enable_discards_exit:
->       vfio_ram_block_discard_disable(container, false);
->   
->   free_container_exit:
-> -    vfio_free_container(container);
-> +    g_free(container);
->   
->   close_fd_exit:
->       close(fd);
-> @@ -693,7 +686,7 @@ static void vfio_disconnect_container(VFIOGroup *group)
->   
->           trace_vfio_disconnect_container(container->fd);
->           close(container->fd);
-> -        vfio_free_container(container);
-> +        g_free(container);
->   
->           vfio_put_address_space(space);
->       }
+>       QLIST_REMOVE(vbasedev, global_next);
+>       QLIST_REMOVE(vbasedev, container_next);
+>       vbasedev->bcontainer = NULL;
+> @@ -933,6 +929,8 @@ void vfio_detach_device(VFIODevice *vbasedev)
+>   const VFIOIOMMUOps vfio_legacy_ops = {
+>       .dma_map = vfio_legacy_dma_map,
+>       .dma_unmap = vfio_legacy_dma_unmap,
+> +    .attach_device = vfio_legacy_attach_device,
+> +    .detach_device = vfio_legacy_detach_device,
+>       .set_dirty_page_tracking = vfio_legacy_set_dirty_page_tracking,
+>       .query_dirty_bitmap = vfio_legacy_query_dirty_bitmap,
+>   };
 
 
