@@ -2,99 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF027E2CAF
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 20:16:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F7A7E2CC1
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 20:19:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r054S-0007tQ-S9; Mon, 06 Nov 2023 14:15:36 -0500
+	id 1r057q-0004d6-3k; Mon, 06 Nov 2023 14:19:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r054Q-0007tH-TQ
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 14:15:34 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1r057l-0004c8-GQ
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 14:19:01 -0500
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r054G-0005l7-Ax
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 14:15:34 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-32da7ac5c4fso2990413f8f.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 11:15:23 -0800 (PST)
+ id 1r057a-0006HQ-BE
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 14:19:01 -0500
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2c5028e5b88so67775141fa.3
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 11:18:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699298123; x=1699902923; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1699298328; x=1699903128; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HDtPrefEanCjuZJYQIPqmOV+61RS08DIeIexVmAEaok=;
- b=LslB3tCl95kPKdSLdEER2Q848DybVctpn4nPkHC0C1K8akNGnXZAQhUIaoOg4PtnZ3
- oCQNI7QxHwDQy2lgOXRXiwBXYO9NgrfgG4gs7A3KZH+y/nhy1bFqpM1rfWxWrpRq0+Ef
- 6pb516/KjPiBjfHKZ/n3la+GkUU8GNNX3dcNvp4KqR2gpx68qkv9QSNrk3VEtq5UJOeP
- bucJqVavYRC7eGgrK+fGQ5bc6IMjtvEKoG147QxfaSYQtQR4+w+dPRoWWgQQT+nhEsai
- RQeuWB3T8BiJXPXGTPq8NTrKao/qxF9qM6LiOjfS/fKuKL2DeYhINPtc7fRnt+dJcW5g
- T4bw==
+ bh=NG34FRvELcoVg68kjiJlGSs8gWaZzLtMEhn0aubzvQA=;
+ b=c14XLqUfJbuY2PAHO/B2cUVb55VrwiE3VDfE31z7pk29j5u+l3jSMNL51czah4x5W0
+ tTjs9+bEIdm5opv1AcCSAnmDzdWHYXdDjakB47/oKhj0J5gnm2IBy+J77ITk36e01uqS
+ WoXAfI7BEIjtGQTdWbyj4aYzX2cWSLMkBPjFSPOPth/5mYe2vf++o6jbMTjVPkh322mT
+ zX3FVCT8S/Dw30lT5pKfZ4bgPFIvTeqJFkGczYBkH+2nL7NEJQWtKusutZrZlUowA8hE
+ ZGC75x2YL78xXedsoAUriYPtlUqu38DoatuWaaG0IvsAiLzGCVQ/Dkjr9oigF2W+dY5V
+ TvNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699298123; x=1699902923;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HDtPrefEanCjuZJYQIPqmOV+61RS08DIeIexVmAEaok=;
- b=t/2N8xwIkF+voOA+87CMXpZ614Z0fvEhzobaO7s9pzrZMNJ+ohOPXERtX9ASCvZwV+
- htBMn2jnxZ3MPrupzGondotxPkbj2aIFGEYDMg5jPlZghso7AC3hlKLCiE+/PtDo9aEh
- YngzgMxmaTjHDTOZNQBiX0+7uDTCVlvz0YVMoH3q3Auhi6DQa/qZGy6Dz9cHoiAYqt0d
- 6nJmm4fUjnyge6qzclckOoVW7Yve2Q0m73P68o7iDnPzVsancNNIKCZ0E76vuyG2zqMv
- Fp9ln873CAl7LnFXW5KglZDsFx2PPDMiGX+UB26I26+sb+IepS3P0/XEZccvxudMCJxL
- pDiA==
-X-Gm-Message-State: AOJu0YxMNFZzd4p/QllZSEIMrcZk3qi7jA8NdY356R6umxoO098q5sOE
- JVQtuvELVp05J7GK9qi+f395GA==
-X-Google-Smtp-Source: AGHT+IGHSsYcGcabLRNX9DqLWtq3bGnh5H7gCpt8A7316y5laA1TQZxCK1wVqzflyk1hNy5udHsVbw==
-X-Received: by 2002:a5d:6d0f:0:b0:32f:a48f:3658 with SMTP id
- e15-20020a5d6d0f000000b0032fa48f3658mr15956735wrq.69.1699298122807; 
- Mon, 06 Nov 2023 11:15:22 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699298328; x=1699903128;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=NG34FRvELcoVg68kjiJlGSs8gWaZzLtMEhn0aubzvQA=;
+ b=ut95sBLDJP0T17Thu1Ky2uU2WZSIYLgd/6CrgwnYxLMtMqN8a9wZUrM41qUrxlG52L
+ R/owcobyC5qnl/paoqB77AB2wwT2j2HYvmInp8uEJpT7RjHnSevJvfZIIC8nMSLRJbbU
+ Cjt+MMjYgr/0vn/msYuRN/70g0IoOUfozqzDuL2U+CmOGI7ZP4Rfevy2GDi9MZJSJrIS
+ /QESoaVLrK3MwMvQUY/8as5lJUV9uUdHtQGahdAoDIlBSq7vBSTy46ioYL603b1VxI5+
+ VcbkocfAk/bnM4hoJ44WsnF/1Gs5d8udNMLP7TEytSPRC66xJrafgOegZRtzmPUS0ZNC
+ LryA==
+X-Gm-Message-State: AOJu0YwXbDwCQ8sG+YtMjI6q252XpxnQpT9evaAAwALL+JY2IqrVbgbe
+ 4HyPztQMo51JDcOdaH8LncTQDw==
+X-Google-Smtp-Source: AGHT+IECrCx04nZ0IoeAt21d+Lf41mIEw//3e+AayfW3nMq5OpDw85gtfCFlglta6Cz3wB4EfQsEGg==
+X-Received: by 2002:a05:651c:19a4:b0:2bf:af49:daf7 with SMTP id
+ bx36-20020a05651c19a400b002bfaf49daf7mr2732264ljb.42.1699298328040; 
+ Mon, 06 Nov 2023 11:18:48 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- i12-20020a5d630c000000b0032dba85ea1bsm347391wru.75.2023.11.06.11.15.17
+ x8-20020adff0c8000000b0032d9a1f2ec3sm370184wro.27.2023.11.06.11.18.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 11:15:19 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B8A056575C;
- Mon,  6 Nov 2023 19:15:16 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, virtio-fs@redhat.com,
- Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Kevin Wolf <kwolf@redhat.com>, Erik Schilling <erik.schilling@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v6 6/6] docs/system: add a basic enumeration of vhost-user
- devices
-Date: Mon,  6 Nov 2023 19:15:15 +0000
-Message-Id: <20231106191515.2801863-7-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231106191515.2801863-1-alex.bennee@linaro.org>
-References: <20231106191515.2801863-1-alex.bennee@linaro.org>
+ Mon, 06 Nov 2023 11:18:46 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 81EB765565;
+ Mon,  6 Nov 2023 19:18:46 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ virtio-fs@redhat.com,  Eduardo Habkost <eduardo@habkost.net>,  Fam Zheng
+ <fam@euphon.net>,  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ qemu-block@nongnu.org,  Stefan Hajnoczi <stefanha@redhat.com>,  Gerd
+ Hoffmann <kraxel@redhat.com>,  Erik Schilling <erik.schilling@linaro.org>,
+ Hanna Reitz <hreitz@redhat.com>,  Eric Blake <eblake@redhat.com>,  Kevin
+ Wolf <kwolf@redhat.com>,  Jason Wang <jasowang@redhat.com>,  Raphael
+ Norwitz <raphael.norwitz@nutanix.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,  Mathieu Poirier
+ <mathieu.poirier@linaro.org>,  Viresh Kumar <viresh.kumar@linaro.org>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>
+Subject: Re: [PATCH v5 3/6] hw/virtio: derive vhost-user-gpio from
+ vhost-user-base
+In-Reply-To: <20231106125222-mutt-send-email-mst@kernel.org> (Michael S.
+ Tsirkin's message of "Mon, 6 Nov 2023 12:53:39 -0500 (1 hour, 22
+ minutes, 14 seconds ago)")
+References: <20231019095610.2818087-1-alex.bennee@linaro.org>
+ <20231019095610.2818087-4-alex.bennee@linaro.org>
+ <20231106121400-mutt-send-email-mst@kernel.org>
+ <87ttpybxhc.fsf@draig.linaro.org>
+ <20231106125222-mutt-send-email-mst@kernel.org>
+User-Agent: mu4e 1.11.24; emacs 29.1
+Date: Mon, 06 Nov 2023 19:18:46 +0000
+Message-ID: <87il6ebsh5.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x232.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,116 +113,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make it clear the vhost-user-device is intended for expert use only.
+"Michael S. Tsirkin" <mst@redhat.com> writes:
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231009095937.195728-7-alex.bennee@linaro.org>
+> On Mon, Nov 06, 2023 at 05:30:39PM +0000, Alex Benn=C3=A9e wrote:
+>> "Michael S. Tsirkin" <mst@redhat.com> writes:
+>>=20
+>> > On Thu, Oct 19, 2023 at 10:56:07AM +0100, Alex Benn=C3=A9e wrote:
+>> >> Now the new base class supports config handling we can take advantage
+>> >> and make vhost-user-gpio a much simpler boilerplate wrapper. Also as
+>> >> this doesn't require any target specific hacks we only need to build
+>> >> the stubs once.
+>> >>=20
+>> >> Message-Id: <20230418162140.373219-12-alex.bennee@linaro.org>
+>> >> Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> >> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+>> >> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> >> Message-Id: <20231009095937.195728-4-alex.bennee@linaro.org>
+>> >> ---
+>> >> -    case CHR_EVENT_OPENED:
+>> >> -        if (vu_gpio_connect(dev, &local_err) < 0) {
+>> >> -            qemu_chr_fe_disconnect(&gpio->chardev);
+>> >> -            return;
+>> >> -        }
+>> >> -        break;
+>> >> -    case CHR_EVENT_CLOSED:
+>> >> -        /* defer close until later to avoid circular close */
+>> >> -        vhost_user_async_close(dev, &gpio->chardev, &gpio->vhost_dev,
+>> >> -                               vu_gpio_disconnect);
+>> >
+>> > Hmm. Looking at this, it seems that the base device will handle close
+>> > synchronously. No? Why isn't this a problem?
+>>=20
+>> I suspect it was a copy and paste from another vhost-user impl. But
+>> testing has shown it works ok.
+>
+> Can you rebase on latest master then please? There have been
+> changes exactly in this area.
 
----
-v5
-  - split vhost-user-device out of the table
-  - sort the table alphabetically
-  - add sound and scmi devices
-v6
-  - add note re vhost-user-device
----
- docs/system/devices/vhost-user-rng.rst |  2 +
- docs/system/devices/vhost-user.rst     | 65 +++++++++++++++++++++++++-
- 2 files changed, 66 insertions(+), 1 deletion(-)
+Sent v6 to the list:
 
-diff --git a/docs/system/devices/vhost-user-rng.rst b/docs/system/devices/vhost-user-rng.rst
-index a145d4105c..ead1405326 100644
---- a/docs/system/devices/vhost-user-rng.rst
-+++ b/docs/system/devices/vhost-user-rng.rst
-@@ -1,3 +1,5 @@
-+.. _vhost_user_rng:
-+
- QEMU vhost-user-rng - RNG emulation
- ===================================
- 
-diff --git a/docs/system/devices/vhost-user.rst b/docs/system/devices/vhost-user.rst
-index a80e95a48a..74c8b2f8be 100644
---- a/docs/system/devices/vhost-user.rst
-+++ b/docs/system/devices/vhost-user.rst
-@@ -8,13 +8,76 @@ outside of QEMU itself. To do this there are a number of things
- required.
- 
- vhost-user device
--===================
-+=================
- 
- These are simple stub devices that ensure the VirtIO device is visible
- to the guest. The code is mostly boilerplate although each device has
- a ``chardev`` option which specifies the ID of the ``--chardev``
- device that connects via a socket to the vhost-user *daemon*.
- 
-+Each device will have an virtio-mmio and virtio-pci variant. See your
-+platform details for what sort of virtio bus to use.
-+
-+.. list-table:: vhost-user devices
-+  :widths: 20 20 60
-+  :header-rows: 1
-+
-+  * - Device
-+    - Type
-+    - Notes
-+  * - vhost-user-blk
-+    - Block storage
-+    - See contrib/vhost-user-blk
-+  * - vhost-user-fs
-+    - File based storage driver
-+    - See https://gitlab.com/virtio-fs/virtiofsd
-+  * - vhost-user-gpio
-+    - Proxy gpio pins to host
-+    - See https://github.com/rust-vmm/vhost-device
-+  * - vhost-user-gpu
-+    - GPU driver
-+    - See contrib/vhost-user-gpu
-+  * - vhost-user-i2c
-+    - Proxy i2c devices to host
-+    - See https://github.com/rust-vmm/vhost-device
-+  * - vhost-user-input
-+    - Generic input driver
-+    - See contrib/vhost-user-input
-+  * - vhost-user-rng
-+    - Entropy driver
-+    - :ref:`vhost_user_rng`
-+  * - vhost-user-scmi
-+    - System Control and Management Interface
-+    - See https://github.com/rust-vmm/vhost-device
-+  * - vhost-user-snd
-+    - Audio device
-+    - See https://github.com/rust-vmm/vhost-device/staging
-+  * - vhost-user-scsi
-+    - SCSI based storage
-+    - See contrib/vhost-user-scsi
-+  * - vhost-user-vsock
-+    - Socket based communication
-+    - See https://github.com/rust-vmm/vhost-device
-+
-+The referenced *daemons* are not exhaustive, any conforming backend
-+implementing the device and using the vhost-user protocol should work.
-+
-+vhost-user-device
-+^^^^^^^^^^^^^^^^^
-+
-+The vhost-user-device is a generic development device intended for
-+expert use while developing new backends. The user needs to specify
-+all the required parameters including:
-+
-+  - Device ``virtio-id``
-+  - The ``num_vqs`` it needs and their ``vq_size``
-+  - The ``config_size`` if needed
-+
-+.. note::
-+  To prevent user confusion you cannot currently instantiate
-+  vhost-user-device without first patching out ``.abstract = true`` in
-+  the ``vhost-user-device.c`` file and rebuilding.
-+
- vhost-user daemon
- =================
- 
--- 
-2.39.2
+  https://patchew.org/QEMU/20231106191515.2801863-1-alex.bennee@linaro.org/
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
