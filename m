@@ -2,110 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDBF07E1D4B
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 10:33:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0749C7E1D4C
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 10:34:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzvyW-0002Kg-39; Mon, 06 Nov 2023 04:32:52 -0500
+	id 1qzvzD-0002f5-2l; Mon, 06 Nov 2023 04:33:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qzvyT-0002JB-Pp
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:32:49 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qzvyQ-00048i-Oi
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:32:49 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-307d58b3efbso2451120f8f.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 01:32:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699263163; x=1699867963; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tYM9JZy0pWxgWplcpiN4Gaka112GVkBHgig4rCH1hkw=;
- b=nLfculsvuqyuA9PUxT96Qe+ll2COk935xRrG7TjN6vLrG9GP/a111CQeWlONnjkviU
- 4xAQDe2MX6tU3SlPLFvjCMtLsbEEBnhR3wUPp5Pb0BeDlbei1O2eYUW2B32D8T7HKif8
- xFPpS+yX+6MjUKKc+mIlm9VX2TJ+6fnxKQLskloqjDkFYCXvK7wZlkEJwntq0qOv9acE
- HS9eWV2FRdM0C7PpUFnL2v6ghh8asH9XXpThvQ+l1aCMz7Rd+LmoOEmwCwtSWMPvUld6
- q7/xuOKYE6mHYCzbofjV6AxQSEBtNQ8AOty9ATOOy6WYfRn4JoUTq/GEeD+HOVpXIOMl
- f6sA==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qzvzA-0002e7-RC
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:33:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qzvz7-0004EN-UF
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:33:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699263208;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jU3urtQtZg2ifeHLbJ+HWOevPmB9GIp1PKyFj+HDKtA=;
+ b=VGlHHUlmEYsfClxscclV5Z3d/HDLySzun4b1WDr1KskkyAOZTlJIvoNKWOD0IsTW4vuI3g
+ jGFaNuomN5VRjBPYEAzrTi1jUh4yC46PpbKpcSehfF1kreIxeEwtzkdb/B6/59YCV3yXvI
+ wuiII0jl1/G1qoZRqfgRLfqcxQUkLNs=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-32-KTQVVNHvMmWJBV8aUkhM0g-1; Mon, 06 Nov 2023 04:33:26 -0500
+X-MC-Unique: KTQVVNHvMmWJBV8aUkhM0g-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-67445c67d5dso53682596d6.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 01:33:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699263163; x=1699867963;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=tYM9JZy0pWxgWplcpiN4Gaka112GVkBHgig4rCH1hkw=;
- b=sqTvHSh30Wg3Kv9mti+cgPHbqA6GHcASvwccI+mb+EGpvOGqRea0IK1Ruv9dQJuNzn
- jfbPcfTVHLbpwb7U6pE3/RDv3u1/kWOk9alyO0Jrm7pkSlXbWJMflBFuEi9pizNwlaK9
- n+ZzXE/rnv1HNBiCX1MAuH45HgWYSItSqUrmRzdzWxYR5P/w6eTO90xekVdFe+DK/iwc
- QRBi6nBgzUiBCDgw4dlgFr/qdS/qwuMQxS5xhOBlx+jo1lQ4CxXG6w7jYZJoINLMdhfN
- wAl9pTYLaYOy0IwWlt5BEwgaq1xq5OnYlZ3sTgXMjprTKwLgXt5cxVhmkNXlwZrkpjHe
- oJCQ==
-X-Gm-Message-State: AOJu0YyXN07eCa9zR8d4SwYFQttXnOd3Sjsl93gzijMMdc9i8agEEgMn
- 2J/mANjKtZI9iStCy+W6tEWbpw==
-X-Google-Smtp-Source: AGHT+IFmnIYvxOkcyLPyFr0wEydB1Nrmj420bzHdRtHey8P35rLtoqOldBy6VxdZuqEw4C2joK3YDQ==
-X-Received: by 2002:a05:6000:18a9:b0:32f:c5f1:61df with SMTP id
- b9-20020a05600018a900b0032fc5f161dfmr4670898wri.20.1699263163490; 
- Mon, 06 Nov 2023 01:32:43 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- s11-20020a5d424b000000b0032da40fd7bdsm8960826wrr.24.2023.11.06.01.32.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 01:32:43 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A895B5F79F;
- Mon,  6 Nov 2023 09:32:42 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,  "Edgar E. Iglesias"
- <edgar.iglesias@gmail.com>,  Song Gao <gaosong@loongson.cn>,
- qemu-arm@nongnu.org,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,  Weiwei Li
- <liweiwei@iscas.ac.cn>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,  Daniel Henrique Barboza
- <danielhb413@gmail.com>,  Yanan Wang <wangyanan55@huawei.com>,
- =?utf-8?Q?C=C3=A9dric?= Le
- Goater <clg@kaod.org>,  Paolo Bonzini <pbonzini@redhat.com>,  David
- Hildenbrand <david@redhat.com>,  Brian Cain <bcain@quicinc.com>,
- qemu-ppc@nongnu.org,  Palmer Dabbelt <palmer@dabbelt.com>,
- qemu-riscv@nongnu.org,  Eduardo Habkost <eduardo@habkost.net>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Alistair Francis
- <alistair.francis@wdc.com>,  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Cleber Rosa <crosa@redhat.com>,  qemu-s390x@nongnu.org,  Laurent Vivier
- <laurent@vivier.eu>,  Yoshinori Sato <ysato@users.sourceforge.jp>,
- Nicholas Piggin <npiggin@gmail.com>,  Thomas Huth <thuth@redhat.com>,
- John Snow <jsnow@redhat.com>,  Alexandre Iooss <erdnaxe@crans.org>,
- Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Mahmoud Mandour
- <ma.mandourr@gmail.com>,  Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>,  Bin Meng <bin.meng@windriver.com>,  Beraldo
- Leal <bleal@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Michael Rolnik <mrolnik@gmail.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: Re: [PATCH 13/29] target/riscv: Use GDBFeature for dynamic XML
-In-Reply-To: <20231103195956.1998255-14-alex.bennee@linaro.org> ("Alex
- =?utf-8?Q?Benn=C3=A9e=22's?= message of "Fri, 3 Nov 2023 19:59:40 +0000 (2
- days, 13 hours, 31 minutes ago)")
-References: <20231103195956.1998255-1-alex.bennee@linaro.org>
- <20231103195956.1998255-14-alex.bennee@linaro.org>
-User-Agent: mu4e 1.11.24; emacs 29.1
-Date: Mon, 06 Nov 2023 09:32:42 +0000
-Message-ID: <87a5rrdy6d.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1699263206; x=1699868006;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jU3urtQtZg2ifeHLbJ+HWOevPmB9GIp1PKyFj+HDKtA=;
+ b=fR1cIxbXaq67ELFqllQnEUYzXRso4qRUhXpY2yY+7eCnA5pWvyHTfCByvnG0ecviwx
+ sYWstyLfhQpLHsD6JQyE8Ztin87VrT8v7Tq9W6aATIn7T1UlON+0KaFnQ1dMD0otAEsy
+ M5lPzdbC9PErHd0Zi32q/9hdjY8iuHk1XpxFlsl2tT2LAYnktxqQniwVNQ1Lts0gYU4v
+ buworQM6onItddtiXNgRapmTO/yfSxAhB89uy4OEeqyRljhFcoXG1BLMX7b7VdtPtrTb
+ Y/42MFK4VQ9vrOpLGWip4usTPnjRquMP6TSU7xgFnmqFs5hfnhqnAlQunhyxnHd8BZoE
+ QpAQ==
+X-Gm-Message-State: AOJu0YzADnJ5nsZE4yO4NlNNLBUvslJ9q3jcvFzppyAf1K0+EG2po+wp
+ ZoylvG7PN75HOws+QtY+RGPEm3GEXvomKA3mm+B4KQqPr6kgFh3fsYMbaUuB6kDQJSaQ8gFX874
+ 2eAqj30/1cbG3G6s=
+X-Received: by 2002:ad4:5c8d:0:b0:66d:1f11:8b85 with SMTP id
+ o13-20020ad45c8d000000b0066d1f118b85mr44055438qvh.13.1699263205977; 
+ Mon, 06 Nov 2023 01:33:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHljHbtPorAHjxZ4QRszR578oC6yfrfykvDtjpfj6D25Zsr4m0BiLsvI6T4IvqtXtMzbYKZwg==
+X-Received: by 2002:ad4:5c8d:0:b0:66d:1f11:8b85 with SMTP id
+ o13-20020ad45c8d000000b0066d1f118b85mr44055425qvh.13.1699263205660; 
+ Mon, 06 Nov 2023 01:33:25 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ pp24-20020a056214139800b0064f4ac061b0sm3289158qvb.12.2023.11.06.01.33.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 06 Nov 2023 01:33:25 -0800 (PST)
+Message-ID: <cbd33911-f04a-4323-9a44-c2a43e1df069@redhat.com>
+Date: Mon, 6 Nov 2023 10:33:21 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 05/41] vfio/common: Move vfio_host_win_add/del into
+ spapr.c
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ "open list:sPAPR (pseries)" <qemu-ppc@nongnu.org>
+References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
+ <20231102071302.1818071-6-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231102071302.1818071-6-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,264 +110,337 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+On 11/2/23 08:12, Zhenzhong Duan wrote:
+> Only spapr supports a customed host window list, other vfio driver
+> assume 64bit host window. So remove the check in listener callback
+> and move vfio_host_win_add/del into spapr.c and make it static.
+> 
+> With the check removed, we still need to do the same check for
+> VFIO_SPAPR_TCE_IOMMU which allows a single host window range
+> [dma32_window_start, dma32_window_size). Move vfio_find_hostwin
+> into spapr.c and do same check in vfio_container_add_section_window
+> instead.
+> 
+> When mapping a ram device section, if it's unaligned with
+> hostwin->iova_pgsizes, this mapping is bypassed. With hostwin
+> moved into spapr, we changed to check container->pgsizes.
+> 
+> Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-> From: Akihiko Odaki <akihiko.odaki@daynix.com>
->
-> In preparation for a change to use GDBFeature as a parameter of
-> gdb_register_coprocessor(), convert the internal representation of
-> dynamic feature from plain XML to GDBFeature.
->
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Message-Id: <20231025093128.33116-7-akihiko.odaki@daynix.com>
-> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-I bisected the following failure:
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
- ./qemu-riscv64 -g 1234 ./tests/tcg/riscv64-linux-user/sha512
+Thanks,
 
-and:
+C.
 
- gdb-multiarch ./tests/tcg/riscv64-linux-user/sha512 -ex "target remote loc=
-alhost:1234" -x ../../tests/tcg/multiarch/gdbstub/registers.py
-
-gives:
-
-warning: Architecture rejected target-supplied description
-Ignoring packet error, continuing...
-Ignoring packet error, continuing...
-Ignoring packet error, continuing...
-Ignoring packet error, continuing...
 
 > ---
->  target/riscv/cpu.h     |  5 +--
->  target/riscv/cpu.c     |  4 +--
->  target/riscv/gdbstub.c | 79 +++++++++++++++++++-----------------------
->  3 files changed, 40 insertions(+), 48 deletions(-)
->
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index f8ffa5ee38..73ec1d3b79 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -24,6 +24,7 @@
->  #include "hw/registerfields.h"
->  #include "hw/qdev-properties.h"
->  #include "exec/cpu-defs.h"
-> +#include "exec/gdbstub.h"
->  #include "qemu/cpu-float.h"
->  #include "qom/object.h"
->  #include "qemu/int128.h"
-> @@ -395,8 +396,8 @@ struct ArchCPU {
->=20=20
->      CPURISCVState env;
->=20=20
-> -    char *dyn_csr_xml;
-> -    char *dyn_vreg_xml;
-> +    GDBFeature dyn_csr_feature;
-> +    GDBFeature dyn_vreg_feature;
->=20=20
->      /* Configuration Settings */
->      RISCVCPUConfig cfg;
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index ac4a6c7eec..5200fba9b9 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1421,9 +1421,9 @@ static const char *riscv_gdb_get_dynamic_xml(CPUSta=
-te *cs, const char *xmlname)
->      RISCVCPU *cpu =3D RISCV_CPU(cs);
->=20=20
->      if (strcmp(xmlname, "riscv-csr.xml") =3D=3D 0) {
-> -        return cpu->dyn_csr_xml;
-> +        return cpu->dyn_csr_feature.xml;
->      } else if (strcmp(xmlname, "riscv-vector.xml") =3D=3D 0) {
-> -        return cpu->dyn_vreg_xml;
-> +        return cpu->dyn_vreg_feature.xml;
->      }
->=20=20
->      return NULL;
-> diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
-> index 524bede865..a3ac0212d1 100644
-> --- a/target/riscv/gdbstub.c
-> +++ b/target/riscv/gdbstub.c
-> @@ -212,12 +212,13 @@ static int riscv_gdb_set_virtual(CPURISCVState *cs,=
- uint8_t *mem_buf, int n)
->      return 0;
->  }
->=20=20
-> -static int riscv_gen_dynamic_csr_xml(CPUState *cs, int base_reg)
-> +static GDBFeature *riscv_gen_dynamic_csr_feature(CPUState *cs, int base_=
-reg)
->  {
->      RISCVCPU *cpu =3D RISCV_CPU(cs);
->      CPURISCVState *env =3D &cpu->env;
-> -    GString *s =3D g_string_new(NULL);
-> +    GDBFeatureBuilder builder;
->      riscv_csr_predicate_fn predicate;
-> +    const char *name;
->      int bitsize =3D 16 << env->misa_mxl_max;
->      int i;
->=20=20
-> @@ -230,9 +231,9 @@ static int riscv_gen_dynamic_csr_xml(CPUState *cs, in=
-t base_reg)
->          bitsize =3D 64;
->      }
->=20=20
-> -    g_string_printf(s, "<?xml version=3D\"1.0\"?>");
-> -    g_string_append_printf(s, "<!DOCTYPE feature SYSTEM \"gdb-target.dtd=
-\">");
-> -    g_string_append_printf(s, "<feature name=3D\"org.gnu.gdb.riscv.csr\"=
->");
-> +    gdb_feature_builder_init(&builder, &cpu->dyn_csr_feature,
-> +                             "org.gnu.gdb.riscv.csr", "riscv-csr.xml",
-> +                             base_reg);
->=20=20
->      for (i =3D 0; i < CSR_TABLE_SIZE; i++) {
->          if (env->priv_ver < csr_ops[i].min_priv_ver) {
-> @@ -240,72 +241,64 @@ static int riscv_gen_dynamic_csr_xml(CPUState *cs, =
-int base_reg)
->          }
->          predicate =3D csr_ops[i].predicate;
->          if (predicate && (predicate(env, i) =3D=3D RISCV_EXCP_NONE)) {
-> -            if (csr_ops[i].name) {
-> -                g_string_append_printf(s, "<reg name=3D\"%s\"", csr_ops[=
-i].name);
-> -            } else {
-> -                g_string_append_printf(s, "<reg name=3D\"csr%03x\"", i);
-> +            g_autofree char *dynamic_name =3D NULL;
-> +            name =3D csr_ops[i].name;
-> +            if (!name) {
-> +                dynamic_name =3D g_strdup_printf("csr%03x", i);
-> +                name =3D dynamic_name;
->              }
-> -            g_string_append_printf(s, " bitsize=3D\"%d\"", bitsize);
-> -            g_string_append_printf(s, " regnum=3D\"%d\"/>", base_reg + i=
-);
-> +
-> +            gdb_feature_builder_append_reg(&builder, name, bitsize, i,
-> +                                           "int", NULL);
->          }
->      }
->=20=20
-> -    g_string_append_printf(s, "</feature>");
+> v4: add vfio_find_hostwin back for VFIO_SPAPR_TCE_IOMMU
+> 
+>   include/hw/vfio/vfio-common.h |  5 ---
+>   hw/vfio/common.c              | 70 +----------------------------
+>   hw/vfio/container.c           | 16 -------
+>   hw/vfio/spapr.c               | 83 +++++++++++++++++++++++++++++++++++
+>   4 files changed, 85 insertions(+), 89 deletions(-)
+> 
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index 87848982bd..a4a22accb9 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -207,11 +207,6 @@ typedef struct {
+>       hwaddr pages;
+>   } VFIOBitmap;
+>   
+> -void vfio_host_win_add(VFIOContainer *container,
+> -                       hwaddr min_iova, hwaddr max_iova,
+> -                       uint64_t iova_pgsizes);
+> -int vfio_host_win_del(VFIOContainer *container, hwaddr min_iova,
+> -                      hwaddr max_iova);
+>   VFIOAddressSpace *vfio_get_address_space(AddressSpace *as);
+>   void vfio_put_address_space(VFIOAddressSpace *space);
+>   bool vfio_devices_all_running_and_saving(VFIOContainer *container);
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index e72055e752..e70fdf5e0c 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -245,44 +245,6 @@ bool vfio_devices_all_running_and_mig_active(VFIOContainer *container)
+>       return true;
+>   }
+>   
+> -void vfio_host_win_add(VFIOContainer *container, hwaddr min_iova,
+> -                       hwaddr max_iova, uint64_t iova_pgsizes)
+> -{
+> -    VFIOHostDMAWindow *hostwin;
 > -
-> -    cpu->dyn_csr_xml =3D g_string_free(s, false);
-> +    gdb_feature_builder_end(&builder);
->=20=20
->  #if !defined(CONFIG_USER_ONLY)
->      env->debugger =3D false;
->  #endif
->=20=20
-> -    return CSR_TABLE_SIZE;
-> +    return &cpu->dyn_csr_feature;
->  }
->=20=20
-> -static int ricsv_gen_dynamic_vector_xml(CPUState *cs, int base_reg)
-> +static GDBFeature *ricsv_gen_dynamic_vector_feature(CPUState *cs, int ba=
-se_reg)
->  {
->      RISCVCPU *cpu =3D RISCV_CPU(cs);
-> -    GString *s =3D g_string_new(NULL);
-> -    g_autoptr(GString) ts =3D g_string_new("");
-> +    GDBFeatureBuilder builder;
->      int reg_width =3D cpu->cfg.vlen;
-> -    int num_regs =3D 0;
->      int i;
->=20=20
-> -    g_string_printf(s, "<?xml version=3D\"1.0\"?>");
-> -    g_string_append_printf(s, "<!DOCTYPE target SYSTEM \"gdb-target.dtd\=
-">");
-> -    g_string_append_printf(s, "<feature name=3D\"org.gnu.gdb.riscv.vecto=
-r\">");
-> +    gdb_feature_builder_init(&builder, &cpu->dyn_vreg_feature,
-> +                             "org.gnu.gdb.riscv.vector", "riscv-vector.x=
-ml",
-> +                             base_reg);
->=20=20
->      /* First define types and totals in a whole VL */
->      for (i =3D 0; i < ARRAY_SIZE(vec_lanes); i++) {
->          int count =3D reg_width / vec_lanes[i].size;
-> -        g_string_printf(ts, "%s", vec_lanes[i].id);
-> -        g_string_append_printf(s,
-> -                               "<vector id=3D\"%s\" type=3D\"%s\" count=
-=3D\"%d\"/>",
-> -                               ts->str, vec_lanes[i].gdb_type, count);
-> +        gdb_feature_builder_append_tag(
-> +            &builder, "<vector id=3D\"%s\" type=3D\"%s\" count=3D\"%d\"/=
->",
-> +            vec_lanes[i].id, vec_lanes[i].gdb_type, count);
->      }
->=20=20
->      /* Define unions */
-> -    g_string_append_printf(s, "<union id=3D\"riscv_vector\">");
-> +    gdb_feature_builder_append_tag(&builder, "<union id=3D\"riscv_vector=
-\">");
->      for (i =3D 0; i < ARRAY_SIZE(vec_lanes); i++) {
-> -        g_string_append_printf(s, "<field name=3D\"%c\" type=3D\"%s\"/>",
-> -                               vec_lanes[i].suffix,
-> -                               vec_lanes[i].id);
-> +        gdb_feature_builder_append_tag(&builder,
-> +                                       "<field name=3D\"%c\" type=3D\"%s=
-\"/>",
-> +                                       vec_lanes[i].suffix, vec_lanes[i]=
-.id);
->      }
-> -    g_string_append(s, "</union>");
-> +    gdb_feature_builder_append_tag(&builder, "</union>");
->=20=20
->      /* Define vector registers */
->      for (i =3D 0; i < 32; i++) {
-> -        g_string_append_printf(s,
-> -                               "<reg name=3D\"v%d\" bitsize=3D\"%d\""
-> -                               " regnum=3D\"%d\" group=3D\"vector\""
-> -                               " type=3D\"riscv_vector\"/>",
-> -                               i, reg_width, base_reg++);
-> -        num_regs++;
-> +        gdb_feature_builder_append_reg(&builder, g_strdup_printf("v%d", =
-i),
-> +                                       reg_width, i, "riscv_vector", "ve=
-ctor");
->      }
->=20=20
-> -    g_string_append_printf(s, "</feature>");
-> +    gdb_feature_builder_end(&builder);
->=20=20
-> -    cpu->dyn_vreg_xml =3D g_string_free(s, false);
-> -    return num_regs;
-> +    return &cpu->dyn_vreg_feature;
->  }
->=20=20
->  void riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
-> @@ -320,10 +313,9 @@ void riscv_cpu_register_gdb_regs_for_features(CPUSta=
-te *cs)
->                                   32, "riscv-32bit-fpu.xml", 0);
->      }
->      if (env->misa_ext & RVV) {
-> -        int base_reg =3D cs->gdb_num_regs;
->          gdb_register_coprocessor(cs, riscv_gdb_get_vector,
->                                   riscv_gdb_set_vector,
-> -                                 ricsv_gen_dynamic_vector_xml(cs, base_r=
-eg),
-> +                                 ricsv_gen_dynamic_vector_feature(cs, cs=
-->gdb_num_regs)->num_regs,
->                                   "riscv-vector.xml", 0);
->      }
->      switch (env->misa_mxl_max) {
-> @@ -343,9 +335,8 @@ void riscv_cpu_register_gdb_regs_for_features(CPUStat=
-e *cs)
->      }
->=20=20
->      if (cpu->cfg.ext_icsr) {
-> -        int base_reg =3D cs->gdb_num_regs;
->          gdb_register_coprocessor(cs, riscv_gdb_get_csr, riscv_gdb_set_cs=
-r,
-> -                                 riscv_gen_dynamic_csr_xml(cs, base_reg),
-> +                                 riscv_gen_dynamic_csr_feature(cs, cs->g=
-db_num_regs)->num_regs,
->                                   "riscv-csr.xml", 0);
->      }
->  }
+> -    QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
+> -        if (ranges_overlap(hostwin->min_iova,
+> -                           hostwin->max_iova - hostwin->min_iova + 1,
+> -                           min_iova,
+> -                           max_iova - min_iova + 1)) {
+> -            hw_error("%s: Overlapped IOMMU are not enabled", __func__);
+> -        }
+> -    }
+> -
+> -    hostwin = g_malloc0(sizeof(*hostwin));
+> -
+> -    hostwin->min_iova = min_iova;
+> -    hostwin->max_iova = max_iova;
+> -    hostwin->iova_pgsizes = iova_pgsizes;
+> -    QLIST_INSERT_HEAD(&container->hostwin_list, hostwin, hostwin_next);
+> -}
+> -
+> -int vfio_host_win_del(VFIOContainer *container,
+> -                      hwaddr min_iova, hwaddr max_iova)
+> -{
+> -    VFIOHostDMAWindow *hostwin;
+> -
+> -    QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
+> -        if (hostwin->min_iova == min_iova && hostwin->max_iova == max_iova) {
+> -            QLIST_REMOVE(hostwin, hostwin_next);
+> -            g_free(hostwin);
+> -            return 0;
+> -        }
+> -    }
+> -
+> -    return -1;
+> -}
+> -
+>   static bool vfio_listener_skipped_section(MemoryRegionSection *section)
+>   {
+>       return (!memory_region_is_ram(section->mr) &&
+> @@ -531,22 +493,6 @@ static void vfio_unregister_ram_discard_listener(VFIOContainer *container,
+>       g_free(vrdl);
+>   }
+>   
+> -static VFIOHostDMAWindow *vfio_find_hostwin(VFIOContainer *container,
+> -                                            hwaddr iova, hwaddr end)
+> -{
+> -    VFIOHostDMAWindow *hostwin;
+> -    bool hostwin_found = false;
+> -
+> -    QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
+> -        if (hostwin->min_iova <= iova && end <= hostwin->max_iova) {
+> -            hostwin_found = true;
+> -            break;
+> -        }
+> -    }
+> -
+> -    return hostwin_found ? hostwin : NULL;
+> -}
+> -
+>   static bool vfio_known_safe_misalignment(MemoryRegionSection *section)
+>   {
+>       MemoryRegion *mr = section->mr;
+> @@ -625,7 +571,6 @@ static void vfio_listener_region_add(MemoryListener *listener,
+>       Int128 llend, llsize;
+>       void *vaddr;
+>       int ret;
+> -    VFIOHostDMAWindow *hostwin;
+>       Error *err = NULL;
+>   
+>       if (!vfio_listener_valid_section(section, "region_add")) {
+> @@ -647,13 +592,6 @@ static void vfio_listener_region_add(MemoryListener *listener,
+>           goto fail;
+>       }
+>   
+> -    hostwin = vfio_find_hostwin(container, iova, end);
+> -    if (!hostwin) {
+> -        error_setg(&err, "Container %p can't map guest IOVA region"
+> -                   " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container, iova, end);
+> -        goto fail;
+> -    }
+> -
+>       memory_region_ref(section->mr);
+>   
+>       if (memory_region_is_iommu(section->mr)) {
+> @@ -734,7 +672,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
+>       llsize = int128_sub(llend, int128_make64(iova));
+>   
+>       if (memory_region_is_ram_device(section->mr)) {
+> -        hwaddr pgmask = (1ULL << ctz64(hostwin->iova_pgsizes)) - 1;
+> +        hwaddr pgmask = (1ULL << ctz64(container->pgsizes)) - 1;
+>   
+>           if ((iova & pgmask) || (int128_get64(llsize) & pgmask)) {
+>               trace_vfio_listener_region_add_no_dma_map(
+> @@ -833,12 +771,8 @@ static void vfio_listener_region_del(MemoryListener *listener,
+>   
+>       if (memory_region_is_ram_device(section->mr)) {
+>           hwaddr pgmask;
+> -        VFIOHostDMAWindow *hostwin;
+> -
+> -        hostwin = vfio_find_hostwin(container, iova, end);
+> -        assert(hostwin); /* or region_add() would have failed */
+>   
+> -        pgmask = (1ULL << ctz64(hostwin->iova_pgsizes)) - 1;
+> +        pgmask = (1ULL << ctz64(container->pgsizes)) - 1;
+>           try_unmap = !((iova & pgmask) || (int128_get64(llsize) & pgmask));
+>       } else if (memory_region_has_ram_discard_manager(section->mr)) {
+>           vfio_unregister_ram_discard_listener(container, section);
+> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+> index 204b244b11..242010036a 100644
+> --- a/hw/vfio/container.c
+> +++ b/hw/vfio/container.c
+> @@ -551,7 +551,6 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+>       container->dma_max_mappings = 0;
+>       container->iova_ranges = NULL;
+>       QLIST_INIT(&container->giommu_list);
+> -    QLIST_INIT(&container->hostwin_list);
+>       QLIST_INIT(&container->vrdl_list);
+>   
+>       ret = vfio_init_container(container, group->fd, errp);
+> @@ -591,14 +590,6 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+>   
+>           vfio_get_iommu_info_migration(container, info);
+>           g_free(info);
+> -
+> -        /*
+> -         * FIXME: We should parse VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE
+> -         * information to get the actual window extent rather than assume
+> -         * a 64-bit IOVA address space.
+> -         */
+> -        vfio_host_win_add(container, 0, (hwaddr)-1, container->pgsizes);
+> -
+>           break;
+>       }
+>       case VFIO_SPAPR_TCE_v2_IOMMU:
+> @@ -687,7 +678,6 @@ static void vfio_disconnect_container(VFIOGroup *group)
+>       if (QLIST_EMPTY(&container->group_list)) {
+>           VFIOAddressSpace *space = container->space;
+>           VFIOGuestIOMMU *giommu, *tmp;
+> -        VFIOHostDMAWindow *hostwin, *next;
+>   
+>           QLIST_REMOVE(container, next);
+>   
+> @@ -698,12 +688,6 @@ static void vfio_disconnect_container(VFIOGroup *group)
+>               g_free(giommu);
+>           }
+>   
+> -        QLIST_FOREACH_SAFE(hostwin, &container->hostwin_list, hostwin_next,
+> -                           next) {
+> -            QLIST_REMOVE(hostwin, hostwin_next);
+> -            g_free(hostwin);
+> -        }
+> -
+>           trace_vfio_disconnect_container(container->fd);
+>           close(container->fd);
+>           vfio_free_container(container);
+> diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
+> index 4428990c28..83da2f7ec2 100644
+> --- a/hw/vfio/spapr.c
+> +++ b/hw/vfio/spapr.c
+> @@ -146,6 +146,60 @@ static const MemoryListener vfio_prereg_listener = {
+>       .region_del = vfio_prereg_listener_region_del,
+>   };
+>   
+> +static void vfio_host_win_add(VFIOContainer *container, hwaddr min_iova,
+> +                              hwaddr max_iova, uint64_t iova_pgsizes)
+> +{
+> +    VFIOHostDMAWindow *hostwin;
+> +
+> +    QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
+> +        if (ranges_overlap(hostwin->min_iova,
+> +                           hostwin->max_iova - hostwin->min_iova + 1,
+> +                           min_iova,
+> +                           max_iova - min_iova + 1)) {
+> +            hw_error("%s: Overlapped IOMMU are not enabled", __func__);
+> +        }
+> +    }
+> +
+> +    hostwin = g_malloc0(sizeof(*hostwin));
+> +
+> +    hostwin->min_iova = min_iova;
+> +    hostwin->max_iova = max_iova;
+> +    hostwin->iova_pgsizes = iova_pgsizes;
+> +    QLIST_INSERT_HEAD(&container->hostwin_list, hostwin, hostwin_next);
+> +}
+> +
+> +static int vfio_host_win_del(VFIOContainer *container,
+> +                             hwaddr min_iova, hwaddr max_iova)
+> +{
+> +    VFIOHostDMAWindow *hostwin;
+> +
+> +    QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
+> +        if (hostwin->min_iova == min_iova && hostwin->max_iova == max_iova) {
+> +            QLIST_REMOVE(hostwin, hostwin_next);
+> +            g_free(hostwin);
+> +            return 0;
+> +        }
+> +    }
+> +
+> +    return -1;
+> +}
+> +
+> +static VFIOHostDMAWindow *vfio_find_hostwin(VFIOContainer *container,
+> +                                            hwaddr iova, hwaddr end)
+> +{
+> +    VFIOHostDMAWindow *hostwin;
+> +    bool hostwin_found = false;
+> +
+> +    QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
+> +        if (hostwin->min_iova <= iova && end <= hostwin->max_iova) {
+> +            hostwin_found = true;
+> +            break;
+> +        }
+> +    }
+> +
+> +    return hostwin_found ? hostwin : NULL;
+> +}
+> +
+>   static int vfio_spapr_remove_window(VFIOContainer *container,
+>                                       hwaddr offset_within_address_space)
+>   {
+> @@ -267,6 +321,26 @@ int vfio_container_add_section_window(VFIOContainer *container,
+>       hwaddr pgsize = 0;
+>       int ret;
+>   
+> +    /*
+> +     * VFIO_SPAPR_TCE_IOMMU supports a single host window between
+> +     * [dma32_window_start, dma32_window_size), we need to ensure
+> +     * the section fall in this range.
+> +     */
+> +    if (container->iommu_type == VFIO_SPAPR_TCE_IOMMU) {
+> +        hwaddr iova, end;
+> +
+> +        iova = section->offset_within_address_space;
+> +        end = iova + int128_get64(section->size) - 1;
+> +
+> +        if (!vfio_find_hostwin(container, iova, end)) {
+> +            error_setg(errp, "Container %p can't map guest IOVA region"
+> +                       " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container,
+> +                       iova, end);
+> +            return -EINVAL;
+> +        }
+> +        return 0;
+> +    }
+> +
+>       if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
+>           return 0;
+>       }
+> @@ -351,6 +425,8 @@ int vfio_spapr_container_init(VFIOContainer *container, Error **errp)
+>       bool v2 = container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU;
+>       int ret, fd = container->fd;
+>   
+> +    QLIST_INIT(&container->hostwin_list);
+> +
+>       /*
+>        * The host kernel code implementing VFIO_IOMMU_DISABLE is called
+>        * when container fd is closed so we do not call it explicitly
+> @@ -418,7 +494,14 @@ listener_unregister_exit:
+>   
+>   void vfio_spapr_container_deinit(VFIOContainer *container)
+>   {
+> +    VFIOHostDMAWindow *hostwin, *next;
+> +
+>       if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
+>           memory_listener_unregister(&container->prereg_listener);
+>       }
+> +    QLIST_FOREACH_SAFE(hostwin, &container->hostwin_list, hostwin_next,
+> +                       next) {
+> +        QLIST_REMOVE(hostwin, hostwin_next);
+> +        g_free(hostwin);
+> +    }
+>   }
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
