@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032B17E1DC3
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 10:59:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55B1A7E1DC0
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 10:59:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzwLx-0007sL-5m; Mon, 06 Nov 2023 04:57:05 -0500
+	id 1qzwMH-0001Na-TV; Mon, 06 Nov 2023 04:57:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qzwLv-0007lx-I7
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:57:03 -0500
+ id 1qzwMF-0001GB-Kv
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:57:23 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qzwLu-0008Tz-1s
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:57:03 -0500
+ id 1qzwM8-00005r-JP
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:57:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699264621;
+ s=mimecast20190719; t=1699264636;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lJbN66is0rq3NleJYaE0Jf3JCOZlcB7xHJzQcJyNAwM=;
- b=cEoWdk+amfC0TAhiVKR7fBcs+jlv6JBJsbkEHdQZ2JFSIy/JpMZVZfYple8PI11hbdPLAM
- pq+5/vOmOl0rz+mWyuRH9wuGhkpXOPqynQxr5YXR25DgCzwbYl7ZQph1VUDH1Slr1ZK0SK
- 0epdgvcC1TY6VIw2roOdoLcb/Z98GPE=
+ bh=Ngzny1QtASkwy4IfrDWfVKDSut+nimzaGhnpW+xw2xM=;
+ b=BqRZKu8e0O7QLOtzD35Qwa34wPgk+zss3G/nYd5mqBH8KeEGccVw4E3DuEByeMxN/Zk/Ug
+ EPEUuJtx1vKcLUc5lcfuVsY2pFSlq+HWfMEU2DnTyAyHgESAuPW6mlisYC1t3b3ef5tB3F
+ B8aYT/xUpb4n3l7hhXWAqcIBcfMzNWU=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-360-ICStj1kmNMmZ_fYZQck4gw-1; Mon,
- 06 Nov 2023 04:56:51 -0500
-X-MC-Unique: ICStj1kmNMmZ_fYZQck4gw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-678-SuGnBhe9PMGTkKywxhIWBA-1; Mon,
+ 06 Nov 2023 04:56:55 -0500
+X-MC-Unique: SuGnBhe9PMGTkKywxhIWBA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3F91F38116FA;
- Mon,  6 Nov 2023 09:56:51 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BDA343C0D19F;
+ Mon,  6 Nov 2023 09:56:54 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 648A3492A;
- Mon,  6 Nov 2023 09:56:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0EFCA40C6EB9;
+ Mon,  6 Nov 2023 09:56:53 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com,
@@ -52,15 +52,15 @@ Cc: stefanha@gmail.com,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL v2 16/24] ui/vnc: VNC requires PIXMAN
-Date: Mon,  6 Nov 2023 13:55:33 +0400
-Message-ID: <20231106095542.1852973-17-marcandre.lureau@redhat.com>
+Subject: [PULL v2 17/24] ui/spice: SPICE/QXL requires PIXMAN
+Date: Mon,  6 Nov 2023 13:55:34 +0400
+Message-ID: <20231106095542.1852973-18-marcandre.lureau@redhat.com>
 In-Reply-To: <20231106095542.1852973-1-marcandre.lureau@redhat.com>
 References: <20231106095542.1852973-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -92,40 +92,63 @@ From: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- meson.build    | 6 +++++-
- ui/meson.build | 2 +-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ meson.build        |  6 +++++-
+ hw/display/Kconfig |  2 +-
+ ui/meson.build     | 10 +++++-----
+ 3 files changed, 11 insertions(+), 7 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 2d67cbf6d6..f3fc1ba68d 100644
+index f3fc1ba68d..0dbad80fcc 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -1536,7 +1536,11 @@ endif
- vnc = not_found
- jpeg = not_found
- sasl = not_found
--if get_option('vnc').allowed() and have_system
-+if get_option('vnc') \
+@@ -1015,7 +1015,11 @@ if not get_option('spice_protocol').auto() or have_system
+                               method: 'pkg-config')
+ endif
+ spice = not_found
+-if not get_option('spice').auto() or have_system
++if get_option('spice') \
 +             .disable_auto_if(not have_system) \
 +             .require(pixman.found(),
-+                      error_message: 'cannot enable VNC if pixman is not available') \
++                      error_message: 'cannot enable SPICE if pixman is not available') \
 +             .allowed()
-   vnc = declare_dependency() # dummy dependency
-   jpeg = dependency('libjpeg', required: get_option('vnc_jpeg'),
-                     method: 'pkg-config')
+   spice = dependency('spice-server', version: '>=0.14.0',
+                      required: get_option('spice'),
+                      method: 'pkg-config')
+diff --git a/hw/display/Kconfig b/hw/display/Kconfig
+index 7b3da68d1c..4d8b0cec40 100644
+--- a/hw/display/Kconfig
++++ b/hw/display/Kconfig
+@@ -93,7 +93,7 @@ config VGA
+ 
+ config QXL
+     bool
+-    depends on SPICE && PCI
++    depends on SPICE && PCI && PIXMAN
+     select VGA
+ 
+ config VIRTIO_GPU
 diff --git a/ui/meson.build b/ui/meson.build
-index 7c99613950..19723188b5 100644
+index 19723188b5..024f494faf 100644
 --- a/ui/meson.build
 +++ b/ui/meson.build
-@@ -46,7 +46,7 @@ vnc_ss.add(files(
- ))
- vnc_ss.add(zlib, jpeg, gnutls)
- vnc_ss.add(when: sasl, if_true: files('vnc-auth-sasl.c'))
--system_ss.add_all(when: vnc, if_true: vnc_ss)
-+system_ss.add_all(when: [vnc, pixman], if_true: vnc_ss)
- system_ss.add(when: vnc, if_false: files('vnc-stubs.c'))
+@@ -141,12 +141,12 @@ if spice.found()
+     'spice-display.c'
+   ))
+   ui_modules += {'spice-core' : spice_core_ss}
+-endif
  
- ui_modules = {}
+-if spice.found() and gio.found()
+-  spice_ss = ss.source_set()
+-  spice_ss.add(spice, gio, pixman, files('spice-app.c'))
+-  ui_modules += {'spice-app': spice_ss}
++  if gio.found()
++    spice_ss = ss.source_set()
++    spice_ss.add(spice, gio, pixman, files('spice-app.c'))
++    ui_modules += {'spice-app': spice_ss}
++  endif
+ endif
+ 
+ keymaps = [
 -- 
 2.41.0
 
