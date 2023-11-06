@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630107E1ACD
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:11:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 145D17E1AF2
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:14:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztf4-00045q-0h; Mon, 06 Nov 2023 02:04:40 -0500
+	id 1qztfW-0004ry-Fj; Mon, 06 Nov 2023 02:05:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztd7-0000xl-Fg
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:02:44 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qztdD-00017w-3Y
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:02:46 -0500
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztcu-00021T-L8
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:02:36 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1cc3bb32b5dso37782495ad.3
+ id 1qztcw-00021a-Hp
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:02:37 -0500
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-53fa455cd94so2527435a12.2
  for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 23:02:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699254143; x=1699858943; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699254144; x=1699858944; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9H5O9Zda+vpUUqZvbTNZUrv7Fbtfcl7R0BVTLI0MHJY=;
- b=XeyU8vDEzV6eSf3eMIfgRp5bT/+7aQ/ZQzNdKHSNLsrenFQtBJUpQ7A2HKpBQ0hr+E
- Mgmb9RvxCxgayUGtx06kxeUNtr9EuGxw+KmXBxVgb6cX4j6j+vZfpmyI14BoCMjtkJYQ
- XZQmBIDMB0/gSeu5Gw6A+e6ma/aUeLash7e/1nP5bCglrRIc6yH97OJ3Yq0ZcNoOegI5
- 36y+QNSrzWxmp38SmQgqo+OXv/bm68hVH+YsiczRvZ3k7Qox8DizJ5iqalqvjkakmdpE
- oUGZtdYQ4fLRc0ZRunaxBsNaHANHmc37forw8d89hlHBntlK0ZqWBit+iih/C+8zl1C2
- Xl9g==
+ bh=DG0aaoeEohQ09SvvzgB8FkzO0oCsIp6ZWWtbFbko7Wg=;
+ b=HqvAVFRVcSSFI6aE0+3VINukfB1RgBnsBDzJ/G5u5ePzoniQLfsHEGvkOl4tRizw/J
+ FFhpNdUCSEdA3n+4lTjrbw8WeZ+S/7Q8aSiE1Y4/c0ZlAQJDcI4yj1iGU0wyvg69ylZc
+ yWHBLOmswZDB0f9NTM8ocmM71FeVDQBTMGwiL/kK0vnWoPnFNTBhj4BOruk744AspNWY
+ xVPLmE7JKlrv/UXwI0vb2ZbC3L2VlNmcJ2b6Ttky1szCyom22EqVlrmB/GosKCoGjjct
+ HOOeI+pRfUtpbpyfkwbw4EglVZqF97WqXXc2gvPJpIzF8WcWqya4F6/KEhGRaDKhXX42
+ WeRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699254143; x=1699858943;
+ d=1e100.net; s=20230601; t=1699254144; x=1699858944;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9H5O9Zda+vpUUqZvbTNZUrv7Fbtfcl7R0BVTLI0MHJY=;
- b=SvjsHRblm4hSheisCMOhpFXeLYl70U5J+oMCaoS21G2cIqSIjMckxPTDU6hgsgUS7g
- 3Kx5Zq5M0HTUUXfioGbOF6nf21fIR/NxP/Lbki0JgZXWlJuSvVpWgZbIPVAje7hjBSmd
- jY19i5p67iOB13gMC9lb+4F/aCsNL4H+y7qjppMkHyh3Q9M4PFiPV3tFPkHnr0UqNAwi
- L4LcF4nZ7UhIS0OuPZ2qZf5npqSRRC5AE185hfuLmIVreBwLSIXIaR3XNTTp2Rv9UpgX
- HoRPQ7Kj5BOARZffaxthkbIaOql0wOelzF/x9fOuY6yxwoVzA+zgtQyq9W+fN2CcLCa3
- Jl/w==
-X-Gm-Message-State: AOJu0Yz1DCof5rKf6U0riO1ab+QnMSvY6gLJJ7CGZX1e2qgd7AckPdbE
- F4YrPKgVt23oNu6rXkeZr4dFToDc283Yu1n9/9I=
-X-Google-Smtp-Source: AGHT+IH6tFeje9p2o3FFx0gNtJhgZXZfJMz9zoS3coLKF2GhCNrswmhJLfricX6Ml608Rz3lMMUQkw==
-X-Received: by 2002:a17:90a:b88d:b0:27d:5964:4ef0 with SMTP id
- o13-20020a17090ab88d00b0027d59644ef0mr25218187pjr.10.1699254143174; 
- Sun, 05 Nov 2023 23:02:23 -0800 (PST)
+ bh=DG0aaoeEohQ09SvvzgB8FkzO0oCsIp6ZWWtbFbko7Wg=;
+ b=vHnPDdulHFWcZNUQEyHnTZRQmokW7RzO3Wz1H6qqbSL2og4XgD+FgNtD4P47bAoFS3
+ aAsWogYbgEcDu3AYzq6hSM98bZbl+rLBbd4VEQXrhvFoEhFdDk9Q1YjnRHqTwTwkkdY3
+ icHkXiRbYoZekyNFksoYlg4rMiTyLug/QbKFbVk70kfcDG1Q+u6QZcw8lZ1h1xCcQded
+ prt0A+hfBSQusCbHuejvKkhlH0GbgTlL3ul6BCbzAjrI5pFIEvEV7Aw204gFIxw1gZB0
+ dazdDYTqUb2Sq2woe5SOFX5zS/7QjDhpy0GwyhKo6f0YB0keNEMp3p6F8AnfxItIt1Md
+ A5xw==
+X-Gm-Message-State: AOJu0YxQr1rwj7wrKIp9ZuRy5eH8Bo7gAJBGOFtZc3CDqQZE8TwbA8Aw
+ qzUhJ8UTAxOHZSj/ZKdmmoVhio3xclcRU3iVGsc=
+X-Google-Smtp-Source: AGHT+IFxIt1QXeN/sgwsLG8Qwbv0022v/d1Vtxya+5PumYh/5+wdzNGBPH3OizKzdm/mRZowgdLEyQ==
+X-Received: by 2002:a05:6a20:42a5:b0:15d:624c:6e43 with SMTP id
+ o37-20020a056a2042a500b0015d624c6e43mr27264126pzj.3.1699254144012; 
+ Sun, 05 Nov 2023 23:02:24 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- 8-20020a17090a194800b0027d88387287sm5319650pjh.51.2023.11.05.23.02.22
+ 8-20020a17090a194800b0027d88387287sm5319650pjh.51.2023.11.05.23.02.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Nov 2023 23:02:22 -0800 (PST)
+ Sun, 05 Nov 2023 23:02:23 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
-Subject: [PATCH 63/71] audio: Constify VMState
-Date: Sun,  5 Nov 2023 22:58:19 -0800
-Message-Id: <20231106065827.543129-64-richard.henderson@linaro.org>
+Subject: [PATCH 64/71] backends: Constify VMState
+Date: Sun,  5 Nov 2023 22:58:20 -0800
+Message-Id: <20231106065827.543129-65-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231106065827.543129-1-richard.henderson@linaro.org>
 References: <20231106065827.543129-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,22 +92,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- audio/audio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ backends/dbus-vmstate.c     | 2 +-
+ backends/tpm/tpm_emulator.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/audio/audio.c b/audio/audio.c
-index f91e05b72c..efb6cc0a01 100644
---- a/audio/audio.c
-+++ b/audio/audio.c
-@@ -1683,7 +1683,7 @@ static const VMStateDescription vmstate_audio = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = vmstate_audio_needed,
+diff --git a/backends/dbus-vmstate.c b/backends/dbus-vmstate.c
+index a9d8cb0acd..be6c4d8e0a 100644
+--- a/backends/dbus-vmstate.c
++++ b/backends/dbus-vmstate.c
+@@ -393,7 +393,7 @@ static const VMStateDescription dbus_vmstate = {
+     .version_id = 0,
+     .pre_save = dbus_vmstate_pre_save,
+     .post_load = dbus_vmstate_post_load,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(data_size, DBusVMState),
+         VMSTATE_VBUFFER_ALLOC_UINT32(data, DBusVMState, 0, 0, data_size),
          VMSTATE_END_OF_LIST()
-     }
- };
+diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
+index f7f1b4ad7a..ebdd2e0a69 100644
+--- a/backends/tpm/tpm_emulator.c
++++ b/backends/tpm/tpm_emulator.c
+@@ -939,7 +939,7 @@ static const VMStateDescription vmstate_tpm_emulator = {
+     .version_id = 0,
+     .pre_save = tpm_emulator_pre_save,
+     .post_load = tpm_emulator_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(state_blobs.permanent_flags, TPMEmulator),
+         VMSTATE_UINT32(state_blobs.permanent.size, TPMEmulator),
+         VMSTATE_VBUFFER_ALLOC_UINT32(state_blobs.permanent.buffer,
 -- 
 2.34.1
 
