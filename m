@@ -2,74 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8446E7E1846
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 02:17:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 915157E1859
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 02:35:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzoDQ-00059S-BR; Sun, 05 Nov 2023 20:15:44 -0500
+	id 1qzoUr-0007Q0-I7; Sun, 05 Nov 2023 20:33:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qzoDO-00058j-4s; Sun, 05 Nov 2023 20:15:42 -0500
-Received: from mail-vk1-xa2b.google.com ([2607:f8b0:4864:20::a2b])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qzoUm-0007Ph-LM
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 20:33:41 -0500
+Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qzoDM-0004Xv-Mv; Sun, 05 Nov 2023 20:15:41 -0500
-Received: by mail-vk1-xa2b.google.com with SMTP id
- 71dfb90a1353d-49d9ef118a5so1462187e0c.1; 
- Sun, 05 Nov 2023 17:15:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qzoUk-00074x-Cs
+ for qemu-devel@nongnu.org; Sun, 05 Nov 2023 20:33:40 -0500
+Received: by mail-oo1-xc31.google.com with SMTP id
+ 006d021491bc7-5875e2b27c5so2096552eaf.3
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 17:33:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699233338; x=1699838138; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qJSYsuxX/SD4RHGOFav4WAact6ov/ErY57Vm7mELOzI=;
- b=a/LRc3W4x5fdNA7wbwVfU91skCRBsV3Cek2rru0qx7wymlsZT7S6BqYOiezyjKeVNe
- q0+A7cjiASU0lP1e5K0f5M6RaajsyHnIUfU0+KcENuduxqmTAK+h4xgKHikjvg451OWz
- 7BA7lPNFopsLTiIuvyqlKNLnFGxBMuu8drXCeM77DS/qPDIqibbB4C0jTkZp04DB9kM2
- JNo/xc7HHMui32pJIwqzKbuDMMcLOQqOyYSKLmzpNC3gfj0BnZQTpWZ50/Wu+AvrvPPC
- Qvla8GC9LWoJ5RTdbM+kKiP7m/4R0hjxD25ccNyFsKpwwQ3zyCt587UNM2O1pY4HOpMP
- RLbQ==
+ d=gmail.com; s=20230601; t=1699234417; x=1699839217; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=UhJEbIMpYGQXpluS3MwgnixomBKzFuGEX0uA8gUuChk=;
+ b=nQFjisb7BqkWvnm/K6qV8A7KdCoaOKQZOH8BJcfbCosOMtGJawbqQqzJRJjtSN75L6
+ SvEyHkjZJIC9Zsy6yCAs6OpLPooGIgMQRXZq+RH7rTQToad6SF2yziYJQe5BAU0EXu97
+ jpDe2RVaLCkBcQuuX5pxjNCKIN1O8BdL+72gO7VFpSeANAOYv1zfV+ice5LMIpfX1lid
+ KqG4HAgmfh9mf5qLU1w/0Apns4DVhUHy15K64wE+/JmBHnHXE/m7ADkTMsGgTmwgURh9
+ ImGV3z5RsuIoL4EbdjQA91z3RBUmXH8aLp0t8EGb6giPu7jDrOwDlMeBLYGOMgIIBTqY
+ GuBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699233338; x=1699838138;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qJSYsuxX/SD4RHGOFav4WAact6ov/ErY57Vm7mELOzI=;
- b=W/HmYW/ErQCgucba4N3VOGauwVdFWYlkBA4DE7S68xlKUr5oXsXg6/g7zPhDoh3PTV
- z+/pYhmD/i276nW99S28fmqxo7YqtZYTT6mSG0a+sAmxITIrKBPlH2uJ5SKYo2o1xJWb
- wQOm5PATQbX04aPsf1Hznq78/4PYVzpSvwYwYeZm4MTb9USZMtuVY1ZiZaPRckdVWqlr
- /zt+5BrmwYhUqvWHk5Pt8qYvsbt/V+uPtlozndrcf+VAKrqvmaM+asUS0CkWCKwYkMN6
- owtk11ySXB+1AsCEN7H4kbkX3L3nLFc+4DINmAaCZkUoMb4mRa4FsvY/xw0X/+s4DCSP
- TEUQ==
-X-Gm-Message-State: AOJu0YxIgKaQj9DI0INKVbtU4Drg3B0Jz1yBunZdcEeyMWQo52Ny1R6f
- g5bQGW6NoluNmA8D4UiON6wUlKiEASpbmCl/5YA=
-X-Google-Smtp-Source: AGHT+IF0DIItm5DCPx3oBDxhycwchnzB4ctqQZWZ1P8/77Df98pZd8Hj8VUl+F6yrkkH1JkJDb6e3zPmHSPFM3QYr8E=
-X-Received: by 2002:a1f:a807:0:b0:496:b3b7:5d4c with SMTP id
- r7-20020a1fa807000000b00496b3b75d4cmr17122015vke.16.1699233337855; Sun, 05
- Nov 2023 17:15:37 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699234417; x=1699839217;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=UhJEbIMpYGQXpluS3MwgnixomBKzFuGEX0uA8gUuChk=;
+ b=crac/XbH9Vo82g8ujRSr6EVMXF2mfaO3LRnSm0HJX0YrYKnCMyGGZZqt4KuM3Z1I41
+ K3nmzPZqyf/AEc0HTjLuSv52z8TAEVgydngUwi9PFxrx6FbgJva5vqfvUxBByJS0zH8v
+ +FGQnlUV8KkKxf8BtxcwxCEQCqUXqe7ofoA0uZnTRql995zDs2c7oqo1BFuvJ98j7x3+
+ WGrAzwo4/pqq+m/nfATCxIZgscNg3L6Nq6iFIqhf/TfExZ2mAy3QEN1lO8E2xLPRdTK/
+ fr3YRQz/TCS7NuAlRR7wFFuH/uw7aqMlP9nLLUpI6z5lBcNzy3uoXsDqK+oJhGcG5nyt
+ Ruvg==
+X-Gm-Message-State: AOJu0YzFp4FfytfTyukLygZYig5vEowG951pGq2ZG3FoVr1r9ViY0fmS
+ 4kbRjmau5M+wBGAdkZFBYlEuYAQrsHzMPsi2gqc=
+X-Google-Smtp-Source: AGHT+IFtWtv+lVVopeTO+TQql9ZUjVrwb9YV3dkChw/ejEHCUxaAWjj43rFu7/1fHGGg9DPckYK7A2y8gxVqCCXbGpU=
+X-Received: by 2002:a4a:b487:0:b0:581:ff09:62e4 with SMTP id
+ b7-20020a4ab487000000b00581ff0962e4mr25959491ooo.2.1699234416738; Sun, 05 Nov
+ 2023 17:33:36 -0800 (PST)
 MIME-Version: 1.0
-References: <20231031154000.18134-1-rbradford@rivosinc.com>
-In-Reply-To: <20231031154000.18134-1-rbradford@rivosinc.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 6 Nov 2023 11:15:00 +1000
-Message-ID: <CAKmqyKNydzPeGy2nkUFHGHkMNMiuga2ZBwxKPOcEpse7EDYEZg@mail.gmail.com>
-Subject: Re: [PATCH v5 0/5] Support discontinuous PMU counters
-To: Rob Bradford <rbradford@rivosinc.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, atishp@rivosinc.com, 
- palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
- liwei1518@gmail.com, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
+References: <cover.1699184105.git.maciej.szmigiero@oracle.com>
+In-Reply-To: <cover.1699184105.git.maciej.szmigiero@oracle.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Mon, 6 Nov 2023 09:33:24 +0800
+Message-ID: <CAJSP0QX7SxmMZDP4kQKQt6wkMTiVY6hVSoEtSBN4874NaxbJuw@mail.gmail.com>
+Subject: Re: [PULL 0/9] Hyper-V Dynamic Memory Protocol driver (hv-balloon)
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2b;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc31.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,68 +84,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 1, 2023 at 1:41=E2=80=AFAM Rob Bradford <rbradford@rivosinc.com=
-> wrote:
+On Sun, 5 Nov 2023 at 19:49, Maciej S. Szmigiero
+<mail@maciej.szmigiero.name> wrote:
 >
-> Currently the available PMU counters start at HPM3 and run through to
-> the number specified by the "pmu-num" property. There is no
-> requirement in the specification that the available counters be
-> continously numbered. This series add suppport for specifying a
-> discountinuous range of counters though a "pmu-mask" property.
+> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 >
-> v5:
+> The following changes since commit d762bf97931b58839316b68a570eecc6143c9e3e:
 >
-> * Added more R-B tags
-> * Make "pmu-num" property directly update "pmu-mask" removing the need
->   to store that value.
+>   Merge tag 'pull-target-arm-20231102' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-11-03 10:04:12 +0800)
 >
-> v4:
+> are available in the Git repository at:
 >
-> * Added more R-B tags (just missing from 4 & 5)
-> * Added details on how to calculate mask
-> * Use custom property for "pmu-num" in order to give deprecation warning
-> * Special case a zero value for "pmu-num"
+>   https://github.com/maciejsszmigiero/qemu.git tags/pull-hv-balloon-20231105
 >
-> v3:
+> for you to fetch changes up to 2b49ecabc6bf15efa6aa05f20a7c319ff65c4e11:
 >
-> * Use env_archcpu() in csr.c
-> * Re-added check to enforce deprectated "pmu-num" below limit
-> * Check that standard counters are not included in mask
-> * Remove use of MAKE_32BIT_MASK()
->
-> v2:
->
-> * Use cfg.pmu_mask wherever cfg.pmu_num was used previously
-> * Deprecate pmu_num property (warning, comment & updated documentation)
-> * Override default pmu_mask value iff pmu_num changed from default
->
-> Rob Bradford (5):
->   target/riscv: Propagate error from PMU setup
->   target/riscv: Don't assume PMU counters are continuous
->   target/riscv: Use existing PMU counter mask in FDT generation
->   target/riscv: Add "pmu-mask" property to replace "pmu-num"
->   docs/about/deprecated: Document RISC-V "pmu-num" deprecation
+>   MAINTAINERS: Add an entry for Hyper-V Dynamic Memory Protocol (2023-11-03 20:31:10 +0100)
 
-Thanks!
+Hi Maciej,
+Please take a look at this CI system build failure:
 
-Applied to riscv-to-apply.next
+/usr/bin/ld: libqemuutil.a.p/meson-generated_.._qapi_qapi-commands-machine.c.o:
+in function `qmp_marshal_query_hv_balloon_status_report':
+/builds/qemu-project/qemu/build/qapi/qapi-commands-machine.c:1000:
+undefined reference to `qmp_query_hv_balloon_status_report'
 
-Alistair
+https://gitlab.com/qemu-project/qemu/-/jobs/5463619044
+
+I have dropped this pull request from the staging tree for the time being.
+
+You can run the GitLab CI by pushing to a personal qemu.git fork on
+GitLab with "git push -o ci.variable=QEMU_CI=1 ..." and it's often
+possible to reproduce the CI jobs locally using the Docker build tests
+(see "make docker-help").
+
+Stefan
 
 >
->  docs/about/deprecated.rst  | 12 ++++++++++++
->  hw/riscv/virt.c            |  2 +-
->  target/riscv/cpu.c         | 40 +++++++++++++++++++++++++++++++++++++-
->  target/riscv/cpu_cfg.h     |  2 +-
->  target/riscv/csr.c         |  5 +++--
->  target/riscv/machine.c     |  2 +-
->  target/riscv/pmu.c         | 34 ++++++++++++++------------------
->  target/riscv/pmu.h         |  5 +++--
->  target/riscv/tcg/tcg-cpu.c | 10 ++++++++--
->  9 files changed, 83 insertions(+), 29 deletions(-)
+> ----------------------------------------------------------------
+> Hyper-V Dynamic Memory protocol driver.
 >
-> --
-> 2.41.0
+> This driver is like virtio-balloon on steroids for Windows guests:
+> it allows both changing the guest memory allocation via ballooning and
+> inserting pieces of extra RAM into it on demand from a provided memory
+> backend via Windows-native Hyper-V Dynamic Memory protocol.
 >
+> * Protocol definitions.
+>
+> * Hyper-V DM protocol driver (hv-balloon) base (ballooning only).
+>
+> * Hyper-V DM protocol driver (hv-balloon) hot-add support.
+>
+> * qapi query-memory-devices support for the driver.
+>
+> * qapi HV_BALLOON_STATUS_REPORT event.
+>
+> * The relevant PC machine plumbing.
+>
+> * New MAINTAINERS entry for the above.
+>
+> ----------------------------------------------------------------
+> David Hildenbrand (2):
+>       memory-device: Support empty memory devices
+>       memory-device: Drop size alignment check
+>
+> Maciej S. Szmigiero (7):
+>       Add Hyper-V Dynamic Memory Protocol definitions
+>       Add Hyper-V Dynamic Memory Protocol driver (hv-balloon) base
+>       Add Hyper-V Dynamic Memory Protocol driver (hv-balloon) hot-add support
+>       qapi: Add query-memory-devices support to hv-balloon
+>       qapi: Add HV_BALLOON_STATUS_REPORT event and its QMP query command
+>       hw/i386/pc: Support hv-balloon
+>       MAINTAINERS: Add an entry for Hyper-V Dynamic Memory Protocol
+>
+>  Kconfig.host                              |    3 +
+>  MAINTAINERS                               |    8 +
+>  hw/core/machine-hmp-cmds.c                |   15 +
+>  hw/hyperv/Kconfig                         |   10 +
+>  hw/hyperv/hv-balloon-internal.h           |   33 +
+>  hw/hyperv/hv-balloon-our_range_memslots.c |  201 ++++
+>  hw/hyperv/hv-balloon-our_range_memslots.h |  110 ++
+>  hw/hyperv/hv-balloon-page_range_tree.c    |  228 ++++
+>  hw/hyperv/hv-balloon-page_range_tree.h    |  118 ++
+>  hw/hyperv/hv-balloon.c                    | 1766 +++++++++++++++++++++++++++++
+>  hw/hyperv/meson.build                     |    1 +
+>  hw/hyperv/trace-events                    |   18 +
+>  hw/i386/Kconfig                           |    1 +
+>  hw/i386/pc.c                              |   22 +
+>  hw/mem/memory-device.c                    |   49 +-
+>  include/hw/hyperv/dynmem-proto.h          |  423 +++++++
+>  include/hw/hyperv/hv-balloon.h            |   18 +
+>  include/hw/mem/memory-device.h            |    7 +-
+>  meson.build                               |   28 +-
+>  meson_options.txt                         |    2 +
+>  monitor/monitor.c                         |    1 +
+>  qapi/machine.json                         |  101 +-
+>  scripts/meson-buildoptions.sh             |    3 +
+>  23 files changed, 3153 insertions(+), 13 deletions(-)
+>  create mode 100644 hw/hyperv/hv-balloon-internal.h
+>  create mode 100644 hw/hyperv/hv-balloon-our_range_memslots.c
+>  create mode 100644 hw/hyperv/hv-balloon-our_range_memslots.h
+>  create mode 100644 hw/hyperv/hv-balloon-page_range_tree.c
+>  create mode 100644 hw/hyperv/hv-balloon-page_range_tree.h
+>  create mode 100644 hw/hyperv/hv-balloon.c
+>  create mode 100644 include/hw/hyperv/dynmem-proto.h
+>  create mode 100644 include/hw/hyperv/hv-balloon.h
 >
 
