@@ -2,34 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A339E7E2693
+	by mail.lfdr.de (Postfix) with ESMTPS id 720AA7E2690
 	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:23:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r00Tk-0000q6-TQ; Mon, 06 Nov 2023 09:21:24 -0500
+	id 1r00Tp-0000rH-3a; Mon, 06 Nov 2023 09:21:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1r00Th-0000pP-GM
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:21:21 -0500
+ id 1r00Tm-0000r6-Mn
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:21:26 -0500
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1r00Tf-0005R3-Fd
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:21:21 -0500
+ id 1r00Tl-0005SZ-Ct
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:21:26 -0500
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1r00Tc-0000dM-MV; Mon, 06 Nov 2023 15:21:16 +0100
+ id 1r00Ti-0000dV-1U; Mon, 06 Nov 2023 15:21:22 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/10] Revert "hw/virtio/virtio-pmem: Replace impossible check
- by assertion"
-Date: Mon,  6 Nov 2023 15:20:46 +0100
-Message-ID: <2d7f1081864790eb1000e6ef34e202dae66a03d2.1699279190.git.maciej.szmigiero@oracle.com>
+Cc: David Hildenbrand <david@redhat.com>
+Subject: [PULL 03/10] memory-device: Drop size alignment check
+Date: Mon,  6 Nov 2023 15:20:47 +0100
+Message-ID: <eb1b7c4bd4135648a96449d4607063e80692fd0c.1699279190.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <cover.1699279190.git.maciej.szmigiero@oracle.com>
 References: <cover.1699279190.git.maciej.szmigiero@oracle.com>
@@ -57,30 +55,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+From: David Hildenbrand <david@redhat.com>
 
-This reverts commit 5960f254dbb46f0c7a9f5f44bf4d27c19c34cb97 since the
-previous commit made this situation possible again.
+There is no strong requirement that the size has to be multiples of the
+requested alignment, let's drop it. This is a preparation for hv-baloon.
 
+Signed-off-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/virtio/virtio-pmem.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ hw/mem/memory-device.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/hw/virtio/virtio-pmem.c b/hw/virtio/virtio-pmem.c
-index cc24812d2e92..c3512c2dae3f 100644
---- a/hw/virtio/virtio-pmem.c
-+++ b/hw/virtio/virtio-pmem.c
-@@ -147,7 +147,10 @@ static void virtio_pmem_fill_device_info(const VirtIOPMEM *pmem,
- static MemoryRegion *virtio_pmem_get_memory_region(VirtIOPMEM *pmem,
-                                                    Error **errp)
- {
--    assert(pmem->memdev);
-+    if (!pmem->memdev) {
-+        error_setg(errp, "'%s' property must be set", VIRTIO_PMEM_MEMDEV_PROP);
-+        return NULL;
-+    }
+diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
+index db702ccad554..e0704b8dc37a 100644
+--- a/hw/mem/memory-device.c
++++ b/hw/mem/memory-device.c
+@@ -236,12 +236,6 @@ static uint64_t memory_device_get_free_addr(MachineState *ms,
+         return 0;
+     }
  
-     return &pmem->memdev->mr;
- }
+-    if (!QEMU_IS_ALIGNED(size, align)) {
+-        error_setg(errp, "backend memory size must be multiple of 0x%"
+-                   PRIx64, align);
+-        return 0;
+-    }
+-
+     if (hint) {
+         if (range_init(&new, *hint, size) || !range_contains_range(&as, &new)) {
+             error_setg(errp, "can't add memory device [0x%" PRIx64 ":0x%" PRIx64
 
