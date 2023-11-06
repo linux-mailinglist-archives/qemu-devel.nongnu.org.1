@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E90417E1AA1
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:01:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F7F97E1AA0
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:01:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztZG-0004Pc-Ja; Mon, 06 Nov 2023 01:58:38 -0500
+	id 1qztZH-0004QL-Jc; Mon, 06 Nov 2023 01:58:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztZC-0004OV-Sd
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:34 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qztZD-0004Ov-K7
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:35 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztZB-0001Ma-3M
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:34 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1cc3bc5df96so27807415ad.2
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:58:32 -0800 (PST)
+ id 1qztZC-0001Ml-3J
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:35 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1cc4f777ab9so27983425ad.0
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:58:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699253911; x=1699858711; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699253912; x=1699858712; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=diCkc088SIM1OXDEE8e4GhljSyDmKgwjUD6eAHwsXOg=;
- b=ZxCz15fhhZbq5HjcZCf/+NIUYtkkIoJq0NsNotBv8IXT7wih4GQAXqi8hAs6WF1kBY
- DwBXSle4koWh7gFrPkp7lcj6SHYIGe6lJ96DKgIgrkv22j8DVV15WVXEt5A1xMQad9OR
- 17qbXnTmYjgE98sAfmCYh1T/fu6loF4rkmOIY+oezf5pJ/OKYXWpVtCJqKhZ/v+bxZL0
- Q6M4VwBoEaFBimcUhSUrIr6AVK848Yy7cmsHZqTCWe893fyKdixUR3XPq2kEacMZyMkc
- TWhvH6VJMPGGMDEGVOT6a+g7tPngPj8F19V8sXs55cHxphcMHqbLQR7n45uNZ5AOCKEM
- YKrQ==
+ bh=oboVQOi6EvjisHoCt0AjEUt8Log6Mds8YaieNrV812g=;
+ b=rKDQIhEoF2z0pMpaw3Jnw22vuXWOpajg+jzVAOiv0hCUPrE5O/OGTqXwCPktR1PDQ0
+ 2MHhDUl9CaXKWPCVtE6Zgukd/mbNjzWSN2srC606jpf0x2G6WW8ybsXXHMEgew4VQjLU
+ eXw9sEMb1wpVzZ1Htu8QZyffjy+h2TWefCbWvw99rGNNhBYyd3MYco8F1gVfM/WiWlMt
+ KcnuLJ8bPY/nH5ZIH7+aA2Xb0I74UmnKe+V2Yvv0WdB/z1FxLgo2mzgs6lTx6HzS17h/
+ +RtSsEBAHPvzDq6KOl41qYTYqwnnr7+o2Z3dl6VAk4pJn0cQqCBcAR18ICcQpfF8GmkA
+ nDTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699253911; x=1699858711;
+ d=1e100.net; s=20230601; t=1699253912; x=1699858712;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=diCkc088SIM1OXDEE8e4GhljSyDmKgwjUD6eAHwsXOg=;
- b=QQZG4Z7kfIedNCcmvNt7JtHBT9VWRj+RleOwMIt5QkBrtE8pu/JWOMF4S60yVIasfl
- /KUDysFOStRVSJ2lj0xdsunpY10W83M0tT0bohTKeG8uUOWRPtJs0uoqTdMQjSUMdPaF
- TwNZWwh6fg6UErvVpT1hKnQtlt4AVoLbK0j4V2JMvnRB6Q+xiuy3SNgeJlsbsIJMJ9L5
- DQ2NTNF9rmxPN68zFzVdd2hDMKJYFtWp5/AFJX6NzcqWzdn4c6YM6rIJrcO2Fu4M3BRX
- U2ysPkClIyOBVQFcB6udtok88hQ4Gj9UvcfDCCWkOmo3TrMrbXkRDnRgiHyPkOltwMs/
- PW2w==
-X-Gm-Message-State: AOJu0YybdiknV2eC+CECpjQcXc/ZwkxS56wW4ApOWDeXiY+ha7/7efWG
- 8L5lfV4Sq8xxIfl/B1ZLpmmxdD9GVaGyBIXny7w=
-X-Google-Smtp-Source: AGHT+IHthieN0iMcmdwbGzSwOXvGETxkeYL3ezUqouFRyz3f8h5Y6nCOyCG+Yh1EHsCaIjl2MlwzSg==
-X-Received: by 2002:a17:903:430c:b0:1cc:45df:4710 with SMTP id
- jz12-20020a170903430c00b001cc45df4710mr16141926plb.40.1699253911548; 
- Sun, 05 Nov 2023 22:58:31 -0800 (PST)
+ bh=oboVQOi6EvjisHoCt0AjEUt8Log6Mds8YaieNrV812g=;
+ b=uIfwvkUqLUqLS1+awdASsdI0K7lZmK4W2y/rvZrnanDfTrjWiKgmBZRk8TT21h8oH8
+ GGjgVmeUTCNehtHSDdRAKBo1bcELDYijgk5UI4nU7OXkQwCVzmhCetRqVWPEcsisPm9z
+ yCU299WwvW4PI3iQxSS57u5bF4YuSiKLdSOyTrJ/dQWQaUw6VzE5LkuCq7l3bvuPk+cp
+ ZvNA8O+gTFXt7VIEeO61iWxXgoLWkh07lsd+IsQuG5PMq7mcyekmmkJnN9mLS12Z6Udn
+ nTAuNmOe4SLgD920qKCifaBjUWMapaaTev2xPuXaJPzVksTldEULVfyJ9mXgXs2V4s9O
+ Izdg==
+X-Gm-Message-State: AOJu0YzkrfpLhQumC+8qIp7ZBujCHobnTQC8C/7EfNNl52P8lIX9Z7NG
+ sMWfIlvbcLWm2a60Til1e76QchHl4D8axHRdmzw=
+X-Google-Smtp-Source: AGHT+IFt/bCvKnMTwyTOADnkCuqgtXdwRvKej70oSJiM+omHdeVKkPIsB09+1NGbg6+kav2Y8UBbJA==
+X-Received: by 2002:a17:903:1250:b0:1cc:7ec0:bc8a with SMTP id
+ u16-20020a170903125000b001cc7ec0bc8amr12698683plh.66.1699253912472; 
+ Sun, 05 Nov 2023 22:58:32 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- c3-20020a170902d48300b001c62e3e1286sm5167130plg.166.2023.11.05.22.58.30
+ c3-20020a170902d48300b001c62e3e1286sm5167130plg.166.2023.11.05.22.58.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Nov 2023 22:58:31 -0800 (PST)
+ Sun, 05 Nov 2023 22:58:32 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
-Subject: [PATCH 03/71] targt/arm: Constify hvf/hvf.c
-Date: Sun,  5 Nov 2023 22:57:19 -0800
-Message-Id: <20231106065827.543129-4-richard.henderson@linaro.org>
+Subject: [PATCH 04/71] target/alpha: Constify VMState in machine.c
+Date: Sun,  5 Nov 2023 22:57:20 -0800
+Message-Id: <20231106065827.543129-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231106065827.543129-1-richard.henderson@linaro.org>
 References: <20231106065827.543129-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,61 +92,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/hvf/hvf.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ target/alpha/machine.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 757e13b0f9..203d88f80b 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -36,7 +36,7 @@
- #define MDSCR_EL1_SS_SHIFT  0
- #define MDSCR_EL1_MDE_SHIFT 15
+diff --git a/target/alpha/machine.c b/target/alpha/machine.c
+index 2b7c8148ff..f09834f635 100644
+--- a/target/alpha/machine.c
++++ b/target/alpha/machine.c
+@@ -24,7 +24,7 @@ static const VMStateInfo vmstate_fpcr = {
+     .put = put_fpcr,
+ };
  
--static uint16_t dbgbcr_regs[] = {
-+static const uint16_t dbgbcr_regs[] = {
-     HV_SYS_REG_DBGBCR0_EL1,
-     HV_SYS_REG_DBGBCR1_EL1,
-     HV_SYS_REG_DBGBCR2_EL1,
-@@ -54,7 +54,8 @@ static uint16_t dbgbcr_regs[] = {
-     HV_SYS_REG_DBGBCR14_EL1,
-     HV_SYS_REG_DBGBCR15_EL1,
+-static VMStateField vmstate_env_fields[] = {
++static const VMStateField vmstate_env_fields[] = {
+     VMSTATE_UINTTL_ARRAY(ir, CPUAlphaState, 31),
+     VMSTATE_UINTTL_ARRAY(fir, CPUAlphaState, 31),
+     /* Save the architecture value of the fpcr, not the internally
+@@ -73,7 +73,7 @@ static const VMStateDescription vmstate_env = {
+     .fields = vmstate_env_fields,
  };
--static uint16_t dbgbvr_regs[] = {
-+
-+static const uint16_t dbgbvr_regs[] = {
-     HV_SYS_REG_DBGBVR0_EL1,
-     HV_SYS_REG_DBGBVR1_EL1,
-     HV_SYS_REG_DBGBVR2_EL1,
-@@ -72,7 +73,8 @@ static uint16_t dbgbvr_regs[] = {
-     HV_SYS_REG_DBGBVR14_EL1,
-     HV_SYS_REG_DBGBVR15_EL1,
- };
--static uint16_t dbgwcr_regs[] = {
-+
-+static const uint16_t dbgwcr_regs[] = {
-     HV_SYS_REG_DBGWCR0_EL1,
-     HV_SYS_REG_DBGWCR1_EL1,
-     HV_SYS_REG_DBGWCR2_EL1,
-@@ -90,7 +92,8 @@ static uint16_t dbgwcr_regs[] = {
-     HV_SYS_REG_DBGWCR14_EL1,
-     HV_SYS_REG_DBGWCR15_EL1,
- };
--static uint16_t dbgwvr_regs[] = {
-+
-+static const uint16_t dbgwvr_regs[] = {
-     HV_SYS_REG_DBGWVR0_EL1,
-     HV_SYS_REG_DBGWVR1_EL1,
-     HV_SYS_REG_DBGWVR2_EL1,
-@@ -2010,7 +2013,7 @@ static const VMStateDescription vmstate_hvf_vtimer = {
-     .name = "hvf-vtimer",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(vtimer_val, HVFVTimer),
-         VMSTATE_END_OF_LIST()
-     },
+ 
+-static VMStateField vmstate_cpu_fields[] = {
++static const VMStateField vmstate_cpu_fields[] = {
+     VMSTATE_CPU(),
+     VMSTATE_STRUCT(env, AlphaCPU, 1, vmstate_env, CPUAlphaState),
+     VMSTATE_END_OF_LIST()
 -- 
 2.34.1
 
