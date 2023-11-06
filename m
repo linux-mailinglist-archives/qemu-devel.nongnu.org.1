@@ -2,101 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 425447E1D62
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 10:42:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDBF07E1D4B
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 10:33:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzw7K-00026i-S0; Mon, 06 Nov 2023 04:41:59 -0500
+	id 1qzvyW-0002Kg-39; Mon, 06 Nov 2023 04:32:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qzw73-00025Q-VY; Mon, 06 Nov 2023 04:41:42 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qzw6o-0005zW-SM; Mon, 06 Nov 2023 04:41:40 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A69ewhd024839; Mon, 6 Nov 2023 09:41:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=yOIUhHzI9nzDh2Hm0kTcVeqra+o9mo20Grsi+CAGyks=;
- b=FZ4ieTdiBC9T3Qaz41eXm3teNWCNKWsuMIbLXkL0U9IRSPP9eaHz8QVfyDBBiZeZPes0
- /vLflvXZWXU7gBT0L/oJVZsqVDcY/oWpR+iO9kMZx8iYA9pupxonPbX7k91mNxRc7vJQ
- q4t6r6cyjce6mrQzEc+uexNd1cZ4WjPEoePlsKawIvzY3kN9uFL13K1UG+OozaZ0neHR
- 5O78P4YdFV3a16lvbYCNK7c9echJPx5iNYxQeynFDbpCw2n/RJnEdEN+XW5MQRIz0A3e
- rqRiOfvQrMk4P7j14eICwZcmjUjOFbyCe0h8S+5VNmXqmwK8bVC6JmR6Uzf28Cc57Lhc 7g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u6v2caym4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Nov 2023 09:41:19 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A69fGkn025807;
- Mon, 6 Nov 2023 09:41:18 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u6v2caxtr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Nov 2023 09:41:18 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A67kXVk007908; Mon, 6 Nov 2023 09:36:24 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u60ny8evn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Nov 2023 09:36:24 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3A69aMYH43909536
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 6 Nov 2023 09:36:22 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B781820043;
- Mon,  6 Nov 2023 09:36:22 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 36F2B20040;
- Mon,  6 Nov 2023 09:36:22 +0000 (GMT)
-Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.47.192])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  6 Nov 2023 09:36:22 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 5/5] tests/tcg/s390x: Test ADD LOGICAL WITH CARRY
-Date: Mon,  6 Nov 2023 10:31:26 +0100
-Message-ID: <20231106093605.1349201-6-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231106093605.1349201-1-iii@linux.ibm.com>
-References: <20231106093605.1349201-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qzvyT-0002JB-Pp
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:32:49 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qzvyQ-00048i-Oi
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 04:32:49 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-307d58b3efbso2451120f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 01:32:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699263163; x=1699867963; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tYM9JZy0pWxgWplcpiN4Gaka112GVkBHgig4rCH1hkw=;
+ b=nLfculsvuqyuA9PUxT96Qe+ll2COk935xRrG7TjN6vLrG9GP/a111CQeWlONnjkviU
+ 4xAQDe2MX6tU3SlPLFvjCMtLsbEEBnhR3wUPp5Pb0BeDlbei1O2eYUW2B32D8T7HKif8
+ xFPpS+yX+6MjUKKc+mIlm9VX2TJ+6fnxKQLskloqjDkFYCXvK7wZlkEJwntq0qOv9acE
+ HS9eWV2FRdM0C7PpUFnL2v6ghh8asH9XXpThvQ+l1aCMz7Rd+LmoOEmwCwtSWMPvUld6
+ q7/xuOKYE6mHYCzbofjV6AxQSEBtNQ8AOty9ATOOy6WYfRn4JoUTq/GEeD+HOVpXIOMl
+ f6sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699263163; x=1699867963;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=tYM9JZy0pWxgWplcpiN4Gaka112GVkBHgig4rCH1hkw=;
+ b=sqTvHSh30Wg3Kv9mti+cgPHbqA6GHcASvwccI+mb+EGpvOGqRea0IK1Ruv9dQJuNzn
+ jfbPcfTVHLbpwb7U6pE3/RDv3u1/kWOk9alyO0Jrm7pkSlXbWJMflBFuEi9pizNwlaK9
+ n+ZzXE/rnv1HNBiCX1MAuH45HgWYSItSqUrmRzdzWxYR5P/w6eTO90xekVdFe+DK/iwc
+ QRBi6nBgzUiBCDgw4dlgFr/qdS/qwuMQxS5xhOBlx+jo1lQ4CxXG6w7jYZJoINLMdhfN
+ wAl9pTYLaYOy0IwWlt5BEwgaq1xq5OnYlZ3sTgXMjprTKwLgXt5cxVhmkNXlwZrkpjHe
+ oJCQ==
+X-Gm-Message-State: AOJu0YyXN07eCa9zR8d4SwYFQttXnOd3Sjsl93gzijMMdc9i8agEEgMn
+ 2J/mANjKtZI9iStCy+W6tEWbpw==
+X-Google-Smtp-Source: AGHT+IFmnIYvxOkcyLPyFr0wEydB1Nrmj420bzHdRtHey8P35rLtoqOldBy6VxdZuqEw4C2joK3YDQ==
+X-Received: by 2002:a05:6000:18a9:b0:32f:c5f1:61df with SMTP id
+ b9-20020a05600018a900b0032fc5f161dfmr4670898wri.20.1699263163490; 
+ Mon, 06 Nov 2023 01:32:43 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ s11-20020a5d424b000000b0032da40fd7bdsm8960826wrr.24.2023.11.06.01.32.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 06 Nov 2023 01:32:43 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id A895B5F79F;
+ Mon,  6 Nov 2023 09:32:42 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,  "Edgar E. Iglesias"
+ <edgar.iglesias@gmail.com>,  Song Gao <gaosong@loongson.cn>,
+ qemu-arm@nongnu.org,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,  Weiwei Li
+ <liweiwei@iscas.ac.cn>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,  Daniel Henrique Barboza
+ <danielhb413@gmail.com>,  Yanan Wang <wangyanan55@huawei.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le
+ Goater <clg@kaod.org>,  Paolo Bonzini <pbonzini@redhat.com>,  David
+ Hildenbrand <david@redhat.com>,  Brian Cain <bcain@quicinc.com>,
+ qemu-ppc@nongnu.org,  Palmer Dabbelt <palmer@dabbelt.com>,
+ qemu-riscv@nongnu.org,  Eduardo Habkost <eduardo@habkost.net>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Alistair Francis
+ <alistair.francis@wdc.com>,  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Cleber Rosa <crosa@redhat.com>,  qemu-s390x@nongnu.org,  Laurent Vivier
+ <laurent@vivier.eu>,  Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Nicholas Piggin <npiggin@gmail.com>,  Thomas Huth <thuth@redhat.com>,
+ John Snow <jsnow@redhat.com>,  Alexandre Iooss <erdnaxe@crans.org>,
+ Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Mahmoud Mandour
+ <ma.mandourr@gmail.com>,  Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>,  Bin Meng <bin.meng@windriver.com>,  Beraldo
+ Leal <bleal@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Michael Rolnik <mrolnik@gmail.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: Re: [PATCH 13/29] target/riscv: Use GDBFeature for dynamic XML
+In-Reply-To: <20231103195956.1998255-14-alex.bennee@linaro.org> ("Alex
+ =?utf-8?Q?Benn=C3=A9e=22's?= message of "Fri, 3 Nov 2023 19:59:40 +0000 (2
+ days, 13 hours, 31 minutes ago)")
+References: <20231103195956.1998255-1-alex.bennee@linaro.org>
+ <20231103195956.1998255-14-alex.bennee@linaro.org>
+User-Agent: mu4e 1.11.24; emacs 29.1
+Date: Mon, 06 Nov 2023 09:32:42 +0000
+Message-ID: <87a5rrdy6d.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: k-Yf5doqPBw_WMXLyanVVvgFeeb-on5r
-X-Proofpoint-ORIG-GUID: LAnIbMAnXiXglLAI-Ht__SWBZxG0e6M6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-06_07,2023-11-02_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxscore=0
- lowpriorityscore=0 clxscore=1015 impostorscore=0 mlxlogscore=999
- suspectscore=0 bulkscore=0 priorityscore=1501 adultscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310240000 definitions=main-2311060082
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,191 +121,264 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a test that tries different combinations of ADD LOGICAL WITH
-CARRY instructions.
+Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/s390x/Makefile.target          |   1 +
- tests/tcg/s390x/add-logical-with-carry.c | 156 +++++++++++++++++++++++
- 2 files changed, 157 insertions(+)
- create mode 100644 tests/tcg/s390x/add-logical-with-carry.c
+> From: Akihiko Odaki <akihiko.odaki@daynix.com>
+>
+> In preparation for a change to use GDBFeature as a parameter of
+> gdb_register_coprocessor(), convert the internal representation of
+> dynamic feature from plain XML to GDBFeature.
+>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Message-Id: <20231025093128.33116-7-akihiko.odaki@daynix.com>
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index a476547b659..0e670f3f8b9 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -43,6 +43,7 @@ TESTS+=cgebra
- TESTS+=clgebr
- TESTS+=clc
- TESTS+=laalg
-+TESTS+=add-logical-with-carry
- 
- cdsg: CFLAGS+=-pthread
- cdsg: LDFLAGS+=-pthread
-diff --git a/tests/tcg/s390x/add-logical-with-carry.c b/tests/tcg/s390x/add-logical-with-carry.c
-new file mode 100644
-index 00000000000..d982f8a651b
---- /dev/null
-+++ b/tests/tcg/s390x/add-logical-with-carry.c
-@@ -0,0 +1,156 @@
-+/*
-+ * Test ADD LOGICAL WITH CARRY instructions.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <stdio.h>
-+#include <stdlib.h>
-+
-+static const struct test {
-+    const char *name;
-+    unsigned long values[3];
-+    unsigned long exp_sum;
-+    int exp_cc;
-+} tests[] = {
-+    /*
-+     * Each test starts with CC 0 and executes two chained ADD LOGICAL WITH
-+     * CARRY instructions on three input values. The values must be compatible
-+     * with both 32- and 64-bit test functions.
-+     */
-+
-+    /* NAME       VALUES       EXP_SUM EXP_CC */
-+    { "cc0->cc0", {0, 0, 0},   0,      0, },
-+    { "cc0->cc1", {0, 0, 42},  42,     1, },
-+    /* cc0->cc2 is not possible */
-+    /* cc0->cc3 is not possible */
-+    /* cc1->cc0 is not possible */
-+    { "cc1->cc1", {-3, 1, 1},  -1,     1, },
-+    { "cc1->cc2", {-3, 1, 2},  0,      2, },
-+    { "cc1->cc3", {-3, 1, -1}, -3,     3, },
-+    /* cc2->cc0 is not possible */
-+    { "cc2->cc1", {-1, 1, 1},  2,      1, },
-+    { "cc2->cc2", {-1, 1, -1}, 0,      2, },
-+    /* cc2->cc3 is not possible */
-+    /* cc3->cc0 is not possible */
-+    { "cc3->cc1", {-1, 2, 1},  3,      1, },
-+    { "cc3->cc2", {-1, 2, -2}, 0,      2, },
-+    { "cc3->cc3", {-1, 2, -1}, 1,      3, },
-+};
-+
-+/* Test ALCR (register variant) followed by ALC (memory variant). */
-+static unsigned long test32rm(unsigned long a, unsigned long b,
-+                              unsigned long c, int *cc)
-+{
-+    unsigned int a32 = a, b32 = b, c32 = c;
-+
-+    asm("xr %[cc],%[cc]\n"
-+        "alcr %[a],%[b]\n"
-+        "alc %[a],%[c]\n"
-+        "ipm %[cc]"
-+        : [a] "+&r" (a32), [cc] "+&r" (*cc)
-+        : [b] "r" (b32), [c] "T" (c32)
-+        : "cc");
-+    *cc >>= 28;
-+
-+    return (int)a32;
-+}
-+
-+/* Test ALC (memory variant) followed by ALCR (register variant). */
-+static unsigned long test32mr(unsigned long a, unsigned long b,
-+                              unsigned long c, int *cc)
-+{
-+    unsigned int a32 = a, b32 = b, c32 = c;
-+
-+    asm("xr %[cc],%[cc]\n"
-+        "alc %[a],%[b]\n"
-+        "alcr %[c],%[a]\n"
-+        "ipm %[cc]"
-+        : [a] "+&r" (a32), [c] "+&r" (c32), [cc] "+&r" (*cc)
-+        : [b] "T" (b32)
-+        : "cc");
-+    *cc >>= 28;
-+
-+    return (int)c32;
-+}
-+
-+/* Test ALCGR (register variant) followed by ALCG (memory variant). */
-+static unsigned long test64rm(unsigned long a, unsigned long b,
-+                              unsigned long c, int *cc)
-+{
-+    asm("xr %[cc],%[cc]\n"
-+        "alcgr %[a],%[b]\n"
-+        "alcg %[a],%[c]\n"
-+        "ipm %[cc]"
-+        : [a] "+&r" (a), [cc] "+&r" (*cc)
-+        : [b] "r" (b), [c] "T" (c)
-+        : "cc");
-+    *cc >>= 28;
-+    return a;
-+}
-+
-+/* Test ALCG (memory variant) followed by ALCGR (register variant). */
-+static unsigned long test64mr(unsigned long a, unsigned long b,
-+                              unsigned long c, int *cc)
-+{
-+    asm("xr %[cc],%[cc]\n"
-+        "alcg %[a],%[b]\n"
-+        "alcgr %[c],%[a]\n"
-+        "ipm %[cc]"
-+        : [a] "+&r" (a), [c] "+&r" (c), [cc] "+&r" (*cc)
-+        : [b] "T" (b)
-+        : "cc");
-+    *cc >>= 28;
-+    return c;
-+}
-+
-+static const struct test_func {
-+    const char *name;
-+    unsigned long (*ptr)(unsigned long, unsigned long, unsigned long, int *);
-+} test_funcs[] = {
-+    { "test32rm", test32rm },
-+    { "test32mr", test32mr },
-+    { "test64rm", test64rm },
-+    { "test64mr", test64mr },
-+};
-+
-+static const struct test_perm {
-+    const char *name;
-+    size_t a_idx, b_idx, c_idx;
-+} test_perms[] = {
-+    { "a, b, c", 0, 1, 2 },
-+    { "b, a, c", 1, 0, 2 },
-+};
-+
-+int main(void)
-+{
-+    unsigned long a, b, c, sum;
-+    int result = EXIT_SUCCESS;
-+    const struct test_func *f;
-+    const struct test_perm *p;
-+    size_t i, j, k;
-+    const struct test *t;
-+    int cc;
-+
-+    for (i = 0; i < sizeof(tests) / sizeof(tests[0]); i++) {
-+        t = &tests[i];
-+        for (j = 0; j < sizeof(test_funcs) / sizeof(test_funcs[0]); j++) {
-+            f = &test_funcs[j];
-+            for (k = 0; k < sizeof(test_perms) / sizeof(test_perms[0]); k++) {
-+                p = &test_perms[k];
-+                a = t->values[p->a_idx];
-+                b = t->values[p->b_idx];
-+                c = t->values[p->c_idx];
-+                sum = f->ptr(a, b, c, &cc);
-+                if (sum != t->exp_sum || cc != t->exp_cc) {
-+                    fprintf(stderr,
-+                            "[  FAILED  ] %s %s(0x%lx, 0x%lx, 0x%lx) returned 0x%lx cc %d, expected 0x%lx cc %d\n",
-+                            t->name, f->name, a, b, c, sum, cc,
-+                            t->exp_sum, t->exp_cc);
-+                    result = EXIT_FAILURE;
-+                }
-+            }
-+        }
-+    }
-+
-+    return result;
-+}
--- 
-2.41.0
+I bisected the following failure:
 
+ ./qemu-riscv64 -g 1234 ./tests/tcg/riscv64-linux-user/sha512
+
+and:
+
+ gdb-multiarch ./tests/tcg/riscv64-linux-user/sha512 -ex "target remote loc=
+alhost:1234" -x ../../tests/tcg/multiarch/gdbstub/registers.py
+
+gives:
+
+warning: Architecture rejected target-supplied description
+Ignoring packet error, continuing...
+Ignoring packet error, continuing...
+Ignoring packet error, continuing...
+Ignoring packet error, continuing...
+
+> ---
+>  target/riscv/cpu.h     |  5 +--
+>  target/riscv/cpu.c     |  4 +--
+>  target/riscv/gdbstub.c | 79 +++++++++++++++++++-----------------------
+>  3 files changed, 40 insertions(+), 48 deletions(-)
+>
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index f8ffa5ee38..73ec1d3b79 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -24,6 +24,7 @@
+>  #include "hw/registerfields.h"
+>  #include "hw/qdev-properties.h"
+>  #include "exec/cpu-defs.h"
+> +#include "exec/gdbstub.h"
+>  #include "qemu/cpu-float.h"
+>  #include "qom/object.h"
+>  #include "qemu/int128.h"
+> @@ -395,8 +396,8 @@ struct ArchCPU {
+>=20=20
+>      CPURISCVState env;
+>=20=20
+> -    char *dyn_csr_xml;
+> -    char *dyn_vreg_xml;
+> +    GDBFeature dyn_csr_feature;
+> +    GDBFeature dyn_vreg_feature;
+>=20=20
+>      /* Configuration Settings */
+>      RISCVCPUConfig cfg;
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index ac4a6c7eec..5200fba9b9 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1421,9 +1421,9 @@ static const char *riscv_gdb_get_dynamic_xml(CPUSta=
+te *cs, const char *xmlname)
+>      RISCVCPU *cpu =3D RISCV_CPU(cs);
+>=20=20
+>      if (strcmp(xmlname, "riscv-csr.xml") =3D=3D 0) {
+> -        return cpu->dyn_csr_xml;
+> +        return cpu->dyn_csr_feature.xml;
+>      } else if (strcmp(xmlname, "riscv-vector.xml") =3D=3D 0) {
+> -        return cpu->dyn_vreg_xml;
+> +        return cpu->dyn_vreg_feature.xml;
+>      }
+>=20=20
+>      return NULL;
+> diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
+> index 524bede865..a3ac0212d1 100644
+> --- a/target/riscv/gdbstub.c
+> +++ b/target/riscv/gdbstub.c
+> @@ -212,12 +212,13 @@ static int riscv_gdb_set_virtual(CPURISCVState *cs,=
+ uint8_t *mem_buf, int n)
+>      return 0;
+>  }
+>=20=20
+> -static int riscv_gen_dynamic_csr_xml(CPUState *cs, int base_reg)
+> +static GDBFeature *riscv_gen_dynamic_csr_feature(CPUState *cs, int base_=
+reg)
+>  {
+>      RISCVCPU *cpu =3D RISCV_CPU(cs);
+>      CPURISCVState *env =3D &cpu->env;
+> -    GString *s =3D g_string_new(NULL);
+> +    GDBFeatureBuilder builder;
+>      riscv_csr_predicate_fn predicate;
+> +    const char *name;
+>      int bitsize =3D 16 << env->misa_mxl_max;
+>      int i;
+>=20=20
+> @@ -230,9 +231,9 @@ static int riscv_gen_dynamic_csr_xml(CPUState *cs, in=
+t base_reg)
+>          bitsize =3D 64;
+>      }
+>=20=20
+> -    g_string_printf(s, "<?xml version=3D\"1.0\"?>");
+> -    g_string_append_printf(s, "<!DOCTYPE feature SYSTEM \"gdb-target.dtd=
+\">");
+> -    g_string_append_printf(s, "<feature name=3D\"org.gnu.gdb.riscv.csr\"=
+>");
+> +    gdb_feature_builder_init(&builder, &cpu->dyn_csr_feature,
+> +                             "org.gnu.gdb.riscv.csr", "riscv-csr.xml",
+> +                             base_reg);
+>=20=20
+>      for (i =3D 0; i < CSR_TABLE_SIZE; i++) {
+>          if (env->priv_ver < csr_ops[i].min_priv_ver) {
+> @@ -240,72 +241,64 @@ static int riscv_gen_dynamic_csr_xml(CPUState *cs, =
+int base_reg)
+>          }
+>          predicate =3D csr_ops[i].predicate;
+>          if (predicate && (predicate(env, i) =3D=3D RISCV_EXCP_NONE)) {
+> -            if (csr_ops[i].name) {
+> -                g_string_append_printf(s, "<reg name=3D\"%s\"", csr_ops[=
+i].name);
+> -            } else {
+> -                g_string_append_printf(s, "<reg name=3D\"csr%03x\"", i);
+> +            g_autofree char *dynamic_name =3D NULL;
+> +            name =3D csr_ops[i].name;
+> +            if (!name) {
+> +                dynamic_name =3D g_strdup_printf("csr%03x", i);
+> +                name =3D dynamic_name;
+>              }
+> -            g_string_append_printf(s, " bitsize=3D\"%d\"", bitsize);
+> -            g_string_append_printf(s, " regnum=3D\"%d\"/>", base_reg + i=
+);
+> +
+> +            gdb_feature_builder_append_reg(&builder, name, bitsize, i,
+> +                                           "int", NULL);
+>          }
+>      }
+>=20=20
+> -    g_string_append_printf(s, "</feature>");
+> -
+> -    cpu->dyn_csr_xml =3D g_string_free(s, false);
+> +    gdb_feature_builder_end(&builder);
+>=20=20
+>  #if !defined(CONFIG_USER_ONLY)
+>      env->debugger =3D false;
+>  #endif
+>=20=20
+> -    return CSR_TABLE_SIZE;
+> +    return &cpu->dyn_csr_feature;
+>  }
+>=20=20
+> -static int ricsv_gen_dynamic_vector_xml(CPUState *cs, int base_reg)
+> +static GDBFeature *ricsv_gen_dynamic_vector_feature(CPUState *cs, int ba=
+se_reg)
+>  {
+>      RISCVCPU *cpu =3D RISCV_CPU(cs);
+> -    GString *s =3D g_string_new(NULL);
+> -    g_autoptr(GString) ts =3D g_string_new("");
+> +    GDBFeatureBuilder builder;
+>      int reg_width =3D cpu->cfg.vlen;
+> -    int num_regs =3D 0;
+>      int i;
+>=20=20
+> -    g_string_printf(s, "<?xml version=3D\"1.0\"?>");
+> -    g_string_append_printf(s, "<!DOCTYPE target SYSTEM \"gdb-target.dtd\=
+">");
+> -    g_string_append_printf(s, "<feature name=3D\"org.gnu.gdb.riscv.vecto=
+r\">");
+> +    gdb_feature_builder_init(&builder, &cpu->dyn_vreg_feature,
+> +                             "org.gnu.gdb.riscv.vector", "riscv-vector.x=
+ml",
+> +                             base_reg);
+>=20=20
+>      /* First define types and totals in a whole VL */
+>      for (i =3D 0; i < ARRAY_SIZE(vec_lanes); i++) {
+>          int count =3D reg_width / vec_lanes[i].size;
+> -        g_string_printf(ts, "%s", vec_lanes[i].id);
+> -        g_string_append_printf(s,
+> -                               "<vector id=3D\"%s\" type=3D\"%s\" count=
+=3D\"%d\"/>",
+> -                               ts->str, vec_lanes[i].gdb_type, count);
+> +        gdb_feature_builder_append_tag(
+> +            &builder, "<vector id=3D\"%s\" type=3D\"%s\" count=3D\"%d\"/=
+>",
+> +            vec_lanes[i].id, vec_lanes[i].gdb_type, count);
+>      }
+>=20=20
+>      /* Define unions */
+> -    g_string_append_printf(s, "<union id=3D\"riscv_vector\">");
+> +    gdb_feature_builder_append_tag(&builder, "<union id=3D\"riscv_vector=
+\">");
+>      for (i =3D 0; i < ARRAY_SIZE(vec_lanes); i++) {
+> -        g_string_append_printf(s, "<field name=3D\"%c\" type=3D\"%s\"/>",
+> -                               vec_lanes[i].suffix,
+> -                               vec_lanes[i].id);
+> +        gdb_feature_builder_append_tag(&builder,
+> +                                       "<field name=3D\"%c\" type=3D\"%s=
+\"/>",
+> +                                       vec_lanes[i].suffix, vec_lanes[i]=
+.id);
+>      }
+> -    g_string_append(s, "</union>");
+> +    gdb_feature_builder_append_tag(&builder, "</union>");
+>=20=20
+>      /* Define vector registers */
+>      for (i =3D 0; i < 32; i++) {
+> -        g_string_append_printf(s,
+> -                               "<reg name=3D\"v%d\" bitsize=3D\"%d\""
+> -                               " regnum=3D\"%d\" group=3D\"vector\""
+> -                               " type=3D\"riscv_vector\"/>",
+> -                               i, reg_width, base_reg++);
+> -        num_regs++;
+> +        gdb_feature_builder_append_reg(&builder, g_strdup_printf("v%d", =
+i),
+> +                                       reg_width, i, "riscv_vector", "ve=
+ctor");
+>      }
+>=20=20
+> -    g_string_append_printf(s, "</feature>");
+> +    gdb_feature_builder_end(&builder);
+>=20=20
+> -    cpu->dyn_vreg_xml =3D g_string_free(s, false);
+> -    return num_regs;
+> +    return &cpu->dyn_vreg_feature;
+>  }
+>=20=20
+>  void riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
+> @@ -320,10 +313,9 @@ void riscv_cpu_register_gdb_regs_for_features(CPUSta=
+te *cs)
+>                                   32, "riscv-32bit-fpu.xml", 0);
+>      }
+>      if (env->misa_ext & RVV) {
+> -        int base_reg =3D cs->gdb_num_regs;
+>          gdb_register_coprocessor(cs, riscv_gdb_get_vector,
+>                                   riscv_gdb_set_vector,
+> -                                 ricsv_gen_dynamic_vector_xml(cs, base_r=
+eg),
+> +                                 ricsv_gen_dynamic_vector_feature(cs, cs=
+->gdb_num_regs)->num_regs,
+>                                   "riscv-vector.xml", 0);
+>      }
+>      switch (env->misa_mxl_max) {
+> @@ -343,9 +335,8 @@ void riscv_cpu_register_gdb_regs_for_features(CPUStat=
+e *cs)
+>      }
+>=20=20
+>      if (cpu->cfg.ext_icsr) {
+> -        int base_reg =3D cs->gdb_num_regs;
+>          gdb_register_coprocessor(cs, riscv_gdb_get_csr, riscv_gdb_set_cs=
+r,
+> -                                 riscv_gen_dynamic_csr_xml(cs, base_reg),
+> +                                 riscv_gen_dynamic_csr_feature(cs, cs->g=
+db_num_regs)->num_regs,
+>                                   "riscv-csr.xml", 0);
+>      }
+>  }
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
