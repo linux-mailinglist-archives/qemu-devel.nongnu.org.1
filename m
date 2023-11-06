@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A86C87E279E
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:50:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC737E2734
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:41:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r00ka-0007ZV-Ou; Mon, 06 Nov 2023 09:38:48 -0500
+	id 1r00kZ-0007Xm-5S; Mon, 06 Nov 2023 09:38:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1r00k1-00071b-Fh; Mon, 06 Nov 2023 09:38:19 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1r00js-000104-LT; Mon, 06 Nov 2023 09:38:10 -0500
-Received: from lhrpeml500003.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SPDPx2wqMz67K7y;
- Mon,  6 Nov 2023 22:34:29 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500003.china.huawei.com (7.191.162.67) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 6 Nov 2023 14:37:51 +0000
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Mon, 6 Nov 2023 14:37:51 +0000
-To: Igor Mammedov <imammedo@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
- "jean-philippe@linaro.org" <jean-philippe@linaro.org>, Jonathan Cameron
- <jonathan.cameron@huawei.com>, "lpieralisi@kernel.org"
- <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "andrew.jones@linux.dev"
- <andrew.jones@linux.dev>, "david@redhat.com" <david@redhat.com>,
- "philmd@linaro.org" <philmd@linaro.org>, "eric.auger@redhat.com"
- <eric.auger@redhat.com>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "mst@redhat.com"
- <mst@redhat.com>, "will@kernel.org" <will@kernel.org>, "gshan@redhat.com"
- <gshan@redhat.com>, "rafael@kernel.org" <rafael@kernel.org>,
- "alex.bennee@linaro.org" <alex.bennee@linaro.org>, "linux@armlinux.org.uk"
- <linux@armlinux.org.uk>, "darren@os.amperecomputing.com"
- <darren@os.amperecomputing.com>, "ilkka@os.amperecomputing.com"
- <ilkka@os.amperecomputing.com>, "vishnu@os.amperecomputing.com"
- <vishnu@os.amperecomputing.com>, "karl.heubaum@oracle.com"
- <karl.heubaum@oracle.com>, "miguel.luis@oracle.com" <miguel.luis@oracle.com>, 
- "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>, zhukeqian
- <zhukeqian1@huawei.com>, "wangxiongfeng (C)" <wangxiongfeng2@huawei.com>,
- "wangyanan (Y)" <wangyanan55@huawei.com>, "jiakernel2@gmail.com"
- <jiakernel2@gmail.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
- "lixianglai@loongson.cn" <lixianglai@loongson.cn>, Linuxarm
- <linuxarm@huawei.com>
-Subject: RE: [PATCH V6 1/9] accel/kvm: Extract common KVM vCPU
- {creation,parking} code
-Thread-Topic: [PATCH V6 1/9] accel/kvm: Extract common KVM vCPU
- {creation,parking} code
-Thread-Index: AQHZ/cNbmYoAvNhsVEaeQJ89abXhdbBdndIAgA/cbdA=
-Date: Mon, 6 Nov 2023 14:37:51 +0000
-Message-ID: <84588feedcca4209ba3a5f07f3c94ecb@huawei.com>
-References: <20231013105129.25648-1-salil.mehta@huawei.com>
- <20231013105129.25648-2-salil.mehta@huawei.com>
- <20231027145652.44cc845c@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231027145652.44cc845c@imammedo.users.ipa.redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.148.208]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r00jr-0006yX-Ru
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:38:05 -0500
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r00jm-00011Q-1Z
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:38:03 -0500
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-9dbb3d12aefso645191166b.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 06:37:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699281476; x=1699886276; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hnhhMk/onsazliMF0ePO1fqzsIFf7smiMaOT4UT9vXk=;
+ b=A4Yf6UioTam8xKOkcIxXKI8XkQydZkPoBp3iMHLWoM9zxMykh8QfmQiEbRnsd+cQ2E
+ x+qMQeCrkQSgnjfpIyIIjAxxnB/nJkFZTVeEVgp+6rcx/v90cYifj4yKL5tG9air03kU
+ hQOdkbhOk8vqlJXFW442cvqt7LQzwyLfIxDxztUaCCRvuxwEdF9mYQnJoZyCnoD0wcuf
+ NzSPKPYG/HIRLA0uXNcvkVoc+YTjYZqU3AIwjMsFHmdbPN1x6YnVDsgny+RbAmZ24Dr7
+ UqK4ga/X2n9hz96eG9kUOvg60H3FuKnlR/kBxmjlg1QqLSVXIdgUcJZlLHqW7u2GzpC6
+ CutA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699281476; x=1699886276;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hnhhMk/onsazliMF0ePO1fqzsIFf7smiMaOT4UT9vXk=;
+ b=kfdRhBHUB3J/bTUeRDlNr04j9dL7hHRzUmIfrcbWMMiWYFZQVE8q+Esht7uQIX5Iil
+ /EVEuIsXrgv/LjRvBjLDvS0+LvNY5Fe8IpvamOoxz2ZFdU1BRfTEOqAOOvejvCLJgMR8
+ KD22oy6Rfd9fueEnvcPKTJxdowABJyMhHeSTXXsqZxt4d09De6G6I0t1ukJkP5QlfSum
+ xTzCpwS8LJjI1VSu+V+Ix5prqdU5el7ZdpYyhwCSa6wto2TGWC6YZUNXJ+mrEAPjKCXv
+ ZKf1cI8WfFKCKwR8Vvtrb9GFzesK9qt5Ada/s1TbDcOBIhlhPwhT8wkgwu0GMXN3awPM
+ Nf0w==
+X-Gm-Message-State: AOJu0YzIAFg2liJKzTjFN3ogJckvQto2CKzGOlYAD83+vlEOjeL5cUvN
+ 7NmB/3RG9E//QL0CUl82UYCrCQ==
+X-Google-Smtp-Source: AGHT+IEUT9KYCIjpez3/wIkEBSiMo4inVRo4dM+5sIDbH/JgNQH9oiTRdeAElFuQOddjcPsqyU6E6A==
+X-Received: by 2002:a17:907:3e20:b0:9dd:8b5b:7873 with SMTP id
+ hp32-20020a1709073e2000b009dd8b5b7873mr7950657ejc.52.1699281476247; 
+ Mon, 06 Nov 2023 06:37:56 -0800 (PST)
+Received: from [192.168.69.115] (176-131-220-199.abo.bbox.fr.
+ [176.131.220.199]) by smtp.gmail.com with ESMTPSA id
+ m25-20020a17090607d900b0099cd008c1a4sm4208150ejc.136.2023.11.06.06.37.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 06 Nov 2023 06:37:55 -0800 (PST)
+Message-ID: <e1f44fa8-2538-5d18-4c80-d31f0e240216@linaro.org>
+Date: Mon, 6 Nov 2023 15:37:54 +0100
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 1/4] tcg: Canonicalize subi to addi during opcode
+ generation
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com
+References: <20231026013945.1152174-1-richard.henderson@linaro.org>
+ <20231026013945.1152174-2-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231026013945.1152174-2-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.085,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,274 +91,16 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Igor,
-Thanks for the review comments. I was bit on and off so could not address
-the comments. Please find my replies inline.
+On 26/10/23 03:39, Richard Henderson wrote:
+> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   tcg/tcg-op.c | 25 +++++++++----------------
+>   1 file changed, 9 insertions(+), 16 deletions(-)
 
-> From: Igor Mammedov <imammedo@redhat.com>
-> Sent: Friday, October 27, 2023 1:57 PM
-> To: Salil Mehta <salil.mehta@huawei.com>
-> Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
-> philippe@linaro.org; Jonathan Cameron <jonathan.cameron@huawei.com>;
-> lpieralisi@kernel.org; peter.maydell@linaro.org;
-> richard.henderson@linaro.org; andrew.jones@linux.dev; david@redhat.com;
-> philmd@linaro.org; eric.auger@redhat.com; oliver.upton@linux.dev;
-> pbonzini@redhat.com; mst@redhat.com; will@kernel.org; gshan@redhat.com;
-> rafael@kernel.org; alex.bennee@linaro.org; linux@armlinux.org.uk;
-> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
-> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
-> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
-> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
-> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
-> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.co=
-m>
-> Subject: Re: [PATCH V6 1/9] accel/kvm: Extract common KVM vCPU
-> {creation,parking} code
->=20
-> On Fri, 13 Oct 2023 11:51:21 +0100
-> Salil Mehta <salil.mehta@huawei.com> wrote:
->=20
-> > KVM vCPU creation is done once during the initialization of the VM when=
- Qemu
->                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> > thread is spawned. This is common to all the architectures.
->=20
-> is it really true fox x86?
-
-Thanks for pointing out. I just meant,
-
-"KVM vCPU creation is done once either during VM initialization or during
-vCPU realization during Hotplug...."
-
-
-> > Hot-unplug of vCPU results in destruction of the vCPU object in QOM but=
- the
-> > corresponding KVM vCPU object in the Host KVM is not destroyed and its
->                                                                 ^
-> since KVM doesn't support vCPU removal
-
-Correct. Will add.
-
-
-> > representative KVM vCPU object/context in Qemu is parked.
-> >
-> > Refactor common logic so that some APIs could be reused by vCPU Hotplug=
- code.
-> 'reused' part doesn't happen within this series. So a reason
-> why patch exists is not clear/no one can deduce the reason
-> without the actual user here.
->=20
-> Suggest to move it to a series that actually will use this patch.
-
-
-I can do that but I think Loongson guys might need bit of this logic
-as well. This patch also brings a good restructuring to the existing
-code and fixes the traces etc.
-
-I would humbly suggest to keep it unless you have strong views.
-
-Thanks
-Salil.
-
-> > Update new/old APIs with trace events instead of DTRACE.
-> >
-> > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> > Reviewed-by: Gavin Shan <gshan@redhat.com>
-> > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Tested-by: Xianglai Li <lixianglai@loongson.cn>
-> > ---
-> >  accel/kvm/kvm-all.c    | 64 ++++++++++++++++++++++++++++++++----------
-> >  accel/kvm/trace-events |  4 +++
-> >  include/sysemu/kvm.h   | 16 +++++++++++
-> >  3 files changed, 69 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> > index 72e1d1141c..bfa7816aaa 100644
-> > --- a/accel/kvm/kvm-all.c
-> > +++ b/accel/kvm/kvm-all.c
-> > @@ -137,6 +137,7 @@ static QemuMutex kml_slots_lock;
-> >  #define kvm_slots_unlock()  qemu_mutex_unlock(&kml_slots_lock)
-> >
-> >  static void kvm_slot_init_dirty_bitmap(KVMSlot *mem);
-> > +static int kvm_get_vcpu(KVMState *s, unsigned long vcpu_id);
-> >
-> >  static inline void kvm_resample_fd_remove(int gsi)
-> >  {
-> > @@ -320,14 +321,53 @@ err:
-> >      return ret;
-> >  }
-> >
-> > +void kvm_park_vcpu(CPUState *cpu)
-> > +{
-> > +    struct KVMParkedVcpu *vcpu;
-> > +
-> > +    trace_kvm_park_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
-> > +
-> > +    vcpu =3D g_malloc0(sizeof(*vcpu));
-> > +    vcpu->vcpu_id =3D kvm_arch_vcpu_id(cpu);
-> > +    vcpu->kvm_fd =3D cpu->kvm_fd;
-> > +    QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
-> > +}
-> > +
-> > +int kvm_create_vcpu(CPUState *cpu)
-> > +{
-> > +    unsigned long vcpu_id =3D kvm_arch_vcpu_id(cpu);
-> > +    KVMState *s =3D kvm_state;
-> > +    int kvm_fd;
-> > +
-> > +    trace_kvm_create_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
-> > +
-> > +    /* check if the KVM vCPU already exist but is parked */
-> > +    kvm_fd =3D kvm_get_vcpu(s, vcpu_id);
-> > +    if (kvm_fd < 0) {
-> > +        /* vCPU not parked: create a new KVM vCPU */
-> > +        kvm_fd =3D kvm_vm_ioctl(s, KVM_CREATE_VCPU, vcpu_id);
-> > +        if (kvm_fd < 0) {
-> > +            error_report("KVM_CREATE_VCPU IOCTL failed for vCPU %lu",
-> vcpu_id);
-> > +            return kvm_fd;
-> > +        }
-> > +    }
-> > +
-> > +    cpu->kvm_fd =3D kvm_fd;
-> > +    cpu->kvm_state =3D s;
-> > +    cpu->vcpu_dirty =3D true;
-> > +    cpu->dirty_pages =3D 0;
-> > +    cpu->throttle_us_per_full =3D 0;
-> > +
-> > +    return 0;
-> > +}
-> > +
-> >  static int do_kvm_destroy_vcpu(CPUState *cpu)
-> >  {
-> >      KVMState *s =3D kvm_state;
-> >      long mmap_size;
-> > -    struct KVMParkedVcpu *vcpu =3D NULL;
-> >      int ret =3D 0;
-> >
-> > -    DPRINTF("kvm_destroy_vcpu\n");
-> > +    trace_kvm_destroy_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
-> >
-> >      ret =3D kvm_arch_destroy_vcpu(cpu);
-> >      if (ret < 0) {
-> > @@ -353,10 +393,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
-> >          }
-> >      }
-> >
-> > -    vcpu =3D g_malloc0(sizeof(*vcpu));
-> > -    vcpu->vcpu_id =3D kvm_arch_vcpu_id(cpu);
-> > -    vcpu->kvm_fd =3D cpu->kvm_fd;
-> > -    QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
-> > +    kvm_park_vcpu(cpu);
-> >  err:
-> >      return ret;
-> >  }
-> > @@ -377,6 +414,8 @@ static int kvm_get_vcpu(KVMState *s, unsigned long
-> vcpu_id)
-> >          if (cpu->vcpu_id =3D=3D vcpu_id) {
-> >              int kvm_fd;
-> >
-> > +            trace_kvm_get_vcpu(vcpu_id);
-> > +
-> >              QLIST_REMOVE(cpu, node);
-> >              kvm_fd =3D cpu->kvm_fd;
-> >              g_free(cpu);
-> > @@ -384,7 +423,7 @@ static int kvm_get_vcpu(KVMState *s, unsigned long
-> vcpu_id)
-> >          }
-> >      }
-> >
-> > -    return kvm_vm_ioctl(s, KVM_CREATE_VCPU, (void *)vcpu_id);
-> > +    return -ENOENT;
-> >  }
-> >
-> >  int kvm_init_vcpu(CPUState *cpu, Error **errp)
-> > @@ -395,19 +434,14 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
-> >
-> >      trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
-> >
-> > -    ret =3D kvm_get_vcpu(s, kvm_arch_vcpu_id(cpu));
-> > +    ret =3D kvm_create_vcpu(cpu);
-> >      if (ret < 0) {
-> > -        error_setg_errno(errp, -ret, "kvm_init_vcpu: kvm_get_vcpu fail=
-ed
-> (%lu)",
-> > +        error_setg_errno(errp, -ret,
-> > +                         "kvm_init_vcpu: kvm_create_vcpu failed (%lu)"=
-,
-> >                           kvm_arch_vcpu_id(cpu));
-> >          goto err;
-> >      }
-> >
-> > -    cpu->kvm_fd =3D ret;
-> > -    cpu->kvm_state =3D s;
-> > -    cpu->vcpu_dirty =3D true;
-> > -    cpu->dirty_pages =3D 0;
-> > -    cpu->throttle_us_per_full =3D 0;
-> > -
-> >      mmap_size =3D kvm_ioctl(s, KVM_GET_VCPU_MMAP_SIZE, 0);
-> >      if (mmap_size < 0) {
-> >          ret =3D mmap_size;
-> > diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
-> > index 399aaeb0ec..cdd0c95c09 100644
-> > --- a/accel/kvm/trace-events
-> > +++ b/accel/kvm/trace-events
-> > @@ -9,6 +9,10 @@ kvm_device_ioctl(int fd, int type, void *arg) "dev fd
-> %d, type 0x%x, arg %p"
-> >  kvm_failed_reg_get(uint64_t id, const char *msg) "Warning: Unable to
-> retrieve ONEREG %" PRIu64 " from KVM: %s"
-> >  kvm_failed_reg_set(uint64_t id, const char *msg) "Warning: Unable to s=
-et
-> ONEREG %" PRIu64 " to KVM: %s"
-> >  kvm_init_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id:
-> %lu"
-> > +kvm_create_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d i=
-d:
-> %lu"
-> > +kvm_get_vcpu(unsigned long arch_cpu_id) "id: %lu"
-> > +kvm_destroy_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d
-> id: %lu"
-> > +kvm_park_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id:
-> %lu"
-> >  kvm_irqchip_commit_routes(void) ""
-> >  kvm_irqchip_add_msi_route(char *name, int vector, int virq) "dev %s
-> vector %d virq %d"
-> >  kvm_irqchip_update_msi_route(int virq) "Updating MSI route virq=3D%d"
-> > diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-> > index ee9025f8e9..8137e6a44c 100644
-> > --- a/include/sysemu/kvm.h
-> > +++ b/include/sysemu/kvm.h
-> > @@ -465,6 +465,22 @@ void kvm_set_sigmask_len(KVMState *s, unsigned int
-> sigmask_len);
-> >  int kvm_physical_memory_addr_from_host(KVMState *s, void *ram_addr,
-> >                                         hwaddr *phys_addr);
-> >
-> > +/**
-> > + * kvm_create_vcpu - Gets a parked KVM vCPU or creates a KVM vCPU
-> > + * @cpu: QOM CPUState object for which KVM vCPU has to be
-> fetched/created.
-> > + *
-> > + * @returns: 0 when success, errno (<0) when failed.
-> > + */
-> > +int kvm_create_vcpu(CPUState *cpu);
-> > +
-> > +/**
-> > + * kvm_park_vcpu - Park QEMU KVM vCPU context
-> > + * @cpu: QOM CPUState object for which QEMU KVM vCPU context has to be
-> parked.
-> > + *
-> > + * @returns: none
-> > + */
-> > +void kvm_park_vcpu(CPUState *cpu);
-> > +
-> >  #endif /* NEED_CPU_H */
-> >
-> >  void kvm_cpu_synchronize_state(CPUState *cpu);
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
