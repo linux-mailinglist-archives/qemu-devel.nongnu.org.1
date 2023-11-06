@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F877E1FAC
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:10:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 053FF7E1F8A
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:09:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzxSy-0005qZ-0d; Mon, 06 Nov 2023 06:08:24 -0500
+	id 1qzxT3-00065c-CA; Mon, 06 Nov 2023 06:08:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxSu-0005mN-JR
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:08:21 -0500
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxT0-0005za-3e
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:08:26 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxSi-00053S-GN
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:08:20 -0500
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2c6b30aca06so57602421fa.3
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:08:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxSp-000580-36
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:08:25 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-32f7abbb8b4so2789448f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:08:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699268886; x=1699873686; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699268893; x=1699873693; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HIk2D2Zy+mW9KoNQEGhLCqqc6EXwTlAoiLD308KY354=;
- b=RgyfapfMcytcQ+YEAkeayqktvYkCBkNiDgGvVvQv0k3a6qSsIhXak2imbPArQIxSTU
- iPYEPdFHcDKIopb8dTtranHH21Bt0OjFAycIYZC6vgTuSF13aahax4as7/n8Q8KWP54N
- jppwKu/wm+HlsBXpFM6UhLkZZ9p9Ppj42CVub/qh7jgAausQj5KeiHuShRyqXLtPMBiG
- lAcgjYTNdrYZChW5CN7QLNu5KDaGxX+jJ2v5yETEet4zYS7K3uQcEfXh2/WvuxSBZD5h
- /h1sslupvJTwXaTWGcXMu50RdTaSD8w7SruINj0ZXXDJJ43jIPFU30iVLQHeRC4OfMMh
- NKBw==
+ bh=1c+BV5Tpk9NJdk/9uGPTtpoehyOljryZgDubWA0xkSQ=;
+ b=zJKWiuj/d1M0jet+WlNAkaoMgWmRdfR3EdQNLZpz+ZCu7OyjePrS191xn3ELHYReJk
+ x1M8XyTdLIWUJ1UIpKBXixFJTwi27Oslz9aVO4so7/T7MecSVzVnOG5cDx/H4LEBLN88
+ 63bmMmXAojejQy7ENg6YiH5tf5RgDafCnzMB7sDI8y81IrgaZaSrX4CnXCQqjUjSgNo5
+ JwTbeMJkCB2DMY7lAlvIg8zwSXZlauANiMv+ZVZBMs/tQs83nshRKOpbcKaT/8cYMLM8
+ UDdN3ZgopgNOToTalUSCmGZd58j8YVnAoNuPvWXsUWwqaKjL3+uLolujTAixKdcrqfff
+ W8BQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699268886; x=1699873686;
+ d=1e100.net; s=20230601; t=1699268893; x=1699873693;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HIk2D2Zy+mW9KoNQEGhLCqqc6EXwTlAoiLD308KY354=;
- b=KSsABmBWX2XVGzHBjHOn3E0PkkARQM0+OUVYGGhcmauMXz8E/A8FWft8Dk4Jh18cwk
- ysymHDCzifrnvSbuaW8uVQMf9d2OdLWk8fazPGvdF88C5Qqxq8mjY9/L3xhsWLsne5kh
- evMi87VUdDfkrFjWwB/tcw3zOtMg8o2CgGuiGKgTD1OdsZS3i6yvtt88GBXCeGvmNcpU
- EjQtIJllFv4g7g9XojtCuJhu6pbfip2VypcRf1gCpp1G9+8yltkZk7mqiW8IZfA8WIvt
- iL0XQRWhnE2naHWbNMmGcm794dXRZ8Sd4flq2iqihosOjPYcQ+31APlskzbKaF/BAeJT
- DBxQ==
-X-Gm-Message-State: AOJu0YyMmrHq1iEHNhigmdeml42gtW2Fc5R0b7OB+IOW9lKXwzxzBhVt
- G+Wvt2AtAu+K0vMl1c5/2usp7gKH6L51Qwz1IZ0=
-X-Google-Smtp-Source: AGHT+IHZzmpQpLISMOVN4u8fENAFmlJt/0w7I/6I45Xn+9+eLmWD1LIrIZlJ/g4SCbq5k1SLfQZs3Q==
-X-Received: by 2002:a2e:7c15:0:b0:2c5:5926:de52 with SMTP id
- x21-20020a2e7c15000000b002c55926de52mr22771440ljc.53.1699268886360; 
- Mon, 06 Nov 2023 03:08:06 -0800 (PST)
+ bh=1c+BV5Tpk9NJdk/9uGPTtpoehyOljryZgDubWA0xkSQ=;
+ b=I5G8e1BaethDspe5hAb7ELmDqB5r7n95xUFrGdAXWjZy/S5UmTL9O1+Ei9Byw92PIM
+ 9JJpCk/SHaDvOveH6XTgSz6+V4TxD+Q1b5kAvDs9FkU9a7RMl2WEBhJCaKNkMSfW2Pyf
+ vnLG3jXVDrqU4X3MmK2zqW++l0en6jF5eGMBlTYiAQbk0NrtBLaFZSphzQoy4LAGduPy
+ o2DXdHsZ1VmU+P/lp9yQTUkL08sHSVN2bsZ60zj59ji2RUNDtrDfamxNH+GW5U/L8Co/
+ mpetCvj20bgG+M2qmK9ZIIsyMGuTDnYLwBUxql43DoMLaKarshHAgj3tVVbcr3bKNO5r
+ de6Q==
+X-Gm-Message-State: AOJu0Yw8+lkFJiKRCGy6y2nflW2ZOB9vBI+P9xHurZBKc30+quHufNMN
+ eiZa0FdSsygbR1V4ALoQzB4+IpSvO+sQMtJOstw=
+X-Google-Smtp-Source: AGHT+IFUfEPgJeqeBUUqYn0HxWEHowevUtNbHp5ZBZ2R9PkQdeXdrg9oHvMCfdnh5DWjqHW4fF0gbg==
+X-Received: by 2002:a05:6000:1864:b0:32f:7c4d:8746 with SMTP id
+ d4-20020a056000186400b0032f7c4d8746mr24071431wri.12.1699268893422; 
+ Mon, 06 Nov 2023 03:08:13 -0800 (PST)
 Received: from m1x-phil.lan (176-131-220-199.abo.bbox.fr. [176.131.220.199])
  by smtp.gmail.com with ESMTPSA id
- a1-20020a05600c348100b003fe1fe56202sm12104665wmq.33.2023.11.06.03.08.04
+ h16-20020a05600004d000b0032dbf99bf4fsm9290025wri.89.2023.11.06.03.08.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 Nov 2023 03:08:06 -0800 (PST)
+ Mon, 06 Nov 2023 03:08:13 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-riscv@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: [PULL 39/60] exec/cpu: Have cpu_exec_realize() return a boolean
-Date: Mon,  6 Nov 2023 12:03:11 +0100
-Message-ID: <20231106110336.358-40-philmd@linaro.org>
+ Yanan Wang <wangyanan55@huawei.com>, Laurent Vivier <laurent@vivier.eu>,
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PULL 40/60] hw/cpu: Clean up global variable shadowing
+Date: Mon,  6 Nov 2023 12:03:12 +0100
+Message-ID: <20231106110336.358-41-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106110336.358-1-philmd@linaro.org>
 References: <20231106110336.358-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,60 +99,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Following the example documented since commit e3fe3988d7 ("error:
-Document Error API usage rules"), have cpu_exec_realizefn()
-return a boolean indicating whether an error is set or not.
+Fix:
+
+  hw/core/machine.c:1302:22: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+      const CPUArchId *cpus = possible_cpus->cpus;
+                       ^
+  hw/core/numa.c:69:17: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+      uint16List *cpus = NULL;
+                  ^
+  hw/acpi/aml-build.c:2005:20: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+      CPUArchIdList *cpus = ms->possible_cpus;
+                     ^
+  hw/core/machine-smp.c:77:14: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+      unsigned cpus    = config->has_cpus ? config->cpus : 0;
+               ^
+  include/hw/core/cpu.h:589:17: note: previous declaration is here
+  extern CPUTailQ cpus;
+                  ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230918160257.30127-22-philmd@linaro.org>
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+Message-Id: <20231010115048.11856-2-philmd@linaro.org>
 ---
- include/hw/core/cpu.h | 2 +-
- cpu-target.c          | 6 ++++--
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ include/hw/core/cpu.h     | 8 ++++----
+ cpu-common.c              | 6 +++---
+ linux-user/main.c         | 2 +-
+ target/s390x/cpu_models.c | 2 +-
+ 4 files changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 5d6f8dca43..eb943efb8f 100644
+index eb943efb8f..77893d7b81 100644
 --- a/include/hw/core/cpu.h
 +++ b/include/hw/core/cpu.h
-@@ -1152,7 +1152,7 @@ G_NORETURN void cpu_abort(CPUState *cpu, const char *fmt, ...)
- /* $(top_srcdir)/cpu.c */
- void cpu_class_init_props(DeviceClass *dc);
- void cpu_exec_initfn(CPUState *cpu);
--void cpu_exec_realizefn(CPUState *cpu, Error **errp);
-+bool cpu_exec_realizefn(CPUState *cpu, Error **errp);
- void cpu_exec_unrealizefn(CPUState *cpu);
- void cpu_exec_reset_hold(CPUState *cpu);
- 
-diff --git a/cpu-target.c b/cpu-target.c
-index 79363ae370..f3e1ad8bcd 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -131,13 +131,13 @@ const VMStateDescription vmstate_cpu_common = {
- };
- #endif
- 
--void cpu_exec_realizefn(CPUState *cpu, Error **errp)
-+bool cpu_exec_realizefn(CPUState *cpu, Error **errp)
- {
-     /* cache the cpu class for the hotpath */
-     cpu->cc = CPU_GET_CLASS(cpu);
- 
-     if (!accel_cpu_common_realize(cpu, errp)) {
--        return;
-+        return false;
-     }
- 
-     /* Wait until cpu initialization complete before exposing cpu. */
-@@ -159,6 +159,8 @@ void cpu_exec_realizefn(CPUState *cpu, Error **errp)
-         vmstate_register(NULL, cpu->cpu_index, cpu->cc->sysemu_ops->legacy_vmsd, cpu);
-     }
- #endif /* CONFIG_USER_ONLY */
-+
-+    return true;
+@@ -586,13 +586,13 @@ static inline CPUArchState *cpu_env(CPUState *cpu)
  }
  
- void cpu_exec_unrealizefn(CPUState *cpu)
+ typedef QTAILQ_HEAD(CPUTailQ, CPUState) CPUTailQ;
+-extern CPUTailQ cpus;
++extern CPUTailQ cpus_queue;
+ 
+-#define first_cpu        QTAILQ_FIRST_RCU(&cpus)
++#define first_cpu        QTAILQ_FIRST_RCU(&cpus_queue)
+ #define CPU_NEXT(cpu)    QTAILQ_NEXT_RCU(cpu, node)
+-#define CPU_FOREACH(cpu) QTAILQ_FOREACH_RCU(cpu, &cpus, node)
++#define CPU_FOREACH(cpu) QTAILQ_FOREACH_RCU(cpu, &cpus_queue, node)
+ #define CPU_FOREACH_SAFE(cpu, next_cpu) \
+-    QTAILQ_FOREACH_SAFE_RCU(cpu, &cpus, node, next_cpu)
++    QTAILQ_FOREACH_SAFE_RCU(cpu, &cpus_queue, node, next_cpu)
+ 
+ extern __thread CPUState *current_cpu;
+ 
+diff --git a/cpu-common.c b/cpu-common.c
+index 45c745ecf6..c81fd72d16 100644
+--- a/cpu-common.c
++++ b/cpu-common.c
+@@ -73,7 +73,7 @@ static int cpu_get_free_index(void)
+     return max_cpu_index;
+ }
+ 
+-CPUTailQ cpus = QTAILQ_HEAD_INITIALIZER(cpus);
++CPUTailQ cpus_queue = QTAILQ_HEAD_INITIALIZER(cpus_queue);
+ static unsigned int cpu_list_generation_id;
+ 
+ unsigned int cpu_list_generation_id_get(void)
+@@ -90,7 +90,7 @@ void cpu_list_add(CPUState *cpu)
+     } else {
+         assert(!cpu_index_auto_assigned);
+     }
+-    QTAILQ_INSERT_TAIL_RCU(&cpus, cpu, node);
++    QTAILQ_INSERT_TAIL_RCU(&cpus_queue, cpu, node);
+     cpu_list_generation_id++;
+ }
+ 
+@@ -102,7 +102,7 @@ void cpu_list_remove(CPUState *cpu)
+         return;
+     }
+ 
+-    QTAILQ_REMOVE_RCU(&cpus, cpu, node);
++    QTAILQ_REMOVE_RCU(&cpus_queue, cpu, node);
+     cpu->cpu_index = UNASSIGNED_CPU_INDEX;
+     cpu_list_generation_id++;
+ }
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 0c23584a96..0cdaf30d34 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -156,7 +156,7 @@ void fork_end(int child)
+            Discard information about the parent threads.  */
+         CPU_FOREACH_SAFE(cpu, next_cpu) {
+             if (cpu != thread_cpu) {
+-                QTAILQ_REMOVE_RCU(&cpus, cpu, node);
++                QTAILQ_REMOVE_RCU(&cpus_queue, cpu, node);
+             }
+         }
+         qemu_init_cpu_list();
+diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
+index 4dead48650..5c455d00c0 100644
+--- a/target/s390x/cpu_models.c
++++ b/target/s390x/cpu_models.c
+@@ -757,7 +757,7 @@ void s390_set_qemu_cpu_model(uint16_t type, uint8_t gen, uint8_t ec_ga,
+     const S390CPUDef *def = s390_find_cpu_def(type, gen, ec_ga, NULL);
+ 
+     g_assert(def);
+-    g_assert(QTAILQ_EMPTY_RCU(&cpus));
++    g_assert(QTAILQ_EMPTY_RCU(&cpus_queue));
+ 
+     /* build the CPU model */
+     s390_qemu_cpu_model.def = def;
 -- 
 2.41.0
 
