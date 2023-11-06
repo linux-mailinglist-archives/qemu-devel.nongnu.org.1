@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF657E2940
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 17:00:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C372F7E294D
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 17:01:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r020O-0001cQ-0x; Mon, 06 Nov 2023 10:59:13 -0500
+	id 1r022e-0002PY-Gq; Mon, 06 Nov 2023 11:01:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r020E-0001c6-Uq; Mon, 06 Nov 2023 10:59:04 -0500
+ id 1r022c-0002Oq-Ei; Mon, 06 Nov 2023 11:01:30 -0500
 Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r020D-0000w0-0n; Mon, 06 Nov 2023 10:59:02 -0500
+ id 1r022a-0001Lv-K0; Mon, 06 Nov 2023 11:01:29 -0500
 Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4083ac51d8aso35558395e9.2; 
- Mon, 06 Nov 2023 07:59:00 -0800 (PST)
+ 5b1f17b1804b1-40906fc54fdso35819595e9.0; 
+ Mon, 06 Nov 2023 08:01:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699286339; x=1699891139; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699286487; x=1699891287; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:organization:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=YdRU2ICAmJ5fzVK5A8/S2GOgHKTlNLHwKSHWlkevpuU=;
- b=csFHVWrG5M804KpbE92BLsFDaNX0WQ4MtqOYcTh9R6YJnC8QHwtNc6x+zSvEie4CZG
- Zz3oUFuVmYUi0z+pmugt/1UQGCtqYDWHNoOfahDYarvwtAcXs0t5yEPYwOejX0HhgzaJ
- CcyJFeWwHAaCmhHvrCq0zNqM57zCLDGko5rKbDHETVK7974dOp2BBk0LeU8FRYNpJJcx
- 0PyNMtLYKkfmmwwD7H23iBiiLa9C15fIoxteiA/cSWNx9d9BGEWRwwOrSClMy7zNOzNu
- VR5aZ1RlfdT37ul0z5uDgDZfcAc9Ua5hoQnpAJ8oG7PuKIrjJ1KgOjesYp5cwUTp66Cc
- a6sA==
+ bh=VuSTMH9ud0jYjriaosHkWWyigJusFLw9itadu/Ef8us=;
+ b=MyRnUe6WTC4Yc/nc8yWium3Ksr/d/Hx0Xm8RxGMmT6TdoCiOKwFyuIkDntX4//Z25Y
+ BNOMfOdQ8kA8FpYwDlLi12Cs8PQ2ufBKyu/8TAC3aSEkfU80nbWuUyVrdky/VD0vfmFt
+ U/DD9yei8y9aJ14bg9oYBF8iLJ2QnA32IEeeUklo99b4MVe8nVxXttJuCFe+QJ8wJl5C
+ xS2i0mdlEXkJ3v/nYOT9n/d6YYEbqKFXC8RuR/ykxXJtPFAwc9u3a5nVYuCR4HVxxOGw
+ /3aySNJcGg5MUFvUyyly7bBVOiJkIShF3OsY/u1T8bBpirA3QTA3g/6+rysSIFMCQv/g
+ qPwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699286339; x=1699891139;
+ d=1e100.net; s=20230601; t=1699286487; x=1699891287;
  h=content-transfer-encoding:in-reply-to:organization:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:from:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YdRU2ICAmJ5fzVK5A8/S2GOgHKTlNLHwKSHWlkevpuU=;
- b=G3sBHtTrmmVKcJlOvebDn7N7BQG2HUNpSUJUYCF8uWpKj/V3vC0FqEEud+u5fvINOV
- 2WD6hb50ggDI+RPI0d8n2ZGlR7lXpCX0I5R5chlm5mP7Em4uMJMYg4VUTw+Z8R0+r+AM
- 3e0zFVyle7ERwrb8JAUq6FZKQgSV56PpgNfwpHVRonn4S2d1eIcZzrQCSEdGC68lVUyZ
- VJAgQbC1DPuo7GjE8ViKHb5jI6aZFg957jiUxm+fp2oqWBitagRDk/NKiKz94qY80OHz
- dA3Up1WKsKeFdFqsqk6U/fxOcmBwSDKTWTaOLw0SWzFW6LVs1Y0taLMxsRPfLJhJtduZ
- UOnw==
-X-Gm-Message-State: AOJu0YwY5Jv9zmbNA9ILb78mXjCNW2Q3QPhXqNOzQnTW8g6R+uZBMBXJ
- s9bVsw4j2zykcExDbpEYLks=
-X-Google-Smtp-Source: AGHT+IG+oPN1NQBnC7slICVrFKIK+QQJ+pHrO26W48S90buGxRQhChU5XJhSimZD7bEJ7PpCsy+dGA==
-X-Received: by 2002:a5d:6051:0:b0:32d:a4c4:f700 with SMTP id
- j17-20020a5d6051000000b0032da4c4f700mr20821057wrt.38.1699286338898; 
- Mon, 06 Nov 2023 07:58:58 -0800 (PST)
+ bh=VuSTMH9ud0jYjriaosHkWWyigJusFLw9itadu/Ef8us=;
+ b=FHU6mhVhaxAkmC062pbO9KaTG9WnXl2+dC5QKh48KKwvmEpIhAxp2cYFRW8aAXA/fJ
+ +RYKAZ7NrwI5au50AuKlFQhy2wS325i2Qh7VsKRZKq3uKIhODYGDS/Tehao4/egNzwhC
+ xH/NA61IB4aRfjBWcz7dbZsFxWb45rouikIBNmA9k9Mx95s6m6u/4whbcuU2JLZDcDIH
+ FNCXc9DPIcsqcHTzjsrZ5n5tODV77R7n3uqFAcDiuVvKSGgVs8qnyXIRroAXl0VkKYEU
+ qs/cEbQ0G20NQNTvpuaVaYq94Pz+0dkwYPBWXMyjBB7eWbl2sVsp4x3WAiv1deAofDH3
+ gBqg==
+X-Gm-Message-State: AOJu0YyFFBgaG6jBCr2H0DwTQw0qK+yaXgKU/tR232uQKr+EHmroBMvR
+ 9XsPWPL6IqAlLrNjsXsxytE=
+X-Google-Smtp-Source: AGHT+IE+3PRRsyWElc9zPvKSrIuMWGE4WXTjXvI2QsMrBJiC6CPa5U2EB5CV13HsYIol7JDB6fOz+Q==
+X-Received: by 2002:a5d:6485:0:b0:32f:a7d5:4ef with SMTP id
+ o5-20020a5d6485000000b0032fa7d504efmr11943384wri.44.1699286486710; 
+ Mon, 06 Nov 2023 08:01:26 -0800 (PST)
 Received: from [10.95.110.31] (54-240-197-231.amazon.com. [54.240.197.231])
  by smtp.gmail.com with ESMTPSA id
- bs14-20020a056000070e00b0032d8eecf901sm10060456wrb.3.2023.11.06.07.58.57
+ h3-20020a5d5043000000b0032dba85ea1bsm9838958wrt.75.2023.11.06.08.01.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Nov 2023 07:58:58 -0800 (PST)
+ Mon, 06 Nov 2023 08:01:24 -0800 (PST)
 From: Paul Durrant <xadimgnik@gmail.com>
 X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <e2cb5f62-9a32-4ea2-bb34-b551dcb0755c@xen.org>
-Date: Mon, 6 Nov 2023 15:58:54 +0000
+Message-ID: <71dc2018-9840-458e-8ca6-3cb8ab86666d@xen.org>
+Date: Mon, 6 Nov 2023 16:01:19 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 06/17] hw/xen: automatically assign device index to
- block devices
+Subject: Re: [PATCH v4 13/17] hw/i386/pc: support '-nic' for xen-net-device
 Content-Language: en-US
 To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
@@ -77,9 +76,9 @@ Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
  qemu-block@nongnu.org, xen-devel@lists.xenproject.org, kvm@vger.kernel.org
 References: <20231106143507.1060610-1-dwmw2@infradead.org>
- <20231106143507.1060610-7-dwmw2@infradead.org>
+ <20231106143507.1060610-14-dwmw2@infradead.org>
 Organization: Xen Project
-In-Reply-To: <20231106143507.1060610-7-dwmw2@infradead.org>
+In-Reply-To: <20231106143507.1060610-14-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::335;
@@ -107,29 +106,33 @@ Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 06/11/2023 14:34, David Woodhouse wrote:
+On 06/11/2023 14:35, David Woodhouse wrote:
 > From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> There's no need to force the user to assign a vdev. We can automatically
-> assign one, starting at xvda and searching until we find the first disk
-> name that's unused.
+> The default NIC creation seems a bit hackish to me. I don't understand
+> why each platform has to call pci_nic_init_nofail() from a point in the
+> code where it actually has a pointer to the PCI bus, and then we have
+> the special cases for things like ne2k_isa.
 > 
-> This means we can now allow '-drive if=xen,file=xxx' to work without an
-> explicit separate -driver argument, just like if=virtio.
+> If qmp_device_add() can *find* the appropriate bus and instantiate
+> the device on it, why can't we just do that from generic code for
+> creating the default NICs too?
 > 
-> Rip out the legacy handling from the xenpv machine, which was scribbling
-> over any disks configured by the toolstack, and didn't work with anything
-> but raw images.
+> But that isn't a yak I want to shave today. Add a xenbus field to the
+> PCMachineState so that it can make its way from pc_basic_device_init()
+> to pc_nic_init() and be handled as a special case like ne2k_isa is.
+> 
+> Now we can launch emulated Xen guests with '-nic user'.
 > 
 > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> Acked-by: Kevin Wolf <kwolf@redhat.com>
 > ---
->   blockdev.c                          |  15 +++-
->   hw/block/xen-block.c                | 118 ++++++++++++++++++++++++++--
->   hw/xen/xen_devconfig.c              |  28 -------
->   hw/xenpv/xen_machine_pv.c           |   9 ---
->   include/hw/xen/xen-legacy-backend.h |   1 -
->   5 files changed, 125 insertions(+), 46 deletions(-)
+>   hw/i386/pc.c             | 11 ++++++++---
+>   hw/i386/pc_piix.c        |  2 +-
+>   hw/i386/pc_q35.c         |  2 +-
+>   hw/xen/xen-bus.c         |  4 +++-
+>   include/hw/i386/pc.h     |  4 +++-
+>   include/hw/xen/xen-bus.h |  2 +-
+>   6 files changed, 17 insertions(+), 8 deletions(-)
 > 
 
 Reviewed-by: Paul Durrant <paul@xen.org>
