@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2813D7E1AB5
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:07:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB5B7E1AC8
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:10:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztZD-0004OO-8x; Mon, 06 Nov 2023 01:58:35 -0500
+	id 1qztZI-0004Qr-PK; Mon, 06 Nov 2023 01:58:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztZA-0004O4-VL
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:32 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1qztZC-0004OQ-LL
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:34 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztZ9-0001MP-6v
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:32 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1cc9784dbc1so21373725ad.2
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:58:30 -0800 (PST)
+ id 1qztZ9-0001MU-V2
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 01:58:34 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1cc58219376so37733485ad.1
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 22:58:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1699253910; x=1699858710; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8KgC7l6+Ks9UAAd1eXGQex3KmmjQLxfw8YM2XKWIPZQ=;
- b=ynFGfCPFDl69Zj+9CrfjiMwnh3jeDsTw+WxklhXDMmqb5SJZRMxzlX5hyjv82dOv1J
- n+LXMnmmn4V+pwrIYskJ53qlGY9gDhG9Rq7FB/XL1uKycyfhUic6Uw/qlVJ+nFxsK/NQ
- ZF2jl0j3ZIXxfj5QEv2hps4mVyKqDJkwLYwNIyvQ8rGXPVObGZP8dmkocVlvA0brfRVw
- cCrvzzfvCxAL2d0X/JpC0Qxk6XOEA7PUBGYxNlfOH4jJ6ofqq8UOGxRoieYHO52b1m3e
- 0zQ3SS2EmuT8O3ZgtaK32EVVg+HkUE2ttPir6AsWZJnfWu0uEd9HaK4M3lmesn+rbqvd
- 6MOw==
+ bh=f8LoPErjrYyrQtAQyxbuWdDZgcLdzvUgbKFyd7tE06M=;
+ b=TcjcnMNS4wF9xqgp/tUYOkqe20tiZ8X4CnHG85gKHo2YATWgnEcPd24j6q1+6EECUe
+ Qe9Mw7XZiIe8pstdrvcRFpH5DO7HHPczmHtthbUV3Of9CJVSfugjRuGJNiygNAuAkms/
+ oD9lQJ5fhpS4G5YAoqHHOYAVS5GyeH0frDuo1ICJR4HF6M9TC5096HDGxjOBNrY01SCG
+ xKK2SmN8RJoJNmyDfvVHC1jIf5/U3nDgbAOPYeDcixL3HylGQ1I0NeyopxkxNtoCZYOv
+ Vul9dRB+/vgn3PifMU36S0We+Ldf2DW7KX+2VngPQAFebKQzgzqA82LBsZVaTIHqJRdQ
+ S2cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1699253910; x=1699858710;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8KgC7l6+Ks9UAAd1eXGQex3KmmjQLxfw8YM2XKWIPZQ=;
- b=EzPOD1Mp2o2CwhBJw5ifkHK1fgDs28fPwqjiJjc/0KOKcTgX+LA72ok5Fm0xanTHNb
- m8zC2BUcxaAa6Q9Uj2PeF0Q+k6xJJUCtET9SFkLkECgb2INXETQgQ9OoC+ImhpnKxv2c
- z8wcBCIrGf/QNoOvEae3rFSfg6Z/T469A/KAxZ8WbsSJH0ErOKwCmCKErSTyXCzqC+aQ
- ff4NRI1xdW3PHF7Urry+mMQlx326mUrZptBY6uQIYDXiQPZ1h2vZ1gLyeKV0X1anngkb
- xcXkXIm18mDS3uW2r6hD3mNcZGiXOZCC8oqkQ52+jIINbsA2yLLITnv8kWA1gc8SBo2M
- jbiA==
-X-Gm-Message-State: AOJu0YxPhLOiWgl+rAlUtvPIJlaQ4lMK6jF9GleoRBykYJ3B7OcfCWAO
- ob4N1/WciXDcJFlBLuhZ/vANXJx8o2Mta7M+5H4=
-X-Google-Smtp-Source: AGHT+IHPX9EDwzcpsrVimZ8QhM6hONVkhribI8fJG5xZ1ctSXvAZzHyDI/r7i0f/AjEQm5pYB8hFbA==
-X-Received: by 2002:a17:903:245:b0:1c5:d8a3:8789 with SMTP id
- j5-20020a170903024500b001c5d8a38789mr27131552plh.4.1699253909800; 
- Sun, 05 Nov 2023 22:58:29 -0800 (PST)
+ bh=f8LoPErjrYyrQtAQyxbuWdDZgcLdzvUgbKFyd7tE06M=;
+ b=NamKGKgJ9tkt3XrGawPUnbY36j8/L+UCb2RlsvjFyen1uBrwBfEFskTSfht+ei3QXi
+ KXXbCYBJ6wjaLrxDoxFF8hnMFMYiujyIaDAJx41Tp5rBg8ZtURTm574whvbMp+TxaeTq
+ vB4Nsj2XipATcU3/Y5X4Ka+iHruzuWEKat+Jk93/tNzM+83mQJ+anXJe2a1vxprzbyz6
+ pV07jDxxNrX8Zdtzu4LSS4eQtAYVKAYgFBAhhj79Qde0MCDs+eCep7DnxLlSsXdnuCVE
+ YqZhgf+fA0IQ6SQFLMdly6RV5gtvPBBzGLN5ckN9Qixpw9vv4RkTyqxPOj7Uh1AfeXmD
+ b0dA==
+X-Gm-Message-State: AOJu0Yz3Qh6Uizu1s+/TL5lS0jItUpCPwyhMykiZ5iReKfrjmhDsEZTH
+ DRWOEHDJoU2m2DmudgQY9ppZNmDzwbm+6p5iyyI=
+X-Google-Smtp-Source: AGHT+IGgWQlnwCHrK+gArRSTX8knCU7s4sLdJcyW/qiDEIeeQtM0sUp4zwZ8a3TFBsc6Pqy4+pGq+w==
+X-Received: by 2002:a17:902:d50d:b0:1cc:339b:62af with SMTP id
+ b13-20020a170902d50d00b001cc339b62afmr30358888plg.16.1699253910652; 
+ Sun, 05 Nov 2023 22:58:30 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  c3-20020a170902d48300b001c62e3e1286sm5167130plg.166.2023.11.05.22.58.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Nov 2023 22:58:29 -0800 (PST)
+ Sun, 05 Nov 2023 22:58:30 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
-Subject: [PATCH 01/71] migration: Make VMStateDescription.subsections const
-Date: Sun,  5 Nov 2023 22:57:17 -0800
-Message-Id: <20231106065827.543129-2-richard.henderson@linaro.org>
+Subject: [PATCH 02/71] target/arm: Constify VMState in machine.c
+Date: Sun,  5 Nov 2023 22:57:18 -0800
+Message-Id: <20231106065827.543129-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231106065827.543129-1-richard.henderson@linaro.org>
 References: <20231106065827.543129-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,110 +90,258 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow the array of pointers to itself be const.
-Propagate this through the copies of this field.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/migration/vmstate.h |  2 +-
- migration/savevm.c          | 12 ++++++------
- migration/vmstate.c         | 15 +++++++++------
- 3 files changed, 16 insertions(+), 13 deletions(-)
+ target/arm/machine.c | 54 ++++++++++++++++++++++----------------------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
-index 9821918631..294d2d8486 100644
---- a/include/migration/vmstate.h
-+++ b/include/migration/vmstate.h
-@@ -209,7 +209,7 @@ struct VMStateDescription {
-     bool (*dev_unplug_pending)(void *opaque);
- 
-     const VMStateField *fields;
--    const VMStateDescription **subsections;
-+    const VMStateDescription * const *subsections;
- };
- 
- extern const VMStateInfo vmstate_info_bool;
-diff --git a/migration/savevm.c b/migration/savevm.c
-index bc98c2ea6f..77a81937cd 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -551,11 +551,11 @@ static void dump_vmstate_vmsf(FILE *out_file, const VMStateField *field,
- }
- 
- static void dump_vmstate_vmss(FILE *out_file,
--                              const VMStateDescription **subsection,
-+                              const VMStateDescription *subsection,
-                               int indent)
- {
--    if (*subsection != NULL) {
--        dump_vmstate_vmsd(out_file, *subsection, indent, true);
-+    if (subsection != NULL) {
-+        dump_vmstate_vmsd(out_file, subsection, indent, true);
+diff --git a/target/arm/machine.c b/target/arm/machine.c
+index 9e20b41189..542be14bec 100644
+--- a/target/arm/machine.c
++++ b/target/arm/machine.c
+@@ -49,7 +49,7 @@ static const VMStateDescription vmstate_vfp = {
+     .version_id = 3,
+     .minimum_version_id = 3,
+     .needed = vfp_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         /* For compatibility, store Qn out of Zn here.  */
+         VMSTATE_UINT64_SUB_ARRAY(env.vfp.zregs[0].d, ARMCPU, 0, 2),
+         VMSTATE_UINT64_SUB_ARRAY(env.vfp.zregs[1].d, ARMCPU, 0, 2),
+@@ -115,7 +115,7 @@ static const VMStateDescription vmstate_iwmmxt = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = iwmmxt_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64_ARRAY(env.iwmmxt.regs, ARMCPU, 16),
+         VMSTATE_UINT32_ARRAY(env.iwmmxt.cregs, ARMCPU, 16),
+         VMSTATE_END_OF_LIST()
+@@ -140,7 +140,7 @@ static const VMStateDescription vmstate_zreg_hi_reg = {
+     .name = "cpu/sve/zreg_hi",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64_SUB_ARRAY(d, ARMVectorReg, 2, ARM_MAX_VQ - 2),
+         VMSTATE_END_OF_LIST()
      }
- }
- 
-@@ -597,7 +597,7 @@ static void dump_vmstate_vmsd(FILE *out_file,
-         fprintf(out_file, "\n%*s]", indent, "");
+@@ -150,7 +150,7 @@ static const VMStateDescription vmstate_preg_reg = {
+     .name = "cpu/sve/preg",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64_ARRAY(p, ARMPredicateReg, 2 * ARM_MAX_VQ / 8),
+         VMSTATE_END_OF_LIST()
      }
-     if (vmsd->subsections != NULL) {
--        const VMStateDescription **subsection = vmsd->subsections;
-+        const VMStateDescription * const *subsection = vmsd->subsections;
-         bool first;
- 
-         fprintf(out_file, ",\n%*s\"Subsections\": [\n", indent, "");
-@@ -606,7 +606,7 @@ static void dump_vmstate_vmsd(FILE *out_file,
-             if (!first) {
-                 fprintf(out_file, ",\n");
-             }
--            dump_vmstate_vmss(out_file, subsection, indent + 2);
-+            dump_vmstate_vmss(out_file, *subsection, indent + 2);
-             subsection++;
-             first = false;
-         }
-@@ -831,7 +831,7 @@ void unregister_savevm(VMStateIf *obj, const char *idstr, void *opaque)
- static void vmstate_check(const VMStateDescription *vmsd)
- {
-     const VMStateField *field = vmsd->fields;
--    const VMStateDescription **subsection = vmsd->subsections;
-+    const VMStateDescription * const *subsection = vmsd->subsections;
- 
-     if (field) {
-         while (field->name) {
-diff --git a/migration/vmstate.c b/migration/vmstate.c
-index b7723a4187..5876062d48 100644
---- a/migration/vmstate.c
-+++ b/migration/vmstate.c
-@@ -452,13 +452,16 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
- }
- 
- static const VMStateDescription *
--vmstate_get_subsection(const VMStateDescription **sub, char *idstr)
-+vmstate_get_subsection(const VMStateDescription * const *sub,
-+                       const char *idstr)
- {
--    while (sub && *sub) {
--        if (strcmp(idstr, (*sub)->name) == 0) {
--            return *sub;
-+    if (sub) {
-+        const VMStateDescription *s;
-+        for (s = *sub; s ; s = *++sub) {
-+            if (strcmp(idstr, s->name) == 0) {
-+                return s;
-+            }
-         }
--        sub++;
+@@ -161,7 +161,7 @@ static const VMStateDescription vmstate_sve = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = sve_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_STRUCT_ARRAY(env.vfp.zregs, ARMCPU, 32, 0,
+                              vmstate_zreg_hi_reg, ARMVectorReg),
+         VMSTATE_STRUCT_ARRAY(env.vfp.pregs, ARMCPU, 17, 0,
+@@ -174,7 +174,7 @@ static const VMStateDescription vmstate_vreg = {
+     .name = "vreg",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64_ARRAY(d, ARMVectorReg, ARM_MAX_VQ * 2),
+         VMSTATE_END_OF_LIST()
      }
-     return NULL;
- }
-@@ -517,7 +520,7 @@ static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
- static int vmstate_subsection_save(QEMUFile *f, const VMStateDescription *vmsd,
-                                    void *opaque, JSONWriter *vmdesc)
- {
--    const VMStateDescription **sub = vmsd->subsections;
-+    const VMStateDescription * const *sub = vmsd->subsections;
-     bool vmdesc_has_subsections = false;
-     int ret = 0;
- 
+@@ -196,7 +196,7 @@ static const VMStateDescription vmstate_za = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = za_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_STRUCT_ARRAY(env.zarray, ARMCPU, ARM_MAX_VQ * 16, 0,
+                              vmstate_vreg, ARMVectorReg),
+         VMSTATE_END_OF_LIST()
+@@ -217,7 +217,7 @@ static const VMStateDescription vmstate_serror = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = serror_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(env.serror.pending, ARMCPU),
+         VMSTATE_UINT8(env.serror.has_esr, ARMCPU),
+         VMSTATE_UINT64(env.serror.esr, ARMCPU),
+@@ -235,7 +235,7 @@ static const VMStateDescription vmstate_irq_line_state = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = irq_line_state_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(env.irq_line_state, ARMCPU),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -254,7 +254,7 @@ static const VMStateDescription vmstate_m_faultmask_primask = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = m_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(env.v7m.faultmask[M_REG_NS], ARMCPU),
+         VMSTATE_UINT32(env.v7m.primask[M_REG_NS], ARMCPU),
+         VMSTATE_END_OF_LIST()
+@@ -289,7 +289,7 @@ static const VMStateDescription vmstate_m_csselr = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = m_csselr_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32_ARRAY(env.v7m.csselr, ARMCPU, M_REG_NUM_BANKS),
+         VMSTATE_VALIDATE("CSSELR is valid", csselr_vmstate_validate),
+         VMSTATE_END_OF_LIST()
+@@ -301,7 +301,7 @@ static const VMStateDescription vmstate_m_scr = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = m_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(env.v7m.scr[M_REG_NS], ARMCPU),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -312,7 +312,7 @@ static const VMStateDescription vmstate_m_other_sp = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = m_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(env.v7m.other_sp, ARMCPU),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -331,7 +331,7 @@ static const VMStateDescription vmstate_m_v8m = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = m_v8m_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32_ARRAY(env.v7m.msplim, ARMCPU, M_REG_NUM_BANKS),
+         VMSTATE_UINT32_ARRAY(env.v7m.psplim, ARMCPU, M_REG_NUM_BANKS),
+         VMSTATE_END_OF_LIST()
+@@ -343,7 +343,7 @@ static const VMStateDescription vmstate_m_fp = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = vfp_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32_ARRAY(env.v7m.fpcar, ARMCPU, M_REG_NUM_BANKS),
+         VMSTATE_UINT32_ARRAY(env.v7m.fpccr, ARMCPU, M_REG_NUM_BANKS),
+         VMSTATE_UINT32_ARRAY(env.v7m.fpdscr, ARMCPU, M_REG_NUM_BANKS),
+@@ -365,7 +365,7 @@ static const VMStateDescription vmstate_m_mve = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = mve_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(env.v7m.vpr, ARMCPU),
+         VMSTATE_UINT32(env.v7m.ltpsize, ARMCPU),
+         VMSTATE_END_OF_LIST()
+@@ -377,7 +377,7 @@ static const VMStateDescription vmstate_m = {
+     .version_id = 4,
+     .minimum_version_id = 4,
+     .needed = m_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(env.v7m.vecbase[M_REG_NS], ARMCPU),
+         VMSTATE_UINT32(env.v7m.basepri[M_REG_NS], ARMCPU),
+         VMSTATE_UINT32(env.v7m.control[M_REG_NS], ARMCPU),
+@@ -391,7 +391,7 @@ static const VMStateDescription vmstate_m = {
+         VMSTATE_INT32(env.v7m.exception, ARMCPU),
+         VMSTATE_END_OF_LIST()
+     },
+-    .subsections = (const VMStateDescription*[]) {
++    .subsections = (const VMStateDescription * const []) {
+         &vmstate_m_faultmask_primask,
+         &vmstate_m_csselr,
+         &vmstate_m_scr,
+@@ -416,7 +416,7 @@ static const VMStateDescription vmstate_thumb2ee = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = thumb2ee_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(env.teecr, ARMCPU),
+         VMSTATE_UINT32(env.teehbr, ARMCPU),
+         VMSTATE_END_OF_LIST()
+@@ -445,7 +445,7 @@ static const VMStateDescription vmstate_pmsav7 = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = pmsav7_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_VARRAY_UINT32(env.pmsav7.drbar, ARMCPU, pmsav7_dregion, 0,
+                               vmstate_info_uint32, uint32_t),
+         VMSTATE_VARRAY_UINT32(env.pmsav7.drsr, ARMCPU, pmsav7_dregion, 0,
+@@ -474,7 +474,7 @@ static const VMStateDescription vmstate_pmsav7_rnr = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = pmsav7_rnr_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(env.pmsav7.rnr[M_REG_NS], ARMCPU),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -504,7 +504,7 @@ static const VMStateDescription vmstate_pmsav8r = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = pmsav8r_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_VARRAY_UINT32(env.pmsav8.hprbar, ARMCPU,
+                         pmsav8r_hdregion, 0, vmstate_info_uint32, uint32_t),
+         VMSTATE_VARRAY_UINT32(env.pmsav8.hprlar, ARMCPU,
+@@ -518,7 +518,7 @@ static const VMStateDescription vmstate_pmsav8 = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = pmsav8_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_VARRAY_UINT32(env.pmsav8.rbar[M_REG_NS], ARMCPU, pmsav7_dregion,
+                               0, vmstate_info_uint32, uint32_t),
+         VMSTATE_VARRAY_UINT32(env.pmsav8.rlar[M_REG_NS], ARMCPU, pmsav7_dregion,
+@@ -527,7 +527,7 @@ static const VMStateDescription vmstate_pmsav8 = {
+         VMSTATE_UINT32(env.pmsav8.mair1[M_REG_NS], ARMCPU),
+         VMSTATE_END_OF_LIST()
+     },
+-    .subsections = (const VMStateDescription * []) {
++    .subsections = (const VMStateDescription * const []) {
+         &vmstate_pmsav8r,
+         NULL
+     }
+@@ -560,7 +560,7 @@ static const VMStateDescription vmstate_m_security = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = m_security_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(env.v7m.secure, ARMCPU),
+         VMSTATE_UINT32(env.v7m.other_ss_msp, ARMCPU),
+         VMSTATE_UINT32(env.v7m.other_ss_psp, ARMCPU),
+@@ -888,7 +888,7 @@ const VMStateDescription vmstate_arm_cpu = {
+     .post_save = cpu_post_save,
+     .pre_load = cpu_pre_load,
+     .post_load = cpu_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32_ARRAY(env.regs, ARMCPU, 16),
+         VMSTATE_UINT64_ARRAY(env.xregs, ARMCPU, 32),
+         VMSTATE_UINT64(env.pc, ARMCPU),
+@@ -937,7 +937,7 @@ const VMStateDescription vmstate_arm_cpu = {
+         },
+         VMSTATE_END_OF_LIST()
+     },
+-    .subsections = (const VMStateDescription*[]) {
++    .subsections = (const VMStateDescription * const []) {
+         &vmstate_vfp,
+         &vmstate_iwmmxt,
+         &vmstate_m,
 -- 
 2.34.1
 
