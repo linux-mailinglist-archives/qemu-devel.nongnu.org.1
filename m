@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E75F67E2D6A
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 20:58:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 508CF7E2D73
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 20:59:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r05hF-0007Vc-Fi; Mon, 06 Nov 2023 14:55:41 -0500
+	id 1r05hJ-0007yI-5r; Mon, 06 Nov 2023 14:55:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+7ad6dfa9aff48d363c6b+7379+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r05gy-0006OL-3F; Mon, 06 Nov 2023 14:55:25 -0500
+ id 1r05gy-0006OK-2u; Mon, 06 Nov 2023 14:55:25 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+7ad6dfa9aff48d363c6b+7379+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r05gn-00066l-VO; Mon, 06 Nov 2023 14:55:21 -0500
+ id 1r05gn-00066i-V9; Mon, 06 Nov 2023 14:55:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=54+9O4MqgKMWNsVDV15P7KT3O3JFiZ0ZmbsNt5OSIo4=; b=uNNnb4D/Jn1NaKTOnlwcXQoBXr
- a7fpJfDZDugOPHlTeDJm5R48ox/KWkG8Kq4VkoW7MrTotDiXX/DNpR8Lx0OIXTa/wlniktk7vXmfZ
- dHj8fjR/z8Yert6javbL8WnB15z9bB7adrZkTchjktVEBMCdmcasEitmq3xKy5xZoKnog4LvVBdId
- gVI2G1ARrSNVDtX1PsfPalbOtKhwBGGDEjoobpG7heQ4S3MtgTVZP7KUMi9uX7qnJBCY4WT97Q0hh
- U8N4avC/qXHuGQuPqJSQ2fsHmTqLfcJSfOEFwq8K+TIzHHPFbtH22DRt5MHxbLdfAwAEyyUd639pH
- CmTmGuNw==;
+ bh=IRrS1Ip1Y1CS4Hz1ksfmSuWNiYQxa0GsEECWORyCCB4=; b=fUutKnPvhKKYNvPnaUSytK4Drp
+ wIw63I9XKRhaK8DOjjloQB8quEVxhSV+OUywFeqHPnHW92zLDm/qClFUq0I426fxoCizket/1f2/1
+ Pu1dxOWpnrPUrfydMjmyfwwL0e1koDvdIfEPwgK/hBjxovrWSY8VbkYrLfMDizwr6mFWlT8IMUaqM
+ yXIa8MwsmIl9y7bjKwp/S5LWH73qH6GZr9diDz6/lJyjujD0+xuIjutKsuLRaLi55f4fSX/GJ2whN
+ RmTarm+G02AnuZm54FvhFzuVAhNtho6uEMoKHgVnwm+qUVo1Pqy0h6css3kUKXUKqPlB/0lNP9mhI
+ TshVueXQ==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1r05fZ-007taE-M3; Mon, 06 Nov 2023 19:53:58 +0000
+ id 1r05fZ-007taG-R7; Mon, 06 Nov 2023 19:53:58 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96.2 #2 (Red
- Hat Linux)) id 1r05fZ-001GN4-37; Mon, 06 Nov 2023 19:53:57 +0000
+ Hat Linux)) id 1r05fa-001GN8-0B; Mon, 06 Nov 2023 19:53:58 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -83,9 +83,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org
-Subject: [PATCH for-8.3 v2 08/46] hw/arm/sbsa-ref: use pci_init_nic_devices()
-Date: Mon,  6 Nov 2023 19:49:13 +0000
-Message-ID: <20231106195352.301038-9-dwmw2@infradead.org>
+Subject: [PATCH for-8.3 v2 09/46] hw/arm/virt: use pci_init_nic_devices()
+Date: Mon,  6 Nov 2023 19:49:14 +0000
+Message-ID: <20231106195352.301038-10-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106195352.301038-1-dwmw2@infradead.org>
 References: <20231106195352.301038-1-dwmw2@infradead.org>
@@ -121,26 +121,25 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: David Woodhouse <dwmw@amazon.co.uk>
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
 ---
- hw/arm/sbsa-ref.c | 4 +---
+ hw/arm/virt.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index bce44690e5..7ad8e1fcea 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -689,9 +689,7 @@ static void create_pcie(SBSAMachineState *sms)
- 
-     pci = PCI_HOST_BRIDGE(dev);
-     if (pci->bus) {
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 92085d2d8f..61706bfcfc 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -1481,9 +1481,7 @@ static void create_pcie(VirtMachineState *vms)
+     pci->bypass_iommu = vms->default_bus_bypass_iommu;
+     vms->bus = pci->bus;
+     if (vms->bus) {
 -        for (i = 0; i < nb_nics; i++) {
 -            pci_nic_init_nofail(&nd_table[i], pci->bus, mc->default_nic, NULL);
 -        }
 +        pci_init_nic_devices(pci->bus, mc->default_nic);
      }
  
-     pci_create_simple(pci->bus, -1, "bochs-display");
+     nodename = vms->pciehb_nodename = g_strdup_printf("/pcie@%" PRIx64, base);
 -- 
 2.41.0
 
