@@ -2,51 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546CF7E1F31
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:04:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B53CA7E2027
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:39:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzxNh-00055G-Mt; Mon, 06 Nov 2023 06:02:57 -0500
+	id 1qzxQx-0001Kt-9d; Mon, 06 Nov 2023 06:06:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qzxNe-00054s-EC
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:02:54 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qzxNO-0003Od-W5
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:02:54 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 0412075607A;
- Mon,  6 Nov 2023 12:02:51 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id EB191756072; Mon,  6 Nov 2023 12:02:50 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id E95C5756066;
- Mon,  6 Nov 2023 12:02:50 +0100 (CET)
-Date: Mon, 6 Nov 2023 12:02:50 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@gmail.com>
-cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH v2 4/4] ati-vga: Implement fallback for pixman routines
-In-Reply-To: <CAJ+F1CJx=dnLOO9QsjBVb9WHH1L1sBpfM8MqKPUZ+mAitCjWSA@mail.gmail.com>
-Message-ID: <4b0e7dc6-516e-a9da-2ac7-5bffb696d931@eik.bme.hu>
-References: <cover.1698871239.git.balaton@eik.bme.hu>
- <ed0fba3f74e48143f02228b83bf8796ca49f3e7d.1698871239.git.balaton@eik.bme.hu>
- <CAJ+F1CJx=dnLOO9QsjBVb9WHH1L1sBpfM8MqKPUZ+mAitCjWSA@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxQT-000127-8t
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:05:49 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxQQ-0004KE-Cs
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:05:48 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-32dcd3e5f3fso2648056f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:05:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699268745; x=1699873545; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9TEM4y15WADC11ywrbeYDwNqe54vVpabH+nFuXXR9vo=;
+ b=DDcTivuoAhQfj6RSh7yuR+7K2AVdOWgiSRdgQmx7FHUn6x1zjVndhc/DZ5JguQjKSv
+ Zvm0vYst6JDUfzK8vte64voW1t4XR27Y/KQmk/uF8v4+BqztEWRyy1K9IYhKwUwLZafd
+ gp4O97zNJz17/D79eT5mq44TvCzLUtt8WGshgY+1hiJplCe+Z/SjpNBTcPyI/VizUyOI
+ azAlqlnFQ8UQIGf/H5fgEQtRO83SCdZpedowVPMVWeulvnM7XN2CwdmFRKYRz0KfpjKi
+ 9Ox+iOaXwobN6/nD2b6/6LXIvMkVjHeJ4QMtP7lwSxPClbGTKErtHQZXfX3aPjwfJP9Q
+ XxrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699268745; x=1699873545;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=9TEM4y15WADC11ywrbeYDwNqe54vVpabH+nFuXXR9vo=;
+ b=ZntkFLW4DCCZ+LnUcpYvjHwE10T0tj4QDlm6ogaU+VYAcPcxn2vulSh6wt/CSI3ljT
+ Q5FBZiCMo/LQex0whaXrCXt/LZ5SL/1D5ZllXi0d5FjxcRSfsNo8sdkGgTJ+iQ5cAiQE
+ 893Og9ygDQY96bKJKWK8QbRWRGTmB4x55gQhl7FMSkFDuONARIZLI19bFyFX2CXnD8+D
+ 6IflnIA+uJur4uOmf3iv+8nIbYTd2Nr5WjHwTBCjkRRIBBvh/kYitHJXYD2UyjZ/XeXv
+ t+63kiZzILHH2upnfCYpZIu1SwfVxiHOegdw+zEM9qMIdXix3wlGh8X4CGUn+eQpTGgH
+ PYGg==
+X-Gm-Message-State: AOJu0YzrAZVPCauKx1J5JWp/KiF1hedJuOpljcNbAboNnoT/b0WKiUMs
+ BbsWMzutS4zuzejeMPU1Y3FEb6h5zxCs014CNb8=
+X-Google-Smtp-Source: AGHT+IGOZ/6VrX2QMc3mxuvaPC+0EbE+IDekhwAIoTOTC+UFQrQ0DCYUI0TONme61tWRfDpdV25NAA==
+X-Received: by 2002:a05:6000:1c0f:b0:32f:ba72:e80b with SMTP id
+ ba15-20020a0560001c0f00b0032fba72e80bmr6504480wrb.54.1699268744791; 
+ Mon, 06 Nov 2023 03:05:44 -0800 (PST)
+Received: from m1x-phil.lan (176-131-220-199.abo.bbox.fr. [176.131.220.199])
+ by smtp.gmail.com with ESMTPSA id
+ c12-20020adffb0c000000b0032fc5f5abafsm6040847wrr.96.2023.11.06.03.05.42
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 06 Nov 2023 03:05:44 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
+ qemu-riscv@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PULL 18/60] target/riscv: Move TYPE_RISCV_CPU_BASE definition to
+ 'cpu.h'
+Date: Mon,  6 Nov 2023 12:02:50 +0100
+Message-ID: <20231106110336.358-19-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231106110336.358-1-philmd@linaro.org>
+References: <20231106110336.358-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-757005906-1699268570=:23658"
-X-Virus-Scanned: ClamAV using ClamSMTP
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,193 +99,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+TYPE_RISCV_CPU_BASE depends on the TARGET_RISCV32/TARGET_RISCV64
+definitions which are target specific. Such target specific
+definition taints "cpu-qom.h".
 
---3866299591-757005906-1699268570=:23658
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Since "cpu-qom.h" must be target agnostic, remove its target
+specific definition uses by moving TYPE_RISCV_CPU_BASE to
+"target/riscv/cpu.h".
 
-On Mon, 6 Nov 2023, Marc-André Lureau wrote:
-> On Thu, Nov 2, 2023 at 12:46 AM BALATON Zoltan <balaton@eik.bme.hu> wrote:
->>
->> Pixman routines can fail if no implementation is available and it will
->> become optional soon so add fallbacks when pixman does not work.
->>
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->> ---
->>  hw/display/ati.c     |  8 +++++
->>  hw/display/ati_2d.c  | 75 +++++++++++++++++++++++++++++++-------------
->>  hw/display/ati_int.h |  1 +
->>  3 files changed, 62 insertions(+), 22 deletions(-)
->>
->> diff --git a/hw/display/ati.c b/hw/display/ati.c
->> index 5e38d2c3de..f911fbc327 100644
->> --- a/hw/display/ati.c
->> +++ b/hw/display/ati.c
->> @@ -1047,6 +1047,7 @@ static Property ati_vga_properties[] = {
->>      DEFINE_PROP_UINT16("x-device-id", ATIVGAState, dev_id,
->>                         PCI_DEVICE_ID_ATI_RAGE128_PF),
->>      DEFINE_PROP_BOOL("guest_hwcursor", ATIVGAState, cursor_guest_mode, false),
->> +    DEFINE_PROP_UINT8("x-pixman", ATIVGAState, use_pixman, 3),
->>      DEFINE_PROP_END_OF_LIST()
->>  };
->>
->> @@ -1068,11 +1069,18 @@ static void ati_vga_class_init(ObjectClass *klass, void *data)
->>      k->exit = ati_vga_exit;
->>  }
->>
->> +static void ati_vga_init(Object *o)
->> +{
->> +    object_property_set_description(o, "x-pixman", "Use pixman for: "
->> +                                    "1: fill, 2: blit");
->> +}
->> +
->>  static const TypeInfo ati_vga_info = {
->>      .name = TYPE_ATI_VGA,
->>      .parent = TYPE_PCI_DEVICE,
->>      .instance_size = sizeof(ATIVGAState),
->>      .class_init = ati_vga_class_init,
->> +    .instance_init = ati_vga_init,
->>      .interfaces = (InterfaceInfo[]) {
->>            { INTERFACE_CONVENTIONAL_PCI_DEVICE },
->>            { },
->> diff --git a/hw/display/ati_2d.c b/hw/display/ati_2d.c
->> index 7d786653e8..0e6b8e4367 100644
->> --- a/hw/display/ati_2d.c
->> +++ b/hw/display/ati_2d.c
->> @@ -92,6 +92,7 @@ void ati_2d_blt(ATIVGAState *s)
->>      switch (s->regs.dp_mix & GMC_ROP3_MASK) {
->>      case ROP3_SRCCOPY:
->>      {
->> +        bool fallback = false;
->>          unsigned src_x = (s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT ?
->>                         s->regs.src_x : s->regs.src_x + 1 - s->regs.dst_width);
->>          unsigned src_y = (s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM ?
->> @@ -122,27 +123,50 @@ void ati_2d_blt(ATIVGAState *s)
->>                  src_bits, dst_bits, src_stride, dst_stride, bpp, bpp,
->>                  src_x, src_y, dst_x, dst_y,
->>                  s->regs.dst_width, s->regs.dst_height);
->> -        if (s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT &&
->> +        if ((s->use_pixman & BIT(1)) &&
->> +            s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT &&
->>              s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM) {
->> -            pixman_blt((uint32_t *)src_bits, (uint32_t *)dst_bits,
->> -                       src_stride, dst_stride, bpp, bpp,
->> -                       src_x, src_y, dst_x, dst_y,
->> -                       s->regs.dst_width, s->regs.dst_height);
->> -        } else {
->> +            fallback = !pixman_blt((uint32_t *)src_bits, (uint32_t *)dst_bits,
->> +                                   src_stride, dst_stride, bpp, bpp,
->> +                                   src_x, src_y, dst_x, dst_y,
->> +                                   s->regs.dst_width, s->regs.dst_height);
->> +        } else if (s->use_pixman & BIT(1)) {
->>              /* FIXME: We only really need a temporary if src and dst overlap */
->>              int llb = s->regs.dst_width * (bpp / 8);
->>              int tmp_stride = DIV_ROUND_UP(llb, sizeof(uint32_t));
->>              uint32_t *tmp = g_malloc(tmp_stride * sizeof(uint32_t) *
->>                                       s->regs.dst_height);
->> -            pixman_blt((uint32_t *)src_bits, tmp,
->> -                       src_stride, tmp_stride, bpp, bpp,
->> -                       src_x, src_y, 0, 0,
->> -                       s->regs.dst_width, s->regs.dst_height);
->> -            pixman_blt(tmp, (uint32_t *)dst_bits,
->> -                       tmp_stride, dst_stride, bpp, bpp,
->> -                       0, 0, dst_x, dst_y,
->> -                       s->regs.dst_width, s->regs.dst_height);
->> +            fallback = !pixman_blt((uint32_t *)src_bits, tmp,
->> +                                   src_stride, tmp_stride, bpp, bpp,
->> +                                   src_x, src_y, 0, 0,
->> +                                   s->regs.dst_width, s->regs.dst_height);
->> +            if (!fallback) {
->> +                fallback = !pixman_blt(tmp, (uint32_t *)dst_bits,
->> +                                       tmp_stride, dst_stride, bpp, bpp,
->> +                                       0, 0, dst_x, dst_y,
->> +                                       s->regs.dst_width, s->regs.dst_height);
->> +            }
->>              g_free(tmp);
->> +        } else {
->> +            fallback = true;
->> +        }
->> +        if (fallback) {
->> +            unsigned int y, i, j, bypp = bpp / 8;
->> +            unsigned int src_pitch = src_stride * sizeof(uint32_t);
->> +            unsigned int dst_pitch = dst_stride * sizeof(uint32_t);
->> +
->> +            for (y = 0; y < s->regs.dst_height; y++) {
->> +                i = dst_x * bypp;
->> +                j = src_x * bypp;
->> +                if (s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM) {
->> +                    i += (dst_y + y) * dst_pitch;
->> +                    j += (src_y + y) * src_pitch;
->> +                } else {
->> +                    i += (dst_y + s->regs.dst_height - 1 - y) * dst_pitch;
->> +                    j += (src_y + s->regs.dst_height - 1 - y) * src_pitch;
->> +                }
->> +                memmove(&dst_bits[i], &src_bits[j], s->regs.dst_width * bypp);
->
-> This doesn't seem to handle overlapping regions the same as the
-> pixman-version. Or am I missing something?
+"target/riscv/cpu-qom.h" is now fully target agnostic.
+Add a comment clarifying that in the header.
 
-memmove (as opposed to memcpy) allows overlapping regions and handles them 
-correctly so no temporary needed for this. I've tested it with MorphOS and 
-still got correct picture.
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20231013140116.255-12-philmd@linaro.org>
+---
+ target/riscv/cpu-qom.h | 8 +-------
+ target/riscv/cpu.h     | 6 ++++++
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-Regards,
-BALATON Zoltan
+diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+index b78169093f..76efb614a6 100644
+--- a/target/riscv/cpu-qom.h
++++ b/target/riscv/cpu-qom.h
+@@ -1,5 +1,5 @@
+ /*
+- * QEMU RISC-V CPU QOM header
++ * QEMU RISC-V CPU QOM header (target agnostic)
+  *
+  * Copyright (c) 2023 Ventana Micro Systems Inc.
+  *
+@@ -44,12 +44,6 @@
+ #define TYPE_RISCV_CPU_VEYRON_V1        RISCV_CPU_TYPE_NAME("veyron-v1")
+ #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
+ 
+-#if defined(TARGET_RISCV32)
+-# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE32
+-#elif defined(TARGET_RISCV64)
+-# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE64
+-#endif
+-
+ typedef struct CPUArchState CPURISCVState;
+ 
+ OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 144cc94cce..d832696418 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -34,6 +34,12 @@
+ 
+ #define CPU_RESOLVING_TYPE TYPE_RISCV_CPU
+ 
++#if defined(TARGET_RISCV32)
++# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE32
++#elif defined(TARGET_RISCV64)
++# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE64
++#endif
++
+ #define TCG_GUEST_DEFAULT_MO 0
+ 
+ /*
+-- 
+2.41.0
 
->> +            }
->>          }
->>          if (dst_bits >= s->vga.vram_ptr + s->vga.vbe_start_addr &&
->>              dst_bits < s->vga.vram_ptr + s->vga.vbe_start_addr +
->> @@ -180,14 +204,21 @@ void ati_2d_blt(ATIVGAState *s)
->>
->>          dst_stride /= sizeof(uint32_t);
->>          DPRINTF("pixman_fill(%p, %d, %d, %d, %d, %d, %d, %x)\n",
->> -                dst_bits, dst_stride, bpp,
->> -                dst_x, dst_y,
->> -                s->regs.dst_width, s->regs.dst_height,
->> -                filler);
->> -        pixman_fill((uint32_t *)dst_bits, dst_stride, bpp,
->> -                    dst_x, dst_y,
->> -                    s->regs.dst_width, s->regs.dst_height,
->> -                    filler);
->> +                dst_bits, dst_stride, bpp, dst_x, dst_y,
->> +                s->regs.dst_width, s->regs.dst_height, filler);
->> +        if (!(s->use_pixman & BIT(0)) ||
->> +            !pixman_fill((uint32_t *)dst_bits, dst_stride, bpp, dst_x, dst_y,
->> +                    s->regs.dst_width, s->regs.dst_height, filler)) {
->> +            /* fallback when pixman failed or we don't want to call it */
->> +            unsigned int x, y, i, bypp = bpp / 8;
->> +            unsigned int dst_pitch = dst_stride * sizeof(uint32_t);
->> +            for (y = 0; y < s->regs.dst_height; y++) {
->> +                i = dst_x * bypp + (dst_y + y) * dst_pitch;
->> +                for (x = 0; x < s->regs.dst_width; x++, i += bypp) {
->> +                    stn_he_p(&dst_bits[i], bypp, filler);
->> +                }
->> +            }
->> +        }
->>          if (dst_bits >= s->vga.vram_ptr + s->vga.vbe_start_addr &&
->>              dst_bits < s->vga.vram_ptr + s->vga.vbe_start_addr +
->>              s->vga.vbe_regs[VBE_DISPI_INDEX_YRES] * s->vga.vbe_line_offset) {
->> diff --git a/hw/display/ati_int.h b/hw/display/ati_int.h
->> index 8abb873f01..f5a47b82b0 100644
->> --- a/hw/display/ati_int.h
->> +++ b/hw/display/ati_int.h
->> @@ -90,6 +90,7 @@ struct ATIVGAState {
->>      char *model;
->>      uint16_t dev_id;
->>      uint8_t mode;
->> +    uint8_t use_pixman;
->>      bool cursor_guest_mode;
->>      uint16_t cursor_size;
->>      uint32_t cursor_offset;
->> --
->> 2.30.9
->>
->>
->
->
->
---3866299591-757005906-1699268570=:23658--
 
