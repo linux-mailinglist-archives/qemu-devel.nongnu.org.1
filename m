@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41EEC7E1F95
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:09:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A86DC7E1FAD
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:10:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzxR8-0001S0-9U; Mon, 06 Nov 2023 06:06:32 -0500
+	id 1qzxRV-0002Js-6Y; Mon, 06 Nov 2023 06:06:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxQa-0001Br-6V
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:05:57 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxQw-0001Zh-Vg
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:06:20 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxQX-0004Lq-Gj
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:05:55 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40907b82ab9so31032475e9.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:05:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxQg-0004NB-Nh
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:06:18 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40850b244beso33448295e9.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:06:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699268752; x=1699873552; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699268759; x=1699873559; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oZ4xqFJalLvpzsW1bcHeUL/13mhLi/mzZSAy+mux2v0=;
- b=QrGpKoJ+ZHnculWUTSEqv2x+dQvx34HmqcAoNg3rnaUvJfSUNSKNMsl2+ESXeRFx4N
- ZyiaT54qEsy0P3/cvO+2GAIE0v9/gQLuEqjFaVbqo/0rqHy/WEmZuWg+/Gc6tXjOs/3f
- 0FyOsiOEqK4NFBIia5GdVxUxu9c9doDre+aVRops+lgQEEDo4XnQ5/fCCvJ4Exjn5PdW
- uZFol2pzW1HKx0aE2QVsPJLl8EDNmBCkPlwua47ANoRR8zfXOunTAtaOd8Cbi1o4hm9o
- 92dp88kXn7FCcaTwpu+LasrqUtqTq+yOAjZW9opJeh+Mynv9Wa1Si3quKUV+gK0COdr5
- YLVQ==
+ bh=WdevyuV5vDNMMgKGndHL1Lb3pKI2mM3BGOnKiVXcZMA=;
+ b=n3lXasjQ9MspPMWhijtRr4yhgrqcXudFV+laNDcjzm6qh2crncIb9f+EJ/kuD4ysZm
+ lh6s1TCnhg7o6kEpnYmMu6NtyWeV92AwDVMlyUuyt/9rTZjnSpivQeSL53GjwtHk4OJ/
+ w6rKCxxoZqZZAUZsO7TBsF+HL5ZslLAiXHLkJuh9Oq04jPQbzfyXkCZrUFsJ8LD+T4Vt
+ eAIZ76tWpwd6o3tV7JYmP1F58AgdV9CI+YfST+2ODpcL9j9gyNu5/fyy+Wbm4Su2noTv
+ rG/frpzoMandao0+A3GXnecPths2LqPBno3N1/fkOfLFJ+JleIHjkT8hkBrFcHk2TjUO
+ aKMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699268752; x=1699873552;
+ d=1e100.net; s=20230601; t=1699268759; x=1699873559;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oZ4xqFJalLvpzsW1bcHeUL/13mhLi/mzZSAy+mux2v0=;
- b=ETFKS/GtUaXXkodbZNXqdKu35E4hyaNhg8wyAUjI0wE1Plgzaw96hbFHB9aenmvxlL
- PKYOYQhDngb7HiH3dH3TZG9iB+yMMm33JX/5P23tojwf3TgFk/fu1xEZEE4gP6Is3Mrb
- vXbKvoEuKYR7SBfN7ECWmKTgZve9EEMeTanAKsrshDZWS6wxtcEuEJgzm8PDKd061XEr
- qJ6k5DbdzLGc4ke7UOJSTTKkx9STvpxkx5aOiIgEweT6rxZqFl5h1Q9/0hKH6zUT+emn
- k3IBlB/Oe8wZVyH8aQT9v6tXj4UCgh6fkJ8FIwcskGJ705N9JHdYc6btCyiO+yS5IbRq
- Oohg==
-X-Gm-Message-State: AOJu0YyPATaox5GI7IAkAEB80c+W1gngzHM70RO+Y+OVSmfhnLU22vxe
- KPs7QYEUcUiggCH3otfIetsJiPZpHkj4o/sN2Ng=
-X-Google-Smtp-Source: AGHT+IG9mJw0F90hy4Uu6xuSpQrJC5TM2lMXtp6Q5jTJMspVFVuvMPHpaiGipu7vhxIPNtgi1AXh6Q==
-X-Received: by 2002:a7b:c7c9:0:b0:406:45c1:4dd with SMTP id
- z9-20020a7bc7c9000000b0040645c104ddmr10153754wmk.14.1699268751703; 
- Mon, 06 Nov 2023 03:05:51 -0800 (PST)
+ bh=WdevyuV5vDNMMgKGndHL1Lb3pKI2mM3BGOnKiVXcZMA=;
+ b=srYKJGDXVIxL2Vk3P2CHThWD+iMXnJnYl9qeq5jQiYNBL2xcLjX+Sq8NJaZFkCUoD4
+ h/gL4NpCMHHhCrCgLlMERx9yrPxb+Lruvi2VY8V4ExvGN7Qp3RXtIvl9pmNLChgHHN2P
+ IPyNmJsZpTIG46VmguQjaCowjnoRfFexXHp5PzHT7JhTFyH+GDeC8HremApPIxp224Eq
+ EoIDO2n3nVIFAhyEFOlKKbOSRlQN91vu2MAazCeCvLgdWXOrHWmYg/7f03CEw7B66h0W
+ gdh46fvuGu0nmngFnkkPIEb3WyUNUTarEIKz/q8bB2a6eGQpkTWLZwgxOY9hWLO3WxxM
+ gMPg==
+X-Gm-Message-State: AOJu0YwwAjOSxWm8Gx5HQRl1ajdIuPlIcnPiEKx31F7qAudoN7oQ3Av1
+ /sthyRASJ30OJQFNelDYsU5Q0BVClm8HzUbZNjA=
+X-Google-Smtp-Source: AGHT+IHx5XXxhtGZu6ZCbciI1JQ5kvGzt8XZDokYAdmWLiQ+Wf2MWQYdjQaCgeHE7cevbJyqEkuPhw==
+X-Received: by 2002:a05:600c:1c9a:b0:401:d803:6243 with SMTP id
+ k26-20020a05600c1c9a00b00401d8036243mr25577656wms.32.1699268759004; 
+ Mon, 06 Nov 2023 03:05:59 -0800 (PST)
 Received: from m1x-phil.lan (176-131-220-199.abo.bbox.fr. [176.131.220.199])
  by smtp.gmail.com with ESMTPSA id
- bh5-20020a05600c3d0500b004094e565e71sm12164949wmb.23.2023.11.06.03.05.49
+ r13-20020a05600c458d00b00406443c8b4fsm11744176wmo.19.2023.11.06.03.05.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 Nov 2023 03:05:51 -0800 (PST)
+ Mon, 06 Nov 2023 03:05:58 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-riscv@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Richard W . M . Jones" <rjones@redhat.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 19/60] target/ppc: Use env_archcpu() in helper_book3s_msgsndp()
-Date: Mon,  6 Nov 2023 12:02:51 +0100
-Message-ID: <20231106110336.358-20-philmd@linaro.org>
+ Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>
+Subject: [PULL 20/60] target/riscv: Use env_archcpu() in [check_]nanbox()
+Date: Mon,  6 Nov 2023 12:02:52 +0100
+Message-ID: <20231106110336.358-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106110336.358-1-philmd@linaro.org>
 References: <20231106110336.358-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,33 +99,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When CPUArchState* is available (here CPUPPCState*), we
+When CPUArchState* is available (here CPURISCVState*), we
 can use the fast env_archcpu() macro to get ArchCPU* (here
-PowerPCCPU*). The QOM cast POWERPC_CPU() macro will be
-slower when building with --enable-qom-cast-debug.
+RISCVCPU*). The QOM cast RISCV_CPU() macro will be slower
+when building with --enable-qom-cast-debug.
 
+Inspired-by: Richard W.M. Jones <rjones@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Richard W.M. Jones <rjones@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20231009110239.66778-2-philmd@linaro.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-Id: <20231009110239.66778-3-philmd@linaro.org>
 ---
- target/ppc/excp_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/riscv/internals.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 7926114d5c..a42743a3e0 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -3136,7 +3136,7 @@ void helper_book3s_msgclrp(CPUPPCState *env, target_ulong rb)
- void helper_book3s_msgsndp(CPUPPCState *env, target_ulong rb)
+diff --git a/target/riscv/internals.h b/target/riscv/internals.h
+index b5f823c7ec..8239ae83cc 100644
+--- a/target/riscv/internals.h
++++ b/target/riscv/internals.h
+@@ -87,7 +87,7 @@ enum {
+ static inline uint64_t nanbox_s(CPURISCVState *env, float32 f)
  {
-     CPUState *cs = env_cpu(env);
--    PowerPCCPU *cpu = POWERPC_CPU(cs);
-+    PowerPCCPU *cpu = env_archcpu(env);
-     CPUState *ccs;
-     uint32_t nr_threads = cs->nr_threads;
-     int ttir = rb & PPC_BITMASK(57, 63);
+     /* the value is sign-extended instead of NaN-boxing for zfinx */
+-    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
++    if (env_archcpu(env)->cfg.ext_zfinx) {
+         return (int32_t)f;
+     } else {
+         return f | MAKE_64BIT_MASK(32, 32);
+@@ -97,7 +97,7 @@ static inline uint64_t nanbox_s(CPURISCVState *env, float32 f)
+ static inline float32 check_nanbox_s(CPURISCVState *env, uint64_t f)
+ {
+     /* Disable NaN-boxing check when enable zfinx */
+-    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
++    if (env_archcpu(env)->cfg.ext_zfinx) {
+         return (uint32_t)f;
+     }
+ 
+@@ -113,7 +113,7 @@ static inline float32 check_nanbox_s(CPURISCVState *env, uint64_t f)
+ static inline uint64_t nanbox_h(CPURISCVState *env, float16 f)
+ {
+     /* the value is sign-extended instead of NaN-boxing for zfinx */
+-    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
++    if (env_archcpu(env)->cfg.ext_zfinx) {
+         return (int16_t)f;
+     } else {
+         return f | MAKE_64BIT_MASK(16, 48);
+@@ -123,7 +123,7 @@ static inline uint64_t nanbox_h(CPURISCVState *env, float16 f)
+ static inline float16 check_nanbox_h(CPURISCVState *env, uint64_t f)
+ {
+     /* Disable nanbox check when enable zfinx */
+-    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
++    if (env_archcpu(env)->cfg.ext_zfinx) {
+         return (uint16_t)f;
+     }
+ 
 -- 
 2.41.0
 
