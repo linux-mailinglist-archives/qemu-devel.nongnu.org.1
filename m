@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A857E201B
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:36:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A1D7E1FF0
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 12:26:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzxUx-000361-KV; Mon, 06 Nov 2023 06:10:27 -0500
+	id 1qzxVE-0003Da-QO; Mon, 06 Nov 2023 06:10:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxUU-0002Xt-Cd
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:10:03 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxUc-0002cK-82
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:10:12 -0500
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxUQ-0005gL-Fy
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:09:58 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-40891d38e3fso30646515e9.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:09:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qzxUX-0005iJ-IL
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 06:10:05 -0500
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2c6ef6c1ec2so52817151fa.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 03:10:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699268993; x=1699873793; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699268999; x=1699873799; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/UYA9fxIVAJDV/ugwhxZLfTB1YL01/OCPxws1OIhgNw=;
- b=twhGE9uHJIOhRvFOenLm90pUF25nxRVTWx0JYDpC+/N8YiAOkdiwraE6+tgn+rYhOE
- coOC2fFY2iqRogMJcZhYSjiMCWA8M83HXCY92NV/p3e6nLzUuMAuimPw4xsTJzfVzUBO
- MOsHlH6/QcMqPwAl1pMCvYeGP+7wEGDLaYQSV7Al6owAtRxM1sRVh55//r0qpJ+7A05F
- qFs4KrMlq5gWxF7YGTxFlGXcrsLKaMOnPdXRB9LwHrE3ZMpDY3jbo0zugd2r7NzvtmHB
- 9tmCTjrUai7KJQQZL345MrzfOt6YSrx0BTlP3gbDNBjDtoApEV0qTbKrCBlgQLcapnD1
- ZKWw==
+ bh=MGUqOvUDBSiuVjcJL6HNGd3FosLBI9RMurHd3wgpnc0=;
+ b=UM/kvCtl5sMb4dU0M0RhM3utLMRVEe44EiQluYmQMRPIJBIeygRHNutW6Axx9RFStf
+ cOyoDiv5mpOZkVW8tQPFhsSoWecJTow03yjIwqaFQ3O41yKBfeWUREylR/kS+wQN2yq9
+ +UxEuRaRfjekMwmL3YrlkcVnKrOLR+44bAKBi0+W1QZK/uW4ErfSnHP1GvipmlA5U3w2
+ cf16waTBJyWbLLxRh4GPe8aVWOmInEtyrHdG+9sga/3aIvhTbYHiVM37z8b/dwyeF6T/
+ vStH1506Pa/tISHjccY+kunBexR+BH+psTEpKMElTFXUi+kRMykgP7KXd1kxVFEd/yjn
+ pjNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699268993; x=1699873793;
+ d=1e100.net; s=20230601; t=1699268999; x=1699873799;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/UYA9fxIVAJDV/ugwhxZLfTB1YL01/OCPxws1OIhgNw=;
- b=OKgJCwh0cs9EqGA7IYuNTAteFhAM1mhpxpdcvZPsDrXA/vB5OQi6BUaFPe8xYG+tFt
- YRAfNYNBi6eLtd+99TZwr3oxCgLlkkt5gMkj1OlKtUKZFBnHKwe69Uv9XSObjK0DE0zX
- wx2zcGwBYdyexsP7k08nnwm5m18hQ2x/ii0v/YlMWeBQF8mYvlzVLa9BI98O2PmfJdr2
- ldqToHMLg/MZMDRIXrm0zk7dC4En7i0ZPX275Y6lIm3vsUDRwAGmcU4tCL1AHCn9ZaYu
- RIOxKi1O5aGW89tbUcnLZIkRnQujD+4OVnynfYzcyNtgbrmxhSB/zrZOkG28tBuhuT5f
- 4Hhg==
-X-Gm-Message-State: AOJu0YzDhy8TtJ67KWFkHCKxdL9481GgEzhxxkXrqOlzkHRkcjEm9sRE
- Q+qw+KBWN6hS0xzsLU2lSRp6HbcbVxNBH18DhVA=
-X-Google-Smtp-Source: AGHT+IEJYwaQv9zhCAnw87q6XL1cNQIMVWd4njIJAfgg35jyjWT0oa+xJ0fh+sg8SmmssH1mUhxHcw==
-X-Received: by 2002:a05:6000:4021:b0:32d:b991:1a71 with SMTP id
- cp33-20020a056000402100b0032db9911a71mr27821328wrb.0.1699268992895; 
- Mon, 06 Nov 2023 03:09:52 -0800 (PST)
+ bh=MGUqOvUDBSiuVjcJL6HNGd3FosLBI9RMurHd3wgpnc0=;
+ b=SwmtC7TXY7ckmmnTcIEjQ6Gz7YRgR5fOFIsufBR6v7yVmjMgURyxKVfc/8lCZZkkvp
+ x6Qq84h8m+ZUDx03M02vC3Al2fRsTKiifEqLrM1UkFNA3cNPzHkkE68Vmzm5lIFWfPUO
+ GjtILRbkpAdu2FF14dXjxuEnlu0WViHhXX1OrXdiJpA9Hhz8yql31qEgQ0++B5BJwFMd
+ XAMVnVAoDSa00zPCfA898J0JpF3OqTtmqHHXj8kTTBMC4FOwB2Uga5asTKgYbuXTmOHo
+ HBnsumDwIoiPAW3I6X0qTu9OEeNdqxDg1JkyWVFXy2irBk6TcrVVg6b8Kd6LJJqD76kp
+ TV6w==
+X-Gm-Message-State: AOJu0Yxvcbqd//3hp7/lPSYBChdQlSmBh64GKpgdRe7x4ARyRNW1D1jv
+ eEsup1IZ0NND8/Ad6cYd+kVqVoEwgSjW9Uxnvw8=
+X-Google-Smtp-Source: AGHT+IFzu+WNTNvikEhT3RfrTXgUYqfUsIePLUoFbNzyRmjcJbd74z4iaBvydg4KqQIGnFcZE2qYAg==
+X-Received: by 2002:a2e:8719:0:b0:2c5:1075:5ec9 with SMTP id
+ m25-20020a2e8719000000b002c510755ec9mr21956567lji.13.1699268999654; 
+ Mon, 06 Nov 2023 03:09:59 -0800 (PST)
 Received: from m1x-phil.lan (176-131-220-199.abo.bbox.fr. [176.131.220.199])
  by smtp.gmail.com with ESMTPSA id
- f18-20020a5d58f2000000b0032da4c98ab2sm9102932wrd.35.2023.11.06.03.09.51
+ f13-20020a05600c4e8d00b0040596352951sm11684422wmq.5.2023.11.06.03.09.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 Nov 2023 03:09:52 -0800 (PST)
+ Mon, 06 Nov 2023 03:09:59 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-riscv@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
- Titus Rwantare <titusr@google.com>, Patrick Venture <venture@google.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 55/60] hw/i2c: pmbus: immediately clear faults on request
-Date: Mon,  6 Nov 2023 12:03:27 +0100
-Message-ID: <20231106110336.358-56-philmd@linaro.org>
+ Titus Rwantare <titusr@google.com>, Hao Wu <wuhaotsh@google.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 56/60] hw/i2c: pmbus: reset page register for out of range reads
+Date: Mon,  6 Nov 2023 12:03:28 +0100
+Message-ID: <20231106110336.358-57-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106110336.358-1-philmd@linaro.org>
 References: <20231106110336.358-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x232.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,34 +97,107 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Titus Rwantare <titusr@google.com>
 
-The probing process of the generic pmbus driver generates
-faults to determine if functions are available. These faults
-were not always cleared resulting in probe failures.
+The linux pmbus driver scans all possible pages and does not reset the
+current page after the scan, making all future page reads fail as out of range
+on devices with a single page.
 
-Reviewed-by: Patrick Venture <venture@google.com>
+This change resets out of range pages immediately on write.
+
+Also added a qtest for simultaneous writes to all pages.
+
+Reviewed-by: Hao Wu <wuhaotsh@google.com>
 Signed-off-by: Titus Rwantare <titusr@google.com>
-Message-ID: <20231023-staging-pmbus-v3-v4-7-07a8cb7cd20a@google.com>
+Message-ID: <20231023-staging-pmbus-v3-v4-8-07a8cb7cd20a@google.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i2c/pmbus_device.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/i2c/pmbus_device.c       | 18 +++++++++---------
+ tests/qtest/max34451-test.c | 24 ++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+), 9 deletions(-)
 
 diff --git a/hw/i2c/pmbus_device.c b/hw/i2c/pmbus_device.c
-index 3bce39e84e..481e158380 100644
+index 481e158380..1b978e588f 100644
 --- a/hw/i2c/pmbus_device.c
 +++ b/hw/i2c/pmbus_device.c
-@@ -1244,6 +1244,11 @@ static int pmbus_write_data(SMBusDevice *smd, uint8_t *buf, uint8_t len)
-     pmdev->in_buf = buf;
+@@ -1255,6 +1255,15 @@ static int pmbus_write_data(SMBusDevice *smd, uint8_t *buf, uint8_t len)
  
-     pmdev->code = buf[0]; /* PMBus command code */
+     if (pmdev->code == PMBUS_PAGE) {
+         pmdev->page = pmbus_receive8(pmdev);
 +
-+    if (pmdev->code == PMBUS_CLEAR_FAULTS) {
-+        pmbus_clear_faults(pmdev);
-+    }
-+
-     if (len == 1) { /* Single length writes are command codes only */
++        if (pmdev->page > pmdev->num_pages - 1 && pmdev->page != PB_ALL_PAGES) {
++            qemu_log_mask(LOG_GUEST_ERROR,
++                          "%s: page %u is out of range\n",
++                          __func__, pmdev->page);
++            pmdev->page = 0; /* undefined behaviour - reset to page 0 */
++            pmbus_cml_error(pmdev);
++            return PMBUS_ERR_BYTE;
++        }
          return 0;
      }
+ 
+@@ -1268,15 +1277,6 @@ static int pmbus_write_data(SMBusDevice *smd, uint8_t *buf, uint8_t len)
+         return 0;
+     }
+ 
+-    if (pmdev->page > pmdev->num_pages - 1) {
+-        qemu_log_mask(LOG_GUEST_ERROR,
+-                        "%s: page %u is out of range\n",
+-                        __func__, pmdev->page);
+-        pmdev->page = 0; /* undefined behaviour - reset to page 0 */
+-        pmbus_cml_error(pmdev);
+-        return PMBUS_ERR_BYTE;
+-    }
+-
+     index = pmdev->page;
+ 
+     switch (pmdev->code) {
+diff --git a/tests/qtest/max34451-test.c b/tests/qtest/max34451-test.c
+index 0c98d0764c..dbf6ddc829 100644
+--- a/tests/qtest/max34451-test.c
++++ b/tests/qtest/max34451-test.c
+@@ -18,6 +18,7 @@
+ #define TEST_ID "max34451-test"
+ #define TEST_ADDR (0x4e)
+ 
++#define MAX34451_MFR_MODE               0xD1
+ #define MAX34451_MFR_VOUT_PEAK          0xD4
+ #define MAX34451_MFR_IOUT_PEAK          0xD5
+ #define MAX34451_MFR_TEMPERATURE_PEAK   0xD6
+@@ -315,6 +316,28 @@ static void test_ot_faults(void *obj, void *data, QGuestAllocator *alloc)
+     }
+ }
+ 
++#define RAND_ON_OFF_CONFIG  0x12
++#define RAND_MFR_MODE       0x3456
++
++/* test writes to all pages */
++static void test_all_pages(void *obj, void *data, QGuestAllocator *alloc)
++{
++    uint16_t i2c_value;
++    QI2CDevice *i2cdev = (QI2CDevice *)obj;
++
++    i2c_set8(i2cdev, PMBUS_PAGE, PB_ALL_PAGES);
++    i2c_set8(i2cdev, PMBUS_ON_OFF_CONFIG, RAND_ON_OFF_CONFIG);
++    max34451_i2c_set16(i2cdev, MAX34451_MFR_MODE, RAND_MFR_MODE);
++
++    for (int i = 0; i < MAX34451_NUM_TEMP_DEVICES + MAX34451_NUM_PWR_DEVICES;
++         i++) {
++        i2c_value = i2c_get8(i2cdev, PMBUS_ON_OFF_CONFIG);
++        g_assert_cmphex(i2c_value, ==, RAND_ON_OFF_CONFIG);
++        i2c_value = max34451_i2c_get16(i2cdev, MAX34451_MFR_MODE);
++        g_assert_cmphex(i2c_value, ==, RAND_MFR_MODE);
++    }
++}
++
+ static void max34451_register_nodes(void)
+ {
+     QOSGraphEdgeOptions opts = {
+@@ -332,5 +355,6 @@ static void max34451_register_nodes(void)
+     qos_add_test("test_ro_regs", "max34451", test_ro_regs, NULL);
+     qos_add_test("test_ov_faults", "max34451", test_ov_faults, NULL);
+     qos_add_test("test_ot_faults", "max34451", test_ot_faults, NULL);
++    qos_add_test("test_all_pages", "max34451", test_all_pages, NULL);
+ }
+ libqos_init(max34451_register_nodes);
 -- 
 2.41.0
 
