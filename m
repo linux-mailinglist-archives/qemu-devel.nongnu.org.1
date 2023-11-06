@@ -2,83 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4907E7E27A5
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:50:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD337E27A9
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:51:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r00vA-0006xm-Jp; Mon, 06 Nov 2023 09:49:44 -0500
+	id 1r00wZ-0003pE-2a; Mon, 06 Nov 2023 09:51:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r00v5-0006rP-AQ
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:49:39 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r00v0-0003L1-CI
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:49:38 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40836ea8cbaso32318315e9.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 06:49:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699282171; x=1699886971; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ZXl0fa8RuDws95Qzrt8I0p4dUeB9fB4UJONm7LU/deg=;
- b=Psv4QY45vl0SUy+SdHw9zw4VLLvHBvJ+SE8o3YOQxmNY+UgC5mCbO4LxnN0F8gtKJk
- TWW5tAq8vhM7LASZPQOnTiJOmhaulZsvmeu4hYji1BsfUxmjva/TXGj6zuFnCy/F1LRk
- 7Pgw+/pPv+kMBN0ZyVWMQ+cVU1r0NyCirzCSTXjVkC/Hh1DoVO3FsHzG+9FEvBpu9cgk
- mqgaW4YhJXpt27uu8Gbvt2gVYHImiGtZQgLwV6u2V1/MYvCXkIk/o0JL01J2MSL3Imuv
- M7TsTiwlY6yJUTmhqzzWhcsvhd4XgiOUDk3ZJeNdSLR7CJrYHxSjetPHkk24dJ3vzuds
- hsIw==
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1r00wW-0003oW-HM
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:51:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1r00wU-00041l-7J
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:51:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699282265;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8GOpWvH+JyebVK5M8WU7x+YaHwAL46964xncMbKRbq8=;
+ b=G3zdlqsNSYak56Ut7E2vLSeKGlkd5feKvJSM1ZQD63ZKh80g2IQ7bG83vh19J+ZtqEgn7M
+ qezE4QoBSssNWDFqzCl0volIVOV0RGh9nmILEv1tq8Z9WdWdCzbOwdH+pDRczWuId333Oj
+ Wygmk7CqyclozdlE+XQ5l7flM7mdf2k=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-434-pb0vJfVsOgScnW_V4mMnEQ-1; Mon, 06 Nov 2023 09:51:03 -0500
+X-MC-Unique: pb0vJfVsOgScnW_V4mMnEQ-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2c6f33ee403so41462951fa.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 06:51:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699282171; x=1699886971;
+ d=1e100.net; s=20230601; t=1699282262; x=1699887062;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZXl0fa8RuDws95Qzrt8I0p4dUeB9fB4UJONm7LU/deg=;
- b=Q/s2MtoycuQdk8quM+rH7gDrZU9fw/nTFIuSV2oMaro64Fd6jJJ6TC1zNMaWqcLH7y
- +XzbFN9DY1MqOsbfjDJ8a1VsYnXgePz0ilnnVH6b/fFKvM6t8MiB+mM2hH+qW95pENhQ
- 4ClVxD5c1QfDqJbdaQdsUfiASerkNFyIF3PkxJMz9Ak2MHZmYknbEzDBDgPnxbv7rVSw
- tkAWeYVZdrT5mrw/LQCyAvjpYhXlBQiCzisk4oF05aavVHn1LOBAHQl6E1l3LWUfNkpN
- byubp7+o116w1pQovbBb24sSI33g66EEQQxKCNiJasJqBe8d2CRZNA1pt1gVbh+lqBxp
- L5yQ==
-X-Gm-Message-State: AOJu0YyjW48YEKPvgnZnc/qUfva+nVmWjfyGlf0hJ+M6ZqRfBC8oOz5e
- gWyQIYi92pytTHfWYl2B6mJ6vA==
-X-Google-Smtp-Source: AGHT+IGwJ9dw1cQZe5UbzvFhmGHqg1LdESGZVr7JwuYLowug30YOz1jDV+QZx8bxgmfPz+fLHMLx0w==
-X-Received: by 2002:a05:600c:3148:b0:401:bdd7:499d with SMTP id
- h8-20020a05600c314800b00401bdd7499dmr24783115wmo.25.1699282171164; 
- Mon, 06 Nov 2023 06:49:31 -0800 (PST)
-Received: from [192.168.69.115] (176-131-220-199.abo.bbox.fr.
- [176.131.220.199]) by smtp.gmail.com with ESMTPSA id
- f14-20020a5d50ce000000b00326f0ca3566sm9592833wrt.50.2023.11.06.06.49.30
+ bh=8GOpWvH+JyebVK5M8WU7x+YaHwAL46964xncMbKRbq8=;
+ b=b3vn/Ke+awsfRU/QVGjE3d6WhAFHcyHOjNwi6z7nNv1lSRv3WPFsmJkLKnJYEXgXp+
+ FstxdokPHQ48g4YWoXmyQ9FQPYqWs+nCv9yHPjxsSpAmlJ3p/AWmFCWR2vazNlrkJwNu
+ E0LJ+zpp4NnLyay5PLL4sADKd6PbGkikQJ0U1fq9peW6t/4HyE91Mc/6CcqINl7XuP7n
+ Z2EtFuQ36dvsSsaLwf6jXXsGz8Mteoq0uNi2KqDfiiXEZUOWbpWCvtdlsY012CuItflu
+ vBGiNqKHOvJlaorGa68CIDrU5tz2Gb4kqnsM+EksrtIVT8HCGrqXkvOHJjC70n7GhHkt
+ lFAg==
+X-Gm-Message-State: AOJu0YwIIZ/EeCfa7KHkLg7bAnNq6FJeQooEKkEnbDs3/yyeyyM4edy3
+ oA/Flk4Wmv6sItxoyH9G3WvImv6WtpTgbO0+b9BH8SdCCtXS0iZ3ucJNvzlea4hjwgU8H+kHz35
+ 7r8/FzQ7dkAmVYzQ=
+X-Received: by 2002:a2e:9d55:0:b0:2c5:1674:8d79 with SMTP id
+ y21-20020a2e9d55000000b002c516748d79mr23250834ljj.21.1699282262282; 
+ Mon, 06 Nov 2023 06:51:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHRMq/92mBJKzAfIhsYOt/jPwAGQQzfQg9gqWI59oIYLVsmBtZfQ25nT4431gCh8JPigy4vsQ==
+X-Received: by 2002:a2e:9d55:0:b0:2c5:1674:8d79 with SMTP id
+ y21-20020a2e9d55000000b002c516748d79mr23250823ljj.21.1699282261991; 
+ Mon, 06 Nov 2023 06:51:01 -0800 (PST)
+Received: from ?IPV6:2003:cf:d718:8590:77de:e1fd:a4df:d080?
+ (p200300cfd718859077dee1fda4dfd080.dip0.t-ipconnect.de.
+ [2003:cf:d718:8590:77de:e1fd:a4df:d080])
+ by smtp.gmail.com with ESMTPSA id
+ r7-20020adff107000000b0032db8f7f378sm9754540wro.71.2023.11.06.06.51.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Nov 2023 06:49:30 -0800 (PST)
-Message-ID: <ffe5e4b3-4c9a-9cee-f997-f53be1656b21@linaro.org>
-Date: Mon, 6 Nov 2023 15:49:29 +0100
+ Mon, 06 Nov 2023 06:51:01 -0800 (PST)
+Message-ID: <a9d0abf4-fc79-461f-bd43-1d79b177de02@redhat.com>
+Date: Mon, 6 Nov 2023 15:51:00 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 4/4] NOTFORMERGE tcg/i386: Assert sub of immediate has
- been folded
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 03/10] block: Allow the wrapper script to see functions
+ declared in qapi.h
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com
-References: <20231026013945.1152174-1-richard.henderson@linaro.org>
- <20231026013945.1152174-5-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231026013945.1152174-5-richard.henderson@linaro.org>
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, =?UTF-8?Q?Jo=C3=A3o_Silva?=
+ <jsilva@suse.de>, Lin Ma <lma@suse.com>, Claudio Fontana <cfontana@suse.de>,
+ Dario Faggioli <dfaggioli@suse.com>, Eric Blake <eblake@redhat.com>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>
+References: <20230609201910.12100-1-farosas@suse.de>
+ <20230609201910.12100-4-farosas@suse.de>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20230609201910.12100-4-farosas@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.085,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,81 +107,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/10/23 03:39, Richard Henderson wrote:
-> A release build should simply accept and emit the subtract.
-> I'm not even sure if this is reasonable to keep for debug.
-> 
-> Not-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On 09.06.23 22:19, Fabiano Rosas wrote:
+> The following patches will add co_wrapper annotations to functions
+> declared in qapi.h. Add that header to the set of files used by
+> block-coroutine-wrapper.py.
+>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->   tcg/tcg.c                 | 49 ++++++++++++++++++++++++++-------------
->   tcg/i386/tcg-target.c.inc | 13 ++++++++---
->   2 files changed, 43 insertions(+), 19 deletions(-)
-> 
-> diff --git a/tcg/tcg.c b/tcg/tcg.c
-> index a507c111cf..408647af7e 100644
-> --- a/tcg/tcg.c
-> +++ b/tcg/tcg.c
-> @@ -3618,23 +3618,40 @@ liveness_pass_1(TCGContext *s)
->           do_addsub2:
->               nb_iargs = 4;
->               nb_oargs = 2;
-> -            /* Test if the high part of the operation is dead, but not
-> -               the low part.  The result can be optimized to a simple
-> -               add or sub.  This happens often for x86_64 guest when the
-> -               cpu mode is set to 32 bit.  */
-> -            if (arg_temp(op->args[1])->state == TS_DEAD) {
-> -                if (arg_temp(op->args[0])->state == TS_DEAD) {
-> -                    goto do_remove;
-> -                }
-> -                /* Replace the opcode and adjust the args in place,
-> -                   leaving 3 unused args at the end.  */
-> -                op->opc = opc = opc_new;
-> -                op->args[1] = op->args[2];
-> -                op->args[2] = op->args[4];
-> -                /* Fall through and mark the single-word operation live.  */
-> -                nb_iargs = 2;
-> -                nb_oargs = 1;
-> +            /*
-> +             * Test if the high part of the operation is dead, but the low
-> +             * part is still live.  The result can be optimized to a simple
-> +             * add or sub.
-> +             */
-> +            if (arg_temp(op->args[1])->state != TS_DEAD) {
-> +                goto do_not_remove;
->               }
-> +            if (arg_temp(op->args[0])->state == TS_DEAD) {
-> +                goto do_remove;
-> +            }
-> +            /*
-> +             * Replace the opcode and adjust the args in place, leaving 3
-> +             * unused args at the end.  Canonicalize subi to andi.
+>   block/meson.build                  | 1 +
+>   scripts/block-coroutine-wrapper.py | 1 +
+>   2 files changed, 2 insertions(+)
 
-Typo s/andi/addi/.
-
-> +             */
-> +            op->args[1] = op->args[2];
-> +            {
-> +                TCGTemp *src2 = arg_temp(op->args[4]);
-> +                if (src2->kind == TEMP_CONST) {
-> +                    if (opc_new == INDEX_op_sub_i32) {
-> +                        src2 = tcg_constant_internal(TCG_TYPE_I32,
-> +                                                     (int32_t)-src2->val);
-> +                        opc_new = INDEX_op_add_i32;
-> +                    } else if (opc_new == INDEX_op_sub_i64) {
-> +                        src2 = tcg_constant_internal(TCG_TYPE_I64, -src2->val);
-> +                        opc_new = INDEX_op_add_i64;
-> +                    }
-> +                }
-> +                op->args[2] = temp_arg(src2);
-> +            }
-> +            op->opc = opc = opc_new;
-> +            /* Mark the single-word operation live.  */
-> +            nb_iargs = 2;
-> +            nb_oargs = 1;
->               goto do_not_remove;
-
-For tcg/tcg.c with your S-o-b and a reworded description:
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 
 
