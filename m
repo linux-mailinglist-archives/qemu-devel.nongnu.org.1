@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B85977E1EAD
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 11:42:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 947E97E1EA4
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 11:41:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzx28-0001cd-U1; Mon, 06 Nov 2023 05:40:41 -0500
+	id 1qzx25-0001Yr-GB; Mon, 06 Nov 2023 05:40:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+aa7b7dce24b49c47a83c+7379+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1qzx1s-0001Uw-Uu; Mon, 06 Nov 2023 05:40:26 -0500
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+ <BATV+7ad6dfa9aff48d363c6b+7379+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qzx1o-0001TZ-2R; Mon, 06 Nov 2023 05:40:20 -0500
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+aa7b7dce24b49c47a83c+7379+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1qzx1e-0007hV-Em; Mon, 06 Nov 2023 05:40:24 -0500
+ <BATV+7ad6dfa9aff48d363c6b+7379+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qzx1e-0007hG-EZ; Mon, 06 Nov 2023 05:40:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
- Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
- To:From:Reply-To:Content-ID:Content-Description;
- bh=2aX82uZpC1qyK8a13DdVvtrvr4nDdAxx84xCzWlWkQE=; b=Lsa03UYsBW/tPFhN+jMR5L26U/
- TVzIcfwnVOKWq5iVAbYsqR6CCu2/cqD2aOvhXmFK94xOl7AaqnrWzCxnvgNIK+qbGL3dSymFt2T1w
- TxnN1TH0mJkh1qzM/BhXXPzV7ivfJRv24SyfrEi9Wn71X/x5BxUf3616HSSSnHGXSzY5RLRicYzGq
- 7YwIXlaz/0icDCQWAP1xDbdRgUrI64/oY3c6TeFVPJwinCYCKUzxgRZ0K+HaQk+yAufoKx5SztD5n
- PuPTmD1h8oBzywh7Jh1H9fiiYouwogazRnsvbqM526NkjyZpNfe1bEFjOBIPG7UHC0kDEpTVLKQW6
- aL2RWHyQ==;
+ d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+ Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=oTzSlnwFiwNNyo9+XLJSozlV3tES1c1DD/ZmREeHw24=; b=AFLH666BhTE9iLsKwkcxfjYYVk
+ EK1GRnKx1eeQSIv4t+AlzQ51FcOiV4PCFI+D9tzyDeaMe6dga8PYsEugIJlk8ThSR6cXwK2AKXIxM
+ vYAXj7UM09WBHcehjYNl+F4q/IdDbIauXkudVIoN/MgOzhWFA+Pyh9VobKDkjCaBQ0r3+ac+bZ7f4
+ vjf/MzboSSR81s4957qqdvrSVWv9ufNI6hAQ3y8jvHLmnO/b1ZYN4vlIQa8/WUDuCtsOyPoL13Siu
+ 1oguA+OYtjBq95Y5Tnq77a8QjdpITiik2VpWIa7KX8H7aNQBgSFdL60drlP/vZ+JFZUNtSuxNPsF8
+ R+CngbmA==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
- id 1qzx1R-00ARzw-0T; Mon, 06 Nov 2023 10:39:57 +0000
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qzx1P-005R1i-Rt; Mon, 06 Nov 2023 10:39:56 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96.2 #2 (Red
- Hat Linux)) id 1qzx1Q-000qGD-0J; Mon, 06 Nov 2023 10:39:56 +0000
+ Hat Linux)) id 1qzx1Q-000qGH-0X; Mon, 06 Nov 2023 10:39:56 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org,
 	qemu-stable@nongnu.org
@@ -46,20 +46,19 @@ Cc: Stefano Stabellini <sstabellini@kernel.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcelo Tosatti <mtosatti@redhat.com>, xen-devel@lists.xenproject.org,
  qemu-block@nongnu.org, kvm@vger.kernel.org
-Subject: [PULL 5/7] hw/xen: fix XenStore watch delivery to guest
-Date: Mon,  6 Nov 2023 10:39:53 +0000
-Message-ID: <20231106103955.200867-6-dwmw2@infradead.org>
+Subject: [PULL 6/7] hw/xen: take iothread mutex in xen_evtchn_reset_op()
+Date: Mon,  6 Nov 2023 10:39:54 +0000
+Message-ID: <20231106103955.200867-7-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231106103955.200867-1-dwmw2@infradead.org>
 References: <20231106103955.200867-1-dwmw2@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- desiato.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
- envelope-from=BATV+aa7b7dce24b49c47a83c+7379+infradead.org+dwmw2@desiato.srs.infradead.org;
- helo=desiato.infradead.org
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+7ad6dfa9aff48d363c6b+7379+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -84,51 +83,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-When fire_watch_cb() found the response buffer empty, it would call
-deliver_watch() to generate the XS_WATCH_EVENT message in the response
-buffer and send an event channel notification to the guest… without
-actually *copying* the response buffer into the ring. So there was
-nothing for the guest to see. The pending response didn't actually get
-processed into the ring until the guest next triggered some activity
-from its side.
-
-Add the missing call to put_rsp().
-
-It might have been slightly nicer to call xen_xenstore_event() here,
-which would *almost* have worked. Except for the fact that it calls
-xen_be_evtchn_pending() to check that it really does have an event
-pending (and clear the eventfd for next time). And under Xen it's
-defined that setting that fd to O_NONBLOCK isn't guaranteed to work,
-so the emu implementation follows suit.
-
-This fixes Xen device hot-unplug.
+The xen_evtchn_soft_reset() function requires the iothread mutex, but is
+also called for the EVTCHNOP_reset hypercall. Ensure the mutex is taken
+in that case.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 0254c4d19df ("hw/xen: Add xenstore wire implementation and implementation stubs")
+Fixes: a15b10978fe6 ("hw/xen: Implement EVTCHNOP_reset")
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Paul Durrant <paul@xen.org>
 ---
- hw/i386/kvm/xen_xenstore.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ hw/i386/kvm/xen_evtchn.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/i386/kvm/xen_xenstore.c b/hw/i386/kvm/xen_xenstore.c
-index 660d0b72f9..8e716a7009 100644
---- a/hw/i386/kvm/xen_xenstore.c
-+++ b/hw/i386/kvm/xen_xenstore.c
-@@ -1357,10 +1357,12 @@ static void fire_watch_cb(void *opaque, const char *path, const char *token)
-     } else {
-         deliver_watch(s, path, token);
-         /*
--         * If the message was queued because there was already ring activity,
--         * no need to wake the guest. But if not, we need to send the evtchn.
-+         * Attempt to queue the message into the actual ring, and send
-+         * the event channel notification if any bytes are copied.
-          */
--        xen_be_evtchn_notify(s->eh, s->be_port);
-+        if (s->rsp_pending && put_rsp(s) > 0) {
-+            xen_be_evtchn_notify(s->eh, s->be_port);
-+        }
+diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
+index 3d6f4b4a0a..b2b4be9983 100644
+--- a/hw/i386/kvm/xen_evtchn.c
++++ b/hw/i386/kvm/xen_evtchn.c
+@@ -1135,6 +1135,7 @@ int xen_evtchn_reset_op(struct evtchn_reset *reset)
+         return -ESRCH;
      }
+ 
++    QEMU_IOTHREAD_LOCK_GUARD();
+     return xen_evtchn_soft_reset();
  }
  
 -- 
