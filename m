@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C8E7E1B0C
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:24:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F0337E1B19
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:25:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztxa-0001dA-E1; Mon, 06 Nov 2023 02:23:46 -0500
+	id 1qztxe-0001e1-6Q; Mon, 06 Nov 2023 02:23:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qztxY-0001cz-2c
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:23:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qztxc-0001dX-Do
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:23:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qztxW-0006Kl-OO
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:23:43 -0500
+ id 1qztxa-0006L0-V7
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:23:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699255422;
+ s=mimecast20190719; t=1699255426;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=I9D+WsgQUn58hPq9Nowxn6qP6OypiJidZorSMGCHn4E=;
- b=CKyx20JmHSd+Y4iTljtnNpED+W81E7WV+7P3dUAbt/2SXmjemlBE1eso4PD9xQNOJhIyY2
- TTR1eYOLuXL6j4uxKO34r5pbMxZPA7baQrARZXPU36epXMDV/Ma2WUGzG/yYL0w6KuMR1f
- xWQD/seL5cw6X3SqnBZhxuiZhSRTfAk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-686-4j4XAnyjOM2f9tFglato2A-1; Mon, 06 Nov 2023 02:23:39 -0500
-X-MC-Unique: 4j4XAnyjOM2f9tFglato2A-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ bh=IX1Ru8tgVxYqEZYqMU0WhGMD54ZY3eu7+DSfIUlkMbI=;
+ b=I+pW9qRcHbkUljNh9ip/JjykePKJGkkC76eD/e7GWcCJQUa40L9E0aQWIkIlGku6yOcRMX
+ Qn91f5czVsS3n/f86Y1/QqlaQrhndlj8MIrBAkYGrkBUfB3XyJZzWxWr/Wk6o/ixcDNvH7
+ DtYj7dmwpVK+LS60ObOmNaaO9KK4ISc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-355-GeICw524MCidRui9sloVRw-1; Mon,
+ 06 Nov 2023 02:23:42 -0500
+X-MC-Unique: GeICw524MCidRui9sloVRw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 80C30185A787;
- Mon,  6 Nov 2023 07:23:38 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8E7242806044;
+ Mon,  6 Nov 2023 07:23:42 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C442340C6EB9;
- Mon,  6 Nov 2023 07:23:37 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CF3C7C1596F;
+ Mon,  6 Nov 2023 07:23:41 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 05/23] vl: drop needless -spice checks
-Date: Mon,  6 Nov 2023 11:22:54 +0400
-Message-ID: <20231106072313.1742543-6-marcandre.lureau@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL 06/23] qemu-options: define -vnc only #ifdef CONFIG_VNC
+Date: Mon,  6 Nov 2023 11:22:55 +0400
+Message-ID: <20231106072313.1742543-7-marcandre.lureau@redhat.com>
 In-Reply-To: <20231106072313.1742543-1-marcandre.lureau@redhat.com>
 References: <20231106072313.1742543-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
@@ -65,7 +65,7 @@ X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,34 +85,96 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Since commit 5324e3e958e ("qemu-options: define -spice only #ifdef
-CONFIG_SPICE"), it is unnecessary to check at runtime for "-spice"
-option.
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- system/vl.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ system/vl.c     | 13 +++++++++----
+ ui/vnc-stubs.c  | 12 ------------
+ qemu-options.hx |  2 ++
+ 3 files changed, 11 insertions(+), 16 deletions(-)
 
 diff --git a/system/vl.c b/system/vl.c
-index 3fb569254a..fb0389e4d0 100644
+index fb0389e4d0..19aef762e4 100644
 --- a/system/vl.c
 +++ b/system/vl.c
-@@ -3475,12 +3475,7 @@ void qemu_init(int argc, char **argv)
+@@ -1095,13 +1095,14 @@ DisplayOptions *qmp_query_display_options(Error **errp)
+ 
+ static void parse_display(const char *p)
+ {
+-    const char *opts;
+-
+     if (is_help_option(p)) {
+         qemu_display_help();
+         exit(0);
+     }
+ 
++#ifdef CONFIG_VNC
++    const char *opts;
++
+     if (strstart(p, "vnc", &opts)) {
+         /*
+          * vnc isn't a (local) DisplayType but a protocol for remote
+@@ -1113,9 +1114,11 @@ static void parse_display(const char *p)
+             error_report("VNC requires a display argument vnc=<display>");
+             exit(1);
+         }
+-    } else {
+-        parse_display_qapi(p);
++        return;
+     }
++#endif
++
++    parse_display_qapi(p);
+ }
+ 
+ static inline bool nonempty_str(const char *str)
+@@ -3344,9 +3347,11 @@ void qemu_init(int argc, char **argv)
+                 machine_parse_property_opt(qemu_find_opts("smp-opts"),
+                                            "smp", optarg);
                  break;
- #ifdef CONFIG_SPICE
-             case QEMU_OPTION_spice:
--                olist = qemu_find_opts_err("spice", NULL);
--                if (!olist) {
--                    error_report("spice support is disabled");
--                    exit(1);
--                }
--                opts = qemu_opts_parse_noisily(olist, optarg, false);
-+                opts = qemu_opts_parse_noisily(qemu_find_opts("spice"), optarg, false);
-                 if (!opts) {
-                     exit(1);
-                 }
++#ifdef CONFIG_VNC
+             case QEMU_OPTION_vnc:
+                 vnc_parse(optarg);
+                 break;
++#endif
+             case QEMU_OPTION_no_acpi:
+                 warn_report("-no-acpi is deprecated, use '-machine acpi=off' instead");
+                 qdict_put_str(machine_opts_dict, "acpi", "off");
+diff --git a/ui/vnc-stubs.c b/ui/vnc-stubs.c
+index b4eb3ce718..a96bc86236 100644
+--- a/ui/vnc-stubs.c
++++ b/ui/vnc-stubs.c
+@@ -10,15 +10,3 @@ int vnc_display_pw_expire(const char *id, time_t expires)
+ {
+     return -ENODEV;
+ };
+-void vnc_parse(const char *str)
+-{
+-    if (strcmp(str, "none") == 0) {
+-        return;
+-    }
+-    error_setg(&error_fatal, "VNC support is disabled");
+-}
+-int vnc_init_func(void *opaque, QemuOpts *opts, Error **errp)
+-{
+-    error_setg(errp, "VNC support is disabled");
+-    return -1;
+-}
+diff --git a/qemu-options.hx b/qemu-options.hx
+index e26230bac5..edc8ca6e30 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -2424,8 +2424,10 @@ SRST
+     OBP.
+ ERST
+ 
++#ifdef CONFIG_VNC
+ DEF("vnc", HAS_ARG, QEMU_OPTION_vnc ,
+     "-vnc <display>  shorthand for -display vnc=<display>\n", QEMU_ARCH_ALL)
++#endif
+ SRST
+ ``-vnc display[,option[,option[,...]]]``
+     Normally, if QEMU is compiled with graphical window support, it
 -- 
 2.41.0
 
