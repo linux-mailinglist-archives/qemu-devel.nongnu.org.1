@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0FEC7E1AB3
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:06:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D77487E1ADA
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 08:13:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qztdp-0002Ce-Rc; Mon, 06 Nov 2023 02:03:22 -0500
+	id 1qztgA-0006nf-46; Mon, 06 Nov 2023 02:05:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztd1-0000cS-4I
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:02:32 -0500
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1qztdD-00018e-C1
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:02:46 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qztcr-00020F-JD
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:02:28 -0500
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2800f7c8125so4097958a91.1
- for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 23:02:16 -0800 (PST)
+ id 1qztcr-00020I-N3
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 02:02:38 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6b87c1edfd5so3052138b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 05 Nov 2023 23:02:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699254135; x=1699858935; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699254136; x=1699858936; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=l/DAqRb/YvkfB+IMhHLNMx9PB+A0mfV7BrZG2PN2lPw=;
- b=V2QwEoVHhltywAU+jT0flpEzayUKnAb+xJMW2DbyxIL4RGmnPev718LZsd9yZHqECV
- Vv5nOy+lIHfoz86bDwAvutzMDWMLkSNKQdZFAMn6euxYHGlD58OL3GvycnSIDwJ4eAbf
- BR7qu131eqKUertg0qF6Jc8ghqIPRLt276/zD43kvXIz02g7+TRdHwiKaH9oaAbYXQJ5
- J9QwWtP3dKCWaEvoXmll+PntI5Px+qTe/PPgCZzNHhA/D9zw09OZw/jRjIsdrhFPMwl5
- RqQ4/uSIYnT4qV0cBfMiVESkBGWZLll+s12nilqZWsLvRvTHGxlaNjCNTWcQBglQuFTm
- DWSQ==
+ bh=VCH7H3uv1j+F9POX07D6yayi/ajggVOOyJwLNgcSu1o=;
+ b=nSKF6mB7hcbmCcvkTZorGn96LVg9ke2nna/OswB9NIR1Vp0FpD4hh1Mp/a9S/IqMqE
+ edVLCjV7CX3xn0Z3+Hrpr3jEOaDkwc92rx6tDdTp+N+ui3kC1V+Y0+okoh+WZUBl4e5V
+ 3HcZwtREVVq8aAUNYgCkltD/Q03VmaIpXFbYKJeHvetMVdii4D8+2f97OySf0ww3zBEh
+ z/Et0ZLsxPfCw8fc0TKRnAL/h5xdzqTMWp5piwUPDGtOwToajgA9/ZHFXyaJT81nmoze
+ KuJRIkSJexqfmJC9JDHbZGjM0tDj55sXBWCmJobQ41ah/+wVUp+vgelKNfdYBJlnfJ2C
+ 3z0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699254135; x=1699858935;
+ d=1e100.net; s=20230601; t=1699254136; x=1699858936;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=l/DAqRb/YvkfB+IMhHLNMx9PB+A0mfV7BrZG2PN2lPw=;
- b=b6bMdd0jjxds9EdIRJ+xmw7RobarK7emWfFW/enFmJrr77tveyxTeLAK0R4VySmzb9
- aAQEvQwvtjzD9DzIeRVSx3OW8ipWLGQy+jnugDuHHrBftK/f0qQRY35NI5tiEdQIgILr
- tIwfyVSVumcnLOT8+tiZMxt5hkQQxNXBmqnLZk8lYeXMTOKY789aJevBqNp7PtA2MEjl
- 5mdPwg2GSv3E0AM3w3Milc0B8hmOMVa8pFfColGd8t0tsRGIJ+OnJB8qkgJCAeZutqmm
- E9J1HtlSiap/z+kAK4Hnql5bkeg42nFPEbeNFxM2mqkIxkEjPTSSbsPcDWr5TvvdVPmQ
- yRKg==
-X-Gm-Message-State: AOJu0YxU50b40wWThSe83CoB9YTZdq0HEQHjFUFiU9gOIh4QL/szXzob
- 8f9HKFYMa7FAN4b4A0rOWHaV+hryQgnI9Z+6wWY=
-X-Google-Smtp-Source: AGHT+IEBMRAEN6r3D5QercvAm/cl4MCP35eXN1kNcx5T786gUXQY9ojvSQ8bVOJbSmBLKSvl9X9Jlw==
-X-Received: by 2002:a17:90b:3e88:b0:27c:df02:88b3 with SMTP id
- rj8-20020a17090b3e8800b0027cdf0288b3mr13081464pjb.8.1699254135326; 
- Sun, 05 Nov 2023 23:02:15 -0800 (PST)
+ bh=VCH7H3uv1j+F9POX07D6yayi/ajggVOOyJwLNgcSu1o=;
+ b=luuQixE11WqiTRoa7WqCNTRiw5pDRimKR05DhyxnxnwvftjMc2cJ7iuqPusuxNCkA8
+ 3c49P/aSfAJN7t/YpOMpkx8xrH/foUzuDKGnYvGIpt27dm2v0bq110iZhAZ99s4ep6R1
+ JYi6AXF8i34obwxf8M44onwslBTHMDX0Ui+hc31n0fDMvqT/1ixrje9lc3hHojUN2b6k
+ 4UaOp850LQ1lUPuE+WErV8Czt7jxLE6He7fvnwMGdIGdw+IQY4lwfexCntHYl6NbFhQc
+ LVPcqsPR/WN0NZTvcRwvvJ81b6qHeszaBCqRyOZTIEtISXYSvL6Nz9E1jOipcSmapR1F
+ QYQQ==
+X-Gm-Message-State: AOJu0Yz8Y79Ep4vrf4mnaUtTOz2vp+q25f5HcAftI0kx1Qjgb88I4TZI
+ Dw/q6fHvczqCd2Y3ZKaNAMFX3JfReLj/0Gy60jw=
+X-Google-Smtp-Source: AGHT+IGllJ+zND0+rOmqjnw4iooHOqjlIh9URdvLqddlrZzzea9b/rVKvArQjaScGSXfO8VccYCLDg==
+X-Received: by 2002:a05:6a20:918d:b0:17a:eddb:ac65 with SMTP id
+ v13-20020a056a20918d00b0017aeddbac65mr27380613pzd.9.1699254136039; 
+ Sun, 05 Nov 2023 23:02:16 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- 8-20020a17090a194800b0027d88387287sm5319650pjh.51.2023.11.05.23.02.14
+ 8-20020a17090a194800b0027d88387287sm5319650pjh.51.2023.11.05.23.02.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Nov 2023 23:02:14 -0800 (PST)
+ Sun, 05 Nov 2023 23:02:15 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
-Subject: [PATCH 53/71] hw/sensor: Constify VMState
-Date: Sun,  5 Nov 2023 22:58:09 -0800
-Message-Id: <20231106065827.543129-54-richard.henderson@linaro.org>
+Subject: [PATCH 54/71] hw/sparc: Constify VMState
+Date: Sun,  5 Nov 2023 22:58:10 -0800
+Message-Id: <20231106065827.543129-55-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231106065827.543129-1-richard.henderson@linaro.org>
 References: <20231106065827.543129-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,138 +92,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/sensor/adm1272.c        | 2 +-
- hw/sensor/dps310.c         | 2 +-
- hw/sensor/emc141x.c        | 2 +-
- hw/sensor/lsm303dlhc_mag.c | 2 +-
- hw/sensor/max31785.c       | 2 +-
- hw/sensor/max34451.c       | 2 +-
- hw/sensor/tmp105.c         | 6 +++---
- hw/sensor/tmp421.c         | 2 +-
- 8 files changed, 10 insertions(+), 10 deletions(-)
+ hw/sparc/sun4m_iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/sensor/adm1272.c b/hw/sensor/adm1272.c
-index 8f4a1c2cd4..1f7c8abb83 100644
---- a/hw/sensor/adm1272.c
-+++ b/hw/sensor/adm1272.c
-@@ -457,7 +457,7 @@ static const VMStateDescription vmstate_adm1272 = {
-     .name = "ADM1272",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]){
-+    .fields = (const VMStateField[]){
-         VMSTATE_PMBUS_DEVICE(parent, ADM1272State),
-         VMSTATE_UINT64(ein_ext, ADM1272State),
-         VMSTATE_UINT32(pin_ext, ADM1272State),
-diff --git a/hw/sensor/dps310.c b/hw/sensor/dps310.c
-index addee99b19..01c776dd7a 100644
---- a/hw/sensor/dps310.c
-+++ b/hw/sensor/dps310.c
-@@ -188,7 +188,7 @@ static const VMStateDescription vmstate_dps310 = {
-     .name = "DPS310",
-     .version_id = 0,
-     .minimum_version_id = 0,
+diff --git a/hw/sparc/sun4m_iommu.c b/hw/sparc/sun4m_iommu.c
+index eb40f9377c..06703b1d96 100644
+--- a/hw/sparc/sun4m_iommu.c
++++ b/hw/sparc/sun4m_iommu.c
+@@ -331,7 +331,7 @@ static const VMStateDescription vmstate_iommu = {
+     .name = "iommu",
+     .version_id = 2,
+     .minimum_version_id = 2,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(len, DPS310State),
-         VMSTATE_UINT8_ARRAY(regs, DPS310State, NUM_REGISTERS),
-         VMSTATE_UINT8(pointer, DPS310State),
-diff --git a/hw/sensor/emc141x.c b/hw/sensor/emc141x.c
-index 7ce8f4e979..95079558e8 100644
---- a/hw/sensor/emc141x.c
-+++ b/hw/sensor/emc141x.c
-@@ -228,7 +228,7 @@ static const VMStateDescription vmstate_emc141x = {
-     .name = "EMC141X",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(len, EMC141XState),
-         VMSTATE_UINT8(data, EMC141XState),
-         VMSTATE_UINT8(pointer, EMC141XState),
-diff --git a/hw/sensor/lsm303dlhc_mag.c b/hw/sensor/lsm303dlhc_mag.c
-index bb8d48b2fd..343ff98990 100644
---- a/hw/sensor/lsm303dlhc_mag.c
-+++ b/hw/sensor/lsm303dlhc_mag.c
-@@ -442,7 +442,7 @@ static const VMStateDescription vmstate_lsm303dlhc_mag = {
-     .name = "LSM303DLHC_MAG",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
- 
-         VMSTATE_I2C_SLAVE(parent_obj, LSM303DLHCMagState),
-         VMSTATE_UINT8(len, LSM303DLHCMagState),
-diff --git a/hw/sensor/max31785.c b/hw/sensor/max31785.c
-index 8b95e32481..916ed4d457 100644
---- a/hw/sensor/max31785.c
-+++ b/hw/sensor/max31785.c
-@@ -487,7 +487,7 @@ static const VMStateDescription vmstate_max31785 = {
-     .name = TYPE_MAX31785,
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]){
-+    .fields = (const VMStateField[]){
-         VMSTATE_PMBUS_DEVICE(parent, MAX31785State),
-         VMSTATE_UINT16_ARRAY(mfr_mode, MAX31785State,
-                              MAX31785_TOTAL_NUM_PAGES),
-diff --git a/hw/sensor/max34451.c b/hw/sensor/max34451.c
-index 9db52ef677..031ae53f59 100644
---- a/hw/sensor/max34451.c
-+++ b/hw/sensor/max34451.c
-@@ -654,7 +654,7 @@ static const VMStateDescription vmstate_max34451 = {
-     .name = TYPE_MAX34451,
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]){
-+    .fields = (const VMStateField[]){
-         VMSTATE_PMBUS_DEVICE(parent, MAX34451State),
-         VMSTATE_UINT16_ARRAY(power_good_on, MAX34451State,
-                              MAX34451_NUM_PWR_DEVICES),
-diff --git a/hw/sensor/tmp105.c b/hw/sensor/tmp105.c
-index 2056449489..a8730d0b7f 100644
---- a/hw/sensor/tmp105.c
-+++ b/hw/sensor/tmp105.c
-@@ -238,7 +238,7 @@ static const VMStateDescription vmstate_tmp105_detect_falling = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = detect_falling_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_BOOL(detect_falling, TMP105State),
+         VMSTATE_UINT32_ARRAY(regs, IOMMUState, IOMMU_NREGS),
+         VMSTATE_UINT64(iostart, IOMMUState),
          VMSTATE_END_OF_LIST()
-     }
-@@ -249,7 +249,7 @@ static const VMStateDescription vmstate_tmp105 = {
-     .version_id = 0,
-     .minimum_version_id = 0,
-     .post_load = tmp105_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(len, TMP105State),
-         VMSTATE_UINT8_ARRAY(buf, TMP105State, 2),
-         VMSTATE_UINT8(pointer, TMP105State),
-@@ -260,7 +260,7 @@ static const VMStateDescription vmstate_tmp105 = {
-         VMSTATE_I2C_SLAVE(i2c, TMP105State),
-         VMSTATE_END_OF_LIST()
-     },
--    .subsections = (const VMStateDescription*[]) {
-+    .subsections = (const VMStateDescription * const []) {
-         &vmstate_tmp105_detect_falling,
-         NULL
-     }
-diff --git a/hw/sensor/tmp421.c b/hw/sensor/tmp421.c
-index a3db57dcb5..b6f0b62ab1 100644
---- a/hw/sensor/tmp421.c
-+++ b/hw/sensor/tmp421.c
-@@ -290,7 +290,7 @@ static const VMStateDescription vmstate_tmp421 = {
-     .name = "TMP421",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(len, TMP421State),
-         VMSTATE_UINT8_ARRAY(buf, TMP421State, 2),
-         VMSTATE_UINT8(pointer, TMP421State),
 -- 
 2.34.1
 
