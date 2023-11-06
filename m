@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3636C7E2596
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 14:33:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DADD7E25AF
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 14:34:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qzzii-0005lT-2I; Mon, 06 Nov 2023 08:32:48 -0500
+	id 1qzzil-0005nA-MY; Mon, 06 Nov 2023 08:32:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qzzig-0005ka-BG
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 08:32:46 -0500
+ id 1qzzii-0005m7-NS
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 08:32:48 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qzzie-0003ky-NT
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 08:32:46 -0500
+ id 1qzzig-0003lG-Ux
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 08:32:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699277564;
+ s=mimecast20190719; t=1699277566;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Wrw1TLwcieyZj3PYYiGWOE6P3VGmBO15YjosPs/JHdI=;
- b=HxylOwhrk/IlPBEizu4EardlcBYh47Zwc6eC7RdhUv5kpEWu4qmb6IX2+8+LvVJJOnMH+d
- 8GlKvNeMlWcVCuaVQkmZ6aTSQElnKmWMWpMdYeExjyEq1Rwg5mR7NAGaGwCSXlIoYxGQXP
- AA03cWb4Re+re/4vQozEKu+R/PSAAxE=
+ bh=Mywo8KICVCxbxzpY+mReJFJ1I78UFt3Y9PYuMgZIeBs=;
+ b=FzzjEPgGBIU+9wJUGs937AsL+IB+qk9vJpn5682i3sCy1pzTeVL03AhKgGkhMWVHpOJlFK
+ 2wZzQlsrSh3w060Yk4ZN6JK/jca7X72/q8f+6ttFn4U4kKHS1PI/BALZFDbg2UIFL966YX
+ CTVdax9FowigOiTlfZf+n8QmwrIO95k=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-403-YBxKm97oNOO2gF-rS6tcfg-1; Mon, 06 Nov 2023 08:32:40 -0500
-X-MC-Unique: YBxKm97oNOO2gF-rS6tcfg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ us-mta-125-KYB8TDfGM1OurNTp5L4s9g-1; Mon, 06 Nov 2023 08:32:44 -0500
+X-MC-Unique: KYB8TDfGM1OurNTp5L4s9g-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 53450185A78F;
- Mon,  6 Nov 2023 13:32:40 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 55542185A788;
+ Mon,  6 Nov 2023 13:32:44 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 79B83502B;
- Mon,  6 Nov 2023 13:32:39 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0BC74492BE0;
+ Mon,  6 Nov 2023 13:32:42 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 04/10] ati-vga: Add 30 bit palette access register
-Date: Mon,  6 Nov 2023 17:32:13 +0400
-Message-ID: <20231106133219.2173660-5-marcandre.lureau@redhat.com>
+Subject: [PULL 05/10] ati-vga: Implement fallback for pixman routines
+Date: Mon,  6 Nov 2023 17:32:14 +0400
+Message-ID: <20231106133219.2173660-6-marcandre.lureau@redhat.com>
 In-Reply-To: <20231106133219.2173660-1-marcandre.lureau@redhat.com>
 References: <20231106133219.2173660-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -84,83 +84,168 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Radeon cards have a 30 bit DAC and corresponding palette register to
-access it. We only use 8 bits but let the guests use 10 bit color
-values for those that access it through this register.
+Pixman routines can fail if no implementation is available and it will
+become optional soon so add fallbacks when pixman does not work.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <9fa19eec95d1563cc65853cf26912f230c702b32.1698871239.git.balaton@eik.bme.hu>
+Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <ed0fba3f74e48143f02228b83bf8796ca49f3e7d.1698871239.git.balaton@eik.bme.hu>
 ---
- hw/display/ati_int.h  | 1 +
- hw/display/ati_regs.h | 1 +
- hw/display/ati.c      | 9 +++++++++
- hw/display/ati_dbg.c  | 1 +
- 4 files changed, 12 insertions(+)
+ hw/display/ati_int.h |  1 +
+ hw/display/ati.c     |  8 +++++
+ hw/display/ati_2d.c  | 75 +++++++++++++++++++++++++++++++-------------
+ 3 files changed, 62 insertions(+), 22 deletions(-)
 
 diff --git a/hw/display/ati_int.h b/hw/display/ati_int.h
-index e8d3c7af75..8abb873f01 100644
+index 8abb873f01..f5a47b82b0 100644
 --- a/hw/display/ati_int.h
 +++ b/hw/display/ati_int.h
-@@ -44,6 +44,7 @@ typedef struct ATIVGARegs {
-     uint32_t gpio_dvi_ddc;
-     uint32_t gpio_monid;
-     uint32_t config_cntl;
-+    uint32_t palette[256];
-     uint32_t crtc_h_total_disp;
-     uint32_t crtc_h_sync_strt_wid;
-     uint32_t crtc_v_total_disp;
-diff --git a/hw/display/ati_regs.h b/hw/display/ati_regs.h
-index c697b328da..d7127748ff 100644
---- a/hw/display/ati_regs.h
-+++ b/hw/display/ati_regs.h
-@@ -48,6 +48,7 @@
- #define AMCGPIO_EN_MIR                          0x00a8
- #define PALETTE_INDEX                           0x00b0
- #define PALETTE_DATA                            0x00b4
-+#define PALETTE_30_DATA                         0x00b8
- #define CNFG_CNTL                               0x00e0
- #define GEN_RESET_CNTL                          0x00f0
- #define CNFG_MEMSIZE                            0x00f8
+@@ -90,6 +90,7 @@ struct ATIVGAState {
+     char *model;
+     uint16_t dev_id;
+     uint8_t mode;
++    uint8_t use_pixman;
+     bool cursor_guest_mode;
+     uint16_t cursor_size;
+     uint32_t cursor_offset;
 diff --git a/hw/display/ati.c b/hw/display/ati.c
-index 538651c233..4868f95cf2 100644
+index 4868f95cf2..9a87a5504a 100644
 --- a/hw/display/ati.c
 +++ b/hw/display/ati.c
-@@ -339,6 +339,9 @@ static uint64_t ati_mm_read(void *opaque, hwaddr addr, unsigned int size)
-     case PALETTE_DATA:
-         val = vga_ioport_read(&s->vga, VGA_PEL_D);
-         break;
-+    case PALETTE_30_DATA:
-+        val = s->regs.palette[vga_ioport_read(&s->vga, VGA_PEL_IR)];
-+        break;
-     case CNFG_CNTL:
-         val = s->regs.config_cntl;
-         break;
-@@ -673,6 +676,12 @@ static void ati_mm_write(void *opaque, hwaddr addr,
-         data >>= 8;
-         vga_ioport_write(&s->vga, VGA_PEL_D, data & 0xff);
-         break;
-+    case PALETTE_30_DATA:
-+        s->regs.palette[vga_ioport_read(&s->vga, VGA_PEL_IW)] = data;
-+        vga_ioport_write(&s->vga, VGA_PEL_D, (data >> 22) & 0xff);
-+        vga_ioport_write(&s->vga, VGA_PEL_D, (data >> 12) & 0xff);
-+        vga_ioport_write(&s->vga, VGA_PEL_D, (data >> 2) & 0xff);
-+        break;
-     case CNFG_CNTL:
-         s->regs.config_cntl = data;
-         break;
-diff --git a/hw/display/ati_dbg.c b/hw/display/ati_dbg.c
-index 4aec1c383a..3ffa7f35df 100644
---- a/hw/display/ati_dbg.c
-+++ b/hw/display/ati_dbg.c
-@@ -30,6 +30,7 @@ static struct ati_regdesc ati_reg_names[] = {
-     {"AMCGPIO_EN_MIR", 0x00a8},
-     {"PALETTE_INDEX", 0x00b0},
-     {"PALETTE_DATA", 0x00b4},
-+    {"PALETTE_30_DATA", 0x00b8},
-     {"CNFG_CNTL", 0x00e0},
-     {"GEN_RESET_CNTL", 0x00f0},
-     {"CNFG_MEMSIZE", 0x00f8},
+@@ -1033,6 +1033,7 @@ static Property ati_vga_properties[] = {
+     DEFINE_PROP_UINT16("x-device-id", ATIVGAState, dev_id,
+                        PCI_DEVICE_ID_ATI_RAGE128_PF),
+     DEFINE_PROP_BOOL("guest_hwcursor", ATIVGAState, cursor_guest_mode, false),
++    DEFINE_PROP_UINT8("x-pixman", ATIVGAState, use_pixman, 3),
+     DEFINE_PROP_END_OF_LIST()
+ };
+ 
+@@ -1054,11 +1055,18 @@ static void ati_vga_class_init(ObjectClass *klass, void *data)
+     k->exit = ati_vga_exit;
+ }
+ 
++static void ati_vga_init(Object *o)
++{
++    object_property_set_description(o, "x-pixman", "Use pixman for: "
++                                    "1: fill, 2: blit");
++}
++
+ static const TypeInfo ati_vga_info = {
+     .name = TYPE_ATI_VGA,
+     .parent = TYPE_PCI_DEVICE,
+     .instance_size = sizeof(ATIVGAState),
+     .class_init = ati_vga_class_init,
++    .instance_init = ati_vga_init,
+     .interfaces = (InterfaceInfo[]) {
+           { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+           { },
+diff --git a/hw/display/ati_2d.c b/hw/display/ati_2d.c
+index 7d786653e8..0e6b8e4367 100644
+--- a/hw/display/ati_2d.c
++++ b/hw/display/ati_2d.c
+@@ -92,6 +92,7 @@ void ati_2d_blt(ATIVGAState *s)
+     switch (s->regs.dp_mix & GMC_ROP3_MASK) {
+     case ROP3_SRCCOPY:
+     {
++        bool fallback = false;
+         unsigned src_x = (s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT ?
+                        s->regs.src_x : s->regs.src_x + 1 - s->regs.dst_width);
+         unsigned src_y = (s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM ?
+@@ -122,27 +123,50 @@ void ati_2d_blt(ATIVGAState *s)
+                 src_bits, dst_bits, src_stride, dst_stride, bpp, bpp,
+                 src_x, src_y, dst_x, dst_y,
+                 s->regs.dst_width, s->regs.dst_height);
+-        if (s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT &&
++        if ((s->use_pixman & BIT(1)) &&
++            s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT &&
+             s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM) {
+-            pixman_blt((uint32_t *)src_bits, (uint32_t *)dst_bits,
+-                       src_stride, dst_stride, bpp, bpp,
+-                       src_x, src_y, dst_x, dst_y,
+-                       s->regs.dst_width, s->regs.dst_height);
+-        } else {
++            fallback = !pixman_blt((uint32_t *)src_bits, (uint32_t *)dst_bits,
++                                   src_stride, dst_stride, bpp, bpp,
++                                   src_x, src_y, dst_x, dst_y,
++                                   s->regs.dst_width, s->regs.dst_height);
++        } else if (s->use_pixman & BIT(1)) {
+             /* FIXME: We only really need a temporary if src and dst overlap */
+             int llb = s->regs.dst_width * (bpp / 8);
+             int tmp_stride = DIV_ROUND_UP(llb, sizeof(uint32_t));
+             uint32_t *tmp = g_malloc(tmp_stride * sizeof(uint32_t) *
+                                      s->regs.dst_height);
+-            pixman_blt((uint32_t *)src_bits, tmp,
+-                       src_stride, tmp_stride, bpp, bpp,
+-                       src_x, src_y, 0, 0,
+-                       s->regs.dst_width, s->regs.dst_height);
+-            pixman_blt(tmp, (uint32_t *)dst_bits,
+-                       tmp_stride, dst_stride, bpp, bpp,
+-                       0, 0, dst_x, dst_y,
+-                       s->regs.dst_width, s->regs.dst_height);
++            fallback = !pixman_blt((uint32_t *)src_bits, tmp,
++                                   src_stride, tmp_stride, bpp, bpp,
++                                   src_x, src_y, 0, 0,
++                                   s->regs.dst_width, s->regs.dst_height);
++            if (!fallback) {
++                fallback = !pixman_blt(tmp, (uint32_t *)dst_bits,
++                                       tmp_stride, dst_stride, bpp, bpp,
++                                       0, 0, dst_x, dst_y,
++                                       s->regs.dst_width, s->regs.dst_height);
++            }
+             g_free(tmp);
++        } else {
++            fallback = true;
++        }
++        if (fallback) {
++            unsigned int y, i, j, bypp = bpp / 8;
++            unsigned int src_pitch = src_stride * sizeof(uint32_t);
++            unsigned int dst_pitch = dst_stride * sizeof(uint32_t);
++
++            for (y = 0; y < s->regs.dst_height; y++) {
++                i = dst_x * bypp;
++                j = src_x * bypp;
++                if (s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM) {
++                    i += (dst_y + y) * dst_pitch;
++                    j += (src_y + y) * src_pitch;
++                } else {
++                    i += (dst_y + s->regs.dst_height - 1 - y) * dst_pitch;
++                    j += (src_y + s->regs.dst_height - 1 - y) * src_pitch;
++                }
++                memmove(&dst_bits[i], &src_bits[j], s->regs.dst_width * bypp);
++            }
+         }
+         if (dst_bits >= s->vga.vram_ptr + s->vga.vbe_start_addr &&
+             dst_bits < s->vga.vram_ptr + s->vga.vbe_start_addr +
+@@ -180,14 +204,21 @@ void ati_2d_blt(ATIVGAState *s)
+ 
+         dst_stride /= sizeof(uint32_t);
+         DPRINTF("pixman_fill(%p, %d, %d, %d, %d, %d, %d, %x)\n",
+-                dst_bits, dst_stride, bpp,
+-                dst_x, dst_y,
+-                s->regs.dst_width, s->regs.dst_height,
+-                filler);
+-        pixman_fill((uint32_t *)dst_bits, dst_stride, bpp,
+-                    dst_x, dst_y,
+-                    s->regs.dst_width, s->regs.dst_height,
+-                    filler);
++                dst_bits, dst_stride, bpp, dst_x, dst_y,
++                s->regs.dst_width, s->regs.dst_height, filler);
++        if (!(s->use_pixman & BIT(0)) ||
++            !pixman_fill((uint32_t *)dst_bits, dst_stride, bpp, dst_x, dst_y,
++                    s->regs.dst_width, s->regs.dst_height, filler)) {
++            /* fallback when pixman failed or we don't want to call it */
++            unsigned int x, y, i, bypp = bpp / 8;
++            unsigned int dst_pitch = dst_stride * sizeof(uint32_t);
++            for (y = 0; y < s->regs.dst_height; y++) {
++                i = dst_x * bypp + (dst_y + y) * dst_pitch;
++                for (x = 0; x < s->regs.dst_width; x++, i += bypp) {
++                    stn_he_p(&dst_bits[i], bypp, filler);
++                }
++            }
++        }
+         if (dst_bits >= s->vga.vram_ptr + s->vga.vbe_start_addr &&
+             dst_bits < s->vga.vram_ptr + s->vga.vbe_start_addr +
+             s->vga.vbe_regs[VBE_DISPI_INDEX_YRES] * s->vga.vbe_line_offset) {
 -- 
 2.41.0
 
