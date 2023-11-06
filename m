@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 276257E268E
+	by mail.lfdr.de (Postfix) with ESMTPS id A436B7E2694
 	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:23:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r00Tk-0000pn-Fc; Mon, 06 Nov 2023 09:21:24 -0500
+	id 1r00Tl-0000qV-FL; Mon, 06 Nov 2023 09:21:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1r00Th-0000pO-Do
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:21:21 -0500
+ id 1r00Tk-0000qK-Cp
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:21:24 -0500
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1r00Te-0005P1-Er
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:21:20 -0500
+ id 1r00Ti-0005Pv-6k
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:21:23 -0500
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1r00TS-0000d8-0N; Mon, 06 Nov 2023 15:21:06 +0100
+ id 1r00TX-0000dF-BM; Mon, 06 Nov 2023 15:21:11 +0100
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>
-Subject: [PULL 00/10] Hyper-V Dynamic Memory Protocol driver (hv-balloon) pull
- req fixed
-Date: Mon,  6 Nov 2023 15:20:44 +0100
-Message-ID: <cover.1699279190.git.maciej.szmigiero@oracle.com>
+Subject: [PULL 01/10] memory-device: Support empty memory devices
+Date: Mon,  6 Nov 2023 15:20:45 +0100
+Message-ID: <6c1b28e9e405da8cfb7296b9efa2b85650086784.1699279190.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <cover.1699279190.git.maciej.szmigiero@oracle.com>
+References: <cover.1699279190.git.maciej.szmigiero@oracle.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=37.28.154.113;
@@ -54,101 +55,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+From: David Hildenbrand <david@redhat.com>
 
-Hi Stefan,
+Let's support empty memory devices -- memory devices that don't have a
+memory device region in the current configuration. hv-balloon with an
+optional memdev is the primary use case.
 
-Fixed the CI pipeline issues with yesterday's pull request, and:
-the following changes since commit d762bf97931b58839316b68a570eecc6143c9e3e:
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+---
+ hw/mem/memory-device.c         | 43 +++++++++++++++++++++++++++++++---
+ include/hw/mem/memory-device.h |  7 +++++-
+ 2 files changed, 46 insertions(+), 4 deletions(-)
 
-  Merge tag 'pull-target-arm-20231102' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-11-03 10:04:12 +0800)
-
-are available in the Git repository at:
-
-  https://github.com/maciejsszmigiero/qemu.git tags/pull-hv-balloon-20231106
-
-for you to fetch changes up to 00313b517d09c0b141fb32997791f911c28fd3ff:
-
-  MAINTAINERS: Add an entry for Hyper-V Dynamic Memory Protocol (2023-11-06 14:08:10 +0100)
-
-----------------------------------------------------------------
-Hyper-V Dynamic Memory protocol driver.
-
-This driver is like virtio-balloon on steroids for Windows guests:
-it allows both changing the guest memory allocation via ballooning and
-inserting pieces of extra RAM into it on demand from a provided memory
-backend via Windows-native Hyper-V Dynamic Memory protocol.
-
-* Preparatory patches to support empty memory devices and ones with
-large alignment requirements.
-
-* Revert of recently added "hw/virtio/virtio-pmem: Replace impossible
-check by assertion" commit 5960f254dbb4 since this series makes this
-situation possible again.
-
-* Protocol definitions.
-
-* Hyper-V DM protocol driver (hv-balloon) base (ballooning only).
-
-* Hyper-V DM protocol driver (hv-balloon) hot-add support.
-
-* qapi query-memory-devices support for the driver.
-
-* qapi HV_BALLOON_STATUS_REPORT event.
-
-* The relevant PC machine plumbing.
-
-* New MAINTAINERS entry for the above.
-
-----------------------------------------------------------------
-David Hildenbrand (2):
-      memory-device: Support empty memory devices
-      memory-device: Drop size alignment check
-
-Maciej S. Szmigiero (8):
-      Revert "hw/virtio/virtio-pmem: Replace impossible check by assertion"
-      Add Hyper-V Dynamic Memory Protocol definitions
-      Add Hyper-V Dynamic Memory Protocol driver (hv-balloon) base
-      Add Hyper-V Dynamic Memory Protocol driver (hv-balloon) hot-add support
-      qapi: Add query-memory-devices support to hv-balloon
-      qapi: Add HV_BALLOON_STATUS_REPORT event and its QMP query command
-      hw/i386/pc: Support hv-balloon
-      MAINTAINERS: Add an entry for Hyper-V Dynamic Memory Protocol
-
- Kconfig.host                              |    3 +
- MAINTAINERS                               |    8 +
- hw/core/machine-hmp-cmds.c                |   15 +
- hw/hyperv/Kconfig                         |   10 +
- hw/hyperv/hv-balloon-internal.h           |   33 +
- hw/hyperv/hv-balloon-our_range_memslots.c |  201 ++++
- hw/hyperv/hv-balloon-our_range_memslots.h |  110 ++
- hw/hyperv/hv-balloon-page_range_tree.c    |  228 ++++
- hw/hyperv/hv-balloon-page_range_tree.h    |  118 ++
- hw/hyperv/hv-balloon-stub.c               |   19 +
- hw/hyperv/hv-balloon.c                    | 1769 +++++++++++++++++++++++++++++
- hw/hyperv/meson.build                     |    1 +
- hw/hyperv/trace-events                    |   18 +
- hw/i386/Kconfig                           |    1 +
- hw/i386/pc.c                              |   22 +
- hw/mem/memory-device.c                    |   49 +-
- hw/virtio/virtio-pmem.c                   |    5 +-
- include/hw/hyperv/dynmem-proto.h          |  423 +++++++
- include/hw/hyperv/hv-balloon.h            |   18 +
- include/hw/mem/memory-device.h            |    7 +-
- meson.build                               |   28 +-
- meson_options.txt                         |    2 +
- monitor/monitor.c                         |    1 +
- qapi/machine.json                         |  101 +-
- scripts/meson-buildoptions.sh             |    3 +
- tests/qtest/qmp-cmd-test.c                |    1 +
- 26 files changed, 3180 insertions(+), 14 deletions(-)
- create mode 100644 hw/hyperv/hv-balloon-internal.h
- create mode 100644 hw/hyperv/hv-balloon-our_range_memslots.c
- create mode 100644 hw/hyperv/hv-balloon-our_range_memslots.h
- create mode 100644 hw/hyperv/hv-balloon-page_range_tree.c
- create mode 100644 hw/hyperv/hv-balloon-page_range_tree.h
- create mode 100644 hw/hyperv/hv-balloon-stub.c
- create mode 100644 hw/hyperv/hv-balloon.c
- create mode 100644 include/hw/hyperv/dynmem-proto.h
- create mode 100644 include/hw/hyperv/hv-balloon.h
+diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
+index ae38f48f1676..db702ccad554 100644
+--- a/hw/mem/memory-device.c
++++ b/hw/mem/memory-device.c
+@@ -20,6 +20,22 @@
+ #include "exec/address-spaces.h"
+ #include "trace.h"
+ 
++static bool memory_device_is_empty(const MemoryDeviceState *md)
++{
++    const MemoryDeviceClass *mdc = MEMORY_DEVICE_GET_CLASS(md);
++    Error *local_err = NULL;
++    MemoryRegion *mr;
++
++    /* dropping const here is fine as we don't touch the memory region */
++    mr = mdc->get_memory_region((MemoryDeviceState *)md, &local_err);
++    if (local_err) {
++        /* Not empty, we'll report errors later when ontaining the MR again. */
++        error_free(local_err);
++        return false;
++    }
++    return !mr;
++}
++
+ static gint memory_device_addr_sort(gconstpointer a, gconstpointer b)
+ {
+     const MemoryDeviceState *md_a = MEMORY_DEVICE(a);
+@@ -249,6 +265,10 @@ static uint64_t memory_device_get_free_addr(MachineState *ms,
+         uint64_t next_addr;
+         Range tmp;
+ 
++        if (memory_device_is_empty(md)) {
++            continue;
++        }
++
+         range_init_nofail(&tmp, mdc->get_addr(md),
+                           memory_device_get_region_size(md, &error_abort));
+ 
+@@ -292,6 +312,7 @@ MemoryDeviceInfoList *qmp_memory_device_list(void)
+         const MemoryDeviceClass *mdc = MEMORY_DEVICE_GET_CLASS(item->data);
+         MemoryDeviceInfo *info = g_new0(MemoryDeviceInfo, 1);
+ 
++        /* Let's query infotmation even for empty memory devices. */
+         mdc->fill_device_info(md, info);
+ 
+         QAPI_LIST_APPEND(tail, info);
+@@ -311,7 +332,7 @@ static int memory_device_plugged_size(Object *obj, void *opaque)
+         const MemoryDeviceState *md = MEMORY_DEVICE(obj);
+         const MemoryDeviceClass *mdc = MEMORY_DEVICE_GET_CLASS(obj);
+ 
+-        if (dev->realized) {
++        if (dev->realized && !memory_device_is_empty(md)) {
+             *size += mdc->get_plugged_size(md, &error_abort);
+         }
+     }
+@@ -337,6 +358,11 @@ void memory_device_pre_plug(MemoryDeviceState *md, MachineState *ms,
+     uint64_t addr, align = 0;
+     MemoryRegion *mr;
+ 
++    /* We support empty memory devices even without device memory. */
++    if (memory_device_is_empty(md)) {
++        return;
++    }
++
+     if (!ms->device_memory) {
+         error_setg(errp, "the configuration is not prepared for memory devices"
+                          " (e.g., for memory hotplug), consider specifying the"
+@@ -380,10 +406,17 @@ out:
+ void memory_device_plug(MemoryDeviceState *md, MachineState *ms)
+ {
+     const MemoryDeviceClass *mdc = MEMORY_DEVICE_GET_CLASS(md);
+-    const unsigned int memslots = memory_device_get_memslots(md);
+-    const uint64_t addr = mdc->get_addr(md);
++    unsigned int memslots;
++    uint64_t addr;
+     MemoryRegion *mr;
+ 
++    if (memory_device_is_empty(md)) {
++        return;
++    }
++
++    memslots = memory_device_get_memslots(md);
++    addr = mdc->get_addr(md);
++
+     /*
+      * We expect that a previous call to memory_device_pre_plug() succeeded, so
+      * it can't fail at this point.
+@@ -408,6 +441,10 @@ void memory_device_unplug(MemoryDeviceState *md, MachineState *ms)
+     const unsigned int memslots = memory_device_get_memslots(md);
+     MemoryRegion *mr;
+ 
++    if (memory_device_is_empty(md)) {
++        return;
++    }
++
+     /*
+      * We expect that a previous call to memory_device_pre_plug() succeeded, so
+      * it can't fail at this point.
+diff --git a/include/hw/mem/memory-device.h b/include/hw/mem/memory-device.h
+index 3354d6c1667e..a1d62cc551ab 100644
+--- a/include/hw/mem/memory-device.h
++++ b/include/hw/mem/memory-device.h
+@@ -38,6 +38,10 @@ typedef struct MemoryDeviceState MemoryDeviceState;
+  * address in guest physical memory can either be specified explicitly
+  * or get assigned automatically.
+  *
++ * Some memory device might not own a memory region in certain device
++ * configurations. Such devices can logically get (un)plugged, however,
++ * empty memory devices are mostly ignored by the memory device code.
++ *
+  * Conceptually, memory devices only span one memory region. If multiple
+  * successive memory regions are used, a covering memory region has to
+  * be provided. Scattered memory regions are not supported for single
+@@ -91,7 +95,8 @@ struct MemoryDeviceClass {
+     uint64_t (*get_plugged_size)(const MemoryDeviceState *md, Error **errp);
+ 
+     /*
+-     * Return the memory region of the memory device.
++     * Return the memory region of the memory device. If the device is
++     * completely empty, returns NULL without an error.
+      *
+      * Called when (un)plugging the memory device, to (un)map the
+      * memory region in guest physical memory, but also to detect the
 
