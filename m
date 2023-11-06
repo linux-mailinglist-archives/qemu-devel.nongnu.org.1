@@ -2,66 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA9F7E2665
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:13:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0542D7E266D
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 15:16:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r00LG-00062H-1M; Mon, 06 Nov 2023 09:12:38 -0500
+	id 1r00Nu-0007Si-CB; Mon, 06 Nov 2023 09:15:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r00LD-000620-US
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:12:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1r00Nr-0007SR-Jb
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:15:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r00LC-0003TE-1A
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:12:35 -0500
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1r00Np-00049K-W9
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 09:15:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699279952;
+ s=mimecast20190719; t=1699280117;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7jK1Nxg3c3H7AngHacIf8ZSjq97OjxP4Qxp0sKBH3ZE=;
- b=ChpuBzSoEWRFQjKeSqymAJh4m1GMKfKMfdEs3VFRMOMMnXr5snKR4epiZC0IUlPh8apsXr
- KjFaX7/60xQctvD7bJkiaN1ce5Q3mHQ/a0ZIXMW/73a1ZlVk6LoflOA2mJlLmtFW8026ti
- BdC8Of8uy0MMvHeIrj/x9N1xOMbcWd4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ujbeXdUIL7sE74Kv8liWhge+ZcVbN5TaUWLp5Cb9+EU=;
+ b=O//yjPZcho3qt5O2esVwV4ZEnTRoH7z7PwZOnFkDvV8CjoXT7fzF7RnvPkKBO++tyICwIK
+ 8OprZZ5XpfibE9nLvoFXAmePXussgmVwX8tbCkcYyisZTBnB1LCilQjDQx4LdRPfDabPq7
+ oyw8L779QChJYwmNXl3aAw3DWsuXP+M=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-6FZCcC44MEymkkMTHzJAYg-1; Mon, 06 Nov 2023 09:12:29 -0500
-X-MC-Unique: 6FZCcC44MEymkkMTHzJAYg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3A0DD101A52D;
- Mon,  6 Nov 2023 14:12:29 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.195.35])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2D19C2026D66;
- Mon,  6 Nov 2023 14:12:28 +0000 (UTC)
-Date: Mon, 6 Nov 2023 15:12:27 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: jsnow@redhat.com, qemu-block@nongnu.org, qemu-devel@nongnu.org,
- balaton@eik.bme.hu, philmd@linaro.org, shentey@gmail.com
-Subject: Re: [PATCH v2 1/3] ide/pci.c: introduce pci_ide_update_mode() function
-Message-ID: <ZUj0S6GqGhZ6kOp9@redhat.com>
-References: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
- <20231024224056.842607-2-mark.cave-ayland@ilande.co.uk>
+ us-mta-553-buu5JSYzPlGKJFVeECpq6w-1; Mon, 06 Nov 2023 09:15:15 -0500
+X-MC-Unique: buu5JSYzPlGKJFVeECpq6w-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-778a65923bdso568024285a.3
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 06:15:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699280114; x=1699884914;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ujbeXdUIL7sE74Kv8liWhge+ZcVbN5TaUWLp5Cb9+EU=;
+ b=AuV6vugwwEyi/eES6IiS7jAvgZ/tGGvfgFgmqEEq7ZpQbe2P5O4P4KiIUPP222Q8t8
+ g3EM3fdfg0kUaY1QlrixrNtTA2oU9ijDjNQJQaaQCHxj98Vqr6O+NKpkubtlNigWHb6I
+ DQyjZ0R9jwjje0stst6KFC6lOJkInaCtpPrFNE/vVu5p50+Z5zKH6IyNOCCWoMuDpeav
+ Lyf+ORrTsURc6Y0Csh+3t5Kz1D22KcOoHpm3mLQIC8ixBTYsBOypKSSmaS/IM1mqZk2x
+ VD9VvWGPcGG6gBN6f3nEywOX/TOeiehO8o4iARtDzsIzGvRxk/2/eoFSxCpXFM1ium+Q
+ gXSw==
+X-Gm-Message-State: AOJu0YzxAl0j961B2gvx76iSM8Wn15Dec/vvOazbkRS9inoXoSo8EFX1
+ q9m6dSAxs+4RzC/BSmjHKcgyIpZ46I+llq71jYbf3Lhx182eeM06Xwuqrclef+NytVOMGWIx7/W
+ 1RYmHOmueN1WWYpr9tmIweEM=
+X-Received: by 2002:a05:620a:3189:b0:77a:282:bfb2 with SMTP id
+ bi9-20020a05620a318900b0077a0282bfb2mr34259095qkb.8.1699280114596; 
+ Mon, 06 Nov 2023 06:15:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGm66TEevY+vLd3VtmyLewSKfUORpLqbIo7rN/UQOBaEE5L9eAHuwb/Zd4iVMqgRcoaxOROAg==
+X-Received: by 2002:a05:620a:3189:b0:77a:282:bfb2 with SMTP id
+ bi9-20020a05620a318900b0077a0282bfb2mr34259071qkb.8.1699280114280; 
+ Mon, 06 Nov 2023 06:15:14 -0800 (PST)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ k11-20020a05620a414b00b007777521dca4sm3317599qko.21.2023.11.06.06.15.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 06 Nov 2023 06:15:13 -0800 (PST)
+Date: Mon, 6 Nov 2023 15:15:11 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, peter.maydell@linaro.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] tests/acpi/bios-tables-test: do not write new blobs
+ unless there are changes
+Message-ID: <20231106151511.57c1e397@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20231102081624.25229-1-anisinha@redhat.com>
+References: <20231102081624.25229-1-anisinha@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231024224056.842607-2-mark.cave-ayland@ilande.co.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -79,162 +102,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 25.10.2023 um 00:40 hat Mark Cave-Ayland geschrieben:
-> This function reads the value of the PCI_CLASS_PROG register for PCI IDE
-> controllers and configures the PCI BARs and/or IDE ioports accordingly.
+On Thu,  2 Nov 2023 13:46:24 +0530
+Ani Sinha <anisinha@redhat.com> wrote:
+
+> When dumping table blobs using rebuild-expected-aml.sh, table blobs from all
+> test variants are dumped regardless of whether there are any actual changes to
+> the tables or not. This creates lot of new files for various test variants that
+> are not part of the git repository. This is because we do not check in all table
+> blobs for all test variants into the repository. Only those blobs for those
+> variants that are different from the generic test-variant agnostic blob are
+> checked in.
 > 
-> In the case where we switch to legacy mode, the PCI BARs are set to return zero
-> (as suggested in the "PCI IDE Controller" specification), the legacy IDE ioports
-> are enabled, and the PCI interrupt pin cleared to indicate legacy IRQ routing.
+> This change makes the test smarter by checking if at all there are any changes
+> in the tables from the checked-in gold master blobs.
+
+> If there are no changes, no new files are written for test variants.
+> However, existing files continue to be overwritten regardless of whether there are changes.
+> Hence, new files will be generated only when there are actual changes in the tables.
+
+You lost me in those 3 sentences. Perhaps rephrasing and adding examples
+wold make it readable. (aka what's (not)writen and when)
+
+
+> This would make analyzing changes to tables less confusing and there would
+> be no need to clean useless untracked files when there are no table changes.
+
+what happens if an absolutely new table has been introduced which
+is not mentioned in tests yet (will it be dumped or not)?
+
 > 
-> Conversely when we switch to native mode, the legacy IDE ioports are disabled
-> and the PCI interrupt pin set to indicate native IRQ routing. The contents of
-> the PCI BARs are unspecified, but this is not an issue since if a PCI IDE
-> controller has been switched to native mode then its BARs will need to be
-> programmed.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
-> Tested-by: Bernhard Beschow <shentey@gmail.com>
+> CC: peter.maydell@linaro.org
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
 > ---
->  hw/ide/pci.c         | 90 ++++++++++++++++++++++++++++++++++++++++++++
->  include/hw/ide/pci.h |  1 +
->  2 files changed, 91 insertions(+)
+>  tests/qtest/bios-tables-test.c | 14 +++++++++++++-
+>  1 file changed, 13 insertions(+), 1 deletion(-)
 > 
-> diff --git a/hw/ide/pci.c b/hw/ide/pci.c
-> index a25b352537..5be643b460 100644
-> --- a/hw/ide/pci.c
-> +++ b/hw/ide/pci.c
-> @@ -104,6 +104,96 @@ const MemoryRegionOps pci_ide_data_le_ops = {
->      .endianness = DEVICE_LITTLE_ENDIAN,
->  };
+> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+> index 9f4bc15aab..743b509e93 100644
+> --- a/tests/qtest/bios-tables-test.c
+> +++ b/tests/qtest/bios-tables-test.c
+> @@ -109,6 +109,7 @@ static const char *iasl;
+>  #endif
 >  
-> +static const MemoryRegionPortio ide_portio_list[] = {
-> +    { 0, 8, 1, .read = ide_ioport_read, .write = ide_ioport_write },
-> +    { 0, 1, 2, .read = ide_data_readw, .write = ide_data_writew },
-> +    { 0, 1, 4, .read = ide_data_readl, .write = ide_data_writel },
-> +    PORTIO_END_OF_LIST(),
-> +};
-> +
-> +static const MemoryRegionPortio ide_portio2_list[] = {
-> +    { 0, 1, 1, .read = ide_status_read, .write = ide_ctrl_write },
-> +    PORTIO_END_OF_LIST(),
-> +};
-
-This is duplicated from hw/ide/ioport.c. I think it would be better to
-use the arrays already defined there, ideally by calling ioport.c
-functions to setup and release the I/O ports.
-
-> +void pci_ide_update_mode(PCIIDEState *s)
-> +{
-> +    PCIDevice *d = PCI_DEVICE(s);
-> +    uint8_t mode = d->config[PCI_CLASS_PROG];
-> +
-> +    switch (mode & 0xf) {
-> +    case 0xa:
-> +        /* Both channels legacy mode */
-
-Why is it ok to handle only the case where both channels are set to the
-same mode? The spec describes mixed-mode setups, too, and doesn't seem
-to allow ignoring a mode change if it's only for one of the channels.
-
-> +
-> +        /* Zero BARs */
-> +        pci_set_long(d->config + PCI_BASE_ADDRESS_0, 0x0);
-> +        pci_set_long(d->config + PCI_BASE_ADDRESS_1, 0x0);
-> +        pci_set_long(d->config + PCI_BASE_ADDRESS_2, 0x0);
-> +        pci_set_long(d->config + PCI_BASE_ADDRESS_3, 0x0);
-
-Here I'm not sure what the spec really implies. Disabling the BAR (i.e.
-making it read-only and returning 0) while in compatibility mode doesn't
-necessarily mean that the value of the register is lost. In other words,
-are we sure that a driver can't expect that the old value is still there
-when it re-enables native mode?
-
-> +        /* Clear interrupt pin */
-> +        pci_config_set_interrupt_pin(d->config, 0);
-
-Unlike for the BARs, I don't see anything in the spec that allows
-disabling this byte. I doubt it hurts in practice, but did you see any
-drivers requiring this? According to the spec, we just must not use the
-PCI interrupt in compatbility mode, but the registers stay accessible.
-
-As far as I can see, the whole PCI interrupt configuration is currently
-unused anyway, and nothing in this series seems to change it. So won't
-we incorrectly continue to use the legacy interrupt even in native mode?
-(Actually, cmd646 seems to get it wrong the other way around and uses
-the PCI interrupt even in compatibility mode.)
-
-I think this means that BMDMAState needs to have two irq lines (a legacy
-and a PCI one) and select the right one in bmdma_irq() depending on
-which mode we're in currently.
-
-> +        /* Add legacy IDE ports */
-> +        if (!s->bus[0].portio_list.owner) {
-> +            portio_list_init(&s->bus[0].portio_list, OBJECT(d),
-> +                             ide_portio_list, &s->bus[0], "ide");
-> +            portio_list_add(&s->bus[0].portio_list,
-> +                            pci_address_space_io(d), 0x1f0);
-> +        }
-> +
-> +        if (!s->bus[0].portio2_list.owner) {
-> +            portio_list_init(&s->bus[0].portio2_list, OBJECT(d),
-> +                             ide_portio2_list, &s->bus[0], "ide");
-> +            portio_list_add(&s->bus[0].portio2_list,
-> +                            pci_address_space_io(d), 0x3f6);
-> +        }
-> +
-> +        if (!s->bus[1].portio_list.owner) {
-> +            portio_list_init(&s->bus[1].portio_list, OBJECT(d),
-> +                                ide_portio_list, &s->bus[1], "ide");
-> +            portio_list_add(&s->bus[1].portio_list,
-> +                            pci_address_space_io(d), 0x170);
-> +        }
-> +
-> +        if (!s->bus[1].portio2_list.owner) {
-> +            portio_list_init(&s->bus[1].portio2_list, OBJECT(d),
-> +                             ide_portio2_list, &s->bus[1], "ide");
-> +            portio_list_add(&s->bus[1].portio2_list,
-> +                            pci_address_space_io(d), 0x376);
-> +        }
-> +        break;
-
-This is essentially ide_init_ioport(), except that it handles the case
-where it is already initialised. Let's reuse it.
-
-> +    case 0xf:
-> +        /* Both channels native mode */
-> +
-> +        /* Set interrupt pin */
-> +        pci_config_set_interrupt_pin(d->config, 1);
-> +
-> +        /* Remove legacy IDE ports */
-> +        if (s->bus[0].portio_list.owner) {
-> +            portio_list_del(&s->bus[0].portio_list);
-> +            portio_list_destroy(&s->bus[0].portio_list);
-> +        }
-> +
-> +        if (s->bus[0].portio2_list.owner) {
-> +            portio_list_del(&s->bus[0].portio2_list);
-> +            portio_list_destroy(&s->bus[0].portio2_list);
-> +        }
-> +
-> +        if (s->bus[1].portio_list.owner) {
-> +            portio_list_del(&s->bus[1].portio_list);
-> +            portio_list_destroy(&s->bus[1].portio_list);
-> +        }
-> +
-> +        if (s->bus[1].portio2_list.owner) {
-> +            portio_list_del(&s->bus[1].portio2_list);
-> +            portio_list_destroy(&s->bus[1].portio2_list);
-> +        }
-> +        break;
-
-And this part could be an ioport.c function as well.
-
-> +    }
-> +}
-
-Kevin
+>  static int verbosity_level;
+> +static GArray *load_expected_aml(test_data *data);
+>  
+>  static bool compare_signature(const AcpiSdtTable *sdt, const char *signature)
+>  {
+> @@ -241,21 +242,32 @@ static void test_acpi_fadt_table(test_data *data)
+>  
+>  static void dump_aml_files(test_data *data, bool rebuild)
+>  {
+> -    AcpiSdtTable *sdt;
+> +    AcpiSdtTable *sdt, *exp_sdt;
+>      GError *error = NULL;
+>      gchar *aml_file = NULL;
+> +    test_data exp_data = {};
+>      gint fd;
+>      ssize_t ret;
+>      int i;
+>  
+> +    exp_data.tables = load_expected_aml(data);
+>      for (i = 0; i < data->tables->len; ++i) {
+>          const char *ext = data->variant ? data->variant : "";
+>          sdt = &g_array_index(data->tables, AcpiSdtTable, i);
+> +        exp_sdt = &g_array_index(exp_data.tables, AcpiSdtTable, i);
+>          g_assert(sdt->aml);
+> +        g_assert(exp_sdt->aml);
+>  
+>          if (rebuild) {
+>              aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir, data->machine,
+>                                         sdt->aml, ext);
+> +            if (!g_file_test(aml_file, G_FILE_TEST_EXISTS) &&
+> +                sdt->aml_len == exp_sdt->aml_len &&
+> +                !memcmp(sdt->aml, exp_sdt->aml, sdt->aml_len)) {
+> +                /* identical tables, no need to write new files */
+> +                g_free(aml_file);
+> +                continue;
+> +            }
+>              fd = g_open(aml_file, O_WRONLY|O_TRUNC|O_CREAT,
+>                          S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
+>              if (fd < 0) {
 
 
