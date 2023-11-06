@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C372F7E294D
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 17:01:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5C37E296B
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 Nov 2023 17:07:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r022e-0002PY-Gq; Mon, 06 Nov 2023 11:01:32 -0500
+	id 1r027A-00044M-MV; Mon, 06 Nov 2023 11:06:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r022c-0002Oq-Ei; Mon, 06 Nov 2023 11:01:30 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1r0278-00043v-Bd; Mon, 06 Nov 2023 11:06:10 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r022a-0001Lv-K0; Mon, 06 Nov 2023 11:01:29 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40906fc54fdso35819595e9.0; 
- Mon, 06 Nov 2023 08:01:27 -0800 (PST)
+ id 1r0276-0002a0-HB; Mon, 06 Nov 2023 11:06:10 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4083f613272so40717365e9.1; 
+ Mon, 06 Nov 2023 08:06:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699286487; x=1699891287; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699286766; x=1699891566; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:organization:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=VuSTMH9ud0jYjriaosHkWWyigJusFLw9itadu/Ef8us=;
- b=MyRnUe6WTC4Yc/nc8yWium3Ksr/d/Hx0Xm8RxGMmT6TdoCiOKwFyuIkDntX4//Z25Y
- BNOMfOdQ8kA8FpYwDlLi12Cs8PQ2ufBKyu/8TAC3aSEkfU80nbWuUyVrdky/VD0vfmFt
- U/DD9yei8y9aJ14bg9oYBF8iLJ2QnA32IEeeUklo99b4MVe8nVxXttJuCFe+QJ8wJl5C
- xS2i0mdlEXkJ3v/nYOT9n/d6YYEbqKFXC8RuR/ykxXJtPFAwc9u3a5nVYuCR4HVxxOGw
- /3aySNJcGg5MUFvUyyly7bBVOiJkIShF3OsY/u1T8bBpirA3QTA3g/6+rysSIFMCQv/g
- qPwQ==
+ bh=MeZXKteg9ly/LgC189oPLkONMw9yBgVhmCgiKF0kD7Q=;
+ b=kp4uI0mJGfb7i7egpKxnWtlmRCQhDR76XCNgHGpSwSjCn97Oei9LFqusnHdZuY8ynW
+ nI6GmZSdi+nkH8tPB9hBuWxgfyu+8r2TjmwpbL4kJTUewgdaNzPKYw7jaD8GXlZWV/RY
+ EhLptigf7l1JoLFqenaBRxSU1I2/IQf8LsCfViDMlnGc53pOY4b9c7MTiFtaub1rhwKZ
+ ewH0khCDIQ25R+KlEHzq3vFcEQ69BArgbnbaMOdi3I9REC5BiUOb2IWLLB3AFNqWhuRa
+ psd2MAFcZGdkuIH5+tXqv77JnksvyDPNCAePNbHKD/EGMzsKYYyfqr+RzwaLcqtP9o3i
+ X7Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699286487; x=1699891287;
+ d=1e100.net; s=20230601; t=1699286766; x=1699891566;
  h=content-transfer-encoding:in-reply-to:organization:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:from:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VuSTMH9ud0jYjriaosHkWWyigJusFLw9itadu/Ef8us=;
- b=FHU6mhVhaxAkmC062pbO9KaTG9WnXl2+dC5QKh48KKwvmEpIhAxp2cYFRW8aAXA/fJ
- +RYKAZ7NrwI5au50AuKlFQhy2wS325i2Qh7VsKRZKq3uKIhODYGDS/Tehao4/egNzwhC
- xH/NA61IB4aRfjBWcz7dbZsFxWb45rouikIBNmA9k9Mx95s6m6u/4whbcuU2JLZDcDIH
- FNCXc9DPIcsqcHTzjsrZ5n5tODV77R7n3uqFAcDiuVvKSGgVs8qnyXIRroAXl0VkKYEU
- qs/cEbQ0G20NQNTvpuaVaYq94Pz+0dkwYPBWXMyjBB7eWbl2sVsp4x3WAiv1deAofDH3
- gBqg==
-X-Gm-Message-State: AOJu0YyFFBgaG6jBCr2H0DwTQw0qK+yaXgKU/tR232uQKr+EHmroBMvR
- 9XsPWPL6IqAlLrNjsXsxytE=
-X-Google-Smtp-Source: AGHT+IE+3PRRsyWElc9zPvKSrIuMWGE4WXTjXvI2QsMrBJiC6CPa5U2EB5CV13HsYIol7JDB6fOz+Q==
-X-Received: by 2002:a5d:6485:0:b0:32f:a7d5:4ef with SMTP id
- o5-20020a5d6485000000b0032fa7d504efmr11943384wri.44.1699286486710; 
- Mon, 06 Nov 2023 08:01:26 -0800 (PST)
+ bh=MeZXKteg9ly/LgC189oPLkONMw9yBgVhmCgiKF0kD7Q=;
+ b=NSiR783HMdU4+4t6TFQXGy2o+6i7mLAJDoh8GSIHVRBjIKZqRO4SYApa7LgcrAn37k
+ ufcFPReb+rhqHsPt0o6FTiSy/B8O05pXe0vk67J0IewKsvSAvpnq1C3ARxY+4X1lFWkA
+ +GoI9Ax5MtfDCrji+wYVFFwUm2iWtG4joaHSyRWhDBTzUoSvcQxMhgmeF4yfnZZ63USl
+ uKbF1MzUidwsIfmFTAHxBWrfww6AIUYMD8aUR3MZNNrRQYPh2//jIxPAzfLjeDlNXSp+
+ 6C8tnA9OdToU5mSbJ8wX8iY1yOuT+AYrSs7MbhhwMCNXo+IjwUH9xdIwmlEUbsoZNd7p
+ NBSQ==
+X-Gm-Message-State: AOJu0YxgdzWvaCya8dX1nrO84X2WRoajCnhd83ObHQAjq1Pi3wyXjP7u
+ jXG9oJKtCAkh4JUTv6zgR34=
+X-Google-Smtp-Source: AGHT+IHSWnf3wN6plpUIgGebG8qT3uQ6MHwdZ3cvFdZB/eJDKIi8+G3R12MVZ1RUvoie9Yarv/csaQ==
+X-Received: by 2002:a05:600c:1d19:b0:409:5a92:470e with SMTP id
+ l25-20020a05600c1d1900b004095a92470emr102303wms.28.1699286766483; 
+ Mon, 06 Nov 2023 08:06:06 -0800 (PST)
 Received: from [10.95.110.31] (54-240-197-231.amazon.com. [54.240.197.231])
  by smtp.gmail.com with ESMTPSA id
- h3-20020a5d5043000000b0032dba85ea1bsm9838958wrt.75.2023.11.06.08.01.23
+ h15-20020a05600c314f00b004094d4292aesm12576758wmo.18.2023.11.06.08.06.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Nov 2023 08:01:24 -0800 (PST)
+ Mon, 06 Nov 2023 08:06:05 -0800 (PST)
 From: Paul Durrant <xadimgnik@gmail.com>
 X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <71dc2018-9840-458e-8ca6-3cb8ab86666d@xen.org>
-Date: Mon, 6 Nov 2023 16:01:19 +0000
+Message-ID: <8531c820-549a-4979-9575-e659ab1b6659@xen.org>
+Date: Mon, 6 Nov 2023 16:06:01 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 13/17] hw/i386/pc: support '-nic' for xen-net-device
+Subject: Re: [PATCH v4 16/17] doc/sphinx/hxtool.py: add optional label
+ argument to SRST directive
 Content-Language: en-US
 To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
@@ -76,13 +77,13 @@ Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
  qemu-block@nongnu.org, xen-devel@lists.xenproject.org, kvm@vger.kernel.org
 References: <20231106143507.1060610-1-dwmw2@infradead.org>
- <20231106143507.1060610-14-dwmw2@infradead.org>
+ <20231106143507.1060610-17-dwmw2@infradead.org>
 Organization: Xen Project
-In-Reply-To: <20231106143507.1060610-14-dwmw2@infradead.org>
+In-Reply-To: <20231106143507.1060610-17-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,30 +110,21 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 06/11/2023 14:35, David Woodhouse wrote:
 > From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> The default NIC creation seems a bit hackish to me. I don't understand
-> why each platform has to call pci_nic_init_nofail() from a point in the
-> code where it actually has a pointer to the PCI bus, and then we have
-> the special cases for things like ne2k_isa.
+> We can't just embed labels directly into files like qemu-options.hx which
+> are included from multiple top-level RST files, because Sphinx sees the
+> labels as duplicate: https://github.com/sphinx-doc/sphinx/issues/9707
 > 
-> If qmp_device_add() can *find* the appropriate bus and instantiate
-> the device on it, why can't we just do that from generic code for
-> creating the default NICs too?
-> 
-> But that isn't a yak I want to shave today. Add a xenbus field to the
-> PCMachineState so that it can make its way from pc_basic_device_init()
-> to pc_nic_init() and be handled as a special case like ne2k_isa is.
-> 
-> Now we can launch emulated Xen guests with '-nic user'.
+> So add an 'emitrefs' option to the Sphinx hxtool-doc directive, which is
+> set only in invocation.rst and not from the HTML rendition of the man
+> page. Along with an argument to the SRST directive which causes a label
+> of the form '.. _LABEL-reference-label:' to be emitted when the emitrefs
+> option is set.
 > 
 > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 > ---
->   hw/i386/pc.c             | 11 ++++++++---
->   hw/i386/pc_piix.c        |  2 +-
->   hw/i386/pc_q35.c         |  2 +-
->   hw/xen/xen-bus.c         |  4 +++-
->   include/hw/i386/pc.h     |  4 +++-
->   include/hw/xen/xen-bus.h |  2 +-
->   6 files changed, 17 insertions(+), 8 deletions(-)
+>   docs/sphinx/hxtool.py      | 18 +++++++++++++++++-
+>   docs/system/invocation.rst |  1 +
+>   2 files changed, 18 insertions(+), 1 deletion(-)
 > 
 
 Reviewed-by: Paul Durrant <paul@xen.org>
