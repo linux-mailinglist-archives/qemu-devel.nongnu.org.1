@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD277E3301
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:33:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C317E3311
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:34:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0BtW-0002jm-CM; Mon, 06 Nov 2023 21:32:46 -0500
+	id 1r0BtW-0002ll-Kv; Mon, 06 Nov 2023 21:32:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r0BtM-0002Mf-FW
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:32:36 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1r0BtP-0002Zp-Bf
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:32:40 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r0BtK-00033u-Lq
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:32:36 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1cc394f4cdfso35545745ad.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:32:34 -0800 (PST)
+ id 1r0BtN-00034P-Hl
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:32:38 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1cc4f777ab9so36643075ad.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:32:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699324352; x=1699929152; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699324356; x=1699929156; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6nS6hf7Wi/XnOI0vXjxHyhHjdp7+KtBoPSC9aLMTBPo=;
- b=fwnDBducieWsJN2PJ7cZkrLjzcJmaMTVODzMbzlA5dI3xU3dPBF1iYLw4F6fiFMMp5
- IYYTAOh7pFAxLER6Nt6IoEWLcOsOZ4wqHLwX1+PinbsWTKbJmbC1r4PN93qHfd9I2ME/
- DmjfX9b0iBpGOYN3z1dr2TYvaRkFb0hh/TjnmLKxJnXz6G58UhDHpGKK7UJJ85J6J2kQ
- eeH+4zOeLGB6EA3m9MJwuo4dtBqY59yQLE+U6CM9Yye03lox8fuflmQvwSzv6JvOYgJV
- syMcXea4zUAYA0p7YXlWeSrXHJyA/ihTz2tjLF611jIzWKm1bSFcpWW64CTv892IhKuA
- kTUQ==
+ bh=xCY/8kc52Ot4x8MUVO+pwx/ZKG2HwEofvg9EN4jvs1o=;
+ b=jMb2URS/28J6P3PrQsnrxXIpkPBJ53tMPkJrRsR+zHIM/VVdkQ8JKHKHpN2StPTovs
+ llIaWa1Cbs4A6sKMYCWeiv8WUTjKLYB3mYy6DVc5boxGXbeOC/la0B9RoLXqGa/Mpjtc
+ LcwDhtUEKRbissJh7sOKRpVNuGYjZLuC6y3Q5YGKzXprF093FaFKJXJ2oCmY0jbKo2zu
+ 5s0xaD3VqwG+iZ9dzYQf9WScG7kk87in1mSY7CAOnXPyIUJbYM9RWKxhdq6zOFlewY7N
+ 68xzzJra8bbRtfj8LQpn+ncWcIRfmFM27+gR3h2rGBsND09Ub1O4jmOSUqv/ZY/50ceP
+ CRJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699324352; x=1699929152;
+ d=1e100.net; s=20230601; t=1699324356; x=1699929156;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6nS6hf7Wi/XnOI0vXjxHyhHjdp7+KtBoPSC9aLMTBPo=;
- b=YGdTSfNXxU6iXL46l9Z3UMt9NkhkmEScQgGfT+ohaWe86l0HTsSjNWa9oQ9BlPFkdC
- WbylO+ylSxrRnZJcVy7dqmnL9F99pcZY4SDB/ONp/ZTvI8TJqfY2udvYbmA2b1+BrSR4
- uSw3Qr1PaCG8pCpEOW5W1WegRMrdbTG3snB6xg1okCoquIku0I8U1BeUMyMrSfhay4HG
- dfCH0uHOdHYbrSzdepO8LPCkuJfl5/gIAOGjedC3F2RAxR0nNEL5lTXXoQN7P9pFiOqV
- 4sjL8CpNFUm2xuMCLvu7dFX+Czh5tsf6C7jEBZYRR+zBCv53PAmCj+ZWiI2kXQo4pBUQ
- UfQA==
-X-Gm-Message-State: AOJu0YxrZU+aoc09IYxyKrHMEGJXcStceRzugLJP1Us1CXkjUHXCfNLF
- PfoK+4qlKT1p3asv0ifBRQjNwCGXKV5yxQ==
-X-Google-Smtp-Source: AGHT+IGTy25I/4vcRmeMyG1jXAPnuf/nin29TI0hg724ThnN5VJGJfY2BugLFLxyUJHsBlxW6GhZfQ==
-X-Received: by 2002:a17:902:ecd2:b0:1cc:6dfa:ca55 with SMTP id
- a18-20020a170902ecd200b001cc6dfaca55mr21364745plh.25.1699324351945; 
- Mon, 06 Nov 2023 18:32:31 -0800 (PST)
+ bh=xCY/8kc52Ot4x8MUVO+pwx/ZKG2HwEofvg9EN4jvs1o=;
+ b=qElGkSyCVxCBi/Lwj9vzhEGqX/y6Uin00na+3yIlmCuzNaYu2QXJLNfOZ29Rjv+UrF
+ fEpZWms/Q6mot9vCfY0sM60v/89uWitcjlZEgZwkA6lsV1uZI9BYwEkD8r3o3p4P/yFt
+ LOWFxEy2EFkpax+itf3XEqkHz9bnHnsEohgqAarPoLTWCXISTlER672b+TnOw3GifOef
+ gg0MBtwyugum7GRCLOKDA8/vmVKiPkkITyLgSocMpktHEJXFzdh+YBHD1ULoVTh4PQGi
+ p6KL+SQcjg2FcRbgxu9O2HE1kLdXs27V+Eu9GZ12xJpE4ymk8jFjuBJvGBKyBCSOClKV
+ WQ9Q==
+X-Gm-Message-State: AOJu0Yyr9esgbA1+UVHLpRc3A3l6XWNfzDt5KgpswGywUymC7xotT87y
+ 60+iqi6qnb+ETD654oo1uGkBx7FTy1BpXQ==
+X-Google-Smtp-Source: AGHT+IG1QP+mabgWMJOyq1/3oMzmfH2CI5kIujncKOHv7XlwAcNyTsRq0wfhzqKoD+JJ68VpjPd4WA==
+X-Received: by 2002:a17:902:e5cc:b0:1cc:5d06:b38 with SMTP id
+ u12-20020a170902e5cc00b001cc5d060b38mr21049052plf.64.1699324355808; 
+ Mon, 06 Nov 2023 18:32:35 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- u18-20020a170902e5d200b001cc32f46757sm6487649plf.107.2023.11.06.18.32.28
+ u18-20020a170902e5d200b001cc32f46757sm6487649plf.107.2023.11.06.18.32.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 18:32:31 -0800 (PST)
+ Mon, 06 Nov 2023 18:32:35 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Rob Bradford <rbradford@rivosinc.com>,
- Alistair Francis <alistair.francis@wdc.com>,
  LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
  Atish Patra <atishp@rivosinc.com>
-Subject: [PULL 45/49] target/riscv: Propagate error from PMU setup
-Date: Tue,  7 Nov 2023 12:29:41 +1000
-Message-ID: <20231107022946.1055027-46-alistair.francis@wdc.com>
+Subject: [PULL 46/49] target/riscv: Don't assume PMU counters are continuous
+Date: Tue,  7 Nov 2023 12:29:42 +1000
+Message-ID: <20231107022946.1055027-47-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231107022946.1055027-1-alistair.francis@wdc.com>
 References: <20231107022946.1055027-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,99 +100,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Rob Bradford <rbradford@rivosinc.com>
 
-More closely follow the QEMU style by returning an Error and propagating
-it there is an error relating to the PMU setup.
-
-Further simplify the function by removing the num_counters parameter as
-this is available from the passed in cpu pointer.
+Check the PMU available bitmask when checking if a counter is valid
+rather than comparing the index against the number of PMUs.
 
 Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Message-ID: <20231031154000.18134-2-rbradford@rivosinc.com>
+Message-ID: <20231031154000.18134-3-rbradford@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/pmu.h         |  3 ++-
- target/riscv/pmu.c         | 19 +++++++++----------
- target/riscv/tcg/tcg-cpu.c |  8 +++++++-
- 3 files changed, 18 insertions(+), 12 deletions(-)
+ target/riscv/csr.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/pmu.h b/target/riscv/pmu.h
-index 2bfb71ba87..88e0713296 100644
---- a/target/riscv/pmu.h
-+++ b/target/riscv/pmu.h
-@@ -17,13 +17,14 @@
-  */
- 
- #include "cpu.h"
-+#include "qapi/error.h"
- 
- bool riscv_pmu_ctr_monitor_instructions(CPURISCVState *env,
-                                         uint32_t target_ctr);
- bool riscv_pmu_ctr_monitor_cycles(CPURISCVState *env,
-                                   uint32_t target_ctr);
- void riscv_pmu_timer_cb(void *priv);
--int riscv_pmu_init(RISCVCPU *cpu, int num_counters);
-+void riscv_pmu_init(RISCVCPU *cpu, Error **errp);
- int riscv_pmu_update_event_map(CPURISCVState *env, uint64_t value,
-                                uint32_t ctr_idx);
- int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum riscv_pmu_event_idx event_idx);
-diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-index 36f6307d28..13801ccb78 100644
---- a/target/riscv/pmu.c
-+++ b/target/riscv/pmu.c
-@@ -434,22 +434,21 @@ int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value, uint32_t ctr_idx)
- }
- 
- 
--int riscv_pmu_init(RISCVCPU *cpu, int num_counters)
-+void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index fc26b52c88..fde7ce1a53 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -188,7 +188,8 @@ static RISCVException zcmt(CPURISCVState *env, int csrno)
+ #if !defined(CONFIG_USER_ONLY)
+ static RISCVException mctr(CPURISCVState *env, int csrno)
  {
--    if (num_counters > (RV_MAX_MHPMCOUNTERS - 3)) {
--        return -1;
-+    uint8_t pmu_num = cpu->cfg.pmu_num;
-+
-+    if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
-+        error_setg(errp, "Number of counters exceeds maximum available");
-+        return;
-     }
+-    int pmu_num = riscv_cpu_cfg(env)->pmu_num;
++    RISCVCPU *cpu = env_archcpu(env);
++    uint32_t pmu_avail_ctrs = cpu->pmu_avail_ctrs;
+     int ctr_index;
+     int base_csrno = CSR_MHPMCOUNTER3;
  
-     cpu->pmu_event_ctr_map = g_hash_table_new(g_direct_hash, g_direct_equal);
-     if (!cpu->pmu_event_ctr_map) {
--        /* PMU support can not be enabled */
--        qemu_log_mask(LOG_UNIMP, "PMU events can't be supported\n");
--        cpu->cfg.pmu_num = 0;
--        return -1;
-+        error_setg(errp, "Unable to allocate PMU event hash table");
-+        return;
+@@ -197,7 +198,7 @@ static RISCVException mctr(CPURISCVState *env, int csrno)
+         base_csrno += 0x80;
      }
- 
-     /* Create a bitmask of available programmable counters */
--    cpu->pmu_avail_ctrs = MAKE_32BIT_MASK(3, num_counters);
--
--    return 0;
-+    cpu->pmu_avail_ctrs = MAKE_32BIT_MASK(3, pmu_num);
- }
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 1a3351b142..144bdac1b2 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -689,7 +689,13 @@ static bool tcg_cpu_realize(CPUState *cs, Error **errp)
+     ctr_index = csrno - base_csrno;
+-    if (!pmu_num || ctr_index >= pmu_num) {
++    if ((BIT(ctr_index) & pmu_avail_ctrs >> 3) == 0) {
+         /* The PMU is not enabled or counter is out of range */
+         return RISCV_EXCP_ILLEGAL_INST;
      }
- 
-     if (cpu->cfg.pmu_num) {
--        if (!riscv_pmu_init(cpu, cpu->cfg.pmu_num) && cpu->cfg.ext_sscofpmf) {
-+        riscv_pmu_init(cpu, &local_err);
-+        if (local_err != NULL) {
-+            error_propagate(errp, local_err);
-+            return false;
-+        }
-+
-+        if (cpu->cfg.ext_sscofpmf) {
-             cpu->pmu_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-                                           riscv_pmu_timer_cb, cpu);
-         }
 -- 
 2.41.0
 
