@@ -2,66 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8317E3F81
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 14:04:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C217E3F87
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 14:05:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Ljw-00080C-Tp; Tue, 07 Nov 2023 08:03:32 -0500
+	id 1r0Lks-00089O-WD; Tue, 07 Nov 2023 08:04:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r0Ljl-0007vr-ME
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:03:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
+ id 1r0LkJ-00088I-T8
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:03:55 -0500
+Received: from smtp1.lauterbach.com ([62.154.241.196])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r0Lji-0005Sn-Dq
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:03:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699362195;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=IOHWcwclobqdsl9Xg2Xkt/KeeQp53aVoWqBsmhryhLo=;
- b=iWI+oiBTpuwqJWnOA3ArybrDfk+ZpkmBDgkNmKtHkeHt8YBwPaAaGhuh5HDEbJY0cBo2Zy
- ZfvLq8ccofn7MAMrhwyhUy+xcA7H1EdY+F3l2NOtCkTU2e22310UTtEvZCyudLbgZdOWJ2
- RYIhq7ndUXtLQiuBy3Sa0zqriTNVWCc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-lZ6B-x-SMoiWxFHVZjCrlA-1; Tue, 07 Nov 2023 08:03:13 -0500
-X-MC-Unique: lZ6B-x-SMoiWxFHVZjCrlA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 61232803C98;
- Tue,  7 Nov 2023 13:03:13 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.119])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1A192492BFA;
- Tue,  7 Nov 2023 13:03:13 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id CC6DF1800DDB; Tue,  7 Nov 2023 14:03:09 +0100 (CET)
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: seabios@seabios.org
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
- Claudio Fontana <cfontana@suse.de>
-Subject: [PATCH v5] limit physical address space size
-Date: Tue,  7 Nov 2023 14:03:09 +0100
-Message-ID: <20231107130309.3257776-1-kraxel@redhat.com>
+ (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
+ id 1r0LkH-0005us-KF
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:03:55 -0500
+Received: (qmail 31123 invoked by uid 484); 7 Nov 2023 13:03:51 -0000
+X-Qmail-Scanner-Diagnostics: from nedpc1.intern.lauterbach.com by
+ smtp1.lauterbach.com (envelope-from <nicolas.eder@lauterbach.com>,
+ uid 484) with qmail-scanner-2.11 
+ (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
+ Clear:RC:1(10.2.11.92):. 
+ Processed in 0.071698 secs); 07 Nov 2023 13:03:51 -0000
+Received: from nedpc1.intern.lauterbach.com
+ (Authenticated_SSL:neder@[10.2.11.92])
+ (envelope-sender <nicolas.eder@lauterbach.com>)
+ by smtp1.lauterbach.com (qmail-ldap-1.03) with TLS_AES_256_GCM_SHA384
+ encrypted SMTP for <qemu-devel@nongnu.org>; 7 Nov 2023 13:03:50 -0000
+From: Nicolas Eder <nicolas.eder@lauterbach.com>
+To: qemu-devel@nongnu.org
+Cc: "Nicolas Eder" <nicolas.eder@lauterbach.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Christian Boenig" <christian.boenig@lauterbach.com>
+Subject: [PATCH v3 07/20] mcdstub: quitting QEMU via mcd command added
+Date: Tue,  7 Nov 2023 14:03:10 +0100
+Message-Id: <20231107130323.4126-8-nicolas.eder@lauterbach.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231107130323.4126-1-nicolas.eder@lauterbach.com>
+References: <20231107130323.4126-1-nicolas.eder@lauterbach.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Qmail-Scanner-2.11: added fake Content-Type header
+Content-Type: text/plain
+Received-SPF: pass client-ip=62.154.241.196;
+ envelope-from=nicolas.eder@lauterbach.com; helo=smtp1.lauterbach.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,38 +68,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For better compatibility with old linux kernels,
-see source code comment.
-
-Related (same problem in ovmf):
-https://github.com/tianocore/edk2/commit/c1e853769046
-
-Cc: Claudio Fontana <cfontana@suse.de>
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- src/fw/paravirt.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/mcdstub/mcdstub.h |  9 +++++++++
+ mcdstub/mcdstub.c         | 15 +++++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/src/fw/paravirt.c b/src/fw/paravirt.c
-index e5d4eca0cb5a..a2c9c64d5e78 100644
---- a/src/fw/paravirt.c
-+++ b/src/fw/paravirt.c
-@@ -182,6 +182,14 @@ static void physbits(int qemu_quirk)
-             __func__, signature, pae ? "yes" : "no", CPULongMode ? "yes" : "no",
-             physbits, valid ? "yes" : "no");
+diff --git a/include/mcdstub/mcdstub.h b/include/mcdstub/mcdstub.h
+index c7e34673a6..c3e9c7e9dc 100644
+--- a/include/mcdstub/mcdstub.h
++++ b/include/mcdstub/mcdstub.h
+@@ -356,6 +356,15 @@ int mcd_handle_packet(const char *line_buf);
+  */
+ void mcd_put_strbuf(void);
  
-+    if (valid && physbits > 46) {
-+        // Old linux kernels have trouble dealing with more than 46
-+        // phys-bits, so avoid that for now.  Seems to be a bug in the
-+        // virtio-pci driver.  Reported: centos-7, ubuntu-18.04
-+        dprintf(1, "%s: using phys-bits=46 (old linux kernel compatibility)\n", __func__);
-+        physbits = 46;
++/**
++ * mcd_exit() - Terminates QEMU.
++ *
++ * If the mcdserver_state has not been initialized the function exits before
++ * terminating QEMU. Terminting is done with the qemu_chr_fe_deinit function.
++ * @code: An exitcode, which can be used in the future.
++ */
++void mcd_exit(int code);
++
+ /**
+  * run_cmd_parser() - Prepares the mcdserver_state before executing TCP packet
+  * functions.
+diff --git a/mcdstub/mcdstub.c b/mcdstub/mcdstub.c
+index d2f6df04c0..858e79632b 100644
+--- a/mcdstub/mcdstub.c
++++ b/mcdstub/mcdstub.c
+@@ -340,6 +340,11 @@ int mcd_handle_packet(const char *line_buf)
+             cmd_parser = &open_server_cmd_desc;
+         }
+         break;
++    case TCP_CHAR_KILLQEMU:
++        /* kill qemu completely */
++        error_report("QEMU: Terminated via MCDstub");
++        mcd_exit(0);
++        exit(0);
+     case TCP_CHAR_CLOSE_SERVER:
+         {
+             static MCDCmdParseEntry close_server_cmd_desc = {
+@@ -492,6 +497,16 @@ int process_string_cmd(void *user_ctx, const char *data,
+     return -1;
+ }
+ 
++void mcd_exit(int code)
++{
++    /* terminate qemu */
++    if (!mcdserver_state.init) {
++        return;
 +    }
 +
-     if (valid)
-         CPUPhysBits = physbits;
- }
++    qemu_chr_fe_deinit(&mcdserver_system_state.chr, true);
++}
++
+ void mcd_chr_event(void *opaque, QEMUChrEvent event)
+ {
+     int i;
 -- 
-2.41.0
+2.34.1
 
 
