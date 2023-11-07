@@ -2,53 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 949E27E41FA
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:42:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A357E421F
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:52:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0NHU-0005cJ-9f; Tue, 07 Nov 2023 09:42:16 -0500
+	id 1r0NQl-0003xa-UX; Tue, 07 Nov 2023 09:51:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r0NHO-0005Vo-KN; Tue, 07 Nov 2023 09:42:12 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1r0NQe-0003vK-U2
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:51:46 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r0NHM-0003n6-M8; Tue, 07 Nov 2023 09:42:10 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 9B40375A4BC;
- Tue,  7 Nov 2023 15:42:21 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 8F0DB75A4B7; Tue,  7 Nov 2023 15:42:21 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 8D1EE75A4B9;
- Tue,  7 Nov 2023 15:42:21 +0100 (CET)
-Date: Tue, 7 Nov 2023 15:42:21 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-cc: Nicholas Piggin <npiggin@gmail.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
- philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Subject: Re: [PATCH v7 0/3] Add emulation of AmigaOne XE board
-In-Reply-To: <8cd19dfe-d4cb-ad71-c99e-51741ab71e44@eik.bme.hu>
-Message-ID: <360e5b93-3b80-04b1-2dbf-2fd95809859c@eik.bme.hu>
-References: <cover.1698406922.git.balaton@eik.bme.hu>
- <88d6fff6-b97e-7c55-bf29-6d3aa2ed690d@eik.bme.hu>
- <8cd19dfe-d4cb-ad71-c99e-51741ab71e44@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1r0NQd-0006NN-48
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:51:44 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id A7ACF311F6;
+ Tue,  7 Nov 2023 17:51:42 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 92DAA33BA6;
+ Tue,  7 Nov 2023 17:51:38 +0300 (MSK)
+Message-ID: <da9904df-1e3c-4e73-b614-b93665d73a05@tls.msk.ru>
+Date: Tue, 7 Nov 2023 17:51:38 +0300
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1045119129-1699368141=:65107"
-X-Virus-Scanned: ClamAV using ClamSMTP
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] ati-vga: Fix aperture sizes
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>, marcandre.lureau@redhat.com
+References: <cover.1698871239.git.balaton@eik.bme.hu>
+ <d077d4f90d19db731df78da6f05058db074cada1.1698871239.git.balaton@eik.bme.hu>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <d077d4f90d19db731df78da6f05058db074cada1.1698871239.git.balaton@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,93 +59,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+01.11.2023 23:45, BALATON Zoltan:
+> Apparently these should be half the memory region sizes confirmed at
+> least by Radeon FCocde ROM while Rage 128 Pro ROMs don't seem to use
+> these. Linux r100 DRM driver also checks for a bit in HOST_PATH_CNTL
+> so we also add that even though the FCode ROM does not seem to set it.
 
---3866299591-1045119129-1699368141=:65107
-Content-Type: text/plain; charset=ISO-8859-15; format=flowed
-Content-Transfer-Encoding: 8BIT
+Is it stable-worthy?
 
-On Tue, 7 Nov 2023, BALATON Zoltan wrote:
-> On Mon, 6 Nov 2023, BALATON Zoltan wrote:
->> On Fri, 27 Oct 2023, BALATON Zoltan wrote:
->>> Changes in v7:
->>> - Increase default memory size to 512m to match pegasos2 and sam460ex
->>> and it's a better default for AmigaOS
->>> 
->>> Changes in v6:
->>> - Dropped patch 1, now it's
->>> 
->>> Based-on: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
->>> 
->>> ([PATCH v2 0/3] ide: implement simple legacy/native mode switching for PCI 
->>> IDE controllers)
->>> - Added Tested-by from Rene
->>> 
->>> Changes in v5:
->>> - Fixed avocado test
->>> 
->>> Changes in v4:
->>> - Found typo in comment in patch 1 so ended up rewording it again
->>> trying to make it more concise. Also take the idea of using
->>> range_covers_byte from Mark's patch
->>> - Added RFC patch for avocado test (untested, I don't have Avocado)
->>> 
->>> Changes in v3:
->>> - Update values, comment and commit message in patch 1 again
->>> 
->>> Changes in v2:
->>> - Update comment and commit message in patch 1 (Mark)
->>> - Fix irq mapping in patch 2 (Volker)
->>> 
->>> Regards,
->>> BALATON Zoltan
->>> 
->>> BALATON Zoltan (3):
->>>  hw/pci-host: Add emulation of Mai Logic Articia S
->>>  hw/ppc: Add emulation of AmigaOne XE board
->>>  tests/avocado: Add test for amigaone board
->> 
->> Nick,
->> 
->> Will you please send a pull request with this now? It's independent of the 
->> IDE fix which as a bugfix so can wait a little more but this series should 
->> be merged before the freeze starts tomorrow. (As this adds a new machine 
->> and does not touch anything else it can't break anything either.)
->
-> Is there a PPC pull request in the making with this series in it? It would be 
-> really sad to miss the release not being able to merge such a simple series 
-> for weeks. As I said this is independent of any other fixes so I'd like to 
-> get this in now please.
+Thanks,
 
-Nick seems to be away so please Cédric, Daniel, Phil or whoever can send a 
-pull request step in and please take care of this. This was posted a month 
-ago with this last version on the list for 1.5 week so I'd hate to miss 
-the release and wait until Easter next year to get this out to users 
-because none of the maintainers are available before and arounf the freeze.
-
-Regards,
-BALATON Zoltan
-
->>> MAINTAINERS                             |   8 +
->>> configs/devices/ppc-softmmu/default.mak |   1 +
->>> hw/pci-host/Kconfig                     |   5 +
->>> hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
->>> hw/pci-host/meson.build                 |   2 +
->>> hw/ppc/Kconfig                          |   7 +
->>> hw/ppc/amigaone.c                       | 164 +++++++++++++
->>> hw/ppc/meson.build                      |   2 +
->>> include/hw/pci-host/articia.h           |  17 ++
->>> tests/avocado/ppc_amiga.py              |  38 +++
->>> 10 files changed, 537 insertions(+)
->>> create mode 100644 hw/pci-host/articia.c
->>> create mode 100644 hw/ppc/amigaone.c
->>> create mode 100644 include/hw/pci-host/articia.h
->>> create mode 100644 tests/avocado/ppc_amiga.py
->>> 
->>> 
->> 
->> 
->
---3866299591-1045119129-1699368141=:65107--
+/mjt
 
