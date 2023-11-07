@@ -2,97 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 802FF7E4ABF
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 22:35:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 137E37E4B9F
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 23:21:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Thd-0006BR-NY; Tue, 07 Nov 2023 16:33:41 -0500
+	id 1r0UR0-0004rq-SF; Tue, 07 Nov 2023 17:20:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1r0Thc-0006BA-AG
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 16:33:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0UQy-0004rC-U7
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 17:20:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1r0Tha-0005rT-2n
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 16:33:40 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0UQw-00064e-5c
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 17:20:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699392816;
+ s=mimecast20190719; t=1699395629;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oyzdKboo+DhHfYIRs4ZCugTHtWy4Ah/VcPH/1LZVsfA=;
- b=dlg7oXrmeopgDIWt7HvCzrDIeqz1oKIEKfA8TwbHFyU7uhtk3GPicAxdqfDJeTR0HU/TKn
- tiDMBT9T0KDazrYBJZhd5ovPWM3Fp0y19U+ywwnnFBKkS+WLX4vGD6AHUOC2BP6kGdd71e
- LFa86nc+5nHPuwUGiVHMIkanALuQFHE=
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
- [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=AB+JCiaZyEhDH5omPPRiPG2VigOZB7R/SkpUzk015f8=;
+ b=Y0iNV5vZMqClJAScUzo6N3ZoRuCg/q2Bf1afM8iQn/G04/B9nfCFk83O40y1i6rp3m51qq
+ zyx9Ayjj3D3hoo83lJVVX1ClN3foXcIJ9Ida3DOn5NeSF8EuW9/7rfQl7v8yfBFq/QN8Ju
+ mvOFUa9niuV+BOAbrGfbI4rlHZQq7dc=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-F_a1TwDJPoi38wBl-ff30Q-1; Tue, 07 Nov 2023 16:33:35 -0500
-X-MC-Unique: F_a1TwDJPoi38wBl-ff30Q-1
-Received: by mail-io1-f69.google.com with SMTP id
- ca18e2360f4ac-7a9618a6685so562075439f.3
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 13:33:35 -0800 (PST)
+ us-mta-33-LZ0dZz-3MQKc1XO-LIx9mg-1; Tue, 07 Nov 2023 17:20:27 -0500
+X-MC-Unique: LZ0dZz-3MQKc1XO-LIx9mg-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-507bd5f4b2dso6807793e87.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 14:20:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699392814; x=1699997614;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oyzdKboo+DhHfYIRs4ZCugTHtWy4Ah/VcPH/1LZVsfA=;
- b=SCp+T2yTB0vbu1Weu3rmMAsP4D8PIr6Krosr28kgbtlHijcAUZZJdQ+rGSlkyEmCSH
- o1saiuG6tuPHQCPayzkRm+h2W3fLbCR2cO8ug1t39WKm28LOXN6JpvJf1GPL61Q8zg5u
- vjZojP/KHtelrDMi5byrsHFCfGZwjzY9AHMERIuReveBeJ5Acih/PI3cZIwjqrhMLiXs
- Xw+jewidPr4MCN4dPKpXexGruHRSGasEwev9jle0j5IvfC7faHj5FOhMfH6eSoRrTmSz
- PgA/ajvxKp8O+VHNDTkIjYiW4lPloEHihGsa8zO9wvJOn4oa8atSMaD1RLTImP9sSLv9
- BozQ==
-X-Gm-Message-State: AOJu0YyMyNK1Cvez8eQt5DrrNLGR/bwpvCr5SmKea1vWxOnxxwspr0S5
- ce97xMgPY056ORXOxtEMzr9Qn1hflOS5L9GVQxuJ17pSZT6Z9Hg2VAI+8dYJojX8nr/DnDapaP8
- OAGBuxFEv3QW06d4=
-X-Received: by 2002:a6b:4e0b:0:b0:7a6:889e:c4b7 with SMTP id
- c11-20020a6b4e0b000000b007a6889ec4b7mr131218iob.11.1699392814262; 
- Tue, 07 Nov 2023 13:33:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFqlcaqWXJ3Edu1wZ4l77EeXNpmapd+CZczU7Nlb+SnpjAwfE9l6KUldf5xKlHsJlaGWg+Q0w==
-X-Received: by 2002:a6b:4e0b:0:b0:7a6:889e:c4b7 with SMTP id
- c11-20020a6b4e0b000000b007a6889ec4b7mr131184iob.11.1699392813910; 
- Tue, 07 Nov 2023 13:33:33 -0800 (PST)
-Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
- q1-20020a6bd201000000b00791e6ae3aa4sm3178628iob.23.2023.11.07.13.33.32
+ d=1e100.net; s=20230601; t=1699395625; x=1700000425;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AB+JCiaZyEhDH5omPPRiPG2VigOZB7R/SkpUzk015f8=;
+ b=Is5OsxZb/BNnyS44VdRkAZHqXST0TMsaL6NzJ7UuPtLSCudXcnCRK9CuaCfrC2W1jg
+ MZ0e2dCzhjF33wK1OohaScY8Rjwt/D7+wi2zDSWxvPlE1HnpAPSjSteF9OofJVZ3MqdR
+ V2Ue6PtXhKmMYND08WFw0szZK8yHaL9NoIeFDxincvgxRlzSWF46kAYpFHrvIgTlCBey
+ 47hZufmBTuOhe5SmU+glFnxvtzc6NqzPP67fQWVxl+jZ7l41C6LxTERgxDG1LKIxaBBS
+ bobmd++8PpWLR1e3ed7z4+NlEk4ZBPLBG4BqvlGW2hHokS3zStSCyiq0qD/Mzb/unr6l
+ pB7g==
+X-Gm-Message-State: AOJu0YwcGK4oZSgQPQUaDvsDYP05+HwnWp6kYprMSY4t2A7Zdi7m8aq6
+ JZRFPeZWqlXyfl/o2qrOSz6tvxumWfAvJp8m3k2Erg1hFaqr5d56UPGcb2g78E8g3we9RchMWkB
+ OOeeY5AvNdk4uIP4=
+X-Received: by 2002:ac2:5488:0:b0:502:ffdf:b098 with SMTP id
+ t8-20020ac25488000000b00502ffdfb098mr24429264lfk.6.1699395625387; 
+ Tue, 07 Nov 2023 14:20:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFjHxleQuK/xYBJuVZrRx3TforrQARWviEeTie8Gxp2f8ttCUmUy10bbBA5qO8dkExYWymahA==
+X-Received: by 2002:ac2:5488:0:b0:502:ffdf:b098 with SMTP id
+ t8-20020ac25488000000b00502ffdfb098mr24429235lfk.6.1699395624970; 
+ Tue, 07 Nov 2023 14:20:24 -0800 (PST)
+Received: from redhat.com ([2a02:14f:1f4:206a:ec71:ae4a:c04f:d4f2])
+ by smtp.gmail.com with ESMTPSA id
+ e12-20020adffd0c000000b0032196c508e3sm3407720wrr.53.2023.11.07.14.20.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 13:33:33 -0800 (PST)
-Date: Tue, 7 Nov 2023 14:33:32 -0700
-From: Alex Williamson <alex.williamson@redhat.com>
-To: <ankita@nvidia.com>
-Cc: <jgg@nvidia.com>, <clg@redhat.com>, <shannon.zhaosl@gmail.com>,
- <peter.maydell@linaro.org>, <ani@anisinha.ca>, <berrange@redhat.com>,
- <eduardo@habkost.net>, <imammedo@redhat.com>, <mst@redhat.com>,
- <eblake@redhat.com>, <armbru@redhat.com>, <david@redhat.com>,
- <gshan@redhat.com>, <Jonathan.Cameron@huawei.com>, <aniketa@nvidia.com>,
- <cjia@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
- <vsethi@nvidia.com>, <acurrid@nvidia.com>, <dnigam@nvidia.com>,
- <udhoke@nvidia.com>, <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
+ Tue, 07 Nov 2023 14:20:23 -0800 (PST)
+Date: Tue, 7 Nov 2023 17:20:17 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: ankita@nvidia.com
+Cc: jgg@nvidia.com, alex.williamson@redhat.com, clg@redhat.com,
+ shannon.zhaosl@gmail.com, peter.maydell@linaro.org, ani@anisinha.ca,
+ berrange@redhat.com, eduardo@habkost.net, imammedo@redhat.com,
+ eblake@redhat.com, armbru@redhat.com, david@redhat.com,
+ gshan@redhat.com, Jonathan.Cameron@huawei.com, aniketa@nvidia.com,
+ cjia@nvidia.com, kwankhede@nvidia.com, targupta@nvidia.com,
+ vsethi@nvidia.com, acurrid@nvidia.com, dnigam@nvidia.com,
+ udhoke@nvidia.com, qemu-arm@nongnu.org, qemu-devel@nongnu.org
 Subject: Re: [PATCH v3 2/2] hw/acpi: Implement the SRAT GI affinity structure
-Message-ID: <20231107143332.0c00bbdc.alex.williamson@redhat.com>
-In-Reply-To: <20231107190039.19434-3-ankita@nvidia.com>
+Message-ID: <20231107171202-mutt-send-email-mst@kernel.org>
 References: <20231107190039.19434-1-ankita@nvidia.com>
  <20231107190039.19434-3-ankita@nvidia.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=alex.williamson@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231107190039.19434-3-ankita@nvidia.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,9 +104,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 8 Nov 2023 00:30:39 +0530
-<ankita@nvidia.com> wrote:
-
+On Wed, Nov 08, 2023 at 12:30:39AM +0530, ankita@nvidia.com wrote:
 > From: Ankit Agrawal <ankita@nvidia.com>
 > 
 > ACPI spec provides a scheme to associate "Generic Initiators" [1]
@@ -177,6 +171,10 @@ On Wed, 8 Nov 2023 00:30:39 +0530
 > +
 > +/*
 > + * ACPI spec, Revision 6.5
+
+we normally just say ACPI 6.5 even though a couple of places are more
+verbose.
+
 > + * 5.2.16.6 Generic Initiator Affinity Structure
 > + */
 > +static
@@ -189,9 +187,6 @@ On Wed, 8 Nov 2023 00:30:39 +0530
 > +    build_append_int_noprefix(table_data, 32, 1);    /* Length */
 > +    build_append_int_noprefix(table_data, 0, 1);     /* Reserved */
 > +    build_append_int_noprefix(table_data, 1, 1);     /* Device Handle Type */
-
-/* Device Handle Type: PCI */
-
 > +    build_append_int_noprefix(table_data, node, 4);  /* Proximity Domain */
 > +    build_append_int_noprefix(table_data, handle->segment, 2);
 > +    build_append_int_noprefix(table_data, handle->bdf, 2);
@@ -214,30 +209,6 @@ On Wed, 8 Nov 2023 00:30:39 +0530
 > +        uint16List *l;
 > +
 > +        o = object_resolve_path_type(gi->device, TYPE_VFIO_PCI, NULL);
-
-As per previous comments, this should not be tied to vfio.  This should
-be able to describe an association between any PCI device and various
-proximity domains, even those beyond this current use case.
-
-It also looks like this support just silently fails if the device
-string isn't the right type or isn't found.  That's not good.  Should
-the previous patch validate the device where the Error return is more
-readily available rather than only doing a strdup there?  Maybe then we
-should store the object there rather than a char buffer.
-
-Don't we also still need to enforce that the device is not hotpluggable
-since we're tying it to this fixed ACPI object?  That was implicit when
-previously testing for the non-hotpluggable vfio-pci device type, but
-should rely on something like device_get_hotpluggable() now.
-
-Also the ACPI Generic Initiator supports either a PCI or ACPI device
-handle, where we're only adding PCI support here.  What do we want ACPI
-device support to look like?  Is it sufficient that device= only
-accepts a PCI device now and fails on anything else and would later be
-updated to accept an ACPI device or should the object have different
-entry points, ex. pci_dev = vs acpi_dev= where it might later be
-introspected whether ACPI device support exists?
-
 > +        if (!o) {
 > +            continue;
 > +        }
@@ -245,13 +216,6 @@ introspected whether ACPI device support exists?
 > +        for (l = gi->nodelist; l; l = l->next) {
 > +            PCIDeviceHandle dev_handle = {0};
 > +            PCIDevice *pci_dev = PCI_DEVICE(o);
-
-I'd explicitly set the segment to zero just to make it more apparent
-that it would need to be addressed when QEMU adds multi-segment
-support.  Thanks,
-
-Alex
-
 > +            dev_handle.bdf = PCI_BUILD_BDF(pci_bus_num(pci_get_bus(pci_dev)),
 > +                                                       pci_dev->devfn);
 > +            build_srat_generic_pci_initiator_affinity(table_data,
@@ -297,19 +261,46 @@ Alex
 > +    GEN_AFFINITY_ENABLED = (1 << 0),
 > +    GEN_AFFINITY_ARCH_TRANS = (1 << 1),
 > +} GenericAffinityFlags;
+
+Don't add these one-time use flags. They are impossible to match to
+spec without reading and memorizing all of it. The way we do it in ACPI
+code is this:
+
+(1 << 0) /* [text matching ACPI spec verbatim ] */
+
+this also means you will not add a ton of dead code just because it is
+in the spec.
+
 > +
 > +/*
 > + * ACPI 6.5: Table 5-66 Device Handle - PCI
+
+In ACPI we document *earliest* spec version that includes this, not just
+a random one you looked at. I checked 6.3 and it's there.
+Pls find earliest one.
+
+Same applies everywhere
+
+
 > + * Device Handle definition
+
+Again match spec text exactly. one line, and "definition" is not there.
+
 > + */
 > +typedef struct PCIDeviceHandle {
 > +    uint16_t segment;
 > +    uint16_t bdf;
 > +    uint8_t res[12];
+
+what is this "res" and why do you need to pass it? It's always 0 isn't
+it?
+
 > +} PCIDeviceHandle;
 > +
 > +void build_srat_generic_pci_initiator(GArray *table_data);
 > +
 >  #endif
+> -- 
+> 2.17.1
 
 
