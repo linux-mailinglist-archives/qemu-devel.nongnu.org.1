@@ -2,85 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC4127E4145
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 14:54:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 015977E4157
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 14:58:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0MXI-0005nz-Vj; Tue, 07 Nov 2023 08:54:33 -0500
+	id 1r0Ma2-0003DW-W1; Tue, 07 Nov 2023 08:57:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r0MX9-0005nJ-96
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:54:23 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r0MX7-0000kS-Et
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:54:23 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5431614d90eso9422421a12.1
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 05:54:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699365259; x=1699970059; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ehJuneutVnZo8eVkxRP+OOMKBTey12ObjuPsdkLoKHk=;
- b=LNsQUv9Qhk2jSv1jQvk02htxFsXd/UveV+ZpSWw7cjnjDer4/DJXO0D5x2Qws0KXqc
- Bj2oQjoPgU8L9lkgJ0ayYPexZyRZ6RtMvY3pPo9mmG3iOXKfiz5wgUxakvl2vttLdz/+
- MtboCMrO8ueDWPLn0OB/KF2W+tzkHFVB0SmckFbToueRgaIvGkofl3/M6+hIo3o36ELR
- uaM2YpMB5mS1KZRGqa45MH4QubsTgWMDpCY7XktU8mEBaomVBVcFMCQ/gOimY7LsD2wE
- Dv0pf7AvPi8wdRHqLBZaHwrYzUboMXOX0450m4AiDbcFPvQoy5//uP5e/Arf2f4hjzMn
- +RFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699365259; x=1699970059;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ehJuneutVnZo8eVkxRP+OOMKBTey12ObjuPsdkLoKHk=;
- b=fbCMRPNekrhEz1l62imijaXXte1BKK/cUDJepmaxMMS7DducwTOgyoHzX9Hfur4NF9
- IdcH22lCGFC3oTrP8BRUDfSuu0h63chr9txvQWXY+rY73zXBEGSKENJJRglLzSD0BoDz
- YO6+G8LRGW6TH6/kZzMk2ptMA5vv7/h4GBCkd7XBEIVsCFfSJuNAtKFxPeqNlDiPDnWu
- umsf/75An+jfXoVUH5X8AbeiKRExsi2XjHK9fQf61Pn6PPYaQG9nflrGA1waYzTLbtqN
- JDLuJSjlJ0/iESkj2YGOPXjTyJiHE1Zrdy0ZnwgyWW6zJ8873USkxb7/3TUEbeXwWveW
- dl9w==
-X-Gm-Message-State: AOJu0Yy1Anx+FlzpJ+WtEHbWjON6E9qAA530uuuOzvKvqz15zJd98z0N
- zwUBzbOiFSvUhpzKRUjtmrGCf1cozvQaPjt8Zc0AUA==
-X-Google-Smtp-Source: AGHT+IFPbuxHg5xSk24I3Z+BRranAURIMp0Po1cJf9CsV3GSZx9450uJPfxAj8K6g7Mtj4CD0WZkVWtqHjkJoWyzHqI=
-X-Received: by 2002:a50:d694:0:b0:542:f968:f9f9 with SMTP id
- r20-20020a50d694000000b00542f968f9f9mr19566834edi.28.1699365259550; Tue, 07
- Nov 2023 05:54:19 -0800 (PST)
-MIME-Version: 1.0
-References: <20231103070136.437557-1-marcandre.lureau@redhat.com>
- <20231103070136.437557-4-marcandre.lureau@redhat.com>
-In-Reply-To: <20231103070136.437557-4-marcandre.lureau@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 7 Nov 2023 13:54:08 +0000
-Message-ID: <CAFEAcA9Pzr_bHom6hy8g8ARS6kbaqLZ8i0wCFT_yjrvBfJu9tQ@mail.gmail.com>
-Subject: Re: [PULL 3/8] dump: Add command interface for kdump-raw formats
-To: marcandre.lureau@redhat.com
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>, Thomas Huth <thuth@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Eric Blake <eblake@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, richard.henderson@linaro.org, 
- Beraldo Leal <bleal@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>, 
- Stephen Brennan <stephen.s.brennan@oracle.com>
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1r0Ma0-0003D1-S8; Tue, 07 Nov 2023 08:57:20 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1r0MZy-0001LL-G7; Tue, 07 Nov 2023 08:57:20 -0500
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3A7DYEHY011505; Tue, 7 Nov 2023 13:57:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=7NdpCFNspD2z3ZcdMI85bq/sD4j7PJb7YdC2o0bLDm0=;
+ b=lshaJHTvvnlSBsdT9AouDZBWMcNPWCCTux0CdoKAlE70An2bdYstRFbXf7oG42d22VmT
+ PKJ60k+wxHqu7HgHzGgHgwiZj/Wm78jofiIP72skP5MZF3rxsGuQIXv9THcfhgViWLW3
+ BQGAIMtXkZ5v+bRg0au1dETzMeLCnu6eXatH+iYonTk+kD03eSbPj6+qGX7A1+KTrB0/
+ rpJVBUvndG50GDdSS54iEtHg0dVPOP/AzsPvEtc3b+Z/m4/znMtat3+TaA4ygLCByilU
+ HS8QbcBGCD9KawxfC3Co893WuBej45dZBBv6JWmyhVIaS2IlqTSy0tpwhK759Q2t3OJG +A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7m71n382-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Nov 2023 13:57:14 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A7DhiTZ011705;
+ Tue, 7 Nov 2023 13:57:14 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7m71n37n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Nov 2023 13:57:14 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3A7CHF9D012887; Tue, 7 Nov 2023 13:57:13 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u609ss7w5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Nov 2023 13:57:13 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3A7DvCmU8323632
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 7 Nov 2023 13:57:13 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D30C458064;
+ Tue,  7 Nov 2023 13:57:12 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5375F58056;
+ Tue,  7 Nov 2023 13:57:12 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
+ [9.61.80.60]) by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  7 Nov 2023 13:57:12 +0000 (GMT)
+Message-ID: <e6ff98c2690df6d20f2a7a9dc49eb37ecd884353.camel@linux.ibm.com>
+Subject: Re: [PATCH] s390/sclp: fix SCLP facility map
+From: Eric Farman <farman@linux.ibm.com>
+To: Thomas Huth <thuth@redhat.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
+Date: Tue, 07 Nov 2023 08:57:12 -0500
+In-Reply-To: <f9a4c0bd-347e-4f26-9690-c27a6266a1e9@redhat.com>
+References: <20231024100703.929679-1-hca@linux.ibm.com>
+ <0cb53eda95889a41d485b993003a10600a7d4424.camel@linux.ibm.com>
+ <f9a4c0bd-347e-4f26-9690-c27a6266a1e9@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 4o4_NcHUmbDeagJPT5ZajkVHWz8NiYnK
+X-Proofpoint-GUID: cXA5SvoAoXXGUIeqPkw5i7-BfPWWP5AB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-07_04,2023-11-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0
+ mlxlogscore=878 adultscore=0 clxscore=1015 mlxscore=0 lowpriorityscore=0
+ impostorscore=0 priorityscore=1501 spamscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310240000
+ definitions=main-2311070114
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=farman@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,99 +115,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 3 Nov 2023 at 07:02, <marcandre.lureau@redhat.com> wrote:
->
-> From: Stephen Brennan <stephen.s.brennan@oracle.com>
->
-> The QMP dump API represents the dump format as an enumeration. Add three
-> new enumerators, one for each supported kdump compression, each named
-> "kdump-raw-*".
->
-> For the HMP command line, rather than adding a new flag corresponding to
-> each format, it seems more human-friendly to add a single flag "-R" to
-> switch the kdump formats to "raw" mode. The choice of "-R" also
-> correlates nicely to the "makedumpfile -R" option, which would serve to
-> reassemble a flattened vmcore.
->
-> Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> [ Marc-Andr=C3=A9: replace loff_t with off_t, indent fixes ]
-> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> Message-Id: <20230918233233.1431858-4-stephen.s.brennan@oracle.com>
+On Tue, 2023-11-07 at 10:45 +0100, Thomas Huth wrote:
+> On 02/11/2023 19.50, Eric Farman wrote:
+> > (+cc qemu-devel)
+> >=20
+> > On Tue, 2023-10-24 at 12:07 +0200, Heiko Carstens wrote:
+> > > Qemu's SCLP implementation incorrectly reports that it supports
+> > > CPU
+> > > reconfiguration. If a guest issues a CPU reconfiguration request
+> > > it
+> > > is rejected as invalid command.
+> > >=20
+> > > Fix the SCLP_HAS_CPU_INFO mask, and remove the unused
+> > > SCLP_CMDW_CONFIGURE_CPU and SCLP_CMDW_DECONFIGURE_CPU defines.
+> > >=20
+> > > Reviewed-by: Eric Farman <farman@linux.ibm.com>
+> > > Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+> > > Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+> > > ---
+> > > =C2=A0=C2=A0include/hw/s390x/sclp.h | 4 +---
+> > > =C2=A0=C2=A01 file changed, 1 insertion(+), 3 deletions(-)
+> >=20
+> > Thomas, any concerns? Could this get picked up for 8.2, please?
+>=20
+> Sorry, been away from keyboard for the last 10 days... queued it now!
 
-Hi; Coverity points out some issues in this commit:
+Ah, nice, hope it was refreshing. Thank you!
 
-> diff --git a/dump/dump-hmp-cmds.c b/dump/dump-hmp-cmds.c
-> index b038785fee..b428ec33df 100644
-> --- a/dump/dump-hmp-cmds.c
-> +++ b/dump/dump-hmp-cmds.c
-> @@ -19,6 +19,7 @@ void hmp_dump_guest_memory(Monitor *mon, const QDict *q=
-dict)
->      bool paging =3D qdict_get_try_bool(qdict, "paging", false);
->      bool zlib =3D qdict_get_try_bool(qdict, "zlib", false);
->      bool lzo =3D qdict_get_try_bool(qdict, "lzo", false);
-> +    bool raw =3D qdict_get_try_bool(qdict, "raw", false);
->      bool snappy =3D qdict_get_try_bool(qdict, "snappy", false);
->      const char *file =3D qdict_get_str(qdict, "filename");
->      bool has_begin =3D qdict_haskey(qdict, "begin");
-> @@ -40,16 +41,28 @@ void hmp_dump_guest_memory(Monitor *mon, const QDict =
-*qdict)
->          dump_format =3D DUMP_GUEST_MEMORY_FORMAT_WIN_DMP;
->      }
->
-> -    if (zlib) {
-> -        dump_format =3D DUMP_GUEST_MEMORY_FORMAT_KDUMP_ZLIB;
-> +    if (zlib && raw) {
-> +        if (raw) {
-> +            dump_format =3D DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_ZLIB;
-> +        } else {
-> +            dump_format =3D DUMP_GUEST_MEMORY_FORMAT_KDUMP_ZLIB;
-
-This is dead code, beacuse the outer conditional "(zlib && raw)"
-ensures that raw can't be false here. What was the intention here?
-(CID 1523841)
-
-> +        }
->      }
->
->      if (lzo) {
-> -        dump_format =3D DUMP_GUEST_MEMORY_FORMAT_KDUMP_LZO;
-> +        if (raw) {
-> +            dump_format =3D DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_LZO;
-> +        } else {
-> +            dump_format =3D DUMP_GUEST_MEMORY_FORMAT_KDUMP_LZO;
-> +        }
->      }
->
->      if (snappy) {
-> -        dump_format =3D DUMP_GUEST_MEMORY_FORMAT_KDUMP_SNAPPY;
-> +        if (raw) {
-> +            dump_format =3D DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_SNAPPY;
-> +        } else {
-> +            dump_format =3D DUMP_GUEST_MEMORY_FORMAT_KDUMP_SNAPPY;
-> +        }
->      }
->
->      if (has_begin) {
-
-
-> @@ -2166,6 +2190,10 @@ void qmp_dump_guest_memory(bool paging, const char=
- *file,
->          error_setg(errp, QERR_INVALID_PARAMETER, "protocol");
->          return;
->      }
-> +    if (kdump_raw && lseek(fd, 0, SEEK_CUR) =3D=3D (off_t) -1) {
-> +        error_setg(errp, "kdump-raw formats require a seekable file");
-> +        return;
-> +    }
-
-This error-exit return path forgets to close(fd), so we leak
-the file descriptor. (CID 1523842)
-
->
->      if (!dump_migration_blocker) {
->          error_setg(&dump_migration_blocker,
-
-thanks
--- PMM
+Eric
 
