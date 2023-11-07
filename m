@@ -2,90 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35C757E38ED
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:22:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D967E38FE
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:23:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0J6A-0005Qc-KG; Tue, 07 Nov 2023 05:14:18 -0500
+	id 1r0J81-0007jA-FS; Tue, 07 Nov 2023 05:16:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J66-0005MR-8H
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:14:14 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1r0J7c-0007ZU-Hn
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:15:50 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J64-00033B-GB
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:14:14 -0500
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1r0J7Z-0003Wz-C5
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:15:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699352052;
+ s=mimecast20190719; t=1699352140;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Cq8e/T3fhqKdlArKCJAyjRr/9dufWVuRJaWAjpre1Es=;
- b=hSKrj4R4W8DvhviqJG12dJPKoRJ4Y087UTJ/mp+9iQWlVBJ4PmkdD6kafC4MsdsOHOxVWb
- dGL9eRguCBnbhnc6LRo2w5LziqA9YHvnmnTj07k280qQO3PpMfchIkwztqEXJRk5YWFhL2
- fJW8AWXH6XRsaKwO+iQqo+/ksAmsEWA=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=N2OYY1iLhbSnnDj8K99i21Hgro0IpdZQmbaAqBH7EdI=;
+ b=PmjEaAzmCAwdW5QMciMcKX/zdz7r+lvdmgIe1yA/2MFUGBhGZFSvL1NsHAY1j9k4adFRCq
+ xdEv3t0M/1HnQnqi0SHRy1rF3D7Yeqp7qMLzCOF6pYl1lveXDbypisVbDJPInN2Jnh7dKJ
+ SbhK4UP815Y0Du+6aAtg5OfAEekBTHw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-132-Tcv4-fWEMXinGgak8V6aRQ-1; Tue, 07 Nov 2023 05:14:10 -0500
-X-MC-Unique: Tcv4-fWEMXinGgak8V6aRQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-32d83fd3765so2478849f8f.3
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:14:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699352048; x=1699956848;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Cq8e/T3fhqKdlArKCJAyjRr/9dufWVuRJaWAjpre1Es=;
- b=MS91MyKU1Eh0xSgHYXdhj3CZylIWAoj8AaVxc1jHr4fYZ9i3tZN4bMx1J6d6ROYH57
- f5G3f7uKvyxjXLNKBHG8j/+gjq5io38oT/DoShgq5MdnA9z+bLJGnOai5VX6oNOIIeOt
- DnrCRY5AsrE3SC02ZwnR9BjzoZ529FxAb+XpbcwG5TNZvGaoy551Eoqtp69mddz+dT2G
- Mfn7R0dAFCS902+ncKc0uqE20yp2YXE3B+bF60cGdigziByu36ZpplhCKq0iJuMry6Sn
- Sa678rFjtCDLqtdPMp3fZFj7YV7TUET/ZQ3CyAcpFYIMmm5LZWViw1fvvlz5GjFC58NE
- HV5Q==
-X-Gm-Message-State: AOJu0YwY5pBdikK2PWKf/cR8uLEqsDq4VYIOdvkM8WzcKFU7m3rpLOzC
- 0bbGJ1Qcpc5TyjApq24zDYBYp+PNtVl9htmbUJ0ieItjj3oEblAssr0bWSrxlqbmEVpcli8Ptbu
- kul3kGBURDQ3fLS4/3k5YUwoRFJ2ldVyZk5ouF77pwVfQ3r1pEEjW4umf+SFf83W+Ye7C
-X-Received: by 2002:a5d:64e6:0:b0:32f:7734:a0fa with SMTP id
- g6-20020a5d64e6000000b0032f7734a0famr30537580wri.2.1699352048614; 
- Tue, 07 Nov 2023 02:14:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFwX+FWz4E28nZS2rA3aJn23YqMBRf7DfkqIGs1KckgqGeiWFY2+y3wkldsrXq66xyrl3vE1A==
-X-Received: by 2002:a5d:64e6:0:b0:32f:7734:a0fa with SMTP id
- g6-20020a5d64e6000000b0032f7734a0famr30537550wri.2.1699352048093; 
- Tue, 07 Nov 2023 02:14:08 -0800 (PST)
-Received: from redhat.com ([2.55.5.143]) by smtp.gmail.com with ESMTPSA id
- v17-20020a5d6111000000b0031c52e81490sm1932943wrt.72.2023.11.07.02.14.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 02:14:07 -0800 (PST)
-Date: Tue, 7 Nov 2023 05:14:04 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
+ us-mta-499-3h6JpbBgPsy4tfcbReq0SA-1; Tue, 07 Nov 2023 05:15:28 -0500
+X-MC-Unique: 3h6JpbBgPsy4tfcbReq0SA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2FA928564E6;
+ Tue,  7 Nov 2023 10:15:28 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.31])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3D53C2026D66;
+ Tue,  7 Nov 2023 10:15:26 +0000 (UTC)
+From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, jsnow@redhat.com,
- Cleber Rosa <crosa@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 63/63] acpi/tests/avocado/bits: enable console logging from
- bits VM
-Message-ID: <94cd94f1c0137b56000c01208e03d0907ad34910.1699351720.git.mst@redhat.com>
-References: <cover.1699351720.git.mst@redhat.com>
+Cc: stefanha@gmail.com,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL v3 00/25] Pixman patches
+Date: Tue,  7 Nov 2023 14:14:58 +0400
+Message-ID: <20231107101524.2993389-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1699351720.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,97 +79,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ani Sinha <anisinha@redhat.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Console logs from the VM can be useful for debugging when things go wrong.
-Other avocado tests enables them. This change enables console logging with the
-following changes:
- - point to the newer bios bits image that actually enabled VM console.
- - change the bits test to drain the console logs from the VM and write the
-   logs.
- - wait for SHUTDOWN event from QEMU so that console logs can be drained out
-   of the socket before it is closed as a part of vm.wait().
+The following changes since commit bb541a7068d2eee51a9abbe2dedcdf27298b1872:
 
-Additionally, following two cosmetic changes have been made:
- - Removed VM QEMU command line logging as avocado framework already logs it.
-   This is a minor cleanup along the way.
- - Update my email to my work email in the avocado acpi bios bits test.
+  Merge tag 'pull-pa-20231106' of https://gitlab.com/rth7680/qemu into staging (2023-11-07 15:01:17 +0800)
 
-CC: jsnow@redhat.com
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Message-Id: <20231027032120.6012-3-anisinha@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- tests/avocado/acpi-bits.py | 28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+are available in the Git repository at:
 
-diff --git a/tests/avocado/acpi-bits.py b/tests/avocado/acpi-bits.py
-index 042007b0b8..68b9e98d4e 100644
---- a/tests/avocado/acpi-bits.py
-+++ b/tests/avocado/acpi-bits.py
-@@ -18,7 +18,7 @@
- #
- #
- # Author:
--#  Ani Sinha <ani@anisinha.ca>
-+#  Ani Sinha <anisinha@redhat.com>
- 
- # pylint: disable=invalid-name
- # pylint: disable=consider-using-f-string
-@@ -48,6 +48,7 @@
- )
- from qemu.machine import QEMUMachine
- from avocado import skipIf
-+from avocado.utils import datadrainer as drainer
- from avocado_qemu import QemuBaseTest
- 
- deps = ["xorriso", "mformat"] # dependent tools needed in the test setup/box.
-@@ -141,12 +142,12 @@ def __init__(self, *args, **kwargs):
-         self._baseDir = None
- 
-         # following are some standard configuration constants
--        self._bitsInternalVer = 2020
--        self._bitsCommitHash = 'b48b88ff' # commit hash must match
-+        self._bitsInternalVer = 2020 # gitlab CI does shallow clones of depth 20
-+        self._bitsCommitHash = 'c7920d2b' # commit hash must match
-                                           # the artifact tag below
--        self._bitsTag = "qemu-bits-10182022" # this is the latest bits
-+        self._bitsTag = "qemu-bits-10262023" # this is the latest bits
-                                              # release as of today.
--        self._bitsArtSHA1Hash = 'b04790ac9b99b5662d0416392c73b97580641fe5'
-+        self._bitsArtSHA1Hash = 'b22cdfcfc7453875297d06d626f5474ee36a343f'
-         self._bitsArtURL = ("https://gitlab.com/qemu-project/"
-                             "biosbits-bits/-/jobs/artifacts/%s/"
-                             "download?job=qemu-bits-build" %self._bitsTag)
-@@ -386,15 +387,20 @@ def test_acpi_smbios_bits(self):
-         # for newer machine models"). Therefore, enforce 32-bit entry point.
-         self._vm.add_args('-machine', 'smbios-entry-point-type=32')
- 
--        args = " ".join(str(arg) for arg in self._vm.base_args()) + \
--            " " + " ".join(str(arg) for arg in self._vm.args)
--
--        self.logger.info("launching QEMU vm with the following arguments: %s",
--                         args)
--
-+        # enable console logging
-+        self._vm.set_console()
-         self._vm.launch()
-+
-+        self.logger.debug("Console output from bits VM follows ...")
-+        c_drainer = drainer.LineLogger(self._vm.console_socket.fileno(),
-+                                       logger=self.logger.getChild("console"),
-+                                       stop_check=(lambda :
-+                                                   not self._vm.is_running()))
-+        c_drainer.start()
-+
-         # biosbits has been configured to run all the specified test suites
-         # in batch mode and then automatically initiate a vm shutdown.
-         # Rely on avocado's unit test timeout.
-+        self._vm.event_wait('SHUTDOWN')
-         self._vm.wait(timeout=None)
-         self.parse_log()
+  https://gitlab.com/marcandre.lureau/qemu.git tags/pixman-pull-request
+
+for you to fetch changes up to d017f28a2ee082f472ed69fedf0435b468000e92:
+
+  build-sys: make pixman actually optional (2023-11-07 14:04:25 +0400)
+
+----------------------------------------------------------------
+Make Pixman an optional dependency
+
+----------------------------------------------------------------
+
+Marc-André Lureau (25):
+  build-sys: add a "pixman" feature
+  build-sys: drop needless warning pragmas for old pixman
+  ui: compile out some qemu-pixman functions when !PIXMAN
+  ui: add pixman-minimal.h
+  vl: drop needless -spice checks
+  qemu-options: define -vnc only #ifdef CONFIG_VNC
+  vl: simplify display_remote logic
+  vl: move display early init before default devices
+  ui/console: allow to override the default VC
+  ui/vc: console-vc requires PIXMAN
+  qmp/hmp: disable screendump if PIXMAN is missing
+  virtio-gpu: replace PIXMAN for region/rect test
+  ui/console: when PIXMAN is unavailable, don't draw placeholder msg
+  vhost-user-gpu: skip VHOST_USER_GPU_UPDATE when !PIXMAN
+  ui/gl: opengl doesn't require PIXMAN
+  ui/vnc: VNC requires PIXMAN
+  ui/spice: SPICE/QXL requires PIXMAN
+  ui/gtk: -display gtk requires PIXMAN
+  ui/dbus: do not require PIXMAN
+  arm/kconfig: XLNX_ZYNQMP_ARM depends on PIXMAN
+  hw/arm: XLNX_VERSAL depends on XLNX_CSU_DMA
+  hw/sm501: allow compiling without PIXMAN
+  hw/mips: FULOONG depends on VT82C686
+  hw/display/ati: allow compiling without PIXMAN
+  build-sys: make pixman actually optional
+
+ meson.build                   |  25 ++++-
+ qapi/ui.json                  |   3 +-
+ include/ui/console.h          |   2 +
+ include/ui/pixman-minimal.h   | 195 ++++++++++++++++++++++++++++++++++
+ include/ui/qemu-pixman.h      |  15 +--
+ include/ui/rect.h             |  59 ++++++++++
+ hw/display/ati.c              |  15 ++-
+ hw/display/ati_2d.c           |  10 +-
+ hw/display/sm501.c            |  45 +++++---
+ hw/display/vhost-user-gpu.c   |   2 +
+ hw/display/virtio-gpu.c       |  30 ++----
+ system/vl.c                   |  84 ++++++++-------
+ ui/console-vc-stubs.c         |  33 ++++++
+ ui/console.c                  |  19 ++++
+ ui/dbus-listener.c            |  90 +++++++++++-----
+ ui/qemu-pixman.c              |   6 ++
+ ui/ui-hmp-cmds.c              |   2 +
+ ui/ui-qmp-cmds.c              |   2 +
+ ui/vnc-stubs.c                |  12 ---
+ Kconfig.host                  |   3 +
+ hmp-commands.hx               |   2 +
+ hw/arm/Kconfig                |   4 +-
+ hw/display/Kconfig            |   7 +-
+ hw/display/meson.build        |   4 +-
+ hw/mips/Kconfig               |   1 +
+ meson_options.txt             |   2 +
+ qemu-options.hx               |   2 +
+ scripts/meson-buildoptions.sh |   3 +
+ ui/meson.build                |  22 ++--
+ 29 files changed, 560 insertions(+), 139 deletions(-)
+ create mode 100644 include/ui/pixman-minimal.h
+ create mode 100644 include/ui/rect.h
+ create mode 100644 ui/console-vc-stubs.c
+
 -- 
-MST
+2.41.0
 
 
