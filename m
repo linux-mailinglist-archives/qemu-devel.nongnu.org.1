@@ -2,75 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF0E7E3B54
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 12:50:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4122A7E3B59
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 12:53:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Kal-0006Q4-2e; Tue, 07 Nov 2023 06:49:59 -0500
+	id 1r0Kd3-0007eE-1L; Tue, 07 Nov 2023 06:52:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r0Kad-0006O1-F5
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 06:49:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r0Kd1-0007e0-4k
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 06:52:19 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r0Kab-0004Xx-Pk
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 06:49:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699357788;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ggcpIgWDmzHQK3ZMctOveHXyjE46XiU6NhYFuTUDKD8=;
- b=VqmVEDPTLbMb4g2JdQ/tRtbCL2TcbDKPPgbLsonLE7yBUDZIal1TuuaDXNwzaQauX5+K8r
- hytDinSP88mV8kt/+06oEYL7/xLoG2fISmQz5eiCwevXGTynRLwiZIuDKpk5k+bANAX9kF
- fIkK5j4HWPKQgNr+1JBRt7p5GfOwmCo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-623--ABvdnV1MemEOCG-r0UKRA-1; Tue,
- 07 Nov 2023 06:49:11 -0500
-X-MC-Unique: -ABvdnV1MemEOCG-r0UKRA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8C1913813BC8;
- Tue,  7 Nov 2023 11:49:11 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.119])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 35E241121308;
- Tue,  7 Nov 2023 11:49:11 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 544F71800DDB; Tue,  7 Nov 2023 12:49:09 +0100 (CET)
-Date: Tue, 7 Nov 2023 12:49:09 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Claudio Fontana <cfontana@suse.de>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
- Dario Faggioli <dfaggioli@suse.com>, Jim Fehlig <jfehlig@suse.com>
-Subject: Re: [PULL 4/6] seabios: update binaries to git snapshot
-Message-ID: <rdyjajgmgmk3kfbmnufqkws662xhsitcg6yx74qlczclx3i3pz@ftfqmcm7jtp4>
-References: <20231010112610.2618091-1-kraxel@redhat.com>
- <20231010112610.2618091-5-kraxel@redhat.com>
- <30a82b23-ded6-f03a-727c-ed6f86657a34@suse.de>
- <terqy6i5rs6ui4wwbzmwlqi2v72c6qfl62nnu2ifgbkbrrz3z4@mneyylwzf6fo>
- <8aa3d259-6dd5-ebf7-8989-66b967434773@suse.de>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r0Kcx-0005G4-P6
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 06:52:18 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id DC2DF75A4BC;
+ Tue,  7 Nov 2023 12:52:27 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id D034775A4B9; Tue,  7 Nov 2023 12:52:27 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id CDB2775A4B8;
+ Tue,  7 Nov 2023 12:52:27 +0100 (CET)
+Date: Tue, 7 Nov 2023 12:52:27 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+cc: qemu-devel@nongnu.org
+Subject: Re: QEMU entering soft freeze for 8.2 release cycle
+In-Reply-To: <20231107105603.GA993420@fedora>
+Message-ID: <bc415368-0e5a-5712-edb6-c0046f090a7b@eik.bme.hu>
+References: <20231107105603.GA993420@fedora>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8aa3d259-6dd5-ebf7-8989-66b967434773@suse.de>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Virus-Scanned: ClamAV using ClamSMTP
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,43 +59,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> Hi, thanks for the response,
-> 
-> just to be sure, this is a regression (it worked fine prior to the seabios update).
+On Tue, 7 Nov 2023, Stefan Hajnoczi wrote:
+> Hi,
+> QEMU is entering soft freeze for the 8.2 release cycle. After today's
+> pull requests, only bug fixes will be merged until the 8.2 release is
+> stablized around December 12th. New features can be merged into -next
+> trees by maintainers, but will not be merged into qemu.git/master.
 
-Yes.
+You seem to be ahead of everyone else. It's still midday here and other 
+people may just start working so maybe you should use US time zone for 
+starting the freeze just to make sure people in that part of the world 
+also on the same page.
 
-> Address sizes:                      43 bits physical, 48 bits virtual
+Regards,
+BALATON Zoltan
 
-OK.
-
-> [    0.881472] pci 0000:00:01.0: PCI bridge to [bus 01]
-> [    0.882262] pci 0000:00:01.0:   bridge window [io  0x1000-0x1fff]
-> [    0.886991] pci 0000:00:01.0:   bridge window [mem 0xfe800000-0xfe9fffff]
-> [    0.890308] pci 0000:00:01.0:   bridge window [mem 0xe1a000000000-0xe1bfffffffff 64bit pref]
-
-This is the change btw, the 64-bit mmio window is moved.
-Apparently we got 48 bits guest physical address space.
-
-> [    8.331290] vmap allocation for size 211106232541184 failed: use vmalloc=<size> to increase size.
-> [    8.332666] virtio-pci 0000:01:00.0: virtio_pci: unable to map virtio 56@0 on bar 4
-> [    8.334166] virtio-pci: probe of 0000:01:00.0 failed with error -22
-
-And here things go wrong.  The size is /way/ off (bar 4 is 16k).
-
-Can you try to reduce the guest physical address space?
-Try 46 instead of 48 first, if that doesn't help try
-smaller values.
-
-qemu command line:
-  -cpu host,host-phys-bits-limit=46
-
-libvirt xml:
-  <cpu ...>
-    <maxphysaddr mode='emulate' bits='46'/>
-  </cpu>
-
-take care,
-  Gerd
-
+> The release schedule is here:
+> https://wiki.qemu.org/Planning/8.2
+>
+> Please remember to update the changelog if your work has landed in 8.2:
+> https://wiki.qemu.org/ChangeLog/8.2
+>
+> Let me know if you have any questions!
+>
+> Thanks,
+> Stefan
+>
 
