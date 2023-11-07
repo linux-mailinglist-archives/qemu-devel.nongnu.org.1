@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781867E41F8
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:40:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 703947E41F9
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:42:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0NEr-0001Fo-UR; Tue, 07 Nov 2023 09:39:34 -0500
+	id 1r0NGh-0003qY-Ax; Tue, 07 Nov 2023 09:41:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r0NEe-0001Ah-4G
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:39:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1r0NGe-0003nb-A0
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:41:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r0NEb-0002n0-Cs
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:39:19 -0500
+ id 1r0NGc-0003dk-O9
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:41:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699367956;
+ s=mimecast20190719; t=1699368081;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ message-id:message-id:to:to:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qd01gry4xrpC15OiUGT7K9n6myaiFEcE6pBlLjHI2vU=;
- b=NPG6La+tkUMJ/Z5pUQpniHiZqFNtqGEDLW/8nLbX44vdV5uqRS8Kib9BYxvkGynXHkPzxc
- PjE8aDM7j+YBnAALGo2L9RW6ds/VUiia+EZ90tcPsyy8bKdxJpV7h2lCUPpYX7tspPH4xl
- XmZcjeoG/MKo/Ypeovklnf/07oTBasw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-369-SpMs9szrNHuH4vVh09tHjQ-1; Tue,
- 07 Nov 2023 09:39:07 -0500
-X-MC-Unique: SpMs9szrNHuH4vVh09tHjQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ bh=2azOG1k33QAaF6Vnrbdb0nsynwYihAqUqu4bmMv7Z2g=;
+ b=FKL7twffo4MQjdKRAbzxNpm/Cs97105YabGtWM4zAJ8iDdnqOPeSETCfFq2/jo/KPjt53y
+ ng+y6GMF1iYdVRiyphZllEmus8SCaAGKVU4F9M/xPgvNNoUAHvYpJ+sgrmbhrwvbhTDLEZ
+ PRTBM2qbWExdEadg+VhHf/L0TqMSlys=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-84-ND1BkLqZNP6nunw9UhVtEA-1; Tue, 07 Nov 2023 09:41:18 -0500
+X-MC-Unique: ND1BkLqZNP6nunw9UhVtEA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DC71428B7313
- for <qemu-devel@nongnu.org>; Tue,  7 Nov 2023 14:39:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6FB7385A58B;
+ Tue,  7 Nov 2023 14:41:17 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.62])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3C82419E94;
- Tue,  7 Nov 2023 14:39:04 +0000 (UTC)
-Date: Tue, 7 Nov 2023 14:39:02 +0000
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 71C671C060AE;
+ Tue,  7 Nov 2023 14:41:16 +0000 (UTC)
+Date: Tue, 7 Nov 2023 14:41:13 +0000
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH] audio: don't abort on f32 audio format in wav backend
-Message-ID: <ZUpMBgRFblvJE1Z8@redhat.com>
-References: <20230922151858.263447-1-berrange@redhat.com>
+To: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 0/3] docs: update x86 CPU model ABI matrix docs
+Message-ID: <ZUpMici/H4wC6f+i@redhat.com>
+References: <20230718092631.730255-1-berrange@redhat.com>
+ <ZQL0YKD5Hm9nvWer@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230922151858.263447-1-berrange@redhat.com>
+In-Reply-To: <ZQL0YKD5Hm9nvWer@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,34 +87,38 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping, for anyone to review this trivial patch....
+Ping, for anyone who can review this.
 
-On Fri, Sep 22, 2023 at 04:18:58PM +0100, Daniel P. Berrangé wrote:
-> Print a debug message as is done for other unsupported audio formats
-> to give the user the chance to understand their mistake.
+On Thu, Sep 14, 2023 at 12:54:08PM +0100, Daniel P. Berrangé wrote:
+> Ping for review please. This series still applies to git master.
 > 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->  audio/wavaudio.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> On Tue, Jul 18, 2023 at 10:26:28AM +0100, Daniel P. Berrangé wrote:
+> > Changed in v2:
+> > 
+> >  - Tweaked commit messages
+> >  - Also add GraniteRapids CPU model
+> > 
+> > Daniel P. Berrangé (3):
+> >   scripts: drop comment about autogenerated CPU API file
+> >   docs: fix highlighting of CPU ABI header rows
+> >   docs: re-generate x86_64 ABI compatibility CSV
+> > 
+> >  docs/system/cpu-models-x86-abi.csv | 20 ++++++++++++++++++--
+> >  docs/system/cpu-models-x86.rst.inc |  2 +-
+> >  scripts/cpu-x86-uarch-abi.py       |  1 -
+> >  3 files changed, 19 insertions(+), 4 deletions(-)
+> > 
+> > -- 
+> > 2.41.0
+> > 
 > 
-> diff --git a/audio/wavaudio.c b/audio/wavaudio.c
-> index 6445a2cb90..e70e5ee0c3 100644
-> --- a/audio/wavaudio.c
-> +++ b/audio/wavaudio.c
-> @@ -97,6 +97,10 @@ static int wav_init_out(HWVoiceOut *hw, struct audsettings *as,
->          dolog ("WAVE files can not handle 32bit formats\n");
->          return -1;
->  
-> +    case AUDIO_FORMAT_F32:
-> +        dolog("WAVE files can not handle float formats\n");
-> +        return -1;
-> +
->      default:
->          abort();
->      }
+> With regards,
+> Daniel
 > -- 
-> 2.41.0
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> 
 > 
 
 With regards,
