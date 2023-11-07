@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ACF87E330D
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B45437E331F
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:36:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0BtL-0001z4-IA; Mon, 06 Nov 2023 21:32:35 -0500
+	id 1r0BtV-0002da-FQ; Mon, 06 Nov 2023 21:32:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r0BtD-0001u0-3Y
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:32:27 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1r0BtE-0001y6-Pu
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:32:28 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r0BtA-00032V-IH
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:32:26 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1cc3216b2a1so42015525ad.2
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:32:24 -0800 (PST)
+ id 1r0BtC-00032v-MJ
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:32:28 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1cc29f39e7aso34158555ad.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:32:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699324342; x=1699929142; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699324345; x=1699929145; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5mrZ5mxg7lpwxJSPkoOF7DsBsJR5EAPVhYW5v2dN1p8=;
- b=iRGIIKgyHjwTkDaF39PV7L8vST4LlNp9ITIeNPa5fKY4OnNxgKLajDmYBUaRGXPe9D
- JDmXRACHplrOI3VXfiIN3MoPDk7JR/1scWx2z6ZxVNzmiuI2ECyvQFf7UuxC2O3LRFpg
- zlF8nfQnpnwKzcbHmV70JvdZtvN5JlhCV1IEv5z1uq6ZRkSefXsLuJ/LPvByEt0HIx7D
- 9MZ/6XUaUOkHOeszIREtjalteSr+6g9+VGd6LlON0g8xB4XqeYK4dGfuWwZQ2fLnslym
- 0V+0y2hmSuifSD2VvqsbYEsqOO+0blsIhg4Ol7GR9XRUckp/SwbRWAbGQ0MLfPo6VLLl
- 55zw==
+ bh=F2gNhwmPj0KePQvpBSUWI/zoyA5leX7uEdHzTBDBr3Y=;
+ b=lAgv6Q7h6guS4c+hfjVrMyL6NwQYlS5FaRng2K+vuTqFXaloj+pIOrk8izG5i9/i6P
+ Y19EvKTSXZW/5o0WHtzNvmUgllMokPSuG5mRERUR599fKBcUzKGZnnPzh1epqqztmZEU
+ aL/WzFJdbJtuO6pftpMB0wClj04+l01Ql1gn01ONWi/G1yGCbxxIKWQ3gacwgsWubuoe
+ Q+AetBM/8KgZsXDVRm7eYmQ5APx8eeiZiikH+UeKcsiXa8+VsDBAdqCv4LeSx056zfGg
+ HdLCg1o/6HoNCnxF4wRSZ+w+sYi+WWtTkY7g+1JK/52GuIjSUvLrNsxDxKsNh+lpLw9/
+ GOWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699324342; x=1699929142;
+ d=1e100.net; s=20230601; t=1699324345; x=1699929145;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5mrZ5mxg7lpwxJSPkoOF7DsBsJR5EAPVhYW5v2dN1p8=;
- b=K7yduKlv9NFvwY7FdqaIQWBaIYE7PItnp50pBT9Iha/v+hStS07PAPTuzESjR27Eg3
- k9rb9b/wJ2xFi8qJR6CoTz4Eg8Q42VPBSadHdCF316dx6rBE8x8c/xJae7WYCTI2Qi+Y
- CE7aPGMSGhR3x04tULTf+LN+VmDZTIy+n2HXzWSbzSUqpSRG1O54CjOC3j5o0/vBR0st
- nhr1zve0PZ4LdAtqoef83uZHXjXtK4pfcASDdIVXCKq5C4azvLKimuBIQJ8hQctCHL5G
- 5R3PS5Zb7GfF36Ywe3/HnorBu4Fz75xFEPOlJSVK3JA0UKRkw+KkGwJzFjfB5+YBAQEo
- qftg==
-X-Gm-Message-State: AOJu0YylbfRSD9RvUzmBnh4DyHP0rFvLjWvKPuSZiEUiQrGG8eVtLEk2
- VhX7QpqeYzaidVN/qR8sGKPC912eQYy8zg==
-X-Google-Smtp-Source: AGHT+IHNipqixmZVEp0QCedKclbFpgD1Y46R7PgE4gWqvH/sOxt6nbUAC75mGH+vgN9iLgFySiZG+g==
-X-Received: by 2002:a17:902:d50f:b0:1cc:4e9f:d27 with SMTP id
- b15-20020a170902d50f00b001cc4e9f0d27mr23381818plg.1.1699324341853; 
- Mon, 06 Nov 2023 18:32:21 -0800 (PST)
+ bh=F2gNhwmPj0KePQvpBSUWI/zoyA5leX7uEdHzTBDBr3Y=;
+ b=EyUuPUv9VHCghISfV0NmaXwIgdAA+84wnp4m1FrWk6brDc/hVJ9A2Hnevmtscr+Bbg
+ NeGvD72Ln1+e/qqtRM2qUip8rz998Vv2GnT1l0kUNJG69WqpU8sIkVGPml/+ZLoMGxsg
+ H5E48c8AYd1xIpYFxM86DsTrpalCLxNCGPriBB3NXDDXjPtV1Kx7xFAQTlpZz8J+a4Ki
+ 7m2w6XslWcOL+g4cHh+zF6VabOpCOuKSPjUqDhxmNBVSLm4hgZ7RvWg6gsaqUwJdDg4L
+ v/sjfEPFGga6LanpxJtys8IdsqlE9tfg6HE9T6CZPLssLFh/Reu3gbInyDUyvyWvh5xN
+ JAZw==
+X-Gm-Message-State: AOJu0YwA+OcnDGjIn3PsPJd75spv/R01Isyk1PY01AgB16fWlUHtmUSR
+ J6mkQV+wXkUa8V5Hxqj3SB5sbelgbxDa0A==
+X-Google-Smtp-Source: AGHT+IHv3D8F+QX5KUI47eMVEfNQuzZ0dsdijP9zvOlGTlo/TixDdmh2tWSHbhHxZJMwwlPm9rnGOQ==
+X-Received: by 2002:a17:903:10a:b0:1cc:6101:2086 with SMTP id
+ y10-20020a170903010a00b001cc61012086mr14258857plc.11.1699324345053; 
+ Mon, 06 Nov 2023 18:32:25 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- u18-20020a170902e5d200b001cc32f46757sm6487649plf.107.2023.11.06.18.32.18
+ u18-20020a170902e5d200b001cc32f46757sm6487649plf.107.2023.11.06.18.32.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 18:32:21 -0800 (PST)
+ Mon, 06 Nov 2023 18:32:24 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Max Chou <max.chou@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 42/49] disas/riscv: Replace TABs with space
-Date: Tue,  7 Nov 2023 12:29:38 +1000
-Message-ID: <20231107022946.1055027-43-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PULL 43/49] hw/ssi: ibex_spi_host: Clear the interrupt even if
+ disabled
+Date: Tue,  7 Nov 2023 12:29:39 +1000
+Message-ID: <20231107022946.1055027-44-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231107022946.1055027-1-alistair.francis@wdc.com>
 References: <20231107022946.1055027-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,47 +97,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Chou <max.chou@sifive.com>
+From: Alistair Francis <alistair23@gmail.com>
 
-Replaces TABs with spaces, making sure to have a consistent coding style
-of 4 space indentations.
+We currently don't clear the interrupts if they are disabled. This means
+that if an interrupt occurs and the guest disables interrupts the QEMU
+IRQ will remain high.
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20231026151828.754279-15-max.chou@sifive.com>
+This doesn't immediately affect guests, but if the
+guest re-enables interrupts it's possible that we will miss an
+interrupt as it always remains set.
+
+Let's update the logic to always call qemu_set_irq() even if the
+interrupts are disabled to ensure we set the level low. The level will
+never be high unless interrupts are enabled, so we won't generate
+interrupts when we shouldn't.
+
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-ID: <20231102003424.2003428-2-alistair.francis@wdc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- disas/riscv.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/ssi/ibex_spi_host.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index 7ea6ea050e..e9458e574b 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -3136,12 +3136,12 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                 }
-                 break;
-             case 89:
--		switch (((inst >> 12) & 0b111)) {
-+                switch (((inst >> 12) & 0b111)) {
-                 case 0: op = rv_op_fmvp_d_x; break;
-                 }
-                 break;
-             case 91:
--		switch (((inst >> 12) & 0b111)) {
-+                switch (((inst >> 12) & 0b111)) {
-                 case 0: op = rv_op_fmvp_q_x; break;
-                 }
-                 break;
-@@ -4579,7 +4579,7 @@ static void decode_inst_operands(rv_decode *dec, rv_isa isa)
-         break;
-     case rv_codec_zcmt_jt:
-         dec->imm = operand_tbl_index(inst);
--	break;
-+        break;
-     case rv_codec_fli:
-         dec->rd = operand_rd(inst);
-         dec->imm = operand_rs1(inst);
+diff --git a/hw/ssi/ibex_spi_host.c b/hw/ssi/ibex_spi_host.c
+index 1ee7d88c22..c300ec294d 100644
+--- a/hw/ssi/ibex_spi_host.c
++++ b/hw/ssi/ibex_spi_host.c
+@@ -205,9 +205,10 @@ static void ibex_spi_host_irq(IbexSPIHostState *s)
+         if (err_irq) {
+             s->regs[IBEX_SPI_HOST_INTR_STATE] |= R_INTR_STATE_ERROR_MASK;
+         }
+-        qemu_set_irq(s->host_err, err_irq);
+     }
+ 
++    qemu_set_irq(s->host_err, err_irq);
++
+     /* Event IRQ Enabled and Event IRQ Cleared */
+     if (event_en && !status_pending) {
+         if (FIELD_EX32(intr_test_reg, INTR_STATE,  SPI_EVENT)) {
+@@ -229,8 +230,9 @@ static void ibex_spi_host_irq(IbexSPIHostState *s)
+         if (event_irq) {
+             s->regs[IBEX_SPI_HOST_INTR_STATE] |= R_INTR_STATE_SPI_EVENT_MASK;
+         }
+-        qemu_set_irq(s->event, event_irq);
+     }
++
++    qemu_set_irq(s->event, event_irq);
+ }
+ 
+ static void ibex_spi_host_transfer(IbexSPIHostState *s)
 -- 
 2.41.0
 
