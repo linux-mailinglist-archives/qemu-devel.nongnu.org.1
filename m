@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B527E33FA
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:14:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A32D27E3423
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:18:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0CPL-0000CH-EY; Mon, 06 Nov 2023 22:05:39 -0500
+	id 1r0CPV-0001RL-8a; Mon, 06 Nov 2023 22:05:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0COP-0006qA-U0
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:04:42 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1r0COX-00077v-N0
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:04:52 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CO8-0000ft-3x
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:04:41 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1cc3216b2a1so42166785ad.2
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:04:23 -0800 (PST)
+ id 1r0COH-0000g1-Gi
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:04:49 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1cc2fc281cdso39189625ad.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:04:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1699326263; x=1699931063; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=kCzE9vIK3Nn7Qq8eXaj04fpM94BoNvhV6PxkUb5Tir4=;
- b=pt5thI+LYafecUrPP0gGQRX7n6SgVnrJv/80txQ4Tg+FVzNk9kqkkDgYVrEusNs6mx
- QjK3s5UloK1kr615BRQPIfqWLksm+ed4SUM3uafUqzo4koDGhalm/HcoYj2l0A4CW0Fj
- 9TUr9o2dGhrlzHyMUv2R8xN+0wumSjFBptXIUHTRabqrDGf5aAK6e3Um+99fF/q8Wf2w
- 7/w8PoI+sDyBaZTk0wLRFnIldJJU27yD6XOHWFBa81dvvhZ/yCOosnH36wbughSsvirj
- K72wlsSLwRRguDww/FKQk4n+/9nKbNpzZ1mZNBPebBwrZbTq/7sM4tN9YTEYhVjqL+lp
- NmLA==
+ :reply-to; bh=/Exykv+xKuErtsZmUvO9DLpku6Bz9Jw3PAqZ735n9fU=;
+ b=qSK2bibzWN9C/aZRNXU4PbuMO1iLdS6pOdeePzlXHJbXqxARKJMafbZxQTE+9nxO5y
+ enAy77mI/h0olqaIlGCaoNkEhvvAsbuWo0I7644oWHxIZ+PPv+20TsCuJZpO+LEWGi5A
+ dY/JYdnHFHvM+JSNrRsvcZGYPkLe2WVpAv11jjcBkVg6ZW3nwHsrsNgACNNPN4HKGNSB
+ DmDVtVZxy7ICCFJYJtz7omDokJQOi4Kk/0IKlfZ4xlkxVjmJRdpSXKMhCeB+wgIfBYv1
+ gQ9y8tITdZUd9HFp0lBfhK8W+rx8lhkTUKAZAAT1bLumGTo6bKA/ZfZwYuAHiZEfopk3
+ 8H3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1699326263; x=1699931063;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kCzE9vIK3Nn7Qq8eXaj04fpM94BoNvhV6PxkUb5Tir4=;
- b=bM3dJ85t95yz23bPhADzKzIQHdBgPnQb7HEHeBdKvaha4b7eX80kdConJ7oafmNBr+
- W/qlUo7qHvQyG0F86B+kZnihTKxpmcZfEGw33+451vmy24dstfwgk00JKe0ytBie5Cv8
- Mtt0mifRnf4bQQgfuhyvpLJUlxYpvd3zlCkEGhOWbVCIL4kex5eAh6/d8hhyhjJbZ08O
- XubMS0GFKg6OcfYxIdTNY7CjmVD81QTfI8wKsKECqGpY+nDqjTm30aVnxd9OXuCnFVQf
- c6p3VLBvTCjV/tzzDmvttfA9friOPzXmy7AhsOcXk8A8+56dZmHfr4165Hc+ig4U5hOX
- IJXg==
-X-Gm-Message-State: AOJu0Yz32NGLXySoBNGupbJAX3NfkKw00nyfFaGKzgWCzAWXgrIjqPZ+
- NO1eQQzCYiVkR7WRbFzyLbigpIuI98r95HG5xpE=
-X-Google-Smtp-Source: AGHT+IHktNru29D+jL/++C73Jkx0KMjGT7+UOP+sJ/3Or88OjRUs7NoYPt6noY43tUjPEfWjKYmW+g==
-X-Received: by 2002:a17:902:ea0c:b0:1cc:56a9:e8d5 with SMTP id
- s12-20020a170902ea0c00b001cc56a9e8d5mr21320899plg.15.1699326262923; 
- Mon, 06 Nov 2023 19:04:22 -0800 (PST)
+ bh=/Exykv+xKuErtsZmUvO9DLpku6Bz9Jw3PAqZ735n9fU=;
+ b=gfiNWW47XTxhWkicTNhLcDEvYg++TsV5G8DlNqRASaoRegosdJO9NKpcZljxtn9v4g
+ eCdIFCHvqjkG9BKBFFribElNbzdwhgKBDsego8WfbSRDqEp4+VcqaW4PN72E6aMgi+oQ
+ ilVDk8c0SBBbuC88ViixudE42DY18xQtiTSFcHO/mz4zfLDw0wZPHj3QzyanV4dYppXs
+ rN+Co+x4kbWg6kGCey4Xe5InLQjA8gvlVZ3albVI3wzsOeF4YTNOcqz0RwyBiUdVaZ8P
+ e0jZ2B3sMpWdVRXf6ASoOUndonHljz6ZqQ5tcg8KjdYAMNM1jVvIefIeGGe5cMTXU4DL
+ qyJw==
+X-Gm-Message-State: AOJu0YwOdPlMNIEGEkVGEx+fVh9pDw5RA8P73ys39kfj/7FnEV/nGHV0
+ jp/IgqsItX/j4shvxa2RTRYMT2kw1D9/XtbC/FY=
+X-Google-Smtp-Source: AGHT+IFicu3IUU7aShvsT2kgoJdysnTMuRDSrCcoAUpNSqzgczWP8QoYoi5Rn+VravryBostfumJVA==
+X-Received: by 2002:a17:903:124e:b0:1cc:ae19:6220 with SMTP id
+ u14-20020a170903124e00b001ccae196220mr7651557plh.27.1699326263598; 
+ Mon, 06 Nov 2023 19:04:23 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- u9-20020a17090282c900b001c72d5e16acsm6518012plz.57.2023.11.06.19.04.22
+ u9-20020a17090282c900b001c72d5e16acsm6518012plz.57.2023.11.06.19.04.23
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 19:04:22 -0800 (PST)
+ Mon, 06 Nov 2023 19:04:23 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/85] target/hppa: Implement cpu_list
-Date: Mon,  6 Nov 2023 19:03:01 -0800
-Message-Id: <20231107030407.8979-20-richard.henderson@linaro.org>
+Subject: [PULL 20/85] target/hppa: Implement hppa_cpu_class_by_name
+Date: Mon,  6 Nov 2023 19:03:02 -0800
+Message-Id: <20231107030407.8979-21-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231107030407.8979-1-richard.henderson@linaro.org>
 References: <20231107030407.8979-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,59 +91,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h |  5 +++++
- target/hppa/cpu.c | 24 ++++++++++++++++++++++++
- 2 files changed, 29 insertions(+)
+ linux-user/hppa/target_elf.h |  2 +-
+ target/hppa/cpu.c            | 10 +++++++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 48ddcffb8a..301c82114a 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -396,4 +396,9 @@ int hppa_artype_for_page(CPUHPPAState *env, target_ulong vaddr);
+diff --git a/linux-user/hppa/target_elf.h b/linux-user/hppa/target_elf.h
+index 82b4e9535e..19cae8bd65 100644
+--- a/linux-user/hppa/target_elf.h
++++ b/linux-user/hppa/target_elf.h
+@@ -9,6 +9,6 @@
+ #define HPPA_TARGET_ELF_H
+ static inline const char *cpu_get_model(uint32_t eflags)
+ {
+-    return "any";
++    return "hppa";
+ }
  #endif
- G_NORETURN void hppa_dynamic_excp(CPUHPPAState *env, int excp, uintptr_t ra);
- 
-+#define CPU_RESOLVING_TYPE TYPE_HPPA_CPU
-+
-+#define cpu_list hppa_cpu_list
-+void hppa_cpu_list(void);
-+
- #endif /* HPPA_CPU_H */
 diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 07fae42bb8..27c74f0d27 100644
+index 27c74f0d27..70ce0c3b99 100644
 --- a/target/hppa/cpu.c
 +++ b/target/hppa/cpu.c
-@@ -161,6 +161,30 @@ static ObjectClass *hppa_cpu_class_by_name(const char *cpu_model)
-     return object_class_by_name(TYPE_HPPA_CPU);
+@@ -158,7 +158,15 @@ static void hppa_cpu_initfn(Object *obj)
+ 
+ static ObjectClass *hppa_cpu_class_by_name(const char *cpu_model)
+ {
+-    return object_class_by_name(TYPE_HPPA_CPU);
++    g_autofree char *typename = g_strconcat(cpu_model, "-cpu", NULL);
++    ObjectClass *oc = object_class_by_name(typename);
++
++    if (oc &&
++        !object_class_is_abstract(oc) &&
++        object_class_dynamic_cast(oc, TYPE_HPPA_CPU)) {
++        return oc;
++    }
++    return NULL;
  }
  
-+static void hppa_cpu_list_entry(gpointer data, gpointer user_data)
-+{
-+    ObjectClass *oc = data;
-+    CPUClass *cc = CPU_CLASS(oc);
-+    const char *tname = object_class_get_name(oc);
-+    g_autofree char *name = g_strndup(tname, strchr(tname, '-') - tname);
-+
-+    if (cc->deprecation_note) {
-+        qemu_printf("  %s (deprecated)\n", name);
-+    } else {
-+        qemu_printf("  %s\n", name);
-+    }
-+}
-+
-+void hppa_cpu_list(void)
-+{
-+    GSList *list;
-+
-+    list = object_class_get_list_sorted(TYPE_HPPA_CPU, false);
-+    qemu_printf("Available CPUs:\n");
-+    g_slist_foreach(list, hppa_cpu_list_entry, NULL);
-+    g_slist_free(list);
-+}
-+
- #ifndef CONFIG_USER_ONLY
- #include "hw/core/sysemu-cpu-ops.h"
- 
+ static void hppa_cpu_list_entry(gpointer data, gpointer user_data)
 -- 
 2.34.1
 
