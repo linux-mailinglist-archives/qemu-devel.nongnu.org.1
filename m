@@ -2,83 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF927E36EA
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 09:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 592577E36F2
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 09:54:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0HoJ-0003mn-Do; Tue, 07 Nov 2023 03:51:47 -0500
+	id 1r0Hqq-0005XZ-0h; Tue, 07 Nov 2023 03:54:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0Hnp-0003eG-8V
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 03:51:18 -0500
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0Hnl-0003O1-8h
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 03:51:17 -0500
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-507973f3b65so7257113e87.3
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 00:51:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699347070; x=1699951870; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=TrSZHFiJAA/AwU7WufUuWN5MLuX6xE725trQkA5y2eI=;
- b=WeHrMOiTJxp0PJHD/V3JJDHN5cQNdf7TtOVnDLHUnvX7MTVuGL+lY6H0uz4mWNPlav
- 0es55CkpjQTim+PEOWKV8KsJ+J+KEf19S8fiZTohcmPDV0JPeULRdMRWnEzBmVooHAM7
- w6B50zO9eAZB5fSC2rtKFnYLB62Zd1MCGF4aGeM/yA/02QZb2LX1Q8qvT+bRgMbJSJ0r
- XuxD0R8VoCzYCqVP5pAXI2NmtEFpO/M5c6s31noJF6lcIW/prZHeugh21Y/oYjpDC9zX
- ooAhX1HPCrNIwBvL4Yc01qfbdKUdnfhkPE+0D5aLN06XLgj2B6Pt6Zxn1lKc6U1ja/k4
- bW1Q==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0Hqo-0005XQ-Nz
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 03:54:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0Hqn-0003tK-BD
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 03:54:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699347260;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=o0cZ+ZhR2DJ2yBaYHFqcJusx27YTGlIT36Q55ajXsb8=;
+ b=P5VY/qAOJ6cK9+jUKrGbRhqWl/qsZjy19FJvX2OKSFBs5tHgAWGeIMfo6dsn2E5jFN58HS
+ AZbkwZ7vK/IIh991VT5CQEoZNiG1WLRub4dyPEU9cZaUwjCXeyd36ki3K52b3Ka4O3mtIa
+ fpmLpYFIXK4JOjjwcHsnt5Zxhzh7ZbQ=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-441-4gfOXRZlMPmIhUkbjzoAng-1; Tue, 07 Nov 2023 03:54:19 -0500
+X-MC-Unique: 4gfOXRZlMPmIhUkbjzoAng-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4084163ecd9so35596185e9.3
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 00:54:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699347070; x=1699951870;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1699347258; x=1699952058;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TrSZHFiJAA/AwU7WufUuWN5MLuX6xE725trQkA5y2eI=;
- b=b+R1m77Za4E5DaT4Gsu6SAPifAwtAA9xuNKIduZ2dLacgAV4cOy+0DClSSXNSBRL+1
- GmP6WP9N6FL47kBz8QrAJu6OSGP4TbEwZlaIDwvUyqDZlxo2QaMXwpAPzhOHbAvT59/c
- Nbj0YICBH2B2OkSxyfxmZoiKeuTQBEMw+jd2fnauI155vF7r+Ugy2a+ncwLDZPXNHVx4
- 7wObHhAwku3VNIQOnvILBpOZsX2S0/NxPzKRN+Y0gL10Lzc/G3tUocZqok83TIG9Ths5
- 198hGmK212zAnpejB4xcAKtfbdYH9PZMUKnqq6M/OyH7nLMAFio2zF4/aaH20fbM6nba
- kWcw==
-X-Gm-Message-State: AOJu0YyGNvuAm/07PfLncvbgbGsf2L4R9Wl1O2DqfmnW8OAJlZSfWC34
- xvN0/QU12XII/C013g7g+Af32A==
-X-Google-Smtp-Source: AGHT+IHoMv3nExW5cDVokGdoq6qHnq/PG7wEVoZ88hDscpByiKlLR2kw/aP+0d8R4Aw18DTMIGQT9Q==
-X-Received: by 2002:ac2:4c43:0:b0:509:4aae:f2b1 with SMTP id
- o3-20020ac24c43000000b005094aaef2b1mr13277690lfk.8.1699347069952; 
- Tue, 07 Nov 2023 00:51:09 -0800 (PST)
-Received: from [192.168.69.115] ([176.187.216.69])
- by smtp.gmail.com with ESMTPSA id
- z6-20020a5d4406000000b003196b1bb528sm1705437wrq.64.2023.11.07.00.51.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Nov 2023 00:51:09 -0800 (PST)
-Message-ID: <009d27a1-79ba-43de-b732-b5a86aa4f7d9@linaro.org>
-Date: Tue, 7 Nov 2023 09:51:07 +0100
+ bh=o0cZ+ZhR2DJ2yBaYHFqcJusx27YTGlIT36Q55ajXsb8=;
+ b=tkkX9BHE0cEirzhEb5nZjRYGOM6HtoUZGb4gmEv0gdhJFbFq3ymE5phHf41jyDQDH9
+ 68l6Qd3CCgzGIaTxtsMi6mZlSmfWzElqb2haxhHB9cWiKYY/XERldBt4OTisuTmP0eHI
+ ExEP8M2LheRYMX7QGdN22Ws6d9dnVarVpxoeuy05gXsSyNWopVAdXWtaVsU2h8hHFf8o
+ G0D5lAWLBPm8mqg8WraHFYBg2KbGiXgpZSa0R7h8bEBdijgCwYlSNtMmDmuok8Y2vGlO
+ k6IdLIjgI/INmnEd+d6wifDZL1/JV7SGrV7GWMVQHhYH3FBdbSL5z5YhLkduywZ4SNdl
+ tW1Q==
+X-Gm-Message-State: AOJu0YwJ1O4WK3hF26Zj9UqnbyP5B/IkOaPnqV9U3MP1LM3hD71Rgf7J
+ bbF+VjL6f1aIg6LlxrrJLdBT2nEqnOPt4aEJaxn0DQcx1TkGArsbkooKAfZqM9NWb/OWfAiCUlQ
+ uUsIK33ziGD4U7ck=
+X-Received: by 2002:a05:600c:470d:b0:408:5919:5f97 with SMTP id
+ v13-20020a05600c470d00b0040859195f97mr1767599wmo.25.1699347257946; 
+ Tue, 07 Nov 2023 00:54:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFW0DP4MVyvdDuQGAZ/B1lFN6dxwRGcUlEsS2knpZNuWx+hxrZ38TehffriqfgJX5UnNL3CYA==
+X-Received: by 2002:a05:600c:470d:b0:408:5919:5f97 with SMTP id
+ v13-20020a05600c470d00b0040859195f97mr1767586wmo.25.1699347257554; 
+ Tue, 07 Nov 2023 00:54:17 -0800 (PST)
+Received: from redhat.com ([2.55.5.143]) by smtp.gmail.com with ESMTPSA id
+ fm15-20020a05600c0c0f00b00405391f485fsm15230888wmb.41.2023.11.07.00.54.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 07 Nov 2023 00:54:16 -0800 (PST)
+Date: Tue, 7 Nov 2023 03:54:07 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>, virtio-fs@redhat.com,
+ Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Kevin Wolf <kwolf@redhat.com>, Erik Schilling <erik.schilling@linaro.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH v6 3/6] hw/virtio: derive vhost-user-gpio from
+ vhost-user-base
+Message-ID: <20231107035245-mutt-send-email-mst@kernel.org>
+References: <20231106191515.2801863-1-alex.bennee@linaro.org>
+ <20231106191515.2801863-4-alex.bennee@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/60] Misc HW/UI patches for 2023-11-06
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-s390x@nongnu.org,
- qemu-block@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
- qemu-arm@nongnu.org
-References: <20231106110336.358-1-philmd@linaro.org>
- <CAJSP0QXN5LQ_56do2MOAXyHWwqstYPDEDgptN4h464mW7wnjqA@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAJSP0QXN5LQ_56do2MOAXyHWwqstYPDEDgptN4h464mW7wnjqA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x132.google.com
+In-Reply-To: <20231106191515.2801863-4-alex.bennee@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,167 +112,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/11/23 02:39, Stefan Hajnoczi wrote:
-> On Mon, 6 Nov 2023 at 19:03, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> The following changes since commit d762bf97931b58839316b68a570eecc6143c9e3e:
->>
->>    Merge tag 'pull-target-arm-20231102' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-11-03 10:04:12 +0800)
->>
->> are available in the Git repository at:
->>
->>    https://github.com/philmd/qemu.git tags/misc-cpus-20231106
->>
->> for you to fetch changes up to a81b438ac3933419910cbdf2e2e8d87681de611e:
->>
->>    ui/sdl2: use correct key names in win title on mac (2023-11-06 11:07:32 +0100)
->>
->> Few checkpatch warnings in target/i386/hvf/x86_emu.c are deliberately ignored.
->> ----------------------------------------------------------------
->> Misc hardware patch queue
->>
->> HW emulation:
->> - PMBus fixes and tests (Titus)
->> - IDE fixes and tests (Fiona)
->> - New ADM1266 sensor (Titus)
->> - Better error propagation in PCI-ISA i82378 (Philippe)
->>
->> Topology:
->> - Fix CPUState::nr_cores calculation (Zhuocheng Ding and Zhao Liu)
->>
->> Monitor:
->> - Synchronize CPU state in 'info lapic' (Dongli Zhang)
->>
->> QOM:
->> - Have 'cpu-qom.h' target-agnostic (Philippe)
->> - Call object_class_is_abstract once in cpu_class_by_name (Philippe)
->>
->> UI:
->> - Use correct key names in titles on MacOS / SDL2 (Adrian)
->>
->> MIPS:
->> - Fix MSA BZ/BNZ and TX79 LQ/SQ opcodes (Philippe)
->>
->> Nios2:
->> - Create IRQs *after* vCPU is realized (Philippe)
->>
->> PPC:
->> - Restrict KVM objects to system emulation (Philippe)
->>
->> X86:
->> - HVF & KVM cleanups (Philippe)
->>
->> Various targets:
->> - Use env_archcpu() to optimize (Philippe)
->>
->> Misc:
->> - Few global variable shadowing removed (Philippe)
->> - Introduce cpu_exec_reset_hold and factor tcg_cpu_reset_hold out (Philippe)
->> - Remove few more 'softmmu' mentions (Philippe)
->> - Fix and cleanup in vl.c (Akihiko & Marc-André)
->> - MAINTAINERS updates (Thomas, Daniel)
->>
->> ----------------------------------------------------------------
->>
->> Adrian Wowk (1):
->>    ui/sdl2: use correct key names in win title on mac
->>
->> Akihiko Odaki (1):
->>    vl: Free machine list
->>
->> Daniel P. Berrangé (1):
->>    MAINTAINERS: update libvirt devel mailing list address
->>
->> Dongli Zhang (1):
->>    target/i386/monitor: synchronize cpu state for lapic info
->>
->> Fiona Ebner (2):
->>    hw/ide: reset: cancel async DMA operation before resetting state
->>    tests/qtest: ahci-test: add test exposing reset issue with pending
->>      callback
->>
->> Marc-André Lureau (1):
->>    vl: constify default_list
->>
->> Philippe Mathieu-Daudé (39):
->>    tests/vm/ubuntu.aarch64: Correct comment about TCG specific delay
->>    tests/unit/test-seccomp: Remove mentions of softmmu in test names
->>    accel/tcg: Declare tcg_flush_jmp_cache() in 'exec/tb-flush.h'
->>    accel: Introduce cpu_exec_reset_hold()
->>    accel/tcg: Factor tcg_cpu_reset_hold() out
->>    target: Unify QOM style
->>    target: Mention 'cpu-qom.h' is target agnostic
->>    target/arm: Move internal declarations from 'cpu-qom.h' to 'cpu.h'
->>    target/ppc: Remove CPU_RESOLVING_TYPE from 'cpu-qom.h'
->>    target/riscv: Remove CPU_RESOLVING_TYPE from 'cpu-qom.h'
->>    target: Declare FOO_CPU_TYPE_NAME/SUFFIX in 'cpu-qom.h'
->>    target/hexagon: Declare QOM definitions in 'cpu-qom.h'
->>    target/loongarch: Declare QOM definitions in 'cpu-qom.h'
->>    target/nios2: Declare QOM definitions in 'cpu-qom.h'
->>    target/openrisc: Declare QOM definitions in 'cpu-qom.h'
->>    target/riscv: Move TYPE_RISCV_CPU_BASE definition to 'cpu.h'
->>    target/ppc: Use env_archcpu() in helper_book3s_msgsndp()
->>    target/riscv: Use env_archcpu() in [check_]nanbox()
->>    target/s390x: Use env_archcpu() in handle_diag_308()
->>    target/xtensa: Use env_archcpu() in update_c[compare|count]()
->>    target/i386/hvf: Use x86_cpu in simulate_[rdmsr|wrmsr]()
->>    target/i386/hvf: Use env_archcpu() in simulate_[rdmsr/wrmsr]()
->>    target/i386/hvf: Use CPUState typedef
->>    target/i386/hvf: Rename 'CPUState *cpu' variable as 'cs'
->>    target/i386/hvf: Rename 'X86CPU *x86_cpu' variable as 'cpu'
->>    target/i386/kvm: Correct comment in kvm_cpu_realize()
->>    target/mips: Fix MSA BZ/BNZ opcodes displacement
->>    target/mips: Fix TX79 LQ/SQ opcodes
->>    sysemu/kvm: Restrict kvmppc_get_radix_page_info() to ppc targets
->>    hw/ppc/e500: Restrict ppce500_init_mpic_kvm() to KVM
->>    target/ppc: Restrict KVM objects to system emulation
->>    target/ppc: Prohibit target specific KVM prototypes on user emulation
->>    target/nios2: Create IRQs *after* accelerator vCPU is realized
->>    target/alpha: Tidy up alpha_cpu_class_by_name()
->>    hw/cpu: Call object_class_is_abstract() once in cpu_class_by_name()
->>    exec/cpu: Have cpu_exec_realize() return a boolean
->>    hw/cpu: Clean up global variable shadowing
-> 
-> Please take a look at the following CI failure:
-> 
-> cc -m64 -mcx16 -Ilibqemu-arm-bsd-user.fa.p -I. -I.. -Itarget/arm
-> -I../target/arm -I../common-user/host/x86_64 -I../bsd-user/include
-> -Ibsd-user/freebsd -I../bsd-user/freebsd -I../bsd-user/host/x86_64
-> -Ibsd-user -I../bsd-user -I../bsd-user/arm -Iqapi -Itrace -Iui
-> -Iui/shader -I/usr/local/include/capstone
-> -I/usr/local/include/glib-2.0 -I/usr/local/lib/glib-2.0/include
-> -I/usr/local/include -fcolor-diagnostics -Wall -Winvalid-pch -Werror
-> -std=gnu11 -O2 -g -fstack-protector-strong -Wundef -Wwrite-strings
-> -Wmissing-prototypes -Wstrict-prototypes -Wredundant-decls
-> -Wold-style-definition -Wtype-limits -Wformat-security -Wformat-y2k
-> -Winit-self -Wignored-qualifiers -Wempty-body -Wnested-externs
-> -Wendif-labels -Wexpansion-to-defined -Wmissing-format-attribute
-> -Wno-initializer-overrides -Wno-missing-include-dirs
-> -Wno-shift-negative-value -Wno-string-plus-int
-> -Wno-typedef-redefinition -Wno-tautological-type-limit-compare
-> -Wno-psabi -Wno-gnu-variable-sized-type-not-at-end -Wthread-safety
-> -iquote . -iquote /tmp/cirrus-ci-build -iquote
-> /tmp/cirrus-ci-build/include -iquote
-> /tmp/cirrus-ci-build/host/include/x86_64 -iquote
-> /tmp/cirrus-ci-build/host/include/generic -iquote
-> /tmp/cirrus-ci-build/tcg/i386 -pthread -D_GNU_SOURCE
-> -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -fno-strict-aliasing
-> -fno-common -fwrapv -fPIE -DNEED_CPU_H
-> '-DCONFIG_TARGET="arm-bsd-user-config-target.h"'
-> '-DCONFIG_DEVICES="arm-bsd-user-config-devices.h"' -MD -MQ
-> libqemu-arm-bsd-user.fa.p/bsd-user_main.c.o -MF
-> libqemu-arm-bsd-user.fa.p/bsd-user_main.c.o.d -o
-> libqemu-arm-bsd-user.fa.p/bsd-user_main.c.o -c ../bsd-user/main.c
-> ../bsd-user/main.c:121:36: error: use of undeclared identifier 'cpus';
-> did you mean 'cpu'?
-> QTAILQ_REMOVE_RCU(&cpus, cpu, node);
-> ^~~~
-> cpu
-> 
-> https://gitlab.com/qemu-project/qemu/-/jobs/5472832586
+On Mon, Nov 06, 2023 at 07:15:12PM +0000, Alex Benn�e wrote:
+> -    case CHR_EVENT_CLOSED:
+> -        /* defer close until later to avoid circular close */
+> -        vhost_user_async_close(dev, &gpio->chardev, &gpio->vhost_dev,
+> -                               vu_gpio_disconnect, vu_gpio_event);
 
-Hmm for some reason the Cirrus jobs aren't running anymore in
-my GitLab namespace, sorry for not catching that trivial leftover.
+I don't remember what is the circular close but I'd be much
+calmer if this refactoring also didn't change behaviour.
+Or if it does, please document why it's safe in the commit log.
 
-Phil.
+-- 
+MST
+
 
