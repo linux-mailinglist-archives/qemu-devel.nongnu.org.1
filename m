@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52147E33A2
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:11:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02D0D7E340B
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:15:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0CRp-0005MY-D3; Mon, 06 Nov 2023 22:08:13 -0500
+	id 1r0CRv-0005mT-Kn; Mon, 06 Nov 2023 22:08:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CRf-0004wM-Pv
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:08:04 -0500
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1r0CRi-00057Z-Jw
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:08:07 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CRc-0001QF-4Q
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:08:03 -0500
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-280200949c3so3900091a91.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:07:59 -0800 (PST)
+ id 1r0CRc-0001QS-R0
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:08:06 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1cc0d0a0355so39090595ad.3
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:08:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1699326479; x=1699931279; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=CpIa1Sa2legrjFfGjmeZYL+BHJcrUIlWJtH6RuB5pv8=;
- b=QjhK0fEbmSbJHcF1SKpFCtlxQoA2nP/+HXivg/HamhEmfv1cpOsWn6xMQCi0uJt/O+
- Pp662RaSJHewLCOlrI0LWfmRJTMQRGN8V5+g3UAmzL+4kaGpnUcUkl+9wASh9GyQjF/w
- keXqQwWQkhrZszfz2O3M9J+ldtlQ4Wh+W82OIq+7foSGfWWTNj8LyDjc7gbOVjfQQPL4
- f6sBkUekujEQVCGefwWJqI8IylRWJPVtlugjZ0t/soLUDwadZ+rKi96XKf9POAlHHWYV
- gbqDNpC+GjFptyaSylgxFcYn5n/BYgAg9QVxrmrFIXm7t7YF1zuD02iYuKWaGGrWoW+Z
- 3ZSg==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zVaSUdm8wIzLLsLpBUjpNJYI2RdNW+CR3uBhuw+VEbI=;
+ b=YxybFH0OFrcdmpqL2OZ+Mn9Y9GJwNMywaKpzP9KLa82z1me01AF6Zjqx7h67UgPxkg
+ Yw/IvBQh6FHZH3sdOFuRovDuNOdb5IPuvipnfKCFpW0bz4bq/BiyoUelAd4qxXaJ60cc
+ MSnmooehTqpAT/R4Uq+pfYXxbua/2I5EsPAhO4GiT+XN8ipIZ6o5IUxRBUlqjNQxIk0A
+ CMhWiM69HVJvC83aS04ii7dsThoE02XpPpE6lF7BXENd7zGF5YsoXd5/g4LOQHW1tUHL
+ lfDloK02/0oYL7pSf2eCep3KeEoq8yWw60x25vHK2M3aoAwmptyyqq9r/oTK5feN9zZX
+ qszA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1699326479; x=1699931279;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CpIa1Sa2legrjFfGjmeZYL+BHJcrUIlWJtH6RuB5pv8=;
- b=URQN5vjE9afkSmEi9TOpzKJKEu6BGdzu2XJTtFfu385DyoXLvJOSmDhd0/eTfgfT8j
- OLrGbkfkePSzBHpS2QETAOoY/Chhl2iLdimpFTf97a3Ic0dDBSdiDtdnUiB0QWsaswKt
- t6+/siZLutBazGLXCvspb2wkgTSiMQCmS0lnUso9fGCuXfhr0E32DaPDAbdIBvM9aMsj
- C7rkh9BqlbCahGkXAnZE1XSmq0xTOFMVY0OxU2OX2YRJlivvynjvQOinsrWQWXXZ+8yX
- pbskBXqJfTU+1qbfJ0WpbzWRAP4IDwkbe/EI1/aOwqX2W+oIHFKear6TGdS6RmfXjN+O
- qxhw==
-X-Gm-Message-State: AOJu0Yzqai1Edi6DSXUxzxj1crAqsIykJ7cUVWh0zSrGU5tzoQMXCZ/J
- N7q6dYMm7bTEu0RxiBGJBlwvHkM9/RA/OOMYHFU=
-X-Google-Smtp-Source: AGHT+IF1L/BXDmomjGkLRjCncqDQ+/yz9MBsAS99AewXT/dlc7OB2UDJ4WTjd5FZPYwH4mY5StxHkw==
-X-Received: by 2002:a17:90a:1a51:b0:27d:306d:71c9 with SMTP id
- 17-20020a17090a1a5100b0027d306d71c9mr21706763pjl.49.1699326478749; 
- Mon, 06 Nov 2023 19:07:58 -0800 (PST)
+ bh=zVaSUdm8wIzLLsLpBUjpNJYI2RdNW+CR3uBhuw+VEbI=;
+ b=ONT1EjTNzSpcNujkXpBhtlWtROfoS+SP5d/2svvkzHXbvPn32a26JS27xuAOtd8T9n
+ So7cgEHSgXtzA3RGMQghc/sS/beUxlDR+RuAxf+iStA96CU/3FUObXLF6OOdCI2pZjZ3
+ DQWy2Dux64zW12dX8kQaox2lzocS9Qmo/hOWBWpMhSIdiZAo9gUqmnXCaxmtk668TBxc
+ rd9r2Soi9YTLYvaofMPlZ1SR8Q0ZLZC9dbkPbpisXsOLcq4H0LKXfToTQQVyhLNNj0T8
+ VPMVK3AbDf67nUHaWmURVbDhV01tTRRAWTmK0725qVlY3gDyDt12zKwJHfXueVAiE933
+ FB5g==
+X-Gm-Message-State: AOJu0Yx8Z0YhVqT5YQ2L8YKFLHj8lpHAeKG3LgMt9ZnB6wD5c3ayo/Es
+ P/3GiDvzYD5KkiaonVQSr0G4FJMZMZM35K98xxo=
+X-Google-Smtp-Source: AGHT+IEHZ0fAlvxYUG/xR342B5Fd+IiBnzVqsDTkPnLz3uZmlbtm7VitnxWVFUYf1O9SUEwwt0tOdQ==
+X-Received: by 2002:a17:90a:ac06:b0:280:200c:2e20 with SMTP id
+ o6-20020a17090aac0600b00280200c2e20mr20255894pjq.27.1699326479460; 
+ Mon, 06 Nov 2023 19:07:59 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  13-20020a17090a004d00b0027782f611d1sm6744883pjb.36.2023.11.06.19.07.58
- for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 19:07:58 -0800 (PST)
+ Mon, 06 Nov 2023 19:07:59 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 67/85] target/hppa: Implement PERMH
-Date: Mon,  6 Nov 2023 19:03:49 -0800
-Message-Id: <20231107030407.8979-68-richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>
+Subject: [PULL 68/85] target/hppa: Fix interruption based on default PSW
+Date: Mon,  6 Nov 2023 19:03:50 -0800
+Message-Id: <20231107030407.8979-69-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231107030407.8979-1-richard.henderson@linaro.org>
 References: <20231107030407.8979-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,65 +90,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Helge Deller <deller@gmx.de>
+
+The default PSW is set by the operating system with the PDC_PSW
+firmware call.  Use that setting to decide if wide mode is to be
+enabled for interruptions and EIRR usage.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/insns.decode |  2 ++
- target/hppa/translate.c  | 29 +++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
+ target/hppa/cpu.h        |  2 ++
+ target/hppa/int_helper.c | 18 ++++++++++++++----
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
-index 22ec07f892..19e537df24 100644
---- a/target/hppa/insns.decode
-+++ b/target/hppa/insns.decode
-@@ -238,6 +238,8 @@ mixh_r          111110 ..... ..... 1 10 00100000 .....  @rrr
- mixw_l          111110 ..... ..... 1 00 00000000 .....  @rrr
- mixw_r          111110 ..... ..... 1 10 00000000 .....  @rrr
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index ea676ba062..ea8e7e99a4 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -137,6 +137,8 @@
+ #define PSW_SM_W         0x200      /* PA2.0 only : Enable Wide Mode */
  
-+permh           111110 r1:5  r2:5  0 c0:2 0 c1:2 c2:2 c3:2 0 t:5
+ #define CR_RC            0
++#define CR_PSW_DEFAULT   6          /* see SeaBIOS PDC_PSW firmware call */
++#define  PDC_PSW_WIDE_BIT 2
+ #define CR_PID1          8
+ #define CR_PID2          9
+ #define CR_PID3          12
+diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
+index f355c4c76b..a11d607b31 100644
+--- a/target/hppa/int_helper.c
++++ b/target/hppa/int_helper.c
+@@ -52,9 +52,17 @@ static void io_eir_write(void *opaque, hwaddr addr,
+                          uint64_t data, unsigned size)
+ {
+     HPPACPU *cpu = opaque;
+-    int le_bit = ~data & 31;
++    CPUHPPAState *env = &cpu->env;
++    int widthm1 = 31;
++    int le_bit;
+ 
+-    cpu->env.cr[CR_EIRR] |= (target_ulong)1 << le_bit;
++    /* The default PSW.W controls the width of EIRR. */
++    if (hppa_is_pa20(env) && env->cr[CR_PSW_DEFAULT] & PDC_PSW_WIDE_BIT) {
++        widthm1 = 63;
++    }
++    le_bit = ~data & widthm1;
 +
- ####
- # Index Mem
- ####
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 2b471444d0..ffdd306d31 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -2946,6 +2946,35 @@ static bool trans_mixw_r(DisasContext *ctx, arg_rrr *a)
-     return do_multimedia(ctx, a, gen_mixw_r);
++    env->cr[CR_EIRR] |= 1ull << le_bit;
+     eval_interrupt(cpu);
  }
  
-+static bool trans_permh(DisasContext *ctx, arg_permh *a)
-+{
-+    TCGv_i64 r, t0, t1, t2, t3;
-+
-+    if (!ctx->is_pa20) {
-+        return false;
-+    }
-+
-+    nullify_over(ctx);
-+
-+    r = load_gpr(ctx, a->r1);
-+    t0 = tcg_temp_new_i64();
-+    t1 = tcg_temp_new_i64();
-+    t2 = tcg_temp_new_i64();
-+    t3 = tcg_temp_new_i64();
-+
-+    tcg_gen_extract_i64(t0, r, (3 - a->c0) * 16, 16);
-+    tcg_gen_extract_i64(t1, r, (3 - a->c1) * 16, 16);
-+    tcg_gen_extract_i64(t2, r, (3 - a->c2) * 16, 16);
-+    tcg_gen_extract_i64(t3, r, (3 - a->c3) * 16, 16);
-+
-+    tcg_gen_deposit_i64(t0, t1, t0, 16, 48);
-+    tcg_gen_deposit_i64(t2, t3, t2, 16, 48);
-+    tcg_gen_deposit_i64(t0, t2, t0, 32, 32);
-+
-+    save_gpr(ctx, a->t, t0);
-+    return nullify_end(ctx);
-+}
-+
- static bool trans_ld(DisasContext *ctx, arg_ldst *a)
- {
-     if (!ctx->is_pa20 && a->size > MO_32) {
+@@ -104,8 +112,10 @@ void hppa_cpu_do_interrupt(CPUState *cs)
+     /* step 1 */
+     env->cr[CR_IPSW] = old_psw = cpu_hppa_get_psw(env);
+ 
+-    /* step 2 -- note PSW_W == 0 for !HPPA64.  */
+-    cpu_hppa_put_psw(env, PSW_W | (i == EXCP_HPMC ? PSW_M : 0));
++    /* step 2 -- Note PSW_W is masked out again for pa1.x */
++    cpu_hppa_put_psw(env,
++                     (env->cr[CR_PSW_DEFAULT] & PDC_PSW_WIDE_BIT ? PSW_W : 0) |
++                     (i == EXCP_HPMC ? PSW_M : 0));
+ 
+     /* step 3 */
+     env->cr[CR_IIASQ] = iasq_f >> 32;
 -- 
 2.34.1
 
