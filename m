@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE207E33A7
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:12:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D10387E33A4
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:12:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0CUl-00064Y-26; Mon, 06 Nov 2023 22:11:15 -0500
+	id 1r0CV9-0006qF-8n; Mon, 06 Nov 2023 22:11:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CUj-0005y1-3f
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:11:13 -0500
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ id 1r0CUx-0006gG-RO
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:11:29 -0500
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CUh-00025E-DK
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:11:12 -0500
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-5b9a7357553so4043096a12.0
+ id 1r0CUi-00025J-2v
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:11:26 -0500
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-5b980391d70so3941093a12.0
  for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:11:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699326670; x=1699931470; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699326671; x=1699931471; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jCD7MGoBGBvFUMEqCraVMyK1zfse2SsJ+vuTkGcLU/A=;
- b=aQZuV2JNvVTvJVCz5CKy+yPJBlDVAX7d6Ko9Gp4YLhk6eX0aH17/4OwHK8D6uHk1aY
- nQOWrqazJqlxQ+/AD7Y4M/Ld/88mwSeIrmgypi9WxTzWlO5fN6fPCYmfKsX8JdU5T4Ct
- OIgBwAn1vLVUNW3A/mPrfb7aniZ4iwWZ68XgA9+LwLKqWZMtPXh/4feQvR26YIynwJXD
- TuRY/S6o34DdIqVcsVoPZgjtOQX3emToImuiPGL5xFKHUYa9h4PBA2I866bKf25LPL79
- bffZNk2dGbABUEaR3dz6i8tmKVfGByD7+UplWOdTxQR12lBcT0Pbz/YTLZ1KSrlmXyuV
- FFcA==
+ bh=ExjsDSAVXPHl9Xgq+QdlGUyx4ksBZYfOfahGxiLtgN0=;
+ b=Ap2hmfpMBT6PTLYjpOAuZ0A8qBDjB4+T79hH9KKpGHbS8a6VLS3DWKSPt2jlL9u5Hz
+ BggMsW0byngjgEoiwUgEBuOY0rymfRKir6hGJ59XzGpUDpjaOwjYU4CsEqovb5/JVZrU
+ Y8ztXbKu4ruLsYv/X4gkeLwGuhtKE6zbEO/5Y1UHeP+rDL0SesY5u5ZQZjUckszF5AbZ
+ HWOK1vV56IzGo0Rcq4dYMMsju8hEp0SyWlPv2RVZDov03pTgEQy9HsJgOs6gUC2LWyDT
+ FeorEhYLyqByeRNGL/6BfHqw2V0oWVVW7oOeeEFdCvMp4kE48v7Cv1xaYrQjvpCfi7Eq
+ xx6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699326670; x=1699931470;
+ d=1e100.net; s=20230601; t=1699326671; x=1699931471;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jCD7MGoBGBvFUMEqCraVMyK1zfse2SsJ+vuTkGcLU/A=;
- b=tZJe1er7iXGgViSjeBVSgOlszjCd4zYHfKGb6qjrMLLiI23MP8EKBX1u5AkmjW525u
- Oy7c8phFQXfC9r/AJ1uqbUeMnTb84lpBJMwfyviXnoGEtOgYH7ThKvILgeXoughkJ6tw
- ibH2nICuJRS+oNdlBz8CVAR7K88B7AvC+alartExMPG6OQs/Ylstf4KprGfKAfkSfnu9
- dxMmdVvZu0oCp+3nlQ2qPCok1kcTyjOHO65vEatgDELIbJNhnD/yXWiS+69alJ8yybs5
- kf+JO6i9DQtysuxo+mZRK9i7dxBcFJAbecSsGo0PZyufnSEInlQztgl57EudmtQ2UIOU
- xiLQ==
-X-Gm-Message-State: AOJu0Yy94WE5TtTolbrGXzL4ehFNrzhN8GjxYnOuNcnY9tIIzG8/XgKJ
- UIc1W+BjE/nXec1CdvBSgVpHF7BLsmYNsdOypOY=
-X-Google-Smtp-Source: AGHT+IFMuuzw15oSJ67Bs2nNC4WGCB82t8C5043skulGpB1FPB9cnFZ2qJ7cYksz2wBs4GW/Y1IapQ==
-X-Received: by 2002:a05:6a20:12c4:b0:181:275f:3b4f with SMTP id
- v4-20020a056a2012c400b00181275f3b4fmr18542685pzg.11.1699326669931; 
- Mon, 06 Nov 2023 19:11:09 -0800 (PST)
+ bh=ExjsDSAVXPHl9Xgq+QdlGUyx4ksBZYfOfahGxiLtgN0=;
+ b=bHmeHBJlr6Xg3dLZUJow0AiWeflxsKt1eZ1AYE0QSoF+f5R2M88vQ6+7d6AuABM6Yu
+ 75HS2SBRIxqNskRIPJptswk/0qO12TxONY85/pfBY15pz7lTFBtyO03yKsp0g9EYSZiw
+ hSdROZFZVBGxurAkRv/SwEkQVY2BxTIcA5Zzmr9menu6AV+94z+2y4tjbDt5iQwOTmbZ
+ WnXr+rveKYJR2gNw/0rg/ECMptxAUecUyR+zB2qWoi33OT2P1NpZlQdfaBdcjB5kHtYQ
+ R75LEC3/i4/TQhkNAwr5Rzphf3FxHBfouk+gX5ASvTYfbAK/vaIMZUkp7kZJ44qIFJRE
+ /dXA==
+X-Gm-Message-State: AOJu0YzMSgY6o9OPO6MtAnoqne2ZXWn5v3EuQxRzlwZ/zkl+7YWMm5qF
+ uM2h6z5FdINwMgwxZ1PDQDKhImVJcx1VBRaOSCQ=
+X-Google-Smtp-Source: AGHT+IGYWxJfswnnqs8cW/pAmCAem7Ec2XD2tb3bWww1+tHS49WbF81apakCroU/OdoAXxkyxxbEbQ==
+X-Received: by 2002:a17:90b:4004:b0:280:94e8:99f4 with SMTP id
+ ie4-20020a17090b400400b0028094e899f4mr19691876pjb.46.1699326670742; 
+ Mon, 06 Nov 2023 19:11:10 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- gw13-20020a17090b0a4d00b0026f4bb8b2casm6246253pjb.6.2023.11.06.19.11.09
+ gw13-20020a17090b0a4d00b0026f4bb8b2casm6246253pjb.6.2023.11.06.19.11.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 19:11:09 -0800 (PST)
+ Mon, 06 Nov 2023 19:11:10 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 82/85] hw/pci-host/astro: Map Astro chip into 64-bit I/O memory
- region
-Date: Mon,  6 Nov 2023 19:04:04 -0800
-Message-Id: <20231107030407.8979-83-richard.henderson@linaro.org>
+Subject: [PULL 83/85] hw/pci-host/astro: Trigger CPU irq on CPU HPA in high
+ memory
+Date: Mon,  6 Nov 2023 19:04:05 -0800
+Message-Id: <20231107030407.8979-84-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231107030407.8979-1-richard.henderson@linaro.org>
 References: <20231107030407.8979-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,46 +93,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Map Astro into high F-region and add alias for 32-bit OS in low region.
+The CPU HPA is in the high F-region on PA2.0 CPUs, so use F_EXTEND()
+to trigger interrupt request at the right CPU HPA address.
+Note that the cpu_hpa value comes out of the IRT, which doesn't store the
+higher addresss bits.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/pci-host/astro.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ hw/pci-host/astro.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/pci-host/astro.c b/hw/pci-host/astro.c
-index 4b2d7caf2d..df61386bd9 100644
+index df61386bd9..b19f0917c5 100644
 --- a/hw/pci-host/astro.c
 +++ b/hw/pci-host/astro.c
-@@ -19,6 +19,8 @@
- 
- #define TYPE_ASTRO_IOMMU_MEMORY_REGION "astro-iommu-memory-region"
- 
-+#define F_EXTEND(addr) ((addr) | MAKE_64BIT_MASK(32, 32))
-+
- #include "qemu/osdep.h"
- #include "qemu/module.h"
- #include "qemu/units.h"
-@@ -821,15 +823,16 @@ static void astro_realize(DeviceState *obj, Error **errp)
- 
-         /* map elroys mmio */
-         map_size = LMMIO_DIST_BASE_SIZE / ROPES_PER_IOC;
--        map_addr = (uint32_t) (LMMIO_DIST_BASE_ADDR + rope * map_size);
-+        map_addr = F_EXTEND(LMMIO_DIST_BASE_ADDR + rope * map_size);
-         memory_region_init_alias(&elroy->pci_mmio_alias, OBJECT(elroy),
-                                  "pci-mmio-alias",
--                                 &elroy->pci_mmio, map_addr, map_size);
-+                                 &elroy->pci_mmio, (uint32_t) map_addr, map_size);
-         memory_region_add_subregion(get_system_memory(), map_addr,
-                                  &elroy->pci_mmio_alias);
- 
-+        /* map elroys io */
-         map_size = IOS_DIST_BASE_SIZE / ROPES_PER_IOC;
--        map_addr = (uint32_t) (IOS_DIST_BASE_ADDR + rope * map_size);
-+        map_addr = F_EXTEND(IOS_DIST_BASE_ADDR + rope * map_size);
-         memory_region_add_subregion(get_system_memory(), map_addr,
-                                  &elroy->pci_io);
- 
+@@ -384,7 +384,7 @@ static void elroy_set_irq(void *opaque, int irq, int level)
+         uint32_t ena = bit & ~old_ilr;
+         s->ilr = old_ilr | bit;
+         if (ena != 0) {
+-            stl_be_phys(&address_space_memory, cpu_hpa, val & 63);
++            stl_be_phys(&address_space_memory, F_EXTEND(cpu_hpa), val & 63);
+         }
+     } else {
+         s->ilr = old_ilr & ~bit;
 -- 
 2.34.1
 
