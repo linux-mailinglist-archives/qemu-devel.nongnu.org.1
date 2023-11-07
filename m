@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2627E3D4E
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 13:27:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EAC97E3D63
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 13:28:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0L8u-0005Lu-Ma; Tue, 07 Nov 2023 07:25:17 -0500
+	id 1r0L8x-0005R8-6V; Tue, 07 Nov 2023 07:25:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L8o-0005Go-J9
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:25:10 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L8s-0005MH-NZ
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:25:14 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L8Z-0004f9-PP
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:25:09 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4084095722aso42504355e9.1
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 04:24:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L8e-0004gH-Hj
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:25:13 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40907b82ab9so39130745e9.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 04:24:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699359891; x=1699964691; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699359897; x=1699964697; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xQIx7Qo+vYb4U5X/jCWdqru6+jgyWVX+HEchvZf2EPw=;
- b=crFDbXptn9AogKys/42RfC4yUmdED8y5lYwhf7soQRCfspxd4XV0fpC1T3GJ+M93HE
- 4H0x1XG0a3yA3t8QuIUbcHbnrWdBJ5pY6ZG1giBT7WbgTrwh3/K1aIQ9YBb0BBaGMCAm
- cdXUPZk7Wl+UDPeuzuPmIFK7Gg26aL0B3defVOxiyH/IWR0hM60FuQM51zZjJoNuWjrt
- Defu1cs2mpGXM6QHz+Tpr3EgbBLiFHRqJ2GFvMRGtxGtRoUTqelV+09hRtCrOs+OoXa9
- FHocc/FNWFfwUJ1+DTDtKKbYLOm/rv3bsOUscDbNqjjW3wc6zspHVRIYpD8cTjde6Gbn
- 1kFQ==
+ bh=vwIwGURbiF//KmePmfvAI1hLU80w6lpRnRx+VzJZixg=;
+ b=IeYl6qcmsiGdXJ3fA/WTi60MmAgpFTr4FccCKum2M6LxtBIec6ToYB6VeCFPeKB+8M
+ n31PcXB0kwC8XU15ICxlh6oqqLLm63ApN97jW5r6LGJWo4rePYB7ylcOuaZMCNlkX562
+ P9OrAyruFZ19tK7eeOMXL0GdLTuNhq3R7Y2HG9lKxHURqQYVrq12egIyfREa0YLE2lwi
+ yyv1R33ruKyVlZVRfg91QAn9BSFaq8nvhIJJMjyKogiS8iOk2f/nEffkeEYPJ1tjqucc
+ jaAZei+Xuh6lKMuBze1gH4nqjU6ThR8yYlY12As8Ele0sVDpfMWks9IclGNhf561CmcP
+ R7VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699359891; x=1699964691;
+ d=1e100.net; s=20230601; t=1699359897; x=1699964697;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xQIx7Qo+vYb4U5X/jCWdqru6+jgyWVX+HEchvZf2EPw=;
- b=himhajB2fVS3URWD07FcA8I9vtGbn+gnM5pW6Y7iXtnQXks7zBnuqC2VCsjmgd/fTJ
- 63MeOvCcQ664xgu8icnNab42halDCwKgf+YOgvYePRyHQ5flrWfhJPb9HYxcW0pdTlV+
- oQrMU4oeUBX4VaCEnrWvHtzEsnIMYUYjU/Ezust+ncRKjaZveL/1fnOvO0R4WDReWRqH
- pEADyBof88srqXieL4G9pBg6Q+ZAWsj7XG9aVmbffEMboF8fsx3sryxTWZ34iCPVqYyr
- XGO2nFSGSva4pP1Fj1v+5FnLEEL0iY/6zu6DrGMUJc6ELZwAdUgEpRNnK2wWe5P/W6Gl
- tlcw==
-X-Gm-Message-State: AOJu0YwG3StxmqbvLyMqCJMQd5vhXKRCcSqJF7UAAJQxDK3PbBa3ySFu
- 29QmoBcittxP1iH2UEIdh7FjvwfPNm09J6Mhm9A=
-X-Google-Smtp-Source: AGHT+IH8Lx6RBaDQF4sVsngCzC6nZLHkVi7928g9uEMsEGk2/yDDvsFk9uMT7A4SP2DYaEhRbVCXVQ==
-X-Received: by 2002:a05:600c:2b0d:b0:409:19a0:d26f with SMTP id
- y13-20020a05600c2b0d00b0040919a0d26fmr2323873wme.23.1699359890958; 
- Tue, 07 Nov 2023 04:24:50 -0800 (PST)
+ bh=vwIwGURbiF//KmePmfvAI1hLU80w6lpRnRx+VzJZixg=;
+ b=kl4sob2YPzPMI6bcS0jaL4Yz2qOwoXE4kK9iCCKc5EsfCymeP/wA8jrI99ESv8nDJe
+ bnmOCMFIv2VvEkpoqqkzeDx2IQM0pibX2IYVUXHemBeWkJt5eaaiAObU27oaUo/5xDnq
+ 4BbvFv6dG7h55FGKVBvOsqZDBMHlrLmaeJWQZD5zyclUDhUwkpsLJsDXtVGb0lmaf3h9
+ wOnEgsACtQMNapnEyE3CxUSEhg5RCKYyUrv05PeXYTCmm5vBRSbw7/fiBzeBWRz63Ogu
+ uOoVx2t788MeY6mXJTXgCZpLe2v4xsLH9EJjqzYNTFE6gnB5pMmmCiwGSSPXTdKJpYzY
+ /X9A==
+X-Gm-Message-State: AOJu0YxUPHWNIEfOQv8Bc0VzpyBbW+n950/d1tWc01Ref6ctCZVnLRx2
+ uZFJR72ApkA7D4mUZgaEcBm+qkKUldq3o08GXB4=
+X-Google-Smtp-Source: AGHT+IGGQ1rM6RveScTmRQAjHmeqN9I73tv2WvCvi1oJorR3AZRW+OYSPUodwSys9zJ4olqahJuvcA==
+X-Received: by 2002:a05:600c:2191:b0:407:4126:f71c with SMTP id
+ e17-20020a05600c219100b004074126f71cmr2988795wme.6.1699359896987; 
+ Tue, 07 Nov 2023 04:24:56 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.216.69])
  by smtp.gmail.com with ESMTPSA id
- fc13-20020a05600c524d00b004068de50c64sm15791988wmb.46.2023.11.07.04.24.49
+ az34-20020a05600c602200b004076f522058sm15891852wmb.0.2023.11.07.04.24.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 07 Nov 2023 04:24:50 -0800 (PST)
+ Tue, 07 Nov 2023 04:24:56 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
@@ -63,23 +63,25 @@ Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: [PULL 36/75] target/ppc: Define powerpc_pm_insn_t in 'internal.h'
-Date: Tue,  7 Nov 2023 13:24:26 +0100
-Message-ID: <20231107122442.58674-2-philmd@linaro.org>
+Subject: [PULL 37/75] target/ppc: Move ppc_cpu_class_by_name() declaration to
+ 'cpu.h'
+Date: Tue,  7 Nov 2023 13:24:27 +0100
+Message-ID: <20231107122442.58674-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231107122442.58674-1-philmd@linaro.org>
 References: <20231107122442.58674-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,59 +97,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PM instructions are only used by TCG helpers. No need to
-expose to other hardware.
+ppc_cpu_class_by_name() is only called in target/ppc/,
+no need to expose outside (in particular to hw/).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Message-Id: <20231013125630.95116-3-philmd@linaro.org>
+Message-Id: <20231013125630.95116-4-philmd@linaro.org>
 ---
- target/ppc/cpu-qom.h  | 10 ----------
- target/ppc/internal.h |  9 +++++++++
- 2 files changed, 9 insertions(+), 10 deletions(-)
+ target/ppc/cpu-qom.h | 2 --
+ target/ppc/cpu.h     | 1 +
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/target/ppc/cpu-qom.h b/target/ppc/cpu-qom.h
-index 41df51269b..f681bfb4a6 100644
+index f681bfb4a6..0b8dfa5fee 100644
 --- a/target/ppc/cpu-qom.h
 +++ b/target/ppc/cpu-qom.h
-@@ -114,16 +114,6 @@ enum powerpc_excp_t {
-     POWERPC_EXCP_POWER10,
+@@ -36,8 +36,6 @@ OBJECT_DECLARE_CPU_TYPE(PowerPCCPU, PowerPCCPUClass, POWERPC_CPU)
+ 
+ #define TYPE_HOST_POWERPC_CPU POWERPC_CPU_TYPE_NAME("host")
+ 
+-ObjectClass *ppc_cpu_class_by_name(const char *name);
+-
+ typedef struct CPUArchState CPUPPCState;
+ typedef struct ppc_tb_t ppc_tb_t;
+ typedef struct ppc_dcr_t ppc_dcr_t;
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 02619e5d54..f3ddfd7a26 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1342,6 +1342,7 @@ struct ArchCPU {
  };
  
--/*****************************************************************************/
--/* PM instructions */
--typedef enum {
--    PPC_PM_DOZE,
--    PPC_PM_NAP,
--    PPC_PM_SLEEP,
--    PPC_PM_RVWINKLE,
--    PPC_PM_STOP,
--} powerpc_pm_insn_t;
--
- /*****************************************************************************/
- /* Input pins model                                                          */
- typedef enum powerpc_input_t powerpc_input_t;
-diff --git a/target/ppc/internal.h b/target/ppc/internal.h
-index c881c67a8b..5b20ecbd33 100644
---- a/target/ppc/internal.h
-+++ b/target/ppc/internal.h
-@@ -20,6 +20,15 @@
  
- #include "hw/registerfields.h"
- 
-+/* PM instructions */
-+typedef enum {
-+    PPC_PM_DOZE,
-+    PPC_PM_NAP,
-+    PPC_PM_SLEEP,
-+    PPC_PM_RVWINKLE,
-+    PPC_PM_STOP,
-+} powerpc_pm_insn_t;
-+
- #define FUNC_MASK(name, ret_type, size, max_val)                  \
- static inline ret_type name(uint##size##_t start,                 \
-                               uint##size##_t end)                 \
++ObjectClass *ppc_cpu_class_by_name(const char *name);
+ PowerPCCPUClass *ppc_cpu_class_by_pvr(uint32_t pvr);
+ PowerPCCPUClass *ppc_cpu_class_by_pvr_mask(uint32_t pvr);
+ PowerPCCPUClass *ppc_cpu_get_family_class(PowerPCCPUClass *pcc);
 -- 
 2.41.0
 
