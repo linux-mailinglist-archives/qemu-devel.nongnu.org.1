@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07BE67E4117
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 14:50:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 831DC7E411D
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 14:50:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0MSC-0008E6-QA; Tue, 07 Nov 2023 08:49:16 -0500
+	id 1r0MSF-0008MN-PP; Tue, 07 Nov 2023 08:49:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0MS6-0007yi-6q
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:49:11 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0MSA-0008AZ-FH
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:49:14 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0MRw-0007MF-DD
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:49:04 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0MS8-0007Rg-4D
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:49:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699364938;
+ s=mimecast20190719; t=1699364951;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WVclUr8dSQzAq2CqSXcZEndcCdvkQtncYA0IP2ciocw=;
- b=h3t1pnHH0x11NPTbIILCBwP0otTbwqoKm5ykJ/kq/FPtUrLhuxWFUwlu6n/oNgdB/1vIfV
- GyaN43VtRnOP9ZaaeKhHOmTYsZOX3YneAHPNkIlzUI70ILGp23sfZrmwpFHpVoZke2lDEi
- Pqmh3HhiDcRe/aNzBh2G3pMWXITgreo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-104-ytMzj34nMSKWWylO6PbmFQ-1; Tue,
- 07 Nov 2023 08:48:52 -0500
-X-MC-Unique: ytMzj34nMSKWWylO6PbmFQ-1
+ bh=j6uzFlbktyVba/3T1STvsjngwIV89c8c8UysbVWjgkI=;
+ b=YPLDU9K4JopOlJmmHSbrRmpOj1e19kSrTED5mzWbPDJE8gcLTWVwWuV5ZYLzdJ04Dp929h
+ GWMVuHmj2+b9pqWusyMRzqDf86A1YmqfHDGoAfhyitNyHCpBNY39/E/8LJOnH/8LbKzeLp
+ fnpHQz7nVMyrmHwlECbyRGihOXhff8s=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-332-FtsfTN0xMnGL29CUkyyEvg-1; Tue, 07 Nov 2023 08:49:10 -0500
+X-MC-Unique: FtsfTN0xMnGL29CUkyyEvg-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AC3FE1DD35C0
- for <qemu-devel@nongnu.org>; Tue,  7 Nov 2023 13:48:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5F8B880D2C3
+ for <qemu-devel@nongnu.org>; Tue,  7 Nov 2023 13:48:53 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.197])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1E4141C060BE;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DFEF91C060BE;
  Tue,  7 Nov 2023 13:48:52 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com
-Subject: [PULL 09/11] qom: Add object_property_set_default_list()
-Date: Tue,  7 Nov 2023 14:48:26 +0100
-Message-ID: <20231107134828.35909-10-kwolf@redhat.com>
+Subject: [PULL 10/11] qdev: Make netdev properties work as list elements
+Date: Tue,  7 Nov 2023 14:48:27 +0100
+Message-ID: <20231107134828.35909-11-kwolf@redhat.com>
 In-Reply-To: <20231107134828.35909-1-kwolf@redhat.com>
 References: <20231107134828.35909-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -77,61 +77,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This function provides a default for properties that are accessed using
-the list visitor interface. The default is always an empty list.
+The 'name' parameter of QOM setters is primarily used to specify the name
+of the currently parsed input element in the visitor interface. For
+top-level qdev properties, this is always set and matches 'prop->name'.
+
+However, for list elements it is NULL, because each element of a list
+doesn't have a separate name. Passing a non-NULL value runs into
+assertion failures in the visitor code.
+
+Therefore, using 'name' in error messages is not right for property
+types that are used in lists, because "(null)" (or even a segfault)
+isn't very helpful to identify what QEMU is complaining about.
+
+Change netdev properties to use 'prop->name' instead, which will contain
+the name of the array property after switching array properties to lists
+in the external interface. (This is still not perfect, as it doesn't
+identify which element in the list caused the error, but strictly better
+than before.)
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-ID: <20231030142658.182193-11-kwolf@redhat.com>
+Message-ID: <20231030142658.182193-12-kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/qom/object.h | 8 ++++++++
- qom/object.c         | 6 ++++++
- 2 files changed, 14 insertions(+)
+ hw/core/qdev-properties-system.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/qom/object.h b/include/qom/object.h
-index ef7258a5e1..afccd24ca7 100644
---- a/include/qom/object.h
-+++ b/include/qom/object.h
-@@ -1093,6 +1093,14 @@ void object_property_set_default_bool(ObjectProperty *prop, bool value);
-  */
- void object_property_set_default_str(ObjectProperty *prop, const char *value);
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index b46d16cd2c..1473ab3d5e 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -450,7 +450,7 @@ static void set_netdev(Object *obj, Visitor *v, const char *name,
+     peers_ptr->queues = queues;
  
-+/**
-+ * object_property_set_default_list:
-+ * @prop: the property to set
-+ *
-+ * Set the property default value to be an empty list.
-+ */
-+void object_property_set_default_list(ObjectProperty *prop);
-+
- /**
-  * object_property_set_default_int:
-  * @prop: the property to set
-diff --git a/qom/object.c b/qom/object.c
-index 8557fe8e4e..95c0dc8285 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -31,6 +31,7 @@
-  * of the QOM core on QObject?  */
- #include "qom/qom-qobject.h"
- #include "qapi/qmp/qbool.h"
-+#include "qapi/qmp/qlist.h"
- #include "qapi/qmp/qnum.h"
- #include "qapi/qmp/qstring.h"
- #include "qemu/error-report.h"
-@@ -1588,6 +1589,11 @@ void object_property_set_default_str(ObjectProperty *prop, const char *value)
-     object_property_set_default(prop, QOBJECT(qstring_from_str(value)));
+ out:
+-    error_set_from_qdev_prop_error(errp, err, obj, name, str);
++    error_set_from_qdev_prop_error(errp, err, obj, prop->name, str);
+     g_free(str);
  }
  
-+void object_property_set_default_list(ObjectProperty *prop)
-+{
-+    object_property_set_default(prop, QOBJECT(qlist_new()));
-+}
-+
- void object_property_set_default_int(ObjectProperty *prop, int64_t value)
- {
-     object_property_set_default(prop, QOBJECT(qnum_from_int(value)));
 -- 
 2.41.0
 
