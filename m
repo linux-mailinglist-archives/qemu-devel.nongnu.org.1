@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB807E4899
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:47:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F41D7E48A3
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:48:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0R6D-0004Qi-C4; Tue, 07 Nov 2023 13:46:53 -0500
+	id 1r0R6F-0004Vf-Bm; Tue, 07 Nov 2023 13:46:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5h-0003vR-MZ
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5h-0003vP-Mw
  for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:23 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5d-0001Tz-Fc
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:19 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5f-0001UN-AC
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699382776;
+ s=mimecast20190719; t=1699382777;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7grqvMUm/2+tdpBgnAuIHfwKZ2t032uJUVPpIdY1xXM=;
- b=g+NlDoBfihR5Xy+1Z9Fe3EwBKKFSzUm5+1cphYggarU/sAnBNik15R0NrYVJxS4lW7XFXE
- GnDRiAoU5vtSSMbkeK3yJTjN3UgEq6A1FNBx9Sl3hjGUxmmUGooMEDbFnwBZOtZDbZzmFZ
- +WfBgUSTg21T7i3WuTK1Uksc02OEnxk=
+ bh=2rmk37/1+MaLUl82vdTAMrHS8+OOW11NeH/kDFXrXvY=;
+ b=g6Z+72aw9InzFCPYJE4Ru6q6GQmJNxP1nsJ/LY+BSQsC24juw8a8L+eptkQ2VJl5Ty5C1Q
+ 0geoFHOmdJYcrDjFsL+GuKSUifn0Gz0pxqSBwEGQlDLJkanEFNsnbUr0UJHusK1cH/EiLL
+ rzfWEF6E1DaINygPdshbAg+/uShP6Kk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-46-Oh7t5RkRM9uS4cKuhPu6HQ-1; Tue, 07 Nov 2023 13:46:14 -0500
-X-MC-Unique: Oh7t5RkRM9uS4cKuhPu6HQ-1
+ us-mta-633-cb2aN3iJOneWMHoUzXuteg-1; Tue, 07 Nov 2023 13:46:15 -0500
+X-MC-Unique: cb2aN3iJOneWMHoUzXuteg-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1337C101A529
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C0018834FC2
  for <qemu-devel@nongnu.org>; Tue,  7 Nov 2023 18:46:14 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.197])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 25174C15983;
- Tue,  7 Nov 2023 18:46:13 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4A9FBC1290F;
+ Tue,  7 Nov 2023 18:46:14 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com
-Subject: [PULL 08/25] block: Mark bdrv_skip_filters() and callers GRAPH_RDLOCK
-Date: Tue,  7 Nov 2023 19:45:48 +0100
-Message-ID: <20231107184605.236540-9-kwolf@redhat.com>
+Subject: [PULL 09/25] block: Mark bdrv_(un)freeze_backing_chain() and callers
+ GRAPH_RDLOCK
+Date: Tue,  7 Nov 2023 19:45:49 +0100
+Message-ID: <20231107184605.236540-10-kwolf@redhat.com>
 In-Reply-To: <20231107184605.236540-1-kwolf@redhat.com>
 References: <20231107184605.236540-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -78,439 +79,263 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This adds GRAPH_RDLOCK annotations to declare that callers of
-bdrv_skip_filters() need to hold a reader lock for the graph because it
-calls bdrv_filter_child(), which accesses bs->file/backing.
+bdrv_(un)freeze_backing_chain() need to hold a reader lock for the
+graph because it calls bdrv_filter_or_cow_child(), which accesses
+bs->file/backing.
+
+Use the opportunity to make bdrv_is_backing_chain_frozen() static, it
+has no external callers.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20231027155333.420094-9-kwolf@redhat.com>
+Message-ID: <20231027155333.420094-10-kwolf@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/block/block-global-state.h |  8 ++++---
- include/block/block_int-io.h       |  4 ++--
- block/block-backend.c              |  1 +
- block/block-copy.c                 |  9 +++++++-
- block/commit.c                     |  5 ++++-
- block/mirror.c                     | 34 +++++++++++++++++++++---------
- block/stream.c                     | 22 ++++++++++++-------
- blockdev.c                         |  7 +++---
- qemu-img.c                         | 18 +++++++++++++---
- 9 files changed, 77 insertions(+), 31 deletions(-)
+ block/copy-on-read.h               |  3 ++-
+ include/block/block-global-state.h | 11 ++++++-----
+ block.c                            |  5 +++--
+ block/commit.c                     |  6 ++++++
+ block/copy-on-read.c               | 19 +++++++++++++++----
+ block/mirror.c                     |  3 +++
+ block/stream.c                     | 16 +++++++++++-----
+ 7 files changed, 46 insertions(+), 17 deletions(-)
 
+diff --git a/block/copy-on-read.h b/block/copy-on-read.h
+index 1d8ad38c74..72f9b378ea 100644
+--- a/block/copy-on-read.h
++++ b/block/copy-on-read.h
+@@ -27,6 +27,7 @@
+ 
+ #include "block/block_int.h"
+ 
+-void bdrv_cor_filter_drop(BlockDriverState *cor_filter_bs);
++void no_coroutine_fn GRAPH_UNLOCKED
++bdrv_cor_filter_drop(BlockDriverState *cor_filter_bs);
+ 
+ #endif /* BLOCK_COPY_ON_READ_H */
 diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
-index 3ae468ea15..b6860ae43b 100644
+index b6860ae43b..545708c35a 100644
 --- a/include/block/block-global-state.h
 +++ b/include/block/block-global-state.h
-@@ -144,9 +144,11 @@ int bdrv_change_backing_file(BlockDriverState *bs, const char *backing_file,
- void bdrv_register(BlockDriver *bdrv);
- int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
-                            const char *backing_file_str);
--BlockDriverState *bdrv_find_overlay(BlockDriverState *active,
--                                    BlockDriverState *bs);
--BlockDriverState *bdrv_find_base(BlockDriverState *bs);
-+
-+BlockDriverState * GRAPH_RDLOCK
-+bdrv_find_overlay(BlockDriverState *active, BlockDriverState *bs);
-+
-+BlockDriverState * GRAPH_RDLOCK bdrv_find_base(BlockDriverState *bs);
- bool bdrv_is_backing_chain_frozen(BlockDriverState *bs, BlockDriverState *base,
-                                   Error **errp);
- int bdrv_freeze_backing_chain(BlockDriverState *bs, BlockDriverState *base,
-diff --git a/include/block/block_int-io.h b/include/block/block_int-io.h
-index 6800af7590..4e7bf57a5e 100644
---- a/include/block/block_int-io.h
-+++ b/include/block/block_int-io.h
-@@ -134,8 +134,8 @@ BdrvChild *bdrv_cow_child(BlockDriverState *bs);
- BdrvChild *bdrv_filter_child(BlockDriverState *bs);
- BdrvChild *bdrv_filter_or_cow_child(BlockDriverState *bs);
- BdrvChild * GRAPH_RDLOCK bdrv_primary_child(BlockDriverState *bs);
--BlockDriverState *bdrv_skip_filters(BlockDriverState *bs);
--BlockDriverState *bdrv_backing_chain_next(BlockDriverState *bs);
-+BlockDriverState * GRAPH_RDLOCK bdrv_skip_filters(BlockDriverState *bs);
-+BlockDriverState * GRAPH_RDLOCK bdrv_backing_chain_next(BlockDriverState *bs);
+@@ -149,11 +149,12 @@ BlockDriverState * GRAPH_RDLOCK
+ bdrv_find_overlay(BlockDriverState *active, BlockDriverState *bs);
  
- static inline BlockDriverState *bdrv_cow_bs(BlockDriverState *bs)
+ BlockDriverState * GRAPH_RDLOCK bdrv_find_base(BlockDriverState *bs);
+-bool bdrv_is_backing_chain_frozen(BlockDriverState *bs, BlockDriverState *base,
+-                                  Error **errp);
+-int bdrv_freeze_backing_chain(BlockDriverState *bs, BlockDriverState *base,
+-                              Error **errp);
+-void bdrv_unfreeze_backing_chain(BlockDriverState *bs, BlockDriverState *base);
++
++int GRAPH_RDLOCK
++bdrv_freeze_backing_chain(BlockDriverState *bs, BlockDriverState *base,
++                          Error **errp);
++void GRAPH_RDLOCK
++bdrv_unfreeze_backing_chain(BlockDriverState *bs, BlockDriverState *base);
+ 
+ /*
+  * The units of offset and total_work_size may be chosen arbitrarily by the
+diff --git a/block.c b/block.c
+index 7e8b39711b..dc1980ee42 100644
+--- a/block.c
++++ b/block.c
+@@ -5843,8 +5843,9 @@ BlockDriverState *bdrv_find_base(BlockDriverState *bs)
+  * between @bs and @base is frozen. @errp is set if that's the case.
+  * @base must be reachable from @bs, or NULL.
+  */
+-bool bdrv_is_backing_chain_frozen(BlockDriverState *bs, BlockDriverState *base,
+-                                  Error **errp)
++static bool GRAPH_RDLOCK
++bdrv_is_backing_chain_frozen(BlockDriverState *bs, BlockDriverState *base,
++                             Error **errp)
  {
-diff --git a/block/block-backend.c b/block/block-backend.c
-index 075a0dfa95..4053134781 100644
---- a/block/block-backend.c
-+++ b/block/block-backend.c
-@@ -2730,6 +2730,7 @@ int blk_commit_all(void)
- {
-     BlockBackend *blk = NULL;
-     GLOBAL_STATE_CODE();
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     while ((blk = blk_all_next(blk)) != NULL) {
-         AioContext *aio_context = blk_get_aio_context(blk);
-diff --git a/block/block-copy.c b/block/block-copy.c
-index 1c60368d72..6b2be3d204 100644
---- a/block/block-copy.c
-+++ b/block/block-copy.c
-@@ -313,7 +313,12 @@ static int64_t block_copy_calculate_cluster_size(BlockDriverState *target,
- {
-     int ret;
-     BlockDriverInfo bdi;
--    bool target_does_cow = bdrv_backing_chain_next(target);
-+    bool target_does_cow;
-+
-+    GLOBAL_STATE_CODE();
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-+    target_does_cow = bdrv_backing_chain_next(target);
- 
-     /*
-      * If there is no backing file on the target, we cannot rely on COW if our
-@@ -355,6 +360,8 @@ BlockCopyState *block_copy_state_new(BdrvChild *source, BdrvChild *target,
-     BdrvDirtyBitmap *copy_bitmap;
-     bool is_fleecing;
- 
-+    GLOBAL_STATE_CODE();
-+
-     cluster_size = block_copy_calculate_cluster_size(target->bs, errp);
-     if (cluster_size < 0) {
-         return NULL;
+     BlockDriverState *i;
+     BdrvChild *child;
 diff --git a/block/commit.c b/block/commit.c
-index fc3ad79749..05eb57d9ea 100644
+index 05eb57d9ea..d92af02ead 100644
 --- a/block/commit.c
 +++ b/block/commit.c
-@@ -255,10 +255,13 @@ void commit_start(const char *job_id, BlockDriverState *bs,
-     GLOBAL_STATE_CODE();
- 
-     assert(top != bs);
-+    bdrv_graph_rdlock_main_loop();
-     if (bdrv_skip_filters(top) == bdrv_skip_filters(base)) {
-         error_setg(errp, "Invalid files for merge: top and base are the same");
-+        bdrv_graph_rdunlock_main_loop();
-         return;
-     }
-+    bdrv_graph_rdunlock_main_loop();
- 
-     base_size = bdrv_getlength(base);
-     if (base_size < 0) {
-@@ -324,6 +327,7 @@ void commit_start(const char *job_id, BlockDriverState *bs,
-      * this is the responsibility of the interface (i.e. whoever calls
-      * commit_start()).
-      */
-+    bdrv_graph_wrlock(top);
-     s->base_overlay = bdrv_find_overlay(top, base);
-     assert(s->base_overlay);
- 
-@@ -342,7 +346,6 @@ void commit_start(const char *job_id, BlockDriverState *bs,
-      */
-     iter_shared_perms = BLK_PERM_WRITE_UNCHANGED | BLK_PERM_WRITE;
- 
--    bdrv_graph_wrlock(top);
-     for (iter = top; iter != base; iter = bdrv_filter_or_cow_bs(iter)) {
-         if (iter == filtered_base) {
-             /*
-diff --git a/block/mirror.c b/block/mirror.c
-index a03247a31b..75e826dac8 100644
---- a/block/mirror.c
-+++ b/block/mirror.c
-@@ -714,7 +714,6 @@ static int mirror_exit_common(Job *job)
-     bdrv_graph_rdlock_main_loop();
-     bdrv_child_refresh_perms(mirror_top_bs, mirror_top_bs->backing,
-                              &error_abort);
--    bdrv_graph_rdunlock_main_loop();
- 
-     if (!abort && s->backing_mode == MIRROR_SOURCE_BACKING_CHAIN) {
-         BlockDriverState *backing = s->is_none_mode ? src : s->base;
-@@ -737,6 +736,7 @@ static int mirror_exit_common(Job *job)
-             local_err = NULL;
-         }
-     }
-+    bdrv_graph_rdunlock_main_loop();
- 
-     if (s->to_replace) {
-         replace_aio_context = bdrv_get_aio_context(s->to_replace);
-@@ -992,13 +992,13 @@ static int coroutine_fn mirror_run(Job *job, Error **errp)
-     } else {
-         s->target_cluster_size = BDRV_SECTOR_SIZE;
-     }
--    bdrv_graph_co_rdunlock();
-     if (backing_filename[0] && !bdrv_backing_chain_next(target_bs) &&
-         s->granularity < s->target_cluster_size) {
-         s->buf_size = MAX(s->buf_size, s->target_cluster_size);
-         s->cow_bitmap = bitmap_new(length);
-     }
-     s->max_iov = MIN(bs->bl.max_iov, target_bs->bl.max_iov);
-+    bdrv_graph_co_rdunlock();
- 
-     s->buf = qemu_try_blockalign(bs, s->buf_size);
-     if (s->buf == NULL) {
-@@ -1744,12 +1744,15 @@ static BlockJob *mirror_start_job(
-         buf_size = DEFAULT_MIRROR_BUF_SIZE;
-     }
- 
-+    bdrv_graph_rdlock_main_loop();
-     if (bdrv_skip_filters(bs) == bdrv_skip_filters(target)) {
-         error_setg(errp, "Can't mirror node into itself");
-+        bdrv_graph_rdunlock_main_loop();
-         return NULL;
-     }
- 
-     target_is_backing = bdrv_chain_contains(bs, target);
-+    bdrv_graph_rdunlock_main_loop();
- 
-     /* In the case of active commit, add dummy driver to provide consistent
-      * reads on the top, while disabling it in the intermediate nodes, and make
-@@ -1832,14 +1835,19 @@ static BlockJob *mirror_start_job(
-         }
- 
-         target_shared_perms |= BLK_PERM_CONSISTENT_READ | BLK_PERM_WRITE;
--    } else if (bdrv_chain_contains(bs, bdrv_skip_filters(target))) {
--        /*
--         * We may want to allow this in the future, but it would
--         * require taking some extra care.
--         */
--        error_setg(errp, "Cannot mirror to a filter on top of a node in the "
--                   "source's backing chain");
--        goto fail;
-+    } else {
-+        bdrv_graph_rdlock_main_loop();
-+        if (bdrv_chain_contains(bs, bdrv_skip_filters(target))) {
-+            /*
-+             * We may want to allow this in the future, but it would
-+             * require taking some extra care.
-+             */
-+            error_setg(errp, "Cannot mirror to a filter on top of a node in "
-+                       "the source's backing chain");
-+            bdrv_graph_rdunlock_main_loop();
-+            goto fail;
-+        }
-+        bdrv_graph_rdunlock_main_loop();
-     }
- 
-     s->target = blk_new(s->common.job.aio_context,
-@@ -1860,6 +1868,7 @@ static BlockJob *mirror_start_job(
-     blk_set_allow_aio_context_change(s->target, true);
-     blk_set_disable_request_queuing(s->target, true);
- 
-+    bdrv_graph_rdlock_main_loop();
-     s->replaces = g_strdup(replaces);
-     s->on_source_error = on_source_error;
-     s->on_target_error = on_target_error;
-@@ -1875,6 +1884,7 @@ static BlockJob *mirror_start_job(
-     if (auto_complete) {
-         s->should_complete = true;
-     }
-+    bdrv_graph_rdunlock_main_loop();
- 
-     s->dirty_bitmap = bdrv_create_dirty_bitmap(s->mirror_top_bs, granularity,
-                                                NULL, errp);
-@@ -2007,8 +2017,12 @@ void mirror_start(const char *job_id, BlockDriverState *bs,
-                    MirrorSyncMode_str(mode));
-         return;
-     }
-+
-+    bdrv_graph_rdlock_main_loop();
-     is_none_mode = mode == MIRROR_SYNC_MODE_NONE;
-     base = mode == MIRROR_SYNC_MODE_TOP ? bdrv_backing_chain_next(bs) : NULL;
-+    bdrv_graph_rdunlock_main_loop();
-+
-     mirror_start_job(job_id, bs, creation_flags, target, replaces,
-                      speed, granularity, buf_size, backing_mode, zero_target,
-                      on_source_error, on_target_error, unmap, NULL, NULL,
-diff --git a/block/stream.c b/block/stream.c
-index 2781441191..5323a9976d 100644
---- a/block/stream.c
-+++ b/block/stream.c
-@@ -53,8 +53,8 @@ static int coroutine_fn stream_populate(BlockBackend *blk,
- static int stream_prepare(Job *job)
+@@ -48,8 +48,10 @@ static int commit_prepare(Job *job)
  {
-     StreamBlockJob *s = container_of(job, StreamBlockJob, common.job);
--    BlockDriverState *unfiltered_bs = bdrv_skip_filters(s->target_bs);
--    BlockDriverState *unfiltered_bs_cow = bdrv_cow_bs(unfiltered_bs);
-+    BlockDriverState *unfiltered_bs;
-+    BlockDriverState *unfiltered_bs_cow;
-     BlockDriverState *base;
-     BlockDriverState *unfiltered_base;
-     Error *local_err = NULL;
-@@ -62,6 +62,11 @@ static int stream_prepare(Job *job)
- 
-     GLOBAL_STATE_CODE();
+     CommitBlockJob *s = container_of(job, CommitBlockJob, common.job);
  
 +    bdrv_graph_rdlock_main_loop();
-+    unfiltered_bs = bdrv_skip_filters(s->target_bs);
-+    unfiltered_bs_cow = bdrv_cow_bs(unfiltered_bs);
-+    bdrv_graph_rdunlock_main_loop();
-+
-     /* We should drop filter at this point, as filter hold the backing chain */
-     bdrv_cor_filter_drop(s->cor_filter_bs);
-     s->cor_filter_bs = NULL;
-@@ -142,18 +147,19 @@ static void stream_clean(Job *job)
- static int coroutine_fn stream_run(Job *job, Error **errp)
- {
-     StreamBlockJob *s = container_of(job, StreamBlockJob, common.job);
--    BlockDriverState *unfiltered_bs = bdrv_skip_filters(s->target_bs);
-+    BlockDriverState *unfiltered_bs;
-     int64_t len;
-     int64_t offset = 0;
-     int error = 0;
-     int64_t n = 0; /* bytes */
- 
--    if (unfiltered_bs == s->base_overlay) {
--        /* Nothing to stream */
--        return 0;
--    }
--
-     WITH_GRAPH_RDLOCK_GUARD() {
-+        unfiltered_bs = bdrv_skip_filters(s->target_bs);
-+        if (unfiltered_bs == s->base_overlay) {
-+            /* Nothing to stream */
-+            return 0;
-+        }
-+
-         len = bdrv_co_getlength(s->target_bs);
-         if (len < 0) {
-             return len;
-diff --git a/blockdev.c b/blockdev.c
-index 6cdf48beb1..5f15ea3b1d 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -1710,7 +1710,6 @@ static void drive_backup_action(DriveBackup *backup,
-         bdrv_graph_rdunlock_main_loop();
-         goto out;
-     }
--    bdrv_graph_rdunlock_main_loop();
- 
-     flags = bs->open_flags | BDRV_O_RDWR;
- 
-@@ -1735,6 +1734,7 @@ static void drive_backup_action(DriveBackup *backup,
-         flags |= BDRV_O_NO_BACKING;
-         set_backing_hd = true;
-     }
+     bdrv_unfreeze_backing_chain(s->commit_top_bs, s->base_bs);
+     s->chain_frozen = false;
 +    bdrv_graph_rdunlock_main_loop();
  
-     size = bdrv_getlength(bs);
-     if (size < 0) {
-@@ -3054,7 +3054,6 @@ void qmp_drive_mirror(DriveMirror *arg, Error **errp)
-         bdrv_graph_rdunlock_main_loop();
-         return;
-     }
--    bdrv_graph_rdunlock_main_loop();
+     /* Remove base node parent that still uses BLK_PERM_WRITE/RESIZE before
+      * the normal backing chain can be restored. */
+@@ -68,7 +70,9 @@ static void commit_abort(Job *job)
+     BlockDriverState *top_bs = blk_bs(s->top);
  
-     aio_context = bdrv_get_aio_context(bs);
-     aio_context_acquire(aio_context);
-@@ -3076,6 +3075,7 @@ void qmp_drive_mirror(DriveMirror *arg, Error **errp)
-     if (arg->sync == MIRROR_SYNC_MODE_NONE) {
-         target_backing_bs = bs;
-     }
-+    bdrv_graph_rdunlock_main_loop();
- 
-     size = bdrv_getlength(bs);
-     if (size < 0) {
-@@ -3450,15 +3450,16 @@ void qmp_change_backing_file(const char *device,
-         goto out;
-     }
- 
-+    bdrv_graph_rdlock_main_loop();
-     if (bdrv_find_base(image_bs) == image_bs) {
-         error_setg(errp, "not allowing backing file change on an image "
-                          "without a backing file");
-+        bdrv_graph_rdunlock_main_loop();
-         goto out;
-     }
- 
-     /* even though we are not necessarily operating on bs, we need it to
-      * determine if block ops are currently prohibited on the chain */
--    bdrv_graph_rdlock_main_loop();
-     if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_CHANGE, errp)) {
-         bdrv_graph_rdunlock_main_loop();
-         goto out;
-diff --git a/qemu-img.c b/qemu-img.c
-index c061fd0634..33f3ab5fba 100644
---- a/qemu-img.c
-+++ b/qemu-img.c
-@@ -1050,12 +1050,14 @@ static int img_commit(int argc, char **argv)
-     qemu_progress_init(progress, 1.f);
-     qemu_progress_print(0.f, 100);
- 
-+    bdrv_graph_rdlock_main_loop();
-     if (base) {
-         base_bs = bdrv_find_backing_image(bs, base);
-         if (!base_bs) {
-             error_setg(&local_err,
-                        "Did not find '%s' in the backing chain of '%s'",
-                        base, filename);
-+            bdrv_graph_rdunlock_main_loop();
-             goto done;
-         }
-     } else {
-@@ -1065,9 +1067,11 @@ static int img_commit(int argc, char **argv)
-         base_bs = bdrv_backing_chain_next(bs);
-         if (!base_bs) {
-             error_setg(&local_err, "Image does not have a backing file");
-+            bdrv_graph_rdunlock_main_loop();
-             goto done;
-         }
-     }
-+    bdrv_graph_rdunlock_main_loop();
- 
-     cbi = (CommonBlockJobCBInfo){
-         .errp = &local_err,
-@@ -1713,7 +1717,8 @@ static void convert_select_part(ImgConvertState *s, int64_t sector_num,
-     }
- }
- 
--static int convert_iteration_sectors(ImgConvertState *s, int64_t sector_num)
-+static int coroutine_mixed_fn GRAPH_RDLOCK
-+convert_iteration_sectors(ImgConvertState *s, int64_t sector_num)
- {
-     int64_t src_cur_offset;
-     int ret, n, src_cur;
-@@ -2115,7 +2120,9 @@ static int convert_do_copy(ImgConvertState *s)
-     }
- 
-     while (sector_num < s->total_sectors) {
+     if (s->chain_frozen) {
 +        bdrv_graph_rdlock_main_loop();
-         n = convert_iteration_sectors(s, sector_num);
+         bdrv_unfreeze_backing_chain(s->commit_top_bs, s->base_bs);
 +        bdrv_graph_rdunlock_main_loop();
-         if (n < 0) {
-             return n;
-         }
-@@ -2757,8 +2764,10 @@ static int img_convert(int argc, char **argv)
-          * s.target_backing_sectors has to be negative, which it will
-          * be automatically).  The backing file length is used only
-          * for optimizations, so such a case is not fatal. */
-+        bdrv_graph_rdlock_main_loop();
-         s.target_backing_sectors =
-             bdrv_nb_sectors(bdrv_backing_chain_next(out_bs));
-+        bdrv_graph_rdunlock_main_loop();
-     } else {
-         s.target_backing_sectors = -1;
      }
-@@ -3145,6 +3154,9 @@ static int get_block_status(BlockDriverState *bs, int64_t offset,
-     int64_t map;
-     char *filename = NULL;
+ 
+     /* Make sure commit_top_bs and top stay around until bdrv_replace_node() */
+@@ -404,7 +408,9 @@ void commit_start(const char *job_id, BlockDriverState *bs,
+ 
+ fail:
+     if (s->chain_frozen) {
++        bdrv_graph_rdlock_main_loop();
+         bdrv_unfreeze_backing_chain(commit_top_bs, base);
++        bdrv_graph_rdunlock_main_loop();
+     }
+     if (s->base) {
+         blk_unref(s->base);
+diff --git a/block/copy-on-read.c b/block/copy-on-read.c
+index 5149fcf63a..6f245b629a 100644
+--- a/block/copy-on-read.c
++++ b/block/copy-on-read.c
+@@ -35,8 +35,8 @@ typedef struct BDRVStateCOR {
+ } BDRVStateCOR;
+ 
+ 
+-static int cor_open(BlockDriverState *bs, QDict *options, int flags,
+-                    Error **errp)
++static int GRAPH_UNLOCKED
++cor_open(BlockDriverState *bs, QDict *options, int flags, Error **errp)
+ {
+     BlockDriverState *bottom_bs = NULL;
+     BDRVStateCOR *state = bs->opaque;
+@@ -44,6 +44,8 @@ static int cor_open(BlockDriverState *bs, QDict *options, int flags,
+     const char *bottom_node = qdict_get_try_str(options, "bottom");
+     int ret;
  
 +    GLOBAL_STATE_CODE();
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
 +
-     /* As an optimization, we could cache the current range of unallocated
-      * clusters in each file of the chain, and avoid querying the same
-      * range repeatedly.
-@@ -3173,9 +3185,7 @@ static int get_block_status(BlockDriverState *bs, int64_t offset,
-     has_offset = !!(ret & BDRV_BLOCK_OFFSET_VALID);
+     ret = bdrv_open_file_child(NULL, options, "file", bs, errp);
+     if (ret < 0) {
+         return ret;
+@@ -59,6 +61,8 @@ static int cor_open(BlockDriverState *bs, QDict *options, int flags,
+             bs->file->bs->supported_zero_flags);
  
-     if (file && has_offset) {
--        bdrv_graph_rdlock_main_loop();
-         bdrv_refresh_filename(file);
--        bdrv_graph_rdunlock_main_loop();
-         filename = file->filename;
+     if (bottom_node) {
++        GRAPH_RDLOCK_GUARD_MAINLOOP();
++
+         bottom_bs = bdrv_find_node(bottom_node);
+         if (!bottom_bs) {
+             error_setg(errp, "Bottom node '%s' not found", bottom_node);
+@@ -227,13 +231,17 @@ cor_co_lock_medium(BlockDriverState *bs, bool locked)
+ }
+ 
+ 
+-static void cor_close(BlockDriverState *bs)
++static void GRAPH_UNLOCKED cor_close(BlockDriverState *bs)
+ {
+     BDRVStateCOR *s = bs->opaque;
+ 
++    GLOBAL_STATE_CODE();
++
+     if (s->chain_frozen) {
++        bdrv_graph_rdlock_main_loop();
+         s->chain_frozen = false;
+         bdrv_unfreeze_backing_chain(bs, s->bottom_bs);
++        bdrv_graph_rdunlock_main_loop();
      }
  
-@@ -3663,7 +3673,9 @@ static int img_rebase(int argc, char **argv)
+     bdrv_unref(s->bottom_bs);
+@@ -263,12 +271,15 @@ static BlockDriver bdrv_copy_on_read = {
+ };
+ 
+ 
+-void bdrv_cor_filter_drop(BlockDriverState *cor_filter_bs)
++void no_coroutine_fn bdrv_cor_filter_drop(BlockDriverState *cor_filter_bs)
+ {
+     BDRVStateCOR *s = cor_filter_bs->opaque;
+ 
++    GLOBAL_STATE_CODE();
++
+     /* unfreeze, as otherwise bdrv_replace_node() will fail */
+     if (s->chain_frozen) {
++        GRAPH_RDLOCK_GUARD_MAINLOOP();
+         s->chain_frozen = false;
+         bdrv_unfreeze_backing_chain(cor_filter_bs, s->bottom_bs);
      }
-     bs = blk_bs(blk);
+diff --git a/block/mirror.c b/block/mirror.c
+index 75e826dac8..f8e439371c 100644
+--- a/block/mirror.c
++++ b/block/mirror.c
+@@ -678,6 +678,7 @@ static int mirror_exit_common(Job *job)
+     s->prepared = true;
+ 
+     aio_context_acquire(qemu_get_aio_context());
++    bdrv_graph_rdlock_main_loop();
+ 
+     mirror_top_bs = s->mirror_top_bs;
+     bs_opaque = mirror_top_bs->opaque;
+@@ -696,6 +697,8 @@ static int mirror_exit_common(Job *job)
+     bdrv_ref(mirror_top_bs);
+     bdrv_ref(target_bs);
+ 
++    bdrv_graph_rdunlock_main_loop();
++
+     /*
+      * Remove target parent that still uses BLK_PERM_WRITE/RESIZE before
+      * inserting target_bs at s->to_replace, where we might not be able to get
+diff --git a/block/stream.c b/block/stream.c
+index 5323a9976d..c32c98339a 100644
+--- a/block/stream.c
++++ b/block/stream.c
+@@ -266,6 +266,8 @@ void stream_start(const char *job_id, BlockDriverState *bs,
+     assert(!(base && bottom));
+     assert(!(backing_file_str && bottom));
  
 +    bdrv_graph_rdlock_main_loop();
-     unfiltered_bs = bdrv_skip_filters(bs);
-+    bdrv_graph_rdunlock_main_loop();
++
+     if (bottom) {
+         /*
+          * New simple interface. The code is written in terms of old interface
+@@ -278,13 +280,11 @@ void stream_start(const char *job_id, BlockDriverState *bs,
+         assert(!bottom->drv->is_filter);
+         base_overlay = above_base = bottom;
+     } else {
+-        GRAPH_RDLOCK_GUARD_MAINLOOP();
+-
+         base_overlay = bdrv_find_overlay(bs, base);
+         if (!base_overlay) {
+             error_setg(errp, "'%s' is not in the backing chain of '%s'",
+                        base->node_name, bs->node_name);
+-            return;
++            goto out_rdlock;
+         }
  
-     if (compress && !block_driver_can_compress(unfiltered_bs->drv)) {
-         error_report("Compression not supported for this file format");
+         /*
+@@ -306,7 +306,7 @@ void stream_start(const char *job_id, BlockDriverState *bs,
+     if (bs_read_only) {
+         /* Hold the chain during reopen */
+         if (bdrv_freeze_backing_chain(bs, above_base, errp) < 0) {
+-            return;
++            goto out_rdlock;
+         }
+ 
+         ret = bdrv_reopen_set_read_only(bs, false, errp);
+@@ -315,10 +315,12 @@ void stream_start(const char *job_id, BlockDriverState *bs,
+         bdrv_unfreeze_backing_chain(bs, above_base);
+ 
+         if (ret < 0) {
+-            return;
++            goto out_rdlock;
+         }
+     }
+ 
++    bdrv_graph_rdunlock_main_loop();
++
+     opts = qdict_new();
+ 
+     qdict_put_str(opts, "driver", "copy-on-read");
+@@ -413,4 +415,8 @@ fail:
+     if (bs_read_only) {
+         bdrv_reopen_set_read_only(bs, true, NULL);
+     }
++    return;
++
++out_rdlock:
++    bdrv_graph_rdunlock_main_loop();
+ }
 -- 
 2.41.0
 
