@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1E17E3313
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:35:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D007E3303
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:33:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Bsb-0005gn-5g; Mon, 06 Nov 2023 21:31:49 -0500
+	id 1r0Bse-0005v8-JX; Mon, 06 Nov 2023 21:31:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r0BsY-0005aU-VU
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:31:46 -0500
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1r0Bsc-0005ri-B1
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:31:50 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r0BsW-0002us-RJ
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:31:46 -0500
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6b89ab5ddb7so5525206b3a.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:31:44 -0800 (PST)
+ id 1r0Bsa-0002vY-Ek
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:31:49 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1cc3388621cso47731715ad.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:31:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699324303; x=1699929103; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699324306; x=1699929106; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zzerSzreBEyLFpv86Iaj/StJpuCF0tcymXhTs5mU6mY=;
- b=Gi7SBFNLKwqmef7NM+tNp/1O1uE9s8TEippAY5ls7o6ksd4Kq82uo3/trp+GNbbKFB
- XnVUkyeo50JbA5Ki5W0Yohtg8aY08RihBa4Y5QWuA2eD2W/gRLVXuyAAIMwu4CDZFb7W
- NswdKwocrCwv4Q1wBcyiKeJ05DJFzpqv0eCKGOLUhl2XEkN7z7cvY4SxFEjZmgHtjwNc
- Uf5xqnSR7B2HETf8WSCXEH3Zmp+wYwDjnVlkJATp8ZNdFxCYkA2lbxTBwilpICR6V84p
- H+YTWcI1Xkv20Zk050U/fWhJPq7W+xHfjnlRB6U0/CIV7eC9M3K8kOWUh8Rd+TrODfHi
- 808g==
+ bh=OtwE/W/kGtkF44+Xl3AQKb9bLAFMuHoSpNqdnKmoL3o=;
+ b=Z8CSJq1cU6IwXzpRs/K4pRy6mMT1TiPmz9o6Ddlh6fnOEyzzjc5kIeDlA3Qf3wCePS
+ X6l9w+ZwRVqtDSD2rejN4qan3d4iLS+Nr0IGDtnRv1Rq4BGeo4uiKExFec/jIKlJWMui
+ bNGKY1e78y1i1j3UF5auiZyVH7lP/8FeWZ/XgebYxGJ15zq5XKY1BFFmL4Zf3iDzpSX7
+ LOvvQ16WaSvVEKvHgTAr6qJDZznlYuXPQxhMttBBQZ2H5LyFENNzLXkgAFf7z2jVXpP3
+ e7eBAgGIQ8xyhgN7F6fsv2jfeZEMqSnOQGN47ki+qAvCORCrwYZlIQQ11tXOhCAwhYcy
+ jJHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699324303; x=1699929103;
+ d=1e100.net; s=20230601; t=1699324306; x=1699929106;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zzerSzreBEyLFpv86Iaj/StJpuCF0tcymXhTs5mU6mY=;
- b=r65rq89NZ0lS/j2CpbNcU+XR1Js5mI6J0jJwjeoSYO2PaRIn4BBRx5EzEFHR/dnczW
- ajNFdv5QUnMJqw+wNPY5OdwxXSklKygqSBbTbwIHVOGfYGP0PcD7jf503yOOe033FC8M
- SnEZqTwuRKq8yOgr6jRqNzuuxL47stEC31JqspmJpoYtOQGX6ChXY+qpXGb1O1ACZjAZ
- MD+f6siPZLJ+fKjO+gZHvTaP5l+tLhVx1dJuTBkTJekmJ45EhI45ToUGuaBTFMdgxF+e
- oDrryEKHapwRiTu/lrwm2WuyITdksbtBU/WLx06PJ1HHwIX5uLshfhGiZxHdtXHpHVkI
- n1/Q==
-X-Gm-Message-State: AOJu0Yw47i90poSAkVa0u1guLun3TiYZfi5vc/yJ0MeA/KZd6bSAHOGz
- muet3+O5al7aAcyMpV9bHEHDA4Mlt2k+hw==
-X-Google-Smtp-Source: AGHT+IHG2eyK1QlxDDesWRzLoKM2XIyQpl61vR2RI1ioXTiWekKM9On7oT610c0/rJbjpsBGGPUvWQ==
-X-Received: by 2002:a05:6a20:728e:b0:14c:daa9:5e22 with SMTP id
- o14-20020a056a20728e00b0014cdaa95e22mr36782476pzk.45.1699324303106; 
- Mon, 06 Nov 2023 18:31:43 -0800 (PST)
+ bh=OtwE/W/kGtkF44+Xl3AQKb9bLAFMuHoSpNqdnKmoL3o=;
+ b=rCaLxPLRQZNKTwglKDmpBQA4LPu3VPqTUbNJYICFGEpLpcBkoLOjh6LABpCDFb8KTv
+ tBj26HlRM4ogxVPj2ENF9W93dUInLIdwQEPFjqSmLe6g1vJDr0HxiuvHvQyhz6j17x32
+ 5qYFZuv9XNlMa+/wJMdDFE+1Dz9oG1q5T8bvK92gt0+jDTRHbci1I3AYRA4cNTDKTizC
+ BqHc7TQftqlkhee41/f4HuzMq8NuiJdvIupl8Tczu8OWYc2braLLWfpG6x04rQM82086
+ x5cEnbUsaR9cXwmrzkHsI43hcbHMHHGih9UwKbJmbo150jmxs+GMHL7637AXDWvN67el
+ AKtA==
+X-Gm-Message-State: AOJu0YxCEC1XdCXZy5pcsI1qH3m6r1IwmiPBlbaYOmBa2UsFWihnMGLM
+ xkx1jEsFGbUzy5jydWyA5QBborz7Wtc8Wg==
+X-Google-Smtp-Source: AGHT+IFFFULoww0ftTbtUveY3ni8n+YozDRdaPjvnDv2i5+dCXT19q/f4UINNHszdxFubBZCB4sp3A==
+X-Received: by 2002:a17:902:c943:b0:1cc:5468:3284 with SMTP id
+ i3-20020a170902c94300b001cc54683284mr1797068pla.23.1699324306641; 
+ Mon, 06 Nov 2023 18:31:46 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- u18-20020a170902e5d200b001cc32f46757sm6487649plf.107.2023.11.06.18.31.40
+ u18-20020a170902e5d200b001cc32f46757sm6487649plf.107.2023.11.06.18.31.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 18:31:42 -0800 (PST)
+ Mon, 06 Nov 2023 18:31:45 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Max Chou <max.chou@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 31/49] target/riscv: Add cfg property for Zvkb extension
-Date: Tue,  7 Nov 2023 12:29:27 +1000
-Message-ID: <20231107022946.1055027-32-alistair.francis@wdc.com>
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 32/49] target/riscv: Replace Zvbb checking by Zvkb
+Date: Tue,  7 Nov 2023 12:29:28 +1000
+Message-ID: <20231107022946.1055027-33-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231107022946.1055027-1-alistair.francis@wdc.com>
 References: <20231107022946.1055027-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,50 +99,93 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Max Chou <max.chou@sifive.com>
 
-After vector crypto spec v1.0.0-rc3 release, the Zvkb extension is
-defined as a proper subset of the Zvbb extension. And both the Zvkn and
-Zvks shorthand extensions replace the included Zvbb extension by Zvkb
-extnesion.
+The Zvkb extension is a proper subset of the Zvbb extension and includes
+following instructions:
+  * vandn.[vv,vx]
+  * vbrev8.v
+  * vrev8.v
+  * vrol.[vv,vx]
+  * vror.[vv,vx,vi]
 
 Signed-off-by: Max Chou <max.chou@sifive.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20231026151828.754279-4-max.chou@sifive.com>
+Message-ID: <20231026151828.754279-5-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_cfg.h     | 1 +
- target/riscv/tcg/tcg-cpu.c | 6 +++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ target/riscv/insn_trans/trans_rvvk.c.inc | 37 +++++++++++++++---------
+ 1 file changed, 24 insertions(+), 13 deletions(-)
 
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index 1f0dac5c8a..c4b2fec024 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -90,6 +90,7 @@ struct RISCVCPUConfig {
-     bool ext_zve64d;
-     bool ext_zvbb;
-     bool ext_zvbc;
-+    bool ext_zvkb;
-     bool ext_zvkg;
-     bool ext_zvkned;
-     bool ext_zvknha;
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 87baae56a1..ad7a183a74 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -508,9 +508,9 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-      * In principle Zve*x would also suffice here, were they supported
-      * in qemu
-      */
--    if ((cpu->cfg.ext_zvbb || cpu->cfg.ext_zvkg || cpu->cfg.ext_zvkned ||
--         cpu->cfg.ext_zvknha || cpu->cfg.ext_zvksed || cpu->cfg.ext_zvksh) &&
--        !cpu->cfg.ext_zve32f) {
-+    if ((cpu->cfg.ext_zvbb || cpu->cfg.ext_zvkb || cpu->cfg.ext_zvkg ||
-+         cpu->cfg.ext_zvkned || cpu->cfg.ext_zvknha || cpu->cfg.ext_zvksed ||
-+         cpu->cfg.ext_zvksh) && !cpu->cfg.ext_zve32f) {
-         error_setg(errp,
-                    "Vector crypto extensions require V or Zve* extensions");
-         return;
+diff --git a/target/riscv/insn_trans/trans_rvvk.c.inc b/target/riscv/insn_trans/trans_rvvk.c.inc
+index e691519ed7..3801c16829 100644
+--- a/target/riscv/insn_trans/trans_rvvk.c.inc
++++ b/target/riscv/insn_trans/trans_rvvk.c.inc
+@@ -112,24 +112,27 @@ GEN_VX_MASKED_TRANS(vclmulh_vx, vclmul_vx_check)
+         return false;                                            \
+     }
+ 
+-static bool zvbb_vv_check(DisasContext *s, arg_rmrr *a)
++static bool zvkb_vv_check(DisasContext *s, arg_rmrr *a)
+ {
+-    return opivv_check(s, a) && s->cfg_ptr->ext_zvbb == true;
++    return opivv_check(s, a) &&
++           (s->cfg_ptr->ext_zvbb == true || s->cfg_ptr->ext_zvkb == true);
+ }
+ 
+-static bool zvbb_vx_check(DisasContext *s, arg_rmrr *a)
++static bool zvkb_vx_check(DisasContext *s, arg_rmrr *a)
+ {
+-    return opivx_check(s, a) && s->cfg_ptr->ext_zvbb == true;
++    return opivx_check(s, a) &&
++           (s->cfg_ptr->ext_zvbb == true || s->cfg_ptr->ext_zvkb == true);
+ }
+ 
+ /* vrol.v[vx] */
+-GEN_OPIVV_GVEC_TRANS_CHECK(vrol_vv, rotlv, zvbb_vv_check)
+-GEN_OPIVX_GVEC_SHIFT_TRANS_CHECK(vrol_vx, rotls, zvbb_vx_check)
++GEN_OPIVV_GVEC_TRANS_CHECK(vrol_vv, rotlv, zvkb_vv_check)
++GEN_OPIVX_GVEC_SHIFT_TRANS_CHECK(vrol_vx, rotls, zvkb_vx_check)
+ 
+ /* vror.v[vxi] */
+-GEN_OPIVV_GVEC_TRANS_CHECK(vror_vv, rotrv, zvbb_vv_check)
+-GEN_OPIVX_GVEC_SHIFT_TRANS_CHECK(vror_vx, rotrs, zvbb_vx_check)
+-GEN_OPIVI_GVEC_TRANS_CHECK(vror_vi, IMM_TRUNC_SEW, vror_vx, rotri, zvbb_vx_check)
++GEN_OPIVV_GVEC_TRANS_CHECK(vror_vv, rotrv, zvkb_vv_check)
++GEN_OPIVX_GVEC_SHIFT_TRANS_CHECK(vror_vx, rotrs, zvkb_vx_check)
++GEN_OPIVI_GVEC_TRANS_CHECK(vror_vi, IMM_TRUNC_SEW, vror_vx, rotri,
++                           zvkb_vx_check)
+ 
+ #define GEN_OPIVX_GVEC_TRANS_CHECK(NAME, SUF, CHECK)                     \
+     static bool trans_##NAME(DisasContext *s, arg_rmrr *a)               \
+@@ -147,8 +150,8 @@ GEN_OPIVI_GVEC_TRANS_CHECK(vror_vi, IMM_TRUNC_SEW, vror_vx, rotri, zvbb_vx_check
+     }
+ 
+ /* vandn.v[vx] */
+-GEN_OPIVV_GVEC_TRANS_CHECK(vandn_vv, andc, zvbb_vv_check)
+-GEN_OPIVX_GVEC_TRANS_CHECK(vandn_vx, andcs, zvbb_vx_check)
++GEN_OPIVV_GVEC_TRANS_CHECK(vandn_vv, andc, zvkb_vv_check)
++GEN_OPIVX_GVEC_TRANS_CHECK(vandn_vx, andcs, zvkb_vx_check)
+ 
+ #define GEN_OPIV_TRANS(NAME, CHECK)                                        \
+     static bool trans_##NAME(DisasContext *s, arg_rmr *a)                  \
+@@ -188,8 +191,16 @@ static bool zvbb_opiv_check(DisasContext *s, arg_rmr *a)
+            vext_check_ss(s, a->rd, a->rs2, a->vm);
+ }
+ 
+-GEN_OPIV_TRANS(vbrev8_v, zvbb_opiv_check)
+-GEN_OPIV_TRANS(vrev8_v, zvbb_opiv_check)
++static bool zvkb_opiv_check(DisasContext *s, arg_rmr *a)
++{
++    return (s->cfg_ptr->ext_zvbb == true || s->cfg_ptr->ext_zvkb == true) &&
++           require_rvv(s) &&
++           vext_check_isa_ill(s) &&
++           vext_check_ss(s, a->rd, a->rs2, a->vm);
++}
++
++GEN_OPIV_TRANS(vbrev8_v, zvkb_opiv_check)
++GEN_OPIV_TRANS(vrev8_v, zvkb_opiv_check)
+ GEN_OPIV_TRANS(vbrev_v, zvbb_opiv_check)
+ GEN_OPIV_TRANS(vclz_v, zvbb_opiv_check)
+ GEN_OPIV_TRANS(vctz_v, zvbb_opiv_check)
 -- 
 2.41.0
 
