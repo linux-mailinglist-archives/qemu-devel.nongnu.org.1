@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F01937E41D8
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:29:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D851E7E41E6
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:35:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0N0M-0004WG-0H; Tue, 07 Nov 2023 09:24:34 -0500
+	id 1r0N9i-0003gh-VM; Tue, 07 Nov 2023 09:34:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r0N06-0004Ja-B5
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:24:20 -0500
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ id 1r0N9T-0003UR-K3
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:34:02 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r0N02-0007d0-8h
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:24:17 -0500
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2c5056059e0so82244441fa.3
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 06:24:12 -0800 (PST)
+ id 1r0N9O-0001Rj-6J
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:33:56 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-40836ea8cbaso40363645e9.0
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 06:33:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699367051; x=1699971851; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699367615; x=1699972415; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Fx8qgNA+lURQSXrzmxWGQIf9pj+8j0bs83issrteW0E=;
- b=PLOoO8eGhOlFKeumePDkiAtGvx3GOqJZA3P4Rg1LR7WcCmx2wURDxeoCO9ODqzpGyr
- BM2hfsuLx9ZFNnBIU/ghk5KSglivsJLZhzDm5TveQkw38FEFgtEV43QcQSGdAklc3W21
- PTxtvulzPsaNbPtk5TpeXUHKqtOK+R3mDqKbvSfcnb7d9VGObkB4wyZhsa0Khjyljefg
- 5sR3VRPoJAcIhSS7RNiDC0ovh4Ckfl+k+BpMG5smxLhekTvNIc26ZesBwuYVhqL5jOLN
- iS1sdriLAqZW4LXUglrIEsi/Lsx02wX8gYXxi3YvCHM4SXVElEizCMnaOoWqbAykBs0e
- G6lA==
+ bh=66Yo0o+2uncS4aFgFuePxGz49R/v9IcSCTHQts+bNnM=;
+ b=a+EPJHaa7NxLR4x/UKi17a+FzjjN8iwtb+IeGs+lP+r3w/ZSgT6wcFanIIf7M/g+tG
+ n3ui1mzBeHF9jMgFUxXt1eEQBXLyceX/V9iq1psZbknP/FL/G+Jqr1BmByaylFT6U4jo
+ WkcYKgCIr9zwuKJC1RovpTndoTQejQYpH6M6u0GlmS5L6mZEits8VBQoiELhH0w7ZArt
+ QsB1TeWGkN55NtEZY4ORBcxZBFkdAGUUL/tMmmaqdkN/Vzli6x0wWPZ9FT6fjfH4rLZ1
+ bd8YlrvLhXqEIebc9pII4x+h/E5Wh7ozcuW9ZKBm5osFLv3hRMXN1TDlp6KaLksMf4gh
+ Fpgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699367051; x=1699971851;
+ d=1e100.net; s=20230601; t=1699367615; x=1699972415;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Fx8qgNA+lURQSXrzmxWGQIf9pj+8j0bs83issrteW0E=;
- b=Q+r90JEKix337C9ucaaIXKGoII6SBTQCfHKHau5+cjxNiX0cdfFpB0mqI5nNP4UgY0
- LZGy63KntKhIHqwMVtuJzSFqlRhbQfwP4PBp7/m+7qEZnx521ix0ieOB94PWE2R5OYEf
- zYcq/6o9CTliNh+2IAlzgsdd6ffq8wASmm1FHFzDAXy3eXTEjueUpWHqh2WSJp6Q+fgk
- ogmHUM37fj7368lA3lEwfCDgdc6kqSUm8s/BBYzFwMmNkA0XlVnnwCMkGrsYEckO9quV
- RNl47de3JMuZs8MmRQWVX0yTDKnouuYzJYNBXLnd113V6L9g7eJLJ7LyCkPaof588M7N
- 3AcQ==
-X-Gm-Message-State: AOJu0Yy8oBFsJ5HkKFyM+10oZ21+gDCi4Ru8IwF0d/xLXTZdL6RtN1Hk
- P52gIrC7AdsFq4uBi71+xYT6VsPh0wUWTJbc65K7yg==
-X-Google-Smtp-Source: AGHT+IGMG8hYPvrpeVVfMGUBP5YM0s3bPz/SgC+agjmDwxWGdg991PMqEXvIqdu/AIWJ9endt9mh+Q==
-X-Received: by 2002:a2e:a7c3:0:b0:2c0:33be:3530 with SMTP id
- x3-20020a2ea7c3000000b002c033be3530mr22935397ljp.45.1699367051494; 
- Tue, 07 Nov 2023 06:24:11 -0800 (PST)
+ bh=66Yo0o+2uncS4aFgFuePxGz49R/v9IcSCTHQts+bNnM=;
+ b=vvHEQ3yPc2HDBnonfMyaw4GsNSPmih8bebL9/pBCVtzq1y/VYD+j2oWBnzmO10pJaL
+ eiLQwaBN1C2oMjxAqizF48eBT8SCIvY/VKWnMKke1W9XfpvrjoPGCm9QYJJocqHSBM41
+ sHBstZDGKNE7+LXvDjauj7ymWd5+iU7HOGIGkyuxv3BXZIwm1BFFPO7PjOmyd1PAI8kQ
+ 0jdFlWUul1plosxsINkuVIE4YHVi/MQB57IcECEhZjJU40/atNUpJAoBRGtopmk1o3Dz
+ /g8qtjnDjdoYwW0eL2KKUHhLOpFw3vAwtN7c7SbPbnKkcltq0JD8RrdQPs5tupguVad0
+ 9nkg==
+X-Gm-Message-State: AOJu0Yzcz1iUYfooZDt0qkfQhRhbhZjL9foJBOYErARPfOQduy6hm73F
+ rQ9crb7Cpz+bmroSaPG3VvLFgIRoGnDeQm15ZLypaw==
+X-Google-Smtp-Source: AGHT+IE94ut5xSB/CfTNuTVVhnIgtBeOGGdkZYLukqHE/d8jAJr32hpVcFcNAu/aHqrufTnM2YVJEg==
+X-Received: by 2002:a05:600c:3547:b0:401:b1c6:97dc with SMTP id
+ i7-20020a05600c354700b00401b1c697dcmr2465268wmq.23.1699367615013; 
+ Tue, 07 Nov 2023 06:33:35 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ew3-20020a05600c808300b004054dcbf92asm15362371wmb.20.2023.11.07.06.24.03
+ u17-20020a05600c19d100b00405c7591b09sm16090135wmq.35.2023.11.07.06.33.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 06:24:07 -0800 (PST)
+ Tue, 07 Nov 2023 06:33:34 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 8CD6E6576C;
+ by draig.lan (Postfix) with ESMTP id A22996576D;
  Tue,  7 Nov 2023 14:23:56 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Timoth=C3=A9e=20Cocault?= <timothee.cocault@gmail.com>,
- fanwenjie <fanwj@mail.ustc.edu.cn>
-Subject: [PULL 22/23] mailmap: fixup some more corrupted author fields
-Date: Tue,  7 Nov 2023 14:23:53 +0000
-Message-Id: <20231107142354.3151266-23-alex.bennee@linaro.org>
+ Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 23/23] Revert "tests/tcg/nios2: Re-enable linux-user tests"
+Date: Tue,  7 Nov 2023 14:23:54 +0000
+Message-Id: <20231107142354.3151266-24-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231107142354.3151266-1-alex.bennee@linaro.org>
 References: <20231107142354.3151266-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,29 +96,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Cc: Timothée Cocault <timothee.cocault@gmail.com>
-Cc: fanwenjie <fanwj@mail.ustc.edu.cn>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231106185112.2755262-22-alex.bennee@linaro.org>
+nios2 signal tests are broken again:
 
-diff --git a/.mailmap b/.mailmap
-index 94f19a0ac9..e12e19f691 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -30,10 +30,12 @@ malc <av1474@comtv.ru> malc <malc@c046a42c-6fe2-441c-8c8c-71466251a162>
- # Corrupted Author fields
- Aaron Larson <alarson@ddci.com> alarson@ddci.com
- Andreas Färber <andreas.faerber@web.de> Andreas Färber <andreas.faerber>
-+fanwenjie <fanwj@mail.ustc.edu.cn> fanwj@mail.ustc.edu.cn <fanwj@mail.ustc.edu.cn>
- Jason Wang <jasowang@redhat.com> Jason Wang <jasowang>
- Marek Dolata <mkdolata@us.ibm.com> mkdolata@us.ibm.com <mkdolata@us.ibm.com>
- Michael Ellerman <mpe@ellerman.id.au> michael@ozlabs.org <michael@ozlabs.org>
- Nick Hudson <hnick@vmware.com> hnick@vmware.com <hnick@vmware.com>
-+Timothée Cocault <timothee.cocault@gmail.com> timothee.cocault@gmail.com <timothee.cocault@gmail.com>
- 
- # There is also a:
- #    (no author) <(no author)@c046a42c-6fe2-441c-8c8c-71466251a162>
+  retry.py -n 10 -c -- ./qemu-nios2 ./tests/tcg/nios2-linux-user/signals
+  Results summary:
+  0: 8 times (80.00%), avg time 2.254 (0.00 varience/0.00 deviation)
+  -11: 2 times (20.00%), avg time 0.253 (0.00 varience/0.00 deviation)
+  Ran command 10 times, 8 passes
+
+This wasn't picked up by CI as we don't have a docker container that
+can build QEMU with the nios2 compiler. I don't have time to bisect
+the breakage and the target is orphaned anyway so take the easy route
+and revert it.
+
+This reverts commit 20e7524ff9f0cab4c9a0306014d6f3d7b467ae1e.
+
+Cc: Chris Wulff <crwulff@gmail.com>
+Cc: Marek Vasut <marex@denx.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20231106185112.2755262-23-alex.bennee@linaro.org>
+
+diff --git a/tests/tcg/nios2/Makefile.target b/tests/tcg/nios2/Makefile.target
+new file mode 100644
+index 0000000000..b38e2352b7
+--- /dev/null
++++ b/tests/tcg/nios2/Makefile.target
+@@ -0,0 +1,11 @@
++# nios2 specific test tweaks
++
++# Currently nios2 signal handling is broken
++run-signals: signals
++	$(call skip-test, $<, "BROKEN")
++run-plugin-signals-with-%:
++	$(call skip-test, $<, "BROKEN")
++run-linux-test: linux-test
++	$(call skip-test, $<, "BROKEN")
++run-plugin-linux-test-with-%:
++	$(call skip-test, $<, "BROKEN")
 -- 
 2.39.2
 
