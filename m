@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 430D57E3D54
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 13:27:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F7C7E3D99
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 13:29:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0LA8-0007Fw-DP; Tue, 07 Nov 2023 07:26:32 -0500
+	id 1r0LAT-0007wW-E1; Tue, 07 Nov 2023 07:26:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L9d-0006Fy-ET
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:26:05 -0500
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L9i-0006HP-0Y
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:26:09 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L9K-00057a-Ea
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:26:00 -0500
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2c50305c5c4so80522671fa.1
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 04:25:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L9Q-000591-Tn
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:26:04 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-543456dbd7bso12985049a12.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 04:25:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699359939; x=1699964739; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699359945; x=1699964745; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uzHw9gxC37cDWskQ8Q09i1BaQBpN31WzD4SH6IynXXc=;
- b=CvKBMHhBGXTLC6ew4HjO2vX1SrgW4YEzhsR/cEtPTzKXNJGY/F87F7afNw0jSdQvRX
- ibvrxSO27zkrDE0gafJSNnh5tpCD6+K2nT31rLFKbA0QpkwwvHEt/6xnwr2OuhEzZiS3
- dEzudWcDJhSga5FzeRVYsaienTSX0lWUuVQufwpRnBW0e3JJJm6Wbps9hEQBmKCb89AC
- d7v0mwBUq6qTzXS+1L/CDJLlkxDq9cj2bKHm7/DgAMBvb0CX70thTkiZhwetqGRYYHOP
- CdJTSQ1nMBc2ZaHN1Q2irxZAEL8dph4kDEQvNqKLmeChXXMnb+zA3N85CwHsiijJ3qe+
- 0wzA==
+ bh=TWjAMfnV0kRvK1CF0UWrM+tNZeOmTMW+hMb8e74FNo4=;
+ b=eqhVJ7QuIvRb24GOGl+EQ+FTM9OPsBLY1YX8cGVCFtxsmHl1M9a8vkkNqHAv/4UcGV
+ P59d7lK8IfXfxZkgdIJwkmfq+V4SxFdkRZ0O1xOZlUOPK3zvSup4I7XRPopEq7uH0BhF
+ Z36mo0SLrsDJVpI4t+z8ly0zDZx6KBzbd5njFPLzVFNFVeNuHzjNR7BORETtp5qBLjsX
+ OfSsRglpidGONn28eVgLEeihWQLFcTT67MeZ7z7F8UvNbe4wYj+z6nyRF0NLKEm4W01R
+ 7lcuPfB9LGmFpKtesZcV54xe5CswzTMKI/oRWZJbcwdlvhBVU//h8V5+fqoFiq8L2uyj
+ jBmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699359939; x=1699964739;
+ d=1e100.net; s=20230601; t=1699359945; x=1699964745;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uzHw9gxC37cDWskQ8Q09i1BaQBpN31WzD4SH6IynXXc=;
- b=KzA/t1YhtkpKywF4WhepEbLYvg+A7X/IS+QeNs/2To6dLm8D1UT6akMXN7Zbq0xnZJ
- M79jB4LFY3jWiJG5YJ4KRsIPoYMXMdVjQsTVaXl4YnMUHdKFbPDDAPmDhxPmpDbMSkv9
- WHfhhBlq7v07fHLQ6oEUXiXf8VXuEtTVNQCpwfAvKzdk1L7nO6ZDuMh4zjLQexSpOLWr
- FbBhDqfK6ycLFqrCJ2MPV422PaL46EZnPmA1uI/xUXTqk/aOtmsG5ngQ8VQ347dheO6T
- eWvax49Ig7MuLifsquZUUnuIWcv2kUynX29L2gVIpR/lIG+rgi00gFoZ6mpfb3UEvcko
- eWBA==
-X-Gm-Message-State: AOJu0Yxi4vBHT3Vig3HLaXtNSie2Kj+Q6Q429KZbGzDG2DYA5gnuTTRz
- s/6PkH9c4MJICOPges3EEczlVZQzw4+Pr+QBhlQ=
-X-Google-Smtp-Source: AGHT+IHYS2sWYgS68pTucc6D2gT5/C0id0v/lkcQcfo8MWiVRRZXBiRLiYanm65MPWc8YdA86y3qKg==
-X-Received: by 2002:a2e:3910:0:b0:2bc:d8cb:59fe with SMTP id
- g16-20020a2e3910000000b002bcd8cb59femr22459267lja.8.1699359938985; 
- Tue, 07 Nov 2023 04:25:38 -0800 (PST)
+ bh=TWjAMfnV0kRvK1CF0UWrM+tNZeOmTMW+hMb8e74FNo4=;
+ b=L3IhT5pGRv5MYhXDgj9kxqhFbWExYSAoI55+7fnOB9qUYFbiwfU10Ink2AUBf+7ixi
+ Od6BbyMai+m+Ewsx2bF1fiAWv3Q9YZYoyIZjH2lPamHFOvn0rhAfii/yF6WFZ8fYrlTi
+ YYDl6Xt/lHTsbXeHK7VMcSczJvSTwF6BlwUYSmfkUsKbAVwZbmLFMGMou5xv3ftQzna3
+ YDUwYnc8sr4LiD7saG5vCPe1TTB6NlzIl57rXELGbN0gdmTlPARfXXLFJxPJ5JcmIz5j
+ hTpFrD243/XXysxNUWYY3zi/ZiwtGWHvRZfdkG2BgVcTJENVsOjjeip3CrcOpQ64jJEE
+ MG2A==
+X-Gm-Message-State: AOJu0YxOp113dnD9EF66q9xtEfM+xSz00BtC/hA7AQJhQrToGSm2I9Nc
+ bine41A8cjiPkGyqLB2oY0OQmfjXxfTnYc648+0=
+X-Google-Smtp-Source: AGHT+IGZJdask+fi03EA8Mp4RnGJsuJPZ2tfZ6T/ZCgR3M1/MRVims0ImI0ewYQuiDr0hvwHAB2CYA==
+X-Received: by 2002:a17:907:26c4:b0:9dd:ebab:2bc5 with SMTP id
+ bp4-20020a17090726c400b009ddebab2bc5mr2059350ejc.7.1699359944935; 
+ Tue, 07 Nov 2023 04:25:44 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.216.69])
  by smtp.gmail.com with ESMTPSA id
- l26-20020a05600c1d1a00b003fef5e76f2csm12701908wms.0.2023.11.07.04.25.37
+ s4-20020a1709062ec400b009c3f8f46c22sm986892eji.77.2023.11.07.04.25.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 07 Nov 2023 04:25:38 -0800 (PST)
+ Tue, 07 Nov 2023 04:25:44 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
@@ -62,18 +62,18 @@ Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 44/75] target/s390x/cpu: Restrict cpu_get_tb_cpu_state()
- definition to TCG
-Date: Tue,  7 Nov 2023 13:24:34 +0100
-Message-ID: <20231107122442.58674-10-philmd@linaro.org>
+Subject: [PULL 45/75] target/s390x/cpu: Restrict CPUS390XState declaration to
+ 'cpu.h'
+Date: Tue,  7 Nov 2023 13:24:35 +0100
+Message-ID: <20231107122442.58674-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231107122442.58674-1-philmd@linaro.org>
 References: <20231107122442.58674-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,49 +96,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cpu_get_tb_cpu_state() is TCG specific. Another accelerator
-calling it would be a bug, so restrict the definition to TCG,
-along with "tcg_s390x.h" header inclusion.
+"target/s390x/cpu-qom.h" has to be target-agnostic. However, it
+currently declares CPUS390XState, which is target-specific.
+Move that declaration to "cpu.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20231106114500.5269-4-philmd@linaro.org>
+Message-Id: <20231106114500.5269-5-philmd@linaro.org>
 ---
- target/s390x/cpu.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ target/s390x/cpu-qom.h | 2 --
+ target/s390x/cpu.h     | 4 ++--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
+diff --git a/target/s390x/cpu-qom.h b/target/s390x/cpu-qom.h
+index fcd70daddf..ccf126b7a9 100644
+--- a/target/s390x/cpu-qom.h
++++ b/target/s390x/cpu-qom.h
+@@ -33,8 +33,6 @@ OBJECT_DECLARE_CPU_TYPE(S390CPU, S390CPUClass, S390_CPU)
+ typedef struct S390CPUModel S390CPUModel;
+ typedef struct S390CPUDef S390CPUDef;
+ 
+-typedef struct CPUArchState CPUS390XState;
+-
+ typedef enum cpu_reset_type {
+     S390_CPU_RESET_NORMAL,
+     S390_CPU_RESET_INITIAL,
 diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
-index 38d7197f4c..110902fa3c 100644
+index 110902fa3c..942589c597 100644
 --- a/target/s390x/cpu.h
 +++ b/target/s390x/cpu.h
-@@ -29,7 +29,6 @@
- #include "cpu_models.h"
- #include "exec/cpu-defs.h"
- #include "qemu/cpu-float.h"
--#include "tcg/tcg_s390x.h"
- #include "qapi/qapi-types-machine-common.h"
+@@ -55,7 +55,7 @@ typedef struct PSW {
+     uint64_t addr;
+ } PSW;
  
- #define ELF_MACHINE_UNAME "S390X"
-@@ -383,6 +382,10 @@ static inline int cpu_mmu_index(CPUS390XState *env, bool ifetch)
- #endif
- }
+-struct CPUArchState {
++typedef struct CPUArchState {
+     uint64_t regs[16];     /* GP registers */
+     /*
+      * The floating point registers are part of the vector registers.
+@@ -157,7 +157,7 @@ struct CPUArchState {
+     /* currently processed sigp order */
+     uint8_t sigp_order;
  
-+#ifdef CONFIG_TCG
-+
-+#include "tcg/tcg_s390x.h"
-+
- static inline void cpu_get_tb_cpu_state(CPUS390XState *env, vaddr *pc,
-                                         uint64_t *cs_base, uint32_t *flags)
+-};
++} CPUS390XState;
+ 
+ static inline uint64_t *get_freg(CPUS390XState *cs, int nr)
  {
-@@ -405,6 +408,8 @@ static inline void cpu_get_tb_cpu_state(CPUS390XState *env, vaddr *pc,
-     }
- }
- 
-+#endif /* CONFIG_TCG */
-+
- /* PER bits from control register 9 */
- #define PER_CR9_EVENT_BRANCH           0x80000000
- #define PER_CR9_EVENT_IFETCH           0x40000000
 -- 
 2.41.0
 
