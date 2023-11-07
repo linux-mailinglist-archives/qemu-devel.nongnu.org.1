@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC7FC7E48AB
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:49:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 460757E489E
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:48:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0R6C-0004Q0-99; Tue, 07 Nov 2023 13:46:53 -0500
+	id 1r0R6G-0004WM-Lk; Tue, 07 Nov 2023 13:46:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5j-0003vc-7y
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:23 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5p-00041Z-A1
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5h-0001Va-Dz
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:22 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5m-0001WW-V7
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699382779;
+ s=mimecast20190719; t=1699382783;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=INYB7n+QawKoYeQfVvQsSGeZKTEYgzBISam7H2frffc=;
- b=VQBzcN9zJTPCqy9pKAWsLuokV/ebCHdMl3p6J/f9+zvjhqNUbBw3tndnYh+KpEkSum0uuL
- QAMbWNYUYNmIMR9UzSmy9ITz1pQvGuu2vYus4NF9wXp+CMtXm07qS/vXbyKkfjdJgbNoWO
- 1qm0+PJqdxjIExChKKB6ncOFfMyoqc4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-vM39sbkrNi2sUA0vfhb2Tg-1; Tue,
- 07 Nov 2023 13:46:18 -0500
-X-MC-Unique: vM39sbkrNi2sUA0vfhb2Tg-1
+ bh=qA6LD5FvtIcm4HXAg7hKc9KfBeIebVmoNokBPYIOAZw=;
+ b=HcuzCufm5+ExQAWjmnHnF/oPWkpaTB8KYVArlh3Q3lk4ERi78xWp+Q93mC3l+y+Qife/xe
+ VOIwLWTzwupxRdicYtqaP6hNhYF7sthFF4mO0q75mkcRW0tIUz/FpKN5kKUnFX7e6Dz2Xr
+ EUatwIjCajOUG9lI3EB+pFL6bOKGD9g=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-41-9Iqsv_JAP9azlHBbgzYUhQ-1; Tue, 07 Nov 2023 13:46:19 -0500
+X-MC-Unique: 9Iqsv_JAP9azlHBbgzYUhQ-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 515433C1CC27
- for <qemu-devel@nongnu.org>; Tue,  7 Nov 2023 18:46:18 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 082B2185A788
+ for <qemu-devel@nongnu.org>; Tue,  7 Nov 2023 18:46:19 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.197])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D1173C1290F;
- Tue,  7 Nov 2023 18:46:17 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 87799C1290F;
+ Tue,  7 Nov 2023 18:46:18 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com
-Subject: [PULL 14/25] block: Inline bdrv_set_backing_noperm()
-Date: Tue,  7 Nov 2023 19:45:54 +0100
-Message-ID: <20231107184605.236540-15-kwolf@redhat.com>
+Subject: [PULL 15/25] block: Mark bdrv_replace_node_common() GRAPH_WRLOCK
+Date: Tue,  7 Nov 2023 19:45:55 +0100
+Message-ID: <20231107184605.236540-16-kwolf@redhat.com>
 In-Reply-To: <20231107184605.236540-1-kwolf@redhat.com>
 References: <20231107184605.236540-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -77,50 +77,168 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's only a single line and has a single caller. Inlining makes things
-a bit easier to follow.
+Instead of taking the writer lock internally, require callers to already
+hold it when calling bdrv_replace_node_common(). Basically everthing in
+the function needs the lock and its callers may already want to hold the
+graph lock and so wouldn't be able to call functions that take it
+internally.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20231027155333.420094-15-kwolf@redhat.com>
+Message-ID: <20231027155333.420094-16-kwolf@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block.c | 14 +-------------
- 1 file changed, 1 insertion(+), 13 deletions(-)
+ block.c | 68 ++++++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 43 insertions(+), 25 deletions(-)
 
 diff --git a/block.c b/block.c
-index d79a6f41f9..dc43e36f69 100644
+index dc43e36f69..c7409cf658 100644
 --- a/block.c
 +++ b/block.c
-@@ -3532,19 +3532,7 @@ out:
+@@ -5412,6 +5412,9 @@ bdrv_replace_node_noperm(BlockDriverState *from,
+ }
+ 
+ /*
++ * Switch all parents of @from to point to @to instead. @from and @to must be in
++ * the same AioContext and both must be drained.
++ *
+  * With auto_skip=true bdrv_replace_node_common skips updating from parents
+  * if it creates a parent-child relation loop or if parent is block-job.
   *
-  * If a backing child is already present (i.e. we're detaching a node), that
-  * child node must be drained.
-- *
-- * After calling this function, the transaction @tran may only be completed
-- * while holding a writer lock for the graph.
+@@ -5421,10 +5424,9 @@ bdrv_replace_node_noperm(BlockDriverState *from,
+  * With @detach_subchain=true @to must be in a backing chain of @from. In this
+  * case backing link of the cow-parent of @to is removed.
   */
--static int GRAPH_WRLOCK
--bdrv_set_backing_noperm(BlockDriverState *bs,
--                        BlockDriverState *backing_hd,
--                        Transaction *tran, Error **errp)
--{
--    GLOBAL_STATE_CODE();
--    return bdrv_set_file_or_backing_noperm(bs, backing_hd, true, tran, errp);
--}
+-static int bdrv_replace_node_common(BlockDriverState *from,
+-                                    BlockDriverState *to,
+-                                    bool auto_skip, bool detach_subchain,
+-                                    Error **errp)
++static int GRAPH_WRLOCK
++bdrv_replace_node_common(BlockDriverState *from, BlockDriverState *to,
++                         bool auto_skip, bool detach_subchain, Error **errp)
+ {
+     Transaction *tran = tran_new();
+     g_autoptr(GSList) refresh_list = NULL;
+@@ -5433,16 +5435,9 @@ static int bdrv_replace_node_common(BlockDriverState *from,
+ 
+     GLOBAL_STATE_CODE();
+ 
+-    /* Make sure that @from doesn't go away until we have successfully attached
+-     * all of its parents to @to. */
+-    bdrv_ref(from);
 -
- int bdrv_set_backing_hd_drained(BlockDriverState *bs,
-                                 BlockDriverState *backing_hd,
-                                 Error **errp)
-@@ -3558,7 +3546,7 @@ int bdrv_set_backing_hd_drained(BlockDriverState *bs,
-         assert(bs->backing->bs->quiesce_counter > 0);
+-    assert(qemu_get_current_aio_context() == qemu_get_aio_context());
++    assert(from->quiesce_counter);
++    assert(to->quiesce_counter);
+     assert(bdrv_get_aio_context(from) == bdrv_get_aio_context(to));
+-    bdrv_drained_begin(from);
+-    bdrv_drained_begin(to);
+-
+-    bdrv_graph_wrlock(to);
+ 
+     if (detach_subchain) {
+         assert(bdrv_chain_contains(from, to));
+@@ -5483,33 +5478,51 @@ static int bdrv_replace_node_common(BlockDriverState *from,
+ 
+ out:
+     tran_finalize(tran, ret);
+-    bdrv_graph_wrunlock();
+-
+-    bdrv_drained_end(to);
+-    bdrv_drained_end(from);
+-    bdrv_unref(from);
+-
+     return ret;
+ }
+ 
+ int bdrv_replace_node(BlockDriverState *from, BlockDriverState *to,
+                       Error **errp)
+ {
++    int ret;
++
+     GLOBAL_STATE_CODE();
+ 
+-    return bdrv_replace_node_common(from, to, true, false, errp);
++    /* Make sure that @from doesn't go away until we have successfully attached
++     * all of its parents to @to. */
++    bdrv_ref(from);
++    bdrv_drained_begin(from);
++    bdrv_drained_begin(to);
++    bdrv_graph_wrlock(to);
++
++    ret = bdrv_replace_node_common(from, to, true, false, errp);
++
++    bdrv_graph_wrunlock();
++    bdrv_drained_end(to);
++    bdrv_drained_end(from);
++    bdrv_unref(from);
++
++    return ret;
+ }
+ 
+ int bdrv_drop_filter(BlockDriverState *bs, Error **errp)
+ {
+     BlockDriverState *child_bs;
++    int ret;
+ 
+     GLOBAL_STATE_CODE();
++
+     bdrv_graph_rdlock_main_loop();
+     child_bs = bdrv_filter_or_cow_bs(bs);
+     bdrv_graph_rdunlock_main_loop();
+ 
+-    return bdrv_replace_node_common(bs, child_bs, true, true, errp);
++    bdrv_drained_begin(child_bs);
++    bdrv_graph_wrlock(bs);
++    ret = bdrv_replace_node_common(bs, child_bs, true, true, errp);
++    bdrv_graph_wrunlock();
++    bdrv_drained_end(child_bs);
++
++    return ret;
+ }
+ 
+ /*
+@@ -5957,15 +5970,15 @@ int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
+ 
+     bdrv_ref(top);
+     bdrv_drained_begin(base);
+-    bdrv_graph_rdlock_main_loop();
++    bdrv_graph_wrlock(base);
+ 
+     if (!top->drv || !base->drv) {
+-        goto exit;
++        goto exit_wrlock;
      }
  
--    ret = bdrv_set_backing_noperm(bs, backing_hd, tran, errp);
-+    ret = bdrv_set_file_or_backing_noperm(bs, backing_hd, true, tran, errp);
-     if (ret < 0) {
-         goto out;
+     /* Make sure that base is in the backing chain of top */
+     if (!bdrv_chain_contains(top, base)) {
+-        goto exit;
++        goto exit_wrlock;
      }
+ 
+     /* If 'base' recursively inherits from 'top' then we should set
+@@ -5997,6 +6010,8 @@ int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
+      * That's a FIXME.
+      */
+     bdrv_replace_node_common(top, base, false, false, &local_err);
++    bdrv_graph_wrunlock();
++
+     if (local_err) {
+         error_report_err(local_err);
+         goto exit;
+@@ -6029,8 +6044,11 @@ int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
+     }
+ 
+     ret = 0;
++    goto exit;
++
++exit_wrlock:
++    bdrv_graph_wrunlock();
+ exit:
+-    bdrv_graph_rdunlock_main_loop();
+     bdrv_drained_end(base);
+     bdrv_unref(top);
+     return ret;
 -- 
 2.41.0
 
