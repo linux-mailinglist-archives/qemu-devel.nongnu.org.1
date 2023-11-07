@@ -2,59 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61527E3712
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 10:00:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 819937E371A
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 10:02:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Hvf-0001Of-L9; Tue, 07 Nov 2023 03:59:23 -0500
+	id 1r0Hy2-0002bi-NT; Tue, 07 Nov 2023 04:01:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1r0HvU-0001Eh-PU; Tue, 07 Nov 2023 03:59:13 -0500
-Received: from forwardcorp1c.mail.yandex.net
- ([2a02:6b8:c03:500:1:45:d181:df01])
+ id 1r0Hxz-0002bZ-Vp
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:01:48 -0500
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1r0HvS-0004mZ-OQ; Tue, 07 Nov 2023 03:59:12 -0500
-Received: from mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:1bac:0:640:75a2:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 3E40F6269C;
- Tue,  7 Nov 2023 11:59:03 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b676::1:19])
- by mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id jwXmps4OkmI0-OLoDqTK4; Tue, 07 Nov 2023 11:59:02 +0300
+ id 1r0Hxu-0005Ig-SK
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:01:47 -0500
+Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c14:750a:0:640:e46:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 0ED7362183;
+ Tue,  7 Nov 2023 12:01:40 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b676::1:19] (unknown
+ [2a02:6b8:b081:b676::1:19])
+ by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id c1YWRB5Of0U0-fwTVRUNC; Tue, 07 Nov 2023 12:01:39 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1699347542;
- bh=RbU2AhEIYoSsIpzzSHTfw0S8X3Bh//VFQqxawl/4l4k=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=fO2lUEM4EqxG6yPy3BRVSdlIJW5cbGGEwqQoeZKm8zpbqRhbqN8Ig+NbbsQ41PHfK
- cNWYYx96OUfCUGPzGj4MG2IrKjTj+fKpE7BzBYu3lv6Ho3tYFMeC9zmkNQWPqEcfK1
- mQ7YasXU803yyCfFEiNncUQCCw5RCpKG6lR1Jg4s=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net;
+ s=default; t=1699347699;
+ bh=vrnt15OQ81+y5Cv/Gx3WedGuA5Rm4RONHM0H9joV9UI=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=naqoC2v75PcCJWxqmklS1RWdVNM1hf4vLxrenPw56S1NTQ12pDArjHPde8ntjFQG9
+ gBuGKoFh3IEvuaRvCS8SKTyDLS8tk8HU6StCFALbaSvaToo9UYT3WJCqLksEN/tOMA
+ 7dbYEe0KHqOe/rVHDZfEimFtX5f7LuydKSMOPx3c=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: qemu-devel@nongnu.org
-Cc: dave@treblig.org, armbru@redhat.com, vsementsov@yandex-team.ru,
- yc-core@yandex-team.ru, zeil@yandex-team.ru, xeor@yandex-team.ru,
- kwolf@redhat.com, hreitz@redhat.com, qemu-block@nongnu.org
-Subject: [PATCH] block-backend: per-device throttling of BLOCK_IO_ERROR reports
-Date: Tue,  7 Nov 2023 11:58:42 +0300
-Message-Id: <20231107085842.602188-1-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+Message-ID: <f310bbbb-445e-4043-870e-16d5de3f9c2a@yandex-team.ru>
+Date: Tue, 7 Nov 2023 12:01:38 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] system/qdev-monitor: move drain_call_rcu call under if
+ (!dev) in qmp_device_add()
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+ Dmitrii Gavrilov <ds-gavr@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, berrange@redhat.com,
+ eduardo@habkost.net, mlevitsk@redhat.com, yc-core@yandex-team.ru
+References: <20231103105602.90475-1-ds-gavr@yandex-team.ru>
+ <20231107023155-mutt-send-email-mst@kernel.org>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20231107023155-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,53 +79,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Leonid Kaplan <xeor@yandex-team.ru>
+On 07.11.23 10:32, Michael S. Tsirkin wrote:
+> On Fri, Nov 03, 2023 at 01:56:02PM +0300, Dmitrii Gavrilov wrote:
+>> Original goal of addition of drain_call_rcu to qmp_device_add was to cover
+>> the failure case of qdev_device_add. It seems call of drain_call_rcu was
+>> misplaced in 7bed89958bfbf40df what led to waiting for pending RCU callbacks
+>> under happy path too. What led to overall performance degradation of
+>> qmp_device_add.
+>>
+>> In this patch call of drain_call_rcu moved under handling of failure of
+>> qdev_device_add.
+> 
+> 
+> Suggested-by: Michael S. Tsirkin <mst@redhat.com>
 
-BLOCK_IO_ERROR events comes from guest, so we must throttle them.
-We still want per-device throttling, so let's use device id as a key.
+Right, sorry for missing that
 
-Signed-off-by: Leonid Kaplan <xeor@yandex-team.ru>
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- monitor/monitor.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index 01ede1babd..ad0243e9d7 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -309,6 +309,7 @@ int error_printf_unless_qmp(const char *fmt, ...)
- static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
-     /* Limit guest-triggerable events to 1 per second */
-     [QAPI_EVENT_RTC_CHANGE]        = { 1000 * SCALE_MS },
-+    [QAPI_EVENT_BLOCK_IO_ERROR]    = { 1000 * SCALE_MS },
-     [QAPI_EVENT_WATCHDOG]          = { 1000 * SCALE_MS },
-     [QAPI_EVENT_BALLOON_CHANGE]    = { 1000 * SCALE_MS },
-     [QAPI_EVENT_QUORUM_REPORT_BAD] = { 1000 * SCALE_MS },
-@@ -498,6 +499,10 @@ static unsigned int qapi_event_throttle_hash(const void *key)
-         hash += g_str_hash(qdict_get_str(evstate->data, "qom-path"));
-     }
- 
-+    if (evstate->event == QAPI_EVENT_BLOCK_IO_ERROR) {
-+        hash += g_str_hash(qdict_get_str(evstate->data, "device"));
-+    }
-+
-     return hash;
- }
- 
-@@ -525,6 +530,11 @@ static gboolean qapi_event_throttle_equal(const void *a, const void *b)
-                        qdict_get_str(evb->data, "qom-path"));
-     }
- 
-+    if (eva->event == QAPI_EVENT_BLOCK_IO_ERROR) {
-+        return !strcmp(qdict_get_str(eva->data, "device"),
-+                       qdict_get_str(evb->data, "device"));
-+    }
-+
-     return TRUE;
- }
- 
+Thanks!
+
+> 
+> Also:
+> 
+> Fixes: 7bed89958b ("device_core: use drain_call_rcu in in qmp_device_add")
+> Cc: "Maxim Levitsky" <mlevitsk@redhat.com>
+> 
+> 
+>>
+>> Signed-off-by: Dmitrii Gavrilov <ds-gavr@yandex-team.ru>
+>> ---
+>>   system/qdev-monitor.c | 23 +++++++++++------------
+>>   1 file changed, 11 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+>> index 1b8005a..dc7b02d 100644
+>> --- a/system/qdev-monitor.c
+>> +++ b/system/qdev-monitor.c
+>> @@ -856,19 +856,18 @@ void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
+>>           return;
+>>       }
+>>       dev = qdev_device_add(opts, errp);
+>> -
+>> -    /*
+>> -     * Drain all pending RCU callbacks. This is done because
+>> -     * some bus related operations can delay a device removal
+>> -     * (in this case this can happen if device is added and then
+>> -     * removed due to a configuration error)
+>> -     * to a RCU callback, but user might expect that this interface
+>> -     * will finish its job completely once qmp command returns result
+>> -     * to the user
+>> -     */
+>> -    drain_call_rcu();
+>> -
+>>       if (!dev) {
+>> +        /*
+>> +         * Drain all pending RCU callbacks. This is done because
+>> +         * some bus related operations can delay a device removal
+>> +         * (in this case this can happen if device is added and then
+>> +         * removed due to a configuration error)
+>> +         * to a RCU callback, but user might expect that this interface
+>> +         * will finish its job completely once qmp command returns result
+>> +         * to the user
+>> +         */
+>> +        drain_call_rcu();
+>> +
+>>           qemu_opts_del(opts);
+>>           return;
+>>       }
+>> -- 
+>> 2.34.1
+>>
+>>
+> 
+
 -- 
-2.34.1
+Best regards,
+Vladimir
 
 
