@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E17DF7E48F8
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 20:09:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 867C67E48FC
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 20:09:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0RRF-0004Xx-O3; Tue, 07 Nov 2023 14:08:37 -0500
+	id 1r0RRh-00053h-LA; Tue, 07 Nov 2023 14:09:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r0RRA-0004XG-Uv
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 14:08:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r0RR9-0005pa-EI
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 14:08:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699384110;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VXuO0i8SoHDIuFTm9Ssk29bISFNyk+++0qvyee3CbjI=;
- b=X7KL8+i6TdUQGPCKjyNJ8E4XX0U31fybnSg/wfMpfbA6a2RgurBR3XH0i+oJJTITx+3eGa
- 23sAflDgFNHHS3cK7tRWqricjgPy0a3JSqATan+wb+XUn4sXizfCS+d80EFSRUBlEhSIKY
- /I7SCPWpZ09N97oTJqqIB1j9f9vj0go=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-528-0Z2u_pGmPnWXDKYStLCJDg-1; Tue,
- 07 Nov 2023 14:08:25 -0500
-X-MC-Unique: 0Z2u_pGmPnWXDKYStLCJDg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 431732801424;
- Tue,  7 Nov 2023 19:08:25 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.62])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 02EEF25C0;
- Tue,  7 Nov 2023 19:08:23 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PULL 5/5] scripts/cpu-x86-uarch-abi.py: Fix parameter error of cmd
-Date: Tue,  7 Nov 2023 19:08:17 +0000
-Message-ID: <20231107190817.1607710-6-berrange@redhat.com>
-In-Reply-To: <20231107190817.1607710-1-berrange@redhat.com>
-References: <20231107190817.1607710-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1r0RRf-00050v-2Z
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 14:09:03 -0500
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1r0RRZ-0005vR-2W
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 14:09:02 -0500
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-9dd5879a126so679940966b.3
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 11:08:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699384134; x=1699988934; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=SUyRXGt8QSsflk1uarPFgrRI9CYeZWMNnW5Ah80VIL0=;
+ b=tKR1BaPo6F+o1xEXk6ZqyOckEmZin/AzOjY46zpNp7YLqQpzJ53+8DQi3eTWarEgFF
+ vP9113Ly4RbxNZKb3ZdZR+/c3TAhdF3/kZZoRwNgKCeAN1WwKNJBegf1SAiO4NKJh/UK
+ kK1sgXjRU2neP1jGa7u5k6ngYbGfq2BbOcIqVXPv+9GHgTA6PgMiqur5u44dku5itm97
+ EnPxE0OEjPw0rBTNJAfyBXI4yDLWA64Xfwv3T5Q9ECRIZU459nMZ6bsT3xDCLOy45QlB
+ C4OhX0krioi7lrEwjLPpAeles99DpcN5pRfr5mgr5zssd04l71R+6wCw/XqO7cu6+Pir
+ hUEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699384134; x=1699988934;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SUyRXGt8QSsflk1uarPFgrRI9CYeZWMNnW5Ah80VIL0=;
+ b=WwfK5Hlu8u+9R8tUxXcupJd6OEsS7OTVxiROE4DiNU0lFw83pcTyPX7yuyfkUzf9DK
+ QCfQ4UuwiCtd/eUL0wGUPgDDZGBER6QxyIiDTN/tCH5wdJG0V47alMvz1iNtSXWjG39M
+ ADTO1S3ngsakUIPJFjODLYJ6y43galKegd2VpLlXbATYjA0jhf+m3EoQxUdqMLk7oyQW
+ 4NhF2rBQTC8a90vlQOTZIpUB6roCXfbBYEMzhWYGXFwtV67Aq7l/3vd1Am5zH2UFZLMX
+ qr9QNUiD0IF5X3nOHO5Xa5qqDo3ifIsxScsZJ+A1+sRX+AXupIlVnup+JjWWVL4Llqin
+ jaqw==
+X-Gm-Message-State: AOJu0YzwSJky1FFDlRD99BG3VAVFTxjO5cEy9uVsObT3e3dKX4W+DxZr
+ /PcSYAgfR6H0JVjgu0/urbP7ofXICFAeuR4xKOiu6A==
+X-Google-Smtp-Source: AGHT+IHlrHlXEa6wFWF3DB/lBqdv8jyE+nyyFZuiRuHso9j7gd/DgXCxoOC4xQKN1ye+gwylsabO//73zpk35DIXrnY=
+X-Received: by 2002:a17:907:720b:b0:9b2:fa55:5794 with SMTP id
+ dr11-20020a170907720b00b009b2fa555794mr16371209ejc.58.1699384134142; Tue, 07
+ Nov 2023 11:08:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20231107185034.6434-1-vr_qemu@t-online.de>
+In-Reply-To: <20231107185034.6434-1-vr_qemu@t-online.de>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Tue, 7 Nov 2023 21:08:38 +0200
+Message-ID: <CAAjaMXbhhd56vea7=EPeqr2FdUzUfVwvR=S-WNwGRBpgL5_B=A@mail.gmail.com>
+Subject: Re: [PATCH] hw/audio/virtio-snd-pci: fix the PCI class code
+To: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-devel@nongnu.org, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x62d.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,51 +87,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+On Tue, 7 Nov 2023 at 20:50, Volker R=C3=BCmelin <vr_qemu@t-online.de> wrot=
+e:
+>
+> The virtio sound device is currently an unclassified PCI device.
+>
+> ~> sudo lspci -s '00:02.0' -v -nn | head -n 2
+> 00:02.0 Unclassified device [00ff]:
+>  Red Hat, Inc. Device [1af4:1059] (rev 01)
+>         Subsystem: Red Hat, Inc. Device [1af4:1100]
+>
+> Set the correct PCI class code to change the device to a
+> multimedia audio controller.
+>
+> ~> sudo lspci -s '00:02.0' -v -nn | head -n 2
+> 00:02.0 Multimedia audio controller [0401]:
+>  Red Hat, Inc. Device [1af4:1059] (rev 01)
+>         Subsystem: Red Hat, Inc. Device [1af4:1100]
+>
+> Signed-off-by: Volker R=C3=BCmelin <vr_qemu@t-online.de>
+> ---
 
-When run this script, there's the error:
-
-python3 scripts/cpu-x86-uarch-abi.py /tmp/qmp
-Traceback (most recent call last):
-  File "/path-to-qemu/qemu/scripts/cpu-x86-uarch-abi.py", line 96, in <module>
-    cpu = shell.cmd("query-cpu-model-expansion",
-TypeError: QEMUMonitorProtocol.cmd() takes 2 positional arguments but 3 were given
-
-Commit 7f521b023bc28 ("scripts/cpu-x86-uarch-abi.py: use .command()
-instead of .cmd()") converts the the original .cmd() to .command()
-(which was later renamed to "cmd" to replace the original one).
-
-But the new .cmd() only accepts typing.Mapping as the parameter instead
-of typing.Dict (see _qmp.execute()).
-
-Change the paremeters of "query-cpu-model-expansion" to typing.Mapping
-format to fix this error.
-
-Fixes: 7f521b023bc28 ("scripts/cpu-x86-uarch-abi.py: use .command() instead of .cmd()")
-
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- scripts/cpu-x86-uarch-abi.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/scripts/cpu-x86-uarch-abi.py b/scripts/cpu-x86-uarch-abi.py
-index f6baeeff24..052ddd7514 100644
---- a/scripts/cpu-x86-uarch-abi.py
-+++ b/scripts/cpu-x86-uarch-abi.py
-@@ -94,8 +94,8 @@
- 
- for name in sorted(names):
-     cpu = shell.cmd("query-cpu-model-expansion",
--                    { "type": "static",
--                      "model": { "name": name }})
-+                    type="static",
-+                    model={ "name": name })
- 
-     got = {}
-     for (feature, present) in cpu["model"]["props"].items():
--- 
-2.41.0
-
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
