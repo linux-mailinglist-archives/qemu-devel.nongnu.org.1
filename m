@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954AD7E38A5
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:16:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E60E37E3904
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:24:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0J5e-000514-Pc; Tue, 07 Nov 2023 05:13:49 -0500
+	id 1r0J5T-0004X7-FW; Tue, 07 Nov 2023 05:13:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J5Y-0004un-6b
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:13:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J5R-0004Wb-M6
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:13:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J5W-0002xj-EL
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:13:39 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J5O-0002ww-S5
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:13:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699352017;
+ s=mimecast20190719; t=1699352010;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=9Psz1BOwTQBVnWrBi4/EaLOXmxV87kpmQ8siLKG1GMM=;
- b=BibaiojKv4V8vCwJsDhdZJ9VPCPt7K9Xf9VS08H1JVLHgrdtsZnk6/82OH6ep5o9htr9F7
- NBad8aF7XW1ZqfpaWplYl+rcpxRd1m1LZzLkQMp0cNmCG39QhFeirvxAaJmYvwfZt4hPPS
- 8/YLCsxN8vDfSL4ARkm1/6H85SzyDcM=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=B4NuGQZaHq8Q+4F5F83IqV9aNTAYT6ys0MEYQ1OXl4M=;
+ b=USqjpJRyaYK/idNRuvNUfwwQilDRd+BKmNLkRy+qLBdkXgJ6IzfwGgac6w9AdwBrajefVz
+ ccxi+tJCnGDd7iLRvqFzdfTA0lWDqMM/0OwwqYV0HDl1wKBXcWejuvFQ/bDFFxlAWPPjZ/
+ wO1r51NHBXnnyoTwS7Dfqu1gISRSH+o=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-70-dOP3ND8tNJeyhnaVNLL9pg-1; Tue, 07 Nov 2023 05:13:19 -0500
-X-MC-Unique: dOP3ND8tNJeyhnaVNLL9pg-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2c6f3cd892cso55338661fa.3
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:13:19 -0800 (PST)
+ us-mta-97-tP1BeqRVPT6GmjOvrqSX7w-1; Tue, 07 Nov 2023 05:13:24 -0500
+X-MC-Unique: tP1BeqRVPT6GmjOvrqSX7w-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-408695c377dso34611815e9.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:13:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699351997; x=1699956797;
+ d=1e100.net; s=20230601; t=1699352002; x=1699956802;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9Psz1BOwTQBVnWrBi4/EaLOXmxV87kpmQ8siLKG1GMM=;
- b=Bl/mN6Sm7vqPyW+yRaeAT/VocPojrpXzEYWRvJr6a0s3LZm/uuz/d0kyvEDP05ubEm
- PybylJHQqfiwU+lDV7Z05LoIFldZRXr8++K2Rzw2x4kCAvwmXmv+elvJwYZiK9ei+U0f
- oCuP0pM3PLplYtypH2LcQ//+RtGtOsJiTdA337wZKJ+oxoI2zcAB9lk2+lIByitAYxfk
- 2sBOGB85nNW2YZUDlj3v04r02xtYW877/61iNewe/JIlOzxwQ/ijMws1yTZ1o6jz1zP3
- kIll6dtUSayyRqYBBydf9nw3u7o3HnjBWG+1t7+26C5xnUFOAdtcB+QGNOZ7H0iH8w78
- 7VpQ==
-X-Gm-Message-State: AOJu0YyuWZzVx2IyPegKyC8ZcW1UWja11k0OKIw0N0/wv3jlHjY1hn07
- WrMJGWYP7WjlW5thKQj8lianguTjtDKSbeOxqOxAgQ+koiUfrKfHsGDvC6byn2oI1uYcgrdEtNK
- fN/hOzSyX9wuZ7ktHVd2nLXKIP2c5nP5rlRC+FcT2VY9lKRBk01czHMewQL8Rur1t+49E
-X-Received: by 2002:a2e:a9a7:0:b0:2bc:db70:b563 with SMTP id
- x39-20020a2ea9a7000000b002bcdb70b563mr30360221ljq.32.1699351997624; 
- Tue, 07 Nov 2023 02:13:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEaUpMu/REQ9YWQSE/IZlcGogyKM2FPtenubdGQLdI/3oj9Z/SHn+vDI+vIbRgbkJpg96oSOA==
-X-Received: by 2002:a2e:a9a7:0:b0:2bc:db70:b563 with SMTP id
- x39-20020a2ea9a7000000b002bcdb70b563mr30360196ljq.32.1699351997243; 
- Tue, 07 Nov 2023 02:13:17 -0800 (PST)
+ bh=B4NuGQZaHq8Q+4F5F83IqV9aNTAYT6ys0MEYQ1OXl4M=;
+ b=B0aoRJH3Pjzj0/X8t/WtEVsYxqofFzo2xZiwQBcJV5awY/JD1OI5HLSKUfqEF+loRz
+ ZYimpilVNKtIbjkeirRQf7jPvKiKr50RnDXVM04U5MSgVqsuBiuKcdL1Hk5f4Kzo8OHn
+ Ao2ArkyPOy8B1u8rElMEremTKBjDJrjJY8691SPHiZnTAX67bN5yZrarJ6J6MpcUYAZ5
+ Rymkke2oWN7GlXksS1DYgJvtYtD+uDnv8t/gGGyRsnR0RNllsKpvljNnTZ00VZYg0EdM
+ 7zhyKt3bxrjLid/4uEdfn48lqRgzXFEV7WbLZRAhzGzXUtz/vljUWMH7xpAuy6K7yI7T
+ o/sA==
+X-Gm-Message-State: AOJu0Yxn7CK0Q3A/+Ck+1CjpiRHuUxb3k0h4TxDhyCXAuSl9m+GkBy7z
+ EK32yv61RRBgd3jMxy0vbqPXd8BsBgKfoYykPkz7YD6BTYlZk08hbDPbCoEzkxhrDxfgOFgZzXy
+ hX8FCfI9LamG/GiyfrBSif/hhHgxRfL74IwV9PSdsggq+4UsR8SldX0wbX8BQVgST/lFa
+X-Received: by 2002:a05:600c:3c9a:b0:3fe:f74c:b4f6 with SMTP id
+ bg26-20020a05600c3c9a00b003fef74cb4f6mr1906041wmb.17.1699352002310; 
+ Tue, 07 Nov 2023 02:13:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGRuD2sj++FQEJS5RVrslYj7ljlZbcBjrmcmDMzKCI2UT/VYsYTeHwnmWbC/KyF8jWyh0SU5g==
+X-Received: by 2002:a05:600c:3c9a:b0:3fe:f74c:b4f6 with SMTP id
+ bg26-20020a05600c3c9a00b003fef74cb4f6mr1906027wmb.17.1699352001963; 
+ Tue, 07 Nov 2023 02:13:21 -0800 (PST)
 Received: from redhat.com ([2.55.5.143]) by smtp.gmail.com with ESMTPSA id
- u17-20020a05600c19d100b00405c7591b09sm15290202wmq.35.2023.11.07.02.13.15
+ k25-20020a05600c1c9900b004067e905f44sm15394340wms.9.2023.11.07.02.13.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 02:13:16 -0800 (PST)
-Date: Tue, 7 Nov 2023 05:13:13 -0500
+ Tue, 07 Nov 2023 02:13:21 -0800 (PST)
+Date: Tue, 7 Nov 2023 05:13:18 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 51/63] hw/cxl/mbox: Add Information and Status / Identify
- command
-Message-ID: <6cf416c176f11bc093fcc1818d6c9a95136f4c59.1699351720.git.mst@redhat.com>
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Fan Ni <fan.ni@samsung.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 52/63] hw/cxl/mbox: Add Physical Switch Identify command.
+Message-ID: <3314efd276ada18cc0b8beb70b8943f8deb872b7.1699351720.git.mst@redhat.com>
 References: <cover.1699351720.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -74,14 +74,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1699351720.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,105 +101,145 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Add this command that is only available via out of band CCIs. It replicates
-information that can be discovered inband via PCI config space.
+Enable it for the switch CCI.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-Message-Id: <20231023160806.13206-8-Jonathan.Cameron@huawei.com>
+Message-Id: <20231023160806.13206-9-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/cxl/cxl-mailbox-utils.c | 55 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ include/hw/cxl/cxl.h           |  6 ++++
+ hw/cxl/cxl-mailbox-utils.c     | 65 ++++++++++++++++++++++++++++++++++
+ hw/pci-bridge/cxl_downstream.c |  4 +--
+ 3 files changed, 72 insertions(+), 3 deletions(-)
 
+diff --git a/include/hw/cxl/cxl.h b/include/hw/cxl/cxl.h
+index 4944725849..75e47b6864 100644
+--- a/include/hw/cxl/cxl.h
++++ b/include/hw/cxl/cxl.h
+@@ -61,4 +61,10 @@ OBJECT_DECLARE_SIMPLE_TYPE(CXLHost, PXB_CXL_HOST)
+ typedef struct CXLUpstreamPort CXLUpstreamPort;
+ DECLARE_INSTANCE_CHECKER(CXLUpstreamPort, CXL_USP, TYPE_CXL_USP)
+ CXLComponentState *cxl_usp_to_cstate(CXLUpstreamPort *usp);
++
++#define TYPE_CXL_DSP "cxl-downstream"
++
++typedef struct CXLDownstreamPort CXLDownstreamPort;
++DECLARE_INSTANCE_CHECKER(CXLDownstreamPort, CXL_DSP, TYPE_CXL_DSP)
++
+ #endif
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 28ea02fcbe..6741698ee7 100644
+index 6741698ee7..6ada49d37c 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -11,6 +11,7 @@
- #include "hw/cxl/cxl.h"
- #include "hw/cxl/cxl_events.h"
- #include "hw/pci/pci.h"
-+#include "hw/pci-bridge/cxl_upstream_port.h"
- #include "qemu/cutils.h"
- #include "qemu/log.h"
- #include "qemu/units.h"
-@@ -44,6 +45,8 @@
-  */
+@@ -70,6 +70,8 @@ enum {
+         #define GET_POISON_LIST        0x0
+         #define INJECT_POISON          0x1
+         #define CLEAR_POISON           0x2
++    PHYSICAL_SWITCH = 0x51,
++        #define IDENTIFY_SWITCH_DEVICE      0x0
+ };
  
- enum {
-+    INFOSTAT    = 0x00,
-+        #define IS_IDENTIFY   0x1
-     EVENTS      = 0x01,
-         #define GET_RECORDS   0x0
-         #define CLEAR_RECORDS   0x1
-@@ -203,6 +206,57 @@ static CXLRetCode cmd_events_set_interrupt_policy(const struct cxl_cmd *cmd,
+ 
+@@ -257,6 +259,67 @@ static CXLRetCode cmd_infostat_identify(const struct cxl_cmd *cmd,
      return CXL_MBOX_SUCCESS;
  }
  
-+/* CXL r3.0 section 8.2.9.1.1: Identify (Opcode 0001h) */
-+static CXLRetCode cmd_infostat_identify(const struct cxl_cmd *cmd,
-+                                        uint8_t *payload_in,
-+                                        size_t len_in,
-+                                        uint8_t *payload_out,
-+                                        size_t *len_out,
-+                                        CXLCCI *cci)
++static void cxl_set_dsp_active_bm(PCIBus *b, PCIDevice *d,
++                                  void *private)
 +{
-+    PCIDeviceClass *class = PCI_DEVICE_GET_CLASS(cci->d);
-+    struct {
-+        uint16_t pcie_vid;
-+        uint16_t pcie_did;
-+        uint16_t pcie_subsys_vid;
-+        uint16_t pcie_subsys_id;
-+        uint64_t sn;
-+    uint8_t max_message_size;
-+        uint8_t component_type;
-+    } QEMU_PACKED *is_identify;
-+    QEMU_BUILD_BUG_ON(sizeof(*is_identify) != 18);
-+
-+    is_identify = (void *)payload_out;
-+    memset(is_identify, 0, sizeof(*is_identify));
-+    is_identify->pcie_vid = class->vendor_id;
-+    is_identify->pcie_did = class->device_id;
-+    if (object_dynamic_cast(OBJECT(cci->d), TYPE_CXL_USP)) {
-+        is_identify->sn = CXL_USP(cci->d)->sn;
-+        /* Subsystem info not defined for a USP */
-+        is_identify->pcie_subsys_vid = 0;
-+        is_identify->pcie_subsys_id = 0;
-+        is_identify->component_type = 0x0; /* Switch */
-+    } else if (object_dynamic_cast(OBJECT(cci->d), TYPE_CXL_TYPE3)) {
-+        PCIDevice *pci_dev = PCI_DEVICE(cci->d);
-+
-+        is_identify->sn = CXL_TYPE3(cci->d)->sn;
-+        /*
-+         * We can't always use class->subsystem_vendor_id as
-+         * it is not set if the defaults are used.
-+         */
-+        is_identify->pcie_subsys_vid =
-+            pci_get_word(pci_dev->config + PCI_SUBSYSTEM_VENDOR_ID);
-+        is_identify->pcie_subsys_id =
-+            pci_get_word(pci_dev->config + PCI_SUBSYSTEM_ID);
-+        is_identify->component_type = 0x3; /* Type 3 */
++    uint8_t *bm = private;
++    if (object_dynamic_cast(OBJECT(d), TYPE_CXL_DSP)) {
++        uint8_t port = PCIE_PORT(d)->port;
++        bm[port / 8] |= 1 << (port % 8);
 +    }
-+
-+    /* TODO: Allow this to vary across different CCIs */
-+    is_identify->max_message_size = 9; /* 512 bytes - MCTP_CXL_MAILBOX_BYTES */
-+    *len_out = sizeof(*is_identify);
-+    return CXL_MBOX_SUCCESS;
 +}
 +
++/* CXL r3 8.2.9.1.1 */
++static CXLRetCode cmd_identify_switch_device(const struct cxl_cmd *cmd,
++                                             uint8_t *payload_in,
++                                             size_t len_in,
++                                             uint8_t *payload_out,
++                                             size_t *len_out,
++                                             CXLCCI *cci)
++{
++    PCIEPort *usp = PCIE_PORT(cci->d);
++    PCIBus *bus = &PCI_BRIDGE(cci->d)->sec_bus;
++    int num_phys_ports = pcie_count_ds_ports(bus);
++
++    struct cxl_fmapi_ident_switch_dev_resp_pl {
++        uint8_t ingress_port_id;
++        uint8_t rsvd;
++        uint8_t num_physical_ports;
++        uint8_t num_vcss;
++        uint8_t active_port_bitmask[0x20];
++        uint8_t active_vcs_bitmask[0x20];
++        uint16_t total_vppbs;
++        uint16_t bound_vppbs;
++        uint8_t num_hdm_decoders_per_usp;
++    } QEMU_PACKED *out;
++    QEMU_BUILD_BUG_ON(sizeof(*out) != 0x49);
++
++    out = (struct cxl_fmapi_ident_switch_dev_resp_pl *)payload_out;
++    *out = (struct cxl_fmapi_ident_switch_dev_resp_pl) {
++        .num_physical_ports = num_phys_ports + 1, /* 1 USP */
++        .num_vcss = 1, /* Not yet support multiple VCS - potentialy tricky */
++        .active_vcs_bitmask[0] = 0x1,
++        .total_vppbs = num_phys_ports + 1,
++        .bound_vppbs = num_phys_ports + 1,
++        .num_hdm_decoders_per_usp = 4,
++    };
++
++    /* Depends on the CCI type */
++    if (object_dynamic_cast(OBJECT(cci->intf), TYPE_PCIE_PORT)) {
++        out->ingress_port_id = PCIE_PORT(cci->intf)->port;
++    } else {
++        /* MCTP? */
++        out->ingress_port_id = 0;
++    }
++
++    pci_for_each_device_under_bus(bus, cxl_set_dsp_active_bm,
++                                  out->active_port_bitmask);
++    out->active_port_bitmask[usp->port / 8] |= (1 << usp->port % 8);
++
++    *len_out = sizeof(*out);
++
++    return CXL_MBOX_SUCCESS;
++}
  /* 8.2.9.2.1 */
  static CXLRetCode cmd_firmware_update_get_info(const struct cxl_cmd *cmd,
                                                 uint8_t *payload_in,
-@@ -755,6 +809,7 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
+@@ -816,6 +879,8 @@ static const struct cxl_cmd cxl_cmd_set_sw[256][256] = {
+     [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported, 0,
+                               0 },
+     [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
++    [PHYSICAL_SWITCH][IDENTIFY_SWITCH_DEVICE] = { "IDENTIFY_SWITCH_DEVICE",
++        cmd_identify_switch_device, 0, 0 },
  };
  
- static const struct cxl_cmd cxl_cmd_set_sw[256][256] = {
-+    [INFOSTAT][IS_IDENTIFY] = { "IDENTIFY", cmd_infostat_identify, 0, 0 },
-     [TIMESTAMP][GET] = { "TIMESTAMP_GET", cmd_timestamp_get, 0, 0 },
-     [TIMESTAMP][SET] = { "TIMESTAMP_SET", cmd_timestamp_set, 0,
-                          IMMEDIATE_POLICY_CHANGE },
+ int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
+diff --git a/hw/pci-bridge/cxl_downstream.c b/hw/pci-bridge/cxl_downstream.c
+index 8c0f759add..8d99e1e96d 100644
+--- a/hw/pci-bridge/cxl_downstream.c
++++ b/hw/pci-bridge/cxl_downstream.c
+@@ -13,6 +13,7 @@
+ #include "hw/pci/msi.h"
+ #include "hw/pci/pcie.h"
+ #include "hw/pci/pcie_port.h"
++#include "hw/cxl/cxl.h"
+ #include "qapi/error.h"
+ 
+ typedef struct CXLDownstreamPort {
+@@ -23,9 +24,6 @@ typedef struct CXLDownstreamPort {
+     CXLComponentState cxl_cstate;
+ } CXLDownstreamPort;
+ 
+-#define TYPE_CXL_DSP "cxl-downstream"
+-DECLARE_INSTANCE_CHECKER(CXLDownstreamPort, CXL_DSP, TYPE_CXL_DSP)
+-
+ #define CXL_DOWNSTREAM_PORT_MSI_OFFSET 0x70
+ #define CXL_DOWNSTREAM_PORT_MSI_NR_VECTOR 1
+ #define CXL_DOWNSTREAM_PORT_EXP_OFFSET 0x90
 -- 
 MST
 
