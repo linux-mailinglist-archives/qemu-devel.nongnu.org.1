@@ -2,52 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F537E48BB
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:51:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 400957E48C4
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:53:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0RA3-0002qE-Sq; Tue, 07 Nov 2023 13:50:51 -0500
+	id 1r0RBo-0003zA-Fh; Tue, 07 Nov 2023 13:52:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
- id 1r0RA1-0002lE-38
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:50:49 -0500
-Received: from mailout02.t-online.de ([194.25.134.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
- id 1r0R9z-0002IL-0q
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:50:48 -0500
-Received: from fwd81.aul.t-online.de (fwd81.aul.t-online.de [10.223.144.107])
- by mailout02.t-online.de (Postfix) with SMTP id 5675B1A08;
- Tue,  7 Nov 2023 19:50:41 +0100 (CET)
-Received: from linpower.localnet ([93.236.156.187]) by fwd81.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1r0R9n-2Fe5th0; Tue, 7 Nov 2023 19:50:35 +0100
-Received: by linpower.localnet (Postfix, from userid 1000)
- id 035FF2002D1; Tue,  7 Nov 2023 19:50:34 +0100 (CET)
-From: =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>
-To: Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH] hw/audio/virtio-snd-pci: fix the PCI class code
-Date: Tue,  7 Nov 2023 19:50:34 +0100
-Message-Id: <20231107185034.6434-1-vr_qemu@t-online.de>
-X-Mailer: git-send-email 2.35.3
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1r0RBm-0003yj-SZ; Tue, 07 Nov 2023 13:52:38 -0500
+Received: from mail-yb1-xb31.google.com ([2607:f8b0:4864:20::b31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1r0RBk-0002RR-I8; Tue, 07 Nov 2023 13:52:38 -0500
+Received: by mail-yb1-xb31.google.com with SMTP id
+ 3f1490d57ef6-d9b9adaf291so5400750276.1; 
+ Tue, 07 Nov 2023 10:52:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1699383155; x=1699987955; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Yo6wRW9K9DGYl24zm/EbCLHPA2tNxsKgGido+MPWX0M=;
+ b=Mnhd4MGTMVgFdmHiWTLItegZSVXXCFfRd2FMXtT6Nl6SAl/NCyv9NGgcrRZg5nkYds
+ cQs+vaP7FQ+yEEhYV6uFAOmVwXM91v/lEJ/SGumcd6tRS+X6dODnHVNhNbAGgQapNmSS
+ gtSLRoguT6/vKcq6TwwJB5cylQoPZ+dWQjGbdeFTHxIER5reE4uhOR1W7SK0DrWm/ZD7
+ bTDkrKNc2hEHe+w+jNt6q9Mm+etCUfK8PZ2J5N+ly/jqU8XyFU1CeF4hbEhqqKgyHST5
+ qUKgwlx3luOYTbFLMgN9K1VOEKefCH9Kr/X/OVFj0G1ASTeSmQXOUx1dHTZ8aD3CQf+K
+ LZFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699383155; x=1699987955;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Yo6wRW9K9DGYl24zm/EbCLHPA2tNxsKgGido+MPWX0M=;
+ b=CDlKOiL7/MjF0xRXe7kj2DKET67VzoKGhsnSQcNB9wqeUCNMZ9ZXBWdPUWn0eKFywW
+ cCj3Wk0DWz3bh2vDt0dhEgycFSB2hzEBJH7JXuAnvubY0O5hD100rO1NKMsc8xG730xx
+ 0IGzBDC7ZLBFajxkFotci4quNy8m9JamZOZJ3E19Q0x/vSI143mVmHqBX+778C+ltYlA
+ G1VHx7NQde2O48zg7YSy7j0e+Pnr/QurJyc29nP7UQog0ySpupqipTsuUfkCd2Ed55/t
+ 16MGxStNoi2ejkACrdu2B7Hdc4iOCrJ6uhYa3cSdVSjizEzYTHCmk06+0lopMqq62jPT
+ JjNg==
+X-Gm-Message-State: AOJu0YzXlBXKKN+D+nWBYMvYW4GKTIdMthZNzDwQAKTOdUSqNGq6yUPQ
+ GlF6y3FxgHMB75jOXEgBsnY=
+X-Google-Smtp-Source: AGHT+IFWefaHm5fv3/56pRVEIojMDSLQ7tJFx6RoM8Q1NsDGVrHQLVwDxTf3qE3on3KSFNL+RZtv2A==
+X-Received: by 2002:a25:3206:0:b0:d9c:707f:1f4f with SMTP id
+ y6-20020a253206000000b00d9c707f1f4fmr24889440yby.3.1699383155021; 
+ Tue, 07 Nov 2023 10:52:35 -0800 (PST)
+Received: from [192.168.68.107] ([179.193.10.161])
+ by smtp.gmail.com with ESMTPSA id
+ v17-20020a259111000000b00d7b8a1074d4sm5286568ybl.57.2023.11.07.10.52.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 07 Nov 2023 10:52:34 -0800 (PST)
+Message-ID: <3d1b7f6a-ddab-4d0e-b15a-07f5f2f2dcef@gmail.com>
+Date: Tue, 7 Nov 2023 15:52:31 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TOI-EXPURGATEID: 150726::1699383035-CE571E93-BE84F1D1/0/0 CLEAN NORMAL
-X-TOI-MSGID: d7732817-bb52-4296-9935-0c98ced31df1
-Received-SPF: pass client-ip=194.25.134.17;
- envelope-from=volker.ruemelin@t-online.de; helo=mailout02.t-online.de
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 2/3] hw/ppc: Add emulation of AmigaOne XE board
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, clg@kaod.org, philmd@linaro.org,
+ Bernhard Beschow <shentey@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+References: <63e5ae9ef7c919e7294bc656a009e5310e10d632.1699380861.git.balaton@eik.bme.hu>
+ <804935e7a5921548d630576159ae2c758fe6e275.1699382232.git.balaton@eik.bme.hu>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <804935e7a5921548d630576159ae2c758fe6e275.1699382232.git.balaton@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b31;
+ envelope-from=danielhb413@gmail.com; helo=mail-yb1-xb31.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -64,49 +97,279 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The virtio sound device is currently an unclassified PCI device.
 
-~> sudo lspci -s '00:02.0' -v -nn | head -n 2
-00:02.0 Unclassified device [00ff]:
- Red Hat, Inc. Device [1af4:1059] (rev 01)
-        Subsystem: Red Hat, Inc. Device [1af4:1100]
 
-Set the correct PCI class code to change the device to a
-multimedia audio controller.
+On 11/7/23 15:40, BALATON Zoltan wrote:
+> The AmigaOne is a rebranded MAI Teron board that uses U-Boot firmware
+> with patches to support AmigaOS and is very similar to pegasos2 so can
+> be easily emulated sharing most code with pegasos2. The reason to
+> emulate it is that AmigaOS comes in different versions for AmigaOne
+> and PegasosII which only have drivers for one machine and firmware so
+> these only run on the specific machine. Adding this board allows
+> another AmigaOS version to be used reusing already existing peagasos2
+> emulation. (The AmigaOne was the first of these boards so likely most
+> widespread which then inspired Pegasos that was later replaced with
+> PegasosII due to problems with Articia S, so these have a lot of
+> similarity. Pegasos mainly ran MorphOS while the PegasosII version of
+> AmigaOS was added later and therefore less common than the AmigaOne
+> version.)
+> 
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> Tested-by: Rene Engel <ReneEngel80@emailn.de>
 
-~> sudo lspci -s '00:02.0' -v -nn | head -n 2
-00:02.0 Multimedia audio controller [0401]:
- Red Hat, Inc. Device [1af4:1059] (rev 01)
-        Subsystem: Red Hat, Inc. Device [1af4:1100]
+Acked-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 
-Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
----
-The two additional lines have been lost between v6 and v7 of
-the "Add VIRTIO sound card" patch series.
+This is passing qtest-hmp and it's not adding a new firmware in pc-bios, so
+let's go with it.
 
- hw/audio/virtio-snd-pci.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/hw/audio/virtio-snd-pci.c b/hw/audio/virtio-snd-pci.c
-index 0f92e0752b..ab58c6410e 100644
---- a/hw/audio/virtio-snd-pci.c
-+++ b/hw/audio/virtio-snd-pci.c
-@@ -47,12 +47,14 @@ static void virtio_snd_pci_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     VirtioPCIClass *vpciklass = VIRTIO_PCI_CLASS(klass);
-+    PCIDeviceClass *pcidevklass = PCI_DEVICE_CLASS(klass);
- 
-     device_class_set_props(dc, virtio_snd_pci_properties);
-     dc->desc = "Virtio Sound";
-     set_bit(DEVICE_CATEGORY_SOUND, dc->categories);
- 
-     vpciklass->realize = virtio_snd_pci_realize;
-+    pcidevklass->class_id = PCI_CLASS_MULTIMEDIA_AUDIO;
- }
- 
- static void virtio_snd_pci_instance_init(Object *obj)
--- 
-2.35.3
+Thanks,
 
+Daniel
+
+> ---
+> v9: Skip error about missing -bios when using qtest
+> 
+>   MAINTAINERS                             |   8 ++
+>   configs/devices/ppc-softmmu/default.mak |   1 +
+>   hw/ppc/Kconfig                          |   7 +
+>   hw/ppc/amigaone.c                       | 166 ++++++++++++++++++++++++
+>   hw/ppc/meson.build                      |   2 +
+>   5 files changed, 184 insertions(+)
+>   create mode 100644 hw/ppc/amigaone.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b86ea7f75a..3d0aec7ffa 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1536,6 +1536,14 @@ F: hw/pci-host/mv64361.c
+>   F: hw/pci-host/mv643xx.h
+>   F: include/hw/pci-host/mv64361.h
+>   
+> +amigaone
+> +M: BALATON Zoltan <balaton@eik.bme.hu>
+> +L: qemu-ppc@nongnu.org
+> +S: Maintained
+> +F: hw/ppc/amigaone.c
+> +F: hw/pci-host/articia.c
+> +F: include/hw/pci-host/articia.h
+> +
+>   Virtual Open Firmware (VOF)
+>   M: Alexey Kardashevskiy <aik@ozlabs.ru>
+>   R: David Gibson <david@gibson.dropbear.id.au>
+> diff --git a/configs/devices/ppc-softmmu/default.mak b/configs/devices/ppc-softmmu/default.mak
+> index a887f5438b..b85fd2bcd7 100644
+> --- a/configs/devices/ppc-softmmu/default.mak
+> +++ b/configs/devices/ppc-softmmu/default.mak
+> @@ -14,6 +14,7 @@ CONFIG_SAM460EX=y
+>   CONFIG_MAC_OLDWORLD=y
+>   CONFIG_MAC_NEWWORLD=y
+>   
+> +CONFIG_AMIGAONE=y
+>   CONFIG_PEGASOS2=y
+>   
+>   # For PReP
+> diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
+> index 5dfbf47ef5..56f0475a8e 100644
+> --- a/hw/ppc/Kconfig
+> +++ b/hw/ppc/Kconfig
+> @@ -69,6 +69,13 @@ config SAM460EX
+>       select USB_OHCI
+>       select FDT_PPC
+>   
+> +config AMIGAONE
+> +    bool
+> +    imply ATI_VGA
+> +    select ARTICIA
+> +    select VT82C686
+> +    select SMBUS_EEPROM
+> +
+>   config PEGASOS2
+>       bool
+>       imply ATI_VGA
+> diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
+> new file mode 100644
+> index 0000000000..992a55e632
+> --- /dev/null
+> +++ b/hw/ppc/amigaone.c
+> @@ -0,0 +1,166 @@
+> +/*
+> + * QEMU Eyetech AmigaOne/Mai Logic Teron emulation
+> + *
+> + * Copyright (c) 2023 BALATON Zoltan
+> + *
+> + * This work is licensed under the GNU GPL license version 2 or later.
+> + *
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/units.h"
+> +#include "qemu/datadir.h"
+> +#include "qemu/log.h"
+> +#include "qemu/error-report.h"
+> +#include "qapi/error.h"
+> +#include "hw/ppc/ppc.h"
+> +#include "hw/boards.h"
+> +#include "hw/loader.h"
+> +#include "hw/pci-host/articia.h"
+> +#include "hw/isa/vt82c686.h"
+> +#include "hw/ide/pci.h"
+> +#include "hw/i2c/smbus_eeprom.h"
+> +#include "hw/ppc/ppc.h"
+> +#include "sysemu/qtest.h"
+> +#include "sysemu/reset.h"
+> +#include "kvm_ppc.h"
+> +
+> +#define BUS_FREQ_HZ 100000000
+> +
+> +/*
+> + * Firmware binary available at
+> + * https://www.hyperion-entertainment.com/index.php/downloads?view=files&parent=28
+> + * then "tail -c 524288 updater.image >u-boot-amigaone.bin"
+> + *
+> + * BIOS emulator in firmware cannot run QEMU vgabios and hangs on it, use
+> + * -device VGA,romfile=VGABIOS-lgpl-latest.bin
+> + * from http://www.nongnu.org/vgabios/ instead.
+> + */
+> +#define PROM_FILENAME "u-boot-amigaone.bin"
+> +#define PROM_ADDR 0xfff00000
+> +#define PROM_SIZE (512 * KiB)
+> +
+> +static void amigaone_cpu_reset(void *opaque)
+> +{
+> +    PowerPCCPU *cpu = opaque;
+> +
+> +    cpu_reset(CPU(cpu));
+> +    cpu_ppc_tb_reset(&cpu->env);
+> +}
+> +
+> +static void fix_spd_data(uint8_t *spd)
+> +{
+> +    uint32_t bank_size = 4 * MiB * spd[31];
+> +    uint32_t rows = bank_size / spd[13] / spd[17];
+> +    spd[3] = ctz32(rows) - spd[4];
+> +}
+> +
+> +static void amigaone_init(MachineState *machine)
+> +{
+> +    PowerPCCPU *cpu;
+> +    CPUPPCState *env;
+> +    MemoryRegion *rom, *pci_mem, *mr;
+> +    const char *fwname = machine->firmware ?: PROM_FILENAME;
+> +    char *filename;
+> +    ssize_t sz;
+> +    PCIBus *pci_bus;
+> +    Object *via;
+> +    DeviceState *dev;
+> +    I2CBus *i2c_bus;
+> +    uint8_t *spd_data;
+> +    int i;
+> +
+> +    /* init CPU */
+> +    cpu = POWERPC_CPU(cpu_create(machine->cpu_type));
+> +    env = &cpu->env;
+> +    if (PPC_INPUT(env) != PPC_FLAGS_INPUT_6xx) {
+> +        error_report("Incompatible CPU, only 6xx bus supported");
+> +        exit(1);
+> +    }
+> +    cpu_ppc_tb_init(env, BUS_FREQ_HZ / 4);
+> +    qemu_register_reset(amigaone_cpu_reset, cpu);
+> +
+> +    /* RAM */
+> +    if (machine->ram_size > 2 * GiB) {
+> +        error_report("RAM size more than 2 GiB is not supported");
+> +        exit(1);
+> +    }
+> +    memory_region_add_subregion(get_system_memory(), 0, machine->ram);
+> +    if (machine->ram_size < 1 * GiB + 32 * KiB) {
+> +        /* Firmware uses this area for startup */
+> +        mr = g_new(MemoryRegion, 1);
+> +        memory_region_init_ram(mr, NULL, "init-cache", 32 * KiB, &error_fatal);
+> +        memory_region_add_subregion(get_system_memory(), 0x40000000, mr);
+> +    }
+> +
+> +    /* allocate and load firmware */
+> +    filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, fwname);
+> +    if (filename) {
+> +        rom = g_new(MemoryRegion, 1);
+> +        memory_region_init_rom(rom, NULL, "rom", PROM_SIZE, &error_fatal);
+> +        memory_region_add_subregion(get_system_memory(), PROM_ADDR, rom);
+> +        sz = load_image_targphys(filename, PROM_ADDR, PROM_SIZE);
+> +        if (sz <= 0 || sz > PROM_SIZE) {
+> +            error_report("Could not load firmware '%s'", filename);
+> +            exit(1);
+> +        }
+> +        g_free(filename);
+> +    } else if (!qtest_enabled()) {
+> +        error_report("Could not find firmware '%s'", fwname);
+> +        exit(1);
+> +    }
+> +
+> +    /* Articia S */
+> +    dev = sysbus_create_simple(TYPE_ARTICIA, 0xfe000000, NULL);
+> +
+> +    i2c_bus = I2C_BUS(qdev_get_child_bus(dev, "smbus"));
+> +    if (machine->ram_size > 512 * MiB) {
+> +        spd_data = spd_data_generate(SDR, machine->ram_size / 2);
+> +    } else {
+> +        spd_data = spd_data_generate(SDR, machine->ram_size);
+> +    }
+> +    fix_spd_data(spd_data);
+> +    smbus_eeprom_init_one(i2c_bus, 0x51, spd_data);
+> +    if (machine->ram_size > 512 * MiB) {
+> +        smbus_eeprom_init_one(i2c_bus, 0x52, spd_data);
+> +    }
+> +
+> +    pci_mem = sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 1);
+> +    mr = g_new(MemoryRegion, 1);
+> +    memory_region_init_alias(mr, OBJECT(dev), "pci-mem-low", pci_mem,
+> +                             0, 0x1000000);
+> +    memory_region_add_subregion(get_system_memory(), 0xfd000000, mr);
+> +    mr = g_new(MemoryRegion, 1);
+> +    memory_region_init_alias(mr, OBJECT(dev), "pci-mem-high", pci_mem,
+> +                             0x80000000, 0x7d000000);
+> +    memory_region_add_subregion(get_system_memory(), 0x80000000, mr);
+> +    pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
+> +
+> +    /* VIA VT82c686B South Bridge (multifunction PCI device) */
+> +    via = OBJECT(pci_create_simple_multifunction(pci_bus, PCI_DEVFN(7, 0),
+> +                                                 TYPE_VT82C686B_ISA));
+> +    object_property_add_alias(OBJECT(machine), "rtc-time",
+> +                              object_resolve_path_component(via, "rtc"),
+> +                              "date");
+> +    qdev_connect_gpio_out(DEVICE(via), 0,
+> +                          qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_INT));
+> +    for (i = 0; i < PCI_NUM_PINS; i++) {
+> +        qdev_connect_gpio_out(dev, i, qdev_get_gpio_in_named(DEVICE(via),
+> +                                                             "pirq", i));
+> +    }
+> +    pci_ide_create_devs(PCI_DEVICE(object_resolve_path_component(via, "ide")));
+> +    pci_vga_init(pci_bus);
+> +}
+> +
+> +static void amigaone_machine_init(MachineClass *mc)
+> +{
+> +    mc->desc = "Eyetech AmigaOne/Mai Logic Teron";
+> +    mc->init = amigaone_init;
+> +    mc->block_default_type = IF_IDE;
+> +    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("7457_v1.2");
+> +    mc->default_display = "std";
+> +    mc->default_ram_id = "ram";
+> +    mc->default_ram_size = 512 * MiB;
+> +}
+> +
+> +DEFINE_MACHINE("amigaone", amigaone_machine_init)
+> diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
+> index 7c2c52434a..7338f9432a 100644
+> --- a/hw/ppc/meson.build
+> +++ b/hw/ppc/meson.build
+> @@ -81,6 +81,8 @@ ppc_ss.add(when: 'CONFIG_E500', if_true: files(
+>   ))
+>   # PowerPC 440 Xilinx ML507 reference board.
+>   ppc_ss.add(when: 'CONFIG_VIRTEX', if_true: files('virtex_ml507.c'))
+> +# AmigaOne
+> +ppc_ss.add(when: 'CONFIG_AMIGAONE', if_true: files('amigaone.c'))
+>   # Pegasos2
+>   ppc_ss.add(when: 'CONFIG_PEGASOS2', if_true: files('pegasos2.c'))
+>   
 
