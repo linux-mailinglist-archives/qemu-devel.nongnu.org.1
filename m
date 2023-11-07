@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD9E7E47E2
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:10:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C07D47E47DC
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:09:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0QUr-00071J-Pl; Tue, 07 Nov 2023 13:08:17 -0500
+	id 1r0QUo-0006zi-UW; Tue, 07 Nov 2023 13:08:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r0QUf-0006vJ-Mv
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:08:05 -0500
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ id 1r0QUd-0006sh-Ul
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:08:03 -0500
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r0QUa-00027G-F0
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:08:04 -0500
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-507adc3381cso7730061e87.3
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 10:07:59 -0800 (PST)
+ id 1r0QUZ-00026y-EB
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:08:02 -0500
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-507975d34e8so8624813e87.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 10:07:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1699380477; x=1699985277; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=F45vC/p6IY3ngsRQuRH+wBiYzJb/ebACHnpu5M5W0wA=;
- b=fcVtib3CRqJ6IOYQ0gNRKuvtWS8/03l3RkeGtAscbmJ0oFdzK0zcXGFz2aT0kaIE2H
- ueDfMwAUiNHGl39vrMNYyvYEDvPSAZb0Qjl0gKV7mZewLTLo7kunJF2ib5Za7mb0QNXr
- oxQs8/Iv6UDMoB5nwP2RamknrzkaNfE1W1ixiili5DMN1UhiiF4tTpc5wOelcHiR23Oz
- gctru4oI9CsDOdMUF/aYhW4FFSPrjZkU27C6JzcMrXgFegrQtFENbv2rAXwFeR2oqy/d
- naT+H/Ss/oXB22RDe8RNvOgblvbvHRr1yuCrucKg9zUxNjwp6B1r8axZ1AV7nNkufv/c
- 0NHg==
+ bh=jKC1LNIfj9tc06yjyzpgfvvZWaBsp45q1uaz/hs/4dA=;
+ b=Y5GfEFeO3h0xcqxJ/mknMdFccr5Zpfkkfqvj4XQVWE/fNmylVeG3VyqpNYXWBadE9+
+ QBgNvpZSYYPHfY3nnznB6Cr1y4aa2TXWrnJHIxHa+q7KyFuvM3/wHxzQaW7JZFbZYS+H
+ L5m6Vjp4HlBy1ZuvHVwwyajDKtKAL5w/W/rSaUxel9TinOEtQ6NgASg/KJRY69vpwTEH
+ RZeIunIMwnG3HB660DKOWNWkXJQE0eOQD8zYZoyiHZL5Gke065VuN86f57EI4b0HK8g0
+ AAlo3GRruBpZYxoAFduktzw5jVg/aYn/m0/zYYXC2dgdEHga6mz9PxXjOEjhs2y8cNCM
+ xyUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1699380477; x=1699985277;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=F45vC/p6IY3ngsRQuRH+wBiYzJb/ebACHnpu5M5W0wA=;
- b=u5EQmL5I4bhozI/6/GevFhwUsvIpBPrBp3Fhh7yIsXE6fwJtC3CMuqq7gVfMTGJQL8
- ds69cTn+egcwxOBUWWDAQL2kg5Of0ZoRPPrhpEJ8uzPD6s8yh/E47hZZ9HYTL7S08t1r
- qFl863cBf6JsE1JETyTfkrNGc3jLfPWenXv8zYqg4JtMt/wjOYaR7ek65ijKsHYL57WV
- +mJ07MLOKBYbMCokuQXytLc5/6hb3F8zIYheUPXRy4TXM+hofTJlwEVP/WNPbhigcOR0
- 1aGDkJmo2ZpsKXMrqUuQyEM9itctdvkTTDNokqkge891Ex7/9tDs4UlkfVVfRJueZK23
- ep6w==
-X-Gm-Message-State: AOJu0YzZmLRnlppTB6rRooXgWYK9xJYN8bRFaJF0zm520qzdzLEbn4eR
- /dAj+H9ddSEg1yG+NxXe6jv+9g==
-X-Google-Smtp-Source: AGHT+IGrdfhcW3k7Pg8RhJrMrLr6XspwX2ytY4xE3tLO4D5mEMzygTpPIU6LcdEqMulTGg1cx8QQgQ==
-X-Received: by 2002:ac2:4a8e:0:b0:505:6c99:bd7c with SMTP id
- l14-20020ac24a8e000000b005056c99bd7cmr25215219lfp.57.1699380477676; 
+ bh=jKC1LNIfj9tc06yjyzpgfvvZWaBsp45q1uaz/hs/4dA=;
+ b=gi0arGTSZXDtHvolO0aoRUYhT/D8qJ1+2cKRegcM+QGWboLWy1RtCRB9OHr5GYuejV
+ oKbbbqTwJB8nXXpVii2D8eAZOf7/tGSAR2ozM+1FZ+zinN3KKhMhLHvJXmxWSyf47aJn
+ pfGPK90apCuzqE96sECDkZuj92Lmgt50XM2YWbOZ9ZK1G4vj3qovIFnbt3XaTKq3g+5v
+ 9TIJTtqdOdAQRwVNI22jGXqYIX94ialDCCOlyZ84J9iOMa798QzLpqdu5yGCnDDmOGoj
+ e2jaO+YqYYyCiIGhFqea/jYDChbRbN/nSb+nHJ7ec+sVuDjNG5tZHx+DcYA9Vz5evs/f
+ 6g0w==
+X-Gm-Message-State: AOJu0YwdlNneL/rZqOvYJdmLoUQpCqeuCAWAkHKohipysDLjzYwBaaLy
+ A2uNAgSBp+VzZYGSG2CJG8n/PA==
+X-Google-Smtp-Source: AGHT+IGsIw9TUjZNlpk6tVtYTkQzRGPmg4Na8p66rpLAqLGFUYBgIb4PxL8/93B9M1WJQ+XdRkawew==
+X-Received: by 2002:a05:6512:3f0c:b0:508:17be:c366 with SMTP id
+ y12-20020a0565123f0c00b0050817bec366mr5870203lfa.21.1699380477236; 
  Tue, 07 Nov 2023 10:07:57 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- g1-20020adfe401000000b0032d9523de65sm2986438wrm.48.2023.11.07.10.07.53
+ x17-20020adfffd1000000b0032710f5584fsm2997290wrs.25.2023.11.07.10.07.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 07 Nov 2023 10:07:56 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0B8326575C;
+ by draig.lan (Postfix) with ESMTP id 23A5C6575D;
  Tue,  7 Nov 2023 18:07:53 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -78,25 +78,25 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  qemu-block@nongnu.org, "Gonglei (Arei)" <arei.gonglei@huawei.com>,
  Fam Zheng <fam@euphon.net>, Kevin Wolf <kwolf@redhat.com>
-Subject: [PATCH v8 6/7] hw/virtio: add vhost-user-snd and virtio-snd-pci
+Subject: [PATCH v8 7/7] docs/system: add a basic enumeration of vhost-user
  devices
-Date: Tue,  7 Nov 2023 18:07:51 +0000
-Message-Id: <20231107180752.3458672-7-alex.bennee@linaro.org>
+Date: Tue,  7 Nov 2023 18:07:52 +0000
+Message-Id: <20231107180752.3458672-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231107180752.3458672-1-alex.bennee@linaro.org>
 References: <20231107180752.3458672-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x134.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,286 +112,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-
-Tested with rust-vmm vhost-user-sound daemon:
-
-    RUST_LOG=trace cargo run --bin vhost-user-sound -- --socket /tmp/snd.sock --backend null
-
-Invocation:
-
-    qemu-system-x86_64  \
-            -qmp unix:./qmp-sock,server,wait=off  \
-            -m 4096 \
-            -numa node,memdev=mem \
-            -object memory-backend-file,id=mem,size=4G,mem-path=/dev/shm,share=on \
-            -D qemu.log \
-            -d guest_errors,trace:\*snd\*,trace:\*sound\*,trace:\*vhost\* \
-            -chardev socket,id=vsnd,path=/tmp/snd.sock \
-            -device vhost-user-snd-pci,chardev=vsnd,id=snd \
-            /path/to/disk
-
-[AJB: imported from https://github.com/epilys/qemu-virtio-snd/commit/54ae1cdd15fef2d88e9e387a175f099a38c636f4.patch]
+Make it clear the vhost-user-device is intended for expert use only.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
 ---
+v5
+  - split vhost-user-device out of the table
+  - sort the table alphabetically
+  - add sound and scmi devices
+v6
+  - add note re vhost-user-device
 v7
-  - s/parent/parent_obj/
-  - add MAINTAINERS
-  - add missing s-o-b
+  - fix patching description
 ---
- MAINTAINERS                        |  7 +++
- include/hw/virtio/vhost-user-snd.h | 24 ++++++++++
- hw/virtio/vhost-user-snd-pci.c     | 75 ++++++++++++++++++++++++++++++
- hw/virtio/vhost-user-snd.c         | 67 ++++++++++++++++++++++++++
- hw/virtio/Kconfig                  |  5 ++
- hw/virtio/meson.build              |  3 ++
- 6 files changed, 181 insertions(+)
- create mode 100644 include/hw/virtio/vhost-user-snd.h
- create mode 100644 hw/virtio/vhost-user-snd-pci.c
- create mode 100644 hw/virtio/vhost-user-snd.c
+ docs/system/devices/vhost-user-rng.rst |  2 +
+ docs/system/devices/vhost-user.rst     | 70 +++++++++++++++++++++++++-
+ 2 files changed, 71 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2ff908d039..86c649784e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2286,6 +2286,13 @@ F: hw/virtio/vhost-user-gpio*
- F: include/hw/virtio/vhost-user-gpio.h
- F: tests/qtest/libqos/virtio-gpio.*
+diff --git a/docs/system/devices/vhost-user-rng.rst b/docs/system/devices/vhost-user-rng.rst
+index a145d4105c..ead1405326 100644
+--- a/docs/system/devices/vhost-user-rng.rst
++++ b/docs/system/devices/vhost-user-rng.rst
+@@ -1,3 +1,5 @@
++.. _vhost_user_rng:
++
+ QEMU vhost-user-rng - RNG emulation
+ ===================================
  
-+vhost-user-snd
-+M: Alex Bennée <alex.bennee@linaro.org>
-+R: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-+S: Maintained
-+F: hw/virtio/vhost-user-snd*
-+F: include/hw/virtio/vhost-user-snd.h
-+
- vhost-user-scmi
- R: mzamazal@redhat.com
- S: Supported
-diff --git a/include/hw/virtio/vhost-user-snd.h b/include/hw/virtio/vhost-user-snd.h
-new file mode 100644
-index 0000000000..f9260116a7
---- /dev/null
-+++ b/include/hw/virtio/vhost-user-snd.h
-@@ -0,0 +1,24 @@
-+/*
-+ * Vhost-user Sound virtio device
-+ *
-+ * Copyright (c) 2021 Mathieu Poirier <mathieu.poirier@linaro.org>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef QEMU_VHOST_USER_SND_H
-+#define QEMU_VHOST_USER_SND_H
-+
-+#include "hw/virtio/virtio.h"
-+#include "hw/virtio/vhost.h"
-+#include "hw/virtio/vhost-user.h"
-+#include "hw/virtio/vhost-user-base.h"
-+
-+#define TYPE_VHOST_USER_SND "vhost-user-snd"
-+OBJECT_DECLARE_SIMPLE_TYPE(VHostUserSound, VHOST_USER_SND)
-+
-+struct VHostUserSound {
-+    VHostUserBase parent_obj;
-+};
-+
-+#endif /* QEMU_VHOST_USER_SND_H */
-diff --git a/hw/virtio/vhost-user-snd-pci.c b/hw/virtio/vhost-user-snd-pci.c
-new file mode 100644
-index 0000000000..d61cfdae63
---- /dev/null
-+++ b/hw/virtio/vhost-user-snd-pci.c
-@@ -0,0 +1,75 @@
-+/*
-+ * Vhost-user Sound virtio device PCI glue
-+ *
-+ * Copyright (c) 2023 Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/virtio/vhost-user-snd.h"
-+#include "hw/virtio/virtio-pci.h"
-+
-+struct VHostUserSoundPCI {
-+    VirtIOPCIProxy parent_obj;
-+    VHostUserSound vdev;
-+};
-+
-+typedef struct VHostUserSoundPCI VHostUserSoundPCI;
-+
-+#define TYPE_VHOST_USER_SND_PCI "vhost-user-snd-pci-base"
-+
-+DECLARE_INSTANCE_CHECKER(VHostUserSoundPCI, VHOST_USER_SND_PCI,
-+                         TYPE_VHOST_USER_SND_PCI)
-+
-+static Property vhost_user_snd_pci_properties[] = {
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
-+static void vhost_user_snd_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
-+{
-+    VHostUserSoundPCI *dev = VHOST_USER_SND_PCI(vpci_dev);
-+    DeviceState *vdev = DEVICE(&dev->vdev);
-+
-+    vpci_dev->nvectors = 1;
-+
-+    qdev_realize(vdev, BUS(&vpci_dev->bus), errp);
-+}
-+
-+static void vhost_user_snd_pci_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
-+    PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
-+    k->realize = vhost_user_snd_pci_realize;
-+    set_bit(DEVICE_CATEGORY_SOUND, dc->categories);
-+    device_class_set_props(dc, vhost_user_snd_pci_properties);
-+    pcidev_k->vendor_id = PCI_VENDOR_ID_REDHAT_QUMRANET;
-+    pcidev_k->device_id = 0; /* Set by virtio-pci based on virtio id */
-+    pcidev_k->revision = 0x00;
-+    pcidev_k->class_id = PCI_CLASS_MULTIMEDIA_AUDIO;
-+}
-+
-+static void vhost_user_snd_pci_instance_init(Object *obj)
-+{
-+    VHostUserSoundPCI *dev = VHOST_USER_SND_PCI(obj);
-+
-+    virtio_instance_init_common(obj, &dev->vdev, sizeof(dev->vdev),
-+                                TYPE_VHOST_USER_SND);
-+}
-+
-+static const VirtioPCIDeviceTypeInfo vhost_user_snd_pci_info = {
-+    .base_name = TYPE_VHOST_USER_SND_PCI,
-+    .non_transitional_name = "vhost-user-snd-pci",
-+    .instance_size = sizeof(VHostUserSoundPCI),
-+    .instance_init = vhost_user_snd_pci_instance_init,
-+    .class_init = vhost_user_snd_pci_class_init,
-+};
-+
-+static void vhost_user_snd_pci_register(void)
-+{
-+    virtio_pci_types_register(&vhost_user_snd_pci_info);
-+}
-+
-+type_init(vhost_user_snd_pci_register);
-diff --git a/hw/virtio/vhost-user-snd.c b/hw/virtio/vhost-user-snd.c
-new file mode 100644
-index 0000000000..9a217543f8
---- /dev/null
-+++ b/hw/virtio/vhost-user-snd.c
-@@ -0,0 +1,67 @@
-+/*
-+ * Vhost-user snd virtio device
-+ *
-+ * Copyright (c) 2023 Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-+ *
-+ * Simple wrapper of the generic vhost-user-device.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/virtio/virtio-bus.h"
-+#include "hw/virtio/vhost-user-snd.h"
-+#include "standard-headers/linux/virtio_ids.h"
-+#include "standard-headers/linux/virtio_snd.h"
-+
-+static const VMStateDescription vu_snd_vmstate = {
-+    .name = "vhost-user-snd",
-+    .unmigratable = 1,
-+};
-+
-+static Property vsnd_properties[] = {
-+    DEFINE_PROP_CHR("chardev", VHostUserBase, chardev),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
-+static void vu_snd_base_realize(DeviceState *dev, Error **errp)
-+{
-+    VHostUserBase *vub = VHOST_USER_BASE(dev);
-+    VHostUserBaseClass *vubs = VHOST_USER_BASE_GET_CLASS(dev);
-+
-+    vub->virtio_id = VIRTIO_ID_SOUND;
-+    vub->num_vqs = 4;
-+    vub->config_size = sizeof(struct virtio_snd_config);
-+    vub->vq_size = 64;
-+
-+    vubs->parent_realize(dev, errp);
-+}
-+
-+static void vu_snd_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    VHostUserBaseClass *vubc = VHOST_USER_BASE_CLASS(klass);
-+
-+    dc->vmsd = &vu_snd_vmstate;
-+    device_class_set_props(dc, vsnd_properties);
-+    device_class_set_parent_realize(dc, vu_snd_base_realize,
-+                                    &vubc->parent_realize);
-+
-+    set_bit(DEVICE_CATEGORY_SOUND, dc->categories);
-+}
-+
-+static const TypeInfo vu_snd_info = {
-+    .name = TYPE_VHOST_USER_SND,
-+    .parent = TYPE_VHOST_USER_BASE,
-+    .instance_size = sizeof(VHostUserSound),
-+    .class_init = vu_snd_class_init,
-+};
-+
-+static void vu_snd_register_types(void)
-+{
-+    type_register_static(&vu_snd_info);
-+}
-+
-+type_init(vu_snd_register_types)
-diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig
-index 92c9cf6c96..aa63ff7fd4 100644
---- a/hw/virtio/Kconfig
-+++ b/hw/virtio/Kconfig
-@@ -101,6 +101,11 @@ config VHOST_VDPA_DEV
-     default y
-     depends on VIRTIO && VHOST_VDPA && LINUX
+diff --git a/docs/system/devices/vhost-user.rst b/docs/system/devices/vhost-user.rst
+index a80e95a48a..c6afc4836f 100644
+--- a/docs/system/devices/vhost-user.rst
++++ b/docs/system/devices/vhost-user.rst
+@@ -8,13 +8,81 @@ outside of QEMU itself. To do this there are a number of things
+ required.
  
-+config VHOST_USER_SND
-+    bool
-+    default y
-+    depends on VIRTIO && VHOST_USER
-+
- config VHOST_USER_SCMI
-     bool
-     default y
-diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-index 0a4d29ace6..118d4d4da7 100644
---- a/hw/virtio/meson.build
-+++ b/hw/virtio/meson.build
-@@ -24,6 +24,7 @@ if have_vhost
-     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_GPIO', if_true: files('vhost-user-gpio.c'))
-     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_I2C', if_true: files('vhost-user-i2c.c'))
-     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_RNG', if_true: files('vhost-user-rng.c'))
-+    system_virtio_ss.add(when: 'CONFIG_VHOST_USER_SND', if_true: files('vhost-user-snd.c'))
+ vhost-user device
+-===================
++=================
  
-     # PCI Stubs
-     system_virtio_ss.add(when: 'CONFIG_VIRTIO_PCI', if_true: files('vhost-user-device-pci.c'))
-@@ -33,6 +34,8 @@ if have_vhost
-                          if_true: files('vhost-user-i2c-pci.c'))
-     system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_RNG'],
-                          if_true: files('vhost-user-rng-pci.c'))
-+    system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_SND'],
-+                         if_true: files('vhost-user-snd-pci.c'))
-   endif
-   if have_vhost_vdpa
-     system_virtio_ss.add(files('vhost-vdpa.c'))
+ These are simple stub devices that ensure the VirtIO device is visible
+ to the guest. The code is mostly boilerplate although each device has
+ a ``chardev`` option which specifies the ID of the ``--chardev``
+ device that connects via a socket to the vhost-user *daemon*.
+ 
++Each device will have an virtio-mmio and virtio-pci variant. See your
++platform details for what sort of virtio bus to use.
++
++.. list-table:: vhost-user devices
++  :widths: 20 20 60
++  :header-rows: 1
++
++  * - Device
++    - Type
++    - Notes
++  * - vhost-user-blk
++    - Block storage
++    - See contrib/vhost-user-blk
++  * - vhost-user-fs
++    - File based storage driver
++    - See https://gitlab.com/virtio-fs/virtiofsd
++  * - vhost-user-gpio
++    - Proxy gpio pins to host
++    - See https://github.com/rust-vmm/vhost-device
++  * - vhost-user-gpu
++    - GPU driver
++    - See contrib/vhost-user-gpu
++  * - vhost-user-i2c
++    - Proxy i2c devices to host
++    - See https://github.com/rust-vmm/vhost-device
++  * - vhost-user-input
++    - Generic input driver
++    - See contrib/vhost-user-input
++  * - vhost-user-rng
++    - Entropy driver
++    - :ref:`vhost_user_rng`
++  * - vhost-user-scmi
++    - System Control and Management Interface
++    - See https://github.com/rust-vmm/vhost-device
++  * - vhost-user-snd
++    - Audio device
++    - See https://github.com/rust-vmm/vhost-device/staging
++  * - vhost-user-scsi
++    - SCSI based storage
++    - See contrib/vhost-user-scsi
++  * - vhost-user-vsock
++    - Socket based communication
++    - See https://github.com/rust-vmm/vhost-device
++
++The referenced *daemons* are not exhaustive, any conforming backend
++implementing the device and using the vhost-user protocol should work.
++
++vhost-user-device
++^^^^^^^^^^^^^^^^^
++
++The vhost-user-device is a generic development device intended for
++expert use while developing new backends. The user needs to specify
++all the required parameters including:
++
++  - Device ``virtio-id``
++  - The ``num_vqs`` it needs and their ``vq_size``
++  - The ``config_size`` if needed
++
++.. note::
++  To prevent user confusion you cannot currently instantiate
++  vhost-user-device without first patching out::
++
++    /* Reason: stop inexperienced users confusing themselves */
++    dc->user_creatable = false;
++
++  in ``vhost-user-device.c`` and ``vhost-user-device-pci.c`` file and
++  rebuilding.
++
+ vhost-user daemon
+ =================
+ 
 -- 
 2.39.2
 
