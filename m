@@ -2,63 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F75E7E39BF
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F9487E39C0
 	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:32:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0JN0-0007HP-Tz; Tue, 07 Nov 2023 05:31:43 -0500
+	id 1r0JMh-0007Az-Iy; Tue, 07 Nov 2023 05:31:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0JMt-0007Fg-Ix
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:31:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0JMs-0006oZ-78
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:31:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699353093;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=mZONFbQdlZzlbfr0XU3FyR9cVXeV4YuUOlZvxxmMhxE=;
- b=Qfewp00Z2flu6ywnwLQewOTilqttZuLKHRR/iau6u9nuwxwjQ9cQqfTsL2NbX8jHG1zpj8
- H0pzCmHcWZsC1ORyscZuJyxQRkrn7MyShKBo7Ty8qW5D1yQkZXpfZ0tlMuex/h7VRq4mOp
- tSCqHrsqDgIb1jf3qC18wJk/DkkG9Ac=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-fayZ4JPiP5mvQStk7XicPg-1; Tue,
- 07 Nov 2023 05:30:46 -0500
-X-MC-Unique: fayZ4JPiP5mvQStk7XicPg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7C4BA3C1AF47;
- Tue,  7 Nov 2023 10:30:46 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.124])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 73B3B25C0;
- Tue,  7 Nov 2023 10:30:45 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org
-Subject: [PATCH] MAINTAINERS: Add artist.c to the hppa machine section
-Date: Tue,  7 Nov 2023 11:30:44 +0100
-Message-ID: <20231107103044.15089-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r0JMd-0007A3-9O
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:31:19 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r0JMa-0006ho-9X
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:31:19 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4083f61322fso40008745e9.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:31:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699353074; x=1699957874; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ovNKojs4tcSm4Rxp81OUZlptHbEKBceYlHEM+s7x7do=;
+ b=e9qAdpga46ERes/OdCiFQ/ZakRtSsdccsD9+z5Ce+IGM+XCG8+Dz455Zj20J/9WoCK
+ b5q2ZStJnlbZZXSyvdHLpQvHOjXbe+7OKGmJRouQQyXIuudqIU8XKuYgZzcT7FYVDblz
+ SaAP0DN6vzs+6gPdIJtPVEg84p/KJjypJKPVAnlu0S7Ru1/E1htPO9VIAgjzPkO1hxV4
+ ska6OMGsKipCjsJD5/CZOk5KpZZYqMjKSIt49/QbhyswHDS2RjLVZROLYSjhQ+CzHmJY
+ aNaO7rUtkwcLoEC3oyBrEepCWcSuxm/0iN4Q0SnWOueEgODxSN8af5lucrRxg3eE+4da
+ HfKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699353074; x=1699957874;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=ovNKojs4tcSm4Rxp81OUZlptHbEKBceYlHEM+s7x7do=;
+ b=V4Q067M7EDuWXyH7j5JRqRjnZy4nnuCxgxS5yAnM43b55GI4YDEkCpUgyNZQ5/Hx4r
+ s2Q3ipw78Bo3qNuiUgMgGdhTSB22f1/4F6xyH/ht2BlEPOKp/gHjWWth/o61sgyYNTVP
+ /iFRfxg1L8VzlLs1bA3DKaCsVU/MLdemi4LHu6KmNS89Zv6kjL0X7swQ1TE6hFY9gAE+
+ P8CXOSudY9k6Gu80EAbgai5i9ABldTa7LQ0z/pkHGgez/7c7ndx88NLz7nIxOmHl0nBJ
+ LKSnOBin09UT3v1dqPaX6WWUBBG2zleSToKp6XslUdyLLRwUCcex5jdnMUupKfUqJ+pp
+ 0BCA==
+X-Gm-Message-State: AOJu0Ywr2x8QZMErEnATFxrpTIjLOcQE4Hm2PezHVUK6z06/MD+mJz4M
+ 3mzccSddAjD+Xj6VmSV8eq2h3A==
+X-Google-Smtp-Source: AGHT+IE4dFgAEWqHccgIMlWYxItcyqrpDfWTANsXmcNjicQKrTLwnSFS9LjsleiIboRRuk4nyhTsAQ==
+X-Received: by 2002:a05:600c:470e:b0:408:55f8:7de with SMTP id
+ v14-20020a05600c470e00b0040855f807demr1947023wmo.28.1699353074392; 
+ Tue, 07 Nov 2023 02:31:14 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ j19-20020a05600c191300b004090ca6d785sm15361908wmq.2.2023.11.07.02.31.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 07 Nov 2023 02:31:13 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 5E5045F790;
+ Tue,  7 Nov 2023 10:31:13 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: =?utf-8?B?RnLDqWTDqXJpYyBQw6l0cm90?=
+ <frederic.petrot@univ-grenoble-alpes.fr>
+Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,  Song Gao
+ <gaosong@loongson.cn>,  qemu-arm@nongnu.org,  =?utf-8?Q?Marc-Andr=C3=A9?=
+ Lureau <marcandre.lureau@redhat.com>,  Wainer dos Santos Moschetta
+ <wainersm@redhat.com>,  Weiwei Li <liweiwei@iscas.ac.cn>,  Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>,  Ilya Leoshkevich
+ <iii@linux.ibm.com>,  Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@kaod.org>, Paolo Bonzini <pbonzini@redhat.com>,  David Hildenbrand
+ <david@redhat.com>,  Brian Cain <bcain@quicinc.com>,  qemu-ppc@nongnu.org,
+ Palmer Dabbelt <palmer@dabbelt.com>,  qemu-riscv@nongnu.org,  Eduardo
+ Habkost <eduardo@habkost.net>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Alistair Francis <alistair.francis@wdc.com>,  Liu
+ Zhiwei <zhiwei_liu@linux.alibaba.com>,  Cleber Rosa <crosa@redhat.com>,
+ qemu-s390x@nongnu.org,  Laurent Vivier <laurent@vivier.eu>,  Yoshinori
+ Sato <ysato@users.sourceforge.jp>,  Nicholas Piggin <npiggin@gmail.com>,
+ Thomas Huth <thuth@redhat.com>,  John Snow <jsnow@redhat.com>,  Alexandre
+ Iooss <erdnaxe@crans.org>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,  Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>,  Bin Meng <bin.meng@windriver.com>,  Beraldo
+ Leal <bleal@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Michael Rolnik <mrolnik@gmail.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: Re: [PATCH 17/29] gdbstub: Simplify XML lookup
+In-Reply-To: <4659ec99-9b86-4c91-8ee8-116bff8b48c4@univ-grenoble-alpes.fr>
+ (=?utf-8?Q?=22Fr=C3=A9d=C3=A9ric_P=C3=A9trot=22's?= message of "Tue, 7 Nov
+ 2023 09:46:21 +0100 (1 hour, 43 minutes, 15 seconds ago)")
+References: <20231103195956.1998255-1-alex.bennee@linaro.org>
+ <20231103195956.1998255-18-alex.bennee@linaro.org>
+ <4659ec99-9b86-4c91-8ee8-116bff8b48c4@univ-grenoble-alpes.fr>
+User-Agent: mu4e 1.11.24; emacs 29.1
+Date: Tue, 07 Nov 2023 10:31:13 +0000
+Message-ID: <8734xh7t3i.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,27 +122,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The artist graphics adapter is only used by the hppa machine, so
-let's add this file to the corresponding section.
+Fr=C3=A9d=C3=A9ric P=C3=A9trot <frederic.petrot@univ-grenoble-alpes.fr> wri=
+tes:
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+> Hello Alex and Akihiko,
+>
+> this patch introduces a regression for riscv.
+> When connecting to gdb, gdb issues the infamous "Architecture rejected
+> target-supplied description" warning.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c1ddf9d623..0c2ef567f0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1204,6 +1204,7 @@ M: Richard Henderson <richard.henderson@linaro.org>
- R: Helge Deller <deller@gmx.de>
- S: Odd Fixes
- F: configs/devices/hppa-softmmu/default.mak
-+F: hw/display/artist.c
- F: hw/hppa/
- F: hw/input/lasips2.c
- F: hw/net/*i82596*
--- 
-2.41.0
+I tracked it down to 13/29 when bisecting which I dropped from:
 
+  Message-Id: <20231106185112.2755262-1-alex.bennee@linaro.org>
+  Date: Mon,  6 Nov 2023 18:50:50 +0000
+  Subject: [PATCH 00/22] Maintainer updates for 8.2 (gdbstub, tests, plugin=
+s) pre-PR
+  From: =3D?UTF-8?q?Alex=3D20Benn=3DC3=3DA9e?=3D <alex.bennee@linaro.org>
+
+So if you can check that series doesn't regress RiscV (it passes the
+tests) then we can at least get some of the stuff merged during freeze.
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
