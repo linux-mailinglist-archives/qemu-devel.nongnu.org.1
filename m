@@ -2,64 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2C97E39F3
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:36:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19AB37E3A32
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:45:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0JR8-0002si-Vv; Tue, 07 Nov 2023 05:35:59 -0500
+	id 1r0JYw-0006wu-E6; Tue, 07 Nov 2023 05:44:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r0JR5-0002sH-Ue
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:35:55 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0JYq-0006vy-Nh
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:43:56 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r0JR4-0007q9-Kj
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:35:55 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0JYn-0000de-SO
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:43:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699353353;
+ s=mimecast20190719; t=1699353831;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=6Uvv1xRbwlcSyApkkKwlVXtNHeD0ro5+00VnpKZh5t4=;
- b=iofy7Nb44moyJPQDYu4oq7aa9xpdbJ5VQ5dUJ54RXwEUUSFlNE3WAxjrl0baDvenQIIGew
- JAvi8MaKCHFVcxvSCa/c71fRtkRIOx7fKhL2G92reA2kxfJl78oH0G5zu9n3pNE+fK2/do
- QfwMSg2+NfdspQbqyohGmLdhGHPS9YQ=
+ bh=vHvQHwWHrIyhCwP3EQMBxhE2cn/RVQIL4TLCR7FFoWI=;
+ b=R9FK9esJahA4fFicX3+8mSYykY7YOQBwnl6+xxP/n/B6kdWgm+QulXj7slyHKjISyDVY5u
+ 8RMWmn5iIXZothxZmV4A9LzFY0US3d8NjaRRibjn707Zlu5uTIQ8L3ZNa2NQBMtdGzTSid
+ 7mi2m8J8l7gbqXHfjIgfgLefgGySGN0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-300-ki8X__nUMX6rIlQ4ts2Rbg-1; Tue, 07 Nov 2023 05:35:51 -0500
-X-MC-Unique: ki8X__nUMX6rIlQ4ts2Rbg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ us-mta-628-9Tmg6Yp6PmicDVJ8JxtZgA-1; Tue, 07 Nov 2023 05:43:47 -0500
+X-MC-Unique: 9Tmg6Yp6PmicDVJ8JxtZgA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0C10A85A59D;
- Tue,  7 Nov 2023 10:35:51 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.119])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id BE4BF492BFC;
- Tue,  7 Nov 2023 10:35:50 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 6B4091800DDB; Tue,  7 Nov 2023 11:35:49 +0100 (CET)
-Date: Tue, 7 Nov 2023 11:35:49 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Claudio Fontana <cfontana@suse.de>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
- Dario Faggioli <dfaggioli@suse.com>, Jim Fehlig <jfehlig@suse.com>
-Subject: Re: [PULL 4/6] seabios: update binaries to git snapshot
-Message-ID: <terqy6i5rs6ui4wwbzmwlqi2v72c6qfl62nnu2ifgbkbrrz3z4@mneyylwzf6fo>
-References: <20231010112610.2618091-1-kraxel@redhat.com>
- <20231010112610.2618091-5-kraxel@redhat.com>
- <30a82b23-ded6-f03a-727c-ed6f86657a34@suse.de>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 867DD185A783;
+ Tue,  7 Nov 2023 10:43:46 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.197])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 786D125C0;
+ Tue,  7 Nov 2023 10:43:45 +0000 (UTC)
+Date: Tue, 7 Nov 2023 11:43:44 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, jsnow@redhat.com,
+ qemu-block@nongnu.org, qemu-devel@nongnu.org, philmd@linaro.org,
+ shentey@gmail.com
+Subject: Re: [PATCH v2 3/3] hw/ide/via: implement legacy/native mode switching
+Message-ID: <ZUoU4FltYjFXdWZm@redhat.com>
+References: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
+ <20231024224056.842607-4-mark.cave-ayland@ilande.co.uk>
+ <ZUj5yTKBkJ99Dbxf@redhat.com>
+ <509075f4-38d2-578b-b4f4-770c3b000ae8@eik.bme.hu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <30a82b23-ded6-f03a-727c-ed6f86657a34@suse.de>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+In-Reply-To: <509075f4-38d2-578b-b4f4-770c3b000ae8@eik.bme.hu>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,25 +82,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  Hi,
-
-> Trying to install a simple centos7 iso for testing as in:
+Am 06.11.2023 um 17:13 hat BALATON Zoltan geschrieben:
+> On Mon, 6 Nov 2023, Kevin Wolf wrote:
+> > Am 25.10.2023 um 00:40 hat Mark Cave-Ayland geschrieben:
+> > > Allow the VIA IDE controller to switch between both legacy and native modes by
+> > > calling pci_ide_update_mode() to reconfigure the device whenever PCI_CLASS_PROG
+> > > is updated.
+> > > 
+> > > This patch moves the initial setting of PCI_CLASS_PROG from via_ide_realize() to
+> > > via_ide_reset(), and removes the direct setting of PCI_INTERRUPT_PIN during PCI
+> > > bus reset since this is now managed by pci_ide_update_mode(). This ensures that
+> > > the device configuration is always consistent with respect to the currently
+> > > selected mode.
+> > > 
+> > > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> > > Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
+> > > Tested-by: Bernhard Beschow <shentey@gmail.com>
+> > 
+> > As I already noted in patch 1, the interrupt handling seems to be wrong
+> > here, it continues to use the ISA IRQ in via_ide_set_irq() even after
+> > switching to native mode.
 > 
-> IMAGESDIR=/images
-> ISO=${IMAGESDIR}/CentOS-7-x86_64-Minimal-2009.iso
+> That's a peculiarity of this via-ide device. It always uses 14/15 legacy
+> interrupts even in native mode and guests expect that so using native
+> interrupts would break pegasos2 guests. This was discussed and tested
+> extensively before.
 
-Oh, you are running a software museum ;)
+This definitely needs a comment to explain the situation then because
+this is in violation of the spec. If real hardware behaves like this,
+it's what we should do, of course, but it's certainly unexpected and we
+should explicitly document it to avoid breaking it later when someone
+touches the code who doesn't know about this peculiarity.
 
-> ================================================================================
-> Probing storage...
-> Installation Destination
-
-If you came that far the linux kernel has been booted.
-Do you have a kernel log for me?
-
-Also, what does "lscpu | grep -i address" print (on the host)?
-
-take care,
-  Gerd
+Kevin
 
 
