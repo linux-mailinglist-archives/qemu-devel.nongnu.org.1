@@ -2,99 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 165DA7E36E4
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 09:47:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5DF37E36E8
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 09:51:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0HjN-0000wM-NE; Tue, 07 Nov 2023 03:46:41 -0500
+	id 1r0Hn1-0003AL-19; Tue, 07 Nov 2023 03:50:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0HjM-0000vi-6C
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 03:46:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r0Hmw-00039x-VD; Tue, 07 Nov 2023 03:50:23 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0HjK-0002g6-Bv
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 03:46:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699346797;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/Yd3+rWWaZo+CYrr7kIDR+cpNL7vsCTyKF0xG+exMj4=;
- b=VtEdRifbaN3HgxoWEAKLtPokCEmE4PViCZF66/rs334+0HCRh7cJrvOpd5utrFcu7xnRG5
- 6e4RgFaNccmMJhryFkFrGKraHMNnVtr7b+AH5JRKmVO8G40xZBMzZCdaBF9js75ciKcbfu
- shGl/RV5u3JiBy0dXp732yieNmTOi20=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-58-b0a7FB3zOz-eE_Qw_K8v7A-1; Tue, 07 Nov 2023 03:46:36 -0500
-X-MC-Unique: b0a7FB3zOz-eE_Qw_K8v7A-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-507cb169766so5385771e87.0
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 00:46:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699346794; x=1699951594;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/Yd3+rWWaZo+CYrr7kIDR+cpNL7vsCTyKF0xG+exMj4=;
- b=vS5uyP3fomtZ446ev66XSYowhdUQ9G1blGk3WLNOR5hKLb1mjPQVLaIy7IRVYaFCXW
- gteW1oEGmw3oEZN9HKu0WS8yaCxylGdTLsgROAyaiImzujMIlXXG6qRlDIFIu9Rb1zxU
- rEs27/xDFp9OqjtUL/8o65sAWrHgtSogRKYjknEVGJ94whqG2lseHaDc9GY+JEUjVrZQ
- 0anfyc/cx3Z/FXNABMv5tEAJ8Vt1CDiuZdjVQMi9rdF6ceiiPa3HcktZ/lrQcyncMRnC
- E1ePZ1+y3JkHvvrJ/DTfQrqMH8yDUJoDLH7HdMNpf1NDNJu4AyR6nsLfFo0i4moPkbrG
- PPIQ==
-X-Gm-Message-State: AOJu0YzEZe76jiHLdTynYH8wp3yslnWtcWFoOJ4RIcqqY2PG0M2//wNZ
- Md7KGG1bo0D+4ep93D4YkAkx9miEwRTkzWHmze5aR7ZMsFWA0BebY2QkjVKQ1s50dNi5YuqdxrX
- XuoHlqn6GUD3ehVE=
-X-Received: by 2002:ac2:5925:0:b0:507:9fc1:ca7a with SMTP id
- v5-20020ac25925000000b005079fc1ca7amr23058183lfi.9.1699346794477; 
- Tue, 07 Nov 2023 00:46:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHdp85apcB1Vg0uC/F6cnLFuOJI/7RGB38INlFUtbOcQ8XQs3QggXRbvkDa3WcXBfarUeMD8A==
-X-Received: by 2002:ac2:5925:0:b0:507:9fc1:ca7a with SMTP id
- v5-20020ac25925000000b005079fc1ca7amr23058159lfi.9.1699346794040; 
- Tue, 07 Nov 2023 00:46:34 -0800 (PST)
-Received: from redhat.com ([2.55.35.37]) by smtp.gmail.com with ESMTPSA id
- g4-20020a05600c310400b004068e09a70bsm14916539wmo.31.2023.11.07.00.46.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 00:46:33 -0800 (PST)
-Date: Tue, 7 Nov 2023 03:46:26 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Stefan Hajnoczi <stefanha@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>, virtio-fs@redhat.com,
- Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Kevin Wolf <kwolf@redhat.com>, Erik Schilling <erik.schilling@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH v6 0/6] virtio: cleanup vhost-user-generic and reduce c&p
-Message-ID: <20231107034521-mutt-send-email-mst@kernel.org>
-References: <20231106191515.2801863-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r0Hmu-0003Hz-Nb; Tue, 07 Nov 2023 03:50:22 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id E644C75609B;
+ Tue,  7 Nov 2023 09:50:32 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id DB5C475608E; Tue,  7 Nov 2023 09:50:32 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id D987B756088;
+ Tue,  7 Nov 2023 09:50:32 +0100 (CET)
+Date: Tue, 7 Nov 2023 09:50:32 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+cc: Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
+ philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+Subject: Re: [PATCH v7 0/3] Add emulation of AmigaOne XE board
+In-Reply-To: <88d6fff6-b97e-7c55-bf29-6d3aa2ed690d@eik.bme.hu>
+Message-ID: <8cd19dfe-d4cb-ad71-c99e-51741ab71e44@eik.bme.hu>
+References: <cover.1698406922.git.balaton@eik.bme.hu>
+ <88d6fff6-b97e-7c55-bf29-6d3aa2ed690d@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231106191515.2801863-1-alex.bennee@linaro.org>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Virus-Scanned: ClamAV using ClamSMTP
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,26 +62,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 06, 2023 at 07:15:09PM +0000, Alex Bennée wrote:
-> A lot of our vhost-user stubs are large chunks of boilerplate that do
-> (mostly) the same thing. This series continues the cleanups by
-> splitting the vhost-user-base and vhost-user-generic implementations.
-> After adding a new vq_size property the rng, gpio and i2c vhost-user
-> devices become simple specialisations of the common base defining the
-> ID, number of queues and potentially the config handling.
-> 
-> I've also added Manos' vhost-user-sound while I was at it.
-> 
+On Mon, 6 Nov 2023, BALATON Zoltan wrote:
+> On Fri, 27 Oct 2023, BALATON Zoltan wrote:
+>> Changes in v7:
+>> - Increase default memory size to 512m to match pegasos2 and sam460ex
+>> and it's a better default for AmigaOS
+>> 
+>> Changes in v6:
+>> - Dropped patch 1, now it's
+>> 
+>> Based-on: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
+>> 
+>> ([PATCH v2 0/3] ide: implement simple legacy/native mode switching for PCI 
+>> IDE controllers)
+>> - Added Tested-by from Rene
+>> 
+>> Changes in v5:
+>> - Fixed avocado test
+>> 
+>> Changes in v4:
+>> - Found typo in comment in patch 1 so ended up rewording it again
+>> trying to make it more concise. Also take the idea of using
+>> range_covers_byte from Mark's patch
+>> - Added RFC patch for avocado test (untested, I don't have Avocado)
+>> 
+>> Changes in v3:
+>> - Update values, comment and commit message in patch 1 again
+>> 
+>> Changes in v2:
+>> - Update comment and commit message in patch 1 (Mark)
+>> - Fix irq mapping in patch 2 (Volker)
+>> 
+>> Regards,
+>> BALATON Zoltan
+>> 
+>> BALATON Zoltan (3):
+>>  hw/pci-host: Add emulation of Mai Logic Articia S
+>>  hw/ppc: Add emulation of AmigaOne XE board
+>>  tests/avocado: Add test for amigaone board
+>
+> Nick,
+>
+> Will you please send a pull request with this now? It's independent of the 
+> IDE fix which as a bugfix so can wait a little more but this series should be 
+> merged before the freeze starts tomorrow. (As this adds a new machine and 
+> does not touch anything else it can't break anything either.)
 
+Is there a PPC pull request in the making with this series in it? It would 
+be really sad to miss the release not being able to merge such a simple 
+series for weeks. As I said this is independent of any other fixes so I'd 
+like to get this in now please.
 
-gpio tests seem to be failing under clang:
+Regards,
+BALATON Zoltan
 
-https://gitlab.com/mstredhat/qemu/-/jobs/5475281549
-
-
-
-
--- 
-MST
-
+>> MAINTAINERS                             |   8 +
+>> configs/devices/ppc-softmmu/default.mak |   1 +
+>> hw/pci-host/Kconfig                     |   5 +
+>> hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
+>> hw/pci-host/meson.build                 |   2 +
+>> hw/ppc/Kconfig                          |   7 +
+>> hw/ppc/amigaone.c                       | 164 +++++++++++++
+>> hw/ppc/meson.build                      |   2 +
+>> include/hw/pci-host/articia.h           |  17 ++
+>> tests/avocado/ppc_amiga.py              |  38 +++
+>> 10 files changed, 537 insertions(+)
+>> create mode 100644 hw/pci-host/articia.c
+>> create mode 100644 hw/ppc/amigaone.c
+>> create mode 100644 include/hw/pci-host/articia.h
+>> create mode 100644 tests/avocado/ppc_amiga.py
+>> 
+>> 
+>
+>
 
