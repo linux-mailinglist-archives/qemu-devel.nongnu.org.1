@@ -2,86 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D077E351A
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 07:14:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CCF07E3521
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 07:16:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0FKr-0003Uc-Ih; Tue, 07 Nov 2023 01:13:13 -0500
+	id 1r0FNK-0004qQ-1f; Tue, 07 Nov 2023 01:15:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r0FKp-0003N8-KO
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 01:13:11 -0500
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1r0FNI-0004pn-FX
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 01:15:44 -0500
+Received: from mail-qt1-x834.google.com ([2607:f8b0:4864:20::834])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r0FKa-0007sx-Lr
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 01:13:11 -0500
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-9c773ac9b15so784543066b.2
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 22:12:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1r0FNF-0000Qd-Lu
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 01:15:44 -0500
+Received: by mail-qt1-x834.google.com with SMTP id
+ d75a77b69052e-41cc7379b23so34019371cf.3
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 22:15:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699337574; x=1699942374; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=8i/DVsUvhzFOD4AjDSqUcNrgVcqwYKIVIu/B5z9QBGc=;
- b=Tbb2zZEVKVZCBxlarQHQcVbGuTD0Vp3CQdaCxvCo06PBOAs7oa26pHEqIGXHn2GNfu
- Tu/WXW7I3MAGzWM3T+9js9T2OzAOQLJGF38OcyfH9aqu/4RwV7ybeynQaILDfaMy6qpB
- DrM0PwPO/VT8N3OojupP8mX1BChwBCXd/JqlipTjt5pIEhrtMVPp3W/nrEosga3bCp8Q
- Jlni+jmLUtMHXX3zO+Lx7edd2WbZG1wscWb/ecggNL7NxkZ5nvvYUjfHzR1l3SJmTkaJ
- ZUKI8K5sksyOb1MDOMgEWgBp2y7hXDazO3yxFXyGsomEyeVCJtfQadrw0kux1oNd37Yf
- af3w==
+ d=gmail.com; s=20230601; t=1699337740; x=1699942540; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=uLdhgPf4LdaB4nUthxIWRyr7VExyq8QfIg0WUEm+V+k=;
+ b=SqxaiZXd1FXKyiVCP7GqgYDiZIppkmmB8Dh/oK3lGV1omd9iFu1+3f8ySg2uLwz0lt
+ Ql6mrnF4jmedxMaUP3fkXVnSShH56sx4pvgBvEFD5qTyrl921auGTUlyGd/hAB2YFYym
+ q8dEpqyidmzW9WOGElPSGdXceCJW5vAo2X4xzTMhacy3o8TEDvNNv97Am27cUoBwoAV0
+ GcuhTZ7u0VEVi3eItVmf/3pYcHeyIftYMWF4JVLpsOlxnYTfPPvfL4m/RFzYzhMWRl9w
+ TMAhA0JLSokOiT2pGfFxxIQL2Qb3//u+VDtFqjjd19mXNcN2q2HxVAr2HtZLFTdp7rd8
+ TytA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699337574; x=1699942374;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8i/DVsUvhzFOD4AjDSqUcNrgVcqwYKIVIu/B5z9QBGc=;
- b=pQJXurQ/j+nLAhnzvs7y5RdyiZMe4IQB2xg9sgyRg2qVFN1gDPJZSNkuaezu1KMgsv
- c3otm7UJ+agFDrF5H+vMyk2uCVYkQNLI8dlYXjvTx/JBpjNwmGi5t7gjma3CCWj7BJdW
- UnYJazI7wTujN5IcbALv6zwCykYLfnpbz3WnV/m+uAqBV1m3Tw/vhmGYJPO99/0F6oKs
- 8KYugJvH1c5mpuUmFzCfvEJ7huDOz/ShkASJDv0TlIgIh1/Q2MHiT4PD7QRPAFCNNxev
- YaxvC6TjfFNiSLH9mB5u48MVW769ylMymdFGsTGqnVs4ZeINUdsT+QMjzXM9QfcAPNpU
- gI7A==
-X-Gm-Message-State: AOJu0Yz5f+d0/mrOdDj/huVvH2TyJAQs5P1Wrm9Sf6c9p3QAVREbRrnl
- 2Ntcy3tCrTLkgc+eucJqb1CKoHfCBNqpg78511kzBw==
-X-Google-Smtp-Source: AGHT+IF5ufAg1P4E2vFe6zkG5fUwolJbBBAp/WDW4oDV22U2XnVl+27uRfjze1uUV0B1gZQmR8CQPHfCTkjioiTsBPs=
-X-Received: by 2002:a17:907:26c5:b0:9e0:2319:16dc with SMTP id
- bp5-20020a17090726c500b009e0231916dcmr4885461ejc.73.1699337574382; Mon, 06
- Nov 2023 22:12:54 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699337740; x=1699942540;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=uLdhgPf4LdaB4nUthxIWRyr7VExyq8QfIg0WUEm+V+k=;
+ b=LwD5iE4blHYerBiinFBRDKcrU56dqtethMtoBwMPaVpIAi2dmBJRY/NQEs6WpAwHwz
+ RwX8wOOQ/mxa1DbJdGIzakJvubTSMEAKH0myM0E/TbeUSUhSQHsDFY9+jbpVZZ8ncIAV
+ heWgQXmASa0VqC9CM2yauPeaNcaBBq2xIN1bp8fzrIeA8JnlRpDAfIdIFilMD2PWEREh
+ 3O1M/onsvc2doH3U/SVQkD6rDSAO8Gq2Im2cvAZpHwIdqnauigNxACjSuN3KyNhqVcCq
+ 9z95VxEJ/MaIr4Ukz2Wk3CHvEdVZhbMfnjEuokVaBHwOvQ6okBbJshOtHZJKbbV69qu8
+ +tcw==
+X-Gm-Message-State: AOJu0YwRiAX61BDbLPX7Ax5BeM/QmcJf3j6zIC0ou/p9MDVLgnDvr9Ua
+ xonwJvd1v7DjacTqN0Dti2tFuTkoMVENYgUsK7SCq0gcmS+R+w==
+X-Google-Smtp-Source: AGHT+IHJi3od/MLdgwUuDnUebT99UznkWpKg3sEla88otAJoD5BHnx5UNmuubcKXjZ2MuGq2TNhnZbUSGpiHLG5rBRs=
+X-Received: by 2002:a05:622a:30f:b0:41c:d9e7:7782 with SMTP id
+ q15-20020a05622a030f00b0041cd9e77782mr37943275qtw.68.1699337740299; Mon, 06
+ Nov 2023 22:15:40 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1698062525.git.manos.pitsidianakis@linaro.org>
- <20231106194352-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20231106194352-mutt-send-email-mst@kernel.org>
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Tue, 7 Nov 2023 08:12:38 +0200
-Message-ID: <CAAjaMXY3YSBbYHAvnMkP64Tze-RcroMcj2T85i8h2y-Rz1-8YA@mail.gmail.com>
-Subject: Re: [PATCH v13 00/11] Add VIRTIO sound card
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
- Igor Skalkin <Igor.Skalkin@opensynergy.com>, 
- Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>, 
- =?UTF-8?B?S8WRdsOhZ8OzLCBab2x0w6Fu?= <DirtY.iCE.hu@gmail.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Stefano Garzarella <sgarzare@redhat.com>
+References: <20231107024417.585475-1-min_halo@163.com>
+In-Reply-To: <20231107024417.585475-1-min_halo@163.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 7 Nov 2023 10:15:28 +0400
+Message-ID: <CAJ+F1C+HqF8646efF7vHGL4jQexUh9Q72T3SPvEXDbj4p7SyDg@mail.gmail.com>
+Subject: Re: [PATCH] dump:Add close fd on error return to avoid resource leak
+To: Zongmin Zhou <min_halo@163.com>
+Cc: qemu-devel@nongnu.org, Zongmin Zhou <zhouzongmin@kylinos.cn>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x635.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::834;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x834.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,23 +86,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 7 Nov 2023 at 02:44, Michael S. Tsirkin <mst@redhat.com> wrote:
+On Tue, Nov 7, 2023 at 10:07=E2=80=AFAM Zongmin Zhou <min_halo@163.com> wro=
+te:
 >
-> On Mon, Oct 23, 2023 at 03:03:17PM +0300, Manos Pitsidianakis wrote:
-> > This patch series adds an audio device implementing the recent virtio
-> > sound spec (1.2) and a corresponding PCI wrapper device.
->
->
-> Pls send patches on top to fix checkpatch warnings.
->
-> https://gitlab.com/mstredhat/qemu/-/jobs/5470533893
+> Signed-off-by: Zongmin Zhou<zhouzongmin@kylinos.cn>
 
-Do you mean this one?
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-6583087d531f2e37a2e2ba2cef7d123e21f8b0ad:214: ERROR: spaces required
-around that ':' (ctx:VxE)
-total: 1 errors, 0 warnings, 674 lines checked
+> ---
+>  dump/dump.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/dump/dump.c b/dump/dump.c
+> index 1c304cadfd..ad5294e853 100644
+> --- a/dump/dump.c
+> +++ b/dump/dump.c
+> @@ -2160,6 +2160,7 @@ void qmp_dump_guest_memory(bool paging, const char =
+*protocol,
+>          return;
+>      }
+>      if (kdump_raw && lseek(fd, 0, SEEK_CUR) =3D=3D (off_t) -1) {
+> +        close(fd);
+>          error_setg(errp, "kdump-raw formats require a seekable file");
+>          return;
+>      }
+> --
+> 2.34.1
+>
+>
 
-If yes, it's a false warning. It's a switch statement with a macro and
-it confuses it with the ternary operator.
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
