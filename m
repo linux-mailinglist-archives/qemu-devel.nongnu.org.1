@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AAA57E3D83
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 13:29:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C94B97E3D51
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 13:27:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0LB0-0001FM-TL; Tue, 07 Nov 2023 07:27:26 -0500
+	id 1r0LAw-0000Yf-NH; Tue, 07 Nov 2023 07:27:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L9z-0006sG-9M
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:26:23 -0500
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0LA6-0007Eu-0y
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:26:30 -0500
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L9s-0005Iw-6H
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:26:22 -0500
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-9c53e8b7cf4so840227466b.1
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 04:26:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L9v-0005KG-KF
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:26:29 -0500
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-9d2d8343dc4so838417866b.0
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 04:26:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699359972; x=1699964772; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699359978; x=1699964778; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qmG50O/2f50/2WgP2HPpZwiYXOel5yrYkpXTGRW5eAc=;
- b=YqDKViovIWaWNrSqs0vCDmYg1PEvUvvDip/VCoId1cERTIbMa4XR0RWxhVzZdjR3Ty
- +gFu49p3WcAIouwhKo7T9sDVjdpimbAvMkgnHzZFyOXuZLT8BqZzeQ3pz6IJUHqF0t54
- YzrfjgjoSpTQPPUu7TkrJhyTld4z/XEdiDWbHiOzys+ohKK+yLSuf56eDrFZP/22iTXh
- 9u+aqpad2VMWFPcpqF/C3KRi59ftlgPoEbr9VIYP1Qeqf0sMdXMaveOqO716cgXj3Up+
- /jUDrz6B/vlGieQI1M8Ukf02J2SkTAOL1pFuiDz/WJi+6viybbwcmHHmb04lplI9h4AA
- 1rQA==
+ bh=G5jwu7f17a+yqtzy4C256uds7gVdP2jJyZeTSPjjH48=;
+ b=mzdkjLFAtNlSHmxJWhBWOxnfd+bp2pQOClHzjs0mj/rdTVg4Ea7/LfIobDvBYYJCo9
+ C9E4JaDH974mCL4duZb8BXCRyfnbUrQuNo8Z/+cVy5PfyT3zpIRCFuuZl2sVjLSEg+rF
+ 4/qzHmZe89N20Is8dyfZpgT4AH8b93WohCCkxXB4quzCzdWVbGPZBLPQiVMydEy2Gbn+
+ t2ATShzJh8L4D6te8R0mrzkwUWLtTvuLOcrzRf1u7h7DpRPWcxnNL5Q7yAbsUSytGZ89
+ v7xSmg8H4aYlip5PleiGnthU1lE24rbtl1mO9hJBuFdElnMp7h3xKzFEwa8B+EsOxZTB
+ gF+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699359972; x=1699964772;
+ d=1e100.net; s=20230601; t=1699359978; x=1699964778;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qmG50O/2f50/2WgP2HPpZwiYXOel5yrYkpXTGRW5eAc=;
- b=nUx8J7s9guC05RMaAIJhe1FhhKOGgKTQANjZm5XGj8ZjUj0Z/81jdloI2vaJZq5FLO
- ug6ghb57DxV7s7J/rZ0ihLVtB0I4HbYhpMSnbMrlHOmhU3DUNiR27fKUjJANDo1mXPfc
- UacwXW6blng4ZM8DrvJDDKQmQgUhDLDwNDlDzPaB4ip8/XW7ApgClHXINvEktjLZzpZ6
- Gr5OOWzRe6weI4GpcHwlHY8LOd4IRhGY0ceyWdUvsNfIF03Z6aSwozsUUwaI9866uRpM
- x7HsNmx2v6e1RjBw3NviLFm5rEzRK9FaFClDtTlfeQEH6JKyvvZ4F5gCSCo9Omf/PBNP
- U8pw==
-X-Gm-Message-State: AOJu0YwVfUrq2jIReJqD2GNxE7ISUv1brp58rZVtYSx2YUogCu9QE/GH
- vbCNMyCFJMOenScteSK9Zzp2wusSnHYzr2H5L4w=
-X-Google-Smtp-Source: AGHT+IFxWQrfEBcl5NXrCBGPBwPhcJoKBU53mNboU0c8IUkQBQXplWulnu+kXpy+b3L94b87BBhvNQ==
-X-Received: by 2002:a17:907:934c:b0:9bf:b6f5:3a08 with SMTP id
- bv12-20020a170907934c00b009bfb6f53a08mr15984029ejc.52.1699359972231; 
- Tue, 07 Nov 2023 04:26:12 -0800 (PST)
+ bh=G5jwu7f17a+yqtzy4C256uds7gVdP2jJyZeTSPjjH48=;
+ b=j4nC3zAuGhC+YGbpNpau4HfwFMUtr/XbSTtxBSOk/4gCau7EiTh2+ViHyJWS0Tk+sO
+ ZCuS/tNclJAUYqGHcMDklHywY7Uuh7BQ3ZImrR7ku3NmStH8pqzTkIkxkMdC3ZIlaN3v
+ VpEo9SdT5KvCwk+nFD0uJt7pqEyIyiq8H6ObnQhVdFQMErQU3us8/RSbNt5pUrabxIjc
+ MgovWCPoKzeQdD3M9KQu1VlH3AHFEyXk0PlKyhk0hHgI+lmF4eDu+ierucebP0dcQc5j
+ 82LPr7jZno7WiMLlbBEehwyz2y6xFEaZ6V9cQfLxTfZvJTdEJiydHrZXx2c1FepCFcl3
+ +bPA==
+X-Gm-Message-State: AOJu0Ywbtil6k68gnjpAE7WVMl0I4whAICoUxfW/UNfMic4lkL5oHgHQ
+ b1bFYckJjNIqZMb6AZeoxDL1nj+VRjB4DvQpdDk=
+X-Google-Smtp-Source: AGHT+IF1bAmhsZy7a81GGB/OM2OIgpR0Z5xrK8Sglh0M+mSuV2WJ+N7GENwlcn1z45jcWBghWUvEBw==
+X-Received: by 2002:a17:907:724e:b0:9be:5ab2:73c0 with SMTP id
+ ds14-20020a170907724e00b009be5ab273c0mr16879801ejc.8.1699359977901; 
+ Tue, 07 Nov 2023 04:26:17 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.216.69])
  by smtp.gmail.com with ESMTPSA id
- s12-20020a170906168c00b0099cd1c0cb21sm972160ejd.129.2023.11.07.04.26.10
+ md5-20020a170906ae8500b009ad7fc17b2asm989795ejb.224.2023.11.07.04.26.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 07 Nov 2023 04:26:11 -0800 (PST)
+ Tue, 07 Nov 2023 04:26:17 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  qemu-s390x@nongnu.org, qemu-riscv@nongnu.org,
- Thomas Huth <thuth@redhat.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, Konstantin Kostiuk <kkostiuk@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 72/75] MAINTAINERS: Add include/hw/xtensa/mx_pic.h to the
- XTFPGA machine section
-Date: Tue,  7 Nov 2023 13:24:39 +0100
-Message-ID: <20231107122442.58674-15-philmd@linaro.org>
+Subject: [PULL 73/75] MAINTAINERS: Add more guest-agent related files to the
+ corresponding section
+Date: Tue,  7 Nov 2023 13:24:40 +0100
+Message-ID: <20231107122442.58674-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231107122442.58674-1-philmd@linaro.org>
 References: <20231107122442.58674-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,31 +96,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-These machines are the only user of the mx_pic code, so the
-header (which is currently "unmaintained" according to the
-MAINTAINERS file) should be added to this section.
+contrib/systemd/qemu-guest-agent.service, tests/data/test-qga-config
+and tests/data/test-qga-os-release belong to the guest agent, so make
+sure that these files are covered here, too.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Acked-by: Max Filippov <jcmvbkbc@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231107102104.14342-1-thuth@redhat.com>
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+Message-ID: <20231107101811.14189-1-thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ MAINTAINERS | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 2a17decd31..2a9354e695 100644
+index 2a9354e695..bc69253a25 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1861,6 +1861,7 @@ M: Max Filippov <jcmvbkbc@gmail.com>
+@@ -3145,10 +3145,11 @@ M: Michael Roth <michael.roth@amd.com>
+ M: Konstantin Kostiuk <kkostiuk@redhat.com>
  S: Maintained
- F: hw/xtensa/xtfpga.c
- F: hw/net/opencores_eth.c
-+F: include/hw/xtensa/mx_pic.h
+ F: qga/
++F: contrib/systemd/qemu-guest-agent.service
+ F: docs/interop/qemu-ga.rst
+ F: docs/interop/qemu-ga-ref.rst
+ F: scripts/qemu-guest-agent/
+-F: tests/unit/test-qga.c
++F: tests/*/test-qga*
+ T: git https://github.com/mdroth/qemu.git qga
  
- Devices
- -------
+ QEMU Guest Agent Win32
 -- 
 2.41.0
 
