@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9A37E48C9
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:53:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB5F7E48CB
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:54:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0RCl-0005IC-F0; Tue, 07 Nov 2023 13:53:39 -0500
+	id 1r0RD3-0005eL-IO; Tue, 07 Nov 2023 13:53:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1r0RCg-0005GJ-7q; Tue, 07 Nov 2023 13:53:34 -0500
-Received: from mail-yb1-xb36.google.com ([2607:f8b0:4864:20::b36])
+ id 1r0RCz-0005cw-T0; Tue, 07 Nov 2023 13:53:54 -0500
+Received: from mail-yb1-xb35.google.com ([2607:f8b0:4864:20::b35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1r0RCU-0002WT-DU; Tue, 07 Nov 2023 13:53:33 -0500
-Received: by mail-yb1-xb36.google.com with SMTP id
- 3f1490d57ef6-da0359751dbso5279838276.1; 
- Tue, 07 Nov 2023 10:53:21 -0800 (PST)
+ id 1r0RCy-0002Xw-Cb; Tue, 07 Nov 2023 13:53:53 -0500
+Received: by mail-yb1-xb35.google.com with SMTP id
+ 3f1490d57ef6-da37522a363so6355134276.0; 
+ Tue, 07 Nov 2023 10:53:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699383201; x=1699988001; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699383230; x=1699988030; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=7gjNyXZrHm7qXCkMUjc8N64XhhmRTNnU6Ef5LT2jNhk=;
- b=U3EoZGkOZWzQN6xNzD+tuemyvy3OE8qIia6d0tUGwEq63JAZbXZ4Bk5s2HXykwvdxP
- 0l/bKr73FmtQmf1++jnz/P9hz78+Qs2aTMyxuq8h7ROVi0brdMtEN40GC9jLnWZNgHne
- oQwgkfzsGQ2NDKSY4gZSdQyjoQeAFcBtEn+p3S4cNlindl6sNzYKAApUdP7Pv+4ndeTc
- EzQ5Cl01Nx/LaoEPsW8JNXVq8gDvoslJiVycScnhRNaevBTlc7KAIIBZlTmvapVmSS5W
- rMKQXBmrCa2VbMLzSEw9O+fwvJB1kY4KdUIXNsaJMqcDr+frqbfSDW2B8bcvWhhLHFgg
- xcdA==
+ bh=hkWsks7ta1p6k6GLqg2B714e4HOapj1CsWPsWZbXV6A=;
+ b=G0mX0f9xMN2upw/eRRCkfazpHvw8u1n19fMjIJOjje+f6hDbYfbaDvoKg9p2srB+Bq
+ Z8dO8nSPV/mK9RXON2ljYHbqjF3kqWaXcrt1kmsnubtMGufTX4oziinyMrXDSSFborEu
+ HvawDHPIVkLjuqSDVMJazkzRTi4NxGuAwvdmE9OEHwtMW8HjWcdX9ccGucqvjbW64hNx
+ c2+tqR7HCrCvqE0laktrXgOMFb4Tx/5TEJv3Lo+l+EqSXlRaiVaH1TFQX3AREc1zsnZB
+ J7m93teeKF65NSIgFDQRdran8WMZzzLmFMemJsinbgiUE/CXF4rf01UToed03406Cizd
+ fxng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699383201; x=1699988001;
+ d=1e100.net; s=20230601; t=1699383230; x=1699988030;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7gjNyXZrHm7qXCkMUjc8N64XhhmRTNnU6Ef5LT2jNhk=;
- b=Wgpb465KnAQZhjsm60YAI5iv700dHiArXxHYIQnGbdZ+GRuxHNaUFtRXKmwM0+xZaz
- D9L5JsFsp8qc7pH0dux+F6ectSB4ayBM4iyviyXCsmGfnbY71rk9XY4JKt1yiwkDzAct
- CsXe2iXlbYf+yJnrb6V60KsAjpVPsghVMCF55F2yVQ9suVQNT33Zgrx8qwgDaNOQC9lF
- FM+SZhDbW5CA5ZMvsNRlrVvE97xzgUOBJ2mjuFn2eyMQHtvguIY3aue/8hJTkVtuIJYI
- 8Uwhra/5y/bg6Tp17WNwxWqlBj1zirrqX+fVuuc3Ct+yViWRRpB79vHvmlqV9avBYJvs
- qTuw==
-X-Gm-Message-State: AOJu0YyxA0CjA3yslr08IXc6R9zSaHuNAr4Ik8VmSW1SYSWXUBggIEir
- MdWw6ZmyaHBlEOXxJay6uSpQCgkkHbg=
-X-Google-Smtp-Source: AGHT+IGOK30oKKwQg1plLz9q/vP8VGAB6Ekyyt0FnZtqT1KbBoJE22+UwVB3MLOT5opKazxaJ0PDVA==
-X-Received: by 2002:a25:cc1:0:b0:d9a:d8bd:7b9c with SMTP id
- 184-20020a250cc1000000b00d9ad8bd7b9cmr2392489ybm.11.1699383200759; 
- Tue, 07 Nov 2023 10:53:20 -0800 (PST)
+ bh=hkWsks7ta1p6k6GLqg2B714e4HOapj1CsWPsWZbXV6A=;
+ b=SuLuD4PKhr/YmP523qM9IMlcZYpJ3XKDUKqLk5PnYcKRxpT7hcj8H8cq2+TWzZ/2J3
+ OlnlQC4OBDYce6mfPGJFXr7jcw0NlUPeNp9sgpFL2UhO5FbBaeZ5fNJAU9RigpUiPUtB
+ 8HF3YnJWkeimwmi8LY/qzl1lbq/hnY8GufbBYP44/qcDO6QkDXmjKcSs+U4r56PW9adv
+ l6/j6z7IXIEfHv/XsnS+l0oVXtslCpoQPI7mlRH3vPp5coFbB6seqMiE0VMlKB0UOdG8
+ hyu7ncPkGaHJ1uYScwHsY50zzaGEC66VdWm760kujetOSyb9fQFSQn7Bri3UQe9RL7t+
+ Ls2w==
+X-Gm-Message-State: AOJu0YwHLkXFLEJ9zGqngHEk53Cl7pFUvcQz6xnTu+GNzBAeCgwWeoSO
+ sQ/USmp08I+12w11RSsmNIUXqkZeQiA=
+X-Google-Smtp-Source: AGHT+IHkx+hAaajzfBqZSZbASCeASP/H4KR0cLilCKS3nsdQTOxGa3MEjt5/9gaVonENxNhiyB6pQA==
+X-Received: by 2002:a25:aaae:0:b0:d9a:5666:7ab5 with SMTP id
+ t43-20020a25aaae000000b00d9a56667ab5mr33678363ybi.10.1699383229744; 
+ Tue, 07 Nov 2023 10:53:49 -0800 (PST)
 Received: from [192.168.68.107] ([179.193.10.161])
  by smtp.gmail.com with ESMTPSA id
- v17-20020a259111000000b00d7b8a1074d4sm5286568ybl.57.2023.11.07.10.53.18
+ v17-20020a259111000000b00d7b8a1074d4sm5286568ybl.57.2023.11.07.10.53.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Nov 2023 10:53:20 -0800 (PST)
-Message-ID: <9321822c-58d8-464d-91ad-12e078f1d001@gmail.com>
-Date: Tue, 7 Nov 2023 15:53:18 -0300
+ Tue, 07 Nov 2023 10:53:49 -0800 (PST)
+Message-ID: <02dff207-a1b2-4705-8350-3ca5b5c65978@gmail.com>
+Date: Tue, 7 Nov 2023 15:53:47 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/3] tests/avocado: Add test for amigaone board
+Subject: Re: [PATCH v7 0/3] Add emulation of AmigaOne XE board
 Content-Language: en-US
 To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
  qemu-ppc@nongnu.org
@@ -67,13 +67,12 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, clg@kaod.org, philmd@linaro.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
 References: <cover.1698406922.git.balaton@eik.bme.hu>
- <b1a0246840fcff1fe6bbd8685e2474a9231b34c5.1698406922.git.balaton@eik.bme.hu>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <b1a0246840fcff1fe6bbd8685e2474a9231b34c5.1698406922.git.balaton@eik.bme.hu>
+In-Reply-To: <cover.1698406922.git.balaton@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b36;
- envelope-from=danielhb413@gmail.com; helo=mail-yb1-xb36.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b35;
+ envelope-from=danielhb413@gmail.com; helo=mail-yb1-xb35.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,64 +97,64 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+Patches 1 and 3 from v7, and 2 from v9, queued in ppc-next.
+
+
+Thanks,
+
+Daniel
 
 On 10/27/23 08:54, BALATON Zoltan wrote:
-> Add an avocado test for the amigaone board that tests it with the
-> firmware.
+> Changes in v7:
+> - Increase default memory size to 512m to match pegasos2 and sam460ex
+> and it's a better default for AmigaOS
 > 
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
-
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-
-
-
->   tests/avocado/ppc_amiga.py | 38 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 38 insertions(+)
+> Changes in v6:
+> - Dropped patch 1, now it's
+> 
+> Based-on: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
+> 
+> ([PATCH v2 0/3] ide: implement simple legacy/native mode switching for PCI IDE controllers)
+> - Added Tested-by from Rene
+> 
+> Changes in v5:
+> - Fixed avocado test
+> 
+> Changes in v4:
+> - Found typo in comment in patch 1 so ended up rewording it again
+> trying to make it more concise. Also take the idea of using
+> range_covers_byte from Mark's patch
+> - Added RFC patch for avocado test (untested, I don't have Avocado)
+> 
+> Changes in v3:
+> - Update values, comment and commit message in patch 1 again
+> 
+> Changes in v2:
+> - Update comment and commit message in patch 1 (Mark)
+> - Fix irq mapping in patch 2 (Volker)
+> 
+> Regards,
+> BALATON Zoltan
+> 
+> BALATON Zoltan (3):
+>    hw/pci-host: Add emulation of Mai Logic Articia S
+>    hw/ppc: Add emulation of AmigaOne XE board
+>    tests/avocado: Add test for amigaone board
+> 
+>   MAINTAINERS                             |   8 +
+>   configs/devices/ppc-softmmu/default.mak |   1 +
+>   hw/pci-host/Kconfig                     |   5 +
+>   hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
+>   hw/pci-host/meson.build                 |   2 +
+>   hw/ppc/Kconfig                          |   7 +
+>   hw/ppc/amigaone.c                       | 164 +++++++++++++
+>   hw/ppc/meson.build                      |   2 +
+>   include/hw/pci-host/articia.h           |  17 ++
+>   tests/avocado/ppc_amiga.py              |  38 +++
+>   10 files changed, 537 insertions(+)
+>   create mode 100644 hw/pci-host/articia.c
+>   create mode 100644 hw/ppc/amigaone.c
+>   create mode 100644 include/hw/pci-host/articia.h
 >   create mode 100644 tests/avocado/ppc_amiga.py
 > 
-> diff --git a/tests/avocado/ppc_amiga.py b/tests/avocado/ppc_amiga.py
-> new file mode 100644
-> index 0000000000..b6f866f91d
-> --- /dev/null
-> +++ b/tests/avocado/ppc_amiga.py
-> @@ -0,0 +1,38 @@
-> +# Test AmigaNG boards
-> +#
-> +# Copyright (c) 2023 BALATON Zoltan
-> +#
-> +# This work is licensed under the terms of the GNU GPL, version 2 or
-> +# later.  See the COPYING file in the top-level directory.
-> +
-> +from avocado.utils import archive
-> +from avocado.utils import process
-> +from avocado_qemu import QemuSystemTest
-> +from avocado_qemu import wait_for_console_pattern
-> +
-> +class AmigaOneMachine(QemuSystemTest):
-> +
-> +    timeout = 90
-> +
-> +    def test_ppc_amigaone(self):
-> +        """
-> +        :avocado: tags=arch:ppc
-> +        :avocado: tags=machine:amigaone
-> +        :avocado: tags=device:articia
-> +        :avocado: tags=accel:tcg
-> +        """
-> +        self.require_accelerator("tcg")
-> +        tar_name = 'A1Firmware_Floppy_05-Mar-2005.zip'
-> +        tar_url = ('https://www.hyperion-entertainment.com/index.php/'
-> +                   'downloads?view=download&format=raw&file=25')
-> +        tar_hash = 'c52e59bc73e31d8bcc3cc2106778f7ac84f6c755'
-> +        zip_file = self.fetch_asset(tar_name, locations=tar_url,
-> +                                    asset_hash=tar_hash)
-> +        archive.extract(zip_file, self.workdir)
-> +        cmd = f"tail -c 524288 {self.workdir}/floppy_edition/updater.image >{self.workdir}/u-boot-amigaone.bin"
-> +        process.run(cmd, shell=True)
-> +
-> +        self.vm.set_console()
-> +        self.vm.add_args('-bios', self.workdir + '/u-boot-amigaone.bin')
-> +        self.vm.launch()
-> +        wait_for_console_pattern(self, 'FLASH:')
 
