@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC8457E48C7
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:53:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE9A37E48C9
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:53:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0RCI-0004Dm-C9; Tue, 07 Nov 2023 13:53:10 -0500
+	id 1r0RCl-0005IC-F0; Tue, 07 Nov 2023 13:53:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1r0RCG-0004C7-6r; Tue, 07 Nov 2023 13:53:08 -0500
-Received: from mail-yb1-xb30.google.com ([2607:f8b0:4864:20::b30])
+ id 1r0RCg-0005GJ-7q; Tue, 07 Nov 2023 13:53:34 -0500
+Received: from mail-yb1-xb36.google.com ([2607:f8b0:4864:20::b36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1r0RCD-0002UR-OX; Tue, 07 Nov 2023 13:53:07 -0500
-Received: by mail-yb1-xb30.google.com with SMTP id
- 3f1490d57ef6-d9fe0a598d8so5937181276.2; 
- Tue, 07 Nov 2023 10:53:04 -0800 (PST)
+ id 1r0RCU-0002WT-DU; Tue, 07 Nov 2023 13:53:33 -0500
+Received: by mail-yb1-xb36.google.com with SMTP id
+ 3f1490d57ef6-da0359751dbso5279838276.1; 
+ Tue, 07 Nov 2023 10:53:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699383184; x=1699987984; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699383201; x=1699988001; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=UAYi7teRxAJkPzCd5gnI3MSx7n4f7lxrpvAo8gHSjvw=;
- b=RdwTHjwGOrwAjTGEuZayX5EMZ1z6tcGiQiFd4XNXSXwi3nDbNXtywU4Qppsyf29sas
- 7Xh37NOXOAePE2Yu9dqNJHV9lUGQfjq+xhnEuO7MKk7H1bEglpJC6GwLSD5yD4tfBm27
- 4Rpuzt2PGuBu4Pw1h71eyeT2b1n6ghDj70ttMXBf51esWx2PSuzPEkG2A41pPdJKbz+5
- nrpkNTFD8X9UHu8OJ2yvAzkXU4+tIRA4VyXh/e9C9n/WuaLje8SE5UUyO90/LaHRpS10
- PZyVJAMVRy67WuSDB0kdmJP44GnX8ippgnyPeVRMPYSWoWi8ubNBc1rPpJ20gewyjicd
- aNzA==
+ bh=7gjNyXZrHm7qXCkMUjc8N64XhhmRTNnU6Ef5LT2jNhk=;
+ b=U3EoZGkOZWzQN6xNzD+tuemyvy3OE8qIia6d0tUGwEq63JAZbXZ4Bk5s2HXykwvdxP
+ 0l/bKr73FmtQmf1++jnz/P9hz78+Qs2aTMyxuq8h7ROVi0brdMtEN40GC9jLnWZNgHne
+ oQwgkfzsGQ2NDKSY4gZSdQyjoQeAFcBtEn+p3S4cNlindl6sNzYKAApUdP7Pv+4ndeTc
+ EzQ5Cl01Nx/LaoEPsW8JNXVq8gDvoslJiVycScnhRNaevBTlc7KAIIBZlTmvapVmSS5W
+ rMKQXBmrCa2VbMLzSEw9O+fwvJB1kY4KdUIXNsaJMqcDr+frqbfSDW2B8bcvWhhLHFgg
+ xcdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699383184; x=1699987984;
+ d=1e100.net; s=20230601; t=1699383201; x=1699988001;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UAYi7teRxAJkPzCd5gnI3MSx7n4f7lxrpvAo8gHSjvw=;
- b=ok3CloHNwN1+UTEOoT9xGXTEdJgc0g7NrqXVxaO8Znsc5Cn9pT/gXtfH1VoAA/fYKr
- VLMOwTbw4OV9MPNgqSzf2CDIMlurqUU34gT7nDAdT0l8c+c634K++StTG6SpVTx79xv3
- IqL8dbQ/uj4Gfj8TShDf9CcMOFL2coIj9n7YXeDSLg7kDtTqP2I8j/snBoTMDcFKnFfy
- /DulNcrgQB+om1JQ9cIST4PxiYhaf3UAkiUQ2d1MELwZJhH+z6ITXnt6OnOWsZ0dOUA4
- V03++Vjh+5FkMA7t3Uzt25ZrlSFX9YACsvzhLbDbnou48l13MOHW+E6j5BviGmQTYbga
- crmg==
-X-Gm-Message-State: AOJu0YwFuIQiYCtxOHr2ej+3pRJyT9KZqmn+Ip6sRd6JC8cJZkww4fb3
- jxwLhhfSDcALX/UxPE4Ip6o=
-X-Google-Smtp-Source: AGHT+IEyknTWu17ThX9Avj83dFakqokpkZd8n6YhPY6vSWopZudSELh4dbv6iw4TCrgHgRQSyd6CCA==
-X-Received: by 2002:a25:b11c:0:b0:d9b:351:6657 with SMTP id
- g28-20020a25b11c000000b00d9b03516657mr31882174ybj.23.1699383183882; 
- Tue, 07 Nov 2023 10:53:03 -0800 (PST)
+ bh=7gjNyXZrHm7qXCkMUjc8N64XhhmRTNnU6Ef5LT2jNhk=;
+ b=Wgpb465KnAQZhjsm60YAI5iv700dHiArXxHYIQnGbdZ+GRuxHNaUFtRXKmwM0+xZaz
+ D9L5JsFsp8qc7pH0dux+F6ectSB4ayBM4iyviyXCsmGfnbY71rk9XY4JKt1yiwkDzAct
+ CsXe2iXlbYf+yJnrb6V60KsAjpVPsghVMCF55F2yVQ9suVQNT33Zgrx8qwgDaNOQC9lF
+ FM+SZhDbW5CA5ZMvsNRlrVvE97xzgUOBJ2mjuFn2eyMQHtvguIY3aue/8hJTkVtuIJYI
+ 8Uwhra/5y/bg6Tp17WNwxWqlBj1zirrqX+fVuuc3Ct+yViWRRpB79vHvmlqV9avBYJvs
+ qTuw==
+X-Gm-Message-State: AOJu0YyxA0CjA3yslr08IXc6R9zSaHuNAr4Ik8VmSW1SYSWXUBggIEir
+ MdWw6ZmyaHBlEOXxJay6uSpQCgkkHbg=
+X-Google-Smtp-Source: AGHT+IGOK30oKKwQg1plLz9q/vP8VGAB6Ekyyt0FnZtqT1KbBoJE22+UwVB3MLOT5opKazxaJ0PDVA==
+X-Received: by 2002:a25:cc1:0:b0:d9a:d8bd:7b9c with SMTP id
+ 184-20020a250cc1000000b00d9ad8bd7b9cmr2392489ybm.11.1699383200759; 
+ Tue, 07 Nov 2023 10:53:20 -0800 (PST)
 Received: from [192.168.68.107] ([179.193.10.161])
  by smtp.gmail.com with ESMTPSA id
- v17-20020a259111000000b00d7b8a1074d4sm5286568ybl.57.2023.11.07.10.53.00
+ v17-20020a259111000000b00d7b8a1074d4sm5286568ybl.57.2023.11.07.10.53.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Nov 2023 10:53:03 -0800 (PST)
-Message-ID: <cf424d56-89ce-40f4-993e-929e7d2a1cae@gmail.com>
-Date: Tue, 7 Nov 2023 15:53:00 -0300
+ Tue, 07 Nov 2023 10:53:20 -0800 (PST)
+Message-ID: <9321822c-58d8-464d-91ad-12e078f1d001@gmail.com>
+Date: Tue, 7 Nov 2023 15:53:18 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/3] hw/pci-host: Add emulation of Mai Logic Articia S
+Subject: Re: [PATCH v7 3/3] tests/avocado: Add test for amigaone board
 Content-Language: en-US
 To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
  qemu-ppc@nongnu.org
@@ -67,13 +67,13 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, clg@kaod.org, philmd@linaro.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
 References: <cover.1698406922.git.balaton@eik.bme.hu>
- <83822787431701cf4d460298d3e3845f362e5da1.1698406922.git.balaton@eik.bme.hu>
+ <b1a0246840fcff1fe6bbd8685e2474a9231b34c5.1698406922.git.balaton@eik.bme.hu>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <83822787431701cf4d460298d3e3845f362e5da1.1698406922.git.balaton@eik.bme.hu>
+In-Reply-To: <b1a0246840fcff1fe6bbd8685e2474a9231b34c5.1698406922.git.balaton@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b30;
- envelope-from=danielhb413@gmail.com; helo=mail-yb1-xb30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b36;
+ envelope-from=danielhb413@gmail.com; helo=mail-yb1-xb36.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,373 +100,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 10/27/23 08:54, BALATON Zoltan wrote:
-> The Articia S is a generic chipset supporting several different CPUs
-> that were among others used on some PPC boards. This is a minimal
-> emulation of the parts needed for emulating the AmigaOne board.
+> Add an avocado test for the amigaone board that tests it with the
+> firmware.
 > 
 > Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> Tested-by: Rene Engel <ReneEngel80@emailn.de>
 > ---
 
-Acked-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 
->   hw/pci-host/Kconfig           |   5 +
->   hw/pci-host/articia.c         | 293 ++++++++++++++++++++++++++++++++++
->   hw/pci-host/meson.build       |   2 +
->   include/hw/pci-host/articia.h |  17 ++
->   4 files changed, 317 insertions(+)
->   create mode 100644 hw/pci-host/articia.c
->   create mode 100644 include/hw/pci-host/articia.h
+
+
+>   tests/avocado/ppc_amiga.py | 38 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 38 insertions(+)
+>   create mode 100644 tests/avocado/ppc_amiga.py
 > 
-> diff --git a/hw/pci-host/Kconfig b/hw/pci-host/Kconfig
-> index 54a609d2ca..f046d76a68 100644
-> --- a/hw/pci-host/Kconfig
-> +++ b/hw/pci-host/Kconfig
-> @@ -73,6 +73,11 @@ config SH_PCI
->       bool
->       select PCI
->   
-> +config ARTICIA
-> +    bool
-> +    select PCI
-> +    select I8259
-> +
->   config MV64361
->       bool
->       select PCI
-> diff --git a/hw/pci-host/articia.c b/hw/pci-host/articia.c
+> diff --git a/tests/avocado/ppc_amiga.py b/tests/avocado/ppc_amiga.py
 > new file mode 100644
-> index 0000000000..f3fcc49f81
+> index 0000000000..b6f866f91d
 > --- /dev/null
-> +++ b/hw/pci-host/articia.c
-> @@ -0,0 +1,293 @@
-> +/*
-> + * Mai Logic Articia S emulation
-> + *
-> + * Copyright (c) 2023 BALATON Zoltan
-> + *
-> + * This work is licensed under the GNU GPL license version 2 or later.
-> + *
-> + */
+> +++ b/tests/avocado/ppc_amiga.py
+> @@ -0,0 +1,38 @@
+> +# Test AmigaNG boards
+> +#
+> +# Copyright (c) 2023 BALATON Zoltan
+> +#
+> +# This work is licensed under the terms of the GNU GPL, version 2 or
+> +# later.  See the COPYING file in the top-level directory.
 > +
-> +#include "qemu/osdep.h"
-> +#include "qemu/log.h"
-> +#include "qapi/error.h"
-> +#include "hw/pci/pci_device.h"
-> +#include "hw/pci/pci_host.h"
-> +#include "hw/irq.h"
-> +#include "hw/i2c/bitbang_i2c.h"
-> +#include "hw/intc/i8259.h"
-> +#include "hw/pci-host/articia.h"
+> +from avocado.utils import archive
+> +from avocado.utils import process
+> +from avocado_qemu import QemuSystemTest
+> +from avocado_qemu import wait_for_console_pattern
 > +
-> +/*
-> + * This is a minimal emulation of this chip as used in AmigaOne board.
-> + * Most features are missing but those are not needed by firmware and guests.
-> + */
+> +class AmigaOneMachine(QemuSystemTest):
 > +
-> +OBJECT_DECLARE_SIMPLE_TYPE(ArticiaState, ARTICIA)
+> +    timeout = 90
 > +
-> +OBJECT_DECLARE_SIMPLE_TYPE(ArticiaHostState, ARTICIA_PCI_HOST)
-> +struct ArticiaHostState {
-> +    PCIDevice parent_obj;
+> +    def test_ppc_amigaone(self):
+> +        """
+> +        :avocado: tags=arch:ppc
+> +        :avocado: tags=machine:amigaone
+> +        :avocado: tags=device:articia
+> +        :avocado: tags=accel:tcg
+> +        """
+> +        self.require_accelerator("tcg")
+> +        tar_name = 'A1Firmware_Floppy_05-Mar-2005.zip'
+> +        tar_url = ('https://www.hyperion-entertainment.com/index.php/'
+> +                   'downloads?view=download&format=raw&file=25')
+> +        tar_hash = 'c52e59bc73e31d8bcc3cc2106778f7ac84f6c755'
+> +        zip_file = self.fetch_asset(tar_name, locations=tar_url,
+> +                                    asset_hash=tar_hash)
+> +        archive.extract(zip_file, self.workdir)
+> +        cmd = f"tail -c 524288 {self.workdir}/floppy_edition/updater.image >{self.workdir}/u-boot-amigaone.bin"
+> +        process.run(cmd, shell=True)
 > +
-> +    ArticiaState *as;
-> +};
-> +
-> +/* TYPE_ARTICIA */
-> +
-> +struct ArticiaState {
-> +    PCIHostState parent_obj;
-> +
-> +    qemu_irq irq[PCI_NUM_PINS];
-> +    MemoryRegion io;
-> +    MemoryRegion mem;
-> +    MemoryRegion reg;
-> +
-> +    bitbang_i2c_interface smbus;
-> +    uint32_t gpio; /* bits 0-7 in, 8-15 out, 16-23 direction (0 in, 1 out) */
-> +    hwaddr gpio_base;
-> +    MemoryRegion gpio_reg;
-> +};
-> +
-> +static uint64_t articia_gpio_read(void *opaque, hwaddr addr, unsigned int size)
-> +{
-> +    ArticiaState *s = opaque;
-> +
-> +    return (s->gpio >> (addr * 8)) & 0xff;
-> +}
-> +
-> +static void articia_gpio_write(void *opaque, hwaddr addr, uint64_t val,
-> +                               unsigned int size)
-> +{
-> +    ArticiaState *s = opaque;
-> +    uint32_t sh = addr * 8;
-> +
-> +    if (addr == 0) {
-> +        /* in bits read only? */
-> +        return;
-> +    }
-> +
-> +    if ((s->gpio & (0xff << sh)) != (val & 0xff) << sh) {
-> +        s->gpio &= ~(0xff << sh | 0xff);
-> +        s->gpio |= (val & 0xff) << sh;
-> +        s->gpio |= bitbang_i2c_set(&s->smbus, BITBANG_I2C_SDA,
-> +                                   s->gpio & BIT(16) ?
-> +                                   !!(s->gpio & BIT(8)) : 1);
-> +        if ((s->gpio & BIT(17))) {
-> +            s->gpio &= ~BIT(0);
-> +            s->gpio |= bitbang_i2c_set(&s->smbus, BITBANG_I2C_SCL,
-> +                                       !!(s->gpio & BIT(9)));
-> +        }
-> +    }
-> +}
-> +
-> +static const MemoryRegionOps articia_gpio_ops = {
-> +    .read = articia_gpio_read,
-> +    .write = articia_gpio_write,
-> +    .valid.min_access_size = 1,
-> +    .valid.max_access_size = 1,
-> +    .endianness = DEVICE_LITTLE_ENDIAN,
-> +};
-> +
-> +static uint64_t articia_reg_read(void *opaque, hwaddr addr, unsigned int size)
-> +{
-> +    ArticiaState *s = opaque;
-> +    uint64_t ret = UINT_MAX;
-> +
-> +    switch (addr) {
-> +    case 0xc00cf8:
-> +        ret = pci_host_conf_le_ops.read(PCI_HOST_BRIDGE(s), 0, size);
-> +        break;
-> +    case 0xe00cfc ... 0xe00cff:
-> +        ret = pci_host_data_le_ops.read(PCI_HOST_BRIDGE(s), addr - 0xe00cfc, size);
-> +        break;
-> +    case 0xf00000:
-> +        ret = pic_read_irq(isa_pic);
-> +        break;
-> +    default:
-> +        qemu_log_mask(LOG_UNIMP, "%s: Unimplemented register read 0x%"
-> +                      HWADDR_PRIx " %d\n", __func__, addr, size);
-> +        break;
-> +    }
-> +    return ret;
-> +}
-> +
-> +static void articia_reg_write(void *opaque, hwaddr addr, uint64_t val,
-> +                              unsigned int size)
-> +{
-> +    ArticiaState *s = opaque;
-> +
-> +    switch (addr) {
-> +    case 0xc00cf8:
-> +        pci_host_conf_le_ops.write(PCI_HOST_BRIDGE(s), 0, val, size);
-> +        break;
-> +    case 0xe00cfc ... 0xe00cff:
-> +        pci_host_data_le_ops.write(PCI_HOST_BRIDGE(s), addr, val, size);
-> +        break;
-> +    default:
-> +        qemu_log_mask(LOG_UNIMP, "%s: Unimplemented register write 0x%"
-> +                      HWADDR_PRIx " %d <- %"PRIx64"\n", __func__, addr, size, val);
-> +        break;
-> +    }
-> +}
-> +
-> +static const MemoryRegionOps articia_reg_ops = {
-> +    .read = articia_reg_read,
-> +    .write = articia_reg_write,
-> +    .valid.min_access_size = 1,
-> +    .valid.max_access_size = 4,
-> +    .endianness = DEVICE_LITTLE_ENDIAN,
-> +};
-> +
-> +static void articia_pcihost_set_irq(void *opaque, int n, int level)
-> +{
-> +    ArticiaState *s = opaque;
-> +    qemu_set_irq(s->irq[n], level);
-> +}
-> +
-> +/*
-> + * AmigaOne SE PCI slot to IRQ routing
-> + *
-> + * repository: https://source.denx.de/u-boot/custodians/u-boot-avr32.git
-> + * refspec: v2010.06
-> + * file: board/MAI/AmigaOneG3SE/articiaS_pci.c
-> + */
-> +static int amigaone_pcihost_bus0_map_irq(PCIDevice *pdev, int pin)
-> +{
-> +    int devfn_slot = PCI_SLOT(pdev->devfn);
-> +
-> +    switch (devfn_slot) {
-> +    case 6:  /* On board ethernet */
-> +        return 3;
-> +    case 7:  /* South bridge */
-> +        return pin;
-> +    default: /* PCI Slot 1 Devfn slot 8, Slot 2 Devfn 9, Slot 3 Devfn 10 */
-> +        return pci_swizzle(devfn_slot, pin);
-> +    }
-> +
-> +}
-> +
-> +static void articia_realize(DeviceState *dev, Error **errp)
-> +{
-> +    ArticiaState *s = ARTICIA(dev);
-> +    PCIHostState *h = PCI_HOST_BRIDGE(dev);
-> +    PCIDevice *pdev;
-> +
-> +    bitbang_i2c_init(&s->smbus, i2c_init_bus(dev, "smbus"));
-> +    memory_region_init_io(&s->gpio_reg, OBJECT(s), &articia_gpio_ops, s,
-> +                          TYPE_ARTICIA, 4);
-> +
-> +    memory_region_init(&s->mem, OBJECT(dev), "pci-mem", UINT64_MAX);
-> +    memory_region_init(&s->io, OBJECT(dev), "pci-io", 0xc00000);
-> +    memory_region_init_io(&s->reg, OBJECT(s), &articia_reg_ops, s,
-> +                          TYPE_ARTICIA, 0x1000000);
-> +    memory_region_add_subregion_overlap(&s->reg, 0, &s->io, 1);
-> +
-> +    /* devfn_min is 8 that matches first PCI slot in AmigaOne */
-> +    h->bus = pci_register_root_bus(dev, NULL, articia_pcihost_set_irq,
-> +                                   amigaone_pcihost_bus0_map_irq, dev, &s->mem,
-> +                                   &s->io, PCI_DEVFN(8, 0), 4, TYPE_PCI_BUS);
-> +    pdev = pci_create_simple_multifunction(h->bus, PCI_DEVFN(0, 0),
-> +                                           TYPE_ARTICIA_PCI_HOST);
-> +    ARTICIA_PCI_HOST(pdev)->as = s;
-> +    pci_create_simple(h->bus, PCI_DEVFN(0, 1), TYPE_ARTICIA_PCI_BRIDGE);
-> +
-> +    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->reg);
-> +    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->mem);
-> +    qdev_init_gpio_out(dev, s->irq, ARRAY_SIZE(s->irq));
-> +}
-> +
-> +static void articia_class_init(ObjectClass *klass, void *data)
-> +{
-> +    DeviceClass *dc = DEVICE_CLASS(klass);
-> +
-> +    dc->realize = articia_realize;
-> +    set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
-> +}
-> +
-> +/* TYPE_ARTICIA_PCI_HOST */
-> +
-> +static void articia_pci_host_cfg_write(PCIDevice *d, uint32_t addr,
-> +                                       uint32_t val, int len)
-> +{
-> +    ArticiaState *s = ARTICIA_PCI_HOST(d)->as;
-> +
-> +    pci_default_write_config(d, addr, val, len);
-> +    switch (addr) {
-> +    case 0x40:
-> +        s->gpio_base = val;
-> +        break;
-> +    case 0x44:
-> +        if (val != 0x11) {
-> +            /* FIXME what do the bits actually mean? */
-> +            break;
-> +        }
-> +        if (memory_region_is_mapped(&s->gpio_reg)) {
-> +            memory_region_del_subregion(&s->io, &s->gpio_reg);
-> +        }
-> +        memory_region_add_subregion(&s->io, s->gpio_base + 0x38, &s->gpio_reg);
-> +        break;
-> +    }
-> +}
-> +
-> +static void articia_pci_host_class_init(ObjectClass *klass, void *data)
-> +{
-> +    DeviceClass *dc = DEVICE_CLASS(klass);
-> +    PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
-> +
-> +    k->config_write = articia_pci_host_cfg_write;
-> +    k->vendor_id = 0x10cc;
-> +    k->device_id = 0x0660;
-> +    k->class_id = PCI_CLASS_BRIDGE_HOST;
-> +    /*
-> +     * PCI-facing part of the host bridge,
-> +     * not usable without the host-facing part
-> +     */
-> +    dc->user_creatable = false;
-> +}
-> +
-> +/* TYPE_ARTICIA_PCI_BRIDGE */
-> +
-> +static void articia_pci_bridge_class_init(ObjectClass *klass, void *data)
-> +{
-> +    DeviceClass *dc = DEVICE_CLASS(klass);
-> +    PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
-> +
-> +    k->vendor_id = 0x10cc;
-> +    k->device_id = 0x0661;
-> +    k->class_id = PCI_CLASS_BRIDGE_HOST;
-> +    /*
-> +     * PCI-facing part of the host bridge,
-> +     * not usable without the host-facing part
-> +     */
-> +    dc->user_creatable = false;
-> +}
-> +
-> +static const TypeInfo articia_types[] = {
-> +    {
-> +        .name          = TYPE_ARTICIA,
-> +        .parent        = TYPE_PCI_HOST_BRIDGE,
-> +        .instance_size = sizeof(ArticiaState),
-> +        .class_init    = articia_class_init,
-> +    },
-> +    {
-> +        .name          = TYPE_ARTICIA_PCI_HOST,
-> +        .parent        = TYPE_PCI_DEVICE,
-> +        .instance_size = sizeof(ArticiaHostState),
-> +        .class_init    = articia_pci_host_class_init,
-> +        .interfaces = (InterfaceInfo[]) {
-> +              { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-> +              { },
-> +        },
-> +    },
-> +    {
-> +        .name          = TYPE_ARTICIA_PCI_BRIDGE,
-> +        .parent        = TYPE_PCI_DEVICE,
-> +        .instance_size = sizeof(PCIDevice),
-> +        .class_init    = articia_pci_bridge_class_init,
-> +        .interfaces = (InterfaceInfo[]) {
-> +              { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-> +              { },
-> +        },
-> +    },
-> +};
-> +
-> +DEFINE_TYPES(articia_types)
-> diff --git a/hw/pci-host/meson.build b/hw/pci-host/meson.build
-> index f891f026cb..de7bfb5a62 100644
-> --- a/hw/pci-host/meson.build
-> +++ b/hw/pci-host/meson.build
-> @@ -20,6 +20,8 @@ pci_ss.add(when: 'CONFIG_GRACKLE_PCI', if_true: files('grackle.c'))
->   pci_ss.add(when: 'CONFIG_UNIN_PCI', if_true: files('uninorth.c'))
->   # PowerPC E500 boards
->   pci_ss.add(when: 'CONFIG_PPCE500_PCI', if_true: files('ppce500.c'))
-> +# AmigaOne
-> +pci_ss.add(when: 'CONFIG_ARTICIA', if_true: files('articia.c'))
->   # Pegasos2
->   pci_ss.add(when: 'CONFIG_MV64361', if_true: files('mv64361.c'))
->   
-> diff --git a/include/hw/pci-host/articia.h b/include/hw/pci-host/articia.h
-> new file mode 100644
-> index 0000000000..529c240274
-> --- /dev/null
-> +++ b/include/hw/pci-host/articia.h
-> @@ -0,0 +1,17 @@
-> +/*
-> + * Mai Logic Articia S emulation
-> + *
-> + * Copyright (c) 2023 BALATON Zoltan
-> + *
-> + * This work is licensed under the GNU GPL license version 2 or later.
-> + *
-> + */
-> +
-> +#ifndef ARTICIA_H
-> +#define ARTICIA_H
-> +
-> +#define TYPE_ARTICIA "articia"
-> +#define TYPE_ARTICIA_PCI_HOST "articia-pci-host"
-> +#define TYPE_ARTICIA_PCI_BRIDGE "articia-pci-bridge"
-> +
-> +#endif
+> +        self.vm.set_console()
+> +        self.vm.add_args('-bios', self.workdir + '/u-boot-amigaone.bin')
+> +        self.vm.launch()
+> +        wait_for_console_pattern(self, 'FLASH:')
 
