@@ -2,55 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C223D7E4858
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:34:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4578F7E4855
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:34:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0QsY-0002p7-AK; Tue, 07 Nov 2023 13:32:46 -0500
+	id 1r0QsY-0002pT-Rs; Tue, 07 Nov 2023 13:32:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0QsW-0002ni-Bd
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0QsW-0002o1-Qw
  for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:32:44 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0QsU-0007Ng-9v
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:32:43 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0QsV-0007Nx-7D
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:32:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699381961;
+ s=mimecast20190719; t=1699381962;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=P9N4XAMcG1M7aNdTvXweTcO2BcWqwho18VxNhTCwbE0=;
- b=IYX+d6NcI3XfawAbOQHumjZ+KtZh+AaonJlAEeNFzu2+58MgihH7y6bdNmmOqXEPoH8S+N
- vq/V91ROlAcBpWSmtciZFG1xpJBbTz5KtUn9+BG4zBhwiQ40DptLB32dUOItiKOUC+MJMO
- ejXr8JfGwSdygkvHHqiLmOl1q0yB/u0=
+ bh=u1onQi2xTufgGPZ8q4VhVUJlLf1xLry+UE2J87Ps60o=;
+ b=DJwtLyF3b4P0ivT96RrZlDvhy8c9KeDlyf5hfWhnPyag3IC6vS8lPyHlKvcQataZOcNizs
+ 0Iyx2deF7HbodW7JEDrL0D5/HF3qij63Jr38DAGkikup2RypXrZO1xfWYE0e5UzcL9xTzV
+ xGhplWro1iEA52t7SptuiWLUTAu+lLM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-479-45hdTzT5MZKhq0n5-vCASg-1; Tue, 07 Nov 2023 13:32:38 -0500
-X-MC-Unique: 45hdTzT5MZKhq0n5-vCASg-1
+ us-mta-213-bjqdv6pKO8Spo_Xs0nJf3Q-1; Tue, 07 Nov 2023 13:32:39 -0500
+X-MC-Unique: bjqdv6pKO8Spo_Xs0nJf3Q-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A7C8E85A58B;
- Tue,  7 Nov 2023 18:32:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DDEF7185A786;
+ Tue,  7 Nov 2023 18:32:38 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.124])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2CAC12166B27;
- Tue,  7 Nov 2023 18:32:35 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EDB572166B26;
+ Tue,  7 Nov 2023 18:32:37 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Heiko Carstens <hca@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>
-Subject: [PULL 04/11] s390/sclp: fix SCLP facility map
-Date: Tue,  7 Nov 2023 19:32:21 +0100
-Message-ID: <20231107183228.276424-5-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PULL 05/11] target/s390x/cpu_models: Use 'first_cpu' in
+ s390_get_feat_block()
+Date: Tue,  7 Nov 2023 19:32:22 +0100
+Message-ID: <20231107183228.276424-6-thuth@redhat.com>
 In-Reply-To: <20231107183228.276424-1-thuth@redhat.com>
 References: <20231107183228.276424-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -78,40 +81,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Qemu's SCLP implementation incorrectly reports that it supports CPU
-reconfiguration. If a guest issues a CPU reconfiguration request it
-is rejected as invalid command.
+We already have a global 'first_cpu' variable storing a pointer
+to the first CPU, no need to use a static one.
 
-Fix the SCLP_HAS_CPU_INFO mask, and remove the unused
-SCLP_CMDW_CONFIGURE_CPU and SCLP_CMDW_DECONFIGURE_CPU defines.
-
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Message-ID: <20231024100703.929679-1-hca@linux.ibm.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20231030093150.65297-1-philmd@linaro.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/hw/s390x/sclp.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ target/s390x/cpu_models.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/include/hw/s390x/sclp.h b/include/hw/s390x/sclp.h
-index 9aef6d9370..b4ecd04e23 100644
---- a/include/hw/s390x/sclp.h
-+++ b/include/hw/s390x/sclp.h
-@@ -38,10 +38,8 @@
- #define MAX_STORAGE_INCREMENTS                  1020
+diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
+index 4dead48650..540d445023 100644
+--- a/target/s390x/cpu_models.c
++++ b/target/s390x/cpu_models.c
+@@ -196,11 +196,7 @@ uint32_t s390_get_ibc_val(void)
  
- /* CPU hotplug SCLP codes */
--#define SCLP_HAS_CPU_INFO                       0x0C00000000000000ULL
-+#define SCLP_HAS_CPU_INFO                       0x0800000000000000ULL
- #define SCLP_CMDW_READ_CPU_INFO                 0x00010001
--#define SCLP_CMDW_CONFIGURE_CPU                 0x00110001
--#define SCLP_CMDW_DECONFIGURE_CPU               0x00100001
+ void s390_get_feat_block(S390FeatType type, uint8_t *data)
+ {
+-    static S390CPU *cpu;
+-
+-    if (!cpu) {
+-        cpu = S390_CPU(qemu_get_cpu(0));
+-    }
++    S390CPU *cpu = S390_CPU(first_cpu);
  
- /* SCLP PCI codes */
- #define SCLP_HAS_IOA_RECONFIG                   0x0000000040000000ULL
+     if (!cpu || !cpu->model) {
+         return;
 -- 
 2.41.0
 
