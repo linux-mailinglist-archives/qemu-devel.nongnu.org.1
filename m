@@ -2,75 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 703947E41F9
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:42:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 949E27E41FA
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:42:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0NGh-0003qY-Ax; Tue, 07 Nov 2023 09:41:27 -0500
+	id 1r0NHU-0005cJ-9f; Tue, 07 Nov 2023 09:42:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r0NGe-0003nb-A0
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:41:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r0NHO-0005Vo-KN; Tue, 07 Nov 2023 09:42:12 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r0NGc-0003dk-O9
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:41:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699368081;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2azOG1k33QAaF6Vnrbdb0nsynwYihAqUqu4bmMv7Z2g=;
- b=FKL7twffo4MQjdKRAbzxNpm/Cs97105YabGtWM4zAJ8iDdnqOPeSETCfFq2/jo/KPjt53y
- ng+y6GMF1iYdVRiyphZllEmus8SCaAGKVU4F9M/xPgvNNoUAHvYpJ+sgrmbhrwvbhTDLEZ
- PRTBM2qbWExdEadg+VhHf/L0TqMSlys=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-84-ND1BkLqZNP6nunw9UhVtEA-1; Tue, 07 Nov 2023 09:41:18 -0500
-X-MC-Unique: ND1BkLqZNP6nunw9UhVtEA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6FB7385A58B;
- Tue,  7 Nov 2023 14:41:17 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.62])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 71C671C060AE;
- Tue,  7 Nov 2023 14:41:16 +0000 (UTC)
-Date: Tue, 7 Nov 2023 14:41:13 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 0/3] docs: update x86 CPU model ABI matrix docs
-Message-ID: <ZUpMici/H4wC6f+i@redhat.com>
-References: <20230718092631.730255-1-berrange@redhat.com>
- <ZQL0YKD5Hm9nvWer@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r0NHM-0003n6-M8; Tue, 07 Nov 2023 09:42:10 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9B40375A4BC;
+ Tue,  7 Nov 2023 15:42:21 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 8F0DB75A4B7; Tue,  7 Nov 2023 15:42:21 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 8D1EE75A4B9;
+ Tue,  7 Nov 2023 15:42:21 +0100 (CET)
+Date: Tue, 7 Nov 2023 15:42:21 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+cc: Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
+ philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+Subject: Re: [PATCH v7 0/3] Add emulation of AmigaOne XE board
+In-Reply-To: <8cd19dfe-d4cb-ad71-c99e-51741ab71e44@eik.bme.hu>
+Message-ID: <360e5b93-3b80-04b1-2dbf-2fd95809859c@eik.bme.hu>
+References: <cover.1698406922.git.balaton@eik.bme.hu>
+ <88d6fff6-b97e-7c55-bf29-6d3aa2ed690d@eik.bme.hu>
+ <8cd19dfe-d4cb-ad71-c99e-51741ab71e44@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZQL0YKD5Hm9nvWer@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1045119129-1699368141=:65107"
+X-Virus-Scanned: ClamAV using ClamSMTP
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,49 +61,96 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping, for anyone who can review this.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-On Thu, Sep 14, 2023 at 12:54:08PM +0100, Daniel P. Berrangé wrote:
-> Ping for review please. This series still applies to git master.
-> 
-> On Tue, Jul 18, 2023 at 10:26:28AM +0100, Daniel P. Berrangé wrote:
-> > Changed in v2:
-> > 
-> >  - Tweaked commit messages
-> >  - Also add GraniteRapids CPU model
-> > 
-> > Daniel P. Berrangé (3):
-> >   scripts: drop comment about autogenerated CPU API file
-> >   docs: fix highlighting of CPU ABI header rows
-> >   docs: re-generate x86_64 ABI compatibility CSV
-> > 
-> >  docs/system/cpu-models-x86-abi.csv | 20 ++++++++++++++++++--
-> >  docs/system/cpu-models-x86.rst.inc |  2 +-
-> >  scripts/cpu-x86-uarch-abi.py       |  1 -
-> >  3 files changed, 19 insertions(+), 4 deletions(-)
-> > 
-> > -- 
-> > 2.41.0
-> > 
-> 
-> With regards,
-> Daniel
-> -- 
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-> 
-> 
+--3866299591-1045119129-1699368141=:65107
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+On Tue, 7 Nov 2023, BALATON Zoltan wrote:
+> On Mon, 6 Nov 2023, BALATON Zoltan wrote:
+>> On Fri, 27 Oct 2023, BALATON Zoltan wrote:
+>>> Changes in v7:
+>>> - Increase default memory size to 512m to match pegasos2 and sam460ex
+>>> and it's a better default for AmigaOS
+>>> 
+>>> Changes in v6:
+>>> - Dropped patch 1, now it's
+>>> 
+>>> Based-on: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
+>>> 
+>>> ([PATCH v2 0/3] ide: implement simple legacy/native mode switching for PCI 
+>>> IDE controllers)
+>>> - Added Tested-by from Rene
+>>> 
+>>> Changes in v5:
+>>> - Fixed avocado test
+>>> 
+>>> Changes in v4:
+>>> - Found typo in comment in patch 1 so ended up rewording it again
+>>> trying to make it more concise. Also take the idea of using
+>>> range_covers_byte from Mark's patch
+>>> - Added RFC patch for avocado test (untested, I don't have Avocado)
+>>> 
+>>> Changes in v3:
+>>> - Update values, comment and commit message in patch 1 again
+>>> 
+>>> Changes in v2:
+>>> - Update comment and commit message in patch 1 (Mark)
+>>> - Fix irq mapping in patch 2 (Volker)
+>>> 
+>>> Regards,
+>>> BALATON Zoltan
+>>> 
+>>> BALATON Zoltan (3):
+>>>  hw/pci-host: Add emulation of Mai Logic Articia S
+>>>  hw/ppc: Add emulation of AmigaOne XE board
+>>>  tests/avocado: Add test for amigaone board
+>> 
+>> Nick,
+>> 
+>> Will you please send a pull request with this now? It's independent of the 
+>> IDE fix which as a bugfix so can wait a little more but this series should 
+>> be merged before the freeze starts tomorrow. (As this adds a new machine 
+>> and does not touch anything else it can't break anything either.)
+>
+> Is there a PPC pull request in the making with this series in it? It would be 
+> really sad to miss the release not being able to merge such a simple series 
+> for weeks. As I said this is independent of any other fixes so I'd like to 
+> get this in now please.
 
+Nick seems to be away so please C�dric, Daniel, Phil or whoever can send a 
+pull request step in and please take care of this. This was posted a month 
+ago with this last version on the list for 1.5 week so I'd hate to miss 
+the release and wait until Easter next year to get this out to users 
+because none of the maintainers are available before and arounf the freeze.
+
+Regards,
+BALATON Zoltan
+
+>>> MAINTAINERS                             |   8 +
+>>> configs/devices/ppc-softmmu/default.mak |   1 +
+>>> hw/pci-host/Kconfig                     |   5 +
+>>> hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
+>>> hw/pci-host/meson.build                 |   2 +
+>>> hw/ppc/Kconfig                          |   7 +
+>>> hw/ppc/amigaone.c                       | 164 +++++++++++++
+>>> hw/ppc/meson.build                      |   2 +
+>>> include/hw/pci-host/articia.h           |  17 ++
+>>> tests/avocado/ppc_amiga.py              |  38 +++
+>>> 10 files changed, 537 insertions(+)
+>>> create mode 100644 hw/pci-host/articia.c
+>>> create mode 100644 hw/ppc/amigaone.c
+>>> create mode 100644 include/hw/pci-host/articia.h
+>>> create mode 100644 tests/avocado/ppc_amiga.py
+>>> 
+>>> 
+>> 
+>> 
+>
+--3866299591-1045119129-1699368141=:65107--
 
