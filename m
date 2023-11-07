@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E67E47E3335
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:50:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA707E3341
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:51:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0C9S-0008R9-Bg; Mon, 06 Nov 2023 21:49:14 -0500
+	id 1r0C9S-0008R6-7M; Mon, 06 Nov 2023 21:49:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0C9P-0008QC-Hj
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:49:11 -0500
+ id 1r0C9Q-0008QR-9K
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:49:12 -0500
 Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0C9N-0005wL-R3
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:49:11 -0500
+ id 1r0C9O-0005wW-QF
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:49:12 -0500
 Received: by mail-ot1-x335.google.com with SMTP id
- 46e09a7af769-6cd0963c61cso2754785a34.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:49:09 -0800 (PST)
+ 46e09a7af769-6ce353df504so3030087a34.3
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:49:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699325349; x=1699930149; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699325350; x=1699930150; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=N9z9UDH6HsfK3PAJgBAA8lIx6YK0Bl0hMEwM1O6FOrY=;
- b=GQKCy4YuJoNAAjQcHm0ecWe1WoFU+TBJVOUM3IFo8WGphCMo3kIxd07WaaYb0k0T5l
- ETF5NrXR27gxbAjHNcjylBKlbxMvKeSATmFJSRAlmsWYKvwLyXMEJTOA2DVVfHr45KUd
- IhFlEzd3L3rFTI3DCEuyHPwn+vFSXNCmi2cIAGCIbXnDOQDBj92TXIzGpciMqDVLsblk
- TG9cSOVINX2IiImZDCX3nTSq6v5sIvMQQgcejBGYuSVSWLmkuXI2Nxc/SiUuxFK6pBTR
- j8jHMwncLPdOIbYbb5rt3FIPEjC1i42noZiGyMsUUd53qxW6lGKlt+AtSLWlBgK4SE7D
- pyIw==
+ bh=yATrqhFa0XdJNCrDgxI0k8cWQsLoXGcnoV4EfIA9rFw=;
+ b=sybNyylZxTBDZsDb0WKHNor/sx+o/xaFAY/4VSp+D3K2cDePXifK7XlNG9gpd7Fcaf
+ SKMd7iYpPYAoVjTk6OeffZtkMVU3+qIwLa6hoDJKoUBm9qvkx57XnBagNHbGO+yyMPTB
+ 9eXjsiKZqgDd96vjvdEy6fCMopYwJV0EXD0OnDciDfzdFcVnWt8MuONlcmepW9QCuTOg
+ Drpq5CZypst2ybaWFsFTfxNcvkIqwQ2Pjl/JLFwJs7JllyJm1WEE3AWlNXZTWb7+ddI1
+ 6b4uLYOo70bpcMmsRudLI7RNA1Ty0Q3y8v5RDgozzTJ7CkGv3azZ2hUvztKHymr32NI0
+ 0v7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699325349; x=1699930149;
+ d=1e100.net; s=20230601; t=1699325350; x=1699930150;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=N9z9UDH6HsfK3PAJgBAA8lIx6YK0Bl0hMEwM1O6FOrY=;
- b=Dv3O8LGq0aPpbDOXLc9mj50YpE7jKU3108aDhsi6QA7Db8JBZFjt8D5nwaiJ9B23LP
- yB/vJHFZDvg7VcjNXY3zfr/dQm0dJSrVZMzYgAjbv4tnjhpxyDDTTUkxwBCSyV+S4Cb0
- zfXflCzXNGVU/G4ggu2nbJ1LHmnptQ0G/P6NXk4Z9We1mSsWJabFbysvn+GMvCMRcrC3
- atNzwSq1gEOHeZS9b2IpZ5wBhZeiuhXsKk3E6gGhY+BzS4e8RnowEyFGtAQ+6MDSsEJ2
- hJkmUYMOqmGq7yG4syh9Z3bYVmjlol3dZHpMe+q80oomTDBBweKWTNEzBvU0Ov1v4iQV
- 4StQ==
-X-Gm-Message-State: AOJu0YxT94pSktKFTNp/19rxb1m46G0a5Qd36X1mGwBWlYUmdJCBvZ70
- NhaijHk//Uj7h8jLzjh+pmKWc8+OKjn0l+eb4Mc=
-X-Google-Smtp-Source: AGHT+IHWpxW/EM+pd+i88pSWjbpYl43e8EZ40I3w0qx8aXk3Uhno5uxGO4DFKoVKGdIpLCGByv8now==
-X-Received: by 2002:a05:6830:3149:b0:6b8:dc53:9efd with SMTP id
- c9-20020a056830314900b006b8dc539efdmr32406598ots.3.1699325348783; 
- Mon, 06 Nov 2023 18:49:08 -0800 (PST)
+ bh=yATrqhFa0XdJNCrDgxI0k8cWQsLoXGcnoV4EfIA9rFw=;
+ b=UYlsDtmZ2LF6TSyWUi8oR0C5nMjYkf1KhHwpIwNuMaiXlpvCzUArUE7FOIQ5YiHukl
+ aHOM0Uch3WTrNn/732fiI6+nNEEAAzgapNd+86DJEi8S1SX275jnWSSpjs1S+XKAdAkG
+ zukzI5gTpvClBs5I2LLjzVpIWSVWs02r4cn/jpAcHOy2svMyHlyZcVd/m9jHbcNysWgY
+ hDWiibvR2M9AR7r7iISpX01aAe9gkE18SWP45oG/3sIywAUluJg0wPMGBS1lIYEu241p
+ E5x88Y+NsOJSlPiy+Serqj4A0axvBVUBBRR+CjGrA/vVgDgOMTYBTxkLqeuKCf2dg5GK
+ pcJA==
+X-Gm-Message-State: AOJu0Yzv1ojyhhMlKrNF90FqDwFRjahOI3qtWcAa+C9rpbHkTfiCQUj8
+ EM6QQBCQuvekyqdOBvXaJQ2H8H1Z9d7FiS9o1tA=
+X-Google-Smtp-Source: AGHT+IFR8/hJtF7Xw9W3mz9i/FCSSPdsVnXnzY6TcBEhq5Y3M4M4yotKc5bkes+tIO1d78PJdWBmkA==
+X-Received: by 2002:a9d:7d90:0:b0:6bb:1036:46de with SMTP id
+ j16-20020a9d7d90000000b006bb103646demr30751758otn.30.1699325349806; 
+ Mon, 06 Nov 2023 18:49:09 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- fn11-20020a056a002fcb00b006bff7c36fb3sm6367478pfb.95.2023.11.06.18.49.08
+ fn11-20020a056a002fcb00b006bff7c36fb3sm6367478pfb.95.2023.11.06.18.49.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 18:49:08 -0800 (PST)
+ Mon, 06 Nov 2023 18:49:09 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 31/35] tcg/optimize: Split out arg_new_constant
-Date: Mon,  6 Nov 2023 18:48:38 -0800
-Message-Id: <20231107024842.7650-32-richard.henderson@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 32/35] tcg: Canonicalize subi to addi during opcode generation
+Date: Mon,  6 Nov 2023 18:48:39 -0800
+Message-Id: <20231107024842.7650-33-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231107024842.7650-1-richard.henderson@linaro.org>
 References: <20231107024842.7650-1-richard.henderson@linaro.org>
@@ -91,77 +92,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes a bug wherein raw uses of tcg_constant_internal
-do not have their TempOptInfo initialized.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20231026013945.1152174-2-richard.henderson@linaro.org>
 ---
- tcg/optimize.c | 29 ++++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+ tcg/tcg-op.c | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index a4fe9ee9bb..d8e437c826 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -338,6 +338,21 @@ static TCGTemp *find_mem_copy_for(OptContext *ctx, TCGType type, intptr_t s)
-     return NULL;
- }
+diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+index de096a6f93..aa6bc6f57d 100644
+--- a/tcg/tcg-op.c
++++ b/tcg/tcg-op.c
+@@ -372,12 +372,7 @@ void tcg_gen_subfi_i32(TCGv_i32 ret, int32_t arg1, TCGv_i32 arg2)
  
-+static TCGArg arg_new_constant(OptContext *ctx, uint64_t val)
-+{
-+    TCGType type = ctx->type;
-+    TCGTemp *ts;
-+
-+    if (type == TCG_TYPE_I32) {
-+        val = (int32_t)val;
-+    }
-+
-+    ts = tcg_constant_internal(type, val);
-+    init_ts_info(ctx, ts);
-+
-+    return temp_arg(ts);
-+}
-+
- static bool tcg_opt_gen_mov(OptContext *ctx, TCGOp *op, TCGArg dst, TCGArg src)
+ void tcg_gen_subi_i32(TCGv_i32 ret, TCGv_i32 arg1, int32_t arg2)
  {
-     TCGTemp *dst_ts = arg_temp(dst);
-@@ -399,16 +414,8 @@ static bool tcg_opt_gen_mov(OptContext *ctx, TCGOp *op, TCGArg dst, TCGArg src)
- static bool tcg_opt_gen_movi(OptContext *ctx, TCGOp *op,
-                              TCGArg dst, uint64_t val)
- {
--    TCGTemp *tv;
--
--    if (ctx->type == TCG_TYPE_I32) {
--        val = (int32_t)val;
+-    /* some cases can be optimized here */
+-    if (arg2 == 0) {
+-        tcg_gen_mov_i32(ret, arg1);
+-    } else {
+-        tcg_gen_sub_i32(ret, arg1, tcg_constant_i32(arg2));
 -    }
--
-     /* Convert movi to mov with constant temp. */
--    tv = tcg_constant_internal(ctx->type, val);
--    init_ts_info(ctx, tv);
--    return tcg_opt_gen_mov(ctx, op, dst, temp_arg(tv));
-+    return tcg_opt_gen_mov(ctx, op, dst, arg_new_constant(ctx, val));
++    tcg_gen_addi_i32(ret, arg1, -arg2);
  }
  
- static uint64_t do_constant_folding_2(TCGOpcode op, uint64_t x, uint64_t y)
-@@ -1431,7 +1438,7 @@ static bool fold_deposit(OptContext *ctx, TCGOp *op)
+ void tcg_gen_neg_i32(TCGv_i32 ret, TCGv_i32 arg)
+@@ -1752,16 +1747,7 @@ void tcg_gen_subfi_i64(TCGv_i64 ret, int64_t arg1, TCGv_i64 arg2)
  
-         op->opc = and_opc;
-         op->args[1] = op->args[2];
--        op->args[2] = temp_arg(tcg_constant_internal(ctx->type, mask));
-+        op->args[2] = arg_new_constant(ctx, mask);
-         ctx->z_mask = mask & arg_info(op->args[1])->z_mask;
-         return false;
-     }
-@@ -1442,7 +1449,7 @@ static bool fold_deposit(OptContext *ctx, TCGOp *op)
-         uint64_t mask = deposit64(-1, op->args[3], op->args[4], 0);
+ void tcg_gen_subi_i64(TCGv_i64 ret, TCGv_i64 arg1, int64_t arg2)
+ {
+-    /* some cases can be optimized here */
+-    if (arg2 == 0) {
+-        tcg_gen_mov_i64(ret, arg1);
+-    } else if (TCG_TARGET_REG_BITS == 64) {
+-        tcg_gen_sub_i64(ret, arg1, tcg_constant_i64(arg2));
+-    } else {
+-        tcg_gen_sub2_i32(TCGV_LOW(ret), TCGV_HIGH(ret),
+-                         TCGV_LOW(arg1), TCGV_HIGH(arg1),
+-                         tcg_constant_i32(arg2), tcg_constant_i32(arg2 >> 32));
+-    }
++    tcg_gen_addi_i64(ret, arg1, -arg2);
+ }
  
-         op->opc = and_opc;
--        op->args[2] = temp_arg(tcg_constant_internal(ctx->type, mask));
-+        op->args[2] = arg_new_constant(ctx, mask);
-         ctx->z_mask = mask & arg_info(op->args[1])->z_mask;
-         return false;
-     }
+ void tcg_gen_neg_i64(TCGv_i64 ret, TCGv_i64 arg)
 -- 
 2.34.1
 
