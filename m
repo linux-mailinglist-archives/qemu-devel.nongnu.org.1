@@ -2,67 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99E47E4673
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 17:57:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECFFC7E467F
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 17:59:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0PN2-00064t-S2; Tue, 07 Nov 2023 11:56:08 -0500
+	id 1r0PPH-0007I2-UW; Tue, 07 Nov 2023 11:58:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0PN1-00064Y-0o
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 11:56:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1r0POp-0007G5-U2
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 11:58:00 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0PMx-0005Jo-69
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 11:56:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699376161;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8cglq06SOwPhkH01HvDs0zDGKK3b/8rdNQZFdHSJShU=;
- b=OUtyuo2YkzW5Xr9ZpocI8ebrsnN3wtpNkCQkh5xa3azagS2pR/VmKxDKO3BZ2gtPyT/n3Y
- KGzi1aMwFZZ59/gw8K075uyqiQxNZyLQ7/tRtNffTWfxFntL7bz/pD6ATXoY+xiEq3RMJ9
- Fw5rfELooNy0goRSs4Nz2INpidm1Gvk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-112-gjioh00cMSq1ifKM1O-9lw-1; Tue,
- 07 Nov 2023 11:55:57 -0500
-X-MC-Unique: gjioh00cMSq1ifKM1O-9lw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CABAD38C616F;
- Tue,  7 Nov 2023 16:55:56 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.197])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id BC6BA2026D66;
- Tue,  7 Nov 2023 16:55:55 +0000 (UTC)
-Date: Tue, 7 Nov 2023 17:55:54 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Niklas Cassel <nks@flawful.org>
-Cc: John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org, Damien Le Moal <dlemoal@kernel.org>,
- Michael Tokarev <mjt@tls.msk.ru>, Niklas Cassel <niklas.cassel@wdc.com>
-Subject: Re: [PATCH] hw/ide/ahci: trigger either error IRQ or regular IRQ,
- not both
-Message-ID: <ZUpsGhfN2/BLpEoD@redhat.com>
-References: <20231011131220.1992064-1-nks@flawful.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1r0POo-0005Wg-7o
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 11:57:59 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 6B58731270;
+ Tue,  7 Nov 2023 19:57:59 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id E53B033BF9;
+ Tue,  7 Nov 2023 19:57:54 +0300 (MSK)
+Message-ID: <64709368-fe12-46a6-89d7-1b0ce96f533d@tls.msk.ru>
+Date: Tue, 7 Nov 2023 19:57:54 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231011131220.1992064-1-nks@flawful.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 0/5] Ui patches
+Content-Language: en-US
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ Dongwon Kim <dongwon.kim@intel.com>, Sergey Mironov <mironov@fintech.ru>
+References: <20231107093035.2746581-1-marcandre.lureau@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20231107093035.2746581-1-marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,24 +64,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 11.10.2023 um 15:12 hat Niklas Cassel geschrieben:
-> From: Niklas Cassel <niklas.cassel@wdc.com>
+07.11.2023 12:30, marcandre.lureau@redhat.com:
+...
+> Antonio Caggiano (1):
+>    ui/gtk-egl: Check EGLSurface before doing scanout
 > 
-> According to AHCI 1.3.1, 5.3.8.1 RegFIS:Entry, if ERR_STAT is set,
-> we jump to state ERR:FatalTaskfile, which will raise a TFES IRQ
-> unconditionally, regardless if the I bit is set in the FIS or not.
+> Carwyn Ellis (1):
+>    ui/cocoa: add zoom-to-fit display option
 > 
-> Thus, we should never raise a normal IRQ after having sent an error
-> IRQ.
+> Dongwon Kim (1):
+>    ui/gtk-egl: apply scale factor when calculating window's dimension
 > 
-> NOTE: for QEMU platforms that use SeaBIOS, this patch depends on QEMU
-> commit 784155cdcb02 ("seabios: update submodule to git snapshot"), and
-> QEMU commit 14f5a7bae4cb ("seabios: update binaries to git snapshot").
+> Marc-André Lureau (1):
+>    ui/gtk: force realization of drawing area
 > 
-> Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+> Sergey Mironov (1):
+>    ui: Replacing pointer in function
 
-Thanks, applied to the block branch.
+Which changes are worth picking up for qemu-stable?
 
-Kevin
+I'm definitely picking up "ui/gtk: force realization of drawing area"
+which fixes a real bug.  "ui/gtk-egl: Check EGLSurface before doing scanout"
+and "ui/gtk-egl: apply scale factor when calculating window's dimension"
+smells like valid candidates too, maybe "ui: Replacing pointer in function"
+as well?
 
+(Adding patch authors to the Cc list)
+
+Thanks,
+
+/mjt
 
