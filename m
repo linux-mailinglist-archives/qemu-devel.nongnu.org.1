@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A05B37E4761
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 18:45:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03EEB7E4792
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 18:50:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Q7v-0008Ed-TW; Tue, 07 Nov 2023 12:44:35 -0500
+	id 1r0QCD-0002Py-TW; Tue, 07 Nov 2023 12:49:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r0Q7q-0008EF-4S; Tue, 07 Nov 2023 12:44:30 -0500
+ id 1r0QCC-0002Pf-0n; Tue, 07 Nov 2023 12:49:00 -0500
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r0Q7m-0005XT-DO; Tue, 07 Nov 2023 12:44:29 -0500
+ id 1r0QC9-0006CX-T7; Tue, 07 Nov 2023 12:48:59 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id F0AF075A4BC;
- Tue,  7 Nov 2023 18:44:38 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 1710E75A4B8;
+ Tue,  7 Nov 2023 18:49:13 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id E3CEE75A4B9; Tue,  7 Nov 2023 18:44:38 +0100 (CET)
+ id 09DDA75A4B7; Tue,  7 Nov 2023 18:49:13 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id E1CA175A4B8;
- Tue,  7 Nov 2023 18:44:38 +0100 (CET)
-Date: Tue, 7 Nov 2023 18:44:38 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 07DFD75A4BE;
+ Tue,  7 Nov 2023 18:49:13 +0100 (CET)
+Date: Tue, 7 Nov 2023 18:49:12 +0100 (CET)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: Daniel Henrique Barboza <danielhb413@gmail.com>
 cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
@@ -33,14 +33,15 @@ cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
  Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
 Subject: Re: [PATCH v7 0/3] Add emulation of AmigaOne XE board
-In-Reply-To: <b6ff86da-2532-708a-6737-4489d260c8a7@eik.bme.hu>
-Message-ID: <df963a67-c522-9752-5b1c-0121bceb45d4@eik.bme.hu>
+In-Reply-To: <fa33a840-2135-4ba8-9db1-6684275e93c3@gmail.com>
+Message-ID: <092437de-efef-1c1c-00f5-8667792c5226@eik.bme.hu>
 References: <cover.1698406922.git.balaton@eik.bme.hu>
  <697ad2e0-cb23-4efe-89e5-d1b521c0648f@gmail.com>
  <b6ff86da-2532-708a-6737-4489d260c8a7@eik.bme.hu>
+ <fa33a840-2135-4ba8-9db1-6684275e93c3@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/mixed;
- boundary="3866299591-1629529015-1699379078=:5463"
+ boundary="3866299591-1288939442-1699379353=:5463"
 X-Virus-Scanned: ClamAV using ClamSMTP
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
@@ -67,146 +68,159 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
   This message is in MIME format.  The first part should be readable text,
   while the remaining parts are likely unreadable without MIME-aware tools.
 
---3866299591-1629529015-1699379078=:5463
+--3866299591-1288939442-1699379353=:5463
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8BIT
 
-On Tue, 7 Nov 2023, BALATON Zoltan wrote:
-> On Tue, 7 Nov 2023, Daniel Henrique Barboza wrote:
->> Zoltan,
+On Tue, 7 Nov 2023, Daniel Henrique Barboza wrote:
+> On 11/7/23 14:33, BALATON Zoltan wrote:
+>> On Tue, 7 Nov 2023, Daniel Henrique Barboza wrote:
+>>> Zoltan,
+>>> 
+>>> Gitlab is complaining about a missing file in one of the tests:
+>>> 
+>>> 
+>>>  8/259 qemu:qtest+qtest-ppc / qtest-ppc/test-hmp ERROR           0.22s   
+>>> killed by signal 6 SIGABRT
+>>> 4324>>> 
+>>> G_TEST_DBUS_DAEMON=/builds/danielhb/qemu/tests/dbus-vmstate-daemon.sh 
+>>> QTEST_QEMU_BINARY=./qemu-system-ppc MALLOC_PERTURB_=87 
+>>> PYTHON=/builds/danielhb/qemu/build/pyvenv/bin/python3 
+>>> /builds/danielhb/qemu/build/tests/qtest/test-hmp --tap -k
+>>> 4325――――――――――――――――――――――――――――――――――――― ✀ 
+>>> ―――――――――――――――――――――――――――――――――――――
+>>> 4326stderr:
+>>> 4327qemu-system-ppc: Could not find firmware 'u-boot-amigaone.bin'
+>>> 4328Broken pipe
+>>> 4329../tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU 
+>>> process but encountered exit status 1 (expected 0)
+>>> 4330(test program exited with status code -6)
+>>> 4331TAP parsing error: Too few tests run (expected 13, got 0)
+>>> 
+>>> 
+>>> You can reproduce it like this:
+>>> 
+>>> $ make -j -C build  && QTEST_QEMU_BINARY=./build/qemu-system-ppc64 
+>>> ./build/tests/qtest/test-hmp
+>>> 
+>>> I ended up amending in-tree (downloaded the firmware, put it under 
+>>> pc-bios, updated pc-bios/meson.build).
+>>> My manual test now passes, but not sure if gitlab will nag about it. Let's 
+>>> wait and see.
 >> 
->> Gitlab is complaining about a missing file in one of the tests:
->> 
->>
->>  8/259 qemu:qtest+qtest-ppc / qtest-ppc/test-hmp ERROR           0.22s 
->> killed by signal 6 SIGABRT
->> 4324>>> 
->> G_TEST_DBUS_DAEMON=/builds/danielhb/qemu/tests/dbus-vmstate-daemon.sh 
->> QTEST_QEMU_BINARY=./qemu-system-ppc MALLOC_PERTURB_=87 
->> PYTHON=/builds/danielhb/qemu/build/pyvenv/bin/python3 
->> /builds/danielhb/qemu/build/tests/qtest/test-hmp --tap -k
->> 4325――――――――――――――――――――――――――――――――――――― ✀ 
->> ―――――――――――――――――――――――――――――――――――――
->> 4326stderr:
->> 4327qemu-system-ppc: Could not find firmware 'u-boot-amigaone.bin'
->> 4328Broken pipe
->> 4329../tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU 
->> process but encountered exit status 1 (expected 0)
->> 4330(test program exited with status code -6)
->> 4331TAP parsing error: Too few tests run (expected 13, got 0)
->> 
->> 
->> You can reproduce it like this:
->> 
->> $ make -j -C build  && QTEST_QEMU_BINARY=./build/qemu-system-ppc64 
->> ./build/tests/qtest/test-hmp
->> 
->> I ended up amending in-tree (downloaded the firmware, put it under pc-bios, 
->> updated pc-bios/meson.build).
->> My manual test now passes, but not sure if gitlab will nag about it. Let's 
->> wait and see.
+>> This is handled in the avocado test and it should download the file from 
+>> the URL there. When tested locally it worked and downloaded the file and 
+>> extracted the firmware bin from it. Can the gitlab CI download stuff or 
+>> does it expect it to be in local cache already where you need to put it 
+>> somehow beforehand? I think Philippe said something about that before but I 
+>> did not quite get it as I don't know neither avocado nor gitlab. Hope 
+>> Philippe is reading it and can chime in.
 >
-> This is handled in the avocado test and it should download the file from the 
-> URL there. When tested locally it worked and downloaded the file and 
-> extracted the firmware bin from it. Can the gitlab CI download stuff or does 
-> it expect it to be in local cache already where you need to put it somehow 
-> beforehand? I think Philippe said something about that before but I did not 
-> quite get it as I don't know neither avocado nor gitlab. Hope Philippe is 
-> reading it and can chime in.
+> Gitlab CI can download stuff. But note that the error above is not 
+> avocado, it's hmp. It expects a firmware file to be available, and I'm 
+> not entirely sure it'll make any effort (e.g. downloading it) aside from 
+> checking if the file exists.
 
-$ make check-avocado AVOCADO_TAGS=machine:amigaone
-[...]
-Fetching asset from tests/avocado/ppc_amiga.py:AmigaOneMachine.test_ppc_amigaone
-JOB ID     : d638ea21275304aee911d63fdb9dc9f11a0f14e3
-JOB LOG    : [...]tests/results/job-2023-11-07T18.38-d638ea2/job.log
-  (1/1) tests/avocado/ppc_amiga.py:AmigaOneMachine.test_ppc_amigaone:  PASS (0.11 s)
-RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
-JOB TIME   : 1.87 s
-
-This creates $HOME/avocado where it downloads the zip. Maybe you need to 
-have this dir on your CI runner if it can't download it itself. Looking at 
-the job.log might tell what happened. I'm afraid I don't know anything 
-else about this.
+Hmm, that's strange because the extracted firmware is passed with -bios in 
+the avocado test. But maybe it's then something else tries to run the 
+machine with some other parameters but it needs a firmware. I was told we 
+can't add the firmware because while it's GPL the sources were lost and 
+not available any more so we only have the binary. Then the question is 
+which test is trying to run the machine without -bios? What's test-hmp?
 
 Regards,
 BALATON Zoltan
 
-> But the test is not required to run the machine so as a last resort you could 
-> just drop the avocado patch and then we can add it later if we can't figure 
-> this out now.
+>> But the test is not required to run the machine so as a last resort you 
+>> could just drop the avocado patch and then we can add it later if we can't 
+>> figure this out now.
 >
-> Regards,
-> BALATON Zoltan
+> Not sure if dropping the avocado test would remediate the situation, but 
+> noted.
 >
->> I told you: code freeze is a blast! Let's see if it's still sunny for the
->> AmigaOne XE board emulation.
->> 
->> 
->> 
->> Thanks,
->> 
->> 
->> Daniel
->> 
->> 
->> 
->> 
->> 
->> On 10/27/23 08:54, BALATON Zoltan wrote:
->>> Changes in v7:
->>> - Increase default memory size to 512m to match pegasos2 and sam460ex
->>> and it's a better default for AmigaOS
->>> 
->>> Changes in v6:
->>> - Dropped patch 1, now it's
->>> 
->>> Based-on: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
->>> 
->>> ([PATCH v2 0/3] ide: implement simple legacy/native mode switching for PCI 
->>> IDE controllers)
->>> - Added Tested-by from Rene
->>> 
->>> Changes in v5:
->>> - Fixed avocado test
->>> 
->>> Changes in v4:
->>> - Found typo in comment in patch 1 so ended up rewording it again
->>> trying to make it more concise. Also take the idea of using
->>> range_covers_byte from Mark's patch
->>> - Added RFC patch for avocado test (untested, I don't have Avocado)
->>> 
->>> Changes in v3:
->>> - Update values, comment and commit message in patch 1 again
->>> 
->>> Changes in v2:
->>> - Update comment and commit message in patch 1 (Mark)
->>> - Fix irq mapping in patch 2 (Volker)
->>> 
->>> Regards,
->>> BALATON Zoltan
->>> 
->>> BALATON Zoltan (3):
->>>    hw/pci-host: Add emulation of Mai Logic Articia S
->>>    hw/ppc: Add emulation of AmigaOne XE board
->>>    tests/avocado: Add test for amigaone board
->>>
->>>   MAINTAINERS                             |   8 +
->>>   configs/devices/ppc-softmmu/default.mak |   1 +
->>>   hw/pci-host/Kconfig                     |   5 +
->>>   hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
->>>   hw/pci-host/meson.build                 |   2 +
->>>   hw/ppc/Kconfig                          |   7 +
->>>   hw/ppc/amigaone.c                       | 164 +++++++++++++
->>>   hw/ppc/meson.build                      |   2 +
->>>   include/hw/pci-host/articia.h           |  17 ++
->>>   tests/avocado/ppc_amiga.py              |  38 +++
->>>   10 files changed, 537 insertions(+)
->>>   create mode 100644 hw/pci-host/articia.c
->>>   create mode 100644 hw/ppc/amigaone.c
->>>   create mode 100644 include/hw/pci-host/articia.h
->>>   create mode 100644 tests/avocado/ppc_amiga.py
->>> 
->> 
+> For now let's push stuff upstream. We have the freeze window to make smaller
+> adjustments if needed.
 >
---3866299591-1629529015-1699379078=:5463--
+>
+> Thanks,
+>
+> Daniel
+>
+>> 
+>> Regards,
+>> BALATON Zoltan
+>> 
+>>> I told you: code freeze is a blast! Let's see if it's still sunny for the
+>>> AmigaOne XE board emulation.
+>>> 
+>>> 
+>>> 
+>>> Thanks,
+>>> 
+>>> 
+>>> Daniel
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> On 10/27/23 08:54, BALATON Zoltan wrote:
+>>>> Changes in v7:
+>>>> - Increase default memory size to 512m to match pegasos2 and sam460ex
+>>>> and it's a better default for AmigaOS
+>>>> 
+>>>> Changes in v6:
+>>>> - Dropped patch 1, now it's
+>>>> 
+>>>> Based-on: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
+>>>> 
+>>>> ([PATCH v2 0/3] ide: implement simple legacy/native mode switching for 
+>>>> PCI IDE controllers)
+>>>> - Added Tested-by from Rene
+>>>> 
+>>>> Changes in v5:
+>>>> - Fixed avocado test
+>>>> 
+>>>> Changes in v4:
+>>>> - Found typo in comment in patch 1 so ended up rewording it again
+>>>> trying to make it more concise. Also take the idea of using
+>>>> range_covers_byte from Mark's patch
+>>>> - Added RFC patch for avocado test (untested, I don't have Avocado)
+>>>> 
+>>>> Changes in v3:
+>>>> - Update values, comment and commit message in patch 1 again
+>>>> 
+>>>> Changes in v2:
+>>>> - Update comment and commit message in patch 1 (Mark)
+>>>> - Fix irq mapping in patch 2 (Volker)
+>>>> 
+>>>> Regards,
+>>>> BALATON Zoltan
+>>>> 
+>>>> BALATON Zoltan (3):
+>>>>    hw/pci-host: Add emulation of Mai Logic Articia S
+>>>>    hw/ppc: Add emulation of AmigaOne XE board
+>>>>    tests/avocado: Add test for amigaone board
+>>>> 
+>>>>   MAINTAINERS                             |   8 +
+>>>>   configs/devices/ppc-softmmu/default.mak |   1 +
+>>>>   hw/pci-host/Kconfig                     |   5 +
+>>>>   hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
+>>>>   hw/pci-host/meson.build                 |   2 +
+>>>>   hw/ppc/Kconfig                          |   7 +
+>>>>   hw/ppc/amigaone.c                       | 164 +++++++++++++
+>>>>   hw/ppc/meson.build                      |   2 +
+>>>>   include/hw/pci-host/articia.h           |  17 ++
+>>>>   tests/avocado/ppc_amiga.py              |  38 +++
+>>>>   10 files changed, 537 insertions(+)
+>>>>   create mode 100644 hw/pci-host/articia.c
+>>>>   create mode 100644 hw/ppc/amigaone.c
+>>>>   create mode 100644 include/hw/pci-host/articia.h
+>>>>   create mode 100644 tests/avocado/ppc_amiga.py
+>>>> 
+>>> 
+>>> 
+>
+>
+--3866299591-1288939442-1699379353=:5463--
 
