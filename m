@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5C67E3FC6
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 14:10:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A98177E3FA1
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 14:07:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Lma-0001qM-98; Tue, 07 Nov 2023 08:06:18 -0500
+	id 1r0LlX-0000kT-Qe; Tue, 07 Nov 2023 08:05:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1r0Lko-0008KI-LT
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:04:28 -0500
+ id 1r0Lkr-0008QN-Ni
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:04:34 -0500
 Received: from smtp1.lauterbach.com ([62.154.241.196])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1r0Lkg-000602-DK
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:04:25 -0500
-Received: (qmail 31271 invoked by uid 484); 7 Nov 2023 13:04:01 -0000
+ id 1r0Lko-00060g-Gt
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:04:29 -0500
+Received: (qmail 31306 invoked by uid 484); 7 Nov 2023 13:04:03 -0000
 X-Qmail-Scanner-Diagnostics: from nedpc1.intern.lauterbach.com by
  smtp1.lauterbach.com (envelope-from <nicolas.eder@lauterbach.com>,
  uid 484) with qmail-scanner-2.11 
  (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
  Clear:RC:1(10.2.11.92):. 
- Processed in 0.071439 secs); 07 Nov 2023 13:04:01 -0000
+ Processed in 1.6e-05 secs); 07 Nov 2023 13:04:03 -0000
 Received: from nedpc1.intern.lauterbach.com
  (Authenticated_SSL:neder@[10.2.11.92])
  (envelope-sender <nicolas.eder@lauterbach.com>)
  by smtp1.lauterbach.com (qmail-ldap-1.03) with TLS_AES_256_GCM_SHA384
- encrypted SMTP for <qemu-devel@nongnu.org>; 7 Nov 2023 13:03:59 -0000
+ encrypted SMTP for <qemu-devel@nongnu.org>; 7 Nov 2023 13:04:01 -0000
 From: Nicolas Eder <nicolas.eder@lauterbach.com>
 To: qemu-devel@nongnu.org
 Cc: "Nicolas Eder" <nicolas.eder@lauterbach.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Christian Boenig" <christian.boenig@lauterbach.com>
-Subject: [PATCH v3 12/20] mcdstub: missing parse_reg_xml function for parsing
- gdb register xml files added
-Date: Tue,  7 Nov 2023 14:03:15 +0100
-Message-Id: <20231107130323.4126-13-nicolas.eder@lauterbach.com>
+Subject: [PATCH v3 13/20] mcdstub: added queries for memory spaces,
+ register groups and registers
+Date: Tue,  7 Nov 2023 14:03:16 +0100
+Message-Id: <20231107130323.4126-14-nicolas.eder@lauterbach.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231107130323.4126-1-nicolas.eder@lauterbach.com>
 References: <20231107130323.4126-1-nicolas.eder@lauterbach.com>
@@ -70,141 +70,322 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 ---
- mcdstub/mcdstub.c | 121 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 121 insertions(+)
+ include/mcdstub/mcdstub.h |  57 ++++++++++
+ mcdstub/mcdstub.c         | 229 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 286 insertions(+)
 
+diff --git a/include/mcdstub/mcdstub.h b/include/mcdstub/mcdstub.h
+index 62394e7c12..85ca8b3b62 100644
+--- a/include/mcdstub/mcdstub.h
++++ b/include/mcdstub/mcdstub.h
+@@ -550,6 +550,63 @@ void handle_close_core(GArray *params, void *user_ctx);
+  */
+ void handle_query_trigger(GArray *params, void *user_ctx);
+ 
++/**
++ * handle_query_reg_groups_f() - Handler for the first register group query.
++ *
++ * This function sends the first register group name and ID.
++ * @params: GArray with all TCP packet parameters.
++ */
++void handle_query_reg_groups_f(GArray *params, void *user_ctx);
++
++/**
++ * handle_query_reg_groups_c() - Handler for all consecutive register group
++ * queries.
++ *
++ * This function sends all consecutive register group names and IDs. It uses
++ * the query_index parameter to determine which register group is queried next.
++ * @params: GArray with all TCP packet parameters.
++ */
++void handle_query_reg_groups_c(GArray *params, void *user_ctx);
++
++/**
++ * handle_query_mem_spaces_f() Handler for the first memory space query.
++ *
++ * This function sends the first memory space name, ID, type and accessing
++ * options.
++ * @params: GArray with all TCP packet parameters.
++ */
++void handle_query_mem_spaces_f(GArray *params, void *user_ctx);
++
++/**
++ * handle_query_mem_spaces_c() - Handler for all consecutive memory space
++ * queries.
++ *
++ * This function sends all consecutive memory space names, IDs, types and
++ * accessing options.
++ * It uses the query_index parameter to determine
++ * which memory space is queried next.
++ * @params: GArray with all TCP packet parameters.
++ */
++void handle_query_mem_spaces_c(GArray *params, void *user_ctx);
++
++/**
++ * handle_query_regs_f() - Handler for the first register query.
++ *
++ * This function sends the first register with all its information.
++ * @params: GArray with all TCP packet parameters.
++ */
++void handle_query_regs_f(GArray *params, void *user_ctx);
++
++/**
++ * handle_query_regs_c() - Handler for all consecutive register queries.
++ *
++ * This function sends all consecutive registers with all their information.
++ * It uses the query_index parameter to determine
++ * which register is queried next.
++ * @params: GArray with all TCP packet parameters.
++ */
++void handle_query_regs_c(GArray *params, void *user_ctx);
++
+ /**
+  * handle_open_server() - Handler for opening the MCD server.
+  *
 diff --git a/mcdstub/mcdstub.c b/mcdstub/mcdstub.c
-index d71dff633a..3e87378b45 100644
+index 3e87378b45..56854c4c76 100644
 --- a/mcdstub/mcdstub.c
 +++ b/mcdstub/mcdstub.c
-@@ -867,6 +867,127 @@ CPUState *find_cpu(uint32_t thread_id)
+@@ -117,6 +117,54 @@ void init_query_cmds_table(MCDCmdParseEntry *mcd_query_cmds_table)
+     mcd_query_cmds_table[cmd_number] = query_trigger;
+     cmd_number++;
+ 
++    MCDCmdParseEntry query_mem_spaces_f = {
++        .handler = handle_query_mem_spaces_f,
++        .cmd = QUERY_ARG_MEMORY QUERY_FIRST,
++    };
++    strcpy(query_mem_spaces_f.schema, (char[2]) { ARG_SCHEMA_CORENUM, '\0' });
++    mcd_query_cmds_table[cmd_number] = query_mem_spaces_f;
++    cmd_number++;
++
++    MCDCmdParseEntry query_mem_spaces_c = {
++        .handler = handle_query_mem_spaces_c,
++        .cmd = QUERY_ARG_MEMORY QUERY_CONSEQUTIVE,
++    };
++    strcpy(query_mem_spaces_c.schema, (char[2]) { ARG_SCHEMA_QRYHANDLE, '\0' });
++    mcd_query_cmds_table[cmd_number] = query_mem_spaces_c;
++    cmd_number++;
++
++    MCDCmdParseEntry query_reg_groups_f = {
++        .handler = handle_query_reg_groups_f,
++        .cmd = QUERY_ARG_REGGROUP QUERY_FIRST,
++    };
++    strcpy(query_reg_groups_f.schema, (char[2]) { ARG_SCHEMA_CORENUM, '\0' });
++    mcd_query_cmds_table[cmd_number] = query_reg_groups_f;
++    cmd_number++;
++
++    MCDCmdParseEntry query_reg_groups_c = {
++        .handler = handle_query_reg_groups_c,
++        .cmd = QUERY_ARG_REGGROUP QUERY_CONSEQUTIVE,
++    };
++    strcpy(query_reg_groups_c.schema, (char[2]) { ARG_SCHEMA_QRYHANDLE, '\0' });
++    mcd_query_cmds_table[cmd_number] = query_reg_groups_c;
++    cmd_number++;
++
++    MCDCmdParseEntry query_regs_f = {
++        .handler = handle_query_regs_f,
++        .cmd = QUERY_ARG_REG QUERY_FIRST,
++    };
++    strcpy(query_regs_f.schema, (char[2]) { ARG_SCHEMA_CORENUM, '\0' });
++    mcd_query_cmds_table[cmd_number] = query_regs_f;
++    cmd_number++;
++
++    MCDCmdParseEntry query_regs_c = {
++        .handler = handle_query_regs_c,
++        .cmd = QUERY_ARG_REG QUERY_CONSEQUTIVE,
++    };
++    strcpy(query_regs_c.schema, (char[2]) { ARG_SCHEMA_QRYHANDLE, '\0' });
++    mcd_query_cmds_table[cmd_number] = query_regs_c;
++    cmd_number++;
++
+     MCDCmdParseEntry query_state = {
+         .handler = handle_query_state,
+         .cmd = QUERY_ARG_STATE,
+@@ -1237,3 +1285,184 @@ void handle_query_trigger(GArray *params, void *user_ctx)
+         TCP_ARGUMENT_ACTION, trigger.action);
+     mcd_put_strbuf();
  }
- 
- 
-+void parse_reg_xml(const char *xml, int size, GArray *registers,
-+    uint8_t reg_type, uint32_t reg_id_offset)
++
++void handle_query_mem_spaces_f(GArray *params, void *user_ctx)
 +{
-+    /* iterates over the complete xml file */
-+    int i, j;
-+    uint32_t current_reg_id = reg_id_offset;
-+    uint32_t internal_id;
-+    int still_to_skip = 0;
-+    char argument[64] = {0};
-+    char value[64] = {0};
-+    bool is_reg = false;
-+    bool is_argument = false;
-+    bool is_value = false;
-+    GArray *reg_data;
++    /* 1. get correct memspaces and set the query_cpu */
++    uint32_t cpu_id = get_param(params, 0)->cpu_id;
++    mcdserver_state.query_cpu_id = cpu_id;
++    GArray *memspaces = g_list_nth_data(mcdserver_state.all_memspaces, cpu_id);
 +
-+    char c;
-+    char *c_ptr;
-+
-+    xml_attrib attribute_j;
-+    const char *argument_j;
-+    const char *value_j;
-+
-+    for (i = 0; i < size; i++) {
-+        c = xml[i];
-+        c_ptr = &c;
-+
-+        if (still_to_skip > 0) {
-+            /* skip unwanted chars */
-+            still_to_skip--;
-+            continue;
-+        }
-+
-+        if (strncmp(&xml[i], "<reg", 4) == 0) {
-+            /* start of a register */
-+            still_to_skip = 3;
-+            is_reg = true;
-+            reg_data = g_array_new(false, true, sizeof(xml_attrib));
-+        } else if (is_reg) {
-+            if (strncmp(&xml[i], "/>", 2) == 0) {
-+                /* end of register info */
-+                still_to_skip = 1;
-+                is_reg = false;
-+
-+                /* create empty register */
-+                mcd_reg_st my_register = (const struct mcd_reg_st){ 0 };
-+
-+                /* add found attribtues */
-+                for (j = 0; j < reg_data->len; j++) {
-+                    attribute_j = g_array_index(reg_data, xml_attrib, j);
-+
-+                    argument_j = attribute_j.argument;
-+                    value_j = attribute_j.value;
-+
-+                    if (strcmp(argument_j, "name") == 0) {
-+                        strcpy(my_register.name, value_j);
-+                    } else if (strcmp(argument_j, "regnum") == 0) {
-+                        my_register.id = atoi(value_j);
-+                    } else if (strcmp(argument_j, "bitsize") == 0) {
-+                        my_register.bitsize = atoi(value_j);
-+                    } else if (strcmp(argument_j, "type") == 0) {
-+                        strcpy(my_register.type, value_j);
-+                    } else if (strcmp(argument_j, "group") == 0) {
-+                        strcpy(my_register.group, value_j);
-+                    }
-+                }
-+                /* add reg_type, internal_id and id*/
-+                my_register.reg_type = reg_type;
-+                my_register.internal_id = internal_id;
-+                internal_id++;
-+                if (!my_register.id) {
-+                    my_register.id = current_reg_id;
-+                    current_reg_id++;
-+                } else {
-+                    /* set correct ID for the next register */
-+                    current_reg_id = my_register.id + 1;
-+                }
-+                /* store register */
-+                g_array_append_vals(registers, (gconstpointer)&my_register, 1);
-+                /* free memory */
-+                g_array_free(reg_data, false);
-+            } else {
-+                /* store info for register */
-+                switch (c) {
-+                case ' ':
-+                    break;
-+                case '=':
-+                    is_argument = false;
-+                    break;
-+                case '"':
-+                    if (is_value) {
-+                        /* end of value reached */
-+                        is_value = false;
-+                        /* store arg-val combo */
-+                        xml_attrib current_attribute;
-+                        strcpy(current_attribute.argument, argument);
-+                        strcpy(current_attribute.value, value);
-+                        g_array_append_vals(reg_data,
-+                        (gconstpointer)&current_attribute, 1);
-+                        memset(argument, 0, sizeof(argument));
-+                        memset(value, 0, sizeof(value));
-+                    } else {
-+                        /*start of value */
-+                        is_value = true;
-+                    }
-+                    break;
-+                default:
-+                    if (is_argument) {
-+                        strncat(argument, c_ptr, 1);
-+                    } else if (is_value) {
-+                        strncat(value, c_ptr, 1);
-+                    } else {
-+                        is_argument = true;
-+                        strncat(argument, c_ptr, 1);
-+                    }
-+                    break;
-+                }
-+            }
-+        }
++    /* 2. check length */
++    int nb_groups = memspaces->len;
++    if (nb_groups == 1) {
++        /* indicates this is the last packet */
++        g_string_printf(mcdserver_state.str_buf, "0%s", QUERY_END_INDEX);
++    } else {
++        g_string_printf(mcdserver_state.str_buf, "1%s", QUERY_END_INDEX);
 +    }
++
++    /* 3. send data */
++    mcd_mem_space_st space = g_array_index(memspaces, mcd_mem_space_st, 0);
++    g_string_append_printf(mcdserver_state.str_buf,
++        "%s=%s.%s=%u.%s=%u.%s=%u.%s=%u.%s=%u.%s=%ld.%s=%ld.%s=%u.",
++        TCP_ARGUMENT_NAME, space.name,
++        TCP_ARGUMENT_ID, space.id,
++        TCP_ARGUMENT_TYPE, space.type,
++        TCP_ARGUMENT_BITS_PER_MAU, space.bits_per_mau,
++        TCP_ARGUMENT_INVARIANCE, space.invariance,
++        TCP_ARGUMENT_ENDIAN, space.endian,
++        TCP_ARGUMENT_MIN, space.min_addr,
++        TCP_ARGUMENT_MAX, space.max_addr,
++        TCP_ARGUMENT_SUPPORTED_ACCESS_OPTIONS, space.supported_access_options);
++    mcd_put_strbuf();
 +}
 +
- int int_cmp(gconstpointer a, gconstpointer b)
- {
-     int int_a = *(int *)a;
++void handle_query_mem_spaces_c(GArray *params, void *user_ctx)
++{
++    /*
++     * this funcitons send all mem spaces except for the first
++     * 1. get parameter and memspace
++     */
++    uint32_t query_index = get_param(params, 0)->query_handle;
++    uint32_t cpu_id = mcdserver_state.query_cpu_id;
++    GArray *memspaces = g_list_nth_data(mcdserver_state.all_memspaces, cpu_id);
++
++    /* 2. check weather this was the last mem space */
++    int nb_groups = memspaces->len;
++    if (query_index + 1 == nb_groups) {
++        /* indicates this is the last packet */
++        g_string_printf(mcdserver_state.str_buf, "0%s", QUERY_END_INDEX);
++    } else {
++        g_string_printf(mcdserver_state.str_buf, "%u!", query_index + 1);
++    }
++
++    /* 3. send the correct memspace */
++    mcd_mem_space_st space = g_array_index(memspaces,
++        mcd_mem_space_st, query_index);
++    g_string_append_printf(mcdserver_state.str_buf,
++        "%s=%s.%s=%u.%s=%u.%s=%u.%s=%u.%s=%u.%s=%ld.%s=%ld.%s=%u.",
++        TCP_ARGUMENT_NAME, space.name,
++        TCP_ARGUMENT_ID, space.id,
++        TCP_ARGUMENT_TYPE, space.type,
++        TCP_ARGUMENT_BITS_PER_MAU, space.bits_per_mau,
++        TCP_ARGUMENT_INVARIANCE, space.invariance,
++        TCP_ARGUMENT_ENDIAN, space.endian,
++        TCP_ARGUMENT_MIN, space.min_addr,
++        TCP_ARGUMENT_MAX, space.max_addr,
++        TCP_ARGUMENT_SUPPORTED_ACCESS_OPTIONS, space.supported_access_options);
++    mcd_put_strbuf();
++}
++
++void handle_query_reg_groups_f(GArray *params, void *user_ctx)
++{
++    /* 1. get correct reggroups and set the query_cpu */
++    uint32_t cpu_id = get_param(params, 0)->cpu_id;
++    mcdserver_state.query_cpu_id = cpu_id;
++    GArray *reggroups = g_list_nth_data(mcdserver_state.all_reggroups, cpu_id);
++
++    /* 2. check length */
++    int nb_groups = reggroups->len;
++    if (nb_groups == 1) {
++        /* indicates this is the last packet */
++        g_string_printf(mcdserver_state.str_buf, "0%s", QUERY_END_INDEX);
++    } else {
++        g_string_printf(mcdserver_state.str_buf, "1%s", QUERY_END_INDEX);
++    }
++    /* 3. send data */
++    mcd_reg_group_st group = g_array_index(reggroups, mcd_reg_group_st, 0);
++    g_string_append_printf(mcdserver_state.str_buf, "%s=%u.%s=%s.",
++        TCP_ARGUMENT_ID, group.id, TCP_ARGUMENT_NAME, group.name);
++    mcd_put_strbuf();
++}
++
++void handle_query_reg_groups_c(GArray *params, void *user_ctx)
++{
++    /*
++     * this funcitons send all reg groups except for the first
++     * 1. get parameter and memspace
++     */
++    uint32_t query_index = get_param(params, 0)->query_handle;
++    uint32_t cpu_id = mcdserver_state.query_cpu_id;
++    GArray *reggroups = g_list_nth_data(mcdserver_state.all_reggroups, cpu_id);
++
++    /* 2. check weather this was the last reg group */
++    int nb_groups = reggroups->len;
++    if (query_index + 1 == nb_groups) {
++        /* indicates this is the last packet */
++        g_string_printf(mcdserver_state.str_buf, "0%s", QUERY_END_INDEX);
++    } else {
++        g_string_printf(mcdserver_state.str_buf, "%u!", query_index + 1);
++    }
++
++    /* 3. send the correct reggroup */
++    mcd_reg_group_st group = g_array_index(reggroups, mcd_reg_group_st,
++        query_index);
++    g_string_append_printf(mcdserver_state.str_buf, "%s=%u.%s=%s.",
++        TCP_ARGUMENT_ID, group.id, TCP_ARGUMENT_NAME, group.name);
++    mcd_put_strbuf();
++}
++
++void handle_query_regs_f(GArray *params, void *user_ctx)
++{
++    /* 1. get correct registers and set the query_cpu */
++    uint32_t cpu_id = get_param(params, 0)->cpu_id;
++    mcdserver_state.query_cpu_id = cpu_id;
++    GArray *registers = g_list_nth_data(mcdserver_state.all_registers, cpu_id);
++
++    /* 2. check length */
++    int nb_regs = registers->len;
++    if (nb_regs == 1) {
++        /* indicates this is the last packet */
++        g_string_printf(mcdserver_state.str_buf, "0%s", QUERY_END_INDEX);
++    } else {
++        g_string_printf(mcdserver_state.str_buf, "1%s", QUERY_END_INDEX);
++    }
++    /* 3. send data */
++    mcd_reg_st my_register = g_array_index(registers, mcd_reg_st, 0);
++    g_string_append_printf(mcdserver_state.str_buf,
++        "%s=%u.%s=%s.%s=%u.%s=%u.%s=%u.%s=%u.%s=%u.%s=%u.",
++        TCP_ARGUMENT_ID, my_register.id,
++        TCP_ARGUMENT_NAME, my_register.name,
++        TCP_ARGUMENT_SIZE, my_register.bitsize,
++        TCP_ARGUMENT_REGGROUPID, my_register.mcd_reg_group_id,
++        TCP_ARGUMENT_MEMSPACEID, my_register.mcd_mem_space_id,
++        TCP_ARGUMENT_TYPE, my_register.mcd_reg_type,
++        TCP_ARGUMENT_THREAD, my_register.mcd_hw_thread_id,
++        TCP_ARGUMENT_OPCODE, my_register.opcode);
++    mcd_put_strbuf();
++}
++
++void handle_query_regs_c(GArray *params, void *user_ctx)
++{
++    /*
++     * this funcitons send all regs except for the first
++     * 1. get parameter and registers
++     */
++    uint32_t query_index = get_param(params, 0)->query_handle;
++    uint32_t cpu_id = mcdserver_state.query_cpu_id;
++    GArray *registers = g_list_nth_data(mcdserver_state.all_registers, cpu_id);
++
++    /* 2. check weather this was the last register */
++    int nb_regs = registers->len;
++    if (query_index + 1 == nb_regs) {
++        /* indicates this is the last packet */
++        g_string_printf(mcdserver_state.str_buf, "0%s", QUERY_END_INDEX);
++    } else {
++        g_string_printf(mcdserver_state.str_buf, "%u!", query_index + 1);
++    }
++
++    /* 3. send the correct register */
++    mcd_reg_st my_register = g_array_index(registers, mcd_reg_st, query_index);
++    g_string_append_printf(mcdserver_state.str_buf,
++        "%s=%u.%s=%s.%s=%u.%s=%u.%s=%u.%s=%u.%s=%u.%s=%u.",
++        TCP_ARGUMENT_ID, my_register.id,
++        TCP_ARGUMENT_NAME, my_register.name,
++        TCP_ARGUMENT_SIZE, my_register.bitsize,
++        TCP_ARGUMENT_REGGROUPID, my_register.mcd_reg_group_id,
++        TCP_ARGUMENT_MEMSPACEID, my_register.mcd_mem_space_id,
++        TCP_ARGUMENT_TYPE, my_register.mcd_reg_type,
++        TCP_ARGUMENT_THREAD, my_register.mcd_hw_thread_id,
++        TCP_ARGUMENT_OPCODE, my_register.opcode);
++    mcd_put_strbuf();
++}
 -- 
 2.34.1
 
