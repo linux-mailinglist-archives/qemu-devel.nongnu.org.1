@@ -2,94 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB4927E3250
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 01:41:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB5B7E325A
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 01:46:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0A8R-0003hK-T9; Mon, 06 Nov 2023 19:40:03 -0500
+	id 1r0ACi-0005IN-DF; Mon, 06 Nov 2023 19:44:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0A8M-0003h8-U1
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 19:39:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.145.221.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0ACg-0005ID-Dp
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 19:44:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0A8I-00013Y-2I
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 19:39:57 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0ACe-0001nR-ID
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 19:44:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699317590;
+ s=mimecast20190719; t=1699317863;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hVh9XJIOKbHXM8ViHQDJWr44h7WJfdkZkzvuDfpL148=;
- b=FYQazr0BU4k9nntchdu49bfUbXRu5C+XybMi55XqzikkafkDQfrIfwYuepyAhPw8ht6Q8k
- FevOXHXNFR0lilPOCjQuyK8mkqPi/k0bNeUPqBUX38PQO4nJtsqwkaZn7NK/VEOTjHyOuN
- wmaSqT8BKOXDOYfXKCxBM86wUR4I/6Q=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=WIzcJSATdmn7pC7sUUpaDbI/Mnet2jGP3iDQ7rMNbLY=;
+ b=HS3WpV8sWEcv2RSSPEIEe/Oug7i3Zmd+R5SyYUxLo27De/76OvBJ58HUbbqMdxpOKCjjus
+ KCQqJ/6l1tnRKEetlrlg4u7NQ9F2CIa21ygYZuBNWAHZoyqdbeUWSoOishe0m6zu7bvrGj
+ zpsVpTJOwYqWc8FeKsbK71GxWwhS42c=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-2-8CJkLabbPgOSSPEuBCUJuQ-1; Mon, 06 Nov 2023 19:39:48 -0500
-X-MC-Unique: 8CJkLabbPgOSSPEuBCUJuQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-408f9cee5e8so32361455e9.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 16:39:48 -0800 (PST)
+ us-mta-264-_tvr3aqKMzSLqWlsG3_k8A-1; Mon, 06 Nov 2023 19:44:22 -0500
+X-MC-Unique: _tvr3aqKMzSLqWlsG3_k8A-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-32db43129c6so2668546f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 16:44:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699317587; x=1699922387;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hVh9XJIOKbHXM8ViHQDJWr44h7WJfdkZkzvuDfpL148=;
- b=rbkCGMfTcPT9pxDthRSOw5hIj7jhM8m4HZLNW629fxtrPhjITcmCft1Xnlls1ZZOcF
- jGE9r+g7phmFwY8xe7keeKg0X7+dtVPnLNX/bACaorsmt9kyJwhPmi4A0uizv6JWtQUm
- 7X7VNtZojZaCNeJxfcRFSDVrdYDPHICY5ELdx3wtnJ8qwvPZtyl8GoupJEfCH9vcgTn0
- AG/MsivkciVf0B7ezPXONsVDpUDOgL6MecUsjiPUor6EGRLvtEhGsUrJWd2gqDvlwjPi
- cvuecQQoNIQ654y068gAd24MwiAljrZIHM/qx5cdNKH/3BTn51UR03YcWfqhF+zCPKUg
- prKw==
-X-Gm-Message-State: AOJu0YyIaoZuORX1gGv90KfR+ZgRnxm4NV6sIIPIhY1ciaz2beeaDq9a
- DkfaL52u+EVRRub2ND5gZf+D+lONXin25NZ+/bNQNd9ovVlob28J7S+cBmVlNkOz4TWXAI8yk+S
- XX7uuBON5qrqqS7w=
-X-Received: by 2002:a05:600c:4c19:b0:408:4f50:9602 with SMTP id
- d25-20020a05600c4c1900b004084f509602mr1033742wmp.12.1699317587134; 
- Mon, 06 Nov 2023 16:39:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEkR39rrj7GDmiiloftCFYwzJQ2tNZV2Y91sECSQ0NASqqLPuVLiA68fOIhXbMiC2hI2/i3RA==
-X-Received: by 2002:a05:600c:4c19:b0:408:4f50:9602 with SMTP id
- d25-20020a05600c4c1900b004084f509602mr1033731wmp.12.1699317586723; 
- Mon, 06 Nov 2023 16:39:46 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699317860; x=1699922660;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WIzcJSATdmn7pC7sUUpaDbI/Mnet2jGP3iDQ7rMNbLY=;
+ b=XibKGOseBiykaPtL3eL/vxSWkMXuVq9EbLLilpOTIbSwPp14ncPhwXgO+XAdGWV2G4
+ DTFfxKv7J0FfX3uknba7ByCruxR/TIrvX9TxA1MNJw2g+cKafxJp2KSXou0/1Gf/nmK4
+ K+BpU8XN0mCtLhbhc7H2rhCLdPnqqmGI50sWLBhYN0P0oLXtpcHHNsP991zw2Nv33H4J
+ sbCUVpJItJmYABfCDOOcQRPyu/SQdJHW050uKxY+glnuC53K18bY6BWrR5jC3ZQ6nQlT
+ swSYvC1OqeAvwdLsHYj1VAhMWfP6AuxhQ9HgAcpo555Ntx0rOC9QSJmALndgNF4xtLUc
+ 2BMg==
+X-Gm-Message-State: AOJu0YxGhzq1cl7ysfQ0763zwrrYIBqNgy69dgccbfC7G2nqTB9KRlJm
+ +0+8TT3oFJZhFWHOoieR0OOch5dcGaQ0Jgw6CMUHvdrgp8H1G/QIfkdb6PINeNMgArbMX8ZKBK9
+ +Nm6MLkoVCUEcbdCcrHQwG+E=
+X-Received: by 2002:adf:fd8d:0:b0:321:68fa:70aa with SMTP id
+ d13-20020adffd8d000000b0032168fa70aamr26307107wrr.9.1699317860363; 
+ Mon, 06 Nov 2023 16:44:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH6eWBl2S6eFeSMmEU7KAAp/q7Hw192Yaxv6od1eOY6NK4DiTfmZ+Vx+UuCBhCxc8IBMU0nuQ==
+X-Received: by 2002:adf:fd8d:0:b0:321:68fa:70aa with SMTP id
+ d13-20020adffd8d000000b0032168fa70aamr26307097wrr.9.1699317860019; 
+ Mon, 06 Nov 2023 16:44:20 -0800 (PST)
 Received: from redhat.com ([2.55.35.37]) by smtp.gmail.com with ESMTPSA id
- ay8-20020a05600c1e0800b0040772138bb7sm13978543wmb.2.2023.11.06.16.39.43
+ y18-20020a5d4ad2000000b00323287186aasm869831wrs.32.2023.11.06.16.44.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 16:39:45 -0800 (PST)
-Date: Mon, 6 Nov 2023 19:39:41 -0500
+ Mon, 06 Nov 2023 16:44:19 -0800 (PST)
+Date: Mon, 6 Nov 2023 19:44:15 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: qemu-devel@nongnu.org, David Woodhouse <dwmw2@infradead.org>,
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+ Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Volker =?iso-8859-1?Q?R=FCmelin?= <vr_qemu@t-online.de>,
+ =?utf-8?B?S8WRdsOhZ8OzLCBab2x0w6Fu?= <DirtY.iCE.hu@gmail.com>,
  Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Joao Martins <joao.m.martins@oracle.com>,
- Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Phil Dennis-Jordan <lists@philjordan.eu>
-Subject: Re: [PATCH v9 5/5] amd_iommu: report x2APIC support to the operating
- system
-Message-ID: <20231106193841-mutt-send-email-mst@kernel.org>
-References: <20231024152105.35942-1-minhquangbui99@gmail.com>
- <20231024152105.35942-6-minhquangbui99@gmail.com>
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: Re: [PATCH v13 00/11] Add VIRTIO sound card
+Message-ID: <20231106194352-mutt-send-email-mst@kernel.org>
+References: <cover.1698062525.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20231024152105.35942-6-minhquangbui99@gmail.com>
-Received-SPF: pass client-ip=216.145.221.124; envelope-from=mst@redhat.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1698062525.git.manos.pitsidianakis@linaro.org>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,335 +110,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 24, 2023 at 10:21:05PM +0700, Bui Quang Minh wrote:
-> This commit adds XTSup configuration to let user choose to whether enable
-> this feature or not. When XTSup is enabled, additional bytes in IRTE with
-> enabled guest virtual VAPIC are used to support 32-bit destination id.
-> 
-> Additionally, this commit exports IVHD type 0x11 besides the old IVHD type
-> 0x10 in ACPI table. IVHD type 0x10 does not report full set of IOMMU
-> features only the legacy ones, so operating system (e.g. Linux) may only
-> detects x2APIC support if IVHD type 0x11 is available. The IVHD type 0x10
-> is kept so that old operating system that only parses type 0x10 can detect
-> the IOMMU device.
-> 
-> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+On Mon, Oct 23, 2023 at 03:03:17PM +0300, Manos Pitsidianakis wrote:
+> This patch series adds an audio device implementing the recent virtio
+> sound spec (1.2) and a corresponding PCI wrapper device.
 
 
-changes IVRS without updating expected files for tests.
-result seems to be CI failures:
-https://gitlab.com/mstredhat/qemu/-/jobs/5470533834
+Pls send patches on top to fix checkpatch warnings.
 
-> ---
->  hw/i386/acpi-build.c | 129 +++++++++++++++++++++++++++----------------
->  hw/i386/amd_iommu.c  |  29 +++++++++-
->  hw/i386/amd_iommu.h  |  16 ++++--
->  3 files changed, 117 insertions(+), 57 deletions(-)
+https://gitlab.com/mstredhat/qemu/-/jobs/5470533893
+
+
+> v13 can be found online at:
 > 
-> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-> index 3f2b27cf75..8069971e54 100644
-> --- a/hw/i386/acpi-build.c
-> +++ b/hw/i386/acpi-build.c
-> @@ -2337,30 +2337,23 @@ static void
->  build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
->                  const char *oem_table_id)
->  {
-> -    int ivhd_table_len = 24;
->      AMDVIState *s = AMD_IOMMU_DEVICE(x86_iommu_get_default());
->      GArray *ivhd_blob = g_array_new(false, true, 1);
->      AcpiTable table = { .sig = "IVRS", .rev = 1, .oem_id = oem_id,
->                          .oem_table_id = oem_table_id };
-> +    uint64_t feature_report;
->  
->      acpi_table_begin(&table, table_data);
->      /* IVinfo - IO virtualization information common to all
->       * IOMMU units in a system
->       */
-> -    build_append_int_noprefix(table_data, 40UL << 8/* PASize */, 4);
-> +    build_append_int_noprefix(table_data,
-> +                             (1UL << 0) | /* EFRSup */
-> +                             (40UL << 8), /* PASize */
-> +                             4);
->      /* reserved */
->      build_append_int_noprefix(table_data, 0, 8);
->  
-> -    /* IVHD definition - type 10h */
-> -    build_append_int_noprefix(table_data, 0x10, 1);
-> -    /* virtualization flags */
-> -    build_append_int_noprefix(table_data,
-> -                             (1UL << 0) | /* HtTunEn      */
-> -                             (1UL << 4) | /* iotblSup     */
-> -                             (1UL << 6) | /* PrefSup      */
-> -                             (1UL << 7),  /* PPRSup       */
-> -                             1);
-> -
->      /*
->       * A PCI bus walk, for each PCI host bridge, is necessary to create a
->       * complete set of IVHD entries.  Do this into a separate blob so that we
-> @@ -2380,56 +2373,94 @@ build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
->          build_append_int_noprefix(ivhd_blob, 0x0000001, 4);
->      }
->  
-> -    ivhd_table_len += ivhd_blob->len;
-> -
->      /*
->       * When interrupt remapping is supported, we add a special IVHD device
-> -     * for type IO-APIC.
-> -     */
-> -    if (x86_iommu_ir_supported(x86_iommu_get_default())) {
-> -        ivhd_table_len += 8;
-> -    }
-> -
-> -    /* IVHD length */
-> -    build_append_int_noprefix(table_data, ivhd_table_len, 2);
-> -    /* DeviceID */
-> -    build_append_int_noprefix(table_data,
-> -                              object_property_get_int(OBJECT(&s->pci), "addr",
-> -                                                      &error_abort), 2);
-> -    /* Capability offset */
-> -    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
-> -    /* IOMMU base address */
-> -    build_append_int_noprefix(table_data, s->mmio.addr, 8);
-> -    /* PCI Segment Group */
-> -    build_append_int_noprefix(table_data, 0, 2);
-> -    /* IOMMU info */
-> -    build_append_int_noprefix(table_data, 0, 2);
-> -    /* IOMMU Feature Reporting */
-> -    build_append_int_noprefix(table_data,
-> -                             (48UL << 30) | /* HATS   */
-> -                             (48UL << 28) | /* GATS   */
-> -                             (1UL << 2)   | /* GTSup  */
-> -                             (1UL << 6),    /* GASup  */
-> -                             4);
-> -
-> -    /* IVHD entries as found above */
-> -    g_array_append_vals(table_data, ivhd_blob->data, ivhd_blob->len);
-> -    g_array_free(ivhd_blob, TRUE);
-> -
-> -    /*
-> -     * Add a special IVHD device type.
-> +     * for type IO-APIC
->       * Refer to spec - Table 95: IVHD device entry type codes
->       *
->       * Linux IOMMU driver checks for the special IVHD device (type IO-APIC).
->       * See Linux kernel commit 'c2ff5cf5294bcbd7fa50f7d860e90a66db7e5059'
->       */
->      if (x86_iommu_ir_supported(x86_iommu_get_default())) {
-> -        build_append_int_noprefix(table_data,
-> +        build_append_int_noprefix(ivhd_blob,
->                                   (0x1ull << 56) |           /* type IOAPIC */
->                                   (IOAPIC_SB_DEVID << 40) |  /* IOAPIC devid */
->                                   0x48,                      /* special device */
->                                   8);
->      }
-> +
-> +    /* IVHD definition - type 10h */
-> +    build_append_int_noprefix(table_data, 0x10, 1);
-> +    /* virtualization flags */
-> +    build_append_int_noprefix(table_data,
-> +                             (1UL << 0) | /* HtTunEn      */
-> +                             (1UL << 4) | /* iotblSup     */
-> +                             (1UL << 6) | /* PrefSup      */
-> +                             (1UL << 7),  /* PPRSup       */
-> +                             1);
-> +
-> +    /* IVHD length */
-> +    build_append_int_noprefix(table_data, ivhd_blob->len + 24, 2);
-> +    /* DeviceID */
-> +    build_append_int_noprefix(table_data,
-> +                              object_property_get_int(OBJECT(&s->pci), "addr",
-> +                                                      &error_abort), 2);
-> +    /* Capability offset */
-> +    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
-> +    /* IOMMU base address */
-> +    build_append_int_noprefix(table_data, s->mmio.addr, 8);
-> +    /* PCI Segment Group */
-> +    build_append_int_noprefix(table_data, 0, 2);
-> +    /* IOMMU info */
-> +    build_append_int_noprefix(table_data, 0, 2);
-> +    /* IOMMU Feature Reporting */
-> +    feature_report = (48UL << 30) | /* HATS   */
-> +                     (48UL << 28) | /* GATS   */
-> +                     (1UL << 2)   | /* GTSup  */
-> +                     (1UL << 6);    /* GASup  */
-> +    if (s->xtsup) {
-> +        feature_report |= (1UL << 0); /* XTSup */
-> +    }
-> +    build_append_int_noprefix(table_data, feature_report, 4);
-> +
-> +    /* IVHD entries as found above */
-> +    g_array_append_vals(table_data, ivhd_blob->data, ivhd_blob->len);
-> +
-> +   /* IVHD definition - type 11h */
-> +    build_append_int_noprefix(table_data, 0x11, 1);
-> +    /* virtualization flags */
-> +    build_append_int_noprefix(table_data,
-> +                             (1UL << 0) | /* HtTunEn      */
-> +                             (1UL << 4),  /* iotblSup     */
-> +                             1);
-> +
-> +    /* IVHD length */
-> +    build_append_int_noprefix(table_data, ivhd_blob->len + 40, 2);
-> +    /* DeviceID */
-> +    build_append_int_noprefix(table_data,
-> +                              object_property_get_int(OBJECT(&s->pci), "addr",
-> +                                                      &error_abort), 2);
-> +    /* Capability offset */
-> +    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
-> +    /* IOMMU base address */
-> +    build_append_int_noprefix(table_data, s->mmio.addr, 8);
-> +    /* PCI Segment Group */
-> +    build_append_int_noprefix(table_data, 0, 2);
-> +    /* IOMMU info */
-> +    build_append_int_noprefix(table_data, 0, 2);
-> +    /* IOMMU Attributes */
-> +    build_append_int_noprefix(table_data, 0, 4);
-> +    /* EFR Register Image */
-> +    build_append_int_noprefix(table_data,
-> +                              amdvi_extended_feature_register(s),
-> +                              8);
-> +    /* EFR Register Image 2 */
-> +    build_append_int_noprefix(table_data, 0, 8);
-> +
-> +    /* IVHD entries as found above */
-> +    g_array_append_vals(table_data, ivhd_blob->data, ivhd_blob->len);
-> +
-> +    g_array_free(ivhd_blob, TRUE);
->      acpi_table_end(linker, &table);
->  }
->  
-> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-> index 7965415b47..e7809b641a 100644
-> --- a/hw/i386/amd_iommu.c
-> +++ b/hw/i386/amd_iommu.c
-> @@ -31,6 +31,7 @@
->  #include "hw/i386/apic_internal.h"
->  #include "trace.h"
->  #include "hw/i386/apic-msidef.h"
-> +#include "hw/qdev-properties.h"
->  
->  /* used AMD-Vi MMIO registers */
->  const char *amdvi_mmio_low[] = {
-> @@ -74,6 +75,16 @@ typedef struct AMDVIIOTLBEntry {
->      uint64_t page_mask;         /* physical page size  */
->  } AMDVIIOTLBEntry;
->  
-> +uint64_t amdvi_extended_feature_register(AMDVIState *s)
-> +{
-> +    uint64_t feature = AMDVI_DEFAULT_EXT_FEATURES;
-> +    if (s->xtsup) {
-> +        feature |= AMDVI_FEATURE_XT;
-> +    }
-> +
-> +    return feature;
-> +}
-> +
->  /* configure MMIO registers at startup/reset */
->  static void amdvi_set_quad(AMDVIState *s, hwaddr addr, uint64_t val,
->                             uint64_t romask, uint64_t w1cmask)
-> @@ -1155,7 +1166,12 @@ static int amdvi_int_remap_ga(AMDVIState *iommu,
->      irq->vector = irte.hi.fields.vector;
->      irq->dest_mode = irte.lo.fields_remap.dm;
->      irq->redir_hint = irte.lo.fields_remap.rq_eoi;
-> -    irq->dest = irte.lo.fields_remap.destination;
-> +    if (iommu->xtsup) {
-> +        irq->dest = irte.lo.fields_remap.destination |
-> +                    (irte.hi.fields.destination_hi << 24);
-> +    } else {
-> +        irq->dest = irte.lo.fields_remap.destination & 0xff;
-> +    }
->  
->      return 0;
->  }
-> @@ -1501,8 +1517,9 @@ static void amdvi_init(AMDVIState *s)
->  
->      /* reset MMIO */
->      memset(s->mmior, 0, AMDVI_MMIO_SIZE);
-> -    amdvi_set_quad(s, AMDVI_MMIO_EXT_FEATURES, AMDVI_EXT_FEATURES,
-> -            0xffffffffffffffef, 0);
-> +    amdvi_set_quad(s, AMDVI_MMIO_EXT_FEATURES,
-> +                   amdvi_extended_feature_register(s),
-> +                   0xffffffffffffffef, 0);
->      amdvi_set_quad(s, AMDVI_MMIO_STATUS, 0, 0x98, 0x67);
->  }
->  
-> @@ -1585,6 +1602,11 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
->      amdvi_init(s);
->  }
->  
-> +static Property amdvi_properties[] = {
-> +    DEFINE_PROP_BOOL("xtsup", AMDVIState, xtsup, false),
-> +    DEFINE_PROP_END_OF_LIST(),
-> +};
-> +
->  static const VMStateDescription vmstate_amdvi_sysbus = {
->      .name = "amd-iommu",
->      .unmigratable = 1
-> @@ -1611,6 +1633,7 @@ static void amdvi_sysbus_class_init(ObjectClass *klass, void *data)
->      dc->user_creatable = true;
->      set_bit(DEVICE_CATEGORY_MISC, dc->categories);
->      dc->desc = "AMD IOMMU (AMD-Vi) DMA Remapping device";
-> +    device_class_set_props(dc, amdvi_properties);
->  }
->  
->  static const TypeInfo amdvi_sysbus = {
-> diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-> index c5065a3e27..73619fe9ea 100644
-> --- a/hw/i386/amd_iommu.h
-> +++ b/hw/i386/amd_iommu.h
-> @@ -154,6 +154,7 @@
->  
->  #define AMDVI_FEATURE_PREFETCH            (1ULL << 0) /* page prefetch       */
->  #define AMDVI_FEATURE_PPR                 (1ULL << 1) /* PPR Support         */
-> +#define AMDVI_FEATURE_XT                  (1ULL << 2) /* x2APIC Support      */
->  #define AMDVI_FEATURE_GT                  (1ULL << 4) /* Guest Translation   */
->  #define AMDVI_FEATURE_IA                  (1ULL << 6) /* inval all support   */
->  #define AMDVI_FEATURE_GA                  (1ULL << 7) /* guest VAPIC support */
-> @@ -173,8 +174,9 @@
->  #define AMDVI_IOTLB_MAX_SIZE 1024
->  #define AMDVI_DEVID_SHIFT    36
->  
-> -/* extended feature support */
-> -#define AMDVI_EXT_FEATURES (AMDVI_FEATURE_PREFETCH | AMDVI_FEATURE_PPR | \
-> +/* default extended feature */
-> +#define AMDVI_DEFAULT_EXT_FEATURES \
-> +        (AMDVI_FEATURE_PREFETCH | AMDVI_FEATURE_PPR | \
->          AMDVI_FEATURE_IA | AMDVI_FEATURE_GT | AMDVI_FEATURE_HE | \
->          AMDVI_GATS_MODE | AMDVI_HATS_MODE | AMDVI_FEATURE_GA)
->  
-> @@ -276,8 +278,8 @@ union irte_ga_lo {
->                  dm:1,
->                  /* ------ */
->                  guest_mode:1,
-> -                destination:8,
-> -                rsvd_1:48;
-> +                destination:24,
-> +                rsvd_1:32;
->    } fields_remap;
->  };
->  
-> @@ -285,7 +287,8 @@ union irte_ga_hi {
->    uint64_t val;
->    struct {
->        uint64_t  vector:8,
-> -                rsvd_2:56;
-> +                rsvd_2:48,
-> +                destination_hi:8;
->    } fields;
->  };
->  
-> @@ -364,6 +367,9 @@ struct AMDVIState {
->  
->      /* Interrupt remapping */
->      bool ga_enabled;
-> +    bool xtsup;
->  };
->  
-> +uint64_t amdvi_extended_feature_register(AMDVIState *s);
-> +
->  #endif
+> https://gitlab.com/epilys/qemu/-/tree/virtio-snd-v13
+> 
+> Ref e7fb941cf7636fdff40cbdcdcd660dec5f15ca3c
+> 
+> Main differences with v12 patch series [^v12]:
+> 
+> - Fixed device aliases (thanks Volker Rümelin <vr_qemu@t-online.de>)
+> 
+> v11[^v11] -> v12[^v12]
+> ======================
+> 
+> - Moved devices from hw/virtio under hw/audio.
+> 
+> v10[^v10] -> v11[^v11]
+> ======================
+> 
+> - Rebased against upstream, which has minor changes to the AUD_* API.
+> - Fixed noise in playback because of invalid bounds when accessing the
+>   audio data in the VirtQueueElement.
+> - Refactor invalid I/O message queue flushing into separate function.
+> - Removed attempt to write unwritten bytes to QEMU sound backend when
+>   flushing: it should only happen when the stream STARTs.
+> - Set latency_bytes to buffer size when returning TX I/O message because
+>   it happens immediately after writing the last bytes to the QEMU
+>   backend, therefore there might be up to <buffer size> bytes to be
+>   played before all the buffer data has finished playing.
+> - Addressed [^v10] review comments:
+>   - Refactored VirtIOSoundPCMBuffer return code into a function instead
+>     of using goto labels in output/input audio callbacks. (Suggested by
+>     <philmd@linaro.org>)
+> 
+> v9[^v9] -> v10[^v10]
+> ====================
+> 
+> - Addressed [^v9] review comments.
+> - Copy buffer data just before playing it on the host instead of when
+>   the IO message arrives. This in most cases takes care of the buffer
+>   not being populated with data from the guest application when it
+>   firsts arrives.
+> 
+> v8[^v8] -> v9[^v9]
+> ==================
+> 
+> - Addressed [^v8] review comments.
+> - Add cpu_to_le32(_) and le32_to_cpu(_) conversions for messages from/to
+>   the guest according to the virtio spec.
+> - Inlined some functions and types to reduce review complexity.
+> - Corrected the replies to IO messages; now both Playback and Capture
+>   work correctly for me. (If you hear cracks in pulseaudio+guest, try
+>   pipewire+guest).
+> 
+> v7[^v7] -> v8[^v8]
+> ==================
+> 
+> - Addressed [^v7] review comments.
+>   Functions that were called from more than one place for code re-use
+>   are not created until they are actually needed.
+> - Fixed cases where block->offset was not respected in Playback
+> 
+> v6[^v6] -> v7[^v7]
+> ==================
+> 
+> - Removed minor stale/duplicate code.
+> - Addressed [^v6] review comments.
+>   Notably, the audio driver name is now `virtio` instead of
+>   `virtio-sound`.
+> - Fixed some invalid pointer logic.
+> - Fixed minor typos and updated documentation.
+> 
+> v5[^v5] -> v6[^v6]
+> ==================
+> 
+> - Free any existing PCM stream resources before allocating a new one.
+> - Add docs.
+> 
+> v4[^v4] -> v5[^v5]
+> ==================
+> 
+> - Use ERRP_GUARD() to propagate errors.
+> - Use virtio_add_feature() instead of XORing constants.
+> - Use %zu format specifier for size_t.
+> 
+> v3[^v3] -> v4[^v4]
+> ==================
+> 
+> - Addressed review style comments.
+> - Split patches for easier review.
+> 
+> v2[^v2] -> v3[^v3]
+> ==================
+> 
+> - Addressed review comments.
+> 
+> v1[^v1] -> v2[^v2]
+> ==================
+> 
+> - Split virtio-snd and virtio-snd-pci devices to two commits
+> - Added audio capture support
+> 
+> Previously:
+> 
+> [^v12]:
+> https://lore.kernel.org/qemu-devel/cover.1697709630.git.manos.pitsidianakis@linaro.org/
+> [^v11]:
+> https://lore.kernel.org/qemu-devel/cover.1696935992.git.manos.pitsidianakis@linaro.org/
+> [^v10]:
+> https://lore.kernel.org/qemu-devel/cover.1695996196.git.manos.pitsidianakis@linaro.org/
+> [^v9]:
+> https://lore.kernel.org/qemu-devel/cover.1694588927.git.manos.pitsidianakis@linaro.org/
+> [^v8]:
+> https://lore.kernel.org/qemu-devel/cover.1693252037.git.manos.pitsidianakis@linaro.org/
+> [^v7]:
+> https://lore.kernel.org/qemu-devel/cover.1692731646.git.manos.pitsidianakis@linaro.org/
+> [^v6]:
+> https://lore.kernel.org/qemu-devel/cover.1692089917.git.manos.pitsidianakis@linaro.org/
+> [^v5]:
+> https://lore.kernel.org/qemu-devel/cover.1690626150.git.manos.pitsidianakis@linaro.org/
+> [^v4]:
+> https://lore.kernel.org/qemu-devel/cover.1689857559.git.manos.pitsidianakis@linaro.org/
+> [^v3]:
+> https://lore.kernel.org/qemu-devel/cover.1689692765.git.manos.pitsidianakis@linaro.org/
+> [^v2]:
+> https://lore.kernel.org/qemu-devel/cover.1686238728.git.manos.pitsidianakis@linaro.org/
+> [^v1]:
+> https://lore.kernel.org/qemu-devel/20230526204845.673031-1-manos.pitsidianakis@linaro.org/
+> 
+> Manos Pitsidianakis (11):
+>   Add virtio-sound device stub
+>   Add virtio-sound-pci device
+>   virtio-sound: handle control messages and streams
+>   virtio-sound: handle VIRTIO_SND_R_PCM_INFO request
+>   virtio-sound: handle VIRTIO_SND_R_PCM_{START,STOP}
+>   virtio-sound: handle VIRTIO_SND_R_PCM_SET_PARAMS
+>   virtio-sound: handle VIRTIO_SND_R_PCM_PREPARE
+>   virtio-sound: handle VIRTIO_SND_R_PCM_RELEASE
+>   virtio-sound: implement audio output (TX)
+>   virtio-sound: implement audio capture (RX)
+>   docs/system: add basic virtio-snd documentation
+> 
+>  MAINTAINERS                        |    9 +
+>  docs/system/device-emulation.rst   |    1 +
+>  docs/system/devices/virtio-snd.rst |   49 +
+>  hw/audio/Kconfig                   |    5 +
+>  hw/audio/meson.build               |    2 +
+>  hw/audio/trace-events              |   20 +
+>  hw/audio/virtio-snd-pci.c          |   93 ++
+>  hw/audio/virtio-snd.c              | 1409 ++++++++++++++++++++++++++++
+>  include/hw/audio/virtio-snd.h      |  235 +++++
+>  system/qdev-monitor.c              |    2 +
+>  10 files changed, 1825 insertions(+)
+>  create mode 100644 docs/system/devices/virtio-snd.rst
+>  create mode 100644 hw/audio/virtio-snd-pci.c
+>  create mode 100644 hw/audio/virtio-snd.c
+>  create mode 100644 include/hw/audio/virtio-snd.h
+> 
+> 
+> base-commit: 384dbdda94c0bba55bf186cccd3714bbb9b737e9
 > -- 
-> 2.25.1
+> 2.39.2
 
 
