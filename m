@@ -2,73 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F7617E3371
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:05:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DC017E337B
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:06:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0COj-0007Zu-Ta; Mon, 06 Nov 2023 22:05:03 -0500
+	id 1r0COc-0007L6-TO; Mon, 06 Nov 2023 22:04:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0COL-0006fV-97
+ id 1r0COL-0006fW-9Q
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:04:38 -0500
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CO6-0000fM-V5
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:04:24 -0500
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-5aa481d53e5so3499534a12.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:04:22 -0800 (PST)
+ id 1r0CO7-0000fd-H4
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:04:25 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1cc37fb1310so36632955ad.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:04:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699326261; x=1699931061; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699326262; x=1699931062; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=U8V0B4qGaX44SCne6/GgXw2vrmkaH/ySdpZ5z2aNKfw=;
- b=EPALSYUQsUPoThWrjPnnDxlpgXy1VOEJTBAclESaL1dw9c7y1w7+0QbEVC73slWQlQ
- 4/3PaGzB4W9GJ+TRVWI21MZaWCpsBN+LTGcgWNpxWFjAi51dUXi4I5jb5uUjTauypYl4
- tEmhWATUIyVtkwGjO1q8Ejrhm3duBcy0UhZ4itAa7vIt7e8gOFlXJ8C95YL+/XbIjFX2
- 9bpQlShfg9H6Hy1G82l/buLTm2JWwjdi2jDpMxpNApaACpltL4FhGBwQzZi49bcd0TKi
- 5uxV/byjxQP6tpq71dkBKgnvshHox7oK1o7SonUzVFy+oI9UZrTPYQ7agwApwGHJyos+
- 9UDg==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=sXBKF6uHHMihJPl4uhe8/3+lsxd/tpaCJO/Jxdl9png=;
+ b=wGt0TXGpERLU6TaA2VbfmyLHxXMBeGG61rQuMV7EC+PhDoAepBQlF7R4huW0P522LV
+ G7lqAFCYDlal0T4Kk7DEcbfujAFxh7m5/rCtrTmIfmKq8fMNwPiFredkiXgzgxjS6VMj
+ eY5UJDZHwe3Ln5RT7mK8nKg6mRI1SyfbgFyvfbTFsiWQ2KXPjy6uqwD52Ttfs5BYSyYy
+ 6jgocqdfH2eAqOrkAp+L6InMCgQUmRV+J9INZQa5fwmE+fixj7uJcTecPqLcFB4395gl
+ giKdz2bf0822RzaojXGtji44vQO9fIrSQch2OaA2XGrA7VW/BWcUc5HIxdAtrQJBmC8M
+ mRsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699326261; x=1699931061;
+ d=1e100.net; s=20230601; t=1699326262; x=1699931062;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U8V0B4qGaX44SCne6/GgXw2vrmkaH/ySdpZ5z2aNKfw=;
- b=N0AZoJotpSuwIoiqk6YjFHzeD/EHt91SZMXX5LO3ayMxhCibCWFJ3CPX52okqjit3G
- p4TP+ZrTBIDhmCIo1JshzoBPXEoZnHlrPYAgay4hA9UeByQy5DwCeOtkKOc56aKaPaHq
- 2bX0koZKuGKRoHZWXblzx1QO5dY8lIKjSc2V6IaAjjBsFTFIAvgNRAI/bMK+EESW/a25
- rIowzLZ40T45UqCQpjVDbEgaoN7fVG39TrZj4FrC/yZpjwxQCCRQ9IjGqiSAhVqY4gAw
- 2JBiMTajLtdMx6GHJIGavpyzLgAFtCypTcozR6CSZKQMg5X2H6veCmcy4fndenW1JYZg
- nmmA==
-X-Gm-Message-State: AOJu0YxaGQl4gombM6KGngJsCIXCEBCv9zg9o46CmXWAMT4fQkO5MpVx
- mCqO8oocBfFoR1IRaEbzwmXjHKMOvHJMX6mtZnU=
-X-Google-Smtp-Source: AGHT+IGeiI3eIHmNEkx9uPJpH85Z7cfN2n3KMue8Ppnk/KyAdjWUHlAO3LLx8cAUlXP4ibJTL3Q2cw==
-X-Received: by 2002:a05:6a20:7da1:b0:15c:fa48:2c09 with SMTP id
- v33-20020a056a207da100b0015cfa482c09mr31743427pzj.15.1699326261553; 
- Mon, 06 Nov 2023 19:04:21 -0800 (PST)
+ bh=sXBKF6uHHMihJPl4uhe8/3+lsxd/tpaCJO/Jxdl9png=;
+ b=S8DFs14f5OgnX0s8GVlYuSbagiYzzk1br+Fo5B8qGwx6BD/K2Fj+sdhXZmUow8bhI7
+ DEvGAOBmJsz1yGSxEk3/ErkzGeN8rjAbnBVbp0myX7tfeDHRvWUARng6rhD1JQoxo9pY
+ xXlh8anJ6M9orSGjH/JHRWRhEIQUSsR3KsPDVtd7AxFQXrdrtkwFsF1zuyedjLv4Dq1P
+ sqgsL+2QioTZWEwA+Ropw1PumO50ElqGbODAjdjJpiN0BU3sruM4dZxhRJZ2M+d90rl3
+ JMBNVpGGlsxgtWdXLqB7l+vHK+r+EISbP935T673VrasA0MXQrBU5ksKKlXfgLiDlTSN
+ 3tEA==
+X-Gm-Message-State: AOJu0YzSf5j5jxFTyfKH309cvir8a8k2AdVb6obClVLiACPl5fl7d7e+
+ tCXGK4EzsW9FCm777YJrDDGztH1u1lYBYHcnq6A=
+X-Google-Smtp-Source: AGHT+IEK+zu7m+mQrCo1f1fa9sp+qtGNfEeu45AVFkKgBXh7/l+g4rgUxcvZNNVpeBF3wos3Drco3A==
+X-Received: by 2002:a17:902:f64e:b0:1c9:e765:e14a with SMTP id
+ m14-20020a170902f64e00b001c9e765e14amr33096996plg.1.1699326262177; 
+ Mon, 06 Nov 2023 19:04:22 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  u9-20020a17090282c900b001c72d5e16acsm6518012plz.57.2023.11.06.19.04.21
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 06 Nov 2023 19:04:21 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 17/85] target/hppa: Introduce TYPE_HPPA64_CPU
-Date: Mon,  6 Nov 2023 19:02:59 -0800
-Message-Id: <20231107030407.8979-18-richard.henderson@linaro.org>
+Subject: [PULL 18/85] target/hppa: Make HPPA_BTLB_ENTRIES variable
+Date: Mon,  6 Nov 2023 19:03:00 -0800
+Message-Id: <20231107030407.8979-19-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231107030407.8979-1-richard.henderson@linaro.org>
 References: <20231107030407.8979-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,109 +89,227 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prepare for the qemu binary supporting both pa10 and pa20
-at the same time.
+Depend on hppa_is_pa20.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu-qom.h   |  1 +
- target/hppa/cpu.h       |  5 +++++
- target/hppa/cpu.c       | 33 ++++++++++++++++++---------------
- target/hppa/translate.c |  2 ++
- 4 files changed, 26 insertions(+), 15 deletions(-)
+ target/hppa/cpu.h        | 19 +++++++++++--------
+ hw/hppa/machine.c        |  9 +++------
+ target/hppa/machine.c    |  3 ++-
+ target/hppa/mem_helper.c | 40 ++++++++++++++++++++++------------------
+ 4 files changed, 38 insertions(+), 33 deletions(-)
 
-diff --git a/target/hppa/cpu-qom.h b/target/hppa/cpu-qom.h
-index b96e0318c7..4a85ebf5e0 100644
---- a/target/hppa/cpu-qom.h
-+++ b/target/hppa/cpu-qom.h
-@@ -24,6 +24,7 @@
- #include "qom/object.h"
- 
- #define TYPE_HPPA_CPU "hppa-cpu"
-+#define TYPE_HPPA64_CPU "hppa64-cpu"
- 
- OBJECT_DECLARE_CPU_TYPE(HPPACPU, HPPACPUClass, HPPA_CPU)
- 
 diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 08de894393..0ac307e0e9 100644
+index 0ac307e0e9..48ddcffb8a 100644
 --- a/target/hppa/cpu.h
 +++ b/target/hppa/cpu.h
-@@ -272,6 +272,11 @@ struct ArchCPU {
+@@ -227,15 +227,13 @@ typedef struct CPUArchState {
+     target_ureg cr_back[2];  /* back of cr17/cr18 */
+     target_ureg shadow[7];   /* shadow registers */
  
- #include "exec/cpu-all.h"
+-    /* ??? The number of entries isn't specified by the architecture.  */
+-#ifdef TARGET_HPPA64
+-#define HPPA_BTLB_FIXED         0       /* BTLBs are not supported in 64-bit machines */
+-#else
+-#define HPPA_BTLB_FIXED         16
+-#endif
+-#define HPPA_BTLB_VARIABLE      0
++    /*
++     * ??? The number of entries isn't specified by the architecture.
++     * BTLBs are not supported in 64-bit machines.
++     */
++#define PA10_BTLB_FIXED         16
++#define PA10_BTLB_VARIABLE      0
+ #define HPPA_TLB_ENTRIES        256
+-#define HPPA_BTLB_ENTRIES       (HPPA_BTLB_FIXED + HPPA_BTLB_VARIABLE)
  
-+static inline bool hppa_is_pa20(CPUHPPAState *env)
+     /* Index for round-robin tlb eviction. */
+     uint32_t tlb_last;
+@@ -277,6 +275,11 @@ static inline bool hppa_is_pa20(CPUHPPAState *env)
+     return object_dynamic_cast(OBJECT(env_cpu(env)), TYPE_HPPA64_CPU) != NULL;
+ }
+ 
++static inline int HPPA_BTLB_ENTRIES(CPUHPPAState *env)
 +{
-+    return object_dynamic_cast(OBJECT(env_cpu(env)), TYPE_HPPA64_CPU) != NULL;
++    return hppa_is_pa20(env) ? 0 : PA10_BTLB_FIXED + PA10_BTLB_VARIABLE;
 +}
 +
  static inline int cpu_mmu_index(CPUHPPAState *env, bool ifetch)
  {
  #ifdef CONFIG_USER_ONLY
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 5e1240c631..07fae42bb8 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -209,20 +209,23 @@ static void hppa_cpu_class_init(ObjectClass *oc, void *data)
-     cc->tcg_ops = &hppa_tcg_ops;
- }
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index 67d4d1b5e0..85682e6bab 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -185,6 +185,7 @@ static FWCfgState *create_fw_cfg(MachineState *ms, PCIBus *pci_bus)
+     uint64_t val;
+     const char qemu_version[] = QEMU_VERSION;
+     MachineClass *mc = MACHINE_GET_CLASS(ms);
++    int btlb_entries = HPPA_BTLB_ENTRIES(&cpu[0]->env);
+     int len;
  
--static const TypeInfo hppa_cpu_type_info = {
--    .name = TYPE_HPPA_CPU,
--    .parent = TYPE_CPU,
--    .instance_size = sizeof(HPPACPU),
--    .instance_align = __alignof(HPPACPU),
--    .instance_init = hppa_cpu_initfn,
--    .abstract = false,
--    .class_size = sizeof(HPPACPUClass),
--    .class_init = hppa_cpu_class_init,
-+static const TypeInfo hppa_cpu_type_infos[] = {
-+    {
-+        .name = TYPE_HPPA_CPU,
-+        .parent = TYPE_CPU,
-+        .instance_size = sizeof(HPPACPU),
-+        .instance_align = __alignof(HPPACPU),
-+        .instance_init = hppa_cpu_initfn,
-+        .abstract = false,
-+        .class_size = sizeof(HPPACPUClass),
-+        .class_init = hppa_cpu_class_init,
-+    },
-+#ifdef TARGET_HPPA64
-+    {
-+        .name = TYPE_HPPA64_CPU,
-+        .parent = TYPE_HPPA_CPU,
-+    },
-+#endif
- };
+     fw_cfg = fw_cfg_init_mem(FW_CFG_IO_BASE, FW_CFG_IO_BASE + 4);
+@@ -196,11 +197,11 @@ static FWCfgState *create_fw_cfg(MachineState *ms, PCIBus *pci_bus)
+     fw_cfg_add_file(fw_cfg, "/etc/firmware-min-version",
+                     g_memdup(&val, sizeof(val)), sizeof(val));
  
--static void hppa_cpu_register_types(void)
--{
--    type_register_static(&hppa_cpu_type_info);
--}
+-    val = cpu_to_le64(HPPA_TLB_ENTRIES - HPPA_BTLB_ENTRIES);
++    val = cpu_to_le64(HPPA_TLB_ENTRIES - btlb_entries);
+     fw_cfg_add_file(fw_cfg, "/etc/cpu/tlb_entries",
+                     g_memdup(&val, sizeof(val)), sizeof(val));
+ 
+-    val = cpu_to_le64(HPPA_BTLB_ENTRIES);
++    val = cpu_to_le64(btlb_entries);
+     fw_cfg_add_file(fw_cfg, "/etc/cpu/btlb_entries",
+                     g_memdup(&val, sizeof(val)), sizeof(val));
+ 
+@@ -608,10 +609,6 @@ static void hppa_machine_reset(MachineState *ms, ShutdownCause reason)
+ 
+         cs->exception_index = -1;
+         cs->halted = 0;
 -
--type_init(hppa_cpu_register_types)
-+DEFINE_TYPES(hppa_cpu_type_infos)
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index ed88f724ce..44c9911720 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -262,6 +262,7 @@ typedef struct DisasContext {
-     int mmu_idx;
-     int privilege;
-     bool psw_n_nonzero;
-+    bool is_pa20;
+-        /* clear any existing TLB and BTLB entries */
+-        memset(cpu[i]->env.tlb, 0, sizeof(cpu[i]->env.tlb));
+-        cpu[i]->env.tlb_last = HPPA_BTLB_ENTRIES;
+     }
  
- #ifdef CONFIG_USER_ONLY
-     MemOp unalign;
-@@ -4091,6 +4092,7 @@ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     /* already initialized by machine_hppa_init()? */
+diff --git a/target/hppa/machine.c b/target/hppa/machine.c
+index 61ae942ff1..473305ffea 100644
+--- a/target/hppa/machine.c
++++ b/target/hppa/machine.c
+@@ -139,6 +139,7 @@ static int tlb_pre_load(void *opaque)
+ static int tlb_post_load(void *opaque, int version_id)
+ {
+     CPUHPPAState *env = opaque;
++    uint32_t btlb_entries = HPPA_BTLB_ENTRIES(env);
+     HPPATLBEntry **unused = &env->tlb_unused;
+     HPPATLBEntry *partial = NULL;
  
-     ctx->cs = cs;
-     ctx->tb_flags = ctx->base.tb->flags;
-+    ctx->is_pa20 = hppa_is_pa20(cpu_env(cs));
+@@ -152,7 +153,7 @@ static int tlb_post_load(void *opaque, int version_id)
  
- #ifdef CONFIG_USER_ONLY
-     ctx->privilege = MMU_IDX_TO_PRIV(MMU_USER_IDX);
+         if (e->entry_valid) {
+             interval_tree_insert(&e->itree, &env->tlb_root);
+-        } else if (i < HPPA_BTLB_ENTRIES) {
++        } else if (i < btlb_entries) {
+             /* btlb not in unused list */
+         } else if (partial == NULL && e->itree.start < e->itree.last) {
+             partial = e;
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index b1773ece61..327fb20c17 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -57,7 +57,7 @@ static void hppa_flush_tlb_ent(CPUHPPAState *env, HPPATLBEntry *ent,
+                               HPPA_MMU_FLUSH_MASK, TARGET_LONG_BITS);
+ 
+     /* Never clear BTLBs, unless forced to do so. */
+-    is_btlb = ent < &env->tlb[HPPA_BTLB_ENTRIES];
++    is_btlb = ent < &env->tlb[HPPA_BTLB_ENTRIES(env)];
+     if (is_btlb && !force_flush_btlb) {
+         return;
+     }
+@@ -93,10 +93,11 @@ static HPPATLBEntry *hppa_alloc_tlb_ent(CPUHPPAState *env)
+     HPPATLBEntry *ent = env->tlb_unused;
+ 
+     if (ent == NULL) {
++        uint32_t btlb_entries = HPPA_BTLB_ENTRIES(env);
+         uint32_t i = env->tlb_last;
+ 
+-        if (i < HPPA_BTLB_ENTRIES || i >= ARRAY_SIZE(env->tlb)) {
+-            i = HPPA_BTLB_ENTRIES;
++        if (i < btlb_entries || i >= ARRAY_SIZE(env->tlb)) {
++            i = btlb_entries;
+         }
+         env->tlb_last = i + 1;
+ 
+@@ -385,23 +386,24 @@ void HELPER(ptlb)(CPUHPPAState *env, target_ulong addr)
+ 
+ void hppa_ptlbe(CPUHPPAState *env)
+ {
++    uint32_t btlb_entries = HPPA_BTLB_ENTRIES(env);
+     uint32_t i;
+ 
+     /* Zap the (non-btlb) tlb entries themselves. */
+-    memset(&env->tlb[HPPA_BTLB_ENTRIES], 0,
+-           sizeof(env->tlb) - HPPA_BTLB_ENTRIES * sizeof(env->tlb[0]));
+-    env->tlb_last = HPPA_BTLB_ENTRIES;
++    memset(&env->tlb[btlb_entries], 0,
++           sizeof(env->tlb) - btlb_entries * sizeof(env->tlb[0]));
++    env->tlb_last = btlb_entries;
+     env->tlb_partial = NULL;
+ 
+     /* Put them all onto the unused list. */
+-    env->tlb_unused = &env->tlb[HPPA_BTLB_ENTRIES];
+-    for (i = HPPA_BTLB_ENTRIES; i < ARRAY_SIZE(env->tlb) - 1; ++i) {
++    env->tlb_unused = &env->tlb[btlb_entries];
++    for (i = btlb_entries; i < ARRAY_SIZE(env->tlb) - 1; ++i) {
+         env->tlb[i].unused_next = &env->tlb[i + 1];
+     }
+ 
+     /* Re-initialize the interval tree with only the btlb entries. */
+     memset(&env->tlb_root, 0, sizeof(env->tlb_root));
+-    for (i = 0; i < HPPA_BTLB_ENTRIES; ++i) {
++    for (i = 0; i < btlb_entries; ++i) {
+         if (env->tlb[i].entry_valid) {
+             interval_tree_insert(&env->tlb[i].itree, &env->tlb_root);
+         }
+@@ -473,12 +475,14 @@ void HELPER(diag_btlb)(CPUHPPAState *env)
+     HPPATLBEntry *btlb;
+     uint64_t virt_page;
+     uint32_t *vaddr;
++    uint32_t btlb_entries = HPPA_BTLB_ENTRIES(env);
+ 
+-#ifdef TARGET_HPPA64
+     /* BTLBs are not supported on 64-bit CPUs */
+-    env->gr[28] = -1; /* nonexistent procedure */
+-    return;
+-#endif
++    if (btlb_entries == 0) {
++        env->gr[28] = -1; /* nonexistent procedure */
++        return;
++    }
++
+     env->gr[28] = 0; /* PDC_OK */
+ 
+     switch (env->gr[25]) {
+@@ -492,8 +496,8 @@ void HELPER(diag_btlb)(CPUHPPAState *env)
+         } else {
+             vaddr[0] = cpu_to_be32(1);
+             vaddr[1] = cpu_to_be32(16 * 1024);
+-            vaddr[2] = cpu_to_be32(HPPA_BTLB_FIXED);
+-            vaddr[3] = cpu_to_be32(HPPA_BTLB_VARIABLE);
++            vaddr[2] = cpu_to_be32(PA10_BTLB_FIXED);
++            vaddr[3] = cpu_to_be32(PA10_BTLB_VARIABLE);
+         }
+         break;
+     case 1:
+@@ -510,7 +514,7 @@ void HELPER(diag_btlb)(CPUHPPAState *env)
+                     (long long) virt_page << TARGET_PAGE_BITS,
+                     (long long) (virt_page + len) << TARGET_PAGE_BITS,
+                     (long long) virt_page, phys_page, len, slot);
+-        if (slot < HPPA_BTLB_ENTRIES) {
++        if (slot < btlb_entries) {
+             btlb = &env->tlb[slot];
+ 
+             /* Force flush of possibly existing BTLB entry. */
+@@ -532,7 +536,7 @@ void HELPER(diag_btlb)(CPUHPPAState *env)
+         slot = env->gr[22];
+         qemu_log_mask(CPU_LOG_MMU, "PDC_BLOCK_TLB: PDC_BTLB_PURGE slot %d\n",
+                                     slot);
+-        if (slot < HPPA_BTLB_ENTRIES) {
++        if (slot < btlb_entries) {
+             btlb = &env->tlb[slot];
+             hppa_flush_tlb_ent(env, btlb, true);
+         } else {
+@@ -542,7 +546,7 @@ void HELPER(diag_btlb)(CPUHPPAState *env)
+     case 3:
+         /* Purge all BTLB entries */
+         qemu_log_mask(CPU_LOG_MMU, "PDC_BLOCK_TLB: PDC_BTLB_PURGE_ALL\n");
+-        for (slot = 0; slot < HPPA_BTLB_ENTRIES; slot++) {
++        for (slot = 0; slot < btlb_entries; slot++) {
+             btlb = &env->tlb[slot];
+             hppa_flush_tlb_ent(env, btlb, true);
+         }
 -- 
 2.34.1
 
