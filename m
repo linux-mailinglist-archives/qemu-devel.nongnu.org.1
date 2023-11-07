@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C737E333B
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:50:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C363B7E3340
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:51:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0C9H-0008K0-2E; Mon, 06 Nov 2023 21:49:03 -0500
+	id 1r0C9G-0008JM-49; Mon, 06 Nov 2023 21:49:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0C9E-0008Ht-7R
+ id 1r0C9E-0008Hg-0A
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:49:00 -0500
-Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0C9B-0005rw-AP
+ id 1r0C9C-0005s8-8j
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:48:59 -0500
-Received: by mail-yw1-x112e.google.com with SMTP id
- 00721157ae682-5a7d9d357faso60358557b3.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:48:56 -0800 (PST)
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6c320a821c4so4636817b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:48:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699325336; x=1699930136; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699325337; x=1699930137; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=WDqry/XgScdXwJwBq8aBX0uqrceQjTsF7uSyvzshoLw=;
- b=KcZZX/IJuUcq2sq62d0W3RXuc0IfnqsT/L22K9pkFuhS6698d6IH/dhvd6WLLcmcar
- jVwKOJEXz6kja0CuGVL4ZqpWDd0YeZzuQ9ci8aXywV8MoSBHYOsYD2vmHtvrnjLnSmAL
- WijpavlYvnwdpztPNkRlBd94I8vrCjGidxsgMzL6IDv3WHpenrPtH/M948OKTg6hqdUC
- djMiq1oba1OGx/rGpQlotRcptkTQpUHXex/Sj0kGxivHVxTcPgpMmgpOhILBdi6WI1qP
- c1Bj1G6at8U2Iv5ag9q6xemxryDCVOyK7siiJM+VHQjoyYRseIm2CENICfZDQEOzleGL
- J0qQ==
+ :reply-to; bh=cAcMZdXb3don662dWVOxxMEXAdoPbTxWOBUJh8uey/k=;
+ b=c2Ah3n0YVl1nC8UZ7fSLcwcUQpMA+mQHVnac133DwnsqKe5lmcBHMfEknvRlsrZ+OG
+ yKErZV1T82ASgunCrFtfVpL6m9gjgiTX6OyggZ6ZRQiyfNiR81mWoJvQygMAvxtGivzv
+ wi+EevH4+oTYE5hRUJhf4x9+aDCZ7PLTtIIBt4fwr48yF4ihmiiHZzZoiPgLpPRNl1Bh
+ 2ZojzjngsH75LDqBFg91cJV+CJ7XjptyZnzngohf54vwvF3CZxeAKo1yc5C2b3+VP7F2
+ Mc/GZPzXuBUTClZE0Pe6578LnzwDy0gJWd1HMki+evFJ+LK90pFaJyQBU65hviUtqCHJ
+ mR7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699325336; x=1699930136;
+ d=1e100.net; s=20230601; t=1699325337; x=1699930137;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WDqry/XgScdXwJwBq8aBX0uqrceQjTsF7uSyvzshoLw=;
- b=ufAkDHw8zLBgO17YZPGJHQ4nrym3VlVM+781h3SdwOEbmUdegintOVWw5oAvgcfOqZ
- Z6SmMvAnH8n3GVlqY62SC+Pllud5pnE41wcB1tj3bAaoQLBeNgkUMoQxxnMfv3h9DjdL
- SS6pokYbJj92uKvof+f1J+Ort9mZAfAJ9c6Y+ckBUdxMc/TYGei0EUjnapjekXo5ZIyB
- QiOYTuDf8u832vC0yf9PUaaxmXjIGSi+goRewTCG3CvhfJ6fiSgC7UygHthRvZzLUWZ/
- CLpte3iLW/S/RrRkMBZqAsJgGjfi8t2vQz3apu7LklufiQJcJwJl012xkRO/LFuAsE3/
- ZUeA==
-X-Gm-Message-State: AOJu0YwSrqYw4Kdhu1FEeU834tgg5HzXVSA0Dq9mndfnZjwrBYdkGLOC
- dr9UtKuk+tq3+n9hsbq6WHMATaYNrlKu7BQVkrs=
-X-Google-Smtp-Source: AGHT+IHHRV4DzcJzEMqW7loJJrjtYkf5HvsDJaHrzv72JyAWyzqhB0GlPm9/r5HPB5QTojjr3RysXw==
-X-Received: by 2002:a25:d80f:0:b0:da0:c581:6663 with SMTP id
- p15-20020a25d80f000000b00da0c5816663mr32065136ybg.28.1699325336293; 
+ bh=cAcMZdXb3don662dWVOxxMEXAdoPbTxWOBUJh8uey/k=;
+ b=kxYznhBeQq1jwxobWzhD0n2HFfEH0AS8Jb4gTssaN9/pLMDXg3JFP+hosQHTRTCz1N
+ I0q3QVcpVq+jkOU3IOYvIDHa1womq2Da4ssYZ8gVXatLUC7H35osRk4TD4luOfOae2jU
+ 0G/GO0tI6q38trAcDE642n92iSroybAK+fWmm8/+776GhxKSkUD3HR3ke0afZbn2HhNw
+ KCQydAomPo9dlq0gvBOP6CscuNyBkGcBcGyykXnAE4ghMb5JR4FjRHKT3od3mrgZ6eya
+ S/Rz4YXKq8c49UJ2t7l6PwygxijJG8UgSqG5COSPRQtOngdME5I0jjyV9CGgGu2VVnQG
+ WW3w==
+X-Gm-Message-State: AOJu0YwFTjmgE4ExXm2LYPRny+w2zcYthK8sOCSe3xCGG95rPvb0xGY+
+ QfRJQt/KW085QKFf4pwLFxKQ5SBf1FGnjyWUyIQ=
+X-Google-Smtp-Source: AGHT+IHWCPsV/Z0FBVq1fparvn/nREUIqFBRQfOXzGjs9pMv+zBSudivgJeqGaUeYU12VkQmVJnIrg==
+X-Received: by 2002:a05:6a00:1345:b0:6bd:f760:6ab1 with SMTP id
+ k5-20020a056a00134500b006bdf7606ab1mr29534190pfu.14.1699325336974; 
  Mon, 06 Nov 2023 18:48:56 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- fn11-20020a056a002fcb00b006bff7c36fb3sm6367478pfb.95.2023.11.06.18.48.55
+ fn11-20020a056a002fcb00b006bff7c36fb3sm6367478pfb.95.2023.11.06.18.48.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 18:48:55 -0800 (PST)
+ Mon, 06 Nov 2023 18:48:56 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 16/35] tcg: Unexport tcg_gen_op*_{i32,i64}
-Date: Mon,  6 Nov 2023 18:48:23 -0800
-Message-Id: <20231107024842.7650-17-richard.henderson@linaro.org>
+Subject: [PATCH 17/35] tcg: Move tcg_constant_* out of line
+Date: Mon,  6 Nov 2023 18:48:24 -0800
+Message-Id: <20231107024842.7650-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231107024842.7650-1-richard.henderson@linaro.org>
 References: <20231107024842.7650-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
- envelope-from=richard.henderson@linaro.org; helo=mail-yw1-x112e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,335 +89,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These functions are no longer used outside tcg-op.c.
-There are several that are completely unused, so remove them.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231029210848.78234-9-richard.henderson@linaro.org>
+Message-Id: <20231029210848.78234-10-richard.henderson@linaro.org>
 ---
- include/tcg/tcg-op-common.h |  47 -------------
- tcg/tcg-op.c                | 131 ++++++++++++++----------------------
- 2 files changed, 52 insertions(+), 126 deletions(-)
+ include/tcg/tcg-op-common.h |  8 ++++++++
+ include/tcg/tcg.h           | 26 --------------------------
+ tcg/tcg-internal.h          |  7 +++++++
+ tcg/tcg.c                   | 15 +++++++++++++++
+ 4 files changed, 30 insertions(+), 26 deletions(-)
 
 diff --git a/include/tcg/tcg-op-common.h b/include/tcg/tcg-op-common.h
-index b922545118..760c67683b 100644
+index 760c67683b..dddf93067e 100644
 --- a/include/tcg/tcg-op-common.h
 +++ b/include/tcg/tcg-op-common.h
-@@ -12,53 +12,6 @@
+@@ -12,6 +12,11 @@
  #include "exec/helper-proto-common.h"
  #include "exec/helper-gen-common.h"
  
--/* Basic output routines.  Not for general consumption.  */
--
--void tcg_gen_op1_i32(TCGOpcode, TCGv_i32);
--void tcg_gen_op1_i64(TCGOpcode, TCGv_i64);
--void tcg_gen_op1i(TCGOpcode, TCGArg);
--void tcg_gen_op2_i32(TCGOpcode, TCGv_i32, TCGv_i32);
--void tcg_gen_op2_i64(TCGOpcode, TCGv_i64, TCGv_i64);
--void tcg_gen_op2i_i32(TCGOpcode, TCGv_i32, TCGArg);
--void tcg_gen_op2i_i64(TCGOpcode, TCGv_i64, TCGArg);
--void tcg_gen_op2ii(TCGOpcode, TCGArg, TCGArg);
--void tcg_gen_op3_i32(TCGOpcode, TCGv_i32, TCGv_i32, TCGv_i32);
--void tcg_gen_op3_i64(TCGOpcode, TCGv_i64, TCGv_i64, TCGv_i64);
--void tcg_gen_op3i_i32(TCGOpcode, TCGv_i32, TCGv_i32, TCGArg);
--void tcg_gen_op3i_i64(TCGOpcode, TCGv_i64, TCGv_i64, TCGArg);
--void tcg_gen_ldst_op_i32(TCGOpcode, TCGv_i32, TCGv_ptr, TCGArg);
--void tcg_gen_ldst_op_i64(TCGOpcode, TCGv_i64, TCGv_ptr, TCGArg);
--void tcg_gen_op4_i32(TCGOpcode, TCGv_i32, TCGv_i32, TCGv_i32, TCGv_i32);
--void tcg_gen_op4_i64(TCGOpcode, TCGv_i64, TCGv_i64, TCGv_i64, TCGv_i64);
--void tcg_gen_op4i_i32(TCGOpcode, TCGv_i32, TCGv_i32, TCGv_i32, TCGArg);
--void tcg_gen_op4i_i64(TCGOpcode, TCGv_i64, TCGv_i64, TCGv_i64, TCGArg);
--void tcg_gen_op4ii_i32(TCGOpcode, TCGv_i32, TCGv_i32, TCGArg, TCGArg);
--void tcg_gen_op4ii_i64(TCGOpcode, TCGv_i64, TCGv_i64, TCGArg, TCGArg);
--void tcg_gen_op5_i32(TCGOpcode, TCGv_i32, TCGv_i32, TCGv_i32,
--                     TCGv_i32, TCGv_i32);
--void tcg_gen_op5_i64(TCGOpcode, TCGv_i64, TCGv_i64, TCGv_i64,
--                     TCGv_i64, TCGv_i64);
--void tcg_gen_op5i_i32(TCGOpcode, TCGv_i32, TCGv_i32, TCGv_i32,
--                      TCGv_i32, TCGArg);
--void tcg_gen_op5i_i64(TCGOpcode, TCGv_i64, TCGv_i64, TCGv_i64,
--                      TCGv_i64, TCGArg);
--void tcg_gen_op5ii_i32(TCGOpcode, TCGv_i32, TCGv_i32, TCGv_i32,
--                       TCGArg, TCGArg);
--void tcg_gen_op5ii_i64(TCGOpcode, TCGv_i64, TCGv_i64, TCGv_i64,
--                       TCGArg, TCGArg);
--void tcg_gen_op6_i32(TCGOpcode, TCGv_i32, TCGv_i32, TCGv_i32,
--                     TCGv_i32, TCGv_i32, TCGv_i32);
--void tcg_gen_op6_i64(TCGOpcode, TCGv_i64, TCGv_i64, TCGv_i64,
--                     TCGv_i64, TCGv_i64, TCGv_i64);
--void tcg_gen_op6i_i32(TCGOpcode, TCGv_i32, TCGv_i32, TCGv_i32,
--                      TCGv_i32, TCGv_i32, TCGArg);
--void tcg_gen_op6i_i64(TCGOpcode, TCGv_i64, TCGv_i64, TCGv_i64,
--                      TCGv_i64, TCGv_i64, TCGArg);
--void tcg_gen_op6ii_i32(TCGOpcode, TCGv_i32, TCGv_i32, TCGv_i32,
--                       TCGv_i32, TCGArg, TCGArg);
--void tcg_gen_op6ii_i64(TCGOpcode, TCGv_i64, TCGv_i64, TCGv_i64,
--                       TCGv_i64, TCGArg, TCGArg);
--
++TCGv_i32 tcg_constant_i32(int32_t val);
++TCGv_i64 tcg_constant_i64(int64_t val);
++TCGv_vec tcg_constant_vec(TCGType type, unsigned vece, int64_t val);
++TCGv_vec tcg_constant_vec_matching(TCGv_vec match, unsigned vece, int64_t val);
++
  /* Generic ops.  */
  
  void gen_set_label(TCGLabel *l);
-diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
-index 579a2aab15..9aba103590 100644
---- a/tcg/tcg-op.c
-+++ b/tcg/tcg-op.c
-@@ -100,204 +100,177 @@ void NI tcg_gen_op6(TCGOpcode opc, TCGArg a1, TCGArg a2, TCGArg a3,
- # define DNI
+@@ -459,6 +464,9 @@ void tcg_gen_stl_vec(TCGv_vec r, TCGv_ptr base, TCGArg offset, TCGType t);
+ # define NAT  TCGv_i64
  #endif
  
--void DNI tcg_gen_op1_i32(TCGOpcode opc, TCGv_i32 a1)
-+static void DNI tcg_gen_op1_i32(TCGOpcode opc, TCGv_i32 a1)
++TCGv_ptr tcg_constant_ptr_int(intptr_t x);
++#define tcg_constant_ptr(X)  tcg_constant_ptr_int((intptr_t)(X))
++
+ static inline void tcg_gen_ld_ptr(TCGv_ptr r, TCGv_ptr a, intptr_t o)
  {
-     tcg_gen_op1(opc, tcgv_i32_arg(a1));
- }
+     glue(tcg_gen_ld_,PTR)((NAT)r, a, o);
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index 3a4c0f124f..1ae131c242 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -934,32 +934,6 @@ void tcg_remove_ops_after(TCGOp *op);
  
--void DNI tcg_gen_op1_i64(TCGOpcode opc, TCGv_i64 a1)
-+static void DNI tcg_gen_op1_i64(TCGOpcode opc, TCGv_i64 a1)
- {
-     tcg_gen_op1(opc, tcgv_i64_arg(a1));
- }
+ void tcg_optimize(TCGContext *s);
  
--void DNI tcg_gen_op1i(TCGOpcode opc, TCGArg a1)
-+static void DNI tcg_gen_op1i(TCGOpcode opc, TCGArg a1)
- {
-     tcg_gen_op1(opc, a1);
- }
- 
--void DNI tcg_gen_op2_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2)
-+static void DNI tcg_gen_op2_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2)
- {
-     tcg_gen_op2(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2));
- }
- 
--void DNI tcg_gen_op2_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2)
-+static void DNI tcg_gen_op2_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2)
- {
-     tcg_gen_op2(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2));
- }
- 
--void DNI tcg_gen_op2i_i32(TCGOpcode opc, TCGv_i32 a1, TCGArg a2)
+-/*
+- * Locate or create a read-only temporary that is a constant.
+- * This kind of temporary need not be freed, but for convenience
+- * will be silently ignored by tcg_temp_free_*.
+- */
+-TCGTemp *tcg_constant_internal(TCGType type, int64_t val);
+-
+-static inline TCGv_i32 tcg_constant_i32(int32_t val)
 -{
--    tcg_gen_op2(opc, tcgv_i32_arg(a1), a2);
+-    return temp_tcgv_i32(tcg_constant_internal(TCG_TYPE_I32, val));
 -}
 -
--void DNI tcg_gen_op2i_i64(TCGOpcode opc, TCGv_i64 a1, TCGArg a2)
+-static inline TCGv_i64 tcg_constant_i64(int64_t val)
 -{
--    tcg_gen_op2(opc, tcgv_i64_arg(a1), a2);
+-    return temp_tcgv_i64(tcg_constant_internal(TCG_TYPE_I64, val));
 -}
 -
--void DNI tcg_gen_op2ii(TCGOpcode opc, TCGArg a1, TCGArg a2)
--{
--    tcg_gen_op2(opc, a1, a2);
--}
+-TCGv_vec tcg_constant_vec(TCGType type, unsigned vece, int64_t val);
+-TCGv_vec tcg_constant_vec_matching(TCGv_vec match, unsigned vece, int64_t val);
 -
--void DNI tcg_gen_op3_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2, TCGv_i32 a3)
-+static void DNI tcg_gen_op3_i32(TCGOpcode opc, TCGv_i32 a1,
-+                                TCGv_i32 a2, TCGv_i32 a3)
- {
-     tcg_gen_op3(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2), tcgv_i32_arg(a3));
- }
- 
--void DNI tcg_gen_op3_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2, TCGv_i64 a3)
-+static void DNI tcg_gen_op3_i64(TCGOpcode opc, TCGv_i64 a1,
-+                                TCGv_i64 a2, TCGv_i64 a3)
- {
-     tcg_gen_op3(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2), tcgv_i64_arg(a3));
- }
- 
--void DNI tcg_gen_op3i_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2, TCGArg a3)
-+static void DNI tcg_gen_op3i_i32(TCGOpcode opc, TCGv_i32 a1,
-+                                 TCGv_i32 a2, TCGArg a3)
- {
-     tcg_gen_op3(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2), a3);
- }
- 
--void DNI tcg_gen_op3i_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2, TCGArg a3)
-+static void DNI tcg_gen_op3i_i64(TCGOpcode opc, TCGv_i64 a1,
-+                                 TCGv_i64 a2, TCGArg a3)
- {
-     tcg_gen_op3(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2), a3);
- }
- 
--void DNI tcg_gen_ldst_op_i32(TCGOpcode opc, TCGv_i32 val,
--                             TCGv_ptr base, TCGArg offset)
-+static void DNI tcg_gen_ldst_op_i32(TCGOpcode opc, TCGv_i32 val,
-+                                    TCGv_ptr base, TCGArg offset)
- {
-     tcg_gen_op3(opc, tcgv_i32_arg(val), tcgv_ptr_arg(base), offset);
- }
- 
--void DNI tcg_gen_ldst_op_i64(TCGOpcode opc, TCGv_i64 val,
--                             TCGv_ptr base, TCGArg offset)
-+static void DNI tcg_gen_ldst_op_i64(TCGOpcode opc, TCGv_i64 val,
-+                                    TCGv_ptr base, TCGArg offset)
- {
-     tcg_gen_op3(opc, tcgv_i64_arg(val), tcgv_ptr_arg(base), offset);
- }
- 
--void DNI tcg_gen_op4_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
--                         TCGv_i32 a3, TCGv_i32 a4)
-+static void DNI tcg_gen_op4_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
-+                                TCGv_i32 a3, TCGv_i32 a4)
- {
-     tcg_gen_op4(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2),
-                 tcgv_i32_arg(a3), tcgv_i32_arg(a4));
- }
- 
--void DNI tcg_gen_op4_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
--                         TCGv_i64 a3, TCGv_i64 a4)
-+static void DNI tcg_gen_op4_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
-+                                TCGv_i64 a3, TCGv_i64 a4)
- {
-     tcg_gen_op4(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2),
-                 tcgv_i64_arg(a3), tcgv_i64_arg(a4));
- }
- 
--void DNI tcg_gen_op4i_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
--                          TCGv_i32 a3, TCGArg a4)
-+static void DNI tcg_gen_op4i_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
-+                                 TCGv_i32 a3, TCGArg a4)
- {
-     tcg_gen_op4(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2),
-                 tcgv_i32_arg(a3), a4);
- }
- 
--void DNI tcg_gen_op4i_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
--                          TCGv_i64 a3, TCGArg a4)
-+static void DNI tcg_gen_op4i_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
-+                                 TCGv_i64 a3, TCGArg a4)
- {
-     tcg_gen_op4(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2),
-                 tcgv_i64_arg(a3), a4);
- }
- 
--void DNI tcg_gen_op4ii_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
--                           TCGArg a3, TCGArg a4)
-+static void DNI tcg_gen_op4ii_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
-+                                  TCGArg a3, TCGArg a4)
- {
-     tcg_gen_op4(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2), a3, a4);
- }
- 
--void DNI tcg_gen_op4ii_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
--                           TCGArg a3, TCGArg a4)
-+static void DNI tcg_gen_op4ii_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
-+                                  TCGArg a3, TCGArg a4)
- {
-     tcg_gen_op4(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2), a3, a4);
- }
- 
--void DNI tcg_gen_op5_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
--                         TCGv_i32 a3, TCGv_i32 a4, TCGv_i32 a5)
-+static void DNI tcg_gen_op5_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
-+                                TCGv_i32 a3, TCGv_i32 a4, TCGv_i32 a5)
- {
-     tcg_gen_op5(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2),
-                 tcgv_i32_arg(a3), tcgv_i32_arg(a4), tcgv_i32_arg(a5));
- }
- 
--void DNI tcg_gen_op5_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
--                         TCGv_i64 a3, TCGv_i64 a4, TCGv_i64 a5)
-+static void DNI tcg_gen_op5_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
-+                                TCGv_i64 a3, TCGv_i64 a4, TCGv_i64 a5)
- {
-     tcg_gen_op5(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2),
-                 tcgv_i64_arg(a3), tcgv_i64_arg(a4), tcgv_i64_arg(a5));
- }
- 
--void DNI tcg_gen_op5i_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
--                          TCGv_i32 a3, TCGv_i32 a4, TCGArg a5)
--{
--    tcg_gen_op5(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2),
--                tcgv_i32_arg(a3), tcgv_i32_arg(a4), a5);
--}
+-#if UINTPTR_MAX == UINT32_MAX
+-# define tcg_constant_ptr(x)     ((TCGv_ptr)tcg_constant_i32((intptr_t)(x)))
+-#else
+-# define tcg_constant_ptr(x)     ((TCGv_ptr)tcg_constant_i64((intptr_t)(x)))
+-#endif
 -
--void DNI tcg_gen_op5i_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
--                          TCGv_i64 a3, TCGv_i64 a4, TCGArg a5)
--{
--    tcg_gen_op5(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2),
--                tcgv_i64_arg(a3), tcgv_i64_arg(a4), a5);
--}
--
--void DNI tcg_gen_op5ii_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
--                           TCGv_i32 a3, TCGArg a4, TCGArg a5)
-+static void DNI tcg_gen_op5ii_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
-+                                  TCGv_i32 a3, TCGArg a4, TCGArg a5)
- {
-     tcg_gen_op5(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2),
-                 tcgv_i32_arg(a3), a4, a5);
+ TCGLabel *gen_new_label(void);
+ 
+ /**
+diff --git a/tcg/tcg-internal.h b/tcg/tcg-internal.h
+index c9ac34fc3d..6c9d9e48db 100644
+--- a/tcg/tcg-internal.h
++++ b/tcg/tcg-internal.h
+@@ -83,6 +83,13 @@ static inline TCGv_i64 TCGV128_HIGH(TCGv_i128 t)
+ 
+ bool tcg_target_has_memory_bswap(MemOp memop);
+ 
++/*
++ * Locate or create a read-only temporary that is a constant.
++ * This kind of temporary need not be freed, but for convenience
++ * will be silently ignored by tcg_temp_free_*.
++ */
++TCGTemp *tcg_constant_internal(TCGType type, int64_t val);
++
+ void tcg_gen_op1(TCGOpcode, TCGArg);
+ void tcg_gen_op2(TCGOpcode, TCGArg, TCGArg);
+ void tcg_gen_op3(TCGOpcode, TCGArg, TCGArg, TCGArg);
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 6766b60b8a..ab0d227c00 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -1806,6 +1806,21 @@ TCGTemp *tcg_constant_internal(TCGType type, int64_t val)
+     return ts;
  }
  
--void DNI tcg_gen_op5ii_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
--                           TCGv_i64 a3, TCGArg a4, TCGArg a5)
-+static void DNI tcg_gen_op5ii_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
-+                                  TCGv_i64 a3, TCGArg a4, TCGArg a5)
++TCGv_i32 tcg_constant_i32(int32_t val)
++{
++    return temp_tcgv_i32(tcg_constant_internal(TCG_TYPE_I32, val));
++}
++
++TCGv_i64 tcg_constant_i64(int64_t val)
++{
++    return temp_tcgv_i64(tcg_constant_internal(TCG_TYPE_I64, val));
++}
++
++TCGv_ptr tcg_constant_ptr_int(intptr_t val)
++{
++    return temp_tcgv_ptr(tcg_constant_internal(TCG_TYPE_PTR, val));
++}
++
+ TCGv_vec tcg_constant_vec(TCGType type, unsigned vece, int64_t val)
  {
-     tcg_gen_op5(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2),
-                 tcgv_i64_arg(a3), a4, a5);
- }
- 
--void DNI tcg_gen_op6_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2, TCGv_i32 a3,
--                         TCGv_i32 a4, TCGv_i32 a5, TCGv_i32 a6)
-+static void DNI tcg_gen_op6_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
-+                                TCGv_i32 a3, TCGv_i32 a4,
-+                                TCGv_i32 a5, TCGv_i32 a6)
- {
-     tcg_gen_op6(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2),
-                 tcgv_i32_arg(a3), tcgv_i32_arg(a4), tcgv_i32_arg(a5),
-                 tcgv_i32_arg(a6));
- }
- 
--void DNI tcg_gen_op6_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2, TCGv_i64 a3,
--                         TCGv_i64 a4, TCGv_i64 a5, TCGv_i64 a6)
-+static void DNI tcg_gen_op6_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
-+                                TCGv_i64 a3, TCGv_i64 a4,
-+                                TCGv_i64 a5, TCGv_i64 a6)
- {
-     tcg_gen_op6(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2),
-                 tcgv_i64_arg(a3), tcgv_i64_arg(a4), tcgv_i64_arg(a5),
-                 tcgv_i64_arg(a6));
- }
- 
--void DNI tcg_gen_op6i_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2, TCGv_i32 a3,
--                          TCGv_i32 a4, TCGv_i32 a5, TCGArg a6)
-+static void DNI tcg_gen_op6i_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
-+                                 TCGv_i32 a3, TCGv_i32 a4,
-+                                 TCGv_i32 a5, TCGArg a6)
- {
-     tcg_gen_op6(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2),
-                 tcgv_i32_arg(a3), tcgv_i32_arg(a4), tcgv_i32_arg(a5), a6);
- }
- 
--void DNI tcg_gen_op6i_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2, TCGv_i64 a3,
--                          TCGv_i64 a4, TCGv_i64 a5, TCGArg a6)
-+static void DNI tcg_gen_op6i_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
-+                                 TCGv_i64 a3, TCGv_i64 a4,
-+                                 TCGv_i64 a5, TCGArg a6)
- {
-     tcg_gen_op6(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2),
-                 tcgv_i64_arg(a3), tcgv_i64_arg(a4), tcgv_i64_arg(a5), a6);
- }
- 
--void DNI tcg_gen_op6ii_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
--                           TCGv_i32 a3, TCGv_i32 a4, TCGArg a5, TCGArg a6)
-+static void DNI tcg_gen_op6ii_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
-+                                  TCGv_i32 a3, TCGv_i32 a4,
-+                                  TCGArg a5, TCGArg a6)
- {
-     tcg_gen_op6(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2),
-                 tcgv_i32_arg(a3), tcgv_i32_arg(a4), a5, a6);
- }
- 
--void DNI tcg_gen_op6ii_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
--                           TCGv_i64 a3, TCGv_i64 a4, TCGArg a5, TCGArg a6)
--{
--    tcg_gen_op6(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2),
--                tcgv_i64_arg(a3), tcgv_i64_arg(a4), a5, a6);
--}
--
- /* Generic ops.  */
- 
- void gen_set_label(TCGLabel *l)
+     val = dup_const(vece, val);
 -- 
 2.34.1
 
