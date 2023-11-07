@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8157E48B0
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:49:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65AE27E489D
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:48:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0R6Q-0004kI-WD; Tue, 07 Nov 2023 13:47:07 -0500
+	id 1r0R6I-0004a2-Tc; Tue, 07 Nov 2023 13:46:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5r-00044k-J0
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:32 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5p-00041Y-8y
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5n-0001Wo-Jc
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:31 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5m-0001Wl-96
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1699382785;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ptm7hwSXzPsMJ4jyJutgAOEotLG1+sYIdfkKXYKk4Go=;
- b=ZtoDEEYLzdLUjHGHPDIZGgjYkmUFm50bNpgJsMChkvuDsgeeijZN+E0K40/BqVjBxffryQ
- KA95jz/ifewjJ70BaY09apaobco0GMx8LOhUt1eg5Il0vjvJ3jamDe6grp7eXFrFoSSvzM
- QwbhqLi0AUI8C4ZKYv/pDyzOH/veAWA=
+ bh=EFmRSZZ1tGJRCUwb25czO0aO3P+HawN92fGv1bSfreg=;
+ b=CIs5fLN8Fxsr6iauZLLPr0DFiFcTFo1GzqYRWmDWMPh81iUhFMNZ4SUHGB0g08Ez0v53Lm
+ 1+Fy5suvyEIYiO4NY1z93gyfQc6YhJyl4Qx9YZSd16kHceuZtAb6AC2HOmu/rh7QWkEvbu
+ BjGAPlyD8DscBJ6SrFXx8wg3vorbOZg=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-597-4yidqTvpM7mYPi2lsbPItw-1; Tue,
- 07 Nov 2023 13:46:24 -0500
-X-MC-Unique: 4yidqTvpM7mYPi2lsbPItw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-255-Vld49_u-PNS-ojBmldC1QQ-1; Tue,
+ 07 Nov 2023 13:46:23 -0500
+X-MC-Unique: Vld49_u-PNS-ojBmldC1QQ-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D032A38143A2
- for <qemu-devel@nongnu.org>; Tue,  7 Nov 2023 18:46:22 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 87153280302A
+ for <qemu-devel@nongnu.org>; Tue,  7 Nov 2023 18:46:23 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.197])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5B6B7C1596F;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 12CCCC1596F;
  Tue,  7 Nov 2023 18:46:22 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com
-Subject: [PULL 20/25] block: Add missing GRAPH_RDLOCK annotations
-Date: Tue,  7 Nov 2023 19:46:00 +0100
-Message-ID: <20231107184605.236540-21-kwolf@redhat.com>
+Subject: [PULL 21/25] qcow2: Take locks for accessing bs->file
+Date: Tue,  7 Nov 2023 19:46:01 +0100
+Message-ID: <20231107184605.236540-22-kwolf@redhat.com>
 In-Reply-To: <20231107184605.236540-1-kwolf@redhat.com>
 References: <20231107184605.236540-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -77,369 +77,283 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds GRAPH_RDLOCK to some driver callbacks that are already called
-with the graph lock held, and which will need the annotation because
-they access bs->file, but don't have it yet.
-
-This also covers a few callbacks that were not marked GRAPH_RDLOCK
-before, but where updating BlockDriver is trivially possible.
+This updates the qcow2 code to add GRAPH_RDLOCK annotations for all
+places that read bs->file.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20231027155333.420094-21-kwolf@redhat.com>
+Message-ID: <20231027155333.420094-22-kwolf@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/qcow2.h                    | 11 ++++++-----
- include/block/block_int-common.h | 17 +++++++++--------
- block/blkdebug.c                 | 13 +++++--------
- block/blkverify.c                |  2 +-
- block/copy-before-write.c        |  2 +-
- block/filter-compress.c          |  3 ++-
- block/io.c                       |  2 ++
- block/parallels.c                | 12 ++++--------
- block/preallocate.c              |  4 ++--
- block/qcow.c                     |  2 +-
- block/qcow2.c                    |  4 ++--
- block/qed.c                      | 10 ++++------
- block/raw-format.c               | 16 ++++++++--------
- block/snapshot-access.c          |  2 +-
- block/vdi.c                      |  9 ++++-----
- block/vhdx.c                     |  6 +++---
- 16 files changed, 55 insertions(+), 60 deletions(-)
+ block/qcow2.h         | 48 ++++++++++++++++++++++++++-----------------
+ block/qcow2-bitmap.c  | 14 +++++++------
+ block/qcow2-cluster.c | 25 +++++++++++-----------
+ block/qcow2.c         | 13 ++++++++----
+ 4 files changed, 59 insertions(+), 41 deletions(-)
 
 diff --git a/block/qcow2.h b/block/qcow2.h
-index 29958c512b..948335979f 100644
+index 948335979f..a9e3481c6e 100644
 --- a/block/qcow2.h
 +++ b/block/qcow2.h
-@@ -972,11 +972,12 @@ int GRAPH_RDLOCK
- qcow2_snapshot_delete(BlockDriverState *bs, const char *snapshot_id,
-                           const char *name, Error **errp);
- 
--int qcow2_snapshot_list(BlockDriverState *bs, QEMUSnapshotInfo **psn_tab);
--int qcow2_snapshot_load_tmp(BlockDriverState *bs,
--                            const char *snapshot_id,
--                            const char *name,
--                            Error **errp);
-+int GRAPH_RDLOCK
-+qcow2_snapshot_list(BlockDriverState *bs, QEMUSnapshotInfo **psn_tab);
-+
-+int GRAPH_RDLOCK
-+qcow2_snapshot_load_tmp(BlockDriverState *bs, const char *snapshot_id,
-+                        const char *name, Error **errp);
- 
- void qcow2_free_snapshots(BlockDriverState *bs);
- int coroutine_fn GRAPH_RDLOCK
-diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
-index 59f6d7f195..63bc523d7c 100644
---- a/include/block/block_int-common.h
-+++ b/include/block/block_int-common.h
-@@ -310,7 +310,7 @@ struct BlockDriver {
-      * One example usage is to avoid waiting for an nbd target node reconnect
-      * timeout during job-cancel with force=true.
-      */
--    void (*bdrv_cancel_in_flight)(BlockDriverState *bs);
-+    void GRAPH_RDLOCK_PTR (*bdrv_cancel_in_flight)(BlockDriverState *bs);
- 
-     int GRAPH_RDLOCK_PTR (*bdrv_inactivate)(BlockDriverState *bs);
- 
-@@ -324,12 +324,12 @@ struct BlockDriver {
-         BlockDriverState *bs, const char *snapshot_id, const char *name,
-         Error **errp);
- 
--    int (*bdrv_snapshot_list)(BlockDriverState *bs,
--                              QEMUSnapshotInfo **psn_info);
--    int (*bdrv_snapshot_load_tmp)(BlockDriverState *bs,
--                                  const char *snapshot_id,
--                                  const char *name,
--                                  Error **errp);
-+    int GRAPH_RDLOCK_PTR (*bdrv_snapshot_list)(
-+        BlockDriverState *bs, QEMUSnapshotInfo **psn_info);
-+
-+    int GRAPH_RDLOCK_PTR (*bdrv_snapshot_load_tmp)(
-+        BlockDriverState *bs, const char *snapshot_id, const char *name,
-+        Error **errp);
- 
-     int coroutine_fn GRAPH_RDLOCK_PTR (*bdrv_co_change_backing_file)(
-         BlockDriverState *bs, const char *backing_file,
-@@ -396,7 +396,8 @@ struct BlockDriver {
-      * Only drivers that want to override guest geometry implement this
-      * callback; see hd_geometry_guess().
-      */
--    int (*bdrv_probe_geometry)(BlockDriverState *bs, HDGeometry *geo);
-+    int GRAPH_RDLOCK_PTR (*bdrv_probe_geometry)(
-+        BlockDriverState *bs, HDGeometry *geo);
- 
-     void GRAPH_WRLOCK_PTR (*bdrv_add_child)(
-         BlockDriverState *parent, BlockDriverState *child, Error **errp);
-diff --git a/block/blkdebug.c b/block/blkdebug.c
-index addad914b3..230efa9e8d 100644
---- a/block/blkdebug.c
-+++ b/block/blkdebug.c
-@@ -746,13 +746,10 @@ blkdebug_co_pdiscard(BlockDriverState *bs, int64_t offset, int64_t bytes)
-     return bdrv_co_pdiscard(bs->file, offset, bytes);
+@@ -641,7 +641,7 @@ static inline void set_l2_bitmap(BDRVQcow2State *s, uint64_t *l2_slice,
+     l2_slice[idx + 1] = cpu_to_be64(bitmap);
  }
  
--static int coroutine_fn blkdebug_co_block_status(BlockDriverState *bs,
--                                                 bool want_zero,
--                                                 int64_t offset,
--                                                 int64_t bytes,
--                                                 int64_t *pnum,
--                                                 int64_t *map,
--                                                 BlockDriverState **file)
-+static int coroutine_fn GRAPH_RDLOCK
-+blkdebug_co_block_status(BlockDriverState *bs, bool want_zero, int64_t offset,
-+                         int64_t bytes, int64_t *pnum, int64_t *map,
-+                         BlockDriverState **file)
- {
-     int err;
- 
-@@ -973,7 +970,7 @@ blkdebug_co_getlength(BlockDriverState *bs)
-     return bdrv_co_getlength(bs->file->bs);
- }
- 
--static void blkdebug_refresh_filename(BlockDriverState *bs)
-+static void GRAPH_RDLOCK blkdebug_refresh_filename(BlockDriverState *bs)
- {
-     BDRVBlkdebugState *s = bs->opaque;
-     const QDictEntry *e;
-diff --git a/block/blkverify.c b/block/blkverify.c
-index 9ea2cb4cc5..a96905db35 100644
---- a/block/blkverify.c
-+++ b/block/blkverify.c
-@@ -288,7 +288,7 @@ blkverify_recurse_can_replace(BlockDriverState *bs,
-            bdrv_recurse_can_replace(s->test_file->bs, to_replace);
- }
- 
--static void blkverify_refresh_filename(BlockDriverState *bs)
-+static void GRAPH_RDLOCK blkverify_refresh_filename(BlockDriverState *bs)
- {
-     BDRVBlkverifyState *s = bs->opaque;
- 
-diff --git a/block/copy-before-write.c b/block/copy-before-write.c
-index 4ffabc5ca2..8193d3a4cd 100644
---- a/block/copy-before-write.c
-+++ b/block/copy-before-write.c
-@@ -335,7 +335,7 @@ cbw_co_pdiscard_snapshot(BlockDriverState *bs, int64_t offset, int64_t bytes)
-     return bdrv_co_pdiscard(s->target, offset, bytes);
- }
- 
--static void cbw_refresh_filename(BlockDriverState *bs)
-+static void GRAPH_RDLOCK cbw_refresh_filename(BlockDriverState *bs)
- {
-     pstrcpy(bs->exact_filename, sizeof(bs->exact_filename),
-             bs->file->bs->filename);
-diff --git a/block/filter-compress.c b/block/filter-compress.c
-index 320d9576fa..e3fc82f322 100644
---- a/block/filter-compress.c
-+++ b/block/filter-compress.c
-@@ -97,7 +97,8 @@ compress_co_pdiscard(BlockDriverState *bs, int64_t offset, int64_t bytes)
- }
- 
- 
--static void compress_refresh_limits(BlockDriverState *bs, Error **errp)
-+static void GRAPH_RDLOCK
-+compress_refresh_limits(BlockDriverState *bs, Error **errp)
- {
-     BlockDriverInfo bdi;
-     int ret;
-diff --git a/block/io.c b/block/io.c
-index 527a1de04e..7e62fabbf5 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -3685,6 +3685,8 @@ out:
- void bdrv_cancel_in_flight(BlockDriverState *bs)
- {
-     GLOBAL_STATE_CODE();
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-     if (!bs || !bs->drv) {
-         return;
-     }
-diff --git a/block/parallels.c b/block/parallels.c
-index 6318dd02e7..9b9bd1f993 100644
---- a/block/parallels.c
-+++ b/block/parallels.c
-@@ -415,14 +415,10 @@ parallels_co_flush_to_os(BlockDriverState *bs)
-     return 0;
- }
- 
--
--static int coroutine_fn parallels_co_block_status(BlockDriverState *bs,
--                                                  bool want_zero,
--                                                  int64_t offset,
--                                                  int64_t bytes,
--                                                  int64_t *pnum,
--                                                  int64_t *map,
--                                                  BlockDriverState **file)
-+static int coroutine_fn GRAPH_RDLOCK
-+parallels_co_block_status(BlockDriverState *bs, bool want_zero, int64_t offset,
-+                          int64_t bytes, int64_t *pnum, int64_t *map,
-+                          BlockDriverState **file)
- {
-     BDRVParallelsState *s = bs->opaque;
-     int count;
-diff --git a/block/preallocate.c b/block/preallocate.c
-index bfb638d8b1..4e0c891ab2 100644
---- a/block/preallocate.c
-+++ b/block/preallocate.c
-@@ -541,8 +541,8 @@ static void preallocate_drop_resize_bh(void *opaque)
-     preallocate_drop_resize(opaque, NULL);
- }
- 
--static void preallocate_set_perm(BlockDriverState *bs,
--                                 uint64_t perm, uint64_t shared)
-+static void GRAPH_RDLOCK
-+preallocate_set_perm(BlockDriverState *bs, uint64_t perm, uint64_t shared)
- {
-     BDRVPreallocateState *s = bs->opaque;
- 
-diff --git a/block/qcow.c b/block/qcow.c
-index eab68e387c..1e2835f1f4 100644
---- a/block/qcow.c
-+++ b/block/qcow.c
-@@ -1024,7 +1024,7 @@ fail:
-     return ret;
- }
- 
--static int qcow_make_empty(BlockDriverState *bs)
-+static int GRAPH_RDLOCK qcow_make_empty(BlockDriverState *bs)
- {
-     BDRVQcowState *s = bs->opaque;
-     uint32_t l1_length = s->l1_size * sizeof(uint64_t);
-diff --git a/block/qcow2.c b/block/qcow2.c
-index 875e613ea9..7ab399ffc5 100644
---- a/block/qcow2.c
-+++ b/block/qcow2.c
-@@ -5226,8 +5226,8 @@ qcow2_co_get_info(BlockDriverState *bs, BlockDriverInfo *bdi)
-     return 0;
- }
- 
--static ImageInfoSpecific *qcow2_get_specific_info(BlockDriverState *bs,
--                                                  Error **errp)
-+static ImageInfoSpecific * GRAPH_RDLOCK
-+qcow2_get_specific_info(BlockDriverState *bs, Error **errp)
+-static inline bool has_data_file(BlockDriverState *bs)
++static inline bool GRAPH_RDLOCK has_data_file(BlockDriverState *bs)
  {
      BDRVQcow2State *s = bs->opaque;
-     ImageInfoSpecific *spec_info;
-diff --git a/block/qed.c b/block/qed.c
-index 996aa384fe..f4c1628a81 100644
---- a/block/qed.c
-+++ b/block/qed.c
-@@ -1443,12 +1443,10 @@ bdrv_qed_co_pwrite_zeroes(BlockDriverState *bs, int64_t offset, int64_t bytes,
-                           QED_AIOCB_WRITE | QED_AIOCB_ZERO);
+     return (s->data_file != bs->file);
+@@ -709,8 +709,8 @@ static inline int64_t qcow2_vm_state_offset(BDRVQcow2State *s)
+     return (int64_t)s->l1_vm_state_index << (s->cluster_bits + s->l2_bits);
  }
  
--static int coroutine_fn bdrv_qed_co_truncate(BlockDriverState *bs,
--                                             int64_t offset,
--                                             bool exact,
--                                             PreallocMode prealloc,
--                                             BdrvRequestFlags flags,
--                                             Error **errp)
-+static int coroutine_fn GRAPH_RDLOCK
-+bdrv_qed_co_truncate(BlockDriverState *bs, int64_t offset, bool exact,
-+                     PreallocMode prealloc, BdrvRequestFlags flags,
-+                     Error **errp)
+-static inline QCow2ClusterType qcow2_get_cluster_type(BlockDriverState *bs,
+-                                                      uint64_t l2_entry)
++static inline QCow2ClusterType GRAPH_RDLOCK
++qcow2_get_cluster_type(BlockDriverState *bs, uint64_t l2_entry)
  {
-     BDRVQEDState *s = bs->opaque;
-     uint64_t old_image_size;
-diff --git a/block/raw-format.c b/block/raw-format.c
-index 8ca74c1cf3..2640d54801 100644
---- a/block/raw-format.c
-+++ b/block/raw-format.c
-@@ -279,11 +279,10 @@ fail:
-     return ret;
- }
+     BDRVQcow2State *s = bs->opaque;
  
--static int coroutine_fn raw_co_block_status(BlockDriverState *bs,
--                                            bool want_zero, int64_t offset,
--                                            int64_t bytes, int64_t *pnum,
--                                            int64_t *map,
--                                            BlockDriverState **file)
-+static int coroutine_fn GRAPH_RDLOCK
-+raw_co_block_status(BlockDriverState *bs, bool want_zero, int64_t offset,
-+                    int64_t bytes, int64_t *pnum, int64_t *map,
-+                    BlockDriverState **file)
- {
-     BDRVRawState *s = bs->opaque;
-     *pnum = bytes;
-@@ -397,7 +396,7 @@ raw_co_get_info(BlockDriverState *bs, BlockDriverInfo *bdi)
-     return bdrv_co_get_info(bs->file->bs, bdi);
- }
- 
--static void raw_refresh_limits(BlockDriverState *bs, Error **errp)
-+static void GRAPH_RDLOCK raw_refresh_limits(BlockDriverState *bs, Error **errp)
- {
-     bs->bl.has_variable_length = bs->file->bs->bl.has_variable_length;
- 
-@@ -561,7 +560,8 @@ raw_probe_blocksizes(BlockDriverState *bs, BlockSizes *bsz)
-     return 0;
- }
- 
--static int raw_probe_geometry(BlockDriverState *bs, HDGeometry *geo)
-+static int GRAPH_RDLOCK
-+raw_probe_geometry(BlockDriverState *bs, HDGeometry *geo)
- {
-     BDRVRawState *s = bs->opaque;
-     if (s->offset || s->has_size) {
-@@ -611,7 +611,7 @@ static const char *const raw_strong_runtime_opts[] = {
-     NULL
- };
- 
--static void raw_cancel_in_flight(BlockDriverState *bs)
-+static void GRAPH_RDLOCK raw_cancel_in_flight(BlockDriverState *bs)
- {
-     bdrv_cancel_in_flight(bs->file->bs);
- }
-diff --git a/block/snapshot-access.c b/block/snapshot-access.c
-index 8d4e8932b8..7c45739eb1 100644
---- a/block/snapshot-access.c
-+++ b/block/snapshot-access.c
-@@ -73,7 +73,7 @@ snapshot_access_co_pwritev_part(BlockDriverState *bs,
- }
- 
- 
--static void snapshot_access_refresh_filename(BlockDriverState *bs)
-+static void GRAPH_RDLOCK snapshot_access_refresh_filename(BlockDriverState *bs)
- {
-     pstrcpy(bs->exact_filename, sizeof(bs->exact_filename),
-             bs->file->bs->filename);
-diff --git a/block/vdi.c b/block/vdi.c
-index 8e144ce523..84150180ec 100644
---- a/block/vdi.c
-+++ b/block/vdi.c
-@@ -520,11 +520,10 @@ static int vdi_reopen_prepare(BDRVReopenState *state,
-     return 0;
- }
- 
--static int coroutine_fn vdi_co_block_status(BlockDriverState *bs,
--                                            bool want_zero,
--                                            int64_t offset, int64_t bytes,
--                                            int64_t *pnum, int64_t *map,
--                                            BlockDriverState **file)
-+static int coroutine_fn GRAPH_RDLOCK
-+vdi_co_block_status(BlockDriverState *bs, bool want_zero, int64_t offset,
-+                    int64_t bytes, int64_t *pnum, int64_t *map,
-+                    BlockDriverState **file)
- {
-     BDRVVdiState *s = (BDRVVdiState *)bs->opaque;
-     size_t bmap_index = offset / s->block_size;
-diff --git a/block/vhdx.c b/block/vhdx.c
-index e136ba1ae1..ac4d52e8c6 100644
---- a/block/vhdx.c
-+++ b/block/vhdx.c
-@@ -2163,9 +2163,9 @@ fail:
-  * r/w and any log has already been replayed, so there is nothing (currently)
-  * for us to do here
+@@ -743,7 +743,7 @@ static inline QCow2ClusterType qcow2_get_cluster_type(BlockDriverState *bs,
+  * (this checks the whole entry and bitmap, not only the bits related
+  * to subcluster @sc_index).
   */
--static int coroutine_fn vhdx_co_check(BlockDriverState *bs,
--                                      BdrvCheckResult *result,
--                                      BdrvCheckMode fix)
-+static int coroutine_fn GRAPH_RDLOCK
-+vhdx_co_check(BlockDriverState *bs, BdrvCheckResult *result,
-+              BdrvCheckMode fix)
- {
-     BDRVVHDXState *s = bs->opaque;
+-static inline
++static inline GRAPH_RDLOCK
+ QCow2SubclusterType qcow2_get_subcluster_type(BlockDriverState *bs,
+                                               uint64_t l2_entry,
+                                               uint64_t l2_bitmap,
+@@ -834,9 +834,9 @@ int64_t qcow2_refcount_metadata_size(int64_t clusters, size_t cluster_size,
+                                      int refcount_order, bool generous_increase,
+                                      uint64_t *refblock_count);
  
+-int qcow2_mark_dirty(BlockDriverState *bs);
+-int qcow2_mark_corrupt(BlockDriverState *bs);
+-int qcow2_update_header(BlockDriverState *bs);
++int GRAPH_RDLOCK qcow2_mark_dirty(BlockDriverState *bs);
++int GRAPH_RDLOCK qcow2_mark_corrupt(BlockDriverState *bs);
++int GRAPH_RDLOCK qcow2_update_header(BlockDriverState *bs);
+ 
+ void GRAPH_RDLOCK
+ qcow2_signal_corruption(BlockDriverState *bs, bool fatal, int64_t offset,
+@@ -890,10 +890,11 @@ int GRAPH_RDLOCK qcow2_write_caches(BlockDriverState *bs);
+ int coroutine_fn qcow2_check_refcounts(BlockDriverState *bs, BdrvCheckResult *res,
+                                        BdrvCheckMode fix);
+ 
+-void qcow2_process_discards(BlockDriverState *bs, int ret);
++void GRAPH_RDLOCK qcow2_process_discards(BlockDriverState *bs, int ret);
+ 
+-int qcow2_check_metadata_overlap(BlockDriverState *bs, int ign, int64_t offset,
+-                                 int64_t size);
++int GRAPH_RDLOCK
++qcow2_check_metadata_overlap(BlockDriverState *bs, int ign, int64_t offset,
++                             int64_t size);
+ int GRAPH_RDLOCK
+ qcow2_pre_write_overlap_check(BlockDriverState *bs, int ign, int64_t offset,
+                               int64_t size, bool data_file);
+@@ -939,8 +940,9 @@ qcow2_alloc_host_offset(BlockDriverState *bs, uint64_t offset,
+ int coroutine_fn GRAPH_RDLOCK
+ qcow2_alloc_compressed_cluster_offset(BlockDriverState *bs, uint64_t offset,
+                                       int compressed_size, uint64_t *host_offset);
+-void qcow2_parse_compressed_l2_entry(BlockDriverState *bs, uint64_t l2_entry,
+-                                     uint64_t *coffset, int *csize);
++void GRAPH_RDLOCK
++qcow2_parse_compressed_l2_entry(BlockDriverState *bs, uint64_t l2_entry,
++                                uint64_t *coffset, int *csize);
+ 
+ int coroutine_fn GRAPH_RDLOCK
+ qcow2_alloc_cluster_link_l2(BlockDriverState *bs, QCowL2Meta *m);
+@@ -993,8 +995,9 @@ qcow2_check_fix_snapshot_table(BlockDriverState *bs, BdrvCheckResult *result,
+                                BdrvCheckMode fix);
+ 
+ /* qcow2-cache.c functions */
+-Qcow2Cache *qcow2_cache_create(BlockDriverState *bs, int num_tables,
+-                               unsigned table_size);
++Qcow2Cache * GRAPH_RDLOCK
++qcow2_cache_create(BlockDriverState *bs, int num_tables, unsigned table_size);
++
+ int qcow2_cache_destroy(Qcow2Cache *c);
+ 
+ void qcow2_cache_entry_mark_dirty(Qcow2Cache *c, void *table);
+@@ -1020,17 +1023,24 @@ void *qcow2_cache_is_table_offset(Qcow2Cache *c, uint64_t offset);
+ void qcow2_cache_discard(Qcow2Cache *c, void *table);
+ 
+ /* qcow2-bitmap.c functions */
+-int coroutine_fn
++int coroutine_fn GRAPH_RDLOCK
+ qcow2_check_bitmaps_refcounts(BlockDriverState *bs, BdrvCheckResult *res,
+                               void **refcount_table,
+                               int64_t *refcount_table_size);
++
+ bool coroutine_fn GRAPH_RDLOCK
+-qcow2_load_dirty_bitmaps(BlockDriverState *bs, bool *header_updated, Error **errp);
+-bool qcow2_get_bitmap_info_list(BlockDriverState *bs,
+-                                Qcow2BitmapInfoList **info_list, Error **errp);
++qcow2_load_dirty_bitmaps(BlockDriverState *bs, bool *header_updated,
++                         Error **errp);
++
++bool GRAPH_RDLOCK
++qcow2_get_bitmap_info_list(BlockDriverState *bs,
++                           Qcow2BitmapInfoList **info_list, Error **errp);
++
+ int GRAPH_RDLOCK qcow2_reopen_bitmaps_rw(BlockDriverState *bs, Error **errp);
+ int GRAPH_RDLOCK qcow2_reopen_bitmaps_ro(BlockDriverState *bs, Error **errp);
+-int coroutine_fn qcow2_truncate_bitmaps_check(BlockDriverState *bs, Error **errp);
++
++int coroutine_fn GRAPH_RDLOCK
++qcow2_truncate_bitmaps_check(BlockDriverState *bs, Error **errp);
+ 
+ bool GRAPH_RDLOCK
+ qcow2_store_persistent_dirty_bitmaps(BlockDriverState *bs, bool release_stored,
+diff --git a/block/qcow2-bitmap.c b/block/qcow2-bitmap.c
+index 3058309c47..0e567ed588 100644
+--- a/block/qcow2-bitmap.c
++++ b/block/qcow2-bitmap.c
+@@ -105,7 +105,7 @@ static inline bool can_write(BlockDriverState *bs)
+     return !bdrv_is_read_only(bs) && !(bdrv_get_flags(bs) & BDRV_O_INACTIVE);
+ }
+ 
+-static int update_header_sync(BlockDriverState *bs)
++static int GRAPH_RDLOCK update_header_sync(BlockDriverState *bs)
+ {
+     int ret;
+ 
+@@ -221,8 +221,9 @@ clear_bitmap_table(BlockDriverState *bs, uint64_t *bitmap_table,
+     }
+ }
+ 
+-static int bitmap_table_load(BlockDriverState *bs, Qcow2BitmapTable *tb,
+-                             uint64_t **bitmap_table)
++static int GRAPH_RDLOCK
++bitmap_table_load(BlockDriverState *bs, Qcow2BitmapTable *tb,
++                  uint64_t **bitmap_table)
+ {
+     int ret;
+     BDRVQcow2State *s = bs->opaque;
+@@ -551,8 +552,9 @@ static uint32_t bitmap_list_count(Qcow2BitmapList *bm_list)
+  * Get bitmap list from qcow2 image. Actually reads bitmap directory,
+  * checks it and convert to bitmap list.
+  */
+-static Qcow2BitmapList *bitmap_list_load(BlockDriverState *bs, uint64_t offset,
+-                                         uint64_t size, Error **errp)
++static Qcow2BitmapList * GRAPH_RDLOCK
++bitmap_list_load(BlockDriverState *bs, uint64_t offset, uint64_t size,
++                 Error **errp)
+ {
+     int ret;
+     BDRVQcow2State *s = bs->opaque;
+@@ -961,7 +963,7 @@ static void set_readonly_helper(gpointer bitmap, gpointer value)
+  * If header_updated is not NULL then it is set appropriately regardless of
+  * the return value.
+  */
+-bool coroutine_fn GRAPH_RDLOCK
++bool coroutine_fn
+ qcow2_load_dirty_bitmaps(BlockDriverState *bs,
+                          bool *header_updated, Error **errp)
+ {
+diff --git a/block/qcow2-cluster.c b/block/qcow2-cluster.c
+index 5af439bd11..ce8c0076b3 100644
+--- a/block/qcow2-cluster.c
++++ b/block/qcow2-cluster.c
+@@ -391,11 +391,10 @@ fail:
+  * If the L2 entry is invalid return -errno and set @type to
+  * QCOW2_SUBCLUSTER_INVALID.
+  */
+-static int qcow2_get_subcluster_range_type(BlockDriverState *bs,
+-                                           uint64_t l2_entry,
+-                                           uint64_t l2_bitmap,
+-                                           unsigned sc_from,
+-                                           QCow2SubclusterType *type)
++static int GRAPH_RDLOCK
++qcow2_get_subcluster_range_type(BlockDriverState *bs, uint64_t l2_entry,
++                                uint64_t l2_bitmap, unsigned sc_from,
++                                QCow2SubclusterType *type)
+ {
+     BDRVQcow2State *s = bs->opaque;
+     uint32_t val;
+@@ -442,9 +441,10 @@ static int qcow2_get_subcluster_range_type(BlockDriverState *bs,
+  * On failure return -errno and update @l2_index to point to the
+  * invalid entry.
+  */
+-static int count_contiguous_subclusters(BlockDriverState *bs, int nb_clusters,
+-                                        unsigned sc_index, uint64_t *l2_slice,
+-                                        unsigned *l2_index)
++static int GRAPH_RDLOCK
++count_contiguous_subclusters(BlockDriverState *bs, int nb_clusters,
++                             unsigned sc_index, uint64_t *l2_slice,
++                             unsigned *l2_index)
+ {
+     BDRVQcow2State *s = bs->opaque;
+     int i, count = 0;
+@@ -1329,7 +1329,8 @@ calculate_l2_meta(BlockDriverState *bs, uint64_t host_cluster_offset,
+  * requires a new allocation (that is, if the cluster is unallocated
+  * or has refcount > 1 and therefore cannot be written in-place).
+  */
+-static bool cluster_needs_new_alloc(BlockDriverState *bs, uint64_t l2_entry)
++static bool GRAPH_RDLOCK
++cluster_needs_new_alloc(BlockDriverState *bs, uint64_t l2_entry)
+ {
+     switch (qcow2_get_cluster_type(bs, l2_entry)) {
+     case QCOW2_CLUSTER_NORMAL:
+@@ -1360,9 +1361,9 @@ static bool cluster_needs_new_alloc(BlockDriverState *bs, uint64_t l2_entry)
+  * allocated and can be overwritten in-place (this includes clusters
+  * of type QCOW2_CLUSTER_ZERO_ALLOC).
+  */
+-static int count_single_write_clusters(BlockDriverState *bs, int nb_clusters,
+-                                       uint64_t *l2_slice, int l2_index,
+-                                       bool new_alloc)
++static int GRAPH_RDLOCK
++count_single_write_clusters(BlockDriverState *bs, int nb_clusters,
++                            uint64_t *l2_slice, int l2_index, bool new_alloc)
+ {
+     BDRVQcow2State *s = bs->opaque;
+     uint64_t l2_entry = get_l2_entry(s, l2_slice, l2_index);
+diff --git a/block/qcow2.c b/block/qcow2.c
+index 7ab399ffc5..cf2468858f 100644
+--- a/block/qcow2.c
++++ b/block/qcow2.c
+@@ -95,9 +95,10 @@ static int qcow2_probe(const uint8_t *buf, int buf_size, const char *filename)
+ }
+ 
+ 
+-static int qcow2_crypto_hdr_read_func(QCryptoBlock *block, size_t offset,
+-                                      uint8_t *buf, size_t buflen,
+-                                      void *opaque, Error **errp)
++static int GRAPH_RDLOCK
++qcow2_crypto_hdr_read_func(QCryptoBlock *block, size_t offset,
++                           uint8_t *buf, size_t buflen,
++                           void *opaque, Error **errp)
+ {
+     BlockDriverState *bs = opaque;
+     BDRVQcow2State *s = bs->opaque;
+@@ -156,7 +157,7 @@ qcow2_crypto_hdr_init_func(QCryptoBlock *block, size_t headerlen, void *opaque,
+ 
+ 
+ /* The graph lock must be held when called in coroutine context */
+-static int coroutine_mixed_fn
++static int coroutine_mixed_fn GRAPH_RDLOCK
+ qcow2_crypto_hdr_write_func(QCryptoBlock *block, size_t offset,
+                             const uint8_t *buf, size_t buflen,
+                             void *opaque, Error **errp)
+@@ -2029,6 +2030,8 @@ static void qcow2_reopen_commit(BDRVReopenState *state)
+ {
+     BDRVQcow2State *s = state->bs->opaque;
+ 
++    GRAPH_RDLOCK_GUARD_MAINLOOP();
++
+     qcow2_update_options_commit(state->bs, state->opaque);
+     if (!s->data_file) {
+         /*
+@@ -2064,6 +2067,8 @@ static void qcow2_reopen_abort(BDRVReopenState *state)
+ {
+     BDRVQcow2State *s = state->bs->opaque;
+ 
++    GRAPH_RDLOCK_GUARD_MAINLOOP();
++
+     if (!s->data_file) {
+         /*
+          * If we don't have an external data file, s->data_file was cleared by
 -- 
 2.41.0
 
