@@ -2,78 +2,124 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3211B7E3820
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 10:50:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC3B7E3825
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 10:51:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0IiV-0005Yi-Pi; Tue, 07 Nov 2023 04:49:51 -0500
+	id 1r0IjU-0007KX-CZ; Tue, 07 Nov 2023 04:50:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0IiU-0005VI-Al
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:49:50 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0IjR-00079g-MY
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:50:49 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0IiS-0006VU-P9
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:49:50 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0IjP-0006pR-6n
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:50:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699350588;
+ s=mimecast20190719; t=1699350646;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=CqGUbUKz1J6foLX0wqsHp2msAP52n1m0k2H2ScM6SAM=;
- b=V2Z7K4LqJouPDdCW8/MdAuWe5l7gXfCF95rXWxEXQROEQwoayoVm+O5/QktEs8dwtYpa26
- WM8sOOFcJNC+YwboGEOTHoOLQa+U6CDXOqigLjltNOQuZ4rxO/H5y50xbMILow6fKBWl/a
- MXLzrS7B9IyzUpl/c0sTg9ZKEsW6dsg=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=SKFKvECUWh8f0Ego2dVBqT5XkK/Uy0U5vkTNas22l+U=;
+ b=SCkq9CAQWRt0IdtR/riSNs97vGOMZPl/Ty3OBDjviNXrYurI6eQXBqZRM4U+HJKtj0P3Cf
+ BlOosCAWoNP/YIBeUQYLXva3jwo+iJAB/DMDM6TIvxgB0Yhnj84CMadbDo9RfFFfL/px62
+ Au4+E7szIAiwaJD66JQUulndQn3HJ1s=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-466-riyc-tXWO9qsQEZEDz2GnQ-1; Tue, 07 Nov 2023 04:49:35 -0500
-X-MC-Unique: riyc-tXWO9qsQEZEDz2GnQ-1
-Received: by mail-yb1-f199.google.com with SMTP id
- 3f1490d57ef6-da0c6d62ec8so6385218276.1
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 01:49:35 -0800 (PST)
+ us-mta-646-P25z2hu9PSeWzJIi_C-QxA-1; Tue, 07 Nov 2023 04:50:43 -0500
+X-MC-Unique: P25z2hu9PSeWzJIi_C-QxA-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-41bf9a5930aso60362321cf.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 01:50:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699350574; x=1699955374;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CqGUbUKz1J6foLX0wqsHp2msAP52n1m0k2H2ScM6SAM=;
- b=g0gy/Qiz2GdmplVzSR9bigDRzeEwyVom0tvyCT516Qr6PbWaQjXDJu5M/teH8n5jBu
- PtUNEm6LmjWCTLYqWpTFsMJhQVf5VbjlWV5EEVLVU8wjjsX4w8fm8Lj5jC+FbVzwv5Kp
- BLdyODTZFaJYyF2wwknBOVqd3tNeUWCuKRufhL0/s0IAdrGZHNuQvPz+QARkgRx+e3n9
- 4l7bkvN6gxlj9hcd8SFDb1shTAp7etFqmD9Vv6TPqZuQE0DUiSIyfAR4We/Xoj+4TyX9
- UD5Ok6kcG/T2LOY3AcUmK7bKFizhg2zqmTqz+oS7lO+DSudh/xp5YxxTQCs70HZFdKaS
- Q8QA==
-X-Gm-Message-State: AOJu0Ywv+5eJdQW50AOh410TP2lFDnjvAm35EPXcaG/pcDYw1DZ0AHCr
- XIp3lvUmbZmRHn0QMPEV42BjzMa87rDmPedKhRBPVgxwrUr9wAFyZSuROgmm7STpG6XCMZf2QHN
- ePNgmFXDzQiy2bR0j7jEHXxAmR9Bw8EIIymX5HQ/7jOD5q6liVm9FkXXdO1EI5RWG2s+Z
-X-Received: by 2002:a25:6b43:0:b0:d9b:3ed:41a5 with SMTP id
- o3-20020a256b43000000b00d9b03ed41a5mr30032179ybm.21.1699350574107; 
- Tue, 07 Nov 2023 01:49:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH0NjKgp7rs/qMhoZgxMsv8dWut6K7Cco+KvuEuwoghhI70UL/5jw2zPmbmEgSVjK1T1lZk5A==
-X-Received: by 2002:a25:6b43:0:b0:d9b:3ed:41a5 with SMTP id
- o3-20020a256b43000000b00d9b03ed41a5mr30032159ybm.21.1699350573585; 
- Tue, 07 Nov 2023 01:49:33 -0800 (PST)
-Received: from redhat.com ([2.55.5.143]) by smtp.gmail.com with ESMTPSA id
- h96-20020a25a569000000b00d9ace05037csm4972908ybi.13.2023.11.07.01.49.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 01:49:32 -0800 (PST)
-Date: Tue, 7 Nov 2023 04:49:27 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH RFC 2/2] netdev: set timeout depending on loadavg
-Message-ID: <eb33ee05432afacce29a70a2e3679aaacef723da.1699350487.git.mst@redhat.com>
-References: <1e64d2a47b63ba7d7f49a23c02c2be91ff5c15fe.1699350487.git.mst@redhat.com>
+ d=1e100.net; s=20230601; t=1699350642; x=1699955442;
+ h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
+ :from:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SKFKvECUWh8f0Ego2dVBqT5XkK/Uy0U5vkTNas22l+U=;
+ b=hZu7/H+IaZa5uV8MkLS9TnCL8xi2SxUTpzXK722qLuqvTsGh30N1q1Sv9rQwFDJqo3
+ BfqEqSYVx8VlOvgjpUKLwxwrOimdUd/hHTXTLX+wEi1HBzsq5sZ/5+Lkx5OPWAsALqWr
+ sLxgE9u6wzlVKCRkyympuuYuXnvFdOxgDvm4h03pquObQPP1egfEe/KPiwlvQ3H8yiKW
+ tl66UC6mHE9OgJKqAw56JGpxORXKcH+OgVarKLsyzR2TyKJHaLtg21eHY/ua164nhfFw
+ r/q6SKz74pTWhzKJkya7Apf+54sp41NNVLTdAj6gVWwKJTDz0hCB6SfOWMedOdgGQg/t
+ bAbw==
+X-Gm-Message-State: AOJu0YwUdYOVKHZHybk28lYS2vCH3sgWTtxyfq2vKdu8GuqKZd3cCWEd
+ +Hiqb2KgtORWarFdC9TU2PQHQe4KW2lANh3MfCqBISmwdmNvXIaNKArVv2KJum6r2b21cK55fi/
+ s7EjcB5EiEfy2Qpk=
+X-Received: by 2002:a05:622a:389:b0:41e:acde:5461 with SMTP id
+ j9-20020a05622a038900b0041eacde5461mr10209943qtx.38.1699350642542; 
+ Tue, 07 Nov 2023 01:50:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFklMDaab/L4P165uUJaJyAx5wSRGFA0R1LFCWiLXeKSHf3WOu8s3Cf0kky3BICnDIv3P/2RA==
+X-Received: by 2002:a05:622a:389:b0:41e:acde:5461 with SMTP id
+ j9-20020a05622a038900b0041eacde5461mr10209933qtx.38.1699350642291; 
+ Tue, 07 Nov 2023 01:50:42 -0800 (PST)
+Received: from [192.168.0.6] (ip-109-43-179-224.web.vodafone.de.
+ [109.43.179.224]) by smtp.gmail.com with ESMTPSA id
+ u11-20020a05622a17cb00b004108ce94882sm4191920qtk.83.2023.11.07.01.50.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 07 Nov 2023 01:50:41 -0800 (PST)
+Message-ID: <0c4ff767-7461-4ecd-9968-b216a98f0e95@redhat.com>
+Date: Tue, 7 Nov 2023 10:50:39 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1e64d2a47b63ba7d7f49a23c02c2be91ff5c15fe.1699350487.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Add a general architecture section for x86
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+References: <20230929134551.395438-1-thuth@redhat.com>
+ <c3f7cb29-2aab-4767-a6af-58c4e043c002@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <c3f7cb29-2aab-4767-a6af-58c4e043c002@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -98,65 +144,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-netdev test keeps failing sometimes.
-I don't think we should increase the timeout some more:
-let's try something else instead, testing how busy the
-system is.
+On 16/10/2023 11.05, Thomas Huth wrote:
+> On 29/09/2023 15.45, Thomas Huth wrote:
+>> It's a little bit weird that the files in target/i386/ which
+>> are not in a subfolder there do not have any associated
+>> maintainer (and thus nobody might be CC:-ed on changes to
+>> these files). We should have a general x86 section for these
+>> files, similar to what we already have for s390x and mips.
+>> Since Paolo is already listed as maintainer for both, the
+>> x86 KVM and TCG CPUs, I'd like to suggest him as maintainer
+>> for the general files, too.
+>>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   Richard, being listed as x86 TCG CPU maintainer, do you
+>>   want to be listed here, too?
+>>
+>>   MAINTAINERS | 11 +++++++++++
+>>   1 file changed, 11 insertions(+)
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 3914bbd85b..5b4ab7d142 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -131,6 +131,17 @@ K: ^Subject:.*(?i)mips
+>>   F: docs/system/target-mips.rst
+>>   F: configs/targets/mips*
+>> +X86 general architecture support
+>> +M: Paolo Bonzini <pbonzini@redhat.com>
+>> +S: Maintained
+>> +F: configs/devices/i386-softmmu/default.mak
+>> +F: configs/targets/i386-softmmu.mak
+>> +F: configs/targets/x86_64-softmmu.mak
+>> +F: docs/system/target-i386*
+>> +F: target/i386/*.[ch]
+>> +F: target/i386/Kconfig
+>> +F: target/i386/meson.build
+>> +
+>>   Guest CPU cores (TCG)
+>>   ---------------------
+>>   Overall TCG CPUs
+> 
+> Friendly Ping!
+> 
+> Paolo, Richard, what do you think about this?
 
-Seems to work for me.
+Ping^2
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- tests/qtest/netdev-socket.c | 28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+  Thomas
 
-diff --git a/tests/qtest/netdev-socket.c b/tests/qtest/netdev-socket.c
-index 7ba1eff120..bb99d08b5e 100644
---- a/tests/qtest/netdev-socket.c
-+++ b/tests/qtest/netdev-socket.c
-@@ -18,6 +18,32 @@
- 
- #define CONNECTION_TIMEOUT    120
- 
-+static double connection_timeout(void)
-+{
-+    double load;
-+    int ret = getloadavg(&load, 1);
-+
-+    /*
-+     * If we can't get load data, or load is low because we just started
-+     * running, assume load of 1 (we are alone in this system).
-+     */
-+    if (ret < 1 || load < 1.0) {
-+        load = 1.0;
-+    }
-+    /*
-+     * No one wants to wait more than 10 minutes for this test. Higher load?
-+     * Too bad.
-+     */
-+    if (load > 10.0) {
-+        fprintf(stderr, "Warning: load %f higher than 10 - test might timeout\n",
-+                load);
-+        load = 10.0;
-+    }
-+
-+    /* if load is high increase timeout as we might not get a chance to run */
-+    return load * CONNECTION_TIMEOUT;
-+}
-+
- #define EXPECT_STATE(q, e, t)                             \
- do {                                                      \
-     char *resp = NULL;                                    \
-@@ -31,7 +57,7 @@ do {                                                      \
-         if (g_str_equal(resp, e)) {                       \
-             break;                                        \
-         }                                                 \
--    } while (g_test_timer_elapsed() < CONNECTION_TIMEOUT); \
-+    } while (g_test_timer_elapsed() < connection_timeout()); \
-     g_assert_cmpstr(resp, ==, e);                         \
-     g_free(resp);                                         \
- } while (0)
--- 
-MST
 
 
