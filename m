@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A817E35C2
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 08:21:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A65497E35D9
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 08:25:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0GNU-0007xX-Rs; Tue, 07 Nov 2023 02:20:00 -0500
+	id 1r0GOd-0002IX-9g; Tue, 07 Nov 2023 02:21:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1r0GNQ-0007wH-Gq
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 02:19:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1r0GOV-0001q3-VZ
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 02:21:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1r0GNP-0002gk-2z
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 02:19:56 -0500
+ id 1r0GOU-0003AA-90
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 02:21:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699341594;
+ s=mimecast20190719; t=1699341661;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Zr8zAotEqX1zZhbLTs985HQlzifY6ujW9QIdplWN7/g=;
- b=GyZOQs+x/4FmBntBQ3o4baepJxkJc5sFZ+9SLThm4ayIr7WgLCxp2CFLH7iTA/UeBpkQrT
- dbI7a0rG/CxwFj1WXj3OX2JuYBqwiIOu+tLxtpmaYrV0/oReDuWi5lQAETXNJYFRHb+NUD
- ZswsM1YDZHoM8w4WAJu0bQfPMW9juo8=
+ bh=jFWiW+q7/NUsYxRAkT/uCzkDHbVVeqZ11g2tKjRCj84=;
+ b=cvwhtLkm/Yokla/c+4/4Ld84bKC5xHUkduOqWqQARJMfv55onbwzv5K0qi66I40FY8TvKL
+ NDlwRsH/6kWuH5d+8LugRxaovuH4f1X/McpVw8RuMBtvYXFE2T8U+uJEZrIyi5YQmq+hyc
+ fWqjMUVEEUa9WaKcjlrylCMSnXRUBtw=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-510--a-LSRPxO1u9jS6wLl995Q-1; Tue,
- 07 Nov 2023 02:19:51 -0500
-X-MC-Unique: -a-LSRPxO1u9jS6wLl995Q-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-97-FAberSjON_SXz-HCdMdLOw-1; Tue,
+ 07 Nov 2023 02:19:55 -0500
+X-MC-Unique: FAberSjON_SXz-HCdMdLOw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DD1451C2B66B;
- Tue,  7 Nov 2023 07:19:50 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4ABA11C2B67A;
+ Tue,  7 Nov 2023 07:19:55 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E147BC1596F;
- Tue,  7 Nov 2023 07:19:49 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5BBAA2166B26;
+ Tue,  7 Nov 2023 07:19:54 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>,
@@ -50,16 +50,16 @@ Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  stefanha@gmail.com, Gerd Hoffmann <kraxel@redhat.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v8 07/24] vl: simplify display_remote logic
-Date: Tue,  7 Nov 2023 11:18:57 +0400
-Message-ID: <20231107071915.2459115-8-marcandre.lureau@redhat.com>
+Subject: [PATCH v8 08/24] vl: move display early init before default devices
+Date: Tue,  7 Nov 2023 11:18:58 +0400
+Message-ID: <20231107071915.2459115-9-marcandre.lureau@redhat.com>
 In-Reply-To: <20231107071915.2459115-1-marcandre.lureau@redhat.com>
 References: <20231107071915.2459115-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -67,9 +67,9 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,39 +87,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Bump the display_remote variable when the -vnc option is parsed, just
-like -spice.
+The next commit needs to have the display registered itself before
+creating the default VCs.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- system/vl.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ system/vl.c | 31 ++++++++++++++++++-------------
+ 1 file changed, 18 insertions(+), 13 deletions(-)
 
 diff --git a/system/vl.c b/system/vl.c
-index 19aef762e4..e9819408df 100644
+index e9819408df..cf46e438cc 100644
 --- a/system/vl.c
 +++ b/system/vl.c
-@@ -1401,11 +1401,6 @@ static void qemu_create_default_devices(void)
+@@ -1352,6 +1352,23 @@ static void qemu_disable_default_devices(void)
+     }
+ }
+ 
++static void qemu_setup_display(void)
++{
++    if (dpy.type == DISPLAY_TYPE_DEFAULT && !display_remote) {
++        if (!qemu_display_find_default(&dpy)) {
++            dpy.type = DISPLAY_TYPE_NONE;
++#if defined(CONFIG_VNC)
++            vnc_parse("localhost:0,to=99,id=default");
++#endif
++        }
++    }
++    if (dpy.type == DISPLAY_TYPE_DEFAULT) {
++        dpy.type = DISPLAY_TYPE_NONE;
++    }
++
++    qemu_display_early_init(&dpy);
++}
++
+ static void qemu_create_default_devices(void)
+ {
+     MachineClass *machine_class = MACHINE_GET_CLASS(current_machine);
+@@ -1401,18 +1418,6 @@ static void qemu_create_default_devices(void)
  #endif
      }
  
+-    if (dpy.type == DISPLAY_TYPE_DEFAULT && !display_remote) {
+-        if (!qemu_display_find_default(&dpy)) {
+-            dpy.type = DISPLAY_TYPE_NONE;
 -#if defined(CONFIG_VNC)
--    if (!QTAILQ_EMPTY(&(qemu_find_opts("vnc")->head))) {
--        display_remote++;
--    }
+-            vnc_parse("localhost:0,to=99,id=default");
 -#endif
-     if (dpy.type == DISPLAY_TYPE_DEFAULT && !display_remote) {
-         if (!qemu_display_find_default(&dpy)) {
-             dpy.type = DISPLAY_TYPE_NONE;
-@@ -3350,6 +3345,7 @@ void qemu_init(int argc, char **argv)
- #ifdef CONFIG_VNC
-             case QEMU_OPTION_vnc:
-                 vnc_parse(optarg);
-+                display_remote++;
-                 break;
- #endif
-             case QEMU_OPTION_no_acpi:
+-        }
+-    }
+-    if (dpy.type == DISPLAY_TYPE_DEFAULT) {
+-        dpy.type = DISPLAY_TYPE_NONE;
+-    }
+-
+     /* If no default VGA is requested, the default is "none".  */
+     if (default_vga) {
+         vga_model = get_default_vga_model(machine_class);
+@@ -1937,7 +1942,6 @@ static void qemu_create_early_backends(void)
+                      "ignoring option");
+     }
+ 
+-    qemu_display_early_init(&dpy);
+     qemu_console_early_init();
+ 
+     if (dpy.has_gl && dpy.gl != DISPLAYGL_MODE_OFF && display_opengl == 0) {
+@@ -3666,6 +3670,7 @@ void qemu_init(int argc, char **argv)
+     suspend_mux_open();
+ 
+     qemu_disable_default_devices();
++    qemu_setup_display();
+     qemu_create_default_devices();
+     qemu_create_early_backends();
+ 
 -- 
 2.41.0
 
