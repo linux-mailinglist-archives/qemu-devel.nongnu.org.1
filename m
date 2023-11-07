@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE797E3332
+	by mail.lfdr.de (Postfix) with ESMTPS id 077677E3330
 	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:49:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0C99-0008EM-7O; Mon, 06 Nov 2023 21:48:55 -0500
+	id 1r0C9B-0008Fy-Bc; Mon, 06 Nov 2023 21:48:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0C96-0008BH-RP
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:48:52 -0500
-Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
+ id 1r0C98-0008EQ-Pr
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:48:54 -0500
+Received: from mail-vs1-xe2f.google.com ([2607:f8b0:4864:20::e2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0C95-0005qf-8d
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:48:52 -0500
-Received: by mail-oi1-x232.google.com with SMTP id
- 5614622812f47-3b58d96a3bbso2020582b6e.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:48:50 -0800 (PST)
+ id 1r0C96-0005qq-4i
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:48:54 -0500
+Received: by mail-vs1-xe2f.google.com with SMTP id
+ ada2fe7eead31-45ef8c21e8aso832098137.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:48:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699325330; x=1699930130; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699325331; x=1699930131; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=IUHz5LdFJfuVGFZ9kE+P0nwAIXfhY4T9R1W1nItwZn8=;
- b=lrFaU5LR3SIRW81Cy1YTTeGcZf8hi+ixnat+zh2czf4Iq5EWjwA6ey3L3Y35t6XLwP
- DEDs4qwFYvhbSUL43YMpKNamk1t7iNDx+CAkwm7z1k/tAi3B07La5kisP0ekX6hXZM9X
- NdpWCKkuSDPmCS+n0MzW+iQ1EAZ2dn0loDIQqLbus+9FCbKMxmbjVGEL7JL99LApCdQJ
- 8gyxnvnLqlx94z4MRyWhVDG/ZG65/wU+VNQMzJbxeaaDtJircCQCM8gX0atLhGtYQZIS
- zwZZXPS+I2n9NPX77ucJmQi3YWkgwzMqOKcwiz20ptwU5VFIPV3cfBTyMR4wro0rhYKS
- IbkA==
+ :reply-to; bh=rIcivD5Ogd1WlEn9ayO0cPwZ7+K+X3MtPYioN7oPrmc=;
+ b=oc99CKZSj4RZOhk1jaouIrMVMEDENov+FjfCDVb95lcrqZXWtYAVhqIsYbU5TCsZCC
+ ZTnlpVkSJYnljuS34myqWCkXUy79pkWibLSpF21xqATephnsTuNT6JveaDd65LoDX8Q6
+ EKU1VXXDot7tluv0Sb0G35Ir3fZwXikTMz/M8YUgA0fWWPYprHLLc1FrMvHa6PtdZqQ9
+ /HdDuVQ2uHJ/BlraR3t4UIFds/TQwSq3NAzRIQlmZnL9YLlwhenImJhbH0VgvAytYbqX
+ IFwo6S+LOspWLrYNuiVg/yPxjTgTsAR5zH5ibQo0TBp2R6OCxR7cvL05pWdz6OGruGTl
+ 4cWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699325330; x=1699930130;
+ d=1e100.net; s=20230601; t=1699325331; x=1699930131;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IUHz5LdFJfuVGFZ9kE+P0nwAIXfhY4T9R1W1nItwZn8=;
- b=YZfmKa1zaXbqmeo2Zd9UPOiOjpaIMM1sHT/crEcf4cXjEzqtgp18/od/hw9n39L88w
- Rg/0/59LRqDFDKlHByf0k1F4JIVCp4WDUldG0xkWFwAWFTp1vdT6sF9OqI0mgqF8H8tl
- XSrp+5bKVf27hCJOgfyx3puMsJhtCctxVz7BrXh2I0lE3ez8Bc4XnWd1fMVyhQYI5O/f
- Vip6n/x1fovbjFDohaDtS+TQ2k0JfxZ424/YHOpYHLTiU4g60JbjB0+mFV0Z761xrTRo
- uTPdK/W/3H19lqqB2SMAOBkY1idd3aRm9ms1umbdPLPQ0MOBuxK/Yq3SNFhoJgUdQY6Y
- puCg==
-X-Gm-Message-State: AOJu0YwtEURs/aHKvbJ/qvxkYWVN6Y+6NYmUji/25d8nq1jldueNIkGn
- DfBlE3lCbZa+u8PfubjG0weOT6ovtrqftZkx51g=
-X-Google-Smtp-Source: AGHT+IGc9Kprv3yCCMGuZVGBq4p8j2TdEnT0jKa48jXMxd4+R+AEz6kI9MyFTq+BgZpf/S8qUQu/3w==
-X-Received: by 2002:aca:1917:0:b0:3b2:ddc0:ac9c with SMTP id
- l23-20020aca1917000000b003b2ddc0ac9cmr29388440oii.39.1699325330137; 
+ bh=rIcivD5Ogd1WlEn9ayO0cPwZ7+K+X3MtPYioN7oPrmc=;
+ b=Y1YYypb8cVPesFQluukQ4S6T74tEOUJGksKcnneLeyOBbhrvVZP1xmUPI59Y+A6aL/
+ TWRllJsjeqfiIbBmFtCP+nRQr+739JBOCGDA6oXeirAaIL8eoXKG9JjdabGI+r+Y44c4
+ do5wpCBVjLUM6IBS0+jxRjwJk+G4fWYUZgRW/n7Qz03SX8kyEKPZUmvQG2CaMSNFXoss
+ 2CpIO6znCXqOLsvxLb+rh+0JeTZIxzGAWaECY2PUqbiF0jnSwJ4UtbvpcuqEuySYQwAs
+ bZXKslqICkiKyx7rDZTMrBDbmvndGxkc0VVxzRuwjPoAJ28PQQGyIZu53ei4Y6xTOIBq
+ FANA==
+X-Gm-Message-State: AOJu0YxhmrIuxJgqIwkUQzurHoiducDOk7JYeMRzx/cL/briv2YzzeB5
+ SQQv5XSZnIln1jshJQ4SxrDKel8rbwmadWNEqXM=
+X-Google-Smtp-Source: AGHT+IHDGwj8cbrAC95hzA+a6jGlSD6/GGnx0Eg5SOttXEoqagEEH3uBG/MS9iNubPIsLrDtacL0Iw==
+X-Received: by 2002:a05:6102:4717:b0:45f:5d1:9c62 with SMTP id
+ ei23-20020a056102471700b0045f05d19c62mr5820390vsb.19.1699325330856; 
  Mon, 06 Nov 2023 18:48:50 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- fn11-20020a056a002fcb00b006bff7c36fb3sm6367478pfb.95.2023.11.06.18.48.49
+ fn11-20020a056a002fcb00b006bff7c36fb3sm6367478pfb.95.2023.11.06.18.48.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 18:48:49 -0800 (PST)
+ Mon, 06 Nov 2023 18:48:50 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 08/35] accel/tcg: Fix condition for store_atom_insert_al16
-Date: Mon,  6 Nov 2023 18:48:15 -0800
-Message-Id: <20231107024842.7650-9-richard.henderson@linaro.org>
+Subject: [PATCH 09/35] tcg: Mark tcg_gen_op* as noinline
+Date: Mon,  6 Nov 2023 18:48:16 -0800
+Message-Id: <20231107024842.7650-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231107024842.7650-1-richard.henderson@linaro.org>
 References: <20231107024842.7650-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x232.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-vs1-xe2f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,78 +89,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Store bytes under a mask is fundamentally a cmpxchg, not a straight store.
-Use HAVE_CMPXCHG128 instead of HAVE_ATOMIC128_RW.
+Encourage the compiler to tail-call rather than inline
+across the dozens of opcode expanders.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230916220151.526140-8-richard.henderson@linaro.org>
+Message-Id: <20231029210848.78234-2-richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c             |  2 +-
- accel/tcg/ldst_atomicity.c.inc | 10 +++++-----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ tcg/tcg-op.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 13986820fe..f35c5f359b 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -2691,7 +2691,7 @@ static uint64_t do_st16_leN(CPUState *cpu, MMULookupPageData *p,
+diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+index 828eb9ee46..9aed19e957 100644
+--- a/tcg/tcg-op.c
++++ b/tcg/tcg-op.c
+@@ -31,20 +31,26 @@
+ #include "tcg-internal.h"
  
-     case MO_ATOM_WITHIN16_PAIR:
-         /* Since size > 8, this is the half that must be atomic. */
--        if (!HAVE_ATOMIC128_RW) {
-+        if (!HAVE_CMPXCHG128) {
-             cpu_loop_exit_atomic(cpu, ra);
-         }
-         return store_whole_le16(p->haddr, p->size, val_le);
-diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
-index e8f97506fa..33a04dec52 100644
---- a/accel/tcg/ldst_atomicity.c.inc
-+++ b/accel/tcg/ldst_atomicity.c.inc
-@@ -825,7 +825,7 @@ static uint64_t store_whole_le16(void *pv, int size, Int128 val_le)
-     int sh = o * 8;
-     Int128 m, v;
  
--    qemu_build_assert(HAVE_ATOMIC128_RW);
-+    qemu_build_assert(HAVE_CMPXCHG128);
+-void tcg_gen_op1(TCGOpcode opc, TCGArg a1)
++/*
++ * Encourage the compiler to tail-call to a function, rather than inlining.
++ * Minimizes code size across 99 bottles of beer on the wall.
++ */
++#define NI  __attribute__((noinline))
++
++void NI tcg_gen_op1(TCGOpcode opc, TCGArg a1)
+ {
+     TCGOp *op = tcg_emit_op(opc, 1);
+     op->args[0] = a1;
+ }
  
-     /* Like MAKE_64BIT_MASK(0, sz), but larger. */
-     if (sz <= 64) {
-@@ -887,7 +887,7 @@ static void store_atom_2(CPUState *cpu, uintptr_t ra,
-             return;
-         }
-     } else if ((pi & 15) == 7) {
--        if (HAVE_ATOMIC128_RW) {
-+        if (HAVE_CMPXCHG128) {
-             Int128 v = int128_lshift(int128_make64(val), 56);
-             Int128 m = int128_lshift(int128_make64(0xffff), 56);
-             store_atom_insert_al16(pv - 7, v, m);
-@@ -956,7 +956,7 @@ static void store_atom_4(CPUState *cpu, uintptr_t ra,
-                 return;
-             }
-         } else {
--            if (HAVE_ATOMIC128_RW) {
-+            if (HAVE_CMPXCHG128) {
-                 store_whole_le16(pv, 4, int128_make64(cpu_to_le32(val)));
-                 return;
-             }
-@@ -1021,7 +1021,7 @@ static void store_atom_8(CPUState *cpu, uintptr_t ra,
-         }
-         break;
-     case MO_64:
--        if (HAVE_ATOMIC128_RW) {
-+        if (HAVE_CMPXCHG128) {
-             store_whole_le16(pv, 8, int128_make64(cpu_to_le64(val)));
-             return;
-         }
-@@ -1076,7 +1076,7 @@ static void store_atom_16(CPUState *cpu, uintptr_t ra,
-         }
-         break;
-     case -MO_64:
--        if (HAVE_ATOMIC128_RW) {
-+        if (HAVE_CMPXCHG128) {
-             uint64_t val_le;
-             int s2 = pi & 15;
-             int s1 = 16 - s2;
+-void tcg_gen_op2(TCGOpcode opc, TCGArg a1, TCGArg a2)
++void NI tcg_gen_op2(TCGOpcode opc, TCGArg a1, TCGArg a2)
+ {
+     TCGOp *op = tcg_emit_op(opc, 2);
+     op->args[0] = a1;
+     op->args[1] = a2;
+ }
+ 
+-void tcg_gen_op3(TCGOpcode opc, TCGArg a1, TCGArg a2, TCGArg a3)
++void NI tcg_gen_op3(TCGOpcode opc, TCGArg a1, TCGArg a2, TCGArg a3)
+ {
+     TCGOp *op = tcg_emit_op(opc, 3);
+     op->args[0] = a1;
+@@ -52,7 +58,7 @@ void tcg_gen_op3(TCGOpcode opc, TCGArg a1, TCGArg a2, TCGArg a3)
+     op->args[2] = a3;
+ }
+ 
+-void tcg_gen_op4(TCGOpcode opc, TCGArg a1, TCGArg a2, TCGArg a3, TCGArg a4)
++void NI tcg_gen_op4(TCGOpcode opc, TCGArg a1, TCGArg a2, TCGArg a3, TCGArg a4)
+ {
+     TCGOp *op = tcg_emit_op(opc, 4);
+     op->args[0] = a1;
+@@ -61,8 +67,8 @@ void tcg_gen_op4(TCGOpcode opc, TCGArg a1, TCGArg a2, TCGArg a3, TCGArg a4)
+     op->args[3] = a4;
+ }
+ 
+-void tcg_gen_op5(TCGOpcode opc, TCGArg a1, TCGArg a2, TCGArg a3,
+-                 TCGArg a4, TCGArg a5)
++void NI tcg_gen_op5(TCGOpcode opc, TCGArg a1, TCGArg a2, TCGArg a3,
++                     TCGArg a4, TCGArg a5)
+ {
+     TCGOp *op = tcg_emit_op(opc, 5);
+     op->args[0] = a1;
+@@ -72,8 +78,8 @@ void tcg_gen_op5(TCGOpcode opc, TCGArg a1, TCGArg a2, TCGArg a3,
+     op->args[4] = a5;
+ }
+ 
+-void tcg_gen_op6(TCGOpcode opc, TCGArg a1, TCGArg a2, TCGArg a3,
+-                 TCGArg a4, TCGArg a5, TCGArg a6)
++void NI tcg_gen_op6(TCGOpcode opc, TCGArg a1, TCGArg a2, TCGArg a3,
++                     TCGArg a4, TCGArg a5, TCGArg a6)
+ {
+     TCGOp *op = tcg_emit_op(opc, 6);
+     op->args[0] = a1;
 -- 
 2.34.1
 
