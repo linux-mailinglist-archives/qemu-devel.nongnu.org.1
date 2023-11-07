@@ -2,65 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE437E3365
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:02:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56FE47E3367
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:02:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0CMF-0000dQ-4v; Mon, 06 Nov 2023 22:02:27 -0500
+	id 1r0CLv-0000Bj-12; Mon, 06 Nov 2023 22:02:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1r0CM7-0000Wg-Fx; Mon, 06 Nov 2023 22:02:19 -0500
-Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
- helo=Atcsqr.andestech.com)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1r0CLt-00009C-4B
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:02:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1r0CM0-0008RU-Jj; Mon, 06 Nov 2023 22:02:19 -0500
-Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
- by Atcsqr.andestech.com with ESMTP id 3A731n6E029702;
- Tue, 7 Nov 2023 11:01:49 +0800 (+08)
- (envelope-from ethan84@andestech.com)
-Received: from ethan84-VirtualBox (10.0.12.51) by ATCPCS16.andestech.com
- (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; Tue, 7 Nov 2023
- 11:01:46 +0800
-Date: Tue, 7 Nov 2023 11:01:36 +0800
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: Peter Xu <peterx@redhat.com>, <qemu-devel@nongnu.org>,
- <richard.henderson@linaro.org>, <pbonzini@redhat.com>,
- <palmer@dabbelt.com>, <alistair.francis@wdc.com>,
- <in.meng@windriver.com>, <liweiwei@iscas.ac.cn>,
- <dbarboza@ventanamicro.com>, <hiwei_liu@linux.alibaba.com>,
- <qemu-riscv@nongnu.org>, <david@redhat.com>
-Subject: Re: [PATCH v2 1/4] exec/memattrs: Add iopmp source id, start
- address, end address to MemTxAttrs
-Message-ID: <ZUmokGGG0BXyuxB7@ethan84-VirtualBox>
-References: <20231102094015.208588-1-ethan84@andestech.com>
- <20231102094015.208588-2-ethan84@andestech.com>
- <ZUOo3fGmqM/gVyTR@x1n>
- <CAFEAcA86B-V0gFLhE9rPK2kG=XeFw7OJ4C==8g2i_WHSLW_HYQ@mail.gmail.com>
- <ZURpIyjhraORROn5@ethan84-VirtualBox>
- <CAFEAcA-1dJnsDyZpf2Dy9XuAdp6CFWSFCzV7eceUJ6RyFLaVPA@mail.gmail.com>
- <ZUhH3Rulnj64whB4@ethan84-VirtualBox>
- <CAFEAcA_z1VCyeUFNMDSsxp-UYRLoMm-4=oo86JkJ3fmjoWdq_w@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1r0CLq-0008PY-Kz
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:02:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699326121;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=DSIlKvf5OuuXPVBYiCsA6JLSscJjSI6dcUsxBZ2/Tcs=;
+ b=KsaoCR8U0dZPFUYHwwvy4hmSlmKM276abaUUjO+pWO0PK95cbzjOUUzZ+Drzc5ekDC/vxH
+ p+4BZQi0XHzrokNucf90vAxdDYN2YIKQCVesK4KJviay8AsPLyELNasyWtFZ9xZyV6n7OO
+ LF4wlrFts6UCMhgedNjddvEeJOxGfgE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-683-ppq2lrHTPLmGqJDArlkKpA-1; Mon, 06 Nov 2023 22:01:50 -0500
+X-MC-Unique: ppq2lrHTPLmGqJDArlkKpA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BB4EF80F90C;
+ Tue,  7 Nov 2023 03:01:49 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.48])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 030D540C6EBA;
+ Tue,  7 Nov 2023 03:01:48 +0000 (UTC)
+Date: Tue, 7 Nov 2023 11:01:46 +0800
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Laurent Vivier <laurent@vivier.eu>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
+Subject: Re: [PULL 0/4] Q800 for 8.2 patches
+Message-ID: <20231107030146.GA952606@fedora>
+References: <20231106081541.53688-1-laurent@vivier.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="6BhzffBBSC2OPHkj"
 Content-Disposition: inline
-In-Reply-To: <CAFEAcA_z1VCyeUFNMDSsxp-UYRLoMm-4=oo86JkJ3fmjoWdq_w@mail.gmail.com>
-User-Agent: Mutt/2.1.4 (2021-12-11)
-X-Originating-IP: [10.0.12.51]
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 3A731n6E029702
-Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
- helo=Atcsqr.andestech.com
-X-Spam_score_int: -6
-X-Spam_score: -0.7
-X-Spam_bar: /
-X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, KHOP_HELO_FCRDNS=0.254,
- RDNS_DYNAMIC=0.982, SPF_HELO_NONE=0.001, TVD_RCVD_IP=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+In-Reply-To: <20231106081541.53688-1-laurent@vivier.eu>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,83 +77,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Ethan Chen <ethan84@andestech.com>
-From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 06, 2023 at 10:34:41AM +0000, Peter Maydell wrote:
-> On Mon, 6 Nov 2023 at 01:57, Ethan Chen <ethan84@andestech.com> wrote:
-> >
-> > On Fri, Nov 03, 2023 at 10:34:28AM +0000, Peter Maydell wrote:
-> > > On Fri, 3 Nov 2023 at 03:29, Ethan Chen <ethan84@andestech.com> wrote:
-> > > >
-> > > > On Thu, Nov 02, 2023 at 01:53:05PM +0000, Peter Maydell wrote:
-> > > > > On Thu, 2 Nov 2023 at 13:49, Peter Xu <peterx@redhat.com> wrote:
-> > > > > >
-> > > > > > On Thu, Nov 02, 2023 at 05:40:12PM +0800, Ethan Chen wrote:
-> > > > > > > Signed-off-by: Ethan Chen <ethan84@andestech.com>
-> > > > > > > ---
-> > > > > > >  include/exec/memattrs.h | 6 ++++++
-> > > > > > >  1 file changed, 6 insertions(+)
-> > > > > > >
-> > > > > > > diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
-> > > > > > > index d04170aa27..fc15e5d7d3 100644
-> > > > > > > --- a/include/exec/memattrs.h
-> > > > > > > +++ b/include/exec/memattrs.h
-> > > > > > > @@ -64,6 +64,12 @@ typedef struct MemTxAttrs {
-> > > > > > >      unsigned int target_tlb_bit0 : 1;
-> > > > > > >      unsigned int target_tlb_bit1 : 1;
-> > > > > > >      unsigned int target_tlb_bit2 : 1;
-> > > > > > > +
-> > > > > > > +    /* IOPMP support up to 65535 sources */
-> > > > > > > +    unsigned int iopmp_sid:16;
-> > > > > >
-> > > > > > There's MemTxAttrs.requester_id, SID for pci, same length.  Reuse it?
-> > > > > >
-> > > > > > > +    /* Transaction infomation for IOPMP */
-> > > > > > > +    unsigned long long iopmp_start_addr;
-> > > > > > > +    unsigned long long iopmp_end_addr;
-> > > > > >
-> > > > > > PS: encoding addresses into memattrs is.. strange, but since I know nothing
-> > > > > > about iopmp, I'll leave that for other reviewers.
-> > > > > >
-> > > > > > Currently MemTxAttrs are passed as a whole int on the stack, if it keeps
-> > > > > > growing we may start to consider a pointer, but need to check the side
-> > > > > > effects of unexpected fields modified within a call.
-> > > > >
-> > > > > Yeah, this struct is intended to model the various attributes that
-> > > > > get passed around on the bus alongside data in real hardware.
-> > > > > I'm pretty sure no real hardware is passing around start and
-> > > > > end transaction addresses on its bus with every read and
-> > > > > write, which suggests that we should be doing this some other
-> > > > > way than adding these fields to the MemTxAttrs struct.
-> > > >
-> > > > For AXI bus ADDR, LEN, SIZE are signals in read/write address channel.
-> > > > IOPMP will check that start address = ADDR,
-> > > > and end address = ADDR + LEN * SIZE.
-> > >
-> > > Yes, but you don't pass the start and end address on the AXI
-> > > bus, so they don't go in QEMU's MemTxAttrs either.
-> >
-> > I will add those AXI bus signals to MemTxAttrs instead of using start and end
-> > address in next revision.
-> 
-> What AXI bus signals? You already get address and size in the
-> actual memory transaction, they don't need to go in the MemTxAttrs.
->
 
-A burst contains multiple continuous read or write operations. In current 
-transaction, I can only get the size and address of a single operation. IOPMP 
-checks not only a single operation but also the burst information. I propose
-to add those signals to MemTxAttrs.
+--6BhzffBBSC2OPHkj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Following AXI signals are needed for IOPMP.
-(AW/AR)ADDR: Address of the first beat(operation) of the burst
-(AW/AR)LEN: Number of beats inside the burst
-(AW/AR)SIZE: Size of each beat
-(AW/AR)BURST: Type of the burst
+Applied, thanks.
 
-Thanks,
-Ethan Chen
+Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
+
+--6BhzffBBSC2OPHkj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVJqJoACgkQnKSrs4Gr
+c8jmRgf+KXuUkotnasaQCFI2sfSP24oTGJSfgfsNofU2FtN5AFAEmFNz3uY0sD+6
+dV9EYrxvEee8CweNqBMZpqSJ8hwR2LX6kIA9HFzjY4X5yz+ZyvnsbLBwhkZUwQtN
+codRgiBea3SimFHzRYHIcnjZTOvzEZ5h+iXwfXub9NzG6YNQPXSOrcw1lg/viSa0
+5pxjI9/04pH2JCP/AdZqnbiKI9IRgsYrBBSE+G2FxRCjuQfnaWqmAlNWL8o0Fs9+
+wy7Qsn21SD1ObLV2sZA4XaGWATH/EuNTYiD00WtQRr84nRLP+gLrpxCovUCxvyM9
+sf/w6ohHdprSz33oRcUqm26k6OVM2A==
+=so0U
+-----END PGP SIGNATURE-----
+
+--6BhzffBBSC2OPHkj--
+
 
