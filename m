@@ -2,92 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9AE7E3887
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:12:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA137E387C
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:11:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0J3J-00057N-7x; Tue, 07 Nov 2023 05:11:21 -0500
+	id 1r0J3P-0005n9-Tq; Tue, 07 Nov 2023 05:11:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0J3F-0004nH-Sg
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:11:17 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0J3D-0002Vu-SH
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:11:17 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-5437d60fb7aso9186003a12.3
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:11:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699351874; x=1699956674; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Ib8kBRPeV5EfosSTrkg+X2z6Y5tUzvz041Z1N7hG7z0=;
- b=AKfrrV1lBbuj9B/0JDjCK2khzghXvBs62l8A/PnFddVZfJGHLZ3AQs62z767smZ2JR
- 76DTKdQvLCqECLCfM1NG2s3luc7tZ2wupmkHYcLZ+mRLKrzGgY6yuaB6eEzWQlU4uN88
- aUjYUV0nrSr3dM5vTRzB6nMHwyUvmBTwfmGpnKY7DxagCw9kVpV3njqJn+ZgklQuY3Zc
- OoarLWhjQmuU7HllnQxw67Ry8pTDicwjrwoqQmrVfkRGyNsS1cw9OHU7mK3POKoqgUs7
- 7b5FYUlHHNeR+N967tMMorVdT8bwYBP2aqgSsInPaYcoSf0BvQeY51fkM+JwYrMJxvJQ
- wj/A==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J3N-0005gl-PY
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:11:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J3L-0002YT-Px
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:11:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699351883;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Qifpv3aNAIEISwFz81bmMK6pnQ3IauyLXcDLRV+33ZY=;
+ b=ZqQzk+0yphGquV04jz+Yy+Gbz49oWai1W3Rac7EhliSyE89TawJP4FWToy7bzLd2SZzK7t
+ 9Xz6onJtwojcYZSV+ZjlKLp1yoHJWDAs5K49MsIn+C/o0CVtHCD4Im5Ty6NSDuzp/A/+LQ
+ uu7tmwwP2ougpa071Sfn2kek3zZY9yk=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-185-J603MWHLN_eUFY9kNcdLSg-1; Tue, 07 Nov 2023 05:11:21 -0500
+X-MC-Unique: J603MWHLN_eUFY9kNcdLSg-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-5079fe7cc7cso6345354e87.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:11:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699351874; x=1699956674;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ib8kBRPeV5EfosSTrkg+X2z6Y5tUzvz041Z1N7hG7z0=;
- b=jO80VivFjVNx1DS1WbHWS9V2aDFiXQYBZbj6vR6szGZokTY4Jf/XwdscmEtJ/SXjsb
- zzANxTCiM1f5ejbPGtpwd+navYapx2sSf6QP1v99DjI7AYtS5LWOPVIc8m5nMKIqUIym
- CP7WNkVTaktHrjW9sks1UaWhmtOSWS7KBqkQTyi4SvEP1qP08D3kxrFl+/p1PZqW+aBh
- RLSWVhT5mCuGxdCSbzMSSVutI51i5tBybSrypc//VGThvyqs1PQ+6ex7qAiEFFLM++Od
- jbo3DCtzBOt77F/ByG2iqDhNSWloUxclM4KjqFdoyxR3oFJMICRM60SlPkIRHLgzmwpl
- i25w==
-X-Gm-Message-State: AOJu0YzdwTF2wRh5c66Y4Ljl9H72PKLMT/BSX5vtMql5sK+w9xKF0YQa
- 9hBWxl1RU7d2N7J9vg/PFi3SsA==
-X-Google-Smtp-Source: AGHT+IGJAyiF30wW/loslMC5FhfX2qPQMxwQJurW3n9tsuJRnBHl4lbw7c0LmzcT9jQkYJ5z26fU1g==
-X-Received: by 2002:a50:d511:0:b0:543:f08:fdc with SMTP id
- u17-20020a50d511000000b005430f080fdcmr22627590edi.9.1699351874203; 
- Tue, 07 Nov 2023 02:11:14 -0800 (PST)
-Received: from [192.168.69.115] ([176.187.216.69])
- by smtp.gmail.com with ESMTPSA id
- k28-20020a508adc000000b0053de19620b9sm5450734edk.2.2023.11.07.02.11.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Nov 2023 02:11:13 -0800 (PST)
-Message-ID: <3de367cf-9b32-4bab-bb03-af974c6d894c@linaro.org>
-Date: Tue, 7 Nov 2023 11:11:11 +0100
+ d=1e100.net; s=20230601; t=1699351880; x=1699956680;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Qifpv3aNAIEISwFz81bmMK6pnQ3IauyLXcDLRV+33ZY=;
+ b=wIfGX3a0v8LEdqgxYHMq7UrvPYrGCqaNl0cIMyLHBf+iy/VnnHeOWQXhgMie/1tIuf
+ eTQsgxm7MPTDm9u9VkZB64Aor/6kvslhy/YgXt8tIqs/uulUzmidp0azcI1YH38NyBYQ
+ H3x95zsRiOSUtiNc7vk9et8RQUdmVipVa7tbYVWwzMBbxDWyo2NOzJjit88tekw+sSai
+ iF66jXXWvgZVfMcA38mAJP6m0OR613qjqepMq3fE9pWtGnRIp8Xa9+zVX4oJ53d3pdtk
+ hz9bw0PW+Fot4aGJ86C//1TUH9+eSBQ2SqdRzq055ZCCSH2CK9yQDDxXzb095S6mYYxc
+ m91w==
+X-Gm-Message-State: AOJu0Yz3kZcHZe4iCZQz+jFPdSWHf/OxqixnYhR+rTpIIpJj4l8mZm+h
+ a7N86GCl0WzDvKFc1abG0hRYHojcckFUcl2IR+RbAjdccgjV+P1L0TAYHmYuRH0eaddcnzW1QA+
+ 3YbPfZtoJxJs4HkOhuHxwRokZRhi+3lD8lh437i4YZ4juHnrwoJ/KsSDVUQUWa17xs7TO
+X-Received: by 2002:a05:6512:10cb:b0:507:aaa9:b080 with SMTP id
+ k11-20020a05651210cb00b00507aaa9b080mr29451571lfg.33.1699351879780; 
+ Tue, 07 Nov 2023 02:11:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHSElT1kUkwKGt/kI8dyERyAqtlAgTjfSVgxPFPgtIPbAkSwBdEENHz1nGQUqDAv+gzMIDhkg==
+X-Received: by 2002:a05:6512:10cb:b0:507:aaa9:b080 with SMTP id
+ k11-20020a05651210cb00b00507aaa9b080mr29451542lfg.33.1699351879472; 
+ Tue, 07 Nov 2023 02:11:19 -0800 (PST)
+Received: from redhat.com ([2.55.5.143]) by smtp.gmail.com with ESMTPSA id
+ y11-20020adff6cb000000b0032fc609c118sm1903923wrp.66.2023.11.07.02.11.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 07 Nov 2023 02:11:18 -0800 (PST)
+Date: Tue, 7 Nov 2023 05:11:14 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Igor Mammedov <imammedo@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>
+Subject: [PULL 24/63] tests: test-smp-parse: Add the test for cores/threads
+ per socket helpers
+Message-ID: <7d5936791ea349d9cef856babcce28470966bfa4.1699351720.git.mst@redhat.com>
+References: <cover.1699351720.git.mst@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 16/22] plugins: allow plugins to be enabled on windows
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org, Stefan Weil <sw@weilnetz.de>,
- Yonggang Luo <luoyonggang@gmail.com>
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Laurent Vivier <laurent@vivier.eu>, Mahmoud Mandour <ma.mandourr@gmail.com>,
- Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- John Snow <jsnow@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Chris Wulff <crwulff@gmail.com>,
- Marek Vasut <marex@denx.de>, Richard Henderson
- <richard.henderson@linaro.org>, Greg Manning <gmanning@rapitasystems.com>
-References: <20231106185112.2755262-1-alex.bennee@linaro.org>
- <20231106185112.2755262-17-alex.bennee@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231106185112.2755262-17-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1699351720.git.mst@redhat.com>
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,56 +103,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/11/23 19:51, Alex Bennée wrote:
-> From: Greg Manning <gmanning@rapitasystems.com>
-> 
-> allow plugins to be enabled in the configure script on windows. Also,
-> add the qemu_plugin_api.lib to the installer.
-> 
-> Signed-off-by: Greg Manning <gmanning@rapitasystems.com>
-> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-> Message-Id: <20231102172053.17692-5-gmanning@rapitasystems.com>
-> [AJB: add check for dlltool to configure]
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> Message-Id: <20231103195956.1998255-30-alex.bennee@linaro.org>
-> ---
->   configure   | 4 ++--
->   meson.build | 5 +++++
->   2 files changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/configure b/configure
-> index e50ec99fe2..abcb199aa8 100755
-> --- a/configure
-> +++ b/configure
-> @@ -1011,9 +1011,9 @@ if test "$targetos" = "bogus"; then
->   fi
->   
->   # test for any invalid configuration combinations
-> -if test "$targetos" = "windows"; then
-> +if test "$targetos" = "windows" && ! has "$dlltool"; then
->     if test "$plugins" = "yes"; then
-> -    error_exit "TCG plugins not currently supported on Windows platforms"
-> +    error_exit "TCG plugins requires dlltool to build on Windows platforms"
->     fi
->     plugins="no"
->   fi
-> diff --git a/meson.build b/meson.build
-> index dcef8b1e79..b855224acc 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -3904,6 +3904,11 @@ endforeach
->   
->   if get_option('plugins')
->     install_headers('include/qemu/qemu-plugin.h')
-> +  if targetos == 'windows'
-> +    # On windows, we want to deliver the qemu_plugin_api.lib file in the qemu installer,
-> +    # so that plugin authors can compile against it.
-> +    install_data(win32_qemu_plugin_api_lib, install_dir: 'lib')
-> +  endif
->   endif
->   
->   subdir('qga')
+From: Zhao Liu <zhao1.liu@intel.com>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Use the different ways to calculate cores/threads per socket, so that
+the new CPU topology levels won't be missed in these 2 helpes:
+
+* machine_topo_get_cores_per_socket()
+* machine_topo_get_threads_per_socket()
+
+Test the commit a1d027be95bc3 ("machine: Add helpers to get cores/
+threads per socket").
+
+Suggested-by: Igor Mammedov <imammedo@redhat.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Message-Id: <20231023094635.1588282-2-zhao1.liu@linux.intel.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ tests/unit/test-smp-parse.c | 67 ++++++++++++++++++++++++++++++-------
+ 1 file changed, 54 insertions(+), 13 deletions(-)
+
+diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
+index fdc39a846c..24972666a7 100644
+--- a/tests/unit/test-smp-parse.c
++++ b/tests/unit/test-smp-parse.c
+@@ -394,20 +394,47 @@ static char *smp_config_to_string(const SMPConfiguration *config)
+         config->has_maxcpus ? "true" : "false", config->maxcpus);
+ }
+ 
+-static char *cpu_topology_to_string(const CpuTopology *topo)
++/* Use the different calculation than machine_topo_get_threads_per_socket(). */
++static unsigned int cpu_topology_get_threads_per_socket(const CpuTopology *topo)
++{
++    /* Check the divisor to avoid invalid topology examples causing SIGFPE. */
++    if (!topo->sockets) {
++        return 0;
++    } else {
++        return topo->max_cpus / topo->sockets;
++    }
++}
++
++/* Use the different calculation than machine_topo_get_cores_per_socket(). */
++static unsigned int cpu_topology_get_cores_per_socket(const CpuTopology *topo)
++{
++    /* Check the divisor to avoid invalid topology examples causing SIGFPE. */
++    if (!topo->threads) {
++        return 0;
++    } else {
++        return cpu_topology_get_threads_per_socket(topo) / topo->threads;
++    }
++}
++
++static char *cpu_topology_to_string(const CpuTopology *topo,
++                                    unsigned int threads_per_socket,
++                                    unsigned int cores_per_socket)
+ {
+     return g_strdup_printf(
+         "(CpuTopology) {\n"
+-        "    .cpus     = %u,\n"
+-        "    .sockets  = %u,\n"
+-        "    .dies     = %u,\n"
+-        "    .clusters = %u,\n"
+-        "    .cores    = %u,\n"
+-        "    .threads  = %u,\n"
+-        "    .max_cpus = %u,\n"
++        "    .cpus               = %u,\n"
++        "    .sockets            = %u,\n"
++        "    .dies               = %u,\n"
++        "    .clusters           = %u,\n"
++        "    .cores              = %u,\n"
++        "    .threads            = %u,\n"
++        "    .max_cpus           = %u,\n"
++        "    .threads_per_socket = %u,\n"
++        "    .cores_per_socket   = %u,\n"
+         "}",
+         topo->cpus, topo->sockets, topo->dies, topo->clusters,
+-        topo->cores, topo->threads, topo->max_cpus);
++        topo->cores, topo->threads, topo->max_cpus,
++        threads_per_socket, cores_per_socket);
+ }
+ 
+ static void check_parse(MachineState *ms, const SMPConfiguration *config,
+@@ -415,14 +442,26 @@ static void check_parse(MachineState *ms, const SMPConfiguration *config,
+                         bool is_valid)
+ {
+     g_autofree char *config_str = smp_config_to_string(config);
+-    g_autofree char *expect_topo_str = cpu_topology_to_string(expect_topo);
+-    g_autofree char *output_topo_str = NULL;
++    g_autofree char *expect_topo_str = NULL, *output_topo_str = NULL;
++    unsigned int expect_threads_per_socket, expect_cores_per_socket;
++    unsigned int ms_threads_per_socket, ms_cores_per_socket;
+     Error *err = NULL;
+ 
++    expect_threads_per_socket =
++                        cpu_topology_get_threads_per_socket(expect_topo);
++    expect_cores_per_socket =
++                        cpu_topology_get_cores_per_socket(expect_topo);
++    expect_topo_str = cpu_topology_to_string(expect_topo,
++                                             expect_threads_per_socket,
++                                             expect_cores_per_socket);
++
+     /* call the generic parser */
+     machine_parse_smp_config(ms, config, &err);
+ 
+-    output_topo_str = cpu_topology_to_string(&ms->smp);
++    ms_threads_per_socket = machine_topo_get_threads_per_socket(ms);
++    ms_cores_per_socket = machine_topo_get_cores_per_socket(ms);
++    output_topo_str = cpu_topology_to_string(&ms->smp, ms_threads_per_socket,
++                                             ms_cores_per_socket);
+ 
+     /* when the configuration is supposed to be valid */
+     if (is_valid) {
+@@ -433,7 +472,9 @@ static void check_parse(MachineState *ms, const SMPConfiguration *config,
+             (ms->smp.clusters == expect_topo->clusters) &&
+             (ms->smp.cores == expect_topo->cores) &&
+             (ms->smp.threads == expect_topo->threads) &&
+-            (ms->smp.max_cpus == expect_topo->max_cpus)) {
++            (ms->smp.max_cpus == expect_topo->max_cpus) &&
++            (ms_threads_per_socket == expect_threads_per_socket) &&
++            (ms_cores_per_socket == expect_cores_per_socket)) {
+             return;
+         }
+ 
+-- 
+MST
 
 
