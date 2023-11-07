@@ -2,70 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821767E3AD3
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 12:13:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9453B7E3AF6
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 12:18:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Jzw-00076R-Qg; Tue, 07 Nov 2023 06:11:56 -0500
+	id 1r0K5S-0005dv-Gz; Tue, 07 Nov 2023 06:17:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0Jzs-00071r-34
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 06:11:52 -0500
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1r0K5K-0005Vb-Gu
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 06:17:33 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0Jzp-0005yw-Ep
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 06:11:51 -0500
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1r0K5F-0006v6-ST
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 06:17:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699355507;
+ s=mimecast20190719; t=1699355844;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=X5Klj/MS8aQgTJ+oNZtvkYTCw6NiMdnsetpogemoMtE=;
- b=e7swejFrFtilUw6PAyOtlp9ykTdz7XUO8l3vK4ybpPt48CZA2i9UjM2TXUA49KWAQC2+pq
- HJPD70D2Luq1KGJ9S5AMBcmG4dzvQNn7m72tV3QjwAeaE7wTn3wxx+ogLmtRfjij8IqxiV
- nx7Udfxa+Mm1xsqNteH+wj07DsyzATc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-231-HBppblAoNbOb2KCbzyvCRw-1; Tue,
- 07 Nov 2023 06:11:41 -0500
-X-MC-Unique: HBppblAoNbOb2KCbzyvCRw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 057C71C294AA;
- Tue,  7 Nov 2023 11:11:41 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.197])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D30941121307;
- Tue,  7 Nov 2023 11:11:39 +0000 (UTC)
-Date: Tue, 7 Nov 2023 12:11:38 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: jsnow@redhat.com, qemu-block@nongnu.org, qemu-devel@nongnu.org,
- balaton@eik.bme.hu, philmd@linaro.org, shentey@gmail.com
-Subject: Re: [PATCH v2 1/3] ide/pci.c: introduce pci_ide_update_mode() function
-Message-ID: <ZUobajEv5cZsXa6g@redhat.com>
-References: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
- <20231024224056.842607-2-mark.cave-ayland@ilande.co.uk>
- <ZUj0S6GqGhZ6kOp9@redhat.com>
- <9d3142cf-fb35-499a-bd2f-b799bfbfd2c1@ilande.co.uk>
+ bh=hlI7k+PDq1EDJS3rGJFrP+0qAFzPftcQEHkWaVkweTw=;
+ b=hM4vgQF7cGNpSmB/gen+oIInP4nA24Qd/e3Dy5FygWfBct5+PZ1s61A8XinDD0MBXatTwo
+ nCt+ziFszvHnqP9FPgLbe8GX35fYtbuY25T+1A0poVSCYZKWk4BZorrIlpYEbyGS4w3F+9
+ k//zZh9F8LWjEyTk6n/dPn68MWWyTnE=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-317-lz9AIT7_NGy3WAGLLtXPWA-1; Tue, 07 Nov 2023 06:17:23 -0500
+X-MC-Unique: lz9AIT7_NGy3WAGLLtXPWA-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-5079fd9754cso5307821e87.0
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 03:17:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699355841; x=1699960641;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hlI7k+PDq1EDJS3rGJFrP+0qAFzPftcQEHkWaVkweTw=;
+ b=TCfmDo1BjoQdi0WDnBFbtHqE1YdnblsPDJFYFOOmk33uy/VicCbuydfT8pw1cT5YRh
+ 7VVe1IyxMFR1HiZ+KWyAH/Uz0SsNOW4M8KKSFDaQRtyFAAY915c0Jr9wqEkdPvnzVYOH
+ Es7QFsQ6Ebp7hR/QIODWbtpipP8uwOJTEplYIWwE/d/f8fRRe2Bhk2N95FL8eSzr/5ii
+ myODJkOuUwe+iVlXj5dAqhmvvut0kp6R/XG00U4bzTJ9mVksUZnCUrdsrHZRPra/n9vB
+ FzTJNv6qqQ4xHosRgiRibBISOIPAWcNXfKXqzG5p4/U5Ft8V6hyWrWCAX0D3jvdlp6U4
+ hX7A==
+X-Gm-Message-State: AOJu0YyLJKO71YHC4oNqx/KEp8AdO+ykVqOprgjgTX/no7/C8QZaj4io
+ FN7IuULN+E+emrUQWXdzmUi8mSIEhQaeouE/PwgYWfE+bQ9CNiAZhclZiAw3YYnntGJOEI6D5U2
+ YHRKC+B+btNUREFClRIchY2pkWT5Cq9Q=
+X-Received: by 2002:ac2:4c2d:0:b0:509:46fb:1fe3 with SMTP id
+ u13-20020ac24c2d000000b0050946fb1fe3mr11728011lfq.42.1699355841691; 
+ Tue, 07 Nov 2023 03:17:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEERKFUcIL7AKjvN+kgzEgMP5AKiOmx+EnCqNPKO1JfchnHTIp3ugJHEkEn2LJUbsv19dG68Ty3XzTuHuGQa7k=
+X-Received: by 2002:ac2:4c2d:0:b0:509:46fb:1fe3 with SMTP id
+ u13-20020ac24c2d000000b0050946fb1fe3mr11727999lfq.42.1699355841313; Tue, 07
+ Nov 2023 03:17:21 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9d3142cf-fb35-499a-bd2f-b799bfbfd2c1@ilande.co.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+References: <20231107101811.14189-1-thuth@redhat.com>
+In-Reply-To: <20231107101811.14189-1-thuth@redhat.com>
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
+Date: Tue, 7 Nov 2023 13:17:10 +0200
+Message-ID: <CAPMcbCo3oNo6UO0zJp0=vuywX8cR5ucz3GB+XJVTJRAvK-Be+Q@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: Add more guest-agent related files to the
+ corresponding section
+To: Thomas Huth <thuth@redhat.com>
+Cc: Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org
+Content-Type: multipart/alternative; boundary="00000000000044cfe406098e1d82"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ HTML_IMAGE_ONLY_20=1.546, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_REMOTE_IMAGE=0.01,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,189 +95,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 06.11.2023 um 23:41 hat Mark Cave-Ayland geschrieben:
-> On 06/11/2023 14:12, Kevin Wolf wrote:
-> 
-> Hi Kevin,
-> 
-> Thanks for taking the time to review this. I'll reply inline below.
-> 
-> > Am 25.10.2023 um 00:40 hat Mark Cave-Ayland geschrieben:
-> > > This function reads the value of the PCI_CLASS_PROG register for PCI IDE
-> > > controllers and configures the PCI BARs and/or IDE ioports accordingly.
-> > > 
-> > > In the case where we switch to legacy mode, the PCI BARs are set to return zero
-> > > (as suggested in the "PCI IDE Controller" specification), the legacy IDE ioports
-> > > are enabled, and the PCI interrupt pin cleared to indicate legacy IRQ routing.
-> > > 
-> > > Conversely when we switch to native mode, the legacy IDE ioports are disabled
-> > > and the PCI interrupt pin set to indicate native IRQ routing. The contents of
-> > > the PCI BARs are unspecified, but this is not an issue since if a PCI IDE
-> > > controller has been switched to native mode then its BARs will need to be
-> > > programmed.
-> > > 
-> > > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> > > Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
-> > > Tested-by: Bernhard Beschow <shentey@gmail.com>
-> > > ---
-> > >   hw/ide/pci.c         | 90 ++++++++++++++++++++++++++++++++++++++++++++
-> > >   include/hw/ide/pci.h |  1 +
-> > >   2 files changed, 91 insertions(+)
-> > > 
-> > > diff --git a/hw/ide/pci.c b/hw/ide/pci.c
-> > > index a25b352537..5be643b460 100644
-> > > --- a/hw/ide/pci.c
-> > > +++ b/hw/ide/pci.c
-> > > @@ -104,6 +104,96 @@ const MemoryRegionOps pci_ide_data_le_ops = {
-> > >       .endianness = DEVICE_LITTLE_ENDIAN,
-> > >   };
-> > > +static const MemoryRegionPortio ide_portio_list[] = {
-> > > +    { 0, 8, 1, .read = ide_ioport_read, .write = ide_ioport_write },
-> > > +    { 0, 1, 2, .read = ide_data_readw, .write = ide_data_writew },
-> > > +    { 0, 1, 4, .read = ide_data_readl, .write = ide_data_writel },
-> > > +    PORTIO_END_OF_LIST(),
-> > > +};
-> > > +
-> > > +static const MemoryRegionPortio ide_portio2_list[] = {
-> > > +    { 0, 1, 1, .read = ide_status_read, .write = ide_ctrl_write },
-> > > +    PORTIO_END_OF_LIST(),
-> > > +};
-> > 
-> > This is duplicated from hw/ide/ioport.c. I think it would be better to
-> > use the arrays already defined there, ideally by calling ioport.c
-> > functions to setup and release the I/O ports.
-> 
-> The tricky part here is that hw/ide/ioport.c is defined for CONFIG_ISA, and
-> so if we did that then all PCI IDE controllers would become dependent upon
-> ISA too, regardless of whether they implement compatibility mode or not.
-> What do you think is the best solution here? Perhaps moving
-> ide_init_ioport() to a more ISA-specific place? I know that both myself and
-> Phil have considered whether ide_init_ioport() should be replaced by
-> something else further down the line.
+--00000000000044cfe406098e1d82
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hm, yes, I didn't think about this.
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 
-Splitting ioport.c is one option, but even the port lists are really
-made for ISA, so the whole file is really ISA related.
+On Tue, Nov 7, 2023 at 12:18=E2=80=AFPM Thomas Huth <thuth@redhat.com> wrot=
+e:
 
-On the other hand, pci_ide_update_mode() isn't really a pure PCI
-function, it's at the intersection of PCI and ISA. Can we just #ifdef it
-out if ISA isn't built? Devices that don't support compatibility mode
-should never try to call pci_ide_update_mode().
+> contrib/systemd/qemu-guest-agent.service , tests/data/test-qga-config
+> and tests/data/test-qga-os-release belong to the guest agent, so make
+> sure that these files are covered here, too.
+>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  MAINTAINERS | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b7be61119f..48a6507759 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3144,10 +3144,11 @@ M: Michael Roth <michael.roth@amd.com>
+>  M: Konstantin Kostiuk <kkostiuk@redhat.com>
+>  S: Maintained
+>  F: qga/
+> +F: contrib/systemd/qemu-guest-agent.service
+>  F: docs/interop/qemu-ga.rst
+>  F: docs/interop/qemu-ga-ref.rst
+>  F: scripts/qemu-guest-agent/
+> -F: tests/unit/test-qga.c
+> +F: tests/*/test-qga*
+>  T: git https://github.com/mdroth/qemu.git qga
+>
+>  QEMU Guest Agent Win32
+> --
+> 2.41.0
+>
+>
 
-> > > +void pci_ide_update_mode(PCIIDEState *s)
-> > > +{
-> > > +    PCIDevice *d = PCI_DEVICE(s);
-> > > +    uint8_t mode = d->config[PCI_CLASS_PROG];
-> > > +
-> > > +    switch (mode & 0xf) {
-> > > +    case 0xa:
-> > > +        /* Both channels legacy mode */
-> > 
-> > Why is it ok to handle only the case where both channels are set to the
-> > same mode? The spec describes mixed-mode setups, too, and doesn't seem
-> > to allow ignoring a mode change if it's only for one of the channels.
-> 
-> Certainly that can be done: only both channels were implemented initially
-> because that was the test case immediately available using the VIA. I can
-> have a look at implementing both channels separately in v2.
+--00000000000044cfe406098e1d82
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I don't think it would make the code more complicated, so it feels like
-implementing it right away would be nice.
+<div dir=3D"ltr"><div dir=3D"ltr">Reviewed-by: Konstantin Kostiuk &lt;<a hr=
+ef=3D"mailto:kkostiuk@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a>=
+&gt;</div><div class=3D"gmail-yj6qo gmail-ajU"><div id=3D"gmail-:10i" class=
+=3D"gmail-ajR" role=3D"button" tabindex=3D"0" aria-label=3D"Show trimmed co=
+ntent" aria-expanded=3D"false"><img class=3D"gmail-ajT" src=3D"https://ssl.=
+gstatic.com/ui/v1/icons/mail/images/cleardot.gif"></div></div></div><br><di=
+v class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Nov 7=
+, 2023 at 12:18=E2=80=AFPM Thomas Huth &lt;<a href=3D"mailto:thuth@redhat.c=
+om">thuth@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quo=
+te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
+);padding-left:1ex">contrib/systemd/qemu-guest-agent.service , tests/data/t=
+est-qga-config<br>
+and tests/data/test-qga-os-release belong to the guest agent, so make<br>
+sure that these files are covered here, too.<br>
+<br>
+Signed-off-by: Thomas Huth &lt;<a href=3D"mailto:thuth@redhat.com" target=
+=3D"_blank">thuth@redhat.com</a>&gt;<br>
+---<br>
+=C2=A0MAINTAINERS | 3 ++-<br>
+=C2=A01 file changed, 2 insertions(+), 1 deletion(-)<br>
+<br>
+diff --git a/MAINTAINERS b/MAINTAINERS<br>
+index b7be61119f..48a6507759 100644<br>
+--- a/MAINTAINERS<br>
++++ b/MAINTAINERS<br>
+@@ -3144,10 +3144,11 @@ M: Michael Roth &lt;<a href=3D"mailto:michael.roth@=
+amd.com" target=3D"_blank">michael.roth@amd.com</a>&gt;<br>
+=C2=A0M: Konstantin Kostiuk &lt;<a href=3D"mailto:kkostiuk@redhat.com" targ=
+et=3D"_blank">kkostiuk@redhat.com</a>&gt;<br>
+=C2=A0S: Maintained<br>
+=C2=A0F: qga/<br>
++F: contrib/systemd/qemu-guest-agent.service<br>
+=C2=A0F: docs/interop/qemu-ga.rst<br>
+=C2=A0F: docs/interop/qemu-ga-ref.rst<br>
+=C2=A0F: scripts/qemu-guest-agent/<br>
+-F: tests/unit/test-qga.c<br>
++F: tests/*/test-qga*<br>
+=C2=A0T: git <a href=3D"https://github.com/mdroth/qemu.git" rel=3D"noreferr=
+er" target=3D"_blank">https://github.com/mdroth/qemu.git</a> qga<br>
+<br>
+=C2=A0QEMU Guest Agent Win32<br>
+-- <br>
+2.41.0<br>
+<br>
+</blockquote></div>
 
-On the other hand, if you want to see this in 8.2, I'm happy to merge
-this part as it is and then we can improve it on top.
-
-> > > +
-> > > +        /* Zero BARs */
-> > > +        pci_set_long(d->config + PCI_BASE_ADDRESS_0, 0x0);
-> > > +        pci_set_long(d->config + PCI_BASE_ADDRESS_1, 0x0);
-> > > +        pci_set_long(d->config + PCI_BASE_ADDRESS_2, 0x0);
-> > > +        pci_set_long(d->config + PCI_BASE_ADDRESS_3, 0x0);
-> > 
-> > Here I'm not sure what the spec really implies. Disabling the BAR (i.e.
-> > making it read-only and returning 0) while in compatibility mode doesn't
-> > necessarily mean that the value of the register is lost. In other words,
-> > are we sure that a driver can't expect that the old value is still there
-> > when it re-enables native mode?
-> 
-> The specification is definitely a bit vague on the details here. In the
-> testing I've done with the VIA, there is only ever a switch from native to
-> legacy mode, and not the other way around. I can see the logic that once
-> you've gone from the native to legacy mode, the memory allocated for the
-> BARs is already reserved by the OS so in theory it could be possible to
-> switch back to native mode again... and that would work if the BARs are
-> preserved.
-> 
-> Would it happen in practice? I'm not really sure, but I can try to implement
-> this if you think it makes sense to take a safer approach.
-
-I'm not sure if any driver tries to do something like this. Maybe a
-situation where BIOS switches to compatibility mode and then the OS to
-native again? But it does feel safer.
-
-The other option would be to not zero out the BAR at all. Doing that is
-optional according to the spec. But then we need to make sure that we
-ignore any access to the memory region behind the BAR even though its
-address is still there.
-
-Come to think of it, don't we need to somehow disable the memory regions
-described by the BARs even when we zero them out? I think updating the
-config space without calling pci_update_mappings() doesn't actually stop
-QEMU from reacting to reads and writes there, does it?
-
-Otherwise, the guest doesn't see the memory region in the BAR any more,
-but it would still be active (which is almost the opposite of what we're
-supposed to do).
-
-> > > +        /* Clear interrupt pin */
-> > > +        pci_config_set_interrupt_pin(d->config, 0);
-> > 
-> > Unlike for the BARs, I don't see anything in the spec that allows
-> > disabling this byte. I doubt it hurts in practice, but did you see any
-> > drivers requiring this? According to the spec, we just must not use the
-> > PCI interrupt in compatbility mode, but the registers stay accessible.
-> 
-> The PCI config dumps taken from a real VIA indicate that this byte is
-> cleared in legacy mode, and that appears to make sense here. If you imagine
-> an early PCI IDE controller, it will always start up in legacy mode and so
-> you don't want to indicate to the guest OS that PCI IRQ routing is required
-> unless it has been switched to native mode first.
-
-Ok. I assume that with a per-channel control, you would clear it only if
-both channels are in compatibility mode, and set it as soon as one
-channel is in native mode?
-
-> > As far as I can see, the whole PCI interrupt configuration is currently
-> > unused anyway, and nothing in this series seems to change it. So won't
-> > we incorrectly continue to use the legacy interrupt even in native mode?
-> > (Actually, cmd646 seems to get it wrong the other way around and uses
-> > the PCI interrupt even in compatibility mode.)
-> > 
-> > I think this means that BMDMAState needs to have two irq lines (a legacy
-> > and a PCI one) and select the right one in bmdma_irq() depending on
-> > which mode we're in currently.
-> 
-> I need to flesh out the details a bit more (in particular testing with more
-> than just the VIA PCI IDE controller), but yes the eventual aim is to
-> consolidate the majority of the BMDMA and mode switching code into
-> hw/ide/pci.c so the individual controllers don't need to worry about this,
-> and everything "just works".
-
-Zoltan's reply for patch 3 actuallys say that it's correct like this for
-the VIA controller, in conflict with what the spec says. So it seems
-that we can't make it "just work" for everyone, but we still need to
-allow devices to intercept it at least.
-
-As I said there, adding a comment in the via emulation should be enough
-for now, and we can leave proper generic interrupt handling for another
-day (when we want to add switching to a model that's actually consistent
-with the spec).
-
-Maybe also leave a TODO comment at the top of this function to remind
-other users that interrupt handling needs to be covered by individual
-devices for now.
-
-Kevin
+--00000000000044cfe406098e1d82--
 
 
