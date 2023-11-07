@@ -2,65 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 892067E35DD
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 08:25:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3BB7E35DB
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 08:25:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0GOD-0000jY-Cy; Tue, 07 Nov 2023 02:20:45 -0500
+	id 1r0GOC-0000Uu-Bv; Tue, 07 Nov 2023 02:20:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1r0GO0-0000G4-F2
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 02:20:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1r0GO5-0000HG-Vd
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 02:20:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1r0GNt-00030N-Lo
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 02:20:32 -0500
+ id 1r0GO3-00034q-Eu
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 02:20:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699341624;
+ s=mimecast20190719; t=1699341634;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8y5okX3QpysGx0N17ejN+rdipmBjYxxyu1XjxtJ2Ujk=;
- b=I5Rt4Z2fSiPjxTMHItRJ7yVJuzjSwIQDQukZZMlIIE6QH99vRXlhbaNn8bFoyK1VZfAidj
- lbX1PHK7BfQlJMcBKUrEvb3/wEN4pzfTSweKKbTWFAKQFjFX+QHTWM/BsMcvpfAip1qwuN
- mLhHuv5u8LoDXw6hab57E1QVly5xKQc=
+ bh=4SZ/OasRCxgbsCQYI36rdtboQkh+0BPjMMpQl7MHELU=;
+ b=Azvdq1iemM4oYyBzkSYjNIszAG5k+y2NRJnOFyqqCUsFNxfn1TEreU/CXktDl2M2BGDkiO
+ flywS/nLEzDRPxO7fsiJwJfFbxtlUtn+v6ixjhEJTLW7QYK8rCAURGAvB2ap6PXQAKzqFP
+ 1+YyDr0zifr9iNiqraqAVsA/l3xh/N0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-685-AvBFPzSCNMajXXAc06tZGA-1; Tue, 07 Nov 2023 02:20:22 -0500
-X-MC-Unique: AvBFPzSCNMajXXAc06tZGA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-196-GmLazMmUM46qg5Szp5F2dA-1; Tue, 07 Nov 2023 02:20:26 -0500
+X-MC-Unique: GmLazMmUM46qg5Szp5F2dA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A4454811002;
- Tue,  7 Nov 2023 07:20:21 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E472289C944;
+ Tue,  7 Nov 2023 07:20:25 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A54581C060AE;
- Tue,  7 Nov 2023 07:20:20 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F263BC1596F;
+ Tue,  7 Nov 2023 07:20:24 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  stefanha@gmail.com, Gerd Hoffmann <kraxel@redhat.com>, qemu-ppc@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH v8 14/24] vhost-user-gpu: skip VHOST_USER_GPU_UPDATE when
- !PIXMAN
-Date: Tue,  7 Nov 2023 11:19:04 +0400
-Message-ID: <20231107071915.2459115-15-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH v8 15/24] ui/gl: opengl doesn't require PIXMAN
+Date: Tue,  7 Nov 2023 11:19:05 +0400
+Message-ID: <20231107071915.2459115-16-marcandre.lureau@redhat.com>
 In-Reply-To: <20231107071915.2459115-1-marcandre.lureau@redhat.com>
 References: <20231107071915.2459115-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -68,9 +66,9 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,35 +86,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-This simply means that 2d drawing updates won't be handled, but 3d
-should work.
+The QEMU fallback covers the requirements. We still need the flags of
+header inclusion with CONFIG_PIXMAN.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/display/vhost-user-gpu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ ui/meson.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
-index 1150521d9d..709c8a02a1 100644
---- a/hw/display/vhost-user-gpu.c
-+++ b/hw/display/vhost-user-gpu.c
-@@ -307,6 +307,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
-         dpy_gl_update(con, m->x, m->y, m->width, m->height);
-         break;
-     }
-+#ifdef CONFIG_PIXMAN
-     case VHOST_USER_GPU_UPDATE: {
-         VhostUserGpuUpdate *m = &msg->payload.update;
- 
-@@ -334,6 +335,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
-         }
-         break;
-     }
-+#endif
-     default:
-         g_warning("unhandled message %d %d", msg->request, msg->size);
-     }
+diff --git a/ui/meson.build b/ui/meson.build
+index 3085e10a72..7c99613950 100644
+--- a/ui/meson.build
++++ b/ui/meson.build
+@@ -60,8 +60,8 @@ endif
+ system_ss.add(opengl)
+ if opengl.found()
+   opengl_ss = ss.source_set()
+-  opengl_ss.add(gbm)
+-  opengl_ss.add(when: [opengl, pixman],
++  opengl_ss.add(gbm, pixman)
++  opengl_ss.add(when: [opengl],
+                if_true: files('shader.c', 'console-gl.c', 'egl-helpers.c', 'egl-context.c'))
+   ui_modules += {'opengl' : opengl_ss}
+ endif
 -- 
 2.41.0
 
