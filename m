@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64947E3888
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:12:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 075B47E38A3
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:16:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0J36-0003Dp-7U; Tue, 07 Nov 2023 05:11:08 -0500
+	id 1r0J35-00037Z-Ik; Tue, 07 Nov 2023 05:11:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J2g-00020G-0y
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:10:42 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J2t-0002UN-MU
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:10:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J2e-0002T9-4B
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:10:41 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J2r-0002Ts-32
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:10:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699351838;
+ s=mimecast20190719; t=1699351852;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=N2OemcVYSlI5Erb95YCn87opEKILgO1gPwKsg30RdW0=;
- b=IL8wQoZYIMcDyPaCBBW5sUpQx4hEUac7dukCnTj7HQrbqS78t1iNeMZuvPRmdKxVMpszgi
- qH+Uli+uJ1sBcs7t7rUFg4eo2Gc8db1SKVKgzz4CiTCZz7SSobKHt7X0MykTqk/aAXZHjh
- Liqlm6EmWQkaNN5ETnqP0xNjCC8+tlU=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gnuv7Z17pTs9Ku5fIWHLu61w17iNT9D7kiH/z0kMDjY=;
+ b=c+RW535PPygmFVHvBiPZQ2/CxfNVJDLkmGSlcDLLv/o9CFqg6t1K+jiDd0cxXanLq9MQEi
+ yAGafK/XgWBLt3lu4GcITJg5KX7/SuN8RXRkCMQ3R02JBAXn9nywfmtHxFDrjMtQa4dd6T
+ KoivyxHzcffWcken3BENyc/XYu1zNXQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-Yrt-evhrOEWRlXaNUYsB1g-1; Tue, 07 Nov 2023 05:10:37 -0500
-X-MC-Unique: Yrt-evhrOEWRlXaNUYsB1g-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-5091368e043so6170687e87.2
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:10:37 -0800 (PST)
+ us-mta-511-PmJSd1aoPxKuiRwWNSb-VA-1; Tue, 07 Nov 2023 05:10:41 -0500
+X-MC-Unique: PmJSd1aoPxKuiRwWNSb-VA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4090181eec2so35022705e9.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:10:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699351835; x=1699956635;
+ d=1e100.net; s=20230601; t=1699351839; x=1699956639;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=N2OemcVYSlI5Erb95YCn87opEKILgO1gPwKsg30RdW0=;
- b=JbprlFiR+4loIJIgaZp5EsXmjKFj4Wd6hNJvQ3Po4wozEKCgsyW4AgSXQXwOJfF3/C
- YavVjVplX0nIO36tBvBb7ZRGX6IY5oT47gXWkqXzDlnQeuPgM+vu5mn4vC6w7r4zl4Nh
- Gqc/Be2xzYyJLZ7H1Tu9FyCO3OQXhTrjws8OgO/Nbx54y/WAwTc9+t0js8mjjxydjStl
- mQDnLAuxsiwmlrOOWyt3Gv0WV25BYCNaqMhDoDKWvLr2OpVtAEZq5SdkwnUK7om/m3kQ
- TKeUicLssGx94xqxHSol77dP6nL4hX8DJ1b1UsiLcN9mk3i2RxQjvOZOT1EEA73rWTJq
- inzg==
-X-Gm-Message-State: AOJu0Yx1ogFexSU99rEhXtREi1lbQiaXUYnQKsRHBvYmYehhvxeIAOpj
- jUadbjFs2rE2+vbS1e0ikFGxiYBEA0sbhmZlzttCsCilmJnwYDn1XXguVdkgWP3vdsVjMkMk1NO
- /l/XuCTavntuMSizuMYu5k0S4yLeXg5rA9U5233Gm9gh/aly2YLa1pwLIZHlreRqD7Qqy
-X-Received: by 2002:a19:ca49:0:b0:507:c9d5:39a9 with SMTP id
- h9-20020a19ca49000000b00507c9d539a9mr22125487lfj.52.1699351835016; 
- Tue, 07 Nov 2023 02:10:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH4jLFGfoCiHifo0fv/LeBNTNe3GY+UGilDrY57nOBnP9mwntU/3M5nErHlX6Z9QcK2AwdwnQ==
-X-Received: by 2002:a19:ca49:0:b0:507:c9d5:39a9 with SMTP id
- h9-20020a19ca49000000b00507c9d539a9mr22125464lfj.52.1699351834571; 
- Tue, 07 Nov 2023 02:10:34 -0800 (PST)
+ bh=gnuv7Z17pTs9Ku5fIWHLu61w17iNT9D7kiH/z0kMDjY=;
+ b=gcfaj6Nkgvpg5b1EwN/MFeLRtGg/90jTVZzlJBvn2CF1KVOZ+MoNFSBW+JZZUtFo47
+ J1+mH1H3kdXRd2is0f/8+Nsv07zzjWhDda15vyPq2JkjS2CkyKxiN23d1kNymqok0byX
+ 8om9FWa/WibINvpJGnAp8ddX46CitiYn4t3+laGdrBUDZGWwh1w5jzMpazPY87FJVrY9
+ QqTbbpzG8ncuL4rhl4xexR4Z8ysrZMiUAGmPoO8hYwOOIGgN1u2u/6ckdxs4/McqcGD2
+ hPZi2jfHm56RySXWMjZixbYhhQlO/vAwT4XF7sheKF5hE8cLUZyqbno8L5LhZTBCQwQc
+ z8bw==
+X-Gm-Message-State: AOJu0YwQ2kdZW3XpLVPQfItr1QmWrMxYs4vlb2ufryCDNiimnYGNU7Mb
+ lnodyuUzebsa9bRRl9jAHFTlHb/fBcf3qBHelX14xBBqWKdc+LrTQu93MNoXSWJlVhdC/QR/MJf
+ 3AqZuAryBQFPDgF216xOqxDsMqQXzKGWu028DcziyzIgRx6+Giza5cQgs9JdZGdWlrcId
+X-Received: by 2002:a05:600c:a02:b0:408:3bbd:4a82 with SMTP id
+ z2-20020a05600c0a0200b004083bbd4a82mr1950203wmp.15.1699351839621; 
+ Tue, 07 Nov 2023 02:10:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG1RWMxg7k40Tp03Cg6votMuDi1EU+mybc/J+Rq3fygeV0/nSbACRPZZpRhStwecLL3sUdyBQ==
+X-Received: by 2002:a05:600c:a02:b0:408:3bbd:4a82 with SMTP id
+ z2-20020a05600c0a0200b004083bbd4a82mr1950185wmp.15.1699351839312; 
+ Tue, 07 Nov 2023 02:10:39 -0800 (PST)
 Received: from redhat.com ([2.55.5.143]) by smtp.gmail.com with ESMTPSA id
- b3-20020a5d5503000000b003233b554e6esm1902622wrv.85.2023.11.07.02.10.32
+ t14-20020a05600c198e00b00405d9a950a2sm15315278wmq.28.2023.11.07.02.10.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 02:10:34 -0800 (PST)
-Date: Tue, 7 Nov 2023 05:10:30 -0500
+ Tue, 07 Nov 2023 02:10:38 -0800 (PST)
+Date: Tue, 7 Nov 2023 05:10:35 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -69,8 +69,8 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
  Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 14/63] virtio-sound: handle VIRTIO_SND_R_PCM_PREPARE
-Message-ID: <e5788b8fbf9361c978eb8347471d8f855580777f.1699351720.git.mst@redhat.com>
+Subject: [PULL 15/63] virtio-sound: handle VIRTIO_SND_R_PCM_RELEASE
+Message-ID: <d48800d740d1eaea5be65accbf37d82f0effcfb5.1699351720.git.mst@redhat.com>
 References: <cover.1699351720.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -106,8 +106,9 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Handles the PCM prepare control request. It initializes a PCM stream
-when the guests asks for it.
+Handle the PCM release control request, which is necessary for flushing
+pending sound IO. No IO is handled yet so currently it only replies to
+the request.
 
 Based-on: https://github.com/OpenSynergy/qemu/commit/5a2f350eec5d157b90d9c7b40a8e603f4da92471
 Signed-off-by: Igor Skalkin <Igor.Skalkin@opensynergy.com>
@@ -115,55 +116,92 @@ Signed-off-by: Anton Yakovlev <Anton.Yakovlev@opensynergy.com>
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Tested-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <c6a9c437ef48e45f083fc957dcf7fe18a028e657.1698062525.git.manos.pitsidianakis@linaro.org>
+Message-Id: <ae0afa16461429df1a2f268313d5bfcca27479ec.1698062525.git.manos.pitsidianakis@linaro.org>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/audio/virtio-snd.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ hw/audio/virtio-snd.c | 48 ++++++++++++++++++++++++++++++++++++++++++-
+ hw/audio/trace-events |  1 +
+ 2 files changed, 48 insertions(+), 1 deletion(-)
 
 diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
-index 084890e52b..31a1942754 100644
+index 31a1942754..9cff724f62 100644
 --- a/hw/audio/virtio-snd.c
 +++ b/hw/audio/virtio-snd.c
-@@ -478,6 +478,28 @@ static const char *print_code(uint32_t code)
-     #undef CASE
- };
+@@ -541,6 +541,52 @@ static void virtio_snd_handle_pcm_start_stop(VirtIOSound *s,
+     stream->active = start;
+ }
  
 +/*
-+ * Handles VIRTIO_SND_R_PCM_PREPARE.
++ * Handles VIRTIO_SND_R_PCM_RELEASE. Releases the buffer resources allocated to
++ * a stream.
 + *
 + * @s: VirtIOSound device
 + * @cmd: The request command queue element from VirtIOSound cmdq field
 + */
-+static void virtio_snd_handle_pcm_prepare(VirtIOSound *s,
++static void virtio_snd_handle_pcm_release(VirtIOSound *s,
 +                                          virtio_snd_ctrl_command *cmd)
 +{
 +    uint32_t stream_id;
++    VirtIOSoundPCMStream *stream;
 +    size_t msg_sz = iov_to_buf(cmd->elem->out_sg,
 +                               cmd->elem->out_num,
 +                               sizeof(virtio_snd_hdr),
 +                               &stream_id,
 +                               sizeof(stream_id));
 +
++    if (msg_sz != sizeof(stream_id)) {
++        /*
++         * TODO: do we need to set DEVICE_NEEDS_RESET?
++         */
++        qemu_log_mask(LOG_GUEST_ERROR,
++                "%s: virtio-snd command size incorrect %zu vs \
++                %zu\n", __func__, msg_sz, sizeof(stream_id));
++        cmd->resp.code = cpu_to_le32(VIRTIO_SND_S_BAD_MSG);
++        return;
++    }
++
 +    stream_id = le32_to_cpu(stream_id);
-+    cmd->resp.code = msg_sz == sizeof(stream_id)
-+                   ? virtio_snd_pcm_prepare(s, stream_id)
-+                   : cpu_to_le32(VIRTIO_SND_S_BAD_MSG);
++    trace_virtio_snd_handle_pcm_release(stream_id);
++    stream = virtio_snd_pcm_get_stream(s, stream_id);
++    if (stream == NULL) {
++        /*
++         * TODO: do we need to set DEVICE_NEEDS_RESET?
++         */
++        error_report("already released stream %"PRIu32, stream_id);
++        virtio_error(VIRTIO_DEVICE(s),
++                     "already released stream %"PRIu32,
++                     stream_id);
++        cmd->resp.code = cpu_to_le32(VIRTIO_SND_S_BAD_MSG);
++        return;
++    }
++    cmd->resp.code = cpu_to_le32(VIRTIO_SND_S_OK);
 +}
 +
  /*
-  * Handles VIRTIO_SND_R_PCM_START.
+  * The actual processing done in virtio_snd_process_cmdq().
   *
-@@ -569,6 +591,8 @@ process_cmd(VirtIOSound *s, virtio_snd_ctrl_command *cmd)
-         virtio_snd_handle_pcm_set_params(s, cmd);
+@@ -594,7 +640,7 @@ process_cmd(VirtIOSound *s, virtio_snd_ctrl_command *cmd)
+         virtio_snd_handle_pcm_prepare(s, cmd);
          break;
-     case VIRTIO_SND_R_PCM_PREPARE:
-+        virtio_snd_handle_pcm_prepare(s, cmd);
-+        break;
      case VIRTIO_SND_R_PCM_RELEASE:
-         cmd->resp.code = cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
+-        cmd->resp.code = cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
++        virtio_snd_handle_pcm_release(s, cmd);
          break;
+     case VIRTIO_SND_R_CHMAP_INFO:
+         qemu_log_mask(LOG_UNIMP,
+diff --git a/hw/audio/trace-events b/hw/audio/trace-events
+index 3badcab2e8..33e24d0011 100644
+--- a/hw/audio/trace-events
++++ b/hw/audio/trace-events
+@@ -51,6 +51,7 @@ virtio_snd_handle_pcm_set_params(uint32_t stream) "VIRTIO_SND_PCM_SET_PARAMS cal
+ virtio_snd_handle_ctrl(void *vdev, void *vq) "snd %p: handle ctrl event for queue %p"
+ virtio_snd_handle_pcm_info(uint32_t stream) "VIRTIO_SND_R_PCM_INFO called for stream %"PRIu32
+ virtio_snd_handle_pcm_start_stop(const char *code, uint32_t stream) "%s called for stream %"PRIu32
++virtio_snd_handle_pcm_release(uint32_t stream) "VIRTIO_SND_PCM_RELEASE called for stream %"PRIu32
+ virtio_snd_handle_code(uint32_t val, const char *code) "ctrl code msg val = %"PRIu32" == %s"
+ virtio_snd_handle_chmap_info(void) "VIRTIO_SND_CHMAP_INFO called"
+ virtio_snd_handle_event(void) "event queue callback called"
 -- 
 MST
 
