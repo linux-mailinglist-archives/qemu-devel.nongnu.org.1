@@ -2,52 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A33877E484D
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:33:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 655057E4851
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:34:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0QsN-0002jP-SB; Tue, 07 Nov 2023 13:32:35 -0500
+	id 1r0QsQ-0002k8-Ld; Tue, 07 Nov 2023 13:32:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0QsM-0002iz-Cn
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:32:34 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0QsP-0002jy-Ke
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:32:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0QsK-0007Mb-OH
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:32:34 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0QsO-0007N3-9Z
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:32:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699381952;
+ s=mimecast20190719; t=1699381955;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=jlg4CfxpGqoiQPNVOrIyhAXBl+U7FoCqTHszcFYgoAo=;
- b=bw+ECgvdvkwO7aao3idEvKRk+xJRhjfEyXBr2zMmx8fKUrUqmRc6OsLdZh9nrVYvOzrrZP
- JREcuIfkfOlOUpLixL4X07VEHeLYUO+i0zYEpdWPtoWz3br07FWNBuAkKUyd+k2fGpcHTU
- yRxbFrBWqBtdDr138k3enr0tOpubbxE=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=nXkuHA5Mav5h6/3r7Nvq2XRtj2+v9KiN45t7aXlOnM0=;
+ b=DOEIiQqYL3MRm6JMNhD+/XPGfxKmEmRY/RqDIdRrT9PMVRiVJ16TZAl8ijwpVagM3tQAtW
+ mS72C0PqEiFn1oVUd/w4N+PDZwHRnS2bX+zFt4EpWQfKatuHol4MVBAkf6hH1Zk/7ku9qV
+ wz60LQrgfOXU30ZHSPHppDqd+qJ7z1Y=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-438-nG4KZmV4P9qlwLhZWZLXxA-1; Tue,
- 07 Nov 2023 13:32:30 -0500
-X-MC-Unique: nG4KZmV4P9qlwLhZWZLXxA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-466-WRaacSCXMA6d9D1-Bo5D4Q-1; Tue,
+ 07 Nov 2023 13:32:32 -0500
+X-MC-Unique: WRaacSCXMA6d9D1-Bo5D4Q-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8292D3C108D7
- for <qemu-devel@nongnu.org>; Tue,  7 Nov 2023 18:32:30 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 58B0F299E74C;
+ Tue,  7 Nov 2023 18:32:32 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.124])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6C3982166B26;
- Tue,  7 Nov 2023 18:32:29 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 100FA2166B26;
+ Tue,  7 Nov 2023 18:32:30 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 00/11] s390x and MAINTAINERS updates
-Date: Tue,  7 Nov 2023 19:32:17 +0100
-Message-ID: <20231107183228.276424-1-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PULL 01/11] MAINTAINERS: Add the virtio-gpu documentation to the
+ corresponding section
+Date: Tue,  7 Nov 2023 19:32:18 +0100
+Message-ID: <20231107183228.276424-2-thuth@redhat.com>
+In-Reply-To: <20231107183228.276424-1-thuth@redhat.com>
+References: <20231107183228.276424-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -75,64 +79,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- Hi Stefan!
+Add virtio-gpu.rst to the corresponding section in MAINTAINERS, so that
+the maintainers gets CC:-ed on corresponding patches.
 
-The following changes since commit 8aba939e77daca10eac99d9d467f65ba7df5ab3e:
+Message-ID: <20231027060808.242442-1-thuth@redhat.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-  Merge tag 'pull-riscv-to-apply-20231107' of https://github.com/alistair23/qemu into staging (2023-11-07 11:08:16 +0800)
-
-are available in the Git repository at:
-
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2023-11-07
-
-for you to fetch changes up to 3e19fbc0c51a62d0c021e1ae768da0df64855927:
-
-  target/s390x/cpu topology: Fix ordering and creation of TLEs (2023-11-07 19:27:08 +0100)
-
-----------------------------------------------------------------
-* Fix s390x CPU reconfiguration information in the SCLP facility map
-* Fix condition code problem in the CLC and LAALG instruction
-* Fix ordering of the new s390x topology list entries
-* Add some more files to the MAINTAINERS file
-* Allow newer versions of Tesseract in the m68k nextcube test
-
-----------------------------------------------------------------
-Heiko Carstens (1):
-      s390/sclp: fix SCLP facility map
-
-Ilya Leoshkevich (5):
-      target/s390x: Fix CLC corrupting cc_src
-      tests/tcg/s390x: Test CLC with inaccessible second operand
-      target/s390x: Fix LAALG not updating cc_src
-      tests/tcg/s390x: Test LAALG with negative cc_src
-      tests/tcg/s390x: Test ADD LOGICAL WITH CARRY
-
-Nina Schoetterl-Glausch (1):
-      target/s390x/cpu topology: Fix ordering and creation of TLEs
-
-Philippe Mathieu-Daudé (1):
-      target/s390x/cpu_models: Use 'first_cpu' in s390_get_feat_block()
-
-Thomas Huth (3):
-      MAINTAINERS: Add the virtio-gpu documentation to the corresponding section
-      MAINTAINERS: Add artist.c to the hppa machine section
-      tests/avocado: Allow newer versions of tesseract in the nextcube test
-
- MAINTAINERS                              |   2 +
- include/hw/s390x/sclp.h                  |   4 +-
- target/s390x/tcg/insn-data.h.inc         |   2 +-
- target/s390x/cpu_models.c                |   6 +-
- target/s390x/kvm/stsi-topology.c         |   8 +-
- target/s390x/tcg/translate.c             |  26 +++++-
- tests/tcg/s390x/add-logical-with-carry.c | 156 +++++++++++++++++++++++++++++++
- tests/tcg/s390x/clc.c                    |  48 ++++++++++
- tests/tcg/s390x/laalg.c                  |  27 ++++++
- tests/avocado/machine_m68k_nextcube.py   |  15 +--
- tests/avocado/tesseract_utils.py         |   4 +-
- tests/tcg/s390x/Makefile.target          |   3 +
- 12 files changed, 271 insertions(+), 30 deletions(-)
- create mode 100644 tests/tcg/s390x/add-logical-with-carry.c
- create mode 100644 tests/tcg/s390x/clc.c
- create mode 100644 tests/tcg/s390x/laalg.c
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 59b92ee640..2058296ede 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2483,6 +2483,7 @@ S: Odd Fixes
+ F: hw/display/virtio-gpu*
+ F: hw/display/virtio-vga.*
+ F: include/hw/virtio/virtio-gpu.h
++F: docs/system/devices/virtio-gpu.rst
+ 
+ vhost-user-blk
+ M: Raphael Norwitz <raphael.norwitz@nutanix.com>
+-- 
+2.41.0
 
 
