@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4737E7E41C0
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:24:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D897E41C6
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:25:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0N01-0004Ed-Sw; Tue, 07 Nov 2023 09:24:14 -0500
+	id 1r0N0H-0004Lg-Jz; Tue, 07 Nov 2023 09:24:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r0Mzs-0004Cr-SJ
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:24:04 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1r0Mzu-0004Dh-NH
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:24:06 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r0Mzp-0007YF-Gj
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:24:04 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-32deb2809daso3403279f8f.3
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 06:23:59 -0800 (PST)
+ id 1r0Mzq-0007YQ-2i
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:24:05 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40850b244beso43394485e9.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 06:24:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699367038; x=1699971838; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699367039; x=1699971839; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jKa4ph+IbACrmLp/l7KUj2enSm3dMfUXc05KWX4jlJA=;
- b=KevyJCliE4PnLVzDXFLJ/yNUU6KBLmNzK19OACMFRlH1hWCXzMBIZdZxUZxu8fcEbl
- a4e2frxF/7gUBVI4AL13aQnJ3SRdFfyhcll7Br9XqsOvHTMkSZPNmTMyTegWch4I1ve8
- 6MBTSXvVw4kwsXwu2cRttjrD2s57FqPN0w7G1pegNq9+LMjO1aPX+Wl/lOjbY10KE5t9
- +ELsJ/RzkQeJrIOa0WyZreMuqzgQ6jSUafXyMKd1IiCYbeupfdxT57D8mS/Sokb+Tfzm
- f9va9TClpL5D1SJoQVL2Ik56FPvAUGhQB6qDOMlrsxAo3jAZOLB3v00UhX48DRrnbAHu
- 5w8A==
+ bh=X6TivXK1QWn2IjcuBDpLpSu+yTjCXvnnkWK/ZS63otI=;
+ b=QV+53/hul0ahXtkH1gbYKDpBP0vuVj6CSaHUSxjqSLE9ws95X3Jb5Mjo2eG1xpQM3F
+ avD6wTseNzsG0WorQDweQkeU07W/DSMyubU4m5TPJ2cEJ0rHrbhFQyyhsJouaqGHeiJN
+ FPlfEo4NPeHBswGV/+yJXK/HD25+thi4q3dBAxEGjg5jN59dXRZjiv/d8nDYJf6gdAyl
+ THxIDPCdT3pbpQP/EE6+FLiPBUbgsQQXitmPSwe47FqHsNRAHiyZLFaKs4NE7VlUXX7Z
+ Rr//Ttankqz7hbbEI2XBGu8hRedU6+ljs+gRrkEDp7If0EVW607omxpga8djSbmZxAlW
+ XPLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699367038; x=1699971838;
+ d=1e100.net; s=20230601; t=1699367039; x=1699971839;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jKa4ph+IbACrmLp/l7KUj2enSm3dMfUXc05KWX4jlJA=;
- b=OZDWAh9lH4B59vDG/XTTsgndryAhO9FMTAkdiWBSm12aZHW08feT4sFJNDCIe2582V
- 3fnj7beab7M0RyxisFk5gCWpJ21ULwm5Elx1xbOqPILZFWp5nd+u0TNiyZSRqm7Vfv4C
- K8w/UWjwBm90rvICdtdJDzVbWOOrXtx2YGN77XoaJ5ujzdfWLlDslxjMZDqgqKR+zXx6
- OV7tArWeHdelG67NinVl42/0YYj2+bLi/gxmWvuZ4K6A+rjwm16lPc+BsY7XoFjhrWFu
- 2ETz2sRc4wexJ/xRnCNCaf/k1wO7W9HUu6j3I6+Wim3sZWiz0tTx49eAdOcu5Ba7EYTb
- eVzw==
-X-Gm-Message-State: AOJu0YyftLqFR3xkOhIb9f3KjIU5mtxjKUGI22FgBjfJ3AwK3bpcyoiA
- LIEjhmjvVjArTcBAP4W8OwymaA==
-X-Google-Smtp-Source: AGHT+IE7qYprY1z7qR1PiFwugXJZRofeFzSTVcJ17QkUYqJaL+LpOmdwsuWR6+a8uX6wVcuIsQuL1g==
-X-Received: by 2002:a5d:47c7:0:b0:32f:932b:e02f with SMTP id
- o7-20020a5d47c7000000b0032f932be02fmr19117539wrc.55.1699367038435; 
- Tue, 07 Nov 2023 06:23:58 -0800 (PST)
+ bh=X6TivXK1QWn2IjcuBDpLpSu+yTjCXvnnkWK/ZS63otI=;
+ b=xLd+UBUYe0vxaqGCu0+hWZypl+4PwJn6f6nGtXUnci8COfhYSO7EC2f4f6hZ/RS/KC
+ +/+rWTIj9HGANniB4RTdSs22q3RhEfaCQdGh1srFdKFbENNquyn/p7cFhaGIADrQtxHV
+ adcIKeVQBf4WTax+fJfoxwJyH4YFUv2c97TkYN6KknENfEIQ5OTx8n/GqD/cibLS2wdv
+ 61rVX3x4/qwI7/vmmSOyfvW+H1NZBzZcHeR3juPZj24hG+3RjROZ/cbVElRWyzR0JRFA
+ 95vcaYVHBDEQCZOnINLsc691KV2OsUK5hiQ+HGbgP11feK82/MYZ3ckFtde7NxoXqzdt
+ PncA==
+X-Gm-Message-State: AOJu0YzaY67dLhdUXiIgF6latfceE6hBFD89mZXGE7d6vCc61Hf2COl0
+ xpamQ1GyzK0sOwisYCktlKJN0X3ezY1OAj/Qr7cZEg==
+X-Google-Smtp-Source: AGHT+IHLrvKxauX65NkKzDbgI5IQE725HayVhU+u+m6wg2sjfSMca0X03L+R1ImXtZ074pOLaWMXWQ==
+X-Received: by 2002:a05:600c:4451:b0:409:5a1a:fe16 with SMTP id
+ v17-20020a05600c445100b004095a1afe16mr2604121wmn.28.1699367039043; 
+ Tue, 07 Nov 2023 06:23:59 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- h6-20020adfe986000000b003200c918c81sm2457299wrm.112.2023.11.07.06.23.55
+ iv12-20020a05600c548c00b0040641a9d49bsm16047128wmb.17.2023.11.07.06.23.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 06:23:55 -0800 (PST)
+ Tue, 07 Nov 2023 06:23:58 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id F344365759;
- Tue,  7 Nov 2023 14:23:54 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 13CB66575A;
+ Tue,  7 Nov 2023 14:23:55 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [PULL 04/23] target/arm: hide all versions of DBGD[RS]AR from gdbstub
-Date: Tue,  7 Nov 2023 14:23:35 +0000
-Message-Id: <20231107142354.3151266-5-alex.bennee@linaro.org>
+Subject: [PULL 05/23] target/arm: hide aliased MIDR from gdbstub
+Date: Tue,  7 Nov 2023 14:23:36 +0000
+Message-Id: <20231107142354.3151266-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231107142354.3151266-1-alex.bennee@linaro.org>
 References: <20231107142354.3151266-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,49 +96,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This avoids two duplicates being presented to gdbstub. As the
-registers are RAZ anyway it is unlikely their value would be of use to
-someone using gdbstub anyway.
+This is just a constant alias register with the same value as the
+"other" MIDR so it serves no purpose being presented to gdbstub.
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231106185112.2755262-5-alex.bennee@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-Id: <20231106185112.2755262-6-alex.bennee@linaro.org>
 
-diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
-index 79a3659c0c..cbfba532f5 100644
---- a/target/arm/debug_helper.c
-+++ b/target/arm/debug_helper.c
-@@ -937,14 +937,14 @@ static const ARMCPRegInfo debug_cp_reginfo[] = {
-      */
-     { .name = "DBGDRAR", .cp = 14, .crn = 1, .crm = 0, .opc1 = 0, .opc2 = 0,
-       .access = PL0_R, .accessfn = access_tdra,
--      .type = ARM_CP_CONST, .resetvalue = 0 },
-+      .type = ARM_CP_CONST | ARM_CP_NO_GDB, .resetvalue = 0 },
-     { .name = "MDRAR_EL1", .state = ARM_CP_STATE_AA64,
-       .opc0 = 2, .opc1 = 0, .crn = 1, .crm = 0, .opc2 = 0,
-       .access = PL1_R, .accessfn = access_tdra,
-       .type = ARM_CP_CONST, .resetvalue = 0 },
-     { .name = "DBGDSAR", .cp = 14, .crn = 2, .crm = 0, .opc1 = 0, .opc2 = 0,
-       .access = PL0_R, .accessfn = access_tdra,
--      .type = ARM_CP_CONST, .resetvalue = 0 },
-+      .type = ARM_CP_CONST | ARM_CP_NO_GDB, .resetvalue = 0 },
-     /* Monitor debug system control register; the 32-bit alias is DBGDSCRext. */
-     { .name = "MDSCR_EL1", .state = ARM_CP_STATE_BOTH,
-       .cp = 14, .opc0 = 2, .opc1 = 0, .crn = 0, .crm = 2, .opc2 = 2,
-@@ -1065,9 +1065,11 @@ static const ARMCPRegInfo debug_cp_reginfo[] = {
- static const ARMCPRegInfo debug_lpae_cp_reginfo[] = {
-     /* 64 bit access versions of the (dummy) debug registers */
-     { .name = "DBGDRAR", .cp = 14, .crm = 1, .opc1 = 0,
--      .access = PL0_R, .type = ARM_CP_CONST | ARM_CP_64BIT, .resetvalue = 0 },
-+      .access = PL0_R, .type = ARM_CP_CONST | ARM_CP_64BIT | ARM_CP_NO_GDB,
-+      .resetvalue = 0 },
-     { .name = "DBGDSAR", .cp = 14, .crm = 2, .opc1 = 0,
--      .access = PL0_R, .type = ARM_CP_CONST | ARM_CP_64BIT, .resetvalue = 0 },
-+      .access = PL0_R, .type = ARM_CP_CONST | ARM_CP_64BIT | ARM_CP_NO_GDB,
-+      .resetvalue = 0 },
- };
- 
- static void dbgwvr_write(CPUARMState *env, const ARMCPRegInfo *ri,
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 6acd87f5b9..ff1970981e 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -9000,7 +9000,7 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+               .type = ARM_CP_CONST, .resetvalue = cpu->revidr },
+         };
+         ARMCPRegInfo id_v8_midr_alias_cp_reginfo = {
+-            .name = "MIDR", .type = ARM_CP_ALIAS | ARM_CP_CONST,
++            .name = "MIDR", .type = ARM_CP_ALIAS | ARM_CP_CONST | ARM_CP_NO_GDB,
+             .cp = 15, .crn = 0, .crm = 0, .opc1 = 0, .opc2 = 4,
+             .access = PL1_R, .resetvalue = cpu->midr
+         };
 -- 
 2.39.2
 
