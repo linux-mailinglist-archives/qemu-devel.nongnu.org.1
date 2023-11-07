@@ -2,75 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA137E387C
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:11:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA5307E3882
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:12:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0J3P-0005n9-Tq; Tue, 07 Nov 2023 05:11:27 -0500
+	id 1r0J3k-0006ha-Fa; Tue, 07 Nov 2023 05:11:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J3N-0005gl-PY
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:11:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J3e-0006Ts-Nh
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:11:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J3L-0002YT-Px
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:11:25 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J3c-0002aQ-Hz
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:11:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699351883;
+ s=mimecast20190719; t=1699351899;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Qifpv3aNAIEISwFz81bmMK6pnQ3IauyLXcDLRV+33ZY=;
- b=ZqQzk+0yphGquV04jz+Yy+Gbz49oWai1W3Rac7EhliSyE89TawJP4FWToy7bzLd2SZzK7t
- 9Xz6onJtwojcYZSV+ZjlKLp1yoHJWDAs5K49MsIn+C/o0CVtHCD4Im5Ty6NSDuzp/A/+LQ
- uu7tmwwP2ougpa071Sfn2kek3zZY9yk=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PBJ1uvthAaidklul8YgcRjJtzKSz6MO46xKoN4oXPb0=;
+ b=TQFIvvYncfZwsl1PBa5ymPPcpEZI3WP3zGcaigxKAKXubRYoCKg/RRsq17UhiBK0v1pB+C
+ yBGryrM70ha4g2anl+LN9XvAhHcfEGek8Q+eSW5nuloXNl6zLxYL3P8yd/FnVP9svY7qfG
+ wG9XQwOsatLPoXace31A1uOMxyOiD6E=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-185-J603MWHLN_eUFY9kNcdLSg-1; Tue, 07 Nov 2023 05:11:21 -0500
-X-MC-Unique: J603MWHLN_eUFY9kNcdLSg-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-5079fe7cc7cso6345354e87.2
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:11:21 -0800 (PST)
+ us-mta-642-WpNppxxkMiqzUJj9mOUDRg-1; Tue, 07 Nov 2023 05:11:26 -0500
+X-MC-Unique: WpNppxxkMiqzUJj9mOUDRg-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2c6f3cd892cso55321961fa.3
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:11:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699351880; x=1699956680;
+ d=1e100.net; s=20230601; t=1699351884; x=1699956684;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Qifpv3aNAIEISwFz81bmMK6pnQ3IauyLXcDLRV+33ZY=;
- b=wIfGX3a0v8LEdqgxYHMq7UrvPYrGCqaNl0cIMyLHBf+iy/VnnHeOWQXhgMie/1tIuf
- eTQsgxm7MPTDm9u9VkZB64Aor/6kvslhy/YgXt8tIqs/uulUzmidp0azcI1YH38NyBYQ
- H3x95zsRiOSUtiNc7vk9et8RQUdmVipVa7tbYVWwzMBbxDWyo2NOzJjit88tekw+sSai
- iF66jXXWvgZVfMcA38mAJP6m0OR613qjqepMq3fE9pWtGnRIp8Xa9+zVX4oJ53d3pdtk
- hz9bw0PW+Fot4aGJ86C//1TUH9+eSBQ2SqdRzq055ZCCSH2CK9yQDDxXzb095S6mYYxc
- m91w==
-X-Gm-Message-State: AOJu0Yz3kZcHZe4iCZQz+jFPdSWHf/OxqixnYhR+rTpIIpJj4l8mZm+h
- a7N86GCl0WzDvKFc1abG0hRYHojcckFUcl2IR+RbAjdccgjV+P1L0TAYHmYuRH0eaddcnzW1QA+
- 3YbPfZtoJxJs4HkOhuHxwRokZRhi+3lD8lh437i4YZ4juHnrwoJ/KsSDVUQUWa17xs7TO
-X-Received: by 2002:a05:6512:10cb:b0:507:aaa9:b080 with SMTP id
- k11-20020a05651210cb00b00507aaa9b080mr29451571lfg.33.1699351879780; 
- Tue, 07 Nov 2023 02:11:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHSElT1kUkwKGt/kI8dyERyAqtlAgTjfSVgxPFPgtIPbAkSwBdEENHz1nGQUqDAv+gzMIDhkg==
-X-Received: by 2002:a05:6512:10cb:b0:507:aaa9:b080 with SMTP id
- k11-20020a05651210cb00b00507aaa9b080mr29451542lfg.33.1699351879472; 
- Tue, 07 Nov 2023 02:11:19 -0800 (PST)
+ bh=PBJ1uvthAaidklul8YgcRjJtzKSz6MO46xKoN4oXPb0=;
+ b=S8h72Epcew9PKnexq246OS5Omov0PMCMwCuWmY7gUARWToUYGk25RqH365H/J9UaWq
+ wuVamJZxaApCxeAELcSYkiasjVDz+R78Na0EokoHaU1nEibud+LW7eimPSz4DkdLJd7c
+ 2wOm720IyVH/C4vuH+fEQYDHBcYet2ASY+nQv8s3wDKWdpAZx1RacU4O7FI20E2td2Au
+ 8Xs0uLKKsaWaNLN66xU7fiCLwWW4T6UmtgsCujyJt6/uswhmU3OveUDl0eeU4zl0oaOq
+ sJpEAgu/9mdBL665X61P54k2nnRqTfOrMNo1zR7H/bByca0Z55nvObBB+G4WxbImMZ7h
+ jtWw==
+X-Gm-Message-State: AOJu0Yw6LwhsRX0YKAOSJtpwiOF8gh4UsLYC+ouAyAlSqvRZc+ap+/tj
+ xrKGI9t1jkPHiDAu9eUcPgYiuRpbAu//058EJGom1CCzP/vWHGDDiTIXl4/VNiBiVEBHbSw8oPA
+ ttGd0UuH79Tc2ZgPY8KFSdoqyKClRZNe/ObNXglKWupjj21NLtzfWEboRB6z9hD9RkaEZ
+X-Received: by 2002:a2e:9f08:0:b0:2bc:dab2:c7dc with SMTP id
+ u8-20020a2e9f08000000b002bcdab2c7dcmr25059254ljk.47.1699351884732; 
+ Tue, 07 Nov 2023 02:11:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFjw9m3AgwD6wZwF8oH05VhBUEFtHKe7rSQmmq+vlleANiygt3MkLv5AskmeU2LkcdPgNGTog==
+X-Received: by 2002:a2e:9f08:0:b0:2bc:dab2:c7dc with SMTP id
+ u8-20020a2e9f08000000b002bcdab2c7dcmr25059220ljk.47.1699351884081; 
+ Tue, 07 Nov 2023 02:11:24 -0800 (PST)
 Received: from redhat.com ([2.55.5.143]) by smtp.gmail.com with ESMTPSA id
- y11-20020adff6cb000000b0032fc609c118sm1903923wrp.66.2023.11.07.02.11.16
+ o25-20020a1c7519000000b003fe1c332810sm14788257wmc.33.2023.11.07.02.11.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 02:11:18 -0800 (PST)
-Date: Tue, 7 Nov 2023 05:11:14 -0500
+ Tue, 07 Nov 2023 02:11:23 -0800 (PST)
+Date: Tue, 7 Nov 2023 05:11:20 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>, Igor Mammedov <imammedo@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: [PULL 24/63] tests: test-smp-parse: Add the test for cores/threads
- per socket helpers
-Message-ID: <7d5936791ea349d9cef856babcce28470966bfa4.1699351720.git.mst@redhat.com>
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 25/63] tests: bios-tables-test: Prepare the ACPI table change
+ for smbios type4 count test
+Message-ID: <6c7937ece909d3df0d2b4e94909f57388f5ed666.1699351720.git.mst@redhat.com>
 References: <cover.1699351720.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -78,14 +75,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1699351720.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,128 +102,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Use the different ways to calculate cores/threads per socket, so that
-the new CPU topology levels won't be missed in these 2 helpes:
+Following the guidelines in tests/qtest/bios-tables-test.c, this
+is step 1 - 3.
 
-* machine_topo_get_cores_per_socket()
-* machine_topo_get_threads_per_socket()
+List the ACPI tables that will be added to test the type 4 count.
 
-Test the commit a1d027be95bc3 ("machine: Add helpers to get cores/
-threads per socket").
-
-Suggested-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Acked-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20231023094635.1588282-2-zhao1.liu@linux.intel.com>
+Message-Id: <20231023094635.1588282-3-zhao1.liu@linux.intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/unit/test-smp-parse.c | 67 ++++++++++++++++++++++++++++++-------
- 1 file changed, 54 insertions(+), 13 deletions(-)
+ tests/qtest/bios-tables-test-allowed-diff.h | 3 +++
+ tests/data/acpi/q35/APIC.type4-count        | 0
+ tests/data/acpi/q35/DSDT.type4-count        | 0
+ tests/data/acpi/q35/FACP.type4-count        | 0
+ 4 files changed, 3 insertions(+)
+ create mode 100644 tests/data/acpi/q35/APIC.type4-count
+ create mode 100644 tests/data/acpi/q35/DSDT.type4-count
+ create mode 100644 tests/data/acpi/q35/FACP.type4-count
 
-diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
-index fdc39a846c..24972666a7 100644
---- a/tests/unit/test-smp-parse.c
-+++ b/tests/unit/test-smp-parse.c
-@@ -394,20 +394,47 @@ static char *smp_config_to_string(const SMPConfiguration *config)
-         config->has_maxcpus ? "true" : "false", config->maxcpus);
- }
- 
--static char *cpu_topology_to_string(const CpuTopology *topo)
-+/* Use the different calculation than machine_topo_get_threads_per_socket(). */
-+static unsigned int cpu_topology_get_threads_per_socket(const CpuTopology *topo)
-+{
-+    /* Check the divisor to avoid invalid topology examples causing SIGFPE. */
-+    if (!topo->sockets) {
-+        return 0;
-+    } else {
-+        return topo->max_cpus / topo->sockets;
-+    }
-+}
-+
-+/* Use the different calculation than machine_topo_get_cores_per_socket(). */
-+static unsigned int cpu_topology_get_cores_per_socket(const CpuTopology *topo)
-+{
-+    /* Check the divisor to avoid invalid topology examples causing SIGFPE. */
-+    if (!topo->threads) {
-+        return 0;
-+    } else {
-+        return cpu_topology_get_threads_per_socket(topo) / topo->threads;
-+    }
-+}
-+
-+static char *cpu_topology_to_string(const CpuTopology *topo,
-+                                    unsigned int threads_per_socket,
-+                                    unsigned int cores_per_socket)
- {
-     return g_strdup_printf(
-         "(CpuTopology) {\n"
--        "    .cpus     = %u,\n"
--        "    .sockets  = %u,\n"
--        "    .dies     = %u,\n"
--        "    .clusters = %u,\n"
--        "    .cores    = %u,\n"
--        "    .threads  = %u,\n"
--        "    .max_cpus = %u,\n"
-+        "    .cpus               = %u,\n"
-+        "    .sockets            = %u,\n"
-+        "    .dies               = %u,\n"
-+        "    .clusters           = %u,\n"
-+        "    .cores              = %u,\n"
-+        "    .threads            = %u,\n"
-+        "    .max_cpus           = %u,\n"
-+        "    .threads_per_socket = %u,\n"
-+        "    .cores_per_socket   = %u,\n"
-         "}",
-         topo->cpus, topo->sockets, topo->dies, topo->clusters,
--        topo->cores, topo->threads, topo->max_cpus);
-+        topo->cores, topo->threads, topo->max_cpus,
-+        threads_per_socket, cores_per_socket);
- }
- 
- static void check_parse(MachineState *ms, const SMPConfiguration *config,
-@@ -415,14 +442,26 @@ static void check_parse(MachineState *ms, const SMPConfiguration *config,
-                         bool is_valid)
- {
-     g_autofree char *config_str = smp_config_to_string(config);
--    g_autofree char *expect_topo_str = cpu_topology_to_string(expect_topo);
--    g_autofree char *output_topo_str = NULL;
-+    g_autofree char *expect_topo_str = NULL, *output_topo_str = NULL;
-+    unsigned int expect_threads_per_socket, expect_cores_per_socket;
-+    unsigned int ms_threads_per_socket, ms_cores_per_socket;
-     Error *err = NULL;
- 
-+    expect_threads_per_socket =
-+                        cpu_topology_get_threads_per_socket(expect_topo);
-+    expect_cores_per_socket =
-+                        cpu_topology_get_cores_per_socket(expect_topo);
-+    expect_topo_str = cpu_topology_to_string(expect_topo,
-+                                             expect_threads_per_socket,
-+                                             expect_cores_per_socket);
-+
-     /* call the generic parser */
-     machine_parse_smp_config(ms, config, &err);
- 
--    output_topo_str = cpu_topology_to_string(&ms->smp);
-+    ms_threads_per_socket = machine_topo_get_threads_per_socket(ms);
-+    ms_cores_per_socket = machine_topo_get_cores_per_socket(ms);
-+    output_topo_str = cpu_topology_to_string(&ms->smp, ms_threads_per_socket,
-+                                             ms_cores_per_socket);
- 
-     /* when the configuration is supposed to be valid */
-     if (is_valid) {
-@@ -433,7 +472,9 @@ static void check_parse(MachineState *ms, const SMPConfiguration *config,
-             (ms->smp.clusters == expect_topo->clusters) &&
-             (ms->smp.cores == expect_topo->cores) &&
-             (ms->smp.threads == expect_topo->threads) &&
--            (ms->smp.max_cpus == expect_topo->max_cpus)) {
-+            (ms->smp.max_cpus == expect_topo->max_cpus) &&
-+            (ms_threads_per_socket == expect_threads_per_socket) &&
-+            (ms_cores_per_socket == expect_cores_per_socket)) {
-             return;
-         }
- 
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..0ce6f8fc72 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,4 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/q35/APIC.type4-count",
++"tests/data/acpi/q35/DSDT.type4-count",
++"tests/data/acpi/q35/FACP.type4-count",
+diff --git a/tests/data/acpi/q35/APIC.type4-count b/tests/data/acpi/q35/APIC.type4-count
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/q35/DSDT.type4-count b/tests/data/acpi/q35/DSDT.type4-count
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/q35/FACP.type4-count b/tests/data/acpi/q35/FACP.type4-count
+new file mode 100644
+index 0000000000..e69de29bb2
 -- 
 MST
 
