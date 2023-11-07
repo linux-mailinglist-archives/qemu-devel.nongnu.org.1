@@ -2,61 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11AFA7E38D0
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:19:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B25457E38FA
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:23:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0J96-0005Mz-4O; Tue, 07 Nov 2023 05:17:20 -0500
+	id 1r0J96-0005QF-Tl; Tue, 07 Nov 2023 05:17:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1r0J92-000522-CA
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:17:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1r0J94-0005Fa-BU
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:17:18 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1r0J8y-0003hD-Rj
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:17:16 -0500
+ id 1r0J91-0003hg-I9
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:17:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699352228;
+ s=mimecast20190719; t=1699352234;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yvieHJpm0aK+J18vgG/hswy0zeFDJ/RTZo7QtUWXNZs=;
- b=RMKIhGFcM+pi3DN34XcN7co0jfhb1eDzWl2CIQ3yth12juEOsLksxKcB2BDjPiudwtgB9v
- 6Z5TdVz9iOjV8i2UKzoRfuxufgotSmt4zXfAd4dOqrSxAMsOCnzsSis1ddQ79SZdAy0poT
- xyjLAqfO1LtlsZWniet4VpCrDvvvUbw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-459-qa02UJU1OL2hYkY5u2acQA-1; Tue,
- 07 Nov 2023 05:17:07 -0500
-X-MC-Unique: qa02UJU1OL2hYkY5u2acQA-1
+ bh=gs3B8q7RwEx467O5ATO4jTBVfcOemL4jMSXkGGVi/rs=;
+ b=IOt4HF/zdSLRWx1RRZvf8/7KsweJL3JilYb4zpqoO7Jd7G0Yvy47EXHun6jNi7e6wEhJ7t
+ tp/oJfyC9RDdiy43Zw5ZXpxOba3fLjWxDYspTtD++bG+mE+p/EwBb0mkJUurI+eU8nlv2+
+ d7GFaeU2tygyxUZ7vpVqpOMLCM1Q7W0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-518-Qu4vnZBTPOaVFKJhq38gAA-1; Tue, 07 Nov 2023 05:17:11 -0500
+X-MC-Unique: Qu4vnZBTPOaVFKJhq38gAA-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C61593821572;
- Tue,  7 Nov 2023 10:17:06 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B6512185A784;
+ Tue,  7 Nov 2023 10:17:10 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D3248492BE0;
- Tue,  7 Nov 2023 10:17:05 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D1F79492BE0;
+ Tue,  7 Nov 2023 10:17:09 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL v3 24/25] hw/display/ati: allow compiling without PIXMAN
-Date: Tue,  7 Nov 2023 14:15:22 +0400
-Message-ID: <20231107101524.2993389-25-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL v3 25/25] build-sys: make pixman actually optional
+Date: Tue,  7 Nov 2023 14:15:23 +0400
+Message-ID: <20231107101524.2993389-26-marcandre.lureau@redhat.com>
 In-Reply-To: <20231107101524.2993389-1-marcandre.lureau@redhat.com>
 References: <20231107101524.2993389-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124;
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -64,7 +68,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -84,107 +88,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Change the "x-pixman" property default value and use the fallback path
-when PIXMAN support is disabled.
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Acked-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/display/ati.c       | 15 ++++++++++++++-
- hw/display/ati_2d.c    | 10 ++++++++--
- hw/display/meson.build |  2 +-
- 3 files changed, 23 insertions(+), 4 deletions(-)
+ meson.build | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/hw/display/ati.c b/hw/display/ati.c
-index 9a87a5504a..569b8f6165 100644
---- a/hw/display/ati.c
-+++ b/hw/display/ati.c
-@@ -32,6 +32,12 @@
+diff --git a/meson.build b/meson.build
+index 8422e7da0c..4848930680 100644
+--- a/meson.build
++++ b/meson.build
+@@ -817,9 +817,6 @@ if not get_option('pixman').auto() or have_system or have_tools
+   pixman = dependency('pixman-1', required: get_option('pixman'), version:'>=0.21.8',
+                       method: 'pkg-config')
+ endif
+-if not pixman.found() and (have_system or have_tools)
+-  error('FIXME: pixman is currently required')
+-endif
  
- #define ATI_DEBUG_HW_CURSOR 0
+ zlib = dependency('zlib', required: true)
  
-+#ifdef CONFIG_PIXMAN
-+#define DEFAULT_X_PIXMAN 3
-+#else
-+#define DEFAULT_X_PIXMAN 0
-+#endif
-+
- static const struct {
-     const char *name;
-     uint16_t dev_id;
-@@ -946,6 +952,12 @@ static void ati_vga_realize(PCIDevice *dev, Error **errp)
-     ATIVGAState *s = ATI_VGA(dev);
-     VGACommonState *vga = &s->vga;
- 
-+#ifndef CONFIG_PIXMAN
-+    if (s->use_pixman != 0) {
-+        warn_report("x-pixman != 0, not effective without PIXMAN");
-+    }
-+#endif
-+
-     if (s->model) {
-         int i;
-         for (i = 0; i < ARRAY_SIZE(ati_model_aliases); i++) {
-@@ -1033,7 +1045,8 @@ static Property ati_vga_properties[] = {
-     DEFINE_PROP_UINT16("x-device-id", ATIVGAState, dev_id,
-                        PCI_DEVICE_ID_ATI_RAGE128_PF),
-     DEFINE_PROP_BOOL("guest_hwcursor", ATIVGAState, cursor_guest_mode, false),
--    DEFINE_PROP_UINT8("x-pixman", ATIVGAState, use_pixman, 3),
-+    /* this is a debug option, prefer PROP_UINT over PROP_BIT for simplicity */
-+    DEFINE_PROP_UINT8("x-pixman", ATIVGAState, use_pixman, DEFAULT_X_PIXMAN),
-     DEFINE_PROP_END_OF_LIST()
- };
- 
-diff --git a/hw/display/ati_2d.c b/hw/display/ati_2d.c
-index 0e6b8e4367..309bb5ccb6 100644
---- a/hw/display/ati_2d.c
-+++ b/hw/display/ati_2d.c
-@@ -123,6 +123,7 @@ void ati_2d_blt(ATIVGAState *s)
-                 src_bits, dst_bits, src_stride, dst_stride, bpp, bpp,
-                 src_x, src_y, dst_x, dst_y,
-                 s->regs.dst_width, s->regs.dst_height);
-+#ifdef CONFIG_PIXMAN
-         if ((s->use_pixman & BIT(1)) &&
-             s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT &&
-             s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM) {
-@@ -147,7 +148,9 @@ void ati_2d_blt(ATIVGAState *s)
-                                        s->regs.dst_width, s->regs.dst_height);
-             }
-             g_free(tmp);
--        } else {
-+        } else
-+#endif
-+        {
-             fallback = true;
-         }
-         if (fallback) {
-@@ -206,9 +209,12 @@ void ati_2d_blt(ATIVGAState *s)
-         DPRINTF("pixman_fill(%p, %d, %d, %d, %d, %d, %d, %x)\n",
-                 dst_bits, dst_stride, bpp, dst_x, dst_y,
-                 s->regs.dst_width, s->regs.dst_height, filler);
-+#ifdef CONFIG_PIXMAN
-         if (!(s->use_pixman & BIT(0)) ||
-             !pixman_fill((uint32_t *)dst_bits, dst_stride, bpp, dst_x, dst_y,
--                    s->regs.dst_width, s->regs.dst_height, filler)) {
-+                    s->regs.dst_width, s->regs.dst_height, filler))
-+#endif
-+        {
-             /* fallback when pixman failed or we don't want to call it */
-             unsigned int x, y, i, bypp = bpp / 8;
-             unsigned int dst_pitch = dst_stride * sizeof(uint32_t);
-diff --git a/hw/display/meson.build b/hw/display/meson.build
-index 9c06aaee20..344dfe3d8c 100644
---- a/hw/display/meson.build
-+++ b/hw/display/meson.build
-@@ -62,7 +62,7 @@ system_ss.add(when: 'CONFIG_XLNX_DISPLAYPORT', if_true: files('xlnx_dp.c'))
- 
- system_ss.add(when: 'CONFIG_ARTIST', if_true: files('artist.c'))
- 
--system_ss.add(when: [pixman, 'CONFIG_ATI_VGA'], if_true: files('ati.c', 'ati_2d.c', 'ati_dbg.c'))
-+system_ss.add(when: 'CONFIG_ATI_VGA', if_true: [files('ati.c', 'ati_2d.c', 'ati_dbg.c'), pixman])
- 
- 
- if config_all_devices.has_key('CONFIG_VIRTIO_GPU')
 -- 
 2.41.0
 
