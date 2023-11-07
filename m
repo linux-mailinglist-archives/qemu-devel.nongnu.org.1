@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EB77E47E7
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:10:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 104057E47E4
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:10:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0QX3-0003WO-Dp; Tue, 07 Nov 2023 13:10:33 -0500
+	id 1r0QWv-0003Lz-7H; Tue, 07 Nov 2023 13:10:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1r0QX0-0003UM-BV
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:10:30 -0500
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1r0QWs-0003KE-49
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:10:22 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1r0QWr-0002ix-2P
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:10:30 -0500
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-5aa481d53e5so4080429a12.1
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 10:10:20 -0800 (PST)
+ id 1r0QWq-0002jA-1J
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:10:21 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1cc2f17ab26so44270085ad.0
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 10:10:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699380617; x=1699985417; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699380618; x=1699985418; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ogYJbqlkzS2Yd8saws9Occt0F7m6RWm2l0bkCCgcR3U=;
- b=F62o9/q2Mqu8GS0dfhOZyso7RT6hASuHOCoSBfoWochdmUNnR43aULGM+0aEMMVaZP
- wVd4+lz3sLFyilY67L46o3+lYvnDCV4Sc5Et5sR/8hniMvQsup2jMGkkqPNKOOt2P5ni
- GGeZunmaCbYrtmbI3pp5BXqHrSbVtbHqNIA8ymR34U1SQ9tCT6rk4OMZC7Pz6/Xz2k89
- II/kekCTdAE8QCwcYX+mJgCgV84ZcTov7eaEM7EqUM/Sh387MPpisSEvQRmpFbg+bsg0
- nkK1GMx2+QbSMxxHO99ujFur4uY7FPIu0kFQOIDkmgtr0wbX7xnK1yyJgvZPBxJb1FCZ
- p5Eg==
+ bh=pxa2X/M3i5M/B67pIBM08iOpkqVk5AqzieyHZGjyhtc=;
+ b=jpo27UHUwQ5GljXwIkqPvDrMrDlsAlR6LUPRrLR07bzy+NoTRDbSLQAdJGwHrmIx61
+ gURDSo2uW1QjeeWeMnwRywnPHdWbyXjHqz7ijcEBXobxdsOEYQYQyEJZV31SrrcJomLm
+ JQQ7+uWUsRYWyTi+S+haFO37hAi+++Hw9CQmhfpxH6A9AWw09A+t9M9uJeeBhQapcxg6
+ n0K6FvCyBakHietp9+cbvqwTQ4L6/zEF4uVieIokEhbktXTMw2E6yo37GdOfqdRNcCPQ
+ hPhm06bm7tQWr2/qU6cDTsMWeVBSdVX41OBPzWXMLoVDLOv/l9lZBG4DfFr+ceuFTyw9
+ gsEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699380617; x=1699985417;
+ d=1e100.net; s=20230601; t=1699380618; x=1699985418;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ogYJbqlkzS2Yd8saws9Occt0F7m6RWm2l0bkCCgcR3U=;
- b=BAz1oXcxEHD5gS81mkTkOEeA/MeZQpZMja/7oaAnVCn/kUSDxD+KM/KeSG4DSMjyKF
- hyAksOwA4WqWczyxsN0fZxhUwe7yTcQyJWRxy0ccnqmLTvOrI+xnsAyiiPmRQgI9CBuS
- P256TvsOMUsMDATUTIv5sL+ioWilO7qlOMQDuXbffLbcRJafPL3bBP+I95azxbvQN8Y/
- wcB17Ny+PMNSLiY0puwxu0UZua1wI+Ww9icqULAQDosJGh+c9yuVqp8MxPlLVliFlh7C
- bllIqtYm58UwGiIi2X61/CwOGRn4vZbX4YnJMi39vktiw5K0neILkHewNhBWAEpaePPo
- WgoQ==
-X-Gm-Message-State: AOJu0Yz+hqxJpG6/pW9gJE/liyz9oWHgwotsEW1l73X8biRyUKOV/11N
- bH2Wrb6FGlokIPv/3WZWU/ArrWJx6B8=
-X-Google-Smtp-Source: AGHT+IFWm9kgjVGfWor3OqA8aZVUBtUhbkrx5BtmA6zSu7sqrwDUHquMPZD7UdUq5z+wxXKrUcUVUg==
-X-Received: by 2002:a17:90b:4acb:b0:280:3650:382a with SMTP id
- mh11-20020a17090b4acb00b002803650382amr22482838pjb.16.1699380617158; 
- Tue, 07 Nov 2023 10:10:17 -0800 (PST)
+ bh=pxa2X/M3i5M/B67pIBM08iOpkqVk5AqzieyHZGjyhtc=;
+ b=KFgIhNgutoAbWd8MpHHA3KB/hle8i6ikZvpB9j9iBorzf1EXzuQW0dQUKnYkHTo50N
+ ioZ+rCTh0q6cOzp0L2VGY7880q6RhnP4Kf4p77jTELSd77crD1KoSh64hWI/WnCEOXz2
+ H1XmNo48lM6Ac52HE+kRM7PDm7byw512mLQbmCXLpSYAT0K1M4VH5uS0Yn+ehQUO45BI
+ fSrBgQI6KTKXeJIaQgwgKhPXXWSOo9+n8VmWpoBkPHdQuuniygBto6L8ewJz76wgztW7
+ YNqzSQ6iX2hMwSsUXmQk1dtTHOizOEokakxfRs06HDYf37R3vSjxNTebMTZc2awGON7E
+ 5hcA==
+X-Gm-Message-State: AOJu0Yxz3OjtsECP5ka478PuQQLGG5ZVa34QUqJVGonGRy251w1Y0/kn
+ SDbdQNnDC0GVQZYrN3b3TW57Hqq1DOE=
+X-Google-Smtp-Source: AGHT+IEQmjibQ784vy6VRNnHQ85xLgjNWXzyE4NL1vQ8Kkz/qut4AdhAt5wqtkfkCdPsz3SW1ZwoXg==
+X-Received: by 2002:a17:902:fa07:b0:1cb:ffc1:23a3 with SMTP id
+ la7-20020a170902fa0700b001cbffc123a3mr26987897plb.62.1699380618084; 
+ Tue, 07 Nov 2023 10:10:18 -0800 (PST)
 Received: from DT.local (c-71-202-158-162.hsd1.ca.comcast.net.
  [71.202.158.162]) by smtp.gmail.com with ESMTPSA id
- az10-20020a170902a58a00b001cc615e6850sm131924plb.90.2023.11.07.10.10.16
+ az10-20020a170902a58a00b001cc615e6850sm131924plb.90.2023.11.07.10.10.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 10:10:16 -0800 (PST)
+ Tue, 07 Nov 2023 10:10:17 -0800 (PST)
 From: nifan.cxl@gmail.com
 To: qemu-devel@nongnu.org
 Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
  ira.weiny@intel.com, dan.j.williams@intel.com, a.manzanares@samsung.com,
  dave@stgolabs.net, nmtadam.samsung@gmail.com, nifan@outlook.com,
  jim.harris@samsung.com, Fan Ni <fan.ni@samsung.com>
-Subject: [PATCH v3 1/9] hw/cxl/cxl-mailbox-utils: Add dc_event_log_size field
- to output payload of identify memory device command
-Date: Tue,  7 Nov 2023 10:07:05 -0800
-Message-ID: <20231107180907.553451-2-nifan.cxl@gmail.com>
+Subject: [PATCH v3 2/9] hw/cxl/cxl-mailbox-utils: Add dynamic capacity region
+ representative and mailbox command support
+Date: Tue,  7 Nov 2023 10:07:06 -0800
+Message-ID: <20231107180907.553451-3-nifan.cxl@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231107180907.553451-1-nifan.cxl@gmail.com>
 References: <20231107180907.553451-1-nifan.cxl@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=nifan.cxl@gmail.com; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,47 +97,194 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fan Ni <fan.ni@samsung.com>
 
-Based on CXL spec 3.0 Table 8-94 (Identify Memory Device Output
-Payload), dynamic capacity event log size should be part of
-output of the Identify command.
-Add dc_event_log_size to the output payload for the host to get the info.
+Per cxl spec 3.0, add dynamic capacity region representative based on
+Table 8-126 and extend the cxl type3 device definition to include dc region
+information. Also, based on info in 8.2.9.8.9.1, add 'Get Dynamic Capacity
+Configuration' mailbox support.
+
+Note: decode_len of a dc region is aligned to 256*MiB, need to be divided by
+256 * MiB before returned to the host for "Get Dynamic Capacity Configuration"
+mailbox command.
 
 Signed-off-by: Fan Ni <fan.ni@samsung.com>
 ---
- hw/cxl/cxl-mailbox-utils.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ hw/cxl/cxl-mailbox-utils.c  | 80 +++++++++++++++++++++++++++++++++++++
+ hw/mem/cxl_type3.c          |  6 +++
+ include/hw/cxl/cxl_device.h | 17 ++++++++
+ 3 files changed, 103 insertions(+)
 
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index f1145e9671..8eceedfa87 100644
+index 8eceedfa87..f80dd6474f 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -21,6 +21,7 @@
- #include "sysemu/hostmem.h"
- 
- #define CXL_CAPACITY_MULTIPLIER   (256 * MiB)
-+#define CXL_DC_EVENT_LOG_SIZE 8
- 
- /*
-  * How to add a new command, example. The command set FOO, with cmd BAR.
-@@ -753,8 +754,9 @@ static CXLRetCode cmd_identify_memory_device(const struct cxl_cmd *cmd,
-         uint16_t inject_poison_limit;
-         uint8_t poison_caps;
-         uint8_t qos_telemetry_caps;
-+        uint16_t dc_event_log_size;
-     } QEMU_PACKED *id;
--    QEMU_BUILD_BUG_ON(sizeof(*id) != 0x43);
-+    QEMU_BUILD_BUG_ON(sizeof(*id) != 0x45);
-     CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-     CXLType3Class *cvc = CXL_TYPE3_GET_CLASS(ct3d);
-     CXLDeviceState *cxl_dstate = &ct3d->cxl_dstate;
-@@ -780,6 +782,7 @@ static CXLRetCode cmd_identify_memory_device(const struct cxl_cmd *cmd,
-     st24_le_p(id->poison_list_max_mer, 256);
-     /* No limit - so limited by main poison record limit */
-     stw_le_p(&id->inject_poison_limit, 0);
-+    stw_le_p(&id->dc_event_log_size, CXL_DC_EVENT_LOG_SIZE);
- 
-     *len_out = sizeof(*id);
+@@ -80,6 +80,8 @@ enum {
+         #define GET_POISON_LIST        0x0
+         #define INJECT_POISON          0x1
+         #define CLEAR_POISON           0x2
++    DCD_CONFIG  = 0x48,
++        #define GET_DC_CONFIG          0x0
+     PHYSICAL_SWITCH = 0x51,
+         #define IDENTIFY_SWITCH_DEVICE      0x0
+         #define GET_PHYSICAL_PORT_STATE     0x1
+@@ -1210,6 +1212,74 @@ static CXLRetCode cmd_media_clear_poison(const struct cxl_cmd *cmd,
      return CXL_MBOX_SUCCESS;
+ }
+ 
++/*
++ * CXL r3.0 section 8.2.9.8.9.1: Get Dynamic Capacity Configuration
++ * (Opcode: 4800h)
++ */
++static CXLRetCode cmd_dcd_get_dyn_cap_config(const struct cxl_cmd *cmd,
++                                             uint8_t *payload_in,
++                                             size_t len_in,
++                                             uint8_t *payload_out,
++                                             size_t *len_out,
++                                             CXLCCI *cci)
++{
++    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
++    struct get_dyn_cap_config_in_pl {
++        uint8_t region_cnt;
++        uint8_t start_region_id;
++    } QEMU_PACKED;
++
++    struct get_dyn_cap_config_out_pl {
++        uint8_t num_regions;
++        uint8_t rsvd1[7];
++        struct {
++            uint64_t base;
++            uint64_t decode_len;
++            uint64_t region_len;
++            uint64_t block_size;
++            uint32_t dsmadhandle;
++            uint8_t flags;
++            uint8_t rsvd2[3];
++        } QEMU_PACKED records[];
++    } QEMU_PACKED;
++
++    struct get_dyn_cap_config_in_pl *in = (void *)payload_in;
++    struct get_dyn_cap_config_out_pl *out = (void *)payload_out;
++    uint16_t record_count = 0, i;
++    uint16_t out_pl_len;
++    uint8_t start_region_id = in->start_region_id;
++
++    if (start_region_id >= ct3d->dc.num_regions) {
++        return CXL_MBOX_INVALID_INPUT;
++    }
++
++    record_count = MIN(ct3d->dc.num_regions - in->start_region_id,
++            in->region_cnt);
++
++    out_pl_len = sizeof(*out) + record_count * sizeof(out->records[0]);
++    assert(out_pl_len <= CXL_MAILBOX_MAX_PAYLOAD_SIZE);
++
++    memset(out, 0, out_pl_len);
++    out->num_regions = record_count;
++    for (i = 0; i < record_count; i++) {
++        stq_le_p(&out->records[i].base,
++                ct3d->dc.regions[start_region_id + i].base);
++        stq_le_p(&out->records[i].decode_len,
++                ct3d->dc.regions[start_region_id + i].decode_len /
++                CXL_CAPACITY_MULTIPLIER);
++        stq_le_p(&out->records[i].region_len,
++                ct3d->dc.regions[start_region_id + i].len);
++        stq_le_p(&out->records[i].block_size,
++                ct3d->dc.regions[start_region_id + i].block_size);
++        stl_le_p(&out->records[i].dsmadhandle,
++                ct3d->dc.regions[start_region_id + i].dsmadhandle);
++        out->records[i].flags = ct3d->dc.regions[start_region_id + i].flags;
++    }
++
++    *len_out = out_pl_len;
++    return CXL_MBOX_SUCCESS;
++}
++
+ #define IMMEDIATE_CONFIG_CHANGE (1 << 1)
+ #define IMMEDIATE_DATA_CHANGE (1 << 2)
+ #define IMMEDIATE_POLICY_CHANGE (1 << 3)
+@@ -1254,6 +1324,11 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
+         cmd_media_clear_poison, 72, 0 },
+ };
+ 
++static const struct cxl_cmd cxl_cmd_set_dcd[256][256] = {
++    [DCD_CONFIG][GET_DC_CONFIG] = { "DCD_GET_DC_CONFIG",
++        cmd_dcd_get_dyn_cap_config, 2, 0 },
++};
++
+ static const struct cxl_cmd cxl_cmd_set_sw[256][256] = {
+     [INFOSTAT][IS_IDENTIFY] = { "IDENTIFY", cmd_infostat_identify, 0, 18 },
+     [INFOSTAT][BACKGROUND_OPERATION_STATUS] = { "BACKGROUND_OPERATION_STATUS",
+@@ -1465,7 +1540,12 @@ void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
+ 
+ void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payload_max)
+ {
++    CXLType3Dev *ct3d = CXL_TYPE3(d);
++
+     cxl_copy_cci_commands(cci, cxl_cmd_set);
++    if (ct3d->dc.num_regions) {
++        cxl_copy_cci_commands(cci, cxl_cmd_set_dcd);
++    }
+     cci->d = d;
+ 
+     /* No separation for PCI MB as protocol handled in PCI device */
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index 7b4d1ee774..6c1ccda159 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -1075,6 +1075,12 @@ static void ct3d_reset(DeviceState *dev)
+     uint32_t *reg_state = ct3d->cxl_cstate.crb.cache_mem_registers;
+     uint32_t *write_msk = ct3d->cxl_cstate.crb.cache_mem_regs_write_mask;
+ 
++    if (ct3d->dc.num_regions) {
++        ct3d->cxl_dstate.is_dcd = true;
++    } else {
++        ct3d->cxl_dstate.is_dcd = false;
++    }
++
+     cxl_component_register_init_common(reg_state, write_msk, CXL2_TYPE3_DEVICE);
+     cxl_device_register_init_t3(ct3d);
+ 
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index 4f2ef0b899..334c51fddb 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -235,6 +235,7 @@ typedef struct cxl_device_state {
+     uint64_t mem_size;
+     uint64_t pmem_size;
+     uint64_t vmem_size;
++    bool is_dcd;
+ 
+     const struct cxl_cmd (*cxl_cmd_set)[256];
+     CPMUState cpmu[CXL_NUM_CPMU_INSTANCES];
+@@ -417,6 +418,17 @@ typedef struct CXLPoison {
+ typedef QLIST_HEAD(, CXLPoison) CXLPoisonList;
+ #define CXL_POISON_LIST_LIMIT 256
+ 
++#define DCD_MAX_REGION_NUM 8
++
++typedef struct CXLDCDRegion {
++    uint64_t base;
++    uint64_t decode_len; /* aligned to 256*MiB */
++    uint64_t len;
++    uint64_t block_size;
++    uint32_t dsmadhandle;
++    uint8_t flags;
++} CXLDCDRegion;
++
+ struct CXLType3Dev {
+     /* Private */
+     PCIDevice parent_obj;
+@@ -453,6 +465,11 @@ struct CXLType3Dev {
+     unsigned int poison_list_cnt;
+     bool poison_list_overflowed;
+     uint64_t poison_list_overflow_ts;
++
++    struct dynamic_capacity {
++        uint8_t num_regions; /* 0-8 regions */
++        CXLDCDRegion regions[DCD_MAX_REGION_NUM];
++    } dc;
+ };
+ 
+ #define TYPE_CXL_TYPE3 "cxl-type3"
 -- 
 2.42.0
 
