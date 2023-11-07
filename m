@@ -2,99 +2,137 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4777E383E
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 10:54:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F65E7E3854
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 10:56:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0ImA-0001hr-AB; Tue, 07 Nov 2023 04:53:38 -0500
+	id 1r0Ioo-0002bD-Sp; Tue, 07 Nov 2023 04:56:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0Ily-0001gb-3l
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:53:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <gmanning@rapitasystems.com>)
+ id 1r0Iom-0002ZF-7w; Tue, 07 Nov 2023 04:56:20 -0500
+Received: from mail-lo4gbr01on20701.outbound.protection.outlook.com
+ ([2a01:111:f403:261a::701]
+ helo=GBR01-LO4-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0Ilv-0007Ue-EE
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:53:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699350802;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=92eCk32RtdbQ+XVFMfVIMlSjhF/MLLKiZmqB7y0SqCI=;
- b=fBjo6EelWw8R1mrhWVw3yQ2B7Fadk8/Tgz/Sm6hflQ+Ha3a7+oY4cNJT4Haa2BPAeFi4ie
- 8+IXZBEMcUkV1uIsF5SRcHiU4EdZX5HyJFCcjrBy11ee4F1aqVxmyWjFfgnj14AXwegcOJ
- HXADRordneabmGFdEfN5cRKyo9ZCicM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-161-dlM9OiB1PuO0ABeh1NApsQ-1; Tue, 07 Nov 2023 04:53:21 -0500
-X-MC-Unique: dlM9OiB1PuO0ABeh1NApsQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4091c9bdb8eso39468005e9.1
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 01:53:21 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699350799; x=1699955599;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=92eCk32RtdbQ+XVFMfVIMlSjhF/MLLKiZmqB7y0SqCI=;
- b=oa3OBN2fZszpVHF+q0XLPmTkllA5An2IvUmFOS9rsuMwVyudLpbRWAwVIsDpsXwquP
- 9MtVQ+11xyrjObL+VvmWR7WhhlkW3JaZNYzoPvrja/GiOe5GaZ8GVCztYhK7cHUBrE0d
- 8ZmG8EyKkfiifEyMe3JVrL6FVkM5tYVuq03hL6kX8dMyvsPfHKuWKRHfz/G8iYsTn6P/
- iO+K7oMpHAxWBRcT7EYuS1TTfwIXg8po5jbR7MwPhJEtAu2ZrWBWaSEDEOqKeQGpM6Yl
- NkeUmW1jySaOZuwx2OwD8UrZmuDwOD+SosFO+vM0VZkL7hLxtKt7j+K61uiG9msNwfaZ
- CGcA==
-X-Gm-Message-State: AOJu0YyRE/FnZ+KygGAYWQj9LI5QU14SVXjaKbOHHbMOtY5Pj6aaPUob
- Oyb15yyAOU+GY0HVEguDZCsNV82VJ9Z0rdkdQ47IklFBNvDSNVvjTWYUxSyEgD/gp+NB/YCSZLz
- H0kBHnLwGbum1y4ofsa1IP5k=
-X-Received: by 2002:a05:600c:3c97:b0:406:5a14:5c1e with SMTP id
- bg23-20020a05600c3c9700b004065a145c1emr2374878wmb.1.1699350799646; 
- Tue, 07 Nov 2023 01:53:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHSINkGFwLkbL+HVypBixc8uuyLoovdLt5oiE+2RVqbHbLl2oIr9GnkNfAuLMscABoBId7gMQ==
-X-Received: by 2002:a05:600c:3c97:b0:406:5a14:5c1e with SMTP id
- bg23-20020a05600c3c9700b004065a145c1emr2374857wmb.1.1699350799261; 
- Tue, 07 Nov 2023 01:53:19 -0800 (PST)
-Received: from redhat.com ([2.55.35.37]) by smtp.gmail.com with ESMTPSA id
- fb14-20020a05600c520e00b0040841e79715sm14673338wmb.27.2023.11.07.01.53.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 01:53:18 -0800 (PST)
-Date: Tue, 7 Nov 2023 04:53:10 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Stefan Hajnoczi <stefanha@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>, virtio-fs@redhat.com,
- Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Kevin Wolf <kwolf@redhat.com>, Erik Schilling <erik.schilling@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH v6 0/6] virtio: cleanup vhost-user-generic and reduce c&p
-Message-ID: <20231107045207-mutt-send-email-mst@kernel.org>
-References: <20231106191515.2801863-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <gmanning@rapitasystems.com>)
+ id 1r0Iok-0007w1-9R; Tue, 07 Nov 2023 04:56:20 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=eSrOVaVuGqs30qSgqCPPLPfiw7GiN6Xvh5y7N6kHafhCBJSyDK8i0Lsl85StCy85VroPKzGYB6rh4KFEPOLeS/Vre8rSH5tyre3QZKBfXTv9B4hgwDRuSRJUEOv6h73Z8Iy1SYdf/ywASGqK1DOJJreafyj6zFd8XYcPDuxM6RKeJGq3fF9ii1My5fzgcgPgxfJ1zNDHyA/sH6tP5zVlOE4oBDax3saCbvvrwqmD3w5g5/h8JNQ0vKBQosP1Bf6d6YnjMpOkeIOuFpRp0LEW8j2pSUZy0UQiKzhRPCzZEFnmHjxW0a7HCZG7cg9Qh9CDHulj6udAqFYfkBowzbyupg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=f8FdRNp8xeBUgkfvKVFrnmHNhu2kvH/RqquG7An44yQ=;
+ b=HLN1lFXlu83q6od8oujEUknVNgM1AgnOkkRCNB/KhJfPJgnmKjr7CsUdKP7esr6LxIxK70i8Rv7QSK3IXBYIDydCF5aDcTubtI9oTIYcYF/2lvvBS6P/FlzPca4DtpXu/zShUtzbfy2heqt1n6VDsfgd5uny0QKJ8o4QCTR4yjSS4KIPCsQCBXDdhmyi52R1d1anaTeVjmtCchhvyWBr2jZPC+Fbtr6spcV3k3as6tB233ZKTyki7xXbqZrYNd+Vgw73IXGeGlSSoyK13H8Ume+EDS6iqvQvFnRoV2j1n8D1Giuw+uyhEC0DzUbTk5YFGJVNYwf8AdjBYE/VsLV/EA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=rapitasystems.com; dmarc=pass action=none
+ header.from=rapitasystems.com; dkim=pass header.d=rapitasystems.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rapitasystems.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=f8FdRNp8xeBUgkfvKVFrnmHNhu2kvH/RqquG7An44yQ=;
+ b=RzH59u7UXJwLcgs54LogIH51GxZJRHdRbB5svnaom9wIm3CRJh4v1GJCHVjgjydogiERqxEbc5Xzuhh/UxtI4VKqnw75UfgWSly2TJlko3aZZzs6bjWmJXI0jk90uTia0cuxiTtK1aCsLAtL4Vq0rCXCFhqKdcaLKXAyFo02iXc=
+Received: from CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:d8::10)
+ by LO6P123MB7064.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:342::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.29; Tue, 7 Nov
+ 2023 09:56:08 +0000
+Received: from CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM
+ ([fe80::ce49:22a9:ed78:7f39]) by CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM
+ ([fe80::ce49:22a9:ed78:7f39%3]) with mapi id 15.20.6954.029; Tue, 7 Nov 2023
+ 09:55:28 +0000
+From: Greg Manning <gmanning@rapitasystems.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, =?iso-8859-1?Q?Alex_Benn=E9e?=
+ <alex.bennee@linaro.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, Peter Maydell
+ <peter.maydell@linaro.org>, =?iso-8859-1?Q?Marc-Andr=E9_Lureau?=
+ <marcandre.lureau@redhat.com>, Laurent Vivier <laurent@vivier.eu>, Mahmoud
+ Mandour <ma.mandourr@gmail.com>, Cleber Rosa <crosa@redhat.com>, Wainer dos
+ Santos Moschetta <wainersm@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>, John
+ Snow <jsnow@redhat.com>, =?iso-8859-1?Q?Daniel_P=2E_Berrang=E9?=
+ <berrange@redhat.com>, Chris Wulff <crwulff@gmail.com>, Marek Vasut
+ <marex@denx.de>, Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH 14/22] plugins: make test/example plugins work on windows
+Thread-Topic: [PATCH 14/22] plugins: make test/example plugins work on windows
+Thread-Index: AQHaEOI/He2Vr1tjpkGxX3DlH73njbBunB2AgAAAbBA=
+Date: Tue, 7 Nov 2023 09:55:24 +0000
+Message-ID: <CWXP123MB4341A5286537C5060BA71FB8D7A9A@CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM>
+References: <20231106185112.2755262-1-alex.bennee@linaro.org>
+ <20231106185112.2755262-15-alex.bennee@linaro.org>
+ <ea92d71f-35a3-4a5f-bece-01436a33e1e8@redhat.com>
+In-Reply-To: <ea92d71f-35a3-4a5f-bece-01436a33e1e8@redhat.com>
+Accept-Language: en-US, en-GB
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=rapitasystems.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CWXP123MB4341:EE_|LO6P123MB7064:EE_
+x-ms-office365-filtering-correlation-id: 2aba8c77-fa2e-454a-bbf0-08dbdf77aa01
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: gcUlK6yIqHRSyQw6nruO1uKNy1z/IixPLLJb9CoKrIKs8e9cvbzY0AQ3NYX4HShlxirJltYtHPPkbZj/oxFvfjTUUqpz6/JDa7JY5veEu4Hywih35kqHtqSvJqIxdGiDNaEoYGtlWGCyuonE5F+28UxVcLlojTDSSc5KS2YKmEu/eZhoLhGcr3rwnXjYwcJMTKKrfV1SW/1RQTvW6jXVyz05nEX2JtZgv2DUkQSuU/Lo0GGmJbuTLYAb9uUphCUBXhw5c0VSRxQb6YtMfRvur2UbUtfYTG+Q+QBRTKJCilVuxcbS6Vkpu7uPkIXQ0Dv8zANsZfCdVlNJ+wPSb8BJ/tCru3FgzQc/VJL26gakHAxEyRKswRtcIytSjAW9bOiekN4NKN29bNiI0yvlcRRVVnnvgVC6f9ZSSz+imW6MH6ZB7TTxqfNW0hpLSvoNQquq4RnTXCbCr3GeRf++M+h1gEMGLKegckNGaO2SyR2HcdzX/QENIm/DmAu29h6/ECwWLCAo7dQWl6Q5QvjsbdVDCmE0Zel2+fun8EiMFolhpinyeLRD9Z3mHYgj7W2uFFhDTizWuOvC+v9tte3aLMSGF6oA051FtBQKSrUPmUPp9wqh+YAhWymUcaTKDkPhtVRw10q4TgQeBfAOMbr157GIHw==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(376002)(39840400004)(136003)(396003)(346002)(230922051799003)(451199024)(1800799009)(64100799003)(186009)(26005)(6666004)(9686003)(7696005)(71200400001)(83380400001)(41300700001)(8676002)(4326008)(5660300002)(8936002)(52536014)(7416002)(2906002)(45080400002)(478600001)(316002)(64756008)(91956017)(54906003)(66946007)(110136005)(66476007)(66556008)(76116006)(66446008)(33656002)(86362001)(38100700002)(122000001)(6506007)(38070700009)(55016003)(460985005);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?aPxwcMug9uGI86Th3B9PWMF79l08eG/B5S7196/HSOYm4UhwSEsTvFQjz5?=
+ =?iso-8859-1?Q?tbjsBKqVBR6vuWJVnMv2OqSn5eD/PWoTZBNREjTpKp28lUqiilhYpS1DcY?=
+ =?iso-8859-1?Q?Y/Mmge+UiTfZurt2Ncd2XKiU+r763L1l1Y+RdDE9yE79N198wfblaIwRrq?=
+ =?iso-8859-1?Q?slebtHElQUJ/75YnaDrSJ1qoFrswRz4e/nHy/kXaHB5ufMnDe54g6vneGq?=
+ =?iso-8859-1?Q?psMkp1U93O16hn8CcBINigCyd8h5j/ZAHXo7Pn3p+ligOMaLsYOJaZxdBo?=
+ =?iso-8859-1?Q?X2j1wKqTXYXsatI/WtT3yFbbj8+rYtegqP/UhBWMdAXVvf0s1NFDhR4oEq?=
+ =?iso-8859-1?Q?w++9/dHxOqOtnXFVXzEllnSH2YWM8F/jr1dYbArTmqlFBwQAxkysNPexOb?=
+ =?iso-8859-1?Q?CtFd6gBcTuuQ0rNkZ3HFl5dRDP+j7Ccs5jN7TcHkiCtZeUh1HWxdJANnMw?=
+ =?iso-8859-1?Q?WOhoXWDjxmBdzHaykJuKWdoW/DO1Vq2i/oEGPyDsWZJPg0kEKWN1ncZZtO?=
+ =?iso-8859-1?Q?sPpF9hDl6B8K1X98+17cyzyiazVIpMqw5EmHnrtrMekAX8m3BmsjJGxMUJ?=
+ =?iso-8859-1?Q?2bEG/JdSCgiIoidsiBU0ZmbxRDMrrxPRMcXkT0GtGlhlXER1bt6cvVk7JK?=
+ =?iso-8859-1?Q?XYl9HBQMkNVuQlmFi6PEfVKvCUR3lYrCup1GjkmHV7y5MlRyMGGw9+YoqC?=
+ =?iso-8859-1?Q?o67Yela91J6Jj5bQZkGAKV5n2be/VlZF90MNj+AXKkEk9shY2xFugBwHgm?=
+ =?iso-8859-1?Q?rspw7/SsZQX1m+hDUrwrkawB7k9WriOaD7idrmxv04DaH5frKMlb321lzU?=
+ =?iso-8859-1?Q?S/szs/PMJsgb7Fl7N44efujBek7Nee7NeEBG7gVWEh+RwEj7xAQugGX1ri?=
+ =?iso-8859-1?Q?y5wh3IPhVwPQusN2Y7IwszgiRU6ciulrwANGWovyU6wbd0eM99eN5izEOI?=
+ =?iso-8859-1?Q?EJQ1oY+abPBA2LY2Aiz9mfeCSQNMI9e9GRegLGE9D4JKmMcQSHwfZZ58S6?=
+ =?iso-8859-1?Q?sFfMV9nODxVMaBSmuHvRSveOqKa1/c4duavuDlkY5cg2ucEZnvuLnKtExF?=
+ =?iso-8859-1?Q?uBNvTadaLI6j5gg04FLUQPRZ+ALKwpMBI1leKXqXNJwr+TVw0kgwQ/k61S?=
+ =?iso-8859-1?Q?aRJpQv8j+KrVBy7x9P9LaNBSWjTUX0WDTrC+AXyH+6lltkjixlvh1bXgpX?=
+ =?iso-8859-1?Q?25nlnXgzRn6wd5qApNUB/8s6Suh3yZRPldvIZ4vr+nipJwrlSc7AS3LXHw?=
+ =?iso-8859-1?Q?kefuyAarQw3vjLb+Leo7MuAkTqwobC6o5LqERlOD1QFFcgzBTwCXDwzOih?=
+ =?iso-8859-1?Q?M6AWbhM169BXERi1x+VWMhiYg6rwgGJlRYpIATx7YhEhM2h7fOLMAou97l?=
+ =?iso-8859-1?Q?89LjqZIqr0wbcyGfh7mVGVZBOt+RbTWrpeKM3XOTFYpvm7eHgvAn27h20h?=
+ =?iso-8859-1?Q?ZDZlYY65cDXBDx5+c820WL14UxORgHo+IJu3i/Hwyn5P9nfswYQ38tniGB?=
+ =?iso-8859-1?Q?lvDoCdorsf3F1LgNE6L2FCmnZVgYonkOi+bBJnsfo9c2U/jtxVe8EVTYcz?=
+ =?iso-8859-1?Q?TceaD5fILPJnhmFL8bTc4f+aIALNFu8JwytHfoBYT8IMJNZ3iRGxBk1ft0?=
+ =?iso-8859-1?Q?VzHdjKhVfzfk8mFUdvtPK7I9DLMscWMcgq?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231106191515.2801863-1-alex.bennee@linaro.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-OriginatorOrg: rapitasystems.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2aba8c77-fa2e-454a-bbf0-08dbdf77aa01
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2023 09:55:24.8840 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 63a1ab10-c4bd-4b99-881c-0040cec74971
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: UVqoQ5Sldvpu0TCr+N7chNxdfcj/sUJC5OYp6Fep5AEOeVtQOWx9z4I2WR1majuShE3LvDC4IfirJEIdWUr6mdIgkIIkEfa1WrugY2BQZTI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P123MB7064
+Received-SPF: pass client-ip=2a01:111:f403:261a::701;
+ envelope-from=gmanning@rapitasystems.com;
+ helo=GBR01-LO4-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,71 +148,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 06, 2023 at 07:15:09PM +0000, Alex Bennée wrote:
-> A lot of our vhost-user stubs are large chunks of boilerplate that do
-> (mostly) the same thing. This series continues the cleanups by
-> splitting the vhost-user-base and vhost-user-generic implementations.
-> After adding a new vq_size property the rng, gpio and i2c vhost-user
-> devices become simple specialisations of the common base defining the
-> ID, number of queues and potentially the config handling.
-> 
-> I've also added Manos' vhost-user-sound while I was at it.
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-Dropped due to CI failures. Pls make sure this passes gitlab CI.
-Also pls ping me after release to help make sure it does not get lost.
-Thanks!
+One important remark below that Greg can answer; the others are nits.
+> ...
+> I think this could also use the notification hook and
+dliNotePreLoadLibrary.  That's a little more tidy but it's okay either way.
 
-> Changes
-> -------
-> 
-> v6
->   - re-base to current master
->   - make vhost-user-device abstract
->   - mention abstractness in docs
-> 
-> v5
->   - addressing comments and tags
->   - improved the docs
-> 
-> v4
->   - dropped the F_TRANSPORT work for another series
->   - added vhost-user-sound
-> 
-> Alex Bennée (5):
->   virtio: split into vhost-user-base and vhost-user-device
->   hw/virtio: derive vhost-user-rng from vhost-user-base
->   hw/virtio: derive vhost-user-gpio from vhost-user-base
->   hw/virtio: derive vhost-user-i2c from vhost-user-base
->   docs/system: add a basic enumeration of vhost-user devices
-> 
-> Manos Pitsidianakis (1):
->   hw/virtio: add vhost-user-snd and virtio-snd-pci devices
-> 
->  docs/system/devices/vhost-user-rng.rst        |   2 +
->  docs/system/devices/vhost-user.rst            |  65 ++-
->  ...{vhost-user-device.h => vhost-user-base.h} |  21 +-
->  include/hw/virtio/vhost-user-gpio.h           |  23 +-
->  include/hw/virtio/vhost-user-i2c.h            |  14 +-
->  include/hw/virtio/vhost-user-rng.h            |  11 +-
->  include/hw/virtio/vhost-user-snd.h            |  26 ++
->  hw/virtio/vhost-user-base.c                   | 345 +++++++++++++++
->  hw/virtio/vhost-user-device-pci.c             |  10 +-
->  hw/virtio/vhost-user-device.c                 | 337 +--------------
->  hw/virtio/vhost-user-gpio.c                   | 406 +-----------------
->  hw/virtio/vhost-user-i2c.c                    | 272 +-----------
->  hw/virtio/vhost-user-rng.c                    | 278 +-----------
->  hw/virtio/vhost-user-snd-pci.c                |  75 ++++
->  hw/virtio/vhost-user-snd.c                    |  67 +++
->  hw/virtio/Kconfig                             |   5 +
->  hw/virtio/meson.build                         |  23 +-
->  17 files changed, 690 insertions(+), 1290 deletions(-)
->  rename include/hw/virtio/{vhost-user-device.h => vhost-user-base.h} (71%)
->  create mode 100644 include/hw/virtio/vhost-user-snd.h
->  create mode 100644 hw/virtio/vhost-user-base.c
->  create mode 100644 hw/virtio/vhost-user-snd-pci.c
->  create mode 100644 hw/virtio/vhost-user-snd.c
-> 
-> -- 
-> 2.39.2
+I don't really mind. I had in mind that there might someday be a
+single executable and when that happens the hook would silently
+get out of the way.
 
+On the other hand, doing it this way means if the user /happens/
+to have a qemu.exe in an unfortunate place then things will fail
+with very unhelpful error messages, because the linker would
+sucessfully load the qemu.exe, then (presumably) fail when
+looking up symbols.
+
+> A bit more important: would it make sense to include the hook *in the
+> QEMU executable itself*, rather than in the DLL?  If it works, it would
+> be much preferrable.  You still would have to add the .lib file to the
+> compilation, but win32_linker.c could simply be placed in os-win32.c
+> with fewer changes to meson.build and the makefiles.
+
+My initial trials of this didn't work. But having read the docs again, I'm
+going to have another go at it now...
+
+Greg.
+--
+
+Follow Rapita Systems on LinkedIn<https://www.linkedin.com/company/rapita-s=
+ystems?utm_source=3Drs_email_sig>
 
