@@ -2,80 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE7F7E3B51
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 12:48:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF0E7E3B54
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 12:50:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0KZ5-0004Yg-9v; Tue, 07 Nov 2023 06:48:15 -0500
+	id 1r0Kal-0006Q4-2e; Tue, 07 Nov 2023 06:49:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0KZ3-0004YX-JB
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 06:48:13 -0500
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0KZ2-0004LA-2P
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 06:48:13 -0500
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-507c5249d55so7287222e87.3
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 03:48:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699357690; x=1699962490; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=qj3AS9SL2giOeYDe2JY+j8efbg8X4C3EoZTMu980FEc=;
- b=geNuu9wdHWNn6FJythOFXIZphig9YJWQnSLxYoa0nxIh/Pplz8zKLjUavIdlDrCev4
- 9riacknnZpABUEAXDjM08g5Jbm0uMkC4asbXsdO9611aLq9ycOhIO7ID5lvkxu/ZpOGD
- j29mN73lEemc++0nB2C7a9OodEwwPO4h9v+bV+2vgFcCIgwzsiFD51mhGA78tIL3WUxD
- wW/8wLjkq5YHPSDJIWnEisttz7Uh5x/v8hc0ZXL+GZUVnH7j/PtbmAVozHM4TRW/xwcT
- SkiQMT1nULVhQ/NofZtr0IKdu/mlfT6KkAfXJJGvyX8ZeVIw5dTFc1X/evOI3zuLQaCn
- NXzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699357690; x=1699962490;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qj3AS9SL2giOeYDe2JY+j8efbg8X4C3EoZTMu980FEc=;
- b=TFePWdh5ytX/XwMOXddcCz99/DjhW6Onu6rAxf582JRV/jLxIsnYsXgW9d3LCCSBJK
- EqEFPIdTXh9g/PuDW9+djW64fLntIRgXznVSj4HUGaQlsI+p/PSwzVsYjYDbLZoZEwK3
- b2Jy0gaK9Z4I+S7WflqvEDiDUTTHt7sjiErlCDk8FOuevjzXS9Z6aalHSOsJCMZGFvKL
- 8fzIHo6Rd30yDktekYom2EYTEBm/lY1/MlPx7Fh7BziCc6nWUmDKC12Lm2afSBvMiVN2
- nlL5sRkdPdHKSbRKvY3lmY46YKCfYZ4J/rUALdp48LUBaJPjq08yeIlAB9Vha/D17Lj6
- PZxw==
-X-Gm-Message-State: AOJu0YzY4Y0dI4o2aG8ay15CuOtqTXVo7cMWYnrbteCxdCM4l5bR/Fux
- iA89y4krZvd1R9wyiByYoLJDjg==
-X-Google-Smtp-Source: AGHT+IFFlEUXNgl/VYC97AIb8fVySJVJkEJ10J9gV0EPI2e8gdSmEpbTG0f96yYk+9w6A/HYZa+opQ==
-X-Received: by 2002:a05:6512:488e:b0:509:d97:c850 with SMTP id
- eq14-20020a056512488e00b005090d97c850mr21917436lfb.31.1699357690075; 
- Tue, 07 Nov 2023 03:48:10 -0800 (PST)
-Received: from [192.168.69.115] ([176.187.216.69])
- by smtp.gmail.com with ESMTPSA id
- o29-20020a05600c511d00b004083996dad8sm15475932wms.18.2023.11.07.03.48.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Nov 2023 03:48:09 -0800 (PST)
-Message-ID: <21eb4e0e-9828-4288-808e-a9ae3b2d417e@linaro.org>
-Date: Tue, 7 Nov 2023 12:48:08 +0100
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r0Kad-0006O1-F5
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 06:49:52 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r0Kab-0004Xx-Pk
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 06:49:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699357788;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ggcpIgWDmzHQK3ZMctOveHXyjE46XiU6NhYFuTUDKD8=;
+ b=VqmVEDPTLbMb4g2JdQ/tRtbCL2TcbDKPPgbLsonLE7yBUDZIal1TuuaDXNwzaQauX5+K8r
+ hytDinSP88mV8kt/+06oEYL7/xLoG2fISmQz5eiCwevXGTynRLwiZIuDKpk5k+bANAX9kF
+ fIkK5j4HWPKQgNr+1JBRt7p5GfOwmCo=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-623--ABvdnV1MemEOCG-r0UKRA-1; Tue,
+ 07 Nov 2023 06:49:11 -0500
+X-MC-Unique: -ABvdnV1MemEOCG-r0UKRA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8C1913813BC8;
+ Tue,  7 Nov 2023 11:49:11 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.193.119])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 35E241121308;
+ Tue,  7 Nov 2023 11:49:11 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 544F71800DDB; Tue,  7 Nov 2023 12:49:09 +0100 (CET)
+Date: Tue, 7 Nov 2023 12:49:09 +0100
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Claudio Fontana <cfontana@suse.de>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
+ Dario Faggioli <dfaggioli@suse.com>, Jim Fehlig <jfehlig@suse.com>
+Subject: Re: [PULL 4/6] seabios: update binaries to git snapshot
+Message-ID: <rdyjajgmgmk3kfbmnufqkws662xhsitcg6yx74qlczclx3i3pz@ftfqmcm7jtp4>
+References: <20231010112610.2618091-1-kraxel@redhat.com>
+ <20231010112610.2618091-5-kraxel@redhat.com>
+ <30a82b23-ded6-f03a-727c-ed6f86657a34@suse.de>
+ <terqy6i5rs6ui4wwbzmwlqi2v72c6qfl62nnu2ifgbkbrrz3z4@mneyylwzf6fo>
+ <8aa3d259-6dd5-ebf7-8989-66b967434773@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dump:Add close fd on error return to avoid resource leak
-Content-Language: en-US
-To: Zongmin Zhou <min_halo@163.com>, marcandre.lureau@redhat.com,
- qemu-devel@nongnu.org
-Cc: Zongmin Zhou <zhouzongmin@kylinos.cn>
-References: <20231107024417.585475-1-min_halo@163.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231107024417.585475-1-min_halo@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8aa3d259-6dd5-ebf7-8989-66b967434773@suse.de>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,24 +86,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/11/23 03:44, Zongmin Zhou wrote:
-> Signed-off-by: Zongmin Zhou<zhouzongmin@kylinos.cn>
-> ---
->   dump/dump.c | 1 +
->   1 file changed, 1 insertion(+)
+> Hi, thanks for the response,
 > 
-> diff --git a/dump/dump.c b/dump/dump.c
-> index 1c304cadfd..ad5294e853 100644
-> --- a/dump/dump.c
-> +++ b/dump/dump.c
-> @@ -2160,6 +2160,7 @@ void qmp_dump_guest_memory(bool paging, const char *protocol,
->           return;
->       }
->       if (kdump_raw && lseek(fd, 0, SEEK_CUR) == (off_t) -1) {
-> +        close(fd);
->           error_setg(errp, "kdump-raw formats require a seekable file");
->           return;
->       }
+> just to be sure, this is a regression (it worked fine prior to the seabios update).
 
-Since I'm preparing a PR, I'm queuing this patch, thanks!
+Yes.
+
+> Address sizes:                      43 bits physical, 48 bits virtual
+
+OK.
+
+> [    0.881472] pci 0000:00:01.0: PCI bridge to [bus 01]
+> [    0.882262] pci 0000:00:01.0:   bridge window [io  0x1000-0x1fff]
+> [    0.886991] pci 0000:00:01.0:   bridge window [mem 0xfe800000-0xfe9fffff]
+> [    0.890308] pci 0000:00:01.0:   bridge window [mem 0xe1a000000000-0xe1bfffffffff 64bit pref]
+
+This is the change btw, the 64-bit mmio window is moved.
+Apparently we got 48 bits guest physical address space.
+
+> [    8.331290] vmap allocation for size 211106232541184 failed: use vmalloc=<size> to increase size.
+> [    8.332666] virtio-pci 0000:01:00.0: virtio_pci: unable to map virtio 56@0 on bar 4
+> [    8.334166] virtio-pci: probe of 0000:01:00.0 failed with error -22
+
+And here things go wrong.  The size is /way/ off (bar 4 is 16k).
+
+Can you try to reduce the guest physical address space?
+Try 46 instead of 48 first, if that doesn't help try
+smaller values.
+
+qemu command line:
+  -cpu host,host-phys-bits-limit=46
+
+libvirt xml:
+  <cpu ...>
+    <maxphysaddr mode='emulate' bits='46'/>
+  </cpu>
+
+take care,
+  Gerd
+
 
