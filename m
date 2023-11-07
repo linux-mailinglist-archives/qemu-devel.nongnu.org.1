@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D10387E33A4
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:12:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E691A7E33EE
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:14:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0CV9-0006qF-8n; Mon, 06 Nov 2023 22:11:39 -0500
+	id 1r0CUn-0006F3-Hg; Mon, 06 Nov 2023 22:11:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CUx-0006gG-RO
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:11:29 -0500
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1r0CUk-00064s-H8
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:11:14 -0500
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CUi-00025J-2v
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:11:26 -0500
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-5b980391d70so3941093a12.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:11:11 -0800 (PST)
+ id 1r0CUi-00025P-PL
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:11:14 -0500
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-27db9fdec0dso4944935a91.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:11:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1699326671; x=1699931471; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ExjsDSAVXPHl9Xgq+QdlGUyx4ksBZYfOfahGxiLtgN0=;
- b=Ap2hmfpMBT6PTLYjpOAuZ0A8qBDjB4+T79hH9KKpGHbS8a6VLS3DWKSPt2jlL9u5Hz
- BggMsW0byngjgEoiwUgEBuOY0rymfRKir6hGJ59XzGpUDpjaOwjYU4CsEqovb5/JVZrU
- Y8ztXbKu4ruLsYv/X4gkeLwGuhtKE6zbEO/5Y1UHeP+rDL0SesY5u5ZQZjUckszF5AbZ
- HWOK1vV56IzGo0Rcq4dYMMsju8hEp0SyWlPv2RVZDov03pTgEQy9HsJgOs6gUC2LWyDT
- FeorEhYLyqByeRNGL/6BfHqw2V0oWVVW7oOeeEFdCvMp4kE48v7Cv1xaYrQjvpCfi7Eq
- xx6A==
+ bh=DfcfvCM44CNzCfVh5n1nc5lCu8ey+5nlcTa0SEohSWE=;
+ b=PYz2iPsDzlP9S1MTVifDdXTxZ1dACpVRoKfVTvJ+zyRV2Eoe0LISvw+dWY+Opluz1U
+ q6R1/mS5huE71mgajqRWmoVgKTYfomBxXz93g+1B6OzRSRGAzri1sFWpgpjIhCHNVI7K
+ W6IRook78L5+zUOejwR3qgtp6fP4q8PQlmYx3KqOr7tH0F1cvjJXQibcANucZioKXMz5
+ ShsjX5iVKpXoDhIzD0KJ2+5DFbf71AANEbNdX8mvCJ79dTCEkeQ4q3ZnUY4mRQ3r0GsW
+ 9QWFQtv3KRrQwObF+Cecw/PgipsssJQgIXuEIYgRiAWcHIggFta5+dSw/VqHW0YS0o3O
+ ttAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1699326671; x=1699931471;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ExjsDSAVXPHl9Xgq+QdlGUyx4ksBZYfOfahGxiLtgN0=;
- b=bHmeHBJlr6Xg3dLZUJow0AiWeflxsKt1eZ1AYE0QSoF+f5R2M88vQ6+7d6AuABM6Yu
- 75HS2SBRIxqNskRIPJptswk/0qO12TxONY85/pfBY15pz7lTFBtyO03yKsp0g9EYSZiw
- hSdROZFZVBGxurAkRv/SwEkQVY2BxTIcA5Zzmr9menu6AV+94z+2y4tjbDt5iQwOTmbZ
- WnXr+rveKYJR2gNw/0rg/ECMptxAUecUyR+zB2qWoi33OT2P1NpZlQdfaBdcjB5kHtYQ
- R75LEC3/i4/TQhkNAwr5Rzphf3FxHBfouk+gX5ASvTYfbAK/vaIMZUkp7kZJ44qIFJRE
- /dXA==
-X-Gm-Message-State: AOJu0YzMSgY6o9OPO6MtAnoqne2ZXWn5v3EuQxRzlwZ/zkl+7YWMm5qF
- uM2h6z5FdINwMgwxZ1PDQDKhImVJcx1VBRaOSCQ=
-X-Google-Smtp-Source: AGHT+IGYWxJfswnnqs8cW/pAmCAem7Ec2XD2tb3bWww1+tHS49WbF81apakCroU/OdoAXxkyxxbEbQ==
-X-Received: by 2002:a17:90b:4004:b0:280:94e8:99f4 with SMTP id
- ie4-20020a17090b400400b0028094e899f4mr19691876pjb.46.1699326670742; 
- Mon, 06 Nov 2023 19:11:10 -0800 (PST)
+ bh=DfcfvCM44CNzCfVh5n1nc5lCu8ey+5nlcTa0SEohSWE=;
+ b=j4OIV/fxlsVwjnksfzMaeHNkn/s1AYOVb6s9f35A8TZ7UEFoSxaWvceDcVJiXlLV7A
+ Y/DQKsy0Xx808sXN3xW/WOslvc91vfp2K3+SdDmc1Ww1EXj/ZnHXvZ0Son/Fmqk9qhrE
+ 7XU9pUgoBS7v93YdsLnnptsNT/mHMzfrFGrX6Yzp+cyF9iawha3GnchWIsxBTf4EgSkS
+ P6szfFRscPnIn8RBvY8aDht7OCKrqnwKVX4g5HtcelmwzEkCF7Sxp4QLduFD5jcOuCWg
+ tbJ3EE3EqU4ZrZAXcXyM5jVxfocKGNrFtR3OpP+PAoNTQKr17jeYIHcUYpTDlTok0eAR
+ 7xdA==
+X-Gm-Message-State: AOJu0YwilfHYDVjhYt2kjB1Xq5n1ndUq5d0e2uiH7IPr6JsOXueo459s
+ zb3PmXpCoWg73Cyq0ZokVOIb3vVAf8nFzj9T+is=
+X-Google-Smtp-Source: AGHT+IFHQVPrLS3umoEYC/MszoRNf4fYZUvGj7MN8zldKM3BxqmT8UHf3Arai9zz7PwZsltp9cfftw==
+X-Received: by 2002:a17:90a:f2d4:b0:27c:f845:3e3f with SMTP id
+ gt20-20020a17090af2d400b0027cf8453e3fmr30019528pjb.1.1699326671372; 
+ Mon, 06 Nov 2023 19:11:11 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  gw13-20020a17090b0a4d00b0026f4bb8b2casm6246253pjb.6.2023.11.06.19.11.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 19:11:10 -0800 (PST)
+ Mon, 06 Nov 2023 19:11:11 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 83/85] hw/pci-host/astro: Trigger CPU irq on CPU HPA in high
- memory
-Date: Mon,  6 Nov 2023 19:04:05 -0800
-Message-Id: <20231107030407.8979-84-richard.henderson@linaro.org>
+Subject: [PULL 84/85] hw/hppa: Turn on 64-bit CPU for C3700 machine
+Date: Mon,  6 Nov 2023 19:04:06 -0800
+Message-Id: <20231107030407.8979-85-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231107030407.8979-1-richard.henderson@linaro.org>
 References: <20231107030407.8979-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,29 +92,24 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The CPU HPA is in the high F-region on PA2.0 CPUs, so use F_EXTEND()
-to trigger interrupt request at the right CPU HPA address.
-Note that the cpu_hpa value comes out of the IRT, which doesn't store the
-higher addresss bits.
-
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/pci-host/astro.c | 2 +-
+ hw/hppa/machine.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/pci-host/astro.c b/hw/pci-host/astro.c
-index df61386bd9..b19f0917c5 100644
---- a/hw/pci-host/astro.c
-+++ b/hw/pci-host/astro.c
-@@ -384,7 +384,7 @@ static void elroy_set_irq(void *opaque, int irq, int level)
-         uint32_t ena = bit & ~old_ilr;
-         s->ilr = old_ilr | bit;
-         if (ena != 0) {
--            stl_be_phys(&address_space_memory, cpu_hpa, val & 63);
-+            stl_be_phys(&address_space_memory, F_EXTEND(cpu_hpa), val & 63);
-         }
-     } else {
-         s->ilr = old_ilr & ~bit;
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index 43c7afb89d..da9ca85806 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -696,7 +696,7 @@ static void HP_C3700_machine_init_class_init(ObjectClass *oc, void *data)
+     NMIClass *nc = NMI_CLASS(oc);
+ 
+     mc->desc = "HP C3700 workstation";
+-    mc->default_cpu_type = TYPE_HPPA_CPU;
++    mc->default_cpu_type = TYPE_HPPA64_CPU;
+     mc->init = machine_HP_C3700_init;
+     mc->reset = hppa_machine_reset;
+     mc->block_default_type = IF_SCSI;
 -- 
 2.34.1
 
