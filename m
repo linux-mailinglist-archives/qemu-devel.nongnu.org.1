@@ -2,83 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 819BD7E4224
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:54:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7197E421D
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:51:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0NSv-0005NH-Fx; Tue, 07 Nov 2023 09:54:05 -0500
+	id 1r0NP9-0002rK-LK; Tue, 07 Nov 2023 09:50:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1r0NSc-0005De-4t
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:53:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1r0NP3-0002nn-Il
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:50:07 -0500
+Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1r0NSX-0006nG-BA
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:53:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699368819;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dVdVpRAJULVgN6n3RP7oKs8iI/jsuwKze1jZRGLr5Nc=;
- b=MzpeZJWoBfYRTpLQNFv8QUMRZkrZYu1lZX2NZ3z5X5jIiyWu3KZhF22gNUfMBhpfRSbEdz
- ZB3IQ6vo6Ycgi7Gx4H45Yi/8CBxurjlZtPfxYZiyd7YiySLyHdv8u/l9DZZWr4PCAlC1KC
- 3aJVkwL++LuRXR891M9UdhAE28hk1/Y=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-34-YA5leVTRPXe9BRqiV2G9mQ-1; Tue, 07 Nov 2023 09:53:38 -0500
-X-MC-Unique: YA5leVTRPXe9BRqiV2G9mQ-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-53dfe3af1b9so4504696a12.1
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 06:53:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699368816; x=1699973616;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=dVdVpRAJULVgN6n3RP7oKs8iI/jsuwKze1jZRGLr5Nc=;
- b=jTS/ruYyU/px4ZkiF90dbTKPgfBgmfULMxBOZRBcni9nnDchOflFIbx9Bp/TlT19Fs
- V0xepb1jM1YVBTGamDSJ5iMYSmvh/cZ4SzIOm5Q84CsycdfJZtT/y7GdFlsDd46HRje8
- cYFU3aPrWt51X+3ETRxzluabKvv3Bic445v3zqy92od+bNDuLbyXcuUjXbY3rRrLEFL/
- Lr9sSeI5W48PKQYgEsPui8kR59xLU+3BdyYuKziHpp5cDx4xsWq6D5LNr+yI1Xrqwq9o
- n2BciQoM1kQDz7RmpbwyPUrvgYw+NZHROoZcMWClbcCOE2bWjQKs8M71ZBME+TptJjOj
- tN6A==
-X-Gm-Message-State: AOJu0YxUfErAQwihYBCiyphiGeYAl59N2P+wCAMFvT4lrdK09UatYyuq
- y7pE3pGtWevcJ+TfcYN48Yl5AK/IlZ3+3J0p3Ptu00humzSEPB6SApsXhe/+VGjhZ+kKml4Eb+8
- ysaJzaMx/p1zJ1vKrAS6Kkvt5l9pIMDfQDHy0beVAiA==
-X-Received: by 2002:a50:d7dc:0:b0:543:54da:1a43 with SMTP id
- m28-20020a50d7dc000000b0054354da1a43mr21122219edj.7.1699368815896; 
- Tue, 07 Nov 2023 06:53:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE7Dj7czbIkFLJN7q+T7yQJOVloo19CylBvFNeselm6hsKPlPvLzjIX2WQwM4OPi7zR7A6ulEoIIBBrugiG5eI=
-X-Received: by 2002:a50:d7dc:0:b0:543:54da:1a43 with SMTP id
- m28-20020a50d7dc000000b0054354da1a43mr21122205edj.7.1699368815611; Tue, 07
- Nov 2023 06:53:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1r0NOx-0005WF-UG
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:50:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1699368600; x=1730904600;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=BczGS45uCgpbAGjAaLL+H2D/4oQ4U7uwH1SnF1hGGyY=;
+ b=apluEKhmlLv98Z4dOI3NT0D6+l5kDTNjLgUQnAXiHTHW+YZQRJ7yZprz
+ I43fMQw58tpj5MEqFbYEUFllKsULlzdzsojEK19FvOjpzzd1zFHZWaAzq
+ IDJGLZ4HQHxT7abzV8yaFySv+thpK0Q1I/iLuriBRbp/dv3pTNAS3fP4s
+ DhZR7zhK+z1q4Bz2fctlP3X0dflxAYfHMaeRcT4hYg0pJXC75Tl6NTx1J
+ rynP0vQFU+sktxVtbyi6tz2KsG6qTwrhH7xo2LVBs4w67PWFhFykb2A78
+ joEpiFbLL9MyTx2rvPz6/e75Fiq+Z2xW7uQpC7vr9/BPe5gcMKwnsnVsq g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10887"; a="2460352"
+X-IronPort-AV: E=Sophos;i="6.03,284,1694761200"; 
+   d="scan'208";a="2460352"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Nov 2023 06:49:57 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.03,284,1694761200"; d="scan'208";a="10847103"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa001.fm.intel.com with ESMTP; 07 Nov 2023 06:49:55 -0800
+Date: Tue, 7 Nov 2023 23:01:40 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH] scripts/cpu-x86-uarch-abi.py: Fix parameter error of cmd
+Message-ID: <ZUpRVOP3sAf/+Chb@intel.com>
+References: <20231018100011.685867-1-zhao1.liu@linux.intel.com>
+ <ZUpGhkYngtFRyGKs@redhat.com>
 MIME-Version: 1.0
-References: <20230922151858.263447-1-berrange@redhat.com>
-In-Reply-To: <20230922151858.263447-1-berrange@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Tue, 7 Nov 2023 18:53:22 +0400
-Message-ID: <CAMxuvazGuV-Z1JZD+_ZtPXGtDTbBnQkOY-nhTV2PW2-gASBveA@mail.gmail.com>
-Subject: Re: [PATCH] audio: don't abort on f32 audio format in wav backend
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZUpGhkYngtFRyGKs@redhat.com>
+Received-SPF: none client-ip=192.198.163.8;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,38 +80,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 22, 2023 at 7:19=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
-edhat.com> wrote:
->
-> Print a debug message as is done for other unsupported audio formats
-> to give the user the chance to understand their mistake.
->
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+On Tue, Nov 07, 2023 at 02:15:34PM +0000, Daniel P. Berrangé wrote:
+> Date: Tue, 7 Nov 2023 14:15:34 +0000
+> From: "Daniel P. Berrangé" <berrange@redhat.com>
+> Subject: Re: [PATCH] scripts/cpu-x86-uarch-abi.py: Fix parameter error of
+>  cmd
+> 
+> On Wed, Oct 18, 2023 at 06:00:11PM +0800, Zhao Liu wrote:
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > When run this script, there's the error:
+> > 
+> > python3 scripts/cpu-x86-uarch-abi.py /tmp/qmp
+> > Traceback (most recent call last):
+> >   File "/path-to-qemu/qemu/scripts/cpu-x86-uarch-abi.py", line 96, in <module>
+> >     cpu = shell.cmd("query-cpu-model-expansion",
+> > TypeError: QEMUMonitorProtocol.cmd() takes 2 positional arguments but 3 were given
+> > 
+> > Commit 7f521b023bc28 ("scripts/cpu-x86-uarch-abi.py: use .command()
+> > instead of .cmd()") converts the the original .cmd() to .command()
+> > (which was later renamed to "cmd" to replace the original one).
+> > 
+> > But the new .cmd() only accepts typing.Mapping as the parameter instead
+> > of typing.Dict (see _qmp.execute()).
+> > 
+> > Change the paremeters of "query-cpu-model-expansion" to typing.Mapping
+> > format to fix this error.
+> > 
+> > Fixes: 7f521b023bc28 ("scripts/cpu-x86-uarch-abi.py: use .command() instead of .cmd()")
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > ---
+> >  scripts/cpu-x86-uarch-abi.py | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> 
+> I'll queue this one and sent a PULL before the final release.
+> 
 
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+Thanks!
 
-> ---
->  audio/wavaudio.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/audio/wavaudio.c b/audio/wavaudio.c
-> index 6445a2cb90..e70e5ee0c3 100644
-> --- a/audio/wavaudio.c
-> +++ b/audio/wavaudio.c
-> @@ -97,6 +97,10 @@ static int wav_init_out(HWVoiceOut *hw, struct audsett=
-ings *as,
->          dolog ("WAVE files can not handle 32bit formats\n");
->          return -1;
->
-> +    case AUDIO_FORMAT_F32:
-> +        dolog("WAVE files can not handle float formats\n");
-> +        return -1;
-> +
->      default:
->          abort();
->      }
-> --
-> 2.41.0
->
+Regards,
+Zhao
 
+> 
+> With regards,
+> Daniel
+> -- 
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> 
 
