@@ -2,95 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCFA27E481E
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:20:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 072717E4826
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:22:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Qgk-0002HT-Bs; Tue, 07 Nov 2023 13:20:34 -0500
+	id 1r0Qhd-0003gJ-VO; Tue, 07 Nov 2023 13:21:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0Qgg-0002Cp-DZ
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:20:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0QgW-00051O-EG
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:20:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699381219;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZdbGDjfP/L398P4HTtjAZh1/yhF4qFZzWRCm7nPN7lE=;
- b=KPG+O5rQ7DW1vYyRZ8Gw/HGWVytUZL6WIZJpUq1ZI4jLfyIwZ31l6yXVxFUzBmQacbxhy7
- Ll1yA2+itcjpTXhK5rbrRyZBWkkAPGM/J0THjT62GXWk8gnyo1YvJFgXPACqzZ11bEvzb2
- 25EktuqvNA1yweTLPlNt8h/l/JJTzBU=
-Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
- [209.85.221.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-5aFwwpQbP1urrZi5ANz3iA-1; Tue, 07 Nov 2023 13:20:18 -0500
-X-MC-Unique: 5aFwwpQbP1urrZi5ANz3iA-1
-Received: by mail-vk1-f197.google.com with SMTP id
- 71dfb90a1353d-4ac342cac5cso1109621e0c.3
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 10:20:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r0Qha-0003fm-Tq
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:21:26 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r0QhZ-00057B-9d
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:21:26 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-53e3b8f906fso10075918a12.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 10:21:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699381283; x=1699986083; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ltyzVQcYUTEP4DOJZknrO/CqLib4xydUJazDnR8QFss=;
+ b=N08tyTF5UfES92wyk1P0QJzmJWMy9dFz6RB5XpW7kBuBYGHWFSa7tJg6P3grrUJTmT
+ sYY+sBVbbcWGsqid6QnOxy4oHIemn86OB/nJM1S5SqTxwFZEPJDJwtZT99w962ETFdMp
+ J4VD4IWsGjFMiL+jrU33WKX5Df6O+OpP4Ru1orAk1L81z+i4xjB+VfMfDdXfFfM5hfS4
+ lVH6q9pExp/C8x5Z7/6s7ViN3+3D9mUehSyxrcEHS+l1Ol1/B1YiHLN8quKOE3m037Pe
+ HxA5rUu1jksExsg2H+l4zPwmxqrukk018cM4jl6jEs3IA2lTTfg56kQXqWjyr9diWUHw
+ 9K9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699381218; x=1699986018;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZdbGDjfP/L398P4HTtjAZh1/yhF4qFZzWRCm7nPN7lE=;
- b=RpyfNQcrkBqwrVaj3bVoS7TrQpB3YnivyifvSyQkptOjuhQYr2UAFkHbBOJrfpTJcg
- lj4kQ+YmNVq6S6+mqnKIk9WIZwEf/GtvPMk7i0aydA+jZBlz/5XT3FYy342YHbxZzgdp
- jRg9LVrHrh2jmWeKGpimDP9m5AsZENTSFtSlmoxBSBz6f5A3hElGkX9/PFPGuCUCUvKX
- hmJhRtz09aWEVG2tTcylsajAVtsrWkPglQ6uk8slfvY2qe0dJw+SbjNWpzRR7ZmYltS7
- KzVZxh74D/JmBUQNypzsmLMfDG7unyggcxQE1+8A+sbNyR764dOQD/oISRm5x8H4xPdM
- WEcA==
-X-Gm-Message-State: AOJu0YwzJs0ZR3gZEjNtUNoyc51YAbhr5UVnPdWSyb/Xd93AOH6CFBpn
- 4EH9LaHQpHRn0HZKs2hi2UWTBb+aP/3XRBFP2W+TFkwypJg/3Xku6mKfRHoT74Qqxunl3cIv1bO
- 1LKEPnpk1NrxjeWc=
-X-Received: by 2002:a1f:a697:0:b0:4ab:eb9c:ef0d with SMTP id
- p145-20020a1fa697000000b004abeb9cef0dmr11696259vke.7.1699381217845; 
- Tue, 07 Nov 2023 10:20:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGgWtRklw/C49cc+4QKPq3PSI7UiRiIoiixZL9dCWlukrS0lB5sXkL9UTDz+pRG96S3yDgxzg==
-X-Received: by 2002:a1f:a697:0:b0:4ab:eb9c:ef0d with SMTP id
- p145-20020a1fa697000000b004abeb9cef0dmr11696231vke.7.1699381217559; 
- Tue, 07 Nov 2023 10:20:17 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- n3-20020a0cfbc3000000b0065b13180892sm144217qvp.16.2023.11.07.10.20.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Nov 2023 10:20:17 -0800 (PST)
-Message-ID: <d48e9f68-8906-4a7d-8e44-0ea894860a4d@redhat.com>
-Date: Tue, 7 Nov 2023 19:20:14 +0100
+ d=1e100.net; s=20230601; t=1699381283; x=1699986083;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ltyzVQcYUTEP4DOJZknrO/CqLib4xydUJazDnR8QFss=;
+ b=OXvPrkUiuqLW9LUQQAyvy+v/5kwEK5HAGZ6qUVApmztVSalMKXbenW4PM7hFxTF0AL
+ fiYS9ot5sBe3Rfpfr9x/VrB0oVbYw5yseDWjelsZAvoEnlnHBTDPAmF5kusCMVm629+X
+ QGQSXpdWnY2NVECqpqD6cPeMYUWJJj7RO/9UBaDUmGXfnAmWT0GGqtYtghuDUfkUyZ52
+ U62EkCZWYBXvMNxStP8pV8DlFFtTpxyDNAEgVQd6DXsk0x2qOD28kVhsV4uiMJ/5um1e
+ y/qZjOVhKTvryH8g3ZgMguu6sYQcog1W/wRJrOOXnc5GtQcT/3wq9gufpb+m14kX2kVz
+ n6Lg==
+X-Gm-Message-State: AOJu0Yygg1M8BTchIUJQe+oK2w4n9YRurHsNQCa1k2ZdAwfVzFmwHSVB
+ Ad7SN6gWYqnG2fdyV4R67JfSr1P1Qpvp4Mh/p4B7rA==
+X-Google-Smtp-Source: AGHT+IFxat6GfCwJLUEXwSNJlNgvamvtunz+6eStoLa/PlKz7j91Ka5zKIYToA9HDXNqgKGEYliD1N5uosYdRgu1Yqk=
+X-Received: by 2002:a50:9552:0:b0:543:7ba6:5bb0 with SMTP id
+ v18-20020a509552000000b005437ba65bb0mr15649643eda.35.1699381283554; Tue, 07
+ Nov 2023 10:21:23 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 39/41] vfio/ccw: Make vfio cdev pre-openable by passing
- a file handle
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com, Eric Farman
- <farman@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, "open list:vfio-ccw" <qemu-s390x@nongnu.org>
-References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
- <20231102071302.1818071-40-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231102071302.1818071-40-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <cover.1698406922.git.balaton@eik.bme.hu>
+ <697ad2e0-cb23-4efe-89e5-d1b521c0648f@gmail.com>
+ <b6ff86da-2532-708a-6737-4489d260c8a7@eik.bme.hu>
+ <fa33a840-2135-4ba8-9db1-6684275e93c3@gmail.com>
+ <092437de-efef-1c1c-00f5-8667792c5226@eik.bme.hu>
+ <4cc81579-1b3c-1373-eeb2-0c941b06c5a1@eik.bme.hu>
+ <CAFEAcA-r+KkrM2RJ--OPC6MhpmfkHitBpwpXKUbvzD3ts4hAbw@mail.gmail.com>
+ <7757c836-f40c-8bcd-fc9a-187654c497d4@eik.bme.hu>
+In-Reply-To: <7757c836-f40c-8bcd-fc9a-187654c497d4@eik.bme.hu>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 7 Nov 2023 18:21:12 +0000
+Message-ID: <CAFEAcA_FoXBc1SUpGh_U1GwqqBCwEEOJLXo20wcPi7WBuubjgA@mail.gmail.com>
+Subject: Re: [PATCH v7 0/3] Add emulation of AmigaOne XE board
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org, 
+ Nicholas Piggin <npiggin@gmail.com>, clg@kaod.org, philmd@linaro.org, 
+ Bernhard Beschow <shentey@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,99 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/2/23 08:13, Zhenzhong Duan wrote:
-> This gives management tools like libvirt a chance to open the vfio
-> cdev with privilege and pass FD to qemu. This way qemu never needs
-> to have privilege to open a VFIO or iommu cdev node.
-> 
-> Opportunisticly, remove a redundant definition of TYPE_VFIO_CCW.
-> 
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+On Tue, 7 Nov 2023 at 18:18, BALATON Zoltan <balaton@eik.bme.hu> wrote:
+>
+> On Tue, 7 Nov 2023, Peter Maydell wrote:
+> > On Tue, 7 Nov 2023 at 18:05, BALATON Zoltan <balaton@eik.bme.hu> wrote:
+> >> So if it's tests/qtest/test-hmp.c that seems to try to run a bunch of
+> >> command for each machine AFAIU. This machine needs a firmware image but
+> >> this test seems to run it with -S and never starts the machine so could
+> >> take any file with -bios for that, e.g. -bios vof.bin (thought about -bios
+> >> /dev/null but that does not work but any other file should probably be
+> >> OK). I don't know how to tell test-hmp to use that thogh or to skip this
+> >> machine.
+> >>
+> >> At some point pegasos2 also needed a firmware but this wasn't a problem
+> >> back then. Either this test is new or we could just ignore this error?
+> >
+> > The test has been around for a long time, and no, you can't ignore
+> > 'make check' failures, they will break the CI. It's one of
+> > the tests we have that test properties that must be true for
+> > all board types (or all devices, in the case of some other
+> > tests). One of the properties is "it ought to start up cleanly
+> > without extra arguments".
+>
+> I'll send a patch in a minute which hopefully fixes that skipping the exit
+> when using qtest and called without -bios.
 
-We would need an Ack from the Z team for this change.
+Yeah, looking at eg hw/mips/malta.c that's what we do there:
+we check qtest_enabled() before printing the error about
+not being able to load a BIOS blob.
 
-Thanks,
-
-C.
-
-
-> ---
->   hw/vfio/ccw.c | 34 +++++++++++++++++++++++++++++++---
->   1 file changed, 31 insertions(+), 3 deletions(-)
-> 
-> diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
-> index 7695ede0fc..a674bd8d6d 100644
-> --- a/hw/vfio/ccw.c
-> +++ b/hw/vfio/ccw.c
-> @@ -30,6 +30,7 @@
->   #include "qemu/error-report.h"
->   #include "qemu/main-loop.h"
->   #include "qemu/module.h"
-> +#include "monitor/monitor.h"
->   
->   struct VFIOCCWDevice {
->       S390CCWDevice cdev;
-> @@ -589,11 +590,12 @@ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
->           }
->       }
->   
-> +    if (vfio_device_get_name(vbasedev, errp)) {
-> +        return;
-> +    }
-> +
->       vbasedev->ops = &vfio_ccw_ops;
->       vbasedev->type = VFIO_DEVICE_TYPE_CCW;
-> -    vbasedev->name = g_strdup_printf("%x.%x.%04x", vcdev->cdev.hostid.cssid,
-> -                           vcdev->cdev.hostid.ssid,
-> -                           vcdev->cdev.hostid.devid);
->       vbasedev->dev = dev;
->   
->       /*
-> @@ -690,12 +692,37 @@ static const VMStateDescription vfio_ccw_vmstate = {
->       .unmigratable = 1,
->   };
->   
-> +static void vfio_ccw_instance_init(Object *obj)
-> +{
-> +    VFIOCCWDevice *vcdev = VFIO_CCW(obj);
-> +
-> +    vcdev->vdev.fd = -1;
-> +}
-> +
-> +#ifdef CONFIG_IOMMUFD
-> +static void vfio_ccw_set_fd(Object *obj, const char *str, Error **errp)
-> +{
-> +    VFIOCCWDevice *vcdev = VFIO_CCW(obj);
-> +    int fd = -1;
-> +
-> +    fd = monitor_fd_param(monitor_cur(), str, errp);
-> +    if (fd == -1) {
-> +        error_prepend(errp, "Could not parse remote object fd %s:", str);
-> +        return;
-> +    }
-> +    vcdev->vdev.fd = fd;
-> +}
-> +#endif
-> +
->   static void vfio_ccw_class_init(ObjectClass *klass, void *data)
->   {
->       DeviceClass *dc = DEVICE_CLASS(klass);
->       S390CCWDeviceClass *cdc = S390_CCW_DEVICE_CLASS(klass);
->   
->       device_class_set_props(dc, vfio_ccw_properties);
-> +#ifdef CONFIG_IOMMUFD
-> +    object_class_property_add_str(klass, "fd", NULL, vfio_ccw_set_fd);
-> +#endif
->       dc->vmsd = &vfio_ccw_vmstate;
->       dc->desc = "VFIO-based subchannel assignment";
->       set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-> @@ -713,6 +740,7 @@ static const TypeInfo vfio_ccw_info = {
->       .name = TYPE_VFIO_CCW,
->       .parent = TYPE_S390_CCW,
->       .instance_size = sizeof(VFIOCCWDevice),
-> +    .instance_init = vfio_ccw_instance_init,
->       .class_init = vfio_ccw_class_init,
->   };
->   
-
+thanks
+-- PMM
 
