@@ -2,100 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B5E7E41B8
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:21:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F2097E41C5
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:25:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0MxE-0000vN-EZ; Tue, 07 Nov 2023 09:21:20 -0500
+	id 1r0N0C-0004Fg-Eg; Tue, 07 Nov 2023 09:24:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frankja@linux.ibm.com>)
- id 1r0MxA-0000sr-K4; Tue, 07 Nov 2023 09:21:16 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frankja@linux.ibm.com>)
- id 1r0Mx7-00071D-JZ; Tue, 07 Nov 2023 09:21:16 -0500
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A7EAag1013532; Tue, 7 Nov 2023 14:21:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=LObvxQEWeax/0iuezMdYjyLPQkqRrr64HBuZvDf4PxU=;
- b=WNBOE85xkvyXkI+gfX08bSUW/IvR5rmNG5EMirkAU0LL1jj0/nGjI3Gyy2W7y2Yx5+Qn
- H2C70fLBJOVQ2VuGEWOzPgf8QKs+nULPwHEth24xMoZXmtuzdqApVRHbtfB6wZ6sVcFe
- appSitqQOl97ksa19OgJWtNp61vhylp/jmr1aaRYJqCPN7c1TIbd1cMWf6n+QVTiNI7W
- ALLyq/Cg9rd/Hdt9uRIOlv48qOjkKpebqYZ4GxZAYMB9Quc6EthJ0foIP59oUg8lyCLI
- lV6zdN2JMUuwqFuIUhdNdAQA4SJ2LmVXlAXa4Fz7LN6AAOv/isN94CgxIG9GK7+bqtrv Vg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7ps4gp7m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Nov 2023 14:21:10 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A7EBGVH018848;
- Tue, 7 Nov 2023 14:21:10 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7ps4gp70-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Nov 2023 14:21:10 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A7D97Al025652; Tue, 7 Nov 2023 14:21:09 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u619nh3vd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Nov 2023 14:21:09 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3A7EL7kH43123082
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 7 Nov 2023 14:21:07 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5928720040;
- Tue,  7 Nov 2023 14:21:07 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3E9B42004F;
- Tue,  7 Nov 2023 14:21:07 +0000 (GMT)
-Received: from a46lp67.. (unknown [9.152.108.100])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  7 Nov 2023 14:21:07 +0000 (GMT)
-From: Janosch Frank <frankja@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r0Mzr-0004CB-P4
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:24:04 -0500
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r0Mzm-0007Xl-11
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:24:03 -0500
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-507a0907896so7231166e87.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 06:23:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699367035; x=1699971835; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=h/mpRhK4dT7+Sn+pVmk/wvvnJudW7L453hTa8KeS450=;
+ b=AzzEduVGayhZi89O79Z8crE+ueMYB6hcAhbHMQkf0hsViwVyAHINtVEsnePwAADdeu
+ 0HFhlwRY7a5kAQjPsPoBbU2qtbTfJvyHDuAj75oNewN5JE4cyJGrdRHF+eoqEz1NzQzl
+ /NB8JV1n+WE3wyLhuJWQUKmib8NiaLSi4Fg6ZIrALnXfnBfHNEEthgugZDX4hcpZydmf
+ ms0QmKu1PiDdp4PgsJhbYG+vt8SjlA/JEMVdcFqIPwQo75hMWg8O92YXxHRgT5aJyhEB
+ 2CoQp3gd6+pcaKRCPqGpdjMsb4CYK1hdVBPKWR7PdSvIXrFpQpuLaTVN+rgtvUZI6Fxm
+ 7i+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699367035; x=1699971835;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=h/mpRhK4dT7+Sn+pVmk/wvvnJudW7L453hTa8KeS450=;
+ b=pZI1binDozM9J2PJ3a8nWBtVMC3H0II/vT03tCQulT3RjBs6uOhnWPQ4XSc+U/X6xg
+ 7RG6UAdGBNKb7FLoS/QCDMDLvmVEbB8JZzguwpuxIhTojQ1IIFRzcCy75kvnKmbfNjtr
+ 9CStL5wjuHRKKac39X0vrBKqylYOWG6fadUbs3+1XZBnXEpEpubEmnv7qUUlARLlVIj2
+ 5PjDtPW7HE7Js3aaiUN1eLxRCr3oRA6fcWvGpvxs7Hz2DlzhnAbK2CWk//Vye0bVXk4H
+ 3ouKu+fg676DtkvNNXud74gxyJcOpdz0V/VV9g7xzu9SXYi+GVaWVY+57XzAa5/r19Yx
+ 0mfA==
+X-Gm-Message-State: AOJu0YwRbz+/nMm+uN+5eAcRr8Xf5OQ/hXGOhCcu08OyYv1PrMpNZMIa
+ q2pO2Eau6LFyob4+7hSreNZN3bfj48qfKNc0anqL6A==
+X-Google-Smtp-Source: AGHT+IFPknlnxcJFhmlawsS0DWxKS2FcTVnWSRf2Bhlj50it+OojL07MJZk2SSk3cnt3HXk9mvOryg==
+X-Received: by 2002:a19:f007:0:b0:504:7ff8:3430 with SMTP id
+ p7-20020a19f007000000b005047ff83430mr22306500lfc.10.1699367035480; 
+ Tue, 07 Nov 2023 06:23:55 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ m17-20020a056000181100b0032da6f17ffdsm2505031wrh.38.2023.11.07.06.23.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 07 Nov 2023 06:23:55 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id A05895F790;
+ Tue,  7 Nov 2023 14:23:54 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, marcandre.lureau@redhat.com, thuth@redhat.com,
- imbrenda@linux.ibm.com
-Subject: [PATCH 4/4] target/s390x/arch_dump: Add arch cleanup function for PV
- dumps
-Date: Tue,  7 Nov 2023 14:20:48 +0000
-Message-Id: <20231107142048.22422-5-frankja@linux.ibm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231107142048.22422-1-frankja@linux.ibm.com>
-References: <20231107142048.22422-1-frankja@linux.ibm.com>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 00/23] Final test, gdbstub, plugin and gitdm updates for 8.2
+Date: Tue,  7 Nov 2023 14:23:31 +0000
+Message-Id: <20231107142354.3151266-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 9jx0cTenXqvFZxs_DTjmy3iS7AKnvEBt
-X-Proofpoint-ORIG-GUID: 1v6rBE2cHUiqodTgasB-vJH8Dm64RWoI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-07_05,2023-11-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- mlxlogscore=999 adultscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
- phishscore=0 impostorscore=0 mlxscore=0 clxscore=1015 priorityscore=1501
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310240000 definitions=main-2311070118
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=frankja@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -112,57 +91,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PV dumps block vcpu runs until dump end is reached. If there's an
-error between PV dump init and PV dump end the vm will never be able
-to run again. One example of such an error is insufficient disk space
-for the dump file.
+The following changes since commit 462ad017ed76889d46696a3581e1b52343f9b683:
 
-Let's add a cleanup function that tries to do a dump end. The dump
-completion data is discarded but there's no point in writing it to a
-file anyway if there's a possibility that other PV dump data is
-missing.
+  Merge tag 'pixman-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2023-11-07 19:00:03 +0800)
 
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
----
- target/s390x/arch_dump.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+are available in the Git repository at:
 
-diff --git a/target/s390x/arch_dump.c b/target/s390x/arch_dump.c
-index bdb0bfa0e7..70146d7e84 100644
---- a/target/s390x/arch_dump.c
-+++ b/target/s390x/arch_dump.c
-@@ -433,6 +433,22 @@ static int arch_sections_write(DumpState *s, uint8_t *buff)
-     return 0;
- }
- 
-+static void arch_cleanup(DumpState *s)
-+{
-+    uint8_t *buff = g_malloc(kvm_s390_pv_dmp_get_size_completion_data());
-+    int rc;
-+
-+    if (!pv_dump_initialized || !buff) {
-+        return;
-+    }
-+
-+    rc = kvm_s390_dump_completion_data(buff);
-+    if (!rc) {
-+            pv_dump_initialized = false;
-+    }
-+    g_free(buff);
-+}
-+
- int cpu_get_dump_info(ArchDumpInfo *info,
-                       const struct GuestPhysBlockList *guest_phys_blocks)
- {
-@@ -448,6 +464,7 @@ int cpu_get_dump_info(ArchDumpInfo *info,
-         info->arch_sections_add_fn = *arch_sections_add;
-         info->arch_sections_write_hdr_fn = *arch_sections_write_hdr;
-         info->arch_sections_write_fn = *arch_sections_write;
-+        info->arch_cleanup_fn = *arch_cleanup;
-     }
-     return 0;
- }
+  https://gitlab.com/stsquad/qemu.git tags/pull-halloween-omnibus-071123-1
+
+for you to fetch changes up to 00da668de6856d912cd75474ba759927e29d0e49:
+
+  Revert "tests/tcg/nios2: Re-enable linux-user tests" (2023-11-07 14:18:29 +0000)
+
+----------------------------------------------------------------
+Final test, gdbstub, plugin and gitdm updates for 8.2
+
+  - fix duplicate register in arm xml
+  - hide various duplicate system registers from gdbstub
+  - add new gdb register test to the CI (skipping s390x/ppc64 for now)
+  - introduce GDBFeatureBuilder
+  - move plugin initialisation to after vCPU init completes
+  - enable building TCG plugins on Windows platform
+  - various gitdm updates
+  - some mailmap fixes
+  - disable testing for nios2 signals which have regressed
+
+----------------------------------------------------------------
+Akihiko Odaki (5):
+      default-configs: Add TARGET_XML_FILES definition
+      gdbstub: Add num_regs member to GDBFeature
+      gdbstub: Introduce gdb_find_static_feature()
+      gdbstub: Introduce GDBFeatureBuilder
+      cpu: Call plugin hooks only when ready
+
+Alex Bennée (13):
+      gdb-xml: fix duplicate register in arm-neon.xml
+      target/arm: mark the 32bit alias of PAR when LPAE enabled
+      target/arm: hide all versions of DBGD[RS]AR from gdbstub
+      target/arm: hide aliased MIDR from gdbstub
+      tests/tcg: add an explicit gdbstub register tester
+      tests/avocado: update the tcg_plugins test
+      configure: tell meson and contrib_plugins about DLLTOOL
+      gitlab: add dlltool to Windows CI
+      contrib/gitdm: Add Rivos Inc to the domain map
+      contrib/gitdm: map HiSilicon to Huawei
+      contrib/gitdm: add Daynix to domain-map
+      mailmap: fixup some more corrupted author fields
+      Revert "tests/tcg/nios2: Re-enable linux-user tests"
+
+Greg Manning (4):
+      plugins: add dllexport and dllimport to api funcs
+      plugins: make test/example plugins work on windows
+      plugins: disable lockstep plugin on windows
+      plugins: allow plugins to be enabled on windows
+
+luzhipeng (1):
+      contrib/gitdm: add domain-map for Cestc
+
+ MAINTAINERS                                        |   2 +-
+ configure                                          |  13 +-
+ configs/targets/loongarch64-linux-user.mak         |   1 +
+ meson.build                                        |   5 +
+ include/exec/gdbstub.h                             |  59 ++++++
+ include/qemu/qemu-plugin.h                         |  50 +++++-
+ contrib/plugins/win32_linker.c                     |  34 ++++
+ cpu-target.c                                       |  11 --
+ gdbstub/gdbstub.c                                  |  78 ++++++++
+ hw/core/cpu-common.c                               |  10 ++
+ target/arm/debug_helper.c                          |  10 +-
+ target/arm/helper.c                                |  37 ++--
+ .gitlab-ci.d/windows.yml                           |   1 +
+ .mailmap                                           |   2 +
+ contrib/gitdm/domain-map                           |   4 +
+ contrib/plugins/Makefile                           |  26 ++-
+ gdb-xml/arm-neon.xml                               |   2 +-
+ plugins/meson.build                                |  19 ++
+ scripts/feature_to_c.py                            |  46 ++++-
+ tests/avocado/tcg_plugins.py                       |  28 +--
+ tests/plugin/meson.build                           |  14 +-
+ tests/tcg/multiarch/Makefile.target                |  11 +-
+ tests/tcg/multiarch/gdbstub/registers.py           | 197 +++++++++++++++++++++
+ tests/tcg/multiarch/system/Makefile.softmmu-target |  13 +-
+ tests/tcg/nios2/Makefile.target                    |  11 ++
+ tests/tcg/ppc64/Makefile.target                    |   7 +
+ tests/tcg/s390x/Makefile.target                    |   4 +
+ 27 files changed, 637 insertions(+), 58 deletions(-)
+ create mode 100644 contrib/plugins/win32_linker.c
+ create mode 100644 tests/tcg/multiarch/gdbstub/registers.py
+ create mode 100644 tests/tcg/nios2/Makefile.target
+
 -- 
-2.34.1
+2.39.2
 
 
