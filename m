@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F5167E4A1E
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 21:50:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAC3B7E4A1C
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 21:50:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Szu-0006aS-He; Tue, 07 Nov 2023 15:48:30 -0500
+	id 1r0T00-0006cu-Cl; Tue, 07 Nov 2023 15:48:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1r0Szr-0006YE-TK; Tue, 07 Nov 2023 15:48:27 -0500
-Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
+ id 1r0Szu-0006aW-6W; Tue, 07 Nov 2023 15:48:30 -0500
+Received: from mail-qt1-x82f.google.com ([2607:f8b0:4864:20::82f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1r0Szq-0006SM-5e; Tue, 07 Nov 2023 15:48:27 -0500
-Received: by mail-qt1-x830.google.com with SMTP id
- d75a77b69052e-41cd6e1d4fbso36742141cf.1; 
- Tue, 07 Nov 2023 12:48:25 -0800 (PST)
+ id 1r0Szs-0006Sx-4E; Tue, 07 Nov 2023 15:48:29 -0500
+Received: by mail-qt1-x82f.google.com with SMTP id
+ d75a77b69052e-41e1974783cso38560111cf.3; 
+ Tue, 07 Nov 2023 12:48:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699390104; x=1699994904; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699390106; x=1699994906; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AuiB8YLB6fW19Sv4iIZuZRWwFlQIhnLJeadaVGwfrms=;
- b=DYYYcgIPLVJbzJhbsn6tUq0UAn2z5rKAadcdNzB1FHOVPIfXJLJeBtpLCyO3pqobsg
- L4oP/s6qFzzABoO2egeFrMO9UYaUu2OB6SbrcBZfoxtdoH+CmBjjMbQt1xJQFQO3M/B0
- MFSsnh1aScKCfQ0iSZ7YORGIInJ30Ev0nq+oPhBoCy5q8uBCQJ4T5lPS/jNuke209u55
- bs9MmabZb/G6nR53tlwBvNUOog6yTW4O3IUSiUkwApYh4kA+xXt9dYBm8gXq39cFE2L4
- csYuWklbZrUBciQHiB+8NsfNnapT4sxMiz11s7t2Mhv/rRymdf7OQuaNJrKjO49zPPDz
- Bl0w==
+ bh=iUcEwOhRQn+FA51Xd0pAqqI8AsQQNXtH2TgPu8rbPhc=;
+ b=FNKW0dVwdJ3wor+upaXPJMUJhuiokdH/9VYhnOD2RAJH5qfR6A9vq/De4he86MRY0x
+ /6KG0RjY6y45WtQHYg3BJqZmJzHbfpD9Q5R2Lks7QxtmU6pn7eRAeCqDsDkvSKVTFvP8
+ R9ceA3ucnuePRl9m2EpZQKcQjUguPN7hq1fP9I6ne7WNjsWlePmRk7KkPtKhn+2pX/Or
+ u+kKu3aES2rQ6BlJmf943RLR0GF1TEXpyJ/HFGnCMmCxVy16s5p+w27BI2j1YhvaEkPK
+ KtpXiA+dWW26gFvvdtUHfbwVVQwzHE33MjIhhuRsYHUfh9AXwhjmYmZRkybfp9MlvIpf
+ ND+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699390104; x=1699994904;
+ d=1e100.net; s=20230601; t=1699390106; x=1699994906;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AuiB8YLB6fW19Sv4iIZuZRWwFlQIhnLJeadaVGwfrms=;
- b=sr71KsXQ+xq6V4ewJtqIF/fkC2nMhhHe19M/lo7WhbecqdiwMKkBneT4IYIPClOjBI
- eD71HAw3n6oW/kkj8B4fp30iGKG6FAdU1DF/Kf5gEgQHThrOIjCdW77uXQcSyRNyKQ5Q
- F6L9CDyDdqzN+T6r6CDyScZpfsqyBTJ4i4jj+7UV7n+tloqXdal429HYQBRAwUIHjPAd
- aeP90ADudvz6+y43DeAz/CieTRGglHju91kntFFICVlVst7K6Czy6GTCCAyIHzDtocDV
- l8wj3OfGnb/sxMLVStf/jVXtB+sEPYgYeef4P+e4WV16cXnIXdti70Ln4yv9d7d1JXPz
- AZDQ==
-X-Gm-Message-State: AOJu0YxXEvdA7N9QN9FzIr+waMaUCI7iaIdMEcNS9FMfHjEpFwUUe4zn
- 9UPisEyFHGH/8e7E+OoRf00YBPoGyaI=
-X-Google-Smtp-Source: AGHT+IHmwHIWejHpTz+YaRHBguR/1xfLwspLpuT7RAgmXOxj7ynshxOtYUCKVsUDKwGtHYWnNjv+jg==
-X-Received: by 2002:a05:622a:1b8e:b0:41c:c2ad:6810 with SMTP id
- bp14-20020a05622a1b8e00b0041cc2ad6810mr1584qtb.2.1699390104464; 
- Tue, 07 Nov 2023 12:48:24 -0800 (PST)
+ bh=iUcEwOhRQn+FA51Xd0pAqqI8AsQQNXtH2TgPu8rbPhc=;
+ b=T//WbAY4XkCe852n7HfwuW27pJB8+m/FQ+wVkQNToKQ3AF4W9cOkl96tCCd5KnT/yG
+ n1GSOvUy5O96uy5nIssiH5Msck7XuiPHxBSys33RBfxtza0Xt/TwgtximlFCnfL1oWdm
+ s4Qma1rtcS0FCR1d+wGj/jcCADRZSOavmrxeaLM1UEjNsK62EQuQupA8STFicGfwejkR
+ Nms9P/Ld9EyzlVpf2WSW/Aq0iagoUcAjDovtTX2BiC1PkFwgMtw6PEKaLV0I3aKRwwya
+ hllpKTRppjQ3IChDBMz4UfkGL/3uS2pmEf8ohc0fEuYtUFLfrRdBmqcQJKwRMxJ29RsL
+ U3eQ==
+X-Gm-Message-State: AOJu0YyK729+KClpCOcVFZw2SVLo/qTbNaOmO5zxuxMeOMvRZPB3weTu
+ qanzM+D1rTpPrjhsILnfkbzxS74ApBI=
+X-Google-Smtp-Source: AGHT+IHArDYyyPE7KOGaqcUxIrwEwh6GAqgQYPD0K+bmFwsc2xHaCrCONWueIrnlk9HVjG3b3tH50A==
+X-Received: by 2002:a05:622a:1791:b0:417:9962:4de9 with SMTP id
+ s17-20020a05622a179100b0041799624de9mr12993qtk.1.1699390106542; 
+ Tue, 07 Nov 2023 12:48:26 -0800 (PST)
 Received: from grind.. ([179.193.10.161]) by smtp.gmail.com with ESMTPSA id
- d13-20020ac8544d000000b0041eb13a8195sm48946qtq.61.2023.11.07.12.48.22
+ d13-20020ac8544d000000b0041eb13a8195sm48946qtq.61.2023.11.07.12.48.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 12:48:24 -0800 (PST)
+ Tue, 07 Nov 2023 12:48:26 -0800 (PST)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
- Glenn Miles <milesg@linux.vnet.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 7/9] ppc/pnv: Fix number of I2C engines and ports for power9/10
-Date: Tue,  7 Nov 2023 17:48:04 -0300
-Message-ID: <20231107204806.8507-8-danielhb413@gmail.com>
+ Saif Abrar <saif.abrar@linux.vnet.ibm.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PULL 8/9] hw/pci-host: Update PHB5 XSCOM registers
+Date: Tue,  7 Nov 2023 17:48:05 -0300
+Message-ID: <20231107204806.8507-9-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231107204806.8507-1-danielhb413@gmail.com>
 References: <20231107204806.8507-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
- envelope-from=danielhb413@gmail.com; helo=mail-qt1-x830.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82f;
+ envelope-from=danielhb413@gmail.com; helo=mail-qt1-x82f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,130 +93,280 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
+From: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
 
-Power9 is supposed to have 4 PIB-connected I2C engines with the
-following number of ports on each engine:
+Add new XSCOM registers introduced in PHB5.
+Apply bit-masks within xscom-write methods.
+Bit-masks specified using PPC_BITMASK macro.
 
-    0: 2
-    1: 13
-    2: 2
-    3: 2
-
-Power10 also has 4 engines but has the following number of ports
-on each engine:
-
-    0: 14
-    1: 14
-    2: 2
-    3: 16
-
-Current code assumes that they all have the same (maximum) number.
-This can be a problem if software expects to see a certain number
-of ports present (Power Hypervisor seems to care).
-
-Fixed this by adding separate tables for power9 and power10 that
-map the I2C controller number to the number of I2C buses that should
-be attached for that engine.
-
+Signed-off-by: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-Message-ID: <20231025152714.956664-1-milesg@linux.vnet.ibm.com>
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Message-ID: <20231016175948.10869-1-saif.abrar@linux.vnet.ibm.com>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- hw/ppc/pnv.c              | 12 ++++++++----
- include/hw/ppc/pnv_chip.h |  6 ++----
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ hw/pci-host/pnv_phb4.c              | 46 ++++++++++++++++++-----------
+ hw/pci-host/pnv_phb4_pec.c          | 33 +++++++++++++++++----
+ include/hw/pci-host/pnv_phb4.h      |  2 +-
+ include/hw/pci-host/pnv_phb4_regs.h |  4 ++-
+ 4 files changed, 60 insertions(+), 25 deletions(-)
 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index ae8e0b45cd..9c29727337 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1615,7 +1615,8 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
-         Object *obj =  OBJECT(&chip9->i2c[i]);
+diff --git a/hw/pci-host/pnv_phb4.c b/hw/pci-host/pnv_phb4.c
+index 37c7afc18c..075499d36d 100644
+--- a/hw/pci-host/pnv_phb4.c
++++ b/hw/pci-host/pnv_phb4.c
+@@ -855,7 +855,7 @@ static uint64_t pnv_pec_stk_nest_xscom_read(void *opaque, hwaddr addr,
+     PnvPHB4 *phb = PNV_PHB4(opaque);
+     uint32_t reg = addr >> 3;
  
-         object_property_set_int(obj, "engine", i + 1, &error_fatal);
--        object_property_set_int(obj, "num-busses", pcc->i2c_num_ports,
-+        object_property_set_int(obj, "num-busses",
-+                                pcc->i2c_ports_per_engine[i],
-                                 &error_fatal);
-         object_property_set_link(obj, "chip", OBJECT(chip), &error_abort);
-         if (!qdev_realize(DEVICE(obj), NULL, errp)) {
-@@ -1640,6 +1641,7 @@ static void pnv_chip_power9_class_init(ObjectClass *klass, void *data)
+-    /* TODO: add list of allowed registers and error out if not */
++    /* All registers are read-able */
+     return phb->nest_regs[reg];
+ }
+ 
+@@ -1000,7 +1000,7 @@ static void pnv_pec_stk_nest_xscom_write(void *opaque, hwaddr addr,
+ 
+     switch (reg) {
+     case PEC_NEST_STK_PCI_NEST_FIR:
+-        phb->nest_regs[PEC_NEST_STK_PCI_NEST_FIR] = val;
++        phb->nest_regs[PEC_NEST_STK_PCI_NEST_FIR] = val & PPC_BITMASK(0, 27);
+         break;
+     case PEC_NEST_STK_PCI_NEST_FIR_CLR:
+         phb->nest_regs[PEC_NEST_STK_PCI_NEST_FIR] &= val;
+@@ -1009,7 +1009,8 @@ static void pnv_pec_stk_nest_xscom_write(void *opaque, hwaddr addr,
+         phb->nest_regs[PEC_NEST_STK_PCI_NEST_FIR] |= val;
+         break;
+     case PEC_NEST_STK_PCI_NEST_FIR_MSK:
+-        phb->nest_regs[PEC_NEST_STK_PCI_NEST_FIR_MSK] = val;
++        phb->nest_regs[PEC_NEST_STK_PCI_NEST_FIR_MSK] = val &
++                                                        PPC_BITMASK(0, 27);
+         break;
+     case PEC_NEST_STK_PCI_NEST_FIR_MSKC:
+         phb->nest_regs[PEC_NEST_STK_PCI_NEST_FIR_MSK] &= val;
+@@ -1019,7 +1020,7 @@ static void pnv_pec_stk_nest_xscom_write(void *opaque, hwaddr addr,
+         break;
+     case PEC_NEST_STK_PCI_NEST_FIR_ACT0:
+     case PEC_NEST_STK_PCI_NEST_FIR_ACT1:
+-        phb->nest_regs[reg] = val;
++        phb->nest_regs[reg] = val & PPC_BITMASK(0, 27);
+         break;
+     case PEC_NEST_STK_PCI_NEST_FIR_WOF:
+         phb->nest_regs[reg] = 0;
+@@ -1030,7 +1031,7 @@ static void pnv_pec_stk_nest_xscom_write(void *opaque, hwaddr addr,
+         /* Flag error ? */
+         break;
+     case PEC_NEST_STK_PBCQ_MODE:
+-        phb->nest_regs[reg] = val & 0xff00000000000000ull;
++        phb->nest_regs[reg] = val & PPC_BITMASK(0, 7);
+         break;
+     case PEC_NEST_STK_MMIO_BAR0:
+     case PEC_NEST_STK_MMIO_BAR0_MASK:
+@@ -1041,28 +1042,33 @@ static void pnv_pec_stk_nest_xscom_write(void *opaque, hwaddr addr,
+              PEC_NEST_STK_BAR_EN_MMIO1)) {
+             phb_pec_error(pec, "Changing enabled BAR unsupported");
+         }
+-        phb->nest_regs[reg] = val & 0xffffffffff000000ull;
++        phb->nest_regs[reg] = val & PPC_BITMASK(0, 39);
+         break;
+     case PEC_NEST_STK_PHB_REGS_BAR:
+         if (phb->nest_regs[PEC_NEST_STK_BAR_EN] & PEC_NEST_STK_BAR_EN_PHB) {
+             phb_pec_error(pec, "Changing enabled BAR unsupported");
+         }
+-        phb->nest_regs[reg] = val & 0xffffffffffc00000ull;
++        phb->nest_regs[reg] = val & PPC_BITMASK(0, 41);
+         break;
+     case PEC_NEST_STK_INT_BAR:
+         if (phb->nest_regs[PEC_NEST_STK_BAR_EN] & PEC_NEST_STK_BAR_EN_INT) {
+             phb_pec_error(pec, "Changing enabled BAR unsupported");
+         }
+-        phb->nest_regs[reg] = val & 0xfffffff000000000ull;
++        phb->nest_regs[reg] = val & PPC_BITMASK(0, 27);
+         break;
+     case PEC_NEST_STK_BAR_EN:
+-        phb->nest_regs[reg] = val & 0xf000000000000000ull;
++        phb->nest_regs[reg] = val & PPC_BITMASK(0, 3);
+         pnv_pec_phb_update_map(phb);
+         break;
+     case PEC_NEST_STK_DATA_FRZ_TYPE:
+-    case PEC_NEST_STK_PBCQ_TUN_BAR:
+         /* Not used for now */
+-        phb->nest_regs[reg] = val;
++        phb->nest_regs[reg] = val & PPC_BITMASK(0, 27);
++        break;
++    case PEC_NEST_STK_PBCQ_SPARSE_PAGE:
++        phb->nest_regs[reg] = val & PPC_BITMASK(3, 5);
++        break;
++    case PEC_NEST_STK_PBCQ_CACHE_INJ:
++        phb->nest_regs[reg] = val & PPC_BITMASK(0, 7);
+         break;
+     default:
+         qemu_log_mask(LOG_UNIMP, "phb4_pec: nest_xscom_write 0x%"HWADDR_PRIx
+@@ -1086,7 +1092,7 @@ static uint64_t pnv_pec_stk_pci_xscom_read(void *opaque, hwaddr addr,
+     PnvPHB4 *phb = PNV_PHB4(opaque);
+     uint32_t reg = addr >> 3;
+ 
+-    /* TODO: add list of allowed registers and error out if not */
++    /* All registers are read-able */
+     return phb->pci_regs[reg];
+ }
+ 
+@@ -1095,10 +1101,9 @@ static void pnv_pec_stk_pci_xscom_write(void *opaque, hwaddr addr,
  {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     PnvChipClass *k = PNV_CHIP_CLASS(klass);
-+    static const int i2c_ports_per_engine[PNV9_CHIP_MAX_I2C] = {2, 13, 2, 2};
+     PnvPHB4 *phb = PNV_PHB4(opaque);
+     uint32_t reg = addr >> 3;
+-
+     switch (reg) {
+     case PEC_PCI_STK_PCI_FIR:
+-        phb->pci_regs[reg] = val;
++        phb->pci_regs[reg] = val & PPC_BITMASK(0, 5);
+         break;
+     case PEC_PCI_STK_PCI_FIR_CLR:
+         phb->pci_regs[PEC_PCI_STK_PCI_FIR] &= val;
+@@ -1107,7 +1112,7 @@ static void pnv_pec_stk_pci_xscom_write(void *opaque, hwaddr addr,
+         phb->pci_regs[PEC_PCI_STK_PCI_FIR] |= val;
+         break;
+     case PEC_PCI_STK_PCI_FIR_MSK:
+-        phb->pci_regs[reg] = val;
++        phb->pci_regs[reg] = val & PPC_BITMASK(0, 5);
+         break;
+     case PEC_PCI_STK_PCI_FIR_MSKC:
+         phb->pci_regs[PEC_PCI_STK_PCI_FIR_MSK] &= val;
+@@ -1117,20 +1122,25 @@ static void pnv_pec_stk_pci_xscom_write(void *opaque, hwaddr addr,
+         break;
+     case PEC_PCI_STK_PCI_FIR_ACT0:
+     case PEC_PCI_STK_PCI_FIR_ACT1:
+-        phb->pci_regs[reg] = val;
++        phb->pci_regs[reg] = val & PPC_BITMASK(0, 5);
+         break;
+     case PEC_PCI_STK_PCI_FIR_WOF:
+         phb->pci_regs[reg] = 0;
+         break;
+     case PEC_PCI_STK_ETU_RESET:
+-        phb->pci_regs[reg] = val & 0x8000000000000000ull;
++        phb->pci_regs[reg] = val & PPC_BIT(0);
+         /* TODO: Implement reset */
+         break;
+     case PEC_PCI_STK_PBAIB_ERR_REPORT:
+         break;
+     case PEC_PCI_STK_PBAIB_TX_CMD_CRED:
++        phb->pci_regs[reg] = val &
++                                 ((PPC_BITMASK(0, 2) | PPC_BITMASK(10, 18)
++                                   | PPC_BITMASK(26, 34) | PPC_BITMASK(41, 50)
++                                   | PPC_BITMASK(58, 63)));
++        break;
+     case PEC_PCI_STK_PBAIB_TX_DAT_CRED:
+-        phb->pci_regs[reg] = val;
++        phb->pci_regs[reg] = val & (PPC_BITMASK(33, 34) | PPC_BITMASK(44, 47));
+         break;
+     default:
+         qemu_log_mask(LOG_UNIMP, "phb4_pec_stk: pci_xscom_write 0x%"HWADDR_PRIx
+diff --git a/hw/pci-host/pnv_phb4_pec.c b/hw/pci-host/pnv_phb4_pec.c
+index 3b2850f7a3..ce8e228f98 100644
+--- a/hw/pci-host/pnv_phb4_pec.c
++++ b/hw/pci-host/pnv_phb4_pec.c
+@@ -34,7 +34,7 @@ static uint64_t pnv_pec_nest_xscom_read(void *opaque, hwaddr addr,
+     PnvPhb4PecState *pec = PNV_PHB4_PEC(opaque);
+     uint32_t reg = addr >> 3;
  
-     k->chip_cfam_id = 0x220d104900008000ull; /* P9 Nimbus DD2.0 */
-     k->cores_mask = POWER9_CORE_MASK;
-@@ -1656,7 +1658,7 @@ static void pnv_chip_power9_class_init(ObjectClass *klass, void *data)
-     dc->desc = "PowerNV Chip POWER9";
-     k->num_pecs = PNV9_CHIP_MAX_PEC;
-     k->i2c_num_engines = PNV9_CHIP_MAX_I2C;
--    k->i2c_num_ports = PNV9_CHIP_MAX_I2C_PORTS;
-+    k->i2c_ports_per_engine = i2c_ports_per_engine;
+-    /* TODO: add list of allowed registers and error out if not */
++    /* All registers are readable */
+     return pec->nest_regs[reg];
+ }
  
-     device_class_set_parent_realize(dc, pnv_chip_power9_realize,
-                                     &k->parent_realize);
-@@ -1861,7 +1863,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-         Object *obj =  OBJECT(&chip10->i2c[i]);
+@@ -45,18 +45,36 @@ static void pnv_pec_nest_xscom_write(void *opaque, hwaddr addr,
+     uint32_t reg = addr >> 3;
  
-         object_property_set_int(obj, "engine", i + 1, &error_fatal);
--        object_property_set_int(obj, "num-busses", pcc->i2c_num_ports,
-+        object_property_set_int(obj, "num-busses",
-+                                pcc->i2c_ports_per_engine[i],
-                                 &error_fatal);
-         object_property_set_link(obj, "chip", OBJECT(chip), &error_abort);
-         if (!qdev_realize(DEVICE(obj), NULL, errp)) {
-@@ -1886,6 +1889,7 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     PnvChipClass *k = PNV_CHIP_CLASS(klass);
-+    static const int i2c_ports_per_engine[PNV10_CHIP_MAX_I2C] = {14, 14, 2, 16};
+     switch (reg) {
+-    case PEC_NEST_PBCQ_HW_CONFIG:
+     case PEC_NEST_DROP_PRIO_CTRL:
++        pec->nest_regs[reg] = val & PPC_BITMASK(0, 25);
++        break;
+     case PEC_NEST_PBCQ_ERR_INJECT:
++        pec->nest_regs[reg] = val & PPC_BITMASK(0, 11);
++        break;
+     case PEC_NEST_PCI_NEST_CLK_TRACE_CTL:
++        pec->nest_regs[reg] = val & PPC_BITMASK(0, 16);
++        break;
+     case PEC_NEST_PBCQ_PMON_CTRL:
++        pec->nest_regs[reg] = val & PPC_BITMASK(0, 37);
++        break;
+     case PEC_NEST_PBCQ_PBUS_ADDR_EXT:
++        pec->nest_regs[reg] = val & PPC_BITMASK(0, 6);
++        break;
+     case PEC_NEST_PBCQ_PRED_VEC_TIMEOUT:
+-    case PEC_NEST_CAPP_CTRL:
++        pec->nest_regs[reg] = val & PPC_BITMASK(0, 15);
++        break;
+     case PEC_NEST_PBCQ_READ_STK_OVR:
++        pec->nest_regs[reg] = val & PPC_BITMASK(0, 48);
++        break;
+     case PEC_NEST_PBCQ_WRITE_STK_OVR:
+     case PEC_NEST_PBCQ_STORE_STK_OVR:
++        pec->nest_regs[reg] = val & PPC_BITMASK(0, 24);
++        break;
+     case PEC_NEST_PBCQ_RETRY_BKOFF_CTRL:
++        pec->nest_regs[reg] = val & PPC_BITMASK(0, 41);
++        break;
++    case PEC_NEST_PBCQ_HW_CONFIG:
++    case PEC_NEST_CAPP_CTRL:
+         pec->nest_regs[reg] = val;
+         break;
+     default:
+@@ -81,7 +99,7 @@ static uint64_t pnv_pec_pci_xscom_read(void *opaque, hwaddr addr,
+     PnvPhb4PecState *pec = PNV_PHB4_PEC(opaque);
+     uint32_t reg = addr >> 3;
  
-     k->chip_cfam_id = 0x120da04900008000ull; /* P10 DD1.0 (with NX) */
-     k->cores_mask = POWER10_CORE_MASK;
-@@ -1902,7 +1906,7 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
-     dc->desc = "PowerNV Chip POWER10";
-     k->num_pecs = PNV10_CHIP_MAX_PEC;
-     k->i2c_num_engines = PNV10_CHIP_MAX_I2C;
--    k->i2c_num_ports = PNV10_CHIP_MAX_I2C_PORTS;
-+    k->i2c_ports_per_engine = i2c_ports_per_engine;
+-    /* TODO: add list of allowed registers and error out if not */
++    /* All registers are readable */
+     return pec->pci_regs[reg];
+ }
  
-     device_class_set_parent_realize(dc, pnv_chip_power10_realize,
-                                     &k->parent_realize);
-diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-index 5815d96ecf..0ab5c42308 100644
---- a/include/hw/ppc/pnv_chip.h
-+++ b/include/hw/ppc/pnv_chip.h
-@@ -88,8 +88,7 @@ struct Pnv9Chip {
- #define PNV9_CHIP_MAX_PEC 3
-     PnvPhb4PecState pecs[PNV9_CHIP_MAX_PEC];
+@@ -93,8 +111,13 @@ static void pnv_pec_pci_xscom_write(void *opaque, hwaddr addr,
  
--#define PNV9_CHIP_MAX_I2C 3
--#define PNV9_CHIP_MAX_I2C_PORTS 1
-+#define PNV9_CHIP_MAX_I2C 4
-     PnvI2C      i2c[PNV9_CHIP_MAX_I2C];
- };
+     switch (reg) {
+     case PEC_PCI_PBAIB_HW_CONFIG:
++        pec->pci_regs[reg] = val & PPC_BITMASK(0, 42);
++        break;
++    case PEC_PCI_PBAIB_HW_OVR:
++        pec->pci_regs[reg] = val & PPC_BITMASK(0, 15);
++        break;
+     case PEC_PCI_PBAIB_READ_STK_OVR:
+-        pec->pci_regs[reg] = val;
++        pec->pci_regs[reg] = val & PPC_BITMASK(0, 48);
+         break;
+     default:
+         phb_pec_error(pec, "%s @0x%"HWADDR_PRIx"=%"PRIx64"\n", __func__,
+diff --git a/include/hw/pci-host/pnv_phb4.h b/include/hw/pci-host/pnv_phb4.h
+index 2d026db9a3..3212e68160 100644
+--- a/include/hw/pci-host/pnv_phb4.h
++++ b/include/hw/pci-host/pnv_phb4.h
+@@ -117,7 +117,7 @@ struct PnvPHB4 {
+     MemoryRegion pci_regs_mr;
  
-@@ -122,7 +121,6 @@ struct Pnv10Chip {
-     PnvPhb4PecState pecs[PNV10_CHIP_MAX_PEC];
+     /* Nest registers */
+-#define PHB4_PEC_NEST_STK_REGS_COUNT  0x17
++#define PHB4_PEC_NEST_STK_REGS_COUNT  0x18
+     uint64_t nest_regs[PHB4_PEC_NEST_STK_REGS_COUNT];
+     MemoryRegion nest_regs_mr;
  
- #define PNV10_CHIP_MAX_I2C 4
--#define PNV10_CHIP_MAX_I2C_PORTS 2
-     PnvI2C       i2c[PNV10_CHIP_MAX_I2C];
- };
+diff --git a/include/hw/pci-host/pnv_phb4_regs.h b/include/hw/pci-host/pnv_phb4_regs.h
+index 4a0d3b28ef..bea96f4d91 100644
+--- a/include/hw/pci-host/pnv_phb4_regs.h
++++ b/include/hw/pci-host/pnv_phb4_regs.h
+@@ -77,10 +77,12 @@
+ #define   PEC_NEST_STK_BAR_EN_PHB               PPC_BIT(2)
+ #define   PEC_NEST_STK_BAR_EN_INT               PPC_BIT(3)
+ #define PEC_NEST_STK_DATA_FRZ_TYPE      0x15
+-#define PEC_NEST_STK_PBCQ_TUN_BAR       0x16
++#define PEC_NEST_STK_PBCQ_SPARSE_PAGE   0x16 /* P10 */
++#define PEC_NEST_STK_PBCQ_CACHE_INJ     0x17 /* P10 */
  
-@@ -140,7 +138,7 @@ struct PnvChipClass {
-     uint32_t     num_phbs;
+ /* XSCOM PCI global registers */
+ #define PEC_PCI_PBAIB_HW_CONFIG         0x00
++#define PEC_PCI_PBAIB_HW_OVR            0x01
+ #define PEC_PCI_PBAIB_READ_STK_OVR      0x02
  
-     uint32_t     i2c_num_engines;
--    uint32_t     i2c_num_ports;
-+    const int    *i2c_ports_per_engine;
- 
-     DeviceRealize parent_realize;
- 
+ /* XSCOM PCI per-stack registers */
 -- 
 2.41.0
 
