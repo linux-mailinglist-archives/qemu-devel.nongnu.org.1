@@ -2,78 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BB6D7E36F9
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 09:56:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 213D97E36FA
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 09:56:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0HsA-0006On-SF; Tue, 07 Nov 2023 03:55:46 -0500
+	id 1r0HsQ-0006Q0-2u; Tue, 07 Nov 2023 03:56:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1r0Hs8-0006OR-Fh
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 03:55:44 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0HsD-0006P1-Bn
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 03:55:49 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1r0Hs6-0004Ky-S8
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 03:55:44 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0HsB-0004Nk-Sl
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 03:55:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699347342;
+ s=mimecast20190719; t=1699347346;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3XNR3RvMHRLRRBiPCYiu8UXbhcTIoWTxIzasu3giM0w=;
- b=cHp9s/tPX2mMyqO7EvJOYqbib7B7Pz82TZdj1iNLeE0c3JHYe+vMKNVaOcT3h4Deyrn66G
- 17pvzaDCSuhzqTwaNG92UH/zUj6vM+UFuIxRjvwcCnrOhIv1nIbN2aCrsS7ZmTC8VanheT
- CGj+JxGKby1TWG8L/JUh0/foqJ6MxiU=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=UGveAkJTxScH3WWJ8EvZ1r3juAkkJ5FaZU12H8BpfVI=;
+ b=Uno1LkrZslCUkvq532hvYtux1mVBDbwBIj04qWrQ3FxCTddHsFRiFyIS/7R5TQzbxv5U1a
+ rywaFixdimjHAD688wXXVl1aGKOgB/LC7yx8/Ve2F2pQpOjjcPOYye1V4wXLn4DdhcsilM
+ AS4jyzxl1r1WpVXRFuzaHFBoBXg6xQ0=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-82-nbDkyDuWMeiTdHciQ7gI0w-1; Tue, 07 Nov 2023 03:55:31 -0500
-X-MC-Unique: nbDkyDuWMeiTdHciQ7gI0w-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-5079a3362afso5382940e87.3
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 00:55:30 -0800 (PST)
+ us-mta-170-glb8z72MO4C5UKpf7gjQqg-1; Tue, 07 Nov 2023 03:55:34 -0500
+X-MC-Unique: glb8z72MO4C5UKpf7gjQqg-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-41cc6fa3ea4so58537851cf.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 00:55:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699347329; x=1699952129;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3XNR3RvMHRLRRBiPCYiu8UXbhcTIoWTxIzasu3giM0w=;
- b=JLLq1uhbJrmL+229Jm5A1Q8NuGiLHdkxmWG30g0VQRF28MDzZqjTYKRCMpVa9lMmJL
- 08NtrkIUBLkP4Qw/ujWrmrhWWCbyjsBSccF0Ya6hJx0jmh1DRB7tYUhwmmbuIrtavGsr
- 9WNm6v8ML+fX/HS6Hom4SBGIe4RHAh/KbXb7Gkvtq6PL8dh/kGyjWpTZNVowrW8exoho
- 3sRribaKNlt/ncw4xyda5uT2NqID2fyMy7oqBAZxzJYUy7ORFWF9XUj0jhfINS1eGosQ
- lPisKn2DLi4SgMneNAYxFSNawxmIM5utRYnKVOLzSJ6AfM8MwLppEBmscJaf6bnbmLnT
- fZQQ==
-X-Gm-Message-State: AOJu0YzuIgnCG0ZK0y5krWV+IuyaDT8DgPFn0/ShCpb3+CbxgTbR/qOe
- nOEWVw68iMX8F0dXXvbuIfFwgR3j2dujQNK+9h+MAiGP3zyNz4ZrT/7LkeMpM6AkiGdzNyoLj7v
- tUar5TqnJdyAHeceIsOHyYEyF6GAfTAY=
-X-Received: by 2002:a05:6512:10c7:b0:509:1227:ca71 with SMTP id
- k7-20020a05651210c700b005091227ca71mr26510253lfg.17.1699347329393; 
- Tue, 07 Nov 2023 00:55:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHIwbbNe6as0r1YSKt92zbZUrAv9eWKnP0wNF7Ro28X7R1IRSbi/KV9p353yuLO89SnL7xliCkIk4C4EH4hsjA=
-X-Received: by 2002:a05:6512:10c7:b0:509:1227:ca71 with SMTP id
- k7-20020a05651210c700b005091227ca71mr26510238lfg.17.1699347329031; Tue, 07
- Nov 2023 00:55:29 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699347334; x=1699952134;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UGveAkJTxScH3WWJ8EvZ1r3juAkkJ5FaZU12H8BpfVI=;
+ b=pFTjAL320o0C368ytKuzHqPdGr5JaFmttrothEyFTIzsmvv7quanojWSqcuHFuHdcR
+ MJvH1hZDcGsX8oayycRJ3xPK9n/RKb3XDfnemGKTuTiJ4r8g1sWHBhhOIFzSimj0OlUH
+ fomWaWfkqJzZLqHBxwy0q6W7Zv/dFOZ5We9XcuUOFCS5Gu/scQLQfIzy8iZ9Ze15DTga
+ mGsHL/yx95CIfN80GUqhXGcj5eYUibpW2SQW2mEK/Ry3cFHjuz8sn1/Pb4IKthPMdURF
+ VGTwCoo94FC/g2uPrac1nEY/TwQUPbc/NWQDZU7/gubMAGlzs6SjdWX4g+MLu2G8qx7u
+ wIng==
+X-Gm-Message-State: AOJu0YzWS/LmCFRkQySpSsZwZHRm7VUDEXqYCqUcbq1mbT+jeseQpu4R
+ SG3cJ0qohH78Lqj8zrH0j0lLmikxt3rfCRQXhddEVGBJ594LsYBZVFJ8DLJqWKlLFLcuWTsmwIL
+ fL0M2QI+vvlUrIGv4oOjVnOo=
+X-Received: by 2002:ac8:580f:0:b0:418:1f3c:5120 with SMTP id
+ g15-20020ac8580f000000b004181f3c5120mr35261277qtg.46.1699347334036; 
+ Tue, 07 Nov 2023 00:55:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFEx3YARHtuk7inOxfLmiKnhV9VGwQQMRZ4ICvmrFSM5+94I0ymZcKobI19AfBmhoRK8/Kh7g==
+X-Received: by 2002:ac8:580f:0:b0:418:1f3c:5120 with SMTP id
+ g15-20020ac8580f000000b004181f3c5120mr35261268qtg.46.1699347333814; 
+ Tue, 07 Nov 2023 00:55:33 -0800 (PST)
+Received: from [192.168.0.6] (ip-109-43-179-224.web.vodafone.de.
+ [109.43.179.224]) by smtp.gmail.com with ESMTPSA id
+ ke15-20020a05622a288f00b00419b9b1b0b0sm4157104qtb.56.2023.11.07.00.55.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 07 Nov 2023 00:55:33 -0800 (PST)
+Message-ID: <8603adb6-d7b8-43d9-9b6e-1e7caf145311@redhat.com>
+Date: Tue, 7 Nov 2023 09:55:29 +0100
 MIME-Version: 1.0
-References: <20231107071915.2459115-1-marcandre.lureau@redhat.com>
- <20231107071915.2459115-24-marcandre.lureau@redhat.com>
- <15834680-16c1-6ed2-38fa-403d9bd14242@eik.bme.hu>
-In-Reply-To: <15834680-16c1-6ed2-38fa-403d9bd14242@eik.bme.hu>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Tue, 7 Nov 2023 12:55:17 +0400
-Message-ID: <CAMxuvaxnUVdWnwpUWd8J76WrRC0pPwTm1NeU6frs0A-T8TOQEg@mail.gmail.com>
-Subject: Re: [PATCH v8 23/24] hw/display/ati: allow compiling without PIXMAN
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- stefanha@gmail.com, Gerd Hoffmann <kraxel@redhat.com>, qemu-ppc@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 2/3] tests/qtest/pvanic: use centralized definition of
+ supported events
+Content-Language: en-US
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org
+References: <20231104-pvpanic-shutdown-v1-0-02353157891b@t-8ch.de>
+ <20231104-pvpanic-shutdown-v1-2-02353157891b@t-8ch.de>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20231104-pvpanic-shutdown-v1-2-02353157891b@t-8ch.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,7 +129,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,182 +145,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+On 04/11/2023 12.25, Thomas Weißschuh wrote:
+> Avoid the necessity to update all tests when new events are added
+> to the device.
+> 
+> Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
+> ---
+>   tests/qtest/pvpanic-pci-test.c | 5 +++--
+>   tests/qtest/pvpanic-test.c     | 5 +++--
+>   2 files changed, 6 insertions(+), 4 deletions(-)
 
-On Tue, Nov 7, 2023 at 12:46=E2=80=AFPM BALATON Zoltan <balaton@eik.bme.hu>=
- wrote:
->
-> On Tue, 7 Nov 2023, marcandre.lureau@redhat.com wrote:
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >
-> > Change the "x-pixman" property default value and use the fallback path
-> > when PIXMAN support is disabled.
-> >
-> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> > ---
-> > hw/display/ati.c       | 16 +++++++++++++++-
-> > hw/display/ati_2d.c    | 11 +++++++----
-> > hw/display/meson.build |  2 +-
-> > 3 files changed, 23 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/hw/display/ati.c b/hw/display/ati.c
-> > index 9a87a5504a..51a3b156ac 100644
-> > --- a/hw/display/ati.c
-> > +++ b/hw/display/ati.c
-> > @@ -32,6 +32,13 @@
-> >
-> > #define ATI_DEBUG_HW_CURSOR 0
-> >
-> > +#ifdef CONFIG_PIXMAN
-> > +#define DEFAULT_X_PIXMAN 3
-> > +#else
-> > +#define DEFAULT_X_PIXMAN 0
-> > +#endif
-> > +
-> > +
->
-> Excess new line.
-
-ok
-
->
-> > static const struct {
-> >     const char *name;
-> >     uint16_t dev_id;
-> > @@ -946,6 +953,12 @@ static void ati_vga_realize(PCIDevice *dev, Error =
-**errp)
-> >     ATIVGAState *s =3D ATI_VGA(dev);
-> >     VGACommonState *vga =3D &s->vga;
-> >
-> > +#ifndef CONFIG_PIXMAN
-> > +    if (s->use_pixman !=3D 0) {
-> > +        warn_report("x-pixman !=3D 0, not effective without PIXMAN");
-> > +    }
-> > +#endif
-> > +
-> >     if (s->model) {
-> >         int i;
-> >         for (i =3D 0; i < ARRAY_SIZE(ati_model_aliases); i++) {
-> > @@ -1033,7 +1046,8 @@ static Property ati_vga_properties[] =3D {
-> >     DEFINE_PROP_UINT16("x-device-id", ATIVGAState, dev_id,
-> >                        PCI_DEVICE_ID_ATI_RAGE128_PF),
-> >     DEFINE_PROP_BOOL("guest_hwcursor", ATIVGAState, cursor_guest_mode, =
-false),
-> > -    DEFINE_PROP_UINT8("x-pixman", ATIVGAState, use_pixman, 3),
-> > +    /* this a debug option, prefer PROP_UINT over PROP_BIT for simplic=
-ity */
->
-> Comment not needed but if you still want it, should be "this is a debug..=
-."
-
-indeed
-
->
-> > +    DEFINE_PROP_UINT8("x-pixman", ATIVGAState, use_pixman, DEFAULT_X_P=
-IXMAN),
-> >     DEFINE_PROP_END_OF_LIST()
-> > };
-> >
-> > diff --git a/hw/display/ati_2d.c b/hw/display/ati_2d.c
-> > index 0e6b8e4367..e58acd0802 100644
-> > --- a/hw/display/ati_2d.c
-> > +++ b/hw/display/ati_2d.c
-> > @@ -92,7 +92,7 @@ void ati_2d_blt(ATIVGAState *s)
-> >     switch (s->regs.dp_mix & GMC_ROP3_MASK) {
-> >     case ROP3_SRCCOPY:
-> >     {
-> > -        bool fallback =3D false;
-> > +        bool fallback =3D true;
-> >         unsigned src_x =3D (s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT ?
-> >                        s->regs.src_x : s->regs.src_x + 1 - s->regs.dst_=
-width);
-> >         unsigned src_y =3D (s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM ?
-> > @@ -119,6 +119,7 @@ void ati_2d_blt(ATIVGAState *s)
-> >
-> >         src_stride /=3D sizeof(uint32_t);
-> >         dst_stride /=3D sizeof(uint32_t);
-> > +#ifdef CONFIG_PIXMAN
-> >         DPRINTF("pixman_blt(%p, %p, %d, %d, %d, %d, %d, %d, %d, %d, %d,=
- %d)\n",
-> >                 src_bits, dst_bits, src_stride, dst_stride, bpp, bpp,
-> >                 src_x, src_y, dst_x, dst_y,
->
-> Keep debug log even without pixman so move ifdef after it (also below) as
-> this provides info on the operation even if done by fallback.
-
-ok
-
->
-> > @@ -147,9 +148,8 @@ void ati_2d_blt(ATIVGAState *s)
-> >                                        s->regs.dst_width, s->regs.dst_h=
-eight);
-> >             }
-> >             g_free(tmp);
-> > -        } else {
-> > -            fallback =3D true;
-> >         }
->
-> If you cahnge default value to true this is not needed any more but for
-> consistency with sm501 you could keep default and put this outside of
-> #idfef instead so it's the same as sm501 or do the same there.
-
-ok, and fixing the fallback=3Dtrue case in my sm501 patch while at it.
-
->
-> > +#endif
-> >         if (fallback) {
-> >             unsigned int y, i, j, bypp =3D bpp / 8;
-> >             unsigned int src_pitch =3D src_stride * sizeof(uint32_t);
-> > @@ -203,12 +203,15 @@ void ati_2d_blt(ATIVGAState *s)
-> >         }
-> >
-> >         dst_stride /=3D sizeof(uint32_t);
-> > +#ifdef CONFIG_PIXMAN
-> >         DPRINTF("pixman_fill(%p, %d, %d, %d, %d, %d, %d, %x)\n",
-> >                 dst_bits, dst_stride, bpp, dst_x, dst_y,
-> >                 s->regs.dst_width, s->regs.dst_height, filler);
->
-> Move ifdef here.
->
-> With these
->
-> Acked-by: BALATON Zoltan <balaton@eik.bme.hu>
->
-> Thanks for doing this in last minute.
-
-thanks for the quick review!
-
->
-> Regards,
-> BALATON Zoltan
->
-> >         if (!(s->use_pixman & BIT(0)) ||
-> >             !pixman_fill((uint32_t *)dst_bits, dst_stride, bpp, dst_x, =
-dst_y,
-> > -                    s->regs.dst_width, s->regs.dst_height, filler)) {
-> > +                    s->regs.dst_width, s->regs.dst_height, filler))
-> > +#endif
-> > +        {
-> >             /* fallback when pixman failed or we don't want to call it =
-*/
-> >             unsigned int x, y, i, bypp =3D bpp / 8;
-> >             unsigned int dst_pitch =3D dst_stride * sizeof(uint32_t);
-> > diff --git a/hw/display/meson.build b/hw/display/meson.build
-> > index 9c06aaee20..344dfe3d8c 100644
-> > --- a/hw/display/meson.build
-> > +++ b/hw/display/meson.build
-> > @@ -62,7 +62,7 @@ system_ss.add(when: 'CONFIG_XLNX_DISPLAYPORT', if_tru=
-e: files('xlnx_dp.c'))
-> >
-> > system_ss.add(when: 'CONFIG_ARTIST', if_true: files('artist.c'))
-> >
-> > -system_ss.add(when: [pixman, 'CONFIG_ATI_VGA'], if_true: files('ati.c'=
-, 'ati_2d.c', 'ati_dbg.c'))
-> > +system_ss.add(when: 'CONFIG_ATI_VGA', if_true: [files('ati.c', 'ati_2d=
-.c', 'ati_dbg.c'), pixman])
-> >
-> >
-> > if config_all_devices.has_key('CONFIG_VIRTIO_GPU')
-> >
+FWIW:
+Acked-by: Thomas Huth <thuth@redhat.com>
 
 
