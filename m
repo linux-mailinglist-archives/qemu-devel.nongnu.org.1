@@ -2,49 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D76C97E4839
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:26:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F1707E483F
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:29:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0QlK-000612-NN; Tue, 07 Nov 2023 13:25:18 -0500
+	id 1r0QoT-0008Q7-MD; Tue, 07 Nov 2023 13:28:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r0QlH-00060k-WB; Tue, 07 Nov 2023 13:25:16 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1r0QoQ-0008PL-Pu; Tue, 07 Nov 2023 13:28:30 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r0QlF-0005r0-Tt; Tue, 07 Nov 2023 13:25:15 -0500
+ id 1r0QoP-0006gn-BN; Tue, 07 Nov 2023 13:28:30 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id C89E275A4BE;
- Tue,  7 Nov 2023 19:25:27 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 0FBA375A4BC;
+ Tue,  7 Nov 2023 19:28:44 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id BDC0775A4B9; Tue,  7 Nov 2023 19:25:27 +0100 (CET)
+ id 0349275A4B9; Tue,  7 Nov 2023 19:28:44 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id BBD2975A4B8;
- Tue,  7 Nov 2023 19:25:27 +0100 (CET)
-Date: Tue, 7 Nov 2023 19:25:27 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 0170475A4B7;
+ Tue,  7 Nov 2023 19:28:43 +0100 (CET)
+Date: Tue, 7 Nov 2023 19:28:43 +0100 (CET)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Daniel Henrique Barboza <danielhb413@gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>
 cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, clg@kaod.org, philmd@linaro.org, 
- Bernhard Beschow <shentey@gmail.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
+ philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>, 
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
  Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Subject: Re: [PATCH v7 0/3] Add emulation of AmigaOne XE board
-In-Reply-To: <fa33a840-2135-4ba8-9db1-6684275e93c3@gmail.com>
-Message-ID: <9d50d770-a47a-06e4-5f8c-b710c8926533@eik.bme.hu>
-References: <cover.1698406922.git.balaton@eik.bme.hu>
- <697ad2e0-cb23-4efe-89e5-d1b521c0648f@gmail.com>
- <b6ff86da-2532-708a-6737-4489d260c8a7@eik.bme.hu>
- <fa33a840-2135-4ba8-9db1-6684275e93c3@gmail.com>
+Subject: Re: [PATCH v8 2/3] hw/ppc: Add emulation of AmigaOne XE board
+In-Reply-To: <CAFEAcA_fcfTcD_bbtgK8W2V65ks9wgChA0gnT=cHjb0fZ48HLQ@mail.gmail.com>
+Message-ID: <a40d1036-7343-2e38-cd8f-478f3d5c607e@eik.bme.hu>
+References: <9917e6e80f9fdab079d06130403aebc5a8544316.1698406922.git.balaton@eik.bme.hu>
+ <63e5ae9ef7c919e7294bc656a009e5310e10d632.1699380861.git.balaton@eik.bme.hu>
+ <CAFEAcA_fcfTcD_bbtgK8W2V65ks9wgChA0gnT=cHjb0fZ48HLQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1669952906-1699381527=:22826"
+Content-Type: text/plain; charset=US-ASCII; format=flowed
 X-Virus-Scanned: ClamAV using ClamSMTP
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -65,160 +64,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Tue, 7 Nov 2023, Peter Maydell wrote:
+> On Tue, 7 Nov 2023 at 18:21, BALATON Zoltan <balaton@eik.bme.hu> wrote:
+>>
+>> The AmigaOne is a rebranded MAI Teron board that uses U-Boot firmware
+>> with patches to support AmigaOS and is very similar to pegasos2 so can
+>> be easily emulated sharing most code with pegasos2. The reason to
+>> emulate it is that AmigaOS comes in different versions for AmigaOne
+>> and PegasosII which only have drivers for one machine and firmware so
+>> these only run on the specific machine. Adding this board allows
+>> another AmigaOS version to be used reusing already existing peagasos2
+>> emulation. (The AmigaOne was the first of these boards so likely most
+>> widespread which then inspired Pegasos that was later replaced with
+>> PegasosII due to problems with Articia S, so these have a lot of
+>> similarity. Pegasos mainly ran MorphOS while the PegasosII version of
+>> AmigaOS was added later and therefore less common than the AmigaOne
+>> version.)
+>> +    filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, fwname);
+>> +    if (!filename) {
+>> +        error_report("Could not find firmware '%s'", fwname);
+>> +        /* qtest/test-hmp expects to be able to run the machine without -bios */
+>> +        if (!qtest_enabled()) {
+>> +            exit(1);
+>> +        }
+>
+> You should put the error_report() line inside the if() as well,
+> to stop the error line turning up in the logfiles/stdout. This
+> is what we do for the various MIPS boards that ordinarily
+> need a BIOS blob.
 
---3866299591-1669952906-1699381527=:22826
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Tue, 7 Nov 2023, Daniel Henrique Barboza wrote:
-> On 11/7/23 14:33, BALATON Zoltan wrote:
->> On Tue, 7 Nov 2023, Daniel Henrique Barboza wrote:
->>> Zoltan,
->>> 
->>> Gitlab is complaining about a missing file in one of the tests:
->>> 
->>> 
->>>  8/259 qemu:qtest+qtest-ppc / qtest-ppc/test-hmp ERROR           0.22s   
->>> killed by signal 6 SIGABRT
->>> 4324>>> 
->>> G_TEST_DBUS_DAEMON=/builds/danielhb/qemu/tests/dbus-vmstate-daemon.sh 
->>> QTEST_QEMU_BINARY=./qemu-system-ppc MALLOC_PERTURB_=87 
->>> PYTHON=/builds/danielhb/qemu/build/pyvenv/bin/python3 
->>> /builds/danielhb/qemu/build/tests/qtest/test-hmp --tap -k
->>> 4325――――――――――――――――――――――――――――――――――――― ✀ 
->>> ―――――――――――――――――――――――――――――――――――――
->>> 4326stderr:
->>> 4327qemu-system-ppc: Could not find firmware 'u-boot-amigaone.bin'
->>> 4328Broken pipe
->>> 4329../tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU 
->>> process but encountered exit status 1 (expected 0)
->>> 4330(test program exited with status code -6)
->>> 4331TAP parsing error: Too few tests run (expected 13, got 0)
-
-OK, how about with v8 of patch2 I've just sent? The other pathches are 
-unchanged so did not resend those. It should allow ronning without -bios 
-for qtest and as this test just runs monitor commands without starting the 
-machine that should be OK. Hopefully this fixes it.
+OK, I'll do a v9 then...
 
 Regards,
 BALATON Zoltan
-
->>> You can reproduce it like this:
->>> 
->>> $ make -j -C build  && QTEST_QEMU_BINARY=./build/qemu-system-ppc64 
->>> ./build/tests/qtest/test-hmp
->>> 
->>> I ended up amending in-tree (downloaded the firmware, put it under 
->>> pc-bios, updated pc-bios/meson.build).
->>> My manual test now passes, but not sure if gitlab will nag about it. Let's 
->>> wait and see.
->> 
->> This is handled in the avocado test and it should download the file from 
->> the URL there. When tested locally it worked and downloaded the file and 
->> extracted the firmware bin from it. Can the gitlab CI download stuff or 
->> does it expect it to be in local cache already where you need to put it 
->> somehow beforehand? I think Philippe said something about that before but I 
->> did not quite get it as I don't know neither avocado nor gitlab. Hope 
->> Philippe is reading it and can chime in.
->
-> Gitlab CI can download stuff. But note that the error above is not avocado, 
-> it's hmp.
-> It expects a firmware file to be available, and I'm not entirely sure it'll 
-> make any
-> effort (e.g. downloading it) aside from checking if the file exists.
->> 
->> But the test is not required to run the machine so as a last resort you 
->> could just drop the avocado patch and then we can add it later if we can't 
->> figure this out now.
->
-> Not sure if dropping the avocado test would remediate the situation, but 
-> noted.
->
-> For now let's push stuff upstream. We have the freeze window to make smaller
-> adjustments if needed.
->
->
-> Thanks,
->
-> Daniel
->
->> 
->> Regards,
->> BALATON Zoltan
->> 
->>> I told you: code freeze is a blast! Let's see if it's still sunny for the
->>> AmigaOne XE board emulation.
->>> 
->>> 
->>> 
->>> Thanks,
->>> 
->>> 
->>> Daniel
->>> 
->>> 
->>> 
->>> 
->>> 
->>> On 10/27/23 08:54, BALATON Zoltan wrote:
->>>> Changes in v7:
->>>> - Increase default memory size to 512m to match pegasos2 and sam460ex
->>>> and it's a better default for AmigaOS
->>>> 
->>>> Changes in v6:
->>>> - Dropped patch 1, now it's
->>>> 
->>>> Based-on: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
->>>> 
->>>> ([PATCH v2 0/3] ide: implement simple legacy/native mode switching for 
->>>> PCI IDE controllers)
->>>> - Added Tested-by from Rene
->>>> 
->>>> Changes in v5:
->>>> - Fixed avocado test
->>>> 
->>>> Changes in v4:
->>>> - Found typo in comment in patch 1 so ended up rewording it again
->>>> trying to make it more concise. Also take the idea of using
->>>> range_covers_byte from Mark's patch
->>>> - Added RFC patch for avocado test (untested, I don't have Avocado)
->>>> 
->>>> Changes in v3:
->>>> - Update values, comment and commit message in patch 1 again
->>>> 
->>>> Changes in v2:
->>>> - Update comment and commit message in patch 1 (Mark)
->>>> - Fix irq mapping in patch 2 (Volker)
->>>> 
->>>> Regards,
->>>> BALATON Zoltan
->>>> 
->>>> BALATON Zoltan (3):
->>>>    hw/pci-host: Add emulation of Mai Logic Articia S
->>>>    hw/ppc: Add emulation of AmigaOne XE board
->>>>    tests/avocado: Add test for amigaone board
->>>> 
->>>>   MAINTAINERS                             |   8 +
->>>>   configs/devices/ppc-softmmu/default.mak |   1 +
->>>>   hw/pci-host/Kconfig                     |   5 +
->>>>   hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
->>>>   hw/pci-host/meson.build                 |   2 +
->>>>   hw/ppc/Kconfig                          |   7 +
->>>>   hw/ppc/amigaone.c                       | 164 +++++++++++++
->>>>   hw/ppc/meson.build                      |   2 +
->>>>   include/hw/pci-host/articia.h           |  17 ++
->>>>   tests/avocado/ppc_amiga.py              |  38 +++
->>>>   10 files changed, 537 insertions(+)
->>>>   create mode 100644 hw/pci-host/articia.c
->>>>   create mode 100644 hw/ppc/amigaone.c
->>>>   create mode 100644 include/hw/pci-host/articia.h
->>>>   create mode 100644 tests/avocado/ppc_amiga.py
->>>> 
->>> 
->>> 
->
->
---3866299591-1669952906-1699381527=:22826--
 
