@@ -2,64 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8965F7E3A9A
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:57:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2427E3AC0
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 12:06:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Jkp-0006UW-6Y; Tue, 07 Nov 2023 05:56:19 -0500
+	id 1r0JtA-0002aU-DW; Tue, 07 Nov 2023 06:04:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r0Jkn-0006UI-SH
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:56:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r0Jkj-0003B1-7e
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:56:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699354571;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type;
- bh=JrwN5tSaU4CnpG1FXdPfKN2Lrp1IGHtouKs+DCet51A=;
- b=O1sHwyw9lF5gWDXbBkJM/XqTUvVMIacaf8qEhmZp0Nj6kcl/d8rQ0PYO1EOhv6jyOe0sJ6
- i2IxEyXxdLUbIUmJyx/ojPjvHjGtutA9u8TGSkmX/kl7BHCL/9IX1Vgu+ankJzvR9DNo0f
- szL5I6lt/Za24lut1+T3afB1FZcHMpM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-134-f6sosHy0OnCbpKzD1bPOgA-1; Tue, 07 Nov 2023 05:56:09 -0500
-X-MC-Unique: f6sosHy0OnCbpKzD1bPOgA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7C2D485A58B
- for <qemu-devel@nongnu.org>; Tue,  7 Nov 2023 10:56:09 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.179])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BDC0B1C060B0
- for <qemu-devel@nongnu.org>; Tue,  7 Nov 2023 10:56:08 +0000 (UTC)
-Date: Tue, 7 Nov 2023 18:56:03 +0800
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Subject: QEMU entering soft freeze for 8.2 release cycle
-Message-ID: <20231107105603.GA993420@fedora>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0Jt8-0002aK-Ke
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 06:04:54 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0Jt6-0004nF-5V
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 06:04:54 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-53b32dca0bfso11022343a12.0
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 03:04:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699355090; x=1699959890; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=02dziRyBDt5l3+DMlpFyyOSgzRZVUg7I8nPdSEr3Q+U=;
+ b=TIqjIdSWvMBLOBAeGIqrdrlNl+9XvSZNignSqIbbFfp8OTPP+t19uDg4+ojCZBqlC9
+ 7EeFkYN4LU0ikLAkrLWv4PRtsZfloO+dLDHlCaIwRSgMg66iogNIqbBFz16D5p+EB23g
+ 58xj3g+frzabRzZ/BkybUQJEJTAyvDL0koyMsSLBKntmR+ydAawYdiYtu58SpBhvLqup
+ R21eQqvMe9tF1iJtZSSTH5Mn4/iUFo1N4/FvwJszHAakM0YK7Qm0sUMfIbFfEyX7WInV
+ aBAuwXMlLGzzxGvOMDNcbzzVLDh1a6MWOrKJ2KR0VNSSkWzDQcaqaO+rkjr9/3QFIC81
+ OBdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699355090; x=1699959890;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=02dziRyBDt5l3+DMlpFyyOSgzRZVUg7I8nPdSEr3Q+U=;
+ b=mk/R99Ogf0VImmqwg4+OqfqIdt4OPSRvuIQIPdgNgyW6FNwqDrBAYRZhXH48gLLJMm
+ r1y7b8+0QzNvgTQAqQV8sTNNE+L2oBvsf91yeUrW9ZZurT5Vn362Ftin5k1WuVwmXPBJ
+ RvlhfWQajqSB7J/W8bl0rhaNR0cOBYGB78uTUg6Y/sys1qYlaiHUm64Hx/ZB0Sf8lrn8
+ yOWF+MYX0cSC78eXwABpU0bAxw/ucbme6r70bYIKh8DC9xTpQGd2H4VRBDuxDTXEvTwb
+ QKk1rHi5AZt/6J9+hlkS1O2/Xn91x5UaljWI0ebgZw1fkEbt0WWHMFuzWV8HkNiaLHT/
+ AmKg==
+X-Gm-Message-State: AOJu0YzeU/s2rfU5QvYLntHMipnYE1i0SK/0BAN/SWHmbgq0q4nSgzrr
+ TvQFrmj+ePoE6eHjYImh2oI52KGgqtf0bUnAtRI=
+X-Google-Smtp-Source: AGHT+IHIrS5qeUzunOprTgFVBrUl/Z/MkDJDfxM3bQxVQhQpL9/8XJxA1+A+PPbHkx6iMefY13GEXg==
+X-Received: by 2002:a50:aa91:0:b0:544:48c1:b705 with SMTP id
+ q17-20020a50aa91000000b0054448c1b705mr1810605edc.0.1699355089780; 
+ Tue, 07 Nov 2023 03:04:49 -0800 (PST)
+Received: from [192.168.69.115] ([176.187.216.69])
+ by smtp.gmail.com with ESMTPSA id
+ u24-20020a50d518000000b0053e07fe8d98sm5455414edi.79.2023.11.07.03.04.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 07 Nov 2023 03:04:49 -0800 (PST)
+Message-ID: <100a8bba-1ec6-4c56-b218-06c99d38386e@linaro.org>
+Date: Tue, 7 Nov 2023 12:04:47 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="Md6KSJwR5RHU8Y4Y"
-Content-Disposition: inline
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Add some more vmware-related files to the
+ corresponding section
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>, qemu-devel@nongnu.org
+References: <20231107102738.14797-1-thuth@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231107102738.14797-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,43 +92,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 7/11/23 11:27, Thomas Huth wrote:
+> These files are obviously related to Vmware emulation, so let's list
+> them in the corresponding section in the MAINTAINERS file.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   MAINTAINERS | 5 +++++
+>   1 file changed, 5 insertions(+)
 
---Md6KSJwR5RHU8Y4Y
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-Hi,
-QEMU is entering soft freeze for the 8.2 release cycle. After today's
-pull requests, only bug fixes will be merged until the 8.2 release is
-stablized around December 12th. New features can be merged into -next
-trees by maintainers, but will not be merged into qemu.git/master.
-
-The release schedule is here:
-https://wiki.qemu.org/Planning/8.2
-
-Please remember to update the changelog if your work has landed in 8.2:
-https://wiki.qemu.org/ChangeLog/8.2
-
-Let me know if you have any questions!
-
-Thanks,
-Stefan
-
---Md6KSJwR5RHU8Y4Y
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVKF8IACgkQnKSrs4Gr
-c8ioFwf/VMGKL863ev8uMQPQMXC2xbrazT+SBmjvEUfW6+mA2cjBysdtcc4UwwJC
-tl0HsZjIn1cfFEj8cmpBDGXgFWaL2TzPTiydXHVVhOQDiQLpDLZs32FyKv0ghj9U
-UDrf6462n8sZpugHzUG20BGJiJIDiY9O1yGm7H8xnJZ7h+GhX2XHQ7jH/upxw1iL
-mzaiSWxWQ1nnQk7Mjz/7dIb8wlfBgPARiY+ULizwBZ4JzIDMiT75AAqxPewq3hjw
-cqpz8pMeDgDHthk1shwwmXaJ20imvfer1z3YR9AqRTURTU2Aoi2ji3deHjj7F0oq
-Rgsz17PD0l48i0dAD71Cqaz+FTrLJw==
-=pNnW
------END PGP SIGNATURE-----
-
---Md6KSJwR5RHU8Y4Y--
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
