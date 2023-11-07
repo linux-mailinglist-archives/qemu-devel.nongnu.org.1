@@ -2,93 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 505137E3621
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 08:56:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BD27E363A
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 09:04:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Gw0-0000d9-Sr; Tue, 07 Nov 2023 02:55:40 -0500
+	id 1r0H3W-0003YK-1x; Tue, 07 Nov 2023 03:03:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1r0Gvx-0000cf-UM
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 02:55:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1r0Gvw-0001HG-BV
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 02:55:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699343735;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:to:
- cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VgVOPEL42G2kdqZq4NjIshGGGQbjEU1aX4xsuj3xops=;
- b=bhMnCVLqEUQCH0A4BjBgzUjwBKt9wliFQUx8f764mD4JleTmZ6T1u3gdemRAz2i9Ko/tnV
- 4AhSdrTwhBmZFH1Fi6sCsoGmQyRakbHhvBxT46F4zmTdIAri5xNEI/85437/MHBJ3RwUrS
- AA9Q1caJVUGH/MQ6Cpru5pCsT4S13EI=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-415vGCYYN2ug1X84qUOedQ-1; Tue, 07 Nov 2023 02:55:34 -0500
-X-MC-Unique: 415vGCYYN2ug1X84qUOedQ-1
-Received: by mail-yb1-f199.google.com with SMTP id
- 3f1490d57ef6-da1aa98ec19so6546220276.2
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 23:55:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r0H3R-0003Xq-6N
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 03:03:21 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r0H3P-0002Xd-9h
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 03:03:20 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5441ba3e53cso6508314a12.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 00:03:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699344197; x=1699948997; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yOybvJ9RVX6rS6SZ9BCFh/ltl5QB98T/R5z9eZSRl+Y=;
+ b=T82mow6hUK+CIdVGKt7rVDvL8xtEg8Z8cPz9Zb14yqfYl29wZOihEYDcnbP6ITiK1I
+ RtZ9bA35+dso2nIF4+ab4hK5xM9+m7EMbVn1YKMeiIimmTHTPj+czRBh1HCoOgzDT0u1
+ xeu85IC5iaPvZitWD0Wjx3X/+Q5QyYRqQvwkLRpSEmliRsQLexFRjDgojry0ykbUoqIu
+ Vq11ZG3k/Ok2A3u9nyERY/GDoUYsUPpQ0KdOf+L9ZgFZ7iYsdtm0aQ8MPZmfD+DIPFuJ
+ ZrNCFUwXm8gBkSCuNHvMUSFnF/6b25B+kXGMGwOo9ZZ2P+Plt8/xnIB7IQVl2G8jmG1I
+ Mc7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699343733; x=1699948533;
- h=message-id:references:cc:in-reply-to:date:subject:mime-version
- :content-transfer-encoding:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VgVOPEL42G2kdqZq4NjIshGGGQbjEU1aX4xsuj3xops=;
- b=E4W+7jXGPsa9E3gcpT/Ciz/pbPY7qpCRaqgVKngIe9Q4j47bP2pfxIw3XbSFfGs6gu
- Hl7GBcNygfKBP8VJcbDwsreu52O9I6O0RugbAMpv5oBT76Jw2NYVl3Ykdxw+osHvEWdZ
- D07h8f/8CPaI6Z3LbcHa1M7c4lAAHOAAqYTxv6V4WaVYojGNEkZOwa/JQSFwJmlsaio5
- n7N/SzXeO0Te899jVEAdzCrOKSXmvF+75a3+PJ4YJaXBTFIuXrw9DKEK5UhQmWzZthRO
- tt+NHr27JAwcyRELEpa5vJZ3outJyP/Vco0wVsMAC3Ud7ldPcb4Hgq43O6CYMjbn70KN
- /ynQ==
-X-Gm-Message-State: AOJu0Yx6uznsib47tpyuZ7dsnYI2A/Me4t3e9xbJ/pBQ3E8WJ7viGP3V
- RxQ4v08gdSQqDXXne0GVZlPtSSu1FizFQpAvRpaKQ2W7Vt0fZwj0+1N16bX3vR0+zwD8of/xGIo
- k/dMLSWkubE1vcKM=
-X-Received: by 2002:a25:aca8:0:b0:da0:d005:6bb7 with SMTP id
- x40-20020a25aca8000000b00da0d0056bb7mr31471996ybi.1.1699343733739; 
- Mon, 06 Nov 2023 23:55:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFW8GHMsm8ssQGkf1Tb+kdh9zrdq7rIL78vVt6iiNS5I6XOaGO+edrwDqnYqzeDW0SZ5vko0w==
-X-Received: by 2002:a25:aca8:0:b0:da0:d005:6bb7 with SMTP id
- x40-20020a25aca8000000b00da0d0056bb7mr31471984ybi.1.1699343733467; 
- Mon, 06 Nov 2023 23:55:33 -0800 (PST)
-Received: from smtpclient.apple ([115.96.144.207])
- by smtp.gmail.com with ESMTPSA id
- p3-20020aa78603000000b0068883728c16sm6927493pfn.144.2023.11.06.23.55.30
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 06 Nov 2023 23:55:32 -0800 (PST)
-From: Ani Sinha <anisinha@redhat.com>
-Content-Type: text/plain;
-	charset=us-ascii
+ d=1e100.net; s=20230601; t=1699344197; x=1699948997;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=yOybvJ9RVX6rS6SZ9BCFh/ltl5QB98T/R5z9eZSRl+Y=;
+ b=q6Fp6vmzHDY2IGwOZ2hZXwJeaa6HAp5l+M7XzRKApwhH7FYOXVANQDidEM4E/pllHg
+ ZTSCMGYfaO1c7A0n8vOCIyI01AVLwkFWaHj0l3wurQFLs8SvxjRZi5G6B4mTwCmkfGnM
+ sCBTQWidSM5OdhIPX2oMNlaILbbJ3Jiin1ap5JkRDCPvBrMqUS8pwOs+o7aqvmGw9znA
+ 9KPFCo5ndN95LcY+lIP8Jm8RLSvg/gDdn0JQQ/hHcrzno0lMYWeWSp5Vd4VkzaArr4R1
+ pxrgBwCWJ0E1Aaf2C82eoVouumAUXI1Hh6/EWp6NmdIMXcxnxCaJT63r/2oPF57rgfZJ
+ CvtA==
+X-Gm-Message-State: AOJu0YxEuTB/2KS0w94WMTaoEN4sDDCDS7XhWx4w9yyb+BsKQhcZ2U7v
+ wPIh5BhYRLAKszJYPYwzuUw/zw==
+X-Google-Smtp-Source: AGHT+IFMrQUuWk9hcLIc5/OoSOlNq69HxkNBJU7wDDbvLC6EXGjeV4mfO3QObVo7dcWfEM6UwCK14A==
+X-Received: by 2002:a17:907:987:b0:9e0:2319:16f0 with SMTP id
+ bf7-20020a170907098700b009e0231916f0mr5035645ejc.65.1699344196972; 
+ Tue, 07 Nov 2023 00:03:16 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ n5-20020a05600c3b8500b004064e3b94afsm14919479wms.4.2023.11.07.00.03.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 07 Nov 2023 00:03:16 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 2C5825F790;
+ Tue,  7 Nov 2023 08:03:16 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org,  Jason Wang <jasowang@redhat.com>,  Daniel P.
+ =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  qemu-block@nongnu.org,
+ Markus Armbruster
+ <armbru@redhat.com>,  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Stefan Hajnoczi <stefanha@redhat.com>,  Gerd Hoffmann
+ <kraxel@redhat.com>,  "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ virtio-fs@redhat.com,  Hanna Reitz <hreitz@redhat.com>,  Fam Zheng
+ <fam@euphon.net>,  Raphael Norwitz <raphael.norwitz@nutanix.com>,  Kevin
+ Wolf <kwolf@redhat.com>,  Erik Schilling <erik.schilling@linaro.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,  Mathieu Poirier
+ <mathieu.poirier@linaro.org>,  Eric Blake <eblake@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH v6 1/6] virtio: split into vhost-user-base and
+ vhost-user-device
+In-Reply-To: <20231107023330-mutt-send-email-mst@kernel.org> (Michael S.
+ Tsirkin's message of "Tue, 7 Nov 2023 02:34:41 -0500 (27 minutes, 35
+ seconds ago)")
+References: <20231106191515.2801863-1-alex.bennee@linaro.org>
+ <20231106191515.2801863-2-alex.bennee@linaro.org>
+ <20231107023330-mutt-send-email-mst@kernel.org>
+User-Agent: mu4e 1.11.24; emacs 29.1
+Date: Tue, 07 Nov 2023 08:03:16 +0000
+Message-ID: <87jzqu6ldn.fsf@draig.linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
-Subject: Re: [PATCH 0/2] Some biosbits avocado test fixes
-Date: Tue, 7 Nov 2023 13:25:28 +0530
-In-Reply-To: <20231027032120.6012-1-anisinha@redhat.com>
-Cc: John Snow <jsnow@redhat.com>, Julia Suvorova <jusual@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, mst@redhat.com, qemu-devel@nongnu.org,
- crosa@redhat.com, philmd@linaro.org,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-References: <20231027032120.6012-1-anisinha@redhat.com>
-Message-Id: <FE18100E-8B63-439C-875C-752E23C7DB6C@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.4)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- MISSING_HEADERS=1.021, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,49 +111,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+"Michael S. Tsirkin" <mst@redhat.com> writes:
 
+> On Mon, Nov 06, 2023 at 07:15:10PM +0000, Alex Benn=C3=A9e wrote:
+>> Lets keep a cleaner split between the base class and the derived
+>> vhost-user-device which we can use for generic vhost-user stubs. This
+>> includes an update to introduce the vq_size property so the number of
+>> entries in a virtq can be defined.
+>>=20
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> Message-Id: <20231009095937.195728-2-alex.bennee@linaro.org>
+>
+> Please do not put Message-Id tags in patches you post.
+> These are used to map patches to email - this patch was
+> In-Reply-To: <20231106191515.2801863-2-alex.bennee@linaro.org>
 
-> On 27-Oct-2023, at 8:51 AM, Ani Sinha <anisinha@redhat.com> wrote:
->=20
-> Included are couple of bios bits test fixes.
-> 32-bit SMBIOS entry point is enforced.
-> Console logging is enabled.
->=20
-> I have tested these changes in the CI pipeline here and the test seems
-> to pass:
->=20
-> https://gitlab.com/anisinha/qemu/-/jobs/5380627517
+It was the last time it was posted. I just strip off the old ones when I
+apply to my tree before preparing a pull request.
 
-MST, are you going to queue this?
-
-> Log:
->=20
-> =
-https://cdn.artifacts.gitlab-static.net/8a/b0/8ab0aa629e9c43a80356e27a4409=
-85f41da9ad10b120a410d9f070bed092fea6/2023_10_26/5380627517/5862985776/job.=
-log?response-content-type=3Dtext%2Fplain%3B%20charset%3Dutf-8&response-con=
-tent-disposition=3Dinline&Expires=3D1698376660&KeyName=3Dgprd-artifacts-cd=
-n&Signature=3Dln7fYsTb8t6ch0Trsa7SHAN01QY=3D
->=20
-> CC: jsnow@redhat.com
-> CC: jusual@redhat.com
-> CC: imammedo@redhat.com
-> CC: mst@redhat.com
-> CC: qemu-devel@nongnu.org
-> CC: crosa@redhat.com
-> CC: philmd@linaro.org
-> CC: Wainer dos Santos Moschetta <wainersm@redhat.com>
-> CC: Beraldo Leal <bleal@redhat.com>
->=20
-> Ani Sinha (2):
->  acpi/tests/avocado/bits: enforce 32-bit SMBIOS entry point
->  acpi/tests/avocado/bits: enable console logging from bits VM
->=20
-> tests/avocado/acpi-bits.py | 33 ++++++++++++++++++++++-----------
-> 1 file changed, 22 insertions(+), 11 deletions(-)
->=20
-> --=20
-> 2.42.0
->=20
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
