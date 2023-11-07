@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E04E07E4A1D
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 21:50:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5167E4A1E
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 21:50:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Szt-0006Zm-WA; Tue, 07 Nov 2023 15:48:30 -0500
+	id 1r0Szu-0006aS-He; Tue, 07 Nov 2023 15:48:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1r0Szr-0006YB-PA; Tue, 07 Nov 2023 15:48:27 -0500
-Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
+ id 1r0Szr-0006YE-TK; Tue, 07 Nov 2023 15:48:27 -0500
+Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1r0Szq-0006S9-2V; Tue, 07 Nov 2023 15:48:27 -0500
-Received: by mail-qt1-x82c.google.com with SMTP id
- d75a77b69052e-41eae4ebf61so23760481cf.2; 
+ id 1r0Szq-0006SM-5e; Tue, 07 Nov 2023 15:48:27 -0500
+Received: by mail-qt1-x830.google.com with SMTP id
+ d75a77b69052e-41cd6e1d4fbso36742141cf.1; 
  Tue, 07 Nov 2023 12:48:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699390102; x=1699994902; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699390104; x=1699994904; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=t2SjJKUXICgckq0rxRRR2hDp8rA78V8HEAIGqAivwTg=;
- b=mTBI4KrQHd/8g+E/2pDStpOm//R/33YXUeFaW0DYhnWPy5K0SM2W6lrH4Z8RZPQ85z
- 0qNADLlsPqEVBV9/XnkmNMrKZwdeNU1URr6tYUB0K1SfwVLK7TS7gB6o0fayprnXD8E0
- B8UNbd6j9wvnCpnsqumI/nASCyfmOEBz+b3qnd0HXLOYa+ppD/GOdBmiu/rCRIgSCGIy
- wNw5PDUjt9cnVE2tIPlFpEDrqp9lxmQLzVPAkWJ7mQpgXR/W5znJE2N9tPHoMykoN3Pz
- 3AhTxFVLzIiZChdlQcFeKxXqQzLfRFPsXv8JwSI14YO+2IiTBnYI/pl8kKkHG6mJyjqy
- eMaQ==
+ bh=AuiB8YLB6fW19Sv4iIZuZRWwFlQIhnLJeadaVGwfrms=;
+ b=DYYYcgIPLVJbzJhbsn6tUq0UAn2z5rKAadcdNzB1FHOVPIfXJLJeBtpLCyO3pqobsg
+ L4oP/s6qFzzABoO2egeFrMO9UYaUu2OB6SbrcBZfoxtdoH+CmBjjMbQt1xJQFQO3M/B0
+ MFSsnh1aScKCfQ0iSZ7YORGIInJ30Ev0nq+oPhBoCy5q8uBCQJ4T5lPS/jNuke209u55
+ bs9MmabZb/G6nR53tlwBvNUOog6yTW4O3IUSiUkwApYh4kA+xXt9dYBm8gXq39cFE2L4
+ csYuWklbZrUBciQHiB+8NsfNnapT4sxMiz11s7t2Mhv/rRymdf7OQuaNJrKjO49zPPDz
+ Bl0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699390102; x=1699994902;
+ d=1e100.net; s=20230601; t=1699390104; x=1699994904;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t2SjJKUXICgckq0rxRRR2hDp8rA78V8HEAIGqAivwTg=;
- b=oDF7cZV3xxRWpfo5b0PFZvQqBAVwsY4OHdX45NVFDciqOFBXgo7NtHnBs0tF4ANaZ/
- BIql85xvUBGQ5bDa6tGoaQ4XSbIN0q4oxYw4bhXjLWDjPK0C0fIyLO16t2ua8zdUQMZe
- my0M0wskBdVZ0qt9hROYHe5BllvPDSmxCK+4SZfEwJL2qv6TLZ1Ju8HZKc2BXm1oVxIM
- xYm85UiUL2g0OBNwbjM0nNd0B1olOuTX+yzW0p/MyNzfNkgBs7cyDwhKDgxHT+rTmzPp
- ig54OY7T8imutkN8dGWXxQ9RWUxCh5IKGClvxBYeGdtkaN2Bp0L8T5r8OxJsbOav16H+
- dn6g==
-X-Gm-Message-State: AOJu0YxXAkG4rNNpy6JPtPGtczRZRs5mOzGrMA+R3gj1mToTvk/IzRs3
- K/Efb2W6HnlbZV3eNiNOPN95d0B0BcQ=
-X-Google-Smtp-Source: AGHT+IHJVYqMpdTkfeclhEJRgbnRtbm+kyfpy223hZQigKFGHRM8kolEzVqkuyU1Hc9aRCnP3Qtkcg==
-X-Received: by 2002:ac8:7f83:0:b0:417:b970:f2a4 with SMTP id
- z3-20020ac87f83000000b00417b970f2a4mr40029225qtj.1.1699390102570; 
- Tue, 07 Nov 2023 12:48:22 -0800 (PST)
+ bh=AuiB8YLB6fW19Sv4iIZuZRWwFlQIhnLJeadaVGwfrms=;
+ b=sr71KsXQ+xq6V4ewJtqIF/fkC2nMhhHe19M/lo7WhbecqdiwMKkBneT4IYIPClOjBI
+ eD71HAw3n6oW/kkj8B4fp30iGKG6FAdU1DF/Kf5gEgQHThrOIjCdW77uXQcSyRNyKQ5Q
+ F6L9CDyDdqzN+T6r6CDyScZpfsqyBTJ4i4jj+7UV7n+tloqXdal429HYQBRAwUIHjPAd
+ aeP90ADudvz6+y43DeAz/CieTRGglHju91kntFFICVlVst7K6Czy6GTCCAyIHzDtocDV
+ l8wj3OfGnb/sxMLVStf/jVXtB+sEPYgYeef4P+e4WV16cXnIXdti70Ln4yv9d7d1JXPz
+ AZDQ==
+X-Gm-Message-State: AOJu0YxXEvdA7N9QN9FzIr+waMaUCI7iaIdMEcNS9FMfHjEpFwUUe4zn
+ 9UPisEyFHGH/8e7E+OoRf00YBPoGyaI=
+X-Google-Smtp-Source: AGHT+IHmwHIWejHpTz+YaRHBguR/1xfLwspLpuT7RAgmXOxj7ynshxOtYUCKVsUDKwGtHYWnNjv+jg==
+X-Received: by 2002:a05:622a:1b8e:b0:41c:c2ad:6810 with SMTP id
+ bp14-20020a05622a1b8e00b0041cc2ad6810mr1584qtb.2.1699390104464; 
+ Tue, 07 Nov 2023 12:48:24 -0800 (PST)
 Received: from grind.. ([179.193.10.161]) by smtp.gmail.com with ESMTPSA id
- d13-20020ac8544d000000b0041eb13a8195sm48946qtq.61.2023.11.07.12.48.20
+ d13-20020ac8544d000000b0041eb13a8195sm48946qtq.61.2023.11.07.12.48.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 12:48:22 -0800 (PST)
+ Tue, 07 Nov 2023 12:48:24 -0800 (PST)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
  Glenn Miles <milesg@linux.vnet.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 6/9] ppc/pnv: Connect PNV I2C controller to powernv10
-Date: Tue,  7 Nov 2023 17:48:03 -0300
-Message-ID: <20231107204806.8507-7-danielhb413@gmail.com>
+Subject: [PULL 7/9] ppc/pnv: Fix number of I2C engines and ports for power9/10
+Date: Tue,  7 Nov 2023 17:48:04 -0300
+Message-ID: <20231107204806.8507-8-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231107204806.8507-1-danielhb413@gmail.com>
 References: <20231107204806.8507-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
- envelope-from=danielhb413@gmail.com; helo=mail-qt1-x82c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
+ envelope-from=danielhb413@gmail.com; helo=mail-qt1-x830.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,112 +94,127 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Glenn Miles <milesg@linux.vnet.ibm.com>
 
-Wires up four I2C controller instances to the powernv10 chip
-XSCOM address space.
+Power9 is supposed to have 4 PIB-connected I2C engines with the
+following number of ports on each engine:
 
-Each controller instance is wired up to two I2C buses of
-its own.  No other I2C devices are connected to the buses
-at this time.
+    0: 2
+    1: 13
+    2: 2
+    3: 2
 
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+Power10 also has 4 engines but has the following number of ports
+on each engine:
+
+    0: 14
+    1: 14
+    2: 2
+    3: 16
+
+Current code assumes that they all have the same (maximum) number.
+This can be a problem if software expects to see a certain number
+of ports present (Power Hypervisor seems to care).
+
+Fixed this by adding separate tables for power9 and power10 that
+map the I2C controller number to the number of I2C buses that should
+be attached for that engine.
+
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Message-ID: <20231017221434.810363-1-milesg@linux.vnet.ibm.com>
+Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+Message-ID: <20231025152714.956664-1-milesg@linux.vnet.ibm.com>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- hw/ppc/pnv.c               | 29 +++++++++++++++++++++++++++++
- include/hw/ppc/pnv_chip.h  |  4 ++++
- include/hw/ppc/pnv_xscom.h |  3 +++
- 3 files changed, 36 insertions(+)
+ hw/ppc/pnv.c              | 12 ++++++++----
+ include/hw/ppc/pnv_chip.h |  6 ++----
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
 diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index bb4d00e266..ae8e0b45cd 100644
+index ae8e0b45cd..9c29727337 100644
 --- a/hw/ppc/pnv.c
 +++ b/hw/ppc/pnv.c
-@@ -1684,6 +1684,10 @@ static void pnv_chip_power10_instance_init(Object *obj)
-         object_initialize_child(obj, "pec[*]", &chip10->pecs[i],
-                                 TYPE_PNV_PHB5_PEC);
-     }
-+
-+    for (i = 0; i < pcc->i2c_num_engines; i++) {
-+        object_initialize_child(obj, "i2c[*]", &chip10->i2c[i], TYPE_PNV_I2C);
-+    }
- }
+@@ -1615,7 +1615,8 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
+         Object *obj =  OBJECT(&chip9->i2c[i]);
  
- static void pnv_chip_power10_quad_realize(Pnv10Chip *chip10, Error **errp)
-@@ -1742,6 +1746,7 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-     PnvChip *chip = PNV_CHIP(dev);
-     Pnv10Chip *chip10 = PNV10_CHIP(dev);
-     Error *local_err = NULL;
-+    int i;
+         object_property_set_int(obj, "engine", i + 1, &error_fatal);
+-        object_property_set_int(obj, "num-busses", pcc->i2c_num_ports,
++        object_property_set_int(obj, "num-busses",
++                                pcc->i2c_ports_per_engine[i],
+                                 &error_fatal);
+         object_property_set_link(obj, "chip", OBJECT(chip), &error_abort);
+         if (!qdev_realize(DEVICE(obj), NULL, errp)) {
+@@ -1640,6 +1641,7 @@ static void pnv_chip_power9_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     PnvChipClass *k = PNV_CHIP_CLASS(klass);
++    static const int i2c_ports_per_engine[PNV9_CHIP_MAX_I2C] = {2, 13, 2, 2};
  
-     /* XSCOM bridge is first */
-     pnv_xscom_init(chip, PNV10_XSCOM_SIZE, PNV10_XSCOM_BASE(chip));
-@@ -1847,6 +1852,28 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-         error_propagate(errp, local_err);
-         return;
-     }
-+
-+
-+    /*
-+     * I2C
-+     */
-+    for (i = 0; i < pcc->i2c_num_engines; i++) {
-+        Object *obj =  OBJECT(&chip10->i2c[i]);
-+
-+        object_property_set_int(obj, "engine", i + 1, &error_fatal);
-+        object_property_set_int(obj, "num-busses", pcc->i2c_num_ports,
-+                                &error_fatal);
-+        object_property_set_link(obj, "chip", OBJECT(chip), &error_abort);
-+        if (!qdev_realize(DEVICE(obj), NULL, errp)) {
-+            return;
-+        }
-+        pnv_xscom_add_subregion(chip, PNV10_XSCOM_I2CM_BASE +
-+                                chip10->i2c[i].engine * PNV10_XSCOM_I2CM_SIZE,
-+                                &chip10->i2c[i].xscom_regs);
-+        qdev_connect_gpio_out(DEVICE(&chip10->i2c[i]), 0,
-+                              qdev_get_gpio_in(DEVICE(&chip10->psi),
-+                                               PSIHB9_IRQ_SBE_I2C));
-+    }
- }
+     k->chip_cfam_id = 0x220d104900008000ull; /* P9 Nimbus DD2.0 */
+     k->cores_mask = POWER9_CORE_MASK;
+@@ -1656,7 +1658,7 @@ static void pnv_chip_power9_class_init(ObjectClass *klass, void *data)
+     dc->desc = "PowerNV Chip POWER9";
+     k->num_pecs = PNV9_CHIP_MAX_PEC;
+     k->i2c_num_engines = PNV9_CHIP_MAX_I2C;
+-    k->i2c_num_ports = PNV9_CHIP_MAX_I2C_PORTS;
++    k->i2c_ports_per_engine = i2c_ports_per_engine;
  
- static uint32_t pnv_chip_power10_xscom_pcba(PnvChip *chip, uint64_t addr)
-@@ -1874,6 +1901,8 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
-     k->xscom_pcba = pnv_chip_power10_xscom_pcba;
+     device_class_set_parent_realize(dc, pnv_chip_power9_realize,
+                                     &k->parent_realize);
+@@ -1861,7 +1863,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
+         Object *obj =  OBJECT(&chip10->i2c[i]);
+ 
+         object_property_set_int(obj, "engine", i + 1, &error_fatal);
+-        object_property_set_int(obj, "num-busses", pcc->i2c_num_ports,
++        object_property_set_int(obj, "num-busses",
++                                pcc->i2c_ports_per_engine[i],
+                                 &error_fatal);
+         object_property_set_link(obj, "chip", OBJECT(chip), &error_abort);
+         if (!qdev_realize(DEVICE(obj), NULL, errp)) {
+@@ -1886,6 +1889,7 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     PnvChipClass *k = PNV_CHIP_CLASS(klass);
++    static const int i2c_ports_per_engine[PNV10_CHIP_MAX_I2C] = {14, 14, 2, 16};
+ 
+     k->chip_cfam_id = 0x120da04900008000ull; /* P10 DD1.0 (with NX) */
+     k->cores_mask = POWER10_CORE_MASK;
+@@ -1902,7 +1906,7 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
      dc->desc = "PowerNV Chip POWER10";
      k->num_pecs = PNV10_CHIP_MAX_PEC;
-+    k->i2c_num_engines = PNV10_CHIP_MAX_I2C;
-+    k->i2c_num_ports = PNV10_CHIP_MAX_I2C_PORTS;
+     k->i2c_num_engines = PNV10_CHIP_MAX_I2C;
+-    k->i2c_num_ports = PNV10_CHIP_MAX_I2C_PORTS;
++    k->i2c_ports_per_engine = i2c_ports_per_engine;
  
      device_class_set_parent_realize(dc, pnv_chip_power10_realize,
                                      &k->parent_realize);
 diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-index 90cfbad1a5..5815d96ecf 100644
+index 5815d96ecf..0ab5c42308 100644
 --- a/include/hw/ppc/pnv_chip.h
 +++ b/include/hw/ppc/pnv_chip.h
-@@ -120,6 +120,10 @@ struct Pnv10Chip {
+@@ -88,8 +88,7 @@ struct Pnv9Chip {
+ #define PNV9_CHIP_MAX_PEC 3
+     PnvPhb4PecState pecs[PNV9_CHIP_MAX_PEC];
  
- #define PNV10_CHIP_MAX_PEC 2
-     PnvPhb4PecState pecs[PNV10_CHIP_MAX_PEC];
-+
-+#define PNV10_CHIP_MAX_I2C 4
-+#define PNV10_CHIP_MAX_I2C_PORTS 2
-+    PnvI2C       i2c[PNV10_CHIP_MAX_I2C];
+-#define PNV9_CHIP_MAX_I2C 3
+-#define PNV9_CHIP_MAX_I2C_PORTS 1
++#define PNV9_CHIP_MAX_I2C 4
+     PnvI2C      i2c[PNV9_CHIP_MAX_I2C];
  };
  
- #define PNV10_PIR2FUSEDCORE(pir) (((pir) >> 3) & 0xf)
-diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
-index 056392ab60..f5becbab41 100644
---- a/include/hw/ppc/pnv_xscom.h
-+++ b/include/hw/ppc/pnv_xscom.h
-@@ -152,6 +152,9 @@ struct PnvXScomInterfaceClass {
- #define PNV10_XSCOM_PSIHB_BASE     0x3011D00
- #define PNV10_XSCOM_PSIHB_SIZE     0x100
+@@ -122,7 +121,6 @@ struct Pnv10Chip {
+     PnvPhb4PecState pecs[PNV10_CHIP_MAX_PEC];
  
-+#define PNV10_XSCOM_I2CM_BASE      PNV9_XSCOM_I2CM_BASE
-+#define PNV10_XSCOM_I2CM_SIZE      PNV9_XSCOM_I2CM_SIZE
-+
- #define PNV10_XSCOM_OCC_BASE       PNV9_XSCOM_OCC_BASE
- #define PNV10_XSCOM_OCC_SIZE       PNV9_XSCOM_OCC_SIZE
+ #define PNV10_CHIP_MAX_I2C 4
+-#define PNV10_CHIP_MAX_I2C_PORTS 2
+     PnvI2C       i2c[PNV10_CHIP_MAX_I2C];
+ };
+ 
+@@ -140,7 +138,7 @@ struct PnvChipClass {
+     uint32_t     num_phbs;
+ 
+     uint32_t     i2c_num_engines;
+-    uint32_t     i2c_num_ports;
++    const int    *i2c_ports_per_engine;
+ 
+     DeviceRealize parent_realize;
  
 -- 
 2.41.0
