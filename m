@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0AE77E3D85
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 13:29:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA2DF7E3D64
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 13:28:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0L97-0005ki-0z; Tue, 07 Nov 2023 07:25:29 -0500
+	id 1r0L98-0005n1-J9; Tue, 07 Nov 2023 07:25:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L95-0005ex-1Z
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L95-0005ho-HJ
  for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:25:27 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L8j-0004nM-KK
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:25:26 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40906fc54fdso43003605e9.0
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 04:25:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L8o-0004so-IQ
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:25:27 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4084b0223ccso40723675e9.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 04:25:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699359903; x=1699964703; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699359909; x=1699964709; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IukOQrcvFKTQKQHU+Gn7+JZ4VvtRt6lfWofdjUUbwSE=;
- b=uoGCNbkPbk5ggg2wqkztH6sYNd/Ke1nPYSEC+ls9IyKuOIkdpsnze50BZTVi8UhmB5
- AvRtYcvC3O6W+G4pYuW8CLjmtSU4GitY42Rg+dN3ACV/9IlwR2eGP88d3078LsHJ3hF2
- U//PYLOGSYhAKVYzWyHP4gQT37QmRIKLBUFngFXH3uowx3fO6Hvs630dOGEbITZXtxW8
- HbLDLekwFoJrBSH9gA4PCkvB4dQYgFol2bY8SwrA6B+H916AgHE2x7i1ioodgUkq4uks
- UMbIqNAYi2lpGu3NxcAKvUhSbA17CU2vnVd6epwOiE8dcngwPmf0Y4WcoXaMsCW9ZKQx
- PQUQ==
+ bh=UxnI5l2WrvXzGWFNPDGJXP6PFry6juDuplDEP4dg9mo=;
+ b=uvFaXAlbTD379AqDpzf2RuvSSg/B3IUDqFXxKNUMDaHwUKROqW5G6RBHIJF8Y6pY6u
+ RwsXoJflvDktMUYpGZX1aocKFVVG8f9gsxt8covcgQ6XwzP019l2482uQ2Giwbm4d26Q
+ ej4joL7l23BIcufuSkxaHM6RES0l1pBVr8vxK9jrcsuQzWvodFKip4EsmexvOppsuZZw
+ +PFoSiXZV3pJE8DahoR+V/QBvdDnkNR0T3s/RSuoz8E+n7flkzUuYmNIchxQWCHTqks5
+ 3TNdTDrh4H0kTuphjqY+qkfenlVbU2ZpSp3G97Ts8IIH3qvlc8iZAtEZ0vjOZ3MNMIpJ
+ tSOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699359903; x=1699964703;
+ d=1e100.net; s=20230601; t=1699359909; x=1699964709;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IukOQrcvFKTQKQHU+Gn7+JZ4VvtRt6lfWofdjUUbwSE=;
- b=v24zbLbxF43RhaXjSi86pRZit8RHaddVqy9RFIzSEDrvC3JfQgO+KQzb8MZL4Q22+t
- 3lJBHXC7AQzbD/VTdfGMfig4oqe7Pe9yldwNUNenzX4okBHvigjA6hvd7/37DSfQkCd2
- 49J0ldjzzUf9WZkAThjwfTx2fQLmeqYy4JbShS3YfWP9Me2trTdDmeqngrBGCTVmmf6q
- YtPjw9ufgoJBAE38289WeGXyLJjNtUnfFXcbD6DZc+mkKDZbscdVFOcwBfmyceqQ+bfz
- zq7+WtrsOYQ8sqzaBrr+mtVlX+rzGno3zhWd1xMXG9TX88ZWxmKawOeuF0EhFPDJq2ND
- geSg==
-X-Gm-Message-State: AOJu0YwVG5HmpbC6vowPoITubZOuKZnB5nBVRW90USUI5/Dax/98lG0G
- wg0QwVCGP19fR5Ip8jQOzjjlN/JHmSrZo3pcawU=
-X-Google-Smtp-Source: AGHT+IEvZfUCnXn8/KmH22XfsfjMj6FUc+jFu/Z+d6VMWhHpfbzOSovg9Kvc5gerCt6zhkw7vxfI4w==
-X-Received: by 2002:a05:600c:35d1:b0:406:52e4:cd23 with SMTP id
- r17-20020a05600c35d100b0040652e4cd23mr2108351wmq.0.1699359902878; 
- Tue, 07 Nov 2023 04:25:02 -0800 (PST)
+ bh=UxnI5l2WrvXzGWFNPDGJXP6PFry6juDuplDEP4dg9mo=;
+ b=WKntkLsAuhFWC+iGCkDjazf1Np6VzML0la29ib2jMFPZUVcLU4XUBT9xecliKnEy33
+ yaRuKWbi+SYBRL+EzngcerLdFXpAfcxV8fabq+sJTCvf8eeZexmYesHrKY128w5j8QQw
+ wZTMjQgSdrvAp8iLl2EHvN2dF1mBzomQ4NY80XOI6DROP4QMTpWMG3ScjBZ2UGyRTxnA
+ z7kr08WusZ4+mfuDhNSQUHdZwVs3njxiXSMetA5gg6JpNT6epeKAHyLMB8usYlELSrWM
+ OwPICu8oULoddYiAP+binWxXj8xOkk/KHTdJ6m6Z7pHXHxbq/XG3oU7K8O8xNsGTx5e6
+ VzVg==
+X-Gm-Message-State: AOJu0YzFJARKuFnrDAj9vheiuQSMTjquIFZOa11KMAgHozOixxaNtjkY
+ hsVrmV3+wlgebm3TQ3TwFJn/KNzYnshXNs59RLk=
+X-Google-Smtp-Source: AGHT+IHAYqPOg5FGtEVduPllyAbcpE8kf7ubxeWXhZATc4/x4lpIfC0WJaAg2fx7uxTOFEg7R9JsmA==
+X-Received: by 2002:adf:f1d0:0:b0:32d:84e8:eef2 with SMTP id
+ z16-20020adff1d0000000b0032d84e8eef2mr22297913wro.33.1699359908952; 
+ Tue, 07 Nov 2023 04:25:08 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.216.69])
  by smtp.gmail.com with ESMTPSA id
- n30-20020a05600c501e00b00405442edc69sm15681877wmr.14.2023.11.07.04.25.01
+ t11-20020a5d49cb000000b003248a490e3asm2215974wrs.39.2023.11.07.04.25.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 07 Nov 2023 04:25:02 -0800 (PST)
+ Tue, 07 Nov 2023 04:25:08 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  qemu-s390x@nongnu.org, qemu-riscv@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 38/75] target/ppc: Move PowerPCCPUClass definition to 'cpu.h'
-Date: Tue,  7 Nov 2023 13:24:28 +0100
-Message-ID: <20231107122442.58674-4-philmd@linaro.org>
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: [PULL 39/75] target/ppc: Move powerpc_excp_t definition to 'cpu.h'
+Date: Tue,  7 Nov 2023 13:24:29 +0100
+Message-ID: <20231107122442.58674-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231107122442.58674-1-philmd@linaro.org>
 References: <20231107122442.58674-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,188 +96,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The OBJECT_DECLARE_CPU_TYPE() macro forward-declares the
-PowerPCCPUClass type. This forward declaration is sufficient
-for code in hw/ to use the QOM definitions. No need to expose
-the structure definition. Keep it local to target/ppc/ by
-moving it to target/ppc/cpu.h.
+The powerpc_excp_t definition is only used by target/ppc/, no need
+to expose it. Restrict it by moving it to "target/ppc/cpu.h".
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231013125630.95116-5-philmd@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Message-Id: <20231013125630.95116-6-philmd@linaro.org>
 ---
- include/hw/ppc/ppc.h |  2 +-
- target/ppc/cpu-qom.h | 56 --------------------------------------------
- target/ppc/cpu.h     | 51 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 52 insertions(+), 57 deletions(-)
+ target/ppc/cpu-qom.h | 29 -----------------------------
+ target/ppc/cpu.h     | 27 +++++++++++++++++++++++++++
+ 2 files changed, 27 insertions(+), 29 deletions(-)
 
-diff --git a/include/hw/ppc/ppc.h b/include/hw/ppc/ppc.h
-index 17a8dfc107..d5d119ea7f 100644
---- a/include/hw/ppc/ppc.h
-+++ b/include/hw/ppc/ppc.h
-@@ -1,7 +1,7 @@
- #ifndef HW_PPC_H
- #define HW_PPC_H
- 
--#include "target/ppc/cpu-qom.h"
-+#include "target/ppc/cpu.h"
- 
- void ppc_set_irq(PowerPCCPU *cpu, int n_IRQ, int level);
- PowerPCCPU *ppc_get_vcpu_by_pir(int pir);
 diff --git a/target/ppc/cpu-qom.h b/target/ppc/cpu-qom.h
-index 0b8dfa5fee..65a640470f 100644
+index 65a640470f..acc5f1a1dc 100644
 --- a/target/ppc/cpu-qom.h
 +++ b/target/ppc/cpu-qom.h
-@@ -21,7 +21,6 @@
- #define QEMU_PPC_CPU_QOM_H
+@@ -78,35 +78,6 @@ static inline bool mmu_is_64bit(powerpc_mmu_t mmu_model)
+     return mmu_model & POWERPC_MMU_64;
+ }
  
- #include "hw/core/cpu.h"
--#include "qom/object.h"
- 
- #ifdef TARGET_PPC64
- #define TYPE_POWERPC_CPU "powerpc64-cpu"
-@@ -36,10 +35,6 @@ OBJECT_DECLARE_CPU_TYPE(PowerPCCPU, PowerPCCPUClass, POWERPC_CPU)
- 
- #define TYPE_HOST_POWERPC_CPU POWERPC_CPU_TYPE_NAME("host")
- 
--typedef struct CPUArchState CPUPPCState;
--typedef struct ppc_tb_t ppc_tb_t;
--typedef struct ppc_dcr_t ppc_dcr_t;
--
- /*****************************************************************************/
- /* MMU model                                                                 */
- typedef enum powerpc_mmu_t powerpc_mmu_t;
-@@ -133,57 +128,6 @@ enum powerpc_input_t {
-     PPC_FLAGS_INPUT_RCPU,
- };
- 
--typedef struct PPCHash64Options PPCHash64Options;
--
--/**
-- * PowerPCCPUClass:
-- * @parent_realize: The parent class' realize handler.
-- * @parent_phases: The parent class' reset phase handlers.
-- *
-- * A PowerPC CPU model.
-- */
--struct PowerPCCPUClass {
--    /*< private >*/
--    CPUClass parent_class;
--    /*< public >*/
--
--    DeviceRealize parent_realize;
--    DeviceUnrealize parent_unrealize;
--    ResettablePhases parent_phases;
--    void (*parent_parse_features)(const char *type, char *str, Error **errp);
--
--    uint32_t pvr;
--    /*
--     * If @best is false, match if pcc is in the family of pvr
--     * Else match only if pcc is the best match for pvr in this family.
--     */
--    bool (*pvr_match)(struct PowerPCCPUClass *pcc, uint32_t pvr, bool best);
--    uint64_t pcr_mask;          /* Available bits in PCR register */
--    uint64_t pcr_supported;     /* Bits for supported PowerISA versions */
--    uint32_t svr;
--    uint64_t insns_flags;
--    uint64_t insns_flags2;
--    uint64_t msr_mask;
--    uint64_t lpcr_mask;         /* Available bits in the LPCR */
--    uint64_t lpcr_pm;           /* Power-saving mode Exit Cause Enable bits */
--    powerpc_mmu_t   mmu_model;
--    powerpc_excp_t  excp_model;
--    powerpc_input_t bus_model;
--    uint32_t flags;
--    int bfd_mach;
--    uint32_t l1_dcache_size, l1_icache_size;
--#ifndef CONFIG_USER_ONLY
--    unsigned int gdb_num_sprs;
--    const char *gdb_spr_xml;
--#endif
--    const PPCHash64Options *hash64_opts;
--    struct ppc_radix_page_info *radix_page_info;
--    uint32_t lrg_decr_bits;
--    int n_host_threads;
--    void (*init_proc)(CPUPPCState *env);
--    int  (*check_pow)(CPUPPCState *env);
+-/*****************************************************************************/
+-/* Exception model                                                           */
+-typedef enum powerpc_excp_t powerpc_excp_t;
+-enum powerpc_excp_t {
+-    POWERPC_EXCP_UNKNOWN   = 0,
+-    /* Standard PowerPC exception model */
+-    POWERPC_EXCP_STD,
+-    /* PowerPC 40x exception model      */
+-    POWERPC_EXCP_40x,
+-    /* PowerPC 603/604/G2 exception model */
+-    POWERPC_EXCP_6xx,
+-    /* PowerPC 7xx exception model      */
+-    POWERPC_EXCP_7xx,
+-    /* PowerPC 74xx exception model     */
+-    POWERPC_EXCP_74xx,
+-    /* BookE exception model            */
+-    POWERPC_EXCP_BOOKE,
+-    /* PowerPC 970 exception model      */
+-    POWERPC_EXCP_970,
+-    /* POWER7 exception model           */
+-    POWERPC_EXCP_POWER7,
+-    /* POWER8 exception model           */
+-    POWERPC_EXCP_POWER8,
+-    /* POWER9 exception model           */
+-    POWERPC_EXCP_POWER9,
+-    /* POWER10 exception model           */
+-    POWERPC_EXCP_POWER10,
 -};
 -
- #ifndef CONFIG_USER_ONLY
- typedef struct PPCTimebase {
-     uint64_t guest_timebase;
+ /*****************************************************************************/
+ /* Input pins model                                                          */
+ typedef enum powerpc_input_t powerpc_input_t;
 diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index f3ddfd7a26..55330d9319 100644
+index 55330d9319..94a804a605 100644
 --- a/target/ppc/cpu.h
 +++ b/target/ppc/cpu.h
-@@ -200,9 +200,14 @@ typedef struct opc_handler_t opc_handler_t;
- /*****************************************************************************/
- /* Types used to describe some PowerPC registers etc. */
- typedef struct DisasContext DisasContext;
-+typedef struct ppc_dcr_t ppc_dcr_t;
- typedef struct ppc_spr_t ppc_spr_t;
-+typedef struct ppc_tb_t ppc_tb_t;
- typedef union ppc_tlb_t ppc_tlb_t;
- typedef struct ppc_hash_pte64 ppc_hash_pte64_t;
-+typedef struct PPCHash64Options PPCHash64Options;
-+
-+typedef struct CPUArchState CPUPPCState;
- 
- /* SPR access micro-ops generations callbacks */
- struct ppc_spr_t {
-@@ -1341,6 +1346,52 @@ struct ArchCPU {
-     int32_t mig_slb_nr;
+@@ -192,6 +192,33 @@ enum {
+     POWERPC_EXCP_TRAP          = 0x40,
  };
  
-+/**
-+ * PowerPCCPUClass:
-+ * @parent_realize: The parent class' realize handler.
-+ * @parent_phases: The parent class' reset phase handlers.
-+ *
-+ * A PowerPC CPU model.
-+ */
-+struct PowerPCCPUClass {
-+    CPUClass parent_class;
++/* Exception model                                                           */
++typedef enum powerpc_excp_t {
++    POWERPC_EXCP_UNKNOWN   = 0,
++    /* Standard PowerPC exception model */
++    POWERPC_EXCP_STD,
++    /* PowerPC 40x exception model      */
++    POWERPC_EXCP_40x,
++    /* PowerPC 603/604/G2 exception model */
++    POWERPC_EXCP_6xx,
++    /* PowerPC 7xx exception model      */
++    POWERPC_EXCP_7xx,
++    /* PowerPC 74xx exception model     */
++    POWERPC_EXCP_74xx,
++    /* BookE exception model            */
++    POWERPC_EXCP_BOOKE,
++    /* PowerPC 970 exception model      */
++    POWERPC_EXCP_970,
++    /* POWER7 exception model           */
++    POWERPC_EXCP_POWER7,
++    /* POWER8 exception model           */
++    POWERPC_EXCP_POWER8,
++    /* POWER9 exception model           */
++    POWERPC_EXCP_POWER9,
++    /* POWER10 exception model           */
++    POWERPC_EXCP_POWER10,
++} powerpc_excp_t;
 +
-+    DeviceRealize parent_realize;
-+    DeviceUnrealize parent_unrealize;
-+    ResettablePhases parent_phases;
-+    void (*parent_parse_features)(const char *type, char *str, Error **errp);
-+
-+    uint32_t pvr;
-+    /*
-+     * If @best is false, match if pcc is in the family of pvr
-+     * Else match only if pcc is the best match for pvr in this family.
-+     */
-+    bool (*pvr_match)(struct PowerPCCPUClass *pcc, uint32_t pvr, bool best);
-+    uint64_t pcr_mask;          /* Available bits in PCR register */
-+    uint64_t pcr_supported;     /* Bits for supported PowerISA versions */
-+    uint32_t svr;
-+    uint64_t insns_flags;
-+    uint64_t insns_flags2;
-+    uint64_t msr_mask;
-+    uint64_t lpcr_mask;         /* Available bits in the LPCR */
-+    uint64_t lpcr_pm;           /* Power-saving mode Exit Cause Enable bits */
-+    powerpc_mmu_t   mmu_model;
-+    powerpc_excp_t  excp_model;
-+    powerpc_input_t bus_model;
-+    uint32_t flags;
-+    int bfd_mach;
-+    uint32_t l1_dcache_size, l1_icache_size;
-+#ifndef CONFIG_USER_ONLY
-+    unsigned int gdb_num_sprs;
-+    const char *gdb_spr_xml;
-+#endif
-+    const PPCHash64Options *hash64_opts;
-+    struct ppc_radix_page_info *radix_page_info;
-+    uint32_t lrg_decr_bits;
-+    int n_host_threads;
-+    void (*init_proc)(CPUPPCState *env);
-+    int  (*check_pow)(CPUPPCState *env);
-+};
+ #define PPC_INPUT(env) ((env)->bus_model)
  
- ObjectClass *ppc_cpu_class_by_name(const char *name);
- PowerPCCPUClass *ppc_cpu_class_by_pvr(uint32_t pvr);
+ /*****************************************************************************/
 -- 
 2.41.0
 
