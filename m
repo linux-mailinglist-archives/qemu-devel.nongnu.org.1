@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4FF7E3863
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:05:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F30D97E3868
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:07:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0IwY-0006CI-TP; Tue, 07 Nov 2023 05:04:22 -0500
+	id 1r0IzR-0007J9-Ii; Tue, 07 Nov 2023 05:07:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0IwW-0006A1-Vs
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:04:21 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0IzP-0007J1-JZ
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:07:19 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0IwV-00010g-9X
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:04:20 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-32fadd4ad09so3536684f8f.1
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:04:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0IzM-0001qS-JJ
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:07:18 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-542d654d03cso9036393a12.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:07:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699351457; x=1699956257; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699351635; x=1699956435; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=7vNQvsBCfS6b/bHw4Id5RTs+WrOWQKLbbdfZpu4FsL4=;
- b=NOK+aGBdb64vJ8sQWsPFEnTQCNVxeu4BPxaEVcLN8IubZ8NbJpQYQUqaCHffWepWWZ
- CjHQdBfBQZrqWkGRU0ugmE1yzx9B94NJS+uVdlW0mm5IyMRM3xLfE1FArKdhWyIBO8Uj
- aYpZFRAW9wQcPLSAA3UVcpnf/+dtO66kQXcSearGuXP2Q9cvRfumt0LGYdU3zhhYDlQ9
- KQ4edaJWuFsA0mjSQsjZ/K53X9pZ3p+fm05b52v8ixYa0PhR0rCjMCkFHRbDvyGQcBqt
- 80VaGh+pjiaDmca5pWjuUEcdoO1PTOBtNoEj0Vr6qmRPkXceTPv50JugQhykxE/03zs5
- JOoQ==
+ bh=4J4kkJz6O3hzXVOuXR6sD805VbvglzIAWsKyxbWp16U=;
+ b=cv2wBqwZ5g9hygNaijhK0kybW4Jd+BLV/qX2IssU4ZlU0VGh+Qa3mRnPABGrYQYteD
+ 2NQcL79KMQV8bUmYES1g6G40sgN25ACiCJj2O9QYm0UNuwoAK0jEI/n0lo0UbW8QILsu
+ SAZkYfIGHX0HCOELYQxsZ72WIN521Es1Jyxq2dzVUyujG+7CXUsoAZJ5hg8n1Ypsq6kn
+ +HjoDXXzy3nED+1tMOOisOvt566cWKla6owtnO6Wl8g7xwBDt6LjoGThjGWfZaQO7ZUu
+ 3UUjhj2tPyzBPyu5tKSsQFGUGY/qtixwY6z9okiSZvczRzIsmPGix1rbfx/AZQq4mowa
+ HDdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699351457; x=1699956257;
+ d=1e100.net; s=20230601; t=1699351635; x=1699956435;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7vNQvsBCfS6b/bHw4Id5RTs+WrOWQKLbbdfZpu4FsL4=;
- b=iBcOk8vmCxLGB9P8oI2oJyuGVuEp7S10dVmSAQCkMDXOau4LRX5clZqp9qiXk+SKvv
- 8CdtoBUemXXyRvVSQN4Eqw/XFSwghvDTPpmvRCh79HOGTsWw6Bi3ULHPN5DfIufRawAX
- 8pixostiRvLf1DP36nP4Iye9ARmkrfgqZpR1h9AgxHZhUuDqqzbgFMlbMVCHypn9lECm
- fX+pet2MXUhkIY7Fg2K+z6j4IQhyyYo70lcfffC+xt+4ZqzsMmqN416EZP2y6XL0oWt5
- beSAMHfwaAZ8lLuHr8Ji0c6bOnKjA1S5xp1rb66wNg+teHeSzWs7GC7u41tiLIKxGv6J
- RzlA==
-X-Gm-Message-State: AOJu0Yy1dzf+nP7dHiQBA3eJjWCeu1hLgvXYXjug0j0znIBpn3TWOMgx
- 9z2AI8EZjZfcP9kxxk1yyXL1X8xnNfixvGkYCLo=
-X-Google-Smtp-Source: AGHT+IFSNUP6BixpddTjwct03/aKUthvMZYskFrYdaR/REoQ6SNwJ7LXa950l2Xm5T7zs8ezJsvlEw==
-X-Received: by 2002:a5d:64ce:0:b0:32d:b031:9719 with SMTP id
- f14-20020a5d64ce000000b0032db0319719mr26469382wri.42.1699351457492; 
- Tue, 07 Nov 2023 02:04:17 -0800 (PST)
+ bh=4J4kkJz6O3hzXVOuXR6sD805VbvglzIAWsKyxbWp16U=;
+ b=SkDFjwx2Zn62LrDtzskHiFRlpVItB96lGVQ+1EjwLm6jzDpEafGzwQvuWzBLpZg4SR
+ jynx/IWP78+DYgi5Yk3O+ZYjcjK67UFWBWbtYJQB/rDC63AhEofP5ccMRxCU9zVQe7rc
+ IRKLGvt09wEBg6lhzP6Dk/yNQgZfBfuTW4bkdkju7/myqDZBzvp0Xx6caOyS3Cvt58Iw
+ TOt4Muq76fQHtVNfzviRzUGDijglv/tFsBBd6ucgzt+DUf1AgekxhvpJrJ15HmBf5QR+
+ Ea8F4/PLSje2P6ODU6cPBzUC1YB7xDpeCZ3+QULkUXb272b+b2GgUU2UKGGZDIOdsKCS
+ 3fpw==
+X-Gm-Message-State: AOJu0Yxjr+bOHsaNDDOZDmYOxpkOac1DV07BtuJYukvT/YSEnnahGlvo
+ nI7g8nTwT+CeJHTX1wmsFYai3w==
+X-Google-Smtp-Source: AGHT+IEa4iBapsSkTdbmpTkrVbt8JCJlS4kDAwEO7LPYSa8MoSJiIUNPUtBSoLBr4ZNjpNbMx66nng==
+X-Received: by 2002:a50:d7dd:0:b0:543:72cd:e14c with SMTP id
+ m29-20020a50d7dd000000b0054372cde14cmr18722361edj.36.1699351634899; 
+ Tue, 07 Nov 2023 02:07:14 -0800 (PST)
 Received: from [192.168.69.115] ([176.187.216.69])
  by smtp.gmail.com with ESMTPSA id
- d7-20020adffd87000000b0032fb7b4f191sm1881485wrr.91.2023.11.07.02.04.15
+ k28-20020a508adc000000b0053de19620b9sm5450734edk.2.2023.11.07.02.07.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Nov 2023 02:04:17 -0800 (PST)
-Message-ID: <690f6ba4-6b4c-4e7b-b340-39c51759f8db@linaro.org>
-Date: Tue, 7 Nov 2023 11:04:14 +0100
+ Tue, 07 Nov 2023 02:07:14 -0800 (PST)
+Message-ID: <3bf96059-44a8-4af3-9b0b-c9f070cd498b@linaro.org>
+Date: Tue, 7 Nov 2023 11:07:11 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/22] gdb-xml: fix duplicate register in arm-neon.xml
+Subject: Re: [PATCH 08/22] gdbstub: Add num_regs member to GDBFeature
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
@@ -71,15 +71,16 @@ Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Beraldo Leal <bleal@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
  John Snow <jsnow@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
  <berrange@redhat.com>, Chris Wulff <crwulff@gmail.com>,
- Marek Vasut <marex@denx.de>, Richard Henderson <richard.henderson@linaro.org>
+ Marek Vasut <marex@denx.de>, Richard Henderson
+ <richard.henderson@linaro.org>, Akihiko Odaki <akihiko.odaki@daynix.com>
 References: <20231106185112.2755262-1-alex.bennee@linaro.org>
- <20231106185112.2755262-3-alex.bennee@linaro.org>
+ <20231106185112.2755262-9-alex.bennee@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231106185112.2755262-3-alex.bennee@linaro.org>
+In-Reply-To: <20231106185112.2755262-9-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,16 +103,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/11/23 19:50, Alex Bennée wrote:
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> Message-Id: <20231103195956.1998255-3-alex.bennee@linaro.org>
-> ---
->   gdb-xml/arm-neon.xml | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Alex,
 
-Cc: qemu-stable@nongnu.org
-Fixes: 56aebc8916 ("Add GDB XML register description support")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On 6/11/23 19:50, Alex Bennée wrote:
+> From: Akihiko Odaki <akihiko.odaki@daynix.com>
+> 
+> Currently the number of registers exposed to GDB is written as magic
+> numbers in code. Derive the number of registers GDB actually see from
+> XML files to replace the magic numbers in code later.
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+> Message-Id: <20231025093128.33116-2-akihiko.odaki@daynix.com>
+
+Something in your workflow is odd, you should keep this Message-Id,
+
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Message-Id: <20231103195956.1998255-9-alex.bennee@linaro.org>
+
+and not propagate this one, IMO.
+
+> ---
+>   include/exec/gdbstub.h  |  1 +
+>   scripts/feature_to_c.py | 46 +++++++++++++++++++++++++++++++++++++++--
+>   2 files changed, 45 insertions(+), 2 deletions(-)
+
 
 
