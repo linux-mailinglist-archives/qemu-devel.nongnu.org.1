@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3349B7E3828
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 10:52:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BC5A7E3836
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 10:53:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0IkD-0008KC-1P; Tue, 07 Nov 2023 04:51:37 -0500
+	id 1r0IlC-0000sY-31; Tue, 07 Nov 2023 04:52:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r0Ik9-0008K0-Eg
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:51:33 -0500
-Received: from mail-yw1-x1130.google.com ([2607:f8b0:4864:20::1130])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0IlA-0000sB-0t
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:52:36 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r0Iju-00074K-IH
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:51:33 -0500
-Received: by mail-yw1-x1130.google.com with SMTP id
- 00721157ae682-5afa5dbc378so59739277b3.0
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 01:51:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0Il6-0007MQ-7n
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:52:35 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5409bc907edso9049205a12.0
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 01:52:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1699350677; x=1699955477; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=80v6yP4QAb/eXkBqA6nw6mTc6HYaYv/UJIOSjzOiz50=;
- b=mF3kJSyXuk1I2sldZfmchH7Jc33ixWZfGFqxPK8XSYFSuz1E1J+BS4RigPRZujM5hH
- EixIwA5wJmLM5CIQT1eQxqsDWcgNR1cxFPVEQkaQuUXUVB/BS5GTtdThDoOCHPiY+7+Y
- k8pFOjoXRnxC99jGcMu4HqzTbqBH3HA2cyXtajmf0X31mcTFMaqlBzleKMRTx0+YnYjf
- MdW8usrgC7E6Ftfkd8ENC0fE2j+74cIudpvnHU6G4UhYUaU/84ZWRc1vAfP9FLdTuwH5
- mpp8v/4CMgNJGu1mnyB/vduvZp7vokbJkETQ3X6Z8Vfaj7cDdM+WsWX77ox3zRDKRHy1
- gKGw==
+ d=linaro.org; s=google; t=1699350750; x=1699955550; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pNHHqSn01kEIqgnAJIMJl9RNUSlTWE7+Bits6YQfQNM=;
+ b=XmpZfFphL2UWDICHJAw0HcxNAfEi9bUiVTToNQkm8uzNSg/pKLrfWNJZKh5eJX+yxg
+ +rB5WFarv35KUsvVfH5WQwvn8zZ1tUJPvVkJPxAvPs/W3BhgYfg2bG+inbvoGHkgF/iE
+ T5wQF5snybfhgrkLSrzNzawkeig/ZIxqszDOe2Jc4SD6zNlBw8DOi1XC6e1Ujeh/QEpq
+ w1PXM9XrL2M10++mOpZAqmgx6ROsVwDQEDOhxL+dTlRpCp6YfLUmznF9OMGkKcPlmbYY
+ LQWtZPkxIb+Xc7N8wAO0LOf+MVhHn7dtcN6aABMwS6dJvTsVgK4AKu7Rdz2CTp2jHSrv
+ warA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699350677; x=1699955477;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1699350750; x=1699955550;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=80v6yP4QAb/eXkBqA6nw6mTc6HYaYv/UJIOSjzOiz50=;
- b=IP8LS4psBIK3wTtuibAyqz8anOuJsrLYXpdehXF6lKgBSwQT5JPVNRhrS7hndaMyyt
- sJkb+E5DqhGMDCPX1GRXhvcN4simNVm0PgYfoVqsvNwAnmodwrxy86fc0fqh/cmo7BVo
- TLNWP2FJH6YtILyGT88p+hp9sYU62MIZTCaddgVxnDp30/jalIUVgWOwKCu1u/sGe123
- Z4TglnPlLfV4XmCbMsE3R8XHXEBFEYux5+gZ572zkklrIv4Oa2NJU34GVO4XatV47hBQ
- qmYA/EZf6MSCQcj0WUxiqeT94QfaLj8mnS7OqUaTnib79wP7p7sxOzPbR30QDO8ARb7q
- tXWw==
-X-Gm-Message-State: AOJu0Yw8gcFrZyYaQc7LejVoW9VP0A0h4EZR8+oPXHECac0dCjgGKpct
- 5fPwtmL2WFpwiDZUyIqnJz6N8A==
-X-Google-Smtp-Source: AGHT+IFfmGWpoIIpWXjG0r1G/A14QesymrhATJVLsoZZZeH9TCpF7o1Y8aNQw5JUSBD+8a8CVacSLQ==
-X-Received: by 2002:a81:8393:0:b0:5a7:b797:d1e4 with SMTP id
- t141-20020a818393000000b005a7b797d1e4mr9914213ywf.21.1699350677088; 
- Tue, 07 Nov 2023 01:51:17 -0800 (PST)
-Received: from [192.168.68.107] ([179.193.10.161])
+ bh=pNHHqSn01kEIqgnAJIMJl9RNUSlTWE7+Bits6YQfQNM=;
+ b=PiR8k1g+qRjH6O5ynCWNS38vgS+uz60q8b6IkWz3kyFzHi0UjsMO9vGljleMi+O6IQ
+ OixEIKWiCEHMTyhg61NxptZf2ijabaLae1BDQ7T5Ljsg4jH1XnTqQqOyrQUgggKyPLu8
+ Sa/eGQj+QYI4DZLTL7JAd8r2JBBQuGT3GYxAEpXeVa4DFaYz+hXIil5pDRoURPlYGf8a
+ NaKARF3EPBeF+7tQH2MogBDSnWR/i+gKkN6ZobSsuD4XeycMZlDgk0w5IUGRmFVROK4O
+ tvJW7f4ySiyH1+mKCGrtVrZoJVyGHkZcRe+yZpeCrvQNqtu2S1gpwCNeyAGCw3xBFILv
+ m8aw==
+X-Gm-Message-State: AOJu0YzT/596HTNkTciemTb56N+OR102VMCAx6lAJpOuTCnAcE9EgKyZ
+ qNpZbTn4FeNvwPQnV7lgSMvE3w==
+X-Google-Smtp-Source: AGHT+IG20avMUgecUCWmpMVDJxuwfTsiz+CoTl3+iQVsAqTCP+TdAl+0G9b36hjeBGH8tuBqQO9oYw==
+X-Received: by 2002:a50:d553:0:b0:543:74e6:9da2 with SMTP id
+ f19-20020a50d553000000b0054374e69da2mr15821839edj.0.1699350750262; 
+ Tue, 07 Nov 2023 01:52:30 -0800 (PST)
+Received: from [192.168.69.115] ([176.187.216.69])
  by smtp.gmail.com with ESMTPSA id
- bt13-20020a05690c072d00b005a82f14b8dbsm5327968ywb.49.2023.11.07.01.51.14
+ j2-20020a50ed02000000b0053e8f1f79afsm5229252eds.30.2023.11.07.01.52.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Nov 2023 01:51:16 -0800 (PST)
-Message-ID: <e768af9e-9e48-4b37-aa77-ee865e56717c@ventanamicro.com>
-Date: Tue, 7 Nov 2023 06:51:12 -0300
+ Tue, 07 Nov 2023 01:52:29 -0800 (PST)
+Message-ID: <9a5c5b2b-db9e-421f-a4d5-b710c532566b@linaro.org>
+Date: Tue, 7 Nov 2023 10:52:28 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/riscv: don't enable Zfa by default
-To: Jerry ZJ <jerry.zhangjian@sifive.com>, alistair.francis@wdc.com,
- palmer@dabbelt.com, frank.chang@sifive.com, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org
-References: <20231106111440.59995-1-jerry.zhangjian@sifive.com>
- <c2901c07-9eef-449c-857a-6d2553aeb170@ventanamicro.com>
- <b1df8107-d0f1-4827-94bd-3f8c7cd3ea57@Spark>
- <0fbc4857-d9b3-4327-8a00-3fb277f05ef5@ventanamicro.com>
- <258be47f-97be-4308-bed5-dc34ef7ff954@Spark>
+Subject: Re: [PATCH] hw/arm: XLNX_VERSAL depends on XLNX_CSU_DMA
 Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <258be47f-97be-4308-bed5-dc34ef7ff954@Spark>
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org,
+ Francisco Iglesias <francisco.iglesias@amd.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
+References: <20231107090346.2614924-1-marcandre.lureau@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231107090346.2614924-1-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1130;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x1130.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,120 +94,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 11/6/23 23:53, Jerry ZJ wrote:
-> Use use mode QEMU can reproduce this
-> Reproduce steps
+On 7/11/23 10:03, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> Compile: riscv64-unknown-elf-clang -march=rv32imac_zicsr_zifencei_zba_zbb ./test.c -o hello_rv32imac
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+Fixes: 868d968004 ("hw/arm/xlnx-versal: Connect OSPI flash controller")
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> ---
+>   hw/arm/Kconfig | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> Run: qemu-riscv32 -cpu rv32,g=false,f=false,v=false,d=false,e=false,h=false,c=true,m=true,i=true,a=true,Zicsr=true,Zifencei=true,zmmul=true,zba=true,zbb=true ./hello_rv32imac
+> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+> index 8ce288a40c..fef992a402 100644
+> --- a/hw/arm/Kconfig
+> +++ b/hw/arm/Kconfig
+> @@ -484,6 +484,7 @@ config XLNX_VERSAL
+>       select XLNX_EFUSE_VERSAL
+>       select XLNX_USB_SUBSYS
+>       select XLNX_VERSAL_TRNG
+> +    select XLNX_CSU_DMA
+>   
+>   config NPCM7XX
+>       bool
 
-I'll definitely send patches to add a 'rv32i' CPU after seeing the amount of
-X=false you're having to use here. You'll be doing something like:
-
-qemu-riscv32 -cpu rv32i,c=true,m=true,a=true,Zicsr=true,Zifencei=true,zmmul=true,zba=true,zbb=true ./hello_rv32imac
-
-I.e. you'll only enable what you need. You won't have to disable defaults you
-don't want. I can put you in the CC if you want to give it a shot.
-
-> 
-> Then you will get the following error message:
-> qemu-riscv32: Zfa extension requires F extension
-> 
-> Since Zfa has just been ratified, I suppose disabling it by default makes sense and will not break anything that exists.
-
-Please elaborate a bit more in the commit msg (feel free to add the command line you
-sent) about how inconvenient it is to deal with having to disable 'zfa' when you want
-'F' disabled. I'll ack it.
-
-
-Thanks,
-
-Daniel
-
-> 
-> Best Regards,
-> Jerry ZJ
-> *SiFive Inc. Taiwan*
-> On Nov 7, 2023 at 00:38 +0800, Daniel Henrique Barboza <dbarboza@ventanamicro.com>, wrote:
->>
->>
->> On 11/6/23 12:21, Jerry ZJ wrote:
->>> We do have some cases that failed. SiFive e-series cores (https://static.dev.sifive.com/SiFive-E21-Manual-v1p0.pdf <https://static.dev.sifive.com/SiFive-E21-Manual-v1p0.pdf>) do not have F extension (For example: rv32imc_zicsr_zifencei_zba_zbb). When we use the corresponding extension options to configure QEMU, i.e., rv32, i=true, m=true, a=true, c=true, Zicsr=true, Zifencei=true, zba=true, zbb=true, the QEMU will have the following error.
->>> Zfa extension requires F extension
->>
->> Can you send your whole command line? I'm unable to reproduce it here. This
->> will boot:
->>
->> ./build/qemu-system-riscv32 -M virt -cpu rv32,i=true,m=true,a=true,c=true,zicsr=true,zifencei=true,zba=true,zbb=true --nographic
->>
->>
->> In a side note, we have a new CPU type (still pending, not yet queue) called
->> "rv64i", which comes only with 'RVI' enabled and nothing else - no defaults,
->> nothing.
->>
->> I believe this use case you testing here would benefit from a "rv32i" CPU that
->> does the same but for 32 bits. Then you can specify the whole CPU and not worry
->> about hidden defaults. Does that makes sense?
->>
->>>
->>> IMHO, we should not enable Zfa extension by default, especially when Zfa requires F to be enabled implicitly.
->>
->> If the rv32 use case you mentioned is really breaking because of zfa and
->> Fm, I'm fine with disabling zfa because it's now a bug. We just need a
->> reproducer.
->>
->>
->> Thanks,
->>
->> Daniel
->>
->>>
->>> Best Regards,
->>> Jerry ZJ
->>> *SiFive Inc. Taiwan*
->>> On Nov 6, 2023 at 22:55 +0800, Daniel Henrique Barboza <dbarboza@ventanamicro.com>, wrote:
->>>>
->>>>
->>>> On 11/6/23 08:14, Jerry Zhang Jian wrote:
->>>>> - Zfa requires F, we should not assume all CPUs have F extension
->>>>> support.
->>>>
->>>> We do not have a case where this happen, do we? The default CPUs have F
->>>> enabled (see misa_ext_cfgs[] in target/riscv/tcg/tcg-cpu.c), so zfa being
->>>> enable isn't a problem for them. Vendor CPUs might not have F enabled, but
->>>> they don't use the default values for extensions, so they're not affected.
->>>> Having zfa enabled by default does not hurt the default CPU setups we have.
->>>>
->>>> I am not a fan of these defaults for rv64 and so on, but once we set them to
->>>> 'true' people can complain if we set them to 'false' because it might break
->>>> existing configs in the wild. We need a strong case (i.e. a bug) to do so.
->>>>
->>>>
->>>> Thanks,
->>>>
->>>> Daniel
->>>>
->>>>
->>>>>
->>>>> Signed-off-by: Jerry Zhang Jian <jerry.zhangjian@sifive.com>
->>>>> ---
->>>>> target/riscv/cpu.c | 2 +-
->>>>> 1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->>>>> index ac4a6c7eec..c9f11509c8 100644
->>>>> --- a/target/riscv/cpu.c
->>>>> +++ b/target/riscv/cpu.c
->>>>> @@ -1247,7 +1247,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
->>>>> MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
->>>>> MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpause, true),
->>>>> MULTI_EXT_CFG_BOOL("zawrs", ext_zawrs, true),
->>>>> - MULTI_EXT_CFG_BOOL("zfa", ext_zfa, true),
->>>>> + MULTI_EXT_CFG_BOOL("zfa", ext_zfa, false),
->>>>> MULTI_EXT_CFG_BOOL("zfh", ext_zfh, false),
->>>>> MULTI_EXT_CFG_BOOL("zfhmin", ext_zfhmin, false),
->>>>> MULTI_EXT_CFG_BOOL("zve32f", ext_zve32f, false),
 
