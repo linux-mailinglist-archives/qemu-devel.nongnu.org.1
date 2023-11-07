@@ -2,80 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55EAA7E32A2
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 02:39:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B64E27E32A6
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 02:41:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0B1t-00076q-KJ; Mon, 06 Nov 2023 20:37:21 -0500
+	id 1r0B4z-00029Z-8w; Mon, 06 Nov 2023 20:40:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1r0B1r-00076f-9t
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 20:37:19 -0500
-Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
+ id 1r0B4c-00029J-3s; Mon, 06 Nov 2023 20:40:10 -0500
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1r0B1h-0001ql-El
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 20:37:19 -0500
-Received: by mail-oo1-xc2e.google.com with SMTP id
- 006d021491bc7-5875e2b27c5so2685721eaf.3
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 17:37:07 -0800 (PST)
+ id 1r0B4V-000283-UY; Mon, 06 Nov 2023 20:40:09 -0500
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-6ce37683cf6so3204185a34.3; 
+ Mon, 06 Nov 2023 17:40:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699321026; x=1699925826; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699321199; x=1699925999; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oKMk281OOMeMDSF0B4UqA1v7FUyiC36MmqJF7+LtSt4=;
- b=jta5JUj+hju7gb+Rg2bBN6tcKFJx2rwpwFX4JrpfeOrVx1VFI2XYOcmRz8I1/sjUuX
- MAEd2LpBhLaQvzzUgeRfoQo7QTpgcTqereuQu4djYVgQqRUEgDc39BUo9rjrh4+ZyL8c
- eKccDs/wQo7aqhvj+FzRekmDFn0ZnQzplBg8wpKWlYZ88fCguTCd9/SofUhr5hAYS4HY
- sTFlikBeuEIEKRHEMqyJGNYHmq5c9O6pC2tQtjztZDBVVkfSoUkBR331Pzv7AYHgDj4f
- E5W2kbAskPRCqKXgg82+N9wCn7xEpk280lE4rIJ49mcCxHUIxMhioqsHHLxH2MIbLd+s
- VYkQ==
+ bh=xJleMQjaaLsKD3zymDLq2GG+Em4KcVhskoi6Q7RZmiw=;
+ b=DqiTEY4PM2+bm+NoSokqhgd+nn9dzV1fdeqNPtDr/hzZa2UuOK+2Dpv0UE0zFrHE5j
+ hCjzXVv9NtXgJVqOha4uRWqmNJdNE9sCGlwe1A8Gzg6R5C86XikpwfiJAezGwTbFVnGs
+ mR4S2bGzYvptlEkg/9KHog8/6XTC3UeNQzsgctbn22TzA/elWarFwK8tvLfz/Jvdgayr
+ qTc6gCrtbN/MVxmYPa3k49ygZpBWQUERAxThF5g7n2//2qqawwE9cEb4f4VcR5/DGoN6
+ yjpt5R2R/NniJIhrFfvaHaf+sPZri4YhjK2UyO2v/G8JJg2OEDZQRVUvyFOUAkrwdgbW
+ bcnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699321026; x=1699925826;
+ d=1e100.net; s=20230601; t=1699321199; x=1699925999;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oKMk281OOMeMDSF0B4UqA1v7FUyiC36MmqJF7+LtSt4=;
- b=EDvnXnY1yOh8U1R+C+8orOBHAJb5MCJgwco3CAi3XAEdmhAF3ER6ce0lS5O2ygpHF/
- iIEcHgESAofhGlUbixTUXiH1vJ5gVwFFZLdr7l6SBNnI8QNqFD4TSB1jH25X9Y91voD7
- ImMgMfh1pkqoF29Dd72tLb24+JgcKhxKCxqt4TQpzOnHfs7IZNL/KNszOqujtzZEyMZn
- FOpy0d5e7lhUkNmId2e0JrQM4zbXcIIQZIVcDHieHtxamvfGineYidtGsn0HNrMsTo53
- Au84Eg3lzCbjaUtIk1lzPPWm8OizU6tsi31Vp+V3eIi0OupZ1Dhc2OwfkfLe+sPE7oCJ
- ovgQ==
-X-Gm-Message-State: AOJu0Yx7ZbYCSJ5qj+Ht9m7aRmrKiiEvWCKXv6FFJjn4/Kkrqw5NMlA1
- y3sMV+bNZY4i8CBWX0oyGdDoloehHgT6ROtQsAs=
-X-Google-Smtp-Source: AGHT+IE5+1A/ZxCO84sIl6j+Gd1sIbL39P8QNzya3C4TW7aIdrXMNq4GzYPvdMVwue+L+MjTkpExrYzHvR+x3i6li/A=
-X-Received: by 2002:a4a:ba06:0:b0:582:99ae:ca47 with SMTP id
- b6-20020a4aba06000000b0058299aeca47mr27807598oop.3.1699321026250; Mon, 06 Nov
- 2023 17:37:06 -0800 (PST)
+ bh=xJleMQjaaLsKD3zymDLq2GG+Em4KcVhskoi6Q7RZmiw=;
+ b=o8ZUe9Oo89EdBKBUsbtRXcgipBdU5yKzFozdJ8e3H15cB8rk7S1n5sX7WdLUVJynpH
+ erBdMEjAe2sN4nFQvoDGBcrZRi+0TMIWHt4t6oCUr7HR9ML5Q0PcgR10wbhEueCR99G6
+ mvZBjKOLXeJpqqVVeFyuHICjAgPE9gDZLlQgyM1qRo8d/krF6P4/4NeBrZE+Gtc6nzb4
+ 6yOPdBW7g2FvWFDaAY3jIy/NgE9eFfkh00mNC0js22pgOZz3HcQdw9cmGy8IJErkjCp7
+ pJsmr09Y2AzMxrpmTccpTrd7UFPoAZ2NYFIsgycLRR2h6Km+CpUHdaGePujDDimTRC5w
+ RMoA==
+X-Gm-Message-State: AOJu0YytdeeAaVotm76XZYcH1VxlZ0q8BnmRrK4OYKuULkVOGHeCi2zM
+ nsKs8qm2S9xWRVkz6opJQ6Dyd5qkOeiGkRZM4e4=
+X-Google-Smtp-Source: AGHT+IHZuWbCytkP8n4Amau66dg4WgfHSel/3swE8s+v2uWdPs0YkGJaZNGLV00cj0Ae+JV0sLY/HpwJ8DtyiDahvh8=
+X-Received: by 2002:a05:6830:2054:b0:6c4:ac5b:aaea with SMTP id
+ f20-20020a056830205400b006c4ac5baaeamr30873746otp.25.1699321199492; Mon, 06
+ Nov 2023 17:39:59 -0800 (PST)
 MIME-Version: 1.0
-References: <20231106095542.1852973-1-marcandre.lureau@redhat.com>
- <20231106095542.1852973-23-marcandre.lureau@redhat.com>
- <4da573ce-756e-d31b-5c13-4e0f8245dd08@linaro.org>
- <CAJ+F1C+c73Aura=JEWyp7z4_3eiNzV1Z8BOeURjJ+2YUucatCA@mail.gmail.com>
- <5f8901af-17e7-daec-4e02-ba1df3f5dbb6@linaro.org>
- <eefcde0e-2409-f119-9b00-6746ca3cf819@eik.bme.hu>
- <CAJ+F1C+Z3_iGnnyGNZgqGW511oET=TWb7qZerBWdnkbYxDqjww@mail.gmail.com>
- <22f2b9d8-8893-0a78-a55c-1ecb482bfad2@eik.bme.hu>
- <CAJSP0QUDDMgoRSZ0bYjhjUo3YScJerUdawSaoNNVWyQ6Up=q+g@mail.gmail.com>
- <94018b35-7a33-7887-f1a8-13a9ee7b6542@eik.bme.hu>
-In-Reply-To: <94018b35-7a33-7887-f1a8-13a9ee7b6542@eik.bme.hu>
+References: <20231106110336.358-1-philmd@linaro.org>
+In-Reply-To: <20231106110336.358-1-philmd@linaro.org>
 From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 7 Nov 2023 09:36:54 +0800
-Message-ID: <CAJSP0QUZcmzecB2QwyRum9mjabNsT=E3UgLLcRmwdkdyow5acA@mail.gmail.com>
-Subject: Re: [PULL v2 22/24] hw/display: make ATI_VGA depend on PIXMAN
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>
+Date: Tue, 7 Nov 2023 09:39:47 +0800
+Message-ID: <CAJSP0QXN5LQ_56do2MOAXyHWwqstYPDEDgptN4h464mW7wnjqA@mail.gmail.com>
+Subject: Re: [PULL 00/60] Misc HW/UI patches for 2023-11-06
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-s390x@nongnu.org, 
+ qemu-block@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org, 
+ qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=stefanha@gmail.com; helo=mail-ot1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,107 +86,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 7 Nov 2023 at 09:10, BALATON Zoltan <balaton@eik.bme.hu> wrote:
+On Mon, 6 Nov 2023 at 19:03, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
 >
-> On Tue, 7 Nov 2023, Stefan Hajnoczi wrote:
-> > On Mon, 6 Nov 2023 at 19:04, BALATON Zoltan <balaton@eik.bme.hu> wrote:
-> >>
-> >> On Mon, 6 Nov 2023, Marc-Andr=C3=A9 Lureau wrote:
-> >>> Hi Zoltan
-> >>>
-> >>> On Mon, Nov 6, 2023 at 2:53=E2=80=AFPM BALATON Zoltan <balaton@eik.bm=
-e.hu> wrote:
-> >>>>
-> >>>> On Mon, 6 Nov 2023, Philippe Mathieu-Daud=C3=A9 wrote:
-> >>>>> On 6/11/23 11:11, Marc-Andr=C3=A9 Lureau wrote:
-> >>>>>> Hi Philippe
-> >>>>>>
-> >>>>>> On Mon, Nov 6, 2023 at 2:03=E2=80=AFPM Philippe Mathieu-Daud=C3=A9=
- <philmd@linaro.org>
-> >>>>>> wrote:
-> >>>>>>>
-> >>>>>>> Hi Marc-Andr=C3=A9,
-> >>>>>>>
-> >>>>>>> Cc'ing Fuloong maintainers,
-> >>>>>>>
-> >>>>>>> On 6/11/23 10:55, marcandre.lureau@redhat.com wrote:
-> >>>>>>>> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >>>>>>>>
-> >>>>>>>> To avoid a kconfig cycle, change "depends on PCI" to "select PCI=
-".
-> >>>>>>>>
-> >>>>>>>> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.c=
-om>
-> >>>>>>>> Acked-by: BALATON Zoltan <balaton@eik.bme.hu>
-> >>>>>>>> ---
-> >>>>>>>>    configs/devices/mips64el-softmmu/default.mak | 3 +--
-> >>>>>>>>    hw/display/Kconfig                           | 3 ++-
-> >>>>>>>>    hw/display/meson.build                       | 2 +-
-> >>>>>>>>    hw/mips/Kconfig                              | 2 ++
-> >>>>>>>>    4 files changed, 6 insertions(+), 4 deletions(-)
-> >>>>>>>>
-> >>>>>>>> diff --git a/configs/devices/mips64el-softmmu/default.mak
-> >>>>>>>> b/configs/devices/mips64el-softmmu/default.mak
-> >>>>>>>> index d5188f7ea5..4d80d60511 100644
-> >>>>>>>> --- a/configs/devices/mips64el-softmmu/default.mak
-> >>>>>>>> +++ b/configs/devices/mips64el-softmmu/default.mak
-> >>>>>>>> @@ -1,9 +1,8 @@
-> >>>>>>>>    # Default configuration for mips64el-softmmu
-> >>>>>>>>
-> >>>>>>>>    include ../mips-softmmu/common.mak
-> >>>>>>>> -CONFIG_FULOONG=3Dy
-> >>>>>>>> +#CONFIG_FULOONG=3Dy
-> >>>>>>>
-> >>>>>>> Why is the justification to disable this board? From the
-> >>>>>>> bare "avoid a kconfig cycle" commit message, it is not
-> >>>>>>> obvious to me.
-> >>>>>>
-> >>>>>> It's not actually disabled, it's enabled by default in kconfig.
-> >>>>>
-> >>>>> OK, so let's remove the line entirely, not comment it, please.
-> >>>>
-> >>>> Well it's disabled without pixman... I have a series adding fallback=
-s to
-> >>>> ati-vga similar to sm501 (which is also needed on aarch64 macOS wher=
-e
-> >>>> pixman does not work) and with that this isn't needed. So I think it=
-'s
-> >>>> better to rebase this series on mine then some of this becomes
-> >>>> unnecessary.
-> >>>>
-> >>>
-> >>>
-> >>> It's not ready yet though. We can later revert some of this change
-> >>
-> >> What's not ready about it?
-> >>
-> >>> when your fallback version is applied. In the meantime, this doesn't
-> >>> change the behaviour unless PIXMAN has been disabled, so it should be
-> >>> acceptable. Agree? thanks
-> >>
-> >> I think it would be better to not commit something that should be reve=
-rted
-> >> soon. I understand you don't want to rebase yout series but I also don=
-'t
-> >> want to revert it later so either do the rebase now or hold off with t=
-his
-> >> series until after mine got in please.
-> >
-> > QEMU 8.2 soft freeze is today. If you both can resolve this and send
-> > pull requests today, then the changes will make it into 8.2.
-> > Otherwise, asking for this pull request to be rebased has the effect
-> > of delaying it until 8.3.
-> >
-> > I'll keep an eye on this series today.
+> The following changes since commit d762bf97931b58839316b68a570eecc6143c9e=
+3e:
 >
-> Marc-Andr=C3=A9 has sent a pull request that contains my ati-vga series:
-> https://patchew.org/QEMU/20231106133219.2173660-1-marcandre.lureau@redhat=
-.com/
-> so I think he intends to rebase this series and send another version toda=
-y
-> or come back to this later. (8.3 will be called 9.0 by the way).
+>   Merge tag 'pull-target-arm-20231102' of https://git.linaro.org/people/p=
+maydell/qemu-arm into staging (2023-11-03 10:04:12 +0800)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/philmd/qemu.git tags/misc-cpus-20231106
+>
+> for you to fetch changes up to a81b438ac3933419910cbdf2e2e8d87681de611e:
+>
+>   ui/sdl2: use correct key names in win title on mac (2023-11-06 11:07:32=
+ +0100)
+>
+> Few checkpatch warnings in target/i386/hvf/x86_emu.c are deliberately ign=
+ored.
+> ----------------------------------------------------------------
+> Misc hardware patch queue
+>
+> HW emulation:
+> - PMBus fixes and tests (Titus)
+> - IDE fixes and tests (Fiona)
+> - New ADM1266 sensor (Titus)
+> - Better error propagation in PCI-ISA i82378 (Philippe)
+>
+> Topology:
+> - Fix CPUState::nr_cores calculation (Zhuocheng Ding and Zhao Liu)
+>
+> Monitor:
+> - Synchronize CPU state in 'info lapic' (Dongli Zhang)
+>
+> QOM:
+> - Have 'cpu-qom.h' target-agnostic (Philippe)
+> - Call object_class_is_abstract once in cpu_class_by_name (Philippe)
+>
+> UI:
+> - Use correct key names in titles on MacOS / SDL2 (Adrian)
+>
+> MIPS:
+> - Fix MSA BZ/BNZ and TX79 LQ/SQ opcodes (Philippe)
+>
+> Nios2:
+> - Create IRQs *after* vCPU is realized (Philippe)
+>
+> PPC:
+> - Restrict KVM objects to system emulation (Philippe)
+>
+> X86:
+> - HVF & KVM cleanups (Philippe)
+>
+> Various targets:
+> - Use env_archcpu() to optimize (Philippe)
+>
+> Misc:
+> - Few global variable shadowing removed (Philippe)
+> - Introduce cpu_exec_reset_hold and factor tcg_cpu_reset_hold out (Philip=
+pe)
+> - Remove few more 'softmmu' mentions (Philippe)
+> - Fix and cleanup in vl.c (Akihiko & Marc-Andr=C3=A9)
+> - MAINTAINERS updates (Thomas, Daniel)
+>
+> ----------------------------------------------------------------
+>
+> Adrian Wowk (1):
+>   ui/sdl2: use correct key names in win title on mac
+>
+> Akihiko Odaki (1):
+>   vl: Free machine list
+>
+> Daniel P. Berrang=C3=A9 (1):
+>   MAINTAINERS: update libvirt devel mailing list address
+>
+> Dongli Zhang (1):
+>   target/i386/monitor: synchronize cpu state for lapic info
+>
+> Fiona Ebner (2):
+>   hw/ide: reset: cancel async DMA operation before resetting state
+>   tests/qtest: ahci-test: add test exposing reset issue with pending
+>     callback
+>
+> Marc-Andr=C3=A9 Lureau (1):
+>   vl: constify default_list
+>
+> Philippe Mathieu-Daud=C3=A9 (39):
+>   tests/vm/ubuntu.aarch64: Correct comment about TCG specific delay
+>   tests/unit/test-seccomp: Remove mentions of softmmu in test names
+>   accel/tcg: Declare tcg_flush_jmp_cache() in 'exec/tb-flush.h'
+>   accel: Introduce cpu_exec_reset_hold()
+>   accel/tcg: Factor tcg_cpu_reset_hold() out
+>   target: Unify QOM style
+>   target: Mention 'cpu-qom.h' is target agnostic
+>   target/arm: Move internal declarations from 'cpu-qom.h' to 'cpu.h'
+>   target/ppc: Remove CPU_RESOLVING_TYPE from 'cpu-qom.h'
+>   target/riscv: Remove CPU_RESOLVING_TYPE from 'cpu-qom.h'
+>   target: Declare FOO_CPU_TYPE_NAME/SUFFIX in 'cpu-qom.h'
+>   target/hexagon: Declare QOM definitions in 'cpu-qom.h'
+>   target/loongarch: Declare QOM definitions in 'cpu-qom.h'
+>   target/nios2: Declare QOM definitions in 'cpu-qom.h'
+>   target/openrisc: Declare QOM definitions in 'cpu-qom.h'
+>   target/riscv: Move TYPE_RISCV_CPU_BASE definition to 'cpu.h'
+>   target/ppc: Use env_archcpu() in helper_book3s_msgsndp()
+>   target/riscv: Use env_archcpu() in [check_]nanbox()
+>   target/s390x: Use env_archcpu() in handle_diag_308()
+>   target/xtensa: Use env_archcpu() in update_c[compare|count]()
+>   target/i386/hvf: Use x86_cpu in simulate_[rdmsr|wrmsr]()
+>   target/i386/hvf: Use env_archcpu() in simulate_[rdmsr/wrmsr]()
+>   target/i386/hvf: Use CPUState typedef
+>   target/i386/hvf: Rename 'CPUState *cpu' variable as 'cs'
+>   target/i386/hvf: Rename 'X86CPU *x86_cpu' variable as 'cpu'
+>   target/i386/kvm: Correct comment in kvm_cpu_realize()
+>   target/mips: Fix MSA BZ/BNZ opcodes displacement
+>   target/mips: Fix TX79 LQ/SQ opcodes
+>   sysemu/kvm: Restrict kvmppc_get_radix_page_info() to ppc targets
+>   hw/ppc/e500: Restrict ppce500_init_mpic_kvm() to KVM
+>   target/ppc: Restrict KVM objects to system emulation
+>   target/ppc: Prohibit target specific KVM prototypes on user emulation
+>   target/nios2: Create IRQs *after* accelerator vCPU is realized
+>   target/alpha: Tidy up alpha_cpu_class_by_name()
+>   hw/cpu: Call object_class_is_abstract() once in cpu_class_by_name()
+>   exec/cpu: Have cpu_exec_realize() return a boolean
+>   hw/cpu: Clean up global variable shadowing
 
-Excellent, thanks!
+Please take a look at the following CI failure:
 
+cc -m64 -mcx16 -Ilibqemu-arm-bsd-user.fa.p -I. -I.. -Itarget/arm
+-I../target/arm -I../common-user/host/x86_64 -I../bsd-user/include
+-Ibsd-user/freebsd -I../bsd-user/freebsd -I../bsd-user/host/x86_64
+-Ibsd-user -I../bsd-user -I../bsd-user/arm -Iqapi -Itrace -Iui
+-Iui/shader -I/usr/local/include/capstone
+-I/usr/local/include/glib-2.0 -I/usr/local/lib/glib-2.0/include
+-I/usr/local/include -fcolor-diagnostics -Wall -Winvalid-pch -Werror
+-std=3Dgnu11 -O2 -g -fstack-protector-strong -Wundef -Wwrite-strings
+-Wmissing-prototypes -Wstrict-prototypes -Wredundant-decls
+-Wold-style-definition -Wtype-limits -Wformat-security -Wformat-y2k
+-Winit-self -Wignored-qualifiers -Wempty-body -Wnested-externs
+-Wendif-labels -Wexpansion-to-defined -Wmissing-format-attribute
+-Wno-initializer-overrides -Wno-missing-include-dirs
+-Wno-shift-negative-value -Wno-string-plus-int
+-Wno-typedef-redefinition -Wno-tautological-type-limit-compare
+-Wno-psabi -Wno-gnu-variable-sized-type-not-at-end -Wthread-safety
+-iquote . -iquote /tmp/cirrus-ci-build -iquote
+/tmp/cirrus-ci-build/include -iquote
+/tmp/cirrus-ci-build/host/include/x86_64 -iquote
+/tmp/cirrus-ci-build/host/include/generic -iquote
+/tmp/cirrus-ci-build/tcg/i386 -pthread -D_GNU_SOURCE
+-D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE -fno-strict-aliasing
+-fno-common -fwrapv -fPIE -DNEED_CPU_H
+'-DCONFIG_TARGET=3D"arm-bsd-user-config-target.h"'
+'-DCONFIG_DEVICES=3D"arm-bsd-user-config-devices.h"' -MD -MQ
+libqemu-arm-bsd-user.fa.p/bsd-user_main.c.o -MF
+libqemu-arm-bsd-user.fa.p/bsd-user_main.c.o.d -o
+libqemu-arm-bsd-user.fa.p/bsd-user_main.c.o -c ../bsd-user/main.c
+../bsd-user/main.c:121:36: error: use of undeclared identifier 'cpus';
+did you mean 'cpu'?
+QTAILQ_REMOVE_RCU(&cpus, cpu, node);
+^~~~
+cpu
+
+https://gitlab.com/qemu-project/qemu/-/jobs/5472832586
+
+Thanks,
 Stefan
 
