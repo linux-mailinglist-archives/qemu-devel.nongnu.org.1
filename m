@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AAE57E41CA
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:26:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B113D7E41D6
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:29:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0N00-0004Dm-Q8; Tue, 07 Nov 2023 09:24:12 -0500
+	id 1r0N0I-0004Qu-Ms; Tue, 07 Nov 2023 09:24:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r0Mzr-0004Bv-Db
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:24:03 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1r0Mzu-0004Di-N5
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:24:06 -0500
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r0Mzl-0007Xm-W1
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:24:03 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-407c3adef8eso49307815e9.2
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 06:23:57 -0800 (PST)
+ id 1r0Mzp-0007YK-IE
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:24:05 -0500
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2c6ec78a840so75737391fa.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 06:23:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699367036; x=1699971836; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699367038; x=1699971838; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LDHFJerErM6xeZ3usM1xoRVcULOAJ0pzTqiA9XHIBaQ=;
- b=HZFRFXp0wF86z52t+Dys8iV09jCCLHp26buOGkEcGsqcHXe9/GMyRZL8VI2gzzC+c3
- +Z009xaUWQo2zo+3wFutIEY5NZb47CvJYXryiKMgVzsbzlH/nrRBWYy7t5GqQnrTXZFu
- pWDCzafzJPhESClPwXEcFmBxln9sOwTnQ+93kNkumyxjyKa84l5Zlhnk2uI6MqsstI1B
- EvLbiDKpE/El1FHPGupHMMmybcNJtu+0Mcx15bkmBnJ/YzdJP16KsD3v/enqvquVmzwr
- alGJ6rzlqosB6fYd8l9Dy6uyUtEtIv7jDQizJ9rdNtfLruUHPyDozZbiUdWWoelRNLvK
- OQ2A==
+ bh=+KyRQEuJeZ5+LF5Izx85Idqn9Hk1tbv3l5q5snV79uA=;
+ b=YDznwLNWe3UKxKoDve/DpMKTNXEehztN4sqOTd8KJ5m+4o/JaMeTYIGETjue5ibHGa
+ inwWE0PKXNdNnNIekEqY8wKUh89o7Cw/a69GtRdLV1WEtGRxSvxZgrP9RGMsq4BB6Cvv
+ CwR9qnKA3steGP88+75CJ0x4TbUplqAYlC2imlz8RBGYPMT5DlLXFGiz3yYjeQ6C2Xux
+ M4uahpAiZNVLLth68Jzxf6MUukrFXMt/vP/FMUgQIbkPsF/yLfEQOqP1Ek4naRXE7A1C
+ uSF73su/Z4WVG7Vu3F+XVZmd09KbzEMkUtjgPj0wVDdVK9bSbkaXIOdxN/Ael+qk9wIY
+ UsPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699367036; x=1699971836;
+ d=1e100.net; s=20230601; t=1699367038; x=1699971838;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LDHFJerErM6xeZ3usM1xoRVcULOAJ0pzTqiA9XHIBaQ=;
- b=ETjwR06RzWWs+q4fOupn1KKWATmbr7O7nfzc71gZD+hvoKEBXtyP9wvDhgsYtKmc4P
- eZV6PllFQUEZwxSa99yJl1Nlcw27KjhaTUPtdahKP1Pmslsj7vmUZGCF9BmNceRVkd9H
- BRV4Hh0LbUjoGskGECLs37TKrAyrj3t6lpg6csUQXNNn3OWRpwb+1MOywsvxix+RnsR+
- 0t5439S0DDWBHzx9t3egKpAahQkx1cEGQizQIYYdCgsLSY48DONmR28GHXarLQ3rt7Zp
- GVGVcqUpv3h312MQsMw3suC4W06YAQKKyK1vyOd2ZZ8njcBs2F72iWylTgJg9eiXKQnY
- 7dlw==
-X-Gm-Message-State: AOJu0YxhMBFvYVAtnzoDZ+ejyBLp/rf7hn3m7M9BcVCForpkoIt78g4X
- 8K8ICQtGfcArmXVv2JQw177p8/7bNe7MrkohQ1aXQg==
-X-Google-Smtp-Source: AGHT+IEWSkYYzVtB6ObTIcoALU5XKaTGtZH1iIk9LzRizmL5ccvoNh2TVvdNk9WwkrB09TrizCPlHQ==
-X-Received: by 2002:a05:600c:1ca1:b0:405:1bbd:aa9c with SMTP id
- k33-20020a05600c1ca100b004051bbdaa9cmr2113233wms.34.1699367035718; 
- Tue, 07 Nov 2023 06:23:55 -0800 (PST)
+ bh=+KyRQEuJeZ5+LF5Izx85Idqn9Hk1tbv3l5q5snV79uA=;
+ b=NWNyeTRW8aHNoqHn51430+7S6zDuwzrAHA33d8JSxYDYyjhtLIVoLtL4yhuILlocV5
+ /AKCYgnAKP9LCBrmtfl5gD8fkMxOP96QsY0+MlokhSabN4tCS5kG7+6R5v+MZgnWN6cA
+ sKCzxwbZXfMrlFMJbXgko63Dx2x26soMjFxli+QObLIVs0y5xcIyA8MeDkoLvkVJXcfr
+ yfuqrntjKuLMaU9JfCiHn2IhZx2pK5zYH8sB9Fh0gTV4hxSrsvpz6w32cAe8r0J2V6n4
+ 3A5/px77BPecz0r44DSuaJof4tYfD6kzIjOiF0uEGpT91eET5PfQDNxAsEImpx6g8XIo
+ 0BIQ==
+X-Gm-Message-State: AOJu0YxRjvZ3n+LVG9f1UatoUb9va3xaEaA8wK38DYUO1vhYsrJA2P2N
+ gBUumAozf/2mQaEBVWFgVYGpnw==
+X-Google-Smtp-Source: AGHT+IFvA9EGGAgLalD0baceZah4j7cTIwcT3v5+IgMAvyo8XgYE+tZlS3YChKiO/qfXQHrI0EfEqA==
+X-Received: by 2002:a2e:8681:0:b0:2b6:cff1:cd1c with SMTP id
+ l1-20020a2e8681000000b002b6cff1cd1cmr24078385lji.34.1699367038678; 
+ Tue, 07 Nov 2023 06:23:58 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- o25-20020a1c7519000000b003fe1c332810sm15497725wmc.33.2023.11.07.06.23.55
+ t10-20020a05600c198a00b004064ac107cfsm15793487wmq.39.2023.11.07.06.23.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 07 Nov 2023 06:23:55 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B563B6572D;
+ by draig.lan (Postfix) with ESMTP id C8D786573E;
  Tue,  7 Nov 2023 14:23:54 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL 01/23] default-configs: Add TARGET_XML_FILES definition
-Date: Tue,  7 Nov 2023 14:23:32 +0000
-Message-Id: <20231107142354.3151266-2-alex.bennee@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 02/23] gdb-xml: fix duplicate register in arm-neon.xml
+Date: Tue,  7 Nov 2023 14:23:33 +0000
+Message-Id: <20231107142354.3151266-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231107142354.3151266-1-alex.bennee@linaro.org>
 References: <20231107142354.3151266-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,28 +96,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-
-loongarch64-linux-user has references to XML files so include them.
-
-Fixes: d32688ecdb ("default-configs: Add loongarch linux-user support")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20231030054834.39145-6-akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-[AJB: remove base32 from list]
+Fixes: 56aebc8916 ("Add GDB XML register description support")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231106185112.2755262-2-alex.bennee@linaro.org>
+Message-Id: <20231106185112.2755262-3-alex.bennee@linaro.org>
 
-diff --git a/configs/targets/loongarch64-linux-user.mak b/configs/targets/loongarch64-linux-user.mak
-index 7d1b964020..d878e5a113 100644
---- a/configs/targets/loongarch64-linux-user.mak
-+++ b/configs/targets/loongarch64-linux-user.mak
-@@ -1,3 +1,4 @@
- # Default configuration for loongarch64-linux-user
- TARGET_ARCH=loongarch64
- TARGET_BASE_ARCH=loongarch
-+TARGET_XML_FILES=gdb-xml/loongarch-base64.xml gdb-xml/loongarch-fpu.xml
+diff --git a/gdb-xml/arm-neon.xml b/gdb-xml/arm-neon.xml
+index 9dce0a996f..d61f6b8549 100644
+--- a/gdb-xml/arm-neon.xml
++++ b/gdb-xml/arm-neon.xml
+@@ -76,7 +76,7 @@
+   <reg name="q8" bitsize="128" type="neon_q"/>
+   <reg name="q9" bitsize="128" type="neon_q"/>
+   <reg name="q10" bitsize="128" type="neon_q"/>
+-  <reg name="q10" bitsize="128" type="neon_q"/>
++  <reg name="q11" bitsize="128" type="neon_q"/>
+   <reg name="q12" bitsize="128" type="neon_q"/>
+   <reg name="q13" bitsize="128" type="neon_q"/>
+   <reg name="q14" bitsize="128" type="neon_q"/>
 -- 
 2.39.2
 
