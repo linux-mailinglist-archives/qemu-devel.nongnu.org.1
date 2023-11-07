@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF3937E47C5
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:04:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC8E7E47C0
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:04:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0QQ2-0008D1-IL; Tue, 07 Nov 2023 13:03:18 -0500
+	id 1r0QPi-000872-Et; Tue, 07 Nov 2023 13:02:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r0QPl-00088M-Mm
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:03:04 -0500
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ id 1r0QPe-00085q-FI
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:02:54 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r0QPf-0000hP-UP
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:03:01 -0500
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-507d1cc0538so8064483e87.2
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 10:02:55 -0800 (PST)
+ id 1r0QPb-0000eU-HQ
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:02:54 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-4083f613272so51417245e9.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 10:02:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699380173; x=1699984973; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699380170; x=1699984970; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bi9MKFK4Q99oQi+hX8lTv9WtemkHSdUftaqOJ7AOKBs=;
- b=FrGO0mpGtWi1uyxNEDjuCl7vZaW6ltWeHjid0lEGtb/vFA/o5ALFTOUUoAwuzxcw6V
- 17StB5m4NlMgP2rJBPPNPEXAbMxjyFk7twbO/ChIv/QA0Yz9Jp45VTj7LpmMbE+MgrPw
- lDQHd/if/h4XVmbjG5k25rNKfoTb6XPB12M7dve+VO/yaXhrnCLSZaGpy9L5XxqzqCK6
- mwvySa3roCHS/3eS80ehtG3voNYwi224nIv5jWMdn4eUTdO9psk/3HLbB1O3bBSQSvBV
- 3gZJicLlB4ckthK7ZA33R7VDg7RXWjFQtWVSmpd/oc8RiMClPvz6PCgcrcb9dKh98mMb
- Sh9g==
+ bh=F45vC/p6IY3ngsRQuRH+wBiYzJb/ebACHnpu5M5W0wA=;
+ b=hXRQn7n30RxEvcGyt0KBN5b6xLnvTUUrF8FZBGj4Ctj5Wk4RPx0ZuRopIH7rB0mvoH
+ ZFxMiJKpdtuZVnU8ZKYW3VxcxJbUJG47niO79txB30jglOShtTfQIJMyVI2k2HTraQpe
+ AddiOYJKsMvLLuY9ZnXfFK7lAG3Z/a+TQfPehdPujA22oNQolI3neKZuwLD6Tppec0Ax
+ mhMFoICERf+hmWtgsK4MtEsscN7ssB7U1/BRZQP5G+O3FKZxRmjkGLqgDFBKfhtCgou1
+ uiX9x0GuvZa1ehuePj8zw8WWi8g/RxoORaHcd0Iy3wr/mZGk5oa9bWFF8OFUz2n46ehy
+ DTXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699380173; x=1699984973;
+ d=1e100.net; s=20230601; t=1699380170; x=1699984970;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bi9MKFK4Q99oQi+hX8lTv9WtemkHSdUftaqOJ7AOKBs=;
- b=o5eoLagNF7hJHvCDCpsqB68VhjB0Dq5OzPk6oCbqLoZnWY4kPup3QzelEsNsViA4ei
- KhqNbbWRnYHlcn3kU3/uQscDlnm+QrGHZ560XQTsvwJ88wEhT6eAGVQ99yltRozqvYQZ
- z6eBsi32ZKh2t0EJwiUw/XhCZRySooqIfZPLsscNIyjjXejcTCoQunxjDwu8RP1M8lFH
- vWyJ4hVT8YFBf7NqCRFFiUgjCi6wGhaE+Qdl8mexfb4ko4zfIskyC5SCyFEnmq+YIAT8
- XaiWqTRGAy+WNRAiBIi2TodyeBShQtWgO2arkFqwgve7yrp6HaYgB9Wu57GCli90hFPh
- I3Rw==
-X-Gm-Message-State: AOJu0YzZMehm9YRC1X7mHgxZq6oZU9tKqWLFB8JXGIwP52C2JwRG/ZBQ
- 353/woDA82nXt0H0RUU0KdcRhA==
-X-Google-Smtp-Source: AGHT+IFHWOeh+3xhWNA+4fRrcVAXeJ4hc3VfX8aclBQqI4rgZWqW7YyBcbeaNrw2pXAn1uo8bMpWPA==
-X-Received: by 2002:a2e:7e0e:0:b0:2c0:34ed:b5ea with SMTP id
- z14-20020a2e7e0e000000b002c034edb5eamr23796734ljc.45.1699380172979; 
- Tue, 07 Nov 2023 10:02:52 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- fm15-20020a05600c0c0f00b00405391f485fsm16903810wmb.41.2023.11.07.10.02.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ bh=F45vC/p6IY3ngsRQuRH+wBiYzJb/ebACHnpu5M5W0wA=;
+ b=FjxEUNDUYOAKUBiUEopQFx5ZhBXFNHFVOCWZ9Bkb487FLO7cl9KWPj0TMMTpxL/kCl
+ HxBcrAuSKmvsNPss0SsrrkXUwf/H3RWIUmUTyQZlV+z1bH4YzzefoCbgMBc2grp+Fycb
+ JEX0zKwNip1XWLXqoh/7AoaKBVZ5IQhmEaZzzVGpTiK7dfpSZ6/wkcEBvgWrIZk7HjUJ
+ 8bv+NqTnQMZLFHYvz5FxRCqCjukaPfbQZdPdZJtXPA0N7WsYtDhKl2OACs57cr7kU2e/
+ vNItQ95K30ZUjCauhndUBowmoLekvdM5zeMHbhyViYQP79F+2jzygz+ClhU9CC8gkZx/
+ ui4w==
+X-Gm-Message-State: AOJu0YyjbnMoSEvgqGgf7Faj/m0M1y5qYkfXJdi2KyQ0eBYL20LPPzM7
+ 8yoeRimpSiwcy6PrFPXEO4Lu1g==
+X-Google-Smtp-Source: AGHT+IFvezbTMaK6ZKklYl8opSnysaHsrWSU02G+7YMOcFA4YnzkN8laiYAHEDPyv4eMZVrNxNZaaA==
+X-Received: by 2002:a05:600c:a43:b0:409:5bd2:aa03 with SMTP id
+ c3-20020a05600c0a4300b004095bd2aa03mr3311841wmq.9.1699380170016; 
  Tue, 07 Nov 2023 10:02:50 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ m23-20020a05600c461700b004060f0a0fdbsm15998530wmo.41.2023.11.07.10.02.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 07 Nov 2023 10:02:47 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 31A206575A;
+ by draig.lan (Postfix) with ESMTP id 4EE026575C;
  Tue,  7 Nov 2023 18:02:47 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -77,24 +77,25 @@ Cc: Eric Blake <eblake@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, virtio-fs@redhat.com,
  Kevin Wolf <kwolf@redhat.com>, "Gonglei (Arei)" <arei.gonglei@huawei.com>
-Subject: [PATCH v7 5/7] hw/virtio: derive vhost-user-i2c from vhost-user-base
-Date: Tue,  7 Nov 2023 18:02:44 +0000
-Message-Id: <20231107180246.3456598-6-alex.bennee@linaro.org>
+Subject: [PATCH v7 6/7] hw/virtio: add vhost-user-snd and virtio-snd-pci
+ devices
+Date: Tue,  7 Nov 2023 18:02:45 +0000
+Message-Id: <20231107180246.3456598-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231107180246.3456598-1-alex.bennee@linaro.org>
 References: <20231107180246.3456598-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x132.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,397 +111,286 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now we can take advantage of the new base class and make
-vhost-user-i2c a much simpler boilerplate wrapper. Also as this
-doesn't require any target specific hacks we only need to build the
-stubs once.
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Tested with rust-vmm vhost-user-sound daemon:
+
+    RUST_LOG=trace cargo run --bin vhost-user-sound -- --socket /tmp/snd.sock --backend null
+
+Invocation:
+
+    qemu-system-x86_64  \
+            -qmp unix:./qmp-sock,server,wait=off  \
+            -m 4096 \
+            -numa node,memdev=mem \
+            -object memory-backend-file,id=mem,size=4G,mem-path=/dev/shm,share=on \
+            -D qemu.log \
+            -d guest_errors,trace:\*snd\*,trace:\*sound\*,trace:\*vhost\* \
+            -chardev socket,id=vsnd,path=/tmp/snd.sock \
+            -device vhost-user-snd-pci,chardev=vsnd,id=snd \
+            /path/to/disk
+
+[AJB: imported from https://github.com/epilys/qemu-virtio-snd/commit/54ae1cdd15fef2d88e9e387a175f099a38c636f4.patch]
+
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
 ---
 v7
   - s/parent/parent_obj/
+  - add MAINTAINERS
+  - add missing s-o-b
 ---
- include/hw/virtio/vhost-user-i2c.h |  14 +-
- hw/virtio/vhost-user-i2c.c         | 272 ++---------------------------
- hw/virtio/meson.build              |   5 +-
- 3 files changed, 23 insertions(+), 268 deletions(-)
+ MAINTAINERS                        |  7 +++
+ include/hw/virtio/vhost-user-snd.h | 24 ++++++++++
+ hw/virtio/vhost-user-snd-pci.c     | 75 ++++++++++++++++++++++++++++++
+ hw/virtio/vhost-user-snd.c         | 67 ++++++++++++++++++++++++++
+ hw/virtio/Kconfig                  |  5 ++
+ hw/virtio/meson.build              |  3 ++
+ 6 files changed, 181 insertions(+)
+ create mode 100644 include/hw/virtio/vhost-user-snd.h
+ create mode 100644 hw/virtio/vhost-user-snd-pci.c
+ create mode 100644 hw/virtio/vhost-user-snd.c
 
-diff --git a/include/hw/virtio/vhost-user-i2c.h b/include/hw/virtio/vhost-user-i2c.h
-index 0f7acd40e3..a9b5612ad0 100644
---- a/include/hw/virtio/vhost-user-i2c.h
-+++ b/include/hw/virtio/vhost-user-i2c.h
-@@ -9,23 +9,17 @@
- #ifndef QEMU_VHOST_USER_I2C_H
- #define QEMU_VHOST_USER_I2C_H
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2ff908d039..86c649784e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2286,6 +2286,13 @@ F: hw/virtio/vhost-user-gpio*
+ F: include/hw/virtio/vhost-user-gpio.h
+ F: tests/qtest/libqos/virtio-gpio.*
  
-+#include "hw/virtio/virtio.h"
- #include "hw/virtio/vhost.h"
- #include "hw/virtio/vhost-user.h"
-+#include "hw/virtio/vhost-user-base.h"
- 
- #define TYPE_VHOST_USER_I2C "vhost-user-i2c-device"
++vhost-user-snd
++M: Alex Bennée <alex.bennee@linaro.org>
++R: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
++S: Maintained
++F: hw/virtio/vhost-user-snd*
++F: include/hw/virtio/vhost-user-snd.h
 +
- OBJECT_DECLARE_SIMPLE_TYPE(VHostUserI2C, VHOST_USER_I2C)
- 
- struct VHostUserI2C {
--    VirtIODevice parent;
--    CharBackend chardev;
--    struct vhost_virtqueue *vhost_vq;
--    struct vhost_dev vhost_dev;
--    VhostUserState vhost_user;
--    VirtQueue *vq;
--    bool connected;
+ vhost-user-scmi
+ R: mzamazal@redhat.com
+ S: Supported
+diff --git a/include/hw/virtio/vhost-user-snd.h b/include/hw/virtio/vhost-user-snd.h
+new file mode 100644
+index 0000000000..f9260116a7
+--- /dev/null
++++ b/include/hw/virtio/vhost-user-snd.h
+@@ -0,0 +1,24 @@
++/*
++ * Vhost-user Sound virtio device
++ *
++ * Copyright (c) 2021 Mathieu Poirier <mathieu.poirier@linaro.org>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef QEMU_VHOST_USER_SND_H
++#define QEMU_VHOST_USER_SND_H
++
++#include "hw/virtio/virtio.h"
++#include "hw/virtio/vhost.h"
++#include "hw/virtio/vhost-user.h"
++#include "hw/virtio/vhost-user-base.h"
++
++#define TYPE_VHOST_USER_SND "vhost-user-snd"
++OBJECT_DECLARE_SIMPLE_TYPE(VHostUserSound, VHOST_USER_SND)
++
++struct VHostUserSound {
 +    VHostUserBase parent_obj;
- };
- 
--/* Virtio Feature bits */
--#define VIRTIO_I2C_F_ZERO_LENGTH_REQUEST		0
--
- #endif /* QEMU_VHOST_USER_I2C_H */
-diff --git a/hw/virtio/vhost-user-i2c.c b/hw/virtio/vhost-user-i2c.c
-index 4eef3f0633..a464f5e039 100644
---- a/hw/virtio/vhost-user-i2c.c
-+++ b/hw/virtio/vhost-user-i2c.c
-@@ -14,253 +14,22 @@
- #include "qemu/error-report.h"
- #include "standard-headers/linux/virtio_ids.h"
- 
--static const int feature_bits[] = {
--    VIRTIO_I2C_F_ZERO_LENGTH_REQUEST,
--    VIRTIO_F_RING_RESET,
--    VHOST_INVALID_FEATURE_BIT
-+static Property vi2c_properties[] = {
++};
++
++#endif /* QEMU_VHOST_USER_SND_H */
+diff --git a/hw/virtio/vhost-user-snd-pci.c b/hw/virtio/vhost-user-snd-pci.c
+new file mode 100644
+index 0000000000..d61cfdae63
+--- /dev/null
++++ b/hw/virtio/vhost-user-snd-pci.c
+@@ -0,0 +1,75 @@
++/*
++ * Vhost-user Sound virtio device PCI glue
++ *
++ * Copyright (c) 2023 Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "hw/qdev-properties.h"
++#include "hw/virtio/vhost-user-snd.h"
++#include "hw/virtio/virtio-pci.h"
++
++struct VHostUserSoundPCI {
++    VirtIOPCIProxy parent_obj;
++    VHostUserSound vdev;
++};
++
++typedef struct VHostUserSoundPCI VHostUserSoundPCI;
++
++#define TYPE_VHOST_USER_SND_PCI "vhost-user-snd-pci-base"
++
++DECLARE_INSTANCE_CHECKER(VHostUserSoundPCI, VHOST_USER_SND_PCI,
++                         TYPE_VHOST_USER_SND_PCI)
++
++static Property vhost_user_snd_pci_properties[] = {
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++static void vhost_user_snd_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
++{
++    VHostUserSoundPCI *dev = VHOST_USER_SND_PCI(vpci_dev);
++    DeviceState *vdev = DEVICE(&dev->vdev);
++
++    vpci_dev->nvectors = 1;
++
++    qdev_realize(vdev, BUS(&vpci_dev->bus), errp);
++}
++
++static void vhost_user_snd_pci_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
++    PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
++    k->realize = vhost_user_snd_pci_realize;
++    set_bit(DEVICE_CATEGORY_SOUND, dc->categories);
++    device_class_set_props(dc, vhost_user_snd_pci_properties);
++    pcidev_k->vendor_id = PCI_VENDOR_ID_REDHAT_QUMRANET;
++    pcidev_k->device_id = 0; /* Set by virtio-pci based on virtio id */
++    pcidev_k->revision = 0x00;
++    pcidev_k->class_id = PCI_CLASS_MULTIMEDIA_AUDIO;
++}
++
++static void vhost_user_snd_pci_instance_init(Object *obj)
++{
++    VHostUserSoundPCI *dev = VHOST_USER_SND_PCI(obj);
++
++    virtio_instance_init_common(obj, &dev->vdev, sizeof(dev->vdev),
++                                TYPE_VHOST_USER_SND);
++}
++
++static const VirtioPCIDeviceTypeInfo vhost_user_snd_pci_info = {
++    .base_name = TYPE_VHOST_USER_SND_PCI,
++    .non_transitional_name = "vhost-user-snd-pci",
++    .instance_size = sizeof(VHostUserSoundPCI),
++    .instance_init = vhost_user_snd_pci_instance_init,
++    .class_init = vhost_user_snd_pci_class_init,
++};
++
++static void vhost_user_snd_pci_register(void)
++{
++    virtio_pci_types_register(&vhost_user_snd_pci_info);
++}
++
++type_init(vhost_user_snd_pci_register);
+diff --git a/hw/virtio/vhost-user-snd.c b/hw/virtio/vhost-user-snd.c
+new file mode 100644
+index 0000000000..9a217543f8
+--- /dev/null
++++ b/hw/virtio/vhost-user-snd.c
+@@ -0,0 +1,67 @@
++/*
++ * Vhost-user snd virtio device
++ *
++ * Copyright (c) 2023 Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
++ *
++ * Simple wrapper of the generic vhost-user-device.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "hw/qdev-properties.h"
++#include "hw/virtio/virtio-bus.h"
++#include "hw/virtio/vhost-user-snd.h"
++#include "standard-headers/linux/virtio_ids.h"
++#include "standard-headers/linux/virtio_snd.h"
++
++static const VMStateDescription vu_snd_vmstate = {
++    .name = "vhost-user-snd",
++    .unmigratable = 1,
++};
++
++static Property vsnd_properties[] = {
 +    DEFINE_PROP_CHR("chardev", VHostUserBase, chardev),
 +    DEFINE_PROP_END_OF_LIST(),
- };
- 
--static void vu_i2c_start(VirtIODevice *vdev)
--{
--    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
--    VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
--    VHostUserI2C *i2c = VHOST_USER_I2C(vdev);
--    int ret, i;
--
--    if (!k->set_guest_notifiers) {
--        error_report("binding does not support guest notifiers");
--        return;
--    }
--
--    ret = vhost_dev_enable_notifiers(&i2c->vhost_dev, vdev);
--    if (ret < 0) {
--        error_report("Error enabling host notifiers: %d", -ret);
--        return;
--    }
--
--    ret = k->set_guest_notifiers(qbus->parent, i2c->vhost_dev.nvqs, true);
--    if (ret < 0) {
--        error_report("Error binding guest notifier: %d", -ret);
--        goto err_host_notifiers;
--    }
--
--    i2c->vhost_dev.acked_features = vdev->guest_features;
--
--    ret = vhost_dev_start(&i2c->vhost_dev, vdev, true);
--    if (ret < 0) {
--        error_report("Error starting vhost-user-i2c: %d", -ret);
--        goto err_guest_notifiers;
--    }
--
--    /*
--     * guest_notifier_mask/pending not used yet, so just unmask
--     * everything here. virtio-pci will do the right thing by
--     * enabling/disabling irqfd.
--     */
--    for (i = 0; i < i2c->vhost_dev.nvqs; i++) {
--        vhost_virtqueue_mask(&i2c->vhost_dev, vdev, i, false);
--    }
--
--    return;
--
--err_guest_notifiers:
--    k->set_guest_notifiers(qbus->parent, i2c->vhost_dev.nvqs, false);
--err_host_notifiers:
--    vhost_dev_disable_notifiers(&i2c->vhost_dev, vdev);
--}
--
--static void vu_i2c_stop(VirtIODevice *vdev)
--{
--    VHostUserI2C *i2c = VHOST_USER_I2C(vdev);
--    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
--    VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
--    int ret;
--
--    if (!k->set_guest_notifiers) {
--        return;
--    }
--
--    vhost_dev_stop(&i2c->vhost_dev, vdev, true);
--
--    ret = k->set_guest_notifiers(qbus->parent, i2c->vhost_dev.nvqs, false);
--    if (ret < 0) {
--        error_report("vhost guest notifier cleanup failed: %d", ret);
--        return;
--    }
--
--    vhost_dev_disable_notifiers(&i2c->vhost_dev, vdev);
--}
--
--static void vu_i2c_set_status(VirtIODevice *vdev, uint8_t status)
--{
--    VHostUserI2C *i2c = VHOST_USER_I2C(vdev);
--    bool should_start = virtio_device_should_start(vdev, status);
--
--    if (vhost_dev_is_started(&i2c->vhost_dev) == should_start) {
--        return;
--    }
--
--    if (should_start) {
--        vu_i2c_start(vdev);
--    } else {
--        vu_i2c_stop(vdev);
--    }
--}
--
--static uint64_t vu_i2c_get_features(VirtIODevice *vdev,
--                                    uint64_t requested_features, Error **errp)
--{
--    VHostUserI2C *i2c = VHOST_USER_I2C(vdev);
--
--    virtio_add_feature(&requested_features, VIRTIO_I2C_F_ZERO_LENGTH_REQUEST);
--    return vhost_get_features(&i2c->vhost_dev, feature_bits, requested_features);
--}
--
--static void vu_i2c_handle_output(VirtIODevice *vdev, VirtQueue *vq)
--{
--    /*
--     * Not normally called; it's the daemon that handles the queue;
--     * however virtio's cleanup path can call this.
--     */
--}
--
--static void vu_i2c_guest_notifier_mask(VirtIODevice *vdev, int idx, bool mask)
--{
--    VHostUserI2C *i2c = VHOST_USER_I2C(vdev);
--
--    /*
--     * We don't support interrupts, return early if index is set to
--     * VIRTIO_CONFIG_IRQ_IDX.
--     */
--    if (idx == VIRTIO_CONFIG_IRQ_IDX) {
--        return;
--    }
--
--    vhost_virtqueue_mask(&i2c->vhost_dev, vdev, idx, mask);
--}
--
--static bool vu_i2c_guest_notifier_pending(VirtIODevice *vdev, int idx)
--{
--    VHostUserI2C *i2c = VHOST_USER_I2C(vdev);
--
--    /*
--     * We don't support interrupts, return early if index is set to
--     * VIRTIO_CONFIG_IRQ_IDX.
--     */
--    if (idx == VIRTIO_CONFIG_IRQ_IDX) {
--        return false;
--    }
--
--    return vhost_virtqueue_pending(&i2c->vhost_dev, idx);
--}
--
--static void do_vhost_user_cleanup(VirtIODevice *vdev, VHostUserI2C *i2c)
--{
--    vhost_user_cleanup(&i2c->vhost_user);
--    virtio_delete_queue(i2c->vq);
--    virtio_cleanup(vdev);
--}
--
--static int vu_i2c_connect(DeviceState *dev)
-+static void vi2c_realize(DeviceState *dev, Error **errp)
- {
--    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
--    VHostUserI2C *i2c = VHOST_USER_I2C(vdev);
++};
++
++static void vu_snd_base_realize(DeviceState *dev, Error **errp)
++{
 +    VHostUserBase *vub = VHOST_USER_BASE(dev);
-+    VHostUserBaseClass *vubc = VHOST_USER_BASE_GET_CLASS(dev);
- 
--    if (i2c->connected) {
--        return 0;
--    }
--    i2c->connected = true;
-+    /* Fixed for I2C */
-+    vub->virtio_id = VIRTIO_ID_I2C_ADAPTER;
-+    vub->num_vqs = 1;
-+    vub->vq_size = 4;
- 
--    /* restore vhost state */
--    if (virtio_device_started(vdev, vdev->status)) {
--        vu_i2c_start(vdev);
--    }
--
--    return 0;
--}
--
--static void vu_i2c_disconnect(DeviceState *dev)
--{
--    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
--    VHostUserI2C *i2c = VHOST_USER_I2C(vdev);
--
--    if (!i2c->connected) {
--        return;
--    }
--    i2c->connected = false;
--
--    if (vhost_dev_is_started(&i2c->vhost_dev)) {
--        vu_i2c_stop(vdev);
--    }
--}
--
--static void vu_i2c_event(void *opaque, QEMUChrEvent event)
--{
--    DeviceState *dev = opaque;
--    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
--    VHostUserI2C *i2c = VHOST_USER_I2C(vdev);
--
--    switch (event) {
--    case CHR_EVENT_OPENED:
--        if (vu_i2c_connect(dev) < 0) {
--            qemu_chr_fe_disconnect(&i2c->chardev);
--            return;
--        }
--        break;
--    case CHR_EVENT_CLOSED:
--        vu_i2c_disconnect(dev);
--        break;
--    case CHR_EVENT_BREAK:
--    case CHR_EVENT_MUX_IN:
--    case CHR_EVENT_MUX_OUT:
--        /* Ignore */
--        break;
--    }
--}
--
--static void vu_i2c_device_realize(DeviceState *dev, Error **errp)
--{
--    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
--    VHostUserI2C *i2c = VHOST_USER_I2C(dev);
--    int ret;
--
--    if (!i2c->chardev.chr) {
--        error_setg(errp, "vhost-user-i2c: missing chardev");
--        return;
--    }
--
--    if (!vhost_user_init(&i2c->vhost_user, &i2c->chardev, errp)) {
--        return;
--    }
--
--    virtio_init(vdev, VIRTIO_ID_I2C_ADAPTER, 0);
--
--    i2c->vhost_dev.nvqs = 1;
--    i2c->vq = virtio_add_queue(vdev, 4, vu_i2c_handle_output);
--    i2c->vhost_dev.vqs = g_new0(struct vhost_virtqueue, i2c->vhost_dev.nvqs);
--
--    ret = vhost_dev_init(&i2c->vhost_dev, &i2c->vhost_user,
--                         VHOST_BACKEND_TYPE_USER, 0, errp);
--    if (ret < 0) {
--        g_free(i2c->vhost_dev.vqs);
--        do_vhost_user_cleanup(vdev, i2c);
--    }
--
--    qemu_chr_fe_set_handlers(&i2c->chardev, NULL, NULL, vu_i2c_event, NULL,
--                             dev, NULL, true);
--}
--
--static void vu_i2c_device_unrealize(DeviceState *dev)
--{
--    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
--    VHostUserI2C *i2c = VHOST_USER_I2C(dev);
--    struct vhost_virtqueue *vhost_vqs = i2c->vhost_dev.vqs;
--
--    /* This will stop vhost backend if appropriate. */
--    vu_i2c_set_status(vdev, 0);
--    vhost_dev_cleanup(&i2c->vhost_dev);
--    g_free(vhost_vqs);
--    do_vhost_user_cleanup(vdev, i2c);
-+    vubc->parent_realize(dev, errp);
- }
- 
- static const VMStateDescription vu_i2c_vmstate = {
-@@ -268,30 +37,21 @@ static const VMStateDescription vu_i2c_vmstate = {
-     .unmigratable = 1,
- };
- 
--static Property vu_i2c_properties[] = {
--    DEFINE_PROP_CHR("chardev", VHostUserI2C, chardev),
--    DEFINE_PROP_END_OF_LIST(),
--};
--
- static void vu_i2c_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
--    VirtioDeviceClass *vdc = VIRTIO_DEVICE_CLASS(klass);
++    VHostUserBaseClass *vubs = VHOST_USER_BASE_GET_CLASS(dev);
++
++    vub->virtio_id = VIRTIO_ID_SOUND;
++    vub->num_vqs = 4;
++    vub->config_size = sizeof(struct virtio_snd_config);
++    vub->vq_size = 64;
++
++    vubs->parent_realize(dev, errp);
++}
++
++static void vu_snd_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
 +    VHostUserBaseClass *vubc = VHOST_USER_BASE_CLASS(klass);
- 
--    device_class_set_props(dc, vu_i2c_properties);
-     dc->vmsd = &vu_i2c_vmstate;
-+    device_class_set_props(dc, vi2c_properties);
-+    device_class_set_parent_realize(dc, vi2c_realize,
++
++    dc->vmsd = &vu_snd_vmstate;
++    device_class_set_props(dc, vsnd_properties);
++    device_class_set_parent_realize(dc, vu_snd_base_realize,
 +                                    &vubc->parent_realize);
-     set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
--    vdc->realize = vu_i2c_device_realize;
--    vdc->unrealize = vu_i2c_device_unrealize;
--    vdc->get_features = vu_i2c_get_features;
--    vdc->set_status = vu_i2c_set_status;
--    vdc->guest_notifier_mask = vu_i2c_guest_notifier_mask;
--    vdc->guest_notifier_pending = vu_i2c_guest_notifier_pending;
- }
- 
- static const TypeInfo vu_i2c_info = {
-     .name = TYPE_VHOST_USER_I2C,
--    .parent = TYPE_VIRTIO_DEVICE,
++
++    set_bit(DEVICE_CATEGORY_SOUND, dc->categories);
++}
++
++static const TypeInfo vu_snd_info = {
++    .name = TYPE_VHOST_USER_SND,
 +    .parent = TYPE_VHOST_USER_BASE,
-     .instance_size = sizeof(VHostUserI2C),
-     .class_init = vu_i2c_class_init,
- };
++    .instance_size = sizeof(VHostUserSound),
++    .class_init = vu_snd_class_init,
++};
++
++static void vu_snd_register_types(void)
++{
++    type_register_static(&vu_snd_info);
++}
++
++type_init(vu_snd_register_types)
+diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig
+index 92c9cf6c96..aa63ff7fd4 100644
+--- a/hw/virtio/Kconfig
++++ b/hw/virtio/Kconfig
+@@ -101,6 +101,11 @@ config VHOST_VDPA_DEV
+     default y
+     depends on VIRTIO && VHOST_VDPA && LINUX
+ 
++config VHOST_USER_SND
++    bool
++    default y
++    depends on VIRTIO && VHOST_USER
++
+ config VHOST_USER_SCMI
+     bool
+     default y
 diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-index 87042e5901..0a4d29ace6 100644
+index 0a4d29ace6..118d4d4da7 100644
 --- a/hw/virtio/meson.build
 +++ b/hw/virtio/meson.build
-@@ -22,12 +22,15 @@ if have_vhost
-     # MMIO Stubs
-     system_virtio_ss.add(files('vhost-user-device.c'))
+@@ -24,6 +24,7 @@ if have_vhost
      system_virtio_ss.add(when: 'CONFIG_VHOST_USER_GPIO', if_true: files('vhost-user-gpio.c'))
-+    system_virtio_ss.add(when: 'CONFIG_VHOST_USER_I2C', if_true: files('vhost-user-i2c.c'))
+     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_I2C', if_true: files('vhost-user-i2c.c'))
      system_virtio_ss.add(when: 'CONFIG_VHOST_USER_RNG', if_true: files('vhost-user-rng.c'))
++    system_virtio_ss.add(when: 'CONFIG_VHOST_USER_SND', if_true: files('vhost-user-snd.c'))
  
      # PCI Stubs
      system_virtio_ss.add(when: 'CONFIG_VIRTIO_PCI', if_true: files('vhost-user-device-pci.c'))
-     system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_GPIO'],
-                          if_true: files('vhost-user-gpio-pci.c'))
-+    system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_I2C'],
-+                         if_true: files('vhost-user-i2c-pci.c'))
+@@ -33,6 +34,8 @@ if have_vhost
+                          if_true: files('vhost-user-i2c-pci.c'))
      system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_RNG'],
                           if_true: files('vhost-user-rng-pci.c'))
++    system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_SND'],
++                         if_true: files('vhost-user-snd-pci.c'))
    endif
-@@ -46,7 +49,6 @@ specific_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock.c
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_VSOCK', if_true: files('vhost-user-vsock.c'))
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_RNG', if_true: files('virtio-rng.c'))
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-mem.c'))
--specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_I2C', if_true: files('vhost-user-i2c.c'))
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_SCMI', if_true: files('vhost-user-scmi.c'))
- specific_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_SCMI'], if_true: files('vhost-user-scmi-pci.c'))
- 
-@@ -54,7 +56,6 @@ virtio_pci_ss = ss.source_set()
- virtio_pci_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock-pci.c'))
- virtio_pci_ss.add(when: 'CONFIG_VHOST_USER_VSOCK', if_true: files('vhost-user-vsock-pci.c'))
- virtio_pci_ss.add(when: 'CONFIG_VHOST_USER_BLK', if_true: files('vhost-user-blk-pci.c'))
--virtio_pci_ss.add(when: 'CONFIG_VHOST_USER_I2C', if_true: files('vhost-user-i2c-pci.c'))
- virtio_pci_ss.add(when: 'CONFIG_VHOST_USER_INPUT', if_true: files('vhost-user-input-pci.c'))
- virtio_pci_ss.add(when: 'CONFIG_VHOST_USER_SCSI', if_true: files('vhost-user-scsi-pci.c'))
- virtio_pci_ss.add(when: 'CONFIG_VHOST_SCSI', if_true: files('vhost-scsi-pci.c'))
+   if have_vhost_vdpa
+     system_virtio_ss.add(files('vhost-vdpa.c'))
 -- 
 2.39.2
 
