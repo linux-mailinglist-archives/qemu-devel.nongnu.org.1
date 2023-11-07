@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F98D7E330E
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC1E17E3313
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:35:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Bsc-0005ni-9c; Mon, 06 Nov 2023 21:31:50 -0500
+	id 1r0Bsb-0005gn-5g; Mon, 06 Nov 2023 21:31:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r0BsZ-0005bQ-H5
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:31:47 -0500
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1r0BsY-0005aU-VU
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:31:46 -0500
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r0BsT-0002uP-RY
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:31:47 -0500
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-28023eadc70so4296510a91.2
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:31:41 -0800 (PST)
+ id 1r0BsW-0002us-RJ
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:31:46 -0500
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6b89ab5ddb7so5525206b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:31:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699324300; x=1699929100; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699324303; x=1699929103; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0NGrUfNZLzWmNH09Z5GuoFNdhcJQ/OgpnjZLsButO4A=;
- b=nN/ZrwLJApr9+l7BiVVVqkfSVK6lY4ZyynRDM4gP6rTlK3Ee6MQEGhRHaAGPwIcjx7
- FYg/7VglraCLXlIHrDtrAEs2V0AMivT6MRCC61Rs1tqaQEE1GfzOQwJQBcUejF2NZw7x
- cdvSwLaBmy1Ta0Tj/RXDfu2hlP+Nwy5D+IMC93YhFgVxotHaKPHoJrBqildwYpySUMr4
- XjupuQpVzTB734374hRcnNOZ0LSimq9IgGENtePCLE0uutpo8kWXzU7+0aT8HzicFoj8
- +8ZAO7iR9iKhmPlFpkNp74OeUaoebR+LojHroLsX02spVjoNx8eV8oHzCRGXSY/iJEXX
- pNmQ==
+ bh=zzerSzreBEyLFpv86Iaj/StJpuCF0tcymXhTs5mU6mY=;
+ b=Gi7SBFNLKwqmef7NM+tNp/1O1uE9s8TEippAY5ls7o6ksd4Kq82uo3/trp+GNbbKFB
+ XnVUkyeo50JbA5Ki5W0Yohtg8aY08RihBa4Y5QWuA2eD2W/gRLVXuyAAIMwu4CDZFb7W
+ NswdKwocrCwv4Q1wBcyiKeJ05DJFzpqv0eCKGOLUhl2XEkN7z7cvY4SxFEjZmgHtjwNc
+ Uf5xqnSR7B2HETf8WSCXEH3Zmp+wYwDjnVlkJATp8ZNdFxCYkA2lbxTBwilpICR6V84p
+ H+YTWcI1Xkv20Zk050U/fWhJPq7W+xHfjnlRB6U0/CIV7eC9M3K8kOWUh8Rd+TrODfHi
+ 808g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699324300; x=1699929100;
+ d=1e100.net; s=20230601; t=1699324303; x=1699929103;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0NGrUfNZLzWmNH09Z5GuoFNdhcJQ/OgpnjZLsButO4A=;
- b=E6xmfHGYT+rkHNhcWYwfNd3dOhFku202Eh418I16WlJsT787z7NBGV0GbcMR4uFOCa
- SHTxP/TKKN0TAo+rd+5GJ2kniEYBAN5u8jSJbNgVwcDGSanmVOnAiTPO8A8Iwo/Iqqv2
- R0XNlVHD/pjxW6hsh39Li8B9Kpbqd6NOElEafc1NwMSiDiWrVoQoXzUws95Qa4RaEtEo
- bLCmm1knSDuJkUuvBRahCVd4su3YD0E9YozZYoru9zSjZXTahZZqnHNigSXw5vgcxrWS
- UxuHX15SebCY/qcC/WWs00bymDZbagbbQ/ADhBMW+geHOAgKl6yH+aScOfjxyBe6DcWJ
- NusA==
-X-Gm-Message-State: AOJu0YyPYC5zS3Cyzq69roN2TF36jiITZL9F5+8dl8wiXtmV/Sj0+peE
- e1ZR6dAevr7jz08vCgNcNIIaTWhlX/Wzmg==
-X-Google-Smtp-Source: AGHT+IFfvN30fqpCGK3Gr0JuHYuSxqPqP6Ok44EMExsqzfdHHh7qs4aKWFaVtp6gfn/bAV1B0MYvtg==
-X-Received: by 2002:a17:90a:fd01:b0:27f:ebfa:1112 with SMTP id
- cv1-20020a17090afd0100b0027febfa1112mr25045844pjb.5.1699324299726; 
- Mon, 06 Nov 2023 18:31:39 -0800 (PST)
+ bh=zzerSzreBEyLFpv86Iaj/StJpuCF0tcymXhTs5mU6mY=;
+ b=r65rq89NZ0lS/j2CpbNcU+XR1Js5mI6J0jJwjeoSYO2PaRIn4BBRx5EzEFHR/dnczW
+ ajNFdv5QUnMJqw+wNPY5OdwxXSklKygqSBbTbwIHVOGfYGP0PcD7jf503yOOe033FC8M
+ SnEZqTwuRKq8yOgr6jRqNzuuxL47stEC31JqspmJpoYtOQGX6ChXY+qpXGb1O1ACZjAZ
+ MD+f6siPZLJ+fKjO+gZHvTaP5l+tLhVx1dJuTBkTJekmJ45EhI45ToUGuaBTFMdgxF+e
+ oDrryEKHapwRiTu/lrwm2WuyITdksbtBU/WLx06PJ1HHwIX5uLshfhGiZxHdtXHpHVkI
+ n1/Q==
+X-Gm-Message-State: AOJu0Yw47i90poSAkVa0u1guLun3TiYZfi5vc/yJ0MeA/KZd6bSAHOGz
+ muet3+O5al7aAcyMpV9bHEHDA4Mlt2k+hw==
+X-Google-Smtp-Source: AGHT+IHG2eyK1QlxDDesWRzLoKM2XIyQpl61vR2RI1ioXTiWekKM9On7oT610c0/rJbjpsBGGPUvWQ==
+X-Received: by 2002:a05:6a20:728e:b0:14c:daa9:5e22 with SMTP id
+ o14-20020a056a20728e00b0014cdaa95e22mr36782476pzk.45.1699324303106; 
+ Mon, 06 Nov 2023 18:31:43 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- u18-20020a170902e5d200b001cc32f46757sm6487649plf.107.2023.11.06.18.31.36
+ u18-20020a170902e5d200b001cc32f46757sm6487649plf.107.2023.11.06.18.31.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 18:31:38 -0800 (PST)
+ Mon, 06 Nov 2023 18:31:42 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Max Chou <max.chou@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 30/49] target/riscv: Expose Zvkt extension property
-Date: Tue,  7 Nov 2023 12:29:26 +1000
-Message-ID: <20231107022946.1055027-31-alistair.francis@wdc.com>
+Subject: [PULL 31/49] target/riscv: Add cfg property for Zvkb extension
+Date: Tue,  7 Nov 2023 12:29:27 +1000
+Message-ID: <20231107022946.1055027-32-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231107022946.1055027-1-alistair.francis@wdc.com>
 References: <20231107022946.1055027-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,35 +99,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Max Chou <max.chou@sifive.com>
 
+After vector crypto spec v1.0.0-rc3 release, the Zvkb extension is
+defined as a proper subset of the Zvbb extension. And both the Zvkn and
+Zvks shorthand extensions replace the included Zvbb extension by Zvkb
+extnesion.
+
 Signed-off-by: Max Chou <max.chou@sifive.com>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20231026151828.754279-3-max.chou@sifive.com>
+Message-ID: <20231026151828.754279-4-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ target/riscv/cpu_cfg.h     | 1 +
+ target/riscv/tcg/tcg-cpu.c | 6 +++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index f40da4c661..9604ba6171 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -133,6 +133,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zvknhb, PRIV_VERSION_1_12_0, ext_zvknhb),
-     ISA_EXT_DATA_ENTRY(zvksed, PRIV_VERSION_1_12_0, ext_zvksed),
-     ISA_EXT_DATA_ENTRY(zvksh, PRIV_VERSION_1_12_0, ext_zvksh),
-+    ISA_EXT_DATA_ENTRY(zvkt, PRIV_VERSION_1_12_0, ext_zvkt),
-     ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
-     ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
-     ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
-@@ -1390,6 +1391,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
-     MULTI_EXT_CFG_BOOL("x-zvknhb", ext_zvknhb, false),
-     MULTI_EXT_CFG_BOOL("x-zvksed", ext_zvksed, false),
-     MULTI_EXT_CFG_BOOL("x-zvksh", ext_zvksh, false),
-+    MULTI_EXT_CFG_BOOL("x-zvkt", ext_zvkt, false),
- 
-     DEFINE_PROP_END_OF_LIST(),
- };
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 1f0dac5c8a..c4b2fec024 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -90,6 +90,7 @@ struct RISCVCPUConfig {
+     bool ext_zve64d;
+     bool ext_zvbb;
+     bool ext_zvbc;
++    bool ext_zvkb;
+     bool ext_zvkg;
+     bool ext_zvkned;
+     bool ext_zvknha;
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 87baae56a1..ad7a183a74 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -508,9 +508,9 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+      * In principle Zve*x would also suffice here, were they supported
+      * in qemu
+      */
+-    if ((cpu->cfg.ext_zvbb || cpu->cfg.ext_zvkg || cpu->cfg.ext_zvkned ||
+-         cpu->cfg.ext_zvknha || cpu->cfg.ext_zvksed || cpu->cfg.ext_zvksh) &&
+-        !cpu->cfg.ext_zve32f) {
++    if ((cpu->cfg.ext_zvbb || cpu->cfg.ext_zvkb || cpu->cfg.ext_zvkg ||
++         cpu->cfg.ext_zvkned || cpu->cfg.ext_zvknha || cpu->cfg.ext_zvksed ||
++         cpu->cfg.ext_zvksh) && !cpu->cfg.ext_zve32f) {
+         error_setg(errp,
+                    "Vector crypto extensions require V or Zve* extensions");
+         return;
 -- 
 2.41.0
 
