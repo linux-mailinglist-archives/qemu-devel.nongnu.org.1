@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B40B17E374D
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 10:14:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B147E3757
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 10:18:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0I9b-0007Kp-7O; Tue, 07 Nov 2023 04:13:47 -0500
+	id 1r0IDP-0001O7-77; Tue, 07 Nov 2023 04:17:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0I9a-0007KR-3g
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:13:46 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0IDM-0001N4-Qg
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:17:40 -0500
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0I9Y-0007ZC-L3
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:13:45 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-32fb1d757f7so2916138f8f.0
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 01:13:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0IDK-0000Ez-VS
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:17:40 -0500
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-509109104e2so7111617e87.3
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 01:17:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699348423; x=1699953223; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699348656; x=1699953456; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=00ZBeN9Bjl0x3wRZpRS5xdebTagoVBTCBMvXv31VmQA=;
- b=czXdycmMRoMfok/jWCvknl0XAS/MAC1uP9lsrJ9ODaZkUCl00U+MAGhlqJvksnylLg
- zsxBbhPXL7CuZBHMtFhzTloKw6dLdu74mhPQob0pC8JhIkTchQUItUN9flakjIvScRqi
- GcF4CGxBRCjOtP8OFl2VysouZLY/kjDhtU19ygRBFPBZJFZu+3uPMOVbI/Pqo6o5dGcI
- nMHo6gy700vqyy2i/P2VHt5bqJeDIw1Ry1hR2vS+bIvtlau7ihg6UjVz4q3cxMTboh/e
- Y956FRaM+OgjVYZ3d2NDN1zK+xA6GVEbTnyRheZAeqn/lSf3GBYLTtFYQ10N28OD4uU6
- xZnA==
+ bh=OciHAjrx74uh9NksX3r4zUgupKsq6Ci9K8lpm2JMuIg=;
+ b=fsoo8lSikEKuJqY64ct0qe9d6QZDbbfG/lC8dAHcxECTdgNw0kmzsQVlMmtjiP6PIQ
+ NWi7IlleTA2BH4geMGLEv7EUVLrOebXBYOSfvyJjl6qJxUcuPacG32KUYburqrKdO5bS
+ V6IzuxrEqu4Wxordq4fbaX++w40LrlvNNGZ6rjhNCB2JVHTHly94SD3vCMQri3BithGy
+ s2lPv35TGypLVDeCsTHQYhY6nW7YC7k/neSSktRKnFIrIplWvzIZDDF0mvA2Md56TOiU
+ fwVQl1nPoCYL9bT9jICJHXhUAWPuf69rtT3EIiZukIjJMhSE79sbN/MUUB67DCDpsBpx
+ R8rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699348423; x=1699953223;
+ d=1e100.net; s=20230601; t=1699348656; x=1699953456;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=00ZBeN9Bjl0x3wRZpRS5xdebTagoVBTCBMvXv31VmQA=;
- b=BBkequAjoXHxtjuUutdA502uGbqk2NMCyjFPoeRCOrzURLK/PP38Y6jG4M34CZDlfR
- 9HLzUIyRdr2NQATY5sPdQhcaeNp6yjwxfIBAlbqrgsSa/zwk22tt5Cin2uKx2mVO+bS9
- 83bT7sIJYxkWTn3cct/gJ04YG4xiFuuG3Y38K/NqcOjQKbCxxYKn545F6eXmceI0WVay
- 3A5v/y+DfaklMUQRGQNFCDADWQRZ3mZc9+ysVuX1ym092nXEgUKbOVByT23JtVhA0gNR
- OIwXkPCgEcrhehs/aHEZyCxi8c8hNLR5NJci3aCOEQwD6oVD3weSHdQn/ZSduRmQucg+
- tehQ==
-X-Gm-Message-State: AOJu0YyMzlRcTNfUsDrS0SIWJTcg58a0aXGtyuMnvo0wqNglzEm4Wl4/
- lI0n5rBrwd5rmf6U14cdzNFEgg==
-X-Google-Smtp-Source: AGHT+IHJkrp2z1htEKeqRSQb3psQKIGk19FV0SV2l3aOEcrJPuTM8jcHGqlPCC1ZTSVsJ5JEEwTCWA==
-X-Received: by 2002:a05:6000:1864:b0:32f:9696:c3e8 with SMTP id
- d4-20020a056000186400b0032f9696c3e8mr19581545wri.51.1699348423146; 
- Tue, 07 Nov 2023 01:13:43 -0800 (PST)
+ bh=OciHAjrx74uh9NksX3r4zUgupKsq6Ci9K8lpm2JMuIg=;
+ b=YMtULGOJFmHEt6MjyFmXHooa87sRusM/ed1Eq6HoXzbs+iF2UPJzfLcskTNdTkfOZP
+ T4kJWDy626Pg0QxyjYGEyTw4/R/4jlxyFGTiPoDhyawauYxM6tMdS8N/2Td0PJ83QP4P
+ 1jJw8kv7VUMK3LcE6RPFvkylocaqwmJ6xRq4dkTmwRP7Fm9IaBv56h8BXfwfjlbEcABV
+ X3lhvmDaTaWCD+xGx2+XLtCjlmZ2mtOWoDhZfiB4yQGa2SLRE/eNI4zxBGE8OgyLb5Wb
+ nojvqTQ1dmE/kUYUlMWBH1YKvhUNiJlq1wiWPVvj12IGihCDh43VKPUf1Ey0n2IbgyBj
+ zYJg==
+X-Gm-Message-State: AOJu0YzJt1pt/EOXu2njATeFuJfyNq02IUDB8lbRvCgbfB10ZgNYENsU
+ 9+Wb7d9H0La0xU+K2LqWj7Om+Q==
+X-Google-Smtp-Source: AGHT+IEua1zniq4vMGj8p4gE4isPehjGzGas8jV4WzIIQhEObirvfuh+azuL3V3S6GzYGgS1Wg2dmQ==
+X-Received: by 2002:a19:4f5c:0:b0:507:aad2:96af with SMTP id
+ a28-20020a194f5c000000b00507aad296afmr20200193lfk.21.1699348656454; 
+ Tue, 07 Nov 2023 01:17:36 -0800 (PST)
 Received: from [192.168.69.115] ([176.187.216.69])
  by smtp.gmail.com with ESMTPSA id
- f8-20020a5d5688000000b0032d9382e6e0sm1781375wrv.45.2023.11.07.01.13.42
+ p8-20020a05651212c800b0050420eff124sm282243lfg.152.2023.11.07.01.17.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Nov 2023 01:13:42 -0800 (PST)
-Message-ID: <bf6a5c22-1ac7-4468-9474-55197b6b5766@linaro.org>
-Date: Tue, 7 Nov 2023 10:13:42 +0100
+ Tue, 07 Nov 2023 01:17:36 -0800 (PST)
+Message-ID: <83af2168-b7ad-4608-a531-18373a19c9f4@linaro.org>
+Date: Tue, 7 Nov 2023 10:17:33 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 02/24] build-sys: drop needless warning pragmas for old
- pixman
+Subject: Re: [PATCH v8 20/24] arm/kconfig: XLNX_ZYNQMP_ARM depends on PIXMAN
 Content-Language: en-US
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org,
+ Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
 Cc: BALATON Zoltan <balaton@eik.bme.hu>, stefanha@gmail.com,
- Gerd Hoffmann <kraxel@redhat.com>, qemu-ppc@nongnu.org
+ Gerd Hoffmann <kraxel@redhat.com>, qemu-ppc@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
 References: <20231107071915.2459115-1-marcandre.lureau@redhat.com>
- <20231107071915.2459115-3-marcandre.lureau@redhat.com>
+ <20231107071915.2459115-21-marcandre.lureau@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231107071915.2459115-3-marcandre.lureau@redhat.com>
+In-Reply-To: <20231107071915.2459115-21-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,20 +97,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/11/23 08:18, marcandre.lureau@redhat.com wrote:
+Hi Marc-André,
+
+On 7/11/23 08:19, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> Since commit 236f282c1c7 ("configure: check for pixman-1 version"), QEMU
-> requires >= 0.21.8.
+> The Display Port has some strong PIXMAN dependency.
 > 
-> Suggested-by: Thomas Huth <thuth@redhat.com>
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > Reviewed-by: Thomas Huth <thuth@redhat.com>
 > ---
->   include/ui/qemu-pixman.h | 4 ----
->   1 file changed, 4 deletions(-)
+>   hw/arm/Kconfig         | 3 ++-
+>   hw/display/Kconfig     | 5 +++++
+>   hw/display/meson.build | 2 +-
+>   3 files changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+> index e35007ed41..8ce288a40c 100644
+> --- a/hw/arm/Kconfig
+> +++ b/hw/arm/Kconfig
+> @@ -451,7 +451,7 @@ config STM32F405_SOC
+>   config XLNX_ZYNQMP_ARM
+>       bool
+>       default y
+> -    depends on TCG && AARCH64
+> +    depends on TCG && AARCH64 && PIXMAN
 
+NACK, this should be:
+
+-- >8 --
+  config XLNX_ZYNQMP_ARM
+      bool
+-    default y
++    default y if PIXMAN
+      depends on TCG && AARCH64
+      select AHCI
+      select ARM_GIC
+---
+
+>       select AHCI
+>       select ARM_GIC
+>       select CADENCE
+> @@ -463,6 +463,7 @@ config XLNX_ZYNQMP_ARM
+>       select XILINX_AXI
+>       select XILINX_SPIPS
+>       select XLNX_CSU_DMA
+> +    select XLNX_DISPLAYPORT
+
+OK.
+
+>       select XLNX_ZYNQMP
+>       select XLNX_ZDMA
+>       select USB_DWC3
+> diff --git a/hw/display/Kconfig b/hw/display/Kconfig
+> index 4d8b0cec40..1aafe1923d 100644
+> --- a/hw/display/Kconfig
+> +++ b/hw/display/Kconfig
+> @@ -134,3 +134,8 @@ config MACFB
+>       bool
+>       select FRAMEBUFFER
+>       depends on NUBUS
+> +
+> +config XLNX_DISPLAYPORT
+> +    bool
+> +    # defaults to "N", enabled by specific boards
+> +    depends on PIXMAN
+
+OK (XLNX_ZYNQMP_ARM gets the dependency from here).
+
+Conditional to using "default y if PIXMAN":
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
