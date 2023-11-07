@@ -2,91 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5C17E4053
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 14:42:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CFEB7E4088
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 14:45:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0MKm-00069z-1m; Tue, 07 Nov 2023 08:41:36 -0500
+	id 1r0MNP-0003WQ-Dn; Tue, 07 Nov 2023 08:44:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0MKa-0005sL-Ql
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:41:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0MNL-0003TL-3g
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:44:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0MKW-0005aB-PZ
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:41:24 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0MNJ-0005q5-Eo
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:44:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699364476;
+ s=mimecast20190719; t=1699364652;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ICkp/HFwZ08fz0nzb0YdCd3L5fDFRWmsKD1g5pxBAM8=;
- b=KcCS11tCukM955okMzM44S7PSPu7+hbJAYufKSLHmZuYyNVBZj8i0o2F+EyQPFc0qxXvm2
- yIAFX3xO8b5aa45/bYDDvuxh7ZJGqbbt9JUZgCEaskGUXszKdmclwIYD0bMC6qcjFSjKGL
- ZwSqE7qgt0OUx8KpAi5+iGeEMKQJCtA=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=a4A5NIE9XFZZVx2DZB0IIIaSU3ccWHSmI5yZcm7I+cA=;
+ b=IIQyDkclQDfYyqDiqnuGdytQz4mxLE8qGw5av7tfh8j717jDmpE6c+RDxlpwS+WidRGFeR
+ E5K5EVqC9SgDYCN7Moqhs7BUVZf72RaUz1fLmwkdMS8Bx8r4RhhmAE3ds1r/hGIkW0bkV0
+ GZ3dWODalOVQCoGJdqnaqF+Up9ICCl4=
+Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com
+ [209.85.221.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-449-jKLX0rWFPeyKJUq2oxeHAg-1; Tue, 07 Nov 2023 08:41:10 -0500
-X-MC-Unique: jKLX0rWFPeyKJUq2oxeHAg-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-7788f0f099fso679983985a.1
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 05:41:10 -0800 (PST)
+ us-mta-324-oZZwvFWNMHmT-RL6x70Dbw-1; Tue, 07 Nov 2023 08:44:06 -0500
+X-MC-Unique: oZZwvFWNMHmT-RL6x70Dbw-1
+Received: by mail-vk1-f200.google.com with SMTP id
+ 71dfb90a1353d-4abfef1031cso1617625e0c.0
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 05:44:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699364470; x=1699969270;
+ d=1e100.net; s=20230601; t=1699364646; x=1699969446;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ICkp/HFwZ08fz0nzb0YdCd3L5fDFRWmsKD1g5pxBAM8=;
- b=rzDovBRAkIApkr4SBt8gWKi/B7U/wbYRSHW8bK8WmJ4STBrPf/s+mq6aeu8/76WVGZ
- aEna22WQhkEvAZtshMqz98RfEzQH5ib3L6vAH9jD5yduIyYI8Ob4x155FkUqLpI5cG6I
- 92aw8RFPU9R9XernrgJ60/G5WSM2B1Yy88bL5gnMefPULDTcNQ+E2gMe188F5U4ZzCja
- 0q620kL51PmrRge3nJ6tgz3AVhavWkeZnfYXT08hRW6AFnQdQW1cvCLvdFyYo3UexzFX
- GRVv6N016BaDKWQRFL4cZhYNNxycMwktRjd1jtiGlRS2aUpJaTVIpSBOLoNYwPloJgyM
- U+Zg==
-X-Gm-Message-State: AOJu0Yy8h0jKGCW9tKMKBBgktHUy+nkBnxn1SXqxhMoq0BQyKIaXtddF
- YBybmc+kKSgPD9SAw52y+LCcLTmZva9rrUfN6MgM1xOzeD8ldWwx49gLaBGNNR+sN/CuCtyujq4
- OEpKd93Ahi7UDR2w=
-X-Received: by 2002:a05:620a:4155:b0:778:929c:a43a with SMTP id
- k21-20020a05620a415500b00778929ca43amr39144064qko.60.1699364470049; 
- Tue, 07 Nov 2023 05:41:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEPRNBje6M3Z/BQcjEl0t0dql/aRhmJO/b7O16qbdIaZTl2P7HOJzILFocTO/xwqQpivvqGWw==
-X-Received: by 2002:a05:620a:4155:b0:778:929c:a43a with SMTP id
- k21-20020a05620a415500b00778929ca43amr39144048qko.60.1699364469727; 
- Tue, 07 Nov 2023 05:41:09 -0800 (PST)
+ bh=a4A5NIE9XFZZVx2DZB0IIIaSU3ccWHSmI5yZcm7I+cA=;
+ b=DU/ZYO2Yia+ncxkaeV1BKLoKrgmYZ/dLEfHylkD/JTq9z5ZokCPen0c4JlnhLQy+eW
+ ZNoMjhuQaxE/AoA2Dp0hn0gzJxPeppeOn6qBANV9JH8xAR2mAO/YmeRZIEEacHqcnFyf
+ b3imincjaMHuZH3j20Fv0Puh0Ljp/kPwSDWYDIEAQxAxLzPz7uGdCdtyqwqFQDwjprko
+ tXQBsyhH640SK9hKQKCAMavcd6UJRtB60utSNWF8AztfbL75BHfDsfaCgp0ikFVoo1N+
+ j9bj0Un544lf7bDJte9Xn/WtF+Tlolkp1XEGvCS/3o3Gjih3eK27RjkD1Ss+LC6TjOd/
+ 1ndQ==
+X-Gm-Message-State: AOJu0YxMldX9ZIHrT1Q+++1NKVc6Tf3hFasdY9YfkVlAbNPza/LhJhhy
+ 6K8ATvxxIiW215p6tYdykipRF/tDemG/e0kNV/7Y6XlH3J5jkeaAnL4lQmZo7zGNC8RqMoY8Bw/
+ Q6cQKbzXFgZloQsI=
+X-Received: by 2002:a1f:a689:0:b0:4ac:174d:4d3d with SMTP id
+ p131-20020a1fa689000000b004ac174d4d3dmr6472758vke.2.1699364645991; 
+ Tue, 07 Nov 2023 05:44:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHOgrbRzio6NukyJC1Y+NLRMY+E1C+zk1AVAdoVpyyfUn/NtlT0pl1Pm6ywKmBzojK+rn+YZQ==
+X-Received: by 2002:a1f:a689:0:b0:4ac:174d:4d3d with SMTP id
+ p131-20020a1fa689000000b004ac174d4d3dmr6472740vke.2.1699364645747; 
+ Tue, 07 Nov 2023 05:44:05 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- bl3-20020a05620a1a8300b0076ee973b9a7sm4184742qkb.27.2023.11.07.05.41.07
+ u13-20020a05620a022d00b0077a02cf7949sm4204315qkm.32.2023.11.07.05.44.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Nov 2023 05:41:09 -0800 (PST)
-Message-ID: <ceab2862-d251-489e-8fdf-c93048a52243@redhat.com>
-Date: Tue, 7 Nov 2023 14:41:06 +0100
+ Tue, 07 Nov 2023 05:44:05 -0800 (PST)
+Message-ID: <0c363b88-5e69-4fd7-a80b-bf9b7821263d@redhat.com>
+Date: Tue, 7 Nov 2023 14:44:02 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 28/41] vfio/iommufd: Implement the iommufd backend
+Subject: Re: [PATCH v4 41/41] vfio: Compile out iommufd for PPC target
 Content-Language: en-US
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
  joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
  jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com
+ yi.y.sun@intel.com, chao.p.peng@intel.com, Thomas Huth <thuth@redhat.com>
 References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
- <20231102071302.1818071-29-zhenzhong.duan@intel.com>
+ <20231102071302.1818071-42-zhenzhong.duan@intel.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231102071302.1818071-29-zhenzhong.duan@intel.com>
+In-Reply-To: <20231102071302.1818071-42-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -104,655 +104,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/2/23 08:12, Zhenzhong Duan wrote:
-> From: Yi Liu <yi.l.liu@intel.com>
+On 11/2/23 08:13, Zhenzhong Duan wrote:
+> Since PPC doesn't support IOMMUFD, make iommufd related code
+> compiled out.
 > 
-> Add the iommufd backend. The IOMMUFD container class is implemented
-> based on the new /dev/iommu user API. This backend obviously depends
-> on CONFIG_IOMMUFD.
-> 
-> So far, the iommufd backend doesn't support dirty page sync yet due
-> to missing support in the host kernel.
-> 
-> Co-authored-by: Eric Auger <eric.auger@redhat.com>
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-
-I think one tag for Eric is enough.
-
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> Suggested-by: Cédric Le Goater <clg@redhat.com>
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
-> v4: use SPDX identifier, use iommufd_cdev_* prefix, merge with manual alloc patch
-> 
->   include/hw/vfio/vfio-common.h |  23 ++
->   hw/vfio/common.c              |  19 +-
->   hw/vfio/iommufd.c             | 504 ++++++++++++++++++++++++++++++++++
->   hw/vfio/meson.build           |   3 +
->   hw/vfio/trace-events          |  13 +
->   5 files changed, 558 insertions(+), 4 deletions(-)
->   create mode 100644 hw/vfio/iommufd.c
-> 
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index 24ecc0e7ee..3f1a39a991 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -89,6 +89,23 @@ typedef struct VFIOHostDMAWindow {
->       QLIST_ENTRY(VFIOHostDMAWindow) hostwin_next;
->   } VFIOHostDMAWindow;
->   
-> +#ifdef CONFIG_IOMMUFD
+Please drop this patch.
 
-Please remove the #ifdef.
+Instead, add
 
-> +typedef struct VFIOIOASHwpt {
-> +    uint32_t hwpt_id;
-> +    QLIST_HEAD(, VFIODevice) device_list;
-> +    QLIST_ENTRY(VFIOIOASHwpt) next;
-> +} VFIOIOASHwpt;
-> +
-> +typedef struct IOMMUFDBackend IOMMUFDBackend;
-> +
-> +typedef struct VFIOIOMMUFDContainer {
-> +    VFIOContainerBase bcontainer;
-> +    IOMMUFDBackend *be;
-> +    uint32_t ioas_id;
-> +    QLIST_HEAD(, VFIOIOASHwpt) hwpt_list;
-> +} VFIOIOMMUFDContainer;
-> +#endif
-> +
->   typedef struct VFIODeviceOps VFIODeviceOps;
->   
->   typedef struct VFIODevice {
-> @@ -116,6 +133,11 @@ typedef struct VFIODevice {
->       OnOffAuto pre_copy_dirty_page_tracking;
->       bool dirty_pages_supported;
->       bool dirty_tracking;
-> +#ifdef CONFIG_IOMMUFD
-> +    int devid;
-> +    VFIOIOASHwpt *hwpt;
-> +    IOMMUFDBackend *iommufd;
-> +#endif
->   } VFIODevice;
->   
->   struct VFIODeviceOps {
-> @@ -201,6 +223,7 @@ typedef QLIST_HEAD(VFIODeviceList, VFIODevice) VFIODeviceList;
->   extern VFIOGroupList vfio_group_list;
->   extern VFIODeviceList vfio_device_list;
->   extern const VFIOIOMMUOps vfio_legacy_ops;
-> +extern const VFIOIOMMUOps vfio_iommufd_ops;
->   extern const MemoryListener vfio_memory_listener;
->   extern int vfio_kvm_device_fd;
->   
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 572ae7c934..a61dce2845 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -1462,10 +1462,13 @@ VFIOAddressSpace *vfio_get_address_space(AddressSpace *as)
->   
->   void vfio_put_address_space(VFIOAddressSpace *space)
->   {
-> -    if (QLIST_EMPTY(&space->containers)) {
-> -        QLIST_REMOVE(space, list);
-> -        g_free(space);
-> +    if (!QLIST_EMPTY(&space->containers)) {
-> +        return;
->       }
-> +
-> +    QLIST_REMOVE(space, list);
-> +    g_free(space);
-> +
->       if (QLIST_EMPTY(&vfio_address_spaces)) {
->           qemu_unregister_reset(vfio_reset_handler, NULL);
->       }
-> @@ -1498,8 +1501,16 @@ retry:
->   int vfio_attach_device(char *name, VFIODevice *vbasedev,
->                          AddressSpace *as, Error **errp)
->   {
-> -    const VFIOIOMMUOps *ops = &vfio_legacy_ops;
-> +    const VFIOIOMMUOps *ops;
->   
-> +#ifdef CONFIG_IOMMUFD
+     imply IOMMUFD
 
-You can keep this one though.
-
-> +    if (vbasedev->iommufd) {
-> +        ops = &vfio_iommufd_ops;
-> +    } else
-> +#endif
-> +    {
-> +        ops = &vfio_legacy_ops;
-> +    }
->       return ops->attach_device(name, vbasedev, as, errp);
->   }
->   
-> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-> new file mode 100644
-> index 0000000000..1bb55ca2c4
-> --- /dev/null
-> +++ b/hw/vfio/iommufd.c
-> @@ -0,0 +1,504 @@
-> +/*
-> + * iommufd container backend
-> + *
-> + * Copyright (C) 2023 Intel Corporation.
-> + * Copyright Red Hat, Inc. 2023
-> + *
-> + * Authors: Yi Liu <yi.l.liu@intel.com>
-> + *          Eric Auger <eric.auger@redhat.com>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include <sys/ioctl.h>
-> +#include <linux/vfio.h>
-> +#include <linux/iommufd.h>
-> +
-> +#include "hw/vfio/vfio-common.h"
-> +#include "qemu/error-report.h"
-> +#include "trace.h"
-> +#include "qapi/error.h"
-> +#include "sysemu/iommufd.h"
-> +#include "hw/qdev-core.h"
-> +#include "sysemu/reset.h"
-> +#include "qemu/cutils.h"
-> +#include "qemu/chardev_open.h"
-> +
-> +static int iommufd_map(VFIOContainerBase *bcontainer, hwaddr iova,
-> +                       ram_addr_t size, void *vaddr, bool readonly)
-> +{
-> +    VFIOIOMMUFDContainer *container =
-> +        container_of(bcontainer, VFIOIOMMUFDContainer, bcontainer);
-> +
-> +    return iommufd_backend_map_dma(container->be,
-> +                                   container->ioas_id,
-> +                                   iova, size, vaddr, readonly);
-> +}
-> +
-> +static int iommufd_unmap(VFIOContainerBase *bcontainer,
-> +                         hwaddr iova, ram_addr_t size,
-> +                         IOMMUTLBEntry *iotlb)
-> +{
-> +    VFIOIOMMUFDContainer *container =
-> +        container_of(bcontainer, VFIOIOMMUFDContainer, bcontainer);
-> +
-> +    /* TODO: Handle dma_unmap_bitmap with iotlb args (migration) */
-> +    return iommufd_backend_unmap_dma(container->be,
-> +                                     container->ioas_id, iova, size);
-> +}
-> +
-> +static void iommufd_cdev_kvm_device_add(VFIODevice *vbasedev)
-> +{
-> +    Error *err = NULL;
-> +
-> +    if (vfio_kvm_device_add_fd(vbasedev->fd, &err)) {
-> +        error_report_err(err);
-> +    }
-> +}
-> +
-> +static void iommufd_cdev_kvm_device_del(VFIODevice *vbasedev)
-> +{
-> +    Error *err = NULL;
-> +
-> +    if (vfio_kvm_device_del_fd(vbasedev->fd, &err)) {
-> +        error_report_err(err);
-> +    }
-> +}
-> +
-> +static int iommufd_connect_and_bind(VFIODevice *vbasedev, Error **errp)
-> +{
-> +    IOMMUFDBackend *iommufd = vbasedev->iommufd;
-> +    struct vfio_device_bind_iommufd bind = {
-> +        .argsz = sizeof(bind),
-> +        .flags = 0,
-> +    };
-> +    int ret;
-> +
-> +    ret = iommufd_backend_connect(iommufd, errp);
-> +    if (ret) {
-> +        return ret;
-> +    }
-> +
-> +    /*
-> +     * Add device to kvm-vfio to be prepared for the tracking
-> +     * in KVM. Especially for some emulated devices, it requires
-> +     * to have kvm information in the device open.
-> +     */
-> +    iommufd_cdev_kvm_device_add(vbasedev);
-> +
-> +    /* Bind device to iommufd */
-> +    bind.iommufd = iommufd->fd;
-> +    ret = ioctl(vbasedev->fd, VFIO_DEVICE_BIND_IOMMUFD, &bind);
-> +    if (ret) {
-> +        error_setg_errno(errp, errno, "error bind device fd=%d to iommufd=%d",
-> +                         vbasedev->fd, bind.iommufd);
-> +        goto err_bind;
-> +    }
-> +
-> +    vbasedev->devid = bind.out_devid;
-> +    trace_iommufd_connect_and_bind(bind.iommufd, vbasedev->name, vbasedev->fd,
-> +                                   vbasedev->devid);
-> +    return ret;
-> +err_bind:
-> +    iommufd_cdev_kvm_device_del(vbasedev);
-> +    iommufd_backend_disconnect(iommufd);
-> +    return ret;
-> +}
-> +
-> +static void iommufd_unbind_and_disconnect(VFIODevice *vbasedev)
-> +{
-> +    /* Unbind is automatically conducted when device fd is closed */
-> +    iommufd_cdev_kvm_device_del(vbasedev);
-> +    iommufd_backend_disconnect(vbasedev->iommufd);
-> +}
-> +
-> +static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
-> +{
-> +    long int ret = -ENOTTY;
-> +    char *path, *vfio_dev_path = NULL, *vfio_path = NULL;
-> +    DIR *dir = NULL;
-> +    struct dirent *dent;
-> +    gchar *contents;
-> +    struct stat st;
-> +    gsize length;
-> +    int major, minor;
-> +    dev_t vfio_devt;
-> +
-> +    path = g_strdup_printf("%s/vfio-dev", sysfs_path);
-> +    if (stat(path, &st) < 0) {
-> +        error_setg_errno(errp, errno, "no such host device");
-> +        goto out_free_path;
-> +    }
-> +
-> +    dir = opendir(path);
-> +    if (!dir) {
-> +        error_setg_errno(errp, errno, "couldn't open dirrectory %s", path);
-> +        goto out_free_path;
-> +    }
-> +
-> +    while ((dent = readdir(dir))) {
-> +        if (!strncmp(dent->d_name, "vfio", 4)) {
-> +            vfio_dev_path = g_strdup_printf("%s/%s/dev", path, dent->d_name);
-> +            break;
-> +        }
-> +    }
-> +
-> +    if (!vfio_dev_path) {
-> +        error_setg(errp, "failed to find vfio-dev/vfioX/dev");
-> +        goto out_close_dir;
-> +    }
-> +
-> +    if (!g_file_get_contents(vfio_dev_path, &contents, &length, NULL)) {
-> +        error_setg(errp, "failed to load \"%s\"", vfio_dev_path);
-> +        goto out_free_dev_path;
-> +    }
-> +
-> +    if (sscanf(contents, "%d:%d", &major, &minor) != 2) {
-> +        error_setg(errp, "failed to get major:minor for \"%s\"", vfio_dev_path);
-> +        goto out_free_dev_path;
-> +    }
-> +    g_free(contents);
-> +    vfio_devt = makedev(major, minor);
-> +
-> +    vfio_path = g_strdup_printf("/dev/vfio/devices/%s", dent->d_name);
-> +    ret = open_cdev(vfio_path, vfio_devt);
-> +    if (ret < 0) {
-> +        error_setg(errp, "Failed to open %s", vfio_path);
-> +    }
-> +
-> +    trace_iommufd_cdev_getfd(vfio_path, ret);
-> +    g_free(vfio_path);
-> +
-> +out_free_dev_path:
-> +    g_free(vfio_dev_path);
-> +out_close_dir:
-> +    closedir(dir);
-> +out_free_path:
-> +    if (*errp) {
-> +        error_prepend(errp, VFIO_MSG_PREFIX, path);
-> +    }
-> +    g_free(path);
-> +
-> +    return ret;
-> +}
-> +
-> +static VFIOIOASHwpt *iommufd_container_get_hwpt(VFIOIOMMUFDContainer *container,
-> +                                                uint32_t hwpt_id)
-> +{
-> +    VFIOIOASHwpt *hwpt;
-> +
-> +    QLIST_FOREACH(hwpt, &container->hwpt_list, next) {
-> +        if (hwpt->hwpt_id == hwpt_id) {
-> +            return hwpt;
-> +        }
-> +    }
-> +
-> +    hwpt = g_malloc0(sizeof(*hwpt));
-> +
-> +    hwpt->hwpt_id = hwpt_id;
-> +    QLIST_INIT(&hwpt->device_list);
-> +    QLIST_INSERT_HEAD(&container->hwpt_list, hwpt, next);
-> +
-> +    return hwpt;
-> +}
-> +
-> +static void iommufd_container_put_hwpt(IOMMUFDBackend *be, VFIOIOASHwpt *hwpt)
-> +{
-> +    QLIST_REMOVE(hwpt, next);
-> +    iommufd_backend_free_id(be->fd, hwpt->hwpt_id);
-> +    g_free(hwpt);
-> +}
-> +
-> +static int iommufd_cdev_attach_hwpt(VFIODevice *vbasedev, uint32_t hwpt_id,
-> +                                    Error **errp)
-> +{
-> +    int ret, iommufd = vbasedev->iommufd->fd;
-> +    struct vfio_device_attach_iommufd_pt attach_data = {
-> +        .argsz = sizeof(attach_data),
-> +        .flags = 0,
-> +        .pt_id = hwpt_id,
-> +    };
-> +
-> +    /* Attach device to an hwpt within iommufd */
-> +    ret = ioctl(vbasedev->fd, VFIO_DEVICE_ATTACH_IOMMUFD_PT, &attach_data);
-> +    if (ret) {
-> +        error_setg_errno(errp, errno,
-> +                         "[iommufd=%d] error attach %s (%d) to hwpt_id=%d",
-> +                         iommufd, vbasedev->name, vbasedev->fd, hwpt_id);
-> +    }
-> +    trace_iommufd_cdev_attach_hwpt(iommufd, vbasedev->name, vbasedev->fd,
-> +                                   hwpt_id);
-> +    return ret;
-> +}
-> +
-> +static int iommufd_cdev_detach_hwpt(VFIODevice *vbasedev, Error **errp)
-> +{
-> +    int ret, iommufd = vbasedev->iommufd->fd;
-> +    struct vfio_device_detach_iommufd_pt detach_data = {
-> +        .argsz = sizeof(detach_data),
-> +        .flags = 0,
-> +    };
-> +
-> +    ret = ioctl(vbasedev->fd, VFIO_DEVICE_DETACH_IOMMUFD_PT, &detach_data);
-> +    if (ret) {
-> +        error_setg_errno(errp, errno, "detach %s from ioas failed",
-> +                         vbasedev->name);
-> +    }
-> +    trace_iommufd_cdev_detach_hwpt(iommufd, vbasedev->name,
-> +                                   vbasedev->hwpt->hwpt_id);
-> +    return ret;
-> +}
-> +
-> +static int iommufd_cdev_attach_container(VFIODevice *vbasedev,
-> +                                         VFIOIOMMUFDContainer *container,
-> +                                         Error **errp)
-> +{
-> +    int ret, iommufd = vbasedev->iommufd->fd;
-> +    VFIOIOASHwpt *hwpt;
-> +    uint32_t hwpt_id;
-> +    Error *err = NULL;
-> +
-> +    /* try to attach to an existing hwpt in this container */
-> +    QLIST_FOREACH(hwpt, &container->hwpt_list, next) {
-> +        ret = iommufd_cdev_attach_hwpt(vbasedev, hwpt->hwpt_id, &err);
-> +        if (ret) {
-> +            const char *msg = error_get_pretty(err);
-> +
-> +            trace_iommufd_cdev_fail_attach_existing_hwpt(msg);
-> +            error_free(err);
-> +            err = NULL;
-> +        } else {
-> +            goto found_hwpt;
-> +        }
-> +    }
-> +
-> +    ret = iommufd_backend_alloc_hwpt(iommufd, vbasedev->devid,
-> +                                     container->ioas_id, &hwpt_id);
-> +
-> +    if (ret) {
-> +        error_setg_errno(errp, errno, "error alloc shadow hwpt");
-> +        return ret;
-> +    }
-> +
-> +    /* Attach cdev to a new allocated hwpt within iommufd */
-> +    ret = iommufd_cdev_attach_hwpt(vbasedev, hwpt_id, errp);
-> +    if (ret) {
-> +        iommufd_backend_free_id(iommufd, hwpt_id);
-> +        return ret;
-> +    }
-> +
-> +    hwpt = iommufd_container_get_hwpt(container, hwpt_id);
-> +found_hwpt:
-> +    QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, next);
-> +    vbasedev->hwpt = hwpt;
-> +
-> +    trace_iommufd_cdev_attach_container(iommufd, vbasedev->name, vbasedev->fd,
-> +                                        container->ioas_id, hwpt->hwpt_id);
-> +    return ret;
-> +}
-> +
-> +static void iommufd_cdev_detach_container(VFIODevice *vbasedev,
-> +                                          VFIOIOMMUFDContainer *container)
-> +{
-> +    VFIOIOASHwpt *hwpt = vbasedev->hwpt;
-> +    Error *err = NULL;
-> +    int ret;
-> +
-> +    ret = iommufd_cdev_detach_hwpt(vbasedev, &err);
-> +    if (ret) {
-> +        error_report_err(err);
-> +    }
-> +
-> +    QLIST_REMOVE(vbasedev, next);
-> +    vbasedev->hwpt = NULL;
-> +    if (QLIST_EMPTY(&hwpt->device_list)) {
-> +        iommufd_container_put_hwpt(vbasedev->iommufd, hwpt);
-> +    }
-> +
-> +    trace_iommufd_cdev_detach_container(container->be->fd, vbasedev->name,
-> +                                        container->ioas_id);
-> +}
-> +
-> +static void iommufd_container_destroy(VFIOIOMMUFDContainer *container)
-> +{
-> +    VFIOContainerBase *bcontainer = &container->bcontainer;
-> +
-> +    if (!QLIST_EMPTY(&container->hwpt_list)) {
-> +        return;
-> +    }
-> +    memory_listener_unregister(&bcontainer->listener);
-> +    vfio_container_destroy(bcontainer);
-> +    iommufd_backend_put_ioas(container->be, container->ioas_id);
-> +    g_free(container);
-> +}
-> +
-> +static int iommufd_ram_block_discard_disable(bool state)
-> +{
-> +    /*
-> +     * We support coordinated discarding of RAM via the RamDiscardManager.
-> +     */
-> +    return ram_block_uncoordinated_discard_disable(state);
-> +}
-> +
-> +static int iommufd_attach_device(const char *name, VFIODevice *vbasedev,
-> +                                 AddressSpace *as, Error **errp)
-> +{
-> +    VFIOContainerBase *bcontainer;
-> +    VFIOIOMMUFDContainer *container;
-> +    VFIOAddressSpace *space;
-> +    struct vfio_device_info dev_info = { .argsz = sizeof(dev_info) };
-> +    int ret, devfd;
-> +    uint32_t ioas_id;
-> +    Error *err = NULL;
-> +
-> +    devfd = iommufd_cdev_getfd(vbasedev->sysfsdev, errp);
-> +    if (devfd < 0) {
-> +        return devfd;
-> +    }
-> +    vbasedev->fd = devfd;
-> +
-> +    ret = iommufd_connect_and_bind(vbasedev, errp);
-> +    if (ret) {
-> +        goto err_connect_bind;
-> +    }
-> +
-> +    space = vfio_get_address_space(as);
-> +
-> +    /* try to attach to an existing container in this space */
-> +    QLIST_FOREACH(bcontainer, &space->containers, next) {
-> +        container = container_of(bcontainer, VFIOIOMMUFDContainer, bcontainer);
-> +        if (bcontainer->ops != &vfio_iommufd_ops ||
-> +            vbasedev->iommufd != container->be) {
-> +            continue;
-> +        }
-> +        if (iommufd_cdev_attach_container(vbasedev, container, &err)) {
-> +            const char *msg = error_get_pretty(err);
-> +
-> +            trace_iommufd_cdev_fail_attach_existing_container(msg);
-> +            error_free(err);
-> +            err = NULL;
-> +        } else {
-> +            ret = iommufd_ram_block_discard_disable(true);
-> +            if (ret) {
-> +                error_setg(errp,
-> +                              "Cannot set discarding of RAM broken (%d)", ret);
-> +                goto err_discard_disable;
-> +            }
-> +            goto found_container;
-> +        }
-> +    }
-> +
-> +    /* Need to allocate a new dedicated container */
-> +    ret = iommufd_backend_get_ioas(vbasedev->iommufd, &ioas_id);
-> +    if (ret < 0) {
-> +        error_setg_errno(errp, errno, "Failed to alloc ioas");
-> +        goto err_get_ioas;
-> +    }
-> +
-> +    trace_iommufd_cdev_alloc_ioas(vbasedev->iommufd->fd, ioas_id);
-> +
-> +    container = g_malloc0(sizeof(*container));
-> +    container->be = vbasedev->iommufd;
-> +    container->ioas_id = ioas_id;
-> +    QLIST_INIT(&container->hwpt_list);
-> +
-> +    bcontainer = &container->bcontainer;
-> +    vfio_container_init(bcontainer, space, &vfio_iommufd_ops);
-> +    QLIST_INSERT_HEAD(&space->containers, bcontainer, next);
-> +
-> +    ret = iommufd_cdev_attach_container(vbasedev, container, errp);
-> +    if (ret) {
-> +        goto err_attach_container;
-> +    }
-> +
-> +    ret = iommufd_ram_block_discard_disable(true);
-> +    if (ret) {
-> +        goto err_discard_disable;
-> +    }
-> +
-> +    bcontainer->pgsizes = qemu_real_host_page_size();
-> +
-> +    bcontainer->listener = vfio_memory_listener;
-> +    memory_listener_register(&bcontainer->listener, bcontainer->space->as);
-> +
-> +    if (bcontainer->error) {
-> +        ret = -1;
-> +        error_propagate_prepend(errp, bcontainer->error,
-> +                                "memory listener initialization failed: ");
-> +        goto err_listener_register;
-> +    }
-> +
-> +    bcontainer->initialized = true;
-> +
-> +found_container:
-> +    ret = ioctl(devfd, VFIO_DEVICE_GET_INFO, &dev_info);
-> +    if (ret) {
-> +        error_setg_errno(errp, errno, "error getting device info");
-> +        goto err_listener_register;
-> +    }
-> +
-> +    /*
-> +     * TODO: examine RAM_BLOCK_DISCARD stuff, should we do group level
-> +     * for discarding incompatibility check as well?
-> +     */
-> +    if (vbasedev->ram_block_discard_allowed) {
-> +        iommufd_ram_block_discard_disable(false);
-> +    }
-> +
-> +    vbasedev->group = 0;
-> +    vbasedev->num_irqs = dev_info.num_irqs;
-> +    vbasedev->num_regions = dev_info.num_regions;
-> +    vbasedev->flags = dev_info.flags;
-> +    vbasedev->reset_works = !!(dev_info.flags & VFIO_DEVICE_FLAGS_RESET);
-> +    vbasedev->bcontainer = bcontainer;
-> +    QLIST_INSERT_HEAD(&bcontainer->device_list, vbasedev, container_next);
-> +    QLIST_INSERT_HEAD(&vfio_device_list, vbasedev, global_next);
-> +
-> +    trace_iommufd_cdev_device_info(vbasedev->name, devfd, vbasedev->num_irqs,
-> +                                   vbasedev->num_regions, vbasedev->flags);
-> +    return 0;
-> +
-> +err_listener_register:
-> +    iommufd_ram_block_discard_disable(false);
-> +err_discard_disable:
-> +    iommufd_cdev_detach_container(vbasedev, container);
-> +err_attach_container:
-> +    iommufd_container_destroy(container);
-> +err_get_ioas:
-> +    vfio_put_address_space(space);
-> +    iommufd_unbind_and_disconnect(vbasedev);
-> +err_connect_bind:
-> +    close(vbasedev->fd);
-> +    return ret;
-> +}
-> +
-> +static void iommufd_detach_device(VFIODevice *vbasedev)
-> +{
-> +    VFIOContainerBase *bcontainer = vbasedev->bcontainer;
-> +    VFIOIOMMUFDContainer *container;
-> +    VFIOAddressSpace *space = bcontainer->space;
-> +
-> +    QLIST_REMOVE(vbasedev, global_next);
-> +    QLIST_REMOVE(vbasedev, container_next);
-> +    vbasedev->bcontainer = NULL;
-> +
-> +    if (!vbasedev->ram_block_discard_allowed) {
-> +        iommufd_ram_block_discard_disable(false);
-> +    }
-> +
-> +    container = container_of(bcontainer, VFIOIOMMUFDContainer, bcontainer);
-> +    iommufd_cdev_detach_container(vbasedev, container);
-> +    iommufd_container_destroy(container);
-> +    vfio_put_address_space(space);
-> +
-> +    iommufd_unbind_and_disconnect(vbasedev);
-> +    close(vbasedev->fd);
-> +}
-> +
-> +const VFIOIOMMUOps vfio_iommufd_ops = {
-> +    .dma_map = iommufd_map,
-> +    .dma_unmap = iommufd_unmap,
-> +    .attach_device = iommufd_attach_device,
-> +    .detach_device = iommufd_detach_device,
-> +};
-> diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
-> index eb6ce6229d..9cae2c9e21 100644
-> --- a/hw/vfio/meson.build
-> +++ b/hw/vfio/meson.build
-> @@ -7,6 +7,9 @@ vfio_ss.add(files(
->     'spapr.c',
->     'migration.c',
->   ))
-> +if have_iommufd
-> +  vfio_ss.add(files('iommufd.c'))
-> +endif
-
-Instead,
-
-vfio_ss.add(when: 'CONFIG_IOMMUFD', if_true: files(
-   'iommufd.c',
-))
-
+in hw/{i386,s390x,arm}/Kconfig for platforms supporting IOMMUFD.
 
 Thanks,
 
@@ -760,29 +124,81 @@ C.
 
 
 
+> ---
+>   hw/vfio/common.c     | 2 +-
+>   hw/vfio/pci.c        | 2 +-
+>   hw/vfio/platform.c   | 2 +-
+>   backends/meson.build | 4 ++--
+>   hw/vfio/meson.build  | 2 +-
+>   5 files changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 1c9203183d..000717cef3 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -1504,7 +1504,7 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
+>   {
+>       const VFIOIOMMUOps *ops;
+>   
+> -#ifdef CONFIG_IOMMUFD
+> +#if defined(CONFIG_IOMMUFD) && !defined(TARGET_PPC)
+>       if (vbasedev->iommufd) {
+>           ops = &vfio_iommufd_ops;
+>       } else
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index d8f658ea47..2287e45119 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -3550,7 +3550,7 @@ static Property vfio_pci_dev_properties[] = {
+>                                      qdev_prop_nv_gpudirect_clique, uint8_t),
+>       DEFINE_PROP_OFF_AUTO_PCIBAR("x-msix-relocation", VFIOPCIDevice, msix_relo,
+>                                   OFF_AUTOPCIBAR_OFF),
+> -#ifdef CONFIG_IOMMUFD
+> +#if defined(CONFIG_IOMMUFD) && !defined(TARGET_PPC)
+>       DEFINE_PROP_LINK("iommufd", VFIOPCIDevice, vbasedev.iommufd,
+>                        TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
+>   #endif
+> diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
+> index aa0b2b9583..c8f4ae5a06 100644
+> --- a/hw/vfio/platform.c
+> +++ b/hw/vfio/platform.c
+> @@ -648,7 +648,7 @@ static Property vfio_platform_dev_properties[] = {
+>       DEFINE_PROP_UINT32("mmap-timeout-ms", VFIOPlatformDevice,
+>                          mmap_timeout, 1100),
+>       DEFINE_PROP_BOOL("x-irqfd", VFIOPlatformDevice, irqfd_allowed, true),
+> -#ifdef CONFIG_IOMMUFD
+> +#if defined(CONFIG_IOMMUFD) && !defined(TARGET_PPC)
+>       DEFINE_PROP_LINK("iommufd", VFIOPlatformDevice, vbasedev.iommufd,
+>                        TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
+>   #endif
+> diff --git a/backends/meson.build b/backends/meson.build
+> index 05ac57ff15..9dbdfa87f7 100644
+> --- a/backends/meson.build
+> +++ b/backends/meson.build
+> @@ -21,9 +21,9 @@ if have_vhost_user
+>   endif
+>   system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost.c'))
+>   if have_iommufd
+> -  system_ss.add(files('iommufd.c'))
+> +  system_ss.add(when: 'TARGET_PPC', if_false: files('iommufd.c'))
+>   else
+> -  system_ss.add(files('iommufd-stub.c'))
+> +  system_ss.add(when: 'TARGET_PPC', if_false: files('iommufd-stub.c'))
+>   endif
+>   if have_vhost_user_crypto
+>     system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost-user.c'))
+> diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+> index 9cae2c9e21..4423bb3cd4 100644
+> --- a/hw/vfio/meson.build
+> +++ b/hw/vfio/meson.build
+> @@ -8,7 +8,7 @@ vfio_ss.add(files(
+>     'migration.c',
+>   ))
+>   if have_iommufd
+> -  vfio_ss.add(files('iommufd.c'))
+> +  vfio_ss.add(when: 'TARGET_PPC', if_false: files('iommufd.c'))
+>   endif
 >   vfio_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
 >     'display.c',
->     'pci-quirks.c',
-> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-> index 08a1f9dfa4..d85342b65f 100644
-> --- a/hw/vfio/trace-events
-> +++ b/hw/vfio/trace-events
-> @@ -164,3 +164,16 @@ vfio_state_pending_estimate(const char *name, uint64_t precopy, uint64_t postcop
->   vfio_state_pending_exact(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t stopcopy_size, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy 0x%"PRIx64" postcopy 0x%"PRIx64" stopcopy size 0x%"PRIx64" precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
->   vfio_vmstate_change(const char *name, int running, const char *reason, const char *dev_state) " (%s) running %d reason %s device state %s"
->   vfio_vmstate_change_prepare(const char *name, int running, const char *reason, const char *dev_state) " (%s) running %d reason %s device state %s"
-> +
-> +#iommufd.c
-> +
-> +iommufd_connect_and_bind(int iommufd, const char *name, int devfd, int devid) " [iommufd=%d] Successfully bound device %s (fd=%d): output devid=%d"
-> +iommufd_cdev_getfd(const char *dev, int devfd) " %s (fd=%d)"
-> +iommufd_cdev_attach_hwpt(int iommufd, const char *name, int devfd, int hwptid) " [iommufd=%d] Successfully attached device %s (%d) to hwptd=%d"
-> +iommufd_cdev_detach_hwpt(int iommufd, const char *name, int hwptid) " [iommufd=%d] Detached %s from hwpt=%d"
-> +iommufd_cdev_fail_attach_existing_hwpt(const char *msg) " %s"
-> +iommufd_cdev_attach_container(int iommufd, const char *name, int devfd, int ioasid, int hwptid) " [iommufd=%d] Successfully attached device %s (%d) to ioasid=%d: output hwptd=%d"
-> +iommufd_cdev_detach_container(int iommufd, const char *name, int ioasid) " [iommufd=%d] Detached %s from ioasid=%d"
-> +iommufd_cdev_fail_attach_existing_container(const char *msg) " %s"
-> +iommufd_cdev_alloc_ioas(int iommufd, int ioas_id) " [iommufd=%d] new IOMMUFD container with ioasid=%d"
-> +iommufd_cdev_device_info(char *name, int devfd, int num_irqs, int num_regions, int flags) " %s (%d) num_irqs=%d num_regions=%d flags=%d"
 
 
