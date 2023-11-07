@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B13267E3877
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:11:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C39A7E3881
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:12:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0J39-0003qd-6U; Tue, 07 Nov 2023 05:11:11 -0500
+	id 1r0J3J-00057k-Cp; Tue, 07 Nov 2023 05:11:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J34-0003AU-Nx
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:11:06 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J3F-0004kF-H9
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:11:17 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J33-0002VB-1t
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:11:06 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J3D-0002Vx-Px
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:11:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699351864;
+ s=mimecast20190719; t=1699351875;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Fk18UFl3gvhVFvUPc8Rke7I/hKZLNs+l/lUgUAmltCE=;
- b=O06KqB7DZJzxUeZOy9DMCHRntf4JKMTvB9y7h2INS5MokLK9PK0MLKSNVgjXmjbZyberwD
- dH1wXs1TV8y1viCzysm7f4wxW3ZyYBQGCSQhSF/1gaDrcSx2NUpFhZlmsQ0dO0iIh9c6Hu
- 9ZlX1vYsviYiF2fjH8JgR9YzfK2E/zE=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Bpj29tXiqgLNxsD0wsJlUZ9eT5lcs0B4elp4WPlk0FM=;
+ b=bag04e9Nu1VlbCffCFypqK+dj/T/K6iPGxjujrcM4v1b1edFIRc5lPWNuwki/okfSZXski
+ VUNNdJUavYnUxLOvG0YHHtgiB4y71WpD3hAb6ROHmdWp1In11Qa6Yl9sSFN9c18mPc0Lxa
+ Lqe068flOEYXOHwv+TcdcsrWV7UkM/o=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-596-_Fp8CfstOm2eafQoP-7JmQ-1; Tue, 07 Nov 2023 05:11:03 -0500
-X-MC-Unique: _Fp8CfstOm2eafQoP-7JmQ-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-50911cc75adso5930542e87.1
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:11:03 -0800 (PST)
+ us-mta-60-wXL2WF9UMM-iZVzF8vUhJQ-1; Tue, 07 Nov 2023 05:11:07 -0500
+X-MC-Unique: wXL2WF9UMM-iZVzF8vUhJQ-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2c50bebd8dfso53492471fa.3
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:11:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699351861; x=1699956661;
+ d=1e100.net; s=20230601; t=1699351865; x=1699956665;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Fk18UFl3gvhVFvUPc8Rke7I/hKZLNs+l/lUgUAmltCE=;
- b=pZM9BPuOf74LVqPGEq2nykM4fN+BPq+W54tZh3Y5Oq6ld5D8pw/XvLA07MJY+21QY2
- G85t2f31RAd4nO+d7FSQsPeU/WeImEPDtmShffhICi5YA445Nh4DFi5LBl8Hy/TVc8If
- XcygefGA0Zy6Wez8yeYuUeUrYyoUgc/eWIZc8RJbwMyRov0LtAs/g1AIaMQ1eg1W9BBd
- J/Hbn+Xmg3Mr9Nn4Hot1kPltYTQWiIqCuxKzvT6VZs/kFGJNaUuaCk3dnPou2tkNHgiU
- pk/YYc3aAo0UG8tP8nSM5F8DJ+5C+Og+Nm69N0wXabKmhGIxcP0B4y5EprdSTsxWpV15
- TBEQ==
-X-Gm-Message-State: AOJu0YzSm5Ujr3ikX7vUl2WUarv0u69e2Uzv18jq8pmMxfPbrXwKkTn2
- HFuOuApL3ICuQn9WM2NM75FhdHtlnGKyXUqcaP5/6x+A84ox15U/aBv6s/hK52qa2aezlxCD0/J
- d5rWFb/SuMCm6edTtEnw+HnFHul2OWBI4OM1m+7OjBBWysJ3qYO54o5Vfi1dwB8XqzveG
-X-Received: by 2002:a19:5f50:0:b0:509:31e6:1de5 with SMTP id
- a16-20020a195f50000000b0050931e61de5mr12992025lfj.47.1699351861152; 
- Tue, 07 Nov 2023 02:11:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IERbotreMh5K4WhsdOjBYGvmUrAemMBxp0MEtAxkvZgQSsZlinmB6D5CIqHsQQqwi8FdqZwgQ==
-X-Received: by 2002:a19:5f50:0:b0:509:31e6:1de5 with SMTP id
- a16-20020a195f50000000b0050931e61de5mr12992014lfj.47.1699351860866; 
- Tue, 07 Nov 2023 02:11:00 -0800 (PST)
+ bh=Bpj29tXiqgLNxsD0wsJlUZ9eT5lcs0B4elp4WPlk0FM=;
+ b=mx4kp/PBoKrB0AjXKZgzsbyuS38ngsMThj+BfIY4OemcbNS1zVnXeBvdTUvfzlrKCx
+ Wy61xgXUgVDY3vyTWkV664887+Emm8VVFXgRwgmjxlqHj32U8N042FyeoWo+k1FWRWG4
+ jxQ31WmE+YGgHYv+/Q/nZAO0ne/nhQ9mkjNYCUimVh0TntBdHhf9cCpsFoYy3AOlynIq
+ xoIBqcUqp87+y2ETiXMDNLZzZ7titD54iREbIDPEGnTSKrT/2AOfK24L67OWCMpUn29g
+ DQzN6D9oHomufHYX5Pf98p3zASW5R4fMHBKYjwcRjk3owTzZ7FKQKjqmK6RglsK3Ntb+
+ cOpw==
+X-Gm-Message-State: AOJu0Yy32e/8NNzKbRJzYOOB3lN4SKZC6VClSPXwOVeg6MpZL0NR9UOq
+ 57HWVXW03bIJjfzE6E6Vf9NE1szquArWjiuSl5eGtGOZ20pFcfQgyPPLzpKgP0svM7UbsUM0fl+
+ fyTVUczq07elfWvDDqfLzM4xblGl8gw/lUkr2DyRd6r9grLdRuwmfH0LBCsl3UnI4E/l+
+X-Received: by 2002:a05:651c:3cf:b0:2c5:1f30:ebfc with SMTP id
+ f15-20020a05651c03cf00b002c51f30ebfcmr23050911ljp.38.1699351865385; 
+ Tue, 07 Nov 2023 02:11:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHCUPlFMIO3qEUQ/ZSpq2ok2/OqNQOmKDBFrq3mrkbzCDuOR3Db6sa/FNZl25b6gW/wkw2pSg==
+X-Received: by 2002:a05:651c:3cf:b0:2c5:1f30:ebfc with SMTP id
+ f15-20020a05651c03cf00b002c51f30ebfcmr23050894ljp.38.1699351864967; 
+ Tue, 07 Nov 2023 02:11:04 -0800 (PST)
 Received: from redhat.com ([2.55.5.143]) by smtp.gmail.com with ESMTPSA id
- t11-20020a5d49cb000000b003248a490e3asm1903339wrs.39.2023.11.07.02.10.58
+ l3-20020a05600c4f0300b003fc0505be19sm15233367wmq.37.2023.11.07.02.11.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 02:11:00 -0800 (PST)
-Date: Tue, 7 Nov 2023 05:10:57 -0500
+ Tue, 07 Nov 2023 02:11:04 -0800 (PST)
+Date: Tue, 7 Nov 2023 05:11:01 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Hawkins Jiawei <yin31149@gmail.com>,
  Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
  Jason Wang <jasowang@redhat.com>
-Subject: [PULL 20/63] vdpa: Allow VIRTIO_NET_F_HASH_REPORT in SVQ
-Message-ID: <556b67d413a699431eadb71642033864649ea934.1699351720.git.mst@redhat.com>
+Subject: [PULL 21/63] vdpa: Add SetSteeringEBPF method for NetClientState
+Message-ID: <d1fd2d3118a42f36d86efae7ffbdce79f7024584.1699351720.git.mst@redhat.com>
 References: <cover.1699351720.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -104,29 +104,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hawkins Jiawei <yin31149@gmail.com>
 
-Enable SVQ with VIRTIO_NET_F_HASH_REPORT feature.
+At present, to enable the VIRTIO_NET_F_RSS feature, eBPF must
+be loaded for the vhost backend.
 
+Given that vhost-vdpa is one of the vhost backend, we need to
+implement the SetSteeringEBPF method to support RSS for vhost-vdpa,
+even if vhost-vdpa calculates the rss hash in the hardware device
+instead of in the kernel by eBPF.
+
+Although this requires QEMU to be compiled with `--enable-bpf`
+configuration even if the vdpa device does not use eBPF to
+calculate the rss hash, this can avoid adding the specific
+conditional statements for vDPA case to enable the VIRTIO_NET_F_RSS
+feature, which reduces code maintainbility.
+
+Suggested-by: Eugenio Pérez <eperezma@redhat.com>
 Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Message-Id: <d66b0aee501cdad7954231900c35a11cad1e13db.1698194366.git.yin31149@gmail.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <280e20ddce55b6de60f1552ba0865bffffe909b2.1698195059.git.yin31149@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- net/vhost-vdpa.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/vhost-vdpa.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index e59d40b8ae..54f748d49d 100644
+index 54f748d49d..3466936b87 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -121,6 +121,7 @@ static const uint64_t vdpa_svq_device_features =
-     BIT_ULL(VIRTIO_NET_F_CTRL_MAC_ADDR) |
-     /* VHOST_F_LOG_ALL is exposed by SVQ */
-     BIT_ULL(VHOST_F_LOG_ALL) |
-+    BIT_ULL(VIRTIO_NET_F_HASH_REPORT) |
-     BIT_ULL(VIRTIO_NET_F_RSC_EXT) |
-     BIT_ULL(VIRTIO_NET_F_STANDBY) |
-     BIT_ULL(VIRTIO_NET_F_SPEED_DUPLEX);
+@@ -241,6 +241,12 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
+     }
+ }
+ 
++/** Dummy SetSteeringEBPF to support RSS for vhost-vdpa backend  */
++static bool vhost_vdpa_set_steering_ebpf(NetClientState *nc, int prog_fd)
++{
++    return true;
++}
++
+ static bool vhost_vdpa_has_vnet_hdr(NetClientState *nc)
+ {
+     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
+@@ -423,6 +429,7 @@ static NetClientInfo net_vhost_vdpa_info = {
+         .has_vnet_hdr = vhost_vdpa_has_vnet_hdr,
+         .has_ufo = vhost_vdpa_has_ufo,
+         .check_peer_type = vhost_vdpa_check_peer_type,
++        .set_steering_ebpf = vhost_vdpa_set_steering_ebpf,
+ };
+ 
+ static int64_t vhost_vdpa_get_vring_group(int device_fd, unsigned vq_index,
+@@ -1258,6 +1265,7 @@ static NetClientInfo net_vhost_vdpa_cvq_info = {
+     .has_vnet_hdr = vhost_vdpa_has_vnet_hdr,
+     .has_ufo = vhost_vdpa_has_ufo,
+     .check_peer_type = vhost_vdpa_check_peer_type,
++    .set_steering_ebpf = vhost_vdpa_set_steering_ebpf,
+ };
+ 
+ /*
 -- 
 MST
 
