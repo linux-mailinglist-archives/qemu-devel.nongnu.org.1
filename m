@@ -2,55 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C597E487A
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:42:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B637E48A5
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:48:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0R1e-0000lv-SA; Tue, 07 Nov 2023 13:42:11 -0500
+	id 1r0R5m-0003wt-J7; Tue, 07 Nov 2023 13:46:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r0R1C-0000gv-7e; Tue, 07 Nov 2023 13:41:42 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5d-0003uH-QE
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:18 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r0R0k-0000pc-N5; Tue, 07 Nov 2023 13:41:40 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id A976175A4BE;
- Tue,  7 Nov 2023 19:41:22 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 9D27075A4BC; Tue,  7 Nov 2023 19:41:22 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 9AC8A75A4B7;
- Tue,  7 Nov 2023 19:41:22 +0100 (CET)
-Date: Tue, 7 Nov 2023 19:41:22 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Daniel Henrique Barboza <danielhb413@gmail.com>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, clg@kaod.org, philmd@linaro.org, 
- Bernhard Beschow <shentey@gmail.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Subject: Re: [PATCH v7 0/3] Add emulation of AmigaOne XE board
-In-Reply-To: <9d50d770-a47a-06e4-5f8c-b710c8926533@eik.bme.hu>
-Message-ID: <fda92206-a035-56bd-8786-57a3cc14bd83@eik.bme.hu>
-References: <cover.1698406922.git.balaton@eik.bme.hu>
- <697ad2e0-cb23-4efe-89e5-d1b521c0648f@gmail.com>
- <b6ff86da-2532-708a-6737-4489d260c8a7@eik.bme.hu>
- <fa33a840-2135-4ba8-9db1-6684275e93c3@gmail.com>
- <9d50d770-a47a-06e4-5f8c-b710c8926533@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5Z-0001T1-DJ
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699382770;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=4N3TAT1bvbVe5FgPyUozFWJLYkD2CPZT8RNYewNTBbM=;
+ b=JmCS3RcTZDbr4twSBnYWxI/RF/Lo39cimCm+xexEykQJuZO1q3FDE+qpiLfgb3OczwROZh
+ 1s55LBUIwe6gYqnWYDUy/pXUbihStrEounqpiYwD93IGdhnF4kgNlzECyRlHA/Jx7z1Jvx
+ PHjD9Mm3doqE4a1PsLGkc1p3XfcUvo8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-561-_pw1LBrzM8WOamn8R0ERrg-1; Tue,
+ 07 Nov 2023 13:46:08 -0500
+X-MC-Unique: _pw1LBrzM8WOamn8R0ERrg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EE8333C1CC2D
+ for <qemu-devel@nongnu.org>; Tue,  7 Nov 2023 18:46:07 +0000 (UTC)
+Received: from merkur.fritz.box (unknown [10.39.194.197])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7906CC1596F;
+ Tue,  7 Nov 2023 18:46:07 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: kwolf@redhat.com
+Subject: [PULL 00/25] Block layer patches
+Date: Tue,  7 Nov 2023 19:45:40 +0100
+Message-ID: <20231107184605.236540-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-528643256-1699382482=:27557"
-X-Virus-Scanned: ClamAV using ClamSMTP
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,165 +75,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+The following changes since commit 462ad017ed76889d46696a3581e1b52343f9b683:
 
---3866299591-528643256-1699382482=:27557
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+  Merge tag 'pixman-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2023-11-07 19:00:03 +0800)
 
-On Tue, 7 Nov 2023, BALATON Zoltan wrote:
-> On Tue, 7 Nov 2023, Daniel Henrique Barboza wrote:
->> On 11/7/23 14:33, BALATON Zoltan wrote:
->>> On Tue, 7 Nov 2023, Daniel Henrique Barboza wrote:
->>>> Zoltan,
->>>> 
->>>> Gitlab is complaining about a missing file in one of the tests:
->>>> 
->>>> 
->>>>  8/259 qemu:qtest+qtest-ppc / qtest-ppc/test-hmp ERROR           0.22s   
->>>> killed by signal 6 SIGABRT
->>>> 4324>>> 
->>>> G_TEST_DBUS_DAEMON=/builds/danielhb/qemu/tests/dbus-vmstate-daemon.sh 
->>>> QTEST_QEMU_BINARY=./qemu-system-ppc MALLOC_PERTURB_=87 
->>>> PYTHON=/builds/danielhb/qemu/build/pyvenv/bin/python3 
->>>> /builds/danielhb/qemu/build/tests/qtest/test-hmp --tap -k
->>>> 4325――――――――――――――――――――――――――――――――――――― ✀ 
->>>> ―――――――――――――――――――――――――――――――――――――
->>>> 4326stderr:
->>>> 4327qemu-system-ppc: Could not find firmware 'u-boot-amigaone.bin'
->>>> 4328Broken pipe
->>>> 4329../tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU 
->>>> process but encountered exit status 1 (expected 0)
->>>> 4330(test program exited with status code -6)
->>>> 4331TAP parsing error: Too few tests run (expected 13, got 0)
->
-> OK, how about with v8 of patch2 I've just sent? The other pathches are
+are available in the Git repository at:
 
-OK, sent v9 then. This shuold be it now.
+  https://repo.or.cz/qemu/kevin.git tags/for-upstream
 
-> unchanged so did not resend those. It should allow ronning without -bios for 
-> qtest and as this test just runs monitor commands without starting the 
-> machine that should be OK. Hopefully this fixes it.
->
-> Regards,
-> BALATON Zoltan
->
->>>> You can reproduce it like this:
->>>> 
->>>> $ make -j -C build  && QTEST_QEMU_BINARY=./build/qemu-system-ppc64 
->>>> ./build/tests/qtest/test-hmp
->>>> 
->>>> I ended up amending in-tree (downloaded the firmware, put it under 
->>>> pc-bios, updated pc-bios/meson.build).
->>>> My manual test now passes, but not sure if gitlab will nag about it. 
->>>> Let's wait and see.
->>> 
->>> This is handled in the avocado test and it should download the file from 
->>> the URL there. When tested locally it worked and downloaded the file and 
->>> extracted the firmware bin from it. Can the gitlab CI download stuff or 
->>> does it expect it to be in local cache already where you need to put it 
->>> somehow beforehand? I think Philippe said something about that before but 
->>> I did not quite get it as I don't know neither avocado nor gitlab. Hope 
->>> Philippe is reading it and can chime in.
->> 
->> Gitlab CI can download stuff. But note that the error above is not avocado, 
->> it's hmp.
->> It expects a firmware file to be available, and I'm not entirely sure it'll 
->> make any
->> effort (e.g. downloading it) aside from checking if the file exists.
->>> 
->>> But the test is not required to run the machine so as a last resort you 
->>> could just drop the avocado patch and then we can add it later if we can't 
->>> figure this out now.
->> 
->> Not sure if dropping the avocado test would remediate the situation, but 
->> noted.
->> 
->> For now let's push stuff upstream. We have the freeze window to make 
->> smaller
->> adjustments if needed.
->> 
->> 
->> Thanks,
->> 
->> Daniel
->> 
->>> 
->>> Regards,
->>> BALATON Zoltan
->>> 
->>>> I told you: code freeze is a blast! Let's see if it's still sunny for the
->>>> AmigaOne XE board emulation.
->>>> 
->>>> 
->>>> 
->>>> Thanks,
->>>> 
->>>> 
->>>> Daniel
->>>> 
->>>> 
->>>> 
->>>> 
->>>> 
->>>> On 10/27/23 08:54, BALATON Zoltan wrote:
->>>>> Changes in v7:
->>>>> - Increase default memory size to 512m to match pegasos2 and sam460ex
->>>>> and it's a better default for AmigaOS
->>>>> 
->>>>> Changes in v6:
->>>>> - Dropped patch 1, now it's
->>>>> 
->>>>> Based-on: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
->>>>> 
->>>>> ([PATCH v2 0/3] ide: implement simple legacy/native mode switching for 
->>>>> PCI IDE controllers)
->>>>> - Added Tested-by from Rene
->>>>> 
->>>>> Changes in v5:
->>>>> - Fixed avocado test
->>>>> 
->>>>> Changes in v4:
->>>>> - Found typo in comment in patch 1 so ended up rewording it again
->>>>> trying to make it more concise. Also take the idea of using
->>>>> range_covers_byte from Mark's patch
->>>>> - Added RFC patch for avocado test (untested, I don't have Avocado)
->>>>> 
->>>>> Changes in v3:
->>>>> - Update values, comment and commit message in patch 1 again
->>>>> 
->>>>> Changes in v2:
->>>>> - Update comment and commit message in patch 1 (Mark)
->>>>> - Fix irq mapping in patch 2 (Volker)
->>>>> 
->>>>> Regards,
->>>>> BALATON Zoltan
->>>>> 
->>>>> BALATON Zoltan (3):
->>>>>    hw/pci-host: Add emulation of Mai Logic Articia S
->>>>>    hw/ppc: Add emulation of AmigaOne XE board
->>>>>    tests/avocado: Add test for amigaone board
->>>>> 
->>>>>   MAINTAINERS                             |   8 +
->>>>>   configs/devices/ppc-softmmu/default.mak |   1 +
->>>>>   hw/pci-host/Kconfig                     |   5 +
->>>>>   hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
->>>>>   hw/pci-host/meson.build                 |   2 +
->>>>>   hw/ppc/Kconfig                          |   7 +
->>>>>   hw/ppc/amigaone.c                       | 164 +++++++++++++
->>>>>   hw/ppc/meson.build                      |   2 +
->>>>>   include/hw/pci-host/articia.h           |  17 ++
->>>>>   tests/avocado/ppc_amiga.py              |  38 +++
->>>>>   10 files changed, 537 insertions(+)
->>>>>   create mode 100644 hw/pci-host/articia.c
->>>>>   create mode 100644 hw/ppc/amigaone.c
->>>>>   create mode 100644 include/hw/pci-host/articia.h
->>>>>   create mode 100644 tests/avocado/ppc_amiga.py
->>>>> 
->>>> 
->>>> 
->> 
->
---3866299591-528643256-1699382482=:27557--
+for you to fetch changes up to 5d4a5080e43681b753f922c5c2a7682bc1d67497:
+
+  hw/ide/ahci: trigger either error IRQ or regular IRQ, not both (2023-11-07 19:14:20 +0100)
+
+----------------------------------------------------------------
+Block layer patches
+
+- Graph locking part 6 (bs->file/backing)
+- ahci: trigger either error IRQ or regular IRQ, not both
+
+----------------------------------------------------------------
+Kevin Wolf (24):
+      block: Mark bdrv_probe_blocksizes() and callers GRAPH_RDLOCK
+      block: Mark bdrv_has_zero_init() and callers GRAPH_RDLOCK
+      block: Mark bdrv_filter_bs() and callers GRAPH_RDLOCK
+      block: Mark bdrv_root_attach_child() GRAPH_WRLOCK
+      block: Mark block_job_add_bdrv() GRAPH_WRLOCK
+      block: Mark bdrv_filter_or_cow_bs() and callers GRAPH_RDLOCK
+      block: Mark bdrv_skip_implicit_filters() and callers GRAPH_RDLOCK
+      block: Mark bdrv_skip_filters() and callers GRAPH_RDLOCK
+      block: Mark bdrv_(un)freeze_backing_chain() and callers GRAPH_RDLOCK
+      block: Mark bdrv_chain_contains() and callers GRAPH_RDLOCK
+      block: Mark bdrv_filter_child() and callers GRAPH_RDLOCK
+      block: Mark bdrv_cow_child() and callers GRAPH_RDLOCK
+      block: Mark bdrv_set_backing_hd_drained() GRAPH_WRLOCK
+      block: Inline bdrv_set_backing_noperm()
+      block: Mark bdrv_replace_node_common() GRAPH_WRLOCK
+      block: Mark bdrv_replace_node() GRAPH_WRLOCK
+      block: Protect bs->backing with graph_lock
+      blkverify: Add locking for request_fn
+      block: Introduce bdrv_co_change_backing_file()
+      block: Add missing GRAPH_RDLOCK annotations
+      qcow2: Take locks for accessing bs->file
+      vhdx: Take locks for accessing bs->file
+      block: Take graph lock for most of .bdrv_open
+      block: Protect bs->file with graph_lock
+
+Niklas Cassel (1):
+      hw/ide/ahci: trigger either error IRQ or regular IRQ, not both
+
+ block/copy-on-read.h                   |   3 +-
+ block/parallels.h                      |   5 +-
+ block/qcow2.h                          |  59 +++++-----
+ block/qed.h                            |   2 +-
+ block/vhdx.h                           |   9 +-
+ include/block/block-global-state.h     |  43 ++++----
+ include/block/block-io.h               |  10 +-
+ include/block/block_int-common.h       |  31 +++---
+ include/block/block_int-global-state.h |  16 +--
+ include/block/block_int-io.h           |  19 ++--
+ include/block/blockjob.h               |   5 +-
+ include/block/blockjob_int.h           |   9 +-
+ block.c                                | 192 +++++++++++++++++++--------------
+ block/backup.c                         |  21 ++--
+ block/blkdebug.c                       |  29 ++---
+ block/blkreplay.c                      |   8 +-
+ block/blkverify.c                      |  18 ++--
+ block/block-backend.c                  |   5 +
+ block/block-copy.c                     |  11 +-
+ block/bochs.c                          |   4 +
+ block/cloop.c                          |   4 +
+ block/commit.c                         |  32 +++++-
+ block/copy-before-write.c              |   6 +-
+ block/copy-on-read.c                   |  19 +++-
+ block/crypto.c                         |  10 ++
+ block/dmg.c                            |  21 ++--
+ block/filter-compress.c                |   5 +-
+ block/io.c                             |   2 +
+ block/mirror.c                         |  85 ++++++++++-----
+ block/monitor/block-hmp-cmds.c         |   3 +
+ block/parallels-ext.c                  |  21 ++--
+ block/parallels.c                      |  22 ++--
+ block/preallocate.c                    |  27 +++--
+ block/qcow.c                           |  13 ++-
+ block/qcow2-bitmap.c                   |  14 +--
+ block/qcow2-cluster.c                  |  25 ++---
+ block/qcow2.c                          | 148 +++++++++++++------------
+ block/qed.c                            |  88 ++++++++-------
+ block/raw-format.c                     |  36 ++++---
+ block/replication.c                    |  12 ++-
+ block/snapshot-access.c                |   5 +-
+ block/stream.c                         |  48 ++++++---
+ block/throttle.c                       |   3 +
+ block/vdi.c                            |  15 ++-
+ block/vhdx-log.c                       |  40 +++----
+ block/vhdx.c                           |  37 ++++---
+ block/vmdk.c                           |  23 ++--
+ block/vpc.c                            |   6 +-
+ blockdev.c                             |  72 ++++++++-----
+ blockjob.c                             |   6 +-
+ hw/ide/ahci.c                          |   5 +-
+ migration/block-dirty-bitmap.c         |   4 +
+ nbd/server.c                           |   6 ++
+ qemu-img.c                             |  31 ++++--
+ tests/unit/test-bdrv-drain.c           |  39 +++++--
+ tests/unit/test-bdrv-graph-mod.c       |  18 +++-
+ 56 files changed, 923 insertions(+), 527 deletions(-)
+
 
