@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4347E3427
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:18:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CE577E341D
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:17:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0CRV-0004IO-2F; Mon, 06 Nov 2023 22:07:53 -0500
+	id 1r0CRj-0004rN-CY; Mon, 06 Nov 2023 22:08:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CRQ-000498-4U
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:07:48 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1r0CRb-0004ko-Ty
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:07:59 -0500
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CRO-0001NM-1z
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:07:47 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1cc7077d34aso39025425ad.2
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:07:45 -0800 (PST)
+ id 1r0CRO-0001NR-N9
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:07:59 -0500
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6ba54c3ed97so5354659b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:07:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1699326465; x=1699931265; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=wtKfWdXFSNlzbjUD16+VR+PXfcJkhL8owsB0fGI5Ev0=;
- b=wRsEaBU68jSQxnEQGodoVNK/FPcv8tBzl+L3GPq9hmi62BC5aOI7TlLm+843XQhGs8
- CFG1/OEw3oodElxsaiF/0KZP380r3DH8rqhcGeU7zIENXS2Q+/Nh0a+GsW/Vdgk44YBQ
- +QU+VXUQEF9UlW3Qc7vi3JKpuUhLHGNIgl3TiEVrfR/LaTRFsqrjIwhEEHDU7oySiuYN
- UD9lKUVBQmVrdyq5XlysEqzK/6PvKVqhOU170JhU/qYNhj6p41BCkhVBpSq4VzQAjU7E
- B/ydg7pcq0RAkA9t9IRbRvR2kN5itv9Lr+P49kCNp2tyV7ggbuXAYx4SXR9lprib6EMe
- dDRw==
+ :reply-to; bh=oL/Q9k4VdGpuvjlQ5aW5bW/J8E3SoDMupdQ5tQzg65o=;
+ b=w0eVguLubF61dHHNI592T5NRFaMJiqcWrlhY+X+8Wi9IuQBZc6OSbGMaEY8TRgi9rg
+ hZz89TQNk3E+xPiad7RvDuSkGihLqouwUDwDyGhmkqP6qaIMVsmjJWnX3APcJDYuyda1
+ +9uQWXglDhxaXl0hz8vPSdHbJZQY1yg5tidDOA6qAmn3F9JC11I/SIAATfzkMRjWorBo
+ Udq7cgiIzULOYGyeOu1P3qTfLpP8FaxNaUVA/594DCRBaQIfs3So3kzP0+42cyGVtrAE
+ 2U8YcSJA5RHSwoSW9LB8/TqtZ9TAZ6B67IdOe8Lm+KwXq+1nStwE6GXCNzy+qdhfeDLw
+ oETw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1699326465; x=1699931265;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wtKfWdXFSNlzbjUD16+VR+PXfcJkhL8owsB0fGI5Ev0=;
- b=UokDG24x79rzAqRg82EBKRzb9qC1+iRQ5OXUXQx5/WA285jkUmunuaiFLQxrJ6+Yl7
- b6ijUjmVX17yjdfdEZeFPqfUc6oW7XXR36ixwhXO/Q/hp6uU0t13bAVoRuLupcQR8POt
- 7akMrA6ptvHVWl90efwtw8wHPNagmP5t5BFBhht2sulDfPKXBmRePR7A2C889V5y3Ix3
- Tsi1tLENuciuxd5DETABCK598p+/KKFLPhlY6/0iyaJJMjVHfqgxIl9A01cstYpKOIw3
- QoNsglsShijYnCiFJQtUrgKzrypr4nMadK0ZCr5DHCIK6xJ4kvWaNxKEG0aiaN2bqvic
- lH5w==
-X-Gm-Message-State: AOJu0Ywzqfy+km0nfWL3w1EaQregB99ajCjJBFMJvTFcH0Va579Nsnl5
- gvmCXIjHboGRveA08DeQtLjgp2ytkxUS7tmMMqc=
-X-Google-Smtp-Source: AGHT+IHRprWOuccsiYQJdULbH8kBZZltUVofr3SNl1ZCJZurU4LqRNpP9yLWjs2p3p4WyzasRsxGRg==
-X-Received: by 2002:a17:90a:1d5:b0:280:53b2:4b9b with SMTP id
- 21-20020a17090a01d500b0028053b24b9bmr19348458pjd.15.1699326464611; 
- Mon, 06 Nov 2023 19:07:44 -0800 (PST)
+ bh=oL/Q9k4VdGpuvjlQ5aW5bW/J8E3SoDMupdQ5tQzg65o=;
+ b=IvF7fkODGXQdNE/mir0glK9ubOlmVXNSkZtz2+3e7w53H+dW9ryg3a7lBELmFfc9zu
+ JDnYzm1Iot8G0dTMa41ILzNwg9IlD2vcV4oeQIc3dbf43xkV21ahHpAbm+6la/+YQO1M
+ Qkx+WvJp0NQOTK+RxN3OCwUhg7hFs+9wDs6YzGY1JoFuUCQDZzOpm/9A6fAascjePL93
+ OIZ9C3tKMNxcVWTJp1ldePt1VAo+6XElvBk896bM457f/Ui4m5KZeZFnz2AC4XPXV8sZ
+ 471o/dV3bO6sLya6ipN5LiKpjcudJMDx3qLdPXmkpuoYr1ZvBZawipU0ByjXNF5B2Uw6
+ Ffrg==
+X-Gm-Message-State: AOJu0Ywe7XneRrGRFNjNgP/va3DSe4SJ4uIhxcvZyw2NaSsC8dtUiHL0
+ CHqlwKdniRyHlBC/GCtBSqS7Vgxt8G6aiT/4yr8=
+X-Google-Smtp-Source: AGHT+IHpgHXJGmxwPn7/1Bc2xPhLv8GQkbDpwwxelvwlqx56TnhnqrnbBQy4t2XW+0d5T+zHoXTABg==
+X-Received: by 2002:a05:6a21:3d8d:b0:180:d66b:7f1 with SMTP id
+ bj13-20020a056a213d8d00b00180d66b07f1mr26229834pzc.62.1699326465338; 
+ Mon, 06 Nov 2023 19:07:45 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  13-20020a17090a004d00b0027782f611d1sm6744883pjb.36.2023.11.06.19.07.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 19:07:44 -0800 (PST)
+ Mon, 06 Nov 2023 19:07:45 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 48/85] target/hppa: Implement DEPD, DEPDI
-Date: Mon,  6 Nov 2023 19:03:30 -0800
-Message-Id: <20231107030407.8979-49-richard.henderson@linaro.org>
+Subject: [PULL 49/85] target/hppa: Implement EXTRD
+Date: Mon,  6 Nov 2023 19:03:31 -0800
+Message-Id: <20231107030407.8979-50-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231107030407.8979-1-richard.henderson@linaro.org>
 References: <20231107030407.8979-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,80 +91,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/insns.decode | 19 ++++++++--
- target/hppa/translate.c  | 80 +++++++++++++++++++++++++++-------------
- 2 files changed, 69 insertions(+), 30 deletions(-)
+ target/hppa/insns.decode |  7 +++++--
+ target/hppa/translate.c  | 42 +++++++++++++++++++++++++++++-----------
+ 2 files changed, 36 insertions(+), 13 deletions(-)
 
 diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
-index 33eec3f4c3..12684b590e 100644
+index 12684b590e..7b51f39b9e 100644
 --- a/target/hppa/insns.decode
 +++ b/target/hppa/insns.decode
-@@ -46,6 +46,10 @@
+@@ -335,8 +335,11 @@ addbi           101011 ..... ..... ... ........... . .  @rib_cf f=1
+ shrpw_sar       110100 r2:5 r1:5 c:3 00 0    00000  t:5
+ shrpw_imm       110100 r2:5 r1:5 c:3 01 0    cpos:5 t:5
  
- %im5_0          0:s1 1:4
- %im5_16         16:s1 17:4
-+%len5           0:5      !function=assemble_6
-+%len6_8         8:1 0:5  !function=assemble_6
-+%len6_12        12:1 0:5 !function=assemble_6
-+%cpos6_11       11:1 5:5
- %ma_to_m        5:1 13:1 !function=ma_to_m
- %ma2_to_m       2:2      !function=ma_to_m
- %pos_to_m       0:1      !function=pos_to_m
-@@ -334,10 +338,17 @@ shrpw_imm       110100 r2:5 r1:5 c:3 01 0    cpos:5 t:5
- extrw_sar       110100 r:5  t:5  c:3 10 se:1 00000  clen:5
- extrw_imm       110100 r:5  t:5  c:3 11 se:1 pos:5  clen:5
+-extrw_sar       110100 r:5  t:5  c:3 10 se:1 00000  clen:5
+-extrw_imm       110100 r:5  t:5  c:3 11 se:1 pos:5  clen:5
++extr_sar        110100 r:5  t:5  c:3 10 se:1 00 000 .....     d=0 len=%len5
++extr_sar        110100 r:5  t:5  c:3 10 se:1 1. 000 .....     d=1 len=%len6_8
++extr_imm        110100 r:5  t:5  c:3 11 se:1 pos:5  .....     d=0 len=%len5
++extr_imm        110110 r:5  t:5  c:3 .. se:1 ..... .....      \
++                d=1 len=%len6_12 pos=%cpos6_11
  
--depw_sar        110101 t:5 r:5   c:3 00 nz:1 00000  clen:5
--depw_imm        110101 t:5 r:5   c:3 01 nz:1 cpos:5 clen:5
--depwi_sar       110101 t:5 ..... c:3 10 nz:1 00000  clen:5      i=%im5_16
--depwi_imm       110101 t:5 ..... c:3 11 nz:1 cpos:5 clen:5      i=%im5_16
-+dep_sar         110101 t:5 r:5   c:3 00 nz:1 00 000 .....     d=0 len=%len5
-+dep_sar         110101 t:5 r:5   c:3 00 nz:1 1. 000 .....     d=1 len=%len6_8
-+dep_imm         110101 t:5 r:5   c:3 01 nz:1 cpos:5 .....     d=0 len=%len5
-+dep_imm         111100 t:5 r:5   c:3 .. nz:1 ..... .....      \
-+                d=1 len=%len6_12 cpos=%cpos6_11
-+depi_sar        110101 t:5 ..... c:3 10 nz:1 d:1 . 000 .....  \
-+                i=%im5_16 len=%len6_8
-+depi_imm        110101 t:5 ..... c:3 11 nz:1 cpos:5 .....     \
-+                d=0 i=%im5_16 len=%len5
-+depi_imm        111101 t:5 ..... c:3 .. nz:1 ..... .....      \
-+                d=1 i=%im5_16 len=%len6_12 cpos=%cpos6_11
- 
- ####
- # Branch External
+ dep_sar         110101 t:5 r:5   c:3 00 nz:1 00 000 .....     d=0 len=%len5
+ dep_sar         110101 t:5 r:5   c:3 00 nz:1 1. 000 .....     d=1 len=%len6_8
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 4562f865f4..ea2150cc55 100644
+index ea2150cc55..533e29879e 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -329,6 +329,17 @@ static int expand_shl11(DisasContext *ctx, int val)
-     return val << 11;
- }
- 
-+static int assemble_6(DisasContext *ctx, int val)
-+{
-+    /*
-+     * Officially, 32 * x + 32 - y.
-+     * Here, x is already in bit 5, and y is [4:0].
-+     * Since -y = ~y + 1, in 5 bits 32 - y => y ^ 31 + 1,
-+     * with the overflow from bit 4 summing with x.
-+     */
-+    return (val ^ 31) + 1;
-+}
-+
- /* Translate CMPI doubleword conditions to standard. */
- static int cmpbid_c(DisasContext *ctx, int val)
- {
-@@ -3404,17 +3415,23 @@ static bool trans_extrw_imm(DisasContext *ctx, arg_extrw_imm *a)
+@@ -3354,11 +3354,14 @@ static bool trans_shrpw_imm(DisasContext *ctx, arg_shrpw_imm *a)
      return nullify_end(ctx);
  }
  
--static bool trans_depwi_imm(DisasContext *ctx, arg_depwi_imm *a)
-+static bool trans_depi_imm(DisasContext *ctx, arg_depi_imm *a)
+-static bool trans_extrw_sar(DisasContext *ctx, arg_extrw_sar *a)
++static bool trans_extr_sar(DisasContext *ctx, arg_extr_sar *a)
  {
 -    unsigned len = 32 - a->clen;
-+    unsigned len, width;
-     target_sreg mask0, mask1;
-     TCGv_reg dest;
++    unsigned widthm1 = a->d ? 63 : 31;
+     TCGv_reg dest, src, tmp;
  
 +    if (!ctx->is_pa20 && a->d) {
 +        return false;
@@ -172,137 +134,77 @@ index 4562f865f4..ea2150cc55 100644
      if (a->c) {
          nullify_over(ctx);
      }
--    if (a->cpos + len > 32) {
--        len = 32 - a->cpos;
-+
-+    len = a->len;
-+    width = a->d ? 64 : 32;
-+    if (a->cpos + len > width) {
-+        len = width - a->cpos;
-     }
- 
-     dest = dest_gpr(ctx, a->t);
-@@ -3423,11 +3440,8 @@ static bool trans_depwi_imm(DisasContext *ctx, arg_depwi_imm *a)
- 
-     if (a->nz) {
-         TCGv_reg src = load_gpr(ctx, a->t);
--        if (mask1 != -1) {
--            tcg_gen_andi_reg(dest, src, mask1);
--            src = dest;
--        }
--        tcg_gen_ori_reg(dest, src, mask0);
-+        tcg_gen_andi_reg(dest, src, mask1);
-+        tcg_gen_ori_reg(dest, dest, mask0);
-     } else {
-         tcg_gen_movi_reg(dest, mask0);
-     }
-@@ -3436,22 +3450,28 @@ static bool trans_depwi_imm(DisasContext *ctx, arg_depwi_imm *a)
-     /* Install the new nullification.  */
-     cond_free(&ctx->null_cond);
-     if (a->c) {
--        ctx->null_cond = do_sed_cond(ctx, a->c, false, dest);
-+        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
-     }
-     return nullify_end(ctx);
- }
- 
--static bool trans_depw_imm(DisasContext *ctx, arg_depw_imm *a)
-+static bool trans_dep_imm(DisasContext *ctx, arg_dep_imm *a)
- {
-     unsigned rs = a->nz ? a->t : 0;
--    unsigned len = 32 - a->clen;
-+    unsigned len, width;
-     TCGv_reg dest, val;
- 
-+    if (!ctx->is_pa20 && a->d) {
-+        return false;
-+    }
-     if (a->c) {
-         nullify_over(ctx);
-     }
--    if (a->cpos + len > 32) {
--        len = 32 - a->cpos;
-+
-+    len = a->len;
-+    width = a->d ? 64 : 32;
-+    if (a->cpos + len > width) {
-+        len = width - a->cpos;
-     }
- 
-     dest = dest_gpr(ctx, a->t);
-@@ -3466,26 +3486,26 @@ static bool trans_depw_imm(DisasContext *ctx, arg_depw_imm *a)
-     /* Install the new nullification.  */
-     cond_free(&ctx->null_cond);
-     if (a->c) {
--        ctx->null_cond = do_sed_cond(ctx, a->c, false, dest);
-+        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
-     }
-     return nullify_end(ctx);
- }
- 
--static bool do_depw_sar(DisasContext *ctx, unsigned rt, unsigned c,
--                        unsigned nz, unsigned clen, TCGv_reg val)
-+static bool do_dep_sar(DisasContext *ctx, unsigned rt, unsigned c,
-+                       bool d, bool nz, unsigned len, TCGv_reg val)
- {
-     unsigned rs = nz ? rt : 0;
--    unsigned len = 32 - clen;
-+    unsigned widthm1 = d ? 63 : 31;
-     TCGv_reg mask, tmp, shift, dest;
--    unsigned msb = 1U << (len - 1);
-+    target_ureg msb = 1ULL << (len - 1);
- 
-     dest = dest_gpr(ctx, rt);
-     shift = tcg_temp_new();
+@@ -3368,36 +3371,53 @@ static bool trans_extrw_sar(DisasContext *ctx, arg_extrw_sar *a)
      tmp = tcg_temp_new();
  
-     /* Convert big-endian bit numbering in SAR to left-shift.  */
--    tcg_gen_andi_reg(shift, cpu_sar, 31);
--    tcg_gen_xori_reg(shift, shift, 31);
-+    tcg_gen_andi_reg(shift, cpu_sar, widthm1);
-+    tcg_gen_xori_reg(shift, shift, widthm1);
+     /* Recall that SAR is using big-endian bit numbering.  */
+-    tcg_gen_andi_reg(tmp, cpu_sar, 31);
+-    tcg_gen_xori_reg(tmp, tmp, 31);
++    tcg_gen_andi_reg(tmp, cpu_sar, widthm1);
++    tcg_gen_xori_reg(tmp, tmp, widthm1);
  
-     mask = tcg_temp_new();
-     tcg_gen_movi_reg(mask, msb + (msb - 1));
-@@ -3503,25 +3523,33 @@ static bool do_depw_sar(DisasContext *ctx, unsigned rt, unsigned c,
+     if (a->se) {
++        if (!a->d) {
++            tcg_gen_ext32s_reg(dest, src);
++            src = dest;
++        }
+         tcg_gen_sar_reg(dest, src, tmp);
+-        tcg_gen_sextract_reg(dest, dest, 0, len);
++        tcg_gen_sextract_reg(dest, dest, 0, a->len);
+     } else {
++        if (!a->d) {
++            tcg_gen_ext32u_reg(dest, src);
++            src = dest;
++        }
+         tcg_gen_shr_reg(dest, src, tmp);
+-        tcg_gen_extract_reg(dest, dest, 0, len);
++        tcg_gen_extract_reg(dest, dest, 0, a->len);
+     }
+     save_gpr(ctx, a->t, dest);
+ 
      /* Install the new nullification.  */
      cond_free(&ctx->null_cond);
-     if (c) {
--        ctx->null_cond = do_sed_cond(ctx, c, false, dest);
-+        ctx->null_cond = do_sed_cond(ctx, c, d, dest);
+     if (a->c) {
+-        ctx->null_cond = do_sed_cond(ctx, a->c, false, dest);
++        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
      }
      return nullify_end(ctx);
  }
  
--static bool trans_depw_sar(DisasContext *ctx, arg_depw_sar *a)
-+static bool trans_dep_sar(DisasContext *ctx, arg_dep_sar *a)
+-static bool trans_extrw_imm(DisasContext *ctx, arg_extrw_imm *a)
++static bool trans_extr_imm(DisasContext *ctx, arg_extr_imm *a)
  {
+-    unsigned len = 32 - a->clen;
+-    unsigned cpos = 31 - a->pos;
++    unsigned len, cpos, width;
+     TCGv_reg dest, src;
+ 
 +    if (!ctx->is_pa20 && a->d) {
 +        return false;
 +    }
      if (a->c) {
          nullify_over(ctx);
      }
--    return do_depw_sar(ctx, a->t, a->c, a->nz, a->clen, load_gpr(ctx, a->r));
-+    return do_dep_sar(ctx, a->t, a->c, a->d, a->nz, a->len,
-+                      load_gpr(ctx, a->r));
- }
  
--static bool trans_depwi_sar(DisasContext *ctx, arg_depwi_sar *a)
-+static bool trans_depi_sar(DisasContext *ctx, arg_depi_sar *a)
- {
-+    if (!ctx->is_pa20 && a->d) {
-+        return false;
++    len = a->len;
++    width = a->d ? 64 : 32;
++    cpos = width - 1 - a->pos;
++    if (cpos + len > width) {
++        len = width - cpos;
 +    }
++
+     dest = dest_gpr(ctx, a->t);
+     src = load_gpr(ctx, a->r);
+     if (a->se) {
+@@ -3410,7 +3430,7 @@ static bool trans_extrw_imm(DisasContext *ctx, arg_extrw_imm *a)
+     /* Install the new nullification.  */
+     cond_free(&ctx->null_cond);
      if (a->c) {
-         nullify_over(ctx);
+-        ctx->null_cond = do_sed_cond(ctx, a->c, false, dest);
++        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
      }
--    return do_depw_sar(ctx, a->t, a->c, a->nz, a->clen, tcg_constant_reg(a->i));
-+    return do_dep_sar(ctx, a->t, a->c, a->d, a->nz, a->len,
-+                      tcg_constant_reg(a->i));
+     return nullify_end(ctx);
  }
- 
- static bool trans_be(DisasContext *ctx, arg_be *a)
 -- 
 2.34.1
 
