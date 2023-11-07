@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B237F7E33F2
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:14:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 640DC7E340D
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:15:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0CRa-0004Vu-N5; Mon, 06 Nov 2023 22:07:58 -0500
+	id 1r0CRe-0004hv-UA; Mon, 06 Nov 2023 22:08:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CRT-0004Gu-Ok
+ id 1r0CRT-0004H3-QQ
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:07:51 -0500
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CRR-0001OC-G4
+ id 1r0CRS-0001OO-1O
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:07:51 -0500
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-5bd6ac9833fso1251846a12.0
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1cc394f4cdfso35691165ad.0
  for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:07:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699326468; x=1699931268; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699326469; x=1699931269; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=FLdWWwhoOkpRyKOoF8mXS66P45fPS1S4k3av2YvNnBQ=;
- b=o6CVs5JEJ5YOPQFfnyHL45Age/4hOTGb7cNxSjpUCgtipKYhn7zpQpbqBkDM+PcObv
- 9PtO1HunwMKAapEzekw4eM4tFLa4Oe7MUO9w8T/h7SxHHQN3qgD+1lxPFhwm8fjxl3Rc
- 7psDNRAPp2nIMJMIO+weJDMq1pJQGv7R+srI7CECLNjL+iEW3QKdmjlTzlhQ+rBRLRCx
- w7dA9SooTUYGLPM1oil6vSpum0CdzsYbO7w3VubkyC7ump2oXoX7zquJmyRvvYiFahvF
- VcpR+GkjecSp7Pm8ixiaLDZkZkXZZpWu8ehN04fXSumMZMtZX2Wv2GSQcvMBbO0TguBg
- hj6g==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7uijs1bn5TXW8wsEr2aove5t1QenLBfPQgRPY54EFkA=;
+ b=o3+SF6NqLTnqYppho0SQIaVORcrfNQvZUxHC4F3llKBUpd6tj4uaV9sYOiQ6fp0Evs
+ oNG8mOS/KopDj/5ILgvQnpnaGNXfq/NM1ZNCehHyWnuL5dnGGRwWmh6NUARFGLU6tsp3
+ tHwJgIYVWpCg5myW/Qmv38F2zQBmOmoWnz5x9Vt3dObJneDlrVqT1YE/eaQB/ra5tMZ8
+ WIsf9MfPbr4BgHBGvx1saGgJ0VXeF8u4VK+VmahszTmij7YG81Cg7kaFRgftHljRK7kY
+ Q8Huh4DNDc/VmMvvQbBOmua0+p/cKRVksHB08uEFwkL9L1VZOgWcXNsQQy3Qhq5N4kex
+ cGZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699326468; x=1699931268;
+ d=1e100.net; s=20230601; t=1699326469; x=1699931269;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FLdWWwhoOkpRyKOoF8mXS66P45fPS1S4k3av2YvNnBQ=;
- b=s+SLqG5NxlDlgjV5sQkCnj9e/xye0ANeL9zs409dtRhd2ThclazKBZqGag+M2gXkDZ
- b2HnnsEbex7lGWj7vkQqNL1ZtdwVDbYB94vqmudt446bj1qFMSdPgIUAK3bjf0XGdKhg
- /pqm5yJhTQBGhIJ9Xi4mIqe053Ktsl7tdPSgRzKn/fnWlzZEvLK9gKGFeaNzTy8vsv7o
- dikyhIkeFLyVnw2stXjGvtJ1G2ISP599pq7i7f2F9y3t0w16QmNhZFucGN0q+RrIcSq/
- m9Z6PhaX5U145VppNRb/irAmcKN1F9GxgKvI+rEYq/3OFmzCRVmgdKGJrG8NW4ZsMJfc
- bmTA==
-X-Gm-Message-State: AOJu0YxiQsjWNNn0Bs9TSJE5sMZVyWEvOAuw6E8odi582PDiky9brdnG
- 6H0DJMV+ApgU8uUAZmmKcg+qG0YW/pniT6I0bdw=
-X-Google-Smtp-Source: AGHT+IFY2MbuUYgF3ZueYefoFWTayWrS1/W/BdseQ6Im+76jFEvNFDKZCoMMhPVJW24XMNOyRI3ITw==
-X-Received: by 2002:a05:6a20:7f8a:b0:183:e7ba:8a8a with SMTP id
- d10-20020a056a207f8a00b00183e7ba8a8amr5733252pzj.30.1699326468110; 
+ bh=7uijs1bn5TXW8wsEr2aove5t1QenLBfPQgRPY54EFkA=;
+ b=EXB/VSOnTD5A4uD2F22lypcvRT9DhmWhLUY/HcXTuV0aHqdw6eIwz478plQObxsuKw
+ 6WqIRraghj+Kn8xW2OWJJeeKKdbed7qN0Mr5M0Zv6dSZaqW17u66+Bt/PWzmvDAQwa0/
+ ZZkGpxrIMONdD60mBjkB/WmTo6qvbbn8m18x3/5kELx1o3jDizfYVMX/bbLDoPvyJvc1
+ esMlnmFWJ052Yekr9E5W44NzSUnbRlw5kVltMx3+uB2vI4Pvmz1PyT54ODvnqyw6n4Qk
+ k2imwoF75BO0XTqxwAig87I9phWK4UlCoLszgWsyrAyk6raabfmmgK/Pws5KSDcsD0dp
+ x+Rw==
+X-Gm-Message-State: AOJu0YyoWHDppYlfmjD7DzGhF3GGpPlXK4d1fZ5XheirR73Gfk2cpTgV
+ 261ImfolpUCNUtbYgUxQh/wEtinUUX0nhS29V8A=
+X-Google-Smtp-Source: AGHT+IGsAcDunNpshuhriTNY1yzCtrqJTfMvMIJ3Sm3fdkppTeLuBj3oEAMI271N80fVDEyQlPL4Cw==
+X-Received: by 2002:a17:90b:1b46:b0:27d:2109:6279 with SMTP id
+ nv6-20020a17090b1b4600b0027d21096279mr7987913pjb.12.1699326468815; 
  Mon, 06 Nov 2023 19:07:48 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- 13-20020a17090a004d00b0027782f611d1sm6744883pjb.36.2023.11.06.19.07.47
- for <qemu-devel@nongnu.org>
+ 13-20020a17090a004d00b0027782f611d1sm6744883pjb.36.2023.11.06.19.07.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 19:07:47 -0800 (PST)
+ Mon, 06 Nov 2023 19:07:48 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 53/85] target/hppa: Implement IDTLBT, IITLBT
-Date: Mon,  6 Nov 2023 19:03:35 -0800
-Message-Id: <20231107030407.8979-54-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 54/85] hw/hppa: Use uint32_t instead of target_ureg
+Date: Mon,  6 Nov 2023 19:03:36 -0800
+Message-Id: <20231107030407.8979-55-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231107030407.8979-1-richard.henderson@linaro.org>
 References: <20231107030407.8979-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,252 +91,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename the existing insert tlb helpers to emphasize that they
-are for pa1.1 cpus.  Implement a combined i/d tlb for pa2.0.
-Still missing is the new 'P' tlb bit.
+The size of target_ureg is going to change.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/helper.h     |  6 ++--
- target/hppa/insns.decode |  4 +++
- target/hppa/mem_helper.c | 61 ++++++++++++++++++++++++++++++++++++----
- target/hppa/translate.c  | 42 +++++++++++++++++++++++----
- 4 files changed, 100 insertions(+), 13 deletions(-)
+ hw/hppa/machine.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/target/hppa/helper.h b/target/hppa/helper.h
-index 9920d38ded..0b346e24f3 100644
---- a/target/hppa/helper.h
-+++ b/target/hppa/helper.h
-@@ -94,8 +94,10 @@ DEF_HELPER_FLAGS_2(write_interval_timer, TCG_CALL_NO_RWG, void, env, tr)
- DEF_HELPER_FLAGS_2(write_eirr, TCG_CALL_NO_RWG, void, env, tr)
- DEF_HELPER_FLAGS_2(write_eiem, TCG_CALL_NO_RWG, void, env, tr)
- DEF_HELPER_FLAGS_2(swap_system_mask, TCG_CALL_NO_RWG, tr, env, tr)
--DEF_HELPER_FLAGS_3(itlba, TCG_CALL_NO_RWG, void, env, tl, tr)
--DEF_HELPER_FLAGS_3(itlbp, TCG_CALL_NO_RWG, void, env, tl, tr)
-+DEF_HELPER_FLAGS_3(itlba_pa11, TCG_CALL_NO_RWG, void, env, tl, tr)
-+DEF_HELPER_FLAGS_3(itlbp_pa11, TCG_CALL_NO_RWG, void, env, tl, tr)
-+DEF_HELPER_FLAGS_3(idtlbt_pa20, TCG_CALL_NO_RWG, void, env, tr, tr)
-+DEF_HELPER_FLAGS_3(iitlbt_pa20, TCG_CALL_NO_RWG, void, env, tr, tr)
- DEF_HELPER_FLAGS_2(ptlb, TCG_CALL_NO_RWG, void, env, tl)
- DEF_HELPER_FLAGS_1(ptlbe, TCG_CALL_NO_RWG, void, env)
- DEF_HELPER_FLAGS_2(lpa, TCG_CALL_NO_WG, tr, env, tl)
-diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
-index 9d8c6a1a16..820049b0c5 100644
---- a/target/hppa/insns.decode
-+++ b/target/hppa/insns.decode
-@@ -145,6 +145,7 @@ nop_addrx       000001 ..... ..... -- 01001110 . 00000  @addrx # pdc
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index 85682e6bab..1f09b4b490 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -391,9 +391,9 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus)
+                     true, EM_PARISC, 0, 0);
  
- probe           000001 b:5 ri:5 sp:2 imm:1 100011 write:1 0 t:5
+     /* Unfortunately, load_elf sign-extends reading elf32.  */
+-    firmware_entry = (target_ureg)firmware_entry;
+-    firmware_low = (target_ureg)firmware_low;
+-    firmware_high = (target_ureg)firmware_high;
++    firmware_entry = (uint32_t)firmware_entry;
++    firmware_low = (uint32_t)firmware_low;
++    firmware_high = (uint32_t)firmware_high;
  
-+# pa1.x tlb insert instructions
- ixtlbx          000001 b:5 r:5 sp:2 0100000 addr:1 0 00000      data=1
- ixtlbx          000001 b:5 r:5 ... 000000 addr:1 0 00000        \
-                 sp=%assemble_sr3x data=0
-@@ -152,6 +153,9 @@ ixtlbx          000001 b:5 r:5 ... 000000 addr:1 0 00000        \
- # pcxl and pcxl2 Fast TLB Insert instructions
- ixtlbxf         000001 00000 r:5 00 0 data:1 01000 addr:1 0 00000
+     if (size < 0) {
+         error_report("could not load firmware '%s'", firmware_filename);
+@@ -420,9 +420,9 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus)
+                         true, EM_PARISC, 0, 0);
  
-+# pa2.0 tlb insert idtlbt and iitlbt instructions
-+ixtlbt          000001 r2:5 r1:5 000 data:1 100000 0 00000    # idtlbt
-+
- pxtlbx          000001 b:5 x:5 sp:2 0100100 local:1 m:1 -----   data=1
- pxtlbx          000001 b:5 x:5 ... 000100 local:1 m:1 -----     \
-                 sp=%assemble_sr3x data=0
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index 420b43a0f6..d5d2d62f4a 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -344,7 +344,7 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
- }
+         /* Unfortunately, load_elf sign-extends reading elf32.  */
+-        kernel_entry = (target_ureg) cpu_hppa_to_phys(NULL, kernel_entry);
+-        kernel_low = (target_ureg)kernel_low;
+-        kernel_high = (target_ureg)kernel_high;
++        kernel_entry = (uint32_t) cpu_hppa_to_phys(NULL, kernel_entry);
++        kernel_low = (uint32_t)kernel_low;
++        kernel_high = (uint32_t)kernel_high;
  
- /* Insert (Insn/Data) TLB Address.  Note this is PA 1.1 only.  */
--void HELPER(itlba)(CPUHPPAState *env, target_ulong addr, target_ureg reg)
-+void HELPER(itlba_pa11)(CPUHPPAState *env, target_ulong addr, target_ureg reg)
- {
-     HPPATLBEntry *ent;
- 
-@@ -365,7 +365,8 @@ void HELPER(itlba)(CPUHPPAState *env, target_ulong addr, target_ureg reg)
-     trace_hppa_tlb_itlba(env, ent, ent->itree.start, ent->itree.last, ent->pa);
- }
- 
--static void set_access_bits(CPUHPPAState *env, HPPATLBEntry *ent, target_ureg reg)
-+static void set_access_bits_pa11(CPUHPPAState *env, HPPATLBEntry *ent,
-+                                 target_ureg reg)
- {
-     ent->access_id = extract32(reg, 1, 18);
-     ent->u = extract32(reg, 19, 1);
-@@ -383,20 +384,70 @@ static void set_access_bits(CPUHPPAState *env, HPPATLBEntry *ent, target_ureg re
- }
- 
- /* Insert (Insn/Data) TLB Protection.  Note this is PA 1.1 only.  */
--void HELPER(itlbp)(CPUHPPAState *env, target_ulong addr, target_ureg reg)
-+void HELPER(itlbp_pa11)(CPUHPPAState *env, target_ulong addr, target_ureg reg)
- {
-     HPPATLBEntry *ent = env->tlb_partial;
- 
-     if (ent) {
-         env->tlb_partial = NULL;
-         if (ent->itree.start <= addr && addr <= ent->itree.last) {
--            set_access_bits(env, ent, reg);
-+            set_access_bits_pa11(env, ent, reg);
-             return;
-         }
-     }
-     qemu_log_mask(LOG_GUEST_ERROR, "ITLBP not following ITLBA\n");
- }
- 
-+static void itlbt_pa20(CPUHPPAState *env, target_ureg r1,
-+                       target_ureg r2, vaddr va_b)
-+{
-+    HPPATLBEntry *ent;
-+    vaddr va_e;
-+    uint64_t va_size;
-+    int mask_shift;
-+
-+    mask_shift = 2 * (r1 & 0xf);
-+    va_size = TARGET_PAGE_SIZE << mask_shift;
-+    va_b &= -va_size;
-+    va_e = va_b + va_size - 1;
-+
-+    hppa_flush_tlb_range(env, va_b, va_e);
-+    ent = hppa_alloc_tlb_ent(env);
-+
-+    ent->itree.start = va_b;
-+    ent->itree.last = va_e;
-+    ent->pa = (r1 << 7) & (TARGET_PAGE_MASK << mask_shift);
-+    ent->t = extract64(r2, 61, 1);
-+    ent->d = extract64(r2, 60, 1);
-+    ent->b = extract64(r2, 59, 1);
-+    ent->ar_type = extract64(r2, 56, 3);
-+    ent->ar_pl1 = extract64(r2, 54, 2);
-+    ent->ar_pl2 = extract64(r2, 52, 2);
-+    ent->u = extract64(r2, 51, 1);
-+    /* o = bit 50 */
-+    /* p = bit 49 */
-+    ent->access_id = extract64(r2, 1, 31);
-+    ent->entry_valid = 1;
-+
-+    interval_tree_insert(&ent->itree, &env->tlb_root);
-+    trace_hppa_tlb_itlba(env, ent, ent->itree.start, ent->itree.last, ent->pa);
-+    trace_hppa_tlb_itlbp(env, ent, ent->access_id, ent->u,
-+                         ent->ar_pl2, ent->ar_pl1, ent->ar_type,
-+                         ent->b, ent->d, ent->t);
-+}
-+
-+void HELPER(idtlbt_pa20)(CPUHPPAState *env, target_ureg r1, target_ureg r2)
-+{
-+    vaddr va_b = deposit64(env->cr[CR_IOR], 32, 32, env->cr[CR_ISR]);
-+    itlbt_pa20(env, r1, r2, va_b);
-+}
-+
-+void HELPER(iitlbt_pa20)(CPUHPPAState *env, target_ureg r1, target_ureg r2)
-+{
-+    vaddr va_b = deposit64(env->cr[CR_IIAOQ], 32, 32, env->cr[CR_IIASQ]);
-+    itlbt_pa20(env, r1, r2, va_b);
-+}
-+
- /* Purge (Insn/Data) TLB.  This is explicitly page-based, and is
-    synchronous across all processors.  */
- static void ptlb_work(CPUState *cpu, run_on_cpu_data data)
-@@ -563,7 +614,7 @@ void HELPER(diag_btlb)(CPUHPPAState *env)
-             btlb->itree.start = virt_page << TARGET_PAGE_BITS;
-             btlb->itree.last = btlb->itree.start + len * TARGET_PAGE_SIZE - 1;
-             btlb->pa = phys_page << TARGET_PAGE_BITS;
--            set_access_bits(env, btlb, env->gr[20]);
-+            set_access_bits_pa11(env, btlb, env->gr[20]);
-             btlb->t = 0;
-             btlb->d = 1;
-         } else {
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 485251bded..29d3bbb3d7 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -2514,6 +2514,9 @@ static bool trans_probe(DisasContext *ctx, arg_probe *a)
- 
- static bool trans_ixtlbx(DisasContext *ctx, arg_ixtlbx *a)
- {
-+    if (ctx->is_pa20) {
-+        return false;
-+    }
-     CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
- #ifndef CONFIG_USER_ONLY
-     TCGv_tl addr;
-@@ -2524,9 +2527,9 @@ static bool trans_ixtlbx(DisasContext *ctx, arg_ixtlbx *a)
-     form_gva(ctx, &addr, &ofs, a->b, 0, 0, 0, a->sp, 0, false);
-     reg = load_gpr(ctx, a->r);
-     if (a->addr) {
--        gen_helper_itlba(tcg_env, addr, reg);
-+        gen_helper_itlba_pa11(tcg_env, addr, reg);
-     } else {
--        gen_helper_itlbp(tcg_env, addr, reg);
-+        gen_helper_itlbp_pa11(tcg_env, addr, reg);
-     }
- 
-     /* Exit TB for TLB change if mmu is enabled.  */
-@@ -2572,6 +2575,9 @@ static bool trans_pxtlbx(DisasContext *ctx, arg_pxtlbx *a)
-  */
- static bool trans_ixtlbxf(DisasContext *ctx, arg_ixtlbxf *a)
- {
-+    if (ctx->is_pa20) {
-+        return false;
-+    }
-     CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
- #ifndef CONFIG_USER_ONLY
-     TCGv_tl addr, atl, stl;
-@@ -2583,8 +2589,6 @@ static bool trans_ixtlbxf(DisasContext *ctx, arg_ixtlbxf *a)
-      * FIXME:
-      *  if (not (pcxl or pcxl2))
-      *    return gen_illegal(ctx);
--     *
--     * Note for future: these are 32-bit systems; no hppa64.
-      */
- 
-     atl = tcg_temp_new_tl();
-@@ -2602,9 +2606,9 @@ static bool trans_ixtlbxf(DisasContext *ctx, arg_ixtlbxf *a)
- 
-     reg = load_gpr(ctx, a->r);
-     if (a->addr) {
--        gen_helper_itlba(tcg_env, addr, reg);
-+        gen_helper_itlba_pa11(tcg_env, addr, reg);
-     } else {
--        gen_helper_itlbp(tcg_env, addr, reg);
-+        gen_helper_itlbp_pa11(tcg_env, addr, reg);
-     }
- 
-     /* Exit TB for TLB change if mmu is enabled.  */
-@@ -2615,6 +2619,32 @@ static bool trans_ixtlbxf(DisasContext *ctx, arg_ixtlbxf *a)
- #endif
- }
- 
-+static bool trans_ixtlbt(DisasContext *ctx, arg_ixtlbt *a)
-+{
-+    if (!ctx->is_pa20) {
-+        return false;
-+    }
-+    CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
-+#ifndef CONFIG_USER_ONLY
-+    nullify_over(ctx);
-+    {
-+        TCGv_i64 src1 = load_gpr(ctx, a->r1);
-+        TCGv_i64 src2 = load_gpr(ctx, a->r2);
-+
-+        if (a->data) {
-+            gen_helper_idtlbt_pa20(tcg_env, src1, src2);
-+        } else {
-+            gen_helper_iitlbt_pa20(tcg_env, src1, src2);
-+        }
-+    }
-+    /* Exit TB for TLB change if mmu is enabled.  */
-+    if (ctx->tb_flags & PSW_C) {
-+        ctx->base.is_jmp = DISAS_IAQ_N_STALE;
-+    }
-+    return nullify_end(ctx);
-+#endif
-+}
-+
- static bool trans_lpa(DisasContext *ctx, arg_ldst *a)
- {
-     CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
+         if (size < 0) {
+             error_report("could not load kernel '%s'", kernel_filename);
 -- 
 2.34.1
 
