@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5AB7E41CE
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:29:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A3A67E41D3
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 15:29:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0N0K-0004Tr-Hk; Tue, 07 Nov 2023 09:24:32 -0500
+	id 1r0N0J-0004TU-SE; Tue, 07 Nov 2023 09:24:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r0N02-0004GF-GZ
+ id 1r0N02-0004GH-Ip
  for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:24:14 -0500
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r0Mzw-0007bk-VE
+ id 1r0Mzw-0007bY-JE
  for qemu-devel@nongnu.org; Tue, 07 Nov 2023 09:24:13 -0500
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-507a29c7eefso7247857e87.1
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-32f78dcf036so4126585f8f.0
  for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 06:24:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1699367047; x=1699971847; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mtDpNZGc7bpiPdq3AvEGwADJunLb29I37B0SspqL8mk=;
- b=jAq1zHgVNomIUNYWFsRslqsJp/z8QqpxKSjDjPZnJ2zNX1dWVxwf+DJogxQNUMbNxG
- no7zJD6V5d938UXIbdhL7ZgNqD5P6h8qHUi4Ux0Vz7en5K9gVSMbXejrE/kzYthUzFLs
- /BOsul3TvoWxH3HEuqUIiUCTXc8ypNUSr/yR3amzAyphuENusZL16b6yHJnjd8Wlt6dW
- l03zFNRnSw3QyljmZGDAKKMUqXY3bOtRW2cY3P7ozlogH4fpMxKIHIy5nw6sAp6yH6W2
- mDWYI2v0v+q+o0duaMS8563tjQn1iol4aOuqhcz0RwfANRSw1yaAdXOARpFeRNpHfwW8
- bVAA==
+ bh=L+uCrfcDLt4fP6JkGcpQPZ8E5/aRDEJ/o5oc6OzqeNw=;
+ b=BncrT1aN9J4wtWe+xtgLd4oubu3vZ54lt/OUZjYY2YdbfD7lx3cwctNvHYAxoOYhke
+ LNc5vhGRbqsmJDx7VpfsSgwJp0Bk7e7T6tAockLGxNR0ZoqRvchy4x83DmD8arhxuaFr
+ LQdYLgIitUz5Aq8dcUouubsJrqreL2JYOg2nsNh/JLl5Xa3K5q5e2hq6NqzM2A7uF3vi
+ QQIl8ZbiOzRRtmei8q9b0QvIO9Ny0NRagPdRtXGC8NsxuloIJYvHkRMqcP+zIPqunHot
+ YCqegBzUxaziq2O2tDfl3RHyh4c7jciRE7eno75Lmtr+gywhYqu2yNVaI50QOyQGEWIA
+ Oajw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1699367047; x=1699971847;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mtDpNZGc7bpiPdq3AvEGwADJunLb29I37B0SspqL8mk=;
- b=Veuq8fDVGTFE8Dw/PwGqxzJBZY85dMNJNc3ygg1a/sQ+T79YGIVb7DCZIdFP8oqd0X
- xiIDcgGELRh/auDno3W4+6q66KE8q06bhsiPEV9o4oogogIMoYscWb3TdScUZopnbtOU
- 0LRR8kD9mIqe2Y3kT4qY5TxJNQcuG3qAlnNqIDYhmWgiUfQ/bsqJQ0SyqN1JAObsHJ0c
- FCxGa6fgVJl2QpJunld4ZoB2d19CEGmjrC4F3tWVyH+7m32zG/U9VhV3CNn9WFy4Jktp
- 9f/qvrB3tcAaYIP4JKbIaTQ2WbTPUckmSqsTPPJ0Wg1tNieaeZmG8nPx/vEVuFAcuMCS
- +BKQ==
-X-Gm-Message-State: AOJu0YwQyRj3+WTdkSVVvHdvWfZ3SCC6z9x6yD4omApgkoVw6o9HaFOY
- 1Va4hqTtCbEoVVncxMrAHgmtCw==
-X-Google-Smtp-Source: AGHT+IE03XZ9iSIcJzaUdtGRjAZF9pH2QqmGqwEAcVTF99Awdh5aDcxYkQW8/wYPgG1DDcHk+rP/OA==
-X-Received: by 2002:a05:6512:1085:b0:509:458a:6c1 with SMTP id
- j5-20020a056512108500b00509458a06c1mr15561705lfg.19.1699367047239; 
+ bh=L+uCrfcDLt4fP6JkGcpQPZ8E5/aRDEJ/o5oc6OzqeNw=;
+ b=iM0NYeWeitIU88F9Gr66/xNgkMlLuRTFfn7xLKRJbu+sfM0DWxgd51njZ6g6Tv3OT5
+ HtrHn7C+qUpy1Kxtj4UaLYWdYUXNAa8PSWqVWI7os7ofKxFxMpTTRQan69kuCUpFsP/6
+ rv3IA4Ov45ai8pmPdPkC9haHpOPT3QVQ6n8RQZHJ5OOcINaYhfN9HCgcr5QTL9GcrpOd
+ rdaILUwk87wSzH0NPb0VZA/cEb/XFWX6J6Lv8qui4gTGQGSfFHdTE+47hCttxb2if4r2
+ RfExyW/loVRCdYUveVHg2IRk5D0W1PxdY2QbNre+B8F59d8iu0iRdurPkH2h90D9eCAX
+ 4b0w==
+X-Gm-Message-State: AOJu0YwnJb1ipciRSvMs35XTy88Npx2r6NTKsoTa35qvcWzSn83zcz74
+ f6hBIgIoygyqBVxGq7xhLDZN/A==
+X-Google-Smtp-Source: AGHT+IFyGIq7dVuMDH1EOvoNleUoy+5cFOjmba3M9Lcmq7y/mU25lAAhiCt9//oX/8BhI6QOBPzwQA==
+X-Received: by 2002:a5d:4585:0:b0:32d:a4d0:1364 with SMTP id
+ p5-20020a5d4585000000b0032da4d01364mr3064173wrq.29.1699367047017; 
  Tue, 07 Nov 2023 06:24:07 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- x4-20020adfdd84000000b0032fb0e2087asm2492340wrl.82.2023.11.07.06.23.58
+ iv12-20020a05600c548c00b0040641a9d49bsm16047254wmb.17.2023.11.07.06.23.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 07 Nov 2023 06:24:03 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 989BB5F790;
+ by draig.lan (Postfix) with ESMTP id AAEB565761;
  Tue,  7 Nov 2023 14:23:55 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 11/23] cpu: Call plugin hooks only when ready
-Date: Tue,  7 Nov 2023 14:23:42 +0000
-Message-Id: <20231107142354.3151266-12-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Greg Manning <gmanning@rapitasystems.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 12/23] configure: tell meson and contrib_plugins about DLLTOOL
+Date: Tue,  7 Nov 2023 14:23:43 +0000
+Message-Id: <20231107142354.3151266-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231107142354.3151266-1-alex.bennee@linaro.org>
 References: <20231107142354.3151266-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,83 +98,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To cleanly handle cross-building we need to export the details of
+dlltool into meson's list of cross binaries and into the
+contrib/plugins/ make configuration.
 
-The initialization and exit hooks will not affect the state of vCPU
-outside TCG context, but they may depend on the state of vCPU.
-Therefore, it's better to call plugin hooks after the vCPU state is
-fully initialized and before it gets uninitialized.
-
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231025093128.33116-16-akihiko.odaki@daynix.com>
+Cc: Greg Manning <gmanning@rapitasystems.com>
+Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231106185112.2755262-12-alex.bennee@linaro.org>
+Message-Id: <20231106185112.2755262-13-alex.bennee@linaro.org>
 
-diff --git a/cpu-target.c b/cpu-target.c
-index 79363ae370..00cd7f4d69 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -42,7 +42,6 @@
- #include "hw/core/accel-cpu.h"
- #include "trace/trace-root.h"
- #include "qemu/accel.h"
--#include "qemu/plugin.h"
- 
- uintptr_t qemu_host_page_size;
- intptr_t qemu_host_page_mask;
-@@ -143,11 +142,6 @@ void cpu_exec_realizefn(CPUState *cpu, Error **errp)
-     /* Wait until cpu initialization complete before exposing cpu. */
-     cpu_list_add(cpu);
- 
--    /* Plugin initialization must wait until cpu_index assigned. */
--    if (tcg_enabled()) {
--        qemu_plugin_vcpu_init_hook(cpu);
--    }
--
- #ifdef CONFIG_USER_ONLY
-     assert(qdev_get_vmsd(DEVICE(cpu)) == NULL ||
-            qdev_get_vmsd(DEVICE(cpu))->unmigratable);
-@@ -174,11 +168,6 @@ void cpu_exec_unrealizefn(CPUState *cpu)
-     }
- #endif
- 
--    /* Call the plugin hook before clearing cpu->cpu_index in cpu_list_remove */
--    if (tcg_enabled()) {
--        qemu_plugin_vcpu_exit_hook(cpu);
--    }
--
-     cpu_list_remove(cpu);
-     /*
-      * Now that the vCPU has been removed from the RCU list, we can call
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index bab8942c30..0acfed4c0f 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -209,6 +209,11 @@ static void cpu_common_realizefn(DeviceState *dev, Error **errp)
-         cpu_resume(cpu);
-     }
- 
-+    /* Plugin initialization must wait until the cpu is fully realized. */
-+    if (tcg_enabled()) {
-+        qemu_plugin_vcpu_init_hook(cpu);
-+    }
-+
-     /* NOTE: latest generic point where the cpu is fully realized */
- }
- 
-@@ -216,6 +221,11 @@ static void cpu_common_unrealizefn(DeviceState *dev)
- {
-     CPUState *cpu = CPU(dev);
- 
-+    /* Call the plugin hook before clearing the cpu is fully unrealized */
-+    if (tcg_enabled()) {
-+        qemu_plugin_vcpu_exit_hook(cpu);
-+    }
-+
-     /* NOTE: latest generic point before the cpu is fully unrealized */
-     cpu_exec_unrealizefn(cpu);
- }
+diff --git a/configure b/configure
+index f1456f6123..cd6c521bd8 100755
+--- a/configure
++++ b/configure
+@@ -309,6 +309,7 @@ fi
+ ar="${AR-${cross_prefix}ar}"
+ as="${AS-${cross_prefix}as}"
+ ccas="${CCAS-$cc}"
++dlltool="${DLLTOOL-${cross_prefix}dlltool}"
+ objcopy="${OBJCOPY-${cross_prefix}objcopy}"
+ ld="${LD-${cross_prefix}ld}"
+ ranlib="${RANLIB-${cross_prefix}ranlib}"
+@@ -1659,6 +1660,9 @@ echo "SRC_PATH=$source_path/contrib/plugins" >> contrib/plugins/$config_host_mak
+ echo "PKG_CONFIG=${pkg_config}" >> contrib/plugins/$config_host_mak
+ echo "CC=$cc $CPU_CFLAGS" >> contrib/plugins/$config_host_mak
+ echo "CFLAGS=${CFLAGS-$default_cflags} $EXTRA_CFLAGS" >> contrib/plugins/$config_host_mak
++if test "$targetos" = windows; then
++  echo "DLLTOOL=$dlltool" >> contrib/plugins/$config_host_mak
++fi
+ if test "$targetos" = darwin; then
+   echo "CONFIG_DARWIN=y" >> contrib/plugins/$config_host_mak
+ fi
+@@ -1764,6 +1768,7 @@ if test "$skip_meson" = no; then
+   test -n "$cxx" && echo "cpp = [$(meson_quote $cxx $CPU_CFLAGS)]" >> $cross
+   test -n "$objcc" && echo "objc = [$(meson_quote $objcc $CPU_CFLAGS)]" >> $cross
+   echo "ar = [$(meson_quote $ar)]" >> $cross
++  echo "dlltool = [$(meson_quote $dlltool)]" >> $cross
+   echo "nm = [$(meson_quote $nm)]" >> $cross
+   echo "pkgconfig = [$(meson_quote $pkg_config)]" >> $cross
+   echo "pkg-config = [$(meson_quote $pkg_config)]" >> $cross
+@@ -1869,6 +1874,7 @@ preserve_env CC
+ preserve_env CFLAGS
+ preserve_env CXX
+ preserve_env CXXFLAGS
++preserve_env DLLTOOL
+ preserve_env LD
+ preserve_env LDFLAGS
+ preserve_env LD_LIBRARY_PATH
 -- 
 2.39.2
 
