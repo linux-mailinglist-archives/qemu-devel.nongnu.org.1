@@ -2,70 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99ED57E3874
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:11:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 642617E3876
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:11:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0J2I-00014z-Qr; Tue, 07 Nov 2023 05:10:21 -0500
+	id 1r0J2Z-0001Fb-Fd; Tue, 07 Nov 2023 05:10:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J1b-0000yz-7e
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:09:36 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J1f-00010O-5D
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:09:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J1Z-00029R-2Q
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:09:34 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J1d-00029c-BY
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:09:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699351772;
+ s=mimecast20190719; t=1699351776;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type;
- bh=sTqD/wwYPePxM415gmSCG828Dat4p/bMlztFGYoLZjE=;
- b=PbmZh/fyFyfuBjyVmGKoaGqaYvcTm3mJsVKAPS6UOoS1rLE0JOkBOOiiFfWW7LbUv/cir4
- QuuBbjTLTIoaegKOTjBHEtAe0efqCL9h9ERjFBuSi549kihEDu6soBdBXWUUFCliakFdw2
- WNYMwrG/AouO4QcEKVsiEFLUiO3JcK8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DeT9trR7h5e0mt3T72UGK2kZ1Wd+DrRHHhGgZvqMeCU=;
+ b=QCI7f7ASvGHyjjrZZJtALym4t0MK+hrtjmNMmaRR0WssVx1cmy2UjXjy17DrCLNtAhDh6d
+ 7aLdqqHXOHv6rlbFn/pX52Zs2bHv5ictS6oMHu4PqEE9EjqJu8HhGvXp8WCh0E2khlT9BP
+ gTZ6uTSDop88FB5ZR8D6cEhvr8fmxfk=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-596-K9MhQ3LaPs6o5892Ma7rvQ-1; Tue, 07 Nov 2023 05:09:30 -0500
-X-MC-Unique: K9MhQ3LaPs6o5892Ma7rvQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-32ddd6f359eso2826625f8f.3
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:09:30 -0800 (PST)
+ us-mta-480-kKwni7kBNEGXNr59FblkFw-1; Tue, 07 Nov 2023 05:09:35 -0500
+X-MC-Unique: kKwni7kBNEGXNr59FblkFw-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-5093a1a0adcso6167172e87.3
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:09:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699351768; x=1699956568;
- h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20230601; t=1699351773; x=1699956573;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sTqD/wwYPePxM415gmSCG828Dat4p/bMlztFGYoLZjE=;
- b=nCH5bv7T8qa3kUFrSssil5JsJ+4ybGqME2g0YYcsERWbxMjV9Bj27VmtOM4quQ1x58
- ILIf1u1yRguiq3ns5TJY2y4ZKEZTP7Ea6yDN6X6ugnbHYlzXxwr/shWIXxmKh8phkkiF
- BXkpFojqUIxPfJ/1PjpP9QlyCZoSGIfp6Wk52+HKHcJR/z6fG8bOMgkmFWPSsjhs1sdo
- PnARF14SSZqNq9yX0c5ywkifIDOgkG9nUCSqMCvN8sUnOHN1NTF7F3GsazFDMSxWYCB2
- lCw44/TKL+wr9Vhmuct2/OtcFzySGaqoxhqm4xA0uZpfVTeUl+y8vtKBEt7OtFmDCwjI
- VmNQ==
-X-Gm-Message-State: AOJu0Yz7Lntw/mYIe6wjN65c4Ir0QTTrR9OD+cG9ywwR3mah6fgsKzYx
- BTHbWoizySnM0/Jzie1oePi6hi44u3crgb5QJjY6N/4LBy4ilmB8mo0cT2MDI370Lgh3ZDyPWlT
- ajNGymJcWULT3jL7BdMM2Uq0t1FDr+Os0DipEpU4VEpV6hOukDvDDZoym1vFfzm9l3p0K
-X-Received: by 2002:a5d:59af:0:b0:32f:7bb6:9695 with SMTP id
- p15-20020a5d59af000000b0032f7bb69695mr29020548wrr.44.1699351768559; 
- Tue, 07 Nov 2023 02:09:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH1YBdp2EKKVmEILl6o33MiU2OI/aGAFNoDQgHsOTcI90MezkJnHyeP1GEo/bgxgYEmw2SqTg==
-X-Received: by 2002:a5d:59af:0:b0:32f:7bb6:9695 with SMTP id
- p15-20020a5d59af000000b0032f7bb69695mr29020523wrr.44.1699351768050; 
- Tue, 07 Nov 2023 02:09:28 -0800 (PST)
+ bh=DeT9trR7h5e0mt3T72UGK2kZ1Wd+DrRHHhGgZvqMeCU=;
+ b=uLkqq95CwrHO/2P0GaLItDFV3eYZlEcdHmvSkeF2iZf8wlOGWPe3DCDv8jFZnumWVF
+ VIbDERjykUL8dyOO3xIOE4V9/BRmfA5PHN2GHdIkdASzNTvxzYRJcKWFeoUuX2ArcCU8
+ FiZ3Cr/52mAwKGFDy5azpekH66BD2qfOIVj2hCCDtbix303xTf55NWBc/kReXk4nSITf
+ dwyTBtzlgs9POuXdnGkx+Xn3h9muMBAiovXi7Syf3A7Y21MrMSwPGKOOA0+eE/O+AIj5
+ t0XneQsjcNpME1oQKJZZGr9uLhACCpF9lAn2szq+ygzUth1scgdKJ1Jj1W8+6NWav3tJ
+ GkPQ==
+X-Gm-Message-State: AOJu0Yzlos3r8YBDMWxUn2/J5K1METUpPjn0JRtqZpN7394LO+OlSK7L
+ I0lrBcaLxX3ddYkQdCt7TNxSOxuVBEjhXVAsP6ECgXuIve8ufKxa+UnD3s946j3g+8mGldYPSeG
+ j7nqoRyYSnHeZ8/urkbXGpyjZ1sNtX+hQbLyFDw+/bxh3gu5yr812xrVdvS8gVOlhh3v2
+X-Received: by 2002:a05:6512:3e1a:b0:500:7a23:720b with SMTP id
+ i26-20020a0565123e1a00b005007a23720bmr29179045lfv.55.1699351772990; 
+ Tue, 07 Nov 2023 02:09:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGqhPMdFekfI3h0XME1AiiBJ1hG+KzAc6hF17BRpUj+A15LT9SLMbOAEqhwRtn64O8XvIF0NA==
+X-Received: by 2002:a05:6512:3e1a:b0:500:7a23:720b with SMTP id
+ i26-20020a0565123e1a00b005007a23720bmr29179020lfv.55.1699351772465; 
+ Tue, 07 Nov 2023 02:09:32 -0800 (PST)
 Received: from redhat.com ([2.55.5.143]) by smtp.gmail.com with ESMTPSA id
- a15-20020a5d456f000000b0032fab28e9c9sm1900312wrc.73.2023.11.07.02.09.26
+ a11-20020a05600c348b00b0040813e14b49sm15542037wmq.30.2023.11.07.02.09.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 02:09:27 -0800 (PST)
-Date: Tue, 7 Nov 2023 05:09:24 -0500
+ Tue, 07 Nov 2023 02:09:31 -0800 (PST)
+Date: Tue, 7 Nov 2023 05:09:28 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 00/63] virtio,pc,pci: features, fixes
-Message-ID: <cover.1699351720.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Hanna Czenczek <hreitz@redhat.com>
+Subject: [PULL 01/63] vhost-user.rst: Improve [GS]ET_VRING_BASE doc
+Message-ID: <c7f21816612879efdae3d9b67f024a6671494c62.1699351720.git.mst@redhat.com>
+References: <cover.1699351720.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1699351720.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
@@ -93,191 +100,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 3e01f1147a16ca566694b97eafc941d62fa1e8d8:
+From: Hanna Czenczek <hreitz@redhat.com>
 
-  Merge tag 'pull-sp-20231105' of https://gitlab.com/rth7680/qemu into staging (2023-11-06 09:34:22 +0800)
+GET_VRING_BASE does not mention that it stops the respective ring.  Fix
+that.
 
-are available in the Git repository at:
+Furthermore, it is not fully clear what the "base offset" these
+commands' documentation refers to is; an offset could be many things.
+Be more precise and verbose about it, especially given that these
+commands use different payload structures depending on whether the vring
+is split or packed.
 
-  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
-
-for you to fetch changes up to 94cd94f1c0137b56000c01208e03d0907ad34910:
-
-  acpi/tests/avocado/bits: enable console logging from bits VM (2023-11-07 03:39:11 -0500)
-
-----------------------------------------------------------------
-virtio,pc,pci: features, fixes
-
-virtio sound card support
-
-vhost-user: back-end state migration
-
-cxl:
-     line length reduction
-     enabling fabric management
-
-vhost-vdpa:
-     shadow virtqueue hash calculation Support
-     shadow virtqueue RSS Support
-
-tests:
-    CPU topology related smbios test cases
-
-Fixes, cleanups all over the place
-
+Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+Message-Id: <20231016134243.68248-2-hreitz@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ docs/interop/vhost-user.rst | 77 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 73 insertions(+), 4 deletions(-)
 
-----------------------------------------------------------------
-Ani Sinha (2):
-      acpi/tests/avocado/bits: enforce 32-bit SMBIOS entry point
-      acpi/tests/avocado/bits: enable console logging from bits VM
-
-Davidlohr Bueso (3):
-      hw/cxl/mbox: Add support for background operations
-      hw/cxl/mbox: Wire up interrupts for background completion
-      hw/cxl: Add support for device sanitation
-
-Gregory Price (1):
-      hw/cxl/type3: Cleanup multiple CXL_TYPE3() calls in read/write functions
-
-Hanna Czenczek (7):
-      vhost-user.rst: Improve [GS]ET_VRING_BASE doc
-      vhost-user.rst: Clarify enabling/disabling vrings
-      vhost-user.rst: Introduce suspended state
-      vhost-user.rst: Migrating back-end-internal state
-      vhost-user: Interface for migration state transfer
-      vhost: Add high-level state save/load functions
-      vhost-user-fs: Implement internal migration
-
-Hawkins Jiawei (5):
-      vdpa: Restore hash calculation state
-      vdpa: Allow VIRTIO_NET_F_HASH_REPORT in SVQ
-      vdpa: Add SetSteeringEBPF method for NetClientState
-      vdpa: Restore receive-side scaling state
-      vdpa: Allow VIRTIO_NET_F_RSS in SVQ
-
-Jonathan Cameron (18):
-      hw/cxl: Use a switch to explicitly check size in caps_reg_read()
-      hw/cxl: Use switch statements for read and write of cachemem registers
-      hw/cxl: CXLDVSECPortExtensions renamed to CXLDVSECPortExt
-      hw/cxl: Line length reductions
-      hw/cxl: Fix a QEMU_BUILD_BUG_ON() in switch statement scope issue.
-      hw/cxl/mbox: Pull the payload out of struct cxl_cmd and make instances constant
-      hw/cxl/mbox: Split mailbox command payload into separate input and output
-      hw/cxl/mbox: Pull the CCI definition out of the CXLDeviceState
-      hw/cxl/mbox: Generalize the CCI command processing
-      hw/pci-bridge/cxl_upstream: Move defintion of device to header.
-      hw/cxl: Add a switch mailbox CCI function
-      hw/cxl/mbox: Add Information and Status / Identify command
-      hw/cxl/mbox: Add Physical Switch Identify command.
-      hw/pci-bridge/cxl_downstream: Set default link width and link speed
-      hw/cxl: Implement Physical Ports status retrieval
-      hw/cxl/mbox: Add Get Background Operation Status Command
-      hw/cxl: Add dummy security state get
-      hw/cxl: Add tunneled command support to mailbox for switch cci.
-
-Manos Pitsidianakis (11):
-      Add virtio-sound device stub
-      Add virtio-sound-pci device
-      virtio-sound: handle control messages and streams
-      virtio-sound: handle VIRTIO_SND_R_PCM_INFO request
-      virtio-sound: handle VIRTIO_SND_R_PCM_{START,STOP}
-      virtio-sound: handle VIRTIO_SND_R_PCM_SET_PARAMS
-      virtio-sound: handle VIRTIO_SND_R_PCM_PREPARE
-      virtio-sound: handle VIRTIO_SND_R_PCM_RELEASE
-      virtio-sound: implement audio output (TX)
-      virtio-sound: implement audio capture (RX)
-      docs/system: add basic virtio-snd documentation
-
-Zhao Liu (16):
-      tests: test-smp-parse: Add the test for cores/threads per socket helpers
-      tests: bios-tables-test: Prepare the ACPI table change for smbios type4 count test
-      tests: bios-tables-test: Add test for smbios type4 count
-      tests: bios-tables-test: Add ACPI table binaries for smbios type4 count test
-      tests: bios-tables-test: Prepare the ACPI table change for smbios type4 core count test
-      tests: bios-tables-test: Add test for smbios type4 core count
-      tests: bios-tables-test: Add ACPI table binaries for smbios type4 core count test
-      tests: bios-tables-test: Prepare the ACPI table change for smbios type4 core count2 test
-      tests: bios-tables-test: Extend smbios core count2 test to cover general topology
-      tests: bios-tables-test: Update ACPI table binaries for smbios core count2 test
-      tests: bios-tables-test: Prepare the ACPI table change for smbios type4 thread count test
-      tests: bios-tables-test: Add test for smbios type4 thread count
-      tests: bios-tables-test: Add ACPI table binaries for smbios type4 thread count test
-      tests: bios-tables-test: Prepare the ACPI table change for smbios type4 thread count2 test
-      tests: bios-tables-test: Add test for smbios type4 thread count2
-      tests: bios-tables-test: Add ACPI table binaries for smbios type4 thread count2 test
-
- include/hw/audio/virtio-snd.h             |  235 +++++
- include/hw/cxl/cxl.h                      |    6 +
- include/hw/cxl/cxl_component.h            |    6 +-
- include/hw/cxl/cxl_device.h               |  109 ++-
- include/hw/cxl/cxl_events.h               |    3 +-
- include/hw/cxl/cxl_pci.h                  |    6 +-
- include/hw/pci-bridge/cxl_upstream_port.h |   19 +
- include/hw/virtio/vhost-backend.h         |   24 +
- include/hw/virtio/vhost-user.h            |    1 +
- include/hw/virtio/vhost.h                 |  113 +++
- hw/audio/virtio-snd-pci.c                 |   93 ++
- hw/audio/virtio-snd.c                     | 1409 +++++++++++++++++++++++++++++
- hw/cxl/cxl-cdat.c                         |    3 +-
- hw/cxl/cxl-component-utils.c              |  130 ++-
- hw/cxl/cxl-device-utils.c                 |  143 ++-
- hw/cxl/cxl-events.c                       |   11 +-
- hw/cxl/cxl-mailbox-utils.c                | 1060 ++++++++++++++++++----
- hw/cxl/switch-mailbox-cci.c               |  111 +++
- hw/mem/cxl_type3.c                        |   63 +-
- hw/mem/cxl_type3_stubs.c                  |    5 +-
- hw/pci-bridge/cxl_downstream.c            |   20 +-
- hw/pci-bridge/cxl_root_port.c             |    2 +-
- hw/pci-bridge/cxl_upstream.c              |   13 +-
- hw/virtio/vhost-user-fs.c                 |  101 ++-
- hw/virtio/vhost-user.c                    |  146 +++
- hw/virtio/vhost.c                         |  241 +++++
- net/vhost-vdpa.c                          |  122 +++
- system/qdev-monitor.c                     |    2 +
- tests/qtest/bios-tables-test.c            |  116 ++-
- tests/unit/test-smp-parse.c               |   67 +-
- MAINTAINERS                               |    9 +
- docs/interop/vhost-user.rst               |  301 +++++-
- docs/system/device-emulation.rst          |    1 +
- docs/system/devices/virtio-snd.rst        |   49 +
- hw/audio/Kconfig                          |    5 +
- hw/audio/meson.build                      |    2 +
- hw/audio/trace-events                     |   20 +
- hw/cxl/meson.build                        |    1 +
- tests/avocado/acpi-bits.py                |   33 +-
- tests/data/acpi/q35/APIC.core-count       |  Bin 0 -> 544 bytes
- tests/data/acpi/q35/APIC.core-count2      |  Bin 2478 -> 3238 bytes
- tests/data/acpi/q35/APIC.thread-count     |  Bin 0 -> 544 bytes
- tests/data/acpi/q35/APIC.thread-count2    |  Bin 0 -> 3238 bytes
- tests/data/acpi/q35/APIC.type4-count      |  Bin 0 -> 1072 bytes
- tests/data/acpi/q35/DSDT.core-count       |  Bin 0 -> 12913 bytes
- tests/data/acpi/q35/DSDT.core-count2      |  Bin 32495 -> 33770 bytes
- tests/data/acpi/q35/DSDT.thread-count     |  Bin 0 -> 12913 bytes
- tests/data/acpi/q35/DSDT.thread-count2    |  Bin 0 -> 33770 bytes
- tests/data/acpi/q35/DSDT.type4-count      |  Bin 0 -> 18589 bytes
- tests/data/acpi/q35/FACP.core-count       |  Bin 0 -> 244 bytes
- tests/data/acpi/q35/FACP.thread-count     |  Bin 0 -> 244 bytes
- tests/data/acpi/q35/FACP.thread-count2    |  Bin 0 -> 244 bytes
- tests/data/acpi/q35/FACP.type4-count      |  Bin 0 -> 244 bytes
- 53 files changed, 4477 insertions(+), 324 deletions(-)
- create mode 100644 include/hw/audio/virtio-snd.h
- create mode 100644 include/hw/pci-bridge/cxl_upstream_port.h
- create mode 100644 hw/audio/virtio-snd-pci.c
- create mode 100644 hw/audio/virtio-snd.c
- create mode 100644 hw/cxl/switch-mailbox-cci.c
- create mode 100644 docs/system/devices/virtio-snd.rst
- create mode 100644 tests/data/acpi/q35/APIC.core-count
- create mode 100644 tests/data/acpi/q35/APIC.thread-count
- create mode 100644 tests/data/acpi/q35/APIC.thread-count2
- create mode 100644 tests/data/acpi/q35/APIC.type4-count
- create mode 100644 tests/data/acpi/q35/DSDT.core-count
- create mode 100644 tests/data/acpi/q35/DSDT.thread-count
- create mode 100644 tests/data/acpi/q35/DSDT.thread-count2
- create mode 100644 tests/data/acpi/q35/DSDT.type4-count
- create mode 100644 tests/data/acpi/q35/FACP.core-count
- create mode 100644 tests/data/acpi/q35/FACP.thread-count
- create mode 100644 tests/data/acpi/q35/FACP.thread-count2
- create mode 100644 tests/data/acpi/q35/FACP.type4-count
+diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+index 768fb5c28c..9202b167dd 100644
+--- a/docs/interop/vhost-user.rst
++++ b/docs/interop/vhost-user.rst
+@@ -108,6 +108,43 @@ A vring state description
+ 
+ :num: a 32-bit number
+ 
++A vring descriptor index for split virtqueues
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++
+++-------------+---------------------+
++| vring index | index in avail ring |
+++-------------+---------------------+
++
++:vring index: 32-bit index of the respective virtqueue
++
++:index in avail ring: 32-bit value, of which currently only the lower 16
++  bits are used:
++
++  - Bits 0–15: Index of the next *Available Ring* descriptor that the
++    back-end will process.  This is a free-running index that is not
++    wrapped by the ring size.
++  - Bits 16–31: Reserved (set to zero)
++
++Vring descriptor indices for packed virtqueues
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++
+++-------------+--------------------+
++| vring index | descriptor indices |
+++-------------+--------------------+
++
++:vring index: 32-bit index of the respective virtqueue
++
++:descriptor indices: 32-bit value:
++
++  - Bits 0–14: Index of the next *Available Ring* descriptor that the
++    back-end will process.  This is a free-running index that is not
++    wrapped by the ring size.
++  - Bit 15: Driver (Available) Ring Wrap Counter
++  - Bits 16–30: Index of the entry in the *Used Ring* where the back-end
++    will place the next descriptor.  This is a free-running index that
++    is not wrapped by the ring size.
++  - Bit 31: Device (Used) Ring Wrap Counter
++
+ A vring address description
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 
+@@ -1042,18 +1079,50 @@ Front-end message types
+ ``VHOST_USER_SET_VRING_BASE``
+   :id: 10
+   :equivalent ioctl: ``VHOST_SET_VRING_BASE``
+-  :request payload: vring state description
++  :request payload: vring descriptor index/indices
+   :reply payload: N/A
+ 
+-  Sets the base offset in the available vring.
++  Sets the next index to use for descriptors in this vring:
++
++  * For a split virtqueue, sets only the next descriptor index to
++    process in the *Available Ring*.  The device is supposed to read the
++    next index in the *Used Ring* from the respective vring structure in
++    guest memory.
++
++  * For a packed virtqueue, both indices are supplied, as they are not
++    explicitly available in memory.
++
++  Consequently, the payload type is specific to the type of virt queue
++  (*a vring descriptor index for split virtqueues* vs. *vring descriptor
++  indices for packed virtqueues*).
+ 
+ ``VHOST_USER_GET_VRING_BASE``
+   :id: 11
+   :equivalent ioctl: ``VHOST_USER_GET_VRING_BASE``
+   :request payload: vring state description
+-  :reply payload: vring state description
++  :reply payload: vring descriptor index/indices
+ 
+-  Get the available vring base offset.
++  Stops the vring and returns the current descriptor index or indices:
++
++    * For a split virtqueue, returns only the 16-bit next descriptor
++      index to process in the *Available Ring*.  Note that this may
++      differ from the available ring index in the vring structure in
++      memory, which points to where the driver will put new available
++      descriptors.  For the *Used Ring*, the device only needs the next
++      descriptor index at which to put new descriptors, which is the
++      value in the vring structure in memory, so this value is not
++      covered by this message.
++
++    * For a packed virtqueue, neither index is explicitly available to
++      read from memory, so both indices (as maintained by the device) are
++      returned.
++
++  Consequently, the payload type is specific to the type of virt queue
++  (*a vring descriptor index for split virtqueues* vs. *vring descriptor
++  indices for packed virtqueues*).
++
++  The request payload’s *num* field is currently reserved and must be
++  set to 0.
+ 
+ ``VHOST_USER_SET_VRING_KICK``
+   :id: 12
+-- 
+MST
 
 
