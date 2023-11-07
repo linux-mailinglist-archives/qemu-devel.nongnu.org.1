@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E357E3D90
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 13:29:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 430D57E3D54
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 13:27:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0LAQ-0007mi-7y; Tue, 07 Nov 2023 07:26:50 -0500
+	id 1r0LA8-0007Fw-DP; Tue, 07 Nov 2023 07:26:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L9d-0006Fs-CN
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L9d-0006Fy-ET
  for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:26:05 -0500
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L9F-000569-Il
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:25:58 -0500
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-507be298d2aso7219217e87.1
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 04:25:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0L9K-00057a-Ea
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 07:26:00 -0500
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2c50305c5c4so80522671fa.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 04:25:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699359933; x=1699964733; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699359939; x=1699964739; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8o7ytDCjKPudtYHMOoHYjJ8HM4/zixXAYrUBK2BQdgM=;
- b=nc0BarosaU0NSxT4zMtZjHrYtSGaQ4zzCHt8yg2ph+BryxA+M+vH9eYyDbAoubWcau
- 6wIU1S149pXAOAFeWY9Cd47TwicCXMAYxnGE26K2TOCDs8X/TdVxHRxT31lhl77V0FHE
- A+h+8wz9zSlztWW2V7p2ZtIZXQ09OUa/Q82Q66fxkEkXEeIzfnSyKGS8cbDyG32UywZU
- 27Gbf2mlFntL6gIXRxHEMxRAiNJ1Kw+G+gL27+Q0vFuFCNSk6IBYQigi6S1+FFg5LYSn
- D0fXwa1maX5sfrRlu5EUe8RlSYnto0IJe381Mp4X5h5Gnu3cw9wTHcfAjQ6HTv8cqc51
- Zr/g==
+ bh=uzHw9gxC37cDWskQ8Q09i1BaQBpN31WzD4SH6IynXXc=;
+ b=CvKBMHhBGXTLC6ew4HjO2vX1SrgW4YEzhsR/cEtPTzKXNJGY/F87F7afNw0jSdQvRX
+ ibvrxSO27zkrDE0gafJSNnh5tpCD6+K2nT31rLFKbA0QpkwwvHEt/6xnwr2OuhEzZiS3
+ dEzudWcDJhSga5FzeRVYsaienTSX0lWUuVQufwpRnBW0e3JJJm6Wbps9hEQBmKCb89AC
+ d7v0mwBUq6qTzXS+1L/CDJLlkxDq9cj2bKHm7/DgAMBvb0CX70thTkiZhwetqGRYYHOP
+ CdJTSQ1nMBc2ZaHN1Q2irxZAEL8dph4kDEQvNqKLmeChXXMnb+zA3N85CwHsiijJ3qe+
+ 0wzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699359933; x=1699964733;
+ d=1e100.net; s=20230601; t=1699359939; x=1699964739;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8o7ytDCjKPudtYHMOoHYjJ8HM4/zixXAYrUBK2BQdgM=;
- b=oeHC+pM2zymUAKQsK2dnRdj37kqZLPofCqD55mI9vRfDIPyNqTZy1B6ZNZfS0uHK+X
- 3NvtZ/FUSGtPhdHKCPQ+L9Oz085hJkx4aacw61OucSW6lOZQQhnxJ5AxoCdNU7bwyzUH
- wjMabsPKOagsJgofeHj+BIKemYAiSOl0pccPclesg9PDJIPzN/3jDxHQ8i8jfE1eC9aI
- Jpkk8l8REl4cNH6S3AFXqLPOrzHFSozPrzXiEi8NrFweWhLiXKp9/MCyLNaxBkikL5bw
- AMYos5ZA571pN/jk3P35/NLyIfqNElVBZ7FyllEmX6+OoMtexPawEfmBRZvMA5oNHdzU
- Q+9g==
-X-Gm-Message-State: AOJu0YyC4S3Lgk/CuZfzmybJoK95wor3PfOqoDQWB5qBDTgTwvva1HAV
- Z9MBHBYmeHG2+6RjrMfkzLTrzIT0BLqKbViS7D0=
-X-Google-Smtp-Source: AGHT+IFWK6Tiib/6nhHwdK6AXlabtxBardlSDnfGQHnH6M47ZWo2aHc2dbBQmwAKkCO3w2qJpJdjzA==
-X-Received: by 2002:ac2:43c9:0:b0:508:e4b1:a785 with SMTP id
- u9-20020ac243c9000000b00508e4b1a785mr21695079lfl.62.1699359933183; 
- Tue, 07 Nov 2023 04:25:33 -0800 (PST)
+ bh=uzHw9gxC37cDWskQ8Q09i1BaQBpN31WzD4SH6IynXXc=;
+ b=KzA/t1YhtkpKywF4WhepEbLYvg+A7X/IS+QeNs/2To6dLm8D1UT6akMXN7Zbq0xnZJ
+ M79jB4LFY3jWiJG5YJ4KRsIPoYMXMdVjQsTVaXl4YnMUHdKFbPDDAPmDhxPmpDbMSkv9
+ WHfhhBlq7v07fHLQ6oEUXiXf8VXuEtTVNQCpwfAvKzdk1L7nO6ZDuMh4zjLQexSpOLWr
+ FbBhDqfK6ycLFqrCJ2MPV422PaL46EZnPmA1uI/xUXTqk/aOtmsG5ngQ8VQ347dheO6T
+ eWvax49Ig7MuLifsquZUUnuIWcv2kUynX29L2gVIpR/lIG+rgi00gFoZ6mpfb3UEvcko
+ eWBA==
+X-Gm-Message-State: AOJu0Yxi4vBHT3Vig3HLaXtNSie2Kj+Q6Q429KZbGzDG2DYA5gnuTTRz
+ s/6PkH9c4MJICOPges3EEczlVZQzw4+Pr+QBhlQ=
+X-Google-Smtp-Source: AGHT+IHYS2sWYgS68pTucc6D2gT5/C0id0v/lkcQcfo8MWiVRRZXBiRLiYanm65MPWc8YdA86y3qKg==
+X-Received: by 2002:a2e:3910:0:b0:2bc:d8cb:59fe with SMTP id
+ g16-20020a2e3910000000b002bcd8cb59femr22459267lja.8.1699359938985; 
+ Tue, 07 Nov 2023 04:25:38 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.216.69])
  by smtp.gmail.com with ESMTPSA id
- r22-20020a05600c35d600b003fee567235bsm15654110wmq.1.2023.11.07.04.25.31
+ l26-20020a05600c1d1a00b003fef5e76f2csm12701908wms.0.2023.11.07.04.25.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 07 Nov 2023 04:25:32 -0800 (PST)
+ Tue, 07 Nov 2023 04:25:38 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  qemu-s390x@nongnu.org, qemu-riscv@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 43/75] hw/s390x/sclp: Have sclp_service_call[_protected]() take
- S390CPU*
-Date: Tue,  7 Nov 2023 13:24:33 +0100
-Message-ID: <20231107122442.58674-9-philmd@linaro.org>
+Subject: [PULL 44/75] target/s390x/cpu: Restrict cpu_get_tb_cpu_state()
+ definition to TCG
+Date: Tue,  7 Nov 2023 13:24:34 +0100
+Message-ID: <20231107122442.58674-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231107122442.58674-1-philmd@linaro.org>
 References: <20231107122442.58674-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,97 +96,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"hw/s390x/sclp.h" is a header used by target-agnostic objects
-(such hw/char/sclpconsole[-lm].c), thus can not use target-specific
-types, such CPUS390XState.
-
-Have sclp_service_call[_protected]() take a S390CPU pointer, which
-is target-agnostic.
+cpu_get_tb_cpu_state() is TCG specific. Another accelerator
+calling it would be a bug, so restrict the definition to TCG,
+along with "tcg_s390x.h" header inclusion.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20231106114500.5269-3-philmd@linaro.org>
+Message-Id: <20231106114500.5269-4-philmd@linaro.org>
 ---
- include/hw/s390x/sclp.h        | 5 ++---
- hw/s390x/sclp.c                | 7 ++++---
- target/s390x/kvm/kvm.c         | 4 ++--
- target/s390x/tcg/misc_helper.c | 2 +-
- 4 files changed, 9 insertions(+), 9 deletions(-)
+ target/s390x/cpu.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/s390x/sclp.h b/include/hw/s390x/sclp.h
-index 9aef6d9370..e229b81a67 100644
---- a/include/hw/s390x/sclp.h
-+++ b/include/hw/s390x/sclp.h
-@@ -227,8 +227,7 @@ static inline int sccb_data_len(SCCB *sccb)
- void s390_sclp_init(void);
- void sclp_service_interrupt(uint32_t sccb);
- void raise_irq_cpu_hotplug(void);
--int sclp_service_call(CPUS390XState *env, uint64_t sccb, uint32_t code);
--int sclp_service_call_protected(CPUS390XState *env, uint64_t sccb,
--                                uint32_t code);
-+int sclp_service_call(S390CPU *cpu, uint64_t sccb, uint32_t code);
-+int sclp_service_call_protected(S390CPU *cpu, uint64_t sccb, uint32_t code);
+diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
+index 38d7197f4c..110902fa3c 100644
+--- a/target/s390x/cpu.h
++++ b/target/s390x/cpu.h
+@@ -29,7 +29,6 @@
+ #include "cpu_models.h"
+ #include "exec/cpu-defs.h"
+ #include "qemu/cpu-float.h"
+-#include "tcg/tcg_s390x.h"
+ #include "qapi/qapi-types-machine-common.h"
  
+ #define ELF_MACHINE_UNAME "S390X"
+@@ -383,6 +382,10 @@ static inline int cpu_mmu_index(CPUS390XState *env, bool ifetch)
  #endif
-diff --git a/hw/s390x/sclp.c b/hw/s390x/sclp.c
-index d339cbb7e4..893e71a41b 100644
---- a/hw/s390x/sclp.c
-+++ b/hw/s390x/sclp.c
-@@ -269,9 +269,9 @@ static void sclp_execute(SCLPDevice *sclp, SCCB *sccb, uint32_t code)
-  * service_interrupt call.
-  */
- #define SCLP_PV_DUMMY_ADDR 0x4000
--int sclp_service_call_protected(CPUS390XState *env, uint64_t sccb,
--                                uint32_t code)
-+int sclp_service_call_protected(S390CPU *cpu, uint64_t sccb, uint32_t code)
- {
-+    CPUS390XState *env = &cpu->env;
-     SCLPDevice *sclp = get_sclp_device();
-     SCLPDeviceClass *sclp_c = SCLP_GET_CLASS(sclp);
-     SCCBHeader header;
-@@ -296,8 +296,9 @@ out_write:
-     return 0;
  }
  
--int sclp_service_call(CPUS390XState *env, uint64_t sccb, uint32_t code)
-+int sclp_service_call(S390CPU *cpu, uint64_t sccb, uint32_t code)
++#ifdef CONFIG_TCG
++
++#include "tcg/tcg_s390x.h"
++
+ static inline void cpu_get_tb_cpu_state(CPUS390XState *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
  {
-+    CPUS390XState *env = &cpu->env;
-     SCLPDevice *sclp = get_sclp_device();
-     SCLPDeviceClass *sclp_c = SCLP_GET_CLASS(sclp);
-     SCCBHeader header;
-diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index 1ddad0bec1..33ab3551f4 100644
---- a/target/s390x/kvm/kvm.c
-+++ b/target/s390x/kvm/kvm.c
-@@ -1174,12 +1174,12 @@ static void kvm_sclp_service_call(S390CPU *cpu, struct kvm_run *run,
-         break;
-     case ICPT_PV_INSTR:
-         g_assert(s390_is_pv());
--        sclp_service_call_protected(env, sccb, code);
-+        sclp_service_call_protected(cpu, sccb, code);
-         /* Setting the CC is done by the Ultravisor. */
-         break;
-     case ICPT_INSTRUCTION:
-         g_assert(!s390_is_pv());
--        r = sclp_service_call(env, sccb, code);
-+        r = sclp_service_call(cpu, sccb, code);
-         if (r < 0) {
-             kvm_s390_program_interrupt(cpu, -r);
-             return;
-diff --git a/target/s390x/tcg/misc_helper.c b/target/s390x/tcg/misc_helper.c
-index 56c7f00cf9..6aa7907438 100644
---- a/target/s390x/tcg/misc_helper.c
-+++ b/target/s390x/tcg/misc_helper.c
-@@ -102,7 +102,7 @@ uint64_t HELPER(stck)(CPUS390XState *env)
- uint32_t HELPER(servc)(CPUS390XState *env, uint64_t r1, uint64_t r2)
- {
-     qemu_mutex_lock_iothread();
--    int r = sclp_service_call(env, r1, r2);
-+    int r = sclp_service_call(env_archcpu(env), r1, r2);
-     qemu_mutex_unlock_iothread();
-     if (r < 0) {
-         tcg_s390_program_interrupt(env, -r, GETPC());
+@@ -405,6 +408,8 @@ static inline void cpu_get_tb_cpu_state(CPUS390XState *env, vaddr *pc,
+     }
+ }
+ 
++#endif /* CONFIG_TCG */
++
+ /* PER bits from control register 9 */
+ #define PER_CR9_EVENT_BRANCH           0x80000000
+ #define PER_CR9_EVENT_IFETCH           0x40000000
 -- 
 2.41.0
 
