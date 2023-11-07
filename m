@@ -2,69 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E34877E336B
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:03:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D3B37E3393
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:08:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0CNC-0004BQ-88; Mon, 06 Nov 2023 22:03:26 -0500
+	id 1r0CPH-00085X-Vy; Mon, 06 Nov 2023 22:05:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r0CN9-0003zp-Uy
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:03:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r0CN2-0000LY-KU
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:03:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699326196;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=mgfGOTc/97wvPQl9RxSSEn4Bldqs7W0wtVwzs15gRfc=;
- b=NYcQcuBd1w+98O+8xzPXCwctIe3l4VDbd+z7Oi79Xyg0m9qB7bV4aT3YRW4GzXKIa7X2zj
- W5unAbz3nfZdcAvfiAw7NPOlPjpaJPGS9B5fRl6ggc4js3D3/Yzb06UdcXPzNPHT79ZDg3
- 3XfKbpyx9k8iK+Mcd9Ez7Y0xMY9CF+0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-gELDjhaMMSuq0A3UvvhxVg-1; Mon, 06 Nov 2023 22:03:12 -0500
-X-MC-Unique: gELDjhaMMSuq0A3UvvhxVg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 186C5821944;
- Tue,  7 Nov 2023 03:03:12 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.48])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 534DA492BFA;
- Tue,  7 Nov 2023 03:03:10 +0000 (UTC)
-Date: Tue, 7 Nov 2023 11:03:09 +0800
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Hanna Czenczek <hreitz@redhat.com>
-Subject: Re: [PULL 0/3] Block patches
-Message-ID: <20231107030309.GA952903@fedora>
-References: <20231106171031.1084277-1-hreitz@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r0COS-0006vf-6t
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:04:44 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r0COL-0000gk-4s
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:04:43 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1cc131e52f1so48057155ad.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:04:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699326269; x=1699931069; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=nte4AsF0yU49KoFZ5WsKrCyyvXp9Hm4i6B93/Stt4MI=;
+ b=OP/Dd8jpuZu2+iSjU0bANT7yY41o511w/QT6tj2nsQgfO31EO+lUvP3ab15ZSdWoIm
+ O26U0rJzzwPastiu+LCPzAXEWQJQ4JA2JQVJ+2jMGtbIbS/pmUGgRjuSwu1x7FpkCp4z
+ 3tojIhvgwMPgEN2erBBtS+iJiJ7nZNuVDXsdzoDaD1VIusll2EUIL523Ttv/ha8KBBkg
+ jJ7ffQMSz07lXcEDorJZ2w67Gve3+dLfqjbjfPTmIzC7sXPa9qU6iKhvBrEYFRkJq1W2
+ a3On5XFdLyfSiya/COVdLem0Rt0hF2EJkxXDCOcNxX/Q5XqtcSdGEVG/tiT8ajFkUwF+
+ Dblg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699326269; x=1699931069;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nte4AsF0yU49KoFZ5WsKrCyyvXp9Hm4i6B93/Stt4MI=;
+ b=Om8ZJQ/QKJizv+7Xf6Ye/Olxtx+80zWYiUnYms4jPiDQsdPLEEYXjXaC83/JG2jSfV
+ w5SODE2V6J7Ruadm8ahRt3xriA1mRVfD8M/s6HlidCEo9IDCOWz7axJwpY+LOT0UAZmt
+ zAXzAqFhPlzhuI6LupPo/UPsFNKGRIbHNgyHUF9XUE1PEx5z/c92ERhTSDDHCbqgN4de
+ v2j0WGuFIPla6ACBsuQLOlrAwnWBZoIlWBqCvHSgz3JACa5Jv4S1haoKOOWS2RYfR2uE
+ /FG/bJSgKZQb84RDdOk3q4dqm/1fqMpceNBeKelFDx8ZUTmGe5GYpy47cm6uABpEh0fU
+ LV6g==
+X-Gm-Message-State: AOJu0Yyl07KgHpkzRMubAwxjoMciVQnPgHcHdCdw10PXFVHpDadqCB69
+ vxl2QXtxgR9A43jqGGElg6gIAKn2TLX1TaHLTrw=
+X-Google-Smtp-Source: AGHT+IFqmTUuF9dSEqhOXYxRk5/ufmpQCHrxP2orE9e6WGjcf0CSuaBK/5ix7ZmyL0bKg9kcWdpaVg==
+X-Received: by 2002:a17:902:dac6:b0:1cc:22db:cf3d with SMTP id
+ q6-20020a170902dac600b001cc22dbcf3dmr2202497plx.15.1699326268936; 
+ Mon, 06 Nov 2023 19:04:28 -0800 (PST)
+Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
+ u9-20020a17090282c900b001c72d5e16acsm6518012plz.57.2023.11.06.19.04.28
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 06 Nov 2023 19:04:28 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 27/85] target/hppa: Use copy_iaoq_entry for link in do_ibranch
+Date: Mon,  6 Nov 2023 19:03:09 -0800
+Message-Id: <20231107030407.8979-28-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231107030407.8979-1-richard.henderson@linaro.org>
+References: <20231107030407.8979-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="3daZpUw0HjrUMzjY"
-Content-Disposition: inline
-In-Reply-To: <20231106171031.1084277-1-hreitz@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,30 +89,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+We need to make sure the link is masked properly along the
+use_nullify_skip path.  The other three settings of a link
+register already use this.
 
---3daZpUw0HjrUMzjY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/hppa/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks.
-
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
-
---3daZpUw0HjrUMzjY
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVJqOwACgkQnKSrs4Gr
-c8jnxAf+LrNf/7vwMG4Ey57+dtVhi7MFldBERPEHze6FhdDJoQImivJlcGHKTiWE
-NHBlIkxxeqKnhpXqwc09/HFN4kD3RoyGhrLy8Y4VqdhngJAdxcghAELoqJq7a0JE
-RvQuuWgwgk5phgoNl4SofWn1gw1P8cIP11z0jmjw29ZwTI7Sx6ESOsLOwhtkv5gv
-BEVU8gZctXk2Y+OiL8TNWBSiHKCuq1em2U+uz15BYMD3sDbskzlF1l03ET3+8/rC
-KEkfeSWbDsrBnyWU7EfJAQVWu/5R9xqCfTc5ewVri2qtc6bAxwMz1nAEfFAIEu2G
-A7AhlJjo2rnRhRgOiHdTPdQNRnGquQ==
-=JcKn
------END PGP SIGNATURE-----
-
---3daZpUw0HjrUMzjY--
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index 348fdb75e5..c2db2782f4 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -1898,7 +1898,7 @@ static bool do_ibranch(DisasContext *ctx, TCGv_reg dest,
+ 
+         nullify_over(ctx);
+         if (link != 0) {
+-            tcg_gen_movi_reg(cpu_gr[link], ctx->iaoq_n);
++            copy_iaoq_entry(ctx, cpu_gr[link], ctx->iaoq_n, ctx->iaoq_n_var);
+         }
+         tcg_gen_lookup_and_goto_ptr();
+         return nullify_end(ctx);
+-- 
+2.34.1
 
 
