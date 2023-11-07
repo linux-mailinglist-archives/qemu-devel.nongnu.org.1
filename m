@@ -2,90 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49F37E4840
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:29:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A33877E484D
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:33:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0QpB-0000d9-9y; Tue, 07 Nov 2023 13:29:17 -0500
+	id 1r0QsN-0002jP-SB; Tue, 07 Nov 2023 13:32:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0Qp5-0000a3-Di
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:29:12 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0QsM-0002iz-Cn
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:32:34 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0Qov-0006qB-H0
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:29:11 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0QsK-0007Mb-OH
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:32:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699381740;
+ s=mimecast20190719; t=1699381952;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6AkuqRJS7H6LY1lGcDJ6LP/vcHAQONvZjygXIxMfm1U=;
- b=e1rTCvZoS8AH2W+v4XTv9WQXHbCyjobsSABJMGq+Tkp9ItQSE4LdQvgkWmNTZSCTIXn+UP
- bDWNJIV/UMGsZXN7K4CqCGDXpePBkH/wWbl7i1Ep3djY1WQKFbA15FhrfKqra7RfXiKeAf
- hVi1/ipy4+MzW/iH6xp67Gy/+Ccu4hE=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-60-MIR6nxY5MZyGy_r35zxMlQ-1; Tue, 07 Nov 2023 13:28:58 -0500
-X-MC-Unique: MIR6nxY5MZyGy_r35zxMlQ-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-66d412e2450so70161866d6.2
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 10:28:58 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699381738; x=1699986538;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6AkuqRJS7H6LY1lGcDJ6LP/vcHAQONvZjygXIxMfm1U=;
- b=jpUBZ0KEG+j5uimLYhLrl/1tWAPeRqaupqj2+2N87ZWjJkg090bzV1QGqk+z7zBdNu
- nHkZzKkdxRC/jCG+FzqTayC/RWVMtBIFReLbx2v5i1MkCo0UhIaYU0DKHw5DIGF249Gz
- VvtR9tJWTmf2ivnCXDFBc+GGFWlPItbT8aYjgQDbwqcloPpyN+YHMcEv5cyH18PLkpPR
- RFwpCTQWhXZJQ9jI6iy6kePIPLWlkM3m5ViZ3lodCVjNH8K8b2Rjq+wE2Cr1zi+3oEQf
- 3mmtyOLv9pldVoJ+r3FBNGxie3KpsxUt3AbDWTnZjYkO0rdwX8JwHsTQn5QK4woHvXC5
- NxiQ==
-X-Gm-Message-State: AOJu0YyaA3SGvqkeASAFYXjRjlgVK/KA8ryzeGQ/3Hh+2vAhYSLuF+rt
- J1ncDmLK839kk3LMxH3/0VDR4iFaSUqwON18BovgewtEe0160B2kLV85Kx0jT1SGHs7ZYXmfkvc
- Zz2YvvQtIsvwPPU0=
-X-Received: by 2002:a05:6214:daa:b0:671:e02a:8bfc with SMTP id
- h10-20020a0562140daa00b00671e02a8bfcmr30506226qvh.16.1699381737790; 
- Tue, 07 Nov 2023 10:28:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEjpDkjUwAuqY65jfkw9uJZJkg0AYMOcMF/rP8Jl24GrxLXFdvR+bWBIMnBI+2bKR2r2kLtow==
-X-Received: by 2002:a05:6214:daa:b0:671:e02a:8bfc with SMTP id
- h10-20020a0562140daa00b00671e02a8bfcmr30506199qvh.16.1699381737467; 
- Tue, 07 Nov 2023 10:28:57 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- k15-20020a05621414ef00b006562b70805bsm145222qvw.84.2023.11.07.10.28.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Nov 2023 10:28:57 -0800 (PST)
-Message-ID: <d8f1ecdd-4ce8-4811-8efe-6607e71a9f98@redhat.com>
-Date: Tue, 7 Nov 2023 19:28:54 +0100
+ content-transfer-encoding:content-transfer-encoding;
+ bh=jlg4CfxpGqoiQPNVOrIyhAXBl+U7FoCqTHszcFYgoAo=;
+ b=bw+ECgvdvkwO7aao3idEvKRk+xJRhjfEyXBr2zMmx8fKUrUqmRc6OsLdZh9nrVYvOzrrZP
+ JREcuIfkfOlOUpLixL4X07VEHeLYUO+i0zYEpdWPtoWz3br07FWNBuAkKUyd+k2fGpcHTU
+ yRxbFrBWqBtdDr138k3enr0tOpubbxE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-438-nG4KZmV4P9qlwLhZWZLXxA-1; Tue,
+ 07 Nov 2023 13:32:30 -0500
+X-MC-Unique: nG4KZmV4P9qlwLhZWZLXxA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8292D3C108D7
+ for <qemu-devel@nongnu.org>; Tue,  7 Nov 2023 18:32:30 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.124])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6C3982166B26;
+ Tue,  7 Nov 2023 18:32:29 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 00/11] s390x and MAINTAINERS updates
+Date: Tue,  7 Nov 2023 19:32:17 +0100
+Message-ID: <20231107183228.276424-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/41] vfio: Adopt iommufd
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com
-References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,354 +75,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/2/23 08:12, Zhenzhong Duan wrote:
-> Hi,
-> 
-> Thanks all for giving guides and comments on previous series, here is
-> the v4 of pure iommufd support part.
-> 
-> Based on Cédric's suggestion, this series includes an effort to remove
-> spapr code from container.c, now all spapr functions are moved to spapr.c
-> or spapr_pci_vfio.c, but there are still a few trival check on
-> VFIO_SPAPR_TCE_*_IOMMU which I am not sure if deserved to introduce many
-> callbacks and duplicate code just to remove them. Some functions are moved
-> to spapr.c instead of spapr_pci_vfio.c to avoid compile issue because
-> spapr_pci_vfio.c is arch specific, or else we need to introduce stub
-> functions to those spapr functions moved.
-> 
-> 
-> PATCH 1-5: Move spapr functions to spapr*.c
-> PATCH 6-20: Abstract out base container
-> PATCH 21-24: Introduce sparpr container and its specific interface
+ Hi Stefan!
 
-PATCH 6-24 applied to vfio-next :
+The following changes since commit 8aba939e77daca10eac99d9d467f65ba7df5ab3e:
 
-   https://github.com/legoater/qemu/commits/vfio-next
+  Merge tag 'pull-riscv-to-apply-20231107' of https://github.com/alistair23/qemu into staging (2023-11-07 11:08:16 +0800)
 
-(with a global s/fucntional/functional/)
+are available in the Git repository at:
 
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2023-11-07
 
-I also pushed the remaining patches on :
+for you to fetch changes up to 3e19fbc0c51a62d0c021e1ae768da0df64855927:
 
-   https://github.com/legoater/qemu/commits/vfio-8.2
+  target/s390x/cpu topology: Fix ordering and creation of TLEs (2023-11-07 19:27:08 +0100)
 
-with a slight rework of the IOMMUFD configuration, now done per platform.
-The VFIO frontend and the 'iommufd' object are only available on x86_64,
-arm, s390x.
+----------------------------------------------------------------
+* Fix s390x CPU reconfiguration information in the SCLP facility map
+* Fix condition code problem in the CLC and LAALG instruction
+* Fix ordering of the new s390x topology list entries
+* Add some more files to the MAINTAINERS file
+* Allow newer versions of Tesseract in the m68k nextcube test
 
-Thanks,
+----------------------------------------------------------------
+Heiko Carstens (1):
+      s390/sclp: fix SCLP facility map
 
-C.
+Ilya Leoshkevich (5):
+      target/s390x: Fix CLC corrupting cc_src
+      tests/tcg/s390x: Test CLC with inaccessible second operand
+      target/s390x: Fix LAALG not updating cc_src
+      tests/tcg/s390x: Test LAALG with negative cc_src
+      tests/tcg/s390x: Test ADD LOGICAL WITH CARRY
 
+Nina Schoetterl-Glausch (1):
+      target/s390x/cpu topology: Fix ordering and creation of TLEs
 
-> PATCH 25: Add --enable/--disable-iommufd config support
-> PATCH 26: Introduce iommufd object
-> PATCH 27-33: add IOMMUFD container and cdev support
-> PATCH 34-39: fd passing for IOMMUFD object and cdev
-> PATCH 40: make VFIOContainerBase parameter const
-> PATCH 41: Compile out for PPC
-> 
-> 
-> We have done wide test with different combinations, e.g:
-> - PCI device were tested
-> - FD passing and hot reset with some trick.
-> - device hotplug test with legacy and iommufd backends
-> - with or without vIOMMU for legacy and iommufd backends
-> - divices linked to different iommufds
-> - VFIO migration with a E800 net card(no dirty sync support) passthrough
-> - platform, ccw and ap were only compile-tested due to environment limit
-> 
-> 
-> Given some iommufd kernel limitations, the iommufd backend is
-> not yet fully on par with the legacy backend w.r.t. features like:
-> - p2p mappings (you will see related error traces)
-> - dirty page sync
-> - and etc.
-> 
-> 
-> qemu code: https://github.com/yiliu1765/qemu/commits/zhenzhong/iommufd_cdev_v4
-> Based on vfio-next, commit id: f686924775
-> 
-> --------------------------------------------------------------------------
-> 
-> Below are some background and graph about the design:
-> 
-> With the introduction of iommufd, the Linux kernel provides a generic
-> interface for userspace drivers to propagate their DMA mappings to kernel
-> for assigned devices. This series does the porting of the VFIO devices
-> onto the /dev/iommu uapi and let it coexist with the legacy implementation.
-> 
-> At QEMU level, interactions with the /dev/iommu are abstracted by a new
-> iommufd object (compiled in with the CONFIG_IOMMUFD option).
-> 
-> Any QEMU device (e.g. vfio device) wishing to use /dev/iommu must be
-> linked with an iommufd object. In this series, the vfio-pci device is
-> granted with such capability (other VFIO devices are not yet ready):
-> 
-> It gets a new optional parameter named iommufd which allows to pass
-> an iommufd object:
-> 
->      -object iommufd,id=iommufd0
->      -device vfio-pci,host=0000:02:00.0,iommufd=iommufd0
-> 
-> Note the /dev/iommu and vfio cdev can be externally opened by a
-> management layer. In such a case the fd is passed:
-> 
->      -object iommufd,id=iommufd0,fd=22
->      -device vfio-pci,iommufd=iommufd0,fd=23
-> 
-> If the fd parameter is not passed, the fd is opened by QEMU.
-> See https://www.mail-archive.com/qemu-devel@nongnu.org/msg937155.html
-> for detailed discuss on this requirement.
-> 
-> If no iommufd option is passed to the vfio-pci device, iommufd is not
-> used and the end-user gets the behavior based on the legacy vfio iommu
-> interfaces:
-> 
->      -device vfio-pci,host=0000:02:00.0
-> 
-> While the legacy kernel interface is group-centric, the new iommufd
-> interface is device-centric, relying on device fd and iommufd.
-> 
-> To support both interfaces in the QEMU VFIO device we reworked the vfio
-> container abstraction so that the generic VFIO code can use either
-> backend.
-> 
-> The VFIOContainer object becomes a base object derived into
-> a) the legacy VFIO container and
-> b) the new iommufd based container.
-> 
-> The base object implements generic code such as code related to
-> memory_listener and address space management whereas the derived
-> objects implement callbacks specific to either BE, legacy and
-> iommufd. Indeed each backend has its own way to setup secure context
-> and dma management interface. The below diagram shows how it looks
-> like with both BEs.
-> 
->                      VFIO                           AddressSpace/Memory
->      +-------+  +----------+  +-----+  +-----+
->      |  pci  |  | platform |  |  ap |  | ccw |
->      +---+---+  +----+-----+  +--+--+  +--+--+     +----------------------+
->          |           |           |        |        |   AddressSpace       |
->          |           |           |        |        +------------+---------+
->      +---V-----------V-----------V--------V----+               /
->      |           VFIOAddressSpace              | <------------+
->      |                  |                      |  MemoryListener
->      |          VFIOContainer list             |
->      +-------+----------------------------+----+
->              |                            |
->              |                            |
->      +-------V------+            +--------V----------+
->      |   iommufd    |            |    vfio legacy    |
->      |  container   |            |     container     |
->      +-------+------+            +--------+----------+
->              |                            |
->              | /dev/iommu                 | /dev/vfio/vfio
->              | /dev/vfio/devices/vfioX    | /dev/vfio/$group_id
-> Userspace   |                            |
-> ============+============================+===========================
-> Kernel      |  device fd                 |
->              +---------------+            | group/container fd
->              | (BIND_IOMMUFD |            | (SET_CONTAINER/SET_IOMMU)
->              |  ATTACH_IOAS) |            | device fd
->              |               |            |
->              |       +-------V------------V-----------------+
->      iommufd |       |                vfio                  |
-> (map/unmap  |       +---------+--------------------+-------+
-> ioas_copy)  |                 |                    | map/unmap
->              |                 |                    |
->       +------V------+    +-----V------+      +------V--------+
->       | iommfd core |    |  device    |      |  vfio iommu   |
->       +-------------+    +------------+      +---------------+
-> 
-> [Secure Context setup]
-> - iommufd BE: uses device fd and iommufd to setup secure context
->                (bind_iommufd, attach_ioas)
-> - vfio legacy BE: uses group fd and container fd to setup secure context
->                    (set_container, set_iommu)
-> [Device access]
-> - iommufd BE: device fd is opened through /dev/vfio/devices/vfioX
-> - vfio legacy BE: device fd is retrieved from group fd ioctl
-> [DMA Mapping flow]
-> 1. VFIOAddressSpace receives MemoryRegion add/del via MemoryListener
-> 2. VFIO populates DMA map/unmap via the container BEs
->     *) iommufd BE: uses iommufd
->     *) vfio legacy BE: uses container fd
-> 
-> 
-> Changelog:
-> v4:
-> - add CONFIG_IOMMUFD check for IOMMUFDProperties (Markus)
-> - add doc for default case without fd (Markus)
-> - Fix build issue reported by Markus and Cédric
-> - Simply use SPDX identifier in new file (Cédric)
-> - make vfio_container_init/destroy helper a seperate patch (Cédric)
-> - make vrdl_list movement a seperate patch (Cédric)
-> - add const for some callback parameters (Cédric)
-> - add g_assert in VFIOIOMMUOps callback (Cédric)
-> - introduce pci_hot_reset callback (Cédric)
-> - remove VFIOIOMMUSpaprOps (Cédric)
-> - initialize g_autofree to NULL (Cédric)
-> - adjust func name prefix and trace event in iommufd.c (Cédric)
-> - add RB
-> 
-> v3:
-> - Rename base container as VFIOContainerBase and legacy container as container (Cédric)
-> - Drop VFIO_IOMMU_BACKEND_OPS class and use struct instead (Cédric)
-> - Cleanup container.c by introducing spapr backend and move spapr code out (Cédric)
-> - Introduce vfio_iommu_spapr_ops (Cédric)
-> - Add doc of iommufd in qom.json and have iommufd member sorted (Markus)
-> - patch19 and patch21 are splitted to two parts to facilitate review
-> 
-> v2:
-> - patch "vfio: Add base container" in v1 is split into patch1-15 per Cédric
-> - add fd passing to platform/ap/ccw vfio device
-> - add (uintptr_t) cast in iommufd_backend_map_dma() per Cédric
-> - rename char_dev.h to chardev_open.h for same naming scheme per Daniel
-> - add full copyright per Daniel and Jason
-> 
-> 
-> Note changelog below are from full IOMMUFD series:
-> 
-> v1:
-> - Alloc hwpt instead of using auto hwpt
-> - elaborate iommufd code per Nicolin
-> - consolidate two patches and drop as.c
-> - typo error fix and function rename
-> 
-> rfcv4:
-> - rebase on top of v8.0.3
-> - Add one patch from Yi which is about vfio device add in kvm
-> - Remove IOAS_COPY optimization and focus on functions in this patchset
-> - Fix wrong name issue reported and fix suggested by Matthew
-> - Fix compilation issue reported and fix sugggsted by Nicolin
-> - Use query_dirty_bitmap callback to replace get_dirty_bitmap for better
-> granularity
-> - Add dev_iter_next() callback to avoid adding so many callback
->    at container scope, add VFIODevice.hwpt to support that
-> - Restore all functions back to common from container whenever possible,
->    mainly migration and reset related functions
-> - Add --enable/disable-iommufd config option, enabled by default in linux
-> - Remove VFIODevice.hwpt_next as it's redundant with VFIODevice.next
-> - Adapt new VFIO_DEVICE_PCI_HOT_RESET uAPI for IOMMUFD backed device
-> - vfio_kvm_device_add/del_group call vfio_kvm_device_add/del_fd to remove
-> redundant code
-> - Add FD passing support for vfio device backed by IOMMUFD
-> - Fix hot unplug resource leak issue in vfio_legacy_detach_device()
-> - Fix FD leak in vfio_get_devicefd()
-> 
-> rfcv3:
-> - rebase on top of v7.2.0
-> - Fix the compilation with CONFIG_IOMMUFD unset by using true classes for
->    VFIO backends
-> - Fix use after free in error path, reported by Alister
-> - Split common.c in several steps to ease the review
-> 
-> rfcv2:
-> - remove the first three patches of rfcv1
-> - add open cdev helper suggested by Jason
-> - remove the QOMification of the VFIOContainer and simply use standard ops
-> (David)
-> - add "-object iommufd" suggested by Alex
-> 
-> Thanks
-> Zhenzhong
-> 
-> Eric Auger (11):
->    vfio/container: Switch to dma_map|unmap API
->    vfio/common: Move giommu_list in base container
->    vfio/container: Move space field to base container
->    vfio/container: Switch to IOMMU BE
->      set_dirty_page_tracking/query_dirty_bitmap API
->    vfio/container: Convert functions to base container
->    vfio/container: Move pgsizes and dma_max_mappings to base container
->    vfio/container: Move listener to base container
->    vfio/container: Move dirty_pgsizes and max_dirty_bitmap_size to base
->      container
->    vfio/container: Implement attach/detach_device
->    backends/iommufd: Introduce the iommufd object
->    vfio/pci: Allow the selection of a given iommu backend
-> 
-> Yi Liu (2):
->    util/char_dev: Add open_cdev()
->    vfio/iommufd: Implement the iommufd backend
-> 
-> Zhenzhong Duan (28):
->    vfio/container: Move IBM EEH related functions into spapr_pci_vfio.c
->    vfio/container: Move vfio_container_add/del_section_window into
->      spapr.c
->    vfio/container: Move spapr specific init/deinit into spapr.c
->    vfio/spapr: Make vfio_spapr_create/remove_window static
->    vfio/common: Move vfio_host_win_add/del into spapr.c
->    vfio: Introduce base object for VFIOContainer and targeted interface
->    vfio/container: Introduce a empty VFIOIOMMUOps
->    vfio/common: Introduce vfio_container_init/destroy helper
->    vfio/container: Move per container device list in base container
->    vfio/container: Move vrdl_list to base container
->    vfio/container: Move iova_ranges to base container
->    vfio/spapr: Introduce spapr backend and target interface
->    vfio/spapr: switch to spapr IOMMU BE add/del_section_window
->    vfio/spapr: Move prereg_listener into spapr container
->    vfio/spapr: Move hostwin_list into spapr container
->    Add iommufd configure option
->    vfio/iommufd: Relax assert check for iommufd backend
->    vfio/iommufd: Add support for iova_ranges
->    vfio/pci: Extract out a helper vfio_pci_get_pci_hot_reset_info
->    vfio/pci: Introduce a vfio pci hot reset interface
->    vfio/iommufd: Enable pci hot reset through iommufd cdev interface
->    vfio/pci: Make vfio cdev pre-openable by passing a file handle
->    vfio: Allow the selection of a given iommu backend for platform ap and
->      ccw
->    vfio/platform: Make vfio cdev pre-openable by passing a file handle
->    vfio/ap: Make vfio cdev pre-openable by passing a file handle
->    vfio/ccw: Make vfio cdev pre-openable by passing a file handle
->    vfio: Make VFIOContainerBase poiner parameter const in VFIOIOMMUOps
->      callbacks
->    vfio: Compile out iommufd for PPC target
-> 
->   MAINTAINERS                           |  13 +
->   meson.build                           |   6 +
->   qapi/qom.json                         |  22 +
->   hw/vfio/pci.h                         |   6 +
->   include/hw/vfio/vfio-common.h         | 118 ++---
->   include/hw/vfio/vfio-container-base.h | 121 +++++
->   include/hw/vfio/vfio-platform.h       |   1 +
->   include/hw/vfio/vfio.h                |   7 -
->   include/qemu/chardev_open.h           |  16 +
->   include/sysemu/iommufd.h              |  46 ++
->   backends/iommufd-stub.c               |  59 +++
->   backends/iommufd.c                    | 257 ++++++++++
->   hw/ppc/spapr_pci_vfio.c               | 100 +++-
->   hw/vfio/ap.c                          |  38 +-
->   hw/vfio/ccw.c                         |  40 +-
->   hw/vfio/common.c                      | 330 ++++++------
->   hw/vfio/container-base.c              | 101 ++++
->   hw/vfio/container.c                   | 443 ++++------------
->   hw/vfio/helpers.c                     |  34 +-
->   hw/vfio/iommufd.c                     | 697 ++++++++++++++++++++++++++
->   hw/vfio/pci.c                         | 112 +++--
->   hw/vfio/platform.c                    |  45 +-
->   hw/vfio/spapr.c                       | 338 ++++++++++++-
->   util/chardev_open.c                   |  81 +++
->   backends/Kconfig                      |   4 +
->   backends/meson.build                  |   5 +
->   backends/trace-events                 |  12 +
->   hw/vfio/meson.build                   |   4 +
->   hw/vfio/trace-events                  |  18 +-
->   meson_options.txt                     |   2 +
->   qemu-options.hx                       |  13 +
->   scripts/meson-buildoptions.sh         |   3 +
->   util/meson.build                      |   1 +
->   33 files changed, 2403 insertions(+), 690 deletions(-)
->   create mode 100644 include/hw/vfio/vfio-container-base.h
->   delete mode 100644 include/hw/vfio/vfio.h
->   create mode 100644 include/qemu/chardev_open.h
->   create mode 100644 include/sysemu/iommufd.h
->   create mode 100644 backends/iommufd-stub.c
->   create mode 100644 backends/iommufd.c
->   create mode 100644 hw/vfio/container-base.c
->   create mode 100644 hw/vfio/iommufd.c
->   create mode 100644 util/chardev_open.c
-> 
+Philippe Mathieu-Daudé (1):
+      target/s390x/cpu_models: Use 'first_cpu' in s390_get_feat_block()
+
+Thomas Huth (3):
+      MAINTAINERS: Add the virtio-gpu documentation to the corresponding section
+      MAINTAINERS: Add artist.c to the hppa machine section
+      tests/avocado: Allow newer versions of tesseract in the nextcube test
+
+ MAINTAINERS                              |   2 +
+ include/hw/s390x/sclp.h                  |   4 +-
+ target/s390x/tcg/insn-data.h.inc         |   2 +-
+ target/s390x/cpu_models.c                |   6 +-
+ target/s390x/kvm/stsi-topology.c         |   8 +-
+ target/s390x/tcg/translate.c             |  26 +++++-
+ tests/tcg/s390x/add-logical-with-carry.c | 156 +++++++++++++++++++++++++++++++
+ tests/tcg/s390x/clc.c                    |  48 ++++++++++
+ tests/tcg/s390x/laalg.c                  |  27 ++++++
+ tests/avocado/machine_m68k_nextcube.py   |  15 +--
+ tests/avocado/tesseract_utils.py         |   4 +-
+ tests/tcg/s390x/Makefile.target          |   3 +
+ 12 files changed, 271 insertions(+), 30 deletions(-)
+ create mode 100644 tests/tcg/s390x/add-logical-with-carry.c
+ create mode 100644 tests/tcg/s390x/clc.c
+ create mode 100644 tests/tcg/s390x/laalg.c
 
 
