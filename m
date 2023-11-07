@@ -2,103 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B077E46A6
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 18:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 489727E46B4
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 18:22:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Pfg-0008IR-70; Tue, 07 Nov 2023 12:15:24 -0500
+	id 1r0Pkn-0001y6-Kc; Tue, 07 Nov 2023 12:20:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1r0Pfd-0008IA-FH; Tue, 07 Nov 2023 12:15:21 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1r0PfY-0008CD-RE; Tue, 07 Nov 2023 12:15:19 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A7H7nls030553; Tue, 7 Nov 2023 17:14:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=gBgw8gYbMJa1T+8yBdiHT+YCvndNunJ1SPX5GcZfxqA=;
- b=JHvURGUW4mPo+G5xW1o1A55RwM4Wwnf4pL+5UJ8F/uBI88GwkdYMSZx/5V2NbX8sn1TT
- KDD0p66QyCPNwB2CycMzcmeTbYChZ17EgvyJmWvznR4x7/J+U1L3s4ynEsHX4QqmX4hv
- aMRu9sLOrUqZsCGEJq2TmNLqCncsQK94R871RX6ZAQocNeUZijJqO2mXVU8OIckb0DZv
- R9PDJzUqEdHEdPBJwjHslg/xjjO6FMCNwgxfsPy3wKt1Hl3NODkDT3riDS3B6kSfx9EC
- CGEiTbwlUegt1uOkEPxUn7oT/K999ObG3yvP/AfU/royP06fKr9clBKoj1gVCNc9m8AE qA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7sbx088v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Nov 2023 17:14:11 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A7H8qWk001879;
- Tue, 7 Nov 2023 17:14:10 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7sbx0886-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Nov 2023 17:14:10 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A7GxMqC016967; Tue, 7 Nov 2023 17:14:09 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u6301snmu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Nov 2023 17:14:09 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3A7HE8Pg32178502
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 7 Nov 2023 17:14:08 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E8E252004D;
- Tue,  7 Nov 2023 17:14:07 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BF3252004B;
- Tue,  7 Nov 2023 17:14:07 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.152.224.66])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  7 Nov 2023 17:14:07 +0000 (GMT)
-Date: Tue, 7 Nov 2023 18:12:42 +0100
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Janosch Frank <frankja@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, marcandre.lureau@redhat.com, 
- thuth@redhat.com
-Subject: Re: [PATCH 2/4] target/s390x/dump: Remove unneeded dump info
- function pointer init
-Message-ID: <20231107181242.05f20439@p-imbrenda>
-In-Reply-To: <20231107142048.22422-3-frankja@linux.ibm.com>
-References: <20231107142048.22422-1-frankja@linux.ibm.com>
- <20231107142048.22422-3-frankja@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1r0Pkj-0001xg-Vn; Tue, 07 Nov 2023 12:20:38 -0500
+Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1r0Pkh-0001Et-MK; Tue, 07 Nov 2023 12:20:37 -0500
+Received: by mail-qt1-x830.google.com with SMTP id
+ d75a77b69052e-41cd7a3e8f8so40607841cf.0; 
+ Tue, 07 Nov 2023 09:20:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1699377632; x=1699982432; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=x/Bd6YdQA2LmzpBvUNPuf0nN4MTBs5nBnF5YbhUl/Z0=;
+ b=WMOi2qLayNf+Yh1rJDggDPbn9quyi/e2B27LIXf2bX4s0BU9ft2QcWMc6TISPNhrAO
+ 56AhHPoTE1+cHVNA+sJUoK777I1+DsSArk5ppsvp4BwlS8tpdUYxVU8OGbn65CsdUFXw
+ HGDy4Cs0IsC6ZqU2gnlCVyIIdKvykHYfLF+BpErj/F8U/cf+aiUQD9TyIH/skbByL81q
+ Bvx2aT+8NGWWC4kuvwmjo8tP7+uI5KlqsgHOm0F6ShPpKRG+rgGped9IZgYLp9wq0v6Z
+ hvBtP6se4I1diU7Y2sbSNp/esADUAderS82ch41QOn1CeA5KsYR4MmDRC6tzP3efLlt/
+ NqQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699377632; x=1699982432;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=x/Bd6YdQA2LmzpBvUNPuf0nN4MTBs5nBnF5YbhUl/Z0=;
+ b=vq3Kh1e6Uec/pr/AST6ovNs7G9P2f7vJd/7MJoLNyb8moQbRgRcZKXDs0JL/ZPHqUf
+ a7wc0ETswSPWkDskW7/QToZTjWAuFmfQGM1kcXKCS9xPbWKaIMW9Hit9vT0/MTJNVUqt
+ Vq01FLnbvpCcYkaDZdEGISV1WrlSNHjVY2pDt1kASFUdlKJqgyEH/6nWKjEjYF3z3Qwe
+ Kny9ZhgCXUKdf95fiBj1sSLsP/q6Kuvl2MA11G37djm8TcfqMKHgInuyOFQAnC+3TW1O
+ oXut+q+AAXgmWPIO84VkZ7iCdjJY05jv07+JWXXkq6QhI87ddbK8VPvZFcEU+UqsvUzb
+ eIzQ==
+X-Gm-Message-State: AOJu0YwbDJvXa0lu3cQVc1fhQQmIIOhsGbCKmHtnDgOYjAF47kify/1P
+ ylAxbJyRgxDfY3wlqcmxFjI=
+X-Google-Smtp-Source: AGHT+IFve8y8zwjoHkbaZfLhP0xdrNeRVwwlQtB9i0DmtAI6D9o0iGubnngVxAotftwEm6iix/trMQ==
+X-Received: by 2002:a05:622a:1a18:b0:41e:a64e:178b with SMTP id
+ f24-20020a05622a1a1800b0041ea64e178bmr12001421qtb.19.1699377631949; 
+ Tue, 07 Nov 2023 09:20:31 -0800 (PST)
+Received: from [192.168.68.107] ([179.193.10.161])
+ by smtp.gmail.com with ESMTPSA id
+ w4-20020ac87e84000000b00419cb97418bsm92471qtj.15.2023.11.07.09.20.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 07 Nov 2023 09:20:31 -0800 (PST)
+Message-ID: <697ad2e0-cb23-4efe-89e5-d1b521c0648f@gmail.com>
+Date: Tue, 7 Nov 2023 14:20:27 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: fy-8yiUstvx4-Vj4pQquizPkkJ_5z9JX
-X-Proofpoint-GUID: yBhBl9FY56NqlQ7qLzzRSOC7TrCrALxE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-07_08,2023-11-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0
- priorityscore=1501 malwarescore=0 mlxscore=0 spamscore=0 mlxlogscore=613
- adultscore=0 suspectscore=0 phishscore=0 clxscore=1015 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310240000 definitions=main-2311070142
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=imbrenda@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/3] Add emulation of AmigaOne XE board
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, clg@kaod.org, philmd@linaro.org,
+ Bernhard Beschow <shentey@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+References: <cover.1698406922.git.balaton@eik.bme.hu>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <cover.1698406922.git.balaton@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
+ envelope-from=danielhb413@gmail.com; helo=mail-qt1-x830.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,34 +96,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue,  7 Nov 2023 14:20:46 +0000
-Janosch Frank <frankja@linux.ibm.com> wrote:
+Zoltan,
 
-> dump_state_prepare() now sets the fucntion pointers to NULL so we only
-> need to touch them if we're going to use them.
+Gitlab is complaining about a missing file in one of the tests:
+
+
+   8/259 qemu:qtest+qtest-ppc / qtest-ppc/test-hmp                          ERROR           0.22s   killed by signal 6 SIGABRT
+4324>>> G_TEST_DBUS_DAEMON=/builds/danielhb/qemu/tests/dbus-vmstate-daemon.sh QTEST_QEMU_BINARY=./qemu-system-ppc MALLOC_PERTURB_=87 PYTHON=/builds/danielhb/qemu/build/pyvenv/bin/python3 /builds/danielhb/qemu/build/tests/qtest/test-hmp --tap -k
+4325――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+4326stderr:
+4327qemu-system-ppc: Could not find firmware 'u-boot-amigaone.bin'
+4328Broken pipe
+4329../tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
+4330(test program exited with status code -6)
+4331TAP parsing error: Too few tests run (expected 13, got 0)
+
+
+You can reproduce it like this:
+
+$ make -j -C build  && QTEST_QEMU_BINARY=./build/qemu-system-ppc64 ./build/tests/qtest/test-hmp
+
+I ended up amending in-tree (downloaded the firmware, put it under pc-bios, updated pc-bios/meson.build).
+My manual test now passes, but not sure if gitlab will nag about it. Let's wait and see.
+
+
+I told you: code freeze is a blast! Let's see if it's still sunny for the
+AmigaOne XE board emulation.
+
+
+
+Thanks,
+
+
+Daniel
+
+
+
+
+
+On 10/27/23 08:54, BALATON Zoltan wrote:
+> Changes in v7:
+> - Increase default memory size to 512m to match pegasos2 and sam460ex
+> and it's a better default for AmigaOS
 > 
-> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-
-I would merge this and the previous patch
-
-> ---
->  target/s390x/arch_dump.c | 4 ----
->  1 file changed, 4 deletions(-)
+> Changes in v6:
+> - Dropped patch 1, now it's
 > 
-> diff --git a/target/s390x/arch_dump.c b/target/s390x/arch_dump.c
-> index 51a2116515..bdb0bfa0e7 100644
-> --- a/target/s390x/arch_dump.c
-> +++ b/target/s390x/arch_dump.c
-> @@ -448,10 +448,6 @@ int cpu_get_dump_info(ArchDumpInfo *info,
->          info->arch_sections_add_fn = *arch_sections_add;
->          info->arch_sections_write_hdr_fn = *arch_sections_write_hdr;
->          info->arch_sections_write_fn = *arch_sections_write;
-> -    } else {
-> -        info->arch_sections_add_fn = NULL;
-> -        info->arch_sections_write_hdr_fn = NULL;
-> -        info->arch_sections_write_fn = NULL;
->      }
->      return 0;
->  }
-
+> Based-on: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
+> 
+> ([PATCH v2 0/3] ide: implement simple legacy/native mode switching for PCI IDE controllers)
+> - Added Tested-by from Rene
+> 
+> Changes in v5:
+> - Fixed avocado test
+> 
+> Changes in v4:
+> - Found typo in comment in patch 1 so ended up rewording it again
+> trying to make it more concise. Also take the idea of using
+> range_covers_byte from Mark's patch
+> - Added RFC patch for avocado test (untested, I don't have Avocado)
+> 
+> Changes in v3:
+> - Update values, comment and commit message in patch 1 again
+> 
+> Changes in v2:
+> - Update comment and commit message in patch 1 (Mark)
+> - Fix irq mapping in patch 2 (Volker)
+> 
+> Regards,
+> BALATON Zoltan
+> 
+> BALATON Zoltan (3):
+>    hw/pci-host: Add emulation of Mai Logic Articia S
+>    hw/ppc: Add emulation of AmigaOne XE board
+>    tests/avocado: Add test for amigaone board
+> 
+>   MAINTAINERS                             |   8 +
+>   configs/devices/ppc-softmmu/default.mak |   1 +
+>   hw/pci-host/Kconfig                     |   5 +
+>   hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
+>   hw/pci-host/meson.build                 |   2 +
+>   hw/ppc/Kconfig                          |   7 +
+>   hw/ppc/amigaone.c                       | 164 +++++++++++++
+>   hw/ppc/meson.build                      |   2 +
+>   include/hw/pci-host/articia.h           |  17 ++
+>   tests/avocado/ppc_amiga.py              |  38 +++
+>   10 files changed, 537 insertions(+)
+>   create mode 100644 hw/pci-host/articia.c
+>   create mode 100644 hw/ppc/amigaone.c
+>   create mode 100644 include/hw/pci-host/articia.h
+>   create mode 100644 tests/avocado/ppc_amiga.py
+> 
 
