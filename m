@@ -2,99 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 775E07E36D3
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 09:39:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3969F7E36E0
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 09:47:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Haq-0002s7-Ue; Tue, 07 Nov 2023 03:37:52 -0500
+	id 1r0Hj0-00009w-Ls; Tue, 07 Nov 2023 03:46:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0Han-0002ro-FS
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 03:37:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r0Hij-0008Sv-Eg; Tue, 07 Nov 2023 03:46:01 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0Hal-0000pF-Kc
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 03:37:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699346266;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=I+IhDEAt/uO9COEgvQWHXEHuQh+Y/1qZXxqLJKsQSbk=;
- b=E5ogKIKwjFEEWb6NQ9eRNvXFF5id8GCT0hphx9Uhb2+jcRbQPTg0SQK3VsG2Xh/oZv/FsD
- 6pKNeHsfidbsun4JgmaI1O9NLZzlh19LtsuottWh4FlLZuDHLu2WL9ma3oC7efIuSe1XJP
- PpaTGmJi/YWyay9j6DnT7i2k/JbWEiA=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-FaAhowuXOcOuUuQVAg0JFw-1; Tue, 07 Nov 2023 03:37:44 -0500
-X-MC-Unique: FaAhowuXOcOuUuQVAg0JFw-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2c6f33ee403so49892711fa.2
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 00:37:44 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699346263; x=1699951063;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=I+IhDEAt/uO9COEgvQWHXEHuQh+Y/1qZXxqLJKsQSbk=;
- b=DlsiaBzVor4M2gyzDeeycUdGhBmOqnxDhmJC6ErUQqTPq64vMc2rxYPui23CKrODFz
- e0b3xJsY134rAIQDiEs8TwrhLpwOfwhRjJt93BI7mdDdUYQFjRI4H2jHk2apxNtoyu9E
- UbP70IekzfCayNMwSyZ7X/n0mXSfhkAcr2sVUdbrUeJSb6MKo3BPxRSQyunwd0Vy5zBb
- bV0TuIVOJ/S0eki5dat+Ets9dCxc8fNPget2lQoznDodR5v8RjGzw43tkHgos27R64R+
- 4gLcRD7IUF0kp1RASjKHOuQAQmb0HaNP98Z4xyGSfPds/L0u2Q8uFoLG1ZYB7dJ+BpCy
- OtTA==
-X-Gm-Message-State: AOJu0YyA4OCPNHj93hFW2+zo8SwkTPVu+xrMpB2nm4LaorJ3uBK46msw
- y1jZWQ5b/luz+CDMHbxnHIS58aG23MlNAKbSHGaPKxZhU9bST8NYcx5MDq9MiwUsg3+d9Tk+ndv
- V89NLnBo5L5v7xu4=
-X-Received: by 2002:a2e:8443:0:b0:2c5:56b:cbcb with SMTP id
- u3-20020a2e8443000000b002c5056bcbcbmr26513478ljh.9.1699346262910; 
- Tue, 07 Nov 2023 00:37:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEgil+tLxtfBoSKO+NKfZTezICiPQjdvNtvUFtVc8WE7cWTO9ZkzplNjRJ47L5+9puHojOBaQ==
-X-Received: by 2002:a2e:8443:0:b0:2c5:56b:cbcb with SMTP id
- u3-20020a2e8443000000b002c5056bcbcbmr26513461ljh.9.1699346262570; 
- Tue, 07 Nov 2023 00:37:42 -0800 (PST)
-Received: from redhat.com ([2.55.5.143]) by smtp.gmail.com with ESMTPSA id
- x14-20020adff0ce000000b0032fb17c65desm1691645wro.19.2023.11.07.00.37.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 00:37:41 -0800 (PST)
-Date: Tue, 7 Nov 2023 03:37:34 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Stefan Hajnoczi <stefanha@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>, virtio-fs@redhat.com,
- Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Kevin Wolf <kwolf@redhat.com>, Erik Schilling <erik.schilling@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH v6 0/6] virtio: cleanup vhost-user-generic and reduce c&p
-Message-ID: <20231107033550-mutt-send-email-mst@kernel.org>
-References: <20231106191515.2801863-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r0Hih-0002ac-4U; Tue, 07 Nov 2023 03:46:01 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id AE166756082;
+ Tue,  7 Nov 2023 09:46:10 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id A28AD75606C; Tue,  7 Nov 2023 09:46:10 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id A006875607A;
+ Tue,  7 Nov 2023 09:46:10 +0100 (CET)
+Date: Tue, 7 Nov 2023 09:46:10 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
+cc: qemu-devel@nongnu.org, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ stefanha@gmail.com, Gerd Hoffmann <kraxel@redhat.com>, qemu-ppc@nongnu.org
+Subject: Re: [PATCH v8 23/24] hw/display/ati: allow compiling without
+ PIXMAN
+In-Reply-To: <20231107071915.2459115-24-marcandre.lureau@redhat.com>
+Message-ID: <15834680-16c1-6ed2-38fa-403d9bd14242@eik.bme.hu>
+References: <20231107071915.2459115-1-marcandre.lureau@redhat.com>
+ <20231107071915.2459115-24-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231106191515.2801863-1-alex.bennee@linaro.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-832536453-1699346770=:66472"
+X-Virus-Scanned: ClamAV using ClamSMTP
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,73 +62,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 06, 2023 at 07:15:09PM +0000, Alex BennÈe wrote:
-> A lot of our vhost-user stubs are large chunks of boilerplate that do
-> (mostly) the same thing. This series continues the cleanups by
-> splitting the vhost-user-base and vhost-user-generic implementations.
-> After adding a new vq_size property the rng, gpio and i2c vhost-user
-> devices become simple specialisations of the common base defining the
-> ID, number of queues and potentially the config handling.
-> 
-> I've also added Manos' vhost-user-sound while I was at it.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--3866299591-832536453-1699346770=:66472
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-Also some checkpatch warnings. Pls fix them too:
+On Tue, 7 Nov 2023, marcandre.lureau@redhat.com wrote:
+> From: Marc-Andr√© Lureau <marcandre.lureau@redhat.com>
+>
+> Change the "x-pixman" property default value and use the fallback path
+> when PIXMAN support is disabled.
+>
+> Signed-off-by: Marc-Andr√© Lureau <marcandre.lureau@redhat.com>
+> ---
+> hw/display/ati.c       | 16 +++++++++++++++-
+> hw/display/ati_2d.c    | 11 +++++++----
+> hw/display/meson.build |  2 +-
+> 3 files changed, 23 insertions(+), 6 deletions(-)
+>
+> diff --git a/hw/display/ati.c b/hw/display/ati.c
+> index 9a87a5504a..51a3b156ac 100644
+> --- a/hw/display/ati.c
+> +++ b/hw/display/ati.c
+> @@ -32,6 +32,13 @@
+>
+> #define ATI_DEBUG_HW_CURSOR 0
+>
+> +#ifdef CONFIG_PIXMAN
+> +#define DEFAULT_X_PIXMAN 3
+> +#else
+> +#define DEFAULT_X_PIXMAN 0
+> +#endif
+> +
+> +
 
-https://gitlab.com/mstredhat/qemu/-/jobs/5475281577
+Excess new line.
 
+> static const struct {
+>     const char *name;
+>     uint16_t dev_id;
+> @@ -946,6 +953,12 @@ static void ati_vga_realize(PCIDevice *dev, Error **errp)
+>     ATIVGAState *s = ATI_VGA(dev);
+>     VGACommonState *vga = &s->vga;
+>
+> +#ifndef CONFIG_PIXMAN
+> +    if (s->use_pixman != 0) {
+> +        warn_report("x-pixman != 0, not effective without PIXMAN");
+> +    }
+> +#endif
+> +
+>     if (s->model) {
+>         int i;
+>         for (i = 0; i < ARRAY_SIZE(ati_model_aliases); i++) {
+> @@ -1033,7 +1046,8 @@ static Property ati_vga_properties[] = {
+>     DEFINE_PROP_UINT16("x-device-id", ATIVGAState, dev_id,
+>                        PCI_DEVICE_ID_ATI_RAGE128_PF),
+>     DEFINE_PROP_BOOL("guest_hwcursor", ATIVGAState, cursor_guest_mode, false),
+> -    DEFINE_PROP_UINT8("x-pixman", ATIVGAState, use_pixman, 3),
+> +    /* this a debug option, prefer PROP_UINT over PROP_BIT for simplicity */
 
-> Changes
-> -------
-> 
-> v6
->   - re-base to current master
->   - make vhost-user-device abstract
->   - mention abstractness in docs
-> 
-> v5
->   - addressing comments and tags
->   - improved the docs
-> 
-> v4
->   - dropped the F_TRANSPORT work for another series
->   - added vhost-user-sound
-> 
-> Alex BennÈe (5):
->   virtio: split into vhost-user-base and vhost-user-device
->   hw/virtio: derive vhost-user-rng from vhost-user-base
->   hw/virtio: derive vhost-user-gpio from vhost-user-base
->   hw/virtio: derive vhost-user-i2c from vhost-user-base
->   docs/system: add a basic enumeration of vhost-user devices
-> 
-> Manos Pitsidianakis (1):
->   hw/virtio: add vhost-user-snd and virtio-snd-pci devices
-> 
->  docs/system/devices/vhost-user-rng.rst        |   2 +
->  docs/system/devices/vhost-user.rst            |  65 ++-
->  ...{vhost-user-device.h => vhost-user-base.h} |  21 +-
->  include/hw/virtio/vhost-user-gpio.h           |  23 +-
->  include/hw/virtio/vhost-user-i2c.h            |  14 +-
->  include/hw/virtio/vhost-user-rng.h            |  11 +-
->  include/hw/virtio/vhost-user-snd.h            |  26 ++
->  hw/virtio/vhost-user-base.c                   | 345 +++++++++++++++
->  hw/virtio/vhost-user-device-pci.c             |  10 +-
->  hw/virtio/vhost-user-device.c                 | 337 +--------------
->  hw/virtio/vhost-user-gpio.c                   | 406 +-----------------
->  hw/virtio/vhost-user-i2c.c                    | 272 +-----------
->  hw/virtio/vhost-user-rng.c                    | 278 +-----------
->  hw/virtio/vhost-user-snd-pci.c                |  75 ++++
->  hw/virtio/vhost-user-snd.c                    |  67 +++
->  hw/virtio/Kconfig                             |   5 +
->  hw/virtio/meson.build                         |  23 +-
->  17 files changed, 690 insertions(+), 1290 deletions(-)
->  rename include/hw/virtio/{vhost-user-device.h => vhost-user-base.h} (71%)
->  create mode 100644 include/hw/virtio/vhost-user-snd.h
->  create mode 100644 hw/virtio/vhost-user-base.c
->  create mode 100644 hw/virtio/vhost-user-snd-pci.c
->  create mode 100644 hw/virtio/vhost-user-snd.c
-> 
-> -- 
-> 2.39.2
+Comment not needed but if you still want it, should be "this is a debug..."
 
+> +    DEFINE_PROP_UINT8("x-pixman", ATIVGAState, use_pixman, DEFAULT_X_PIXMAN),
+>     DEFINE_PROP_END_OF_LIST()
+> };
+>
+> diff --git a/hw/display/ati_2d.c b/hw/display/ati_2d.c
+> index 0e6b8e4367..e58acd0802 100644
+> --- a/hw/display/ati_2d.c
+> +++ b/hw/display/ati_2d.c
+> @@ -92,7 +92,7 @@ void ati_2d_blt(ATIVGAState *s)
+>     switch (s->regs.dp_mix & GMC_ROP3_MASK) {
+>     case ROP3_SRCCOPY:
+>     {
+> -        bool fallback = false;
+> +        bool fallback = true;
+>         unsigned src_x = (s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT ?
+>                        s->regs.src_x : s->regs.src_x + 1 - s->regs.dst_width);
+>         unsigned src_y = (s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM ?
+> @@ -119,6 +119,7 @@ void ati_2d_blt(ATIVGAState *s)
+>
+>         src_stride /= sizeof(uint32_t);
+>         dst_stride /= sizeof(uint32_t);
+> +#ifdef CONFIG_PIXMAN
+>         DPRINTF("pixman_blt(%p, %p, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)\n",
+>                 src_bits, dst_bits, src_stride, dst_stride, bpp, bpp,
+>                 src_x, src_y, dst_x, dst_y,
+
+Keep debug log even without pixman so move ifdef after it (also below) as 
+this provides info on the operation even if done by fallback.
+
+> @@ -147,9 +148,8 @@ void ati_2d_blt(ATIVGAState *s)
+>                                        s->regs.dst_width, s->regs.dst_height);
+>             }
+>             g_free(tmp);
+> -        } else {
+> -            fallback = true;
+>         }
+
+If you cahnge default value to true this is not needed any more but for 
+consistency with sm501 you could keep default and put this outside of 
+#idfef instead so it's the same as sm501 or do the same there.
+
+> +#endif
+>         if (fallback) {
+>             unsigned int y, i, j, bypp = bpp / 8;
+>             unsigned int src_pitch = src_stride * sizeof(uint32_t);
+> @@ -203,12 +203,15 @@ void ati_2d_blt(ATIVGAState *s)
+>         }
+>
+>         dst_stride /= sizeof(uint32_t);
+> +#ifdef CONFIG_PIXMAN
+>         DPRINTF("pixman_fill(%p, %d, %d, %d, %d, %d, %d, %x)\n",
+>                 dst_bits, dst_stride, bpp, dst_x, dst_y,
+>                 s->regs.dst_width, s->regs.dst_height, filler);
+
+Move ifdef here.
+
+With these
+
+Acked-by: BALATON Zoltan <balaton@eik.bme.hu>
+
+Thanks for doing this in last minute.
+
+Regards,
+BALATON Zoltan
+
+>         if (!(s->use_pixman & BIT(0)) ||
+>             !pixman_fill((uint32_t *)dst_bits, dst_stride, bpp, dst_x, dst_y,
+> -                    s->regs.dst_width, s->regs.dst_height, filler)) {
+> +                    s->regs.dst_width, s->regs.dst_height, filler))
+> +#endif
+> +        {
+>             /* fallback when pixman failed or we don't want to call it */
+>             unsigned int x, y, i, bypp = bpp / 8;
+>             unsigned int dst_pitch = dst_stride * sizeof(uint32_t);
+> diff --git a/hw/display/meson.build b/hw/display/meson.build
+> index 9c06aaee20..344dfe3d8c 100644
+> --- a/hw/display/meson.build
+> +++ b/hw/display/meson.build
+> @@ -62,7 +62,7 @@ system_ss.add(when: 'CONFIG_XLNX_DISPLAYPORT', if_true: files('xlnx_dp.c'))
+>
+> system_ss.add(when: 'CONFIG_ARTIST', if_true: files('artist.c'))
+>
+> -system_ss.add(when: [pixman, 'CONFIG_ATI_VGA'], if_true: files('ati.c', 'ati_2d.c', 'ati_dbg.c'))
+> +system_ss.add(when: 'CONFIG_ATI_VGA', if_true: [files('ati.c', 'ati_2d.c', 'ati_dbg.c'), pixman])
+>
+>
+> if config_all_devices.has_key('CONFIG_VIRTIO_GPU')
+>
+--3866299591-832536453-1699346770=:66472--
 
