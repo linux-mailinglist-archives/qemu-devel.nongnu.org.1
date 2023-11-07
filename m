@@ -2,105 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2B27E45B9
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 17:17:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9C77E3620
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 08:56:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0OkY-0007za-4C; Tue, 07 Nov 2023 11:16:23 -0500
+	id 1r0Gvg-0000Wh-Nc; Tue, 07 Nov 2023 02:55:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalap1@us.ibm.com>)
- id 1r0Gin-0006A1-So; Tue, 07 Nov 2023 02:42:03 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0GvY-0000Vz-Hs
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 02:55:12 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalap1@us.ibm.com>)
- id 1r0Gil-0006aC-GU; Tue, 07 Nov 2023 02:42:01 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A77dZ2d018164; Tue, 7 Nov 2023 07:41:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=Jw2xSs+BxAc8oeAD791uufh2poFYCMzdEe6QqC8uh7Y=;
- b=SkJYclP38rVlLgSe+r5JjPaLfM5bSPv2iTY4b/qDcaq1dtcmlg95DN6EVBLhazw0Z37t
- Wyo2ycG/U60UPXVELWsG1p7umDeG2LENYvqS0l+d9HilRHMMdIWk0ynaVLTFLros8Mlr
- hyCtW/lHC31JZSo+/3+vB/oLvnaCpPJjTug+a09ZY0c9O2oWESO+WmJUPWrLZvScDDz+
- 5cpikFM/EQm0htQnbLJTVNQNzsWiGVLlDYKUDfRrXs9qEhCKU4yQcqESu47TmRzl4d/F
- 62lEW9R0768RRMxqGlrMwVMaQHvs/QpoYZFqrVBGJFugIqEvsHxofT/haDQN0/VJE76k Ng== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7h1sg2wv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Nov 2023 07:41:37 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A77diSo018894;
- Tue, 7 Nov 2023 07:41:36 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7h1sg2we-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Nov 2023 07:41:36 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A76B9CL012797; Tue, 7 Nov 2023 07:41:36 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u609sqc45-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Nov 2023 07:41:36 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
- [10.39.53.229])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3A77fXSQ63832410
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 7 Nov 2023 07:41:33 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 252A55805C;
- Tue,  7 Nov 2023 07:41:33 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 09EE65805B;
- Tue,  7 Nov 2023 07:41:33 +0000 (GMT)
-Received: from gfwr516.rchland.ibm.com (unknown [9.10.239.105])
- by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
- Tue,  7 Nov 2023 07:41:32 +0000 (GMT)
-Received: by gfwr516.rchland.ibm.com (Postfix, from userid 607334)
- id 47B62220041; Tue,  7 Nov 2023 01:41:32 -0600 (CST)
-From: Chalapathi V <chalap1@gfwr516.rchland.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
- clg@kaod.org, calebs@us.ibm.com, chalapathi.v@ibm.com,
- saif.abrar@linux.vnet.ibm.com, Chalapathi V <chalapathi.v@linux.ibm.com>
-Subject: [PATCH v4 3/3] hw/ppc: Nest1 chiplet wiring
-Date: Tue,  7 Nov 2023 01:41:27 -0600
-Message-Id: <20231107074127.31821-4-chalap1@gfwr516.rchland.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20231107074127.31821-1-chalap1@gfwr516.rchland.ibm.com>
-References: <20231107074127.31821-1-chalap1@gfwr516.rchland.ibm.com>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0GvW-0000xE-E4
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 02:55:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699343708;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VeP7RdrtsCymmJHV4I1XRzRQym1UQzvDHM9sJcJxAm0=;
+ b=L+X9B/rWYiSnQgB0zGSdkivTskdKv/Fn5GbN5LZC+w+DHnUepAxUvaFQyMDHBHJNl42Miz
+ BbP24hET8RH6+SxCNEFMOrjG7f9DoWV58IAivyBNedbOmBeB93hyyEdh8b8lENLvM/T/B8
+ +o92UFYN6uTnLT7WVFXyT5KajBejjTU=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-81-Vsyuuod4PO6xbQ9HwHH-ow-1; Tue, 07 Nov 2023 02:55:06 -0500
+X-MC-Unique: Vsyuuod4PO6xbQ9HwHH-ow-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-66d87503d24so70644076d6.3
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 23:55:06 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699343706; x=1699948506;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VeP7RdrtsCymmJHV4I1XRzRQym1UQzvDHM9sJcJxAm0=;
+ b=fI7vVZl718VHyuarolofwXBr69Y7Y+wR+4lUXVbWyx8wOMTk9Kiq+QBdx9tV+wzs5V
+ /GuaCzrMyGpnGkkdc8ArCp20HUhJccn2h25uY6rijKjnkrm0k6JcATGPCihbRljZ2qpU
+ q0lO6SNvjjRbTxIeDT+hkWXs4FPNO5+q0ahzG+NnVwmFhQp2y4OwUViJrZMVBHtmWnR2
+ C5xkdTbBK5nGLOyZfal45ZB7vz60AMZMabKBfq8IK+slIZL9ib0i/wFjNeXOOiJ6vafj
+ GTJTtizICAWMQUnT/byROwTJgLGgxo1MXRmJLMRs6G1EDfSyXseGCx3d9CcqeWxulBMc
+ EFGg==
+X-Gm-Message-State: AOJu0Yzmxj3PMcXKbIZCyxBHxKcJZsuLdLMEQ6A+G1M04c9/nilZ6hHW
+ aAWuh3npc0sFVcKji1Y2rkpP9U8WplH4I6d/a5pFfTZ1oUpfoVTo4eEchvENxVqzUrDIYua8q+M
+ oCHlnmOdGvCG4SMc=
+X-Received: by 2002:a05:6214:624:b0:671:560f:32fa with SMTP id
+ a4-20020a056214062400b00671560f32famr29969893qvx.40.1699343706501; 
+ Mon, 06 Nov 2023 23:55:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEqLkcjMjVkh3uAidyUKs9yTcaREixeL3ccv+pooI5BNBqZV3+6JebGSa5BJw7+IRteEcPuzQ==
+X-Received: by 2002:a05:6214:624:b0:671:560f:32fa with SMTP id
+ a4-20020a056214062400b00671560f32famr29969887qvx.40.1699343706273; 
+ Mon, 06 Nov 2023 23:55:06 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ c6-20020a05621401c600b0066cfb9cc087sm4163084qvt.134.2023.11.06.23.55.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 06 Nov 2023 23:55:05 -0800 (PST)
+Message-ID: <9282ab25-82ca-44e0-a2d6-0c4c015ca10f@redhat.com>
+Date: Tue, 7 Nov 2023 08:55:03 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] block/snapshot: Fix compiler warning with
+ -Wshadow=local
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>
+Cc: Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org
+References: <20231023175038.111607-1-thuth@redhat.com>
+ <87zg08vcwd.fsf@pond.sub.org> <875y2ws3vq.fsf@pond.sub.org>
+ <dadc9fd6-b6c4-4824-81c1-07aa91f7723d@redhat.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <dadc9fd6-b6c4-4824-81c1-07aa91f7723d@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: B1JaVuTRIogQJ2klZ4OZSShgf-lFzlCg
-X-Proofpoint-ORIG-GUID: TnCjVkpcXZAK6akRaViQNELVdZtI44xd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-06_15,2023-11-02_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- spamscore=0 mlxscore=0 priorityscore=1501 phishscore=0 adultscore=0
- suspectscore=0 clxscore=1034 mlxlogscore=843 malwarescore=0
- impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2310240000 definitions=main-2311070062
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=chalap1@us.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 07 Nov 2023 11:16:20 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,83 +104,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chalapathi V <chalapathi.v@linux.ibm.com>
+On 10/24/23 13:51, Thomas Huth wrote:
+> On 24/10/2023 12.37, Markus Armbruster wrote:
+>> Markus Armbruster <armbru@redhat.com> writes:
+>>
+>>> Thomas Huth <thuth@redhat.com> writes:
+>>>
+>>>> No need to declare a new variable in the the inner code block
+>>>> here, we can re-use the "ret" variable that has been declared
+>>>> at the beginning of the function. With this change, the code
+>>>> can now be successfully compiled with -Wshadow=local again.
+>>>>
+>>>> Fixes: a32e781838 ("Mark bdrv_snapshot_fallback() and callers GRAPH_RDLOCK")
+>>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>>> ---
+>>>>   v2: Assign "ret" only in one spot
+>>>>
+>>>>   block/snapshot.c | 6 ++----
+>>>>   1 file changed, 2 insertions(+), 4 deletions(-)
+>>>>
+>>>> diff --git a/block/snapshot.c b/block/snapshot.c
+>>>> index 6e16eb803a..55974273ae 100644
+>>>> --- a/block/snapshot.c
+>>>> +++ b/block/snapshot.c
+>>>> @@ -629,7 +629,6 @@ int bdrv_all_goto_snapshot(const char *name,
+>>>>       while (iterbdrvs) {
+>>>>           BlockDriverState *bs = iterbdrvs->data;
+>>>>           AioContext *ctx = bdrv_get_aio_context(bs);
+>>>> -        int ret = 0;
+>>>>           bool all_snapshots_includes_bs;
+>>>>           aio_context_acquire(ctx);
+>>>> @@ -637,9 +636,8 @@ int bdrv_all_goto_snapshot(const char *name,
+>>>>           all_snapshots_includes_bs = bdrv_all_snapshots_includes_bs(bs);
+>>>>           bdrv_graph_rdunlock_main_loop();
+>>>> -        if (devices || all_snapshots_includes_bs) {
+>>>> -            ret = bdrv_snapshot_goto(bs, name, errp);
+>>>> -        }
+>>>> +        ret = (devices || all_snapshots_includes_bs) ?
+>>>> +              bdrv_snapshot_goto(bs, name, errp) : 0;
+>>>>           aio_context_release(ctx);
+>>>>           if (ret < 0) {
+>>>>               bdrv_graph_rdlock_main_loop();
+>>>
+>>> Better.  Unconditional assignment to @ret right before it's checked is
+>>> how we should use @ret.
+>>>
+>>> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+>>>
+>>> And queued.  Thanks!
+>>
+>> Mind if I drop the Fixes: tag?  Nothing broken until we enable
+>> -Wshadow=local...
+> 
+> Fine for me!
 
-This part of the patchset connects the nest1 chiplet model to p10 chip.
+This looks like the last remaining warning. Are we going to activate
+-Wshadow=local next ?
 
-Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
----
- hw/ppc/pnv.c              | 14 ++++++++++++++
- include/hw/ppc/pnv_chip.h |  2 ++
- 2 files changed, 16 insertions(+)
+Thanks,
 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index c0e34ff..2b93cdd 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -351,6 +351,8 @@ static void pnv_chip_power10_dt_populate(PnvChip *chip, void *fdt)
-     static const char compat[] = "ibm,power10-xscom\0ibm,xscom";
-     int i;
- 
-+    Pnv10Chip *chip10 = PNV10_CHIP(chip);
-+
-     pnv_dt_xscom(chip, fdt, 0,
-                  cpu_to_be64(PNV10_XSCOM_BASE(chip)),
-                  cpu_to_be64(PNV10_XSCOM_SIZE),
-@@ -366,6 +368,9 @@ static void pnv_chip_power10_dt_populate(PnvChip *chip, void *fdt)
-         pnv_dt_memory(fdt, chip->chip_id, chip->ram_start, chip->ram_size);
-     }
- 
-+    /* Populate nest1_chiplet device tree */
-+    PNV_NEST1CHIPLET_GET_CLASS(&chip10->nest1_chiplet)->nest1_dt_populate(fdt);
-+
-     pnv_dt_lpc(chip, fdt, 0, PNV10_LPCM_BASE(chip), PNV10_LPCM_SIZE);
- }
- 
-@@ -1649,6 +1654,8 @@ static void pnv_chip_power10_instance_init(Object *obj)
-     object_initialize_child(obj, "occ",  &chip10->occ, TYPE_PNV10_OCC);
-     object_initialize_child(obj, "sbe",  &chip10->sbe, TYPE_PNV10_SBE);
-     object_initialize_child(obj, "homer", &chip10->homer, TYPE_PNV10_HOMER);
-+    object_initialize_child(obj, "nest1_chiplet", &chip10->nest1_chiplet,
-+                            TYPE_PNV_NEST1_CHIPLET);
- 
-     chip->num_pecs = pcc->num_pecs;
- 
-@@ -1813,6 +1820,13 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(get_system_memory(), PNV10_HOMER_BASE(chip),
-                                 &chip10->homer.regs);
- 
-+    /* nest1 chiplet control regs */
-+    if (!qdev_realize(DEVICE(&chip10->nest1_chiplet), NULL, errp)) {
-+        return;
-+    }
-+    pnv_xscom_add_subregion(chip, PNV10_XSCOM_NEST1_CTRL_CHIPLET_BASE,
-+                   &chip10->nest1_chiplet.perv_chiplet.xscom_perv_ctrl_regs);
-+
-     /* PHBs */
-     pnv_chip_power10_phb_realize(chip, &local_err);
-     if (local_err) {
-diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-index 53e1d92..4bcb925 100644
---- a/include/hw/ppc/pnv_chip.h
-+++ b/include/hw/ppc/pnv_chip.h
-@@ -4,6 +4,7 @@
- #include "hw/pci-host/pnv_phb4.h"
- #include "hw/ppc/pnv_core.h"
- #include "hw/ppc/pnv_homer.h"
-+#include "hw/ppc/pnv_nest_chiplet.h"
- #include "hw/ppc/pnv_lpc.h"
- #include "hw/ppc/pnv_occ.h"
- #include "hw/ppc/pnv_psi.h"
-@@ -109,6 +110,7 @@ struct Pnv10Chip {
-     PnvOCC       occ;
-     PnvSBE       sbe;
-     PnvHomer     homer;
-+    PnvNest1Chiplet nest1_chiplet;
- 
-     uint32_t     nr_quads;
-     PnvQuad      *quads;
--- 
-1.8.3.1
+C.
+
+
+
+
 
 
