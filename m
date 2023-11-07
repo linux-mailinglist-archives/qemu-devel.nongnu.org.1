@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8287E3375
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:06:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 226817E336F
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:05:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0COF-0006M2-SU; Mon, 06 Nov 2023 22:04:32 -0500
+	id 1r0CO6-0006Lh-U5; Mon, 06 Nov 2023 22:04:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CO1-0006KZ-1T
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:04:17 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1r0CNz-0006KD-Ld
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:04:16 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CNx-0000dF-4o
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:04:16 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1cc53d0030fso41529965ad.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:04:12 -0800 (PST)
+ id 1r0CNy-0000dL-0Q
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:04:15 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1cc2575dfc7so37447185ad.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:04:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1699326252; x=1699931052; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=YyJfb6Wojnqq08dXxiqAELvXf9aCz7pqkYhEssz6d0I=;
- b=pSBZ7yDZ5JOm28NqFlnRPzsnCPK1R2amZqwZLm0NoOHP45FS7mLmEcA+cGtcxa3src
- 3z2Cvyya8s+CKES97BYejd6sqFvAvcHcOQFJ3dBf/SgCQBIlXpMTJtBvoAAatUfJc9yL
- irGjRNJHMVPzM2ovpo8HiCMMzWqAF3QK+aU8lp0yaF9WjGVEh3HWpRCYFxLFrpqCQ0Yz
- wcMpZJQIQlhvittE2IP0obr2WkmFKaZyz6BfLc6qqUwCAPukz/VPyfWNe2PA3uGZHXoR
- UMadnwrtK613qQqTbFGFdyof+jMEtNxDjgQdtxeUOEps86fpfcd2APJvu7n5vkAKMYie
- HCdQ==
+ :reply-to; bh=Ez2Z78a8l3Rct3xuqmIfMNHaaKAnGMRqCCq6D0MIJeY=;
+ b=gvj2zCXK1VmsMAK/XeXHANcDV5IIea7ZgL5rOnhwLfFVMUGy/sZNloNDAza3RqTFkJ
+ KF4UBVcGD0TjKFuswNJj3jpSWwa2yL7dvIKvWAfWTJlk2X5DWF4ozDlq/gYWusi4ed8L
+ dmwhiL+VYQanQwGLcclaQC1mw6DkfzSHSPAwyTrjqHk6s134BRJXHavmREhJxMY7ck3K
+ ol6ULnl5ucd2BuehyQFF5NUDF436sD4mgITQSvo6lPsqZnZbB86JSfcrrQMlXqGNpGJG
+ CNGB2xk1SyuckUfkWvKokxlk2w/TeU1YUyVLDS8o7CRmddwvTCbpPSPrsg8bkq5TO64v
+ 5JbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1699326252; x=1699931052;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YyJfb6Wojnqq08dXxiqAELvXf9aCz7pqkYhEssz6d0I=;
- b=LZ0AtNZHnjQ5w4b4l4bHMOJsdtSX3MS6IXGVd3wZ74iZsfFJMUZQoTjYT3FHHRyZ7t
- TgmDjfh1VsrZmiGppAjO5821QdMUUGnNsHcJrRKeo/7r56jCwmMuxGnPQ+ju2l2ee8g7
- xWoi6cEFhfuG1aF8iNjt/3q9V6V8qWpHkW1XcOHa25hFe/PELugnlC09zpYQ6w5w09PN
- rGV13807V370sFmXwBbq/cYBBxn9t1oKEKRZSoJyyoRD8dNpNsA/oHjW8RUl6c2iAQ/U
- L3DFvNsacL2YpbO9Y53p3Bvhf3VopRaz4rklCbDAsG4IQpS6ZTx0ekONFFMd2nHakJVu
- OZmg==
-X-Gm-Message-State: AOJu0YwBnSOmV9C6Mp+a6RnfKHTidpwpsu2To6IZqhnS+zlpLLOjXiBK
- ++AjYARAHgmNICwi93HtVwqS6EQRI6Ddy8edf8E=
-X-Google-Smtp-Source: AGHT+IG5NV+BPQsmdDWf36mLVLVXo8XLPUzOmfeo7IuA2qy0LeMOqvUVvJU+Dbr3MNoM9xe/8d1zyQ==
-X-Received: by 2002:a17:903:41c6:b0:1c9:9fa6:ce5b with SMTP id
- u6-20020a17090341c600b001c99fa6ce5bmr1846947ple.16.1699326251827; 
- Mon, 06 Nov 2023 19:04:11 -0800 (PST)
+ bh=Ez2Z78a8l3Rct3xuqmIfMNHaaKAnGMRqCCq6D0MIJeY=;
+ b=LCZyJ/0f5APl1sqwKu29B6F3rttAb/zGUPe7p3uKSWCH+pyZhDYpphgRqHfZfC4y2a
+ IbjXb8RpR8UowVfyNwKxAMmoFca0peIy1bWrCJiJS9NCORzkZ5VEhtdy6+X+2S6fj1Jy
+ lAcOLne8MB3loiBGGpavTm8qBsWsWmZJKbRZxArbqNJNc9CP0JTzhGPT0qK3zgV5jeis
+ YI3WtlBvyQCMVtfTvzlsRSe9DEWwRll28Uqlg+pL7LGFkwONNiOh0vSXbqufkLMUSWtd
+ gEhDJVt3MHRfW+Lu0vadAJKgTJpnZAAOzmZnvRwEcXqENl55qa5aYDCWHR7eMvlOSmi7
+ gc5A==
+X-Gm-Message-State: AOJu0YyNLshrbhkoSfkG5xoOk1Ch1CDhkDfJQPsBmBTkleUy8npG6kse
+ Ad9VAjo486odld7Jnb+RhT/O7SJYm9HXR6BiBB8=
+X-Google-Smtp-Source: AGHT+IHlZyPOgq3FAVTJiCUOrPaekDoK8oGURImN7Ps70TqWC5rWnnPC4K/ElWyMHS6u13zQYGpcdQ==
+X-Received: by 2002:a17:902:bc42:b0:1ca:87e0:93e3 with SMTP id
+ t2-20020a170902bc4200b001ca87e093e3mr26241664plz.7.1699326252642; 
+ Mon, 06 Nov 2023 19:04:12 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- u9-20020a17090282c900b001c72d5e16acsm6518012plz.57.2023.11.06.19.04.11
+ u9-20020a17090282c900b001c72d5e16acsm6518012plz.57.2023.11.06.19.04.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 19:04:11 -0800 (PST)
+ Mon, 06 Nov 2023 19:04:12 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 04/85] target/hppa: Always report one page to tlb_set_page
-Date: Mon,  6 Nov 2023 19:02:46 -0800
-Message-Id: <20231107030407.8979-5-richard.henderson@linaro.org>
+Subject: [PULL 05/85] target/hppa: Split out hppa_flush_tlb_range
+Date: Mon,  6 Nov 2023 19:02:47 -0800
+Message-Id: <20231107030407.8979-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231107030407.8979-1-richard.henderson@linaro.org>
 References: <20231107030407.8979-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,61 +89,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No need to trigger the large_page_mask code unnecessarily.
-Drop the now unused HPPATLBEntry.page_size field.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h        |  5 +++--
- target/hppa/mem_helper.c | 11 +++++++++--
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ target/hppa/mem_helper.c | 39 ++++++++++++++++++++++++---------------
+ 1 file changed, 24 insertions(+), 15 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 84bb6edc60..1480d0237a 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -179,15 +179,16 @@ typedef struct HPPATLBEntry {
-     IntervalTreeNode itree;
- 
-     target_ureg pa;
-+
-+    unsigned entry_valid : 1;
-+
-     unsigned u : 1;
-     unsigned t : 1;
-     unsigned d : 1;
-     unsigned b : 1;
--    unsigned page_size : 4;
-     unsigned ar_type : 3;
-     unsigned ar_pl1 : 2;
-     unsigned ar_pl2 : 2;
--    unsigned entry_valid : 1;
-     unsigned access_id : 16;
- } HPPATLBEntry;
- 
 diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index 687ae44ed0..60cae646cc 100644
+index 60cae646cc..828cceb29c 100644
 --- a/target/hppa/mem_helper.c
 +++ b/target/hppa/mem_helper.c
-@@ -268,9 +268,16 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
- 
-     trace_hppa_tlb_fill_success(env, addr & TARGET_PAGE_MASK,
-                                 phys & TARGET_PAGE_MASK, size, type, mmu_idx);
--    /* Success!  Store the translation into the QEMU TLB.  */
-+
-+    /*
-+     * Success!  Store the translation into the QEMU TLB.
-+     * Note that we always install a single-page entry, because that
-+     * is what works best with softmmu -- anything else will trigger
-+     * the large page protection mask.  We do not require this,
-+     * because we record the large page here in the hppa tlb.
-+     */
-     tlb_set_page(cs, addr & TARGET_PAGE_MASK, phys & TARGET_PAGE_MASK,
--                 prot, mmu_idx, TARGET_PAGE_SIZE << (ent ? 2 * ent->page_size : 0));
-+                 prot, mmu_idx, TARGET_PAGE_SIZE);
-     return true;
+@@ -67,6 +67,25 @@ static void hppa_flush_tlb_ent(CPUHPPAState *env, HPPATLBEntry *ent,
+     ent->itree.start = -1;
  }
  
++static HPPATLBEntry *hppa_flush_tlb_range(CPUHPPAState *env,
++                                          vaddr va_b, vaddr va_e)
++{
++    HPPATLBEntry *empty = NULL;
++
++    /* Zap any old entries covering ADDR; notice empty entries on the way.  */
++    for (int i = HPPA_BTLB_ENTRIES; i < ARRAY_SIZE(env->tlb); ++i) {
++        HPPATLBEntry *ent = &env->tlb[i];
++
++        if (!ent->entry_valid) {
++            empty = ent;
++        } else if (va_e >= ent->itree.start && va_b <= ent->itree.last) {
++            hppa_flush_tlb_ent(env, ent, false);
++            empty = ent;
++        }
++    }
++    return empty;
++}
++
+ static HPPATLBEntry *hppa_alloc_tlb_ent(CPUHPPAState *env)
+ {
+     HPPATLBEntry *ent;
+@@ -284,21 +303,11 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
+ /* Insert (Insn/Data) TLB Address.  Note this is PA 1.1 only.  */
+ void HELPER(itlba)(CPUHPPAState *env, target_ulong addr, target_ureg reg)
+ {
+-    HPPATLBEntry *empty = NULL;
+-    int i;
++    HPPATLBEntry *empty;
+ 
+     /* Zap any old entries covering ADDR; notice empty entries on the way.  */
+-    for (i = HPPA_BTLB_ENTRIES; i < ARRAY_SIZE(env->tlb); ++i) {
+-        HPPATLBEntry *ent = &env->tlb[i];
+-        if (ent->itree.start <= addr && addr <= ent->itree.last) {
+-            if (ent->entry_valid) {
+-                hppa_flush_tlb_ent(env, ent, false);
+-            }
+-            if (!empty) {
+-                empty = ent;
+-            }
+-        }
+-    }
++    addr &= TARGET_PAGE_MASK;
++    empty = hppa_flush_tlb_range(env, addr, addr + TARGET_PAGE_SIZE - 1);
+ 
+     /* If we didn't see an empty entry, evict one.  */
+     if (empty == NULL) {
+@@ -306,8 +315,8 @@ void HELPER(itlba)(CPUHPPAState *env, target_ulong addr, target_ureg reg)
+     }
+ 
+     /* Note that empty->entry_valid == 0 already.  */
+-    empty->itree.start = addr & TARGET_PAGE_MASK;
+-    empty->itree.last = empty->itree.start + TARGET_PAGE_SIZE - 1;
++    empty->itree.start = addr;
++    empty->itree.last = addr + TARGET_PAGE_SIZE - 1;
+     empty->pa = extract32(reg, 5, 20) << TARGET_PAGE_BITS;
+     trace_hppa_tlb_itlba(env, empty, empty->itree.start,
+                          empty->itree.last, empty->pa);
 -- 
 2.34.1
 
