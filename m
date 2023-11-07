@@ -2,81 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 204117E3916
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:27:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC8A7E3918
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:28:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0JIU-0004nq-QH; Tue, 07 Nov 2023 05:27:02 -0500
+	id 1r0JJL-0005XY-Sw; Tue, 07 Nov 2023 05:27:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1r0JIS-0004lL-M4
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:27:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0JJE-0005UH-Rs
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:27:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1r0JIQ-0005xj-TR
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:27:00 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0JJC-00061P-OT
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:27:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699352817;
+ s=mimecast20190719; t=1699352862;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=32iHXOL2b+FyuXabWgmM/gZnmzR6vBSoNDBPdYmW/Kk=;
- b=N+vPPsVGt9MQReaGOqS3WwXcW6WVUMTro4CCs82ZRBJSDRoaNtvTEXLQ4gAt2KKYAP+n8I
- WAGMv2QZK5WI0FkVPoRteJUEtmgJwPvxqBJnUHEuW4L1v5PyXvx4ux9Q4pFhVZhBjv8dNz
- I8QVkx8IXSvpmWX4/ke5Wuhvn7PzPbc=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=jMgu1n6wU8I3H7kuJhkfIx98ul3QKm4sC8BFiFUpGgs=;
+ b=iDk6LKbhmHd28MiJbOld89tKvFlGKmRpTCCpaqE20bKvxdem65hPQyq7mPV3TRsSBaeZwV
+ EJo0AFl/FdWLT93FdcAVOCRQuxP2AgzKMPuj/Toz1VmuF7v7DGKwNgzxpzAEj4i4CH0709
+ BVV9EPnToOKna4k99wZlMXBxDefixaM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-82-nkGSCcw6PFm2Wp7eFC7xZw-1; Tue, 07 Nov 2023 05:26:50 -0500
-X-MC-Unique: nkGSCcw6PFm2Wp7eFC7xZw-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-543d2bc7d9dso4196022a12.1
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:26:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699352808; x=1699957608;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=32iHXOL2b+FyuXabWgmM/gZnmzR6vBSoNDBPdYmW/Kk=;
- b=sLsIfw1zL89cutHjSwQfCdK8jhhDEy4Iio/VYN5fTTfjqJmRJzAmP9wZ7aShZ50obU
- +EOMl1LDpq87Wk3BC9KQZZHOobaSoc9gO/urZSNn6IUCo4tp1VBbFX7WlGeVES1ewY49
- JmrKE61xoWw6NBTK6mU6Ff62g1slUk1eQFyr08xsUjanxPDTHUDZ08hJIidkXZJFds97
- 6qpurxsVf9S8UCWkHYWCxNYXnVcEIygb3B7UyxI+aR6RZfJHFKLE4O2se96WiF05z7pR
- IUVMNtNH/D1dK6wNESqe60qWXrREMPlZ34JfLt8MvgOaBjHWDzgDEF995fENdmTGM9Zw
- 0DDA==
-X-Gm-Message-State: AOJu0YyxdWviSUYjn9pqtc+AdZaJS4ngxUZALq25Y4z348zJDR4zrzb6
- BniKNGGDdmaYIYhePgVmT4HGjxXQyNNlfmpe67PK2bPZCx0sPUlyQUzMh8pcGCS5utgnNwxvGEW
- 2zoWimR/g1+fCZOsh8gPy+u/M+Fu/53aF4AceuwWf7Q==
-X-Received: by 2002:a50:cd1c:0:b0:543:bd27:f4a9 with SMTP id
- z28-20020a50cd1c000000b00543bd27f4a9mr14258240edi.12.1699352808579; 
- Tue, 07 Nov 2023 02:26:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGwa1/KgR94ClxJUx4fzhETCdbNciEWZeA+bw4R8UYNgumRlozG4v/ZLaQEOzvIKyu4ppvYjoZwQi9PRYnYjNM=
-X-Received: by 2002:a50:cd1c:0:b0:543:bd27:f4a9 with SMTP id
- z28-20020a50cd1c000000b00543bd27f4a9mr14258232edi.12.1699352808310; Tue, 07
- Nov 2023 02:26:48 -0800 (PST)
+ us-mta-219-W8_YcLkUNICyXH6YRrkJWw-1; Tue, 07 Nov 2023 05:27:40 -0500
+X-MC-Unique: W8_YcLkUNICyXH6YRrkJWw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9F580811E7E;
+ Tue,  7 Nov 2023 10:27:40 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.124])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 980182166B26;
+ Tue,  7 Nov 2023 10:27:39 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH] MAINTAINERS: Add some more vmware-related files to the
+ corresponding section
+Date: Tue,  7 Nov 2023 11:27:38 +0100
+Message-ID: <20231107102738.14797-1-thuth@redhat.com>
 MIME-Version: 1.0
-References: <20231107101524.2993389-1-marcandre.lureau@redhat.com>
-In-Reply-To: <20231107101524.2993389-1-marcandre.lureau@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Tue, 7 Nov 2023 14:26:36 +0400
-Message-ID: <CAMxuvaxqMK3nzJ=aQjTgoGf8tnvMkQayxCsHYpmymxX15ZwtMg@mail.gmail.com>
-Subject: Re: [PULL v3 00/25] Pixman patches
-To: qemu-devel@nongnu.org
-Cc: stefanha@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,100 +75,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Stefan
+These files are obviously related to Vmware emulation, so let's list
+them in the corresponding section in the MAINTAINERS file.
 
-On Tue, Nov 7, 2023 at 2:16=E2=80=AFPM <marcandre.lureau@redhat.com> wrote:
->
-> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->
-> The following changes since commit bb541a7068d2eee51a9abbe2dedcdf27298b18=
-72:
->
->   Merge tag 'pull-pa-20231106' of https://gitlab.com/rth7680/qemu into st=
-aging (2023-11-07 15:01:17 +0800)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/marcandre.lureau/qemu.git tags/pixman-pull-request
->
-> for you to fetch changes up to d017f28a2ee082f472ed69fedf0435b468000e92:
->
->   build-sys: make pixman actually optional (2023-11-07 14:04:25 +0400)
->
-> ----------------------------------------------------------------
-> Make Pixman an optional dependency
->
-> ----------------------------------------------------------------
->
-> Marc-Andr=C3=A9 Lureau (25):
->   build-sys: add a "pixman" feature
->   build-sys: drop needless warning pragmas for old pixman
->   ui: compile out some qemu-pixman functions when !PIXMAN
->   ui: add pixman-minimal.h
->   vl: drop needless -spice checks
->   qemu-options: define -vnc only #ifdef CONFIG_VNC
->   vl: simplify display_remote logic
->   vl: move display early init before default devices
->   ui/console: allow to override the default VC
->   ui/vc: console-vc requires PIXMAN
->   qmp/hmp: disable screendump if PIXMAN is missing
->   virtio-gpu: replace PIXMAN for region/rect test
->   ui/console: when PIXMAN is unavailable, don't draw placeholder msg
->   vhost-user-gpu: skip VHOST_USER_GPU_UPDATE when !PIXMAN
->   ui/gl: opengl doesn't require PIXMAN
->   ui/vnc: VNC requires PIXMAN
->   ui/spice: SPICE/QXL requires PIXMAN
->   ui/gtk: -display gtk requires PIXMAN
->   ui/dbus: do not require PIXMAN
->   arm/kconfig: XLNX_ZYNQMP_ARM depends on PIXMAN
->   hw/arm: XLNX_VERSAL depends on XLNX_CSU_DMA
->   hw/sm501: allow compiling without PIXMAN
->   hw/mips: FULOONG depends on VT82C686
->   hw/display/ati: allow compiling without PIXMAN
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ MAINTAINERS | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-There is a kind of false-positive with check-patch here:
-86: ERROR: suspect code indent for conditional statements (8, 8)
-
-I think we can agree to ignore. thanks
-
->   build-sys: make pixman actually optional
->
->  meson.build                   |  25 ++++-
->  qapi/ui.json                  |   3 +-
->  include/ui/console.h          |   2 +
->  include/ui/pixman-minimal.h   | 195 ++++++++++++++++++++++++++++++++++
->  include/ui/qemu-pixman.h      |  15 +--
->  include/ui/rect.h             |  59 ++++++++++
->  hw/display/ati.c              |  15 ++-
->  hw/display/ati_2d.c           |  10 +-
->  hw/display/sm501.c            |  45 +++++---
->  hw/display/vhost-user-gpu.c   |   2 +
->  hw/display/virtio-gpu.c       |  30 ++----
->  system/vl.c                   |  84 ++++++++-------
->  ui/console-vc-stubs.c         |  33 ++++++
->  ui/console.c                  |  19 ++++
->  ui/dbus-listener.c            |  90 +++++++++++-----
->  ui/qemu-pixman.c              |   6 ++
->  ui/ui-hmp-cmds.c              |   2 +
->  ui/ui-qmp-cmds.c              |   2 +
->  ui/vnc-stubs.c                |  12 ---
->  Kconfig.host                  |   3 +
->  hmp-commands.hx               |   2 +
->  hw/arm/Kconfig                |   4 +-
->  hw/display/Kconfig            |   7 +-
->  hw/display/meson.build        |   4 +-
->  hw/mips/Kconfig               |   1 +
->  meson_options.txt             |   2 +
->  qemu-options.hx               |   2 +
->  scripts/meson-buildoptions.sh |   3 +
->  ui/meson.build                |  22 ++--
->  29 files changed, 560 insertions(+), 139 deletions(-)
->  create mode 100644 include/ui/pixman-minimal.h
->  create mode 100644 include/ui/rect.h
->  create mode 100644 ui/console-vc-stubs.c
->
-> --
-> 2.41.0
->
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 215d97e58f..becf1c4089 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2362,8 +2362,13 @@ F: hw/net/net_tx_pkt*
+ Vmware
+ M: Dmitry Fleytman <dmitry.fleytman@gmail.com>
+ S: Maintained
++F: docs/specs/vmw_pvscsi-spec.txt
++F: hw/display/vmware_vga.c
+ F: hw/net/vmxnet*
+ F: hw/scsi/vmw_pvscsi*
++F: pc-bios/efi-vmxnet3.rom
++F: pc-bios/vgabios-vmware.bin
++F: roms/config.vga-vmware
+ F: tests/qtest/vmxnet3-test.c
+ F: docs/specs/vwm_pvscsi-spec.rst
+ 
+-- 
+2.41.0
 
 
