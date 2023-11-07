@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3AC7E38C6
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:19:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A52A7E3893
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:14:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0J4l-0002oI-37; Tue, 07 Nov 2023 05:12:51 -0500
+	id 1r0J4w-0003OC-V6; Tue, 07 Nov 2023 05:13:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J4j-0002o0-Qc
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:12:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J4t-0003LD-Nx
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:12:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J4h-0002ly-Dd
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:12:49 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r0J4r-0002ny-Ia
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:12:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699351966;
+ s=mimecast20190719; t=1699351976;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=xB5lcPuUcxHE5NrWU1XvWl0Q9zQU2jRWZ5iV6plyM8o=;
- b=AlUVHG6HqK4UEbvFeohf9LQToy6telvZJJrKvdMN1O5/oFOlzLimW4noaC/wnx6L5Ezuyg
- I/PkJZCX9Bt5rwKJL47ai/Uaxc2o1mNYSIZKRGwVnMD413XdbqLqqBN1UMIBRR6n2aQXjS
- VoYWZ8fCzshnclgijD8VDM491MbMfJI=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Tb+Ihf3FZQsxjNCgYDPZDlw3xq0lYm3eqZrirVZB9V4=;
+ b=GkRgdgbmwTAiPcyAGOjUvaQ0Sjwiq/ttZKWUyyls19GWCqVhCC4qN/YgO8Xj08cw4F9EKO
+ /CFc1ZPDrKcOlhdq81Yg4mwSh9+4gTl+fT/OM2/dV7k2ywvyU2EpNk4YMPpQPIjGqW9TCR
+ UtadQZkWfzMp3tfX0yim7ZKS5ETRXEM=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-216-n0xhePJcOpqYh9Wx3XyX_A-1; Tue, 07 Nov 2023 05:12:45 -0500
-X-MC-Unique: n0xhePJcOpqYh9Wx3XyX_A-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4083717431eso36138475e9.1
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:12:45 -0800 (PST)
+ us-mta-515-irwdLg6aMuCmh5sUPibUEg-1; Tue, 07 Nov 2023 05:12:49 -0500
+X-MC-Unique: irwdLg6aMuCmh5sUPibUEg-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-32d8d17dcbaso2824878f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:12:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699351964; x=1699956764;
+ d=1e100.net; s=20230601; t=1699351968; x=1699956768;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xB5lcPuUcxHE5NrWU1XvWl0Q9zQU2jRWZ5iV6plyM8o=;
- b=CrKBg5Wsejo9hGE2t+EzO0tF9lDoVb2XKtsvi4t57lou8FOAxwSmqI49W140jv5hhK
- aM1ufZCFFaysRBRywCaiwO9fG08HjPwm43QHdXMgruOzUOYG57s7l56GNUZc5kAzEfyu
- vQr/KJC59qoFfyuKXORSPNH1QVvg0l7EXaEz/KsJk40aPxiyEbzw5wJldZtx2Js0pSwK
- 2894I1av+Av2G1q6rr/urBZdaJa4/WLFj+tWmxxdoQmKEzVwMbwRFFp5yah9szJIRgRd
- ew3AgkshXko5CePToTZo0yR4NQJIXVUOVEZ6fdVq0g+eWtRuqYq1rGjdRG4keDNZ2U9C
- elMA==
-X-Gm-Message-State: AOJu0YzMbXCCfFVvDotd5pOACz/AYyBRLBF/nmCoR4DW/uRKy1xhU6TR
- Yu/o+PBE30MTAeav9djkqk+RpX97MiQ6VqKcrVwyHQV8Wh5mQkTWhqQdpEMMGz922rSd54nRfDj
- iGR66xXDW80m21Kagb2my1etUlfngbtnphPpCsVRYkStjWBtsoXzhWn4m4npisz2zE9MJ
-X-Received: by 2002:a05:600c:4587:b0:405:3a65:1b4c with SMTP id
- r7-20020a05600c458700b004053a651b4cmr1751692wmo.6.1699351963936; 
- Tue, 07 Nov 2023 02:12:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH4UcT57eV5eAk2muXoedAvBt9Bh+AkZu4VH7qSUu1GCKsqbL7sPxPP1qI34xHt0OJ408yrTw==
-X-Received: by 2002:a05:600c:4587:b0:405:3a65:1b4c with SMTP id
- r7-20020a05600c458700b004053a651b4cmr1751675wmo.6.1699351963481; 
- Tue, 07 Nov 2023 02:12:43 -0800 (PST)
+ bh=Tb+Ihf3FZQsxjNCgYDPZDlw3xq0lYm3eqZrirVZB9V4=;
+ b=MlN/CqM0c40wtOxuMn+ez9l5kaftlrhK/Y9J68MtaGQniUc7LGD2H4NqfMQ20L2Rv1
+ 6mE9xl6gnXUsh8JKElUelzuX7MHudT9oasNDImKmqvK6t5AKFJKAzLmdoZ6XsN30nF8o
+ hhJ0JXQO1jSOWw1UmItbHKl2//0sJ7zVRiAMdZi+LPdquoGuTDOBZ48VnwC7z5RgrR4U
+ wSvr2Rk+j7Z6Z/3nx+rvHwUqr1Ex/M6DmixuDH5s4lvb4fRvxWwjsI0/kOw+m6Gs0lv1
+ i8IzhvLNxxOuzvmXnBJDMETytQ9V7JT1jz+spka10VFdKbe4rg7B2miHe29mDABGYIeU
+ i+Og==
+X-Gm-Message-State: AOJu0YwYLd7ANMgpV6/Kdeh3qeUWs2YKR+B35HO46ENQ2GhZnKd2QRub
+ qyOCDy+FG4Tc+Ht9EiNN+airIw/Prc6QfOX98ZOMy1eeITIiKoGlyZ8e5aoOO+6FvVvONnDdIzR
+ 7976vquHVSyTuwkAQCa22SfXvELWEEa45Ovd6qiXYDk+s3hgcrQ9YgqUUJR4QE+Cxypkt
+X-Received: by 2002:a5d:6d82:0:b0:32f:9511:9795 with SMTP id
+ l2-20020a5d6d82000000b0032f95119795mr20193263wrs.11.1699351967948; 
+ Tue, 07 Nov 2023 02:12:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHstBS62lVmTW8qyFCt5VA8dMhxbgK00lckVpjPK3N3XOAP/8TIB5UGoKpEXeI9kGDLbbEcMA==
+X-Received: by 2002:a5d:6d82:0:b0:32f:9511:9795 with SMTP id
+ l2-20020a5d6d82000000b0032f95119795mr20193249wrs.11.1699351967646; 
+ Tue, 07 Nov 2023 02:12:47 -0800 (PST)
 Received: from redhat.com ([2.55.5.143]) by smtp.gmail.com with ESMTPSA id
- p7-20020a056000018700b0032f7eaa6e43sm1905003wrx.79.2023.11.07.02.12.41
+ l2-20020a5d4bc2000000b0032da319a27asm1924053wrt.9.2023.11.07.02.12.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Nov 2023 02:12:43 -0800 (PST)
-Date: Tue, 7 Nov 2023 05:12:39 -0500
+ Tue, 07 Nov 2023 02:12:47 -0800 (PST)
+Date: Tue, 7 Nov 2023 05:12:43 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Michael Tokarev <mjt@tls.msk.ru>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 43/63] hw/cxl: Line length reductions
-Message-ID: <b342489ae795f5c2a9f7a565bac8443ccb11b0ce.1699351720.git.mst@redhat.com>
+ Jeongtae Park <jtp.park@samsung.com>, Fan Ni <fan.ni@samsung.com>
+Subject: [PULL 44/63] hw/cxl: Fix a QEMU_BUILD_BUG_ON() in switch statement
+ scope issue.
+Message-ID: <45234c2dd2920f16f768bda1ec8353bda8c5a929.1699351720.git.mst@redhat.com>
 References: <cover.1699351720.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -74,14 +75,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1699351720.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,339 +102,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Michael Tsirkin observed that there were some unnecessarily
-long lines in the CXL code in a recent review.
-This patch is intended to rectify that where it does not
-hurt readability.
+As _Static_assert is a declaration, it can't follow a label until C23.
+Some older versions of GCC trip up on this one.
 
+This check has no obvious purpose so just remove it.
+
+Reported-by: Jeongtae Park <jtp.park@samsung.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
-
-Message-Id: <20231023140210.3089-5-Jonathan.Cameron@huawei.com>
+Message-Id: <20231023140210.3089-6-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/cxl/cxl_component.h |  3 ++-
- include/hw/cxl/cxl_device.h    |  5 +++--
- include/hw/cxl/cxl_events.h    |  3 ++-
- hw/cxl/cxl-cdat.c              |  3 ++-
- hw/cxl/cxl-component-utils.c   | 14 ++++++++------
- hw/cxl/cxl-events.c            |  9 ++++++---
- hw/cxl/cxl-mailbox-utils.c     | 21 ++++++++++++++-------
- hw/mem/cxl_type3.c             | 31 +++++++++++++++++++------------
- hw/mem/cxl_type3_stubs.c       |  5 +++--
- 9 files changed, 59 insertions(+), 35 deletions(-)
+ hw/cxl/cxl-component-utils.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
-index 3c795a6278..e52dd8d2b9 100644
---- a/include/hw/cxl/cxl_component.h
-+++ b/include/hw/cxl/cxl_component.h
-@@ -175,7 +175,8 @@ HDM_DECODER_INIT(3);
-     (CXL_IDE_REGISTERS_OFFSET + CXL_IDE_REGISTERS_SIZE)
- #define CXL_SNOOP_REGISTERS_SIZE   0x8
- 
--QEMU_BUILD_BUG_MSG((CXL_SNOOP_REGISTERS_OFFSET + CXL_SNOOP_REGISTERS_SIZE) >= 0x1000,
-+QEMU_BUILD_BUG_MSG((CXL_SNOOP_REGISTERS_OFFSET +
-+                    CXL_SNOOP_REGISTERS_SIZE) >= 0x1000,
-                    "No space for registers");
- 
- typedef struct component_registers {
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index 51cd0d9ce3..007ddaf078 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -192,7 +192,7 @@ void cxl_device_register_init_common(CXLDeviceState *dev);
-  * Documented as a 128 bit register, but 64 bit accesses and the second
-  * 64 bits are currently reserved.
-  */
--REG64(CXL_DEV_CAP_ARRAY, 0) /* Documented as 128 bit register but 64 byte accesses */
-+REG64(CXL_DEV_CAP_ARRAY, 0)
-     FIELD(CXL_DEV_CAP_ARRAY, CAP_ID, 0, 16)
-     FIELD(CXL_DEV_CAP_ARRAY, CAP_VERSION, 16, 8)
-     FIELD(CXL_DEV_CAP_ARRAY, CAP_COUNT, 32, 16)
-@@ -361,7 +361,8 @@ struct CXLType3Class {
-                         uint64_t offset);
-     void (*set_lsa)(CXLType3Dev *ct3d, const void *buf, uint64_t size,
-                     uint64_t offset);
--    bool (*set_cacheline)(CXLType3Dev *ct3d, uint64_t dpa_offset, uint8_t *data);
-+    bool (*set_cacheline)(CXLType3Dev *ct3d, uint64_t dpa_offset,
-+                          uint8_t *data);
- };
- 
- MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
-diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
-index 089ba2091f..d778487b7e 100644
---- a/include/hw/cxl/cxl_events.h
-+++ b/include/hw/cxl/cxl_events.h
-@@ -92,7 +92,8 @@ typedef enum CXLEventIntMode {
-     CXL_INT_RES      = 0x03,
- } CXLEventIntMode;
- #define CXL_EVENT_INT_MODE_MASK 0x3
--#define CXL_EVENT_INT_SETTING(vector) ((((uint8_t)vector & 0xf) << 4) | CXL_INT_MSI_MSIX)
-+#define CXL_EVENT_INT_SETTING(vector) \
-+    ((((uint8_t)vector & 0xf) << 4) | CXL_INT_MSI_MSIX)
- typedef struct CXLEventInterruptPolicy {
-     uint8_t info_settings;
-     uint8_t warn_settings;
-diff --git a/hw/cxl/cxl-cdat.c b/hw/cxl/cxl-cdat.c
-index d246d6885b..639a2db3e1 100644
---- a/hw/cxl/cxl-cdat.c
-+++ b/hw/cxl/cxl-cdat.c
-@@ -60,7 +60,8 @@ static void ct3_build_cdat(CDATObject *cdat, Error **errp)
-         return;
-     }
- 
--    cdat->built_buf_len = cdat->build_cdat_table(&cdat->built_buf, cdat->private);
-+    cdat->built_buf_len = cdat->build_cdat_table(&cdat->built_buf,
-+                                                 cdat->private);
- 
-     if (!cdat->built_buf_len) {
-         /* Build later as not all data available yet */
 diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
-index 1f4ea11640..5ebd81daf3 100644
+index 5ebd81daf3..d0245cc55d 100644
 --- a/hw/cxl/cxl-component-utils.c
 +++ b/hw/cxl/cxl-component-utils.c
-@@ -241,7 +241,8 @@ static void hdm_init_common(uint32_t *reg_state, uint32_t *write_msk,
-     ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, TARGET_COUNT, 1);
-     ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, INTERLEAVE_256B, 1);
-     ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, INTERLEAVE_4K, 1);
--    ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, POISON_ON_ERR_CAP, 0);
-+    ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY,
-+                     POISON_ON_ERR_CAP, 0);
-     ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_GLOBAL_CONTROL,
-                      HDM_DECODER_ENABLE, 0);
-     write_msk[R_CXL_HDM_DECODER_GLOBAL_CONTROL] = 0x3;
-@@ -264,15 +265,16 @@ static void hdm_init_common(uint32_t *reg_state, uint32_t *write_msk,
-     }
- }
+@@ -305,7 +305,6 @@ void cxl_component_register_init_common(uint32_t *reg_state,
+     ARRAY_FIELD_DP32(reg_state, CXL_CAPABILITY_HEADER, ARRAY_SIZE, caps);
  
--void cxl_component_register_init_common(uint32_t *reg_state, uint32_t *write_msk,
-+void cxl_component_register_init_common(uint32_t *reg_state,
-+                                        uint32_t *write_msk,
-                                         enum reg_type type)
- {
-     int caps = 0;
- 
-     /*
--     * In CXL 2.0 the capabilities required for each CXL component are such that,
--     * with the ordering chosen here, a single number can be used to define
--     * which capabilities should be provided.
-+     * In CXL 2.0 the capabilities required for each CXL component are such
-+     * that, with the ordering chosen here, a single number can be used to
-+     * define which capabilities should be provided.
-      */
-     switch (type) {
-     case CXL2_DOWNSTREAM_PORT:
-@@ -449,7 +451,7 @@ void cxl_component_create_dvsec(CXLComponentState *cxl,
-         default: /* Registers are RO for other component types */
-             break;
-         }
--        /* There are rw1cs bits in the status register but never set currently */
-+        /* There are rw1cs bits in the status register but never set */
-         break;
-     }
- 
-diff --git a/hw/cxl/cxl-events.c b/hw/cxl/cxl-events.c
-index 3ddd6369ad..e2172b94b9 100644
---- a/hw/cxl/cxl-events.c
-+++ b/hw/cxl/cxl-events.c
-@@ -170,8 +170,10 @@ CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPayload *pl,
-     if (log->overflow_err_count) {
-         pl->flags |= CXL_GET_EVENT_FLAG_OVERFLOW;
-         pl->overflow_err_count = cpu_to_le16(log->overflow_err_count);
--        pl->first_overflow_timestamp = cpu_to_le64(log->first_overflow_timestamp);
--        pl->last_overflow_timestamp = cpu_to_le64(log->last_overflow_timestamp);
-+        pl->first_overflow_timestamp =
-+            cpu_to_le64(log->first_overflow_timestamp);
-+        pl->last_overflow_timestamp =
-+            cpu_to_le64(log->last_overflow_timestamp);
-     }
- 
-     pl->record_count = cpu_to_le16(nr);
-@@ -180,7 +182,8 @@ CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPayload *pl,
-     return CXL_MBOX_SUCCESS;
- }
- 
--CXLRetCode cxl_event_clear_records(CXLDeviceState *cxlds, CXLClearEventPayload *pl)
-+CXLRetCode cxl_event_clear_records(CXLDeviceState *cxlds,
-+                                   CXLClearEventPayload *pl)
- {
-     CXLEventLog *log;
-     uint8_t log_type;
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 434ccc5f6e..ab082ec9de 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -366,9 +366,12 @@ static CXLRetCode cmd_identify_memory_device(struct cxl_cmd *cmd,
- 
-     snprintf(id->fw_revision, 0x10, "BWFW VERSION %02d", 0);
- 
--    stq_le_p(&id->total_capacity, cxl_dstate->mem_size / CXL_CAPACITY_MULTIPLIER);
--    stq_le_p(&id->persistent_capacity, cxl_dstate->pmem_size / CXL_CAPACITY_MULTIPLIER);
--    stq_le_p(&id->volatile_capacity, cxl_dstate->vmem_size / CXL_CAPACITY_MULTIPLIER);
-+    stq_le_p(&id->total_capacity,
-+             cxl_dstate->mem_size / CXL_CAPACITY_MULTIPLIER);
-+    stq_le_p(&id->persistent_capacity,
-+             cxl_dstate->pmem_size / CXL_CAPACITY_MULTIPLIER);
-+    stq_le_p(&id->volatile_capacity,
-+             cxl_dstate->vmem_size / CXL_CAPACITY_MULTIPLIER);
-     stl_le_p(&id->lsa_size, cvc->get_lsa_size(ct3d));
-     /* 256 poison records */
-     st24_le_p(id->poison_list_max_mer, 256);
-@@ -396,13 +399,15 @@ static CXLRetCode cmd_ccls_get_partition_info(struct cxl_cmd *cmd,
-         return CXL_MBOX_INTERNAL_ERROR;
-     }
- 
--    stq_le_p(&part_info->active_vmem, cxl_dstate->vmem_size / CXL_CAPACITY_MULTIPLIER);
-+    stq_le_p(&part_info->active_vmem,
-+             cxl_dstate->vmem_size / CXL_CAPACITY_MULTIPLIER);
-     /*
-      * When both next_vmem and next_pmem are 0, there is no pending change to
-      * partitioning.
-      */
-     stq_le_p(&part_info->next_vmem, 0);
--    stq_le_p(&part_info->active_pmem, cxl_dstate->pmem_size / CXL_CAPACITY_MULTIPLIER);
-+    stq_le_p(&part_info->active_pmem,
-+             cxl_dstate->pmem_size / CXL_CAPACITY_MULTIPLIER);
-     stq_le_p(&part_info->next_pmem, 0);
- 
-     *len = sizeof(*part_info);
-@@ -681,8 +686,10 @@ static struct cxl_cmd cxl_cmd_set[256][256] = {
-     [FIRMWARE_UPDATE][GET_INFO] = { "FIRMWARE_UPDATE_GET_INFO",
-         cmd_firmware_update_get_info, 0, 0 },
-     [TIMESTAMP][GET] = { "TIMESTAMP_GET", cmd_timestamp_get, 0, 0 },
--    [TIMESTAMP][SET] = { "TIMESTAMP_SET", cmd_timestamp_set, 8, IMMEDIATE_POLICY_CHANGE },
--    [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported, 0, 0 },
-+    [TIMESTAMP][SET] = { "TIMESTAMP_SET", cmd_timestamp_set,
-+                         8, IMMEDIATE_POLICY_CHANGE },
-+    [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported,
-+                              0, 0 },
-     [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
-     [IDENTIFY][MEMORY_DEVICE] = { "IDENTIFY_MEMORY_DEVICE",
-         cmd_identify_memory_device, 0, 0 },
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index c02be4ce45..18ad853f5b 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -208,10 +208,9 @@ static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
-     }
- 
-     if (nonvolatile_mr) {
-+        uint64_t base = volatile_mr ? memory_region_size(volatile_mr) : 0;
-         rc = ct3_build_cdat_entries_for_mr(&(table[cur_ent]), dsmad_handle++,
--                                           nonvolatile_mr, true,
--                                           (volatile_mr ?
--                                            memory_region_size(volatile_mr) : 0));
-+                                           nonvolatile_mr, true, base);
-         if (rc < 0) {
-             goto error_cleanup;
-         }
-@@ -514,7 +513,8 @@ static void ct3d_reg_write(void *opaque, hwaddr offset, uint64_t value,
-     case A_CXL_RAS_UNC_ERR_STATUS:
-     {
-         uint32_t capctrl = ldl_le_p(cache_mem + R_CXL_RAS_ERR_CAP_CTRL);
--        uint32_t fe = FIELD_EX32(capctrl, CXL_RAS_ERR_CAP_CTRL, FIRST_ERROR_POINTER);
-+        uint32_t fe = FIELD_EX32(capctrl, CXL_RAS_ERR_CAP_CTRL,
-+                                 FIRST_ERROR_POINTER);
-         CXLError *cxl_err;
-         uint32_t unc_err;
- 
-@@ -533,7 +533,8 @@ static void ct3d_reg_write(void *opaque, hwaddr offset, uint64_t value,
-                  * closest to behavior of hardware not capable of multiple
-                  * header recording.
-                  */
--                QTAILQ_FOREACH_SAFE(cxl_err, &ct3d->error_list, node, cxl_next) {
-+                QTAILQ_FOREACH_SAFE(cxl_err, &ct3d->error_list, node,
-+                                    cxl_next) {
-                     if ((1 << cxl_err->type) & value) {
-                         QTAILQ_REMOVE(&ct3d->error_list, cxl_err, node);
-                         g_free(cxl_err);
-@@ -1072,7 +1073,8 @@ void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
-         if (((start >= p->start) && (start < p->start + p->length)) ||
-             ((start + length > p->start) &&
-              (start + length <= p->start + p->length))) {
--            error_setg(errp, "Overlap with existing poisoned region not supported");
-+            error_setg(errp,
-+                       "Overlap with existing poisoned region not supported");
-             return;
-         }
-     }
-@@ -1085,7 +1087,8 @@ void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
-     p = g_new0(CXLPoison, 1);
-     p->length = length;
-     p->start = start;
--    p->type = CXL_POISON_TYPE_INTERNAL; /* Different from injected via the mbox */
-+    /* Different from injected via the mbox */
-+    p->type = CXL_POISON_TYPE_INTERNAL;
- 
-     QLIST_INSERT_HEAD(&ct3d->poison_list, p, node);
-     ct3d->poison_list_cnt++;
-@@ -1222,7 +1225,8 @@ void qmp_cxl_inject_correctable_error(const char *path, CxlCorErrorType type,
-         return;
-     }
-     /* If the error is masked, nothting to do here */
--    if (!((1 << cxl_err_type) & ~ldl_le_p(reg_state + R_CXL_RAS_COR_ERR_MASK))) {
-+    if (!((1 << cxl_err_type) &
-+          ~ldl_le_p(reg_state + R_CXL_RAS_COR_ERR_MASK))) {
-         return;
-     }
- 
-@@ -1372,7 +1376,8 @@ void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log, uint8_t flags,
-                                bool has_bank, uint8_t bank,
-                                bool has_row, uint32_t row,
-                                bool has_column, uint16_t column,
--                               bool has_correction_mask, uint64List *correction_mask,
-+                               bool has_correction_mask,
-+                               uint64List *correction_mask,
-                                Error **errp)
- {
-     Object *obj = object_resolve_path(path, NULL);
-@@ -1473,7 +1478,7 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-                                         int16_t temperature,
-                                         uint32_t dirty_shutdown_count,
-                                         uint32_t corrected_volatile_error_count,
--                                        uint32_t corrected_persistent_error_count,
-+                                        uint32_t corrected_persist_error_count,
-                                         Error **errp)
- {
-     Object *obj = object_resolve_path(path, NULL);
-@@ -1513,8 +1518,10 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-     module.life_used = life_used;
-     stw_le_p(&module.temperature, temperature);
-     stl_le_p(&module.dirty_shutdown_count, dirty_shutdown_count);
--    stl_le_p(&module.corrected_volatile_error_count, corrected_volatile_error_count);
--    stl_le_p(&module.corrected_persistent_error_count, corrected_persistent_error_count);
-+    stl_le_p(&module.corrected_volatile_error_count,
-+             corrected_volatile_error_count);
-+    stl_le_p(&module.corrected_persistent_error_count,
-+             corrected_persist_error_count);
- 
-     if (cxl_event_insert(cxlds, enc_log, (CXLEventRecordRaw *)&module)) {
-         cxl_event_irq_assert(ct3d);
-diff --git a/hw/mem/cxl_type3_stubs.c b/hw/mem/cxl_type3_stubs.c
-index 8ba5d3d1f7..3e1851e32b 100644
---- a/hw/mem/cxl_type3_stubs.c
-+++ b/hw/mem/cxl_type3_stubs.c
-@@ -33,7 +33,8 @@ void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log, uint8_t flags,
-                                bool has_bank, uint8_t bank,
-                                bool has_row, uint32_t row,
-                                bool has_column, uint16_t column,
--                               bool has_correction_mask, uint64List *correction_mask,
-+                               bool has_correction_mask,
-+                               uint64List *correction_mask,
-                                Error **errp) {}
- 
- void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-@@ -45,7 +46,7 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-                                         int16_t temperature,
-                                         uint32_t dirty_shutdown_count,
-                                         uint32_t corrected_volatile_error_count,
--                                        uint32_t corrected_persistent_error_count,
-+                                        uint32_t corrected_persist_error_count,
-                                         Error **errp) {}
- 
- void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
+ #define init_cap_reg(reg, id, version)                                        \
+-    QEMU_BUILD_BUG_ON(CXL_##reg##_REGISTERS_OFFSET == 0);                     \
+     do {                                                                      \
+         int which = R_CXL_##reg##_CAPABILITY_HEADER;                          \
+         reg_state[which] = FIELD_DP32(reg_state[which],                       \
 -- 
 MST
 
