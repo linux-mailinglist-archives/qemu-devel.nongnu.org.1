@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF8B7E3416
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:16:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC89A7E33AC
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:12:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0CS1-00063M-3F; Mon, 06 Nov 2023 22:08:25 -0500
+	id 1r0CS0-0005yw-GT; Mon, 06 Nov 2023 22:08:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CRo-0005UQ-Gx
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:08:12 -0500
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1r0CRr-0005hK-VG
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:08:16 -0500
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CRi-0001TP-Hm
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:08:12 -0500
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6c32a20d5dbso4117230b3a.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:08:05 -0800 (PST)
+ id 1r0CRj-0001Th-Aq
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:08:15 -0500
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2800c221af2so4894738a91.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:08:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699326485; x=1699931285; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699326486; x=1699931286; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=nPDrqyoPtn/P2Y3dlnz8L7OPFIA66GeNv3k0Fexkp9U=;
- b=sL3fOJnLOR9kZCiEdsGL4sQhMkS4es7TG+BZOcJngDcfWYVNwjzEfdlmlMl3xpHEVM
- vNOCT15b11efDowXaVqNrsU7q1BzzG1WkqBbfge3I+YNAm27+ja6oFXmQe6kRo0jis/R
- gZQZ1wIBY4JWbqQk/N7t56IWK1nnD6bi6spweqG2/nFUQ5eAWWOfInzbFQ7C/2gVUWXe
- ZZGu+26ILxA2YNTGvjCPDtDjX8nT4VVKFMi2MJUeT8tUEVOIQqmivmSgRuXDMYFwKVv4
- SE9eNxa5oiwGLeCQvq2RSPZ/UTASQLxH2Znx+JsQ4oq3itWFMixS2XlW989+FHA1grLT
- i8rQ==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=66ApnGauyIOyjoGgrQcp0zpcbmFv1rSgcJfwyoog9aA=;
+ b=E9smyNzu+MMIWhX6sW422iiBI/MKSznPxjEurvYC+Cwzut7kyyCbI7sI+qTYplu4tG
+ 8HntvqAhkYkwmJFZk+MDpEjZSrvsbM7w/zzKrmCv+klEQT576NZR1jfGdLRqsO+GooJ0
+ pYYbNZk8r/1LKOilH5ghq/DZCS2jvhOqJbO2F+js4VknJUowgzDA72WWpt4FGZjEsi0G
+ 3U9incHDHs+2PBABlJnTn89FSiPKPYko3M1c5ZpuveHcnWo7OlBL+3hhFMURo3T/xy4z
+ H0kpwOTbu9TbAFyeEYNfj4oi21la8HrIv5NClCi0qu/fxqLZ42ogAir85DP4urH0qIVa
+ xsMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699326485; x=1699931285;
+ d=1e100.net; s=20230601; t=1699326486; x=1699931286;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nPDrqyoPtn/P2Y3dlnz8L7OPFIA66GeNv3k0Fexkp9U=;
- b=FD0ygvT7Mfc7JOMMN2Irz3J3am/f3EBsXbIM5RUxjV6Bz3aepPsuJAjKhr59fzrA6F
- BZX2PnL2oHeQ5A1+54ccYtl4MhjHTc1ffgxbGMxCUo3SthpsgkbUQX06cFVzZZoLD0S+
- wSdMm/NhMuok/GSSn+GFBsaRryYJ6OBrNTyxtm0ltl4gRQhNrfaheIk1x3V0zoFG+i3P
- 6MBv7CmCrcxdAIWDufk69li+MKQFMCCJAHE162OLCZyNby7PBtJjm8u6k8TI3VDXN8H3
- QVA9PzPJB8Y5EmevSkp+Dite5PhWBHDkQN4ntvcd5SU0HBbVZjIW9rJeB7gj1crjqp/P
- QFLg==
-X-Gm-Message-State: AOJu0YyOy+n7JVr4qF3gMkv+1r+XEJ3aoe9SBpSdzqzYLQb0KvqBcCsf
- pJhTS9Trq6U/NZX65AHvj7cb6+xrhQ34gw59sFQ=
-X-Google-Smtp-Source: AGHT+IEuHSD7stoDNuRFBdWddGQ0funxm5NxwGr3ZV8FgKzmSS9kuWMAjsh+1PeytQ44BPqcoKq2uQ==
-X-Received: by 2002:a05:6a20:7f8a:b0:183:e7ba:8a8a with SMTP id
- d10-20020a056a207f8a00b00183e7ba8a8amr5733730pzj.30.1699326485013; 
+ bh=66ApnGauyIOyjoGgrQcp0zpcbmFv1rSgcJfwyoog9aA=;
+ b=qXFLyS6qlUBRP6IHJrjKZEX2X/TgV79nOktCrTZ/wcA98VQNcycrS2TCpJ4sbTfyW5
+ DdSXZmvpzkFIKSiNNb2LJOweld0gvvDWIkElfESS8ntZWe8lg7nDiYcgHHLmPjQa+Cu4
+ noxfAjfVKwxiF5HRVxHp1nuvfF5+lg07W36nRMbiySeieXgGpzkySAGvy++1zU7du3Mm
+ DUiecl1qNBobsxU18NC4BNFfORkmjbUdz8dDMSQQYRC7QdUIdW+dYZ/xduneftOifbyq
+ pWJNU3zIJZvBbCAE3cXhdb+s3M5QtUHtQ5TaPSVn04yas3sIiOG2us5yphdKV9BTvOWg
+ 78EA==
+X-Gm-Message-State: AOJu0YwdCp7RWQSUlYCAGU5h3QKjt9XnRIEUxfBS8lTsNX7AouP47Ols
+ /MUykCc1krq1+/pdo81VOKmHqjLZElu9UOCPG58=
+X-Google-Smtp-Source: AGHT+IFyvps4/lAnC9OqjDYOBBiXME/gf7FCkDVYvzxoqgiMihNBFoyFZZxKHH59jf/BevuKNMumKQ==
+X-Received: by 2002:a17:90a:2a86:b0:27d:4b20:3604 with SMTP id
+ j6-20020a17090a2a8600b0027d4b203604mr22815684pjd.27.1699326485811; 
  Mon, 06 Nov 2023 19:08:05 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- 13-20020a17090a004d00b0027782f611d1sm6744883pjb.36.2023.11.06.19.08.04
- for <qemu-devel@nongnu.org>
+ 13-20020a17090a004d00b0027782f611d1sm6744883pjb.36.2023.11.06.19.08.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 19:08:04 -0800 (PST)
+ Mon, 06 Nov 2023 19:08:05 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 76/85] target/hppa: Avoid async_safe_run_on_cpu on uniprocessor
- system
-Date: Mon,  6 Nov 2023 19:03:58 -0800
-Message-Id: <20231107030407.8979-77-richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>
+Subject: [PULL 77/85] target/hppa: Clear upper bits in mtctl for pa1.x
+Date: Mon,  6 Nov 2023 19:03:59 -0800
+Message-Id: <20231107030407.8979-78-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231107030407.8979-1-richard.henderson@linaro.org>
 References: <20231107030407.8979-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,39 +90,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Helge Deller <deller@gmx.de>
+
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/mem_helper.c | 8 +++++++-
+ target/hppa/translate.c | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index 7132ea221c..602e6c809f 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -480,6 +480,7 @@ void HELPER(ptlb)(CPUHPPAState *env, target_ulong addr)
- {
-     CPUState *src = env_cpu(env);
-     CPUState *cpu;
-+    bool wait = false;
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index 9f129a230b..4102f5faf3 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -2060,7 +2060,13 @@ static bool trans_mtctl(DisasContext *ctx, arg_mtctl *a)
  
-     trace_hppa_tlb_ptlb(env);
-     run_on_cpu_data data = RUN_ON_CPU_TARGET_PTR(addr);
-@@ -487,9 +488,14 @@ void HELPER(ptlb)(CPUHPPAState *env, target_ulong addr)
-     CPU_FOREACH(cpu) {
-         if (cpu != src) {
-             async_run_on_cpu(cpu, ptlb_work, data);
-+            wait = true;
-         }
-     }
--    async_safe_run_on_cpu(src, ptlb_work, data);
-+    if (wait) {
-+        async_safe_run_on_cpu(src, ptlb_work, data);
+ #ifndef CONFIG_USER_ONLY
+     nullify_over(ctx);
+-    reg = load_gpr(ctx, a->r);
++
++    if (ctx->is_pa20) {
++        reg = load_gpr(ctx, a->r);
 +    } else {
-+        ptlb_work(src, data);
++        reg = tcg_temp_new_i64();
++        tcg_gen_ext32u_i64(reg, load_gpr(ctx, a->r));
 +    }
- }
  
- void hppa_ptlbe(CPUHPPAState *env)
+     switch (ctl) {
+     case CR_IT:
 -- 
 2.34.1
 
