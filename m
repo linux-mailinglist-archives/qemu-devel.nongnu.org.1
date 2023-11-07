@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CFE07E32F4
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:32:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C89687E3310
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:34:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0Bs5-0003iZ-EX; Mon, 06 Nov 2023 21:31:17 -0500
+	id 1r0Bs7-0003im-FQ; Mon, 06 Nov 2023 21:31:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r0Bs1-0003SW-0m
+ id 1r0Bs1-0003VY-FK
  for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:31:13 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r0Brx-0002n9-P9
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:31:12 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1cc5b705769so47200575ad.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:30:59 -0800 (PST)
+ id 1r0Brx-0002oo-O6
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:31:13 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1cc1ee2d8dfso47089995ad.3
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:31:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699324258; x=1699929058; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699324262; x=1699929062; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=brc8LPoI6i56fPp8v/s+mfo+dQa+BkbCRd3TgBQFTJI=;
- b=TC7k8Q+zU0qXDyDlb5NdTgggNO+CJwzkMd2nUU3rpyrf0PmrxMVocjWNF0vep6uXt4
- AbNIU6uqoH4koBAD3fZuVUb9CYnuH4UDVagsaN95/cVO/+b87/TebovmbCg98zrywRcc
- gNkEWlzym3Pt8dp6idwySWi2yGCrVX4obo2o6cmc/sD8XZQZ5rhFvb++vv+qzQYAOSIo
- L/AKaTnV8riIrFg/EJMgAuXbTq8Ky0rfRUPfgsQwUDmp6m562H5mZGxfAy82OBWoBn+h
- 4MzV1OsfEB0kTs+mUbOOUNMTTdIkCXymwpDb+kntY4e53W4eQLGPDuR0EJtu1O5vxYeG
- Wsew==
+ bh=DlX1VQasrS2peO0LifeKFR+P9fYeUoOJaqvdbWuFzgo=;
+ b=CP3NBd6F6LKDzv/fuS9elgOTcQ+HVBuHeUsHTxBqlmOa/Fm4bY7wXyJPimt4QGQNTl
+ WeRGXn6CNGJh6oEvlcHeSFdliIWlvO1mzB3bMr7/i2nC80HN7kNL8iw9a7SuvArcU6Cn
+ jqL+NxB1ba7H4kMZKhrMhqQsfspoiEBjgkJB5A4t3dl24tjq3fAqWIzcCf5K8RnFzuII
+ N34chfSIIoJ/qsraJtF7C3Moi4O7O66yLZpryvY/h1qhrU9XXvMltoZwY1wous0AF8GO
+ hUbe95y2cdTG6h/wnShAiDi2klzpERxNCyRH3+Qssayf6YfktyPsv5LuDlgVbCu8U2Fy
+ kbtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699324258; x=1699929058;
+ d=1e100.net; s=20230601; t=1699324262; x=1699929062;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=brc8LPoI6i56fPp8v/s+mfo+dQa+BkbCRd3TgBQFTJI=;
- b=LBhzT3/C+VSjbFN5e28tV+J0RUXEmfsHu5qv12biLW/cka0g6iO0ihPFz1M6kvVc4M
- d4SA4PXe4vvfuvvcqQmrwo70HWxZ0V2P4I62PukFkPa2A2Dm1SK6la/PHxCYMKL9ABtN
- SRL4UbgyRDti34AFHn+Z5gw0SwWyMT7Eykp1vVyTb5bCenfCHT6mN+gkecmA6vv3ICkX
- EjpnliAlBB8oyI2nJ2XWcnpCg1tz1jZvLGYhBKXZobT57+zHmIdDCrD96gifBSzhWmCn
- AQJeLQGry2NP++d77X+qnF/J2SW2rhEafXmqOP/esiBGIH1Ehl7Ij4eJOuF7y+3UdfYg
- 6mjA==
-X-Gm-Message-State: AOJu0YzGHATFghOtSJct77AWj3CkDRLgf0Avp7zdB137X0F3naWE/eTA
- GGaXAtfKmMf+DIgUSgs3/hNjdjvPC659/A==
-X-Google-Smtp-Source: AGHT+IE51BjhlViJZL9Fe6xIcWYc4f1nbGkAxyMV5IHWpeEpMjCI4FQ37UbCjqOnyrwBW+ZN+F4eFA==
-X-Received: by 2002:a17:902:da87:b0:1cc:4124:7754 with SMTP id
- j7-20020a170902da8700b001cc41247754mr34094317plx.32.1699324258301; 
- Mon, 06 Nov 2023 18:30:58 -0800 (PST)
+ bh=DlX1VQasrS2peO0LifeKFR+P9fYeUoOJaqvdbWuFzgo=;
+ b=SLp0hwHRF1m0pM5s45rzSvOPTEqsj/D9/KLHOgqpEG/g2SP2WTEOH8JtpLoywsZ0nd
+ IG4NluJr9Eojb6zPVTXjNtvfi3UdMzD9K/eyQ1znTOFlFxd0zzH2Fonej31O+SVoM9vU
+ lRcuTjk1sVbAev8lNlsZvCB7Jaqbk5vuQgQ0EKmEhKvmkpjnrYQxQUDLBRhhRmJfSD6j
+ NMfKWH9lrMXbgE/lxa9VsEVDVFp3bJUeT3kWu2hVvjqFJfQiMvo1OIw4Hxm1JZKvyYva
+ J78Ro/8+qy3St/S1PNBzvQzbsOyCf8KspQr2pnMEV7VjTKPmaFTxLZ6piqSibGO9jHyi
+ SVww==
+X-Gm-Message-State: AOJu0YwkVpjsRvZFhGfgM8evFVEwPWrWG2Eb87Cz2yt5QVhBsKW3dtfv
+ N2Fxm4Fq6fqLBSJHPsinxUCXOSc9Mbi00A==
+X-Google-Smtp-Source: AGHT+IGLYZWcc3665NhU4sAHH+qrV6sFtq238wUPnAsc+FbM20y+gpEhuY9HUdVKsHO2mv/NhANUQQ==
+X-Received: by 2002:a17:902:db10:b0:1cc:5833:cf4f with SMTP id
+ m16-20020a170902db1000b001cc5833cf4fmr27688399plx.55.1699324262063; 
+ Mon, 06 Nov 2023 18:31:02 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- u18-20020a170902e5d200b001cc32f46757sm6487649plf.107.2023.11.06.18.30.55
+ u18-20020a170902e5d200b001cc32f46757sm6487649plf.107.2023.11.06.18.30.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 18:30:57 -0800 (PST)
+ Mon, 06 Nov 2023 18:31:01 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com, Himanshu Chauhan <hchauhan@ventanamicro.com>,
+ Mayuresh Chitale <mchitale@ventanamicro.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 18/49] target/riscv/riscv-qmp-cmds.c: check CPU accel in
- query-cpu-model-expansion
-Date: Tue,  7 Nov 2023 12:29:14 +1000
-Message-ID: <20231107022946.1055027-19-alistair.francis@wdc.com>
+Subject: [PULL 19/49] Add epmp to extensions list and rename it to smepmp
+Date: Tue,  7 Nov 2023 12:29:15 +1000
+Message-ID: <20231107022946.1055027-20-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231107022946.1055027-1-alistair.francis@wdc.com>
 References: <20231107022946.1055027-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,74 +98,186 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Himanshu Chauhan <hchauhan@ventanamicro.com>
 
-Use the recently added riscv_cpu_accelerator_compatible() to filter
-unavailable CPUs for a given accelerator. At this moment this is the
-case for a QEMU built with KVM and TCG support querying a binary running
-with TCG:
+Smepmp is a ratified extension which qemu refers to as epmp.
+Rename epmp to smepmp and add it to extension list so that
+it is added to the isa string.
 
-qemu-system-riscv64 -S -M virt,accel=tcg -display none
-    -qmp tcp:localhost:1234,server,wait=off
-
-./qemu/scripts/qmp/qmp-shell localhost:1234
-
-(QEMU) query-cpu-model-expansion type=full model={"name":"host"}
-{"error": {"class": "GenericError", "desc": "'host' CPU not available with tcg"}}
-
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
+Signed-off-by: Mayuresh Chitale <mchitale@ventanamicro.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20231018195638.211151-7-dbarboza@ventanamicro.com>
+Message-ID: <20231019065546.1431579-1-mchitale@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/riscv-qmp-cmds.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ target/riscv/cpu_cfg.h     |  2 +-
+ target/riscv/cpu.c         |  8 +++-----
+ target/riscv/csr.c         |  6 +++---
+ target/riscv/pmp.c         | 12 ++++++------
+ target/riscv/tcg/tcg-cpu.c |  4 ++--
+ 5 files changed, 15 insertions(+), 17 deletions(-)
 
-diff --git a/target/riscv/riscv-qmp-cmds.c b/target/riscv/riscv-qmp-cmds.c
-index 5b2d186c83..2f2dbae7c8 100644
---- a/target/riscv/riscv-qmp-cmds.c
-+++ b/target/riscv/riscv-qmp-cmds.c
-@@ -31,6 +31,8 @@
- #include "qapi/qobject-input-visitor.h"
- #include "qapi/visitor.h"
- #include "qom/qom-qobject.h"
-+#include "sysemu/kvm.h"
-+#include "sysemu/tcg.h"
- #include "cpu-qom.h"
- #include "cpu.h"
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 208cac1c7c..e7ce977189 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -102,6 +102,7 @@ struct RISCVCPUConfig {
+     bool ext_smaia;
+     bool ext_ssaia;
+     bool ext_sscofpmf;
++    bool ext_smepmp;
+     bool rvv_ta_all_1s;
+     bool rvv_ma_all_1s;
  
-@@ -63,6 +65,17 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
-     return cpu_list;
+@@ -134,7 +135,6 @@ struct RISCVCPUConfig {
+     uint16_t cboz_blocksize;
+     bool mmu;
+     bool pmp;
+-    bool epmp;
+     bool debug;
+     bool misa_w;
+ 
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 8e0abe33d3..0c58c8571f 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -134,7 +134,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
+     ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
+     ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
+-    ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, epmp),
++    ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
+     ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
+     ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
+     ISA_EXT_DATA_ENTRY(sscofpmf, PRIV_VERSION_1_12_0, ext_sscofpmf),
+@@ -600,12 +600,11 @@ static void rv32_ibex_cpu_init(Object *obj)
+ #ifndef CONFIG_USER_ONLY
+     set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
+ #endif
+-    cpu->cfg.epmp = true;
+-
+     /* inherited from parent obj via riscv_cpu_init() */
+     cpu->cfg.ext_zifencei = true;
+     cpu->cfg.ext_zicsr = true;
+     cpu->cfg.pmp = true;
++    cpu->cfg.ext_smepmp = true;
  }
  
-+static void riscv_check_if_cpu_available(RISCVCPU *cpu, Error **errp)
-+{
-+    if (!riscv_cpu_accelerator_compatible(cpu)) {
-+        g_autofree char *name = riscv_cpu_get_name(cpu);
-+        const char *accel = kvm_enabled() ? "kvm" : "tcg";
-+
-+        error_setg(errp, "'%s' CPU not available with %s", name, accel);
-+        return;
-+    }
-+}
-+
- static void riscv_obj_add_qdict_prop(Object *obj, QDict *qdict_out,
-                                      const char *name)
+ static void rv32_imafcu_nommu_cpu_init(Object *obj)
+@@ -1280,6 +1279,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     MULTI_EXT_CFG_BOOL("zve64d", ext_zve64d, false),
+     MULTI_EXT_CFG_BOOL("sstc", ext_sstc, true),
+ 
++    MULTI_EXT_CFG_BOOL("smepmp", ext_smepmp, false),
+     MULTI_EXT_CFG_BOOL("smstateen", ext_smstateen, false),
+     MULTI_EXT_CFG_BOOL("svadu", ext_svadu, true),
+     MULTI_EXT_CFG_BOOL("svinval", ext_svinval, false),
+@@ -1345,8 +1345,6 @@ const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
+ 
+ /* These are experimental so mark with 'x-' */
+ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
+-    /* ePMP 0.9.3 */
+-    MULTI_EXT_CFG_BOOL("x-epmp", epmp, false),
+     MULTI_EXT_CFG_BOOL("x-smaia", ext_smaia, false),
+     MULTI_EXT_CFG_BOOL("x-ssaia", ext_ssaia, false),
+ 
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index a5be1c202c..f4e0a3962f 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -524,9 +524,9 @@ static RISCVException pmp(CPURISCVState *env, int csrno)
+     return RISCV_EXCP_ILLEGAL_INST;
+ }
+ 
+-static RISCVException epmp(CPURISCVState *env, int csrno)
++static RISCVException smepmp(CPURISCVState *env, int csrno)
  {
-@@ -161,6 +174,13 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
+-    if (riscv_cpu_cfg(env)->epmp) {
++    if (riscv_cpu_cfg(env)->ext_smepmp) {
+         return RISCV_EXCP_NONE;
+     }
  
-     obj = object_new(object_class_get_name(oc));
+@@ -4762,7 +4762,7 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+     [CSR_VSIPH]       = { "vsiph",       aia_hmode32, NULL, NULL, rmw_vsiph },
  
-+    riscv_check_if_cpu_available(RISCV_CPU(obj), &local_err);
-+    if (local_err != NULL) {
-+        error_propagate(errp, local_err);
-+        object_unref(obj);
-+        return NULL;
-+    }
-+
-     if (qdict_in) {
-         riscv_cpuobj_validate_qdict_in(obj, model->props, qdict_in,
-                                        &local_err);
+     /* Physical Memory Protection */
+-    [CSR_MSECCFG]    = { "mseccfg",  epmp, read_mseccfg, write_mseccfg,
++    [CSR_MSECCFG]    = { "mseccfg", smepmp, read_mseccfg, write_mseccfg,
+                          .min_priv_ver = PRIV_VERSION_1_11_0           },
+     [CSR_PMPCFG0]    = { "pmpcfg0",   pmp, read_pmpcfg,  write_pmpcfg  },
+     [CSR_PMPCFG1]    = { "pmpcfg1",   pmp, read_pmpcfg,  write_pmpcfg  },
+diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+index 5e60c26031..21d2489e27 100644
+--- a/target/riscv/pmp.c
++++ b/target/riscv/pmp.c
+@@ -91,7 +91,7 @@ static bool pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
+     if (pmp_index < MAX_RISCV_PMPS) {
+         bool locked = true;
+ 
+-        if (riscv_cpu_cfg(env)->epmp) {
++        if (riscv_cpu_cfg(env)->ext_smepmp) {
+             /* mseccfg.RLB is set */
+             if (MSECCFG_RLB_ISSET(env)) {
+                 locked = false;
+@@ -340,9 +340,9 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+ 
+         /*
+          * Convert the PMP permissions to match the truth table in the
+-         * ePMP spec.
++         * Smepmp spec.
+          */
+-        const uint8_t epmp_operation =
++        const uint8_t smepmp_operation =
+             ((env->pmp_state.pmp[i].cfg_reg & PMP_LOCK) >> 4) |
+             ((env->pmp_state.pmp[i].cfg_reg & PMP_READ) << 2) |
+             (env->pmp_state.pmp[i].cfg_reg & PMP_WRITE) |
+@@ -367,7 +367,7 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+                  * If mseccfg.MML Bit set, do the enhanced pmp priv check
+                  */
+                 if (mode == PRV_M) {
+-                    switch (epmp_operation) {
++                    switch (smepmp_operation) {
+                     case 0:
+                     case 1:
+                     case 4:
+@@ -398,7 +398,7 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+                         g_assert_not_reached();
+                     }
+                 } else {
+-                    switch (epmp_operation) {
++                    switch (smepmp_operation) {
+                     case 0:
+                     case 8:
+                     case 9:
+@@ -574,7 +574,7 @@ void mseccfg_csr_write(CPURISCVState *env, target_ulong val)
+         }
+     }
+ 
+-    if (riscv_cpu_cfg(env)->epmp) {
++    if (riscv_cpu_cfg(env)->ext_smepmp) {
+         /* Sticky bits */
+         val |= (env->mseccfg & (MSECCFG_MMWP | MSECCFG_MML));
+         if ((val ^ env->mseccfg) & (MSECCFG_MMWP | MSECCFG_MML)) {
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 6771617226..c5ff03efce 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -565,12 +565,12 @@ void riscv_tcg_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+         return;
+     }
+ 
+-    if (cpu->cfg.epmp && !cpu->cfg.pmp) {
++    if (cpu->cfg.ext_smepmp && !cpu->cfg.pmp) {
+         /*
+          * Enhanced PMP should only be available
+          * on harts with PMP support
+          */
+-        error_setg(errp, "Invalid configuration: EPMP requires PMP support");
++        error_setg(errp, "Invalid configuration: Smepmp requires PMP support");
+         return;
+     }
+ 
 -- 
 2.41.0
 
