@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9749F7E33AB
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:12:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3847E341C
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:17:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0CRb-0004Xq-Rs; Mon, 06 Nov 2023 22:07:59 -0500
+	id 1r0CRm-00057p-Bv; Mon, 06 Nov 2023 22:08:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CRW-0004SF-Pa
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:07:54 -0500
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1r0CRc-0004mO-Dp
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:08:00 -0500
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CRU-0001P2-Rx
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:07:54 -0500
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-27db9fdec0dso4943347a91.0
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:07:52 -0800 (PST)
+ id 1r0CRV-0001P9-OJ
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:08:00 -0500
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6b497c8575aso5526977b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:07:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699326471; x=1699931271; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699326472; x=1699931272; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=5LcF9LoYUfkHMUXrodl2B+uzzvbwDBzafXMANmAdcak=;
- b=GxKqQgtCNnHpEb9pukT0UeXsmpDgKw4PYXGdJXeEA/SKio2yKuppe+QCeIsMRQw7K1
- r6OPKp2aVsdgB/tEoyCowlDMkThBh0Lw1CCNLEysSJR93DU8itlA0O0BjCk6s8KnyRbK
- EuIzI9nch9fG/dcP2iDu+pZH7qzQ569BfLNbUB4BEar+P3/GxhCaQtAvO18s8OSc93QI
- pwvCqoy363TPbhi0HvShHrvwmxucBr3fEuQu/WQa06nTKGbVI3G7mUzyUPiVG6yQOjFz
- Svjd51Dv0npsDYnAcEj5r/7ieL0XDRc836dUYnMULdU47CPAf+M+2azuuzVUbhhvtGwB
- 7p5g==
+ :reply-to; bh=5R4Ejp1tf3eAAlnOmMDj473kePszpAfYWj5OPHnPKtM=;
+ b=LJeSzIxEK3rOH/lbHpxa4URxMLutFCCnLsXJNiULpKw1zc5Ymd5svoHhiI7JiRV2Re
+ d9AMmjOxz5FNLy2IMZBwz6R5rP2tnC9+r/rkPT4cH6rdm2Rghlp+wN+w+chTejft6Vbz
+ y4SWnZCdNbwylBHMMXjSyfryD9aZUDDyRLDFR8SkCXq7RK8nyW5twcURamLFGKtjpcck
+ KYdotl/EkzYouPg/QCYA2ozvbUXMnH6C/b7e2TBS+4RmaFfPTc0wz1xfkc6Wizx+L4PB
+ u4TUxrHxKj63voD/CmWnfuKgGgkpCoscde8sI1FqCj5/oZAz3A+uRnUiUs+Zu/M4cMIb
+ Jb1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699326471; x=1699931271;
+ d=1e100.net; s=20230601; t=1699326472; x=1699931272;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5LcF9LoYUfkHMUXrodl2B+uzzvbwDBzafXMANmAdcak=;
- b=YDHT9F3D1+4sRr+CvFNluGE1YtF7b3XPTi/8nf+cy7O5a0S3QdaQQ6C9EUUJh9O00h
- yLU15tC9cxunArTfPbPuK/yGYZ8f7pgsa/ABB+aa/Yo0TrAPnG8Srx0+omxJcvhUAznn
- c0zDhvwkKvSjiinMQIN+LFzV84/VZYkd8ZWypbvEgdOhcbPwET9Lq67PWw6/HC0kDxO3
- ZDfHbcE0z8udtzDsgAIE+3SsfaCTHZZnZSE9Au5lYXNUBcqLiXcOYWCuexgEMb8zb/Vk
- 6C+vO9UqjS8Xnxn4Fp6YgOTAMuxsRWTRYuyefeo8/cILU6ytww7A1eZrusrBrpQNAxTI
- 7X0w==
-X-Gm-Message-State: AOJu0YxxZjidi+4SVT8yiZP8VY5dqfBFjrF9T4uknFaTl2adsECk0xFU
- PpAX9Gr//jSwO5/8pBbUaBdu07JteP8Nx0Pe9jM=
-X-Google-Smtp-Source: AGHT+IHrjeeea20SrI7NBhMa7igVJWlf5dXsZ4qiMWnZZwHqbnJtJWy1Jh+iut3IEWC3ywV37TX/sA==
-X-Received: by 2002:a17:90a:34d:b0:280:c9a1:861e with SMTP id
- 13-20020a17090a034d00b00280c9a1861emr15214644pjf.13.1699326471441; 
- Mon, 06 Nov 2023 19:07:51 -0800 (PST)
+ bh=5R4Ejp1tf3eAAlnOmMDj473kePszpAfYWj5OPHnPKtM=;
+ b=s6kzdxEp43+Nkix+VTDzdRi9pQn4MgpMQdymI8iFhAg0j9vt+1f0vSHlX+c0XbNhr8
+ 8hQW5O8OdUTWQv4wi+6p20HDZfmCMK6EpSXjQxiUyKbiL4h5IeM7FHsr7+Hl28tXdDLz
+ wyf85CVu8n0vdG9HwHqMyXCs7fkLQrc7UD3m3QeM2ZXICHPE2hmYRxpBYrqN5+I+36kx
+ L//3J2HWYKM+OzG4Lq6rVMP6fcBvSmzeZnoSPuti/P27qnL01Xn8xK9hA0DpgiL3p8LH
+ 5y3bdM2HiatQu6Be34QVfpoqkp6GmW5TdVPteSCqw3e0hc+TbvpAatng3gf8lmWIktlM
+ FsuA==
+X-Gm-Message-State: AOJu0YxIeSxLVKidsMw9PYoLv+3C+MEzRK7yYYYLoTybqryGlXya2f8f
+ xjkT5jQTv9jZhgH5B5ev1LzAzwhk+5bOVnr7C08=
+X-Google-Smtp-Source: AGHT+IFwfLQ6lBoVLOpqmz8KxyRZUzBCwFOhgLlivZU9kw3FJlharL9YAm7tjwoLTeo27EgT/eKHIw==
+X-Received: by 2002:a05:6a20:958b:b0:160:97a3:cae9 with SMTP id
+ iu11-20020a056a20958b00b0016097a3cae9mr41891238pzb.54.1699326472199; 
+ Mon, 06 Nov 2023 19:07:52 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- 13-20020a17090a004d00b0027782f611d1sm6744883pjb.36.2023.11.06.19.07.50
+ 13-20020a17090a004d00b0027782f611d1sm6744883pjb.36.2023.11.06.19.07.51
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 19:07:50 -0800 (PST)
+ Mon, 06 Nov 2023 19:07:51 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 57/85] target/hppa: Remove remaining TARGET_REGISTER_BITS
- redirections
-Date: Mon,  6 Nov 2023 19:03:39 -0800
-Message-Id: <20231107030407.8979-58-richard.henderson@linaro.org>
+Subject: [PULL 58/85] target/hppa: Adjust vmstate_env for pa2.0 tlb
+Date: Mon,  6 Nov 2023 19:03:40 -0800
+Message-Id: <20231107030407.8979-59-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231107030407.8979-1-richard.henderson@linaro.org>
 References: <20231107030407.8979-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,127 +89,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The conversions to/from i64 can be eliminated entirely,
-folding computation into adjacent operations.
+Split out the tlb to a subsection so that it can be separately
+versioned -- the format is only partially following the architecture
+and is partially guided by the qemu implementation.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 46 ++++++++++++-----------------------------
- 1 file changed, 13 insertions(+), 33 deletions(-)
+ target/hppa/machine.c | 93 ++++++++++++++++++++++++++-----------------
+ 1 file changed, 57 insertions(+), 36 deletions(-)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index ec3f70e46e..0024c38c84 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -33,15 +33,6 @@
- #undef  HELPER_H
+diff --git a/target/hppa/machine.c b/target/hppa/machine.c
+index f6df4deac5..2f8e8cc5a1 100644
+--- a/target/hppa/machine.c
++++ b/target/hppa/machine.c
+@@ -44,28 +44,30 @@ static const VMStateInfo vmstate_psw = {
+     .put = put_psw,
+ };
  
- 
--/* Since we have a distinction between register size and address size,
--   we need to redefine all of these.  */
--
--#define tcg_gen_extu_reg_tl  tcg_gen_mov_i64
--#define tcg_gen_trunc_i64_reg tcg_gen_mov_i64
--#define tcg_gen_extu_reg_i64 tcg_gen_mov_i64
--#define tcg_gen_ext_reg_i64  tcg_gen_mov_i64
--
--
- typedef struct DisasCond {
-     TCGCond c;
-     TCGv_i64 a0, a1;
-@@ -1345,8 +1336,7 @@ static void form_gva(DisasContext *ctx, TCGv_i64 *pgva, TCGv_i64 *pofs,
- 
-     *pofs = ofs;
-     *pgva = addr = tcg_temp_new_i64();
--    tcg_gen_extu_reg_tl(addr, modify <= 0 ? ofs : base);
--    tcg_gen_andi_tl(addr, addr, gva_offset_mask(ctx));
-+    tcg_gen_andi_tl(addr, modify <= 0 ? ofs : base, gva_offset_mask(ctx));
- #ifndef CONFIG_USER_ONLY
-     if (!is_phys) {
-         tcg_gen_or_tl(addr, addr, space_select(ctx, sp, base));
-@@ -1966,13 +1956,11 @@ static bool trans_mfsp(DisasContext *ctx, arg_mfsp *a)
-     unsigned rt = a->t;
-     unsigned rs = a->sp;
-     TCGv_i64 t0 = tcg_temp_new_i64();
--    TCGv_i64 t1 = tcg_temp_new();
- 
-     load_spr(ctx, t0, rs);
-     tcg_gen_shri_i64(t0, t0, 32);
--    tcg_gen_trunc_i64_reg(t1, t0);
- 
--    save_gpr(ctx, rt, t1);
-+    save_gpr(ctx, rt, t0);
- 
-     cond_free(&ctx->null_cond);
-     return true;
-@@ -2029,22 +2017,21 @@ static bool trans_mtsp(DisasContext *ctx, arg_mtsp *a)
+-/* FIXME: Use the PA2.0 format, which is a superset of the PA1.1 format.  */
+ static int get_tlb(QEMUFile *f, void *opaque, size_t size,
+                    const VMStateField *field)
  {
-     unsigned rr = a->r;
-     unsigned rs = a->sp;
--    TCGv_i64 t64;
-+    TCGv_i64 tmp;
+     HPPATLBEntry *ent = opaque;
+-    uint32_t val;
++    uint64_t val;
  
-     if (rs >= 5) {
-         CHECK_MOST_PRIVILEGED(EXCP_PRIV_REG);
-     }
-     nullify_over(ctx);
+     ent->itree.start = qemu_get_be64(f);
++    ent->itree.last = qemu_get_be64(f);
+     ent->pa = qemu_get_be64(f);
+-    val = qemu_get_be32(f);
++    val = qemu_get_be64(f);
  
--    t64 = tcg_temp_new_i64();
--    tcg_gen_extu_reg_i64(t64, load_gpr(ctx, rr));
--    tcg_gen_shli_i64(t64, t64, 32);
-+    tmp = tcg_temp_new_i64();
-+    tcg_gen_shli_i64(tmp, load_gpr(ctx, rr), 32);
- 
-     if (rs >= 4) {
--        tcg_gen_st_i64(t64, tcg_env, offsetof(CPUHPPAState, sr[rs]));
-+        tcg_gen_st_i64(tmp, tcg_env, offsetof(CPUHPPAState, sr[rs]));
-         ctx->tb_flags &= ~TB_FLAG_SR_SAME;
-     } else {
--        tcg_gen_mov_i64(cpu_sr[rs], t64);
-+        tcg_gen_mov_i64(cpu_sr[rs], tmp);
-     }
- 
-     return nullify_end(ctx);
-@@ -2135,11 +2122,8 @@ static bool trans_ldsid(DisasContext *ctx, arg_ldsid *a)
-     /* We don't implement space registers in user mode. */
-     tcg_gen_movi_i64(dest, 0);
- #else
--    TCGv_i64 t0 = tcg_temp_new_i64();
+-    ent->entry_valid = extract32(val, 0, 1);
+-    ent->access_id = extract32(val, 1, 18);
+-    ent->u = extract32(val, 19, 1);
+-    ent->ar_pl2 = extract32(val, 20, 2);
+-    ent->ar_pl1 = extract32(val, 22, 2);
+-    ent->ar_type = extract32(val, 24, 3);
+-    ent->b = extract32(val, 27, 1);
+-    ent->d = extract32(val, 28, 1);
+-    ent->t = extract32(val, 29, 1);
 -
--    tcg_gen_mov_i64(t0, space_select(ctx, a->sp, load_gpr(ctx, a->b)));
--    tcg_gen_shri_i64(t0, t0, 32);
--    tcg_gen_trunc_i64_reg(dest, t0);
-+    tcg_gen_mov_i64(dest, space_select(ctx, a->sp, load_gpr(ctx, a->b)));
-+    tcg_gen_shri_i64(dest, dest, 32);
- #endif
-     save_gpr(ctx, a->t, dest);
+-    ent->itree.last = ent->itree.start + TARGET_PAGE_SIZE - 1;
++    if (val) {
++        ent->t = extract64(val, 61, 1);
++        ent->d = extract64(val, 60, 1);
++        ent->b = extract64(val, 59, 1);
++        ent->ar_type = extract64(val, 56, 3);
++        ent->ar_pl1 = extract64(val, 54, 2);
++        ent->ar_pl2 = extract64(val, 52, 2);
++        ent->u = extract64(val, 51, 1);
++        /* o = bit 50 */
++        /* p = bit 49 */
++        ent->access_id = extract64(val, 1, 31);
++        ent->entry_valid = 1;
++    }
+     return 0;
+ }
  
-@@ -3188,10 +3172,8 @@ static bool trans_shrp_sar(DisasContext *ctx, arg_shrp_sar *a)
-             TCGv_i64 s = tcg_temp_new_i64();
+@@ -73,27 +75,30 @@ static int put_tlb(QEMUFile *f, void *opaque, size_t size,
+                    const VMStateField *field, JSONWriter *vmdesc)
+ {
+     HPPATLBEntry *ent = opaque;
+-    uint32_t val = 0;
++    uint64_t val = 0;
  
-             tcg_gen_concat32_i64(t, src2, src1);
--            tcg_gen_extu_reg_i64(s, cpu_sar);
--            tcg_gen_andi_i64(s, s, 31);
--            tcg_gen_shr_i64(t, t, s);
--            tcg_gen_trunc_i64_reg(dest, t);
-+            tcg_gen_andi_i64(s, cpu_sar, 31);
-+            tcg_gen_shr_i64(dest, t, s);
-         }
+     if (ent->entry_valid) {
+         val = 1;
+-        val = deposit32(val, 1, 18, ent->access_id);
+-        val = deposit32(val, 19, 1, ent->u);
+-        val = deposit32(val, 20, 2, ent->ar_pl2);
+-        val = deposit32(val, 22, 2, ent->ar_pl1);
+-        val = deposit32(val, 24, 3, ent->ar_type);
+-        val = deposit32(val, 27, 1, ent->b);
+-        val = deposit32(val, 28, 1, ent->d);
+-        val = deposit32(val, 29, 1, ent->t);
++        val = deposit64(val, 61, 1, ent->t);
++        val = deposit64(val, 60, 1, ent->d);
++        val = deposit64(val, 59, 1, ent->b);
++        val = deposit64(val, 56, 3, ent->ar_type);
++        val = deposit64(val, 54, 2, ent->ar_pl1);
++        val = deposit64(val, 52, 2, ent->ar_pl2);
++        val = deposit64(val, 51, 1, ent->u);
++        /* o = bit 50 */
++        /* p = bit 49 */
++        val = deposit64(val, 1, 31, ent->access_id);
      }
-     save_gpr(ctx, a->t, dest);
-@@ -3233,10 +3215,8 @@ static bool trans_shrp_imm(DisasContext *ctx, arg_shrp_imm *a)
-             tcg_gen_rotri_i32(t32, t32, sa);
-             tcg_gen_extu_i32_i64(dest, t32);
-         } else {
--            TCGv_i64 t64 = tcg_temp_new_i64();
--            tcg_gen_concat32_i64(t64, t2, cpu_gr[a->r1]);
--            tcg_gen_shri_i64(t64, t64, sa);
--            tcg_gen_trunc_i64_reg(dest, t64);
-+            tcg_gen_concat32_i64(dest, t2, cpu_gr[a->r1]);
-+            tcg_gen_extract_i64(dest, dest, sa, 32);
-         }
-     }
-     save_gpr(ctx, a->t, dest);
+ 
+     qemu_put_be64(f, ent->itree.start);
++    qemu_put_be64(f, ent->itree.last);
+     qemu_put_be64(f, ent->pa);
+-    qemu_put_be32(f, val);
++    qemu_put_be64(f, val);
+     return 0;
+ }
+ 
+-static const VMStateInfo vmstate_tlb = {
++static const VMStateInfo vmstate_tlb_entry = {
+     .name = "tlb entry",
+     .get = get_tlb,
+     .put = put_tlb,
+@@ -147,7 +152,24 @@ static int tlb_post_load(void *opaque, int version_id)
+     return 0;
+ }
+ 
+-static VMStateField vmstate_env_fields[] = {
++static const VMStateField vmstate_tlb_fields[] = {
++    VMSTATE_ARRAY(tlb, CPUHPPAState,
++                  ARRAY_SIZE(((CPUHPPAState *)0)->tlb),
++                  0, vmstate_tlb_entry, HPPATLBEntry),
++    VMSTATE_UINT32(tlb_last, CPUHPPAState),
++    VMSTATE_END_OF_LIST()
++};
++
++static const VMStateDescription vmstate_tlb = {
++    .name = "env/tlb",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = vmstate_tlb_fields,
++    .pre_load = tlb_pre_load,
++    .post_load = tlb_post_load,
++};
++
++static const VMStateField vmstate_env_fields[] = {
+     VMSTATE_UINT64_ARRAY(gr, CPUHPPAState, 32),
+     VMSTATE_UINT64_ARRAY(fr, CPUHPPAState, 32),
+     VMSTATE_UINT64_ARRAY(sr, CPUHPPAState, 8),
+@@ -176,24 +198,23 @@ static VMStateField vmstate_env_fields[] = {
+     VMSTATE_UINT64(iasq_b, CPUHPPAState),
+ 
+     VMSTATE_UINT32(fr0_shadow, CPUHPPAState),
+-
+-    VMSTATE_ARRAY(tlb, CPUHPPAState, ARRAY_SIZE(((CPUHPPAState *)0)->tlb),
+-                  0, vmstate_tlb, HPPATLBEntry),
+-    VMSTATE_UINT32(tlb_last, CPUHPPAState),
+-
+     VMSTATE_END_OF_LIST()
+ };
+ 
++static const VMStateDescription *vmstate_env_subsections[] = {
++    &vmstate_tlb,
++    NULL
++};
++
+ static const VMStateDescription vmstate_env = {
+     .name = "env",
+-    .version_id = 2,
+-    .minimum_version_id = 2,
++    .version_id = 3,
++    .minimum_version_id = 3,
+     .fields = vmstate_env_fields,
+-    .pre_load = tlb_pre_load,
+-    .post_load = tlb_post_load,
++    .subsections = vmstate_env_subsections,
+ };
+ 
+-static VMStateField vmstate_cpu_fields[] = {
++static const VMStateField vmstate_cpu_fields[] = {
+     VMSTATE_CPU(),
+     VMSTATE_STRUCT(env, HPPACPU, 1, vmstate_env, CPUHPPAState),
+     VMSTATE_END_OF_LIST()
 -- 
 2.34.1
 
