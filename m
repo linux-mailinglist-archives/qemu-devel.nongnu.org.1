@@ -2,54 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03EEB7E4792
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 18:50:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF327E47C4
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:04:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0QCD-0002Py-TW; Tue, 07 Nov 2023 12:49:01 -0500
+	id 1r0QPh-00085o-CS; Tue, 07 Nov 2023 13:02:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r0QCC-0002Pf-0n; Tue, 07 Nov 2023 12:49:00 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r0QC9-0006CX-T7; Tue, 07 Nov 2023 12:48:59 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 1710E75A4B8;
- Tue,  7 Nov 2023 18:49:13 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 09DDA75A4B7; Tue,  7 Nov 2023 18:49:13 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 07DFD75A4BE;
- Tue,  7 Nov 2023 18:49:13 +0100 (CET)
-Date: Tue, 7 Nov 2023 18:49:12 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Daniel Henrique Barboza <danielhb413@gmail.com>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, clg@kaod.org, philmd@linaro.org, 
- Bernhard Beschow <shentey@gmail.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Subject: Re: [PATCH v7 0/3] Add emulation of AmigaOne XE board
-In-Reply-To: <fa33a840-2135-4ba8-9db1-6684275e93c3@gmail.com>
-Message-ID: <092437de-efef-1c1c-00f5-8667792c5226@eik.bme.hu>
-References: <cover.1698406922.git.balaton@eik.bme.hu>
- <697ad2e0-cb23-4efe-89e5-d1b521c0648f@gmail.com>
- <b6ff86da-2532-708a-6737-4489d260c8a7@eik.bme.hu>
- <fa33a840-2135-4ba8-9db1-6684275e93c3@gmail.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r0QPc-000859-F0
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:02:52 -0500
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r0QPZ-0000dU-JN
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:02:52 -0500
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2c501bd6ff1so84439361fa.3
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 10:02:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699380167; x=1699984967; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7/NS4jzylqsR4woBmmhWZ8uZVX9wA7qTXVASTS+L4CQ=;
+ b=uo5sBcrEd0KVUGtPhp94ugnS70n1VvYn+0RBiDsBX2PCIpIk2061Y9cuuD1LY1zE28
+ JuglZCV9l50T7eeltJW0GNaArurw33ftWyFsqWFy1f58mNMbBbJBuStJunZNM5lx4bf/
+ 2NZlBWhmdax7wtWOcxEbjwKITdy7H12OB/htcpC6TGrcHzrK5F4epSJDacSirzZ3Z/g+
+ 5/AroVjEgrU0VL9lBrA6RjxRUUMHPPykxhhff69A0kAaxPpevMQQnP/DInzdk8c0tNZt
+ OgrK1piNL9rmC0KKkGxWswxxGBd+4CXjHvZxhsdaIxDoWC5lNA0FR2vuhYHw4ETK0J1I
+ 2jJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699380167; x=1699984967;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7/NS4jzylqsR4woBmmhWZ8uZVX9wA7qTXVASTS+L4CQ=;
+ b=CKBpGHKEIZ9DAXElRoGZJCVLYjw7NLd+b6xDNOHiQ7XlvB3r36AUE+/vjl0Y0x57n7
+ mUViXyreNXZcb/I83XRQ39a6qFW0ZLdSrqyXSqxvJFSX2i8ARSgCnb96trNrg2Yx3dGD
+ wx6Rlo3GSkyZqDzApuNR9IWE9c27ZeNgGuuHiRPWVLVJrso+wT0bUJbYpf6aF1dLrzSv
+ 5bANoE9J+jzkESWNoCPeQbhqnz8UBFxIbPKXMm8KcYTASvV5su4uHyTW0q/6R2qICF3b
+ 8vbHjoQE+4pj+SK4sk5lE4XWkSuZwo1mccT2eekfiBeRA1MbwLCXBVYW6Cs3ph1BU69r
+ Fm5A==
+X-Gm-Message-State: AOJu0YwO4CNuWr0J8mscOf/OaX3d7tpmYAYm/Jy4G3MREnWXrMfTzMs+
+ jFsPlmUYOoXU7TM3LUcNTFpNxw==
+X-Google-Smtp-Source: AGHT+IFlAneX7RuepV/F10AZo9wlJFfaVdahnJCMQ1veoSeYwD0Oask8HPJBQVhxjp1FcMwl+lHtVQ==
+X-Received: by 2002:a2e:a793:0:b0:2c5:8b1:7561 with SMTP id
+ c19-20020a2ea793000000b002c508b17561mr33035440ljf.10.1699380167523; 
+ Tue, 07 Nov 2023 10:02:47 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 17-20020a05600c021100b004053e9276easm16057705wmi.32.2023.11.07.10.02.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 07 Nov 2023 10:02:47 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id A31645F790;
+ Tue,  7 Nov 2023 18:02:46 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Eric Blake <eblake@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fam Zheng <fam@euphon.net>, Jason Wang <jasowang@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ Erik Schilling <erik.schilling@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, qemu-block@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Markus Armbruster <armbru@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, virtio-fs@redhat.com,
+ Kevin Wolf <kwolf@redhat.com>, "Gonglei (Arei)" <arei.gonglei@huawei.com>
+Subject: [PATCH v7 0/7] virtio: cleanup vhost-user-generic and reduce c&p
+Date: Tue,  7 Nov 2023 18:02:39 +0000
+Message-Id: <20231107180246.3456598-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1288939442-1699379353=:5463"
-X-Virus-Scanned: ClamAV using ClamSMTP
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x231.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,162 +107,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+A lot of our vhost-user stubs are large chunks of boilerplate that do
+(mostly) the same thing. This series continues the cleanups by
+splitting the vhost-user-base and vhost-user-generic implementations.
+After adding a new vq_size property the rng, gpio and i2c vhost-user
+devices become simple specialisations of the common base defining the
+ID, number of queues and potentially the config handling.
 
---3866299591-1288939442-1699379353=:5463
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+I've also added Manos' vhost-user-sound while I was at it.
 
-On Tue, 7 Nov 2023, Daniel Henrique Barboza wrote:
-> On 11/7/23 14:33, BALATON Zoltan wrote:
->> On Tue, 7 Nov 2023, Daniel Henrique Barboza wrote:
->>> Zoltan,
->>> 
->>> Gitlab is complaining about a missing file in one of the tests:
->>> 
->>> 
->>>  8/259 qemu:qtest+qtest-ppc / qtest-ppc/test-hmp ERROR           0.22s   
->>> killed by signal 6 SIGABRT
->>> 4324>>> 
->>> G_TEST_DBUS_DAEMON=/builds/danielhb/qemu/tests/dbus-vmstate-daemon.sh 
->>> QTEST_QEMU_BINARY=./qemu-system-ppc MALLOC_PERTURB_=87 
->>> PYTHON=/builds/danielhb/qemu/build/pyvenv/bin/python3 
->>> /builds/danielhb/qemu/build/tests/qtest/test-hmp --tap -k
->>> 4325――――――――――――――――――――――――――――――――――――― ✀ 
->>> ―――――――――――――――――――――――――――――――――――――
->>> 4326stderr:
->>> 4327qemu-system-ppc: Could not find firmware 'u-boot-amigaone.bin'
->>> 4328Broken pipe
->>> 4329../tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU 
->>> process but encountered exit status 1 (expected 0)
->>> 4330(test program exited with status code -6)
->>> 4331TAP parsing error: Too few tests run (expected 13, got 0)
->>> 
->>> 
->>> You can reproduce it like this:
->>> 
->>> $ make -j -C build  && QTEST_QEMU_BINARY=./build/qemu-system-ppc64 
->>> ./build/tests/qtest/test-hmp
->>> 
->>> I ended up amending in-tree (downloaded the firmware, put it under 
->>> pc-bios, updated pc-bios/meson.build).
->>> My manual test now passes, but not sure if gitlab will nag about it. Let's 
->>> wait and see.
->> 
->> This is handled in the avocado test and it should download the file from 
->> the URL there. When tested locally it worked and downloaded the file and 
->> extracted the firmware bin from it. Can the gitlab CI download stuff or 
->> does it expect it to be in local cache already where you need to put it 
->> somehow beforehand? I think Philippe said something about that before but I 
->> did not quite get it as I don't know neither avocado nor gitlab. Hope 
->> Philippe is reading it and can chime in.
->
-> Gitlab CI can download stuff. But note that the error above is not 
-> avocado, it's hmp. It expects a firmware file to be available, and I'm 
-> not entirely sure it'll make any effort (e.g. downloading it) aside from 
-> checking if the file exists.
+Changes
+-------
 
-Hmm, that's strange because the extracted firmware is passed with -bios in 
-the avocado test. But maybe it's then something else tries to run the 
-machine with some other parameters but it needs a firmware. I was told we 
-can't add the firmware because while it's GPL the sources were lost and 
-not available any more so we only have the binary. Then the question is 
-which test is trying to run the machine without -bios? What's test-hmp?
+v7
+  - various review comments
+  - move to async teardown (fixes CI failure)
 
-Regards,
-BALATON Zoltan
+v6
+  - re-base to current master
+  - make vhost-user-device abstract
+  - mention abstractness in docs
 
->> But the test is not required to run the machine so as a last resort you 
->> could just drop the avocado patch and then we can add it later if we can't 
->> figure this out now.
->
-> Not sure if dropping the avocado test would remediate the situation, but 
-> noted.
->
-> For now let's push stuff upstream. We have the freeze window to make smaller
-> adjustments if needed.
->
->
-> Thanks,
->
-> Daniel
->
->> 
->> Regards,
->> BALATON Zoltan
->> 
->>> I told you: code freeze is a blast! Let's see if it's still sunny for the
->>> AmigaOne XE board emulation.
->>> 
->>> 
->>> 
->>> Thanks,
->>> 
->>> 
->>> Daniel
->>> 
->>> 
->>> 
->>> 
->>> 
->>> On 10/27/23 08:54, BALATON Zoltan wrote:
->>>> Changes in v7:
->>>> - Increase default memory size to 512m to match pegasos2 and sam460ex
->>>> and it's a better default for AmigaOS
->>>> 
->>>> Changes in v6:
->>>> - Dropped patch 1, now it's
->>>> 
->>>> Based-on: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
->>>> 
->>>> ([PATCH v2 0/3] ide: implement simple legacy/native mode switching for 
->>>> PCI IDE controllers)
->>>> - Added Tested-by from Rene
->>>> 
->>>> Changes in v5:
->>>> - Fixed avocado test
->>>> 
->>>> Changes in v4:
->>>> - Found typo in comment in patch 1 so ended up rewording it again
->>>> trying to make it more concise. Also take the idea of using
->>>> range_covers_byte from Mark's patch
->>>> - Added RFC patch for avocado test (untested, I don't have Avocado)
->>>> 
->>>> Changes in v3:
->>>> - Update values, comment and commit message in patch 1 again
->>>> 
->>>> Changes in v2:
->>>> - Update comment and commit message in patch 1 (Mark)
->>>> - Fix irq mapping in patch 2 (Volker)
->>>> 
->>>> Regards,
->>>> BALATON Zoltan
->>>> 
->>>> BALATON Zoltan (3):
->>>>    hw/pci-host: Add emulation of Mai Logic Articia S
->>>>    hw/ppc: Add emulation of AmigaOne XE board
->>>>    tests/avocado: Add test for amigaone board
->>>> 
->>>>   MAINTAINERS                             |   8 +
->>>>   configs/devices/ppc-softmmu/default.mak |   1 +
->>>>   hw/pci-host/Kconfig                     |   5 +
->>>>   hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
->>>>   hw/pci-host/meson.build                 |   2 +
->>>>   hw/ppc/Kconfig                          |   7 +
->>>>   hw/ppc/amigaone.c                       | 164 +++++++++++++
->>>>   hw/ppc/meson.build                      |   2 +
->>>>   include/hw/pci-host/articia.h           |  17 ++
->>>>   tests/avocado/ppc_amiga.py              |  38 +++
->>>>   10 files changed, 537 insertions(+)
->>>>   create mode 100644 hw/pci-host/articia.c
->>>>   create mode 100644 hw/ppc/amigaone.c
->>>>   create mode 100644 include/hw/pci-host/articia.h
->>>>   create mode 100644 tests/avocado/ppc_amiga.py
->>>> 
->>> 
->>> 
->
->
---3866299591-1288939442-1699379353=:5463--
+v5
+  - addressing comments and tags
+  - improved the docs
+
+v4
+  - dropped the F_TRANSPORT work for another series
+  - added vhost-user-sound
+
+Alex Bennée (6):
+  virtio: split into vhost-user-base and vhost-user-device
+  hw/virtio: convert vhost-user-base to async shutdown
+  hw/virtio: derive vhost-user-rng from vhost-user-base
+  hw/virtio: derive vhost-user-gpio from vhost-user-base
+  hw/virtio: derive vhost-user-i2c from vhost-user-base
+  docs/system: add a basic enumeration of vhost-user devices
+
+Manos Pitsidianakis (1):
+  hw/virtio: add vhost-user-snd and virtio-snd-pci devices
+
+ MAINTAINERS                                   |  13 +
+ docs/system/devices/vhost-user-rng.rst        |   2 +
+ docs/system/devices/vhost-user.rst            |  70 ++-
+ ...{vhost-user-device.h => vhost-user-base.h} |  21 +-
+ include/hw/virtio/vhost-user-gpio.h           |  25 +-
+ include/hw/virtio/vhost-user-i2c.h            |  14 +-
+ include/hw/virtio/vhost-user-rng.h            |  13 +-
+ include/hw/virtio/vhost-user-snd.h            |  24 ++
+ hw/virtio/vhost-user-base.c                   | 354 +++++++++++++++
+ hw/virtio/vhost-user-device-pci.c             |  13 +-
+ hw/virtio/vhost-user-device.c                 | 338 +--------------
+ hw/virtio/vhost-user-gpio.c                   | 406 +-----------------
+ hw/virtio/vhost-user-i2c.c                    | 272 +-----------
+ hw/virtio/vhost-user-rng.c                    | 278 +-----------
+ hw/virtio/vhost-user-snd-pci.c                |  75 ++++
+ hw/virtio/vhost-user-snd.c                    |  67 +++
+ hw/virtio/Kconfig                             |   5 +
+ hw/virtio/meson.build                         |  23 +-
+ 18 files changed, 719 insertions(+), 1294 deletions(-)
+ rename include/hw/virtio/{vhost-user-device.h => vhost-user-base.h} (71%)
+ create mode 100644 include/hw/virtio/vhost-user-snd.h
+ create mode 100644 hw/virtio/vhost-user-base.c
+ create mode 100644 hw/virtio/vhost-user-snd-pci.c
+ create mode 100644 hw/virtio/vhost-user-snd.c
+
+-- 
+2.39.2
+
 
