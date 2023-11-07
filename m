@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460757E489E
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:48:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 704597E48A7
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 19:48:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0R6G-0004WM-Lk; Tue, 07 Nov 2023 13:46:56 -0500
+	id 1r0R6F-0004Vb-90; Tue, 07 Nov 2023 13:46:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5p-00041Z-A1
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:31 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5n-00041W-Cq
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:28 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5m-0001WW-V7
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:28 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0R5j-0001Vy-TL
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 13:46:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699382783;
+ s=mimecast20190719; t=1699382781;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qA6LD5FvtIcm4HXAg7hKc9KfBeIebVmoNokBPYIOAZw=;
- b=HcuzCufm5+ExQAWjmnHnF/oPWkpaTB8KYVArlh3Q3lk4ERi78xWp+Q93mC3l+y+Qife/xe
- VOIwLWTzwupxRdicYtqaP6hNhYF7sthFF4mO0q75mkcRW0tIUz/FpKN5kKUnFX7e6Dz2Xr
- EUatwIjCajOUG9lI3EB+pFL6bOKGD9g=
+ bh=w0Pw14MMEFDUie5Z7nWMO05syP8WwrvNVlewbsAACAU=;
+ b=XdAVZLsA8i8COSV93H9gxKucgqQc7jckitF5muSbmHYF+mREk5kwhQlaH0xapMcLPO/eMt
+ 3vcR0Qz/7OZeDyDTT0/0CuEUiU2eUa5/QqgazfcXgLOm6HdrCM/nt4E8ikXc5KmBADBid4
+ G7GnQAag6KDh9T1mzro9hbYzLyfglRA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-41-9Iqsv_JAP9azlHBbgzYUhQ-1; Tue, 07 Nov 2023 13:46:19 -0500
-X-MC-Unique: 9Iqsv_JAP9azlHBbgzYUhQ-1
+ us-mta-63-Xfj5dljJPVGg9KoO0Z4whA-1; Tue, 07 Nov 2023 13:46:20 -0500
+X-MC-Unique: Xfj5dljJPVGg9KoO0Z4whA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 082B2185A788
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F2B36101AA75
  for <qemu-devel@nongnu.org>; Tue,  7 Nov 2023 18:46:19 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.197])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 87799C1290F;
- Tue,  7 Nov 2023 18:46:18 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3E811C1596F;
+ Tue,  7 Nov 2023 18:46:19 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com
-Subject: [PULL 15/25] block: Mark bdrv_replace_node_common() GRAPH_WRLOCK
-Date: Tue,  7 Nov 2023 19:45:55 +0100
-Message-ID: <20231107184605.236540-16-kwolf@redhat.com>
+Subject: [PULL 16/25] block: Mark bdrv_replace_node() GRAPH_WRLOCK
+Date: Tue,  7 Nov 2023 19:45:56 +0100
+Message-ID: <20231107184605.236540-17-kwolf@redhat.com>
 In-Reply-To: <20231107184605.236540-1-kwolf@redhat.com>
 References: <20231107184605.236540-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -78,167 +78,284 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Instead of taking the writer lock internally, require callers to already
-hold it when calling bdrv_replace_node_common(). Basically everthing in
-the function needs the lock and its callers may already want to hold the
-graph lock and so wouldn't be able to call functions that take it
-internally.
+hold it when calling bdrv_replace_node(). Its callers may already want
+to hold the graph lock and so wouldn't be able to call functions that
+take it internally.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20231027155333.420094-16-kwolf@redhat.com>
+Message-ID: <20231027155333.420094-17-kwolf@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block.c | 68 ++++++++++++++++++++++++++++++++++++---------------------
- 1 file changed, 43 insertions(+), 25 deletions(-)
+ include/block/block-global-state.h |  6 ++++--
+ block.c                            | 30 +++++++++++-------------------
+ block/commit.c                     | 13 +++++++++++--
+ block/mirror.c                     | 26 ++++++++++++++++----------
+ blockdev.c                         |  5 +++++
+ tests/unit/test-bdrv-drain.c       |  6 ++++++
+ tests/unit/test-bdrv-graph-mod.c   | 13 +++++++++++--
+ 7 files changed, 64 insertions(+), 35 deletions(-)
 
+diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
+index a1fd70ec97..9e0ccc1c32 100644
+--- a/include/block/block-global-state.h
++++ b/include/block/block-global-state.h
+@@ -71,8 +71,10 @@ bdrv_co_create_file(const char *filename, QemuOpts *opts, Error **errp);
+ BlockDriverState *bdrv_new(void);
+ int bdrv_append(BlockDriverState *bs_new, BlockDriverState *bs_top,
+                 Error **errp);
+-int bdrv_replace_node(BlockDriverState *from, BlockDriverState *to,
+-                      Error **errp);
++
++int GRAPH_WRLOCK
++bdrv_replace_node(BlockDriverState *from, BlockDriverState *to, Error **errp);
++
+ int bdrv_replace_child_bs(BdrvChild *child, BlockDriverState *new_bs,
+                           Error **errp);
+ BlockDriverState *bdrv_insert_node(BlockDriverState *bs, QDict *node_options,
 diff --git a/block.c b/block.c
-index dc43e36f69..c7409cf658 100644
+index c7409cf658..cac517ab8b 100644
 --- a/block.c
 +++ b/block.c
-@@ -5412,6 +5412,9 @@ bdrv_replace_node_noperm(BlockDriverState *from,
- }
- 
- /*
-+ * Switch all parents of @from to point to @to instead. @from and @to must be in
-+ * the same AioContext and both must be drained.
-+ *
-  * With auto_skip=true bdrv_replace_node_common skips updating from parents
-  * if it creates a parent-child relation loop or if parent is block-job.
-  *
-@@ -5421,10 +5424,9 @@ bdrv_replace_node_noperm(BlockDriverState *from,
-  * With @detach_subchain=true @to must be in a backing chain of @from. In this
-  * case backing link of the cow-parent of @to is removed.
-  */
--static int bdrv_replace_node_common(BlockDriverState *from,
--                                    BlockDriverState *to,
--                                    bool auto_skip, bool detach_subchain,
--                                    Error **errp)
-+static int GRAPH_WRLOCK
-+bdrv_replace_node_common(BlockDriverState *from, BlockDriverState *to,
-+                         bool auto_skip, bool detach_subchain, Error **errp)
+@@ -5484,25 +5484,7 @@ out:
+ int bdrv_replace_node(BlockDriverState *from, BlockDriverState *to,
+                       Error **errp)
  {
-     Transaction *tran = tran_new();
-     g_autoptr(GSList) refresh_list = NULL;
-@@ -5433,16 +5435,9 @@ static int bdrv_replace_node_common(BlockDriverState *from,
- 
-     GLOBAL_STATE_CODE();
- 
+-    int ret;
+-
+-    GLOBAL_STATE_CODE();
+-
 -    /* Make sure that @from doesn't go away until we have successfully attached
 -     * all of its parents to @to. */
 -    bdrv_ref(from);
--
--    assert(qemu_get_current_aio_context() == qemu_get_aio_context());
-+    assert(from->quiesce_counter);
-+    assert(to->quiesce_counter);
-     assert(bdrv_get_aio_context(from) == bdrv_get_aio_context(to));
 -    bdrv_drained_begin(from);
 -    bdrv_drained_begin(to);
--
 -    bdrv_graph_wrlock(to);
- 
-     if (detach_subchain) {
-         assert(bdrv_chain_contains(from, to));
-@@ -5483,33 +5478,51 @@ static int bdrv_replace_node_common(BlockDriverState *from,
- 
- out:
-     tran_finalize(tran, ret);
--    bdrv_graph_wrunlock();
 -
+-    ret = bdrv_replace_node_common(from, to, true, false, errp);
+-
+-    bdrv_graph_wrunlock();
 -    bdrv_drained_end(to);
 -    bdrv_drained_end(from);
 -    bdrv_unref(from);
 -
-     return ret;
- }
- 
- int bdrv_replace_node(BlockDriverState *from, BlockDriverState *to,
-                       Error **errp)
- {
-+    int ret;
-+
-     GLOBAL_STATE_CODE();
- 
--    return bdrv_replace_node_common(from, to, true, false, errp);
-+    /* Make sure that @from doesn't go away until we have successfully attached
-+     * all of its parents to @to. */
-+    bdrv_ref(from);
-+    bdrv_drained_begin(from);
-+    bdrv_drained_begin(to);
-+    bdrv_graph_wrlock(to);
-+
-+    ret = bdrv_replace_node_common(from, to, true, false, errp);
-+
-+    bdrv_graph_wrunlock();
-+    bdrv_drained_end(to);
-+    bdrv_drained_end(from);
-+    bdrv_unref(from);
-+
-+    return ret;
+-    return ret;
++    return bdrv_replace_node_common(from, to, true, false, errp);
  }
  
  int bdrv_drop_filter(BlockDriverState *bs, Error **errp)
- {
-     BlockDriverState *child_bs;
-+    int ret;
+@@ -5717,9 +5699,19 @@ BlockDriverState *bdrv_insert_node(BlockDriverState *bs, QDict *options,
+         goto fail;
+     }
  
-     GLOBAL_STATE_CODE();
-+
-     bdrv_graph_rdlock_main_loop();
-     child_bs = bdrv_filter_or_cow_bs(bs);
-     bdrv_graph_rdunlock_main_loop();
- 
--    return bdrv_replace_node_common(bs, child_bs, true, true, errp);
-+    bdrv_drained_begin(child_bs);
-+    bdrv_graph_wrlock(bs);
-+    ret = bdrv_replace_node_common(bs, child_bs, true, true, errp);
++    /*
++     * Make sure that @bs doesn't go away until we have successfully attached
++     * all of its parents to @new_node_bs and undrained it again.
++     */
++    bdrv_ref(bs);
+     bdrv_drained_begin(bs);
++    bdrv_drained_begin(new_node_bs);
++    bdrv_graph_wrlock(new_node_bs);
+     ret = bdrv_replace_node(bs, new_node_bs, errp);
 +    bdrv_graph_wrunlock();
-+    bdrv_drained_end(child_bs);
-+
-+    return ret;
++    bdrv_drained_end(new_node_bs);
+     bdrv_drained_end(bs);
++    bdrv_unref(bs);
+ 
+     if (ret < 0) {
+         error_prepend(errp, "Could not replace node: ");
+diff --git a/block/commit.c b/block/commit.c
+index d92af02ead..30bc082edc 100644
+--- a/block/commit.c
++++ b/block/commit.c
+@@ -68,6 +68,7 @@ static void commit_abort(Job *job)
+ {
+     CommitBlockJob *s = container_of(job, CommitBlockJob, common.job);
+     BlockDriverState *top_bs = blk_bs(s->top);
++    BlockDriverState *commit_top_backing_bs;
+ 
+     if (s->chain_frozen) {
+         bdrv_graph_rdlock_main_loop();
+@@ -94,8 +95,12 @@ static void commit_abort(Job *job)
+      * XXX Can (or should) we somehow keep 'consistent read' blocked even
+      * after the failed/cancelled commit job is gone? If we already wrote
+      * something to base, the intermediate images aren't valid any more. */
+-    bdrv_replace_node(s->commit_top_bs, s->commit_top_bs->backing->bs,
+-                      &error_abort);
++    commit_top_backing_bs = s->commit_top_bs->backing->bs;
++    bdrv_drained_begin(commit_top_backing_bs);
++    bdrv_graph_wrlock(commit_top_backing_bs);
++    bdrv_replace_node(s->commit_top_bs, commit_top_backing_bs, &error_abort);
++    bdrv_graph_wrunlock();
++    bdrv_drained_end(commit_top_backing_bs);
+ 
+     bdrv_unref(s->commit_top_bs);
+     bdrv_unref(top_bs);
+@@ -425,7 +430,11 @@ fail:
+     /* commit_top_bs has to be replaced after deleting the block job,
+      * otherwise this would fail because of lack of permissions. */
+     if (commit_top_bs) {
++        bdrv_drained_begin(top);
++        bdrv_graph_wrlock(top);
+         bdrv_replace_node(commit_top_bs, top, &error_abort);
++        bdrv_graph_wrunlock();
++        bdrv_drained_end(top);
+     }
  }
  
- /*
-@@ -5957,15 +5970,15 @@ int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
+diff --git a/block/mirror.c b/block/mirror.c
+index f8e439371c..dfc1c416e8 100644
+--- a/block/mirror.c
++++ b/block/mirror.c
+@@ -712,6 +712,7 @@ static int mirror_exit_common(Job *job)
+      * these permissions any more means that we can't allow any new requests on
+      * mirror_top_bs from now on, so keep it drained. */
+     bdrv_drained_begin(mirror_top_bs);
++    bdrv_drained_begin(target_bs);
+     bs_opaque->stop = true;
  
-     bdrv_ref(top);
-     bdrv_drained_begin(base);
--    bdrv_graph_rdlock_main_loop();
-+    bdrv_graph_wrlock(base);
- 
-     if (!top->drv || !base->drv) {
--        goto exit;
-+        goto exit_wrlock;
+     bdrv_graph_rdlock_main_loop();
+@@ -757,15 +758,13 @@ static int mirror_exit_common(Job *job)
+         /* The mirror job has no requests in flight any more, but we need to
+          * drain potential other users of the BDS before changing the graph. */
+         assert(s->in_drain);
+-        bdrv_drained_begin(target_bs);
++        bdrv_drained_begin(to_replace);
+         /*
+          * Cannot use check_to_replace_node() here, because that would
+          * check for an op blocker on @to_replace, and we have our own
+          * there.
+-         *
+-         * TODO Pull out the writer lock from bdrv_replace_node() to here
+          */
+-        bdrv_graph_rdlock_main_loop();
++        bdrv_graph_wrlock(target_bs);
+         if (bdrv_recurse_can_replace(src, to_replace)) {
+             bdrv_replace_node(to_replace, target_bs, &local_err);
+         } else {
+@@ -774,8 +773,8 @@ static int mirror_exit_common(Job *job)
+                        "would not lead to an abrupt change of visible data",
+                        to_replace->node_name, target_bs->node_name);
+         }
+-        bdrv_graph_rdunlock_main_loop();
+-        bdrv_drained_end(target_bs);
++        bdrv_graph_wrunlock();
++        bdrv_drained_end(to_replace);
+         if (local_err) {
+             error_report_err(local_err);
+             ret = -EPERM;
+@@ -790,7 +789,6 @@ static int mirror_exit_common(Job *job)
+         aio_context_release(replace_aio_context);
      }
+     g_free(s->replaces);
+-    bdrv_unref(target_bs);
  
-     /* Make sure that base is in the backing chain of top */
-     if (!bdrv_chain_contains(top, base)) {
--        goto exit;
-+        goto exit_wrlock;
-     }
- 
-     /* If 'base' recursively inherits from 'top' then we should set
-@@ -5997,6 +6010,8 @@ int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
-      * That's a FIXME.
+     /*
+      * Remove the mirror filter driver from the graph. Before this, get rid of
+@@ -798,7 +796,12 @@ static int mirror_exit_common(Job *job)
+      * valid.
       */
-     bdrv_replace_node_common(top, base, false, false, &local_err);
+     block_job_remove_all_bdrv(bjob);
++    bdrv_graph_wrlock(mirror_top_bs);
+     bdrv_replace_node(mirror_top_bs, mirror_top_bs->backing->bs, &error_abort);
 +    bdrv_graph_wrunlock();
 +
-     if (local_err) {
-         error_report_err(local_err);
-         goto exit;
-@@ -6029,8 +6044,11 @@ int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
++    bdrv_drained_end(target_bs);
++    bdrv_unref(target_bs);
+ 
+     bs_opaque->job = NULL;
+ 
+@@ -1987,11 +1990,14 @@ fail:
      }
  
-     ret = 0;
-+    goto exit;
-+
-+exit_wrlock:
-+    bdrv_graph_wrunlock();
- exit:
+     bs_opaque->stop = true;
+-    bdrv_graph_rdlock_main_loop();
++    bdrv_drained_begin(bs);
++    bdrv_graph_wrlock(bs);
++    assert(mirror_top_bs->backing->bs == bs);
+     bdrv_child_refresh_perms(mirror_top_bs, mirror_top_bs->backing,
+                              &error_abort);
 -    bdrv_graph_rdunlock_main_loop();
-     bdrv_drained_end(base);
+-    bdrv_replace_node(mirror_top_bs, mirror_top_bs->backing->bs, &error_abort);
++    bdrv_replace_node(mirror_top_bs, bs, &error_abort);
++    bdrv_graph_wrunlock();
++    bdrv_drained_end(bs);
+ 
+     bdrv_unref(mirror_top_bs);
+ 
+diff --git a/blockdev.c b/blockdev.c
+index f04faf6373..5bc921236c 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -1610,7 +1610,12 @@ static void external_snapshot_abort(void *opaque)
+                 aio_context_acquire(aio_context);
+             }
+ 
++            bdrv_drained_begin(state->new_bs);
++            bdrv_graph_wrlock(state->old_bs);
+             bdrv_replace_node(state->new_bs, state->old_bs, &error_abort);
++            bdrv_graph_wrunlock();
++            bdrv_drained_end(state->new_bs);
++
+             bdrv_unref(state->old_bs); /* bdrv_replace_node() ref'ed old_bs */
+ 
+             aio_context_release(aio_context);
+diff --git a/tests/unit/test-bdrv-drain.c b/tests/unit/test-bdrv-drain.c
+index 40d17b4c5a..b16f831c23 100644
+--- a/tests/unit/test-bdrv-drain.c
++++ b/tests/unit/test-bdrv-drain.c
+@@ -2000,7 +2000,13 @@ static void do_test_replace_child_mid_drain(int old_drain_count,
+     parent_s->was_undrained = false;
+ 
+     g_assert(parent_bs->quiesce_counter == old_drain_count);
++    bdrv_drained_begin(old_child_bs);
++    bdrv_drained_begin(new_child_bs);
++    bdrv_graph_wrlock(NULL);
+     bdrv_replace_node(old_child_bs, new_child_bs, &error_abort);
++    bdrv_graph_wrunlock();
++    bdrv_drained_end(new_child_bs);
++    bdrv_drained_end(old_child_bs);
+     g_assert(parent_bs->quiesce_counter == new_drain_count);
+ 
+     if (!old_drain_count && !new_drain_count) {
+diff --git a/tests/unit/test-bdrv-graph-mod.c b/tests/unit/test-bdrv-graph-mod.c
+index 8609f7f42b..22d4cd83f6 100644
+--- a/tests/unit/test-bdrv-graph-mod.c
++++ b/tests/unit/test-bdrv-graph-mod.c
+@@ -234,11 +234,16 @@ static void test_parallel_exclusive_write(void)
+     BlockDriverState *fl1 = pass_through_node("fl1");
+     BlockDriverState *fl2 = pass_through_node("fl2");
+ 
++    bdrv_drained_begin(fl1);
++    bdrv_drained_begin(fl2);
++
+     /*
+      * bdrv_attach_child() eats child bs reference, so we need two @base
+-     * references for two filters:
++     * references for two filters. We also need an additional @fl1 reference so
++     * that it still exists when we want to undrain it.
+      */
+     bdrv_ref(base);
++    bdrv_ref(fl1);
+ 
+     bdrv_graph_wrlock(NULL);
+     bdrv_attach_child(top, fl1, "backing", &child_of_bds,
+@@ -250,10 +255,14 @@ static void test_parallel_exclusive_write(void)
+     bdrv_attach_child(fl2, base, "backing", &child_of_bds,
+                       BDRV_CHILD_FILTERED | BDRV_CHILD_PRIMARY,
+                       &error_abort);
+-    bdrv_graph_wrunlock();
+ 
+     bdrv_replace_node(fl1, fl2, &error_abort);
++    bdrv_graph_wrunlock();
++
++    bdrv_drained_end(fl2);
++    bdrv_drained_end(fl1);
+ 
++    bdrv_unref(fl1);
+     bdrv_unref(fl2);
      bdrv_unref(top);
-     return ret;
+ }
 -- 
 2.41.0
 
