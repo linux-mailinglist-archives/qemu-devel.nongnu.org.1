@@ -2,73 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64E27E32A6
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 02:41:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2E37E32EC
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 03:31:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0B4z-00029Z-8w; Mon, 06 Nov 2023 20:40:33 -0500
+	id 1r0Bqs-0002Vj-HC; Mon, 06 Nov 2023 21:30:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1r0B4c-00029J-3s; Mon, 06 Nov 2023 20:40:10 -0500
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1r0Bqq-0002VB-KA
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:30:00 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1r0B4V-000283-UY; Mon, 06 Nov 2023 20:40:09 -0500
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-6ce37683cf6so3204185a34.3; 
- Mon, 06 Nov 2023 17:40:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1r0Bqo-0002B6-JL
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 21:30:00 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1cc53d0030fso41385955ad.0
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 18:29:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699321199; x=1699925999; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xJleMQjaaLsKD3zymDLq2GG+Em4KcVhskoi6Q7RZmiw=;
- b=DqiTEY4PM2+bm+NoSokqhgd+nn9dzV1fdeqNPtDr/hzZa2UuOK+2Dpv0UE0zFrHE5j
- hCjzXVv9NtXgJVqOha4uRWqmNJdNE9sCGlwe1A8Gzg6R5C86XikpwfiJAezGwTbFVnGs
- mR4S2bGzYvptlEkg/9KHog8/6XTC3UeNQzsgctbn22TzA/elWarFwK8tvLfz/Jvdgayr
- qTc6gCrtbN/MVxmYPa3k49ygZpBWQUERAxThF5g7n2//2qqawwE9cEb4f4VcR5/DGoN6
- yjpt5R2R/NniJIhrFfvaHaf+sPZri4YhjK2UyO2v/G8JJg2OEDZQRVUvyFOUAkrwdgbW
- bcnA==
+ d=gmail.com; s=20230601; t=1699324196; x=1699928996; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IVzHn331g5u7RFHKqArgjXiMTEIMI1VKOcxTAZonIJQ=;
+ b=O2YMZePLXemnLjDJ6FDd9aWxnSMrEPFP/kRUVqrJVAcyz2XuzwSUgunnXm6kVG83/2
+ Qcdpj0eJ2PLGLnckkZGZpdXIypuFeeG8MhbClvZx7aczA0bnwo1dRePOSHnz1G2uJ7Jc
+ UK8JHHH3HABGRFSYuicd19j4DNZueezY6zZ+f6skcpxDn5yWOo3ssJLXRGn156LoofUw
+ Z/+yNNIpOoSCLvr0uDHrTL4STWY6zAYiCPGruVt6vR0TrBapaMhdBYQooEZZjeMCJAzy
+ 0UucCFNt5AGqthao2We20QXvLUUA9eprGgtYASM6Yefcug/Cw1wFLbusmbgl2igsg+LG
+ /ThA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699321199; x=1699925999;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xJleMQjaaLsKD3zymDLq2GG+Em4KcVhskoi6Q7RZmiw=;
- b=o8ZUe9Oo89EdBKBUsbtRXcgipBdU5yKzFozdJ8e3H15cB8rk7S1n5sX7WdLUVJynpH
- erBdMEjAe2sN4nFQvoDGBcrZRi+0TMIWHt4t6oCUr7HR9ML5Q0PcgR10wbhEueCR99G6
- mvZBjKOLXeJpqqVVeFyuHICjAgPE9gDZLlQgyM1qRo8d/krF6P4/4NeBrZE+Gtc6nzb4
- 6yOPdBW7g2FvWFDaAY3jIy/NgE9eFfkh00mNC0js22pgOZz3HcQdw9cmGy8IJErkjCp7
- pJsmr09Y2AzMxrpmTccpTrd7UFPoAZ2NYFIsgycLRR2h6Km+CpUHdaGePujDDimTRC5w
- RMoA==
-X-Gm-Message-State: AOJu0YytdeeAaVotm76XZYcH1VxlZ0q8BnmRrK4OYKuULkVOGHeCi2zM
- nsKs8qm2S9xWRVkz6opJQ6Dyd5qkOeiGkRZM4e4=
-X-Google-Smtp-Source: AGHT+IHZuWbCytkP8n4Amau66dg4WgfHSel/3swE8s+v2uWdPs0YkGJaZNGLV00cj0Ae+JV0sLY/HpwJ8DtyiDahvh8=
-X-Received: by 2002:a05:6830:2054:b0:6c4:ac5b:aaea with SMTP id
- f20-20020a056830205400b006c4ac5baaeamr30873746otp.25.1699321199492; Mon, 06
- Nov 2023 17:39:59 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699324196; x=1699928996;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IVzHn331g5u7RFHKqArgjXiMTEIMI1VKOcxTAZonIJQ=;
+ b=VDxht6iP4Rc5WMo34sh6AwYnAI8vFdadNZKt3EFYX1W8lioKnrWorIKHZ2CPPDCqIJ
+ e2YLWnHJ9InDrzkquc8RHF0QCRxZQNtrkjQYgBZt8uLIfMop7ijX2Vvge84ecQtnSATI
+ Upep+jCVbjFaseQ+4SC17dH9fSflhOHsKMhZtgv21QFPFo5h6wF+dHeiHPO1LuiAWY81
+ z5vtqODpziwriajBNTXPXXYKtAOw3DCozarXDO04S6rYHPDztSD6cCqvibyP4dhvgGk0
+ xel2O3+St/V3hzfBX+nbxPSLoScfd0tDP46Lm+rHqejSgLe7J7PmJRul0wTW3v0SyWQd
+ h5RA==
+X-Gm-Message-State: AOJu0YyAj3SLxK1BT7IKPtyFfPgxvi8xlLTdhOPP7ykl9mLNvVc0AGj/
+ vfdTe2KFGUodKcZk9bTDAmQUsJ2cm6hiNQ==
+X-Google-Smtp-Source: AGHT+IFRuafQ/ukY1p8rlp+awChGZZeRdlNYZsLvsLb/P+vl1V/1GccHhw6BW5j//j8AG2rIcaxnfg==
+X-Received: by 2002:a17:902:fb43:b0:1cb:fcfb:61af with SMTP id
+ lf3-20020a170902fb4300b001cbfcfb61afmr1439550plb.30.1699324195743; 
+ Mon, 06 Nov 2023 18:29:55 -0800 (PST)
+Received: from toolbox.alistair23.me
+ (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
+ [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
+ by smtp.gmail.com with ESMTPSA id
+ u18-20020a170902e5d200b001cc32f46757sm6487649plf.107.2023.11.06.18.29.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 06 Nov 2023 18:29:54 -0800 (PST)
+From: Alistair Francis <alistair23@gmail.com>
+X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
+To: qemu-devel@nongnu.org
+Cc: alistair23@gmail.com,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 00/49] riscv-to-apply queue
+Date: Tue,  7 Nov 2023 12:28:56 +1000
+Message-ID: <20231107022946.1055027-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20231106110336.358-1-philmd@linaro.org>
-In-Reply-To: <20231106110336.358-1-philmd@linaro.org>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 7 Nov 2023 09:39:47 +0800
-Message-ID: <CAJSP0QXN5LQ_56do2MOAXyHWwqstYPDEDgptN4h464mW7wnjqA@mail.gmail.com>
-Subject: Re: [PULL 00/60] Misc HW/UI patches for 2023-11-06
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-s390x@nongnu.org, 
- qemu-block@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org, 
- qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
- envelope-from=stefanha@gmail.com; helo=mail-ot1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,170 +94,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 6 Nov 2023 at 19:03, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
-> wrote:
->
-> The following changes since commit d762bf97931b58839316b68a570eecc6143c9e=
-3e:
->
->   Merge tag 'pull-target-arm-20231102' of https://git.linaro.org/people/p=
-maydell/qemu-arm into staging (2023-11-03 10:04:12 +0800)
->
-> are available in the Git repository at:
->
->   https://github.com/philmd/qemu.git tags/misc-cpus-20231106
->
-> for you to fetch changes up to a81b438ac3933419910cbdf2e2e8d87681de611e:
->
->   ui/sdl2: use correct key names in win title on mac (2023-11-06 11:07:32=
- +0100)
->
-> Few checkpatch warnings in target/i386/hvf/x86_emu.c are deliberately ign=
-ored.
-> ----------------------------------------------------------------
-> Misc hardware patch queue
->
-> HW emulation:
-> - PMBus fixes and tests (Titus)
-> - IDE fixes and tests (Fiona)
-> - New ADM1266 sensor (Titus)
-> - Better error propagation in PCI-ISA i82378 (Philippe)
->
-> Topology:
-> - Fix CPUState::nr_cores calculation (Zhuocheng Ding and Zhao Liu)
->
-> Monitor:
-> - Synchronize CPU state in 'info lapic' (Dongli Zhang)
->
-> QOM:
-> - Have 'cpu-qom.h' target-agnostic (Philippe)
-> - Call object_class_is_abstract once in cpu_class_by_name (Philippe)
->
-> UI:
-> - Use correct key names in titles on MacOS / SDL2 (Adrian)
->
-> MIPS:
-> - Fix MSA BZ/BNZ and TX79 LQ/SQ opcodes (Philippe)
->
-> Nios2:
-> - Create IRQs *after* vCPU is realized (Philippe)
->
-> PPC:
-> - Restrict KVM objects to system emulation (Philippe)
->
-> X86:
-> - HVF & KVM cleanups (Philippe)
->
-> Various targets:
-> - Use env_archcpu() to optimize (Philippe)
->
-> Misc:
-> - Few global variable shadowing removed (Philippe)
-> - Introduce cpu_exec_reset_hold and factor tcg_cpu_reset_hold out (Philip=
-pe)
-> - Remove few more 'softmmu' mentions (Philippe)
-> - Fix and cleanup in vl.c (Akihiko & Marc-Andr=C3=A9)
-> - MAINTAINERS updates (Thomas, Daniel)
->
-> ----------------------------------------------------------------
->
-> Adrian Wowk (1):
->   ui/sdl2: use correct key names in win title on mac
->
-> Akihiko Odaki (1):
->   vl: Free machine list
->
-> Daniel P. Berrang=C3=A9 (1):
->   MAINTAINERS: update libvirt devel mailing list address
->
-> Dongli Zhang (1):
->   target/i386/monitor: synchronize cpu state for lapic info
->
-> Fiona Ebner (2):
->   hw/ide: reset: cancel async DMA operation before resetting state
->   tests/qtest: ahci-test: add test exposing reset issue with pending
->     callback
->
-> Marc-Andr=C3=A9 Lureau (1):
->   vl: constify default_list
->
-> Philippe Mathieu-Daud=C3=A9 (39):
->   tests/vm/ubuntu.aarch64: Correct comment about TCG specific delay
->   tests/unit/test-seccomp: Remove mentions of softmmu in test names
->   accel/tcg: Declare tcg_flush_jmp_cache() in 'exec/tb-flush.h'
->   accel: Introduce cpu_exec_reset_hold()
->   accel/tcg: Factor tcg_cpu_reset_hold() out
->   target: Unify QOM style
->   target: Mention 'cpu-qom.h' is target agnostic
->   target/arm: Move internal declarations from 'cpu-qom.h' to 'cpu.h'
->   target/ppc: Remove CPU_RESOLVING_TYPE from 'cpu-qom.h'
->   target/riscv: Remove CPU_RESOLVING_TYPE from 'cpu-qom.h'
->   target: Declare FOO_CPU_TYPE_NAME/SUFFIX in 'cpu-qom.h'
->   target/hexagon: Declare QOM definitions in 'cpu-qom.h'
->   target/loongarch: Declare QOM definitions in 'cpu-qom.h'
->   target/nios2: Declare QOM definitions in 'cpu-qom.h'
->   target/openrisc: Declare QOM definitions in 'cpu-qom.h'
->   target/riscv: Move TYPE_RISCV_CPU_BASE definition to 'cpu.h'
->   target/ppc: Use env_archcpu() in helper_book3s_msgsndp()
->   target/riscv: Use env_archcpu() in [check_]nanbox()
->   target/s390x: Use env_archcpu() in handle_diag_308()
->   target/xtensa: Use env_archcpu() in update_c[compare|count]()
->   target/i386/hvf: Use x86_cpu in simulate_[rdmsr|wrmsr]()
->   target/i386/hvf: Use env_archcpu() in simulate_[rdmsr/wrmsr]()
->   target/i386/hvf: Use CPUState typedef
->   target/i386/hvf: Rename 'CPUState *cpu' variable as 'cs'
->   target/i386/hvf: Rename 'X86CPU *x86_cpu' variable as 'cpu'
->   target/i386/kvm: Correct comment in kvm_cpu_realize()
->   target/mips: Fix MSA BZ/BNZ opcodes displacement
->   target/mips: Fix TX79 LQ/SQ opcodes
->   sysemu/kvm: Restrict kvmppc_get_radix_page_info() to ppc targets
->   hw/ppc/e500: Restrict ppce500_init_mpic_kvm() to KVM
->   target/ppc: Restrict KVM objects to system emulation
->   target/ppc: Prohibit target specific KVM prototypes on user emulation
->   target/nios2: Create IRQs *after* accelerator vCPU is realized
->   target/alpha: Tidy up alpha_cpu_class_by_name()
->   hw/cpu: Call object_class_is_abstract() once in cpu_class_by_name()
->   exec/cpu: Have cpu_exec_realize() return a boolean
->   hw/cpu: Clean up global variable shadowing
+The following changes since commit 3e01f1147a16ca566694b97eafc941d62fa1e8d8:
 
-Please take a look at the following CI failure:
+  Merge tag 'pull-sp-20231105' of https://gitlab.com/rth7680/qemu into staging (2023-11-06 09:34:22 +0800)
 
-cc -m64 -mcx16 -Ilibqemu-arm-bsd-user.fa.p -I. -I.. -Itarget/arm
--I../target/arm -I../common-user/host/x86_64 -I../bsd-user/include
--Ibsd-user/freebsd -I../bsd-user/freebsd -I../bsd-user/host/x86_64
--Ibsd-user -I../bsd-user -I../bsd-user/arm -Iqapi -Itrace -Iui
--Iui/shader -I/usr/local/include/capstone
--I/usr/local/include/glib-2.0 -I/usr/local/lib/glib-2.0/include
--I/usr/local/include -fcolor-diagnostics -Wall -Winvalid-pch -Werror
--std=3Dgnu11 -O2 -g -fstack-protector-strong -Wundef -Wwrite-strings
--Wmissing-prototypes -Wstrict-prototypes -Wredundant-decls
--Wold-style-definition -Wtype-limits -Wformat-security -Wformat-y2k
--Winit-self -Wignored-qualifiers -Wempty-body -Wnested-externs
--Wendif-labels -Wexpansion-to-defined -Wmissing-format-attribute
--Wno-initializer-overrides -Wno-missing-include-dirs
--Wno-shift-negative-value -Wno-string-plus-int
--Wno-typedef-redefinition -Wno-tautological-type-limit-compare
--Wno-psabi -Wno-gnu-variable-sized-type-not-at-end -Wthread-safety
--iquote . -iquote /tmp/cirrus-ci-build -iquote
-/tmp/cirrus-ci-build/include -iquote
-/tmp/cirrus-ci-build/host/include/x86_64 -iquote
-/tmp/cirrus-ci-build/host/include/generic -iquote
-/tmp/cirrus-ci-build/tcg/i386 -pthread -D_GNU_SOURCE
--D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE -fno-strict-aliasing
--fno-common -fwrapv -fPIE -DNEED_CPU_H
-'-DCONFIG_TARGET=3D"arm-bsd-user-config-target.h"'
-'-DCONFIG_DEVICES=3D"arm-bsd-user-config-devices.h"' -MD -MQ
-libqemu-arm-bsd-user.fa.p/bsd-user_main.c.o -MF
-libqemu-arm-bsd-user.fa.p/bsd-user_main.c.o.d -o
-libqemu-arm-bsd-user.fa.p/bsd-user_main.c.o -c ../bsd-user/main.c
-../bsd-user/main.c:121:36: error: use of undeclared identifier 'cpus';
-did you mean 'cpu'?
-QTAILQ_REMOVE_RCU(&cpus, cpu, node);
-^~~~
-cpu
+are available in the Git repository at:
 
-https://gitlab.com/qemu-project/qemu/-/jobs/5472832586
+  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20231107
 
-Thanks,
-Stefan
+for you to fetch changes up to bc5e8445342fee35b35f2ed9a9f2249e060b8776:
+
+  docs/about/deprecated: Document RISC-V "pmu-num" deprecation (2023-11-07 11:06:02 +1000)
+
+----------------------------------------------------------------
+Third RISC-V PR for 8.2
+
+ * Rename ext_icboz to ext_zicboz
+ * Rename ext_icbom to ext_zicbom
+ * Rename ext_icsr to ext_zicsr
+ * Rename ext_ifencei to ext_zifencei
+ * Add RISC-V Virtual IRQs and IRQ filtering support
+ * Change default linux-user cpu to 'max'
+ * Update 'virt' machine core limit
+ * Add query-cpu-model-expansion API
+ * Rename epmp to smepmp and expose the extension
+ * Clear pmp/smepmp bits on reset
+ * Ignore pmp writes when RW=01
+ * Support zicntr/zihpm flags and disable support
+ * Correct CSR_MSECCFG operations
+ * Update mail address for Weiwei Li
+ * Update RISC-V vector crypto to ratified v1.0.0
+ * Clear the Ibex/OpenTitan SPI interrupts even if disabled
+ * Set the OpenTitan priv to 1.12.0
+ * Support discontinuous PMU counters
+
+----------------------------------------------------------------
+Alistair Francis (2):
+      hw/ssi: ibex_spi_host: Clear the interrupt even if disabled
+      target/riscv: cpu: Set the OpenTitan priv to 1.12.0
+
+Daniel Henrique Barboza (17):
+      target/riscv: rename ext_ifencei to ext_zifencei
+      target/riscv: rename ext_icsr to ext_zicsr
+      target/riscv: rename ext_icbom to ext_zicbom
+      target/riscv: rename ext_icboz to ext_zicboz
+      linux-user/riscv: change default cpu to 'max'
+      docs/system/riscv: update 'virt' machine core limit
+      target/riscv/kvm/kvm-cpu.c: add missing property getters()
+      qapi,risc-v: add query-cpu-model-expansion
+      target/riscv/tcg: add tcg_cpu_finalize_features()
+      target/riscv: handle custom props in qmp_query_cpu_model_expansion
+      target/riscv: add riscv_cpu_accelerator_compatible()
+      target/riscv/riscv-qmp-cmds.c: check CPU accel in query-cpu-model-expansion
+      target/riscv: add zicntr extension flag for TCG
+      target/riscv/kvm: add zicntr reg
+      target/riscv: add zihpm extension flag for TCG
+      target/riscv/kvm: add zihpm reg
+      target/riscv/kvm: add zicsr, zifencei, zba, zbs, svnapot
+
+Heinrich Schuchardt (1):
+      target/riscv: correct csr_ops[CSR_MSECCFG]
+
+Himanshu Chauhan (1):
+      Add epmp to extensions list and rename it to smepmp
+
+Max Chou (14):
+      target/riscv: Add cfg property for Zvkt extension
+      target/riscv: Expose Zvkt extension property
+      target/riscv: Add cfg property for Zvkb extension
+      target/riscv: Replace Zvbb checking by Zvkb
+      target/riscv: Expose Zvkb extension property
+      target/riscv: Add cfg properties for Zvkn[c|g] extensions
+      target/riscv: Expose Zvkn[c|g] extnesion properties
+      target/riscv: Add cfg properties for Zvks[c|g] extensions
+      target/riscv: Expose Zvks[c|g] extnesion properties
+      target/riscv: Move vector crypto extensions to riscv_cpu_extensions
+      disas/riscv: Add rv_fmt_vd_vs2_uimm format
+      disas/riscv: Add rv_codec_vror_vi for vror.vi
+      disas/riscv: Add support for vector crypto extensions
+      disas/riscv: Replace TABs with space
+
+Mayuresh Chitale (2):
+      target/riscv: pmp: Clear pmp/smepmp bits on reset
+      target/riscv: pmp: Ignore writes when RW=01
+
+Rajnesh Kanwal (6):
+      target/riscv: Without H-mode mask all HS mode inturrupts in mie.
+      target/riscv: Check for async flag in case of RISCV_EXCP_SEMIHOST.
+      target/riscv: Set VS* bits to one in mideleg when H-Ext is enabled
+      target/riscv: Split interrupt logic from riscv_cpu_update_mip.
+      target/riscv: Add M-mode virtual interrupt and IRQ filtering support.
+      target/riscv: Add HS-mode virtual interrupt and IRQ filtering support.
+
+Rob Bradford (5):
+      target/riscv: Propagate error from PMU setup
+      target/riscv: Don't assume PMU counters are continuous
+      target/riscv: Use existing PMU counter mask in FDT generation
+      target/riscv: Add "pmu-mask" property to replace "pmu-num"
+      docs/about/deprecated: Document RISC-V "pmu-num" deprecation
+
+Weiwei Li (1):
+      MAINTAINERS: update mail address for Weiwei Li
+
+ MAINTAINERS                                 |   2 +-
+ docs/about/deprecated.rst                   |  12 +
+ docs/system/riscv/virt.rst                  |   2 +-
+ qapi/machine-target.json                    |   6 +-
+ disas/riscv.h                               |   2 +
+ linux-user/riscv/target_elf.h               |   3 +-
+ target/riscv/cpu.h                          |  25 ++
+ target/riscv/cpu_bits.h                     |   6 +
+ target/riscv/cpu_cfg.h                      |  22 +-
+ target/riscv/pmp.h                          |   2 +
+ target/riscv/pmu.h                          |   5 +-
+ target/riscv/tcg/tcg-cpu.h                  |   2 +
+ disas/riscv.c                               | 157 ++++++++-
+ hw/riscv/boot.c                             |   2 +-
+ hw/riscv/virt.c                             |   6 +-
+ hw/ssi/ibex_spi_host.c                      |   6 +-
+ target/riscv/cpu.c                          | 199 ++++++++---
+ target/riscv/cpu_helper.c                   |  99 ++++--
+ target/riscv/csr.c                          | 497 +++++++++++++++++++++++++---
+ target/riscv/gdbstub.c                      |   2 +-
+ target/riscv/kvm/kvm-cpu.c                  |  59 +++-
+ target/riscv/machine.c                      |  16 +-
+ target/riscv/pmp.c                          |  27 +-
+ target/riscv/pmu.c                          |  34 +-
+ target/riscv/riscv-qmp-cmds.c               | 160 +++++++++
+ target/riscv/tcg/tcg-cpu.c                  | 176 +++++++---
+ target/riscv/insn_trans/trans_rvi.c.inc     |   2 +-
+ target/riscv/insn_trans/trans_rvvk.c.inc    |  37 ++-
+ target/riscv/insn_trans/trans_rvzicbo.c.inc |  16 +-
+ 29 files changed, 1326 insertions(+), 258 deletions(-)
 
