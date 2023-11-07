@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 604117E33A1
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:11:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 444267E3413
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:16:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0CRz-0005yx-9K; Mon, 06 Nov 2023 22:08:23 -0500
+	id 1r0CRr-0005Zp-B2; Mon, 06 Nov 2023 22:08:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CRl-0005Iu-Kh
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:08:10 -0500
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ id 1r0CRl-0005Gi-0a
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:08:09 -0500
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CRh-0001RT-B5
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:08:09 -0500
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2800bdf888dso3995980a91.1
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:08:03 -0800 (PST)
+ id 1r0CRh-0001Rm-2K
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:08:08 -0500
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6b1d1099a84so5244422b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:08:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1699326483; x=1699931283; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=hES6yVQ0/11qdrvyqhHvx3Mqj7cvamUGm715KS/hVjU=;
- b=OTAhW5/cT0iuMyHeQfrZ4HrXxy5lf7HT3Tqcc2BQCphciUAfwYPGgFlL/2AINPEIgo
- twQysGtmyN2z0vUdbERD7pftawGr5E16yyBJiUeGZuK14kCI1ThD2uzsxVc/ljurJA/E
- YJP4TDYDM1p0PlpFCgN//x38dsV5oKAsgOYENoBxzw0aPBK9YAqMtU3ENgoZOxjyTpWI
- YBtc2WuIDZ9xgp2jTKGyQzISspJYQbyI32f74VXTtMTYUSQNqICpUdaO3guihUTCR7PN
- Hlu6Bgia0u4NdFP0tv1oJ3x6naXSeUsdNccQtRzSTMPwM14teMSuEUXQ2iN8IFEczUjq
- lLNg==
+ :reply-to; bh=1WVjPga7yIHeu3PAMI2CdXP3lbKO1ZBcZBYWD91rJoo=;
+ b=nhtF4NLkpvnQ+cAGjEkUYlLdY8OIl117PwtYqU4M+HZyK6NVc0+wvOxA0ZBiN35mCF
+ nZrzo1SaygUmWWWX6kcy88zfE8ABJQWsYmFutalacmRR21vJkidDxdlaA2t1Q/K1cPHm
+ 0vZ3Ic+zJfTDDAiP6/gNS8UDaaub0m5QjM3TdjWvQlEsIyaO4nIsuRRsqfi/awi7hEUG
+ GF26z+7DzNpvZO7Auafrh83RADfwJxyJO7n6wA1jzhpFSiE2tRzddjOVoAHoL/4Ma8LA
+ lUyQ0vvxHCyy4rGejwdZcODBtdex+SXBg9Wgvhl4/UwpTeUs5wUp5eQi0ntxFbIJX5HH
+ QFZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1699326483; x=1699931283;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hES6yVQ0/11qdrvyqhHvx3Mqj7cvamUGm715KS/hVjU=;
- b=mYvNivtmez6jR7ajhegRlKfUpBxn5kvsyabPL9GTumOfsDZMKBbLk2i8FDHx2OHHAw
- 9L71HR6vXIBT5dmYpcGUplpxTPcfrddGQdxn1au4LY4cibVvc5V/9hSPvtUW6iTb96ne
- vBTWOXh5fkuDZQj8AAn+HKQDjPvRFmQakXlEmk8OfplQvazhhzxUG08KZOPNOR+irWsj
- bMZ6lIbiU3bCA0YLjGEtKyPvfM7kkb5k0yV3SrknX7obf67lva6Aav85htSKf9txRaiA
- oabUFLdsOHHtV1lgNdHVj9JIUTxaK9AcGuXtWHIPfXIcpj3SCn4h7uigwqN8rK7Kex5H
- oDcg==
-X-Gm-Message-State: AOJu0YwEPNW4g/4u3gZgvR8Q7UYtARaWo39wVMAaEwnbvtLa+WmCW/Wi
- WBGgP5damSuSiNTnn+VdDWsnLdKVD423aCy/DYw=
-X-Google-Smtp-Source: AGHT+IEuBwrCfiGrRpo+8Pw9SKwUxCEYPxV1M9uxN5/m/JSNjnZLCvMHz5pBaHFKYxs6ylxNQGaRKw==
-X-Received: by 2002:a17:90b:1e49:b0:27c:ecec:8854 with SMTP id
- pi9-20020a17090b1e4900b0027cecec8854mr1783970pjb.7.1699326482854; 
- Mon, 06 Nov 2023 19:08:02 -0800 (PST)
+ bh=1WVjPga7yIHeu3PAMI2CdXP3lbKO1ZBcZBYWD91rJoo=;
+ b=qZgNWft5yxetOgyhdPnQ9ZG6NpLLALJ/0Bhj7O5rH6cZqKRFdrj07qMtdq6a8g7Map
+ a0odRvc9EQVzzwWHkJvrsuJA3pI1je0Gf35w3XXjQ3zpn3OGIedDzVzqBMkjGbjLb2eJ
+ z8rNJBuCZWuKKtzdO0FYwBcQT6dMhGSQK3zt2gM5UPGuHagbXM6kFNeocgrGN12IUR6E
+ NjoYQes9Fp+25cHn+miAQA/eBRbqpnS1iADnmxBvuJCfPP9NaVxoHB/WkTgKHaw6kn8I
+ VN79Mpu84+8MGudQY94ySXTCMQzowVO10e+0DaeyCyIq0tr+Pp2BQcyk+CM7tCCF9M1w
+ Dikg==
+X-Gm-Message-State: AOJu0YwD89lG2Q131ErWRV++4LxXLobAS52Ioo3Dd+DFl9KT2C/4Qt84
+ MNlcpaha1sKAskDh9O2dGFROMeBdZBTYcPZrx1g=
+X-Google-Smtp-Source: AGHT+IGgpWEwhPdfrIkiAE0FE19c1pFDJ4y8lGKwzdGxPaE+KFMeY7iDAUk4TOJ/kPI3062kXoVW+A==
+X-Received: by 2002:a05:6a20:12ca:b0:181:275f:3b5e with SMTP id
+ v10-20020a056a2012ca00b00181275f3b5emr23182837pzg.5.1699326483640; 
+ Mon, 06 Nov 2023 19:08:03 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- 13-20020a17090a004d00b0027782f611d1sm6744883pjb.36.2023.11.06.19.08.02
+ 13-20020a17090a004d00b0027782f611d1sm6744883pjb.36.2023.11.06.19.08.03
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Nov 2023 19:08:02 -0800 (PST)
+ Mon, 06 Nov 2023 19:08:03 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 73/85] linux-user/hppa: Drop EXCP_DUMP from handled exceptions
-Date: Mon,  6 Nov 2023 19:03:55 -0800
-Message-Id: <20231107030407.8979-74-richard.henderson@linaro.org>
+Subject: [PULL 74/85] target/hppa: Implement pa2.0 data prefetch instructions
+Date: Mon,  6 Nov 2023 19:03:56 -0800
+Message-Id: <20231107030407.8979-75-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231107030407.8979-1-richard.henderson@linaro.org>
 References: <20231107030407.8979-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,44 +89,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+These are aliased onto the normal integer loads to %g0.
+Since we don't emulate caches, prefetch is a nop.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/hppa/cpu_loop.c | 4 ----
- 1 file changed, 4 deletions(-)
+ target/hppa/translate.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/linux-user/hppa/cpu_loop.c b/linux-user/hppa/cpu_loop.c
-index 8ab1335106..d5232f37fe 100644
---- a/linux-user/hppa/cpu_loop.c
-+++ b/linux-user/hppa/cpu_loop.c
-@@ -147,12 +147,10 @@ void cpu_loop(CPUHPPAState *env)
-             force_sig_fault(TARGET_SIGSEGV, TARGET_SEGV_MAPERR, env->iaoq_f);
-             break;
-         case EXCP_ILL:
--            EXCP_DUMP(env, "qemu: EXCP_ILL exception %#x\n", trapnr);
-             force_sig_fault(TARGET_SIGILL, TARGET_ILL_ILLOPC, env->iaoq_f);
-             break;
-         case EXCP_PRIV_OPR:
-             /* check for glibc ABORT_INSTRUCTION "iitlbp %r0,(%sr0, %r0)" */
--            EXCP_DUMP(env, "qemu: EXCP_PRIV_OPR exception %#x\n", trapnr);
-             if (env->cr[CR_IIR] == 0x04000000) {
- 		    force_sig_fault(TARGET_SIGILL, TARGET_ILL_ILLOPC, env->iaoq_f);
-             } else {
-@@ -160,7 +158,6 @@ void cpu_loop(CPUHPPAState *env)
-             }
-             break;
-         case EXCP_PRIV_REG:
--            EXCP_DUMP(env, "qemu: EXCP_PRIV_REG exception %#x\n", trapnr);
-             force_sig_fault(TARGET_SIGILL, TARGET_ILL_PRVREG, env->iaoq_f);
-             break;
-         case EXCP_OVERFLOW:
-@@ -173,7 +170,6 @@ void cpu_loop(CPUHPPAState *env)
-             force_sig_fault(TARGET_SIGFPE, 0, env->iaoq_f);
-             break;
-         case EXCP_BREAK:
--            EXCP_DUMP(env, "qemu: EXCP_BREAK exception %#x\n", trapnr);
-             force_sig_fault(TARGET_SIGTRAP, TARGET_TRAP_BRKPT, env->iaoq_f & ~3);
-             break;
-         case EXCP_DEBUG:
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index ba15cf6ab8..e7f379d648 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -2976,7 +2976,15 @@ static bool trans_permh(DisasContext *ctx, arg_permh *a)
+ 
+ static bool trans_ld(DisasContext *ctx, arg_ldst *a)
+ {
+-    if (!ctx->is_pa20 && a->size > MO_32) {
++    if (ctx->is_pa20) {
++       /*
++        * With pa20, LDB, LDH, LDW, LDD to %g0 are prefetches.
++        * Any base modification still occurs.
++        */
++        if (a->t == 0) {
++            return trans_nop_addrx(ctx, a);
++        }
++    } else if (a->size > MO_32) {
+         return gen_illegal(ctx);
+     }
+     return do_load(ctx, a->t, a->b, a->x, a->scale ? a->size : 0,
 -- 
 2.34.1
 
