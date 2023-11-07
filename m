@@ -2,138 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1205A7E4019
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 14:32:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA7C7E401A
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 14:33:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0MAP-0000Lw-0a; Tue, 07 Nov 2023 08:30:53 -0500
+	id 1r0MD7-0002fe-EY; Tue, 07 Nov 2023 08:33:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0MAM-0000JY-Nc
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:30:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0MD5-0002b0-2J
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:33:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0MAJ-0003dS-Rl
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:30:50 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0MD2-00040M-7d
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 08:33:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699363846;
+ s=mimecast20190719; t=1699364015;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=LLODxzJuOLsN4mmYBVAnLziCgPNVchnWgB93NiAhpYw=;
- b=EE1YOgwx7/BoslHAfMz1UQp9voM4SuauR0VC+9pwSzfkdIOUE2bZMUs5C2p7BM+TGNaieC
- yfFX5R+pRyQOJPV+YzjTKmDB22tay0upbFFNpywl+68+tXMgXGUdQ/n9JDkrkb3eCmSjEr
- 5NNT1Xvl56Ycv4zUW9VBgMrHs2vHvA8=
-Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
- [209.85.221.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=OWeesfY61gMOep56A0imnJbu4o62SKDoHrKiwL1vm6U=;
+ b=JwXAL0tuCdeS32SusJ2P3kYFf4Hl+EcKjmhbLimkDu/6fzfRObFQdl2V+OpQ+VFpsh/HxE
+ uyA0/HdVMFXmPXDpYufz96onEhibhPuVnpWwGlmJ6acA7xl2mjjPobtxNK71UypLi4F0kL
+ hMmhywvrbZ0S1UFJcRXeaVrbwI+y/yw=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-7ag2wsPsNi6xaoFcxCOanw-1; Tue, 07 Nov 2023 08:30:44 -0500
-X-MC-Unique: 7ag2wsPsNi6xaoFcxCOanw-1
-Received: by mail-vk1-f197.google.com with SMTP id
- 71dfb90a1353d-4abecd9d37aso1679191e0c.1
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 05:30:44 -0800 (PST)
+ us-mta-16-P9CQcbRqNRqfxRzIQO4iPg-1; Tue, 07 Nov 2023 08:33:18 -0500
+X-MC-Unique: P9CQcbRqNRqfxRzIQO4iPg-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7788fa5f1b0so655398085a.2
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 05:33:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699363844; x=1699968644;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1699363998; x=1699968798;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LLODxzJuOLsN4mmYBVAnLziCgPNVchnWgB93NiAhpYw=;
- b=op8lth4czLRQbPMawLZwDL5584GR3KJ05NAslN3AHdcp4ogOoDEE9s6Tmzwxc2HgAV
- 9hz4eWDuLjOxEFCwXepjAH+adIFsIhULhG32hEa087AJ5o9eHTWhzCysiws0QYgbzeo+
- ufe4GxYvXo9agrjnZZdVdve4bsWHl4w0ix1gfhJa88lsKKHQp4sbLdOF9dg7pHEsCEQa
- rjmcRxXYIDHGvjHZ5u914syBeyKYbi+FiVezc7wXcDCu82Dkun0RNYDWlTAVSymwll9T
- WNUbW0CqXqihNsMj5OOChXrq89keEzjCy5hSok7emCiBZQfxJLtInZXrUQH/ghX7ru/R
- QVkQ==
-X-Gm-Message-State: AOJu0Yx7YbzY+Nq/gSg9zm2ox6wx2oXZhYSrxT98Z/8DN1FGoLp2kCBQ
- x5Dvf7zhY/xFOvle3ZolkV2g7uq+fOKuWbW8/m0btnoFwc+w2YE6aBX3lwWfG+b/UNePIMt+Y+2
- WgGPhzvPg8q3AbXw=
-X-Received: by 2002:a1f:1e52:0:b0:49a:8237:c81 with SMTP id
- e79-20020a1f1e52000000b0049a82370c81mr29480866vke.13.1699363844020; 
- Tue, 07 Nov 2023 05:30:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IED9nMHa3r59JKZCl+zrp/jr/sMIzEl1Vr2Prf1gwFWOKsAQsUeAKqtKMUK4mLm/C6hP/wieg==
-X-Received: by 2002:a1f:1e52:0:b0:49a:8237:c81 with SMTP id
- e79-20020a1f1e52000000b0049a82370c81mr29480851vke.13.1699363843765; 
- Tue, 07 Nov 2023 05:30:43 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-43-179-224.web.vodafone.de.
- [109.43.179.224]) by smtp.gmail.com with ESMTPSA id
- x1-20020ad44581000000b00647386a3234sm4341981qvu.85.2023.11.07.05.30.41
+ bh=OWeesfY61gMOep56A0imnJbu4o62SKDoHrKiwL1vm6U=;
+ b=V8dQq+gGukTUEQfQ0cbQqh2CfCTcZYUtRNRBK7SPvcWJl5/eDt+bj89S85S51mPqPO
+ tjkBGsWpDoI47cESN2sQpVwu2z18MzA277zhbqMeigJUZKHxsZstgVnXibMobJT536ZH
+ D7rFK4o9+J9cjTfJATCJY4uNxxDz2IjTBjfZtHAABg91H855hoWNfWgg4N1rVNlBvsID
+ GzEmKpcEsy2ZZqC4r4vWrjRR0wFdXNgOnZsbIJkUovWyq0Z5Zygt//lgEN/wiw2jkKzK
+ VQjLa09JEnkKD1PWeqD7r1HkIDGdqzV3WtzgKgLW/Nq/NEthe7nXepLoxOt4h4q0iV63
+ eQ9A==
+X-Gm-Message-State: AOJu0YwmFRJebrvwGUmTn06u06QxSC2iPDAZzWAiFK/bKoirrafPpmI2
+ +Qr9WpJgBfuiQK2WHfGmJKB6tESZXc9L/lUY/8J19nzDhNjgbyXyd9ijGSwhlGXhKF/1H3PuK4i
+ SKORICSMXYPnna6k=
+X-Received: by 2002:a05:620a:558b:b0:777:6631:85b6 with SMTP id
+ vq11-20020a05620a558b00b00777663185b6mr32426637qkn.39.1699363997901; 
+ Tue, 07 Nov 2023 05:33:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFWj2HjOKai+IebhEC1Jk7qUyOThHM1lHUuLkTlZGWaZ6ajAkbEeG086gGyqrz3T/M1O4u1uw==
+X-Received: by 2002:a05:620a:558b:b0:777:6631:85b6 with SMTP id
+ vq11-20020a05620a558b00b00777663185b6mr32426600qkn.39.1699363997535; 
+ Tue, 07 Nov 2023 05:33:17 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ po2-20020a05620a384200b00774309d3e89sm4194638qkn.7.2023.11.07.05.33.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Nov 2023 05:30:43 -0800 (PST)
-Message-ID: <95a40f37-e5c2-45fd-8fe4-9be90920e8d0@redhat.com>
-Date: Tue, 7 Nov 2023 14:30:39 +0100
+ Tue, 07 Nov 2023 05:33:17 -0800 (PST)
+Message-ID: <da7de379-bd8c-47d1-b7bf-412be92a2756@redhat.com>
+Date: Tue, 7 Nov 2023 14:33:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] target/s390x/cpu: Restrict CPUS390XState declaration
- to 'cpu.h'
+Subject: Re: [PATCH v4 26/41] backends/iommufd: Introduce the iommufd object
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-s390x@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>
-References: <20231106114500.5269-1-philmd@linaro.org>
- <c53fd7bd-b9ea-43d4-8d1b-b7acdeef0f90@redhat.com>
- <dc17be3c-5520-4636-a826-f112078b323b@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <dc17be3c-5520-4636-a826-f112078b323b@linaro.org>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Thomas Huth <thuth@redhat.com>
+References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
+ <20231102071302.1818071-27-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231102071302.1818071-27-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -149,33 +108,596 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 07/11/2023 13.12, Philippe Mathieu-Daudé wrote:
-> On 7/11/23 11:44, Thomas Huth wrote:
->> On 06/11/2023 12.44, Philippe Mathieu-Daudé wrote:
->>> In order to restrict CPUS390XState declaration to "cpu.h" (both
->>> target-specific):
->>> - have the following prototypes take a S390CPU* instead:
->>>    . css_do_sic()
->>>    . sclp_service_call()
->>>    . sclp_service_call_protected()
->>> - restrict cpu_get_tb_cpu_state() definition to TCG
->>>
->>> Philippe Mathieu-Daudé (4):
->>>    hw/s390x/css: Have css_do_sic() take S390CPU instead of CPUS390XState
->>>    hw/s390x/sclp: Have sclp_service_call[_protected]() take S390CPU*
->>>    target/s390x/cpu: Restrict cpu_get_tb_cpu_state() definition to TCG
->>>    target/s390x/cpu: Restrict CPUS390XState declaration to 'cpu.h'
->>
->> Patches look reasonable. Thanks, queued them now!
+On 11/2/23 08:12, Zhenzhong Duan wrote:
+> From: Eric Auger <eric.auger@redhat.com>
 > 
-> Thanks, since I wasn't sure the series would be reviewed in time for
-> soft freeze, I didn't mention it would be more convenient for me to
-> take it via my hw-misc tree. Since you kindly reviewed it, I'll take
-> it :) Thanks!
+> Introduce an iommufd object which allows the interaction
+> with the host /dev/iommu device.
+> 
+> The /dev/iommu can have been already pre-opened outside of qemu,
+> in which case the fd can be passed directly along with the
+> iommufd object:
+> 
+> This allows the iommufd object to be shared accross several
+> subsystems (VFIO, VDPA, ...). For example, libvirt would open
+> the /dev/iommu once.
+> 
+> If no fd is passed along with the iommufd object, the /dev/iommu
+> is opened by the qemu code.
+> 
+> The CONFIG_IOMMUFD option must be set to compile this new object.
+> 
+> Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+> v4: add CONFIG_IOMMUFD check, document default case
+> 
+>   MAINTAINERS              |   7 ++
+>   qapi/qom.json            |  22 ++++
+>   include/sysemu/iommufd.h |  46 +++++++
+>   backends/iommufd-stub.c  |  59 +++++++++
+>   backends/iommufd.c       | 257 +++++++++++++++++++++++++++++++++++++++
+>   backends/Kconfig         |   4 +
+>   backends/meson.build     |   5 +
+>   backends/trace-events    |  12 ++
+>   qemu-options.hx          |  13 ++
+>   9 files changed, 425 insertions(+)
+>   create mode 100644 include/sysemu/iommufd.h
+>   create mode 100644 backends/iommufd-stub.c
+>   create mode 100644 backends/iommufd.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index cd8d6b140f..6f35159255 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2135,6 +2135,13 @@ F: hw/vfio/ap.c
+>   F: docs/system/s390x/vfio-ap.rst
+>   L: qemu-s390x@nongnu.org
+>   
+> +iommufd
+> +M: Yi Liu <yi.l.liu@intel.com>
+> +M: Eric Auger <eric.auger@redhat.com>
+> +S: Supported
+> +F: backends/iommufd.c
+> +F: include/sysemu/iommufd.h
+> +
+>   vhost
+>   M: Michael S. Tsirkin <mst@redhat.com>
+>   S: Supported
+> diff --git a/qapi/qom.json b/qapi/qom.json
+> index c53ef978ff..27300add48 100644
+> --- a/qapi/qom.json
+> +++ b/qapi/qom.json
+> @@ -794,6 +794,24 @@
+>   { 'struct': 'VfioUserServerProperties',
+>     'data': { 'socket': 'SocketAddress', 'device': 'str' } }
+>   
+> +##
+> +# @IOMMUFDProperties:
+> +#
+> +# Properties for iommufd objects.
+> +#
+> +# @fd: file descriptor name previously passed via 'getfd' command,
+> +#     which represents a pre-opened /dev/iommu.  This allows the
+> +#     iommufd object to be shared accross several subsystems
+> +#     (VFIO, VDPA, ...), and the file descriptor to be shared
+> +#     with other process, e.g. DPDK.  (default: QEMU opens
+> +#     /dev/iommu by itself)
+> +#
+> +# Since: 8.2
+> +##
+> +{ 'struct': 'IOMMUFDProperties',
+> +  'data': { '*fd': 'str' },
+> +  'if': 'CONFIG_IOMMUFD' }
 
-All right, I'll drop them from my queue again then.
 
-  Thomas
+Activating or not IOMMUFD on a platform is a configuration choice
+and it is not a dependency on an external resource. I would make
+things simpler and drop all the #ifdef in the documentation files.
 
+There might be a way to remove the documentation also. Not a big
+issue for now.
+
+
+> +
+>   ##
+>   # @RngProperties:
+>   #
+> @@ -934,6 +952,8 @@
+>       'input-barrier',
+>       { 'name': 'input-linux',
+>         'if': 'CONFIG_LINUX' },
+> +    { 'name': 'iommufd',
+> +      'if': 'CONFIG_IOMMUFD' },
+>       'iothread',
+>       'main-loop',
+>       { 'name': 'memory-backend-epc',
+> @@ -1003,6 +1023,8 @@
+>         'input-barrier':              'InputBarrierProperties',
+>         'input-linux':                { 'type': 'InputLinuxProperties',
+>                                         'if': 'CONFIG_LINUX' },
+> +      'iommufd':                    { 'type': 'IOMMUFDProperties',
+> +                                      'if': 'CONFIG_IOMMUFD' },
+>         'iothread':                   'IothreadProperties',
+>         'main-loop':                  'MainLoopProperties',
+>         'memory-backend-epc':         { 'type': 'MemoryBackendEpcProperties',
+> diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
+> new file mode 100644
+> index 0000000000..f0e5c7eeb8
+> --- /dev/null
+> +++ b/include/sysemu/iommufd.h
+> @@ -0,0 +1,46 @@
+> +#ifndef SYSEMU_IOMMUFD_H
+> +#define SYSEMU_IOMMUFD_H
+> +
+> +#include "qom/object.h"
+> +#include "qemu/thread.h"
+> +#include "exec/hwaddr.h"
+> +#include "exec/cpu-common.h"
+> +
+> +#define TYPE_IOMMUFD_BACKEND "iommufd"
+> +OBJECT_DECLARE_TYPE(IOMMUFDBackend, IOMMUFDBackendClass,
+> +                    IOMMUFD_BACKEND)
+> +#define IOMMUFD_BACKEND(obj) \
+> +    OBJECT_CHECK(IOMMUFDBackend, (obj), TYPE_IOMMUFD_BACKEND)
+> +#define IOMMUFD_BACKEND_GET_CLASS(obj) \
+> +    OBJECT_GET_CLASS(IOMMUFDBackendClass, (obj), TYPE_IOMMUFD_BACKEND)
+> +#define IOMMUFD_BACKEND_CLASS(klass) \
+> +    OBJECT_CLASS_CHECK(IOMMUFDBackendClass, (klass), TYPE_IOMMUFD_BACKEND)
+> +struct IOMMUFDBackendClass {
+> +    ObjectClass parent_class;
+> +};
+> +
+> +struct IOMMUFDBackend {
+> +    Object parent;
+> +
+> +    /*< protected >*/
+> +    int fd;            /* /dev/iommu file descriptor */
+> +    bool owned;        /* is the /dev/iommu opened internally */
+> +    QemuMutex lock;
+> +    uint32_t users;
+> +
+> +    /*< public >*/
+> +};
+> +
+> +int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp);
+> +void iommufd_backend_disconnect(IOMMUFDBackend *be);
+> +
+> +int iommufd_backend_get_ioas(IOMMUFDBackend *be, uint32_t *ioas_id);
+> +void iommufd_backend_put_ioas(IOMMUFDBackend *be, uint32_t ioas_id);
+> +void iommufd_backend_free_id(int fd, uint32_t id);
+> +int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
+> +                            ram_addr_t size, void *vaddr, bool readonly);
+> +int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+> +                              hwaddr iova, ram_addr_t size);
+> +int iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id,
+> +                               uint32_t pt_id, uint32_t *out_hwpt);
+> +#endif
+> diff --git a/backends/iommufd-stub.c b/backends/iommufd-stub.c
+
+I don't think this stub file is needed. Please drop.
+
+> new file mode 100644
+> index 0000000000..02ac844c17
+> --- /dev/null
+> +++ b/backends/iommufd-stub.c
+> @@ -0,0 +1,59 @@
+> +/*
+> + * iommufd container backend stub
+> + *
+> + * Copyright (C) 2023 Intel Corporation.
+> + * Copyright Red Hat, Inc. 2023
+> + *
+> + * Authors: Yi Liu <yi.l.liu@intel.com>
+> + *          Eric Auger <eric.auger@redhat.com>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
+> +
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> +
+> + * You should have received a copy of the GNU General Public License along
+> + * with this program; if not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "sysemu/iommufd.h"
+> +#include "qemu/error-report.h"
+> +
+> +int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
+> +{
+> +    return 0;
+> +}
+> +void iommufd_backend_disconnect(IOMMUFDBackend *be)
+> +{
+> +}
+> +void iommufd_backend_free_id(int fd, uint32_t id)
+> +{
+> +}
+> +int iommufd_backend_get_ioas(IOMMUFDBackend *be, uint32_t *ioas_id)
+> +{
+> +    return 0;
+> +}
+> +void iommufd_backend_put_ioas(IOMMUFDBackend *be, uint32_t ioas_id)
+> +{
+> +}
+> +int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
+> +                            ram_addr_t size, void *vaddr, bool readonly)
+> +{
+> +    return 0;
+> +}
+> +int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+> +                              hwaddr iova, ram_addr_t size)
+> +{
+> +    return 0;
+> +}
+> +int iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id,
+> +                               uint32_t pt_id, uint32_t *out_hwpt)
+> +{
+> +    return 0;
+> +}
+> diff --git a/backends/iommufd.c b/backends/iommufd.c
+> new file mode 100644
+> index 0000000000..a526d58824
+> --- /dev/null
+> +++ b/backends/iommufd.c
+> @@ -0,0 +1,257 @@
+> +/*
+> + * iommufd container backend
+> + *
+> + * Copyright (C) 2023 Intel Corporation.
+> + * Copyright Red Hat, Inc. 2023
+> + *
+> + * Authors: Yi Liu <yi.l.liu@intel.com>
+> + *          Eric Auger <eric.auger@redhat.com>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "sysemu/iommufd.h"
+> +#include "qapi/error.h"
+> +#include "qapi/qmp/qerror.h"
+> +#include "qemu/module.h"
+> +#include "qom/object_interfaces.h"
+> +#include "qemu/error-report.h"
+> +#include "monitor/monitor.h"
+> +#include "trace.h"
+> +#include <sys/ioctl.h>
+> +#include <linux/iommufd.h>
+> +
+> +static void iommufd_backend_init(Object *obj)
+> +{
+> +    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
+> +
+> +    be->fd = -1;
+> +    be->users = 0;
+> +    be->owned = true;
+> +    qemu_mutex_init(&be->lock);
+> +}
+> +
+> +static void iommufd_backend_finalize(Object *obj)
+> +{
+> +    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
+> +
+> +    if (be->owned) {
+> +        close(be->fd);
+> +        be->fd = -1;
+> +    }
+> +}
+> +
+> +static void iommufd_backend_set_fd(Object *obj, const char *str, Error **errp)
+> +{
+> +    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
+> +    int fd = -1;
+> +
+> +    fd = monitor_fd_param(monitor_cur(), str, errp);
+> +    if (fd == -1) {
+> +        error_prepend(errp, "Could not parse remote object fd %s:", str);
+> +        return;
+> +    }
+> +    qemu_mutex_lock(&be->lock);
+> +    be->fd = fd;
+> +    be->owned = false;
+> +    qemu_mutex_unlock(&be->lock);
+> +    trace_iommu_backend_set_fd(be->fd);
+> +}
+> +
+> +static void iommufd_backend_class_init(ObjectClass *oc, void *data)
+> +{
+> +    object_class_property_add_str(oc, "fd", NULL, iommufd_backend_set_fd);
+> +}
+> +
+> +int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
+> +{
+> +    int fd, ret = 0;
+> +
+> +    qemu_mutex_lock(&be->lock);
+> +    if (be->users == UINT32_MAX) {
+> +        error_setg(errp, "too many connections");
+> +        ret = -E2BIG;
+> +        goto out;
+> +    }
+> +    if (be->owned && !be->users) {
+> +        fd = qemu_open_old("/dev/iommu", O_RDWR);
+> +        if (fd < 0) {
+> +            error_setg_errno(errp, errno, "/dev/iommu opening failed");
+> +            ret = fd;
+> +            goto out;
+> +        }
+> +        be->fd = fd;
+> +    }
+> +    be->users++;
+> +out:
+> +    trace_iommufd_backend_connect(be->fd, be->owned,
+> +                                  be->users, ret);
+> +    qemu_mutex_unlock(&be->lock);
+> +    return ret;
+> +}
+> +
+> +void iommufd_backend_disconnect(IOMMUFDBackend *be)
+> +{
+> +    qemu_mutex_lock(&be->lock);
+> +    if (!be->users) {
+> +        goto out;
+> +    }
+> +    be->users--;
+> +    if (!be->users && be->owned) {
+> +        close(be->fd);
+> +        be->fd = -1;
+> +    }
+> +out:
+> +    trace_iommufd_backend_disconnect(be->fd, be->users);
+> +    qemu_mutex_unlock(&be->lock);
+> +}
+> +
+> +static int iommufd_backend_alloc_ioas(int fd, uint32_t *ioas_id)
+> +{
+> +    int ret;
+> +    struct iommu_ioas_alloc alloc_data  = {
+> +        .size = sizeof(alloc_data),
+> +        .flags = 0,
+> +    };
+> +
+> +    ret = ioctl(fd, IOMMU_IOAS_ALLOC, &alloc_data);
+> +    if (ret) {
+> +        error_report("Failed to allocate ioas %m");
+> +    }
+> +
+> +    *ioas_id = alloc_data.out_ioas_id;
+> +    trace_iommufd_backend_alloc_ioas(fd, *ioas_id, ret);
+> +
+> +    return ret;
+> +}
+> +
+> +void iommufd_backend_free_id(int fd, uint32_t id)
+> +{
+> +    int ret;
+> +    struct iommu_destroy des = {
+> +        .size = sizeof(des),
+> +        .id = id,
+> +    };
+> +
+> +    ret = ioctl(fd, IOMMU_DESTROY, &des);
+> +    trace_iommufd_backend_free_id(fd, id, ret);
+> +    if (ret) {
+> +        error_report("Failed to free id: %u %m", id);
+> +    }
+> +}
+> +
+> +int iommufd_backend_get_ioas(IOMMUFDBackend *be, uint32_t *ioas_id)
+> +{
+> +    int ret;
+> +
+> +    ret = iommufd_backend_alloc_ioas(be->fd, ioas_id);
+> +    trace_iommufd_backend_get_ioas(be->fd, *ioas_id, ret);
+> +    return ret;
+> +}
+> +
+> +void iommufd_backend_put_ioas(IOMMUFDBackend *be, uint32_t ioas_id)
+> +{
+> +    iommufd_backend_free_id(be->fd, ioas_id);
+> +    trace_iommufd_backend_put_ioas(be->fd, ioas_id);
+> +}
+> +
+> +int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
+> +                            ram_addr_t size, void *vaddr, bool readonly)
+> +{
+> +    int ret;
+> +    struct iommu_ioas_map map = {
+> +        .size = sizeof(map),
+> +        .flags = IOMMU_IOAS_MAP_READABLE |
+> +                 IOMMU_IOAS_MAP_FIXED_IOVA,
+> +        .ioas_id = ioas_id,
+> +        .__reserved = 0,
+> +        .user_va = (uintptr_t)vaddr,
+> +        .iova = iova,
+> +        .length = size,
+> +    };
+> +
+> +    if (!readonly) {
+> +        map.flags |= IOMMU_IOAS_MAP_WRITEABLE;
+> +    }
+> +
+> +    ret = ioctl(be->fd, IOMMU_IOAS_MAP, &map);
+> +    trace_iommufd_backend_map_dma(be->fd, ioas_id, iova, size,
+> +                                  vaddr, readonly, ret);
+> +    if (ret) {
+> +        error_report("IOMMU_IOAS_MAP failed: %m");
+> +    }
+> +    return !ret ? 0 : -errno;
+> +}
+> +
+> +int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+> +                              hwaddr iova, ram_addr_t size)
+> +{
+> +    int ret;
+> +    struct iommu_ioas_unmap unmap = {
+> +        .size = sizeof(unmap),
+> +        .ioas_id = ioas_id,
+> +        .iova = iova,
+> +        .length = size,
+> +    };
+> +
+> +    ret = ioctl(be->fd, IOMMU_IOAS_UNMAP, &unmap);
+> +    trace_iommufd_backend_unmap_dma(be->fd, ioas_id, iova, size, ret);
+> +    /*
+> +     * TODO: IOMMUFD doesn't support mapping PCI BARs for now.
+> +     * It's not a problem if there is no p2p dma, relax it here
+> +     * and avoid many noisy trigger from vIOMMU side.
+
+Should we add a warn_report() ?
+
+> +     */
+> +    if (ret && errno == ENOENT) {
+> +        ret = 0;
+> +    }
+> +    if (ret) {
+> +        error_report("IOMMU_IOAS_UNMAP failed: %m");
+> +    }
+> +    return !ret ? 0 : -errno;
+> +}
+> +
+> +int iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id,
+> +                               uint32_t pt_id, uint32_t *out_hwpt)
+> +{
+> +    int ret;
+> +    struct iommu_hwpt_alloc alloc_hwpt = {
+> +        .size = sizeof(struct iommu_hwpt_alloc),
+> +        .flags = 0,
+> +        .dev_id = dev_id,
+> +        .pt_id = pt_id,
+> +        .__reserved = 0,
+> +    };
+> +
+> +    ret = ioctl(iommufd, IOMMU_HWPT_ALLOC, &alloc_hwpt);
+> +    trace_iommufd_backend_alloc_hwpt(iommufd, dev_id, pt_id,
+> +                                     alloc_hwpt.out_hwpt_id, ret);
+> +
+> +    if (ret) {
+> +        error_report("IOMMU_HWPT_ALLOC failed: %m");
+> +    } else {
+> +        *out_hwpt = alloc_hwpt.out_hwpt_id;
+> +    }
+> +    return !ret ? 0 : -errno;
+> +}
+> +
+> +static const TypeInfo iommufd_backend_info = {
+> +    .name = TYPE_IOMMUFD_BACKEND,
+> +    .parent = TYPE_OBJECT,
+> +    .instance_size = sizeof(IOMMUFDBackend),
+> +    .instance_init = iommufd_backend_init,
+> +    .instance_finalize = iommufd_backend_finalize,
+> +    .class_size = sizeof(IOMMUFDBackendClass),
+> +    .class_init = iommufd_backend_class_init,
+> +    .interfaces = (InterfaceInfo[]) {
+> +        { TYPE_USER_CREATABLE },
+> +        { }
+> +    }
+> +};
+> +
+> +static void register_types(void)
+> +{
+> +    type_register_static(&iommufd_backend_info);
+> +}
+> +
+> +type_init(register_types);
+> diff --git a/backends/Kconfig b/backends/Kconfig
+> index f35abc1609..2cb23f62fa 100644
+> --- a/backends/Kconfig
+> +++ b/backends/Kconfig
+> @@ -1 +1,5 @@
+>   source tpm/Kconfig
+> +
+> +config IOMMUFD
+> +    bool
+> +    depends on VFIO
+> diff --git a/backends/meson.build b/backends/meson.build
+> index 914c7c4afb..05ac57ff15 100644
+> --- a/backends/meson.build
+> +++ b/backends/meson.build
+> @@ -20,6 +20,11 @@ if have_vhost_user
+>     system_ss.add(when: 'CONFIG_VIRTIO', if_true: files('vhost-user.c'))
+>   endif
+>   system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost.c'))
+> +if have_iommufd
+> +  system_ss.add(files('iommufd.c'))
+> +else
+> +  system_ss.add(files('iommufd-stub.c'))
+> +endif
+
+replace with :
+
+  system_ss.add(when: 'CONFIG_IOMMUFD', if_true: files('iommufd.c'))
+
+and drop iommufd-stub.c which will become useless.
+
+
+
+>   if have_vhost_user_crypto
+>     system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost-user.c'))
+>   endif
+> diff --git a/backends/trace-events b/backends/trace-events
+> index 652eb76a57..e5f828bca2 100644
+> --- a/backends/trace-events
+> +++ b/backends/trace-events
+> @@ -5,3 +5,15 @@ dbus_vmstate_pre_save(void)
+>   dbus_vmstate_post_load(int version_id) "version_id: %d"
+>   dbus_vmstate_loading(const char *id) "id: %s"
+>   dbus_vmstate_saving(const char *id) "id: %s"
+> +
+> +# iommufd.c
+> +iommufd_backend_connect(int fd, bool owned, uint32_t users, int ret) "fd=%d owned=%d users=%d (%d)"
+> +iommufd_backend_disconnect(int fd, uint32_t users) "fd=%d users=%d"
+> +iommu_backend_set_fd(int fd) "pre-opened /dev/iommu fd=%d"
+> +iommufd_backend_get_ioas(int iommufd, uint32_t ioas, int ret) " iommufd=%d ioas=%d (%d)"
+> +iommufd_backend_put_ioas(int iommufd, uint32_t ioas) " iommufd=%d ioas=%d"
+> +iommufd_backend_map_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, void *vaddr, bool readonly, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" addr=%p readonly=%d (%d)"
+> +iommufd_backend_unmap_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
+> +iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas, int ret) " iommufd=%d ioas=%d (%d)"
+> +iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
+> +iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id, uint32_t pt_id, uint32_t out_hwpt_id, int ret) " iommufd=%d dev_id=%u pt_id=%u out_hwpt=%u (%d)"
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index e26230bac5..ddfaddf8ce 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -5210,6 +5210,19 @@ SRST
+>   
+>           The ``share`` boolean option is on by default with memfd.
+>   
+> +#ifdef CONFIG_IOMMUFD
+
+Please remove.
+
+
+Thanks,
+
+C.
+
+
+
+
+> +    ``-object iommufd,id=id[,fd=fd]``
+> +        Creates an iommufd backend which allows control of DMA mapping
+> +        through the /dev/iommu device.
+> +
+> +        The ``id`` parameter is a unique ID which frontends (such as
+> +        vfio-pci of vdpa) will use to connect with the iommufd backend.
+> +
+> +        The ``fd`` parameter is an optional pre-opened file descriptor
+> +        resulting from /dev/iommu opening. Usually the iommufd is shared
+> +        across all subsystems, bringing the benefit of centralized
+> +        reference counting.
+> +#endif
+>       ``-object rng-builtin,id=id``
+>           Creates a random number generator backend which obtains entropy
+>           from QEMU builtin functions. The ``id`` parameter is a unique ID
 
 
