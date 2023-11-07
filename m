@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515697E38FC
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:23:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 324977E38C9
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:19:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0J84-0007qo-2H; Tue, 07 Nov 2023 05:16:16 -0500
+	id 1r0J82-0007qF-SE; Tue, 07 Nov 2023 05:16:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1r0J7l-0007aF-5e
+ id 1r0J7o-0007aN-6D
  for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:16:10 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1r0J7j-0003Xo-Ih
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:15:56 -0500
+ id 1r0J7m-0003Y8-DR
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:15:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699352154;
+ s=mimecast20190719; t=1699352157;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NW6ghQk1O2r049N0oiICfv4ZaD7e1tUB9opeV+7VTSY=;
- b=MZW7RlQgTkCvYfJFvQpk2zzR5qfdfmdVnCh3g0w31wKp+UCutrny7NIAJzu3IU1xl6k1Jn
- K0Q7cKvGqGOOIVtN8HFGwIlnY8IaDqgQoJJcNdEZhdBgTmH54o9H66vqq6Tb8hLXDLsYSg
- dTf+g5gWJvcIPvQElHtla9frPKt94nw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-599-pK0dk7n3OEOtj7BXYLxaMw-1; Tue, 07 Nov 2023 05:15:36 -0500
-X-MC-Unique: pK0dk7n3OEOtj7BXYLxaMw-1
+ bh=caXmS8RnOSLOAzbadXQQPIhTwrW9ZJrLqzxOtE0HgPE=;
+ b=HTW/ayHe8WAqYQk/uKcZGdaZgCAxo6UkqYB/l4GBWxXBFSZiovXmA3K5qSZYxUrDn4QkkL
+ +kXvI8WftVC8I3VTcqgQ0Gisvq84F3lFfUtj47HOGjQWkvlGSFe3tKXl8wIrXnhFgN/XJG
+ idUChBKOemZgt8PAv6way9VVBoXuTcQ=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-bzdEfS_vPheVcEL2ZuVXjw-1; Tue,
+ 07 Nov 2023 05:15:40 -0500
+X-MC-Unique: bzdEfS_vPheVcEL2ZuVXjw-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F22A4101A594;
- Tue,  7 Nov 2023 10:15:35 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F19343C1477D;
+ Tue,  7 Nov 2023 10:15:39 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2147F25C0;
- Tue,  7 Nov 2023 10:15:34 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0691425C0;
+ Tue,  7 Nov 2023 10:15:38 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL v3 02/25] build-sys: drop needless warning pragmas for old
- pixman
-Date: Tue,  7 Nov 2023 14:15:00 +0400
-Message-ID: <20231107101524.2993389-3-marcandre.lureau@redhat.com>
+Subject: [PULL v3 03/25] ui: compile out some qemu-pixman functions when
+ !PIXMAN
+Date: Tue,  7 Nov 2023 14:15:01 +0400
+Message-ID: <20231107101524.2993389-4-marcandre.lureau@redhat.com>
 In-Reply-To: <20231107101524.2993389-1-marcandre.lureau@redhat.com>
 References: <20231107101524.2993389-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -86,34 +86,100 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Since commit 236f282c1c7 ("configure: check for pixman-1 version"), QEMU
-requires >= 0.21.8.
+Those functions require the PIXMAN library.
 
-Suggested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/ui/qemu-pixman.h | 4 ----
- 1 file changed, 4 deletions(-)
+ include/ui/qemu-pixman.h | 7 +++++--
+ ui/qemu-pixman.c         | 6 ++++++
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
-index d37feb5e3c..4bfa8fae0c 100644
+index 4bfa8fae0c..c140cd84b6 100644
 --- a/include/ui/qemu-pixman.h
 +++ b/include/ui/qemu-pixman.h
-@@ -7,11 +7,7 @@
- #define QEMU_PIXMAN_H
+@@ -72,17 +72,17 @@ pixman_format_code_t qemu_default_pixman_format(int bpp, bool native_endian);
+ pixman_format_code_t qemu_drm_format_to_pixman(uint32_t drm_format);
+ uint32_t qemu_pixman_to_drm_format(pixman_format_code_t pixman);
+ int qemu_pixman_get_type(int rshift, int gshift, int bshift);
+-pixman_format_code_t qemu_pixman_get_format(PixelFormat *pf);
+ bool qemu_pixman_check_format(DisplayChangeListener *dcl,
+                               pixman_format_code_t format);
  
- #ifdef CONFIG_PIXMAN
--/* pixman-0.16.0 headers have a redundant declaration */
--#pragma GCC diagnostic push
--#pragma GCC diagnostic ignored "-Wredundant-decls"
- #include <pixman.h>
--#pragma GCC diagnostic pop
- #endif
++#ifdef CONFIG_PIXMAN
++pixman_format_code_t qemu_pixman_get_format(PixelFormat *pf);
+ pixman_image_t *qemu_pixman_linebuf_create(pixman_format_code_t format,
+                                            int width);
+ void qemu_pixman_linebuf_fill(pixman_image_t *linebuf, pixman_image_t *fb,
+                               int width, int x, int y);
+ pixman_image_t *qemu_pixman_mirror_create(pixman_format_code_t format,
+                                           pixman_image_t *image);
+-void qemu_pixman_image_unref(pixman_image_t *image);
+ 
+ pixman_image_t *qemu_pixman_glyph_from_vgafont(int height, const uint8_t *font,
+                                                unsigned int ch);
+@@ -91,6 +91,9 @@ void qemu_pixman_glyph_render(pixman_image_t *glyph,
+                               pixman_color_t *fgcol,
+                               pixman_color_t *bgcol,
+                               int x, int y, int cw, int ch);
++#endif
++
++void qemu_pixman_image_unref(pixman_image_t *image);
+ 
+ G_DEFINE_AUTOPTR_CLEANUP_FUNC(pixman_image_t, qemu_pixman_image_unref)
+ 
+diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
+index b43ec38bf0..5ca55dd199 100644
+--- a/ui/qemu-pixman.c
++++ b/ui/qemu-pixman.c
+@@ -145,6 +145,7 @@ int qemu_pixman_get_type(int rshift, int gshift, int bshift)
+     return type;
+ }
+ 
++#ifdef CONFIG_PIXMAN
+ pixman_format_code_t qemu_pixman_get_format(PixelFormat *pf)
+ {
+     pixman_format_code_t format;
+@@ -158,6 +159,7 @@ pixman_format_code_t qemu_pixman_get_format(PixelFormat *pf)
+     }
+     return format;
+ }
++#endif
  
  /*
+  * Return true for known-good pixman conversions.
+@@ -186,6 +188,7 @@ bool qemu_pixman_check_format(DisplayChangeListener *dcl,
+     }
+ }
+ 
++#ifdef CONFIG_PIXMAN
+ pixman_image_t *qemu_pixman_linebuf_create(pixman_format_code_t format,
+                                            int width)
+ {
+@@ -211,6 +214,7 @@ pixman_image_t *qemu_pixman_mirror_create(pixman_format_code_t format,
+                                     NULL,
+                                     pixman_image_get_stride(image));
+ }
++#endif
+ 
+ void qemu_pixman_image_unref(pixman_image_t *image)
+ {
+@@ -220,6 +224,7 @@ void qemu_pixman_image_unref(pixman_image_t *image)
+     pixman_image_unref(image);
+ }
+ 
++#ifdef CONFIG_PIXMAN
+ pixman_image_t *qemu_pixman_glyph_from_vgafont(int height, const uint8_t *font,
+                                                unsigned int ch)
+ {
+@@ -262,3 +267,4 @@ void qemu_pixman_glyph_render(pixman_image_t *glyph,
+     pixman_image_unref(ifg);
+     pixman_image_unref(ibg);
+ }
++#endif /* CONFIG_PIXMAN */
 -- 
 2.41.0
 
