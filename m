@@ -2,133 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC3B7E3825
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 10:51:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3349B7E3828
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 10:52:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0IjU-0007KX-CZ; Tue, 07 Nov 2023 04:50:52 -0500
+	id 1r0IkD-0008KC-1P; Tue, 07 Nov 2023 04:51:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0IjR-00079g-MY
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:50:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r0IjP-0006pR-6n
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:50:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699350646;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=SKFKvECUWh8f0Ego2dVBqT5XkK/Uy0U5vkTNas22l+U=;
- b=SCkq9CAQWRt0IdtR/riSNs97vGOMZPl/Ty3OBDjviNXrYurI6eQXBqZRM4U+HJKtj0P3Cf
- BlOosCAWoNP/YIBeUQYLXva3jwo+iJAB/DMDM6TIvxgB0Yhnj84CMadbDo9RfFFfL/px62
- Au4+E7szIAiwaJD66JQUulndQn3HJ1s=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-P25z2hu9PSeWzJIi_C-QxA-1; Tue, 07 Nov 2023 04:50:43 -0500
-X-MC-Unique: P25z2hu9PSeWzJIi_C-QxA-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-41bf9a5930aso60362321cf.2
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 01:50:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r0Ik9-0008K0-Eg
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:51:33 -0500
+Received: from mail-yw1-x1130.google.com ([2607:f8b0:4864:20::1130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r0Iju-00074K-IH
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 04:51:33 -0500
+Received: by mail-yw1-x1130.google.com with SMTP id
+ 00721157ae682-5afa5dbc378so59739277b3.0
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 01:51:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1699350677; x=1699955477; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=80v6yP4QAb/eXkBqA6nw6mTc6HYaYv/UJIOSjzOiz50=;
+ b=mF3kJSyXuk1I2sldZfmchH7Jc33ixWZfGFqxPK8XSYFSuz1E1J+BS4RigPRZujM5hH
+ EixIwA5wJmLM5CIQT1eQxqsDWcgNR1cxFPVEQkaQuUXUVB/BS5GTtdThDoOCHPiY+7+Y
+ k8pFOjoXRnxC99jGcMu4HqzTbqBH3HA2cyXtajmf0X31mcTFMaqlBzleKMRTx0+YnYjf
+ MdW8usrgC7E6Ftfkd8ENC0fE2j+74cIudpvnHU6G4UhYUaU/84ZWRc1vAfP9FLdTuwH5
+ mpp8v/4CMgNJGu1mnyB/vduvZp7vokbJkETQ3X6Z8Vfaj7cDdM+WsWX77ox3zRDKRHy1
+ gKGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699350642; x=1699955442;
- h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
- :from:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SKFKvECUWh8f0Ego2dVBqT5XkK/Uy0U5vkTNas22l+U=;
- b=hZu7/H+IaZa5uV8MkLS9TnCL8xi2SxUTpzXK722qLuqvTsGh30N1q1Sv9rQwFDJqo3
- BfqEqSYVx8VlOvgjpUKLwxwrOimdUd/hHTXTLX+wEi1HBzsq5sZ/5+Lkx5OPWAsALqWr
- sLxgE9u6wzlVKCRkyympuuYuXnvFdOxgDvm4h03pquObQPP1egfEe/KPiwlvQ3H8yiKW
- tl66UC6mHE9OgJKqAw56JGpxORXKcH+OgVarKLsyzR2TyKJHaLtg21eHY/ua164nhfFw
- r/q6SKz74pTWhzKJkya7Apf+54sp41NNVLTdAj6gVWwKJTDz0hCB6SfOWMedOdgGQg/t
- bAbw==
-X-Gm-Message-State: AOJu0YwUdYOVKHZHybk28lYS2vCH3sgWTtxyfq2vKdu8GuqKZd3cCWEd
- +Hiqb2KgtORWarFdC9TU2PQHQe4KW2lANh3MfCqBISmwdmNvXIaNKArVv2KJum6r2b21cK55fi/
- s7EjcB5EiEfy2Qpk=
-X-Received: by 2002:a05:622a:389:b0:41e:acde:5461 with SMTP id
- j9-20020a05622a038900b0041eacde5461mr10209943qtx.38.1699350642542; 
- Tue, 07 Nov 2023 01:50:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFklMDaab/L4P165uUJaJyAx5wSRGFA0R1LFCWiLXeKSHf3WOu8s3Cf0kky3BICnDIv3P/2RA==
-X-Received: by 2002:a05:622a:389:b0:41e:acde:5461 with SMTP id
- j9-20020a05622a038900b0041eacde5461mr10209933qtx.38.1699350642291; 
- Tue, 07 Nov 2023 01:50:42 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-43-179-224.web.vodafone.de.
- [109.43.179.224]) by smtp.gmail.com with ESMTPSA id
- u11-20020a05622a17cb00b004108ce94882sm4191920qtk.83.2023.11.07.01.50.41
+ d=1e100.net; s=20230601; t=1699350677; x=1699955477;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=80v6yP4QAb/eXkBqA6nw6mTc6HYaYv/UJIOSjzOiz50=;
+ b=IP8LS4psBIK3wTtuibAyqz8anOuJsrLYXpdehXF6lKgBSwQT5JPVNRhrS7hndaMyyt
+ sJkb+E5DqhGMDCPX1GRXhvcN4simNVm0PgYfoVqsvNwAnmodwrxy86fc0fqh/cmo7BVo
+ TLNWP2FJH6YtILyGT88p+hp9sYU62MIZTCaddgVxnDp30/jalIUVgWOwKCu1u/sGe123
+ Z4TglnPlLfV4XmCbMsE3R8XHXEBFEYux5+gZ572zkklrIv4Oa2NJU34GVO4XatV47hBQ
+ qmYA/EZf6MSCQcj0WUxiqeT94QfaLj8mnS7OqUaTnib79wP7p7sxOzPbR30QDO8ARb7q
+ tXWw==
+X-Gm-Message-State: AOJu0Yw8gcFrZyYaQc7LejVoW9VP0A0h4EZR8+oPXHECac0dCjgGKpct
+ 5fPwtmL2WFpwiDZUyIqnJz6N8A==
+X-Google-Smtp-Source: AGHT+IFfmGWpoIIpWXjG0r1G/A14QesymrhATJVLsoZZZeH9TCpF7o1Y8aNQw5JUSBD+8a8CVacSLQ==
+X-Received: by 2002:a81:8393:0:b0:5a7:b797:d1e4 with SMTP id
+ t141-20020a818393000000b005a7b797d1e4mr9914213ywf.21.1699350677088; 
+ Tue, 07 Nov 2023 01:51:17 -0800 (PST)
+Received: from [192.168.68.107] ([179.193.10.161])
+ by smtp.gmail.com with ESMTPSA id
+ bt13-20020a05690c072d00b005a82f14b8dbsm5327968ywb.49.2023.11.07.01.51.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Nov 2023 01:50:41 -0800 (PST)
-Message-ID: <0c4ff767-7461-4ecd-9968-b216a98f0e95@redhat.com>
-Date: Tue, 7 Nov 2023 10:50:39 +0100
+ Tue, 07 Nov 2023 01:51:16 -0800 (PST)
+Message-ID: <e768af9e-9e48-4b37-aa77-ee865e56717c@ventanamicro.com>
+Date: Tue, 7 Nov 2023 06:51:12 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Add a general architecture section for x86
+Subject: Re: [PATCH] target/riscv: don't enable Zfa by default
+To: Jerry ZJ <jerry.zhangjian@sifive.com>, alistair.francis@wdc.com,
+ palmer@dabbelt.com, frank.chang@sifive.com, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+References: <20231106111440.59995-1-jerry.zhangjian@sifive.com>
+ <c2901c07-9eef-449c-857a-6d2553aeb170@ventanamicro.com>
+ <b1df8107-d0f1-4827-94bd-3f8c7cd3ea57@Spark>
+ <0fbc4857-d9b3-4327-8a00-3fb277f05ef5@ventanamicro.com>
+ <258be47f-97be-4308-bed5-dc34ef7ff954@Spark>
 Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-References: <20230929134551.395438-1-thuth@redhat.com>
- <c3f7cb29-2aab-4767-a6af-58c4e043c002@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <c3f7cb29-2aab-4767-a6af-58c4e043c002@redhat.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <258be47f-97be-4308-bed5-dc34ef7ff954@Spark>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1130;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x1130.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -144,54 +98,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/10/2023 11.05, Thomas Huth wrote:
-> On 29/09/2023 15.45, Thomas Huth wrote:
->> It's a little bit weird that the files in target/i386/ which
->> are not in a subfolder there do not have any associated
->> maintainer (and thus nobody might be CC:-ed on changes to
->> these files). We should have a general x86 section for these
->> files, similar to what we already have for s390x and mips.
->> Since Paolo is already listed as maintainer for both, the
->> x86 KVM and TCG CPUs, I'd like to suggest him as maintainer
->> for the general files, too.
->>
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   Richard, being listed as x86 TCG CPU maintainer, do you
->>   want to be listed here, too?
->>
->>   MAINTAINERS | 11 +++++++++++
->>   1 file changed, 11 insertions(+)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 3914bbd85b..5b4ab7d142 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -131,6 +131,17 @@ K: ^Subject:.*(?i)mips
->>   F: docs/system/target-mips.rst
->>   F: configs/targets/mips*
->> +X86 general architecture support
->> +M: Paolo Bonzini <pbonzini@redhat.com>
->> +S: Maintained
->> +F: configs/devices/i386-softmmu/default.mak
->> +F: configs/targets/i386-softmmu.mak
->> +F: configs/targets/x86_64-softmmu.mak
->> +F: docs/system/target-i386*
->> +F: target/i386/*.[ch]
->> +F: target/i386/Kconfig
->> +F: target/i386/meson.build
->> +
->>   Guest CPU cores (TCG)
->>   ---------------------
->>   Overall TCG CPUs
+
+
+On 11/6/23 23:53, Jerry ZJ wrote:
+> Use use mode QEMU can reproduce this
+> Reproduce steps
 > 
-> Friendly Ping!
+> Compile: riscv64-unknown-elf-clang -march=rv32imac_zicsr_zifencei_zba_zbb ./test.c -o hello_rv32imac
 > 
-> Paolo, Richard, what do you think about this?
+> Run: qemu-riscv32 -cpu rv32,g=false,f=false,v=false,d=false,e=false,h=false,c=true,m=true,i=true,a=true,Zicsr=true,Zifencei=true,zmmul=true,zba=true,zbb=true ./hello_rv32imac
 
-Ping^2
+I'll definitely send patches to add a 'rv32i' CPU after seeing the amount of
+X=false you're having to use here. You'll be doing something like:
 
-  Thomas
+qemu-riscv32 -cpu rv32i,c=true,m=true,a=true,Zicsr=true,Zifencei=true,zmmul=true,zba=true,zbb=true ./hello_rv32imac
+
+I.e. you'll only enable what you need. You won't have to disable defaults you
+don't want. I can put you in the CC if you want to give it a shot.
+
+> 
+> Then you will get the following error message:
+> qemu-riscv32: Zfa extension requires F extension
+> 
+> Since Zfa has just been ratified, I suppose disabling it by default makes sense and will not break anything that exists.
+
+Please elaborate a bit more in the commit msg (feel free to add the command line you
+sent) about how inconvenient it is to deal with having to disable 'zfa' when you want
+'F' disabled. I'll ack it.
 
 
+Thanks,
+
+Daniel
+
+> 
+> Best Regards,
+> Jerry ZJ
+> *SiFive Inc. Taiwan*
+> On Nov 7, 2023 at 00:38 +0800, Daniel Henrique Barboza <dbarboza@ventanamicro.com>, wrote:
+>>
+>>
+>> On 11/6/23 12:21, Jerry ZJ wrote:
+>>> We do have some cases that failed. SiFive e-series cores (https://static.dev.sifive.com/SiFive-E21-Manual-v1p0.pdf <https://static.dev.sifive.com/SiFive-E21-Manual-v1p0.pdf>) do not have F extension (For example: rv32imc_zicsr_zifencei_zba_zbb). When we use the corresponding extension options to configure QEMU, i.e., rv32, i=true, m=true, a=true, c=true, Zicsr=true, Zifencei=true, zba=true, zbb=true, the QEMU will have the following error.
+>>> Zfa extension requires F extension
+>>
+>> Can you send your whole command line? I'm unable to reproduce it here. This
+>> will boot:
+>>
+>> ./build/qemu-system-riscv32 -M virt -cpu rv32,i=true,m=true,a=true,c=true,zicsr=true,zifencei=true,zba=true,zbb=true --nographic
+>>
+>>
+>> In a side note, we have a new CPU type (still pending, not yet queue) called
+>> "rv64i", which comes only with 'RVI' enabled and nothing else - no defaults,
+>> nothing.
+>>
+>> I believe this use case you testing here would benefit from a "rv32i" CPU that
+>> does the same but for 32 bits. Then you can specify the whole CPU and not worry
+>> about hidden defaults. Does that makes sense?
+>>
+>>>
+>>> IMHO, we should not enable Zfa extension by default, especially when Zfa requires F to be enabled implicitly.
+>>
+>> If the rv32 use case you mentioned is really breaking because of zfa and
+>> Fm, I'm fine with disabling zfa because it's now a bug. We just need a
+>> reproducer.
+>>
+>>
+>> Thanks,
+>>
+>> Daniel
+>>
+>>>
+>>> Best Regards,
+>>> Jerry ZJ
+>>> *SiFive Inc. Taiwan*
+>>> On Nov 6, 2023 at 22:55 +0800, Daniel Henrique Barboza <dbarboza@ventanamicro.com>, wrote:
+>>>>
+>>>>
+>>>> On 11/6/23 08:14, Jerry Zhang Jian wrote:
+>>>>> - Zfa requires F, we should not assume all CPUs have F extension
+>>>>> support.
+>>>>
+>>>> We do not have a case where this happen, do we? The default CPUs have F
+>>>> enabled (see misa_ext_cfgs[] in target/riscv/tcg/tcg-cpu.c), so zfa being
+>>>> enable isn't a problem for them. Vendor CPUs might not have F enabled, but
+>>>> they don't use the default values for extensions, so they're not affected.
+>>>> Having zfa enabled by default does not hurt the default CPU setups we have.
+>>>>
+>>>> I am not a fan of these defaults for rv64 and so on, but once we set them to
+>>>> 'true' people can complain if we set them to 'false' because it might break
+>>>> existing configs in the wild. We need a strong case (i.e. a bug) to do so.
+>>>>
+>>>>
+>>>> Thanks,
+>>>>
+>>>> Daniel
+>>>>
+>>>>
+>>>>>
+>>>>> Signed-off-by: Jerry Zhang Jian <jerry.zhangjian@sifive.com>
+>>>>> ---
+>>>>> target/riscv/cpu.c | 2 +-
+>>>>> 1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>>>>> index ac4a6c7eec..c9f11509c8 100644
+>>>>> --- a/target/riscv/cpu.c
+>>>>> +++ b/target/riscv/cpu.c
+>>>>> @@ -1247,7 +1247,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+>>>>> MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
+>>>>> MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpause, true),
+>>>>> MULTI_EXT_CFG_BOOL("zawrs", ext_zawrs, true),
+>>>>> - MULTI_EXT_CFG_BOOL("zfa", ext_zfa, true),
+>>>>> + MULTI_EXT_CFG_BOOL("zfa", ext_zfa, false),
+>>>>> MULTI_EXT_CFG_BOOL("zfh", ext_zfh, false),
+>>>>> MULTI_EXT_CFG_BOOL("zfhmin", ext_zfhmin, false),
+>>>>> MULTI_EXT_CFG_BOOL("zve32f", ext_zve32f, false),
 
