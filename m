@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9685D7E33EF
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:14:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D08ED7E3435
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 04:30:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0CX2-0003Gg-BG; Mon, 06 Nov 2023 22:13:36 -0500
+	id 1r0Cm4-0002tE-KX; Mon, 06 Nov 2023 22:29:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CWz-0003Ez-Pk
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:13:33 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1r0Cly-0002t3-PO
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:29:02 -0500
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0CWy-0002Fn-7G
- for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:13:33 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1ccbb7f79cdso14896385ad.3
- for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:13:31 -0800 (PST)
+ id 1r0Clx-0005Rt-90
+ for qemu-devel@nongnu.org; Mon, 06 Nov 2023 22:29:02 -0500
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-280351c32afso4825392a91.1
+ for <qemu-devel@nongnu.org>; Mon, 06 Nov 2023 19:29:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699326811; x=1699931611; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699327739; x=1699932539; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ksB+6M3EAlC9VCyemGaBxFPiWH1NM4Rzt3EydbpiwqM=;
- b=xgXnzEvddgy1aNXusXqQ8huz0ctOWLeIo64HWx6qBz1gNbrhEOji2kmSZlxznj18t5
- i6+F3n6HorJz7RES/SRa6PicDrA/tpyhS+G8hN7HPsLGJQQJPqPIr501phjM33tUNRpB
- O12wDtj+jp2N46vx8329jHb+2JMR/XfvptmHKCFWZrMeciRCPTxWY9bmhLaqc5gfHmJn
- yMrdIm90/HkOwTAcAF9ftA8ixyGXFFhjDruIdPzjoVGD9vXKok5YaN3FjaisPpv3uNGk
- Z7cykMzOamRTKfPXs6/4s5Gg7NTwdF/CCcMN6icENykDDEzPlzcr6ySjf6G8fNyy0Jcp
- kwpQ==
+ bh=4poDYHs52w2J1TIzkjHGMV4WHsV8keNHGlQTxGz9coU=;
+ b=DgheRYIVLWhcwOySf6Pj4vFzfAkP4dYAQokb6uhfLsrTXpHoZ2MGbdVt7s0fkEK7yZ
+ Px+9bd51G6vvCd6hcfhxd5IfysGRoULpnNkzsdsKfZIacWsW6UxAWw1yJS/rr6D56EuW
+ pjsW58OyTCeYUcPang3UFMlM3Wp0e6VePTLZcI4wPL/moq/p20PBnPApeDOBATpP6fLn
+ or1yesz1i866ljdHQG+4ZmYyG9TunPxLIp988rdNVVV4y61+TRK3mcksxpljnLaeuYxA
+ RpcH6l6Og2daRUyA98QNKaPlQFbIsfyIhZrBtOn69OKfuW9pzr3CVw3Cd9O8tU1xxnCy
+ IBTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699326811; x=1699931611;
+ d=1e100.net; s=20230601; t=1699327739; x=1699932539;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ksB+6M3EAlC9VCyemGaBxFPiWH1NM4Rzt3EydbpiwqM=;
- b=TOJgQ3LARXg4yQHNpeTAMJsP8Zvc+PSL7DTKCoi5DjFeDa5P95neZdLNHv2a6V95r9
- C8BpSuhq8Dts5E6I3IA3NJCpZx6jQ4jDSFpbQCeh2Pknc4jxLmn+cKLNuRPKLVSkzgig
- x+MvJgbTNle9EdhCIpY0OaQ5UwztePNs1PXQc0W1DxKosK24/HmBQjl/51Iz7B1+lBq/
- zKOKiPVyFcHYDxidt/FwaUCGOgef4Z78y8SqQkStFJBl3YZEse7TSpUOJrWV8i9Ta2dT
- 7IZerLIJwwhdC5fqKat+O8XTNGI6m8F518uqNpfzh9csD6G0mTyRouQ3UK3q0JlIOUNc
- YOQg==
-X-Gm-Message-State: AOJu0YzHWr86z83Bel5bGH0DJRHh/eK3tHOKwut1BFGzBwzHPM4OprRY
- PsJTMVS9GRFq5dbrR+rRjz9RZ8LxGe+Yn+awEAA=
-X-Google-Smtp-Source: AGHT+IFjKE2Luj8SbhIoHouXFLcsBbr7/zZ9xY6bybthuT7ubfx7+9bi1F8YD9++i7DOLHYMUwQvqg==
-X-Received: by 2002:a17:902:fb45:b0:1cc:379b:3505 with SMTP id
- lf5-20020a170902fb4500b001cc379b3505mr18593802plb.49.1699326810749; 
- Mon, 06 Nov 2023 19:13:30 -0800 (PST)
+ bh=4poDYHs52w2J1TIzkjHGMV4WHsV8keNHGlQTxGz9coU=;
+ b=A+jff4Of6ck4urWAk9T+O3tQm1khRdM/k69x4HPzuDdxE25ofJISIoILnanv53ugoy
+ ZOdwz1gYrVLRA7c47jxhofOng9KkmtGgIBniHZE5qI7HWx2mcY1o/u8omhN/+VEpTIkK
+ ZxKQa1yyoq3RuQHAkYg5HCekuy4opmJc5pyoz+gI2H1GSuL7b3xQEhfGv/Rr9ypcGvF+
+ rQS+8IUg+NqvVG+U6isj6RDOfBPWu8rK/ovJJFjeqGAmumqIzdA9YYDBSMmThlE0P8sI
+ ZKZWGxE4Jck1WhxiVfWPVb+WiH7i4KWtV5UZhxcFdF0E8ZYXOOX/gRPRe9WZ52BqjnaV
+ m7Yg==
+X-Gm-Message-State: AOJu0YzEapmQQuKr5/q9/vyJ6knxlMMz0n5PBM+1jh9EjAiUfrQh3Bcb
+ KBr16H2pVMyYclVWIWGqUe4x7Q==
+X-Google-Smtp-Source: AGHT+IHx5Oc9hX8wImJdOCFwcDT4+Wx9KGr5MTJiUzMW/RXLriTLvkw25aJymqR/qlCSZMmWfp3ppA==
+X-Received: by 2002:a17:90b:3d1:b0:27f:df1e:199e with SMTP id
+ go17-20020a17090b03d100b0027fdf1e199emr32070285pjb.28.1699327739417; 
+ Mon, 06 Nov 2023 19:28:59 -0800 (PST)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- 21-20020a170902c21500b001c736746d33sm6533759pll.217.2023.11.06.19.13.30
+ g18-20020a17090ace9200b0027df62a9e68sm6091378pju.13.2023.11.06.19.28.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Nov 2023 19:13:30 -0800 (PST)
-Message-ID: <c6140f05-d1e9-4fbe-9aad-c764102675fd@linaro.org>
-Date: Mon, 6 Nov 2023 19:13:28 -0800
+ Mon, 06 Nov 2023 19:28:59 -0800 (PST)
+Message-ID: <e8bac7bd-b264-4405-aba9-e3531c5e8522@linaro.org>
+Date: Mon, 6 Nov 2023 19:28:57 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 23/29] plugins: Use different helpers when reading
- registers
+Subject: Re: [PATCH 01/22] default-configs: Add TARGET_XML_FILES definition
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
-References: <20231103195956.1998255-1-alex.bennee@linaro.org>
- <20231103195956.1998255-24-alex.bennee@linaro.org>
+References: <20231106185112.2755262-1-alex.bennee@linaro.org>
+ <20231106185112.2755262-2-alex.bennee@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231103195956.1998255-24-alex.bennee@linaro.org>
+In-Reply-To: <20231106185112.2755262-2-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,41 +94,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/3/23 12:59, Alex Bennée wrote:
-> --- a/plugins/api.c
-> +++ b/plugins/api.c
-> @@ -89,7 +89,11 @@ void qemu_plugin_register_vcpu_tb_exec_cb(struct qemu_plugin_tb *tb,
->                                             void *udata)
->   {
->       if (!tb->mem_only) {
-> -        plugin_register_dyn_cb__udata(&tb->cbs[PLUGIN_CB_REGULAR],
-> +        int index = flags == QEMU_PLUGIN_CB_R_REGS ||
-> +                    flags == QEMU_PLUGIN_CB_RW_REGS ?
-> +                    PLUGIN_CB_REGULAR_R : PLUGIN_CB_REGULAR;
-> +
+On 11/6/23 10:50, Alex Bennée wrote:
+> From: Akihiko Odaki <akihiko.odaki@daynix.com>
+> 
+> loongarch64-linux-user has references to XML files so include them.
+> 
+> Fixes: d32688ecdb ("default-configs: Add loongarch linux-user support")
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Message-Id: <20231030054834.39145-6-akihiko.odaki@daynix.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Message-Id: <20231103195956.1998255-2-alex.bennee@linaro.org>
+> [AJB: remove base32 from list]
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   configs/targets/loongarch64-linux-user.mak | 1 +
+>   1 file changed, 1 insertion(+)
 
-I'd really rather you reject QEMU_PLUGIN_CB_RW_REGS entirely, rather than implement it 
-with incorrect semantics.
-
-Otherwise,
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-> +        plugin_register_dyn_cb__udata(&tb->cbs[index],
->                                         cb, flags, udata);
->       }
->   }
-> @@ -109,7 +113,11 @@ void qemu_plugin_register_vcpu_insn_exec_cb(struct qemu_plugin_insn *insn,
->                                               void *udata)
->   {
->       if (!insn->mem_only) {
-> -        plugin_register_dyn_cb__udata(&insn->cbs[PLUGIN_CB_INSN][PLUGIN_CB_REGULAR],
-> +        int index = flags == QEMU_PLUGIN_CB_R_REGS ||
-> +                    flags == QEMU_PLUGIN_CB_RW_REGS ?
-> +                    PLUGIN_CB_REGULAR_R : PLUGIN_CB_REGULAR;
-> +
-> +        plugin_register_dyn_cb__udata(&insn->cbs[PLUGIN_CB_INSN][index],
->                                         cb, flags, udata);
->       }
->   }
+
+r~
+
+> 
+> diff --git a/configs/targets/loongarch64-linux-user.mak b/configs/targets/loongarch64-linux-user.mak
+> index 7d1b964020..d878e5a113 100644
+> --- a/configs/targets/loongarch64-linux-user.mak
+> +++ b/configs/targets/loongarch64-linux-user.mak
+> @@ -1,3 +1,4 @@
+>   # Default configuration for loongarch64-linux-user
+>   TARGET_ARCH=loongarch64
+>   TARGET_BASE_ARCH=loongarch
+> +TARGET_XML_FILES=gdb-xml/loongarch-base64.xml gdb-xml/loongarch-fpu.xml
 
 
