@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB9147E3870
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:09:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A2117E3873
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 Nov 2023 11:09:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0J0w-0008Bn-T4; Tue, 07 Nov 2023 05:08:54 -0500
+	id 1r0J1X-0000sm-Dk; Tue, 07 Nov 2023 05:09:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0J0v-000887-01
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:08:53 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0J1Q-0000pl-HJ
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:09:24 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0J0t-00024O-Eu
- for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:08:52 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-54394328f65so9134444a12.3
- for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:08:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0J1O-00026H-0w
+ for qemu-devel@nongnu.org; Tue, 07 Nov 2023 05:09:24 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-5441ba3e53cso6712242a12.1
+ for <qemu-devel@nongnu.org>; Tue, 07 Nov 2023 02:09:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699351729; x=1699956529; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699351761; x=1699956561; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=PQ4+o/piKsP4ORGXI6NCo9rYNgG06wEm+IZM8VnuqEQ=;
- b=e1BfXvuKzCvcXGpEcuXNlHnuol42ZOigG05tD4HDJmJqHboEWb6fIjUQxsGpylHI3I
- V8TuemAA7fz4wXzLffCl/2EnXUJIsyC1MtOKQFAkblRhP4q6rbyLSA4bbKIU7oCdXtrh
- wGbXl7RLhTxtLNZuw4sZDOV25wNiLlg23RyxB3zyoyyO5O7mRNV4O422xykHk5Dp1pTO
- lyxc2yClgwyfitIEf/6hUpD2vDnUFKav6Ym7vDRI18j522SqH5DuFd334LIWsc9VQovb
- 2Mku7D0GfYJ1qAexUk0SlYXuCZy7hmcmDu1eEl24PDtZCz8+vLF4lEobgil6XTFkiGGb
- bsxQ==
+ bh=I1/9USN/jBOffMp2yloOb5x9kWe3LnPxTW7blqDcHgQ=;
+ b=UibiEMV9QYa9jtiJIrsTX+Gvk4bRz3ccxc6gjJy968xIIkh2a1kPEEy9UY22V8qMkF
+ IkVW34HzZNP8jgyPj30N0iiuJaasg3Lx060A16w5KY81rAiYNm/kiozMyFsMidk93cqi
+ pfy/XHCY7z28l/C96fqcLTYx315NhLEorpTflT94upKzokJybW5sg+/o0LkmoUXfhq1j
+ 6ZB2G2LzmlS7M/p+rqyF1yTYbc7UhP/+KdQY47LCnpKADlVaW3DDWkMiygN4FXAJskYG
+ zacz2rpwuf+HI/bSZG7j69ubBzBd7Zi9XM3hGV7Y+WrZmvq5WFlv98JBWIUNnjnedFeR
+ 0sog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699351729; x=1699956529;
+ d=1e100.net; s=20230601; t=1699351761; x=1699956561;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PQ4+o/piKsP4ORGXI6NCo9rYNgG06wEm+IZM8VnuqEQ=;
- b=mvDxRM5bCiKEXW+tlNH7VzaDsj1QYSaYv4gBfM/MlrTZCEadTboD2nAiGSlNegrhQk
- v46Gf7YJi5FrDnrzpeP35+yyR750iudrW6QugIccckl0z5+tMvd45t8+NXhWPoTlFNIu
- PkTCmdLHdVcG8pvQpx1O6JEkydUpbI0h+QEjwvcJXSFLKDNCbkqpWntQYXW6WhYEZRh3
- aHun2B3SSDgIx2HlfALj4/A991nH7dMgrBWqBEWbKjBNwmnnzCl460XYxx9eIUnurtRD
- UJ3DypR2084feNpBf4vnvAxt1RSr3BMIX1QF8ZRGD4qKjtjY6vAm5lvy9kA2oTRtGEPC
- eQNw==
-X-Gm-Message-State: AOJu0YyRk0VIkEmAeX5HxjB2EZqCDZp1AmnGMoRFZlrbjw7Q5pjJRgUY
- 1d6ZtOaagKVb3gQ5WdC08PrGqg==
-X-Google-Smtp-Source: AGHT+IH4ZgHA4uTvskcqGv9JQ7OLDKf/rC6bwDf9MANmBxj2QVs0GS+vS5x17qm+RHLVw4Yjh2gSYA==
-X-Received: by 2002:aa7:d5c3:0:b0:532:e71b:5ead with SMTP id
- d3-20020aa7d5c3000000b00532e71b5eadmr23307697eds.32.1699351729518; 
- Tue, 07 Nov 2023 02:08:49 -0800 (PST)
+ bh=I1/9USN/jBOffMp2yloOb5x9kWe3LnPxTW7blqDcHgQ=;
+ b=SKE1p9OnGAu4ZG37P6tNpJzxOb+/e7G65rost0zj0MZR3t/AzupfyzW4H8dKGacGH9
+ HfIYccwChZXrVxhpjXpa7fa/9b/fEMyK+8ifNGqxBAquFcwwW/AthQ55EskIk5XXzYMw
+ 4zIS6gDHnzWBJIqk5Bo0cw6/2SOVxObC+skRHdBDnw8IC1NtpQKFQDm4YgMxzFht1NLn
+ KPjZ1FjkcHAKLM6cI5zT6FlrBospCAfxfKXg1rGJpY5VpovgRsSuUxfeWjXFHqDRY0hH
+ 3uHh/qPCf7rp49u8yHw2Zhorp+xg4mZ5iJhw7PjsXjFrXVVJ/l2zXbBtGknZ9tkZhOeh
+ lkJA==
+X-Gm-Message-State: AOJu0Yyj7qPbwuZWdHDHzXlyCk6zQJEH8XSN3WU1+SfslLRYiye6WGSf
+ Zl/Y463ze0cEVrGtUJVMGYDVMA==
+X-Google-Smtp-Source: AGHT+IHsREcktv5dvqQ2cBAqy8QrIyKH8UP64Cl7+lTHN+KBuQS53H2dfJXqxgYiOpp+imodOZzX1Q==
+X-Received: by 2002:a05:6402:1b0e:b0:53f:e49e:4be with SMTP id
+ by14-20020a0564021b0e00b0053fe49e04bemr20396618edb.42.1699351760854; 
+ Tue, 07 Nov 2023 02:09:20 -0800 (PST)
 Received: from [192.168.69.115] ([176.187.216.69])
  by smtp.gmail.com with ESMTPSA id
- k28-20020a508adc000000b0053de19620b9sm5450734edk.2.2023.11.07.02.08.47
+ k28-20020a508adc000000b0053de19620b9sm5450734edk.2.2023.11.07.02.09.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Nov 2023 02:08:49 -0800 (PST)
-Message-ID: <3fc9185e-1780-4eff-a61a-1e334518e07b@linaro.org>
-Date: Tue, 7 Nov 2023 11:08:47 +0100
+ Tue, 07 Nov 2023 02:09:20 -0800 (PST)
+Message-ID: <04ea9a57-90f2-4da2-aa83-96691ba8fffb@linaro.org>
+Date: Tue, 7 Nov 2023 11:09:18 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/22] plugins: add dllexport and dllimport to api funcs
+Subject: Re: [PATCH 12/22] configure: tell meson and contrib_plugins about
+ DLLTOOL
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
@@ -74,20 +75,20 @@ Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Marek Vasut <marex@denx.de>, Richard Henderson
  <richard.henderson@linaro.org>, Greg Manning <gmanning@rapitasystems.com>
 References: <20231106185112.2755262-1-alex.bennee@linaro.org>
- <20231106185112.2755262-14-alex.bennee@linaro.org>
+ <20231106185112.2755262-13-alex.bennee@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231106185112.2755262-14-alex.bennee@linaro.org>
+In-Reply-To: <20231106185112.2755262-13-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,20 +105,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/11/23 19:51, Alex Bennée wrote:
-> From: Greg Manning <gmanning@rapitasystems.com>
+> To cleanly handle cross-building we need to export the details of
+> dlltool into meson's list of cross binaries and into the
+> contrib/plugins/ make configuration.
 > 
-> In qemu-plugin.h, mark all API functions as __declspec(dllexport) when
-> compiling the executables, and as __declspec(dllimport) when being used
-> to compile plugins against.
-> 
-> Signed-off-by: Greg Manning <gmanning@rapitasystems.com>
-> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-> Message-Id: <20231102172053.17692-2-gmanning@rapitasystems.com>
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> Message-Id: <20231103195956.1998255-27-alex.bennee@linaro.org>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Greg Manning <gmanning@rapitasystems.com>
 > ---
->   include/qemu/qemu-plugin.h | 50 +++++++++++++++++++++++++++++++++++---
->   1 file changed, 47 insertions(+), 3 deletions(-)
+>   configure | 6 ++++++
+>   1 file changed, 6 insertions(+)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
