@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C2B7E5A46
+	by mail.lfdr.de (Postfix) with ESMTPS id 4567F7E5A48
 	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 16:40:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0kdw-00014h-4B; Wed, 08 Nov 2023 10:39:00 -0500
+	id 1r0kds-00013z-Qh; Wed, 08 Nov 2023 10:38:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <davydov-max@yandex-team.ru>)
- id 1r0kdt-00014H-E9
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 10:38:57 -0500
+ id 1r0kdr-00013d-2E
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 10:38:55 -0500
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <davydov-max@yandex-team.ru>)
- id 1r0kdo-0003Wf-5t
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 10:38:57 -0500
+ id 1r0kdo-0003Wg-8e
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 10:38:54 -0500
 Received: from mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c2a:d48:0:640:dfd9:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 671766119E;
- Wed,  8 Nov 2023 18:38:45 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 197C66100F;
+ Wed,  8 Nov 2023 18:38:46 +0300 (MSK)
 Received: from davydov-max-nux.yandex.net (unknown
  [2a02:6b8:0:419:878a:664c:8a66:d6c1])
  by mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id RcfG230OcGk0-ZQtKd6mK; Wed, 08 Nov 2023 18:38:44 +0300
+ ESMTPSA id RcfG230OcGk0-FMeziPzb; Wed, 08 Nov 2023 18:38:45 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1699457924;
- bh=4cfF8M9b2XvTvnHvOnXr6TuKO7qckpbY76KHTXi7Ips=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=WX0nJrx8V7CO7PjpJJnfyta/hHxh2rmU9uPF4TzxaHB8RPX9ZTOmUcFPnIoOHIwwZ
- BO45fW+4VwW2J3ldCIiDZde0bAFneWXuX4jwMvmg05x7bHfewU9QwQ/SMlhlfcAiql
- ZqDWAPajEnspqepQME88fG6fXLDwL4VnHIWpk6Ks=
+ s=default; t=1699457925;
+ bh=4f0vKxaQ5Suc1D6hvlVdCAkz4rQVoYaXNnI8/7h4KPk=;
+ h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=Ut2X1m6AzVuKT1VLa0K0ipCT8EEYJ+zEnQyyJKhnkJoqiw7m4ObzXGR61PrFWdn85
+ T8/ccoe2EhYZZB7q0UNwaztwP5GVHzePUqL8P7UGCtJZHO4U4458PTNUEcNqLIsGGp
+ OFuuF3+kdY04vUibf7MMQvCYKr18rSVwzSPCcKNc=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Maksim Davydov <davydov-max@yandex-team.ru>
@@ -46,12 +46,13 @@ Cc: vsementsov@yandex-team.ru, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
  pbonzini@redhat.com, berrange@redhat.com, alxndr@bu.edu, bsd@redhat.com,
  stefanha@redhat.com, thuth@redhat.com, darren.kenny@oracle.com,
  Qiuhao.Li@outlook.com, lvivier@redhat.com
-Subject: [PATCH v6 0/4] compare machine type compat_props
-Date: Wed,  8 Nov 2023 18:38:23 +0300
-Message-Id: <20231108153827.39692-1-davydov-max@yandex-team.ru>
+Subject: [PATCH v6 1/4] qom: add default value
+Date: Wed,  8 Nov 2023 18:38:24 +0300
+Message-Id: <20231108153827.39692-2-davydov-max@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231108153827.39692-1-davydov-max@yandex-team.ru>
+References: <20231108153827.39692-1-davydov-max@yandex-team.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
  envelope-from=davydov-max@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
@@ -76,56 +77,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This script can be used to choose the best machine type in the
-appropriate cases. Also we have to check compat_props of the old MT
-after changes to be sure that they haven't broken old the MT. For
-example, pc_compat_3_1 of pc-q35-3.1 has Icelake-Client which was
-removed.
+qmp_qom_list_properties can print default values if they are available
+as qmp_device_list_properties does, because both of them use the
+ObjectPropertyInfo structure with default_value field. This can be useful
+when working with "not device" types (e.g. memory-backend).
 
-v6 -> v5:
-* add ability to compare different QEMU binaries
-* replace abstract drivers by its implementations
-* improve human-readable format
-* code refactoring
+Signed-off-by: Maksim Davydov <davydov-max@yandex-team.ru>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
+ qom/qom-qmp-cmds.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-v5 -> v4:
-* minor fixes
-
-v4 -> v3:
-* increase read buffer limit to limit value in libvirt
-* add caching of qmp requests to speed up the script 
-
-v3 -> v2:
-* simplify adding new methods for getting QEMU default values
-* add typing
-* change concept from fixed dictionaries to classes
-
-v2 -> v1:
-* fix script code style and descriptions
-* reorder patches
+diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
+index 7c087299de..e91a235347 100644
+--- a/qom/qom-qmp-cmds.c
++++ b/qom/qom-qmp-cmds.c
+@@ -212,6 +212,7 @@ ObjectPropertyInfoList *qmp_qom_list_properties(const char *typename,
+         info->name = g_strdup(prop->name);
+         info->type = g_strdup(prop->type);
+         info->description = g_strdup(prop->description);
++        info->default_value = qobject_ref(prop->defval);
  
-v1 -> previous iteration:
-* new default value print concept
-* QEMU python library is used to collect qmp data
-* remove auxiliary patches (that was used to fix `->get` sematics)
-* print compat_props in the correct order
-* delete `absract` field to reduce output JSON size
-
-Maksim Davydov (4):
-  qom: add default value
-  qmp: add dump machine type compatible properties
-  python: add binary
-  scripts: add script to compare compatible properties
-
- hw/core/machine-qmp-cmds.c     |  23 +-
- python/qemu/machine/machine.py |   5 +
- qapi/machine.json              |  54 +++-
- qom/qom-qmp-cmds.c             |   1 +
- scripts/compare_mt.py          | 484 +++++++++++++++++++++++++++++++++
- tests/qtest/fuzz/qos_fuzz.c    |   2 +-
- 6 files changed, 565 insertions(+), 4 deletions(-)
- create mode 100755 scripts/compare_mt.py
-
+         QAPI_LIST_PREPEND(prop_list, info);
+     }
 -- 
 2.34.1
 
