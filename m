@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E34297E5D4A
+	by mail.lfdr.de (Postfix) with ESMTPS id E75F17E5D4B
 	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 19:34:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0nMO-0007Qt-TV; Wed, 08 Nov 2023 13:33:04 -0500
+	id 1r0nMQ-0007RN-4f; Wed, 08 Nov 2023 13:33:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0nMN-0007Qk-0r
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 13:33:03 -0500
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0nMO-0007Qu-D5
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 13:33:04 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0nMJ-0002va-Gd
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 13:33:02 -0500
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-507cee17b00so9471472e87.2
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 10:32:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0nMM-0002xK-OM
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 13:33:04 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-32f7c44f6a7so4252542f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 10:33:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699468374; x=1700073174; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=/+uQZr3Lg6zblZBi+iv4WzPewq3iyMI5xDv1R/01phg=;
- b=MSKhyRn9oBOxRHLDMlUvqo/TxF8eE2xaHmeQZ25cQeXM7Vfb7H/26a3Gxj4PLdC1C5
- wjhjMWdY3fbcodUmH7GroRh6L4aWfaS703ma8lARkm7IIDJQY4706ceCw9vv0GNRL17i
- 6TjwxUm9FdB1syj2JSsvXKbidJEe/uOqcXtV0/vYdR6My+yMmcu3hfzQSGTZab6kjuzA
- 7ywNSINzODVRYdnqA0tpMYyTu7jBGUa2HAO3iYt0VDkYGFYbCn1JpxtBTyMZJBlH663L
- pd5AtDglPXK1x4r9gddX65etqfpYHbRBi473SbSKcwPGzPr3SMMi+nmdbBVOazsCJ2cK
- nJiQ==
+ d=linaro.org; s=google; t=1699468381; x=1700073181; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=viJPlpU3vzxbCgCk3OGKl1HnEwyjYeL1NL/uBJdjxBI=;
+ b=Yie5K7JUAkhkUHsiojXPuKnl/snW/A1GMbQeMLyiA1qouIPQz6fB2W8xwTzPKtmUqI
+ u9VEJGWclU1OW9FKG7jZbVi+XAhcwmu1tPeTt1l5k2gWTl7T3YcdIOIdDsYcl7mdjFow
+ bCE7ZW4WyCUHY+o8+civgxJtNKolsLo/pTLnSq3fkEt+0EP18fqXzz58RTQuNrYJv29s
+ 1BGOzKW6phZKlok7wJDsO7QVk4je2n2KDKr+w1ucHY6/Prd1QkyEO/dfk17drwJ6b2RZ
+ +3f9p8HbNGU+aef7HgzJRrs+y1yvYQIu4rofpy/k4wse+vDVNcztyEZW+BPqDE/vg6dY
+ rshw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699468374; x=1700073174;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=/+uQZr3Lg6zblZBi+iv4WzPewq3iyMI5xDv1R/01phg=;
- b=IbrX7NA/ezsvV/9Xh7xlN5kJk5Qv4VtzsMSB0qnWJqDkRV6VzDXYlo/WnZJhnRjFW0
- KXyL9xiAtbPiFBNZwS6xDC4TVtR8JMOGjyL/mPFSRy9InoR+H4fgxx/QGThCz3ShmjFd
- PuveYDC7ilgj/YQdEN+mJ2v7cTroZAFdWRzzy0bF+wckPMXmGhgxVCQAEaSDKQ25Lx3o
- 0SeIizDIRbF1VhDiKnVFDzZmht7j0goC0ZlL5Zf/a/SZ3J3Tkk2TUbhMWCC/BvPBnJHa
- cyjUHq1QR8hA16OI84FkkQzyJXjbd4Ky9WF5UdrENy1KJZefTL61g4dX7XG98ZdBzqrD
- SGPA==
-X-Gm-Message-State: AOJu0Yyf/jWQZt+LWHqC5h1/XfsHR8IT9JHi06pYVpUlse87qYQ+OWC4
- oUtUmAIzsdlN/7Lxm+XomQ/kjFwqVYwPenecdIs=
-X-Google-Smtp-Source: AGHT+IEzdauTmA3EQngseVYUWJ0WT+0ZEPlY7kb5m0MNGvFp/1Em1Ed59Qz4XKPxGGJYPfzVkulFMA==
-X-Received: by 2002:a05:6512:746:b0:507:9f69:e8d9 with SMTP id
- c6-20020a056512074600b005079f69e8d9mr1687268lfs.49.1699468374385; 
- Wed, 08 Nov 2023 10:32:54 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699468381; x=1700073181;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=viJPlpU3vzxbCgCk3OGKl1HnEwyjYeL1NL/uBJdjxBI=;
+ b=kezGu5MBlN0V3m/uQ2zz04tGLBRI/Ytqzl+FybvjRZG+H8ltduVuJnWjdz+bIR4C3o
+ 175ZEGrq4QhW5eJGpkiYJlNMds60VfQC5NuZjUFGf/x48dlq2Z7Fbw4STs6Tojw5aSF1
+ oK0EHoaTBCemrJNmt+xSvw/NUJfDN/4k+vUZ+8cc2liTskCVY8mZhHXnvqcZcc433iVl
+ Fe0gSqv6O/96lsEuHWSCTBkxldszrLmXqhhT45vJTghCek/V8fE9SpU3H5krJPXfwAF6
+ tkQOWbuNoCMQprZjnppVf4IeV9tRHZM/XpH8ZsRYYrBU0VwC/At8Er53vst05bk3nZwu
+ ILeQ==
+X-Gm-Message-State: AOJu0YywkbjBR1QMmBGXIvlzw8mnkwm23gs7uaX/m6GpSlxo4vsvRQFD
+ ZpqSq5OaCHupAw/Rvp/pDmFDJD7YdrQ/zpuVHVg=
+X-Google-Smtp-Source: AGHT+IE59wbPvgVnbA1Dwt75BV1AIqQf1/OLk/OHqxO4DdL0qR7TNaX95C7XCleLT5uUh8RTb78nuQ==
+X-Received: by 2002:a05:6000:402c:b0:32f:79e5:8109 with SMTP id
+ cp44-20020a056000402c00b0032f79e58109mr2281480wrb.2.1699468380703; 
+ Wed, 08 Nov 2023 10:33:00 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.199.60])
  by smtp.gmail.com with ESMTPSA id
- l3-20020a05600c4f0300b003fc0505be19sm20197162wmq.37.2023.11.08.10.32.52
+ g16-20020a5d5550000000b0032de6f95fb3sm5487253wrw.40.2023.11.08.10.32.58
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 08 Nov 2023 10:32:54 -0800 (PST)
+ Wed, 08 Nov 2023 10:33:00 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  John Snow <jsnow@redhat.com>
@@ -64,15 +65,17 @@ Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Howard Spoelstra <hsp.cat7@gmail.com>
-Subject: [RFC PATCH 0/2] buildsys: Use host meson on macOS Sonoma (14)
-Date: Wed,  8 Nov 2023 19:32:49 +0100
-Message-ID: <20231108183251.80572-1-philmd@linaro.org>
+Subject: [NOTFORMERGE PATCH 1/2] configure: Use distrib meson
+Date: Wed,  8 Nov 2023 19:32:50 +0100
+Message-ID: <20231108183251.80572-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231108183251.80572-1-philmd@linaro.org>
+References: <20231108183251.80572-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,36 +98,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-macOS 14 "Sonoma" was released end of September 2023,
-developers who upgraded they host can not build QEMU
-anymore due to some issue with meson, described in
-https://gitlab.com/qemu-project/qemu/-/issues/1939
-(mkvenv ignore the host meson and forces to use the
-old meson 0.63.3, which doesn't work on Sonoma).
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ configure | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-I have no clue how to fix this meson issue, but I put
-these 2 patches to keep testing Sonoma out-of-tree
-during the release freeze window.
-
-Successful build:
-https://gitlab.com/philmd/qemu/-/jobs/5491256155
-
-Based-on: <20231108162022.76189-1-philmd@linaro.org>
-  .gitlab-ci.d/cirrus: Upgrade macOS to 13 (Ventura)
-  https://lore.kernel.org/qemu-devel/20231108162022.76189-1-philmd@linaro.org/
-
-Philippe Mathieu-Daudé (2):
-  configure: Use distrib meson on macOS
-  .gitlab-ci.d/cirrus: Add manual testing of macOS 14 (Sonoma)
-
- configure                         |  9 +--------
- .gitlab-ci.d/cirrus.yml           | 17 +++++++++++++++++
- .gitlab-ci.d/cirrus/macos-14.vars | 16 ++++++++++++++++
- tests/lcitool/libvirt-ci          |  2 +-
- tests/lcitool/refresh             |  1 +
- 5 files changed, 36 insertions(+), 9 deletions(-)
- create mode 100644 .gitlab-ci.d/cirrus/macos-14.vars
-
+diff --git a/configure b/configure
+index f1456f6123..93735b7661 100755
+--- a/configure
++++ b/configure
+@@ -955,15 +955,8 @@ if $python -c 'import sys; sys.exit(sys.version_info >= (3,11))'; then
+     $mkvenv ensure --dir "${source_path}/python/wheels" \
+         'tomli>=1.2.0' || exit 1
+ fi
+-$mkvenv ensuregroup --dir "${source_path}/python/wheels" \
+-     ${source_path}/pythondeps.toml meson || exit 1
+ 
+-# At this point, we expect Meson to be installed and available.
+-# We expect mkvenv or pip to have created pyvenv/bin/meson for us.
+-# We ignore PATH completely here: we want to use the venv's Meson
+-# *exclusively*.
+-
+-meson="$(cd pyvenv/bin; pwd)/meson"
++meson="$(which meson)"
+ 
+ # Conditionally ensure Sphinx is installed.
+ 
 -- 
 2.41.0
 
