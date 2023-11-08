@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDA8E7E5F9D
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 22:05:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A307E5FE6
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 22:19:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0piX-0000Um-MT; Wed, 08 Nov 2023 16:04:05 -0500
+	id 1r0pwI-0006UG-Ej; Wed, 08 Nov 2023 16:18:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0piV-0000UH-3b
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 16:04:03 -0500
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0pwG-0006U8-Fu
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 16:18:16 -0500
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0piT-0007pK-CB
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 16:04:02 -0500
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2c54c8934abso1384561fa.0
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 13:04:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0pwE-0001mi-2X
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 16:18:16 -0500
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-507a29c7eefso155778e87.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 13:18:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699477439; x=1700082239; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699478292; x=1700083092; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=z8aM1Ib8UMp170QJ36gwew/hWv1wzCwtdDC2AGHbG9E=;
- b=k/RIK2t8lCdGQ3kw2tJUN1ZxpPMOF+M/WAxc+y2tTTxH2ZQhbeIl+y0hCopPEJF6wy
- pqoCzN0dRbFE5jJSMy9yB/sce4oBccJQDWhqeJFGZygcu4eGXanTnegXnbtv4jX/WvNT
- R57EOa3RDa4FHO+Vo1VE+P4fDxg/SMdMbX0rYd1MHsTj5xFtnwj8Gc8DTnBaKr6fgHiA
- C162CbNfZAh0lT/5C5dsvDVyW8hU7IFZl74as8xZW0BoEhAQcLjoH3+5c1zGWff1ry6G
- +qH7m5Smd7RFviZPhv2SumZeYuVGD7MEJNisXVuoy1YX5ZAV+WC3JJ6fT4YnyPBoCxpD
- Ra+g==
+ bh=SpVt77XOaITVfrZ5G2w5L7Gj4gphmLK9T/4LL8lJTY0=;
+ b=BPE2T75I0hSiTQFiFgFxjJhXj2Z0z9QJ6JSXEBiasrkyyoy7LQK5mb98nphKz8Claf
+ e9n1SPoWam837Eu0ELlzXY+AXVgSCub79wIpx5ecc62F/lE3wHH0hLzJm9diEU/krESZ
+ 14mhv3d6INonO9iSJ8Ph9rlQH4X6mOutxqH2g0x/sjGjU0iAhmnfNn6CzWOFPWsEYOqV
+ FHgxL2V7lV47Isg1uYSfo5Zs4kPmFl+sZXCUmB7pSkSBfrWL3Oir4M/JADjo4e9SVeZ2
+ d1c/j0zM65C2N26lEEDPQlTZgN72gfKD6TuQxpnOUEGaGOLWt4gsQUuySydOCHp1A4EW
+ z1gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699477439; x=1700082239;
+ d=1e100.net; s=20230601; t=1699478292; x=1700083092;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=z8aM1Ib8UMp170QJ36gwew/hWv1wzCwtdDC2AGHbG9E=;
- b=O0fKnimoU7PM4vXQ83pH4ILe/i4yHJKXzBaKygox7gkJoFdgXrY6rWO1FzG1WA3KzP
- sn3lyQRZ2Sbg9Zt8GH2CWtBsoEPXjnNo56TRMCyGPxcn+tbtJWyRJngsKy98ZxHhxg2/
- +e2WQRH4l5cIy94BqcNi3PUeHBiUEv6/ZQjsEYL2bLWiQL/E1BI7B3H+PODDIGnK6CKa
- kr7DMmD6J5T8yc7st+4qsLhxlzQ4w0AedkgL465fop5HnynA9KBrD8S59PwyLWY8qLLt
- o2N79U6qak8ddG8AMGdLjc8Fo15NQayoQ+8tCUQmIRu1uh94eE/bWN9oGrf4qXgpZZyh
- XCng==
-X-Gm-Message-State: AOJu0YyXHviRL1ADhGtg0mlRFIwjWPAl+bZoTZ/px/DfBCezfN9bYGEm
- 8kvXuAf1g0876jIpu20kZreDdyFuatX2s/e5448=
-X-Google-Smtp-Source: AGHT+IGB2W+DarqZ5vJp1XE5QzjrCTqnIOdcjdmUmm4tXCDjUJ5ekwRPGxXiSlpKqVRKC71sL9Uw4g==
-X-Received: by 2002:a05:651c:222b:b0:2c5:11fe:53b2 with SMTP id
- y43-20020a05651c222b00b002c511fe53b2mr3256323ljq.37.1699477438951; 
- Wed, 08 Nov 2023 13:03:58 -0800 (PST)
+ bh=SpVt77XOaITVfrZ5G2w5L7Gj4gphmLK9T/4LL8lJTY0=;
+ b=l6ycU0GmrB4WskkepCOxPXTHCYkJ+mYcsVvOekzLQPOZSVslkQCbltOW2Fl0x2LwiF
+ wj8fyYrucdWJPp6UltyPNvQMXOJ76TwH6Wcj0FcE0opHl1sjVtadTjaVYxawwNyBD+dF
+ Y6ODAdN0uQVU+NVI3o7exyzVSGhcsh2arnVOpv0xz2dC321CxTRQYL0MHDMx6KEGlHms
+ klXAc4b7AiYsdMHv4lFO8TL7aTbg9pgexFODj9w+TmBN6KJjRri5n6I5sk/M2etebKJt
+ WUcXIUBylly+q1hYc9YhGJzdXs4A822uF/gbg+p0CIh1A47yt+/tEEpAleHye9jnuble
+ EISQ==
+X-Gm-Message-State: AOJu0Yx4h2V4O2giNWD02XCningU16U+1Ulu94h5aH7IlKn/jHQS9O8w
+ vvfyfqn50vmnL/E0n8I9eblfpg==
+X-Google-Smtp-Source: AGHT+IHBrui8AIgsJj33GptnoAnv2j295XnOYNmyLDUQQXeQqYsGnPJrSzz3fxcQc3nh8k0y8HwWdg==
+X-Received: by 2002:a05:6512:6d3:b0:509:494d:c3d2 with SMTP id
+ u19-20020a05651206d300b00509494dc3d2mr2644553lff.32.1699478291859; 
+ Wed, 08 Nov 2023 13:18:11 -0800 (PST)
 Received: from [192.168.69.115] ([176.187.199.60])
  by smtp.gmail.com with ESMTPSA id
- k2-20020a05600c168200b00405718cbeadsm1163097wmn.1.2023.11.08.13.03.57
+ q26-20020a50c35a000000b00536031525e5sm7293544edb.91.2023.11.08.13.18.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Nov 2023 13:03:58 -0800 (PST)
-Message-ID: <7e8a5d3d-2d81-4cc4-808e-265ae786dc2c@linaro.org>
-Date: Wed, 8 Nov 2023 22:03:56 +0100
+ Wed, 08 Nov 2023 13:18:11 -0800 (PST)
+Message-ID: <e8c242c8-471d-4375-86f1-60c23c64369c@linaro.org>
+Date: Wed, 8 Nov 2023 22:18:09 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 34/35] target/alpha: Use TCG_COND_TSTNE for
- gen_fold_mzero
+Subject: Re: [PATCH for-8.2] target/sparc: Fix RETURN
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com
-References: <20231028194522.245170-1-richard.henderson@linaro.org>
- <20231028194522.245170-35-richard.henderson@linaro.org>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+References: <20231108204739.279972-1-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231028194522.245170-35-richard.henderson@linaro.org>
+In-Reply-To: <20231108204739.279972-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x233.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,68 +91,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/10/23 21:45, Richard Henderson wrote:
+On 8/11/23 21:47, Richard Henderson wrote:
+> Perform window restore before pc update. Required in order
+> to recognize any window underflow trap with the current pc.
+> 
+> Fixes: 86b82fe021f4 ("target/sparc: Move JMPL, RETT, RETURN to decodetree")
+> Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/alpha/translate.c | 49 +++++++++++++++++++---------------------
->   1 file changed, 23 insertions(+), 26 deletions(-)
+>   target/sparc/translate.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-> index c7daf46de7..c68c2bcd21 100644
-> --- a/target/alpha/translate.c
-> +++ b/target/alpha/translate.c
-> @@ -490,56 +490,53 @@ static DisasJumpType gen_bcond(DisasContext *ctx, TCGCond cond, int ra,
->   
->   /* Fold -0.0 for comparison with COND.  */
->   
-> -static void gen_fold_mzero(TCGCond cond, TCGv dest, TCGv src)
-> +static TCGv_i64 gen_fold_mzero(TCGCond *pcond, uint64_t *pimm, TCGv_i64 src)
+> diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+> index 6fc333a6b8..9387299559 100644
+> --- a/target/sparc/translate.c
+> +++ b/target/sparc/translate.c
+> @@ -4096,12 +4096,12 @@ TRANS(RETT, 32, do_add_special, a, do_rett)
+>   static bool do_return(DisasContext *dc, int rd, TCGv src)
 >   {
-> -    uint64_t mzero = 1ull << 63;
-> +    TCGv_i64 tmp;
+>       gen_check_align(dc, src, 3);
+> +    gen_helper_restore(tcg_env);
 >   
-> -    switch (cond) {
-> +    *pimm = 0;
-> +    switch (*pcond) {
->       case TCG_COND_LE:
->       case TCG_COND_GT:
->           /* For <= or >, the -0.0 value directly compares the way we want.  */
-> -        tcg_gen_mov_i64(dest, src);
-> -        break;
-> +        return src;
+>       gen_mov_pc_npc(dc);
+>       tcg_gen_mov_tl(cpu_npc, src);
+>       gen_address_mask(dc, cpu_npc);
 >   
->       case TCG_COND_EQ:
->       case TCG_COND_NE:
-> -        /* For == or !=, we can simply mask off the sign bit and compare.  */
-> -        tcg_gen_andi_i64(dest, src, mzero - 1);
-> -        break;
-> +        /* For == or !=, we can compare without the sign bit. */
+> -    gen_helper_restore(tcg_env);
 
-> +        *pcond = *pcond == TCG_COND_EQ ? TCG_COND_TSTEQ : TCG_COND_TSTNE;
-
-OK, $subject is only this line, the rest is purely refactoring.
+Ahah! I noticed that earlier in a late review, wondered why you moved
+that gen_helper_restore() call after updating $nPC, but my SPARC is now
+rusty so I was sure I was missing something. Too shy to ask :/
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-> +        *pimm = INT64_MAX;
-> +        return src;
->   
->       case TCG_COND_GE:
->       case TCG_COND_LT:
->           /* For >= or <, map -0.0 to +0.0. */
-> -        tcg_gen_movcond_i64(TCG_COND_NE, dest, src, tcg_constant_i64(mzero),
-> -                            src, tcg_constant_i64(0));
-> -        break;
-> +        tmp = tcg_temp_new_i64();
-> +        tcg_gen_movcond_i64(TCG_COND_EQ, tmp,
-> +                            src, tcg_constant_i64(INT64_MIN),
-> +                            tcg_constant_i64(0), src);
-> +        return tmp;
->   
->       default:
-> -        abort();
-> +        g_assert_not_reached();
->       }
+>       dc->npc = DYNAMIC_PC_LOOKUP;
+>       return true;
 >   }
 
 
