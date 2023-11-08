@@ -2,103 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06177E5BF4
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 18:05:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C6A07E5C80
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 18:36:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0lyK-0001Uf-IF; Wed, 08 Nov 2023 12:04:08 -0500
+	id 1r0mSU-0002kl-UV; Wed, 08 Nov 2023 12:35:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pasic@linux.ibm.com>)
- id 1r0lxz-0001U6-BL; Wed, 08 Nov 2023 12:03:48 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pasic@linux.ibm.com>)
- id 1r0lxf-0002O9-Tc; Wed, 08 Nov 2023 12:03:45 -0500
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A8GuLMX018205; Wed, 8 Nov 2023 17:03:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=WY15HxMwYzUesubXtvbUvd0VsLkEfoGgndHj6wHC51A=;
- b=Pq4hJ6/LA7UcsNkk8+IkL5VqMctbethsL462wwZsGRFP0sPfwke0K4dHY81rwWl3N1Zu
- mQ+Qj3WUXjRksEU4unVvmZTGS0SDOgGXB8BdU7ka7EjkC8NC5vGHNPcNLI98C8XLJq+A
- 6dign1J66b3cbr3dt5+LYY71CDslwh1r2wVz/UjSq7evCBHAWy+/kwK2VIrV0VL5hAHj
- zFVR/uQwHRNVsdbrRJlD5zwekOK4hJ5fa/t0rPw9YaPhvlFleP907JqwXQcf2PZwcI1T
- vsKh1e//ZFAjCO6nbrjjoGDgScQQT5GlnHZz5Rfj8pjAag2dljyQ0AsDz672mGHQRYdd UQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u8dqn1j10-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Nov 2023 17:03:15 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A8GvfPa024738;
- Wed, 8 Nov 2023 17:03:15 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u8dqn1hyr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Nov 2023 17:03:15 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A8GcNW3000726; Wed, 8 Nov 2023 17:03:14 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u7w22x82p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Nov 2023 17:03:14 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3A8H3Aef24052234
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 8 Nov 2023 17:03:11 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E1E912004B;
- Wed,  8 Nov 2023 17:03:10 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A436F20040;
- Wed,  8 Nov 2023 17:03:10 +0000 (GMT)
-Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown
- [9.152.224.212])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  8 Nov 2023 17:03:10 +0000 (GMT)
-Date: Wed, 8 Nov 2023 18:03:08 +0100
-From: Halil Pasic <pasic@linux.ibm.com>
-To: Eric Farman <farman@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
- David Hildenbrand <david@redhat.com>, Claudio
- Imbrenda <imbrenda@linux.ibm.com>,
- Juan Quintela <quintela@redhat.com>, Halil Pasic <pasic@linux.ibm.com>
-Subject: Re: [PATCH] MAINTAINERS: Fix a couple s390 paths
-Message-ID: <20231108180308.27d973d0.pasic@linux.ibm.com>
-In-Reply-To: <20231020141509.2096591-1-farman@linux.ibm.com>
-References: <20231020141509.2096591-1-farman@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0mSS-0002kY-DV
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 12:35:16 -0500
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0mSQ-0000at-NH
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 12:35:16 -0500
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-9d0b4dfd60dso1081218266b.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 09:35:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699464910; x=1700069710; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TaZOkiuCIJBSrz3Yf50gfUgaDBqaSwlGdFVQNZNMaDU=;
+ b=dQFt4Yo+4eRi+fct6yiwwwz6hNGIErxPHn6lx85SbahjBW4EqM6hQekhOsemok8axY
+ oPkTZAEO+rfUKfN0eCMERVqYPcoN0r2ETBaboMbITH/hsDcGbQNpk8R39LbBEgWXqNaI
+ kYIscDvq0fdT0Kpj++qSP3gL4N736yN5HJAfq/SwBZjkQpO63WY9HpF5FByQuo65CUYv
+ cxuUFnF0M+hbrvVI3PF6FxUsWWkTIhsVLJZ4Pf3PvgPBE7uIQ5ASzwFHMkS5YK4Z4NFb
+ 5/RPKbVvBaliKHnUQemEAUFfmw//2d0RdTvgxkH/v9rO1GOK+/CsRc7I6J8W8Wh8vHwX
+ w8Nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699464910; x=1700069710;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TaZOkiuCIJBSrz3Yf50gfUgaDBqaSwlGdFVQNZNMaDU=;
+ b=eKEjRcR+6Ht6a1BOxj2qS/frIeTUlke4xUhdtPY0JvP5y6+qZnTZvku+8s2vNKN23w
+ oxeuOCKsWMpDimAM+ORkDTZoBH4TiAlxgdlZNV58+PZPcUPu6BZxOD6rfH9t81uH5Mbc
+ jBPms0GJuYe2T8HAxoAUfnpKpb71wNGrMoCtcu5MLpTn6XG5u6wVzXZyY4bYPd19VU/O
+ lHSyR8wZKcMq5x2bFJnJHHbQIuYkKlFHROBUreDcjWksK4cqMI6D8KqcNrfFSVT+Hm9y
+ wlV2//F7RtaJsBF/UzQ0UF5AToF8oHR6DlB+gP8VmYA785D4VTlasi1Teut6TGJ25jn/
+ Rs8Q==
+X-Gm-Message-State: AOJu0YwICLLtezwGqo4JIo/FfhP5XqY7Uco1L3SPe/AJX4dJZmCmeNRd
+ HEPIWyV5b/ojSkrEIGjKfW+mPA==
+X-Google-Smtp-Source: AGHT+IE37dIVmSPaTiRf2d2ADKaeb8L3/2zFRYggUkQ0RPOM0Xpn6NluNTBM20dEtBo8H4zzRWgA6Q==
+X-Received: by 2002:a17:907:9342:b0:9dd:f303:8e6c with SMTP id
+ bv2-20020a170907934200b009ddf3038e6cmr2200111ejc.73.1699464910240; 
+ Wed, 08 Nov 2023 09:35:10 -0800 (PST)
+Received: from [192.168.69.115] ([176.187.199.60])
+ by smtp.gmail.com with ESMTPSA id
+ g17-20020a170906395100b009de467a25d5sm1386271eje.13.2023.11.08.09.35.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 08 Nov 2023 09:35:09 -0800 (PST)
+Message-ID: <039a6e2d-8daf-46a4-a175-8df1ceaef0c3@linaro.org>
+Date: Wed, 8 Nov 2023 18:35:07 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] tests/docker: merge debian-native with debian-amd64
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Anders Roxell <anders.roxell@linaro.org>, Thomas Huth <thuth@redhat.com>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+References: <20231108165602.3865524-1-alex.bennee@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231108165602.3865524-1-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: uWq09R8KqoOkgjw_twqIulMfjI0J5XdT
-X-Proofpoint-GUID: tzlyCTj2j4yyK3rX7CD6zJX9POvk3A2w
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-08_05,2023-11-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=651 bulkscore=0
- phishscore=0 malwarescore=0 mlxscore=0 spamscore=0 suspectscore=0
- lowpriorityscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311060000 definitions=main-2311080141
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=pasic@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,16 +94,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 20 Oct 2023 16:15:09 +0200
-Eric Farman <farman@linux.ibm.com> wrote:
+On 8/11/23 17:56, Alex Bennée wrote:
+> debian-native isn't really needed and suffers from the problem of
+> tracking a distros dependencies rather than the projects. With a
+> little surgery we can make the debian-amd64 container architecture
+> neutral and allow people to use it to build a native QEMU.
+> 
+> Rename it so it follows the same non-arch pattern of the other distro
+> containers.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Cc: Anders Roxell <anders.roxell@linaro.org>
+> ---
+>   .gitlab-ci.d/buildtest.yml                    | 12 ++---
+>   .gitlab-ci.d/containers.yml                   |  2 +-
+>   tests/docker/Makefile.include                 |  3 --
+>   tests/docker/dockerfiles/debian-native.docker | 54 -------------------
+>   .../{debian-amd64.docker => debian.docker}    |  7 ++-
+>   tests/lcitool/refresh                         |  9 ++--
+>   6 files changed, 18 insertions(+), 69 deletions(-)
+>   delete mode 100644 tests/docker/dockerfiles/debian-native.docker
+>   rename tests/docker/dockerfiles/{debian-amd64.docker => debian.docker} (96%)
 
-> : Fri, 20 Oct 2023 16:15:09 +0200
-> X-Mailer: git-send-email 2.39.2
-> 
-> These are simple typos, since the directories don't exist but the
-> files themselves do in hw/s390x/
-> 
-> Fixes: 56e3483402 ("MAINTAINERS: split out s390x sections")
-> Signed-off-by: Eric Farman <farman@linux.ibm.com>
-Reviewed-by:  Halil Pasic <pasic@linux.ibm.com>
+Good idea. Why RFC?
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
