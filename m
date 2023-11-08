@@ -2,75 +2,137 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CC947E5668
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 13:38:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C70227E568D
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 13:53:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0hnf-0004A3-6h; Wed, 08 Nov 2023 07:36:51 -0500
+	id 1r0i3l-0008Lj-Cz; Wed, 08 Nov 2023 07:53:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1r0hnc-00049k-TP
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 07:36:48 -0500
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1r0hna-0007Ei-VD
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 07:36:48 -0500
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-6ce2ea3a944so4070832a34.1
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 04:36:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699447005; x=1700051805; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4bo8b2wUFyf73l5iWW8VUnux5zZ9rzp0eCSEuVcZiQw=;
- b=GgDOYS2CbGpUTCuWBiLhFlvyi5s0GqxM1cKbg5FD2C5it3ly7Oj/BxqW8/Z7QR1Nc9
- kh0AOGimCHgTORxAZnjFBuPIxSE5VrnRUGv5TvVW+0+HHkXWimgdb8wBL4wEjVt7HpfH
- EZ18XVjWOWozndolAjnOo8x8t5rTwi8dFvjcL9IDYvXIRHuiWfhFN1YyUz76ysdOku0T
- zEXuC5+OXdIfJHaqmQGG1DHOwzXaheBLRi/TiiDz3KRWPn1NrdzOjzib2mSqquoZxtSR
- xEdFfZdQU63ap6J05aOhHc0TjTD7diF5qYD7pNKUqzyK+AOERIauO3OihcJfmRBOyLWx
- uNQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699447005; x=1700051805;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4bo8b2wUFyf73l5iWW8VUnux5zZ9rzp0eCSEuVcZiQw=;
- b=UzGdUYUppJuPaT2mB8yla/GmYLRFZanI9a2ELlGC4FYYFj2qnc86b3XLj6wrXKBrqj
- y0/A43FadGyaoTgodYKsslcX//f8X6HeZ9gSaq6ta8+8vXxCZGt/o3/PCdCrykZxFFNt
- Lb5prMCyl/Zi8gTZO9W3Te/eEPc0AXjaSA+QaDv7AwvsvSToVn6PqeUnVHn5RYy8RY7e
- Gq8eiDhpnBHPdtF3oeeQRktFfqtL4ZSaxHG2rWw1LRVYdmZI5aJo88Z2Uekl5zBo68V3
- HfhEE/+Q8ci+GNFcL8fTDGgIOPDp+VYztIrHpBotJvXLAKXJQGLBF+Kpqymwzqq45lJE
- bHaw==
-X-Gm-Message-State: AOJu0Ywq6jr+gfqu5J4/iyE+khWajQ7O8MoxhVN99ae6I9G29eBKzgSV
- Q+7ET+1xjlFXAndBJhVHBuvPHcyjO9XHEMspBtM=
-X-Google-Smtp-Source: AGHT+IES57Y6drx+cGcEtezFTp1iiTZz2Ncn2mIwm/t55SFwxRhrb9aDd5cCFoBxuYDEF4EybT5IDEdIQZRRQdFbhoY=
-X-Received: by 2002:a05:6830:16d9:b0:6b9:2e88:79cc with SMTP id
- l25-20020a05683016d900b006b92e8879ccmr1565681otr.19.1699447005292; Wed, 08
- Nov 2023 04:36:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1r0i3i-0008Lb-T6
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 07:53:27 -0500
+Received: from mail-bn8nam12on2050.outbound.protection.outlook.com
+ ([40.107.237.50] helo=NAM12-BN8-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1r0i3g-00020Z-JV
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 07:53:26 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XuNIYwx2lQmVN58mrA/QT1BAyqOypfZzba3lmkC8O5lFEMuUtZZXTfVoDOT+BBeuCWvZxHpeG0nOmJHj1OvmWewIA6fy83KFiE/XaQ1pe5MYpW5La77ROHsXMMsGjMfNPJCh5qgRQod5Df5q7snw2f8HWRZ9K+GndaxIE5Zug4zOfSRL54YeAKVP6oGIg6dBJX0MD1pk29IgY4t1UfQ0f01vG8nGFLllVKJFSR9ansoeXdCAfB71ej4o392I+66tfpcdrUN0WKuVsT+0ICJtD58KCcJDMxnYqoCZPioBycmeaJ3utVCSUaj7da3RaV0U7PFipDUAWaWl2Tky2aIl4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=v2yMLy+T2/ShxxNRa4s0eBsQpuGEkX92zmUfnTLerSk=;
+ b=B8dU5wCOiEi7dCi7tO8nexl8Qfgeq43QqoLEbmgKuB/+wj47oR7ZDZnXV80X7bi9ugYayJaWNADvvo8vDq6seEFVSgtWvJN5BVGd4blekwdAq3ZPPRnkTEUL92Gf7QJ+IcfdjYDDkYd7xh2eP7Auj9gaFZEQqKHCUllxUNBxs19o86f6SqmuWTHImzbB6RQOg1FrTR3nLZkhuMlLbKnj5mt9sHyqxLldpW7QaCIVb+azU1zVRVLyUG9Upho9f4KifxIMtGa/SGd4mBzMiXSbnqQS9F+tc4fhkVc4WfkUlf1IYAwkcg3LDXhEbUmm69j4t5ZM6XmhPwZ5ct7CK1E24w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=v2yMLy+T2/ShxxNRa4s0eBsQpuGEkX92zmUfnTLerSk=;
+ b=iHDWdj0ZnNUHzh0dF4LNFL4BP57C9Lc9G8vz2InPwlokk+QLvwcRHDEnbuEvlCcPSfqD6UotZS/PP9oXGpgn3h8fiI8jOcjbhRKwmuGeT8APS2wv+v/uaGd0I5Ia5JPcmFsHx2lPPV2In8BNQ8/veKoZ5c1OunmYzYcvEXnBeeyV20nic+Knl9ty4j+omDTlDJ9kmJEYqM+pdiL31THmwhG3W3BRlQurppTqMubDrsMOOrjGnyGSkbyeLI/XktRMNdr4wDxLReigCuvV1VBug7eG4od4SLHr1ml0QGmf/kJdZGlJdCvdV8OuIaBdUGA0pOO+/FSFU1rSDNzUiO+Vkw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by DS0PR12MB8295.namprd12.prod.outlook.com (2603:10b6:8:f6::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.18; Wed, 8 Nov
+ 2023 12:48:19 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::60d4:c1e3:e1aa:8f93]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::60d4:c1e3:e1aa:8f93%4]) with mapi id 15.20.6977.018; Wed, 8 Nov 2023
+ 12:48:19 +0000
+Date: Wed, 8 Nov 2023 08:48:17 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+Cc: Matthew Rosato <mjrosato@linux.ibm.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>,
+ "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "Martins, Joao" <joao.m.martins@oracle.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>,
+ "Liu, Yi L" <yi.l.liu@intel.com>, "Sun, Yi Y" <yi.y.sun@intel.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>,
+ Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ "Jason J. Herne" <jjherne@linux.ibm.com>,
+ Tony Krowiak <akrowiak@linux.ibm.com>
+Subject: Re: [PATCH v4 28/41] vfio/iommufd: Implement the iommufd backend
+Message-ID: <20231108124817.GS4488@nvidia.com>
+References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
+ <20231102071302.1818071-29-zhenzhong.duan@intel.com>
+ <76538479-77ec-1a7d-cee1-906f6f758cff@linux.ibm.com>
+ <SJ0PR11MB6744D87FD3CBB3380647E68792A8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SJ0PR11MB6744D87FD3CBB3380647E68792A8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+X-ClientProxiedBy: DS7PR05CA0053.namprd05.prod.outlook.com
+ (2603:10b6:8:2f::34) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 MIME-Version: 1.0
-References: <20231107142354.3151266-1-alex.bennee@linaro.org>
-In-Reply-To: <20231107142354.3151266-1-alex.bennee@linaro.org>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 8 Nov 2023 20:36:33 +0800
-Message-ID: <CAJSP0QU5eNAVBskQDNq7eSHvhdVcaunAMWUxYEWWkF0gOjp-CQ@mail.gmail.com>
-Subject: Re: [PULL 00/23] Final test, gdbstub, plugin and gitdm updates for 8.2
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
- envelope-from=stefanha@gmail.com; helo=mail-ot1-x32e.google.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|DS0PR12MB8295:EE_
+X-MS-Office365-Filtering-Correlation-Id: 70d4fa84-d629-4966-4575-08dbe058fc12
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 2d2MBk9m/nW4zQT9GMdcLiE/f6VoxpWfIp1y8xjs/X9VIoiqY5kG9WW8buKuT90lQDtIvLIv/9/5s/4jtMhRVUVb8IJZ5Q1xmHrPxp2nnb+MMoKs35xc1qHk5gdBhm8onzjmt0jaSAYy+OSZwsv1Eky7pzJbdCGLO4USzKmEkZ+Roq9Sm81XlaxgzKV7XwtV092/tqfj0vbGkOz1XGpjv4cZpKSYWFeyAtSpVxa9LNNhULrB0HCp8+7L9LRK/mXXDWW9MutUMhXkANWG+EsItlX8yPWGJwSddnYS0Ek3KQ1MRLGfT6WSsKrX7oVRf3A8bu/1nzqxcxD4ROvUvPaYgS05d+QVXcnnoy3Y/UYuXwQG/XwuluJZaeOM/qbUMgkksDHDmH9huW7Yto9TdTJDMNgpQ7GA31xgtKwCy5bZltMgExQ5XwwNbQFVqKXvZuGy98q+URLLSSQdnR4CYPOgx1023f4J3Pd/2O2jjDaHd4A+sohrmIE8lFxUoD5hYlqKgmF88JNNazU/E3a21uoxG38zNbyXPg+qtiAbhQj3N7+SdmnSwKnDzj83ELzWZJH6
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:LV2PR12MB5869.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(136003)(376002)(39860400002)(396003)(346002)(366004)(230922051799003)(451199024)(64100799003)(1800799009)(186009)(7416002)(6486002)(2906002)(478600001)(5660300002)(26005)(41300700001)(38100700002)(86362001)(36756003)(6512007)(6916009)(316002)(2616005)(1076003)(33656002)(54906003)(8676002)(8936002)(4326008)(83380400001)(6506007)(66476007)(66946007)(66556008);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1AcqIUB2WeDF8jnP+tVcxLYs+NqgvxNUwTLyUayYSKVFNUL/5ZRgObl55j9c?=
+ =?us-ascii?Q?aD795uL92OiUEfi86fHgYZI93NaR0ja/1BwglDsym2Ncs3BTIjI8X4qGF6je?=
+ =?us-ascii?Q?zwg9KpMju3dubAqu3JI62QTHYNJNB75CkMNi1u6PNOGa9PWLdw9Weds+CpUZ?=
+ =?us-ascii?Q?KVBIV5zKFX0WVhak6sHCAG9KBAgFcCpsdjdQCL7YJtdYGDU3Bgz7Ibsj6kk2?=
+ =?us-ascii?Q?xx3OzR+s8F9zu7cq03FPWNyxQleUDe9bcb9BJBz0/FH0sDAXuAm2O03dEXwV?=
+ =?us-ascii?Q?V+1+wvvfFLHpCfp+LIbgZgvpuxT5ilvhBkPZ7QxTulFRxzgPcYp2sv/n+Lvr?=
+ =?us-ascii?Q?xzVnJ6Yce/PxIB4Jt2ETwY874Mmy5IAg78CLDOR6ARLdOdsV68+aiFJvgQ/b?=
+ =?us-ascii?Q?/Tp2uJiu3Wi+qNzM38Xeng07PdSnuzmvDnvEfS9xEsLPGFPFgFafyec0aiTh?=
+ =?us-ascii?Q?554tz5bkmmISxLNr48uGDnUZWD6kLP1fWcxAQY3MGM+wBKG5O7cEAhkEDnlK?=
+ =?us-ascii?Q?fjd2TFoUykqocqyWZIHn+PdjUBtUm+i4S4u4u++SdWdFrF0BKaNLdA21nu6f?=
+ =?us-ascii?Q?45cwJj8Fe5TAxApdzx7EYZbD8tHV/eihCbZzVBEVKBXNxZUQFO2ohRoLwUQ1?=
+ =?us-ascii?Q?vaOs1O0+NNLq8+0qsV9jQzVoZ0DJoXTZ+ENTNfke5VVbn1wk1au7NglCEupl?=
+ =?us-ascii?Q?aHL06xlaZvshG8pQnDqlKZVHhGVtdvEsX8AyQW8MGyZwg895X2C2rY97TWVt?=
+ =?us-ascii?Q?CnFZBRJWsYCbo3wCG3Sw3QxysmaRF+4xOf/jB9Nqi0eecO19BK8kNbHWqEZU?=
+ =?us-ascii?Q?ntOPg3pNNbQON0pf2vn+vqwwiKh+O2lxEouACwUoVrkVRguYJdCx+BMQXz5W?=
+ =?us-ascii?Q?qpiy2joPr3ldqPzgJr/oTOGIamNWhaWe0UcuNmF3iPRqddS9IfUJM+kaR3za?=
+ =?us-ascii?Q?O8K6zPRmg60JuQifFbR2qhZ+9JxrobXT+xh9nJHy/FMgVaZOlqiz+fjNCMln?=
+ =?us-ascii?Q?Z2mlQRc6pEgCJQaI8MX31CpngvjX4+zXn4npl0I10bjIQzeCaxPUecsoKUfX?=
+ =?us-ascii?Q?qkppaJz3W3/2QMsho1k2HSqv7RVblCAKf4PFbgfazjfsseDiD+Gs/4J5Brc+?=
+ =?us-ascii?Q?kqGwphQAxfPi36Hl55va9ohIOh3uhxZGhVnCoWaq2JHIRCuipMLLITa1PTHm?=
+ =?us-ascii?Q?KaKdoZmTW0ORb/0q1lEpqpA75Xft1B6Y0EBkqnCiv4CwyFzHDrKgu8Bx8NHa?=
+ =?us-ascii?Q?405FIYL7lk0+eTV/61EF7xBZ0MrVFSl39q5axqJe8JkchhWBN22nkrJgatf7?=
+ =?us-ascii?Q?sN5RvJziSjC5duuigegWE657Wge5ruJdLFhUlvFPXFjls14K1sY5n7Qqpv+j?=
+ =?us-ascii?Q?6rqxopKOAD/xWnJr+7nz7Rl+cDVrhjgiVGBkr9PCYUt1Jl4YHxWwQNV9nw2H?=
+ =?us-ascii?Q?fHuulTX8c9fGS84ko6auNfTcrAD8qNt3COfd9TWx2ZHcZHLGaWMitPpK8RYZ?=
+ =?us-ascii?Q?d/sA5gxVM8gmFfy73l4bmlXy29GnP6sOOFZBQ3O0y/LK4vwF1Z6r057t6kt1?=
+ =?us-ascii?Q?ALN/f2tPIEd9fjEEqxw=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70d4fa84-d629-4966-4575-08dbe058fc12
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2023 12:48:19.5728 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UK23lBE8yEqfBUpU/KkHxavd+SelKjT1jUS7hTtIEr0HRK7De8KrZKSTDHzeTlHd
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8295
+Received-SPF: softfail client-ip=40.107.237.50; envelope-from=jgg@nvidia.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,132 +148,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 7 Nov 2023 at 22:25, Alex Benn=C3=A9e <alex.bennee@linaro.org> wrot=
-e:
->
-> The following changes since commit 462ad017ed76889d46696a3581e1b52343f9b6=
-83:
->
->   Merge tag 'pixman-pull-request' of https://gitlab.com/marcandre.lureau/=
-qemu into staging (2023-11-07 19:00:03 +0800)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/stsquad/qemu.git tags/pull-halloween-omnibus-071123-=
-1
->
-> for you to fetch changes up to 00da668de6856d912cd75474ba759927e29d0e49:
->
->   Revert "tests/tcg/nios2: Re-enable linux-user tests" (2023-11-07 14:18:=
-29 +0000)
->
-> ----------------------------------------------------------------
-> Final test, gdbstub, plugin and gitdm updates for 8.2
->
->   - fix duplicate register in arm xml
->   - hide various duplicate system registers from gdbstub
->   - add new gdb register test to the CI (skipping s390x/ppc64 for now)
->   - introduce GDBFeatureBuilder
->   - move plugin initialisation to after vCPU init completes
->   - enable building TCG plugins on Windows platform
+On Wed, Nov 08, 2023 at 07:16:52AM +0000, Duan, Zhenzhong wrote:
 
-Hi Alex,
-Please take a look at the following CI failure:
+> >> +    ret = iommufd_backend_alloc_hwpt(iommufd, vbasedev->devid,
+> >> +                                     container->ioas_id, &hwpt_id);
+> >> +
+> >> +    if (ret) {
+> >> +        error_setg_errno(errp, errno, "error alloc shadow hwpt");
+> >> +        return ret;
+> >> +    }
+> >
+> >The above alloc_hwpt fails for mdevs (at least, it fails for me attempting to use
+> >iommufd backend with vfio-ccw and vfio-ap on s390).  The ioctl is failing in the
+> >kernel because it can't find an IOMMUFD_OBJ_DEVICE.
+> >
+> >AFAIU that's because the mdevs are meant to instead use kernel access via
+> >vfio_iommufd_emulated_attach_ioas, not hwpt.  That's how mdevs behave when
+> >looking at the kernel vfio compat container.
+> >
+> >As a test, I was able to get vfio-ccw and vfio-ap working using the iommufd
+> >backend by just skipping this alloc_hwpt above and instead passing container-
+> >>ioas_id into the iommufd_cdev_attach_hwpt below.  That triggers the
+> >vfio_iommufd_emulated_attach_ioas call in the kernel.
+> 
+> Thanks for help test and investigation.
+> I was only focusing on real device and missed the mdev particularity, sorry.
+> You are right, there is no hwpt support for mdev, not even an emulated hwpt.
+> I'll digging into this and see how to distinguish mdev with real device in
+> this low level function.
 
-i686-w64-mingw32-gcc -m32 -o tests/plugin/libempty.dll
-plugins/qemu_plugin_api.lib tests/plugin/libempty.dll.p/empty.c.obj
-tests/plugin/libempty.dll.p/.._.._contrib_plugins_win32_linker.c.obj
--Wl,--allow-shlib-undefined -shared -Wl,--start-group
--Wl,--out-implib=3Dtests/plugin/libempty.dll.a -fstack-protector-strong
--Wl,--no-seh -Wl,--nxcompat -Wl,--dynamicbase -Wl,--warn-common
-/usr/i686-w64-mingw32/sys-root/mingw/lib/libglib-2.0.dll.a
-/usr/i686-w64-mingw32/sys-root/mingw/lib/libintl.dll.a
-/usr/i686-w64-mingw32/sys-root/mingw/lib/libgmodule-2.0.dll.a
--lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32
--luuid -lcomdlg32 -ladvapi32 -Wl,--end-group
-/usr/lib/gcc/i686-w64-mingw32/12.2.1/../../../../i686-w64-mingw32/bin/ld:
-tests/plugin/libempty.dll.p/empty.c.obj: in function
-`qemu_plugin_install':
-/builds/qemu-project/qemu/build/../tests/plugin/empty.c:30: undefined
-reference to `_imp__qemu_plugin_register_vcpu_tb_trans_cb'
-collect2: error: ld returned 1 exit status
+I was expecting that hwpt manipulation would be done exclusively
+inside the device-specific vIOMMU userspace driver. Generic code paths
+that don't have that knowledge should use the IOAS for everything
 
-https://gitlab.com/qemu-project/qemu/-/jobs/5487689202
-
-Thanks,
-Stefan
-
->   - various gitdm updates
->   - some mailmap fixes
->   - disable testing for nios2 signals which have regressed
->
-> ----------------------------------------------------------------
-> Akihiko Odaki (5):
->       default-configs: Add TARGET_XML_FILES definition
->       gdbstub: Add num_regs member to GDBFeature
->       gdbstub: Introduce gdb_find_static_feature()
->       gdbstub: Introduce GDBFeatureBuilder
->       cpu: Call plugin hooks only when ready
->
-> Alex Benn=C3=A9e (13):
->       gdb-xml: fix duplicate register in arm-neon.xml
->       target/arm: mark the 32bit alias of PAR when LPAE enabled
->       target/arm: hide all versions of DBGD[RS]AR from gdbstub
->       target/arm: hide aliased MIDR from gdbstub
->       tests/tcg: add an explicit gdbstub register tester
->       tests/avocado: update the tcg_plugins test
->       configure: tell meson and contrib_plugins about DLLTOOL
->       gitlab: add dlltool to Windows CI
->       contrib/gitdm: Add Rivos Inc to the domain map
->       contrib/gitdm: map HiSilicon to Huawei
->       contrib/gitdm: add Daynix to domain-map
->       mailmap: fixup some more corrupted author fields
->       Revert "tests/tcg/nios2: Re-enable linux-user tests"
->
-> Greg Manning (4):
->       plugins: add dllexport and dllimport to api funcs
->       plugins: make test/example plugins work on windows
->       plugins: disable lockstep plugin on windows
->       plugins: allow plugins to be enabled on windows
->
-> luzhipeng (1):
->       contrib/gitdm: add domain-map for Cestc
->
->  MAINTAINERS                                        |   2 +-
->  configure                                          |  13 +-
->  configs/targets/loongarch64-linux-user.mak         |   1 +
->  meson.build                                        |   5 +
->  include/exec/gdbstub.h                             |  59 ++++++
->  include/qemu/qemu-plugin.h                         |  50 +++++-
->  contrib/plugins/win32_linker.c                     |  34 ++++
->  cpu-target.c                                       |  11 --
->  gdbstub/gdbstub.c                                  |  78 ++++++++
->  hw/core/cpu-common.c                               |  10 ++
->  target/arm/debug_helper.c                          |  10 +-
->  target/arm/helper.c                                |  37 ++--
->  .gitlab-ci.d/windows.yml                           |   1 +
->  .mailmap                                           |   2 +
->  contrib/gitdm/domain-map                           |   4 +
->  contrib/plugins/Makefile                           |  26 ++-
->  gdb-xml/arm-neon.xml                               |   2 +-
->  plugins/meson.build                                |  19 ++
->  scripts/feature_to_c.py                            |  46 ++++-
->  tests/avocado/tcg_plugins.py                       |  28 +--
->  tests/plugin/meson.build                           |  14 +-
->  tests/tcg/multiarch/Makefile.target                |  11 +-
->  tests/tcg/multiarch/gdbstub/registers.py           | 197 +++++++++++++++=
-++++++
->  tests/tcg/multiarch/system/Makefile.softmmu-target |  13 +-
->  tests/tcg/nios2/Makefile.target                    |  11 ++
->  tests/tcg/ppc64/Makefile.target                    |   7 +
->  tests/tcg/s390x/Makefile.target                    |   4 +
->  27 files changed, 637 insertions(+), 58 deletions(-)
->  create mode 100644 contrib/plugins/win32_linker.c
->  create mode 100644 tests/tcg/multiarch/gdbstub/registers.py
->  create mode 100644 tests/tcg/nios2/Makefile.target
->
-> --
-> 2.39.2
->
->
+Jason
 
