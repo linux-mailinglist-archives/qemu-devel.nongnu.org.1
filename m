@@ -2,100 +2,140 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF3DC7E5823
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 14:50:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D247E5891
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 15:21:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0ivi-0000wb-1E; Wed, 08 Nov 2023 08:49:14 -0500
+	id 1r0jP1-0001DV-T7; Wed, 08 Nov 2023 09:19:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0ive-0000vL-3u
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 08:49:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1r0jOz-0001D0-Oc
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 09:19:29 -0500
+Received: from mail-mw2nam12on2061b.outbound.protection.outlook.com
+ ([2a01:111:f400:fe5a::61b]
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0ivc-0004kZ-44
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 08:49:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699451345;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dLEkoYp9XyGL4CCu4/Qw361jSNUBD4H52C3/UgahnyA=;
- b=KytgFBqZPKdkkUx0lGYmBxUMQ6Q0dsFpQvVWD4CE9DMIz3WfAl4GtEULxu3t2OoIVqlNMr
- 4RzCFqkufuZV2Pt9ffqFKvf5ECF3PiGO2VYUbiMR3u8Fsu0bXCQQmvXwAZo/qFuErrL8bS
- 44PfqviZ/QwUplPtZDCukEAHP34L8jk=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-364-l-xnUwhlMCGVN1VlxbDESg-1; Wed, 08 Nov 2023 08:49:03 -0500
-X-MC-Unique: l-xnUwhlMCGVN1VlxbDESg-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-67049a2c8b3so83647706d6.0
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 05:49:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699451340; x=1700056140;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dLEkoYp9XyGL4CCu4/Qw361jSNUBD4H52C3/UgahnyA=;
- b=xEbJOjkD/cnLDbAWx9zFVoFH7ocfEtb2LsU/gkndEB/gbbjoIpAlwv/F1Li5UdnbVT
- EW4DfFZMBIM8AYthfGuLgjh68XMysTx8ZfBkXhqQUk1GcTB69M497/oYbsgvwZl1yM1l
- q+jcOj/BJpM1ciaLxPE2XodtXU3chv8MedpYdoj6t1VWq+rj/dVdB4McS6LrhRxUInDJ
- xqVSJCQ4SdYIxeieoGTNfxWoRSyywHkMlIty/HdyoKtBOhese4a5MoZMZOezZgF0/gB/
- mdt/h0nvU4R/q2KI4OsJVjrtaqC7ShVOcN6k0aNe5buNbsdtGZMS3sCb8SAQoyIA75R6
- Zb8w==
-X-Gm-Message-State: AOJu0YxaZi/GvTSyuabh7SWXZPSR3q+aOqeZ5BObx63v/sVXSxlBjuly
- 7sXroCIoVPYw0/H5EwAfU9WO+l6+K74X8IGlSFWozbcC7aA+A9MyxXy+WCwYuEEZzylwNSZGpww
- vOpKTED6nWDed2r8=
-X-Received: by 2002:a05:6214:212e:b0:66d:9d71:9b28 with SMTP id
- r14-20020a056214212e00b0066d9d719b28mr2447625qvc.11.1699451340231; 
- Wed, 08 Nov 2023 05:49:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHwsf5pFPVV5fL6aPq30haHq+EZVDvoETdaJi2hYQXvkrXAWGQTmpVV2yOJCxsSqmLIDbqUGg==
-X-Received: by 2002:a05:6214:212e:b0:66d:9d71:9b28 with SMTP id
- r14-20020a056214212e00b0066d9d719b28mr2447599qvc.11.1699451339950; 
- Wed, 08 Nov 2023 05:48:59 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- lf18-20020a0562142cd200b0065afedf3aabsm1080337qvb.48.2023.11.08.05.48.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Nov 2023 05:48:59 -0800 (PST)
-Message-ID: <20de5dde-2a1a-4d20-bafc-b63a8015fae7@redhat.com>
-Date: Wed, 8 Nov 2023 14:48:55 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 26/41] backends/iommufd: Introduce the iommufd object
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org,
- alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Thomas Huth <thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1r0jOx-00038A-E5
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 09:19:29 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dOa6vM1jJL01chMWW8PLIJGkNhCNLRuj7u0ahnRIB3oI5zElKVBRMVyTxFEGuOYamyiAIiBRWyetjutYHZ3Q11HvonSz6a32Ecrbe/KLpZv5NRSXh6N394j39CKQzmNcd2S1PzngLbxx/EWHOa1bV+eaV1fyjt+jylcvv8q+4gmbfTlpEH1HYsD+wQjaJMufX9aWh680pNBl43X9Z8x+pE38jekpxRCvQG8p7BvK6hjerD48HChDTKVVlrGNGWLSwrZcHgHXHfL5RsCunjhFx3TlBeyZmRNuA/2Uok5fBjGFJVM1u9zOnUAJ4o/Gd68HNW7jsUet+yx+ujbHlADcuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W9ktPkuPWyO5UhBdJJkNgxrPOFxgS83uLsw7nqMHIVM=;
+ b=GNuLW7Dpnon7dv7EkgzFffF+exIYuPT0HjXYzIsH5GxYz25C/10o6RfKQmQqJddwtFlPK6OM/mbxzdnoyfMTb6zs3Swdd+BOtDqBQ+OzruErt3MfgyOdkj1JLUvkOdUWcMCiIaCxePJVOQPieM0paV43HHNZ2VS8n09mGL+tvJRdYzRq0DoOd7QH2SDu83D1HOjyOfluA0MBG0dlnd/UZLxgSyfKdQ8duwra1AUXOaLx0JZ2dREGAg9ylowVhZgI/H1QvrOSKHJzurK5KEQ75ed0nZSRDpK6QwYrBpZXJRuyXtwtQNGELt+TWG4/cPCpmyUrndeXwfNBVhogJiBy3A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W9ktPkuPWyO5UhBdJJkNgxrPOFxgS83uLsw7nqMHIVM=;
+ b=hPV4Z8R4hoDyqZEpGegC66LXuF6Kseh7WGmRQcYtqQW3Lk1zan9NjYJ8F95nL5B4RAS+rVuvbe1Cbz7X/1UyKAhQfwxAl05yaIrZxdXogHn5RhyLMNwvmHsQ8h2mcYOgmQTEuOqpu0H0pPNTAqlSPI9nqCHxhHlmcuAb1XgRIIxgdMMLxtT+pitGFLegIGm4eNFUos8b21VAN9uUjDMuoOALIajA2oyrrfpL7zJI0ipzCu3Oqu5iwtl67+jDMuT6y1+lN/+L0l72QlxTGdHGq0x9d4fd85ZDMFeSDQRQz5CKAuidaPIOrlsz5h/jNCjXAadGzeXMdHhUDrC6QDU3AA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by LV3PR12MB9402.namprd12.prod.outlook.com (2603:10b6:408:213::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.18; Wed, 8 Nov
+ 2023 14:19:22 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::60d4:c1e3:e1aa:8f93]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::60d4:c1e3:e1aa:8f93%4]) with mapi id 15.20.6977.018; Wed, 8 Nov 2023
+ 14:19:22 +0000
+Date: Wed, 8 Nov 2023 10:19:20 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+Cc: Matthew Rosato <mjrosato@linux.ibm.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>,
+ "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "Martins, Joao" <joao.m.martins@oracle.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>,
+ "Liu, Yi L" <yi.l.liu@intel.com>, "Sun, Yi Y" <yi.y.sun@intel.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>,
+ Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ "Jason J. Herne" <jjherne@linux.ibm.com>,
+ Tony Krowiak <akrowiak@linux.ibm.com>
+Subject: Re: [PATCH v4 28/41] vfio/iommufd: Implement the iommufd backend
+Message-ID: <20231108141920.GT4488@nvidia.com>
 References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
- <20231102071302.1818071-27-zhenzhong.duan@intel.com>
- <da7de379-bd8c-47d1-b7bf-412be92a2756@redhat.com>
- <87r0l0dc9q.fsf@pond.sub.org>
- <d710b361-7078-456c-86bd-6b7f23d56584@redhat.com>
- <87zfzoa65e.fsf@pond.sub.org>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <87zfzoa65e.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+ <20231102071302.1818071-29-zhenzhong.duan@intel.com>
+ <76538479-77ec-1a7d-cee1-906f6f758cff@linux.ibm.com>
+ <SJ0PR11MB6744D87FD3CBB3380647E68792A8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <20231108124817.GS4488@nvidia.com>
+ <SJ0PR11MB674482451CB0D2A7BB4DC20292A8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SJ0PR11MB674482451CB0D2A7BB4DC20292A8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+X-ClientProxiedBy: SA9PR13CA0065.namprd13.prod.outlook.com
+ (2603:10b6:806:23::10) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|LV3PR12MB9402:EE_
+X-MS-Office365-Filtering-Correlation-Id: 68303495-b52e-4f01-aedf-08dbe065b409
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: K1dVqsxYeo9iRO1KrkZsuaO0SWFWbVRR4IPgdoOBFotpYU3s3XV+/pZUJo0jwfyOuDITeHKEeLQEmi5rOPRSnlO/ms378hcklFI82sH6BvTxJ/fQ9tmj6c4yqAdU0KGhaceKkoMqlqvsRQZqL98UXyCGVQZR5P+eI5acEfGeb7ncsIdZhfDor8y1+T0e40almwtVxgT1oWKV1oJ9Je9qHZsErPbKNK6uUXu1Gx3qsJHnaLHaLYwt293hKCML4DR+i7wVfL7+9ay2PcXv+jZ58qT1IGo4ybd02mapBCx4QEi00fIIZ2vhSSrhq8HzI/n/5WrhszCs3QUIV8qkz8yIzSSmZBVRZuvgYcW2W7fMeIJCcFb9/HEFK2K5N0I/NQO6TkmWa513Tpt4bSTp3ZcoOShNKuUrGUkDos9Ee/2PVStl+JMu1h+dnvbEj3j3z52zXeHdkmRo4Mdxdf2u+QUREwYjlmcwitDr1w/6YyiqviljmUUr2uwGqQfRNXv+GUMAcmCwcBv3FM38IBjn3YIaRmpJxIKKCiyNL89HGxSq+BxQyj+oZ3BAYebtBij5DnMV
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:LV2PR12MB5869.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(396003)(39860400002)(136003)(366004)(346002)(376002)(230922051799003)(186009)(1800799009)(451199024)(64100799003)(6506007)(2616005)(6512007)(6486002)(478600001)(83380400001)(4744005)(1076003)(26005)(2906002)(54906003)(5660300002)(66946007)(66556008)(7416002)(41300700001)(66476007)(8676002)(4326008)(6916009)(8936002)(316002)(38100700002)(33656002)(36756003)(86362001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?HV9yGtcyBnWiOIPh5oyqsg1C6ihRIglnnbyFqIeDu/MPdhojrnkDOuh3p6MQ?=
+ =?us-ascii?Q?I4UZ04vqjWc6/4AJ4knkHg6dyxij0+bd3iaUqMTEqE4oCdi1fVr060tg3cJj?=
+ =?us-ascii?Q?3oKMXr8lE8jZj+u40evMwmlEW/IMomouUdneQz2OnLngV4cyI5zq92XsjX9Q?=
+ =?us-ascii?Q?R/r5di0IDtqckjKxTboCwMi+LQ4ZBkNFnCmNHwBTtvxBRL8cfFq9L7VzWeni?=
+ =?us-ascii?Q?zJUMPppowOCtp6UvVloxPj5b2OUtfkCNKUMwr9iV5VMd/ElnM74ecF9pDTs0?=
+ =?us-ascii?Q?yEhxwo5wfrz5qW+oFelOHqSjjB/y5RAIK8uZ3hUTRiz3Ga15F0D7qNWgsI2x?=
+ =?us-ascii?Q?Xmtj8n8S4WD2wOgGM5vpByl2Wuv2RHPisHGETRssIjks96ZO8afHFrOONbxO?=
+ =?us-ascii?Q?q93STsBFTALL2VU9dqTZZLPgWSoS4MMetiblK7m3ELM6jyFxSA5LB583CUfx?=
+ =?us-ascii?Q?54uKKg6oLWOWOl+SgP/o6BxyC2pjsOt6YRVADnBv17fx+35Pkp4pM4WOQJUT?=
+ =?us-ascii?Q?wpU1eXmANbop1kKRy0dW1+5+3hc/tHrBpWv0AJzzVOY3AbR8pIkB9RVD/7po?=
+ =?us-ascii?Q?B2INhFqFV4UhC9ns1FU29KUbn4FEJ3aBymV2wXrcglVzIET53ee5j36Q7tv5?=
+ =?us-ascii?Q?PB2TXiFMr7Y0dNPnj/snG1ZTNSFgGOjjPZ9MHRLafqhAR4EceyEjWsBseg+Q?=
+ =?us-ascii?Q?edPSdo6pHcmqo9ArtJErrCXZK0/KTcphu04thmtgdxum6BTre3WTzW3QA9xa?=
+ =?us-ascii?Q?nAL1AJXFCgEHatAeEDIin9SbTJFQNcqUyggVI7j+QVM+3hkDSDUOfe1eg8dc?=
+ =?us-ascii?Q?UACgCcZLtpdRCdw39WhWxEhdDuE7FQhsb5ePZSL8/7sLw3M4VX8oZbvvgbWX?=
+ =?us-ascii?Q?JPvRlAaA1LAt+N8cIh9Lv1MCnH+VuEQst8fBBVuh9xaTQ2beOJNAhlNUR8Eg?=
+ =?us-ascii?Q?iej2ibuRuyzHRDB0PuKFONo2RBbK28DcUYokukybL4xA+VXJcVVnj/cV/eU7?=
+ =?us-ascii?Q?6dpCsIIFk/P6Q4oqkMdpeZaitFnTE4A2r1f/UtsG7B+ydZHJUAcKB34T4F98?=
+ =?us-ascii?Q?BwBe6IRH8cr9Fq0SB+c6eXxOjJeNLtkyLbQFkZX/koeqMx8dkGZA2gIuqo2b?=
+ =?us-ascii?Q?zUZOoSzZr6BC3zhAAE6ZaOMl8IK+2Q85hVnf+lpHWgYYe+Vfudj7Qhdo3jNZ?=
+ =?us-ascii?Q?uHJSvUZ0Arf3Hcl51xuQg9zPvS5Y/QwY3hd1uiBkBOx9PDuzEP8vf3W1Hilm?=
+ =?us-ascii?Q?QFLwtrJFEp1YGG7LDFDww8NWeOVTTKvtCsnhM35HHXFMTfhz4kXOchpG1Nh+?=
+ =?us-ascii?Q?bvJNAzuaxPxM572sDli+ScnMgthB301P6L1lc29oV0EFub5o20xZt5DHNbzt?=
+ =?us-ascii?Q?zzIAY6rUFIxv5n99Uh3u3uZo75Lvu8HQ/kLLGcQQrCS47KXreeHbSZofh4vG?=
+ =?us-ascii?Q?6rC4aLQPbLcu9S+dc65lH//q0UTkRlLeCwIZRjHoBaY6fhnvI3JVHuauOJds?=
+ =?us-ascii?Q?xC9BdPIZVhJ8xteec3pIvSYzW+8SqZpeFAkl4AEhVcw2a4Od5MTdpYR2tVeW?=
+ =?us-ascii?Q?pMdtrnidMHU3tDNuppY=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68303495-b52e-4f01-aedf-08dbe065b409
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2023 14:19:22.1398 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rrSWZTuOtJltO8kzr6uiVtaLX5i6WxXITHHD2J0Ukq+7kFnXnn7jrNQNsP125C6j
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9402
+Received-SPF: softfail client-ip=2a01:111:f400:fe5a::61b;
+ envelope-from=jgg@nvidia.com;
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -112,166 +152,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/8/23 11:30, Markus Armbruster wrote:
-> Cédric Le Goater <clg@redhat.com> writes:
+On Wed, Nov 08, 2023 at 01:25:34PM +0000, Duan, Zhenzhong wrote:
+
+> >I was expecting that hwpt manipulation would be done exclusively
+> >inside the device-specific vIOMMU userspace driver. Generic code paths
+> >that don't have that knowledge should use the IOAS for everything
 > 
->> Hello Markus,
->>
->> On 11/8/23 06:50, Markus Armbruster wrote:
->>> Cédric Le Goater <clg@redhat.com> writes:
->>>
->>>> On 11/2/23 08:12, Zhenzhong Duan wrote:
->>>>> From: Eric Auger <eric.auger@redhat.com>
->>>>> Introduce an iommufd object which allows the interaction
->>>>> with the host /dev/iommu device.
->>>>> The /dev/iommu can have been already pre-opened outside of qemu,
->>>>> in which case the fd can be passed directly along with the
->>>>> iommufd object:
->>>>> This allows the iommufd object to be shared accross several
->>>>> subsystems (VFIO, VDPA, ...). For example, libvirt would open
->>>>> the /dev/iommu once.
->>>>> If no fd is passed along with the iommufd object, the /dev/iommu
->>>>> is opened by the qemu code.
->>>>> The CONFIG_IOMMUFD option must be set to compile this new object.
->>>>> Suggested-by: Alex Williamson <alex.williamson@redhat.com>
->>>>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->>>>> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
->>>>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->>>>> ---
->>>>> v4: add CONFIG_IOMMUFD check, document default case
->>>>>     MAINTAINERS              |   7 ++
->>>>>     qapi/qom.json            |  22 ++++
->>>>>     include/sysemu/iommufd.h |  46 +++++++
->>>>>     backends/iommufd-stub.c  |  59 +++++++++
->>>>>     backends/iommufd.c       | 257 +++++++++++++++++++++++++++++++++++++++
->>>>>     backends/Kconfig         |   4 +
->>>>>     backends/meson.build     |   5 +
->>>>>     backends/trace-events    |  12 ++
->>>>>     qemu-options.hx          |  13 ++
->>>>>     9 files changed, 425 insertions(+)
->>>>>     create mode 100644 include/sysemu/iommufd.h
->>>>>     create mode 100644 backends/iommufd-stub.c
->>>>>     create mode 100644 backends/iommufd.c
->>>>> diff --git a/MAINTAINERS b/MAINTAINERS
->>>>> index cd8d6b140f..6f35159255 100644
->>>>> --- a/MAINTAINERS
->>>>> +++ b/MAINTAINERS
->>>>> @@ -2135,6 +2135,13 @@ F: hw/vfio/ap.c
->>>>>     F: docs/system/s390x/vfio-ap.rst
->>>>>     L: qemu-s390x@nongnu.org
->>>>>     +iommufd
->>>>> +M: Yi Liu <yi.l.liu@intel.com>
->>>>> +M: Eric Auger <eric.auger@redhat.com>
->>>>> +S: Supported
->>>>> +F: backends/iommufd.c
->>>>> +F: include/sysemu/iommufd.h
->>>>> +
->>>>>     vhost
->>>>>     M: Michael S. Tsirkin <mst@redhat.com>
->>>>>     S: Supported
->>>>> diff --git a/qapi/qom.json b/qapi/qom.json
->>>>> index c53ef978ff..27300add48 100644
->>>>> --- a/qapi/qom.json
->>>>> +++ b/qapi/qom.json
->>>>> @@ -794,6 +794,24 @@
->>>>>     { 'struct': 'VfioUserServerProperties',
->>>>>       'data': { 'socket': 'SocketAddress', 'device': 'str' } }
->>>>> +##
->>>>> +# @IOMMUFDProperties:
->>>>> +#
->>>>> +# Properties for iommufd objects.
->>>>> +#
->>>>> +# @fd: file descriptor name previously passed via 'getfd' command,
->>>>> +#     which represents a pre-opened /dev/iommu.  This allows the
->>>>> +#     iommufd object to be shared accross several subsystems
->>>>> +#     (VFIO, VDPA, ...), and the file descriptor to be shared
->>>>> +#     with other process, e.g. DPDK.  (default: QEMU opens
->>>>> +#     /dev/iommu by itself)
->>>>> +#
->>>>> +# Since: 8.2
->>>>> +##
->>>>> +{ 'struct': 'IOMMUFDProperties',
->>>>> +  'data': { '*fd': 'str' },
->>>>> +  'if': 'CONFIG_IOMMUFD' }
->>>>
->>>>
->>>> Activating or not IOMMUFD on a platform is a configuration choice
->>>> and it is not a dependency on an external resource. I would make
->>>> things simpler and drop all the #ifdef in the documentation files.
->>>
->>> What exactly are you proposing?
->>
->> I would like to simplify the configuration part of this new IOMMUFD
->> feature and avoid a ./configure option to enable/disable the feature
->> since it has no external dependencies and can be compiled on all
->> platforms.
->>
->> However, we know that it only makes sense to have the IOMMUFD backend
->> on platforms s390x, aarch64, x86_64. So I am proposing as an improvement
->> to enable IOMMUFD only on these platforms with this addition :
->>
->>    imply IOMMUFD
->>
->> to hw/{i386,s390x,arm}/Kconfig files.
->>
->> This gives us the possibility to compile out the feature downstream
->> if something goes wrong, using the files under : configs/devices/.
-> 
-> Shouldn't we then compile out the relevant parts of the QAPI schema,
-> too?
+> Yes, this way we don't need to distinguish between mdev and real device,
+> just attach to IOAS. But lose the benefit that same hwpt could be passed
+> into vIOMMU to be used as S2 hwpt in nesting.
 
-Is it possible with Kconfig options ?
-  
->> Given that the IOMMUFD feature doesn't have any external dependencies
->> and that the IOMMUFD backend object is common to all platforms, I am
->> also proposing to remove all the CONFIG_IOMMUFD define usage in the
->> documentation file "qemu-options.hx" and the schema file "qapi/qom.json".
-> 
-> Any CONFIG_IOMMUFD left elsewhere?
+If you have a nesting capable vIOMMU driver then it should be
+creating the HWPTs and managing them in its layer. Maybe the core code
+provides some helpers.
 
-There are. To expose or not vfio properties. Stuff like :
+Obviously you can't link a mdev to a nesting vIOMMU driver in the
+first place. Mdev should be connected to a different IOMMU driver that
+doesn't use HWPT at all.
 
-ifdef CONFIG_IOMMUFD
-     DEFINE_PROP_LINK("iommufd", VFIOPCIDevice, vbasedev.iommufd,
-                      TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
-#endif
-     DEFINE_PROP_END_OF_LIST(),
+I think it will make alot of trouble to put the hwpt in the wrong
+layer as there shouldn't really be much generic code touching it.
 
-and
-
-#ifdef CONFIG_IOMMUFD
-     object_class_property_add_str(klass, "fd", NULL, vfio_pci_set_fd);
-#endif
-
-
->>> The use of 'if': 'CONFIG_IOMMUFD' in the QAPI schema enables
->>> introspection with query-qmp-schema: when ObjectType @iommufd exists,
->>> QEMU supports creating the object.  Or am I confused?
->>
->> Object iommufd should always exist since it is common to all.
->>
->> Is that acceptable ?
-> 
-> Perhaps the question to ask is whether a management application needs to
-> know whether this version of QEMU supports iommufd objects.  If yes,
-> then query-qmp-schema is an obvious way to find out.  
-
-Thanks for reminding me of this possibility. In that case, we should
-indeed avoid returning iommufd support when !CONFIG_IOMMUFD.
-
-Can it be implemented in qapi/qom.json with Kconfig options ?
-
-> What could go
-> wrong when this returns "supported" when it actually isn't?
-  
-The management layer would build an invalid QEMU command line and
-QEMU would return "invalid object type: iommufd"
-
-Thanks,
-
-C.
-
-
-
-
+Jason
 
