@@ -2,71 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D577E54BD
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 12:13:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B2877E55B9
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 12:42:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0gUG-0000Tl-6V; Wed, 08 Nov 2023 06:12:44 -0500
+	id 1r0gvC-0003RX-KN; Wed, 08 Nov 2023 06:40:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r0gUB-0000Ta-PK
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 06:12:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r0gU7-0007Jd-UI
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 06:12:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699441952;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=y323cqyH+Ks9o2lMmvmtx+b9aMhN91xBoWsIJaW6gYc=;
- b=VUrATxWqoM3RV6p1FxKnMPuwRQdPPuvYlIa9sE++4TcHt7wdYCcWTp6A0PNegVWawAIBLB
- cDlzpxZ2NlPSoHKMoPRvRNne49DQ+B/StiY+wkW6I8l4Hu7jfrlD1Qo7b2dbI/BRAxkV7W
- Yo/C/NOXZrqt7dNlwHFZIhj+/gjuFGc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-300-Z-LG6PnnPqSslmen2r3b7A-1; Wed,
- 08 Nov 2023 06:12:27 -0500
-X-MC-Unique: Z-LG6PnnPqSslmen2r3b7A-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D45D63804511;
- Wed,  8 Nov 2023 11:12:26 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.119])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AB988502B;
- Wed,  8 Nov 2023 11:12:26 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 5FCA61800DE8; Wed,  8 Nov 2023 12:12:25 +0100 (CET)
-Date: Wed, 8 Nov 2023 12:12:25 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Christopher Lentocha <christopherericlentocha@gmail.com>, 
- qemu-devel@nongnu.org, Volker =?utf-8?Q?R=C3=BCmelin?= <vr_qemu@t-online.de>
-Subject: Re: [PATCH] Fix Windows 2000 and XP HDAudio Support
-Message-ID: <lfrzsbncmlbxoelzt4asbctne5wq7mnjtv6yo3kc6nroocxsdc@45urch4n6pi4>
-References: <737e8de1-9c14-453e-35eb-bff1e6b34a4a@gmail.com>
- <1b3f57dd-7a3f-4630-b1e1-298578bbc5b7@linaro.org>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1r0gv9-0003R9-Ck
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 06:40:31 -0500
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1r0gv7-0004TI-Nu
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 06:40:31 -0500
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-5842c251d7cso3574374eaf.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 03:40:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1699443628; x=1700048428; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Yi8Z5kjdW7glNYel3iW9CZUr/OiPFv/nNW8kPmb4WwA=;
+ b=Izws8r0kKsz0UrROCWHBcQnS6P607yn+tXwZoJsESqJVpddVcKAYtZFLfA7cCmVADe
+ 2/Oq1THv0D34X2LaLi4PU+BSWkXTobkql3YfyQka1OLt/mSG8SFRblIJzHpqR/GYH2E0
+ 8/z/Dq/9eLVZAhFhKuLKANWYqUk+WcSHnlaNju8Zq3zUF7wFGZrwETjj2RSrJwYzLrtn
+ Rt+QtfOF28c++ja2qjy9UJYNhUK3C63JCytjrbslnsO7wxLLpBE3dYh+FjCMxna4lGlU
+ SRazFpMyT/ovZZm6sOeFntZaZjDHXHJPCBNeVoi2AS9hPZ9PyGULdZWnEWcC/foL9ut2
+ LW+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699443628; x=1700048428;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Yi8Z5kjdW7glNYel3iW9CZUr/OiPFv/nNW8kPmb4WwA=;
+ b=H6rrPbdKTQnBLoVkZtj6c0RziApATr0LSSOfueHWmYKgIr+IqyGDTyjLNXKfXofYK6
+ oMfknlHzA5FidZ364qJpGmUwWaAXamOSoDA9IzalORSHkqQdMKveYEqteiHgVXPtluYU
+ 039wGtrn9dCMEULpPnm77oni9tk/uxU87yJVG9sxTq2T+rVhIbQRy7Be6bD0V7Dxgmtx
+ iuT+rWfubU6upiCjgW3MyUY+pokourei4zWmOsc7eX7oFWV7u69IlnA6DSTyS2DfdZ6S
+ 9Kt9ljxuBen948aSvFCZQxRE1/zMhQBi84Wa4O6F5hir+3tNwbVkYkLdaVHGLUM/TOTy
+ N4xA==
+X-Gm-Message-State: AOJu0Ywz9pC3/ieXyWcpOsQIuUe3FPIIYD10mWlveA956Mj9mAP8Z4Vh
+ X9Xobw645cHJOG/OXjeT1XKO2MwtwH22/Qux35g=
+X-Google-Smtp-Source: AGHT+IGD++ynK8aqOk1AR52DzOMDQKm8xVM2V1MXei0tGpdByDNPPuREQTEt7hxES3rAmt4OKTwMVNghhUWSGH1kp14=
+X-Received: by 2002:a4a:380e:0:b0:581:ea70:8a30 with SMTP id
+ c14-20020a4a380e000000b00581ea708a30mr1346502ooa.7.1699443628211; Wed, 08 Nov
+ 2023 03:40:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1b3f57dd-7a3f-4630-b1e1-298578bbc5b7@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <7dfb93bd-314d-4d62-8bac-64f5fdf93c22@linaro.org>
+In-Reply-To: <7dfb93bd-314d-4d62-8bac-64f5fdf93c22@linaro.org>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 8 Nov 2023 19:40:16 +0800
+Message-ID: <CAJSP0QXY=HKE3eBVrsCiK3qoX5F8FjKT9FiU78xM2vapWQtQjQ@mail.gmail.com>
+Subject: Re: virtio-fs@redhat.com bouncing
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ QEMU Developers <qemu-devel@nongnu.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Mauro Matteo Cascella <mcascell@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,28 +90,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 08, 2023 at 11:02:06AM +0100, Philippe Mathieu-Daudé wrote:
-> Thanks Christopher for your patch,
-> 
-> I'm Cc'ing Volker and Gerd who know better this hardware model.
-> 
-> On 7/11/23 20:27, Christopher Lentocha wrote:
-> > 
-> > Change the ID to be a Realtek ALC885 so that both
+On Wed, 8 Nov 2023 at 19:05, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
+>
+> Hi Stefan,
+>
+> You are listed as virtiofs maintainer, see MAINTAINERS:
+>
+>    virtiofs
+>    M: Stefan Hajnoczi <stefanha@redhat.com>
+>    S: Supported
+>    F: hw/virtio/vhost-user-fs*
+>    F: include/hw/virtio/vhost-user-fs.h
+>    L: virtio-fs@redhat.com
+>
+> Mails sent to this list address are bouncing:
+>
+> <virtio-fs@redhat.com>: host int-mx-rdu2.corp.redhat.com[10.11.203.6]
+> said: 550
+>      5.1.1 <virtio-fs@redhat.com>: Recipient address rejected: User
+> unknown in
+>      local recipient table (in reply to RCPT TO command)
+>
+> Maybe the list need to be updated, like Daniel did with libvir-list@?
+> https://lore.kernel.org/qemu-devel/20231027095643.2842382-1-berrange@redh=
+at.com/
 
-No.  Rewriting the existing codecs is clearly a non-starter.
+Yes, it does. The new mailing list address has not been created yet.
+I'll update the MAINTAINERS file when the new mailing list becomes
+available in the coming days.
 
-You can add a 'hda-realtek-alc885' variant which tries to
-mimic the realtek coded close enough to make old guests
-without generic hda driver happy.
+> Looking at other lists, I also see secalert@:
+>
+>    $ git grep L:.*redhat MAINTAINERS
+>    MAINTAINERS:86:L: secalert@redhat.com
+>    MAINTAINERS:2231:L: virtio-fs@redhat.com
+>
+> So Cc'ing Michael / Mauro.
 
-> > +#define QEMU_HDA_ID 0x10EC0885
+I'm not sure about secalert. Thanks for CCing Michael and Mauro.
 
-Nope.  Somemething like 'REALTEK_ALC885_ID' please.
-
-[ remaining bits of the patch snipped, needs major rework ]
-
-take care,
-  Gerd
-
+Thanks,
+Stefan
 
