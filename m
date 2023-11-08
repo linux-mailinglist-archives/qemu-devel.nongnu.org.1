@@ -2,79 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A307E5FE6
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 22:19:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9673C7E5FE8
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 22:23:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0pwI-0006UG-Ej; Wed, 08 Nov 2023 16:18:18 -0500
+	id 1r0q0H-00083X-Lq; Wed, 08 Nov 2023 16:22:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0pwG-0006U8-Fu
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 16:18:16 -0500
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0pwE-0001mi-2X
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 16:18:16 -0500
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-507a29c7eefso155778e87.1
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 13:18:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699478292; x=1700083092; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=SpVt77XOaITVfrZ5G2w5L7Gj4gphmLK9T/4LL8lJTY0=;
- b=BPE2T75I0hSiTQFiFgFxjJhXj2Z0z9QJ6JSXEBiasrkyyoy7LQK5mb98nphKz8Claf
- e9n1SPoWam837Eu0ELlzXY+AXVgSCub79wIpx5ecc62F/lE3wHH0hLzJm9diEU/krESZ
- 14mhv3d6INonO9iSJ8Ph9rlQH4X6mOutxqH2g0x/sjGjU0iAhmnfNn6CzWOFPWsEYOqV
- FHgxL2V7lV47Isg1uYSfo5Zs4kPmFl+sZXCUmB7pSkSBfrWL3Oir4M/JADjo4e9SVeZ2
- d1c/j0zM65C2N26lEEDPQlTZgN72gfKD6TuQxpnOUEGaGOLWt4gsQUuySydOCHp1A4EW
- z1gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699478292; x=1700083092;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SpVt77XOaITVfrZ5G2w5L7Gj4gphmLK9T/4LL8lJTY0=;
- b=l6ycU0GmrB4WskkepCOxPXTHCYkJ+mYcsVvOekzLQPOZSVslkQCbltOW2Fl0x2LwiF
- wj8fyYrucdWJPp6UltyPNvQMXOJ76TwH6Wcj0FcE0opHl1sjVtadTjaVYxawwNyBD+dF
- Y6ODAdN0uQVU+NVI3o7exyzVSGhcsh2arnVOpv0xz2dC321CxTRQYL0MHDMx6KEGlHms
- klXAc4b7AiYsdMHv4lFO8TL7aTbg9pgexFODj9w+TmBN6KJjRri5n6I5sk/M2etebKJt
- WUcXIUBylly+q1hYc9YhGJzdXs4A822uF/gbg+p0CIh1A47yt+/tEEpAleHye9jnuble
- EISQ==
-X-Gm-Message-State: AOJu0Yx4h2V4O2giNWD02XCningU16U+1Ulu94h5aH7IlKn/jHQS9O8w
- vvfyfqn50vmnL/E0n8I9eblfpg==
-X-Google-Smtp-Source: AGHT+IHBrui8AIgsJj33GptnoAnv2j295XnOYNmyLDUQQXeQqYsGnPJrSzz3fxcQc3nh8k0y8HwWdg==
-X-Received: by 2002:a05:6512:6d3:b0:509:494d:c3d2 with SMTP id
- u19-20020a05651206d300b00509494dc3d2mr2644553lff.32.1699478291859; 
- Wed, 08 Nov 2023 13:18:11 -0800 (PST)
-Received: from [192.168.69.115] ([176.187.199.60])
- by smtp.gmail.com with ESMTPSA id
- q26-20020a50c35a000000b00536031525e5sm7293544edb.91.2023.11.08.13.18.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Nov 2023 13:18:11 -0800 (PST)
-Message-ID: <e8c242c8-471d-4375-86f1-60c23c64369c@linaro.org>
-Date: Wed, 8 Nov 2023 22:18:09 +0100
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r0q0C-00083A-P9
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 16:22:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r0q0A-0002rL-VN
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 16:22:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699478535;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jFqpGd1lH9TPwRe2nTD1OQK2MlAUMTRnAfWVtjsGzq4=;
+ b=f0O7CNDdKBpS+T/BRZCzkbhilUM0ynmpL5LZxmodDTkWfA5X8ygji3lFeY3um/iKLewfKN
+ k0J0D19d/zh0YsVqS4mrs2h3j1vc21pnzHXhBW3oWqPe/oyNUN0MgiJeFfpuDUtsJIZE26
+ qURwPIl04XtNiGHAO+Nn48oSkkLHYpM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-692-T5j2urt7MAqvtMW1Od39ng-1; Wed,
+ 08 Nov 2023 16:22:12 -0500
+X-MC-Unique: T5j2urt7MAqvtMW1Od39ng-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C18EF3C11C63;
+ Wed,  8 Nov 2023 21:22:11 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.81])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 672D22166B26;
+ Wed,  8 Nov 2023 21:22:10 +0000 (UTC)
+Date: Wed, 8 Nov 2023 15:22:08 -0600
+From: Eric Blake <eblake@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, dave@treblig.org, armbru@redhat.com, 
+ yc-core@yandex-team.ru, zeil@yandex-team.ru, xeor@yandex-team.ru,
+ kwolf@redhat.com, hreitz@redhat.com, qemu-block@nongnu.org
+Subject: Re: [PATCH] block-backend: per-device throttling of BLOCK_IO_ERROR
+ reports
+Message-ID: <tl4b6tcrlwchbgrkq2zuqyxqqsxe3oclrgt6pr62ggm2nbtkfz@lah5uyiomzp5>
+References: <20231107085842.602188-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-8.2] target/sparc: Fix RETURN
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-References: <20231108204739.279972-1-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231108204739.279972-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231107085842.602188-1-vsementsov@yandex-team.ru>
+User-Agent: NeoMutt/20231023
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,41 +81,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/11/23 21:47, Richard Henderson wrote:
-> Perform window restore before pc update. Required in order
-> to recognize any window underflow trap with the current pc.
+On Tue, Nov 07, 2023 at 11:58:42AM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> From: Leonid Kaplan <xeor@yandex-team.ru>
 > 
-> Fixes: 86b82fe021f4 ("target/sparc: Move JMPL, RETT, RETURN to decodetree")
-> Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> BLOCK_IO_ERROR events comes from guest, so we must throttle them.
+> We still want per-device throttling, so let's use device id as a key.
+> 
+> Signed-off-by: Leonid Kaplan <xeor@yandex-team.ru>
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 > ---
->   target/sparc/translate.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  monitor/monitor.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 > 
-> diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-> index 6fc333a6b8..9387299559 100644
-> --- a/target/sparc/translate.c
-> +++ b/target/sparc/translate.c
-> @@ -4096,12 +4096,12 @@ TRANS(RETT, 32, do_add_special, a, do_rett)
->   static bool do_return(DisasContext *dc, int rd, TCGv src)
->   {
->       gen_check_align(dc, src, 3);
-> +    gen_helper_restore(tcg_env);
->   
->       gen_mov_pc_npc(dc);
->       tcg_gen_mov_tl(cpu_npc, src);
->       gen_address_mask(dc, cpu_npc);
->   
-> -    gen_helper_restore(tcg_env);
+> diff --git a/monitor/monitor.c b/monitor/monitor.c
+> index 01ede1babd..ad0243e9d7 100644
+> --- a/monitor/monitor.c
+> +++ b/monitor/monitor.c
+> @@ -309,6 +309,7 @@ int error_printf_unless_qmp(const char *fmt, ...)
+>  static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
+>      /* Limit guest-triggerable events to 1 per second */
+>      [QAPI_EVENT_RTC_CHANGE]        = { 1000 * SCALE_MS },
+> +    [QAPI_EVENT_BLOCK_IO_ERROR]    = { 1000 * SCALE_MS },
+>      [QAPI_EVENT_WATCHDOG]          = { 1000 * SCALE_MS },
+>      [QAPI_EVENT_BALLOON_CHANGE]    = { 1000 * SCALE_MS },
+>      [QAPI_EVENT_QUORUM_REPORT_BAD] = { 1000 * SCALE_MS },
+> @@ -498,6 +499,10 @@ static unsigned int qapi_event_throttle_hash(const void *key)
+>          hash += g_str_hash(qdict_get_str(evstate->data, "qom-path"));
+>      }
+>  
+> +    if (evstate->event == QAPI_EVENT_BLOCK_IO_ERROR) {
+> +        hash += g_str_hash(qdict_get_str(evstate->data, "device"));
 
-Ahah! I noticed that earlier in a late review, wondered why you moved
-that gen_helper_restore() call after updating $nPC, but my SPARC is now
-rusty so I was sure I was missing something. Too shy to ask :/
+Wouldn't ^= be better than += for combining hashes?
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> +    }
+> +
+>      return hash;
+>  }
+>  
+> @@ -525,6 +530,11 @@ static gboolean qapi_event_throttle_equal(const void *a, const void *b)
+>                         qdict_get_str(evb->data, "qom-path"));
+>      }
+>  
+> +    if (eva->event == QAPI_EVENT_BLOCK_IO_ERROR) {
+> +        return !strcmp(qdict_get_str(eva->data, "device"),
+> +                       qdict_get_str(evb->data, "device"));
+> +    }
+> +
 
->       dc->npc = DYNAMIC_PC_LOOKUP;
->       return true;
->   }
+At any rate, the idea makes sense for me.
+
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
