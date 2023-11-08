@@ -2,128 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A55A7E568C
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 13:52:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CC947E5668
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 13:38:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0i1V-0007bY-1i; Wed, 08 Nov 2023 07:51:09 -0500
+	id 1r0hnf-0004A3-6h; Wed, 08 Nov 2023 07:36:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <LeoHou@canaan-creative.com>)
- id 1r0i1P-0007bQ-Fc
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 07:51:03 -0500
-Received: from mail-bjschn02on20614.outbound.protection.partner.outlook.cn
- ([2406:e500:4440:2::614]
- helo=CHN02-BJS-obe.outbound.protection.partner.outlook.cn)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <LeoHou@canaan-creative.com>)
- id 1r0i1E-0001HE-8r
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 07:51:03 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fQO0s/2KVUwAlD2r25P/+k/rTuEWeOluZmQ+0p0UsQZK3TQXuySeY5HYfFZyM8iO1tAB6JvelODNwflvjkcx4jN9pEPJUeiVASbqFRTnIksuqhE1PSUJfZq+WflgurFhRm98O6Qd/WMcovv9Rv53hGeozT0gzJ4k1BI1YyFukan2PyeI0bXP58ojcMcFwf6u8kQtnBhRkIFNHFPAixaSLsUchm1gY6GGMqjq65Lu+WFWy6kBFz7IpdVJ6dHVq0Ki8cSA+GeXSuyGI8Z6zIqRVcu6BO4l/RWgIKSwhrX3VcXnQbP+8f9xc2fYxJTW9m+9Ckkn4+u6i7pAkEG+UvR/Hg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8s/kjUiq3uCxInjco1c6nJKEvc9yxFI5t5ejcVi9rCQ=;
- b=ZHqFWUfnDOXyV02L5VFxikWc98Xkrk0ZsxErlJpREwPVr6djMqN68k/+9bmlaeDM8d5iuYRgIexp08XTRVJwFuCBxjZfzwtaqczpy8ID/LeqmsXLfCpyyZwsYor1NVWxg0ffvVdvdJFr//L+ip+Z4QewXnGMQUlHdae/fBuZXxPezpk1FKQopB4+nLZmXjU1KhSkalgQSxKUa0015lCL3+WieLqBCA79/G9gKQ5f5NFz3IrgrBAVeVs7c8Hkq58+UkGTXWkewjwrao3mguYP0wMbkudcRU5spFy/CslxtK+HCBNEVVyzrBVGvVTyfF/lvrW+Rsl3G9V8hwxcj4SNjw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=canaan-creative.com; dmarc=pass action=none
- header.from=canaan-creative.com; dkim=pass header.d=canaan-creative.com;
- arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canaan-creative.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8s/kjUiq3uCxInjco1c6nJKEvc9yxFI5t5ejcVi9rCQ=;
- b=hb4/CJRZWILLamUttDrHx47Hk9DPDLELkEiNX38dIsSFUynsBVrDLtmvWw0Uz32xy5PALthsY+r8XMyt/s/r/GFB8QPMFkt/IbuaGyZtxJ1Z3yWPRsU3Z1bYcisbgnCWbVX0BMFJ/lrDtIbjQHpoX4tDjiUQ1G4Z3X+CyGn8IWd5mb4/EUg+YpkCEOzQ0phKV+pIcbHFU7DAPngkK0gv/m3vmC6Z7ZpG+VEGnTfKuhsvTJjzKlpE+26mWMm8O8N9gDu0S8DkH/TWcy2DlLIeDUB2qObOUH0X5H5P/P8h3lAWXax+BQFZIZVSNfOmBPpAfdm/fGZFRCAUod6xHkoJtg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=canaan-creative.com;
-Received: from BJSPR01MB0627.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:d::14) by BJSPR01MB0881.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:f::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.39; Wed, 8 Nov
- 2023 12:30:56 +0000
-Received: from BJSPR01MB0627.CHNPR01.prod.partner.outlook.cn
- ([fe80::16f1:3381:bdd6:efc7]) by
- BJSPR01MB0627.CHNPR01.prod.partner.outlook.cn ([fe80::16f1:3381:bdd6:efc7%5])
- with mapi id 15.20.6933.038; Wed, 8 Nov 2023 12:30:56 +0000
-From: Leo Hou <LeoHou@canaan-creative.com>
-To: qemu-devel@nongnu.org
-Cc: alistair.francis@wdc.com, jason.chien@sifive.com,
- zhangdongxue@canaan-creative.com, Leo Hou <houyingle@canaan-creative.com>
-Subject: [PATCH 1/1] Changed the way aclint gets CPUState from hartid-base to
- cpu_index
-Date: Wed,  8 Nov 2023 20:30:46 +0800
-Message-Id: <d9ea63e85600c805c5399ef2c78bc556f7a9c323.1699433553.git.houyingle@canaan-creative.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <cover.1699433553.git.houyingle@canaan-creative.com>
-References: <cover.1699433553.git.houyingle@canaan-creative.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ZQ0PR01CA0021.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:2::14) To BJSPR01MB0627.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:d::14)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1r0hnc-00049k-TP
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 07:36:48 -0500
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1r0hna-0007Ei-VD
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 07:36:48 -0500
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-6ce2ea3a944so4070832a34.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 04:36:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1699447005; x=1700051805; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4bo8b2wUFyf73l5iWW8VUnux5zZ9rzp0eCSEuVcZiQw=;
+ b=GgDOYS2CbGpUTCuWBiLhFlvyi5s0GqxM1cKbg5FD2C5it3ly7Oj/BxqW8/Z7QR1Nc9
+ kh0AOGimCHgTORxAZnjFBuPIxSE5VrnRUGv5TvVW+0+HHkXWimgdb8wBL4wEjVt7HpfH
+ EZ18XVjWOWozndolAjnOo8x8t5rTwi8dFvjcL9IDYvXIRHuiWfhFN1YyUz76ysdOku0T
+ zEXuC5+OXdIfJHaqmQGG1DHOwzXaheBLRi/TiiDz3KRWPn1NrdzOjzib2mSqquoZxtSR
+ xEdFfZdQU63ap6J05aOhHc0TjTD7diF5qYD7pNKUqzyK+AOERIauO3OihcJfmRBOyLWx
+ uNQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699447005; x=1700051805;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4bo8b2wUFyf73l5iWW8VUnux5zZ9rzp0eCSEuVcZiQw=;
+ b=UzGdUYUppJuPaT2mB8yla/GmYLRFZanI9a2ELlGC4FYYFj2qnc86b3XLj6wrXKBrqj
+ y0/A43FadGyaoTgodYKsslcX//f8X6HeZ9gSaq6ta8+8vXxCZGt/o3/PCdCrykZxFFNt
+ Lb5prMCyl/Zi8gTZO9W3Te/eEPc0AXjaSA+QaDv7AwvsvSToVn6PqeUnVHn5RYy8RY7e
+ Gq8eiDhpnBHPdtF3oeeQRktFfqtL4ZSaxHG2rWw1LRVYdmZI5aJo88Z2Uekl5zBo68V3
+ HfhEE/+Q8ci+GNFcL8fTDGgIOPDp+VYztIrHpBotJvXLAKXJQGLBF+Kpqymwzqq45lJE
+ bHaw==
+X-Gm-Message-State: AOJu0Ywq6jr+gfqu5J4/iyE+khWajQ7O8MoxhVN99ae6I9G29eBKzgSV
+ Q+7ET+1xjlFXAndBJhVHBuvPHcyjO9XHEMspBtM=
+X-Google-Smtp-Source: AGHT+IES57Y6drx+cGcEtezFTp1iiTZz2Ncn2mIwm/t55SFwxRhrb9aDd5cCFoBxuYDEF4EybT5IDEdIQZRRQdFbhoY=
+X-Received: by 2002:a05:6830:16d9:b0:6b9:2e88:79cc with SMTP id
+ l25-20020a05683016d900b006b92e8879ccmr1565681otr.19.1699447005292; Wed, 08
+ Nov 2023 04:36:45 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BJSPR01MB0627:EE_|BJSPR01MB0881:EE_
-X-MS-Office365-Filtering-Correlation-Id: d572467c-82ae-4f3c-0efd-08dbe0568e65
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Swzs0ueJoNVxMtCvGsBwZALWiVGBbAn/Gv9oBEvfL7N/wPLlmDIdoIrGHS8x0Cp36JcVI/fmwX2VxdN1ui/uy5X2uvXTFqF7im7ewnH4JYd72EUTnxW8ILK6NMXSETT/EoNuE7Pzrehu8YEkOygpxpVe4yUse2Zx0uukMaPomEATq/y/Yp8IikX0WyfWLUhXEyCO+ZGzYBv9fZWOn2oJyhDSJwQ5T3RC+VcZdQHGiuSwnsmOSoiXAs2zV2HjbSZ13CBPjjU/2W31J05JYp9IsVYC/nhvwWt1h4oyacI78Syke6EYSBOQUVbKK3PglhhoYw+bxifusbGF5K5vNk2+4POrq5xnoLGe8fRAxSZ/9anqskW/XEZ2Xiisqq24xAg2LAJIddCrdTRk6VctuubMyzlquqRhw4W+NmYo3FK2B7nsJVKDjd75HAMKdEPcaJs+Re5930n2TUiL4aTJNt9xxoClD0jGg8mM/wjZTVbVTTHrdt7ckYt9LTY6QwhTu9SbARMdeqOeoC06BIlTBkWr4R7DrSENRpHZTBFlsE4Epif8tVIozoOBywtb37Zc4Kus
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BJSPR01MB0627.CHNPR01.prod.partner.outlook.cn; PTR:;
- CAT:NONE;
- SFS:(13230031)(39830400003)(346002)(366004)(396003)(136003)(230922051799003)(64100799003)(1800799009)(186009)(451199024)(52116002)(107886003)(6666004)(41300700001)(26005)(40180700001)(36756003)(6916009)(66946007)(41320700001)(66476007)(66556008)(38350700005)(2906002)(86362001)(508600001)(40160700002)(83380400001)(8676002)(4326008)(5660300002)(8936002)(2616005)(38100700002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?FMydjmuIyYddWMNQw2oatml7J0OSTF9G1TH8jN2uON6xJj89vE06Hj3gX+g1?=
- =?us-ascii?Q?2iN/VHaUhcWel9oEZn7TGtVnQGma5AScTOW7TlS/xc4E49/N9ff2UFqTGR68?=
- =?us-ascii?Q?dbXkpWDDeqyxeF7p+/wPYCke0XqT6iDHG9PsmXaJkdzHld7aTX+qq8vPhxN0?=
- =?us-ascii?Q?c2NrvK0lREKAH50fWEbJeXzqiS1hBQaNPN9uXLxG9wj9Hg/NBqHoRR2Px5v8?=
- =?us-ascii?Q?TIZHOrmoW43rQGUfDNe+HpW+D72XMqC3SRnn8jJUnkOg2zeRcLRIUjKzWm+x?=
- =?us-ascii?Q?w0IZqk+0UjtK2KQvPAERKAp4QnMjsbLLIzCQRW+M1e0rdrEdWevN/CFW5j1T?=
- =?us-ascii?Q?v5qcRxeWoqmhYCWhSS7RykQUM7vHROu6BRzzhAeUWNa/mVmU1vzn7KQb0Yd7?=
- =?us-ascii?Q?CIXyxL3MSEbjKGscE4dm9WK5fZZ9CQWCi+r8TFdyPg0xM29ELSRvKZj6AZ4K?=
- =?us-ascii?Q?rnAh/UfwnrKbqeSob6bcv43jAYgWm4/NXQTuCmIV4ajxD4rRA44jXHy5f8Q6?=
- =?us-ascii?Q?uha4WPAqTZL3J6wkGjU1TEpewie4JrQAHp65eUoLL+qWILsbyUB3soHST/zD?=
- =?us-ascii?Q?ecL7B4Zq7zdQdnb1AtRmUUkUUk5Jb4wqMgTigYqSzVnKs85KThLL+/Uj32QO?=
- =?us-ascii?Q?QFY2jzS89vSXHYUORVwImgG4TSLkqE4UxpEffzvOhialplt8TCEwho/j3nMN?=
- =?us-ascii?Q?uNuw2Sz/4tB6QAzA+ARLrZdieAHp8eeL4LhbIR2OiDew+BNOiLPnQvbtFFmC?=
- =?us-ascii?Q?jPDeQRhHOA3Ojb3R5VIVvwDRCwDZXu6yxm/bmoA5cYYwL2foLTF4lpZ1lEaX?=
- =?us-ascii?Q?PBwKGHtmrJTj2RLNIgUpzUSSCaZqOvmoLOXi3le+XN2BXudyIAMuXSoA+NQM?=
- =?us-ascii?Q?ks5qFMCCLKPWDZZw0SEJHneYXBotnjkRkRoxe1L5ZQaT82LCn24APDkRYPjI?=
- =?us-ascii?Q?Iev72Uu/3DykHiRlVxTB7thVR5xq/z2zTEPb7n6i32q49glE/ojbrVKtFIFM?=
- =?us-ascii?Q?/6YUwzkUpPaw/Wfg+kHIGa+P3RTJJGvG6U8sWSBhZCgYKYjER0wa9IYYskPf?=
- =?us-ascii?Q?v7it8H/qAkyrcvGg505pO2zwujuHBZkA5EKOfXEN0d7lmSzYwnJIBNQmNnGe?=
- =?us-ascii?Q?ob6tTcoPZFPS0ZuXBYQI2DsxfgG1TgAuLn0tX3xu0fDfNUmciopBkPD+HcxX?=
- =?us-ascii?Q?uUbf56Bqvpis/Qyk1GpZcFR8IHvhklR8H+Q7Jk2k1nvY9KJ0NcSUYe8HWR3u?=
- =?us-ascii?Q?L8/CjxRlS6CqzNhkIUpCnkRsyLdU78UMay9ghM4gwhcjvV8JTLMTr+yIWbhj?=
- =?us-ascii?Q?QiYQSjp2tpmYGn9G0fhcwxrDIUA2PHT9BkborKFZq8jlvk1hC/OdQQJTTrwR?=
- =?us-ascii?Q?4TLU1njqxznhiQUSqHQWcWGylUdoNC9CpAvmb8Btxc4Zit+E6pfxZjzLVYyP?=
- =?us-ascii?Q?MqrAE46NF4Rlzwa5FhEInV2sqN3n+DxUfzYQmrR8Hy6ds0FlVnl/vc/KFtpe?=
- =?us-ascii?Q?11xQCMIzZqAohyDqjtdUEDGU3pM77nOWjbSxPN+S3AE4BaL4hw0uTV2TDPvr?=
- =?us-ascii?Q?0Vj4JLLN1IedoQxJ4k70t+bIq0G0J6s7g0vaNPUngye96QA/bxOex1eI90i/?=
- =?us-ascii?Q?nA=3D=3D?=
-X-OriginatorOrg: canaan-creative.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d572467c-82ae-4f3c-0efd-08dbe0568e65
-X-MS-Exchange-CrossTenant-AuthSource: BJSPR01MB0627.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2023 12:30:56.4678 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fb9be9d7-8f56-4a62-b26e-3018a3e771a5
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4kpvtvBx873MFOeWoUK1+z+K8WPX+JZue8xQh0030YJeX7L5jeQFpLM0irwTY5mjhRHW+g/bfrcngd8a0boAKXbCcMw8RJUYHyJwhJgPIEk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJSPR01MB0881
-Received-SPF: permerror client-ip=2406:e500:4440:2::614;
- envelope-from=LeoHou@canaan-creative.com;
- helo=CHN02-BJS-obe.outbound.protection.partner.outlook.cn
+References: <20231107142354.3151266-1-alex.bennee@linaro.org>
+In-Reply-To: <20231107142354.3151266-1-alex.bennee@linaro.org>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 8 Nov 2023 20:36:33 +0800
+Message-ID: <CAJSP0QU5eNAVBskQDNq7eSHvhdVcaunAMWUxYEWWkF0gOjp-CQ@mail.gmail.com>
+Subject: Re: [PULL 00/23] Final test, gdbstub, plugin and gitdm updates for 8.2
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=stefanha@gmail.com; helo=mail-ot1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- T_SCC_BODY_TEXT_LINE=-0.01, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -139,101 +86,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Leo Hou <houyingle@canaan-creative.com>
+On Tue, 7 Nov 2023 at 22:25, Alex Benn=C3=A9e <alex.bennee@linaro.org> wrot=
+e:
+>
+> The following changes since commit 462ad017ed76889d46696a3581e1b52343f9b6=
+83:
+>
+>   Merge tag 'pixman-pull-request' of https://gitlab.com/marcandre.lureau/=
+qemu into staging (2023-11-07 19:00:03 +0800)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/stsquad/qemu.git tags/pull-halloween-omnibus-071123-=
+1
+>
+> for you to fetch changes up to 00da668de6856d912cd75474ba759927e29d0e49:
+>
+>   Revert "tests/tcg/nios2: Re-enable linux-user tests" (2023-11-07 14:18:=
+29 +0000)
+>
+> ----------------------------------------------------------------
+> Final test, gdbstub, plugin and gitdm updates for 8.2
+>
+>   - fix duplicate register in arm xml
+>   - hide various duplicate system registers from gdbstub
+>   - add new gdb register test to the CI (skipping s390x/ppc64 for now)
+>   - introduce GDBFeatureBuilder
+>   - move plugin initialisation to after vCPU init completes
+>   - enable building TCG plugins on Windows platform
 
-cpu_by_arch_id() uses hartid-base as the index to obtain the corresponding CPUState structure variable.
-qemu_get_cpu() uses cpu_index as the index to obtain the corresponding CPUState structure variable.
+Hi Alex,
+Please take a look at the following CI failure:
 
-In heterogeneous CPU or multi-socket scenarios, multiple aclint needs to be instantiated,
-and the hartid-base of each cpu bound by aclint can start from 0. If cpu_by_arch_id() is still used
-in this case, all aclint will bind to the earliest initialized hart with hartid-base 0 and cause conflicts.
+i686-w64-mingw32-gcc -m32 -o tests/plugin/libempty.dll
+plugins/qemu_plugin_api.lib tests/plugin/libempty.dll.p/empty.c.obj
+tests/plugin/libempty.dll.p/.._.._contrib_plugins_win32_linker.c.obj
+-Wl,--allow-shlib-undefined -shared -Wl,--start-group
+-Wl,--out-implib=3Dtests/plugin/libempty.dll.a -fstack-protector-strong
+-Wl,--no-seh -Wl,--nxcompat -Wl,--dynamicbase -Wl,--warn-common
+/usr/i686-w64-mingw32/sys-root/mingw/lib/libglib-2.0.dll.a
+/usr/i686-w64-mingw32/sys-root/mingw/lib/libintl.dll.a
+/usr/i686-w64-mingw32/sys-root/mingw/lib/libgmodule-2.0.dll.a
+-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32
+-luuid -lcomdlg32 -ladvapi32 -Wl,--end-group
+/usr/lib/gcc/i686-w64-mingw32/12.2.1/../../../../i686-w64-mingw32/bin/ld:
+tests/plugin/libempty.dll.p/empty.c.obj: in function
+`qemu_plugin_install':
+/builds/qemu-project/qemu/build/../tests/plugin/empty.c:30: undefined
+reference to `_imp__qemu_plugin_register_vcpu_tb_trans_cb'
+collect2: error: ld returned 1 exit status
 
-So with cpu_index as the index, use qemu_get_cpu() to get the CPUState struct variable,
-and connect the aclint interrupt line to the hart of the CPU indexed with cpu_index
-(the corresponding hartid-base can start at 0). It's more reasonable.
+https://gitlab.com/qemu-project/qemu/-/jobs/5487689202
 
-Signed-off-by: Leo Hou <houyingle@canaan-creative.com>
----
- hw/intc/riscv_aclint.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Thanks,
+Stefan
 
-diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
-index ab1a0b4b3a..be8f539fcb 100644
---- a/hw/intc/riscv_aclint.c
-+++ b/hw/intc/riscv_aclint.c
-@@ -130,7 +130,7 @@ static uint64_t riscv_aclint_mtimer_read(void *opaque, hwaddr addr,
-         addr < (mtimer->timecmp_base + (mtimer->num_harts << 3))) {
-         size_t hartid = mtimer->hartid_base +
-                         ((addr - mtimer->timecmp_base) >> 3);
--        CPUState *cpu = cpu_by_arch_id(hartid);
-+        CPUState *cpu = qemu_get_cpu(hartid);
-         CPURISCVState *env = cpu ? cpu_env(cpu) : NULL;
-         if (!env) {
-             qemu_log_mask(LOG_GUEST_ERROR,
-@@ -173,7 +173,7 @@ static void riscv_aclint_mtimer_write(void *opaque, hwaddr addr,
-         addr < (mtimer->timecmp_base + (mtimer->num_harts << 3))) {
-         size_t hartid = mtimer->hartid_base +
-                         ((addr - mtimer->timecmp_base) >> 3);
--        CPUState *cpu = cpu_by_arch_id(hartid);
-+        CPUState *cpu = qemu_get_cpu(hartid);
-         CPURISCVState *env = cpu ? cpu_env(cpu) : NULL;
-         if (!env) {
-             qemu_log_mask(LOG_GUEST_ERROR,
-@@ -232,7 +232,7 @@ static void riscv_aclint_mtimer_write(void *opaque, hwaddr addr,
- 
-         /* Check if timer interrupt is triggered for each hart. */
-         for (i = 0; i < mtimer->num_harts; i++) {
--            CPUState *cpu = cpu_by_arch_id(mtimer->hartid_base + i);
-+            CPUState *cpu = qemu_get_cpu(mtimer->hartid_base + i);
-             CPURISCVState *env = cpu ? cpu_env(cpu) : NULL;
-             if (!env) {
-                 continue;
-@@ -293,7 +293,7 @@ static void riscv_aclint_mtimer_realize(DeviceState *dev, Error **errp)
-     s->timecmp = g_new0(uint64_t, s->num_harts);
-     /* Claim timer interrupt bits */
-     for (i = 0; i < s->num_harts; i++) {
--        RISCVCPU *cpu = RISCV_CPU(cpu_by_arch_id(s->hartid_base + i));
-+        RISCVCPU *cpu = RISCV_CPU(qemu_get_cpu(s->hartid_base + i));
-         if (riscv_cpu_claim_interrupts(cpu, MIP_MTIP) < 0) {
-             error_report("MTIP already claimed");
-             exit(1);
-@@ -373,7 +373,7 @@ DeviceState *riscv_aclint_mtimer_create(hwaddr addr, hwaddr size,
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, addr);
- 
-     for (i = 0; i < num_harts; i++) {
--        CPUState *cpu = cpu_by_arch_id(hartid_base + i);
-+        CPUState *cpu = qemu_get_cpu(hartid_base + i);
-         RISCVCPU *rvcpu = RISCV_CPU(cpu);
-         CPURISCVState *env = cpu ? cpu_env(cpu) : NULL;
-         riscv_aclint_mtimer_callback *cb =
-@@ -408,7 +408,7 @@ static uint64_t riscv_aclint_swi_read(void *opaque, hwaddr addr,
- 
-     if (addr < (swi->num_harts << 2)) {
-         size_t hartid = swi->hartid_base + (addr >> 2);
--        CPUState *cpu = cpu_by_arch_id(hartid);
-+        CPUState *cpu = qemu_get_cpu(hartid);
-         CPURISCVState *env = cpu ? cpu_env(cpu) : NULL;
-         if (!env) {
-             qemu_log_mask(LOG_GUEST_ERROR,
-@@ -431,7 +431,7 @@ static void riscv_aclint_swi_write(void *opaque, hwaddr addr, uint64_t value,
- 
-     if (addr < (swi->num_harts << 2)) {
-         size_t hartid = swi->hartid_base + (addr >> 2);
--        CPUState *cpu = cpu_by_arch_id(hartid);
-+        CPUState *cpu = qemu_get_cpu(hartid);
-         CPURISCVState *env = cpu ? cpu_env(cpu) : NULL;
-         if (!env) {
-             qemu_log_mask(LOG_GUEST_ERROR,
-@@ -546,7 +546,7 @@ DeviceState *riscv_aclint_swi_create(hwaddr addr, uint32_t hartid_base,
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, addr);
- 
-     for (i = 0; i < num_harts; i++) {
--        CPUState *cpu = cpu_by_arch_id(hartid_base + i);
-+        CPUState *cpu = qemu_get_cpu(hartid_base + i);
-         RISCVCPU *rvcpu = RISCV_CPU(cpu);
- 
-         qdev_connect_gpio_out(dev, i,
--- 
-2.34.1
-
+>   - various gitdm updates
+>   - some mailmap fixes
+>   - disable testing for nios2 signals which have regressed
+>
+> ----------------------------------------------------------------
+> Akihiko Odaki (5):
+>       default-configs: Add TARGET_XML_FILES definition
+>       gdbstub: Add num_regs member to GDBFeature
+>       gdbstub: Introduce gdb_find_static_feature()
+>       gdbstub: Introduce GDBFeatureBuilder
+>       cpu: Call plugin hooks only when ready
+>
+> Alex Benn=C3=A9e (13):
+>       gdb-xml: fix duplicate register in arm-neon.xml
+>       target/arm: mark the 32bit alias of PAR when LPAE enabled
+>       target/arm: hide all versions of DBGD[RS]AR from gdbstub
+>       target/arm: hide aliased MIDR from gdbstub
+>       tests/tcg: add an explicit gdbstub register tester
+>       tests/avocado: update the tcg_plugins test
+>       configure: tell meson and contrib_plugins about DLLTOOL
+>       gitlab: add dlltool to Windows CI
+>       contrib/gitdm: Add Rivos Inc to the domain map
+>       contrib/gitdm: map HiSilicon to Huawei
+>       contrib/gitdm: add Daynix to domain-map
+>       mailmap: fixup some more corrupted author fields
+>       Revert "tests/tcg/nios2: Re-enable linux-user tests"
+>
+> Greg Manning (4):
+>       plugins: add dllexport and dllimport to api funcs
+>       plugins: make test/example plugins work on windows
+>       plugins: disable lockstep plugin on windows
+>       plugins: allow plugins to be enabled on windows
+>
+> luzhipeng (1):
+>       contrib/gitdm: add domain-map for Cestc
+>
+>  MAINTAINERS                                        |   2 +-
+>  configure                                          |  13 +-
+>  configs/targets/loongarch64-linux-user.mak         |   1 +
+>  meson.build                                        |   5 +
+>  include/exec/gdbstub.h                             |  59 ++++++
+>  include/qemu/qemu-plugin.h                         |  50 +++++-
+>  contrib/plugins/win32_linker.c                     |  34 ++++
+>  cpu-target.c                                       |  11 --
+>  gdbstub/gdbstub.c                                  |  78 ++++++++
+>  hw/core/cpu-common.c                               |  10 ++
+>  target/arm/debug_helper.c                          |  10 +-
+>  target/arm/helper.c                                |  37 ++--
+>  .gitlab-ci.d/windows.yml                           |   1 +
+>  .mailmap                                           |   2 +
+>  contrib/gitdm/domain-map                           |   4 +
+>  contrib/plugins/Makefile                           |  26 ++-
+>  gdb-xml/arm-neon.xml                               |   2 +-
+>  plugins/meson.build                                |  19 ++
+>  scripts/feature_to_c.py                            |  46 ++++-
+>  tests/avocado/tcg_plugins.py                       |  28 +--
+>  tests/plugin/meson.build                           |  14 +-
+>  tests/tcg/multiarch/Makefile.target                |  11 +-
+>  tests/tcg/multiarch/gdbstub/registers.py           | 197 +++++++++++++++=
+++++++
+>  tests/tcg/multiarch/system/Makefile.softmmu-target |  13 +-
+>  tests/tcg/nios2/Makefile.target                    |  11 ++
+>  tests/tcg/ppc64/Makefile.target                    |   7 +
+>  tests/tcg/s390x/Makefile.target                    |   4 +
+>  27 files changed, 637 insertions(+), 58 deletions(-)
+>  create mode 100644 contrib/plugins/win32_linker.c
+>  create mode 100644 tests/tcg/multiarch/gdbstub/registers.py
+>  create mode 100644 tests/tcg/nios2/Makefile.target
+>
+> --
+> 2.39.2
+>
+>
 
