@@ -2,86 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 769057E5363
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 11:30:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC1D7E536C
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 11:31:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0foA-0005NM-0x; Wed, 08 Nov 2023 05:29:14 -0500
+	id 1r0fpv-00067g-Ot; Wed, 08 Nov 2023 05:31:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0fo1-0005Mn-Fv
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 05:29:06 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0fny-0007zY-M4
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 05:29:04 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-9df8d0c556eso524999066b.2
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 02:28:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699439338; x=1700044138; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=L/R0DyfONmdVfKsQLsbbhRQ8OB6qFWk3yoaVwXxr/+8=;
- b=EjmJ5AWSjDBydW+7ZK7Xhj+uzcUQBb0XNIcex6uVeXYEe1oHFUv7OfqhkXWK273ujk
- SfWN0/r4AnVQR1NsI+RKLgGYbqGq7nHDkyJUR/2+SjF/cfcFpyDiLA6E3uioKAmGdF77
- Up5Y0xm4a1PhVpG44riIKeQ6SPluYSG6yklp/Bgab60kF+PunMCHAJzO/oB5WIHSi9gF
- 3+MAaTyci/GQs3SXPlFj2m4PKTOnEDsiGMHAAhObzhpOmxWYXPbQPNN/IV4cla+IHB2m
- zUCee1pANn4dNCq50fIBwmot/3nRLl1OdQfs7mtWr0D7RjAswqEBpeYBfW7t64Wu082v
- UR6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699439338; x=1700044138;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=L/R0DyfONmdVfKsQLsbbhRQ8OB6qFWk3yoaVwXxr/+8=;
- b=IMkCXadBsePRPbk8WPLMIQD9wgaplLadFp9ecde0YAN6F+80CZ//JOnWaBjaunaE/2
- XNSSb9GQA+4ptNvu4O6namp94lK9n7cvsAyZVKp6NEkn8J7/wVkpmHsJfTS5l/9QQpi6
- OKDFoAnJcv8Ni71RzklB2PhgOcRkXUdMK0Z919BRPapNjEw2XQ8qOSP289CxlFINfPbs
- AyLgZzNnoPDrGmKqSXpEaKEyFytzBwUIqHiPmuGAiWOG3dzpxktL9EcBOIp+flzCzDjX
- xzQFUgaLq12ucMcJ+HkJbxHqCJQBY3aF+wSY+1QMnx4QxDt7ulCwW7CFGkPPEYbwb/4P
- hQ6Q==
-X-Gm-Message-State: AOJu0Yyg0zkSriMWfF6kRlLoASH9ROMbxMaWR8+nLD6jFa3AmepKgh2/
- csH/GqaJ3zCrzSiLLN9eO47t0Q==
-X-Google-Smtp-Source: AGHT+IGXz54CMETEAIPt43IvYm8QrT8fdhRCY5QeVZ6Vlvyc1ISP1S6xVc1LpzfUdgKIYajiljkgNw==
-X-Received: by 2002:a17:907:843:b0:9bd:7b0b:2657 with SMTP id
- ww3-20020a170907084300b009bd7b0b2657mr966992ejb.61.1699439338511; 
- Wed, 08 Nov 2023 02:28:58 -0800 (PST)
-Received: from [192.168.69.115] ([176.187.199.60])
- by smtp.gmail.com with ESMTPSA id
- t27-20020a170906179b00b009a1dbf55665sm803390eje.161.2023.11.08.02.28.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Nov 2023 02:28:57 -0800 (PST)
-Message-ID: <c1322f3b-2ae2-4ca7-9a76-a2a434dc8315@linaro.org>
-Date: Wed, 8 Nov 2023 11:28:55 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r0fpu-00067W-GN
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 05:31:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r0fps-0008Ul-CK
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 05:31:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699439459;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=rGxw00CgJ0AyFLVnPs9XHdFKVKDW8/V7QSjtZliMFUI=;
+ b=NjFNxuU7xfGa16c8wEkyN8TtUIxIwYc1Q8Rz6eUm1JHlSNLyuf7VLuFyGzoFZxpvX2Z8Wf
+ bpR0Vj6B+iSgrYOuQwwYDN2U7rrqgGcybki9Gkhvh3RLHDYgNTmZ45agzRdYAdnPWL0j4j
+ quUto6L4fd3P4xL5uMpYwAroaMd5rBc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-643-6CTcCk64MJeLHQkwzp20wQ-1; Wed, 08 Nov 2023 05:30:57 -0500
+X-MC-Unique: 6CTcCk64MJeLHQkwzp20wQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7C330811E7E;
+ Wed,  8 Nov 2023 10:30:56 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 17B05492BFA;
+ Wed,  8 Nov 2023 10:30:56 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id DF58921E6A1F; Wed,  8 Nov 2023 11:30:53 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,  qemu-devel@nongnu.org,
+ alex.williamson@redhat.com,  jgg@nvidia.com,  nicolinc@nvidia.com,
+ joao.m.martins@oracle.com,  eric.auger@redhat.com,  peterx@redhat.com,
+ jasowang@redhat.com,  kevin.tian@intel.com,  yi.l.liu@intel.com,
+ yi.y.sun@intel.com,  chao.p.peng@intel.com,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Eric Blake <eblake@redhat.com>,  Daniel P.
+ =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Eduardo Habkost
+ <eduardo@habkost.net>, Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v4 26/41] backends/iommufd: Introduce the iommufd object
+References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
+ <20231102071302.1818071-27-zhenzhong.duan@intel.com>
+ <da7de379-bd8c-47d1-b7bf-412be92a2756@redhat.com>
+ <87r0l0dc9q.fsf@pond.sub.org>
+ <d710b361-7078-456c-86bd-6b7f23d56584@redhat.com>
+Date: Wed, 08 Nov 2023 11:30:53 +0100
+In-Reply-To: <d710b361-7078-456c-86bd-6b7f23d56584@redhat.com>
+ (=?utf-8?Q?=22C=C3=A9dric?= Le
+ Goater"'s message of "Wed, 8 Nov 2023 11:03:45 +0100")
+Message-ID: <87zfzoa65e.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/4] hw/audio/pcspk: Inline pcspk_init()
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>, Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
-References: <20231020171509.87839-1-philmd@linaro.org>
- <D0ECDB9D-F04B-46F5-BFE6-94257FB4FF65@gmail.com>
- <87cywr1ahe.fsf@pond.sub.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <87cywr1ahe.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,64 +94,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/11/23 09:56, Markus Armbruster wrote:
-> Bernhard Beschow <shentey@gmail.com> writes:
-> 
->> Am 20. Oktober 2023 17:15:04 UTC schrieb "Philippe Mathieu-Daudé" <philmd@linaro.org>:
->>> Unfortunately v2 was merged as commit 40f8214fcd,
->>> so adapt v3 to clean the mess.
+C=C3=A9dric Le Goater <clg@redhat.com> writes:
+
+> Hello Markus,
+>
+> On 11/8/23 06:50, Markus Armbruster wrote:
+>> C=C3=A9dric Le Goater <clg@redhat.com> writes:
+>>=20
+>>> On 11/2/23 08:12, Zhenzhong Duan wrote:
+>>>> From: Eric Auger <eric.auger@redhat.com>
+>>>> Introduce an iommufd object which allows the interaction
+>>>> with the host /dev/iommu device.
+>>>> The /dev/iommu can have been already pre-opened outside of qemu,
+>>>> in which case the fd can be passed directly along with the
+>>>> iommufd object:
+>>>> This allows the iommufd object to be shared accross several
+>>>> subsystems (VFIO, VDPA, ...). For example, libvirt would open
+>>>> the /dev/iommu once.
+>>>> If no fd is passed along with the iommufd object, the /dev/iommu
+>>>> is opened by the qemu code.
+>>>> The CONFIG_IOMMUFD option must be set to compile this new object.
+>>>> Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+>>>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+>>>> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+>>>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>>>> ---
+>>>> v4: add CONFIG_IOMMUFD check, document default case
+>>>>    MAINTAINERS              |   7 ++
+>>>>    qapi/qom.json            |  22 ++++
+>>>>    include/sysemu/iommufd.h |  46 +++++++
+>>>>    backends/iommufd-stub.c  |  59 +++++++++
+>>>>    backends/iommufd.c       | 257 ++++++++++++++++++++++++++++++++++++=
++++
+>>>>    backends/Kconfig         |   4 +
+>>>>    backends/meson.build     |   5 +
+>>>>    backends/trace-events    |  12 ++
+>>>>    qemu-options.hx          |  13 ++
+>>>>    9 files changed, 425 insertions(+)
+>>>>    create mode 100644 include/sysemu/iommufd.h
+>>>>    create mode 100644 backends/iommufd-stub.c
+>>>>    create mode 100644 backends/iommufd.c
+>>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>>> index cd8d6b140f..6f35159255 100644
+>>>> --- a/MAINTAINERS
+>>>> +++ b/MAINTAINERS
+>>>> @@ -2135,6 +2135,13 @@ F: hw/vfio/ap.c
+>>>>    F: docs/system/s390x/vfio-ap.rst
+>>>>    L: qemu-s390x@nongnu.org
+>>>>    +iommufd
+>>>> +M: Yi Liu <yi.l.liu@intel.com>
+>>>> +M: Eric Auger <eric.auger@redhat.com>
+>>>> +S: Supported
+>>>> +F: backends/iommufd.c
+>>>> +F: include/sysemu/iommufd.h
+>>>> +
+>>>>    vhost
+>>>>    M: Michael S. Tsirkin <mst@redhat.com>
+>>>>    S: Supported
+>>>> diff --git a/qapi/qom.json b/qapi/qom.json
+>>>> index c53ef978ff..27300add48 100644
+>>>> --- a/qapi/qom.json
+>>>> +++ b/qapi/qom.json
+>>>> @@ -794,6 +794,24 @@
+>>>>    { 'struct': 'VfioUserServerProperties',
+>>>>      'data': { 'socket': 'SocketAddress', 'device': 'str' } }
+>>>> +##
+>>>> +# @IOMMUFDProperties:
+>>>> +#
+>>>> +# Properties for iommufd objects.
+>>>> +#
+>>>> +# @fd: file descriptor name previously passed via 'getfd' command,
+>>>> +#     which represents a pre-opened /dev/iommu.  This allows the
+>>>> +#     iommufd object to be shared accross several subsystems
+>>>> +#     (VFIO, VDPA, ...), and the file descriptor to be shared
+>>>> +#     with other process, e.g. DPDK.  (default: QEMU opens
+>>>> +#     /dev/iommu by itself)
+>>>> +#
+>>>> +# Since: 8.2
+>>>> +##
+>>>> +{ 'struct': 'IOMMUFDProperties',
+>>>> +  'data': { '*fd': 'str' },
+>>>> +  'if': 'CONFIG_IOMMUFD' }
 >>>
->>> Philippe Mathieu-Daudé (4):
->>>   hw/i386/pc: Pass Error** argument to pc_basic_device_init()
->>>   hw/i386/pc: Propagate error if HPET device creation failed
->>>   hw/i386/pc: Propagate error if PC_SPEAKER device creation failed
+>>>
+>>> Activating or not IOMMUFD on a platform is a configuration choice
+>>> and it is not a dependency on an external resource. I would make
+>>> things simpler and drop all the #ifdef in the documentation files.
 >>
->> I'm not sure if I'd do these first three patches. The reason is that machines don't inherit from DeviceState and therefore don't have canonical methods such as realize() to propagate errors. Propagating the errors in the machine init helper methods seem a bit ad-hoc to me.
-> 
-> The Error interface enables separation of error detection and error
-> handling.  On detection, we create an Error object, and handling
-> consumes it.
-> 
-> A function that leaves error handling to its callers generally requires
-> its callees to leave it, too.  Use of &error_fatal is wrong then.
-> 
-> Even when error handling need not be left to callers, leaving it can
-> result in simpler or more robust code.
-> 
-> When a function handles errors itself, say by use of &error_fatal or
-> error_report(), it's only usable in contexts where this handling is
-> appropriate.
-> 
-> Sometimes the context is obvious enough, and unlikely to change.
-> Handling directly is fine then, and can be simpler.
-> 
-> When the context isn't that obvious, leaving error handling to callers
-> liberates you from thinking about the context, and also enables safe
-> reuse of the function in other contexts.
-> 
-> I think pc_basic_device_init() doesn't *need* the change, as it's
-> context is obvious enough.  But the change is fine, and if we apply it,
-> we never have to think about the context again.  Matter of taste.
+>> What exactly are you proposing?
+>
+> I would like to simplify the configuration part of this new IOMMUFD
+> feature and avoid a ./configure option to enable/disable the feature
+> since it has no external dependencies and can be compiled on all
+> platforms.
+>
+> However, we know that it only makes sense to have the IOMMUFD backend
+> on platforms s390x, aarch64, x86_64. So I am proposing as an improvement
+> to enable IOMMUFD only on these platforms with this addition :
+>
+>   imply IOMMUFD
+>
+> to hw/{i386,s390x,arm}/Kconfig files.
+>
+> This gives us the possibility to compile out the feature downstream
+> if something goes wrong, using the files under : configs/devices/.
 
-I disagree with Bernhard because pc_basic_device_init() could end up
-refactored and called elsewhere where error can be propagated -- think
-qdev modules --, and in its current form we'll keep ignoring the caller
-errp and use &error_fatal (see patch #2 and #3). Also, better to have
-an unified style rather that trying to "optimize" arguments on a per
-case basis. Anyhow, my 2 cents.
+Shouldn't we then compile out the relevant parts of the QAPI schema,
+too?
 
-> 
->>>   hw/isa/i82378: Propagate error if PC_SPEAKER device creation failed
->>
->> The reason I suggested use of `errp` here is that it is already a parameter.
-> 
-> Use of &error_fatal in a function taking @errp is almost always wrong.
-> The patch fixes an instance of "wrong".
+> Given that the IOMMUFD feature doesn't have any external dependencies
+> and that the IOMMUFD backend object is common to all platforms, I am
+> also proposing to remove all the CONFIG_IOMMUFD define usage in the
+> documentation file "qemu-options.hx" and the schema file "qapi/qom.json".
 
-Due to Bernhard concerns, I'm only queuing patch #4.
+Any CONFIG_IOMMUFD left elsewhere?
 
-Regards,
+>> The use of 'if': 'CONFIG_IOMMUFD' in the QAPI schema enables
+>> introspection with query-qmp-schema: when ObjectType @iommufd exists,
+>> QEMU supports creating the object.  Or am I confused?
+>
+> Object iommufd should always exist since it is common to all.
+>
+> Is that acceptable ?
 
-Phil.
+Perhaps the question to ask is whether a management application needs to
+know whether this version of QEMU supports iommufd objects.  If yes,
+then query-qmp-schema is an obvious way to find out.  What could go
+wrong when this returns "supported" when it actually isn't?
 
 
