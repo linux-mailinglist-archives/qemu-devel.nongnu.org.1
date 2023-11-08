@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482CB7E6027
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 22:47:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F08167E602C
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 22:49:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0qMy-0007Cm-96; Wed, 08 Nov 2023 16:45:52 -0500
+	id 1r0qQZ-00083y-ED; Wed, 08 Nov 2023 16:49:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r0qMw-0007CM-LC
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 16:45:50 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r0qQX-00083W-DF
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 16:49:33 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r0qMu-0007Xx-VU
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 16:45:50 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r0qQV-0007p0-FZ
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 16:49:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699479946;
+ s=mimecast20190719; t=1699480170;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HkAhhAYITXnUt5yHjAr0bXFQsidVVYaHI46yFpgyXas=;
- b=Kg/kAXUOFgsH8FR2ACiWEe9qgi3AhaQ6ZNdZRRSXcqiske4xFcaHutPs9kGwHHEDjSwDan
- k/6w3koTYSvYaA+YA+b0fgK+vnpXH1bgEtGU/Fsx2B181GWur88R9dWOTog6trJXcAkKKQ
- Z1X+jeJixI1d578Pz2eNj6UK8iHLgm8=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Ez8IJy1a3BA4fs9XHfB8x7X2MAdhj78GynjkmlHeeOM=;
+ b=bPca4mtZIqYfusYj9I+nZCQJessnA+o77wlVI5VPqVe5MvWfQMD9AzJGFDwVmFZiaAl3KS
+ TdZmhpND3d/uavSr8Tl51f03pPTTYxDl1upj/Sh7DebckonzPS+b/+uSryRC3/slolQ9JP
+ CgU+klvOwFPQbA4XfEz4ZDPPfs6cbUM=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-145-eYMtVxoXPbSPyWNEX4-48Q-1; Wed, 08 Nov 2023 16:45:42 -0500
-X-MC-Unique: eYMtVxoXPbSPyWNEX4-48Q-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-778b5c628f4so2825685a.0
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 13:45:42 -0800 (PST)
+ us-mta-575-LDhLsIV0PL2Nowk0t98rRg-1; Wed, 08 Nov 2023 16:49:28 -0500
+X-MC-Unique: LDhLsIV0PL2Nowk0t98rRg-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-77a02ceef95so2509985a.0
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 13:49:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699479942; x=1700084742;
+ d=1e100.net; s=20230601; t=1699480168; x=1700084968;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HkAhhAYITXnUt5yHjAr0bXFQsidVVYaHI46yFpgyXas=;
- b=dWE1iTbO2d8D6X7eMyOVcxULZs1k7LbgJqsfD97j8RMYuE6L0ExuwTx0L8Xzml7Tg+
- YYQDrDFqR0CPoTs2sa1mHquPCqozKVWWC4Yp3ZcdGkStkI9bWyRisfg6NWS+RUMROn9t
- +pLe53xTEfG8gI4vHao/p9eZB80hW0SIiyfSGyrqqURUqMnSpFfcAg65BD6NwmChOH4n
- jIR+3+XW2vPTZPDWcCDVM6rsVtkXu8dVu9Kc6poNWoTC/s9aC2OMMidKLn7iN00cfPbE
- GCg6TJlvaThAXMtUkBJdUigYOiDjrm4p1/kZ4z2jk3vx5SvwHXKK+IStG7yC8sBRbN76
- 04dA==
-X-Gm-Message-State: AOJu0YyuMGN7bbvDk48CgItFxn6PoBejOHdnkigLrhq5Rx2b1rWITCmc
- 3aV9yFyIiHagJb98UWQTihKvGfw2ywFoKMGJ/JirjmE4zwVWBDPLwHryHJlZ1fCsK0G8EFNGw6k
- qbhaL+OEUCd1EDcY=
-X-Received: by 2002:a05:620a:3951:b0:77a:69a1:b6a3 with SMTP id
- qs17-20020a05620a395100b0077a69a1b6a3mr3362976qkn.1.1699479941963; 
- Wed, 08 Nov 2023 13:45:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHQZCt63TxcQQRrnBi6Rri6BCjXUfFmFInm5lCtky1D74wqauPEsHpWGyplbktaKel2b8dTFA==
-X-Received: by 2002:a05:620a:3951:b0:77a:69a1:b6a3 with SMTP id
- qs17-20020a05620a395100b0077a69a1b6a3mr3362964qkn.1.1699479941687; 
- Wed, 08 Nov 2023 13:45:41 -0800 (PST)
+ bh=Ez8IJy1a3BA4fs9XHfB8x7X2MAdhj78GynjkmlHeeOM=;
+ b=s/EMe9EGj81KGTQNld6d6O50yZ5PunYewnAaosJtJWLtzskWoPaswLo3DT66XJ5cwM
+ SX17ZhCyW8C0HH2FthFNBud0hdhzXPDHxLuGrUFoFDVQz+WPlNBl+esXvlJqOBftt6jY
+ d0+gbfMCXXqv3XtfzK1nE7AJdUGl5BB2QTU1uZ+KB/D8yACAeJ2dMoCRntAlYW1Jo/0r
+ DkwepLI7/3MUJrV4swTPmZ92e8b3VJ9WY4o245ZCPqDM1+6ztNRAne28xb/TV8Li/E76
+ H78cBpe3J00CltuPEdSNOZe/BqAJgHswJwFQXT9dvhjRJtAfYyaj8fVjgJ3mIgci3s9M
+ t7qQ==
+X-Gm-Message-State: AOJu0YxTLOgeAcbQmMzKA39FOWBE9B9tijLOVMHRFeuNMPpeitd3k5LO
+ 65ANiLM1L/+XUQdR6XlktrCVWwAmoDAdqP3uArSjgxu0jpFJKbQ47td9QsUFChkrpuvZJjHFLLE
+ Dt0fPlas6Vxlccl0=
+X-Received: by 2002:ad4:4a02:0:b0:670:b357:82bd with SMTP id
+ m2-20020ad44a02000000b00670b35782bdmr3060657qvz.6.1699480168267; 
+ Wed, 08 Nov 2023 13:49:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHX2Q5Zj+ZE6gAUHwPreew7m5IIEHQDHzbSYv0E5vkd5egXaqTMSUJqNVG5MlTYunLxrtvevw==
+X-Received: by 2002:ad4:4a02:0:b0:670:b357:82bd with SMTP id
+ m2-20020ad44a02000000b00670b35782bdmr3060643qvz.6.1699480167890; 
+ Wed, 08 Nov 2023 13:49:27 -0800 (PST)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- w2-20020a05620a0e8200b007789a3499casm1449632qkm.115.2023.11.08.13.45.40
+ u16-20020a0cec90000000b0064f4ac061b0sm1491509qvo.12.2023.11.08.13.49.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Nov 2023 13:45:41 -0800 (PST)
-Date: Wed, 8 Nov 2023 16:45:39 -0500
+ Wed, 08 Nov 2023 13:49:27 -0800 (PST)
+Date: Wed, 8 Nov 2023 16:49:25 -0500
 From: Peter Xu <peterx@redhat.com>
-To: William Roche <william.roche@oracle.com>
-Cc: qemu-devel@nongnu.org, lizhijian@fujitsu.com, pbonzini@redhat.com,
- quintela@redhat.com, leobras@redhat.com, joao.m.martins@oracle.com,
- lidongchen@tencent.com
-Subject: Re: [PATCH v4 2/2] migration: prevent migration when a poisoned page
- is unknown from the VM
-Message-ID: <ZUwBgzr1GcSIy0sJ@x1n>
-References: <20230920235301.1622672-1-william.roche@oracle.com>
- <20231013150839.867164-1-william.roche@oracle.com>
- <20231013150839.867164-3-william.roche@oracle.com>
- <ZS1pSeL3hj4/73lk@x1n>
- <c0af41b7-56dd-4395-8c79-d630ece3b589@oracle.com>
- <ZS6ksf8o7dJ8mzUe@x1n>
- <d0c6b2b9-ab95-4b29-969a-85edcac3f8af@oracle.com>
+To: =?utf-8?Q?=E2=80=9CWilliam?= Roche <william.roche@oracle.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, lizhijian@fujitsu.com,
+ pbonzini@redhat.com, quintela@redhat.com, leobras@redhat.com,
+ joao.m.martins@oracle.com, lidongchen@tencent.com
+Subject: Re: [PATCH v5 0/2] Qemu crashes on VM migration after an handled
+ memory error
+Message-ID: <ZUwCZdZj-vZD1NJC@x1n>
+References: <ZS6ksf8o7dJ8mzUe@x1n>
+ <20231106220319.456765-1-william.roche@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <d0c6b2b9-ab95-4b29-969a-85edcac3f8af@oracle.com>
+In-Reply-To: <20231106220319.456765-1-william.roche@oracle.com>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -107,83 +102,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 06, 2023 at 10:38:14PM +0100, William Roche wrote:
-> Note also that large pages are taken into account too for our live
-> migration, but the poisoning of a qemu large page requires more work
-> especially for VM using standard 4k pages on top of these qemu large
-> pages -- and this is a completely different issue. I'm mentioning this
-> aspect here because even on Intel platforms, underlying large pages
-> poisoning needs to be reported better to the running VM as a large
-> section of its memory is gone (not just a single head 4k page), and
-> adding live migration to this problem will not make things any better...
-
-Good point.. Yes, huge poisoned pages seem all broken.
-
-> I did that in a self content test program: memory allocation,
-> UFFDIO_REGISTER and use of UFFDIO_POISON.  The register mode has to be
-> given but MISSING or WP both works. This gives the possibility to inject
-> poison in a much easier and better way than using
-> madvise(... MADV_HWPOISON, ...) for example.
-
-Indeed, I should have left a comment if I noticed that when reviewing the
-POISON changes; I overlooked that find_dst_vma(), even named like that,
-will check the vma uffd context existed.  Doesn't really be necessary to
-UFFDIO_POISON.
-
-I can consider proposing a patch to allow that, which should be
-trivial.. but it won't help with old kernels, so QEMU may still need to
-better always register to make it always work as long as
-UFFD_FEATURE_POISON reported.. sad.
-
+On Mon, Nov 06, 2023 at 10:03:17PM +0000, “William Roche wrote:
+> From: William Roche <william.roche@oracle.com>
 > 
-> But it implies a lot of other changes:
->     - The source has to flag the error pages to indicate a poison
->       (new flag in the exchange protocole)
->     - The destination has to be able to deal with the new protocole
+> 
+> Note about ARM specificities:
+> This code has a small part impacting more specificaly ARM machines,
+> that's the reason why I added qemu-arm@nongnu.org -- see description.
+> 
+> 
+> A Qemu VM can survive a memory error, as qemu can relay the error to the
+> VM kernel which could also deal with it -- poisoning/off-lining the impacted
+> page.
+> This situation creates a hole in the VM memory address space that the VM kernel
+> knows about (an unreadable page or set of pages).
+> 
+> But the migration of this VM (live migration through the network or
+> pseudo-migration with the creation of a state file) will crash Qemu when
+> it sequentially reads the memory address space and stumbles on the
+> existing hole.
+> 
+> In order to thoroughly correct this problem, the poison information should
+> follow the migration which represents several difficulties:
+> - poisoning a page on the destination machine to replicate the source
+>   poison requires CAP_SYS_ADMIN priviledges, and qemu process may not
+>   always run as a root process
+> - the destination kernel needs to be configured with CONFIG_MEMORY_FAILURE
+> - the poison information would require a memory transfer protocol
+>   enhancement to provide this information
+> (The current patches don't provide any of that)
+> 
+> But if we rely on the fact that the a running VM kernel is correctly
+> dealing with memory poison it is informed about: marking the poison page
+> as inaccessible, we could count on the VM kernel to make sure that
+> poisoned pages are not used, even after a migration.
+> In this case, I suggest to treat the poisoned pages as if they were
+> zero-pages for the migration copy.
+> This fix also works with underlying large pages, taking into account the
+> RAMBlock segment "page-size".
+> 
+> Now, it leaves a case that we have to deal with: if a memory error is
+> reported to qemu but not injected into the running kernel...
+> As the migration will go from a poisoned page to an all-zero page, if
+> the VM kernel doesn't prevent the access to this page, a memory read
+> that would generate a BUS_MCEERR_AR error on the source platform, could
+> be reading zeros on the destination. This is a memory corruption.
+> 
+> So we have to ensure that all poisoned pages we set to zero are known by
+> the running kernel. But we have a problem with platforms where BUS_MCEERR_AO
+> errors are ignored, which means that qemu knows about the poison but the VM
+> doesn't. For the moment it's only the case for ARM, but could later be
+> also needed for AMD VMs.
+> See https://lore.kernel.org/all/20230912211824.90952-3-john.allen@amd.com/
+> 
+> In order to avoid this possible silent data corruption situation, we should
+> prevent the migration when we know that a poisoned page is ignored from the VM.
+> 
+> Which is, according to me, the smallest fix we need  to avoid qemu crashes
+> on migration after an handled memory error, without introducing a possible
+> corruption situation.
+> 
+> This fix is scripts/checkpatch.pl clean.
+> Unit test: Migration blocking succesfully tested on ARM -- injected AO error
+> blocks it. On x86 the same type of error being relayed doesn't block.
+> 
+> v2:
+>   - adding compressed transfer handling of poisoned pages
+> 
+> v3:
+>   - Included the Reviewed-by and Tested-by information on first patch
+>   - added a TODO comment above control_save_page()
+>     mentioning Zhijian's feedback about RDMA migration failure.
+> 
+> v4:
+>   - adding a patch to deal with unknown poison tracking (impacting ARM)
+>     (not using migrate_add_blocker as this is not devices related and
+>     we want to avoid the interaction with --only-migratable mechanism)
+> 
+> v5:
+>   - Updating the code to the latest version
+>   - adding qemu-arm@nongnu.org for a complementary review
+> 
+> 
+> William Roche (2):
+>   migration: skip poisoned memory pages on "ram saving" phase
+>   migration: prevent migration when a poisoned page is unknown from the
+>     VM
 
-IIUC these two can be simply implemented by migrating hwpoison_page_list
-over to dest.  You need to have a compat bit for doing this, ignoring the
-list on old machine types, because old QEMUs will not recognize this vmsd.
+I hope someone from arch-specific can have a quick look at patch 2..
 
-QEMU should even support migrating a list object in VMSD, feel free to have
-a look at VMSTATE_QLIST_V().
+One thing to mention is unfortunately waiting on patch 2 means we'll miss
+this release. Actually it is already missed.. softfreeze yesterday [1].  So
+it may likely need to wait for 9.0.
 
->     - The destination has to be able to mark the pages as poisoned
->       (authorized to use userfaultfd)
-
-Note: userfaultfd is actually available without any privilege if to use
-UFFDIO_POISON only, as long as to open the uffd (either via syscall or
-/dev/userfaultfd) using UFFD_FLAG_USER_ONLY.
-
-A trick is we can register with UFFD_WP mode (not MISSING; because when a
-kernel accesses a missing page it'll cause SIGBUS then with USER_ONLY),
-then inject whatever POISON we want.  As long as UFFDIO_WRITEPROTECT is not
-invoked, UFFD_WP does nothing (unlike MISSING).
-
->     - So both source and destination have to be upgraded (of course
->       qemu but also an appropriate kernel version providing
->       UFFDIO_POISON on the destination)
-
-True.  Unfortunately this is not avoidable.
-
->     - we may need to be able to negotiate a fall back solution
->     - an indication of the method to use could belong to the
->       migration capabilities and parameters
-
-For above two points: it's a common issue with migration compatibility.  As
-long as you can provide above VMSD to migrate hwpoison_page_list, marking
-all old QEMU machine types skipping that, then it should just work.
-
-You can have a closer look at anything in hw_compat_* as an example.
-
->     - etc...
-
-I think you did summarize mostly all the points I can think of; is there
-really anything more? :)
-
-It'll be great if you can, or plan to, fix that for good.
-
-Thanks,
+[1] https://wiki.qemu.org/Planning/8.2
 
 -- 
 Peter Xu
