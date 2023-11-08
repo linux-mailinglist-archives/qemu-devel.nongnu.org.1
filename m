@@ -2,59 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B19607E5EE1
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 20:53:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D33E97E5F54
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 21:42:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0obJ-00074s-D2; Wed, 08 Nov 2023 14:52:33 -0500
+	id 1r0pLz-0004wA-3q; Wed, 08 Nov 2023 15:40:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r0obH-00074W-0U
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 14:52:31 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r0obE-00080I-ML
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 14:52:30 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 29CF075A4B9;
- Wed,  8 Nov 2023 20:52:43 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 1D2C875A4B8; Wed,  8 Nov 2023 20:52:43 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 1A999756094;
- Wed,  8 Nov 2023 20:52:43 +0100 (CET)
-Date: Wed, 8 Nov 2023 20:52:43 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Peter Maydell <peter.maydell@linaro.org>
-cc: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- John Snow <jsnow@redhat.com>, 
- =?ISO-8859-15?Q?Daniel_P_=2E_Berrang=E9?= <berrange@redhat.com>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>, 
- Rene Engel <ReneEngel80@emailn.de>, 
- =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>, 
- Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>, 
- Howard Spoelstra <hsp.cat7@gmail.com>
-Subject: Re: [NOTFORMERGE PATCH 1/2] configure: Use distrib meson
-In-Reply-To: <CAFEAcA9xgS_8VV1S+-7vaqSqzK_2=0hJ+ceDP7BVdFd6TUR-nw@mail.gmail.com>
-Message-ID: <44d8c245-122a-47f0-25e2-eae1dac8ac18@eik.bme.hu>
-References: <20231108183251.80572-1-philmd@linaro.org>
- <20231108183251.80572-2-philmd@linaro.org>
- <CAFEAcA9xgS_8VV1S+-7vaqSqzK_2=0hJ+ceDP7BVdFd6TUR-nw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0pLx-0004w1-Ej
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 15:40:45 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0pLs-0000dh-2e
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 15:40:45 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-543c3756521so73986a12.2
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 12:40:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699476038; x=1700080838; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YyU5pE96yFKFzm7401ZBtLmMAI8TGG2Uv/3UTokNVAY=;
+ b=cnfMQWGipyqPwIQ+73rg7JmPNpWPxpnYW7kyJ4veyP0iaYWFke8Uva2UJpQFfYMS8z
+ 4N7NkTrfGkwglVoFS0blTlwygeVuIg4zjjmXHPvrUOxgSIcHgfMu4PvrsdyLhRXKIWtQ
+ qB0CJkZt15M/80Vcxa9mXy2rgzfUZXCwom0nE1jNfyPl6JO5TFJoxyneNiiyFFWUcGV+
+ W6YrSKtr0AGU5pgUsetQ6DSGyPFa2SvBGYkAsVVoUqPgXXXPUdHHf884sYSgFaabx1GS
+ tOakCgAaRya6SjHJFy4vckV7kVP0yKfHJ8cCSLXPIQdxzugr5XwlosTaFGCi0EQpJWiv
+ f36Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699476038; x=1700080838;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YyU5pE96yFKFzm7401ZBtLmMAI8TGG2Uv/3UTokNVAY=;
+ b=eWKx3VZT5p7St4/g8Iw8XQWQKLOfydWTVfHtyd2QQ2VQEzlm5uc4Vf2OMGRa/tNG8i
+ H10zg6auN6tIjzEW9qZd5S94PbOPFxRSRcgtm3XN3grIn+mBKcFNu15lXjhbhLyOMaqF
+ c+Zrfypo0BZuPV4MWLerHH1KIJkkotojKgA3rpbMDzxkejsSr5X9SJtIdt+AD9p1xW42
+ yUwGbclQQREPxsQ5yu/j4ZRPpJiPHH+GUV6UPBlmW6um0FC1KO1DSmz9DLV6sIj8qGP9
+ sEGMGz8PLJ1aR0HxT6j0ILZI+5mB2jQPJ84F8WbFKW9+xAxsiP900Dd7xmfd+nBE7c+Q
+ 7ulw==
+X-Gm-Message-State: AOJu0Yz47gbJEZRoRZuO2TO+pgzXsP7yjWqIoR6RbDaSgis0jFnXPvYC
+ 2oyLwD8IPqYoKambvJHmL2o3Fjs4+6OBWpfZnDU=
+X-Google-Smtp-Source: AGHT+IE+pPZdbRA9N6FLHB5EmVPNHvkntg3fX79Qs/osKnVcdkiafSO7rn1FZo+L2PQgb8smwRt1ig==
+X-Received: by 2002:a50:8712:0:b0:53e:fdeb:13c7 with SMTP id
+ i18-20020a508712000000b0053efdeb13c7mr2452749edb.21.1699476038249; 
+ Wed, 08 Nov 2023 12:40:38 -0800 (PST)
+Received: from [192.168.69.115] ([176.187.199.60])
+ by smtp.gmail.com with ESMTPSA id
+ eg38-20020a05640228a600b0053ff311f388sm7081214edb.23.2023.11.08.12.40.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 08 Nov 2023 12:40:37 -0800 (PST)
+Message-ID: <6a4a2205-9abc-45d6-9c6b-f8d94d838e77@linaro.org>
+Date: Wed, 8 Nov 2023 21:40:35 +0100
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1472163992-1699473163=:15444"
-X-Virus-Scanned: ClamAV using ClamSMTP
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 27/35] tcg/ppc: Support TCG_COND_TST{EQ,NE}
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com
+References: <20231028194522.245170-1-richard.henderson@linaro.org>
+ <20231028194522.245170-28-richard.henderson@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231028194522.245170-28-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,62 +92,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi Richard,
 
---3866299591-1472163992-1699473163=:15444
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+On 28/10/23 21:45, Richard Henderson wrote:
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   tcg/ppc/tcg-target.c.inc | 105 ++++++++++++++++++++++++++++++++++++---
+>   1 file changed, 98 insertions(+), 7 deletions(-)
 
-On Wed, 8 Nov 2023, Peter Maydell wrote:
-> On Wed, 8 Nov 2023 at 18:33, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>  configure | 9 +--------
->>  1 file changed, 1 insertion(+), 8 deletions(-)
->>
->> diff --git a/configure b/configure
->> index f1456f6123..93735b7661 100755
->> --- a/configure
->> +++ b/configure
->> @@ -955,15 +955,8 @@ if $python -c 'import sys; sys.exit(sys.version_info >= (3,11))'; then
->>      $mkvenv ensure --dir "${source_path}/python/wheels" \
->>          'tomli>=1.2.0' || exit 1
->>  fi
->> -$mkvenv ensuregroup --dir "${source_path}/python/wheels" \
->> -     ${source_path}/pythondeps.toml meson || exit 1
->>
->> -# At this point, we expect Meson to be installed and available.
->> -# We expect mkvenv or pip to have created pyvenv/bin/meson for us.
->> -# We ignore PATH completely here: we want to use the venv's Meson
->> -# *exclusively*.
->> -
->> -meson="$(cd pyvenv/bin; pwd)/meson"
->> +meson="$(which meson)"
 
-Doesn't this revert 66e2c6cbace ?
+> -static inline void tcg_out_rld(TCGContext *s, int op, TCGReg ra, TCGReg rs,
+> -                               int sh, int mb)
+> +static void tcg_out_rld_rc(TCGContext *s, int op, TCGReg ra, TCGReg rs,
+> +                           int sh, int mb, bool rc)
+>   {
+>       tcg_debug_assert(TCG_TARGET_REG_BITS == 64);
+>       sh = SH(sh & 0x1f) | (((sh >> 5) & 1) << 1);
+>       mb = MB64((mb >> 5) | ((mb << 1) & 0x3f));
+> -    tcg_out32(s, op | RA(ra) | RS(rs) | sh | mb);
+> +    tcg_out32(s, op | RA(ra) | RS(rs) | sh | mb | rc);
+>   }
+>   
+> -static inline void tcg_out_rlw(TCGContext *s, int op, TCGReg ra, TCGReg rs,
+> -                               int sh, int mb, int me)
+> +static void tcg_out_rld(TCGContext *s, int op, TCGReg ra, TCGReg rs,
+> +                        int sh, int mb)
+> +{
+> +    tcg_out_rld_rc(s, op, ra, rs, sh, mb, false);
+> +}
+> +
+> +static void tcg_out_rlw_rc(TCGContext *s, int op, TCGReg ra, TCGReg rs,
+> +                           int sh, int mb, int me, bool rc)
+>   {
+>       tcg_out32(s, op | RA(ra) | RS(rs) | SH(sh) | MB(mb) | ME(me));
 
-> Presumably the other approach would be to make the pythondeps.toml
-> say "on macos we need at least version X of meson" ?
->
-> Do we know what the upstream meson issue is that we're running into
-> with the older version on this host ?
+Here I'm a bit confused because 'rc' is not used. Shouldn't we OR it
+to tcg_out32()' second argument?
 
-Linked from the QEMU ticket in the cover letter:
-https://github.com/mesonbuild/meson/issues/12399
+>   }
+>   
+> +static void tcg_out_rlw(TCGContext *s, int op, TCGReg ra, TCGReg rs,
+> +                        int sh, int mb, int me)
+> +{
+> +    tcg_out_rlw_rc(s, op, ra, rs, sh, mb, me, false);
+> +}
 
-AFAIU the problem is that macOS has system python in 
-/Library/Frameworks/python.framework (or something like that) but homebrew 
-does not use that but installs its own python somewhere in /opt and meson 
-from homebrew uses that python but configure finds the system python which 
-does not have meson so it then downloads its own meson but that's too old 
-for macOS Sonoma. It should probably check for homebrew or macports 
-locations too or check for meson and get the python that's using. A 
-workaround apparently is to pass --python with the right path to 
-configure.
-
-Regards,
-BALATON Zoltan
---3866299591-1472163992-1699473163=:15444--
 
