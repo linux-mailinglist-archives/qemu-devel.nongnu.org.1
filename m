@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DB17E5CD0
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 19:00:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 862457E5D08
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 19:18:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0mq6-0003P3-BL; Wed, 08 Nov 2023 12:59:42 -0500
+	id 1r0n6o-0004ow-5X; Wed, 08 Nov 2023 13:16:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0mpq-0003Ec-HH
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 12:59:29 -0500
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0n6m-0004oo-22
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 13:16:56 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0mpn-00055R-QW
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 12:59:26 -0500
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-9becde9ea7bso230454466b.0
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 09:59:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0n6k-0008N5-9J
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 13:16:55 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-408002b5b9fso53420615e9.3
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 10:16:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699466360; x=1700071160; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699467412; x=1700072212; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=zCIV6xhOEy9e0/ump87scJTxEKubosmfb6SjXkR8ygA=;
- b=eZScp0DsAYKLUHY38/aaergN2iNLsRYskutobN92uNvh5rO5vxUGxWatpaPya4gZ8z
- 0+m3/NHf1FUTg0U1+S5LxmWTOS4ZHrqX/vgBELEGFv4jKWW+5eqH9RGJBw8bdvSOrVmR
- rGRBJe0tKziiMYqXjM5bYeUrW72oKWY51A0ZjGWvwHAuE07JGDA7/GDJEB0MMoo/zTel
- ZaXR3+ebJwfcqJb2AmsiXsX8IGkrBR6m8cK8x9tqt/OOxO81NVmOJ3FTk5PDZTr+Adrw
- JN23mdxsTtMdb9Iyms+8lKr5B3WnY+7+9FOrpQHyYFXvg6zt8s2xJNWlp9iarTlOTiia
- J6YA==
+ bh=XC1GWaYbosIWp31yMZBsOkOClRZdf+8ncPwz2MqSrUM=;
+ b=C9Wb3Hjj5kNZqdWh71uxRyBBrRd7gA/olAybT05JRSEpYGolgwaN0nOG/Bseo7QYnO
+ DU1OVJYCiwRzaz95J6l4U6yw9HL0PfB4HboejFoK/XLUPgCJSySHxe8zB3aHHAFrJzg8
+ nmz3P2fxjDgbuIYd3Qj8wNbc/pO4snIdXKjnW7/NrCUtcFwi7tJdU56c/k6EGny+al0D
+ cn0Lvf8sW8H8pml4TL+LVW3Ff59AuHs63fq7dreGTXpLP2vNtJgmDoZIDw+e082r81Jr
+ GNaZvsNSBqfRnl6aemFzuR311jqEL+2j4KUL0AoGQvtOVcIsurjGgDJtBgZj/ioeNP2X
+ /Czg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699466360; x=1700071160;
+ d=1e100.net; s=20230601; t=1699467412; x=1700072212;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zCIV6xhOEy9e0/ump87scJTxEKubosmfb6SjXkR8ygA=;
- b=bAF4JtPdMTglSQNsjgvUFXrIZPlAdqr1pG5bgygPJynEhqOBvnIQEiTAWEf/K7hdGs
- kM+smEGx1CtZZhjvYmP0g6LY984D5j0bELQOgC7MxJwchsEx4y3fKsUOIEGurxoKkoY3
- us4N/tw3pYSNsT1n2VHATOI+SHMBISdJYf5vrPx4stvrd53++TNYUd9Ct06MbyHaVrh8
- tmBQMgxD/WIitlUgfRYoJjKwqPVbK/esIPGzw8YiOi++LgyBQ3JO0E/py37SGl5TduIx
- r6/5DEd2EJTKx3DSE7KHj50+kPwDlSTA9NA2Gmb4mgAyFk+LN6BuqO8CW5Ir6PItffsr
- RPVA==
-X-Gm-Message-State: AOJu0Yz9q7teDMu+Nnt2MS4yVhNbRBUs8U+C0Q5e7ueEDQ0K2v6C07m5
- nHTw1btqvW1fxg4H5/DTXrFKQI0CPSVjgvxSBxc=
-X-Google-Smtp-Source: AGHT+IGuPOohKZmFAgddJF1Co9ORgC/M2PL3kwQZM2KEaGUVD9y8ARx/pHRC01ExEv4I0J+4gd5fAg==
-X-Received: by 2002:a17:907:7246:b0:9a9:f0e6:904e with SMTP id
- ds6-20020a170907724600b009a9f0e6904emr2745557ejc.16.1699466360431; 
- Wed, 08 Nov 2023 09:59:20 -0800 (PST)
+ bh=XC1GWaYbosIWp31yMZBsOkOClRZdf+8ncPwz2MqSrUM=;
+ b=enj9BRLN+YDnyd9C95Q9h6TgEvufeopMr53IR6uXviT0MbOJZHg/XR4/aQ3aGsWWki
+ hiVZ4vcOWJN1br3F++jYzPtUAVi/qjA615XugmeR5N0cIlAoxevs5kRYUk9rWDPoTdWp
+ kAcUQttgmuRGKkmx1KS9naz+85KkDpfEDcykGpRc/3b5V3ySDtKaH4rzGPKEYMMaB9mx
+ TvC9omjexipDFOiAmMaBIFkyxLed30awdfEuptDpBC0UmDYnbVivOOPhkzSDOOB1SLcY
+ Bsk5FaA8QVAote/v4vn9nZmX6EH/kWg2oHwJqWDhbh7/sliIloY5LSs40yyP1AH2a8Ie
+ X+zg==
+X-Gm-Message-State: AOJu0YxCmxw/L+hf0cngXrzJGmMaPxHZxs9JuVtDPoNXapeuZv8qFGg5
+ 65ej0+QwW1EZE21RjZ+ubihHBw==
+X-Google-Smtp-Source: AGHT+IGx6BSxO3EWzMBgo2lQ5jLMZqB2yBfVmq5PtdYBPJDmp/A4o9R/pwgVz1A5gpFLO/A486Wxdg==
+X-Received: by 2002:a05:600c:3d85:b0:402:ea96:c09a with SMTP id
+ bi5-20020a05600c3d8500b00402ea96c09amr2699357wmb.16.1699467412105; 
+ Wed, 08 Nov 2023 10:16:52 -0800 (PST)
 Received: from [192.168.69.115] ([176.187.199.60])
  by smtp.gmail.com with ESMTPSA id
- lv19-20020a170906bc9300b009a9fbeb15f5sm1372376ejb.46.2023.11.08.09.59.18
+ ha7-20020a05600c860700b004080f0376a0sm19460727wmb.42.2023.11.08.10.16.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Nov 2023 09:59:19 -0800 (PST)
-Message-ID: <9ba58d8f-0554-439e-b93d-b6e06fafe3d0@linaro.org>
-Date: Wed, 8 Nov 2023 18:59:18 +0100
+ Wed, 08 Nov 2023 10:16:51 -0800 (PST)
+Message-ID: <bd3556de-553f-4f56-aeb2-fa38d6fd52a6@linaro.org>
+Date: Wed, 8 Nov 2023 19:16:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/35 2/2] tcg/arm: Support TCG_COND_TST{EQ,NE}
+Subject: Re: [PATCH v2 14/35] tcg/i386: Support TCG_COND_TST{EQ,NE}
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org
-References: <20231028194522.245170-12-richard.henderson@linaro.org>
- <20231108145244.72421-2-philmd@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com
+References: <20231028194522.245170-1-richard.henderson@linaro.org>
+ <20231028194522.245170-15-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231108145244.72421-2-philmd@linaro.org>
+In-Reply-To: <20231028194522.245170-15-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,51 +92,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/11/23 15:52, Philippe Mathieu-Daudé wrote:
-> From: Richard Henderson <richard.henderson@linaro.org>
+On 28/10/23 21:45, Richard Henderson wrote:
+> Merge tcg_out_testi into tcg_out_cmp and adjust the two uses.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> Message-Id: <20231028194522.245170-12-richard.henderson@linaro.org>
-> [PMD: Split from bigger patch, part 2/2]
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   tcg/arm/tcg-target.c.inc | 29 ++++++++++++++++++++++++++++-
->   1 file changed, 28 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
-> index 66d71af8bf..0fc7273b16 100644
-> --- a/tcg/arm/tcg-target.c.inc
-> +++ b/tcg/arm/tcg-target.c.inc
-> @@ -1194,7 +1194,27 @@ static void tcg_out_mb(TCGContext *s, TCGArg a0)
->   static TCGCond tcg_out_cmp(TCGContext *s, TCGCond cond, TCGReg a,
->                              TCGArg b, int b_const)
->   {
-> -    tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0, a, b, b_const);
-> +    if (!is_tst_cond(cond)) {
-> +        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0, a, b, b_const);
-> +        return cond;
-> +    }
-> +
-> +    cond = tcg_tst_eqne_cond(cond);
-> +    if (b_const) {
-> +        int imm12 = encode_imm(b);
-> +
-> +        /*
-> +         * The compare constraints allow rIN, but TST does not support N.
-> +         * Be prepared to load the constant into a scratch register.
-> +         */
-> +        if (imm12 >= 0) {
-> +            tcg_out_dat_imm(s, COND_AL, ARITH_TST, 0, a, imm12);
-> +            return cond;
-> +        }
-> +        tcg_out_movi32(s, COND_AL, TCG_REG_TMP, b);
-> +        b = TCG_REG_TMP;
-> +    }
-> +    tcg_out_dat_reg(s, COND_AL, ARITH_TST, 0, a, b, SHIFT_IMM_LSL(0));
->       return cond;
->   }
+>   tcg/i386/tcg-target.c.inc | 83 ++++++++++++++++++++++-----------------
+>   1 file changed, 47 insertions(+), 36 deletions(-)
 
-To the best of my knowledge,
+
+>   #if TCG_TARGET_REG_BITS == 64
+> @@ -1422,15 +1424,35 @@ static void tcg_out_jxx(TCGContext *s, int opc, TCGLabel *l, bool small)
+>   static int tcg_out_cmp(TCGContext *s, TCGCond cond, TCGArg arg1,
+>                          TCGArg arg2, int const_arg2, int rexw)
+>   {
+> -    if (const_arg2) {
+> -        if (arg2 == 0) {
+> -            /* test r, r */
+> -            tcg_out_modrm(s, OPC_TESTL + rexw, arg1, arg1);
+> +    if (is_tst_cond(cond)) {
+> +        if (!const_arg2) {
+> +            tcg_out_modrm(s, OPC_TESTL + rexw, arg1, arg2);
+> +        } else if (arg2 <= 0xff && (TCG_TARGET_REG_BITS == 64 || arg1 < 4)) {
+> +            tcg_out_modrm(s, OPC_GRP3_Eb | P_REXB_RM, EXT3_TESTi, arg1);
+> +            tcg_out8(s, arg2);
+> +        } else if ((arg2 & ~0xff00) == 0 && arg1 < 4) {
+> +            tcg_out_modrm(s, OPC_GRP3_Eb, EXT3_TESTi, arg1 + 4);
+> +            tcg_out8(s, arg2 >> 8);
+>           } else {
+
+For this part, a double-review from x86 developer is welcomed,
+
+> -            tgen_arithi(s, ARITH_CMP + rexw, arg1, arg2, 0);
+> +            if (rexw) {
+> +                if (arg2 == (uint32_t)arg2) {
+> +                    rexw = 0;
+> +                } else {
+> +                    tcg_debug_assert(arg2 == (int32_t)arg2);
+> +                }
+> +            }
+> +            tcg_out_modrm(s, OPC_GRP3_Ev + rexw, EXT3_TESTi, arg1);
+> +            tcg_out32(s, arg2);
+>           }
+>       } else {
+
+then the rest is OK.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
