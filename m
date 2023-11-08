@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF627E5328
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 11:14:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BFC67E5330
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 11:16:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0faB-0000bx-15; Wed, 08 Nov 2023 05:14:47 -0500
+	id 1r0fbJ-0001GX-Sx; Wed, 08 Nov 2023 05:15:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0fa7-0000ad-Mo
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 05:14:44 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0fbH-0001GC-Cg
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 05:15:55 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0fa6-0005Lo-50
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 05:14:43 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5446c9f3a77so6592371a12.0
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 02:14:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0fbE-0005zH-SC
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 05:15:55 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-53e07db272cso11337330a12.3
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 02:15:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699438480; x=1700043280; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1699438551; x=1700043351; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=nXu5JbxuCc43Id12FbPQve/1ULkK4fdNAbZOIBym3oc=;
- b=KxH2hSl7s3iLrs5/yHWtkrNSRQalEGw2O9lDIHC3UIn7xVDFcG+WZ4GbD7nDx0fxfW
- 4PsZCwqdJr+SALhpNxZ7JfkizD+O7eEnuvSwnbhH+3NwjTk+JbA/ib00PtFZYZb9XWA1
- E2qvuizV1a7OpCFNSMQHRWt03oOUAlqMvzYtXxadnsc/hE+mSdngP6hQc21JAf/CaA2b
- Z7LA0aLe2cAjJvjw0ySk0Tyw5ONmFKV/p2xrG9uR04xpQsG62fIK8IG+jbnxZkF0cyR8
- FqmeAgK2JOT/K/3yS/FMsEFf5SWcd2FhdLHCyszqvtVwkv4tskLX9CUH0PoDQVwAnzJV
- kLLg==
+ bh=FjuDEx+em/hiEDBICHdsD60/CCoHeYP+hQAVHoWhbNo=;
+ b=WiHJXOO4eWW6Uy7itB0QiC27ObHKKuoAlN6cuWYNbvcAJSiOdK8/7/NaweqyMa12bB
+ uGpwHouDg3tXOZjzO0bFagvpjgBljALSSL+UgZ72FxdZA8HWFGbTGpolZuJ+nmt6Ju5s
+ MHgZb6hdIkjgdgvOCcMCUc+nxoCZRCTc9MSp2G7X8swMsiZUQEvhEfs4LwKL3mKe/l4D
+ ZS2l8kOH+T/bB2cAVWJwThKH7FEwliLIc/nAVYAnQt7ybmjwXC4KiTEpW/6Y4VN0qZjY
+ oHFtgbidqJpgYHFRltEqIJWvsIqt3qrBJNfcuXT8UwJA1v/+JqP9QEGoOI7Xlx44Uqba
+ 4B4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699438480; x=1700043280;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1699438551; x=1700043351;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nXu5JbxuCc43Id12FbPQve/1ULkK4fdNAbZOIBym3oc=;
- b=sgeBgkL6yJA/WBLA5ZvWjtr1vAjIEu4D+ACoJusXI1kRdCtoH/edxuY93zpWt4bz2f
- 13sGvTuLq9ZBophfj1YiGMPqMgAlMUrB9W5dWOpGkWMksQzDe9YR+PrKzExxJCICNvdD
- pFse2g/a9lVGHJQYEjhsZ+WRew8p+tX27f20/tYMqtPGGzefQPPHV4NRH3UGi0jC6hEa
- J6UA3mxkg8DhB2oObXuAmCuKF/ZTPrwrZ34+f+QupKTMvRcUTsrGcloNjaFItgA4UJsX
- So0FrHAv4Va1HtQc2byfY7Kix/aDw/QBmDjoKk6K1EONI7hT5yE04zphO4JBNwVvJh02
- PGtg==
-X-Gm-Message-State: AOJu0YyCtEzLScovy/9Phl344lAfykvxeZ9s3DSNPnI/cVl7HndTwbRE
- iotaTH3s23TFKzJHnhEBEkoz4g==
-X-Google-Smtp-Source: AGHT+IHh0y9/YSc2NARpFyHb7MgtvLEtQta3Xoj56zoIFxNjk9hb5SdtEn57Whv+WNGBYN2lzCJZNA==
-X-Received: by 2002:a17:907:6d07:b0:9be:6ccb:6a8f with SMTP id
- sa7-20020a1709076d0700b009be6ccb6a8fmr932441ejc.48.1699438480717; 
- Wed, 08 Nov 2023 02:14:40 -0800 (PST)
+ bh=FjuDEx+em/hiEDBICHdsD60/CCoHeYP+hQAVHoWhbNo=;
+ b=g9psrUxw/pdsqvBIgmjpkhhflrk5aCM7t5t85Sh0wUEj6M/jNqXFkx9DEH+uQ9KBDh
+ sSG7p6lTiyYDf2+7UL9xK6HzkcC4Bw87W/Z+PHCTq6hX7JjXLRdE6jpr0ROiHqcS9U1l
+ 1tqYwn/zWMPwPv8LniIF4+ivpfSAoCxu+yOA3U+ZTKRX4AhHxbwNUU8SMR7EoDggz6ZW
+ H0XNqMgGShkve2kHk66fJRRKY9NBI+h2Z5Bha9/9bdTNqKf21Ezx5CHYbYhDK+Dgy7X3
+ lvTNb8fdT70YfHZc0ZmjnnrwtAnkSbk9GwNsgmUX4h5JtFLIZm8Nca2p0ouu1HF1W3wE
+ JTog==
+X-Gm-Message-State: AOJu0YyX2LeC6B1ZJ2c7z/l50HDWX65FR8J1k/K8uqNOt3xk9n7bjPDn
+ NqW0HXZBXdjK0g2eu4yGs5oYYA==
+X-Google-Smtp-Source: AGHT+IF9l5ZsXfJUa1yjoTuPIwTJ4J/nesTCC/iOsV+mi8gzSyccMun8uNW+ja4L3mfZDF5PxN7obg==
+X-Received: by 2002:a17:907:3f17:b0:9b3:308:d045 with SMTP id
+ hq23-20020a1709073f1700b009b30308d045mr1151825ejc.46.1699438551244; 
+ Wed, 08 Nov 2023 02:15:51 -0800 (PST)
 Received: from [192.168.69.115] ([176.187.199.60])
  by smtp.gmail.com with ESMTPSA id
- o14-20020a1709062e8e00b00997cce73cc7sm794992eji.29.2023.11.08.02.14.39
+ o14-20020a1709062e8e00b00997cce73cc7sm794992eji.29.2023.11.08.02.15.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Nov 2023 02:14:40 -0800 (PST)
-Message-ID: <88a3fd18-c756-47c8-99b8-bac30d3e1775@linaro.org>
-Date: Wed, 8 Nov 2023 11:14:39 +0100
+ Wed, 08 Nov 2023 02:15:50 -0800 (PST)
+Message-ID: <3230162d-7e32-4e65-9ef5-338d05934aad@linaro.org>
+Date: Wed, 8 Nov 2023 11:15:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 49/71] hw/rtc: Constify VMState
+Subject: Re: [PATCH 03/71] targt/arm: Constify hvf/hvf.c
 Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
 References: <20231106065827.543129-1-richard.henderson@linaro.org>
- <20231106065827.543129-50-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231106065827.543129-50-richard.henderson@linaro.org>
+ <20231106065827.543129-4-richard.henderson@linaro.org>
+ <003a731c-63d2-92cb-37f8-8f57c1e07ed3@linaro.org>
+In-Reply-To: <003a731c-63d2-92cb-37f8-8f57c1e07ed3@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,22 +93,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/11/23 07:58, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   hw/rtc/allwinner-rtc.c   | 2 +-
->   hw/rtc/aspeed_rtc.c      | 2 +-
->   hw/rtc/ds1338.c          | 2 +-
->   hw/rtc/exynos4210_rtc.c  | 2 +-
->   hw/rtc/goldfish_rtc.c    | 2 +-
->   hw/rtc/ls7a_rtc.c        | 2 +-
->   hw/rtc/m48t59.c          | 2 +-
->   hw/rtc/mc146818rtc.c     | 6 +++---
->   hw/rtc/pl031.c           | 6 +++---
->   hw/rtc/twl92230.c        | 4 ++--
->   hw/rtc/xlnx-zynqmp-rtc.c | 2 +-
->   11 files changed, 16 insertions(+), 16 deletions(-)
+On 6/11/23 12:54, Philippe Mathieu-Daudé wrote:
+> On 6/11/23 07:57, Richard Henderson wrote:
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   target/arm/hvf/hvf.c | 13 ++++++++-----
+>>   1 file changed, 8 insertions(+), 5 deletions(-)
+> 
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Typo "target" in subject.
 
 
