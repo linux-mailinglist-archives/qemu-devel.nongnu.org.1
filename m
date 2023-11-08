@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58A5C7E592E
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 15:35:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A94167E5983
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 15:54:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0jcl-0003hF-5T; Wed, 08 Nov 2023 09:33:43 -0500
+	id 1r0jvH-0001RW-Ie; Wed, 08 Nov 2023 09:52:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0jci-0003h2-Sf
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 09:33:40 -0500
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0jvG-0001RN-DX
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 09:52:50 -0500
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0jch-0006Vs-8Y
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 09:33:40 -0500
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2c50fbc218bso86259301fa.3
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 06:33:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0jvE-0002Et-Ld
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 09:52:50 -0500
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-9d224dca585so1080829566b.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 06:52:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699454017; x=1700058817; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=SUi9y5bLAzCx+3JdbgnGbPL8ag7jLzWYgknDzZmr/oo=;
- b=lEVmVXdOpKzjVf3Xvlyl+cjVNFsTbIU75eAzohcBaYa6lIk9xCzq2sVRX8CiykZe5c
- VLfc+gLZ1yAfRuY0KHVQFZWVEx3mZEBekQJU7nSNF/qnxaIhvXN0xRrvHNiDrtTHDlgd
- qj6pudfqHoQkWj258C6G0qCiGMK02j/AcbFoT1jlBaWEIdmvWnj4a/MpeQS3QzYH+gRf
- OUeKldxCgQnfOAGjbzX3HNZ+OAbU2jDeT07gDQ6t5Sdgxt6L1A0TDA5Z4dRQ8vFs1WWz
- 0hQFRyRlZAS82kpMmtbdbjL1pZhHCJ5vQV3jJ9bOQRYuosSAnztIpxAhfshxCKkqx3Yq
- +bxg==
+ d=linaro.org; s=google; t=1699455166; x=1700059966; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wDdmF0dac/ehT5un6rtZ/BCMjBn2hJpxmqGf5ogGxBQ=;
+ b=Kqc+ZR+ECvky18Uf5Itzb+3xwkoHGJx68mZsZXkyBwsrOwAeORrC0WrLpinNBEo/Th
+ yaKgobDaGxzEqFUnqfliaMxCwJrwa6NmKaV8RZ4M3nABvomPtnjKuhR3GBFOrBx49KVO
+ cBG5xMcGD8y8Klo9YorJs4B65HFEzKp0KbzJwF+3ugQmglgzLrTNwNXoktATEQnW0Qno
+ tgzy8M5DH0359y2aNlpezeKAqbGqkSo0vgIJUrB0r0KCpVL/AEv3PY5bxd/vwn8cptiX
+ krqGv5ye9OZDaOIBjq5nvxg6Fk7NrFT2pcCeu+9ZVYuOW50Vs0XEPX3xWJn66SL17iSB
+ yTsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699454017; x=1700058817;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SUi9y5bLAzCx+3JdbgnGbPL8ag7jLzWYgknDzZmr/oo=;
- b=ICMlN/K5oe5OlANb9ALHNENase9l442phE7G0QI3/4O8h3tYZZ1x0SJuxUqBXkLctL
- 5+KFxGq8P7CgrzugBjuAm3oXoeZh6W+HwjHKvxdAeU4Tp+LHq4EjpiFMJP/okIwLudRj
- Ws4d3uMZOY/d0mT35J2QX/RcmS54Uau+sJUlHjePZJEBM0yoxAmyDf6igw6Q/uUYfk4g
- YWrBVukWcVxn4X2a4TuJ5RRLEAqPCN1itmVRhjNcz7v3JSvaZxwkQemv7BmOKsvEsIk9
- c+QD/RbGFNzaptJuSo/+TmA90RIgEq+OJKixtpu1tr6wmk8cp/X0QNJHXsHZSlu/QSoN
- 47nA==
-X-Gm-Message-State: AOJu0YygTcGpit7dDTtpmk1VHHgm7uwI8wacwtMEXIUQBDALl6+FfNqy
- 4IUkn1bJxPP02t8m5iyOFPQrQw==
-X-Google-Smtp-Source: AGHT+IEX/mR237Q+TgK1r55YZqc/3D+KAS5nW8O91vHidvDLocVM2yonH6l0arUSjrdVC0YMEIV2mA==
-X-Received: by 2002:a2e:80da:0:b0:2bd:d34:e1ef with SMTP id
- r26-20020a2e80da000000b002bd0d34e1efmr1747948ljg.3.1699454017109; 
- Wed, 08 Nov 2023 06:33:37 -0800 (PST)
-Received: from [192.168.69.115] ([176.187.199.60])
+ d=1e100.net; s=20230601; t=1699455166; x=1700059966;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wDdmF0dac/ehT5un6rtZ/BCMjBn2hJpxmqGf5ogGxBQ=;
+ b=lkx61qmh2LBdEvuIW6ZUEetveEFapV/KRdYJ3mDnZPR8btpjD0YLiHDVpKdYSql3Nl
+ vDdV0JXlYmEHtA0AsapfyZxP7KtMid9D9iHCaiqdbfeATcXZvJQ4aIgUxnWQm/3DJ0xF
+ H4cCy5pZPfIgW8+FdXIhDGuWla+9iAGCBTqpMRqlauT3mFNyRzhDr9R8mEGRVl+k6Nuw
+ +w0AcMIWXKPX4YgVqfUUVxbvjGnqdytcOdqUAb8dg1+DN8CMFaBXPNpMV/0vjSmAyrBQ
+ h3qyWQ+rj/2Yx38k6LHtjsPRl2SLfw6dOMAuXHWVhYhY1wLFAhJPKEdYtAsgsxWNMUYz
+ qwOw==
+X-Gm-Message-State: AOJu0YyGvhrEFC+HocLT66/IcS0kaYFEighLSUbEZ/ZKsPT+A7fV8jxh
+ 2S4iPPVnUDPEcgweMvIHEMxIQq5+Rt6ZB96M//A=
+X-Google-Smtp-Source: AGHT+IFlXkjY7dXeGSKYUQMyPAb/+GrSj08DX4hjaF02XmSgRhu1Hk1NpDdFgTEks8PtLUgiSTZRdw==
+X-Received: by 2002:a17:906:794a:b0:9e1:21d:fdaa with SMTP id
+ l10-20020a170906794a00b009e1021dfdaamr1903099ejo.57.1699455166606; 
+ Wed, 08 Nov 2023 06:52:46 -0800 (PST)
+Received: from m1x-phil.lan ([176.187.199.60])
  by smtp.gmail.com with ESMTPSA id
- k9-20020a5d5189000000b0032da75af3easm5074912wrv.80.2023.11.08.06.33.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Nov 2023 06:33:36 -0800 (PST)
-Message-ID: <fbc70e51-5a09-497e-a22f-48416eb688d1@linaro.org>
-Date: Wed, 8 Nov 2023 15:33:35 +0100
+ s19-20020a170906455300b0099bd1ce18fesm1165398ejq.10.2023.11.08.06.52.45
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 08 Nov 2023 06:52:46 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 11/35 1/2] tcg/arm: Factor tcg_out_cmp() out
+Date: Wed,  8 Nov 2023 15:52:42 +0100
+Message-ID: <20231108145244.72421-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231028194522.245170-12-richard.henderson@linaro.org>
+References: <20231028194522.245170-12-richard.henderson@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/20] mcdstub: tcp packet processing added
-Content-Language: en-US
-To: Nicolas Eder <nicolas.eder@lauterbach.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Christian Boenig <christian.boenig@lauterbach.com>
-References: <20231107130323.4126-1-nicolas.eder@lauterbach.com>
- <20231107130323.4126-6-nicolas.eder@lauterbach.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231107130323.4126-6-nicolas.eder@lauterbach.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x232.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,56 +91,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Nicolas,
+From: Richard Henderson <richard.henderson@linaro.org>
 
-On 7/11/23 14:03, Nicolas Eder wrote:
-> ---
->   include/mcdstub/mcdstub.h | 144 ++++++++++++++++++++
->   mcdstub/mcdstub.c         | 277 ++++++++++++++++++++++++++++++++++++++
->   2 files changed, 421 insertions(+)
-> 
-> diff --git a/include/mcdstub/mcdstub.h b/include/mcdstub/mcdstub.h
-> index 36058157ae..1461d0e1cb 100644
-> --- a/include/mcdstub/mcdstub.h
-> +++ b/include/mcdstub/mcdstub.h
-> @@ -25,6 +25,21 @@ typedef struct MCDProcess {
->       char target_xml[1024];
->   } MCDProcess;
->   
-> +typedef void (*MCDCmdHandler)(GArray *params, void *user_ctx);
-> +typedef struct MCDCmdParseEntry {
-> +    MCDCmdHandler handler;
-> +    const char *cmd;
-> +    char schema[CMD_SCHEMA_LENGTH];
-> +} MCDCmdParseEntry;
-> +
-> +typedef union MCDCmdVariant {
-> +    const char *data;
-> +    uint32_t data_uint32_t;
-> +    uint64_t data_uint64_t;
-> +    uint32_t query_handle;
-> +    uint32_t cpu_id;
-> +} MCDCmdVariant;
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20231028194522.245170-12-richard.henderson@linaro.org>
+[PMD: Split from bigger patch, part 1/2]
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ tcg/arm/tcg-target.c.inc | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-[...]
+diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
+index 0c29a3929b..66d71af8bf 100644
+--- a/tcg/arm/tcg-target.c.inc
++++ b/tcg/arm/tcg-target.c.inc
+@@ -1191,6 +1191,13 @@ static void tcg_out_mb(TCGContext *s, TCGArg a0)
+     }
+ }
+ 
++static TCGCond tcg_out_cmp(TCGContext *s, TCGCond cond, TCGReg a,
++                           TCGArg b, int b_const)
++{
++    tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0, a, b, b_const);
++    return cond;
++}
++
+ static TCGCond tcg_out_cmp2(TCGContext *s, const TCGArg *args,
+                             const int *const_args)
+ {
+@@ -1806,9 +1813,8 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         /* Constraints mean that v2 is always in the same register as dest,
+          * so we only need to do "if condition passed, move v1 to dest".
+          */
+-        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0,
+-                        args[1], args[2], const_args[2]);
+-        tcg_out_dat_rIK(s, tcg_cond_to_arm_cond[args[5]], ARITH_MOV,
++        c = tcg_out_cmp(s, args[5], args[1], args[2], const_args[2]);
++        tcg_out_dat_rIK(s, tcg_cond_to_arm_cond[c], ARITH_MOV,
+                         ARITH_MVN, args[0], 0, args[3], const_args[3]);
+         break;
+     case INDEX_op_add_i32:
+@@ -1958,25 +1964,21 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         break;
+ 
+     case INDEX_op_brcond_i32:
+-        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0,
+-                       args[0], args[1], const_args[1]);
+-        tcg_out_goto_label(s, tcg_cond_to_arm_cond[args[2]],
+-                           arg_label(args[3]));
++        c = tcg_out_cmp(s, args[2], args[0], args[1], const_args[1]);
++        tcg_out_goto_label(s, tcg_cond_to_arm_cond[c], arg_label(args[3]));
+         break;
+     case INDEX_op_setcond_i32:
+-        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0,
+-                        args[1], args[2], const_args[2]);
+-        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[args[3]],
++        c = tcg_out_cmp(s, args[3], args[1], args[2], const_args[2]);
++        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[c],
+                         ARITH_MOV, args[0], 0, 1);
+-        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[tcg_invert_cond(args[3])],
++        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[tcg_invert_cond(c)],
+                         ARITH_MOV, args[0], 0, 0);
+         break;
+     case INDEX_op_negsetcond_i32:
+-        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0,
+-                        args[1], args[2], const_args[2]);
+-        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[args[3]],
++        c = tcg_out_cmp(s, args[3], args[1], args[2], const_args[2]);
++        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[c],
+                         ARITH_MVN, args[0], 0, 0);
+-        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[tcg_invert_cond(args[3])],
++        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[tcg_invert_cond(c)],
+                         ARITH_MOV, args[0], 0, 0);
+         break;
+ 
+-- 
+2.41.0
 
-Can we add an URL to the spec in this file header?
-
-It should be relatively easy to add a qtest for MCB, with raw
-packets to:
-- read memory
-- write memory
-- read register
-- write register
-- register breakpoint
-- run vcpu
-- stop vcpu
-
-Maybe we can write a tiny code that loop incrementing a static
-variable, run for few ms and check the variable got incremented?
-That would exercise most of these commands.
-
-Regards,
-
-Phil.
 
