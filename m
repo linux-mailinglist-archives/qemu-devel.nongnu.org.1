@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ECF97E51AB
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 09:08:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79A107E51B2
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 09:10:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0dbj-0005iB-Il; Wed, 08 Nov 2023 03:08:15 -0500
+	id 1r0ddF-0007Jd-Bm; Wed, 08 Nov 2023 03:09:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r0dbh-0005ff-MT
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 03:08:13 -0500
-Received: from mail-qt1-x82a.google.com ([2607:f8b0:4864:20::82a])
+ id 1r0dd8-0007JD-AY; Wed, 08 Nov 2023 03:09:42 -0500
+Received: from mail-qt1-x829.google.com ([2607:f8b0:4864:20::829])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r0dbe-0006vn-UA
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 03:08:13 -0500
-Received: by mail-qt1-x82a.google.com with SMTP id
- d75a77b69052e-41ea8debcdaso26307561cf.1
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 00:08:10 -0800 (PST)
+ id 1r0dd6-0007B2-TJ; Wed, 08 Nov 2023 03:09:42 -0500
+Received: by mail-qt1-x829.google.com with SMTP id
+ d75a77b69052e-41cda69486eso43665321cf.3; 
+ Wed, 08 Nov 2023 00:09:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699430890; x=1700035690; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699430979; x=1700035779; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=847TtZnj/STbWnjwuk8/68HaCnVou++Ajcyk7pZkRyo=;
- b=S7D6alKtnN3aJ0vNAXIgEYY3Yb+3Z9iS8YOnor+pe2j1n6H54PbsRFVN7uK7oPXTsP
- zH8WWMyjccubLHGsENrYXXNDqZ7N0DrAuYtZAkWDg+yAvImyntgDf17fMzqugoOIUHFl
- oUz7xAZQDErnDWkBqlTmEg84D7Px/4FTeL9ymrH/V2J/BPyEKbW7Ho8M3qfkMGrxP0a/
- DyQTeZSP+BkE/xLscfZk2kThLYmx4RxCaXDRnH8Y/579nzLiktoxscltPBow5zHC9KAV
- Axzm/xudmBR2rgjVrUSatMeqGTsUxD21CXioLww3X3J45TklHyDCK7N6SRSH2DPA1Oio
- 5hLg==
+ bh=Cfl2MiedisAHQs4dplmh3iddyfb9uLMnSum/VncmNcI=;
+ b=TPUd3aFaxsx6oNw6aWdx4yfNZEMnID83/fOHsMtiGL/cX/YoHUW3LgzJ87x7f81IZw
+ hHmFjEZaq/s+8GqYx4/yaFSKOmGsg3Arvfv+sOooYBOyUbCL+lVI6K0RBqSsE4jx9oYd
+ sMCc4NQztb4meHQa/IyFFEJsutda5UJZObrwcvup7Oaui6OSn3zisXKn9nPoWvCnOsOE
+ ocYalqMiZtIVkzGviw/h5R+7phFor2MzMUrMUiG42iGiE14M6UhbuSrCbnGwGKA9akph
+ mYxBXxIeZODjNw6ce9tq9H/5NcYjCAqG/sOljhaHJDmcD1vZmSn6YihIHNFPXkQHzl9l
+ TB6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699430890; x=1700035690;
+ d=1e100.net; s=20230601; t=1699430979; x=1700035779;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=847TtZnj/STbWnjwuk8/68HaCnVou++Ajcyk7pZkRyo=;
- b=YYTZAqf5Otpz6QmQL6P/sFPe2lQwyJZqo0HtoiarBIaXoR2pAz1XPWWL3jjm0ZUpvl
- HB0BQnsV+ldAElGSc781PF5fo6DPJyMZ1lUZa2HrBfY2IhTkeW3TD8fFJ9dJHfvaqs4t
- CQKbRhrP8nnLQJzrpBBD859sVuuepSLojW8JdSZTpHig7GqcvOANzymx76scTSj3FQYu
- jGd87svM0+Xg90LYGdMqsFLjk0gARlKD2wHB1MLNf9kQ83V0fVWql8+BOG24dszDMMhz
- iDdFngcJai2QMethUiLBDIqhMpVsvDz0z7HVVD5xl6EzQh96YEeRuG8AIxzW96vHHDRu
- IZhg==
-X-Gm-Message-State: AOJu0YwlOFCzpR8zYo0EO7K+l45FJ63Wd07uNR8Q9O7Lsgjmm1rUIAvs
- SzpWHPsbiJNE/kQA0O4NmEa/hhR+Vh+EeBu2I4Z6uOavWGs0HQ==
-X-Google-Smtp-Source: AGHT+IHeJmHt/Y9qGaS3yXDhXYxjLe4vw3NwHB1dv4xwQNyg/RYHweTgVPmYeS5DH/Xg/lGPOzCTHDMZUBpfjFPfGaM=
-X-Received: by 2002:ac8:7dc4:0:b0:418:152d:bf4 with SMTP id
- c4-20020ac87dc4000000b00418152d0bf4mr1317342qte.51.1699430889778; Wed, 08 Nov
- 2023 00:08:09 -0800 (PST)
+ bh=Cfl2MiedisAHQs4dplmh3iddyfb9uLMnSum/VncmNcI=;
+ b=MOQ5uDRxAzGNbAaOKf12FDei8iY0+5nWvFVjqA4DRVNjsckfkCSiqU0MSzBaQsSfus
+ Jp9dqUv6IGBAaAY0wgWiTJdngSOhwI6V+XUfke6jvTBIzWvQPcY6JZbXMInC9lDzJPiK
+ sAEYXSowdZa6S5WvIh5Pn1guhB6zPWZbJ2mbkb0ufvlbUdvVwFq4tezpolcK+ryuvzo3
+ 15rpzhapokZpa2sNXQKYRqUKXLNtWpIzrqVRGbou9JIU+LMSKhDatlZs9O4JrwoNCBzc
+ 0sXvoCABb1UbohS+EY1e8ZrtANXOowLplTryhibnFE6irkCQJSpEWzJ4GAjVbh729u7K
+ OiWA==
+X-Gm-Message-State: AOJu0YxxUJYj8WC6yfFgLzVgVc+gQ8h4Nj79N4Ep33EG2KgbFLVke8qD
+ V/BX6v17fmJEyWbEmp3bexWgSXa8oVthaDJqLCE=
+X-Google-Smtp-Source: AGHT+IEohPqD3GD5mvCGa1HTKrsiQgsDjr0t6A/BxFv83WWoG+wHMzmmNOXVbeh9pb1PgZy1SYFchGGcrCdI4xFxxBU=
+X-Received: by 2002:ac8:570b:0:b0:41e:2aab:8dc with SMTP id
+ 11-20020ac8570b000000b0041e2aab08dcmr1438032qtw.37.1699430979474; Wed, 08 Nov
+ 2023 00:09:39 -0800 (PST)
 MIME-Version: 1.0
-References: <20231108053731.112043-1-armbru@redhat.com>
- <20231108053731.112043-3-armbru@redhat.com>
-In-Reply-To: <20231108053731.112043-3-armbru@redhat.com>
+References: <20231107142048.22422-1-frankja@linux.ibm.com>
+ <20231107142048.22422-3-frankja@linux.ibm.com>
+In-Reply-To: <20231107142048.22422-3-frankja@linux.ibm.com>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Wed, 8 Nov 2023 12:07:58 +0400
-Message-ID: <CAJ+F1C+NCXqhwY7Sj0BZAm3G-BCexqK_Ozot6FWnwhhd+cFoSw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] dump: Fix HMP dump-guest-memory -z without -R
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, stephen.s.brennan@oracle.com, berrange@redhat.com
+Date: Wed, 8 Nov 2023 12:09:28 +0400
+Message-ID: <CAJ+F1C+oP_dDjo5fyog+GDYVcFvG6vYE=ikdwLfNo+fYhqeRag@mail.gmail.com>
+Subject: Re: [PATCH 2/4] target/s390x/dump: Remove unneeded dump info function
+ pointer init
+To: Janosch Frank <frankja@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com, 
+ imbrenda@linux.ibm.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82a;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::829;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x829.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,38 +87,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 8, 2023 at 9:38=E2=80=AFAM Markus Armbruster <armbru@redhat.com=
+Hi
+
+On Tue, Nov 7, 2023 at 6:22=E2=80=AFPM Janosch Frank <frankja@linux.ibm.com=
 > wrote:
 >
-> -z without -R has no effect: the dump format remains @elf.  Fix the
-> logic error so it becomes @kdump-zlib.
+> dump_state_prepare() now sets the fucntion pointers to NULL so we only
+
+function
+
+> need to touch them if we're going to use them.
 >
-> Fixes: e6549197f7ed (dump: Add command interface for kdump-raw formats)
-> Fixes: CID 1523841
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+
+regardless if the previous patch is applied, this patch lgtm
 
 Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
 > ---
->  dump/dump-hmp-cmds.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  target/s390x/arch_dump.c | 4 ----
+>  1 file changed, 4 deletions(-)
 >
-> diff --git a/dump/dump-hmp-cmds.c b/dump/dump-hmp-cmds.c
-> index b428ec33df..d9340427c3 100644
-> --- a/dump/dump-hmp-cmds.c
-> +++ b/dump/dump-hmp-cmds.c
-> @@ -41,7 +41,7 @@ void hmp_dump_guest_memory(Monitor *mon, const QDict *q=
-dict)
->          dump_format =3D DUMP_GUEST_MEMORY_FORMAT_WIN_DMP;
+> diff --git a/target/s390x/arch_dump.c b/target/s390x/arch_dump.c
+> index 51a2116515..bdb0bfa0e7 100644
+> --- a/target/s390x/arch_dump.c
+> +++ b/target/s390x/arch_dump.c
+> @@ -448,10 +448,6 @@ int cpu_get_dump_info(ArchDumpInfo *info,
+>          info->arch_sections_add_fn =3D *arch_sections_add;
+>          info->arch_sections_write_hdr_fn =3D *arch_sections_write_hdr;
+>          info->arch_sections_write_fn =3D *arch_sections_write;
+> -    } else {
+> -        info->arch_sections_add_fn =3D NULL;
+> -        info->arch_sections_write_hdr_fn =3D NULL;
+> -        info->arch_sections_write_fn =3D NULL;
 >      }
->
-> -    if (zlib && raw) {
-> +    if (zlib) {
->          if (raw) {
->              dump_format =3D DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_ZLIB;
->          } else {
+>      return 0;
+>  }
 > --
-> 2.41.0
+> 2.34.1
 >
 >
 
