@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFBF07E58E7
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 15:29:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A5C7E592E
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 15:35:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0jXB-0008O6-WD; Wed, 08 Nov 2023 09:27:58 -0500
+	id 1r0jcl-0003hF-5T; Wed, 08 Nov 2023 09:33:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0jX6-0008NO-5z
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 09:27:52 -0500
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0jci-0003h2-Sf
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 09:33:40 -0500
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0jX3-0004qx-NL
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 09:27:51 -0500
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-9c41e95efcbso1044511666b.3
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 06:27:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0jch-0006Vs-8Y
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 09:33:40 -0500
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2c50fbc218bso86259301fa.3
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 06:33:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699453668; x=1700058468; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699454017; x=1700058817; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=UTVySnCHqdBYrtYlFPk0dG8SS+HryJ+3ImfDHYCMhSM=;
- b=o93ooex0v4eKpcGvPuQ7acN5LYAz0O3Z1MRm7oQOiqEYxJbmr5a+68dySIe6dwsFRl
- pjSPu2B8v6I3qu8pjneMOC2lNv7oeWtPr0NEqk/REynTIyTwqxHxCQOfikDLAEHX5Zbv
- bxB3I3P+cm5rBtFX6evW2G3CyNrAVp9V1qA+RUM5qAK+7FvsitUhUDRjvMjq8iAm1M8Y
- OVYyPZteWcwf093Me6UGjFChMYnsyQFiMyam4nxe3RUzAUgwr3U/tXBT4DeaCw1/ARuz
- dll8G2Z+jU9+2/2y0FbJ71q69sbglMwp4B19YwXDrDHLDdC/ymul0WwiaatyGfocuMMv
- Ub1w==
+ bh=SUi9y5bLAzCx+3JdbgnGbPL8ag7jLzWYgknDzZmr/oo=;
+ b=lEVmVXdOpKzjVf3Xvlyl+cjVNFsTbIU75eAzohcBaYa6lIk9xCzq2sVRX8CiykZe5c
+ VLfc+gLZ1yAfRuY0KHVQFZWVEx3mZEBekQJU7nSNF/qnxaIhvXN0xRrvHNiDrtTHDlgd
+ qj6pudfqHoQkWj258C6G0qCiGMK02j/AcbFoT1jlBaWEIdmvWnj4a/MpeQS3QzYH+gRf
+ OUeKldxCgQnfOAGjbzX3HNZ+OAbU2jDeT07gDQ6t5Sdgxt6L1A0TDA5Z4dRQ8vFs1WWz
+ 0hQFRyRlZAS82kpMmtbdbjL1pZhHCJ5vQV3jJ9bOQRYuosSAnztIpxAhfshxCKkqx3Yq
+ +bxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699453668; x=1700058468;
+ d=1e100.net; s=20230601; t=1699454017; x=1700058817;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UTVySnCHqdBYrtYlFPk0dG8SS+HryJ+3ImfDHYCMhSM=;
- b=NWj3biymlQTNPIV9Cv1S74g4IeItEcRxii9UId53HkHYhlw1RiAB2cNEMbUig9GpIm
- dCHkv2Fb3g8MEuwKj/33SYJR/juD+2rZDj7Km70ZDDGb3ol3Gnc+W+2uDYWvh5OFuwms
- GsoI8asyxPpiYzJOYoC/uBWyZvuPvhBDLCNVvIE5fmr2WPJt3bSUzIjdFle+IwNHgcig
- I/exRB6HKn2zspqGeCMxjql/0tdcxZfvbuAE9iBT2uZ0tWm92AeW2rLNvWfJPEonTyOk
- bgGxIibVkHurbBRxxagWAmY7ItvC6o0wX5/HS3bP/pgmlz/BQr358ywzyBW7G3nP5ip6
- waKQ==
-X-Gm-Message-State: AOJu0Yy8PyYXJ7ZjBWMngfkBBDyOMgVs7Z8KUut3YEbQPn1neysHj3SD
- bkEtTBZrQV21/El5vKC5+i3qBA==
-X-Google-Smtp-Source: AGHT+IFUTyMe1KwO1Z6c+3hS4EvXtZxm3ncpM+M67IB4hA9IkvBqdJVPSFZ9eUoIysb7hF6GFn1osQ==
-X-Received: by 2002:a17:907:741:b0:9bf:77ae:3aa9 with SMTP id
- xc1-20020a170907074100b009bf77ae3aa9mr1586129ejb.24.1699453668069; 
- Wed, 08 Nov 2023 06:27:48 -0800 (PST)
+ bh=SUi9y5bLAzCx+3JdbgnGbPL8ag7jLzWYgknDzZmr/oo=;
+ b=ICMlN/K5oe5OlANb9ALHNENase9l442phE7G0QI3/4O8h3tYZZ1x0SJuxUqBXkLctL
+ 5+KFxGq8P7CgrzugBjuAm3oXoeZh6W+HwjHKvxdAeU4Tp+LHq4EjpiFMJP/okIwLudRj
+ Ws4d3uMZOY/d0mT35J2QX/RcmS54Uau+sJUlHjePZJEBM0yoxAmyDf6igw6Q/uUYfk4g
+ YWrBVukWcVxn4X2a4TuJ5RRLEAqPCN1itmVRhjNcz7v3JSvaZxwkQemv7BmOKsvEsIk9
+ c+QD/RbGFNzaptJuSo/+TmA90RIgEq+OJKixtpu1tr6wmk8cp/X0QNJHXsHZSlu/QSoN
+ 47nA==
+X-Gm-Message-State: AOJu0YygTcGpit7dDTtpmk1VHHgm7uwI8wacwtMEXIUQBDALl6+FfNqy
+ 4IUkn1bJxPP02t8m5iyOFPQrQw==
+X-Google-Smtp-Source: AGHT+IEX/mR237Q+TgK1r55YZqc/3D+KAS5nW8O91vHidvDLocVM2yonH6l0arUSjrdVC0YMEIV2mA==
+X-Received: by 2002:a2e:80da:0:b0:2bd:d34:e1ef with SMTP id
+ r26-20020a2e80da000000b002bd0d34e1efmr1747948ljg.3.1699454017109; 
+ Wed, 08 Nov 2023 06:33:37 -0800 (PST)
 Received: from [192.168.69.115] ([176.187.199.60])
  by smtp.gmail.com with ESMTPSA id
- f6-20020a05600c4e8600b003fefb94ccc9sm19950237wmq.11.2023.11.08.06.27.47
+ k9-20020a5d5189000000b0032da75af3easm5074912wrv.80.2023.11.08.06.33.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Nov 2023 06:27:47 -0800 (PST)
-Message-ID: <2ed8e417-438e-4d44-9e1b-f391328afc4d@linaro.org>
-Date: Wed, 8 Nov 2023 15:27:45 +0100
+ Wed, 08 Nov 2023 06:33:36 -0800 (PST)
+Message-ID: <fbc70e51-5a09-497e-a22f-48416eb688d1@linaro.org>
+Date: Wed, 8 Nov 2023 15:33:35 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/20] first version of mcdstub
+Subject: Re: [PATCH v3 05/20] mcdstub: tcp packet processing added
 Content-Language: en-US
 To: Nicolas Eder <nicolas.eder@lauterbach.com>, qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Christian Boenig <christian.boenig@lauterbach.com>
 References: <20231107130323.4126-1-nicolas.eder@lauterbach.com>
+ <20231107130323.4126-6-nicolas.eder@lauterbach.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231107130323.4126-1-nicolas.eder@lauterbach.com>
+In-Reply-To: <20231107130323.4126-6-nicolas.eder@lauterbach.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x232.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,32 +96,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Hi Nicolas,
 
 On 7/11/23 14:03, Nicolas Eder wrote:
-> SUMMARY
-> =======
+> ---
+>   include/mcdstub/mcdstub.h | 144 ++++++++++++++++++++
+>   mcdstub/mcdstub.c         | 277 ++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 421 insertions(+)
 > 
-> This patch-set introduces the first version of the mcdstub.
+> diff --git a/include/mcdstub/mcdstub.h b/include/mcdstub/mcdstub.h
+> index 36058157ae..1461d0e1cb 100644
+> --- a/include/mcdstub/mcdstub.h
+> +++ b/include/mcdstub/mcdstub.h
+> @@ -25,6 +25,21 @@ typedef struct MCDProcess {
+>       char target_xml[1024];
+>   } MCDProcess;
+>   
+> +typedef void (*MCDCmdHandler)(GArray *params, void *user_ctx);
+> +typedef struct MCDCmdParseEntry {
+> +    MCDCmdHandler handler;
+> +    const char *cmd;
+> +    char schema[CMD_SCHEMA_LENGTH];
+> +} MCDCmdParseEntry;
+> +
+> +typedef union MCDCmdVariant {
+> +    const char *data;
+> +    uint32_t data_uint32_t;
+> +    uint64_t data_uint64_t;
+> +    uint32_t query_handle;
+> +    uint32_t cpu_id;
+> +} MCDCmdVariant;
 
+[...]
 
->   30 files changed, 3749 insertions(+), 38 deletions(-)
->   create mode 100644 debug/debug-common.c
->   create mode 100644 debug/debug-gdb.c
->   create mode 100644 debug/debug-mcd.c
->   create mode 100644 include/cutils.h
->   create mode 100644 include/mcdstub/arm_mcdstub.h
->   create mode 100644 include/mcdstub/mcd_shared_defines.h
->   create mode 100644 include/mcdstub/mcdstub.h
->   create mode 100644 include/mcdstub/mcdstub_common.h
->   create mode 100644 include/qemu/debug.h
->   create mode 100644 mcdstub/mcdstub.c
->   create mode 100644 mcdstub/meson.build
->   create mode 100644 target/arm/mcdstub.c
+Can we add an URL to the spec in this file header?
 
-These files are missing a license. Adding:
-/* SPDX-License-Identifier: GPL-2.0-or-later */
-on the first line is usually enough.
+It should be relatively easy to add a qtest for MCB, with raw
+packets to:
+- read memory
+- write memory
+- read register
+- write register
+- register breakpoint
+- run vcpu
+- stop vcpu
 
-No need to respin a v4 yet, let's wait for technical
-comments on your patches.
+Maybe we can write a tiny code that loop incrementing a static
+variable, run for few ms and check the variable got incremented?
+That would exercise most of these commands.
 
 Regards,
 
