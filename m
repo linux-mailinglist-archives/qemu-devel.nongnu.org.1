@@ -2,91 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2E067E610E
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 00:34:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD94E7E6115
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 00:38:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0s3K-0002jl-1b; Wed, 08 Nov 2023 18:33:42 -0500
+	id 1r0s79-00060Z-V5; Wed, 08 Nov 2023 18:37:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r0s3I-0002jd-Kx
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 18:33:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1r0s77-0005ng-EZ
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 18:37:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r0s3F-0001Kq-QL
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 18:33:40 -0500
+ id 1r0s6s-00029I-5I
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 18:37:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699486416;
+ s=mimecast20190719; t=1699486640;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=xXvpNJG4lPmVbNx5yplm8n2NeMOGVKBYtUYUO8C3gMY=;
- b=D3ygvyO+2H6UO8AOaN17kaILlx4eJAf8ruuAXHOZMrPFf1+392sI1xYiqxTibvPefPN08S
- TmZ+K8KoCZJw3R3vKEFuR2L3Sb2DXGAjZfyxhW58P/r6rlg11DVnnm/uydslHA4GWCgJCv
- erTSPUyLkY4g5wbmLE/4FQMdcbR5eBY=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=NTid6SXbBreQgkWHXMzcvO/GT017hkg++wKMuzLo/NM=;
+ b=IkbKkyqow8Ix6xksLXBw+2M37VXDliRDybtdJAUxntyhujU3f5vkyequCNPcZypHUR2Fkk
+ fFN7tO9aKPTO1anjO6qpM9KmlT3pdKNbrZWDstmaYeWh6mC/RMJhbKdD+5msF7zAIA6f7K
+ 2vATNpMGMdefE80V7S44ZKMh1gxsocM=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-279-qKxa_vesPnmsnQE2QwhmaA-1; Wed, 08 Nov 2023 18:33:34 -0500
-X-MC-Unique: qKxa_vesPnmsnQE2QwhmaA-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9dd89e2ce17so19925866b.0
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 15:33:34 -0800 (PST)
+ us-mta-384-A6okuw21NECfT0icvECPpg-1; Wed, 08 Nov 2023 18:37:16 -0500
+X-MC-Unique: A6okuw21NECfT0icvECPpg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9c797b497e8so19381666b.0
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 15:37:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699486413; x=1700091213;
+ d=1e100.net; s=20230601; t=1699486635; x=1700091435;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=xXvpNJG4lPmVbNx5yplm8n2NeMOGVKBYtUYUO8C3gMY=;
- b=BnCgIoRuh2dSivowDpNMbMNYpFrN5UoDVeJUapNiZJnbOS6rKoUeC9UNtCShxEuROM
- iusJSFJXoovc4swQpL+a09Q/WZx7uOkafX8n6TsDFAoSKxnXBj/pFNbZMGzcIzgfATCr
- h7qqo0bjLMCU6i7M1EqiD5hhszNmTZXwHhrDzFlqUDpnKi0HM1Liv/qHiiCARbgGpqV3
- 8EKs4IiF6tnAso276WDSoJJKD4rAmMFoAXZNLnWwPwHiFlP1pnRZtP09vVEtWXpqAW4K
- DdGhIVSreAio7Job0tToBPrrEbvQQxz/wcUSHkpXwp/+dnbHmPE7WPGaBmUvzBA8wKF/
- JwWw==
-X-Gm-Message-State: AOJu0Yw3zqRXwNWnKw/b88o3bGFXak4ICrGKsi7roXY4EwJ3G8/dXOFh
- WfrD+Yhlt3kWjQNr5IbzLCL73/qJ9f2ECk4N6rpSg6IR8WjfJEYcBtyLAwZ9I7va7hU37AHKnGm
- nAgCoKDrIG/W3x8Tiuy0QxpTipkcqPJs=
-X-Received: by 2002:a17:907:3fa6:b0:9b2:babd:cd51 with SMTP id
- hr38-20020a1709073fa600b009b2babdcd51mr3114715ejc.5.1699486413680; 
- Wed, 08 Nov 2023 15:33:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGsWOJoaH2g2Pu+FD1m53gDv6JqgY4QW/Sy8JyHdSE/AyhTysuFcXRVIm4UAuenrX1nlqPHyPWMLxiL9urZBPE=
-X-Received: by 2002:a17:907:3fa6:b0:9b2:babd:cd51 with SMTP id
- hr38-20020a1709073fa600b009b2babdcd51mr3114700ejc.5.1699486413324; Wed, 08
- Nov 2023 15:33:33 -0800 (PST)
+ bh=NTid6SXbBreQgkWHXMzcvO/GT017hkg++wKMuzLo/NM=;
+ b=bDYjee2RtFrfb8m1MjT1XdqxKNBIcFW45jF/VHwVJvLe8y+wlNYFUPDBz4Kzv4LzAp
+ 9FBKXLrUSVbfCsxeXoj4Gklxz5RmNMi1UdARmXEus1cxGYb2uz2MfvuhJpyl2V79sfQ7
+ S6J4Odf3yObhyYSn6Ngi8vNC1dLK2ZBuhREv/2a7fTzkFhg/jNfr0raP1NIqfj7YzuZb
+ 7b8I/eoEbMgm/L/y8JBWHxmHkw0yR+VYDE1LxNMRA3s4M5DYRsAI7oENSBgKxK7VuYaQ
+ 9jVh84AVMXqD0thfG1qKNRAasui96AqjX3/rX2yVAtpPIs5GpaJ0kG8ynb2SBhKxo1jb
+ qCWg==
+X-Gm-Message-State: AOJu0Yw3IhVXICjAT9p2DcDRnc5ow9AzajjD/FPPPLNA3yM0i3lhdXFF
+ b1jTcDS5amTbCE4lQJCMs+ss0AkcUXOstEAgSEZY8V+EV5MDCW2La7YA3nRR0T2KHnufEL72IiY
+ VvOhM7hSYYc/uWXAlAhBezXI606cXkSg=
+X-Received: by 2002:a17:907:7f06:b0:9be:7de2:927f with SMTP id
+ qf6-20020a1709077f0600b009be7de2927fmr2796339ejc.66.1699486635536; 
+ Wed, 08 Nov 2023 15:37:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEj5eA3sn0cea9+2iDaWwKpjVOWF4Bb9RHjIOEAr995nG0jNskRf9pfx5bxe+FVJ2VckspBF8rz9A1BFEvQqmg=
+X-Received: by 2002:a17:907:7f06:b0:9be:7de2:927f with SMTP id
+ qf6-20020a1709077f0600b009be7de2927fmr2796323ejc.66.1699486635201; Wed, 08
+ Nov 2023 15:37:15 -0800 (PST)
 MIME-Version: 1.0
 References: <20231108183251.80572-1-philmd@linaro.org>
- <20231108183251.80572-2-philmd@linaro.org>
- <CAFEAcA9xgS_8VV1S+-7vaqSqzK_2=0hJ+ceDP7BVdFd6TUR-nw@mail.gmail.com>
- <44d8c245-122a-47f0-25e2-eae1dac8ac18@eik.bme.hu>
-In-Reply-To: <44d8c245-122a-47f0-25e2-eae1dac8ac18@eik.bme.hu>
+ <20231108183251.80572-3-philmd@linaro.org>
+In-Reply-To: <20231108183251.80572-3-philmd@linaro.org>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 9 Nov 2023 00:33:20 +0100
-Message-ID: <CABgObfa00En_Hodn8UaAUNH5Eq1tMbBSAq+6j69pKaZ-iG3Xew@mail.gmail.com>
-Subject: Re: [NOTFORMERGE PATCH 1/2] configure: Use distrib meson
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel <qemu-devel@nongnu.org>, John Snow <jsnow@redhat.com>, 
+Date: Thu, 9 Nov 2023 00:37:04 +0100
+Message-ID: <CABgObfZXaAT2CsN2LAZZ_8sszq+t+GvL-EH5mdxEFeSo5_GijQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] .gitlab-ci.d/cirrus: Add manual testing of macOS 14
+ (Sonoma)
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>, John Snow <jsnow@redhat.com>, 
  =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Rene Engel <ReneEngel80@emailn.de>, 
+ Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
  Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>, 
  Howard Spoelstra <hsp.cat7@gmail.com>
-Content-Type: multipart/alternative; boundary="000000000000f794240609ac8336"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Content-Type: multipart/alternative; boundary="000000000000312a4a0609ac9180"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,84 +100,290 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000f794240609ac8336
+--000000000000312a4a0609ac9180
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Il mer 8 nov 2023, 20:52 BALATON Zoltan <balaton@eik.bme.hu> ha scritto:
+Il mer 8 nov 2023, 19:33 Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> ha
+scritto:
 
-> AFAIU the problem is that macOS has system python in
-> /Library/Frameworks/python.framework (or something like that) but homebrew
-> does not use that but installs its own python somewhere in /opt and meson
-> from homebrew uses that python but configure finds the system python which
-> does not have meson so it then downloads its own meson but that's too old
-> for macOS Sonoma
+> Upgrade libvirt-ci so it covers macOS 14. Add a manual entry
+> (QEMU_JOB_OPTIONAL: 1) to test on Sonoma release. Refresh the
+> lci-tool generated files.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+> Docs are disabled due to:
+>
+>   Collecting sphinx
+>     Downloading sphinx-7.2.6-py3-none-any.whl.metadata (5.9 kB)
+>   Collecting sphinx-rtd-theme
+>     Downloading sphinx_rtd_theme-1.3.0-py2.py3-none-any.whl.metadata (4.5
+> kB)
+>
 
-
-Correct (except s/downloads/installs/), basically --python/$PYTHON is the
-sole interpreter used to run *any* Python code during the QEMU build. The
-difference is that QEMU 8.1 would indeed download Meson, while QEMU 8.2
-always uses the wheel that is shipped with QEMU. This change was done
-because the embedded Meson is intended to be a "known good" version that we
-(and pythondeps.toml) can point users to, in case a newer version from the
-distro has issues. Of course the other side of the coin is that an older
-version might not support new OSes as in this case.
-
-The workaround below is not just a workaround but the intended solution if
-one wants to use the Meson and Sphinx packages from homebrew, and cannot
-modify the PATH to privilege homebrew's Python interpreter. In order to
-support Sonoma out of the box with the system Python, however, we can bump
-the shipped version of Meson to 1.2.x (and adjust pythondeps.toml).
+Same issue: the pip that is installing sphinx is unrelated to the Python
+that is used to compile QEMU. Use /opt/homebrew/bin/pip3 instead.
 
 Paolo
 
-It should probably check for homebrew or macports
-> locations too or check for meson and get the python that's using. A
-> workaround apparently is to pass --python with the right path to
-> configure.
+  ...
+>   Installing collected packages ...
+>   ...
+>   python determined to be '/opt/homebrew/bin/python3'
+>   python version: Python 3.11.6
+>   mkvenv: Creating non-isolated virtual environment at 'pyvenv'
+>   mkvenv: checking for sphinx>=3D1.6
+>   mkvenv: checking for sphinx_rtd_theme>=3D0.5
+>   ...
+>   Program /opt/homebrew/opt/python@3.12/bin/sphinx-build found: NO
+>   ../docs/meson.build:1:15: ERROR: Program '/opt/homebrew/opt/python@3.12=
+/bin/sphinx-build'
+> not found or not executable
+>
+> =C2=AF\_(=E3=83=84)_/=C2=AF
+> ---
+>  .gitlab-ci.d/cirrus.yml           | 17 +++++++++++++++++
+>  .gitlab-ci.d/cirrus/macos-14.vars | 16 ++++++++++++++++
+>  tests/lcitool/libvirt-ci          |  2 +-
+>  tests/lcitool/refresh             |  1 +
+>  4 files changed, 35 insertions(+), 1 deletion(-)
+>  create mode 100644 .gitlab-ci.d/cirrus/macos-14.vars
+>
+> diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
+> index 07dc6edae1..84ce143509 100644
+> --- a/.gitlab-ci.d/cirrus.yml
+> +++ b/.gitlab-ci.d/cirrus.yml
+> @@ -74,6 +74,23 @@ aarch64-macos-13-base-build:
+>      PKG_CONFIG_PATH:
+> /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt=
+/homebrew/readline/lib/pkgconfig
+>      TEST_TARGETS: check-unit check-block check-qapi-schema
+> check-softfloat check-qtest-x86_64
+>
+> +aarch64-macos-14-base-build:
+> +  extends: .cirrus_build_job
+> +  variables:
+> +    NAME: macos-14
+> +    CIRRUS_VM_INSTANCE_TYPE: macos_instance
+> +    CIRRUS_VM_IMAGE_SELECTOR: image
+> +    CIRRUS_VM_IMAGE_NAME: ghcr.io/cirruslabs/macos-sonoma-base:latest
+> +    CIRRUS_VM_CPUS: 12
+> +    CIRRUS_VM_RAM: 24G
+> +    UPDATE_COMMAND: brew update
+> +    INSTALL_COMMAND: brew install
+> +    PATH_EXTRA: /opt/homebrew/ccache/libexec:/opt/homebrew/gettext/bin
+> +    PKG_CONFIG_PATH:
+> /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt=
+/homebrew/readline/lib/pkgconfig
+> +    TEST_TARGETS: check-unit check-block check-qapi-schema
+> check-softfloat check-qtest-x86_64
+> +    QEMU_JOB_OPTIONAL: 1
+> +    CONFIGURE_ARGS: --disable-docs
+> +
+>
+>  # The following jobs run VM-based tests via KVM on a Linux-based
+> Cirrus-CI job
+>  .cirrus_kvm_job:
+> diff --git a/.gitlab-ci.d/cirrus/macos-14.vars
+> b/.gitlab-ci.d/cirrus/macos-14.vars
+> new file mode 100644
+> index 0000000000..43070f4a26
+> --- /dev/null
+> +++ b/.gitlab-ci.d/cirrus/macos-14.vars
+> @@ -0,0 +1,16 @@
+> +# THIS FILE WAS AUTO-GENERATED
+> +#
+> +#  $ lcitool variables macos-14 qemu
+> +#
+> +# https://gitlab.com/libvirt/libvirt-ci
+> +
+> +CCACHE=3D'/opt/homebrew/bin/ccache'
+> +CPAN_PKGS=3D''
+> +CROSS_PKGS=3D''
+> +MAKE=3D'/opt/homebrew/bin/gmake'
+> +NINJA=3D'/opt/homebrew/bin/ninja'
+> +PACKAGING_COMMAND=3D'brew'
+> +PIP3=3D'/opt/homebrew/bin/pip3'
+> +PKGS=3D'bash bc bison bzip2 capstone ccache cmocka ctags curl dbus
+> diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 jemalloc
+> jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libsli=
+rp
+> libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja
+> pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse
+> spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
+> +PYPI_PKGS=3D'PyYAML numpy pillow sphinx sphinx-rtd-theme tomli'
+> +PYTHON=3D'/opt/homebrew/bin/python3'
+> diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
+> index 36bc517161..77c800186f 160000
+> --- a/tests/lcitool/libvirt-ci
+> +++ b/tests/lcitool/libvirt-ci
+> @@ -1 +1 @@
+> -Subproject commit 36bc517161c45ead20224d47f2dc4fa428af6724
+> +Subproject commit 77c800186f34b21be7660750577cc5582a914deb
+> diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+> index 2259f131b4..e11d0ba381 100755
+> --- a/tests/lcitool/refresh
+> +++ b/tests/lcitool/refresh
+> @@ -197,6 +197,7 @@ try:
+>      #
+>      generate_cirrus("freebsd-13")
+>      generate_cirrus("macos-13")
+> +    generate_cirrus("macos-14")
+>
+>      #
+>      # VM packages lists
+> --
+> 2.41.0
+>
 >
 
---000000000000f794240609ac8336
+--000000000000312a4a0609ac9180
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"auto"><br><br><div class=3D"gmail_quote" dir=3D"auto"><div dir=
-=3D"ltr" class=3D"gmail_attr">Il mer 8 nov 2023, 20:52 BALATON Zoltan &lt;<=
-a href=3D"mailto:balaton@eik.bme.hu" target=3D"_blank" rel=3D"noreferrer">b=
-alaton@eik.bme.hu</a>&gt; ha scritto:<br></div><blockquote class=3D"gmail_q=
-uote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1e=
-x">AFAIU the problem is that macOS has system python in <br>
-/Library/Frameworks/python.framework (or something like that) but homebrew =
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">Il mer 8 nov 2023, 19:33 Philippe Mathieu-Daud=C3=A9 &=
+lt;<a href=3D"mailto:philmd@linaro.org">philmd@linaro.org</a>&gt; ha scritt=
+o:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bo=
+rder-left:1px #ccc solid;padding-left:1ex">Upgrade libvirt-ci so it covers =
+macOS 14. Add a manual entry<br>
+(QEMU_JOB_OPTIONAL: 1) to test on Sonoma release. Refresh the<br>
+lci-tool generated files.<br>
 <br>
-does not use that but installs its own python somewhere in /opt and meson <=
-br>
-from homebrew uses that python but configure finds the system python which =
+Signed-off-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@lin=
+aro.org" target=3D"_blank" rel=3D"noreferrer">philmd@linaro.org</a>&gt;<br>
+---<br>
+Docs are disabled due to:<br>
 <br>
-does not have meson so it then downloads its own meson but that&#39;s too o=
-ld <br>
-for macOS Sonoma</blockquote></div><div dir=3D"auto"><br></div><div dir=3D"=
-auto">Correct (except s/downloads/installs/), basically --python/$PYTHON is=
- the sole interpreter used to run *any* Python code during the QEMU build. =
-The difference is that QEMU 8.1 would indeed download Meson, while QEMU 8.2=
- always uses the wheel that is shipped with QEMU. This change was done beca=
-use the embedded Meson is intended to be a &quot;known good&quot; version t=
-hat we (and pythondeps.toml) can point users to, in case a newer version fr=
-om the distro has issues. Of course the other side of the coin is that an o=
-lder version might not support new OSes as in this case.</div><div dir=3D"a=
-uto"><br></div><div dir=3D"auto">The workaround below is not just a workaro=
-und but the intended solution if one wants to use the Meson and Sphinx pack=
-ages from homebrew, and cannot modify the PATH to privilege homebrew&#39;s =
-Python interpreter. In order to support Sonoma out of the box with the syst=
-em Python, however, we can bump the shipped version of Meson to 1.2.x (and =
-adjust pythondeps.toml).</div><div dir=3D"auto"><br></div><div dir=3D"auto"=
->Paolo</div><div dir=3D"auto"><br></div><div class=3D"gmail_quote" dir=3D"a=
-uto"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-le=
-ft:1px #ccc solid;padding-left:1ex">It should probably check for homebrew o=
-r macports <br>
-locations too or check for meson and get the python that&#39;s using. A <br=
+=C2=A0 Collecting sphinx<br>
+=C2=A0 =C2=A0 Downloading sphinx-7.2.6-py3-none-any.whl.metadata (5.9 kB)<b=
+r>
+=C2=A0 Collecting sphinx-rtd-theme<br>
+=C2=A0 =C2=A0 Downloading sphinx_rtd_theme-1.3.0-py2.py3-none-any.whl.metad=
+ata (4.5 kB)<br></blockquote></div></div><div dir=3D"auto"><br></div><div d=
+ir=3D"auto">Same issue: the pip that is installing sphinx is unrelated to t=
+he Python that is used to compile QEMU. Use /opt/homebrew/bin/pip3 instead.=
+</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"=
+auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote cl=
+ass=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;p=
+adding-left:1ex">
+=C2=A0 ...<br>
+=C2=A0 Installing collected packages ...<br>
+=C2=A0 ...<br>
+=C2=A0 python determined to be &#39;/opt/homebrew/bin/python3&#39;<br>
+=C2=A0 python version: Python 3.11.6<br>
+=C2=A0 mkvenv: Creating non-isolated virtual environment at &#39;pyvenv&#39=
+;<br>
+=C2=A0 mkvenv: checking for sphinx&gt;=3D1.6<br>
+=C2=A0 mkvenv: checking for sphinx_rtd_theme&gt;=3D0.5<br>
+=C2=A0 ...<br>
+=C2=A0 Program /opt/homebrew/opt/python@3.12/bin/sphinx-build found: NO<br>
+=C2=A0 ../docs/meson.build:1:15: ERROR: Program &#39;/opt/homebrew/opt/pyth=
+on@3.12/bin/sphinx-build&#39; not found or not executable<br>
+<br>
+=C2=AF\_(=E3=83=84)_/=C2=AF<br>
+---<br>
+=C2=A0.gitlab-ci.d/cirrus.yml=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 17 =
++++++++++++++++++<br>
+=C2=A0.gitlab-ci.d/cirrus/macos-14.vars | 16 ++++++++++++++++<br>
+=C2=A0tests/lcitool/libvirt-ci=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 2 =
++-<br>
+=C2=A0tests/lcitool/refresh=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+|=C2=A0 1 +<br>
+=C2=A04 files changed, 35 insertions(+), 1 deletion(-)<br>
+=C2=A0create mode 100644 .gitlab-ci.d/cirrus/macos-14.vars<br>
+<br>
+diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml<br>
+index 07dc6edae1..84ce143509 100644<br>
+--- a/.gitlab-ci.d/cirrus.yml<br>
++++ b/.gitlab-ci.d/cirrus.yml<br>
+@@ -74,6 +74,23 @@ aarch64-macos-13-base-build:<br>
+=C2=A0 =C2=A0 =C2=A0PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/=
+homebrew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig<br>
+=C2=A0 =C2=A0 =C2=A0TEST_TARGETS: check-unit check-block check-qapi-schema =
+check-softfloat check-qtest-x86_64<br>
+<br>
++aarch64-macos-14-base-build:<br>
++=C2=A0 extends: .cirrus_build_job<br>
++=C2=A0 variables:<br>
++=C2=A0 =C2=A0 NAME: macos-14<br>
++=C2=A0 =C2=A0 CIRRUS_VM_INSTANCE_TYPE: macos_instance<br>
++=C2=A0 =C2=A0 CIRRUS_VM_IMAGE_SELECTOR: image<br>
++=C2=A0 =C2=A0 CIRRUS_VM_IMAGE_NAME: <a href=3D"http://ghcr.io/cirruslabs/m=
+acos-sonoma-base:latest" rel=3D"noreferrer noreferrer" target=3D"_blank">gh=
+cr.io/cirruslabs/macos-sonoma-base:latest</a><br>
++=C2=A0 =C2=A0 CIRRUS_VM_CPUS: 12<br>
++=C2=A0 =C2=A0 CIRRUS_VM_RAM: 24G<br>
++=C2=A0 =C2=A0 UPDATE_COMMAND: brew update<br>
++=C2=A0 =C2=A0 INSTALL_COMMAND: brew install<br>
++=C2=A0 =C2=A0 PATH_EXTRA: /opt/homebrew/ccache/libexec:/opt/homebrew/gette=
+xt/bin<br>
++=C2=A0 =C2=A0 PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/homeb=
+rew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig<br>
++=C2=A0 =C2=A0 TEST_TARGETS: check-unit check-block check-qapi-schema check=
+-softfloat check-qtest-x86_64<br>
++=C2=A0 =C2=A0 QEMU_JOB_OPTIONAL: 1<br>
++=C2=A0 =C2=A0 CONFIGURE_ARGS: --disable-docs<br>
++<br>
+<br>
+=C2=A0# The following jobs run VM-based tests via KVM on a Linux-based Cirr=
+us-CI job<br>
+=C2=A0.cirrus_kvm_job:<br>
+diff --git a/.gitlab-ci.d/cirrus/macos-14.vars b/.gitlab-ci.d/cirrus/macos-=
+14.vars<br>
+new file mode 100644<br>
+index 0000000000..43070f4a26<br>
+--- /dev/null<br>
++++ b/.gitlab-ci.d/cirrus/macos-14.vars<br>
+@@ -0,0 +1,16 @@<br>
++# THIS FILE WAS AUTO-GENERATED<br>
++#<br>
++#=C2=A0 $ lcitool variables macos-14 qemu<br>
++#<br>
++# <a href=3D"https://gitlab.com/libvirt/libvirt-ci" rel=3D"noreferrer nore=
+ferrer" target=3D"_blank">https://gitlab.com/libvirt/libvirt-ci</a><br>
++<br>
++CCACHE=3D&#39;/opt/homebrew/bin/ccache&#39;<br>
++CPAN_PKGS=3D&#39;&#39;<br>
++CROSS_PKGS=3D&#39;&#39;<br>
++MAKE=3D&#39;/opt/homebrew/bin/gmake&#39;<br>
++NINJA=3D&#39;/opt/homebrew/bin/ninja&#39;<br>
++PACKAGING_COMMAND=3D&#39;brew&#39;<br>
++PIP3=3D&#39;/opt/homebrew/bin/pip3&#39;<br>
++PKGS=3D&#39;bash bc bison bzip2 capstone ccache cmocka ctags curl dbus dif=
+futils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 jemalloc jpeg-t=
+urbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libss=
+h libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pk=
+g-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protoco=
+l swtpm tesseract usbredir vde vte3 xorriso zlib zstd&#39;<br>
++PYPI_PKGS=3D&#39;PyYAML numpy pillow sphinx sphinx-rtd-theme tomli&#39;<br=
 >
-workaround apparently is to pass --python with the right path to <br>
-configure.<br></blockquote></div></div>
++PYTHON=3D&#39;/opt/homebrew/bin/python3&#39;<br>
+diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci<br>
+index 36bc517161..77c800186f 160000<br>
+--- a/tests/lcitool/libvirt-ci<br>
++++ b/tests/lcitool/libvirt-ci<br>
+@@ -1 +1 @@<br>
+-Subproject commit 36bc517161c45ead20224d47f2dc4fa428af6724<br>
++Subproject commit 77c800186f34b21be7660750577cc5582a914deb<br>
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh<br>
+index 2259f131b4..e11d0ba381 100755<br>
+--- a/tests/lcitool/refresh<br>
++++ b/tests/lcitool/refresh<br>
+@@ -197,6 +197,7 @@ try:<br>
+=C2=A0 =C2=A0 =C2=A0#<br>
+=C2=A0 =C2=A0 =C2=A0generate_cirrus(&quot;freebsd-13&quot;)<br>
+=C2=A0 =C2=A0 =C2=A0generate_cirrus(&quot;macos-13&quot;)<br>
++=C2=A0 =C2=A0 generate_cirrus(&quot;macos-14&quot;)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0#<br>
+=C2=A0 =C2=A0 =C2=A0# VM packages lists<br>
+-- <br>
+2.41.0<br>
+<br>
+</blockquote></div></div></div>
 
---000000000000f794240609ac8336--
+--000000000000312a4a0609ac9180--
 
 
