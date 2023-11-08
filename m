@@ -2,84 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482CE7E5BCD
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 17:57:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA897E5BD3
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 17:59:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0lqj-0004nJ-6P; Wed, 08 Nov 2023 11:56:17 -0500
+	id 1r0ltH-0005zT-O6; Wed, 08 Nov 2023 11:58:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r0lqf-0004mv-Lc
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 11:56:13 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r0lqd-0001ZA-GA
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 11:56:13 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-32f7abbb8b4so4393412f8f.0
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 08:56:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699462569; x=1700067369; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=WKRu1qW7m73XqCiSGo2ppaPxSAL/et4FkCiZ0PAFizw=;
- b=UCFXKHfgbKDnqQT+CARBP5u56IWGZvyoH5IYqbHSLobNpRFkljhK9W9PDF22BrjALE
- owHtgp4kcQuOd91mofZgGpFpWDUVlOlldU8s3B11/j0eWyYIbT8vKOFOr8hTUkQg2zfg
- rp3An3bGXSynJLv51Zig23W3ztbKTKhDMY2RifiQg7VQQP77A6RDTq2D9yBeuoJipez9
- xgEMupx0M4Jqu4IcAACEM9Vk4DxYvNj4QBK2a7/5lZeL/gwVjTgdLD6AN4VDy42z7XGA
- kZb3W+r7/7pS5+aWf00QsBxXVEmUhHlJLmiHtnftCSZXJj4Ypq/btHuhl4JG0j0JELZi
- SEgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699462569; x=1700067369;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=WKRu1qW7m73XqCiSGo2ppaPxSAL/et4FkCiZ0PAFizw=;
- b=HsOK00M97xKdMh8QQscsqkjrdf7tKASfmN1Kxpcg4i1hD+xs0zw7f30TcP5yC74YEt
- fRloSslXBYMFJiDnmyWWwoC0p3WJeiy1yfji2Iw4SXmklBU4UmsLwfpC4DwcFsxUqIJ6
- jwpnK39Lo5HzrB9RQQo2aqJR+uMjrBZUWUGLGVxA0ZtpkcU1mCRoBZsUc4KYKMapKQOg
- P8mktfNP+cuBThSWYbJB96Etnxkm59fP6zV31FK4tTvQZjUYUVJJLzCxzoH/3ubuVKC7
- hsRuRepjKm9iYUjMmocK17sA5IznXz2C588iL2THp2F7CkL7GWVLDePGKE5stUQY1apR
- q9FA==
-X-Gm-Message-State: AOJu0Yy0xhCT6zxsdsZT67IqvTrsULWM7CyRhZnD60btGP/RdMEiykOJ
- YBiPnUJ8TYApqHr6HAgF5n3AAA==
-X-Google-Smtp-Source: AGHT+IHdEgFNLVSqGoG1hEo83E3C5nMYsA2Fxk0tBD7UK17MEommg4P98Dcp5YDSmFXpYZAGoyd/Dw==
-X-Received: by 2002:adf:e652:0:b0:32d:b7d4:b90 with SMTP id
- b18-20020adfe652000000b0032db7d40b90mr1715231wrn.39.1699462569476; 
- Wed, 08 Nov 2023 08:56:09 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a6-20020a056000100600b0031984b370f2sm5344923wrx.47.2023.11.08.08.56.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Nov 2023 08:56:09 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B2FA25F751;
- Wed,  8 Nov 2023 16:56:08 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0ltG-0005xt-AH
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 11:58:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0ltE-0001kE-JH
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 11:58:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699462730;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Z/GkScLipQ+ld/deVdwtBd0nxl78rZMkrpeLIxFEArI=;
+ b=Kk8RyONwhb+aQt9zP60/QanvtZzI4UaIBZ750k5N9Hd4d5CJmJWpGx4aqwCrQXkHTV/0iU
+ noUzjVUCzCXrMEZ35th8g9Wiawf1To1Wev9KjqOoIyQItLAUN1VLJh9lFXJkJ+0XAM0epg
+ XVyi0/jnOG1+CIoKot6hwV5JNynwVW8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-178-eSQLIQVaNrmXehrJArwzEQ-1; Wed, 08 Nov 2023 11:58:47 -0500
+X-MC-Unique: eSQLIQVaNrmXehrJArwzEQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0612D185A783
+ for <qemu-devel@nongnu.org>; Wed,  8 Nov 2023 16:58:47 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.39.193.161])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8696F492BE8;
+ Wed,  8 Nov 2023 16:58:46 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Anders Roxell <anders.roxell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [RFC PATCH] tests/docker: merge debian-native with debian-amd64
-Date: Wed,  8 Nov 2023 16:56:02 +0000
-Message-Id: <20231108165602.3865524-1-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
+Cc: kwolf@redhat.com
+Subject: [PULL v2 00/25] Block layer patches
+Date: Wed,  8 Nov 2023 17:58:41 +0100
+Message-ID: <20231108165841.102073-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,225 +75,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-debian-native isn't really needed and suffers from the problem of
-tracking a distros dependencies rather than the projects. With a
-little surgery we can make the debian-amd64 container architecture
-neutral and allow people to use it to build a native QEMU.
+The following changes since commit 462ad017ed76889d46696a3581e1b52343f9b683:
 
-Rename it so it follows the same non-arch pattern of the other distro
-containers.
+  Merge tag 'pixman-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2023-11-07 19:00:03 +0800)
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Cc: Anders Roxell <anders.roxell@linaro.org>
----
- .gitlab-ci.d/buildtest.yml                    | 12 ++---
- .gitlab-ci.d/containers.yml                   |  2 +-
- tests/docker/Makefile.include                 |  3 --
- tests/docker/dockerfiles/debian-native.docker | 54 -------------------
- .../{debian-amd64.docker => debian.docker}    |  7 ++-
- tests/lcitool/refresh                         |  9 ++--
- 6 files changed, 18 insertions(+), 69 deletions(-)
- delete mode 100644 tests/docker/dockerfiles/debian-native.docker
- rename tests/docker/dockerfiles/{debian-amd64.docker => debian.docker} (96%)
+are available in the Git repository at:
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index da72f7c690..7f9af83b10 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -70,7 +70,7 @@ build-system-debian:
-   needs:
-     job: amd64-debian-container
-   variables:
--    IMAGE: debian-amd64
-+    IMAGE: debian
-     CONFIGURE_ARGS: --with-coroutine=sigaltstack
-     TARGETS: arm-softmmu i386-softmmu riscv64-softmmu sh4eb-softmmu
-       sparc-softmmu xtensa-softmmu
-@@ -82,7 +82,7 @@ check-system-debian:
-     - job: build-system-debian
-       artifacts: true
-   variables:
--    IMAGE: debian-amd64
-+    IMAGE: debian
-     MAKE_CHECK_ARGS: check
- 
- avocado-system-debian:
-@@ -91,7 +91,7 @@ avocado-system-debian:
-     - job: build-system-debian
-       artifacts: true
-   variables:
--    IMAGE: debian-amd64
-+    IMAGE: debian
-     MAKE_CHECK_ARGS: check-avocado
-     AVOCADO_TAGS: arch:arm arch:i386 arch:riscv64 arch:sh4 arch:sparc arch:xtensa
- 
-@@ -101,7 +101,7 @@ crash-test-debian:
-     - job: build-system-debian
-       artifacts: true
-   variables:
--    IMAGE: debian-amd64
-+    IMAGE: debian
-   script:
-     - cd build
-     - make NINJA=":" check-venv
-@@ -589,7 +589,7 @@ build-tools-and-docs-debian:
-     # when running on 'master' we use pre-existing container
-     optional: true
-   variables:
--    IMAGE: debian-amd64
-+    IMAGE: debian
-     MAKE_CHECK_ARGS: check-unit ctags TAGS cscope
-     CONFIGURE_ARGS: --disable-system --disable-user --enable-docs --enable-tools
-     QEMU_JOB_PUBLISH: 1
-@@ -609,7 +609,7 @@ build-tools-and-docs-debian:
- # of what topic branch they're currently using
- pages:
-   extends: .base_job_template
--  image: $CI_REGISTRY_IMAGE/qemu/debian-amd64:$QEMU_CI_CONTAINER_TAG
-+  image: $CI_REGISTRY_IMAGE/qemu/debian:$QEMU_CI_CONTAINER_TAG
-   stage: test
-   needs:
-     - job: build-tools-and-docs-debian
-diff --git a/.gitlab-ci.d/containers.yml b/.gitlab-ci.d/containers.yml
-index 8637a13d86..ae79d4c58b 100644
---- a/.gitlab-ci.d/containers.yml
-+++ b/.gitlab-ci.d/containers.yml
-@@ -11,7 +11,7 @@ amd64-debian-container:
-   extends: .container_job_template
-   stage: containers
-   variables:
--    NAME: debian-amd64
-+    NAME: debian
- 
- amd64-ubuntu2204-container:
-   extends: .container_job_template
-diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
-index cd4688bf07..5ba5b50ab9 100644
---- a/tests/docker/Makefile.include
-+++ b/tests/docker/Makefile.include
-@@ -88,9 +88,6 @@ DOCKER_PARTIAL_IMAGES += debian-s390x-cross
- DOCKER_PARTIAL_IMAGES += fedora
- endif
- 
--# The native build should never use the registry
--docker-image-debian-native: DOCKER_REGISTRY=
--
- # alpine has no adduser
- docker-image-alpine: NOUSER=1
- 
-diff --git a/tests/docker/dockerfiles/debian-native.docker b/tests/docker/dockerfiles/debian-native.docker
-deleted file mode 100644
-index abac7d7cd7..0000000000
---- a/tests/docker/dockerfiles/debian-native.docker
-+++ /dev/null
-@@ -1,54 +0,0 @@
--#
--# Docker Debian Native
--#
--# This is intended to build QEMU on native host systems. Debian is
--# chosen due to the broadest range on supported host systems for QEMU.
--#
--# This docker target is based on the docker.io Debian Bullseye base
--# image rather than QEMU's base because we would otherwise confuse the
--# build grabbing stuff from the registry built for other
--# architectures.
--#
--FROM docker.io/library/debian:bullseye-slim
--MAINTAINER Alex Bennée <alex.bennee@linaro.org>
--
--# Duplicate deb line as deb-src
--RUN cat /etc/apt/sources.list | sed "s/^deb\ /deb-src /" >> /etc/apt/sources.list
--
--# Install common build utilities
--RUN apt update && \
--    DEBIAN_FRONTEND=noninteractive apt install -yy eatmydata
--
--RUN apt update && \
--    DEBIAN_FRONTEND=noninteractive eatmydata \
--    apt build-dep -yy --arch-only qemu
--
--RUN apt update && \
--    DEBIAN_FRONTEND=noninteractive eatmydata \
--    apt install -y --no-install-recommends \
--        cscope \
--        genisoimage \
--        exuberant-ctags \
--        global \
--        libbz2-dev \
--        liblzo2-dev \
--        libgcrypt20-dev \
--        libfdt-dev \
--        librdmacm-dev \
--        libsasl2-dev \
--        libsnappy-dev \
--        libvte-dev \
--        netcat-openbsd \
--        ninja-build \
--        openssh-client \
--        python3-numpy \
--        python3-opencv \
--        python3-venv
--
--ENV QEMU_CONFIGURE_OPTS $QEMU_CONFIGURE_OPTS
--ENV DEF_TARGET_LIST "none"
--# As a final step configure the user (if env is defined)
--ARG USER
--ARG UID
--RUN if [ "${USER}" ]; then \
--  id ${USER} 2>/dev/null || useradd -u ${UID} -U ${USER}; fi
-diff --git a/tests/docker/dockerfiles/debian-amd64.docker b/tests/docker/dockerfiles/debian.docker
-similarity index 96%
-rename from tests/docker/dockerfiles/debian-amd64.docker
-rename to tests/docker/dockerfiles/debian.docker
-index 9b50fb2f63..b5e642d5b6 100644
---- a/tests/docker/dockerfiles/debian-amd64.docker
-+++ b/tests/docker/dockerfiles/debian.docker
-@@ -155,10 +155,13 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
-   apt install -y --no-install-recommends \
-   cscope\
-   global\
--  linux-headers-amd64
-+  linux-headers-generic
- RUN git clone https://github.com/luigirizzo/netmap.git /usr/src/netmap
- RUN cd /usr/src/netmap && git checkout v11.3
--RUN cd /usr/src/netmap/LINUX && ./configure --no-drivers --no-apps --kernel-dir=$(ls -d /usr/src/linux-headers-*-amd64) && make install
-+RUN cd /usr/src/netmap/LINUX && \
-+  ./configure --no-drivers --no-apps \
-+  --kernel-dir=$(ls -d /usr/src/linux-headers-*-$(dpkg --print-architecture)) \
-+  && make install
- ENV QEMU_CONFIGURE_OPTS --enable-netmap
- # As a final step configure the user (if env is defined)
- ARG USER
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 10c54a377c..13250f40c4 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -99,10 +99,13 @@ debian12_extras = [
-     "  apt install -y --no-install-recommends \\\n",
-     "  cscope\\\n",
-     "  global\\\n",
--    "  linux-headers-amd64\n",
-+    "  linux-headers-generic\n",
-     "RUN git clone https://github.com/luigirizzo/netmap.git /usr/src/netmap\n",
-     "RUN cd /usr/src/netmap && git checkout v11.3\n",
--    "RUN cd /usr/src/netmap/LINUX && ./configure --no-drivers --no-apps --kernel-dir=$(ls -d /usr/src/linux-headers-*-amd64) && make install\n",
-+    "RUN cd /usr/src/netmap/LINUX && \\\n",
-+    "  ./configure --no-drivers --no-apps \\\n",
-+    "  --kernel-dir=$(ls -d /usr/src/linux-headers-*-$(dpkg --print-architecture)) \\\n",
-+    "  && make install\n",
-     "ENV QEMU_CONFIGURE_OPTS --enable-netmap\n"
- ]
- 
-@@ -123,7 +126,7 @@ try:
-     #
-     generate_dockerfile("alpine", "alpine-318")
-     generate_dockerfile("centos8", "centos-stream-8")
--    generate_dockerfile("debian-amd64", "debian-12",
-+    generate_dockerfile("debian", "debian-12",
-                         trailer="".join(debian12_extras))
-     generate_dockerfile("fedora", "fedora-38")
-     generate_dockerfile("opensuse-leap", "opensuse-leap-15")
--- 
-2.39.2
+  https://repo.or.cz/qemu/kevin.git tags/for-upstream
+
+for you to fetch changes up to b523a3d54f3d031a54cd0931cc5d855608e63140:
+
+  hw/ide/ahci: trigger either error IRQ or regular IRQ, not both (2023-11-08 17:56:18 +0100)
+
+----------------------------------------------------------------
+Block layer patches
+
+- Graph locking part 6 (bs->file/backing)
+- ahci: trigger either error IRQ or regular IRQ, not both
+
+----------------------------------------------------------------
+Kevin Wolf (24):
+      block: Mark bdrv_probe_blocksizes() and callers GRAPH_RDLOCK
+      block: Mark bdrv_has_zero_init() and callers GRAPH_RDLOCK
+      block: Mark bdrv_filter_bs() and callers GRAPH_RDLOCK
+      block: Mark bdrv_root_attach_child() GRAPH_WRLOCK
+      block: Mark block_job_add_bdrv() GRAPH_WRLOCK
+      block: Mark bdrv_filter_or_cow_bs() and callers GRAPH_RDLOCK
+      block: Mark bdrv_skip_implicit_filters() and callers GRAPH_RDLOCK
+      block: Mark bdrv_skip_filters() and callers GRAPH_RDLOCK
+      block: Mark bdrv_(un)freeze_backing_chain() and callers GRAPH_RDLOCK
+      block: Mark bdrv_chain_contains() and callers GRAPH_RDLOCK
+      block: Mark bdrv_filter_child() and callers GRAPH_RDLOCK
+      block: Mark bdrv_cow_child() and callers GRAPH_RDLOCK
+      block: Mark bdrv_set_backing_hd_drained() GRAPH_WRLOCK
+      block: Inline bdrv_set_backing_noperm()
+      block: Mark bdrv_replace_node_common() GRAPH_WRLOCK
+      block: Mark bdrv_replace_node() GRAPH_WRLOCK
+      block: Protect bs->backing with graph_lock
+      blkverify: Add locking for request_fn
+      block: Introduce bdrv_co_change_backing_file()
+      block: Add missing GRAPH_RDLOCK annotations
+      qcow2: Take locks for accessing bs->file
+      vhdx: Take locks for accessing bs->file
+      block: Take graph lock for most of .bdrv_open
+      block: Protect bs->file with graph_lock
+
+Niklas Cassel (1):
+      hw/ide/ahci: trigger either error IRQ or regular IRQ, not both
+
+ block/copy-on-read.h                   |   3 +-
+ block/parallels.h                      |   5 +-
+ block/qcow2.h                          |  59 +++++-----
+ block/qed.h                            |   2 +-
+ block/vhdx.h                           |   9 +-
+ include/block/block-global-state.h     |  43 ++++----
+ include/block/block-io.h               |  10 +-
+ include/block/block_int-common.h       |  31 +++---
+ include/block/block_int-global-state.h |  16 +--
+ include/block/block_int-io.h           |  19 ++--
+ include/block/blockjob.h               |   5 +-
+ include/block/blockjob_int.h           |   9 +-
+ block.c                                | 192 +++++++++++++++++++--------------
+ block/backup.c                         |  21 ++--
+ block/blkdebug.c                       |  29 ++---
+ block/blkreplay.c                      |   8 +-
+ block/blkverify.c                      |  18 ++--
+ block/block-backend.c                  |   5 +
+ block/block-copy.c                     |  11 +-
+ block/bochs.c                          |   4 +
+ block/cloop.c                          |   4 +
+ block/commit.c                         |  32 +++++-
+ block/copy-before-write.c              |   6 +-
+ block/copy-on-read.c                   |  19 +++-
+ block/crypto.c                         |  10 ++
+ block/dmg.c                            |  21 ++--
+ block/filter-compress.c                |   5 +-
+ block/io.c                             |   2 +
+ block/mirror.c                         |  88 ++++++++++-----
+ block/monitor/block-hmp-cmds.c         |   3 +
+ block/parallels-ext.c                  |  21 ++--
+ block/parallels.c                      |  22 ++--
+ block/preallocate.c                    |  27 +++--
+ block/qcow.c                           |  13 ++-
+ block/qcow2-bitmap.c                   |  14 +--
+ block/qcow2-cluster.c                  |  25 ++---
+ block/qcow2.c                          | 148 +++++++++++++------------
+ block/qed.c                            |  88 ++++++++-------
+ block/raw-format.c                     |  36 ++++---
+ block/replication.c                    |  12 ++-
+ block/snapshot-access.c                |   5 +-
+ block/stream.c                         |  48 ++++++---
+ block/throttle.c                       |   3 +
+ block/vdi.c                            |  15 ++-
+ block/vhdx-log.c                       |  40 +++----
+ block/vhdx.c                           |  37 ++++---
+ block/vmdk.c                           |  23 ++--
+ block/vpc.c                            |   6 +-
+ blockdev.c                             |  72 ++++++++-----
+ blockjob.c                             |   6 +-
+ hw/ide/ahci.c                          |   5 +-
+ migration/block-dirty-bitmap.c         |   4 +
+ nbd/server.c                           |   6 ++
+ qemu-img.c                             |  31 ++++--
+ tests/unit/test-bdrv-drain.c           |  39 +++++--
+ tests/unit/test-bdrv-graph-mod.c       |  18 +++-
+ 56 files changed, 926 insertions(+), 527 deletions(-)
 
 
