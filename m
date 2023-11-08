@@ -2,96 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88DBA7E5299
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 10:23:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF3E7E529D
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 10:24:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0ekr-0006nZ-Id; Wed, 08 Nov 2023 04:21:45 -0500
+	id 1r0emw-00087l-Li; Wed, 08 Nov 2023 04:23:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0eko-0006n7-Ia
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 04:21:43 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0emu-00086w-RX
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 04:23:52 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0ekm-00053U-SP
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 04:21:42 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r0emt-0005IF-Ai
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 04:23:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699435299;
+ s=mimecast20190719; t=1699435430;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mVltpDhtj4PVlsIXSPVizZGJfqxb0+3KzSxnkHaLVXA=;
- b=JYMlcYcao9ktHFntmarC48eNr6N6t7QgLQALb8lcQ3JHh7BYeby/ogr2GI+c4g7rKZ2F8/
- q16XOi/27Kb7OmUWsfITNJdT7DIeBGHK0Gpz0Dqi/FynulmA5K7KxSZ4hOuAU/2PWVaJ//
- M1IvVegVSv+df7L/s3ma4OimsbfRrvY=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=o4kNiL8HtZ+KnSFj62fiqupRPWfr3wi/gZYwBUJx8Fk=;
+ b=REt4wG+C6ErEE5EIpAhmqq8dLbiRUmwGvPQrSG23GCSXIa1kqSgg8qIT/UJ3BhPfZH7zJG
+ gzElG92x2aSb3kMzD1uyq6kEAZu0GFSfUDHJL/0Q8Tmgp4pHUWEhA8WhucvZ7Y1WFdRhNe
+ b0FLEL/fXYiHPQE2YtBM8WyK/5tCCvs=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-263-c6gRcFfmOKepi5Re4OUhfw-1; Wed, 08 Nov 2023 04:21:37 -0500
-X-MC-Unique: c6gRcFfmOKepi5Re4OUhfw-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-66d03dcdc6bso78886616d6.1
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 01:21:37 -0800 (PST)
+ us-mta-594-Df14eMyBPSCcwrSY4LwjbA-1; Wed, 08 Nov 2023 04:23:48 -0500
+X-MC-Unique: Df14eMyBPSCcwrSY4LwjbA-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6717027ac96so76994366d6.2
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 01:23:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699435297; x=1700040097;
+ d=1e100.net; s=20230601; t=1699435428; x=1700040228;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mVltpDhtj4PVlsIXSPVizZGJfqxb0+3KzSxnkHaLVXA=;
- b=gHgV+ny3Xa48rOGbRTnAibnj8qgYu/nczpiXb+7sR54T5DnDPlkjY17QNnsT5rJEn0
- XwIK/f/0+ajKD3e9nPl8cTHvYk6mnoljuMm8E2diu9wOjnlhnYcAiovVeZEIRkFYeHE/
- asSdioT9qoGwYK02kiTdoLqobOJvWU2GxBBsLo5SH3oBRLZ+RWyngGaFKOpfyWTQ3rbL
- imwQH2zETaKoSiFU9bMDUaQrUCBoVJsLIB5HseHm8xNqdLTcmag+zgZf4VQKbUa7h3YU
- 3gM+NpbUefB3bLkgF/3KHT3NJcZIV+jygUnJdnSkIa423OSk3j/8BvNBLVhMKGurN7vK
- 9E6g==
-X-Gm-Message-State: AOJu0YzlMG2WLIgqACHZeHillMCY3w50m08GublPIJs2AZretxkpS9LI
- D4dQ7jbEnRvw5dWtwzrVTAwGdXuHbewoC1sCI8i9Cmc75R6te/wsGOxEboF0I/svyWq+ZhATmrN
- JDmPqpQcug+fw9Rw=
-X-Received: by 2002:a05:6214:2687:b0:66d:5dd:26f6 with SMTP id
- gm7-20020a056214268700b0066d05dd26f6mr1308594qvb.25.1699435297418; 
- Wed, 08 Nov 2023 01:21:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEr83PctT5PjQ5xxIIwGc+W86mwbenAj6iG8EUxqYvSadOWdu+8pUH4mkBwW3pO1YC2+7C5kQ==
-X-Received: by 2002:a05:6214:2687:b0:66d:5dd:26f6 with SMTP id
- gm7-20020a056214268700b0066d05dd26f6mr1308575qvb.25.1699435297094; 
- Wed, 08 Nov 2023 01:21:37 -0800 (PST)
+ bh=o4kNiL8HtZ+KnSFj62fiqupRPWfr3wi/gZYwBUJx8Fk=;
+ b=ulVnbeDExbzSby6tqC1GRyQMMJUeLPXd2le74gP08xJ4lOfEOr0AhCQuz1Rt5p8WBy
+ 1i6KoBhWh2j4vNQ2puRjGB5ryC4LhDaDM5aqrdRVaT1jIjh1631V/PuUlIwv5Q6kMM5v
+ 2T9zgDXngEAQxi7cnc94ml3d/cKJql/6wHQ3yQcq3bwOM755HGU5OiMKAgtHNfMnwbYN
+ w43DCCxmwKGpcACuhWj5mpQUvoUEsJZH1GtYkVPX1y4O6YmiSoaVU3U3BJLnirakgbvN
+ efagfUx7GiFj1c44p61ZE8I1GJcfx7pgeivsj+xygzZskjPHlzkjiPpr2TsDM+P7+T/P
+ 99hQ==
+X-Gm-Message-State: AOJu0Yy1L8q3j7rwYxSb8CXN124IG4DOJPaLuWXREKaRJbWD4n1e4Z3d
+ Pn/yY2TXhRyOl50u/DHpGo0M3yNVb+DfLycmLGMTz7ENvqRJFWATKK1y9oYx5Rt9xiOlWABlS7G
+ 9YJNZhLeTJ+WBLAI=
+X-Received: by 2002:ad4:5d6b:0:b0:671:3f49:c8b7 with SMTP id
+ fn11-20020ad45d6b000000b006713f49c8b7mr1204721qvb.51.1699435428379; 
+ Wed, 08 Nov 2023 01:23:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEO/8BSwXqMZtqx2oiMljdH6ynLX1eWa+yRlSUaSVm0zJ5CIcOQqQv6bGIKxxf7qyXgIDXzHA==
+X-Received: by 2002:ad4:5d6b:0:b0:671:3f49:c8b7 with SMTP id
+ fn11-20020ad45d6b000000b006713f49c8b7mr1204697qvb.51.1699435428081; 
+ Wed, 08 Nov 2023 01:23:48 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- bu7-20020ad455e7000000b0064f5d70d072sm873432qvb.37.2023.11.08.01.21.34
+ l8-20020a056214104800b0065d89f4d537sm867006qvr.45.2023.11.08.01.23.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Nov 2023 01:21:36 -0800 (PST)
-Message-ID: <cb8d044d-72ad-4197-ae29-78599cf4771f@redhat.com>
-Date: Wed, 8 Nov 2023 10:21:33 +0100
+ Wed, 08 Nov 2023 01:23:47 -0800 (PST)
+Message-ID: <3fe23c92-e25c-486c-b7d4-81bf09a5f106@redhat.com>
+Date: Wed, 8 Nov 2023 10:23:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v4 00/41] vfio: Adopt iommufd
 Content-Language: en-US
-To: Matthew Rosato <mjrosato@linux.ibm.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com, Thomas Huth <thuth@redhat.com>,
- Eric Farman <farman@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- "Jason J. Herne" <jjherne@linux.ibm.com>,
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
+ <nicolinc@nvidia.com>, "Martins, Joao" <joao.m.martins@oracle.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
+ "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
+ Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>, "Jason J. Herne" <jjherne@linux.ibm.com>,
  Tony Krowiak <akrowiak@linux.ibm.com>
 References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
  <d8f1ecdd-4ce8-4811-8efe-6607e71a9f98@redhat.com>
  <923acaad-4e52-442f-b688-277e87a48469@linux.ibm.com>
+ <SJ0PR11MB67444527CF73955C131AABD892A8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <SJ0PR11MB6744D2DDA934B345ABAADFB092A8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <923acaad-4e52-442f-b688-277e87a48469@linux.ibm.com>
+In-Reply-To: <SJ0PR11MB6744D2DDA934B345ABAADFB092A8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -109,79 +116,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/8/23 04:26, Matthew Rosato wrote:
-> On 11/7/23 1:28 PM, Cédric Le Goater wrote:
->> On 11/2/23 08:12, Zhenzhong Duan wrote:
->>> Hi,
->>>
->>> Thanks all for giving guides and comments on previous series, here is
->>> the v4 of pure iommufd support part.
->>>
->>> Based on Cédric's suggestion, this series includes an effort to remove
->>> spapr code from container.c, now all spapr functions are moved to spapr.c
->>> or spapr_pci_vfio.c, but there are still a few trival check on
->>> VFIO_SPAPR_TCE_*_IOMMU which I am not sure if deserved to introduce many
->>> callbacks and duplicate code just to remove them. Some functions are moved
->>> to spapr.c instead of spapr_pci_vfio.c to avoid compile issue because
->>> spapr_pci_vfio.c is arch specific, or else we need to introduce stub
->>> functions to those spapr functions moved.
->>>
->>>
->>> PATCH 1-5: Move spapr functions to spapr*.c
->>> PATCH 6-20: Abstract out base container
->>> PATCH 21-24: Introduce sparpr container and its specific interface
+>>> FYI, I first tried this vfio-8.2 branch on s390x but wasn't actually able to use the
+>>> iommufd backend (was getting errors like Property 'vfio-pci.iommufd' not found)
+>>> so I think something isn't actually enabling IOMMUFD as expected with your
+>>> change...
 >>
->> PATCH 6-24 applied to vfio-next :
->>
->>    https://github.com/legoater/qemu/commits/vfio-next
->>
->> (with a global s/fucntional/functional/)
->>
->>
->> I also pushed the remaining patches on :
->>
->>    https://github.com/legoater/qemu/commits/vfio-8.2
->>
->> with a slight rework of the IOMMUFD configuration, now done per platform.
->> The VFIO frontend and the 'iommufd' object are only available on x86_64,
->> arm, s390x.
+>> It looks CONFIG_IOMMUFD is recognized by Kconfig sub-system but not received
+>> by compiler. I'm still digging how to pass CONFIG_IOMMUFD to compiler.
 > 
-> FYI, I first tried this vfio-8.2 branch on s390x but wasn't actually able to use the iommufd backend (was getting errors like Property 'vfio-pci.iommufd' not found) so I think something isn't actually enabling IOMMUFD as expected with your change...
-
-yes. The previous method used to enable the IOMMUFD device with
-a ./configure script option was exposing the CONFIG_IOMMUFD define
-globally.
-
-The current method using the Kconfig files requires an extra :
-
-#include CONFIG_DEVICES
-
-in each file using CONFIG_IOMMUFD.
-
-I didn't see it because when compiled natively on x86_64 the
-CONFIG_IOMMUFD define is included for some (magic) reason.
-It is not the case on other arches, ppc64, aarch64, s390x.
-
-I did the update and repushed vfio-8.2. Should work now.
-
+> Need below change to pass CONFIG_IOMMUFD to compiler.
 > 
-> Instead I tested on s390x using vfio-next + patches 25-41 of this series on top.
+> diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+> index 0a810f8b88..2a3263b51f 100644
+> --- a/hw/vfio/ap.c
+> +++ b/hw/vfio/ap.c
+> @@ -30,6 +30,7 @@
+>   #include "exec/address-spaces.h"
+>   #include "qom/object.h"
+>   #include "monitor/monitor.h"
+> +#include CONFIG_DEVICES
 > 
-> Legacy backend regression testing worked fine for vfio-pci, vfio-ap and vfio-ccw.
+>   #define TYPE_VFIO_AP_DEVICE      "vfio-ap"
+> 
+> diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
+> index a674bd8d6d..08101ad445 100644
+> --- a/hw/vfio/ccw.c
+> +++ b/hw/vfio/ccw.c
+> @@ -31,6 +31,7 @@
+>   #include "qemu/main-loop.h"
+>   #include "qemu/module.h"
+>   #include "monitor/monitor.h"
+> +#include CONFIG_DEVICES
+> 
+>   struct VFIOCCWDevice {
+>       S390CCWDevice cdev;
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index d8f658ea47..3121b5f985 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -44,6 +44,7 @@
+>   #include "migration/qemu-file.h"
+>   #include "sysemu/iommufd.h"
+>   #include "monitor/monitor.h"
+> +#include CONFIG_DEVICES
+> 
+>   #define TYPE_VFIO_PCI_NOHOTPLUG "vfio-pci-nohotplug"
 
-ok. Good. This means that vfio-next is in good shape.
 
-> Using iommufd backend for vfio-pci on s390 exposes an s390-only issue related to accounting of vfio DMA limit (code in hw/s390x/s390-pci-vfio.c assumes VFIODevice.group is never null, but that's no longer true when we use the iommufd backend with cdev).  We don't even need to track this when using the iommufd backend -- With that issue bypassed, vfio-pci testing on s390x looks good so far.  I'll send a separate fix for that.
+yep. I pushed forced vfio-8.2 with these changes.
 
 Thanks,
 
 C.
 
-  
-> Using the iommufd backend for vfio-ccw and vfio-ap did not work, see response to patch 28.
-> 
-> Thanks,
-> Matt
-> 
 
 
