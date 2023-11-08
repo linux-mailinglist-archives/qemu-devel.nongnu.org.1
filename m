@@ -2,63 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA897E5BD3
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 17:59:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 052867E5BDF
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 18:00:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0ltH-0005zT-O6; Wed, 08 Nov 2023 11:58:55 -0500
+	id 1r0luV-0006kk-GI; Wed, 08 Nov 2023 12:00:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0ltG-0005xt-AH
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 11:58:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r0ltE-0001kE-JH
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 11:58:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699462730;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Z/GkScLipQ+ld/deVdwtBd0nxl78rZMkrpeLIxFEArI=;
- b=Kk8RyONwhb+aQt9zP60/QanvtZzI4UaIBZ750k5N9Hd4d5CJmJWpGx4aqwCrQXkHTV/0iU
- noUzjVUCzCXrMEZ35th8g9Wiawf1To1Wev9KjqOoIyQItLAUN1VLJh9lFXJkJ+0XAM0epg
- XVyi0/jnOG1+CIoKot6hwV5JNynwVW8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-178-eSQLIQVaNrmXehrJArwzEQ-1; Wed, 08 Nov 2023 11:58:47 -0500
-X-MC-Unique: eSQLIQVaNrmXehrJArwzEQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0612D185A783
- for <qemu-devel@nongnu.org>; Wed,  8 Nov 2023 16:58:47 +0000 (UTC)
-Received: from merkur.redhat.com (unknown [10.39.193.161])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8696F492BE8;
- Wed,  8 Nov 2023 16:58:46 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: kwolf@redhat.com
-Subject: [PULL v2 00/25] Block layer patches
-Date: Wed,  8 Nov 2023 17:58:41 +0100
-Message-ID: <20231108165841.102073-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r0luL-0006iD-0O
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 12:00:01 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r0luJ-0001qu-60
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 12:00:00 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-409299277bbso49675685e9.2
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 08:59:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699462796; x=1700067596; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gVGNIJ8DjBhgmEvbz7dBpDVLyyQ6pCRuq6Jf8A9o4k8=;
+ b=uB3SqanRdNX4H+63qfZ/ybpkoirr4k3PWW7qmqMUyNeyhBlaBfHR7jMukoG1140nCA
+ 3S+s59PlnUoInR2AdlQEnNDLHisoy9GEM8IWgwWPHYmteuPS6nA2RTY9nF1ElI+H5cBO
+ gghz/vOMKUn5lIogfOKYvO2mVSv44+G0gtSi3NRdZa9kdSCOBEMYqt0UjME35GtmMm07
+ Bok7BiNl21FmKPQFxBSEuVwbtk5Qw0QHL4jLHqdJJcmyou8pgJ8FKYwsQ8Yr00vQpVZK
+ DyI/K0zzhgbPye/y2YV9mygyRhEUZjNZUx+HLqCJtgL57YPNA74hVOjw8yrkJFw0buIv
+ Fj3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699462796; x=1700067596;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=gVGNIJ8DjBhgmEvbz7dBpDVLyyQ6pCRuq6Jf8A9o4k8=;
+ b=xUTZKqsx1KXizD1bxSOslj0UbsTY+AbMddYWbk2wjoUKFla6pwu1VlEAk61uTT9yR2
+ 6MpqSGneuWys/yTnu4j2AMevx6y7O3iY+zENp8P37ltmrLPTRbv7Sh2aLg0lPHBkrcSA
+ hEJ0CFbIgalj6Wsy+YrKtBgYENsKwYmcNfBjyct1TnhWifFyw+4edUchcJUxP7OolDfx
+ OWOblhP7OImzRS36WeLS1kRxSlDLAWucwyoYv5I8qSaWwxTlM4tR7279S/rzQKiahm1N
+ /AqoF9AzA9NRk3YJbwJm77RRlwZQGcUQBYtXCiBExAx5edtByihXR5gkB0J74vNNBCGS
+ 2acg==
+X-Gm-Message-State: AOJu0YzZqhp8/i2zzh87HL6EQbKOMvvaC22EtE0RMUpRnpeficOxuMEQ
+ W/4B31J8D9WByuRH1Ft7h2FenA==
+X-Google-Smtp-Source: AGHT+IHRDfdJHPWz9Y3xgGna9wHXRIUTgy1S8QFKAJsk4CNK/WJsMc2Nl8yIhDzXQppGuvKNv6mcpQ==
+X-Received: by 2002:a1c:7c08:0:b0:40a:2796:61a0 with SMTP id
+ x8-20020a1c7c08000000b0040a279661a0mr2134164wmc.33.1699462796187; 
+ Wed, 08 Nov 2023 08:59:56 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ j19-20020a05600c1c1300b004060f0a0fd5sm20006019wms.13.2023.11.08.08.59.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 08 Nov 2023 08:59:55 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 3B5EB5F751;
+ Wed,  8 Nov 2023 16:59:55 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Beraldo Leal <bleal@redhat.com>,  Wainer dos
+ Santos Moschetta <wainersm@redhat.com>,  Thomas Huth <thuth@redhat.com>,
+ Daniel P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH] .gitlab-ci.d/cirrus: Upgrade macOS to 13 (Ventura)
+In-Reply-To: <20231108162022.76189-1-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Wed, 8 Nov 2023 17:20:22
+ +0100 (36 minutes, 26 seconds ago)")
+References: <20231108162022.76189-1-philmd@linaro.org>
+User-Agent: mu4e 1.11.24; emacs 29.1
+Date: Wed, 08 Nov 2023 16:59:55 +0000
+Message-ID: <87r0l089kk.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,110 +98,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 462ad017ed76889d46696a3581e1b52343f9b683:
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-  Merge tag 'pixman-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2023-11-07 19:00:03 +0800)
+> macOS 14 "Sonoma" was released on September 2023 [1].
+>
+> According to QEMU's support policy, we stop supporting the
+> previous major release two years after the the new major
+> release has been published. Replace the macOS 12 (Monterey)
+> testing by macOS 13 (Ventura, released on October 2022, [2]).
+>
+> Refresh the generated files by running:
 
-are available in the Git repository at:
+Queued to for-8.2/random-fixes, thanks.
 
-  https://repo.or.cz/qemu/kevin.git tags/for-upstream
-
-for you to fetch changes up to b523a3d54f3d031a54cd0931cc5d855608e63140:
-
-  hw/ide/ahci: trigger either error IRQ or regular IRQ, not both (2023-11-08 17:56:18 +0100)
-
-----------------------------------------------------------------
-Block layer patches
-
-- Graph locking part 6 (bs->file/backing)
-- ahci: trigger either error IRQ or regular IRQ, not both
-
-----------------------------------------------------------------
-Kevin Wolf (24):
-      block: Mark bdrv_probe_blocksizes() and callers GRAPH_RDLOCK
-      block: Mark bdrv_has_zero_init() and callers GRAPH_RDLOCK
-      block: Mark bdrv_filter_bs() and callers GRAPH_RDLOCK
-      block: Mark bdrv_root_attach_child() GRAPH_WRLOCK
-      block: Mark block_job_add_bdrv() GRAPH_WRLOCK
-      block: Mark bdrv_filter_or_cow_bs() and callers GRAPH_RDLOCK
-      block: Mark bdrv_skip_implicit_filters() and callers GRAPH_RDLOCK
-      block: Mark bdrv_skip_filters() and callers GRAPH_RDLOCK
-      block: Mark bdrv_(un)freeze_backing_chain() and callers GRAPH_RDLOCK
-      block: Mark bdrv_chain_contains() and callers GRAPH_RDLOCK
-      block: Mark bdrv_filter_child() and callers GRAPH_RDLOCK
-      block: Mark bdrv_cow_child() and callers GRAPH_RDLOCK
-      block: Mark bdrv_set_backing_hd_drained() GRAPH_WRLOCK
-      block: Inline bdrv_set_backing_noperm()
-      block: Mark bdrv_replace_node_common() GRAPH_WRLOCK
-      block: Mark bdrv_replace_node() GRAPH_WRLOCK
-      block: Protect bs->backing with graph_lock
-      blkverify: Add locking for request_fn
-      block: Introduce bdrv_co_change_backing_file()
-      block: Add missing GRAPH_RDLOCK annotations
-      qcow2: Take locks for accessing bs->file
-      vhdx: Take locks for accessing bs->file
-      block: Take graph lock for most of .bdrv_open
-      block: Protect bs->file with graph_lock
-
-Niklas Cassel (1):
-      hw/ide/ahci: trigger either error IRQ or regular IRQ, not both
-
- block/copy-on-read.h                   |   3 +-
- block/parallels.h                      |   5 +-
- block/qcow2.h                          |  59 +++++-----
- block/qed.h                            |   2 +-
- block/vhdx.h                           |   9 +-
- include/block/block-global-state.h     |  43 ++++----
- include/block/block-io.h               |  10 +-
- include/block/block_int-common.h       |  31 +++---
- include/block/block_int-global-state.h |  16 +--
- include/block/block_int-io.h           |  19 ++--
- include/block/blockjob.h               |   5 +-
- include/block/blockjob_int.h           |   9 +-
- block.c                                | 192 +++++++++++++++++++--------------
- block/backup.c                         |  21 ++--
- block/blkdebug.c                       |  29 ++---
- block/blkreplay.c                      |   8 +-
- block/blkverify.c                      |  18 ++--
- block/block-backend.c                  |   5 +
- block/block-copy.c                     |  11 +-
- block/bochs.c                          |   4 +
- block/cloop.c                          |   4 +
- block/commit.c                         |  32 +++++-
- block/copy-before-write.c              |   6 +-
- block/copy-on-read.c                   |  19 +++-
- block/crypto.c                         |  10 ++
- block/dmg.c                            |  21 ++--
- block/filter-compress.c                |   5 +-
- block/io.c                             |   2 +
- block/mirror.c                         |  88 ++++++++++-----
- block/monitor/block-hmp-cmds.c         |   3 +
- block/parallels-ext.c                  |  21 ++--
- block/parallels.c                      |  22 ++--
- block/preallocate.c                    |  27 +++--
- block/qcow.c                           |  13 ++-
- block/qcow2-bitmap.c                   |  14 +--
- block/qcow2-cluster.c                  |  25 ++---
- block/qcow2.c                          | 148 +++++++++++++------------
- block/qed.c                            |  88 ++++++++-------
- block/raw-format.c                     |  36 ++++---
- block/replication.c                    |  12 ++-
- block/snapshot-access.c                |   5 +-
- block/stream.c                         |  48 ++++++---
- block/throttle.c                       |   3 +
- block/vdi.c                            |  15 ++-
- block/vhdx-log.c                       |  40 +++----
- block/vhdx.c                           |  37 ++++---
- block/vmdk.c                           |  23 ++--
- block/vpc.c                            |   6 +-
- blockdev.c                             |  72 ++++++++-----
- blockjob.c                             |   6 +-
- hw/ide/ahci.c                          |   5 +-
- migration/block-dirty-bitmap.c         |   4 +
- nbd/server.c                           |   6 ++
- qemu-img.c                             |  31 ++++--
- tests/unit/test-bdrv-drain.c           |  39 +++++--
- tests/unit/test-bdrv-graph-mod.c       |  18 +++-
- 56 files changed, 926 insertions(+), 527 deletions(-)
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
