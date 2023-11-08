@@ -2,88 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B027E5D4C
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 19:34:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 368A87E5D55
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 19:36:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0nMX-0007SZ-Jw; Wed, 08 Nov 2023 13:33:13 -0500
+	id 1r0nPD-00022g-Mt; Wed, 08 Nov 2023 13:35:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0nMU-0007Ro-T2
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 13:33:10 -0500
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ (Exim 4.90_1) (envelope-from <kevin@koconnor.net>)
+ id 1r0nPB-00022W-Rk
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 13:35:57 -0500
+Received: from mail-qk1-x72a.google.com ([2607:f8b0:4864:20::72a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0nMS-0002yE-Tn
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 13:33:10 -0500
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-507962561adso9609173e87.0
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 10:33:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <kevin@koconnor.net>)
+ id 1r0nP9-0003Sq-ND
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 13:35:57 -0500
+Received: by mail-qk1-x72a.google.com with SMTP id
+ af79cd13be357-779f2718accso503424185a.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 10:35:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699468387; x=1700073187; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7sjGHTrxzwEAUajPpIMG7q/DAjj1XmmdYO7Mb2TzPag=;
- b=IVepP0JN3ISndaaTaC7CIsxgkEKErrkrjep7NKlNUmFPdfRTlWViyRWYBiouQ3wwab
- 2xKBGvf87xSjFbfRXDX2xqh2RNZp36MikYylqR14gWtACrJkvYSwXxRnW2x+94jfpTQw
- jQFlTc2mNgUKeHX2TamSGTmA2W+WSQ+pvvl0xqysoN62KoFvm88//cK/WY6aGL14fiVK
- CyIpwLdp3w+yqY4XeuI6EXunyjqk9pvlCmxe0lVJzCWBkryL0i02i2Ujx4THSV0Hwonj
- Duqmp/mnnucPe1r7BYKIQjJ+g3CNSp4HMyfW3FNtFNeXabIKMLsBg9AQESUIQKHphg7R
- hkkQ==
+ d=koconnor.net; s=google; t=1699468554; x=1700073354; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=CY9LNn8/fjSgCZBehBmQSILa1N/co1OH3DMcwnmIN8w=;
+ b=hcvA4SkMf6CXboU09D4Rp1y9ZCakUGN09yxWVePEInjyauBd8BnpVyG5mnB5j6KfSG
+ zfN9qCTY1Ezjhqf7A7Ev4OMBB5VBU1CXC0G18TWAUkb4+8C892BVMT4A2zU+xN40h/wD
+ a2/hygBYothf+6BNyaI8oTuvwGWi3x014dhZg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699468387; x=1700073187;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7sjGHTrxzwEAUajPpIMG7q/DAjj1XmmdYO7Mb2TzPag=;
- b=DvxOxT9cwg8ZW/abw+tYH91eku1Vqgy0KFR4B8eNakY936Dja54Lcn0I2scnUTlL4t
- vqFdlHWfqZXRht3WrvAA8hDuomI39goPwo1Ww1rOixRpXnBdTgW1n6cifH1Pk9Z93FuA
- XbP+ZlBQw0xz/diRT/kL+/U5Pdr7TyE0jAydinxFTOP9cpI4y2w+cKbtvSn+/Dl+VYTA
- BR09vDlGL9fn13p5/Whj2u1h2vHcrK5bVs3Vzd7w7MNg3w7fXv00DwzMZFAvnD8NkRs3
- jjTKgBWQmUbnu0BxDZp4mdaFbh4jff8B22NyLHbCp+vM553g9XW+ZzQa2WqhBvYIZ7b2
- aEFg==
-X-Gm-Message-State: AOJu0Yx+/xOEMYYxeEGDjiAi0by6N1hQ9GiQNpwB3/MfF7dMnWWR/RTH
- yOO8XSyeXR+Debrny7IaKrndIE1aaSPRmQCEJzU=
-X-Google-Smtp-Source: AGHT+IHHcvbOaEIgt4FKpWg34KW+1xW91R2jQ7HoSFocUF02HdMGlSeclTp2ZYPqtM+DmIi9lLM2tQ==
-X-Received: by 2002:a19:c215:0:b0:503:333e:b387 with SMTP id
- l21-20020a19c215000000b00503333eb387mr1936956lfc.41.1699468387012; 
- Wed, 08 Nov 2023 10:33:07 -0800 (PST)
-Received: from m1x-phil.lan ([176.187.199.60])
- by smtp.gmail.com with ESMTPSA id
- a11-20020adfed0b000000b0032d9337e7d1sm5534286wro.11.2023.11.08.10.33.05
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 08 Nov 2023 10:33:06 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- John Snow <jsnow@redhat.com>
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Rene Engel <ReneEngel80@emailn.de>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Howard Spoelstra <hsp.cat7@gmail.com>
-Subject: [PATCH 2/2] .gitlab-ci.d/cirrus: Add manual testing of macOS 14
- (Sonoma)
-Date: Wed,  8 Nov 2023 19:32:51 +0100
-Message-ID: <20231108183251.80572-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231108183251.80572-1-philmd@linaro.org>
-References: <20231108183251.80572-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1699468554; x=1700073354;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CY9LNn8/fjSgCZBehBmQSILa1N/co1OH3DMcwnmIN8w=;
+ b=ISlOJnPk4TIBmyMxtZVk0JbzamOXk39enk1lc1AHGky13Fs6vWtyh4sIKiJgQmf/91
+ NnhWesOgRrxaJ3v1EbSATogvdA3oDUF8oES0z/Bq/PoMKW0mseYYJb/9kW/bSikDMHQj
+ /bnF4w3gNmn4IFozB4j/e0wJh2AQAc2RgmaFFzijHwhCgOIytFGQVmhBWGHmcRcWwnfm
+ 1SlS5p8Q2+Q40J7FnFLv4tNWPoPbCZFMRl6GM1RQTkEh0wnneUz5on97EmQPqDyOpu0j
+ DEg8slcFsTz6oifMzwI7U47CFT67ABo+FNwKX9rvTCXqmTi/ImsiSbgDuoXnzQ45L/OF
+ vWFg==
+X-Gm-Message-State: AOJu0YxlGt+SoOISg1V7UP5egMPYwcYMf/dQOd749vaf5DwuZLg8vg/B
+ U9kDx/7S6iWGBPhgBLac8CcZFd9/yHxsPDFuGEHREg==
+X-Google-Smtp-Source: AGHT+IH2u34V8XotAmRmX1u8OSkz8Nv36Bcb9Aj3JSVrSxHdluGTbgxHjouGMX5Xn5qGhX33D1+ang==
+X-Received: by 2002:a05:620a:468e:b0:773:a83f:4170 with SMTP id
+ bq14-20020a05620a468e00b00773a83f4170mr2424450qkb.63.1699468554304; 
+ Wed, 08 Nov 2023 10:35:54 -0800 (PST)
+Received: from localhost ([64.18.11.71]) by smtp.gmail.com with ESMTPSA id
+ t14-20020a05620a0b0e00b0076d6a08ac98sm1311726qkg.76.2023.11.08.10.35.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 08 Nov 2023 10:35:52 -0800 (PST)
+Date: Wed, 8 Nov 2023 13:35:52 -0500
+From: Kevin O'Connor <kevin@koconnor.net>
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: seabios@seabios.org, qemu-devel@nongnu.org,
+ Claudio Fontana <cfontana@suse.de>
+Subject: Re: [SeaBIOS] [PATCH v5] limit physical address space size
+Message-ID: <ZUvVCHWbU29+eDm7@morn>
+References: <20231107130309.3257776-1-kraxel@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231107130309.3257776-1-kraxel@redhat.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72a;
+ envelope-from=kevin@koconnor.net; helo=mail-qk1-x72a.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,109 +87,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Upgrade libvirt-ci so it covers macOS 14. Add a manual entry
-(QEMU_JOB_OPTIONAL: 1) to test on Sonoma release. Refresh the
-lci-tool generated files.
+On Tue, Nov 07, 2023 at 02:03:09PM +0100, Gerd Hoffmann wrote:
+> For better compatibility with old linux kernels,
+> see source code comment.
+> 
+> Related (same problem in ovmf):
+> https://github.com/tianocore/edk2/commit/c1e853769046
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-Docs are disabled due to:
+Thanks.  I'll defer to your judgement on this.  It does seem a little
+odd to alter the CPUPhysBits variable itself instead of adding
+additional checking to the pciinit.c code that uses CPUPhysBits.
+(That is, if there are old Linux kernels that can't handle a very high
+PCI space, then a workaround in the PCI code might make it more clear
+what is occurring.)
 
-  Collecting sphinx
-    Downloading sphinx-7.2.6-py3-none-any.whl.metadata (5.9 kB)
-  Collecting sphinx-rtd-theme
-    Downloading sphinx_rtd_theme-1.3.0-py2.py3-none-any.whl.metadata (4.5 kB)
-  ...
-  Installing collected packages ...
-  ...
-  python determined to be '/opt/homebrew/bin/python3'
-  python version: Python 3.11.6
-  mkvenv: Creating non-isolated virtual environment at 'pyvenv'
-  mkvenv: checking for sphinx>=1.6
-  mkvenv: checking for sphinx_rtd_theme>=0.5
-  ...
-  Program /opt/homebrew/opt/python@3.12/bin/sphinx-build found: NO
-  ../docs/meson.build:1:15: ERROR: Program '/opt/homebrew/opt/python@3.12/bin/sphinx-build' not found or not executable
+Cheers,
+-Kevin
 
-¯\_(ツ)_/¯
----
- .gitlab-ci.d/cirrus.yml           | 17 +++++++++++++++++
- .gitlab-ci.d/cirrus/macos-14.vars | 16 ++++++++++++++++
- tests/lcitool/libvirt-ci          |  2 +-
- tests/lcitool/refresh             |  1 +
- 4 files changed, 35 insertions(+), 1 deletion(-)
- create mode 100644 .gitlab-ci.d/cirrus/macos-14.vars
 
-diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index 07dc6edae1..84ce143509 100644
---- a/.gitlab-ci.d/cirrus.yml
-+++ b/.gitlab-ci.d/cirrus.yml
-@@ -74,6 +74,23 @@ aarch64-macos-13-base-build:
-     PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig
-     TEST_TARGETS: check-unit check-block check-qapi-schema check-softfloat check-qtest-x86_64
- 
-+aarch64-macos-14-base-build:
-+  extends: .cirrus_build_job
-+  variables:
-+    NAME: macos-14
-+    CIRRUS_VM_INSTANCE_TYPE: macos_instance
-+    CIRRUS_VM_IMAGE_SELECTOR: image
-+    CIRRUS_VM_IMAGE_NAME: ghcr.io/cirruslabs/macos-sonoma-base:latest
-+    CIRRUS_VM_CPUS: 12
-+    CIRRUS_VM_RAM: 24G
-+    UPDATE_COMMAND: brew update
-+    INSTALL_COMMAND: brew install
-+    PATH_EXTRA: /opt/homebrew/ccache/libexec:/opt/homebrew/gettext/bin
-+    PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig
-+    TEST_TARGETS: check-unit check-block check-qapi-schema check-softfloat check-qtest-x86_64
-+    QEMU_JOB_OPTIONAL: 1
-+    CONFIGURE_ARGS: --disable-docs
-+
- 
- # The following jobs run VM-based tests via KVM on a Linux-based Cirrus-CI job
- .cirrus_kvm_job:
-diff --git a/.gitlab-ci.d/cirrus/macos-14.vars b/.gitlab-ci.d/cirrus/macos-14.vars
-new file mode 100644
-index 0000000000..43070f4a26
---- /dev/null
-+++ b/.gitlab-ci.d/cirrus/macos-14.vars
-@@ -0,0 +1,16 @@
-+# THIS FILE WAS AUTO-GENERATED
-+#
-+#  $ lcitool variables macos-14 qemu
-+#
-+# https://gitlab.com/libvirt/libvirt-ci
-+
-+CCACHE='/opt/homebrew/bin/ccache'
-+CPAN_PKGS=''
-+CROSS_PKGS=''
-+MAKE='/opt/homebrew/bin/gmake'
-+NINJA='/opt/homebrew/bin/ninja'
-+PACKAGING_COMMAND='brew'
-+PIP3='/opt/homebrew/bin/pip3'
-+PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 jemalloc jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
-+PYPI_PKGS='PyYAML numpy pillow sphinx sphinx-rtd-theme tomli'
-+PYTHON='/opt/homebrew/bin/python3'
-diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
-index 36bc517161..77c800186f 160000
---- a/tests/lcitool/libvirt-ci
-+++ b/tests/lcitool/libvirt-ci
-@@ -1 +1 @@
--Subproject commit 36bc517161c45ead20224d47f2dc4fa428af6724
-+Subproject commit 77c800186f34b21be7660750577cc5582a914deb
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 2259f131b4..e11d0ba381 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -197,6 +197,7 @@ try:
-     #
-     generate_cirrus("freebsd-13")
-     generate_cirrus("macos-13")
-+    generate_cirrus("macos-14")
- 
-     #
-     # VM packages lists
--- 
-2.41.0
-
+> 
+> Cc: Claudio Fontana <cfontana@suse.de>
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+> ---
+>  src/fw/paravirt.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/src/fw/paravirt.c b/src/fw/paravirt.c
+> index e5d4eca0cb5a..a2c9c64d5e78 100644
+> --- a/src/fw/paravirt.c
+> +++ b/src/fw/paravirt.c
+> @@ -182,6 +182,14 @@ static void physbits(int qemu_quirk)
+>              __func__, signature, pae ? "yes" : "no", CPULongMode ? "yes" : "no",
+>              physbits, valid ? "yes" : "no");
+>  
+> +    if (valid && physbits > 46) {
+> +        // Old linux kernels have trouble dealing with more than 46
+> +        // phys-bits, so avoid that for now.  Seems to be a bug in the
+> +        // virtio-pci driver.  Reported: centos-7, ubuntu-18.04
+> +        dprintf(1, "%s: using phys-bits=46 (old linux kernel compatibility)\n", __func__);
+> +        physbits = 46;
+> +    }
+> +
+>      if (valid)
+>          CPUPhysBits = physbits;
+>  }
+> -- 
+> 2.41.0
+> 
+> _______________________________________________
+> SeaBIOS mailing list -- seabios@seabios.org
+> To unsubscribe send an email to seabios-leave@seabios.org
 
