@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C5997E5F83
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 21:56:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E447E5F85
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 21:56:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0pao-0005Ej-4u; Wed, 08 Nov 2023 15:56:07 -0500
+	id 1r0pay-0005NB-AA; Wed, 08 Nov 2023 15:56:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0paY-0005E6-W2
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 15:55:51 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0pav-0005KH-Nw
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 15:56:13 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0paV-0005fj-UJ
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 15:55:50 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4079ed65471so515785e9.1
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 12:55:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0pao-0005lb-R8
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 15:56:08 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-40806e40fccso421715e9.2
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 12:56:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699476946; x=1700081746; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699476965; x=1700081765; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=FOxgXi0+nZ830fEffTfy/FaqPFSWjQNHLF2MJ3HjJgE=;
- b=dIP/43WcQNgKN/dj+E+4GHlvStT2xoqCeOKTHGYNXSeud44PE3tVEEv2Fp++AgB/Dj
- 9SNRTPIT/9S2z1PDsZcYqO7tqDQhmCeSMJITForifVCerSd5nZUCoogpoEpXOxZna1aF
- FNthZzysxSqPFYe6cjzYR2V0O0Fj+sowYSkJBDoDIPXwhPet1KsN4MgX6tHOPOcNXdpy
- m70NAppLVE4HD/ViVW56eiS/XXqOxnVhSNN/3KIxWItPs2herG0wLzkOMFkVCu9QTu+9
- sGFYHQ3dKu3wx5LJ/Q4o8KqhPEBSLTEKf0BSw13n2H1cDbc8izFoWM5ytppvk6b1KcT5
- rE9A==
+ bh=QVKGDCVLmJfCPDcvthPLoEurFev3Qo8WopnVYtrI0p0=;
+ b=r5dk8f0vGLrv7VGO9fIX5bUWKz6SvnNccq2AGVsuL6XGyfs2yO+mM4lfhx1KlG4F9/
+ ATfhJnrw1+s0tbPLN9DFYFTLsd7d+BYxxQjOSyS6icLlYk7cmnAt6UFEc8ABwPGZZCry
+ kFJRSGXe3CRBGGjN2G0fvOFj1CLxWnz6vyNWYrNgDZMX5GXN9Qi3NFxKRA8SSfaOgJIy
+ Z+395rCldn8Qu/2KyRZG+lDPDK0U2hfDimJvGt2k4jD5hKCgTPqdcQm4flMTp3iZMNkg
+ D/j2E+p7Wm1IlgKRZxkvwcDbkkzm58Wy+hGnt7eqYO+YoD0HpVANihkze8loCS6YgiCd
+ CMFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699476946; x=1700081746;
+ d=1e100.net; s=20230601; t=1699476965; x=1700081765;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FOxgXi0+nZ830fEffTfy/FaqPFSWjQNHLF2MJ3HjJgE=;
- b=McSWwJwl89HtQwnclilt8czyIepamPI//B3VcMg8UjRoC566wQBYDhW994bc/52XgP
- HVv4EuhZRIu1aYYN1S7jfHo2tCSHphSfaezaiRXR03TE7CIhJlwUgZm/IbOTT60g33pb
- aGeQGX0F51UxqzQz1ejf/8wQ5NUskCPGHn2gouAGYHx9Juhl3t6ndMFPR7MTr2E8hBnP
- j/3oeEakwumNsG9o2TvCtt/Nrc9dXLemG6c9YapRe1ASAife8GkVEXCDcw92fUf0p5wp
- ye9sQu/AlKdGNUTrZHJdvTPXSFPhx/BP4rKdc9bV/UB31vp0pmigsSsGAVDI5Z6BKhCh
- rJtw==
-X-Gm-Message-State: AOJu0YyzDCQbEVpol0SoFnj23WdNN0BK0VqITRHJvjwiaDrONCsGVPgJ
- W8jhCDmYsOMjMC04WBTyj1zW87O9b2kzkEF50nc=
-X-Google-Smtp-Source: AGHT+IGTu3L1JO1mOswApDqaVA0vHgKufSuDFsJIX1ujErBJ/jX/pirCDdrWitNFm0QD1+vcGK/K6w==
-X-Received: by 2002:a05:600c:45c9:b0:409:7900:f3ef with SMTP id
- s9-20020a05600c45c900b004097900f3efmr2760546wmo.38.1699476946090; 
- Wed, 08 Nov 2023 12:55:46 -0800 (PST)
+ bh=QVKGDCVLmJfCPDcvthPLoEurFev3Qo8WopnVYtrI0p0=;
+ b=ew2d+opldthL83M2FHA4PDr0smKze6OhEeE5lpuIW5ziDG16vjbRf3yh+x0d1E1YEP
+ k7do2ffrKbi/W5erpmVHw7it6LJnvAxT1p5H0GCGhvjOFSSPFy08kJUTkvmwfckLKkl9
+ npZaeMRSz4XOSdR/1JRbZeYiRn+P4k8eL+Go1v5qBrkt/dNmo5WJJQm0gbG7qNmrXGjV
+ oJ+R3DGinZHFrbkmC8A/POjxa6i84bVoIhsYyrxgil1hTcFNkV9Wb21IiNOTILWi6dgu
+ cqEne2shpUuznh+3taSc27q7RquQzrJGvY5QgVkSzcj1SDMjFTZitmqdoUnx3x97LunT
+ mbGw==
+X-Gm-Message-State: AOJu0YxifUsd/e8BcgFItlBNVK20RkBfequIP8ZpIdR411aP//NhXRiL
+ tVQj2CLa7W0qzRfUjWK4rq589g==
+X-Google-Smtp-Source: AGHT+IEmwRY9SKp1xrkadYs/hPErelJd59LmTl4eq1WYhGZcEzaZatV24n4t4CAPMwdz951zFMRsOQ==
+X-Received: by 2002:a05:600c:4ec8:b0:408:37d4:b5ba with SMTP id
+ g8-20020a05600c4ec800b0040837d4b5bamr3025898wmq.12.1699476965170; 
+ Wed, 08 Nov 2023 12:56:05 -0800 (PST)
 Received: from [192.168.69.115] ([176.187.199.60])
  by smtp.gmail.com with ESMTPSA id
- n5-20020a05600c3b8500b004064e3b94afsm20771584wms.4.2023.11.08.12.55.45
+ n5-20020a05600c3b8500b004064e3b94afsm20771584wms.4.2023.11.08.12.56.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Nov 2023 12:55:45 -0800 (PST)
-Message-ID: <9e0ddda1-8b4b-47b1-ae2a-b8ffd32536dd@linaro.org>
-Date: Wed, 8 Nov 2023 21:55:45 +0100
+ Wed, 08 Nov 2023 12:56:04 -0800 (PST)
+Message-ID: <ec975f16-6362-49fc-990a-d0a0048fe02b@linaro.org>
+Date: Wed, 8 Nov 2023 21:56:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 32/35 1/2] target/alpha: Pass immediate value to
- gen_bcond_internal()
+Subject: Re: [PATCH v2 32/35] target/alpha: Use TCG_COND_TST{EQ,NE} for
+ BLB{C,S}
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-References: <20231028194522.245170-33-richard.henderson@linaro.org>
- <20231108205247.83234-1-philmd@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com
+References: <20231028194522.245170-1-richard.henderson@linaro.org>
+ <20231028194522.245170-33-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231108205247.83234-1-philmd@linaro.org>
+In-Reply-To: <20231028194522.245170-33-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,82 +93,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/11/23 21:52, Philippe Mathieu-Daudé wrote:
-> From: Richard Henderson <richard.henderson@linaro.org>
-> 
-> Simplify gen_bcond() by passing an immediate value.
-> 
+On 28/10/23 21:45, Richard Henderson wrote:
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> Message-Id: <20231028194522.245170-33-richard.henderson@linaro.org>
-> [PMD: Split from bigger patch, part 1/2]
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   target/alpha/translate.c | 21 +++++++--------------
->   1 file changed, 7 insertions(+), 14 deletions(-)
-> 
-> diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-> index 32333081d8..46efe1df7c 100644
-> --- a/target/alpha/translate.c
-> +++ b/target/alpha/translate.c
-> @@ -453,13 +453,13 @@ static DisasJumpType gen_bdirect(DisasContext *ctx, int ra, int32_t disp)
->   }
->   
->   static DisasJumpType gen_bcond_internal(DisasContext *ctx, TCGCond cond,
-> -                                        TCGv cmp, int32_t disp)
-> +                                        TCGv cmp, uint64_t imm, int32_t disp)
->   {
->       uint64_t dest = ctx->base.pc_next + (disp << 2);
->       TCGLabel *lab_true = gen_new_label();
->   
->       if (use_goto_tb(ctx, dest)) {
-> -        tcg_gen_brcondi_i64(cond, cmp, 0, lab_true);
-> +        tcg_gen_brcondi_i64(cond, cmp, imm, lab_true);
->   
->           tcg_gen_goto_tb(0);
->           tcg_gen_movi_i64(cpu_pc, ctx->base.pc_next);
-> @@ -472,11 +472,11 @@ static DisasJumpType gen_bcond_internal(DisasContext *ctx, TCGCond cond,
->   
->           return DISAS_NORETURN;
->       } else {
-> -        TCGv_i64 z = load_zero(ctx);
-> +        TCGv_i64 i = tcg_constant_i64(imm);
->           TCGv_i64 d = tcg_constant_i64(dest);
->           TCGv_i64 p = tcg_constant_i64(ctx->base.pc_next);
->   
-> -        tcg_gen_movcond_i64(cond, cpu_pc, cmp, z, d, p);
-> +        tcg_gen_movcond_i64(cond, cpu_pc, cmp, i, d, p);
->           return DISAS_PC_UPDATED;
->       }
->   }
-> @@ -484,15 +484,8 @@ static DisasJumpType gen_bcond_internal(DisasContext *ctx, TCGCond cond,
->   static DisasJumpType gen_bcond(DisasContext *ctx, TCGCond cond, int ra,
->                                  int32_t disp, int mask)
->   {
-> -    if (mask) {
-> -        TCGv tmp = tcg_temp_new();
-> -        DisasJumpType ret;
-> -
-> -        tcg_gen_andi_i64(tmp, load_gpr(ctx, ra), 1);
-> -        ret = gen_bcond_internal(ctx, cond, tmp, disp);
-> -        return ret;
-> -    }
-> -    return gen_bcond_internal(ctx, cond, load_gpr(ctx, ra), disp);
-> +    return gen_bcond_internal(ctx, cond, load_gpr(ctx, ra),
-> +                              !!mask, disp);
+>   target/alpha/translate.c | 39 ++++++++++++++++-----------------------
+>   1 file changed, 16 insertions(+), 23 deletions(-)
 
-Hmm we can pass 'mask' directly.
-
->   }
->   
->   /* Fold -0.0 for comparison with COND.  */
-> @@ -533,7 +526,7 @@ static DisasJumpType gen_fbcond(DisasContext *ctx, TCGCond cond, int ra,
->       DisasJumpType ret;
->   
->       gen_fold_mzero(cond, cmp_tmp, load_fpr(ctx, ra));
-> -    ret = gen_bcond_internal(ctx, cond, cmp_tmp, disp);
-> +    ret = gen_bcond_internal(ctx, cond, cmp_tmp, 0, disp);
->       return ret;
->   }
->   
+Preferably split:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
