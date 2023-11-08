@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A107E51B2
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 09:10:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C0097E51D1
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 09:19:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0ddF-0007Jd-Bm; Wed, 08 Nov 2023 03:09:49 -0500
+	id 1r0dlU-0002rv-EK; Wed, 08 Nov 2023 03:18:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r0dd8-0007JD-AY; Wed, 08 Nov 2023 03:09:42 -0500
-Received: from mail-qt1-x829.google.com ([2607:f8b0:4864:20::829])
+ id 1r0dlN-0002kb-C9; Wed, 08 Nov 2023 03:18:15 -0500
+Received: from mail-yb1-xb33.google.com ([2607:f8b0:4864:20::b33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r0dd6-0007B2-TJ; Wed, 08 Nov 2023 03:09:42 -0500
-Received: by mail-qt1-x829.google.com with SMTP id
- d75a77b69052e-41cda69486eso43665321cf.3; 
- Wed, 08 Nov 2023 00:09:40 -0800 (PST)
+ id 1r0dlK-0000cv-Qn; Wed, 08 Nov 2023 03:18:12 -0500
+Received: by mail-yb1-xb33.google.com with SMTP id
+ 3f1490d57ef6-d9a518d66a1so6837918276.0; 
+ Wed, 08 Nov 2023 00:18:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699430979; x=1700035779; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699431489; x=1700036289; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Cfl2MiedisAHQs4dplmh3iddyfb9uLMnSum/VncmNcI=;
- b=TPUd3aFaxsx6oNw6aWdx4yfNZEMnID83/fOHsMtiGL/cX/YoHUW3LgzJ87x7f81IZw
- hHmFjEZaq/s+8GqYx4/yaFSKOmGsg3Arvfv+sOooYBOyUbCL+lVI6K0RBqSsE4jx9oYd
- sMCc4NQztb4meHQa/IyFFEJsutda5UJZObrwcvup7Oaui6OSn3zisXKn9nPoWvCnOsOE
- ocYalqMiZtIVkzGviw/h5R+7phFor2MzMUrMUiG42iGiE14M6UhbuSrCbnGwGKA9akph
- mYxBXxIeZODjNw6ce9tq9H/5NcYjCAqG/sOljhaHJDmcD1vZmSn6YihIHNFPXkQHzl9l
- TB6Q==
+ bh=O+xR3Hz8s6Kk20CvfyDIid5CCdY/fplNkYiYxjDOteM=;
+ b=eECcERvO2a679AqaVTBaoEwR/57DajpTd/5SD3zwNEhmsyp6lSYOUCK25JKgMFCgI4
+ dSoa4Zgm8sZnk2C/Lxli16XCwmfBUbAevsfujK1ItndpqZ6dlINu6s11FgY2j8I4U5VR
+ PJ5GbKk9rsFwlfvxc1JpY9bWxzQdDbsnViM2WG2PB1ZqFc1ahkJPi0pHSYYyMUGLnIWn
+ WSoHMzX/JEBuNQOU2uRBUb+3JW/Mn85XVl1H6dPBDq/fpTL1fc9lqQF8uq2DAKm5GQVa
+ UwLd9N5GtTDTLqqOcnTy9X3imqugbd5QNdjNmfBWoFliCgWTOCUs/ZyKaUHvGFwYhtYr
+ AIvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699430979; x=1700035779;
+ d=1e100.net; s=20230601; t=1699431489; x=1700036289;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Cfl2MiedisAHQs4dplmh3iddyfb9uLMnSum/VncmNcI=;
- b=MOQ5uDRxAzGNbAaOKf12FDei8iY0+5nWvFVjqA4DRVNjsckfkCSiqU0MSzBaQsSfus
- Jp9dqUv6IGBAaAY0wgWiTJdngSOhwI6V+XUfke6jvTBIzWvQPcY6JZbXMInC9lDzJPiK
- sAEYXSowdZa6S5WvIh5Pn1guhB6zPWZbJ2mbkb0ufvlbUdvVwFq4tezpolcK+ryuvzo3
- 15rpzhapokZpa2sNXQKYRqUKXLNtWpIzrqVRGbou9JIU+LMSKhDatlZs9O4JrwoNCBzc
- 0sXvoCABb1UbohS+EY1e8ZrtANXOowLplTryhibnFE6irkCQJSpEWzJ4GAjVbh729u7K
- OiWA==
-X-Gm-Message-State: AOJu0YxxUJYj8WC6yfFgLzVgVc+gQ8h4Nj79N4Ep33EG2KgbFLVke8qD
- V/BX6v17fmJEyWbEmp3bexWgSXa8oVthaDJqLCE=
-X-Google-Smtp-Source: AGHT+IEohPqD3GD5mvCGa1HTKrsiQgsDjr0t6A/BxFv83WWoG+wHMzmmNOXVbeh9pb1PgZy1SYFchGGcrCdI4xFxxBU=
-X-Received: by 2002:ac8:570b:0:b0:41e:2aab:8dc with SMTP id
- 11-20020ac8570b000000b0041e2aab08dcmr1438032qtw.37.1699430979474; Wed, 08 Nov
- 2023 00:09:39 -0800 (PST)
+ bh=O+xR3Hz8s6Kk20CvfyDIid5CCdY/fplNkYiYxjDOteM=;
+ b=Rwt3j8yLpsmcLaXmCd2jBDsVhJ4Z8kz40OV+jKaBErLqA5vUDM4f2qcREK53aEHahu
+ s1S6hfxpsyFPeWkqdtlweTk9K490ZmCgJF3yv+Bq7pwkDFBF4WoF4SJCwdCKiz0Pu6jQ
+ qL9u+u3qvagfWU3b4HJ/dhJ+mR2E/Hik+xuwdCEJ/KLGh53KUpc10P+s4bTzTI6Dn6D5
+ Yc7g9YQkc14jSrKVQv6fa/wzvtPCj9eIlMqtqkJoKq1+jTl1ql1pVMMLds0Z2V/AB4VJ
+ PVQ2jpuCgfJnu0OYB9X3BkvH1lC8sPgpFNlP1mMTEyvIHvdCTOPtP/SgNriLA4wSUVA1
+ ZoeQ==
+X-Gm-Message-State: AOJu0YzmqSoDv4Z9vH37nMgvIXjCGVLGeJFOlfJ+57ynEXJChhB02ACj
+ 9ywxg/Ikylrk3dWepPL1D/QOZEhddHnwegkIxy4=
+X-Google-Smtp-Source: AGHT+IGNZ2tOOkI3iW4jGkytJdOS0yBNoMf1QZqmIVi9kqyx6FPIZ0+RuP/yls4/KwkLhddtJ4EuhvvrRM3IwXQPxKk=
+X-Received: by 2002:a25:73cf:0:b0:d9b:ea48:e5c8 with SMTP id
+ o198-20020a2573cf000000b00d9bea48e5c8mr1126333ybc.59.1699431489053; Wed, 08
+ Nov 2023 00:18:09 -0800 (PST)
 MIME-Version: 1.0
 References: <20231107142048.22422-1-frankja@linux.ibm.com>
- <20231107142048.22422-3-frankja@linux.ibm.com>
-In-Reply-To: <20231107142048.22422-3-frankja@linux.ibm.com>
+ <20231107142048.22422-5-frankja@linux.ibm.com>
+In-Reply-To: <20231107142048.22422-5-frankja@linux.ibm.com>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Wed, 8 Nov 2023 12:09:28 +0400
-Message-ID: <CAJ+F1C+oP_dDjo5fyog+GDYVcFvG6vYE=ikdwLfNo+fYhqeRag@mail.gmail.com>
-Subject: Re: [PATCH 2/4] target/s390x/dump: Remove unneeded dump info function
- pointer init
+Date: Wed, 8 Nov 2023 12:17:58 +0400
+Message-ID: <CAJ+F1C+fMoRJr9DovZ-RG-sz+Kk43pg9h+9uvej+42XkRCErvw@mail.gmail.com>
+Subject: Re: [PATCH 4/4] target/s390x/arch_dump: Add arch cleanup function for
+ PV dumps
 To: Janosch Frank <frankja@linux.ibm.com>
 Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com, 
  imbrenda@linux.ibm.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::829;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x829.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b33;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-yb1-xb33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,34 +92,63 @@ Hi
 On Tue, Nov 7, 2023 at 6:22=E2=80=AFPM Janosch Frank <frankja@linux.ibm.com=
 > wrote:
 >
-> dump_state_prepare() now sets the fucntion pointers to NULL so we only
-
-function
-
-> need to touch them if we're going to use them.
+> PV dumps block vcpu runs until dump end is reached. If there's an
+> error between PV dump init and PV dump end the vm will never be able
+> to run again. One example of such an error is insufficient disk space
+> for the dump file.
+>
+> Let's add a cleanup function that tries to do a dump end. The dump
+> completion data is discarded but there's no point in writing it to a
+> file anyway if there's a possibility that other PV dump data is
+> missing.
 >
 > Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-
-regardless if the previous patch is applied, this patch lgtm
-
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-
 > ---
->  target/s390x/arch_dump.c | 4 ----
->  1 file changed, 4 deletions(-)
+>  target/s390x/arch_dump.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
 >
 > diff --git a/target/s390x/arch_dump.c b/target/s390x/arch_dump.c
-> index 51a2116515..bdb0bfa0e7 100644
+> index bdb0bfa0e7..70146d7e84 100644
 > --- a/target/s390x/arch_dump.c
 > +++ b/target/s390x/arch_dump.c
-> @@ -448,10 +448,6 @@ int cpu_get_dump_info(ArchDumpInfo *info,
+> @@ -433,6 +433,22 @@ static int arch_sections_write(DumpState *s, uint8_t=
+ *buff)
+>      return 0;
+>  }
+>
+> +static void arch_cleanup(DumpState *s)
+> +{
+> +    uint8_t *buff =3D g_malloc(kvm_s390_pv_dmp_get_size_completion_data(=
+));
+> +    int rc;
+> +
+> +    if (!pv_dump_initialized || !buff) {
+
+this may leak if bluff !=3D NULL && !pv_dump_initialized
+
+Better use g_autofree.
+
+No need to check bluff !=3D NULL. (g_malloc abort() if it failed)
+
+> +        return;
+> +    }
+> +
+> +    rc =3D kvm_s390_dump_completion_data(buff);
+> +    if (!rc) {
+> +            pv_dump_initialized =3D false;
+> +    }
+> +    g_free(buff);
+> +}
+> +
+>  int cpu_get_dump_info(ArchDumpInfo *info,
+>                        const struct GuestPhysBlockList *guest_phys_blocks=
+)
+>  {
+> @@ -448,6 +464,7 @@ int cpu_get_dump_info(ArchDumpInfo *info,
 >          info->arch_sections_add_fn =3D *arch_sections_add;
 >          info->arch_sections_write_hdr_fn =3D *arch_sections_write_hdr;
 >          info->arch_sections_write_fn =3D *arch_sections_write;
-> -    } else {
-> -        info->arch_sections_add_fn =3D NULL;
-> -        info->arch_sections_write_hdr_fn =3D NULL;
-> -        info->arch_sections_write_fn =3D NULL;
+> +        info->arch_cleanup_fn =3D *arch_cleanup;
 >      }
 >      return 0;
 >  }
@@ -128,6 +157,7 @@ Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 >
 >
 
+otherwise, seems ok
 
 --=20
 Marc-Andr=C3=A9 Lureau
