@@ -2,82 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE757E5E18
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 20:03:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A5A17E5EB1
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 20:34:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0noz-0000IR-5b; Wed, 08 Nov 2023 14:02:37 -0500
+	id 1r0oIk-0008WM-DW; Wed, 08 Nov 2023 14:33:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r0noy-0000IH-6N
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 14:02:36 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <paul.knight@oasis-open.org>)
+ id 1r0oIh-0008W6-DF
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 14:33:19 -0500
+Received: from mail-io1-xd31.google.com ([2607:f8b0:4864:20::d31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r0now-0007Q5-BN
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 14:02:35 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-53d9f001b35so12197034a12.2
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 11:02:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <paul.knight@oasis-open.org>)
+ id 1r0oIf-0004qK-0K
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 14:33:19 -0500
+Received: by mail-io1-xd31.google.com with SMTP id
+ ca18e2360f4ac-7a956887c20so2046639f.1
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 11:33:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699470152; x=1700074952; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JnS6wYPpg8/Dds0iazqskWjGNdrqiXhb4tjP8jVnjQQ=;
- b=TA6FKiy2ZgNSMDmw4JFgDjiWgLrcI8V2UK6mYUbktAmkwJ6QqzbnpATFBTrNUhQL3X
- 7488Rht0Ez7zqLUW87pvC9ndA0n7EG8ahFKlyWQNOWJR7i9mTZtb+OOEvBnzyQZzox5i
- In8sFLMVXlncr5o95f6ptzv1vtjm+rewtYe03HCROP40UewTrkdUb+Xc8W4/DLUuA32F
- K/O1NylI+9R8AKc2g/sbCBsN81kuLDpZAYInva9Jyw3hzwiCXaD/xw/urMCXREnS6Bi3
- Zft9pQzJ74+K+ur4pexNL3DTiv7zFqoPWAu60lShV1qfKk+Ph52BaxIix36MrtpBymNb
- Q0TQ==
+ d=oasis-open-org.20230601.gappssmtp.com; s=20230601; t=1699471995; x=1700076795;
+ darn=nongnu.org; 
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=9I12sN3bYvArj8wrZUCoYQV5h7w6GNNiyJck2N4AIgU=;
+ b=RCAvFZiYn7QuwiCSMuiV7d2miVWMeDUoYDKElWOfvw/kIGXf81gxD34YqhVb1WjvzS
+ cJ4vk/Z4XcARh1QTg3SBOCYnaVRD5T4MNVGlH8i5kXnRPGiYrTSGy6k2QpMB3ff7qMIl
+ orwsK8auJ/aMzzodc/QHFGf7rg/qWskozFt9/Drey/AW8+xXbDLfrg3BnJ7Qof1Ci+YE
+ p2F2lcfjCt38yalUoIEO6cXh1v+l+AQ9JAufzbXraUkXX07F4Lx0N1k5wekEvAYEqvE7
+ NF9iMHgwr1TRlYNtB7zQnKDqW5/Y/1ZlfnKQGiEhVIzRaQmGyvvSffW1FxqUonDYK+Yf
+ SkSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699470152; x=1700074952;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JnS6wYPpg8/Dds0iazqskWjGNdrqiXhb4tjP8jVnjQQ=;
- b=CR43O4MsMgJ0Ja1XyGMqYjPrpz10cwn+F6GFv61BEdDGa1t+uPqa35UlQI4VX+3d97
- jzWtWzOuUowlakvyTtb2ETdvaH/Kpf4mtYWldMi88MPQxfEq2L70uD3xNks3rQjEP5Rm
- UdnBAsPtQq5mCUTZnVEp8EzCVgFDO99BY1WraDQydWj0MZnChduGK2+/Q2ev0iqRTmKM
- nfwAYR01pkbpH1rsdbLpA5QbQLcuw1TYif8R5ck0eF5t0pczS8Bw6s8YZk4bASD00K/y
- Z3Ok8JX6/kmprucye5+PppoTFjNILUPIFmsAlJsXAuFep5C5czo71e0Us7VOLgAZcEvD
- dxqw==
-X-Gm-Message-State: AOJu0Yx5tqBBT2N0KylnV3Tk0uqugYhFsHGk9F843VpVcb58mq0m24vH
- iWAtBeUjXUgfpMTxafWwdpR/GE29zcfymi9Tb64TKQ==
-X-Google-Smtp-Source: AGHT+IH+nKCPN+X24+zu9HazTMUPSeOWH+r9zThhM/KvWeXOvcK1bjjj0VpXHwIqGgcWjhv9V9GKeCAZgbrqaF8sVPA=
-X-Received: by 2002:a50:d5c1:0:b0:543:56d8:eb26 with SMTP id
- g1-20020a50d5c1000000b0054356d8eb26mr2392737edj.35.1699470152583; Wed, 08 Nov
- 2023 11:02:32 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699471995; x=1700076795;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9I12sN3bYvArj8wrZUCoYQV5h7w6GNNiyJck2N4AIgU=;
+ b=pKlRZ5cGST5XcDRU0jsL2X9LxMwgwAoEpmBJeWdU7UFe+13/tq3k8g5EMhifRWOC8r
+ UyUaD02uPgv1+5T7toDT5zfiwkTpr7yzrY40PsOYQKXt2gu8MS8s3KcCEumhRnyUT3AF
+ A0tX6e9/XEDQve1lKRWWcCB4cTqamOCgg7poOuJLvzdp+QYj8063Rwla8IFftEBUhRMT
+ 1n5SMrxS9kT6HqYrvCqjUcdHdqiGdnzKcKXl2YxF8UDvB0XKCbUGN2Qt+OuRWqQCxeQM
+ vhUBYoQGnFej2NNe2Akxf/tuyMDF32DEiuD9gLkqBFpHS+YH5SPeZt+hYqSiL7SdG/Dq
+ +xkw==
+X-Gm-Message-State: AOJu0YxvZnUz2aklDd9SOEMfVYZm3UFmYOFM3jzxZ8N+97QDFBRmzLlY
+ y6px7rYimWkH5mHSXJMyZrS9Td/dDnkkWhjjs1NIpw==
+X-Google-Smtp-Source: AGHT+IElanGZ5BTlx6OBcuOpjBD5A1wBi/8drWr/XXiU6HZgTAvgz7DH/f5Dt9UYFKLuSxTphVf5HilF3qEd/+6rT/8=
+X-Received: by 2002:a05:6602:3812:b0:786:25a3:ef30 with SMTP id
+ bb18-20020a056602381200b0078625a3ef30mr3962649iob.7.1699471994336; Wed, 08
+ Nov 2023 11:33:14 -0800 (PST)
 MIME-Version: 1.0
-References: <20231108183251.80572-1-philmd@linaro.org>
- <20231108183251.80572-2-philmd@linaro.org>
-In-Reply-To: <20231108183251.80572-2-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 8 Nov 2023 19:01:48 +0000
-Message-ID: <CAFEAcA9xgS_8VV1S+-7vaqSqzK_2=0hJ+ceDP7BVdFd6TUR-nw@mail.gmail.com>
-Subject: Re: [NOTFORMERGE PATCH 1/2] configure: Use distrib meson
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- John Snow <jsnow@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Rene Engel <ReneEngel80@emailn.de>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>, 
- Howard Spoelstra <hsp.cat7@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+From: Paul Knight <paul.knight@oasis-open.org>
+Date: Wed, 8 Nov 2023 14:33:03 -0500
+Message-ID: <CADgeAH_67CQZoVGEB_ddGEZA5+kUzmQe_3yfA1U6-c-K2mJi7g@mail.gmail.com>
+Subject: Invitation to comment on Virtual I/O Device (VIRTIO) Version 1.3 -
+ ends December 8th
+To: project-announce@lists.oasis-open.org, members@lists.oasis-open.org, 
+ virtio@lists.oasis-open.org, virtio-comment@lists.oasis-open.org
+Content-Type: multipart/alternative; boundary="0000000000008753570609a9289d"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d31;
+ envelope-from=paul.knight@oasis-open.org; helo=mail-io1-xd31.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,40 +83,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 8 Nov 2023 at 18:33, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
-> wrote:
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  configure | 9 +--------
->  1 file changed, 1 insertion(+), 8 deletions(-)
->
-> diff --git a/configure b/configure
-> index f1456f6123..93735b7661 100755
-> --- a/configure
-> +++ b/configure
-> @@ -955,15 +955,8 @@ if $python -c 'import sys; sys.exit(sys.version_info=
- >=3D (3,11))'; then
->      $mkvenv ensure --dir "${source_path}/python/wheels" \
->          'tomli>=3D1.2.0' || exit 1
->  fi
-> -$mkvenv ensuregroup --dir "${source_path}/python/wheels" \
-> -     ${source_path}/pythondeps.toml meson || exit 1
->
-> -# At this point, we expect Meson to be installed and available.
-> -# We expect mkvenv or pip to have created pyvenv/bin/meson for us.
-> -# We ignore PATH completely here: we want to use the venv's Meson
-> -# *exclusively*.
-> -
-> -meson=3D"$(cd pyvenv/bin; pwd)/meson"
-> +meson=3D"$(which meson)"
+--0000000000008753570609a9289d
+Content-Type: text/plain; charset="UTF-8"
 
-Presumably the other approach would be to make the pythondeps.toml
-say "on macos we need at least version X of meson" ?
+OASIS members and other interested parties,
 
-Do we know what the upstream meson issue is that we're running into
-with the older version on this host ?
+OASIS and the OASIS Virtual I/O Device (VIRTIO) TC are pleased to announce
+that Virtual I/O Device (VIRTIO) Version 1.3 is now available for public
+review and comment.
 
-thanks
--- PMM
+Specification Overview:
+
+This document describes the specifications of the 'virtio' family of
+devices. These devices are found in virtual environments, yet by design
+they look like physical devices to the guest within the virtual machine -
+and this document treats them as such. This similarity allows the guest to
+use standard drivers and discovery mechanisms. The purpose of virtio and
+this specification is that virtual environments and guests should have a
+straightforward, efficient, standard and extensible mechanism for virtual
+devices, rather than boutique per-environment or per-OS mechanisms.
+
+The documents and related files are available here:
+
+Virtual I/O Device (VIRTIO) Version 1.3
+Committee Specification Draft 01
+06 October 2023
+
+Editable source (Authoritative):
+https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/tex/
+HTML:
+https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.html
+PDF:
+https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.pdf
+Example driver listing:
+https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/listings/
+PDF file marked to indicate changes from Version 1.2 Committee
+Specification 01:
+https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01-diff-from-v1.2-cs01.pdf
+
+For your convenience, OASIS provides a complete package of the
+specification document and any related files in ZIP distribution files. You
+can download the ZIP file at:
+https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.zip
+
+A public review metadata record documenting this and any previous public
+reviews is available at:
+https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01-public-review-metadata.html
+
+How to Provide Feedback
+
+OASIS and the OASIS Virtual I/O Device (VIRTIO) TC value your feedback. We
+solicit input from developers, users and others, whether OASIS members or
+not, for the sake of improving the interoperability and quality of its
+technical work.
+
+The public review starts 09 November 2023 at 00:00 UTC and ends 08 December
+2023 at 23:59 UTC.
+
+Comments may be submitted to the TC by any person through the use of the
+OASIS TC Comment Facility which can be used by following the instructions
+on the TC's "Send A Comment" page (
+https://www.oasis-open.org/committees/comments/index.php?wg_abbrev=virtio).
+
+Comments submitted by TC non-members for this work and for other work of
+this TC are publicly archived and can be viewed at:
+
+https://lists.oasis-open.org/archives/virtio-comment/
+
+All comments submitted to OASIS are subject to the OASIS Feedback License,
+which ensures that the feedback you provide carries the same obligations at
+least as the obligations of the TC members. In connection with this public
+review, we call your attention to the OASIS IPR Policy [1] applicable
+especially [2] to the work of this technical committee. All members of the
+TC should be familiar with this document, which may create obligations
+regarding the disclosure and availability of a member's patent, copyright,
+trademark and license rights that read on an approved OASIS specification.
+
+OASIS invites any persons who know of any such claims to disclose these if
+they may be essential to the implementation of the above specification, so
+that notice of them may be posted to the notice page for this TC's work.
+
+Additional information about the specification and the VIRTIO TC can be
+found at the TC's public home page:
+https://www.oasis-open.org/committees/virtio/
+
+========== Additional references:
+
+[1] https://www.oasis-open.org/policies-guidelines/ipr/
+
+[2] https://github.com/oasis-tcs/virtio-admin/blob/master/IPR.md
+https://www.oasis-open.org/policies-guidelines/ipr/#Non-Assertion-Mode
+Non-Assertion Mode
+-- 
+Paul Knight <paul.knight@oasis-open.org>....Document Process Analyst
+<https://www.oasis-open.org/people/staff/paul-knight>
+OASIS <https://www.oasis-open.org/>...Setting the standard for open
+collaboration
+
+--0000000000008753570609a9289d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>OASIS members and other interested parties,<br><br>OA=
+SIS and the OASIS Virtual I/O Device (VIRTIO) TC are pleased to announce th=
+at Virtual I/O Device (VIRTIO) Version 1.3 is now available for public revi=
+ew and comment.<br><br>Specification Overview:<br><br>This document describ=
+es the specifications of the &#39;virtio&#39; family of devices. These devi=
+ces are found in virtual environments, yet by design they look like physica=
+l devices to the guest within the virtual machine - and this document treat=
+s them as such. This similarity allows the guest to use standard drivers an=
+d discovery mechanisms. The purpose of virtio and this specification is tha=
+t virtual environments and guests should have a straightforward, efficient,=
+ standard and extensible mechanism for virtual devices, rather than boutiqu=
+e per-environment or per-OS mechanisms.<br><br>The documents and related fi=
+les are available here:<br><br>Virtual I/O Device (VIRTIO) Version 1.3<br>C=
+ommittee Specification Draft 01<br>06 October 2023<br><br>Editable source (=
+Authoritative):<br><a href=3D"https://docs.oasis-open.org/virtio/virtio/v1.=
+3/csd01/tex/">https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/tex/</a>=
+<br>HTML:<br><a href=3D"https://docs.oasis-open.org/virtio/virtio/v1.3/csd0=
+1/virtio-v1.3-csd01.html">https://docs.oasis-open.org/virtio/virtio/v1.3/cs=
+d01/virtio-v1.3-csd01.html</a><br>PDF:<br><a href=3D"https://docs.oasis-ope=
+n.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.pdf">https://docs.oasis-op=
+en.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.pdf</a><br>Example driver=
+ listing:<br><a href=3D"https://docs.oasis-open.org/virtio/virtio/v1.3/csd0=
+1/listings/">https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/listings/=
+</a><br>PDF file marked to indicate changes from Version 1.2 Committee Spec=
+ification 01:<br><a href=3D"https://docs.oasis-open.org/virtio/virtio/v1.3/=
+csd01/virtio-v1.3-csd01-diff-from-v1.2-cs01.pdf">https://docs.oasis-open.or=
+g/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01-diff-from-v1.2-cs01.pdf</a><br=
+><br>For your convenience, OASIS provides a complete package of the specifi=
+cation document and any related files in ZIP distribution files. You can do=
+wnload the ZIP file at:<br><a href=3D"https://docs.oasis-open.org/virtio/vi=
+rtio/v1.3/csd01/virtio-v1.3-csd01.zip">https://docs.oasis-open.org/virtio/v=
+irtio/v1.3/csd01/virtio-v1.3-csd01.zip</a><br><br>A public review metadata =
+record documenting this and any previous public reviews is available at:<br=
+><a href=3D"https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.=
+3-csd01-public-review-metadata.html">https://docs.oasis-open.org/virtio/vir=
+tio/v1.3/csd01/virtio-v1.3-csd01-public-review-metadata.html</a><br><br>How=
+ to Provide Feedback<br><br>OASIS and the OASIS Virtual I/O Device (VIRTIO)=
+ TC value your feedback. We solicit input from developers, users and others=
+, whether OASIS members or not, for the sake of improving the interoperabil=
+ity and quality of its technical work.<br><br>The public review starts 09 N=
+ovember 2023 at 00:00 UTC and ends 08 December 2023 at 23:59 UTC.<br><br>Co=
+mments may be submitted to the TC by any person through the use of the OASI=
+S TC Comment Facility which can be used by following the instructions on th=
+e TC&#39;s &quot;Send A Comment&quot; page (<a href=3D"https://www.oasis-op=
+en.org/committees/comments/index.php?wg_abbrev=3Dvirtio">https://www.oasis-=
+open.org/committees/comments/index.php?wg_abbrev=3Dvirtio</a>).<br><br>Comm=
+ents submitted by TC non-members for this work and for other work of this T=
+C are publicly archived and can be viewed at:<br><br><a href=3D"https://lis=
+ts.oasis-open.org/archives/virtio-comment/">https://lists.oasis-open.org/ar=
+chives/virtio-comment/</a><br><br>All comments submitted to OASIS are subje=
+ct to the OASIS Feedback License, which ensures that the feedback you provi=
+de carries the same obligations at least as the obligations of the TC membe=
+rs. In connection with this public review, we call your attention to the OA=
+SIS IPR Policy [1] applicable especially [2] to the work of this technical =
+committee. All members of the TC should be familiar with this document, whi=
+ch may create obligations regarding the disclosure and availability of a me=
+mber&#39;s patent, copyright, trademark and license rights that read on an =
+approved OASIS specification.<br><br>OASIS invites any persons who know of =
+any such claims to disclose these if they may be essential to the implement=
+ation of the above specification, so that notice of them may be posted to t=
+he notice page for this TC&#39;s work.<br><br>Additional information about =
+the specification and the VIRTIO TC can be found at the TC&#39;s public hom=
+e page:<br><a href=3D"https://www.oasis-open.org/committees/virtio/">https:=
+//www.oasis-open.org/committees/virtio/</a><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D Additional references:<br><br>[1] <a href=3D"https://www.oasis-open.=
+org/policies-guidelines/ipr/">https://www.oasis-open.org/policies-guideline=
+s/ipr/</a><br><br>[2] <a href=3D"https://github.com/oasis-tcs/virtio-admin/=
+blob/master/IPR.md">https://github.com/oasis-tcs/virtio-admin/blob/master/I=
+PR.md</a><br><a href=3D"https://www.oasis-open.org/policies-guidelines/ipr/=
+#Non-Assertion-Mode">https://www.oasis-open.org/policies-guidelines/ipr/#No=
+n-Assertion-Mode</a><br>Non-Assertion Mode<br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature" da=
+ta-smartmail=3D"gmail_signature"><div dir=3D"ltr"><div><div dir=3D"ltr"><di=
+v><div dir=3D"ltr"><div><div dir=3D"ltr"><div><div dir=3D"ltr"><div><div di=
+r=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><font style=3D"color:rgb(0,0,0)=
+;background-color:rgb(255,255,255)" color=3D"#888888"><a href=3D"mailto:pau=
+l.knight@oasis-open.org" target=3D"_blank">Paul Knight</a>...</font><span s=
+tyle=3D"color:rgb(0,0,0)">.</span><a href=3D"https://www.oasis-open.org/peo=
+ple/staff/paul-knight" target=3D"_blank">Document Process Analyst</a></div>=
+<div dir=3D"ltr"><font style=3D"color:rgb(0,0,0);background-color:rgb(255,2=
+55,255)" color=3D"#888888"><a href=3D"https://www.oasis-open.org/" target=
+=3D"_blank">OASIS</a>...</font><font color=3D"#000000">Setting the standard=
+ for open collaboration</font></div></div></div></div></div></div></div></d=
+iv></div></div></div></div></div></div></div>
+
+--0000000000008753570609a9289d--
 
