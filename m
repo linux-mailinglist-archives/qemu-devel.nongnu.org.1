@@ -2,73 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1291F7E5B15
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 17:23:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAFEE7E5B25
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 17:25:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0lKS-0003BX-0q; Wed, 08 Nov 2023 11:22:56 -0500
+	id 1r0lMk-00043u-1c; Wed, 08 Nov 2023 11:25:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r0lKP-0003BH-0K
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 11:22:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <smitterl@redhat.com>)
+ id 1r0lMb-000434-FS
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 11:25:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r0lKN-0003oD-77
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 11:22:52 -0500
+ (Exim 4.90_1) (envelope-from <smitterl@redhat.com>)
+ id 1r0lMZ-0004Cq-R3
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 11:25:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699460568;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vOOnaCkfaBfvcT20Z4bOs0smmXp2+AfspFydIcHUBj4=;
- b=Y8mN2h5P1PfiRJ6A62IbjbM/GrxscVsVJ9/QXbgilqizKEDwy1+TuqP/kPB9BAbl4vvtz0
- 63Z4zysYvdqebGdSfcXNeZBe7Vj6dph13lqNuymVW2ttC2Qe2lGBNUcVhFTkeE/Ck1S4Fx
- lNYq6XpOTrf13cnCvWvc2Dt2FwiVVas=
+ s=mimecast20190719; t=1699460706;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Z+Kd8D4ZxwpH7Ta3ZCRieR1Dc6Cf83zEOrRIhJPJel0=;
+ b=blFG9MCyVvQKyozd4yUV4P4CX4Q4lGLMhkL5AP5xEkH6cgZeJ35k/ggPf/KKUVwY+JFwfv
+ cKGeZeczxYYwtglENq7CdZMYIh/kIZVmGbKZtOOg81dZqMkboIJD2RKRXa3ldr/ghwDrh/
+ GifUWVDxWexCTfZTfFYwStniCFg1ac4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-528-JWt9KtsQNImZ0u1jIBq4Lg-1; Wed, 08 Nov 2023 11:22:46 -0500
-X-MC-Unique: JWt9KtsQNImZ0u1jIBq4Lg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ us-mta-66-XRzlwM11OTSx-RW5HdxXXw-1; Wed, 08 Nov 2023 11:23:57 -0500
+X-MC-Unique: XRzlwM11OTSx-RW5HdxXXw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E5D5184AC64;
- Wed,  8 Nov 2023 16:22:45 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id F1821492BFC;
- Wed,  8 Nov 2023 16:22:44 +0000 (UTC)
-Date: Wed, 8 Nov 2023 16:22:42 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Beraldo Leal <bleal@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH] .gitlab-ci.d/cirrus: Upgrade macOS to 13 (Ventura)
-Message-ID: <ZUu10tMmaZBPlqOU@redhat.com>
-References: <20231108162022.76189-1-philmd@linaro.org>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0750A83DE2D;
+ Wed,  8 Nov 2023 16:23:57 +0000 (UTC)
+Received: from s390x-kvm-006.lab.eng.rdu2.redhat.com
+ (s390x-kvm-006.lab.eng.rdu2.redhat.com [10.0.160.6])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F28B9492BEF;
+ Wed,  8 Nov 2023 16:23:56 +0000 (UTC)
+From: Sebastian Mitterle <smitterl@redhat.com>
+To: peter.maydell@linaro.org
+Cc: thuth@redhat.com,
+	qemu-s390x@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH] risu: Add test summary
+Date: Wed,  8 Nov 2023 11:23:56 -0500
+Message-ID: <20231108162356.36670-1-smitterl@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231108162022.76189-1-philmd@linaro.org>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=smitterl@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,41 +76,59 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 08, 2023 at 05:20:22PM +0100, Philippe Mathieu-Daudé wrote:
-> macOS 14 "Sonoma" was released on September 2023 [1].
-> 
-> According to QEMU's support policy, we stop supporting the
-> previous major release two years after the the new major
-> release has been published. Replace the macOS 12 (Monterey)
-> testing by macOS 13 (Ventura, released on October 2022, [2]).
-> 
-> Refresh the generated files by running:
-> 
->   $ make lcitool-refresh
-> 
-> [1] https://www.apple.com/newsroom/2023/09/macos-sonoma-is-available-today/
-> [2] https://www.apple.com/newsroom/2022/10/macos-ventura-is-now-available/
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  .gitlab-ci.d/cirrus.yml                              | 6 +++---
->  .gitlab-ci.d/cirrus/{macos-12.vars => macos-13.vars} | 2 +-
->  tests/lcitool/refresh                                | 2 +-
->  3 files changed, 5 insertions(+), 5 deletions(-)
->  rename .gitlab-ci.d/cirrus/{macos-12.vars => macos-13.vars} (95%)
+Currently, a successful test run finishes silently with exit code 0.
+The last message on the console is "starting image" which can leave
+the user wondering if they executed the commands correctly.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Now add a summary of the number of executed instructions in case
+of success. Don't add that message when printing the trace to
+stdout (`-t -`).
 
+Tested:
+a) master/apprentice mode
+b) trace mode to file
+c) trace mode to stdout
 
-With regards,
-Daniel
+Suggested-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Sebastian Mitterle <smitterl@redhat.com>
+---
+ risu.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/risu.c b/risu.c
+index 36fc82a..740663a 100644
+--- a/risu.c
++++ b/risu.c
+@@ -551,6 +551,7 @@ int main(int argc, char **argv)
+     struct option *longopts;
+     char *shortopts;
+     stack_t ss;
++    int ret;
+ 
+     longopts = setup_options(&shortopts);
+ 
+@@ -635,8 +636,15 @@ int main(int argc, char **argv)
+     arch_init();
+ 
+     if (ismaster) {
+-        return master();
++        ret = master();
+     } else {
+-        return apprentice();
++        ret = apprentice();
+     }
++
++    if (ret == EXIT_SUCCESS && (!trace || (trace  && strcmp(trace_fn, "-") != 0))) {
++        fprintf(stderr, "No mismatches found. Executed %zd checkpoints.\n",
++                signal_count);
++    }
++
++    return ret;
+ }
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.41.0
 
 
