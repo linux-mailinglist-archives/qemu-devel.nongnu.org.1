@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 805B67E5D6A
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 19:42:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE757E5E18
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 20:03:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0nVG-0003zW-HT; Wed, 08 Nov 2023 13:42:14 -0500
+	id 1r0noz-0000IR-5b; Wed, 08 Nov 2023 14:02:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0nVE-0003zO-9C
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 13:42:12 -0500
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r0noy-0000IH-6N
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 14:02:36 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r0nVC-0004gn-Ej
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 13:42:12 -0500
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-2809a824bbbso5569000a91.3
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 10:42:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r0now-0007Q5-BN
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 14:02:35 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-53d9f001b35so12197034a12.2
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 11:02:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699468929; x=1700073729; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=a8hP4ONYatUsSD+JK/Q3WAou1kfbPcq506JPa5WeBZ0=;
- b=ZkVUGV/w5Za1o22ysTS8lz2ryKnmvLeiNu5yLgBUeeqs+kLeJCt6ZFD0J5dgcWkpsr
- b3xivVPrgYFgWOY+mepizrukvewJ7f/NgAAC3P151r352ZY4KoLUJ3TJD+lLJeXgEcoV
- kG1EyOc3le1Dyc7AaAAlSDe61jhMIyRXqu2cNcHqG6OKX+28vMCj6IwwbztI+ObjLjj2
- jCNCD1+2SvxVHCBMr5S/0nqJFMHTYho2ZSKevzgubw3fuxYhC55tTflBjPEKHJhMNqtp
- KfhCPFApr07Bk+9u5k6R8xg/LF/560TClIYO7hTM8ydI2zTXZ3rTMeekMB0las0bVXiD
- UJlg==
+ d=linaro.org; s=google; t=1699470152; x=1700074952; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JnS6wYPpg8/Dds0iazqskWjGNdrqiXhb4tjP8jVnjQQ=;
+ b=TA6FKiy2ZgNSMDmw4JFgDjiWgLrcI8V2UK6mYUbktAmkwJ6QqzbnpATFBTrNUhQL3X
+ 7488Rht0Ez7zqLUW87pvC9ndA0n7EG8ahFKlyWQNOWJR7i9mTZtb+OOEvBnzyQZzox5i
+ In8sFLMVXlncr5o95f6ptzv1vtjm+rewtYe03HCROP40UewTrkdUb+Xc8W4/DLUuA32F
+ K/O1NylI+9R8AKc2g/sbCBsN81kuLDpZAYInva9Jyw3hzwiCXaD/xw/urMCXREnS6Bi3
+ Zft9pQzJ74+K+ur4pexNL3DTiv7zFqoPWAu60lShV1qfKk+Ph52BaxIix36MrtpBymNb
+ Q0TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699468929; x=1700073729;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=a8hP4ONYatUsSD+JK/Q3WAou1kfbPcq506JPa5WeBZ0=;
- b=hOyhZkGwW35WebyiW9RpIckhcFC4sHpg6ziycfP7uPlExMXFGIKNEDPqJXoDGBCdzc
- HGKmgO7AB1yPgiBDsLryJSGkE1UytPqL1zx87kJND0KZy6lcgtU8NmzNOIm82zb6eguM
- Gql3fzI6tYGumpPrM/I/L5EplTc8JdukDkckVTuBGWTODSvW4F0RXAIgShlPzL9qPHKf
- rw6kqlGlmOUHQh7HPSy0tUhOBvT7qoKbEVvyX9irqq1Lk+IC95s583bT+IqIvvlhyYim
- 3vhpJdBvAerFWZnBvzRMssicK1XfVQNoHfLJl+ij/XSFg1bgaVg/dfUve41fErrpf7Sy
- H7cw==
-X-Gm-Message-State: AOJu0YyBVULQdy2i2Wl8wGisAcGsM7QiKgj4eTGisK+RpUNZPT5BUbUY
- tCKkJaqTM6Jdaqcom/JXej0v2w==
-X-Google-Smtp-Source: AGHT+IF8sEZmRZBypkkajPxlNUNCDd54kiMv4fYWUvtyVdtYhPLeTacdgMPiTQpsiakIoprhETvnig==
-X-Received: by 2002:a17:90b:4b82:b0:27d:c35:7f3 with SMTP id
- lr2-20020a17090b4b8200b0027d0c3507f3mr2741636pjb.8.1699468928786; 
- Wed, 08 Nov 2023 10:42:08 -0800 (PST)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- e10-20020a17090a4a0a00b0028105e3c7d8sm1889193pjh.0.2023.11.08.10.42.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Nov 2023 10:42:08 -0800 (PST)
-Message-ID: <4a1e02a2-65ce-47b5-88f1-9bbf295cfa3f@linaro.org>
-Date: Wed, 8 Nov 2023 10:42:06 -0800
+ d=1e100.net; s=20230601; t=1699470152; x=1700074952;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JnS6wYPpg8/Dds0iazqskWjGNdrqiXhb4tjP8jVnjQQ=;
+ b=CR43O4MsMgJ0Ja1XyGMqYjPrpz10cwn+F6GFv61BEdDGa1t+uPqa35UlQI4VX+3d97
+ jzWtWzOuUowlakvyTtb2ETdvaH/Kpf4mtYWldMi88MPQxfEq2L70uD3xNks3rQjEP5Rm
+ UdnBAsPtQq5mCUTZnVEp8EzCVgFDO99BY1WraDQydWj0MZnChduGK2+/Q2ev0iqRTmKM
+ nfwAYR01pkbpH1rsdbLpA5QbQLcuw1TYif8R5ck0eF5t0pczS8Bw6s8YZk4bASD00K/y
+ Z3Ok8JX6/kmprucye5+PppoTFjNILUPIFmsAlJsXAuFep5C5czo71e0Us7VOLgAZcEvD
+ dxqw==
+X-Gm-Message-State: AOJu0Yx5tqBBT2N0KylnV3Tk0uqugYhFsHGk9F843VpVcb58mq0m24vH
+ iWAtBeUjXUgfpMTxafWwdpR/GE29zcfymi9Tb64TKQ==
+X-Google-Smtp-Source: AGHT+IH+nKCPN+X24+zu9HazTMUPSeOWH+r9zThhM/KvWeXOvcK1bjjj0VpXHwIqGgcWjhv9V9GKeCAZgbrqaF8sVPA=
+X-Received: by 2002:a50:d5c1:0:b0:543:56d8:eb26 with SMTP id
+ g1-20020a50d5c1000000b0054356d8eb26mr2392737edj.35.1699470152583; Wed, 08 Nov
+ 2023 11:02:32 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 9/9] target/loongarch: Add loongarch kvm into meson
- build
-Content-Language: en-US
-To: xianglai li <lixianglai@loongson.cn>, qemu-devel@nongnu.org
-Cc: gaosong@loongson.cn, maobibo@loongson.cn, zhaotianrui@loongson.cn,
- mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
- marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
- philmd@linaro.org, peter.maydell@linaro.org, yangxiaojuan@loongson.cn
-References: <20231108014141.2590657-1-lixianglai@loongson.cn>
- <20231108014141.2590657-10-lixianglai@loongson.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231108014141.2590657-10-lixianglai@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
+References: <20231108183251.80572-1-philmd@linaro.org>
+ <20231108183251.80572-2-philmd@linaro.org>
+In-Reply-To: <20231108183251.80572-2-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 8 Nov 2023 19:01:48 +0000
+Message-ID: <CAFEAcA9xgS_8VV1S+-7vaqSqzK_2=0hJ+ceDP7BVdFd6TUR-nw@mail.gmail.com>
+Subject: Re: [NOTFORMERGE PATCH 1/2] configure: Use distrib meson
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ John Snow <jsnow@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Rene Engel <ReneEngel80@emailn.de>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>, 
+ Howard Spoelstra <hsp.cat7@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,23 +94,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/7/23 17:41, xianglai li wrote:
-> From: Tianrui Zhao <zhaotianrui@loongson.cn>
-> 
-> Add kvm.c and kvm-stub.c into meson.build to compile
-> it when kvm is configed. Meanwhile in meson.build,
-> we set the kvm_targets to loongarch64-softmmu when
-> the cpu is loongarch.
-> 
-> Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
-> Signed-off-by: xianglai li <lixianglai@loongson.cn>
+On Wed, 8 Nov 2023 at 18:33, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->   meson.build                  | 2 ++
->   target/loongarch/meson.build | 1 +
->   2 files changed, 3 insertions(+)
+>  configure | 9 +--------
+>  1 file changed, 1 insertion(+), 8 deletions(-)
+>
+> diff --git a/configure b/configure
+> index f1456f6123..93735b7661 100755
+> --- a/configure
+> +++ b/configure
+> @@ -955,15 +955,8 @@ if $python -c 'import sys; sys.exit(sys.version_info=
+ >=3D (3,11))'; then
+>      $mkvenv ensure --dir "${source_path}/python/wheels" \
+>          'tomli>=3D1.2.0' || exit 1
+>  fi
+> -$mkvenv ensuregroup --dir "${source_path}/python/wheels" \
+> -     ${source_path}/pythondeps.toml meson || exit 1
+>
+> -# At this point, we expect Meson to be installed and available.
+> -# We expect mkvenv or pip to have created pyvenv/bin/meson for us.
+> -# We ignore PATH completely here: we want to use the venv's Meson
+> -# *exclusively*.
+> -
+> -meson=3D"$(cd pyvenv/bin; pwd)/meson"
+> +meson=3D"$(which meson)"
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Presumably the other approach would be to make the pythondeps.toml
+say "on macos we need at least version X of meson" ?
 
+Do we know what the upstream meson issue is that we're running into
+with the older version on this host ?
 
-r~
+thanks
+-- PMM
 
