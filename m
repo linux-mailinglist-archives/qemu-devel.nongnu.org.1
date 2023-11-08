@@ -2,80 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C67A67E538D
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 11:42:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CCB17E54A0
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 Nov 2023 11:58:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0g0l-0002iU-E8; Wed, 08 Nov 2023 05:42:15 -0500
+	id 1r0gF4-00085J-5o; Wed, 08 Nov 2023 05:57:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0g0j-0002hg-BT
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 05:42:13 -0500
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r0g0h-0001x0-K0
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 05:42:13 -0500
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-9e1fb7faa9dso322944166b.2
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 02:42:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699440130; x=1700044930; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ze7TsIR1SPoCiVi7j0NSi7P0uUbi1Jh/VvPQbpP6Jgs=;
- b=KLkT8sVLY0izDRdPA1JzLZNF8osz1tYq/Y7COfLF4Kymm60xzZj5l/pHQuBb+WQPK/
- GSbcnLSSKb3VeRCik35EPLMZCu7k1Pa8mKEWbAxn33GEzjlyalWylCzJ6sAeIwaApy9u
- nD5KTlHU/kKHn8MuhtzjZAt742z4j2NFJ6VdZS5IgnwQfyv4tm5+BaNxWqygMsppON5h
- TnA8xO4WtE+ZqXy2+26TbeaNqnICAHiDv+gp3n6hzQi8bgjiBQwbvvTBfekY4jBkIzoT
- 5Q6Js5vRVTwaw/6Y+8XBUj1aKc1l5zrm94BI1dB2FvNyhUbMn5BlkMDYyrA0AocJwnef
- NTjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699440130; x=1700044930;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ze7TsIR1SPoCiVi7j0NSi7P0uUbi1Jh/VvPQbpP6Jgs=;
- b=dclc5v71JmpUUr8PjrxS1VUN9JCsG2eeVQ4mYzg5i+5oo9AqxJfmu2eT1voVyi7Qe6
- lx1K3KbSp0Q5SpTuJUKZdj46TN5xG9VOfwXnHXpP+LJ/Q7CSkC7tCuSVyzKntJkXLh2y
- vD/kbB/DhOeYhOOI0M6d+L+wo0o0wjdkTVh+9RTc+9udjdY9fr4AhAL0Kozea6ueTzaU
- J7bpcqz8eIkVDcnpAsay4YFb5fjXi11Zc7GZHjdceTBFdl6ouSD3x/jcjrEUY6Gl5wI0
- BqSotteNOi9Y0QSxPoq68sLgKdwdomvWsWaJpFEKt/lDPwzlhJF1Y3OonPEAM+W8nkRf
- l2Tw==
-X-Gm-Message-State: AOJu0YxUGEeOJsoQD+E5TLGNGU8bD65BUvzknuy53k0HF8pQ7LDs8AsR
- Ksh54sv1THmyKqP00lpArGgSiQ==
-X-Google-Smtp-Source: AGHT+IE+4OPRld2dbzgHQw4RfOXxuDDapC/AvbwK3+hUAsYwMMwJEXvxgcCr9pdcZcWRKttDgC8PoA==
-X-Received: by 2002:a17:906:d553:b0:9ba:2b14:44f4 with SMTP id
- cr19-20020a170906d55300b009ba2b1444f4mr1131401ejc.49.1699440130027; 
- Wed, 08 Nov 2023 02:42:10 -0800 (PST)
-Received: from [192.168.69.115] ([176.187.199.60])
- by smtp.gmail.com with ESMTPSA id
- dx15-20020a170906a84f00b0099cce6f7d50sm833565ejb.64.2023.11.08.02.42.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Nov 2023 02:42:09 -0800 (PST)
-Message-ID: <7e87bf56-e96d-49c2-aa37-e8eaf3d0b5b2@linaro.org>
-Date: Wed, 8 Nov 2023 11:42:08 +0100
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1r0gEz-000858-PN
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 05:56:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1r0gEy-0004VC-8J
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 05:56:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699441014;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=YBfopc7Ul74TXPkTzrBPjS9p5wbFCJOmvULQRkMJKq8=;
+ b=h2Ki47WsZyrQeVZ7gqgfciY0y8Qn1UBkFwoDEOL6r9nVEHIYYCKwgyIEHZPmj1jOmob4ma
+ 9OKidEzrec0+qIsJFxXt4xPa5RXHFToXjRrD/xCqM56NQkhetrYO30CN0LE1vqqmkncz14
+ 5AiMXEGELyOf5QQBdhQMeyjiSHGYiWs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-629-cogYiMViP5i2lcZgmKIrBw-1; Wed, 08 Nov 2023 05:56:53 -0500
+X-MC-Unique: cogYiMViP5i2lcZgmKIrBw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0243785A58B;
+ Wed,  8 Nov 2023 10:56:53 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.35])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 12EDC1121308;
+ Wed,  8 Nov 2023 10:56:51 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-stable@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>
+Subject: [PATCH] tracetool: avoid invalid escape in Python string
+Date: Wed,  8 Nov 2023 14:56:49 +0400
+Message-ID: <20231108105649.60453-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vl: constify default_list
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-References: <20231030101529.105266-1-marcandre.lureau@redhat.com>
- <9d80aef7-084a-b9ee-832f-4e4b7549713e@linaro.org>
-In-Reply-To: <9d80aef7-084a-b9ee-832f-4e4b7549713e@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,20 +81,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/10/23 11:19, Philippe Mathieu-Daudé wrote:
-> On 30/10/23 11:15, marcandre.lureau@redhat.com wrote:
->> From: Marc-André Lureau <marcandre.lureau@redhat.com>
->>
->> It's not modified, let's make it const.
->>
->> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
->> ---
->>   system/vl.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-... and queued via my cpu/misc tree, thanks!
+This is an error in Python 3.12; fix it by using a raw string literal.
 
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ scripts/tracetool/__init__.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
+index b29594d75e..b887540a55 100644
+--- a/scripts/tracetool/__init__.py
++++ b/scripts/tracetool/__init__.py
+@@ -91,7 +91,7 @@ def out(*lines, **kwargs):
+ def validate_type(name):
+     bits = name.split(" ")
+     for bit in bits:
+-        bit = re.sub("\*", "", bit)
++        bit = re.sub(r"\*", "", bit)
+         if bit == "":
+             continue
+         if bit == "const":
+-- 
+2.41.0
 
 
