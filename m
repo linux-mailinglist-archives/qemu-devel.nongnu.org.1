@@ -2,41 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28A87E6B76
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:48:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B20FF7E6BBA
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:55:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15MM-0006DC-3T; Thu, 09 Nov 2023 08:46:14 -0500
+	id 1r15MR-0006Sg-FK; Thu, 09 Nov 2023 08:46:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15M2-00063b-2p; Thu, 09 Nov 2023 08:45:54 -0500
+ id 1r15M5-0006DK-1t; Thu, 09 Nov 2023 08:45:58 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15Lz-0001fa-7p; Thu, 09 Nov 2023 08:45:53 -0500
+ id 1r15M2-0001hJ-Pi; Thu, 09 Nov 2023 08:45:56 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3746231B12;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5BB0431B13;
  Thu,  9 Nov 2023 16:43:13 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4763D344B8;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6004F344B9;
  Thu,  9 Nov 2023 16:43:05 +0300 (MSK)
-Received: (nullmailer pid 1461839 invoked by uid 1000);
+Received: (nullmailer pid 1461842 invoked by uid 1000);
  Thu, 09 Nov 2023 13:43:02 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Fam Zheng <fam@euphon.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Juan Quintela <quintela@redhat.com>, "Denis V. Lunev" <den@openvz.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.3 26/55] target/arm: Correctly propagate stage 1 BTI
- guarded bit in a two-stage walk
-Date: Thu,  9 Nov 2023 16:42:30 +0300
-Message-Id: <20231109134300.1461632-26-mjt@tls.msk.ru>
+Subject: [Stable-8.1.3 27/55] util/uuid: Add UUID_STR_LEN definition
+Date: Thu,  9 Nov 2023 16:42:31 +0300
+Message-Id: <20231109134300.1461632-27-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
 References: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,84 +64,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Cédric Le Goater <clg@redhat.com>
 
-In a two-stage translation, the result of the BTI guarded bit should
-be the guarded bit from the first stage of translation, as there is
-no BTI guard information in stage two.  Our code tried to do this,
-but got it wrong, because we currently have two fields where the GP
-bit information might live (ARMCacheAttrs::guarded and
-CPUTLBEntryFull::extra::arm::guarded), and we were storing the GP bit
-in the latter during the stage 1 walk but trying to copy the former
-in combine_cacheattrs().
+qemu_uuid_unparse() includes a trailing NUL when writing the uuid
+string and the buffer size should be UUID_FMT_LEN + 1 bytes. Add a
+define for this size and use it where required.
 
-Remove the duplicated storage, and always use the field in
-CPUTLBEntryFull; correctly propagate the stage 1 value to the output
-in get_phys_addr_twostage().
-
-Note for stable backports: in v8.0 and earlier the field is named
-result->f.guarded, not result->f.extra.arm.guarded.
-
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1950
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20231031173723.26582-1-peter.maydell@linaro.org
-(cherry picked from commit 4c09abeae8704970ff03bf2196973f6bf08ab6f9)
+Cc: Fam Zheng <fam@euphon.net>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+Reviewed-by: "Denis V. Lunev" <den@openvz.org>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+(cherry picked from commit 721da0396cfa0a4859cefb57e32cc79d19d80f54)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: replace f.extra.arm.guarded -> f.guarded due to v8.1.0-1179-ga81fef4b64)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 0f01bc32a8..784f1e0fab 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1180,7 +1180,6 @@ typedef struct ARMCacheAttrs {
-     unsigned int attrs:8;
-     unsigned int shareability:2; /* as in the SH field of the VMSAv8-64 PTEs */
-     bool is_s2_format:1;
--    bool guarded:1;              /* guarded bit of the v8-64 PTE */
- } ARMCacheAttrs;
+diff --git a/block/parallels-ext.c b/block/parallels-ext.c
+index 8a109f005a..4d8ecf5047 100644
+--- a/block/parallels-ext.c
++++ b/block/parallels-ext.c
+@@ -130,7 +130,7 @@ static BdrvDirtyBitmap *parallels_load_bitmap(BlockDriverState *bs,
+     g_autofree uint64_t *l1_table = NULL;
+     BdrvDirtyBitmap *bitmap;
+     QemuUUID uuid;
+-    char uuidstr[UUID_FMT_LEN + 1];
++    char uuidstr[UUID_STR_LEN];
+     int i;
  
- /* Fields that are valid upon success. */
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 8f94100c61..3195d5d401 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -2979,7 +2979,6 @@ static ARMCacheAttrs combine_cacheattrs(uint64_t hcr,
+     if (data_size < sizeof(bf)) {
+diff --git a/block/vdi.c b/block/vdi.c
+index 6c35309e04..af2feaa129 100644
+--- a/block/vdi.c
++++ b/block/vdi.c
+@@ -239,7 +239,7 @@ static void vdi_header_to_le(VdiHeader *header)
  
-     assert(!s1.is_s2_format);
-     ret.is_s2_format = false;
--    ret.guarded = s1.guarded;
+ static void vdi_header_print(VdiHeader *header)
+ {
+-    char uuidstr[37];
++    char uuidstr[UUID_STR_LEN];
+     QemuUUID uuid;
+     logout("text        %s", header->text);
+     logout("signature   0x%08x\n", header->signature);
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 6d5d43eda2..d54f527728 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -1105,7 +1105,7 @@ static void get_uuid(Object *obj, Visitor *v, const char *name, void *opaque,
+ {
+     Property *prop = opaque;
+     QemuUUID *uuid = object_field_prop_ptr(obj, prop);
+-    char buffer[UUID_FMT_LEN + 1];
++    char buffer[UUID_STR_LEN];
+     char *p = buffer;
  
-     if (s1.attrs == 0xf0) {
-         tagged = true;
-@@ -3119,7 +3118,7 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-     int s1_prot, s1_lgpgsz;
-     bool is_secure = ptw->in_secure;
-     ARMSecuritySpace in_space = ptw->in_space;
--    bool ret, ipa_secure;
-+    bool ret, ipa_secure, s1_guarded;
-     ARMCacheAttrs cacheattrs1;
-     ARMSecuritySpace ipa_space;
-     uint64_t hcr;
-@@ -3147,6 +3146,7 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-      */
-     s1_prot = result->f.prot;
-     s1_lgpgsz = result->f.lg_page_size;
-+    s1_guarded = result->f.guarded;
-     cacheattrs1 = result->cacheattrs;
-     memset(result, 0, sizeof(*result));
+     qemu_uuid_unparse(uuid, buffer);
+diff --git a/hw/hyperv/vmbus.c b/hw/hyperv/vmbus.c
+index 271289f902..c64eaa5a46 100644
+--- a/hw/hyperv/vmbus.c
++++ b/hw/hyperv/vmbus.c
+@@ -2271,7 +2271,7 @@ static void vmbus_dev_realize(DeviceState *dev, Error **errp)
+     VMBus *vmbus = VMBUS(qdev_get_parent_bus(dev));
+     BusChild *child;
+     Error *err = NULL;
+-    char idstr[UUID_FMT_LEN + 1];
++    char idstr[UUID_STR_LEN];
  
-@@ -3197,6 +3197,9 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-     result->cacheattrs = combine_cacheattrs(hcr, cacheattrs1,
-                                             result->cacheattrs);
+     assert(!qemu_uuid_is_null(&vdev->instanceid));
  
-+    /* No BTI GP information in stage 2, we just use the S1 value */
-+    result->f.guarded = s1_guarded;
-+
-     /*
-      * Check if IPA translates to secure or non-secure PA space.
-      * Note that VSTCR overrides VTCR and {N}SW overrides {N}SA.
+@@ -2467,7 +2467,7 @@ static char *vmbus_get_dev_path(DeviceState *dev)
+ static char *vmbus_get_fw_dev_path(DeviceState *dev)
+ {
+     VMBusDevice *vdev = VMBUS_DEVICE(dev);
+-    char uuid[UUID_FMT_LEN + 1];
++    char uuid[UUID_STR_LEN];
+ 
+     qemu_uuid_unparse(&vdev->instanceid, uuid);
+     return g_strdup_printf("%s@%s", qdev_fw_name(dev), uuid);
+diff --git a/include/qemu/uuid.h b/include/qemu/uuid.h
+index dc40ee1fc9..9e160d65aa 100644
+--- a/include/qemu/uuid.h
++++ b/include/qemu/uuid.h
+@@ -79,6 +79,7 @@ typedef struct {
+                  "%02hhx%02hhx%02hhx%02hhx%02hhx%02hhx"
+ 
+ #define UUID_FMT_LEN 36
++#define UUID_STR_LEN (UUID_FMT_LEN + 1)
+ 
+ #define UUID_NONE "00000000-0000-0000-0000-000000000000"
+ 
+diff --git a/migration/savevm.c b/migration/savevm.c
+index a2cb8855e2..d60c4f487a 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -469,8 +469,8 @@ static bool vmstate_uuid_needed(void *opaque)
+ static int vmstate_uuid_post_load(void *opaque, int version_id)
+ {
+     SaveState *state = opaque;
+-    char uuid_src[UUID_FMT_LEN + 1];
+-    char uuid_dst[UUID_FMT_LEN + 1];
++    char uuid_src[UUID_STR_LEN];
++    char uuid_dst[UUID_STR_LEN];
+ 
+     if (!qemu_uuid_set) {
+         /*
+diff --git a/tests/unit/test-uuid.c b/tests/unit/test-uuid.c
+index c111de5fc1..224c6d9936 100644
+--- a/tests/unit/test-uuid.c
++++ b/tests/unit/test-uuid.c
+@@ -145,7 +145,7 @@ static void test_uuid_unparse(void)
+     int i;
+ 
+     for (i = 0; i < ARRAY_SIZE(uuid_test_data); i++) {
+-        char out[37];
++        char out[UUID_STR_LEN];
+ 
+         if (!uuid_test_data[i].check_unparse) {
+             continue;
+diff --git a/util/uuid.c b/util/uuid.c
+index b1108dde78..cedabea155 100644
+--- a/util/uuid.c
++++ b/util/uuid.c
+@@ -51,7 +51,7 @@ int qemu_uuid_is_equal(const QemuUUID *lhv, const QemuUUID *rhv)
+ void qemu_uuid_unparse(const QemuUUID *uuid, char *out)
+ {
+     const unsigned char *uu = &uuid->data[0];
+-    snprintf(out, UUID_FMT_LEN + 1, UUID_FMT,
++    snprintf(out, UUID_STR_LEN, UUID_FMT,
+              uu[0], uu[1], uu[2], uu[3], uu[4], uu[5], uu[6], uu[7],
+              uu[8], uu[9], uu[10], uu[11], uu[12], uu[13], uu[14], uu[15]);
+ }
 -- 
 2.39.2
 
