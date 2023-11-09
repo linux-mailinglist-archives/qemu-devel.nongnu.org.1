@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2867E64C6
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 08:52:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F19627E64C5
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 08:52:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0zoP-0007L5-P9; Thu, 09 Nov 2023 02:50:49 -0500
+	id 1r0zoP-0007L4-Gc; Thu, 09 Nov 2023 02:50:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1r0zoK-0007Jy-RN
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:50:44 -0500
+ (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1r0zoL-0007KZ-AZ
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:50:45 -0500
 Received: from mgamail.intel.com ([192.55.52.43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1r0zoJ-0001o2-Ax
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:50:44 -0500
+ (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1r0zoJ-0001sR-CC
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:50:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1699516243; x=1731052243;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MbIfcTx5Jpa1uax7o3pELRo6a1v5BYZchyQrtHIxi40=;
- b=UzMSyTc9RbV0pXEjBIzTa/JotSStfYqSL7qTwiWgtEgLwoVoV8hGc/Cx
- 08aqXvgyZIfzBxh1BIUGYs2BReU04xw3RD0Fon+REMi2ruAdwVz4+vgbz
- pqWPXk6qtSfa4xHttNcAGmk3h6JRjLX9F8ERl/IJc1khGYwW2JZlRSZT4
- rjOzE2pchlIofyhL88cNN5d2G7x8Jr7a79/1Yvmv7GOUOQ5scsbd4pERF
- 5N2jf+xwlZ0D7YmS6rUAQDPZBEMk8lbYsVzEnhpPmlRfMTmIpG/rPC2E3
- tmnGaCtI1UITm6IjHOp2uLCOuK4Em4Brqdqx4o8sBGqTMfrNTXDADThmL A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="476165162"
-X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="476165162"
+ bh=qS2divpzlg34Mgdu79EblBhmAA77ycjlMQsD+syQIDc=;
+ b=c+eYrwkPbKGA0VDj6zA2+jxICh25aPG8hcwdLLaFUbA4dOh9on4BSrG9
+ E+vYS+YLW0/jl4zODmsX2EIfAeqYPjvGcrqIQPnrA6VyZb85U+2H16P4Q
+ 5s9pKGMDYQWEArgaOo3be6o+eXP844EjKEPokixfs4fD8ml2FkZ81nls8
+ 3KVfbJ+U7QLLDbm1S5hxSbATebjcozJbk4KhDoqr/unoaeO5GbxZ/V9XQ
+ bGNpqb9t+l3Ws7cd3HXGAHQy7COE0BZ+kSb4eKxx2znzBjMHrRr2vMSq3
+ nzS0B9YJQEYmTdmSIb2Y91b/nyDDIzTCTcKTmis4YWetzw7fzatKyWBmn A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="476165170"
+X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="476165170"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  08 Nov 2023 23:50:23 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="763329289"
-X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="763329289"
+X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="763329295"
+X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="763329295"
 Received: from unknown (HELO fred..) ([172.25.112.68])
  by orsmga002.jf.intel.com with ESMTP; 08 Nov 2023 23:50:23 -0800
 From: Xin Li <xin3.li@intel.com>
@@ -43,9 +43,9 @@ To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, richard.henderson@linaro.org, pbonzini@redhat.com,
  eduardo@habkost.net, seanjc@google.com, chao.gao@intel.com, hpa@zytor.com,
  xiaoyao.li@intel.com, weijiang.yang@intel.com
-Subject: [PATCH v3 5/6] target/i386: enumerate VMX nested-exception support
-Date: Wed,  8 Nov 2023 23:20:11 -0800
-Message-ID: <20231109072012.8078-6-xin3.li@intel.com>
+Subject: [PATCH v3 6/6] target/i386: Add get/set/migrate support for FRED MSRs
+Date: Wed,  8 Nov 2023 23:20:12 -0800
+Message-ID: <20231109072012.8078-7-xin3.li@intel.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231109072012.8078-1-xin3.li@intel.com>
 References: <20231109072012.8078-1-xin3.li@intel.com>
@@ -75,53 +75,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow VMX nested-exception support to be exposed in KVM guests, thus
-nested KVM guests can enumerate it.
+FRED CPU states are managed in 9 new FRED MSRs, in addtion to a few
+existing CPU registers and MSRs, e.g., CR4.FRED and MSR_IA32_PL0_SSP.
+
+Save/restore/migrate FRED MSRs if FRED is exposed to the guest.
 
 Tested-by: Shan Kang <shan.kang@intel.com>
 Signed-off-by: Xin Li <xin3.li@intel.com>
 ---
- scripts/kvm/vmxcap | 1 +
- target/i386/cpu.c  | 1 +
- target/i386/cpu.h  | 1 +
- 3 files changed, 3 insertions(+)
+ target/i386/cpu.h     | 22 +++++++++++++++++++
+ target/i386/kvm/kvm.c | 49 +++++++++++++++++++++++++++++++++++++++++++
+ target/i386/machine.c | 28 +++++++++++++++++++++++++
+ 3 files changed, 99 insertions(+)
 
-diff --git a/scripts/kvm/vmxcap b/scripts/kvm/vmxcap
-index 44898d73c2..508be19c75 100755
---- a/scripts/kvm/vmxcap
-+++ b/scripts/kvm/vmxcap
-@@ -117,6 +117,7 @@ controls = [
-             54: 'INS/OUTS instruction information',
-             55: 'IA32_VMX_TRUE_*_CTLS support',
-             56: 'Skip checks on event error code',
-+            58: 'VMX nested exception support',
-             },
-         msr = MSR_IA32_VMX_BASIC,
-         ),
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index dcf914a7ec..f7556621a5 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -1343,6 +1343,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             [54] = "vmx-ins-outs",
-             [55] = "vmx-true-ctls",
-             [56] = "vmx-any-errcode",
-+            [58] = "vmx-nested-exception",
-         },
-         .msr = {
-             .index = MSR_IA32_VMX_BASIC,
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index a4d3702621..cc3b4fefb8 100644
+index cc3b4fefb8..3b13eceffe 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -1054,6 +1054,7 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
- #define MSR_VMX_BASIC_INS_OUTS                       (1ULL << 54)
- #define MSR_VMX_BASIC_TRUE_CTLS                      (1ULL << 55)
- #define MSR_VMX_BASIC_ANY_ERRCODE                    (1ULL << 56)
-+#define MSR_VMX_BASIC_NESTED_EXCEPTION               (1ULL << 58)
+@@ -529,6 +529,17 @@ typedef enum X86Seg {
+ #define MSR_IA32_XFD                    0x000001c4
+ #define MSR_IA32_XFD_ERR                0x000001c5
  
- #define MSR_VMX_MISC_PREEMPTION_TIMER_SHIFT_MASK     0x1Full
- #define MSR_VMX_MISC_STORE_LMA                       (1ULL << 5)
++/* FRED MSRs */
++#define MSR_IA32_FRED_RSP0              0x000001cc       /* Stack level 0 regular stack pointer */
++#define MSR_IA32_FRED_RSP1              0x000001cd       /* Stack level 1 regular stack pointer */
++#define MSR_IA32_FRED_RSP2              0x000001ce       /* Stack level 2 regular stack pointer */
++#define MSR_IA32_FRED_RSP3              0x000001cf       /* Stack level 3 regular stack pointer */
++#define MSR_IA32_FRED_STKLVLS           0x000001d0       /* FRED exception stack levels */
++#define MSR_IA32_FRED_SSP1              0x000001d1       /* Stack level 1 shadow stack pointer in ring 0 */
++#define MSR_IA32_FRED_SSP2              0x000001d2       /* Stack level 2 shadow stack pointer in ring 0 */
++#define MSR_IA32_FRED_SSP3              0x000001d3       /* Stack level 3 shadow stack pointer in ring 0 */
++#define MSR_IA32_FRED_CONFIG            0x000001d4       /* FRED Entrypoint and interrupt stack level */
++
+ #define MSR_IA32_BNDCFGS                0x00000d90
+ #define MSR_IA32_XSS                    0x00000da0
+ #define MSR_IA32_UMWAIT_CONTROL         0xe1
+@@ -1687,6 +1698,17 @@ typedef struct CPUArchState {
+     target_ulong cstar;
+     target_ulong fmask;
+     target_ulong kernelgsbase;
++
++    /* FRED MSRs */
++    uint64_t fred_rsp0;
++    uint64_t fred_rsp1;
++    uint64_t fred_rsp2;
++    uint64_t fred_rsp3;
++    uint64_t fred_stklvls;
++    uint64_t fred_ssp1;
++    uint64_t fred_ssp2;
++    uint64_t fred_ssp3;
++    uint64_t fred_config;
+ #endif
+ 
+     uint64_t tsc_adjust;
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 11b8177eff..101ff63805 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -3309,6 +3309,17 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
+         kvm_msr_entry_add(cpu, MSR_KERNELGSBASE, env->kernelgsbase);
+         kvm_msr_entry_add(cpu, MSR_FMASK, env->fmask);
+         kvm_msr_entry_add(cpu, MSR_LSTAR, env->lstar);
++        if (env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_FRED) {
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_RSP0, env->fred_rsp0);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_RSP1, env->fred_rsp1);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_RSP2, env->fred_rsp2);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_RSP3, env->fred_rsp3);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_STKLVLS, env->fred_stklvls);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_SSP1, env->fred_ssp1);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_SSP2, env->fred_ssp2);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_SSP3, env->fred_ssp3);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_CONFIG, env->fred_config);
++        }
+     }
+ #endif
+ 
+@@ -3773,6 +3784,17 @@ static int kvm_get_msrs(X86CPU *cpu)
+         kvm_msr_entry_add(cpu, MSR_KERNELGSBASE, 0);
+         kvm_msr_entry_add(cpu, MSR_FMASK, 0);
+         kvm_msr_entry_add(cpu, MSR_LSTAR, 0);
++        if (env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_FRED) {
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_RSP0, 0);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_RSP1, 0);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_RSP2, 0);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_RSP3, 0);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_STKLVLS, 0);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_SSP1, 0);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_SSP2, 0);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_SSP3, 0);
++            kvm_msr_entry_add(cpu, MSR_IA32_FRED_CONFIG, 0);
++        }
+     }
+ #endif
+     kvm_msr_entry_add(cpu, MSR_KVM_SYSTEM_TIME, 0);
+@@ -3994,6 +4016,33 @@ static int kvm_get_msrs(X86CPU *cpu)
+         case MSR_LSTAR:
+             env->lstar = msrs[i].data;
+             break;
++        case MSR_IA32_FRED_RSP0:
++            env->fred_rsp0 = msrs[i].data;
++            break;
++        case MSR_IA32_FRED_RSP1:
++            env->fred_rsp1 = msrs[i].data;
++            break;
++        case MSR_IA32_FRED_RSP2:
++            env->fred_rsp2 = msrs[i].data;
++            break;
++        case MSR_IA32_FRED_RSP3:
++            env->fred_rsp3 = msrs[i].data;
++            break;
++        case MSR_IA32_FRED_STKLVLS:
++            env->fred_stklvls = msrs[i].data;
++            break;
++        case MSR_IA32_FRED_SSP1:
++            env->fred_ssp1 = msrs[i].data;
++            break;
++        case MSR_IA32_FRED_SSP2:
++            env->fred_ssp2 = msrs[i].data;
++            break;
++        case MSR_IA32_FRED_SSP3:
++            env->fred_ssp3 = msrs[i].data;
++            break;
++        case MSR_IA32_FRED_CONFIG:
++            env->fred_config = msrs[i].data;
++            break;
+ #endif
+         case MSR_IA32_TSC:
+             env->tsc = msrs[i].data;
+diff --git a/target/i386/machine.c b/target/i386/machine.c
+index a1041ef828..850a19cb8e 100644
+--- a/target/i386/machine.c
++++ b/target/i386/machine.c
+@@ -1544,6 +1544,33 @@ static const VMStateDescription vmstate_msr_xfd = {
+ };
+ 
+ #ifdef TARGET_X86_64
++static bool intel_fred_msrs_needed(void *opaque)
++{
++    X86CPU *cpu = opaque;
++    CPUX86State *env = &cpu->env;
++
++    return !!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_FRED);
++}
++
++static const VMStateDescription vmstate_msr_fred = {
++    .name = "cpu/fred",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = intel_fred_msrs_needed,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINT64(env.fred_rsp0, X86CPU),
++        VMSTATE_UINT64(env.fred_rsp1, X86CPU),
++        VMSTATE_UINT64(env.fred_rsp2, X86CPU),
++        VMSTATE_UINT64(env.fred_rsp3, X86CPU),
++        VMSTATE_UINT64(env.fred_stklvls, X86CPU),
++        VMSTATE_UINT64(env.fred_ssp1, X86CPU),
++        VMSTATE_UINT64(env.fred_ssp2, X86CPU),
++        VMSTATE_UINT64(env.fred_ssp3, X86CPU),
++        VMSTATE_UINT64(env.fred_config, X86CPU),
++        VMSTATE_END_OF_LIST()
++            }
++        };
++
+ static bool amx_xtile_needed(void *opaque)
+ {
+     X86CPU *cpu = opaque;
+@@ -1747,6 +1774,7 @@ const VMStateDescription vmstate_x86_cpu = {
+         &vmstate_pdptrs,
+         &vmstate_msr_xfd,
+ #ifdef TARGET_X86_64
++        &vmstate_msr_fred,
+         &vmstate_amx_xtile,
+ #endif
+         &vmstate_arch_lbr,
 -- 
 2.42.0
 
