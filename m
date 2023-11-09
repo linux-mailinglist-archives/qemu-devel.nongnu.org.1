@@ -2,78 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE307E6E36
+	by mail.lfdr.de (Postfix) with ESMTPS id 816837E6E33
 	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 17:06:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r17WT-0007nP-8r; Thu, 09 Nov 2023 11:04:49 -0500
+	id 1r17WQ-0007gL-IR; Thu, 09 Nov 2023 11:04:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r17WF-0007iK-B6
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 11:04:36 -0500
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r17W3-0007cn-C0
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 11:04:24 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r17WB-0001Xz-AW
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 11:04:33 -0500
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-5441ba3e53cso1605598a12.1
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 08:04:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r17W1-0001UA-74
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 11:04:22 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40842752c6eso7647345e9.1
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 08:04:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699545870; x=1700150670; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=wSAaFIMjbOUvTUCnLK9sawHNvp9MFTD1AlmSfBsbXN4=;
- b=mOz56uAUGlc+vSok9OIyUzmv4JFDaFbkPar6rbcAyr/bmSeMXf5OWpyU2Lfw8YbbjD
- djYNpbK0b8RI8a/rWvZV9SrriqwuKn74R1AiahrYkOWh3lNBgXH/3OHZdYT7rZ6stcIi
- Cg+us1cCUKGfVnODErjT5l84Rp+LWicRA3dIT6Kia6ceUvvIY9l3llBYEfb/jAJwJuUG
- VyRrzc1lQj1RWckJ15I/IX7SRs3nulCz1aojfGBsTS+kIf6CmKJ4guY/ZoCQJnkAF4yh
- YLG5NJ22zQ2y3Wsjda9aF5sIUB+3SKisnux6rG9AkseJcBNeHew5yTZw4A4zwvVenmp9
- DQbg==
+ d=linaro.org; s=google; t=1699545859; x=1700150659; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=d7/odcMHPyRWP9Cp8jHjOALDKNHfR30r5MKW5SKiTWU=;
+ b=xMxsqhNAUWduRicBfG+zZG5wyPjnA9djNDAHjZw8xby8J117hxDo46SzXgHxfh4AwT
+ J8zLMOKAuoNR8ySgbxhEGBFHzyJBZ40EusPrI42+75bonS/eXqJ7A9o7BGpIY3PqihqY
+ 8aDj8hkIBy4S84zuirmQPyt8Ob4v6YzrUXbnyFV9+e+3/seVh5ga1hYTGdJ4VTqewFHz
+ QdiTfUAZMwGbQDyDf9WtXCrH2zuqUFoNplLumacConkijHARGRwYSX8KUD1InHqhMeUv
+ pF1YPHRNrzPpSUiZ2nEDGq5Rmn+oazNOhNqH8hdW8ufrFIQYlqAsOausJnDo0rOaj9uw
+ 2dQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699545870; x=1700150670;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=wSAaFIMjbOUvTUCnLK9sawHNvp9MFTD1AlmSfBsbXN4=;
- b=QG/yCatYcL+1vDirSKyb8eDRREDMP52IDqccN5Bj7DD2GuXXjOjR2zDJUUuGW+3ryK
- xQdOjLeg/MbUnWDIicEHHv+Eu2wU35BHHPU7dCblHOQzSFzVlLnwwPB5qrilyq2kKO3T
- kgfW6tKuYqUSCCKkTG6FQlQxny5ZE/zKGuXgIkpnlxrgW/MZN6PpfU207O6k12wBjt23
- EOfLzcdriTiQnQ+9YKQipRvCzJsGEM5lPfmZpIXIAoReiU0lFDNvhbbDD2ZltAOnPsCw
- WFcwcwLPeL4hrDnsu65B9PPUsarXdoXp2gAxNtZJtoK5F5c8hYuMnpZBL68s4KQbzSAM
- EYOQ==
-X-Gm-Message-State: AOJu0YzYzXwx0vlDw05ZhwNYlWIbabf++TYyI1pUDrrMLYzQSj67bwAR
- PwfVDzpqd+f+S3nUAd1B0cyYWJjyTSSxv5DfMiKnQQ==
-X-Google-Smtp-Source: AGHT+IH91DbfT5A1++uWQudUX5J7BBSI6b3R6xnaRanCdVuJCpMkLk4MvNet2Fcb+7qsAoDuJOcpeYvli6nDyIDZP9w=
-X-Received: by 2002:a50:d7dc:0:b0:53f:f908:eda8 with SMTP id
- m28-20020a50d7dc000000b0053ff908eda8mr4372874edj.4.1699545869428; Thu, 09 Nov
- 2023 08:04:29 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699545859; x=1700150659;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=d7/odcMHPyRWP9Cp8jHjOALDKNHfR30r5MKW5SKiTWU=;
+ b=fPHmm4QruzE8X7CnoHTFz6G3RCuv9/qJPc5pwpHJ5IVFjqZ0LB0iuxyXmoKp+Q5E2T
+ zMaq1klbiL2dR3jHCq6MszLPyVegl2Zymx9ex87/fDqus2jfZyeAdGbNHpZ3FMBSS/01
+ nYJsGCq1AUO8Q6FEDx1aGbIc7OmwBm3YmlQmsDE3IqRPeed0T11M0H3ItHyxkATahBv6
+ +xYby8re/bBFVoleoj1rZ7wdDOt2eC2+MtBdzw82h6EH010rNQ7MJTMKIFjecsPHpWxc
+ FfKxXqNQgJqFIVpseqqV+YB05aa1382UjKbTNlhXAOg9RI9lQa3WVor0FNapIFVeU567
+ f/vw==
+X-Gm-Message-State: AOJu0Yz2Q1XOFy5oMFvD1XbXYI0laXIDdF666SKYEzgoI4mgSGiVbXkX
+ lGitAQTL9WV3rGTIDb4pjxQl8w==
+X-Google-Smtp-Source: AGHT+IFQb2ppnM3FVXoj/CNengyz8j/LyLezceQ6s/niUXgx5PYuaYSyFLfntUtLKmKWLaueXkHMzw==
+X-Received: by 2002:a05:600c:1c98:b0:405:34e4:14cf with SMTP id
+ k24-20020a05600c1c9800b0040534e414cfmr4871381wms.4.1699545859215; 
+ Thu, 09 Nov 2023 08:04:19 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ ay15-20020a05600c1e0f00b0040586360a36sm2521784wmb.17.2023.11.09.08.04.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 09 Nov 2023 08:04:18 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 6BDF85F756;
+ Thu,  9 Nov 2023 16:04:18 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Greg Manning <gmanning@rapitasystems.com>
+Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH v3 0/1] plugins: fix win plugin tests on cross compile
+In-Reply-To: <20231109124326.21106-1-gmanning@rapitasystems.com> (Greg
+ Manning's message of "Thu, 9 Nov 2023 12:43:18 +0000 (2 hours, 53
+ minutes, 40 seconds ago)")
+References: <20231109124326.21106-1-gmanning@rapitasystems.com>
+User-Agent: mu4e 1.11.24; emacs 29.1
+Date: Thu, 09 Nov 2023 16:04:18 +0000
+Message-ID: <87msvm7w1p.fsf@draig.linaro.org>
 MIME-Version: 1.0
-References: <1c312ba88e0928527dad6bc2e1b73d8cfe4b7f48.camel@infradead.org>
-In-Reply-To: <1c312ba88e0928527dad6bc2e1b73d8cfe4b7f48.camel@infradead.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 9 Nov 2023 16:04:17 +0000
-Message-ID: <CAFEAcA9oyF1scfpmz-7wYX5j=nGgdG-7uD3nXw3dqhoMi8MHzg@mail.gmail.com>
-Subject: Re: [PATCH] hw/xen: clean up xen_block_find_free_vdev() to avoid
- Coverity false positive
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Kevin Wolf <kwolf@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>, xen-devel@lists.xenproject.org,
- qemu-block@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,64 +97,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 9 Nov 2023 at 15:30, David Woodhouse <dwmw2@infradead.org> wrote:
->
-> From: David Woodhouse <dwmw@amazon.co.uk>
->
-> Coverity couldn't see that nr_existing was always going to be zero when
-> qemu_xen_xs_directory() returned NULL in the ENOENT case (CID 1523906).
->
-> Perhaps more to the point, neither could Peter at first glance. Improve
-> the code to hopefully make it clearer to Coverity and human reviewers
-> alike.
->
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> ---
->  hw/block/xen-block.c | 24 +++++++++++++++++++++---
->  1 file changed, 21 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
-> index 6d64ede94f..aed1d5c330 100644
-> --- a/hw/block/xen-block.c
-> +++ b/hw/block/xen-block.c
-> @@ -91,9 +91,27 @@ static bool xen_block_find_free_vdev(XenBlockDevice *blockdev, Error **errp)
->
->      existing_frontends = qemu_xen_xs_directory(xenbus->xsh, XBT_NULL, fe_path,
->                                                 &nr_existing);
-> -    if (!existing_frontends && errno != ENOENT) {
-> -        error_setg_errno(errp, errno, "cannot read %s", fe_path);
-> -        return false;
-> +    if (!existing_frontends) {
-> +        if (errno == ENOENT) {
-> +            /*
-> +             * If the frontend directory doesn't exist because there are
-> +             * no existing vbd devices, that's fine. Just ensure that we
-> +             * don't dereference the NULL existing_frontends pointer, by
-> +             * checking that nr_existing is zero so the loop below is not
-> +             * entered.
-> +             *
-> +             * In fact this is redundant since nr_existing is initialized
-> +             * to zero, but setting it again here makes it abundantly clear
-> +             * to Coverity, and to the human reader who doesn't know the
-> +             * semantics of qemu_xen_xs_directory() off the top of their
-> +             * head.
-> +             */
-> +            nr_existing = 0;
+Greg Manning <gmanning@rapitasystems.com> writes:
 
-You could alternatively assert(nr_existing == 0); here, but I
-don't feel strongly about that.
-
-> +        } else {
-> +            /* All other errors accessing the frontend directory are fatal. */
-> +            error_setg_errno(errp, errno, "cannot read %s", fe_path);
-> +            return false;
-> +        }
->      }
+> v1-v2: Added the signed-off-by line.
+> v2-v3: Fixed the issue reference.
 >
->      memset(used_devs, 0, sizeof(used_devs));
-> --
-> 2.34.1
+> Greg Manning (1):
+>   plugins: fix win plugin tests on cross compile
+>
+>  .gitlab-ci.d/crossbuilds.yml | 2 +-
+>  contrib/plugins/Makefile     | 2 +-
+>  plugins/meson.build          | 2 +-
+>  tests/plugin/meson.build     | 3 ++-
+>  4 files changed, 5 insertions(+), 4 deletions(-)
 
-thanks
--- PMM
+Actually I'm still seeing failures:
+
+  FAILED: qemu-system-aarch64.exe=20
+  x86_64-w64-mingw32-gcc -m64 -mcx16 @qemu-system-aarch64.exe.rsp
+  /usr/lib/gcc/x86_64-w64-mingw32/12.2.1/../../../../x86_64-w64-mingw32/bin=
+/ld: libcommon.fa.p/os-win32.c.obj: in function `set_dll_delaylink_hook':
+  /builds/stsquad/qemu/build/../os-win32.c:83: undefined reference to `g_mo=
+dule_symbol'
+  /usr/lib/gcc/x86_64-w64-mingw32/12.2.1/../../../../x86_64-w64-mingw32/bin=
+/ld: /builds/stsquad/qemu/build/../os-win32.c:89: undefined reference to `g=
+_module_symbol'
+  collect2: error: ld returned 1 exit status
+  [2104/3331] Linking target qemu-system-aarch64w.exe
+  FAILED: qemu-system-aarch64w.exe=20
+  x86_64-w64-mingw32-gcc -m64 -mcx16 @qemu-system-aarch64w.exe.rsp
+  /usr/lib/gcc/x86_64-w64-mingw32/12.2.1/../../../../x86_64-w64-mingw32/bin=
+/ld: libcommon.fa.p/os-win32.c.obj: in function `set_dll_delaylink_hook':
+  /builds/stsquad/qemu/build/../os-win32.c:83: undefined reference to `g_mo=
+dule_symbol'
+  /usr/lib/gcc/x86_64-w64-mingw32/12.2.1/../../../../x86_64-w64-mingw32/bin=
+/ld: /builds/stsquad/qemu/build/../os-win32.c:89: undefined reference to `g=
+_module_symbol'
+  collect2: error: ld returned 1 exit status
+  [2105/3331] Compiling C object libqemu-loongarch64-softmmu.fa.p/hw_loonga=
+rch_virt.c.obj
+  ninja: build stopped: subcommand failed.
+  make: *** [Makefile:162: run-ninja] Error 1
+
+Should I drop the other patch I grabbed:
+
+  plugins: Move the windows linking function to qemu
+
+?
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
