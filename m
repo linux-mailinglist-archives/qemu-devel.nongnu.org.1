@@ -2,75 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E9467E6CE0
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 16:09:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 927207E6D04
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 16:14:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r16eb-0007We-Ls; Thu, 09 Nov 2023 10:09:09 -0500
+	id 1r16hx-0000ii-Vv; Thu, 09 Nov 2023 10:12:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r16eZ-0007Sq-Dt
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 10:09:07 -0500
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r16hm-0000h9-Sm
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 10:12:27 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r16eX-0006hz-QW
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 10:09:07 -0500
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-9de7a43bd1aso156235666b.3
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 07:09:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r16hl-0007SO-8W
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 10:12:26 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-53e2308198eso1542800a12.1
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 07:12:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699542543; x=1700147343; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=RkxZjLdrSTnFJIKsHkOj6x9DC0DNlMhc61gK75HiHJU=;
- b=D8QAvTcY3x1U09RAIvuskMi9ZW2kPLwjaJ2JDXlDLMi79RhqjX+f8PASqQlMw7tVLM
- iEAnxKricZLrKWk7oqhKOvBy8G+OODCvAOm0IDu54CWl4IBp1mHJno/O6MX5ONvDIrVP
- 1SMVEx18ttL6vEMUHfPlxIGqA7fsIRyE5GRgZTveiez33tK63IDdru+AIaEZavLkLMMC
- yFPVqrVzwt7oQH91957ebBatDkE1FKW1sQ7d0xfJnljXKPOYoN1pVKfQr5c+PE3Ownj4
- MRAYsvjE6PsPm4f0rIAuJroQ1Zsh15ngPVUo+GY/vOqxjzXO/7IuxCgDjp3RA3gWEfla
- yyPA==
+ d=linaro.org; s=google; t=1699542742; x=1700147542; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=BeA1OFZuU8Z+NBhkZJgXIZhb+kVnpN4xIzQlmJqZrnc=;
+ b=Q1R+a/cg3Qx9KeeH894bPSWqYIsMBJJBaF4VTofIhAK8GHJKqmVhnA1B8R3gc+8QmX
+ VRH6aH+omQq9FoZHSNz94BW9+uC6x7ZjLVClB+46+GsxpA4/6nzKYe8mBOz5AF0HJKgW
+ OeU0C4zHFX/9QWBrHnajBCB5ULUYQalS/KIMMkR6vMOF2wGMuKzXW0aZ5xsrXa2/Zgtv
+ VDIEBojCretR4qz/XDkkbodL2ucSAOVWnGIJ13lDOOulmn8tgByBNjqJ61fnWfwZq1Wo
+ qBe3mSDVgfpVOXXf3ksGi26HcNI0+dhZQciM8w+wuwsa+lYDhe8GCsLJcnU8Fqh6FOf2
+ 0xLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699542543; x=1700147343;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1699542742; x=1700147542;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=RkxZjLdrSTnFJIKsHkOj6x9DC0DNlMhc61gK75HiHJU=;
- b=cD/qXCXUlkDdfoNvONE+E8/suuyv0rWBLamQJ9xQMONDTv+CLJFb3YKUIGePFTXFDU
- EuBubQGEO9DoFPFkuz6rltOLM8HzvLkpeO/BWGV/4RlMM86nfvSKZShRfOBOQKGkBRId
- 2NsjvGbOgj4V2L/QMotdIMfqESTu7TzRGSFhTa+moiSsyOfaUaG2qu2AqBlDRyL7DyGS
- wCH2Bzmg258flvmuvEz5eMjGAgli84QYnPwz/0iZXLkQQOY5LCEWVSQh3VDJs0Ydf7p2
- mFC8uKkiBCujN/sUcvvm35oa84M22leQo/R/DRr39K3vPhdxcukV3nDD0ZzP0qvXL2FI
- tSPQ==
-X-Gm-Message-State: AOJu0Yxqvrn2dUs3NaiGBvFB8lkgEDXpwZ04vuIcHOTKALZ2RsXso2xC
- siQ2Iq9G9Y6s1nILYLYzqy7znbhtWNjHrXqO2npd6w==
-X-Google-Smtp-Source: AGHT+IEFAz5R2FlOdMaY2ilD0nBgFZU3YQ1OXGUSFNF69N7jcgXqcPFhBJJj0RN5w3gsk5NgYxq2hQ==
-X-Received: by 2002:a17:907:3ea4:b0:9e2:af56:c380 with SMTP id
- hs36-20020a1709073ea400b009e2af56c380mr4283099ejc.6.1699542543397; 
- Thu, 09 Nov 2023 07:09:03 -0800 (PST)
-Received: from m1x-phil.lan ([176.187.199.161])
- by smtp.gmail.com with ESMTPSA id
- qt19-20020a170906ecf300b009a1be9c29d7sm2670716ejb.179.2023.11.09.07.09.01
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 09 Nov 2023 07:09:02 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Ryo ONODERA <ryoon@netbsd.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Kyle Evans <kevans@freebsd.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Beraldo Leal <bleal@redhat.com>, Reinoud Zandijk <reinoud@netbsd.org>,
- Warner Losh <imp@bsdimp.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-8.2] tests/vm/netbsd: Use Python v3.11
-Date: Thu,  9 Nov 2023 16:09:00 +0100
-Message-ID: <20231109150900.91186-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
+ bh=BeA1OFZuU8Z+NBhkZJgXIZhb+kVnpN4xIzQlmJqZrnc=;
+ b=Cq6J/jnQ1oAePcC6kIjLSeGU4IXt15f7X18kkodnJAptrYkfddWx2ApL9v2xu60wC0
+ YgKbXab8ORMqJbg7dWy/cUvb4FvifxJauiZIE6aBBuiIfg2GveJatymcxrx2Av3ubwsF
+ QnDcx7vdL6ed1QyTh0WrvMU2NJa5d8MLuXYmlK5GbX0peXg1YV2xsUxsjZ4OUYYebhDf
+ lhiIR46+USE1RcS5HpSNxrqWDfv+YRNgD01y3Ov5VTyHqnJcKIHvZlwY4EsjxVTQwPpn
+ KbWmmHtPZQgV5ez9x+dEaoGNUnsxxuU1B8TGiQ9gMxMUAvFcWjNsAWBzriXepwFWpy8F
+ O54Q==
+X-Gm-Message-State: AOJu0Yw/KGpcXiCzppCpE1THj8Sj99kJ+YlaohHol939rqlhydwKo8uC
+ juEl4Gc8XkzX51fY8l5lVpd9s/WxmmqNT/cWczIuqQ==
+X-Google-Smtp-Source: AGHT+IEV4yRRd9p6Eb+zm7cZnzMZTmElLp5KzbrQ/yPdksl132XAgXkAoyiukSMdXxb7Qc/cP/n3saV/YYGavN8VGkA=
+X-Received: by 2002:a50:9b5d:0:b0:53d:fe06:3bb2 with SMTP id
+ a29-20020a509b5d000000b0053dfe063bb2mr5063332edj.8.1699542742232; Thu, 09 Nov
+ 2023 07:12:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+References: <20231107030407.8979-1-richard.henderson@linaro.org>
+ <20231107030407.8979-76-richard.henderson@linaro.org>
+In-Reply-To: <20231107030407.8979-76-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 9 Nov 2023 15:12:10 +0000
+Message-ID: <CAFEAcA8W8k8oPfwjG7ANf6iK6peYtbP4L-i+GGSQ7A1eTBpW9A@mail.gmail.com>
+Subject: Re: [PULL 75/85] target/hppa: Add pa2.0 cpu local tlb flushes
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Helge Deller <deller@gmx.de>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,58 +85,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We requiere the 'ninja-build', which depends on 'python311':
+On Tue, 7 Nov 2023 at 03:17, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> From: Helge Deller <deller@gmx.de>
+>
+> The previous decoding misnamed the bit it called "local".
+> Other than the name, the implementation was correct for pa1.x.
+> Rename this field to "tlbe".
+>
+> PA2.0 adds (a real) local bit to PxTLB, and also adds a range
+> of pages to flush in GR[b].
+>
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-  $ pkgin show-deps ninja-build
-  direct dependencies for ninja-build-1.11.1nb1
-          python311>=3.11.0
+Hi; Coverity points out a potential overflow in this code:
 
-So we end up installing both Python v3.10 and v3.11:
 
-  [31/76] installing python311-3.11.5...
-  [54/76] installing python310-3.10.13...
-  [74/76] installing py310-expat-3.10.13nb1...
 
-Then the build system picks Python v3.11, and doesn't find
-py-expat because we only installed the 3.10 version:
+> -/* Purge (Insn/Data) TLB.  This is explicitly page-based, and is
+> -   synchronous across all processors.  */
+> +/* Purge (Insn/Data) TLB. */
+>  static void ptlb_work(CPUState *cpu, run_on_cpu_data data)
+>  {
+>      CPUHPPAState *env = cpu_env(cpu);
+> -    target_ulong addr = (target_ulong) data.target_ptr;
+> +    vaddr start = data.target_ptr;
+> +    vaddr end;
+>
+> -    hppa_flush_tlb_range(env, addr, addr);
+> +    /*
+> +     * PA2.0 allows a range of pages encoded into GR[b], which we have
+> +     * copied into the bottom bits of the otherwise page-aligned address.
+> +     * PA1.x will always provide zero here, for a single page flush.
+> +     */
+> +    end = start & 0xf;
+> +    start &= TARGET_PAGE_MASK;
+> +    end = TARGET_PAGE_SIZE << (2 * end);
 
-  python determined to be '/usr/pkg/bin/python3.11'
-  python version: Python 3.11.5
+Here 2 * end can be 30, but TARGET_PAGE_SIZE is only a 32-bit
+type, so the shift might overflow. Cast TARGET_PAGE_SIZE to vaddr
+before doing the shift? (CID 1523902)
 
-  *** Ouch! ***
+> +    end = start + end - 1;
+> +
+> +    hppa_flush_tlb_range(env, start, end);
+>  }
 
-  Python's pyexpat module is not found.
-  It's normally part of the Python standard library, maybe your distribution packages it separately?
-  Either install pyexpat, or alleviate the need for it in the first place by installing pip and setuptools for '/usr/pkg/bin/python3.11'.
-
-  (Hint: NetBSD's pkgsrc debundles this to e.g. 'py310-expat'.)
-
-  ERROR: python venv creation failed
-
-Fix by installing py-expat for v3.11. Remove the v3.10
-packages since we aren't using them anymore.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- tests/vm/netbsd | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tests/vm/netbsd b/tests/vm/netbsd
-index 40b27a3469..649fcad353 100755
---- a/tests/vm/netbsd
-+++ b/tests/vm/netbsd
-@@ -30,8 +30,8 @@ class NetBSDVM(basevm.BaseVM):
-         "git-base",
-         "pkgconf",
-         "xz",
--        "python310",
--        "py310-expat",
-+        "python311",
-+        "py311-expat",
-         "ninja-build",
- 
-         # gnu tools
--- 
-2.41.0
-
+thanks
+-- PMM
 
