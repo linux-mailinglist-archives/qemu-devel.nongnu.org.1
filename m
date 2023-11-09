@@ -2,77 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453877E7066
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1BF7E7065
 	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 18:36:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r18vs-0007xr-10; Thu, 09 Nov 2023 12:35:08 -0500
+	id 1r18wa-0000AE-SD; Thu, 09 Nov 2023 12:35:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1r18vl-0007vB-Gz
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:35:02 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r18wY-00007J-Ey
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:35:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1r18vj-0002gi-To
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:35:01 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r18wX-00036n-0t
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:35:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699551298;
+ s=mimecast20190719; t=1699551348;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xmYBomGCdOjHt/58fYuHshjiqDxuv41a04vVYCbBXlI=;
- b=bcpB5wgMaxKe0l+TGyEuwrLRRttGCa/YXDMA06xOdozFrs3hB7xy1VIP+II8bwGc/78MyO
- JoicNH8JJsoVUUbI82PYThHg6VnTY6KyccGCTf/VderMfUl9/y1lGAafdjIKP/8wzRRVv2
- YVierJxRGJzxIA0cpRRiKwJw96jk+oA=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=3kxC4D30sqcqkFVnnnKWCXVXyHn8o6QRk3N4lzZEIyE=;
+ b=SjDWomBztZ4Xz7AVGKO2VXzdiX3yhjSrgR81+VWDGPL7Ne7ML/GA3zX5DPSyz2DhhVyHK0
+ KmUDrJ7vhgFiBwe1fmvi6Qhtq7CB5ZIl1IOpJTnVSoEdQi3By7C8mmgIkuwhEJbKHbjLO1
+ BzCJ5sidIlleD/Oro2VXQWg97E1YPIs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-N35WH-W_OIOI6ksuDqUSdA-1; Thu, 09 Nov 2023 12:34:58 -0500
-X-MC-Unique: N35WH-W_OIOI6ksuDqUSdA-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-41cc5b9d26eso34398721cf.0
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 09:34:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699551297; x=1700156097;
- h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xmYBomGCdOjHt/58fYuHshjiqDxuv41a04vVYCbBXlI=;
- b=BkpE5gYNlYh2imcNIx5FKyCCj5L9R9npdWORlVQVVcD9IPcNco9IFPkIRwA3aGgPsz
- CNCHYGaOT7TyL6AmK9RIuTXgRp5SgoHII/iiahBagkbUhq38y1aqAaBt2jpkJkklxq9r
- 37+e0Uoh0aKU1j7VLDMeQjbRefeept40FKTGO3TqlZAeIauyRIrEaBo2QRRhKxZ2PCwl
- OFbIWA3Alhw8m0g8ghB5VTd32AEvqE+IE0OisjARjjT127M+5Z/JWXjLwfdbe4cYotAa
- O6prqLwXOxWdJhLi5LxWf+2Y41e6awKwpXq83ePg/TRx52TnklfQ6zthAOSTrgob+5+6
- VIAQ==
-X-Gm-Message-State: AOJu0Yw/WHJpTKKnB4dmmnn6mawhP4QaCGujG58Pf3OYJH2yDhSdwAdn
- uw4hB4P16HnMEkSUH9jf3Acktv0mSsKrjVOWkvAdMrbWzeNTbLpMEF+kKzt0RocqCU9twrxGX7l
- fH8dA3AU0pm/gDs+yBL9RKTymF36uHL8gvJbwPTw=
-X-Received: by 2002:a05:622a:14c7:b0:40c:21b2:40ab with SMTP id
- u7-20020a05622a14c700b0040c21b240abmr6877955qtx.22.1699551297090; 
- Thu, 09 Nov 2023 09:34:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHV192V3KlwUoCMleiNZHU2uw+e0pgy3r9j0ozN1mb6o4XHRTr/fB/5yQxVrczjvJRN9Ps3D1ynel7fuKwdzfc=
-X-Received: by 2002:a05:622a:14c7:b0:40c:21b2:40ab with SMTP id
- u7-20020a05622a14c700b0040c21b240abmr6877937qtx.22.1699551296880; Thu, 09 Nov
- 2023 09:34:56 -0800 (PST)
-Received: from 744723338238 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 9 Nov 2023 09:34:56 -0800
-From: Andrea Bolognani <abologna@redhat.com>
-References: <20231016152704.221611-1-victortoso@redhat.com>
- <20231016152704.221611-5-victortoso@redhat.com>
+ us-mta-562-L-ee1XiAMyiONFIqfV4t3w-1; Thu, 09 Nov 2023 12:35:47 -0500
+X-MC-Unique: L-ee1XiAMyiONFIqfV4t3w-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C6FF0811E88;
+ Thu,  9 Nov 2023 17:35:46 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.49])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C14372026D68;
+ Thu,  9 Nov 2023 17:35:45 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-trivial@nongnu.org
+Subject: [PATCH] hw/audio/es1370: Avoid four-letter word
+Date: Thu,  9 Nov 2023 18:35:44 +0100
+Message-ID: <20231109173544.375129-1-thuth@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20231016152704.221611-5-victortoso@redhat.com>
-Date: Thu, 9 Nov 2023 09:34:56 -0800
-Message-ID: <CABJz62NbJAkLRS7t3JN8T-=1mkZ9BX68Jgd+VPr0tYwQPZNKag@mail.gmail.com>
-Subject: Re: [PATCH v2 04/11] qapi: golang: Generate qapi's alternate types in
- Go
-To: Victor Toso <victortoso@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- John Snow <jsnow@redhat.com>, 
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=abologna@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -97,32 +75,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 16, 2023 at 05:26:57PM +0200, Victor Toso wrote:
-> [*] The exception for optional fields as default is to Types that can
-> accept JSON Null as a value. For this case, we translate NULL to a
-> member type called IsNull, which is boolean in Go.  This will be
-> explained better in the documentation patch of this series but the
-> main rationale is around Marshaling to and from JSON and Go data
-> structures.
->
-> Example:
->
-> qapi:
->  | { 'alternate': 'StrOrNull',
->  |   'data': { 's': 'str',
->  |             'n': 'null' } }
->
-> go:
->  | type StrOrNull struct {
->  |     S      *string
->  |     IsNull bool
->  | }
+Using certain four-letter words is not good style in source code,
+so let's avoid that.
 
-We should call this Null instead of IsNull, and also make it a
-pointer similarly to what I just suggested for union branches that
-don't have additional data attached to them.
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ hw/audio/es1370.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
+diff --git a/hw/audio/es1370.c b/hw/audio/es1370.c
+index 91c47330ad..bd460c810e 100644
+--- a/hw/audio/es1370.c
++++ b/hw/audio/es1370.c
+@@ -670,8 +670,7 @@ static void es1370_transfer_audio (ES1370State *s, struct chan *d, int loop_sel,
+     cnt += (transferred + d->leftover) >> 2;
+ 
+     if (s->sctl & loop_sel) {
+-        /* Bah, how stupid is that having a 0 represent true value?
+-           i just spent few hours on this shit */
++        /* Bah, how stupid is that having a 0 represent true value? */
+         AUD_log ("es1370: warning", "non looping mode\n");
+     } else {
+         d->frame_cnt = size;
 -- 
-Andrea Bolognani / Red Hat / Virtualization
+2.41.0
 
 
