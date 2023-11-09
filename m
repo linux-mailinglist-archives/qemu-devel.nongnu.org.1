@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F88C7E6B59
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:44:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF717E6B5B
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:45:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15KZ-0008GO-9I; Thu, 09 Nov 2023 08:44:23 -0500
+	id 1r15Ka-0008KD-Rj; Thu, 09 Nov 2023 08:44:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15KR-0007yx-VK; Thu, 09 Nov 2023 08:44:17 -0500
+ id 1r15KU-00081b-0S; Thu, 09 Nov 2023 08:44:18 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15KK-00014h-N5; Thu, 09 Nov 2023 08:44:10 -0500
+ id 1r15KN-00014x-NL; Thu, 09 Nov 2023 08:44:14 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5FBC131AFF;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7315231B00;
  Thu,  9 Nov 2023 16:43:11 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 71727344A6;
+ by tsrv.corpit.ru (Postfix) with SMTP id 80E3E344A7;
  Thu,  9 Nov 2023 16:43:03 +0300 (MSK)
-Received: (nullmailer pid 1461785 invoked by uid 1000);
+Received: (nullmailer pid 1461788 invoked by uid 1000);
  Thu, 09 Nov 2023 13:43:02 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.3 08/55] tests/avocado: avoid invalid escape in Python
- string
-Date: Thu,  9 Nov 2023 16:42:12 +0300
-Message-Id: <20231109134300.1461632-8-mjt@tls.msk.ru>
+Subject: [Stable-8.1.3 09/55] tests/vm: avoid invalid escape in Python string
+Date: Thu,  9 Nov 2023 16:42:13 +0300
+Message-Id: <20231109134300.1461632-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
 References: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
@@ -62,26 +61,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-This is an error in Python 3.12; fix it by using a raw string literal.
+This is an error in Python 3.12; fix it by using a raw string literal
+or by double-escaping the backslash.
 
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 1b5f3f65cc71341a4f9fc9e89bb6985fde703758)
+(cherry picked from commit 86a8989d4557a09b68f8b78b6c3fb6ad3f23ca6f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/avocado/virtio_check_params.py b/tests/avocado/virtio_check_params.py
-index 4093da8a67..0b1e99fc24 100644
---- a/tests/avocado/virtio_check_params.py
-+++ b/tests/avocado/virtio_check_params.py
-@@ -43,7 +43,7 @@
- class VirtioMaxSegSettingsCheck(QemuSystemTest):
-     @staticmethod
-     def make_pattern(props):
--        pattern_items = ['{0} = \w+'.format(prop) for prop in props]
-+        pattern_items = [r'{0} = \w+'.format(prop) for prop in props]
-         return '|'.join(pattern_items)
+diff --git a/tests/vm/basevm.py b/tests/vm/basevm.py
+index a97e23b0ce..6e31698906 100644
+--- a/tests/vm/basevm.py
++++ b/tests/vm/basevm.py
+@@ -331,8 +331,8 @@ def console_init(self, timeout = None):
+     def console_log(self, text):
+         for line in re.split("[\r\n]", text):
+             # filter out terminal escape sequences
+-            line = re.sub("\x1b\[[0-9;?]*[a-zA-Z]", "", line)
+-            line = re.sub("\x1b\([0-9;?]*[a-zA-Z]", "", line)
++            line = re.sub("\x1b\\[[0-9;?]*[a-zA-Z]", "", line)
++            line = re.sub("\x1b\\([0-9;?]*[a-zA-Z]", "", line)
+             # replace unprintable chars
+             line = re.sub("\x1b", "<esc>", line)
+             line = re.sub("[\x00-\x1f]", ".", line)
+@@ -530,7 +530,7 @@ def get_qemu_version(qemu_path):
+        and return the major number."""
+     output = subprocess.check_output([qemu_path, '--version'])
+     version_line = output.decode("utf-8")
+-    version_num = re.split(' |\(', version_line)[3].split('.')[0]
++    version_num = re.split(r' |\(', version_line)[3].split('.')[0]
+     return int(version_num)
  
-     def query_virtqueue(self, vm, dev_type_name):
+ def parse_config(config, args):
 -- 
 2.39.2
 
