@@ -2,51 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C2A7E6941
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 12:11:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D1BA7E69A8
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 12:30:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r12vT-0003Wq-F5; Thu, 09 Nov 2023 06:10:19 -0500
+	id 1r13E0-00076r-De; Thu, 09 Nov 2023 06:29:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+c182118e23cc89d32fc1+7382+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r12vQ-0003WQ-5t
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 06:10:16 -0500
+ id 1r13Dx-00076a-6Y
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 06:29:25 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+c182118e23cc89d32fc1+7382+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r12vN-0007lP-Dh
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 06:10:15 -0500
+ id 1r13Du-0003MV-PB
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 06:29:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=rt2aHiJyJxCNoEfvVS/JVTjaiBs2bD/mLAfOceqX4zg=; b=D3GrzayLu7Y62VYBd8if3Cq7sq
- KaQi4x/1gqshWNM3xQZpwKlWh90oBALzCkucw980kDPUN1mJC2e46QuQ+oo+W4SfD+6y8wNKdlg07
- tCRlEFrmgfs2UO2isJe0ZCnMtx6Xat3rkhpoH9UitW/FRUO0thnJa+WEQPKrFvLMw/KEnwYIxJjQu
- 2XdlRWuhcyvp95dtqd9p825wawFgNt2OKmy8N6Ho5xMqLhWpc5U1nmjx8CzOWbRLC415R0mYPL0Ep
- 0jauomT1SJ65tTg8f1haNRg0GT3rDYb1Op4pdOc6T5eBuD+bGF2aMXW5dBX7nBVU1855xD4cjvIvf
- 6swM0pYQ==;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:Date:Cc:To:
+ From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+ Content-Description:In-Reply-To:References;
+ bh=vXHB3lMo5sCs/McFbt92Zb5GowAnLqKNuqKpXrhFEfk=; b=MaUE6spuxdFqVg64cDHHj0r1dK
+ yxS681KGnoXhcp0kc94pTYw6hf983blEpGqSbDU2ywLdmIOYSCeK79+FB5Q6yytC0n9FR0JBXEIGy
+ PgsbwZPMhuTL7uxXhpfDxJV+LuHPNux8MJ/DzfaJN5oFR9H8pU8aQVRO/4NojmJYlUseQagwxShvH
+ wpC52F+CfIm/bZiTL7kA9VL5UJLO3F+dfGEUhLx2gd25Mdu2xF4AqbU9+cgaZrx8N0Tnsr098bsoC
+ xyezevLm+nagxuZDQW9q+nFrZEWnHnA00CC7RBf3XIbmotHVx5sLg72heTjct454vmBRpAFDIVoLa
+ q/6Ln3SA==;
 Received: from [2001:8b0:10b:5:e60c:fbc4:6b73:8eff]
  (helo=u3832b3a9db3152.ant.amazon.com)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1r12vF-006t2t-6t; Thu, 09 Nov 2023 11:10:06 +0000
-Message-ID: <4f89df97e82375b22afca0f59102954434dc08cc.camel@infradead.org>
-Subject: Re: [PULL v3 09/25] ui/console: allow to override the default VC
+ id 1r13Dp-006yIf-Cf; Thu, 09 Nov 2023 11:29:18 +0000
+Message-ID: <61ea91785772a8138ad12b305cbd5aac4aa1e86a.camel@infradead.org>
+Subject: [PATCH 8.2 bugfix] net: do not delete nics in net_cleanup()
 From: David Woodhouse <dwmw2@infradead.org>
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: stefanha@gmail.com, Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>
-Date: Thu, 09 Nov 2023 11:10:05 +0000
-In-Reply-To: <20231107101524.2993389-10-marcandre.lureau@redhat.com>
-References: <20231107101524.2993389-1-marcandre.lureau@redhat.com>
- <20231107101524.2993389-10-marcandre.lureau@redhat.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+Date: Thu, 09 Nov 2023 11:29:17 +0000
 Content-Type: multipart/signed; micalg="sha-256";
  protocol="application/pkcs7-signature"; 
- boundary="=-vxSjgaFboR+I9gPMlhTu"
+ boundary="=-1uUxoqSuVqx/lZrF2RyU"
 User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
@@ -77,44 +73,107 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---=-vxSjgaFboR+I9gPMlhTu
+--=-1uUxoqSuVqx/lZrF2RyU
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2023-11-07 at 14:15 +0400, marcandre.lureau@redhat.com wrote:
-> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->=20
-> If a display is backed by a specialized VC, allow to override the
-> default "vc:80Cx24C".
->=20
-> As suggested by Paolo, if the display doesn't implement a VC (get_vc()
-> returns NULL), use a fallback that will use a muxed console on stdio.
->=20
-> This changes the behaviour of "qemu -display none", to create a muxed
-> serial/monitor by default (on TTY & not daemonized).
->=20
-> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Hrm. This breaks the command line documented at=20
-https://qemu-project.gitlab.io/qemu/system/i386/xen.html
+In net_cleanup() we only need to delete the netdevs, as those may have
+state which outlives QEMU when it exits, and thus may actually need to
+be cleaned up on exit.
 
- $ ./qemu-system-x86_64 --accel kvm,xen-version=3D0x40011,kernel-irqchip=3D=
-split \
-    -display none -chardev stdio,mux=3Don,id=3Dchar0,signal=3Doff -mon char=
-0 \
-    -device xen-console,chardev=3Dchar0  -drive file=3D${GUEST_IMAGE},if=3D=
-xen
+The nics, on the other hand, are owned by the device which created them.
+Most devices don't bother to clean up on exit because they don't have
+any state which will outlive QEMU... but XenBus devices do need to clean
+up their nodes in XenStore, and do have an exit handler to delete them.
 
-qemu-system-x86_64: cannot use stdio by multiple character devices
-qemu-system-x86_64: could not connect serial device to character backend 's=
-tdio'
+When the XenBus exit handler destroys the xen-net-device, it attempts
+to delete its nic after net_cleanup() had already done so. And crashes.
 
-Can we make it create a Xen console by default, instead of a serial
-port? And/or make it *not* use stdio if something else on the command
-line already does?
+Fix this by only deleting netdevs as we walk the list in net_cleanup().
+As the comment notes, we can't use QTAILQ_FOREACH_SAFE() as each
+deletion may remove *multiple* entries, including the "safely" saved
+'next' pointer. But we can store the *previous* entry, since nics are
+safe.
 
---=-vxSjgaFboR+I9gPMlhTu
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Paul Durrant <paul@xen.org>
+---
+=C2=A0net/net.c | 28 ++++++++++++++++++++++------
+=C2=A01 file changed, 22 insertions(+), 6 deletions(-)
+
+diff --git a/net/net.c b/net/net.c
+index c0c0cbe99e..bbe33da176 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -1499,18 +1499,34 @@ static void net_vm_change_state_handler(void *opaqu=
+e, bool running,
+=C2=A0
+=C2=A0void net_cleanup(void)
+=C2=A0{
+-=C2=A0=C2=A0=C2=A0 NetClientState *nc;
++=C2=A0=C2=A0=C2=A0 NetClientState *nc, **p =3D &QTAILQ_FIRST(&net_clients)=
+;
+=C2=A0
+=C2=A0=C2=A0=C2=A0=C2=A0 /*cleanup colo compare module for COLO*/
+=C2=A0=C2=A0=C2=A0=C2=A0 colo_compare_cleanup();
+=C2=A0
+-=C2=A0=C2=A0=C2=A0 /* We may del multiple entries during qemu_del_net_clie=
+nt(),
+-=C2=A0=C2=A0=C2=A0=C2=A0 * so QTAILQ_FOREACH_SAFE() is also not safe here.
++=C2=A0=C2=A0=C2=A0 /*
++=C2=A0=C2=A0=C2=A0=C2=A0 * Walk the net_clients list and remove the netdev=
+s but *not* any
++=C2=A0=C2=A0=C2=A0=C2=A0 * NET_CLIENT_DRIVER_NIC entries. The latter are o=
+wned by the device
++=C2=A0=C2=A0=C2=A0=C2=A0 * model which created them, and in some cases (e.=
+g. xen-net-device)
++=C2=A0=C2=A0=C2=A0=C2=A0 * the device itself may do cleanup at exit and wi=
+ll be upset if we
++=C2=A0=C2=A0=C2=A0=C2=A0 * just delete its NIC from underneath it.
++=C2=A0=C2=A0=C2=A0=C2=A0 *
++=C2=A0=C2=A0=C2=A0=C2=A0 * Since qemu_del_net_client() may delete multiple=
+ entries, using
++=C2=A0=C2=A0=C2=A0=C2=A0 * QTAILQ_FOREACH_SAFE() is not safe here. The onl=
+y safe pointer
++=C2=A0=C2=A0=C2=A0=C2=A0 * to keep as a bookmark is a NET_CLIENT_DRIVER_NI=
+C entry, so keep
++=C2=A0=C2=A0=C2=A0=C2=A0 * 'p' pointing to either the head of the list, or=
+ the 'next' field
++=C2=A0=C2=A0=C2=A0=C2=A0 * of the latest NET_CLIENT_DRIVER_NIC, and operat=
+e on *p as we walk
++=C2=A0=C2=A0=C2=A0=C2=A0 * the list.
++=C2=A0=C2=A0=C2=A0=C2=A0 *
++=C2=A0=C2=A0=C2=A0=C2=A0 * The 'nc' variable isn't part of the list traver=
+sal; it's purely
++=C2=A0=C2=A0=C2=A0=C2=A0 * for convenience as too much '(*p)->' has a tend=
+ency to make the
++=C2=A0=C2=A0=C2=A0=C2=A0 * readers' eyes bleed.
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+-=C2=A0=C2=A0=C2=A0 while (!QTAILQ_EMPTY(&net_clients)) {
+-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 nc =3D QTAILQ_FIRST(&net_client=
+s);
++=C2=A0=C2=A0=C2=A0 while (*p) {
++=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 nc =3D *p;
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (nc->info->type =3D=3D =
+NET_CLIENT_DRIVER_NIC) {
+-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qemu_de=
+l_nic(qemu_get_nic(nc));
++=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Skip=
+ NET_CLIENT_DRIVER_NIC entries */
++=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 p =3D &=
+QTAILQ_NEXT(nc, next);
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else {
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qe=
+mu_del_net_client(nc);
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+--=20
+2.34.1
+
+
+
+--=-1uUxoqSuVqx/lZrF2RyU
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -206,25 +265,25 @@ IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
 dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
 NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
 xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTA5MTExMDA1WjAvBgkqhkiG9w0BCQQxIgQgYOJKxD35
-TOft6dSNvVr0uK6ouVjI/CJ8GtpiCGWjabkwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTA5MTEyOTE3WjAvBgkqhkiG9w0BCQQxIgQgdopygr5n
+xscJFVn1f9Gor/30/qBpGPWB37saMolb0XUwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
 BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
 A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
 dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
 DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
 Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgBzLrGhCmMVDI9wzEtwigm05gUYtTRZBROZ
-cy2g6joYqyobkVIfGNg8J9EkPzs920afefSPMTw13QED4tBwBsNA3ZHyami8PV1Jr+9Q+oUXT9HC
-/ljoiusRaVteOKKKvsM6EH1aXeOnx/IXRjjlQdgmRH5LPUrzSARoOIeQjRYmc69HJKi7/QVOMC/r
-bwh+Ztg56+GG/V7YWrPJRYH2dIS1QlUQiXKu8DaKACZ11BXrHJpFnFGAciEMGprAVxi4T75/X8og
-SuRd0wAQuMTEC1b+lZt3BP83+IfxcO5SBQcXoJE4s3+AieQMNIihPRShEEI9JzCFiaND85aiL0YG
-J6067nFA9fGTfDP9i1rPRK36zuHqdasXcOFwA8ONGT9up0op0SSx8NIHoMTbuXF1GoeZ0mqB5b3V
-l7N8icO53Emffdc2t/9D/Z4wbD7c1PXj2pHeTKqPUJH3SDSrCWeuFVPUjLqKCNMeM4UpMA6M8b4e
-giHVobH7AM9mE94wdH6LdgIQjJ+x7ZRk3S9ZqxwaL5whXJiWjN90CKw3lYhWtESQmkdE0nMetuyX
-R9nVGHck+TSOL+pDE7gD36NOw184qVPSpDLO/0OEtEqxv27lnnocbzOo+Q3UvxVOyr2gs95rF4Ic
-w/vBuGp1aJjr8jaLOz+34nrBbdd/s3axrTYJvnXJ9wAAAAAAAA==
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAJm+CF0WyZANooR0iUYkhCxQBMswWWEqRY
+2dUZzTcAsA25y+/9kzMWhvg6haeBljO22TSTi6Z0yP9HefZjCBG1NKiIm5u8TMIh10EL0HpW8hJ9
+3h0uCFsVHa4TYKqKK60IIFDgFvSQeXvLw8oHVs8FrjlRtWMT7JDoWLkchUEmGVozfkzfZ1BQtZs5
+AIE3d/SS52JIH97ap406bY9IeOwLshDA+qlhNuFyAtq0Cy3Id75Sm9O63XyhvJHwvWoZicCmvjKG
+dLdgNIhol0NJdzn2oGdBuoN45G7+vQgNE1rl9Dj3W8IPiWN9D6ev/weLbW4Md7F+pikMYrHQUALL
+hdpMdZ7C2jv0qqkl1biCCtQINN9/DbNCI1H9QuL/DInOWzFqL7lHLr8x2Y+W6Fsqr/1HK8ZNLj3B
+RlCefd5A/mnbOKuGIGTIyrWffABYktb6KABBprX3JvsqFJTFYe6yTeercPjmodTsx2N6thcQ2Auz
+rs/kdBunHzPXNSQsGVbp0slitXWV6U2z9KR7f3htOQ1eraXdVxWpDj1RyPROvgPIuXsqFXFUxRTk
+WnBwJLdimOMUKLtaIvyZJ3LXs+NO69RPjTCOaNG9uF6CLAa0058qf0IAe0gdKKisUKlxvFTsXien
+Shm2xvJdphGIwg6wsr8PzQ6jGvaA4JmxBS0yPXy3rAAAAAAAAA==
 
 
---=-vxSjgaFboR+I9gPMlhTu--
+--=-1uUxoqSuVqx/lZrF2RyU--
 
