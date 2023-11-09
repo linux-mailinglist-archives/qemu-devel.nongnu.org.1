@@ -2,86 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78C317E6436
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 08:17:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5569B7E64C3
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 08:52:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0zHA-0005CR-Am; Thu, 09 Nov 2023 02:16:28 -0500
+	id 1r0zoJ-0007Ib-Jn; Thu, 09 Nov 2023 02:50:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1r0zH5-00059G-H7
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:16:23 -0500
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1r0zH1-0003Ob-CW
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:16:21 -0500
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-9d2c54482fbso82277366b.2
- for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 23:16:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699514177; x=1700118977; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=RcOzC5K65xHmreBnxbCehvlPjXJ9Jer7okFzkyUE/GE=;
- b=KhsJM4CY6qP4hG23Yi2oLsPR8YIfMUOGvrlvwyOKJj+8AtPL9R0WdTzmSvuCttvKCa
- MAxnLiUY6xzO/vuKqAYvOMqe9GoiIV+315LQMVDhDa/6cWFEsnx0/lLTdKsD2LLWZUzJ
- 9z1vLNPIO1P/o/mkPm1RczVhbl5qsFofUUd6bNyxurazFcys/yMq8XIMcZqs6Xsaj6yd
- YCJF+BaimFWtn678zwTZ0UPmut6fKBwLcH8bDxmrukgfGFjieT9LSlE8mfXxp5neoJSN
- pMiBMgwEiypdIkpPjNADf+k/My/G21l/5Tc/tay7WejwPu2u7eW+vKXcllpDCNUiPSA3
- rIqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699514177; x=1700118977;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=RcOzC5K65xHmreBnxbCehvlPjXJ9Jer7okFzkyUE/GE=;
- b=Ieb0xHBWj4z41diu7+S/mQhROcR1BK9hCHiTKD3OmYdU/2kWuaZhAMxjO10Ci/nnjS
- nIwW1u9fz8oEqhcPOLto/G+QOkq4C63tTXmXR6RP35UrmMVd9E2iPAwtMwpZKaUTzqH2
- o9csY+sp6pJ7lq6sIrqwL6rBWJxciIKpxJJAxGytmbagOuhs5ZpG7LqAvS5W/FzVshSk
- ggpwQTxhaV4Wbn3pOb7CxJ6vVA6YOwRwxPl1PssHlJYL+UJFV6eQpTBY6V+UyiJ5EuHE
- wJ5jvVXwtDPbmakX5ausgkwH50a5GyukjZavdtmjAG06PpwpaAOeOAaAe+hQFYWqvl/+
- 1I2Q==
-X-Gm-Message-State: AOJu0YwiKRC3DXh89QWQDlcxhvsnwKPHxkzNMONyIp5N6eUzw+LCNK4h
- Hu05ODLC4qcI650oJhCUyq4GMw==
-X-Google-Smtp-Source: AGHT+IHax2ZV8ZwCJwbXI8Yd55gDtbA1Z2eT2Tv+ktCqPWnQOX7DszE9XFb3wY5e4usUTeZjq5sM0g==
-X-Received: by 2002:a17:906:eec6:b0:9d4:55b1:9249 with SMTP id
- wu6-20020a170906eec600b009d455b19249mr3301786ejb.71.1699514177512; 
- Wed, 08 Nov 2023 23:16:17 -0800 (PST)
-Received: from [192.168.200.206] (83.11.210.67.ipv4.supernova.orange.pl.
- [83.11.210.67]) by smtp.gmail.com with ESMTPSA id
- r5-20020a170906c28500b009929ab17be0sm2115567ejz.162.2023.11.08.23.16.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 Nov 2023 23:16:17 -0800 (PST)
-Message-ID: <e036e998-597c-441f-8c8a-569e2350b30a@linaro.org>
-Date: Thu, 9 Nov 2023 08:16:15 +0100
+ (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1r0zoF-0007HY-8Q
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:50:39 -0500
+Received: from mgamail.intel.com ([192.55.52.43])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1r0zo9-0001o2-5A
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:50:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1699516233; x=1731052233;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=sFrdaYDqHcmeMwI+r91s4Pu9byCxYPzQ4VEuUXb9rxI=;
+ b=LL3aUutqosdjmjV2p4RDcAy8oDfy4sjsrDDw7HMo3SlV0rsrWsW7Y3he
+ W6xgchJC65E64EdVUO7fefQ2QuKu53GUnh5V2wiqqFjeM2TMnyLyxuvGG
+ X4/L8qyw4rwSbMExPKJY1DY9uJVrrpOgSEmPxzCyiTkAkGDD49IewehRr
+ 84oNdhNSoMPklGRCIeVQsKCSiQg/2XOyQjwTfRuEWkRSGuKR7FpBtbMm7
+ 7XJ8Sf21H7pJ13qxKYw29pudlQGmDKXKPn0+AsJUSAHCrHGOiLar06nQw
+ iU9m2TnmqGhBgOthDt6ocV0kO/EivIAcXjolbqfkYzWu6d1C6hOnmrnP7 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="476165122"
+X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="476165122"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Nov 2023 23:50:22 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="763329260"
+X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="763329260"
+Received: from unknown (HELO fred..) ([172.25.112.68])
+ by orsmga002.jf.intel.com with ESMTP; 08 Nov 2023 23:50:21 -0800
+From: Xin Li <xin3.li@intel.com>
+To: qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org, richard.henderson@linaro.org, pbonzini@redhat.com,
+ eduardo@habkost.net, seanjc@google.com, chao.gao@intel.com, hpa@zytor.com,
+ xiaoyao.li@intel.com, weijiang.yang@intel.com
+Subject: [PATCH v3 0/6] target/i386: add support for FRED
+Date: Wed,  8 Nov 2023 23:20:06 -0800
+Message-ID: <20231109072012.8078-1-xin3.li@intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] hw/ide/ahci: fix legacy software reset
-Content-Language: pl-PL, en-GB, en-HK
-To: Niklas Cassel <nks@flawful.org>, John Snow <jsnow@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Damien Le Moal <dlemoal@kernel.org>, Michael Tokarev <mjt@tls.msk.ru>,
- Niklas Cassel <niklas.cassel@wdc.com>
-References: <20231108222657.117984-1-nks@flawful.org>
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <20231108222657.117984-1-nks@flawful.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=192.55.52.43; envelope-from=xin3.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,38 +73,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 8.11.2023 o 23:26, Niklas Cassel pisze:
-> From: Niklas Cassel <niklas.cassel@wdc.com>
+This patch set adds support for the Intel flexible return and event delivery
+(FRED) architecture to allow Qemu to run KVM guests with FRED enabled.
 
-> This fixes an issue for FreeBSD where the device would fail to reset.
-> The problem was not noticed in Linux, because Linux uses a COMRESET
-> instead of a legacy software reset by default.
-> 
-> Fixes: e2a5d9b3d9c3 ("hw/ide/ahci: simplify and document PxCI handling")
-> Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-> Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+The FRED architecture defines simple new transitions that change privilege
+level (ring transitions). The FRED architecture was designed with the
+following goals:
+1) Improve overall performance and response time by replacing event delivery
+   through the interrupt descriptor table (IDT event delivery) and event
+   return by the IRET instruction with lower latency transitions.
+2) Improve software robustness by ensuring that event delivery establishes
+   the full supervisor context and that event return establishes the full
+   user context.
 
-Tested-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Intel VMX architecture is extended to run FRED guests, and the changes
+are majorly:
+1) New VMCS fields for FRED context management, which includes two new
+   event data VMCS fields, eight new guest FRED context VMCS fields and
+   eight new host FRED context VMCS fields.
+2) VMX nested-Exception support for proper virtualization of stack
+   levels introduced with FRED architecture.
 
-FreeBSD 14-rc3 boots fine on AArch64 with this patch:
+Search for the latest FRED spec in most search engines with this search pattern:
 
-Trying to mount root from cd9660:/dev/iso9660/14_0_RC3_AARCH64_BO [ro]...
-cd0 at ahcich0 bus 0 scbus0 target 0 lun 0
-cd0: <QEMU QEMU DVD-ROM 2.5+> Removable CD-ROM SCSI device
-cd0: Serial Number QM00001
-cd0: 150.000MB/s transfers (SATA 1.x, UDMA5, ATAPI 12bytes, PIO 8192bytes)
-cd0: 347MB (177954 2048 byte sectors)
-ada0 at ahcich1 bus 0 scbus1 target 0 lun 0
-ada0: <QEMU HARDDISK 2.5+> ATA-7 SATA device
-ada0: Serial Number QM00003
-ada0: 150.000MB/s transfers (SATA 1.x, UDMA5, PIO 8192bytes)
-ada0: Command Queueing enabled
-ada0: 504MB (1032192 512 byte sectors)
-ada1 at ahcich2 bus 0 scbus2 target 0 lun 0
-ada1: <QEMU HARDDISK 2.5+> ATA-7 SATA device
-ada1: Serial Number QM00005
-ada1: 150.000MB/s transfers (SATA 1.x, UDMA5, PIO 8192bytes)
-ada1: Command Queueing enabled
-ada1: 8192MB (16777216 512 byte sectors)
+  site:intel.com FRED (flexible return and event delivery) specification
+
+The counterpart KVM patch set is at:
+https://lore.kernel.org/kvm/20231108183003.5981-1-xin3.li@intel.com/T/#m77876e22876f41c5ec677c0834a46113a4987d31
+
+
+---
+Changelog
+v3:
+- Add WRMSRNS as a baseline feature for FRED.
+- Add the secondary VM exit controls MSR.
+- Add FRED VMX controls to VM exit/entry feature words and
+  scripts/kvm/vmxcap.
+- Do not set/get FRED SSP0 MSR, i.e. PL0_SSP MSR, with FRED, leave it to
+  KVM CET.
+
+v2:
+- Add VMX nested-exception support to scripts/kvm/vmxcap (Paolo Bonzini).
+- Move FRED MSRs from basic x86_cpu part to .subsections part (Weijiang Yang).
+
+
+Xin Li (6):
+  target/i386: add support for FRED in CPUID enumeration
+  target/i386: mark CR4.FRED not reserved
+  target/i386: add the secondary VM exit controls MSR
+  target/i386: add support for VMX FRED controls
+  target/i386: enumerate VMX nested-exception support
+  target/i386: Add get/set/migrate support for FRED MSRs
+
+ scripts/kvm/vmxcap    | 13 ++++++++++++
+ target/i386/cpu.c     | 15 ++++++++++---
+ target/i386/cpu.h     | 42 ++++++++++++++++++++++++++++++++++++-
+ target/i386/kvm/kvm.c | 49 +++++++++++++++++++++++++++++++++++++++++++
+ target/i386/machine.c | 28 +++++++++++++++++++++++++
+ 5 files changed, 143 insertions(+), 4 deletions(-)
+
+
+base-commit: a3c3aaa846ad61b801e7196482dcf4afb8ba34e4
+-- 
+2.42.0
 
 
