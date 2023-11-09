@@ -2,44 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2FA57E6B65
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:46:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 654957E6B74
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:48:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15Lk-0003WH-G7; Thu, 09 Nov 2023 08:45:37 -0500
+	id 1r15Li-0003Qn-RM; Thu, 09 Nov 2023 08:45:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15LB-0002bK-8U; Thu, 09 Nov 2023 08:45:05 -0500
+ id 1r15LF-0002ee-6p; Thu, 09 Nov 2023 08:45:09 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15L8-0001Mf-Cu; Thu, 09 Nov 2023 08:45:00 -0500
+ id 1r15LD-0001Nf-BZ; Thu, 09 Nov 2023 08:45:04 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 84F1331B0C;
+ by isrv.corpit.ru (Postfix) with ESMTP id 96FF431B0D;
  Thu,  9 Nov 2023 16:43:12 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 91B52344B2;
+ by tsrv.corpit.ru (Postfix) with SMTP id A6E9C344B3;
  Thu,  9 Nov 2023 16:43:04 +0300 (MSK)
-Received: (nullmailer pid 1461821 invoked by uid 1000);
+Received: (nullmailer pid 1461824 invoked by uid 1000);
  Thu, 09 Nov 2023 13:43:02 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Glenn Miles <milesg@linux.vnet.ibm.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.3 20/55] misc/led: LED state is set opposite of what is
- expected
-Date: Thu,  9 Nov 2023 16:42:24 +0300
-Message-Id: <20231109134300.1461632-20-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Czenczek <hreitz@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.3 21/55] block: Fix locking in media change monitor
+ commands
+Date: Thu,  9 Nov 2023 16:42:25 +0300
+Message-Id: <20231109134300.1461632-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
 References: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,36 +60,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
+From: Kevin Wolf <kwolf@redhat.com>
 
-Testing of the LED state showed that when the LED polarity was
-set to GPIO_POLARITY_ACTIVE_LOW and a low logic value was set on
-the input GPIO of the LED, the LED was being turn off when it was
-expected to be turned on.
+blk_insert_bs() requires that the caller holds the AioContext lock for
+the node to be inserted. Since commit c066e808e11, neglecting to do so
+causes a crash when the child has to be moved to a different AioContext
+to attach it to the BlockBackend.
 
-Fixes: ddb67f6402 ("hw/misc/led: Allow connecting from GPIO output")
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Message-id: 20231024191945.4135036-1-milesg@linux.vnet.ibm.com
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 6f83dc67168d17856744275e2a0d7a6addf6cfb9)
+This fixes qmp_blockdev_insert_anon_medium(), which is called for the
+QMP commands 'blockdev-insert-medium' and 'blockdev-change-medium', to
+correctly take the lock.
+
+Cc: qemu-stable@nongnu.org
+Fixes: https://issues.redhat.com/browse/RHEL-3922
+Fixes: c066e808e11a5c181b625537b6c78e0de27a4801
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20231013153302.39234-2-kwolf@redhat.com>
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit fed824501501518b1ad3dc08a39f8f855508190d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/misc/led.c b/hw/misc/led.c
-index f6d6d68bce..42bb43a39a 100644
---- a/hw/misc/led.c
-+++ b/hw/misc/led.c
-@@ -63,7 +63,7 @@ static void led_set_state_gpio_handler(void *opaque, int line, int new_state)
-     LEDState *s = LED(opaque);
+diff --git a/block/qapi-sysemu.c b/block/qapi-sysemu.c
+index ef07151892..305225db32 100644
+--- a/block/qapi-sysemu.c
++++ b/block/qapi-sysemu.c
+@@ -232,6 +232,7 @@ static void qmp_blockdev_insert_anon_medium(BlockBackend *blk,
+                                             BlockDriverState *bs, Error **errp)
+ {
+     Error *local_err = NULL;
++    AioContext *ctx;
+     bool has_device;
+     int ret;
  
-     assert(line == 0);
--    led_set_state(s, !!new_state != s->gpio_active_high);
-+    led_set_state(s, !!new_state == s->gpio_active_high);
- }
+@@ -253,7 +254,11 @@ static void qmp_blockdev_insert_anon_medium(BlockBackend *blk,
+         return;
+     }
  
- static void led_reset(DeviceState *dev)
++    ctx = bdrv_get_aio_context(bs);
++    aio_context_acquire(ctx);
+     ret = blk_insert_bs(blk, bs, errp);
++    aio_context_release(ctx);
++
+     if (ret < 0) {
+         return;
+     }
 -- 
 2.39.2
 
