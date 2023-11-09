@@ -2,39 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADFA57E6BF5
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D2AA7E6C19
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:08:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15by-0003SQ-39; Thu, 09 Nov 2023 09:02:22 -0500
+	id 1r15dc-0007ZG-GJ; Thu, 09 Nov 2023 09:04:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15bO-000060-Ga; Thu, 09 Nov 2023 09:01:48 -0500
+ id 1r15bS-0000Km-Iy; Thu, 09 Nov 2023 09:01:52 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15bM-0006PF-0m; Thu, 09 Nov 2023 09:01:45 -0500
+ id 1r15bP-0006Q6-0u; Thu, 09 Nov 2023 09:01:49 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2113331BD0;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3593931BD1;
  Thu,  9 Nov 2023 16:59:56 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2103834509;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3D2DE3450A;
  Thu,  9 Nov 2023 16:59:48 +0300 (MSK)
-Received: (nullmailer pid 1462856 invoked by uid 1000);
+Received: (nullmailer pid 1462859 invoked by uid 1000);
  Thu, 09 Nov 2023 13:59:47 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+Cc: qemu-stable@nongnu.org, Laszlo Ersek <lersek@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.7 26/62] target/i386: fix memory operand size for CVTPS2PD
-Date: Thu,  9 Nov 2023 16:58:54 +0300
-Message-Id: <20231109135933.1462615-26-mjt@tls.msk.ru>
+Subject: [Stable-7.2.7 27/62] hw/display/ramfb: plug slight guest-triggerable
+ leak on mode setting
+Date: Thu,  9 Nov 2023 16:58:55 +0300
+Message-Id: <20231109135933.1462615-27-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 References: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,100 +63,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Laszlo Ersek <lersek@redhat.com>
 
-CVTPS2PD only loads a half-register for memory, unlike the other
-operations under 0x0F 0x5A.  "Unpack" the group into separate
-emission functions instead of using gen_unary_fp_sse.
+The fw_cfg DMA write callback in ramfb prepares a new display surface in
+QEMU; this new surface is put to use ("swapped in") upon the next display
+update. At that time, the old surface (if any) is released.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit abd41884c530aa025ada253bf1a5bd0c2b808219)
+If the guest triggers the fw_cfg DMA write callback at least twice between
+two adjacent display updates, then the second callback (and further such
+callbacks) will leak the previously prepared (but not yet swapped in)
+display surface.
+
+The issue can be shown by:
+
+(1) starting QEMU with "-trace displaysurface_free", and
+
+(2) running the following program in the guest UEFI shell:
+
+> #include <Library/ShellCEntryLib.h>           // ShellAppMain()
+> #include <Library/UefiBootServicesTableLib.h> // gBS
+> #include <Protocol/GraphicsOutput.h>          // EFI_GRAPHICS_OUTPUT_PROTOCOL
+>
+> INTN
+> EFIAPI
+> ShellAppMain (
+>   IN UINTN   Argc,
+>   IN CHAR16  **Argv
+>   )
+> {
+>   EFI_STATUS                    Status;
+>   VOID                          *Interface;
+>   EFI_GRAPHICS_OUTPUT_PROTOCOL  *Gop;
+>   UINT32                        Mode;
+>
+>   Status = gBS->LocateProtocol (
+>                   &gEfiGraphicsOutputProtocolGuid,
+>                   NULL,
+>                   &Interface
+>                   );
+>   if (EFI_ERROR (Status)) {
+>     return 1;
+>   }
+>
+>   Gop = Interface;
+>
+>   Mode = 1;
+>   for ( ; ;) {
+>     Status = Gop->SetMode (Gop, Mode);
+>     if (EFI_ERROR (Status)) {
+>       break;
+>     }
+>
+>     Mode = 1 - Mode;
+>   }
+>
+>   return 1;
+> }
+
+The symptom is then that:
+
+- only one trace message appears periodically,
+
+- the time between adjacent messages keeps increasing -- implying that
+  some list structure (containing the leaked resources) keeps growing,
+
+- the "surface" pointer is ever different.
+
+> 18566@1695127471.449586:displaysurface_free surface=0x7f2fcc09a7c0
+> 18566@1695127471.529559:displaysurface_free surface=0x7f2fcc9dac10
+> 18566@1695127471.659812:displaysurface_free surface=0x7f2fcc441dd0
+> 18566@1695127471.839669:displaysurface_free surface=0x7f2fcc0363d0
+> 18566@1695127472.069674:displaysurface_free surface=0x7f2fcc413a80
+> 18566@1695127472.349580:displaysurface_free surface=0x7f2fcc09cd00
+> 18566@1695127472.679783:displaysurface_free surface=0x7f2fcc1395f0
+> 18566@1695127473.059848:displaysurface_free surface=0x7f2fcc1cae50
+> 18566@1695127473.489724:displaysurface_free surface=0x7f2fcc42fc50
+> 18566@1695127473.969791:displaysurface_free surface=0x7f2fcc45dcc0
+> 18566@1695127474.499708:displaysurface_free surface=0x7f2fcc70b9d0
+> 18566@1695127475.079769:displaysurface_free surface=0x7f2fcc82acc0
+> 18566@1695127475.709941:displaysurface_free surface=0x7f2fcc369c00
+> 18566@1695127476.389619:displaysurface_free surface=0x7f2fcc32b910
+> 18566@1695127477.119772:displaysurface_free surface=0x7f2fcc0d5a20
+> 18566@1695127477.899517:displaysurface_free surface=0x7f2fcc086c40
+> 18566@1695127478.729962:displaysurface_free surface=0x7f2fccc72020
+> 18566@1695127479.609839:displaysurface_free surface=0x7f2fcc185160
+> 18566@1695127480.539688:displaysurface_free surface=0x7f2fcc23a7e0
+> 18566@1695127481.519759:displaysurface_free surface=0x7f2fcc3ec870
+> 18566@1695127482.549930:displaysurface_free surface=0x7f2fcc634960
+> 18566@1695127483.629661:displaysurface_free surface=0x7f2fcc26b140
+> 18566@1695127484.759987:displaysurface_free surface=0x7f2fcc321700
+> 18566@1695127485.940289:displaysurface_free surface=0x7f2fccaad100
+
+We figured this wasn't a CVE-worthy problem, as only small amounts of
+memory were leaked (the framebuffer itself is mapped from guest RAM, QEMU
+only allocates administrative structures), plus libvirt restricts QEMU
+memory footprint anyway, thus the guest can only DoS itself.
+
+Plug the leak, by releasing the last prepared (not yet swapped in) display
+surface, if any, in the fw_cfg DMA write callback.
+
+Regarding the "reproducer", with the fix in place, the log is flooded with
+trace messages (one per fw_cfg write), *and* the trace message alternates
+between just two "surface" pointer values (i.e., nothing is leaked, the
+allocator flip-flops between two objects in effect).
+
+This issue appears to date back to the introducion of ramfb (995b30179bdc,
+"hw/display: add ramfb, a simple boot framebuffer living in guest ram",
+2018-06-18).
+
+Cc: Gerd Hoffmann <kraxel@redhat.com> (maintainer:ramfb)
+Cc: qemu-stable@nongnu.org
+Fixes: 995b30179bdc
+Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+Acked-by: Laszlo Ersek <lersek@redhat.com>
+Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20230919131955.27223-1-lersek@redhat.com>
+(cherry picked from commit e0288a778473ebd35eac6cc1924faca7d477d241)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index a894e874bc..528e2fdfbb 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -805,10 +805,20 @@ static void decode_sse_unary(DisasContext *s, CPUX86State *env, X86OpEntry *entr
-     case 0x51: entry->gen = gen_VSQRT; break;
-     case 0x52: entry->gen = gen_VRSQRT; break;
-     case 0x53: entry->gen = gen_VRCP; break;
--    case 0x5A: entry->gen = gen_VCVTfp2fp; break;
-     }
+diff --git a/hw/display/ramfb.c b/hw/display/ramfb.c
+index 79b9754a58..c2b002d534 100644
+--- a/hw/display/ramfb.c
++++ b/hw/display/ramfb.c
+@@ -97,6 +97,7 @@ static void ramfb_fw_cfg_write(void *dev, off_t offset, size_t len)
+ 
+     s->width = width;
+     s->height = height;
++    qemu_free_displaysurface(s->ds);
+     s->ds = surface;
  }
  
-+static void decode_0F5A(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
-+{
-+    static const X86OpEntry opcodes_0F5A[4] = {
-+        X86_OP_ENTRY2(VCVTPS2PD,  V,x,       W,xh, vex2),      /* VCVTPS2PD */
-+        X86_OP_ENTRY2(VCVTPD2PS,  V,x,       W,x,  vex2),      /* VCVTPD2PS */
-+        X86_OP_ENTRY3(VCVTSS2SD,  V,x,  H,x, W,x,  vex2_rep3), /* VCVTSS2SD */
-+        X86_OP_ENTRY3(VCVTSD2SS,  V,x,  H,x, W,x,  vex2_rep3), /* VCVTSD2SS */
-+    };
-+    *entry = *decode_by_prefix(s, opcodes_0F5A);
-+}
-+
- static void decode_0F5B(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
- {
-     static const X86OpEntry opcodes_0F5B[4] = {
-@@ -891,7 +901,7 @@ static const X86OpEntry opcodes_0F[256] = {
- 
-     [0x58] = X86_OP_ENTRY3(VADD,       V,x, H,x, W,x, vex2_rep3 p_00_66_f3_f2),
-     [0x59] = X86_OP_ENTRY3(VMUL,       V,x, H,x, W,x, vex2_rep3 p_00_66_f3_f2),
--    [0x5a] = X86_OP_GROUP3(sse_unary,  V,x, H,x, W,x, vex2_rep3 p_00_66_f3_f2), /* CVTPS2PD */
-+    [0x5a] = X86_OP_GROUP0(0F5A),
-     [0x5b] = X86_OP_GROUP0(0F5B),
-     [0x5c] = X86_OP_ENTRY3(VSUB,       V,x, H,x, W,x, vex2_rep3 p_00_66_f3_f2),
-     [0x5d] = X86_OP_ENTRY3(VMIN,       V,x, H,x, W,x, vex2_rep3 p_00_66_f3_f2),
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 5d31fce65d..d6a9de8b3d 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -1917,12 +1917,22 @@ static void gen_VCOMI(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-     set_cc_op(s, CC_OP_EFLAGS);
- }
- 
--static void gen_VCVTfp2fp(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-+static void gen_VCVTPD2PS(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
- {
--    gen_unary_fp_sse(s, env, decode,
--                     gen_helper_cvtpd2ps_xmm, gen_helper_cvtps2pd_xmm,
--                     gen_helper_cvtpd2ps_ymm, gen_helper_cvtps2pd_ymm,
--                     gen_helper_cvtsd2ss, gen_helper_cvtss2sd);
-+    if (s->vex_l) {
-+        gen_helper_cvtpd2ps_ymm(cpu_env, OP_PTR0, OP_PTR2);
-+    } else {
-+        gen_helper_cvtpd2ps_xmm(cpu_env, OP_PTR0, OP_PTR2);
-+    }
-+}
-+
-+static void gen_VCVTPS2PD(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-+{
-+    if (s->vex_l) {
-+        gen_helper_cvtps2pd_ymm(cpu_env, OP_PTR0, OP_PTR2);
-+    } else {
-+        gen_helper_cvtps2pd_xmm(cpu_env, OP_PTR0, OP_PTR2);
-+    }
- }
- 
- static void gen_VCVTPS2PH(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-@@ -1939,6 +1949,16 @@ static void gen_VCVTPS2PH(DisasContext *s, CPUX86State *env, X86DecodedInsn *dec
-     }
- }
- 
-+static void gen_VCVTSD2SS(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-+{
-+    gen_helper_cvtsd2ss(cpu_env, OP_PTR0, OP_PTR1, OP_PTR2);
-+}
-+
-+static void gen_VCVTSS2SD(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-+{
-+    gen_helper_cvtss2sd(cpu_env, OP_PTR0, OP_PTR1, OP_PTR2);
-+}
-+
- static void gen_VCVTSI2Sx(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
- {
-     int vec_len = vector_len(s, decode);
 -- 
 2.39.2
 
