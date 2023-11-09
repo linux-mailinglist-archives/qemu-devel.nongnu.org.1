@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8ACB7E6C1F
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:08:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2F717E6C12
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:06:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15fW-0004x7-3Y; Thu, 09 Nov 2023 09:06:02 -0500
+	id 1r15fU-0004oi-Rv; Thu, 09 Nov 2023 09:06:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15dF-0005on-FB; Thu, 09 Nov 2023 09:03:48 -0500
+ id 1r15dI-0005pC-8R; Thu, 09 Nov 2023 09:03:48 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15dD-00077n-Gf; Thu, 09 Nov 2023 09:03:41 -0500
+ id 1r15dG-00078E-5r; Thu, 09 Nov 2023 09:03:43 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9EA6131BE5;
+ by isrv.corpit.ru (Postfix) with ESMTP id B051E31BE6;
  Thu,  9 Nov 2023 16:59:57 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A7E9C3451C;
+ by tsrv.corpit.ru (Postfix) with SMTP id B9C3E3451D;
  Thu,  9 Nov 2023 16:59:49 +0300 (MSK)
-Received: (nullmailer pid 1462915 invoked by uid 1000);
+Received: (nullmailer pid 1462918 invoked by uid 1000);
  Thu, 09 Nov 2023 13:59:47 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -30,10 +30,10 @@ Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Laurent Vivier <laurent@vivier.eu>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.7 45/62] Revert "linux-user: add more compat ioctl
- definitions"
-Date: Thu,  9 Nov 2023 16:59:13 +0300
-Message-Id: <20231109135933.1462615-45-mjt@tls.msk.ru>
+Subject: [Stable-7.2.7 46/62] Revert "linux-user: fix compat with glibc >=
+ 2.36 sys/mount.h"
+Date: Thu,  9 Nov 2023 16:59:14 +0300
+Message-Id: <20231109135933.1462615-46-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 References: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
@@ -65,7 +65,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-This reverts commit c5495f4ecb0cdaaf2e9dddeb48f1689cdb520ca0.
+This reverts commit 3cd3df2a9584e6f753bb62a0028bd67124ab5532.
 
 glibc has fixed (in 2.36.9000-40-g774058d729) the problem
 that caused a clash when both sys/mount.h annd linux/mount.h
@@ -82,47 +82,54 @@ in linux/mount.h via linux/fs.h since Linux 6.1
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20230110174901.2580297-2-berrange@redhat.com>
+Message-Id: <20230110174901.2580297-3-berrange@redhat.com>
 Signed-off-by: Laurent Vivier <laurent@vivier.eu>
-(cherry picked from commit 9f0246539ae84a5e21efd1cc4516fc343f08115a)
+(cherry picked from commit 6003159ce18faad4e1bc7bf9c85669019cd4950e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index cedf22c5b5..7037c51bca 100644
+index 7037c51bca..aead0f6ac9 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -111,31 +111,6 @@
- #define FS_IOC32_SETFLAGS              _IOW('f', 2, int)
- #define FS_IOC32_GETVERSION            _IOR('v', 1, int)
- #define FS_IOC32_SETVERSION            _IOW('v', 2, int)
+@@ -95,25 +95,7 @@
+ #include <linux/soundcard.h>
+ #include <linux/kd.h>
+ #include <linux/mtio.h>
 -
--#define BLKGETSIZE64 _IOR(0x12,114,size_t)
--#define BLKDISCARD _IO(0x12,119)
--#define BLKIOMIN _IO(0x12,120)
--#define BLKIOOPT _IO(0x12,121)
--#define BLKALIGNOFF _IO(0x12,122)
--#define BLKPBSZGET _IO(0x12,123)
--#define BLKDISCARDZEROES _IO(0x12,124)
--#define BLKSECDISCARD _IO(0x12,125)
--#define BLKROTATIONAL _IO(0x12,126)
--#define BLKZEROOUT _IO(0x12,127)
--
--#define FIBMAP     _IO(0x00,1)
--#define FIGETBSZ   _IO(0x00,2)
--
--struct file_clone_range {
--        __s64 src_fd;
--        __u64 src_offset;
--        __u64 src_length;
--        __u64 dest_offset;
--};
--
--#define FICLONE         _IOW(0x94, 9, int)
--#define FICLONERANGE    _IOW(0x94, 13, struct file_clone_range)
--
- #else
+-#ifdef HAVE_SYS_MOUNT_FSCONFIG
+-/*
+- * glibc >= 2.36 linux/mount.h conflicts with sys/mount.h,
+- * which in turn prevents use of linux/fs.h. So we have to
+- * define the constants ourselves for now.
+- */
+-#define FS_IOC_GETFLAGS                _IOR('f', 1, long)
+-#define FS_IOC_SETFLAGS                _IOW('f', 2, long)
+-#define FS_IOC_GETVERSION              _IOR('v', 1, long)
+-#define FS_IOC_SETVERSION              _IOW('v', 2, long)
+-#define FS_IOC_FIEMAP                  _IOWR('f', 11, struct fiemap)
+-#define FS_IOC32_GETFLAGS              _IOR('f', 1, int)
+-#define FS_IOC32_SETFLAGS              _IOW('f', 2, int)
+-#define FS_IOC32_GETVERSION            _IOR('v', 1, int)
+-#define FS_IOC32_SETVERSION            _IOW('v', 2, int)
+-#else
  #include <linux/fs.h>
- #endif
+-#endif
+ #include <linux/fd.h>
+ #if defined(CONFIG_FIEMAP)
+ #include <linux/fiemap.h>
+diff --git a/meson.build b/meson.build
+index 450c48a9f0..787f91855e 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2032,8 +2032,6 @@ config_host_data.set('HAVE_OPTRESET',
+                      cc.has_header_symbol('getopt.h', 'optreset'))
+ config_host_data.set('HAVE_IPPROTO_MPTCP',
+                      cc.has_header_symbol('netinet/in.h', 'IPPROTO_MPTCP'))
+-config_host_data.set('HAVE_SYS_MOUNT_FSCONFIG',
+-                     cc.has_header_symbol('sys/mount.h', 'FSCONFIG_SET_FLAG'))
+ 
+ # has_member
+ config_host_data.set('HAVE_SIGEV_NOTIFY_THREAD_ID',
 -- 
 2.39.2
 
