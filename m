@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637227E6B17
+	by mail.lfdr.de (Postfix) with ESMTPS id 457C47E6B16
 	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:16:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r14rp-0008No-Vg; Thu, 09 Nov 2023 08:14:42 -0500
+	id 1r14sZ-0000GX-Dr; Thu, 09 Nov 2023 08:15:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r14ro-0008NX-7k
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 08:14:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r14sW-0000Fk-Ro
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 08:15:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r14rm-0002Wx-1G
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 08:14:39 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r14sV-0002wi-Ao
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 08:15:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699535677;
+ s=mimecast20190719; t=1699535722;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=2ioEoJzIKuszNkHGE0QD6v1AvCCTAe9bpTdmoF3fnys=;
- b=CxQsVsVINckoEeuGOyy8oD+LWR36cweZwAAXkUVjk6WDjADhSqsGpIscGW/WCG9wQge3O7
- +/kCF4xV7RPDSd63YtZajjkMZk+t6H+xvRyk2cDQVKDzrDLvCDfsZnk39NPwk+NCeqyaOa
- GGbZRxMfV9TvlEjI0kCNsxNrnM7QMlU=
+ bh=OWiOSjQbESsRB7XMUMmAhWDOp3hgIQHLa6zJw0k1uiA=;
+ b=VC32kp4kEt3FamuqReLniXSg9zTh64Q3SvSm6J/wIYeRNv7kqRgSEtCufk5oIBaLJuoRlT
+ mxMbIvlFUPIb4utCRAl0/el2/XCH4RE4ZNFR426atDQPdP3FqJK1bmaAEns1OkyfIOAerx
+ eRQnf4RLFn2NDs881yKnW4QsY9DOs3c=
 Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
  [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-142-NaLchBEaPlyr9ewaiNKPsA-1; Thu, 09 Nov 2023 08:14:34 -0500
-X-MC-Unique: NaLchBEaPlyr9ewaiNKPsA-1
+ us-mta-587-TgdOLyAiNjWucBC1Ju-qXQ-1; Thu, 09 Nov 2023 08:15:21 -0500
+X-MC-Unique: TgdOLyAiNjWucBC1Ju-qXQ-1
 Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-66fe14725aeso11472186d6.2
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 05:14:34 -0800 (PST)
+ 6a1803df08f44-6707401e1aeso10066476d6.0
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 05:15:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699535674; x=1700140474;
+ d=1e100.net; s=20230601; t=1699535720; x=1700140520;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2ioEoJzIKuszNkHGE0QD6v1AvCCTAe9bpTdmoF3fnys=;
- b=QGKkeZNrPXnoKg+82Puz1YjLeXz8nhuc417xH5YikjzQNCrlSC3MfEWfRRlHaEKl/6
- WNZgmttD3FyNjSMEjdS9g4wz4WndxbJ6pSpFvFoyiwFZ1KSwK1+mM9UwwqfS/zQiYnI1
- ARmLMcyfZ2twqJuXm2SXKaOA5uVVGgS/83GYyFQ9KhJ1CjqoMvRqFcyCWePt+yKO55RZ
- ujeDvudRLAHNdidNY+aubimEK9FHuShITulZLVcLQuxBpquYJnUMEv2Be4koI6YrkxP7
- mUuOHdNBfPfBu8uRvlsRuQ3/tp0ZtCDRnCmBYKKPpRK4OGu2ltER7h2AL5CQLAx1KQVx
- EZMQ==
-X-Gm-Message-State: AOJu0Yyun8BB6R5TBPtTPqlCvaen+cuaEp50Uc0Hxu98ky8d0oQq0e2r
- +bZJfbp8/AXpvwohutZMiWUbsCPMWDL4/QY41wG/cxcOfUCiuiRttCotDdMV8QwweB/vVm4cZOI
- i3H3UN77HdzuvTbo=
-X-Received: by 2002:a0c:f054:0:b0:66d:5d31:999e with SMTP id
- b20-20020a0cf054000000b0066d5d31999emr4471242qvl.43.1699535673973; 
- Thu, 09 Nov 2023 05:14:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF47Cmputs3V7DZdyojlmPJR7J3Wpq9wdKBaDIKpwYL97BdM12teQ4DxdT3SMUgFRcD22JRNA==
-X-Received: by 2002:a0c:f054:0:b0:66d:5d31:999e with SMTP id
- b20-20020a0cf054000000b0066d5d31999emr4471223qvl.43.1699535673639; 
- Thu, 09 Nov 2023 05:14:33 -0800 (PST)
+ bh=OWiOSjQbESsRB7XMUMmAhWDOp3hgIQHLa6zJw0k1uiA=;
+ b=rB+LZz+ZDMYD6oxOg7RT0KJ7qD1Arj6+sYwwGXs2fG56HGfnEvQvV6u9ZPSVknpPPs
+ NqhK/BFfdavWKqraXZuQ64GVi5WoFWRH0z7LBpFyasSc/G8tyFKbpKBOzkXCdU002Yq6
+ suQWBa4UzLofN+XK5UCdN8s3/+CRGZ6uwG6eiXIYil0BmwtZZseOrF7Pz5iwBPjHDYOW
+ Y2KHuHftdsPA2uExYOcLEJL/BijHAU3AQNYAhl26EZ5mcci2lDJ+vqxt0TlGocthZUrN
+ 4tG3KRzlwuCzq9NTFIzj1kt0W7UIF+c3atdi1u/JUwpSJiOzYyzZ1dSO3lkZgewS2pgw
+ Fxlg==
+X-Gm-Message-State: AOJu0YzmGiJCRhqK7emBn2tDG1IWy2G6YoFuZ/1n7/esUNUJ66VNEEFG
+ BybBfO8Ok4w+AoTdFXjphlwsbSHFWA5Dy+HFbDFbHVHdjOw66cJvpanaCa9nqRub1OU6SgPCUL9
+ mseRBEwtLhZ/05rI=
+X-Received: by 2002:a05:6214:20a1:b0:66d:10fd:4abb with SMTP id
+ 1-20020a05621420a100b0066d10fd4abbmr4267418qvd.16.1699535720748; 
+ Thu, 09 Nov 2023 05:15:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEtURzTkuHhZMPmXkmwPnI0TQuXIm2rzAotA2Xe5lt5vUCMf/LkX/gub2aThrLD/MB7eqleVg==
+X-Received: by 2002:a05:6214:20a1:b0:66d:10fd:4abb with SMTP id
+ 1-20020a05621420a100b0066d10fd4abbmr4267400qvd.16.1699535720496; 
+ Thu, 09 Nov 2023 05:15:20 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-177-79.web.vodafone.de.
  [109.43.177.79]) by smtp.gmail.com with ESMTPSA id
- y8-20020a0ceac8000000b0066d32666a27sm2044971qvp.66.2023.11.09.05.14.31
+ y8-20020a0ceac8000000b0066d32666a27sm2044971qvp.66.2023.11.09.05.15.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Nov 2023 05:14:33 -0800 (PST)
-Message-ID: <b4638836-43bb-4e8c-854f-591c77073bb0@redhat.com>
-Date: Thu, 9 Nov 2023 14:14:29 +0100
+ Thu, 09 Nov 2023 05:15:20 -0800 (PST)
+Message-ID: <74bb0f66-4383-4627-aedb-859383df1ba8@redhat.com>
+Date: Thu, 9 Nov 2023 14:15:18 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] target/s390x/dump: Remove unneeded dump info
- function pointer init
+Subject: Re: [PATCH v2 2/3] dump: Add arch cleanup function
 Content-Language: en-US
 To: Janosch Frank <frankja@linux.ibm.com>, qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, marcandre.lureau@redhat.com, imbrenda@linux.ibm.com
 References: <20231109120443.185979-1-frankja@linux.ibm.com>
- <20231109120443.185979-2-frankja@linux.ibm.com>
+ <20231109120443.185979-3-frankja@linux.ibm.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -115,19 +114,19 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231109120443.185979-2-frankja@linux.ibm.com>
+In-Reply-To: <20231109120443.185979-3-frankja@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -144,30 +143,43 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 09/11/2023 13.04, Janosch Frank wrote:
-> dump_state_prepare() now sets the function pointers to NULL so we only
-> need to touch them if we're going to use them.
+> Some architectures (s390x) need to cleanup after a failed dump to be
+> able to continue to run the vm. Add a cleanup function pointer and
+> call it if it's set.
 > 
 > Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-> Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   target/s390x/arch_dump.c | 4 ----
->   1 file changed, 4 deletions(-)
+>   dump/dump.c                | 4 ++++
+>   include/sysemu/dump-arch.h | 1 +
+>   2 files changed, 5 insertions(+)
 > 
-> diff --git a/target/s390x/arch_dump.c b/target/s390x/arch_dump.c
-> index 51a2116515..bdb0bfa0e7 100644
-> --- a/target/s390x/arch_dump.c
-> +++ b/target/s390x/arch_dump.c
-> @@ -448,10 +448,6 @@ int cpu_get_dump_info(ArchDumpInfo *info,
->           info->arch_sections_add_fn = *arch_sections_add;
->           info->arch_sections_write_hdr_fn = *arch_sections_write_hdr;
->           info->arch_sections_write_fn = *arch_sections_write;
-> -    } else {
-> -        info->arch_sections_add_fn = NULL;
-> -        info->arch_sections_write_hdr_fn = NULL;
-> -        info->arch_sections_write_fn = NULL;
->       }
->       return 0;
->   }
+> diff --git a/dump/dump.c b/dump/dump.c
+> index d355ada62e..9eeb7ab453 100644
+> --- a/dump/dump.c
+> +++ b/dump/dump.c
+> @@ -96,6 +96,10 @@ uint64_t cpu_to_dump64(DumpState *s, uint64_t val)
+>   
+>   static int dump_cleanup(DumpState *s)
+>   {
+> +    if (s->dump_info.arch_cleanup_fn) {
+> +        s->dump_info.arch_cleanup_fn(s);
+> +    }
+> +
+>       guest_phys_blocks_free(&s->guest_phys_blocks);
+>       memory_mapping_list_free(&s->list);
+>       close(s->fd);
+> diff --git a/include/sysemu/dump-arch.h b/include/sysemu/dump-arch.h
+> index 59bbc9be38..743916e46c 100644
+> --- a/include/sysemu/dump-arch.h
+> +++ b/include/sysemu/dump-arch.h
+> @@ -24,6 +24,7 @@ typedef struct ArchDumpInfo {
+>       void (*arch_sections_add_fn)(DumpState *s);
+>       uint64_t (*arch_sections_write_hdr_fn)(DumpState *s, uint8_t *buff);
+>       int (*arch_sections_write_fn)(DumpState *s, uint8_t *buff);
+> +    void (*arch_cleanup_fn)(DumpState *s);
+>   } ArchDumpInfo;
+>   
+>   struct GuestPhysBlockList; /* memory_mapping.h */
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
