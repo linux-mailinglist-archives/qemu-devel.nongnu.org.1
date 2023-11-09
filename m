@@ -2,91 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 512FD7E71BE
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 19:51:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D5E7E71BF
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 19:52:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1A6E-0006KP-Sy; Thu, 09 Nov 2023 13:49:54 -0500
+	id 1r1A7v-0007GS-Lf; Thu, 09 Nov 2023 13:51:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1r1A6D-0006Jy-75
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 13:49:53 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1r1A66-0004O5-Ew
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 13:49:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=yLviHL2+I1iIBoAsOyQi6Cce9/2BCH81+nObRCNTQZU=; b=CTBb6823s0kaFowcR5oWsneIHf
- 9KRybl2zVpf+ey5WTrJwVm0bGoweI7An74Vc7xG4J0ryFO/s0/h6T6z9x+IE+wadvWJpBOxpC3Gra
- KQ9JY4eEeYIKRjjuR3GwRl07iGEpxMVb3PvOxJyi+wYjUiFUWzdIVYt1fegJeV4c3Jf+1UCb3r9vM
- zUMeMR8I0oqGE4LspZG4J1UDztjCNJ7yaRBySAIdLF2Dj7tdivJvEKAy0z6PwJ9SqEcI8LZMQ5uid
- m465EJjQhSZUmUHwYgXInpuQnjcrD6/uuAqd1VXR0DyaaGW41TVdFAcGiiVeMaeJrkAy3kxS/uaxr
- e0YYTg6WexBpeMBxsz8f/HUpfuCNsXhseYRWK2Fk04mrBky/nvy9zqEkNZdDm+bfEi7I8PxX8jKGr
- j8bNMcpvsbsKLPYZlgChBCjAmT4IkRdHfOe8fBfhiVyc1SlhumNVVDMQWwY3kqyDPc7HQpvrN4zY1
- R5pN5jD/nUcAQqEQglTv6oLn+mhHYlWBN7WovJk28E58Krv8HqHZbl2pq0ywiiB7r2owTHmnc66vk
- zNlRmiBzG2HSdho1KWIWyK4dlpIWpEJrEbnzH349hD93mUcBiqUVgMWl9tvjIMQfNCrfF/k3rB87J
- vJhsdMrKBkXVmi2+O/Ei1aY73VEKUf2HwI3q25qs4=;
-Received: from [2a00:23c4:8bb0:5400:292b:b2e3:612a:c1c9]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1r1A5n-0006oi-Af; Thu, 09 Nov 2023 18:49:31 +0000
-Message-ID: <8f3d0d99-286b-4a08-95c7-3d2c0cfacf72@ilande.co.uk>
-Date: Thu, 9 Nov 2023 18:49:33 +0000
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r1A7t-0007Fb-LU
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 13:51:37 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r1A7r-0005Ej-BR
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 13:51:37 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-9d216597f64so210059266b.3
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 10:51:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699555893; x=1700160693; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Ae7t7ezmyIDAPmpBQ9pJmgCBGpUwlFMWGMyUb3NrLGc=;
+ b=TB9NSaoMwceMtG5urW3UIxpWh2AXdq/kNnCOP0Fqp4+1VzQr2mKJMzVE93d4T7onW5
+ sVF1FSjuzA7wIREf+a06ai74enKgwFN0CFOcqECo6nGRJz6t+tq/RMvXmBK3dQ8ixFmx
+ sPhoJ/VR31WPsGMTOGsAS6WBJHm5AWLp//9t9sX5IEtojaBfT8bjSnOoIFa3ebCYLign
+ zhlxYtCJP71WRp9HYRE8FMRX+xPpJzxuhCjKfLZGODpM4R7vnJWgRgd+9rzgDTV9yQMF
+ N6f+ro3h6t00Uxhe9icHQlLUtQbuiqb4DqfX0HbrOaoWZGHIt9CBSSmeaAnhzlZNTasy
+ tBnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699555893; x=1700160693;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ae7t7ezmyIDAPmpBQ9pJmgCBGpUwlFMWGMyUb3NrLGc=;
+ b=f6feupe6uJD+CFeqpGpT7ZC1LD08tzIu68rLXiR9WrfntRzxCcAfO0KlGljcKH0+AM
+ ffgABrn8TShAPZd916idZSWGb1Dnz7qwduyaFHJ3P+g01k5H04o1b/kbeMG7/FOgiX0O
+ OnjM1SKc6jTLts8cwjtemWpxNX8V042HKj8ew5hyH+dWrlIWQi7f7jCyHR4BgQgwxILC
+ 0BGO68/WzR+rwzuMLcaUAaH6COn1+H4nEtyxuGJEFc53d1c0//Ak5KigK3viGyIWqdy9
+ iV0u/ItIWI+dBK3XsTLG1vB+YmHrcFIKEnRaTufMkFPkc/XGX/3i7sQ3RiPMZr9jsEfU
+ jbZQ==
+X-Gm-Message-State: AOJu0YyF7b8QnGPyqExJ3KvXrymKLZ6LvFazP+vWYYdQLLQZDLoF917m
+ H5U8CG8wWN8GTDgtX0T3fWGwCA==
+X-Google-Smtp-Source: AGHT+IE74t0exS/UsUSvy1kEB8H+a6A6M4CLbVJ/sJeFtBH35+AQlsqfnRCDtS52HDLQrhgbX2OcCQ==
+X-Received: by 2002:a17:906:c4c7:b0:9e4:6500:7540 with SMTP id
+ cl7-20020a170906c4c700b009e465007540mr2721112ejb.58.1699555893266; 
+ Thu, 09 Nov 2023 10:51:33 -0800 (PST)
+Received: from [192.168.69.115] ([176.187.199.161])
+ by smtp.gmail.com with ESMTPSA id
+ f23-20020a170906139700b0099bcb44493fsm2930816ejc.147.2023.11.09.10.51.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 09 Nov 2023 10:51:32 -0800 (PST)
+Message-ID: <35e9990e-41da-4702-8163-62e2b282ffb0@linaro.org>
+Date: Thu, 9 Nov 2023 19:51:30 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20231108204739.279972-1-richard.henderson@linaro.org>
+Subject: Re: [PATCH] ppc/pnv: Fix potential overflow in I2C model
 Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <20231108204739.279972-1-richard.henderson@linaro.org>
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Glenn Miles <milesg@linux.vnet.ibm.com>
+References: <20231109080536.1005500-1-clg@kaod.org>
+ <CAFEAcA_vs==UgZGkuW96wY=tdHXxk8cu1O7HRGKAoAj=Ltyv1A@mail.gmail.com>
+ <de9177ea-c444-4710-8eda-7cecaef06eb7@kaod.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <de9177ea-c444-4710-8eda-7cecaef06eb7@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:5400:292b:b2e3:612a:c1c9
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH for-8.2] target/sparc: Fix RETURN
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,46 +96,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/11/2023 20:47, Richard Henderson wrote:
-
-> Perform window restore before pc update. Required in order
-> to recognize any window underflow trap with the current pc.
+On 9/11/23 16:54, Cédric Le Goater wrote:
+> On 11/9/23 16:02, Peter Maydell wrote:
+>> On Thu, 9 Nov 2023 at 08:06, Cédric Le Goater <clg@kaod.org> wrote:
+>>>
+>>> Coverity warns that "i2c_bus_busy(i2c->busses[i]) << i" might overflow
+>>> because the expression is evaluated using 32-bit arithmetic and then
+>>> used in a context expecting a uint64_t.
+>>>
+>>> Fixes: Coverity CID 1523918
+>>> Cc: Glenn Miles <milesg@linux.vnet.ibm.com>
+>>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>>> ---
+>>>   hw/ppc/pnv_i2c.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/hw/ppc/pnv_i2c.c b/hw/ppc/pnv_i2c.c
+>>> index f75e59e70977..ab73c59f7704 100644
+>>> --- a/hw/ppc/pnv_i2c.c
+>>> +++ b/hw/ppc/pnv_i2c.c
+>>> @@ -437,7 +437,7 @@ static uint64_t pnv_i2c_xscom_read(void *opaque, 
+>>> hwaddr addr,
+>>>       case I2C_PORT_BUSY_REG: /* compute busy bit for each port  */
+>>>           val = 0;
+>>>           for (i = 0; i < i2c->num_busses; i++) {
+>>> -            val |= i2c_bus_busy(i2c->busses[i]) << i;
+>>> +            val |= (uint64_t) i2c_bus_busy(i2c->busses[i]) << i;
+>>>           }
+>>>           break;
+>>
+>> Should the device's realize function also impose a max
+>> limit on the num-busses property? There doesn't seem to be
+>> anything preventing a caller from setting it to a big
+>> number like 128, which would then be UB here.
 > 
-> Fixes: 86b82fe021f4 ("target/sparc: Move JMPL, RETT, RETURN to decodetree")
-> Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/sparc/translate.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> yes. I will add an assert(i2c->num_busses < 64). The current max
+> is 16 for POWER10.
 > 
-> diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-> index 6fc333a6b8..9387299559 100644
-> --- a/target/sparc/translate.c
-> +++ b/target/sparc/translate.c
-> @@ -4096,12 +4096,12 @@ TRANS(RETT, 32, do_add_special, a, do_rett)
->   static bool do_return(DisasContext *dc, int rd, TCGv src)
->   {
->       gen_check_align(dc, src, 3);
-> +    gen_helper_restore(tcg_env);
->   
->       gen_mov_pc_npc(dc);
->       tcg_gen_mov_tl(cpu_npc, src);
->       gen_address_mask(dc, cpu_npc);
->   
-> -    gen_helper_restore(tcg_env);
->       dc->npc = DYNAMIC_PC_LOOKUP;
->       return true;
->   }
+>> Style nit: casts shouldn't have a space after them before
+>> the thing they're casting.
+> 
+> yep.
+> 
+> I prefer the cast method than the deposit call. Philippe, I hope you
+> don't mind ?
 
-Thanks Richard! I've tried booting the FreeBSD ISO several times with this patch 
-applied, and haven't seen a single failure so:
-
-Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-
-
-ATB,
-
-Mark.
+Matter of taste, I don't mind ¯\_(ツ)_/¯
 
 
