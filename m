@@ -2,70 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3DB7E6421
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 08:02:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 844357E6425
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 08:04:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0z2Q-0006SI-5c; Thu, 09 Nov 2023 02:01:14 -0500
+	id 1r0z5Q-0000Cp-Ff; Thu, 09 Nov 2023 02:04:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r0z2N-0006S5-6y
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:01:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1r0z5P-0000Ak-B9
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:04:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r0z2K-0000nc-13
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:01:10 -0500
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1r0z5N-0001L6-OG
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:04:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699513265;
+ s=mimecast20190719; t=1699513456;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FNkpCgZCLGMWVXiZsG85x8HSjKr0xjK17BhIKUyjc/Y=;
- b=NAA2v2TrZiUIcjEfpDgelfcXXk2WT4rWOCOLBaDijQXpSztg5B1WaOW+kKtbAar3A+N1x8
- YKHTPFYYE86tpbyk+sxVZA84okB232iia5xVz0mS5gndNewP+QqpzVrKTTS/zVJtmMFC0u
- ZkT3n+ufpMnLnmScjlaalu4toGGFNq4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-251-G4nBLgTcPQCRHYes_LUrwA-1; Thu, 09 Nov 2023 02:01:02 -0500
-X-MC-Unique: G4nBLgTcPQCRHYes_LUrwA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ content-transfer-encoding:content-transfer-encoding;
+ bh=D7WarhrLTuxi0oytHefmmflWiEJDS7jlEvkRUBTBf44=;
+ b=axomBjBQ3bI4GD4d9uojCucB7Qg0c0n9U6CEE6xSZaOQ9ELMqNwNP7caahrpGp821oVWLv
+ GglreHM6onBIPZ13gb4p9QMCMimObymGg0QnDdWh4gksoooVaJD3zZwHRATvPIk2YS+OOE
+ yd7F8rPBr/jJnS8jubtmkhhPb2E1jXs=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-106-dIYjYsczMDOEap_RUJe9Zw-1; Thu,
+ 09 Nov 2023 02:04:14 -0500
+X-MC-Unique: dIYjYsczMDOEap_RUJe9Zw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0C1FA85FBE0;
- Thu,  9 Nov 2023 07:01:02 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D647E1121306;
- Thu,  9 Nov 2023 07:01:01 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 91D2A21E6A1F; Thu,  9 Nov 2023 08:01:00 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Kamay Xutax <admin@xutaxkamay.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, =?utf-8?Q?Ma?=
- =?utf-8?Q?rc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH RFC v1 0/1] clipboard sharing implementation for SDL
-References: <20231108022139.12503-1-admin@xutaxkamay.com>
-Date: Thu, 09 Nov 2023 08:01:00 +0100
-In-Reply-To: <20231108022139.12503-1-admin@xutaxkamay.com> (Kamay Xutax's
- message of "Wed, 8 Nov 2023 03:21:38 +0100")
-Message-ID: <87pm0j76mr.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3F65D3C1F126;
+ Thu,  9 Nov 2023 07:04:14 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.85])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 63477492BE7;
+ Thu,  9 Nov 2023 07:04:12 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Mads Ynddal <mads@ynddal.dk>,
+	Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 0/1] Tracing patches
+Date: Thu,  9 Nov 2023 15:04:08 +0800
+Message-ID: <20231109070409.46365-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,35 +78,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Kamay Xutax <admin@xutaxkamay.com> writes:
+The following changes since commit a3c3aaa846ad61b801e7196482dcf4afb8ba34e4:
 
-> Hello,
->
-> This is my first try contributing to QEMU,
+  Merge tag 'pull-ppc-20231107' of https://gitlab.com/danielhb/qemu into staging (2023-11-08 20:35:00 +0800)
 
-Welcome!
+are available in the Git repository at:
 
-> and I would like some advices before merging my patch into master branch.
+  https://gitlab.com/stefanha/qemu.git tags/tracing-pull-request
 
-First piece of advice: it's a busy mailing list, and to get people's
-attention, cc: them.  For a patch, you want to cc: maintainers of the
-code you patch.  To find them, use scripts/get_maintainer.pl and
-exercise judgement.  Let me show you:
+for you to fetch changes up to 4d96307c5b4fac40c6ca25f38318b4b65d315de0:
 
-    $ scripts/get_maintainer.pl ./0001-*patch
+  tracetool: avoid invalid escape in Python string (2023-11-09 15:03:02 +0800)
 
-    Gerd Hoffmann <kraxel@redhat.com> (odd fixer:Graphics)
-    "Marc-Andr=C3=A9 Lureau" <marcandre.lureau@redhat.com> (odd fixer:Graph=
-ics)
-    Paolo Bonzini <pbonzini@redhat.com> (maintainer:Meson)
-    "Daniel P. Berrang=C3=A9" <berrange@redhat.com> (reviewer:Meson)
-    Thomas Huth <thuth@redhat.com> (reviewer:Meson)
-    "Philippe Mathieu-Daud=C3=A9" <philmd@linaro.org> (reviewer:Meson)
-    qemu-devel@nongnu.org (open list:All patches CC here)
+----------------------------------------------------------------
+Pull request
 
-Since the patch's Meson part is straightforward, I'd just cc: the two
-Graphics people,  I'm doing it in this message, so you don't have to.
+----------------------------------------------------------------
 
-[...]
+Marc-André Lureau (1):
+  tracetool: avoid invalid escape in Python string
+
+ scripts/tracetool/__init__.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+-- 
+2.41.0
 
 
