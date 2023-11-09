@@ -2,130 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B437E6B21
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:19:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7938A7E6B28
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:21:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r14w3-00036f-6H; Thu, 09 Nov 2023 08:19:03 -0500
+	id 1r14xW-00049H-9o; Thu, 09 Nov 2023 08:20:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r14w0-00032k-D4
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 08:19:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1r14xR-00047X-1W; Thu, 09 Nov 2023 08:20:29 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r14vy-0003ZS-TD
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 08:19:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699535938;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Ks8xkeVpz+WazwKAsU1nIrAyTEZZfSUePD3UK1nF698=;
- b=Cv48c9DJAgYQ8stGBh/OV81QVarwbljLDjHZApN0RY5t4L5AmwDsSAZekHrWNWfxENSl5h
- W3Wa9lTVtrNNR6/IsPphNAiU+mi4x+/mSgbZAoVz/6IXe6NbQX4TvFxp6RLEF/kmwYBdAw
- kdpS3aSbrcu/B2A3wBUaJ6b4wiR7Ats=
-Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
- [209.85.221.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-362-Ry-idHG9OSO9V1SYtL5g-A-1; Thu, 09 Nov 2023 08:18:56 -0500
-X-MC-Unique: Ry-idHG9OSO9V1SYtL5g-A-1
-Received: by mail-vk1-f197.google.com with SMTP id
- 71dfb90a1353d-4ac37915271so387468e0c.0
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 05:18:56 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699535936; x=1700140736;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ks8xkeVpz+WazwKAsU1nIrAyTEZZfSUePD3UK1nF698=;
- b=tyC5bPfGXe+LFR5eI4dHhRaKFQYF4p2/xjfmwUFLLsIkKU7ki0JjCrJRCcABJR+Kqq
- v6DhMxPK86M8aSgJMdgMWOmQqdzNj3SPLy421jUNCDIhqPQ9g+8UGfgb4xEDARrRNnfh
- AsRt0pcFA/2nPEtYv8VQ/oxYn+4/3tSVSQGoGNDC2KOQ2i5TwY93S3p3RlsAu5I2xJZe
- j2vGX4TWGfMTIdqo+1/sXfNDIajOooh40kLNczjkT93FFUfDb4qFK5ZU2fd53/dyxIu8
- wsDjPOIEo4yu1B0l5APqotSEeoYfkzB34xni+y7VYQKjL9iKo7Xeps2l0ywiJnOtD8KB
- RSTg==
-X-Gm-Message-State: AOJu0YznzUttHn8Bdv4nUgUkKa2vbaSQH3CetUZe0a2X0CJoznxhHn3c
- dnENRlAG6zOJY03ta0R/vTzF8ehTlmQFFyxx2Bh8L0EzFqXp5PLpatbnRJD++4Qa5tiA/Jcfsp8
- 7agUCUuyT1fX9iWk=
-X-Received: by 2002:ac5:c5a8:0:b0:49c:b45:6cba with SMTP id
- f8-20020ac5c5a8000000b0049c0b456cbamr1281858vkl.12.1699535936107; 
- Thu, 09 Nov 2023 05:18:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGh59QNcUfJvXJPf1yJ9PiJEAu5k6A5mxQfIA8ngmTTylQCg67GRyeXclcLMescpnTocK2qjA==
-X-Received: by 2002:ac5:c5a8:0:b0:49c:b45:6cba with SMTP id
- f8-20020ac5c5a8000000b0049c0b456cbamr1281848vkl.12.1699535935817; 
- Thu, 09 Nov 2023 05:18:55 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-43-177-79.web.vodafone.de.
- [109.43.177.79]) by smtp.gmail.com with ESMTPSA id
- mg3-20020a056214560300b0067266b7b903sm2063620qvb.5.2023.11.09.05.18.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Nov 2023 05:18:55 -0800 (PST)
-Message-ID: <a305ef9b-b0d6-40f4-8cb6-3ce6c42868c8@redhat.com>
-Date: Thu, 9 Nov 2023 14:18:52 +0100
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1r14xN-0003vY-EA; Thu, 09 Nov 2023 08:20:28 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 0FEAE31ADF;
+ Thu,  9 Nov 2023 16:20:22 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id DD58034484;
+ Thu,  9 Nov 2023 16:20:13 +0300 (MSK)
+Message-ID: <f7f5288a-c2dd-4831-8bac-31286f53f394@tls.msk.ru>
+Date: Thu, 9 Nov 2023 16:20:13 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] target/s390x/arch_dump: Add arch cleanup function
- for PV dumps
+Subject: Re: [PATCH v2] target/arm: Fix SVE STR increment
 Content-Language: en-US
-To: Janosch Frank <frankja@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, marcandre.lureau@redhat.com, imbrenda@linux.ibm.com
-References: <20231109120443.185979-1-frankja@linux.ibm.com>
- <20231109120443.185979-4-frankja@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20231109120443.185979-4-frankja@linux.ibm.com>
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-stable@nongnu.org,
+ Anders Roxell <anders.roxell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20231031143215.29764-1-richard.henderson@linaro.org>
+ <874jhv86a4.fsf@draig.linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <874jhv86a4.fsf@draig.linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -143,61 +62,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09/11/2023 13.04, Janosch Frank wrote:
-> PV dumps block vcpu runs until dump end is reached. If there's an
-> error between PV dump init and PV dump end the vm will never be able
-> to run again. One example of such an error is insufficient disk space
-> for the dump file.
+09.11.2023 15:23, Alex Bennée:
+> Richard Henderson <richard.henderson@linaro.org> writes:
 > 
-> Let's add a cleanup function that tries to do a dump end. The dump
-> completion data is discarded but there's no point in writing it to a
-> file anyway if there's a possibility that other PV dump data is
-> missing.
+>> The previous change missed updating one of the increments and
+>> one of the MemOps.  Add a test case for all vector lengths.
+>>
+>> Cc: qemu-stable@nongnu.org
+>> Fixes: e6dd5e782be ("target/arm: Use tcg_gen_qemu_{ld, st}_i128 in gen_sve_{ld, st}r")
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > 
-> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-> ---
->   target/s390x/arch_dump.c | 17 +++++++++++++++++
->   1 file changed, 17 insertions(+)
-> 
-> diff --git a/target/s390x/arch_dump.c b/target/s390x/arch_dump.c
-> index bdb0bfa0e7..7e8a1b4fc0 100644
-> --- a/target/s390x/arch_dump.c
-> +++ b/target/s390x/arch_dump.c
-> @@ -433,6 +433,22 @@ static int arch_sections_write(DumpState *s, uint8_t *buff)
->       return 0;
->   }
->   
-> +static void arch_cleanup(DumpState *s)
-> +{
-> +    g_autofree uint8_t *buff = NULL;
-> +    int rc;
-> +
-> +    if (!pv_dump_initialized) {
-> +        return;
-> +    }
+> This was Cd'd for stable but didn't make it in. There is a trivial
+> re-base conflict but I can re-send the patch if that helps.
 
-Maybe add a comment here why we still try the completion (e.g. something 
-like the first paragraph of the commit description)
+Nope, I picked it up, here:
 
-> +    buff = g_malloc(kvm_s390_pv_dmp_get_size_completion_data());
-> +    rc = kvm_s390_dump_completion_data(buff);
-> +    if (!rc) {
-> +            pv_dump_initialized = false;
-> +    }
-> +}
-> +
->   int cpu_get_dump_info(ArchDumpInfo *info,
->                         const struct GuestPhysBlockList *guest_phys_blocks)
->   {
-> @@ -448,6 +464,7 @@ int cpu_get_dump_info(ArchDumpInfo *info,
->           info->arch_sections_add_fn = *arch_sections_add;
->           info->arch_sections_write_hdr_fn = *arch_sections_write_hdr;
->           info->arch_sections_write_fn = *arch_sections_write;
-> +        info->arch_cleanup_fn = *arch_cleanup;
->       }
->       return 0;
->   }
+  https://gitlab.com/mjt0k/qemu/-/commits/staging-8.1/?ref_type=heads
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+commit eabe320b, committed 5 days ago, - about the time when it has
+been committed to master.
 
+I want to send announce for the next 8.1 release, just haven't decided
+when to do that, - usually there's quite a few fixes coming during the
+freeze. Maybe the best is to get 8.1.3 now and 8.1.4 together with 8.2.0.
+
+/mjt
 
