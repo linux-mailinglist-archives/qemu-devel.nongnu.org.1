@@ -2,172 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A677E625D
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 03:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F137C7E6261
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 03:47:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0v2u-0005qV-4b; Wed, 08 Nov 2023 21:45:28 -0500
+	id 1r0v4I-0006ZS-Tg; Wed, 08 Nov 2023 21:46:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r0v2s-0005qK-2z
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 21:45:26 -0500
-Received: from mgamail.intel.com ([192.198.163.7])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1r0v4E-0006Z7-61
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 21:46:50 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r0v2p-0004mj-En
- for qemu-devel@nongnu.org; Wed, 08 Nov 2023 21:45:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1699497924; x=1731033924;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=5zWi9po+TguMX3RcGFNImBd633z/LBOGIgvOa2RPF+c=;
- b=WWOTfMigaL9KTfGKDQljsZv4G0BQP4mvJEkNnbZZmXan+d6j6k23OTRV
- 3MceAVMSHGcMNcI2eO4vnJYCMYhBQoXGBtsMgr/kWZIGMm+R+iF6x42tj
- QvCRuclyc5xj1MKFmq3sDmjzkama6yEocUVl1/jLdPH1pdXxgq/C3kXbR
- 1Qy/wXGOf1HvaKyJc1IZ0/5vQZL3sbsdXxh8XZRCDlegsnRHfguLauFHi
- Y7PYqLEkkofbkiPua6PS6PF12F6KPG67YTPlUCUu8XZJd/IBYNWlWHJ7o
- nEupV8jukhmvwZuLNV+B1rVVCGy4tpzdVmItliJQbYneohkabLVpDgdNS g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="11455874"
-X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="11455874"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Nov 2023 18:45:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="886856824"
-X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="886856824"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by orsmga004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 08 Nov 2023 18:45:20 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Wed, 8 Nov 2023 18:45:19 -0800
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Wed, 8 Nov 2023 18:45:19 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Wed, 8 Nov 2023 18:45:19 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.100)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Wed, 8 Nov 2023 18:45:18 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ked8a9gLynCNLnLdqjpOSxMZbaEqIrBkM+358t/mJ+QfCll/Q44MCUbU/XbrahsYntBacz3/ThvYOkSH9pXYkYLXJTdiQZEkQc6E8DIUJLP/SXfodME5BTPcoX7j7yYIHTKSVY9K38VRWPHBof8KYqO8tzye2zzRLAQHm/ICG44z8Rf9f4ziWyAe2vrgsWcvftLHSMUMJggr33DMSYJj3/va24QFFZHIxOvPyDuNFzgND/SqkTcSrmbJ/3nSAA7uRlz1V7pZNnpOCkswSymEZ/iz7/I7IeWzIWCfwMMUdevYFw/QCLKOpG4AB5GdC+1B8Q6qPrmntVVpJN3xK/6tug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5zWi9po+TguMX3RcGFNImBd633z/LBOGIgvOa2RPF+c=;
- b=efm9gfsWnjgGiyoHNSV++jOAf0SVEEJ50ZKiz8CcLFeJ03kfUIjV6AdEobD+YpzMCR6NLK/vBMRyb09LjjOqHtETBLYAhXLjHhHdF8+arOT/nLPqI9TwKyCduMRrLAiN8vp2XARptyeRNTyGCn2fRzIHXj3m5RHcPo61FwsN5LpVaxxFFZ8MJACXLAG8eWa8i3yCWQd2mOoLPJ7heWCPZtbq7BQCMNN3jc8enixgvkrQh1MCuu4f0to77PyeR9bxKjGGd1IDtRNOFteosohJq+Vnvz0ZgS7odjKrfYNEI5HfIiocD4BHlI0s9mLyPcccWX3ZC41dDP2nyhiAZVoCdw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by MN6PR11MB8170.namprd11.prod.outlook.com (2603:10b6:208:47c::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.28; Thu, 9 Nov
- 2023 02:45:11 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea%4]) with mapi id 15.20.6954.028; Thu, 9 Nov 2023
- 02:45:10 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: Matthew Rosato <mjrosato@linux.ibm.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "alex.williamson@redhat.com"
- <alex.williamson@redhat.com>, "clg@redhat.com" <clg@redhat.com>,
- "nicolinc@nvidia.com" <nicolinc@nvidia.com>, "Martins, Joao"
- <joao.m.martins@oracle.com>, "eric.auger@redhat.com" <eric.auger@redhat.com>, 
- "peterx@redhat.com" <peterx@redhat.com>, "jasowang@redhat.com"
- <jasowang@redhat.com>, "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L"
- <yi.l.liu@intel.com>, "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P"
- <chao.p.peng@intel.com>, Thomas Huth <thuth@redhat.com>, Eric Farman
- <farman@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>, "Jason J. Herne"
- <jjherne@linux.ibm.com>, Tony Krowiak <akrowiak@linux.ibm.com>
-Subject: RE: [PATCH v4 28/41] vfio/iommufd: Implement the iommufd backend
-Thread-Topic: [PATCH v4 28/41] vfio/iommufd: Implement the iommufd backend
-Thread-Index: AQHaDV58rXzWcAbguEiSUs8ukZNa17BvxJKAgABFgECAAF7hgIAABUPggAAULQCAAM8cUA==
-Date: Thu, 9 Nov 2023 02:45:10 +0000
-Message-ID: <SJ0PR11MB6744EEE3F0B22ADD14E2923C92AFA@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
- <20231102071302.1818071-29-zhenzhong.duan@intel.com>
- <76538479-77ec-1a7d-cee1-906f6f758cff@linux.ibm.com>
- <SJ0PR11MB6744D87FD3CBB3380647E68792A8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <20231108124817.GS4488@nvidia.com>
- <SJ0PR11MB674482451CB0D2A7BB4DC20292A8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <20231108141920.GT4488@nvidia.com>
-In-Reply-To: <20231108141920.GT4488@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|MN6PR11MB8170:EE_
-x-ms-office365-filtering-correlation-id: fe4f4bbf-40da-43e7-8484-08dbe0cde3ff
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 71MPFChIW2WfXojxRZ4cvRrun1drkf5vhL9nWx/FbkBgQU+IgKPALBYZLMb5a7jBZauYF7MJlodI1zCJ1LydaEGSZijdM1KSLn5LdmthXCQ6v4z5nr23ppl0sphDzz7dqS6oxUZBDJv9l0jjQpp5LSA02GsEokyYit2dypaj6f9RBIHUfq1sFUXqn9nF0wlWWYzcNRoeUNeZo2ol5blWgZOugOEdEjpByPjku2pDxBS0MKFwWBjkkvNmxvrnVKGkexEKao9DcPAWm5sFpHo5qHiKLi6TW9CwNxUJEPTBb37MQDA9ysqb12fp113dM/ki4YiknMfBe258qFPUHjPJ8uhqW2C26iw4E0ia52AmSSxe7YOZa9Z68+WMpm659PjsJPop96/y3X7J1LlcYLpC61W9E8/cztqLRjoy/CGzBt6rejsmK0FLyEa3xmrOvykMkRceOJasoufU0Qsd48bXgdNKGA2L4j8jiis2ewQQeHRvrqRbbFhyJDZJ0g/FEE+w13L7kYG+B2D5J3DvVNrfEqg3Iu0nsCqkpZifBOYy9Ol5JUMZblJV5ZnGEIz9ewymXOPvcJMtj6wtLxSBOJEmtq/ecNPkQ5G/SmyX+cla4xLbKY/CSHJ40D+Rc5cx/QEW10FmuQw9FcS9HKm063VXCA==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(136003)(366004)(396003)(39860400002)(346002)(230922051799003)(64100799003)(1800799009)(451199024)(186009)(55016003)(83380400001)(33656002)(478600001)(52536014)(8936002)(38070700009)(4326008)(86362001)(41300700001)(8676002)(2906002)(38100700002)(71200400001)(6506007)(6916009)(316002)(82960400001)(122000001)(7696005)(7416002)(5660300002)(66946007)(64756008)(54906003)(76116006)(66476007)(66556008)(26005)(9686003)(66446008)(13296009);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?ZdMEP4i+x+OmLNZUTbEdzi9dYLJ5v76nQN5p2EwWwONHefKi2Gz8Cm+r/36F?=
- =?us-ascii?Q?tcvhOKnB98wWEwj2qlnsTDmQFLV3qVy0BCD4rLjl9aLubLSxxS6RaVJ6HfaV?=
- =?us-ascii?Q?RYP0FFxYDLOBDgFvLR8BdlFjQ5VH/6OaUCywmKxYSrFlTJmTDICevAt5g/KA?=
- =?us-ascii?Q?vwW/yYWwjqV1vc+dR/oHBETjvzgorPqVCDpc6BBDnbqimWfYLxDbVZeM8sD5?=
- =?us-ascii?Q?JwasnBsbHohT1Zv1N4I5Dcfq0jdfixdTx80xMucee3z1VSFK1FM3Vju9orrt?=
- =?us-ascii?Q?YDPvIFPRiQUy9bldpfZmtaUMBhVVjHi2jm2pv/46+6WM9glu8OS+Lit9wI+E?=
- =?us-ascii?Q?t70mPkhjeEuvEC6Ii4wnePEAID/B99+XtE0O0BYV8ByVpY2VJ0oeK1KwDmmh?=
- =?us-ascii?Q?TfQmC7c97TYbx/uydn+4bORg8BE0Ednr3iRnT/DF+rVLzrpNr6zDHnAXuC5C?=
- =?us-ascii?Q?nVsbi2bBvcLkdE1Qs1zmdNK78fMYiG34tp4v8xTWP7aZ0CQAdyPn4yN3BcKU?=
- =?us-ascii?Q?0DcDvy8Hbu6xQ8LqxivGRA2G0ciIHYfUYXWsu/L7jgGA/JURT6FcMMNOkX6q?=
- =?us-ascii?Q?R7icq1BxBIVYlMxKqWxybIvoOPQuQYXcJvFF0r0LLpn7hNAaiGL3fs+k+Qts?=
- =?us-ascii?Q?59zaffJyaxFk2VmF3mpY8zOSiZ7UgaiOCphy9J9VSTkuO3HJaSEne1TQSATS?=
- =?us-ascii?Q?hp9LMwb1nJH/6zSPbtw10ak8QwXmIzDQZNywKWFOSNuIoTP1TcliDlI45/Ka?=
- =?us-ascii?Q?P1CWl4NdWFgAXUQg5gs4+Vgfq/jHbCXqzdmsc3S/cDDXtj9FlEPPgEkcru+/?=
- =?us-ascii?Q?/0HpVsSY/+ItM2gyDSIe6EggsQap6Zyo7Y9EaHYmEOGJBqVluneRGqe6pUDv?=
- =?us-ascii?Q?jh46j9fawV4QpC4TBzp+j36Evt/lHUfV2TQiK+cVa9B8l5NEZ+lCFbLb1Ha/?=
- =?us-ascii?Q?+pFYrPPF7Mm+xObPHiAIJh0u3GJsKBJAGycYH/RRQRmdVGL/eo3xRw6Efn2+?=
- =?us-ascii?Q?oyDCJtG3yrDDcSybmtMggTMYyNjqRD6FuuVzifimj7l7w1EXo4MBUXIxJPvq?=
- =?us-ascii?Q?AHglYN/0EMDhyF+58izftLEFYFYGsJczBwrjSdMjZvWkQ3xBAmnDRcnWd4w2?=
- =?us-ascii?Q?cpGk7yMKSnL5/EqK1YMBBo8RIE/Z8DEm7rXzYASI+p5rQXhXUJ0gmfd5zG1J?=
- =?us-ascii?Q?L+629uEBUiYalt80/9ymV3sytSCxlOPrP0ceEFWkY5Bp1PDJVt+11NJNElX3?=
- =?us-ascii?Q?Mz4EBiJ0nLYI/AazhRcb746emiZYIL2ogIH+b77fxBy2uAfbBRKgxi7HictW?=
- =?us-ascii?Q?6pQN4bI34dmrENI1xiSYtqvUu9UgEhjvkkY/gcBb0XKZn/iEGPVFKZD8f2h1?=
- =?us-ascii?Q?JztDU1eZBDO6my0VGYuislp0+F2QSD7b7Gcu9gfzRl2TXf9qjh5EuV1DlnLF?=
- =?us-ascii?Q?IBTtCGWxt2xbH0PycbC/U33jCX/YeQ5PWi1tJab90TOq0Kz2TicBkwwb+bZf?=
- =?us-ascii?Q?dLDs59xofvfNTcfZq2Cc2W9qSWi1YQFa9GF9+3G4s42iz773LXfaArhStlij?=
- =?us-ascii?Q?eo1AyH56MaoJZKEzpqMnlcwZs9hbY7xquLFp8aRh?=
-Content-Type: text/plain; charset="us-ascii"
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1r0v4B-0004x9-9A
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 21:46:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699498005;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9uTK9lYwHscxKjBooxi8xkxLiCzeEj8YmQuNviv3caM=;
+ b=cZnewNCu/kS32lj5fFde8fBCRqY/sTfTyZC8kyYVM9Xj9PK3fSSFtPSEjdGnz43K+GPb45
+ EmZ5yub2IZvFE7HkiGYNPKaQxXRAxom4rTvUNuWn/uVpF8v5cIfeEIk4nH7XRMsSPn3fO1
+ sJW3POTpkRIvwOvPATlVbu+hle0ZFBQ=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-374-Zye_2Vi0Ojew38gfLmPnDw-1; Wed, 08 Nov 2023 21:46:43 -0500
+X-MC-Unique: Zye_2Vi0Ojew38gfLmPnDw-1
+Received: by mail-pf1-f198.google.com with SMTP id
+ d2e1a72fcca58-6b243dc6aeeso313607b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 08 Nov 2023 18:46:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699498003; x=1700102803;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=9uTK9lYwHscxKjBooxi8xkxLiCzeEj8YmQuNviv3caM=;
+ b=EjeI0ebOXMX/Ou8Z+sbkgOaWPftkptdJOqXOmBi4UK+8nz5nrmGHa3zGLFphyJLgOM
+ v6nQsNS/OZ43e3gk8uKk9g25YsJk+Deoj1B47klch6dEzWgiHG5Lr2U/8fP8BUqbdaGi
+ FbtrUndQTWmN12K4kK9uTFehnYVTzMRwgfd4Lcnh7IauDAHgTLRyXymU5EccU74ioi/l
+ 0ZuuL6RBJrTLxWdkZsR9+N93TsTmXsqWxepxyIb5EPbd/UZ8vwM+2bGwBSfrirFdkdgw
+ wLLX76E6pJlXZIz09K6c9tGOXJLEAxS/TJgTq8o+W96+6dB6lVjgmlA3Io28LxYqNfG/
+ dldQ==
+X-Gm-Message-State: AOJu0Yy5QbWBogr7y4/iLthcxhsLGlWqEARsaJ09i71QyN2rb96CL0aR
+ SXUBiMDKwqorVDbyoHlTHV61jLKhho1iDX8E1b85+Znr/5Flda9YnG4QIhpgyL3g1rdsXa1DhOa
+ +39vpcaU9OtYQr9g=
+X-Received: by 2002:a05:6a00:ac4:b0:6c3:3213:2d17 with SMTP id
+ c4-20020a056a000ac400b006c332132d17mr3653768pfl.29.1699498002629; 
+ Wed, 08 Nov 2023 18:46:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH82ZY0VZAsZsz7UoLH1+egg1vrOd/ynDRJ/z2PkYyF6Icqg4XW+rc5V1yWuiU18oyYSPSXsA==
+X-Received: by 2002:a05:6a00:ac4:b0:6c3:3213:2d17 with SMTP id
+ c4-20020a056a000ac400b006c332132d17mr3653754pfl.29.1699498002140; 
+ Wed, 08 Nov 2023 18:46:42 -0800 (PST)
+Received: from smtpclient.apple ([115.96.107.18])
+ by smtp.gmail.com with ESMTPSA id
+ ei35-20020a056a0080e300b006934e7ceb79sm9622310pfb.32.2023.11.08.18.46.39
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 08 Nov 2023 18:46:41 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.200.91.1.1\))
+Subject: Re: [PATCH v5] tests/avocado: add test to exercize processor address
+ space memory bound checks
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <cabed062-bfb7-431d-b0fe-b38c159165e4@linaro.org>
+Date: Thu, 9 Nov 2023 08:16:26 +0530
+Cc: Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
 Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe4f4bbf-40da-43e7-8484-08dbe0cde3ff
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Nov 2023 02:45:10.0791 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /Ver4u9MNcjJb/GzR4yUoqQVJ2gfFbtpeKafqaeh/hr02rFrrxsEe+jJYlpI1hEaMx8pqn3K/Qf1bYqcWhnHgx5ZfEsgtNOM9SeNVEoX6Ew=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8170
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.198.163.7;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+Message-Id: <9EEBD1E2-8B45-41F4-BB61-9578E541C9A1@redhat.com>
+References: <20231103110643.11664-1-anisinha@redhat.com>
+ <cabed062-bfb7-431d-b0fe-b38c159165e4@linaro.org>
+To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+X-Mailer: Apple Mail (2.3774.200.91.1.1)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -187,37 +108,250 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
->-----Original Message-----
->From: Jason Gunthorpe <jgg@nvidia.com>
->Sent: Wednesday, November 8, 2023 10:19 PM
->Subject: Re: [PATCH v4 28/41] vfio/iommufd: Implement the iommufd backend
->
->On Wed, Nov 08, 2023 at 01:25:34PM +0000, Duan, Zhenzhong wrote:
->
->> >I was expecting that hwpt manipulation would be done exclusively
->> >inside the device-specific vIOMMU userspace driver. Generic code paths
->> >that don't have that knowledge should use the IOAS for everything
->>
->> Yes, this way we don't need to distinguish between mdev and real device,
->> just attach to IOAS. But lose the benefit that same hwpt could be passed
->> into vIOMMU to be used as S2 hwpt in nesting.
->
->If you have a nesting capable vIOMMU driver then it should be
->creating the HWPTs and managing them in its layer. Maybe the core code
->provides some helpers.
+> On 08-Nov-2023, at 8:33=E2=80=AFPM, Philippe Mathieu-Daud=C3=A9 =
+<philmd@linaro.org> wrote:
+>=20
+> Hi Ani,
+>=20
+> On 3/11/23 12:06, Ani Sinha wrote:
+>> QEMU has validations to make sure that a VM is not started with more =
+memory
+>> (static and hotpluggable memory) than what the guest processor can =
+address
+>> directly with its addressing bits. This change adds a test to make =
+sure QEMU
+>> fails to start with a specific error message when an attempt is made =
+to
+>> start a VM with more memory than what the processor can directly =
+address.
+>> The test also checks for passing cases when the address space of the =
+processor
+>> is capable of addressing all memory. Boundary cases are tested.
+>> CC: imammedo@redhat.com
+>> CC: David Hildenbrand <david@redhat.com>
+>> Acked-by: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>> ---
+>>  tests/avocado/mem-addr-space-check.py | 361 =
+++++++++++++++++++++++++++
+>>  1 file changed, 361 insertions(+)
+>>  create mode 100644 tests/avocado/mem-addr-space-check.py
+>> Changelog:
+>> v5:
+>>   - made the negative test cases (ones that do not result in QEMU =
+crash)
+>>     more robust by checking the non-existence of the "phys-bits too =
+low"
+>>     log.
+>>   - added a new test case for AMD HT window where QEMU starts fine.
+>>   - rebased.
+>>   - cosmetic typo/comment adjustments.
+>> Tests all pass:
+>> $ ./pyvenv/bin/avocado run tests/avocado/mem-addr-space-check.py =
+--tap -
+>> 1..15
+>> ok 1 =
+tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_pse36
+>> ok 2 =
+tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_pae
+>> ok 3 =
+tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_pentium=
+_pse36
+>> ok 4 =
+tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_pentium=
+_pae
+>> ok 5 =
+tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_pentium=
+2
+>> ok 6 =
+tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_nonpse=
+36
+>> ok 7 =
+tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_tcg_q3=
+5_70_amd
+>> ok 8 =
+tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_tcg_q3=
+5_71_amd
+>> ok 9 =
+tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_tcg_q35=
+_70_amd
+>> ok 10 =
+tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_tcg_q35=
+_71_amd
+>> ok 11 =
+tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_tcg_q35=
+_71_intel
+>> ok 12 =
+tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_tcg_q3=
+5_71_amd_41bits
+>> ok 13 =
+tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_tcg_q35=
+_71_amd_41bits
+>> ok 14 =
+tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_low_tcg_q3=
+5_intel_cxl
+>> ok 15 =
+tests/avocado/mem-addr-space-check.py:MemAddrCheck.test_phybits_ok_tcg_q35=
+_intel_cxl
+>> v4: incorporated changes related to suggestions from David.
+>> v3: added pae tests as well.
+>> v2: added 64-bit tests. Added cxl tests.
+>> diff --git a/tests/avocado/mem-addr-space-check.py =
+b/tests/avocado/mem-addr-space-check.py
+>> new file mode 100644
+>> index 0000000000..6b4ada5857
+>> --- /dev/null
+>> +++ b/tests/avocado/mem-addr-space-check.py
+>> @@ -0,0 +1,361 @@
+>> +# Check for crash when using memory beyond the available guest =
+processor
+>> +# address space.
+>> +#
+>> +# Copyright (c) 2023 Red Hat, Inc.
+>> +#
+>> +# Author:
+>> +#  Ani Sinha <anisinha@redhat.com>
+>> +#
+>> +# This program is free software; you can redistribute it and/or =
+modify
+>> +# it under the terms of the GNU General Public License as published =
+by
+>> +# the Free Software Foundation; either version 2 of the License, or
+>> +# (at your option) any later version.
+>> +#
+>> +# This program is distributed in the hope that it will be useful,
+>> +# but WITHOUT ANY WARRANTY; without even the implied warranty of
+>> +# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>> +# GNU General Public License for more details.
+>> +#
+>> +# You should have received a copy of the GNU General Public License
+>> +# along with this program.  If not, see =
+<http://www.gnu.org/licenses/>.
+>> +
+>> +from avocado_qemu import QemuSystemTest
+>> +import signal
+>> +import time
+>> +
+>> +class MemAddrCheck(QemuSystemTest):
+>> +    # first, lets test some 32-bit processors.
+>> +    # for all 32-bit cases, pci64_hole_size is 0.
+>> +    def test_phybits_low_pse36(self):
+>> +        """
+>> +        :avocado: tags=3Dmachine:q35
+>> +        :avocado: tags=3Darch:x86_64
+>> +
+>> +        With pse36 feature ON, a processor has 36 bits of =
+addressing. So it can
+>> +        access up to a maximum of 64GiB of memory. Memory hotplug =
+region begins
+>> +        at 4 GiB boundary when "above_4g_mem_size" is 0 (this would =
+be true when
+>> +        we have 0.5 GiB of VM memory, see pc_q35_init()). This means =
+total
+>> +        hotpluggable memory size is 60 GiB. Per slot, we reserve 1 =
+GiB of memory
+>> +        for dimm alignment for all newer machines (see =
+enforce_aligned_dimm
+>> +        property for pc machines and pc_get_device_memory_range()). =
+That leaves
+>> +        total hotpluggable actual memory size of 59 GiB. If the VM =
+is started
+>> +        with 0.5 GiB of memory, maxmem should be set to a maximum =
+value of
+>> +        59.5 GiB to ensure that the processor can address all memory =
+directly.
+>> +        Note that 64-bit pci hole size is 0 in this case. If maxmem =
+is set to
+>> +        59.6G, QEMU should fail to start with a message "phy-bits =
+are too low".
+>> +        If maxmem is set to 59.5G with all other QEMU parameters =
+identical, QEMU
+>> +        should start fine.
+>> +        """
+>> +        self.vm.add_args('-S', '-machine', 'q35', '-m',
+>> +                         '512,slots=3D1,maxmem=3D59.6G',
+>> +                         '-cpu', 'pentium,pse36=3Don', '-display', =
+'none',
+>> +                         '-object', =
+'memory-backend-ram,id=3Dmem1,size=3D1G',
+>> +                         '-device', 'pc-dimm,id=3Dvm0,memdev=3Dmem1')
+>> +        self.vm.set_qmp_monitor(enabled=3DFalse)
+>> +        self.vm.launch()
+>> +        self.vm.wait()
+>> +        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code =
+should be 1")
+>> +        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
+>> +
+>> +    def test_phybits_low_pae(self):
+>> +        """
+>> +        :avocado: tags=3Dmachine:q35
+>> +        :avocado: tags=3Darch:x86_64
+>> +
+>> +        With pae feature ON, a processor has 36 bits of addressing. =
+So it can
+>> +        access up to a maximum of 64GiB of memory. Rest is the same =
+as the case
+>> +        with pse36 above.
+>> +        """
+>> +        self.vm.add_args('-S', '-machine', 'q35', '-m',
+>> +                         '512,slots=3D1,maxmem=3D59.6G',
+>> +                         '-cpu', 'pentium,pae=3Don', '-display', =
+'none',
+>> +                         '-object', =
+'memory-backend-ram,id=3Dmem1,size=3D1G',
+>> +                         '-device', 'pc-dimm,id=3Dvm0,memdev=3Dmem1')
+>> +        self.vm.set_qmp_monitor(enabled=3DFalse)
+>> +        self.vm.launch()
+>> +        self.vm.wait()
+>> +        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code =
+should be 1")
+>> +        self.assertRegex(self.vm.get_log(), r'phys-bits too low')
+>> +
+>> +    def test_phybits_ok_pentium_pse36(self):
+>> +        """
+>> +        :avocado: tags=3Dmachine:q35
+>> +        :avocado: tags=3Darch:x86_64
+>> +
+>> +        Setting maxmem to 59.5G and making sure that QEMU can start =
+with the
+>> +        same options as the failing case above with pse36 cpu =
+feature.
+>> +        """
+>> +        self.vm.add_args('-machine', 'q35', '-m',
+>> +                         '512,slots=3D1,maxmem=3D59.5G',
+>> +                         '-cpu', 'pentium,pse36=3Don', '-display', =
+'none',
+>> +                         '-object', =
+'memory-backend-ram,id=3Dmem1,size=3D1G',
+>> +                         '-device', 'pc-dimm,id=3Dvm0,memdev=3Dmem1')
+>> +        self.vm.set_qmp_monitor(enabled=3DFalse)
+>> +        self.vm.launch()
+>> +        time.sleep(3)
+>=20
+> Why do we need to wait 3s?
 
-OK, thanks for suggestion.
+If we spawn the VM and then immediately kill it, we do not get any logs =
+from QEMU. The log file is empty. So I did some experiments and it =
+seemed 3 sec is a good time to wait for VM to start and generate the log =
+before we kill it. I have not experimented with other tests to see what =
+the minimal time is good enough although you are right, several other =
+tests (for example machine_avr6) uses such sleeps.
 
->
->Obviously you can't link a mdev to a nesting vIOMMU driver in the
->first place. Mdev should be connected to a different IOMMU driver that
->doesn't use HWPT at all.
->
->I think it will make alot of trouble to put the hwpt in the wrong
->layer as there shouldn't really be much generic code touching it.
+> Maybe add a definition, then:
+>=20
+>           time.sleep(DELAY_Q35_BOOT_SEQUENCE)
+>=20
+> here and in the other tests. Or a comment.
 
-I'll send v5 with your suggested changes.
+I will add a comment why we needed that sleep.
 
-Thanks
-Zhenzhong
+> So we can tune
+> that delay in a single place. Otherwise,
+>=20
+> Acked-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>=20
+>> +        self.vm.shutdown()
+>> +        self.assertNotRegex(self.vm.get_log(), r'phys-bits too low')
+
+
 
