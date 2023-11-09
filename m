@@ -2,36 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6BFA7E6BAC
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:53:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E11357E6BB9
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:55:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15OS-0002xN-6j; Thu, 09 Nov 2023 08:48:24 -0500
+	id 1r15Oa-00048x-Iu; Thu, 09 Nov 2023 08:48:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15O7-0002gI-9I; Thu, 09 Nov 2023 08:48:03 -0500
+ id 1r15O7-0002jS-U5; Thu, 09 Nov 2023 08:48:04 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15O3-0002Hx-M1; Thu, 09 Nov 2023 08:48:02 -0500
+ id 1r15O5-0002P3-7O; Thu, 09 Nov 2023 08:48:03 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 107AC31B26;
+ by isrv.corpit.ru (Postfix) with ESMTP id 22D6631B27;
  Thu,  9 Nov 2023 16:43:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 20B01344CC;
+ by tsrv.corpit.ru (Postfix) with SMTP id 31A14344CD;
  Thu,  9 Nov 2023 16:43:07 +0300 (MSK)
-Received: (nullmailer pid 1461901 invoked by uid 1000);
+Received: (nullmailer pid 1461904 invoked by uid 1000);
  Thu, 09 Nov 2023 13:43:02 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Antonio Caggiano <quic_acaggian@quicinc.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Sergey Evlashev <vectorchiefrocks@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.3 46/55] ui/gtk-egl: Check EGLSurface before doing scanout
-Date: Thu,  9 Nov 2023 16:42:50 +0300
-Message-Id: <20231109134300.1461632-46-mjt@tls.msk.ru>
+Subject: [Stable-8.1.3 47/55] target/mips: Fix MSA BZ/BNZ opcodes displacement
+Date: Thu,  9 Nov 2023 16:42:51 +0300
+Message-Id: <20231109134300.1461632-47-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
 References: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
@@ -61,57 +63,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Antonio Caggiano <quic_acaggian@quicinc.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The first time gd_egl_scanout_texture() is called, there's a possibility
-that the GTK drawing area might not be realized yet, in which case its
-associated GdkWindow is NULL. This means gd_egl_init() was also skipped
-and the EGLContext and EGLSurface stored in the VirtualGfxConsole are
-not valid yet.
+The PC offset is *signed*.
 
-Continuing with the scanout in this conditions would result in hitting
-an assert in libepoxy: "Couldn't find current GLX or EGL context".
-
-A possible workaround is to just ignore the scanout request, giving the
-the GTK drawing area some time to finish its realization. At that point,
-the gd_egl_init() will succeed and the EGLContext and EGLSurface stored
-in the VirtualGfxConsole will be valid.
-
-Signed-off-by: Antonio Caggiano <quic_acaggian@quicinc.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20231016123215.2699269-1-quic_acaggian@quicinc.com>
-(cherry picked from commit 6f189a08c1b0085808af1bfbf4567f0da193ecc1)
+Cc: qemu-stable@nongnu.org
+Reported-by: Sergey Evlashev <vectorchiefrocks@gmail.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1624
+Fixes: c7a9ef7517 ("target/mips: Introduce decode tree bindings for MSA ASE")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230914085807.12241-1-philmd@linaro.org>
+(cherry picked from commit 04591b3ddd9a96b9298a1dd437a6464ab55e62ee)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-index 45c7544337..cd2f176502 100644
---- a/ui/gtk-egl.c
-+++ b/ui/gtk-egl.c
-@@ -244,12 +244,19 @@ void gd_egl_scanout_texture(DisplayChangeListener *dcl,
-     vc->gfx.h = h;
-     vc->gfx.y0_top = backing_y_0_top;
+diff --git a/target/mips/tcg/msa.decode b/target/mips/tcg/msa.decode
+index 9575289195..4410e2a02e 100644
+--- a/target/mips/tcg/msa.decode
++++ b/target/mips/tcg/msa.decode
+@@ -31,8 +31,8 @@
  
--    eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
--                   vc->gfx.esurface, vc->gfx.ectx);
-+    if (!vc->gfx.esurface) {
-+        gd_egl_init(vc);
-+        if (!vc->gfx.esurface) {
-+            return;
-+        }
-+
-+        eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
-+                       vc->gfx.esurface, vc->gfx.ectx);
- 
--    gtk_egl_set_scanout_mode(vc, true);
--    egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
--                         backing_id, false);
-+        gtk_egl_set_scanout_mode(vc, true);
-+        egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
-+                             backing_id, false);
-+    }
- }
- 
- void gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,
+ @lsa                ...... rs:5 rt:5 rd:5 ... sa:2 ......   &r
+ @ldst               ...... sa:s10 ws:5 wd:5 .... df:2       &msa_i
+-@bz_v               ...... ... ..    wt:5 sa:16             &msa_bz df=3
+-@bz                 ...... ...  df:2 wt:5 sa:16             &msa_bz
++@bz_v               ...... ... ..    wt:5 sa:s16            &msa_bz df=3
++@bz                 ...... ...  df:2 wt:5 sa:s16            &msa_bz
+ @elm_df             ...... .... ......    ws:5 wd:5 ......  &msa_elm_df df=%elm_df n=%elm_n
+ @elm                ...... ..........     ws:5 wd:5 ......  &msa_elm
+ @vec                ...... .....     wt:5 ws:5 wd:5 ......  &msa_r df=0
 -- 
 2.39.2
 
