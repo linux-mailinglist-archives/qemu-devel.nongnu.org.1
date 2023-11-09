@@ -2,125 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78477E751F
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 00:28:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 972497E752F
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 00:35:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1ERB-0002Hr-Vi; Thu, 09 Nov 2023 18:27:50 -0500
+	id 1r1EXd-0004p4-DW; Thu, 09 Nov 2023 18:34:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew.cooper@cloud.com>)
- id 1r1ER7-0002HG-VN
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 18:27:46 -0500
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r1EXb-0004om-8O
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 18:34:27 -0500
+Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <andrew.cooper@cloud.com>)
- id 1r1ER6-0008Pf-50
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 18:27:45 -0500
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-507be298d2aso1820833e87.1
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 15:27:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r1EXZ-0001DX-A6
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 18:34:26 -0500
+Received: by mail-oi1-x235.google.com with SMTP id
+ 5614622812f47-3b5aee410f2so810881b6e.1
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 15:34:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=citrix.com; s=google; t=1699572461; x=1700177261; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1699572864; x=1700177664; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=veKVb2RA9uHNpeekgCTX4pevrSJkI6gh2i+pfB5WCqc=;
- b=DR7Xypjm5phy3R9c9GyvN268BrNuurbnHvv+AbivcbYiZ5JjayyFAmc1msJqYKUA8O
- QhPjd29S8ibsEHZplp/jkuZePqSSl5i0LtNOkyOANtUaq9NF1Sq74Kpe8LNf4+JrHaBJ
- gbyQD77p/SoFtckO9mIm0G5KYeSNWMUvN5OVU=
+ bh=v3jppUeEd320Y8fdOz/rUSZHbzt53xKH4zhdrGWNlDo=;
+ b=t7Jap5Ot5+LGUjHIVTCUgWb/mngAVTkAJMOXwd1+zghJCrfLrphEfkmG9Ke+VbB1d1
+ QU454vq9E8NBPrd3fPLqi359lTZRytIX/4wdP9JhiadH89InRohAZTPelhp4JZFGrRV0
+ FHMg6ZaEb43zKjNmvDq3DPPQeOnZFHSRU+3siH/Ld4m6IlVi4oQh1djgADBC5JaJqENx
+ eDn9x2kWlClzKfAaaYel9qllaq6Tv2ZWcgn/XTH11EpHaamNE1mlwLheiVlr8ZQwPSXS
+ I8xellCUnc4vc6YFu2aAIYmhGqHpTM72brNwC7TSP94qqA4enL8+K1oyrEyFYQc5L97p
+ 01pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699572461; x=1700177261;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1699572864; x=1700177664;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=veKVb2RA9uHNpeekgCTX4pevrSJkI6gh2i+pfB5WCqc=;
- b=Yeous+v4bWkl9jE9pVg7LWyt1nqRC+rkfhBY5SO72wpjw8BjdFq0xrtHajQ614Luyg
- SBaaOZGkSJU7acF9kTdrJppyw2/C8nhTvfyE7XMWjxm2blpu0Hl82CUKSg4DLJrD8ZLp
- wK01+cf+mtZjkL8p2WRRvDU2TQeH5ugOomngxIuN3bvB5OVf87Hjwo7GaE2Z23OWqbCV
- 4UAs9lpjbGRvMDQ+10yyRyqzRBE7Ph+8rGZ+NKw3hsvl+L2IPCsOQhjW84qC360RTPz7
- Zb7vYeaY+ZnVY62+4fWc16aj60CYA8dJqY7hUg98SDU0DQCQI6pC4/hSVbN0FFq0RZci
- UC9A==
-X-Gm-Message-State: AOJu0Yyp+2WL8KVtH1ME+Vukv9VQVw4VNXVh8uP6b2NmkuCUPPNE7EBz
- LmaDpu9uFbRQEF/1McKJB3M0Xw==
-X-Google-Smtp-Source: AGHT+IEEmksdZX9vdnZTlT503S4/enEoX/QKneG+S884wd5FXfNZeCxefGhIUNEqmpY/uSBwbU6TAg==
-X-Received: by 2002:a05:6512:3dab:b0:4fe:af1:c3ae with SMTP id
- k43-20020a0565123dab00b004fe0af1c3aemr3147783lfv.15.1699572460951; 
- Thu, 09 Nov 2023 15:27:40 -0800 (PST)
-Received: from [192.168.1.10] (host-92-26-107-252.as13285.net. [92.26.107.252])
+ bh=v3jppUeEd320Y8fdOz/rUSZHbzt53xKH4zhdrGWNlDo=;
+ b=etucPBmi+0QWiQmde5P2QsA70Trx5+vvXx071/KHraKGD7b3BgQUKPsA7rqie3j4o2
+ I9YmOUgA4xY2lsyghIee5/owYw2hhAn1R6USCVl9dH2+5QXixpfQaNog0v1NvqR0+0aY
+ 6k1cFxJfl3T8eqN4uKCbEMNVy3B0KFEaKwhanGGQfe/8WkCxmn57Z6mfRxzVBUTbAauy
+ 0vHTCZwmG3DM96WPVSLVbQZSWmGFo6zmDULMpooSjrSA6mPwP9ZZWt9tTVEBO/N2MBOC
+ nY6H7AJ2hLMHMCfDpIgR7A2gV7TpdZBSFvIgJoosHoQXJnDo9YnDnZsg/Jf349L5G7X9
+ V5KA==
+X-Gm-Message-State: AOJu0YzVTNKPfck8/v+z1leTqAijPcHfogF6V4uhl0PC/eBDYoIHd6Ih
+ oZJ+MfKXpRBiZhipkD7C3P8d6Q==
+X-Google-Smtp-Source: AGHT+IFvAMWOwhO7wqRrIv2YKQqzWdvtS3FVFZLPhIW4lhB0BAwve4GdIdZKbU9n3ixE+P1cJ7kZ5A==
+X-Received: by 2002:a05:6808:4c4:b0:3b2:dfa0:aea3 with SMTP id
+ a4-20020a05680804c400b003b2dfa0aea3mr3849934oie.3.1699572863810; 
+ Thu, 09 Nov 2023 15:34:23 -0800 (PST)
+Received: from ?IPV6:2607:fb91:1ee6:29b:6626:64c4:1b48:c565?
+ ([2607:fb91:1ee6:29b:6626:64c4:1b48:c565])
  by smtp.gmail.com with ESMTPSA id
- t6-20020adfe446000000b0032dcb08bf94sm694149wrm.60.2023.11.09.15.27.40
+ 29-20020a630a1d000000b0057412d84d25sm5191779pgk.4.2023.11.09.15.34.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Nov 2023 15:27:40 -0800 (PST)
-Message-ID: <06fb67ef-45ad-43ba-9f7a-0ef565fb182e@citrix.com>
-Date: Thu, 9 Nov 2023 23:27:39 +0000
+ Thu, 09 Nov 2023 15:34:23 -0800 (PST)
+Message-ID: <858ea782-e9da-4eed-a065-ef0266e01591@linaro.org>
+Date: Thu, 9 Nov 2023 15:34:18 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] include/hw/xen: Use more inclusive language in comment
-Content-Language: en-GB
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>
-Cc: xen-devel@lists.xenproject.org, qemu-trivial@nongnu.org
-References: <20231109174034.375392-1-thuth@redhat.com>
-From: Andrew Cooper <andrew.cooper3@citrix.com>
-Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
- 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
- 6+ahAA==
-In-Reply-To: <20231109174034.375392-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=andrew.cooper@cloud.com; helo=mail-lf1-x132.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Subject: Re: [PATCH-for-8.2 v4 10/10] hw/char/pl011: Implement TX FIFO
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Gavin Shan <gshan@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Evgeny Iakovlev <eiakovlev@linux.microsoft.com>, qemu-arm@nongnu.org,
+ Mikko Rapeli <mikko.rapeli@linaro.org>
+References: <20231109192814.95977-1-philmd@linaro.org>
+ <20231109192814.95977-11-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231109192814.95977-11-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x235.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -136,16 +102,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09/11/2023 5:40 pm, Thomas Huth wrote:
-> Let's improve the wording here.
->
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+On 11/9/23 11:28, Philippe Mathieu-Daudé wrote:
+> If the UART back-end chardev doesn't drain data as fast as stdout
+> does or blocks, buffer in the TX FIFO to try again later.
+> 
+> This avoids having the IO-thread busy waiting on chardev back-ends,
+> reported recently when testing the Trusted Reference Stack and
+> using the socket backend:
+> https://linaro.atlassian.net/browse/TRS-149?focusedCommentId=149574
+> 
+> Implement registering a front-end 'watch' callback on back-end
+> events, so we can resume transmitting when the back-end is writable
+> again, not blocking the main loop.
+> 
+> Similarly to the RX FIFO path, FIFO level selection is not
+> implemented (interrupt is triggered when a single byte is available
+> in the FIFO).
+> 
+> We only migrate the TX FIFO if it is in use.
+> 
+> Reported-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+> Suggested-by: Alex Bennée <alex.bennee@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/char/pl011.c      | 107 ++++++++++++++++++++++++++++++++++++++++---
+>   hw/char/trace-events |   4 ++
+>   2 files changed, 105 insertions(+), 6 deletions(-)
+> 
+> diff --git a/hw/char/pl011.c b/hw/char/pl011.c
+> index f474f56780..a14ece4f07 100644
+> --- a/hw/char/pl011.c
+> +++ b/hw/char/pl011.c
+> @@ -57,6 +57,9 @@ DeviceState *pl011_create(hwaddr addr, qemu_irq irq, Chardev *chr)
+>   /* Data Register, UARTDR */
+>   #define DR_BE   (1 << 10)
+>   
+> +/* Receive Status Register/Error Clear Register, UARTRSR/UARTECR */
+> +#define RSR_OE  (1 << 3)
+> +
+>   /* Interrupt status bits in UARTRIS, UARTMIS, UARTIMSC */
+>   #define INT_OE (1 << 10)
+>   #define INT_BE (1 << 9)
+> @@ -156,6 +159,68 @@ static void pl011_reset_tx_fifo(PL011State *s)
+>       fifo8_reset(&s->xmit_fifo);
+>   }
+>   
+> +static gboolean pl011_drain_tx(PL011State *s)
+> +{
+> +    trace_pl011_fifo_tx_drain(fifo8_num_used(&s->xmit_fifo));
+> +    pl011_reset_tx_fifo(s);
+> +    s->rsr &= ~RSR_OE;
+> +    return G_SOURCE_REMOVE;
+> +}
+> +
+> +static gboolean pl011_xmit(void *do_not_use, GIOCondition cond, void *opaque)
+> +{
+> +    PL011State *s = opaque;
+> +    int ret;
+> +    const uint8_t *buf;
+> +    uint32_t buflen;
+> +    uint32_t count;
+> +    bool tx_enabled;
+> +
+> +    tx_enabled = (s->cr & CR_UARTEN) && (s->cr & CR_TXE);
+> +    if (!tx_enabled) {
+> +        /*
+> +         * If TX is disabled, nothing to do.
+> +         * Keep the potentially used FIFO as is.
+> +         */
+> +        return G_SOURCE_REMOVE;
+> +    }
+> +
+> +    if (!qemu_chr_fe_backend_connected(&s->chr)) {
+> +        /* Instant drain the fifo when there's no back-end */
+> +        return pl011_drain_tx(s);
+> +    }
+> +
+> +    count = fifo8_num_used(&s->xmit_fifo);
+> +    if (count < 1) {
+> +        /* FIFO empty */
+> +        return G_SOURCE_REMOVE;
+> +    }
 
-Thankyou for the patch, but this is a verbatim copy of a set of Xen headers.
+Could swap these two blocks.  Certainly the fifo does not need draining if it is empty...
 
-Would you mind submitting a correction to
-xen.git:xen/include/public/hvm/params.h first, and then syncing the
-result back into Qemu?
+> +    if (!fifo8_is_empty(&s->xmit_fifo)) {
+> +        /* Reschedule another transmission if we couldn't transmit all */
+> +        guint r = qemu_chr_fe_add_watch(&s->chr, G_IO_OUT | G_IO_HUP,
+> +                                        pl011_xmit, s);
+> +        if (!r) {
+> +            /* Error in back-end? */
+> +            return pl011_drain_tx(s);
+> +        }
+> +    }
+> +
+> +    pl011_update(s);
+> +
+> +    return G_SOURCE_REMOVE;
 
-~Andrew
+The documentation for FEWatchFunc says you should be returning G_SOURCE_CONTINUE to leave 
+the source in the main loop.  That certainly makes more sense than re-adding a watch when 
+the fifo is not empty.  There's also no error handling to do then.  Just
+
+
+     pl011_update(s);
+     return fifo8_is_empty(&s->xmit_fifo) ? G_SOURCE_REMOVE : G_SOURCE_CONTINUE;
+
+> +    case 12: /* UARTCR */ {
+> +        uint16_t en_bits = s->cr & (CR_UARTEN | CR_TXE | CR_RXE);
+> +        uint16_t dis_bits = value & (CR_UARTEN | CR_TXE | CR_RXE);
+> +        if (en_bits ^ dis_bits && !fifo8_is_empty(&s->xmit_fifo)) {
+> +            /*
+> +             * If the UART is disabled in the middle of transmission
+> +             * or reception, it completes the current character before
+> +             * stopping.
+> +             */
+> +            pl011_xmit(NULL, G_IO_OUT, s);
+
+This seems wrong.  You don't know that the host device is ready.
+
+We will never transmit a partial character because the host will never accept less than 
+one character at a time.  Therefore there's absolutely nothing we need to do in order to 
+"complete the current character", which is the one we started with the *previous* pl011_xmit.
+
+Just set the CR bits with no further comment.
+
+
+r~
 
