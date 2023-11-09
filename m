@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 331C47E6B88
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:51:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33BB97E6BB3
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:54:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15PI-0005tG-Rh; Thu, 09 Nov 2023 08:49:17 -0500
+	id 1r15PG-0005Hf-2k; Thu, 09 Nov 2023 08:49:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15Of-0004vA-SG; Thu, 09 Nov 2023 08:48:43 -0500
+ id 1r15Oh-0004wS-Hh; Thu, 09 Nov 2023 08:48:46 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15Od-0002fZ-TZ; Thu, 09 Nov 2023 08:48:37 -0500
+ id 1r15Of-0002fr-05; Thu, 09 Nov 2023 08:48:38 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BF80B31B2D;
+ by isrv.corpit.ru (Postfix) with ESMTP id D426131B2E;
  Thu,  9 Nov 2023 16:43:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C834C344D4;
+ by tsrv.corpit.ru (Postfix) with SMTP id E192B344D5;
  Thu,  9 Nov 2023 16:43:07 +0300 (MSK)
-Received: (nullmailer pid 1461922 invoked by uid 1000);
+Received: (nullmailer pid 1461925 invoked by uid 1000);
  Thu, 09 Nov 2023 13:43:03 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.3 53/55] target/s390x: Fix LAALG not updating cc_src
-Date: Thu,  9 Nov 2023 16:42:57 +0300
-Message-Id: <20231109134300.1461632-53-mjt@tls.msk.ru>
+Subject: [Stable-8.1.3 54/55] tests/tcg/s390x: Test LAALG with negative cc_src
+Date: Thu,  9 Nov 2023 16:42:58 +0300
+Message-Id: <20231109134300.1461632-54-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
 References: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
@@ -63,75 +62,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-LAALG uses op_laa() and wout_addu64(). The latter expects cc_src to be
-set, but the former does not do it. This can lead to assertion failures
-if something sets cc_src to neither 0 nor 1 before.
+Add a small test to prevent regressions.
 
-Fix by introducing op_laa_addu64(), which sets cc_src, and using it for
-LAALG.
-
-Fixes: 4dba4d6fef61 ("target/s390x: Use atomic operations for LOAD AND OP")
-Cc: qemu-stable@nongnu.org
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20231106093605.1349201-4-iii@linux.ibm.com>
+Message-ID: <20231106093605.1349201-5-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit bea402482a8c94389638cbd3d7fe3963fb317f4c)
+(cherry picked from commit ebc14107f1f3ac1db13132cd28cf94adcd38e5d7)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/s390x/tcg/insn-data.h.inc b/target/s390x/tcg/insn-data.h.inc
-index 0bfd88d3c3..2f07f39d9c 100644
---- a/target/s390x/tcg/insn-data.h.inc
-+++ b/target/s390x/tcg/insn-data.h.inc
-@@ -442,7 +442,7 @@
-     D(0xebe8, LAAG,    RSY_a, ILA, r3, a2, new, in2_r1, laa, adds64, MO_TEUQ)
- /* LOAD AND ADD LOGICAL */
-     D(0xebfa, LAAL,    RSY_a, ILA, r3_32u, a2, new, in2_r1_32, laa, addu32, MO_TEUL)
--    D(0xebea, LAALG,   RSY_a, ILA, r3, a2, new, in2_r1, laa, addu64, MO_TEUQ)
-+    D(0xebea, LAALG,   RSY_a, ILA, r3, a2, new, in2_r1, laa_addu64, addu64, MO_TEUQ)
- /* LOAD AND AND */
-     D(0xebf4, LAN,     RSY_a, ILA, r3_32s, a2, new, in2_r1_32, lan, nz32, MO_TESL)
-     D(0xebe4, LANG,    RSY_a, ILA, r3, a2, new, in2_r1, lan, nz64, MO_TEUQ)
-diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index 97ab1b3daa..d927e01c0c 100644
---- a/target/s390x/tcg/translate.c
-+++ b/target/s390x/tcg/translate.c
-@@ -2677,17 +2677,32 @@ static DisasJumpType op_kxb(DisasContext *s, DisasOps *o)
-     return DISAS_NEXT;
- }
+diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
+index 3ddbde1a9d..9325944cc7 100644
+--- a/tests/tcg/s390x/Makefile.target
++++ b/tests/tcg/s390x/Makefile.target
+@@ -42,6 +42,7 @@ TESTS+=mdeb
+ TESTS+=cgebra
+ TESTS+=clgebr
+ TESTS+=clc
++TESTS+=laalg
  
--static DisasJumpType op_laa(DisasContext *s, DisasOps *o)
-+static DisasJumpType help_laa(DisasContext *s, DisasOps *o, bool addu64)
- {
-     /* The real output is indeed the original value in memory;
-        recompute the addition for the computation of CC.  */
-     tcg_gen_atomic_fetch_add_i64(o->in2, o->in2, o->in1, get_mem_index(s),
-                                  s->insn->data | MO_ALIGN);
-     /* However, we need to recompute the addition for setting CC.  */
--    tcg_gen_add_i64(o->out, o->in1, o->in2);
-+    if (addu64) {
-+        tcg_gen_movi_i64(cc_src, 0);
-+        tcg_gen_add2_i64(o->out, cc_src, o->in1, cc_src, o->in2, cc_src);
-+    } else {
-+        tcg_gen_add_i64(o->out, o->in1, o->in2);
-+    }
-     return DISAS_NEXT;
- }
- 
-+static DisasJumpType op_laa(DisasContext *s, DisasOps *o)
-+{
-+    return help_laa(s, o, false);
-+}
+ cdsg: CFLAGS+=-pthread
+ cdsg: LDFLAGS+=-pthread
+diff --git a/tests/tcg/s390x/laalg.c b/tests/tcg/s390x/laalg.c
+new file mode 100644
+index 0000000000..797d168bb1
+--- /dev/null
++++ b/tests/tcg/s390x/laalg.c
+@@ -0,0 +1,27 @@
++/*
++ * Test the LAALG instruction.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <stdlib.h>
 +
-+static DisasJumpType op_laa_addu64(DisasContext *s, DisasOps *o)
++int main(void)
 +{
-+    return help_laa(s, o, true);
-+}
++    unsigned long cc = 0, op1, op2 = 40, op3 = 2;
 +
- static DisasJumpType op_lan(DisasContext *s, DisasOps *o)
- {
-     /* The real output is indeed the original value in memory;
++    asm("slgfi %[cc],1\n"  /* Set cc_src = -1. */
++        "laalg %[op1],%[op3],%[op2]\n"
++        "ipm %[cc]"
++        : [cc] "+r" (cc)
++        , [op1] "=r" (op1)
++        , [op2] "+T" (op2)
++        : [op3] "r" (op3)
++        : "cc");
++
++    assert(cc == 0xffffffff10ffffff);
++    assert(op1 == 40);
++    assert(op2 == 42);
++
++    return EXIT_SUCCESS;
++}
 -- 
 2.39.2
 
