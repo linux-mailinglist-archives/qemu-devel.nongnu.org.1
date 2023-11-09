@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C893C7E6BE9
+	by mail.lfdr.de (Postfix) with ESMTPS id E35167E6BEA
 	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:02:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15aL-0005bh-7x; Thu, 09 Nov 2023 09:00:44 -0500
+	id 1r15b6-0006er-44; Thu, 09 Nov 2023 09:01:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15ZW-0005B7-K9; Thu, 09 Nov 2023 08:59:52 -0500
+ id 1r15Za-0005DB-At; Thu, 09 Nov 2023 08:59:56 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15ZU-0005QH-IT; Thu, 09 Nov 2023 08:59:50 -0500
+ id 1r15ZW-0005R4-UE; Thu, 09 Nov 2023 08:59:53 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7E9F331BBB;
+ by isrv.corpit.ru (Postfix) with ESMTP id 91DB331BBC;
  Thu,  9 Nov 2023 16:59:41 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 899EB344F4;
+ by tsrv.corpit.ru (Postfix) with SMTP id 9AF09344F5;
  Thu,  9 Nov 2023 16:59:33 +0300 (MSK)
-Received: (nullmailer pid 1462769 invoked by uid 1000);
+Received: (nullmailer pid 1462772 invoked by uid 1000);
  Thu, 09 Nov 2023 13:59:33 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ sdicaro@DDCI.com, Daniel Henrique Barboza <danielhb413@gmail.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.7 05/62] target/ppc: Sign-extend large decrementer to
- 64-bits
-Date: Thu,  9 Nov 2023 16:58:33 +0300
-Message-Id: <20231109135933.1462615-5-mjt@tls.msk.ru>
+Subject: [Stable-7.2.7 06/62] target/ppc: Decrementer fix BookE semantics
+Date: Thu,  9 Nov 2023 16:58:34 +0300
+Message-Id: <20231109135933.1462615-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 References: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,46 +62,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-When storing a large decrementer value with the most significant
-implemented bit set, it is to be treated as a negative and sign
-extended.
+The decrementer store function has logic that short-cuts the timer if a
+very small value is stored (0, 1, or 2) and raises an interrupt
+directly. There are two problem with this on BookE.
 
-This isn't hit for book3s DEC because of another bug, fixing it
-in the next patch exposes this one and can cause additional
-problems, so fix this first. It can be hit with HDECR and other
-edge triggered types.
+First is that BookE says a decrementer interrupt should not be raised
+on a store of 0, only of a decrement from 1. Second is that raising
+the irq directly will bypass the auto-reload logic in the booke decr
+timer function, breaking autoreload when 1 or 2 is stored.
 
-Fixes: a8dafa52518 ("target/ppc: Implement large decrementer support for TCG")
+Fix this by removing that small-value special case. It makes this
+tricky logic even more difficult to reason about, and it hardly matters
+for performance.
+
+Cc: sdicaro@DDCI.com
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-[ clg: removed extra cpu and pcc variables shadowing local variables ]
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
-(cherry picked from commit c8fbc6b9f2f3c732ee3307093c1c5c367eaa64ae)
+Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+Message-Id: <20230530131214.373524-2-npiggin@gmail.com>
+Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+(cherry picked from commit 17dd1354c1d1aba9caf4af01e11aa7dbe128474f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index 9961abc505..5573ab467c 100644
+index 5573ab467c..dfa3945454 100644
 --- a/hw/ppc/ppc.c
 +++ b/hw/ppc/ppc.c
-@@ -746,7 +746,9 @@ target_ulong cpu_ppc_load_decr(CPUPPCState *env)
-      * to 64 bits, otherwise it is a 32 bit value.
-      */
-     if (env->spr[SPR_LPCR] & LPCR_LD) {
--        return decr;
-+        PowerPCCPU *cpu = env_archcpu(env);
-+        PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
-+        return sextract64(decr, 0, pcc->lrg_decr_bits);
+@@ -843,11 +843,7 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
      }
-     return (uint32_t) decr;
- }
-@@ -765,7 +767,7 @@ target_ulong cpu_ppc_load_hdecr(CPUPPCState *env)
-      * extended to 64 bits, otherwise it is 32 bits.
+ 
+     /*
+-     * Going from 2 -> 1, 1 -> 0 or 0 -> -1 is the event to generate a DEC
+-     * interrupt.
+-     *
+-     * If we get a really small DEC value, we can assume that by the time we
+-     * handled it we should inject an interrupt already.
++     * Going from 1 -> 0 or 0 -> -1 is the event to generate a DEC interrupt.
+      *
+      * On MSB level based DEC implementations the MSB always means the interrupt
+      * is pending, so raise it on those.
+@@ -855,8 +851,7 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
+      * On MSB edge based DEC implementations the MSB going from 0 -> 1 triggers
+      * an edge interrupt, so raise it here too.
       */
-     if (pcc->lrg_decr_bits > 32) {
--        return hdecr;
-+        return sextract64(hdecr, 0, pcc->lrg_decr_bits);
-     }
-     return (uint32_t) hdecr;
- }
+-    if ((value < 3) ||
+-        ((tb_env->flags & PPC_DECR_UNDERFLOW_LEVEL) && signed_value < 0) ||
++    if (((tb_env->flags & PPC_DECR_UNDERFLOW_LEVEL) && signed_value < 0) ||
+         ((tb_env->flags & PPC_DECR_UNDERFLOW_TRIGGERED) && signed_value < 0
+           && signed_decr >= 0)) {
+         (*raise_excp)(cpu);
 -- 
 2.39.2
 
