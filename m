@@ -2,145 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7A1A7E6BC6
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:55:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F31A07E6BC2
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:55:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15VP-0001xt-PO; Thu, 09 Nov 2023 08:55:35 -0500
+	id 1r15U8-0006Au-G3; Thu, 09 Nov 2023 08:54:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=5677a8076b=leonid_komarianskyi@epam.com>)
- id 1r15VL-0001Tb-Uq; Thu, 09 Nov 2023 08:55:32 -0500
-Received: from mx0b-0039f301.pphosted.com ([148.163.137.242])
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1r15U5-00068M-U0; Thu, 09 Nov 2023 08:54:14 -0500
+Received: from mail-dbaeur03on2072e.outbound.protection.outlook.com
+ ([2a01:111:f400:fe1a::72e]
+ helo=EUR03-DBA-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=5677a8076b=leonid_komarianskyi@epam.com>)
- id 1r15VI-0004Fl-Le; Thu, 09 Nov 2023 08:55:31 -0500
-Received: from pps.filterd (m0174680.ppops.net [127.0.0.1])
- by mx0b-0039f301.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A9CDBSv020945; Thu, 9 Nov 2023 13:55:21 GMT
-Received: from eur04-db3-obe.outbound.protection.outlook.com
- (mail-db3eur04lp2050.outbound.protection.outlook.com [104.47.12.50])
- by mx0b-0039f301.pphosted.com (PPS) with ESMTPS id 3u8bpe3wp7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Nov 2023 13:55:21 +0000
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1r15U3-0003pN-6H; Thu, 09 Nov 2023 08:54:13 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lmdXMkPLhSTPhm1j4NBNWrCmhcEMCOic/i/OqI2KMTQ/klbpv2ovjyks0LFjsG118AEhdDpG6YWz89z94kksXS6usb8qwKWPa6Y+0h4L2Y5YxzHatTu2YuAUhm//64Q0k5ReldehcTawZY75SqmB9KkZ6usWvCaPs0lfn691daEkizbkYDy0Vg6sCxdA5dhhp2KNvAVUCx6/rHZ7+FsfXk9uRm7rRC4/mdJLZ7XdMUdpZxTk92aRxo1XCzc/9YiVtgos4kaTeBOfuV8Vy1dkusYUkD+erzQ3w8gJkvKxg5VyVKX9OWfSHdtzi7OfnAQ32P0HV83b8pIGcB0SI60TdA==
+ b=NCV+Iv5TyivHhvgZtgF5uHYdRSvJ+aRY9PNtHwT9DQVy13LNAXW6wMry/emLw4joPoyfwdylG2vwuSShcuaD67JcSjWf0+/OUfjN0+ODN13WUDZJmlbuA1o/zMSJJvTvChZSUqCXCEn/bcl7Wo7RgqH7HmA5a33LUjl8VgZJCwv08wE1bSWuC7mCAUyhbepaai4+eVvyveWr460Kkupk8FIZcl5EyLNYGmkj3ZVCyW5iii6tIiowO3i1Db/EmaEUg9Cp11xxR4iLoGD9GlbcG2Z4cY1rQGkD2FhrVdweIn3jFbtODzuqz/p7SG21bl7NY5X5/QPpTU/r+xOdb/OBZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hQ3Leke++wbGnkkLpKiEn9TC+ZukJztOt9csrbf8U2I=;
- b=avTsJfyt4GzDtbUBX8/4hXnxG9Q0te7M1e7F87gEVjNyiyivqXjnXhf1TMGv6k2Yzntvz3RkV5bSrAFZAE0thXdeTRCvXL54Jx5A8RhA1bZP2xSSAktYup2WwZTcoMg52iZgspdFcP2rFcuWsUbOD7LBHRpttUp3N37QKzNBx5Ges0SQntsB9IEJsdeI4+CK8S45FE9kdyQpCKc9QVEmiiqsixAllECQnC8ZUDsVMPPElOfSwmUhqzaXzbj+EVoJrWKEUPNnRLTX+y0yRr4ZC4r4RZOWtYjJ4bHOpZFRBTvup5rd4o73QI1RfW4Z6qzNyg4FrCoMLMa8dBymzNOomw==
+ bh=+Qm1CMauLgG88ucFQ9CsTbrwblcboTAgZHvhojWVk0U=;
+ b=FJId6jiLmZ5Uo4dyvFlgKIo7WQLtMngoXMKIX9BknfwoY+pDY+v4UHxCl/4amSJjtjAPTrd74XktXTQMabcb+XeNNozCGLHkfpXQKKzoUQSntMk3lK6wBVbn+QzOZqsWcG1+Jl55liAgqwaTiHo5f5xs2EoojS8ZFECea0q39mM324o5pgpUjuiMsJDgM8PmCIX85Oz/MXT1c1DPdbG04Gj0RyeJyROlc0epFzeMx+MaqsqD7MIAbSWTNE8O8VRosBcZNLwBeJz+MDQU4tzzPlZCkt+RhfvlIdGpeCurEWMPJLXK+RhI72GmZ+ttbEhztB+ZNXW5/FpJTKY9CJGX3w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=epam.com; dmarc=pass action=none header.from=epam.com;
- dkim=pass header.d=epam.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=epam.com; s=selector2; 
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hQ3Leke++wbGnkkLpKiEn9TC+ZukJztOt9csrbf8U2I=;
- b=NhOP/jSMUSlWxxa5G2o6HweS/jTJKN7ojlubrl/0zx4xK9z6s8DENm3pDfOmxdtoCPpWfsinpmaF11D1dwsMGjz61l/ySO0Ut8tKF3ZmpQgpttwIcYthv8MPb6iYBcJ84sfVSwHNFZuH6Uuswd+zBYY6SMY5IeQRSMKoC3STBZXQia/73qgm26V+Po6nnyZ+q8JZNbXKkTLfZ4xdUSmuPAk0ApH4WS1ql8dko1g0gg6aGBctTd1YkvPCUbc9eucQZE96ovfgRTknaiIdmq50Ia8RI0Rn2oYwpEjmo1r6TrC7kUbl2kssKGlrR00JSaLm3Dsrb7kbsykn0dIOYs0Ylw==
-Received: from AS4PR03MB8676.eurprd03.prod.outlook.com (2603:10a6:20b:58c::8)
- by DB9PR03MB7338.eurprd03.prod.outlook.com (2603:10a6:10:221::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.19; Thu, 9 Nov
- 2023 13:55:18 +0000
-Received: from AS4PR03MB8676.eurprd03.prod.outlook.com
- ([fe80::3779:1a8d:a31f:95a3]) by AS4PR03MB8676.eurprd03.prod.outlook.com
- ([fe80::3779:1a8d:a31f:95a3%2]) with mapi id 15.20.6954.027; Thu, 9 Nov 2023
- 13:55:18 +0000
-From: Leonid Komarianskyi <Leonid_Komarianskyi@epam.com>
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, Volodymyr Babchuk
- <Volodymyr_Babchuk@epam.com>, Dmytro Firsov <Dmytro_Firsov@epam.com>,
- Leonid Komarianskyi <Leonid_Komarianskyi@epam.com>
-Subject: [PATCH v2] target/arm: Add overflow check for gt_recalc_timer
-Thread-Topic: [PATCH v2] target/arm: Add overflow check for gt_recalc_timer
-Thread-Index: AQHaExRfPMvujsWDHkC+f/nKYA3iTw==
-Date: Thu, 9 Nov 2023 13:55:18 +0000
-Message-ID: <20231109135439.1297135-1-leonid_komarianskyi@epam.com>
-References: <CAFEAcA_koyJSR_7kF6TByA_rm2nJQr-8UnXrtu3JqwgpqUEctw@mail.gmail.com>
-In-Reply-To: <CAFEAcA_koyJSR_7kF6TByA_rm2nJQr-8UnXrtu3JqwgpqUEctw@mail.gmail.com>
-Accept-Language: en-US
+ bh=+Qm1CMauLgG88ucFQ9CsTbrwblcboTAgZHvhojWVk0U=;
+ b=vuOugmmatXfkgn7IOy0Iy9obWiwRa/Z1b5F/LGFOd3v16G1k23g2Ja8OrwsfZhmPDNUSer5L7VF0kvjuSrhHoKoX4uwGrJ9YwXcc3JWj0oqw0mHzUK9KFUWO16Nc09qDFUTilvwMYDkc7lVQUwIFCpl9wGOG9nVgC6VHsJPHD7HKrQulZKmfVK37REG/4N89KReqAk9O9N4DyE6BPFhGSNA03aM9l5ytByFNpOVuCVaAQb0msQiXQ9R2JS0qOz+Z7El/T5yWpoIsLh8MGURgZeaebJkGdJMVWYQg29iVAfk8xKU5+hefgwuw1CRlZbfX/7maagmQbHqHqXk3pQg0Zw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by PA4PR08MB6288.eurprd08.prod.outlook.com
+ (2603:10a6:102:f3::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.29; Thu, 9 Nov
+ 2023 13:54:07 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::597b:57ae:f418:2352]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::597b:57ae:f418:2352%6]) with mapi id 15.20.6954.029; Thu, 9 Nov 2023
+ 13:54:07 +0000
+Message-ID: <59f3903e-e9a2-45cb-bd5d-49d2d46af945@virtuozzo.com>
+Date: Thu, 9 Nov 2023 15:55:59 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/7] iotests/271: check disk usage on subcluster-based
+ discard/unmap
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS4PR03MB8676:EE_|DB9PR03MB7338:EE_
-x-ms-office365-filtering-correlation-id: 1129b834-b61f-4666-7ca2-08dbe12b8203
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: ly9f63Oz5eTp/0H+SNsiZcjm7mOuj8MqGFKobeOMVT/Ujr29E8JuqNLnUK9leVuM0U7wISgvjG3b15GdFrgYKMRYK2Xt/GQt4Obb2qBD8hI3pgPg0JcaKLzCwWj/xdgwWxC/RORO3gh9ZvS36KOGflVHlr7oHUVO6bRyb50QVl+IVvAAAb2tS5BlNqtWJ8uY9zEE9VqQOR2vDYYGXAGOfNT0qe6S9NMEaGPBRRxJAesMjdXzAHZEcR7G5p2L4EMf6voSLvEddmE3vV58WauTpJ1pr1IdcDYWX1sIxlf+9CPlVeEM2PqfnyKtVmkwUa2I9oZMbCFyYzhczpusX+HUkiBZETLvpm9E6KdiShsV76YAdMIaKdTSUFiH+HDty3wHLoQeE3lIbNeB2JhMVp5i3uqaHgCurKmSnbkhv+brbHT5+hiUUD556EHB5XgSn1pD4z5LL9HKQ5wA4bXVhPmikGCU230LkbE2YdGXjmfR4GK5xQDtzSAt3fWTc+Il9dHLfaJEYFwwelINzCga68EfrHDKsb0VkymX3WcgM+YCx79ZdLernIQN3ZnK/GDs9XGd5RLKaFJrezev/bzpWlaNdAG8aC5Iid/BBX8CGihuhgPQa9gdn7tI1ZN2iVgdUbr9
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AS4PR03MB8676.eurprd03.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(376002)(346002)(136003)(366004)(396003)(230922051799003)(186009)(1800799009)(451199024)(64100799003)(26005)(2616005)(38070700009)(1076003)(107886003)(6506007)(6512007)(83380400001)(41300700001)(76116006)(66476007)(91956017)(66556008)(66946007)(66446008)(54906003)(64756008)(316002)(6916009)(122000001)(5660300002)(36756003)(86362001)(8936002)(4326008)(8676002)(38100700002)(71200400001)(478600001)(6486002)(2906002);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?r3glH+io5okLw0tXC9An7dPSoe5ZHqLGwdUGrDwN3NxOU8XmkLx6sUq1R+?=
- =?iso-8859-1?Q?YrIPZecBrGPcr/JteOFwnJ/aA5X68N6VcpeFQr9yU80PIHRCh0JagQz01M?=
- =?iso-8859-1?Q?J30CbTssQkHmixLBbliXOe+7q9jYS/2AHZISMt61Bz35z53FHm63kaBaxN?=
- =?iso-8859-1?Q?2f6t20kRvR+ukCOrg59xhSC3B2m6in6iwy5Oc/1L9bhTlKPnfuusbrDW4n?=
- =?iso-8859-1?Q?xHXgsDAjZqsWnrL3F2HL5o4rx8fQ7V48LoQNBfp4jeMxdPDD/vJLJB32vx?=
- =?iso-8859-1?Q?cw28QazZ26p8lCycYyAodzMcEpKJoemtwSNOKjDY8xRyxVP79XizfIX08H?=
- =?iso-8859-1?Q?q6Ozpu4AlJzAWJdeTP5Q/+Nl39KaHQxMluYSP2O9sJXrzSvbrdl6dKsJLb?=
- =?iso-8859-1?Q?CUrZEnW9jpE3H/XeN7MCOJvA68YVS70HqEUaTM6Pu3PGGHIUW2w7atwWQg?=
- =?iso-8859-1?Q?NAbbrGmGmnrgnPXPjnRCVlM+ZOsJVbfJnSUgAai5DwSIM4HFyO7sPHQs/o?=
- =?iso-8859-1?Q?hUEMrBCQo5kE09KRTtLj9VpiDqHDGagLEuKLrbvDGlHFFzGWxd73D6FkKu?=
- =?iso-8859-1?Q?hAjVnpEsA29KgcARHHCdknSc9Hi7QobX/OlRr0yk6aqy5nDUgaNOOIEP/9?=
- =?iso-8859-1?Q?Cc2zdq/KwSOdifnmQ1fQ8PWmZABVu0rgM7xM1Xtp3jWfBC/SHCKzrPMrac?=
- =?iso-8859-1?Q?t9l3vxi+jyFslDWkIxYvBGnJEhE2mTa681PSRn7ZusAv5SN3yumILuSrL1?=
- =?iso-8859-1?Q?DBDLMXmka5Nbha1JR9qLa/oFBRdArtTY6IETu0OLWhoJZZSkJT11aRp+DE?=
- =?iso-8859-1?Q?IDsTwymcorvo8zDTfrScZcd2ZcEE30MKSSsjg4Nb+ZUl6EMWalI01H4j3+?=
- =?iso-8859-1?Q?VeGAj7G1qsdM4id/7+6OUBfkiVpYW7/EYhS0ZR3snJOfE9oEFEPrlswlYg?=
- =?iso-8859-1?Q?iR09691ts5SbhAio0NCgqFkNSqgR4NhZ8HllWUVm1e/Q7iEgHdWzN5HnMQ?=
- =?iso-8859-1?Q?lX8JW7U/kUu7yOo4GJTQLdwKlrTS0zu70hSQ6GAxASQcYfeDPnu1/kvj8V?=
- =?iso-8859-1?Q?G112RROJegdRFvKmo7ctGb439zlUgcRzZ+B2u/JXUHkoumNZ8ur6klNQme?=
- =?iso-8859-1?Q?PA4ufFW4u7+8TbTrt7jdJlNpAYu2iA4x1q1GYWMrzFU/hNBAUh3gijrgyJ?=
- =?iso-8859-1?Q?x44q0G+ePHxNpyWDANOb6su4SoXm9T3M/EcBwYTniTSQvNNHW2AV9aUI0E?=
- =?iso-8859-1?Q?GpqH92C5cWLHPrjJsTZuIsHtlQ9kq3PCguoDgph5TiwkPyo3kAWssb0YIv?=
- =?iso-8859-1?Q?DmEcwTckAAy1/vp27LvZvRw3eDqiW1j8He4uAqxuJMFUMlXih3jWEnjB+U?=
- =?iso-8859-1?Q?JW3l8zBslR+tWjhUd4NdgsFJx3z7Zm+PE3ETe7wvKBIcfziX4OkyBKEsmQ?=
- =?iso-8859-1?Q?gEWKZSD1mgZ+66SRlF7/8OaFsDiYBJORCjwvHQSK6Vayp01YCt35ktyCO/?=
- =?iso-8859-1?Q?VFy1ieNHmYzrLT3BOPBx57+bVKzdkM+cZlFvPU1Y4ez6jt5La+KfZN6Kq+?=
- =?iso-8859-1?Q?r0+lNP6cIzXFo8Pm/s0i3qf36DDmeujdDueIEI0E1AiS+9NqUv1nL7okkz?=
- =?iso-8859-1?Q?m3Q64EHmyMZM7ytyT+WtUw+meWv1V6+jM/XEaPpeB4Lm6E8I83QW0xiOv5?=
- =?iso-8859-1?Q?YWgT118mAZccbTM2mU4=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+To: Hanna Czenczek <hreitz@redhat.com>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, eblake@redhat.com,
+ berto@igalia.com, den@virtuozzo.com
+References: <20231020215622.789260-1-andrey.drobyshev@virtuozzo.com>
+ <20231020215622.789260-8-andrey.drobyshev@virtuozzo.com>
+ <90298f38-fe14-4659-87a3-9b4bd2f516df@redhat.com>
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <90298f38-fe14-4659-87a3-9b4bd2f516df@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0083.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cd::8) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
 MIME-Version: 1.0
-X-OriginatorOrg: epam.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|PA4PR08MB6288:EE_
+X-MS-Office365-Filtering-Correlation-Id: aa1acf91-8854-4cf0-42f6-08dbe12b5755
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Vp05/jqls+Z5vlfI+r7LbSRkVQMgRSHT4zRMogFoI0N0YqtEWiZvoMTmgRUq7eWgISxWsT8xTm46ftNX7eq1UCQYwJWBY2XiwQXvo+VAT96sEvU5sVqfcl5R3pEYIwDQqY8m5xoLlHRux+yDLKFJOwL6KRRIMHqXQTe+JGyfagd24nW0jTgKgCW120d5fccMkMAXk4ZCaa1ucqkHYcubVC+peo+PFPR7pXbU2cpy+iI8zory3SkcY7+wUc4AWty4fvpiTTvGF7Tudg5hPPu6HoecWABBCDIb+V29LLvSp7xywX2cmxRQtPyQdL1tOzbpAtSE85BQbAR+dURpqz46j24xJNuR/OZZVqRYyTLKZXABSlb5F+iBITaOY+iwd+oH3sk5b5DkZcd4FXw1MS70HaEWqQxOZqGeRavai49EtV8OyXhPrxFF9fFyvWSreVZqQNtkxK2pwgmNWvWxucIhl50ouijfZhKHvq5EKSqUwIBQgeLTqJMDOdMKuTh5aCJV6s4SzHScx04QpuAhbRWk0EJbMN0Z2dM708Q/s0AUZ0+Fb11uU12hHZnnh73i3u4CFo4VGa9Elizq4Eel1/Xibwu3FDXNjgwSYt4d4/AHPj9OsRm1R0mJviR241cOUJixHC+dKqPoIwaeq+kfZBzj8Xpc9jJ+MYvGajsTLgMFwxw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI0PR08MB10656.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(346002)(376002)(366004)(39850400004)(136003)(396003)(230922051799003)(451199024)(1800799009)(186009)(64100799003)(86362001)(6512007)(31696002)(66476007)(36756003)(66556008)(6506007)(66946007)(8936002)(8676002)(38100700002)(6666004)(55236004)(4326008)(44832011)(53546011)(26005)(5660300002)(31686004)(316002)(2616005)(6486002)(107886003)(478600001)(2906002)(41300700001)(83380400001)(21314003)(45980500001)(43740500002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QnpndE5xL2krd0FucDdwMjh3akRLUXB2RnBiSkU5WUI1TVltRUJzSzB5YXN2?=
+ =?utf-8?B?YzFzSUdhNTN6VU82K09VRlhEb1EvZXVCSW1HOUgxamN5dTY2N08wN29ZME5S?=
+ =?utf-8?B?SU8xdW5DRGtFdmZ6MDgwT2l3NUt0TU8zZlVMandsb2FtU1BDQWwya0dZbTlt?=
+ =?utf-8?B?YzJSbnRnQ01mbVZ6Tmh4WmlzeE10QWl5OFNzTFhWcGNKRGgxbFQ0M2ttSEJP?=
+ =?utf-8?B?K2ZlWk00TjNwVGQzQjc3VjRNQ3QwRkkvOXZCNk91WDlOV3cwMmxvR0NVWFRm?=
+ =?utf-8?B?dG50OFVnRFBZSGVDRWJlcTRVd3F2bGJIemdtUHlLTThxQzQ2VlJzcGg3N1Fl?=
+ =?utf-8?B?QTdsSy9XV0lOemprbkJYeGlzQkxraTVYb21ybXBxNXVHTVNJdXArM3RCSFlW?=
+ =?utf-8?B?L0FDNFh6aDBGckdUM3orbVU2SUo0UmVJWE1VYjNwQkllakI5bzlQVFo4TUt3?=
+ =?utf-8?B?UGZUYnMvZmkzaWltR2VhSlBJMHEzU2N5ZVNjWjFiZGhhSTlsU0NPai9Kc0dr?=
+ =?utf-8?B?a0lVT1hzM3NvVFZpNWpGakRoYkdvNnd2NkkxaU5yQ3N2L2JvY2RiWkN1cVdH?=
+ =?utf-8?B?cGxqdFZ1YXhlMzU4ZmpENWpDVHVpZUhMaVI3OFBlNlpVY3BSOHAwQkFjaUpm?=
+ =?utf-8?B?U0Z0R2ZZdzJzeTd4eEtLRWJtenM1OVFvWFVjVmZBdndKUHJKTEFRdmFqaTIv?=
+ =?utf-8?B?TFpzdWl0QXR3L2FLVXZQeEttbXpLTzY0T21rbG9qVkRzL0QrMkpNQXhlZDRF?=
+ =?utf-8?B?aWlLMkJMRjZ4NmFEWmEwUXJFVExLZ2JRbUZDUitXV2lydUU4Qzk4M1JEU2dk?=
+ =?utf-8?B?RTNlU3BuWXVneGVvOVBDVER5aGtRMmQzb1EyM2NndERUbzlqM2JRRFBzRzVZ?=
+ =?utf-8?B?T0JzWm9RWFNPY2xzODUwVE5UMnpqUE1MT0N2U1AwVU8xMUdyZ2wxRm1uYTl0?=
+ =?utf-8?B?cXNpeHdLOGN2OEpEc0JEUmNwZlN0UGRCbGlKKzBFV2QwWlN4TVBRdkpSOHRB?=
+ =?utf-8?B?RW5uaDdZazRmVTJGb1F3bGNLRnYycEgrVDZHenJkWVlKa0hwV2s0V2VPY29y?=
+ =?utf-8?B?dUt1KzZPKzJWVXJibkQxS0RnUTYrV1U1SCtTUEdPS3BtVW0rWmJrczlIemRC?=
+ =?utf-8?B?TzIxc0ZtV1ArSFpjY09EUlI2bzc1OXAweVJDUEtJNS9VSDVmbHJqMFhyS0t3?=
+ =?utf-8?B?WmVleXVlTHJIV21uaTVTWGY3RlU3U1BFOXV4cVFlQW85NmVjNm9EVUI0c01G?=
+ =?utf-8?B?UkF4am9JRDcyTmMwY2h5TU9YUkd6T1crM1ZQektNbUtqRWZ6T0U1a2RzSndC?=
+ =?utf-8?B?ZDdveU1RMnNvN0dhT2swV3A0ZHI3RkVLYVU3YXB5ekU4YnU4WitJYk1SVWNX?=
+ =?utf-8?B?MlhYdlVQRW40VForc3pyNFhNUm52R2lWbi9tUEIycE9kdTBrOW9jbkZ5RGd6?=
+ =?utf-8?B?bEF4TnhCbmtkcFFqcmhLM0Z3b0lnQzh5NFlmamltWHRrbDdBNEVQR01JL1U2?=
+ =?utf-8?B?aXBwUTIvU3lVUm0vLzlsMnhOWVc1TjcwQUt2TzFqM1ZTWWxvN01RNzJ0ZzVF?=
+ =?utf-8?B?SDJMa1I2dXNRaEh0VHM2RG95NHNYeWNTTjFDeFFTNWVEMHZzM1JKd0tWVjZV?=
+ =?utf-8?B?Z2t0aWJzNCtIbENjUklJY1FFckRnaXBQRHBBQ1d5MlRlb0JUdGcrMDV1blpC?=
+ =?utf-8?B?OEQzeEszaDhwc3VQb0hZRDlYbUJiWnhTWk9vbkxubENLc09QRytkR1FxSjRO?=
+ =?utf-8?B?NHROZDMxVU9mMzJIYThuUFNOczJQblM2Q3Zjc3NpdzZDbjkyeFRxZnJoRThI?=
+ =?utf-8?B?TzdUYzRaRHREUERoMnRwL1ZFQk5LOWFkSGF4VkVaSFh3WU9SR3ljcGFYWkJP?=
+ =?utf-8?B?cnFENTEweUo1cjBEUS92WGJOVDI4YnZ4dFl3clA2RHJBYUpTN1B0Q1dzVjlC?=
+ =?utf-8?B?bTFKMm1kK1dDZmhNSG1wR2JvSlpVVEY4L3dwd2ZNTVB1dG9VaDBpRkJpcGV5?=
+ =?utf-8?B?RE5BVUx4RUg4UjF4NkR0Um9jS1FaL2dpSUlxWGxOWGJuZ3BLRkxWQzZoWXor?=
+ =?utf-8?B?YThINElZU0F3OXc5TDYwMkpWTFhqNit2M2NmMU1GTWlaZFhGaG9vRlpzbXEv?=
+ =?utf-8?B?VGtoWmRKUm10aGFwajR4L00yaWpTL3plaGd1NklmRTM4RWxocDI4ekpiWlda?=
+ =?utf-8?B?elE9PQ==?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aa1acf91-8854-4cf0-42f6-08dbe12b5755
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR03MB8676.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1129b834-b61f-4666-7ca2-08dbe12b8203
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Nov 2023 13:55:18.3896 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b41b72d0-4e9f-4c26-8a69-f949f367c91d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qPcqqk/PQT1fpjlSkQJeMJ7JWdYzEY4Np0xQBR5ADoIiMdNXIRzIw5F1YuyYP0VPSOYTPTdPkDd81sX/JdOUDJ2ZO//yhtEBfDQKSwiTj4s=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR03MB7338
-X-Proofpoint-ORIG-GUID: dzMiTWCy6VRW-3xc7aDSbKbpqK_2mumY
-X-Proofpoint-GUID: dzMiTWCy6VRW-3xc7aDSbKbpqK_2mumY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-09_10,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=811 spamscore=0
- adultscore=0 impostorscore=0 malwarescore=0 mlxscore=0 suspectscore=0
- priorityscore=1501 bulkscore=0 clxscore=1011 lowpriorityscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311090105
-Received-SPF: pass client-ip=148.163.137.242;
- envelope-from=prvs=5677a8076b=leonid_komarianskyi@epam.com;
- helo=mx0b-0039f301.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2023 13:54:06.9532 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8jHpIgnN5q+TK5yOb5IP3uQ/19rhULcDsBZBSVpOhUiBzvRQogmksMy/WHkHORGgD88YIC9N+Gjsif/L+k1cN0+hHWxi16kddbo98Ol6Mr4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR08MB6288
+Received-SPF: pass client-ip=2a01:111:f400:fe1a::72e;
+ envelope-from=andrey.drobyshev@virtuozzo.com;
+ helo=EUR03-DBA-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -156,45 +147,183 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If gt_timer is enabled before cval initialization on a virtualized
-setup on QEMU, cval equals (UINT64_MAX - 1). Adding an offset value
-to this causes an overflow that sets timer into the past, which leads
-to infinite loop, because this timer fires immediately and calls
-gt_recalc_timer() once more, which in turn sets the timer into the
-past again and as a result, QEMU hangs. This patch adds check for
-overflowing of the nexttick variable.
+On 11/3/23 17:51, Hanna Czenczek wrote:
+> On 20.10.23 23:56, Andrey Drobyshev wrote:
+>> Add _verify_du_delta() checker which is used to check that real disk
+>> usage delta meets the expectations.  For now we use it for checking that
+>> subcluster-based discard/unmap operations lead to actual disk usage
+>> decrease (i.e. PUNCH_HOLE operation is performed).
+> 
+> I’m not too happy about checking the disk usage because that relies on
+> the underlying filesystem actually accepting and executing the unmap. 
+> Why is it not enough to check the L2 bitmap?
+> 
+> …Coming back later (I had to fix the missing `ret = ` I mentioned in
+> patch 2, or this test would hang, so I couldn’t run it at first), I note
+> that checking the disk usage in fact doesn’t work on tmpfs.  I usually
+> run the iotests in tmpfs, so that’s not great.
+> 
 
-Suggested-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
-Co-Authored-By: Dmytro Firsov <dmytro_firsov@epam.com>
-Signed-off-by: Leonid Komarianskyi <leonid_komarianskyi@epam.com>
----
- target/arm/helper.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+My original idea was to make sure that the PUNCH_HOLE operation did
+indeed take place, i.e. there was an actual discard.  For instance,
+currently the discard operation initiated by qemu-io is called with the
+QCOW2_DISCARD_REQUEST discard type, but if some other type is passed by
+mistake, qcow2_queue_discard() won't be called, and though the
+subclusters will be marked unallocated in L2 the data will still be
+there.  Not quite what we expect from discard operation.
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 3b22596eab..b4aaa2965b 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -2665,6 +2665,16 @@ static void gt_recalc_timer(ARMCPU *cpu, int timerid=
-x)
-         } else {
-             /* Next transition is when we hit cval */
-             nexttick =3D gt->cval + offset;
-+            if (nexttick < gt->cval) {
-+                /*
-+                 * If gt->cval value is close to UINT64_MAX then adding
-+                 * to it offset can lead to overflow of nexttick variable.
-+                 * So, this check tests that arguments sum is less than an=
-y
-+                 * addend, and in case it is overflowed we have to mod tim=
-er
-+                 * to INT64_MAX.
-+                 */
-+                nexttick =3D UINT64_MAX;
-+            }
-         }
-         /*
-          * Note that the desired next expiry time might be beyond the
---=20
-2.25.1
+BTW checking the disk usage on tmpfs works on my machine:
+
+> # cd /tmp; df -Th /tmp
+> Filesystem     Type   Size  Used Avail Use% Mounted on
+> tmpfs          tmpfs   32G  2.5M   32G   1% /tmp
+> # BUILD=/root/src/qemu/master/build
+> # $BUILD/qemu-img create -f qcow2 -o extended_l2=on img.qcow2 1M
+> Formatting 'img.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=on compression_type=zlib size=1048576 lazy_refcounts=off refcount_bits=16
+> # $BUILD/qemu-io -c 'write -q 0 128k' img.qcow2
+> # du --block-size=1 img.qcow2
+> 397312  img.qcow2
+> # $BUILD/qemu-io -f qcow2 -c 'discard -q 0 8k' img.qcow2
+> # du --block-size=1 img.qcow2
+> 389120  img.qcow2
+> # $BUILD/qemu-io -f qcow2 -c 'discard -q 8k 120k' img.qcow2
+> # du --block-size=1 img.qcow2
+> 266240  img.qcow2
+
+I'm wondering what this might depend on and can't we overcome this?
+
+>> Also add separate test case for discarding particular subcluster within
+>> one cluster.
+>>
+>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>> ---
+>>   tests/qemu-iotests/271     | 25 ++++++++++++++++++++++++-
+>>   tests/qemu-iotests/271.out |  2 ++
+>>   2 files changed, 26 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/qemu-iotests/271 b/tests/qemu-iotests/271
+>> index c7c2cadda0..5fcb209f5f 100755
+>> --- a/tests/qemu-iotests/271
+>> +++ b/tests/qemu-iotests/271
+>> @@ -81,6 +81,15 @@ _verify_l2_bitmap()
+>>       fi
+>>   }
+>>   +# Check disk usage delta after a discard/unmap operation
+>> +# _verify_du_delta $before $after $expected_delta
+>> +_verify_du_delta()
+>> +{
+>> +    if [ $(($1 - $2)) -ne $3 ]; then
+>> +        printf "ERROR: unexpected delta: $1 - $2 = $(($1 - $2)) != $3\n"
+>> +    fi
+>> +}
+>> +
+>>   # This should be called as _run_test c=XXX sc=XXX off=XXX len=XXX
+>> cmd=XXX
+>>   # c:   cluster number (0 if unset)
+>>   # sc:  subcluster number inside cluster @c (0 if unset)
+>> @@ -198,9 +207,12 @@ for use_backing_file in yes no; do
+>>       alloc="$(seq 0 31)"; zero=""
+>>       _run_test sc=0 len=64k
+>>   -    ### Zero and unmap half of cluster #0 (this won't unmap it)
+>> +    ### Zero and unmap half of cluster #0 (this will unmap it)
+> 
+> I think “it” refers to the cluster, and it is not unmapped.  This test
+> case does not use a discard, but write -z instead, so it worked before. 
+> (The L2 bitmap shown in the output doesn’t change, so functionally, this
+> patch series didn’t change this case.)
+> 
+
+From the _run_test() implementation:
+
+> # cmd: the command to pass to qemu-io, must be one of                           
+> #      write    -> write                                                        
+> #      zero     -> write -z                                                     
+> #      unmap    -> write -z -u           <-------------                                       
+> #      compress -> write -c                                                     
+> #      discard  -> discard                                                      
+> _run_test()
+
+So it actually uses 'write -z -u', and we end up with an actual unmap.
+I agree that the l2 bitmap doesn't change, that's why I specifically
+added disk usage check to catch the changed functionality.
+
+>>       alloc="$(seq 16 31)"; zero="$(seq 0 15)"
+>> +    before=$(disk_usage "$TEST_IMG")
+>>       _run_test sc=0 len=32k cmd=unmap
+>> +    after=$(disk_usage "$TEST_IMG")
+>> +    _verify_du_delta $before $after 32768
+>>         ### Zero and unmap cluster #0
+>>       alloc=""; zero="$(seq 0 31)"
+> 
+> For this following case shown truncated here, why don’t we try
+> “_run_test sc=16 len=32k cmd=unmap” instead of “sc=0 len=64k”?  I.e.
+> unmap only the second half, which, thanks to patch 3, should still unmap
+> the whole cluster, because the first half is already unmapped.
+> 
+
+Agreed.  And the interesting part is that here we'd be calling 'write -u
+-z', thus following the zero_l2_subclusters() ->
+discard_l2_subclusters() -> discard_in_l2_slice() path...
+
+>> @@ -447,7 +459,10 @@ for use_backing_file in yes no; do
+>>         # Subcluster-aligned request from clusters #12 to #14
+>>       alloc="$(seq 0 15)"; zero="$(seq 16 31)"
+>> +    before=$(disk_usage "$TEST_IMG")
+>>       _run_test c=12 sc=16 len=128k cmd=unmap
+>> +    after=$(disk_usage "$TEST_IMG")
+>> +    _verify_du_delta $before $after $((128 * 1024))
+>>       alloc=""; zero="$(seq 0 31)"
+>>       _verify_l2_bitmap 13
+>>       alloc="$(seq 16 31)"; zero="$(seq 0 15)"
+>> @@ -528,6 +543,14 @@ for use_backing_file in yes no; do
+>>       else
+>>           _make_test_img -o extended_l2=on 1M
+>>       fi
+>> +    # Write cluster #0 and discard its subclusters #0-#3
+>> +    $QEMU_IO -c 'write -q 0 64k' "$TEST_IMG"
+>> +    before=$(disk_usage "$TEST_IMG")
+>> +    $QEMU_IO -c 'discard -q 0 8k' "$TEST_IMG"
+>> +    after=$(disk_usage "$TEST_IMG")
+>> +    _verify_du_delta $before $after 8192
+>> +    alloc="$(seq 4 31)"; zero="$(seq 0 3)"
+>> +    _verify_l2_bitmap 0
+>>       # Write clusters #0-#2 and then discard them
+>>       $QEMU_IO -c 'write -q 0 128k' "$TEST_IMG"
+>>       $QEMU_IO -c 'discard -q 0 128k' "$TEST_IMG"
+> 
+> Similarly to above, I think it would be good if we combined this
+> following case with the one you added, i.e. to write 128k from the
+> beginning, drop the write here, and change the discard to be “discard -q
+> 8k 120k”, i.e. skip the subclusters we have already discarded, to see
+> that this is still combined to discard the whole first cluster.
+> 
+
+...and here we'd be calling discard directly, thus following the
+discard_l2_subclusters() -> discard_in_l2_slice() path.
+
+> ...Ah, see, and when I try this, the following assertion fails:
+> 
+> qemu-io: ../block/qcow2-cache.c:156: qcow2_cache_destroy: Assertion
+> `c->entries[i].ref == 0' failed.
+> ./common.rc: line 220: 128894 Aborted                 (core dumped) (
+> VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec
+> "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
+> 
+
+Yes, I should've added qcow2_cache_put() when going
+discard_l2_subclusters() -> discard_in_l2_slice(), same as I did on the
+zero_l2_subclusters() -> zero_in_l2_slice() path.  Thanks for catching.
+
+> Looks like an L2 table is leaked somewhere.  That’s why SCRI should be a
+> g_auto()-able type.
+> 
+
+In this case this indeed makes sense, since when we extend the operation
+from the subclusters range to the entire cluster, SCRI is no longer
+needed.  The only question with this approach is the
+zero_l2_subclusters() -> discard_l2_subclusters() path.
+
+> Hanna
+> 
+> [...]
 
