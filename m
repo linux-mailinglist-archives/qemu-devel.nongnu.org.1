@@ -2,86 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E177D7E6C41
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:13:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CB57E6C45
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:14:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15kU-00015s-0w; Thu, 09 Nov 2023 09:11:10 -0500
+	id 1r15lb-0003p1-FG; Thu, 09 Nov 2023 09:12:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1r15kL-0000zv-07
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:11:03 -0500
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1r15lY-0003e4-FG
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:12:16 -0500
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1r15kI-0001Mp-TE
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:11:00 -0500
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-692c02adeefso876772b3a.3
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 06:10:58 -0800 (PST)
+ id 1r15lW-0001hz-Le
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:12:16 -0500
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-3b52360cdf0so480166b6e.2
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 06:12:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699539057; x=1700143857; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=gmail.com; s=20230601; t=1699539132; x=1700143932; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=U411sozw5w/ihVxc5s9QbqvmvunlH19Wp0MN7bwe/b8=;
- b=aHBwfAlgVzJ0FQydJpVu8iGoBsrUifo4L/559k+ElfsbeT4nA7dH8wdzGtBr5GdVJC
- 12pmPOi0GkXTJo6KH/3qI0IOnf/OQ8Tx5hb7PU/25Yq3tWVr6TSqYzVwHE+ZYjSpvb5R
- VJmaZWINOBx+ZEKkY0K2NI/z6DurBz2zo2f5F1KQbAOyMo4TAaKpyKgRgKA9Z9jIt7nW
- 3F0A87TWaCHxu78oa3VaJkx7aUgscgMzu4FCAcjgyqpP6QV2Sf4nPzVQt3/VtAr84Y+F
- DiMDFfU43w1PtjnX7Igx5aSvgnUwOcj9vXK+5RbqwK9sd7c3XSGQs2RQnCCJ4nnAk2FK
- ml+Q==
+ bh=XdPMy5GCblk2oZj7BPm0Mv+JTZ3/O3d7uW7WH8URlD4=;
+ b=He1gyX5SWjGIT8PuijupR0iVD1bGMQxmJyNIVANyx6VuLmNqWQkRCGeDUa3pORaJDg
+ xd69wUjXzjRlR30rv4q018oMNfvjauDus0zkYTGkSvhYQ0F5jsxcwELw9TRbJHmGMFFE
+ EfuQwn1+pXMqBjTVJgXivpZ/bxIScK6P5jjkuV7Ww4YW6kqsFLzMCFjYsyYoVEKjaErt
+ +OYshtgeNCoX+DQg4JmgkAlXsaQDmgl6hHZccFhwWURmNKplYe72LWuWrIdDH3V4Y19f
+ FnmKdz4JF96WZuEwvXeiCpPqom9IXCVFQ/Ic8Hs80+RdYVimmZt1bMdnIhvVpuzQEdyd
+ CbSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699539057; x=1700143857;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1699539132; x=1700143932;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=U411sozw5w/ihVxc5s9QbqvmvunlH19Wp0MN7bwe/b8=;
- b=T81vRtGOitpttnLIo9oXc2qs3N4+KD0vpQfusUvkeHIbHMz14djA8t0RGDvegM2m4F
- NaI+PqPY5tfttOkwdbvW2oFyFWkHbjBSn7zVGDBHiEin4iNX1yHmXBRcvVJHMOrVCYN7
- paWADuviXsVzTJRQzIqjKdS39eEzJJcKluDA0MNpohAJr1mSgj6rzCD5EftbzckhNKNF
- RPRRweN1PB9m6RnL5kJohDsam9XQ/mciGJtaJieQB/XJmgqKr/xgAZ79LUMuqmeGpJJS
- i7WDWRoJDDLElAZeDbnOTfklIOQ99/oI0Dh0i8MXtl4VDcPzsDJIsjI/hcqMS8fsuhHn
- BONA==
-X-Gm-Message-State: AOJu0Yz8pFmIkA/rwZlc+Gh/rug2B5rGSaRD+qZ6EpHi5LZm+rduu031
- ScwCgDTG/Y3UJVijmT4mWSA=
-X-Google-Smtp-Source: AGHT+IGzfwGtBVQHjJ0QnjKILNTBqeJajrYQrRiawcJOhNcWG0283S3SQMOI9X1qY2MazltpNqHayw==
-X-Received: by 2002:a05:6a00:a1a:b0:6c3:75e1:9dcd with SMTP id
- p26-20020a056a000a1a00b006c375e19dcdmr5186952pfh.18.1699539056632; 
- Thu, 09 Nov 2023 06:10:56 -0800 (PST)
+ bh=XdPMy5GCblk2oZj7BPm0Mv+JTZ3/O3d7uW7WH8URlD4=;
+ b=BRO++O+40pnrZvmvPALo8vy+yrxbjzufdeqIExk9RlHSnXwzvTQ2+1ua3LcGPu36GF
+ URW1z8lf+YK2WqjlAk+jCInti6tbNTQColN3bdyOEQzQW4rd/+czzOsiCZvhi9FazF55
+ +imYcxg0e5nwDpt49z2zXG7mbDydW7LelNwEMtfDWcsQKeHm4ClIC76bEoeALu3dnA1+
+ a0thtALBmkrNAyPz9FhBfj9VGpBFi7s0bwTS//eUKeSS+9kPVRXyqAbNipopZfOMlc/Z
+ R0zFkEYrvtWcLcA2tT+MSd7KxIhklNvv8sIlbAr0DAfCh/FCo6HsakEmwFl6fyBw3fKh
+ A6gw==
+X-Gm-Message-State: AOJu0Yx4PLaOOYSBX0CnIo2qE4rbzosOimm3JxDjcKbjX4NjmWCRSzmt
+ JHG5/dzp2efnbtSOTjnWJEo=
+X-Google-Smtp-Source: AGHT+IFgL2Hsfaj5GedTvogJ0gi30Yt7gd3BFaz5BAIS7OJVZAskZN8HEQq97xHt9wOoItEmCZDKYg==
+X-Received: by 2002:a05:6808:2009:b0:3ab:9afd:8efd with SMTP id
+ q9-20020a056808200900b003ab9afd8efdmr1839976oiw.40.1699539132305; 
+ Thu, 09 Nov 2023 06:12:12 -0800 (PST)
 Received: from ?IPV6:2001:ee0:50f4:9050:3366:c285:960c:ac78?
  ([2001:ee0:50f4:9050:3366:c285:960c:ac78])
  by smtp.gmail.com with ESMTPSA id
- a7-20020a63d407000000b005742092c211sm4846189pgh.64.2023.11.09.06.10.50
+ a7-20020a63d407000000b005742092c211sm4846189pgh.64.2023.11.09.06.12.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Nov 2023 06:10:55 -0800 (PST)
-Message-ID: <1c4cf652-9b31-4b22-8bb9-df27dce74cfd@gmail.com>
-Date: Thu, 9 Nov 2023 21:10:43 +0700
+ Thu, 09 Nov 2023 06:12:11 -0800 (PST)
+Message-ID: <2992a952-a444-411e-bdde-4de89498af23@gmail.com>
+Date: Thu, 9 Nov 2023 21:12:07 +0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 0/5] Support x2APIC mode with TCG accelerator
-To: Santosh Shukla <santosh.shukla@amd.com>, qemu-devel@nongnu.org
-Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, "Michael S . Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+Subject: Re: [PATCH v9 5/5] amd_iommu: report x2APIC support to the operating
+ system
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, David Woodhouse <dwmw2@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Igor Mammedov <imammedo@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
  <alex.bennee@linaro.org>, Joao Martins <joao.m.martins@oracle.com>,
  Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Phil Dennis-Jordan <lists@philjordan.eu>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+ Phil Dennis-Jordan <lists@philjordan.eu>
 References: <20231024152105.35942-1-minhquangbui99@gmail.com>
- <8bbae7b9-3923-b5cd-ff89-50baeccb5d02@amd.com>
-Content-Language: en-US
+ <20231024152105.35942-6-minhquangbui99@gmail.com>
+ <20231106193841-mutt-send-email-mst@kernel.org>
+ <34300309-aa29-4a78-9e6b-aa91b05ff4af@gmail.com>
+ <20231108144325-mutt-send-email-mst@kernel.org>
 From: Bui Quang Minh <minhquangbui99@gmail.com>
-In-Reply-To: <8bbae7b9-3923-b5cd-ff89-50baeccb5d02@amd.com>
+In-Reply-To: <20231108144325-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=minhquangbui99@gmail.com; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=minhquangbui99@gmail.com; helo=mail-oi1-x22b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -105,114 +109,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/9/23 17:11, Santosh Shukla wrote:
-> On 10/24/2023 8:51 PM, Bui Quang Minh wrote:
->> Hi everyone,
+On 11/9/23 02:44, Michael S. Tsirkin wrote:
+> On Wed, Nov 08, 2023 at 09:22:18PM +0700, Bui Quang Minh wrote:
+>> On 11/7/23 07:39, Michael S. Tsirkin wrote:
+>>> On Tue, Oct 24, 2023 at 10:21:05PM +0700, Bui Quang Minh wrote:
+>>>> This commit adds XTSup configuration to let user choose to whether enable
+>>>> this feature or not. When XTSup is enabled, additional bytes in IRTE with
+>>>> enabled guest virtual VAPIC are used to support 32-bit destination id.
+>>>>
+>>>> Additionally, this commit exports IVHD type 0x11 besides the old IVHD type
+>>>> 0x10 in ACPI table. IVHD type 0x10 does not report full set of IOMMU
+>>>> features only the legacy ones, so operating system (e.g. Linux) may only
+>>>> detects x2APIC support if IVHD type 0x11 is available. The IVHD type 0x10
+>>>> is kept so that old operating system that only parses type 0x10 can detect
+>>>> the IOMMU device.
+>>>>
+>>>> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+>>>> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+>>>
+>>>
+>>> changes IVRS without updating expected files for tests.
+>>> result seems to be CI failures:
+>>> https://gitlab.com/mstredhat/qemu/-/jobs/5470533834
 >>
->> This series implements x2APIC mode in userspace local APIC and the
->> RDMSR/WRMSR helper to access x2APIC registers in x2APIC mode. Intel iommu
->> and AMD iommu are adjusted to support x2APIC interrupt remapping. With this
->> series, we can now boot Linux kernel into x2APIC mode with TCG accelerator
->> using either Intel or AMD iommu.
 >>
->> Testing to boot my own built Linux 6.3.0-rc2, the kernel successfully boot
->> with enabled x2APIC and can enumerate CPU with APIC ID 257
->>
->> Using Intel IOMMU
->>
->> qemu/build/qemu-system-x86_64 \
->>    -smp 2,maxcpus=260 \
->>    -cpu qemu64,x2apic=on \
->>    -machine q35 \
->>    -device intel-iommu,intremap=on,eim=on \
->>    -device qemu64-x86_64-cpu,x2apic=on,core-id=257,socket-id=0,thread-id=0 \
->>    -m 2G \
->>    -kernel $KERNEL_DIR \
->>    -append "nokaslr console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
->>    -drive file=$IMAGE_DIR,format=raw \
->>    -nographic \
->>    -s
->>
->> Using AMD IOMMU
->>
->> qemu/build/qemu-system-x86_64 \
->>    -smp 2,maxcpus=260 \
->>    -cpu qemu64,x2apic=on \
->>    -machine q35 \
->>    -device amd-iommu,intremap=on,xtsup=on \
->>    -device qemu64-x86_64-cpu,x2apic=on,core-id=257,socket-id=0,thread-id=0 \
->>    -m 2G \
->>    -kernel $KERNEL_DIR \
->>    -append "nokaslr console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
->>    -drive file=$IMAGE_DIR,format=raw \
->>    -nographic \
->>    -s
->>
->> Testing the emulated userspace APIC with kvm-unit-tests, disable test
->> device with this patch
->>
->> diff --git a/lib/x86/fwcfg.c b/lib/x86/fwcfg.c
->> index 1734afb..f56fe1c 100644
->> --- a/lib/x86/fwcfg.c
->> +++ b/lib/x86/fwcfg.c
->> @@ -27,6 +27,7 @@ static void read_cfg_override(void)
->>
->>          if ((str = getenv("TEST_DEVICE")))
->>                  no_test_device = !atol(str);
->> +       no_test_device = true;
->>
->>          if ((str = getenv("MEMLIMIT")))
->>                  fw_override[FW_CFG_MAX_RAM] = atol(str) * 1024 * 1024;
->>
->> ~ env QEMU=/home/minh/Desktop/oss/qemu/build/qemu-system-x86_64 ACCEL=tcg \
->> ./run_tests.sh -v -g apic
->>
->> TESTNAME=apic-split TIMEOUT=90s ACCEL=tcg ./x86/run x86/apic.flat -smp 2
->> -cpu qemu64,+x2apic,+tsc-deadline -machine kernel_irqchip=split FAIL
->> apic-split (54 tests, 8 unexpected failures, 1 skipped)
->> TESTNAME=ioapic-split TIMEOUT=90s ACCEL=tcg ./x86/run x86/ioapic.flat -smp
->> 1 -cpu qemu64 -machine kernel_irqchip=split PASS ioapic-split (19 tests)
->> TESTNAME=x2apic TIMEOUT=30 ACCEL=tcg ./x86/run x86/apic.flat -smp 2 -cpu
->> qemu64,+x2apic,+tsc-deadline FAIL x2apic (54 tests, 8 unexpected failures,
->> 1 skipped) TESTNAME=xapic TIMEOUT=60 ACCEL=tcg ./x86/run x86/apic.flat -smp
->> 2 -cpu qemu64,-x2apic,+tsc-deadline -machine pit=off FAIL xapic (43 tests,
->> 6 unexpected failures, 2 skipped)
->>
->>    FAIL: apic_disable: *0xfee00030: 50014
->>    FAIL: apic_disable: *0xfee00080: f0
->>    FAIL: apic_disable: *0xfee00030: 50014
->>    FAIL: apic_disable: *0xfee00080: f0
->>    FAIL: apicbase: relocate apic
->>
->> These errors are because we don't disable MMIO region when switching to
->> x2APIC and don't support relocate MMIO region yet. This is a problem
->> because, MMIO region is the same for all CPUs, in order to support these we
->> need to figure out how to allocate and manage different MMIO regions for
->> each CPUs. This can be an improvement in the future.
->>
->>    FAIL: nmi-after-sti
->>    FAIL: multiple nmi
->>
->> These errors are in the way we handle CPU_INTERRUPT_NMI in core TCG.
->>
->>    FAIL: TMCCT should stay at zero
->>
->> This error is related to APIC timer which should be addressed in separate
->> patch.
->>
->> Version 9 changes,
+>> Thanks Michael, I am preparing the fix in the next version. I've read the
+>> instructions to update the test data in bios-tables-test.c. It says I need
+>> to create some separate patches to update the test data. Are there any
+>> reasons for this? I intend to change the binary and include the ASL diff
+>> into the commit message. Is it enough?
 > 
-> Hi Bui,
-> 
-> I have tested v9 on EPYC-Genoa system with kvm acceleration mode on, I could
-> see > 255 vCPU for Linux and Windows Guest.
-> 
-> Tested-by: Santosh Shukla <Santosh.Shukla@amd.com>
+> No, not enough.  No, do not ignore the rules please.  Yes, there's a
+> reason.  The reason is that I need to be able to rebase your patches.  I
+> then regenerate the binaries. If the patch includes binaries it won't
+> rebase.
 
-Hi Santosh,
-
-With KVM enabled, you may be using the in kernel APIC from KVM not the 
-emulated APIC in userspace as in this series.
+Okay, I got it. I will prepare the fix in the next version.
 
 Thanks,
 Quang Minh.
