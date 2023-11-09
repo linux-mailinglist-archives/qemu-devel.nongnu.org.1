@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303967E6BEC
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:02:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 380687E6BF6
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:04:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15bQ-0008Iv-Ix; Thu, 09 Nov 2023 09:01:51 -0500
+	id 1r15bi-0001Zk-O1; Thu, 09 Nov 2023 09:02:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15aB-0005nz-Un; Thu, 09 Nov 2023 09:00:34 -0500
+ id 1r15aH-0005rk-5o; Thu, 09 Nov 2023 09:00:38 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15Zz-0005mc-ML; Thu, 09 Nov 2023 09:00:31 -0500
+ id 1r15a5-0005qU-V1; Thu, 09 Nov 2023 09:00:36 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 04DBA31BC2;
+ by isrv.corpit.ru (Postfix) with ESMTP id 156B631BC3;
  Thu,  9 Nov 2023 16:59:42 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 0EC1A344FB;
+ by tsrv.corpit.ru (Postfix) with SMTP id 20289344FC;
  Thu,  9 Nov 2023 16:59:34 +0300 (MSK)
-Received: (nullmailer pid 1462791 invoked by uid 1000);
+Received: (nullmailer pid 1462794 invoked by uid 1000);
  Thu, 09 Nov 2023 13:59:33 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- Ivan Warren <ivan@vmfacility.fr>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.7 12/62] accel/tcg: mttcg remove false-negative halted
- assertion
-Date: Thu,  9 Nov 2023 16:58:40 +0300
-Message-Id: <20231109135933.1462615-12-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.7 13/62] hw/scsi/scsi-disk: Disallow block sizes smaller
+ than 512 [CVE-2023-42467]
+Date: Thu,  9 Nov 2023 16:58:41 +0300
+Message-Id: <20231109135933.1462615-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 References: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
@@ -62,50 +60,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Thomas Huth <thuth@redhat.com>
 
-mttcg asserts that an execution ending with EXCP_HALTED must have
-cpu->halted. However between the event or instruction that sets
-cpu->halted and requests exit and the assertion here, an
-asynchronous event could clear cpu->halted.
+We are doing things like
 
-This leads to crashes running AIX on ppc/pseries because it uses
-H_CEDE/H_PROD hcalls, where H_CEDE sets self->halted = 1 and
-H_PROD sets other cpu->halted = 0 and kicks it.
+    nb_sectors /= (s->qdev.blocksize / BDRV_SECTOR_SIZE);
 
-H_PROD could be turned into an interrupt to wake, but several other
-places in ppc, sparc, and semihosting follow what looks like a similar
-pattern setting halted = 0 directly. So remove this assertion.
+in the code here (e.g. in scsi_disk_emulate_mode_sense()), so if
+the blocksize is smaller than BDRV_SECTOR_SIZE (=512), this crashes
+with a division by 0 exception. Thus disallow block sizes of 256
+bytes to avoid this situation.
 
-Reported-by: Ivan Warren <ivan@vmfacility.fr>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Message-Id: <20230829010658.8252-1-npiggin@gmail.com>
-[rth: Keep the case label and adjust the comment.]
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 0e5903436de712844b0e6cdd862b499c767e09e9)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1813
+CVE: 2023-42467
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20230925091854.49198-1-thuth@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 7cfcc79b0ab800959716738aff9419f53fc68c9c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
-index d50239e0e2..3a021624f4 100644
---- a/accel/tcg/tcg-accel-ops-mttcg.c
-+++ b/accel/tcg/tcg-accel-ops-mttcg.c
-@@ -100,14 +100,9 @@ static void *mttcg_cpu_thread_fn(void *arg)
-                 break;
-             case EXCP_HALTED:
-                 /*
--                 * during start-up the vCPU is reset and the thread is
--                 * kicked several times. If we don't ensure we go back
--                 * to sleep in the halted state we won't cleanly
--                 * start-up when the vCPU is enabled.
--                 *
--                 * cpu->halted should ensure we sleep in wait_io_event
-+                 * Usually cpu->halted is set, but may have already been
-+                 * reset by another thread by the time we arrive here.
-                  */
--                g_assert(cpu->halted);
-                 break;
-             case EXCP_ATOMIC:
-                 qemu_mutex_unlock_iothread();
+diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
+index e493c28814..915e0369cb 100644
+--- a/hw/scsi/scsi-disk.c
++++ b/hw/scsi/scsi-disk.c
+@@ -1624,9 +1624,10 @@ static void scsi_disk_emulate_mode_select(SCSIDiskReq *r, uint8_t *inbuf)
+          * Since the existing code only checks/updates bits 8-15 of the block
+          * size, restrict ourselves to the same requirement for now to ensure
+          * that a block size set by a block descriptor and then read back by
+-         * a subsequent SCSI command will be the same
++         * a subsequent SCSI command will be the same. Also disallow a block
++         * size of 256 since we cannot handle anything below BDRV_SECTOR_SIZE.
+          */
+-        if (bs && !(bs & ~0xff00) && bs != s->qdev.blocksize) {
++        if (bs && !(bs & ~0xfe00) && bs != s->qdev.blocksize) {
+             s->qdev.blocksize = bs;
+             trace_scsi_disk_mode_select_set_blocksize(s->qdev.blocksize);
+         }
 -- 
 2.39.2
 
