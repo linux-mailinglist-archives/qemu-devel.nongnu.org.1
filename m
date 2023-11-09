@@ -2,86 +2,144 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597927E6C77
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:33:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D557E6C7D
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:35:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1660-0001md-Aw; Thu, 09 Nov 2023 09:33:24 -0500
+	id 1r167S-0003kK-Ho; Thu, 09 Nov 2023 09:34:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r165w-0001ly-3X
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:33:20 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r165u-0005tg-F2
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:33:19 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-53e3b8f906fso1442723a12.2
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 06:33:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699540397; x=1700145197; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=p/p9yeW43NcSMER0YQpwehxYcbDOe/wAYZ9SJZyRksQ=;
- b=GOki4Bpe4BVP3UJohSOc7vkFwCatL4phEexHe8ffmSP9SSJQNgTI+EmfJopJKR/xfu
- gzwlHXv7YU8IvIYSHE0GKJwPzIOAyTwsJDqVOVOZV2WJKAGYPRIz48K/MHZWQz5NmQWy
- V507KUArwuV9CFl5jNN9vmoVywlhey9v4sZqfhMEYnb1p+tdDUtpdPu8Xwx+CxAYwBc3
- gcyAdpjlNaGZdcNtfK/c6LY1QTGEO/gI5OsQEMT96G9JqI8OlIkT56qAkYPOfNQ06DQu
- 3nqM59u8LWEXCOQ1/jOEC49/r70r83pOmaAT8Teqg7wCrdojcSFBfdSth1VenNyJQkpi
- +Oiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699540397; x=1700145197;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=p/p9yeW43NcSMER0YQpwehxYcbDOe/wAYZ9SJZyRksQ=;
- b=vjabPceuZYt1NLlkiyPkD2mi31R1cLskSs8DSLnnSBYR3GefKnfb9I8vbg7sS8Kfqe
- pY4p4JfLCb1cgMulcbofmbtj8MXvz4W0OHn0uT8Odynewe6I7IHTUjZ/04mRWknMCzL5
- R/2Qyj/QYjLb4DmXorOdnp7F2QdECm/CHsM3V6w6MrKrijnyoJhwxFx2Z5mExqnpaU9F
- iiThbV9+tsqVnVmZQJYxZppRFU7ScgbSLB+mk3fz1+xJU+pX0PECLu8t62UbafVs645c
- 4QIjfGsqeosjEtD8/UR5oU4C4lo5agX+vaxPsBN8MZZSkefSR2cyXssa5grQa6VDNgOL
- FSiA==
-X-Gm-Message-State: AOJu0YxamF4CWM1YvLWDsc2hDtofsUiG8XgAc03N38Yz0zY3tgcEOzPp
- 4LljA0Cn8WCmt8hJQ0/DE8fntalAk62qJ00EhxtVuQ==
-X-Google-Smtp-Source: AGHT+IG357JpQyVxWaJjqbV8YiVbKX+wpl5yjOXXCxYoMHlCTyZk6gVT3AeKgF8otnbJuRZg7j8Xbtz/KkJPUM7pYnw=
-X-Received: by 2002:a17:907:a0b:b0:9e2:8206:2ea9 with SMTP id
- bb11-20020a1709070a0b00b009e282062ea9mr3873060ejc.60.1699540396832; Thu, 09
- Nov 2023 06:33:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1r167I-0003iO-Q0
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:34:45 -0500
+Received: from mail-co1nam11on20615.outbound.protection.outlook.com
+ ([2a01:111:f400:7eab::615]
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1r167F-0006HI-Sb
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:34:44 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=aGK3CpsH4Eb4646IGfNJyVX/vAxI/RZnC75W7UROd6F14o/yhYcSr8jf1KXfRy98mL1nJpyqK/TiE4IBZqdTYdsIwlvQbgYawNzYdhup1eF3rzmciBqFTD+Mi1L16xEKKT/PFyf9HC/MmpkkMKBUgornazIUkEe7xJ8qKftLcHMDJ2NfV7KTVx4To5cS56v7hWJr4QGYW3tRRQpqsKeB3wqqUp4bencxaXkv0nL7E8vrR4bD4stAh211BWR7aAJ0ZFd2uqCp6aDXYwg/QPltwa8VEWJfSY4vro1ZBxic0u3VwAbGdUf3H122GumDHDhieB9U+mfKx2qMtAWKkpAm+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sVkfwRzvKKxe5NsjMil93CISc01EDpgoKyqM8Pb9J5c=;
+ b=gluEpfLNIkDVoSD2t2l3BJLkOsNYrGMmgon0FRLL7ULYCzYjy8MjW4vgpzZViXKYmPCTL8RN38scAqSqxKC1V6c6hHRUfFEmlx+FyD2tU3nqB87S3q5j8RK6cW4U+AEERm48+GlXi+RvcgWTnNb14SL6ULIRw/M55q8LIKaoxoYu3zNWNsa3cFStCKLv0fk1FU4Bw5FSYEoEGaVl+4lPLD1PY6d+0qSA2X7TZixRNu+oDNj9L7AOccDyog69+18bsM8GNV/DpsTrzY/bdsPi5YJxQYxrrNAkdvgUzCI2DlGXXozmw7QA5LhLdDlxNZNjowN3peMjW0hBTD+sxuHSzg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sVkfwRzvKKxe5NsjMil93CISc01EDpgoKyqM8Pb9J5c=;
+ b=rKQ2Qeiu3byHugLRnSIkWa99yNZ2t90+6VNpuBKIB1nzQQ5RPuOQXoR9eCuo4CqrVyzTMM9fke4OpjeMufALsDyVEzs4J18bGe9iIZzHVaYhmC7N1WfY1KQr5/qACRd11VsaUzNCydyr3aLiUyGZwCaLja1jai8CFdtTKvgC4Hu85BMq3wobBAA0LDII2RPLGjTo+umzCKm1r1v8ZlJ2PdjszAkGvOc2wxAXXFvQTFISqOMthl1VP7ueetDCBuwXGAJkA8WcYhrwgGs/crACoZ8q7amhhKf+KNKOHQYVbXWl6KjfKqbWA14pb4oTiFKyWEfAOjPbfcGFpjW+NNTPsg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by PH7PR12MB7426.namprd12.prod.outlook.com (2603:10b6:510:201::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.28; Thu, 9 Nov
+ 2023 14:34:36 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::60d4:c1e3:e1aa:8f93]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::60d4:c1e3:e1aa:8f93%4]) with mapi id 15.20.6977.018; Thu, 9 Nov 2023
+ 14:34:36 +0000
+Date: Thu, 9 Nov 2023 10:34:34 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Joao Martins <joao.m.martins@oracle.com>
+Cc: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>,
+ "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>,
+ "Liu, Yi L" <yi.l.liu@intel.com>, "Sun, Yi Y" <yi.y.sun@intel.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>,
+ Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ "Jason J. Herne" <jjherne@linux.ibm.com>,
+ Tony Krowiak <akrowiak@linux.ibm.com>
+Subject: Re: [PATCH v4 28/41] vfio/iommufd: Implement the iommufd backend
+Message-ID: <20231109143434.GI4488@nvidia.com>
+References: <20231102071302.1818071-29-zhenzhong.duan@intel.com>
+ <76538479-77ec-1a7d-cee1-906f6f758cff@linux.ibm.com>
+ <SJ0PR11MB6744D87FD3CBB3380647E68792A8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <20231108124817.GS4488@nvidia.com>
+ <b6f22a3a-84cc-44ab-947b-b7e12656fe87@oracle.com>
+ <20231109125700.GZ4488@nvidia.com>
+ <592a04c2-0b4e-4bb2-80e4-f4c2dfacf00c@oracle.com>
+ <d7475721-2388-4b9c-a47f-1891e82a635e@oracle.com>
+ <20231109130921.GC4488@nvidia.com>
+ <c761227b-360e-47d5-868d-2cfb71080a46@oracle.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c761227b-360e-47d5-868d-2cfb71080a46@oracle.com>
+X-ClientProxiedBy: DM6PR07CA0045.namprd07.prod.outlook.com
+ (2603:10b6:5:74::22) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 MIME-Version: 1.0
-References: <20231107092149.404842-1-dwmw2@infradead.org>
- <20231107092149.404842-7-dwmw2@infradead.org>
-In-Reply-To: <20231107092149.404842-7-dwmw2@infradead.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 9 Nov 2023 14:33:06 +0000
-Message-ID: <CAFEAcA8McSqwXyAg1+9_DOjy5PU==FRja_gjkdXAAqjr7QtLQA@mail.gmail.com>
-Subject: Re: [PULL 06/15] hw/xen: automatically assign device index to block
- devices
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>, 
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, 
- Jason Wang <jasowang@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- qemu-block@nongnu.org, xen-devel@lists.xenproject.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|PH7PR12MB7426:EE_
+X-MS-Office365-Filtering-Correlation-Id: ff6b3644-5196-4b0f-ea73-08dbe130ff3f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: uxC3jzwM8XVSrC+QJux+HX6t755zKMRVuQdVAYNMm1HcOR6ny9s50u/Z9qDgSA/s0RT5VKB0Mac9jXg42VHw+hnx4zxuYTq8Y+DRnWqj8p31f8apcrSLUMJvdD6cpIO3hBas5MWeIG8Zh6hfpRWZbEunMJQr8RRtuBvulTSv+AhFetm1bJh21iAPf8tQkAL45P4ll+PO7xVMuUwO3lYB3wm01zoI0rLIm5RXQmQSsje/15C2lFP708XKOzfmykxsgq5A1eWY6OpZuL609DZt8fcgiX9Fc9WqPwtKgI0di8rLyMr8sojl+CQh9kN1r2fMLJWPAOBaJmujlWTpWxfVbMzeZNbSfyaP4Xa5Y+CSH5l9pt1MjbEffRhcP2539bfJfv9vQIElmPMxQDzqh0YBC3yRUnUCFepyWch9eb7F/DTyO5tP5Y5vBQnGADYt8BdU2Qn9yXBRfQgDeqDi8icpO4DThQwEUMHsWwnWFPNiTbE0FJtDdR5JNQQjTvcn6Ad0u2hQefoPMmrihkk/1LuYjuLYfuhKR8XtHHsimAVYAoGPxLlmddAmGyTRhvL9iuCa
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:LV2PR12MB5869.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(396003)(376002)(136003)(366004)(39860400002)(346002)(230922051799003)(64100799003)(451199024)(1800799009)(186009)(4326008)(8936002)(86362001)(41300700001)(8676002)(33656002)(36756003)(316002)(2906002)(54906003)(6486002)(1076003)(6506007)(53546011)(6916009)(478600001)(7416002)(66556008)(5660300002)(38100700002)(66946007)(2616005)(6512007)(26005)(66476007);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?MTbj8UpOT6/h2Baf1wyVB29bMdFpLnp5z9IoCk7HdXO+S8hE3Rif2wq2xQGk?=
+ =?us-ascii?Q?uhCJ+J4rXSpmqFPciyBVvA0pxKgJEAJag4JEKdcLLkE8QRH9wxw0dfvMn3ae?=
+ =?us-ascii?Q?Hdx/phP0sJdibPCpLjvjgKCRyg0sI5LiA4SNoGOrQ/KyU1THQwvwomV0u1W1?=
+ =?us-ascii?Q?0htKxVN435eilsFcrovSzlYGs9H/ej7d4czK3gd/bg8Rsou1uBgj7MazK6O5?=
+ =?us-ascii?Q?3IW2WvMSTsiL3jcMNOFydnObOJ4ABrGNAFSaB5ek3X/uIXt6rgpfKnVb0mZ/?=
+ =?us-ascii?Q?brSEeSme2fkn/MnzkjVCix7hDoG+z8CM+MIaJvaXDquFG4dZ5AT0JqMpmHY0?=
+ =?us-ascii?Q?TILYLJwF4ZOhebZJyCzw09VYdQHOhWZz+lSkt0Jj1KRPA+q8nYd8vE7wDzK8?=
+ =?us-ascii?Q?7AcGYp4W7AaSytBOdYKeV4SIqRH8oV2FMJSF+TDGyQCICxMwfyHfRWj7FjkY?=
+ =?us-ascii?Q?pnDiAsZxT0S+npWeBz0kV73xKBoaB7rx0MAn/+7zML8GOp8I1IXPo82/pW3j?=
+ =?us-ascii?Q?2DNZpZ4MPNOGE76ItB1YxuFMG01XJqd9kwTpD+J83noW6OcNqPbAUKwCOVTs?=
+ =?us-ascii?Q?sfPdQ/APqfBK1Ep47DzHTTiZP4XDxQ5fClZfccNljIg/nNO7Lu9+94KQ3Gtc?=
+ =?us-ascii?Q?+jHAuQG9j6i8hLjumXcXo1boTz96Acd/aN5KKLXv/kbR/zFcC+M/FtiOHgnz?=
+ =?us-ascii?Q?O2zYKv5905XsWQt/v15G0B7/UaK0Q1md5ljZnY6iPnONHNZpGgU/lWkVOF9u?=
+ =?us-ascii?Q?i20ZR2N8BQ1LDKqXddjTHmmB9dARVbwkXny6kM88ypDhBkoVi5UENQoDVGiL?=
+ =?us-ascii?Q?OEi0SpaOxr3rKFnEHon5h9u5CGoVAYOGQEIOSAj5mUC1UDSZlRSjQX6iHIpM?=
+ =?us-ascii?Q?+pINj/BP9vhSdlVo4uR/vIcDN/jxOERAP/5Gv+Eu8t98q2rLDC/kPncqktN5?=
+ =?us-ascii?Q?CO+9ZDYovoKrfrEx9eQU1jM/eiihBdsGFcHMYLhSfo/9ttJFwraPmwdPbkbX?=
+ =?us-ascii?Q?PCpCzEtiZlXi697nN1j06lCQNWABF4tWHVXsdo2O7qzZWxhhPB79Ft4OgxMV?=
+ =?us-ascii?Q?ShUxYb/x08ZWD4HmmYE87EGvIudXNqPIEixZcksvi7CfSP7Cre0VUI0r6ZOE?=
+ =?us-ascii?Q?UutiSphPS2AkUjjwXcwkM/v9qLaQ889ZQd3rsNnLxuzXGGrFKbmnJf9FZKQh?=
+ =?us-ascii?Q?aJiny3i13vJU+pCn+V8SD9fIrWeMvI6ejBGHhFyIo2XpEmlbKDzVHLvb8GS/?=
+ =?us-ascii?Q?ocIry9ILPFzzoNzaunWYImJFFH8FKV+fsqsQMLNjiWj1hLMDoX5f/u4w9tsX?=
+ =?us-ascii?Q?C9t2v4n7vWPZidnszRQuCA4xc+p0eN/xV9WwGvQrUFl6GUPR5ABcvaA9ZkIO?=
+ =?us-ascii?Q?XjJFNcN9iEVjImsQceSXxcpkDSBdiz2gs0iR913o6PzsfE56X0r771ioVEIE?=
+ =?us-ascii?Q?oCrZlV0L7kVZTceMjYPfHvhcFvbs9OoQlVVKjhQBs8TXYdCwjlza8fxxTxoe?=
+ =?us-ascii?Q?E52Z6bYCls7628yiNV0LAKMgaMzwyK1AfNjKC8Udhw8HKbRDzfaVIo/PuzWi?=
+ =?us-ascii?Q?fvcCaxLkltvIG+Eczol0zdwENkMdIz9PJ1iG7PIo?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff6b3644-5196-4b0f-ea73-08dbe130ff3f
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2023 14:34:36.1918 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8At41g0It9nZbyBBxJxG7iHnAiYXCm7AcoC3F1woA3NDYkv+xdoIJaIuLbN4JdGO
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7426
+Received-SPF: softfail client-ip=2a01:111:f400:7eab::615;
+ envelope-from=jgg@nvidia.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,88 +156,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 7 Nov 2023 at 09:24, David Woodhouse <dwmw2@infradead.org> wrote:
->
-> From: David Woodhouse <dwmw@amazon.co.uk>
->
-> There's no need to force the user to assign a vdev. We can automatically
-> assign one, starting at xvda and searching until we find the first disk
-> name that's unused.
->
-> This means we can now allow '-drive if=3Dxen,file=3Dxxx' to work without =
-an
-> explicit separate -driver argument, just like if=3Dvirtio.
->
-> Rip out the legacy handling from the xenpv machine, which was scribbling
-> over any disks configured by the toolstack, and didn't work with anything
-> but raw images.
+On Thu, Nov 09, 2023 at 01:21:59PM +0000, Joao Martins wrote:
+> On 09/11/2023 13:09, Jason Gunthorpe wrote:
+> > On Thu, Nov 09, 2023 at 01:03:02PM +0000, Joao Martins wrote:
+> > 
+> >>> I am not talking about mdevs; but rather the regular (non mdev) case not being
+> >>> able to use dirty tracking with autodomains hwpt allocation.
+> >>
+> >> ... without any vIOMMU.
+> > 
+> > Ah, well, that is troublesome isn't it..
+> > 
+> > So do we teach autodomains to be more featured in the kernel or do we
+> > teach the generic qemu code to effectively implement autodomains in
+> > userspace?
+> 
+> The latter is actually what we have been doing. Well I wouldn't call autodomains
+> in qemu, but rather just allocate a hwpt, instead of attaching the IOAS
+> directly. But well mdevs don't have domains and we overlooked that. I would turn
+> the exception into an exception rather than making the norm, doesn't look to be
+> much complexity added?
 
-Hi; Coverity points out an issue in this code (CID 1523906):
+Autodomains are complex because of things like mdev and iommu
+non-uniformity's. Qemu can't just allocate a single HWPT, it needs to
+be annoyingly managed.
 
-> +/*
-> + * Find a free device name in the xvda =E2=86=92 xvdfan range and set it=
- in
-> + * blockdev->props.vdev. Our definition of "free" is that there must
-> + * be no other disk or partition with the same disk number.
-> + *
-> + * You are technically permitted to have all of hda, hda1, sda, sda1,
-> + * xvda and xvda1 as *separate* PV block devices with separate backing
-> + * stores. That doesn't make it a good idea. This code will skip xvda
-> + * if *any* of those "conflicting" devices already exists.
-> + *
-> + * The limit of xvdfan (disk 4095) is fairly arbitrary just to avoid a
-> + * stupidly sized bitmap, but Linux as of v6.6 doesn't support anything
-> + * higher than that anyway.
-> + */
-> +static bool xen_block_find_free_vdev(XenBlockDevice *blockdev, Error **e=
-rrp)
-> +{
-> +    XenBus *xenbus =3D XEN_BUS(qdev_get_parent_bus(DEVICE(blockdev)));
-> +    unsigned long used_devs[BITS_TO_LONGS(MAX_AUTO_VDEV)];
-> +    XenBlockVdev *vdev =3D &blockdev->props.vdev;
-> +    char fe_path[XENSTORE_ABS_PATH_MAX + 1];
-> +    char **existing_frontends;
-> +    unsigned int nr_existing =3D 0;
-> +    unsigned int vdev_nr;
-> +    int i, disk =3D 0;
-> +
-> +    snprintf(fe_path, sizeof(fe_path), "/local/domain/%u/device/vbd",
-> +             blockdev->xendev.frontend_id);
-> +
-> +    existing_frontends =3D qemu_xen_xs_directory(xenbus->xsh, XBT_NULL, =
-fe_path,
-> +                                               &nr_existing);
-> +    if (!existing_frontends && errno !=3D ENOENT) {
+> What I last re-collect is that autodomains represents the 'simple users' that
+> don't care much beyond the basics of IOMMU features (I recall the example was
+> DPDK apps and the like). You could say that for current needs IOMMU autodomains
+> suffices for qemu.
 
-Here we check whether existing_frontends is NULL, implying it
-might be NULL (and the && in the condition means we might not
-take this error-exit path even if it is NULL)...
+Yes, that was my intention. Aside from that it primarily exists to
+support vfio compatibility
 
-> +        error_setg_errno(errp, errno, "cannot read %s", fe_path);
-> +        return false;
-> +    }
-> +
-> +    memset(used_devs, 0, sizeof(used_devs));
-> +    for (i =3D 0; i < nr_existing; i++) {
-> +        if (qemu_strtoui(existing_frontends[i], NULL, 10, &vdev_nr)) {
+> Connecting autodomains to this enforcing on the hwpt is relatively simple btw,
+> it just needs to connect the dirty tracking flag with same semantic of
+> hwpt-alloc equivalent and pass the hwpt flags into the domain allocation.
 
-...but here we deref existing_frontends, implying it can't be NULL.
+Yes
 
-> +            free(existing_frontends[i]);
-> +            continue;
-> +        }
-> +
-> +        free(existing_frontends[i]);
-> +
-> +        disk =3D vdev_to_diskno(vdev_nr);
-> +        if (disk < 0 || disk >=3D MAX_AUTO_VDEV) {
-> +            continue;
-> +        }
-> +
-> +        set_bit(disk, used_devs);
-> +    }
-> +    free(existing_frontends);
+> It's more of what of a question should be the expectations to the user when
+> using ATTACH_HWPT with an IOAS_ID versus direct manipulation of HWPT. I am
+> wondering if dirty tracking is alone here or whether there's more features that
+> start to mud the simplicity of autodomains that would approximate of hwpt-alloc.
 
-thanks
--- PMM
+This is why I had been thinking of a pure HWPT based scheme
+
+So it seems we cannot have a simple model where the generic qmeu layer
+just works in IOAS :( It might as well always work in HWPT and
+understand all the auto domains complexity itself.
+
+Jason
 
