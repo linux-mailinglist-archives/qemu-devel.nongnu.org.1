@@ -2,50 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA9AA7E64C4
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 08:52:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2867E64C6
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 08:52:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0zoL-0007Jw-Bn; Thu, 09 Nov 2023 02:50:45 -0500
+	id 1r0zoP-0007L5-P9; Thu, 09 Nov 2023 02:50:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1r0zoJ-0007JE-0C
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:50:43 -0500
+ (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1r0zoK-0007Jy-RN
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:50:44 -0500
 Received: from mgamail.intel.com ([192.55.52.43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1r0zoG-0001sR-9g
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:50:42 -0500
+ (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1r0zoJ-0001o2-Ax
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:50:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1699516240; x=1731052240;
+ t=1699516243; x=1731052243;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MRaXk3shPh7gkjPfs7QFU/AG2qwffhxmzb8OZqrofHo=;
- b=dNhGs7GzD73pf7QkH0ulCnC+BST1Wfz2INB2/HkJJhKvSZdMRoLLz5WJ
- pM4TQnZmXEPMCbiOq9pywJgN13jI4ObXadvcr86EPOt7Y1MLMExJUlOcl
- 1uuh75LTgF8MDeuMERt+NFEApEoVGxdUPQEAGbo38sui/SxRF8bFrD0NA
- 3RP7U6gu8ngV5eBQ3U1+AF5EIBJSQjn9lMjjxS4XyMMdmTZFNbhjciwuN
- VSG1BBmMQ95p2PeVgs8Gb50Y2O5RNWnK+WsUqsu6orrk0qttnmayqyOB4
- 1Bu86Eol/Yt9N37C/Q1ZOUhuHjpeBg49ZD84LXg0SA15CJ5nVse2oVS+q g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="476165154"
-X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="476165154"
+ bh=MbIfcTx5Jpa1uax7o3pELRo6a1v5BYZchyQrtHIxi40=;
+ b=UzMSyTc9RbV0pXEjBIzTa/JotSStfYqSL7qTwiWgtEgLwoVoV8hGc/Cx
+ 08aqXvgyZIfzBxh1BIUGYs2BReU04xw3RD0Fon+REMi2ruAdwVz4+vgbz
+ pqWPXk6qtSfa4xHttNcAGmk3h6JRjLX9F8ERl/IJc1khGYwW2JZlRSZT4
+ rjOzE2pchlIofyhL88cNN5d2G7x8Jr7a79/1Yvmv7GOUOQ5scsbd4pERF
+ 5N2jf+xwlZ0D7YmS6rUAQDPZBEMk8lbYsVzEnhpPmlRfMTmIpG/rPC2E3
+ tmnGaCtI1UITm6IjHOp2uLCOuK4Em4Brqdqx4o8sBGqTMfrNTXDADThmL A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="476165162"
+X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="476165162"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  08 Nov 2023 23:50:23 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="763329284"
-X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="763329284"
+X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="763329289"
+X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="763329289"
 Received: from unknown (HELO fred..) ([172.25.112.68])
- by orsmga002.jf.intel.com with ESMTP; 08 Nov 2023 23:50:22 -0800
+ by orsmga002.jf.intel.com with ESMTP; 08 Nov 2023 23:50:23 -0800
 From: Xin Li <xin3.li@intel.com>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, richard.henderson@linaro.org, pbonzini@redhat.com,
  eduardo@habkost.net, seanjc@google.com, chao.gao@intel.com, hpa@zytor.com,
  xiaoyao.li@intel.com, weijiang.yang@intel.com
-Subject: [PATCH v3 4/6] target/i386: add support for VMX FRED controls
-Date: Wed,  8 Nov 2023 23:20:10 -0800
-Message-ID: <20231109072012.8078-5-xin3.li@intel.com>
+Subject: [PATCH v3 5/6] target/i386: enumerate VMX nested-exception support
+Date: Wed,  8 Nov 2023 23:20:11 -0800
+Message-ID: <20231109072012.8078-6-xin3.li@intel.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231109072012.8078-1-xin3.li@intel.com>
 References: <20231109072012.8078-1-xin3.li@intel.com>
@@ -75,49 +75,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add VMX FRED controls used to enable save/load of FRED MSRs.
+Allow VMX nested-exception support to be exposed in KVM guests, thus
+nested KVM guests can enumerate it.
 
 Tested-by: Shan Kang <shan.kang@intel.com>
 Signed-off-by: Xin Li <xin3.li@intel.com>
 ---
- scripts/kvm/vmxcap | 3 +++
- target/i386/cpu.c  | 2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ scripts/kvm/vmxcap | 1 +
+ target/i386/cpu.c  | 1 +
+ target/i386/cpu.h  | 1 +
+ 3 files changed, 3 insertions(+)
 
 diff --git a/scripts/kvm/vmxcap b/scripts/kvm/vmxcap
-index 7da1e00ca8..44898d73c2 100755
+index 44898d73c2..508be19c75 100755
 --- a/scripts/kvm/vmxcap
 +++ b/scripts/kvm/vmxcap
-@@ -229,6 +229,8 @@ controls = [
-     Allowed1Control(
-         name = 'secondary VM-Exit controls',
-         bits = {
-+            0: 'Save IA32 FRED MSRs',
-+            1: 'Load IA32 FRED MSRs',
+@@ -117,6 +117,7 @@ controls = [
+             54: 'INS/OUTS instruction information',
+             55: 'IA32_VMX_TRUE_*_CTLS support',
+             56: 'Skip checks on event error code',
++            58: 'VMX nested exception support',
              },
-         cap_msr = MSR_IA32_VMX_EXIT_CTLS2,
+         msr = MSR_IA32_VMX_BASIC,
          ),
-@@ -246,6 +248,7 @@ controls = [
-             16: 'Load IA32_BNDCFGS',
-             17: 'Conceal VM entries from PT',
-             18: 'Load IA32_RTIT_CTL',
-+            23: 'Load IA32 FRED MSRs',
-             },
-         cap_msr = MSR_IA32_VMX_ENTRY_CTLS,
-         true_cap_msr = MSR_IA32_VMX_TRUE_ENTRY_CTLS,
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 227ee1c759..dcf914a7ec 100644
+index dcf914a7ec..f7556621a5 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -1285,7 +1285,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             NULL, "vmx-entry-ia32e-mode", NULL, NULL,
-             NULL, "vmx-entry-load-perf-global-ctrl", "vmx-entry-load-pat", "vmx-entry-load-efer",
-             "vmx-entry-load-bndcfgs", NULL, "vmx-entry-load-rtit-ctl", NULL,
--            NULL, NULL, "vmx-entry-load-pkrs", NULL,
-+            NULL, NULL, "vmx-entry-load-pkrs", "vmx-entry-load-fred",
-             NULL, NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
+@@ -1343,6 +1343,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+             [54] = "vmx-ins-outs",
+             [55] = "vmx-true-ctls",
+             [56] = "vmx-any-errcode",
++            [58] = "vmx-nested-exception",
          },
+         .msr = {
+             .index = MSR_IA32_VMX_BASIC,
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index a4d3702621..cc3b4fefb8 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1054,6 +1054,7 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
+ #define MSR_VMX_BASIC_INS_OUTS                       (1ULL << 54)
+ #define MSR_VMX_BASIC_TRUE_CTLS                      (1ULL << 55)
+ #define MSR_VMX_BASIC_ANY_ERRCODE                    (1ULL << 56)
++#define MSR_VMX_BASIC_NESTED_EXCEPTION               (1ULL << 58)
+ 
+ #define MSR_VMX_MISC_PREEMPTION_TIMER_SHIFT_MASK     0x1Full
+ #define MSR_VMX_MISC_STORE_LMA                       (1ULL << 5)
 -- 
 2.42.0
 
