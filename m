@@ -2,126 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 935927E6AC6
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 13:45:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A3F07E6ADB
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 13:54:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r14OT-00043W-6f; Thu, 09 Nov 2023 07:44:21 -0500
+	id 1r14X0-0007ev-DR; Thu, 09 Nov 2023 07:53:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gmanning@rapitasystems.com>)
- id 1r14OF-00042e-J2
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 07:44:12 -0500
-Received: from mail-lo4gbr01on20701.outbound.protection.outlook.com
- ([2a01:111:f403:261a::701]
- helo=GBR01-LO4-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gmanning@rapitasystems.com>)
- id 1r14OB-0003dc-Rt
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 07:44:06 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cAcuYauM8g+hrz28XXaeA0XJ7RdQBzV7LTzxQ1eiHOZCjZ4zil7c2UZmp7eRzIVS7Z274fsXYnVt8tbNiVmmqaUfy7vPKSjno5ui+yOoeoQwJR8cCtZCCcs4oNeoxVnEkotUzBz12xzlU9V+vvL8Luj04iHpjfMBQFsloJCsWQrF34lp1mnxSw8f9i/bR5tmtv69JJkoEJ+QPlygKQnQFR29xRVZrm1eH3kWBoKIk80SSKzCqobYOglBUuqJmADH55E7FAavgQ+o8EsuaGsh+RX3dfsYIXRivqqrQ8xrR2acgKhh4/WWwRSSDlWQILrYx0bFl1ZbCeLEj4vLzH5AYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O6f2sSvOEBYP4saMgNcKzhCySND+v6o9PYBX6bos74A=;
- b=jP7DlZjewNiFYpBTcgfxCUI/8kDhZffqadQizAXHPUmtwMvKyzdwm7GllmMPdpD+KY/V8dqIyX/lXYzTFYg9zwWkIbL2kkLP3WAvAZkuRBqbRqM3NLzFp5eNrOfJzSErHlhGKwnUhjLev5nT9WebIqnkVUUjil+LW2RQZAz2fyqz96n1D9iiwjI7lECyp4+whyTMCeQVfQcXVCk3HmqKtq5E1pQUZCCQLKMPwMnLdMIhFag2MVTkMdmiKTxINT/sCG7L5Hr1QiWPAXhcDC+i71e89q0fdWPv+Ohr/5yO6bPEYU2ALhTHi97Cm6pT5xpcx3t7/ZU/mYbqIHfXxM4BXQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=rapitasystems.com; dmarc=pass action=none
- header.from=rapitasystems.com; dkim=pass header.d=rapitasystems.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rapitasystems.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O6f2sSvOEBYP4saMgNcKzhCySND+v6o9PYBX6bos74A=;
- b=KSypRqEj55+H+71Am2OVabllkhBGiYUzXmbaqIYLTFRvC3MfQZBDrz6DTw9+10sqvSgjZ3Bs1P8bUJKhEXiwfOdPt+1vEV5KAKNAXQt7bQ9mPRKSXdUVGIeeuS1PFUfSG8FI2dNVdQPWHlUSQhRfaMmCMj11baVbHJiuPkwfbkM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=rapitasystems.com;
-Received: from CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:d8::10)
- by LO4P123MB6562.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:27c::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.29; Thu, 9 Nov
- 2023 12:44:01 +0000
-Received: from CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM
- ([fe80::e732:bfe0:f22b:d2c0]) by CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM
- ([fe80::e732:bfe0:f22b:d2c0%4]) with mapi id 15.20.6977.019; Thu, 9 Nov 2023
- 12:44:01 +0000
-From: Greg Manning <gmanning@rapitasystems.com>
+ (Exim 4.90_1) (envelope-from <amonakov@ispras.ru>)
+ id 1r14Wy-0007ed-BB
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 07:53:08 -0500
+Received: from mail.ispras.ru ([83.149.199.84])
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <amonakov@ispras.ru>)
+ id 1r14Wv-0005Qj-70
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 07:53:08 -0500
+Received: from [10.10.3.121] (unknown [10.10.3.121])
+ by mail.ispras.ru (Postfix) with ESMTPS id CC3DA40737AC;
+ Thu,  9 Nov 2023 12:52:38 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru CC3DA40737AC
+Date: Thu, 9 Nov 2023 15:52:38 +0300 (MSK)
+From: Alexander Monakov <amonakov@ispras.ru>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Greg Manning <gmanning@rapitasystems.com>
-Subject: [PATCH v3 1/1] plugins: fix win plugin tests on cross compile
-Date: Thu,  9 Nov 2023 12:43:19 +0000
-Message-ID: <20231109124326.21106-2-gmanning@rapitasystems.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231109124326.21106-1-gmanning@rapitasystems.com>
-References: <20231109124326.21106-1-gmanning@rapitasystems.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO2P265CA0099.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:c::15) To CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:400:d8::10)
+cc: Mikhail Romanov <mmromanov@ispras.ru>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2] Optimize buffer_is_zero
+In-Reply-To: <20231027143704.7060-1-mmromanov@ispras.ru>
+Message-ID: <e0ae3a3e-f02c-0031-a85f-5645c7480f8f@ispras.ru>
+References: <20231027143704.7060-1-mmromanov@ispras.ru>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWXP123MB4341:EE_|LO4P123MB6562:EE_
-X-MS-Office365-Filtering-Correlation-Id: d2373594-3a8d-407f-ed4f-08dbe1218bb9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: u5cTjOsgjB/QNVnNybvU4SMYIBmTMC5hXe3hlXS1qqO7+LYBpja7Xm1U6a5FHdxYkWmWOMZ7tO4zJ+d1W2fmmJKKTVRjy6GoADIHL6qUX0OCyQ+O3cyW8APCCvesa3F3niR5+3XL4FvIZt9tb6L+cYYp73rtQWiIc9ifb4Oc44HlHOkP06LU6LN1czmEPdfHyHQ0MefmrGgLdgEIbfWfk4zdYaZGSX2PZdBejVkaEdMGl1UMz0zqS/yz73KJo5fUmq6c/MIIqXlMWrqyuj5agptbNUNQL1QmZOUH6DTfMPFKACDwZFnKuo5Lkkye4NwhGVqO/EbqOkiek5Qtv2nuYq7SWWlcoWUZxray//M6GE2sedmswhfiuTATYPtV/6e677yC6oGvLwglj7GbkUhqSnSDOGgNk30w07WC8fXydBvX9kHucafAwzpsz6oN1Lo7TYesmbtAPuJKqspRRCDx/X6PihMsEqkcuQxY3BYSGsWrks9lEH6EKvVQl6WU6dQJmMyUuuyEklg3LdfGFeOJFLP7gQU8IGyDRch3XBvJJG3uAPbp8uuPpaOwL9Y7zaySecMm5snGVAtPI1TCQrxHxfio5lgZ2wztkUmBtviLdM0=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(376002)(396003)(366004)(346002)(39840400004)(230922051799003)(451199024)(64100799003)(186009)(1800799009)(966005)(6486002)(478600001)(86362001)(1076003)(2616005)(83380400001)(36756003)(38100700002)(66946007)(316002)(6512007)(54906003)(66476007)(107886003)(6916009)(6506007)(6666004)(66556008)(5660300002)(26005)(2906002)(41300700001)(8676002)(8936002)(4326008)(460985005);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?OVt7H93hY4+8jLoBzIsyum56BPugDN87CYCnxn7b2UrRSr73cAFM0CZZ83Va?=
- =?us-ascii?Q?48X7rQCn+l8QKyCOhoD2AXN1/XJtp+/zzc0uOdh0mqp29K386IBY0h2hQ4g+?=
- =?us-ascii?Q?jijcCqh1/kAbVFGPPmLIxOcDb0yR/7DBdo0wpYIT2rOX1yllwW2HgjDohGZ1?=
- =?us-ascii?Q?1ojCYrIPt2PrMEYxFpwEd6HMFccS3ww8tTmb0lDXA+9clMp7lifpyvHKF86a?=
- =?us-ascii?Q?aBPEnTustEjueQBH/ncB52MsrrknkUhW5/qFvqI9sJJXYq0Ay7WrnWrfJ/OV?=
- =?us-ascii?Q?qKyLp/e9YVGtXgl/ykyr9HaHOlmZXjkYfuK3iMA5sp0AftzJkvzGcE83g8/z?=
- =?us-ascii?Q?ZQuLdJGYkx0fEv//aKGMWjSCfVKhbLVnKAwtK4zcLT/6FWCUA7pu+Vleisvx?=
- =?us-ascii?Q?mju2zOmi+o71qUYWxEbyROEBl2ECY0i0pZQIzcjO5TaXzXfka/hJXlJ7zXX/?=
- =?us-ascii?Q?mjT3yAH4dhDGF3qUt5WjBMa5Da9z7MTMLDJcd/1xhPtqx5eJ08fIGDaDjqPI?=
- =?us-ascii?Q?AOPWeZDCw1+vc9ysgr7r94F6tNwHJ1HRoIh9qjsPLbq/K5xVUfTDx1Fr0Xev?=
- =?us-ascii?Q?euHTGAZMc/winl3D1JlEO5RixeticFifMIEqlur3pQMuuQmGOR4gcp6PVoCq?=
- =?us-ascii?Q?CQK7xm2oEfwbpPwUPER7TBT4ksJ6WQfR0j/EFNW9/bhMHsSarYgQQQuQALqu?=
- =?us-ascii?Q?0Aite67JDUWm15IbOUHU7I7uSXEMow/gtWrB1NJfoM1lU42VG+aeHZ9MgNsH?=
- =?us-ascii?Q?QiG993j2iQVuW/8a/K9UVluYeXAOQadV/ytKMj0TnWzi7UKae263/6zSGoBg?=
- =?us-ascii?Q?9cq9VFLzwDiGRoKu7jOSHQCyqsf7kGuw8TvqOhcBwI9ZN7Umefcy3PkDmLKc?=
- =?us-ascii?Q?XkjYA8b+ddIDZ9vJQWsQYeJTJIqdh0xSAGUH3JfQxx5qr6QqEU7LWtvUuoR3?=
- =?us-ascii?Q?I0aSp0XP8D4erL6CXhW2+9xY38YWFcUp/NBrvYmtbm7tTKhaSzXefMQqSLrO?=
- =?us-ascii?Q?F2wpaPpVp5FS+iHLkCE0LvjqYFqfMIN9vmgmGWE+gn13DTWzBI+nLYkFremL?=
- =?us-ascii?Q?7LGlf1rJpQz+PjJR60WFuym/0p+dJYczk0PCyKhKUzvlnoc+QIoS0JoQxMvq?=
- =?us-ascii?Q?9jlJ5Ok12ZA6/xjr//seyAlwS77fNjWUzGpRNfOnwOdTr8WSA50tM9KSJcbh?=
- =?us-ascii?Q?ljKqDecHXZRtgsgGgXJ5xLUW5WHhsArb/ypIFUILFjOjeBtnmIcha1kEmlxJ?=
- =?us-ascii?Q?R+oTcp/UEWbxCKgn67emTag22pRcLXQEna4vwwBKZag/q9Fz2Bn9BAfJgBFI?=
- =?us-ascii?Q?fgdJX2POFLijn7TW1hAQvatp8iXiNse0Q6WLfMfLRM5wmEWM0Qs6C4IQVqSG?=
- =?us-ascii?Q?YdCs1NkgwCbPa2HjCsj5hl2CvsSQ2R1ZFgXvmkoplx9p0FjdtUfNuZSVHtJQ?=
- =?us-ascii?Q?yCOf2ucMYCER6u9wYw16icZslqYM5o2QeLSF0FhC6PKBGTG7rPC3ydSsHgDJ?=
- =?us-ascii?Q?jH+5PUHbjvTEjDbZI1VBhsGJck9g7ft5VIwdBf6BdbIgHNZg3U/gEQg4WBjX?=
- =?us-ascii?Q?eYXugHl7rEamKASIHtbPzhcjpsj8KqRKqYLfTB9Q7hL6hL0PfZHiZe/pnM+q?=
- =?us-ascii?Q?Fw=3D=3D?=
-X-OriginatorOrg: rapitasystems.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d2373594-3a8d-407f-ed4f-08dbe1218bb9
-X-MS-Exchange-CrossTenant-AuthSource: CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2023 12:44:01.4546 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 63a1ab10-c4bd-4b99-881c-0040cec74971
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FFpp0pXpsdkSVUVCUoQJawBYD4RYjlHQvnIcEekLRZdwJ2PXXu0Wsb1mUgDRGUzRhPFWWIOoPQvVisvWcU2vwBH4AJAyLwBzjQiJUtXVa00=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P123MB6562
-Received-SPF: pass client-ip=2a01:111:f403:261a::701;
- envelope-from=gmanning@rapitasystems.com;
- helo=GBR01-LO4-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+Content-Type: text/plain; charset=US-ASCII
+Received-SPF: pass client-ip=83.149.199.84; envelope-from=amonakov@ispras.ru;
+ helo=mail.ispras.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -138,77 +56,470 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1972
+I'd like to ping this patch on behalf of Mikhail.
 
-Cross compile gcc is more picky about argument order than msys. Changed
-the meson command to take the (now renamed) libqemu_plugin_api.a as a
-lib, rather than an object. This puts it in the right place on both
-native and cross compile gcc commands
+  https://patchew.org/QEMU/20231027143704.7060-1-mmromanov@ispras.ru/
 
-Reenable plugins on crossbuilds
+If this needs to be split up a bit to ease review, please let us know.
 
-Signed-off-by: Greg Manning <gmanning@rapitasystems.com>
----
- .gitlab-ci.d/crossbuilds.yml | 2 +-
- contrib/plugins/Makefile     | 2 +-
- plugins/meson.build          | 2 +-
- tests/plugin/meson.build     | 3 ++-
- 4 files changed, 5 insertions(+), 4 deletions(-)
+On Fri, 27 Oct 2023, Mikhail Romanov wrote:
 
-diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
-index ac71a2abd3..56dd603a86 100644
---- a/.gitlab-ci.d/crossbuilds.yml
-+++ b/.gitlab-ci.d/crossbuilds.yml
-@@ -165,7 +165,7 @@ cross-win32-system:
-     job: win32-fedora-cross-container
-   variables:
-     IMAGE: fedora-win32-cross
--    EXTRA_CONFIGURE_OPTS: --enable-fdt=internal --disable-plugins
-+    EXTRA_CONFIGURE_OPTS: --enable-fdt=internal
-     CROSS_SKIP_TARGETS: alpha-softmmu avr-softmmu hppa-softmmu m68k-softmmu
-                         microblazeel-softmmu mips64el-softmmu nios2-softmmu
-   artifacts:
-diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
-index 1783750cf6..0b64d2c1e3 100644
---- a/contrib/plugins/Makefile
-+++ b/contrib/plugins/Makefile
-@@ -49,7 +49,7 @@ all: $(SONAMES)
- 	$(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<
- 
- ifeq ($(CONFIG_WIN32),y)
--lib%$(SO_SUFFIX): %.o win32_linker.o ../../plugins/qemu_plugin_api.lib
-+lib%$(SO_SUFFIX): %.o win32_linker.o ../../plugins/libqemu_plugin_api.a
- 	$(CC) -shared -o $@ $^ $(LDLIBS)
- else ifeq ($(CONFIG_DARWIN),y)
- lib%$(SO_SUFFIX): %.o
-diff --git a/plugins/meson.build b/plugins/meson.build
-index 40d24529c0..6b2d7a9292 100644
---- a/plugins/meson.build
-+++ b/plugins/meson.build
-@@ -28,7 +28,7 @@ if get_option('plugins')
-     # then use dlltool to assemble a delaylib.
-     win32_qemu_plugin_api_lib = configure_file(
-       input: win32_plugin_def,
--      output: 'qemu_plugin_api.lib',
-+      output: 'libqemu_plugin_api.a',
-       command: [dlltool, '--input-def', '@INPUT@',
-                 '--output-delaylib', '@OUTPUT@', '--dllname', 'qemu.exe']
-     )
-diff --git a/tests/plugin/meson.build b/tests/plugin/meson.build
-index 528bb9d86c..28a929dbcc 100644
---- a/tests/plugin/meson.build
-+++ b/tests/plugin/meson.build
-@@ -4,7 +4,8 @@ if get_option('plugins')
-     if targetos == 'windows'
-       t += shared_module(i, files(i + '.c') + '../../contrib/plugins/win32_linker.c',
-                         include_directories: '../../include/qemu',
--                        objects: [win32_qemu_plugin_api_lib],
-+                        link_depends: [win32_qemu_plugin_api_lib],
-+                        link_args: ['-Lplugins', '-lqemu_plugin_api'],
-                         dependencies: glib)
- 
-     else
--- 
-2.42.0
-
+> Improve buffer_is_zero function which is often used in qemu-img utility.
+> For instance, when converting a 4.4 GiB Windows 10 image to qcow2 it
+> takes around 40% of qemu-img run time (measured with 'perf record').
+> 
+> * The main improvements:
+> 
+> 1) Define an inline wrapper for this function in include/qemu/cutils.h.
+> It checks three bytes from the buffer, avoiding call overhead when
+> any of those is non-zero.
+> 
+> 2) Move the decision between accelerators to the inline wrapper so it
+> can be optimized out when buffer size is known at compile time.
+> 
+> * Cleanups:
+> 
+> 3) Delete AVX-512 accelerator, which is now invoked rarely thanks to
+> inline wrapper, so its speed benefit is neutralized by processor
+> frequency and voltage transition periods, as described in
+> https://travisdowns.github.io/blog/2020/01/17/avxfreq1.html
+> 
+> 4) Delete SSE4 accelerator because its only difference with the SSE2 one
+> is using ptest instead of pcmpeq+pmovmsk to compare a vector with 0, but
+> it gives no perfomance benefit (according to uops.info data).
+> 
+> 5) Remove all prefetches because they are done just a few processor
+> cycles before their target would be loaded.
+> 
+> * Improvements for SIMD variants:
+> 
+> 6) Double amount of bytes checked in an iteration of the main loop in
+> both SSE2 and AVX2 accelerators, moving the bottleneck from ALU port
+> contention to load ports (two loads per cycle on popular x86
+> implementations). The improvement can be seen on real CPUs as well as
+> uiCA simulation.
+> 
+> 7) Replace unaligned tail checking in AVX2 accelerator with aligned tail
+> checking similar to SSE2's one because reading unaligned tail gives no
+> benefit.
+> 
+> 8) Move tail checking in both SSE2 and AVX2 accelerators before the main
+> loop so pcmpeq+pmovmsk checks are spread out more evenly.
+> 
+> * Correctness fixes:
+> 
+> 9) Add uint64_a type for pointers in integer version so they can alias
+> with any other type used in the buffer.
+> 
+> 10) Adjust loop iterators to avoid incrementing a pointer past the end of
+> the buffer.
+> 
+> * Other improvements:
+> 
+> 11) Improve checking buffers with len < 8 in internal integer function
+> because inline wrapper ensures len >= 4.
+> 
+> After these improvements buffer_is_zero works ~40% faster and takes 28%
+> of qemu-img run time (measured the same way as initial version, inline
+> wrapper execution included).
+> 
+> The test-bufferiszero.c unit test still passes.
+> 
+> Signed-off-by: Mikhail Romanov <mmromanov@ispras.ru>
+> ---
+> 
+> v2: reworded the commit message and comments; use casts via 'void *'
+> 
+> As buffer_is_zero is now a static inline function, should it be moved into its
+> own header file?
+> 
+>  include/qemu/cutils.h |  25 ++++-
+>  util/bufferiszero.c   | 249 +++++++++++++++++-------------------------
+>  2 files changed, 122 insertions(+), 152 deletions(-)
+> 
+> diff --git a/include/qemu/cutils.h b/include/qemu/cutils.h
+> index 92c927a6a3..6e35802b5e 100644
+> --- a/include/qemu/cutils.h
+> +++ b/include/qemu/cutils.h
+> @@ -187,7 +187,30 @@ char *freq_to_str(uint64_t freq_hz);
+>  /* used to print char* safely */
+>  #define STR_OR_NULL(str) ((str) ? (str) : "null")
+>  
+> -bool buffer_is_zero(const void *buf, size_t len);
+> +bool buffer_is_zero_len_4_plus(const void *buf, size_t len);
+> +extern bool (*buffer_is_zero_len_256_plus)(const void *, size_t);
+> +static inline bool buffer_is_zero(const void *vbuf, size_t len)
+> +{
+> +    const char *buf = vbuf;
+> +
+> +    if (len == 0) {
+> +        return true;
+> +    }
+> +    if (buf[0] || buf[len - 1] || buf[len / 2]) {
+> +        return false;
+> +    }
+> +    /* For len <= 3, all bytes are already tested.  */
+> +    if (len <= 3) {
+> +        return true;
+> +    }
+> +
+> +    if (len >= 256) {
+> +        return buffer_is_zero_len_256_plus(vbuf, len);
+> +    } else {
+> +        return buffer_is_zero_len_4_plus(vbuf, len);
+> +    }
+> +}
+> +
+>  bool test_buffer_is_zero_next_accel(void);
+>  
+>  /*
+> diff --git a/util/bufferiszero.c b/util/bufferiszero.c
+> index 3e6a5dfd63..3e5a014368 100644
+> --- a/util/bufferiszero.c
+> +++ b/util/bufferiszero.c
+> @@ -26,30 +26,23 @@
+>  #include "qemu/bswap.h"
+>  #include "host/cpuinfo.h"
+>  
+> -static bool
+> -buffer_zero_int(const void *buf, size_t len)
+> +typedef uint64_t uint64_a __attribute__((may_alias));
+> +
+> +bool
+> +buffer_is_zero_len_4_plus(const void *buf, size_t len)
+>  {
+>      if (unlikely(len < 8)) {
+> -        /* For a very small buffer, simply accumulate all the bytes.  */
+> -        const unsigned char *p = buf;
+> -        const unsigned char *e = buf + len;
+> -        unsigned char t = 0;
+> -
+> -        do {
+> -            t |= *p++;
+> -        } while (p < e);
+> -
+> -        return t == 0;
+> +        /* Inline wrapper ensures len >= 4.  */
+> +        return (ldl_he_p(buf) | ldl_he_p(buf + len - 4)) == 0;
+>      } else {
+> -        /* Otherwise, use the unaligned memory access functions to
+> -           handle the beginning and end of the buffer, with a couple
+> +        /* Use unaligned memory access functions to handle
+> +           the beginning and end of the buffer, with a couple
+>             of loops handling the middle aligned section.  */
+> -        uint64_t t = ldq_he_p(buf);
+> -        const uint64_t *p = (uint64_t *)(((uintptr_t)buf + 8) & -8);
+> -        const uint64_t *e = (uint64_t *)(((uintptr_t)buf + len) & -8);
+> +        uint64_t t = ldq_he_p(buf) | ldq_he_p(buf + len - 8);
+> +        const uint64_a *p = (void *)(((uintptr_t)buf + 8) & -8);
+> +        const uint64_a *e = (void *)(((uintptr_t)buf + len) & -8);
+>  
+> -        for (; p + 8 <= e; p += 8) {
+> -            __builtin_prefetch(p + 8);
+> +        for (; p < e - 7; p += 8) {
+>              if (t) {
+>                  return false;
+>              }
+> @@ -58,7 +51,6 @@ buffer_zero_int(const void *buf, size_t len)
+>          while (p < e) {
+>              t |= *p++;
+>          }
+> -        t |= ldq_he_p(buf + len - 8);
+>  
+>          return t == 0;
+>      }
+> @@ -67,124 +59,112 @@ buffer_zero_int(const void *buf, size_t len)
+>  #if defined(CONFIG_AVX512F_OPT) || defined(CONFIG_AVX2_OPT) || defined(__SSE2__)
+>  #include <immintrin.h>
+>  
+> -/* Note that each of these vectorized functions require len >= 64.  */
+> +/* Prevent the compiler from reassociating
+> +   a chain of similar operations.  */
+> +#define SSE_REASSOC_BARRIER(a, b) asm("" : "+x"(a), "+x"(b))
+> +
+> +/* Note that each of these vectorized functions assume len >= 256.  */
+>  
+>  static bool __attribute__((target("sse2")))
+>  buffer_zero_sse2(const void *buf, size_t len)
+>  {
+> -    __m128i t = _mm_loadu_si128(buf);
+> -    __m128i *p = (__m128i *)(((uintptr_t)buf + 5 * 16) & -16);
+> -    __m128i *e = (__m128i *)(((uintptr_t)buf + len) & -16);
+> -    __m128i zero = _mm_setzero_si128();
+> +    /* Begin with an unaligned head and tail of 16 bytes.  */
+> +    __m128i t = *(__m128i_u *)buf;
+> +    __m128i t2 = *(__m128i_u *)(buf + len - 16);
+> +    const __m128i *p = (void *)(((uintptr_t)buf + 16) & -16);
+> +    const __m128i *e = (void *)(((uintptr_t)buf + len) & -16);
+> +    __m128i zero = { 0 };
+>  
+> -    /* Loop over 16-byte aligned blocks of 64.  */
+> -    while (likely(p <= e)) {
+> -        __builtin_prefetch(p);
+> +    /* Proceed with an aligned tail.  */
+> +    t2 |= e[-7];
+> +    t |= e[-6];
+> +    /* Use the barrier to ensure two independent chains.  */
+> +    SSE_REASSOC_BARRIER(t, t2);
+> +    t2 |= e[-5];
+> +    t |= e[-4];
+> +    SSE_REASSOC_BARRIER(t, t2);
+> +    t2 |= e[-3];
+> +    t |= e[-2];
+> +    SSE_REASSOC_BARRIER(t, t2);
+> +    t2 |= e[-1];
+> +    t |= t2;
+> +
+> +    /* Loop over 16-byte aligned blocks of 128.  */
+> +    while (likely(p < e - 7)) {
+>          t = _mm_cmpeq_epi8(t, zero);
+>          if (unlikely(_mm_movemask_epi8(t) != 0xFFFF)) {
+>              return false;
+>          }
+> -        t = p[-4] | p[-3] | p[-2] | p[-1];
+> -        p += 4;
+> +        t = p[0];
+> +        t2 = p[1];
+> +        SSE_REASSOC_BARRIER(t, t2);
+> +        t |= p[2];
+> +        t2 |= p[3];
+> +        SSE_REASSOC_BARRIER(t, t2);
+> +        t |= p[4];
+> +        t2 |= p[5];
+> +        SSE_REASSOC_BARRIER(t, t2);
+> +        t |= p[6];
+> +        t2 |= p[7];
+> +        SSE_REASSOC_BARRIER(t, t2);
+> +        t |= t2;
+> +        p += 8;
+>      }
+>  
+> -    /* Finish the aligned tail.  */
+> -    t |= e[-3];
+> -    t |= e[-2];
+> -    t |= e[-1];
+> -
+> -    /* Finish the unaligned tail.  */
+> -    t |= _mm_loadu_si128(buf + len - 16);
+> -
+>      return _mm_movemask_epi8(_mm_cmpeq_epi8(t, zero)) == 0xFFFF;
+>  }
+>  
+>  #ifdef CONFIG_AVX2_OPT
+> -static bool __attribute__((target("sse4")))
+> -buffer_zero_sse4(const void *buf, size_t len)
+> -{
+> -    __m128i t = _mm_loadu_si128(buf);
+> -    __m128i *p = (__m128i *)(((uintptr_t)buf + 5 * 16) & -16);
+> -    __m128i *e = (__m128i *)(((uintptr_t)buf + len) & -16);
+> -
+> -    /* Loop over 16-byte aligned blocks of 64.  */
+> -    while (likely(p <= e)) {
+> -        __builtin_prefetch(p);
+> -        if (unlikely(!_mm_testz_si128(t, t))) {
+> -            return false;
+> -        }
+> -        t = p[-4] | p[-3] | p[-2] | p[-1];
+> -        p += 4;
+> -    }
+> -
+> -    /* Finish the aligned tail.  */
+> -    t |= e[-3];
+> -    t |= e[-2];
+> -    t |= e[-1];
+> -
+> -    /* Finish the unaligned tail.  */
+> -    t |= _mm_loadu_si128(buf + len - 16);
+> -
+> -    return _mm_testz_si128(t, t);
+> -}
+>  
+>  static bool __attribute__((target("avx2")))
+>  buffer_zero_avx2(const void *buf, size_t len)
+>  {
+>      /* Begin with an unaligned head of 32 bytes.  */
+> -    __m256i t = _mm256_loadu_si256(buf);
+> -    __m256i *p = (__m256i *)(((uintptr_t)buf + 5 * 32) & -32);
+> -    __m256i *e = (__m256i *)(((uintptr_t)buf + len) & -32);
+> +    __m256i t = *(__m256i_u *)buf;
+> +    __m256i t2 = *(__m256i_u *)(buf + len - 32);
+> +    const __m256i *p = (void *)(((uintptr_t)buf + 32) & -32);
+> +    const __m256i *e = (void *)(((uintptr_t)buf + len) & -32);
+> +    __m256i zero = { 0 };
+>  
+> -    /* Loop over 32-byte aligned blocks of 128.  */
+> -    while (p <= e) {
+> -        __builtin_prefetch(p);
+> -        if (unlikely(!_mm256_testz_si256(t, t))) {
+> +    /* Proceed with an aligned tail.  */
+> +    t2 |= e[-7];
+> +    t |= e[-6];
+> +    SSE_REASSOC_BARRIER(t, t2);
+> +    t2 |= e[-5];
+> +    t |= e[-4];
+> +    SSE_REASSOC_BARRIER(t, t2);
+> +    t2 |= e[-3];
+> +    t |= e[-2];
+> +    SSE_REASSOC_BARRIER(t, t2);
+> +    t2 |= e[-1];
+> +    t |= t2;
+> +
+> +    /* Loop over 32-byte aligned blocks of 256.  */
+> +    while (likely(p < e - 7)) {
+> +        t = _mm256_cmpeq_epi8(t, zero);
+> +        if (unlikely(_mm256_movemask_epi8(t) != 0xFFFFFFFF)) {
+>              return false;
+>          }
+> -        t = p[-4] | p[-3] | p[-2] | p[-1];
+> -        p += 4;
+> -    } ;
+> +        t = p[0];
+> +        t2 = p[1];
+> +        SSE_REASSOC_BARRIER(t, t2);
+> +        t |= p[2];
+> +        t2 |= p[3];
+> +        SSE_REASSOC_BARRIER(t, t2);
+> +        t |= p[4];
+> +        t2 |= p[5];
+> +        SSE_REASSOC_BARRIER(t, t2);
+> +        t |= p[6];
+> +        t2 |= p[7];
+> +        SSE_REASSOC_BARRIER(t, t2);
+> +        t |= t2;
+> +        p += 8;
+> +    }
+>  
+> -    /* Finish the last block of 128 unaligned.  */
+> -    t |= _mm256_loadu_si256(buf + len - 4 * 32);
+> -    t |= _mm256_loadu_si256(buf + len - 3 * 32);
+> -    t |= _mm256_loadu_si256(buf + len - 2 * 32);
+> -    t |= _mm256_loadu_si256(buf + len - 1 * 32);
+> -
+> -    return _mm256_testz_si256(t, t);
+> +    return _mm256_movemask_epi8(_mm256_cmpeq_epi8(t, zero)) == 0xFFFFFFFF;
+>  }
+>  #endif /* CONFIG_AVX2_OPT */
+>  
+> -#ifdef CONFIG_AVX512F_OPT
+> -static bool __attribute__((target("avx512f")))
+> -buffer_zero_avx512(const void *buf, size_t len)
+> -{
+> -    /* Begin with an unaligned head of 64 bytes.  */
+> -    __m512i t = _mm512_loadu_si512(buf);
+> -    __m512i *p = (__m512i *)(((uintptr_t)buf + 5 * 64) & -64);
+> -    __m512i *e = (__m512i *)(((uintptr_t)buf + len) & -64);
+> -
+> -    /* Loop over 64-byte aligned blocks of 256.  */
+> -    while (p <= e) {
+> -        __builtin_prefetch(p);
+> -        if (unlikely(_mm512_test_epi64_mask(t, t))) {
+> -            return false;
+> -        }
+> -        t = p[-4] | p[-3] | p[-2] | p[-1];
+> -        p += 4;
+> -    }
+> -
+> -    t |= _mm512_loadu_si512(buf + len - 4 * 64);
+> -    t |= _mm512_loadu_si512(buf + len - 3 * 64);
+> -    t |= _mm512_loadu_si512(buf + len - 2 * 64);
+> -    t |= _mm512_loadu_si512(buf + len - 1 * 64);
+> -
+> -    return !_mm512_test_epi64_mask(t, t);
+> -
+> -}
+> -#endif /* CONFIG_AVX512F_OPT */
+> -
+>  /*
+>   * Make sure that these variables are appropriately initialized when
+>   * SSE2 is enabled on the compiler command-line, but the compiler is
+> @@ -192,20 +172,17 @@ buffer_zero_avx512(const void *buf, size_t len)
+>   */
+>  #if defined(CONFIG_AVX512F_OPT) || defined(CONFIG_AVX2_OPT)
+>  # define INIT_USED     0
+> -# define INIT_LENGTH   0
+> -# define INIT_ACCEL    buffer_zero_int
+> +# define INIT_ACCEL    buffer_is_zero_len_4_plus
+>  #else
+>  # ifndef __SSE2__
+>  #  error "ISA selection confusion"
+>  # endif
+>  # define INIT_USED     CPUINFO_SSE2
+> -# define INIT_LENGTH   64
+>  # define INIT_ACCEL    buffer_zero_sse2
+>  #endif
+>  
+>  static unsigned used_accel = INIT_USED;
+> -static unsigned length_to_accel = INIT_LENGTH;
+> -static bool (*buffer_accel)(const void *, size_t) = INIT_ACCEL;
+> +bool (*buffer_is_zero_len_256_plus)(const void *, size_t) = INIT_ACCEL;
+>  
+>  static unsigned __attribute__((noinline))
+>  select_accel_cpuinfo(unsigned info)
+> @@ -213,24 +190,18 @@ select_accel_cpuinfo(unsigned info)
+>      /* Array is sorted in order of algorithm preference. */
+>      static const struct {
+>          unsigned bit;
+> -        unsigned len;
+>          bool (*fn)(const void *, size_t);
+>      } all[] = {
+> -#ifdef CONFIG_AVX512F_OPT
+> -        { CPUINFO_AVX512F, 256, buffer_zero_avx512 },
+> -#endif
+>  #ifdef CONFIG_AVX2_OPT
+> -        { CPUINFO_AVX2,    128, buffer_zero_avx2 },
+> -        { CPUINFO_SSE4,     64, buffer_zero_sse4 },
+> +        { CPUINFO_AVX2,   buffer_zero_avx2 },
+>  #endif
+> -        { CPUINFO_SSE2,     64, buffer_zero_sse2 },
+> -        { CPUINFO_ALWAYS,    0, buffer_zero_int },
+> +        { CPUINFO_SSE2,   buffer_zero_sse2 },
+> +        { CPUINFO_ALWAYS, buffer_is_zero_len_4_plus },
+>      };
+>  
+>      for (unsigned i = 0; i < ARRAY_SIZE(all); ++i) {
+>          if (info & all[i].bit) {
+> -            length_to_accel = all[i].len;
+> -            buffer_accel = all[i].fn;
+> +            buffer_is_zero_len_256_plus = all[i].fn;
+>              return all[i].bit;
+>          }
+>      }
+> @@ -256,35 +227,11 @@ bool test_buffer_is_zero_next_accel(void)
+>      return used;
+>  }
+>  
+> -static bool select_accel_fn(const void *buf, size_t len)
+> -{
+> -    if (likely(len >= length_to_accel)) {
+> -        return buffer_accel(buf, len);
+> -    }
+> -    return buffer_zero_int(buf, len);
+> -}
+> -
+>  #else
+> -#define select_accel_fn  buffer_zero_int
+> +#define select_accel_fn  buffer_is_zero_len_4_plus
+>  bool test_buffer_is_zero_next_accel(void)
+>  {
+>      return false;
+>  }
+>  #endif
+>  
+> -/*
+> - * Checks if a buffer is all zeroes
+> - */
+> -bool buffer_is_zero(const void *buf, size_t len)
+> -{
+> -    if (unlikely(len == 0)) {
+> -        return true;
+> -    }
+> -
+> -    /* Fetch the beginning of the buffer while we select the accelerator.  */
+> -    __builtin_prefetch(buf);
+> -
+> -    /* Use an optimized zero check if possible.  Note that this also
+> -       includes a check for an unrolled loop over 64-bit integers.  */
+> -    return select_accel_fn(buf, len);
+> -}
+> 
 
