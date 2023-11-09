@@ -2,73 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 254AD7E6828
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 11:32:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7862A7E6834
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 11:33:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r12Iu-0006T5-4A; Thu, 09 Nov 2023 05:30:28 -0500
+	id 1r12Lb-0007ic-Dk; Thu, 09 Nov 2023 05:33:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r12Is-0006Sr-9S
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 05:30:26 -0500
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ (Exim 4.90_1) (envelope-from <philippe.mathieu-daude@linaro.org>)
+ id 1r12LY-0007iQ-A6
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 05:33:12 -0500
+Received: from mail-qk1-x731.google.com ([2607:f8b0:4864:20::731])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r12Ic-00087H-IW
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 05:30:26 -0500
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-507a98517f3so823801e87.0
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 02:30:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philippe.mathieu-daude@linaro.org>)
+ id 1r12LJ-00008W-TN
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 05:33:10 -0500
+Received: by mail-qk1-x731.google.com with SMTP id
+ af79cd13be357-7789cc5c8ccso60604485a.0
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 02:32:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699525808; x=1700130608; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=OR1GuzH1VpTmRsIa5M2Y3InV8XhPPUiU/2+QIdT+z8Q=;
- b=RkOIH+5eyP/FtzEStTvPQBa2XeMiDRFrYdt8AxY4TeYsNJ5yBE0jPoJAAut9rSv+3g
- AqT4/z3ZgPI0fL6WgYcHheU1vdwpGuXOMJIY6xfugX27NXeaUxRFXMZ1QhN7ZzoagNRL
- P3PDcSF15lwHi4fPBHPPhUvkOtSsYBbbAWTzRlWPuVRpqZvNQ7Lf6SwLqM1jqcgbpqf4
- +a2ImfwoJ+5aPoUbbJYz2cH/OF0jcr/VDLGcVWvdDdluklUSY6dpw1nHqj0ObuPlf3rw
- DidT/7Lt4Tgmh0N33xtme6urtubRUTeI8wousLNHfPIHd/mIzTRUdpERwODQwpFMpLL5
- 4GEQ==
+ d=linaro.org; s=google; t=1699525976; x=1700130776; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=WRHV41HjbqwkytpjP7R0wen4xj42WGhuct82a0bgmFs=;
+ b=UgSf9LSlWPXD56vykLPeHRUE+8H2VpJUqdixDQCccqzULBuaX0c68K+o6X5+t2fz6w
+ PlWVpJAAp30WPPtt61G+SU1+nhLQr97y5avWjwGhPtB5JGIZdaidtLm0GuR8NgbZtjNi
+ qHQ0NDVfdQZYwTkIkbn+WZR44Aitje+3uV7fGbaa3anGhTwXGA4IXKHzj7dlVBthcXdA
+ yPnvucgIqvoucYpoerm5yzo82XxHq5jDmge6d4HUCJ7i5JU36zjbd9QiKE+qwyK8dumg
+ LIyLhZfdRrwieAwMD04U95i8txvD7xIj/L7oLC+NcFEJ3b0Jjka9+UkIt9cRQGLxJY65
+ Wg+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699525808; x=1700130608;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OR1GuzH1VpTmRsIa5M2Y3InV8XhPPUiU/2+QIdT+z8Q=;
- b=BDStEn115Ba9ZJhq8Bx+IT2LQO2BXcYvxlSIV52bi9pn/jFRZGMddwSSa+bk+Fhf+H
- zMQb3qTHijLdkr6e5Oz5zeONInFsliWe2jIh7y5QnOIAWYCqrRbK3V0EMi5OCcqo57No
- HOTPqL7prB6AsfisN5QNHeCl35ONstL4bcWl3XXKFDK6Q7GNAhAOHzIn1PqTOkSRJg03
- ECjGs2QG6PYkWUc3at4yRomIeszziKWqdpSOf6XV7bancJiffJ4psE2nIBhpYFwJ1YF+
- oXWfYxYUkmRrctEqYlb+uZ2AAzMQvICS0FQje+CDdoX0SX2fGUyjQ42gAnKBqW50/WzL
- BbgA==
-X-Gm-Message-State: AOJu0YzyC1gEVr8GKvV+O7f2piSXPwSl/rN3IrdSl9rQJZPs4QD5p3dH
- 4O3eGlXOHolx/H4a1FERqv9Cig==
-X-Google-Smtp-Source: AGHT+IHNhDg0c+Kh6Dgprz7OPwtddsJKp8w/F1fmsiRFWSd+mNzdCProNW2MNtStSLhXvbLfZ5c9Xg==
-X-Received: by 2002:a19:8c0e:0:b0:503:a82:b371 with SMTP id
- o14-20020a198c0e000000b005030a82b371mr977582lfd.4.1699525807758; 
- Thu, 09 Nov 2023 02:30:07 -0800 (PST)
-Received: from [192.168.16.175] (226.red-88-28-2.dynamicip.rima-tde.net.
- [88.28.2.226]) by smtp.gmail.com with ESMTPSA id
- 20-20020a05600c025400b004065e235417sm1625235wmj.21.2023.11.09.02.30.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Nov 2023 02:30:07 -0800 (PST)
-Message-ID: <bec71964-3c8a-4419-b96d-71db48b5b24b@linaro.org>
-Date: Thu, 9 Nov 2023 11:30:04 +0100
+ d=1e100.net; s=20230601; t=1699525976; x=1700130776;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WRHV41HjbqwkytpjP7R0wen4xj42WGhuct82a0bgmFs=;
+ b=OWhSg0Zlv3S3XoKR9UUFu2P/fWXKNJeLM1TQ2PE6twtr8Y5nZKr/dFUlykBwKmMNj4
+ IdwJrU3seuaO0I3zao1x5RDG2DcXjNkNhy8xsKAl6T0fwF8qEi6oSn1NusJB69oVTFZf
+ Rf0EJUE0DcF87TRPiIBgsCDfxihb/912sNNARfYKhuu8SHN0ACUiLz9x9m/DRWa/Ui9i
+ 4EEuEw/VNCTEGHNtcDGWVDUidODTfone150iaD6K8zNv3vA49p2Ysp+Zge+1Ve93KF1O
+ UrOopgYKqJun6DGK4y6bX9WpOHsSEFTeD713fCsd8LqUsX0n7D7FJVl9c+eg0j9SNE+P
+ DVOw==
+X-Gm-Message-State: AOJu0YzQ9xD45VCje2aGbfheALChOnKyMw7oI3cxuWkX0m2DoEbyzlm6
+ UP8DgE0pHJNlZj5VxxRWuMzj3uKQu1DO62ueObfL2Q==
+X-Google-Smtp-Source: AGHT+IEboDMQdxtksnWJMatZecpWnSiOV/P7sVHciyIwmpDtgPkVtMn0ae7/k71FMC0ZZjsx6Mmz5zXUjdXHPVURXjk=
+X-Received: by 2002:a05:620a:2907:b0:778:b30b:9839 with SMTP id
+ m7-20020a05620a290700b00778b30b9839mr10907570qkp.23.1699525976160; Thu, 09
+ Nov 2023 02:32:56 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] plugins: fix win plugin tests on cross compile
-Content-Language: en-US
-To: Greg Manning <gmanning@rapitasystems.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 References: <20231109091337.415-1-gmanning@rapitasystems.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 In-Reply-To: <20231109091337.415-1-gmanning@rapitasystems.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
+From: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Date: Thu, 9 Nov 2023 11:32:44 +0100
+Message-ID: <CAPMQPEJozXXPGWTPPbRxUEWZsdEVrVrwuuqQJehwYN41PfL8rQ@mail.gmail.com>
+Subject: Re: [PATCH] plugins: fix win plugin tests on cross compile
+To: Greg Manning <gmanning@rapitasystems.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::731;
+ envelope-from=philippe.mathieu-daude@linaro.org; helo=mail-qk1-x731.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,7 +88,7 @@ Hi Greg,
 On 9/11/23 10:13, Greg Manning wrote:
 > fixes #1927.
 
-Does this match GitLab pattern? See
+Does this match the GitLab pattern? See
 https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#default-closing-pattern
 
 We usually write:
@@ -110,7 +103,7 @@ Are you sure this is #1927 "SPARC64 pci-bridge kernel panic"?
 > the meson command to take the (now renamed) libqemu_plugin_api.a as a
 > lib, rather than an object. This puts it in the right place on both
 > native and cross compile gcc commands
-> 
+>
 > Reenable plugins on crossbuilds
 
 Missing your Signed-off-by tag, see:
@@ -120,13 +113,14 @@ Otherwise LGTM, thanks for working on this issue!
 
 Phil.
 
+
 > ---
 >   .gitlab-ci.d/crossbuilds.yml | 2 +-
 >   contrib/plugins/Makefile     | 2 +-
 >   plugins/meson.build          | 2 +-
 >   tests/plugin/meson.build     | 3 ++-
 >   4 files changed, 5 insertions(+), 4 deletions(-)
-> 
+>
 > diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
 > index ac71a2abd3..56dd603a86 100644
 > --- a/.gitlab-ci.d/crossbuilds.yml
@@ -145,12 +139,12 @@ Phil.
 > --- a/contrib/plugins/Makefile
 > +++ b/contrib/plugins/Makefile
 > @@ -49,7 +49,7 @@ all: $(SONAMES)
->   	$(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<
->   
+>       $(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<
+>
 >   ifeq ($(CONFIG_WIN32),y)
 > -lib%$(SO_SUFFIX): %.o win32_linker.o ../../plugins/qemu_plugin_api.lib
 > +lib%$(SO_SUFFIX): %.o win32_linker.o ../../plugins/libqemu_plugin_api.a
->   	$(CC) -shared -o $@ $^ $(LDLIBS)
+>       $(CC) -shared -o $@ $^ $(LDLIBS)
 >   else ifeq ($(CONFIG_DARWIN),y)
 >   lib%$(SO_SUFFIX): %.o
 > diff --git a/plugins/meson.build b/plugins/meson.build
@@ -178,7 +172,6 @@ Phil.
 > +                        link_depends: [win32_qemu_plugin_api_lib],
 > +                        link_args: ['-Lplugins', '-lqemu_plugin_api'],
 >                           dependencies: glib)
->   
+>
 >       else
-
 
