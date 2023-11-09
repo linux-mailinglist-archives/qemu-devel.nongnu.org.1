@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5569B7E64C3
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C997E64C1
 	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 08:52:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0zoJ-0007Ib-Jn; Thu, 09 Nov 2023 02:50:43 -0500
+	id 1r0zoK-0007Je-1c; Thu, 09 Nov 2023 02:50:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1r0zoF-0007HY-8Q
+ (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1r0zoF-0007HQ-7s
  for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:50:39 -0500
 Received: from mgamail.intel.com ([192.55.52.43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1r0zo9-0001o2-5A
+ (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1r0zo9-0001pD-55
  for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:50:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1699516233; x=1731052233;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=sFrdaYDqHcmeMwI+r91s4Pu9byCxYPzQ4VEuUXb9rxI=;
- b=LL3aUutqosdjmjV2p4RDcAy8oDfy4sjsrDDw7HMo3SlV0rsrWsW7Y3he
- W6xgchJC65E64EdVUO7fefQ2QuKu53GUnh5V2wiqqFjeM2TMnyLyxuvGG
- X4/L8qyw4rwSbMExPKJY1DY9uJVrrpOgSEmPxzCyiTkAkGDD49IewehRr
- 84oNdhNSoMPklGRCIeVQsKCSiQg/2XOyQjwTfRuEWkRSGuKR7FpBtbMm7
- 7XJ8Sf21H7pJ13qxKYw29pudlQGmDKXKPn0+AsJUSAHCrHGOiLar06nQw
- iU9m2TnmqGhBgOthDt6ocV0kO/EivIAcXjolbqfkYzWu6d1C6hOnmrnP7 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="476165122"
-X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="476165122"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=XHdLvfVHJIvI0mv20DOWuf8Ii7qbgRx1MvES8geIcoU=;
+ b=SUxuHbS9TGfvJUx1nRBLaXIuQ1SCxrqca/1NDc+t+D8USEkK0qd43+Db
+ +96hdDeW2+JkndRjXsoulS2E2af+9a0ejVvgvsDfgagT2SJU3j8u+i7Er
+ MYShRx6iv55LaC8vBABP4z1rr0uVFeXL3HhWYYTQmhKXINqMqNDVywlh7
+ MGGLvYO2lpaDurj8cLFR/vQkWtW4tCMqqxbxwcqoKYuHbMrpjQmAYIRDG
+ k69468Zd2QWf57SDHWDvwnB+nUE1/1G2SAO+PVD820gMlooKbM+6RNpQI
+ t5uFxOJL/nfaDXBN1GFgJ+dxihWl3L7p5rKEuz4FYAeDkMJzTT9l5F6MI A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="476165129"
+X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="476165129"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  08 Nov 2023 23:50:22 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="763329260"
-X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="763329260"
+X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="763329268"
+X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="763329268"
 Received: from unknown (HELO fred..) ([172.25.112.68])
  by orsmga002.jf.intel.com with ESMTP; 08 Nov 2023 23:50:21 -0800
 From: Xin Li <xin3.li@intel.com>
@@ -43,10 +43,12 @@ To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, richard.henderson@linaro.org, pbonzini@redhat.com,
  eduardo@habkost.net, seanjc@google.com, chao.gao@intel.com, hpa@zytor.com,
  xiaoyao.li@intel.com, weijiang.yang@intel.com
-Subject: [PATCH v3 0/6] target/i386: add support for FRED
-Date: Wed,  8 Nov 2023 23:20:06 -0800
-Message-ID: <20231109072012.8078-1-xin3.li@intel.com>
+Subject: [PATCH v3 1/6] target/i386: add support for FRED in CPUID enumeration
+Date: Wed,  8 Nov 2023 23:20:07 -0800
+Message-ID: <20231109072012.8078-2-xin3.li@intel.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231109072012.8078-1-xin3.li@intel.com>
+References: <20231109072012.8078-1-xin3.li@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.55.52.43; envelope-from=xin3.li@intel.com;
@@ -73,67 +75,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch set adds support for the Intel flexible return and event delivery
-(FRED) architecture to allow Qemu to run KVM guests with FRED enabled.
+FRED, i.e., the Intel flexible return and event delivery architecture,
+defines simple new transitions that change privilege level (ring
+transitions).
 
-The FRED architecture defines simple new transitions that change privilege
-level (ring transitions). The FRED architecture was designed with the
-following goals:
-1) Improve overall performance and response time by replacing event delivery
-   through the interrupt descriptor table (IDT event delivery) and event
-   return by the IRET instruction with lower latency transitions.
-2) Improve software robustness by ensuring that event delivery establishes
-   the full supervisor context and that event return establishes the full
-   user context.
+The new transitions defined by the FRED architecture are FRED event
+delivery and, for returning from events, two FRED return instructions.
+FRED event delivery can effect a transition from ring 3 to ring 0, but
+it is used also to deliver events incident to ring 0.  One FRED
+instruction (ERETU) effects a return from ring 0 to ring 3, while the
+other (ERETS) returns while remaining in ring 0.  Collectively, FRED
+event delivery and the FRED return instructions are FRED transitions.
 
-Intel VMX architecture is extended to run FRED guests, and the changes
-are majorly:
-1) New VMCS fields for FRED context management, which includes two new
-   event data VMCS fields, eight new guest FRED context VMCS fields and
-   eight new host FRED context VMCS fields.
-2) VMX nested-Exception support for proper virtualization of stack
-   levels introduced with FRED architecture.
+In addition to these transitions, the FRED architecture defines a new
+instruction (LKGS) for managing the state of the GS segment register.
+The LKGS instruction can be used by 64-bit operating systems that do
+not use the new FRED transitions.
 
-Search for the latest FRED spec in most search engines with this search pattern:
+WRMSRNS is an instruction that behaves exactly like WRMSR, with the
+only difference being that it is not a serializing instruction by
+default.  Under certain conditions, WRMSRNS may replace WRMSR to improve
+performance.  FRED uses it to switch RSP0 in a faster manner.
+
+Search for the latest FRED spec in most search engines with this search
+pattern:
 
   site:intel.com FRED (flexible return and event delivery) specification
 
-The counterpart KVM patch set is at:
-https://lore.kernel.org/kvm/20231108183003.5981-1-xin3.li@intel.com/T/#m77876e22876f41c5ec677c0834a46113a4987d31
+The CPUID feature flag CPUID.(EAX=7,ECX=1):EAX[17] enumerates FRED, and
+the CPUID feature flag CPUID.(EAX=7,ECX=1):EAX[18] enumerates LKGS, and
+the CPUID feature flag CPUID.(EAX=7,ECX=1):EAX[19] enumerates WRMSRNS.
 
+Add CPUID definitions for FRED/LKGS/WRMSRNS, and expose them to KVM guests.
 
+Because FRED relies on LKGS and WRMSRNS, add that to feature dependency
+map.
+
+Tested-by: Shan Kang <shan.kang@intel.com>
+Signed-off-by: Xin Li <xin3.li@intel.com>
 ---
-Changelog
-v3:
-- Add WRMSRNS as a baseline feature for FRED.
-- Add the secondary VM exit controls MSR.
-- Add FRED VMX controls to VM exit/entry feature words and
-  scripts/kvm/vmxcap.
-- Do not set/get FRED SSP0 MSR, i.e. PL0_SSP MSR, with FRED, leave it to
-  KVM CET.
+ target/i386/cpu.c | 10 +++++++++-
+ target/i386/cpu.h |  6 ++++++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-v2:
-- Add VMX nested-exception support to scripts/kvm/vmxcap (Paolo Bonzini).
-- Move FRED MSRs from basic x86_cpu part to .subsections part (Weijiang Yang).
-
-
-Xin Li (6):
-  target/i386: add support for FRED in CPUID enumeration
-  target/i386: mark CR4.FRED not reserved
-  target/i386: add the secondary VM exit controls MSR
-  target/i386: add support for VMX FRED controls
-  target/i386: enumerate VMX nested-exception support
-  target/i386: Add get/set/migrate support for FRED MSRs
-
- scripts/kvm/vmxcap    | 13 ++++++++++++
- target/i386/cpu.c     | 15 ++++++++++---
- target/i386/cpu.h     | 42 ++++++++++++++++++++++++++++++++++++-
- target/i386/kvm/kvm.c | 49 +++++++++++++++++++++++++++++++++++++++++++
- target/i386/machine.c | 28 +++++++++++++++++++++++++
- 5 files changed, 143 insertions(+), 4 deletions(-)
-
-
-base-commit: a3c3aaa846ad61b801e7196482dcf4afb8ba34e4
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 358d9c0a65..403c84177a 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -965,7 +965,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+             "avx-vnni", "avx512-bf16", NULL, "cmpccxadd",
+             NULL, NULL, "fzrm", "fsrs",
+             "fsrc", NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
++            NULL, "fred", "lkgs", "wrmsrns",
+             NULL, "amx-fp16", NULL, "avx-ifma",
+             NULL, NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
+@@ -1552,6 +1552,14 @@ static FeatureDep feature_dependencies[] = {
+         .from = { FEAT_VMX_SECONDARY_CTLS,  VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE },
+         .to = { FEAT_7_0_ECX,               CPUID_7_0_ECX_WAITPKG },
+     },
++    {
++        .from = { FEAT_7_1_EAX,             CPUID_7_1_EAX_FRED },
++        .to = { FEAT_7_1_EAX,               CPUID_7_1_EAX_LKGS },
++    },
++    {
++        .from = { FEAT_7_1_EAX,             CPUID_7_1_EAX_FRED },
++        .to = { FEAT_7_1_EAX,               CPUID_7_1_EAX_WRMSRNS },
++    },
+ };
+ 
+ typedef struct X86RegisterInfo32 {
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index cd2e295bd6..5faf00551d 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -934,6 +934,12 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
+ #define CPUID_7_1_EDX_AMX_COMPLEX       (1U << 8)
+ /* PREFETCHIT0/1 Instructions */
+ #define CPUID_7_1_EDX_PREFETCHITI       (1U << 14)
++/* Flexible return and event delivery (FRED) */
++#define CPUID_7_1_EAX_FRED              (1U << 17)
++/* Load into IA32_KERNEL_GS_BASE (LKGS) */
++#define CPUID_7_1_EAX_LKGS              (1U << 18)
++/* Non-Serializing Write to Model Specific Register (WRMSRNS) */
++#define CPUID_7_1_EAX_WRMSRNS           (1U << 19)
+ 
+ /* Do not exhibit MXCSR Configuration Dependent Timing (MCDT) behavior */
+ #define CPUID_7_2_EDX_MCDT_NO           (1U << 5)
 -- 
 2.42.0
 
