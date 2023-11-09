@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 687E77E6C0F
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BC87E6C15
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:07:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15fU-0004o5-Oe; Thu, 09 Nov 2023 09:06:01 -0500
+	id 1r15ec-0002G1-Ai; Thu, 09 Nov 2023 09:05:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15cN-0004IB-Hi; Thu, 09 Nov 2023 09:02:49 -0500
+ id 1r15ce-000569-Gf; Thu, 09 Nov 2023 09:03:11 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15cL-0006rz-Hn; Thu, 09 Nov 2023 09:02:46 -0500
+ id 1r15cO-0006sU-ST; Thu, 09 Nov 2023 09:03:04 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DB0BE31BDA;
+ by isrv.corpit.ru (Postfix) with ESMTP id ED86131BDB;
  Thu,  9 Nov 2023 16:59:56 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E5EAE34513;
- Thu,  9 Nov 2023 16:59:48 +0300 (MSK)
-Received: (nullmailer pid 1462887 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 028E434514;
+ Thu,  9 Nov 2023 16:59:49 +0300 (MSK)
+Received: (nullmailer pid 1462890 invoked by uid 1000);
  Thu, 09 Nov 2023 13:59:47 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Mikulas Patocka <mpatocka@redhat.com>,
+ Yoshinori Sato <ysato@users.sourcefoege.jp>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.7 36/62] linux-user/mips: fix abort on integer overflow
-Date: Thu,  9 Nov 2023 16:59:04 +0300
-Message-Id: <20231109135933.1462615-36-mjt@tls.msk.ru>
+Subject: [Stable-7.2.7 37/62] linux-user/sh4: Fix crashes on signal delivery
+Date: Thu,  9 Nov 2023 16:59:05 +0300
+Message-Id: <20231109135933.1462615-37-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 References: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
@@ -39,12 +40,11 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,35 +62,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mikulas Patocka <mpatocka@redhat.com>
 
-QEMU mips userspace emulation crashes with "qemu: unhandled CPU exception
-0x15 - aborting" when one of the integer arithmetic instructions detects
-an overflow.
+sh4 uses gUSA (general UserSpace Atomicity) to provide atomicity on CPUs
+that don't have atomic instructions. A gUSA region that adds 1 to an
+atomic variable stored in @R2 looks like this:
 
-This patch fixes it so that it delivers SIGFPE with FPE_INTOVF instead.
+  4004b6:       03 c7           mova    4004c4 <gusa+0x10>,r0
+  4004b8:       f3 61           mov     r15,r1
+  4004ba:       09 00           nop
+  4004bc:       fa ef           mov     #-6,r15
+  4004be:       22 63           mov.l   @r2,r3
+  4004c0:       01 73           add     #1,r3
+  4004c2:       32 22           mov.l   r3,@r2
+  4004c4:       13 6f           mov     r1,r15
+
+R0 contains a pointer to the end of the gUSA region
+R1 contains the saved stack pointer
+R15 contains negative length of the gUSA region
+
+When this region is interrupted by a signal, the kernel detects if
+R15 >= -128U. If yes, the kernel rolls back PC to the beginning of the
+region and restores SP by copying R1 to R15.
+
+The problem happens if we are interrupted by a signal at address 4004c4.
+R15 still holds the value -6, but the atomic value was already written by
+an instruction at address 4004c2. In this situation we can't undo the
+gUSA. The function unwind_gusa does nothing, the signal handler attempts
+to push a signal frame to the address -6 and crashes.
+
+This patch fixes it, so that if we are interrupted at the last instruction
+in a gUSA region, we copy R1 to R15 to restore the correct stack pointer
+and avoid crashing.
+
+There's another bug: if we are interrupted in a delay slot, we save the
+address of the instruction in the delay slot. We must save the address of
+the previous instruction.
 
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Message-Id: <3ef979a8-3ee1-eb2d-71f7-d788ff88dd11@redhat.com>
+Reviewed-by: Yoshinori Sato <ysato@users.sourcefoege.jp>
+Message-Id: <b16389f7-6c62-70b7-59b3-87533c0bcc@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 6fad9b4bb91dcc824f9c00a36ee843883b58313b)
+(cherry picked from commit 3b894b699c9a9c064466e128c18be80a3f2113bc)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/mips/cpu_loop.c b/linux-user/mips/cpu_loop.c
-index 8735e58bad..990b03e727 100644
---- a/linux-user/mips/cpu_loop.c
-+++ b/linux-user/mips/cpu_loop.c
-@@ -180,7 +180,9 @@ done_syscall:
-             }
-             force_sig_fault(TARGET_SIGFPE, si_code, env->active_tc.PC);
-             break;
--
-+	case EXCP_OVERFLOW:
-+            force_sig_fault(TARGET_SIGFPE, TARGET_FPE_INTOVF, env->active_tc.PC);
-+            break;
-         /* The code below was inspired by the MIPS Linux kernel trap
-          * handling code in arch/mips/kernel/traps.c.
-          */
+diff --git a/linux-user/sh4/signal.c b/linux-user/sh4/signal.c
+index c4ba962708..c16c2c2d57 100644
+--- a/linux-user/sh4/signal.c
++++ b/linux-user/sh4/signal.c
+@@ -104,6 +104,14 @@ static void unwind_gusa(CPUSH4State *regs)
+ 
+         /* Reset the SP to the saved version in R1.  */
+         regs->gregs[15] = regs->gregs[1];
++    } else if (regs->gregs[15] >= -128u && regs->pc == regs->gregs[0]) {
++        /* If we are on the last instruction of a gUSA region, we must reset
++           the SP, otherwise we would be pushing the signal context to
++           invalid memory.  */
++        regs->gregs[15] = regs->gregs[1];
++    } else if (regs->flags & TB_FLAG_DELAY_SLOT) {
++        /* If we are in a delay slot, push the previous instruction.  */
++        regs->pc -= 2;
+     }
+ }
+ 
 -- 
 2.39.2
 
