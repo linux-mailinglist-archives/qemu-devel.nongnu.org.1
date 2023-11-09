@@ -2,90 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0000E7E7495
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 23:54:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E077E7496
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 23:54:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1Dtn-00023W-4Q; Thu, 09 Nov 2023 17:53:19 -0500
+	id 1r1Dtn-000247-N5; Thu, 09 Nov 2023 17:53:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1r1Dtk-00022t-Ue; Thu, 09 Nov 2023 17:53:17 -0500
+ id 1r1Dtk-00022s-UF; Thu, 09 Nov 2023 17:53:17 -0500
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1r1Dtg-0001fU-8K; Thu, 09 Nov 2023 17:53:16 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ id 1r1Dtg-0001fa-Aj; Thu, 09 Nov 2023 17:53:16 -0500
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A9MewpY027923; Thu, 9 Nov 2023 22:53:08 GMT
+ 3A9Mepfe028330; Thu, 9 Nov 2023 22:53:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=VwxadFzgesvI/PBE6LkEV5HkAXuTBDSGDuSwOq3V4DA=;
- b=N5huaQyruFv0lQC/pkuHQ7vs/Z5MZkV1D0q1HuV00lWbD+tcYGwyaBIgTYx1kc3PkCAV
- 2KW7MUGEfPBkcdDcG0GRcphpLOSaXDVsuMhGHCk9wVvIJTDV+TUhfQCAl1fBPNrZr/fL
- ZQ0hRUW8UeuOPmXn9FM8Z/Y+nrni/P1axOL63sB7aZm4u11P9j927dLtXjh7516WD5jB
- EAP9+8yi4rcdVrWctlhLj8feTYuM+zOf68PweXvmMhSs3RbdVgDyzXJANiua/8th1P4o
- 5IZf69Ww3I177ssjmQN0GFJEReBwnb1qnRCwTdF6sVp75Vht4r5p91uJDhOnOD/rhcAU gw== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=jIQ+XSSeTwjc7+bZbWrfJ/RU5+15EXIq9VHvvU7dA1Q=;
+ b=SxddOmCDFwLIYSyUAn8kxxGqJXWTYWaq/En33EvQmiXyvDE9IuUcXzqvJtHRG66Ml/8Q
+ JvJQo2ou7FZZKNaD3WpvupNlU5a8kYkknQRF3CfixjHf0tD1AktQDEWe93+JfxRgv7Ia
+ 9jIrvLFTWeHcOOLboLVCzuxDMa/PggF5kxO6DL032mvXRuRGaUzDUKzN8jR9gA8e4fQj
+ twM2dvLysiWTgAtxNjoiGW4PjLEtgoVqR1ywghxcjrX6bgxCoxjKRY6K8k9sqZavXXUp
+ uZXwnf8/JOuwQX97ZXl+w4XMMqQE4H2ChsB1dIiqg2GCT1gQhY9avXRK4EX6WPbMqnFZ Tg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u987x8egv-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u97n71fkt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Nov 2023 22:53:08 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A9MhIG0004180;
+ Thu, 9 Nov 2023 22:53:08 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u97n71fke-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Nov 2023 22:53:08 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3A9M2Z3A004176; Thu, 9 Nov 2023 22:53:07 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u7w21700t-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 09 Nov 2023 22:53:07 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A9Mr7xi031112;
- Thu, 9 Nov 2023 22:53:07 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u987x8egd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Nov 2023 22:53:07 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A9Ljaan014340; Thu, 9 Nov 2023 22:53:05 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u7w2271hy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Nov 2023 22:53:05 +0000
 Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
  [10.39.53.229])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3A9Mr4eV43778752
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3A9Mr6H712452384
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 9 Nov 2023 22:53:05 GMT
+ Thu, 9 Nov 2023 22:53:06 GMT
 Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9DD965805C;
+ by IMSVA (Postfix) with ESMTP id 3132F58059;
+ Thu,  9 Nov 2023 22:53:06 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CA8D45805D;
  Thu,  9 Nov 2023 22:53:04 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 50F4E58059;
- Thu,  9 Nov 2023 22:53:03 +0000 (GMT)
 Received: from li-2311da4c-2e09-11b2-a85c-c003041e9174.ibm.com.com (unknown
  [9.61.66.47]) by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu,  9 Nov 2023 22:53:03 +0000 (GMT)
+ Thu,  9 Nov 2023 22:53:04 +0000 (GMT)
 From: Matthew Rosato <mjrosato@linux.ibm.com>
 To: qemu-s390x@nongnu.org
 Cc: farman@linux.ibm.com, thuth@redhat.com, clg@redhat.com,
  pasic@linux.ibm.com, borntraeger@linux.ibm.com,
  richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
  qemu-devel@nongnu.org
-Subject: [PATCH 0/2] s390x/pci: small set of fixes
-Date: Thu,  9 Nov 2023 17:53:00 -0500
-Message-ID: <20231109225302.401344-1-mjrosato@linux.ibm.com>
+Subject: [PATCH 1/2] s390x/pci: bypass vfio DMA counting when using cdev
+Date: Thu,  9 Nov 2023 17:53:01 -0500
+Message-ID: <20231109225302.401344-2-mjrosato@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231109225302.401344-1-mjrosato@linux.ibm.com>
+References: <20231109225302.401344-1-mjrosato@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: wM-EM9RkvKui8GvUmQGRVK2T6Dk8tAR8
-X-Proofpoint-GUID: JsfAPvoRxmZD8nOX6pZnOyUclaUTv8MM
+X-Proofpoint-ORIG-GUID: 0beZ_NOun9CY_jEysd50ghd93XcZYT6k
+X-Proofpoint-GUID: 60-SeHEebSIi4BY-HsYfOujVMQShwobp
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-09_16,2023-11-09_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- mlxlogscore=519 mlxscore=0 priorityscore=1501 clxscore=1011 adultscore=0
- spamscore=0 suspectscore=0 lowpriorityscore=0 malwarescore=0 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311090167
+ suspectscore=0
+ mlxlogscore=670 clxscore=1015 priorityscore=1501 spamscore=0
+ lowpriorityscore=0 bulkscore=0 mlxscore=0 phishscore=0 impostorscore=0
+ adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311060000 definitions=main-2311090167
 Received-SPF: pass client-ip=148.163.156.1;
  envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
@@ -110,27 +113,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following set of changes are associated with issues exposed by testing
-of the 'vfio: Adopt iommufd' series.
+The current code assumes that there is always a vfio group, but
+that's no longer guaranteed with the iommufd backend when using
+cdev.  In this case, we don't need to track the vfio dma limit
+anyway.
 
-The first patch fixes an existing assumption that a vfio device will always
-have a group fd (which is no longer true if cdev is used, which can only
-happen once the iommufd backend is used).  This patch really only needs to
-go into 8.2 if the 'vfio: Adopt iommufd' series does (but would be fine to 
-go into 8.2 without it too).
+Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
+---
+ hw/s390x/s390-pci-vfio.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-The second patch fixes an issue where we do not detect that a vfio DMA limit
-was never read from vfio.  This is actually an existing bug as it's possible
-for an older host kernel to be missing this support today; so ideally this one
-should be targeted for 8.2 regardless. 
-
-Matthew Rosato (2):
-  s390x/pci: bypass vfio DMA counting when using cdev
-  s390x/pci: only limit DMA aperture if vfio DMA limit reported
-
- hw/s390x/s390-pci-vfio.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
+diff --git a/hw/s390x/s390-pci-vfio.c b/hw/s390x/s390-pci-vfio.c
+index 59a2e03873..7218583883 100644
+--- a/hw/s390x/s390-pci-vfio.c
++++ b/hw/s390x/s390-pci-vfio.c
+@@ -66,7 +66,11 @@ S390PCIDMACount *s390_pci_start_dma_count(S390pciState *s,
+ 
+     assert(vpdev);
+ 
+-    id = vpdev->vbasedev.group->container->fd;
++    if (vpdev->vbasedev.group) {
++        id = vpdev->vbasedev.group->container->fd;
++    } else {
++        return NULL;
++    }
+ 
+     if (!s390_pci_update_dma_avail(id, &avail)) {
+         return NULL;
 -- 
 2.41.0
 
