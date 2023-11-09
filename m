@@ -2,57 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844357E6425
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 08:04:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2060D7E642B
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 08:10:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0z5Q-0000Cp-Ff; Thu, 09 Nov 2023 02:04:20 -0500
+	id 1r0zAQ-0002Td-Hd; Thu, 09 Nov 2023 02:09:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r0z5P-0000Ak-B9
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:04:19 -0500
+ id 1r0zAN-0002TE-Qy
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:09:27 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r0z5N-0001L6-OG
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:04:19 -0500
+ id 1r0zAM-0002BB-Cf
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 02:09:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699513456;
+ s=mimecast20190719; t=1699513764;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=D7WarhrLTuxi0oytHefmmflWiEJDS7jlEvkRUBTBf44=;
- b=axomBjBQ3bI4GD4d9uojCucB7Qg0c0n9U6CEE6xSZaOQ9ELMqNwNP7caahrpGp821oVWLv
- GglreHM6onBIPZ13gb4p9QMCMimObymGg0QnDdWh4gksoooVaJD3zZwHRATvPIk2YS+OOE
- yd7F8rPBr/jJnS8jubtmkhhPb2E1jXs=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-106-dIYjYsczMDOEap_RUJe9Zw-1; Thu,
- 09 Nov 2023 02:04:14 -0500
-X-MC-Unique: dIYjYsczMDOEap_RUJe9Zw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9MIr6lDtHkRnzMEouUlLVyfL7/4EDeD7FLrbsmHywBQ=;
+ b=aJdp20fDqU1ndjTQV393r4tQUJ5UzXjk8PQ9+KRH+6Z6aCgIs9TY1mrz7/3MCsl9bcjVGK
+ CkahIZsMbc6v7GKMWEN/ybCum7Uk0Xpus63/5JqQWwKgZDgeiRUsHFTN3k6WFbrhQSbZ9P
+ RFeMFRUjg2ODb52PfMv7kFsD6at3lyk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-692-Snjf0Pl4PYKhVDnZ8j5Xxg-1; Thu, 09 Nov 2023 02:09:22 -0500
+X-MC-Unique: Snjf0Pl4PYKhVDnZ8j5Xxg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3F65D3C1F126;
- Thu,  9 Nov 2023 07:04:14 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8102385C1A5;
+ Thu,  9 Nov 2023 07:04:20 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.85])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 63477492BE7;
- Thu,  9 Nov 2023 07:04:12 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A50711C060AE;
+ Thu,  9 Nov 2023 07:04:19 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Mads Ynddal <mads@ynddal.dk>,
-	Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 0/1] Tracing patches
-Date: Thu,  9 Nov 2023 15:04:08 +0800
-Message-ID: <20231109070409.46365-1-stefanha@redhat.com>
+Cc: Mads Ynddal <mads@ynddal.dk>, Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 1/1] tracetool: avoid invalid escape in Python string
+Date: Thu,  9 Nov 2023 15:04:09 +0800
+Message-ID: <20231109070409.46365-2-stefanha@redhat.com>
+In-Reply-To: <20231109070409.46365-1-stefanha@redhat.com>
+References: <20231109070409.46365-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -78,29 +83,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit a3c3aaa846ad61b801e7196482dcf4afb8ba34e4:
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-  Merge tag 'pull-ppc-20231107' of https://gitlab.com/danielhb/qemu into staging (2023-11-08 20:35:00 +0800)
+This is an error in Python 3.12; fix it by using a raw string literal.
 
-are available in the Git repository at:
-
-  https://gitlab.com/stefanha/qemu.git tags/tracing-pull-request
-
-for you to fetch changes up to 4d96307c5b4fac40c6ca25f38318b4b65d315de0:
-
-  tracetool: avoid invalid escape in Python string (2023-11-09 15:03:02 +0800)
-
-----------------------------------------------------------------
-Pull request
-
-----------------------------------------------------------------
-
-Marc-André Lureau (1):
-  tracetool: avoid invalid escape in Python string
-
+Cc:  <qemu-stable@nongnu.org>
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-ID: <20231108105649.60453-1-marcandre.lureau@redhat.com>
+---
  scripts/tracetool/__init__.py | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
+index b29594d75e..b887540a55 100644
+--- a/scripts/tracetool/__init__.py
++++ b/scripts/tracetool/__init__.py
+@@ -91,7 +91,7 @@ def out(*lines, **kwargs):
+ def validate_type(name):
+     bits = name.split(" ")
+     for bit in bits:
+-        bit = re.sub("\*", "", bit)
++        bit = re.sub(r"\*", "", bit)
+         if bit == "":
+             continue
+         if bit == "const":
 -- 
 2.41.0
 
