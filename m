@@ -2,42 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEB507E6BF3
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:03:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 043A17E6BED
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:02:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15bE-0007wE-Kv; Thu, 09 Nov 2023 09:01:37 -0500
+	id 1r15bf-0001KZ-V2; Thu, 09 Nov 2023 09:02:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15aL-0005yE-BC; Thu, 09 Nov 2023 09:00:43 -0500
+ id 1r15aO-000652-QU; Thu, 09 Nov 2023 09:00:52 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15aD-0005vF-Io; Thu, 09 Nov 2023 09:00:41 -0500
+ id 1r15aI-0005y5-K7; Thu, 09 Nov 2023 09:00:44 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2640431BC4;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3555031BC5;
  Thu,  9 Nov 2023 16:59:42 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 311E5344FD;
+ by tsrv.corpit.ru (Postfix) with SMTP id 41AC7344FE;
  Thu,  9 Nov 2023 16:59:34 +0300 (MSK)
-Received: (nullmailer pid 1462797 invoked by uid 1000);
+Received: (nullmailer pid 1462800 invoked by uid 1000);
  Thu, 09 Nov 2023 13:59:33 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.7 14/62] ui/vnc: fix debug output for invalid audio
- message
-Date: Thu,  9 Nov 2023 16:58:42 +0300
-Message-Id: <20231109135933.1462615-14-mjt@tls.msk.ru>
+Subject: [Stable-7.2.7 15/62] ui/vnc: fix handling of VNC_FEATURE_XVP
+Date: Thu,  9 Nov 2023 16:58:43 +0300
+Message-Id: <20231109135933.1462615-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 References: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,27 +61,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-The debug message was cut and pasted from the invalid audio format
-case, but the audio message is at bytes 2-3.
+VNC_FEATURE_XVP was not shifted left before adding it to vs->features,
+so it was never enabled; but it was also checked the wrong way with
+a logical AND instead of vnc_has_feature.  Fix both places.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 0cb9c5880e6b8dedc4e20026ce859dd1ea9aac84)
+(cherry picked from commit 477b301000d665313217f65e3a368d2cb7769c42)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/ui/vnc.c b/ui/vnc.c
-index 1856d57380..e04a251e72 100644
+index e04a251e72..1ca16c0ff6 100644
 --- a/ui/vnc.c
 +++ b/ui/vnc.c
-@@ -2565,7 +2565,7 @@ static int protocol_client_msg(VncState *vs, uint8_t *data, size_t len)
-                     vs, vs->ioc, vs->as.fmt, vs->as.nchannels, vs->as.freq);
-                 break;
-             default:
--                VNC_DEBUG("Invalid audio message %d\n", read_u8(data, 4));
-+                VNC_DEBUG("Invalid audio message %d\n", read_u8(data, 2));
-                 vnc_client_error(vs);
-                 break;
+@@ -2219,7 +2219,7 @@ static void set_encodings(VncState *vs, int32_t *encodings, size_t n_encodings)
+             break;
+         case VNC_ENCODING_XVP:
+             if (vs->vd->power_control) {
+-                vs->features |= VNC_FEATURE_XVP;
++                vs->features |= VNC_FEATURE_XVP_MASK;
+                 send_xvp_message(vs, VNC_XVP_CODE_INIT);
              }
+             break;
+@@ -2468,7 +2468,7 @@ static int protocol_client_msg(VncState *vs, uint8_t *data, size_t len)
+         vnc_client_cut_text(vs, read_u32(data, 4), data + 8);
+         break;
+     case VNC_MSG_CLIENT_XVP:
+-        if (!(vs->features & VNC_FEATURE_XVP)) {
++        if (!vnc_has_feature(vs, VNC_FEATURE_XVP)) {
+             error_report("vnc: xvp client message while disabled");
+             vnc_client_error(vs);
+             break;
 -- 
 2.39.2
 
