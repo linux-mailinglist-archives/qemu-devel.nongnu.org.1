@@ -2,92 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0753E7E7163
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 19:27:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47E257E719A
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 19:36:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r19kA-0002Y6-Um; Thu, 09 Nov 2023 13:27:06 -0500
+	id 1r19sA-0006pC-As; Thu, 09 Nov 2023 13:35:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r19jx-0002UA-IR
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 13:26:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
+ id 1r19s7-0006mp-6u
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 13:35:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r19jv-0006ym-SF
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 13:26:53 -0500
+ (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
+ id 1r19s5-0000l1-GO
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 13:35:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699554411;
+ s=mimecast20190719; t=1699554914;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=QKcxe+mJ71dBtyD0j527RCnjrr5Mm2SMBIz1P2uCRp0=;
- b=Q0nwrjISpHbJs5hb2mCWXkz6JHzqgqZ2smIS3sI4wt1RQKe7jOm4Sw3AyLj5ngpmQ5QpH6
- vtwXQTY1gbZIOtiU2AvGBi5mKyzPdb991feMZFTIcgvGM6euJHjwZtTIi/2im9Q1l1Q3Xr
- WiFXPqcZtV0fzOkM32fivJGq1I2tl8Y=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xmx37nET/gNVZ6D6QCg+V+SDqm+VhDvvBPhSMDgE2UQ=;
+ b=YiUonxMWrFdi+Mf+/8XWrowT3YsEduDRdP1CUl8sChedLq409HhZquMhdijfqeh28rInx0
+ 7sw76xk7A0xUg2kX20ilJ0WP7kgeeWS7mQFe0/NXSezduiWkfY+jqDL54pYJ8A0nZ3qqzF
+ 27zXOZIpiBzyafzN4l+55Q5hVf0Y6EE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-356-geBWzTSsPN-Tp1bAWhYhKA-1; Thu, 09 Nov 2023 13:26:49 -0500
-X-MC-Unique: geBWzTSsPN-Tp1bAWhYhKA-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-99bca0b9234so98308366b.2
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 10:26:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699554408; x=1700159208;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QKcxe+mJ71dBtyD0j527RCnjrr5Mm2SMBIz1P2uCRp0=;
- b=agBxthAQ3VT/l02ll5mgf4H8s8C/gvIR8OpTMdu8szfl3i67zFcYdlBZHA9Iq+QH7R
- newPdrLnQ1vkg5B8NtOIEf5Uczm+NolXB27l/g6YJ9Pr1peA+mZJW7L445d6Ze2v69mc
- dmctIYnnqfxrYHr12IbqWMfaKdc8h3YfmB9SkVvampc1Z2W07eSTUvMaEx5EeQCarcME
- dfekHIEl+rniT3sgfIEbZEWM3XN9/BQWKrX0C3zAmsY1MNJ+9FSDfted8fFQhF0+K9ef
- MHpj3zYGWA0vWuEZl9Gybq4LbsIv7gsvWg58F6kZVoUulPYoKyxPuDBzy26md0Fmkwr1
- mWiw==
-X-Gm-Message-State: AOJu0YxNdhw0mK/Q9yKQZ+7D3PB1psE1DdAF0hiuCGvkeFIVyoRug66A
- 8W8uVVafvP1Fr2tkv4XFkeI6gTUgHoO+cPiVCEUMF/qMN+2AIzEFw+rmgCVEnwtwaWf745DEhIc
- Da6I6ot6Jl8nUHd8=
-X-Received: by 2002:a17:906:794a:b0:9c3:b609:7211 with SMTP id
- l10-20020a170906794a00b009c3b6097211mr5188007ejo.1.1699554408470; 
- Thu, 09 Nov 2023 10:26:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHHMkTitnoMfywALCoS0hfqpjx97MIWa/1EPaJDUmq++UTVH/HSt3SFJNf6xdr4VXVWLwdLiQ==
-X-Received: by 2002:a17:906:794a:b0:9c3:b609:7211 with SMTP id
- l10-20020a170906794a00b009c3b6097211mr5187998ejo.1.1699554408175; 
- Thu, 09 Nov 2023 10:26:48 -0800 (PST)
-Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
- ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.googlemail.com with ESMTPSA id
- u20-20020a1709060b1400b009cb2fd85371sm2866614ejg.8.2023.11.09.10.26.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Nov 2023 10:26:47 -0800 (PST)
-Message-ID: <6214d5aa-1895-485b-9e41-061f4067e5fb@redhat.com>
-Date: Thu, 9 Nov 2023 19:26:46 +0100
+ us-mta-85-vQdb9oxuPnaSZDxFdzD2pg-1; Thu, 09 Nov 2023 13:35:07 -0500
+X-MC-Unique: vQdb9oxuPnaSZDxFdzD2pg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B95C0101A53B
+ for <qemu-devel@nongnu.org>; Thu,  9 Nov 2023 18:35:05 +0000 (UTC)
+Received: from localhost (unknown [10.45.226.151])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 53C085032;
+ Thu,  9 Nov 2023 18:35:05 +0000 (UTC)
+Date: Thu, 9 Nov 2023 19:35:04 +0100
+From: Victor Toso <victortoso@redhat.com>
+To: Andrea Bolognani <abologna@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
+ John Snow <jsnow@redhat.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
+Subject: Re: [PATCH v2 07/11] qapi: golang: Generate qapi's union types in Go
+Message-ID: <s2ev3hammcfpjbkrk7zxisge4a2cqr2gyomt2htir66vinfyhe@tupvidmxywzv>
+References: <20231016152704.221611-1-victortoso@redhat.com>
+ <20231016152704.221611-8-victortoso@redhat.com>
+ <CABJz62PFopBRaMBc8Smtse9DJEy+0Qii7DtiTZGQdks3dXOdUw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/qemu-iotests/149: Use more inclusive language in
- this test
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org, qemu-devel@nongnu.org
-References: <20231109180910.376632-1-thuth@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20231109180910.376632-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="itbdth2fvf4eeddw"
+Content-Disposition: inline
+In-Reply-To: <CABJz62PFopBRaMBc8Smtse9DJEy+0Qii7DtiTZGQdks3dXOdUw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=victortoso@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,78 +84,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/9/23 19:09, Thomas Huth wrote:
-> Let's use 'allowlist' and 'ignorelist' here instead of
-> problematic words.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   tests/qemu-iotests/149     | 14 +++++++-------
->   tests/qemu-iotests/149.out |  8 ++++----
->   2 files changed, 11 insertions(+), 11 deletions(-)
-> 
-> diff --git a/tests/qemu-iotests/149 b/tests/qemu-iotests/149
-> index 2ae318f16f..42f627688a 100755
-> --- a/tests/qemu-iotests/149
-> +++ b/tests/qemu-iotests/149
-> @@ -518,7 +518,7 @@ configs = [
->   
->   ]
->   
-> -blacklist = [
-> +ignorelist = [
 
-unsupported_configs
+--itbdth2fvf4eeddw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->       # We don't have a cast-6 cipher impl for QEMU yet
->       "cast6-256-xts-plain64-sha1",
->       "cast6-128-xts-plain64-sha1",
-> @@ -528,17 +528,17 @@ blacklist = [
->       "twofish-192-xts-plain64-sha1",
->   ]
->   
-> -whitelist = []
-> +allowlist = []
->   if "LUKS_CONFIG" in os.environ:
-> -    whitelist = os.environ["LUKS_CONFIG"].split(",")
-> +    allowlist = os.environ["LUKS_CONFIG"].split(",")
+Hi,
 
-tested_configs
+On Thu, Nov 09, 2023 at 09:29:28AM -0800, Andrea Bolognani wrote:
+> On Mon, Oct 16, 2023 at 05:27:00PM +0200, Victor Toso wrote:
+> > This patch handles QAPI union types and generates the equivalent data
+> > structures and methods in Go to handle it.
+> >
+> > The QAPI union type has two types of fields: The @base and the
+> > @Variants members. The @base fields can be considered common members
+> > for the union while only one field maximum is set for the @Variants.
+> >
+> > In the QAPI specification, it defines a @discriminator field, which is
+> > an Enum type. The purpose of the  @discriminator is to identify which
+> > @variant type is being used.
+> >
+> > For the @discriminator's enum that are not handled by the QAPI Union,
+> > we add in the Go struct a separate block as "Unbranched enum fields".
+> > The rationale for this extra block is to allow the user to pass that
+> > enum value under the discriminator, without extra payload.
+> >
+> > The union types implement the Marshaler and Unmarshaler interfaces to
+> > seamless decode from JSON objects to Golang structs and vice versa.
+> >
+> > qapi:
+> >  | { 'union': 'SetPasswordOptions',
+> >  |   'base': { 'protocol': 'DisplayProtocol',
+> >  |             'password': 'str',
+> >  |             '*connected': 'SetPasswordAction' },
+> >  |   'discriminator': 'protocol',
+> >  |   'data': { 'vnc': 'SetPasswordOptionsVnc' } }
+> >
+> > go:
+> >  | type SetPasswordOptions struct {
+> >  | 	Password  string             `json:"password"`
+> >  | 	Connected *SetPasswordAction `json:"connected,omitempty"`
+> >  | 	// Variants fields
+> >  | 	Vnc *SetPasswordOptionsVnc `json:"-"`
+> >  | 	// Unbranched enum fields
+> >  | 	Spice bool `json:"-"`
+> >  | }
+>=20
+> Instead of using bool for these, can we denote a special type? For
+> example
+>=20
+>   type Empty struct{}
+>=20
+> We could then do
+>=20
+>   u :=3D SetPasswordOptions{
+>     Password: "...",
+>     Spice: &Empty{},
+>   }
+>=20
+> The benefit I have in mind is that you'd be able to check which
+> variant field is set consistently:
+>=20
+>   if u.Vnc !=3D nil {
+>     ...
+>   }
+>   if u.Spice !=3D nil {
+>     ...
+>   }
+>=20
+> Additionally, this would allow client code that *looks* at the
+> union to keep working even if actual data is later added to the
+> branch; client code that *creates* the union would need to be
+> updated, of course, but that would be the case regardless.
 
-While at it:
+I think it is better to not have code that is working to keep
+working in this case where Spice is implemented.
 
--whitelist = []
-+# Optionally test only the configurations in the LUKS_CONFIG
-+# environment variable
-+tested_configs = None
+Implementing Spice here would mean that a struct type
+SetPasswordOptionsSpice was created but because the code handling
+it before was using struct type Empty, it will not handle the new
+struct, leading to possible runtime errors (e.g: not handling
+username/password)
 
-and below
+A bool would be simpler, triggering compile time errors.
 
--if len(whitelist) > 0 and config.name not in whitelist:
-+if tested_configs is not None and config.name not in test_configs:
+Note that I'm working with the mindset that each version of the
+module talks well with a version of QEMU. We should consider next
+if we want to implement logic for QAPI versioning promises, which
+is for more than one QEMU version. Markus had an email about it
+last year. Daniel also suggested more version promises than what
+QAPI currently does.
 
->   
->   for config in configs:
-> -    if config.name in blacklist:
-> -        iotests.log("Skipping %s in blacklist" % config.name)
-> +    if config.name in ignorelist:
-> +        iotests.log("Skipping %s in ignorelist" % config.name)
+Anyway, that's my rationale for bool here.
 
-Skipping %s (cipher not supported)
+Cheers,
+Victor
 
-Even better would be to change blacklist to a regular expression and 
-make it just [ "^cast6-.*", "^twofish-.*" ], but I am not going to 
-require that. :)
+--itbdth2fvf4eeddw
+Content-Type: application/pgp-signature; name="signature.asc"
 
->           continue
->   
-> -    if len(whitelist) > 0 and config.name not in whitelist:
-> -        iotests.log("Skipping %s not in whitelist" % config.name)
-> +    if len(allowlist) > 0 and config.name not in allowlist:
-> +        iotests.log("Skipping %s not in allowlist" % config.name)
+-----BEGIN PGP SIGNATURE-----
 
-Skipping %s (not in LUKS_CONFIG)
+iQIzBAABCAAdFiEEIG07NS9WbzsOZXLpl9kSPeN6SE8FAmVNJlcACgkQl9kSPeN6
+SE9Nxw//b8H0nDL26FZ0mLT2ABbSxNbHy+NyvfcUCqMAWVO9JYiuAvGz6op5AKFb
+veYs2c8CH7EC0gJqQRvSxYYX7P7enyBEebSwqzywL60Wj5HGagDqw/ynhKth1WuL
+qrrp35y0BSU3/LT9DmWrEyVSluS3VnXGJoDoNBbFCoG3M7HdASYHPsSOi4g0aAeG
+CTkF8Pb5poSWLsr7Fz2GgGesK1hO0c9J3mWg3LCyYggQzytiuS5HcaYIJJeSsGfJ
+SovXqyWS9fxxiqy7anXxoV6wrhyJ7vg47GZ0MHHQbolx7VnmU2UvR8zfztT0Qman
+9jISeX6l3B/53I3GNTRopceBDci4/grhy6gkAcp09dbCEj5NraQvWAFbMYzyRJsR
+VDsR5mFLMnAGQHzR9gRi76ftzcOwz6xHeuZNWQQHOHmAtEE4InTfOw/fbs4/YtFl
+EXkeCbKMeThPgtXTnMkDubFrX6O+xk3Mjkc+n1KuJ3jvUlOfabCK4NlT4llTPTX4
+UpSmyZcMc35rd4awnTSAWJ10W7VYIpAJkfgYzvST+P69lHkLO47L9sL/26INKcV3
+lK5M/3NkLqlPgWfil+4xa6cRo/v0iFSQtJGzSbBRbqvdjwFCDm5sB8XjVU7smll3
+5DrNNWjLpNJRCWKofbMzJ/oWpm7wihnRR6WawuB9iiVkK+aeXMg=
+=tTkO
+-----END PGP SIGNATURE-----
 
-Paolo
+--itbdth2fvf4eeddw--
 
 
