@@ -2,43 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF56F7E6C3B
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:12:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E90767E6C31
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:11:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15fx-0006Lx-7C; Thu, 09 Nov 2023 09:06:29 -0500
+	id 1r15gd-0007pv-Js; Thu, 09 Nov 2023 09:07:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15dj-0000Wa-Ap; Thu, 09 Nov 2023 09:04:14 -0500
+ id 1r15dj-0000Zl-V5; Thu, 09 Nov 2023 09:04:17 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15de-00078w-Qx; Thu, 09 Nov 2023 09:04:10 -0500
+ id 1r15de-0007Ck-Vp; Thu, 09 Nov 2023 09:04:11 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D68EF31BE8;
+ by isrv.corpit.ru (Postfix) with ESMTP id E817B31BE9;
  Thu,  9 Nov 2023 16:59:57 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id DFB383451F;
+ by tsrv.corpit.ru (Postfix) with SMTP id F1BB834520;
  Thu,  9 Nov 2023 16:59:49 +0300 (MSK)
-Received: (nullmailer pid 1462924 invoked by uid 1000);
+Received: (nullmailer pid 1462928 invoked by uid 1000);
  Thu, 09 Nov 2023 13:59:47 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.7 48/62] target/arm: Don't allow stage 2 page table walks
- to downgrade to NS
-Date: Thu,  9 Nov 2023 16:59:16 +0300
-Message-Id: <20231109135933.1462615-48-mjt@tls.msk.ru>
+Subject: [Stable-7.2.7 49/62] target/arm: Fix handling of SW and NSW bits for
+ stage 2 walks
+Date: Thu,  9 Nov 2023 16:59:17 +0300
+Message-Id: <20231109135933.1462615-49-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 References: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -65,52 +63,198 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-Bit 63 in a Table descriptor is only the NSTable bit for stage 1
-translations; in stage 2 it is RES0.  We were incorrectly looking at
-it all the time.
+We currently don't correctly handle the VSTCR_EL2.SW and VTCR_EL2.NSW
+configuration bits.  These allow configuration of whether the stage 2
+page table walks for Secure IPA and NonSecure IPA should do their
+descriptor reads from Secure or NonSecure physical addresses. (This
+is separate from how the translation table base address and other
+parameters are set: an NS IPA always uses VTTBR_EL2 and VTCR_EL2
+for its base address and walk parameters, regardless of the NSW bit,
+and similarly for Secure.)
 
-This causes problems if:
- * the stage 2 table descriptor was incorrectly setting the RES0 bit
- * we are doing a stage 2 translation in Secure address space for
-   a NonSecure stage 1 regime -- in this case we would incorrectly
-   do an immediate downgrade to NonSecure
+Provide a new function ptw_idx_for_stage_2() which returns the
+MMU index to use for descriptor reads, and use it to set up
+the .in_ptw_idx wherever we call get_phys_addr_lpae().
 
-A bug elsewhere in the code currently prevents us from getting
-to the second situation, but when we fix that it will be possible.
+For a stage 2 walk, wherever we call get_phys_addr_lpae():
+ * .in_ptw_idx should be ptw_idx_for_stage_2() of the .in_mmu_idx
+ * .in_secure should be true if .in_mmu_idx is Stage2_S
+
+This allows us to correct S1_ptw_translate() so that it consistently
+always sets its (out_secure, out_phys) to the result it gets from the
+S2 walk (either by calling get_phys_addr_lpae() or by TLB lookup).
+This makes better conceptual sense because the S2 walk should return
+us an (address space, address) tuple, not an address that we then
+randomly assign to S or NS.
+
+Our previous handling of SW and NSW was broken, so guest code
+trying to use these bits to put the s2 page tables in the "other"
+address space wouldn't work correctly.
 
 Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1600
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20230504135425.2748672-2-peter.maydell@linaro.org
-(cherry picked from commit 21a4ab8318ba6f049aac244e237cd1557586e216)
+Message-id: 20230504135425.2748672-3-peter.maydell@linaro.org
+(cherry picked from commit fcc0b0418fff655f20fd0cf86a1bbdc41fd2e7c6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index fa013044c1..e593bc339a 100644
+index e593bc339a..97c85f3c95 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -1382,17 +1382,18 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-     descaddrmask &= ~indexmask_grainsize;
+@@ -103,6 +103,37 @@ ARMMMUIdx arm_stage1_mmu_idx(CPUARMState *env)
+     return stage_1_mmu_idx(arm_mmu_idx(env));
+ }
+ 
++/*
++ * Return where we should do ptw loads from for a stage 2 walk.
++ * This depends on whether the address we are looking up is a
++ * Secure IPA or a NonSecure IPA, which we know from whether this is
++ * Stage2 or Stage2_S.
++ * If this is the Secure EL1&0 regime we need to check the NSW and SW bits.
++ */
++static ARMMMUIdx ptw_idx_for_stage_2(CPUARMState *env, ARMMMUIdx stage2idx)
++{
++    bool s2walk_secure;
++
++    /*
++     * We're OK to check the current state of the CPU here because
++     * (1) we always invalidate all TLBs when the SCR_EL3.NS bit changes
++     * (2) there's no way to do a lookup that cares about Stage 2 for a
++     * different security state to the current one for AArch64, and AArch32
++     * never has a secure EL2. (AArch32 ATS12NSO[UP][RW] allow EL3 to do
++     * an NS stage 1+2 lookup while the NS bit is 0.)
++     */
++    if (!arm_is_secure_below_el3(env) || !arm_el_is_aa64(env, 3)) {
++        return ARMMMUIdx_Phys_NS;
++    }
++    if (stage2idx == ARMMMUIdx_Stage2_S) {
++        s2walk_secure = !(env->cp15.vstcr_el2 & VSTCR_SW);
++    } else {
++        s2walk_secure = !(env->cp15.vtcr_el2 & VTCR_NSW);
++    }
++    return s2walk_secure ? ARMMMUIdx_Phys_S : ARMMMUIdx_Phys_NS;
++
++}
++
+ static bool regime_translation_big_endian(CPUARMState *env, ARMMMUIdx mmu_idx)
+ {
+     return (regime_sctlr(env, mmu_idx) & SCTLR_EE) != 0;
+@@ -220,7 +251,6 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
+     ARMMMUIdx mmu_idx = ptw->in_mmu_idx;
+     ARMMMUIdx s2_mmu_idx = ptw->in_ptw_idx;
+     uint8_t pte_attrs;
+-    bool pte_secure;
+ 
+     ptw->out_virt = addr;
+ 
+@@ -232,8 +262,8 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
+         if (regime_is_stage2(s2_mmu_idx)) {
+             S1Translate s2ptw = {
+                 .in_mmu_idx = s2_mmu_idx,
+-                .in_ptw_idx = is_secure ? ARMMMUIdx_Phys_S : ARMMMUIdx_Phys_NS,
+-                .in_secure = is_secure,
++                .in_ptw_idx = ptw_idx_for_stage_2(env, s2_mmu_idx),
++                .in_secure = s2_mmu_idx == ARMMMUIdx_Stage2_S,
+                 .in_debug = true,
+             };
+             GetPhysAddrResult s2 = { };
+@@ -244,12 +274,12 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
+             }
+             ptw->out_phys = s2.f.phys_addr;
+             pte_attrs = s2.cacheattrs.attrs;
+-            pte_secure = s2.f.attrs.secure;
++            ptw->out_secure = s2.f.attrs.secure;
+         } else {
+             /* Regime is physical. */
+             ptw->out_phys = addr;
+             pte_attrs = 0;
+-            pte_secure = is_secure;
++            ptw->out_secure = s2_mmu_idx == ARMMMUIdx_Phys_S;
+         }
+         ptw->out_host = NULL;
+         ptw->out_rw = false;
+@@ -270,7 +300,7 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
+         ptw->out_phys = full->phys_addr | (addr & ~TARGET_PAGE_MASK);
+         ptw->out_rw = full->prot & PAGE_WRITE;
+         pte_attrs = full->pte_attrs;
+-        pte_secure = full->attrs.secure;
++        ptw->out_secure = full->attrs.secure;
+ #else
+         g_assert_not_reached();
+ #endif
+@@ -293,11 +323,6 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
+         }
+     }
+ 
+-    /* Check if page table walk is to secure or non-secure PA space. */
+-    ptw->out_secure = (is_secure
+-                       && !(pte_secure
+-                            ? env->cp15.vstcr_el2 & VSTCR_SW
+-                            : env->cp15.vtcr_el2 & VTCR_NSW));
+     ptw->out_be = regime_translation_big_endian(env, mmu_idx);
+     return true;
+ 
+@@ -2610,7 +2635,7 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
+     hwaddr ipa;
+     int s1_prot, s1_lgpgsz;
+     bool is_secure = ptw->in_secure;
+-    bool ret, ipa_secure, s2walk_secure;
++    bool ret, ipa_secure;
+     ARMCacheAttrs cacheattrs1;
+     bool is_el0;
+     uint64_t hcr;
+@@ -2624,20 +2649,11 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
+ 
+     ipa = result->f.phys_addr;
+     ipa_secure = result->f.attrs.secure;
+-    if (is_secure) {
+-        /* Select TCR based on the NS bit from the S1 walk. */
+-        s2walk_secure = !(ipa_secure
+-                          ? env->cp15.vstcr_el2 & VSTCR_SW
+-                          : env->cp15.vtcr_el2 & VTCR_NSW);
+-    } else {
+-        assert(!ipa_secure);
+-        s2walk_secure = false;
+-    }
+ 
+     is_el0 = ptw->in_mmu_idx == ARMMMUIdx_Stage1_E0;
+-    ptw->in_mmu_idx = s2walk_secure ? ARMMMUIdx_Stage2_S : ARMMMUIdx_Stage2;
+-    ptw->in_ptw_idx = s2walk_secure ? ARMMMUIdx_Phys_S : ARMMMUIdx_Phys_NS;
+-    ptw->in_secure = s2walk_secure;
++    ptw->in_mmu_idx = ipa_secure ? ARMMMUIdx_Stage2_S : ARMMMUIdx_Stage2;
++    ptw->in_secure = ipa_secure;
++    ptw->in_ptw_idx = ptw_idx_for_stage_2(env, ptw->in_mmu_idx);
  
      /*
--     * Secure accesses start with the page table in secure memory and
-+     * Secure stage 1 accesses start with the page table in secure memory and
-      * can be downgraded to non-secure at any step. Non-secure accesses
-      * remain non-secure. We implement this by just ORing in the NSTable/NS
-      * bits at each step.
-+     * Stage 2 never gets this kind of downgrade.
-      */
-     tableattrs = is_secure ? 0 : (1 << 4);
+      * S1 is done, now do S2 translation.
+@@ -2729,6 +2745,16 @@ static bool get_phys_addr_with_struct(CPUARMState *env, S1Translate *ptw,
+         ptw->in_ptw_idx = is_secure ? ARMMMUIdx_Stage2_S : ARMMMUIdx_Stage2;
+         break;
  
-  next_level:
-     descaddr |= (address >> (stride * (4 - level))) & indexmask;
-     descaddr &= ~7ULL;
--    nstable = extract32(tableattrs, 4, 1);
-+    nstable = !regime_is_stage2(mmu_idx) && extract32(tableattrs, 4, 1);
-     if (nstable) {
-         /*
-          * Stage2_S -> Stage2 or Phys_S -> Phys_NS
++    case ARMMMUIdx_Stage2:
++    case ARMMMUIdx_Stage2_S:
++        /*
++         * Second stage lookup uses physical for ptw; whether this is S or
++         * NS may depend on the SW/NSW bits if this is a stage 2 lookup for
++         * the Secure EL2&0 regime.
++         */
++        ptw->in_ptw_idx = ptw_idx_for_stage_2(env, mmu_idx);
++        break;
++
+     case ARMMMUIdx_E10_0:
+         s1_mmu_idx = ARMMMUIdx_Stage1_E0;
+         goto do_twostage;
+@@ -2752,7 +2778,7 @@ static bool get_phys_addr_with_struct(CPUARMState *env, S1Translate *ptw,
+         /* fall through */
+ 
+     default:
+-        /* Single stage and second stage uses physical for ptw. */
++        /* Single stage uses physical for ptw. */
+         ptw->in_ptw_idx = is_secure ? ARMMMUIdx_Phys_S : ARMMMUIdx_Phys_NS;
+         break;
+     }
 -- 
 2.39.2
 
