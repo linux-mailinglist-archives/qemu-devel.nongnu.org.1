@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F031E7E73AB
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 22:37:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96DE27E73EC
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 22:51:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1Ch0-0000hv-Ct; Thu, 09 Nov 2023 16:36:02 -0500
+	id 1r1Cub-0003Wg-3x; Thu, 09 Nov 2023 16:50:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r1Cgy-0000he-Nb
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 16:36:00 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r1CuV-0003U7-BX
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 16:49:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r1Cgv-0003wn-UH
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 16:36:00 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r1CuK-0006eo-0P
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 16:49:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699565756;
+ s=mimecast20190719; t=1699566586;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TRDMQDVYqhUZnt4ORu8xRvgj+N4wDUR0vU3LFDGgzM4=;
- b=cBOmIPjvvZG8GF7h6yjcgxDkxyhPVEs8n5TZbRGWyRMac98XigP5mxs80ymk8QF1UNKgo2
- qy+HOL85cyVxJ11c2ieFTVQ0m+KA6XpRD3Rq0dbRtqBJYAQ62NgSqIvrATB4SZBD/PRLgG
- IGSmfKYBDJ8rou6QDctCawzgMyvlGRg=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=yf1ZA4bmxT04JFB+HBgkywHvdzJIbfprVmdFsHkALRU=;
+ b=HyLBjZDXu8hI9DQcrDyq5BxY5qZHWWaYBCcZJzpSZUgsUPfHY8ple1zoPnI9H4hHkxFWs5
+ VaC0AFUbdrQcv1BJg2YzEeGTUR9MlQIPMQqEGDh1efsVZ1L7p9Z1xwryDShkEQNuBHIaWE
+ JGipCT5VUYbtbl26HLBmbSbZ396b96o=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-203-f6fnPnqkPTi2vDQL1kFong-1; Thu, 09 Nov 2023 16:35:55 -0500
-X-MC-Unique: f6fnPnqkPTi2vDQL1kFong-1
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-2804a04e233so1266579a91.0
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 13:35:54 -0800 (PST)
+ us-mta-639-hRz2qjOuPrSl8fhtIPEzuQ-1; Thu, 09 Nov 2023 16:49:45 -0500
+X-MC-Unique: hRz2qjOuPrSl8fhtIPEzuQ-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-2804a04e233so1279305a91.0
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 13:49:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699565753; x=1700170553;
+ d=1e100.net; s=20230601; t=1699566584; x=1700171384;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TRDMQDVYqhUZnt4ORu8xRvgj+N4wDUR0vU3LFDGgzM4=;
- b=pYL5CyvlR8gFcRgTqcNOBwyQvlhAjly15P4mVftMh+F+G6EnRdsRbFrvG4xiisRGEe
- Yunhu3acAhAMJ6qmemJv3aiOuzBat+ahBYix4USQxcsAK9MvtksVvRJRoZrK3Ky6ESKY
- JyWdQQedjPUPg773tntaAq7M/8LeTpjVp5H/+hC7GfE5qe8d206zETMhd/vrN0VzNNWv
- Cci0KapSHY97bTDYC0ymop6RkstoR2/dQTdPMd8Eoo1dpSatEbWmxaTqyGzGMAQLfFLd
- DhXFXlhtpBy/fEaQ+yA/aGY4W0gDhPm7Pkr0f4zG7dVg5iE7bevIvMKw73kPS9m5C5wj
- n79Q==
-X-Gm-Message-State: AOJu0Yx43baEMOD26BZtCMyuihKGMf6foXst+XsnLebTTPl1NhiYWZu0
- jfZT+CmR0yRNhudtSHMPgSU4uBZAsUdywDowqyA+3ynxhFfsbkMtcp6ttCe/ZyN9TZEqLUfNR6W
- e7JCx7o+KkHI0OcGeGmC99LWoaViMwtk=
-X-Received: by 2002:a17:90b:3a8d:b0:280:6b5b:3f40 with SMTP id
- om13-20020a17090b3a8d00b002806b5b3f40mr2971641pjb.8.1699565753411; 
- Thu, 09 Nov 2023 13:35:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEwZW4TF7s/cov9deGc12Gnc4Xwy44tQ5iDauQTJVx+u4/bmm43cNblkRk5noouCNSYfqDx/0sRFSoShyJRpoM=
-X-Received: by 2002:a17:90b:3a8d:b0:280:6b5b:3f40 with SMTP id
- om13-20020a17090b3a8d00b002806b5b3f40mr2971620pjb.8.1699565753054; Thu, 09
- Nov 2023 13:35:53 -0800 (PST)
+ bh=yf1ZA4bmxT04JFB+HBgkywHvdzJIbfprVmdFsHkALRU=;
+ b=lO2lKjdOlBF6Ulp1CNfy+AyHC5fyrJzqXYQjLyO+wKOMlOTe38EbIe7JpUKXgwwsR/
+ rqiK/ti6Pgjj9QEbI84law+ipA9sjoZfZ1XUNp13UEAjqUKzH0CrQVo0g3EjL9MvyGju
+ hHXBv+8lQRUFO38iBWqGKP8blKMQSLnDzFHLG91kSMnqbd6xnbqjDJIWYj7XEmkFjcDQ
+ V6eawmFifVpIdGNrHnLOPMLj1AqHK14QQUa1YBQLhITlb3H40MT6m2ycWg+wXgaaPjVn
+ hmlEwo4S2zJPBaBVBTsrPDln5SWY8t1uVz/NGylEirpkfIaQtA7Mj4M3Uj7w4j9/whvg
+ YVjg==
+X-Gm-Message-State: AOJu0YzhqwgjExQphTU7VzPo674P/yl7xEU78RJNYzk9/z6kLS18K60/
+ lc63n8STWkkhWpg3AXs3x+UDT+1ToqLtu3sr/f0vPxcetZNWuWtgO14SQsRW9l+sReA+Nd3XD+M
+ Ea9lN1wJa6LSNuh+j2jpC082bMjvTmik=
+X-Received: by 2002:a17:90b:4ac9:b0:27d:1571:f683 with SMTP id
+ mh9-20020a17090b4ac900b0027d1571f683mr2795221pjb.44.1699566583951; 
+ Thu, 09 Nov 2023 13:49:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGt/T8O0MJB17YtxbT0UFV94EMvh9IVD+YMZR0cqfhhT2y9olTMktBg9JZNA/HJgrnrRoZMB4CJBJ8sQ7/nrhM=
+X-Received: by 2002:a17:90b:4ac9:b0:27d:1571:f683 with SMTP id
+ mh9-20020a17090b4ac900b0027d1571f683mr2795200pjb.44.1699566583669; Thu, 09
+ Nov 2023 13:49:43 -0800 (PST)
 MIME-Version: 1.0
-References: <20231109155855.844630-1-pbonzini@redhat.com>
- <CAFn=p-YZ=sMJ0=C71wX1x6NXcK8rSZfVO+f3TQQExADGJhEJdg@mail.gmail.com>
-In-Reply-To: <CAFn=p-YZ=sMJ0=C71wX1x6NXcK8rSZfVO+f3TQQExADGJhEJdg@mail.gmail.com>
+References: <20231108153827.39692-1-davydov-max@yandex-team.ru>
+ <20231108153827.39692-4-davydov-max@yandex-team.ru>
+In-Reply-To: <20231108153827.39692-4-davydov-max@yandex-team.ru>
 From: John Snow <jsnow@redhat.com>
-Date: Thu, 9 Nov 2023 16:35:42 -0500
-Message-ID: <CAFn=p-YB9QawiXd2newm1itooNpnU_4QY29zC2aFp2mN4beTHg@mail.gmail.com>
-Subject: Re: [PATCH] docs: document what configure does with virtual
- environments
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>,
- Peter Maydell <peter.maydell@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- BALATON Zoltan <balaton@eik.bme.hu>, Thomas Huth <thuth@redhat.com>
+Date: Thu, 9 Nov 2023 16:49:32 -0500
+Message-ID: <CAFn=p-Yvtf4-Uhrk3yt7LCy_szdWx2Yx96CPRcY7BLfmcAO-dg@mail.gmail.com>
+Subject: Re: [PATCH v6 3/4] python: add binary
+To: Maksim Davydov <davydov-max@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, eduardo@habkost.net, 
+ marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com, 
+ crosa@redhat.com, bleal@redhat.com, eblake@redhat.com, armbru@redhat.com, 
+ pbonzini@redhat.com, berrange@redhat.com, alxndr@bu.edu, bsd@redhat.com, 
+ stefanha@redhat.com, thuth@redhat.com, darren.kenny@oracle.com, 
+ Qiuhao.Li@outlook.com, lvivier@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,173 +97,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Whoops, didn't mean to reply off-list.
+On Wed, Nov 8, 2023 at 10:39=E2=80=AFAM Maksim Davydov
+<davydov-max@yandex-team.ru> wrote:
+>
+> Add a supportive property to access the path to the qemu binary
+>
+> Signed-off-by: Maksim Davydov <davydov-max@yandex-team.ru>
+> ---
+>  python/qemu/machine/machine.py | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine=
+.py
+> index 31cb9d617d..78436403b2 100644
+> --- a/python/qemu/machine/machine.py
+> +++ b/python/qemu/machine/machine.py
+> @@ -328,6 +328,11 @@ def args(self) -> List[str]:
+>          """Returns the list of arguments given to the QEMU binary."""
+>          return self._args
+>
+> +    @property
+> +    def binary(self) -> str:
+> +        """Returns path to the qemu binary"""
+> +        return self._binary
+> +
+>      def _pre_launch(self) -> None:
+>          if self._qmp_set:
+>              if self._monitor_address is None:
+> --
+> 2.34.1
+>
+>
 
-On Thu, Nov 9, 2023 at 4:34=E2=80=AFPM John Snow <jsnow@redhat.com> wrote:
->
-> On Thu, Nov 9, 2023 at 10:59=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.co=
-m> wrote:
-> >
-> > Given the recent confusion around how QEMU detects the system
-> > Meson installation, and/or decides to install its own, it is
-> > time to fill in the "Python virtual environments and the QEMU
-> > build system" section of the documentation.
-> >
-> > As a curiosity, a first and partial draft of the text was generated
-> > by an LLM[1].  It required quite a bit of editing and probably did not
-> > save much time, but some expressions do remain in the finished text.
->
-> boo :p
->
-> >
-> > [1] https://chat.openai.com/share/42c1500d-71c1-480b-bab9-7ccc2c155365
-> >
-> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > ---
-> >  docs/devel/build-system.rst | 54 ++++++++++++++++++++++++++++++++++---
-> >  pythondeps.toml             |  3 ++-
-> >  2 files changed, 53 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
-> > index 21f78da7d1d..4def2e55e73 100644
-> > --- a/docs/devel/build-system.rst
-> > +++ b/docs/devel/build-system.rst
-> > @@ -122,10 +122,49 @@ functioning.  These are performed using a few mor=
-e helper functions:
-> >     indicated by $TMPC.
-> >
-> >
-> > -Python virtual environments and the QEMU build system
-> > ------------------------------------------------------
-> > +Python virtual environments and the build process
-> > +-------------------------------------------------
-> > +
-> > +An important part of configure is to create a Python virtual environme=
-nt
-> > +(venv) during the configuration phase, using the Python interpreter th=
-at
-> > +``configure`` identified, or that was requested via the ``--python``
-> > +command line option and the ``$PYTHON`` variable from the environment.
->
-> Which takes precedence, in what order? "and" makes it sound as if both
-> --python and $PYTHON are considered, but I don't think that's actually
-> true.
->
-> > +The venv resides in the ``pyvenv`` directory in the build tree,
-> > +and provides consistency in how the build process runs Python code.
-> > +In particular it avoids a potential mismatch, where Meson and Sphinx
->
-> I think you can drop the comma. This is so pedantic that if you left
-> it in to spite me, I'd not blame you. :)
->
-> > +binaries on the PATH might operate in a different Python environment
-> > +than the one chosen by the user during the build process.
-> > +
-> > +At this stage, ``configure`` also queries the chosen Python interprete=
-r
-> > +about QEMU's build dependencies.  ``configure`` does  *not*
-> > +pick the ``meson``, ``sphinx-build`` or ``avocado`` binaries in the PA=
-TH;
-> > +likewise, there are no options such as ``--meson`` or ``sphinx-build``=
-.
->
-> should we say ``--sphinx-build``?
->
-> I also might say "does not ^necessarily pick the ..." because they
-> could be the same, it just isn't the criteria it uses to choose them.
->
-> > +If QEMU does not find a dependency, check that it was installed in the
-> > +right ``site-packages`` directory or with the right ``pip`` program.
->
-> I don't actually know what this means. >_>
->
-> > +
-> > +If the package is available as a system package for the chosen
->
-> technically, I think if the package is available at all for the chosen
-> interpreter. We supported nested venvs, so it's more than just system
-> packages.
->
-> > +interpreter, ``configure`` prepares a small script that invokes it
-> > +from the venv itself.  If not, ``configure`` can also optionally
-> > +install dependencies in the virtual environment with ``pip``.
->
-> What may not be clear here is that this can refer to installing from
-> bundled sources in the source tree. IIRC, it's used in preference to
-> internet sources, isn't it? (Unless that changed.)
->
-> > +Downloading is triggered only when a ``configure`` option (currently,
-> > +only ``--enable-docs``) is explicitly enabled but the dependencies are
-> > +not present, and can also be disabled with ``--disable-download``.[#pi=
-p]_
-> > +
-> > +.. [#pip_] Avocado can also be installed with ``pip`` in the virtual
-> > +           environment when running ``make check-avocado``.  In this
-> > +           case, it is not currently possible to block the downloading=
-.
-> > +
->
-> Similarly to my above comment: if downloads are disabled, we do have
-> some vendored packages we'll attempt to use.
->
-> > +The required versions of the packages are stored in a configuration fi=
-le
-> > +``pythondeps.toml``.  The format is custom to QEMU, but it is document=
-ed
-> > +at the top of the file itself and it should be easy to understand.  Th=
-e
-> > +requirements should make it possible to use the version that is packag=
-ed
-> > +that is provided by supported distros.
-> > +
-> > +When dependencies are downloaded, instead, ``configure`` uses a "known
-> > +good" version that is also listed in ``pythondeps.toml``.  In this
-> > +scenario, ``pythondeps.toml`` behaves like the "lock file" used by
-> > +``cargo``, ``poetry`` or other dependency management systems.
-> >
-> > -TBD
-> >
-> >  Stage 2: Meson
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > @@ -376,6 +415,15 @@ This is needed to obey the --python=3D option pass=
-ed to the configure
-> >  script, which may point to something other than the first python3
-> >  binary on the path.
-> >
-> > +By the time Meson runs, Python dependencies are available in the virtu=
-al
-> > +environment and should be invoked though the scripts that ``configure`=
-`
->
-> through
->
-> > +places under ``pyvenv``.  One way to do so is as follows, using Meson'=
-s
-> > +``find_program`` function::
-> > +
-> > +  sphinx_build =3D find_program(
-> > +       fs.parent(python.full_path()) / 'sphinx-build',
-> > +       required: get_option('docs'))
-> > +
-> >
-> >  Stage 3: Make
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > diff --git a/pythondeps.toml b/pythondeps.toml
-> > index 0a35ebcf9f0..4beadfd96f5 100644
-> > --- a/pythondeps.toml
-> > +++ b/pythondeps.toml
-> > @@ -10,7 +10,8 @@
-> >  # - accepted: accepted versions when using a system package
-> >  # - installed: fixed version to install in the virtual environment
-> >  #              if a system package is not found; if not specified,
-> > -#              the minimum and maximum
-> > +#              defaults to the same as "accepted" or, if also missing,
-> > +#              to the newest version available on PyPI.
-> >  # - canary: if specified, use this program name to present more
-> >  #           precise error diagnostics to the user.  For example,
-> >  #           'sphinx-build' can be used as a bellwether for the
-> > --
-> > 2.41.0
-> >
+'kay.
+
+Reviewed-by: John Snow <jsnow@redhat.com>
 
 
