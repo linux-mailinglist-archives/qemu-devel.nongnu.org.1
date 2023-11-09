@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAFFA7E709B
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 18:44:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E90017E7095
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 18:43:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r193u-0003WD-7Q; Thu, 09 Nov 2023 12:43:26 -0500
+	id 1r193p-0003Uy-UP; Thu, 09 Nov 2023 12:43:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r193o-0003UJ-Pk
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r193o-0003UT-Tu
  for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:43:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r193l-0004nb-EX
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r193l-0004nR-CC
  for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:43:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1699551796;
@@ -22,32 +22,32 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HmbwBCopdS5a3LUIcj6eIQ5tXkQOF7LNvSeyfmSqDMI=;
- b=LvprOSN7SbEmrgL2jm4z9XwOJYFnIjZ0f0Ja0jdiWT3cVnmU5aDLHc4oB1hGpmiDTIm5zI
- q3WGPy+DqNerdeKhPhpq3AstRJcQL4YY44WAtFVjkyYzvvheMsy7bhBUFdjVEoZHoq/OwC
- BirNTw+9FA0h9YilHzzd3F0I8HwvLws=
+ bh=OciqrmI4PMIefAHi47Le2UsALowmiqepzrCHCJbie00=;
+ b=A9KG8RH/NtR/rGGFR1zifle9nkgbN7BzNLdJIJp1/3GdQ0jw0o3FawxJM+ZIs10yijT1Eo
+ LMX+oZBqGRnBCq7FfdYAcLLXSGisr6AxmalDbUnz820tmsxrMb4SBryHr5jB9lH7gFZROW
+ P4hW3xxlIlRY7L322v1XiRrpkFcweEE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-660-yy6oS7NiOKGWGkmiceGDLw-1; Thu, 09 Nov 2023 12:43:12 -0500
-X-MC-Unique: yy6oS7NiOKGWGkmiceGDLw-1
+ us-mta-222-VuEFiwHWMueqtIscvx3y6Q-1; Thu, 09 Nov 2023 12:43:12 -0500
+X-MC-Unique: VuEFiwHWMueqtIscvx3y6Q-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D987D848171;
- Thu,  9 Nov 2023 17:43:10 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2605F185A788;
+ Thu,  9 Nov 2023 17:43:12 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.194.188])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CEF27202696C;
- Thu,  9 Nov 2023 17:43:09 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1B4592026D37;
+ Thu,  9 Nov 2023 17:43:10 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com, armbru@redhat.com, berrange@redhat.com,
  peter.maydell@linaro.org, pbonzini@redhat.com, philmd@linaro.org
-Subject: [PATCH v3 01/11] hw/i386/pc: Use qdev_prop_set_array()
-Date: Thu,  9 Nov 2023 18:42:30 +0100
-Message-ID: <20231109174240.72376-2-kwolf@redhat.com>
+Subject: [PATCH v3 02/11] hw/arm/mps2-tz: Use qdev_prop_set_array()
+Date: Thu,  9 Nov 2023 18:42:31 +0100
+Message-ID: <20231109174240.72376-3-kwolf@redhat.com>
 In-Reply-To: <20231109174240.72376-1-kwolf@redhat.com>
 References: <20231109174240.72376-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -85,36 +85,46 @@ array property with a single call.
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/i386/pc.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ hw/arm/mps2-tz.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 188bc9d0f8..29b9964733 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -44,6 +44,7 @@
- #include "sysemu/reset.h"
- #include "kvm/kvm_i386.h"
- #include "hw/xen/xen.h"
+diff --git a/hw/arm/mps2-tz.c b/hw/arm/mps2-tz.c
+index eae3639da2..668db5ed61 100644
+--- a/hw/arm/mps2-tz.c
++++ b/hw/arm/mps2-tz.c
+@@ -48,6 +48,7 @@
+ #include "qemu/units.h"
+ #include "qemu/cutils.h"
+ #include "qapi/error.h"
 +#include "qapi/qmp/qlist.h"
  #include "qemu/error-report.h"
- #include "hw/acpi/cpu_hotplug.h"
- #include "acpi-build.h"
-@@ -1457,10 +1458,11 @@ static void pc_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
-         /* Declare the APIC range as the reserved MSI region */
-         char *resv_prop_str = g_strdup_printf("0xfee00000:0xfeefffff:%d",
-                                               VIRTIO_IOMMU_RESV_MEM_T_MSI);
-+        QList *reserved_regions = qlist_new();
+ #include "hw/arm/boot.h"
+ #include "hw/arm/armv7m.h"
+@@ -461,6 +462,7 @@ static MemoryRegion *make_scc(MPS2TZMachineState *mms, void *opaque,
+     MPS2SCC *scc = opaque;
+     DeviceState *sccdev;
+     MPS2TZMachineClass *mmc = MPS2TZ_MACHINE_GET_CLASS(mms);
++    QList *oscclk;
+     uint32_t i;
+ 
+     object_initialize_child(OBJECT(mms), "scc", scc, TYPE_MPS2_SCC);
+@@ -469,11 +471,13 @@ static MemoryRegion *make_scc(MPS2TZMachineState *mms, void *opaque,
+     qdev_prop_set_uint32(sccdev, "scc-cfg4", 0x2);
+     qdev_prop_set_uint32(sccdev, "scc-aid", 0x00200008);
+     qdev_prop_set_uint32(sccdev, "scc-id", mmc->scc_id);
+-    qdev_prop_set_uint32(sccdev, "len-oscclk", mmc->len_oscclk);
 +
-+        qlist_append_str(reserved_regions, resv_prop_str);
-+        qdev_prop_set_array(dev, "reserved-regions", reserved_regions);
- 
--        object_property_set_uint(OBJECT(dev), "len-reserved-regions", 1, errp);
--        object_property_set_str(OBJECT(dev), "reserved-regions[0]",
--                                resv_prop_str, errp);
-         g_free(resv_prop_str);
++    oscclk = qlist_new();
+     for (i = 0; i < mmc->len_oscclk; i++) {
+-        g_autofree char *propname = g_strdup_printf("oscclk[%u]", i);
+-        qdev_prop_set_uint32(sccdev, propname, mmc->oscclk[i]);
++        qlist_append_int(oscclk, mmc->oscclk[i]);
      }
- 
++    qdev_prop_set_array(sccdev, "oscclk", oscclk);
++
+     sysbus_realize(SYS_BUS_DEVICE(scc), &error_fatal);
+     return sysbus_mmio_get_region(SYS_BUS_DEVICE(sccdev), 0);
+ }
 -- 
 2.41.0
 
