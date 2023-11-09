@@ -2,82 +2,173 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699C37E6256
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 03:44:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A677E625D
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 03:46:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r0uzy-0004ko-GG; Wed, 08 Nov 2023 21:42:26 -0500
+	id 1r0v2u-0005qV-4b; Wed, 08 Nov 2023 21:45:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <elta.era@gmail.com>)
- id 1r0uzu-0004kI-RG; Wed, 08 Nov 2023 21:42:22 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <elta.era@gmail.com>)
- id 1r0uzs-00048J-W2; Wed, 08 Nov 2023 21:42:22 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1cc3542e328so2958165ad.1; 
- Wed, 08 Nov 2023 18:42:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699497739; x=1700102539; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gdP6D3W2wTsoSET+2u+akA8ceDXa4pgEnK0pVfYlAXU=;
- b=h+EzQJL530g5RFbJqAiiopZwXDharxIcMg5Sg3014EKctEd05hjGrkezhxH1LWCr52
- F/cnphhxv7VDBi5BfKOtp3ye/a3heZT37quu12uRPdTxvkg6O1Iuqw6beLad8lP5/B6K
- 3NaStKh2uLiuSgcxfVM/AvawgoD+Cl+6Asqvzbci2cHOq7liZapEyT7058VlZtg8TsFd
- wekOBi2CcO8w5JHvTw+9gDf9rjrIFP/apBUCE1YCn3iScpl0cGS5R194mVsBKjT2n1bF
- GWmS9r6xMmFd4JGMQTJQCXkGpl1Qn8jWXFd26eYgtrDlF0aacAzbMZ+vIoqbJcQ53/QY
- Z7lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699497739; x=1700102539;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gdP6D3W2wTsoSET+2u+akA8ceDXa4pgEnK0pVfYlAXU=;
- b=m57RaEcfzJldtkWooQg89HmG/l0YuVixxnvQjxN75kgHo80ShN3cCOVFtdRzvNERJW
- rOwRzdI+m5wVsXQPfUiFe5mvwDhQJC06YhItaRWSR6L4c58cQzyyEqnvEuo8gLZlmmt3
- 0TyP6KxGwAR08EGh0tMm1tDeE/AN7tP99TxAVUPUzgnGsE/KoV6uQbCYUx29kypHTjsf
- 9wPda9RXWAQ708W4u/38F8QoAlg11eGHijHY9gZOJ3pmCCw2Imio2nwbCZ6J39G4kmW0
- 0Z9uTZVaIvCQAx7zMQb8H3+cs95+JE2DqHNkcxdJtQ66hx+QA0gF6lZqwVi04bWpMCgq
- 6WuQ==
-X-Gm-Message-State: AOJu0YyN9RvqzrYYe0o4nLsBTFfOh/8Nf3CI0dtTrrHVwfabbwvHyzOw
- RapnEbRiInezfhGB2XoLs/5VUpLZrqRSYNR/QX4=
-X-Google-Smtp-Source: AGHT+IGGGxWO17q/ItU4n2yA3oJeIJZ90SlZ8DqU3qy0+yxP0zl6Dfh2+x5LpVH9gS88RdZDovLKpbARKbvRVs8tRPQ=
-X-Received: by 2002:a05:6a20:439f:b0:172:6771:d766 with SMTP id
- i31-20020a056a20439f00b001726771d766mr4034765pzl.51.1699497739037; Wed, 08
- Nov 2023 18:42:19 -0800 (PST)
-MIME-Version: 1.0
-References: <cover.1699496263.git.houyingle@canaan-creative.com>
- <6d1d8cc8c2b37b145e4a826095619097fa4a34d5.1699496263.git.houyingle@canaan-creative.com>
-In-Reply-To: <6d1d8cc8c2b37b145e4a826095619097fa4a34d5.1699496263.git.houyingle@canaan-creative.com>
-From: Dongxue Zhang <elta.era@gmail.com>
-Date: Thu, 9 Nov 2023 10:41:58 +0800
-Message-ID: <CAEomy4TmM0ShGkuV2mprB8Xm0Kn62ZWZA7Gnfvt07pioY9fCCA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] hw/intc/riscv_aclint:Change the way to get CPUState
- from hard-base to pu_index
-To: Leo Hou <LeoHou@canaan-creative.com>
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- Anup Patel <apatel@ventanamicro.com>, Bin Meng <bin.meng@windriver.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Leo Hou <houyingle@canaan-creative.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Mayuresh Chitale <mchitale@ventanamicro.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Palmer Dabbelt <palmer@rivosinc.com>, 
- Weiwei Li <liweiwei@iscas.ac.cn>, QEMU Developers <qemu-devel@nongnu.org>, 
- qemu-riscv <qemu-riscv@nongnu.org>, Elta Era <elta.era@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1r0v2s-0005qK-2z
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 21:45:26 -0500
+Received: from mgamail.intel.com ([192.198.163.7])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1r0v2p-0004mj-En
+ for qemu-devel@nongnu.org; Wed, 08 Nov 2023 21:45:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1699497924; x=1731033924;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=5zWi9po+TguMX3RcGFNImBd633z/LBOGIgvOa2RPF+c=;
+ b=WWOTfMigaL9KTfGKDQljsZv4G0BQP4mvJEkNnbZZmXan+d6j6k23OTRV
+ 3MceAVMSHGcMNcI2eO4vnJYCMYhBQoXGBtsMgr/kWZIGMm+R+iF6x42tj
+ QvCRuclyc5xj1MKFmq3sDmjzkama6yEocUVl1/jLdPH1pdXxgq/C3kXbR
+ 1Qy/wXGOf1HvaKyJc1IZ0/5vQZL3sbsdXxh8XZRCDlegsnRHfguLauFHi
+ Y7PYqLEkkofbkiPua6PS6PF12F6KPG67YTPlUCUu8XZJd/IBYNWlWHJ7o
+ nEupV8jukhmvwZuLNV+B1rVVCGy4tpzdVmItliJQbYneohkabLVpDgdNS g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="11455874"
+X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="11455874"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Nov 2023 18:45:20 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="886856824"
+X-IronPort-AV: E=Sophos;i="6.03,288,1694761200"; d="scan'208";a="886856824"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by orsmga004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 08 Nov 2023 18:45:20 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Wed, 8 Nov 2023 18:45:19 -0800
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Wed, 8 Nov 2023 18:45:19 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34 via Frontend Transport; Wed, 8 Nov 2023 18:45:19 -0800
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.100)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.34; Wed, 8 Nov 2023 18:45:18 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Ked8a9gLynCNLnLdqjpOSxMZbaEqIrBkM+358t/mJ+QfCll/Q44MCUbU/XbrahsYntBacz3/ThvYOkSH9pXYkYLXJTdiQZEkQc6E8DIUJLP/SXfodME5BTPcoX7j7yYIHTKSVY9K38VRWPHBof8KYqO8tzye2zzRLAQHm/ICG44z8Rf9f4ziWyAe2vrgsWcvftLHSMUMJggr33DMSYJj3/va24QFFZHIxOvPyDuNFzgND/SqkTcSrmbJ/3nSAA7uRlz1V7pZNnpOCkswSymEZ/iz7/I7IeWzIWCfwMMUdevYFw/QCLKOpG4AB5GdC+1B8Q6qPrmntVVpJN3xK/6tug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5zWi9po+TguMX3RcGFNImBd633z/LBOGIgvOa2RPF+c=;
+ b=efm9gfsWnjgGiyoHNSV++jOAf0SVEEJ50ZKiz8CcLFeJ03kfUIjV6AdEobD+YpzMCR6NLK/vBMRyb09LjjOqHtETBLYAhXLjHhHdF8+arOT/nLPqI9TwKyCduMRrLAiN8vp2XARptyeRNTyGCn2fRzIHXj3m5RHcPo61FwsN5LpVaxxFFZ8MJACXLAG8eWa8i3yCWQd2mOoLPJ7heWCPZtbq7BQCMNN3jc8enixgvkrQh1MCuu4f0to77PyeR9bxKjGGd1IDtRNOFteosohJq+Vnvz0ZgS7odjKrfYNEI5HfIiocD4BHlI0s9mLyPcccWX3ZC41dDP2nyhiAZVoCdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
+ by MN6PR11MB8170.namprd11.prod.outlook.com (2603:10b6:208:47c::10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.28; Thu, 9 Nov
+ 2023 02:45:11 +0000
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::a4bb:8de0:9dde:2fea]) by SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::a4bb:8de0:9dde:2fea%4]) with mapi id 15.20.6954.028; Thu, 9 Nov 2023
+ 02:45:10 +0000
+From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+CC: Matthew Rosato <mjrosato@linux.ibm.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "alex.williamson@redhat.com"
+ <alex.williamson@redhat.com>, "clg@redhat.com" <clg@redhat.com>,
+ "nicolinc@nvidia.com" <nicolinc@nvidia.com>, "Martins, Joao"
+ <joao.m.martins@oracle.com>, "eric.auger@redhat.com" <eric.auger@redhat.com>, 
+ "peterx@redhat.com" <peterx@redhat.com>, "jasowang@redhat.com"
+ <jasowang@redhat.com>, "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L"
+ <yi.l.liu@intel.com>, "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P"
+ <chao.p.peng@intel.com>, Thomas Huth <thuth@redhat.com>, Eric Farman
+ <farman@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>, "Jason J. Herne"
+ <jjherne@linux.ibm.com>, Tony Krowiak <akrowiak@linux.ibm.com>
+Subject: RE: [PATCH v4 28/41] vfio/iommufd: Implement the iommufd backend
+Thread-Topic: [PATCH v4 28/41] vfio/iommufd: Implement the iommufd backend
+Thread-Index: AQHaDV58rXzWcAbguEiSUs8ukZNa17BvxJKAgABFgECAAF7hgIAABUPggAAULQCAAM8cUA==
+Date: Thu, 9 Nov 2023 02:45:10 +0000
+Message-ID: <SJ0PR11MB6744EEE3F0B22ADD14E2923C92AFA@SJ0PR11MB6744.namprd11.prod.outlook.com>
+References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
+ <20231102071302.1818071-29-zhenzhong.duan@intel.com>
+ <76538479-77ec-1a7d-cee1-906f6f758cff@linux.ibm.com>
+ <SJ0PR11MB6744D87FD3CBB3380647E68792A8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <20231108124817.GS4488@nvidia.com>
+ <SJ0PR11MB674482451CB0D2A7BB4DC20292A8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <20231108141920.GT4488@nvidia.com>
+In-Reply-To: <20231108141920.GT4488@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|MN6PR11MB8170:EE_
+x-ms-office365-filtering-correlation-id: fe4f4bbf-40da-43e7-8484-08dbe0cde3ff
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 71MPFChIW2WfXojxRZ4cvRrun1drkf5vhL9nWx/FbkBgQU+IgKPALBYZLMb5a7jBZauYF7MJlodI1zCJ1LydaEGSZijdM1KSLn5LdmthXCQ6v4z5nr23ppl0sphDzz7dqS6oxUZBDJv9l0jjQpp5LSA02GsEokyYit2dypaj6f9RBIHUfq1sFUXqn9nF0wlWWYzcNRoeUNeZo2ol5blWgZOugOEdEjpByPjku2pDxBS0MKFwWBjkkvNmxvrnVKGkexEKao9DcPAWm5sFpHo5qHiKLi6TW9CwNxUJEPTBb37MQDA9ysqb12fp113dM/ki4YiknMfBe258qFPUHjPJ8uhqW2C26iw4E0ia52AmSSxe7YOZa9Z68+WMpm659PjsJPop96/y3X7J1LlcYLpC61W9E8/cztqLRjoy/CGzBt6rejsmK0FLyEa3xmrOvykMkRceOJasoufU0Qsd48bXgdNKGA2L4j8jiis2ewQQeHRvrqRbbFhyJDZJ0g/FEE+w13L7kYG+B2D5J3DvVNrfEqg3Iu0nsCqkpZifBOYy9Ol5JUMZblJV5ZnGEIz9ewymXOPvcJMtj6wtLxSBOJEmtq/ecNPkQ5G/SmyX+cla4xLbKY/CSHJ40D+Rc5cx/QEW10FmuQw9FcS9HKm063VXCA==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376002)(136003)(366004)(396003)(39860400002)(346002)(230922051799003)(64100799003)(1800799009)(451199024)(186009)(55016003)(83380400001)(33656002)(478600001)(52536014)(8936002)(38070700009)(4326008)(86362001)(41300700001)(8676002)(2906002)(38100700002)(71200400001)(6506007)(6916009)(316002)(82960400001)(122000001)(7696005)(7416002)(5660300002)(66946007)(64756008)(54906003)(76116006)(66476007)(66556008)(26005)(9686003)(66446008)(13296009);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?ZdMEP4i+x+OmLNZUTbEdzi9dYLJ5v76nQN5p2EwWwONHefKi2Gz8Cm+r/36F?=
+ =?us-ascii?Q?tcvhOKnB98wWEwj2qlnsTDmQFLV3qVy0BCD4rLjl9aLubLSxxS6RaVJ6HfaV?=
+ =?us-ascii?Q?RYP0FFxYDLOBDgFvLR8BdlFjQ5VH/6OaUCywmKxYSrFlTJmTDICevAt5g/KA?=
+ =?us-ascii?Q?vwW/yYWwjqV1vc+dR/oHBETjvzgorPqVCDpc6BBDnbqimWfYLxDbVZeM8sD5?=
+ =?us-ascii?Q?JwasnBsbHohT1Zv1N4I5Dcfq0jdfixdTx80xMucee3z1VSFK1FM3Vju9orrt?=
+ =?us-ascii?Q?YDPvIFPRiQUy9bldpfZmtaUMBhVVjHi2jm2pv/46+6WM9glu8OS+Lit9wI+E?=
+ =?us-ascii?Q?t70mPkhjeEuvEC6Ii4wnePEAID/B99+XtE0O0BYV8ByVpY2VJ0oeK1KwDmmh?=
+ =?us-ascii?Q?TfQmC7c97TYbx/uydn+4bORg8BE0Ednr3iRnT/DF+rVLzrpNr6zDHnAXuC5C?=
+ =?us-ascii?Q?nVsbi2bBvcLkdE1Qs1zmdNK78fMYiG34tp4v8xTWP7aZ0CQAdyPn4yN3BcKU?=
+ =?us-ascii?Q?0DcDvy8Hbu6xQ8LqxivGRA2G0ciIHYfUYXWsu/L7jgGA/JURT6FcMMNOkX6q?=
+ =?us-ascii?Q?R7icq1BxBIVYlMxKqWxybIvoOPQuQYXcJvFF0r0LLpn7hNAaiGL3fs+k+Qts?=
+ =?us-ascii?Q?59zaffJyaxFk2VmF3mpY8zOSiZ7UgaiOCphy9J9VSTkuO3HJaSEne1TQSATS?=
+ =?us-ascii?Q?hp9LMwb1nJH/6zSPbtw10ak8QwXmIzDQZNywKWFOSNuIoTP1TcliDlI45/Ka?=
+ =?us-ascii?Q?P1CWl4NdWFgAXUQg5gs4+Vgfq/jHbCXqzdmsc3S/cDDXtj9FlEPPgEkcru+/?=
+ =?us-ascii?Q?/0HpVsSY/+ItM2gyDSIe6EggsQap6Zyo7Y9EaHYmEOGJBqVluneRGqe6pUDv?=
+ =?us-ascii?Q?jh46j9fawV4QpC4TBzp+j36Evt/lHUfV2TQiK+cVa9B8l5NEZ+lCFbLb1Ha/?=
+ =?us-ascii?Q?+pFYrPPF7Mm+xObPHiAIJh0u3GJsKBJAGycYH/RRQRmdVGL/eo3xRw6Efn2+?=
+ =?us-ascii?Q?oyDCJtG3yrDDcSybmtMggTMYyNjqRD6FuuVzifimj7l7w1EXo4MBUXIxJPvq?=
+ =?us-ascii?Q?AHglYN/0EMDhyF+58izftLEFYFYGsJczBwrjSdMjZvWkQ3xBAmnDRcnWd4w2?=
+ =?us-ascii?Q?cpGk7yMKSnL5/EqK1YMBBo8RIE/Z8DEm7rXzYASI+p5rQXhXUJ0gmfd5zG1J?=
+ =?us-ascii?Q?L+629uEBUiYalt80/9ymV3sytSCxlOPrP0ceEFWkY5Bp1PDJVt+11NJNElX3?=
+ =?us-ascii?Q?Mz4EBiJ0nLYI/AazhRcb746emiZYIL2ogIH+b77fxBy2uAfbBRKgxi7HictW?=
+ =?us-ascii?Q?6pQN4bI34dmrENI1xiSYtqvUu9UgEhjvkkY/gcBb0XKZn/iEGPVFKZD8f2h1?=
+ =?us-ascii?Q?JztDU1eZBDO6my0VGYuislp0+F2QSD7b7Gcu9gfzRl2TXf9qjh5EuV1DlnLF?=
+ =?us-ascii?Q?IBTtCGWxt2xbH0PycbC/U33jCX/YeQ5PWi1tJab90TOq0Kz2TicBkwwb+bZf?=
+ =?us-ascii?Q?dLDs59xofvfNTcfZq2Cc2W9qSWi1YQFa9GF9+3G4s42iz773LXfaArhStlij?=
+ =?us-ascii?Q?eo1AyH56MaoJZKEzpqMnlcwZs9hbY7xquLFp8aRh?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=elta.era@gmail.com; helo=mail-pl1-x62b.google.com
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe4f4bbf-40da-43e7-8484-08dbe0cde3ff
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Nov 2023 02:45:10.0791 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /Ver4u9MNcjJb/GzR4yUoqQVJ2gfFbtpeKafqaeh/hr02rFrrxsEe+jJYlpI1hEaMx8pqn3K/Qf1bYqcWhnHgx5ZfEsgtNOM9SeNVEoX6Ew=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8170
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.198.163.7;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,122 +185,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Dongxue Zhang <zhangdongxue@canaan-creative.com>
 
 
-On Thu, Nov 9, 2023 at 10:22=E2=80=AFAM Leo Hou <LeoHou@canaan-creative.com=
-> wrote:
+>-----Original Message-----
+>From: Jason Gunthorpe <jgg@nvidia.com>
+>Sent: Wednesday, November 8, 2023 10:19 PM
+>Subject: Re: [PATCH v4 28/41] vfio/iommufd: Implement the iommufd backend
 >
-> From: Leo Hou <houyingle@canaan-creative.com>
+>On Wed, Nov 08, 2023 at 01:25:34PM +0000, Duan, Zhenzhong wrote:
 >
-> cpu_by_arch_id() uses hartid-base as the index to obtain the correspondin=
-g CPUState structure variable.
-> qemu_get_cpu() uses cpu_index as the index to obtain the corresponding CP=
-UState structure variable.
+>> >I was expecting that hwpt manipulation would be done exclusively
+>> >inside the device-specific vIOMMU userspace driver. Generic code paths
+>> >that don't have that knowledge should use the IOAS for everything
+>>
+>> Yes, this way we don't need to distinguish between mdev and real device,
+>> just attach to IOAS. But lose the benefit that same hwpt could be passed
+>> into vIOMMU to be used as S2 hwpt in nesting.
 >
-> In heterogeneous CPU or multi-socket scenarios, multiple aclint needs to =
-be instantiated,
-> and the hartid-base of each cpu bound by aclint can start from 0. If cpu_=
-by_arch_id() is still used
-> in this case, all aclint will bind to the earliest initialized hart with =
-hartid-base 0 and cause conflicts.
+>If you have a nesting capable vIOMMU driver then it should be
+>creating the HWPTs and managing them in its layer. Maybe the core code
+>provides some helpers.
+
+OK, thanks for suggestion.
+
 >
-> So with cpu_index as the index, use qemu_get_cpu() to get the CPUState st=
-ruct variable,
-> and connect the aclint interrupt line to the hart of the CPU indexed with=
- cpu_index
-> (the corresponding hartid-base can start at 0). It's more reasonable.
+>Obviously you can't link a mdev to a nesting vIOMMU driver in the
+>first place. Mdev should be connected to a different IOMMU driver that
+>doesn't use HWPT at all.
 >
-> Signed-off-by: Leo Hou <houyingle@canaan-creative.com>
-> ---
->  hw/intc/riscv_aclint.c | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
-> index ab1a0b4b3a..be8f539fcb 100644
-> --- a/hw/intc/riscv_aclint.c
-> +++ b/hw/intc/riscv_aclint.c
-> @@ -130,7 +130,7 @@ static uint64_t riscv_aclint_mtimer_read(void *opaque=
-, hwaddr addr,
->          addr < (mtimer->timecmp_base + (mtimer->num_harts << 3))) {
->          size_t hartid =3D mtimer->hartid_base +
->                          ((addr - mtimer->timecmp_base) >> 3);
-> -        CPUState *cpu =3D cpu_by_arch_id(hartid);
-> +        CPUState *cpu =3D qemu_get_cpu(hartid);
->          CPURISCVState *env =3D cpu ? cpu_env(cpu) : NULL;
->          if (!env) {
->              qemu_log_mask(LOG_GUEST_ERROR,
-> @@ -173,7 +173,7 @@ static void riscv_aclint_mtimer_write(void *opaque, h=
-waddr addr,
->          addr < (mtimer->timecmp_base + (mtimer->num_harts << 3))) {
->          size_t hartid =3D mtimer->hartid_base +
->                          ((addr - mtimer->timecmp_base) >> 3);
-> -        CPUState *cpu =3D cpu_by_arch_id(hartid);
-> +        CPUState *cpu =3D qemu_get_cpu(hartid);
->          CPURISCVState *env =3D cpu ? cpu_env(cpu) : NULL;
->          if (!env) {
->              qemu_log_mask(LOG_GUEST_ERROR,
-> @@ -232,7 +232,7 @@ static void riscv_aclint_mtimer_write(void *opaque, h=
-waddr addr,
->
->          /* Check if timer interrupt is triggered for each hart. */
->          for (i =3D 0; i < mtimer->num_harts; i++) {
-> -            CPUState *cpu =3D cpu_by_arch_id(mtimer->hartid_base + i);
-> +            CPUState *cpu =3D qemu_get_cpu(mtimer->hartid_base + i);
->              CPURISCVState *env =3D cpu ? cpu_env(cpu) : NULL;
->              if (!env) {
->                  continue;
-> @@ -293,7 +293,7 @@ static void riscv_aclint_mtimer_realize(DeviceState *=
-dev, Error **errp)
->      s->timecmp =3D g_new0(uint64_t, s->num_harts);
->      /* Claim timer interrupt bits */
->      for (i =3D 0; i < s->num_harts; i++) {
-> -        RISCVCPU *cpu =3D RISCV_CPU(cpu_by_arch_id(s->hartid_base + i));
-> +        RISCVCPU *cpu =3D RISCV_CPU(qemu_get_cpu(s->hartid_base + i));
->          if (riscv_cpu_claim_interrupts(cpu, MIP_MTIP) < 0) {
->              error_report("MTIP already claimed");
->              exit(1);
-> @@ -373,7 +373,7 @@ DeviceState *riscv_aclint_mtimer_create(hwaddr addr, =
-hwaddr size,
->      sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, addr);
->
->      for (i =3D 0; i < num_harts; i++) {
-> -        CPUState *cpu =3D cpu_by_arch_id(hartid_base + i);
-> +        CPUState *cpu =3D qemu_get_cpu(hartid_base + i);
->          RISCVCPU *rvcpu =3D RISCV_CPU(cpu);
->          CPURISCVState *env =3D cpu ? cpu_env(cpu) : NULL;
->          riscv_aclint_mtimer_callback *cb =3D
-> @@ -408,7 +408,7 @@ static uint64_t riscv_aclint_swi_read(void *opaque, h=
-waddr addr,
->
->      if (addr < (swi->num_harts << 2)) {
->          size_t hartid =3D swi->hartid_base + (addr >> 2);
-> -        CPUState *cpu =3D cpu_by_arch_id(hartid);
-> +        CPUState *cpu =3D qemu_get_cpu(hartid);
->          CPURISCVState *env =3D cpu ? cpu_env(cpu) : NULL;
->          if (!env) {
->              qemu_log_mask(LOG_GUEST_ERROR,
-> @@ -431,7 +431,7 @@ static void riscv_aclint_swi_write(void *opaque, hwad=
-dr addr, uint64_t value,
->
->      if (addr < (swi->num_harts << 2)) {
->          size_t hartid =3D swi->hartid_base + (addr >> 2);
-> -        CPUState *cpu =3D cpu_by_arch_id(hartid);
-> +        CPUState *cpu =3D qemu_get_cpu(hartid);
->          CPURISCVState *env =3D cpu ? cpu_env(cpu) : NULL;
->          if (!env) {
->              qemu_log_mask(LOG_GUEST_ERROR,
-> @@ -546,7 +546,7 @@ DeviceState *riscv_aclint_swi_create(hwaddr addr, uin=
-t32_t hartid_base,
->      sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, addr);
->
->      for (i =3D 0; i < num_harts; i++) {
-> -        CPUState *cpu =3D cpu_by_arch_id(hartid_base + i);
-> +        CPUState *cpu =3D qemu_get_cpu(hartid_base + i);
->          RISCVCPU *rvcpu =3D RISCV_CPU(cpu);
->
->          qdev_connect_gpio_out(dev, i,
-> --
-> 2.34.1
->
+>I think it will make alot of trouble to put the hwpt in the wrong
+>layer as there shouldn't really be much generic code touching it.
+
+I'll send v5 with your suggested changes.
+
+Thanks
+Zhenzhong
 
