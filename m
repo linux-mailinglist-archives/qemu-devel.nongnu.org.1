@@ -2,117 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC967E744E
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 23:19:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0000E7E7495
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 23:54:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1DM8-00019N-0Q; Thu, 09 Nov 2023 17:18:32 -0500
+	id 1r1Dtn-00023W-4Q; Thu, 09 Nov 2023 17:53:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john_platts@hotmail.com>)
- id 1r1DM4-00018n-SE; Thu, 09 Nov 2023 17:18:28 -0500
-Received: from mail-westcentralusazolkn19011019.outbound.protection.outlook.com
- ([52.103.7.19] helo=CY4PR02CU007.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1r1Dtk-00022t-Ue; Thu, 09 Nov 2023 17:53:17 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john_platts@hotmail.com>)
- id 1r1DM2-0003rY-MA; Thu, 09 Nov 2023 17:18:28 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UNPcgFnD7eUqaoQ5cOnCoqZ9FWLKE0rEnCM9v8j0JGT0mtWjX7RxGyPBagAJetBpYa+PnjL4SP8sJ9jAI1HY5c3EMBkjPFxyYyD/azBa/5k6Wl+asyA9+MIMs4NNdPmeIXVxVcYLq+NQXp0UPkKfN2yZqbkhmQBRLERsq1ZecLZhwsxx0S00A/QkO0hzkUJapL8uobTX+4uJ5Wy4vYQE/F8nCRLT287SLdRuPUqY2XcRs6f+pwpaqAR+XuWZLNIeehdYc+fxn1odKjSJ7HipWqOl67ORdULvRM6KZIhQ250WZrRjzbtiKsQx6wdGomJRaMgyz/qniyQJvI6OLryu4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UjnJ0JgG8bvaJY1cvRGX5n+s+n2iCleyDsyyeHFbU7E=;
- b=ZzCfLmHAeEl7168CgSXQr8U2Ccd3K0xdxs5tUuNAJGVC1tklcH6sgQA4spEhQ5PUMQ4KvezV4OeahtOLEiLkgQkwcrvywz9b4mboOEcUDwNiQnTVRaS4aN86dkW67iGlxsXYI2U+fuuQplGUiVi0fksh74yTHdbxL5jJUtMHTpNc3JCmpZJc3l17FrSownXQcGBsT2vyFwjrYByOI1U1J5+4eG3r4mYo7Dnmw3I0uxfbBsuKVpmu2iAEfDWI8qw+3Lkmcs1AXWzpLSpAuYCWShmle18yfeNy0CPgod9T5jgZ7aq1Kfs2IzEQbP6CDnvWjoBLST7gWL/JECl9HyAcIA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UjnJ0JgG8bvaJY1cvRGX5n+s+n2iCleyDsyyeHFbU7E=;
- b=vGMmB2d0zKMc7ge0zIQk06GmlQIq/atRsQjhRMS3XrkvLVPJ78Tuze6KqEVbyLReU8td3gfvyrxm60Lp/ae3icEKYjjmFIeAgSUPi+rATB0ADRiU5b1N8q4qXgshCnx8n/WiWoNntlHXaQEqIMIpcbpTVj4uhYlO1TgGpzV6nq0bjGh7+uQjM+fyAiEe6/zimdcYqeJDg1UDoqnBNdsig2n7Q53Wa46jfddPuJ81NTR+NFYLcZu/eWLkSYxULf77akoROe+Ch1Fv7JmREGClp6rJQweMdMfSSpBdI0lO7ElmhDG+jK9jMn1R9eYphdXPOrfCeh2hyunx74sgQQwYtA==
-Received: from SN6PR05MB5837.namprd05.prod.outlook.com (2603:10b6:805:f4::20)
- by BLAPR05MB7329.namprd05.prod.outlook.com (2603:10b6:208:29f::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.29; Thu, 9 Nov
- 2023 22:18:09 +0000
-Received: from SN6PR05MB5837.namprd05.prod.outlook.com
- ([fe80::c41:7e67:640d:c47e]) by SN6PR05MB5837.namprd05.prod.outlook.com
- ([fe80::c41:7e67:640d:c47e%4]) with mapi id 15.20.6954.028; Thu, 9 Nov 2023
- 22:18:09 +0000
-From: John Platts <john_platts@hotmail.com>
-To: "qemu-ppc@nongnu.org" <qemu-ppc@nongnu.org>
-CC: "npiggin@gmail.com" <npiggin@gmail.com>, "danielhb413@gmail.com"
- <danielhb413@gmail.com>, "clg@kaod.org" <clg@kaod.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PING] target/ppc: Fix bugs in VSX_CVT_FP_TO_INT and
- VSX_CVT_FP_TO_INT2 macros
-Thread-Topic: [PING] target/ppc: Fix bugs in VSX_CVT_FP_TO_INT and
- VSX_CVT_FP_TO_INT2 macros
-Thread-Index: AQHaE1qe19iBxldti06QnynA/XxvGg==
-Date: Thu, 9 Nov 2023 22:18:08 +0000
-Message-ID: <SN6PR05MB583760D0AEB19A3516E216329DAFA@SN6PR05MB5837.namprd05.prod.outlook.com>
-References: <SN6PR05MB583705596093E9D2EFC8E4029DDEA@SN6PR05MB5837.namprd05.prod.outlook.com>
- <SN6PR05MB5837B5EF0D11E0A787EC30179DA5A@SN6PR05MB5837.namprd05.prod.outlook.com>
-In-Reply-To: <SN6PR05MB5837B5EF0D11E0A787EC30179DA5A@SN6PR05MB5837.namprd05.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-tmn: [TM5kZDq1D04RY2eyhb0RNZSsHle6aGQWTH/5i2jGtFrAWlV414PBrhTIUyGaaJgdvVXA6op7Nd0=]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR05MB5837:EE_|BLAPR05MB7329:EE_
-x-ms-office365-filtering-correlation-id: f784802c-26d8-4c3e-b1d3-08dbe171c101
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: VK9uzVh/NV2Zwb9YaTX3lOgyjoFUPCtB12YwWMOBWcn7K2g2wl9jQiivLHVFnXoKPstTq0t8hgGgsky3DhgSDuQm62iyeYE1+hQuszTsUAdkm7rp0o7KKctb+Op7rO2dnzXOMhEVVYqJVDasM3ZmCDHvVY6nawMePTYdgOsiOCCKC/OZqoH6/NfMh2gZoLP2IHTUoxMSGI0Jr7dD9mR0EOOT8zLa5yA34Vi67Oq+TlqWS538MsmnlMV5cywUA4bX+vqrcEYxRY8LoSXyGz7vOijRTXloxvRRnPmm0CMIYiIiHiK3790s+xCEn2wZTBPZ0UaQVSSMR/pHb2BZm9wpQHu7am69o4xWKPILAgNscfCCGvgl3nrmcrcyrZ3yN2l9LVKImJ/DMhAO1s1w8maZ3ioyARvQQnUxbJtTGNcNGESJbD1NViUKYE/wasLaZ4QOeGJAPwX+rYUmxYshpicwmCLIz8jLZ/Kk1rUVSsyXP0z47DsnnoonLmoX6l3chKaUpLIxT4sTlTJIyTy5XxQW3S8u56tSLJeXoKRSroi88oqvtYedFd2MrUNXZMuMuPopJmHBS2MWFkAV0681fBZbVlquRmULXQIC6U+yfjl0ZOKwkhSBEj0F0+NmYsU9YgrNg77gRaLjuMeV9IWZDsVoRw==
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?CVDxb9mGmjgBXvkPl1QvNdgjRTMHpsU+B6Ap+oJCSiFsqGwvw2gw/g6HTL?=
- =?iso-8859-1?Q?8HLZdp0s2sb8/fPxbU4ikxEbu0r5BOdqUtT2omTtS1qBxlka/cveuOJet/?=
- =?iso-8859-1?Q?nHs1u9urSIJ/v1uY58rQreanRx8+X/uL/4rGB3lCUr0GlSpTOl9B8NzuAY?=
- =?iso-8859-1?Q?e3khvTc9Gp7R+sAdLVZYPvLKMXNCNpW+4ynlD50FeHvRWnldvxzeEiYDfG?=
- =?iso-8859-1?Q?+0zrfy79YW+CkKlHjPqXS8BgyNy3bVeaNHHUeWl0+uTzV+3rpl+klmDyzz?=
- =?iso-8859-1?Q?x4Y8qcDlCZPoANv0DW9Nd2O2Z3YEl4XJXwRIFdvwsFjn5kMPuYrosCok54?=
- =?iso-8859-1?Q?aAyy4rDhNOvaQ7px5iR/4gF46pCfzE778cia25R0wqHngic2NFi1YHIG1A?=
- =?iso-8859-1?Q?wDFbslLV+tc1+LjWOnBp3O8DPX899szVle3i804JRz6PbnVQzJDLYpDUno?=
- =?iso-8859-1?Q?LpLQ/3RaXlvHrtmCHx6yqQpUV00ieMhRevDtJnKbGefjY3u8YmIQx+E+CZ?=
- =?iso-8859-1?Q?OCArdzfXsAXai2NwSad1Oek575HgRfLvcrPJ6xmWMkNh2BlRx86Eoh4jA4?=
- =?iso-8859-1?Q?pSZUrfQFs2nB2Ci7HkDYxOuXFXo+su9ILaVpVzZjJPpTNAhSO8kCjUQkHO?=
- =?iso-8859-1?Q?yY+OsmAcdZkldmoAATFLBymnjHVlMCPC1r8T9eKuGYD5gk7QURZl6ztTgX?=
- =?iso-8859-1?Q?DqmyaBKKC55/qrrDbalLJnFc0i8+Ljs2f1CjMOfEi+DmLHuw3RJMAN1BfJ?=
- =?iso-8859-1?Q?ULZgiMm7XZlsQiOXTbbL3/c7jXTsTc2tdmcZYnuLrD1N1v8aAK+foJM88h?=
- =?iso-8859-1?Q?Ecfn1BQ6NqINc3TppXitfhwlRp9888eGW2BvKrqZJsjz+DmCSnt0qioXIq?=
- =?iso-8859-1?Q?kESvsyyu0KtJH/78EU1J+5/lQmj7pIdtys2cITVT6V5e4Dml2UGQV3JZpI?=
- =?iso-8859-1?Q?q+oRStliSgHqNAzwn5zQVJ6sURu5vCiIVw7k+0fwLydbCL5AOXM8oN4RnE?=
- =?iso-8859-1?Q?c/qdAf5gm52CtGKCRrN+ORHohgA68cLFc7Xcx+uaKugop9yMRAVv+3MJcm?=
- =?iso-8859-1?Q?WH5QI9B+JRuE4tKWzxm+xxfnVSaCIu45ROdID9bmCk7QY+KHFvKQVTUHYE?=
- =?iso-8859-1?Q?CAixkSx4xrKlia/BpvDZt/8zvMuRguo6RiiNZktC9nXkhvb8KG46aT8Q29?=
- =?iso-8859-1?Q?Bapq3pO+jPUn2dcxlnHNE0v50GfQ1lsSpO+ddKsTZh5zwPMEXQbjqAx/Cb?=
- =?iso-8859-1?Q?AhXY3XbC+GgTOxq/e0mfeMpPqSlLtMKHDzdIgSdvem4ETk9Gz18yOsbOR/?=
- =?iso-8859-1?Q?ve4JASl61Aykm+aIFJcK8SYZLwtZJz8QeAhB7jHt/9WmhS4=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1r1Dtg-0001fU-8K; Thu, 09 Nov 2023 17:53:16 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3A9MewpY027923; Thu, 9 Nov 2023 22:53:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=VwxadFzgesvI/PBE6LkEV5HkAXuTBDSGDuSwOq3V4DA=;
+ b=N5huaQyruFv0lQC/pkuHQ7vs/Z5MZkV1D0q1HuV00lWbD+tcYGwyaBIgTYx1kc3PkCAV
+ 2KW7MUGEfPBkcdDcG0GRcphpLOSaXDVsuMhGHCk9wVvIJTDV+TUhfQCAl1fBPNrZr/fL
+ ZQ0hRUW8UeuOPmXn9FM8Z/Y+nrni/P1axOL63sB7aZm4u11P9j927dLtXjh7516WD5jB
+ EAP9+8yi4rcdVrWctlhLj8feTYuM+zOf68PweXvmMhSs3RbdVgDyzXJANiua/8th1P4o
+ 5IZf69Ww3I177ssjmQN0GFJEReBwnb1qnRCwTdF6sVp75Vht4r5p91uJDhOnOD/rhcAU gw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u987x8egv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Nov 2023 22:53:07 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A9Mr7xi031112;
+ Thu, 9 Nov 2023 22:53:07 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u987x8egd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Nov 2023 22:53:07 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3A9Ljaan014340; Thu, 9 Nov 2023 22:53:05 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u7w2271hy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Nov 2023 22:53:05 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3A9Mr4eV43778752
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 9 Nov 2023 22:53:05 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9DD965805C;
+ Thu,  9 Nov 2023 22:53:04 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 50F4E58059;
+ Thu,  9 Nov 2023 22:53:03 +0000 (GMT)
+Received: from li-2311da4c-2e09-11b2-a85c-c003041e9174.ibm.com.com (unknown
+ [9.61.66.47]) by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu,  9 Nov 2023 22:53:03 +0000 (GMT)
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+To: qemu-s390x@nongnu.org
+Cc: farman@linux.ibm.com, thuth@redhat.com, clg@redhat.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
+ qemu-devel@nongnu.org
+Subject: [PATCH 0/2] s390x/pci: small set of fixes
+Date: Thu,  9 Nov 2023 17:53:00 -0500
+Message-ID: <20231109225302.401344-1-mjrosato@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-4823-7-msonline-outlook-84f76.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR05MB5837.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: f784802c-26d8-4c3e-b1d3-08dbe171c101
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Nov 2023 22:18:08.8551 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR05MB7329
-Received-SPF: pass client-ip=52.103.7.19; envelope-from=john_platts@hotmail.com;
- helo=CY4PR02CU007.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: wM-EM9RkvKui8GvUmQGRVK2T6Dk8tAR8
+X-Proofpoint-GUID: JsfAPvoRxmZD8nOX6pZnOyUclaUTv8MM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-09_16,2023-11-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ mlxlogscore=519 mlxscore=0 priorityscore=1501 clxscore=1011 adultscore=0
+ spamscore=0 suspectscore=0 lowpriorityscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311090167
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,25 +110,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-What is the status of integrating the fixes to the VSX_CVT_FP_TO_INT and VS=
-X_CVT_FP_TO_INT2 macros in target/ppc/fpu_helper.c?=0A=
-=0A=
-The bug that is currently there with the VSX_CVT_FP_TO_INT and VSX_CVT_FP_T=
-O_INT2 macros is that float_invalid_cvt is incorrectly called if the curren=
-t source value is a non-NaN value and a previous NaN source value from the =
-same source vector was encountered.=0A=
-=0A=
-The link to a patch that fixes the above bug in the VSX_CVT_FP_TO_INT and V=
-SX_CVT_FP_TO_INT2 macros can be found at https://patchew.org/QEMU/SN6PR05MB=
-5837B5EF0D11E0A787EC30179DA5A@SN6PR05MB5837.namprd05.prod.outlook.com/.=0A=
-=0A=
-A description of this bug can be found at https://gitlab.com/qemu-project/q=
-emu/-/issues/1941.=0A=
-=0A=
-Here is a link to a test program that will detect the bugs that are current=
-ly there with the emulation of the xvcvspsxws, xvcvspuxws, xvcvspsxds, xvcv=
-spuxds, xvcvdpsxws, xvcvdpuxws, xvcvdpsxds, and xvcvdpuxds instructions if =
-the source vector contains at least one NaN value:=0A=
-https://gitlab.com/qemu-project/qemu/uploads/fcbb97896ff2f4ab435affae94467f=
-4d/vsx_f2i_nan_test_102523.c=
+The following set of changes are associated with issues exposed by testing
+of the 'vfio: Adopt iommufd' series.
+
+The first patch fixes an existing assumption that a vfio device will always
+have a group fd (which is no longer true if cdev is used, which can only
+happen once the iommufd backend is used).  This patch really only needs to
+go into 8.2 if the 'vfio: Adopt iommufd' series does (but would be fine to 
+go into 8.2 without it too).
+
+The second patch fixes an issue where we do not detect that a vfio DMA limit
+was never read from vfio.  This is actually an existing bug as it's possible
+for an older host kernel to be missing this support today; so ideally this one
+should be targeted for 8.2 regardless. 
+
+Matthew Rosato (2):
+  s390x/pci: bypass vfio DMA counting when using cdev
+  s390x/pci: only limit DMA aperture if vfio DMA limit reported
+
+ hw/s390x/s390-pci-vfio.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+-- 
+2.41.0
+
 
