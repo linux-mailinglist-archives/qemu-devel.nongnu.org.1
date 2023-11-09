@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 272D27E6B7F
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:49:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B3287E6B89
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:51:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15PJ-0005zf-Nu; Thu, 09 Nov 2023 08:49:17 -0500
+	id 1r15PI-0005ZB-8R; Thu, 09 Nov 2023 08:49:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15Od-0004es-EO; Thu, 09 Nov 2023 08:48:35 -0500
+ id 1r15Oc-0004eW-H9; Thu, 09 Nov 2023 08:48:35 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15Ob-0002Vf-Ay; Thu, 09 Nov 2023 08:48:35 -0500
+ id 1r15Oa-0002ez-JG; Thu, 09 Nov 2023 08:48:34 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 93CFD31B2B;
+ by isrv.corpit.ru (Postfix) with ESMTP id A6EFF31B2C;
  Thu,  9 Nov 2023 16:43:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9F6AC344D2;
+ by tsrv.corpit.ru (Postfix) with SMTP id B58BD344D3;
  Thu,  9 Nov 2023 16:43:07 +0300 (MSK)
-Received: (nullmailer pid 1461916 invoked by uid 1000);
+Received: (nullmailer pid 1461919 invoked by uid 1000);
  Thu, 09 Nov 2023 13:43:03 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.3 51/55] target/s390x: Fix CLC corrupting cc_src
-Date: Thu,  9 Nov 2023 16:42:55 +0300
-Message-Id: <20231109134300.1461632-51-mjt@tls.msk.ru>
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.3 52/55] tests/tcg/s390x: Test CLC with inaccessible
+ second operand
+Date: Thu,  9 Nov 2023 16:42:56 +0300
+Message-Id: <20231109134300.1461632-52-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
 References: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
@@ -63,48 +63,81 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-CLC updates cc_src before accessing the second operand; if the latter
-is inaccessible, the former ends up containing a bogus value.
+Add a small test to prevent regressions.
 
-Fix by reading cc_src into a temporary first.
-
-Fixes: 4f7403d52b1c ("target-s390: Convert CLC")
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/1865
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Message-ID: <20231106093605.1349201-2-iii@linux.ibm.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20231106093605.1349201-3-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit aba2ec341c6d20c8dc3e6ecf87fa7c1a71e30c1e)
+(cherry picked from commit 43fecbe7a53fe8e5a6aff0d6471b1cc624e26b51)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index dc7041e1d8..97ab1b3daa 100644
---- a/target/s390x/tcg/translate.c
-+++ b/target/s390x/tcg/translate.c
-@@ -2007,6 +2007,7 @@ static DisasJumpType op_cksm(DisasContext *s, DisasOps *o)
- static DisasJumpType op_clc(DisasContext *s, DisasOps *o)
- {
-     int l = get_field(s, l1);
-+    TCGv_i64 src;
-     TCGv_i32 vl;
-     MemOp mop;
+diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
+index 1fc9809907..3ddbde1a9d 100644
+--- a/tests/tcg/s390x/Makefile.target
++++ b/tests/tcg/s390x/Makefile.target
+@@ -41,6 +41,7 @@ TESTS+=larl
+ TESTS+=mdeb
+ TESTS+=cgebra
+ TESTS+=clgebr
++TESTS+=clc
  
-@@ -2016,9 +2017,11 @@ static DisasJumpType op_clc(DisasContext *s, DisasOps *o)
-     case 4:
-     case 8:
-         mop = ctz32(l + 1) | MO_TE;
--        tcg_gen_qemu_ld_tl(cc_src, o->addr1, get_mem_index(s), mop);
-+        /* Do not update cc_src yet: loading cc_dst may cause an exception. */
-+        src = tcg_temp_new_i64();
-+        tcg_gen_qemu_ld_tl(src, o->addr1, get_mem_index(s), mop);
-         tcg_gen_qemu_ld_tl(cc_dst, o->in2, get_mem_index(s), mop);
--        gen_op_update2_cc_i64(s, CC_OP_LTUGTU_64, cc_src, cc_dst);
-+        gen_op_update2_cc_i64(s, CC_OP_LTUGTU_64, src, cc_dst);
-         return DISAS_NEXT;
-     default:
-         vl = tcg_constant_i32(l);
+ cdsg: CFLAGS+=-pthread
+ cdsg: LDFLAGS+=-pthread
+diff --git a/tests/tcg/s390x/clc.c b/tests/tcg/s390x/clc.c
+new file mode 100644
+index 0000000000..e14189bd75
+--- /dev/null
++++ b/tests/tcg/s390x/clc.c
+@@ -0,0 +1,48 @@
++/*
++ * Test the CLC instruction.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <signal.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++
++static void handle_sigsegv(int sig, siginfo_t *info, void *ucontext)
++{
++    mcontext_t *mcontext = &((ucontext_t *)ucontext)->uc_mcontext;
++    if (mcontext->gregs[0] != 600) {
++        write(STDERR_FILENO, "bad r0\n", 7);
++        _exit(EXIT_FAILURE);
++    }
++    if (((mcontext->psw.mask >> 44) & 3) != 1) {
++        write(STDERR_FILENO, "bad cc\n", 7);
++        _exit(EXIT_FAILURE);
++    }
++    _exit(EXIT_SUCCESS);
++}
++
++int main(void)
++{
++    register unsigned long r0 asm("r0");
++    unsigned long mem = 42, rhs = 500;
++    struct sigaction act;
++    int err;
++
++    memset(&act, 0, sizeof(act));
++    act.sa_sigaction = handle_sigsegv;
++    act.sa_flags = SA_SIGINFO;
++    err = sigaction(SIGSEGV, &act, NULL);
++    assert(err == 0);
++
++    r0 = 100;
++    asm("algr %[r0],%[rhs]\n"
++        "clc 0(8,%[mem]),0(0)\n"  /* The 2nd operand will cause a SEGV. */
++        : [r0] "+r" (r0)
++        : [mem] "r" (&mem)
++        , [rhs] "r" (rhs)
++        : "cc", "memory");
++
++    return EXIT_FAILURE;
++}
 -- 
 2.39.2
 
