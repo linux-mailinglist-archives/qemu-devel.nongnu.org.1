@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E519E7E6B90
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:51:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E747E6BB7
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:54:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15LY-00033d-TT; Thu, 09 Nov 2023 08:45:25 -0500
+	id 1r15LR-0002hb-9r; Thu, 09 Nov 2023 08:45:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15L6-0002Xh-9t; Thu, 09 Nov 2023 08:44:59 -0500
+ id 1r15L5-0002Xa-QR; Thu, 09 Nov 2023 08:44:59 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15L2-0001Hj-4j; Thu, 09 Nov 2023 08:44:55 -0500
+ id 1r15L4-0001I6-1j; Thu, 09 Nov 2023 08:44:55 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4A92431B08;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5C55531B09;
  Thu,  9 Nov 2023 16:43:12 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 5C640344AF;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6C955344B0;
  Thu,  9 Nov 2023 16:43:04 +0300 (MSK)
-Received: (nullmailer pid 1461812 invoked by uid 1000);
+Received: (nullmailer pid 1461815 invoked by uid 1000);
  Thu, 09 Nov 2023 13:43:02 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.3 17/55] hw/rdma/vmw/pvrdma_cmd: Use correct struct in
- query_port()
-Date: Thu,  9 Nov 2023 16:42:21 +0300
-Message-Id: <20231109134300.1461632-17-mjt@tls.msk.ru>
+Subject: [Stable-8.1.3 18/55] target/sparc: Clear may_lookup for npc ==
+ DYNAMIC_PC
+Date: Thu,  9 Nov 2023 16:42:22 +0300
+Message-Id: <20231109134300.1461632-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
 References: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
@@ -60,72 +61,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-In query_port() we pass the address of a local pvrdma_port_attr
-struct to the rdma_query_backend_port() function.  Unfortunately,
-rdma_backend_query_port() wants a pointer to a struct ibv_port_attr,
-and the two are not the same length.
-
-Coverity spotted this (CID 1507146): pvrdma_port_attr is 48 bytes
-long, and ibv_port_attr is 52 bytes, because it has a few extra
-fields at the end.
-
-Fortunately, all we do with the attrs struct after the call is to
-read a few specific fields out of it which are all at the same
-offsets in both structs, so we can simply make the local variable the
-correct type.  This also lets us drop the cast (which should have
-been a bit of a warning flag that we were doing something wrong
-here).
-
-We do however need to add extra casts for the fields of the
-struct that are enums: clang will complain about the implicit
-cast to a different enum type otherwise.
+With pairs of jmp+rett, pc == DYNAMIC_PC_LOOKUP and
+npc == DYNAMIC_PC.  Make sure that we exit for interrupts.
 
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: 633c42834c7 ("target/sparc: Introduce DYNAMIC_PC_LOOKUP")
+Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 930f1865cc654b637ffe1207fa5b44bf0a156279)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 4ab9a7429bf7507fba4b96b97d4147628c91ba14)
 
-diff --git a/hw/rdma/vmw/pvrdma_cmd.c b/hw/rdma/vmw/pvrdma_cmd.c
-index c6ed025982..d385d18d9c 100644
---- a/hw/rdma/vmw/pvrdma_cmd.c
-+++ b/hw/rdma/vmw/pvrdma_cmd.c
-@@ -129,23 +129,27 @@ static int query_port(PVRDMADev *dev, union pvrdma_cmd_req *req,
- {
-     struct pvrdma_cmd_query_port *cmd = &req->query_port;
-     struct pvrdma_cmd_query_port_resp *resp = &rsp->query_port_resp;
--    struct pvrdma_port_attr attrs = {};
-+    struct ibv_port_attr attrs = {};
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index bd877a5e4a..9074a90818 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -5664,10 +5664,10 @@ static void sparc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+             break;
+         }
  
-     if (cmd->port_num > MAX_PORTS) {
-         return -EINVAL;
-     }
++        may_lookup = true;
+         if (dc->pc & 3) {
+             switch (dc->pc) {
+             case DYNAMIC_PC_LOOKUP:
+-                may_lookup = true;
+                 break;
+             case DYNAMIC_PC:
+                 may_lookup = false;
+@@ -5677,10 +5677,24 @@ static void sparc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+             }
+         } else {
+             tcg_gen_movi_tl(cpu_pc, dc->pc);
+-            may_lookup = true;
+         }
  
--    if (rdma_backend_query_port(&dev->backend_dev,
--                                (struct ibv_port_attr *)&attrs)) {
-+    if (rdma_backend_query_port(&dev->backend_dev, &attrs)) {
-         return -ENOMEM;
-     }
- 
-     memset(resp, 0, sizeof(*resp));
- 
--    resp->attrs.state = dev->func0->device_active ? attrs.state :
--                                                    PVRDMA_PORT_DOWN;
--    resp->attrs.max_mtu = attrs.max_mtu;
--    resp->attrs.active_mtu = attrs.active_mtu;
-+    /*
-+     * The state, max_mtu and active_mtu fields are enums; the values
-+     * for pvrdma_port_state and pvrdma_mtu match those for
-+     * ibv_port_state and ibv_mtu, so we can cast them safely.
-+     */
-+    resp->attrs.state = dev->func0->device_active ?
-+        (enum pvrdma_port_state)attrs.state : PVRDMA_PORT_DOWN;
-+    resp->attrs.max_mtu = (enum pvrdma_mtu)attrs.max_mtu;
-+    resp->attrs.active_mtu = (enum pvrdma_mtu)attrs.active_mtu;
-     resp->attrs.phys_state = attrs.phys_state;
-     resp->attrs.gid_tbl_len = MIN(MAX_PORT_GIDS, attrs.gid_tbl_len);
-     resp->attrs.max_msg_sz = 1024;
+-        save_npc(dc);
++        if (dc->npc & 3) {
++            switch (dc->npc) {
++            case JUMP_PC:
++                gen_generic_branch(dc);
++                break;
++            case DYNAMIC_PC:
++                may_lookup = false;
++                break;
++            case DYNAMIC_PC_LOOKUP:
++                break;
++            default:
++                g_assert_not_reached();
++            }
++        } else {
++            tcg_gen_movi_tl(cpu_npc, dc->npc);
++        }
+         if (may_lookup) {
+             tcg_gen_lookup_and_goto_ptr();
+         } else {
 -- 
 2.39.2
 
