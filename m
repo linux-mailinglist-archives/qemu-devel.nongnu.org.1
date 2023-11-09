@@ -2,44 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5830C7E6B6E
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:47:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E519E7E6B90
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:51:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15Kl-0000y7-TG; Thu, 09 Nov 2023 08:44:36 -0500
+	id 1r15LY-00033d-TT; Thu, 09 Nov 2023 08:45:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15Ki-0000pF-MR; Thu, 09 Nov 2023 08:44:32 -0500
+ id 1r15L6-0002Xh-9t; Thu, 09 Nov 2023 08:44:59 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15Kg-0001HC-N4; Thu, 09 Nov 2023 08:44:32 -0500
+ id 1r15L2-0001Hj-4j; Thu, 09 Nov 2023 08:44:55 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3A76E31B07;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4A92431B08;
  Thu,  9 Nov 2023 16:43:12 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 409C6344AE;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5C640344AF;
  Thu,  9 Nov 2023 16:43:04 +0300 (MSK)
-Received: (nullmailer pid 1461809 invoked by uid 1000);
+Received: (nullmailer pid 1461812 invoked by uid 1000);
  Thu, 09 Nov 2023 13:43:02 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Lu Gao <lu.gao@verisilicon.com>,
- Jianxian Wen <jianxian.wen@verisilicon.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.3 16/55] hw/sd/sdhci: Block Size Register bits [14:12] is
- lost
-Date: Thu,  9 Nov 2023 16:42:20 +0300
-Message-Id: <20231109134300.1461632-16-mjt@tls.msk.ru>
+Subject: [Stable-8.1.3 17/55] hw/rdma/vmw/pvrdma_cmd: Use correct struct in
+ query_port()
+Date: Thu,  9 Nov 2023 16:42:21 +0300
+Message-Id: <20231109134300.1461632-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
 References: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,79 +60,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Lu Gao <lu.gao@verisilicon.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Block Size Register bits [14:12] is SDMA Buffer Boundary, it is missed
-in register write, but it is needed in SDMA transfer. e.g. it will be
-used in sdhci_sdma_transfer_multi_blocks to calculate boundary_ variables.
+In query_port() we pass the address of a local pvrdma_port_attr
+struct to the rdma_query_backend_port() function.  Unfortunately,
+rdma_backend_query_port() wants a pointer to a struct ibv_port_attr,
+and the two are not the same length.
 
-Missing this field will cause wrong operation for different SDMA Buffer
-Boundary settings.
+Coverity spotted this (CID 1507146): pvrdma_port_attr is 48 bytes
+long, and ibv_port_attr is 52 bytes, because it has a few extra
+fields at the end.
 
-Fixes: d7dfca0807 ("hw/sdhci: introduce standard SD host controller")
-Fixes: dfba99f17f ("hw/sdhci: Fix DMA Transfer Block Size field")
-Signed-off-by: Lu Gao <lu.gao@verisilicon.com>
-Signed-off-by: Jianxian Wen <jianxian.wen@verisilicon.com>
-Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
-Message-ID: <20220321055618.4026-1-lu.gao@verisilicon.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit ae5f70baf549925080fcdbc6c1939c98a4a39246)
+Fortunately, all we do with the attrs struct after the call is to
+read a few specific fields out of it which are all at the same
+offsets in both structs, so we can simply make the local variable the
+correct type.  This also lets us drop the cast (which should have
+been a bit of a warning flag that we were doing something wrong
+here).
+
+We do however need to add extra casts for the fields of the
+struct that are enums: clang will complain about the implicit
+cast to a different enum type otherwise.
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit 4ab9a7429bf7507fba4b96b97d4147628c91ba14)
 
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 362c2c86aa..1bf89a1155 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -321,6 +321,8 @@ static void sdhci_poweron_reset(DeviceState *dev)
- 
- static void sdhci_data_transfer(void *opaque);
- 
-+#define BLOCK_SIZE_MASK (4 * KiB - 1)
-+
- static void sdhci_send_command(SDHCIState *s)
+diff --git a/hw/rdma/vmw/pvrdma_cmd.c b/hw/rdma/vmw/pvrdma_cmd.c
+index c6ed025982..d385d18d9c 100644
+--- a/hw/rdma/vmw/pvrdma_cmd.c
++++ b/hw/rdma/vmw/pvrdma_cmd.c
+@@ -129,23 +129,27 @@ static int query_port(PVRDMADev *dev, union pvrdma_cmd_req *req,
  {
-     SDRequest request;
-@@ -371,7 +373,8 @@ static void sdhci_send_command(SDHCIState *s)
+     struct pvrdma_cmd_query_port *cmd = &req->query_port;
+     struct pvrdma_cmd_query_port_resp *resp = &rsp->query_port_resp;
+-    struct pvrdma_port_attr attrs = {};
++    struct ibv_port_attr attrs = {};
  
-     sdhci_update_irq(s);
- 
--    if (!timeout && s->blksize && (s->cmdreg & SDHC_CMD_DATA_PRESENT)) {
-+    if (!timeout && (s->blksize & BLOCK_SIZE_MASK) &&
-+        (s->cmdreg & SDHC_CMD_DATA_PRESENT)) {
-         s->data_count = 0;
-         sdhci_data_transfer(s);
+     if (cmd->port_num > MAX_PORTS) {
+         return -EINVAL;
      }
-@@ -406,7 +409,6 @@ static void sdhci_end_transfer(SDHCIState *s)
- /*
-  * Programmed i/o data transfer
-  */
--#define BLOCK_SIZE_MASK (4 * KiB - 1)
  
- /* Fill host controller's read buffer with BLKSIZE bytes of data from card */
- static void sdhci_read_block_from_card(SDHCIState *s)
-@@ -1154,7 +1156,8 @@ sdhci_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
-             s->sdmasysad = (s->sdmasysad & mask) | value;
-             MASKED_WRITE(s->sdmasysad, mask, value);
-             /* Writing to last byte of sdmasysad might trigger transfer */
--            if (!(mask & 0xFF000000) && s->blkcnt && s->blksize &&
-+            if (!(mask & 0xFF000000) && s->blkcnt &&
-+                (s->blksize & BLOCK_SIZE_MASK) &&
-                 SDHC_DMA_TYPE(s->hostctl1) == SDHC_CTRL_SDMA) {
-                 if (s->trnmod & SDHC_TRNS_MULTI) {
-                     sdhci_sdma_transfer_multi_blocks(s);
-@@ -1168,7 +1171,11 @@ sdhci_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
-         if (!TRANSFERRING_DATA(s->prnsts)) {
-             uint16_t blksize = s->blksize;
+-    if (rdma_backend_query_port(&dev->backend_dev,
+-                                (struct ibv_port_attr *)&attrs)) {
++    if (rdma_backend_query_port(&dev->backend_dev, &attrs)) {
+         return -ENOMEM;
+     }
  
--            MASKED_WRITE(s->blksize, mask, extract32(value, 0, 12));
-+            /*
-+             * [14:12] SDMA Buffer Boundary
-+             * [11:00] Transfer Block Size
-+             */
-+            MASKED_WRITE(s->blksize, mask, extract32(value, 0, 15));
-             MASKED_WRITE(s->blkcnt, mask >> 16, value >> 16);
+     memset(resp, 0, sizeof(*resp));
  
-             /* Limit block size to the maximum buffer size */
+-    resp->attrs.state = dev->func0->device_active ? attrs.state :
+-                                                    PVRDMA_PORT_DOWN;
+-    resp->attrs.max_mtu = attrs.max_mtu;
+-    resp->attrs.active_mtu = attrs.active_mtu;
++    /*
++     * The state, max_mtu and active_mtu fields are enums; the values
++     * for pvrdma_port_state and pvrdma_mtu match those for
++     * ibv_port_state and ibv_mtu, so we can cast them safely.
++     */
++    resp->attrs.state = dev->func0->device_active ?
++        (enum pvrdma_port_state)attrs.state : PVRDMA_PORT_DOWN;
++    resp->attrs.max_mtu = (enum pvrdma_mtu)attrs.max_mtu;
++    resp->attrs.active_mtu = (enum pvrdma_mtu)attrs.active_mtu;
+     resp->attrs.phys_state = attrs.phys_state;
+     resp->attrs.gid_tbl_len = MIN(MAX_PORT_GIDS, attrs.gid_tbl_len);
+     resp->attrs.max_msg_sz = 1024;
 -- 
 2.39.2
 
