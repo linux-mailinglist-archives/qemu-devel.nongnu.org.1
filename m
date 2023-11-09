@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3987E6C27
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:09:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 675CB7E6C33
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:11:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15fs-0005Tr-BJ; Thu, 09 Nov 2023 09:06:24 -0500
+	id 1r15gL-0006lZ-AV; Thu, 09 Nov 2023 09:06:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15co-0005II-N7; Thu, 09 Nov 2023 09:03:22 -0500
+ id 1r15dA-0005fv-N5; Thu, 09 Nov 2023 09:03:38 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15cm-0006wu-UC; Thu, 09 Nov 2023 09:03:14 -0500
+ id 1r15d8-0006xA-8e; Thu, 09 Nov 2023 09:03:36 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 44CB131BE0;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5913931BE2;
  Thu,  9 Nov 2023 16:59:57 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4CC3D34518;
+ by tsrv.corpit.ru (Postfix) with SMTP id 601B534519;
  Thu,  9 Nov 2023 16:59:49 +0300 (MSK)
-Received: (nullmailer pid 1462903 invoked by uid 1000);
+Received: (nullmailer pid 1462906 invoked by uid 1000);
  Thu, 09 Nov 2023 13:59:47 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.7 41/62] tests/migration: Add -fno-stack-protector
-Date: Thu,  9 Nov 2023 16:59:09 +0300
-Message-Id: <20231109135933.1462615-41-mjt@tls.msk.ru>
+Subject: [Stable-7.2.7 42/62] tests/tcg: Add -fno-stack-protector
+Date: Thu,  9 Nov 2023 16:59:10 +0300
+Message-Id: <20231109135933.1462615-42-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 References: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
@@ -70,28 +70,132 @@ it is necessary to explicitly disable stack protector when linking
 without standard libraries.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230731091042.139159-2-akihiko.odaki@daynix.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 7a06a8fec9df3b6a0f72e7b37dff0969430aab96)
+Message-Id: <20230731091042.139159-3-akihiko.odaki@daynix.com>
+[AJB: fix comment string typo]
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20231029145033.592566-3-alex.bennee@linaro.org>
+(cherry picked from commit 580731dcc87eb27a2b0dc20ec331f1ce51864c97)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/migration/s390x/Makefile b/tests/migration/s390x/Makefile
-index 6393c3e5b9..6671de2efc 100644
---- a/tests/migration/s390x/Makefile
-+++ b/tests/migration/s390x/Makefile
-@@ -6,8 +6,8 @@ all: a-b-bios.h
- fwdir=../../../pc-bios/s390-ccw
+diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
+index 14bc013181..368a053392 100644
+--- a/tests/tcg/Makefile.target
++++ b/tests/tcg/Makefile.target
+@@ -123,7 +123,7 @@ else
+ # For softmmu targets we include a different Makefile fragement as the
+ # build options for bare programs are usually pretty different. They
+ # are expected to provide their own build recipes.
+-EXTRA_CFLAGS += -ffreestanding
++EXTRA_CFLAGS += -ffreestanding -fno-stack-protector
+ -include $(SRC_PATH)/tests/tcg/minilib/Makefile.target
+ -include $(SRC_PATH)/tests/tcg/multiarch/system/Makefile.softmmu-target
+ -include $(SRC_PATH)/tests/tcg/$(TARGET_NAME)/Makefile.softmmu-target
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index fc8d90ed69..a72578fccb 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -38,7 +38,7 @@ endif
+ # bti-1 tests the elf notes, so we require special compiler support.
+ ifneq ($(CROSS_CC_HAS_ARMV8_BTI),)
+ AARCH64_TESTS += bti-1 bti-3
+-bti-1 bti-3: CFLAGS += -mbranch-protection=standard
++bti-1 bti-3: CFLAGS += -fno-stack-protector -mbranch-protection=standard
+ bti-1 bti-3: LDFLAGS += -nostdlib
+ endif
+ # bti-2 tests PROT_BTI, so no special compiler support required.
+diff --git a/tests/tcg/arm/Makefile.target b/tests/tcg/arm/Makefile.target
+index b3b1504a1c..6b69672fcf 100644
+--- a/tests/tcg/arm/Makefile.target
++++ b/tests/tcg/arm/Makefile.target
+@@ -12,7 +12,7 @@ float_madds: CFLAGS+=-mfpu=neon-vfpv4
  
- CFLAGS+=-ffreestanding -fno-delete-null-pointer-checks -fPIE -Os \
--	-msoft-float -march=z900 -fno-asynchronous-unwind-tables -Wl,-pie \
--	-Wl,--build-id=none -nostdlib
-+	-msoft-float -march=z900 -fno-asynchronous-unwind-tables \
-+	-fno-stack-protector -Wl,-pie -Wl,--build-id=none -nostdlib
+ # Basic Hello World
+ ARM_TESTS = hello-arm
+-hello-arm: CFLAGS+=-marm -ffreestanding
++hello-arm: CFLAGS+=-marm -ffreestanding -fno-stack-protector
+ hello-arm: LDFLAGS+=-nostdlib
  
- a-b-bios.h: s390x.elf
- 	echo "$$__note" > header.tmp
+ # IWMXT floating point extensions
+diff --git a/tests/tcg/cris/Makefile.target b/tests/tcg/cris/Makefile.target
+index 372287bd03..ea1053236f 100644
+--- a/tests/tcg/cris/Makefile.target
++++ b/tests/tcg/cris/Makefile.target
+@@ -30,7 +30,7 @@ AS	= $(CC) -x assembler-with-cpp
+ LD      = $(CC)
+ 
+ # we rely on GCC inline:ing the stuff we tell it to in many places here.
+-CFLAGS  = -Winline -Wall -g -O2 -static
++CFLAGS  = -Winline -Wall -g -O2 -static -fno-stack-protector
+ NOSTDFLAGS = -nostartfiles -nostdlib
+ ASFLAGS += -mcpu=v10 -g -Wa,-I,$(SRC_PATH)/tests/tcg/cris/bare
+ CRT_FILES = crt.o sys.o
+diff --git a/tests/tcg/hexagon/Makefile.target b/tests/tcg/hexagon/Makefile.target
+index 96a4d7a614..1b2b26e843 100644
+--- a/tests/tcg/hexagon/Makefile.target
++++ b/tests/tcg/hexagon/Makefile.target
+@@ -19,7 +19,7 @@
+ EXTRA_RUNS =
+ 
+ CFLAGS += -Wno-incompatible-pointer-types -Wno-undefined-internal
+-CFLAGS += -fno-unroll-loops
++CFLAGS += -fno-unroll-loops -fno-stack-protector
+ 
+ HEX_SRC=$(SRC_PATH)/tests/tcg/hexagon
+ VPATH += $(HEX_SRC)
+diff --git a/tests/tcg/i386/Makefile.target b/tests/tcg/i386/Makefile.target
+index bafd8c2180..3aec3bba77 100644
+--- a/tests/tcg/i386/Makefile.target
++++ b/tests/tcg/i386/Makefile.target
+@@ -35,7 +35,7 @@ run-plugin-test-i386-adcox-%: QEMU_OPTS += -cpu max
+ #
+ # hello-i386 is a barebones app
+ #
+-hello-i386: CFLAGS+=-ffreestanding
++hello-i386: CFLAGS+=-ffreestanding -fno-stack-protector
+ hello-i386: LDFLAGS+=-nostdlib
+ 
+ # test-386 includes a couple of additional objects that need to be
+diff --git a/tests/tcg/minilib/Makefile.target b/tests/tcg/minilib/Makefile.target
+index c821d2806a..af0bf54be9 100644
+--- a/tests/tcg/minilib/Makefile.target
++++ b/tests/tcg/minilib/Makefile.target
+@@ -12,7 +12,7 @@ SYSTEM_MINILIB_SRC=$(SRC_PATH)/tests/tcg/minilib
+ MINILIB_SRCS=$(wildcard $(SYSTEM_MINILIB_SRC)/*.c)
+ MINILIB_OBJS=$(patsubst $(SYSTEM_MINILIB_SRC)/%.c, %.o, $(MINILIB_SRCS))
+ 
+-MINILIB_CFLAGS+=-nostdlib -ggdb -O0
++MINILIB_CFLAGS+=-nostdlib -fno-stack-protector -ggdb -O0
+ MINILIB_INC=-isystem $(SYSTEM_MINILIB_SRC)
+ 
+ .PRECIOUS: $(MINILIB_OBJS)
+diff --git a/tests/tcg/mips/Makefile.target b/tests/tcg/mips/Makefile.target
+index 1a994d5525..5d17c1706e 100644
+--- a/tests/tcg/mips/Makefile.target
++++ b/tests/tcg/mips/Makefile.target
+@@ -14,6 +14,6 @@ MIPS_TESTS=hello-mips
+ 
+ TESTS += $(MIPS_TESTS)
+ 
+-hello-mips: CFLAGS+=-mno-abicalls -fno-PIC -mabi=32
++hello-mips: CFLAGS+=-mno-abicalls -fno-PIC -fno-stack-protector -mabi=32
+ hello-mips: LDFLAGS+=-nostdlib
+ endif
+diff --git a/tests/tcg/mips/hello-mips.c b/tests/tcg/mips/hello-mips.c
+index 4e1cf501af..38e22d00e3 100644
+--- a/tests/tcg/mips/hello-mips.c
++++ b/tests/tcg/mips/hello-mips.c
+@@ -5,8 +5,8 @@
+ * http://www.linux-mips.org/wiki/MIPSABIHistory
+ * http://www.linux.com/howtos/Assembly-HOWTO/mips.shtml
+ *
+-* mipsel-linux-gcc -nostdlib -mno-abicalls -fno-PIC -mabi=32 \
+-*                  -O2 -static -o hello-mips hello-mips.c
++* mipsel-linux-gcc -nostdlib -mno-abicalls -fno-PIC -fno-stack-protector \
++*                  -mabi=32 -O2 -static -o hello-mips hello-mips.c
+ *
+ */
+ #define __NR_SYSCALL_BASE	4000
 -- 
 2.39.2
 
