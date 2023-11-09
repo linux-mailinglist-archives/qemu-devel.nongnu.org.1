@@ -2,43 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C3F7E6BF9
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:04:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B30A7E6BFD
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:04:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15bi-0001NO-0f; Thu, 09 Nov 2023 09:02:06 -0500
+	id 1r15bw-0003RF-V3; Thu, 09 Nov 2023 09:02:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15aW-000688-Fa; Thu, 09 Nov 2023 09:00:59 -0500
+ id 1r15ar-0006Nh-M8; Thu, 09 Nov 2023 09:01:20 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15aQ-00061F-9o; Thu, 09 Nov 2023 09:00:47 -0500
+ id 1r15al-000623-To; Thu, 09 Nov 2023 09:01:13 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5C3AB31BC7;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6E69831BC8;
  Thu,  9 Nov 2023 16:59:42 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6436134500;
+ by tsrv.corpit.ru (Postfix) with SMTP id 77E8B34501;
  Thu,  9 Nov 2023 16:59:34 +0300 (MSK)
-Received: (nullmailer pid 1462806 invoked by uid 1000);
+Received: (nullmailer pid 1462809 invoked by uid 1000);
  Thu, 09 Nov 2023 13:59:33 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.7 17/62] esp: use correct type for esp_dma_enable() in
- sysbus_esp_gpio_demux()
-Date: Thu,  9 Nov 2023 16:58:45 +0300
-Message-Id: <20231109135933.1462615-17-mjt@tls.msk.ru>
+Subject: [Stable-7.2.7 18/62] esp: restrict non-DMA transfer length to that of
+ available data
+Date: Thu,  9 Nov 2023 16:58:46 +0300
+Message-Id: <20231109135933.1462615-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 References: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -65,33 +63,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-The call to esp_dma_enable() was being made with the SYSBUS_ESP type instead of
-the ESP type. This meant that when GPIO 1 was being used to trigger a DMA
-request from an external DMA controller, the setting of ESPState's dma_enabled
-field would clobber unknown memory whilst the dma_cb callback pointer would
-typically return NULL so the DMA request would never start.
+In the case where a SCSI layer transfer is incorrectly terminated, it is
+possible for a TI command to cause a SCSI buffer overflow due to the
+expected transfer data length being less than the available data in the
+FIFO. When this occurs the unsigned async_len variable underflows and
+becomes a large offset which writes past the end of the allocated SCSI
+buffer.
+
+Restrict the non-DMA transfer length to be the smallest of the expected
+transfer length and the available FIFO data to ensure that it is no longer
+possible for the SCSI buffer overflow to occur.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1810
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20230913204410.65650-2-mark.cave-ayland@ilande.co.uk>
+Message-ID: <20230913204410.65650-3-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit b86dc5cb0b4105fa8ad29e822ab5d21c589c5ec5)
+(cherry picked from commit 77668e4b9bca03a856c27ba899a2513ddf52bb52)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index e52188d022..4218a6a960 100644
+index 4218a6a960..9b11d8c573 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -1395,7 +1395,7 @@ static void sysbus_esp_gpio_demux(void *opaque, int irq, int level)
-         parent_esp_reset(s, irq, level);
-         break;
-     case 1:
--        esp_dma_enable(opaque, irq, level);
-+        esp_dma_enable(s, irq, level);
-         break;
+@@ -759,7 +759,8 @@ static void esp_do_nodma(ESPState *s)
      }
- }
+ 
+     if (to_device) {
+-        len = MIN(fifo8_num_used(&s->fifo), ESP_FIFO_SZ);
++        len = MIN(s->async_len, ESP_FIFO_SZ);
++        len = MIN(len, fifo8_num_used(&s->fifo));
+         esp_fifo_pop_buf(&s->fifo, s->async_buf, len);
+         s->async_buf += len;
+         s->async_len -= len;
 -- 
 2.39.2
 
