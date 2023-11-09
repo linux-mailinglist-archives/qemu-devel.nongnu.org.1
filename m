@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46CA27E6B66
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:46:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F88C7E6B59
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:44:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15Kc-0008LM-Cb; Thu, 09 Nov 2023 08:44:26 -0500
+	id 1r15KZ-0008GO-9I; Thu, 09 Nov 2023 08:44:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15KJ-0007x0-Lx; Thu, 09 Nov 2023 08:44:12 -0500
+ id 1r15KR-0007yx-VK; Thu, 09 Nov 2023 08:44:17 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15K2-00012L-TB; Thu, 09 Nov 2023 08:44:00 -0500
+ id 1r15KK-00014h-N5; Thu, 09 Nov 2023 08:44:10 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 501A831AFE;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5FBC131AFF;
  Thu,  9 Nov 2023 16:43:11 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 61CB8344A5;
+ by tsrv.corpit.ru (Postfix) with SMTP id 71727344A6;
  Thu,  9 Nov 2023 16:43:03 +0300 (MSK)
-Received: (nullmailer pid 1461782 invoked by uid 1000);
+Received: (nullmailer pid 1461785 invoked by uid 1000);
  Thu, 09 Nov 2023 13:43:02 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.3 07/55] target/hexagon: avoid invalid escape in Python
+Subject: [Stable-8.1.3 08/55] tests/avocado: avoid invalid escape in Python
  string
-Date: Thu,  9 Nov 2023 16:42:11 +0300
-Message-Id: <20231109134300.1461632-7-mjt@tls.msk.ru>
+Date: Thu,  9 Nov 2023 16:42:12 +0300
+Message-Id: <20231109134300.1461632-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
 References: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
@@ -66,31 +66,22 @@ This is an error in Python 3.12; fix it by using a raw string literal.
 
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit e41c40d101fce79af4d679955eb6e0d31e02c47c)
+(cherry picked from commit 1b5f3f65cc71341a4f9fc9e89bb6985fde703758)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/hexagon/hex_common.py b/target/hexagon/hex_common.py
-index dce1b852a7..0da65d6dd6 100755
---- a/target/hexagon/hex_common.py
-+++ b/target/hexagon/hex_common.py
-@@ -45,7 +45,7 @@ def uniquify(seq):
- immre = re.compile(r"[#]([rRsSuUm])(\d+)(?:[:](\d+))?")
- reg_or_immre = re.compile(
-     r"(((?<!DUP)[MNRCOPQXSGVZA])([stuvwxyzdefg]+)"
--    + "([.]?[LlHh]?)(\d+S?))|([#]([rRsSuUm])(\d+)[:]?(\d+)?)"
-+    r"([.]?[LlHh]?)(\d+S?))|([#]([rRsSuUm])(\d+)[:]?(\d+)?)"
- )
- relimmre = re.compile(r"[#]([rR])(\d+)(?:[:](\d+))?")
- absimmre = re.compile(r"[#]([sSuUm])(\d+)(?:[:](\d+))?")
-@@ -337,7 +337,7 @@ def read_attribs_file(name):
+diff --git a/tests/avocado/virtio_check_params.py b/tests/avocado/virtio_check_params.py
+index 4093da8a67..0b1e99fc24 100644
+--- a/tests/avocado/virtio_check_params.py
++++ b/tests/avocado/virtio_check_params.py
+@@ -43,7 +43,7 @@
+ class VirtioMaxSegSettingsCheck(QemuSystemTest):
+     @staticmethod
+     def make_pattern(props):
+-        pattern_items = ['{0} = \w+'.format(prop) for prop in props]
++        pattern_items = [r'{0} = \w+'.format(prop) for prop in props]
+         return '|'.join(pattern_items)
  
- 
- def read_overrides_file(name):
--    overridere = re.compile("#define fGEN_TCG_([A-Za-z0-9_]+)\(.*")
-+    overridere = re.compile(r"#define fGEN_TCG_([A-Za-z0-9_]+)\(.*")
-     for line in open(name, "rt").readlines():
-         if not overridere.match(line):
-             continue
+     def query_virtqueue(self, vm, dev_type_name):
 -- 
 2.39.2
 
