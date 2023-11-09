@@ -2,95 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC4F7E6FE1
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 18:11:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5E47E6FE2
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 18:11:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r18Xz-0002w6-UH; Thu, 09 Nov 2023 12:10:27 -0500
+	id 1r18Ym-0003sf-0i; Thu, 09 Nov 2023 12:11:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r18Xy-0002vg-G4
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:10:26 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ id 1r18Yk-0003rk-9U
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:11:14 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r18Xv-0006U2-NC
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:10:25 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-53e3b8f906fso1765042a12.2
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 09:10:23 -0800 (PST)
+ id 1r18Yi-0006Z1-OP
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:11:14 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5446c9f3a77so1924541a12.0
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 09:11:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699549821; x=1700154621; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699549871; x=1700154671; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=pKn2wFNiNtiYtY2NRSgRfnoKVvquaS14kyseYtAQ+R4=;
- b=lBPSUsdMHFVw9nScYl+Sdrylk32BRjNlBPaRh4OZ3tEqOKAUlbWNLOP/FQDR3CO3Es
- 0TIsy0AwahJ5RRqpQYtlP4WqWXMUqXtWYsh6t3Fo0QXVHpV8NzeBJQeaoSDsmXrVJ5sX
- jVSDf+Hr4KbVym6h7jGuRGk72gAR7BBkMrMBUCgGzdeq+Ty6svYxlLfZvEnalsvHlShY
- /FlDwPQpAjd/9ylAGztUGxdu8mf7aib94gg9e/F/tJijGROGx90hagM9JlaWYp+erWTI
- 3d+JuF4ClgOFkOzNeVBpdL+7LcX4smEK2wYrqk+WsY57H5j7sv2oIuaXlQTcCs8yvVJK
- /V8Q==
+ bh=U+9y4x2z4fsA5Zt83hhNWhpPB+KEimoExJJi5qWOLcw=;
+ b=Ec5HGziMBXpXd54g6Ok5vO2ZkKQRnN9P0KFdeSO4g3Q06I1HneLWt8+Dr8fDyB9lrl
+ 66uy0lsty+2RTHT/JEdVHoIJAUMcjBThzFWS+ex3UGVITTry+Wr0EDoZlPIc4f4hLYZ4
+ 9WgE3AMvlRB/yDChtBNi/l1gafn21hYOTYkElqPFY/xnINaJICy+XNIyFaEGMC3xPBZc
+ HgkEugSBSds9/+EEXqvVyS9EsgMcxMU4iLL3LaWRBWsXXrgniQP+XrZtcBUcdLWCDTPk
+ pk4eVsNCRA1/v29QA4uHQ2IsH/hwpQKEr+EPm5KJOd86Tzx219zP99ZumoeDKRnzL6Du
+ cxNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699549821; x=1700154621;
+ d=1e100.net; s=20230601; t=1699549871; x=1700154671;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=pKn2wFNiNtiYtY2NRSgRfnoKVvquaS14kyseYtAQ+R4=;
- b=cOFxGiCWP+sl1o5rc0SY30D2Jf9DiySzf7w05Ni9omFvtO29a7rjZY0yepizOcz+qJ
- iExkjC43uqY5oWife1khxoyyolBpxWbT6pfSDfYdyp8GkX0mNWAWU4B3aABkjCotC4DB
- nzjod9wmS0VmDEbsevOw7xbOmkFgoO7+jIRLWjAMzMrVoGE57TZOdzdfUTNACmUP8zke
- LtaNYQA36axjZBpoDzJphq02CeAMgNLU/xLueQHfzo89kdQ49Odcn1BdhrsIVGMrDxWs
- 1sIMZiCNIaxxV2Ot/t+Ez/X7Pt3jKc5DJVN3uGlRLf+EGcnmF7aoWVXpbZRzUdpgk5hB
- mY7g==
-X-Gm-Message-State: AOJu0YyzqBIToNhvi7vcoAzORWeDd6CqhVVqbZmJXrKA8YcUBAzvfRkI
- 8BzHoSjk49PZzzGhM1xvYjN7817B5T11EQ+F7RChAg==
-X-Google-Smtp-Source: AGHT+IFbH6CAVXH7ADs5Rexsg2FS03eddq9jcbNcFPSNY/KE+KcLSuHQrZrEEyLAUZZpzzlUbm/Djm6P6dRKH45Hu3I=
-X-Received: by 2002:a50:cdc1:0:b0:543:7c3d:6ab0 with SMTP id
- h1-20020a50cdc1000000b005437c3d6ab0mr4703974edj.13.1699549821243; Thu, 09 Nov
- 2023 09:10:21 -0800 (PST)
+ bh=U+9y4x2z4fsA5Zt83hhNWhpPB+KEimoExJJi5qWOLcw=;
+ b=PkpeG8qSWe5T95qZenXOLnI6BJxRXRYmW24rccEKWelDYL1alDUTbOnedwvFLuRqSQ
+ SJs2BRzH8CHKv62zTKA2wu1QAoyzijWrUCY52AOLwVsPQMN05m6V6ClKJqNcrYQRVz1k
+ ke0JRtyGNt0R2325UwfeteVUdlJZEje3RAs49OjC8dLeqPraGbjMPcAOCTi9+5gxhz7F
+ sylcfTENhOw+6tgo2IpToV5fcC3qjqwV4pNUfO2HJOclQxkeu2RtYwIztGXiz9BY+dAS
+ SfaRssHuOIX76k784pr+n3Rnt4D8pfxGCT9sqtDi6Wme3fNDolkBdNOg7RIECgi/Yi+3
+ PGDQ==
+X-Gm-Message-State: AOJu0YwSbFCjj7aI6Nf6HaySuVd2kgdW4hvYCzTCnsm2WGrUpJvCzf0S
+ DU7USUDdJCWCZZ4/0IsGQ0XEK+in6Mq+C6huYjtBZw==
+X-Google-Smtp-Source: AGHT+IFovhhZBU8q8epkldZ8FQyCfD2pxsZoaKgTh4nV2ATsJ9betfQ69V9zealCiEP4AkkZGFzHDdy52gO8h1Kc4gs=
+X-Received: by 2002:a50:9ea7:0:b0:53f:a526:779 with SMTP id
+ a36-20020a509ea7000000b0053fa5260779mr4812176edf.12.1699549871438; Thu, 09
+ Nov 2023 09:11:11 -0800 (PST)
 MIME-Version: 1.0
-References: <20231102114054.44360-1-quintela@redhat.com>
- <20231102114054.44360-22-quintela@redhat.com>
-In-Reply-To: <20231102114054.44360-22-quintela@redhat.com>
+References: <20231109170715.259520-1-eric.auger@redhat.com>
+In-Reply-To: <20231109170715.259520-1-eric.auger@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 9 Nov 2023 17:10:09 +0000
-Message-ID: <CAFEAcA_LrLsJ_4PnWLW0cuuTQRP5J7yq48xm8=kLDL39MObn9g@mail.gmail.com>
-Subject: Re: [PULL 21/40] migration: per-mode blockers
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>, 
- Laurent Vivier <lvivier@redhat.com>, David Gibson <david@gibson.dropbear.id.au>,
- qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Kevin Wolf <kwolf@redhat.com>, David Hildenbrand <david@redhat.com>, 
- Samuel Thibault <samuel.thibault@ens-lyon.org>, qemu-s390x@nongnu.org, 
- Richard Henderson <richard.henderson@linaro.org>,
- Leonardo Bras <leobras@redhat.com>, 
- Corey Minyard <cminyard@mvista.com>, Ilya Leoshkevich <iii@linux.ibm.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-ppc@nongnu.org, 
- "Michael S. Tsirkin" <mst@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Gerd Hoffmann <kraxel@redhat.com>, 
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- Li Zhijian <lizhijian@fujitsu.com>, Eric Blake <eblake@redhat.com>, 
- "Denis V. Lunev" <den@openvz.org>, Hanna Reitz <hreitz@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>, qemu-arm@nongnu.org, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Corey Minyard <minyard@acm.org>, John Snow <jsnow@redhat.com>,
- Jeff Cody <codyprime@gmail.com>, 
- Peter Xu <peterx@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Jason Wang <jasowang@redhat.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Stefan Weil <sw@weilnetz.de>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Fam Zheng <fam@euphon.net>, Steve Sistare <steven.sistare@oracle.com>
+Date: Thu, 9 Nov 2023 17:11:00 +0000
+Message-ID: <CAFEAcA_iNjy2NgxEk51_XU27qZOKjw+OuxzGhvTCMBAjxaJi+A@mail.gmail.com>
+Subject: Re: [PATCH] virtio-iommu: Remove useless !sdev check in
+ virtio_iommu_probe()
+To: Eric Auger <eric.auger@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+ clg@redhat.com, mst@redhat.com, yanghliu@redhat.com, 
+ alex.williamson@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -113,43 +87,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2 Nov 2023 at 11:43, Juan Quintela <quintela@redhat.com> wrote:
+On Thu, 9 Nov 2023 at 17:07, Eric Auger <eric.auger@redhat.com> wrote:
 >
-> From: Steve Sistare <steven.sistare@oracle.com>
+> The code already checks iommu_mr is not NULL so there is no
+> need to check container_of() is not NULL. Remove the check.
 >
-> Extend the blocker interface so that a blocker can be registered for
-> one or more migration modes.  The existing interfaces register a
-> blocker for all modes, and the new interfaces take a varargs list
-> of modes.
->
-> Internally, maintain a separate blocker list per mode.  The same Error
-> object may be added to multiple lists.  When a block is deleted, it is
-> removed from every list, and the Error is freed.
->
-> No functional change until a new mode is added.
+> Fixes: CID 1523901
+> Fixes: 09b4c3d6a2 ("virtio-iommu: Record whether a probe request has
+> been issued")
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Reported-by: Coverity (CID 1523901)
 
-Hi; Coverity worries about this code:
-
-> -static GSList *migration_blockers;
-> +static GSList *migration_blockers[MIG_MODE__MAX];
->
->  static bool migration_object_check(MigrationState *ms, Error **errp);
->  static int migration_maybe_pause(MigrationState *s,
-> @@ -1043,7 +1043,7 @@ static void fill_source_migration_info(MigrationInfo *info)
->  {
->      MigrationState *s = migrate_get_current();
->      int state = qatomic_read(&s->state);
-> -    GSList *cur_blocker = migration_blockers;
-> +    GSList *cur_blocker = migration_blockers[migrate_mode()];
-
-because it thinks that migrate_mode() might return a value that's
-too big for the migration_blockers[] array. (CID 1523829, 1523830.)
-
-I think Coverity complains mostly because it doesn't understand
-that the MIG_MODE__MAX in the enum is not a valid enum value
-that a function returning a MigMode might return. But we can
-help it out by assert()ing in migrate_mode() that the value
-we're about to return is definitely a valid mode.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
 -- PMM
