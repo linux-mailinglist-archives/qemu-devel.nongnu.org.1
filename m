@@ -2,70 +2,127 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF707E6644
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 10:08:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 778957E667E
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 10:19:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r111F-0002VX-Ks; Thu, 09 Nov 2023 04:08:09 -0500
+	id 1r11Bs-00065K-QV; Thu, 09 Nov 2023 04:19:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1r111D-0002UH-8I; Thu, 09 Nov 2023 04:08:07 -0500
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <gmanning@rapitasystems.com>)
+ id 1r11Bh-000639-5Z
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 04:18:58 -0500
+Received: from mail-lo4gbr01on2097.outbound.protection.outlook.com
+ ([40.107.122.97] helo=GBR01-LO4-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1r1119-0000He-Mr; Thu, 09 Nov 2023 04:08:06 -0500
-Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:5329:0:640:5ed5:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id D7FFC61976;
- Thu,  9 Nov 2023 12:07:58 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b42b::1:2e] (unknown
- [2a02:6b8:b081:b42b::1:2e])
- by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id v7abfF0On8c0-BcB0sycY; Thu, 09 Nov 2023 12:07:58 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1699520878;
- bh=9apuE64fZoYjpT4VLW8mk0oUcbeNnjUm20AMDVFkNmM=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=BLsHTpF5+AW0xY9ZTQeG28PP6P6lK1WtlX5kRKK2O5m1fmK1YE6hzWZufocso97z6
- YoXTpt/ZHtFcpyBovJwRDxnBdP9IEBBcTebZyo0a4+gIcMTNzBXJ6JS29076vu8C8z
- nolLfT1FOuIh7gh/qTgmuhP1tpVR0057OIT5hw8Y=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <7b017824-069d-421a-a179-4098ab7a8c64@yandex-team.ru>
-Date: Thu, 9 Nov 2023 12:07:57 +0300
+ (Exim 4.90_1) (envelope-from <gmanning@rapitasystems.com>)
+ id 1r11Bf-0002J5-EG
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 04:18:56 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=W4TBl1LCfFGBIau+56CBjd9ZKeojkATnh77UocgRUAa2tZnecUW5ObdO6Ppyr2NO+p0RN+VmubQkAH3qkFpmehCD16ooTYEw1rGf9hPKj+JUhaxrZrWM5fLM4obfSH5ypYi8UUh8MtxKCixi/ZxaPWL9lctVG7znIs3v+L/LO8dxANepTBZMfFbD/N35fN+8GqAxf2TZ1+nJX5x5stMNyfgxoQnhnZ4OasEzyruPn5gGnTP29vCn0YSKvB6bUqoWgLgxPxTUrt6jR5vCdBnONIEEF/P0rvoQYOts+hrb0+ZUhfrTFkivELWzESDrO2oliBoFIjNVQGw9JLhsfGFY6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5G7XOcKtovDh5oNxVTKVE9m/1fUYLktR6tnQLnoT6VA=;
+ b=L2vqLzgOW+zinKSO7yiTu7N/Tf1z9rRPzILLDnNuFDBufcsUza3twO/+/goWXMVUOaUpv5oBNqb6nuXceXx11LAJ/nTDY2RsLNTa6e1eMgcyFELVuiHgLzKFy3NXi3BN2pUe3nGdEed+03/UXNCPih/o0TwXQsVXq2QlAsoGKEBRXpf2MmgY9BC4Nlh+UGH0zWQ4KfkD7+SqaJM258cW7pvKxLcRs9FxF0xZQvt/jnyfoJTXGgRX2sJggpMPfc2FckFQC6PQ/uGy3n7C++rUcCDL9nUKpYFwMW6mQxeT+4zuoK+50Vl3e2G9IVxs/QdCyOvbNpN9JGOr1hiSn0MSag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=rapitasystems.com; dmarc=pass action=none
+ header.from=rapitasystems.com; dkim=pass header.d=rapitasystems.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rapitasystems.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5G7XOcKtovDh5oNxVTKVE9m/1fUYLktR6tnQLnoT6VA=;
+ b=FxmEd+neCWRC+X98c0TFksHNnKt4wDJLOxKNmpPDGiohm5aY/4lD8AOvub5pi7TENe1zspqU99nnQI7tdSaWYWr0qCLMEs01LcHYOO1o2iIbMvkb2Bo1TCvgokeoEOMlOSpg6QAQCin8E3WhgMwEuIEGSbJBjqaQrjaN3KlU9ig=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=rapitasystems.com;
+Received: from CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:d8::10)
+ by CWLP123MB3282.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:5c::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.18; Thu, 9 Nov
+ 2023 09:13:50 +0000
+Received: from CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM
+ ([fe80::e732:bfe0:f22b:d2c0]) by CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM
+ ([fe80::e732:bfe0:f22b:d2c0%4]) with mapi id 15.20.6977.019; Thu, 9 Nov 2023
+ 09:13:50 +0000
+From: Greg Manning <gmanning@rapitasystems.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Greg Manning <gmanning@rapitasystems.com>
+Subject: [PATCH] plugins: fix win plugin tests on cross compile
+Date: Thu,  9 Nov 2023 09:13:16 +0000
+Message-ID: <20231109091337.415-1-gmanning@rapitasystems.com>
+X-Mailer: git-send-email 2.42.0.windows.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LNXP265CA0040.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:5c::28) To CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:400:d8::10)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block-backend: per-device throttling of BLOCK_IO_ERROR
- reports
-Content-Language: en-US
-To: Eric Blake <eblake@redhat.com>
-Cc: qemu-devel@nongnu.org, dave@treblig.org, armbru@redhat.com,
- yc-core@yandex-team.ru, zeil@yandex-team.ru, xeor@yandex-team.ru,
- kwolf@redhat.com, hreitz@redhat.com, qemu-block@nongnu.org
-References: <20231107085842.602188-1-vsementsov@yandex-team.ru>
- <tl4b6tcrlwchbgrkq2zuqyxqqsxe3oclrgt6pr62ggm2nbtkfz@lah5uyiomzp5>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <tl4b6tcrlwchbgrkq2zuqyxqqsxe3oclrgt6pr62ggm2nbtkfz@lah5uyiomzp5>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CWXP123MB4341:EE_|CWLP123MB3282:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3b48a272-64a5-4ac0-d2d3-08dbe1042f7b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: fY3nIksFzeqvFb5d2eBG4w2EYZCvAB4cUNG+AnlhBWaWPZmcmldGYEqIAG3dMLGSmq2ibHer1bJUBGIoIv81e+FvDpPeM2PDq+hjWiTGo5C3KtJCepLiOCcjuElFbFlCFhg54TccaI+rbCwLvkTz9tMA9cE9QDGVNMC3H0YDhD/AjkoqgM9fmdS0iU3b4WprmmeRn2fPosvFzqxax61uxG/v0vBu20nmWWak0bMH36Hip1CO8BrUGcCWL8rINf+HG4WY9LxwPlJL18uOD4z+gBdX2fcihr7vrvomhrJ+erqf1cgYLgv0sTT23ySfINU2MaE6LsYwsSIU4k4ALb+Q+SVD28Yf8tlLWR0Ae7uzLzoMwdUwVZjhewURwH/QKLd2SSyP+jGQPXz5NJ2H1ChPX3AMIOt7TtJjKax6tIiq/aWDVG/qgtrt387IxyaKLObmfF2ync50YG2NMYMLqssTJ7kEKS4CAASeNU7MfXX/oeMbRFAc1dnKXuk0qL8GkhQQsROCDF4i5zmkjFlBkCWu+wjA40rDjfBryEqvizMMTxT+RfMIAP17BlTY4X7bDJqdH7m32K0juy+DuMvvs21lWRt29Nc3rDzvr61fx5tlh7pJUXJiD/oLSRQq5BCC/8HU
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(396003)(136003)(39840400004)(346002)(376002)(230922051799003)(64100799003)(451199024)(1800799009)(186009)(83380400001)(26005)(2616005)(6506007)(6512007)(38100700002)(1076003)(107886003)(478600001)(6666004)(66556008)(66476007)(54906003)(66946007)(316002)(6916009)(36756003)(41300700001)(2906002)(8936002)(4326008)(6486002)(8676002)(86362001)(5660300002)(460985005);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?QTA8SWICGWgkBW5DszjuQZ9bhSiCpHIH4tYSLZwK7Nh+HcpGwk3mHYWG6zIE?=
+ =?us-ascii?Q?IAjxlLw8AtUBOmPw7ot9fl0hhdHloBmfFwtI5zP2GczDrqBpM33ewVnv/PUH?=
+ =?us-ascii?Q?s+rZNj8JwbXYoqQT9K5cEInn4q/+YQCAwGKOC6CjOrRF89tw905diYxWwIl8?=
+ =?us-ascii?Q?cyugTLVY9OWLL+bAvghd0UUt2YGh67wpDHRmklulFGZXooWQ3i6gM5DbnjDf?=
+ =?us-ascii?Q?qPJzu6QxA7SmhbkQXCh1a80gHXojeM89CLHUyH8D0W2EUZKhmbgYQWw1lJFi?=
+ =?us-ascii?Q?h1ejsFzzMzECwhptRcomKLQEfZA+yaDmWliEJq7euMkPcJDJYnUJwGyrGlLz?=
+ =?us-ascii?Q?wM+yN1ff39LQYCStR+7QbHmYYNpG4fDbmt+Y9W8vGIzFw1kRGrHgytC4iAHj?=
+ =?us-ascii?Q?IjWX0Q3/rBf58s5IhCYpd5kmBEvQFf7+wVOt3gpoJkcnJkBzIqoXX+bDAUns?=
+ =?us-ascii?Q?ZKOEfCsJ8Pz7rzye//rVYxlWbahGuHX26tB2dE+k+I63HcZKj54SbvrswJX2?=
+ =?us-ascii?Q?kFX9EA51o6EBhqobBj2lWh6DEbeRUVBFFb+nZ9VjQDojIaka+7sYystvzk3Z?=
+ =?us-ascii?Q?CuQwzfuBgABJ9CE0EcxE4k0QGa2WZyRRlYp1IJmDLR1JDmoOh89wUiA+5F6+?=
+ =?us-ascii?Q?hGyY7IetYPYS6C9uL6kyheX++e+9UEW8YmesTc7pazebwOSV9aZ5ZLXnAHF0?=
+ =?us-ascii?Q?UnOZp91wXuGF6HU/x3Wf807TjLZz7x12UyaQXt36JHZx1FNsNmVEWW6KeCwl?=
+ =?us-ascii?Q?6Eq8eHNuHc+2fRqE0JybLn0EV8uo0HmNe7XqgLKokUIVjxjk/aD665TON8dz?=
+ =?us-ascii?Q?7vbCfAAFw3rtSOk4Z628/NQ2Ozezemzg7j4NznMmtVb+sYdf4IA6zZKwgQgw?=
+ =?us-ascii?Q?e7Owameum3TA/BGJ9dwmUYDkXmuXktlU2x4CfaYDbHkJ5J2lgm1WCUco/ujf?=
+ =?us-ascii?Q?vXGLtDUfyyytdFuVa9Du1pXHxtoJPWUDFsGcNj+ydDGSlbh7MwyfA+oTx2IK?=
+ =?us-ascii?Q?aaYeoTuAGscuRmbEVJx7uM9BxeWK084E5mo9HOBWqLyDOQ8knIQ8Q6Shdtv7?=
+ =?us-ascii?Q?TSaVBRyLJFrJauvrZa6s/GePzQOXiJgETuboa8OQsd5EXI32YGMWnKaxnbiY?=
+ =?us-ascii?Q?hGrnpJcepjsQlzCj3C39lwSSDHSbP70/nNqN5qD55dBCbTbjTMToX5pVbxEf?=
+ =?us-ascii?Q?JeTEj4q920U1+asxEs4vnYI4DkQWYO93kwKrDPD1riv3pUBIFB6uj495vPOz?=
+ =?us-ascii?Q?8E6hQCHy4S+Ba0mcOO7XNgCu9t2szsLOnpRR5Ro+KRw1r8q0CAUNTyg86Dhq?=
+ =?us-ascii?Q?t5gsFoJBGNe4GUN3dIBUpG9qOvUNdpCPZIHyQGPIg37+wn9FOPhhx3UEFfUe?=
+ =?us-ascii?Q?HSezdFPpVWjyNO+Lt5QI1Fsv7/O3mL3LmENNwU2quASSyIwvmnZRrBV2IxFe?=
+ =?us-ascii?Q?xWgh+We03rbwZzvUoalDJsIDnUaa3cS8Ra61NlThIupBmTS05/A5BYR00nb3?=
+ =?us-ascii?Q?3EUa5tFNFjpZaMLpUXW6pX34pstuYp4xgamJv8H8bko1uvi/TAai9+b+zAAx?=
+ =?us-ascii?Q?pzgU22k/3oq39/SSlWkJOKVV6Mb9MegEqIRSF1KpXA1gUWNwIYKDFXfToeC8?=
+ =?us-ascii?Q?2A=3D=3D?=
+X-OriginatorOrg: rapitasystems.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3b48a272-64a5-4ac0-d2d3-08dbe1042f7b
+X-MS-Exchange-CrossTenant-AuthSource: CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2023 09:13:50.0713 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 63a1ab10-c4bd-4b99-881c-0040cec74971
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UzZizEpHb4vTX+NTIJvjfzJg/q4QaNH0rcWnLzUWNP9J+hVam0PuvHQlWIttrzMI+wwiseolg8H1RD4RBLpsTr3OjyVwjfl0FyrZ1aURC4U=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP123MB3282
+Received-SPF: pass client-ip=40.107.122.97;
+ envelope-from=gmanning@rapitasystems.com;
+ helo=GBR01-LO4-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -77,65 +134,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09.11.23 00:22, Eric Blake wrote:
-> On Tue, Nov 07, 2023 at 11:58:42AM +0300, Vladimir Sementsov-Ogievskiy wrote:
->> From: Leonid Kaplan <xeor@yandex-team.ru>
->>
->> BLOCK_IO_ERROR events comes from guest, so we must throttle them.
->> We still want per-device throttling, so let's use device id as a key.
->>
->> Signed-off-by: Leonid Kaplan <xeor@yandex-team.ru>
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->> ---
->>   monitor/monitor.c | 10 ++++++++++
->>   1 file changed, 10 insertions(+)
->>
->> diff --git a/monitor/monitor.c b/monitor/monitor.c
->> index 01ede1babd..ad0243e9d7 100644
->> --- a/monitor/monitor.c
->> +++ b/monitor/monitor.c
->> @@ -309,6 +309,7 @@ int error_printf_unless_qmp(const char *fmt, ...)
->>   static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
->>       /* Limit guest-triggerable events to 1 per second */
->>       [QAPI_EVENT_RTC_CHANGE]        = { 1000 * SCALE_MS },
->> +    [QAPI_EVENT_BLOCK_IO_ERROR]    = { 1000 * SCALE_MS },
->>       [QAPI_EVENT_WATCHDOG]          = { 1000 * SCALE_MS },
->>       [QAPI_EVENT_BALLOON_CHANGE]    = { 1000 * SCALE_MS },
->>       [QAPI_EVENT_QUORUM_REPORT_BAD] = { 1000 * SCALE_MS },
->> @@ -498,6 +499,10 @@ static unsigned int qapi_event_throttle_hash(const void *key)
->>           hash += g_str_hash(qdict_get_str(evstate->data, "qom-path"));
->>       }
->>   
->> +    if (evstate->event == QAPI_EVENT_BLOCK_IO_ERROR) {
->> +        hash += g_str_hash(qdict_get_str(evstate->data, "device"));
-> 
-> Wouldn't ^= be better than += for combining hashes?
+fixes #1927.
 
-As I understand (after googling a bit), XOR is a kind of default, and is obviously better than OR and AND.
-Adding is not bitwise and should be slower, but I don't think we care about it here. Still adding is better at least in fact that it doesn't map pairs of equal string all to zero hash.
-Adding is preexisting in this function, I don't think we should change it now.
+Cross compile gcc is more picky about argument order than msys. Changed
+the meson command to take the (now renamed) libqemu_plugin_api.a as a
+lib, rather than an object. This puts it in the right place on both
+native and cross compile gcc commands
 
-> 
->> +    }
->> +
->>       return hash;
->>   }
->>   
->> @@ -525,6 +530,11 @@ static gboolean qapi_event_throttle_equal(const void *a, const void *b)
->>                          qdict_get_str(evb->data, "qom-path"));
->>       }
->>   
->> +    if (eva->event == QAPI_EVENT_BLOCK_IO_ERROR) {
->> +        return !strcmp(qdict_get_str(eva->data, "device"),
->> +                       qdict_get_str(evb->data, "device"));
->> +    }
->> +
-> 
-> At any rate, the idea makes sense for me.
-> 
+Reenable plugins on crossbuilds
+---
+ .gitlab-ci.d/crossbuilds.yml | 2 +-
+ contrib/plugins/Makefile     | 2 +-
+ plugins/meson.build          | 2 +-
+ tests/plugin/meson.build     | 3 ++-
+ 4 files changed, 5 insertions(+), 4 deletions(-)
 
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index ac71a2abd3..56dd603a86 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -165,7 +165,7 @@ cross-win32-system:
+     job: win32-fedora-cross-container
+   variables:
+     IMAGE: fedora-win32-cross
+-    EXTRA_CONFIGURE_OPTS: --enable-fdt=internal --disable-plugins
++    EXTRA_CONFIGURE_OPTS: --enable-fdt=internal
+     CROSS_SKIP_TARGETS: alpha-softmmu avr-softmmu hppa-softmmu m68k-softmmu
+                         microblazeel-softmmu mips64el-softmmu nios2-softmmu
+   artifacts:
+diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
+index 1783750cf6..0b64d2c1e3 100644
+--- a/contrib/plugins/Makefile
++++ b/contrib/plugins/Makefile
+@@ -49,7 +49,7 @@ all: $(SONAMES)
+ 	$(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<
+ 
+ ifeq ($(CONFIG_WIN32),y)
+-lib%$(SO_SUFFIX): %.o win32_linker.o ../../plugins/qemu_plugin_api.lib
++lib%$(SO_SUFFIX): %.o win32_linker.o ../../plugins/libqemu_plugin_api.a
+ 	$(CC) -shared -o $@ $^ $(LDLIBS)
+ else ifeq ($(CONFIG_DARWIN),y)
+ lib%$(SO_SUFFIX): %.o
+diff --git a/plugins/meson.build b/plugins/meson.build
+index 40d24529c0..6b2d7a9292 100644
+--- a/plugins/meson.build
++++ b/plugins/meson.build
+@@ -28,7 +28,7 @@ if get_option('plugins')
+     # then use dlltool to assemble a delaylib.
+     win32_qemu_plugin_api_lib = configure_file(
+       input: win32_plugin_def,
+-      output: 'qemu_plugin_api.lib',
++      output: 'libqemu_plugin_api.a',
+       command: [dlltool, '--input-def', '@INPUT@',
+                 '--output-delaylib', '@OUTPUT@', '--dllname', 'qemu.exe']
+     )
+diff --git a/tests/plugin/meson.build b/tests/plugin/meson.build
+index 528bb9d86c..28a929dbcc 100644
+--- a/tests/plugin/meson.build
++++ b/tests/plugin/meson.build
+@@ -4,7 +4,8 @@ if get_option('plugins')
+     if targetos == 'windows'
+       t += shared_module(i, files(i + '.c') + '../../contrib/plugins/win32_linker.c',
+                         include_directories: '../../include/qemu',
+-                        objects: [win32_qemu_plugin_api_lib],
++                        link_depends: [win32_qemu_plugin_api_lib],
++                        link_args: ['-Lplugins', '-lqemu_plugin_api'],
+                         dependencies: glib)
+ 
+     else
 -- 
-Best regards,
-Vladimir
+2.42.0.windows.1
 
 
