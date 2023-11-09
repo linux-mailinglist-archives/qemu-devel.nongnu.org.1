@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F320E7E6A47
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 13:03:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F8637E6A3F
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 13:02:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r13kS-0003ud-1S; Thu, 09 Nov 2023 07:03:00 -0500
+	id 1r13kJ-0003eT-Jv; Thu, 09 Nov 2023 07:02:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r13jv-0002vh-Oh; Thu, 09 Nov 2023 07:02:29 -0500
+ id 1r13jv-0002vn-RY; Thu, 09 Nov 2023 07:02:29 -0500
 Received: from mgamail.intel.com ([192.55.52.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r13jt-0001ej-3G; Thu, 09 Nov 2023 07:02:27 -0500
+ id 1r13jt-0001im-3H; Thu, 09 Nov 2023 07:02:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1699531345; x=1731067345;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=cUCPSSkRfmQWPToOtzwU716BqrqKL3tmwbY3XxblW/U=;
- b=GZWxwWI5UguJfpIDw9UHsPJ2GVWCzNdgUZdS6B3fG+t4G5sG7kH+vzf1
- 5THlDmkYRtST5O8nmvsf9E4L5/p0gBXEOwDVidmBZhcembNWnfobI1Qd2
- QvZhf3AsylUqPEtFfJF0h0aDu66l979+JrnQTBSsk+fPEdQcY3RL6Qfsh
- MO8xkr6lDhUeK60u+IW9Vz1Vfopgou4Q9mJDzTJutbC8rM4jtF8Ihkk6d
- EPiB58r340xe52rw7bjmOW3vee7Cs94jUcpik+cI2rChwWFw3Qsa7R7Hg
- /wV8rtj82CCy5NdUV6AMevyNEghgPikd+EUZpSMitCWdSDmJVZ+l5rNlg A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="369305907"
-X-IronPort-AV: E=Sophos;i="6.03,289,1694761200"; d="scan'208";a="369305907"
+ bh=lZKllIPPRTf9aF5P9hMWpH34s5E5h6/z4b2hjfmFxrU=;
+ b=i0jRAepjIW4PG1H5+oeDQJ7dzeiHFhPoj20wXEVJtKVTmrDmVw3BlNst
+ m5ugRhHP/4o0kfF3D4Y98FzkKsz2HEtKOfE1KtIsBYRhM/J2dhtCK9Y64
+ cTCIzhXWNh6hvGgeFrLwz0aVzMzc1sZII6MkYFoxSvQGma9880hrkCPrY
+ O72NDce5VmY0xOmSCd8xSE9FsN/eTuw+/N5m3/SOxHII+OWtqToK3FVZ6
+ juQIvsGNxSTzqe3qHg3EVualKOtKOIEZyD1pBGxlggV4CSn97oalgAf9J
+ YJvG9OqyROafxRe9egfqrW64xJs+y4estqt2nTLzYD+p+OaIjtIanw1p9 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="369305919"
+X-IronPort-AV: E=Sophos;i="6.03,289,1694761200"; d="scan'208";a="369305919"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Nov 2023 04:02:07 -0800
+ 09 Nov 2023 04:02:15 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.03,289,1694761200"; d="scan'208";a="11516232"
+X-IronPort-AV: E=Sophos;i="6.03,289,1694761200"; d="scan'208";a="11516248"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Nov 2023 04:02:03 -0800
+ 09 Nov 2023 04:02:07 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
@@ -46,11 +46,15 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [PATCH v5 18/20] hw/arm: Activate IOMMUFD for virt machines
-Date: Thu,  9 Nov 2023 19:45:27 +0800
-Message-Id: <20231109114529.1904193-19-zhenzhong.duan@intel.com>
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-s390x@nongnu.org (open list:S390 TCG CPUs)
+Subject: [PATCH v5 19/20] kconfig: Activate IOMMUFD for s390x machines
+Date: Thu,  9 Nov 2023 19:45:28 +0800
+Message-Id: <20231109114529.1904193-20-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231109114529.1904193-1-zhenzhong.duan@intel.com>
 References: <20231109114529.1904193-1-zhenzhong.duan@intel.com>
@@ -86,21 +90,21 @@ From: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/arm/Kconfig | 1 +
+ hw/s390x/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 3ada335a24..660f49db49 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -8,6 +8,7 @@ config ARM_VIRT
-     imply TPM_TIS_SYSBUS
-     imply TPM_TIS_I2C
-     imply NVDIMM
+diff --git a/hw/s390x/Kconfig b/hw/s390x/Kconfig
+index 4c068d7960..26ad104485 100644
+--- a/hw/s390x/Kconfig
++++ b/hw/s390x/Kconfig
+@@ -6,6 +6,7 @@ config S390_CCW_VIRTIO
+     imply VFIO_CCW
+     imply WDT_DIAG288
+     imply PCIE_DEVICES
 +    imply IOMMUFD
-     select ARM_GIC
-     select ACPI
-     select ARM_SMMUV3
+     select PCI_EXPRESS
+     select S390_FLIC
+     select S390_FLIC_KVM if KVM
 -- 
 2.34.1
 
