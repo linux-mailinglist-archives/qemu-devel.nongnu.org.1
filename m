@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8F87E6C0E
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:06:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD5B7E6C4E
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:16:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15eC-0008Qi-LZ; Thu, 09 Nov 2023 09:04:46 -0500
+	id 1r15em-0003Mg-0W; Thu, 09 Nov 2023 09:05:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15bm-0002V6-6L; Thu, 09 Nov 2023 09:02:10 -0500
+ id 1r15bq-00030Q-1V; Thu, 09 Nov 2023 09:02:14 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15bj-0006QJ-Tv; Thu, 09 Nov 2023 09:02:09 -0500
+ id 1r15bo-0006Sy-1v; Thu, 09 Nov 2023 09:02:13 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4899231BD2;
+ by isrv.corpit.ru (Postfix) with ESMTP id 58A7931BD3;
  Thu,  9 Nov 2023 16:59:56 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 516DB3450B;
+ by tsrv.corpit.ru (Postfix) with SMTP id 63B963450C;
  Thu,  9 Nov 2023 16:59:48 +0300 (MSK)
-Received: (nullmailer pid 1462862 invoked by uid 1000);
+Received: (nullmailer pid 1462865 invoked by uid 1000);
  Thu, 09 Nov 2023 13:59:47 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Marc Hartmayer <mhartmay@linux.ibm.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.7 28/62] chardev/char-pty: Avoid losing bytes when the
- other side just (re-)connected
-Date: Thu,  9 Nov 2023 16:58:56 +0300
-Message-Id: <20231109135933.1462615-28-mjt@tls.msk.ru>
+Subject: [Stable-7.2.7 29/62] linux-user/hppa: Fix struct target_sigcontext
+ layout
+Date: Thu,  9 Nov 2023 16:58:57 +0300
+Message-Id: <20231109135933.1462615-29-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 References: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
@@ -63,77 +62,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-When starting a guest via libvirt with "virsh start --console ...",
-the first second of the console output is missing. This is especially
-annoying on s390x that only has a text console by default and no graphical
-output - if the bios fails to boot here, the information about what went
-wrong is completely lost.
+Use abi_ullong not uint64_t so that the alignment of the field
+and therefore the layout of the struct is correct.
 
-One part of the problem (there is also some things to be done on the
-libvirt side) is that QEMU only checks with a 1 second timer whether
-the other side of the pty is already connected, so the first second of
-the console output is always lost.
-
-This likely used to work better in the past, since the code once checked
-for a re-connection during write, but this has been removed in commit
-f8278c7d74 ("char-pty: remove the check for connection on write") to avoid
-some locking.
-
-To ease the situation here at least a little bit, let's check with g_poll()
-whether we could send out the data anyway, even if the connection has not
-been marked as "connected" yet. The file descriptor is marked as non-blocking
-anyway since commit fac6688a18 ("Do not hang on full PTY"), so this should
-not cause any trouble if the other side is not ready for receiving yet.
-
-With this patch applied, I can now successfully see the bios output of
-a s390x guest when running it with "virsh start --console" (with a patched
-version of virsh that fixes the remaining issues there, too).
-
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20230816210743.1319018-1-thuth@redhat.com>
-(cherry picked from commit 4f7689f0817a717d18cc8aca298990760f27a89b)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 33bc4fa78b06fc4e5fe22e5576811a97707e0cc6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: use TFR() instead of RETRY_ON_EINTR() before v7.2.0-538-g8b6aa69365)
 
-diff --git a/chardev/char-pty.c b/chardev/char-pty.c
-index 53f25c6bbd..e6d0b05211 100644
---- a/chardev/char-pty.c
-+++ b/chardev/char-pty.c
-@@ -108,11 +108,27 @@ static void pty_chr_update_read_handler(Chardev *chr)
- static int char_pty_chr_write(Chardev *chr, const uint8_t *buf, int len)
- {
-     PtyChardev *s = PTY_CHARDEV(chr);
-+    GPollFD pfd;
-+    int rc;
- 
--    if (!s->connected) {
--        return len;
-+    if (s->connected) {
-+        return io_channel_send(s->ioc, buf, len);
-+    }
-+
-+    /*
-+     * The other side might already be re-connected, but the timer might
-+     * not have fired yet. So let's check here whether we can write again:
-+     */
-+    pfd.fd = QIO_CHANNEL_FILE(s->ioc)->fd;
-+    pfd.events = G_IO_OUT;
-+    pfd.revents = 0;
-+    TFR(rc = g_poll(&pfd, 1, 0));
-+    g_assert(rc >= 0);
-+    if (!(pfd.revents & G_IO_HUP) && (pfd.revents & G_IO_OUT)) {
-+        io_channel_send(s->ioc, buf, len);
-     }
--    return io_channel_send(s->ioc, buf, len);
-+
-+    return len;
- }
- 
- static GSource *pty_chr_add_watch(Chardev *chr, GIOCondition cond)
+diff --git a/linux-user/hppa/signal.c b/linux-user/hppa/signal.c
+index bda6e54655..ec5f5412d1 100644
+--- a/linux-user/hppa/signal.c
++++ b/linux-user/hppa/signal.c
+@@ -25,7 +25,7 @@
+ struct target_sigcontext {
+     abi_ulong sc_flags;
+     abi_ulong sc_gr[32];
+-    uint64_t sc_fr[32];
++    abi_ullong sc_fr[32];
+     abi_ulong sc_iasq[2];
+     abi_ulong sc_iaoq[2];
+     abi_ulong sc_sar;
 -- 
 2.39.2
 
