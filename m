@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F717E6C12
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:06:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D877E6C30
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:11:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15fU-0004oi-Rv; Thu, 09 Nov 2023 09:06:01 -0500
+	id 1r15fs-0005TV-82; Thu, 09 Nov 2023 09:06:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15dI-0005pC-8R; Thu, 09 Nov 2023 09:03:48 -0500
+ id 1r15dd-0007xx-AV; Thu, 09 Nov 2023 09:04:05 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15dG-00078E-5r; Thu, 09 Nov 2023 09:03:43 -0500
+ id 1r15db-00078T-7h; Thu, 09 Nov 2023 09:04:04 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B051E31BE6;
+ by isrv.corpit.ru (Postfix) with ESMTP id C41C531BE7;
  Thu,  9 Nov 2023 16:59:57 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B9C3E3451D;
+ by tsrv.corpit.ru (Postfix) with SMTP id CC2193451E;
  Thu,  9 Nov 2023 16:59:49 +0300 (MSK)
-Received: (nullmailer pid 1462918 invoked by uid 1000);
+Received: (nullmailer pid 1462921 invoked by uid 1000);
  Thu, 09 Nov 2023 13:59:47 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Laurent Vivier <laurent@vivier.eu>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.7 46/62] Revert "linux-user: fix compat with glibc >=
- 2.36 sys/mount.h"
-Date: Thu,  9 Nov 2023 16:59:14 +0300
-Message-Id: <20231109135933.1462615-46-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.7 47/62] target/arm: Don't access TCG code when debugging
+ with KVM
+Date: Thu,  9 Nov 2023 16:59:15 +0300
+Message-Id: <20231109135933.1462615-47-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 References: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
@@ -63,73 +63,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Fabiano Rosas <farosas@suse.de>
 
-This reverts commit 3cd3df2a9584e6f753bb62a0028bd67124ab5532.
+When TCG is disabled this part of the code should not be reachable, so
+wrap it with an ifdef for now.
 
-glibc has fixed (in 2.36.9000-40-g774058d729) the problem
-that caused a clash when both sys/mount.h annd linux/mount.h
-are included, and backported this to the 2.36 stable release
-too:
-
-  https://sourceware.org/glibc/wiki/Release/2.36#Usage_of_.3Clinux.2Fmount.h.3E_and_.3Csys.2Fmount.h.3E
-
-It is saner for QEMU to remove the workaround it applied for
-glibc 2.36 and expect distros to ship the 2.36 maint release
-with the fix. This avoids needing to add a further workaround
-to QEMU to deal with the fact that linux/brtfs.h now also pulls
-in linux/mount.h via linux/fs.h since Linux 6.1
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20230110174901.2580297-3-berrange@redhat.com>
-Signed-off-by: Laurent Vivier <laurent@vivier.eu>
-(cherry picked from commit 6003159ce18faad4e1bc7bf9c85669019cd4950e)
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 0d3de77a07f4f774f7a9248afa8ea497ad5f2ae5)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: trivial change which makes two subsequent cherry-picks to apply cleanly)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 7037c51bca..aead0f6ac9 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -95,25 +95,7 @@
- #include <linux/soundcard.h>
- #include <linux/kd.h>
- #include <linux/mtio.h>
--
--#ifdef HAVE_SYS_MOUNT_FSCONFIG
--/*
-- * glibc >= 2.36 linux/mount.h conflicts with sys/mount.h,
-- * which in turn prevents use of linux/fs.h. So we have to
-- * define the constants ourselves for now.
-- */
--#define FS_IOC_GETFLAGS                _IOR('f', 1, long)
--#define FS_IOC_SETFLAGS                _IOW('f', 2, long)
--#define FS_IOC_GETVERSION              _IOR('v', 1, long)
--#define FS_IOC_SETVERSION              _IOW('v', 2, long)
--#define FS_IOC_FIEMAP                  _IOWR('f', 11, struct fiemap)
--#define FS_IOC32_GETFLAGS              _IOR('f', 1, int)
--#define FS_IOC32_SETFLAGS              _IOW('f', 2, int)
--#define FS_IOC32_GETVERSION            _IOR('v', 1, int)
--#define FS_IOC32_SETVERSION            _IOW('v', 2, int)
--#else
- #include <linux/fs.h>
--#endif
- #include <linux/fd.h>
- #if defined(CONFIG_FIEMAP)
- #include <linux/fiemap.h>
-diff --git a/meson.build b/meson.build
-index 450c48a9f0..787f91855e 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2032,8 +2032,6 @@ config_host_data.set('HAVE_OPTRESET',
-                      cc.has_header_symbol('getopt.h', 'optreset'))
- config_host_data.set('HAVE_IPPROTO_MPTCP',
-                      cc.has_header_symbol('netinet/in.h', 'IPPROTO_MPTCP'))
--config_host_data.set('HAVE_SYS_MOUNT_FSCONFIG',
--                     cc.has_header_symbol('sys/mount.h', 'FSCONFIG_SET_FLAG'))
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 0b16068557..fa013044c1 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -254,6 +254,7 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
+         ptw->out_host = NULL;
+         ptw->out_rw = false;
+     } else {
++#ifdef CONFIG_TCG
+         CPUTLBEntryFull *full;
+         int flags;
  
- # has_member
- config_host_data.set('HAVE_SIGEV_NOTIFY_THREAD_ID',
+@@ -270,6 +271,9 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
+         ptw->out_rw = full->prot & PAGE_WRITE;
+         pte_attrs = full->pte_attrs;
+         pte_secure = full->attrs.secure;
++#else
++        g_assert_not_reached();
++#endif
+     }
+ 
+     if (regime_is_stage2(s2_mmu_idx)) {
 -- 
 2.39.2
 
