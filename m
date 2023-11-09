@@ -2,188 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 253A77E6A69
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 13:19:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC32F7E6A85
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 13:24:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r13yy-0005nz-Fd; Thu, 09 Nov 2023 07:18:00 -0500
+	id 1r144D-0000hl-FX; Thu, 09 Nov 2023 07:23:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1r13yr-0005n1-BP
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 07:17:54 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1r13yo-00067T-UP
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 07:17:53 -0500
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A91iE56020370; Thu, 9 Nov 2023 12:17:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=o8murElc2/GJTTx+0aW+xQXCOSqvq9FJ+MNr/Thqpfc=;
- b=Q7A5ngGx6tEEg295JBhFepIBISqbVUBaT1CP/B0RX/rxCEKKKIG+UgslftOsjm4M3a3s
- ZPDsqChlXh+ZoQ0EgSZj9AwQomj8nAtupU6JK8EnCaBobGRvy5e/YW8uO1ByE0gfFjhj
- hUBO4TR3U1z0voPvwXH5JiJ5zgrTAhUYWt63ZINEG1cQ2APh8fXwEtcJjfJiTXXRojST
- WEE/6sUxu0MrA7Jmdfx3jH6ur2dVtJPrVDOYRYM1roe+7qa6ajuFKlOE82aklQd1TBu5
- Iz9gu2Rwke0t+BSztqvbG2656NuOmY+TEuNXmgga3srJfC6epGe+whMWN3pEhQFv9iqu Nw== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3u7w203tqc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 09 Nov 2023 12:17:45 +0000
-Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3A9Ax7Al000404; Thu, 9 Nov 2023 12:17:44 GMT
-Received: from nam04-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam04lp2168.outbound.protection.outlook.com [104.47.73.168])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3u7w1xv1r9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 09 Nov 2023 12:17:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FJ1Lqh86Qyb3V+ZJyQCSzOI7IoNhNMLanbwBV78O1Ubeie93wcCSXBYdyIyCfk12E8Azcc+vxMKgrWOvC9zsB7cUgp18NnDnyq14Dru8f1Sg7S/keeRGj233PBfOs9/smLAJ3osL7pONu84Zf7EsDSv/8VCs43YzjwcR8QxBVEPVQaXyVObazAfoWLQMgXOgkBc3bKRuTUnWN4SMEBWbakzuupKXQVcU4ZnFxKy8xZnmyB8BnfEK/Gn2HB9TjfCAwkpcwmFksi9D9Ym9Txml2WDNi17WrpmkQym8pHFKlrFrjmgJTIZK/bJb47Trh3kZNrSt5JzJev1abaRcm7Oa3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o8murElc2/GJTTx+0aW+xQXCOSqvq9FJ+MNr/Thqpfc=;
- b=e8IGw7Pvfko8fKGDmVjjs7hsY00uGN4TT9F6+dyaCESleV6HgM6mtwE/dFbE7IyiYrNAj0rznUaDRemji9bfVf9aIvGgBQgx58ZrzYyqHKWFouxbfl887BetTSpYKO6nPE5ouUScVOJgWLc3o0Tw4jTQt5O0FuRQZqGHtwnK91LNWavneHF/AmReh46TQPqnDKdbZp7hDmEXGR/spYuPGX9jGvYuhEyD4MHmyUFncHO78tjtWKWbbScd+EFg7tCCwvP0tRm4m0gSCMwG9NCnIBeYiAeE9eKbqFBFYr3gYU1j3M3fynV4NAilCt8rgMXQMDBgltcLIgkpjGX9BfWW4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r144B-0000hI-E9
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 07:23:23 -0500
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r1446-0007AU-Fo
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 07:23:23 -0500
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-5098eb6690cso731394e87.3
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 04:23:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o8murElc2/GJTTx+0aW+xQXCOSqvq9FJ+MNr/Thqpfc=;
- b=jkMkteOXfQSsEIAv/KoXwLW+lF+nfQRzVtiFhOJ/s3CnL0JxznCMxhFO5FUIix56bJbWPwukEd7Fo840hjtyyC/tR8BNLV41xW0oh2rbrvgyzOpqHOUcK+zAQM7F8MMs2XiycmwzxHAu3tlE7xWGX1l7MLC5jij1y8ADnVHNRgQ=
-Received: from BLAPR10MB4835.namprd10.prod.outlook.com (2603:10b6:208:331::11)
- by SJ2PR10MB7827.namprd10.prod.outlook.com (2603:10b6:a03:568::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.28; Thu, 9 Nov
- 2023 12:17:41 +0000
-Received: from BLAPR10MB4835.namprd10.prod.outlook.com
- ([fe80::5262:1e:e9a9:6c46]) by BLAPR10MB4835.namprd10.prod.outlook.com
- ([fe80::5262:1e:e9a9:6c46%4]) with mapi id 15.20.6977.018; Thu, 9 Nov 2023
- 12:17:41 +0000
-Message-ID: <b6f22a3a-84cc-44ab-947b-b7e12656fe87@oracle.com>
-Date: Thu, 9 Nov 2023 12:17:35 +0000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 28/41] vfio/iommufd: Implement the iommufd backend
-Content-Language: en-US
-To: Jason Gunthorpe <jgg@nvidia.com>,
- "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhat.com" <clg@redhat.com>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Sun, Yi Y" <yi.y.sun@intel.com>,
- "Peng, Chao P" <chao.p.peng@intel.com>, Thomas Huth <thuth@redhat.com>,
- Eric Farman <farman@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- "Jason J. Herne" <jjherne@linux.ibm.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>
-References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
- <20231102071302.1818071-29-zhenzhong.duan@intel.com>
- <76538479-77ec-1a7d-cee1-906f6f758cff@linux.ibm.com>
- <SJ0PR11MB6744D87FD3CBB3380647E68792A8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <20231108124817.GS4488@nvidia.com>
-From: Joao Martins <joao.m.martins@oracle.com>
-In-Reply-To: <20231108124817.GS4488@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4PR10CA0027.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d8::17) To BLAPR10MB4835.namprd10.prod.outlook.com
- (2603:10b6:208:331::11)
+ d=linaro.org; s=google; t=1699532596; x=1700137396; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HSOnXP+w+crFJqJxF94h/n8C2tt94YjLXvEYeVkTwis=;
+ b=WabQV+Qa4nZ+6LM2bGFKJVIPIz3qjybP9vEA5u1W+LQmO4XaCibovNUsBKFmXPKL82
+ 17YJ51+PfD1/r2OSe14OifvEYh040mkUWTRcWHc3tFs9pGA7uM14gQyDspafVdSrwZ+J
+ LjKFqSHpZBKmipU+MiwvbZPZKR0hYO3AZwPtROLsFuxxqajJF0fKO4iPsu5G/ye7ZWnL
+ HhYxw4ozYwqWrQO5PMYBMG7/1Rh7uY1AMQGN66Nq6O54cMYy5gb9JDxIQfsnpIo5dTnW
+ p1q+WrvA95Oq4sJ2u608zJLd6u+PHyXn1r3mBDoDkr+pnt2IxtXkr8MlzRyVmc7WDzH6
+ C/ZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699532596; x=1700137396;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=HSOnXP+w+crFJqJxF94h/n8C2tt94YjLXvEYeVkTwis=;
+ b=ElRTvTDpJBJXdE7ybTyWRN4xOM+P+tsJYL7tvs8nxF7J5fmqS9U0l6nCpMIYP8dcJ9
+ WQlaszUlr272jmVl70WcytCMP+VsCZTHm9PTyjJI48rBi40YhyXxnIgbHdkGDsvKLXfO
+ 9B7eanKzEhwrz2TXjxqTNjB6WgwcsgDwMJVB5zLf3GJlUWDvGOLGmLEMlXkCbtgqRjnT
+ elXPzZjIGemQS38UR+4f9Uf8b7XlSDhrT2lCJ1D9/qMvSKoOPmpcFyAxEgE0sCetZKFM
+ e/g3QC67xVBvD95URrF0v/h4lP+n7ybVYgV+w+oglQfznQCho59PNrPAg8mfrJoGZdbM
+ guVw==
+X-Gm-Message-State: AOJu0YwNpPubRasckgFWiz7XuIysTrxoSDeBIpK5/ud8tm4SbvYRl3OM
+ TkfpfKCR0Ib9PuM/WxRSep+6PA==
+X-Google-Smtp-Source: AGHT+IH31YRHeAHD4iTweoh4MmDt1/JIUgdW+ayett0IUnPOweI+eY+5MeLZVYpmYLem2htWahfCXA==
+X-Received: by 2002:a19:f710:0:b0:509:75b8:637b with SMTP id
+ z16-20020a19f710000000b0050975b8637bmr1292651lfe.30.1699532595997; 
+ Thu, 09 Nov 2023 04:23:15 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ q23-20020a7bce97000000b004094e565e71sm1909953wmj.23.2023.11.09.04.23.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 09 Nov 2023 04:23:15 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 291B45F756;
+ Thu,  9 Nov 2023 12:23:15 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Michael Tokarev <mjt@tls.msk.ru>, Naresh Kamboju
+ <naresh.kamboju@linaro.org>
+Cc: qemu-devel@nongnu.org,  qemu-arm@nongnu.org,  qemu-stable@nongnu.org,
+ Anders Roxell <anders.roxell@linaro.org>, Richard Henderson
+ <richard.henderson@linaro.org>
+Subject: Re: [PATCH v2] target/arm: Fix SVE STR increment
+In-Reply-To: <20231031143215.29764-1-richard.henderson@linaro.org> (Richard
+ Henderson's message of "Tue, 31 Oct 2023 07:32:15 -0700 (1 week, 1
+ day, 21 hours ago)")
+References: <20231031143215.29764-1-richard.henderson@linaro.org>
+User-Agent: mu4e 1.11.24; emacs 29.1
+Date: Thu, 09 Nov 2023 12:23:15 +0000
+Message-ID: <874jhv86a4.fsf@draig.linaro.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BLAPR10MB4835:EE_|SJ2PR10MB7827:EE_
-X-MS-Office365-Filtering-Correlation-Id: 05492834-def8-4467-9986-08dbe11ddf03
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ZreZOU4Z1VdTpLvlcS94MeWNJlXZDDqn0kmIXCgISbDFru74kvz0s8jhsUwdVLmew12uMgy7hUWEpOj1l8SFJq0yj2Anx49UgTjx3vdVQYnHrClJ4QYgObCpS6gaAjS/ssTlL3gBcE253YyWZZzGMTeH/NytjmeCPkJ5vE+ebBnPsk8UOlOxUg0D6bVJd/bxpGtRb0FsvH8CjfWgZBRBTlsYszn9oWobJvSzAhYYQYprYU9ImrnzZ5vAY5YD1t/+FkBoiQ4kK+NBGuWbx0Eoqs/tTh/aXTk11lZAuOdbqCV767bvJeKFaoEVW7dwhDjlH3s2esP2Lxc1CxMn0/yd/802LllsxrRZJrVESZU3qrOYmwe0EMn3WKTTaYQ8R+P46kEqzMxnUzJLZePtCr0jShiFkxwLQbB0IAWLN1g4Yk8DXXG0kV0Fug4AIVE24bS94qdqZqUhRX63w4zKBrQcS5BGdhxZo14WzA8+zLSIH6FaI3zIhdspQxlnZpEQyvZzyW/Cuouk2uBvhxAq60iJOzMm8vWSuJ8+ukf2my9ZKBKSh5WGP0JofWvCscQdg4pV1JcMTWFjq0wjjibN7617cs74hoEQqkGjrEQxlJ239bPxORPnLkg5E49292+xJqFAlMHClo9U6oyrskEfN9jGnQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BLAPR10MB4835.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(39860400002)(396003)(376002)(136003)(366004)(230922051799003)(64100799003)(186009)(451199024)(1800799009)(2906002)(41300700001)(66556008)(316002)(54906003)(478600001)(66476007)(8936002)(66946007)(5660300002)(4326008)(8676002)(38100700002)(36756003)(86362001)(110136005)(31686004)(7416002)(31696002)(6486002)(83380400001)(53546011)(6506007)(2616005)(6666004)(26005)(6512007)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d0taZTVkNGdMZzVnYTZ0ZEFvek0yeW9pMjZRM0RyZmcxOXd3TzMyWFFrUytW?=
- =?utf-8?B?cmpieGpVR25CTm5NU2svcC83QnpGNDZhRC9YSGlRMjdKM2FsTVd5MExmUnBh?=
- =?utf-8?B?Y3NrWUtKVXRaRy9reERnakViOXBhUktlQVE1R1hkWEFuSCtDSkJtSzAxWmpo?=
- =?utf-8?B?MUJvWFg0UkNubi9CSE1FdnpMRVF6TzU5dVNqUkNEcytFNERUbVVXR3lQajRr?=
- =?utf-8?B?VlZRQ3pORFBQcDlNdkU1MTZ0WTMyT3NtSGFLV1E5a1ZnN0FHbExnVkUzM0Ey?=
- =?utf-8?B?S0U3UnNWSlZraFFGWHFHTkZVdlYwMXoyOEIwUXBONkRuWGp3aExtWmVKZHA4?=
- =?utf-8?B?em9nQThjbWh0SXVIMGdhQWFHaHRqcVVQMnpNRXVTM3lwQ3RLOUR5UmtUVEls?=
- =?utf-8?B?RzNTcnF4WHZHcFRNcXRTVmU5YVBrWm0wTTRaMUpDM1lZaW5vMmdPdEVERUp4?=
- =?utf-8?B?RjkzTWhDTEFUaGR5MzBDZHBQTDVyOWFvamUrbnJzMDlMeHdoQlB5YTZ2OWtm?=
- =?utf-8?B?TXdZYXI2aFRXdzEyRDdsZmdHeE9IK0NaUjVOallHNlE3ZTM2WktpWm9PUG94?=
- =?utf-8?B?dHRWdmhZYURTZXBVOXZ2R2xaR2tWMURtL2tIWkJObFBBeXpnN29QT3E3bm90?=
- =?utf-8?B?dm5RWXFyU3Z3K1dreWM3NlJURkNDMXp5TFNBdjRxb2F2eVFPRnBXb3dQdmlo?=
- =?utf-8?B?R1VGa01zUGR2TFk0a0dWV3JKWHJzTllVdDRTbHhXczkzS1pnVWlMUGdBbmlz?=
- =?utf-8?B?Ui9LZVVXMkZCYzErVFh1Tk56YnVDak5wd3VwZEJZcHVtcTFlYmt4OUFPdmlU?=
- =?utf-8?B?REhNdFlaQjFCajZnM2p2dncvejBKZ0dCOGlaclBYS2hGY21mWllsbUJNcVlW?=
- =?utf-8?B?RGExMGJrNDZYYlNwdlZvREFaOVlDbGUyVlJwY3Q3bFFPYm5EYVlJUFhyby9L?=
- =?utf-8?B?U3Z1ZGk0aDFseGdMcHErOEJWN3lhbjdmVUlVRUtHaElVN3h6dkhYeGtGLzFm?=
- =?utf-8?B?UTVJcnBSdjhPNGJhUnhvNHc1ZjhoOVJuZVFEbEh5bFRsUG5zMzZNdG54Qjdw?=
- =?utf-8?B?MmRweTR2VnpZQzIwKzBvTytiLy9zZ1d3UzNEeVhDRVdaTXBVRkxXc3FDT216?=
- =?utf-8?B?eXlYdmZZanpudEp5bXNtOWh3TVpvZWRwQ3hPL2pUNUdQQk92SVhDMnZQL3dJ?=
- =?utf-8?B?MmYzTHRQNDFsamxwd1BSL1MzZlMvSTludlBZNCtNYVlXVlhkNTh2b1hwWjU5?=
- =?utf-8?B?TVpKU0UyYkVOZUhkaWVNKzZyVkhVRVYrUUtEVERWeFR4TjltSGJxbEtkMU1n?=
- =?utf-8?B?eGNVaVhMMkd0OGg2dzFpNUdHcmRhcFE2bi9sZlFJdkVnc3Z0UGsyMWFkQ3Zt?=
- =?utf-8?B?alEvdE9PZnR5Wm83cGpJVjRDOWdrYVFveTk2c0V3cERBZWIzeER0RE0vN3Q3?=
- =?utf-8?B?UWwySGk1c1dHRi9Db3pmZUtnOW1RQ2F4VmZxTTNJSTN6UG9FNkJxTFFha2w1?=
- =?utf-8?B?NTdTeHhRdGRUTFYwQkpyOEl3d25vOWlPOFk1ZW9UTU1vMHc4Tm1ZK1NJcGN2?=
- =?utf-8?B?UkJYb1o1RmV1YmdsbkVmVlVZVSsxdFBYTHBFNjJ0NVBCZlFSMHpNNWZGRHdC?=
- =?utf-8?B?M2JoT29oRGFGSzVJQlBzeUNTM0M0dUtaeHVwaytJRDBCQWo3RXFjcEpJL3JW?=
- =?utf-8?B?aThlQmVOUEdiaFAzOWFWY3hiOUVidVNkazFJRnBETFdNcUREa2hmM3htVUd4?=
- =?utf-8?B?U3I2WXFwckFHTHVweERvZU9GcWlRSzBwTTBvRTFaSS9xTm4rT1pxTHc5Rk1U?=
- =?utf-8?B?V0RwTUp4SldjUm94NDlzeVRBUmR3SDhtV01LOFZ2c3c3SWZsV0VNT0EwdDRN?=
- =?utf-8?B?TVprNzVWM0xFT3JTVGwxOFlSMnZtL05NMFplczhOU29EQWNtRERDOE4rNDhG?=
- =?utf-8?B?TUpqY3lSVFV1VEJIQ1NUTnB3MkxmbVd3Sk5iVm13aW1RTGZLRHVqVGgyQk94?=
- =?utf-8?B?VXhoc0hGbld0Vk9DU1p1bFRDSyswcGNEaW9PL09tY1VQVldmZU11N2NpUnp6?=
- =?utf-8?B?R1ZRWnVXcEpjV0xSbkhqVGZhTjBaRHdINDVhRitzd1pLeVhzVkhqT2ZVN1dU?=
- =?utf-8?B?QzAvK0plYkQ5V2RQKzMvTi92SEx1ZGtsazJHRjJYb0toeUhBblVzZkhmUWJH?=
- =?utf-8?B?Rnc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: M/mkbZ0qIgSEUHvENQ9Wxz2RkA3cdTmLOn/tAJwa6ndB+r3NXCm2KKZhXJRUV7e3EwXhYRfJgQ2/EqRuYL/QIniqyfiBxNvNkEnU1cvlJKTMkbhDW6oK0AVlAS9MGWY3KyNR7FL8cSLPlwX3clVhkn8W5oK2V62tA4LEIfQugLvlJKUzeNxHCsQ5wyM1o/kDHRGbdE4o5XER3+M/gGNjVLkkQXTufE+W6gzFE6UlyFhCQobxuAm85k0RcPk/mccoJpL5SVEZP/rHpwqEs5D/DPOBUTTLx2CfhUtfH9xCDt8hKt+FdkQ3/GiclPvf0tViW81PDnl88Un1DYvspTAbV5s3/vQdWEm3T6QjUAO+ay6XLvgzd04EJH4UjMXUM64lrz4y59wTVisajwqupku14eMqPNLdwl2t0KKRui2mZr6miDEqXYMJcUlegg9XH3CORFlkzuugaUttG0aHlBET7BrwRhCfzZEKIUQO0WfTYGEX5ImAWR5BZi/eRoJMWO/Y6GQbsxz53IdGtP+ZnnWYK2U3JqcIgs8lRDlwp4lY99iUOxie3pj34qNpG1i0pCeGoPaRZRUl1b1m/u91N+nZGKVfteNd93nBbzC3b6s0i32ut+NED9i9ecQUl5toeyvepVQd7spEnJ03K/COtLu6y8mILujNsf4ZNxKW4hqM+6+GheT7XwKBv5Geh+g+4Yt9GBxD/OxoL3w8njgVJmu+0QYTZuhoJqH8sF87Cj2FLnHNCwcTSOsxo34VPNkxaamHLD1VXojGJE5vT86uhgqKGNasWhYOkYCGYJvdM4T75NFVpMYiMeNXvRe7Cr1qvqEpmvldD/1ypRWmMinuUDftgkdBN9XtWiCZfmmLOV+FHXh2ehM3UDm4dyV84BVzLh1K
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 05492834-def8-4467-9986-08dbe11ddf03
-X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB4835.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2023 12:17:41.7036 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HtFicRhIFNo9wFKsQBssEAKvxY8cwdRov17L6hw8buXLkcclf2md55wh+ZBZsu32Z8rU7ZZT1OjMtJHXdtWxCbHLMsAEJD3P1OJixd2Sca8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR10MB7827
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-09_10,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- malwarescore=0
- suspectscore=0 adultscore=0 bulkscore=0 mlxlogscore=999 phishscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311090091
-X-Proofpoint-ORIG-GUID: 7aHV6Vl6z0qRU9Y5N5CQMLebloXBDwce
-X-Proofpoint-GUID: 7aHV6Vl6z0qRU9Y5N5CQMLebloXBDwce
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x130.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -199,52 +99,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Richard Henderson <richard.henderson@linaro.org> writes:
 
+> The previous change missed updating one of the increments and
+> one of the MemOps.  Add a test case for all vector lengths.
+>
+> Cc: qemu-stable@nongnu.org
+> Fixes: e6dd5e782be ("target/arm: Use tcg_gen_qemu_{ld, st}_i128 in gen_sv=
+e_{ld, st}r")
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-On 08/11/2023 12:48, Jason Gunthorpe wrote:
-> On Wed, Nov 08, 2023 at 07:16:52AM +0000, Duan, Zhenzhong wrote:
-> 
->>>> +    ret = iommufd_backend_alloc_hwpt(iommufd, vbasedev->devid,
->>>> +                                     container->ioas_id, &hwpt_id);
->>>> +
->>>> +    if (ret) {
->>>> +        error_setg_errno(errp, errno, "error alloc shadow hwpt");
->>>> +        return ret;
->>>> +    }
->>>
->>> The above alloc_hwpt fails for mdevs (at least, it fails for me attempting to use
->>> iommufd backend with vfio-ccw and vfio-ap on s390).  The ioctl is failing in the
->>> kernel because it can't find an IOMMUFD_OBJ_DEVICE.
->>>
->>> AFAIU that's because the mdevs are meant to instead use kernel access via
->>> vfio_iommufd_emulated_attach_ioas, not hwpt.  That's how mdevs behave when
->>> looking at the kernel vfio compat container.
->>>
->>> As a test, I was able to get vfio-ccw and vfio-ap working using the iommufd
->>> backend by just skipping this alloc_hwpt above and instead passing container-
->>>> ioas_id into the iommufd_cdev_attach_hwpt below.  That triggers the
->>> vfio_iommufd_emulated_attach_ioas call in the kernel.
->>
->> Thanks for help test and investigation.
->> I was only focusing on real device and missed the mdev particularity, sorry.
->> You are right, there is no hwpt support for mdev, not even an emulated hwpt.
->> I'll digging into this and see how to distinguish mdev with real device in
->> this low level function.
-> 
-> I was expecting that hwpt manipulation would be done exclusively
-> inside the device-specific vIOMMU userspace driver. Generic code paths
-> that don't have that knowledge should use the IOAS for everything
+This was Cd'd for stable but didn't make it in. There is a trivial
+re-base conflict but I can re-send the patch if that helps.
 
-I am probably late into noticing this given Zhenzhong v5; but arent' we
-forgetting the enforcing of dirty tracking in HWPT is done /via/ ALLOC_HWPT ?
+With this:
 
-We decided sometime ago that the domain_alloc_user flow (and thus enforcement of
-dirty tracking) would go via hwpt manip as opposed to the autodomains flow.
+   tuxrun --runtime docker \
+     --qemu-binary ~/lsrc/qemu.git/builds/bisect/qemu-system-aarch64 \
+     --device qemu-arm64 --boot-args rw \
+     --kernel https://storage.tuxsuite.com/public/linaro/lkft/builds/2XmWuG=
+CI7saydsrZw4FcWSu6JGQ/Image.gz \
+     --modules https://storage.tuxsuite.com/public/linaro/lkft/builds/2XmWu=
+GCI7saydsrZw4FcWSu6JGQ/modules.tar.xz \
+     --rootfs https://storage.tuxboot.com/debian/bookworm/arm64/rootfs.ext4=
+.xz \
+     --parameters SHARD_INDEX=3D4 --parameters SKIPFILE=3Dskipfile-lkft.yam=
+l \
+     --parameters SHARD_NUMBER=3D4 \
+     --parameters KSELFTEST=3Dhttps://storage.tuxsuite.com/public/linaro/lk=
+ft/builds/2XmWuGCI7saydsrZw4FcWSu6JGQ/kselftest.tar.xz \
+     --image docker.io/linaro/tuxrun-dispatcher:v0.52.0 --tests kselftest-a=
+rm64 --timeouts boot=3D30 kselftest-arm64=3D60
 
-Otherwise if I need to ressurect the autodomains support we will need a
-ATTACH_IOAS flag replicating this enforcement to pass into the HWPT auto allocation.
+on my branch:
 
-Or I can add the hwpt manip on the qemu dirty tracking support of iommufd.
+  https://gitlab.com/stsquad/qemu/-/tree/for-8.1-stable?ref_type=3Dheads
 
-	Joao
+the test works.
+
+> ---
+>  target/arm/tcg/translate-sve.c    |  5 ++--
+>  tests/tcg/aarch64/sve-str.c       | 49 +++++++++++++++++++++++++++++++
+>  tests/tcg/aarch64/Makefile.target |  6 +++-
+>  3 files changed, 57 insertions(+), 3 deletions(-)
+>  create mode 100644 tests/tcg/aarch64/sve-str.c
+>
+> diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sv=
+e.c
+> index 7b39962f20..296e7d1ce2 100644
+> --- a/target/arm/tcg/translate-sve.c
+> +++ b/target/arm/tcg/translate-sve.c
+> @@ -4294,7 +4294,7 @@ void gen_sve_str(DisasContext *s, TCGv_ptr base, in=
+t vofs,
+>          t0 =3D tcg_temp_new_i64();
+>          t1 =3D tcg_temp_new_i64();
+>          t16 =3D tcg_temp_new_i128();
+> -        for (i =3D 0; i < len_align; i +=3D 8) {
+> +        for (i =3D 0; i < len_align; i +=3D 16) {
+>              tcg_gen_ld_i64(t0, base, vofs + i);
+>              tcg_gen_ld_i64(t1, base, vofs + i + 8);
+>              tcg_gen_concat_i64_i128(t16, t0, t1);
+> @@ -4320,7 +4320,8 @@ void gen_sve_str(DisasContext *s, TCGv_ptr base, in=
+t vofs,
+>          t16 =3D tcg_temp_new_i128();
+>          tcg_gen_concat_i64_i128(t16, t0, t1);
+>=20=20
+> -        tcg_gen_qemu_st_i128(t16, clean_addr, midx, MO_LEUQ);
+> +        tcg_gen_qemu_st_i128(t16, clean_addr, midx,
+> +                             MO_LE | MO_128 | MO_ATOM_NONE);
+>          tcg_gen_addi_i64(clean_addr, clean_addr, 16);
+>=20=20
+>          tcg_gen_brcondi_ptr(TCG_COND_LTU, i, len_align, loop);
+> diff --git a/tests/tcg/aarch64/sve-str.c b/tests/tcg/aarch64/sve-str.c
+> new file mode 100644
+> index 0000000000..551f0d6f18
+> --- /dev/null
+> +++ b/tests/tcg/aarch64/sve-str.c
+> @@ -0,0 +1,49 @@
+> +#include <stdio.h>
+> +#include <sys/prctl.h>
+> +
+> +#define N  (256+16)
+> +
+> +static int __attribute__((noinline)) test(int vl)
+> +{
+> +    unsigned char buf[N];
+> +    int err =3D 0;
+> +
+> +    for (int i =3D 0; i < N; ++i) {
+> +        buf[i] =3D (unsigned char)i;
+> +    }
+> +
+> +    asm volatile (
+> +        "mov z0.b, #255\n\t"
+> +        "str z0, %0"
+> +        : : "m" (buf) : "z0", "memory");
+> +
+> +    for (int i =3D 0; i < vl; ++i) {
+> +        if (buf[i] !=3D 0xff) {
+> +            fprintf(stderr, "vl %d, index %d, expected 255, got %d\n",
+> +                    vl, i, buf[i]);
+> +            err =3D 1;
+> +        }
+> +    }
+> +
+> +    for (int i =3D vl; i < N; ++i) {
+> +        if (buf[i] !=3D (unsigned char)i) {
+> +            fprintf(stderr, "vl %d, index %d, expected %d, got %d\n",
+> +                    vl, i, (unsigned char)i, buf[i]);
+> +            err =3D 1;
+> +        }
+> +    }
+> +
+> +    return err;
+> +}
+> +
+> +int main()
+> +{
+> +    int err =3D 0;
+> +
+> +    for (int i =3D 16; i <=3D 256; i +=3D 16) {
+> +        if (prctl(PR_SVE_SET_VL, i, 0, 0, 0, 0) =3D=3D i) {
+> +            err |=3D test(i);
+> +        }
+> +    }
+> +    return err;
+> +}
+> diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefi=
+le.target
+> index 62b38c792f..c6542b5f1b 100644
+> --- a/tests/tcg/aarch64/Makefile.target
+> +++ b/tests/tcg/aarch64/Makefile.target
+> @@ -103,7 +103,11 @@ sha512-sve: CFLAGS=3D-O3 -march=3Darmv8.1-a+sve
+>  sha512-sve: sha512.c
+>  	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
+>=20=20
+> -TESTS +=3D sha512-sve
+> +sve-str: CFLAGS=3D-O1 -march=3Darmv8.1-a+sve
+> +sve-str: sve-str.c
+> +	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
+> +
+> +TESTS +=3D sha512-sve sve-str
+>=20=20
+>  ifneq ($(GDB),)
+>  GDB_SCRIPT=3D$(SRC_PATH)/tests/guest-debug/run-test.py
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
