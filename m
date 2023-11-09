@@ -2,92 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 876067E704F
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 18:31:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 453877E7066
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 18:36:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r18s5-0005zr-2r; Thu, 09 Nov 2023 12:31:13 -0500
+	id 1r18vs-0007xr-10; Thu, 09 Nov 2023 12:35:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r18rY-0005we-57
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:30:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1r18vl-0007vB-Gz
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:35:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r18rT-0001zO-MZ
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:30:38 -0500
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1r18vj-0002gi-To
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:35:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699551033;
+ s=mimecast20190719; t=1699551298;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=SdtKFa7mxprOYlxBZB3ggTFL38OA4DGj0DEz1vwno+0MS2sdmSVplyDuG3Rqh3nG5/mHmQ
- SFX6Yao1FzhLFasuUVusDXnGSOBE3w4gNNi695X3P6VkXR/3m8zkgcQ59Jw/dYThZ11LQr
- 0vD6x2+tXS4Zta1Xc6/i7//NkYPiyeI=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xmYBomGCdOjHt/58fYuHshjiqDxuv41a04vVYCbBXlI=;
+ b=bcpB5wgMaxKe0l+TGyEuwrLRRttGCa/YXDMA06xOdozFrs3hB7xy1VIP+II8bwGc/78MyO
+ JoicNH8JJsoVUUbI82PYThHg6VnTY6KyccGCTf/VderMfUl9/y1lGAafdjIKP/8wzRRVv2
+ YVierJxRGJzxIA0cpRRiKwJw96jk+oA=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-345--WW-LRkZNFiKNqI_VzYy5g-1; Thu, 09 Nov 2023 12:30:29 -0500
-X-MC-Unique: -WW-LRkZNFiKNqI_VzYy5g-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-53e2acda9d6so947779a12.2
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 09:30:28 -0800 (PST)
+ us-mta-86-N35WH-W_OIOI6ksuDqUSdA-1; Thu, 09 Nov 2023 12:34:58 -0500
+X-MC-Unique: N35WH-W_OIOI6ksuDqUSdA-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-41cc5b9d26eso34398721cf.0
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 09:34:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699551027; x=1700155827;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=nApn3V08rXTUknJS8iFPZpA9FCIBMwTnx7Eb2JI/BnVkKJ9GUpso69bYEgJrMlVPsy
- lfRTxa9FOrwLFGAU81ssNf6nen13QeuARVqRyNspCgV/K45VuifQ/YkHRO5seuo8y3qf
- b4cQIk6M9JGgvLPl8GgRtdwfwdymAoSessLRKlEb/2JqZOrnrN1TBngZhMQisCFrzFOx
- N+tlqJB50108xwLVFU1zIGIAKE1gDz4sq0ADhhYTke4WO2VYBpYgcL11OY1krRTkv/Gr
- S5hpAAWdJpUokwDHi1ZIQL8o9g4dr1gk5KO0ARnLMkrbuoKnMaygDkhdAjPUd/8AicPH
- AYQQ==
-X-Gm-Message-State: AOJu0YwTdf+CO/JrDm16TbmaJCgxaMg29YctgPrFApmTDNQPV/UvLDdc
- DeMfTjRt3c+JXh/00vIX54sc//uIcSfy5EJ1uqb6otOiUuPy+SwHSJ49HuJ8QWAeFvjbgLDVUas
- AwS3comRx599kb0M=
-X-Received: by 2002:a50:9994:0:b0:540:b1fb:b630 with SMTP id
- m20-20020a509994000000b00540b1fbb630mr4688600edb.27.1699551027400; 
- Thu, 09 Nov 2023 09:30:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFOPUGtGIlHZgYEDICnWj3JtfnKb1LwKB2SB50zRUkhwalAcFo0MBiTaPo8zt22/6IyIvIdfA==
-X-Received: by 2002:a50:9994:0:b0:540:b1fb:b630 with SMTP id
- m20-20020a509994000000b00540b1fbb630mr4688581edb.27.1699551027095; 
- Thu, 09 Nov 2023 09:30:27 -0800 (PST)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.gmail.com with ESMTPSA id
- r25-20020a50aad9000000b00540e894609dsm75606edc.17.2023.11.09.09.30.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 Nov 2023 09:30:26 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org,
- Beraldo Leal <bleal@redhat.com>, Rene Engel <ReneEngel80@emailn.de>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Howard Spoelstra <hsp.cat7@gmail.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: Re: [PATCH] .gitlab-ci.d/cirrus: Upgrade macOS to 13 (Ventura)
-Date: Thu,  9 Nov 2023 18:30:21 +0100
-Message-ID: <20231109173021.851946-2-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231108162022.76189-1-philmd@linaro.org>
-References: 
+ d=1e100.net; s=20230601; t=1699551297; x=1700156097;
+ h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xmYBomGCdOjHt/58fYuHshjiqDxuv41a04vVYCbBXlI=;
+ b=BkpE5gYNlYh2imcNIx5FKyCCj5L9R9npdWORlVQVVcD9IPcNco9IFPkIRwA3aGgPsz
+ CNCHYGaOT7TyL6AmK9RIuTXgRp5SgoHII/iiahBagkbUhq38y1aqAaBt2jpkJkklxq9r
+ 37+e0Uoh0aKU1j7VLDMeQjbRefeept40FKTGO3TqlZAeIauyRIrEaBo2QRRhKxZ2PCwl
+ OFbIWA3Alhw8m0g8ghB5VTd32AEvqE+IE0OisjARjjT127M+5Z/JWXjLwfdbe4cYotAa
+ O6prqLwXOxWdJhLi5LxWf+2Y41e6awKwpXq83ePg/TRx52TnklfQ6zthAOSTrgob+5+6
+ VIAQ==
+X-Gm-Message-State: AOJu0Yw/WHJpTKKnB4dmmnn6mawhP4QaCGujG58Pf3OYJH2yDhSdwAdn
+ uw4hB4P16HnMEkSUH9jf3Acktv0mSsKrjVOWkvAdMrbWzeNTbLpMEF+kKzt0RocqCU9twrxGX7l
+ fH8dA3AU0pm/gDs+yBL9RKTymF36uHL8gvJbwPTw=
+X-Received: by 2002:a05:622a:14c7:b0:40c:21b2:40ab with SMTP id
+ u7-20020a05622a14c700b0040c21b240abmr6877955qtx.22.1699551297090; 
+ Thu, 09 Nov 2023 09:34:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHV192V3KlwUoCMleiNZHU2uw+e0pgy3r9j0ozN1mb6o4XHRTr/fB/5yQxVrczjvJRN9Ps3D1ynel7fuKwdzfc=
+X-Received: by 2002:a05:622a:14c7:b0:40c:21b2:40ab with SMTP id
+ u7-20020a05622a14c700b0040c21b240abmr6877937qtx.22.1699551296880; Thu, 09 Nov
+ 2023 09:34:56 -0800 (PST)
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 9 Nov 2023 09:34:56 -0800
+From: Andrea Bolognani <abologna@redhat.com>
+References: <20231016152704.221611-1-victortoso@redhat.com>
+ <20231016152704.221611-5-victortoso@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+In-Reply-To: <20231016152704.221611-5-victortoso@redhat.com>
+Date: Thu, 9 Nov 2023 09:34:56 -0800
+Message-ID: <CABJz62NbJAkLRS7t3JN8T-=1mkZ9BX68Jgd+VPr0tYwQPZNKag@mail.gmail.com>
+Subject: Re: [PATCH v2 04/11] qapi: golang: Generate qapi's alternate types in
+ Go
+To: Victor Toso <victortoso@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ John Snow <jsnow@redhat.com>, 
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=abologna@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,8 +97,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued, thanks.
+On Mon, Oct 16, 2023 at 05:26:57PM +0200, Victor Toso wrote:
+> [*] The exception for optional fields as default is to Types that can
+> accept JSON Null as a value. For this case, we translate NULL to a
+> member type called IsNull, which is boolean in Go.  This will be
+> explained better in the documentation patch of this series but the
+> main rationale is around Marshaling to and from JSON and Go data
+> structures.
+>
+> Example:
+>
+> qapi:
+>  | { 'alternate': 'StrOrNull',
+>  |   'data': { 's': 'str',
+>  |             'n': 'null' } }
+>
+> go:
+>  | type StrOrNull struct {
+>  |     S      *string
+>  |     IsNull bool
+>  | }
 
-Paolo
+We should call this Null instead of IsNull, and also make it a
+pointer similarly to what I just suggested for union branches that
+don't have additional data attached to them.
+
+-- 
+Andrea Bolognani / Red Hat / Virtualization
 
 
