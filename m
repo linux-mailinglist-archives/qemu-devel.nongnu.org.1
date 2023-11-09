@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 436047E6B53
+	by mail.lfdr.de (Postfix) with ESMTPS id 7392D7E6B55
 	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:44:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15JV-0007KA-Gm; Thu, 09 Nov 2023 08:43:17 -0500
+	id 1r15JY-0007Uq-9V; Thu, 09 Nov 2023 08:43:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15JN-00076L-AI; Thu, 09 Nov 2023 08:43:10 -0500
+ id 1r15JN-00076M-AG; Thu, 09 Nov 2023 08:43:10 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15JK-0000hD-Kz; Thu, 09 Nov 2023 08:43:08 -0500
+ id 1r15JK-0000iO-Fm; Thu, 09 Nov 2023 08:43:08 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7735331AF7;
- Thu,  9 Nov 2023 16:43:08 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id C35DC31AF8;
+ Thu,  9 Nov 2023 16:43:10 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7822E3449E;
- Thu,  9 Nov 2023 16:43:00 +0300 (MSK)
-Received: (nullmailer pid 1461755 invoked by uid 1000);
- Thu, 09 Nov 2023 13:43:00 -0000
+ by tsrv.corpit.ru (Postfix) with SMTP id C4D1B3449F;
+ Thu,  9 Nov 2023 16:43:02 +0300 (MSK)
+Received: (nullmailer pid 1461763 invoked by uid 1000);
+ Thu, 09 Nov 2023 13:43:02 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.3 00/55] Patch Round-up for stable 8.1.3,
- freeze on 2023-11-19
-Date: Thu,  9 Nov 2023 16:42:04 +0300
-Message-Id: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Yuval Shaia <yuval.shaia.ml@gmail.com>,
+ Soul Chen <soulchen8650@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.3 01/55] hw/pvrdma: Protect against buggy or malicious
+ guest driver
+Date: Thu,  9 Nov 2023 16:42:05 +0300
+Message-Id: <20231109134300.1461632-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
+References: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,133 +61,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v8.1.3:
+From: Yuval Shaia <yuval.shaia.ml@gmail.com>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-8.1
+Guest driver allocates and initialize page tables to be used as a ring
+of descriptors for CQ and async events.
+The page table that represents the ring, along with the number of pages
+in the page table is passed to the device.
+Currently our device supports only one page table for a ring.
 
-Patch freeze is 2023-11-19, and the release is planned for 2023-11-21:
+Let's make sure that the number of page table entries the driver
+reports, do not exceeds the one page table size.
 
-  https://wiki.qemu.org/Planning/8.1
+Reported-by: Soul Chen <soulchen8650@gmail.com>
+Signed-off-by: Yuval Shaia <yuval.shaia.ml@gmail.com>
+Fixes: CVE-2023-1544
+Message-ID: <20230301142926.18686-1-yuval.shaia.ml@gmail.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit 85fc35afa93c7320d1641d344d0c5dfbe341d087)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+diff --git a/hw/rdma/vmw/pvrdma_main.c b/hw/rdma/vmw/pvrdma_main.c
+index 4fc6712025..55b338046e 100644
+--- a/hw/rdma/vmw/pvrdma_main.c
++++ b/hw/rdma/vmw/pvrdma_main.c
+@@ -91,19 +91,33 @@ static int init_dev_ring(PvrdmaRing *ring, PvrdmaRingState **ring_state,
+                          dma_addr_t dir_addr, uint32_t num_pages)
+ {
+     uint64_t *dir, *tbl;
+-    int rc = 0;
++    int max_pages, rc = 0;
+ 
+     if (!num_pages) {
+         rdma_error_report("Ring pages count must be strictly positive");
+         return -EINVAL;
+     }
+ 
++    /*
++     * Make sure we can satisfy the requested number of pages in a single
++     * TARGET_PAGE_SIZE sized page table (taking into account that first entry
++     * is reserved for ring-state)
++     */
++    max_pages = TARGET_PAGE_SIZE / sizeof(dma_addr_t) - 1;
++    if (num_pages > max_pages) {
++        rdma_error_report("Maximum pages on a single directory must not exceed %d\n",
++                          max_pages);
++        return -EINVAL;
++    }
++
+     dir = rdma_pci_dma_map(pci_dev, dir_addr, TARGET_PAGE_SIZE);
+     if (!dir) {
+         rdma_error_report("Failed to map to page directory (ring %s)", name);
+         rc = -ENOMEM;
+         goto out;
+     }
++
++    /* We support only one page table for a ring */
+     tbl = rdma_pci_dma_map(pci_dev, dir[0], TARGET_PAGE_SIZE);
+     if (!tbl) {
+         rdma_error_report("Failed to map to page table (ring %s)", name);
+-- 
+2.39.2
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
-
-Thanks!
-
-/mjt
-
---------------------------------------
-01 85fc35afa93c Yuval Shaia:
-   hw/pvrdma: Protect against buggy or malicious guest driver
-02 caea03279e11 Fabiano Rosas:
-   migration: Fix analyze-migration read operation signedness
-03 d4f34485ca8a Juan Quintela:
-   migration: Non multifd migration don't care about multifd flushes
-04 acf873873ae3 John Snow:
-   python/qmp: remove Server.wait_closed() call for Python 3.12
-05 a5e3cb3b90a6 Paolo Bonzini:
-   tests/docker: avoid invalid escape in Python string
-06 e4b6532cc0a5 Paolo Bonzini:
-   docs/sphinx: avoid invalid escape in Python string
-07 e41c40d101fc Paolo Bonzini:
-   target/hexagon: avoid invalid escape in Python string
-08 1b5f3f65cc71 Paolo Bonzini:
-   tests/avocado: avoid invalid escape in Python string
-09 86a8989d4557 Paolo Bonzini:
-   tests/vm: avoid invalid escape in Python string
-10 e6d8e5e6e366 Paolo Bonzini:
-   tracetool: avoid invalid escape in Python string
-11 e6e66b032873 Richard Henderson:
-   linux-user: Fixes for zero_bss
-12 6fad9b4bb91d Mikulas Patocka:
-   linux-user/mips: fix abort on integer overflow
-13 3b894b699c9a Mikulas Patocka:
-   linux-user/sh4: Fix crashes on signal delivery
-14 a1e6a5c46219 Helge Deller:
-   lasips2: LASI PS/2 devices are not user-createable
-15 d01448c79d89 Michal Orzel:
-   target/arm: Fix CNTPCT_EL0 trapping from EL0 when HCR_EL2.E2H is 0
-16 ae5f70baf549 Lu Gao:
-   hw/sd/sdhci: Block Size Register bits [14:12] is lost
-17 4ab9a7429bf7 Peter Maydell:
-   hw/rdma/vmw/pvrdma_cmd: Use correct struct in query_port()
-18 930f1865cc65 Richard Henderson:
-   target/sparc: Clear may_lookup for npc == DYNAMIC_PC
-19 307521d6e29e Peter Maydell:
-   target/arm: Fix syndrome for FGT traps on ERET
-20 6f83dc67168d Glenn Miles:
-   misc/led: LED state is set opposite of what is expected
-21 fed824501501 Kevin Wolf:
-   block: Fix locking in media change monitor commands
-22 580731dcc87e Akihiko Odaki:
-   tests/tcg: Add -fno-stack-protector
-23 8b097fd6b06e Andrey Drobyshev:
-   qemu-img: rebase: stop when reaching EOF of old backing file
-24 827171c31805 Andrey Drobyshev:
-   qemu-iotests: 024: add rebasing test case for overlay_size > backing_size
-25 b11293c212c2 Richard Henderson:
-   target/arm: Fix SVE STR increment
-26 4c09abeae870 Peter Maydell:
-   target/arm: Correctly propagate stage 1 BTI guarded bit in a two-stage walk
-27 721da0396cfa Cédric Le Goater:
-   util/uuid: Add UUID_STR_LEN definition
-28 f8d6f3b16c37 Cédric Le Goater:
-   vfio/pci: Fix buffer overrun when writing the VF token
-29 4ef9d97b1a37 Cédric Le Goater:
-   util/uuid: Remove UUID_FMT_LEN
-30 e969f992c656 David Woodhouse:
-   i386/xen: Don't advertise XENFEAT_supervisor_mode_kernel
-31 e7dbb62ff19c David Woodhouse:
-   i386/xen: fix per-vCPU upcall vector for Xen emulation
-32 18e83f28bf39 David Woodhouse:
-   hw/xen: select kernel mode for per-vCPU event channel upcall vector
-33 3de75ed35241 David Woodhouse:
-   hw/xen: don't clear map_track[] in xen_gnttab_reset()
-34 4a5780f52095 David Woodhouse:
-   hw/xen: fix XenStore watch delivery to guest
-35 debc995e883b David Woodhouse:
-   hw/xen: take iothread mutex in xen_evtchn_reset_op()
-36 a1c1082908dd David Woodhouse:
-   hw/xen: use correct default protocol for xen-block on x86
-37 9c549ab6895a Marc-André Lureau:
-   virtio-gpu: block migration of VMs with blob=true
-38 cc8fb0c3ae3c Vladimir Sementsov-Ogievskiy:
-   block/nvme: nvme_process_completion() fix bound for cid
-39 5722fc471296 Peter Maydell:
-   target/arm: Fix A64 LDRA immediate decode
-40 b2b109041ecd Jean-Louis Dupond:
-   qcow2: keep reference on zeroize with discard-no-unref enabled
-41 10b9e0802a07 Sam Li:
-   block/file-posix: fix update_zones_wp() caller
-42 ad4feaca61d7 Naohiro Aota:
-   file-posix: fix over-writing of returning zone_append offset
-43 08730ee0cc01 BALATON Zoltan:
-   ati-vga: Implement fallback for pixman routines
-44 565f85a9c293 Marc-André Lureau:
-   ui/gtk: force realization of drawing area
-45 47fd6ab1e334 Dongwon Kim:
-   ui/gtk-egl: apply scale factor when calculating window's dimension
-46 6f189a08c1b0 Antonio Caggiano:
-   ui/gtk-egl: Check EGLSurface before doing scanout
-47 04591b3ddd9a Philippe Mathieu-Daudé:
-   target/mips: Fix MSA BZ/BNZ opcodes displacement
-48 18f86aecd6a1 Philippe Mathieu-Daudé:
-   target/mips: Fix TX79 LQ/SQ opcodes
-49 7d7512019fc4 Fiona Ebner:
-   hw/ide: reset: cancel async DMA operation before resetting state
-50 cc610857bbd3 Fiona Ebner:
-   tests/qtest: ahci-test: add test exposing reset issue with pending callback
-51 aba2ec341c6d Ilya Leoshkevich:
-   target/s390x: Fix CLC corrupting cc_src
-52 43fecbe7a53f Ilya Leoshkevich:
-   tests/tcg/s390x: Test CLC with inaccessible second operand
-53 bea402482a8c Ilya Leoshkevich:
-   target/s390x: Fix LAALG not updating cc_src
-54 ebc14107f1f3 Ilya Leoshkevich:
-   tests/tcg/s390x: Test LAALG with negative cc_src
-55 b523a3d54f3d Niklas Cassel:
-   hw/ide/ahci: trigger either error IRQ or regular IRQ, not both
 
