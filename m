@@ -2,40 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFEB27E6BFE
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:05:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52C3F7E6BF9
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:04:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15bj-0001l4-Qq; Thu, 09 Nov 2023 09:02:08 -0500
+	id 1r15bi-0001NO-0f; Thu, 09 Nov 2023 09:02:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15aQ-00065a-Fn; Thu, 09 Nov 2023 09:00:53 -0500
+ id 1r15aW-000688-Fa; Thu, 09 Nov 2023 09:00:59 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15aM-00060P-Og; Thu, 09 Nov 2023 09:00:46 -0500
+ id 1r15aQ-00061F-9o; Thu, 09 Nov 2023 09:00:47 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 487BC31BC6;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5C3AB31BC7;
  Thu,  9 Nov 2023 16:59:42 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 50E6D344FF;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6436134500;
  Thu,  9 Nov 2023 16:59:34 +0300 (MSK)
-Received: (nullmailer pid 1462803 invoked by uid 1000);
+Received: (nullmailer pid 1462806 invoked by uid 1000);
  Thu, 09 Nov 2023 13:59:33 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Vasiliy Ulyanov <vulyanov@suse.de>, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.7 16/62] optionrom: Remove build-id section
-Date: Thu,  9 Nov 2023 16:58:44 +0300
-Message-Id: <20231109135933.1462615-16-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.7 17/62] esp: use correct type for esp_dma_enable() in
+ sysbus_esp_gpio_demux()
+Date: Thu,  9 Nov 2023 16:58:45 +0300
+Message-Id: <20231109135933.1462615-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 References: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,69 +63,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-Our linker script for optionroms specifies only the placement of the
-.text section, leaving the linker free to place the remaining sections
-at arbitrary places in the file.
+The call to esp_dma_enable() was being made with the SYSBUS_ESP type instead of
+the ESP type. This meant that when GPIO 1 was being used to trigger a DMA
+request from an external DMA controller, the setting of ESPState's dma_enabled
+field would clobber unknown memory whilst the dma_cb callback pointer would
+typically return NULL so the DMA request would never start.
 
-Since at least binutils 2.39, the .note.gnu.build-id section is now
-being placed at the start of the file, which causes label addresses to
-be shifted. For linuxboot_dma.bin that means that the PnP header
-(among others) will not be found when determining the type of ROM at
-optionrom_setup():
-
-(0x1c is the label _pnph, where the magic "PnP" is)
-
-$ xxd /usr/share/qemu/linuxboot_dma.bin | grep "PnP"
-00000010: 0000 0000 0000 0000 0000 1c00 2450 6e50  ............$PnP
-
-$ xxd pc-bios/optionrom/linuxboot_dma.bin | grep "PnP"
-00000010: 0000 0000 0000 0000 0000 4c00 2450 6e50  ............$PnP
-                                   ^bad
-
-Using a freshly built linuxboot_dma.bin ROM results in a broken boot:
-
-  SeaBIOS (version rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org)
-  Booting from Hard Disk...
-  Boot failed: could not read the boot disk
-
-  Booting from Floppy...
-  Boot failed: could not read the boot disk
-
-  No bootable device.
-
-We're not using the build-id section, so pass the --build-id=none
-option to the linker to remove it entirely.
-
-Note: In theory, this same issue could happen with any other
-section. The ideal solution would be to have all unused sections
-discarded in the linker script. However that would be a larger change,
-specially for the pvh rom which uses the .bss and COMMON sections so
-I'm addressing only the immediate issue here.
-
-Reported-by: Vasiliy Ulyanov <vulyanov@suse.de>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20230926192502.15986-1-farosas@suse.de>
+Message-ID: <20230913204410.65650-2-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 35ed01ba5448208695ada5fa20a13c0a4689a1c1)
+(cherry picked from commit b86dc5cb0b4105fa8ad29e822ab5d21c589c5ec5)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(mjt: remove unrelated stable@vger)
 
-diff --git a/pc-bios/optionrom/Makefile b/pc-bios/optionrom/Makefile
-index b1fff0ba6c..30d07026c7 100644
---- a/pc-bios/optionrom/Makefile
-+++ b/pc-bios/optionrom/Makefile
-@@ -36,7 +36,7 @@ config-cc.mak: Makefile
- 	    $(call cc-option,-Wno-array-bounds)) 3> config-cc.mak
- -include config-cc.mak
- 
--override LDFLAGS = -nostdlib -Wl,-T,$(SRC_DIR)/flat.lds
-+override LDFLAGS = -nostdlib -Wl,--build-id=none,-T,$(SRC_DIR)/flat.lds
- 
- pvh.img: pvh.o pvh_main.o
- 
+diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
+index e52188d022..4218a6a960 100644
+--- a/hw/scsi/esp.c
++++ b/hw/scsi/esp.c
+@@ -1395,7 +1395,7 @@ static void sysbus_esp_gpio_demux(void *opaque, int irq, int level)
+         parent_esp_reset(s, irq, level);
+         break;
+     case 1:
+-        esp_dma_enable(opaque, irq, level);
++        esp_dma_enable(s, irq, level);
+         break;
+     }
+ }
 -- 
 2.39.2
 
