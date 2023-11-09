@@ -2,71 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154097E6DFE
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 16:48:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 064E27E79C4
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 08:34:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r17FP-0002PK-OC; Thu, 09 Nov 2023 10:47:11 -0500
+	id 1r1M18-0005kk-9r; Fri, 10 Nov 2023 02:33:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1r17FK-0002My-FS; Thu, 09 Nov 2023 10:47:06 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1r17F5-0006MK-1x; Thu, 09 Nov 2023 10:47:06 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-53e70b0a218so1635472a12.2; 
- Thu, 09 Nov 2023 07:46:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699544808; x=1700149608; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=E7vJXSBetClD/gOUlPRTJf1R7+Q0EPYGlWm8oFc/t4Q=;
- b=IXl8qbr9h8JnCaAGbwW95r684Dtliu4KCALtlM3iYjcvqAK+vmYSfr9jF3Z0s3uAQb
- cPuqiofn3OaseAf+E471NAZWD7K8bOpHIksC/wl8Ikm5Y+jiPQ2huMoJVb3OnsEfMefX
- ee0OkPYZhFGmxB4wjZVHp4OwnlBvulUYLneaROmbHS1dJJKM8s7KpZ6AoiAcqHXmH3wl
- IpIfmqDCCvmZ5on5fVm61bqfTH2HxoSNXvy21le9x9ivQrUEXCbGKi4YLIGrtVJVpM1g
- KwmckVak6I4wNwRR0b0FMzcSRvsVlMxlfyQDA/lHITF/65OwhvhdLb9HQ6Ct7CXVOKuL
- nFrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699544808; x=1700149608;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=E7vJXSBetClD/gOUlPRTJf1R7+Q0EPYGlWm8oFc/t4Q=;
- b=Z6XWhnVy5F9t86zAGLLwd9vO7nTeiTaqTTrBJ3OBsV4qsuLswfe4WS1CS0lj+t5EZ4
- WrRWKtHbP+3OBCZ0IMrjlzptsipfP7YR0Hul8vp3HOOZ+28BV150MQWrQe4pUk98BFPu
- fILy6wbwm2Hjm179fGdkMlEKGH7bc/cQP/ATYvtL4IG0vkfwvesAUZVgZaqP5T3zD/4s
- GMYD3kmOjgmZhpVhzILyU50YYEbhwdjlin6j4jHlNrN2EgAJQcHjIdvkN4XB4wqr0AXN
- Hb8rWOmzLOAuT1r27BPuy8Z9g6TTflvSHDc/FRiTf/nckhmLE1mj7KEPJM5hT4famvMv
- IcuQ==
-X-Gm-Message-State: AOJu0YxrbNKhe+XcD1082GlJk7k9yL9DwcSaaRal2LhZE6wKPOs3rzbq
- 4sHjkv9d2BoI1C3LEMqxcGyyB4Bs8JaJV12FERg=
-X-Google-Smtp-Source: AGHT+IGZfWVBeM8Cn7YNpZXKITecEFsKEdMzBICXqVlvmQdx6phTb1nZy25kUwtzj/UM6+NUSDwP5QVmO0SWJHKoEYs=
-X-Received: by 2002:a50:8a81:0:b0:53e:1b:15f5 with SMTP id
- j1-20020a508a81000000b0053e001b15f5mr4562023edj.39.1699544807820; 
- Thu, 09 Nov 2023 07:46:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
+ id 1r1M14-0005dw-Nb
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:33:22 -0500
+Received: from mgamail.intel.com ([198.175.65.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
+ id 1r1M12-0007HI-Tj
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:33:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1699601601; x=1731137601;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=B2q/sm0UOlEDxkDSGbHGaYVp8jIR3zsBxM8BgBttiFg=;
+ b=GijrrJ98Od7+MWkF4ZIEUvFgumGhP9DlqnnZK7ERBpiT8mO0QnNXdo5O
+ eikMJPMONiqO0Lf26YT6xfODgKLprXepVkgfFvfBjDBoIFPqMu2s+nhln
+ 0wAKiYQKsBKkwOmuAy3KURYe44pd7xo035PYcazSki8EA2Fox69crhFNA
+ n7R6s1GWnY0Xwv5vtRPvWVzvtNKK4kdy1YdIlOp9GecFYctkmEWWJbMT9
+ /OmGRLVpoE1+jZ8c48lgxwWZv+GAcPcNF3XlXTcVV/j3d6VspIzxiTqry
+ V9BRXnQ3xJbf6EqZPpePvseOm9Gb5Au/6fmNDZviIx0nIwZK3u85ALl4r w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="3183700"
+X-IronPort-AV: E=Sophos;i="6.03,291,1694761200"; 
+   d="scan'208";a="3183700"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Nov 2023 23:33:17 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="829571064"
+X-IronPort-AV: E=Sophos;i="6.03,291,1694761200"; d="scan'208";a="829571064"
+Received: from sae-gw02.sh.intel.com (HELO localhost) ([10.239.45.110])
+ by fmsmga008.fm.intel.com with ESMTP; 09 Nov 2023 23:33:15 -0800
+From: Yuan Liu <yuan1.liu@intel.com>
+To: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
+Cc: qemu-devel@nongnu.org,
+	yuan1.liu@intel.com,
+	nanhai.zou@intel.com
+Subject: [PATCH v2 3/4] configure: add qpl option
+Date: Thu,  9 Nov 2023 23:46:37 +0800
+Message-Id: <20231109154638.488213-4-yuan1.liu@intel.com>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20231109154638.488213-1-yuan1.liu@intel.com>
+References: <20231109154638.488213-1-yuan1.liu@intel.com>
 MIME-Version: 1.0
-References: <20231109151917.1925107-1-peter.maydell@linaro.org>
-In-Reply-To: <20231109151917.1925107-1-peter.maydell@linaro.org>
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Date: Thu, 9 Nov 2023 16:46:36 +0100
-Message-ID: <CAJy5ezoyaWH0fzdjO-W6tS3RjJtOytr2CVT7uUkwhg=VOUYaEg@mail.gmail.com>
-Subject: Re: [PATCH] target/arm: HVC at EL3 should go to EL3, not EL2
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000008cd5400609ba1cd6"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-ed1-x532.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=yuan1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
+ DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,117 +78,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000008cd5400609ba1cd6
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+the Query Processing Library (QPL) is an open-source library that
+supports data compression and decompression features.
 
-On Thu, Nov 9, 2023 at 4:20=E2=80=AFPM Peter Maydell <peter.maydell@linaro.=
-org>
-wrote:
+add --enable-qpl and --disable-qpl options to enable and disable
+the QPL compression accelerator. The QPL compression accelerator
+can accelerate the Zlib compression algorithm during the live migration.
 
-> AArch64 permits code at EL3 to use the HVC instruction; however the
-> exception we take should go to EL3, not down to EL2 (see the pseudocode
-> AArch64.CallHypervisor()). Fix the target EL.
->
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->
+Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+---
+ meson.build                   | 7 +++++++
+ meson_options.txt             | 2 ++
+ scripts/meson-buildoptions.sh | 3 +++
+ 3 files changed, 12 insertions(+)
 
-Reviewed-by: Edgar E. Iglesias <edgar@zeroasic.com>
+diff --git a/meson.build b/meson.build
+index 259dc5f308..b4ba30b4fa 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1032,6 +1032,11 @@ if not get_option('zstd').auto() or have_block
+                     required: get_option('zstd'),
+                     method: 'pkg-config')
+ endif
++qpl = not_found
++if not get_option('qpl').auto()
++    qpl = dependency('libqpl', required: get_option('qpl'),
++                     method: 'pkg-config')
++endif
+ virgl = not_found
 
+ have_vhost_user_gpu = have_tools and targetos == 'linux' and pixman.found()
+@@ -2165,6 +2170,7 @@ config_host_data.set('CONFIG_MALLOC_TRIM', has_malloc_trim)
+ config_host_data.set('CONFIG_STATX', has_statx)
+ config_host_data.set('CONFIG_STATX_MNT_ID', has_statx_mnt_id)
+ config_host_data.set('CONFIG_ZSTD', zstd.found())
++config_host_data.set('CONFIG_QPL', qpl.found())
+ config_host_data.set('CONFIG_FUSE', fuse.found())
+ config_host_data.set('CONFIG_FUSE_LSEEK', fuse_lseek.found())
+ config_host_data.set('CONFIG_SPICE_PROTOCOL', spice_protocol.found())
+@@ -4325,6 +4331,7 @@ summary_info += {'snappy support':    snappy}
+ summary_info += {'bzip2 support':     libbzip2}
+ summary_info += {'lzfse support':     liblzfse}
+ summary_info += {'zstd support':      zstd}
++summary_info += {'Query Processing Library support': qpl}
+ summary_info += {'NUMA host support': numa}
+ summary_info += {'capstone':          capstone}
+ summary_info += {'libpmem support':   libpmem}
+diff --git a/meson_options.txt b/meson_options.txt
+index 3c7398f3c6..71cd533985 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -255,6 +255,8 @@ option('xkbcommon', type : 'feature', value : 'auto',
+        description: 'xkbcommon support')
+ option('zstd', type : 'feature', value : 'auto',
+        description: 'zstd compression support')
++option('qpl', type : 'feature', value : 'auto',
++       description: 'Query Processing Library support')
+ option('fuse', type: 'feature', value: 'auto',
+        description: 'FUSE block device export')
+ option('fuse_lseek', type : 'feature', value : 'auto',
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 7ca4b77eae..0909d1d517 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -220,6 +220,7 @@ meson_options_help() {
+   printf "%s\n" '                  Xen PCI passthrough support'
+   printf "%s\n" '  xkbcommon       xkbcommon support'
+   printf "%s\n" '  zstd            zstd compression support'
++  printf "%s\n" '  qpl             Query Processing Library support'
+ }
+ _meson_option_parse() {
+   case $1 in
+@@ -556,6 +557,8 @@ _meson_option_parse() {
+     --disable-xkbcommon) printf "%s" -Dxkbcommon=disabled ;;
+     --enable-zstd) printf "%s" -Dzstd=enabled ;;
+     --disable-zstd) printf "%s" -Dzstd=disabled ;;
++    --enable-qpl) printf "%s" -Dqpl=enabled ;;
++    --disable-qpl) printf "%s" -Dqpl=disabled ;;
+     *) return 1 ;;
+   esac
+ }
+--
+2.39.3
 
-
-> ---
->  target/arm/tcg/translate-a64.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/target/arm/tcg/translate-a64.c
-> b/target/arm/tcg/translate-a64.c
-> index 41484d8ae54..a2e49c39f9f 100644
-> --- a/target/arm/tcg/translate-a64.c
-> +++ b/target/arm/tcg/translate-a64.c
-> @@ -2351,6 +2351,8 @@ static bool trans_SVC(DisasContext *s, arg_i *a)
->
->  static bool trans_HVC(DisasContext *s, arg_i *a)
->  {
-> +    int target_el =3D s->current_el =3D=3D 3 ? 3 : 2;
-> +
->      if (s->current_el =3D=3D 0) {
->          unallocated_encoding(s);
->          return true;
-> @@ -2363,7 +2365,7 @@ static bool trans_HVC(DisasContext *s, arg_i *a)
->      gen_helper_pre_hvc(tcg_env);
->      /* Architecture requires ss advance before we do the actual work */
->      gen_ss_advance(s);
-> -    gen_exception_insn_el(s, 4, EXCP_HVC, syn_aa64_hvc(a->imm), 2);
-> +    gen_exception_insn_el(s, 4, EXCP_HVC, syn_aa64_hvc(a->imm),
-> target_el);
->      return true;
->  }
->
-> --
-> 2.34.1
->
->
->
-
---0000000000008cd5400609ba1cd6
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><div class=3D"gmail_quote"><div=
- dir=3D"ltr" class=3D"gmail_attr">On Thu, Nov 9, 2023 at 4:20=E2=80=AFPM Pe=
-ter Maydell &lt;<a href=3D"mailto:peter.maydell@linaro.org">peter.maydell@l=
-inaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">AArch64 permits code at EL3 to use the HVC instruction; however =
-the<br>
-exception we take should go to EL3, not down to EL2 (see the pseudocode<br>
-AArch64.CallHypervisor()). Fix the target EL.<br>
-<br>
-Cc: <a href=3D"mailto:qemu-stable@nongnu.org" target=3D"_blank">qemu-stable=
-@nongnu.org</a><br>
-Signed-off-by: Peter Maydell &lt;<a href=3D"mailto:peter.maydell@linaro.org=
-" target=3D"_blank">peter.maydell@linaro.org</a>&gt;<br></blockquote><div><=
-br></div><div>Reviewed-by: Edgar E. Iglesias &lt;<a href=3D"mailto:edgar@ze=
-roasic.com">edgar@zeroasic.com</a>&gt;<br></div><div><br></div><div>=C2=A0<=
-/div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bo=
-rder-left:1px solid rgb(204,204,204);padding-left:1ex">
----<br>
-=C2=A0target/arm/tcg/translate-a64.c | 4 +++-<br>
-=C2=A01 file changed, 3 insertions(+), 1 deletion(-)<br>
-<br>
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.=
-c<br>
-index 41484d8ae54..a2e49c39f9f 100644<br>
---- a/target/arm/tcg/translate-a64.c<br>
-+++ b/target/arm/tcg/translate-a64.c<br>
-@@ -2351,6 +2351,8 @@ static bool trans_SVC(DisasContext *s, arg_i *a)<br>
-<br>
-=C2=A0static bool trans_HVC(DisasContext *s, arg_i *a)<br>
-=C2=A0{<br>
-+=C2=A0 =C2=A0 int target_el =3D s-&gt;current_el =3D=3D 3 ? 3 : 2;<br>
-+<br>
-=C2=A0 =C2=A0 =C2=A0if (s-&gt;current_el =3D=3D 0) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0unallocated_encoding(s);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return true;<br>
-@@ -2363,7 +2365,7 @@ static bool trans_HVC(DisasContext *s, arg_i *a)<br>
-=C2=A0 =C2=A0 =C2=A0gen_helper_pre_hvc(tcg_env);<br>
-=C2=A0 =C2=A0 =C2=A0/* Architecture requires ss advance before we do the ac=
-tual work */<br>
-=C2=A0 =C2=A0 =C2=A0gen_ss_advance(s);<br>
--=C2=A0 =C2=A0 gen_exception_insn_el(s, 4, EXCP_HVC, syn_aa64_hvc(a-&gt;imm=
-), 2);<br>
-+=C2=A0 =C2=A0 gen_exception_insn_el(s, 4, EXCP_HVC, syn_aa64_hvc(a-&gt;imm=
-), target_el);<br>
-=C2=A0 =C2=A0 =C2=A0return true;<br>
-=C2=A0}<br>
-<br>
--- <br>
-2.34.1<br>
-<br>
-<br>
-</blockquote></div></div>
-
---0000000000008cd5400609ba1cd6--
 
