@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76DAC7E6A50
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 13:05:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 542E97E6A4E
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 13:05:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r13mf-0004rm-FL; Thu, 09 Nov 2023 07:05:17 -0500
+	id 1r13mh-00055Q-Ny; Thu, 09 Nov 2023 07:05:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <frankja@linux.ibm.com>)
- id 1r13mO-0004WR-E8; Thu, 09 Nov 2023 07:05:07 -0500
+ id 1r13mT-0004ZB-VB; Thu, 09 Nov 2023 07:05:09 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <frankja@linux.ibm.com>)
- id 1r13mM-0002WA-6K; Thu, 09 Nov 2023 07:05:00 -0500
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ id 1r13mM-0002WH-5y; Thu, 09 Nov 2023 07:05:02 -0500
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A9C09CF012126; Thu, 9 Nov 2023 12:04:53 GMT
+ 3A9Bwtf9030822; Thu, 9 Nov 2023 12:04:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=pp1;
- bh=EdONry6mKOlcDT2qfQjdNBgfxcffoS+ptHGCYZDsBj8=;
- b=PKQ7WJEx7EA3nqiTmztlJ5Xw6aGX6IYhPo897faDP2IVwnHYUKXF17kOwPGnjiViAjVy
- y8ScSaNDQF+8u4hhNUIelgMOcjceHg98L5WeJ6bRc6kTsdECvKBpnNOxR0PM1JWlDdkI
- ND2XRCjlfZ9EKh8uYX2xV21C+tmEext2eLR5Bfd1HCpMEu4A1qBs2P3zeQ+k878dIXA3
- +e+EP67AKX/vSX7uvWZ7iNpg8EjaW5hEc7dxSGCDqpjnm7tfbkm8duKDsOCY5ZVNoqJX
- vfyoaWIi94/hz2pmlUyDloR++WqYHpBY7r2Hywayx3OtNgSHOdNa7izHEnixPrfTD5xU 2w== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=RPIFRsyhinFNvqnbr2d6wZNBquqGfrU0XeHbSZix9NQ=;
+ b=kIXANLK7qeJ3ywTGuJo/tslbn4uoPXwBa2eiT02J8r07cnLOOphxuAgV73xBI2L1sOm8
+ ZDchEENNiWnpF4n+kv5UuMvA0QAMz5gkpTrzRt2yuz4J6FhdcUgsXwcbXY6MhFxBZZJI
+ XJkLRpiXSNeGAT2Iua3DtoaZiZtiSydD5qvw0C5PLQtDrjglYzNuZsEtiedQcN3Ewwwc
+ 4/LeclNrCIWv/we2t8m6MfHuC7hhWbAL6iyej78hYhD/q75UXZgCYmC5BLIX0hHsm9Aj
+ mCHfynuTj/POM8jdmmgrG/Y04CFAT0t59w9dT5wKW4CC4QgRWS4kA8TjKGNStPtURVnN ZQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u8y1x05bs-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u8xr6rxxs-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 09 Nov 2023 12:04:53 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A9C0fVQ016408;
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A9C1H0B012143;
  Thu, 9 Nov 2023 12:04:53 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u8y1x05bg-1
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u8xr6rxxg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Nov 2023 12:04:52 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3A9BB16J004176; Thu, 9 Nov 2023 12:04:52 GMT
+ Thu, 09 Nov 2023 12:04:53 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3A9B4FxS019248; Thu, 9 Nov 2023 12:04:52 GMT
 Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u7w213jq0-1
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u7w243htn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 09 Nov 2023 12:04:52 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
  by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3A9C4opU46989606
+ 3A9C4oax46400168
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Thu, 9 Nov 2023 12:04:50 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 86D3C2004B;
+ by IMSVA (Postfix) with ESMTP id BD06220049;
  Thu,  9 Nov 2023 12:04:50 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5852720049;
+ by IMSVA (Postfix) with ESMTP id 8E2DF2004D;
  Thu,  9 Nov 2023 12:04:50 +0000 (GMT)
 Received: from a46lp67.. (unknown [9.152.108.100])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -67,24 +67,27 @@ From: Janosch Frank <frankja@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, marcandre.lureau@redhat.com, thuth@redhat.com,
  imbrenda@linux.ibm.com
-Subject: [PATCH v2 0/3] dump: Arch info function pointer addition and cleanup
-Date: Thu,  9 Nov 2023 12:04:40 +0000
-Message-Id: <20231109120443.185979-1-frankja@linux.ibm.com>
+Subject: [PATCH v2 1/3] target/s390x/dump: Remove unneeded dump info function
+ pointer init
+Date: Thu,  9 Nov 2023 12:04:41 +0000
+Message-Id: <20231109120443.185979-2-frankja@linux.ibm.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231109120443.185979-1-frankja@linux.ibm.com>
+References: <20231109120443.185979-1-frankja@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: aIpBwUxr2NTsNFo_7FesmkKnxy1GPg2J
-X-Proofpoint-ORIG-GUID: hft1yhuZyKhnlf1ZElpQZkEBFdx1iuwE
+X-Proofpoint-ORIG-GUID: B5JyoDSr4S2lDWubvXrKhuHhNtf0YqLu
+X-Proofpoint-GUID: Cs3gKGF0K3EqrvYju2vj4UHXwCrUAeVc
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-09_10,2023-11-09_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
- mlxlogscore=247 clxscore=1015 phishscore=0 adultscore=0 suspectscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ spamscore=0 phishscore=0
+ suspectscore=0 mlxscore=0 lowpriorityscore=0 priorityscore=1501
+ malwarescore=0 impostorscore=0 bulkscore=0 clxscore=1015 mlxlogscore=542
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311060000 definitions=main-2311090089
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=frankja@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
@@ -110,30 +113,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Small cleanups/fixes to the dump info function pointer assignments as
-well as a new function pointer for cleanup of residual state.
+dump_state_prepare() now sets the function pointers to NULL so we only
+need to touch them if we're going to use them.
 
-This has come up because test managed to dump a s390 PV vm onto a disk
-that was too small for the dump. After the dump failed, the vm wasn't
-able to resume running since KVM was still in dump mode which blocks
-vcpu entry.
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ target/s390x/arch_dump.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-The new function pointer allows cleanup of such a situation.
-
-v2:
-	- Usage of g_autofree
-	- Dropped explicit NULLing of function pointers
-
-Janosch Frank (3):
-  target/s390x/dump: Remove unneeded dump info function pointer init
-  dump: Add arch cleanup function
-  target/s390x/arch_dump: Add arch cleanup function for PV dumps
-
- dump/dump.c                |  4 ++++
- include/sysemu/dump-arch.h |  1 +
- target/s390x/arch_dump.c   | 21 +++++++++++++++++----
- 3 files changed, 22 insertions(+), 4 deletions(-)
-
+diff --git a/target/s390x/arch_dump.c b/target/s390x/arch_dump.c
+index 51a2116515..bdb0bfa0e7 100644
+--- a/target/s390x/arch_dump.c
++++ b/target/s390x/arch_dump.c
+@@ -448,10 +448,6 @@ int cpu_get_dump_info(ArchDumpInfo *info,
+         info->arch_sections_add_fn = *arch_sections_add;
+         info->arch_sections_write_hdr_fn = *arch_sections_write_hdr;
+         info->arch_sections_write_fn = *arch_sections_write;
+-    } else {
+-        info->arch_sections_add_fn = NULL;
+-        info->arch_sections_write_hdr_fn = NULL;
+-        info->arch_sections_write_fn = NULL;
+     }
+     return 0;
+ }
 -- 
 2.34.1
 
