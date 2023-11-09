@@ -2,75 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0215B7E6C89
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:40:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B02DA7E6C93
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:44:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r16C8-0006ac-Vo; Thu, 09 Nov 2023 09:39:45 -0500
+	id 1r16F2-0008C6-Sm; Thu, 09 Nov 2023 09:42:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r16C6-0006Zm-H2
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:39:42 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
+ id 1r16F0-0008Bi-H7
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:42:42 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r16C4-0007a4-HE
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:39:42 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-54394328f65so1467271a12.3
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 06:39:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
+ id 1r16Ey-0000MH-PR
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:42:42 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1cc37fb1310so7902445ad.1
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 06:42:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699540779; x=1700145579; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=msdVLAIhlH+1RsLafz3R2lsBbz1GRyTbWGmT21yH9cY=;
- b=ucT02uUt4dnQjyHnqQjPuKqbL6dvqZF+F/FbocSA8JQJv33J5++GwezHqr5W++Vebc
- oycp4u6R6EJFIyO9dY0EEanIGTzwG0tdodPPY5q8M4AxgELkwATcO8JQwY1MjEURKEqn
- 6X+aJno/16FnH1A0LD/Q1UJeCJgpuN7B27Qhm+Nu5vyGbX6kw53Xeg3Ze0hqR+cprCEy
- lfBe1+WNhvWWSK97lZ3Yq4r+QtbdIcCZLhDf/2Dh8d3OyToWhoEqd9vbetbiLHFuKSMB
- /Vs+cPcK5zB53D6oXfML5eO4dBcoLb0qWxpKvu4xoe3H6yaZcmEzLpYANngo8GXHqqv7
- wsOg==
+ d=gmail.com; s=20230601; t=1699540959; x=1700145759; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=BU/2Tm5IJQo8WQ+D9/H4U7J+F1ejivNnReQmp/7v34s=;
+ b=h5bYWjQk9ssgRtsnWk7rcc0gNVoBd+svPB6mPhqAwhpiEaKnR+wKsLEEMddtiON5eG
+ DUFNtFmhO/TZWo77prpH64tRbExPFkH+WS2y/hyOzA+IV/p2KpvB3qBc/tovf3o18ihA
+ 4BHkSnJ2KbaZ13nZ9eyLpxv99FdQEUYS434XQtgfAHO/y8cgI5+guBqvu17nCVL3fyOV
+ GJX/5BYrx/eQ6oBVpMm7KnWlyF0xk6pkHKy4SuYZVBw3/DuP5fYiLOtZQ7NRzaVvCkZU
+ WqjjfdRq/gdZpVbWKkwj+wineJb6l8YTgPuclOq27OYEGAI/cHAgkpAvI9W0Iz32kZSh
+ Td+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699540779; x=1700145579;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=msdVLAIhlH+1RsLafz3R2lsBbz1GRyTbWGmT21yH9cY=;
- b=j1AY+3mP3T37KjoD1cRxJZFLCdgaRal2aQPXJYgzDLy2YFth8cc1tOs+c8gH5s5ovU
- Co3eklHw3cZoKtvH8zPk5QWL5l8n63efDHPb8B7fdml2+PE6axOt6uP9nDazOldP4kZR
- OA3HEJBrAus3OErFsgmG0Eoe6R9eZsyqPiJ9R1ByySM9g+9fmsvuE6LdfBsAuPrg+wYx
- 83WjZaa5qHn8UfvDhWJY3+pJSNSrJ68EGs43QmuU7QG6BD5zvjAgDkDv3pxJ7cdWfJJG
- pNaOweIV4JjCmagVtoK4ahUGwVRWXGIba8U4Ac1VgX8hVA2TwOTQ7xF39RdeYfeBdxE+
- IiRg==
-X-Gm-Message-State: AOJu0Yzd/040A52B/cV8gk1bVkwQX1BcgneygYxn3kjCZcH4LtGXfB3S
- Sn4sNBQOtWP7+XNwylu0AsvtXvK4MSIPGCXREOmzI3FOuXiibpaH
-X-Google-Smtp-Source: AGHT+IHNgK5uZaT6C8Tj2i1pHSkFzZc2mU1qKRfmio5nRVOJvEsqPSLFD8uOdH1nX8mNtfp17Y1mFnjgIlVhvOhkzHY=
-X-Received: by 2002:a50:9310:0:b0:53f:8493:5b0b with SMTP id
- m16-20020a509310000000b0053f84935b0bmr3829015eda.35.1699540778936; Thu, 09
- Nov 2023 06:39:38 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699540959; x=1700145759;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BU/2Tm5IJQo8WQ+D9/H4U7J+F1ejivNnReQmp/7v34s=;
+ b=pRDKrpmvmgyaojf37pwKiQ8UWmZnN+7pqG1l3QAzh8nqJA9c+MGkfCeQVedVTR6shp
+ RFJgV3IWYLxNhBLtBxNOzWZB7YDSzVx0S9OH6b1m2CZM+99u+8Px4xvtFyQhLbxfb7O/
+ XiwlxpydtnuJyqu9KEjF4wNDYNHpXbs/J2gG2k4BftxuAaZzoA+y0t6NMf8K54YtPynz
+ bN3zndzb3taBw6sWX28T6qtFgXDDYiGfWZmk/8Qnbary1Dt/zqjYyd/j/5bcYK0INusV
+ 7u2F8lY00UigElmGmIDULI/q4x1gbW+gC8O+I1O+N1f45LnxeGBp8+0ZqaBb/cVsPLxV
+ anFg==
+X-Gm-Message-State: AOJu0YzWQDoPw06F0t+6iBbWn25Kh7KmdY35bw193/vdqgdQrDqkjFcE
+ C5r4MIUbd7GpDtiqiDarV7cy6SHR0Ycnjg==
+X-Google-Smtp-Source: AGHT+IGidJdzcsZd/wu2ALDgnNw3mh+Q1uzu7glIlXXS4ZEBspXmpIjixNxrixDmX7gtgNJQVQfpWA==
+X-Received: by 2002:a17:902:ce01:b0:1cc:3daa:d368 with SMTP id
+ k1-20020a170902ce0100b001cc3daad368mr6246421plg.65.1699540958650; 
+ Thu, 09 Nov 2023 06:42:38 -0800 (PST)
+Received: from ?IPV6:2001:ee0:50f4:9050:b178:6138:397c:2ce7?
+ ([2001:ee0:50f4:9050:b178:6138:397c:2ce7])
+ by smtp.gmail.com with ESMTPSA id
+ z7-20020a1709027e8700b001b7f40a8959sm3688022pla.76.2023.11.09.06.42.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 09 Nov 2023 06:42:38 -0800 (PST)
+Message-ID: <7a56029c-8637-4abd-a38f-7b838a059749@gmail.com>
+Date: Thu, 9 Nov 2023 21:42:30 +0700
 MIME-Version: 1.0
-References: <cover.1699351720.git.mst@redhat.com>
- <25a52959f99d6860a186175bda898e3bdb605f91.1699351720.git.mst@redhat.com>
-In-Reply-To: <25a52959f99d6860a186175bda898e3bdb605f91.1699351720.git.mst@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 9 Nov 2023 14:39:28 +0000
-Message-ID: <CAFEAcA8Hed0Av2PCZBmwkO8mj+qzSsZqt10funKOyXTmo7gu4g@mail.gmail.com>
-Subject: Re: [PULL 57/63] hw/cxl: Add support for device sanitation
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Davidlohr Bueso <dave@stgolabs.net>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 0/5] Support x2APIC mode with TCG accelerator
+Content-Language: en-US
+To: Joao Martins <joao.m.martins@oracle.com>,
+ Santosh Shukla <santosh.shukla@amd.com>, qemu-devel@nongnu.org
+Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Peter Xu <peterx@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Phil Dennis-Jordan <lists@philjordan.eu>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+References: <20231024152105.35942-1-minhquangbui99@gmail.com>
+ <8bbae7b9-3923-b5cd-ff89-50baeccb5d02@amd.com>
+ <1c4cf652-9b31-4b22-8bb9-df27dce74cfd@gmail.com>
+ <756919c3-13ed-4fcc-a4b2-30cd431746a4@oracle.com>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
+In-Reply-To: <756919c3-13ed-4fcc-a4b2-30cd431746a4@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=minhquangbui99@gmail.com; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,114 +107,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 7 Nov 2023 at 10:13, Michael S. Tsirkin <mst@redhat.com> wrote:
->
-> From: Davidlohr Bueso <dave@stgolabs.net>
->
-> Make use of the background operations through the sanitize command, per C=
-XL
-> 3.0 specs. Traditionally run times can be rather long, depending on the
-> size of the media.
->
-> Estimate times based on:
->          https://pmem.io/documents/NVDIMM_DSM_Interface-V1.8.pdf
->
+On 11/9/23 21:32, Joao Martins wrote:
+> On 09/11/2023 14:10, Bui Quang Minh wrote:
+>> On 11/9/23 17:11, Santosh Shukla wrote:
+>>> On 10/24/2023 8:51 PM, Bui Quang Minh wrote:
+>>>> Hi everyone,
+>>>>
+>>>> This series implements x2APIC mode in userspace local APIC and the
+>>>> RDMSR/WRMSR helper to access x2APIC registers in x2APIC mode. Intel iommu
+>>>> and AMD iommu are adjusted to support x2APIC interrupt remapping. With this
+>>>> series, we can now boot Linux kernel into x2APIC mode with TCG accelerator
+>>>> using either Intel or AMD iommu.
+>>>>
+>>>> Testing to boot my own built Linux 6.3.0-rc2, the kernel successfully boot
+>>>> with enabled x2APIC and can enumerate CPU with APIC ID 257
+>>>>
+>>>> Using Intel IOMMU
+>>>>
+>>>> qemu/build/qemu-system-x86_64 \
+>>>>     -smp 2,maxcpus=260 \
+>>>>     -cpu qemu64,x2apic=on \
+>>>>     -machine q35 \
+>>>>     -device intel-iommu,intremap=on,eim=on \
+>>>>     -device qemu64-x86_64-cpu,x2apic=on,core-id=257,socket-id=0,thread-id=0 \
+>>>>     -m 2G \
+>>>>     -kernel $KERNEL_DIR \
+>>>>     -append "nokaslr console=ttyS0 root=/dev/sda earlyprintk=serial
+>>>> net.ifnames=0" \
+>>>>     -drive file=$IMAGE_DIR,format=raw \
+>>>>     -nographic \
+>>>>     -s
+>>>>
+>>>> Using AMD IOMMU
+>>>>
+>>>> qemu/build/qemu-system-x86_64 \
+>>>>     -smp 2,maxcpus=260 \
+>>>>     -cpu qemu64,x2apic=on \
+>>>>     -machine q35 \
+>>>>     -device amd-iommu,intremap=on,xtsup=on \
+>>>>     -device qemu64-x86_64-cpu,x2apic=on,core-id=257,socket-id=0,thread-id=0 \
+>>>>     -m 2G \
+>>>>     -kernel $KERNEL_DIR \
+>>>>     -append "nokaslr console=ttyS0 root=/dev/sda earlyprintk=serial
+>>>> net.ifnames=0" \
+>>>>     -drive file=$IMAGE_DIR,format=raw \
+>>>>     -nographic \
+>>>>     -s
+>>>>
+>>>> Testing the emulated userspace APIC with kvm-unit-tests, disable test
+>>>> device with this patch
+>>>>
+>>>> diff --git a/lib/x86/fwcfg.c b/lib/x86/fwcfg.c
+>>>> index 1734afb..f56fe1c 100644
+>>>> --- a/lib/x86/fwcfg.c
+>>>> +++ b/lib/x86/fwcfg.c
+>>>> @@ -27,6 +27,7 @@ static void read_cfg_override(void)
+>>>>
+>>>>           if ((str = getenv("TEST_DEVICE")))
+>>>>                   no_test_device = !atol(str);
+>>>> +       no_test_device = true;
+>>>>
+>>>>           if ((str = getenv("MEMLIMIT")))
+>>>>                   fw_override[FW_CFG_MAX_RAM] = atol(str) * 1024 * 1024;
+>>>>
+>>>> ~ env QEMU=/home/minh/Desktop/oss/qemu/build/qemu-system-x86_64 ACCEL=tcg \
+>>>> ./run_tests.sh -v -g apic
+>>>>
+>>>> TESTNAME=apic-split TIMEOUT=90s ACCEL=tcg ./x86/run x86/apic.flat -smp 2
+>>>> -cpu qemu64,+x2apic,+tsc-deadline -machine kernel_irqchip=split FAIL
+>>>> apic-split (54 tests, 8 unexpected failures, 1 skipped)
+>>>> TESTNAME=ioapic-split TIMEOUT=90s ACCEL=tcg ./x86/run x86/ioapic.flat -smp
+>>>> 1 -cpu qemu64 -machine kernel_irqchip=split PASS ioapic-split (19 tests)
+>>>> TESTNAME=x2apic TIMEOUT=30 ACCEL=tcg ./x86/run x86/apic.flat -smp 2 -cpu
+>>>> qemu64,+x2apic,+tsc-deadline FAIL x2apic (54 tests, 8 unexpected failures,
+>>>> 1 skipped) TESTNAME=xapic TIMEOUT=60 ACCEL=tcg ./x86/run x86/apic.flat -smp
+>>>> 2 -cpu qemu64,-x2apic,+tsc-deadline -machine pit=off FAIL xapic (43 tests,
+>>>> 6 unexpected failures, 2 skipped)
+>>>>
+>>>>     FAIL: apic_disable: *0xfee00030: 50014
+>>>>     FAIL: apic_disable: *0xfee00080: f0
+>>>>     FAIL: apic_disable: *0xfee00030: 50014
+>>>>     FAIL: apic_disable: *0xfee00080: f0
+>>>>     FAIL: apicbase: relocate apic
+>>>>
+>>>> These errors are because we don't disable MMIO region when switching to
+>>>> x2APIC and don't support relocate MMIO region yet. This is a problem
+>>>> because, MMIO region is the same for all CPUs, in order to support these we
+>>>> need to figure out how to allocate and manage different MMIO regions for
+>>>> each CPUs. This can be an improvement in the future.
+>>>>
+>>>>     FAIL: nmi-after-sti
+>>>>     FAIL: multiple nmi
+>>>>
+>>>> These errors are in the way we handle CPU_INTERRUPT_NMI in core TCG.
+>>>>
+>>>>     FAIL: TMCCT should stay at zero
+>>>>
+>>>> This error is related to APIC timer which should be addressed in separate
+>>>> patch.
+>>>>
+>>>> Version 9 changes,
+>>>
+>>> Hi Bui,
+>>>
+>>> I have tested v9 on EPYC-Genoa system with kvm acceleration mode on, I could
+>>> see > 255 vCPU for Linux and Windows Guest.
+>>>
+>>> Tested-by: Santosh Shukla <Santosh.Shukla@amd.com>
+>>
+>> Hi Santosh,
+>>
+>> With KVM enabled, you may be using the in kernel APIC from KVM not the emulated
+>> APIC in userspace as in this series.
+>>
+> 
+> Your XTSup code isn't necessarily userspace APIC specific. You can have
+> accel=kvm with split irqchip and things will still work. I suspect that's how
+> Santosh tested it.
 
-Hi; Coverity points out dead code in this function (CID 1523905):
-
-> +/*
-> + * CXL 3.0 spec section 8.2.9.8.5.1 - Sanitize.
-> + *
-> + * Once the Sanitize command has started successfully, the device shall =
-be
-> + * placed in the media disabled state. If the command fails or is interr=
-upted
-> + * by a reset or power failure, it shall remain in the media disabled st=
-ate
-> + * until a successful Sanitize command has been completed. During this s=
-tate:
-> + *
-> + * 1. Memory writes to the device will have no effect, and all memory re=
-ads
-> + * will return random values (no user data returned, even for locations =
-that
-> + * the failed Sanitize operation didn=E2=80=99t sanitize yet).
-> + *
-> + * 2. Mailbox commands shall still be processed in the disabled state, e=
-xcept
-> + * that commands that access Sanitized areas shall fail with the Media D=
-isabled
-> + * error code.
-> + */
-> +static CXLRetCode cmd_sanitize_overwrite(const struct cxl_cmd *cmd,
-> +                                         uint8_t *payload_in,
-> +                                         size_t len_in,
-> +                                         uint8_t *payload_out,
-> +                                         size_t *len_out,
-> +                                         CXLCCI *cci)
-> +{
-> +    CXLType3Dev *ct3d =3D CXL_TYPE3(cci->d);
-> +    uint64_t total_mem; /* in Mb */
-> +    int secs;
-> +
-> +    total_mem =3D (ct3d->cxl_dstate.vmem_size + ct3d->cxl_dstate.pmem_si=
-ze) >> 20;
-> +    if (total_mem <=3D 512) {
-> +        secs =3D 4;
-> +    } else if (total_mem <=3D 1024) {
-> +        secs =3D 8;
-> +    } else if (total_mem <=3D 2 * 1024) {
-> +        secs =3D 15;
-> +    } else if (total_mem <=3D 4 * 1024) {
-> +        secs =3D 30;
-> +    } else if (total_mem <=3D 8 * 1024) {
-> +        secs =3D 60;
-> +    } else if (total_mem <=3D 16 * 1024) {
-> +        secs =3D 2 * 60;
-> +    } else if (total_mem <=3D 32 * 1024) {
-> +        secs =3D 4 * 60;
-> +    } else if (total_mem <=3D 64 * 1024) {
-> +        secs =3D 8 * 60;
-> +    } else if (total_mem <=3D 128 * 1024) {
-> +        secs =3D 15 * 60;
-> +    } else if (total_mem <=3D 256 * 1024) {
-> +        secs =3D 30 * 60;
-> +    } else if (total_mem <=3D 512 * 1024) {
-> +        secs =3D 60 * 60;
-> +    } else if (total_mem <=3D 1024 * 1024) {
-> +        secs =3D 120 * 60;
-> +    } else {
-> +        secs =3D 240 * 60; /* max 4 hrs */
-> +    }
-
-Here we have an exhaustive if ladder that sets 'secs'. None
-of the values we might end up with are less than 4.
-
-> +
-> +    /* EBUSY other bg cmds as of now */
-> +    cci->bg.runtime =3D secs * 1000UL;
-> +    *len_out =3D 0;
-> +
-> +    cxl_dev_disable_media(&ct3d->cxl_dstate);
-> +
-> +    if (secs > 2) {
-> +        /* sanitize when done */
-> +        return CXL_MBOX_BG_STARTED;
-> +    } else {
-
-...but here we have an else clause for when secs <=3D 2,
-which can never happen.
-
-> +        __do_sanitization(ct3d);
-> +        cxl_dev_enable_media(&ct3d->cxl_dstate);
-> +
-> +        return CXL_MBOX_SUCCESS;
-> +    }
-
-What was the intention here ?
-
-> +}
-
-thanks
--- PMM
+Ah, I got it. Thanks Santosh, Joao.
+Quang Minh.
 
