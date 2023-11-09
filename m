@@ -2,65 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E257E719A
+	by mail.lfdr.de (Postfix) with ESMTPS id 428287E7199
 	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 19:36:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r19sA-0006pC-As; Thu, 09 Nov 2023 13:35:22 -0500
+	id 1r19s3-0006bi-Qp; Thu, 09 Nov 2023 13:35:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1r19s7-0006mp-6u
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 13:35:19 -0500
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1r19s0-0006TO-Vh
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 13:35:13 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1r19s5-0000l1-GO
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 13:35:18 -0500
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1r19rz-0000jr-70
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 13:35:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699554914;
+ s=mimecast20190719; t=1699554910;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=xmx37nET/gNVZ6D6QCg+V+SDqm+VhDvvBPhSMDgE2UQ=;
- b=YiUonxMWrFdi+Mf+/8XWrowT3YsEduDRdP1CUl8sChedLq409HhZquMhdijfqeh28rInx0
- 7sw76xk7A0xUg2kX20ilJ0WP7kgeeWS7mQFe0/NXSezduiWkfY+jqDL54pYJ8A0nZ3qqzF
- 27zXOZIpiBzyafzN4l+55Q5hVf0Y6EE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3G/60C8tVI2fdp2p+VeUxhEsK8H7wTf6C243oHXhdEg=;
+ b=PW5l50saskZkn7AWuZuS/0TM3uP+RDh34kPMmT5XAJWUi1dBVG6nWcE0n3nSdsD8zzAzy5
+ oZMH8tgKZ28YAfQvu6A1CDT50EkQBGT0qBP56QXycMB0l76sWOZIqY0r9eJ3AEmc0M7PJc
+ 6HP1HDm2n0B89OutpnfpUB2Nun1Qkoo=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-85-vQdb9oxuPnaSZDxFdzD2pg-1; Thu, 09 Nov 2023 13:35:07 -0500
-X-MC-Unique: vQdb9oxuPnaSZDxFdzD2pg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B95C0101A53B
- for <qemu-devel@nongnu.org>; Thu,  9 Nov 2023 18:35:05 +0000 (UTC)
-Received: from localhost (unknown [10.45.226.151])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 53C085032;
- Thu,  9 Nov 2023 18:35:05 +0000 (UTC)
-Date: Thu, 9 Nov 2023 19:35:04 +0100
-From: Victor Toso <victortoso@redhat.com>
-To: Andrea Bolognani <abologna@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
- John Snow <jsnow@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
-Subject: Re: [PATCH v2 07/11] qapi: golang: Generate qapi's union types in Go
-Message-ID: <s2ev3hammcfpjbkrk7zxisge4a2cqr2gyomt2htir66vinfyhe@tupvidmxywzv>
+ us-mta-387-wJwfERDWOAm7j7UjTBQ8lA-1; Thu, 09 Nov 2023 13:35:08 -0500
+X-MC-Unique: wJwfERDWOAm7j7UjTBQ8lA-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-421aca7f03eso1381371cf.0
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 10:35:08 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699554908; x=1700159708;
+ h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3G/60C8tVI2fdp2p+VeUxhEsK8H7wTf6C243oHXhdEg=;
+ b=B3JhQ2KzKGYNATdUTjTjbOl3exl592WOO1PDWLZdqW4KiGhsGD5jbyukwYKQZ06LGE
+ Iw5a8dt21tehR8ttICLrSZnq51dHq4Ku+xbdxY3XI4ZPTKepk1ikDISKCxq28bVaJ1kY
+ jX1Shw/BNszFHWk2AkvE1HLUmdWhMe/EyCqTt0BKS5n3HxZz3vNbYDuVZJUOlACBD06u
+ Ojv+gNSontr893zFf86zDUxTkG9oV65PDmsMnYXHZx18Kz+0dnsL8jYYtK8InDjpHx/9
+ R4lRoby2w6NHfgOKYLzoDcb7McKseJcI1U5PaVcz5NJExomgzdJjrkefiqzFZzaWQFKZ
+ e30A==
+X-Gm-Message-State: AOJu0Yx5gAYs+sjEjzQA2lnHlisxmZpqWLP4dGZZ3cm79L0LIATbmf/J
+ ZLYWvV+lm9SlUm2aPHbA55DN0cvOUdUxVPyld4M0mWaIcHb2Qv6J1bQaddVAaOgI0FJ8conr7gn
+ lrDicRsN6QL9V3RyUpR2S6QO4Oe88dcI=
+X-Received: by 2002:a05:622a:8:b0:418:bdf:f4b with SMTP id
+ x8-20020a05622a000800b004180bdf0f4bmr6469200qtw.6.1699554908168; 
+ Thu, 09 Nov 2023 10:35:08 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFk/g2rthxzKG+U3wqfJV1YxLvfVtgZ89HBcvFPNnBjHc3ysmVplK4LrqYzQVOkZt////3cRo4pfFM79mq5K7Y=
+X-Received: by 2002:a05:622a:8:b0:418:bdf:f4b with SMTP id
+ x8-20020a05622a000800b004180bdf0f4bmr6469183qtw.6.1699554907907; 
+ Thu, 09 Nov 2023 10:35:07 -0800 (PST)
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 9 Nov 2023 10:35:07 -0800
+From: Andrea Bolognani <abologna@redhat.com>
 References: <20231016152704.221611-1-victortoso@redhat.com>
- <20231016152704.221611-8-victortoso@redhat.com>
- <CABJz62PFopBRaMBc8Smtse9DJEy+0Qii7DtiTZGQdks3dXOdUw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="itbdth2fvf4eeddw"
-Content-Disposition: inline
-In-Reply-To: <CABJz62PFopBRaMBc8Smtse9DJEy+0Qii7DtiTZGQdks3dXOdUw@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=victortoso@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+In-Reply-To: <20231016152704.221611-1-victortoso@redhat.com>
+Date: Thu, 9 Nov 2023 10:35:07 -0800
+Message-ID: <CABJz62M1QnjdutHvPi9dyEueEU+BEfqK+xXeHw5GXeJaR+PcAA@mail.gmail.com>
+Subject: Re: [PATCH v2 00/11] qapi-go: add generator for Golang interface
+To: Victor Toso <victortoso@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ John Snow <jsnow@redhat.com>, 
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=abologna@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -84,123 +95,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, Oct 16, 2023 at 05:26:53PM +0200, Victor Toso wrote:
+> This patch series intent is to introduce a generator that produces a Go
+> module for Go applications to interact over QMP with QEMU.
+>
+> This is the second iteration:
+>  v1: https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg06734.html
+>
+> I've pushed this series in my gitlab fork:
+> https://gitlab.com/victortoso/qemu/-/tree/qapi-golang-v2
+>
+> I've also generated the qapi-go module over QEMU tags: v7.0.0, v7.1.0,
+> v7.2.6, v8.0.0 and v8.1.0, see the commits history here:
+> https://gitlab.com/victortoso/qapi-go/-/commits/qapi-golang-v2-by-tags
+>
+> I've also generated the qapi-go module over each commit of this series,
+> see the commits history here (using previous refered qapi-golang-v2)
+> https://gitlab.com/victortoso/qapi-go/-/commits/qapi-golang-v2-by-patch
 
---itbdth2fvf4eeddw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I've provided feedback on the various facets of the API in response
+to the corresponding patch. Note that I've only addressed concerns
+about the consumer-facing API: I have some notes about the
+implementation as well, but that's something that we should be able
+to easily change transparently so I didn't give it priority.
 
-Hi,
+Overall, I think that the current API is quite close to being a solid
+PoC that can be used as a starting point for further development.
 
-On Thu, Nov 09, 2023 at 09:29:28AM -0800, Andrea Bolognani wrote:
-> On Mon, Oct 16, 2023 at 05:27:00PM +0200, Victor Toso wrote:
-> > This patch handles QAPI union types and generates the equivalent data
-> > structures and methods in Go to handle it.
-> >
-> > The QAPI union type has two types of fields: The @base and the
-> > @Variants members. The @base fields can be considered common members
-> > for the union while only one field maximum is set for the @Variants.
-> >
-> > In the QAPI specification, it defines a @discriminator field, which is
-> > an Enum type. The purpose of the  @discriminator is to identify which
-> > @variant type is being used.
-> >
-> > For the @discriminator's enum that are not handled by the QAPI Union,
-> > we add in the Go struct a separate block as "Unbranched enum fields".
-> > The rationale for this extra block is to allow the user to pass that
-> > enum value under the discriminator, without extra payload.
-> >
-> > The union types implement the Marshaler and Unmarshaler interfaces to
-> > seamless decode from JSON objects to Golang structs and vice versa.
-> >
-> > qapi:
-> >  | { 'union': 'SetPasswordOptions',
-> >  |   'base': { 'protocol': 'DisplayProtocol',
-> >  |             'password': 'str',
-> >  |             '*connected': 'SetPasswordAction' },
-> >  |   'discriminator': 'protocol',
-> >  |   'data': { 'vnc': 'SetPasswordOptionsVnc' } }
-> >
-> > go:
-> >  | type SetPasswordOptions struct {
-> >  | 	Password  string             `json:"password"`
-> >  | 	Connected *SetPasswordAction `json:"connected,omitempty"`
-> >  | 	// Variants fields
-> >  | 	Vnc *SetPasswordOptionsVnc `json:"-"`
-> >  | 	// Unbranched enum fields
-> >  | 	Spice bool `json:"-"`
-> >  | }
->=20
-> Instead of using bool for these, can we denote a special type? For
-> example
->=20
->   type Empty struct{}
->=20
-> We could then do
->=20
->   u :=3D SetPasswordOptions{
->     Password: "...",
->     Spice: &Empty{},
->   }
->=20
-> The benefit I have in mind is that you'd be able to check which
-> variant field is set consistently:
->=20
->   if u.Vnc !=3D nil {
->     ...
->   }
->   if u.Spice !=3D nil {
->     ...
->   }
->=20
-> Additionally, this would allow client code that *looks* at the
-> union to keep working even if actual data is later added to the
-> branch; client code that *creates* the union would need to be
-> updated, of course, but that would be the case regardless.
-
-I think it is better to not have code that is working to keep
-working in this case where Spice is implemented.
-
-Implementing Spice here would mean that a struct type
-SetPasswordOptionsSpice was created but because the code handling
-it before was using struct type Empty, it will not handle the new
-struct, leading to possible runtime errors (e.g: not handling
-username/password)
-
-A bool would be simpler, triggering compile time errors.
-
-Note that I'm working with the mindset that each version of the
-module talks well with a version of QEMU. We should consider next
-if we want to implement logic for QAPI versioning promises, which
-is for more than one QEMU version. Markus had an email about it
-last year. Daniel also suggested more version promises than what
-QAPI currently does.
-
-Anyway, that's my rationale for bool here.
-
-Cheers,
-Victor
-
---itbdth2fvf4eeddw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEIG07NS9WbzsOZXLpl9kSPeN6SE8FAmVNJlcACgkQl9kSPeN6
-SE9Nxw//b8H0nDL26FZ0mLT2ABbSxNbHy+NyvfcUCqMAWVO9JYiuAvGz6op5AKFb
-veYs2c8CH7EC0gJqQRvSxYYX7P7enyBEebSwqzywL60Wj5HGagDqw/ynhKth1WuL
-qrrp35y0BSU3/LT9DmWrEyVSluS3VnXGJoDoNBbFCoG3M7HdASYHPsSOi4g0aAeG
-CTkF8Pb5poSWLsr7Fz2GgGesK1hO0c9J3mWg3LCyYggQzytiuS5HcaYIJJeSsGfJ
-SovXqyWS9fxxiqy7anXxoV6wrhyJ7vg47GZ0MHHQbolx7VnmU2UvR8zfztT0Qman
-9jISeX6l3B/53I3GNTRopceBDci4/grhy6gkAcp09dbCEj5NraQvWAFbMYzyRJsR
-VDsR5mFLMnAGQHzR9gRi76ftzcOwz6xHeuZNWQQHOHmAtEE4InTfOw/fbs4/YtFl
-EXkeCbKMeThPgtXTnMkDubFrX6O+xk3Mjkc+n1KuJ3jvUlOfabCK4NlT4llTPTX4
-UpSmyZcMc35rd4awnTSAWJ10W7VYIpAJkfgYzvST+P69lHkLO47L9sL/26INKcV3
-lK5M/3NkLqlPgWfil+4xa6cRo/v0iFSQtJGzSbBRbqvdjwFCDm5sB8XjVU7smll3
-5DrNNWjLpNJRCWKofbMzJ/oWpm7wihnRR6WawuB9iiVkK+aeXMg=
-=tTkO
------END PGP SIGNATURE-----
-
---itbdth2fvf4eeddw--
+-- 
+Andrea Bolognani / Red Hat / Virtualization
 
 
