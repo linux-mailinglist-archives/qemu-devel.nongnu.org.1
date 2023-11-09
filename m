@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908EB7E6C37
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:12:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5865D7E6C1C
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:08:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15gd-0007tw-Ul; Thu, 09 Nov 2023 09:07:12 -0500
+	id 1r15gj-00085C-8N; Thu, 09 Nov 2023 09:07:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15eC-0000zL-5g; Thu, 09 Nov 2023 09:04:44 -0500
+ id 1r15eB-0000zG-UD; Thu, 09 Nov 2023 09:04:44 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15e8-0007FJ-3S; Thu, 09 Nov 2023 09:04:39 -0500
+ id 1r15e8-0007FS-HG; Thu, 09 Nov 2023 09:04:39 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2B3D131BEC;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3CD7C31BED;
  Thu,  9 Nov 2023 16:59:58 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 348F234523;
+ by tsrv.corpit.ru (Postfix) with SMTP id 4704034524;
  Thu,  9 Nov 2023 16:59:50 +0300 (MSK)
-Received: (nullmailer pid 1462937 invoked by uid 1000);
+Received: (nullmailer pid 1462940 invoked by uid 1000);
  Thu, 09 Nov 2023 13:59:47 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, BALATON Zoltan <balaton@eik.bme.hu>,
+Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.7 52/62] ati-vga: Implement fallback for pixman routines
-Date: Thu,  9 Nov 2023 16:59:20 +0300
-Message-Id: <20231109135933.1462615-52-mjt@tls.msk.ru>
+ Antonio Caggiano <quic_acaggian@quicinc.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.7 53/62] ui/gtk: force realization of drawing area
+Date: Thu,  9 Nov 2023 16:59:21 +0300
+Message-Id: <20231109135933.1462615-53-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
 References: <qemu-stable-7.2.7-20231109164316@cover.tls.msk.ru>
@@ -61,167 +61,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Pixman routines can fail if no implementation is available and it will
-become optional soon so add fallbacks when pixman does not work.
+Fixes the GL context creation from a widget that isn't yet realized (in
+a hidden tab for example).
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <ed0fba3f74e48143f02228b83bf8796ca49f3e7d.1698871239.git.balaton@eik.bme.hu>
-(cherry picked from commit 08730ee0cc01c3fceb907a93436d15170a7556c4)
+Resolves:
+https://gitlab.com/qemu-project/qemu/-/issues/1727
+
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Antonio Caggiano <quic_acaggian@quicinc.com>
+Message-Id: <20231017111642.1155545-1-marcandre.lureau@redhat.com>
+(cherry picked from commit 565f85a9c293818a91a3d3414311303de7e00cec)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/display/ati.c b/hw/display/ati.c
-index 6e38e00502..4f3bebcfd3 100644
---- a/hw/display/ati.c
-+++ b/hw/display/ati.c
-@@ -1014,6 +1014,7 @@ static Property ati_vga_properties[] = {
-     DEFINE_PROP_UINT16("x-device-id", ATIVGAState, dev_id,
-                        PCI_DEVICE_ID_ATI_RAGE128_PF),
-     DEFINE_PROP_BOOL("guest_hwcursor", ATIVGAState, cursor_guest_mode, false),
-+    DEFINE_PROP_UINT8("x-pixman", ATIVGAState, use_pixman, 3),
-     DEFINE_PROP_END_OF_LIST()
- };
+diff --git a/ui/gtk.c b/ui/gtk.c
+index e681e8c319..283c41a1a1 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -2317,6 +2317,7 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
+     GdkDisplay *window_display;
+     GtkIconTheme *theme;
+     char *dir;
++    int idx;
  
-@@ -1035,11 +1036,18 @@ static void ati_vga_class_init(ObjectClass *klass, void *data)
-     k->exit = ati_vga_exit;
- }
+     if (!gtkinit) {
+         fprintf(stderr, "gtk initialization failed\n");
+@@ -2379,6 +2380,15 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
+     gtk_container_add(GTK_CONTAINER(s->window), s->vbox);
  
-+static void ati_vga_init(Object *o)
-+{
-+    object_property_set_description(o, "x-pixman", "Use pixman for: "
-+                                    "1: fill, 2: blit");
-+}
+     gtk_widget_show_all(s->window);
 +
- static const TypeInfo ati_vga_info = {
-     .name = TYPE_ATI_VGA,
-     .parent = TYPE_PCI_DEVICE,
-     .instance_size = sizeof(ATIVGAState),
-     .class_init = ati_vga_class_init,
-+    .instance_init = ati_vga_init,
-     .interfaces = (InterfaceInfo[]) {
-           { INTERFACE_CONVENTIONAL_PCI_DEVICE },
-           { },
-diff --git a/hw/display/ati_2d.c b/hw/display/ati_2d.c
-index 7d786653e8..0e6b8e4367 100644
---- a/hw/display/ati_2d.c
-+++ b/hw/display/ati_2d.c
-@@ -92,6 +92,7 @@ void ati_2d_blt(ATIVGAState *s)
-     switch (s->regs.dp_mix & GMC_ROP3_MASK) {
-     case ROP3_SRCCOPY:
-     {
-+        bool fallback = false;
-         unsigned src_x = (s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT ?
-                        s->regs.src_x : s->regs.src_x + 1 - s->regs.dst_width);
-         unsigned src_y = (s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM ?
-@@ -122,27 +123,50 @@ void ati_2d_blt(ATIVGAState *s)
-                 src_bits, dst_bits, src_stride, dst_stride, bpp, bpp,
-                 src_x, src_y, dst_x, dst_y,
-                 s->regs.dst_width, s->regs.dst_height);
--        if (s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT &&
-+        if ((s->use_pixman & BIT(1)) &&
-+            s->regs.dp_cntl & DST_X_LEFT_TO_RIGHT &&
-             s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM) {
--            pixman_blt((uint32_t *)src_bits, (uint32_t *)dst_bits,
--                       src_stride, dst_stride, bpp, bpp,
--                       src_x, src_y, dst_x, dst_y,
--                       s->regs.dst_width, s->regs.dst_height);
--        } else {
-+            fallback = !pixman_blt((uint32_t *)src_bits, (uint32_t *)dst_bits,
-+                                   src_stride, dst_stride, bpp, bpp,
-+                                   src_x, src_y, dst_x, dst_y,
-+                                   s->regs.dst_width, s->regs.dst_height);
-+        } else if (s->use_pixman & BIT(1)) {
-             /* FIXME: We only really need a temporary if src and dst overlap */
-             int llb = s->regs.dst_width * (bpp / 8);
-             int tmp_stride = DIV_ROUND_UP(llb, sizeof(uint32_t));
-             uint32_t *tmp = g_malloc(tmp_stride * sizeof(uint32_t) *
-                                      s->regs.dst_height);
--            pixman_blt((uint32_t *)src_bits, tmp,
--                       src_stride, tmp_stride, bpp, bpp,
--                       src_x, src_y, 0, 0,
--                       s->regs.dst_width, s->regs.dst_height);
--            pixman_blt(tmp, (uint32_t *)dst_bits,
--                       tmp_stride, dst_stride, bpp, bpp,
--                       0, 0, dst_x, dst_y,
--                       s->regs.dst_width, s->regs.dst_height);
-+            fallback = !pixman_blt((uint32_t *)src_bits, tmp,
-+                                   src_stride, tmp_stride, bpp, bpp,
-+                                   src_x, src_y, 0, 0,
-+                                   s->regs.dst_width, s->regs.dst_height);
-+            if (!fallback) {
-+                fallback = !pixman_blt(tmp, (uint32_t *)dst_bits,
-+                                       tmp_stride, dst_stride, bpp, bpp,
-+                                       0, 0, dst_x, dst_y,
-+                                       s->regs.dst_width, s->regs.dst_height);
-+            }
-             g_free(tmp);
-+        } else {
-+            fallback = true;
++    for (idx = 0;; idx++) {
++        QemuConsole *con = qemu_console_lookup_by_index(idx);
++        if (!con) {
++            break;
 +        }
-+        if (fallback) {
-+            unsigned int y, i, j, bypp = bpp / 8;
-+            unsigned int src_pitch = src_stride * sizeof(uint32_t);
-+            unsigned int dst_pitch = dst_stride * sizeof(uint32_t);
++        gtk_widget_realize(s->vc[idx].gfx.drawing_area);
++    }
 +
-+            for (y = 0; y < s->regs.dst_height; y++) {
-+                i = dst_x * bypp;
-+                j = src_x * bypp;
-+                if (s->regs.dp_cntl & DST_Y_TOP_TO_BOTTOM) {
-+                    i += (dst_y + y) * dst_pitch;
-+                    j += (src_y + y) * src_pitch;
-+                } else {
-+                    i += (dst_y + s->regs.dst_height - 1 - y) * dst_pitch;
-+                    j += (src_y + s->regs.dst_height - 1 - y) * src_pitch;
-+                }
-+                memmove(&dst_bits[i], &src_bits[j], s->regs.dst_width * bypp);
-+            }
-         }
-         if (dst_bits >= s->vga.vram_ptr + s->vga.vbe_start_addr &&
-             dst_bits < s->vga.vram_ptr + s->vga.vbe_start_addr +
-@@ -180,14 +204,21 @@ void ati_2d_blt(ATIVGAState *s)
- 
-         dst_stride /= sizeof(uint32_t);
-         DPRINTF("pixman_fill(%p, %d, %d, %d, %d, %d, %d, %x)\n",
--                dst_bits, dst_stride, bpp,
--                dst_x, dst_y,
--                s->regs.dst_width, s->regs.dst_height,
--                filler);
--        pixman_fill((uint32_t *)dst_bits, dst_stride, bpp,
--                    dst_x, dst_y,
--                    s->regs.dst_width, s->regs.dst_height,
--                    filler);
-+                dst_bits, dst_stride, bpp, dst_x, dst_y,
-+                s->regs.dst_width, s->regs.dst_height, filler);
-+        if (!(s->use_pixman & BIT(0)) ||
-+            !pixman_fill((uint32_t *)dst_bits, dst_stride, bpp, dst_x, dst_y,
-+                    s->regs.dst_width, s->regs.dst_height, filler)) {
-+            /* fallback when pixman failed or we don't want to call it */
-+            unsigned int x, y, i, bypp = bpp / 8;
-+            unsigned int dst_pitch = dst_stride * sizeof(uint32_t);
-+            for (y = 0; y < s->regs.dst_height; y++) {
-+                i = dst_x * bypp + (dst_y + y) * dst_pitch;
-+                for (x = 0; x < s->regs.dst_width; x++, i += bypp) {
-+                    stn_he_p(&dst_bits[i], bypp, filler);
-+                }
-+            }
-+        }
-         if (dst_bits >= s->vga.vram_ptr + s->vga.vbe_start_addr &&
-             dst_bits < s->vga.vram_ptr + s->vga.vbe_start_addr +
-             s->vga.vbe_regs[VBE_DISPI_INDEX_YRES] * s->vga.vbe_line_offset) {
-diff --git a/hw/display/ati_int.h b/hw/display/ati_int.h
-index 8acb9c7466..055aa2d140 100644
---- a/hw/display/ati_int.h
-+++ b/hw/display/ati_int.h
-@@ -89,6 +89,7 @@ struct ATIVGAState {
-     char *model;
-     uint16_t dev_id;
-     uint8_t mode;
-+    uint8_t use_pixman;
-     bool cursor_guest_mode;
-     uint16_t cursor_size;
-     uint32_t cursor_offset;
+     if (opts->u.gtk.has_show_menubar &&
+         !opts->u.gtk.show_menubar) {
+         gtk_widget_hide(s->menu_bar);
 -- 
 2.39.2
 
