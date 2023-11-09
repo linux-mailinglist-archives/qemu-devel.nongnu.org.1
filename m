@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4987E6CE1
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E9467E6CE0
 	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 16:09:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r16dl-0006oC-O6; Thu, 09 Nov 2023 10:08:17 -0500
+	id 1r16eb-0007We-Ls; Thu, 09 Nov 2023 10:09:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r16dj-0006nw-4o
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 10:08:15 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r16eZ-0007Sq-Dt
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 10:09:07 -0500
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r16dh-0006Xo-Gh
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 10:08:14 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5409bc907edso1503254a12.0
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 07:08:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r16eX-0006hz-QW
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 10:09:07 -0500
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-9de7a43bd1aso156235666b.3
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 07:09:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699542492; x=1700147292; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JiAotfhiZUR5Fnoe4X6ciSmNdvRKEZEHLtRqCjm6z2A=;
- b=A0Rchg1v40o7kQRUS2hQ9RxyWr92zBmy3cZgKijloHSPtLPt1gvDUukcKWL1cOqmUh
- N8k3FlHbmnBLwA77CudrW1apQOOwgYd5YAh526u+154xNDiHXX5FvSlu/2spGaF+LEbc
- j0FaeuT1F/37nPQVZDgGwSEtdw6tjtPIEUy5HZMRyy8zDTrZ69kDXbJM1Ru7x/1CZLSD
- UD8d40RU1a4mspfpU6BOwuIerHwbYdOrqjPpj2U33meY/ptn0vtXp3S7E507qx0CUTWM
- fB/UkxbMCR4P37MLFvFdTaP8uAY5j7ozhQri0tAuC7FgylkaMnPkP8ZUrTuZCnnAWypV
- CViQ==
+ d=linaro.org; s=google; t=1699542543; x=1700147343; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=RkxZjLdrSTnFJIKsHkOj6x9DC0DNlMhc61gK75HiHJU=;
+ b=D8QAvTcY3x1U09RAIvuskMi9ZW2kPLwjaJ2JDXlDLMi79RhqjX+f8PASqQlMw7tVLM
+ iEAnxKricZLrKWk7oqhKOvBy8G+OODCvAOm0IDu54CWl4IBp1mHJno/O6MX5ONvDIrVP
+ 1SMVEx18ttL6vEMUHfPlxIGqA7fsIRyE5GRgZTveiez33tK63IDdru+AIaEZavLkLMMC
+ yFPVqrVzwt7oQH91957ebBatDkE1FKW1sQ7d0xfJnljXKPOYoN1pVKfQr5c+PE3Ownj4
+ MRAYsvjE6PsPm4f0rIAuJroQ1Zsh15ngPVUo+GY/vOqxjzXO/7IuxCgDjp3RA3gWEfla
+ yyPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699542492; x=1700147292;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JiAotfhiZUR5Fnoe4X6ciSmNdvRKEZEHLtRqCjm6z2A=;
- b=jXam08wbJ1fXacIg5CAW0DmEDldCvl9VAPBbks18RvqCJ5zO4CgFtMyCFKUSy6vGJM
- izYimtfe6IFJkfOth+KfY57VwPCT5fmOMiYUBQzCsDI20dvaAUQ6YgRE10pC/fkZYJLS
- qd6kqF6SJuKbIIGev4Qms2C8zFxfMoYue8gM45rshEsrJ3O60fGr7QOesHkDarWp7YdZ
- xbxR5VG/6dApTLV9CUqjVFzY4gmYkjKdq/gSXJ4uN71AkOQwt9kaDDeIc69JfCjchitq
- +owj/2OHlqfe4zx/dCFI2TI0rywYwH2Bxbfkj1O3frLsn8n5VbvKf6LmHm0WOnLpCet1
- W9Fw==
-X-Gm-Message-State: AOJu0Yx38gDhvZe3ainsnc9MXvdn0e9Y38gm1BZ/2LxKo4oM4lpQ02VA
- ro7P4BjN1qad2nj838vOtmFAdnRoth1oKKGNZOyA8w==
-X-Google-Smtp-Source: AGHT+IE94JLgDYRogIYFmnVqHpWXvZmJJi05H/2lDzONMs6p7ZmC/hF5y9kV6Rf2nphMofp3kwuF1M8e1LidxNJmDSQ=
-X-Received: by 2002:a50:d583:0:b0:53e:468d:64a9 with SMTP id
- v3-20020a50d583000000b0053e468d64a9mr4597383edi.21.1699542491824; Thu, 09 Nov
- 2023 07:08:11 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699542543; x=1700147343;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RkxZjLdrSTnFJIKsHkOj6x9DC0DNlMhc61gK75HiHJU=;
+ b=cD/qXCXUlkDdfoNvONE+E8/suuyv0rWBLamQJ9xQMONDTv+CLJFb3YKUIGePFTXFDU
+ EuBubQGEO9DoFPFkuz6rltOLM8HzvLkpeO/BWGV/4RlMM86nfvSKZShRfOBOQKGkBRId
+ 2NsjvGbOgj4V2L/QMotdIMfqESTu7TzRGSFhTa+moiSsyOfaUaG2qu2AqBlDRyL7DyGS
+ wCH2Bzmg258flvmuvEz5eMjGAgli84QYnPwz/0iZXLkQQOY5LCEWVSQh3VDJs0Ydf7p2
+ mFC8uKkiBCujN/sUcvvm35oa84M22leQo/R/DRr39K3vPhdxcukV3nDD0ZzP0qvXL2FI
+ tSPQ==
+X-Gm-Message-State: AOJu0Yxqvrn2dUs3NaiGBvFB8lkgEDXpwZ04vuIcHOTKALZ2RsXso2xC
+ siQ2Iq9G9Y6s1nILYLYzqy7znbhtWNjHrXqO2npd6w==
+X-Google-Smtp-Source: AGHT+IEFAz5R2FlOdMaY2ilD0nBgFZU3YQ1OXGUSFNF69N7jcgXqcPFhBJJj0RN5w3gsk5NgYxq2hQ==
+X-Received: by 2002:a17:907:3ea4:b0:9e2:af56:c380 with SMTP id
+ hs36-20020a1709073ea400b009e2af56c380mr4283099ejc.6.1699542543397; 
+ Thu, 09 Nov 2023 07:09:03 -0800 (PST)
+Received: from m1x-phil.lan ([176.187.199.161])
+ by smtp.gmail.com with ESMTPSA id
+ qt19-20020a170906ecf300b009a1be9c29d7sm2670716ejb.179.2023.11.09.07.09.01
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 09 Nov 2023 07:09:02 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Ryo ONODERA <ryoon@netbsd.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Kyle Evans <kevans@freebsd.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Beraldo Leal <bleal@redhat.com>, Reinoud Zandijk <reinoud@netbsd.org>,
+ Warner Losh <imp@bsdimp.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-8.2] tests/vm/netbsd: Use Python v3.11
+Date: Thu,  9 Nov 2023 16:09:00 +0100
+Message-ID: <20231109150900.91186-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20231106143653.302391-1-clg@redhat.com>
- <20231106143653.302391-10-clg@redhat.com>
-In-Reply-To: <20231106143653.302391-10-clg@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 9 Nov 2023 15:08:01 +0000
-Message-ID: <CAFEAcA_P+ewPD7PD_ZqfWJ_GX1szM_zxMr_G5cMYNWLApn_raw@mail.gmail.com>
-Subject: Re: [PULL 09/22] virtio-iommu: Record whether a probe request has
- been issued
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>, 
- Eric Auger <eric.auger@redhat.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Yanghang Liu <yanghliu@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,84 +93,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 6 Nov 2023 at 14:48, C=C3=A9dric Le Goater <clg@redhat.com> wrote:
->
-> From: Eric Auger <eric.auger@redhat.com>
->
-> Add an IOMMUDevice 'probe_done' flag to record that the driver
-> already issued a probe request on that device.
->
-> This will be useful to double check host reserved regions aren't
-> notified after the probe and hence are not taken into account
-> by the driver.
+We requiere the 'ninja-build', which depends on 'python311':
 
-Hi; Coverity points out (CID 1523901) that this change introduced
-dead code (but improves on the previous bad code!):
+  $ pkgin show-deps ninja-build
+  direct dependencies for ninja-build-1.11.1nb1
+          python311>=3.11.0
 
+So we end up installing both Python v3.10 and v3.11:
 
-> -static ssize_t virtio_iommu_fill_resv_mem_prop(VirtIOIOMMU *s, uint32_t =
-ep,
-> +static ssize_t virtio_iommu_fill_resv_mem_prop(IOMMUDevice *sdev, uint32=
-_t ep,
->                                                 uint8_t *buf, size_t free=
-)
->  {
->      struct virtio_iommu_probe_resv_mem prop =3D {};
->      size_t size =3D sizeof(prop), length =3D size - sizeof(prop.head), t=
-otal;
-> -    IOMMUDevice *sdev;
->      GList *l;
->
-> -    sdev =3D container_of(virtio_iommu_mr(s, ep), IOMMUDevice, iommu_mr)=
-;
-> -    if (!sdev) {
-> -        return -EINVAL;
-> -    }
+  [31/76] installing python311-3.11.5...
+  [54/76] installing python310-3.10.13...
+  [74/76] installing py310-expat-3.10.13nb1...
 
-In the old code this check on sdev was wrong -- because iommu_mr
-is not the first field in IOMMUDevice, if virtio_iommu_mr() returns
-NULL that doesn't mean that container_of(...) is going to be NULL.
+Then the build system picks Python v3.11, and doesn't find
+py-expat because we only installed the 3.10 version:
 
-> -
->      total =3D size * g_list_length(sdev->resv_regions);
->      if (total > free) {
->          return -ENOSPC;
-> @@ -688,19 +682,27 @@ static int virtio_iommu_probe(VirtIOIOMMU *s,
->                                uint8_t *buf)
->  {
->      uint32_t ep_id =3D le32_to_cpu(req->endpoint);
-> +    IOMMUMemoryRegion *iommu_mr =3D virtio_iommu_mr(s, ep_id);
->      size_t free =3D VIOMMU_PROBE_SIZE;
-> +    IOMMUDevice *sdev;
->      ssize_t count;
->
-> -    if (!virtio_iommu_mr(s, ep_id)) {
-> +    if (!iommu_mr) {
->          return VIRTIO_IOMMU_S_NOENT;
->      }
->
-> -    count =3D virtio_iommu_fill_resv_mem_prop(s, ep_id, buf, free);
-> +    sdev =3D container_of(iommu_mr, IOMMUDevice, iommu_mr);
-> +    if (!sdev) {
-> +        return -EINVAL;
-> +    }
+  python determined to be '/usr/pkg/bin/python3.11'
+  python version: Python 3.11.5
 
-In the new code we already check directly whether virtio_iommu_mr()
-returned NULL. So the check on sdev being NULL is simply dead
-code -- it can never be true and we should just delete it.
+  *** Ouch! ***
 
-> +
-> +    count =3D virtio_iommu_fill_resv_mem_prop(sdev, ep_id, buf, free);
->      if (count < 0) {
->          return VIRTIO_IOMMU_S_INVAL;
->      }
->      buf +=3D count;
->      free -=3D count;
-> +    sdev->probe_done =3D true;
->
->      return VIRTIO_IOMMU_S_OK;
->  }
+  Python's pyexpat module is not found.
+  It's normally part of the Python standard library, maybe your distribution packages it separately?
+  Either install pyexpat, or alleviate the need for it in the first place by installing pip and setuptools for '/usr/pkg/bin/python3.11'.
 
-thanks
--- PMM
+  (Hint: NetBSD's pkgsrc debundles this to e.g. 'py310-expat'.)
+
+  ERROR: python venv creation failed
+
+Fix by installing py-expat for v3.11. Remove the v3.10
+packages since we aren't using them anymore.
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ tests/vm/netbsd | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tests/vm/netbsd b/tests/vm/netbsd
+index 40b27a3469..649fcad353 100755
+--- a/tests/vm/netbsd
++++ b/tests/vm/netbsd
+@@ -30,8 +30,8 @@ class NetBSDVM(basevm.BaseVM):
+         "git-base",
+         "pkgconf",
+         "xz",
+-        "python310",
+-        "py310-expat",
++        "python311",
++        "py311-expat",
+         "ninja-build",
+ 
+         # gnu tools
+-- 
+2.41.0
+
 
