@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5678C7E6A3A
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 13:02:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B40C17E6A4C
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 13:04:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r13jK-0001t0-6p; Thu, 09 Nov 2023 07:01:52 -0500
+	id 1r13jO-0001zG-5O; Thu, 09 Nov 2023 07:01:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r13j5-0001sj-RY
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 07:01:35 -0500
+ id 1r13j9-0001tF-C1
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 07:01:42 -0500
 Received: from mgamail.intel.com ([192.55.52.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r13j2-0001ej-9d
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 07:01:35 -0500
+ id 1r13j6-0001ej-Fr
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 07:01:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1699531292; x=1731067292;
+ t=1699531296; x=1731067296;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=F3chQL1M72NeWVmCa7AhXQWoLFGv95OLyspEsviFHKg=;
- b=OefVwF8hSv/FifCw3Hx1wSm9OLESlVX/olGxaz/v63YH/TrAXlCH6nc/
- ZHy8v7SzRTmSlO8SN7QXhhX0CQUtQsiLLX9NkS/7YtE5hgMfIGR+ylBFH
- /OAks5iY4QzEyFzLPihr2JkSbscsggg0Hhc0KnwhqxylDoE2uFdS3O2nS
- kCalLK7YUgt24oZGjsisAcshyNWmViGQn6YnKuY9HrtoxcU7b9W29mFjI
- 8J2tDH9pUzmSApLXHv6Hcm/SLzuUDL8nrS0upqs/jikMqaMxqUyXwKahN
- v7DhF3obXon6jW+oJEYttEcFTO03GPZG+gNsmVu3g8Ao8JHmW5o9Wdbgd Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="369305635"
-X-IronPort-AV: E=Sophos;i="6.03,289,1694761200"; d="scan'208";a="369305635"
+ bh=UvojtTk2Tnwz7rhOPFOHVNudkF9K8d5hTFFivDtNhOs=;
+ b=VaH8i04vRCduxQlh/BYR/h3D39mVWtn2kKRSEpGZ3yyAx2BwDXokGnW8
+ J88Ba8wD5azGGU3Y0gVwwB3Y99/qffNKTdbb0XG0VLxXPmPujSyVO1rhz
+ WGPIjFmKLQ9iirsy7/XXqYM3qLBN13eT8jQ0zfZouQOyi8d7evSCK4xU6
+ 68Vb4WKE5GhkFp4VfMYnBJ95oSCkQpdo+J11aKCr2XdtpTShQhLhxnz/0
+ s+AQl21mtSyX8h8jqs0ToaaEJoZG3EhAd5tPlwTVkgSrjdEscYCF9q9jw
+ M393ol26aq7UWXjux97md3tcSd7mQZQnd72BBC9pBaQOo9auNBpxaIH9W A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="369305683"
+X-IronPort-AV: E=Sophos;i="6.03,289,1694761200"; d="scan'208";a="369305683"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Nov 2023 04:01:26 -0800
+ 09 Nov 2023 04:01:27 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.03,289,1694761200"; d="scan'208";a="11516004"
+X-IronPort-AV: E=Sophos;i="6.03,289,1694761200"; d="scan'208";a="11516016"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Nov 2023 04:01:19 -0800
+ 09 Nov 2023 04:01:23 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
@@ -47,14 +47,14 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v5 07/20] vfio/pci: Introduce a vfio pci hot reset interface
-Date: Thu,  9 Nov 2023 19:45:16 +0800
-Message-Id: <20231109114529.1904193-8-zhenzhong.duan@intel.com>
+Subject: [PATCH v5 08/20] vfio/iommufd: Enable pci hot reset through iommufd
+ cdev interface
+Date: Thu,  9 Nov 2023 19:45:17 +0800
+Message-Id: <20231109114529.1904193-9-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231109114529.1904193-1-zhenzhong.duan@intel.com>
 References: <20231109114529.1904193-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.55.52.136;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -80,90 +80,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Legacy vfio pci and iommufd cdev have different process to hot reset
-vfio device, expand current code to abstract out pci_hot_reset callback
-for legacy vfio, this same interface will also be used by iommufd
-cdev vfio device.
+Add a new callback iommufd_pci_hot_reset to do iommufd specific
+check and reset operation.
 
-Rename vfio_pci_hot_reset to vfio_legacy_pci_hot_reset and move it
-into container.c, vfio_pci_host_match is also moved as a dependency.
-
-vfio_pci_[pre/post]_reset are exported so they could be called in
-legacy and iommufd pci_hot_reset callback.
-
-Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
-v5: Move vfio_legacy_pci_hot_reset into container.c
+ hw/vfio/iommufd.c    | 142 +++++++++++++++++++++++++++++++++++++++++++
+ hw/vfio/trace-events |   1 +
+ 2 files changed, 143 insertions(+)
 
- hw/vfio/pci.h                         |   2 +
- include/hw/vfio/vfio-container-base.h |   3 +
- hw/vfio/container.c                   | 177 ++++++++++++++++++++++++++
- hw/vfio/pci.c                         | 176 +------------------------
- 4 files changed, 187 insertions(+), 171 deletions(-)
-
-diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index 1006061afb..9264bce721 100644
---- a/hw/vfio/pci.h
-+++ b/hw/vfio/pci.h
-@@ -218,6 +218,8 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr);
- 
- extern const PropertyInfo qdev_prop_nv_gpudirect_clique;
- 
-+void vfio_pci_pre_reset(VFIOPCIDevice *vdev);
-+void vfio_pci_post_reset(VFIOPCIDevice *vdev);
- int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
-                                     struct vfio_pci_hot_reset_info **info_p);
- 
-diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index 4b6f017c6f..45bb19c767 100644
---- a/include/hw/vfio/vfio-container-base.h
-+++ b/include/hw/vfio/vfio-container-base.h
-@@ -106,6 +106,9 @@ struct VFIOIOMMUOps {
-     int (*set_dirty_page_tracking)(VFIOContainerBase *bcontainer, bool start);
-     int (*query_dirty_bitmap)(VFIOContainerBase *bcontainer, VFIOBitmap *vbmap,
-                               hwaddr iova, hwaddr size);
-+    /* PCI specific */
-+    int (*pci_hot_reset)(VFIODevice *vbasedev, bool single);
-+
-     /* SPAPR specific */
-     int (*add_window)(VFIOContainerBase *bcontainer,
-                       MemoryRegionSection *section,
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index ed2d721b2b..cb957d063b 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -33,6 +33,7 @@
- #include "trace.h"
- #include "qapi/error.h"
- #include "migration/migration.h"
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 958c3e794f..44dc6848bf 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -24,6 +24,7 @@
+ #include "sysemu/reset.h"
+ #include "qemu/cutils.h"
+ #include "qemu/chardev_open.h"
 +#include "pci.h"
  
- VFIOGroupList vfio_group_list =
-     QLIST_HEAD_INITIALIZER(vfio_group_list);
-@@ -922,6 +923,181 @@ static void vfio_legacy_detach_device(VFIODevice *vbasedev)
-     vfio_put_group(group);
+ static int iommufd_map(VFIOContainerBase *bcontainer, hwaddr iova,
+                        ram_addr_t size, void *vaddr, bool readonly)
+@@ -469,9 +470,150 @@ static void iommufd_detach_device(VFIODevice *vbasedev)
+     close(vbasedev->fd);
  }
  
-+static bool vfio_pci_host_match(PCIHostDeviceAddress *addr, const char *name)
++static VFIODevice *vfio_pci_find_by_iommufd_devid(__u32 devid)
 +{
-+    char tmp[13];
++    VFIODevice *vbasedev_iter;
 +
-+    sprintf(tmp, "%04x:%02x:%02x.%1x", addr->domain,
-+            addr->bus, addr->slot, addr->function);
-+
-+    return (strcmp(tmp, name) == 0);
++    QLIST_FOREACH(vbasedev_iter, &vfio_device_list, global_next) {
++        if (vbasedev_iter->bcontainer->ops != &vfio_iommufd_ops) {
++            continue;
++        }
++        if (devid == vbasedev_iter->devid) {
++            return vbasedev_iter;
++        }
++    }
++    return NULL;
 +}
 +
-+static int vfio_legacy_pci_hot_reset(VFIODevice *vbasedev, bool single)
++static int iommufd_pci_hot_reset(VFIODevice *vbasedev, bool single)
 +{
 +    VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
-+    VFIOGroup *group;
 +    struct vfio_pci_hot_reset_info *info = NULL;
 +    struct vfio_pci_dependent_device *devices;
 +    struct vfio_pci_hot_reset *reset;
-+    int32_t *fds;
-+    int ret, i, count;
++    int ret, i;
 +    bool multi = false;
 +
 +    trace_vfio_pci_hot_reset(vdev->vbasedev.name, single ? "one" : "multi");
@@ -178,62 +141,65 @@ index ed2d721b2b..cb957d063b 100644
 +    if (ret) {
 +        goto out_single;
 +    }
++
++    assert(info->flags & VFIO_PCI_HOT_RESET_FLAG_DEV_ID);
++
 +    devices = &info->devices[0];
++
++    if (!(info->flags & VFIO_PCI_HOT_RESET_FLAG_DEV_ID_OWNED)) {
++        if (!vdev->has_pm_reset) {
++            for (i = 0; i < info->count; i++) {
++                if (devices[i].devid == VFIO_PCI_DEVID_NOT_OWNED) {
++                    error_report("vfio: Cannot reset device %s, "
++                                 "depends on device %04x:%02x:%02x.%x "
++                                 "which is not owned.",
++                                 vdev->vbasedev.name, devices[i].segment,
++                                 devices[i].bus, PCI_SLOT(devices[i].devfn),
++                                 PCI_FUNC(devices[i].devfn));
++                }
++            }
++        }
++        ret = -EPERM;
++        goto out_single;
++    }
 +
 +    trace_vfio_pci_hot_reset_has_dep_devices(vdev->vbasedev.name);
 +
-+    /* Verify that we have all the groups required */
 +    for (i = 0; i < info->count; i++) {
-+        PCIHostDeviceAddress host;
 +        VFIOPCIDevice *tmp;
 +        VFIODevice *vbasedev_iter;
 +
-+        host.domain = devices[i].segment;
-+        host.bus = devices[i].bus;
-+        host.slot = PCI_SLOT(devices[i].devfn);
-+        host.function = PCI_FUNC(devices[i].devfn);
++        trace_vfio_pci_hot_reset_dep_devices_iommufd(devices[i].segment,
++                                             devices[i].bus,
++                                             PCI_SLOT(devices[i].devfn),
++                                             PCI_FUNC(devices[i].devfn),
++                                             devices[i].devid);
 +
-+        trace_vfio_pci_hot_reset_dep_devices(host.domain,
-+                host.bus, host.slot, host.function, devices[i].group_id);
++        /*
++         * If a VFIO cdev device is resettable, all the dependent devices
++         * are either bound to same iommufd or within same iommu_groups as
++         * one of the iommufd bound devices.
++         */
++        assert(devices[i].devid != VFIO_PCI_DEVID_NOT_OWNED);
 +
-+        if (vfio_pci_host_match(&host, vdev->vbasedev.name)) {
++        if (devices[i].devid == vdev->vbasedev.devid ||
++            devices[i].devid == VFIO_PCI_DEVID_OWNED) {
 +            continue;
 +        }
 +
-+        QLIST_FOREACH(group, &vfio_group_list, next) {
-+            if (group->groupid == devices[i].group_id) {
-+                break;
-+            }
++        vbasedev_iter = vfio_pci_find_by_iommufd_devid(devices[i].devid);
++        if (!vbasedev_iter || !vbasedev_iter->dev->realized ||
++            vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
++            continue;
 +        }
-+
-+        if (!group) {
-+            if (!vdev->has_pm_reset) {
-+                error_report("vfio: Cannot reset device %s, "
-+                             "depends on group %d which is not owned.",
-+                             vdev->vbasedev.name, devices[i].group_id);
-+            }
-+            ret = -EPERM;
-+            goto out;
++        tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
++        if (single) {
++            ret = -EINVAL;
++            goto out_single;
 +        }
-+
-+        /* Prep dependent devices for reset and clear our marker. */
-+        QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
-+            if (!vbasedev_iter->dev->realized ||
-+                vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
-+                continue;
-+            }
-+            tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
-+            if (vfio_pci_host_match(&host, tmp->vbasedev.name)) {
-+                if (single) {
-+                    ret = -EINVAL;
-+                    goto out_single;
-+                }
-+                vfio_pci_pre_reset(tmp);
-+                tmp->vbasedev.needs_reset = false;
-+                multi = true;
-+                break;
-+            }
-+        }
++        vfio_pci_pre_reset(tmp);
++        tmp->vbasedev.needs_reset = false;
++        multi = true;
 +    }
 +
 +    if (!single && !multi) {
@@ -241,75 +207,34 @@ index ed2d721b2b..cb957d063b 100644
 +        goto out_single;
 +    }
 +
-+    /* Determine how many group fds need to be passed */
-+    count = 0;
-+    QLIST_FOREACH(group, &vfio_group_list, next) {
-+        for (i = 0; i < info->count; i++) {
-+            if (group->groupid == devices[i].group_id) {
-+                count++;
-+                break;
-+            }
-+        }
-+    }
++    /* Use zero length array for hot reset with iommufd backend */
++    reset = g_malloc0(sizeof(*reset));
++    reset->argsz = sizeof(*reset);
 +
-+    reset = g_malloc0(sizeof(*reset) + (count * sizeof(*fds)));
-+    reset->argsz = sizeof(*reset) + (count * sizeof(*fds));
-+    fds = &reset->group_fds[0];
-+
-+    /* Fill in group fds */
-+    QLIST_FOREACH(group, &vfio_group_list, next) {
-+        for (i = 0; i < info->count; i++) {
-+            if (group->groupid == devices[i].group_id) {
-+                fds[reset->count++] = group->fd;
-+                break;
-+            }
-+        }
-+    }
-+
-+    /* Bus reset! */
++     /* Bus reset! */
 +    ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_PCI_HOT_RESET, reset);
 +    g_free(reset);
 +
 +    trace_vfio_pci_hot_reset_result(vdev->vbasedev.name,
 +                                    ret ? strerror(errno) : "Success");
 +
-+out:
 +    /* Re-enable INTx on affected devices */
 +    for (i = 0; i < info->count; i++) {
-+        PCIHostDeviceAddress host;
 +        VFIOPCIDevice *tmp;
 +        VFIODevice *vbasedev_iter;
 +
-+        host.domain = devices[i].segment;
-+        host.bus = devices[i].bus;
-+        host.slot = PCI_SLOT(devices[i].devfn);
-+        host.function = PCI_FUNC(devices[i].devfn);
-+
-+        if (vfio_pci_host_match(&host, vdev->vbasedev.name)) {
++        if (devices[i].devid == vdev->vbasedev.devid ||
++            devices[i].devid == VFIO_PCI_DEVID_OWNED) {
 +            continue;
 +        }
 +
-+        QLIST_FOREACH(group, &vfio_group_list, next) {
-+            if (group->groupid == devices[i].group_id) {
-+                break;
-+            }
++        vbasedev_iter = vfio_pci_find_by_iommufd_devid(devices[i].devid);
++        if (!vbasedev_iter || !vbasedev_iter->dev->realized ||
++            vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
++            continue;
 +        }
-+
-+        if (!group) {
-+            break;
-+        }
-+
-+        QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
-+            if (!vbasedev_iter->dev->realized ||
-+                vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
-+                continue;
-+            }
-+            tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
-+            if (vfio_pci_host_match(&host, tmp->vbasedev.name)) {
-+                vfio_pci_post_reset(tmp);
-+                break;
-+            }
-+        }
++        tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
++        vfio_pci_post_reset(tmp);
 +    }
 +out_single:
 +    if (!single) {
@@ -320,224 +245,25 @@ index ed2d721b2b..cb957d063b 100644
 +    return ret;
 +}
 +
- const VFIOIOMMUOps vfio_legacy_ops = {
-     .dma_map = vfio_legacy_dma_map,
-     .dma_unmap = vfio_legacy_dma_unmap,
-@@ -929,4 +1105,5 @@ const VFIOIOMMUOps vfio_legacy_ops = {
-     .detach_device = vfio_legacy_detach_device,
-     .set_dirty_page_tracking = vfio_legacy_set_dirty_page_tracking,
-     .query_dirty_bitmap = vfio_legacy_query_dirty_bitmap,
-+    .pci_hot_reset = vfio_legacy_pci_hot_reset,
+ const VFIOIOMMUOps vfio_iommufd_ops = {
+     .dma_map = iommufd_map,
+     .dma_unmap = iommufd_unmap,
+     .attach_device = iommufd_attach_device,
+     .detach_device = iommufd_detach_device,
++    .pci_hot_reset = iommufd_pci_hot_reset,
  };
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index eb55e8ae88..257dae6a87 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -2374,7 +2374,7 @@ static int vfio_add_capabilities(VFIOPCIDevice *vdev, Error **errp)
-     return 0;
- }
- 
--static void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
-+void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
- {
-     PCIDevice *pdev = &vdev->pdev;
-     uint16_t cmd;
-@@ -2411,7 +2411,7 @@ static void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
-     vfio_pci_write_config(pdev, PCI_COMMAND, cmd, 2);
- }
- 
--static void vfio_pci_post_reset(VFIOPCIDevice *vdev)
-+void vfio_pci_post_reset(VFIOPCIDevice *vdev)
- {
-     Error *err = NULL;
-     int nr;
-@@ -2435,16 +2435,6 @@ static void vfio_pci_post_reset(VFIOPCIDevice *vdev)
-     vfio_quirk_reset(vdev);
- }
- 
--static bool vfio_pci_host_match(PCIHostDeviceAddress *addr, const char *name)
--{
--    char tmp[13];
--
--    sprintf(tmp, "%04x:%02x:%02x.%1x", addr->domain,
--            addr->bus, addr->slot, addr->function);
--
--    return (strcmp(tmp, name) == 0);
--}
--
- int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
-                                     struct vfio_pci_hot_reset_info **info_p)
- {
-@@ -2485,166 +2475,10 @@ int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
- 
- static int vfio_pci_hot_reset(VFIOPCIDevice *vdev, bool single)
- {
--    VFIOGroup *group;
--    struct vfio_pci_hot_reset_info *info = NULL;
--    struct vfio_pci_dependent_device *devices;
--    struct vfio_pci_hot_reset *reset;
--    int32_t *fds;
--    int ret, i, count;
--    bool multi = false;
--
--    trace_vfio_pci_hot_reset(vdev->vbasedev.name, single ? "one" : "multi");
--
--    if (!single) {
--        vfio_pci_pre_reset(vdev);
--    }
--    vdev->vbasedev.needs_reset = false;
--
--    ret = vfio_pci_get_pci_hot_reset_info(vdev, &info);
--
--    if (ret) {
--        goto out_single;
--    }
--    devices = &info->devices[0];
--
--    trace_vfio_pci_hot_reset_has_dep_devices(vdev->vbasedev.name);
--
--    /* Verify that we have all the groups required */
--    for (i = 0; i < info->count; i++) {
--        PCIHostDeviceAddress host;
--        VFIOPCIDevice *tmp;
--        VFIODevice *vbasedev_iter;
--
--        host.domain = devices[i].segment;
--        host.bus = devices[i].bus;
--        host.slot = PCI_SLOT(devices[i].devfn);
--        host.function = PCI_FUNC(devices[i].devfn);
--
--        trace_vfio_pci_hot_reset_dep_devices(host.domain,
--                host.bus, host.slot, host.function, devices[i].group_id);
--
--        if (vfio_pci_host_match(&host, vdev->vbasedev.name)) {
--            continue;
--        }
--
--        QLIST_FOREACH(group, &vfio_group_list, next) {
--            if (group->groupid == devices[i].group_id) {
--                break;
--            }
--        }
--
--        if (!group) {
--            if (!vdev->has_pm_reset) {
--                error_report("vfio: Cannot reset device %s, "
--                             "depends on group %d which is not owned.",
--                             vdev->vbasedev.name, devices[i].group_id);
--            }
--            ret = -EPERM;
--            goto out;
--        }
--
--        /* Prep dependent devices for reset and clear our marker. */
--        QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
--            if (!vbasedev_iter->dev->realized ||
--                vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
--                continue;
--            }
--            tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
--            if (vfio_pci_host_match(&host, tmp->vbasedev.name)) {
--                if (single) {
--                    ret = -EINVAL;
--                    goto out_single;
--                }
--                vfio_pci_pre_reset(tmp);
--                tmp->vbasedev.needs_reset = false;
--                multi = true;
--                break;
--            }
--        }
--    }
--
--    if (!single && !multi) {
--        ret = -EINVAL;
--        goto out_single;
--    }
--
--    /* Determine how many group fds need to be passed */
--    count = 0;
--    QLIST_FOREACH(group, &vfio_group_list, next) {
--        for (i = 0; i < info->count; i++) {
--            if (group->groupid == devices[i].group_id) {
--                count++;
--                break;
--            }
--        }
--    }
--
--    reset = g_malloc0(sizeof(*reset) + (count * sizeof(*fds)));
--    reset->argsz = sizeof(*reset) + (count * sizeof(*fds));
--    fds = &reset->group_fds[0];
--
--    /* Fill in group fds */
--    QLIST_FOREACH(group, &vfio_group_list, next) {
--        for (i = 0; i < info->count; i++) {
--            if (group->groupid == devices[i].group_id) {
--                fds[reset->count++] = group->fd;
--                break;
--            }
--        }
--    }
--
--    /* Bus reset! */
--    ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_PCI_HOT_RESET, reset);
--    g_free(reset);
--
--    trace_vfio_pci_hot_reset_result(vdev->vbasedev.name,
--                                    ret ? strerror(errno) : "Success");
--
--out:
--    /* Re-enable INTx on affected devices */
--    for (i = 0; i < info->count; i++) {
--        PCIHostDeviceAddress host;
--        VFIOPCIDevice *tmp;
--        VFIODevice *vbasedev_iter;
--
--        host.domain = devices[i].segment;
--        host.bus = devices[i].bus;
--        host.slot = PCI_SLOT(devices[i].devfn);
--        host.function = PCI_FUNC(devices[i].devfn);
--
--        if (vfio_pci_host_match(&host, vdev->vbasedev.name)) {
--            continue;
--        }
--
--        QLIST_FOREACH(group, &vfio_group_list, next) {
--            if (group->groupid == devices[i].group_id) {
--                break;
--            }
--        }
--
--        if (!group) {
--            break;
--        }
--
--        QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
--            if (!vbasedev_iter->dev->realized ||
--                vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
--                continue;
--            }
--            tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
--            if (vfio_pci_host_match(&host, tmp->vbasedev.name)) {
--                vfio_pci_post_reset(tmp);
--                break;
--            }
--        }
--    }
--out_single:
--    if (!single) {
--        vfio_pci_post_reset(vdev);
--    }
--    g_free(info);
-+    VFIODevice *vbasedev = &vdev->vbasedev;
-+    const VFIOIOMMUOps *ops = vbasedev->bcontainer->ops;
- 
--    return ret;
-+    return ops->pci_hot_reset(vbasedev, single);
- }
- 
- /*
+diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+index 47ae6eede1..a079a2c803 100644
+--- a/hw/vfio/trace-events
++++ b/hw/vfio/trace-events
+@@ -34,6 +34,7 @@ vfio_check_af_flr(const char *name) "%s Supports FLR via AF cap"
+ vfio_pci_hot_reset(const char *name, const char *type) " (%s) %s"
+ vfio_pci_hot_reset_has_dep_devices(const char *name) "%s: hot reset dependent devices:"
+ vfio_pci_hot_reset_dep_devices(int domain, int bus, int slot, int function, int group_id) "\t%04x:%02x:%02x.%x group %d"
++vfio_pci_hot_reset_dep_devices_iommufd(int domain, int bus, int slot, int function, int dev_id) "\t%04x:%02x:%02x.%x devid %d"
+ vfio_pci_hot_reset_result(const char *name, const char *result) "%s hot reset: %s"
+ vfio_populate_device_config(const char *name, unsigned long size, unsigned long offset, unsigned long flags) "Device %s config:\n  size: 0x%lx, offset: 0x%lx, flags: 0x%lx"
+ vfio_populate_device_get_irq_info_failure(const char *errstr) "VFIO_DEVICE_GET_IRQ_INFO failure: %s"
 -- 
 2.34.1
 
