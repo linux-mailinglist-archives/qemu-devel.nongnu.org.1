@@ -2,70 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221217E6FCE
+	by mail.lfdr.de (Postfix) with ESMTPS id D777D7E6FCF
 	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 18:02:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r18PO-0005wo-41; Thu, 09 Nov 2023 12:01:34 -0500
+	id 1r18Pn-0006wM-TB; Thu, 09 Nov 2023 12:02:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r18Oi-0005YL-Ck
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:01:09 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r18Ob-0004Qo-7q
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:00:50 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id E6BD71F8B0;
- Thu,  9 Nov 2023 17:00:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1699549243; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1r18Pk-0006mM-Fe
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:01:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1r18Ph-0004bF-P3
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:01:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699549311;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JnmzlKEGAPufbNhwlXQCjObBBL0P9HHHD90UDs0vRDg=;
- b=vtqmeMIY0rIIkYL3067ySASZmKmLTlKMDrufKSGK6VZZHW+12RHyjXJufdYwPE3fNwK5q3
- nWcfksTt5p4q8NKyM+yPwEplmzODK8ESIqj7Q13zd1oPvlY52zOYItASRbI80SQBdlrkoy
- mJPvGG/yjUmRIo2WCK51MV7SVSQmeB4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1699549243;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JnmzlKEGAPufbNhwlXQCjObBBL0P9HHHD90UDs0vRDg=;
- b=VAefq2S4jyLS7/8zYkqFHi5kEkeo+J4cbWVNszJqvilSdrk4RJH+iTi+nvqT3aKeA3iFMM
- aK9eSJGmojNpotAQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 78C3E138E5;
- Thu,  9 Nov 2023 17:00:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id ssdoETsQTWVLOAAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 09 Nov 2023 17:00:43 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>
-Subject: Re: [PATCH RFC 3/7] migration: multifd_send_kick_main()
-In-Reply-To: <ZU0N5UGFRFUNnH2b@x1n>
-References: <20231022201211.452861-1-peterx@redhat.com>
- <20231022201211.452861-4-peterx@redhat.com> <87zfznvp0u.fsf@suse.de>
- <ZU0N5UGFRFUNnH2b@x1n>
-Date: Thu, 09 Nov 2023 14:00:41 -0300
-Message-ID: <87v8aazwsm.fsf@suse.de>
+ bh=HyfCYjDvFPU+LgrXpF2pYGmLt5J24SOs7RM5KfJWPIg=;
+ b=FK17P/U6+e5HKmpopZmv9UDe49/lgAHu4GYCb1mn87N805ir1aVdvMMAtYMhStlPOLwbGQ
+ 21VYXFB7+3DZdlF6a+0VE1wDjueN8tmNXQ5cQYqSXZIWYbw7wvdLGnGrX5n7kU9/Ov87z0
+ ZMk/k4W8uTXc0bpetNgmeGg+6nVvjLk=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-74-b5H00rGWMk-nhd9CFbvJNw-1; Thu, 09 Nov 2023 12:01:48 -0500
+X-MC-Unique: b5H00rGWMk-nhd9CFbvJNw-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-543298e3cc8so918919a12.3
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 09:01:48 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699549307; x=1700154107;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=HyfCYjDvFPU+LgrXpF2pYGmLt5J24SOs7RM5KfJWPIg=;
+ b=YKRXxY1R53Cr+Xv2sRnOLK2c5xVPsJu1Hia81mYH84xkyxoqoboYt31gjFJ9EtVxIM
+ Y9VoREtXTl982Qh8zbPWGCGiXM5gZfDC7Z8olZrc3t8OPC3PoQLj/7NzxbD3pxz76Zcz
+ MvwShma8AP606FYlHGFwTTnXzYfZls112SEspWw5VBE4wOtzTKM08pacp4DbPYGtrEFF
+ lvZvVo7aXvBfjtlBZs2J8VFBhEuEV7p74ejiNeNPCvsXvRFOTD4khveFTYotHH55yA+E
+ sc5z0mrASzkk/L0JHB5tSLLDZGY4pAhgNOkx0jrZPbeSbnZOTqHHXhZ3iy/JyryjCodA
+ /cWw==
+X-Gm-Message-State: AOJu0YzB6NjPOfYu1ZhBWA4T+J2+zz82tq0PAmhutYVlxiK2SP/DqdHk
+ 6Nsz79fHYBgw2rQSLkBmjGkhib3kF34RfT9TjIrVl/e7OT7WWgdUF2F0pOsfyep5DyNEsuG2aPP
+ zjo9iKv+pGjcpNus=
+X-Received: by 2002:a50:9fe9:0:b0:540:12fc:ed1d with SMTP id
+ c96-20020a509fe9000000b0054012fced1dmr5132876edf.12.1699549307563; 
+ Thu, 09 Nov 2023 09:01:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF2deCtrQ9NpCnbCdiiGbixl/raaIinaNNOOgMH+SNGYVn3vBcUu8G3VrjzZ7P4IrkCL6W/qQ==
+X-Received: by 2002:a50:9fe9:0:b0:540:12fc:ed1d with SMTP id
+ c96-20020a509fe9000000b0054012fced1dmr5132843edf.12.1699549307173; 
+ Thu, 09 Nov 2023 09:01:47 -0800 (PST)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.gmail.com with ESMTPSA id
+ v15-20020a50d08f000000b005436d751abbsm38249edd.83.2023.11.09.09.01.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 09 Nov 2023 09:01:45 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Beraldo Leal <bleal@redhat.com>, Rene Engel <ReneEngel80@emailn.de>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Howard Spoelstra <hsp.cat7@gmail.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH v2 1/2] buildsys: Bump minimal meson version required to
+ v1.2.3
+Date: Thu,  9 Nov 2023 18:01:43 +0100
+Message-ID: <20231109170144.848401-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231109160504.93677-2-philmd@linaro.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,73 +107,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
-
-> On Wed, Nov 08, 2023 at 07:49:53PM -0300, Fabiano Rosas wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > When a multifd sender thread hit errors, it always needs to kick the main
->> > thread by kicking all the semaphores that it can be waiting upon.
->> >
->> > Provide a helper for it and deduplicate the code.
->> >
->> > Signed-off-by: Peter Xu <peterx@redhat.com>
->> > ---
->> >  migration/multifd.c | 21 +++++++++++++++------
->> >  1 file changed, 15 insertions(+), 6 deletions(-)
->> >
->> > diff --git a/migration/multifd.c b/migration/multifd.c
->> > index 4afdd88602..33fb21d0e4 100644
->> > --- a/migration/multifd.c
->> > +++ b/migration/multifd.c
->> > @@ -374,6 +374,18 @@ struct {
->> >      MultiFDMethods *ops;
->> >  } *multifd_send_state;
->> >  
->> > +/*
->> > + * The migration thread can wait on either of the two semaphores.  This
->> > + * function can be used to kick the main thread out of waiting on either of
->> > + * them.  Should mostly only be called when something wrong happened with
->> > + * the current multifd send thread.
->> > + */
->> > +static void multifd_send_kick_main(MultiFDSendParams *p)
->> > +{
->> > +    qemu_sem_post(&p->sem_sync);
->> > +    qemu_sem_post(&multifd_send_state->channels_ready);
->> > +}
->> > +
->> >  /*
->> >   * How we use multifd_send_state->pages and channel->pages?
->> >   *
->> > @@ -746,8 +758,7 @@ out:
->> >          assert(local_err);
->> >          trace_multifd_send_error(p->id);
->> >          multifd_send_terminate_threads(local_err);
->> > -        qemu_sem_post(&p->sem_sync);
->> > -        qemu_sem_post(&multifd_send_state->channels_ready);
->> > +        multifd_send_kick_main(p);
->> >          error_free(local_err);
->> >      }
->> >  
->> > @@ -787,8 +798,7 @@ static void multifd_tls_outgoing_handshake(QIOTask *task,
->> >       * is not created, and then tell who pay attention to me.
->> >       */
->> >      p->quit = true;
->> > -    qemu_sem_post(&multifd_send_state->channels_ready);
->> > -    qemu_sem_post(&p->sem_sync);
->> > +    multifd_send_kick_main(p);
->> 
->> There's a bug here in the original code:
->> 
->> It's not really safe to call any of these outside of the channel lock
->> because multifd_save_cleanup() could execute at the same time and call
->> qemu_sem_destroy() -> qemu_mutex_destroy(), which can assert because we
->> might be holding the sem_lock.
->
-> If you meant "p->mutex" as the "channel lock", IIUC even holding that won't
-> work? Because it'll also be freed in multifd_save_cleanup().
->
-
-You're right, I just sent an RFC about this, please take a look.
+> We need meson v1.2.3 to build QEMU on macOS Sonoma.=0D
+> =0D
+> It also build fine all our CI jobs, so let's use it as our=0D
+> "good enough" packaged wheel.=0D
+> =0D
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1939=0D
+> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>=0D
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>=0D
+> ---=0D
+>  python/wheels/meson-0.63.3-py3-none-any.whl | Bin 926526 -> 0 bytes=0D
+>  python/wheels/meson-1.2.3-py3-none-any.whl  | Bin 0 -> 964928 bytes=0D
+>  pythondeps.toml                             |   2 +-=0D
+>  3 files changed, 1 insertion(+), 1 deletion(-)=0D
+>  delete mode 100644 python/wheels/meson-0.63.3-py3-none-any.whl=0D
+>  create mode 100644 python/wheels/meson-1.2.3-py3-none-any.whl=0D
+>=0D
+> diff --git a/pythondeps.toml b/pythondeps.toml=0D
+> index 0a35ebcf9f..a2f8c1980b 100644=0D
+> --- a/pythondeps.toml=0D
+> +++ b/pythondeps.toml=0D
+> @@ -18,7 +18,7 @@=0D
+>=0D
+>  [meson]=0D
+>  # The install key should match the version in python/wheels/=0D
+> -meson =3D { accepted =3D ">=3D0.63.0", installed =3D "0.63.3", canary =
+=3D "meson" }=0D
+> +meson =3D { accepted =3D ">=3D1.2.3", installed =3D "1.2.3", canary =3D =
+"meson" }=0D
+=0D
+We don't need to block older versions of Meson, and indeed we don't=0D
+want to because it's fine to use the distro package everywhere=0D
+(including Sonoma).  (So the subject would become would be=0D
+"buildsys: Bump known good meson version to v1.2.3).=0D
+=0D
+You can look at sphinx below for another case where the accepted=0D
+versions are much older than the installed one.=0D
+=0D
+If there's anything you'd like to add to the (just sent) documentation=0D
+to clarify this, please help.=0D
+=0D
+Paolo=0D
+=0D
+> =0D
+>  [docs]=0D
+>  sphinx =3D { accepted =3D ">=3D1.6", installed =3D "5.3.0", canary =3D "=
+sphinx-build" }=0D
 
 
