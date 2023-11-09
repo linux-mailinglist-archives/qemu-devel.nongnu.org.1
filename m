@@ -2,85 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549D27E7108
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 19:01:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2857E710A
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 19:02:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r19K0-0003op-LE; Thu, 09 Nov 2023 13:00:04 -0500
+	id 1r19LX-00050N-Sl; Thu, 09 Nov 2023 13:01:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1r19Jt-0003od-Ad
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:59:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1r19Jq-0000lT-MP
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 12:59:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699552793;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=eB36mxktbVBMpiVVO/3+GulQyQf02S1+NrVV5rhh3n8=;
- b=iQ9di8Jx0qJoSba6e+h+m9UeihbGF7R2V8GZpNZ3oM6KDMwrncqzSg3kq2Sch4mYKPjhrW
- lxndJDdnIgqJvLJ6SVVcjEOPwc1yKKtknXlmGQybKMty9S6cxj6MRfV/9aeVDiWQL+MeGb
- 8smnlGGhLevITSTG2Ahk8bLBmSztI+E=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-teNr6bMINUeQF9PLYVFRLg-1; Thu, 09 Nov 2023 12:59:52 -0500
-X-MC-Unique: teNr6bMINUeQF9PLYVFRLg-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-41b83b8dbe1so14460541cf.1
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 09:59:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r19LN-0004wj-9G
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 13:01:30 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r19LK-0001Ft-Jg
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 13:01:29 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-53d9f001b35so1825978a12.2
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 10:01:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699552884; x=1700157684; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=rIlNApzXrb8e5wRpfNh4qEA6gI1Xn0LpbJPDKaRcJTk=;
+ b=l3YBtsItETBuc1ZFAuH2ONaaev9wC594793ilHr2cb9H+yvvcmApMzfXRkQraU6rMb
+ RJCcQbQCoU/ucPCu//J0xjz3xSKI2Ua/yi+P1L7ek5/gyGW8cFuINPfuGgqsxHuoIt5G
+ YXnbNx7AVlbv/RqeGbGHlkaRdeohQp5aNyDDIkAcLzH/seEZRUd/HinYRh2Jb5M9JFNF
+ mEnwGKBFRDV65B6pKw92yvmjqxInlXn6MJvoNbVXBw+rSy0yJzMRbTrpGV9nH5meMRTU
+ PdcEHs1oaYag4N6CDhq0mPLVTKq2RTvy0d5xhppDBuVVg4npQ8aT9EFOHFSvburPvP5K
+ kJ9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699552792; x=1700157592;
- h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eB36mxktbVBMpiVVO/3+GulQyQf02S1+NrVV5rhh3n8=;
- b=aYlRkuUkohUIyGlijs7M9gBsBD7fvpUNDaAdICm7g/NF+Jz75/wB1F4MmMRzXeSw1B
- Jq3tDmvI0WgQr+1ssGRgDrroT7N4E3v+BKFhLaIJGAzreZHWwMs5bKDEKsTHfP5SFsaT
- X9/tkhN925uGGgtlL2RpBHSJJLr6uE6FzW6wqnLHSZCDpJdNG1pwW3tSWFjr4qPOPjcF
- 6EfNENo55+lWK5RPNBoxSbRC1JV93ZXROUpdOFyzmyQ5n79jz3r0ta+u6eO0gX5zt7vj
- dflw7LcJao8usAJ22YBkCgz2l3zCZcOosHkkXgeiyTlzj63vnljrIZczXAtkT7B9DjQZ
- qOWw==
-X-Gm-Message-State: AOJu0YwYgGH/pzDXykHyU2/3677X2IcCKTU78/kQe9YVhyqMD5XsWE8i
- eUPwklJvUHQGy1ZlpgsQexm+sTSeu/XJXTTaqNGQbW+gvZX4J8QwJZtLPsL7lN3/dGlyjsuJ/1z
- g3dsiDK+gnGscI1fqbLWES/2ZsRk4xTY=
-X-Received: by 2002:ac8:4e8e:0:b0:419:50c7:f6bc with SMTP id
- 14-20020ac84e8e000000b0041950c7f6bcmr6081755qtp.22.1699552791848; 
- Thu, 09 Nov 2023 09:59:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEBs4fpW9GW5QrjfzEFGuvoCAIoHp0Usgjx+ofl7PqOK50rdcRa+AIQ2KbonENP1WC35GPWJ/7Y/FX7sTBYrXM=
-X-Received: by 2002:ac8:4e8e:0:b0:419:50c7:f6bc with SMTP id
- 14-20020ac84e8e000000b0041950c7f6bcmr6081742qtp.22.1699552791638; Thu, 09 Nov
- 2023 09:59:51 -0800 (PST)
-Received: from 744723338238 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 9 Nov 2023 09:59:50 -0800
-From: Andrea Bolognani <abologna@redhat.com>
-References: <20231016152704.221611-1-victortoso@redhat.com>
- <20231016152704.221611-9-victortoso@redhat.com>
+ d=1e100.net; s=20230601; t=1699552884; x=1700157684;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rIlNApzXrb8e5wRpfNh4qEA6gI1Xn0LpbJPDKaRcJTk=;
+ b=R7Jd8BpQwqQT3HJ+NXnHE9P2zCmy7ozPL7WhrwlNX2IiiEpz3rg1FFXHxhE+NeUMRJ
+ tq+a3tdGUec3xnuEPXbDmwsZpucKh9bEdI/6CDxotjD02cOBKVk11/PEHByojlSSWugB
+ 8uhpTtOdM8SdWOXCCAGEjqzKbK+ukXftHzswOW2cN5qEf13L8Gqio8PBGa3jGH3Suz1n
+ fLAy8J3M+4AWc54M8VqaCVwgln8iYagIBj3eni0uZ/LgSKYDxVBKKGNpD/5O9I0zG0aH
+ lYpB7ObZ7QhV8fcm6OW79ilA9r928IM6RFM2dM7mHZoQhS1F+U/h22Wa/TtOGg5ZY9OL
+ bbXA==
+X-Gm-Message-State: AOJu0YzjhR6UyKt8zqWYmmHdhDR6tQZpETNsVEnkZVicixpPbyEz3/l2
+ 5UJ1595PAUnogQQ1aEcMJQ7gIgo52TFIM+Hu4nA1bg==
+X-Google-Smtp-Source: AGHT+IE0G8TCFNaNpPdCbXZS5fN8JNyUxrvhrx901jbYf58mDtg/h+jOGNVRarmHr0NWlQEY70VnpbseNKK12qS2cPk=
+X-Received: by 2002:a50:cc8a:0:b0:543:5d2e:a9c3 with SMTP id
+ q10-20020a50cc8a000000b005435d2ea9c3mr5306640edi.20.1699552884331; Thu, 09
+ Nov 2023 10:01:24 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20231016152704.221611-9-victortoso@redhat.com>
-Date: Thu, 9 Nov 2023 09:59:50 -0800
-Message-ID: <CABJz62PJHOY8CLNe-xOrDqRupWMxVCz08WvaxY7tfg8e2WwOpg@mail.gmail.com>
-Subject: Re: [PATCH v2 08/11] qapi: golang: Generate qapi's event types in Go
-To: Victor Toso <victortoso@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- John Snow <jsnow@redhat.com>, 
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20231109173544.375129-1-thuth@redhat.com>
+In-Reply-To: <20231109173544.375129-1-thuth@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 9 Nov 2023 18:01:13 +0000
+Message-ID: <CAFEAcA_MK9-jzQx-po06-CnLLBHQSA2_VB3g7UFVCCiJskyCeg@mail.gmail.com>
+Subject: Re: [PATCH] hw/audio/es1370: Avoid four-letter word
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ qemu-trivial@nongnu.org, "Daniel P. Berrange" <berrange@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=abologna@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- PDS_LITECOIN_ID=0.5, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,80 +85,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 16, 2023 at 05:27:01PM +0200, Victor Toso wrote:
-> This patch handles QAPI event types and generates data structures in
-> Go that handles it.
+On Thu, 9 Nov 2023 at 17:36, Thomas Huth <thuth@redhat.com> wrote:
 >
-> We also define a Event interface and two helper functions MarshalEvent
-> and UnmarshalEvent.
+> Using certain four-letter words is not good style in source code,
+> so let's avoid that.
 >
-> Example:
-> qapi:
->  | { 'event': 'MEMORY_DEVICE_SIZE_CHANGE',
->  |   'data': { '*id': 'str', 'size': 'size', 'qom-path' : 'str'} }
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  hw/audio/es1370.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 >
-> go:
->  | type MemoryDeviceSizeChangeEvent struct {
->  |         MessageTimestamp Timestamp `json:"-"`
->  |         Id               *string   `json:"id,omitempty"`
->  |         Size             uint64    `json:"size"`
->  |         QomPath          string    `json:"qom-path"`
->  | }
+> diff --git a/hw/audio/es1370.c b/hw/audio/es1370.c
+> index 91c47330ad..bd460c810e 100644
+> --- a/hw/audio/es1370.c
+> +++ b/hw/audio/es1370.c
+> @@ -670,8 +670,7 @@ static void es1370_transfer_audio (ES1370State *s, struct chan *d, int loop_sel,
+>      cnt += (transferred + d->leftover) >> 2;
 >
-> usage:
->  | input := `{"event":"MEMORY_DEVICE_SIZE_CHANGE",` +
->  | `"timestamp":{"seconds":1588168529,"microseconds":201316},` +
->  | `"data":{"id":"vm0","size":1073741824,"qom-path":"/machine/unattached/device[2]"}}`
->  | e, err := UnmarshalEvent([]byte(input)
->  | if err != nil {
->  |     panic(err)
->  | }
->  | if e.GetName() == `MEMORY_DEVICE_SIZE_CHANGE` {
->  |     m := e.(*MemoryDeviceSizeChangeEvent)
->  |     // m.QomPath == "/machine/unattached/device[2]"
->  | }
+>      if (s->sctl & loop_sel) {
+> -        /* Bah, how stupid is that having a 0 represent true value?
+> -           i just spent few hours on this shit */
+> +        /* Bah, how stupid is that having a 0 represent true value? */
+>          AUD_log ("es1370: warning", "non looping mode\n");
+>      } else {
+>          d->frame_cnt = size;
+> --
+> 2.41.0
 
-I don't think we should encourage people to perform string
-comparisons, as it completely sidesteps Go's type system and is thus
-error-prone. Safer version:
+We could be more usefully clear here anyway:
 
-  switch m := e.(type) {
-  case *MemoryDeviceSizeChangeEvent:
-    // m.QomPath == "/machine/unattached/device[2]"
-  }
+/*
+ * loop_sel tells us which bit in the SCTL register to look at
+ * (either P1_LOOP_SEL, P2_LOOP_SEL or R1_LOOP_SEL). The sense
+ * of these bits is 0 for loop mode (set interrupt and keep recording
+ * when the sample count reaches zero) or 1 for stop mode (set
+ * interrupt and stop recording).
+ */
 
-Now, I'm not sure I would go as far as suggesting that the GetName()
-function should be completely removed, but maybe we can try leaving
-it out from the initial version and see if people start screaming?
+PS: while we are cleaning up comments in this source file,
+how about the bit marked /* Start blatant GPL violation */ ?
 
-API-wise, I'm not a fan of the fact that we're forcing users to call
-(Un)MarshalEvent instead of the standard (Un)MarshalJSON. If we add
-something like
+I think what that comment is trying to say is "most of this
+source file is under the MIT license per the comment at the top
+of the file, but these register constants are from the Linux
+kernel sources and so they are GPL2". Both these licenses are
+fine for QEMU, but we should have the commentary at the top
+say "file is this license except for the GPL2-only macros etc"
+rather than misleadingly claiming this is a GPL violation...
 
-  func GetEventType(data []byte) (Event, error) {
-    type event struct {
-      Name string `json:"event"`
-    }
-
-    tmp := event{}
-    if err := json.Unmarshal(data, &tmp); err != nil {
-      return nil, err
-    }
-
-    switch tmp.Name {
-    case "MEMORY_DEVICE_SIZE_CHANGE":
-            return &MemoryDeviceSizeChangeEvent{}, nil
-    ...
-    }
-
-    return nil, fmt.Errorf("unrecognized event '%s'", tmp.Name)
-  }
-
-it becomes feasible to stick with standard functions. We can of
-course keep the (Un)MarshalEvent functions around for convenience,
-but I don't think they should be the only available API.
-
--- 
-Andrea Bolognani / Red Hat / Virtualization
-
+thanks
+-- PMM
 
