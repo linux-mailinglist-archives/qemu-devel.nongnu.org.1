@@ -2,53 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4287E79C5
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 08:34:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B2F7E79C0
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 08:33:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1M12-0005Qj-JB; Fri, 10 Nov 2023 02:33:20 -0500
+	id 1r1M12-0005Qh-Kg; Fri, 10 Nov 2023 02:33:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1r1M10-0005NB-37
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:33:18 -0500
+ id 1r1M0z-0005Mz-GL
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:33:17 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1r1M0v-0007CT-Ss
+ id 1r1M0x-0007DT-9z
  for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:33:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1699601594; x=1731137594;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=PpG4IDDHZqxdROsvtlPIkaJfK9w2uoO/QTtfxBKqcRE=;
- b=oAVXmUPSH9WyWL3ah7RyLVzUKxPrTDk6UdPFm3onpfd0nM2+EUGvk2zE
- i1orip3KyvyRIK7MS+wPqq62jv12bvdZli+Z8iH3lK6zB9GhSNXTHUX5N
- G6JSnn7qC/sG+GN4vuwDDHQOscJsKE+Che1vMSskdPnbiex8eJpmqOSTb
- ZbVyhdh1gTN+w5kthThg1vCHhxeVTFDMRptTimFdM5NYwUa+pfEPgWjC0
- nhwdUy2CU05b+qtyeoytNNjW6LIbzrJMgX/Euh4lK4hnq8V4OCPsu9oxS
- vK8xd9Wlk05HNV1fFB9+D3PfJHoAlRsg/0jr4adm9iHbo8zmBxkQ0JDMV g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="11694824"
-X-IronPort-AV: E=Sophos;i="6.03,291,1694761200"; d="scan'208";a="11694824"
+ t=1699601595; x=1731137595;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=+d/QvHRS/nq18/jH2q/BnchHPO+qhQm5X4HU3nYHklw=;
+ b=PYDX0y2OuJc7tJeYIPV+wZeaR24YJUWkqTeKjL78Fwe8dZYi7zpO/Pg4
+ hmC/Pua73QRjIyuvQ/eq2rUBtM2S36zkOSed8QY23Q7yuMaKf29BLqMzm
+ a31tZLfkiy5Xk9D84v6i3aEu6ZMDzmKtk5VECAgtrYv474CN5cSSDJzLI
+ d8WwklVMq5l4T9/65ECbcEEN0RSXB+XV/LKVROo0+vWMuVat9t86tl/XO
+ gpXLwRl7ot+qHPHtZzxoiv1NtB52gjJ6fXJMLjpv/NUcAHDWlDYII3IQ8
+ 09B0uo3FOp4Gyd0a2aIju4qlG9GxLn0KM8zPKWhYA+M/PxJWDCN78RwyG w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="11694836"
+X-IronPort-AV: E=Sophos;i="6.03,291,1694761200"; d="scan'208";a="11694836"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Nov 2023 23:33:08 -0800
+ 09 Nov 2023 23:33:11 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="1010886532"
-X-IronPort-AV: E=Sophos;i="6.03,291,1694761200"; d="scan'208";a="1010886532"
+X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="1010886550"
+X-IronPort-AV: E=Sophos;i="6.03,291,1694761200"; d="scan'208";a="1010886550"
 Received: from sae-gw02.sh.intel.com (HELO localhost) ([10.239.45.110])
- by fmsmga006.fm.intel.com with ESMTP; 09 Nov 2023 23:33:05 -0800
+ by fmsmga006.fm.intel.com with ESMTP; 09 Nov 2023 23:33:08 -0800
 From: Yuan Liu <yuan1.liu@intel.com>
 To: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
 Cc: qemu-devel@nongnu.org,
 	yuan1.liu@intel.com,
 	nanhai.zou@intel.com
-Subject: [PATCH v2 0/4] Live Migration Acceleration with IAA Compression
-Date: Thu,  9 Nov 2023 23:46:34 +0800
-Message-Id: <20231109154638.488213-1-yuan1.liu@intel.com>
+Subject: [PATCH v2 1/4] migration: Introduce multifd-compression-accel
+ parameter
+Date: Thu,  9 Nov 2023 23:46:35 +0800
+Message-Id: <20231109154638.488213-2-yuan1.liu@intel.com>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20231109154638.488213-1-yuan1.liu@intel.com>
+References: <20231109154638.488213-1-yuan1.liu@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.7; envelope-from=yuan1.liu@intel.com;
@@ -75,126 +78,259 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Introduce the multifd-compression-accel option to enable or disable live
+migration data (de)compression accelerator.
 
-I am writing to submit a code change aimed at enhancing live migration
-acceleration by leveraging the compression capability of the Intel
-In-Memory Analytics Accelerator (IAA).
+The default value of multifd-compression-accel is auto, and the enabling
+and selection of the accelerator are automatically detected. By setting
+multifd-compression-accel=none, the acceleration function can be disabled.
+Similarly, users can explicitly specify a specific accelerator name, such
+as multifd-compression-accel=qpl.
 
-The implementation of the IAA (de)compression code is based on Intel Query
-Processing Library (QPL), an open-source software project designed for
-IAA high-level software programming. https://github.com/intel/qpl
+Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+---
+ hw/core/qdev-properties-system.c    | 11 +++++++++++
+ include/hw/qdev-properties-system.h |  4 ++++
+ migration/migration-hmp-cmds.c      | 10 ++++++++++
+ migration/options.c                 | 24 ++++++++++++++++++++++++
+ migration/options.h                 |  1 +
+ qapi/migration.json                 | 26 +++++++++++++++++++++++++-
+ 6 files changed, 75 insertions(+), 1 deletion(-)
 
-In the previous version, there was some discussion about whether to
-introduce a new compression algorithm for IAA. Because the compression
-algorithm of IAA hardware is based on deflate, and QPL already supports
-Zlib, so in this version, I implemented IAA as an accelerator for the
-Zlib compression method. However, due to some reasons, QPL is currently
-not compatible with the existing Zlib method that Zlib compressed data
-can be decompressed by QPl and vice versa, I am still working on
-resolving compatibility issues.
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 688340610e..ed23035845 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -673,6 +673,17 @@ const PropertyInfo qdev_prop_multifd_compression = {
+     .set_default_value = qdev_propinfo_set_default_value_enum,
+ };
 
-I have some concerns about the existing Zlib compression
-  1. Will you consider supporting one channel to support multi-stream
-     compression? Of course, this may lead to a reduction in compression
-     ratio, but it will allow the hardware to process each stream
-     concurrently. We can have each stream process multiple pages,
-     reducing the loss of compression ratio. For example, 128 pages are
-     divided into 16 streams for independent compression.
++/* --- MultiFD Compression Accelerator --- */
++
++const PropertyInfo qdev_prop_multifd_compression_accel = {
++    .name = "MultiFDCompressionAccel",
++    .description = "MultiFD Compression Accelerator, "
++                   "auto/none/qpl",
++    .enum_table = &MultiFDCompressionAccel_lookup,
++    .get = qdev_propinfo_get_enum,
++    .set = qdev_propinfo_set_enum,
++    .set_default_value = qdev_propinfo_set_default_value_enum,
++};
+ /* --- Reserved Region --- */
 
-  2. Will you consider using QPL/IAA as an independent compression
-     algorithm instead of an accelerator? In this way, we can better
-     utilize hardware performance and some features, such as IAA's
-     canned mode, which can be dynamically generated by some statistics
-     of data. A huffman table to improve the compression ratio.
+ /*
+diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properties-system.h
+index 0ac327ae60..da086bd836 100644
+--- a/include/hw/qdev-properties-system.h
++++ b/include/hw/qdev-properties-system.h
+@@ -7,6 +7,7 @@ extern const PropertyInfo qdev_prop_chr;
+ extern const PropertyInfo qdev_prop_macaddr;
+ extern const PropertyInfo qdev_prop_reserved_region;
+ extern const PropertyInfo qdev_prop_multifd_compression;
++extern const PropertyInfo qdev_prop_multifd_compression_accel;
+ extern const PropertyInfo qdev_prop_losttickpolicy;
+ extern const PropertyInfo qdev_prop_blockdev_on_error;
+ extern const PropertyInfo qdev_prop_bios_chs_trans;
+@@ -41,6 +42,9 @@ extern const PropertyInfo qdev_prop_pcie_link_width;
+ #define DEFINE_PROP_MULTIFD_COMPRESSION(_n, _s, _f, _d) \
+     DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_multifd_compression, \
+                        MultiFDCompression)
++#define DEFINE_PROP_MULTIFD_COMPRESSION_ACCEL(_n, _s, _f, _d) \
++    DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_multifd_compression_accel, \
++                       MultiFDCompressionAccel)
+ #define DEFINE_PROP_LOSTTICKPOLICY(_n, _s, _f, _d) \
+     DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_losttickpolicy, \
+                         LostTickPolicy)
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index a82597f18e..3a278c89d9 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -344,6 +344,11 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+         monitor_printf(mon, "%s: %s\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_MULTIFD_COMPRESSION),
+             MultiFDCompression_str(params->multifd_compression));
++        assert(params->has_multifd_compression_accel);
++        monitor_printf(mon, "%s: %s\n",
++            MigrationParameter_str(
++                MIGRATION_PARAMETER_MULTIFD_COMPRESSION_ACCEL),
++            MultiFDCompressionAccel_str(params->multifd_compression_accel));
+         monitor_printf(mon, "%s: %" PRIu64 " bytes\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_XBZRLE_CACHE_SIZE),
+             params->xbzrle_cache_size);
+@@ -610,6 +615,11 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
+         visit_type_MultiFDCompression(v, param, &p->multifd_compression,
+                                       &err);
+         break;
++    case MIGRATION_PARAMETER_MULTIFD_COMPRESSION_ACCEL:
++        p->has_multifd_compression_accel = true;
++        visit_type_MultiFDCompressionAccel(v, param,
++                                           &p->multifd_compression_accel, &err);
++        break;
+     case MIGRATION_PARAMETER_MULTIFD_ZLIB_LEVEL:
+         p->has_multifd_zlib_level = true;
+         visit_type_uint8(v, param, &p->multifd_zlib_level, &err);
+diff --git a/migration/options.c b/migration/options.c
+index 42fb818956..4c567c49e6 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -59,6 +59,8 @@
+ #define DEFAULT_MIGRATE_X_CHECKPOINT_DELAY (200 * 100)
+ #define DEFAULT_MIGRATE_MULTIFD_CHANNELS 2
+ #define DEFAULT_MIGRATE_MULTIFD_COMPRESSION MULTIFD_COMPRESSION_NONE
++/* By default use the accelerator for multifd compression */
++#define DEFAULT_MIGRATE_MULTIFD_COMPRESSION_ACCEL MULTIFD_COMPRESSION_ACCEL_AUTO
+ /* 0: means nocompress, 1: best speed, ... 9: best compress ratio */
+ #define DEFAULT_MIGRATE_MULTIFD_ZLIB_LEVEL 1
+ /* 0: means nocompress, 1: best speed, ... 20: best compress ratio */
+@@ -139,6 +141,9 @@ Property migration_properties[] = {
+     DEFINE_PROP_MULTIFD_COMPRESSION("multifd-compression", MigrationState,
+                       parameters.multifd_compression,
+                       DEFAULT_MIGRATE_MULTIFD_COMPRESSION),
++    DEFINE_PROP_MULTIFD_COMPRESSION_ACCEL("multifd-compression-accel",
++                      MigrationState, parameters.multifd_compression_accel,
++                      DEFAULT_MIGRATE_MULTIFD_COMPRESSION_ACCEL),
+     DEFINE_PROP_UINT8("multifd-zlib-level", MigrationState,
+                       parameters.multifd_zlib_level,
+                       DEFAULT_MIGRATE_MULTIFD_ZLIB_LEVEL),
+@@ -818,6 +823,15 @@ MultiFDCompression migrate_multifd_compression(void)
+     return s->parameters.multifd_compression;
+ }
 
-Test condition:
-  1. Host CPUs are based on Sapphire Rapids, and frequency locked to 3.4G
-  2. VM type, 16 vCPU and 64G memory
-  3. The Idle workload means no workload is running in the VM
-  4. The Redis workload means YCSB workloadb + Redis Server are running
-     in the VM, about 20G or more memory will be used.
-  5. Source side migartion configuration commands
-     a. migrate_set_capability multifd on
-     b. migrate_set_parameter multifd-channels 2/4/8
-     c. migrate_set_parameter downtime-limit 300
-     d. migrate_set_parameter multifd-compression zlib
-     e. migrate_set_parameter multifd-compression-accel none/qpl
-     f. migrate_set_parameter max-bandwidth 100G
-  6. Desitination side migration configuration commands
-     a. migrate_set_capability multifd on
-     b. migrate_set_parameter multifd-channels 2/4/8
-     c. migrate_set_parameter multifd-compression zlib
-     d. migrate_set_parameter multifd-compression-accel none/qpl
-     e. migrate_set_parameter max-bandwidth 100G
++MultiFDCompressionAccel migrate_multifd_compression_accel(void)
++{
++    MigrationState *s = migrate_get_current();
++
++    assert(s->parameters.multifd_compression_accel <
++           MULTIFD_COMPRESSION_ACCEL__MAX);
++    return s->parameters.multifd_compression_accel;
++}
++
+ int migrate_multifd_zlib_level(void)
+ {
+     MigrationState *s = migrate_get_current();
+@@ -945,6 +959,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+     params->multifd_channels = s->parameters.multifd_channels;
+     params->has_multifd_compression = true;
+     params->multifd_compression = s->parameters.multifd_compression;
++    params->has_multifd_compression_accel = true;
++    params->multifd_compression_accel = s->parameters.multifd_compression_accel;
+     params->has_multifd_zlib_level = true;
+     params->multifd_zlib_level = s->parameters.multifd_zlib_level;
+     params->has_multifd_zstd_level = true;
+@@ -999,6 +1015,7 @@ void migrate_params_init(MigrationParameters *params)
+     params->has_block_incremental = true;
+     params->has_multifd_channels = true;
+     params->has_multifd_compression = true;
++    params->has_multifd_compression_accel = true;
+     params->has_multifd_zlib_level = true;
+     params->has_multifd_zstd_level = true;
+     params->has_xbzrle_cache_size = true;
+@@ -1273,6 +1290,9 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+     if (params->has_multifd_compression) {
+         dest->multifd_compression = params->multifd_compression;
+     }
++    if (params->has_multifd_compression_accel) {
++        dest->multifd_compression_accel = params->multifd_compression_accel;
++    }
+     if (params->has_xbzrle_cache_size) {
+         dest->xbzrle_cache_size = params->xbzrle_cache_size;
+     }
+@@ -1394,6 +1414,10 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+     if (params->has_multifd_compression) {
+         s->parameters.multifd_compression = params->multifd_compression;
+     }
++    if (params->has_multifd_compression_accel) {
++        s->parameters.multifd_compression_accel =
++            params->multifd_compression_accel;
++    }
+     if (params->has_xbzrle_cache_size) {
+         s->parameters.xbzrle_cache_size = params->xbzrle_cache_size;
+         xbzrle_cache_resize(params->xbzrle_cache_size, errp);
+diff --git a/migration/options.h b/migration/options.h
+index 237f2d6b4a..e59bf4b5c1 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -85,6 +85,7 @@ uint64_t migrate_avail_switchover_bandwidth(void);
+ uint64_t migrate_max_postcopy_bandwidth(void);
+ int migrate_multifd_channels(void);
+ MultiFDCompression migrate_multifd_compression(void);
++MultiFDCompressionAccel migrate_multifd_compression_accel(void);
+ int migrate_multifd_zlib_level(void);
+ int migrate_multifd_zstd_level(void);
+ uint8_t migrate_throttle_trigger_threshold(void);
+diff --git a/qapi/migration.json b/qapi/migration.json
+index db3df12d6c..47239328e4 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -616,6 +616,22 @@
+             { 'name': 'zstd', 'if': 'CONFIG_ZSTD' } ] }
 
-Early migration result, each result is the average of three tests
-
- +--------+-------------+--------+--------+---------+----+-----+
- |        | The number  |total   |downtime|network  |pages per |
- |        | of channels |time(ms)|(ms)    |bandwidth|second    |
- |        | and mode    |        |        |(mbps)   |          |
- |        +-------------+-----------------+---------+----------+
- |        | 2 chl, Zlib | 20647  | 22     | 195     | 137767   |
- |        +-------------+--------+--------+---------+----------+
- | Idle   | 2 chl, IAA  | 17022  | 36     | 286     | 460289   |
- |workload+-------------+--------+--------+---------+----------+
- |        | 4 chl, Zlib | 18835  | 29     | 241     | 299028   |
- |        +-------------+--------+--------+---------+----------+
- |        | 4 chl, IAA  | 16280  | 32     | 298     | 652456   |
- |        +-------------+--------+--------+---------+----------+
- |        | 8 chl, Zlib | 17379  | 32     | 275     | 470591   |
- |        +-------------+--------+--------+---------+----------+
- |        | 8 chl, IAA  | 15551  | 46     | 313     | 1315784  |
- +--------+-------------+--------+--------+---------+----------+
-
- +--------+-------------+--------+--------+---------+----+-----+
- |        | The number  |total   |downtime|network  |pages per |
- |        | of channels |time(ms)|(ms)    |bandwidth|second    |
- |        | and mode    |        |        |(mbps)   |          |
- |        +-------------+-----------------+---------+----------+
- |        | 2 chl, Zlib | 100% failure, timeout is 120s        |
- |        +-------------+--------+--------+---------+----------+
- | Redis  | 2 chl, IAA  | 62737  | 115    | 4547    | 387911   |
- |workload+-------------+--------+--------+---------+----------+
- |        | 4 chl, Zlib | 30% failure, timeout is 120s         |
- |        +-------------+--------+--------+---------+----------+
- |        | 4 chl, IAA  | 54645  | 177    | 5382    | 656865   |
- |        +-------------+--------+--------+---------+----------+
- |        | 8 chl, Zlib | 93488  | 74     | 1264    | 129486   |
- |        +-------------+--------+--------+---------+----------+
- |        | 8 chl, IAA  | 24367  | 303    | 6901    | 964380   |
- +--------+-------------+--------+--------+---------+----------+
-
-v2:
-  - add support for multifd compression accelerator
-  - add support for the QPL accelerator in the multifd
-    compression accelerator
-  - fixed the issue that QPL was compiled into the migration
-    module by default
-
-Yuan Liu (4):
-  migration: Introduce multifd-compression-accel parameter
-  multifd: Implement multifd compression accelerator
-  configure: add qpl option
-  multifd: Introduce QPL compression accelerator
-
- hw/core/qdev-properties-system.c    |  11 +
- include/hw/qdev-properties-system.h |   4 +
- meson.build                         |   7 +
- meson_options.txt                   |   2 +
- migration/meson.build               |   1 +
- migration/migration-hmp-cmds.c      |  10 +
- migration/multifd-qpl.c             | 326 ++++++++++++++++++++++++++++
- migration/multifd.c                 |  38 +++-
- migration/multifd.h                 |   8 +
- migration/options.c                 |  24 ++
- migration/options.h                 |   1 +
- qapi/migration.json                 |  26 ++-
- scripts/meson-buildoptions.sh       |   3 +
- 13 files changed, 458 insertions(+), 3 deletions(-)
- create mode 100644 migration/multifd-qpl.c
-
+ ##
++# @MultiFDCompressionAccel:
++#
++# An enumeration of multifd compression accelerator.
++#
++# @auto: automatically determined if accelerator is available.
++#
++# @none: disable compression accelerator.
++#
++# @qpl: enable qpl compression accelerator.
++#
++# Since: 8.2
++##
++{ 'enum': 'MultiFDCompressionAccel',
++  'data': [ 'auto', 'none',
++            { 'name': 'qpl', 'if': 'CONFIG_QPL' } ] }
++##
+ # @BitmapMigrationBitmapAliasTransform:
+ #
+ # @persistent: If present, the bitmap will be made persistent or
+@@ -798,6 +814,9 @@
+ # @multifd-compression: Which compression method to use.  Defaults to
+ #     none.  (Since 5.0)
+ #
++# @multifd-compression-accel: Which compression accelerator to use.  Defaults to
++#     auto.  (Since 8.2)
++#
+ # @multifd-zlib-level: Set the compression level to be used in live
+ #     migration, the compression level is an integer between 0 and 9,
+ #     where 0 means no compression, 1 means the best compression
+@@ -853,7 +872,7 @@
+            'block-incremental',
+            'multifd-channels',
+            'xbzrle-cache-size', 'max-postcopy-bandwidth',
+-           'max-cpu-throttle', 'multifd-compression',
++           'max-cpu-throttle', 'multifd-compression', 'multifd-compression-accel',
+            'multifd-zlib-level', 'multifd-zstd-level',
+            'block-bitmap-mapping',
+            { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
+@@ -974,6 +993,9 @@
+ # @multifd-compression: Which compression method to use.  Defaults to
+ #     none.  (Since 5.0)
+ #
++# @multifd-compression-accel: Which compression acclerator to use.  Defaults to
++#     auto.  (Since 8.2)
++#
+ # @multifd-zlib-level: Set the compression level to be used in live
+ #     migration, the compression level is an integer between 0 and 9,
+ #     where 0 means no compression, 1 means the best compression
+@@ -1046,6 +1068,7 @@
+             '*max-postcopy-bandwidth': 'size',
+             '*max-cpu-throttle': 'uint8',
+             '*multifd-compression': 'MultiFDCompression',
++            '*multifd-compression-accel': 'MultiFDCompressionAccel',
+             '*multifd-zlib-level': 'uint8',
+             '*multifd-zstd-level': 'uint8',
+             '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
+@@ -1257,6 +1280,7 @@
+             '*max-postcopy-bandwidth': 'size',
+             '*max-cpu-throttle': 'uint8',
+             '*multifd-compression': 'MultiFDCompression',
++            '*multifd-compression-accel': 'MultiFDCompressionAccel',
+             '*multifd-zlib-level': 'uint8',
+             '*multifd-zstd-level': 'uint8',
+             '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
 --
 2.39.3
 
