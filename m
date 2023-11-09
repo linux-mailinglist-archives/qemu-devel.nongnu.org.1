@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C18F47E6B7B
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:49:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D99177E6B5C
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 14:45:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r15Ki-0000dZ-Bs; Thu, 09 Nov 2023 08:44:32 -0500
+	id 1r15Kj-0000jN-10; Thu, 09 Nov 2023 08:44:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15KX-0008Hy-CM; Thu, 09 Nov 2023 08:44:21 -0500
+ id 1r15Kb-0008Tj-Ce; Thu, 09 Nov 2023 08:44:25 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r15KV-0001Ar-Ba; Thu, 09 Nov 2023 08:44:21 -0500
+ id 1r15KY-0001Bf-6O; Thu, 09 Nov 2023 08:44:25 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A3F2B31B02;
+ by isrv.corpit.ru (Postfix) with ESMTP id CC80431B03;
  Thu,  9 Nov 2023 16:43:11 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B28CC344A9;
+ by tsrv.corpit.ru (Postfix) with SMTP id D05E7344AA;
  Thu,  9 Nov 2023 16:43:03 +0300 (MSK)
-Received: (nullmailer pid 1461794 invoked by uid 1000);
+Received: (nullmailer pid 1461797 invoked by uid 1000);
  Thu, 09 Nov 2023 13:43:02 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Mikulas Patocka <mpatocka@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.3 11/55] linux-user: Fixes for zero_bss
-Date: Thu,  9 Nov 2023 16:42:15 +0300
-Message-Id: <20231109134300.1461632-11-mjt@tls.msk.ru>
+Subject: [Stable-8.1.3 12/55] linux-user/mips: fix abort on integer overflow
+Date: Thu,  9 Nov 2023 16:42:16 +0300
+Message-Id: <20231109134300.1461632-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
 References: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,110 +60,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-The previous change, 2d385be6152, assumed !PAGE_VALID meant that
-the page would be unmapped by the elf image.  However, since we
-reserved the entire image space via mmap, PAGE_VALID will always
-be set.  Instead, assume PROT_NONE for the same condition.
+QEMU mips userspace emulation crashes with "qemu: unhandled CPU exception
+0x15 - aborting" when one of the integer arithmetic instructions detects
+an overflow.
 
-Furthermore, assume bss is only ever present for writable segments,
-and that there is no page overlap between PT_LOAD segments.
-Instead of an assert, return false to indicate failure.
+This patch fixes it so that it delivers SIGFPE with FPE_INTOVF instead.
 
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1854
-Fixes: 2d385be6152 ("linux-user: Do not adjust zero_bss for host page size")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Message-Id: <3ef979a8-3ee1-eb2d-71f7-d788ff88dd11@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit e6e66b03287331abc6f184456dbc6d25505590ec)
+(cherry picked from commit 6fad9b4bb91dcc824f9c00a36ee843883b58313b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index a69e7d7eab..47170fe5d3 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -2217,31 +2217,58 @@ static abi_ulong setup_arg_pages(struct linux_binprm *bprm,
-  * Map and zero the bss.  We need to explicitly zero any fractional pages
-  * after the data section (i.e. bss).  Return false on mapping failure.
-  */
--static bool zero_bss(abi_ulong start_bss, abi_ulong end_bss, int prot)
-+static bool zero_bss(abi_ulong start_bss, abi_ulong end_bss,
-+                     int prot, Error **errp)
- {
-     abi_ulong align_bss;
- 
-+    /* We only expect writable bss; the code segment shouldn't need this. */
-+    if (!(prot & PROT_WRITE)) {
-+        error_setg(errp, "PT_LOAD with non-writable bss");
-+        return false;
-+    }
-+
-     align_bss = TARGET_PAGE_ALIGN(start_bss);
-     end_bss = TARGET_PAGE_ALIGN(end_bss);
- 
-     if (start_bss < align_bss) {
-         int flags = page_get_flags(start_bss);
- 
--        if (!(flags & PAGE_VALID)) {
--            /* Map the start of the bss. */
-+        if (!(flags & PAGE_BITS)) {
-+            /*
-+             * The whole address space of the executable was reserved
-+             * at the start, therefore all pages will be VALID.
-+             * But assuming there are no PROT_NONE PT_LOAD segments,
-+             * a PROT_NONE page means no data all bss, and we can
-+             * simply extend the new anon mapping back to the start
-+             * of the page of bss.
-+             */
-             align_bss -= TARGET_PAGE_SIZE;
--        } else if (flags & PAGE_WRITE) {
--            /* The page is already mapped writable. */
--            memset(g2h_untagged(start_bss), 0, align_bss - start_bss);
-         } else {
--            /* Read-only zeros? */
--            g_assert_not_reached();
-+            /*
-+             * The start of the bss shares a page with something.
-+             * The only thing that we expect is the data section,
-+             * which would already be marked writable.
-+             * Overlapping the RX code segment seems malformed.
-+             */
-+            if (!(flags & PAGE_WRITE)) {
-+                error_setg(errp, "PT_LOAD with bss overlapping "
-+                           "non-writable page");
-+                return false;
-+            }
-+
-+            /* The page is already mapped and writable. */
-+            memset(g2h_untagged(start_bss), 0, align_bss - start_bss);
-         }
-     }
- 
--    return align_bss >= end_bss ||
--           target_mmap(align_bss, end_bss - align_bss, prot,
--                       MAP_FIXED | MAP_PRIVATE | MAP_ANON, -1, 0) != -1;
-+    if (align_bss < end_bss &&
-+        target_mmap(align_bss, end_bss - align_bss, prot,
-+                    MAP_FIXED | MAP_PRIVATE | MAP_ANON, -1, 0) == -1) {
-+        error_setg_errno(errp, errno, "Error mapping bss");
-+        return false;
-+    }
-+    return true;
- }
- 
- #if defined(TARGET_ARM)
-@@ -3265,8 +3292,8 @@ static void load_elf_image(const char *image_name, int image_fd,
- 
-             /* If the load segment requests extra zeros (e.g. bss), map it. */
-             if (vaddr_ef < vaddr_em &&
--                !zero_bss(vaddr_ef, vaddr_em, elf_prot)) {
--                goto exit_mmap;
-+                !zero_bss(vaddr_ef, vaddr_em, elf_prot, &err)) {
-+                goto exit_errmsg;
+diff --git a/linux-user/mips/cpu_loop.c b/linux-user/mips/cpu_loop.c
+index 8735e58bad..990b03e727 100644
+--- a/linux-user/mips/cpu_loop.c
++++ b/linux-user/mips/cpu_loop.c
+@@ -180,7 +180,9 @@ done_syscall:
              }
- 
-             /* Find the full program boundaries.  */
+             force_sig_fault(TARGET_SIGFPE, si_code, env->active_tc.PC);
+             break;
+-
++	case EXCP_OVERFLOW:
++            force_sig_fault(TARGET_SIGFPE, TARGET_FPE_INTOVF, env->active_tc.PC);
++            break;
+         /* The code below was inspired by the MIPS Linux kernel trap
+          * handling code in arch/mips/kernel/traps.c.
+          */
 -- 
 2.39.2
 
