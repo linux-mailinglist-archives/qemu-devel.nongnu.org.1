@@ -2,94 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02DA7E6C93
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:44:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E7D7E6C94
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 15:45:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r16F2-0008C6-Sm; Thu, 09 Nov 2023 09:42:44 -0500
+	id 1r16Go-0000XC-Vw; Thu, 09 Nov 2023 09:44:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1r16F0-0008Bi-H7
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:42:42 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r16Gn-0000UR-1j
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:44:33 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1r16Ey-0000MH-PR
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:42:42 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1cc37fb1310so7902445ad.1
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 06:42:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r16Gl-0000YX-CE
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 09:44:32 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-53df747cfe5so1582565a12.2
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 06:44:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699540959; x=1700145759; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BU/2Tm5IJQo8WQ+D9/H4U7J+F1ejivNnReQmp/7v34s=;
- b=h5bYWjQk9ssgRtsnWk7rcc0gNVoBd+svPB6mPhqAwhpiEaKnR+wKsLEEMddtiON5eG
- DUFNtFmhO/TZWo77prpH64tRbExPFkH+WS2y/hyOzA+IV/p2KpvB3qBc/tovf3o18ihA
- 4BHkSnJ2KbaZ13nZ9eyLpxv99FdQEUYS434XQtgfAHO/y8cgI5+guBqvu17nCVL3fyOV
- GJX/5BYrx/eQ6oBVpMm7KnWlyF0xk6pkHKy4SuYZVBw3/DuP5fYiLOtZQ7NRzaVvCkZU
- WqjjfdRq/gdZpVbWKkwj+wineJb6l8YTgPuclOq27OYEGAI/cHAgkpAvI9W0Iz32kZSh
- Td+A==
+ d=linaro.org; s=google; t=1699541068; x=1700145868; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=VovdA1XYVOBSHnYUjjsDosCFdi0dbItblIgDu0vjIxk=;
+ b=M9aVvtGWxWePHq3uLWHfIeEb+VDglALvUYbp6fDEqd46uY+5fDw6CXIfAcq8sKZVVb
+ mKJLx5HcdV+pSFsfy4CMez4PYSI7ye7A4vRh8Vdth1rS5fnMtFvfNyeqfgFplw01lHc1
+ t5BGHnyazkd7gPb9od00ZYmhc8bErTfgmZXU9mu4LU40MC7e5NhXJnpLItb1iOGLa6kz
+ Y3IkajiTFOPjzUk8d0JYbjFWcGb8hc9100YaiBlF1KGAOIBGwh7bwZ3DvbxZNyEvCVf1
+ zcD9G8l9m8BerwdtiubKS+RDYvg2d0E0QESoYFnrAY7CZT9MXCTz5IpeQkAbj441rf+4
+ A8oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699540959; x=1700145759;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BU/2Tm5IJQo8WQ+D9/H4U7J+F1ejivNnReQmp/7v34s=;
- b=pRDKrpmvmgyaojf37pwKiQ8UWmZnN+7pqG1l3QAzh8nqJA9c+MGkfCeQVedVTR6shp
- RFJgV3IWYLxNhBLtBxNOzWZB7YDSzVx0S9OH6b1m2CZM+99u+8Px4xvtFyQhLbxfb7O/
- XiwlxpydtnuJyqu9KEjF4wNDYNHpXbs/J2gG2k4BftxuAaZzoA+y0t6NMf8K54YtPynz
- bN3zndzb3taBw6sWX28T6qtFgXDDYiGfWZmk/8Qnbary1Dt/zqjYyd/j/5bcYK0INusV
- 7u2F8lY00UigElmGmIDULI/q4x1gbW+gC8O+I1O+N1f45LnxeGBp8+0ZqaBb/cVsPLxV
- anFg==
-X-Gm-Message-State: AOJu0YzWQDoPw06F0t+6iBbWn25Kh7KmdY35bw193/vdqgdQrDqkjFcE
- C5r4MIUbd7GpDtiqiDarV7cy6SHR0Ycnjg==
-X-Google-Smtp-Source: AGHT+IGidJdzcsZd/wu2ALDgnNw3mh+Q1uzu7glIlXXS4ZEBspXmpIjixNxrixDmX7gtgNJQVQfpWA==
-X-Received: by 2002:a17:902:ce01:b0:1cc:3daa:d368 with SMTP id
- k1-20020a170902ce0100b001cc3daad368mr6246421plg.65.1699540958650; 
- Thu, 09 Nov 2023 06:42:38 -0800 (PST)
-Received: from ?IPV6:2001:ee0:50f4:9050:b178:6138:397c:2ce7?
- ([2001:ee0:50f4:9050:b178:6138:397c:2ce7])
- by smtp.gmail.com with ESMTPSA id
- z7-20020a1709027e8700b001b7f40a8959sm3688022pla.76.2023.11.09.06.42.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Nov 2023 06:42:38 -0800 (PST)
-Message-ID: <7a56029c-8637-4abd-a38f-7b838a059749@gmail.com>
-Date: Thu, 9 Nov 2023 21:42:30 +0700
+ d=1e100.net; s=20230601; t=1699541068; x=1700145868;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VovdA1XYVOBSHnYUjjsDosCFdi0dbItblIgDu0vjIxk=;
+ b=JaqMB/CeBKInS0//6rgvhTKV7Vo5uPP964c/egiuvh8AkzpRqrGnpJPDXDmRnBrxUT
+ Ymvkk3AadsBk1RtshUnJ5qWrFHrVzYkYJf6DHzHg4/4L7fRVgYMuQbBhonQTBJ1p2EsI
+ G+j+xee4dS5TNaV0l6H1va91uiCPptK4rWYU3rgA8oGwPJe/5I/kEmjJNaaPggVv/dfd
+ Pg0KIl0M0cEMhXFoiTjRuAmWC0ywd4OT5GD93mcbXfP7U2RNR2lju41uWMhszdomsT9S
+ LKi6T3kN3YSMDfS2c4RDhcumnWKQEWKcSHJGPgROHcR0pbhvQEZ6DhXpBu/SQgWJM0y+
+ A2IQ==
+X-Gm-Message-State: AOJu0Ywwx7aRWHwTB+60a7nC4+heu5mWaUTc4P1B5vcxAYDQ/HttAHr8
+ kOiIHmQAuyIPIDAhFh4tMTPvCdWXY9d3JkSvTyKSBw==
+X-Google-Smtp-Source: AGHT+IHdk39ojq58pZ0cUkr4kVBLv8ugRxrTw2vRrwEqvEpRWlpWUBJd/1eCHBmYr7iWwNyxfGb7uD0nW/FbAMTyvQM=
+X-Received: by 2002:a05:6402:404:b0:545:4bf3:ac89 with SMTP id
+ q4-20020a056402040400b005454bf3ac89mr2132850edv.23.1699541068266; Thu, 09 Nov
+ 2023 06:44:28 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 0/5] Support x2APIC mode with TCG accelerator
-Content-Language: en-US
-To: Joao Martins <joao.m.martins@oracle.com>,
- Santosh Shukla <santosh.shukla@amd.com>, qemu-devel@nongnu.org
-Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, "Michael S . Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Peter Xu <peterx@redhat.com>,
- Jason Wang <jasowang@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Phil Dennis-Jordan <lists@philjordan.eu>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-References: <20231024152105.35942-1-minhquangbui99@gmail.com>
- <8bbae7b9-3923-b5cd-ff89-50baeccb5d02@amd.com>
- <1c4cf652-9b31-4b22-8bb9-df27dce74cfd@gmail.com>
- <756919c3-13ed-4fcc-a4b2-30cd431746a4@oracle.com>
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-In-Reply-To: <756919c3-13ed-4fcc-a4b2-30cd431746a4@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=minhquangbui99@gmail.com; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <cover.1699351720.git.mst@redhat.com>
+ <221d2cfbdb5301f8f0cfbf26baf76544a5d71c27.1699351720.git.mst@redhat.com>
+In-Reply-To: <221d2cfbdb5301f8f0cfbf26baf76544a5d71c27.1699351720.git.mst@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 9 Nov 2023 14:44:17 +0000
+Message-ID: <CAFEAcA-4UhUkokA8mbtk0D4NnJ7kShO9M60nOahLS1f=vFY=Kw@mail.gmail.com>
+Subject: Re: [PULL 55/63] hw/cxl/mbox: Add support for background operations
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, Davidlohr Bueso <dave@stgolabs.net>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -107,124 +86,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/9/23 21:32, Joao Martins wrote:
-> On 09/11/2023 14:10, Bui Quang Minh wrote:
->> On 11/9/23 17:11, Santosh Shukla wrote:
->>> On 10/24/2023 8:51 PM, Bui Quang Minh wrote:
->>>> Hi everyone,
->>>>
->>>> This series implements x2APIC mode in userspace local APIC and the
->>>> RDMSR/WRMSR helper to access x2APIC registers in x2APIC mode. Intel iommu
->>>> and AMD iommu are adjusted to support x2APIC interrupt remapping. With this
->>>> series, we can now boot Linux kernel into x2APIC mode with TCG accelerator
->>>> using either Intel or AMD iommu.
->>>>
->>>> Testing to boot my own built Linux 6.3.0-rc2, the kernel successfully boot
->>>> with enabled x2APIC and can enumerate CPU with APIC ID 257
->>>>
->>>> Using Intel IOMMU
->>>>
->>>> qemu/build/qemu-system-x86_64 \
->>>>     -smp 2,maxcpus=260 \
->>>>     -cpu qemu64,x2apic=on \
->>>>     -machine q35 \
->>>>     -device intel-iommu,intremap=on,eim=on \
->>>>     -device qemu64-x86_64-cpu,x2apic=on,core-id=257,socket-id=0,thread-id=0 \
->>>>     -m 2G \
->>>>     -kernel $KERNEL_DIR \
->>>>     -append "nokaslr console=ttyS0 root=/dev/sda earlyprintk=serial
->>>> net.ifnames=0" \
->>>>     -drive file=$IMAGE_DIR,format=raw \
->>>>     -nographic \
->>>>     -s
->>>>
->>>> Using AMD IOMMU
->>>>
->>>> qemu/build/qemu-system-x86_64 \
->>>>     -smp 2,maxcpus=260 \
->>>>     -cpu qemu64,x2apic=on \
->>>>     -machine q35 \
->>>>     -device amd-iommu,intremap=on,xtsup=on \
->>>>     -device qemu64-x86_64-cpu,x2apic=on,core-id=257,socket-id=0,thread-id=0 \
->>>>     -m 2G \
->>>>     -kernel $KERNEL_DIR \
->>>>     -append "nokaslr console=ttyS0 root=/dev/sda earlyprintk=serial
->>>> net.ifnames=0" \
->>>>     -drive file=$IMAGE_DIR,format=raw \
->>>>     -nographic \
->>>>     -s
->>>>
->>>> Testing the emulated userspace APIC with kvm-unit-tests, disable test
->>>> device with this patch
->>>>
->>>> diff --git a/lib/x86/fwcfg.c b/lib/x86/fwcfg.c
->>>> index 1734afb..f56fe1c 100644
->>>> --- a/lib/x86/fwcfg.c
->>>> +++ b/lib/x86/fwcfg.c
->>>> @@ -27,6 +27,7 @@ static void read_cfg_override(void)
->>>>
->>>>           if ((str = getenv("TEST_DEVICE")))
->>>>                   no_test_device = !atol(str);
->>>> +       no_test_device = true;
->>>>
->>>>           if ((str = getenv("MEMLIMIT")))
->>>>                   fw_override[FW_CFG_MAX_RAM] = atol(str) * 1024 * 1024;
->>>>
->>>> ~ env QEMU=/home/minh/Desktop/oss/qemu/build/qemu-system-x86_64 ACCEL=tcg \
->>>> ./run_tests.sh -v -g apic
->>>>
->>>> TESTNAME=apic-split TIMEOUT=90s ACCEL=tcg ./x86/run x86/apic.flat -smp 2
->>>> -cpu qemu64,+x2apic,+tsc-deadline -machine kernel_irqchip=split FAIL
->>>> apic-split (54 tests, 8 unexpected failures, 1 skipped)
->>>> TESTNAME=ioapic-split TIMEOUT=90s ACCEL=tcg ./x86/run x86/ioapic.flat -smp
->>>> 1 -cpu qemu64 -machine kernel_irqchip=split PASS ioapic-split (19 tests)
->>>> TESTNAME=x2apic TIMEOUT=30 ACCEL=tcg ./x86/run x86/apic.flat -smp 2 -cpu
->>>> qemu64,+x2apic,+tsc-deadline FAIL x2apic (54 tests, 8 unexpected failures,
->>>> 1 skipped) TESTNAME=xapic TIMEOUT=60 ACCEL=tcg ./x86/run x86/apic.flat -smp
->>>> 2 -cpu qemu64,-x2apic,+tsc-deadline -machine pit=off FAIL xapic (43 tests,
->>>> 6 unexpected failures, 2 skipped)
->>>>
->>>>     FAIL: apic_disable: *0xfee00030: 50014
->>>>     FAIL: apic_disable: *0xfee00080: f0
->>>>     FAIL: apic_disable: *0xfee00030: 50014
->>>>     FAIL: apic_disable: *0xfee00080: f0
->>>>     FAIL: apicbase: relocate apic
->>>>
->>>> These errors are because we don't disable MMIO region when switching to
->>>> x2APIC and don't support relocate MMIO region yet. This is a problem
->>>> because, MMIO region is the same for all CPUs, in order to support these we
->>>> need to figure out how to allocate and manage different MMIO regions for
->>>> each CPUs. This can be an improvement in the future.
->>>>
->>>>     FAIL: nmi-after-sti
->>>>     FAIL: multiple nmi
->>>>
->>>> These errors are in the way we handle CPU_INTERRUPT_NMI in core TCG.
->>>>
->>>>     FAIL: TMCCT should stay at zero
->>>>
->>>> This error is related to APIC timer which should be addressed in separate
->>>> patch.
->>>>
->>>> Version 9 changes,
->>>
->>> Hi Bui,
->>>
->>> I have tested v9 on EPYC-Genoa system with kvm acceleration mode on, I could
->>> see > 255 vCPU for Linux and Windows Guest.
->>>
->>> Tested-by: Santosh Shukla <Santosh.Shukla@amd.com>
->>
->> Hi Santosh,
->>
->> With KVM enabled, you may be using the in kernel APIC from KVM not the emulated
->> APIC in userspace as in this series.
->>
-> 
-> Your XTSup code isn't necessarily userspace APIC specific. You can have
-> accel=kvm with split irqchip and things will still work. I suspect that's how
-> Santosh tested it.
+On Tue, 7 Nov 2023 at 10:13, Michael S. Tsirkin <mst@redhat.com> wrote:
+>
+> From: Davidlohr Bueso <dave@stgolabs.net>
+>
+> Support background commands in the mailbox, and update
+> cmd_infostat_bg_op_sts() accordingly. This patch does not implement mbox
+> interrupts upon completion, so the kernel driver must rely on polling to
+> know when the operation is done.
+>
+> Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> Message-Id: <20231023160806.13206-12-Jonathan.Cameron@huawei.com>
+> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
-Ah, I got it. Thanks Santosh, Joao.
-Quang Minh.
+Hi; Coverity points out dead code in this function (CID 1523907):
+
+> +static void bg_timercb(void *opaque)
+> +{
+> +    CXLCCI *cci = opaque;
+> +    CXLDeviceState *cxl_dstate = &CXL_TYPE3(cci->d)->cxl_dstate;
+> +    uint64_t bg_status_reg = 0;
+> +    uint64_t now = qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL);
+> +    uint64_t total_time = cci->bg.starttime + cci->bg.runtime;
+> +
+> +    assert(cci->bg.runtime > 0);
+> +    bg_status_reg = FIELD_DP64(bg_status_reg, CXL_DEV_BG_CMD_STS,
+> +                               OP, cci->bg.opcode);
+> +
+> +    if (now >= total_time) { /* we are done */
+> +        uint64_t status_reg;
+> +        uint16_t ret = CXL_MBOX_SUCCESS;
+
+Here we set 'ret' to CXL_MBOX_SUCCESS...
+
+> +
+> +        cci->bg.complete_pct = 100;
+> +        /* Clear bg */
+> +        status_reg = FIELD_DP64(0, CXL_DEV_MAILBOX_STS, BG_OP, 0);
+> +        cxl_dstate->mbox_reg_state64[R_CXL_DEV_MAILBOX_STS] = status_reg;
+> +
+> +        bg_status_reg = FIELD_DP64(bg_status_reg, CXL_DEV_BG_CMD_STS,
+> +                                   RET_CODE, ret);
+
+...and nothing here changes 'ret'...
+
+> +
+> +        /* TODO add ad-hoc cmd succesful completion handling */
+> +
+> +        qemu_log("Background command %04xh finished: %s\n",
+> +                 cci->bg.opcode,
+> +                 ret == CXL_MBOX_SUCCESS ? "success" : "aborted");
+
+...but here we check whether ret is CXL_MBOX_SUCCESS or not:
+the "aborted" half of this condition is dead code.
+
+A later commit adds an "if (ret == CXL_MBOX_SUCCESS) {" block
+where the TODO currently is, and that is an unnecessary check,
+because ret cannot be anything else at that point.
+
+> +    } else {
+> +        /* estimate only */
+> +        cci->bg.complete_pct = 100 * now / total_time;
+> +        timer_mod(cci->bg.timer, now + CXL_MBOX_BG_UPDATE_FREQ);
+> +    }
+
+What was the intention here ?
+
+thanks
+-- PMM
 
