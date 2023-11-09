@@ -2,76 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7862A7E6834
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 11:33:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A560D7E6835
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 Nov 2023 11:33:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r12Lb-0007ic-Dk; Thu, 09 Nov 2023 05:33:15 -0500
+	id 1r12M1-0007mf-4N; Thu, 09 Nov 2023 05:33:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philippe.mathieu-daude@linaro.org>)
- id 1r12LY-0007iQ-A6
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 05:33:12 -0500
-Received: from mail-qk1-x731.google.com ([2607:f8b0:4864:20::731])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philippe.mathieu-daude@linaro.org>)
- id 1r12LJ-00008W-TN
- for qemu-devel@nongnu.org; Thu, 09 Nov 2023 05:33:10 -0500
-Received: by mail-qk1-x731.google.com with SMTP id
- af79cd13be357-7789cc5c8ccso60604485a.0
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 02:32:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <prvs=670a93ad5=dwmw@amazon.co.uk>)
+ id 1r12Lr-0007mU-L5
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 05:33:31 -0500
+Received: from smtp-fw-52005.amazon.com ([52.119.213.156])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <prvs=670a93ad5=dwmw@amazon.co.uk>)
+ id 1r12Lo-0000Hw-GA
+ for qemu-devel@nongnu.org; Thu, 09 Nov 2023 05:33:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699525976; x=1700130776; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=WRHV41HjbqwkytpjP7R0wen4xj42WGhuct82a0bgmFs=;
- b=UgSf9LSlWPXD56vykLPeHRUE+8H2VpJUqdixDQCccqzULBuaX0c68K+o6X5+t2fz6w
- PlWVpJAAp30WPPtt61G+SU1+nhLQr97y5avWjwGhPtB5JGIZdaidtLm0GuR8NgbZtjNi
- qHQ0NDVfdQZYwTkIkbn+WZR44Aitje+3uV7fGbaa3anGhTwXGA4IXKHzj7dlVBthcXdA
- yPnvucgIqvoucYpoerm5yzo82XxHq5jDmge6d4HUCJ7i5JU36zjbd9QiKE+qwyK8dumg
- LIyLhZfdRrwieAwMD04U95i8txvD7xIj/L7oLC+NcFEJ3b0Jjka9+UkIt9cRQGLxJY65
- Wg+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699525976; x=1700130776;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=WRHV41HjbqwkytpjP7R0wen4xj42WGhuct82a0bgmFs=;
- b=OWhSg0Zlv3S3XoKR9UUFu2P/fWXKNJeLM1TQ2PE6twtr8Y5nZKr/dFUlykBwKmMNj4
- IdwJrU3seuaO0I3zao1x5RDG2DcXjNkNhy8xsKAl6T0fwF8qEi6oSn1NusJB69oVTFZf
- Rf0EJUE0DcF87TRPiIBgsCDfxihb/912sNNARfYKhuu8SHN0ACUiLz9x9m/DRWa/Ui9i
- 4EEuEw/VNCTEGHNtcDGWVDUidODTfone150iaD6K8zNv3vA49p2Ysp+Zge+1Ve93KF1O
- UrOopgYKqJun6DGK4y6bX9WpOHsSEFTeD713fCsd8LqUsX0n7D7FJVl9c+eg0j9SNE+P
- DVOw==
-X-Gm-Message-State: AOJu0YzQ9xD45VCje2aGbfheALChOnKyMw7oI3cxuWkX0m2DoEbyzlm6
- UP8DgE0pHJNlZj5VxxRWuMzj3uKQu1DO62ueObfL2Q==
-X-Google-Smtp-Source: AGHT+IEboDMQdxtksnWJMatZecpWnSiOV/P7sVHciyIwmpDtgPkVtMn0ae7/k71FMC0ZZjsx6Mmz5zXUjdXHPVURXjk=
-X-Received: by 2002:a05:620a:2907:b0:778:b30b:9839 with SMTP id
- m7-20020a05620a290700b00778b30b9839mr10907570qkp.23.1699525976160; Thu, 09
- Nov 2023 02:32:56 -0800 (PST)
+ d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+ s=amazon201209; t=1699526008; x=1731062008;
+ h=from:to:cc:subject:date:message-id;
+ bh=tcDArW6GaT5bPuyW9wNKJRfaOZKtro4EH2xj4rr/DEk=;
+ b=IVsd9SFQ+cvKZMIc8GviGM070f3OF0w79EswDAzhRs0jqlsLueAYccXy
+ 1nFUXavHPerGi1Neg3eMhqKRLNTHXw3r1ZXZCTKrctcSoXOFq3rXvMjr+
+ GmvkElmRtWtxtPLM7hedpZkPimjYEDscpp9EBi1fhY1TOiLVnOW7Cj5ox Q=;
+X-Amazon-filename: smime.p7s
+X-IronPort-AV: E=Sophos;i="6.03,289,1694736000"; 
+ d="p7s'?scan'208";a="615105358"
+Content-Type: multipart/mixed; boundary="===============5645647688167219304=="
 MIME-Version: 1.0
-References: <20231109091337.415-1-gmanning@rapitasystems.com>
-In-Reply-To: <20231109091337.415-1-gmanning@rapitasystems.com>
-From: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Date: Thu, 9 Nov 2023 11:32:44 +0100
-Message-ID: <CAPMQPEJozXXPGWTPPbRxUEWZsdEVrVrwuuqQJehwYN41PfL8rQ@mail.gmail.com>
-Subject: Re: [PATCH] plugins: fix win plugin tests on cross compile
-To: Greg Manning <gmanning@rapitasystems.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::731;
- envelope-from=philippe.mathieu-daude@linaro.org; helo=mail-qk1-x731.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO
+ email-inbound-relay-iad-1a-m6i4x-b5bd57cf.us-east-1.amazon.com) ([10.43.8.6])
+ by smtp-border-fw-52005.iad7.amazon.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2023 10:33:23 +0000
+Received: from smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev
+ (iad7-ws-svc-p70-lb3-vlan3.iad.amazon.com [10.32.235.38])
+ by email-inbound-relay-iad-1a-m6i4x-b5bd57cf.us-east-1.amazon.com (Postfix)
+ with ESMTPS id 60FA848F30; Thu,  9 Nov 2023 10:33:23 +0000 (UTC)
+Received: from EX19MTAUEC001.ant.amazon.com [10.0.0.204:64094]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.5.237:2525]
+ with esmtp (Farcaster)
+ id 9b4a943d-222a-4a8c-860b-0232d51336ab; Thu, 9 Nov 2023 10:33:22 +0000 (UTC)
+X-Farcaster-Flow-ID: 9b4a943d-222a-4a8c-860b-0232d51336ab
+Received: from EX19D008UEC001.ant.amazon.com (10.252.135.232) by
+ EX19MTAUEC001.ant.amazon.com (10.252.135.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.39; Thu, 9 Nov 2023 10:33:22 +0000
+Received: from EX19D008UEC001.ant.amazon.com (10.252.135.232) by
+ EX19D008UEC001.ant.amazon.com (10.252.135.232) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1118.39;
+ Thu, 9 Nov 2023 10:33:22 +0000
+Received: from EX19D008UEC001.ant.amazon.com ([fe80::4702:5d1a:c556:797]) by
+ EX19D008UEC001.ant.amazon.com ([fe80::4702:5d1a:c556:797%3]) with mapi id
+ 15.02.1118.039; Thu, 9 Nov 2023 10:33:22 +0000
+To: "peter.maydell@linaro.org" <peter.maydell@linaro.org>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: [PATCH] doc/sphinx/hxtool.py: add optional label argument to SRST
+ directive
+Thread-Topic: [PATCH] doc/sphinx/hxtool.py: add optional label argument to
+ SRST directive
+Thread-Index: AQHaEvgp4m9M2sagZ0+ecgeFrzq7mQ==
+Date: Thu, 9 Nov 2023 10:33:22 +0000
+Message-ID: <7a25bd4ee1f8b06c7a51d20486aaa8bc8e1282ea.camel@amazon.co.uk>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.106.82.23]
+MIME-Version: 1.0
+Precedence: Bulk
+Received-SPF: pass client-ip=52.119.213.156;
+ envelope-from=prvs=670a93ad5=dwmw@amazon.co.uk; helo=smtp-fw-52005.amazon.com
+X-Spam_score_int: -118
+X-Spam_score: -11.9
+X-Spam_bar: -----------
+X-Spam_report: (-11.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01, UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -80,98 +92,255 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  "Woodhouse, David" <dwmw@amazon.co.uk>
+From:  "Woodhouse, David" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Greg,
+--===============5645647688167219304==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=sha-256;
+	protocol="application/pkcs7-signature"; boundary="=-n7tVtrrf1bAfW1vdsU2f"
 
-On 9/11/23 10:13, Greg Manning wrote:
-> fixes #1927.
+--=-n7tVtrrf1bAfW1vdsU2f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-Does this match the GitLab pattern? See
-https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#default-closing-pattern
+V2UgY2FuJ3QganVzdCBlbWJlZCBsYWJlbHMgZGlyZWN0bHkgaW50byBmaWxlcyBsaWtlIHFlbXUt
+b3B0aW9ucy5oeCB3aGljaAphcmUgaW5jbHVkZWQgZnJvbSBtdWx0aXBsZSB0b3AtbGV2ZWwgUlNU
+IGZpbGVzLCBiZWNhdXNlIFNwaGlueCBzZWVzIHRoZQpsYWJlbHMgYXMgZHVwbGljYXRlOiBodHRw
+czovL2dpdGh1Yi5jb20vc3BoaW54LWRvYy9zcGhpbngvaXNzdWVzLzk3MDcKClNvIGFkZCBhbiAn
+ZW1pdHJlZnMnIG9wdGlvbiB0byB0aGUgU3BoaW54IGh4dG9vbC1kb2MgZGlyZWN0aXZlLCB3aGlj
+aCBpcwpzZXQgb25seSBpbiBpbnZvY2F0aW9uLnJzdCBhbmQgbm90IGZyb20gdGhlIEhUTUwgcmVu
+ZGl0aW9uIG9mIHRoZSBtYW4KcGFnZS4gQWxvbmcgd2l0aCBhbiBhcmd1bWVudCB0byB0aGUgU1JT
+VCBkaXJlY3RpdmUgd2hpY2ggY2F1c2VzIGEgbGFiZWwKb2YgdGhlIGZvcm0gJy4uIF9MQUJFTC1y
+ZWZlcmVuY2UtbGFiZWw6JyB0byBiZSBlbWl0dGVkIHdoZW4gdGhlIGVtaXRyZWZzCm9wdGlvbiBp
+cyBzZXQuCgpOb3cgd2hlcmUgdGhlIFhlbiBQViBkb2N1bWVudGF0aW9uIHJlZmVycyB0byB0aGUg
+ZG9jdW1lbnRhdGlvbiBmb3IgdGhlCi1pbml0cmQgY29tbWFuZCBsaW5lIG9wdGlvbiwgaXQgY2Fu
+IGVtaXQgYSBsaW5rIGRpcmVjdGx5IHRvIGl0LgoKU2lnbmVkLW9mZi1ieTogRGF2aWQgV29vZGhv
+dXNlIDxkd213QGFtYXpvbi5jby51az4KUmV2aWV3ZWQtYnk6IFBhdWwgRHVycmFudCA8cGF1bEB4
+ZW4ub3JnPgotLS0KaHR0cHM6Ly9xZW11LXByb2plY3QuZ2l0bGFiLmlvL3FlbXUvc3lzdGVtL2kz
+ODYveGVuLmh0bWwgdGVsbHMgdGhlIHVzZXIKdG8gInNlZSB0aGUgY29tbWFuZCBsaW5lIGRvY3Vt
+ZW50YXRpb24gZm9yIHRoZSAtaW5pdHJkIG9wdGlvbiIuIEl0J2QgYmUKYSB3aG9sZSBsb3Qgbmlj
+ZXIgaWYgd2UgY291bGQgKmxpbmsqIHRvIGl0LiBJdCBhY3R1YWxseSB3b3JrZWQgb24gbXkKdGVz
+dCBib3gsIGJ1dCBvbmx5IGJlY2F1c2UgSSdtIHVzaW5nIGFuIG9sZGVyIHZlcnNpb24gb2YgU3Bo
+aW54IHdoaWNoCmRpZG4ndCBjb21wbGFpbiBhYm91dCB0aGUgZHVwbGljYXRlIHJlZnMsIGFuZCBq
+dXN0IHBpY2tlZCAqb25lKiB0byBsaW5rCnRvLgoKwqBkb2NzL3NwaGlueC9oeHRvb2wucHnCoMKg
+wqDCoMKgIHwgMTggKysrKysrKysrKysrKysrKystCsKgZG9jcy9zeXN0ZW0vaTM4Ni94ZW4ucnN0
+wqDCoCB8wqAgMiArLQrCoGRvY3Mvc3lzdGVtL2ludm9jYXRpb24ucnN0IHzCoCAxICsKwqBxZW11
+LW9wdGlvbnMuaHjCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAyICstCsKgNCBmaWxlcyBjaGFu
+Z2VkLCAyMCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RvY3Mv
+c3BoaW54L2h4dG9vbC5weSBiL2RvY3Mvc3BoaW54L2h4dG9vbC5weQppbmRleCA5ZjZiOWQ4N2Rj
+Li5iZmIwOTI5NTczIDEwMDY0NAotLS0gYS9kb2NzL3NwaGlueC9oeHRvb2wucHkKKysrIGIvZG9j
+cy9zcGhpbngvaHh0b29sLnB5CkBAIC03OCwxOCArNzgsMjggQEAgZGVmIHBhcnNlX2FyY2hoZWFk
+aW5nKGZpbGUsIGxudW0sIGxpbmUpOgrCoMKgwqDCoMKgwqDCoMKgIHNlcnJvcihmaWxlLCBsbnVt
+LCAiSW52YWxpZCBBUkNISEVBRElORyBsaW5lIikKwqDCoMKgwqAgcmV0dXJuIG1hdGNoLmdyb3Vw
+KDEpCsKgCitkZWYgcGFyc2Vfc3JzdChmaWxlLCBsbnVtLCBsaW5lKToKK8KgwqDCoCAiIiJIYW5k
+bGUgYW4gU1JTVCBkaXJlY3RpdmUiIiIKK8KgwqDCoCAjIFRoZSBpbnB1dCBzaG91bGQgYmUgIlNS
+U1QobGFiZWwpIi4KK8KgwqDCoCBtYXRjaCA9IHJlLm1hdGNoKHInU1JTVFwoKC4qPylcKScsIGxp
+bmUpCivCoMKgwqAgaWYgbWF0Y2ggaXMgTm9uZToKK8KgwqDCoMKgwqDCoMKgIHNlcnJvcihmaWxl
+LCBsbnVtLCAiSW52YWxpZCBTUlNUIGxpbmUiKQorwqDCoMKgIHJldHVybiBtYXRjaC5ncm91cCgx
+KQorCsKgY2xhc3MgSHh0b29sRG9jRGlyZWN0aXZlKERpcmVjdGl2ZSk6CsKgwqDCoMKgICIiIkV4
+dHJhY3QgclNUIGZyYWdtZW50cyBmcm9tIHRoZSBzcGVjaWZpZWQgLmh4IGZpbGUiIiIKwqDCoMKg
+wqAgcmVxdWlyZWRfYXJndW1lbnQgPSAxCsKgwqDCoMKgIG9wdGlvbmFsX2FyZ3VtZW50cyA9IDEK
+wqDCoMKgwqAgb3B0aW9uX3NwZWMgPSB7Ci3CoMKgwqDCoMKgwqDCoCAnaHhmaWxlJzogZGlyZWN0
+aXZlcy51bmNoYW5nZWRfcmVxdWlyZWQKK8KgwqDCoMKgwqDCoMKgICdoeGZpbGUnOiBkaXJlY3Rp
+dmVzLnVuY2hhbmdlZF9yZXF1aXJlZCwKK8KgwqDCoMKgwqDCoMKgICdlbWl0cmVmcyc6IGRpcmVj
+dGl2ZXMuZmxhZwrCoMKgwqDCoCB9CsKgwqDCoMKgIGhhc19jb250ZW50ID0gRmFsc2UKwqAKwqDC
+oMKgwqAgZGVmIHJ1bihzZWxmKToKwqDCoMKgwqDCoMKgwqDCoCBlbnYgPSBzZWxmLnN0YXRlLmRv
+Y3VtZW50LnNldHRpbmdzLmVudgrCoMKgwqDCoMKgwqDCoMKgIGh4ZmlsZSA9IGVudi5jb25maWcu
+aHh0b29sX3NyY3RyZWUgKyAnLycgKyBzZWxmLmFyZ3VtZW50c1swXQorwqDCoMKgwqDCoMKgwqAg
+ZW1pdHJlZnMgPSAiZW1pdHJlZnMiIGluIHNlbGYub3B0aW9ucwrCoArCoMKgwqDCoMKgwqDCoMKg
+ICMgVGVsbCBzcGhpbnggb2YgdGhlIGRlcGVuZGVuY3kKwqDCoMKgwqDCoMKgwqDCoCBlbnYubm90
+ZV9kZXBlbmRlbmN5KG9zLnBhdGguYWJzcGF0aChoeGZpbGUpKQpAQCAtMTEzLDYgKzEyMywxMiBA
+QCBkZWYgcnVuKHNlbGYpOgrCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgc2Vycm9yKGh4ZmlsZSwgbG51bSwgJ2V4cGVjdGVkIEVSU1QsIGZvdW5kIFNSU1Qn
+KQrCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGVsc2U6CsKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzdGF0ZSA9IEh4U3RhdGUu
+UlNUCivCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlmIGVt
+aXRyZWZzIGFuZCBsaW5lICE9ICJTUlNUIjoKK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBsYWJlbCA9IHBhcnNlX3Nyc3QoaHhmaWxlLCBsbnVt
+LCBsaW5lKQorwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIGlmIGxhYmVsICE9ICIiOgorwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcnN0bGlzdC5hcHBlbmQoIiIsIGh4ZmlsZSwg
+bG51bSAtIDEpCivCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoCByZWZsaW5lID0gIi4uIF8iICsgbGFiZWwgKyAiLXJlZmVyZW5jZS1s
+YWJlbDoiCivCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCByc3RsaXN0LmFwcGVuZChyZWZsaW5lLCBoeGZpbGUsIGxudW0gLSAxKQrC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBlbGlmIGRpcmVjdGl2ZSA9PSAnRVJTVCc6
+CsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgc3RhdGUgPT0gSHhT
+dGF0ZS5DVEVYVDoKwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgIHNlcnJvcihoeGZpbGUsIGxudW0sICdleHBlY3RlZCBTUlNULCBmb3VuZCBFUlNUJykKZGlm
+ZiAtLWdpdCBhL2RvY3Mvc3lzdGVtL2kzODYveGVuLnJzdCBiL2RvY3Mvc3lzdGVtL2kzODYveGVu
+LnJzdAppbmRleCA4MTg5ODc2OGJhLi41MzZkZDZhMmY5IDEwMDY0NAotLS0gYS9kb2NzL3N5c3Rl
+bS9pMzg2L3hlbi5yc3QKKysrIGIvZG9jcy9zeXN0ZW0vaTM4Ni94ZW4ucnN0CkBAIC0xMzIsNyAr
+MTMyLDcgQEAgVGhlIGV4YW1wbGUgYWJvdmUgcHJvdmlkZXMgdGhlIGd1ZXN0IGtlcm5lbCBjb21t
+YW5kIGxpbmUgYWZ0ZXIgYSBzZXBhcmF0b3IKwqAoIiBgYC0tYGAgIikgb24gdGhlIFhlbiBjb21t
+YW5kIGxpbmUsIGFuZCBkb2VzIG5vdCBwcm92aWRlIHRoZSBndWVzdCBrZXJuZWwKwqB3aXRoIGFu
+IGFjdHVhbCBpbml0cmFtZnMsIHdoaWNoIHdvdWxkIG5lZWQgdG8gbGlzdGVkIGFzIGEgc2Vjb25k
+IG11bHRpYm9vdArCoG1vZHVsZS4gRm9yIG1vcmUgY29tcGxpY2F0ZWQgYWx0ZXJuYXRpdmVzLCBz
+ZWUgdGhlIGNvbW1hbmQgbGluZQotZG9jdW1lbnRhdGlvbiBmb3IgdGhlIGBgLWluaXRyZGBgIG9w
+dGlvbi4KKzpyZWY6YGRvY3VtZW50YXRpb24gPGluaXRyZC1yZWZlcmVuY2UtbGFiZWw+YCBmb3Ig
+dGhlIGBgLWluaXRyZGBgIG9wdGlvbi4KwqAKwqBIb3N0IE9TIHJlcXVpcmVtZW50cwrCoC0tLS0t
+LS0tLS0tLS0tLS0tLS0tCmRpZmYgLS1naXQgYS9kb2NzL3N5c3RlbS9pbnZvY2F0aW9uLnJzdCBi
+L2RvY3Mvc3lzdGVtL2ludm9jYXRpb24ucnN0CmluZGV4IDRiYTM4ZmMyM2QuLmVmNzVkYWQyZTIg
+MTAwNjQ0Ci0tLSBhL2RvY3Mvc3lzdGVtL2ludm9jYXRpb24ucnN0CisrKyBiL2RvY3Mvc3lzdGVt
+L2ludm9jYXRpb24ucnN0CkBAIC0xMSw2ICsxMSw3IEBAIGRpc2tfaW1hZ2UgaXMgYSByYXcgaGFy
+ZCBkaXNrIGltYWdlIGZvciBJREUgaGFyZCBkaXNrIDAuIFNvbWUgdGFyZ2V0cyBkbwrCoG5vdCBu
+ZWVkIGEgZGlzayBpbWFnZS4KwqAKwqAuLiBoeHRvb2wtZG9jOjogcWVtdS1vcHRpb25zLmh4CivC
+oMKgwqAgOmVtaXRyZWZzOgrCoArCoERldmljZSBVUkwgU3ludGF4CsKgfn5+fn5+fn5+fn5+fn5+
+fn4KZGlmZiAtLWdpdCBhL3FlbXUtb3B0aW9ucy5oeCBiL3FlbXUtb3B0aW9ucy5oeAppbmRleCA0
+MmZkMDllNGRlLi40NjRlNzI1N2IwIDEwMDY0NAotLS0gYS9xZW11LW9wdGlvbnMuaHgKKysrIGIv
+cWVtdS1vcHRpb25zLmh4CkBAIC0zOTg3LDcgKzM5ODcsNyBAQCBFUlNUCsKgCsKgREVGKCJpbml0
+cmQiLCBIQVNfQVJHLCBRRU1VX09QVElPTl9pbml0cmQsIFwKwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCAiLWluaXRyZCBmaWxlwqDCoMKgIHVzZSAnZmlsZScgYXMgaW5pdGlhbCByYW0gZGlza1xuIiwg
+UUVNVV9BUkNIX0FMTCkKLVNSU1QKK1NSU1QoaW5pdHJkKQrCoArCoGBgLWluaXRyZCBmaWxlYGAK
+wqDCoMKgwqAgVXNlIGZpbGUgYXMgaW5pdGlhbCByYW0gZGlzay4KLS0gCjIuMzQuMQoKCg==
 
-We usually write:
-"Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1927"
 
-So there is no confusion between forked repositories, or when
-commits are cherry-picked by stable distributions.
+--=-n7tVtrrf1bAfW1vdsU2f
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-Are you sure this is #1927 "SPARC64 pci-bridge kernel panic"?
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEjww
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhAwggT4oAMCAQICEQC/QgfpbUT3q2fHshU/ReqfMA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowIjEgMB4GCSqGSIb3DQEJARYRZHdtd0BhbWF6b24uY28udWsw
+ggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQCZgnzd4h6STv/MQcUPixvDN/dNtp4yVSdc
+xz9mB1OcA7HXd4WdPyYagmkcH0WguDYaQnOszkSdElI+2XRFSlGXhY7U9tktvdWuY1zAY1UWES8e
+3BUHqSKbIKx4SX6GuctCcPnyagVZ9Hk21YUElx9cdmrqt0bGoydgxAspEx56J9Q5a48WfvFYjLBF
+NL1dw+P1eUeAljco30+Xggf5faawKfPArUX0cmU4VIh5DMUyv4d0xxfNN6cK1GMj/HGUg2T9OTHW
+nbTdq+OHJwHGi/37mCWx1O3uV0hbZzA1fNklaqlsr1Acg0elPeCFXLb8dSkMgQZHNJVjn+mBvG4d
+MG4FS3ntipApytA+a5IaMP3LNAo0EoBd5/xVy0M6TXbiYesYLq9rhnrLgO1qcw7+if0jH9YoEJ6a
+Je1m7omfEXh2XpospSLaohmAqaBKlyhXDXbTnUVnIf79zU5ohHZof0cP2amnnvYUVD72iuf9qe7X
+4L1Rj589qEWYROKiMil5X7l/smE1dAmxhKxx6YWvWkXH9u7JOcmLGdKST0voaY7j3Wk0lxK3NKsk
+q0G3BpqbPz3P8BYtn38BvbkFnwVW7F7Qzus3KZJgP62eN25QHxoFj44x3sppx4I5WlYG4lxdFZsY
+smQdj64c7MaJ7cp8RJN+eO32RKrkndEkihzxevl11wIDAQABo4IByjCCAcYwHwYDVR0jBBgwFoAU
+CcDy/AvalNtf/ivfqJlCz8ngrQAwHQYDVR0OBBYEFJ418HpIgZaPnwpWdCNSvm4XgH/lMA4GA1Ud
+DwEB/wQEAwIFoDAMBgNVHRMBAf8EAjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMEBggrBgEFBQcDAjBA
+BgNVHSAEOTA3MDUGDCsGAQQBsjEBAgEBATAlMCMGCCsGAQUFBwIBFhdodHRwczovL3NlY3RpZ28u
+Y29tL0NQUzBaBgNVHR8EUzBRME+gTaBLhklodHRwOi8vY3JsLnNlY3RpZ28uY29tL1NlY3RpZ29S
+U0FDbGllbnRBdXRoZW50aWNhdGlvbmFuZFNlY3VyZUVtYWlsQ0EuY3JsMIGKBggrBgEFBQcBAQR+
+MHwwVQYIKwYBBQUHMAKGSWh0dHA6Ly9jcnQuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1
+dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcnQwIwYIKwYBBQUHMAGGF2h0dHA6Ly9vY3Nw
+LnNlY3RpZ28uY29tMBwGA1UdEQQVMBOBEWR3bXdAYW1hem9uLmNvLnVrMA0GCSqGSIb3DQEBCwUA
+A4IBAQCSez7gtf1wlWJr568crX21nm6QFWRdJ/YxMOReeqYtGs8QZf2zm2vIEFab61MrgJFJcFJL
+sRhVHwnH/hvax3ZldDpUhM0ODpA9soUjYsvKJ0boFAHPtI1BL0yrZNCBdsUGxMv0t64Acj2ovxQ+
+OxPd5ngHu0MzYIKLDvTSehxkh/qW23X7Ey/fPR0sgnAK4IV7clidmuWBbrqX+WKEyEP2kaEvLsRg
+8plzYbVVFJl37rX2waKnGaWYnJ3BrvcMMgDSQCuoxMThWAOr7wxOh0ni0K3rW7CwDIAjUSk+fFmS
+2EacUvIv/0xUW1nXzGJ12/Qyi+Mw65m0qE776qfcftg3MIIGEDCCBPigAwIBAgIRAL9CB+ltRPer
+Z8eyFT9F6p8wDQYJKoZIhvcNAQELBQAwgZYxCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVy
+IE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAWBgNVBAoTD1NlY3RpZ28gTGltaXRlZDE+
+MDwGA1UEAxM1U2VjdGlnbyBSU0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1h
+aWwgQ0EwHhcNMjIwMTA3MDAwMDAwWhcNMjUwMTA2MjM1OTU5WjAiMSAwHgYJKoZIhvcNAQkBFhFk
+d213QGFtYXpvbi5jby51azCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAJmCfN3iHpJO
+/8xBxQ+LG8M39022njJVJ1zHP2YHU5wDsdd3hZ0/JhqCaRwfRaC4NhpCc6zORJ0SUj7ZdEVKUZeF
+jtT22S291a5jXMBjVRYRLx7cFQepIpsgrHhJfoa5y0Jw+fJqBVn0eTbVhQSXH1x2auq3RsajJ2DE
+CykTHnon1DlrjxZ+8ViMsEU0vV3D4/V5R4CWNyjfT5eCB/l9prAp88CtRfRyZThUiHkMxTK/h3TH
+F803pwrUYyP8cZSDZP05MdadtN2r44cnAcaL/fuYJbHU7e5XSFtnMDV82SVqqWyvUByDR6U94IVc
+tvx1KQyBBkc0lWOf6YG8bh0wbgVLee2KkCnK0D5rkhow/cs0CjQSgF3n/FXLQzpNduJh6xgur2uG
+esuA7WpzDv6J/SMf1igQnpol7WbuiZ8ReHZemiylItqiGYCpoEqXKFcNdtOdRWch/v3NTmiEdmh/
+Rw/Zqaee9hRUPvaK5/2p7tfgvVGPnz2oRZhE4qIyKXlfuX+yYTV0CbGErHHpha9aRcf27sk5yYsZ
+0pJPS+hpjuPdaTSXErc0qySrQbcGmps/Pc/wFi2ffwG9uQWfBVbsXtDO6zcpkmA/rZ43blAfGgWP
+jjHeymnHgjlaVgbiXF0VmxiyZB2PrhzsxontynxEk3547fZEquSd0SSKHPF6+XXXAgMBAAGjggHK
+MIIBxjAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUnjXwekiBlo+f
+ClZ0I1K+bheAf+UwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEW
+F2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2Vj
+dGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5j
+cmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9T
+ZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEF
+BQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHAYDVR0RBBUwE4ERZHdtd0BhbWF6b24uY28u
+dWswDQYJKoZIhvcNAQELBQADggEBAJJ7PuC1/XCVYmvnrxytfbWebpAVZF0n9jEw5F56pi0azxBl
+/bOba8gQVpvrUyuAkUlwUkuxGFUfCcf+G9rHdmV0OlSEzQ4OkD2yhSNiy8onRugUAc+0jUEvTKtk
+0IF2xQbEy/S3rgByPai/FD47E93meAe7QzNggosO9NJ6HGSH+pbbdfsTL989HSyCcArghXtyWJ2a
+5YFuupf5YoTIQ/aRoS8uxGDymXNhtVUUmXfutfbBoqcZpZicncGu9wwyANJAK6jExOFYA6vvDE6H
+SeLQretbsLAMgCNRKT58WZLYRpxS8i//TFRbWdfMYnXb9DKL4zDrmbSoTvvqp9x+2DcxggTHMIIE
+wwIBATCBrDCBljELMAkGA1UEBhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4G
+A1UEBxMHU2FsZm9yZDEYMBYGA1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdv
+IFJTQSBDbGllbnQgQXV0aGVudGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAL9CB+ltRPer
+Z8eyFT9F6p8wDQYJYIZIAWUDBAIBBQCgggHrMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJ
+KoZIhvcNAQkFMQ8XDTIzMTEwOTEwMzMyMVowLwYJKoZIhvcNAQkEMSIEIJSpGT9IZPFKkCKVkr8l
+5Nsm/KnX/JBjaF732NRxJZMSMIG9BgkrBgEEAYI3EAQxga8wgawwgZYxCzAJBgNVBAYTAkdCMRsw
+GQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAWBgNVBAoTD1Nl
+Y3RpZ28gTGltaXRlZDE+MDwGA1UEAxM1U2VjdGlnbyBSU0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9u
+IGFuZCBTZWN1cmUgRW1haWwgQ0ECEQC/QgfpbUT3q2fHshU/ReqfMIG/BgsqhkiG9w0BCRACCzGB
+r6CBrDCBljELMAkGA1UEBhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UE
+BxMHU2FsZm9yZDEYMBYGA1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJT
+QSBDbGllbnQgQXV0aGVudGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAL9CB+ltRPerZ8ey
+FT9F6p8wDQYJKoZIhvcNAQEBBQAEggIAP5PSA2tUyP1+SG+6n9v1zuoLd0AisGnfpQkoAkcbc9IS
+iYPVOuJes+SJcB7+robDyY6luafn8LGlvsZqAqZkjkb+jZdHAg+ocfCKYT2Js4vTrmKz/U7sVzOm
+GHqI39wKFfE5TDRzSBWV9eIDHNgTAGTRPrDFNx8rSQ8DzcI+YhLhZGzPuEkqZdnQJoVmxvvipeR2
+crbz3VAwB6Rhl1Brg2atOOtL4VXWr5oF+PKwBPJPhEhRKcK7BhY6+rzNHEqWvsFRXcL07H4pPuA6
+rlpflkDiFhRmYkPGYmGfKOntr0JtIvORiyAVVHTGOLb5eKYGCwK9mkbdE5jmx7UbPIVQtWriot1S
+jc191XuKhhhBI8dTFkGi67mET/fRMAr5p6BPoc5Hdv3kAcYrnPxbctMYNn0T3gw8+NX1N0OQdQZ1
+e02ZalYt33JB/GnFmAsILXZPWL+8QQsKr7UsYqtDMb6yMUfX1wPkKqkFUP2v73AG45gxHnmX2+km
+Ba+ciqiyuYsToABXfXWbeGwngPwRtLw/EyzOmwMshdY5Dk2wFzCOE2km8XLHu8v32tM1X4MxKz0m
+KyZta34Pxy+hoYiqyhFOTuNF//ci6KFe6FvRQrgqRA8jWF+3wEEHt4YDN+aYiEu1IMQTeNxTzaX9
+k92A7QeXxiyL20He0AjeYEMZfBJtPmEAAAAAAAA=
 
-> Cross compile gcc is more picky about argument order than msys. Changed
-> the meson command to take the (now renamed) libqemu_plugin_api.a as a
-> lib, rather than an object. This puts it in the right place on both
-> native and cross compile gcc commands
->
-> Reenable plugins on crossbuilds
 
-Missing your Signed-off-by tag, see:
-https://www.qemu.org/docs/master/devel/submitting-a-patch.html#patch-emails-must-include-a-signed-off-by-line
+--=-n7tVtrrf1bAfW1vdsU2f--
 
-Otherwise LGTM, thanks for working on this issue!
+--===============5645647688167219304==
+Content-Type: multipart/alternative; boundary="===============3421934815360615908=="
+MIME-Version: 1.0
+Content-Disposition: inline
 
-Phil.
+--===============3421934815360615908==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 
 
-> ---
->   .gitlab-ci.d/crossbuilds.yml | 2 +-
->   contrib/plugins/Makefile     | 2 +-
->   plugins/meson.build          | 2 +-
->   tests/plugin/meson.build     | 3 ++-
->   4 files changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
-> index ac71a2abd3..56dd603a86 100644
-> --- a/.gitlab-ci.d/crossbuilds.yml
-> +++ b/.gitlab-ci.d/crossbuilds.yml
-> @@ -165,7 +165,7 @@ cross-win32-system:
->       job: win32-fedora-cross-container
->     variables:
->       IMAGE: fedora-win32-cross
-> -    EXTRA_CONFIGURE_OPTS: --enable-fdt=internal --disable-plugins
-> +    EXTRA_CONFIGURE_OPTS: --enable-fdt=internal
->       CROSS_SKIP_TARGETS: alpha-softmmu avr-softmmu hppa-softmmu m68k-softmmu
->                           microblazeel-softmmu mips64el-softmmu nios2-softmmu
->     artifacts:
-> diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
-> index 1783750cf6..0b64d2c1e3 100644
-> --- a/contrib/plugins/Makefile
-> +++ b/contrib/plugins/Makefile
-> @@ -49,7 +49,7 @@ all: $(SONAMES)
->       $(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<
->
->   ifeq ($(CONFIG_WIN32),y)
-> -lib%$(SO_SUFFIX): %.o win32_linker.o ../../plugins/qemu_plugin_api.lib
-> +lib%$(SO_SUFFIX): %.o win32_linker.o ../../plugins/libqemu_plugin_api.a
->       $(CC) -shared -o $@ $^ $(LDLIBS)
->   else ifeq ($(CONFIG_DARWIN),y)
->   lib%$(SO_SUFFIX): %.o
-> diff --git a/plugins/meson.build b/plugins/meson.build
-> index 40d24529c0..6b2d7a9292 100644
-> --- a/plugins/meson.build
-> +++ b/plugins/meson.build
-> @@ -28,7 +28,7 @@ if get_option('plugins')
->       # then use dlltool to assemble a delaylib.
->       win32_qemu_plugin_api_lib = configure_file(
->         input: win32_plugin_def,
-> -      output: 'qemu_plugin_api.lib',
-> +      output: 'libqemu_plugin_api.a',
->         command: [dlltool, '--input-def', '@INPUT@',
->                   '--output-delaylib', '@OUTPUT@', '--dllname', 'qemu.exe']
->       )
-> diff --git a/tests/plugin/meson.build b/tests/plugin/meson.build
-> index 528bb9d86c..28a929dbcc 100644
-> --- a/tests/plugin/meson.build
-> +++ b/tests/plugin/meson.build
-> @@ -4,7 +4,8 @@ if get_option('plugins')
->       if targetos == 'windows'
->         t += shared_module(i, files(i + '.c') + '../../contrib/plugins/win32_linker.c',
->                           include_directories: '../../include/qemu',
-> -                        objects: [win32_qemu_plugin_api_lib],
-> +                        link_depends: [win32_qemu_plugin_api_lib],
-> +                        link_args: ['-Lplugins', '-lqemu_plugin_api'],
->                           dependencies: glib)
->
->       else
+
+
+Amazon Development Centre (London) Ltd. Registered in England and Wales wit=
+h registration number 04543232 with its registered office at 1 Principal Pl=
+ace, Worship Street, London EC2A 2FA, United Kingdom.
+
+
+
+--===============3421934815360615908==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+
+<br><br><br>Amazon Development Centre (London) Ltd.Registered in England an=
+d Wales with registration number 04543232 with its registered office at 1 P=
+rincipal Place, Worship Street, London EC2A 2FA, United Kingdom.<br><br><br>
+
+--===============3421934815360615908==--
+
+--===============5645647688167219304==--
 
