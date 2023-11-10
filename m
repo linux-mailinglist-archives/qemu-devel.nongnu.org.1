@@ -2,79 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0021A7E79A4
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 08:05:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F193D7E79C1
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 08:33:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1LYg-0002Y9-O6; Fri, 10 Nov 2023 02:04:02 -0500
+	id 1r1Lzf-0004NG-3m; Fri, 10 Nov 2023 02:31:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r1LYf-0002Xz-79
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:04:01 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r1Lzc-0004Ln-5s
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:31:52 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r1LYd-0001eh-Ix
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:04:00 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-54394328f65so2762225a12.3
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 23:03:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r1LzX-00074n-2K
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:31:51 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-53e08e439c7so2944866a12.0
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 23:31:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699599838; x=1700204638; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699601505; x=1700206305; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=l3rUg7roLk6k2RfgB8iBCaW3n9h+FcwIvamkKS3y6Fs=;
- b=kl+Htmy6pGmliLdOz8DWXmDVo1avsQwvHjw9DYfsX6FSPOcPbC6HHD5/xwLo0XeWvy
- qk8RXU4aL0RL12n1DVNqy45zgbro36fPSrn6xdoMM5EKXY0E4GYHMz8fBidJfPCcetI7
- By2MVyqGiXQwKoHZPUwc+1W9FmRS4ODXUsA8aDZowNsl1j14xU/AvXo35X82BJubanf7
- CPThBrQCYgvQPyqMUGE2GpNdUkkFbaTj95Y2pXBUZx1qT+PYZUs0rlxp57pXUuyE0Bsu
- 4Icx9Xtbqhx790OXIcRAMXyKaXbNOQKkM36W0iyauFaO9MUQzT7l0bC/fxxpl0bSxBgE
- T4Qg==
+ bh=ZpzkuQ3EokkT80Y2bQ2BAl9ZQRy6Itv22qj1L2DbalU=;
+ b=JyP1IZzxa0gvLOcfIwK20DxBM84jgLn9NRIwSMTXg/uZ5JNm2nOnrmMoiw4cEY99Bi
+ 4s8PN5cdAHLLNGVuYRIkNfcoWtZ2Sqrl1VLxNN49bkn3s5sbljWLj6hs6EqjgSuT7Vc7
+ iBQgymVQN4v+454kmbDwpvb2cEw9p8AfZL41OmXrQEZp6hS5Ciy3tOWbm1hpPf7ZOArc
+ tIScnDN9baW5jtYF8XRIZ3psXqVnnSOnLUOZj/HEVm6WvLR7CSqTdUG63uUcFc1M8zXU
+ SJk5Gg2WkSXG6a7W2cyoXYX+1XiBQffTV2d+boNxq1Vqp4YxqAKPfUrJb3W5AuLmB0+e
+ fotg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699599838; x=1700204638;
+ d=1e100.net; s=20230601; t=1699601505; x=1700206305;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=l3rUg7roLk6k2RfgB8iBCaW3n9h+FcwIvamkKS3y6Fs=;
- b=BiAuXBfxAMXUOoMh2VWwAaqOW3Ucg6UNVA/QJeV8EycgMSqmfBJC5MDDjOkrhyGPQq
- iXHIx5tJxOiei4aeVEogemSQUDZq/UKDIVQAiwyqPrFYjFcgn44O9FfHqJRpf4Ly9EK3
- u5lVEyXB+lYHlvwHpyHXsQ7ikYX7QKob+mnuN040t7mLNaT7t/jBvJISuDPxl90f9CuD
- vqKjGR2wcDCkqJreEvnmOrZhWcvDxCaTL/WdSWV5FT5ug4IWlYwYTBKYowlOHfJtBy1C
- okG2U3iPDtgJzhd17AYACO2E2XGNtRicLBxNxfEX/V6cG2FQ0FQOUI4xxFhQ6jR5YeAK
- GngQ==
-X-Gm-Message-State: AOJu0YySrf2FLzxsMlIk3fDnThHqatiNHSKlnvo3eEWU2igqCayh+ZvZ
- mCXuN3ylCVVxm6js7Jrf2UQUtg==
-X-Google-Smtp-Source: AGHT+IEP5ekL0z+0R8y4rsGvA29JkBpQwS/mb2MZXlZvWvZVqjc65t2oWiytR2TxSav6hpkqyfkg2g==
-X-Received: by 2002:a17:906:c115:b0:9c2:2d0a:320c with SMTP id
- do21-20020a170906c11500b009c22d0a320cmr6123542ejc.46.1699599837914; 
- Thu, 09 Nov 2023 23:03:57 -0800 (PST)
+ bh=ZpzkuQ3EokkT80Y2bQ2BAl9ZQRy6Itv22qj1L2DbalU=;
+ b=SLsMo5Pa+HuANu/WaUHfC06gW6WfPDpoFeVdXl9VLuM8c5E0tpuZOflFBHRfa1N83T
+ zhGXRoX+2pHNbFrP6Bp/fmN9eYOZBs8/XfMB89GHxL41Q51L3xzArr685JsN5NO7PaOP
+ Ot/mbtzrqNS5+6PF4hPL7Nw7Pa2zNMrp/ZqAlQqGOgqoS3VuKHqwA/6knqcQC2Wo0Sjn
+ Ga6ZHgxeuCfefhlquH/9D95/OFPKjmDYlb1XK62iLSsgMOxXerjvUSDaymvKpdeXuyUS
+ ney7keE/fB1evfkNtfwcaHG3Po7SXwTQXDOhJn4vAxXFnxfW+WLEqpvD9drqIRSgq6qa
+ 3GMQ==
+X-Gm-Message-State: AOJu0Yz1TwRhUqlTRXmvIivhcK1QCyQr2jhNhwr0cJxe759gYvTcN/rt
+ Gb4X/TDOuqhMj5OF0CPKqc7bvw==
+X-Google-Smtp-Source: AGHT+IGOuxKzQ+irNe++lRziZNFVwErc5DdUNTN2rDhpwf6ZzSOfB4wr2l8dXWKRZ2+Z82vr3dDJ/A==
+X-Received: by 2002:a17:907:a0b:b0:9cf:35a7:9ea5 with SMTP id
+ bb11-20020a1709070a0b00b009cf35a79ea5mr5018325ejc.74.1699601505123; 
+ Thu, 09 Nov 2023 23:31:45 -0800 (PST)
 Received: from [192.168.69.115] ([176.187.194.109])
  by smtp.gmail.com with ESMTPSA id
- m17-20020a1709061ed100b0098884f86e41sm3484298ejj.123.2023.11.09.23.03.55
+ c10-20020a170906d18a00b009a1a653770bsm3512222ejz.87.2023.11.09.23.31.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Nov 2023 23:03:57 -0800 (PST)
-Message-ID: <e52a7cea-5f89-40f0-8bba-e244c3642a0a@linaro.org>
-Date: Fri, 10 Nov 2023 08:03:54 +0100
+ Thu, 09 Nov 2023 23:31:44 -0800 (PST)
+Message-ID: <464bf22d-e9c0-44bf-8d78-4e64eb57c8c1@linaro.org>
+Date: Fri, 10 Nov 2023 08:31:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/4] python: add binary
+Subject: Re: [PATCH for-8.3 v2 04/46] hw/pci: add pci_init_nic_devices(),
+ pci_init_nic_in_slot()
 Content-Language: en-US
-To: Maksim Davydov <davydov-max@yandex-team.ru>, qemu-devel@nongnu.org
-Cc: vsementsov@yandex-team.ru, eduardo@habkost.net,
- marcel.apfelbaum@gmail.com, wangyanan55@huawei.com, jsnow@redhat.com,
- crosa@redhat.com, bleal@redhat.com, eblake@redhat.com, armbru@redhat.com,
- pbonzini@redhat.com, berrange@redhat.com, alxndr@bu.edu, bsd@redhat.com,
- stefanha@redhat.com, thuth@redhat.com, darren.kenny@oracle.com,
- Qiuhao.Li@outlook.com, lvivier@redhat.com
-References: <20231108153827.39692-1-davydov-max@yandex-team.ru>
- <20231108153827.39692-4-davydov-max@yandex-team.ru>
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>, Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>, Rob Herring <robh@kernel.org>,
+ Subbaraya Sundeep <sundeep.lkml@gmail.com>, Jan Kiszka <jan.kiszka@web.de>,
+ Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, Helge Deller <deller@gmx.de>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Song Gao <gaosong@loongson.cn>, Thomas Huth <huth@tuxfamily.org>,
+ Laurent Vivier <laurent@vivier.eu>, Huacai Chen <chenhuacai@kernel.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, Jason Wang <jasowang@redhat.com>,
+ Jia Liu <proljc@gmail.com>, Stafford Horne <shorne@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, Bin Meng
+ <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Magnus Damm <magnus.damm@gmail.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, xen-devel@lists.xenproject.org
+References: <20231106195352.301038-1-dwmw2@infradead.org>
+ <20231106195352.301038-5-dwmw2@infradead.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231108153827.39692-4-davydov-max@yandex-team.ru>
+In-Reply-To: <20231106195352.301038-5-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,31 +135,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/11/23 16:38, Maksim Davydov wrote:
-> Add a supportive property to access the path to the qemu binary
-> 
-> Signed-off-by: Maksim Davydov <davydov-max@yandex-team.ru>
-> ---
->   python/qemu/machine/machine.py | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine.py
-> index 31cb9d617d..78436403b2 100644
-> --- a/python/qemu/machine/machine.py
-> +++ b/python/qemu/machine/machine.py
-> @@ -328,6 +328,11 @@ def args(self) -> List[str]:
->           """Returns the list of arguments given to the QEMU binary."""
->           return self._args
->   
-> +    @property
-> +    def binary(self) -> str:
-> +        """Returns path to the qemu binary"""
-> +        return self._binary
-> +
->       def _pre_launch(self) -> None:
->           if self._qmp_set:
->               if self._monitor_address is None:
+Hi David,
 
-Better patch subject could be:
-"python/qemu/machine: Add method to retrieve QEMUMachine::binary field"
+On 6/11/23 20:49, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> The loop over nd_table[] to add PCI NICs is repeated in quite a few
+> places. Add a helper function to do it.
+> 
+> Some platforms also try to instantiate a specific model in a specific
+> slot, to match the real hardware. Add pci_init_nic_in_slot() for that
+> purpose.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> Reviewed-by: Paul Durrant <paul@xen.org>
+> ---
+>   hw/pci/pci.c         | 45 ++++++++++++++++++++++++++++++++++++++++++++
+>   include/hw/pci/pci.h |  4 +++-
+>   2 files changed, 48 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index 885c04b6f5..5703266c0b 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -1925,6 +1925,51 @@ PCIDevice *pci_nic_init_nofail(NICInfo *nd, PCIBus *rootbus,
+>       return pci_dev;
+>   }
+>   
+> +void pci_init_nic_devices(PCIBus *bus, const char *default_model)
+> +{
+> +    qemu_create_nic_bus_devices(&bus->qbus, TYPE_PCI_DEVICE, default_model,
+> +                                "virtio", "virtio-net-pci");
+> +}
+> +
+> +bool pci_init_nic_in_slot(PCIBus *rootbus, const char *model,
+> +                          const char *alias, const char *devaddr)
+> +{
+> +    NICInfo *nd = qemu_find_nic_info(model, true, alias);
+> +    int dom, busnr, devfn;
+> +    PCIDevice *pci_dev;
+> +    unsigned slot;
+> +    PCIBus *bus;
+> +
+> +    if (!nd) {
+> +        return false;
+> +    }
+> +
+> +    if (!devaddr || pci_parse_devaddr(devaddr, &dom, &busnr, &slot, NULL) < 0) {
+> +        error_report("Invalid PCI device address %s for device %s",
+> +                     devaddr, model);
+> +        exit(1);
+> +    }
+> +
+> +    if (dom != 0) {
+> +        error_report("No support for non-zero PCI domains");
+> +        exit(1);
+> +    }
+> +
+> +    devfn = PCI_DEVFN(slot, 0);
+> +
+> +    bus = pci_find_bus_nr(rootbus, busnr);
+> +    if (!bus) {
+> +        error_report("Invalid PCI device address %s for device %s",
+> +                     devaddr, model);
+> +        exit(1);
+> +    }
+> +
+> +    pci_dev = pci_new(devfn, model);
+> +    qdev_set_nic_properties(&pci_dev->qdev, nd);
+> +    pci_realize_and_unref(pci_dev, bus, &error_fatal);
+
+Could these functions be used with hotplug devices?
+
+If so we should propagate the error, not make it fatal.
+
+> +    return true;
+> +}
+> +
+>   PCIDevice *pci_vga_init(PCIBus *bus)
+>   {
+>       vga_interface_created = true;
+> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+> index ea5aff118b..684d49bdcd 100644
+> --- a/include/hw/pci/pci.h
+> +++ b/include/hw/pci/pci.h
+> @@ -317,7 +317,9 @@ void pci_device_reset(PCIDevice *dev);
+>   PCIDevice *pci_nic_init_nofail(NICInfo *nd, PCIBus *rootbus,
+>                                  const char *default_model,
+>                                  const char *default_devaddr);
+> -
+> +void pci_init_nic_devices(PCIBus *bus, const char *default_model);
+> +bool pci_init_nic_in_slot(PCIBus *rootbus, const char *default_model,
+> +                          const char *alias, const char *devaddr);
+>   PCIDevice *pci_vga_init(PCIBus *bus);
+>   
+>   static inline PCIBus *pci_get_bus(const PCIDevice *dev)
+
 
