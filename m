@@ -2,114 +2,176 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C3E37E81EA
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 19:43:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D597E8269
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 20:24:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1WS5-000163-F9; Fri, 10 Nov 2023 13:41:58 -0500
+	id 1r1X6O-0002a3-0i; Fri, 10 Nov 2023 14:23:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john_platts@hotmail.com>)
- id 1r1WRx-00015G-Ca; Fri, 10 Nov 2023 13:41:49 -0500
-Received: from mail-eastusazolkn190100000.outbound.protection.outlook.com
- ([2a01:111:f403:d003::] helo=BL0PR02CU006.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <william.roche@oracle.com>)
+ id 1r1X6L-0002Zf-Sx
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 14:23:33 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john_platts@hotmail.com>)
- id 1r1WRu-00075h-NP; Fri, 10 Nov 2023 13:41:49 -0500
+ (Exim 4.90_1) (envelope-from <william.roche@oracle.com>)
+ id 1r1X6I-0005fJ-3e
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 14:23:33 -0500
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AAHiQrv023279; Fri, 10 Nov 2023 19:22:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=content-type :
+ message-id : date : subject : to : cc : references : from : in-reply-to :
+ mime-version; s=corp-2023-03-30;
+ bh=VT1IaNr0X5Ly5RbiRuJyR9Q0ZiP1qgsus7bBLMSN1Io=;
+ b=mB5/JCHSpqcwAalWJjZvFY5Ccu+WWvH8h4TU5mD1wdBwYag1zMKbZ69JQ0uo33qcMv0M
+ JJSrxPqq2lbdgZgnjAi+6u/UtomhWWP5xD1NLg7p8JX1MeNK/na5U3oCUAC/h8i09+iB
+ pU/sLoHcXkoaFqn/RchVDBoe7vwiteiD31uzLaxQY5l29wZjMkdWOgq/ker2b8DyAbaE
+ /BdTNEIZ3SnQQMhhfVgdC9XgLVOZ8N/KLPavXK9GYpz3K37ZYHDHyjLEgCc/t/MPHs/C
+ wqYemKNPu9pk1Os6UCzHj84Qa9dt/nKRIHHBe+mVGfUrLIkWKWreasAXYsVndSQRjugg YQ== 
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3u7w216wmy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 10 Nov 2023 19:22:58 +0000
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 3AAIPgHj024983; Fri, 10 Nov 2023 19:22:58 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10lp2100.outbound.protection.outlook.com [104.47.55.100])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3u9fr77fwy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 10 Nov 2023 19:22:58 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mb//HjjPo4DX1WjE4KFODF/Kxvt8drnhyR1OcxY7yfFer6iR4Ot3svcSgv9VvuMtja2z3smW1rC+/JFVcLZSm7Q8RryASfN9q39xkPiiyolrhE+h9kC3E8UrhMEoFwAU2m4l444oxTAiYmRmRWiqrVHfjukOeK8DVRa5RnSiOhaY8OPyhKjtndGnK9/LVzCYhLmdBttTsLUE8dnRXuXS9BP3rkIOp2eir74taUbcS2O7ihJsWSWrBhstzF2Od2uPPQg7pUvQVRKWuvG5+aBa+OSr7Z+jGYoWEknb8MqqUgukcTPGKLojHc7rJ7rciXE9ZLONIW6GdaxUi8AgTWGzXg==
+ b=CCTYGLkfkoJmugrYIWPrtdBPb/lkz0uwcGrc13fTN9qVwJtJzADUuvULPynv1SdCkTt6iEDznaJULsdws9lsOPQwpzJczlksFJPd+XC2fxnDB6dw74EzqMjiUSquiN7LOr61JxljhV8mdJMCxlQKi1FgvbCkdlrcW6RyD4iVUl0Qx47+H3m90zc23QXPuTjsE9qoKV5NDnZALgS54xu6osLYk0ExCCyMQxpTIFgRz5O+/69n9ML900lSNIj4CIr95hpU1zhXnmlMP6F0EQwgD5KirTBHUWiwDe7JwqXu1+yH2ME2LcB4dXKWSL5VuA6xm6VU+MYUboU+1eyAQePOVA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=He0bImIkO1KMvJa8r02uXCkQLMYmU9Qh+R8BkmDlTqs=;
- b=IS2ceZ3N7z/Eo3zZ330BnWpHPVn5R/098XoOORFRA4bHOEPnChIaGG4kUxBuyU1Mi6iraqdgpkhF/Eo9preTSpEhTBtN55G85ODNykwgA4Bl26Ig7S1Pw9+RoTGjrjaJAv/9QEgcPtVd5QlzBj7OO4nHJUyMI8aCNurmnXqVfhbq8CXHM1XoHeNUmAIc5T0SgD21up18+KtH7v1r7+wit59n5FwBpMk2phXlVZFLTI4jMSXhOyU/7ZG6QaQRTRqDu/Drn3QqDIo714KHCc1eFo0qARMtiXY/wcTstWzvXSm73Fm/SyN6r2mF/0UUTvxSZ2kC6UHjS+h5QMC4y1BuEw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
+ bh=VT1IaNr0X5Ly5RbiRuJyR9Q0ZiP1qgsus7bBLMSN1Io=;
+ b=A2zzTr7YfhYpd75ZNxinu030y2DBKlZ6ZlRVIqrldTLMSR3Ocjw+uoVXwb3WCzC5/vxzm+3yw8XxmydM0FJq4SndoFclBsf0rp2Zdf4/r/LGjNF+v+iEGLjYGq1IPk7RDbi/1URXHeWWqHIrefZr7l3Zxb8arL0+cd/wvIu2LI58wWa79IyVdpIgj1HLW95eohX+wh3fq5yFfuCDfyURgF2eELxo2bjvpO3OBuV5kWlHBJA/xpPIxEChteRPzGLJJUy+HLcF4uASTw6MqhAn4fCuLrrkU//VPchyvGPW99qU6yFEGt0lMkUTlQaz4c45fRZq59U1k9oy7/ottdU1Fw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=He0bImIkO1KMvJa8r02uXCkQLMYmU9Qh+R8BkmDlTqs=;
- b=D6ONZ39xzaM0hZTYVDFec0c3HNj2iA7/5ZwyFy420VIC4li9httAqzhw07IT1daGjKATC/700bYWECx/olLyoZotj9FjvM15y/OfTVP8azHnyaKtzYgrY6lyQPcaBCpqKsUOiM7NK5ixI+uPQA5x9mcarCZB2Mi6e7q7SF+hnXtUydBg1umQh0Z6tFEb770DVlXnGdJ2W59IVJtUzC0343HGAcjnO6VSDD1o9u8pH9A7mwmEcerjbkZBv8YOXjIcnSdfzHNjrxaL63v30N8RT+JvTQcKRXiROk3uqyTR07Kc3ARW3IjW8aQZ5bFlaly9vw3I7aqobdIpphcUArOXww==
-Received: from SN6PR05MB5837.namprd05.prod.outlook.com (2603:10b6:805:f4::20)
- by MW4PR05MB8745.namprd05.prod.outlook.com (2603:10b6:303:128::15)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.29; Fri, 10 Nov
- 2023 18:41:42 +0000
-Received: from SN6PR05MB5837.namprd05.prod.outlook.com
- ([fe80::c41:7e67:640d:c47e]) by SN6PR05MB5837.namprd05.prod.outlook.com
- ([fe80::c41:7e67:640d:c47e%4]) with mapi id 15.20.6954.028; Fri, 10 Nov 2023
- 18:41:42 +0000
-From: John Platts <john_platts@hotmail.com>
-To: "qemu-ppc@nongnu.org" <qemu-ppc@nongnu.org>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "npiggin@gmail.com"
- <npiggin@gmail.com>, "danielhb413@gmail.com" <danielhb413@gmail.com>,
- "clg@kaod.org" <clg@kaod.org>
-Subject: [PATCH v8] target/ppc: Fix bugs in VSX_CVT_FP_TO_INT and
- VSX_CVT_FP_TO_INT2 macros
-Thread-Topic: [PATCH v8] target/ppc: Fix bugs in VSX_CVT_FP_TO_INT and
- VSX_CVT_FP_TO_INT2 macros
-Thread-Index: AQHaFAVbFOMMVwZMFkaa2O8yT0CHXA==
-Date: Fri, 10 Nov 2023 18:41:42 +0000
-Message-ID: <SN6PR05MB5837524077F6C8A2A482B41A9DAEA@SN6PR05MB5837.namprd05.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-tmn: [zeTjtQXbndMI+pwRxIWHJnDTec49upkG3CqphxjdCkGG0S7TseI+5JNyeKHnC4sIduTPLWt0Iww=]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR05MB5837:EE_|MW4PR05MB8745:EE_
-x-ms-office365-filtering-correlation-id: bb51d1c1-78c2-48ce-ad4c-08dbe21caecc
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: GLOrwlqnixiF0G9g11iLvq7h4G2rpbqIo3WdXrpcGXCGBgwGUyOhUQlu0FYwR9MnEYiMOHx3WZzzI8tnWMLpaOZppQZBcyjZZ2FtbT2RSjr4igu1wmq9b0aifQuziqaF3G0kwJMPIkkXxbE5ptuOkjxhxRjUTFx3+YG4dwYifz1Zri5/cyEGevtXJW4yZgfYKD5/uwNNcify0PvCQ/TRQf16Y2ZkiEL3Ie0GrtAKydVxMKIyvSlIvXSZ0MokgsLf9khXZKo5NyoUGhoDXWEIiHnz02ZkyWn+9v2xloml/1z7Qcav0PsDXSLdoFh6Kr3CaesRdmEOcNjjmV4TOxFCVUEEQImBfbjRlYMWujld11PZv8sTpemR/3xs0GkUa2STgX1F0mNB8nfUYiZWhRiyaOhoJMis/fhdBoHbmBQwpkQJzB7bjoJZYOdR+7Q4R5FGHz55v+S10EoXbifwVFTYK86ZMJIColyn75IzUFThNnmwtZrxMA+YFu3q5BSZLqd+k9yHXg44i14R+2vFuJQEFZnbOABiWCiFC15A1wzg/K6cSMQ/6WQpUXq7qbvv6rKVnU7xY3snE7XHfPv+pWT5ofHFx3PC7kOEshNqWvAl92A=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?g9moev6YCU7STnUVbPeQ3qyfzaUO6wnSd1egNAAKvc9CuuI3Art2gHM0Sv?=
- =?iso-8859-1?Q?GMGSgIR7lq2K/X1Ep7kOX1w8O2WvM5I4zNPUm673WocqAYB9Mr/XHbBOBI?=
- =?iso-8859-1?Q?YHGLxBNBKpClwyJ8USUgx66OlNP/D9+rffYkNX5ycGSOJuwhMukeXQC71s?=
- =?iso-8859-1?Q?YWFQWPD6Fhwg2+gBH8MvzWJrFVpSCS2bu7cg2Brf/cCLFkYMjY7nERAkId?=
- =?iso-8859-1?Q?OMU8uzn3ydeoqXtPFVScBpez7ACif4tiaEYiMvhsHJmvyEEJ7/X/yJNMP5?=
- =?iso-8859-1?Q?K8E9g5kzB54HZnsTVOcTzRKJTj7QKlZVBJrRowafQSBbYMOyKHZ+mny9Xc?=
- =?iso-8859-1?Q?Kg2E84EPvIVKYpCPtWAQZFWzHsnE7g9ML4Hz+YoTarha5MHeORgqqEroNY?=
- =?iso-8859-1?Q?ECf9+jdgNUPl3axaiTT/RXSC/pwisg2vZhAknWRMKB1/UAO28iYGuhuIHE?=
- =?iso-8859-1?Q?MDvsHvY6OQ11ekOmM6puMX1KfSf7IuINxfFyj/vc/29K7iAL1DtHuMplMs?=
- =?iso-8859-1?Q?3s+PoK9qpsiYG63kTP2I3wP9eT3Rr1lr0QEySrtMY36mfF5uRzk74cBK5I?=
- =?iso-8859-1?Q?sqTu1ZtvDmLvrQFzDME4GqskoAAnxv+w1d+lZ7ckE058eoXH3FD8XBIoQi?=
- =?iso-8859-1?Q?oWzCQEQ7sCJVTPeaWjy919dkSll35B7Soku+OAfAdDFiuhpZnPj4UsfF5e?=
- =?iso-8859-1?Q?iemAuQpeHa9a3MDfpDZjTheIdkIXpzsbG/TzQSppKBj/GmXVixYNC0Ti6P?=
- =?iso-8859-1?Q?jJSeoMU3SGgaopEtcMRAM/XEBPOPbOMY+OftoRWfIlLfdt48pKn5ClnKlL?=
- =?iso-8859-1?Q?j0h7GnUykdUozLWuhczCXDdaFZJs7CrxIk1enDm9UNK31TUTxwtGxNcM4F?=
- =?iso-8859-1?Q?hHcF/m7MkO4kHC0hcpgmDiFb0qAFDyw27Jdycjm+/hXzsHiUO8+p3P94Jz?=
- =?iso-8859-1?Q?C4pxhj1VzliRA38jizJLoGXk4xVPXYd/sxk6WJ8rPxDUdrlgfRqlPu+dXl?=
- =?iso-8859-1?Q?Ln5G9gY3YLMHUIuyja/tWSI7uPwezVS7rNQNSlE5utZOLInGr0WOPC6N7j?=
- =?iso-8859-1?Q?yYiAgvdVqPC22zNss81zyag2npJtjO1dCBgPE8yGFHvCcStPLdJKPbqZkh?=
- =?iso-8859-1?Q?Cgoyj9jRDzWyc/iifU1o9+cCvZYYepBpZJU5KTcIxWlv6jtWabt6E3bR3A?=
- =?iso-8859-1?Q?zgC/MDh8+Q+6aHxTSL2TBlTPEUCR8oB9mO/UiO1wsk5R0EZIN0mYYK3BYX?=
- =?iso-8859-1?Q?52N29NRGT5Q6Rk6JInygPeM/GJ/Dt8b2P3BgXrZXg9/fLacEJ4tgQqdwyJ?=
- =?iso-8859-1?Q?hj+1/vJmypyJj5Dvk91K6K0D0wyyb6Ok3unBcBHlZq/hX7E=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ bh=VT1IaNr0X5Ly5RbiRuJyR9Q0ZiP1qgsus7bBLMSN1Io=;
+ b=zEnyYi0z1fAW35djgR5T0hr9MHG0WBDFHB5eMGqmNur8q/Wnyz/vmbyDk2syd/DnxBD5TMFFgMSC91OMHzJg6pRMHkV9IELAYPctW1tClFdTG2Txek7aMtjKmRtXo1TFRwCw7Dug7tk2xLyWUDw1MNa26T61JP2Xnv9WLQ9/Vv4=
+Received: from PH0PR10MB5481.namprd10.prod.outlook.com (2603:10b6:510:ea::5)
+ by SA2PR10MB4476.namprd10.prod.outlook.com (2603:10b6:806:f9::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.19; Fri, 10 Nov
+ 2023 19:22:55 +0000
+Received: from PH0PR10MB5481.namprd10.prod.outlook.com
+ ([fe80::448a:a2fe:44f7:3e90]) by PH0PR10MB5481.namprd10.prod.outlook.com
+ ([fe80::448a:a2fe:44f7:3e90%4]) with mapi id 15.20.6977.019; Fri, 10 Nov 2023
+ 19:22:55 +0000
+Content-Type: multipart/alternative;
+ boundary="------------HwKxFBMtz3PUrQYhSERwJR0D"
+Message-ID: <43bea81c-cb7d-44e9-a9b9-3f059faf472e@oracle.com>
+Date: Fri, 10 Nov 2023 20:22:45 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] migration: prevent migration when a poisoned page
+ is unknown from the VM
+Content-Language: en-US, fr
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, lizhijian@fujitsu.com, pbonzini@redhat.com,
+ quintela@redhat.com, leobras@redhat.com, joao.m.martins@oracle.com,
+ lidongchen@tencent.com
+References: <20230920235301.1622672-1-william.roche@oracle.com>
+ <20231013150839.867164-1-william.roche@oracle.com>
+ <20231013150839.867164-3-william.roche@oracle.com> <ZS1pSeL3hj4/73lk@x1n>
+ <c0af41b7-56dd-4395-8c79-d630ece3b589@oracle.com> <ZS6ksf8o7dJ8mzUe@x1n>
+ <d0c6b2b9-ab95-4b29-969a-85edcac3f8af@oracle.com> <ZUwBgzr1GcSIy0sJ@x1n>
+From: William Roche <william.roche@oracle.com>
+In-Reply-To: <ZUwBgzr1GcSIy0sJ@x1n>
+X-ClientProxiedBy: SI2PR02CA0048.apcprd02.prod.outlook.com
+ (2603:1096:4:196::23) To PH0PR10MB5481.namprd10.prod.outlook.com
+ (2603:10b6:510:ea::5)
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-4823-7-msonline-outlook-84f76.templateTenant
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5481:EE_|SA2PR10MB4476:EE_
+X-MS-Office365-Filtering-Correlation-Id: f1c9b179-d05d-40f6-d878-08dbe22270eb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: p/dWtKdU6bWqlaJZTATKYwoV8Tm3FQAS6sr/mDCdEpd+0qANcgjftOb+tVxw0M+KOuhM5kur54LolCfVeFwsA7Mdu93QbzEbFY3wrs3V3ll0Ag7c6YUjoDbwYakTA1PXo40Ouy+NUpvdZ7NVsnZP4njqdWTlzTDseHhf8Z02pUNpTZeo74CzTave9noGv23NUDJnQWmE7XaobUtBYAKiy6XRNVLa29XAldZLDCQecdv8QXxaWlqVP3JsH1gnPypfIBGqDiN078c0SNM5Dpxtjs5Bkvo0Wt1TcEqKtkmjBsrCzL/8HGKajrASaBN3at3Cnc7QvFHJ3T7gIPVgydKiAcCUNyx8pDpPTDXrdTGmAqdNZuhDhGwO9TwqwRDOKGHzVFTj0fMocYFyy0rVR08+Yk2v4WTXWM3rGjrkzrG5dvLMlGZUuu3fwZG8mP86TvFv5m7o/PcJjEP9jh1tbt0qAltG+hR17v01DViRc/tJbHtuo7+o3mW8bWuFyzt4Heai5bUjpGwF2hLsyZhKvZr+fLdXTLlDIt8Cxgx4zcEICbg3dOMtdNxlkD+DY8ceUqOfbLkmLZcax2qDTeJNZeEjc9Pl2URRnLWHiVwIeJyUPEovrZAElABFdz9XZx03P2BimAtqrb5WHYtGZXhH+Z8rjA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR10MB5481.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(396003)(376002)(39860400002)(346002)(136003)(230922051799003)(64100799003)(451199024)(186009)(1800799009)(36756003)(66899024)(8676002)(44832011)(4326008)(8936002)(2906002)(31696002)(86362001)(41300700001)(6512007)(26005)(53546011)(31686004)(6506007)(6666004)(5660300002)(33964004)(478600001)(6486002)(2616005)(83380400001)(66476007)(66946007)(66556008)(38100700002)(316002)(6916009)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dE03NTVaWGpSQVVhYzVrT01hQ1psZW5YMUhzdWJ0Ny93YUdnVjV3RTkxcEtn?=
+ =?utf-8?B?TzZ4bmhCS3B5MTJTQk9FYmc2cUkrYUZqK1dwMTZ0V3c1eHU1cXpMaC8rTVFI?=
+ =?utf-8?B?UktKNFYzeDlSU0tDakt3Q21iRnhMeTcwS0FuUi9vMjhiZS95S2xOTlc0Q2dz?=
+ =?utf-8?B?bk5JdHZvcDJVR0FpTWtRWEVpdnZrT3Z0M2ptUUpLZ3FnMUsyWCs1S1FMa2VJ?=
+ =?utf-8?B?amJjRjU5VEt0L1pBaFdySmZzRGdzTjk1KzQ4dDhkZSs1TkgvajIwRloxMjNQ?=
+ =?utf-8?B?cFVTRjBRVXV0dnlJWXdwRldUNVFPTlNRejdyNTBuQkt4Rm52RnpGQkJnQ1Ar?=
+ =?utf-8?B?QUZhOTB3NndNQUR0OVBUb3RTMUxXd0gwK3VtZCtQL29iK1M0emNKVVMrbmxH?=
+ =?utf-8?B?b3dwb2xoV1FYMkhXZjBLb29meitqcU5qZXVaQXhURWVmdThwSjVzTVNoa0Mx?=
+ =?utf-8?B?bmFMY0NsNHRvakZGdjAwVmYxVHRvcWpUd0YwMHJsdU5JekxGazRadmxqTGV5?=
+ =?utf-8?B?ME5vR2J5U0ZjaG8zWlVpMU93am11NWhxTGlBMWo0OHlOTDV6cnRla08wNVg0?=
+ =?utf-8?B?Q3ZGNjh4ZUZVb2dxbEdYbE1wdGlVcitYRFVnZFArVjcvS01ONGJRbkFWdVdZ?=
+ =?utf-8?B?T01JblNMK2MzN1hxRjRHdjNTZTVuQ2c2Q2c0QnRtdy9qaXhPSHB0dnhhdlR3?=
+ =?utf-8?B?a0xSZ2l2NFVsUDFXTFgxaUt2ODhNWUxwZWZnWmY1dWJlcUpoRXFqU1hnT3ZQ?=
+ =?utf-8?B?cGVIaDU0S3lZSFpmVWtEQ2hDTy9QRExEQUE1blNkdTRQQ3RyNTZHV25mZXNp?=
+ =?utf-8?B?SklzMlErZG1EVFJiS3hkRHUwWUw5Wk12MnNObUtjZ2pDMUhHR3g5emNpaHI5?=
+ =?utf-8?B?ZmZkNnE0dUowMkFrSnE1Si9yQ2ZmTmZEWlVmNVRFSC9oZDEvNGJPMk1NUFJV?=
+ =?utf-8?B?aTFNb3RLNVBqRTdDQXZiZEQ3Ujc0M0tZQ05jN3NCZGs5Z1ROZEFEYjBaVTRB?=
+ =?utf-8?B?ZWtyOE9HWklDbS95WDdFajBoVy96c1dmSG1NcEd4WnEvc1V4WFNZNnRvT0xN?=
+ =?utf-8?B?YVZGZk1lQU5qUUFVMk81TVFlekxrcFdOcVZnb2VDTTdCMTRkUWU2VnVKQ1dR?=
+ =?utf-8?B?SmZmOFhOOGZnVzlmdWhQMUhHd2JMWDZnaGUwK0I0TW9BVExkbG5Pb0IyREcy?=
+ =?utf-8?B?aThKdnNsamFEWjdwcjhsMTNCOGFxL08xNHp3QklTbmtlZDR4M2ZoVVdDdWhz?=
+ =?utf-8?B?RHVpVWNlM0xZRVhiK0lud0NVMFF0VE54aDJyTElaNlI4VkYyWGJkSG1IcnlD?=
+ =?utf-8?B?aTd6ak1YYXk2M3owSHFSeEk1UTVrRnhsV2luZjR0cjNTN0xJeEFZZkNaU1pL?=
+ =?utf-8?B?cnBEVXNLZDZrVlVndEIyZVM4RzhFQlZUL0htTkU5VWpodFpVMGtReDdubnk2?=
+ =?utf-8?B?QmZFOFp0MW52dmlEeWNyVTcyczlBYVN1NHJ1dWZxNzFXRGdJQ0hOdDFoTFdx?=
+ =?utf-8?B?bXh5TXJrOExnWUNYeFNaOTNrajB5K1RUZVlLWTZ6RnlOaW1ZdVJrSk1JL3lL?=
+ =?utf-8?B?RVE1RmI0cWVKajB0Unl3a0MwYVR6Q0x2R3ZrT0VpNy9RTVk4MWEveWlqMXhN?=
+ =?utf-8?B?dGljUjZkbUZiRG1Gd3NRVVRjWTY2cUN4Syt1anRtTk5KbU1WSDNMUzFqc1l4?=
+ =?utf-8?B?NFhkM0hoekFqaHhPM09qTXp3TS9iUlZPbEw5R3ozN0sxR3krWFB0dllVbTdG?=
+ =?utf-8?B?RldOSC9RRGUrUWlMQWJLVGZWVUphN3Btc1plWkpwT2J4Y1dLVzZsU2sveWhp?=
+ =?utf-8?B?UzlJVHFQSFM1OUZiQ1BVcHdVcmdWRjI1SURjN3hNRkYxakpMelVmYjBLVDBT?=
+ =?utf-8?B?alJLUTZ0a0ZZbmhvQ0FRRUd3eGVSRVNHTG00THZvNHM5eXhrTmRBNXNaU09K?=
+ =?utf-8?B?NVFpTlVNOER1UXU5eXdaR3RUb081YjJiM3ZlNTdMV0tRNkRCQ3NnMUhVWHla?=
+ =?utf-8?B?V3hNbHVzNExkRUZXT3JyY2VWS1RFblp1OEdpNzRmUXEvTUVXUFkzQ1dQUFAx?=
+ =?utf-8?B?OCtlYUovUUU3bFVyUG5zSmk3NEFsRjFsSjNtczhTNGNpc09WbDloSWpuWlpN?=
+ =?utf-8?Q?FNiwhYft3sjs9YeTjXx79H78E?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: upnNpWF0y/yq2yERBDEjLbzszbID8J2KDwXZzhXKBLNoE385vuAoMyl7mnjoqedc2bV51y8eOEPNS5Kd+ibgIegBNxCsP7/HWWx7B98kef/+FTt5TSmXDodsgwkdoMf9PyeFyxLRtLHBF4m1gInoAIalaERPf5RTSr/71+or0t0UPKeCWXcgfUIQQcy/0zNNjj7reUELT+ow2nano3M7KVK7o7TtagL7e7rGofLf+J+36Pu/qBxY6gTyBjs60sGa3uy+Y6wfpzKdi023jrxUyc871oxEs4Qtr7vp8ae4wD+LV6vJaUgeAUrAMOLNsqfDDKH314QiMDbO6mezE0Sq+469AmFy25iXxzUWeFnvoTU3z8a1wmF5HT+catgsxZBSPOKnG35feDdnbRCENSuoG2MTFks9yDfdZMwdO3+SSOUxZ0tLQ2eUEE0cRY1ftokRqEciX0568qCXd+yBnXBNTg/GZT0yH4Cj9ws5fRGGj0rCbvdc//+jp+DPiCwJZV9AR1mxVTJHTqI7cTS+Z/qdA1SHE8yLRATu3R4BCYi65Ucf5++xEaNP6RRl1g2uiNnZ/R/Gy9t7xj2tB3HvriWj54b/ZwWDyBpM7kVHr6tMvA5DjwdHXdLGus9YB7m5Nkonw9QkasHUZKOx6VxPe1lRdSKRKJZZjzEy01pQgNpb6iF0kyTUK8JFfnHjzlgkRuDtB+UcVWsYlqwMvUi5qCz5HIPbMvHU3ATDt/nsh82GCLEDdR9lVL1ji+xJ5IHtaWK0kohP4c14+AuxxLSlrEpvItvH+rxQbGrxb9K2XsW2rOyrAonlLbUNf5M/Cuvng0+uqEY0G6FA7ilpIUaIeFtCIg==
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1c9b179-d05d-40f6-d878-08dbe22270eb
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5481.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR05MB5837.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: bb51d1c1-78c2-48ce-ad4c-08dbe21caecc
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Nov 2023 18:41:42.2550 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR05MB8745
-Received-SPF: pass client-ip=2a01:111:f403:d003::;
- envelope-from=john_platts@hotmail.com;
- helo=BL0PR02CU006.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2023 19:22:55.5580 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nTmEpoVIGBfn2Ku0uSxaakc60K0jqfkAbAC3ILSuOnpN1Y4FdSuwM+075N9CtvJyx1WeBfbo9pDEL8IypkmQpn+ujpaEnApojChP2BoXAVE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4476
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-10_17,2023-11-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ malwarescore=0 phishscore=0
+ mlxlogscore=999 adultscore=0 mlxscore=0 spamscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
+ definitions=main-2311100162
+X-Proofpoint-GUID: q0EucTmyatttRAzKl6C-1_lzLzYYPBXe
+X-Proofpoint-ORIG-GUID: q0EucTmyatttRAzKl6C-1_lzLzYYPBXe
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=william.roche@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -126,523 +188,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The patch below fixes a bug in the VSX_CVT_FP_TO_INT and VSX_CVT_FP_TO_INT2=
-=0A=
-macros in target/ppc/fpu_helper.c where a non-NaN floating point value from=
- the=0A=
-source vector is incorrectly converted to 0, 0x80000000, or 0x8000000000000=
-000=0A=
-instead of the expected value if a preceding source floating point value fr=
-om=0A=
-the same source vector was a NaN.=0A=
-=0A=
-The bug in the VSX_CVT_FP_TO_INT and VSX_CVT_FP_TO_INT2 macros in=0A=
-target/ppc/fpu_helper.c was introduced with commit c3f24257e3c0.=0A=
-=0A=
-This patch also adds a new vsx_f2i_nan test in tests/tcg/ppc64 that checks =
-that=0A=
-the VSX xvcvspsxws, xvcvspuxws, xvcvspsxds, xvcvspuxds, xvcvdpsxws, xvcvdpu=
-xws,=0A=
-xvcvdpsxds, and xvcvdpuxds instructions correctly convert non-NaN floating =
-point=0A=
-values to integer values if the source vector contains NaN floating point v=
-alues.=0A=
-=0A=
-Fixes: c3f24257e3c0 ("target/ppc: Clear fpstatus flags on helpers missing i=
-t")=0A=
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1941=0A=
-Signed-off-by: John Platts <john_platts@hotmail.com>=0A=
----=0A=
- target/ppc/fpu_helper.c         |  12 +-=0A=
- tests/tcg/ppc64/Makefile.target |   5 +=0A=
- tests/tcg/ppc64/vsx_f2i_nan.c   | 300 ++++++++++++++++++++++++++++++++=0A=
- 3 files changed, 313 insertions(+), 4 deletions(-)=0A=
- create mode 100644 tests/tcg/ppc64/vsx_f2i_nan.c=0A=
-=0A=
-diff --git a/target/ppc/fpu_helper.c b/target/ppc/fpu_helper.c=0A=
-index 03150a0f10..4b3dcad5d1 100644=0A=
---- a/target/ppc/fpu_helper.c=0A=
-+++ b/target/ppc/fpu_helper.c=0A=
-@@ -2880,20 +2880,22 @@ uint64_t helper_XSCVSPDPN(uint64_t xb)=0A=
- #define VSX_CVT_FP_TO_INT(op, nels, stp, ttp, sfld, tfld, sfi, rnan)      =
-   \=0A=
- void helper_##op(CPUPPCState *env, ppc_vsr_t *xt, ppc_vsr_t *xb)          =
-   \=0A=
- {                                                                         =
-   \=0A=
-+    int all_flags =3D 0;                                                  =
-     \=0A=
-     ppc_vsr_t t =3D { };                                                  =
-     \=0A=
-     int i, flags;                                                         =
-   \=0A=
-                                                                           =
-   \=0A=
--    helper_reset_fpstatus(env);                                           =
-   \=0A=
--                                                                          =
-   \=0A=
-     for (i =3D 0; i < nels; i++) {                                        =
-     \=0A=
-+        helper_reset_fpstatus(env);                                       =
-   \=0A=
-         t.tfld =3D stp##_to_##ttp##_round_to_zero(xb->sfld, &env->fp_statu=
-s);  \=0A=
-         flags =3D env->fp_status.float_exception_flags;                   =
-     \=0A=
-+        all_flags |=3D flags;                                             =
-     \=0A=
-         if (unlikely(flags & float_flag_invalid)) {                       =
-   \=0A=
-             t.tfld =3D float_invalid_cvt(env, flags, t.tfld, rnan, 0, GETP=
-C());\=0A=
-         }                                                                 =
-   \=0A=
-     }                                                                     =
-   \=0A=
-                                                                           =
-   \=0A=
-     *xt =3D t;                                                            =
-     \=0A=
-+    env->fp_status.float_exception_flags =3D all_flags;                   =
-     \=0A=
-     do_float_check_status(env, sfi, GETPC());                             =
-   \=0A=
- }=0A=
- =0A=
-@@ -2945,15 +2947,16 @@ VSX_CVT_FP_TO_INT128(XSCVQPSQZ, int128, 0x800000000=
-0000000ULL);=0A=
- #define VSX_CVT_FP_TO_INT2(op, nels, stp, ttp, sfi, rnan)                 =
-   \=0A=
- void helper_##op(CPUPPCState *env, ppc_vsr_t *xt, ppc_vsr_t *xb)          =
-   \=0A=
- {                                                                         =
-   \=0A=
-+    int all_flags =3D 0;                                                  =
-     \=0A=
-     ppc_vsr_t t =3D { };                                                  =
-     \=0A=
-     int i, flags;                                                         =
-   \=0A=
-                                                                           =
-   \=0A=
--    helper_reset_fpstatus(env);                                           =
-   \=0A=
--                                                                          =
-   \=0A=
-     for (i =3D 0; i < nels; i++) {                                        =
-     \=0A=
-+        helper_reset_fpstatus(env);                                       =
-   \=0A=
-         t.VsrW(2 * i) =3D stp##_to_##ttp##_round_to_zero(xb->VsrD(i),     =
-     \=0A=
-                                                        &env->fp_status);  =
-   \=0A=
-         flags =3D env->fp_status.float_exception_flags;                   =
-     \=0A=
-+        all_flags |=3D flags;                                             =
-     \=0A=
-         if (unlikely(flags & float_flag_invalid)) {                       =
-   \=0A=
-             t.VsrW(2 * i) =3D float_invalid_cvt(env, flags, t.VsrW(2 * i),=
-     \=0A=
-                                               rnan, 0, GETPC());          =
-   \=0A=
-@@ -2962,6 +2965,7 @@ void helper_##op(CPUPPCState *env, ppc_vsr_t *xt, ppc=
-_vsr_t *xb)             \=0A=
-     }                                                                     =
-   \=0A=
-                                                                           =
-   \=0A=
-     *xt =3D t;                                                            =
-     \=0A=
-+    env->fp_status.float_exception_flags =3D all_flags;                   =
-     \=0A=
-     do_float_check_status(env, sfi, GETPC());                             =
-   \=0A=
- }=0A=
- =0A=
-diff --git a/tests/tcg/ppc64/Makefile.target b/tests/tcg/ppc64/Makefile.tar=
-get=0A=
-index 1d08076756..ca8b929464 100644=0A=
---- a/tests/tcg/ppc64/Makefile.target=0A=
-+++ b/tests/tcg/ppc64/Makefile.target=0A=
-@@ -16,6 +16,11 @@ PPC64_TESTS=3Dbcdsub non_signalling_xscv=0A=
- endif=0A=
- $(PPC64_TESTS): CFLAGS +=3D -mpower8-vector=0A=
- =0A=
-+ifneq ($(CROSS_CC_HAS_POWER8_VECTOR),)=0A=
-+PPC64_TESTS +=3D vsx_f2i_nan=0A=
-+endif=0A=
-+vsx_f2i_nan: CFLAGS +=3D -mpower8-vector -I$(SRC_PATH)/include=0A=
-+=0A=
- PPC64_TESTS +=3D mtfsf=0A=
- PPC64_TESTS +=3D mffsce=0A=
- =0A=
-diff --git a/tests/tcg/ppc64/vsx_f2i_nan.c b/tests/tcg/ppc64/vsx_f2i_nan.c=
-=0A=
-new file mode 100644=0A=
-index 0000000000..94b1a4eb02=0A=
---- /dev/null=0A=
-+++ b/tests/tcg/ppc64/vsx_f2i_nan.c=0A=
-@@ -0,0 +1,300 @@=0A=
-+#include <stdio.h>=0A=
-+#include "qemu/compiler.h"=0A=
-+=0A=
-+typedef vector float vsx_float32_vec_t;=0A=
-+typedef vector double vsx_float64_vec_t;=0A=
-+typedef vector signed int vsx_int32_vec_t;=0A=
-+typedef vector unsigned int vsx_uint32_vec_t;=0A=
-+typedef vector signed long long vsx_int64_vec_t;=0A=
-+typedef vector unsigned long long vsx_uint64_vec_t;=0A=
-+=0A=
-+#define DEFINE_VSX_F2I_FUNC(SRC_T, DEST_T, INSN)                       \=
-=0A=
-+static inline vsx_##DEST_T##_vec_t                                     \=
-=0A=
-+    vsx_convert_##SRC_T##_vec_to_##DEST_T##_vec(vsx_##SRC_T##_vec_t v) \=
-=0A=
-+{                                                                      \=
-=0A=
-+    vsx_##DEST_T##_vec_t result;                                       \=
-=0A=
-+    asm(#INSN " %x0, %x1" : "=3Dwa" (result) : "wa" (v));                \=
-=0A=
-+    return result;                                                     \=
-=0A=
-+}=0A=
-+=0A=
-+DEFINE_VSX_F2I_FUNC(float32, int32, xvcvspsxws)=0A=
-+DEFINE_VSX_F2I_FUNC(float32, uint32, xvcvspuxws)=0A=
-+DEFINE_VSX_F2I_FUNC(float32, int64, xvcvspsxds)=0A=
-+DEFINE_VSX_F2I_FUNC(float32, uint64, xvcvspuxds)=0A=
-+DEFINE_VSX_F2I_FUNC(float64, int32, xvcvdpsxws)=0A=
-+DEFINE_VSX_F2I_FUNC(float64, uint32, xvcvdpuxws)=0A=
-+DEFINE_VSX_F2I_FUNC(float64, int64, xvcvdpsxds)=0A=
-+DEFINE_VSX_F2I_FUNC(float64, uint64, xvcvdpuxds)=0A=
-+=0A=
-+static inline vsx_float32_vec_t vsx_float32_is_nan(vsx_float32_vec_t v)=0A=
-+{=0A=
-+    vsx_float32_vec_t abs_v;=0A=
-+    vsx_float32_vec_t result_mask;=0A=
-+    const vsx_uint32_vec_t f32_pos_inf_bits =3D {0x7F800000U, 0x7F800000U,=
-=0A=
-+                                               0x7F800000U, 0x7F800000U};=
-=0A=
-+=0A=
-+    asm("xvabssp %x0, %x1" : "=3Dwa" (abs_v) : "wa" (v));=0A=
-+    asm("vcmpgtuw %0, %1, %2"=0A=
-+        : "=3Dv" (result_mask)=0A=
-+        : "v" (abs_v), "v" (f32_pos_inf_bits));=0A=
-+    return result_mask;=0A=
-+}=0A=
-+=0A=
-+static inline vsx_float64_vec_t vsx_float64_is_nan(vsx_float64_vec_t v)=0A=
-+{=0A=
-+    vsx_float64_vec_t abs_v;=0A=
-+    vsx_float64_vec_t result_mask;=0A=
-+    const vsx_uint64_vec_t f64_pos_inf_bits =3D {0x7FF0000000000000ULL,=0A=
-+                                               0x7FF0000000000000ULL};=0A=
-+=0A=
-+    asm("xvabsdp %x0, %x1" : "=3Dwa" (abs_v) : "wa" (v));=0A=
-+    asm("vcmpgtud %0, %1, %2"=0A=
-+        : "=3Dv" (result_mask)=0A=
-+        : "v" (abs_v), "v" (f64_pos_inf_bits));=0A=
-+    return result_mask;=0A=
-+}=0A=
-+=0A=
-+#define DEFINE_VSX_BINARY_LOGICAL_OP_INSN(LANE_TYPE, OP_NAME, OP_INSN)    =
-\=0A=
-+static inline vsx_##LANE_TYPE##_vec_t vsx_##LANE_TYPE##_##OP_NAME(        =
-\=0A=
-+    vsx_##LANE_TYPE##_vec_t a, vsx_##LANE_TYPE##_vec_t b)                 =
-\=0A=
-+{                                                                         =
-\=0A=
-+    vsx_##LANE_TYPE##_vec_t result;                                       =
-\=0A=
-+    asm(#OP_INSN " %x0, %x1, %x2" : "=3Dwa" (result) : "wa" (a), "wa" (b))=
-; \=0A=
-+    return result;                                                        =
-\=0A=
-+}=0A=
-+=0A=
-+DEFINE_VSX_BINARY_LOGICAL_OP_INSN(float32, logical_and, xxland)=0A=
-+DEFINE_VSX_BINARY_LOGICAL_OP_INSN(float64, logical_and, xxland)=0A=
-+DEFINE_VSX_BINARY_LOGICAL_OP_INSN(int32, logical_and, xxland)=0A=
-+DEFINE_VSX_BINARY_LOGICAL_OP_INSN(uint32, logical_and, xxland)=0A=
-+DEFINE_VSX_BINARY_LOGICAL_OP_INSN(int64, logical_and, xxland)=0A=
-+DEFINE_VSX_BINARY_LOGICAL_OP_INSN(uint64, logical_and, xxland)=0A=
-+=0A=
-+DEFINE_VSX_BINARY_LOGICAL_OP_INSN(float32, logical_andc, xxlandc)=0A=
-+DEFINE_VSX_BINARY_LOGICAL_OP_INSN(float64, logical_andc, xxlandc)=0A=
-+=0A=
-+DEFINE_VSX_BINARY_LOGICAL_OP_INSN(float32, logical_or, xxlor)=0A=
-+DEFINE_VSX_BINARY_LOGICAL_OP_INSN(float64, logical_or, xxlor)=0A=
-+DEFINE_VSX_BINARY_LOGICAL_OP_INSN(int32, logical_or, xxlor)=0A=
-+DEFINE_VSX_BINARY_LOGICAL_OP_INSN(uint32, logical_or, xxlor)=0A=
-+DEFINE_VSX_BINARY_LOGICAL_OP_INSN(int64, logical_or, xxlor)=0A=
-+DEFINE_VSX_BINARY_LOGICAL_OP_INSN(uint64, logical_or, xxlor)=0A=
-+=0A=
-+static inline vsx_int32_vec_t vsx_mask_out_float32_vec_to_int32_vec(=0A=
-+    vsx_int32_vec_t v)=0A=
-+{=0A=
-+    return v;=0A=
-+}=0A=
-+static inline vsx_uint32_vec_t vsx_mask_out_float32_vec_to_uint32_vec(=0A=
-+    vsx_uint32_vec_t v)=0A=
-+{=0A=
-+    return v;=0A=
-+}=0A=
-+static inline vsx_int64_vec_t vsx_mask_out_float32_vec_to_int64_vec(=0A=
-+    vsx_int64_vec_t v)=0A=
-+{=0A=
-+    return v;=0A=
-+}=0A=
-+static inline vsx_uint64_vec_t vsx_mask_out_float32_vec_to_uint64_vec(=0A=
-+    vsx_uint64_vec_t v)=0A=
-+{=0A=
-+    return v;=0A=
-+}=0A=
-+=0A=
-+static inline vsx_int32_vec_t vsx_mask_out_float64_vec_to_int32_vec(=0A=
-+    vsx_int32_vec_t v)=0A=
-+{=0A=
-+#if HOST_BIG_ENDIAN=0A=
-+    const vsx_int32_vec_t valid_lanes_mask =3D {-1, 0, -1, 0};=0A=
-+#else=0A=
-+    const vsx_int32_vec_t valid_lanes_mask =3D {0, -1, 0, -1};=0A=
-+#endif=0A=
-+=0A=
-+    return vsx_int32_logical_and(v, valid_lanes_mask);=0A=
-+}=0A=
-+=0A=
-+static inline vsx_uint32_vec_t vsx_mask_out_float64_vec_to_uint32_vec(=0A=
-+    vsx_uint32_vec_t v)=0A=
-+{=0A=
-+    return (vsx_uint32_vec_t)vsx_mask_out_float64_vec_to_int32_vec(=0A=
-+        (vsx_int32_vec_t)v);=0A=
-+}=0A=
-+=0A=
-+static inline vsx_int64_vec_t vsx_mask_out_float64_vec_to_int64_vec(=0A=
-+    vsx_int64_vec_t v)=0A=
-+{=0A=
-+    return v;=0A=
-+}=0A=
-+static inline vsx_uint64_vec_t vsx_mask_out_float64_vec_to_uint64_vec(=0A=
-+    vsx_uint64_vec_t v)=0A=
-+{=0A=
-+    return v;=0A=
-+}=0A=
-+=0A=
-+static inline void print_vsx_float32_vec_elements(FILE *stream,=0A=
-+                                                  vsx_float32_vec_t vec)=
-=0A=
-+{=0A=
-+    fprintf(stream, "%g, %g, %g, %g", (double)vec[0], (double)vec[1],=0A=
-+            (double)vec[2], (double)vec[3]);=0A=
-+}=0A=
-+=0A=
-+static inline void print_vsx_float64_vec_elements(FILE *stream,=0A=
-+                                                  vsx_float64_vec_t vec)=
-=0A=
-+{=0A=
-+    fprintf(stream, "%.17g, %.17g", vec[0], vec[1]);=0A=
-+}=0A=
-+=0A=
-+static inline void print_vsx_int32_vec_elements(FILE *stream,=0A=
-+                                                vsx_int32_vec_t vec)=0A=
-+{=0A=
-+    fprintf(stream, "%d, %d, %d, %d", vec[0], vec[1], vec[2], vec[3]);=0A=
-+}=0A=
-+=0A=
-+static inline void print_vsx_uint32_vec_elements(FILE *stream,=0A=
-+                                                 vsx_uint32_vec_t vec)=0A=
-+{=0A=
-+    fprintf(stream, "%u, %u, %u, %u", vec[0], vec[1], vec[2], vec[3]);=0A=
-+}=0A=
-+=0A=
-+static inline void print_vsx_int64_vec_elements(FILE *stream,=0A=
-+                                                vsx_int64_vec_t vec)=0A=
-+{=0A=
-+    fprintf(stream, "%lld, %lld", vec[0], vec[1]);=0A=
-+}=0A=
-+=0A=
-+static inline void print_vsx_uint64_vec_elements(FILE *stream,=0A=
-+                                                 vsx_uint64_vec_t vec)=0A=
-+{=0A=
-+    fprintf(stream, "%llu, %llu", vec[0], vec[1]);=0A=
-+}=0A=
-+=0A=
-+#define DEFINE_VSX_ALL_EQ_FUNC(LANE_TYPE, CMP_INSN)                   \=0A=
-+static inline int vsx_##LANE_TYPE##_all_eq(vsx_##LANE_TYPE##_vec_t a, \=0A=
-+                                           vsx_##LANE_TYPE##_vec_t b) \=0A=
-+{                                                                     \=0A=
-+    unsigned result;                                                  \=0A=
-+    vsx_##LANE_TYPE##_vec_t is_eq_mask_vec;                           \=0A=
-+    asm(#CMP_INSN ". %0, %2, %3\n\t"                                  \=0A=
-+        "mfocrf %1, 2"                                                \=0A=
-+        : "=3Dv" (is_eq_mask_vec), "=3Dr" (result)                        =
-\=0A=
-+        : "v" (a), "v" (b)                                            \=0A=
-+        : "cr6");                                                     \=0A=
-+    return (int)((result >> 7) & 1u);                                 \=0A=
-+}=0A=
-+=0A=
-+DEFINE_VSX_ALL_EQ_FUNC(int32, vcmpequw)=0A=
-+DEFINE_VSX_ALL_EQ_FUNC(uint32, vcmpequw)=0A=
-+DEFINE_VSX_ALL_EQ_FUNC(int64, vcmpequd)=0A=
-+DEFINE_VSX_ALL_EQ_FUNC(uint64, vcmpequd)=0A=
-+=0A=
-+#define DEFINE_VSX_F2I_TEST_FUNC(SRC_T, DEST_T)                          \=
-=0A=
-+static inline int test_vsx_conv_##SRC_T##_vec_to_##DEST_T##_vec(         \=
-=0A=
-+    vsx_##SRC_T##_vec_t src_v)                                           \=
-=0A=
-+{                                                                        \=
-=0A=
-+    const vsx_##SRC_T##_vec_t is_nan_mask =3D vsx_##SRC_T##_is_nan(src_v);=
- \=0A=
-+    const vsx_##SRC_T##_vec_t nan_src_v =3D                               =
- \=0A=
-+        vsx_##SRC_T##_logical_and(src_v, is_nan_mask);                   \=
-=0A=
-+    const vsx_##SRC_T##_vec_t non_nan_src_v =3D                           =
- \=0A=
-+        vsx_##SRC_T##_logical_andc(src_v, is_nan_mask);                  \=
-=0A=
-+                                                                         \=
-=0A=
-+    const vsx_##DEST_T##_vec_t expected_result =3D                        =
- \=0A=
-+        vsx_mask_out_##SRC_T##_vec_to_##DEST_T##_vec(                    \=
-=0A=
-+            vsx_##DEST_T##_logical_or(                                   \=
-=0A=
-+                vsx_convert_##SRC_T##_vec_to_##DEST_T##_vec(nan_src_v),  \=
-=0A=
-+                vsx_convert_##SRC_T##_vec_to_##DEST_T##_vec(             \=
-=0A=
-+                    non_nan_src_v)));                                    \=
-=0A=
-+    const vsx_##DEST_T##_vec_t actual_result =3D                          =
- \=0A=
-+        vsx_mask_out_##SRC_T##_vec_to_##DEST_T##_vec(                    \=
-=0A=
-+            vsx_convert_##SRC_T##_vec_to_##DEST_T##_vec(src_v));         \=
-=0A=
-+    const int test_result =3D                                             =
- \=0A=
-+        vsx_##DEST_T##_all_eq(expected_result, actual_result);           \=
-=0A=
-+                                                                         \=
-=0A=
-+    if (unlikely(test_result =3D=3D 0)) {                                 =
-   \=0A=
-+        fputs("FAIL: Conversion of " #SRC_T " vector to " #DEST_T        \=
-=0A=
-+              " vector failed\n", stdout);                               \=
-=0A=
-+        fputs("Source values: ", stdout);                                \=
-=0A=
-+        print_vsx_##SRC_T##_vec_elements(stdout, src_v);                 \=
-=0A=
-+        fputs("\nExpected result: ", stdout);                            \=
-=0A=
-+        print_vsx_##DEST_T##_vec_elements(stdout, expected_result);      \=
-=0A=
-+        fputs("\nActual result: ", stdout);                              \=
-=0A=
-+        print_vsx_##DEST_T##_vec_elements(stdout, actual_result);        \=
-=0A=
-+        fputs("\n\n", stdout);                                           \=
-=0A=
-+    }                                                                    \=
-=0A=
-+                                                                         \=
-=0A=
-+    return test_result;                                                  \=
-=0A=
-+}=0A=
-+=0A=
-+=0A=
-+DEFINE_VSX_F2I_TEST_FUNC(float32, int32)=0A=
-+DEFINE_VSX_F2I_TEST_FUNC(float32, uint32)=0A=
-+DEFINE_VSX_F2I_TEST_FUNC(float32, int64)=0A=
-+DEFINE_VSX_F2I_TEST_FUNC(float32, uint64)=0A=
-+DEFINE_VSX_F2I_TEST_FUNC(float64, int32)=0A=
-+DEFINE_VSX_F2I_TEST_FUNC(float64, uint32)=0A=
-+DEFINE_VSX_F2I_TEST_FUNC(float64, int64)=0A=
-+DEFINE_VSX_F2I_TEST_FUNC(float64, uint64)=0A=
-+=0A=
-+static inline vsx_int32_vec_t vsx_int32_vec_from_mask(int mask)=0A=
-+{=0A=
-+    const vsx_int32_vec_t bits_to_test =3D {1, 2, 4, 8};=0A=
-+    const vsx_int32_vec_t vec_mask =3D {mask, mask, mask, mask};=0A=
-+    vsx_int32_vec_t result;=0A=
-+=0A=
-+    asm("vcmpequw %0, %1, %2"=0A=
-+        : "=3Dv" (result)=0A=
-+        : "v" (vsx_int32_logical_and(vec_mask, bits_to_test)),=0A=
-+          "v" (bits_to_test));=0A=
-+    return result;=0A=
-+}=0A=
-+=0A=
-+static inline vsx_int64_vec_t vsx_int64_vec_from_mask(int mask)=0A=
-+{=0A=
-+    const vsx_int64_vec_t bits_to_test =3D {1, 2};=0A=
-+    const vsx_int64_vec_t vec_mask =3D {mask, mask};=0A=
-+    vsx_int64_vec_t result;=0A=
-+=0A=
-+    asm("vcmpequd %0, %1, %2"=0A=
-+        : "=3Dv" (result)=0A=
-+        : "v" (vsx_int64_logical_and(vec_mask, bits_to_test)),=0A=
-+          "v" (bits_to_test));=0A=
-+    return result;=0A=
-+}=0A=
-+=0A=
-+int main(void)=0A=
-+{=0A=
-+    const vsx_float32_vec_t f32_iota1 =3D {1.0f, 2.0f, 3.0f, 4.0f};=0A=
-+    const vsx_float64_vec_t f64_iota1 =3D {1.0, 2.0};=0A=
-+=0A=
-+    int num_of_tests_failed =3D 0;=0A=
-+=0A=
-+    for (int i =3D 0; i < 16; i++) {=0A=
-+        const vsx_int32_vec_t nan_mask =3D vsx_int32_vec_from_mask(i);=0A=
-+        const vsx_float32_vec_t f32_v =3D=0A=
-+            vsx_float32_logical_or(f32_iota1, (vsx_float32_vec_t)nan_mask)=
-;=0A=
-+        num_of_tests_failed +=3D=0A=
-+            (int)(!test_vsx_conv_float32_vec_to_int32_vec(f32_v));=0A=
-+        num_of_tests_failed +=3D=0A=
-+            (int)(!test_vsx_conv_float32_vec_to_int64_vec(f32_v));=0A=
-+        num_of_tests_failed +=3D=0A=
-+            (int)(!test_vsx_conv_float32_vec_to_uint32_vec(f32_v));=0A=
-+        num_of_tests_failed +=3D=0A=
-+            (int)(!test_vsx_conv_float32_vec_to_uint64_vec(f32_v));=0A=
-+    }=0A=
-+=0A=
-+    for (int i =3D 0; i < 4; i++) {=0A=
-+        const vsx_int64_vec_t nan_mask =3D vsx_int64_vec_from_mask(i);=0A=
-+        const vsx_float64_vec_t f64_v =3D=0A=
-+            vsx_float64_logical_or(f64_iota1, (vsx_float64_vec_t)nan_mask)=
-;=0A=
-+        num_of_tests_failed +=3D=0A=
-+            (int)(!test_vsx_conv_float64_vec_to_int32_vec(f64_v));=0A=
-+        num_of_tests_failed +=3D=0A=
-+            (int)(!test_vsx_conv_float64_vec_to_int64_vec(f64_v));=0A=
-+        num_of_tests_failed +=3D=0A=
-+            (int)(!test_vsx_conv_float64_vec_to_uint32_vec(f64_v));=0A=
-+        num_of_tests_failed +=3D=0A=
-+            (int)(!test_vsx_conv_float64_vec_to_uint64_vec(f64_v));=0A=
-+    }=0A=
-+=0A=
-+    printf("%d tests failed\n", num_of_tests_failed);=0A=
-+    return (int)(num_of_tests_failed !=3D 0);=0A=
-+}=0A=
--- =0A=
-2.34.1=0A=
-=0A=
+--------------HwKxFBMtz3PUrQYhSERwJR0D
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+On 11/8/23 22:45, Peter Xu wrote:
+> On Mon, Nov 06, 2023 at 10:38:14PM +0100, William Roche wrote:
+>> But it implies a lot of other changes:
+>>      - The source has to flag the error pages to indicate a poison
+>>        (new flag in the exchange protocole)
+>>      - The destination has to be able to deal with the new protocole
+> IIUC these two can be simply implemented by migrating hwpoison_page_list
+> over to dest.  You need to have a compat bit for doing this, ignoring the
+> list on old machine types, because old QEMUs will not recognize this vmsd.
+>
+> QEMU should even support migrating a list object in VMSD, feel free to have
+> a look at VMSTATE_QLIST_V().
+
+This is another area that I'll need to learn about.
+
+>>      - The destination has to be able to mark the pages as poisoned
+>>        (authorized to use userfaultfd)
+> Note: userfaultfd is actually available without any privilege if to use
+> UFFDIO_POISON only, as long as to open the uffd (either via syscall or
+> /dev/userfaultfd) using UFFD_FLAG_USER_ONLY.
+>
+> A trick is we can register with UFFD_WP mode (not MISSING; because when a
+> kernel accesses a missing page it'll cause SIGBUS then with USER_ONLY),
+> then inject whatever POISON we want.  As long as UFFDIO_WRITEPROTECT is not
+> invoked, UFFD_WP does nothing (unlike MISSING).
+>
+>>      - So both source and destination have to be upgraded (of course
+>>        qemu but also an appropriate kernel version providing
+>>        UFFDIO_POISON on the destination)
+> True.  Unfortunately this is not avoidable.
+>
+>>      - we may need to be able to negotiate a fall back solution
+>>      - an indication of the method to use could belong to the
+>>        migration capabilities and parameters
+> For above two points: it's a common issue with migration compatibility.  As
+> long as you can provide above VMSD to migrate hwpoison_page_list, marking
+> all old QEMU machine types skipping that, then it should just work.
+>
+> You can have a closer look at anything in hw_compat_* as an example.
+
+Yes, I'll do that.
+
+>>      - etc...
+> I think you did summarize mostly all the points I can think of; is there
+> really anything more? :)
+
+Probably some work to select the poison migration method (allowing a
+migration transforming poison into zeros as a fall back method if the
+poison migration itself with UFFDIO_POISON can't be used, or not) for
+example.
+
+> It'll be great if you can, or plan to, fix that for good.
+
+Thanks for the offer ;)
+I'd really like to implement that, but I currently have another pressing
+issue to work on. I should be back on this topic within a few months.
+
+I'm now waiting for some feedback from the ARM architecture reviewer(s).
+
+Thanks a lot for all your suggestions.
+
+--------------HwKxFBMtz3PUrQYhSERwJR0D
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <div class="moz-cite-prefix">On 11/8/23 22:45, Peter Xu wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:ZUwBgzr1GcSIy0sJ@x1n">
+      <pre class="moz-quote-pre" wrap="">On Mon, Nov 06, 2023 at 10:38:14PM +0100, William Roche wrote:</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">But it implies a lot of other changes:
+&nbsp;&nbsp; &nbsp;- The source has to flag the error pages to indicate a poison
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (new flag in the exchange protocole)
+&nbsp;&nbsp; &nbsp;- The destination has to be able to deal with the new protocole
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+IIUC these two can be simply implemented by migrating hwpoison_page_list
+over to dest.  You need to have a compat bit for doing this, ignoring the
+list on old machine types, because old QEMUs will not recognize this vmsd.
+
+QEMU should even support migrating a list object in VMSD, feel free to have
+a look at VMSTATE_QLIST_V().</pre>
+    </blockquote>
+    <p><font face="monospace">This is another area that I'll need to
+        learn about.</font><br>
+    </p>
+    <p><span style="white-space: pre-wrap">
+</span></p>
+    <blockquote type="cite" cite="mid:ZUwBgzr1GcSIy0sJ@x1n">
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">&nbsp;&nbsp; &nbsp;- The destination has to be able to mark the pages as poisoned
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (authorized to use userfaultfd)
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Note: userfaultfd is actually available without any privilege if to use
+UFFDIO_POISON only, as long as to open the uffd (either via syscall or
+/dev/userfaultfd) using UFFD_FLAG_USER_ONLY.
+
+A trick is we can register with UFFD_WP mode (not MISSING; because when a
+kernel accesses a missing page it'll cause SIGBUS then with USER_ONLY),
+then inject whatever POISON we want.  As long as UFFDIO_WRITEPROTECT is not
+invoked, UFFD_WP does nothing (unlike MISSING).
+
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">&nbsp;&nbsp; &nbsp;- So both source and destination have to be upgraded (of course
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; qemu but also an appropriate kernel version providing
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UFFDIO_POISON on the destination)
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+True.  Unfortunately this is not avoidable.
+
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">&nbsp;&nbsp; &nbsp;- we may need to be able to negotiate a fall back solution
+&nbsp;&nbsp; &nbsp;- an indication of the method to use could belong to the
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; migration capabilities and parameters
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+For above two points: it's a common issue with migration compatibility.  As
+long as you can provide above VMSD to migrate hwpoison_page_list, marking
+all old QEMU machine types skipping that, then it should just work.
+
+You can have a closer look at anything in hw_compat_* as an example.</pre>
+    </blockquote>
+    <p><font face="monospace">Yes, I'll do that.</font></p>
+    <p><span style="white-space: pre-wrap">
+</span></p>
+    <blockquote type="cite" cite="mid:ZUwBgzr1GcSIy0sJ@x1n">
+      <pre class="moz-quote-pre" wrap="">
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">&nbsp;&nbsp; &nbsp;- etc...
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+I think you did summarize mostly all the points I can think of; is there
+really anything more? :)</pre>
+    </blockquote>
+    <p><font face="monospace">Probably some work to select the poison
+        migration method (allowing a<br>
+        migration transforming poison into zeros as a fall back method
+        if the<br>
+        poison migration itself with <span style="white-space: pre-wrap">UFFDIO_POISON </span>can't be
+        used, or not) for<br>
+        example.</font><br>
+    </p>
+    <blockquote type="cite" cite="mid:ZUwBgzr1GcSIy0sJ@x1n">
+      <pre class="moz-quote-pre" wrap="">
+It'll be great if you can, or plan to, fix that for good.
+</pre>
+    </blockquote>
+    <p><font face="monospace">Thanks for the offer ;)<br>
+        I'd really like to implement that, but I currently have another
+        pressing<br>
+        issue to work on. I should be back on this topic within a few
+        months.</font></p>
+    <p><font face="monospace">I'm now waiting for some feedback from the
+        ARM architecture reviewer(s).</font></p>
+    <p><font face="monospace">Thanks a lot for all your suggestions.<br>
+      </font></p>
+  </body>
+</html>
+
+--------------HwKxFBMtz3PUrQYhSERwJR0D--
 
