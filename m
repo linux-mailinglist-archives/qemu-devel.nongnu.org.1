@@ -2,90 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E247B7E7BDB
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 12:34:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A3BE7E7BE2
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 12:36:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1PlO-0004hH-Va; Fri, 10 Nov 2023 06:33:26 -0500
+	id 1r1Pna-0006GT-Oi; Fri, 10 Nov 2023 06:35:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r1PlI-0004gJ-TN
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 06:33:21 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r1PlG-0007P4-Nd
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 06:33:20 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40859c464daso14480375e9.1
- for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 03:33:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699615994; x=1700220794; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=N9RRjo0H7ohPMN50cLmaMghwMlykvqa2DWQuM/AlxhE=;
- b=lpLzH6ghRlUR38FVa1ED8/9BWWg5tGfeYEhcIOMgEVpeK9jSuUvHY9BJ7UY1IER/qS
- UBlK1rby9dhrCHpOyizWmOhMUz9xZ+t+716wHcdB2nLWRCLLpIl+entOZPLo8AZIS7H9
- oDQJQXO0A25b7Wer9408fsAmM/8G8D2RnecTL+MtDki2G1wvzj2jSUrm7lV7CJ88beKW
- 1YBsEdZTMtUneiZdIiZj0ljgfarSThLrsn496XUfkyC75cwSir/kurquQAIXaAyi0I/N
- rGZa79eSShbPSvuqcWV0syEQyP2PydjC8+6CD3TFX9hcnv5dzr1iTIoSJfikF60wQ6Rm
- l4vQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699615994; x=1700220794;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=N9RRjo0H7ohPMN50cLmaMghwMlykvqa2DWQuM/AlxhE=;
- b=nG47N8UntsmnYSACSooUORAhpubKwu8+2sCgZ5/qFFeW4HE6RqBoNxGK9f4oGTq/Zo
- A9q8NdV2PCpJmAAEWTMG2ZRPWWDxvmo6vn7V7LnxkAGVoHbXBuAlUjkFRjntkoLQrxMP
- Q+U6+4kwCmsB2h+PqamB8k+ihGExUeeTjMJw3COJwAthDx252vuwtdj0Yb/Ck5WbNezt
- PrR6XF1/KCvPjDS34KZisS6d0fNNt9dc/II5oqQ1cq6VHYkZ8zyWnCzjbSOqesQD4LMb
- 6I3SmywaXJZrqnDB5TGYoKl9O3dkDv62HNAQXUwOuV+yP1MbrgkeVk0WVUwJM5vJvDwq
- lkTA==
-X-Gm-Message-State: AOJu0YxhSRahUQLB6fIIbrRjbetvRlek1rCI55YYFX0KZsC16MH0Bx+c
- TtUbgkLjxYhaLNIJyWPn7Rtjyg==
-X-Google-Smtp-Source: AGHT+IETydfU1s7L52ySs5hwWyHooGQ9ot1TOFqefxINI9gvE6d0ep/qBrJJikE326YkA8+z9+PijA==
-X-Received: by 2002:a05:600c:190a:b0:40a:4609:9cbd with SMTP id
- j10-20020a05600c190a00b0040a46099cbdmr1129318wmq.13.1699615994588; 
- Fri, 10 Nov 2023 03:33:14 -0800 (PST)
-Received: from meli.delivery (adsl-205.37.6.2.tellas.gr. [37.6.2.205])
- by smtp.gmail.com with ESMTPSA id
- v19-20020a05600c445300b0040813e14b49sm4988328wmn.30.2023.11.10.03.33.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Nov 2023 03:33:14 -0800 (PST)
-Date: Fri, 10 Nov 2023 13:28:14 +0200
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r1PnY-0006Fy-Ew; Fri, 10 Nov 2023 06:35:40 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r1PnW-0007uF-8s; Fri, 10 Nov 2023 06:35:40 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id B8CF975A4C1;
+ Fri, 10 Nov 2023 12:35:56 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id AD01C75A4B8; Fri, 10 Nov 2023 12:35:56 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id AB46175A4B7;
+ Fri, 10 Nov 2023 12:35:56 +0100 (CET)
+Date: Fri, 10 Nov 2023 12:35:56 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>
+cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
+ Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+ =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
  qemu-arm@nongnu.org
 Subject: Re: [PATCH 2/2] Add warn_unused_result attr to AUD_register_card
-User-Agent: meli 0.8.2
+In-Reply-To: <ZU4R+08zuo8xvlg8@redhat.com>
+Message-ID: <02562baf-3d92-f5b4-2592-a9d868586451@eik.bme.hu>
 References: <cover.1699606819.git.manos.pitsidianakis@linaro.org>
  <4b040fc18cb0e563e92ce084ca18b89a050a8aaa.1699606819.git.manos.pitsidianakis@linaro.org>
  <CAFEAcA80sv6ewJ+LoROn-9ooEyLGQwiqYpL3=fqrK7gA0oZG-A@mail.gmail.com>
- <3wmne.fhuf28sb5yfg@linaro.org>
- <CAFEAcA-mSBgLuGLp4Tzaq0L78PtsxF19CVfmkJwaM8pHfwv7wg@mail.gmail.com>
- <ZU4SmH8LMGVJmGZp@redhat.com>
-In-Reply-To: <ZU4SmH8LMGVJmGZp@redhat.com>
-Message-ID: <3wo3c.z2jjrdl2xn4i@linaro.org>
+ <3wmne.fhuf28sb5yfg@linaro.org> <ZU4R+08zuo8xvlg8@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1631310355-1699616156=:56818"
+X-Virus-Scanned: ClamAV using ClamSMTP
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,45 +65,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 10 Nov 2023 13:23, "Daniel P. Berrangé" <berrange@redhat.com> wrote:
->On Fri, Nov 10, 2023 at 11:18:39AM +0000, Peter Maydell wrote:
->> On Fri, 10 Nov 2023 at 11:02, Manos Pitsidianakis
->> <manos.pitsidianakis@linaro.org> wrote:
->> >
->> > On Fri, 10 Nov 2023 12:21, Peter Maydell <peter.maydell@linaro.org> wrote:
->> > >This kind of thing is why Coverity's unused-result warning has a
->> > >lot of false positives. We shouldn't introduce extra code like
->> > >this to work around the fact that the tooling doesn't understand
->> > >our error-handling convention (i.e. error_fatal, and the way
->> > >that some functions report errors both via the return value and
->> > >also via the Error** argument).
->> >
->> > I respect that :). But I personally believe that clinging to C's
->> > inadequacies, instead of preventing bugs statically just because it adds
->> > some lines of code, is misguided. Proper code should strive to make bugs
->> > impossible in the first place.
->> 
->> I generally agree. The problem here really is that we've ended
->> up with this odd API convention that reports errors in two
->> ways. In an ideal world we'd tidy up our APIs to report errors
->> exactly in one way (presumably via the Error).
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--3866299591-1631310355-1699616156=:56818
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8BIT
+
+On Fri, 10 Nov 2023, Daniel P. Berrangé wrote:
+> On Fri, Nov 10, 2023 at 12:44:56PM +0200, Manos Pitsidianakis wrote:
+>> On Fri, 10 Nov 2023 12:21, Peter Maydell <peter.maydell@linaro.org> wrote:
+>>> This kind of thing is why Coverity's unused-result warning has a
+>>> lot of false positives. We shouldn't introduce extra code like
+>>> this to work around the fact that the tooling doesn't understand
+>>> our error-handling convention (i.e. error_fatal, and the way
+>>> that some functions report errors both via the return value and
+>>> also via the Error** argument).
+>>
+>> I respect that :). But I personally believe that clinging to C's
+>> inadequacies, instead of preventing bugs statically just because it adds
+>> some lines of code, is misguided. Proper code should strive to make bugs
+>> impossible in the first place. At least that is my perspective and I would
+>> like there to be constructive discussions about different approaches in the
+>> mailing list. Perhaps something good might come out of it!
 >
->The compelling thing about our slightly odd &error_fatal/error_abort
->approach is that we can directly get stack traces showing exactly
->where the error happened.
+> Your approach to the problem:
 >
->If we just propagate the error up the stack to finally exit/abort,
->the origin context is essentially lost, and when it does abort, we
->don't get a snapshot of all threads at the time the error hit, as
->we've moved on in time.
+>  if (!AUD_register_card("OMAP EAC", &s->codec.card, &error_fatal)) {
+>    exit(1);
+>  }
+>
+> is adding dead-code because the exit(1) will never be reachable. So while
+> it lets you squelch the unused result warning, it is verbose and misleading
+> to anyone who sees it.
+>
+> Perhaps a more viable option is to pull in gnulib's ignore_value macro
+>
+>  #define ignore_value(x) \
+>    (__extension__ ({ __typeof__ (x) __x = (x); (void) __x; }))
+>
+> and then we would have just this:
+>
+> ignore_value(AUD_register_card("OMAP EAC", &s->codec.card, &error_fatal));
 
-FYI: It is possible to get a stack trace using gnu libunwind which is 
-portable, dependency-free and runs on many targets: 
-https://github.com/libunwind/libunwind#libunwind
+I wonder if just casting to (void) without assigning to a value could 
+avoid the warning? In that case you would not need a macro just
 
-Or llvm's libunwind which is also of great quality: 
-https://bcain-llvm.readthedocs.io/projects/libunwind/en/latest/
+(void)AUD_register_card("OMAP EAC", &s->codec.card, &error_fatal);
 
-They are also compatible with co-routines and JIT code (At least, the 
-GNU one is, not sure about llvm).
+Not sure it's clearer than a macro which states what it does but the 
+definition is a bit cryptic while this cast is simpler but may also puzzle 
+somebody not familiar with it.
+
+Regards,
+BALATON Zoltan
+--3866299591-1631310355-1699616156=:56818--
 
