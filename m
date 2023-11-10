@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 655E37E834F
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 21:03:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 450127E8353
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 21:04:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1XiS-00021r-1k; Fri, 10 Nov 2023 15:02:56 -0500
+	id 1r1XiS-00021c-08; Fri, 10 Nov 2023 15:02:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r1XiM-0001yK-0n
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 15:02:52 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r1XiP-0001zI-GV
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 15:02:53 -0500
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r1XiK-0004cS-Bm
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 15:02:49 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r1XiN-0004db-U4
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 15:02:53 -0500
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 0197C1F8C0;
- Fri, 10 Nov 2023 20:02:47 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id E3E4D219B2;
+ Fri, 10 Nov 2023 20:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1699646567; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1699646568; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tmwd7iHU0NMBiDqCHDKHLq00DyPOwq8NnlmxuEjsLMc=;
- b=c0+KaYSBTbP0WIPIdh8/fSjGJONOiF92amDY0rFZNXMrS0dQT5lb/Yj7Q4EfZvWKl8bZGW
- f/MjBhXAHb2gUXOTJAg2TYjt9XgtBCBrFugbSzORVUQyI9tgf0/TOxwkZGfWb/MsshHMoP
- PHkxfi/TIqpwZSDSrNOh7SksaOVy2C8=
+ bh=1XDw7h+MPjEb3Fw95R1zEtbmr3eWUmHUulSWsjufGZg=;
+ b=MnZV9KopVQQ8ipOudvugtx6AXDetVFvHUliIaAczRz9fMuXcSy6xFLWsVEqDXm2j0lxKfn
+ 7eL+SgeelUSbxiliguUovU0IePsfL6BahSi3oHTxJQzliohJeiWMQaBLh74zowVvEgdU4e
+ WivfZDdYEyfsj4FxTUe9cYXP8aBobGw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1699646567;
+ s=susede2_ed25519; t=1699646568;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tmwd7iHU0NMBiDqCHDKHLq00DyPOwq8NnlmxuEjsLMc=;
- b=DWgoLPswpP577C0T1kGrAMwC4spNHL62cOEtHeSm5aVQeYFODcr5VUTWbLgsnyBeylskGM
- w54tCF+EZdR/naCw==
+ bh=1XDw7h+MPjEb3Fw95R1zEtbmr3eWUmHUulSWsjufGZg=;
+ b=cjarW7DpZ5pbL1kPd1h/uNQvcxpvuZJynoNkdW35SQ1nk/hsDCKVQXhbbmujbfGYndsAVm
+ qgfYgfvfN95kSFDw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 74481138FC;
- Fri, 10 Nov 2023 20:02:45 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6D801138FC;
+ Fri, 10 Nov 2023 20:02:47 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id ACsBEGWMTmWiaQAAMHmgww
- (envelope-from <farosas@suse.de>); Fri, 10 Nov 2023 20:02:45 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id wKlGDmeMTmWiaQAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 10 Nov 2023 20:02:47 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v2 1/4] migration/multifd: Stop setting p->ioc before
- connecting
-Date: Fri, 10 Nov 2023 17:02:38 -0300
-Message-Id: <20231110200241.20679-2-farosas@suse.de>
+Subject: [RFC PATCH v2 2/4] migration/multifd: Join the TLS thread
+Date: Fri, 10 Nov 2023 17:02:39 -0300
+Message-Id: <20231110200241.20679-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231110200241.20679-1-farosas@suse.de>
 References: <20231110200241.20679-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -87,28 +86,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is being shadowed but the assignments at
-multifd_channel_connect() and multifd_tls_channel_connect() .
+We're currently leaking the resources of the TLS thread by not joining
+it and also overwriting the p->thread pointer altogether.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/multifd.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ migration/multifd.c | 10 +++++++++-
+ migration/multifd.h |  1 +
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/migration/multifd.c b/migration/multifd.c
-index ec58c58082..409460684f 100644
+index 409460684f..d632dbc095 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -883,8 +883,7 @@ static void multifd_new_send_channel_async(QIOTask *task, gpointer opaque)
+@@ -525,6 +525,10 @@ void multifd_save_cleanup(void)
+     for (i = 0; i < migrate_multifd_channels(); i++) {
+         MultiFDSendParams *p = &multifd_send_state->params[i];
  
-     trace_multifd_new_send_channel_async(p->id);
-     if (!qio_task_propagate_error(task, &local_err)) {
--        p->c = ioc;
--        qio_channel_set_delay(p->c, false);
-+        qio_channel_set_delay(ioc, false);
-         p->running = true;
-         if (multifd_channel_connect(p, ioc, &local_err)) {
-             return;
++        if (p->tls_thread) {
++            qemu_thread_join(p->tls_thread);
++        }
++
+         if (p->running) {
+             qemu_thread_join(&p->thread);
+         }
+@@ -552,6 +556,8 @@ void multifd_save_cleanup(void)
+         p->iov = NULL;
+         g_free(p->normal);
+         p->normal = NULL;
++        g_free(p->tls_thread);
++        p->tls_thread = NULL;
+         multifd_send_state->ops->send_cleanup(p, &local_err);
+         if (local_err) {
+             migrate_set_error(migrate_get_current(), local_err);
+@@ -826,7 +832,9 @@ static bool multifd_tls_channel_connect(MultiFDSendParams *p,
+     trace_multifd_tls_outgoing_handshake_start(ioc, tioc, hostname);
+     qio_channel_set_name(QIO_CHANNEL(tioc), "multifd-tls-outgoing");
+     p->c = QIO_CHANNEL(tioc);
+-    qemu_thread_create(&p->thread, "multifd-tls-handshake-worker",
++
++    p->tls_thread = g_new0(QemuThread, 1);
++    qemu_thread_create(p->tls_thread, "multifd-tls-handshake-worker",
+                        multifd_tls_handshake_thread, p,
+                        QEMU_THREAD_JOINABLE);
+     return true;
+diff --git a/migration/multifd.h b/migration/multifd.h
+index a835643b48..4ff78e9863 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -75,6 +75,7 @@ typedef struct {
+     char *name;
+     /* channel thread id */
+     QemuThread thread;
++    QemuThread *tls_thread;
+     /* communication channel */
+     QIOChannel *c;
+     /* is the yank function registered */
 -- 
 2.35.3
 
