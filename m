@@ -2,57 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 929097E799C
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 07:53:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0021A7E79A4
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 08:05:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1LNZ-0008M8-Gh; Fri, 10 Nov 2023 01:52:33 -0500
+	id 1r1LYg-0002Y9-O6; Fri, 10 Nov 2023 02:04:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=s8KG=GX=kaod.org=clg@ozlabs.org>)
- id 1r1LNW-0008Lq-NH; Fri, 10 Nov 2023 01:52:30 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=s8KG=GX=kaod.org=clg@ozlabs.org>)
- id 1r1LNU-0008Mg-88; Fri, 10 Nov 2023 01:52:30 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SRTyp3w6pz4wd2;
- Fri, 10 Nov 2023 17:52:18 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SRTym55tGz4wd1;
- Fri, 10 Nov 2023 17:52:16 +1100 (AEDT)
-Message-ID: <5cc3d394-b9d0-4926-bc99-3999faf3e5f1@kaod.org>
-Date: Fri, 10 Nov 2023 07:52:10 +0100
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r1LYf-0002Xz-79
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:04:01 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r1LYd-0001eh-Ix
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:04:00 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-54394328f65so2762225a12.3
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 23:03:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699599838; x=1700204638; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=l3rUg7roLk6k2RfgB8iBCaW3n9h+FcwIvamkKS3y6Fs=;
+ b=kl+Htmy6pGmliLdOz8DWXmDVo1avsQwvHjw9DYfsX6FSPOcPbC6HHD5/xwLo0XeWvy
+ qk8RXU4aL0RL12n1DVNqy45zgbro36fPSrn6xdoMM5EKXY0E4GYHMz8fBidJfPCcetI7
+ By2MVyqGiXQwKoHZPUwc+1W9FmRS4ODXUsA8aDZowNsl1j14xU/AvXo35X82BJubanf7
+ CPThBrQCYgvQPyqMUGE2GpNdUkkFbaTj95Y2pXBUZx1qT+PYZUs0rlxp57pXUuyE0Bsu
+ 4Icx9Xtbqhx790OXIcRAMXyKaXbNOQKkM36W0iyauFaO9MUQzT7l0bC/fxxpl0bSxBgE
+ T4Qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699599838; x=1700204638;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=l3rUg7roLk6k2RfgB8iBCaW3n9h+FcwIvamkKS3y6Fs=;
+ b=BiAuXBfxAMXUOoMh2VWwAaqOW3Ucg6UNVA/QJeV8EycgMSqmfBJC5MDDjOkrhyGPQq
+ iXHIx5tJxOiei4aeVEogemSQUDZq/UKDIVQAiwyqPrFYjFcgn44O9FfHqJRpf4Ly9EK3
+ u5lVEyXB+lYHlvwHpyHXsQ7ikYX7QKob+mnuN040t7mLNaT7t/jBvJISuDPxl90f9CuD
+ vqKjGR2wcDCkqJreEvnmOrZhWcvDxCaTL/WdSWV5FT5ug4IWlYwYTBKYowlOHfJtBy1C
+ okG2U3iPDtgJzhd17AYACO2E2XGNtRicLBxNxfEX/V6cG2FQ0FQOUI4xxFhQ6jR5YeAK
+ GngQ==
+X-Gm-Message-State: AOJu0YySrf2FLzxsMlIk3fDnThHqatiNHSKlnvo3eEWU2igqCayh+ZvZ
+ mCXuN3ylCVVxm6js7Jrf2UQUtg==
+X-Google-Smtp-Source: AGHT+IEP5ekL0z+0R8y4rsGvA29JkBpQwS/mb2MZXlZvWvZVqjc65t2oWiytR2TxSav6hpkqyfkg2g==
+X-Received: by 2002:a17:906:c115:b0:9c2:2d0a:320c with SMTP id
+ do21-20020a170906c11500b009c22d0a320cmr6123542ejc.46.1699599837914; 
+ Thu, 09 Nov 2023 23:03:57 -0800 (PST)
+Received: from [192.168.69.115] ([176.187.194.109])
+ by smtp.gmail.com with ESMTPSA id
+ m17-20020a1709061ed100b0098884f86e41sm3484298ejj.123.2023.11.09.23.03.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 09 Nov 2023 23:03:57 -0800 (PST)
+Message-ID: <e52a7cea-5f89-40f0-8bba-e244c3642a0a@linaro.org>
+Date: Fri, 10 Nov 2023 08:03:54 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PING] target/ppc: Fix bugs in VSX_CVT_FP_TO_INT and
- VSX_CVT_FP_TO_INT2 macros
+Subject: Re: [PATCH v6 3/4] python: add binary
 Content-Language: en-US
-To: John Platts <john_platts@hotmail.com>,
- "qemu-ppc@nongnu.org" <qemu-ppc@nongnu.org>
-Cc: "npiggin@gmail.com" <npiggin@gmail.com>,
- "danielhb413@gmail.com" <danielhb413@gmail.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-References: <SN6PR05MB583705596093E9D2EFC8E4029DDEA@SN6PR05MB5837.namprd05.prod.outlook.com>
- <SN6PR05MB5837B5EF0D11E0A787EC30179DA5A@SN6PR05MB5837.namprd05.prod.outlook.com>
- <SN6PR05MB583760D0AEB19A3516E216329DAFA@SN6PR05MB5837.namprd05.prod.outlook.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <SN6PR05MB583760D0AEB19A3516E216329DAFA@SN6PR05MB5837.namprd05.prod.outlook.com>
+To: Maksim Davydov <davydov-max@yandex-team.ru>, qemu-devel@nongnu.org
+Cc: vsementsov@yandex-team.ru, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, wangyanan55@huawei.com, jsnow@redhat.com,
+ crosa@redhat.com, bleal@redhat.com, eblake@redhat.com, armbru@redhat.com,
+ pbonzini@redhat.com, berrange@redhat.com, alxndr@bu.edu, bsd@redhat.com,
+ stefanha@redhat.com, thuth@redhat.com, darren.kenny@oracle.com,
+ Qiuhao.Li@outlook.com, lvivier@redhat.com
+References: <20231108153827.39692-1-davydov-max@yandex-team.ru>
+ <20231108153827.39692-4-davydov-max@yandex-team.ru>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231108153827.39692-4-davydov-max@yandex-team.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=s8KG=GX=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,36 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello John,
-
-On 11/9/23 23:18, John Platts wrote:
-> What is the status of integrating the fixes to the VSX_CVT_FP_TO_INT and VSX_CVT_FP_TO_INT2 macros in target/ppc/fpu_helper.c?
-
-You sent a couple of times the same patch :
-  
-  https://patchwork.ozlabs.org/project/qemu-ppc/list/?submitter=87426
-
-I suppose v3 is the one to consider.
-
+On 8/11/23 16:38, Maksim Davydov wrote:
+> Add a supportive property to access the path to the qemu binary
 > 
-> The bug that is currently there with the VSX_CVT_FP_TO_INT and VSX_CVT_FP_TO_INT2 macros is that float_invalid_cvt is incorrectly called if the current source value is a non-NaN value and a previous NaN source value from the same source vector was encountered.
+> Signed-off-by: Maksim Davydov <davydov-max@yandex-team.ru>
+> ---
+>   python/qemu/machine/machine.py | 5 +++++
+>   1 file changed, 5 insertions(+)
 > 
-> The link to a patch that fixes the above bug in the VSX_CVT_FP_TO_INT and VSX_CVT_FP_TO_INT2 macros can be found at https://patchew.org/QEMU/SN6PR05MB5837B5EF0D11E0A787EC30179DA5A@SN6PR05MB5837.namprd05.prod.outlook.com/.
-> 
-> A description of this bug can be found at https://gitlab.com/qemu-project/qemu/-/issues/1941.
-> 
-> Here is a link to a test program that will detect the bugs that are currently there with the emulation of the xvcvspsxws, xvcvspuxws, xvcvspsxds, xvcvspuxds, xvcvdpsxws, xvcvdpuxws, xvcvdpsxds, and xvcvdpuxds instructions if the source vector contains at least one NaN value:
-> https://gitlab.com/qemu-project/qemu/uploads/fcbb97896ff2f4ab435affae94467f4d/vsx_f2i_nan_test_102523.c
+> diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine.py
+> index 31cb9d617d..78436403b2 100644
+> --- a/python/qemu/machine/machine.py
+> +++ b/python/qemu/machine/machine.py
+> @@ -328,6 +328,11 @@ def args(self) -> List[str]:
+>           """Returns the list of arguments given to the QEMU binary."""
+>           return self._args
+>   
+> +    @property
+> +    def binary(self) -> str:
+> +        """Returns path to the qemu binary"""
+> +        return self._binary
+> +
+>       def _pre_launch(self) -> None:
+>           if self._qmp_set:
+>               if self._monitor_address is None:
 
-If you have time, could you please respin a v4 and include the
-test case under tests/tcg/ppc64 ? Please add a Fixes: tag with
-the commit id also.
-
-The plan is to merge fixes, such as this one, in the coming weeks,
-and I will send one PPC PR before the end of the 8.2 cycle.
-
-Thanks,
-
-C.
-
+Better patch subject could be:
+"python/qemu/machine: Add method to retrieve QEMUMachine::binary field"
 
