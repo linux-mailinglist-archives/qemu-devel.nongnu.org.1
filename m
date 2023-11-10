@@ -2,70 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D157F7E7B82
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 11:53:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D547E7B83
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 11:53:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1P79-0001lm-RL; Fri, 10 Nov 2023 05:51:51 -0500
+	id 1r1P86-000211-85; Fri, 10 Nov 2023 05:52:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r1P77-0001la-Cl
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 05:51:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r1P85-00020s-0Z
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 05:52:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r1P75-0005sF-Ad
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 05:51:49 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r1P83-0005zO-1o
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 05:52:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699613504;
+ s=mimecast20190719; t=1699613566;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OzgIOGtpcvl3EewkpqelL7NoI4WVG+xRrFthYzZHATQ=;
- b=eUD6OEUE4Hh1XuAcVwf2qeBMuUHK9Ncao19Yrx/rPcD7b9nD3wLnQmmgvTnDdty+UNmthm
- s4Vq+804AttHczRzphTssHuhjSFyLFp93Su/JQh3Tu58bPXz962aoFP/Jr4m0/XI2HWRpT
- lnVwDc5aHQfXouO6ck+2RM3xNLONQy4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=S2zYpv4LGpG6QINOzlwjpDU/HzAPDlqtkX+Ow47oAC0=;
+ b=Dew4JEuGtFktKoGtJe9eh217xGGxsYLr3aWmGK9jLLd6y/REcXH5GjAuY2PNIfEiX51faQ
+ dSfybus7d+htmUziClL3iRvQym0esa4r892LVFXdlR4dhC92LJHqUxnvDunqfSi0BXNDDy
+ zCEAXTXN9jAleF7qjhPnnmeA8zUehBs=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-317-RDqxHutsMpCPqTgrmB8nZQ-1; Fri, 10 Nov 2023 05:51:42 -0500
-X-MC-Unique: RDqxHutsMpCPqTgrmB8nZQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 82B19811E7E;
- Fri, 10 Nov 2023 10:51:42 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.194.44])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E89A0502A;
- Fri, 10 Nov 2023 10:51:41 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id B4CAD1800DF8; Fri, 10 Nov 2023 11:51:40 +0100 (CET)
-Date: Fri, 10 Nov 2023 11:51:40 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Claudio Fontana <cfontana@suse.de>
-Cc: Kevin O'Connor <kevin@koconnor.net>, 
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>,
- seabios@seabios.org, qemu-devel@nongnu.org
-Subject: Re: [SeaBIOS] [PATCH v5] limit physical address space size
-Message-ID: <npmimli5x4vcwxb3csaaut3sobuzsex7pgtf4xbrbnfd22hnyz@ixh5tmn4xkpk>
-References: <20231107130309.3257776-1-kraxel@redhat.com>
- <ZUvVCHWbU29+eDm7@morn>
- <59437ef3-7b94-2aa4-31b4-012412ce160b@suse.de>
+ us-mta-312-ASAR-pKtPje9t4Id-m45iQ-1; Fri, 10 Nov 2023 05:52:45 -0500
+X-MC-Unique: ASAR-pKtPje9t4Id-m45iQ-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-67012b06439so20516766d6.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 02:52:45 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699613565; x=1700218365;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=S2zYpv4LGpG6QINOzlwjpDU/HzAPDlqtkX+Ow47oAC0=;
+ b=HOa1Rub0A3r26C+HjYs/x7pkSJhfSZHlU6QWiBUt19j2/P0q8vYxNXGCAL+F2U9fi6
+ fjzP0AQ2ljQg6YN+AZEfKmRui4q4xO0ukcm09qRj8GgZK24bIdFG6SP/q5Od+7OVD9e6
+ rjcMAkEaV4d2hAEfnODdQfrQ1g3JvexniEe596/HYi/k4sDRlfrI+iKJG0uXqy1zOvbB
+ fTtuI60o3WjVKHpudwYUu1FWf+K/bPyq2oqMT2yApbIs3Ey4AW4GcX2/nrp7UtFVpvcp
+ dHDxXu1ogASvcpsaGwHo2CmBYuf8ffa+zkMsFA8OzBIgf7utGjvhdD6GteCZyEs+Uhuy
+ CfNg==
+X-Gm-Message-State: AOJu0Yy8BXrczHBB7Sl1/mzOeDQvi46DoL0R4wUMa57o40+0S1IBrNl7
+ FTLHhkqC73Ib9rjHxL76yocYMWKv1DRRfV3nbbjMA/SZrM9xuhTyw/1hqoIwPfnUqS+1Sbb3Yk+
+ +jFeV4kvVUQq3zrE=
+X-Received: by 2002:a05:6214:f29:b0:658:49bb:f78f with SMTP id
+ iw9-20020a0562140f2900b0065849bbf78fmr8639796qvb.39.1699613564819; 
+ Fri, 10 Nov 2023 02:52:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHZNZsPcfrTADoH9gqkqQIOfW5yPylKIX/2o8TeCEv99aCwfcoulgJmSnqy/ZQTEsCbzKbVpw==
+X-Received: by 2002:a05:6214:f29:b0:658:49bb:f78f with SMTP id
+ iw9-20020a0562140f2900b0065849bbf78fmr8639778qvb.39.1699613564504; 
+ Fri, 10 Nov 2023 02:52:44 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ c10-20020a05621401ea00b0065b11053445sm2848260qvu.54.2023.11.10.02.52.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 10 Nov 2023 02:52:44 -0800 (PST)
+Message-ID: <07539cb1-2262-4ae9-82ea-cfb7b9b8f2d5@redhat.com>
+Date: Fri, 10 Nov 2023 11:52:41 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <59437ef3-7b94-2aa4-31b4-012412ce160b@suse.de>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 10/20] vfio/pci: Make vfio cdev pre-openable by passing
+ a file handle
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com
+References: <20231109114529.1904193-1-zhenzhong.duan@intel.com>
+ <20231109114529.1904193-11-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231109114529.1904193-11-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,131 +105,269 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 10, 2023 at 09:36:02AM +0100, Claudio Fontana wrote:
-> On 11/8/23 19:35, Kevin O'Connor wrote:
-> > On Tue, Nov 07, 2023 at 02:03:09PM +0100, Gerd Hoffmann wrote:
-> >> For better compatibility with old linux kernels,
-> >> see source code comment.
-> >>
-> >> Related (same problem in ovmf):
-> >> https://github.com/tianocore/edk2/commit/c1e853769046
-> > 
-> > Thanks.  I'll defer to your judgement on this.  It does seem a little
-> > odd to alter the CPUPhysBits variable itself instead of adding
-> > additional checking to the pciinit.c code that uses CPUPhysBits.
-> > (That is, if there are old Linux kernels that can't handle a very high
-> > PCI space, then a workaround in the PCI code might make it more clear
-> > what is occurring.)
-> > 
-> > Cheers,
-> > -Kevin
-> > 
-> > 
-> >>
-> >> Cc: Claudio Fontana <cfontana@suse.de>
-> >> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+On 11/9/23 12:45, Zhenzhong Duan wrote:
+> This gives management tools like libvirt a chance to open the vfio
+> cdev with privilege and pass FD to qemu. This way qemu never needs
+> to have privilege to open a VFIO or iommu cdev node.
 > 
-> Hi,
+> Together with the earlier support of pre-opening /dev/iommu device,
+> now we have full support of passing a vfio device to unprivileged
+> qemu by management tool. This mode is no more considered for the
+> legacy backend. So let's remove the "TODO" comment.
 > 
-> I thought about this, and I am not sure it's the right call though.
+> Add a helper function vfio_device_get_name() to check fd and get
+> device name, it will also be used by other vfio devices.
 > 
-> The change breaking old guests (CentOS7, Ubuntu 18.04 are the known ones, but presumably others as well) in QEMU is:
+> There is no easy way to check if a device is mdev with FD passing,
+> so fail the x-balloon-allowed check unconditionally in this case.
 > 
-> commit 784155cdcb02ffaae44afecab93861070e7d652d
-> Author: Gerd Hoffmann <kraxel@redhat.com>
-> Date:   Mon Sep 11 17:20:26 2023 +0200
+> There is also no easy way to get BDF as name with FD passing, so
+> we fake a name by VFIO_FD[fd].
 > 
->     seabios: update submodule to git snapshot
->     
->     git shortlog
->     ------------
->     
->     Gerd Hoffmann (7):
->           disable array bounds warning
->           better kvm detection
->           detect physical address space size
->           move 64bit pci window to end of address space
->           be less conservative with the 64bit pci io window
->           qemu: log reservations in fw_cfg e820 table
->           check for e820 conflict
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>   include/hw/vfio/vfio-common.h |  1 +
+>   hw/vfio/helpers.c             | 34 +++++++++++++++++++++++++++++
+>   hw/vfio/iommufd.c             | 12 +++++++----
+>   hw/vfio/pci.c                 | 40 ++++++++++++++++++++++++-----------
+>   4 files changed, 71 insertions(+), 16 deletions(-)
 > 
-> The reasoning for the change is according to:
-> 
-> https://mail.coreboot.org/hyperkitty/list/seabios@seabios.org/message/BHK67ULKJTLJT676J4D5C2ND53CFEL3Q/
-> 
-> "It makes seabios follow a common pattern.  real mode address space
-> has io resources mapped high (below 1M).  32-bit address space has
-> io resources mapped high too (below 4G).  This does the same for
-> 64-bit resources."
-> 
-> So it seems to be an almost aesthetic choice, the way I read the
-> "common pattern", one that ends up actually breaking existing
-> workloads though.
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index 3dac5c167e..960a14e8d8 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -238,6 +238,7 @@ struct vfio_info_cap_header *
+>   vfio_get_device_info_cap(struct vfio_device_info *info, uint16_t id);
+>   struct vfio_info_cap_header *
+>   vfio_get_cap(void *ptr, uint32_t cap_offset, uint16_t id);
+> +int vfio_device_get_name(VFIODevice *vbasedev, Error **errp);
+>   #endif
+>   
+>   bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
+> diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+> index 168847e7c5..d80aa58719 100644
+> --- a/hw/vfio/helpers.c
+> +++ b/hw/vfio/helpers.c
+> @@ -20,6 +20,7 @@
+>    */
+>   
+>   #include "qemu/osdep.h"
+> +#include CONFIG_DEVICES /* CONFIG_IOMMUFD */
+>   #include <sys/ioctl.h>
+>   
+>   #include "hw/vfio/vfio-common.h"
+> @@ -609,3 +610,36 @@ bool vfio_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type)
+>   
+>       return ret;
+>   }
+> +
+> +int vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
+> +{
+> +    struct stat st;
+> +
+> +    if (vbasedev->fd < 0) {
+> +        if (stat(vbasedev->sysfsdev, &st) < 0) {
+> +            error_setg_errno(errp, errno, "no such host device");
+> +            error_prepend(errp, VFIO_MSG_PREFIX, vbasedev->sysfsdev);
+> +            return -errno;
+> +        }
+> +        /* User may specify a name, e.g: VFIO platform device */
+> +        if (!vbasedev->name) {
+> +            vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
+> +        }
+> +    }
+> +#ifdef CONFIG_IOMMUFD
+> +    else {
+> +        if (!vbasedev->iommufd) {
 
-It's not about aesthetics.  It's about handing out more resources to the
-64bit mmio window and also to the pci bridge windows if we have enough
-address space for that.  This is important because not only main memory
-sizes grow, but also device memory grows.  Especially GPUs and AI
-accelerators can have rather big PCI memory bars these days.  If you
-want support hotplugging them you need pcie root ports with big enough
-bridge windows.
 
-The "common pattern" refers to OVMF doing the same for the same reason.
+Can we handle with this case without CONFIG_IOMMUFD, simply by
+testing vbasedev->iommufd ?
 
-> Now the correction to that that you propose in SeaBIOS is:
-> 
-> >> +    if (valid && physbits > 46) {
-> >> +        // Old linux kernels have trouble dealing with more than 46
-> >> +        // phys-bits, so avoid that for now.  Seems to be a bug in the
-> >> +        // virtio-pci driver.  Reported: centos-7, ubuntu-18.04
-> >> +        dprintf(1, "%s: using phys-bits=46 (old linux kernel compatibility)\n", __func__);
-> >> +        physbits = 46;
-> >> +    }
+> +            error_setg(errp, "Use FD passing only with iommufd backend");
+> +            return -EINVAL;
+> +        }
+> +        /*
+> +         * Give a name with fd so any function printing out vbasedev->name
+> +         * will not break.
+> +         */
+> +        if (!vbasedev->name) {
+> +            vbasedev->name = g_strdup_printf("VFIO_FD%d", vbasedev->fd);
+> +        }
+> +    }
+> +#endif
+> +    return 0;
+> +}
+> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+> index 44dc6848bf..fd30477275 100644
+> --- a/hw/vfio/iommufd.c
+> +++ b/hw/vfio/iommufd.c
+> @@ -326,11 +326,15 @@ static int iommufd_attach_device(const char *name, VFIODevice *vbasedev,
+>       uint32_t ioas_id;
+>       Error *err = NULL;
+>   
+> -    devfd = iommufd_cdev_getfd(vbasedev->sysfsdev, errp);
+> -    if (devfd < 0) {
+> -        return devfd;
+> +    if (vbasedev->fd < 0) {
+> +        devfd = iommufd_cdev_getfd(vbasedev->sysfsdev, errp);
+> +        if (devfd < 0) {
+> +            return devfd;
+> +        }
+> +        vbasedev->fd = devfd;
+> +    } else {
+> +        devfd = vbasedev->fd;
+>       }
+> -    vbasedev->fd = devfd;
+>   
+>       ret = iommufd_connect_and_bind(vbasedev, errp);
+>       if (ret) {
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index e9a426200b..f95725ed16 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -44,6 +44,7 @@
+>   #include "migration/blocker.h"
+>   #include "migration/qemu-file.h"
+>   #include "sysemu/iommufd.h"
+> +#include "monitor/monitor.h"
+>   
+>   #define TYPE_VFIO_PCI_NOHOTPLUG "vfio-pci-nohotplug"
+>   
+> @@ -2934,18 +2935,23 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>       VFIODevice *vbasedev = &vdev->vbasedev;
+>       char *tmp, *subsys;
+>       Error *err = NULL;
+> -    struct stat st;
+>       int i, ret;
+>       bool is_mdev;
+>       char uuid[UUID_STR_LEN];
+>       char *name;
+>   
+> -    if (!vbasedev->sysfsdev) {
+> +    if (vbasedev->fd < 0 && !vbasedev->sysfsdev) {
+>           if (!(~vdev->host.domain || ~vdev->host.bus ||
+>                 ~vdev->host.slot || ~vdev->host.function)) {
+>               error_setg(errp, "No provided host device");
+> +#ifdef CONFIG_IOMMUFD
+> +            error_append_hint(errp, "Use -device vfio-pci,host=DDDD:BB:DD.F, "
+> +                              "-device vfio-pci,sysfsdev=PATH_TO_DEVICE "
+> +                              "or -device vfio-pci,fd=DEVICE_FD\n");
+> +#else
+>               error_append_hint(errp, "Use -device vfio-pci,host=DDDD:BB:DD.F "
+>                                 "or -device vfio-pci,sysfsdev=PATH_TO_DEVICE\n");
+> +#endif
 
-> but to me this is potentially breaking the situation for another set
-> of users, those that are passing through 48 physical bits from their
-> host cpu to the guest, and expect it to actually happen.
+or simply :
 
-This doesn't change the address space size the guest does see.  seabios
-does not have the power to change the information returned by the cpuid
-instruction.
 
-This only changes the placement of the PCI bars.  The pci setup code is
-the only consumer of that variable, guess it makes sense to move the
-quirk to the pci code (as suggested by Kevin) to clarify this.
+                error_append_hint(errp, "Use -device vfio-pci,host=DDDD:BB:DD.F "
+  +#ifdef CONFIG_IOMMUFD
+  +                              "or -device vfio-pci,fd=DEVICE_FD "
+  +#endif
+                                  "or -device vfio-pci,sysfsdev=PATH_TO_DEVICE\n");
 
-> Would it not be a better solution to instead either revert the
-> original change,
 
-No (see above).
 
-> or to patch it to find a new range that better satisfies code
-> consistency/aesthetic requirements, but also does not break any
-> running workload?
+>               return;
+>           }
+>           vbasedev->sysfsdev =
+> @@ -2954,13 +2960,9 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>                               vdev->host.slot, vdev->host.function);
+>       }
+>   
+> -    if (stat(vbasedev->sysfsdev, &st) < 0) {
+> -        error_setg_errno(errp, errno, "no such host device");
+> -        error_prepend(errp, VFIO_MSG_PREFIX, vbasedev->sysfsdev);
+> +    if (vfio_device_get_name(vbasedev, errp)) {
+>           return;
+>       }
+> -
+> -    vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
+>       vbasedev->ops = &vfio_pci_ops;
+>       vbasedev->type = VFIO_DEVICE_TYPE_PCI;
+>       vbasedev->dev = DEVICE(vdev);
+> @@ -3320,6 +3322,7 @@ static void vfio_instance_init(Object *obj)
+>       vdev->host.bus = ~0U;
+>       vdev->host.slot = ~0U;
+>       vdev->host.function = ~0U;
+> +    vdev->vbasedev.fd = -1;
+We should probably move the all VFIODevice initializations :
 
-Upstream OVMF does the same thing for roughly one year, the old linux
-kernel issue is the only one which showed up so far.  OVMF wouldn't see
-*really* old guests (without UEFI support) though.
+     vbasedev->ops = &vfio_pci_ops;
+     vbasedev->type = VFIO_DEVICE_TYPE_PCI;
+     vbasedev->dev = DEVICE(vdev);
 
-The pci setup code already has a bunch of conditions for activating the
-64bit mmio window, to avoid breaking really old guests.  It wouldn't
-happen on CPUs without long mode.  It also wouldn't happen if guests
-don't have memory above 4G.
+under vfio_instance_init (should be called vfio_pci_instance_init).
 
-I'm open to suggestions to refine this.
+This is true for all other VFIO devices. May be not for this series,
+it can come later.
 
-> Or we could add some extra workarounds in the stack elsewhere in the
-> management tools to try to detect older guests (not ideal either), but
-> this seems like adding breakage on top of breakage to me.
 
-We already have libosinfo which records guest capabilities, which exists
-to solve exactly that problem:  Allow new guests use new features by
-default, without breaking old guests.  Extending libosinfo looks like a
-perfectly valid approach to me, especially considering that we probably
-want make the 46 phys-bits limit conditional some day in the future, to
-allow even larger guests.
+>   
+>       vdev->nv_gpudirect_clique = 0xFF;
+>   
+> @@ -3373,11 +3376,6 @@ static Property vfio_pci_dev_properties[] = {
+>                                      qdev_prop_nv_gpudirect_clique, uint8_t),
+>       DEFINE_PROP_OFF_AUTO_PCIBAR("x-msix-relocation", VFIOPCIDevice, msix_relo,
+>                                   OFF_AUTOPCIBAR_OFF),
+> -    /*
+> -     * TODO - support passed fds... is this necessary?
+> -     * DEFINE_PROP_STRING("vfiofd", VFIOPCIDevice, vfiofd_name),
+> -     * DEFINE_PROP_STRING("vfiogroupfd, VFIOPCIDevice, vfiogroupfd_name),
+> -     */
+>   #ifdef CONFIG_IOMMUFD
+>       DEFINE_PROP_LINK("iommufd", VFIOPCIDevice, vbasedev.iommufd,
+>                        TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
+> @@ -3385,6 +3383,21 @@ static Property vfio_pci_dev_properties[] = {
+>       DEFINE_PROP_END_OF_LIST(),
+>   };
+>   
+> +#ifdef CONFIG_IOMMUFD
+> +static void vfio_pci_set_fd(Object *obj, const char *str, Error **errp)
+> +{
+> +    VFIOPCIDevice *vdev = VFIO_PCI(obj);
+> +    int fd = -1;
+> +
+> +    fd = monitor_fd_param(monitor_cur(), str, errp);
+> +    if (fd == -1) {
+> +        error_prepend(errp, "Could not parse remote object fd %s:", str);
+> +        return;
+> +    }
+> +    vdev->vbasedev.fd = fd;
 
-take care,
-  Gerd
+We could introduce a common helper in hw/vfio/common.c to remove code
+duplication :
+
+#ifdef CONFIG_IOMMUFD
+static void vfio_pci_set_fd(Object *obj, const char *str, Error **errp)
+{
+     vfio_device_set_fd(&VFIO_PCI(obj)->vbasedev, str, errp);
+}
+#endif
+  
+
+Thanks,
+
+C.
+
+
+
+> +}
+> +#endif
+> +
+>   static void vfio_pci_dev_class_init(ObjectClass *klass, void *data)
+>   {
+>       DeviceClass *dc = DEVICE_CLASS(klass);
+> @@ -3392,6 +3405,9 @@ static void vfio_pci_dev_class_init(ObjectClass *klass, void *data)
+>   
+>       dc->reset = vfio_pci_reset;
+>       device_class_set_props(dc, vfio_pci_dev_properties);
+> +#ifdef CONFIG_IOMMUFD
+> +    object_class_property_add_str(klass, "fd", NULL, vfio_pci_set_fd);
+> +#endif
+>       dc->desc = "VFIO-based PCI device assignment";
+>       set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+>       pdc->realize = vfio_realize;
 
 
