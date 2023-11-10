@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D1177E7DB5
+	by mail.lfdr.de (Postfix) with ESMTPS id A142B7E7DB6
 	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 17:19:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1UCX-0006dP-MF; Fri, 10 Nov 2023 11:17:45 -0500
+	id 1r1UCb-0006fW-UI; Fri, 10 Nov 2023 11:17:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <carwynellis@gmail.com>)
- id 1r1UCV-0006dG-LW
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 11:17:43 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1r1UCY-0006de-J4
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 11:17:47 -0500
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <carwynellis@gmail.com>)
- id 1r1UCU-00052U-5a
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 11:17:43 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4084095722aso16610075e9.1
- for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 08:17:41 -0800 (PST)
+ id 1r1UCV-00052c-PC
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 11:17:45 -0500
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2c501bd6ff1so30021421fa.3
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 08:17:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699633060; x=1700237860; darn=nongnu.org;
- h=content-transfer-encoding:signed-off-by:mime-version:message-id
- :date:subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=aYeszopDPS2sWFGSUBt5YWzdaZRZHzlScHWA5XAbyZk=;
- b=nBnYJZOmsSrUQAojyZVCqUnFZY49kz3SGGjGSOO4uPPvbUudeJSwCRM3jz0Y0mxRiv
- 3GBfB54tdm9jwyRFLtz3VJTWhiRSoniddYSNgZ80H3EIYLq3FdFfSo/77xRzY/wLz0kA
- fo9A652VHXYd0l1vfZIO1l98O/NemVe6ABy1XXrxKWo0TlbofB7+Z2tnvcQwDHTKrhzB
- 6RHRaWOamBoBQsD4+t6/gGvFJKGxbWtGWAfWptW7ZBl2fDy3g6oQmf1cXsCKpz5MtpX5
- OA5EJUZhc2ryGdUHqr2Rt7WWswKNx5sY0JZVpK+lJ4TeEwPLOZSLZ7QjkWzuqs0BB9bY
- EOyg==
+ d=gmail.com; s=20230601; t=1699633061; x=1700237861; darn=nongnu.org;
+ h=content-transfer-encoding:signed-off-by:mime-version:references
+ :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=1LlGGAsuGEciFtqW7AcVcmHiNhhbZmOzg1/XRrkYRU0=;
+ b=GaAxsxrfEJVG/9Im7kgm8k8joJ1fhJESzLQpFFHu1Q9N8/frmQZuE4wPPt/UOkZkms
+ OPtANyQwBEmnSZgGFHpQi/BYRYS67KdIB8r7Cj4EKGzAbbLIiqd0sHJFfSS6ihEjFtjp
+ gsiB/6ei5oW3SyIWlBUI6vtqBYz+TCT0GnoeftJMlIECJ26T9ClDC12zmwS5PeJ+60rL
+ Xtx5lO5IRqeCqWRjLwlFh+/ekWQwEakonMrN3fCNa7ID9GEaYLrGbvdHpT0kGyCSgHKv
+ jTCv3p7Xt1W+8L7fz8fTXhJQu3Rbi44InevU+dM5bFlFr6h43GmxfU/iR1/W0Jt7l6gL
+ xs2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699633060; x=1700237860;
- h=content-transfer-encoding:signed-off-by:mime-version:message-id
- :date:subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=aYeszopDPS2sWFGSUBt5YWzdaZRZHzlScHWA5XAbyZk=;
- b=Ou2VRJ3B41/zYh5fy+I+TTmAG1zF4qXaEy5UWWb9aGGzRi2s/mSJDlqUZFpja9Os/6
- qb+G7w9l5aF07vDguVE4DjoSg9LIRKk39L926ftWUsx2Yq7Ld/txexdRMPO3aalelUZj
- hAXcy+FhOq1EWSLq4BJ5L0lClfA3uF9OkgcrmpTZunKgjiYtx0kgwVWqWsC5LNP7APNE
- YOuXXkxQfpjY7p5LwtXt0PhU6pGOsOHAN/d+QhWaOSa3eS5LRNxaT0hOUpVLU1cFibPg
- oQQQvI0YoWLl+Y6PjrtGz22FsJVV41TypeFywI8VOyBN7r3pErrBQDovLfpAtYWFrYmq
- ueCQ==
-X-Gm-Message-State: AOJu0YwElofZyWxZnzoRulo8IUVvwpDPJtfNpjL/MAKMPtjWBxwzPezf
- dDScUn2D6jb4Ns+WYGpoSWo8/3gwJFriAg==
-X-Google-Smtp-Source: AGHT+IF8zoLm69xRcPisV45sATm4e3WVep2b1UQ6O0HcmS1MyR99B7KQAA+CBEPp60vpY7VpuUz5zg==
-X-Received: by 2002:a05:600c:3398:b0:407:8e68:4a5b with SMTP id
- o24-20020a05600c339800b004078e684a5bmr7895488wmp.38.1699633059756; 
- Fri, 10 Nov 2023 08:17:39 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699633061; x=1700237861;
+ h=content-transfer-encoding:signed-off-by:mime-version:references
+ :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1LlGGAsuGEciFtqW7AcVcmHiNhhbZmOzg1/XRrkYRU0=;
+ b=kwIcfClprbXKbNmGG9KWNZgpUYL3iV5Nc6hkg+LfQCq31ugYPUAYQ7nz1q40v5vBdq
+ f850HGcXq05GrpTLePuIqcWOfJ02CXSuiSobMfbrH5M49hNtmNRipU2lH6xY7d6X8qCE
+ +JDZnXxrYDqW2Z4qFm12xi0df3o+WeYa0byPeXjJLOSo2pzRaElWPZX3qISCAw9GHDKl
+ qlvHka2t5g55HukxVJ2XJT3PL3a6Yu+thhEw7D3UL+ycWGfkzckfUHJJt1cypMcoVR5x
+ yZw0IuTwaAe69VZVInoW4Ipp2X9V1bnAWfhh9t8ih5Iuf/lJFDxr8ym4866zJjAkegf3
+ M2kA==
+X-Gm-Message-State: AOJu0Yx/ffjplBRQN9DSRQEZEnulb43f2hvA353MgSjICe8gvIzRFVQ0
+ mL1jq+K+PmuWSaGgnmIGDwLL6yvpdBbixw==
+X-Google-Smtp-Source: AGHT+IFtHmlRxJrc7gXIj0WEk7otoJleyQXUPUx3OHd26uGtXgYJo8tV4KumWrVy85LheKXNwAR37Q==
+X-Received: by 2002:a2e:b803:0:b0:2c0:1c32:b4e1 with SMTP id
+ u3-20020a2eb803000000b002c01c32b4e1mr6227862ljo.27.1699633061273; 
+ Fri, 10 Nov 2023 08:17:41 -0800 (PST)
 Received: from localhost.localdomain
  (host86-185-6-213.range86-185.btcentralplus.com. [86.185.6.213])
  by smtp.googlemail.com with ESMTPSA id
- u24-20020a05600c00d800b0040a463cf09dsm2097879wmm.33.2023.11.10.08.17.39
+ u24-20020a05600c00d800b0040a463cf09dsm2097879wmm.33.2023.11.10.08.17.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Nov 2023 08:17:39 -0800 (PST)
+ Fri, 10 Nov 2023 08:17:40 -0800 (PST)
 From: carwynellis@gmail.com
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, philmd@linaro.org, akihiko.odaki@daynix.com,
  kraxel@redhat.com, marcandre.lureau@redhat.com,
  Carwyn Ellis <carwynellis@gmail.com>
-Subject: [PATCH 0/1] ui/cocoa: add zoom-interpolation display option
-Date: Fri, 10 Nov 2023 16:17:28 +0000
-Message-ID: <20231110161729.36822-1-carwynellis@gmail.com>
+Subject: [PATCH 1/1] ui/cocoa: add zoom-interpolation display option
+Date: Fri, 10 Nov 2023 16:17:29 +0000
+Message-ID: <20231110161729.36822-2-carwynellis@gmail.com>
 X-Mailer: git-send-email 2.42.1
+In-Reply-To: <20231110161729.36822-1-carwynellis@gmail.com>
+References: <20231110161729.36822-1-carwynellis@gmail.com>
 MIME-Version: 1.0
 Signed-off-by: Carwyn Ellis <carwynellis@gmail.com>
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=carwynellis@gmail.com; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=carwynellis@gmail.com; helo=mail-lj1-x232.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,22 +97,102 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Carwyn Ellis <carwynellis@gmail.com>
 
-Provides a new display option, zoom-interpolation, that enables or
-disables smoothing of the scaled display output when the zoom-to-fit
-option is enabled.
+Provides a new display option, zoom-interpolation, that enables
+interpolation of the scaled display when zoom-to-fit is enabled.
 
-A 'Zoom Interpolation' item has also been added to the view menu to
-allow interpolation to be toggled on and off as required.
+Also provides a corresponding view menu item to allow this to be toggled
+as required.
 
 Signed-off-by: Carwyn Ellis <carwynellis@gmail.com>
-
-Carwyn Ellis (1):
-  ui/cocoa: add zoom-interpolation display option
-
+---
  qapi/ui.json |  6 +++++-
  ui/cocoa.m   | 21 ++++++++++++++++++++-
  2 files changed, 25 insertions(+), 2 deletions(-)
 
+diff --git a/qapi/ui.json b/qapi/ui.json
+index a0158baf23..e27e57f69c 100644
+--- a/qapi/ui.json
++++ b/qapi/ui.json
+@@ -1414,6 +1414,9 @@
+ #     turned off the host window will be resized instead. Defaults to
+ #     "off". (Since 8.2)
+ #
++# @zoom-interpolation: Apply interpolation to smooth output when
++#     zoom-to-fit is enabled. Defaults to "off". (Since 8.2)
++#
+ # Since: 7.0
+ ##
+ { 'struct': 'DisplayCocoa',
+@@ -1421,7 +1424,8 @@
+       '*left-command-key': 'bool',
+       '*full-grab': 'bool',
+       '*swap-opt-cmd': 'bool',
+-      '*zoom-to-fit': 'bool'
++      '*zoom-to-fit': 'bool',
++      '*zoom-interpolation': 'bool'
+   } }
+ 
+ ##
+diff --git a/ui/cocoa.m b/ui/cocoa.m
+index cd069da696..35df8d6ce2 100644
+--- a/ui/cocoa.m
++++ b/ui/cocoa.m
+@@ -105,6 +105,7 @@ static void cocoa_switch(DisplayChangeListener *dcl,
+ static bool swap_opt_cmd;
+ 
+ static bool stretch_video;
++static CGInterpolationQuality zoom_interpolation = kCGInterpolationNone;
+ static NSTextField *pauseLabel;
+ 
+ static bool allow_events;
+@@ -455,7 +456,7 @@ - (void) drawRect:(NSRect) rect
+     // get CoreGraphic context
+     CGContextRef viewContextRef = [[NSGraphicsContext currentContext] CGContext];
+ 
+-    CGContextSetInterpolationQuality (viewContextRef, kCGInterpolationNone);
++    CGContextSetInterpolationQuality (viewContextRef, zoom_interpolation);
+     CGContextSetShouldAntialias (viewContextRef, NO);
+ 
+     // draw screen bitmap directly to Core Graphics context
+@@ -1411,6 +1412,17 @@ - (void)zoomToFit:(id) sender
+     }
+ }
+ 
++- (void)toggleZoomInterpolation:(id) sender
++{
++    if (zoom_interpolation == kCGInterpolationNone) {
++        zoom_interpolation = kCGInterpolationLow;
++        [sender setState: NSControlStateValueOn];
++    } else {
++        zoom_interpolation = kCGInterpolationNone;
++        [sender setState: NSControlStateValueOff];
++    }
++}
++
+ /* Displays the console on the screen */
+ - (void)displayConsole:(id)sender
+ {
+@@ -1673,6 +1685,9 @@ static void create_initial_menus(void)
+     menuItem = [[[NSMenuItem alloc] initWithTitle:@"Zoom To Fit" action:@selector(zoomToFit:) keyEquivalent:@""] autorelease];
+     [menuItem setState: stretch_video ? NSControlStateValueOn : NSControlStateValueOff];
+     [menu addItem: menuItem];
++    menuItem = [[[NSMenuItem alloc] initWithTitle:@"Zoom Interpolation" action:@selector(toggleZoomInterpolation:) keyEquivalent:@""] autorelease];
++    [menuItem setState: zoom_interpolation == kCGInterpolationLow ? NSControlStateValueOn : NSControlStateValueOff];
++    [menu addItem: menuItem];
+     menuItem = [[[NSMenuItem alloc] initWithTitle:@"View" action:nil keyEquivalent:@""] autorelease];
+     [menuItem setSubmenu:menu];
+     [[NSApp mainMenu] addItem:menuItem];
+@@ -2070,6 +2085,10 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
+         stretch_video = true;
+     }
+ 
++    if (opts->u.cocoa.has_zoom_interpolation && opts->u.cocoa.zoom_interpolation) {
++        zoom_interpolation = kCGInterpolationLow;
++    }
++
+     create_initial_menus();
+     /*
+      * Create the menu entries which depend on QEMU state (for consoles
 -- 
 2.42.1
 
