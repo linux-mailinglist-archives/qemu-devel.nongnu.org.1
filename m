@@ -2,94 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394167E830F
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 20:51:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 709927E831A
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 20:55:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1XWY-0002ED-Bu; Fri, 10 Nov 2023 14:50:38 -0500
+	id 1r1XaT-0007iP-59; Fri, 10 Nov 2023 14:54:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1r1XVt-0001yk-4M; Fri, 10 Nov 2023 14:49:58 -0500
+ id 1r1XaJ-0007hi-Pv; Fri, 10 Nov 2023 14:54:31 -0500
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1r1XVq-00023a-Jt; Fri, 10 Nov 2023 14:49:56 -0500
+ id 1r1XaH-0002mZ-6N; Fri, 10 Nov 2023 14:54:31 -0500
 Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AAJHu3x014168; Fri, 10 Nov 2023 19:49:51 GMT
+ 3AAJii4j031580; Fri, 10 Nov 2023 19:54:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=EQvX58U3+LbupE3gqOpEP8u0I+E7qeBETUe0W9A48kg=;
- b=tHABYXcii5aeSlNRWoWV7pYZJ0E0q7P5h7qUNvzjvzrdR7Ssinh06AToAV1KDWAHch7b
- n1uv+K0c8ysEggioj3ZUR1H+uqqfybRMOMIJlKy8a4hjEUqR2k3u1Veo8sXqhEjECa4r
- GuZTZijFuGrFtdICqB20KfijpqqgZtGqMAySRkFJ7B+wcvqFcr/eA6ORiL3isfiNBuAe
- g87g5Tq25bMUqoarbtqywbAhuUPXOSsS0sZ6QY9RWfLEAjd2INYS7JlaURh+aiYPYjbT
- 3AIx1+Hf+mg0bSGyxxAwoaTKwxVyxpOLr4N5yKadO8izIjQY9wE9gXSgG289AOs3yY15 JQ== 
+ : date : message-id : in-reply-to : references : content-transfer-encoding
+ : mime-version; s=pp1; bh=tj7I4ec8I8Ze2Zk76Lm53NvLFrItO+Oqlp6beORrikM=;
+ b=nxYGpELqzExHtTPx8rTSh+Nc+2/7aqFDYCXuyzpbxf2esqxjXyTNuUF/qiWG+jmITxaT
+ 5JhBLMhSsCc/jlrNqOyq6XtDUUBNCsq/Y7uKhlYVTJeYrJzIx75ooTKOmvAJ06Oa9ivz
+ Xeqv042eVQVySGoIqJy32Sf7VB4YsF2k8OAcniJYUgb2ubpUJaR93zvdHmMg1+wkmJVX
+ 3mUL1ORd6/xjoxNIkPQPsfDWcYwxdDxaQBzsdcch7AuRJvDeo8xpBF18XvBb8igun/rM
+ sqXxvB+K0Xa/Gf6tO7cwMAE3Y59jG8QWGsfEVbBJF7ZVH14datqM0Mvr4HdtrN8o+Umw FQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u9thwrxxe-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u9thws1wp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Nov 2023 19:49:50 +0000
+ Fri, 10 Nov 2023 19:54:18 +0000
 Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AAJHvHW014408;
- Fri, 10 Nov 2023 19:49:50 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u9thwrxx6-1
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AAJipdp000587;
+ Fri, 10 Nov 2023 19:54:18 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u9thws1vg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Nov 2023 19:49:50 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AAJDUXI000644; Fri, 10 Nov 2023 19:49:49 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u7w23d7p7-1
+ Fri, 10 Nov 2023 19:54:18 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AAJF64n004144; Fri, 10 Nov 2023 19:49:51 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u7w21d76b-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Nov 2023 19:49:49 +0000
+ Fri, 10 Nov 2023 19:49:51 +0000
 Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
  [10.39.53.231])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3AAJnmMP43713192
+ by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AAJnop410224374
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 10 Nov 2023 19:49:48 GMT
+ Fri, 10 Nov 2023 19:49:50 GMT
 Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A0E3D58054;
- Fri, 10 Nov 2023 19:49:48 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 6D33258045;
+ Fri, 10 Nov 2023 19:49:50 +0000 (GMT)
 Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3FEA558045;
- Fri, 10 Nov 2023 19:49:48 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0B22258054;
+ Fri, 10 Nov 2023 19:49:50 +0000 (GMT)
 Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
  by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 10 Nov 2023 19:49:48 +0000 (GMT)
+ Fri, 10 Nov 2023 19:49:49 +0000 (GMT)
 From: Glenn Miles <milesg@linux.vnet.ibm.com>
 To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
 Cc: Glenn Miles <milesg@linux.vnet.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PATCH v2 5/8] ppc/pnv: Use resettable interface to reset child I2C
- buses
-Date: Fri, 10 Nov 2023 13:49:22 -0600
-Message-Id: <20231110194925.475909-6-milesg@linux.vnet.ibm.com>
+Subject: [PATCH v2 6/8] misc: Add a pca9554 GPIO device model
+Date: Fri, 10 Nov 2023 13:49:23 -0600
+Message-Id: <20231110194925.475909-7-milesg@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20231110194925.475909-1-milesg@linux.vnet.ibm.com>
 References: <20231110194925.475909-1-milesg@linux.vnet.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 53s7ppcB5v4l8R6a7eereUWgXGDtKgmH
-X-Proofpoint-GUID: 3KQPUw_OfRBj9iHWkydATQp3DDirg8fX
+X-Proofpoint-ORIG-GUID: WZW4kDw0HEjnsvnvBwrp1zAnA2azzjKr
+X-Proofpoint-GUID: 41Jfr7ClI6yiltNIA6dq0glysdkKsIKb
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-10_17,2023-11-09_01,2023-05-22_02
+ definitions=2023-11-10_18,2023-11-09_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  lowpriorityscore=0
- impostorscore=0 mlxlogscore=663 mlxscore=0 clxscore=1015 bulkscore=0
+ impostorscore=0 mlxlogscore=999 mlxscore=0 clxscore=1015 bulkscore=0
  adultscore=0 priorityscore=1501 spamscore=0 phishscore=0 suspectscore=0
  malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311100166
+ engine=8.12.0-2311060000 definitions=main-2311100167
 Received-SPF: none client-ip=148.163.156.1;
  envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
@@ -114,60 +113,441 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The QEMU I2C buses and devices use the resettable
-interface for resetting while the PNV I2C controller
-and parent buses and devices have not yet transitioned
-to this new interface and use the old reset strategy.
-This was preventing the I2C buses and devices wired
-to the PNV I2C controller from being reset.
+Specs are available here:
 
-The short term fix for this is to have the PNV I2C
-Controller's reset function explicitly call the resettable
-interface function, bus_cold_reset(), on all child
-I2C buses.
+    https://www.nxp.com/docs/en/data-sheet/PCA9554_9554A.pdf
 
-The long term fix should be to transition all PNV parent
-devices and buses to use the resettable interface so that
-all child buses and devices are automatically reset.
+This is a simple model supporting the basic registers for GPIO
+mode.  The device also supports an interrupt output line but the
+model does not yet support this.
 
 Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 ---
- hw/ppc/pnv_i2c.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ MAINTAINERS                    |   2 +
+ hw/misc/pca9554.c              | 328 +++++++++++++++++++++++++++++++++
+ include/hw/misc/pca9554.h      |  36 ++++
+ include/hw/misc/pca9554_regs.h |  19 ++
+ 4 files changed, 385 insertions(+)
+ create mode 100644 hw/misc/pca9554.c
+ create mode 100644 include/hw/misc/pca9554.h
+ create mode 100644 include/hw/misc/pca9554_regs.h
 
-diff --git a/hw/ppc/pnv_i2c.c b/hw/ppc/pnv_i2c.c
-index f80589157b..9ced596b98 100644
---- a/hw/ppc/pnv_i2c.c
-+++ b/hw/ppc/pnv_i2c.c
-@@ -628,6 +628,19 @@ static int pnv_i2c_dt_xscom(PnvXScomInterface *dev, void *fdt,
-     return 0;
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e73a3ff544..209080e1a0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1504,8 +1504,10 @@ F: hw/ppc/pnv*
+ F: hw/intc/pnv*
+ F: hw/intc/xics_pnv.c
+ F: hw/pci-host/pnv*
++F: hw/misc/pca9554.c
+ F: include/hw/ppc/pnv*
+ F: include/hw/pci-host/pnv*
++F: include/hw/misc/pca9554*.h
+ F: pc-bios/skiboot.lid
+ F: tests/qtest/pnv*
  
-+static void pnv_i2c_sys_reset(void *dev)
+diff --git a/hw/misc/pca9554.c b/hw/misc/pca9554.c
+new file mode 100644
+index 0000000000..778b32e443
+--- /dev/null
++++ b/hw/misc/pca9554.c
+@@ -0,0 +1,328 @@
++/*
++ * PCA9554 I/O port
++ *
++ * Copyright (c) 2023, IBM Corporation.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/log.h"
++#include "qemu/module.h"
++#include "qemu/bitops.h"
++#include "hw/qdev-properties.h"
++#include "hw/misc/pca9554.h"
++#include "hw/misc/pca9554_regs.h"
++#include "hw/irq.h"
++#include "migration/vmstate.h"
++#include "qapi/error.h"
++#include "qapi/visitor.h"
++#include "trace.h"
++#include "qom/object.h"
++
++struct PCA9554Class {
++    /*< private >*/
++    I2CSlaveClass parent_class;
++    /*< public >*/
++};
++typedef struct PCA9554Class PCA9554Class;
++
++DECLARE_CLASS_CHECKERS(PCA9554Class, PCA9554,
++                       TYPE_PCA9554)
++
++#define PCA9554_PIN_LOW  0x0
++#define PCA9554_PIN_HIZ  0x1
++
++static const char *pin_state[] = {"low", "high"};
++
++static void pca9554_update_pin_input(PCA9554State *s)
 +{
-+    int port;
-+    PnvI2C *i2c = PNV_I2C(dev);
++    int i;
++    uint8_t config = s->regs[PCA9554_CONFIG];
++    uint8_t output = s->regs[PCA9554_OUTPUT];
++    uint8_t internal_state = config | output;
 +
-+    pnv_i2c_reset(dev);
++    for (i = 0; i < PCA9554_PIN_COUNT; i++) {
++        uint8_t bit_mask = 1 << i;
++        uint8_t internal_pin_state = (internal_state >> i) & 0x1;
++        uint8_t old_value = s->regs[PCA9554_INPUT] & bit_mask;
++        uint8_t new_value;
 +
-+    /* reset all buses connected to this i2c controller */
-+    for (port = 0; port < i2c->num_busses; port++) {
-+        bus_cold_reset(BUS(i2c->busses[port]));
++        switch (internal_pin_state) {
++        case PCA9554_PIN_LOW:
++            s->regs[PCA9554_INPUT] &= ~bit_mask;
++            break;
++        case PCA9554_PIN_HIZ:
++            /*
++             * pullup sets it to a logical 1 unless
++             * external device drives it low.
++             */
++            if (s->ext_state[i] == PCA9554_PIN_LOW) {
++                s->regs[PCA9554_INPUT] &= ~bit_mask;
++            } else {
++                s->regs[PCA9554_INPUT] |=  bit_mask;
++            }
++            break;
++        default:
++            break;
++        }
++
++        /* update irq state only if pin state changed */
++        new_value = s->regs[PCA9554_INPUT] & bit_mask;
++        if (new_value != old_value) {
++            if (new_value) {
++                /* changed from 0 to 1 */
++                qemu_set_irq(s->gpio_out[i], 1);
++            } else {
++                /* changed from 1 to 0 */
++                qemu_set_irq(s->gpio_out[i], 0);
++            }
++        }
 +    }
 +}
 +
- static void pnv_i2c_realize(DeviceState *dev, Error **errp)
- {
-     PnvI2C *i2c = PNV_I2C(dev);
-@@ -648,7 +661,7 @@ static void pnv_i2c_realize(DeviceState *dev, Error **errp)
- 
-     fifo8_create(&i2c->fifo, PNV_I2C_FIFO_SIZE);
- 
--    qemu_register_reset(pnv_i2c_reset, dev);
-+    qemu_register_reset(pnv_i2c_sys_reset, dev);
- 
-     qdev_init_gpio_out(DEVICE(dev), &i2c->psi_irq, 1);
- }
++static uint8_t pca9554_read(PCA9554State *s, uint8_t reg)
++{
++    switch (reg) {
++    case PCA9554_INPUT:
++        return s->regs[PCA9554_INPUT] ^ s->regs[PCA9554_POLARITY];
++    case PCA9554_OUTPUT:
++    case PCA9554_POLARITY:
++    case PCA9554_CONFIG:
++        return s->regs[reg];
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: unexpected read to register %d\n",
++                      __func__, reg);
++        return 0xFF;
++    }
++}
++
++static void pca9554_write(PCA9554State *s, uint8_t reg, uint8_t data)
++{
++    switch (reg) {
++    case PCA9554_OUTPUT:
++    case PCA9554_CONFIG:
++        s->regs[reg] = data;
++        pca9554_update_pin_input(s);
++        break;
++    case PCA9554_POLARITY:
++        s->regs[reg] = data;
++        break;
++    case PCA9554_INPUT:
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: unexpected write to register %d\n",
++                      __func__, reg);
++    }
++}
++
++static uint8_t pca9554_recv(I2CSlave *i2c)
++{
++    PCA9554State *s = PCA9554(i2c);
++    uint8_t ret;
++
++    ret = pca9554_read(s, s->pointer & 0x3);
++
++    return ret;
++}
++
++static int pca9554_send(I2CSlave *i2c, uint8_t data)
++{
++    PCA9554State *s = PCA9554(i2c);
++
++    /* First byte sent by is the register address */
++    if (s->len == 0) {
++        s->pointer = data;
++        s->len++;
++    } else {
++        pca9554_write(s, s->pointer & 0x3, data);
++    }
++
++    return 0;
++}
++
++static int pca9554_event(I2CSlave *i2c, enum i2c_event event)
++{
++    PCA9554State *s = PCA9554(i2c);
++
++    s->len = 0;
++    return 0;
++}
++
++static void pca9554_get_pin(Object *obj, Visitor *v, const char *name,
++                            void *opaque, Error **errp)
++{
++    PCA9554State *s = PCA9554(obj);
++    int pin, rc;
++    uint8_t state;
++
++    rc = sscanf(name, "pin%2d", &pin);
++    if (rc != 1) {
++        error_setg(errp, "%s: error reading %s", __func__, name);
++        return;
++    }
++    if (pin < 0 || pin > PCA9554_PIN_COUNT) {
++        error_setg(errp, "%s invalid pin %s", __func__, name);
++        return;
++    }
++
++    state = pca9554_read(s, PCA9554_CONFIG);
++    state |= pca9554_read(s, PCA9554_OUTPUT);
++    state = (state >> pin) & 0x1;
++    visit_type_str(v, name, (char **)&pin_state[state], errp);
++}
++
++static void pca9554_set_pin(Object *obj, Visitor *v, const char *name,
++                            void *opaque, Error **errp)
++{
++    PCA9554State *s = PCA9554(obj);
++    int pin, rc, val;
++    uint8_t state, mask;
++    char *state_str;
++
++    if (!visit_type_str(v, name, &state_str, errp)) {
++        return;
++    }
++    rc = sscanf(name, "pin%2d", &pin);
++    if (rc != 1) {
++        error_setg(errp, "%s: error reading %s", __func__, name);
++        return;
++    }
++    if (pin < 0 || pin > PCA9554_PIN_COUNT) {
++        error_setg(errp, "%s invalid pin %s", __func__, name);
++        return;
++    }
++
++    for (state = 0; state < ARRAY_SIZE(pin_state); state++) {
++        if (!strcmp(state_str, pin_state[state])) {
++            break;
++        }
++    }
++    if (state >= ARRAY_SIZE(pin_state)) {
++        error_setg(errp, "%s invalid pin state %s", __func__, state_str);
++        return;
++    }
++
++    /* First, modify the output register bit */
++    val = pca9554_read(s, PCA9554_OUTPUT);
++    mask = 0x1 << pin;
++    if (state == PCA9554_PIN_LOW) {
++        val &= ~(mask);
++    } else {
++        val |= mask;
++    }
++    pca9554_write(s, PCA9554_OUTPUT, val);
++
++    /* Then, clear the config register bit for output mode */
++    val = pca9554_read(s, PCA9554_CONFIG);
++    val &= ~mask;
++    pca9554_write(s, PCA9554_CONFIG, val);
++}
++
++static const VMStateDescription pca9554_vmstate = {
++    .name = "PCA9554",
++    .version_id = 0,
++    .minimum_version_id = 0,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINT8(len, PCA9554State),
++        VMSTATE_UINT8(pointer, PCA9554State),
++        VMSTATE_UINT8_ARRAY(regs, PCA9554State, PCA9554_NR_REGS),
++        VMSTATE_UINT8_ARRAY(ext_state, PCA9554State, PCA9554_PIN_COUNT),
++        VMSTATE_I2C_SLAVE(i2c, PCA9554State),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++static void pca9554_reset(DeviceState *dev)
++{
++    PCA9554State *s = PCA9554(dev);
++
++    s->regs[PCA9554_INPUT] = 0xFF;
++    s->regs[PCA9554_OUTPUT] = 0xFF;
++    s->regs[PCA9554_POLARITY] = 0x0; /* No pins are inverted */
++    s->regs[PCA9554_CONFIG] = 0xFF; /* All pins are inputs */
++
++    memset(s->ext_state, PCA9554_PIN_HIZ, PCA9554_PIN_COUNT);
++    pca9554_update_pin_input(s);
++
++    s->pointer = 0x0;
++    s->len = 0;
++}
++
++static void pca9554_initfn(Object *obj)
++{
++    int pin;
++
++    for (pin = 0; pin < PCA9554_PIN_COUNT; pin++) {
++        char *name;
++
++        name = g_strdup_printf("pin%d", pin);
++        object_property_add(obj, name, "bool", pca9554_get_pin, pca9554_set_pin,
++                            NULL, NULL);
++        g_free(name);
++    }
++}
++
++static void pca9554_set_ext_state(PCA9554State *s, int pin, int level)
++{
++    if (s->ext_state[pin] != level) {
++        s->ext_state[pin] = level;
++        pca9554_update_pin_input(s);
++    }
++}
++
++static void pca9554_gpio_in_handler(void *opaque, int pin, int level)
++{
++
++    PCA9554State *s = PCA9554(opaque);
++
++    assert((pin >= 0) && (pin < PCA9554_PIN_COUNT));
++    pca9554_set_ext_state(s, pin, level);
++}
++
++static void pca9554_realize(DeviceState *dev, Error **errp)
++{
++    PCA9554State *s = PCA9554(dev);
++
++    if (!s->description) {
++        s->description = g_strdup("pca9554");
++    }
++
++    qdev_init_gpio_out(dev, s->gpio_out, PCA9554_PIN_COUNT);
++    qdev_init_gpio_in(dev, pca9554_gpio_in_handler, PCA9554_PIN_COUNT);
++}
++
++static Property pca9554_properties[] = {
++    DEFINE_PROP_STRING("description", PCA9554State, description),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++static void pca9554_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    I2CSlaveClass *k = I2C_SLAVE_CLASS(klass);
++
++    k->event = pca9554_event;
++    k->recv = pca9554_recv;
++    k->send = pca9554_send;
++    dc->realize = pca9554_realize;
++    dc->reset = pca9554_reset;
++    dc->vmsd = &pca9554_vmstate;
++    device_class_set_props(dc, pca9554_properties);
++}
++
++static const TypeInfo pca9554_info = {
++    .name          = TYPE_PCA9554,
++    .parent        = TYPE_I2C_SLAVE,
++    .instance_init = pca9554_initfn,
++    .instance_size = sizeof(PCA9554State),
++    .class_init    = pca9554_class_init,
++    .class_size    = sizeof(PCA9554Class),
++    .abstract      = false,
++};
++
++static void pca9554_register_types(void)
++{
++    type_register_static(&pca9554_info);
++}
++
++type_init(pca9554_register_types)
+diff --git a/include/hw/misc/pca9554.h b/include/hw/misc/pca9554.h
+new file mode 100644
+index 0000000000..54bfc4c4c7
+--- /dev/null
++++ b/include/hw/misc/pca9554.h
+@@ -0,0 +1,36 @@
++/*
++ * PCA9554 I/O port
++ *
++ * Copyright (c) 2023, IBM Corporation.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#ifndef PCA9554_H
++#define PCA9554_H
++
++#include "hw/i2c/i2c.h"
++#include "qom/object.h"
++
++#define TYPE_PCA9554 "pca9554"
++typedef struct PCA9554State PCA9554State;
++DECLARE_INSTANCE_CHECKER(PCA9554State, PCA9554,
++                         TYPE_PCA9554)
++
++#define PCA9554_NR_REGS 4
++#define PCA9554_PIN_COUNT 8
++
++struct PCA9554State {
++    /*< private >*/
++    I2CSlave i2c;
++    /*< public >*/
++
++    uint8_t len;
++    uint8_t pointer;
++
++    uint8_t regs[PCA9554_NR_REGS];
++    qemu_irq gpio_out[PCA9554_PIN_COUNT];
++    uint8_t ext_state[PCA9554_PIN_COUNT];
++    char *description; /* For debugging purpose only */
++};
++
++#endif
+diff --git a/include/hw/misc/pca9554_regs.h b/include/hw/misc/pca9554_regs.h
+new file mode 100644
+index 0000000000..602c4a90e0
+--- /dev/null
++++ b/include/hw/misc/pca9554_regs.h
+@@ -0,0 +1,19 @@
++/*
++ * PCA9554 I/O port registers
++ *
++ * Copyright (c) 2023, IBM Corporation.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#ifndef PCA9554_REGS_H
++#define PCA9554_REGS_H
++
++/*
++ * Bits [0:1] are used to address a specific register.
++ */
++#define PCA9554_INPUT       0 /* read only input register */
++#define PCA9554_OUTPUT      1 /* read/write pin output state */
++#define PCA9554_POLARITY    2 /* Set polarity of input register */
++#define PCA9554_CONFIG      3 /* Set pins as inputs our ouputs */
++
++#endif
 -- 
 2.31.1
 
