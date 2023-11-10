@@ -2,46 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD287E82CC
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 20:36:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC7D7E830B
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 20:51:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1XI7-0006Q1-QH; Fri, 10 Nov 2023 14:35:43 -0500
+	id 1r1XWE-0001zx-N3; Fri, 10 Nov 2023 14:50:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=DfYf=GX=gmx.de=deller@kernel.org>)
- id 1r1XI5-0006Pg-2V
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 14:35:41 -0500
-Received: from ams.source.kernel.org ([145.40.68.75])
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1r1XVq-0001xr-BO; Fri, 10 Nov 2023 14:49:54 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=DfYf=GX=gmx.de=deller@kernel.org>)
- id 1r1XI3-0007vz-4F
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 14:35:40 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by ams.source.kernel.org (Postfix) with ESMTP id 2BEFDB81FAE;
- Fri, 10 Nov 2023 19:35:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD7FC433C7;
- Fri, 10 Nov 2023 19:35:27 +0000 (UTC)
-Date: Fri, 10 Nov 2023 20:35:24 +0100
-From: Helge Deller <deller@gmx.de>
-To: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH] target/hppa: Fix possible overflow in TLB size calculation
-Message-ID: <ZU6F/H8CZr3q4pP/@p100>
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1r1XVo-00023R-79; Fri, 10 Nov 2023 14:49:54 -0500
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AAJlcg6001506; Fri, 10 Nov 2023 19:49:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=gzblgFoaYNUYow2g5Ekro5bRuYoE2l9S9weO+0eEXaM=;
+ b=ARRiv3XQVERL3tzVxX/bL/m3THCTqESJx+JimeTtAtBPQa+vlNNf3Kb1V7gXgRMcL2M4
+ f/fmP53jktNaUb4XOOcBXJzxxw3j8yrO6/+281eVLQ8wzgGnBkRGQU7al0ZmgAy09G0r
+ 5JmRWKrkFaQuBp1LvcKNIT8yUgnlRSCK+bc7KOfqTQe4liae0n8jyD9RHFw6Ce4VZc1O
+ XHiJoRSqAz5fuLLfoM5VqGaxQbnygkX6AE7uyUiUqBuuigreRq8QSwSAJurXY43sf/PY
+ kMSoypYjo/VPuzR+POGGsDfueorwJvedt/ykycl4FEwPMAO7hgLPT/SWfwXIE8Tnf/Cu 9A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u9u0101nx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 10 Nov 2023 19:49:43 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AAJmXCG004825;
+ Fri, 10 Nov 2023 19:49:42 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u9u0101nd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 10 Nov 2023 19:49:42 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AAIoVul014506; Fri, 10 Nov 2023 19:49:41 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u7w22d899-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 10 Nov 2023 19:49:41 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
+ [10.39.53.231])
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AAJnepn5374580
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 10 Nov 2023 19:49:40 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 605175805E;
+ Fri, 10 Nov 2023 19:49:40 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EC6CB58045;
+ Fri, 10 Nov 2023 19:49:39 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
+ by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 10 Nov 2023 19:49:39 +0000 (GMT)
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
+To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+Cc: Glenn Miles <milesg@linux.vnet.ibm.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
+Subject: [PATCH v2 0/8] Add powernv10 I2C devices and tests
+Date: Fri, 10 Nov 2023 13:49:17 -0600
+Message-Id: <20231110194925.475909-1-milesg@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Received-SPF: pass client-ip=145.40.68.75;
- envelope-from=SRS0=DfYf=GX=gmx.de=deller@kernel.org;
- helo=ams.source.kernel.org
-X-Spam_score_int: -36
-X-Spam_score: -3.7
-X-Spam_bar: ---
-X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: UIej6akrZHOJh937O7xUAM1cqfgKCCSU
+X-Proofpoint-GUID: evP4eqRQtHOdO3l36ff9bC6SMhF4kdoX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-10_17,2023-11-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxlogscore=595
+ priorityscore=1501 bulkscore=0 suspectscore=0 impostorscore=0
+ malwarescore=0 clxscore=1015 mlxscore=0 phishscore=0 lowpriorityscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311100166
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -58,33 +110,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverty found that the shift of TARGET_PAGE_SIZE (32-bit type) might
-overflow.  Fix it by casting TARGET_PAGE_SIZE to a 64-bit type before
-doing the shift (CID 1523902 and CID 1523908).
+This series of patches includes support, tests and fixes for
+adding PCA9552 and PCA9554 I2C devices to the powernv10 chip.
 
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+The PCA9552 device is used for PCIe slot hotplug power control
+and monitoring, while the PCA9554 device is used for presence
+detection of IBM CableCard devices.  Both devices are required
+by the Power Hypervisor Firmware on Power10 platforms.
 
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index f100c26290..30f0415d1b 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -460,7 +460,7 @@ static void itlbt_pa20(CPUHPPAState *env, target_ulong r1,
-     int mask_shift;
- 
-     mask_shift = 2 * (r1 & 0xf);
--    va_size = TARGET_PAGE_SIZE << mask_shift;
-+    va_size = ((uint64_t) TARGET_PAGE_SIZE) << mask_shift;
-     va_b &= -va_size;
-     va_e = va_b + va_size - 1;
- 
-@@ -522,7 +522,7 @@ static void ptlb_work(CPUState *cpu, run_on_cpu_data data)
-      */
-     end = start & 0xf;
-     start &= TARGET_PAGE_MASK;
--    end = TARGET_PAGE_SIZE << (2 * end);
-+    end = ((vaddr) TARGET_PAGE_SIZE) << (2 * end);
-     end = start + end - 1;
- 
-     hppa_flush_tlb_range(env, start, end);
+Changes from previous version:
+  - Added prerequisite patch that hasn't merged into master yet.
+    (see patch 1/8 for details).  Without this patch, the code
+    compiles but "make check" fails.
+
+Glenn Miles (8):
+  ppc/pnv: Add pca9552 to powernv10 for PCIe hotplug power control
+  ppc/pnv: Wire up pca9552 GPIO pins for PCIe hotplug power control
+  ppc/pnv: PNV I2C engines assigned incorrect XSCOM addresses
+  ppc/pnv: Fix PNV I2C invalid status after reset
+  ppc/pnv: Use resettable interface to reset child I2C buses
+  misc: Add a pca9554 GPIO device model
+  ppc/pnv: Add a pca9554 I2C device to powernv10
+  ppc/pnv: Test pnv i2c master and connected devices
+
+ MAINTAINERS                     |   2 +
+ hw/misc/Kconfig                 |   4 +
+ hw/misc/meson.build             |   1 +
+ hw/misc/pca9554.c               | 328 ++++++++++++++++
+ hw/ppc/Kconfig                  |   2 +
+ hw/ppc/pnv.c                    |  35 +-
+ hw/ppc/pnv_i2c.c                |  47 ++-
+ include/hw/misc/pca9554.h       |  36 ++
+ include/hw/misc/pca9554_regs.h  |  19 +
+ tests/qtest/meson.build         |   1 +
+ tests/qtest/pnv-host-i2c-test.c | 653 ++++++++++++++++++++++++++++++++
+ 11 files changed, 1106 insertions(+), 22 deletions(-)
+ create mode 100644 hw/misc/pca9554.c
+ create mode 100644 include/hw/misc/pca9554.h
+ create mode 100644 include/hw/misc/pca9554_regs.h
+ create mode 100644 tests/qtest/pnv-host-i2c-test.c
+
+-- 
+2.31.1
+
 
