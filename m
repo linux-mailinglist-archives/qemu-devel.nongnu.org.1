@@ -2,81 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 969A97E7AB8
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 10:22:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 109467E7ABD
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 10:24:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1Nid-0005mL-2m; Fri, 10 Nov 2023 04:22:27 -0500
+	id 1r1Nkf-000793-1P; Fri, 10 Nov 2023 04:24:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r1Nia-0005kp-9E
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:22:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1r1Nkc-00078n-Pv
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:24:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r1NiY-0003jF-Az
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:22:23 -0500
+ id 1r1Nkb-0003yg-2k
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:24:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699608140;
+ s=mimecast20190719; t=1699608268;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1Bq5BZeLFcaJMdF334xwQpxs5FOQ5Uq9+HIBIQqF21k=;
- b=Y0/ctZMtLFXCO8EhzlP7aWPVZqVqCNRVFam+GkP9I4IEpG4pG9QvYuro440le7DXxpkwnl
- 9mplCfwnZoIeNHT/oLO0Eq7Lp/6MqlLIbsfUEXkLY6954Bp9OO+mz41zx1hfwu3iSpd+n+
- z7fkT8I/dlDFWHZsQDepBjMZ3WRxeWs=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-312-FrdC4u05MLWNbus_NgkCRw-1; Fri,
- 10 Nov 2023 04:22:17 -0500
-X-MC-Unique: FrdC4u05MLWNbus_NgkCRw-1
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=WtKDZkfabbXeQ8XuvS+m9fyTSOQiQupkxlF7xCLj/wY=;
+ b=COgvo2EWYIy/BDNCnSnOkYiELt/p1aEM5qI0TlGJPVkQBgVM8bdu2bUH8t9mlToNrcOrDT
+ hlIm0WPTqxH8fTBu3D1GwBTzvwh3ZUusy18OsTBNfESC4rJzBbbIMSIWDx2r4mHVw2xHQR
+ 1WZ5Ij5WPdv1b4SxjUu8rr8LAZCZtUs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-275-XM0GWF-PMOKEQPjuT1xe7w-1; Fri, 10 Nov 2023 04:24:26 -0500
+X-MC-Unique: XM0GWF-PMOKEQPjuT1xe7w-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8B2F03C000B9;
- Fri, 10 Nov 2023 09:22:16 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5E329101A550;
+ Fri, 10 Nov 2023 09:24:26 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.89])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0D69840C6EB9;
- Fri, 10 Nov 2023 09:22:14 +0000 (UTC)
-Date: Fri, 10 Nov 2023 09:22:06 +0000
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B12D540C6EB9;
+ Fri, 10 Nov 2023 09:24:25 +0000 (UTC)
+Date: Fri, 10 Nov 2023 09:24:23 +0000
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Reinoud Zandijk <reinoud@netbsd.org>,
- Ryo ONODERA <ryoon@netbsd.org>, Gerd Hoffmann <kraxel@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: Re: [RFC PATCH-for-8.2] .gitlab-ci.d/cirrus.yml: Promote NetBSD job
- as gating
-Message-ID: <ZU32PpBQc6jLmexY@redhat.com>
-References: <20231109153510.92353-1-philmd@linaro.org>
- <737f6fe5-cf3e-4fdd-b5d8-28f71a2fa9e6@linaro.org>
- <ZU0PuHyw8X8e/p0j@redhat.com>
- <52df2072-a26e-4e73-afe0-65a877bafbdc@redhat.com>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 1/2] Add QEMU_WARN_UNUSED_RESULT attribute
+Message-ID: <ZU32x9sN5GTStr1x@redhat.com>
+References: <cover.1699606819.git.manos.pitsidianakis@linaro.org>
+ <84781fce2c3145a86d043d4c6b3b463af40eeed0.1699606819.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <52df2072-a26e-4e73-afe0-65a877bafbdc@redhat.com>
+In-Reply-To: <84781fce2c3145a86d043d4c6b3b463af40eeed0.1699606819.git.manos.pitsidianakis@linaro.org>
 User-Agent: Mutt/2.2.9 (2022-11-12)
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,65 +83,40 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 09, 2023 at 06:15:51PM +0100, Thomas Huth wrote:
-> On 09/11/2023 17.58, Daniel P. Berrangé wrote:
-> > On Thu, Nov 09, 2023 at 04:35:56PM +0100, Philippe Mathieu-Daudé wrote:
-> > > On 9/11/23 16:35, Philippe Mathieu-Daudé wrote:
-> > > > This Cirrus-CI based job takes ~12min, similarly to macOS job.
-> > > > 
-> > > > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> > > > ---
-> > > > Based-on: <20231109150900.91186-1-philmd@linaro.org>
-> > > >             "tests/vm/netbsd: Use Python v3.11"
-> > > > ---
-> > > >    .gitlab-ci.d/cirrus.yml | 3 +--
-> > > >    1 file changed, 1 insertion(+), 2 deletions(-)
-> > > > 
-> > > > diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-> > > > index e7f1f83c2c..7b01acb104 100644
-> > > > --- a/.gitlab-ci.d/cirrus.yml
-> > > > +++ b/.gitlab-ci.d/cirrus.yml
-> > > > @@ -94,8 +94,6 @@ aarch64-macos-12-base-build:
-> > > >        - cirrus-run -v --show-build-log always .gitlab-ci.d/cirrus/$NAME.yml
-> > > >      variables:
-> > > >        QEMU_JOB_CIRRUS: 1
-> > > > -    QEMU_JOB_OPTIONAL: 1
-> > > > -
-> > > >    x86-netbsd:
-> > > >      extends: .cirrus_kvm_job
-> > > > @@ -110,3 +108,4 @@ x86-openbsd:
-> > > >        NAME: openbsd
-> > > >        CONFIGURE_ARGS: --target-list=i386-softmmu,riscv64-softmmu,mips64-softmmu
-> > > >        TEST_TARGETS: check
-> > > > +    QEMU_JOB_OPTIONAL: 1
-> > > 
-> > > BTW OpenBSD works for me, but takes ~20min (similar to the FreeBSD job).
-> ...
-> > I could have sworn our cirrus jobs were much slower in the past (around
-> > the 40 min mark), as we had to cut down what we were running to avoid
-> > frequent timeouts.
+On Fri, Nov 10, 2023 at 11:16:38AM +0200, Manos Pitsidianakis wrote:
+> This commit adds QEMU_WARN_UNUSED_RESULT, a macro for the gcc function
+> attribute `warn_unused_result`. The utility of this attribute is to
+> ensure functions that return values that need to be inspected are not
+> ignored by the caller.
 > 
-> You're right, Daniel. Seems like both, the Cirrus netbsd and the openbsd job
-> are currently broken and only output some help text instead of compiling
-> QEMU:
+> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
+>  include/qemu/compiler.h | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 > 
->  https://gitlab.com/philmd/qemu/-/jobs/5497861511#L6834
-> 
-> ... that's why the finish so fast.
-> 
-> IIRC last time I've seen them "working", they were running into the 80
-> minute timeout again.
-> 
-> So the netbsd and openbsd job are indeed not very useful anymore. I think we
-> should rather remove them and add a proper job via our own custom
-> KVM-capable runners instead.
+> diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
+> index c797f0d457..7ddbf1f1cf 100644
+> --- a/include/qemu/compiler.h
+> +++ b/include/qemu/compiler.h
+> @@ -212,6 +212,20 @@
+>  # define QEMU_USED
+>  #endif
+>  
+> +/*
+> + * From GCC documentation:
+> + *
+> + *   The warn_unused_result attribute causes a warning to be emitted if a
+> + *   caller of the function with this attribute does not use its return value.
+> + *   This is useful for functions where not checking the result is either a
+> + *   security problem or always a bug, such as realloc.
+> + */
+> +#if __has_attribute(warn_unused_result)
+> +# define QEMU_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
+> +#else
+> +# define QEMU_WARN_UNUSED_RESULT
+> +#endif
 
-The CI job isn't the issue though - it is merely a sign of brokeness
-elsewhere.  Either tests/vm/{netbsd,openbsd} are broken, or our entire
-build process for those platforms is broken.
-
-We need to root cause this, rather than hide it further by dropping
-the CI jobs.
+GLib already provides us G_GNUC_WARN_UNUSED_RESULT so don't add this.
 
 With regards,
 Daniel
