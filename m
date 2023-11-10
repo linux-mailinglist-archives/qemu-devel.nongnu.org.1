@@ -2,96 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 185137E7D61
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 16:22:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C24EA7E7D78
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 16:36:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1TIl-0002ug-0z; Fri, 10 Nov 2023 10:20:07 -0500
+	id 1r1TXh-0006QO-Oz; Fri, 10 Nov 2023 10:35:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <john_platts@hotmail.com>)
- id 1r1TIi-0002u5-2j; Fri, 10 Nov 2023 10:20:04 -0500
-Received: from mail-westus2azolkn19010002.outbound.protection.outlook.com
- ([52.103.10.2] helo=CO1PR02CU002.outbound.protection.outlook.com)
+ id 1r1TXf-0006Q8-Og; Fri, 10 Nov 2023 10:35:31 -0500
+Received: from mail-westus2azolkn19012043.outbound.protection.outlook.com
+ ([52.103.10.43] helo=MW2PR02CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <john_platts@hotmail.com>)
- id 1r1TIe-0000Cz-Iz; Fri, 10 Nov 2023 10:20:03 -0500
+ id 1r1TXc-00046j-MR; Fri, 10 Nov 2023 10:35:31 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YpoNug4yc5w0gcr/KyKvwuT2cfFYAMdU+96BM9iScUIBULlCTG+QwxcXXFp16aVPb7omg9F3r1QVB2OtAtojNdp3rXdErYHcmy3hsoIylGpmgiOqcww9Q7ZUYhlQyh/iaGAV01N5J42NBXiXdyzUjyBMio0SEREYyuf6jWS5389uMvkfwtM2EpGIlPLyDv5Hx0ZXLd/mrsA7evbTgI6b5nxPICokCBvDCtqrqkANQSc7hS92DnQxp7eusP3qidsNuiplIl6LUTqpXQc0GeeQNCINnFfu704b4cbRJILJSqjlQSfF1Zzopk+d0bpWDtpFUbE8LmdISfZeb721/3GGZA==
+ b=RdIF1p3ayK6zD49uPvgBevpdBO6rD6fpkIQWL1RZzlt0kJWLPiWmj1AJn5EPbcglT0IuVp7WMIeMqdAcqkfy2+vuzzucmnJLbUFVKuCm27CdEHGyNTEDKHTXvlamYegxcKHKT+fPTC6dCRDHuAiXfBQ2MUqdHa02NV2uI1uAQf5Rg5B4oPRlNwtUkHl10iNEXm2XU0sfxjgIQw2fr/e2g6jhdBqo67cMTa30c2xOuPSG/BW23L3BpA2UnMHfU+lkpAtRj4ebLygqfP8c9iq5OABiacL4Uj3w5bIr7v7k55sb5tOdJdi5zyzk33yeZ1WtMEQJvdzGeRcRU6rknoGqAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FXIMu87YZ6+1Q5R7CFdS8g/xTZRfpXWVLtgWBZKpbGo=;
- b=n7X/EfUfuHPNUiQfbkrd/eDJdNmR++3/6LQtvsxnC04EHWvys7zQTuJWhbzX++/fkCnc7rmiNX4gY/EjfX0Eeqj5V0e6D9438gNWsOg/fBOAeZg6Dtn5Amx6Pq8Tp+qbOD72zJ6P0tx01wc8R/TdbxGJSYam1wmLGN8p6DOflr79LzWdrWWyaAHgNhmC7cktmpoKXtIM6mcwpIz2vfgfGaCkfeTTJBsi5J3d3fgAolUQdXXhaiUhaj0aHwyhDEwQHodx/I1FYkSJuU7s0ma1BvagHuEOr69Tl1l7XUjksm6EGwz4bQgsasgQe8c1TOI5pRgGiFU4ppltk7yUwydcnw==
+ bh=rkN6/GO0t13niS4Lv/TG6pFWh2cqR/Sc+hxf14Hss/Q=;
+ b=mVSQRZQhN9dcZkQVkGQ+FEo9BXChXRpqhCkghTKQIjIGZVUG8td5PYbfKelDSeff+Pc6Qzh89GqinPCE+aRfOhBwJOqL1IG89EbnCc5lsYGJQ3KbA+urNuCSU7vpeL2XCiZLkXAxuFAxpdH+9CGpxaqnZ3Erte/2p4ioIEUK0YoVdOpMC7Exj/IhaSPF4S4Ji4fQJ3rY/KtOAHWHSrx26V+Fa8qpgflEAJJnL7znUwQpz/uZ6CvhXHx4TKBhVUPyH+fbr9chDx7OHa5D6+HThFhllO/jD3IFCTlqZzgwfrhs0bnqfa/gCLFAmDM4l//koTRNHLISRVJSxUdn4f2LjQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FXIMu87YZ6+1Q5R7CFdS8g/xTZRfpXWVLtgWBZKpbGo=;
- b=h5TVWMSKzBbaYCzIng3azlG0h1YwTiCuvmfENiKviPN4FEc4c7HTYC80obypE7kEExrRPTv/zpSKM4RLvSudyAgJ3r8slE1Kuj+qLWDG5aQwkEF+NCyUJmwfiOuY0ahbd+UT9hff0VmCSyIcestOVayD3FnzBY7Q3Jom2zRpfMioSTuFrzBRX6dtsm3J1weBWPA2a86VXbLOG3VuAQ/ibVR87ILaV6m2sVxHQejnSyEUQSDXyPaE28ZXDOmOoBrkMYIhonzkGjksS1fSdWCDT/uOw5NFwhhV5an+JGK7WBlQHVcV96HKuJN6PGUTrmEGBf4cLxic08LNq+Ap1Wd71A==
+ bh=rkN6/GO0t13niS4Lv/TG6pFWh2cqR/Sc+hxf14Hss/Q=;
+ b=qkXL9TwUZ7MpWapVeVlXAkpWCjA6XcLzB0FSVNzpLgQBoFjPnlM44nquNnSi1DmEJ1r1x8IY4naxg3fr9sFgt5Tvxw0nEXeQe9Eqa75lc6DyOvWOp2YyGybpzgyqaq5T46eDeaypOuztVnhxUsnI8/HtDIOEO97gQ0898BVxb7gG8bSHK03paVMgIqvHZvEqzuRKQ7LUg39Pt1YTrERhtuq+8TVk2dbUKzHaV1lQooSDy5D2fKaXYzi9XxCelkx+I8Ep/iXfDXORyvZX3eugGw6Rn21ksd0tpEU/Yxvz/LoDu4Bfxr0dAr50s+3EpqdRK5nptdenuw2Puu3ytTY1eQ==
 Received: from SN6PR05MB5837.namprd05.prod.outlook.com (2603:10b6:805:f4::20)
- by CYXPR05MB10483.namprd05.prod.outlook.com (2603:10b6:930:dd::12)
+ by DM4PR05MB10196.namprd05.prod.outlook.com (2603:10b6:8:180::16)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.28; Fri, 10 Nov
- 2023 15:19:43 +0000
+ 2023 15:35:11 +0000
 Received: from SN6PR05MB5837.namprd05.prod.outlook.com
  ([fe80::c41:7e67:640d:c47e]) by SN6PR05MB5837.namprd05.prod.outlook.com
  ([fe80::c41:7e67:640d:c47e%4]) with mapi id 15.20.6954.028; Fri, 10 Nov 2023
- 15:19:42 +0000
+ 15:35:11 +0000
 From: John Platts <john_platts@hotmail.com>
 To: "qemu-ppc@nongnu.org" <qemu-ppc@nongnu.org>
 CC: "npiggin@gmail.com" <npiggin@gmail.com>, "danielhb413@gmail.com"
  <danielhb413@gmail.com>, "clg@kaod.org" <clg@kaod.org>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: [PATCH v4] target/ppc: Fix bugs in VSX_CVT_FP_TO_INT and
+Subject: Re: [PATCH v5] target/ppc: Fix bugs in VSX_CVT_FP_TO_INT and
  VSX_CVT_FP_TO_INT2 macros
-Thread-Topic: [PATCH v4] target/ppc: Fix bugs in VSX_CVT_FP_TO_INT and
+Thread-Topic: [PATCH v5] target/ppc: Fix bugs in VSX_CVT_FP_TO_INT and
  VSX_CVT_FP_TO_INT2 macros
-Thread-Index: AQHaE+lU1y+mnp/NNUqa1QAOQZ/Fdw==
-Date: Fri, 10 Nov 2023 15:19:42 +0000
-Message-ID: <SN6PR05MB58378D2FFC111C3C8482CA3A9DAEA@SN6PR05MB5837.namprd05.prod.outlook.com>
+Thread-Index: AQHaE+t978RdhJF7Z0e5h5bd+vwZsQ==
+Date: Fri, 10 Nov 2023 15:35:10 +0000
+Message-ID: <SN6PR05MB58370F778E36797C833A020E9DAEA@SN6PR05MB5837.namprd05.prod.outlook.com>
 References: <SN6PR05MB583705596093E9D2EFC8E4029DDEA@SN6PR05MB5837.namprd05.prod.outlook.com>
  <SN6PR05MB5837B5EF0D11E0A787EC30179DA5A@SN6PR05MB5837.namprd05.prod.outlook.com>
  <SN6PR05MB583760D0AEB19A3516E216329DAFA@SN6PR05MB5837.namprd05.prod.outlook.com>
-In-Reply-To: <SN6PR05MB583760D0AEB19A3516E216329DAFA@SN6PR05MB5837.namprd05.prod.outlook.com>
+ <SN6PR05MB58378D2FFC111C3C8482CA3A9DAEA@SN6PR05MB5837.namprd05.prod.outlook.com>
+In-Reply-To: <SN6PR05MB58378D2FFC111C3C8482CA3A9DAEA@SN6PR05MB5837.namprd05.prod.outlook.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 msip_labels: 
 x-ms-exchange-messagesentrepresentingtype: 1
-x-tmn: [SBK9mqLrYpAW0XQJ1B+74WoGFKszLHlLPMXRF8PyTOHD/dZNfZM2loNAc66yC1YJEn3XtGjjimA=]
+x-tmn: [j5dVyL5yZy3ErHQmlZEilr1kXlOIZPUSE0SuQu8N6J657Z/Pz6lKdT01OqTHa7HiwYOiPIhJ9U0=]
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR05MB5837:EE_|CYXPR05MB10483:EE_
-x-ms-office365-filtering-correlation-id: 282ec07a-a9f3-43f9-8059-08dbe20076ff
+x-ms-traffictypediagnostic: SN6PR05MB5837:EE_|DM4PR05MB10196:EE_
+x-ms-office365-filtering-correlation-id: 8dc666f0-1217-44d7-7c5e-08dbe202a026
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: VO80MMOC59Hb4mcvn6GnwXNs/7MJurhRds6Li1606y61YuJVfUE1ZiToz3DjkQljvMqcDTcH7/PK8nUl2/hmWwuJTsUAsc2IdjWNWhIjS56qyQ5BHUgNo8A124SGY84gH2j0sZ1ga0C2Qy8EzQHc9mL7SblVwD++2xSPnvHgRWUFhizwwKf2o9LcsKE/EmdRFM77dug4/kPN8Iu1abXa0C2PoNve8YfPGUstYfO97N1yUgvcFVjSpaxeJFzaEE9TDpvN7uka1ZAJq+QeP/EA4q+XpIRBSkfTfeM6CyEC3sPTZnqO6hTgTv5uH8hW6+RecdPVfvHWVHgKzP83EL3fzZCx3ml8wCQbCDahww2kFIfSAAeBMo9wfslgfxnzqVhLXQG8jHhuDN3z/FbmXoBwVdFwCOM5lxE+2s+cPhen/RkNM8mWcp587nPdMKbL8kjrX8TVDWVNC2OJzBjyMgNNFxdyJkwSTBIbohG6SK/klaXXr12/ISsAIpUCwKfnXkaZAm3o5jMIvw7GCrjCT73TMs12t9g+k96RM/uokq0JiPYV5Gd3dtA9ELcLMC3fQj/7w7h+fBpw9CYE5eV6IG6c/U7zRedeSR4aZCyTCiGkrNo=
+x-microsoft-antispam-message-info: bZwpd6JZgkVmRsZaOH7DH/YcRhZ7Ipph79cRFqh+x2x69nwkbJjnm2pyEdstD/JJ3Km7wYLOYTb7XTvikPVoGB9XgOb1zeldKnWP5LoTHXEEWXEwE9377RbIfRdwkMFcQLpk9nKJWyTGfJEwqmVnVgCXmwHTKWPtJGUuv3OwjHY3Q7dHlrl4ttNCc8j0MBGZ0Wh6Xv5ItZ+DVRYQRuf+iRPpF9MfGjq7Ms2Bu9F8QJo1F5SpzLxWGLDE1rk1K0u6jJ3reNzhhsynEJDadlwB2aGBvsphrnhffwBE537ndhyV32kqCRGSGk0iKTYa8uxv6I/uQxoLQFaliDtxZjfGgR7/tJlEuMvRJMZbUlm5ymujzZZRV11LvI9aSM5MCYBx6Y/cZbRqWMqt6iV/hqxwVa2Vu9K4P7WGU6bDzEzzmNKM9ks8TepmKN9aeabd8u5/hZyHWjRSZ56gnl2z8GkCAQqEdS2nDRk5SPZq/x109LeECtylTC61OuJK9P68ZgSKnBkfxZNXdlZo1Qx7oqn07pJbDmGhwF1LANRvobJ9v4zdtmnzsZBEveVTYVIm/K7mUMydLmrRolfI293liECxYARzip5dmJTlbX/hkDppSPY=
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?vFCzEHlb/8oANghl0TZZ5KZfOphs0w7yFYbxN6Dysdcl7MhYTJTO36Lffr?=
- =?iso-8859-1?Q?mF743wseWyOWJnYmO+2YBFodZuCGfHmRwDBDgF8PEqXz0yNfnfoIqwDk8d?=
- =?iso-8859-1?Q?XD4jQ0TPMZHSq9Z4yWbb+SIVDavy1jwv4FyOgiKR/VhZ3FscbVpp2oEJVT?=
- =?iso-8859-1?Q?0TV/00PQGI6MhkamdG3dXZcCsSp28q2J8maP23iO5YgJGyIKrDxgq0WOst?=
- =?iso-8859-1?Q?+HyViQtkg1ofOaY8hqXTavRewidTbaer++R7R1UbM1qJ2ayOMxytKtyXCV?=
- =?iso-8859-1?Q?McR0Utz6EF9ciO07AMzuCkcTJVcz6P74AjJWn7XU/2aV0cWDGpyflS3OzX?=
- =?iso-8859-1?Q?qdD8L2aClvQhiC6solLRIIEJYXP0oAya1Yb8xODS3j6mb5F3WNZu7QaVrQ?=
- =?iso-8859-1?Q?Mz34+mKK4gHSUqqTXYomjaD0L4wtj3eCZloaUI4HjHG7c/jaNPNcEs9ZIq?=
- =?iso-8859-1?Q?jVjVLrM079uHWUYDCVH81bj3edyeenW4VpL4Mh+mYRkb+UAGbXTI2Jg7tC?=
- =?iso-8859-1?Q?tuclLanUcjau6EMo3GBuTYDjoeK/VNCmAlgArpAdsT3mOCNzvbhjI6OU+c?=
- =?iso-8859-1?Q?2T2wMUg/x1y5YnI/m8PNRP4AGsLPYrSUMAx2NFGQmMyyzCNxHpuyCYze2t?=
- =?iso-8859-1?Q?Hy6n5gGiN1SRcEhJ7qf6Rb12u9TapHlUxf0X/HQJDi1JjoMdbIYSopsmD9?=
- =?iso-8859-1?Q?OUhhKydJqv3S/4kZrCpyB1l48IGIJKrg2pHQWYsCEUgD7UvkYpRxaJXT/T?=
- =?iso-8859-1?Q?9uixHuGVlr8srneoUv2hBvep9Y0YqUj8tpiSxPB4CJIgxEuSr4/YBamGv8?=
- =?iso-8859-1?Q?SV0UqYoVGHlf1SwMfwemlBOm3K0H7PLtLaLRLyK7DkUIjXz66lqX3tmzrI?=
- =?iso-8859-1?Q?j53Xbu4uscfVgUQnJ6Ju41SBHIWGZ483eH5GsZM9j/6ouV0VwN8FYTvej3?=
- =?iso-8859-1?Q?0QoWAGnFWtRg9ONu+sUmTbuZSu/QVIy4NhYuKV0H9f1S4MPKUVRr9y05l2?=
- =?iso-8859-1?Q?EUnudtgz/x+/wlo2q9yK6CSNe6Uv4aQVj/eUVdrclC7HKzRtTtamqxQmBl?=
- =?iso-8859-1?Q?xMCZbazm0vG2fB0zm/oYEixrdNVXiQ8FqTIuJJJ5rfJTlCGR8Tl3QXCUy3?=
- =?iso-8859-1?Q?/wK/ui0TL/fJJcvMax74aTHn3BIIkqD1+ZaYx/HSdgyDTI9UwkjkBFKuQ4?=
- =?iso-8859-1?Q?97l7ElRZXuUgY2sKfXqMLe3xhaQHyk7l8B+onS3V66zRWMsAt0Hc5Zq0V7?=
- =?iso-8859-1?Q?kp6XQP87JsiOWxrgapPn4Z/IJxdvQFBzMJCgeUH2rhAHEbIlVgaA4zAy9e?=
- =?iso-8859-1?Q?UxwTZpgdJJdppknf4HQDwsc0WCOTFsJ/YjVs9tg8jI12VLs=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?UNM2HbF7t9f03OkjrJKhwvT6uI5JXNgL1sYqcx9iN3Uc1ZauIxoIgP/M2H?=
+ =?iso-8859-1?Q?nTkhN+0cNnfXFB3OWvlTTdP7c6QvO+DCa1IwtOE155akQGdGo5mBy5Hr1r?=
+ =?iso-8859-1?Q?dziK7in4JsRhRGC6OEgaiLmc4npw854+0xPyjJ/OKoJPqhwgU63A9gmWA0?=
+ =?iso-8859-1?Q?4mH+YxrHyySPgzIUHyzI2HoI7SSytT907oJUFHWnzRr1FktpHx0f9CXlyp?=
+ =?iso-8859-1?Q?yJNuOV5BNyXmDlj8iH+drkAgSj/mO3Zx8/er7WBen1t5ZR5I5ecxlvNOqa?=
+ =?iso-8859-1?Q?IRkpmHU+Njq4tKsmkVOmUgJsB7jSEDaZLJKw7ndotTj0inC7nQ76V+Hk9i?=
+ =?iso-8859-1?Q?xV4DU/G1KYPav92xjUrA71ylh0aSEMk17QW1vGjV3TVHkofiwN76W0aA+I?=
+ =?iso-8859-1?Q?8crjV0e78ZmFN+Iinm0U9pfQ7TSV/HbiMMAAuwQGKjUXQ1y23nBqpRWe5N?=
+ =?iso-8859-1?Q?3QVDLsbiBuX68dsyBm3KZldo6PBLN/tW5k9dFgkBTNe9tpQf/lZiyrmHhr?=
+ =?iso-8859-1?Q?aIqZwV7cu+g1KhaPlECEmRvOdXXlZvLCgA4bEJ+4jQgr6dux7nBuI8ig0o?=
+ =?iso-8859-1?Q?j8zA2ShO8iCsmFcOyDMbRjvNDOL/sOPIzCNNFOgQU+esHeQVRJPvST8OS+?=
+ =?iso-8859-1?Q?HZQcVwNsm4d1WEcrfdIYBY56pIpAx7n8NvQ/aJ7m/k0VyyKAbFS2EY8WQ8?=
+ =?iso-8859-1?Q?pLaUsan0YslJxsUlqD+sDJWq6/pQzkSdDGwivm8QccdKtG1aX6wGgU9V1f?=
+ =?iso-8859-1?Q?114DCoDyQTEnjHxX8OemvUxRmp8W+11jvbqOiqpsm/e4VHmfGV2MAyM6Sa?=
+ =?iso-8859-1?Q?6FCfomLOS2U8fu3StbUXVAYMyphEidGbNPIkCEpyOnCBDZ9A1Z74lucscT?=
+ =?iso-8859-1?Q?RkftwILiNB4jZfdoJpBoEPEaCzY36+j+IqPvBf8MuearjED3xZBTLjOgjJ?=
+ =?iso-8859-1?Q?3b9OWrh2/TxzIqKEQnBWFHVLryj0OvlwBX+/mXUEcfjlEks87NKv78MypI?=
+ =?iso-8859-1?Q?rx3FHOz7AEN+M3JBko+Zepc8iJP39jr/PVAOFXdYR6WLlNyFd1OoFIhPVn?=
+ =?iso-8859-1?Q?w9O6XjxTv2d8GMNzmKOl+hBgrgfiES+jV5rQ1VCRLbbjGm4BgATs0Au4TW?=
+ =?iso-8859-1?Q?RxDfQcaAhVKbH0wSDYJots2YtDBWbp7A3r3qVsv/xPhnKSwNL968f2Y5lw?=
+ =?iso-8859-1?Q?1XhmjXO2E7Lpzk9wuXm0E+AMXep3wXeorJCGTh0eHiXcIn/3LkPzBKaTu+?=
+ =?iso-8859-1?Q?Oq7gRwT7CUNDdhyS+nvbCeyVJGEnGXA4eaG4gHortZQJQfc8UQFZJ/QjGa?=
+ =?iso-8859-1?Q?zGTh8kF2cecfgRPjg0jeSFoDGBUX8vW5Qgn1zz9V44N9n5c=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
@@ -99,14 +100,15 @@ X-OriginatorOrg: sct-15-20-4823-7-msonline-outlook-84f76.templateTenant
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: SN6PR05MB5837.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 282ec07a-a9f3-43f9-8059-08dbe20076ff
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8dc666f0-1217-44d7-7c5e-08dbe202a026
 X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Nov 2023 15:19:42.7271 (UTC)
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Nov 2023 15:35:10.7143 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR05MB10483
-Received-SPF: pass client-ip=52.103.10.2; envelope-from=john_platts@hotmail.com;
- helo=CO1PR02CU002.outbound.protection.outlook.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR05MB10196
+Received-SPF: pass client-ip=52.103.10.43;
+ envelope-from=john_platts@hotmail.com;
+ helo=MW2PR02CU001.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -130,19 +132,26 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 The patch below fixes a bug in the VSX_CVT_FP_TO_INT and VSX_CVT_FP_TO_INT2=
- macros in target/ppc/fpu_helper.c where a non-NaN floating point value fro=
-m the source vector is incorrectly converted to 0, 0x80000000, or 0x8000000=
-000000000 instead of the expected value if a preceding source floating poin=
-t value from the same source vector was a NaN.=0A=
 =0A=
-The bug in the VSX_CVT_FP_TO_INT and VSX_CVT_FP_TO_INT2 macros in target/pp=
-c/fpu_helper.c was introduced with commit c3f24257e3c0.=0A=
+macros in target/ppc/fpu_helper.c where a non-NaN floating point value from=
+ the=0A=
+source vector is incorrectly converted to 0, 0x80000000, or 0x8000000000000=
+000=0A=
+instead of the expected value if a preceding source floating point value fr=
+om=0A=
+the same source vector was a NaN.=0A=
 =0A=
-This patch also adds the vsx_f2i_nan test program that checks that the VSX =
-xvcvspsxws, xvcvspuxws, xvcvspsxds, xvcvspuxds, xvcvdpsxws, xvcvdpuxws, xvc=
-vdpsxds, and xvcvdpuxds instructions correctly convert non-NaN floating val=
-ues to integer values if the source vector contains NaN floating point valu=
-es.=0A=
+The bug in the VSX_CVT_FP_TO_INT and VSX_CVT_FP_TO_INT2 macros in=0A=
+target/ppc/fpu_helper.c was introduced with commit c3f24257e3c0.=0A=
+=0A=
+This patch also adds a new vsx_f2i_nan test in tests/tcg/ppc64 that checks =
+that=0A=
+the VSX xvcvspsxws, xvcvspuxws, xvcvspsxds, xvcvspuxds, xvcvdpsxws, xvcvdpu=
+xws,=0A=
+xvcvdpsxds, and xvcvdpuxds instructions correctly convert non-NaN floating =
+point=0A=
+values to integer values if the source vector contains NaN floating point v=
+alues.=0A=
 =0A=
 Fixes: c3f24257e3c0 ("target/ppc: Clear fpstatus flags on helpers missing i=
 t")=0A=
