@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78C7C7E7AFC
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 10:39:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BAC57E7B17
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 10:48:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1NyA-0002UL-T2; Fri, 10 Nov 2023 04:38:30 -0500
+	id 1r1O6B-0008Cs-QB; Fri, 10 Nov 2023 04:46:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r1Ny9-0002TY-Np
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:38:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1r1O69-0008CR-5A
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:46:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r1Ny6-0006W3-Jt
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:38:29 -0500
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1r1O66-0008Oo-QZ
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:46:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699609106;
+ s=mimecast20190719; t=1699609601;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=s78/VPPynP7lIUS0i/tpFzeRlgCgx/plWuOQnPmw7pM=;
- b=icV+HDPUTFagyoeYQ1SaH1Wfiajd00BlJ7q+BCcY+pNfbtJHdfVW7lC3zVMIHZ5d9cBt5P
- BgFVuy5Q4eol/AX9zQmXmhSWs6q6LFHXvPAivj71L3CR9DUAwHGkCT5z3+YNuXXPwkqIYy
- 6rKheypcAaD6gcXSZ20K2Ng2+btJILA=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=YGr9teKpDewR088GgqpRw+wfjJN370YpDVWq0z0zbGA=;
+ b=dSArB9obUnHqPtWhzNQRnh9B0DE0tHypRA0TiLqBurNRHgq56/3fSOJdl2HNH9DbfHsa1E
+ yQ9zdqzLXqOmgzsqL8Ug4km+9LxdNcXfLLteEniPA09TtRQnMA+dc4Z1gYDB8WXmywiTb2
+ tPhY6JA4xDwvpZaHKIt3sCvygJqEvJY=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-274-57g-7-_fNiSEShDdl8PQMA-1; Fri, 10 Nov 2023 04:38:24 -0500
-X-MC-Unique: 57g-7-_fNiSEShDdl8PQMA-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-54442ba286fso1493380a12.2
- for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 01:38:24 -0800 (PST)
+ us-mta-687-G2mHnwekN4qT571fL67ASw-1; Fri, 10 Nov 2023 04:46:40 -0500
+X-MC-Unique: G2mHnwekN4qT571fL67ASw-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-66fbd3bc8ebso22356566d6.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 01:46:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699609103; x=1700213903;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=s78/VPPynP7lIUS0i/tpFzeRlgCgx/plWuOQnPmw7pM=;
- b=m3pzAQFGgPQd00+3zeSaUdQo7TDSGHEgEQJs0iWnoFh/ac+eBrZwJ+5+HkFay+GdVK
- 9nQDhCThOQNWIodcbEgZRd4csaD/r1U7zbvotqEcUAhMfdZz8FH8uA1V3lyOYGPyK011
- Ml4Y0aAs4OOtyZDMGltKlHggcZkGILvSd04ZnOxDHUam6oNPO20u4wfgOe8pZpoSOn3u
- sC4zLSIyFISBAw5tW47SxPcQKC0fsJPlkwCvDiX4g5uRXBlFnqmq0tRk52x38au5RTjv
- 7VcAikzzWIeg6TutF48WmhauwQcWxbN6UI7X9SUG7tbq0unNrrRYl0K6O21Y9U1f4/Pu
- Kn5w==
-X-Gm-Message-State: AOJu0YzJ1+HdnJA7ZchL2Dsyhu3ZAmh1kNuV+0m0mDGUg0us7HpppmmO
- jWOHeRSptAFiegmuAgEX+8yAGmAU4SP23q6CiOXQhjiHp4/cRja1R/NPNfG9vyY/zXeb7Jg8MoU
- U3pnzdcWEGu2tws8H/xL9ZdVpls1+mascuWwB7ej6tugHNFboUfuJNz213JgMvk5APA9dHVXU+w
- c=
-X-Received: by 2002:a50:8a81:0:b0:53e:1b:15f5 with SMTP id
- j1-20020a508a81000000b0053e001b15f5mr6165510edj.39.1699609102755; 
- Fri, 10 Nov 2023 01:38:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEjKx93YFzoFBEarGXyjKHvep5Qkn9kRGsCNjZzqke7S9n61PY1MrKWzBx9H/LgzHxJGFj/PQ==
-X-Received: by 2002:a50:8a81:0:b0:53e:1b:15f5 with SMTP id
- j1-20020a508a81000000b0053e001b15f5mr6165488edj.39.1699609102335; 
- Fri, 10 Nov 2023 01:38:22 -0800 (PST)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.gmail.com with ESMTPSA id
- a89-20020a509ee2000000b00546cf67c348sm884345edf.59.2023.11.10.01.38.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Nov 2023 01:38:21 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, philmd@linaro.org, balaton@eik.bme.hu,
- jsnow@redhat.com, thuth@redhat.com
-Subject: [PATCH v2] docs: document what configure does with virtual
- environments
-Date: Fri, 10 Nov 2023 10:38:20 +0100
-Message-ID: <20231110093820.918450-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
+ d=1e100.net; s=20230601; t=1699609599; x=1700214399;
+ h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YGr9teKpDewR088GgqpRw+wfjJN370YpDVWq0z0zbGA=;
+ b=utgxO+spofJjGH6sHhv+YV+7ReSYcBqxszrO+wqGP9mKKQVvAo3wEdnuosd27jOFlo
+ 4cKhfL7ncr4xWpvpwwdFzhPoUqPnNCvNVMlUrkGh3uGJL2Nw5c8+H7rAcvN1T9zDId5C
+ P+QCs1mRUfczoZVxlj2kSmP3OYagRy+l4t4TmMeUOb1mzchs5vQDsspacdXEBzWvxke+
+ JGJwc6Lc0kus6nbE11VqAVt4sLggTga1GhtvyIMRg/SFOGaV20WfKVwr1uRsGrF0vW6G
+ kzO1kQKcsAcjISJE5MlCto1EvBAsVF8e9zXcvzzHd0j1t84pneFfNgGcKpIlhrpy/LpF
+ qMsg==
+X-Gm-Message-State: AOJu0YykZiRB+cf9D0rs4Q4WA/lu5qYEl8oULRkVovt6qS5whufA6kO1
+ /JqHga9sqYQTvk12+59l//iV+iXr/d/ryog34ikb34y6MxgTbzpnhYiUrIEkA7hyIzHtsRXqfRx
+ 4G4E+kz0ub5xfSPHdlSy+ylm948kSwPk=
+X-Received: by 2002:ac8:5a8b:0:b0:41c:dd22:e7bf with SMTP id
+ c11-20020ac85a8b000000b0041cdd22e7bfmr7988174qtc.42.1699609599052; 
+ Fri, 10 Nov 2023 01:46:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHF5rsYfCdIFxlCM5fY9JnmgxG3JTyumdNpKQQLPzZTrp29PEsws2jn/E5lijQEReozeSRGsOqipPDSgp3Rz5Q=
+X-Received: by 2002:ac8:5a8b:0:b0:41c:dd22:e7bf with SMTP id
+ c11-20020ac85a8b000000b0041cdd22e7bfmr7988163qtc.42.1699609598825; Fri, 10
+ Nov 2023 01:46:38 -0800 (PST)
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 10 Nov 2023 01:46:37 -0800
+From: Andrea Bolognani <abologna@redhat.com>
+References: <20231016152704.221611-1-victortoso@redhat.com>
+ <20231016152704.221611-11-victortoso@redhat.com>
+ <CABJz62PJVbhJkqCzsSHfHSbeZ8PX74OGjbhf6uKZy7JBxnoa5Q@mail.gmail.com>
+ <dfwqu6vgvmhezaorvm6vhj2kwuibpke4fvcocttrnyi2rypjat@jpwugcjwewbs>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+In-Reply-To: <dfwqu6vgvmhezaorvm6vhj2kwuibpke4fvcocttrnyi2rypjat@jpwugcjwewbs>
+Date: Fri, 10 Nov 2023 01:46:37 -0800
+Message-ID: <CABJz62O9d_NjQ-ZYWa9=1=N4VaNbT6PhPS9EM=gRqOP=LR1R5g@mail.gmail.com>
+Subject: Re: [PATCH v2 10/11] qapi: golang: Add CommandResult type to Go
+To: Victor Toso <victortoso@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ John Snow <jsnow@redhat.com>, 
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=abologna@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,152 +98,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Given the recent confusion around how QEMU detects the system
-Meson installation, and/or decides to install its own, it is
-time to fill in the "Python virtual environments and the QEMU
-build system" section of the documentation.
+On Thu, Nov 09, 2023 at 08:31:01PM +0100, Victor Toso wrote:
+> On Thu, Nov 09, 2023 at 10:24:20AM -0800, Andrea Bolognani wrote:
+> > On Mon, Oct 16, 2023 at 05:27:03PM +0200, Victor Toso wrote:
+> > > Example:
+> > > qapi:
+> > >     | { 'command': 'query-sev', 'returns': 'SevInfo',
+> > >     |   'if': 'TARGET_I386' }
+> > >
+> > > go:
+> > >     | type QuerySevCommandReturn struct {
+> > >     |     MessageId string     `json:"id,omitempty"`
+> > >     |     Result    *SevInfo   `json:"return"`
+> > >     |     Error     *QapiError `json:"error,omitempty"`
+> > >     | }
+> > >
+> > > usage:
+> > >     | // One can use QuerySevCommandReturn directly or
+> > >     | // command's interface GetReturnType() instead.
+> >
+> > I'm not convinced this function is particularly useful. I know
+> > that I've suggested something similar for events, but the usage
+> > scenarios are different.
+>
+> I think that I wanted to expose knowledge we had in the parser,
+> not necessarily useful or needed indeed. At the very least, I
+> agree that at this layer, we just want Command and ComandReturn
+> types to be generated and properly (un)mashalled.
+>
+> One downside is for testing.
+>
+> If we have a list of commands, I can just iterate over them
+> Unmarshal to a command interface variable, fetch the return type
+> and do some comparisons to see if all is what we expected. See:
+>
+> https://gitlab.com/victortoso/qapi-go/-/blob/main/test/examples_test.go#L61
+>
+> Not saying we should keep it for tests, but it is useful :)
 
-As a curiosity, a first and partial draft of the text was generated
-by an LLM[1].  It required quite a bit of editing and probably did not
-save much time, but some expressions do remain in the finished text.
+That code is quite dense and I'm not going to dig into it now :)
 
-[1] https://chat.openai.com/share/42c1500d-71c1-480b-bab9-7ccc2c155365
+Anyway, I don't have a problem with keeping this type-safe
+introspection feature around. Maybe call it GetCommandReturnType
+though.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- docs/devel/build-system.rst | 88 +++++++++++++++++++++++++++++++++++--
- pythondeps.toml             |  3 +-
- 2 files changed, 87 insertions(+), 4 deletions(-)
+> > This produces
+> >
+> >   type QueryAudiodevsCommandReturn struct {
+> >     MessageId string     `json:"id,omitempty"`
+> >     Error     *QAPIError `json:"error,omitempty"`
+> >     Result    []Audiodev `json:"return"`
+> >   }
+> >
+> > when the return type is an array. Is that the correct behavior? I
+> > haven't thought too hard about it, but it seems odd so I though I'd
+> > bring it up.
+>
+> Hm, the schema for it is
+>
+>   ##
+>   # @query-audiodevs:
+>   #
+>   # Returns information about audiodev configuration
+>   #
+>   # Returns: array of @Audiodev
+>   #
+>   # Since: 8.0
+>   ##
+>   { 'command': 'query-audiodevs',
+>     'returns': ['Audiodev'] }
+>
+> So, I think it is correct. Would you expect it to be an object
+> wrapping the array or I'm missing what you find odd.
 
-diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
-index 21f78da7d1d..43d6005881e 100644
---- a/docs/devel/build-system.rst
-+++ b/docs/devel/build-system.rst
-@@ -122,10 +122,78 @@ functioning.  These are performed using a few more helper functions:
-    indicated by $TMPC.
- 
- 
--Python virtual environments and the QEMU build system
-------------------------------------------------------
-+Python virtual environments and the build process
-+-------------------------------------------------
-+
-+An important step in ``configure`` is to create a Python virtual
-+environment (venv) during the configuration phase.  The Python interpreter
-+comes from the ``--python`` command line option, the ``$PYTHON`` variable
-+from the environment, or the system PATH, in this order.  The venv resides
-+in the ``pyvenv`` directory in the build tree, and provides consistency
-+in how the build process runs Python code.
-+
-+At this stage, ``configure`` also queries the chosen Python interpreter
-+about QEMU's build dependencies.  Note that the build process does  *not*
-+look for ``meson``, ``sphinx-build`` or ``avocado`` binaries in the PATH;
-+likewise, there are no options such as ``--meson`` or ``--sphinx-build``.
-+This avoids a potential mismatch, where Meson and Sphinx binaries on the
-+PATH might operate in a different Python environment than the one chosen
-+by the user during the build process.  On the other hand, it introduces
-+a potential source of confusion where the user installs a dependency but
-+``configure`` is not able to find it.  When this happens, the dependency
-+was installed in the ``site-packages`` directory of another interpreter,
-+or with the wrong ``pip`` program.
-+
-+If a package is available for the chosen interpreter, ``configure``
-+prepares a small script that invokes it from the venv itself[#distlib]_.
-+If not, ``configure`` can also optionally install dependencies in the
-+virtual environment with ``pip``, either from wheels in ``python/wheels``
-+or by downloading the package with PyPI.  Downloading can be disabled with
-+``--disable-download``; and anyway, it only happens when a ``configure``
-+option (currently, only ``--enable-docs``) is explicitly enabled but
-+the dependencies are not present[#pip]_.
-+
-+.. [#distlib] The scripts are created based on the package's metadata,
-+              specifically the ``console_script`` entry points.  This is the
-+              same mechanism that ``pip`` uses when installing a package.
-+              Currently, in all cases it would be possible to use ``python -m``
-+              instead of an entry point script, which makes this approach a
-+              bit overkill.  On the other hand, creating the scripts is
-+              future proof and it makes the contents of the ``pyvenv/bin``
-+              directory more informative.  Portability is also not an issue,
-+              because the Python Packaging Authority provides a package
-+              ``distlib.scripts`` to perform this task.
-+
-+.. [#pip] ``pip`` might also be used when running ``make check-avocado``
-+           if downloading is enabled, to ensure that Avocado is
-+           available.
-+
-+The required versions of the packages are stored in a configuration file
-+``pythondeps.toml``.  The format is custom to QEMU, but it is documented
-+at the top of the file itself and it should be easy to understand.  The
-+requirements should make it possible to use the version that is packaged
-+that is provided by supported distros.
-+
-+When dependencies are downloaded, instead, ``configure`` uses a "known
-+good" version that is also listed in ``pythondeps.toml``.  In this
-+scenario, ``pythondeps.toml`` behaves like the "lock file" used by
-+``cargo``, ``poetry`` or other dependency management systems.
-+
-+
-+Bundled Python packages
-+-----------------------
-+
-+Python packages that are **mandatory** dependencies to build QEMU,
-+but are not available in all supported distros, are bundled with the
-+QEMU sources.  Currently this includes Meson (outdated in CentOS 8
-+and derivatives, Ubuntu 20.04 and 22.04, and openSUSE Leap) and tomli
-+(absent in Ubuntu 20.04).
-+
-+If you need to update these, please do so by modifying and rerunning
-+``python/scripts/vendor.py``.  This script embeds the sha256 hash of
-+package sources and checks it.  The pypi.org web site provides an easy
-+way to retrieve the sha256 hash of the sources.
- 
--TBD
- 
- Stage 2: Meson
- ==============
-@@ -376,6 +444,15 @@ This is needed to obey the --python= option passed to the configure
- script, which may point to something other than the first python3
- binary on the path.
- 
-+By the time Meson runs, Python dependencies are available in the virtual
-+environment and should be invoked through the scripts that ``configure``
-+places under ``pyvenv``.  One way to do so is as follows, using Meson's
-+``find_program`` function::
-+
-+  sphinx_build = find_program(
-+       fs.parent(python.full_path()) / 'sphinx-build',
-+       required: get_option('docs'))
-+
- 
- Stage 3: Make
- =============
-@@ -434,6 +511,11 @@ number of dynamically created files listed later.
-   executables.  Build rules for various subdirectories are included in
-   other meson.build files spread throughout the QEMU source tree.
- 
-+``python/scripts/mkvenv.py``
-+  A wrapper for the Python ``venv`` and ``distlib.scripts`` packages.
-+  It handles creating the virtual environment, creating scripts in
-+  ``pyvenv/bin``, and calling ``pip`` to install dependencies.
-+
- ``tests/Makefile.include``
-   Rules for external test harnesses. These include the TCG tests
-   and the Avocado-based integration tests.
-diff --git a/pythondeps.toml b/pythondeps.toml
-index 0a35ebcf9f0..4beadfd96f5 100644
---- a/pythondeps.toml
-+++ b/pythondeps.toml
-@@ -10,7 +10,8 @@
- # - accepted: accepted versions when using a system package
- # - installed: fixed version to install in the virtual environment
- #              if a system package is not found; if not specified,
--#              the minimum and maximum
-+#              defaults to the same as "accepted" or, if also missing,
-+#              to the newest version available on PyPI.
- # - canary: if specified, use this program name to present more
- #           precise error diagnostics to the user.  For example,
- #           'sphinx-build' can be used as a bellwether for the
+It works as expected if there is a result, but in the case of error:
+
+  in := `{ "error": {"class": "errorClass", "desc": "errorDesc" }}`
+
+  out := qapi.QueryAudiodevsCommandReturn{}
+  err := json.Unmarshal([]byte(in), &out)
+  if err != nil {
+      panic(err)
+  }
+  fmt.Printf("result=%v error=%v\n", out.Result, out.Error)
+
+the output will be
+
+  result=[] error=errorDesc
+
+Note how result is an empty array instead of a nil pointer. If we
+unmarshal the same JSON into QueryReplayCommandReturn instead, the
+output becomes
+
+  result=<nil> error=errorDesc
+
+The latter behavior seems more correct to me, based on how we deal
+with unions and alternates.
+
 -- 
-2.41.0
+Andrea Bolognani / Red Hat / Virtualization
 
 
