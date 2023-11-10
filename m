@@ -2,62 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33F77E7A7F
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 10:13:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F41DB7E7A8A
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 10:18:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1NZP-0008Fx-Qp; Fri, 10 Nov 2023 04:12:55 -0500
+	id 1r1Nd9-0002QW-PX; Fri, 10 Nov 2023 04:16:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+29e7849af3f7cdd1dde9+7383+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r1NZN-0008Fg-Eq; Fri, 10 Nov 2023 04:12:53 -0500
-Received: from casper.infradead.org ([90.155.50.34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+29e7849af3f7cdd1dde9+7383+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r1NZK-0001cQ-De; Fri, 10 Nov 2023 04:12:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=szkSQPoIKoP5lekOfNB3Z458Rwwk6eknWfne+IEJkEE=; b=Pv2rjFyeMN96myZ5+P3qknMwO3
- J4/A/Bx2Ch0OSmgI/U1DzLssEEOtbm8tuKLymw4fdG9NbVDLZM4xMfqGYG9YjjtjsPplcw2M7X1dd
- Q7a+qeDokhWEgvpN0DC71y6xk6fxLS6O5AvW9+jvaj17YjcK3Z0uglHBMbr4G450lTLp4GULIEMjd
- RoDMW1K5Ou8SvKs6gnzwCZ+8lMnuXUYKHdTqPaSyDCClqrer4u52qAppl/F+mBaSDisKYDEhbA6+5
- iGENGfDfxT6SkJZ2/QzSK/pH+jzAq0OlVqqTH/igJABIITgjnjUCsM2Oc0LLKL4KpHosXxaHEC2bo
- hdOmojdQ==;
-Received: from [2001:8b0:10b:5:18d3:34d5:5849:7b74]
- (helo=u3832b3a9db3152.ant.amazon.com)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1r1NYq-00CWNe-0e; Fri, 10 Nov 2023 09:12:20 +0000
-Message-ID: <d81446693e0a82201807bc3c1a9d2a307135df72.camel@infradead.org>
-Subject: Re: [PATCH] include/hw/xen: Use more inclusive language in comment
-From: David Woodhouse <dwmw2@infradead.org>
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, Stefano
- Stabellini <sstabellini@kernel.org>, Anthony Perard
- <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>
-Cc: xen-devel@lists.xenproject.org, qemu-trivial@nongnu.org
-Date: Fri, 10 Nov 2023 09:12:20 +0000
-In-Reply-To: <20231109174034.375392-1-thuth@redhat.com>
-References: <20231109174034.375392-1-thuth@redhat.com>
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-I7CDt+ABG3lJwgraqKn9"
-User-Agent: Evolution 3.44.4-0ubuntu2 
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1r1Nd7-0002Pk-K1
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:16:45 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1r1Nd6-0002m6-0O
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:16:45 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40836ea8cbaso12596135e9.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 01:16:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699607802; x=1700212602; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=078LHjHgYcIKXgy3K59FfW1+FGsAoPUrmucU4b2BaBI=;
+ b=N2/+C1pDYiRsCCW2aqqYLAUpWQdxF964qjZvgNfFV5V2wmDdGC1eiOdqOUlb+Blrm5
+ EZR9yAUR55E9pqP/6wSBLBgK8ltEVjQTs8CIVXfj1HQN8dYvlucv6NGRy2JgzqRbEbrr
+ YOylhY+Cc2UlpMnGEDj6FzVy60bjbxYT0G67PbHdtxcOaIItCOtqsmfxY0Tn7X8qyuhJ
+ kXlyDfM4iMSsi8Lu3KuVKSHIuJ4w8ss4/XsHb26iu7ucpIs+1PeBbV5PAdHkq8rcDrfd
+ okdYyvEdtXLANaFLu27B/PgemLb6iGX3OB/Gv7HXnpwZY05X1pMOvHk31QO6nCLnpZ3O
+ NNew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699607802; x=1700212602;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=078LHjHgYcIKXgy3K59FfW1+FGsAoPUrmucU4b2BaBI=;
+ b=Jolw+4Y/DNsjf3CsBCn9tkwzIFOwDaeooG3mltf8o2opjBuuwcjaaghrIya6VUH1dK
+ tcqhwz0Nm+V7E2SLKRDwGTZ1km2ZV85T2NnGJ19JBHqGEndSSgZymnuQoZZKgT+ZR7lv
+ DwODcfx0A0llsSEU6ExaQkiraBr0hUvz7LcBpvW0DwkA+efxjYHo1BKv4yabM5L1iPRK
+ yyqsbVKs7EKy/G43kVynJI+dDsCRUad58rizSthm/7BdtRf+eJe5z3l4aTb8fUsNwkVG
+ GKoKoXbX5D1dX1Ln0PtgwKR45ksmi1LmDlbCRgyrjzQlqV0mUF1iL/0lLoRtVkDpjLvd
+ Lj8w==
+X-Gm-Message-State: AOJu0Ywbgfz9Qty/g8LB8cL9LjHRC+g42pi3VGJ1m6lE39LIM2e0wkc4
+ CLahpiydcFgskOKzR58Wp38AEOfq/y5njZ31m3a9xA==
+X-Google-Smtp-Source: AGHT+IEZrs31ztoeShp0cUaqp9ycmiYeKJfoccSjx0r/JPcjbEC6jIAOhyJDpM3icmAxv9kMxEqy9g==
+X-Received: by 2002:a05:600c:293:b0:406:8c7a:9520 with SMTP id
+ 19-20020a05600c029300b004068c7a9520mr6264962wmk.36.1699607801844; 
+ Fri, 10 Nov 2023 01:16:41 -0800 (PST)
+Received: from localhost.localdomain (adsl-205.37.6.2.tellas.gr. [37.6.2.205])
+ by smtp.gmail.com with ESMTPSA id
+ p22-20020a05600c359600b004080f0376a0sm4537493wmq.42.2023.11.10.01.16.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 10 Nov 2023 01:16:41 -0800 (PST)
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH 0/2] Add QEMU_WARN_UNUSED_RESULT function attribute
+Date: Fri, 10 Nov 2023 11:16:37 +0200
+Message-Id: <cover.1699606819.git.manos.pitsidianakis@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=90.155.50.34;
- envelope-from=BATV+29e7849af3f7cdd1dde9+7383+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,153 +89,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Functions that return a value to indicate success or failure can be 
+decorated with the warn_unused_result attribute. GCC will stop 
+compilation if a caller does not check the return value after calling 
+such a function. This was not possible to spot statically before, but 
+Coverity detects this kind of bug. I was prompted by
 
---=-I7CDt+ABG3lJwgraqKn9
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+https://lore.kernel.org/qemu-devel/CAFEAcA_TS-B0gc-DUYT6BaKnm8Uauhsx3rW2dmVNUgTToVjSJg@mail.gmail.com/
 
-On Thu, 2023-11-09 at 18:40 +0100, Thomas Huth wrote:
-> Let's improve the wording here.
->=20
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+to prevent this from happening in the future.
 
-Absolutely, but please can we change it in Xen first because these
-headers are a direct import.
+This patch series depends on 
+<20231109162034.2108018-1-manos.pitsidianakis@linaro.org>
 
-Acked-by: David Woodhouse <dwmw@amazon.co.uk>
+https://lore.kernel.org/qemu-devel/20231109162034.2108018-1-manos.pitsidianakis@linaro.org/
 
-> ---
-> =C2=A0include/hw/xen/interface/hvm/params.h | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/include/hw/xen/interface/hvm/params.h
-> b/include/hw/xen/interface/hvm/params.h
-> index a22b4ed45d..9bcb40284c 100644
-> --- a/include/hw/xen/interface/hvm/params.h
-> +++ b/include/hw/xen/interface/hvm/params.h
-> @@ -255,7 +255,7 @@
-> =C2=A0 * Note that 'mixed' mode has not been evaluated for safety from a
-> =C2=A0 * security perspective.=C2=A0 Before using this mode in a
-> =C2=A0 * security-critical environment, each subop should be evaluated fo=
-r
-> - * safety, with unsafe subops blacklisted in XSM.
-> + * safety, with unsafe subops blocked in XSM.
-> =C2=A0 */
-> =C2=A0#define HVM_PARAM_ALTP2M=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 35
-> =C2=A0#define XEN_ALTP2M_disabled=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0
+Manos Pitsidianakis (2):
+  Add QEMU_WARN_UNUSED_RESULT attribute
+  Add warn_unused_result attr to AUD_register_card
+
+ audio/audio.h           |  2 +-
+ hw/arm/omap2.c          |  8 +++++++-
+ hw/input/tsc210x.c      |  8 +++++++-
+ include/qemu/compiler.h | 14 ++++++++++++++
+ 4 files changed, 29 insertions(+), 3 deletions(-)
 
 
---=-I7CDt+ABG3lJwgraqKn9
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+base-commit: ad6ef0a42e314a8c6ac6c96d5f6e607a1e5644b5
+prerequisite-patch-id: 484ec9f7f6109c10d4be0484fe8e3c2550c415f4
+-- 
+2.39.2
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
-ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
-oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
-SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
-xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
-RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
-bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
-NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
-KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
-5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
-C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
-gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
-VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
-by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
-b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
-BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
-QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
-c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
-AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
-qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
-v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
-Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
-tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
-Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
-ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
-GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
-h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
-9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
-P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
-2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
-BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
-7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
-lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
-lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
-AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
-Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
-FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
-BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
-cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
-aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
-LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
-BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
-Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
-lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
-WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
-hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
-IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
-dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
-NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
-xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTEwMDkxMjIwWjAvBgkqhkiG9w0BCQQxIgQgE585freP
-iaP3/NA96uMrl7A88q81bvZ2+JjcbxRDat4wgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
-A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
-dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
-DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgCLZXfUD3/Hzdx6qJWlJriNlDpvSuKPvoCh
-WsDqYa0XOHoFAcRrwytQZvsaHoG1beG60lXFifayItczSJWF2dOpADSqd25GdqI3KfteLsI5As0M
-OD6tpLaR41pJixVO3uFWr774BkC4IAGVkC6PZCZIww+dkPEWX4LJcQFoYuebuFOkPK9ai+vrIsuq
-fuKaGrN/9z3U4zdqwLxaSt0hU3007ath7JFqrsP4FY6jY89czXTrrjhZa5ea1mxJ0a5nB6i3Yd75
-aB7kTu2jhaOU+ljK56u/CAlIK6rUEqCCrhqlco7kv/0771Hxf7feIT8DmAmc/prrV2LhCVyXYYen
-GIM2sCiZ5/VlnfadcscGYSX/1iw2H+1LXi9y4q02bEb8Wgt3oiyU1QPFwCp7f1lb8oka7VERmuor
-Kg5yKvx1bTG+4yKjUPaEA7/BB7uYtTvdWrrCLXuHP35z5rZv4OQIlJQcZjMhWSZz9osnybHFodd6
-a2GFGkMnUJuTdsWEUZo7SzV/vzIkNkixgJc6mX0af7tM05K+vUJUmRh13a9froXtjUztvFoOl8i5
-MZBfe6Fp6bCXA8sKnW5R1XdgZCCyNcEUQMuKSDPee5uu5hVdTCaA4DvbVxxWcW1Aib1HhD65gh9d
-p44mX+czucnlkAQem2VUYgv9KifWRDT6G1wXxGLPbgAAAAAAAA==
-
-
---=-I7CDt+ABG3lJwgraqKn9--
 
