@@ -2,121 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C26837E7CE6
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 15:15:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 400F27E79CE
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 08:41:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1SHL-0000kU-Uz; Fri, 10 Nov 2023 09:14:36 -0500
+	id 1r1M8J-00067w-AX; Fri, 10 Nov 2023 02:40:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Julia.Zhang@amd.com>)
- id 1r1M8Z-0006BF-GC
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:41:07 -0500
-Received: from mail-bn8nam12on2061a.outbound.protection.outlook.com
- ([2a01:111:f400:fe5b::61a]
- helo=NAM12-BN8-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r1M8G-00064P-Gh
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:40:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Julia.Zhang@amd.com>)
- id 1r1M8V-0000Zm-MK
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:41:06 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=c+yTwAW6x8fv/FurfWs5mTjkrLYLn+eV28rQNK8TWXvLtYCvNsjDmV9DNpVipFVOomnTjQ8TkWPvskgM3FJSYL3PPb2NSYNoyYcktpEYa5jG1Qgb1dxOy8is2+fTDqggctE5VU14YBquLRMUY7woiKBGnPE0F276u3YEuQoaEIWX1sXtU5XKLrp6bYof2JOlRh42CosggOKD1iBKbsT0ardjlz5db/uAteP/NXmUH85V/KT2MDqY3iXZw+aP8ms5Gpnmk/BgGfZSsgev9UGSxAJN2Hiy6qmB9tAJ2iQYvNNLMml5vt7aVmnqb+hdUNEihW3WciX+8ZPJ55qET0w2EA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9aX1RsF3gCTbk9wZR0KoZwRve7pKpevRbJ1zXxYsX70=;
- b=cGczpLNV1Qcqa90qgqg977zcfxwfZGUHblRpkJzDDUYjVG94D/vgP8RkmopzCCkrSjo41wjsgdIdqS/de3BnKskJU4gXscrd1HZPtyVQd2wPrnXx3zUh/P3EdEB8zo+kd2s+BU0sW9PEkbTH+wZF9ZTsagFos7lLwqXr0KLxxCE6OP8UdU7aUTyKNfWlKMJ8TLTmNfYBZkU5Hfhy+M7jRcwryuS00p/RfG52qohWxf7PrYmCiamf8E1iBlfXkSy8jGjFd2ED/V0goRX0lh62DfbQiG+xl5hoeacdMokn5vT4qzc2YOjFxTr+9+XsqsyWZOe2wCGkoN06KImCJLZX8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9aX1RsF3gCTbk9wZR0KoZwRve7pKpevRbJ1zXxYsX70=;
- b=AxHfEca15FwTniv8WI6CIQJqd6/yGnb6jvGoilN47eEHMjDkMnWTVY9MLTEHC7P10Yv9IrR5PFNXztnNM1kA4TGOUpXJeLOI/9tIzCSdaPSaQxY4/ZTh2tnDjPCSI47GcL8l6sls9QRMo2T92+q/K5bD3Uqddn8rHT/F3l8MX54=
-Received: from DM5PR07CA0104.namprd07.prod.outlook.com (2603:10b6:4:ae::33) by
- LV3PR12MB9236.namprd12.prod.outlook.com (2603:10b6:408:1a5::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.28; Fri, 10 Nov
- 2023 07:41:00 +0000
-Received: from DS2PEPF00003442.namprd04.prod.outlook.com
- (2603:10b6:4:ae:cafe::6d) by DM5PR07CA0104.outlook.office365.com
- (2603:10b6:4:ae::33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.19 via Frontend
- Transport; Fri, 10 Nov 2023 07:41:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS2PEPF00003442.mail.protection.outlook.com (10.167.17.69) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6977.16 via Frontend Transport; Fri, 10 Nov 2023 07:40:59 +0000
-Received: from jenkins-julia.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Fri, 10 Nov
- 2023 01:40:54 -0600
-From: Julia Zhang <julia.zhang@amd.com>
-To: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
- Stefano Stabellini <sstabellini@kernel.org>, Anthony PERARD
- <anthony.perard@citrix.com>, Antonio Caggiano
- <antonio.caggiano@collabora.com>, "Dr . David Alan Gilbert"
- <dgilbert@redhat.com>, Robert Beckett <bob.beckett@collabora.com>,
- <qemu-devel@nongnu.org>
-CC: <xen-devel@lists.xenproject.org>, Alex Deucher
- <alexander.deucher@amd.com>, =?UTF-8?q?Christian=20K=C3=B6nig?=
- <christian.koenig@amd.com>, Xenia Ragiadakou <burzalodowa@gmail.com>,
- "Honglei Huang" <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- "Chen Jiqian" <Jiqian.Chen@amd.com>
-Subject: [PATCH 2/2] virgl: Modify resource_query_layout
-Date: Fri, 10 Nov 2023 15:40:27 +0800
-Message-ID: <20231110074027.24862-3-julia.zhang@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231110074027.24862-1-julia.zhang@amd.com>
-References: <20231110074027.24862-1-julia.zhang@amd.com>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r1M8E-0000YW-Hk
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:40:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699602044;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1sXfm4rueFMNKFqpoFKpfY8pu+Y/4svbiOzl/odyLQQ=;
+ b=PtCCm19mpYSSVtg4jFbWPoCO7B8S8ywk5mhc9ZcxcNJakdFB/6kOVmMLfLI+KeTz9GKUHT
+ 2u20sivA+IeutpfdMtHfyJ18YodN2Wy6SVTnmi5tBeToAC/+8jIPnVp5K6kWmreUaRotpC
+ 0OymKLoV93bLHMBovA/4n3+oQGVynrA=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-14-3K0qDbFiPUqTbKNnPJEk-g-1; Fri, 10 Nov 2023 02:40:42 -0500
+X-MC-Unique: 3K0qDbFiPUqTbKNnPJEk-g-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-66d0b251a6aso19908176d6.2
+ for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 23:40:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699602042; x=1700206842;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1sXfm4rueFMNKFqpoFKpfY8pu+Y/4svbiOzl/odyLQQ=;
+ b=J5eZfjvzGfoc5KVBTygj0q80zBQdECWuz4eAlSe+fYEZGuL4+tcb49zZwFz5sFTCIr
+ 6UfvHHKDN5r5n2HlFevLbsGHDhKvw5LP/S3VE6IpxpEYjqBswd6ugTltqr2mh0Hpxt4G
+ JqCHfKFNFaOwcOhrC0ZUNY46ChBZVPVTz7j3qcJsPYZh3TFWd+UeEyy3Z33rHPmQ9IRH
+ CSXoG0VTOcQE79o+CC0fXaDG0ei9en0ynr5sqPN75VFQDPTbgesIsm2hg91/avLZuApB
+ iN4mL295tho8Hdwf3BZi+a1zp4c3a1K7aO3fgGuB+OLrS6vhzCDfiE+eRkBiIIGBsLdg
+ iKbg==
+X-Gm-Message-State: AOJu0YxMsL9RJjDQsOJKD6FgD9GWM8Btgq/fLVMVXWnzZrxqel6OqCJn
+ vimJQBqaNT6A14o+jmUe9BYV4kQlLMqq29slRHHBQhkO0ELa11vO5pwdY6JtCpuQlCs81dMV3XH
+ 7N9YMozFqPcg1zaM=
+X-Received: by 2002:a05:6214:5090:b0:66d:25cb:43ba with SMTP id
+ kk16-20020a056214509000b0066d25cb43bamr7763250qvb.20.1699602042259; 
+ Thu, 09 Nov 2023 23:40:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHILcFaeqouA667ZEamwXGgOKpu77IJpohK3aEJP8binMKl4J7HQxa8C0Ry9npK96771sHZbQ==
+X-Received: by 2002:a05:6214:5090:b0:66d:25cb:43ba with SMTP id
+ kk16-20020a056214509000b0066d25cb43bamr7763241qvb.20.1699602042019; 
+ Thu, 09 Nov 2023 23:40:42 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ cj17-20020a05622a259100b004196a813639sm2655294qtb.17.2023.11.09.23.40.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 09 Nov 2023 23:40:41 -0800 (PST)
+Message-ID: <81e498b6-9e74-4bf8-8c7e-02ff9451ebe3@redhat.com>
+Date: Fri, 10 Nov 2023 08:40:38 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF00003442:EE_|LV3PR12MB9236:EE_
-X-MS-Office365-Filtering-Correlation-Id: ee1a2fd1-d145-4e37-56e1-08dbe1c06219
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: OK9GVynjpOXS6kkR9zIx3ddSOkORtmiesPl70lm1HhnqgTeqdRPZeyvHz6rYtFw1DOdhjtdkLlWcKO5uAkyz5eeqseBnWgM2eymWaixC/8xqmcYhoODntG8/yyeSQSvqvD/dC17XP4JyKGJRZ/I2XKqu9xiwZ1Hqy2m+ZAoMGfP40Frz4Qhr2xUm+3ES37lZOpA7oBY49OlK2itRNUqLwTb5dF+CFrbAAC0Z4Jrz5AiGG8J/78SjzGt9d07T6TzU9s81t5z+JtjOHiJnR7KcnGCsaj55d4g+jyeLSzoGfDytXwlQ0s4jBztxwQXIIm+v9At8iRN9hpQaZikgu0FGJBUDVKKc1hx1+UCy4aQ68TWy5nZMDeGJi/mtlvY9c/bOYuoo7ybs4yy5GZacFLIvsHb0X4iZxNFsFW9YodKLuQM6as1LOEyEFdVcA9But55MLLGkdXnzlyLcBzTECh0hVh596Idhn2gM1BtvqMJS3AvFqGgflU/y2XInSRHt4Y1eim3GOaoKEzMw+plTGDDoUjPj0gqzlLyHv/dD8mmkxGH/jX1PwDw8ALg9PAKZOZjhwpN3cbbk/4pwnvcb+4jzoSZJWK3foTPTvg0nBx2ndCBlxtJADtkU4iyAGKoxoLuBStLxaoz6K+AUzvTJFXydq0l7mA/c4selESuuqFUre9mf0gHB+i8UiH1qhDedd8URgjzIjEN2fFbYaZXDzQZr5sz7IqAhyZDDDN0WI336X+0/lhaasoSj2vMKTEQTTZiOVmbcqUeUYrMUCIdnWcmFlF7REAnZ4Zn8xjGzwS6h9ycFhAcmA2z/avrwntl/3vFP
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(136003)(376002)(39860400002)(346002)(396003)(230173577357003)(230273577357003)(230922051799003)(1800799009)(186009)(82310400011)(64100799003)(451199024)(40470700004)(36840700001)(46966006)(40480700001)(356005)(81166007)(40460700003)(82740400003)(70206006)(6666004)(110136005)(478600001)(7696005)(36756003)(86362001)(70586007)(26005)(1076003)(16526019)(2616005)(426003)(7416002)(336012)(8936002)(2906002)(41300700001)(47076005)(54906003)(4326008)(5660300002)(8676002)(316002)(36860700001)(44832011)(83380400001)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2023 07:40:59.8074 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee1a2fd1-d145-4e37-56e1-08dbe1c06219
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF00003442.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9236
-Received-SPF: softfail client-ip=2a01:111:f400:fe5b::61a;
- envelope-from=Julia.Zhang@amd.com;
- helo=NAM12-BN8-obe.outbound.protection.outlook.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] s390x/pci: small set of fixes
+Content-Language: en-US
+To: Matthew Rosato <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: farman@linux.ibm.com, thuth@redhat.com, pasic@linux.ibm.com,
+ borntraeger@linux.ibm.com, richard.henderson@linaro.org, david@redhat.com,
+ iii@linux.ibm.com, qemu-devel@nongnu.org
+References: <20231109225302.401344-1-mjrosato@linux.ibm.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231109225302.401344-1-mjrosato@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 10 Nov 2023 09:14:31 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -131,83 +102,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Modify resource_query_layout to handle the use case that need to query
-correct stride for guest linear resource before it is created.
+Hello Matthew,
 
-Signed-off-by: Julia Zhang <julia.zhang@amd.com>
----
- hw/display/virtio-gpu-virgl.c               | 20 +++-----------------
- include/standard-headers/linux/virtio_gpu.h |  8 ++++----
- 2 files changed, 7 insertions(+), 21 deletions(-)
+On 11/9/23 23:53, Matthew Rosato wrote:
+> The following set of changes are associated with issues exposed by testing
+> of the 'vfio: Adopt iommufd' series.
+> 
+> The first patch fixes an existing assumption that a vfio device will always
+> have a group fd (which is no longer true if cdev is used, which can only
+> happen once the iommufd backend is used).  This patch really only needs to
+> go into 8.2 if the 'vfio: Adopt iommufd' series does (but would be fine to
+> go into 8.2 without it too).
 
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 9c5a07cef1..ae146a68cb 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -728,22 +728,9 @@ static void virgl_cmd_resource_query_layout(VirtIOGPU *g,
-     VIRTIO_GPU_FILL_CMD(qlayout);
-     virtio_gpu_resource_query_layout_bswap(&qlayout);
- 
--    if (qlayout.resource_id == 0) {
--        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource id 0 is not allowed\n",
--                      __func__);
--        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
--        return;
--    }
--
--    res = virtio_gpu_find_resource(g, qlayout.resource_id);
--    if (!res) {
--        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource does not exist %d\n",
--                      __func__, qlayout.resource_id);
--        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
--        return;
--    }
--
--    ret = virgl_renderer_resource_query_layout(qlayout.resource_id, &rlayout);
-+    ret = virgl_renderer_resource_query_layout(qlayout.resource_id, &rlayout,
-+					       qlayout.width, qlayout.height,
-+					       qlayout.format, qlayout.bind);
-     if (ret != 0) {
-         qemu_log_mask(LOG_GUEST_ERROR, "%s: resource %d is not externally-allocated\n",
-                       __func__, qlayout.resource_id);
-@@ -758,7 +745,6 @@ static void virgl_cmd_resource_query_layout(VirtIOGPU *g,
-     for (i = 0; i < resp.num_planes; i++) {
-         resp.planes[i].offset = rlayout.planes[i].offset;
-         resp.planes[i].stride = rlayout.planes[i].stride;
--	resp.planes[i].size = rlayout.planes[i].size;
-     }
-     virtio_gpu_ctrl_response(g, cmd, &resp.hdr, sizeof(resp));
- }
-diff --git a/include/standard-headers/linux/virtio_gpu.h b/include/standard-headers/linux/virtio_gpu.h
-index 734fdb6beb..6fb0f711c8 100644
---- a/include/standard-headers/linux/virtio_gpu.h
-+++ b/include/standard-headers/linux/virtio_gpu.h
-@@ -506,7 +506,10 @@ struct virtio_gpu_status_freezing {
- struct virtio_gpu_resource_query_layout {
- 	struct virtio_gpu_ctrl_hdr hdr;
- 	uint32_t resource_id;
--	uint32_t padding;
-+	uint32_t width;
-+	uint32_t height;
-+	uint32_t format;
-+	uint32_t bind;
- };
- 
- /* VIRTIO_GPU_RESP_OK_RESOURCE_LAYOUT */
-@@ -515,12 +518,9 @@ struct virtio_gpu_resp_resource_layout {
- 	struct virtio_gpu_ctrl_hdr hdr;
- 	uint64_t modifier;
- 	uint32_t num_planes;
--	uint32_t padding;
- 	struct virtio_gpu_resource_plane {
- 		uint64_t offset;
--		uint64_t size;
- 		uint32_t stride;
--		uint32_t padding;
- 	} planes[VIRTIO_GPU_RES_MAX_PLANES];
- };
- 
--- 
-2.34.1
+It is a bit late for the 8.2. So we have time to polish v5 of the 'vfio: Adopt
+iommufd' series a bit more. I should include the v6 in an early PR for a 9.0.
+  
+> The second patch fixes an issue where we do not detect that a vfio DMA limit
+> was never read from vfio.  This is actually an existing bug as it's possible
+> for an older host kernel to be missing this support today; so ideally this one
+> should be targeted for 8.2 regardless.
+
+Nevertheless, I hope these two fixes can reached 8.2 since they are good
+to have anyhow.
+
+Thanks,
+
+C.
+
+  
+> Matthew Rosato (2):
+>    s390x/pci: bypass vfio DMA counting when using cdev
+>    s390x/pci: only limit DMA aperture if vfio DMA limit reported
+> 
+>   hw/s390x/s390-pci-vfio.c | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
+> 
 
 
