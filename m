@@ -2,72 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C847E7BAC
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 12:05:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 352147E7BC0
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 12:17:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1PJX-0006ZR-E4; Fri, 10 Nov 2023 06:04:39 -0500
+	id 1r1PUR-00055R-15; Fri, 10 Nov 2023 06:15:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r1PJT-0006ZH-4y
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 06:04:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r1PJQ-0000qo-IL
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 06:04:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699614270;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=s8uixZaHBVd8vS90lOHBBKjfd5ecyIq7YDpA9iWP9aI=;
- b=gTBxrSTCkvHOod/LbTsCHHyn0mwrY0Hzpbubgwc2ZuK6CiJl828MwbCNsKBEZM7xPjGQjc
- I9lMdEjetCXKxQSASReh/Zd6tUNKFWch+ALTXbd6NuhSpEWk3tJHKrjSvT144R2UjP1zkf
- 9JV4aHqn0/AbsgFZiI0fY5xAawgTuLM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-382-vKHegDgUOLKIEhQ4PQdvcw-1; Fri,
- 10 Nov 2023 06:04:27 -0500
-X-MC-Unique: vKHegDgUOLKIEhQ4PQdvcw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8523C1C0518E;
- Fri, 10 Nov 2023 11:04:26 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.194.44])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 531071C060AE;
- Fri, 10 Nov 2023 11:04:26 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 07B0D1800D60; Fri, 10 Nov 2023 12:04:24 +0100 (CET)
-Date: Fri, 10 Nov 2023 12:04:24 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Claudio Fontana <cfontana@suse.de>
-Cc: Kevin O'Connor <kevin@koconnor.net>, 
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>,
- seabios@seabios.org, qemu-devel@nongnu.org
-Subject: Re: [SeaBIOS] [PATCH v5] limit physical address space size
-Message-ID: <iqerqemhgokkgemaxnfktoz6ssrk3uqc4bncoghmhhxaaycleo@u5k642niiya3>
-References: <20231107130309.3257776-1-kraxel@redhat.com>
- <ZUvVCHWbU29+eDm7@morn>
- <59437ef3-7b94-2aa4-31b4-012412ce160b@suse.de>
- <npmimli5x4vcwxb3csaaut3sobuzsex7pgtf4xbrbnfd22hnyz@ixh5tmn4xkpk>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r1PUP-00055A-Ab
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 06:15:53 -0500
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r1PUN-0003Nk-MC
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 06:15:53 -0500
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-9e1fb7faa9dso324072266b.2
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 03:15:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699614950; x=1700219750; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TUjkHAsAcJQRPBx9EOAMz18aQaDsB1mBRQKwcytnCag=;
+ b=pRbenq0l2731eVwYNLITGBFqn1cD5BL6Ybmo0hZuRoderF8mKCIMBYDS3bVOfgyFlE
+ /WJyzYgTj4T5dnLOHlFj3RcfL3//1xUZuOHHSTO22+6TlAJcfCjsq+TqCQDCI3IR4rfr
+ W14p/hYB6TAu/CZiC7EytCoFXWlIlvC+++sRC3GiryC/O5TcdfO12OTAvUMQ8ZmZJZ2v
+ ecXUkUCs/PIuL1vdPmlnjB2VYxy3nCnWXJ15e7qihMMtvrfeW6DnIUDpvW685xhWEh7Q
+ 5ems2zrC52d0KEpm96uMnPDelmlS+QHt7GwP+NMW5Wq+msC6GMDBiPs2/sHupBB69D5c
+ UGgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699614950; x=1700219750;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TUjkHAsAcJQRPBx9EOAMz18aQaDsB1mBRQKwcytnCag=;
+ b=sKyPrdJ47y9k0f4RyF66FAwZgLTs+zGjKlSyZmuKD9PM5thiJh8paX4n9WdXtbvnUn
+ OHKP0dUOPrRIosR1qxRIbyvoZgO/gBn3T41zzIv/SFHkSeZ/hKk1ootVGOPcyERmhkrC
+ PNRN9ge5/BxTuQYbPnFTzdiVqJZbXKCgnr6GFOMfVSy01sFPnEV/zZDA8vlKjNKJ2gB9
+ zZBOd7lalcOA30Pg6gA6dwF0y59zdi9uurwXbpFbPs2y4biFh+XPUfvqetRHMO6AoQcj
+ 4armRbIQwR9ZDjfqbKd81L8KPt/M+1GB/3dzklH0NGUpCey71xjpH04fhgdgoWpgXV0G
+ 5sBw==
+X-Gm-Message-State: AOJu0Yx7qDe77y3YkK6SBpfYYyu8OEWXFDxeS8O97ctvO56MuMwjXif7
+ M36HZX2CDh6yKOEq7BNVpagiRA==
+X-Google-Smtp-Source: AGHT+IEXwIEEy09zNuCdANXzBztHdDTa+2N4QJXyqZWGisqt0aVYKfpWv+5Tp7m47XeiT0IyrZWOpw==
+X-Received: by 2002:a17:907:5cc:b0:9d4:2003:78dd with SMTP id
+ wg12-20020a17090705cc00b009d4200378ddmr6100721ejb.70.1699614950126; 
+ Fri, 10 Nov 2023 03:15:50 -0800 (PST)
+Received: from [192.168.69.115] ([176.187.194.109])
+ by smtp.gmail.com with ESMTPSA id
+ u17-20020a509511000000b005454b6d4e22sm1002715eda.64.2023.11.10.03.15.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 10 Nov 2023 03:15:49 -0800 (PST)
+Message-ID: <f881ad49-38f6-450f-8c0a-0ba40810422b@linaro.org>
+Date: Fri, 10 Nov 2023 12:15:48 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <npmimli5x4vcwxb3csaaut3sobuzsex7pgtf4xbrbnfd22hnyz@ixh5tmn4xkpk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] Add QEMU_WARN_UNUSED_RESULT attribute
+Content-Language: en-US
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <cover.1699606819.git.manos.pitsidianakis@linaro.org>
+ <84781fce2c3145a86d043d4c6b3b463af40eeed0.1699606819.git.manos.pitsidianakis@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <84781fce2c3145a86d043d4c6b3b463af40eeed0.1699606819.git.manos.pitsidianakis@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,87 +93,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  Hi,
+On 10/11/23 10:16, Manos Pitsidianakis wrote:
+> This commit adds QEMU_WARN_UNUSED_RESULT, a macro for the gcc function
+> attribute `warn_unused_result`. The utility of this attribute is to
+> ensure functions that return values that need to be inspected are not
+> ignored by the caller.
+> 
+> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
+>   include/qemu/compiler.h | 14 ++++++++++++++
+>   1 file changed, 14 insertions(+)
 
-> This only changes the placement of the PCI bars.  The pci setup code is
-> the only consumer of that variable, guess it makes sense to move the
-> quirk to the pci code (as suggested by Kevin) to clarify this.
+> +/*
+> + * From GCC documentation:
+> + *
+> + *   The warn_unused_result attribute causes a warning to be emitted if a
+> + *   caller of the function with this attribute does not use its return value.
+> + *   This is useful for functions where not checking the result is either a
+> + *   security problem or always a bug, such as realloc.
+> + */
+> +#if __has_attribute(warn_unused_result)
+> +# define QEMU_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
+> +#else
+> +# define QEMU_WARN_UNUSED_RESULT
+> +#endif
 
-i.e. like this:
+FWIW I sometimes use:
 
-From d538dc7d4316e557ae302464252444d09de0681d Mon Sep 17 00:00:00 2001
-From: Gerd Hoffmann <kraxel@redhat.com>
-Date: Tue, 7 Nov 2023 13:49:31 +0100
-Subject: [PATCH] limit physical address space size
++#if __has_attribute(nonnull)
++# define QEMU_NONNULL(indexes...) __attribute__((nonnull((indexes))))
++#else
++# define QEMU_NONNULL(indexes...)
++#endif
 
-For better compatibility with old linux kernels,
-see source code comment.
-
-Related (same problem in ovmf):
-https://github.com/tianocore/edk2/commit/c1e853769046
-
-Reported-by: Claudio Fontana <cfontana@suse.de>
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- src/fw/pciinit.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
-
-diff --git a/src/fw/pciinit.c b/src/fw/pciinit.c
-index c7084f5e397e..7aeea61bfd05 100644
---- a/src/fw/pciinit.c
-+++ b/src/fw/pciinit.c
-@@ -52,6 +52,7 @@ u64 pcimem64_start = BUILD_PCIMEM64_START;
- u64 pcimem64_end   = BUILD_PCIMEM64_END;
- u64 pci_io_low_end = 0xa000;
- u32 pci_use_64bit  = 0;
-+u32 pci_phys_bits  = 0;
- 
- struct pci_region_entry {
-     struct pci_device *dev;
-@@ -967,7 +968,7 @@ static int pci_bios_check_devices(struct pci_bus *busses)
-             if (hotplug_support == HOTPLUG_PCIE)
-                 resource_optional = pcie_cap && (type == PCI_REGION_TYPE_IO);
-             if (hotplug_support && pci_use_64bit && is64 && (type == PCI_REGION_TYPE_PREFMEM))
--                align = (u64)1 << (CPUPhysBits - 11);
-+                align = (u64)1 << (pci_phys_bits - 11);
-             if (align > sum && hotplug_support && !resource_optional)
-                 sum = align; /* reserve min size for hot-plug */
-             if (size > sum) {
-@@ -1131,12 +1132,12 @@ static void pci_bios_map_devices(struct pci_bus *busses)
-         r64_mem.base = le64_to_cpu(romfile_loadint("etc/reserved-memory-end", 0));
-         if (r64_mem.base < 0x100000000LL + RamSizeOver4G)
-             r64_mem.base = 0x100000000LL + RamSizeOver4G;
--        if (CPUPhysBits) {
--            u64 top = 1LL << CPUPhysBits;
-+        if (pci_phys_bits) {
-+            u64 top = 1LL << pci_phys_bits;
-             u64 size = (ALIGN(sum_mem, (1LL<<30)) +
-                         ALIGN(sum_pref, (1LL<<30)));
-             if (pci_use_64bit)
--                size = ALIGN(size, (1LL<<(CPUPhysBits-3)));
-+                size = ALIGN(size, (1LL<<(pci_phys_bits-3)));
-             if (r64_mem.base < top - size) {
-                 r64_mem.base = top - size;
-             }
-@@ -1181,8 +1182,16 @@ pci_setup(void)
- 
-     dprintf(3, "pci setup\n");
- 
--    if (CPUPhysBits >= 36 && CPULongMode && RamSizeOver4G)
-+    if (CPUPhysBits >= 36 && CPULongMode && RamSizeOver4G) {
-         pci_use_64bit = 1;
-+        pci_phys_bits = CPUPhysBits;
-+        if (pci_phys_bits > 46) {
-+            // Old linux kernels have trouble dealing with more than 46
-+            // phys-bits, so avoid that for now.  Seems to be a bug in the
-+            // virtio-pci driver.  Reported: centos-7, ubuntu-18.04
-+            pci_phys_bits = 46;
-+        }
-+    }
- 
-     dprintf(1, "=== PCI bus & bridge init ===\n");
-     if (pci_probe_host() != 0) {
--- 
-2.41.0
-
+when doing tree-wide refactors, then remove the attribute because
+prototypes become really ugly.
 
