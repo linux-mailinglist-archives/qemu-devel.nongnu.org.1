@@ -2,89 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023A37E7C32
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 13:36:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40ED47E7C36
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 13:38:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1QNo-0003Kf-Hg; Fri, 10 Nov 2023 07:13:08 -0500
+	id 1r1QlH-0003JL-0w; Fri, 10 Nov 2023 07:37:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
- id 1r1QNk-0003KA-9C
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 07:13:04 -0500
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
- id 1r1QNf-0000bI-AX
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 07:13:04 -0500
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AAA6xxx008454; Fri, 10 Nov 2023 12:12:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=Wok5H2mfpVN9JX67K+yEafRFnFO4S/k+LL+beWWytRw=;
- b=iUUHfO3scHfS+hTKz3bqO8RmyHBiHxr10x/clR2pdeWuWgKxt3xEIEeYlVb5BGvBaXmC
- 1dV4sdbLnuv8g4UINIqTswfhLtJxhNjPYfVhD/TAqr5WM0BuN3pRhIzWRnYaZEC3qJ6D
- RaDw8xDCs04mqj5UqR6N9JDut3vEr7zBz309vC2lRw7Cg/U8cRs+RG6tVN5J9V25d5Vc
- u6zE/+gU8fpvAx5nHlmjnUouY12fik9GqqXLZor/a6ESdeoRAdZS4XJ3RpYSS1iLVb+5
- 4QqmMMunLjnMs0Bzx10LbrA4fXkLjDsqLjMpFR2bfQs4BVatFzcxyenz3OEHmvDY8ub/ UQ== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u9f3k0ssr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Nov 2023 12:12:53 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
- [10.47.209.196])
- by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AACCq7Z026131
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Nov 2023 12:12:52 GMT
-Received: from hu-mathbern-lv.qualcomm.com (10.49.16.6) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.39; Fri, 10 Nov 2023 04:12:52 -0800
-From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-To: <ltaylorsimpson@gmail.com>
-CC: <ale@rev.ng>, <anjo@rev.ng>, <bcain@quicinc.com>, <philmd@linaro.org>,
- <qemu-devel@nongnu.org>, <quic_mathbern@quicinc.com>,
- <richard.henderson@linaro.org>, <sidneym@quicinc.com>
-Subject: Re: [RFC PATCH] Hexagon (target/hexagon) Make generators object
- oriented
-Date: Fri, 10 Nov 2023 09:12:42 -0300
-Message-ID: <ee22b1aa814dd18733bf11ecd1be473c1d379522.1699618162.git.quic_mathbern@quicinc.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20231109212549.356168-1-ltaylorsimpson@gmail.com>
-References: <20231109212549.356168-1-ltaylorsimpson@gmail.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r1QlE-0003It-Lt
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 07:37:20 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r1QlB-0006v5-Sd
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 07:37:20 -0500
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 2ADBC1F8BA;
+ Fri, 10 Nov 2023 12:37:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1699619836; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=k5TZqRxrHaWC3hsxOeMNn596Lzqb/6i22q96uu/TW0M=;
+ b=hC64wUQLr0uXc+Rw2bkxutgMXrTTc+700yK9STJoJpVC5Zyh+D70ruIC+jNKA+dqoYy+cD
+ O49W45snGfAIrmAofWFzfFT6+BzWWiJQaB78lk5HO8GJdPo/4BFMca5JHg9qa5Z62d4kAg
+ Sha1v9k92/ZrMQIA1GPULUZvlrWx2Ro=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1699619836;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=k5TZqRxrHaWC3hsxOeMNn596Lzqb/6i22q96uu/TW0M=;
+ b=DrR7TDe9KI4/i/9Vbqg/+Wm3orRdm0HSYLCQCgTPOXXBn9p7EioDwDz/JrE47DEdI1/Nju
+ lioxgcdQ1MSe9gCQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B16CE138FC;
+ Fri, 10 Nov 2023 12:37:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id pmsEH/sjTmXsIQAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 10 Nov 2023 12:37:15 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>, Leonardo
+ Bras <leobras@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: Re: [RFC PATCH 2/2] migration/multifd: Move semaphore release into
+ main thread
+In-Reply-To: <87pm0hzucq.fsf@suse.de>
+References: <20231109165856.15224-1-farosas@suse.de>
+ <20231109165856.15224-3-farosas@suse.de> <ZU0rY662a5C1mvyf@x1n>
+ <87pm0hzucq.fsf@suse.de>
+Date: Fri, 10 Nov 2023 09:37:13 -0300
+Message-ID: <87leb5zsw6.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: kBUnEyKt62Y_HCLLTzJre4PzDIy6s1Tf
-X-Proofpoint-GUID: kBUnEyKt62Y_HCLLTzJre4PzDIy6s1Tf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-10_09,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=14
- lowpriorityscore=0
- spamscore=14 impostorscore=0 adultscore=0 bulkscore=0 mlxscore=14
- priorityscore=1501 phishscore=0 clxscore=1011 mlxlogscore=78
- malwarescore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311060000 definitions=main-2311100100
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=quic_mathbern@quicinc.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,26 +86,241 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Taylor Simpson <ltaylorsimpson@gmail.com> wrote:
->
-> RFC - This patch handles gen_tcg_funcs.py.  I'd like to get comments
-> on the general approach before working on the other Python scripts.
-> 
-> The generators are generally a bunch of Python if-then-else
-> statements based on the regtype and regid.  Encapsulate regtype/regid
-> into a class hierarchy.  Clients lookup the register and invoke
-> methods.
-> 
-> This has several advantages for making the code easier to read,
-> understand, and maintain
-> - The class name makes it more clear what the operand does
-> - All the methods for a given type of operand are together
-> - Don't need as many calls to hex_common.bad_register
-> - We can remove the functions in hex_common that use regtype/regid
->   (e.g., is_read)
-> 
-> Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+Fabiano Rosas <farosas@suse.de> writes:
 
-Really nice! I personally think it's a great separation and it improves
-the code readability.
+> Peter Xu <peterx@redhat.com> writes:
+>
+>> On Thu, Nov 09, 2023 at 01:58:56PM -0300, Fabiano Rosas wrote:
+>>> We cannot operate on the multifd semaphores outside of the multifd
+>>> channel thread
+>>> because multifd_save_cleanup() can run in parallel and
+>>> attempt to destroy the mutexes, which causes an assert.
+>>> 
+>>> Looking at the places where we use the semaphores aside from the
+>>> migration thread, there's only the TLS handshake thread and the
+>>> initial multifd_channel_connect() in the main thread. These are places
+>>> where creating the multifd channel cannot fail, so releasing the
+>>> semaphores at these places only serves the purpose of avoiding a
+>>> deadlock when an error happens before the channel(s) have started, but
+>>> after the migration thread has already called
+>>> multifd_send_sync_main().
+>>> 
+>>> Instead of attempting to release the semaphores at those places, move
+>>> the release into multifd_save_cleanup(). This puts the semaphore usage
+>>> in the same thread that does the cleanup, eliminating the race.
+>>> 
+>>> Move the call to multifd_save_cleanup() before joining for the
+>>> migration thread so we release the semaphores before.
+>>> 
+>>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>>> ---
+>>>  migration/migration.c |  4 +++-
+>>>  migration/multifd.c   | 29 +++++++++++------------------
+>>>  2 files changed, 14 insertions(+), 19 deletions(-)
+>>> 
+>>> diff --git a/migration/migration.c b/migration/migration.c
+>>> index cca32c553c..52be20561b 100644
+>>> --- a/migration/migration.c
+>>> +++ b/migration/migration.c
+>>> @@ -1300,6 +1300,9 @@ static void migrate_fd_cleanup(MigrationState *s)
+>>>          QEMUFile *tmp;
+>>>  
+>>>          trace_migrate_fd_cleanup();
+>>> +
+>>> +        multifd_save_cleanup();
+>>> +
+>>>          qemu_mutex_unlock_iothread();
+>>>          if (s->migration_thread_running) {
+>>>              qemu_thread_join(&s->thread);
+>>> @@ -1307,7 +1310,6 @@ static void migrate_fd_cleanup(MigrationState *s)
+>>>          }
+>>>          qemu_mutex_lock_iothread();
+>>>  
+>>> -        multifd_save_cleanup();
+>>>          qemu_mutex_lock(&s->qemu_file_lock);
+>>>          tmp = s->to_dst_file;
+>>>          s->to_dst_file = NULL;
+>>> diff --git a/migration/multifd.c b/migration/multifd.c
+>>> index ec58c58082..9ca482cfbe 100644
+>>> --- a/migration/multifd.c
+>>> +++ b/migration/multifd.c
+>>> @@ -527,6 +527,9 @@ void multifd_save_cleanup(void)
+>>>  
+>>>          if (p->running) {
+>>>              qemu_thread_join(&p->thread);
+>>> +        } else {
+>>> +            qemu_sem_post(&p->sem_sync);
+>>> +            qemu_sem_post(&multifd_send_state->channels_ready);
+>>
+>> I think relying on p->running to join the thread is already problematic.
+>>
+>
+> Absolutely. I've already complained about this in another thread.
+>
+>> Now all threads are created with JOINABLE, so we must join them to release
+>> the thread resources.  Clearing "running" at the end of the thread is
+>> already wrong to me, because it means if the thread quits before the main
+>> thread reaching here, we will not join the thread, and the thread resource
+>> will be leaked.
+>>
+>> Here IMHO we should set p->running=true right before thread created, and
+>> never clear it.  We may even want to rename it to p->thread_created?
+>>
+>
+> Ok, let me do that. I already have some patches touching
+> multifd_new_send_channel_async() due to fixed-ram.
+>
+>>>          }
+>>>      }
+>>>      for (i = 0; i < migrate_multifd_channels(); i++) {
+>>> @@ -751,8 +754,6 @@ out:
+>>>          assert(local_err);
+>>>          trace_multifd_send_error(p->id);
+>>>          multifd_send_terminate_threads(local_err);
+>>> -        qemu_sem_post(&p->sem_sync);
+>>> -        qemu_sem_post(&multifd_send_state->channels_ready);
+>>>          error_free(local_err);
+>>>      }
+>>>  
+>>> @@ -780,20 +781,15 @@ static void multifd_tls_outgoing_handshake(QIOTask *task,
+>>>  
+>>>      if (!qio_task_propagate_error(task, &err)) {
+>>>          trace_multifd_tls_outgoing_handshake_complete(ioc);
+>>> -        if (multifd_channel_connect(p, ioc, &err)) {
+>>> -            return;
+>>> -        }
+>>> +        multifd_channel_connect(p, ioc, NULL);
+>>
+>> Ignoring Error** is not good..
+>>
+>> I think you meant to say "it should never fail", then we should put
+>> &error_abort.  Another cleaner way to do this is split the current
+>> multifd_channel_connect() into tls and non-tls helpers, then we can call
+>> the non-tls helpers here (which may not need an Error**).
+>
+> I attempted the split and it looked awkward, so I let go. But I agree
+> about the Error.
+>
+>>> +    } else {
+>>> +        /*
+>>> +         * The multifd client could already be waiting to queue data,
+>>> +         * so let it know that we didn't even start.
+>>> +         */
+>>> +        p->quit = true;
+>>> +        trace_multifd_tls_outgoing_handshake_error(ioc, error_get_pretty(err));
+>>>      }
+>>> -
+>>> -    trace_multifd_tls_outgoing_handshake_error(ioc, error_get_pretty(err));
+>>> -
+>>> -    /*
+>>> -     * Error happen, mark multifd_send_thread status as 'quit' although it
+>>> -     * is not created, and then tell who pay attention to me.
+>>> -     */
+>>> -    p->quit = true;
+>>> -    qemu_sem_post(&multifd_send_state->channels_ready);
+>>> -    qemu_sem_post(&p->sem_sync);
+>>>  }
+>>>  
+>>>  static void *multifd_tls_handshake_thread(void *opaque)
+>>> @@ -862,9 +858,6 @@ static void multifd_new_send_channel_cleanup(MultiFDSendParams *p,
+>>>                                               QIOChannel *ioc, Error *err)
+>>>  {
+>>>       migrate_set_error(migrate_get_current(), err);
+>>> -     /* Error happen, we need to tell who pay attention to me */
+>>> -     qemu_sem_post(&multifd_send_state->channels_ready);
+>>> -     qemu_sem_post(&p->sem_sync);
+>>>       /*
+>>>        * Although multifd_send_thread is not created, but main migration
+>>>        * thread need to judge whether it is running, so we need to mark
+>>> -- 
+>>
+>> I may still need some more time to digest your whole solution, currently
+>> not very clear to me.  It may or may not be the patch's problem,
+>> though.
+>
+> The core assumption of this patch is that we currently only need to
+> release the semaphores because the multifd_send_sync_main() is allowed
+> to execute even before the multifd channels have started. If creation
+> failed to even start, for instance because of a TLS handshake failure,
+> the migration thread will hang waiting for channels_ready (or sem_sync).
+>
+> Then there are two premises:
+>
+>  - when an error happens, multifd_save_cleanup() is always called;
+>  
+>  - a hanging migration thread (at multifd_send_sync_main) will not stop
+>    the main thread from reaching multifd_save_cleanup.
+>
+> If this holds, then it's safe to release the semaphores right before
+> destroying them at multifd_save_cleanup.
+>
+>> But let me also share how I see this..  I think we should rework the
+>> multifd thread model on channel establishment.
+>>
+>> Firstly, as I mentioned above, we must always join() the threads if it's
+>> JOINABLE or the resource is leaked, afaict.  That's the first thing to fix.
+>
+> I think we historically stumbled upon the fact that qemu_thread_join()
+> is not the same as pthread_join(). The former takes a pointer and is not
+> safe to call with a NULL QemuThread. That seems to be the reason for the
+> p->running check before it.
+
+Scratch this part, the QemuThread is not a pointer.
+
+...should it be? Because then we can test p->thread instead of
+p->running, which would be more precise and would dispense the
+thread_created flag.
+
+>> Then let's see when TLS is there and what we do: we'll create "two" threads
+>> just for that, what's even worse:
+>>
+>>   - We'll create tls handshake thread in multifd_tls_channel_connect()
+>>     first, setting &p->thread.
+>>
+>>   - Within the same thread, we do multifd_tls_outgoing_handshake() when
+>>     handshake done -> multifd_channel_connect() -> we yet create the real
+>>     multifd_send_thread(), setting &p->thread too.
+>
+> Hmm good point, we're calling qio_task_complete() from within the
+> thread, that's misleading. I believe using qio_task_run_in_thread()
+> would put the completion callback in the main thread, right? That would
+> look a bit better I think because we could then join the handshake
+> thread before multifd_channel_connect().
+>
+>> So AFAICT, the tls handshake thread is already leaked, got p->thread
+>> overwritten by the new thread created by itself..
+>>
+>> I think we should fix this then.  I haven't figured the best way to do,
+>> two things I can come up with now:
+>>
+>>   1) At least make the tls handshake thread detached.
+>>
+>>   2) Make the handshake done in multifd send thread directly; I don't yet
+>>      see why we must create two threads..
+>
+> I'm (a little bit) against this. It's nice to know that a multifdsend_#
+> thread will only be doing IO and no other task. I have the same concern
+> about putting zero page detection in the multifd thread.
+>
+>> Then assuming we have a clear model with all these threads issue fixed (no
+>> matter whether we'd shrink 2N threads into N threads), then what we need to
+>> do, IMHO, is making sure to join() all of them before destroying anything
+>> (say, per-channel MultiFDSendParams).  Then when we destroy everything
+>> safely, either mutex/sem/etc..  Because no one will race us anymore.
+>
+> This doesn't address the race. There's a data dependency between the
+> multifd channels and the migration thread around the channels_ready
+> semaphore. So we cannot join the migration thread because it could be
+> stuck waiting for the semaphore, which means we cannot join+cleanup the
+> channel thread because the semaphore is still being used. That's why I'm
+> moving the semaphores post to the point where we join the
+> thread. Reading your email, now I think that should be:
+>
+> qemu_sem_post(&p->sem_sync);
+> qemu_sem_post(&multifd_send_state->channels_ready);
+> qemu_thread_join(&p->thread);
+>
+> Fundamentally, the issue is that we do create the multifd threads before
+> the migration thread, but they might not be ready before the migration
+> thread needs to use them.
 
