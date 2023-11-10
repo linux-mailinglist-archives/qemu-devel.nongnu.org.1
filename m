@@ -2,94 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5FD37E7A4C
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 09:52:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D796F7E7A79
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 10:09:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1NDs-0000uV-UF; Fri, 10 Nov 2023 03:50:40 -0500
+	id 1r1NUV-0005yd-LN; Fri, 10 Nov 2023 04:07:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r1NDr-0000u4-4M
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 03:50:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r1NDn-0005gC-Jm
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 03:50:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699606233;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sgg8j3ooXHfy29OpnYE9Lh6w+b4gLvn26Zph3Ne7SyA=;
- b=WJqQ3zHkOAPwGUejanG94nsGedSsK+8/gZxwLxAYTNevqs35+FxS61TP7xyPbEH+nQH6HS
- 3Sjzf6Nrwvwj/tFadkASS5M+tXDDuOPna5JrdMhOKTJ+J/Lqmwk8aMWiNX6R8uHRIbP+GC
- SKdkk/6j5A4SRoK+MSOVvim7WXDTfW4=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-379-cn9pQll6NaKrYVXYkIMpgg-1; Fri, 10 Nov 2023 03:50:31 -0500
-X-MC-Unique: cn9pQll6NaKrYVXYkIMpgg-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-41cba6d1330so21932231cf.1
- for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 00:50:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1r1NUS-0005yF-PK
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:07:48 -0500
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1r1NUO-0000r0-0u
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:07:46 -0500
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-507bd64814fso2509599e87.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 01:07:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699607261; x=1700212061; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=EzWAd4i8SfrnOVX1XV2s9b3+InPfyVDmDF/a6BICHBE=;
+ b=elfKYo5sfA+dHJSFEjHuVknPtwRegB0+YWVERW8Sxiq9jw1f4D3+c4mbb+pcbOzhIi
+ QA4aRI3tdlYQN5k7FrNsT2gwkQkclD9DuEwfRcf42BghRFDv6YqwbLTvNOcBTTTGl9Sh
+ blmS/RPKzEdh9b5iDe2uXhK4Kd/XfIXi2mIpZsX/Rkvs79aFxN2igUW304KFzzkd4HJQ
+ RDjqvMzOD1+PgKiu6kibZdr6ZL9vD2Kb8OiB4xQrFCx/Ow59WAOhs2rbclrLQE7eFNWT
+ qc3Tf8bGgMmCobJ32wWIlDJMvXktGlr8qTpD6PzFoSEQdrIzSWGpyJddm+6OJwKSERxC
+ 74ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699606231; x=1700211031;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sgg8j3ooXHfy29OpnYE9Lh6w+b4gLvn26Zph3Ne7SyA=;
- b=fLNyd9px7+RpVFS5oLlhroHiosvqQYbs5fLnG2GIh1jlnDQPXbUMGJVHKERy64uaae
- zFkR6j4X45C7uigaPi/dbzCGyqYhPbpLQGJefszQDRjDSNTmusjRAEzi1nupXKM87yqv
- Le+yrT9+EhVQDr3pfXuPFwr75YPOtqFsbwO8/0pJg2drFI+csx/v3HzQIVcpYKW7iVdf
- DLQ14vMBES+DyV4TViDWRlrHU/eOoVmXwkyhQTzWd9qUUIoJtPMy2SmN50zm8qY1hQHP
- J2wRNSlx0c9RQzSqghWQmQneQdcs539IMrEzHSRgpNWtg42kIPqXDkkp8izmKqWeS9Ym
- bRvg==
-X-Gm-Message-State: AOJu0YxcSSaHDh06vMk+AeI5HPVWzEqfwWNmkieSIgo87SdlEBy+pNqq
- XCsgJHDQHGcrggCQhXPDBhS1WyojNN0AP1xTpcLULqDrJFzcP/FItUma5tfJJsoesCqUKYBpGw3
- bBOk9NNjFIUefh+U=
-X-Received: by 2002:a05:622a:341:b0:41c:cfc0:5c52 with SMTP id
- r1-20020a05622a034100b0041ccfc05c52mr8333879qtw.39.1699606231184; 
- Fri, 10 Nov 2023 00:50:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEp5BSn6KT27W9VLqs9r7RmdDAA/ehKosHRusihr0FFVOx3lOFW9JiYWHZ2GOjtQmy8bJoYCA==
-X-Received: by 2002:a05:622a:341:b0:41c:cfc0:5c52 with SMTP id
- r1-20020a05622a034100b0041ccfc05c52mr8333854qtw.39.1699606230863; 
- Fri, 10 Nov 2023 00:50:30 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ d=1e100.net; s=20230601; t=1699607261; x=1700212061;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=EzWAd4i8SfrnOVX1XV2s9b3+InPfyVDmDF/a6BICHBE=;
+ b=CB8F+veMXRJwNJKExeWqKnmHRaVwd68p+jzmKs9C/MJIuvOsmMdH5K5Xz147a+1HN4
+ mnN7yls0qDwDM+5keJMqRMlLXtxMxNSIpuhDAD9q28OH+YOyKoPFjSfy7rAUjJOxPSY2
+ r87XWGv1kUzopPgDrISC7VKQolb8Mgp97dkiS9+wOWKfJb/aNVtR0utsPegwFQPjiqPy
+ lkPpzRIG0o9W8/RQDA13bCAtfnD391QHy0HaW1eGLXSP8XKH1Rmm0hqoQ3Vj3zKi7rZ2
+ cb+rz6l3oaRLdQCKsnylS+baqtq9ZnJUqtnof1avIx+DpvLEFQCFNuzxATbgrPMu7V4l
+ 4v+w==
+X-Gm-Message-State: AOJu0YxqvyY4Fd1eTVJ0ftSNvXuJVcHf1NPQbtKK3w4gZq/paSihCP71
+ HJPPvsWnW3zhyBd+PzFQBDDtiQ==
+X-Google-Smtp-Source: AGHT+IHsnoIQc227pduT9sUgfkSjsUR1F55mBRat9+peuDdECm0KUhvOxZ2tkmbxF1xfWNvxfbqbTw==
+X-Received: by 2002:a2e:92d7:0:b0:2c5:1f57:1ef5 with SMTP id
+ k23-20020a2e92d7000000b002c51f571ef5mr6588095ljh.39.1699607260695; 
+ Fri, 10 Nov 2023 01:07:40 -0800 (PST)
+Received: from localhost.localdomain ([2.221.137.100])
  by smtp.gmail.com with ESMTPSA id
- jr23-20020a05622a801700b0041aff9339a2sm2654867qtb.22.2023.11.10.00.50.29
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 10 Nov 2023 00:50:30 -0800 (PST)
-Message-ID: <130a66bf-07b6-49ea-a7bf-de8afe0c83b9@redhat.com>
-Date: Fri, 10 Nov 2023 09:50:27 +0100
+ u8-20020a05600c138800b004075d5664basm4631372wmf.8.2023.11.10.01.07.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 10 Nov 2023 01:07:40 -0800 (PST)
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: peter.maydell@linaro.org
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: [PATCH] hw/arm/virt: fix GIC maintenance IRQ registration
+Date: Fri, 10 Nov 2023 09:05:58 +0000
+Message-ID: <20231110090557.3219206-2-jean-philippe@linaro.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 11/20] vfio/platform: Allow the selection of a given
- iommu backend
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com
-References: <20231109114529.1904193-1-zhenzhong.duan@intel.com>
- <20231109114529.1904193-12-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231109114529.1904193-12-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=jean-philippe@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,75 +89,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/9/23 12:45, Zhenzhong Duan wrote:
-> Now we support two types of iommu backends, let's add the capability
-> to select one of them. This depends on whether an iommufd object has
-> been linked with the vfio-platform device:
-> 
-> If the user wants to use the legacy backend, it shall not
-> link the vfio-platform device with any iommufd object:
-> 
->   -device vfio-platform,host=XXX
-> 
-> This is called the legacy mode/backend.
-> 
-> If the user wants to use the iommufd backend (/dev/iommu) it
-> shall pass an iommufd object id in the vfio-platform device options:
-> 
->   -object iommufd,id=iommufd0
->   -device vfio-platform,host=XXX,iommufd=iommufd0
-> 
-> Suggested-by: Alex Williamson <alex.williamson@redhat.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->   include/hw/vfio/vfio-platform.h | 1 +
->   hw/vfio/platform.c              | 5 +++++
->   2 files changed, 6 insertions(+)
-> 
-> diff --git a/include/hw/vfio/vfio-platform.h b/include/hw/vfio/vfio-platform.h
-> index c414c3dffc..f57f4276f2 100644
-> --- a/include/hw/vfio/vfio-platform.h
-> +++ b/include/hw/vfio/vfio-platform.h
-> @@ -18,6 +18,7 @@
->   
->   #include "hw/sysbus.h"
->   #include "hw/vfio/vfio-common.h"
-> +#include "sysemu/iommufd.h"
->   #include "qemu/event_notifier.h"
->   #include "qemu/queue.h"
->   #include "qom/object.h"
-I think we can move this change including "sysemu/iommufd.h" to file
-"hw/vfio/platform.c"
+Since commit 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic"),
+GIC maintenance IRQ registration fails on arm64:
 
+[    0.979743] kvm [1]: Cannot register interrupt 9
 
-Thanks,
+That commit re-defined VIRTUAL_PMU_IRQ to be a INTID but missed a case
+where the maintenance IRQ is actually referred by its PPI index. Just
+like commit fa68ecb330db ("hw/arm/virt: fix PMU IRQ registration"), use
+INITID_TO_PPI(). A search of "GIC_FDT_IRQ_TYPE_PPI" indicates that there
+shouldn't be more similar issues.
 
-C.
+Fixes: 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic")
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+---
+ hw/arm/virt.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-
-
-> diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
-> index 8e3d4ac458..86e176ee97 100644
-> --- a/hw/vfio/platform.c
-> +++ b/hw/vfio/platform.c
-> @@ -15,6 +15,7 @@
->    */
->   
->   #include "qemu/osdep.h"
-> +#include CONFIG_DEVICES /* CONFIG_IOMMUFD */
->   #include "qapi/error.h"
->   #include <sys/ioctl.h>
->   #include <linux/vfio.h>
-> @@ -649,6 +650,10 @@ static Property vfio_platform_dev_properties[] = {
->       DEFINE_PROP_UINT32("mmap-timeout-ms", VFIOPlatformDevice,
->                          mmap_timeout, 1100),
->       DEFINE_PROP_BOOL("x-irqfd", VFIOPlatformDevice, irqfd_allowed, true),
-> +#ifdef CONFIG_IOMMUFD
-> +    DEFINE_PROP_LINK("iommufd", VFIOPlatformDevice, vbasedev.iommufd,
-> +                     TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
-> +#endif
->       DEFINE_PROP_END_OF_LIST(),
->   };
->   
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 783d71a1b3..f5e685b060 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -591,7 +591,8 @@ static void fdt_add_gic_node(VirtMachineState *vms)
+ 
+         if (vms->virt) {
+             qemu_fdt_setprop_cells(ms->fdt, nodename, "interrupts",
+-                                   GIC_FDT_IRQ_TYPE_PPI, ARCH_GIC_MAINT_IRQ,
++                                   GIC_FDT_IRQ_TYPE_PPI,
++                                   INTID_TO_PPI(ARCH_GIC_MAINT_IRQ),
+                                    GIC_FDT_IRQ_FLAGS_LEVEL_HI);
+         }
+     } else {
+@@ -615,7 +616,8 @@ static void fdt_add_gic_node(VirtMachineState *vms)
+                                          2, vms->memmap[VIRT_GIC_VCPU].base,
+                                          2, vms->memmap[VIRT_GIC_VCPU].size);
+             qemu_fdt_setprop_cells(ms->fdt, nodename, "interrupts",
+-                                   GIC_FDT_IRQ_TYPE_PPI, ARCH_GIC_MAINT_IRQ,
++                                   GIC_FDT_IRQ_TYPE_PPI,
++                                   INTID_TO_PPI(ARCH_GIC_MAINT_IRQ),
+                                    GIC_FDT_IRQ_FLAGS_LEVEL_HI);
+         }
+     }
+-- 
+2.42.0
 
 
