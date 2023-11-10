@@ -2,82 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334857E85E0
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 23:50:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD00D7E8698
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 00:28:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1aJB-0007ht-IO; Fri, 10 Nov 2023 17:49:01 -0500
+	id 1r1atr-0005sN-Rv; Fri, 10 Nov 2023 18:26:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r1aJ8-0007ge-Gs
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 17:48:58 -0500
-Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r1aJ5-0000pb-S6
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 17:48:58 -0500
-Received: by mail-yw1-x112f.google.com with SMTP id
- 00721157ae682-5a86b6391e9so31007107b3.0
- for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 14:48:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699656534; x=1700261334; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=QWsTdl2K6+YGQK5bU59O/HCLogegVMrnoVjvMNTDmS8=;
- b=acE3Z6gTkxdnCnc7HtcBUYbeJgwCKpCjoZC9P0OlH3JsRaO1xFCAIfF4RlZazBsQ1C
- OmjdPwIuwaKmeyie5zh9ahznepGfPY+GNiO6m8um+TLBhzbEIj5oIzxXq3D9o2lwyJdL
- CDDUcEqRM9e4GwoqhK5AD6+y52sm3uFA3A6Y/AaG9YHb7s0X1vZs+KD8tuX/GIloVet+
- wW6mZ0YYlD7MSs3j6UBoXFtGlPLjGv7WAjf6BVRHSli6CNhzEsUtn1efTZUNCvzhKUEG
- iHMD0S4jf8ocaWenSWmJcvGjbvZwzPZKGHx0A3SwknkPuGMsN4glfNCZe5f+JHhHjXTB
- R+aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699656534; x=1700261334;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QWsTdl2K6+YGQK5bU59O/HCLogegVMrnoVjvMNTDmS8=;
- b=KLJSOMa9SBit3t6thSs7uY6irjunkN+z8D58ftS3ndzE+51gG9a9h4I5if8bu2hHeG
- IQ8peiNSrus3I5seiDQ40/DrO3o7KSTcctfvNZgOhodMjq6IZ4eTIQqkTkTOgjyyNBh0
- QDYq+MlURixuwxFY6gxLjZdUyHgBDfdIQsMKGbGo7v8hXSEMLTcJmC7X2eEsfSwlLh0u
- oymyQ5o5JG+frqSX3hyOvSvLfLSor6CuEpEvRJ7+GDzOATaivBGZExyM1aCpPYecz0SS
- qFLwZMaRlEYo5ZBjRE/7eLJ7EcXHaClVZj1vKkzefLteYSCMHX5TcjRRYd+Gzh0E2wNT
- lgnA==
-X-Gm-Message-State: AOJu0YztUabDzIlCrQGoaP8A2ZEendSWtlpkrGK1cuD4SSZT57mZhtJI
- DJfIoefJ9GRacKx7P0bhQ7SNEA==
-X-Google-Smtp-Source: AGHT+IG+qaiPuG4vgUz2c+k6qNhLVd/j0BbC3tY+RVpvkzpscKi7DT6UBbf+f4SuM5CeKpbOGJW8tg==
-X-Received: by 2002:a81:5489:0:b0:5af:abe1:3d4b with SMTP id
- i131-20020a815489000000b005afabe13d4bmr568110ywb.5.1699656534208; 
- Fri, 10 Nov 2023 14:48:54 -0800 (PST)
-Received: from ?IPV6:2607:fb91:9e6:820:96bf:8504:fb4:ae37?
- ([2607:fb91:9e6:820:96bf:8504:fb4:ae37])
- by smtp.gmail.com with ESMTPSA id
- o124-20020a0de582000000b0059b547b167esm125732ywe.98.2023.11.10.14.48.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 10 Nov 2023 14:48:53 -0800 (PST)
-Message-ID: <d93beb59-ab19-43ef-8d70-5e63cc6dbe29@linaro.org>
-Date: Fri, 10 Nov 2023 14:48:49 -0800
+ (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1r1ato-0005s0-34
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 18:26:52 -0500
+Received: from rusty.tulip.relay.mailchannels.net ([23.83.218.252])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1r1atj-0000BI-Cj
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 18:26:51 -0500
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+ by relay.mailchannels.net (Postfix) with ESMTP id 7BDCE3627BC;
+ Fri, 10 Nov 2023 23:26:44 +0000 (UTC)
+Received: from pdx1-sub0-mail-a235.dreamhost.com (unknown [127.0.0.6])
+ (Authenticated sender: dreamhost)
+ by relay.mailchannels.net (Postfix) with ESMTPA id 1EA6D3627EC;
+ Fri, 10 Nov 2023 23:26:44 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1699658804; a=rsa-sha256;
+ cv=none;
+ b=axae0WvmcVNWPBYp0IzU254cOASIwrT1d+QUgGoqNVc4JsWqsJ/M/NyJpQ6/KWVdnJhlgW
+ 3dAC+PqcVZPmGLxpaasAeLg9NmX/E4BmySjiKWkzljw0aSCsJ9UEV0KlicSBwoFj3/L1wI
+ H5TUKfdkUk08YdLQvPkqltfTrZIQw3osWNSeIYQML4nTurbA5LzNhyniUbBKnBkyuUgXRJ
+ qgNTLFyUyUoh5S6A9AfhfYLuqkInhd5AWf7/6iW9PW1RzDxBWPd0204gbm2OSKCaI/pNyQ
+ MGy0eAlRw+LkyNb/zs308WJvAyX/BfAH24uRz8L/pG5wKuh7/WiJhjVkQaRRuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net; s=arc-2022; t=1699658804;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:dkim-signature;
+ bh=5djTN8nvvdGY4qoT4NBklw/HiGALT9CmWuR3LSa7ORw=;
+ b=37+gtfWFOmTbgj212CRyzZVSvEwNwlkhA2uza3wPj5kP13UefZ3DEh/8tDRFZoj1Ix8cmC
+ 0gSKSrzKQ89vlyJLOlseDeMQNtRYjR7h8XaGO1lytOrC22l3Z3BJsU2h4xEfGXz80rsFGn
+ ekuwSVYuNJYXs/pwFBYkARZSYG1xydZjcBnMQSUeyTdaOVl0xP4XoIFhGeqDhB4Y+JIShl
+ NaE6PZyeomtR8xdJo7lz7gxqQpKpCQm9FUdmTaOgaDf0bzTTOUZSsglDPv9NGsVOwXlIqo
+ zo5vQZH++J7xWzFppC5upWBAjgQzwgigfVzpv8jDdv9KtCeNAwTrf8RFBZeX7Q==
+ARC-Authentication-Results: i=1; rspamd-6c48c794c6-jdrd6;
+ auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Tart-Interest: 28ef6f5956d9dfa5_1699658804353_2514300046
+X-MC-Loop-Signature: 1699658804353:1689754630
+X-MC-Ingress-Time: 1699658804353
+Received: from pdx1-sub0-mail-a235.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.117.123.8 (trex/6.9.2); Fri, 10 Nov 2023 23:26:44 +0000
+Received: from localhost.localdomain (ip72-199-50-187.sd.sd.cox.net
+ [72.199.50.187])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ (Authenticated sender: dave@stgolabs.net)
+ by pdx1-sub0-mail-a235.dreamhost.com (Postfix) with ESMTPSA id 4SRw2C3sBGz3k; 
+ Fri, 10 Nov 2023 15:26:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+ s=dreamhost; t=1699658803;
+ bh=5djTN8nvvdGY4qoT4NBklw/HiGALT9CmWuR3LSa7ORw=;
+ h=From:To:Cc:Subject:Date:Content-Transfer-Encoding;
+ b=qfkDCnSw36gisLU8aARa/+xyV0H46mIIfzg1Ig3Bel3//UaEOAZSHbXCzQv5/hrOi
+ F7bdMVN4AFcdEppCRyIleurO8Nj5mo/MI/bYFawbrEDMU+/q6RaV5yCGJK19LP2tq/
+ Peyqdfcec+bru+5Vn1fbATHJGLzmTwd9dLLCm4zgol3jkQ+u2wT14fjYypLd4WTEre
+ vmJPh+gcnJ97BhHg2HTImoD6v106HiIE0+x1N6RBnpFP9IjmbJ4eJtGTYJsRiGuwBp
+ zSmAdIORfv5UNrCslLR6+BWdTk7HZw4FagtiNti1PoBpj88ojIj31VJyl1WBNN9qca
+ iSO4y/byZ8q1A==
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: mst@redhat.com
+Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org,
+ Jonathan.Cameron@huawei.com, fan.ni@samsung.com, dave@stgolabs.net
+Subject: [PATCH] hw/cxl/mbox: Remove dead code
+Date: Fri, 10 Nov 2023 15:26:40 -0800
+Message-ID: <20231110232640.11327-1-dave@stgolabs.net>
+X-Mailer: git-send-email 2.42.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/hppa: Fix possible overflow in TLB size calculation
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-References: <ZU6F/H8CZr3q4pP/@p100>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ZU6F/H8CZr3q4pP/@p100>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
- envelope-from=richard.henderson@linaro.org; helo=mail-yw1-x112f.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=23.83.218.252; envelope-from=dave@stgolabs.net;
+ helo=rusty.tulip.relay.mailchannels.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,15 +107,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/10/23 11:35, Helge Deller wrote:
-> Coverty found that the shift of TARGET_PAGE_SIZE (32-bit type) might
-> overflow.  Fix it by casting TARGET_PAGE_SIZE to a 64-bit type before
-> doing the shift (CID 1523902 and CID 1523908).
-> 
-> Reported-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Helge Deller <deller@gmx.de>
+Two functions were reported to have dead code, remove the bogus
+branches altogether, as well as a misplaced qemu_log call.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+---
+ hw/cxl/cxl-mailbox-utils.c | 43 +++++++++++++-------------------------
+ 1 file changed, 15 insertions(+), 28 deletions(-)
 
-r~
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index b36557509710..39642ed93ee6 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -1001,15 +1001,8 @@ static CXLRetCode cmd_sanitize_overwrite(const struct cxl_cmd *cmd,
+ 
+     cxl_dev_disable_media(&ct3d->cxl_dstate);
+ 
+-    if (secs > 2) {
+-        /* sanitize when done */
+-        return CXL_MBOX_BG_STARTED;
+-    } else {
+-        __do_sanitization(ct3d);
+-        cxl_dev_enable_media(&ct3d->cxl_dstate);
+-
+-        return CXL_MBOX_SUCCESS;
+-    }
++    /* sanitize when done */
++    return CXL_MBOX_BG_STARTED;
+ }
+ 
+ static CXLRetCode cmd_get_security_state(const struct cxl_cmd *cmd,
+@@ -1387,27 +1380,21 @@ static void bg_timercb(void *opaque)
+ 
+         cci->bg.complete_pct = 100;
+         cci->bg.ret_code = ret;
+-        if (ret == CXL_MBOX_SUCCESS) {
+-            switch (cci->bg.opcode) {
+-            case 0x4400: /* sanitize */
+-            {
+-                CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
+-
+-                __do_sanitization(ct3d);
+-                cxl_dev_enable_media(&ct3d->cxl_dstate);
+-            }
++        switch (cci->bg.opcode) {
++        case 0x4400: /* sanitize */
++        {
++            CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
++
++            __do_sanitization(ct3d);
++            cxl_dev_enable_media(&ct3d->cxl_dstate);
++        }
++        break;
++        case 0x4304: /* TODO: scan media */
++            break;
++        default:
++            __builtin_unreachable();
+             break;
+-            case 0x4304: /* TODO: scan media */
+-                break;
+-            default:
+-                __builtin_unreachable();
+-                break;
+-            }
+         }
+-
+-        qemu_log("Background command %04xh finished: %s\n",
+-                 cci->bg.opcode,
+-                 ret == CXL_MBOX_SUCCESS ? "success" : "aborted");
+     } else {
+         /* estimate only */
+         cci->bg.complete_pct = 100 * now / total_time;
+-- 
+2.42.1
+
 
