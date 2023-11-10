@@ -2,58 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C2CC7E8523
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 22:35:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D2B7E8541
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 22:49:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1Z99-0002eH-LI; Fri, 10 Nov 2023 16:34:35 -0500
+	id 1r1ZLw-0003dP-4G; Fri, 10 Nov 2023 16:47:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <reinoud@gorilla.13thmonkey.org>)
- id 1r1Yo3-0006pX-Cp
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 16:12:47 -0500
-Received: from 2a02-a46b-bd8f-1-b9b1-f16b-e3de-c82.fixed6.kpn.net
- ([2a02:a46b:bd8f:1:b9b1:f16b:e3de:c82] helo=gorilla.13thmonkey.org)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <reinoud@gorilla.13thmonkey.org>) id 1r1Yo1-0000qT-Ih
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 16:12:47 -0500
-Received: by gorilla.13thmonkey.org (Postfix, from userid 103)
- id DF50C2FF0948; Fri, 10 Nov 2023 22:12:38 +0100 (CET)
-Date: Fri, 10 Nov 2023 22:12:38 +0100
-From: Reinoud Zandijk <reinoud@gorilla.13thmonkey.org>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Reinoud Zandijk <reinoud@netbsd.org>,
- Ryo ONODERA <ryoon@netbsd.org>, Gerd Hoffmann <kraxel@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: Re: [RFC PATCH-for-8.2] .gitlab-ci.d/cirrus.yml: Promote NetBSD job
- as gating
-Message-ID: <ZU6cxnwMOqOEBu-F@gorilla.13thmonkey.org>
-References: <20231109153510.92353-1-philmd@linaro.org>
- <737f6fe5-cf3e-4fdd-b5d8-28f71a2fa9e6@linaro.org>
- <ZU0PuHyw8X8e/p0j@redhat.com>
- <52df2072-a26e-4e73-afe0-65a877bafbdc@redhat.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1r1ZLu-0003dD-IL
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 16:47:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1r1ZLs-0006ub-GD
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 16:47:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699652861;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WpBjPQC4fWqAtmRHqryuLU9UJXarqcrl+f83Dw/3+2k=;
+ b=ToQrLo8tQIJhNSbQp/PsxebAAnruNz70h7Sv+5CHC2ixDwZsPIxq7sWK1iNJQUNpOeDxjk
+ sUPIwkMIAOUS3IL6XC520qzyU/s/ZdBYHp9arO2abSIdzBMxeAYzOZ+iK48BN6MJO/GAIV
+ otR6soYL+uo+eE48AThts6NkMdRuibY=
+Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com
+ [209.85.217.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-88-0J8llnSzNMSMF33L5kKD6A-1; Fri, 10 Nov 2023 16:47:39 -0500
+X-MC-Unique: 0J8llnSzNMSMF33L5kKD6A-1
+Received: by mail-vs1-f71.google.com with SMTP id
+ ada2fe7eead31-45ee5ccda9eso910845137.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 13:47:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699652859; x=1700257659;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WpBjPQC4fWqAtmRHqryuLU9UJXarqcrl+f83Dw/3+2k=;
+ b=C5IB9CpwKMLrA0ef0PDVhDKbP+ySttvRa+wJIOAvTwZDzRCcgZYXNglB1J9dYWOEdH
+ aKaUKT7pQvsDGTEAASKxejQMtvyJhmMs+yHuf1QlOUWAi24rMBcKsc5jaSuEt0JGksvN
+ GzBowvE5MK1Tls6bucXDwsy6QYpS0HEHifHEvZAT4D16NDX8pYtXa/IB7TquAgF76Gbu
+ EWq4LkWlidSmjrjtZuIxRznrtrkm7hQWOB7dY0T3oSNCd/EHD7WtMcqLxMqmEy2DveoQ
+ /7sH6WBo93koRDXvLDOOLIy8g/d7XKjK9vGwjhTB4VFoWfxZzujq+MqlV0mB9PaEs4Yl
+ W67A==
+X-Gm-Message-State: AOJu0YztVnMa/ONqTf2lM+teZOwKupphuXyWPDGMc5N3TNnXWhiYs8d0
+ JPsIQKa2lwpksSeifscTuy0XRzW4ikfQjAdbf5UuDwSGDI42wGmngPCafurkBA6O0v7JU5IJl3L
+ mBGHicVuciAons0rDDtlMOZAMakW8h9g=
+X-Received: by 2002:a67:cd17:0:b0:460:f899:da3b with SMTP id
+ u23-20020a67cd17000000b00460f899da3bmr574634vsl.12.1699652859222; 
+ Fri, 10 Nov 2023 13:47:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFMFin/Tuqbd1mkkT7UxCnuzN7+j9W1KJwPGzJypb/UQXg7pNyXrckDBO2HnHTL1SmqTmpRPXhAEgpXBdPP1zw=
+X-Received: by 2002:a67:cd17:0:b0:460:f899:da3b with SMTP id
+ u23-20020a67cd17000000b00460f899da3bmr574622vsl.12.1699652858933; Fri, 10 Nov
+ 2023 13:47:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <52df2072-a26e-4e73-afe0-65a877bafbdc@redhat.com>
-Received-SPF: none client-ip=2a02:a46b:bd8f:1:b9b1:f16b:e3de:c82;
- envelope-from=reinoud@gorilla.13thmonkey.org; helo=gorilla.13thmonkey.org
-X-Spam_score_int: 17
-X-Spam_score: 1.7
-X-Spam_bar: +
-X-Spam_report: (1.7 / 5.0 requ) BAYES_00=-1.9, KHOP_HELO_FCRDNS=0.245,
- RCVD_IN_PBL=3.335, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+References: <20231109092554.1253-1-gmanning@rapitasystems.com>
+ <20231109092554.1253-2-gmanning@rapitasystems.com>
+ <CWXP123MB43413EFD75E3292155EBAA0DD7AEA@CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM>
+In-Reply-To: <CWXP123MB43413EFD75E3292155EBAA0DD7AEA@CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 10 Nov 2023 22:47:26 +0100
+Message-ID: <CABgObfYrWEoR4YADU-0VbMZpCsmL=eRuFx0gz5Lp2H3c=LrDJQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] plugins: Move the windows linking function to qemu
+To: Greg Manning <gmanning@rapitasystems.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 10 Nov 2023 16:34:26 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,65 +97,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 09, 2023 at 06:15:51PM +0100, Thomas Huth wrote:
-> On 09/11/2023 17.58, Daniel P. Berrangé wrote:
-> > On Thu, Nov 09, 2023 at 04:35:56PM +0100, Philippe Mathieu-Daudé wrote:
-> > > On 9/11/23 16:35, Philippe Mathieu-Daudé wrote:
-> > > > This Cirrus-CI based job takes ~12min, similarly to macOS job.
-> > > > 
-> > > > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> > > > ---
-> > > > Based-on: <20231109150900.91186-1-philmd@linaro.org>
-> > > >             "tests/vm/netbsd: Use Python v3.11"
-> > > > ---
-> > > >    .gitlab-ci.d/cirrus.yml | 3 +--
-> > > >    1 file changed, 1 insertion(+), 2 deletions(-)
-> > > > 
-> > > > diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-> > > > index e7f1f83c2c..7b01acb104 100644
-> > > > --- a/.gitlab-ci.d/cirrus.yml
-> > > > +++ b/.gitlab-ci.d/cirrus.yml
-> > > > @@ -94,8 +94,6 @@ aarch64-macos-12-base-build:
-> > > >        - cirrus-run -v --show-build-log always .gitlab-ci.d/cirrus/$NAME.yml
-> > > >      variables:
-> > > >        QEMU_JOB_CIRRUS: 1
-> > > > -    QEMU_JOB_OPTIONAL: 1
-> > > > -
-> > > >    x86-netbsd:
-> > > >      extends: .cirrus_kvm_job
-> > > > @@ -110,3 +108,4 @@ x86-openbsd:
-> > > >        NAME: openbsd
-> > > >        CONFIGURE_ARGS: --target-list=i386-softmmu,riscv64-softmmu,mips64-softmmu
-> > > >        TEST_TARGETS: check
-> > > > +    QEMU_JOB_OPTIONAL: 1
-> > > 
-> > > BTW OpenBSD works for me, but takes ~20min (similar to the FreeBSD job).
-> ...
-> > I could have sworn our cirrus jobs were much slower in the past (around
-> > the 40 min mark), as we had to cut down what we were running to avoid
-> > frequent timeouts.
-> 
-> You're right, Daniel. Seems like both, the Cirrus netbsd and the openbsd job
-> are currently broken and only output some help text instead of compiling
-> QEMU:
-> 
->  https://gitlab.com/philmd/qemu/-/jobs/5497861511#L6834
-> 
-> ... that's why the finish so fast.
-> 
-> IIRC last time I've seen them "working", they were running into the 80
-> minute timeout again.
-> 
-> So the netbsd and openbsd job are indeed not very useful anymore. I think we
-> should rather remove them and add a proper job via our own custom
-> KVM-capable runners instead.
+On Fri, Nov 10, 2023 at 6:36=E2=80=AFPM Greg Manning <gmanning@rapitasystem=
+s.com> wrote:
+> Then hopefully when a plugin links to this, it gets the __pfnDliFailureHo=
+ok2
+> symbol defined and set up and everything would work. Except gcc strips
+> out any unreferenced symbols from static libs when linking. So the plugin
+> would have to be linked thusly:
+>
+> gcc -shared -o my_plugin.dll -Wl,-u,__pfnDliFailureHook2 my_plugin.o qemu=
+_plugin_api.lib
+>
+> But no other qemu-fiddling-with-things or extra code in plugins required.
+>
+> Hmm. Feels like half a solution. I wonder if there's a way to mark symbol=
+s as
+> "always required despite what dead code analysis says".
 
-Even though I am a co-maintainer of the NetBSD support for Qemu I am not quite
-sure what testcase this is. Is this a regression test of installing NetBSD
-from an ISO? That somehow times out? Where can I find the resulting console
-output? Maybe the installer changed?
+To be clear, I don't dislike at all the simpler solution where you
+just add a macro like this:
 
-With regards,
-Reinoud
+#ifdef _WIN32
+#define QEMU_PLUGIN_HOOK \
+   /* contents of win32_linker.c */
+#else
+#define QEMU_PLUGIN_HOOK
+#endif
+
+and add QEMU_PLUGIN_HOOK to a source file of every plugin. But if you
+would like to use a library, you can pass a linker script on the
+command line as if it was a library, and the paths within the linker
+script are resolved relative to the linker script itself. So you can
+place in tests/plugins/meson.build something like:
+
+# uses dlltool like it does now... can also use custom_target
+delaylib =3D configure_file(output: 'qemu_plugin_api.lib',
+   ...)
+delayhook =3D static_library('qemu_delay_hook', sources: 'qemu_delay_hook.c=
+')
+plugin_api =3D configure_file(output : 'libqemu_plugin_api.a', input:
+'libqemu_plugin_api.ld', copy: true, install_dir:
+get_option('libdir'))
+
+where the last configure_file creates a file with contents such as
+
+INPUT(qemu_plugin_api.lib) # from dlltool
+INPUT(libqemu_delay_hook.a) # compiled from qemu_delay_hook.c
+EXTERN(__pfnDliNotifyHook2)  # equivalent to -Wl,-u
+
+And then it should work to add link_depends: [delayhook, delaylib,
+plugin_api], link_args: plugin_api as in your previous version.
+
+Finally, since the hook will be built by ninja, you also need
+
+diff --git a/Makefile b/Makefile
+index 676a4a54f48..7b42d85f1dc 100644
+--- a/Makefile
++++ b/Makefile
+@@ -184,6 +184,7 @@ $(SUBDIR_RULES):
+ ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
+ .PHONY: plugins
+ plugins: contrib/plugins/all
++contrib/plugins/all: | run-ninja
+ endif
+
+ .PHONY: recurse-all recurse-clean
+
+to ensure that the plugins are built after libqemu_delay_hook.a (of
+course feel free to change the file names!).
+
+The main disadvantage is that the Microsoft linker does not know
+linker scripts, so that's a point in favor of the macro solution.
+
+Paolo
 
 
