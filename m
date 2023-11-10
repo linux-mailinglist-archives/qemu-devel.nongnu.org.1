@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F013B7E7A89
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 10:18:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C2C7E7A8B
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 10:18:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1NdB-0002Rm-Fk; Fri, 10 Nov 2023 04:16:49 -0500
+	id 1r1NdE-0002SR-6A; Fri, 10 Nov 2023 04:16:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r1Nd9-0002QP-1z
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:16:47 -0500
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ id 1r1NdB-0002SC-SZ
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:16:49 -0500
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r1Nd7-0002mO-Du
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:16:46 -0500
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2c6ed1b9a1cso22680281fa.3
- for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 01:16:45 -0800 (PST)
+ id 1r1NdA-0002nx-26
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:16:49 -0500
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2c504a5e1deso23833191fa.2
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 01:16:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699607803; x=1700212603; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699607804; x=1700212604; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mbp8XXdbG6B9pZBrryz1zASTDVDqNMiO4XNfxxKRD1M=;
- b=KGnPtAUug0Up+jmKSRCf8b1ZR2Nww37xUIIhF1BWTurKVgd+k1Zi/vRfKfN5K2Kamu
- WIbjY8kuFTj3yCs0I909TzTatrmCyNGpUMY6eZ/XPBjezg1fDwJgqAX6i3ArZ+Vaib6e
- CaIkO6sPtN57ougOAk/Kx6lLhpmPkOTjvLoYy8cov1tehDmI2GmV0bAYnRgFxyL7WB3F
- EC8OlK1me7ywog+VCymecWHvwZFHCSnZni0Y5MxXk1Ps7ZhhojiwBbbWIP4hdcv5KvQS
- RIw1Jj8qGRIOay9UxjMeJ/9KztHq9Qna+yEgzsAlquTs0vEnf8tjxEoiBvYQGVJkcxKX
- zr3g==
+ bh=DeFgcUrkNeVKboCpBXlqzidVzZtMesg9/1Y5VQkDHfk=;
+ b=i0c1uFUD2hp/LoozObvIuM36cT6TFPb3dZ+Pm3DnvSjeB9J1aCxD/JZ41WHIyuZ1tl
+ nXesEx3omxNKeUzY7GRfm9Dix+ZLpRdKcEzF/5RgVdXwJdzfN/yL046ICYZHq9OvdULH
+ undNBgWhNtiKuhYDaCZES0BKdkNt31yUYppso6J+7WOQX/oLoABSxmlVX6Bs+xazA2Nf
+ vD/MsVarKBGo6kXS9cmPhOb1sZ6ud0svP3n7/Oi3+5suEJjK9PD9ubuxcSITYivZJK22
+ BebX6As9umEkPlK3QenJXmicY5gPmH1JjDMHlfjJQVSGt80ggbIVyEaty+72wuEgmaOK
+ W9+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699607803; x=1700212603;
+ d=1e100.net; s=20230601; t=1699607804; x=1700212604;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mbp8XXdbG6B9pZBrryz1zASTDVDqNMiO4XNfxxKRD1M=;
- b=YCI2B1wGHObJ8A12nJcfto3EZy/x/niiDxrxOXttgHZ8Hts6Ko4RhlpH2GqVm/yUqo
- 6d4UkcrE+Ham0UnH/t72Tl60NyVPSp97s6BhgfOCm2c55ng3AxUeXWJvfQUrlwDdEbPm
- y9W1EGT002q0GBcyMd6MqfF/9s+JQ94fIE1VM/v5EGUG2zww0K44Su8kvpt5Rh36fDw7
- UOrHrP5tlyHei3KPPIrhE1Ymwu69C0WptLhqILsrlRqz/eQPDuCLvE/NtPeVlvsp7vbm
- 8Xd6TKuKq/ARhCXtukyqNKF0Iy7TNKGPiPmjDsvmNo5IOlApsFQ76oGu/YUI/V4GQXlj
- 85ug==
-X-Gm-Message-State: AOJu0Yx0tXXp2PK1sQsiIRjnAZ3ylF3EL6X8g0yEpjtGRf9lLYwek7Q3
- FxzuqXH90GAOvQMLpv5fxWUP8rZrVIVvYJZ1+om7sw==
-X-Google-Smtp-Source: AGHT+IEyvzD5cRGLe4v6eW6UL+vYFxGUg7RGlx6d8tKCAv9/eh/OdfWWc0ioXgDTi0p6qttGizkFXA==
-X-Received: by 2002:a2e:9904:0:b0:2bc:f2d7:f6ce with SMTP id
- v4-20020a2e9904000000b002bcf2d7f6cemr6321992lji.49.1699607802968; 
- Fri, 10 Nov 2023 01:16:42 -0800 (PST)
+ bh=DeFgcUrkNeVKboCpBXlqzidVzZtMesg9/1Y5VQkDHfk=;
+ b=i0MBdOKZ3whsp1Fktop8d0ORtVUBsoE4+OVBo32TAemIjuZOvgv8VtJhZcnLVtJqo3
+ M/oHhepkhBOfk106mKU1dNZPxuySPH1dabwNLw83kG4hf48ehmPSL0RpSi9vr/O2t7ZD
+ wDXIOa5I9TtF7Jqj9ibtup1DZFNko6/LtkgtoTsfIY+o7kiNBTQwirtSNio1lZF5vBAl
+ UV1UWcK26JvJkhO3FiQ9FFNhVCQY+ICxBofrIhqFYGFp/HsbZZ5LPoieujT8OziXVw0D
+ j5BxVTgBevL6fC22Z1COtn9xf0kEPc91O2uZGxbmHuJDu4XEDKCdbLNnxHtBhpLLUk+G
+ qpHA==
+X-Gm-Message-State: AOJu0YyE0OkCe5AISLP+/0fUCt7s/DCwJ9C9pleKzUd0/xa/ZrqsLdCs
+ gJOpLVY1zaVeWk1z+mvJHlp6leIB0Y0YUlXF+QLE3A==
+X-Google-Smtp-Source: AGHT+IHOaRjRFsMXrSp5gqbRRGQmJhqE5M59fIDTMgTheqMecik0BlntJiOT+zjHqRpdchbx3+KS4A==
+X-Received: by 2002:a2e:3315:0:b0:2c5:2182:48db with SMTP id
+ d21-20020a2e3315000000b002c5218248dbmr5774670ljc.20.1699607804405; 
+ Fri, 10 Nov 2023 01:16:44 -0800 (PST)
 Received: from localhost.localdomain (adsl-205.37.6.2.tellas.gr. [37.6.2.205])
  by smtp.gmail.com with ESMTPSA id
- p22-20020a05600c359600b004080f0376a0sm4537493wmq.42.2023.11.10.01.16.42
+ p22-20020a05600c359600b004080f0376a0sm4537493wmq.42.2023.11.10.01.16.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Nov 2023 01:16:42 -0800 (PST)
+ Fri, 10 Nov 2023 01:16:44 -0800 (PST)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 1/2] Add QEMU_WARN_UNUSED_RESULT attribute
-Date: Fri, 10 Nov 2023 11:16:38 +0200
-Message-Id: <84781fce2c3145a86d043d4c6b3b463af40eeed0.1699606819.git.manos.pitsidianakis@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-arm@nongnu.org (open list:OMAP)
+Subject: [PATCH 2/2] Add warn_unused_result attr to AUD_register_card
+Date: Fri, 10 Nov 2023 11:16:39 +0200
+Message-Id: <4b040fc18cb0e563e92ce084ca18b89a050a8aaa.1699606819.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1699606819.git.manos.pitsidianakis@linaro.org>
 References: <cover.1699606819.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x231.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x230.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,41 +95,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit adds QEMU_WARN_UNUSED_RESULT, a macro for the gcc function
-attribute `warn_unused_result`. The utility of this attribute is to
-ensure functions that return values that need to be inspected are not
-ignored by the caller.
+Ignoring the return value by accident is easy to miss as a bug. Such a
+bug was spotted by Coverity CID 1523899. Now, future instances of this
+type of bug will produce a warning when using GCC.
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- include/qemu/compiler.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ audio/audio.h      | 2 +-
+ hw/arm/omap2.c     | 8 +++++++-
+ hw/input/tsc210x.c | 8 +++++++-
+ 3 files changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
-index c797f0d457..7ddbf1f1cf 100644
---- a/include/qemu/compiler.h
-+++ b/include/qemu/compiler.h
-@@ -212,6 +212,20 @@
- # define QEMU_USED
- #endif
+diff --git a/audio/audio.h b/audio/audio.h
+index fcc22307be..b78c75962e 100644
+--- a/audio/audio.h
++++ b/audio/audio.h
+@@ -94,7 +94,7 @@ typedef struct QEMUAudioTimeStamp {
+ void AUD_vlog (const char *cap, const char *fmt, va_list ap) G_GNUC_PRINTF(2, 0);
+ void AUD_log (const char *cap, const char *fmt, ...) G_GNUC_PRINTF(2, 3);
  
-+/*
-+ * From GCC documentation:
-+ *
-+ *   The warn_unused_result attribute causes a warning to be emitted if a
-+ *   caller of the function with this attribute does not use its return value.
-+ *   This is useful for functions where not checking the result is either a
-+ *   security problem or always a bug, such as realloc.
-+ */
-+#if __has_attribute(warn_unused_result)
-+# define QEMU_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
-+#else
-+# define QEMU_WARN_UNUSED_RESULT
-+#endif
-+
- /*
-  * Ugly CPP trick that is like "defined FOO", but also works in C
-  * code.  Useful to replace #ifdef with "if" statements; assumes
+-bool AUD_register_card (const char *name, QEMUSoundCard *card, Error **errp);
++bool AUD_register_card (const char *name, QEMUSoundCard *card, Error **errp) QEMU_WARN_UNUSED_RESULT;
+ void AUD_remove_card (QEMUSoundCard *card);
+ CaptureVoiceOut *AUD_add_capture(
+     AudioState *s,
+diff --git a/hw/arm/omap2.c b/hw/arm/omap2.c
+index f170728e7e..59fc061120 100644
+--- a/hw/arm/omap2.c
++++ b/hw/arm/omap2.c
+@@ -614,7 +614,13 @@ static struct omap_eac_s *omap_eac_init(struct omap_target_agent_s *ta,
+         s->codec.card.name = g_strdup(current_machine->audiodev);
+         s->codec.card.state = audio_state_by_name(s->codec.card.name, &error_fatal);
+     }
+-    AUD_register_card("OMAP EAC", &s->codec.card, &error_fatal);
++    /*
++     * We pass error_fatal so on error QEMU will exit(). But we check the
++     * return value to make the warn_unused_result compiler warning go away.
++     */
++    if (!AUD_register_card("OMAP EAC", &s->codec.card, &error_fatal)) {
++        exit(1);
++    }
+ 
+     memory_region_init_io(&s->iomem, NULL, &omap_eac_ops, s, "omap.eac",
+                           omap_l4_region_size(ta, 0));
+diff --git a/hw/input/tsc210x.c b/hw/input/tsc210x.c
+index 950506fb38..003c664b56 100644
+--- a/hw/input/tsc210x.c
++++ b/hw/input/tsc210x.c
+@@ -1102,7 +1102,13 @@ static void tsc210x_init(TSC210xState *s,
+         s->card.name = g_strdup(current_machine->audiodev);
+         s->card.state = audio_state_by_name(s->card.name, &error_fatal);
+     }
+-    AUD_register_card(s->name, &s->card, &error_fatal);
++    /*
++     * We pass error_fatal so on error QEMU will exit(). But we check the
++     * return value to make the warn_unused_result compiler warning go away.
++     */
++    if (!AUD_register_card(s->name, &s->card, &error_fatal)) {
++        return;
++    }
+ 
+     qemu_register_reset((void *) tsc210x_reset, s);
+     vmstate_register(NULL, 0, vmsd, s);
 -- 
 2.39.2
 
