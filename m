@@ -2,92 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D547E7B83
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 11:53:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C31E7E7B86
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 11:56:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1P86-000211-85; Fri, 10 Nov 2023 05:52:50 -0500
+	id 1r1PBE-0003af-Fk; Fri, 10 Nov 2023 05:56:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r1P85-00020s-0Z
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 05:52:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1r1PB8-0003aG-M3
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 05:55:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r1P83-0005zO-1o
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 05:52:48 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1r1PB7-000705-4r
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 05:55:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699613566;
+ s=mimecast20190719; t=1699613756;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S2zYpv4LGpG6QINOzlwjpDU/HzAPDlqtkX+Ow47oAC0=;
- b=Dew4JEuGtFktKoGtJe9eh217xGGxsYLr3aWmGK9jLLd6y/REcXH5GjAuY2PNIfEiX51faQ
- dSfybus7d+htmUziClL3iRvQym0esa4r892LVFXdlR4dhC92LJHqUxnvDunqfSi0BXNDDy
- zCEAXTXN9jAleF7qjhPnnmeA8zUehBs=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HC6ViVtSZpmTqFoLN1KgicOiJRg6vudC4xOxGgnzFOU=;
+ b=ebKeEs6a5jiLg3XKEE/oCuiXnMeATugHbtlrFpRVFlYC/hOdZ1XC2OTtJrNB/f/qKCua0b
+ fXliKxdkZ0EQDcVq/ONqibhzaRFRpsaNNWBmHSz6fhb9jUljukSqlbQb4DZ3OJBfJ0aq82
+ NsUtLgaXG4WsxVdgfvYD2mZxOX8J06k=
+Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
+ [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-312-ASAR-pKtPje9t4Id-m45iQ-1; Fri, 10 Nov 2023 05:52:45 -0500
-X-MC-Unique: ASAR-pKtPje9t4Id-m45iQ-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-67012b06439so20516766d6.1
- for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 02:52:45 -0800 (PST)
+ us-mta-323-jxJHfy-DOHy6NhC_q6YENg-1; Fri, 10 Nov 2023 05:55:54 -0500
+X-MC-Unique: jxJHfy-DOHy6NhC_q6YENg-1
+Received: by mail-ua1-f72.google.com with SMTP id
+ a1e0cc1a2514c-7b9f0314231so605026241.3
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 02:55:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699613565; x=1700218365;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=S2zYpv4LGpG6QINOzlwjpDU/HzAPDlqtkX+Ow47oAC0=;
- b=HOa1Rub0A3r26C+HjYs/x7pkSJhfSZHlU6QWiBUt19j2/P0q8vYxNXGCAL+F2U9fi6
- fjzP0AQ2ljQg6YN+AZEfKmRui4q4xO0ukcm09qRj8GgZK24bIdFG6SP/q5Od+7OVD9e6
- rjcMAkEaV4d2hAEfnODdQfrQ1g3JvexniEe596/HYi/k4sDRlfrI+iKJG0uXqy1zOvbB
- fTtuI60o3WjVKHpudwYUu1FWf+K/bPyq2oqMT2yApbIs3Ey4AW4GcX2/nrp7UtFVpvcp
- dHDxXu1ogASvcpsaGwHo2CmBYuf8ffa+zkMsFA8OzBIgf7utGjvhdD6GteCZyEs+Uhuy
- CfNg==
-X-Gm-Message-State: AOJu0Yy8BXrczHBB7Sl1/mzOeDQvi46DoL0R4wUMa57o40+0S1IBrNl7
- FTLHhkqC73Ib9rjHxL76yocYMWKv1DRRfV3nbbjMA/SZrM9xuhTyw/1hqoIwPfnUqS+1Sbb3Yk+
- +jFeV4kvVUQq3zrE=
-X-Received: by 2002:a05:6214:f29:b0:658:49bb:f78f with SMTP id
- iw9-20020a0562140f2900b0065849bbf78fmr8639796qvb.39.1699613564819; 
- Fri, 10 Nov 2023 02:52:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHZNZsPcfrTADoH9gqkqQIOfW5yPylKIX/2o8TeCEv99aCwfcoulgJmSnqy/ZQTEsCbzKbVpw==
-X-Received: by 2002:a05:6214:f29:b0:658:49bb:f78f with SMTP id
- iw9-20020a0562140f2900b0065849bbf78fmr8639778qvb.39.1699613564504; 
- Fri, 10 Nov 2023 02:52:44 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- c10-20020a05621401ea00b0065b11053445sm2848260qvu.54.2023.11.10.02.52.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 10 Nov 2023 02:52:44 -0800 (PST)
-Message-ID: <07539cb1-2262-4ae9-82ea-cfb7b9b8f2d5@redhat.com>
-Date: Fri, 10 Nov 2023 11:52:41 +0100
+ d=1e100.net; s=20230601; t=1699613754; x=1700218554;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=HC6ViVtSZpmTqFoLN1KgicOiJRg6vudC4xOxGgnzFOU=;
+ b=tCpYyM3ixlaWJc3w95UOFY0X4Bt9cgO3oKIuucWXdWzu7CDlBRX8hBxpGBN0P1xhw6
+ tPgESuABF4L7ViHs5KBQJjdQrIdVBrOOxts9CloAizHP+W+Hx1VGTl2dfFB9HpIlILYQ
+ /n5pxxdFNznq+jh2RN8/OErOZpejL++Kpsr2mPRqvcxCQjFw80YprgbTdC2vbT0vHhwl
+ MmgyKIBXvnbPOo4yMJZdfHmu3rfmRir69cOGMptlyPtlle2soRwo0WGmuWzfSxWjibgR
+ HAfsoDQgax3UxKT7NrgGgAklcdTNu1nY2wHgv9I5fNyrW+n4ajOSUZexlBUACPEqU1E/
+ EpSw==
+X-Gm-Message-State: AOJu0YxV9qSHhBqBJGzU83SLVDTAoPbWKI97ZbqlpKK0PBMfCmTG53H6
+ eWRoKlv//a9iCBxNSNfrLz7EeIQs7kaAKua8SygTh4zW29XC0BIMX9E56G7yYTj47JUj+u4ffbY
+ 8vEasK+5Oe0Us8n4rbeJLvVxhPJ2uIec=
+X-Received: by 2002:a05:6102:e0c:b0:45f:101c:16d5 with SMTP id
+ o12-20020a0561020e0c00b0045f101c16d5mr9787914vst.19.1699613754128; 
+ Fri, 10 Nov 2023 02:55:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE3FuABxWgVVME1NntmTi8NOGK9oJsG+Gwcs7DF0NMK1jhVvO1EQeGmM+xCEqGqKDKaK4sOG/f8WSoaZm7a+i8=
+X-Received: by 2002:a05:6102:e0c:b0:45f:101c:16d5 with SMTP id
+ o12-20020a0561020e0c00b0045f101c16d5mr9787896vst.19.1699613753856; Fri, 10
+ Nov 2023 02:55:53 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/20] vfio/pci: Make vfio cdev pre-openable by passing
- a file handle
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com
-References: <20231109114529.1904193-1-zhenzhong.duan@intel.com>
- <20231109114529.1904193-11-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231109114529.1904193-11-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+References: <20231110093325.917900-1-pbonzini@redhat.com>
+ <95788d03-b854-996c-b8e3-981c79a1bb6c@eik.bme.hu>
+In-Reply-To: <95788d03-b854-996c-b8e3-981c79a1bb6c@eik.bme.hu>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 10 Nov 2023 11:55:41 +0100
+Message-ID: <CABgObfaROkW3f+YNmFLSN5rKX9BW197aPM2gBXPqx+1t34-GkA@mail.gmail.com>
+Subject: Re: [PATCH] tests: respect --enable/--disable-download for Avocado
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, jsnow@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,269 +95,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/9/23 12:45, Zhenzhong Duan wrote:
-> This gives management tools like libvirt a chance to open the vfio
-> cdev with privilege and pass FD to qemu. This way qemu never needs
-> to have privilege to open a VFIO or iommu cdev node.
-> 
-> Together with the earlier support of pre-opening /dev/iommu device,
-> now we have full support of passing a vfio device to unprivileged
-> qemu by management tool. This mode is no more considered for the
-> legacy backend. So let's remove the "TODO" comment.
-> 
-> Add a helper function vfio_device_get_name() to check fd and get
-> device name, it will also be used by other vfio devices.
-> 
-> There is no easy way to check if a device is mdev with FD passing,
-> so fail the x-balloon-allowed check unconditionally in this case.
-> 
-> There is also no easy way to get BDF as name with FD passing, so
-> we fake a name by VFIO_FD[fd].
-> 
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->   include/hw/vfio/vfio-common.h |  1 +
->   hw/vfio/helpers.c             | 34 +++++++++++++++++++++++++++++
->   hw/vfio/iommufd.c             | 12 +++++++----
->   hw/vfio/pci.c                 | 40 ++++++++++++++++++++++++-----------
->   4 files changed, 71 insertions(+), 16 deletions(-)
-> 
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index 3dac5c167e..960a14e8d8 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -238,6 +238,7 @@ struct vfio_info_cap_header *
->   vfio_get_device_info_cap(struct vfio_device_info *info, uint16_t id);
->   struct vfio_info_cap_header *
->   vfio_get_cap(void *ptr, uint32_t cap_offset, uint16_t id);
-> +int vfio_device_get_name(VFIODevice *vbasedev, Error **errp);
->   #endif
->   
->   bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
-> diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
-> index 168847e7c5..d80aa58719 100644
-> --- a/hw/vfio/helpers.c
-> +++ b/hw/vfio/helpers.c
-> @@ -20,6 +20,7 @@
->    */
->   
->   #include "qemu/osdep.h"
-> +#include CONFIG_DEVICES /* CONFIG_IOMMUFD */
->   #include <sys/ioctl.h>
->   
->   #include "hw/vfio/vfio-common.h"
-> @@ -609,3 +610,36 @@ bool vfio_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type)
->   
->       return ret;
->   }
-> +
-> +int vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
-> +{
-> +    struct stat st;
-> +
-> +    if (vbasedev->fd < 0) {
-> +        if (stat(vbasedev->sysfsdev, &st) < 0) {
-> +            error_setg_errno(errp, errno, "no such host device");
-> +            error_prepend(errp, VFIO_MSG_PREFIX, vbasedev->sysfsdev);
-> +            return -errno;
-> +        }
-> +        /* User may specify a name, e.g: VFIO platform device */
-> +        if (!vbasedev->name) {
-> +            vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
-> +        }
-> +    }
-> +#ifdef CONFIG_IOMMUFD
-> +    else {
-> +        if (!vbasedev->iommufd) {
+On Fri, Nov 10, 2023 at 11:00=E2=80=AFAM BALATON Zoltan <balaton@eik.bme.hu=
+> wrote:
+> > +if test "$download" =3D "enabled" ; then
+> > +    mkvenv_online_flag=3D" --online"
+>
+> Is leading space before -- intended? It does not seem to matter at usees
+> below.
 
+Maybe it's paranoia but I was worried that some shells would mess up
+"echo --foo". They did in the past, but it was many years ago.  It would
+be useful to add a
 
-Can we handle with this case without CONFIG_IOMMUFD, simply by
-testing vbasedev->iommufd ?
-
-> +            error_setg(errp, "Use FD passing only with iommufd backend");
-> +            return -EINVAL;
-> +        }
-> +        /*
-> +         * Give a name with fd so any function printing out vbasedev->name
-> +         * will not break.
-> +         */
-> +        if (!vbasedev->name) {
-> +            vbasedev->name = g_strdup_printf("VFIO_FD%d", vbasedev->fd);
-> +        }
-> +    }
-> +#endif
-> +    return 0;
-> +}
-> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-> index 44dc6848bf..fd30477275 100644
-> --- a/hw/vfio/iommufd.c
-> +++ b/hw/vfio/iommufd.c
-> @@ -326,11 +326,15 @@ static int iommufd_attach_device(const char *name, VFIODevice *vbasedev,
->       uint32_t ioas_id;
->       Error *err = NULL;
->   
-> -    devfd = iommufd_cdev_getfd(vbasedev->sysfsdev, errp);
-> -    if (devfd < 0) {
-> -        return devfd;
-> +    if (vbasedev->fd < 0) {
-> +        devfd = iommufd_cdev_getfd(vbasedev->sysfsdev, errp);
-> +        if (devfd < 0) {
-> +            return devfd;
-> +        }
-> +        vbasedev->fd = devfd;
-> +    } else {
-> +        devfd = vbasedev->fd;
->       }
-> -    vbasedev->fd = devfd;
->   
->       ret = iommufd_connect_and_bind(vbasedev, errp);
->       if (ret) {
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index e9a426200b..f95725ed16 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -44,6 +44,7 @@
->   #include "migration/blocker.h"
->   #include "migration/qemu-file.h"
->   #include "sysemu/iommufd.h"
-> +#include "monitor/monitor.h"
->   
->   #define TYPE_VFIO_PCI_NOHOTPLUG "vfio-pci-nohotplug"
->   
-> @@ -2934,18 +2935,23 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->       VFIODevice *vbasedev = &vdev->vbasedev;
->       char *tmp, *subsys;
->       Error *err = NULL;
-> -    struct stat st;
->       int i, ret;
->       bool is_mdev;
->       char uuid[UUID_STR_LEN];
->       char *name;
->   
-> -    if (!vbasedev->sysfsdev) {
-> +    if (vbasedev->fd < 0 && !vbasedev->sysfsdev) {
->           if (!(~vdev->host.domain || ~vdev->host.bus ||
->                 ~vdev->host.slot || ~vdev->host.function)) {
->               error_setg(errp, "No provided host device");
-> +#ifdef CONFIG_IOMMUFD
-> +            error_append_hint(errp, "Use -device vfio-pci,host=DDDD:BB:DD.F, "
-> +                              "-device vfio-pci,sysfsdev=PATH_TO_DEVICE "
-> +                              "or -device vfio-pci,fd=DEVICE_FD\n");
-> +#else
->               error_append_hint(errp, "Use -device vfio-pci,host=DDDD:BB:DD.F "
->                                 "or -device vfio-pci,sysfsdev=PATH_TO_DEVICE\n");
-> +#endif
-
-or simply :
-
-
-                error_append_hint(errp, "Use -device vfio-pci,host=DDDD:BB:DD.F "
-  +#ifdef CONFIG_IOMMUFD
-  +                              "or -device vfio-pci,fd=DEVICE_FD "
-  +#endif
-                                  "or -device vfio-pci,sysfsdev=PATH_TO_DEVICE\n");
-
-
-
->               return;
->           }
->           vbasedev->sysfsdev =
-> @@ -2954,13 +2960,9 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->                               vdev->host.slot, vdev->host.function);
->       }
->   
-> -    if (stat(vbasedev->sysfsdev, &st) < 0) {
-> -        error_setg_errno(errp, errno, "no such host device");
-> -        error_prepend(errp, VFIO_MSG_PREFIX, vbasedev->sysfsdev);
-> +    if (vfio_device_get_name(vbasedev, errp)) {
->           return;
->       }
-> -
-> -    vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
->       vbasedev->ops = &vfio_pci_ops;
->       vbasedev->type = VFIO_DEVICE_TYPE_PCI;
->       vbasedev->dev = DEVICE(vdev);
-> @@ -3320,6 +3322,7 @@ static void vfio_instance_init(Object *obj)
->       vdev->host.bus = ~0U;
->       vdev->host.slot = ~0U;
->       vdev->host.function = ~0U;
-> +    vdev->vbasedev.fd = -1;
-We should probably move the all VFIODevice initializations :
-
-     vbasedev->ops = &vfio_pci_ops;
-     vbasedev->type = VFIO_DEVICE_TYPE_PCI;
-     vbasedev->dev = DEVICE(vdev);
-
-under vfio_instance_init (should be called vfio_pci_instance_init).
-
-This is true for all other VFIO devices. May be not for this series,
-it can come later.
-
-
->   
->       vdev->nv_gpudirect_clique = 0xFF;
->   
-> @@ -3373,11 +3376,6 @@ static Property vfio_pci_dev_properties[] = {
->                                      qdev_prop_nv_gpudirect_clique, uint8_t),
->       DEFINE_PROP_OFF_AUTO_PCIBAR("x-msix-relocation", VFIOPCIDevice, msix_relo,
->                                   OFF_AUTOPCIBAR_OFF),
-> -    /*
-> -     * TODO - support passed fds... is this necessary?
-> -     * DEFINE_PROP_STRING("vfiofd", VFIOPCIDevice, vfiofd_name),
-> -     * DEFINE_PROP_STRING("vfiogroupfd, VFIOPCIDevice, vfiogroupfd_name),
-> -     */
->   #ifdef CONFIG_IOMMUFD
->       DEFINE_PROP_LINK("iommufd", VFIOPCIDevice, vbasedev.iommufd,
->                        TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
-> @@ -3385,6 +3383,21 @@ static Property vfio_pci_dev_properties[] = {
->       DEFINE_PROP_END_OF_LIST(),
->   };
->   
-> +#ifdef CONFIG_IOMMUFD
-> +static void vfio_pci_set_fd(Object *obj, const char *str, Error **errp)
-> +{
-> +    VFIOPCIDevice *vdev = VFIO_PCI(obj);
-> +    int fd = -1;
-> +
-> +    fd = monitor_fd_param(monitor_cur(), str, errp);
-> +    if (fd == -1) {
-> +        error_prepend(errp, "Could not parse remote object fd %s:", str);
-> +        return;
-> +    }
-> +    vdev->vbasedev.fd = fd;
-
-We could introduce a common helper in hw/vfio/common.c to remove code
-duplication :
-
-#ifdef CONFIG_IOMMUFD
-static void vfio_pci_set_fd(Object *obj, const char *str, Error **errp)
-{
-     vfio_device_set_fd(&VFIO_PCI(obj)->vbasedev, str, errp);
+print() {
+  printf '%s\n' "$*"
 }
-#endif
-  
 
-Thanks,
+shell function but this was not the right patch to do it.
 
-C.
+Paolo
 
-
-
-> +}
-> +#endif
-> +
->   static void vfio_pci_dev_class_init(ObjectClass *klass, void *data)
->   {
->       DeviceClass *dc = DEVICE_CLASS(klass);
-> @@ -3392,6 +3405,9 @@ static void vfio_pci_dev_class_init(ObjectClass *klass, void *data)
->   
->       dc->reset = vfio_pci_reset;
->       device_class_set_props(dc, vfio_pci_dev_properties);
-> +#ifdef CONFIG_IOMMUFD
-> +    object_class_property_add_str(klass, "fd", NULL, vfio_pci_set_fd);
-> +#endif
->       dc->desc = "VFIO-based PCI device assignment";
->       set_bit(DEVICE_CATEGORY_MISC, dc->categories);
->       pdc->realize = vfio_realize;
+> Regards,
+> BALATON Zolatn
+>
+> > fi
+> >
+> > if test "$docs" !=3D "disabled" ; then
+> >     if ! $mkvenv ensuregroup \
+> > -         $mkvenv_flags \
+> > +         $(test "$docs" =3D "enabled" && echo "$mkvenv_online_flag") \
+> >          ${source_path}/pythondeps.toml docs;
+> >     then
+> >         if test "$docs" =3D "enabled" ; then
+> > @@ -1631,6 +1631,7 @@ if test "$container" !=3D no; then
+> > fi
+> > echo "SUBDIRS=3D$subdirs" >> $config_host_mak
+> > echo "PYTHON=3D$python" >> $config_host_mak
+> > +echo "MKVENV_ENSUREGROUP=3D$mkvenv ensuregroup $mkvenv_online_flag" >>=
+ $config_host_mak
+> > echo "GENISOIMAGE=3D$genisoimage" >> $config_host_mak
+> > echo "MESON=3D$meson" >> $config_host_mak
+> > echo "NINJA=3D$ninja" >> $config_host_mak
+> > diff --git a/tests/Makefile.include b/tests/Makefile.include
+> > index dab1989a071..c9d1674bd07 100644
+> > --- a/tests/Makefile.include
+> > +++ b/tests/Makefile.include
+> > @@ -111,7 +111,7 @@ quiet-venv-pip =3D $(quiet-@)$(call quiet-command-r=
+un, \
+> >
+> > $(TESTS_VENV_TOKEN): $(SRC_PATH)/pythondeps.toml
+> >       $(call quiet-venv-pip,install -e "$(SRC_PATH)/python/")
+> > -     $(PYTHON) python/scripts/mkvenv.py ensuregroup --online $< avocad=
+o
+> > +     $(MKVENV_ENSUREGROUP) $< avocado
+> >       $(call quiet-command, touch $@)
+> >
+> > $(TESTS_RESULTS_DIR):
+> >
+>
 
 
