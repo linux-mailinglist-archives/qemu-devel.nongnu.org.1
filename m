@@ -2,62 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 951A87E8355
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 21:04:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 655E37E834F
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 21:03:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1XiQ-00021I-Ew; Fri, 10 Nov 2023 15:02:54 -0500
+	id 1r1XiS-00021r-1k; Fri, 10 Nov 2023 15:02:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r1XiK-0001yI-Tx
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r1XiM-0001yK-0n
  for qemu-devel@nongnu.org; Fri, 10 Nov 2023 15:02:52 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28])
+Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r1XiJ-0004bd-8L
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 15:02:48 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r1XiK-0004cS-Bm
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 15:02:49 -0500
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 08212219B2;
- Fri, 10 Nov 2023 20:02:45 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 0197C1F8C0;
+ Fri, 10 Nov 2023 20:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1699646565; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=ZXX+6EFbIwN1A5TtRW0vUsnttmRUbTPgjIIiJ5wDYUg=;
- b=ktJms19WmWnzLf4qJ4byxnlWD8D9WTEB0BrzbZaxVrwVzfeYuQ7GYdZB5vuuhKEecIojh1
- PfSMDTdz5596TUBwWuB17cV5inl5lSrxugG817d5ePE9uhrf6KkRuk8uKjuanOMptCF0cV
- mf2ATc/0EBeuf9BFv7UevZuioASYcNI=
+ t=1699646567; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=tmwd7iHU0NMBiDqCHDKHLq00DyPOwq8NnlmxuEjsLMc=;
+ b=c0+KaYSBTbP0WIPIdh8/fSjGJONOiF92amDY0rFZNXMrS0dQT5lb/Yj7Q4EfZvWKl8bZGW
+ f/MjBhXAHb2gUXOTJAg2TYjt9XgtBCBrFugbSzORVUQyI9tgf0/TOxwkZGfWb/MsshHMoP
+ PHkxfi/TIqpwZSDSrNOh7SksaOVy2C8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1699646565;
+ s=susede2_ed25519; t=1699646567;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=ZXX+6EFbIwN1A5TtRW0vUsnttmRUbTPgjIIiJ5wDYUg=;
- b=poeSZLeSwz+Vg5wfwhjzBh7bNHMCT0v8srZFzkBfWXBY/zsd6dIlLWdF7lx/ipH7z3D+k3
- g7RGEV7jsDu0xsBw==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=tmwd7iHU0NMBiDqCHDKHLq00DyPOwq8NnlmxuEjsLMc=;
+ b=DWgoLPswpP577C0T1kGrAMwC4spNHL62cOEtHeSm5aVQeYFODcr5VUTWbLgsnyBeylskGM
+ w54tCF+EZdR/naCw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 86601138FC;
- Fri, 10 Nov 2023 20:02:43 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 74481138FC;
+ Fri, 10 Nov 2023 20:02:45 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 3bdVFGOMTmWiaQAAMHmgww
- (envelope-from <farosas@suse.de>); Fri, 10 Nov 2023 20:02:43 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id ACsBEGWMTmWiaQAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 10 Nov 2023 20:02:45 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v2 0/4] migration: Fix multifd qemu_mutex_destroy race
-Date: Fri, 10 Nov 2023 17:02:37 -0300
-Message-Id: <20231110200241.20679-1-farosas@suse.de>
+Subject: [RFC PATCH v2 1/4] migration/multifd: Stop setting p->ioc before
+ connecting
+Date: Fri, 10 Nov 2023 17:02:38 -0300
+Message-Id: <20231110200241.20679-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20231110200241.20679-1-farosas@suse.de>
+References: <20231110200241.20679-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -80,36 +87,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-changes:
-- dropped the Error patch
-- removed p->running
-- joined the TLS thread
+This is being shadowed but the assignments at
+multifd_channel_connect() and multifd_tls_channel_connect() .
 
-v1:
-https://lore.kernel.org/r/20231109165856.15224-1-farosas@suse.de
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ migration/multifd.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-We're calling qemu_sem_post() in threads other than the multifd
-channel and the migration thread. This is vulnerable to a race with
-multifd_save_cleanup() which calls qemu_sem_destroy(). If we attempt
-to destroy the semaphore mutex with the lock taken, the code asserts.
-
-We're hitting this in the current master and we've had reports of this
-in the past already:
-
-[PATCH] migrate/multifd: fix coredump when the multifd thread cleanup
-https://lore.kernel.org/r/20230621081826.3203053-1-zhangjianguo18@huawei.com
-
-Fabiano Rosas (4):
-  migration/multifd: Stop setting p->ioc before connecting
-  migration/multifd: Join the TLS thread
-  migration/multifd: Remove p->running
-  migration/multifd: Move semaphore release into main thread
-
- migration/migration.c |  4 +-
- migration/multifd.c   | 87 +++++++++++++++++++++++--------------------
- migration/multifd.h   |  9 ++---
- 3 files changed, 53 insertions(+), 47 deletions(-)
-
+diff --git a/migration/multifd.c b/migration/multifd.c
+index ec58c58082..409460684f 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -883,8 +883,7 @@ static void multifd_new_send_channel_async(QIOTask *task, gpointer opaque)
+ 
+     trace_multifd_new_send_channel_async(p->id);
+     if (!qio_task_propagate_error(task, &local_err)) {
+-        p->c = ioc;
+-        qio_channel_set_delay(p->c, false);
++        qio_channel_set_delay(ioc, false);
+         p->running = true;
+         if (multifd_channel_connect(p, ioc, &local_err)) {
+             return;
 -- 
 2.35.3
 
