@@ -2,83 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 362D67E7E00
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 18:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 591F87E7E0C
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 18:14:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1UwP-0006ry-Rf; Fri, 10 Nov 2023 12:05:09 -0500
+	id 1r1V4T-0002op-EX; Fri, 10 Nov 2023 12:13:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kevin@koconnor.net>)
- id 1r1UwO-0006rh-37
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 12:05:08 -0500
-Received: from mail-qt1-x82f.google.com ([2607:f8b0:4864:20::82f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <kevin@koconnor.net>)
- id 1r1UwM-0006QZ-DG
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 12:05:07 -0500
-Received: by mail-qt1-x82f.google.com with SMTP id
- d75a77b69052e-41c157bbd30so14770321cf.0
- for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 09:05:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=koconnor.net; s=google; t=1699635905; x=1700240705; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=Bwh3BGIGBAH45Tbe+acgCu7li5SjWHmyNADyZQRg2mQ=;
- b=hj6IjHukLll5rwSXISduZM0g4vv672hkeuXZvCa8Q0aZQqzqg1MvQZcrEzvMbv1dAu
- Kei9ByhXvwbN13tSVb5MOy8MioX2kRFmZlwicbfjJonnWVYDHaag7GYopp8d8fEIZITW
- 9bPPoV8nX5AvjN2WbVazYoJXKFVLYxQBMn9ZA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699635905; x=1700240705;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Bwh3BGIGBAH45Tbe+acgCu7li5SjWHmyNADyZQRg2mQ=;
- b=i8BYFgiMrZ+8IRFWTAuzhyB0OTEeGvXTNbT5pu1YFfUHHBjbKM8mg0g/8PECXL1e/n
- 8eCGgpLeeJHUtwJu8rlR9wBggfdxA6qgQLiorgtLNNGsRguv2jN+axVTmDJmK8p6CmnS
- YyLGEnk/j6hNUtE250cDmXunZvz2V606Kv7lNYTJa+qG4MFHw2V6e5WPU1/a7IXJAjGb
- COoKtR/dBfoJUiyiTNt66QbVwfE3ae8XKetayE/2LQPUaVBDCjNjrknAmaQsGBJSdF47
- bbvFpM/hWvjs+sjQfOmnBFjwzdSMn6PL6LuOEH8/jYlHqyD9HuansyBe9hfbv/aNQ969
- nUyQ==
-X-Gm-Message-State: AOJu0YwKvQDyEb0WJp6n54Ff9g1riQ0YSgMIuUymRX7+/WSXD/pVjYMW
- h5udW0KwR1VaQ8gvZev7m2GLrw==
-X-Google-Smtp-Source: AGHT+IG8/chLjso3Q+5AiZ2LJUiTtOrTNGdxuP4MAAJtYdkPLOaI51QRJAP8s98OcCamYclwzyVmvg==
-X-Received: by 2002:a05:622a:6:b0:421:bbb8:e70b with SMTP id
- x6-20020a05622a000600b00421bbb8e70bmr749858qtw.27.1699635905025; 
- Fri, 10 Nov 2023 09:05:05 -0800 (PST)
-Received: from localhost ([64.18.11.67]) by smtp.gmail.com with ESMTPSA id
- h6-20020ac85686000000b0041818df8a0dsm2909785qta.36.2023.11.10.09.05.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Nov 2023 09:05:04 -0800 (PST)
-Date: Fri, 10 Nov 2023 12:05:03 -0500
-From: Kevin O'Connor <kevin@koconnor.net>
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Claudio Fontana <cfontana@suse.de>,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, seabios@seabios.org,
- qemu-devel@nongnu.org
-Subject: Re: [SeaBIOS] [PATCH v5] limit physical address space size
-Message-ID: <ZU5iv5dSNyyoisTN@morn>
-References: <20231107130309.3257776-1-kraxel@redhat.com>
- <ZUvVCHWbU29+eDm7@morn>
- <59437ef3-7b94-2aa4-31b4-012412ce160b@suse.de>
- <npmimli5x4vcwxb3csaaut3sobuzsex7pgtf4xbrbnfd22hnyz@ixh5tmn4xkpk>
- <iqerqemhgokkgemaxnfktoz6ssrk3uqc4bncoghmhhxaaycleo@u5k642niiya3>
- <ZU5eAKNwo4kxVG8R@morn>
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1r1V4P-0002oW-GB
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 12:13:25 -0500
+Received: from mail-bn8nam04on2071.outbound.protection.outlook.com
+ ([40.107.100.71] helo=NAM04-BN8-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1r1V4L-0008Ar-24
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 12:13:23 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TqG8Fy0VGrMgwn70Vc8/UKXX0b7efQBxMf+sMrWZdaKL4oJaE7fE5TVQtuSyuuGUspz3wVKLxv1aqouC9m+2yp7hpIsEK8KI2Uz8Zh20eIKLIfulXOqHq7YUOiewuv9mMolJsNBg5NHSv8JGdTonI1D1MrQVN+A3uqiqyDkKUQAkcbNL1kzM8MY3kHjV/6uVE1sYgwUyPOphiaw8mNksPSB76LACZJ6P3skTqBTtWBT3t59SQyWiGiPDVbYA3mQjdepNiaBBc3M+sGJakQMrQ7CBXyniB3WGQ9N4Hpki0qlp27bzFoIWgqK9k5OTm4L+vFUs0BRkyL1BFMCMd36ang==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Qrs+3NcZdT+h52uwmz3T53vLM/StVDHg51KXJx1bms0=;
+ b=DAH05n3SNcHjKOaz7Y/U5295CB4XvoTqUlxcwUSyfjEHGxB8OO4jN1FM9SfQ4lzc/LuQWkKr20RDCR367NcWi7vnbqOUwDEY/d/qjcYDwPYS/fPyUQq4rLC1kt90gBPd/kWlarVClWQIGV0gPheLjcGUp1Ae8aQaDv4W0PwhE8X8RT1He5gitfm8wAM7DzggNNKNGqwd8gm9DaZjTH20jHTU19tQDBBaW4QAMMxr7Hw6vIbUYHLnMgDHrw6C5z+ILGqNwCoe2zSsWpCd8NU7xGoJyD+bKGZY1f1E/gsz7b0NvjpEVel5xrhTQkkJlRR6WRfrnRZ4k9trsD6Y5P+t+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Qrs+3NcZdT+h52uwmz3T53vLM/StVDHg51KXJx1bms0=;
+ b=1/zMSz8Pd9nXCv8hR6M18opJ5jwdaabDocmdthtzpmGFt9FsDp8yapl7KsnHqS2qaWD0JaQCRrHq/CrsyXTEPUj/TW0azmq2c9v4+MR4XAmovexRPhvBn+bZFO9LG0cMWgREZg/87Vrsyv2D10W9yYANiMqFUjF/9zWOfrdk76c=
+Received: from DM6PR07CA0104.namprd07.prod.outlook.com (2603:10b6:5:330::30)
+ by MW3PR12MB4521.namprd12.prod.outlook.com (2603:10b6:303:53::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.29; Fri, 10 Nov
+ 2023 17:08:13 +0000
+Received: from DS3PEPF000099DE.namprd04.prod.outlook.com
+ (2603:10b6:5:330:cafe::d8) by DM6PR07CA0104.outlook.office365.com
+ (2603:10b6:5:330::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.21 via Frontend
+ Transport; Fri, 10 Nov 2023 17:08:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS3PEPF000099DE.mail.protection.outlook.com (10.167.17.200) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6977.16 via Frontend Transport; Fri, 10 Nov 2023 17:08:13 +0000
+Received: from bmoger-ubuntu.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Fri, 10 Nov
+ 2023 11:08:11 -0600
+From: Babu Moger <babu.moger@amd.com>
+To: <pbonzini@redhat.com>, <richard.henderson@linaro.org>,
+ <eduardo@habkost.net>
+CC: <mst@redhat.com>, <marcel.apfelbaum@gmail.com>, <qemu-devel@nongnu.org>,
+ <kvm@vger.kernel.org>, <Michael.Roth@amd.com>, <nikunj.dadhania@amd.com>,
+ <babu.moger@amd.com>
+Subject: [PATCH] target/i386: Fix CPUID encoding of Fn8000001E_ECX
+Date: Fri, 10 Nov 2023 11:08:06 -0600
+Message-ID: <20231110170806.70962-1-babu.moger@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZU5eAKNwo4kxVG8R@morn>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82f;
- envelope-from=kevin@koconnor.net; helo=mail-qt1-x82f.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099DE:EE_|MW3PR12MB4521:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2799adaa-25ab-4b33-608c-08dbe20f9fc4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: NV9RN4womyxVIBv5P8/x7Sz6YdXJNuJv2LKLCHO5s3qN1ZidswAuE2/v/tfGXy1lgz6n3ydXzl0aVNeNGBED1UDPRWPV7zaA5UjOXlP2XfLzfohoAuM3g192HvqVB2CphxCEeDQVacqe6FlHqTUZeWHMcjQFfUgo95ddY02csDYyvF19rsLeMfQAWN95+BxqobI2P57XCfb1u64tXokfa/o+CuH5LxBBeWPxldB1f5M5izNJYPDTKpiuBeWSq9muFWNRYYBkdGn+EylQ2QRph153bldjUGZ2p8oKyxLgbwbBYfPhKAcxNaJVYBGQTWl0T2K5ig5TrGFxEvKCgCzb8pL692TOHXq6Y4+jJqDDCZlGGYNzuNw1x6+pcB+jvRNuPtANIHXjWuixYvKCEJmOeG+xX/rLJ9tB1Cgv26MrcXFIvkL1D2C36+Q3/2nX7JsoGRRM5+KvGkkiLckfhWuMBIgS+VNgHas0NBQWkSxVVpVG9wlim6Y2i2oBoj42/rLTi1Iuf/Pdou1EIe7yWKxG4vUZ23DrJjcm21xG0vaVqVBJA9KkoZa+Pa8STlvkY4Sr8nV1POl4ivLFndE+YtcuKgfSNMvY+/ObKV+XCKoq0HGTnPnQNX04c4iGqItiOHdszp2FxpZipuKEUBrMtpKLadWTu6ywPxhiq/cYpr02uY796nNVVD4uT4FnBSlOxp4G/o94IKQcQMKc+qpJOcNlKEMdutRTFg0d5ij826BHqOIPLfMeeySoBie3jHthRpMS
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(376002)(136003)(346002)(396003)(39860400002)(230922051799003)(451199024)(64100799003)(82310400011)(1800799009)(186009)(36840700001)(40470700004)(46966006)(426003)(40460700003)(40480700001)(1076003)(2616005)(2906002)(16526019)(26005)(336012)(36860700001)(83380400001)(41300700001)(8936002)(478600001)(5660300002)(8676002)(316002)(7696005)(44832011)(47076005)(4326008)(966005)(70206006)(70586007)(54906003)(81166007)(110136005)(356005)(82740400003)(6666004)(36756003)(86362001)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2023 17:08:13.5109 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2799adaa-25ab-4b33-608c-08dbe20f9fc4
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099DE.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4521
+Received-SPF: softfail client-ip=40.107.100.71;
+ envelope-from=Babu.Moger@amd.com;
+ helo=NAM04-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,106 +121,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 10, 2023 at 11:44:48AM -0500, Kevin O'Connor wrote:
-> On Fri, Nov 10, 2023 at 12:04:24PM +0100, Gerd Hoffmann wrote:
-> > -        if (CPUPhysBits) {
-> > -            u64 top = 1LL << CPUPhysBits;
-> > +        if (pci_phys_bits) {
-> 
-> FYI, this is a change in behavior - previously this condition would
-> have been taken even if CPULongMode or RamSizeOver4G is false.  I'm
-> not sure if this change is intentional.  (My example patch below
-> follows your lead here.)
-> 
+Observed the following failure while booting the SEV-SNP guest and the
+guest fails to boot with the smp parameters:
+"-smp 192,sockets=1,dies=12,cores=8,threads=2".
 
-On closer inspection, I think this change in behavior was not
-intended.  How about variable names like the below instead.
+qemu-system-x86_64: sev_snp_launch_update: SNP_LAUNCH_UPDATE ret=-5 fw_error=22 'Invalid parameter'
+qemu-system-x86_64: SEV-SNP: CPUID validation failed for function 0x8000001e, index: 0x0.
+provided: eax:0x00000000, ebx: 0x00000100, ecx: 0x00000b00, edx: 0x00000000
+expected: eax:0x00000000, ebx: 0x00000100, ecx: 0x00000300, edx: 0x00000000
+qemu-system-x86_64: SEV-SNP: failed update CPUID page
 
--Kevin
+Reason for the failure is due to overflowing of bits used for "Node per
+processor" in CPUID Fn8000001E_ECX. This field's width is 3 bits wide and
+can hold maximum value 0x7. With dies=12 (0xB), it overflows and spills
+over into the reserved bits. In the case of SEV-SNP, this causes CPUID
+enforcement failure and guest fails to boot.
 
+The PPR documentation for CPUID_Fn8000001E_ECX [Node Identifiers]
+=================================================================
+Bits    Description
+31:11   Reserved.
 
-diff --git a/src/fw/pciinit.c b/src/fw/pciinit.c
-index c7084f5..6b13cd5 100644
---- a/src/fw/pciinit.c
-+++ b/src/fw/pciinit.c
-@@ -46,12 +46,16 @@ static const char *region_type_name[] = {
-     [ PCI_REGION_TYPE_PREFMEM ] = "prefmem",
- };
+10:8    NodesPerProcessor: Node per processor. Read-only.
+        ValidValues:
+        Value   Description
+        0h      1 node per processor.
+        7h-1h   Reserved.
+
+7:0     NodeId: Node ID. Read-only. Reset: Fixed,XXh.
+=================================================================
+
+As in the spec, the valid value for "node per processor" is 0 and rest
+are reserved.
+
+Looking back at the history of decoding of CPUID_Fn8000001E_ECX, noticed
+that there were cases where "node per processor" can be more than 1. It
+is valid only for pre-F17h (pre-EPYC) architectures. For EPYC or later
+CPUs, the linux kernel does not use this information to build the L3
+topology.
+
+Also noted that the CPUID Function 0x8000001E_ECX is available only when
+TOPOEXT feature is enabled. This feature is enabled only for EPYC(F17h)
+or later processors. So, previous generation of processors do not not
+enumerate 0x8000001E_ECX leaf.
+
+There could be some corner cases where the older guests could enable the
+TOPOEXT feature by running with -cpu host, in which case legacy guests
+might notice the topology change. To address those cases introduced a
+new CPU property "legacy-multi-node". It will be true for older machine
+types to maintain compatibility. By default, it will be false, so new
+decoding will be used going forward.
+
+The documentation is taken from Preliminary Processor Programming
+Reference (PPR) for AMD Family 19h Model 11h, Revision B1 Processors 55901
+Rev 0.25 - Oct 6, 2022.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 31ada106d891 ("Simplify CPUID_8000_001E for AMD")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537
+Signed-off-by: Babu Moger <babu.moger@amd.com>
+---
+ hw/i386/pc.c      |  4 +++-
+ target/i386/cpu.c | 18 ++++++++++--------
+ target/i386/cpu.h |  1 +
+ 3 files changed, 14 insertions(+), 9 deletions(-)
+
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 188bc9d0f8..624d5da146 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -77,7 +77,9 @@
+     { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
+     { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
  
-+// Memory ranges exported to legacy ACPI type table generation
- u64 pcimem_start   = BUILD_PCIMEM_START;
- u64 pcimem_end     = BUILD_PCIMEM_END;
- u64 pcimem64_start = BUILD_PCIMEM64_START;
- u64 pcimem64_end   = BUILD_PCIMEM64_END;
--u64 pci_io_low_end = 0xa000;
--u32 pci_use_64bit  = 0;
-+
-+// Resource allocation limits
-+static u64 pci_io_low_end = 0xa000;
-+static u64 pci_mem64_top  = 0;
-+static u32 pci_pad_mem64  = 0;
+-GlobalProperty pc_compat_8_1[] = {};
++GlobalProperty pc_compat_8_1[] = {
++    { TYPE_X86_CPU, "legacy-multi-node", "on" },
++};
+ const size_t pc_compat_8_1_len = G_N_ELEMENTS(pc_compat_8_1);
  
- struct pci_region_entry {
-     struct pci_device *dev;
-@@ -966,8 +970,9 @@ static int pci_bios_check_devices(struct pci_bus *busses)
-             int resource_optional = 0;
-             if (hotplug_support == HOTPLUG_PCIE)
-                 resource_optional = pcie_cap && (type == PCI_REGION_TYPE_IO);
--            if (hotplug_support && pci_use_64bit && is64 && (type == PCI_REGION_TYPE_PREFMEM))
--                align = (u64)1 << (CPUPhysBits - 11);
-+            if (hotplug_support && pci_pad_mem64 && is64
-+                && (type == PCI_REGION_TYPE_PREFMEM))
-+                align = pci_mem64_top >> 11;
-             if (align > sum && hotplug_support && !resource_optional)
-                 sum = align; /* reserve min size for hot-plug */
-             if (size > sum) {
-@@ -1111,7 +1116,7 @@ static void pci_bios_map_devices(struct pci_bus *busses)
-         panic("PCI: out of I/O address space\n");
- 
-     dprintf(1, "PCI: 32: %016llx - %016llx\n", pcimem_start, pcimem_end);
--    if (pci_use_64bit || pci_bios_init_root_regions_mem(busses)) {
-+    if (pci_pad_mem64 || pci_bios_init_root_regions_mem(busses)) {
-         struct pci_region r64_mem, r64_pref;
-         r64_mem.list.first = NULL;
-         r64_pref.list.first = NULL;
-@@ -1131,14 +1136,13 @@ static void pci_bios_map_devices(struct pci_bus *busses)
-         r64_mem.base = le64_to_cpu(romfile_loadint("etc/reserved-memory-end", 0));
-         if (r64_mem.base < 0x100000000LL + RamSizeOver4G)
-             r64_mem.base = 0x100000000LL + RamSizeOver4G;
--        if (CPUPhysBits) {
--            u64 top = 1LL << CPUPhysBits;
-+        if (pci_mem64_top) {
-             u64 size = (ALIGN(sum_mem, (1LL<<30)) +
-                         ALIGN(sum_pref, (1LL<<30)));
--            if (pci_use_64bit)
--                size = ALIGN(size, (1LL<<(CPUPhysBits-3)));
--            if (r64_mem.base < top - size) {
--                r64_mem.base = top - size;
-+            if (pci_pad_mem64)
-+                size = ALIGN(size, pci_mem64_top >> 3);
-+            if (r64_mem.base < pci_mem64_top - size) {
-+                r64_mem.base = pci_mem64_top - size;
-             }
-             if (e820_is_used(r64_mem.base, size))
-                 r64_mem.base -= size;
-@@ -1181,8 +1185,18 @@ pci_setup(void)
- 
-     dprintf(3, "pci setup\n");
- 
-+    if (CPUPhysBits) {
-+        pci_mem64_top = 1LL << CPUPhysBits;
-+        if (CPUPhysBits > 46) {
-+            // Old linux kernels have trouble dealing with more than 46
-+            // phys-bits, so avoid that for now.  Seems to be a bug in the
-+            // virtio-pci driver.  Reported: centos-7, ubuntu-18.04
-+            pci_mem64_top = 1LL << 46;
-+        }
+ GlobalProperty pc_compat_8_0[] = {
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 358d9c0a65..baee9394a1 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -398,12 +398,9 @@ static void encode_topo_cpuid8000001e(X86CPU *cpu, X86CPUTopoInfo *topo_info,
+      * 31:11 Reserved.
+      * 10:8 NodesPerProcessor: Node per processor. Read-only. Reset: XXXb.
+      *      ValidValues:
+-     *      Value Description
+-     *      000b  1 node per processor.
+-     *      001b  2 nodes per processor.
+-     *      010b Reserved.
+-     *      011b 4 nodes per processor.
+-     *      111b-100b Reserved.
++     *      Value   Description
++     *      0h      1 node per processor.
++     *      7h-1h   Reserved.
+      *  7:0 NodeId: Node ID. Read-only. Reset: XXh.
+      *
+      * NOTE: Hardware reserves 3 bits for number of nodes per processor.
+@@ -412,8 +409,12 @@ static void encode_topo_cpuid8000001e(X86CPU *cpu, X86CPUTopoInfo *topo_info,
+      * NodeId is combination of node and socket_id which is already decoded
+      * in apic_id. Just use it by shifting.
+      */
+-    *ecx = ((topo_info->dies_per_pkg - 1) << 8) |
+-           ((cpu->apic_id >> apicid_die_offset(topo_info)) & 0xFF);
++    if (cpu->legacy_multi_node) {
++        *ecx = ((topo_info->dies_per_pkg - 1) << 8) |
++               ((cpu->apic_id >> apicid_die_offset(topo_info)) & 0xFF);
++    } else {
++        *ecx = (cpu->apic_id >> apicid_pkg_offset(topo_info)) & 0xFF;
 +    }
-+
-     if (CPUPhysBits >= 36 && CPULongMode && RamSizeOver4G)
--        pci_use_64bit = 1;
-+        pci_pad_mem64 = 1;
  
-     dprintf(1, "=== PCI bus & bridge init ===\n");
-     if (pci_probe_host() != 0) {
+     *edx = 0;
+ }
+@@ -7894,6 +7895,7 @@ static Property x86_cpu_properties[] = {
+      * own cache information (see x86_cpu_load_def()).
+      */
+     DEFINE_PROP_BOOL("legacy-cache", X86CPU, legacy_cache, true),
++    DEFINE_PROP_BOOL("legacy-multi-node", X86CPU, legacy_multi_node, false),
+     DEFINE_PROP_BOOL("xen-vapic", X86CPU, xen_vapic, false),
+ 
+     /*
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index cd2e295bd6..7b855924d6 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1988,6 +1988,7 @@ struct ArchCPU {
+      * If true present the old cache topology information
+      */
+     bool legacy_cache;
++    bool legacy_multi_node;
+ 
+     /* Compatibility bits for old machine types: */
+     bool enable_cpuid_0xb;
+-- 
+2.34.1
+
 
