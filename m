@@ -2,133 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263947E7AE1
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 10:31:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A817E7AE4
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 10:31:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1Nqi-0001Hw-3h; Fri, 10 Nov 2023 04:30:48 -0500
+	id 1r1Nqy-0001Qd-DT; Fri, 10 Nov 2023 04:31:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <JBeulich@suse.com>)
- id 1r1NqO-0001EO-QZ; Fri, 10 Nov 2023 04:30:29 -0500
-Received: from mail-he1eur01on0630.outbound.protection.outlook.com
- ([2a01:111:f400:fe1e::630]
- helo=EUR01-HE1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r1NqZ-0001IV-Cy
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:30:40 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <JBeulich@suse.com>)
- id 1r1NqM-0005Cy-JD; Fri, 10 Nov 2023 04:30:28 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=g/1smTd/U5W/l897e/zpPXNFQ/9KyD5+HpvdEJH4zKYvagtLMVt3fcG19zRVPTf0YrV28gbu+3jkPkypwEtyClYTx1tyOBp4qFdAhTQEjMR4aXOeNqa5cYiUz+majaELYrB54fojYOHAPIsJMaJbXtNCwpAkxz3tbR3WvHiyajjIFkDZmF1eXZsoHSvaCsbkkFO/+jmvbVmI7/k8sDfWfcKLOXfMVM9Xt70VXULD99n3RQoH4MgtcNYt2IqyLNYojYTO4ekmXiLJF31/dgqcnQBIBtfOLISqUfJIRYOyi+L7pawea9Q1/gTkUe+1OF2exPb0tXPVH25WBiD2a11eYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IvEW3lHlPjDqZW6RjabtN6gmhKE3xf1ZYztQzCTecSo=;
- b=DMVRjHnJRa0ZNzXrSnBdp0aXbjQ+nx+erMJVyrFnbqtn2eiIOFbITOYxHkgbdfEy03dvdBR7iU532E2Z8fkuCi6BPg/ubwFQ7aG5/GCJDXn5OGTju0HHq4E6Hh7aLx6S5iOrRl3NYdlN37EjedH1lo++H5ZU0jrEhC3bqDhdInCjjX6evXtgYqae3RqTqgiO3BdeVtDOyQQ0AknFGBSCZGRYyrgWRVzmpaWEpSVFxsJp+9oJTJIIQZcrX8+sTWZrQtNCQRu2a0Y4iqzDqzZ1jfY4D5BXm8kyNW9nF0fFGNnHR8U6ZfT/NZFGdscdKjZ2QLE5fmtCOM/GggPZmaeYhA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
- dkim=pass header.d=suse.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IvEW3lHlPjDqZW6RjabtN6gmhKE3xf1ZYztQzCTecSo=;
- b=tZ5kR+UgL7on0ejo9CTbXtT95VY8kwnbgQFbgMmlZNnQtfCl2dV6e/cpbKtVybD47QSQZR9kbEk+MHL8mbICCM2uJ7QFVtE5epSDQq1hU/fGSM8NcnKgk+qskSK17aeFCPEYwHzX8TSVkMhf4r6SuokfGQMUmQ92s2Sxl6v+QWwCJozJR/pBhBTDLYc/d+jJjGkYXwycWx/tN+fVDO8p8uceC3G1JvZwAbDFWuVZpvWFIzUeJcI69vRF9Oqc7Z7W6gryNPCZxfw40NtShUYCnhGvwHyj19Ma+bLs7/41j7hgpEc1+XI+OU3OCQhMep7myhg/GOE5dZwVPsRtLPDXAA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=suse.com;
-Received: from DU2PR04MB8790.eurprd04.prod.outlook.com (2603:10a6:10:2e1::23)
- by GVXPR04MB9974.eurprd04.prod.outlook.com (2603:10a6:150:11a::16)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.16; Fri, 10 Nov
- 2023 09:30:19 +0000
-Received: from DU2PR04MB8790.eurprd04.prod.outlook.com
- ([fe80::eb8e:fa24:44c1:5d44]) by DU2PR04MB8790.eurprd04.prod.outlook.com
- ([fe80::eb8e:fa24:44c1:5d44%3]) with mapi id 15.20.7002.010; Fri, 10 Nov 2023
- 09:30:18 +0000
-Message-ID: <2ae66eda-3560-2930-4bbb-87345a719f32@suse.com>
-Date: Fri, 10 Nov 2023 10:30:16 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] include/hw/xen: Use more inclusive language in comment
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>
-Cc: xen-devel@lists.xenproject.org, qemu-trivial@nongnu.org,
- Anthony Perard <anthony.perard@citrix.com>, qemu-devel@nongnu.org,
- Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>
-References: <20231109174034.375392-1-thuth@redhat.com>
-From: Jan Beulich <jbeulich@suse.com>
-In-Reply-To: <20231109174034.375392-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0222.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e4::8) To DU2PR04MB8790.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::23)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r1NqW-0005LZ-2s
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:30:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699608633;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=o/gSqr3euw/9ojjrtKu2Emy797vAtlehLPlF6krrX7Y=;
+ b=PIooQgFEwMnOl3/XpL6oXdmQtk4MvBekbNCQwScQy1dgGtlvQ+SIvyDZQj0lraRIHlXL7C
+ tf0017KVVutlY9vDOA9SIyqXpBdjWb4wg5pllSF6YOVE8S1xAWAZQ4fSLdMe4Dt52eEr+0
+ T7+UxYGQUA7p5FmMqEGPd4hkbMBoqKs=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-556-GIVC-8rNP0qMN10epuUjsA-1; Fri, 10 Nov 2023 04:30:31 -0500
+X-MC-Unique: GIVC-8rNP0qMN10epuUjsA-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-41cbc7d2e58so21741351cf.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 01:30:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699608631; x=1700213431;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=o/gSqr3euw/9ojjrtKu2Emy797vAtlehLPlF6krrX7Y=;
+ b=AN9UmpII2/eSYB7LQbn9Afaj274NActrL4AVNvBDuR3YUFcQnMugyN10Yui05s98rT
+ f7TELLOoTiupI/QMrNrUzIVQV7xDvGPaDhTjZp72i9Qbrg/Wj7Gxr38nw0ictiVNsdFw
+ lSSf9Y7iEWQSGUmPCHKAL0aOiHlr0VtcdOIAKETaguyt2VF6IKr2JfLQSr3nf+x/eT2f
+ xeWFYBIXceGloDYWud+VArJBMSn4sVz+icivkLBepHPB9Hr/CJIsNngHFV+vgxpHdCc/
+ CxOxq8m3sbNFgKWLy/UJOZiFnGvS7jvx+sAajTkOJdi+OS3oW5w0xjzYF59sz9ugjJuR
+ tqXA==
+X-Gm-Message-State: AOJu0YzAaIDpjHqkiaWlKn1xjfRV2uXVOvXUufU9lcWUqd+e+GJJG9rt
+ oVPatORVPTlHWNvfEG0boeQQo55tbKGTDMuKwKO+vIqfq84S8BgR6YWtITlqbfV5NR3UG5R0Vbo
+ CwBQ3FvdSPqexS7s=
+X-Received: by 2002:ac8:5d8a:0:b0:41e:1cc8:f280 with SMTP id
+ d10-20020ac85d8a000000b0041e1cc8f280mr8486562qtx.59.1699608631274; 
+ Fri, 10 Nov 2023 01:30:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFLuxAO0VVzOzYxN337004gGOtXFTFDIUpHGvOiWRhcLwrSocOQ/vrq6FVbpRTnMipk+xYuHQ==
+X-Received: by 2002:ac8:5d8a:0:b0:41e:1cc8:f280 with SMTP id
+ d10-20020ac85d8a000000b0041e1cc8f280mr8486550qtx.59.1699608631011; 
+ Fri, 10 Nov 2023 01:30:31 -0800 (PST)
+Received: from [192.168.0.6] (ip-109-43-177-79.web.vodafone.de.
+ [109.43.177.79]) by smtp.gmail.com with ESMTPSA id
+ v7-20020ac87487000000b0041815bcea29sm467470qtq.19.2023.11.10.01.30.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 10 Nov 2023 01:30:30 -0800 (PST)
+Message-ID: <68a7b137-1709-4a1c-ba50-374aa30bc036@redhat.com>
+Date: Fri, 10 Nov 2023 10:30:26 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8790:EE_|GVXPR04MB9974:EE_
-X-MS-Office365-Filtering-Correlation-Id: f3e3923f-52ca-4884-8217-08dbe1cfa75a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: d5/xI2/rrcWpsxMxR6o0Rn/QFMZhk1/PFwfISIaMi62ypc5dE6E5l7gEoNoo5njvBPXfRu5RAW7L/G4r/NDbmaMSb/10jH0EHjgXbArxthFlru6Uweh9uRK6zHSG8rgyM6VzcU+vko2ItzaBz1JBT0E5BQWXXHFiUyl3Hq92YDnEtDDomVrK6dysQZGXT+OzmcX1gthOu6eDIb0/9SyTAhviYSoxIYREGTY6FnxjcqfQcFXv9X8xVT9oOCAxI76SAj/Sn8TIaABsu07IkgytYnKpqmMEDzyeC20yDQeeueW8c41RWOnhrmM6MrwajMwI8jdnBtqCG5zmmJ6xtl9jUDXWbBqVv9KI4vMQxIISvdAkGy9gr/iRLlxQmROVX/BglH20Ll6K8nvqQmTRdsQE5LgpU5sAzQ7yAp7ggj0zU//1rWLCss7PTmeHuTSPPOlVw11A0bvDtsAhA5lUgaPX0myVyyw4JElcwx1kOI2dy6/UFnxhRgRM8ryvGQLA93sQPcGJw6/L1YD2rD6+kNijqpYv45Y0ColgFojidusoPFkQVIllRO0LiW24oPjF16PTsVY9Fco4fVQOcUGCYhc1fODLNm2xrgxrJl0+75a10rBIhbI2tBggzIg31WrBiF0brM5xFcfKNcOgQQF4UpqSiw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DU2PR04MB8790.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(376002)(346002)(366004)(136003)(396003)(230922051799003)(186009)(64100799003)(451199024)(1800799009)(36756003)(31686004)(86362001)(31696002)(38100700002)(53546011)(26005)(6506007)(2616005)(6486002)(316002)(66476007)(8676002)(66946007)(83380400001)(66556008)(8936002)(54906003)(4326008)(6916009)(478600001)(2906002)(5660300002)(6512007)(41300700001)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dmVkS2hBMEJnNGZpNEt2Z1E2NFh0c1FaVlBpRHFPQk96QlZTZnNFdFQ5Q1Zh?=
- =?utf-8?B?Rk1YR05vUEQ2QjRzbzZYVnY1OFpWTmNmazBDbG9paGQ2bDY3RDduTFh4UnRM?=
- =?utf-8?B?VzVnVXZYdWxncXhGeFEyTXhHSzBhaFhNRGhXRmlPNDF5dktVcTdmN2RKT05N?=
- =?utf-8?B?MTFjL3N4dkpZV2hjZTlKS0R6U24wbWp0K2JCYWRVeVJPRHh5NFJxT3AxNWZj?=
- =?utf-8?B?bFFVb245Y2U4TDZ4YVczcVBlU1laaW5pMk5XL0hkSm1RbHZUTDhTemxlUEZP?=
- =?utf-8?B?MHlQOXRKNDBXYnU3U1drcVcrNktIN3RGOERjNEZoN09CTHVFbXo3OTI2OWFM?=
- =?utf-8?B?T0lUT2NxZmVsMEZaWTV5VlVXZHU1elRzTUV6d3E5SnY5SDJDQWc5YzlaZ2sr?=
- =?utf-8?B?U1VHb3hLNEM3ZVEvWFNGVzlSSWIzN2JNYkdYTVUwM203ZUlnbHpGQ2FMNXZp?=
- =?utf-8?B?dWRkSlo5ZlYzdlhmY1FPMlJlTjRNNDA1OU5JRytaN2QzQ3FsZWxqQi9FZS92?=
- =?utf-8?B?ZDBEQ0xSZ2JvaE55c3FIanlsOVJNVkc2VFhONm5jOThrSkFUdld3YjRjVDdr?=
- =?utf-8?B?byswN1RLM0UyWHFKcG9kSFdxTEszSG9IeVFsY0FDVXJTTXRwTU1EbjF4UEt4?=
- =?utf-8?B?QTJ6Vy94dFJMeGtZWTJiQWhxMVFCNHErTHBKWXBuOEJ6Rzc1VkxLckJXbXpq?=
- =?utf-8?B?SkN6ckg3UE1pNXdWSmg3cWNtQmM4RTQzTER6blBDS3FsVm90NnJkSjhuVUxh?=
- =?utf-8?B?clBqR09vSFJkUEUwSGNKTGlhTVNOTEJkMWhaMTl0dkRFVW9SUkc0bTJmQkpN?=
- =?utf-8?B?cGsxMUVQaFJWQmdmVVRhbnQ1eUQ4czExbmtJcXk3dU5hYUNNRHl5emNybUw1?=
- =?utf-8?B?cW82TGdnMGZKMlhWV2c1dGtNenZza1VRcnhlRTFjT2pTdm42dFA2M0NqRnFY?=
- =?utf-8?B?Uy9WSXRHZ0pDN0hDN2hWOGc4N1I4SFBjSVVTUzFUcTM1UTJUcUM1U3VkOEVB?=
- =?utf-8?B?eEx1U2RoM2NjSGxwMk5vQWEwUHdBWWlCWGsvMFBlUm1zdnFMSkhsaHZLNGd3?=
- =?utf-8?B?YWRoT0Uwamg3NlNkR2NYRW9wcGMxOWpjTkJadDJRb2JQYXVQeWV2MXpSRUZL?=
- =?utf-8?B?TVFjbm05dkhQKzBEdTZVMDBZWXBFSk5pb2thSWNVM1F6SUNXYXZKek1PTS9M?=
- =?utf-8?B?UVhIRFl0S0gvVzBJeitnMHdkTTV4eDJRRDZQVlExK0x0bStVdS85NDNiODdP?=
- =?utf-8?B?V1NLUjM2c3V0a25JbC9MOTN6WURtMXdFNk1YamlrcEFNWVNjU3pSZDVidUtR?=
- =?utf-8?B?di9INENVY09lSVdINnFvWDFGY2Q0RVZ6b2tyTGFLVFUyT0pSRkhCeTFVL3B1?=
- =?utf-8?B?U0ljMG5vRDlkWVdEQVNOVVNyejBVa25LL1VRODJuelFKMDN1UUhwdFNRdGxX?=
- =?utf-8?B?R1FxNFJiRlNxd2tQRkhyVDJRTHBFVU0wdE9UWmxuWllHUUNtRTA4WEF6STJX?=
- =?utf-8?B?eVQ3Y0wvTFRUczRTM2xnTmxack1aMUYxTTc5VDRBYWtJSTE1U2JMcWp5MWp1?=
- =?utf-8?B?LytHbkcvbmJUbktuaW56NDZMMytCYXV4YXV0RVlIZUZDanlZNG5zRXAvbEty?=
- =?utf-8?B?OE9zRGJGaWM2K1BRSnhoSG04aHNMS3pxNmY5czRsSHpMdlpQbjJaZ1E2WU1s?=
- =?utf-8?B?SXE4b0R6aUFlaG1ZdXNJWjVQYlppaVEvbzFRMW9neXFIOW5FQ3FRV05xRzVa?=
- =?utf-8?B?dkR5dEJIVmpSKzVQblVUNmp2cVF0S0F4bE16c3VmU09ZT2tBYVRvQWd2dkpX?=
- =?utf-8?B?cVRLSDhoL1dpdHJMZHJaSkNOY09mcGZJdmRhZVRIUVM2L1h4YWZrZ2g3a0p0?=
- =?utf-8?B?RTF6VnZrYmZ4Z0xjS2g2dWdkMWRwZkovNEc5eWZlbXdzeXJ4MmRxai95QWY1?=
- =?utf-8?B?YWQwZlZOSmE3YkhTZ0l5cm9WWFMwamNvUTVxK1NGQWptcDg3OXJuckxjenFp?=
- =?utf-8?B?Y0dhUFpoZHp0NVRmZUFaYUw2aUI3TnZhaHFRVms0UFBvUm5wUFh1bGRrVm1k?=
- =?utf-8?B?RitiS0g5M0x3TUVFSFNXVzhiQ1RFbk1MV2Q4ZlRsUXl4T0pwOVZ4SndUT3B2?=
- =?utf-8?Q?583b0gsY50cBUtiQhcn+RS3m9?=
-X-OriginatorOrg: suse.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3e3923f-52ca-4884-8217-08dbe1cfa75a
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8790.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2023 09:30:18.6388 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K4Rkptm/ieZtSmM50ebRLskeisBlan4OFSpwa5Jx7P7IW8UYJrMyzonyr/uvrOm8nmFtZu+ovCrMju8ybtFVmg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9974
-Received-SPF: pass client-ip=2a01:111:f400:fe1e::630;
- envelope-from=JBeulich@suse.com;
- helo=EUR01-HE1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.265,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH-for-8.2] .gitlab-ci.d/cirrus.yml: Promote NetBSD job
+ as gating
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Reinoud Zandijk <reinoud@netbsd.org>, Ryo ONODERA <ryoon@netbsd.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Beraldo Leal <bleal@redhat.com>
+References: <20231109153510.92353-1-philmd@linaro.org>
+ <737f6fe5-cf3e-4fdd-b5d8-28f71a2fa9e6@linaro.org>
+ <ZU0PuHyw8X8e/p0j@redhat.com>
+ <52df2072-a26e-4e73-afe0-65a877bafbdc@redhat.com>
+ <ZU32PpBQc6jLmexY@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <ZU32PpBQc6jLmexY@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -145,29 +151,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09.11.2023 18:40, Thomas Huth wrote:
-> --- a/include/hw/xen/interface/hvm/params.h
-> +++ b/include/hw/xen/interface/hvm/params.h
-> @@ -255,7 +255,7 @@
->   * Note that 'mixed' mode has not been evaluated for safety from a
->   * security perspective.  Before using this mode in a
->   * security-critical environment, each subop should be evaluated for
-> - * safety, with unsafe subops blacklisted in XSM.
-> + * safety, with unsafe subops blocked in XSM.
+On 10/11/2023 10.22, Daniel P. Berrangé wrote:
+> On Thu, Nov 09, 2023 at 06:15:51PM +0100, Thomas Huth wrote:
+>> On 09/11/2023 17.58, Daniel P. Berrangé wrote:
+>>> On Thu, Nov 09, 2023 at 04:35:56PM +0100, Philippe Mathieu-Daudé wrote:
+>>>> On 9/11/23 16:35, Philippe Mathieu-Daudé wrote:
+>>>>> This Cirrus-CI based job takes ~12min, similarly to macOS job.
+>>>>>
+>>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>>>> ---
+>>>>> Based-on: <20231109150900.91186-1-philmd@linaro.org>
+>>>>>              "tests/vm/netbsd: Use Python v3.11"
+>>>>> ---
+>>>>>     .gitlab-ci.d/cirrus.yml | 3 +--
+>>>>>     1 file changed, 1 insertion(+), 2 deletions(-)
+>>>>>
+>>>>> diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
+>>>>> index e7f1f83c2c..7b01acb104 100644
+>>>>> --- a/.gitlab-ci.d/cirrus.yml
+>>>>> +++ b/.gitlab-ci.d/cirrus.yml
+>>>>> @@ -94,8 +94,6 @@ aarch64-macos-12-base-build:
+>>>>>         - cirrus-run -v --show-build-log always .gitlab-ci.d/cirrus/$NAME.yml
+>>>>>       variables:
+>>>>>         QEMU_JOB_CIRRUS: 1
+>>>>> -    QEMU_JOB_OPTIONAL: 1
+>>>>> -
+>>>>>     x86-netbsd:
+>>>>>       extends: .cirrus_kvm_job
+>>>>> @@ -110,3 +108,4 @@ x86-openbsd:
+>>>>>         NAME: openbsd
+>>>>>         CONFIGURE_ARGS: --target-list=i386-softmmu,riscv64-softmmu,mips64-softmmu
+>>>>>         TEST_TARGETS: check
+>>>>> +    QEMU_JOB_OPTIONAL: 1
+>>>>
+>>>> BTW OpenBSD works for me, but takes ~20min (similar to the FreeBSD job).
+>> ...
+>>> I could have sworn our cirrus jobs were much slower in the past (around
+>>> the 40 min mark), as we had to cut down what we were running to avoid
+>>> frequent timeouts.
+>>
+>> You're right, Daniel. Seems like both, the Cirrus netbsd and the openbsd job
+>> are currently broken and only output some help text instead of compiling
+>> QEMU:
+>>
+>>   https://gitlab.com/philmd/qemu/-/jobs/5497861511#L6834
+>>
+>> ... that's why the finish so fast.
+>>
+>> IIRC last time I've seen them "working", they were running into the 80
+>> minute timeout again.
+>>
+>> So the netbsd and openbsd job are indeed not very useful anymore. I think we
+>> should rather remove them and add a proper job via our own custom
+>> KVM-capable runners instead.
+> 
+> The CI job isn't the issue though - it is merely a sign of brokeness
+> elsewhere.  Either tests/vm/{netbsd,openbsd} are broken, or our entire
+> build process for those platforms is broken.
+> 
+> We need to root cause this, rather than hide it further by dropping
+> the CI jobs.
 
-To avoid another round trip when you send the patch against xen.git, as
-already asked for by others, I'd like to point out that the wording
-change isn't describing things sufficiently similarly: "blocked" reads
-as if XSM would do so all by itself, whereas "blacklisted" has an
-indication that something needs to be done for XSM to behave in the
-intended way. Minimally I'd suggest "suitably blocked via", but perhaps
-yet better wording can be thought of.
+"make vm-build-netbsd" locally just works fine (as soon as Philippe's python 
+fix gets merged). I just had another try with the cirrus-ci job, but it 
+indeeds run into timeout issues again:
 
-Jan
+  https://gitlab.com/thuth/qemu/-/jobs/5501021556
 
-PS: Personally I'm against such avoiding of certain words. Them being
-misused is not really a justification. New wording (perhaps not
-specifically here, but considering the underlying wider theme) is going
-to be misused as well, leading to the need to come up with yet different
-wording, and so on.
+I guess we could cut it down again by e.g. removing aarch64-softmmu from the 
+target list ... but we then still have the problem that we can not run it by 
+default due to the limitations of cirrus-ci only allowing to run 2 jobs in 
+parallel. And as long as we don't run things by default, they apparently 
+tend to bit-rot quite fast...
+
+  Thomas
+
 
