@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F41DB7E7A8A
+	by mail.lfdr.de (Postfix) with ESMTPS id F013B7E7A89
 	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 10:18:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1Nd9-0002QW-PX; Fri, 10 Nov 2023 04:16:47 -0500
+	id 1r1NdB-0002Rm-Fk; Fri, 10 Nov 2023 04:16:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r1Nd7-0002Pk-K1
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:16:45 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1r1Nd9-0002QP-1z
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:16:47 -0500
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r1Nd6-0002m6-0O
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:16:45 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-40836ea8cbaso12596135e9.0
- for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 01:16:43 -0800 (PST)
+ id 1r1Nd7-0002mO-Du
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:16:46 -0500
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2c6ed1b9a1cso22680281fa.3
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 01:16:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699607802; x=1700212602; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=078LHjHgYcIKXgy3K59FfW1+FGsAoPUrmucU4b2BaBI=;
- b=N2/+C1pDYiRsCCW2aqqYLAUpWQdxF964qjZvgNfFV5V2wmDdGC1eiOdqOUlb+Blrm5
- EZR9yAUR55E9pqP/6wSBLBgK8ltEVjQTs8CIVXfj1HQN8dYvlucv6NGRy2JgzqRbEbrr
- YOylhY+Cc2UlpMnGEDj6FzVy60bjbxYT0G67PbHdtxcOaIItCOtqsmfxY0Tn7X8qyuhJ
- kXlyDfM4iMSsi8Lu3KuVKSHIuJ4w8ss4/XsHb26iu7ucpIs+1PeBbV5PAdHkq8rcDrfd
- okdYyvEdtXLANaFLu27B/PgemLb6iGX3OB/Gv7HXnpwZY05X1pMOvHk31QO6nCLnpZ3O
- NNew==
+ d=linaro.org; s=google; t=1699607803; x=1700212603; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mbp8XXdbG6B9pZBrryz1zASTDVDqNMiO4XNfxxKRD1M=;
+ b=KGnPtAUug0Up+jmKSRCf8b1ZR2Nww37xUIIhF1BWTurKVgd+k1Zi/vRfKfN5K2Kamu
+ WIbjY8kuFTj3yCs0I909TzTatrmCyNGpUMY6eZ/XPBjezg1fDwJgqAX6i3ArZ+Vaib6e
+ CaIkO6sPtN57ougOAk/Kx6lLhpmPkOTjvLoYy8cov1tehDmI2GmV0bAYnRgFxyL7WB3F
+ EC8OlK1me7ywog+VCymecWHvwZFHCSnZni0Y5MxXk1Ps7ZhhojiwBbbWIP4hdcv5KvQS
+ RIw1Jj8qGRIOay9UxjMeJ/9KztHq9Qna+yEgzsAlquTs0vEnf8tjxEoiBvYQGVJkcxKX
+ zr3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699607802; x=1700212602;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=078LHjHgYcIKXgy3K59FfW1+FGsAoPUrmucU4b2BaBI=;
- b=Jolw+4Y/DNsjf3CsBCn9tkwzIFOwDaeooG3mltf8o2opjBuuwcjaaghrIya6VUH1dK
- tcqhwz0Nm+V7E2SLKRDwGTZ1km2ZV85T2NnGJ19JBHqGEndSSgZymnuQoZZKgT+ZR7lv
- DwODcfx0A0llsSEU6ExaQkiraBr0hUvz7LcBpvW0DwkA+efxjYHo1BKv4yabM5L1iPRK
- yyqsbVKs7EKy/G43kVynJI+dDsCRUad58rizSthm/7BdtRf+eJe5z3l4aTb8fUsNwkVG
- GKoKoXbX5D1dX1Ln0PtgwKR45ksmi1LmDlbCRgyrjzQlqV0mUF1iL/0lLoRtVkDpjLvd
- Lj8w==
-X-Gm-Message-State: AOJu0Ywbgfz9Qty/g8LB8cL9LjHRC+g42pi3VGJ1m6lE39LIM2e0wkc4
- CLahpiydcFgskOKzR58Wp38AEOfq/y5njZ31m3a9xA==
-X-Google-Smtp-Source: AGHT+IEZrs31ztoeShp0cUaqp9ycmiYeKJfoccSjx0r/JPcjbEC6jIAOhyJDpM3icmAxv9kMxEqy9g==
-X-Received: by 2002:a05:600c:293:b0:406:8c7a:9520 with SMTP id
- 19-20020a05600c029300b004068c7a9520mr6264962wmk.36.1699607801844; 
- Fri, 10 Nov 2023 01:16:41 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699607803; x=1700212603;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=mbp8XXdbG6B9pZBrryz1zASTDVDqNMiO4XNfxxKRD1M=;
+ b=YCI2B1wGHObJ8A12nJcfto3EZy/x/niiDxrxOXttgHZ8Hts6Ko4RhlpH2GqVm/yUqo
+ 6d4UkcrE+Ham0UnH/t72Tl60NyVPSp97s6BhgfOCm2c55ng3AxUeXWJvfQUrlwDdEbPm
+ y9W1EGT002q0GBcyMd6MqfF/9s+JQ94fIE1VM/v5EGUG2zww0K44Su8kvpt5Rh36fDw7
+ UOrHrP5tlyHei3KPPIrhE1Ymwu69C0WptLhqILsrlRqz/eQPDuCLvE/NtPeVlvsp7vbm
+ 8Xd6TKuKq/ARhCXtukyqNKF0Iy7TNKGPiPmjDsvmNo5IOlApsFQ76oGu/YUI/V4GQXlj
+ 85ug==
+X-Gm-Message-State: AOJu0Yx0tXXp2PK1sQsiIRjnAZ3ylF3EL6X8g0yEpjtGRf9lLYwek7Q3
+ FxzuqXH90GAOvQMLpv5fxWUP8rZrVIVvYJZ1+om7sw==
+X-Google-Smtp-Source: AGHT+IEyvzD5cRGLe4v6eW6UL+vYFxGUg7RGlx6d8tKCAv9/eh/OdfWWc0ioXgDTi0p6qttGizkFXA==
+X-Received: by 2002:a2e:9904:0:b0:2bc:f2d7:f6ce with SMTP id
+ v4-20020a2e9904000000b002bcf2d7f6cemr6321992lji.49.1699607802968; 
+ Fri, 10 Nov 2023 01:16:42 -0800 (PST)
 Received: from localhost.localdomain (adsl-205.37.6.2.tellas.gr. [37.6.2.205])
  by smtp.gmail.com with ESMTPSA id
- p22-20020a05600c359600b004080f0376a0sm4537493wmq.42.2023.11.10.01.16.41
+ p22-20020a05600c359600b004080f0376a0sm4537493wmq.42.2023.11.10.01.16.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Nov 2023 01:16:41 -0800 (PST)
+ Fri, 10 Nov 2023 01:16:42 -0800 (PST)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 0/2] Add QEMU_WARN_UNUSED_RESULT function attribute
-Date: Fri, 10 Nov 2023 11:16:37 +0200
-Message-Id: <cover.1699606819.git.manos.pitsidianakis@linaro.org>
+Subject: [PATCH 1/2] Add QEMU_WARN_UNUSED_RESULT attribute
+Date: Fri, 10 Nov 2023 11:16:38 +0200
+Message-Id: <84781fce2c3145a86d043d4c6b3b463af40eeed0.1699606819.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <cover.1699606819.git.manos.pitsidianakis@linaro.org>
+References: <cover.1699606819.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,34 +92,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Functions that return a value to indicate success or failure can be 
-decorated with the warn_unused_result attribute. GCC will stop 
-compilation if a caller does not check the return value after calling 
-such a function. This was not possible to spot statically before, but 
-Coverity detects this kind of bug. I was prompted by
+This commit adds QEMU_WARN_UNUSED_RESULT, a macro for the gcc function
+attribute `warn_unused_result`. The utility of this attribute is to
+ensure functions that return values that need to be inspected are not
+ignored by the caller.
 
-https://lore.kernel.org/qemu-devel/CAFEAcA_TS-B0gc-DUYT6BaKnm8Uauhsx3rW2dmVNUgTToVjSJg@mail.gmail.com/
-
-to prevent this from happening in the future.
-
-This patch series depends on 
-<20231109162034.2108018-1-manos.pitsidianakis@linaro.org>
-
-https://lore.kernel.org/qemu-devel/20231109162034.2108018-1-manos.pitsidianakis@linaro.org/
-
-Manos Pitsidianakis (2):
-  Add QEMU_WARN_UNUSED_RESULT attribute
-  Add warn_unused_result attr to AUD_register_card
-
- audio/audio.h           |  2 +-
- hw/arm/omap2.c          |  8 +++++++-
- hw/input/tsc210x.c      |  8 +++++++-
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+---
  include/qemu/compiler.h | 14 ++++++++++++++
- 4 files changed, 29 insertions(+), 3 deletions(-)
+ 1 file changed, 14 insertions(+)
 
-
-base-commit: ad6ef0a42e314a8c6ac6c96d5f6e607a1e5644b5
-prerequisite-patch-id: 484ec9f7f6109c10d4be0484fe8e3c2550c415f4
+diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
+index c797f0d457..7ddbf1f1cf 100644
+--- a/include/qemu/compiler.h
++++ b/include/qemu/compiler.h
+@@ -212,6 +212,20 @@
+ # define QEMU_USED
+ #endif
+ 
++/*
++ * From GCC documentation:
++ *
++ *   The warn_unused_result attribute causes a warning to be emitted if a
++ *   caller of the function with this attribute does not use its return value.
++ *   This is useful for functions where not checking the result is either a
++ *   security problem or always a bug, such as realloc.
++ */
++#if __has_attribute(warn_unused_result)
++# define QEMU_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
++#else
++# define QEMU_WARN_UNUSED_RESULT
++#endif
++
+ /*
+  * Ugly CPP trick that is like "defined FOO", but also works in C
+  * code.  Useful to replace #ifdef with "if" statements; assumes
 -- 
 2.39.2
 
