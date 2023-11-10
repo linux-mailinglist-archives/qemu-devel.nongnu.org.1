@@ -2,66 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045167E7B5C
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 11:20:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 217F17E7B5E
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 11:21:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1Oc7-0002YK-8q; Fri, 10 Nov 2023 05:19:47 -0500
+	id 1r1Odi-000407-Fj; Fri, 10 Nov 2023 05:21:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r1Oc4-0002XV-Se
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 05:19:44 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1r1OdZ-0003zl-Qw
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 05:21:17 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r1Oc3-0007Sk-BX
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 05:19:44 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-53e751aeb3cso2995053a12.2
- for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 02:19:42 -0800 (PST)
+ id 1r1OdX-0007tz-Tk
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 05:21:17 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5437d60fb7aso2963112a12.3
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 02:21:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699611581; x=1700216381; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699611673; x=1700216473; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=UuTVwkNU5aeIlhkYLSuV1jLn77VkG1aW0M33v3Y6yWM=;
- b=A6hpY6MM09VIQvCzWL5BmQ3o0OUGUN6CJ1ppNtnMucYft64pSXdAnEBooEpxIo+8Xi
- 23r2goCGvQBtD9Ohnq70NCVnqQ/VJR8EIcqxb+iGrvUarOiDwiR0x/9trLcFTAGxyKb1
- kWMs+v1KeHtrNDEXACBw2LtmyrT14wdujUBLeUkZO5iPAXieNSwmAGm5/EALod8o43rL
- YAR9/J8UoJ9kWT7u8maIw9q25+LF1xO7UYKdmrHOXZQ4WI+jqTAjnEL7x9AQjLKnSTml
- piuwvrLkHOZSy6AmxHidfJak6jNv0iwPeMP1dWyUdCcGzQaOdjw+EXFI2L9dqcyEF6o/
- 1O2A==
+ bh=LqHY1rM+nJijkVtRNRAZWGeNV/wqoJqulwCB5qLr/y4=;
+ b=ibq1QfZjiC41nploVvtIV9UazPqmOakfhqm+EVSE2syEjEK/kno4rVt8nd+lNpV/cs
+ CstuO91P9Ifk2EpriO6LcZLm8E5rrWigPKIRcEQl6rnzuIw0tRL8KMyNZ6AimjAJd04H
+ C7zDDcZiQJCD8TSjaE7/d/t2XZF/fGtaS8qsXmDZboRt/dzga/hu7aqUjxVKHqtgQzs3
+ VJ+Bzh4S8kLu9epQbRRdgZgokzERW0HTezHymYAgvMb4Nkpgw/m8poAPbqByM7jeab2s
+ 4rdbh5ITyp6ulgOk56Iu/+ErQb8y+4dqHYPE/pike0K1ZPK2bDZ6GRW7pIgqQIDHoPhM
+ t5Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699611581; x=1700216381;
+ d=1e100.net; s=20230601; t=1699611673; x=1700216473;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=UuTVwkNU5aeIlhkYLSuV1jLn77VkG1aW0M33v3Y6yWM=;
- b=GCW2AI3xe3sgeue5RCaLIhO3MvZ1khSDJnm30RjwrcrKxYOlGSqSY87gz7uDj3yhK2
- wdGIqEV6K8KyMaNJqzMA7VJP1O7BQQq8RdVPyyg61riGl1hwDCHBgAz1+FPD7kBk3RTe
- qT6i0qon3rpUVAVWqCs+ulqk1pXlLs5wjPXA6ne1dByKz05uSEv8JZvJCuN1JXRcssuC
- Ff9HM1b8vzQUMdhlAb2zjGaoQ5OXsfEnkJCmcTQi4utgcqSK56eR5suMma9HtFTfbB9J
- f4oyNGGPIrfi4/0aLDqijGKqYKo9aOT0paeMYGshWLe6TM3r1TKt1idwrgYlI6N7ev2V
- k+1Q==
-X-Gm-Message-State: AOJu0Yz4QMKcZSGXrK7YFvv/V1tWQLG5q2Ptw+f+bxTdaw/g8HhvRn3b
- /8p8B4ocAg0P0If0YTQmAwoXC3WMKQMvOjPUIsQbiA==
-X-Google-Smtp-Source: AGHT+IEE7tfUQ2jRMvRHYn2WxsiQYkaYjq+7NioZTD1YP5JaXrQrEitq3yElAfGJQlzmAqUPI03aR0AgpH1ZXzEQPlY=
-X-Received: by 2002:a05:6402:268e:b0:545:5674:4293 with SMTP id
- w14-20020a056402268e00b0054556744293mr4572736edd.28.1699611581683; Fri, 10
- Nov 2023 02:19:41 -0800 (PST)
+ bh=LqHY1rM+nJijkVtRNRAZWGeNV/wqoJqulwCB5qLr/y4=;
+ b=ZkLnL+G1UhFmooFYOBPuW41zix7fhP6seE3C6nohkxV3dtW1WGXPMY8fZ36HftFtHc
+ z9MXCeSVRnBillxleHK6cuDhh4XgjD+m88b7P8xzFIKsgnj8JPdIKGwshsRWvzBPxYYr
+ D0RzAYjwdLxkZ5k0BAOUbQyicf0B8LBeBF/Lj5s8hcsBCTMYIomXItKxAsrTrqyCb2md
+ B1PQ3rwbFFlGz2o67M2hXa3p0tFFX+b1HVRf4jiHn75OgXW1kVoamAWbokLbds+Ptm6u
+ 2ozp8/4ncb+KVtEMcWAZd4uGtUssWrTsC/JnmYzRQs58GkqkNmF9YxT+M81O8NxGqVU3
+ rGRA==
+X-Gm-Message-State: AOJu0YzM9OD+9gKIlCAMcK+gNh+J/K1rVrecls3XdWogYLR7DXxbWXQi
+ Mh9A53ugQvem5MFkOEKJFjCMMVIbO0cAQUu0WikQhg==
+X-Google-Smtp-Source: AGHT+IFhkUk7hwuZBj1DfWvw9u/uuHuwMndz5d9znY3llK9wnIGdqvq+rr8a1ChNvFNmJfPNu9+hvvMdFTsRh4WQ2Zc=
+X-Received: by 2002:a50:8714:0:b0:53d:f072:7b0a with SMTP id
+ i20-20020a508714000000b0053df0727b0amr6661245edb.39.1699611673413; Fri, 10
+ Nov 2023 02:21:13 -0800 (PST)
 MIME-Version: 1.0
-References: <20231110090557.3219206-2-jean-philippe@linaro.org>
-In-Reply-To: <20231110090557.3219206-2-jean-philippe@linaro.org>
+References: <cover.1699606819.git.manos.pitsidianakis@linaro.org>
+ <4b040fc18cb0e563e92ce084ca18b89a050a8aaa.1699606819.git.manos.pitsidianakis@linaro.org>
+In-Reply-To: <4b040fc18cb0e563e92ce084ca18b89a050a8aaa.1699606819.git.manos.pitsidianakis@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 10 Nov 2023 10:19:30 +0000
-Message-ID: <CAFEAcA_Jja7MT_cSiEJ2it+wG7LnUXfnuoo1vmoUf1-+KSgtAA@mail.gmail.com>
-Subject: Re: [PATCH] hw/arm/virt: fix GIC maintenance IRQ registration
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Date: Fri, 10 Nov 2023 10:21:02 +0000
+Message-ID: <CAFEAcA80sv6ewJ+LoROn-9ooEyLGQwiqYpL3=fqrK7gA0oZG-A@mail.gmail.com>
+Subject: Re: [PATCH 2/2] Add warn_unused_result attr to AUD_register_card
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ "open list:OMAP" <qemu-arm@nongnu.org>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -84,24 +88,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 10 Nov 2023 at 09:07, Jean-Philippe Brucker
-<jean-philippe@linaro.org> wrote:
+On Fri, 10 Nov 2023 at 09:16, Manos Pitsidianakis
+<manos.pitsidianakis@linaro.org> wrote:
 >
-> Since commit 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic"),
-> GIC maintenance IRQ registration fails on arm64:
+> Ignoring the return value by accident is easy to miss as a bug. Such a
+> bug was spotted by Coverity CID 1523899. Now, future instances of this
+> type of bug will produce a warning when using GCC.
 >
-> [    0.979743] kvm [1]: Cannot register interrupt 9
+> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
+>  audio/audio.h      | 2 +-
+>  hw/arm/omap2.c     | 8 +++++++-
+>  hw/input/tsc210x.c | 8 +++++++-
+>  3 files changed, 15 insertions(+), 3 deletions(-)
 >
-> That commit re-defined VIRTUAL_PMU_IRQ to be a INTID but missed a case
-> where the maintenance IRQ is actually referred by its PPI index. Just
-> like commit fa68ecb330db ("hw/arm/virt: fix PMU IRQ registration"), use
-> INITID_TO_PPI(). A search of "GIC_FDT_IRQ_TYPE_PPI" indicates that there
-> shouldn't be more similar issues.
+> diff --git a/audio/audio.h b/audio/audio.h
+> index fcc22307be..b78c75962e 100644
+> --- a/audio/audio.h
+> +++ b/audio/audio.h
+> @@ -94,7 +94,7 @@ typedef struct QEMUAudioTimeStamp {
+>  void AUD_vlog (const char *cap, const char *fmt, va_list ap) G_GNUC_PRINTF(2, 0);
+>  void AUD_log (const char *cap, const char *fmt, ...) G_GNUC_PRINTF(2, 3);
 >
-> Fixes: 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic")
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> -bool AUD_register_card (const char *name, QEMUSoundCard *card, Error **errp);
+> +bool AUD_register_card (const char *name, QEMUSoundCard *card, Error **errp) QEMU_WARN_UNUSED_RESULT;
+>  void AUD_remove_card (QEMUSoundCard *card);
+>  CaptureVoiceOut *AUD_add_capture(
+>      AudioState *s,
+> diff --git a/hw/arm/omap2.c b/hw/arm/omap2.c
+> index f170728e7e..59fc061120 100644
+> --- a/hw/arm/omap2.c
+> +++ b/hw/arm/omap2.c
+> @@ -614,7 +614,13 @@ static struct omap_eac_s *omap_eac_init(struct omap_target_agent_s *ta,
+>          s->codec.card.name = g_strdup(current_machine->audiodev);
+>          s->codec.card.state = audio_state_by_name(s->codec.card.name, &error_fatal);
+>      }
+> -    AUD_register_card("OMAP EAC", &s->codec.card, &error_fatal);
+> +    /*
+> +     * We pass error_fatal so on error QEMU will exit(). But we check the
+> +     * return value to make the warn_unused_result compiler warning go away.
+> +     */
+> +    if (!AUD_register_card("OMAP EAC", &s->codec.card, &error_fatal)) {
+> +        exit(1);
+> +    }
 
-Isn't this already fixed by commit fa68ecb330dbd ?
+This kind of thing is why Coverity's unused-result warning has a
+lot of false positives. We shouldn't introduce extra code like
+this to work around the fact that the tooling doesn't understand
+our error-handling convention (i.e. error_fatal, and the way
+that some functions report errors both via the return value and
+also via the Error** argument).
 
 thanks
 -- PMM
