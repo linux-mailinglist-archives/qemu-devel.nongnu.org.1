@@ -2,94 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792437E7E21
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 18:25:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D527E7E20
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 18:25:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1VEq-0005GO-8q; Fri, 10 Nov 2023 12:24:12 -0500
+	id 1r1VEn-0004vD-GZ; Fri, 10 Nov 2023 12:24:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1r1VES-0004d8-UU; Fri, 10 Nov 2023 12:23:50 -0500
+ id 1r1VEV-0004gS-Bg; Fri, 10 Nov 2023 12:23:55 -0500
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1r1VER-0001Li-35; Fri, 10 Nov 2023 12:23:48 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ id 1r1VER-0001Lz-3b; Fri, 10 Nov 2023 12:23:49 -0500
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AAHMnjs010444; Fri, 10 Nov 2023 17:23:28 GMT
+ 3AAGGINe028699; Fri, 10 Nov 2023 17:23:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=xUr+2y2qt8jU7iels+dJPVMGmTqA8rb9xfHFMnKN58A=;
- b=oOIM8GsnqgCvvwyHvLWEyMb97IadEwpngD3/qiCMhvjcrA0Nucae04xEfANqUvUA51B5
- mU3s9INtM45PmciYFU4Gbf44Eab9oCi8mwOQOgbyL9+ZFUpm0+1TbjvGcwJw+mAT0JTl
- lIAyvzLXTS9HPLx1Dba1hDe2QLteuas/ekam8objwpDO5bV6FJ7YSz7/0KJjqfWpUoeD
- x6Enx/Rc+jfQ16OVpNWGZcveg+ULuHQMVNrv6HA4HNBSlRihHaOG7YMZ3FOLyGATPbkP
- KNv/mgObvo+BJAl21GFxRqKcUZwyac4ft67RRCnWBtxFfIG7F/2epjZ5Hd0vZY2lvruQ ZA== 
+ bh=/JwNLu7mrM86wGF1XfEj/6HO1y9iBQtDCwI33+5WE5M=;
+ b=QEQsZGkEME2v1dHGFqh8MeXKDZphrmycBqgMsSAi/To9MeTY6cOOrsNlXGhonjhIlgdc
+ 52+ZSvgbLM/QJNfIHMK2/LqzOoHX5zORn4u0cYTnBACny4F00ymHgglRaUAjLE6P1TaY
+ Pj9jKUNHmjNdQhs0GC/UYJ56wlIJTi8jj1FoCdY+lAvV31+NtiFQtR+pJR0qbg1afPzg
+ XX66ygrYHrF7mcVShMlHtFM++Lfn6fYaa3zAky2yJMjIqwvQMsEhpn9P2Vppusg6aezB
+ AFYWFFO7PUBiwHpXXAW+oT9gyQ+3IazpoQpLNpMiMHjCsSua3VpcxsfeIACWvyFoPRE/ Vg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u9rv000gg-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u9qfgajey-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Nov 2023 17:23:28 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AAHNSEA012795;
- Fri, 10 Nov 2023 17:23:28 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u9rv000g9-1
+ Fri, 10 Nov 2023 17:23:33 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AAHLcHA020943;
+ Fri, 10 Nov 2023 17:23:33 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u9qfgajdv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Nov 2023 17:23:27 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AAH8jrK003443; Fri, 10 Nov 2023 17:23:27 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u7w22caew-1
+ Fri, 10 Nov 2023 17:23:33 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AAGTBVw014309; Fri, 10 Nov 2023 17:23:31 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u7w22cbym-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Nov 2023 17:23:27 +0000
+ Fri, 10 Nov 2023 17:23:31 +0000
 Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
  [10.39.53.231])
- by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3AAHNQeQ20841184
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AAHNVbu18088578
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 10 Nov 2023 17:23:26 GMT
+ Fri, 10 Nov 2023 17:23:31 GMT
 Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 55A9458045;
- Fri, 10 Nov 2023 17:23:26 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3F2A458045;
+ Fri, 10 Nov 2023 17:23:31 +0000 (GMT)
 Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F099658050;
- Fri, 10 Nov 2023 17:23:25 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id E20DA58050;
+ Fri, 10 Nov 2023 17:23:30 +0000 (GMT)
 Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
  by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 10 Nov 2023 17:23:25 +0000 (GMT)
+ Fri, 10 Nov 2023 17:23:30 +0000 (GMT)
 From: Glenn Miles <milesg@linux.vnet.ibm.com>
 To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
 Cc: Glenn Miles <milesg@linux.vnet.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PATCH 2/8] ppc/pnv: Wire up pca9552 GPIO pins for PCIe hotplug power
- control
-Date: Fri, 10 Nov 2023 11:22:42 -0600
-Message-Id: <20231110172248.3885194-3-milesg@linux.vnet.ibm.com>
+Subject: [PATCH 3/8] ppc/pnv: PNV I2C engines assigned incorrect XSCOM
+ addresses
+Date: Fri, 10 Nov 2023 11:22:43 -0600
+Message-Id: <20231110172248.3885194-4-milesg@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20231110172248.3885194-1-milesg@linux.vnet.ibm.com>
 References: <20231110172248.3885194-1-milesg@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: hflE7fHd5jYCprqmcElSvi9Yk_LVWgbh
-X-Proofpoint-ORIG-GUID: YxZny9Dyys6ZuX2LHa8h-MeZG10O3vV1
+X-Proofpoint-GUID: RCpk0I82fDaHmTV703B0WajATWBdsiqr
+X-Proofpoint-ORIG-GUID: 88iar2Hdz1TYNp387V9dgiY_wg13prAP
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-10_15,2023-11-09_01,2023-05-22_02
+ definitions=2023-11-10_14,2023-11-09_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 clxscore=1015
- adultscore=0 lowpriorityscore=0 malwarescore=0 mlxlogscore=999
- priorityscore=1501 bulkscore=0 spamscore=0 impostorscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311100144
+ malwarescore=0
+ mlxlogscore=734 adultscore=0 mlxscore=0 lowpriorityscore=0
+ priorityscore=1501 suspectscore=0 bulkscore=0 phishscore=0 clxscore=1015
+ impostorscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311060000 definitions=main-2311100144
 Received-SPF: none client-ip=148.163.156.1;
  envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
@@ -114,65 +114,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For power10, a pca9552 device is used for PCIe slot hotplug power
-control by the Power Hypervisor code.  The code expects that some
-time after it enables power to a PCIe slot by asserting one of the
-pca9552 GPIO pins 0-4, it should see a "power good" signal asserted
-on one of pca9552 GPIO pins 5-9.
-
-To simulate this behavior, we simply connect the GPIO outputs for
-pins 0-4 to the GPIO inputs for pins 5-9.
-
-Each PCIe slot is assigned 3 GPIO pins on the pca9552 device, for
-control of up to 5 PCIe slots.  The per-slot signal names are:
-
-   SLOTx_EN.......PHYP uses this as an output to enable
-                  slot power.  We connect this to the
-                  SLOTx_PG pin to simulate a PGOOD signal.
-   SLOTx_PG.......PHYP uses this as in input to detect
-                  PGOOD for the slot.  For our purposes
-                  we just connect this to the SLOTx_EN
-                  output.
-   SLOTx_Control..PHYP uses this as an output to prevent
-                  a race condition in the real hotplug
-                  circuitry, but we can ignore this output
-                  for simulation.
+The PNV I2C engines for power9 and power10 were being assigned a base
+XSCOM address that was off by one I2C engine's address range such
+that engine 0 had engine 1's address and so on.  The xscom address
+assignment was being based on the device tree engine numbering, which
+starts at 1.  Rather than changing the device tree numbering to start
+with 0, the addressing was changed to be based on the existing device
+tree numbers minus one.
 
 Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 ---
- hw/ppc/pnv.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ hw/ppc/pnv.c     | 6 ++++--
+ hw/ppc/pnv_i2c.c | 2 +-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 7afaf1008f..0b24d7d8ed 100644
+index 0b24d7d8ed..516434bc9c 100644
 --- a/hw/ppc/pnv.c
 +++ b/hw/ppc/pnv.c
-@@ -1882,7 +1882,24 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-      * Add a PCA9552 I2C device for PCIe hotplug control
-      * to engine 2, bus 1, address 0x63
-      */
--    i2c_slave_create_simple(chip10->i2c[2].busses[1], "pca9552", 0x63);
-+    I2CSlave* hotplug = i2c_slave_create_simple(chip10->i2c[2].busses[1],
-+                                                "pca9552", 0x63);
-+
-+    /*
-+     * Connect PCA9552 GPIO pins 0-4 (SLOTx_EN) outputs to GPIO pins 5-9
-+     * (SLOTx_PG) inputs in order to fake the pgood state of PCIe slots after
-+     * hypervisor code sets a SLOTx_EN pin high.
-+     */
-+    qdev_connect_gpio_out(DEVICE(hotplug), 0,
-+                          qdev_get_gpio_in(DEVICE(hotplug), 5));
-+    qdev_connect_gpio_out(DEVICE(hotplug), 1,
-+                          qdev_get_gpio_in(DEVICE(hotplug), 6));
-+    qdev_connect_gpio_out(DEVICE(hotplug), 2,
-+                          qdev_get_gpio_in(DEVICE(hotplug), 7));
-+    qdev_connect_gpio_out(DEVICE(hotplug), 3,
-+                          qdev_get_gpio_in(DEVICE(hotplug), 8));
-+    qdev_connect_gpio_out(DEVICE(hotplug), 4,
-+                          qdev_get_gpio_in(DEVICE(hotplug), 9));
- 
- }
- 
+@@ -1623,7 +1623,8 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
+             return;
+         }
+         pnv_xscom_add_subregion(chip, PNV9_XSCOM_I2CM_BASE +
+-                               chip9->i2c[i].engine * PNV9_XSCOM_I2CM_SIZE,
++                                (chip9->i2c[i].engine - 1) *
++                                        PNV9_XSCOM_I2CM_SIZE,
+                                 &chip9->i2c[i].xscom_regs);
+         qdev_connect_gpio_out(DEVICE(&chip9->i2c[i]), 0,
+                               qdev_get_gpio_in(DEVICE(&chip9->psi),
+@@ -1871,7 +1872,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
+             return;
+         }
+         pnv_xscom_add_subregion(chip, PNV10_XSCOM_I2CM_BASE +
+-                                chip10->i2c[i].engine * PNV10_XSCOM_I2CM_SIZE,
++                                (chip10->i2c[i].engine - 1) *
++                                        PNV10_XSCOM_I2CM_SIZE,
+                                 &chip10->i2c[i].xscom_regs);
+         qdev_connect_gpio_out(DEVICE(&chip10->i2c[i]), 0,
+                               qdev_get_gpio_in(DEVICE(&chip10->psi),
+diff --git a/hw/ppc/pnv_i2c.c b/hw/ppc/pnv_i2c.c
+index f75e59e709..b2c738da50 100644
+--- a/hw/ppc/pnv_i2c.c
++++ b/hw/ppc/pnv_i2c.c
+@@ -593,7 +593,7 @@ static int pnv_i2c_dt_xscom(PnvXScomInterface *dev, void *fdt,
+     int i2c_offset;
+     const char i2c_compat[] = "ibm,power8-i2cm\0ibm,power9-i2cm";
+     uint32_t i2c_pcba = PNV9_XSCOM_I2CM_BASE +
+-        i2c->engine * PNV9_XSCOM_I2CM_SIZE;
++        (i2c->engine - 1) * PNV9_XSCOM_I2CM_SIZE;
+     uint32_t reg[2] = {
+         cpu_to_be32(i2c_pcba),
+         cpu_to_be32(PNV9_XSCOM_I2CM_SIZE)
 -- 
 2.31.1
 
