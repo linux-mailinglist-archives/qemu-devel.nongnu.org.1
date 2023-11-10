@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 967427E799B
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 07:53:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 929097E799C
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 07:53:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1LN3-0008KZ-SU; Fri, 10 Nov 2023 01:52:01 -0500
+	id 1r1LNZ-0008M8-Gh; Fri, 10 Nov 2023 01:52:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wubinfeng@huawei.com>)
- id 1r1LMz-0008KB-QI
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 01:51:57 -0500
-Received: from szxga01-in.huawei.com ([45.249.212.187])
+ (Exim 4.90_1) (envelope-from <SRS0=s8KG=GX=kaod.org=clg@ozlabs.org>)
+ id 1r1LNW-0008Lq-NH; Fri, 10 Nov 2023 01:52:30 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wubinfeng@huawei.com>)
- id 1r1LMx-0008L0-Bu
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 01:51:57 -0500
-Received: from kwepemm000016.china.huawei.com (unknown [172.30.72.53])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4SRTxy5wkTzhZFT;
- Fri, 10 Nov 2023 14:51:34 +0800 (CST)
-Received: from [10.174.187.88] (10.174.187.88) by
- kwepemm000016.china.huawei.com (7.193.23.210) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Fri, 10 Nov 2023 14:51:45 +0800
-Subject: Re: [PATCH] Fix segmentation fault when VM shutdown with virtio-gpu
- unplugged
-To: "Michael S. Tsirkin" <mst@redhat.com>
-References: <20231110043916.1116-1-wubinfeng@huawei.com>
- <20231110003905-mutt-send-email-mst@kernel.org>
-CC: <kraxel@redhat.com>, <qemu-devel@nongnu.org>, <wangmeiling21@huawei.com>
-Message-ID: <7fd5016a-cbe6-064e-e926-351b1da66642@huawei.com>
-Date: Fri, 10 Nov 2023 14:51:32 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ (Exim 4.90_1) (envelope-from <SRS0=s8KG=GX=kaod.org=clg@ozlabs.org>)
+ id 1r1LNU-0008Mg-88; Fri, 10 Nov 2023 01:52:30 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SRTyp3w6pz4wd2;
+ Fri, 10 Nov 2023 17:52:18 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SRTym55tGz4wd1;
+ Fri, 10 Nov 2023 17:52:16 +1100 (AEDT)
+Message-ID: <5cc3d394-b9d0-4926-bc99-3999faf3e5f1@kaod.org>
+Date: Fri, 10 Nov 2023 07:52:10 +0100
 MIME-Version: 1.0
-In-Reply-To: <20231110003905-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset="gbk"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PING] target/ppc: Fix bugs in VSX_CVT_FP_TO_INT and
+ VSX_CVT_FP_TO_INT2 macros
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.187.88]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemm000016.china.huawei.com (7.193.23.210)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=45.249.212.187; envelope-from=wubinfeng@huawei.com;
- helo=szxga01-in.huawei.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-3.265, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+To: John Platts <john_platts@hotmail.com>,
+ "qemu-ppc@nongnu.org" <qemu-ppc@nongnu.org>
+Cc: "npiggin@gmail.com" <npiggin@gmail.com>,
+ "danielhb413@gmail.com" <danielhb413@gmail.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+References: <SN6PR05MB583705596093E9D2EFC8E4029DDEA@SN6PR05MB5837.namprd05.prod.outlook.com>
+ <SN6PR05MB5837B5EF0D11E0A787EC30179DA5A@SN6PR05MB5837.namprd05.prod.outlook.com>
+ <SN6PR05MB583760D0AEB19A3516E216329DAFA@SN6PR05MB5837.namprd05.prod.outlook.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <SN6PR05MB583760D0AEB19A3516E216329DAFA@SN6PR05MB5837.namprd05.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=s8KG=GX=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,86 +66,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Binfeng Wu <wubinfeng@huawei.com>
-From:  Binfeng Wu via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sorry for this mistake. Please check now.
-Please let us know if we need resubmit it.
+Hello John,
 
-From e798cf68b1a4043dcf8dda9b895812c1dab88da2 Mon Sep 17 00:00:00 2001
-From: wangmeiling <wangmeiling21@huawei.com>
-Date: Fri, 10 Nov 2023 10:17:54 +0800
-Subject: [PATCH] Fix segmentation fault when VM shutdown with virtio-gpu
- unplugged
+On 11/9/23 23:18, John Platts wrote:
+> What is the status of integrating the fixes to the VSX_CVT_FP_TO_INT and VSX_CVT_FP_TO_INT2 macros in target/ppc/fpu_helper.c?
 
-In the virtio-gpu unrealize process, the vdev structure has been cleaned up.
-However, vm_change_state_handler is not cleaned up yet, which is related to
-vdev. This handler will be cleaned up when VM shutdown, but the vdev is
-already a null pointer at this time, this will lead to segmentation fault.
+You sent a couple of times the same patch :
+  
+  https://patchwork.ozlabs.org/project/qemu-ppc/list/?submitter=87426
 
-Signed-off-by: wangmeiling <wangmeiling21@huawei.com>
-Signed-off-by: wubinfeng <wubinfeng@huawei.com>
----
- hw/display/virtio-gpu-base.c | 2 ++
- 1 file changed, 2 insertions(+)
+I suppose v3 is the one to consider.
 
-diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
-index 37af256219..b31b8d683f 100644
---- a/hw/display/virtio-gpu-base.c
-+++ b/hw/display/virtio-gpu-base.c
-@@ -252,6 +252,8 @@ virtio_gpu_base_device_unrealize(DeviceState *qdev)
- {
-     VirtIOGPUBase *g = VIRTIO_GPU_BASE(qdev);
-
-+    virtio_cleanup(VIRTIO_DEVICE(g));
-+
-     migrate_del_blocker(&g->migration_blocker);
- }
-
---
-2.20.1
-
-
-ÔÚ 2023/11/10 13:40, Michael S. Tsirkin Ð´µÀ:
-> On Fri, Nov 10, 2023 at 12:39:16PM +0800, Binfeng Wu wrote:
->> From: wangmeiling <wangmeiling21@huawei.com>
->>
->> In the virtio-gpu unrealize process, the vdev structure has been cleaned up.
->> However, vm_change_state_handler is not cleaned up yet, which is related to
->> vdev. This handler will be cleaned up when VM shutdown, but the vdev is
->> already a null pointer at this time, this will lead to segmentation fault.
->>
->> Signed-off-by: wangmeiling21@huawei.com
->> Signed-off-by: wubinfeng@huawei.com
 > 
-> You need to add your real names, not just email.
+> The bug that is currently there with the VSX_CVT_FP_TO_INT and VSX_CVT_FP_TO_INT2 macros is that float_invalid_cvt is incorrectly called if the current source value is a non-NaN value and a previous NaN source value from the same source vector was encountered.
 > 
-> With that:
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> The link to a patch that fixes the above bug in the VSX_CVT_FP_TO_INT and VSX_CVT_FP_TO_INT2 macros can be found at https://patchew.org/QEMU/SN6PR05MB5837B5EF0D11E0A787EC30179DA5A@SN6PR05MB5837.namprd05.prod.outlook.com/.
 > 
->> ---
->>  hw/display/virtio-gpu-base.c | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
->> index 37af256219..b31b8d683f 100644
->> --- a/hw/display/virtio-gpu-base.c
->> +++ b/hw/display/virtio-gpu-base.c
->> @@ -252,6 +252,8 @@ virtio_gpu_base_device_unrealize(DeviceState *qdev)
->>  {
->>      VirtIOGPUBase *g = VIRTIO_GPU_BASE(qdev);
->>  
->> +    virtio_cleanup(VIRTIO_DEVICE(g));
->> +
->>      migrate_del_blocker(&g->migration_blocker);
->>  }
->>  
->> -- 
->> 2.20.1
+> A description of this bug can be found at https://gitlab.com/qemu-project/qemu/-/issues/1941.
 > 
-> 
-> .
-> 
+> Here is a link to a test program that will detect the bugs that are currently there with the emulation of the xvcvspsxws, xvcvspuxws, xvcvspsxds, xvcvspuxds, xvcvdpsxws, xvcvdpuxws, xvcvdpsxds, and xvcvdpuxds instructions if the source vector contains at least one NaN value:
+> https://gitlab.com/qemu-project/qemu/uploads/fcbb97896ff2f4ab435affae94467f4d/vsx_f2i_nan_test_102523.c
+
+If you have time, could you please respin a v4 and include the
+test case under tests/tcg/ppc64 ? Please add a Fixes: tag with
+the commit id also.
+
+The plan is to merge fixes, such as this one, in the coming weeks,
+and I will send one PPC PR before the end of the 8.2 cycle.
+
+Thanks,
+
+C.
+
 
