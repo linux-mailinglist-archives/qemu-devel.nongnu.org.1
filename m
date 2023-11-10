@@ -2,126 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208F87E79CF
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 08:41:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D5E27E7CE4
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 15:15:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1M8C-0005zn-JX; Fri, 10 Nov 2023 02:40:44 -0500
+	id 1r1SHP-0000lB-F4; Fri, 10 Nov 2023 09:14:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r1M83-0005x3-48
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:40:35 -0500
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r1M7z-0000Vc-Ns
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:40:34 -0500
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-9e1fb7faa9dso291510766b.2
- for <qemu-devel@nongnu.org>; Thu, 09 Nov 2023 23:40:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699602030; x=1700206830; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=w1cQVy8Tdk0u30Y5Hhr0erXikh+ihShfX7wQfHbqGoc=;
- b=EVZQ5KJTan5SjybH/nswY3T9SefEDfekfkrBj9a/ZkNCjb+SrjDy6/lyTp8mwAZhD/
- 87swST3f5VAQLd6Mi1tvifFJ0XsDMb8bdY+aJ22cp0b0MVwuTr0n/58I4OF3yA587A6w
- /Eyx7qlG6sYjAnwQY7mJ9f+f3TPiAEljNt1wjH1pgHvFUQYlbNn8EaJ7YnPrICx/ysjc
- GZYHOTAfA4HwdTcqVHdx/cygNVEk/9JsetmFfo3MZl+5wDz4iUJ7O3vA0L4IxXJE6SFH
- UYPWprBkjqQ+aLvnaVzNXcS8uzoRG7U+cdNg0BMbUxAEdXgn39s1eTUDDXKf9z2ZWXAi
- LNDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699602030; x=1700206830;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=w1cQVy8Tdk0u30Y5Hhr0erXikh+ihShfX7wQfHbqGoc=;
- b=pplQFI2G/ebRkAO6DdPM5cHiGctmxSdvxrhgr78qwCtuHpSQXQgvI7+8rQnJT06+yo
- +UWPbJx09PevSIwehS0C+4ZLr0qhXR2NXJ0m+2BNMBIXtK/8TOFSte+Nmi6q/IVAoMFA
- hz5w6xrcYM2CqIdVZDqs9QIIdCmgYkuRiM114ZEzEiMiqigxm78J21IApVROQtmSvZRE
- FIGX4S+KRGWD1Xf1mipud3kRdvzmE+fKLZ3Giru9f0e6mIiQw6u/cFjNh8M+mYWyidfz
- WaaoQ2fnqXsN1y01VgUSLEgc7VlV5Pms5yA1MO9XzmLe2vEngVZrJzLdHlyw4/5CY2SJ
- yenA==
-X-Gm-Message-State: AOJu0YxedtdyDDE8Ic3E7LcELqeHV7fdHgcqxisN0RlzmMEtnh1hqOnn
- kyEQFOl6RZh7Ak0wz3tFEMd6zw==
-X-Google-Smtp-Source: AGHT+IFiynhjKq3A77rBORXMoLsYOtp3N+GMcbcfs+ylkUNpnOvZIjAqXdE960vvYQGNOoGt3u62WQ==
-X-Received: by 2002:a17:907:9287:b0:9c7:5a01:ffec with SMTP id
- bw7-20020a170907928700b009c75a01ffecmr6368674ejc.0.1699602029914; 
- Thu, 09 Nov 2023 23:40:29 -0800 (PST)
-Received: from [192.168.69.115] ([176.187.194.109])
- by smtp.gmail.com with ESMTPSA id
- qt19-20020a170906ecf300b009a1be9c29d7sm3567178ejb.179.2023.11.09.23.40.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Nov 2023 23:40:29 -0800 (PST)
-Message-ID: <34e2c0c6-4e04-486a-8e1f-4afdc461a5d4@linaro.org>
-Date: Fri, 10 Nov 2023 08:40:23 +0100
+ (Exim 4.90_1) (envelope-from <Julia.Zhang@amd.com>)
+ id 1r1MDM-00088B-GF
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:46:05 -0500
+Received: from mail-bn8nam12on2048.outbound.protection.outlook.com
+ ([40.107.237.48] helo=NAM12-BN8-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Julia.Zhang@amd.com>)
+ id 1r1MDH-0001UU-UD
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 02:46:04 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lEk1uP0lGUnY0LLIHlJ1ADjZ6o0ZiwpkHd7ta5jZhjp7sHMNCnQHJWriS3aHuLsQQ4mPC3UpLs51nmApo2Mf5Q79njXI1JpIqCiw7nAwQKyyHxJiGIGaFMfY2PY0FpYpN3MWaoAqnCTn3rXpQ+u3JXj374XiXtZ2NyPAdMADRntgwl0JvN03x/aRAEdv7tkf8mFHfVXj/Q65kg2+/C8fe0OCCjKOGyW/je3m+6ZtJqrnAMyjV34JXUV/4yHgXf5ZPBpkzUS5opLp5n7EUBhghVHP72lGw8qQ8bftnZ3DCDtYrZz4htJjP9DxNfakc79mZ/MOEdpWYC9g1Z/7I7+Lkw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eGDzmHa8OEhPPEAOSIU8ytz1xQ9bIs6QVntjhfnDetA=;
+ b=DEu05q+L0WishkyqEsBH0flQ8RHXq0b+QWr+UWnoMBkPps9Tz5sesmCfSEEf0EYnjflePehq+kSFLmRpoACEkvC/yj5ifcua+YughF5TOkVrwTNvZLZf01dRVRRd+nLn3opa7OjxXOtaqkrGz62ELiNf0nk1VwMZnMCM/VaHWQIWca3qCEcwTi9fd298MvtWWi39yDdCUyR7tB3mUJ3HyCfnXfKJNnsRC3PTrXJN/5Qes4o/fxeWmQ74XDrV4Wue/bQR7vGmjzuKfqhEh0ZoDdPpDxE3OzL2ME1FQ3DHI3AhNy1qWThc9d+0HSiCF0439abNrCWPHugCVSlyeobuSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eGDzmHa8OEhPPEAOSIU8ytz1xQ9bIs6QVntjhfnDetA=;
+ b=GzHH0LuM77hF/Y1r2BUH7YVPhPP+/SGvIjIT6oe7yunKMSZ/KoEjZtFPoJGdoH7GZ+cF23YU5imfah2tCodvmmA4+a6p88ihslKaucRrToqRVCAukeDIP5wDSAIIzP5tTIAOyPMBhUBi2or2i0gYdppz7RQ8eWe6bcwlY+zQrQc=
+Received: from CH0P221CA0019.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:11c::8)
+ by DS0PR12MB9448.namprd12.prod.outlook.com (2603:10b6:8:1bb::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.28; Fri, 10 Nov
+ 2023 07:40:51 +0000
+Received: from DS2PEPF00003445.namprd04.prod.outlook.com
+ (2603:10b6:610:11c:cafe::c5) by CH0P221CA0019.outlook.office365.com
+ (2603:10b6:610:11c::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.19 via Frontend
+ Transport; Fri, 10 Nov 2023 07:40:50 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS2PEPF00003445.mail.protection.outlook.com (10.167.17.72) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6977.16 via Frontend Transport; Fri, 10 Nov 2023 07:40:50 +0000
+Received: from jenkins-julia.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Fri, 10 Nov
+ 2023 01:40:45 -0600
+From: Julia Zhang <julia.zhang@amd.com>
+To: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>, Anthony PERARD
+ <anthony.perard@citrix.com>, Antonio Caggiano
+ <antonio.caggiano@collabora.com>, "Dr . David Alan Gilbert"
+ <dgilbert@redhat.com>, Robert Beckett <bob.beckett@collabora.com>,
+ <qemu-devel@nongnu.org>
+CC: <xen-devel@lists.xenproject.org>, Alex Deucher
+ <alexander.deucher@amd.com>, =?UTF-8?q?Christian=20K=C3=B6nig?=
+ <christian.koenig@amd.com>, Xenia Ragiadakou <burzalodowa@gmail.com>,
+ "Honglei Huang" <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ "Chen Jiqian" <Jiqian.Chen@amd.com>
+Subject: [PATCH 0/2] Implementation of resource_query_layout
+Date: Fri, 10 Nov 2023 15:40:25 +0800
+Message-ID: <20231110074027.24862-1-julia.zhang@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-8.3 v2 05/46] hw/i386/pc: use qemu_get_nic_info() and
- pci_init_nic_devices()
-Content-Language: en-US
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org,
- Bernhard Beschow <shentey@gmail.com>, Markus Armbruster <armbru@redhat.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Beniamino Galvani <b.galvani@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Niek Linnenbank <nieklinnenbank@gmail.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, Igor Mitsyanko <i.mitsyanko@gmail.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Andrey Smirnov <andrew.smirnov@gmail.com>, Rob Herring <robh@kernel.org>,
- Subbaraya Sundeep <sundeep.lkml@gmail.com>, Jan Kiszka <jan.kiszka@web.de>,
- Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
- Radoslaw Biernacki <rad@semihalf.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>, Helge Deller <deller@gmx.de>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Song Gao <gaosong@loongson.cn>, Thomas Huth <huth@tuxfamily.org>,
- Laurent Vivier <laurent@vivier.eu>, Huacai Chen <chenhuacai@kernel.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Aurelien Jarno <aurelien@aurel32.net>, Jason Wang <jasowang@redhat.com>,
- Jia Liu <proljc@gmail.com>, Stafford Horne <shorne@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Bin Meng
- <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, xen-devel@lists.xenproject.org
-References: <20231106195352.301038-1-dwmw2@infradead.org>
- <20231106195352.301038-6-dwmw2@infradead.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231106195352.301038-6-dwmw2@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF00003445:EE_|DS0PR12MB9448:EE_
+X-MS-Office365-Filtering-Correlation-Id: 377251bb-2983-450b-f774-08dbe1c05ca4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: O+UJh3S3TLAzTDuY0M1zTsltAxWWlwtX5Iieds/pDAqDc2hooF9CLIXb4hK+WEarYRP1aStxTCHUbyCypEbLX3x+V19jQpLwLSzyH0MMu6KZcpmi5SP90LRqf1dAUSUQI4/Mo0KPr8/Mqd+VHxLWYqdfLodDhN/RNbex4FiOLj0jHcHx0h9SKxhrHrFUou8zckP0LTiqoRIutdaOYsh6SSYo1t+nO0IqPT2/e4ylK26+GALWKD72K95cRzFqHJJuiTW5UmtnRsu0/BIUeYIsdVAtoj0a8Q4dwsVyWa4G8rBTlrNQokQVX1hJIBEx7NyPCATZdsT4kBrR/Txm/oBrqBI1Hun8yQAH6QUnQzJ3vkmDeepzTQJiAV/TXfkF8Ftnnqzws8dYweueCIkqNch0rNqLvOyhru+5G6/npy9Vvf7H1IetKdKeOtEvfyOKBTpgwEqJDPW11bvB9f++HrB+qGwgBl6dr1TV53uXy0GaicMYl2al0V2JcDJHDQTGQiGdLLhpQ2cYzeKlc7EOSJ4MGac0RFia6wa9HzA/wjMFRn5gzbn/7qMGhxwMTzhKuMO/vTWQrQTO2QpiGtmTBJIYfGygzhvmqjRsuAnrWlnZBF7zJGKYG6O9CL+auWOCgTuAJcDTRDSa5wKq44J2q0TyH6yaHsqPnYDEqZrYkovoYeNfvlj0DxTvMzJZgnEBCRmobKjD5ojIOMVX+JrJK7ESZUDkklhpXIp90BZvRKeiXq/Wc34a9PQ5AnYbrnQ/dMOzCTLw3tJryShEP7dxB98N8w==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(136003)(376002)(39860400002)(346002)(396003)(230922051799003)(1800799009)(186009)(82310400011)(64100799003)(451199024)(40470700004)(36840700001)(46966006)(40480700001)(356005)(81166007)(40460700003)(82740400003)(70206006)(6666004)(110136005)(478600001)(7696005)(36756003)(86362001)(70586007)(26005)(1076003)(16526019)(2616005)(426003)(7416002)(336012)(8936002)(2906002)(41300700001)(47076005)(54906003)(4326008)(4744005)(5660300002)(8676002)(316002)(36860700001)(44832011)(83380400001)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2023 07:40:50.6561 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 377251bb-2983-450b-f774-08dbe1c05ca4
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF00003445.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9448
+Received-SPF: softfail client-ip=40.107.237.48;
+ envelope-from=Julia.Zhang@amd.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 10 Nov 2023 09:14:31 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,78 +128,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi David,
+This add implementation of resource_query_layout to get the information of
+how the host has actually allocated the buffer. This function is now used
+to query the stride for guest linear resource for dGPU prime on guest VMs.
 
-+Markus/Bernhard
+Related mesa mr: https:
+//gitlab.freedesktop.org/mesa/mesa/-/merge_requests/23896
+virglrenderer mr: https:
+//gitlab.freedesktop.org/virgl/virglrenderer/-/merge_requests/1268
 
-On 6/11/23 20:49, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> 
-> Eliminate direct access to nd_table[] and nb_nics by processing the the
-> Xen and ISA NICs first and then calling pci_init_nic_devices() for the
-> rest.
-> 
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> Reviewed-by: Paul Durrant <paul@xen.org>
-> ---
->   hw/i386/pc.c                | 26 ++++++++++++++++----------
->   include/hw/net/ne2000-isa.h |  2 --
->   2 files changed, 16 insertions(+), 12 deletions(-)
-> 
-> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index c2bc3fa52d..4078d2d231 100644
-> --- a/hw/i386/pc.c
-> +++ b/hw/i386/pc.c
-> @@ -652,8 +652,11 @@ static void pc_init_ne2k_isa(ISABus *bus, NICInfo *nd)
->   {
->       static int nb_ne2k = 0;
->   
-> -    if (nb_ne2k == NE2000_NB_MAX)
-> +    if (nb_ne2k == NE2000_NB_MAX) {
-> +        error_setg(&error_fatal,
+Daniel Stone (1):
+  virgl: Implement resource_query_layout
 
-In the context of dynamically created machines I'd rather have
-this function,
+Julia Zhang (1):
+  virgl: Modify resource_query_layout
 
-> +                   "maximum number of ISA NE2000 devices exceeded");
->           return;
-> +    }
->       isa_ne2000_init(bus, ne2000_io[nb_ne2k],
->                       ne2000_irq[nb_ne2k], nd);
->       nb_ne2k++;
-> @@ -1291,23 +1294,26 @@ void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus,
->                    BusState *xen_bus)
->   {
->       MachineClass *mc = MACHINE_CLASS(pcmc);
-> -    int i;
-> +    bool default_is_ne2k = g_str_equal(mc->default_nic, TYPE_ISA_NE2000);
-> +    NICInfo *nd;
->   
->       rom_set_order_override(FW_CFG_ORDER_OVERRIDE_NIC);
-> -    for (i = 0; i < nb_nics; i++) {
-> -        NICInfo *nd = &nd_table[i];
-> -        const char *model = nd->model ? nd->model : mc->default_nic;
->   
-> -        if (xen_bus && (!nd->model || g_str_equal(model, "xen-net-device"))) {
-> +    if (xen_bus) {
-> +        while (nc = qemu_find_nic_info("xen-net-device", true, NULL)) {
->               DeviceState *dev = qdev_new("xen-net-device");
->               qdev_set_nic_properties(dev, nd);
->               qdev_realize_and_unref(dev, xen_bus, &error_fatal);
+ hw/display/virtio-gpu-base.c                |  4 +++
+ hw/display/virtio-gpu-virgl.c               | 35 +++++++++++++++++++++
+ include/hw/virtio/virtio-gpu-bswap.h        |  7 +++++
+ include/standard-headers/linux/virtio_gpu.h | 29 +++++++++++++++++
+ meson.build                                 |  4 +++
+ 5 files changed, 79 insertions(+)
 
-and this one non-fatal (primarily for API example). But this is pending
-on a discussion on another thread, see:
-https://lore.kernel.org/qemu-devel/c1322f3b-2ae2-4ca7-9a76-a2a434dc8315@linaro.org/
-so no changed requested so far.
+-- 
+2.34.1
 
-> -        } else if (g_str_equal(model, "ne2k_isa")) {
-> -            pc_init_ne2k_isa(isa_bus, nd);
-> -        } else {
-> -            pci_nic_init_nofail(nd, pci_bus, model, NULL);
->           }
->       }
-
-Regards,
-
-Phil.
 
