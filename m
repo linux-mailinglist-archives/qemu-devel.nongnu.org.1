@@ -2,77 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F04D77E7A33
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 09:36:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D6A77E7A34
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 09:37:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1Mzp-0003lF-BT; Fri, 10 Nov 2023 03:36:09 -0500
+	id 1r1N0n-0004PR-6b; Fri, 10 Nov 2023 03:37:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1r1Mzo-0003l2-5b
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 03:36:08 -0500
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1r1Mzm-0002n8-1U
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 03:36:07 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1r1N0k-0004Oo-ER
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 03:37:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1r1N0j-0002sJ-35
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 03:37:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699605424;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=/48ObBUAedEyPRpgtsOuL4Ztg+DGbSyrmAPAkGMsBpg=;
+ b=BSRo63LVOSx7ngeLKc5kZhbF/q4VfESjzcl8pfkEBT0LTx+44WRbOMaEukY8kqTNLBMzqT
+ 9HfSJG7bfxLb5EcyAL909rfWcv4n0S/M6I6W5YffL+Aj/2EsEGO3HDZZOrv+pBf5rZYBz/
+ 3xkak7dd7kpL2ncq47jhUHSOGCBGREU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-196-UtbcqoM7O1WJI2gHPw4Ghg-1; Fri, 10 Nov 2023 03:37:00 -0500
+X-MC-Unique: UtbcqoM7O1WJI2gHPw4Ghg-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id E767C1F8B9;
- Fri, 10 Nov 2023 08:36:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1699605362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uB81GHjdagNa6TKI985cH017NM7XspVKe8XdpkBSZ7w=;
- b=ZppVMnpQD+AuTqrVGOV2T2UUmyCS7fGTE4rNii3k63Lafu28Can8L9mgC50URTbmjwcZit
- dLHQpunLgNx8oPmV2CYen9hfYQ8CFSDQK3Ytb1wg+rCW5ejv3G/gzs8PxwtrjS7K0+rmRZ
- FSkOZ9cVvVFXPM1V8pnv1F4CNaXp2eg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1699605362;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uB81GHjdagNa6TKI985cH017NM7XspVKe8XdpkBSZ7w=;
- b=THqBcnnlJvGNeSL64xvWjPxfGN4Pshr3PTQmIDj+j+3EbaVLab+PvhrmT8xIHj7GHMGS4p
- K6UcodH6zNHbaEAw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A2CF4138FC;
- Fri, 10 Nov 2023 08:36:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id bzbwJXLrTWXhLQAAMHmgww
- (envelope-from <cfontana@suse.de>); Fri, 10 Nov 2023 08:36:02 +0000
-Message-ID: <59437ef3-7b94-2aa4-31b4-012412ce160b@suse.de>
-Date: Fri, 10 Nov 2023 09:36:02 +0100
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1F67D811E82;
+ Fri, 10 Nov 2023 08:37:00 +0000 (UTC)
+Received: from laptop.redhat.com (unknown [10.39.192.149])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D6C45492BFC;
+ Fri, 10 Nov 2023 08:36:58 +0000 (UTC)
+From: Eric Auger <eric.auger@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, peter.maydell@linaro.org
+Cc: clg@redhat.com
+Subject: [PATCH for-8.2] test-resv-mem: Fix CID 1523911
+Date: Fri, 10 Nov 2023 09:36:54 +0100
+Message-ID: <20231110083654.277345-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [SeaBIOS] [PATCH v5] limit physical address space size
-Content-Language: en-US
-To: Kevin O'Connor <kevin@koconnor.net>, Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: seabios@seabios.org, qemu-devel@nongnu.org
-References: <20231107130309.3257776-1-kraxel@redhat.com>
- <ZUvVCHWbU29+eDm7@morn>
-From: Claudio Fontana <cfontana@suse.de>
-In-Reply-To: <ZUvVCHWbU29+eDm7@morn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1d;
- envelope-from=cfontana@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -76
-X-Spam_score: -7.7
-X-Spam_bar: -------
-X-Spam_report: (-7.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.265,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,108 +77,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/8/23 19:35, Kevin O'Connor wrote:
-> On Tue, Nov 07, 2023 at 02:03:09PM +0100, Gerd Hoffmann wrote:
->> For better compatibility with old linux kernels,
->> see source code comment.
->>
->> Related (same problem in ovmf):
->> https://github.com/tianocore/edk2/commit/c1e853769046
-> 
-> Thanks.  I'll defer to your judgement on this.  It does seem a little
-> odd to alter the CPUPhysBits variable itself instead of adding
-> additional checking to the pciinit.c code that uses CPUPhysBits.
-> (That is, if there are old Linux kernels that can't handle a very high
-> PCI space, then a workaround in the PCI code might make it more clear
-> what is occurring.)
-> 
-> Cheers,
-> -Kevin
-> 
-> 
->>
->> Cc: Claudio Fontana <cfontana@suse.de>
->> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Coverity complains about passing "&expected" to "run_range_inverse_array",
+which dereferences null "expected". I guess the problem is that the
+compare_ranges() loop dereferences 'e' without testing it. However the
+loop condition is based on 'ranges' which is garanteed to have
+the same length as 'expected' given the g_assert_cmpint() just
+before the loop. So the code looks safe to me.
 
-Hi,
+Nevertheless adding a test on expected before the loop to get rid of the
+warning.
 
-I thought about this, and I am not sure it's the right call though.
+Fixes: CID 1523901
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Reported-by: Coverity (CID 1523901)
 
-The change breaking old guests (CentOS7, Ubuntu 18.04 are the known ones, but presumably others as well) in QEMU is:
+---
 
-commit 784155cdcb02ffaae44afecab93861070e7d652d
-Author: Gerd Hoffmann <kraxel@redhat.com>
-Date:   Mon Sep 11 17:20:26 2023 +0200
+Hope this fixes the Coverity warning as I cannot test.
+---
+ tests/unit/test-resv-mem.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-    seabios: update submodule to git snapshot
-    
-    git shortlog
-    ------------
-    
-    Gerd Hoffmann (7):
-          disable array bounds warning
-          better kvm detection
-          detect physical address space size
-          move 64bit pci window to end of address space
-          be less conservative with the 64bit pci io window
-          qemu: log reservations in fw_cfg e820 table
-          check for e820 conflict
+diff --git a/tests/unit/test-resv-mem.c b/tests/unit/test-resv-mem.c
+index 5963274e2c..cd8f7318cc 100644
+--- a/tests/unit/test-resv-mem.c
++++ b/tests/unit/test-resv-mem.c
+@@ -44,6 +44,10 @@ static void compare_ranges(const char *prefix, GList *ranges,
+     print_ranges("out", ranges);
+     print_ranges("expected", expected);
+ #endif
++    if (!expected) {
++        g_assert_true(!ranges);
++        return;
++    }
+     g_assert_cmpint(g_list_length(ranges), ==, g_list_length(expected));
+     for (l = ranges, e = expected; l ; l = l->next, e = e->next) {
+         Range *r = (Range *)l->data;
+-- 
+2.41.0
 
-The reasoning for the change is according to:
-
-https://mail.coreboot.org/hyperkitty/list/seabios@seabios.org/message/BHK67ULKJTLJT676J4D5C2ND53CFEL3Q/
-
-"It makes seabios follow a common pattern.  real mode address space
-has io resources mapped high (below 1M).  32-bit address space has
-io resources mapped high too (below 4G).  This does the same for
-64-bit resources."
-
-So it seems to be an almost aesthetic choice, the way I read the "common pattern", one that ends up actually breaking existing workloads though.
-
-Now the correction to that that you propose in SeaBIOS is:
-
->> ---
->>  src/fw/paravirt.c | 8 ++++++++
->>  1 file changed, 8 insertions(+)
->>
->> diff --git a/src/fw/paravirt.c b/src/fw/paravirt.c
->> index e5d4eca0cb5a..a2c9c64d5e78 100644
->> --- a/src/fw/paravirt.c
->> +++ b/src/fw/paravirt.c
->> @@ -182,6 +182,14 @@ static void physbits(int qemu_quirk)
->>              __func__, signature, pae ? "yes" : "no", CPULongMode ? "yes" : "no",
->>              physbits, valid ? "yes" : "no");
->>  
->> +    if (valid && physbits > 46) {
->> +        // Old linux kernels have trouble dealing with more than 46
->> +        // phys-bits, so avoid that for now.  Seems to be a bug in the
->> +        // virtio-pci driver.  Reported: centos-7, ubuntu-18.04
->> +        dprintf(1, "%s: using phys-bits=46 (old linux kernel compatibility)\n", __func__);
->> +        physbits = 46;
->> +    }
->> +
->>      if (valid)
->>          CPUPhysBits = physbits;
->>  }
->> -- 
->> 2.41.0
-
-but to me this is potentially breaking the situation for another set of users,
-those that are passing through 48 physical bits from their host cpu to the guest,
-and expect it to actually happen.
-
-Would it not be a better solution to instead either revert the original change,
-or to patch it to find a new range that better satisfies code consistency/aesthetic requirements,
-but also does not break any running workload?
-
-I could help with the testing for this.
-
-Or we could add some extra workarounds in the stack elsewhere in the management tools to
-try to detect older guests (not ideal either), but this seems like adding breakage on top of breakage to me.
-
-Might be wrong though, looking forward for opinions across Seabios and QEMU.
-
-Thanks,
-
-Claudio
 
