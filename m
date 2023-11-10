@@ -2,86 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D2B7E8541
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 22:49:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 334857E85E0
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 23:50:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1ZLw-0003dP-4G; Fri, 10 Nov 2023 16:47:48 -0500
+	id 1r1aJB-0007ht-IO; Fri, 10 Nov 2023 17:49:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r1ZLu-0003dD-IL
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 16:47:46 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r1ZLs-0006ub-GD
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 16:47:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699652861;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WpBjPQC4fWqAtmRHqryuLU9UJXarqcrl+f83Dw/3+2k=;
- b=ToQrLo8tQIJhNSbQp/PsxebAAnruNz70h7Sv+5CHC2ixDwZsPIxq7sWK1iNJQUNpOeDxjk
- sUPIwkMIAOUS3IL6XC520qzyU/s/ZdBYHp9arO2abSIdzBMxeAYzOZ+iK48BN6MJO/GAIV
- otR6soYL+uo+eE48AThts6NkMdRuibY=
-Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com
- [209.85.217.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-88-0J8llnSzNMSMF33L5kKD6A-1; Fri, 10 Nov 2023 16:47:39 -0500
-X-MC-Unique: 0J8llnSzNMSMF33L5kKD6A-1
-Received: by mail-vs1-f71.google.com with SMTP id
- ada2fe7eead31-45ee5ccda9eso910845137.1
- for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 13:47:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r1aJ8-0007ge-Gs
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 17:48:58 -0500
+Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r1aJ5-0000pb-S6
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 17:48:58 -0500
+Received: by mail-yw1-x112f.google.com with SMTP id
+ 00721157ae682-5a86b6391e9so31007107b3.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 14:48:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699656534; x=1700261334; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=QWsTdl2K6+YGQK5bU59O/HCLogegVMrnoVjvMNTDmS8=;
+ b=acE3Z6gTkxdnCnc7HtcBUYbeJgwCKpCjoZC9P0OlH3JsRaO1xFCAIfF4RlZazBsQ1C
+ OmjdPwIuwaKmeyie5zh9ahznepGfPY+GNiO6m8um+TLBhzbEIj5oIzxXq3D9o2lwyJdL
+ CDDUcEqRM9e4GwoqhK5AD6+y52sm3uFA3A6Y/AaG9YHb7s0X1vZs+KD8tuX/GIloVet+
+ wW6mZ0YYlD7MSs3j6UBoXFtGlPLjGv7WAjf6BVRHSli6CNhzEsUtn1efTZUNCvzhKUEG
+ iHMD0S4jf8ocaWenSWmJcvGjbvZwzPZKGHx0A3SwknkPuGMsN4glfNCZe5f+JHhHjXTB
+ R+aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699652859; x=1700257659;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=WpBjPQC4fWqAtmRHqryuLU9UJXarqcrl+f83Dw/3+2k=;
- b=C5IB9CpwKMLrA0ef0PDVhDKbP+ySttvRa+wJIOAvTwZDzRCcgZYXNglB1J9dYWOEdH
- aKaUKT7pQvsDGTEAASKxejQMtvyJhmMs+yHuf1QlOUWAi24rMBcKsc5jaSuEt0JGksvN
- GzBowvE5MK1Tls6bucXDwsy6QYpS0HEHifHEvZAT4D16NDX8pYtXa/IB7TquAgF76Gbu
- EWq4LkWlidSmjrjtZuIxRznrtrkm7hQWOB7dY0T3oSNCd/EHD7WtMcqLxMqmEy2DveoQ
- /7sH6WBo93koRDXvLDOOLIy8g/d7XKjK9vGwjhTB4VFoWfxZzujq+MqlV0mB9PaEs4Yl
- W67A==
-X-Gm-Message-State: AOJu0YztVnMa/ONqTf2lM+teZOwKupphuXyWPDGMc5N3TNnXWhiYs8d0
- JPsIQKa2lwpksSeifscTuy0XRzW4ikfQjAdbf5UuDwSGDI42wGmngPCafurkBA6O0v7JU5IJl3L
- mBGHicVuciAons0rDDtlMOZAMakW8h9g=
-X-Received: by 2002:a67:cd17:0:b0:460:f899:da3b with SMTP id
- u23-20020a67cd17000000b00460f899da3bmr574634vsl.12.1699652859222; 
- Fri, 10 Nov 2023 13:47:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFMFin/Tuqbd1mkkT7UxCnuzN7+j9W1KJwPGzJypb/UQXg7pNyXrckDBO2HnHTL1SmqTmpRPXhAEgpXBdPP1zw=
-X-Received: by 2002:a67:cd17:0:b0:460:f899:da3b with SMTP id
- u23-20020a67cd17000000b00460f899da3bmr574622vsl.12.1699652858933; Fri, 10 Nov
- 2023 13:47:38 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699656534; x=1700261334;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QWsTdl2K6+YGQK5bU59O/HCLogegVMrnoVjvMNTDmS8=;
+ b=KLJSOMa9SBit3t6thSs7uY6irjunkN+z8D58ftS3ndzE+51gG9a9h4I5if8bu2hHeG
+ IQ8peiNSrus3I5seiDQ40/DrO3o7KSTcctfvNZgOhodMjq6IZ4eTIQqkTkTOgjyyNBh0
+ QDYq+MlURixuwxFY6gxLjZdUyHgBDfdIQsMKGbGo7v8hXSEMLTcJmC7X2eEsfSwlLh0u
+ oymyQ5o5JG+frqSX3hyOvSvLfLSor6CuEpEvRJ7+GDzOATaivBGZExyM1aCpPYecz0SS
+ qFLwZMaRlEYo5ZBjRE/7eLJ7EcXHaClVZj1vKkzefLteYSCMHX5TcjRRYd+Gzh0E2wNT
+ lgnA==
+X-Gm-Message-State: AOJu0YztUabDzIlCrQGoaP8A2ZEendSWtlpkrGK1cuD4SSZT57mZhtJI
+ DJfIoefJ9GRacKx7P0bhQ7SNEA==
+X-Google-Smtp-Source: AGHT+IG+qaiPuG4vgUz2c+k6qNhLVd/j0BbC3tY+RVpvkzpscKi7DT6UBbf+f4SuM5CeKpbOGJW8tg==
+X-Received: by 2002:a81:5489:0:b0:5af:abe1:3d4b with SMTP id
+ i131-20020a815489000000b005afabe13d4bmr568110ywb.5.1699656534208; 
+ Fri, 10 Nov 2023 14:48:54 -0800 (PST)
+Received: from ?IPV6:2607:fb91:9e6:820:96bf:8504:fb4:ae37?
+ ([2607:fb91:9e6:820:96bf:8504:fb4:ae37])
+ by smtp.gmail.com with ESMTPSA id
+ o124-20020a0de582000000b0059b547b167esm125732ywe.98.2023.11.10.14.48.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 10 Nov 2023 14:48:53 -0800 (PST)
+Message-ID: <d93beb59-ab19-43ef-8d70-5e63cc6dbe29@linaro.org>
+Date: Fri, 10 Nov 2023 14:48:49 -0800
 MIME-Version: 1.0
-References: <20231109092554.1253-1-gmanning@rapitasystems.com>
- <20231109092554.1253-2-gmanning@rapitasystems.com>
- <CWXP123MB43413EFD75E3292155EBAA0DD7AEA@CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM>
-In-Reply-To: <CWXP123MB43413EFD75E3292155EBAA0DD7AEA@CWXP123MB4341.GBRP123.PROD.OUTLOOK.COM>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 10 Nov 2023 22:47:26 +0100
-Message-ID: <CABgObfYrWEoR4YADU-0VbMZpCsmL=eRuFx0gz5Lp2H3c=LrDJQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] plugins: Move the windows linking function to qemu
-To: Greg Manning <gmanning@rapitasystems.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/hppa: Fix possible overflow in TLB size calculation
+Content-Language: en-US
+To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <ZU6F/H8CZr3q4pP/@p100>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <ZU6F/H8CZr3q4pP/@p100>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-yw1-x112f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,78 +94,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 10, 2023 at 6:36=E2=80=AFPM Greg Manning <gmanning@rapitasystem=
-s.com> wrote:
-> Then hopefully when a plugin links to this, it gets the __pfnDliFailureHo=
-ok2
-> symbol defined and set up and everything would work. Except gcc strips
-> out any unreferenced symbols from static libs when linking. So the plugin
-> would have to be linked thusly:
->
-> gcc -shared -o my_plugin.dll -Wl,-u,__pfnDliFailureHook2 my_plugin.o qemu=
-_plugin_api.lib
->
-> But no other qemu-fiddling-with-things or extra code in plugins required.
->
-> Hmm. Feels like half a solution. I wonder if there's a way to mark symbol=
-s as
-> "always required despite what dead code analysis says".
+On 11/10/23 11:35, Helge Deller wrote:
+> Coverty found that the shift of TARGET_PAGE_SIZE (32-bit type) might
+> overflow.  Fix it by casting TARGET_PAGE_SIZE to a 64-bit type before
+> doing the shift (CID 1523902 and CID 1523908).
+> 
+> Reported-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Helge Deller <deller@gmx.de>
 
-To be clear, I don't dislike at all the simpler solution where you
-just add a macro like this:
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-#ifdef _WIN32
-#define QEMU_PLUGIN_HOOK \
-   /* contents of win32_linker.c */
-#else
-#define QEMU_PLUGIN_HOOK
-#endif
-
-and add QEMU_PLUGIN_HOOK to a source file of every plugin. But if you
-would like to use a library, you can pass a linker script on the
-command line as if it was a library, and the paths within the linker
-script are resolved relative to the linker script itself. So you can
-place in tests/plugins/meson.build something like:
-
-# uses dlltool like it does now... can also use custom_target
-delaylib =3D configure_file(output: 'qemu_plugin_api.lib',
-   ...)
-delayhook =3D static_library('qemu_delay_hook', sources: 'qemu_delay_hook.c=
-')
-plugin_api =3D configure_file(output : 'libqemu_plugin_api.a', input:
-'libqemu_plugin_api.ld', copy: true, install_dir:
-get_option('libdir'))
-
-where the last configure_file creates a file with contents such as
-
-INPUT(qemu_plugin_api.lib) # from dlltool
-INPUT(libqemu_delay_hook.a) # compiled from qemu_delay_hook.c
-EXTERN(__pfnDliNotifyHook2)  # equivalent to -Wl,-u
-
-And then it should work to add link_depends: [delayhook, delaylib,
-plugin_api], link_args: plugin_api as in your previous version.
-
-Finally, since the hook will be built by ninja, you also need
-
-diff --git a/Makefile b/Makefile
-index 676a4a54f48..7b42d85f1dc 100644
---- a/Makefile
-+++ b/Makefile
-@@ -184,6 +184,7 @@ $(SUBDIR_RULES):
- ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
- .PHONY: plugins
- plugins: contrib/plugins/all
-+contrib/plugins/all: | run-ninja
- endif
-
- .PHONY: recurse-all recurse-clean
-
-to ensure that the plugins are built after libqemu_delay_hook.a (of
-course feel free to change the file names!).
-
-The main disadvantage is that the Microsoft linker does not know
-linker scripts, so that's a point in favor of the macro solution.
-
-Paolo
-
+r~
 
