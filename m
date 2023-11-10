@@ -2,75 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 352147E7BC0
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 12:17:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33FB47E7BC7
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 12:21:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1PUR-00055R-15; Fri, 10 Nov 2023 06:15:55 -0500
+	id 1r1PXM-0006ml-08; Fri, 10 Nov 2023 06:18:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r1PUP-00055A-Ab
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 06:15:53 -0500
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r1PXJ-0006mG-SK
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 06:18:53 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r1PUN-0003Nk-MC
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 06:15:53 -0500
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-9e1fb7faa9dso324072266b.2
- for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 03:15:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r1PXI-0003lS-8E
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 06:18:53 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-53dfc28a2afso3069147a12.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 03:18:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699614950; x=1700219750; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=TUjkHAsAcJQRPBx9EOAMz18aQaDsB1mBRQKwcytnCag=;
- b=pRbenq0l2731eVwYNLITGBFqn1cD5BL6Ybmo0hZuRoderF8mKCIMBYDS3bVOfgyFlE
- /WJyzYgTj4T5dnLOHlFj3RcfL3//1xUZuOHHSTO22+6TlAJcfCjsq+TqCQDCI3IR4rfr
- W14p/hYB6TAu/CZiC7EytCoFXWlIlvC+++sRC3GiryC/O5TcdfO12OTAvUMQ8ZmZJZ2v
- ecXUkUCs/PIuL1vdPmlnjB2VYxy3nCnWXJ15e7qihMMtvrfeW6DnIUDpvW685xhWEh7Q
- 5ems2zrC52d0KEpm96uMnPDelmlS+QHt7GwP+NMW5Wq+msC6GMDBiPs2/sHupBB69D5c
- UGgw==
+ d=linaro.org; s=google; t=1699615131; x=1700219931; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=BCR61QE4ydIgYeiOrwA+nOrMj2JOoVhgp8U+Sjs5I1s=;
+ b=lVBtbGLVYzpN5R7wZDdmbqBRJp9GFeJIo4V5ozGTMHsqUfPtCWqCCzeDW+Y2jVGEew
+ i47VN6EEPmW20FIwtqAyUl8AMVuFwvIWU/MpKCbPHzMJuS3xWVdp1rTsHEGafd4gxLF2
+ bOzgKOnch5zUIALTpOx8JFnBEm9l2eDtIKsdu+39Z4/zAppfjIIqyWhRZz3MbYRU5buF
+ 1MQWO1TIOMQaSDZ0kxbBpgXllriEYGIgdtQ04lx3HnDhR3VPXJGyNgW3msotlQPRB+W+
+ CYcZxiKsYlQGhoXsBCovV6He6VIJxOi4FuFreJzIE63OsRyNXhyRdNe8pT3hoPwNi9tI
+ K4hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699614950; x=1700219750;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TUjkHAsAcJQRPBx9EOAMz18aQaDsB1mBRQKwcytnCag=;
- b=sKyPrdJ47y9k0f4RyF66FAwZgLTs+zGjKlSyZmuKD9PM5thiJh8paX4n9WdXtbvnUn
- OHKP0dUOPrRIosR1qxRIbyvoZgO/gBn3T41zzIv/SFHkSeZ/hKk1ootVGOPcyERmhkrC
- PNRN9ge5/BxTuQYbPnFTzdiVqJZbXKCgnr6GFOMfVSy01sFPnEV/zZDA8vlKjNKJ2gB9
- zZBOd7lalcOA30Pg6gA6dwF0y59zdi9uurwXbpFbPs2y4biFh+XPUfvqetRHMO6AoQcj
- 4armRbIQwR9ZDjfqbKd81L8KPt/M+1GB/3dzklH0NGUpCey71xjpH04fhgdgoWpgXV0G
- 5sBw==
-X-Gm-Message-State: AOJu0Yx7qDe77y3YkK6SBpfYYyu8OEWXFDxeS8O97ctvO56MuMwjXif7
- M36HZX2CDh6yKOEq7BNVpagiRA==
-X-Google-Smtp-Source: AGHT+IEXwIEEy09zNuCdANXzBztHdDTa+2N4QJXyqZWGisqt0aVYKfpWv+5Tp7m47XeiT0IyrZWOpw==
-X-Received: by 2002:a17:907:5cc:b0:9d4:2003:78dd with SMTP id
- wg12-20020a17090705cc00b009d4200378ddmr6100721ejb.70.1699614950126; 
- Fri, 10 Nov 2023 03:15:50 -0800 (PST)
-Received: from [192.168.69.115] ([176.187.194.109])
- by smtp.gmail.com with ESMTPSA id
- u17-20020a509511000000b005454b6d4e22sm1002715eda.64.2023.11.10.03.15.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 10 Nov 2023 03:15:49 -0800 (PST)
-Message-ID: <f881ad49-38f6-450f-8c0a-0ba40810422b@linaro.org>
-Date: Fri, 10 Nov 2023 12:15:48 +0100
+ d=1e100.net; s=20230601; t=1699615131; x=1700219931;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BCR61QE4ydIgYeiOrwA+nOrMj2JOoVhgp8U+Sjs5I1s=;
+ b=gMx6YTJCkHvOz+BDVRQNnIa6ZQcJ6QHisIo7gz5u91VvkAOSh/9YnxfihT7/ElGYMF
+ LSuKW4s5GB8e53UEV14P4crFAfwqMiAEUXNQ3cU4b5q6Nk3dTG0rCPsk67839BtBV034
+ 7Kr1C3CZkuRNwgC7ro/bWuOj9pDPx1sHKbtVy/ZkOnrYkswgjE2eB8Y9aQJMrAVjj5Rm
+ bdE56Z04lWjswcQTb3PwTzNYKie5iGQtmJRXkhiKEHH99kS55Wp/TBUCS1apGB8fTc59
+ 2ofndgynL4ON5624WI1W05k4Ohk8+oTjoCES75Um/X+HU9hp0okB6MDShYDFV6MfV5Ys
+ qVNQ==
+X-Gm-Message-State: AOJu0Yy+YiaOPpSjvG1+BENgvG2A7o3y1WSmjJYCrsi+ZMcmYKjMTgwS
+ 25wefa9JPZQiMlvHe2Z3WrBp+deQ8lokYvUUtXZkQA==
+X-Google-Smtp-Source: AGHT+IHUWoZbJd6rMLMHFEnFtKhh78QPIvyJHZGIlAJheilVAg278mdz1QIUQ1612BzZxTAsaJXdNiDyKhdftNqrY04=
+X-Received: by 2002:a50:aadd:0:b0:53b:9948:cc1f with SMTP id
+ r29-20020a50aadd000000b0053b9948cc1fmr6710655edc.12.1699615130691; Fri, 10
+ Nov 2023 03:18:50 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] Add QEMU_WARN_UNUSED_RESULT attribute
-Content-Language: en-US
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
 References: <cover.1699606819.git.manos.pitsidianakis@linaro.org>
- <84781fce2c3145a86d043d4c6b3b463af40eeed0.1699606819.git.manos.pitsidianakis@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <84781fce2c3145a86d043d4c6b3b463af40eeed0.1699606819.git.manos.pitsidianakis@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
+ <4b040fc18cb0e563e92ce084ca18b89a050a8aaa.1699606819.git.manos.pitsidianakis@linaro.org>
+ <CAFEAcA80sv6ewJ+LoROn-9ooEyLGQwiqYpL3=fqrK7gA0oZG-A@mail.gmail.com>
+ <3wmne.fhuf28sb5yfg@linaro.org>
+In-Reply-To: <3wmne.fhuf28sb5yfg@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 10 Nov 2023 11:18:39 +0000
+Message-ID: <CAFEAcA-mSBgLuGLp4Tzaq0L78PtsxF19CVfmkJwaM8pHfwv7wg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] Add warn_unused_result attr to AUD_register_card
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,39 +90,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/11/23 10:16, Manos Pitsidianakis wrote:
-> This commit adds QEMU_WARN_UNUSED_RESULT, a macro for the gcc function
-> attribute `warn_unused_result`. The utility of this attribute is to
-> ensure functions that return values that need to be inspected are not
-> ignored by the caller.
-> 
-> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> ---
->   include/qemu/compiler.h | 14 ++++++++++++++
->   1 file changed, 14 insertions(+)
+On Fri, 10 Nov 2023 at 11:02, Manos Pitsidianakis
+<manos.pitsidianakis@linaro.org> wrote:
+>
+> On Fri, 10 Nov 2023 12:21, Peter Maydell <peter.maydell@linaro.org> wrote:
+> >This kind of thing is why Coverity's unused-result warning has a
+> >lot of false positives. We shouldn't introduce extra code like
+> >this to work around the fact that the tooling doesn't understand
+> >our error-handling convention (i.e. error_fatal, and the way
+> >that some functions report errors both via the return value and
+> >also via the Error** argument).
+>
+> I respect that :). But I personally believe that clinging to C's
+> inadequacies, instead of preventing bugs statically just because it adds
+> some lines of code, is misguided. Proper code should strive to make bugs
+> impossible in the first place.
 
-> +/*
-> + * From GCC documentation:
-> + *
-> + *   The warn_unused_result attribute causes a warning to be emitted if a
-> + *   caller of the function with this attribute does not use its return value.
-> + *   This is useful for functions where not checking the result is either a
-> + *   security problem or always a bug, such as realloc.
-> + */
-> +#if __has_attribute(warn_unused_result)
-> +# define QEMU_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
-> +#else
-> +# define QEMU_WARN_UNUSED_RESULT
-> +#endif
+I generally agree. The problem here really is that we've ended
+up with this odd API convention that reports errors in two
+ways. In an ideal world we'd tidy up our APIs to report errors
+exactly in one way (presumably via the Error).
 
-FWIW I sometimes use:
-
-+#if __has_attribute(nonnull)
-+# define QEMU_NONNULL(indexes...) __attribute__((nonnull((indexes))))
-+#else
-+# define QEMU_NONNULL(indexes...)
-+#endif
-
-when doing tree-wide refactors, then remove the attribute because
-prototypes become really ugly.
+-- PMM
 
