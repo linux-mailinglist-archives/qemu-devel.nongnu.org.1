@@ -2,75 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B847E79F8
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 09:07:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D847E79FD
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 09:12:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1MWZ-0003NT-HH; Fri, 10 Nov 2023 03:05:55 -0500
+	id 1r1MbZ-0006C1-SE; Fri, 10 Nov 2023 03:11:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r1MWV-0003NI-Jw
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 03:05:51 -0500
-Received: from mail-vk1-xa2d.google.com ([2607:f8b0:4864:20::a2d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r1MWU-00059s-4b
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 03:05:51 -0500
-Received: by mail-vk1-xa2d.google.com with SMTP id
- 71dfb90a1353d-4ac89e8e964so758102e0c.3
- for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 00:05:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699603548; x=1700208348; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9jBgUb3TDI7cfBZsBt8qoBLfWa8t6l3O66vVJjZyNWU=;
- b=c/SfA7D4+9h9ZqD7oC4fZdEPP+PRUoxSxjzcdWsxzbZRCk5Ev+kvcPclCLpCLc0w53
- UKJ4fwC6QosXaL0BFma1RfKXHRxNXEsbga7D8fDi46SEkLl00AIpQnl1qtHrZzWkwKwR
- Nc4WQFC7Ftdb1uP4qWZG8itmsDRa/w/l61G38U4GFto/g+7Wv9dsAnBvkyejl3OOSIlB
- BfhyNrX7YY70fxxceAVvkWcYaup6ruYBLQi/s7qjAIpd7XLpPACGOqiVZ6JGSEmr3+Yb
- Trdd3hoZfKMgvxeMJnLSktCC9nx5ksvwvmkRDnY+v2/ni+b0N7hGQT1DGfVK528Oc6+w
- db1A==
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1r1MbX-00068g-O6
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 03:11:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1r1MbU-0005zh-Tq
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 03:11:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699603859;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8hmuVvK4HAM6KfyCPk18Axnq2ITLlTdNtdjgzJQRckg=;
+ b=UpihVS63sIyy3YYoAjVnlMrJdBo/E72icEIKSHaQLh1eF1wF83Y7tDRHlvziJ+LLgJA1ZX
+ qeO3/W82KlqjhFKty9XjEVM3OqYKfnVoCYm1hlpTjThCbA4EsLoM7Sv0cJkLdyC2j2Fp9S
+ 4VQKlWoszmsiVpu0y5d5x+d/ua2ZL9Y=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-130-l21sWaTVPQ2Bvy2CTvn2Ww-1; Fri, 10 Nov 2023 03:10:58 -0500
+X-MC-Unique: l21sWaTVPQ2Bvy2CTvn2Ww-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9dd58f582a0so141066666b.0
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 00:10:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699603548; x=1700208348;
+ d=1e100.net; s=20230601; t=1699603856; x=1700208656;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9jBgUb3TDI7cfBZsBt8qoBLfWa8t6l3O66vVJjZyNWU=;
- b=Tc5T+UONWZiq+Zx8dMG+q/uksU+EL1DqVEA+nAFEuIYAuWaOdhi+Qa1drtvr4yG+77
- fLYJKL5Ot/56jqe0vAq0MreUX/qMMNj+9S6iZOwyIUvQzAk0aTHMQYujNMgirklWr+1a
- wjODFLSzmakLpXEgnOR9kvIs9iHSGXxYPjKjQ8aRfWjLj56DMPxvh8L4d1l8I6Ar1X1+
- M84IlO6W8c4lBbIlHOxXNklkIua0EUc0J90mp/OxOZinbvVu/9jJZyMovav8HW361yP4
- eQjRaawsLDqyvPXu1+TpWoMDeakY0wEnZqYFJcSFkJhCT137mdHy+ttJd4blS9ROXid1
- Mwsg==
-X-Gm-Message-State: AOJu0YxxZddU3gGpP9D2QYnvh3O5CWaMcOQVyxOWiXlnOQhZP/Y1uOSG
- ztyZfmS/5rm/D15NR5PfFIDrjC+brJvqlykXaIYpWeRrslg=
-X-Google-Smtp-Source: AGHT+IHyzExODykvA90S1Cs0lmWCbcmoqvsPkzVin29ELW9i9HlZBQJUVRHDgalXCEUeqjtKO6bYEouh/DRpNHLGuRY=
-X-Received: by 2002:a05:6122:1da6:b0:49a:466c:199e with SMTP id
- gg38-20020a0561221da600b0049a466c199emr4204137vkb.2.1699603548410; Fri, 10
- Nov 2023 00:05:48 -0800 (PST)
+ bh=8hmuVvK4HAM6KfyCPk18Axnq2ITLlTdNtdjgzJQRckg=;
+ b=WL61sYhmso4zquJrUGB7HIo0My9tzHnegdlpPZigCaQB9372snLXoVDAyvRo5Fh8YO
+ VSs8jlg1MMCJXPDMQukymXgmfiBaHoN5fYdtWoHGTnxP7aSRRZcsS5traqlal3lss3EH
+ z/SIwtdHAAVnJdotGuX3Q9O+uk8HT4JMG4f2VUOUp5u4k2YJ89fIWy2eGoDZ9YI+ZByl
+ N0JmgpT8qai354c0AFde+EiVm04sslgbAiswRGQVs5tOBOOkzC9qbEhzY4AqirCVM8In
+ uD2cGKbenHIONP1YjnFaeeHXfWSLXRgNoJ6SO4NfsM/togHyDoZpZZ9ZNODRhBBSeGp5
+ TgqA==
+X-Gm-Message-State: AOJu0YxwPQ4BBYMPj6Bwlr8eCTngvBiameUHBfUHTk/8vreWksjecPfg
+ 5YsMmemt9rvIcROnUrYaBhtX2czcMRZZAYiPdY0hwQsYuSYPPlpbBRHz214DGZ4Injj2zLqB3EU
+ ItI4tMJ24GAjF1qBjENd1hXdalHZRGeKQdTTaZPo=
+X-Received: by 2002:a50:c352:0:b0:53e:782f:cfa6 with SMTP id
+ q18-20020a50c352000000b0053e782fcfa6mr5194639edb.37.1699603855963; 
+ Fri, 10 Nov 2023 00:10:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG/OFH2FZB6Gjp9eX3mweEYVFMzd5UlhC9m0CKkmy9iKtKhGuy/hNOvZtpXV8hDplzCsv8DvSDh8iDCYteeRNo=
+X-Received: by 2002:a50:c352:0:b0:53e:782f:cfa6 with SMTP id
+ q18-20020a50c352000000b0053e782fcfa6mr5194625edb.37.1699603855631; Fri, 10
+ Nov 2023 00:10:55 -0800 (PST)
 MIME-Version: 1.0
-References: <20231102141010.300310-1-marcandre.lureau@redhat.com>
-In-Reply-To: <20231102141010.300310-1-marcandre.lureau@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Fri, 10 Nov 2023 12:05:36 +0400
-Message-ID: <CAJ+F1CLs3sDf+=Ky4ohecVewMNnAOKBj7qJ18RSO9Y6ufR_UJg@mail.gmail.com>
-Subject: Re: [PATCH] build-sys: fix meson project version usage
-To: qemu-devel@nongnu.org, pbonzini@redhat.com
-Cc: Michael Roth <michael.roth@amd.com>,
- Konstantin Kostiuk <kkostiuk@redhat.com>
+References: <20231108133719.113217-1-marcandre.lureau@redhat.com>
+In-Reply-To: <20231108133719.113217-1-marcandre.lureau@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Fri, 10 Nov 2023 12:10:44 +0400
+Message-ID: <CAMxuvaxtia3Bnojgm4Txx8AkT1EjA6_hF=Yj=N1a42AnjJmLmQ@mail.gmail.com>
+Subject: Re: [PATCH] ui/console: fix default VC when there are no display
+To: qemu-devel@nongnu.org, gmaglione@redhat.com
+Cc: pbonzini@redhat.com, Gerd Hoffmann <kraxel@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2d;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-vk1-xa2d.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,43 +94,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 2, 2023 at 6:11=E2=80=AFPM <marcandre.lureau@redhat.com> wrote:
+Hi
+
+On Wed, Nov 8, 2023 at 5:37=E2=80=AFPM <marcandre.lureau@redhat.com> wrote:
 >
 > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 >
-> Program wixl found: YES (/usr/bin/wixl)
+> When display is "none", we may still have remote displays (I think it
+> would be simpler if VNC/Spice were regular display btw). Return the
+> default VC then, and set them up to fix a regression when using remote
+> display and it used the TTY instead.
 >
-> ../qga/meson.build:149:16: ERROR: Unknown variable "project".
->
-> Fixes: e20d68aa0b9 ("configure, meson: use command line options to config=
-ure qemu-ga")
+> Fixes: commit 1bec1cc0d ("ui/console: allow to override the default VC")
+> Reported-by: German Maglione <gmaglione@redhat.com>
 > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-ping
+German, did you file an issue on gitlab? Could you check/test this patch?
+
+thanks
 
 > ---
->  qga/meson.build | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  system/vl.c  |  4 +++-
+>  ui/console.c | 14 ++++++++------
+>  2 files changed, 11 insertions(+), 7 deletions(-)
 >
-> diff --git a/qga/meson.build b/qga/meson.build
-> index 940a51d55d..ff7a8496e4 100644
-> --- a/qga/meson.build
-> +++ b/qga/meson.build
-> @@ -146,7 +146,7 @@ if targetos =3D=3D 'windows'
->        libpcre =3D 'libpcre2'
->      endif
->      qga_msi_version =3D get_option('qemu_ga_version') =3D=3D '' \
-> -      ? project.version() \
-> +      ? meson.project_version() \
->        : get_option('qemu_ga_version')
->      qga_msi =3D custom_target('QGA MSI',
->                              input: files('installer/qemu-ga.wxs'),
+> diff --git a/system/vl.c b/system/vl.c
+> index bd7fad770b..8c522a07da 100644
+> --- a/system/vl.c
+> +++ b/system/vl.c
+> @@ -1359,6 +1359,7 @@ static void qemu_setup_display(void)
+>              dpy.type =3D DISPLAY_TYPE_NONE;
+>  #if defined(CONFIG_VNC)
+>              vnc_parse("localhost:0,to=3D99,id=3Ddefault");
+> +            display_remote++;
+>  #endif
+>          }
+>      }
+> @@ -1391,7 +1392,8 @@ static void qemu_create_default_devices(void)
+>          }
+>      }
+>
+> -    if (nographic || (!vc && !is_daemonized() && isatty(STDOUT_FILENO)))=
+ {
+> +    if (nographic ||
+> +        ((!display_remote || !vc) && !is_daemonized() && isatty(STDOUT_F=
+ILENO))) {
+>          if (default_parallel) {
+>              add_device_config(DEV_PARALLEL, "null");
+>          }
+> diff --git a/ui/console.c b/ui/console.c
+> index 8e688d3569..f08c8365b0 100644
+> --- a/ui/console.c
+> +++ b/ui/console.c
+> @@ -1679,19 +1679,21 @@ void qemu_display_init(DisplayState *ds, DisplayO=
+ptions *opts)
+>
+>  const char *qemu_display_get_vc(DisplayOptions *opts)
+>  {
+> +#ifdef CONFIG_PIXMAN
+> +    const char *vc =3D "vc:80Cx24C";
+> +#else
+> +    const char *vc =3D NULL;
+> +#endif
+> +
+>      assert(opts->type < DISPLAY_TYPE__MAX);
+>      if (opts->type =3D=3D DISPLAY_TYPE_NONE) {
+> -        return NULL;
+> +        return vc;
+>      }
+>      assert(dpys[opts->type] !=3D NULL);
+>      if (dpys[opts->type]->vc) {
+>          return dpys[opts->type]->vc;
+> -    } else {
+> -#ifdef CONFIG_PIXMAN
+> -        return "vc:80Cx24C";
+> -#endif
+>      }
+> -    return NULL;
+> +    return vc;
+>  }
+>
+>  void qemu_display_help(void)
 > --
 > 2.41.0
 >
->
 
-
---=20
-Marc-Andr=C3=A9 Lureau
 
