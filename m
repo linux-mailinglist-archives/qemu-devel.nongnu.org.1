@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D445D7E7AF6
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 10:35:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A527E7AF9
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 Nov 2023 10:36:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1Nv4-0006l5-3p; Fri, 10 Nov 2023 04:35:18 -0500
+	id 1r1NwF-0008VX-7V; Fri, 10 Nov 2023 04:36:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r1Nut-0006cO-5m
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:35:08 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r1NwC-0008Ts-SZ
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:36:29 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r1Nuq-00067b-Sv
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:35:06 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r1NwB-0006Cs-9V
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 04:36:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699608904;
+ s=mimecast20190719; t=1699608984;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SY+2b5/41TIar/opnw0mmNctXoeUsnqwd6MVXp04vSY=;
- b=RE8B1yyNVcKjpGB6YMxoZKnZ4cMA/3ZE4qnovBp2XFByYWJrR7w6c3IqitRJQa3H9PmE1W
- 149KoV9JjcWbLfg4E4PIBNQblusqv7jlCvVh/ynj+AV0w0DTHLYTlQV00eb1Awk3stVOpm
- pjeRGz/9iHZhv8s5eqi4qgAdaLntCFE=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SUbur2CoegP+Xr9Bjo4zFhRSED2cV+Wf+fNGKE5cJrA=;
+ b=G05am2nvCTJP1NQpRkd6dTwIgVFkV56GYWSHHj9jFUUy00FXUvkjCBjobkf7CTFKbnXZsL
+ 6NABA613966kjUS6brSopz0Wgi9a60rSAFLfVd4FuGcgfQA8qiTtzQMprbPpMuyeC1lnsj
+ 5aGEMsYQfDtZICOHCboGVnW3i0bG6b8=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-IgAA5r_wMUu6G2r0JALFqQ-1; Fri, 10 Nov 2023 04:35:02 -0500
-X-MC-Unique: IgAA5r_wMUu6G2r0JALFqQ-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6707401e1aeso21021606d6.0
- for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 01:35:02 -0800 (PST)
+ us-mta-662-wcnzzMc1MNerK7lCV2nQXg-1; Fri, 10 Nov 2023 04:36:23 -0500
+X-MC-Unique: wcnzzMc1MNerK7lCV2nQXg-1
+Received: by mail-yb1-f197.google.com with SMTP id
+ 3f1490d57ef6-da0cb98f66cso2254446276.2
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 01:36:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699608902; x=1700213702;
+ d=1e100.net; s=20230601; t=1699608983; x=1700213783;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SY+2b5/41TIar/opnw0mmNctXoeUsnqwd6MVXp04vSY=;
- b=bW3fSZf6dD57cqhfWMwRymAbuWIXAmiOpWmXt5xQz2n36nBVa4K8tcwJX7RPHR47WU
- JbnLslLu2huJVGZwg2IaqMt2OyA54bdLrPfToD2ys6Ej8b8xnEdODCWRCIkUeVvUxuZV
- 3+P4JGyRFASDOSWi55LbBYPT6cQ5eaGq3y9b2V7fgex8AKy3vV4+WW1UhhPh99WlrOET
- myPBIX8GBPVvZaNbYc22s3uKYudk7Yf/w2JmgRUiobMOBEkLknQFafpUH7Nwitxd584j
- BcWuoqMBXNiCAPv8CC2a+9EuRUMX4NShCJ0QW/a6pDOpFZ03htR9laBDHFkABxwrX5l2
- c30w==
-X-Gm-Message-State: AOJu0YwdqBnTEP+J+vK13n644Fz2BCg7dmwyCRSiyroVvZT3zv5av2Io
- b9yYZZU5eCkjQOwEytz3B3hl9SEzHH4L7hEWVzqn/qJKB7HZeWIOGUYamlw3NAq39DtIrrZJ1y3
- mq9b6qHORu8Oi/9c=
-X-Received: by 2002:a05:6214:5085:b0:658:2ee7:7658 with SMTP id
- kk5-20020a056214508500b006582ee77658mr6990927qvb.25.1699608902417; 
- Fri, 10 Nov 2023 01:35:02 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF4a4DnQf6R2XeFQ7PQJJeAsnkAD0p7TSsoy2h7zIbPyLsZfspg0LDKKhjmPeaMPLNA5DmPdw==
-X-Received: by 2002:a05:6214:5085:b0:658:2ee7:7658 with SMTP id
- kk5-20020a056214508500b006582ee77658mr6990920qvb.25.1699608902184; 
- Fri, 10 Nov 2023 01:35:02 -0800 (PST)
+ bh=SUbur2CoegP+Xr9Bjo4zFhRSED2cV+Wf+fNGKE5cJrA=;
+ b=gHWw2SiU3dI6dcnvZvAROOHwu2Tlvmih4sIwFMMeemJdPt7dQ/sF8l9zdLr0Fl3FlR
+ nUoHYkezhHYtITewKjyYnfnKie3m7HB43NmPl7XWTBSsdVBNMFQB18K+7QQ9G4uthsqX
+ HduOJ+zRPjLJsNoQqKt8BkjbjRGbxSUFBn/8uPTVI/SKkEoSglF18Wh8QTenzrM4EN0T
+ crb10/armxgqbFKhRR1LJMhS8u/rZQTkybQ39NI72VDPhwAMUZeMS66oezQBYLkguNXT
+ Q5ex0v4pChyF0gF22OycSXNcF3lzu1zn38TH+qV+wRzyWUkIp8f299jTmbJATsTJs+m4
+ S4VQ==
+X-Gm-Message-State: AOJu0YzI7/h3suO0Z59YAfT6NRa3Qu3QpnIkrZHK19Rd+emAQ9HYuOiq
+ oMCbbnGUGuAVejLOdyYLO2psskB/wcjgC9J+7W201khFC0vLqiQM7dYB9uTInIkgvySM4gRE9IE
+ blnpXnSJU36TWFQU=
+X-Received: by 2002:a25:361e:0:b0:d9a:5666:7ab5 with SMTP id
+ d30-20020a25361e000000b00d9a56667ab5mr7408544yba.10.1699608982872; 
+ Fri, 10 Nov 2023 01:36:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGzntl0fTdDGPY0P2JmNDxFA2ktYLqRmFmoeEBn4AwIiklVPf8W2yIT64Xq7LxjbmodIWjMPQ==
+X-Received: by 2002:a25:361e:0:b0:d9a:5666:7ab5 with SMTP id
+ d30-20020a25361e000000b00d9a56667ab5mr7408532yba.10.1699608982602; 
+ Fri, 10 Nov 2023 01:36:22 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- x14-20020a0ce78e000000b0065afbb39b2dsm2784013qvn.47.2023.11.10.01.35.00
+ x14-20020a0ce78e000000b0065afbb39b2dsm2784013qvn.47.2023.11.10.01.36.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 10 Nov 2023 01:35:01 -0800 (PST)
-Message-ID: <b4bac441-cb54-444f-bc7c-359d22bfcea4@redhat.com>
-Date: Fri, 10 Nov 2023 10:35:00 +0100
+ Fri, 10 Nov 2023 01:36:22 -0800 (PST)
+Message-ID: <a83922bb-8c53-47d8-b15a-8a7052f02053@redhat.com>
+Date: Fri, 10 Nov 2023 10:36:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 04/20] vfio/iommufd: Relax assert check for iommufd
- backend
+Subject: Re: [PATCH v5 05/20] vfio/iommufd: Add support for iova_ranges and
+ pgsizes
 Content-Language: en-US
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
@@ -75,11 +75,11 @@ Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
  jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  yi.y.sun@intel.com, chao.p.peng@intel.com
 References: <20231109114529.1904193-1-zhenzhong.duan@intel.com>
- <20231109114529.1904193-5-zhenzhong.duan@intel.com>
+ <20231109114529.1904193-6-zhenzhong.duan@intel.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231109114529.1904193-5-zhenzhong.duan@intel.com>
+In-Reply-To: <20231109114529.1904193-6-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -106,59 +106,96 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/9/23 12:45, Zhenzhong Duan wrote:
-> Currently iommufd doesn't support dirty page sync yet,
-> but it will not block us doing live migration if VFIO
-> migration is force enabled.
+> Some vIOMMU such as virtio-iommu use iova ranges from host side to
+> setup reserved ranges for passthrough device, so that guest will not
+> use an iova range beyond host support.
 > 
-> So in this case we allow set_dirty_page_tracking to be NULL.
-> Note we don't need same change for query_dirty_bitmap because
-> when dirty page sync isn't supported, query_dirty_bitmap will
-> never be called.
+> Use an uAPI of IOMMUFD to get iova ranges of host side and pass to
+> vIOMMU just like the legacy backend.
 > 
-> Suggested-by: Cédric Le Goater <clg@redhat.com>
+> Also use out_iova_alignment returned from uAPI as pgsizes instead of
+> qemu_real_host_page_size() as a fallback.
+> 
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+> v5: Add missed pgsizes initialization in vfio_get_info_iova_range
+> 
+>   hw/vfio/iommufd.c | 48 +++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 48 insertions(+)
+> 
+> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+> index ea4e23f4ec..958c3e794f 100644
+> --- a/hw/vfio/iommufd.c
+> +++ b/hw/vfio/iommufd.c
+> @@ -267,6 +267,53 @@ static int iommufd_ram_block_discard_disable(bool state)
+>       return ram_block_uncoordinated_discard_disable(state);
+>   }
+>   
+> +static int vfio_get_info_iova_range(VFIOIOMMUFDContainer *container,
+> +                                    uint32_t ioas_id)
+> +{
+> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+> +    struct iommu_ioas_iova_ranges *info;
+> +    struct iommu_iova_range *iova_ranges;
+> +    int ret, sz, fd = container->be->fd;
+> +
+> +    info = g_malloc0(sizeof(*info));
+> +    info->size = sizeof(*info);
+> +    info->ioas_id = ioas_id;
+> +
+> +    ret = ioctl(fd, IOMMU_IOAS_IOVA_RANGES, info);
+> +    if (ret && errno != EMSGSIZE) {
+> +        goto error;
+> +    }
+> +
+> +    sz = info->num_iovas * sizeof(struct iommu_iova_range);
+> +    info = g_realloc(info, sizeof(*info) + sz);
+> +    info->allowed_iovas = (uintptr_t)(info + 1);
+> +
+> +    ret = ioctl(fd, IOMMU_IOAS_IOVA_RANGES, info);
+> +    if (ret) {
+> +        goto error;
+> +    }
+> +
+> +    iova_ranges = (struct iommu_iova_range *)(uintptr_t)info->allowed_iovas;
+> +
+> +    for (int i = 0; i < info->num_iovas; i++) {
+> +        Range *range = g_new(Range, 1);
+> +
+> +        range_set_bounds(range, iova_ranges[i].start, iova_ranges[i].last);
+> +        bcontainer->iova_ranges =
+> +            range_list_insert(bcontainer->iova_ranges, range);
+> +    }
+> +    bcontainer->pgsizes = info->out_iova_alignment;
+> +
+> +    g_free(info);
+> +    return 0;
+> +
+> +error:
+> +    ret = -errno;
+> +    g_free(info);
+> +    error_report("vfio/iommufd: Cannot get iova ranges: %m");
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Can we propagate the error ?
 
 Thanks,
 
 C.
 
 
-> ---
->   hw/vfio/container-base.c | 4 ++++
->   hw/vfio/container.c      | 4 ----
->   2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-> index 71f7274973..eee2dcfe76 100644
-> --- a/hw/vfio/container-base.c
-> +++ b/hw/vfio/container-base.c
-> @@ -55,6 +55,10 @@ void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
->   int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
->                                              bool start)
->   {
-> +    if (!bcontainer->dirty_pages_supported) {
-> +        return 0;
-> +    }
+> +    return ret;
+> +}
 > +
->       g_assert(bcontainer->ops->set_dirty_page_tracking);
->       return bcontainer->ops->set_dirty_page_tracking(bcontainer, start);
->   }
-> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-> index 6bacf38222..ed2d721b2b 100644
-> --- a/hw/vfio/container.c
-> +++ b/hw/vfio/container.c
-> @@ -216,10 +216,6 @@ static int vfio_legacy_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
->           .argsz = sizeof(dirty),
->       };
+>   static int iommufd_attach_device(const char *name, VFIODevice *vbasedev,
+>                                    AddressSpace *as, Error **errp)
+>   {
+> @@ -343,6 +390,7 @@ static int iommufd_attach_device(const char *name, VFIODevice *vbasedev,
+>       }
 >   
-> -    if (!bcontainer->dirty_pages_supported) {
-> -        return 0;
-> -    }
-> -
->       if (start) {
->           dirty.flags = VFIO_IOMMU_DIRTY_PAGES_FLAG_START;
->       } else {
+>       bcontainer->pgsizes = qemu_real_host_page_size();
+> +    vfio_get_info_iova_range(container, ioas_id);
+>   
+>       bcontainer->listener = vfio_memory_listener;
+>       memory_listener_register(&bcontainer->listener, bcontainer->space->as);
 
 
