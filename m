@@ -2,69 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7FC7E8A19
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 10:54:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F427E8A3A
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 11:41:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1kgH-000652-4l; Sat, 11 Nov 2023 04:53:33 -0500
+	id 1r1lPj-00033s-8Q; Sat, 11 Nov 2023 05:40:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r1kgD-00064q-Sn
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 04:53:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
+ id 1r1lPh-00033V-Ce; Sat, 11 Nov 2023 05:40:29 -0500
+Received: from mailout04.t-online.de ([194.25.134.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r1kg4-00076Y-Jg
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 04:53:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699696397;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=GoX6J3pA+xZFZ45k9r6rpvuZ1WSIHoMc0w0Sb7Ui0mQ=;
- b=GWVzCemdMw2wzSayYc0q9yRQYgp6ts0WYAhpsuFcPLfBAk2dEl7N/SbTZIX92Rpr3bgl5e
- +hBL+yeWekll3IADDiPth28xcm3BaODQfykBWfvbq/lYHGjUSF6RKmph5yjZI5iT3bpNFV
- Swo948OJptQuEo0Mo/zBXjCe7+lQWKE=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-96-3Ja42YToNzebIFJcZE2Sog-1; Sat,
- 11 Nov 2023 04:53:15 -0500
-X-MC-Unique: 3Ja42YToNzebIFJcZE2Sog-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B010E3C23645
- for <qemu-devel@nongnu.org>; Sat, 11 Nov 2023 09:53:15 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E564F40C6EB9;
- Sat, 11 Nov 2023 09:53:14 +0000 (UTC)
-Date: Sat, 11 Nov 2023 17:53:11 +0800
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com
-Subject: Re: [PULL v2 00/11] qdev: Make array properties user accessible again
-Message-ID: <20231111095311.GA171435@fedora>
-References: <20231110172305.29107-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
+ id 1r1lPf-00038D-Gx; Sat, 11 Nov 2023 05:40:29 -0500
+Received: from fwd70.aul.t-online.de (fwd70.aul.t-online.de [10.223.144.96])
+ by mailout04.t-online.de (Postfix) with SMTP id 1F0A419D6E;
+ Sat, 11 Nov 2023 11:40:23 +0100 (CET)
+Received: from linpower.localnet ([93.236.156.187]) by fwd70.t-online.de
+ with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
+ esmtp id 1r1lPZ-31Bd8T0; Sat, 11 Nov 2023 11:40:21 +0100
+Received: by linpower.localnet (Postfix, from userid 1000)
+ id CADF6200229; Sat, 11 Nov 2023 11:40:20 +0100 (CET)
+From: =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>
+To: Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org,
+ qemu-stable@nongnu.org
+Subject: [PATCH for 8.2] ui/gtk-egl: move function calls back to regular code
+ path
+Date: Sat, 11 Nov 2023 11:40:20 +0100
+Message-Id: <20231111104020.26183-1-vr_qemu@t-online.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="4oiSqewj99Q4otq6"
-Content-Disposition: inline
-In-Reply-To: <20231110172305.29107-1-kwolf@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TOI-EXPURGATEID: 150726::1699699221-327FB937-690F3BD1/0/0 CLEAN NORMAL
+X-TOI-MSGID: 05c13fee-4bea-44b5-aed3-7011414ae907
+Received-SPF: pass client-ip=194.25.134.18;
+ envelope-from=volker.ruemelin@t-online.de; helo=mailout04.t-online.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,30 +63,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Commit 6f189a08c1 ("ui/gtk-egl: Check EGLSurface before doing
+scanout") introduced a regression when QEMU is running with a
+virtio-gpu-gl-device on a host under X11. After the guest has
+initialized the virtio-gpu-gl-device, the guest screen only
+shows "Display output is not active.".
 
---4oiSqewj99Q4otq6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Commit 6f189a08c1 moved all function calls in
+gd_egl_scanout_texture() to a code path which is only called
+once after gd_egl_init() succeeds in gd_egl_scanout_texture().
+Move all function calls in gd_egl_scanout_texture() back to
+the regular code path so they get always called if one of the
+gd_egl_init() calls was successful.
 
-Applied, thanks.
+Fixes: 6f189a08c1 ("ui/gtk-egl: Check EGLSurface before doing scanout")
+Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+---
+ ui/gtk-egl.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
-
---4oiSqewj99Q4otq6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVPTwcACgkQnKSrs4Gr
-c8gfXAf/V3u/rHTMDI9mTrjS6/crcPpTZ50lKXIkBYtmsr65UjdJ84y1cxy3EWul
-/OylmrhjkLnPddYzl4Hy22iok3e5ZrAFAcO3NIZiO/X/xWuEBBfuH8iUeXkEs+UR
-fUXKo7xacaucpR/2CPDUXqET3wvde8rBR6O7cbYq8uc1g6ni06XjM5haFGSA6wOH
-NlQ8H6vcmjNNV06Vk4Mz0jS2DSHlM8JOdZbDM3IdFER7XNZpK7wVHhRWpQx4DIm3
-9IjJclVXP171ZOfw7wuNrwIMV5OBCgJ+KgsBm1WgF81fk19bc38Jm3xGCfiL1OHt
-nKLIT1rCQuo6g86QzslkswnVNcrN/g==
-=x9L4
------END PGP SIGNATURE-----
-
---4oiSqewj99Q4otq6--
+diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+index cd2f176502..3af5ac5bcf 100644
+--- a/ui/gtk-egl.c
++++ b/ui/gtk-egl.c
+@@ -249,14 +249,14 @@ void gd_egl_scanout_texture(DisplayChangeListener *dcl,
+         if (!vc->gfx.esurface) {
+             return;
+         }
++    }
+ 
+-        eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
+-                       vc->gfx.esurface, vc->gfx.ectx);
++    eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
++                   vc->gfx.esurface, vc->gfx.ectx);
+ 
+-        gtk_egl_set_scanout_mode(vc, true);
+-        egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
+-                             backing_id, false);
+-    }
++    gtk_egl_set_scanout_mode(vc, true);
++    egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
++                         backing_id, false);
+ }
+ 
+ void gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,
+-- 
+2.35.3
 
 
