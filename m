@@ -2,84 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47F1C7F2DD0
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 13:56:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C547B7F31BE
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 15:57:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5QHg-0006kF-4K; Tue, 21 Nov 2023 07:55:20 -0500
+	id 1r5SAf-0002I1-3F; Tue, 21 Nov 2023 09:56:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r5QHd-0006ja-L9
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 07:55:17 -0500
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r5QHb-0004PS-9y
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 07:55:17 -0500
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-28398d6c9f3so3671038a91.0
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 04:55:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1700571314; x=1701176114; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=a+VFY9n6L1rNfogGRXqT4uK3iW80vJ4m0prIcuKT1uw=;
- b=AknBubc0PFMM6o8Be+JGHPsoNq8LMp82nN/Z/08BJbP8Cxi0E9AF7MB61DtMlotySI
- g4pwL69/IcJye1PMKYYbdxbp33+vyXDGW8p3c3L5zA0SADZc/YRtCSg0N55PgZ6l/6OP
- PkDjtpiZWadDs2qvk+QHdqBSvOv+je5IC1TLanzm8SE0xKybhyHOJJ5ecjaapU8DpTMX
- qIprb2yKDsj8kqzn1fOErtsVp6v6gROnVN+Dwr0JAfmMBk2CeR0OLdqeiX9o+/QMF+Hj
- RJtT+5HFAlBAXg99MelFBiZ79A8jL1PNuT2Cb2Eu/wk+1wo6hJ6Al/BQGiQO7CRkfXcP
- ms5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700571314; x=1701176114;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=a+VFY9n6L1rNfogGRXqT4uK3iW80vJ4m0prIcuKT1uw=;
- b=bUjyO6/4YuQKTwr1a/ZC1P6D4tqwZVMKC1bnzgUqxGw0QEpAZ9WqowLLJ+waA6XWu0
- p1Tx5LDwP1IaX5NSHRvkn2/jVWvIcGuVia9RxuqHFGSc+WnWykp/AdlJ4V8c6KQJceKx
- 966OcbeasUXfXBptZocP7L3/m+VfnShFacfyTnZGhlXUORim8YxqOGJirRzCd05HvYbe
- 3bBjETsT4WKiDrhOZqLGGKOXZFf10bjodxB8jU+K4Zq63Mv2dpJoRvT7kLJlowKPA8RZ
- SAOB+uGCBT0V3XgUgxSagsuOrPFyHZ6ttJTnip7B/QU9lNMNVT728TJyG1SsUyjstYue
- Dfng==
-X-Gm-Message-State: AOJu0YzqJYR9EKVl0sDjbHJyR+rfa/B8EMF0qIGIAaZHzcYU8jS+NhF6
- d96kr8VrUwgEIc93hrGP+/VteA==
-X-Google-Smtp-Source: AGHT+IF1NIoZfqWb3lYNuIVSRnq/LdfZWuSHDHgFgvL7CMVA5YH3wJv91iXO/SpeSfViXgV+t5ixwQ==
-X-Received: by 2002:a17:90b:3a86:b0:27c:fc2a:a178 with SMTP id
- om6-20020a17090b3a8600b0027cfc2aa178mr12118205pjb.9.1700571313872; 
- Tue, 21 Nov 2023 04:55:13 -0800 (PST)
-Received: from [192.168.68.109] ([152.250.131.119])
- by smtp.gmail.com with ESMTPSA id
- x10-20020a17090aa38a00b0028328057c67sm7027577pjp.45.2023.11.21.04.55.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Nov 2023 04:55:13 -0800 (PST)
-Message-ID: <96f2695c-2950-45db-ae21-44b0d5558ee2@ventanamicro.com>
-Date: Tue, 21 Nov 2023 09:55:11 -0300
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1r5SAc-0002G9-JG; Tue, 21 Nov 2023 09:56:10 -0500
+Received: from mail-b.sr.ht ([173.195.146.151])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1r5SAZ-0003I2-CT; Tue, 21 Nov 2023 09:56:10 -0500
+Authentication-Results: mail-b.sr.ht; dkim=none 
+Received: from git.sr.ht (unknown [173.195.146.142])
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 0932311F236;
+ Tue, 21 Nov 2023 14:56:05 +0000 (UTC)
+From: ~aminier <aminier@git.sr.ht>
+Date: Sat, 11 Nov 2023 15:33:33 +0100
+Subject: [PATCH qemu 1/1] Implement STM32L4x5 EXTI
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] target/riscv/cpu_helper.c: Fix mxr bit behavior
-Content-Language: en-US
-To: Ivan Klokov <ivan.klokov@syntacore.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- bin.meng@windriver.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com
-References: <20231121071757.7178-1-ivan.klokov@syntacore.com>
- <20231121071757.7178-3-ivan.klokov@syntacore.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231121071757.7178-3-ivan.klokov@syntacore.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1035.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Message-ID: <170057856467.12935.6421900912319796560-1@git.sr.ht>
+X-Mailer: git.sr.ht
+In-Reply-To: <170057856467.12935.6421900912319796560-0@git.sr.ht>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, alistair@alistair23.me, philmd@linaro.org,
+ peter.maydell@linaro.org, ines.varhol@telecom-paris.fr,
+ arnaud.minier@telecom-paris.fr
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
+ helo=mail-b.sr.ht
+X-Spam_score_int: 15
+X-Spam_score: 1.5
+X-Spam_bar: +
+X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,72 +53,774 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~aminier <arnaud.minier@telecom-paris.fr>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+---
+ hw/arm/Kconfig                    |   1 +
+ hw/arm/stm32l4x5_soc.c            |  65 +++++-
+ hw/misc/Kconfig                   |   3 +
+ hw/misc/meson.build               |   1 +
+ hw/misc/stm32l4x5_exti.c          | 329 ++++++++++++++++++++++++++++++
+ hw/misc/trace-events              |   5 +
+ include/hw/arm/stm32l4x5_soc.h    |   3 +
+ include/hw/misc/stm32l4x5_exti.h  |  64 ++++++
+ tests/qtest/meson.build           |   5 +
+ tests/qtest/stm32l4x5_exti-test.c | 102 +++++++++
+ 10 files changed, 576 insertions(+), 2 deletions(-)
+ create mode 100644 hw/misc/stm32l4x5_exti.c
+ create mode 100644 include/hw/misc/stm32l4x5_exti.h
+ create mode 100644 tests/qtest/stm32l4x5_exti-test.c
 
-On 11/21/23 04:17, Ivan Klokov wrote:
-> According to RISCV Specification sect 9.5 on two stage translation when
-> V=1 the vsstatus(mstatus in QEMU's terms) field MXR, which makes
-> execute-only pages readable, only overrides VS-stage page protection.
-> Setting MXR at HS-level(mstatus_hs), however, overrides both VS-stage
-> and G-stage execute-only permissions.
-> 
-> The hypervisor extension changes the behavior of MXR\MPV\MPRV bits.
-> Due to RISCV Specification sect. 9.4.1 when MPRV=1, explicit memory
-> accesses are translated and protected, and endianness is applied, as
-> though the current virtualization mode were set to MPV and the current
-> nominal privilege mode were set to MPP. vsstatus.MXR makes readable
-> those pages marked executable at the VS translation stage.
-> 
-> Fixes: 36a18664ba ("target/riscv: Implement second stage MMU")
-> 
-> Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
-> ---
-
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
->   target/riscv/cpu_helper.c | 24 ++++++++++++++++++++----
->   1 file changed, 20 insertions(+), 4 deletions(-)
-> 
-> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> index 9ff0952e46..e7e23b34f4 100644
-> --- a/target/riscv/cpu_helper.c
-> +++ b/target/riscv/cpu_helper.c
-> @@ -1032,13 +1032,29 @@ restart:
->           prot |= PAGE_WRITE;
->       }
->       if (pte & PTE_X) {
-> -        bool mxr;
-> +        bool mxr = false;
->   
-> -        if (first_stage == true) {
-> +        /*
-> +         * Use mstatus for first stage or for the second stage without
-> +         * virt_enabled (MPRV+MPV)
-> +         */
-> +        if (first_stage || !env->virt_enabled) {
->               mxr = get_field(env->mstatus, MSTATUS_MXR);
-> -        } else {
-> -            mxr = get_field(env->vsstatus, MSTATUS_MXR);
->           }
-> +
-> +        /* MPRV+MPV case, check VSSTATUS */
-> +        if (first_stage && two_stage && !env->virt_enabled) {
-> +            mxr |= get_field(env->vsstatus, MSTATUS_MXR);
-> +        }
-> +
-> +        /*
-> +         * Setting MXR at HS-level overrides both VS-stage and G-stage
-> +         * execute-only permissions
-> +         */
-> +        if (env->virt_enabled) {
-> +            mxr |= get_field(env->mstatus_hs, MSTATUS_MXR);
-> +        }
-> +
->           if (mxr) {
->               prot |= PAGE_READ;
->           }
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index b95576fb0c..28d378ed83 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -458,6 +458,7 @@ config STM32L4X5_SOC
+     bool
+     select ARM_V7M
+     select OR_IRQ
++    select STM32L4X5_EXTI
+=20
+ config XLNX_ZYNQMP_ARM
+     bool
+diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
+index 198d3f6d3e..6f2a1b34b3 100644
+--- a/hw/arm/stm32l4x5_soc.c
++++ b/hw/arm/stm32l4x5_soc.c
+@@ -43,10 +43,51 @@
+ #define SRAM2_BASE_ADDRESS 0x10000000
+ #define SRAM2_SIZE (32 * KiB)
+=20
++static const hwaddr exti_addr =3D 0x40010400;
++
++#define NUM_EXTI_IRQ 40
++/* Match exti line connections with their CPU IRQ number */
++/* See Vector Table (Reference Manual p.396) */
++static const int exti_irq[NUM_EXTI_IRQ] =3D {
++    6,                      /* GPIO[0]                 */
++    7,                      /* GPIO[1]                 */
++    8,                      /* GPIO[2]                 */
++    9,                      /* GPIO[3]                 */
++    10,                     /* GPIO[4]                 */
++    23, 23, 23, 23, 23,     /* GPIO[5..9]              */
++    40, 40, 40, 40, 40, 40, /* GPIO[10..15]            */
++    1,                      /* PVD                     */
++    67,                     /* OTG_FS_WKUP, Direct     */
++    41,                     /* RTC_ALARM               */
++    2,                      /* RTC_TAMP_STAMP2/CSS_LSE */
++    3,                      /* RTC wakeup timer        */
++    63,                     /* COMP1                   */
++    63,                     /* COMP2                   */
++    31,                     /* I2C1 wakeup, Direct     */
++    33,                     /* I2C2 wakeup, Direct     */
++    72,                     /* I2C3 wakeup, Direct     */
++    37,                     /* USART1 wakeup, Direct   */
++    38,                     /* USART2 wakeup, Direct   */
++    39,                     /* USART3 wakeup, Direct   */
++    52,                     /* UART4 wakeup, Direct    */
++    53,                     /* UART4 wakeup, Direct    */
++    70,                     /* LPUART1 wakeup, Direct  */
++    65,                     /* LPTIM1, Direct          */
++    66,                     /* LPTIM2, Direct          */
++    76,                     /* SWPMI1 wakeup, Direct   */
++    1,                      /* PVM1 wakeup             */
++    1,                      /* PVM2 wakeup             */
++    1,                      /* PVM3 wakeup             */
++    1,                      /* PVM4 wakeup             */
++    78                      /* LCD wakeup, Direct      */
++};
++
+ static void stm32l4x5_soc_initfn(Object *obj)
+ {
+     Stm32l4x5SocState *s =3D STM32L4X5_SOC(obj);
+=20
++    object_initialize_child(obj, "exti", &s->exti, TYPE_STM32L4X5_EXTI);
++
+     s->sysclk =3D qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
+     s->refclk =3D qdev_init_clock_in(DEVICE(s), "refclk", NULL, NULL, 0);
+ }
+@@ -57,7 +98,9 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, Err=
+or **errp)
+     Stm32l4x5SocState *s =3D STM32L4X5_SOC(dev_soc);
+     const Stm32l4x5SocClass *sc =3D STM32L4X5_SOC_GET_CLASS(dev_soc);
+     MemoryRegion *system_memory =3D get_system_memory();
+-    DeviceState *armv7m;
++    DeviceState *dev, *armv7m;
++    SysBusDevice *busdev;
++    int i;
+=20
+     /*
+      * We use s->refclk internally and only define it with qdev_init_clock_i=
+n()
+@@ -122,6 +165,25 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, =
+Error **errp)
+         return;
+     }
+=20
++    dev =3D DEVICE(&s->exti);
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->exti), errp)) {
++        return;
++    }
++    busdev =3D SYS_BUS_DEVICE(dev);
++    sysbus_mmio_map(busdev, 0, exti_addr);
++    for (i =3D 0; i < NUM_EXTI_IRQ; i++) {
++        /* IRQ seems not to be connected ? */
++        sysbus_connect_irq(busdev, i, qdev_get_gpio_in(armv7m, exti_irq[i]));
++    }
++
++    /*
++     * Uncomment when Syscfg is implemented
++     * for (i =3D 0; i < 16; i++) {
++     *     qdev_connect_gpio_out(DEVICE(&s->syscfg), i,
++     *                           qdev_get_gpio_in(dev, i));
++     * }
++     */
++
+     /* APB1 BUS */
+     create_unimplemented_device("TIM2",      0x40000000, 0x400);
+     create_unimplemented_device("TIM3",      0x40000400, 0x400);
+@@ -162,7 +224,6 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, E=
+rror **errp)
+     create_unimplemented_device("SYSCFG",    0x40010000, 0x30);
+     create_unimplemented_device("VREFBUF",   0x40010030, 0x1D0);
+     create_unimplemented_device("COMP",      0x40010200, 0x200);
+-    create_unimplemented_device("EXTI",      0x40010400, 0x400);
+     /* RESERVED:    0x40010800, 0x1400 */
+     create_unimplemented_device("FIREWALL",  0x40011C00, 0x400);
+     /* RESERVED:    0x40012000, 0x800 */
+diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+index cc8a8c1418..3efe3dc2cc 100644
+--- a/hw/misc/Kconfig
++++ b/hw/misc/Kconfig
+@@ -87,6 +87,9 @@ config STM32F4XX_SYSCFG
+ config STM32F4XX_EXTI
+     bool
+=20
++config STM32L4X5_EXTI
++    bool
++
+ config MIPS_ITU
+     bool
+=20
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index 36c20d5637..16db6e228d 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -110,6 +110,7 @@ system_ss.add(when: 'CONFIG_XLNX_VERSAL_TRNG', if_true: f=
+iles(
+ system_ss.add(when: 'CONFIG_STM32F2XX_SYSCFG', if_true: files('stm32f2xx_sys=
+cfg.c'))
+ system_ss.add(when: 'CONFIG_STM32F4XX_SYSCFG', if_true: files('stm32f4xx_sys=
+cfg.c'))
+ system_ss.add(when: 'CONFIG_STM32F4XX_EXTI', if_true: files('stm32f4xx_exti.=
+c'))
++system_ss.add(when: 'CONFIG_STM32L4X5_EXTI', if_true: files('stm32l4x5_exti.=
+c'))
+ system_ss.add(when: 'CONFIG_MPS2_FPGAIO', if_true: files('mps2-fpgaio.c'))
+ system_ss.add(when: 'CONFIG_MPS2_SCC', if_true: files('mps2-scc.c'))
+=20
+diff --git a/hw/misc/stm32l4x5_exti.c b/hw/misc/stm32l4x5_exti.c
+new file mode 100644
+index 0000000000..f0a535672c
+--- /dev/null
++++ b/hw/misc/stm32l4x5_exti.c
+@@ -0,0 +1,329 @@
++/*
++ * STM32L4x5 SoC family EXTI
++ *
++ * Copyright (c) 2014 Alistair Francis <alistair@alistair23.me>
++ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
++ * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
++ *
++ * SPDX-License-Identifier: MIT
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a c=
+opy
++ * of this software and associated documentation files (the "Software"), to =
+deal
++ * in the Software without restriction, including without limitation the rig=
+hts
++ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++ * copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING F=
+ROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++ * THE SOFTWARE.
++ */
++
++/* stm32l4x5_exti implementation is derived from stm32f4xx_exti */
++
++#include "qemu/osdep.h"
++#include "qemu/log.h"
++#include "trace.h"
++#include "hw/irq.h"
++#include "migration/vmstate.h"
++#include "hw/misc/stm32l4x5_exti.h"
++
++#define EXTI_IMR1   0x00
++#define EXTI_EMR1   0x04
++#define EXTI_RTSR1  0x08
++#define EXTI_FTSR1  0x0C
++#define EXTI_SWIER1 0x10
++#define EXTI_PR1    0x14
++#define EXTI_IMR2   0x20
++#define EXTI_EMR2   0x24
++#define EXTI_RTSR2  0x28
++#define EXTI_FTSR2  0x2C
++#define EXTI_SWIER2 0x30
++#define EXTI_PR2    0x34
++
++/* 0b11111111_10000010_00000000_00000000 */
++#define DIRECT_LINE_MASK1 0xFF820000
++/* 0b00000000_00000000_00000000_10000111 */
++#define DIRECT_LINE_MASK2 0x00000087
++/* 0b11111111_11111111_11111111_00000000 */
++#define RESERVED_BITS_MASK_EXTI_xMR2 0xFFFFFF00
++
++/* 0b00000000_00000000_00000000_01111000 */
++#define ACTIVABLE_xR2 (~DIRECT_LINE_MASK2 & ~RESERVED_BITS_MASK_EXTI_xMR2)
++
++static void stm32l4x5_exti_reset(DeviceState *dev)
++{
++    Stm32l4x5ExtiState *s =3D STM32L4X5_EXTI(dev);
++
++    s->exti_imr1 =3D DIRECT_LINE_MASK1;
++    s->exti_emr1 =3D 0x00000000;
++    s->exti_rtsr1 =3D 0x00000000;
++    s->exti_ftsr1 =3D 0x00000000;
++    s->exti_swier1 =3D 0x00000000;
++    s->exti_pr1 =3D 0x00000000;
++
++    s->exti_imr2 =3D DIRECT_LINE_MASK2;
++    s->exti_emr2 =3D 0x00000000;
++    s->exti_rtsr2 =3D 0x00000000;
++    s->exti_ftsr2 =3D 0x00000000;
++    s->exti_swier2 =3D 0x00000000;
++    s->exti_pr2 =3D 0x00000000;
++}
++
++static void stm32l4x5_exti_set_irq(void *opaque, int irq, int level)
++{
++    Stm32l4x5ExtiState *s =3D opaque;
++
++    trace_stm32l4x5_exti_set_irq(irq, level);
++
++    if (irq >=3D NUM_INTERRUPT_OUT_LINES) {
++        return;
++    }
++
++    if (irq < 32) {
++        if (((1 << irq) & s->exti_rtsr1) && level) {
++            /* Rising Edge */
++            s->exti_pr1 |=3D 1 << irq;
++        }
++
++        if (((1 << irq) & s->exti_ftsr1) && !level) {
++            /* Falling Edge */
++            s->exti_pr1 |=3D 1 << irq;
++        }
++
++        if (!((1 << irq) & s->exti_imr1)) {
++            /* Interrupt is masked */
++            return;
++        }
++    } else {
++        /* Shift the value to enable access in x2 registers*/
++        int irq_x2 =3D irq - 32;
++        if (((1 << irq_x2) & s->exti_rtsr2) && level) {
++            /* Rising Edge */
++            s->exti_pr2 |=3D 1 << irq_x2;
++        }
++
++        if (((1 << irq_x2) & s->exti_ftsr2) && !level) {
++            /* Falling Edge */
++            s->exti_pr2 |=3D 1 << irq_x2;
++        }
++
++        if (!((1 << irq_x2) & s->exti_imr2)) {
++            /* Interrupt is masked */
++            return;
++        }
++    }
++    qemu_irq_pulse(s->irq[irq]);
++}
++
++static uint64_t stm32l4x5_exti_read(void *opaque, hwaddr addr,
++                                    unsigned int size)
++{
++    Stm32l4x5ExtiState *s =3D opaque;
++    uint32_t r =3D 0;
++
++    switch (addr) {
++    case EXTI_IMR1:
++        r =3D s->exti_imr1;
++        break;
++    case EXTI_EMR1:
++        r =3D s->exti_emr1;
++        break;
++    case EXTI_RTSR1:
++        r =3D s->exti_rtsr1;
++        break;
++    case EXTI_FTSR1:
++        r =3D s->exti_ftsr1;
++        break;
++    case EXTI_SWIER1:
++        r =3D s->exti_swier1;
++        break;
++    case EXTI_PR1:
++        r =3D s->exti_pr1;
++        break;
++    case EXTI_IMR2:
++        r =3D s->exti_imr2;
++        break;
++    case EXTI_EMR2:
++        r =3D s->exti_emr2;
++        break;
++    case EXTI_RTSR2:
++        r =3D s->exti_rtsr2;
++        break;
++    case EXTI_FTSR2:
++        r =3D s->exti_ftsr2;
++        break;
++    case EXTI_SWIER2:
++        r =3D s->exti_swier2;
++        break;
++    case EXTI_PR2:
++        r =3D s->exti_pr2;
++        break;
++
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "STM32L4X5_exti_read: Bad offset %x\n", (int)addr);
++        break;
++    }
++
++    trace_stm32l4x5_exti_read(addr, r);
++
++    return r;
++}
++
++static void stm32l4x5_exti_write(void *opaque, hwaddr addr,
++                                 uint64_t val64, unsigned int size)
++{
++    Stm32l4x5ExtiState *s =3D opaque;
++    uint32_t value =3D (uint32_t)val64;
++
++    trace_stm32l4x5_exti_write(addr, value);
++
++    switch (addr) {
++    case EXTI_IMR1:
++        s->exti_imr1 =3D value;
++        return;
++    case EXTI_EMR1:
++        s->exti_emr1 =3D value;
++        return;
++    case EXTI_RTSR1:
++        s->exti_rtsr1 =3D value & ~DIRECT_LINE_MASK1;
++        return;
++    case EXTI_FTSR1:
++        s->exti_ftsr1 =3D value & ~DIRECT_LINE_MASK1;
++        return;
++    case EXTI_SWIER1:
++        s->exti_swier1 =3D value & ~DIRECT_LINE_MASK1;
++        for (int i =3D 0; i < 32; i++) {
++            const uint32_t mask =3D 1 << i;
++            if (s->exti_swier1 & s->exti_imr1 & mask) {
++                s->exti_pr1 |=3D mask;
++                qemu_irq_pulse(s->irq[i]);
++            }
++        }
++        return;
++    case EXTI_PR1:
++        /* This bit is cleared by writing a 1 to it */
++        s->exti_pr1 &=3D ~(value & ~DIRECT_LINE_MASK1);
++        /* Don't forget to clean software interrupts */
++        s->exti_swier1 &=3D ~(value & ~DIRECT_LINE_MASK1);
++        for (int i =3D 0; i < 32; i++) {
++            const uint32_t mask =3D 1 << i;
++            if (!(s->exti_pr1 & mask)) {
++                qemu_irq_lower(s->irq[i]);
++            }
++        }
++        return;
++    case EXTI_IMR2:
++        s->exti_imr2 =3D value & ~RESERVED_BITS_MASK_EXTI_xMR2;
++        return;
++    case EXTI_EMR2:
++        s->exti_emr2 =3D value & ~RESERVED_BITS_MASK_EXTI_xMR2;
++        return;
++    case EXTI_RTSR2:
++        s->exti_rtsr2 =3D value & ACTIVABLE_xR2;
++        return;
++    case EXTI_FTSR2:
++        s->exti_ftsr2 =3D value & ACTIVABLE_xR2;
++        return;
++    case EXTI_SWIER2:
++        s->exti_swier2 =3D value & ACTIVABLE_xR2;
++        for (int i =3D 0; i < 8; i++) {
++            const uint32_t mask =3D 1 << i;
++            if (s->exti_swier2 & s->exti_imr2 & mask) {
++                s->exti_pr2 |=3D mask;
++                qemu_irq_raise(s->irq[32 + i]);
++            }
++        }
++        return;
++    case EXTI_PR2:
++        /* This bit is cleared by writing a 1 to it */
++        s->exti_pr2 &=3D ~value | ~ACTIVABLE_xR2;
++        /* Don't forget to clean software interrupts */
++        s->exti_swier2 &=3D ~value | ~ACTIVABLE_xR2;
++        for (int i =3D 0; i < 8; i++) {
++            const uint32_t mask =3D 1 << i;
++            if (!(s->exti_pr2 & mask)) {
++                qemu_irq_lower(s->irq[32 + i]);
++            }
++        }
++        return;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "STM32L4X5_exti_write: Bad offset %x\n", (int)addr);
++    }
++}
++
++static const MemoryRegionOps stm32l4x5_exti_ops =3D {
++    .read =3D stm32l4x5_exti_read,
++    .write =3D stm32l4x5_exti_write,
++    .endianness =3D DEVICE_NATIVE_ENDIAN,
++};
++
++static void stm32l4x5_exti_init(Object *obj)
++{
++    Stm32l4x5ExtiState *s =3D STM32L4X5_EXTI(obj);
++    int i;
++
++    for (i =3D 0; i < NUM_INTERRUPT_OUT_LINES; i++) {
++        sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq[i]);
++    }
++
++    memory_region_init_io(&s->mmio, obj, &stm32l4x5_exti_ops, s,
++                          TYPE_STM32L4X5_EXTI, 0x400);
++    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
++
++    qdev_init_gpio_in(DEVICE(obj), stm32l4x5_exti_set_irq,
++                      NUM_GPIO_EVENT_IN_LINES);
++}
++
++static const VMStateDescription vmstate_stm32l4x5_exti =3D {
++    .name =3D TYPE_STM32L4X5_EXTI,
++    .version_id =3D 1,
++    .minimum_version_id =3D 1,
++    .fields =3D (VMStateField[]) {
++        VMSTATE_UINT32(exti_imr1, Stm32l4x5ExtiState),
++        VMSTATE_UINT32(exti_emr1, Stm32l4x5ExtiState),
++        VMSTATE_UINT32(exti_rtsr1, Stm32l4x5ExtiState),
++        VMSTATE_UINT32(exti_ftsr1, Stm32l4x5ExtiState),
++        VMSTATE_UINT32(exti_swier1, Stm32l4x5ExtiState),
++        VMSTATE_UINT32(exti_pr1, Stm32l4x5ExtiState),
++        VMSTATE_UINT32(exti_imr2, Stm32l4x5ExtiState),
++        VMSTATE_UINT32(exti_emr2, Stm32l4x5ExtiState),
++        VMSTATE_UINT32(exti_rtsr2, Stm32l4x5ExtiState),
++        VMSTATE_UINT32(exti_ftsr2, Stm32l4x5ExtiState),
++        VMSTATE_UINT32(exti_swier2, Stm32l4x5ExtiState),
++        VMSTATE_UINT32(exti_pr2, Stm32l4x5ExtiState),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++static void stm32l4x5_exti_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc =3D DEVICE_CLASS(klass);
++
++    dc->reset =3D stm32l4x5_exti_reset;
++    dc->vmsd =3D &vmstate_stm32l4x5_exti;
++}
++
++static const TypeInfo stm32l4x5_exti_info =3D {
++    .name          =3D TYPE_STM32L4X5_EXTI,
++    .parent        =3D TYPE_SYS_BUS_DEVICE,
++    .instance_size =3D sizeof(Stm32l4x5ExtiState),
++    .instance_init =3D stm32l4x5_exti_init,
++    .class_init    =3D stm32l4x5_exti_class_init,
++};
++
++static void stm32l4x5_exti_register_types(void)
++{
++    type_register_static(&stm32l4x5_exti_info);
++}
++
++type_init(stm32l4x5_exti_register_types)
+diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+index 05ff692441..2f01c62c0e 100644
+--- a/hw/misc/trace-events
++++ b/hw/misc/trace-events
+@@ -163,6 +163,11 @@ stm32f4xx_exti_set_irq(int irq, int level) "Set EXTI: %d=
+ to %d"
+ stm32f4xx_exti_read(uint64_t addr) "reg read: addr: 0x%" PRIx64 " "
+ stm32f4xx_exti_write(uint64_t addr, uint64_t data) "reg write: addr: 0x%" PR=
+Ix64 " val: 0x%" PRIx64 ""
+=20
++# stm32l4x5_exti.c
++stm32l4x5_exti_set_irq(int irq, int level) "Set EXTI: %d to %d"
++stm32l4x5_exti_read(uint64_t addr, uint64_t data) "reg read: addr: 0x%" PRIx=
+64 " val: 0x%" PRIx64 ""
++stm32l4x5_exti_write(uint64_t addr, uint64_t data) "reg write: addr: 0x%" PR=
+Ix64 " val: 0x%" PRIx64 ""
++
+ # tz-mpc.c
+ tz_mpc_reg_read(uint32_t offset, uint64_t data, unsigned size) "TZ MPC regs =
+read: offset 0x%x data 0x%" PRIx64 " size %u"
+ tz_mpc_reg_write(uint32_t offset, uint64_t data, unsigned size) "TZ MPC regs=
+ write: offset 0x%x data 0x%" PRIx64 " size %u"
+diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_soc.h
+index ab61c4b8a1..940941598e 100644
+--- a/include/hw/arm/stm32l4x5_soc.h
++++ b/include/hw/arm/stm32l4x5_soc.h
+@@ -32,6 +32,7 @@
+ #include "qemu/units.h"
+ #include "hw/qdev-core.h"
+ #include "hw/arm/armv7m.h"
++#include "hw/misc/stm32l4x5_exti.h"
+ #include "qom/object.h"
+=20
+ #define TYPE_STM32L4X5_SOC "stm32l4x5-soc"
+@@ -45,6 +46,8 @@ struct Stm32l4x5SocState {
+=20
+     ARMv7MState armv7m;
+=20
++    Stm32l4x5ExtiState exti;
++
+     MemoryRegion sram1;
+     MemoryRegion sram2;
+     MemoryRegion flash;
+diff --git a/include/hw/misc/stm32l4x5_exti.h b/include/hw/misc/stm32l4x5_ext=
+i.h
+new file mode 100644
+index 0000000000..4305e7fcbb
+--- /dev/null
++++ b/include/hw/misc/stm32l4x5_exti.h
+@@ -0,0 +1,64 @@
++/*
++ * STM32L4x5 SoC family EXTI
++ *
++ * Copyright (c) 2014 Alistair Francis <alistair@alistair23.me>
++ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
++ * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
++ *
++ * SPDX-License-Identifier: MIT
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a c=
+opy
++ * of this software and associated documentation files (the "Software"), to =
+deal
++ * in the Software without restriction, including without limitation the rig=
+hts
++ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++ * copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING F=
+ROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++ * THE SOFTWARE.
++ */
++
++/* stm32l4x5_exti implementation is derived from stm32f4xx_exti */
++
++#ifndef HW_STM32L4X5_EXTI_H
++#define HW_STM32L4X5_EXTI_H
++
++#include "hw/sysbus.h"
++#include "qom/object.h"
++
++#define TYPE_STM32L4X5_EXTI "stm32l4x5-exti"
++OBJECT_DECLARE_SIMPLE_TYPE(Stm32l4x5ExtiState, STM32L4X5_EXTI)
++
++#define NUM_GPIO_EVENT_IN_LINES 16
++#define NUM_INTERRUPT_OUT_LINES 40
++
++struct Stm32l4x5ExtiState {
++    SysBusDevice parent_obj;
++
++    MemoryRegion mmio;
++
++    uint32_t exti_imr1;
++    uint32_t exti_emr1;
++    uint32_t exti_rtsr1;
++    uint32_t exti_ftsr1;
++    uint32_t exti_swier1;
++    uint32_t exti_pr1;
++    uint32_t exti_imr2;
++    uint32_t exti_emr2;
++    uint32_t exti_rtsr2;
++    uint32_t exti_ftsr2;
++    uint32_t exti_swier2;
++    uint32_t exti_pr2;
++
++    qemu_irq irq[NUM_INTERRUPT_OUT_LINES];
++};
++
++#endif
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index c9945e69b1..bc62f201a8 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -194,6 +194,10 @@ qtests_aspeed =3D \
+   ['aspeed_hace-test',
+    'aspeed_smc-test',
+    'aspeed_gpio-test']
++
++qtests_stm32l4x5 =3D \
++  ['stm32l4x5_exti-test']
++
+ qtests_arm =3D \
+   (config_all_devices.has_key('CONFIG_MPS2') ? ['sse-timer-test'] : []) + \
+   (config_all_devices.has_key('CONFIG_CMSDK_APB_DUALTIMER') ? ['cmsdk-apb-du=
+altimer-test'] : []) + \
+@@ -207,6 +211,7 @@ qtests_arm =3D \
+   (config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] :=
+ []) + \
+   (config_all_devices.has_key('CONFIG_VEXPRESS') ? ['test-arm-mptimer'] : []=
+) + \
+   (config_all_devices.has_key('CONFIG_MICROBIT') ? ['microbit-test'] : []) +=
+ \
++  (config_all_devices.has_key('CONFIG_STM32L4X5_SOC') ? qtests_stm32l4x5 : [=
+]) + \
+   ['arm-cpu-features',
+    'boot-serial-test']
+=20
+diff --git a/tests/qtest/stm32l4x5_exti-test.c b/tests/qtest/stm32l4x5_exti-t=
+est.c
+new file mode 100644
+index 0000000000..a6cf04f7ba
+--- /dev/null
++++ b/tests/qtest/stm32l4x5_exti-test.c
+@@ -0,0 +1,102 @@
++/*
++ * QTest testcase for STML4XX_EXTI
++ *
++ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
++ * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "libqtest-single.h"
++
++#define EXTI_BASE_ADDR 0x40010400
++#define EXTI_IMR1 0x00
++#define EXTI_EMR1 0x04
++#define EXTI_RTSR1 0x08
++#define EXTI_FTSR1 0x0C
++#define EXTI_SWIER1 0x10
++#define EXTI_PR1 0x14
++#define EXTI_IMR2 0x20
++#define EXTI_EMR2 0x24
++#define EXTI_RTSR2 0x28
++#define EXTI_FTSR2 0x2C
++#define EXTI_SWIER2 0x30
++#define EXTI_PR2 0x34
++
++#define GPIO_0_IRQ 6
++
++static void exti_writel(unsigned int offset, uint32_t value)
++{
++    writel(EXTI_BASE_ADDR + offset, value);
++}
++
++static uint32_t exti_readl(unsigned int offset)
++{
++    return readl(EXTI_BASE_ADDR + offset);
++}
++
++static void test_write_read(void)
++{
++    /* Test that we can write and retrieve a value from the device */
++    exti_writel(EXTI_IMR1, 0xFFFFFFFF);
++    const uint32_t imr1 =3D exti_readl(EXTI_IMR1);
++    g_assert_cmpuint(imr1, =3D=3D, 0xFFFFFFFF);
++
++    /* Test that reserved address are not written to */
++    exti_writel(EXTI_IMR2, 0xFFFFFFFF);
++    const uint32_t imr2 =3D exti_readl(EXTI_IMR2);
++    g_assert_cmpuint(imr2, =3D=3D, 0x000001FF);
++}
++
++static void test_direct_lines_write(void)
++{
++    /* Test that Direct Lines are not written to */
++    exti_writel(EXTI_RTSR2, 0xFFFFFFFF);
++    const uint32_t rtsr2 =3D exti_readl(EXTI_RTSR2);
++    g_assert_cmpuint(rtsr2, =3D=3D, 0x00000078);
++}
++
++static void test_software_interrupt(void)
++{
++    /* Test that we can launch irq using software in*/
++
++    g_assert_false(get_irq(GPIO_0_IRQ));
++    /* Bit 0 corresponds to GPIO Px_0 */
++    exti_writel(EXTI_IMR1, 0x00000001);
++    exti_writel(EXTI_SWIER1, 0x00000001);
++    uint32_t swier1 =3D exti_readl(EXTI_SWIER1);
++    uint32_t pr1 =3D exti_readl(EXTI_PR1);
++
++    g_assert_cmpuint(swier1, =3D=3D, 0x00000001);
++    g_assert_cmpuint(pr1, =3D=3D, 0x00000001);
++
++    g_assert_true(get_irq(GPIO_0_IRQ));
++
++    /* Reset the irq and check the registers state */
++    exti_writel(EXTI_PR1, 0x00000001);
++    swier1 =3D exti_readl(EXTI_SWIER1);
++    pr1 =3D exti_readl(EXTI_PR1);
++    g_assert_cmpuint(swier1, =3D=3D, 0x00000000);
++    g_assert_cmpuint(pr1, =3D=3D, 0x00000000);
++}
++
++int main(int argc, char **argv)
++{
++    int ret;
++
++    g_test_init(&argc, &argv, NULL);
++    g_test_set_nonfatal_assertions();
++
++    qtest_add_func("stm32l4x5/exti/write_read", test_write_read);
++    qtest_add_func("stm32l4x5/exti/direct_lines_write", test_direct_lines_wr=
+ite);
++    /* Fails for now, not implemented */
++    qtest_add_func("stm32l4x5/exti/software_interrupt", test_software_interr=
+upt);
++
++    qtest_start("-machine b-l475e-iot01a");
++    ret =3D g_test_run();
++    qtest_end();
++
++    return ret;
++}
+--=20
+2.38.5
 
