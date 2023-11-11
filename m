@@ -2,83 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 775597E89C3
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 09:16:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F7FC7E8A19
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 10:54:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1j8n-00059Y-BA; Sat, 11 Nov 2023 03:14:53 -0500
+	id 1r1kgH-000652-4l; Sat, 11 Nov 2023 04:53:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r1j8k-00059D-V5
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 03:14:51 -0500
-Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r1j8i-0008Lo-KS
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 03:14:49 -0500
-Received: by mail-oi1-x22c.google.com with SMTP id
- 5614622812f47-3b56b618217so1592519b6e.0
- for <qemu-devel@nongnu.org>; Sat, 11 Nov 2023 00:14:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1699690487; x=1700295287; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=cwWf4jd51u1PpvyuN+Of1I4010hXbBFJlAgHfWjN6E4=;
- b=QTnrQXpXs1RM1mhZuqJA3Fn5b1yxZLS+T6967k5leLhRUlxqrj63FgMVLAQCdiv1JK
- p4ANQWxJAlBWlDQhLHsU+KHGHEDOco9SeYDhkWrGVRXrtVjES2rK7cXICEY4nFDk90Yq
- lQrasHqNee3ybwVrd+KE0D4R+zmjZQgr/7npqlctLi+gQ6VedVZY7zFU+2cfiC5P9tH5
- aHooBYfrpOIPXw6LOysjX/qsopnyRLLm9YTYSenTxN9rC/L1LgGM4RKv5NIBSUXkxBCa
- 9Km4xtBwRo0Boi/0lAmV5oryQxPDsA4nnriN4hdetWmy/38/pPmOnO4j6kINFPV6qhyU
- VOiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699690487; x=1700295287;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cwWf4jd51u1PpvyuN+Of1I4010hXbBFJlAgHfWjN6E4=;
- b=BcElg2ZVUrSueT4Q9BgMht5alhXEOGmv+B6U8j3jzE01HFGfp1BVwU9ElVsFjAitjN
- jx40+JyjsRid44hKltcLP69UYCJ1m7iMjXozNfm7F1WBd6O0ysKFx8mRKg5eAP2zX4A4
- z/vMTno0Xekg5ZTwZIxXibzD35yyL/PhZz3tvC0ss5G4BmAK3dg9JRbo2qB3KE8SwUxv
- 8+zuoGT7kFXitEA84ei6d5igNX4Jvz3laC8gMxCeDVR3rOb7AsL7G3iBfmjtcBDSLrbe
- hN3YFEZNNc0afnpYXjHO6zSJP7cD1slSq8sOTy4iqG2++T3xNG96YoAITdpxSQMaG+Ng
- ilCw==
-X-Gm-Message-State: AOJu0YweCdFoA3s/oO4CngbZ8cqxFG1tDa8DYc0JmlS6cxmFmvSaRBn+
- gQIDY4IMlSS5m0umrTberbKUpQ==
-X-Google-Smtp-Source: AGHT+IHcZm1w2xggTtj3s9dsTbKFJ7u5QAqdtJfYbYNK5z9yqUoVQHlJxAu7I7qWrQ5CL+WNtA8kqA==
-X-Received: by 2002:a05:6808:13c7:b0:3b2:dd36:dec0 with SMTP id
- d7-20020a05680813c700b003b2dd36dec0mr2526880oiw.4.1699690487291; 
- Sat, 11 Nov 2023 00:14:47 -0800 (PST)
-Received: from [192.168.68.107] (201-69-66-14.dial-up.telesp.net.br.
- [201.69.66.14]) by smtp.gmail.com with ESMTPSA id
- bi5-20020a056a02024500b0059b2316be86sm753727pgb.46.2023.11.11.00.14.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 11 Nov 2023 00:14:46 -0800 (PST)
-Message-ID: <def7be54-9c16-4825-9921-c569adc8e79e@ventanamicro.com>
-Date: Sat, 11 Nov 2023 05:14:43 -0300
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1r1kgD-00064q-Sn
+ for qemu-devel@nongnu.org; Sat, 11 Nov 2023 04:53:29 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1r1kg4-00076Y-Jg
+ for qemu-devel@nongnu.org; Sat, 11 Nov 2023 04:53:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699696397;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GoX6J3pA+xZFZ45k9r6rpvuZ1WSIHoMc0w0Sb7Ui0mQ=;
+ b=GWVzCemdMw2wzSayYc0q9yRQYgp6ts0WYAhpsuFcPLfBAk2dEl7N/SbTZIX92Rpr3bgl5e
+ +hBL+yeWekll3IADDiPth28xcm3BaODQfykBWfvbq/lYHGjUSF6RKmph5yjZI5iT3bpNFV
+ Swo948OJptQuEo0Mo/zBXjCe7+lQWKE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-96-3Ja42YToNzebIFJcZE2Sog-1; Sat,
+ 11 Nov 2023 04:53:15 -0500
+X-MC-Unique: 3Ja42YToNzebIFJcZE2Sog-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B010E3C23645
+ for <qemu-devel@nongnu.org>; Sat, 11 Nov 2023 09:53:15 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.9])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E564F40C6EB9;
+ Sat, 11 Nov 2023 09:53:14 +0000 (UTC)
+Date: Sat, 11 Nov 2023 17:53:11 +0800
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com
+Subject: Re: [PULL v2 00/11] qdev: Make array properties user accessible again
+Message-ID: <20231111095311.GA171435@fedora>
+References: <20231110172305.29107-1-kwolf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] linux-user/riscv: Add Zicboz block size to hwprobe
-To: Palmer Dabbelt <palmer@rivosinc.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, Alistair Francis <Alistair.Francis@wdc.com>,
- armbru@redhat.com, Richard Henderson <richard.henderson@linaro.org>
-References: <20231110173716.24423-1-palmer@rivosinc.com>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231110173716.24423-1-palmer@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x22c.google.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="4oiSqewj99Q4otq6"
+Content-Disposition: inline
+In-Reply-To: <20231110172305.29107-1-kwolf@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,43 +81,29 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+--4oiSqewj99Q4otq6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 11/10/23 14:37, Palmer Dabbelt wrote:
-> Support for probing the Zicboz block size landed in Linux 6.6, which was
-> released a few weeks ago.  This provides the user-configured block size
-> when Zicboz is enabled.
-> 
-> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-> ---
+Applied, thanks.
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
 
+--4oiSqewj99Q4otq6
+Content-Type: application/pgp-signature; name="signature.asc"
 
->   linux-user/syscall.c | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-> index 65ac3ac796..7caacf43d6 100644
-> --- a/linux-user/syscall.c
-> +++ b/linux-user/syscall.c
-> @@ -8808,6 +8808,8 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
->   #define     RISCV_HWPROBE_MISALIGNED_UNSUPPORTED (4 << 0)
->   #define     RISCV_HWPROBE_MISALIGNED_MASK        (7 << 0)
->   
-> +#define RISCV_HWPROBE_KEY_ZICBOZ_BLOCK_SIZE 6
-> +
->   struct riscv_hwprobe {
->       abi_llong  key;
->       abi_ullong value;
-> @@ -8860,6 +8862,10 @@ static void risc_hwprobe_fill_pairs(CPURISCVState *env,
->           case RISCV_HWPROBE_KEY_CPUPERF_0:
->               __put_user(RISCV_HWPROBE_MISALIGNED_FAST, &pair->value);
->               break;
-> +        case RISCV_HWPROBE_KEY_ZICBOZ_BLOCK_SIZE:
-> +            value = cfg->ext_zicboz ? cfg->cboz_blocksize : 0;
-> +            __put_user(value, &pair->value);
-> +            break;
->           default:
->               __put_user(-1, &pair->key);
->               break;
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVPTwcACgkQnKSrs4Gr
+c8gfXAf/V3u/rHTMDI9mTrjS6/crcPpTZ50lKXIkBYtmsr65UjdJ84y1cxy3EWul
+/OylmrhjkLnPddYzl4Hy22iok3e5ZrAFAcO3NIZiO/X/xWuEBBfuH8iUeXkEs+UR
+fUXKo7xacaucpR/2CPDUXqET3wvde8rBR6O7cbYq8uc1g6ni06XjM5haFGSA6wOH
+NlQ8H6vcmjNNV06Vk4Mz0jS2DSHlM8JOdZbDM3IdFER7XNZpK7wVHhRWpQx4DIm3
+9IjJclVXP171ZOfw7wuNrwIMV5OBCgJ+KgsBm1WgF81fk19bc38Jm3xGCfiL1OHt
+nKLIT1rCQuo6g86QzslkswnVNcrN/g==
+=x9L4
+-----END PGP SIGNATURE-----
+
+--4oiSqewj99Q4otq6--
+
 
