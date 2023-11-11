@@ -2,82 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840DB7E8B5F
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 16:30:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C6C7E8B83
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 17:11:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1pve-0003yf-Ia; Sat, 11 Nov 2023 10:29:46 -0500
+	id 1r1qYb-0004Pu-5r; Sat, 11 Nov 2023 11:10:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r1pvd-0003yS-A9
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 10:29:45 -0500
+ id 1r1qYV-0004PI-DU
+ for qemu-devel@nongnu.org; Sat, 11 Nov 2023 11:09:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r1pvb-0008KO-I7
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 10:29:45 -0500
+ id 1r1qYT-0007Nt-Ry
+ for qemu-devel@nongnu.org; Sat, 11 Nov 2023 11:09:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699716582;
+ s=mimecast20190719; t=1699718987;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Kh8hHoHBgX/fTehaZ1B5Sfw7yk3YdWsOqVB7Mq6gH8Q=;
- b=e3sk4AAf0elZQjLXOpTQWH+IEvaXjjnePH9mfUeXhMhQyIi04rlhEgp5avqIkK3yGGaRu3
- WO6ZQwd48XKHViBkCEp5ovrW2cPHblHemI/QbQCMUSOp83kdUoGdNWeI0kUFbxLVnr0QTH
- 1SGG+dA7y/UIyqNNmEhxBeHhqwqBgI4=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=22IE7fXv/QBpZIrnnuBoq+ow7hRrWW5GkZzjnTZm6+U=;
+ b=dNWbLn4g3zrkfw4kbt9lkvv8ZHkMFyiHp3WNlYdEoDfd6TKC+PIZ08vfroTH0KCmL+Z3ec
+ fS6CKSKK2xVg3OVc5IoM8ymPm35MnAq7A1bcFV68vr2R79LyVucc4quEuAvpsHb70OohYb
+ Xxp+i57lYFOtZFNHnkv9NQYFXwSPYSM=
+Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
+ [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-673-agDX8IXDM5KOylrViluFRA-1; Sat, 11 Nov 2023 10:29:41 -0500
-X-MC-Unique: agDX8IXDM5KOylrViluFRA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9e293cd8269so227221266b.0
- for <qemu-devel@nongnu.org>; Sat, 11 Nov 2023 07:29:40 -0800 (PST)
+ us-mta-553-xvjrk8CqOjOrflYCmQQnhA-1; Sat, 11 Nov 2023 11:09:45 -0500
+X-MC-Unique: xvjrk8CqOjOrflYCmQQnhA-1
+Received: by mail-ua1-f69.google.com with SMTP id
+ a1e0cc1a2514c-7ba274ab2afso948093241.0
+ for <qemu-devel@nongnu.org>; Sat, 11 Nov 2023 08:09:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699716579; x=1700321379;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1699718985; x=1700323785;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Kh8hHoHBgX/fTehaZ1B5Sfw7yk3YdWsOqVB7Mq6gH8Q=;
- b=fD3GLLQ4/N/iQRG8hfyMHKYNxLF6i6j7tYjhR54dhtCKn9SvmKbkXTtaN/dqei5ZWZ
- I4DArwfcmvDOmUZOGL5rraU2tcgM0kj7QIHFpXCaOIVyQvvCIKxIGIT8N/q/1w3xkIQT
- GHm8LkMImWsXlpa816nzTeoY4SeM+Hc3GgkPtjjArXNwDosa/Vtr6TKC9Z7sLkBzv5MF
- OYkoCUADKEVOu+UEFXLLfqPOI7ay2BzJY72Cz/xtfkCkT2hHDV6y8uWjJXy8Msl+H7uh
- 1Q5hUPBHzcVTWnlACA9jArAKECoprpsf6cmVosQh/+XnBFLNyyzoEj9iJ6ryf/j5uLm5
- 4doQ==
-X-Gm-Message-State: AOJu0YwkVRFAjvkU51tUyL5zSxzL5m8HtHKgBnqbLGrvDDQHFpQHSnv2
- S6P0SB294uk64wH1v1Xri9iy4BH1pwdek41WwKylWLNMAZJezx84701DEVPqAtAj73sP3Yfh+q8
- m5lfZAdPWNVd3IsC+8gRyJuc/DG9kfjhiAETuWuBn41YR69hbP4gltWW9E/rnGkCbcWSuH7YJ2T
- k=
-X-Received: by 2002:a17:906:4147:b0:9e6:59d5:71c4 with SMTP id
- l7-20020a170906414700b009e659d571c4mr1412389ejk.16.1699716579461; 
- Sat, 11 Nov 2023 07:29:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHXoW04a5P0QOH+7XRoRD1Z73Y5lCd0C+An3u5Z+DeJ2DQgd6IoyTVNjwuXcmmAH8oSOKAHFA==
-X-Received: by 2002:a17:906:4147:b0:9e6:59d5:71c4 with SMTP id
- l7-20020a170906414700b009e659d571c4mr1412378ejk.16.1699716579127; 
- Sat, 11 Nov 2023 07:29:39 -0800 (PST)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
- by smtp.gmail.com with ESMTPSA id
- l22-20020a170906a41600b0099d798a6bb5sm1209620ejz.67.2023.11.11.07.29.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 11 Nov 2023 07:29:37 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 6/6] .gitlab-ci.d/cirrus: Add manual testing of macOS 14
- (Sonoma)
-Date: Sat, 11 Nov 2023 16:29:23 +0100
-Message-ID: <20231111152923.966998-7-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231111152923.966998-1-pbonzini@redhat.com>
-References: <20231111152923.966998-1-pbonzini@redhat.com>
+ bh=22IE7fXv/QBpZIrnnuBoq+ow7hRrWW5GkZzjnTZm6+U=;
+ b=oZpDWCBF55M3bE4RtizpTmECzMveOj+osiS9LfVX1T6sDQZ0KZ6HFFp+9CyZktoU/H
+ Ab8bo1YesWOftHlvZvUKQ3YrrdVJGmGjWEBaB/OBI+T8DZrYl+E63MD1d4/9Xp0fvJ6K
+ Tqca1DgnPty0/j73PwRDykRBPzIWxwhCf73YtYe1i1rpdUUKQUsStmy35G+Rxc7t5U9D
+ gkQOYOiYv7eicILdhxoWUM+CceOxZ0aUQBvWPb0lSXeJLLXajXjkwMqFgHRKQjDjD9Ql
+ 5yL18LpBVsN1K92BuA+nstnMlpME8+FkSnfuv8nY4PRp0FqJathRD5tlncyDDuHE07JK
+ WJeQ==
+X-Gm-Message-State: AOJu0YxtiU1y+4fGmSjwPc78dvgTsWK00MEgedq25KfkT2Mq2yOOF3BP
+ WGyD3x3wKMUQrBZkDZFDiem1zsReiXjXbN2ey6WfIJKyIFNjfM6fRvZ8ARDoXoQXa2KsHGoerw4
+ USzSDQYhER6FRoT6zHZQHHaTMH7cMSjg=
+X-Received: by 2002:a67:e195:0:b0:45e:9611:7b71 with SMTP id
+ e21-20020a67e195000000b0045e96117b71mr2103852vsl.27.1699718985337; 
+ Sat, 11 Nov 2023 08:09:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHjIxvLA6M0OiMBd3HP+FkWey0DtWNscdIdtAloCZ3YlYm3uddtn/yUl1rykiXI3ublZtiEHxH6g8QyOY5CXbA=
+X-Received: by 2002:a67:e195:0:b0:45e:9611:7b71 with SMTP id
+ e21-20020a67e195000000b0045e96117b71mr2103840vsl.27.1699718985070; Sat, 11
+ Nov 2023 08:09:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <610aad34-da0b-4b8a-aa22-4ad19513ae28@tls.msk.ru>
+In-Reply-To: <610aad34-da0b-4b8a-aa22-4ad19513ae28@tls.msk.ru>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Sat, 11 Nov 2023 17:09:33 +0100
+Message-ID: <CABgObfYMct5NwGuYtOsFdEYaV6U=Ahe8zMPc_8QRh5a-cs_SEQ@mail.gmail.com>
+Subject: Re: disable-pie build
+To: Michael Tokarev <mjt@tls.msk.ru>, Stefan Hajnoczi <stefanha@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -103,92 +94,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+On Sat, Nov 11, 2023 at 3:40=E2=80=AFAM Michael Tokarev <mjt@tls.msk.ru> wr=
+ote:
+>
+> Hi!
+>
+> It looks like --disable-pie configure, which uses -fno-pie -no-pie flags
+> for the compiler, is broken: it does not not tell the *linker* about the
+> option, so the link fails (at least on debian bookworm):
 
-Upgrade libvirt-ci so it covers macOS 14. Add a manual entry
-(QEMU_JOB_OPTIONAL: 1) to test on Sonoma release. Refresh the
-lci-tool generated files.
+Looks good, if you can send a patch perhaps Stefan can apply it (or
+someone else can handle it in my stead, because I'm away next week).
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231109160504.93677-3-philmd@linaro.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- .gitlab-ci.d/cirrus.yml           | 16 ++++++++++++++++
- .gitlab-ci.d/cirrus/macos-14.vars | 16 ++++++++++++++++
- tests/lcitool/libvirt-ci          |  2 +-
- tests/lcitool/refresh             |  1 +
- 4 files changed, 34 insertions(+), 1 deletion(-)
- create mode 100644 .gitlab-ci.d/cirrus/macos-14.vars
+Paolo
 
-diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index 07dc6edae1c..64f2e25afab 100644
---- a/.gitlab-ci.d/cirrus.yml
-+++ b/.gitlab-ci.d/cirrus.yml
-@@ -74,6 +74,22 @@ aarch64-macos-13-base-build:
-     PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig
-     TEST_TARGETS: check-unit check-block check-qapi-schema check-softfloat check-qtest-x86_64
- 
-+aarch64-macos-14-base-build:
-+  extends: .cirrus_build_job
-+  variables:
-+    NAME: macos-14
-+    CIRRUS_VM_INSTANCE_TYPE: macos_instance
-+    CIRRUS_VM_IMAGE_SELECTOR: image
-+    CIRRUS_VM_IMAGE_NAME: ghcr.io/cirruslabs/macos-sonoma-base:latest
-+    CIRRUS_VM_CPUS: 12
-+    CIRRUS_VM_RAM: 24G
-+    UPDATE_COMMAND: brew update
-+    INSTALL_COMMAND: brew install
-+    PATH_EXTRA: /opt/homebrew/ccache/libexec:/opt/homebrew/gettext/bin
-+    PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig
-+    TEST_TARGETS: check-unit check-block check-qapi-schema check-softfloat check-qtest-x86_64
-+    QEMU_JOB_OPTIONAL: 1
-+
- 
- # The following jobs run VM-based tests via KVM on a Linux-based Cirrus-CI job
- .cirrus_kvm_job:
-diff --git a/.gitlab-ci.d/cirrus/macos-14.vars b/.gitlab-ci.d/cirrus/macos-14.vars
-new file mode 100644
-index 00000000000..43070f4a265
---- /dev/null
-+++ b/.gitlab-ci.d/cirrus/macos-14.vars
-@@ -0,0 +1,16 @@
-+# THIS FILE WAS AUTO-GENERATED
-+#
-+#  $ lcitool variables macos-14 qemu
-+#
-+# https://gitlab.com/libvirt/libvirt-ci
-+
-+CCACHE='/opt/homebrew/bin/ccache'
-+CPAN_PKGS=''
-+CROSS_PKGS=''
-+MAKE='/opt/homebrew/bin/gmake'
-+NINJA='/opt/homebrew/bin/ninja'
-+PACKAGING_COMMAND='brew'
-+PIP3='/opt/homebrew/bin/pip3'
-+PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 jemalloc jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
-+PYPI_PKGS='PyYAML numpy pillow sphinx sphinx-rtd-theme tomli'
-+PYTHON='/opt/homebrew/bin/python3'
-diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
-index 36bc517161c..77c800186f3 160000
---- a/tests/lcitool/libvirt-ci
-+++ b/tests/lcitool/libvirt-ci
-@@ -1 +1 @@
--Subproject commit 36bc517161c45ead20224d47f2dc4fa428af6724
-+Subproject commit 77c800186f34b21be7660750577cc5582a914deb
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 2259f131b48..e11d0ba381f 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -197,6 +197,7 @@ try:
-     #
-     generate_cirrus("freebsd-13")
-     generate_cirrus("macos-13")
-+    generate_cirrus("macos-14")
- 
-     #
-     # VM packages lists
--- 
-2.41.0
+> /usr/bin/ld: libcommon.fa.p/hw_core_cpu-common.c.o: relocation R_X86_64_3=
+2 against `.rodata' can not be used when making a PIE object; recompile wit=
+h
+> -fPIE
+> /usr/bin/ld: failed to set dynamic section sizes: bad value
+>
+> This is failing for *all* executables, including tests, qemu-img, etc.
+>
+> The following change fixes it:
+>
+> diff --git a/meson.build b/meson.build
+> index a9c4f28247..0b7ca45d48 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -278,7 +278,8 @@ endif
+>   # tries to build an executable instead of a shared library and fails.  =
+So
+>   # don't add -no-pie anywhere and cross fingers. :(
+>   if not get_option('b_pie')
+> -  qemu_common_flags +=3D cc.get_supported_arguments('-fno-pie', '-no-pie=
+')
+> +  qemu_common_flags +=3D cc.get_supported_arguments('-fno-pie')
+> +  qemu_ldflags +=3D cc.get_supported_arguments('-no-pie')
+>   endif
+>
+>   if not get_option('stack_protector').disabled()
+>
+>C
 
 
