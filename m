@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F0357E8BE3
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 18:32:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 022967E8BE4
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 18:34:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1rq3-0008J5-0u; Sat, 11 Nov 2023 12:32:07 -0500
+	id 1r1rrT-0000kn-DT; Sat, 11 Nov 2023 12:33:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=UdCb=GY=kaod.org=clg@ozlabs.org>)
- id 1r1rq0-0008IR-Nd; Sat, 11 Nov 2023 12:32:04 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=UdCb=GY=kaod.org=clg@ozlabs.org>)
- id 1r1rpy-0007TW-OS; Sat, 11 Nov 2023 12:32:04 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SSN6S1xkZz4wy1;
- Sun, 12 Nov 2023 04:32:00 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SSN6P421Cz4wcg;
- Sun, 12 Nov 2023 04:31:57 +1100 (AEDT)
-Message-ID: <37c6b37d-59e2-4a1d-8a62-fa934f4463ba@kaod.org>
-Date: Sat, 11 Nov 2023 18:31:55 +0100
+ (Exim 4.90_1) (envelope-from <reinoud@gorilla.13thmonkey.org>)
+ id 1r1rrR-0000kf-3o
+ for qemu-devel@nongnu.org; Sat, 11 Nov 2023 12:33:33 -0500
+Received: from 2a02-a46b-bd8f-1-b9b1-f16b-e3de-c82.fixed6.kpn.net
+ ([2a02:a46b:bd8f:1:b9b1:f16b:e3de:c82] helo=gorilla.13thmonkey.org)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <reinoud@gorilla.13thmonkey.org>) id 1r1rrP-0007ei-Ij
+ for qemu-devel@nongnu.org; Sat, 11 Nov 2023 12:33:32 -0500
+Received: by gorilla.13thmonkey.org (Postfix, from userid 103)
+ id 88BFC2FF0948; Sat, 11 Nov 2023 18:33:25 +0100 (CET)
+Date: Sat, 11 Nov 2023 18:33:25 +0100
+From: Reinoud Zandijk <reinoud@gorilla.13thmonkey.org>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Reinoud Zandijk <reinoud@netbsd.org>,
+ Ryo ONODERA <ryoon@netbsd.org>, Gerd Hoffmann <kraxel@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: Re: [RFC PATCH-for-8.2] .gitlab-ci.d/cirrus.yml: Promote NetBSD job
+ as gating
+Message-ID: <ZU-65RIut9TWbx_F@gorilla.13thmonkey.org>
+References: <20231109153510.92353-1-philmd@linaro.org>
+ <737f6fe5-cf3e-4fdd-b5d8-28f71a2fa9e6@linaro.org>
+ <ZU0PuHyw8X8e/p0j@redhat.com>
+ <52df2072-a26e-4e73-afe0-65a877bafbdc@redhat.com>
+ <ZU6cxnwMOqOEBu-F@gorilla.13thmonkey.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] hw/ppc: Nest1 chiplet wiring
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
- calebs@us.ibm.com, chalapathi.v@ibm.com, saif.abrar@linux.vnet.ibm.com,
- Chalapathi V <chalapathi.v@linux.ibm.com>
-References: <20231107074127.31821-1-chalap1@gfwr516.rchland.ibm.com>
- <20231107074127.31821-4-chalap1@gfwr516.rchland.ibm.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231107074127.31821-4-chalap1@gfwr516.rchland.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=UdCb=GY=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZU6cxnwMOqOEBu-F@gorilla.13thmonkey.org>
+Received-SPF: none client-ip=2a02:a46b:bd8f:1:b9b1:f16b:e3de:c82;
+ envelope-from=reinoud@gorilla.13thmonkey.org; helo=gorilla.13thmonkey.org
+X-Spam_score_int: 17
+X-Spam_score: 1.7
+X-Spam_bar: +
+X-Spam_report: (1.7 / 5.0 requ) BAYES_00=-1.9, KHOP_HELO_FCRDNS=0.241,
+ RCVD_IN_PBL=3.335, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,96 +68,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/7/23 08:41, Chalapathi V wrote:
-> From: Chalapathi V <chalapathi.v@linux.ibm.com>
+On Fri, Nov 10, 2023 at 10:12:38PM +0100, Reinoud Zandijk wrote:
+> On Thu, Nov 09, 2023 at 06:15:51PM +0100, Thomas Huth wrote:
+> > On 09/11/2023 17.58, Daniel P. Berrangé wrote:
+> > > On Thu, Nov 09, 2023 at 04:35:56PM +0100, Philippe Mathieu-Daudé wrote:
+...
+> > You're right, Daniel. Seems like both, the Cirrus netbsd and the openbsd job
+> > are currently broken and only output some help text instead of compiling
+> > QEMU:
+> > 
+> >  https://gitlab.com/philmd/qemu/-/jobs/5497861511#L6834
+> > 
+> > ... that's why the finish so fast.
+> > 
+> > IIRC last time I've seen them "working", they were running into the 80
+> > minute timeout again.
+> > 
+> > So the netbsd and openbsd job are indeed not very useful anymore. I think we
+> > should rather remove them and add a proper job via our own custom
+> > KVM-capable runners instead.
 > 
-> This part of the patchset connects the nest1 chiplet model to p10 chip.
-> 
-> Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
-> ---
->   hw/ppc/pnv.c              | 14 ++++++++++++++
->   include/hw/ppc/pnv_chip.h |  2 ++
->   2 files changed, 16 insertions(+)
-> 
-> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index c0e34ff..2b93cdd 100644
-> --- a/hw/ppc/pnv.c
-> +++ b/hw/ppc/pnv.c
-> @@ -351,6 +351,8 @@ static void pnv_chip_power10_dt_populate(PnvChip *chip, void *fdt)
->       static const char compat[] = "ibm,power10-xscom\0ibm,xscom";
->       int i;
->   
-> +    Pnv10Chip *chip10 = PNV10_CHIP(chip);
-> +
->       pnv_dt_xscom(chip, fdt, 0,
->                    cpu_to_be64(PNV10_XSCOM_BASE(chip)),
->                    cpu_to_be64(PNV10_XSCOM_SIZE),
-> @@ -366,6 +368,9 @@ static void pnv_chip_power10_dt_populate(PnvChip *chip, void *fdt)
->           pnv_dt_memory(fdt, chip->chip_id, chip->ram_start, chip->ram_size);
->       }
->   
-> +    /* Populate nest1_chiplet device tree */
-> +    PNV_NEST1CHIPLET_GET_CLASS(&chip10->nest1_chiplet)->nest1_dt_populate(fdt);
-you could call directly pnv_nest1_dt_populate() IMO.
+> Even though I am a co-maintainer of the NetBSD support for Qemu I am not quite
+> sure what testcase this is. Is this a regression test of installing NetBSD
+> from an ISO? That somehow times out? Where can I find the resulting console
+> output? Maybe the installer changed?
 
+Re-reading the thread its about compiling Qemu on NetBSD. Doh. I am a novice
+to the test kit you use so please forgive me if I don't make sense. Am I right
+that it does install NetBSD OK, it then comes up and then tries to compile
+Qemu on it but it fails due to some Python errors in the test script? Does it
+use NetBSDs pkgsrc with its patches or has it its own method of dealing with
+them?
 
-Have you tried to start a 2 sockets machine ?
-
-   -machine powernv10 -smp 16,sockets=2,cores=2,threads=4
-
-
-Thanks,
-
-C.
-
-
-
-> +
->       pnv_dt_lpc(chip, fdt, 0, PNV10_LPCM_BASE(chip), PNV10_LPCM_SIZE);
->   }
->   
-> @@ -1649,6 +1654,8 @@ static void pnv_chip_power10_instance_init(Object *obj)
->       object_initialize_child(obj, "occ",  &chip10->occ, TYPE_PNV10_OCC);
->       object_initialize_child(obj, "sbe",  &chip10->sbe, TYPE_PNV10_SBE);
->       object_initialize_child(obj, "homer", &chip10->homer, TYPE_PNV10_HOMER);
-> +    object_initialize_child(obj, "nest1_chiplet", &chip10->nest1_chiplet,
-> +                            TYPE_PNV_NEST1_CHIPLET);
->   
->       chip->num_pecs = pcc->num_pecs;
->   
-> @@ -1813,6 +1820,13 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
->       memory_region_add_subregion(get_system_memory(), PNV10_HOMER_BASE(chip),
->                                   &chip10->homer.regs);
->   
-> +    /* nest1 chiplet control regs */
-> +    if (!qdev_realize(DEVICE(&chip10->nest1_chiplet), NULL, errp)) {
-> +        return;
-> +    }
-> +    pnv_xscom_add_subregion(chip, PNV10_XSCOM_NEST1_CTRL_CHIPLET_BASE,
-> +                   &chip10->nest1_chiplet.perv_chiplet.xscom_perv_ctrl_regs);
-> +
->       /* PHBs */
->       pnv_chip_power10_phb_realize(chip, &local_err);
->       if (local_err) {
-> diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-> index 53e1d92..4bcb925 100644
-> --- a/include/hw/ppc/pnv_chip.h
-> +++ b/include/hw/ppc/pnv_chip.h
-> @@ -4,6 +4,7 @@
->   #include "hw/pci-host/pnv_phb4.h"
->   #include "hw/ppc/pnv_core.h"
->   #include "hw/ppc/pnv_homer.h"
-> +#include "hw/ppc/pnv_nest_chiplet.h"
->   #include "hw/ppc/pnv_lpc.h"
->   #include "hw/ppc/pnv_occ.h"
->   #include "hw/ppc/pnv_psi.h"
-> @@ -109,6 +110,7 @@ struct Pnv10Chip {
->       PnvOCC       occ;
->       PnvSBE       sbe;
->       PnvHomer     homer;
-> +    PnvNest1Chiplet nest1_chiplet;
->   
->       uint32_t     nr_quads;
->       PnvQuad      *quads;
+With regards,
+Reinoud
 
 
