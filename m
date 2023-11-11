@@ -2,56 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D47E7E8BE6
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 18:36:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 250797E8BFD
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 18:54:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1ru5-0001cX-9u; Sat, 11 Nov 2023 12:36:17 -0500
+	id 1r1sA2-0004Ha-4f; Sat, 11 Nov 2023 12:52:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=UdCb=GY=kaod.org=clg@ozlabs.org>)
- id 1r1ru3-0001bu-Tu; Sat, 11 Nov 2023 12:36:15 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1r1s9z-0004HB-E6
+ for qemu-devel@nongnu.org; Sat, 11 Nov 2023 12:52:43 -0500
+Received: from mail-dm6nam11on2062.outbound.protection.outlook.com
+ ([40.107.223.62] helo=NAM11-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=UdCb=GY=kaod.org=clg@ozlabs.org>)
- id 1r1ru1-00011j-2T; Sat, 11 Nov 2023 12:36:15 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SSNCC69qkz4wy1;
- Sun, 12 Nov 2023 04:36:07 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SSNC94Bcgz4wdD;
- Sun, 12 Nov 2023 04:36:05 +1100 (AEDT)
-Message-ID: <f25aa178-450f-4a62-9b7d-50fcbc7e195a@kaod.org>
-Date: Sat, 11 Nov 2023 18:36:02 +0100
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1r1s9w-000676-E6
+ for qemu-devel@nongnu.org; Sat, 11 Nov 2023 12:52:43 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HaufHP72gP5+IXKOzRaIRXsNkQdwDF7i54v3pGjQDYGxxN+02vNfWZKHveHVM5Y4NvLjGDYxp1i7bCAigVvo2UlUMIKuWRT4+XDyaBIyDnG/4xZ/5pN1jsWDSDMYvm0JwArHd+cQ9q1nNI0x9zmLUX2cJGV2fiTEf8pMKY3+hEV6OUnQuRHj50oseXBuqwTfDWsBTyt2XmKtg7U59XMhSZVno6gStLLRqfNiYKNGJkb83tax5EkfV/CC34rAZx3CJUZc1JEg6kIvvr9Ib5N06WOpAhf3yKl2RnGdas45pztCd6ZiptfoJn6R3uITy5UGBR0mKDHVjukrbH38WxrtrA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3Rm9MaO+DG142wLptdiXafvyHWuYrvQJ5dYUngOLAbs=;
+ b=T9jlTCrmgjYRoYnRtMDZN7BAdbKtylUXVdaOXMCRe6r8WD4dy6ykcwaHtArv85GVtI3YIvcjXgTRbtVti8kOHwaV8ebOQk+BUe6kI3HE8O3ZYYVu7egWwn7AY5Bg2zasbqkIjuBraka3TPs4iEW1CW5yipyW95LDqTll1d/W4BPlEtVwnE258RQ/6A2bEAdEbbl+bJHqwxXdUIMQQGLxkwbDtQWs3U2+lV2uCO14bLImaBaQPKARh2x1OXj53PTUjSiBGmNuxrNIfC4IfqON8y4rYy8X0PMvk7QG8mWhJ+ipOJ5OSZFxSAsBI+nGijL0MvgpgzLK6RFbWUyl3HSb1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3Rm9MaO+DG142wLptdiXafvyHWuYrvQJ5dYUngOLAbs=;
+ b=qd9rT1FmyWasGpVic82yeJUxFuVGsxnNy9246HNlumUe2plY1qbIC9xZ+Ll0NFEMZWDulcvPdxx/HycU5sTqV3dYiCZbfFVx0/LnPtMerSZtri22/TmY72BPmIrKD2TaRMgavNWofnHFfYLmucJHzBPScrUt4xWFzKddJv5z5q2wbVCsublFc8bofKEpb6lVt5wD0xvL8fXiSPl8KgclKvR5tvpxwnmnJLsESvv1n/0TcIh2eT2v57MmWORvKr6JkYlCfzCBFPp5OwPxoIFnJ5TOtB3Bg9n1Qu5NQ9yRogPkl5fEqSqvhgP0I89BukhSCXeotJ+DH0fSWVEGmZGFPg==
+Received: from DM6PR13CA0072.namprd13.prod.outlook.com (2603:10b6:5:134::49)
+ by CH0PR12MB5348.namprd12.prod.outlook.com (2603:10b6:610:d7::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.19; Sat, 11 Nov
+ 2023 17:47:30 +0000
+Received: from DS1PEPF00017091.namprd03.prod.outlook.com
+ (2603:10b6:5:134:cafe::37) by DM6PR13CA0072.outlook.office365.com
+ (2603:10b6:5:134::49) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.12 via Frontend
+ Transport; Sat, 11 Nov 2023 17:47:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ DS1PEPF00017091.mail.protection.outlook.com (10.167.17.133) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7002.13 via Frontend Transport; Sat, 11 Nov 2023 17:47:30 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sat, 11 Nov
+ 2023 09:47:20 -0800
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sat, 11 Nov
+ 2023 09:47:20 -0800
+Received: from Asurada-Nvidia (10.127.8.10) by mail.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
+ Transport; Sat, 11 Nov 2023 09:47:19 -0800
+Date: Sat, 11 Nov 2023 09:47:17 -0800
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>
+CC: <qemu-devel@nongnu.org>, <alex.williamson@redhat.com>, <clg@redhat.com>,
+ <jgg@nvidia.com>, <joao.m.martins@oracle.com>, <eric.auger@redhat.com>,
+ <peterx@redhat.com>, <jasowang@redhat.com>, <kevin.tian@intel.com>,
+ <yi.l.liu@intel.com>, <yi.y.sun@intel.com>, <chao.p.peng@intel.com>
+Subject: Re: [PATCH v5 03/20] vfio/iommufd: Implement the iommufd backend
+Message-ID: <ZU++JT3FBbGhJIKH@Asurada-Nvidia>
+References: <20231109114529.1904193-1-zhenzhong.duan@intel.com>
+ <20231109114529.1904193-4-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8] target/ppc: Fix bugs in VSX_CVT_FP_TO_INT and
- VSX_CVT_FP_TO_INT2 macros
-Content-Language: en-US
-To: John Platts <john_platts@hotmail.com>,
- "qemu-ppc@nongnu.org" <qemu-ppc@nongnu.org>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "npiggin@gmail.com" <npiggin@gmail.com>,
- "danielhb413@gmail.com" <danielhb413@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <SN6PR05MB5837524077F6C8A2A482B41A9DAEA@SN6PR05MB5837.namprd05.prod.outlook.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <SN6PR05MB5837524077F6C8A2A482B41A9DAEA@SN6PR05MB5837.namprd05.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=UdCb=GY=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20231109114529.1904193-4-zhenzhong.duan@intel.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017091:EE_|CH0PR12MB5348:EE_
+X-MS-Office365-Filtering-Correlation-Id: bc2663b7-82b2-47de-20c6-08dbe2de4706
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 4MWVqj72Rx99jBObUTbAN4rTCQpwIs5CnJjjiBOfT1Vren++39LfTryWfBLlWuKvSXMbTow7ZDeEX5uxGcTb/YX7ndCNQ5SrasIzNDJkyOui4WfnSOAzrIjAgUbkui/GFhIgEoaBJnyhsOg6kmruSC8Y0uxGccRxBuwivUsWEW4SQ1fBOk5S6XANvmsf6BrwG0FFPU/00QC7PEULoLmBNIQNVAprL4lZObHuhH329nkx84j7OuG0phtiZa1SEs+GYUI7Hhb+rPYpg00e2m3JhA5XBsUh9/r5innRlOSwsMS/G8yB6gDZVksIME1Bno+5trf8/SZ7BXIls3q3igE5udmYjeNEqbeVy8U7qvxstwRH9hSZt8x0UXz4/XUdrCwx93OzztFWpE2+8oj9xImC5hN0ddck4Hrmo8jLOh7sFersdqbRFuJhUZPRWBKaZWunMXb0/c4GHV+Atd2Xc1et4VimhP0wLfpMUJ8n9bXKPgNkckmSkhs7XOX6/4+c+cil9/lELJJ1rJx4RD1ARdr7AZV5EXJOAsGVbyXigC+H6dWjhTwYzQQy5NTEhTLlC7D5wT7ApLsIzBhPSQuhocz564T75rVS4AAtu8BmD+EFJN5BtRxe9JYSR//XV7A5rO6/xver8R5StlkhjSZRruoFIwrxgOvJPpKpgl4Ek8RYnWDsYoBi2dpaJ8faP8KJCeiFilt4DtIAF9fUHpi6b5Oo83j7rnGCeLisis0yQS0Gtnw=
+X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
+ SFS:(13230031)(4636009)(136003)(346002)(396003)(39860400002)(376002)(230922051799003)(64100799003)(1800799009)(82310400011)(186009)(451199024)(46966006)(40470700004)(36840700001)(4326008)(40480700001)(55016003)(8676002)(8936002)(40460700003)(2906002)(41300700001)(7416002)(5660300002)(336012)(426003)(70586007)(70206006)(54906003)(6916009)(86362001)(316002)(478600001)(33716001)(47076005)(82740400003)(9686003)(36860700001)(356005)(26005)(7636003);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2023 17:47:30.3695 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bc2663b7-82b2-47de-20c6-08dbe2de4706
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF00017091.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB5348
+Received-SPF: softfail client-ip=40.107.223.62;
+ envelope-from=nicolinc@nvidia.com;
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,415 +131,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adding Richard,
+On Thu, Nov 09, 2023 at 07:45:12PM +0800, Zhenzhong Duan wrote:
 
-Thanks,
-
-C.
-
-
-On 11/10/23 19:41, John Platts wrote:
-> The patch below fixes a bug in the VSX_CVT_FP_TO_INT and VSX_CVT_FP_TO_INT2
-> macros in target/ppc/fpu_helper.c where a non-NaN floating point value from the
-> source vector is incorrectly converted to 0, 0x80000000, or 0x8000000000000000
-> instead of the expected value if a preceding source floating point value from
-> the same source vector was a NaN.
-> 
-> The bug in the VSX_CVT_FP_TO_INT and VSX_CVT_FP_TO_INT2 macros in
-> target/ppc/fpu_helper.c was introduced with commit c3f24257e3c0.
-> 
-> This patch also adds a new vsx_f2i_nan test in tests/tcg/ppc64 that checks that
-> the VSX xvcvspsxws, xvcvspuxws, xvcvspsxds, xvcvspuxds, xvcvdpsxws, xvcvdpuxws,
-> xvcvdpsxds, and xvcvdpuxds instructions correctly convert non-NaN floating point
-> values to integer values if the source vector contains NaN floating point values.
-> 
-> Fixes: c3f24257e3c0 ("target/ppc: Clear fpstatus flags on helpers missing it")
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1941
-> Signed-off-by: John Platts <john_platts@hotmail.com>
-> ---
->   target/ppc/fpu_helper.c         |  12 +-
->   tests/tcg/ppc64/Makefile.target |   5 +
->   tests/tcg/ppc64/vsx_f2i_nan.c   | 300 ++++++++++++++++++++++++++++++++
->   3 files changed, 313 insertions(+), 4 deletions(-)
->   create mode 100644 tests/tcg/ppc64/vsx_f2i_nan.c
-> 
-> diff --git a/target/ppc/fpu_helper.c b/target/ppc/fpu_helper.c
-> index 03150a0f10..4b3dcad5d1 100644
-> --- a/target/ppc/fpu_helper.c
-> +++ b/target/ppc/fpu_helper.c
-> @@ -2880,20 +2880,22 @@ uint64_t helper_XSCVSPDPN(uint64_t xb)
->   #define VSX_CVT_FP_TO_INT(op, nels, stp, ttp, sfld, tfld, sfi, rnan)         \
->   void helper_##op(CPUPPCState *env, ppc_vsr_t *xt, ppc_vsr_t *xb)             \
->   {                                                                            \
-> +    int all_flags = 0;                                                       \
->       ppc_vsr_t t = { };                                                       \
->       int i, flags;                                                            \
->                                                                                \
-> -    helper_reset_fpstatus(env);                                              \
-> -                                                                             \
->       for (i = 0; i < nels; i++) {                                             \
-> +        helper_reset_fpstatus(env);                                          \
->           t.tfld = stp##_to_##ttp##_round_to_zero(xb->sfld, &env->fp_status);  \
->           flags = env->fp_status.float_exception_flags;                        \
-> +        all_flags |= flags;                                                  \
->           if (unlikely(flags & float_flag_invalid)) {                          \
->               t.tfld = float_invalid_cvt(env, flags, t.tfld, rnan, 0, GETPC());\
->           }                                                                    \
->       }                                                                        \
->                                                                                \
->       *xt = t;                                                                 \
-> +    env->fp_status.float_exception_flags = all_flags;                        \
->       do_float_check_status(env, sfi, GETPC());                                \
->   }
->   
-> @@ -2945,15 +2947,16 @@ VSX_CVT_FP_TO_INT128(XSCVQPSQZ, int128, 0x8000000000000000ULL);
->   #define VSX_CVT_FP_TO_INT2(op, nels, stp, ttp, sfi, rnan)                    \
->   void helper_##op(CPUPPCState *env, ppc_vsr_t *xt, ppc_vsr_t *xb)             \
->   {                                                                            \
-> +    int all_flags = 0;                                                       \
->       ppc_vsr_t t = { };                                                       \
->       int i, flags;                                                            \
->                                                                                \
-> -    helper_reset_fpstatus(env);                                              \
-> -                                                                             \
->       for (i = 0; i < nels; i++) {                                             \
-> +        helper_reset_fpstatus(env);                                          \
->           t.VsrW(2 * i) = stp##_to_##ttp##_round_to_zero(xb->VsrD(i),          \
->                                                          &env->fp_status);     \
->           flags = env->fp_status.float_exception_flags;                        \
-> +        all_flags |= flags;                                                  \
->           if (unlikely(flags & float_flag_invalid)) {                          \
->               t.VsrW(2 * i) = float_invalid_cvt(env, flags, t.VsrW(2 * i),     \
->                                                 rnan, 0, GETPC());             \
-> @@ -2962,6 +2965,7 @@ void helper_##op(CPUPPCState *env, ppc_vsr_t *xt, ppc_vsr_t *xb)             \
->       }                                                                        \
->                                                                                \
->       *xt = t;                                                                 \
-> +    env->fp_status.float_exception_flags = all_flags;                        \
->       do_float_check_status(env, sfi, GETPC());                                \
->   }
->   
-> diff --git a/tests/tcg/ppc64/Makefile.target b/tests/tcg/ppc64/Makefile.target
-> index 1d08076756..ca8b929464 100644
-> --- a/tests/tcg/ppc64/Makefile.target
-> +++ b/tests/tcg/ppc64/Makefile.target
-> @@ -16,6 +16,11 @@ PPC64_TESTS=bcdsub non_signalling_xscv
->   endif
->   $(PPC64_TESTS): CFLAGS += -mpower8-vector
->   
-> +ifneq ($(CROSS_CC_HAS_POWER8_VECTOR),)
-> +PPC64_TESTS += vsx_f2i_nan
-> +endif
-> +vsx_f2i_nan: CFLAGS += -mpower8-vector -I$(SRC_PATH)/include
-> +
->   PPC64_TESTS += mtfsf
->   PPC64_TESTS += mffsce
->   
-> diff --git a/tests/tcg/ppc64/vsx_f2i_nan.c b/tests/tcg/ppc64/vsx_f2i_nan.c
-> new file mode 100644
-> index 0000000000..94b1a4eb02
-> --- /dev/null
-> +++ b/tests/tcg/ppc64/vsx_f2i_nan.c
-> @@ -0,0 +1,300 @@
-> +#include <stdio.h>
-> +#include "qemu/compiler.h"
-> +
-> +typedef vector float vsx_float32_vec_t;
-> +typedef vector double vsx_float64_vec_t;
-> +typedef vector signed int vsx_int32_vec_t;
-> +typedef vector unsigned int vsx_uint32_vec_t;
-> +typedef vector signed long long vsx_int64_vec_t;
-> +typedef vector unsigned long long vsx_uint64_vec_t;
-> +
-> +#define DEFINE_VSX_F2I_FUNC(SRC_T, DEST_T, INSN)                       \
-> +static inline vsx_##DEST_T##_vec_t                                     \
-> +    vsx_convert_##SRC_T##_vec_to_##DEST_T##_vec(vsx_##SRC_T##_vec_t v) \
-> +{                                                                      \
-> +    vsx_##DEST_T##_vec_t result;                                       \
-> +    asm(#INSN " %x0, %x1" : "=wa" (result) : "wa" (v));                \
-> +    return result;                                                     \
-> +}
-> +
-> +DEFINE_VSX_F2I_FUNC(float32, int32, xvcvspsxws)
-> +DEFINE_VSX_F2I_FUNC(float32, uint32, xvcvspuxws)
-> +DEFINE_VSX_F2I_FUNC(float32, int64, xvcvspsxds)
-> +DEFINE_VSX_F2I_FUNC(float32, uint64, xvcvspuxds)
-> +DEFINE_VSX_F2I_FUNC(float64, int32, xvcvdpsxws)
-> +DEFINE_VSX_F2I_FUNC(float64, uint32, xvcvdpuxws)
-> +DEFINE_VSX_F2I_FUNC(float64, int64, xvcvdpsxds)
-> +DEFINE_VSX_F2I_FUNC(float64, uint64, xvcvdpuxds)
-> +
-> +static inline vsx_float32_vec_t vsx_float32_is_nan(vsx_float32_vec_t v)
+> +static int iommufd_cdev_attach_ioas_hwpt(VFIODevice *vbasedev, bool is_ioas,
+> +                                         uint32_t id, Error **errp)
 > +{
-> +    vsx_float32_vec_t abs_v;
-> +    vsx_float32_vec_t result_mask;
-> +    const vsx_uint32_vec_t f32_pos_inf_bits = {0x7F800000U, 0x7F800000U,
-> +                                               0x7F800000U, 0x7F800000U};
+> +    int ret, iommufd = vbasedev->iommufd->fd;
+> +    struct vfio_device_attach_iommufd_pt attach_data = {
+> +        .argsz = sizeof(attach_data),
+> +        .flags = 0,
+> +        .pt_id = id,
+> +    };
+> +    const char *str = is_ioas ? "ioas" : "hwpt";
 > +
-> +    asm("xvabssp %x0, %x1" : "=wa" (abs_v) : "wa" (v));
-> +    asm("vcmpgtuw %0, %1, %2"
-> +        : "=v" (result_mask)
-> +        : "v" (abs_v), "v" (f32_pos_inf_bits));
-> +    return result_mask;
-> +}
-> +
-> +static inline vsx_float64_vec_t vsx_float64_is_nan(vsx_float64_vec_t v)
-> +{
-> +    vsx_float64_vec_t abs_v;
-> +    vsx_float64_vec_t result_mask;
-> +    const vsx_uint64_vec_t f64_pos_inf_bits = {0x7FF0000000000000ULL,
-> +                                               0x7FF0000000000000ULL};
-> +
-> +    asm("xvabsdp %x0, %x1" : "=wa" (abs_v) : "wa" (v));
-> +    asm("vcmpgtud %0, %1, %2"
-> +        : "=v" (result_mask)
-> +        : "v" (abs_v), "v" (f64_pos_inf_bits));
-> +    return result_mask;
-> +}
-> +
-> +#define DEFINE_VSX_BINARY_LOGICAL_OP_INSN(LANE_TYPE, OP_NAME, OP_INSN)    \
-> +static inline vsx_##LANE_TYPE##_vec_t vsx_##LANE_TYPE##_##OP_NAME(        \
-> +    vsx_##LANE_TYPE##_vec_t a, vsx_##LANE_TYPE##_vec_t b)                 \
-> +{                                                                         \
-> +    vsx_##LANE_TYPE##_vec_t result;                                       \
-> +    asm(#OP_INSN " %x0, %x1, %x2" : "=wa" (result) : "wa" (a), "wa" (b)); \
-> +    return result;                                                        \
-> +}
-> +
-> +DEFINE_VSX_BINARY_LOGICAL_OP_INSN(float32, logical_and, xxland)
-> +DEFINE_VSX_BINARY_LOGICAL_OP_INSN(float64, logical_and, xxland)
-> +DEFINE_VSX_BINARY_LOGICAL_OP_INSN(int32, logical_and, xxland)
-> +DEFINE_VSX_BINARY_LOGICAL_OP_INSN(uint32, logical_and, xxland)
-> +DEFINE_VSX_BINARY_LOGICAL_OP_INSN(int64, logical_and, xxland)
-> +DEFINE_VSX_BINARY_LOGICAL_OP_INSN(uint64, logical_and, xxland)
-> +
-> +DEFINE_VSX_BINARY_LOGICAL_OP_INSN(float32, logical_andc, xxlandc)
-> +DEFINE_VSX_BINARY_LOGICAL_OP_INSN(float64, logical_andc, xxlandc)
-> +
-> +DEFINE_VSX_BINARY_LOGICAL_OP_INSN(float32, logical_or, xxlor)
-> +DEFINE_VSX_BINARY_LOGICAL_OP_INSN(float64, logical_or, xxlor)
-> +DEFINE_VSX_BINARY_LOGICAL_OP_INSN(int32, logical_or, xxlor)
-> +DEFINE_VSX_BINARY_LOGICAL_OP_INSN(uint32, logical_or, xxlor)
-> +DEFINE_VSX_BINARY_LOGICAL_OP_INSN(int64, logical_or, xxlor)
-> +DEFINE_VSX_BINARY_LOGICAL_OP_INSN(uint64, logical_or, xxlor)
-> +
-> +static inline vsx_int32_vec_t vsx_mask_out_float32_vec_to_int32_vec(
-> +    vsx_int32_vec_t v)
-> +{
-> +    return v;
-> +}
-> +static inline vsx_uint32_vec_t vsx_mask_out_float32_vec_to_uint32_vec(
-> +    vsx_uint32_vec_t v)
-> +{
-> +    return v;
-> +}
-> +static inline vsx_int64_vec_t vsx_mask_out_float32_vec_to_int64_vec(
-> +    vsx_int64_vec_t v)
-> +{
-> +    return v;
-> +}
-> +static inline vsx_uint64_vec_t vsx_mask_out_float32_vec_to_uint64_vec(
-> +    vsx_uint64_vec_t v)
-> +{
-> +    return v;
-> +}
-> +
-> +static inline vsx_int32_vec_t vsx_mask_out_float64_vec_to_int32_vec(
-> +    vsx_int32_vec_t v)
-> +{
-> +#if HOST_BIG_ENDIAN
-> +    const vsx_int32_vec_t valid_lanes_mask = {-1, 0, -1, 0};
-> +#else
-> +    const vsx_int32_vec_t valid_lanes_mask = {0, -1, 0, -1};
-> +#endif
-> +
-> +    return vsx_int32_logical_and(v, valid_lanes_mask);
-> +}
-> +
-> +static inline vsx_uint32_vec_t vsx_mask_out_float64_vec_to_uint32_vec(
-> +    vsx_uint32_vec_t v)
-> +{
-> +    return (vsx_uint32_vec_t)vsx_mask_out_float64_vec_to_int32_vec(
-> +        (vsx_int32_vec_t)v);
-> +}
-> +
-> +static inline vsx_int64_vec_t vsx_mask_out_float64_vec_to_int64_vec(
-> +    vsx_int64_vec_t v)
-> +{
-> +    return v;
-> +}
-> +static inline vsx_uint64_vec_t vsx_mask_out_float64_vec_to_uint64_vec(
-> +    vsx_uint64_vec_t v)
-> +{
-> +    return v;
-> +}
-> +
-> +static inline void print_vsx_float32_vec_elements(FILE *stream,
-> +                                                  vsx_float32_vec_t vec)
-> +{
-> +    fprintf(stream, "%g, %g, %g, %g", (double)vec[0], (double)vec[1],
-> +            (double)vec[2], (double)vec[3]);
-> +}
-> +
-> +static inline void print_vsx_float64_vec_elements(FILE *stream,
-> +                                                  vsx_float64_vec_t vec)
-> +{
-> +    fprintf(stream, "%.17g, %.17g", vec[0], vec[1]);
-> +}
-> +
-> +static inline void print_vsx_int32_vec_elements(FILE *stream,
-> +                                                vsx_int32_vec_t vec)
-> +{
-> +    fprintf(stream, "%d, %d, %d, %d", vec[0], vec[1], vec[2], vec[3]);
-> +}
-> +
-> +static inline void print_vsx_uint32_vec_elements(FILE *stream,
-> +                                                 vsx_uint32_vec_t vec)
-> +{
-> +    fprintf(stream, "%u, %u, %u, %u", vec[0], vec[1], vec[2], vec[3]);
-> +}
-> +
-> +static inline void print_vsx_int64_vec_elements(FILE *stream,
-> +                                                vsx_int64_vec_t vec)
-> +{
-> +    fprintf(stream, "%lld, %lld", vec[0], vec[1]);
-> +}
-> +
-> +static inline void print_vsx_uint64_vec_elements(FILE *stream,
-> +                                                 vsx_uint64_vec_t vec)
-> +{
-> +    fprintf(stream, "%llu, %llu", vec[0], vec[1]);
-> +}
-> +
-> +#define DEFINE_VSX_ALL_EQ_FUNC(LANE_TYPE, CMP_INSN)                   \
-> +static inline int vsx_##LANE_TYPE##_all_eq(vsx_##LANE_TYPE##_vec_t a, \
-> +                                           vsx_##LANE_TYPE##_vec_t b) \
-> +{                                                                     \
-> +    unsigned result;                                                  \
-> +    vsx_##LANE_TYPE##_vec_t is_eq_mask_vec;                           \
-> +    asm(#CMP_INSN ". %0, %2, %3\n\t"                                  \
-> +        "mfocrf %1, 2"                                                \
-> +        : "=v" (is_eq_mask_vec), "=r" (result)                        \
-> +        : "v" (a), "v" (b)                                            \
-> +        : "cr6");                                                     \
-> +    return (int)((result >> 7) & 1u);                                 \
-> +}
-> +
-> +DEFINE_VSX_ALL_EQ_FUNC(int32, vcmpequw)
-> +DEFINE_VSX_ALL_EQ_FUNC(uint32, vcmpequw)
-> +DEFINE_VSX_ALL_EQ_FUNC(int64, vcmpequd)
-> +DEFINE_VSX_ALL_EQ_FUNC(uint64, vcmpequd)
-> +
-> +#define DEFINE_VSX_F2I_TEST_FUNC(SRC_T, DEST_T)                          \
-> +static inline int test_vsx_conv_##SRC_T##_vec_to_##DEST_T##_vec(         \
-> +    vsx_##SRC_T##_vec_t src_v)                                           \
-> +{                                                                        \
-> +    const vsx_##SRC_T##_vec_t is_nan_mask = vsx_##SRC_T##_is_nan(src_v); \
-> +    const vsx_##SRC_T##_vec_t nan_src_v =                                \
-> +        vsx_##SRC_T##_logical_and(src_v, is_nan_mask);                   \
-> +    const vsx_##SRC_T##_vec_t non_nan_src_v =                            \
-> +        vsx_##SRC_T##_logical_andc(src_v, is_nan_mask);                  \
-> +                                                                         \
-> +    const vsx_##DEST_T##_vec_t expected_result =                         \
-> +        vsx_mask_out_##SRC_T##_vec_to_##DEST_T##_vec(                    \
-> +            vsx_##DEST_T##_logical_or(                                   \
-> +                vsx_convert_##SRC_T##_vec_to_##DEST_T##_vec(nan_src_v),  \
-> +                vsx_convert_##SRC_T##_vec_to_##DEST_T##_vec(             \
-> +                    non_nan_src_v)));                                    \
-> +    const vsx_##DEST_T##_vec_t actual_result =                           \
-> +        vsx_mask_out_##SRC_T##_vec_to_##DEST_T##_vec(                    \
-> +            vsx_convert_##SRC_T##_vec_to_##DEST_T##_vec(src_v));         \
-> +    const int test_result =                                              \
-> +        vsx_##DEST_T##_all_eq(expected_result, actual_result);           \
-> +                                                                         \
-> +    if (unlikely(test_result == 0)) {                                    \
-> +        fputs("FAIL: Conversion of " #SRC_T " vector to " #DEST_T        \
-> +              " vector failed\n", stdout);                               \
-> +        fputs("Source values: ", stdout);                                \
-> +        print_vsx_##SRC_T##_vec_elements(stdout, src_v);                 \
-> +        fputs("\nExpected result: ", stdout);                            \
-> +        print_vsx_##DEST_T##_vec_elements(stdout, expected_result);      \
-> +        fputs("\nActual result: ", stdout);                              \
-> +        print_vsx_##DEST_T##_vec_elements(stdout, actual_result);        \
-> +        fputs("\n\n", stdout);                                           \
-> +    }                                                                    \
-> +                                                                         \
-> +    return test_result;                                                  \
-> +}
-> +
-> +
-> +DEFINE_VSX_F2I_TEST_FUNC(float32, int32)
-> +DEFINE_VSX_F2I_TEST_FUNC(float32, uint32)
-> +DEFINE_VSX_F2I_TEST_FUNC(float32, int64)
-> +DEFINE_VSX_F2I_TEST_FUNC(float32, uint64)
-> +DEFINE_VSX_F2I_TEST_FUNC(float64, int32)
-> +DEFINE_VSX_F2I_TEST_FUNC(float64, uint32)
-> +DEFINE_VSX_F2I_TEST_FUNC(float64, int64)
-> +DEFINE_VSX_F2I_TEST_FUNC(float64, uint64)
-> +
-> +static inline vsx_int32_vec_t vsx_int32_vec_from_mask(int mask)
-> +{
-> +    const vsx_int32_vec_t bits_to_test = {1, 2, 4, 8};
-> +    const vsx_int32_vec_t vec_mask = {mask, mask, mask, mask};
-> +    vsx_int32_vec_t result;
-> +
-> +    asm("vcmpequw %0, %1, %2"
-> +        : "=v" (result)
-> +        : "v" (vsx_int32_logical_and(vec_mask, bits_to_test)),
-> +          "v" (bits_to_test));
-> +    return result;
-> +}
-> +
-> +static inline vsx_int64_vec_t vsx_int64_vec_from_mask(int mask)
-> +{
-> +    const vsx_int64_vec_t bits_to_test = {1, 2};
-> +    const vsx_int64_vec_t vec_mask = {mask, mask};
-> +    vsx_int64_vec_t result;
-> +
-> +    asm("vcmpequd %0, %1, %2"
-> +        : "=v" (result)
-> +        : "v" (vsx_int64_logical_and(vec_mask, bits_to_test)),
-> +          "v" (bits_to_test));
-> +    return result;
-> +}
-> +
-> +int main(void)
-> +{
-> +    const vsx_float32_vec_t f32_iota1 = {1.0f, 2.0f, 3.0f, 4.0f};
-> +    const vsx_float64_vec_t f64_iota1 = {1.0, 2.0};
-> +
-> +    int num_of_tests_failed = 0;
-> +
-> +    for (int i = 0; i < 16; i++) {
-> +        const vsx_int32_vec_t nan_mask = vsx_int32_vec_from_mask(i);
-> +        const vsx_float32_vec_t f32_v =
-> +            vsx_float32_logical_or(f32_iota1, (vsx_float32_vec_t)nan_mask);
-> +        num_of_tests_failed +=
-> +            (int)(!test_vsx_conv_float32_vec_to_int32_vec(f32_v));
-> +        num_of_tests_failed +=
-> +            (int)(!test_vsx_conv_float32_vec_to_int64_vec(f32_v));
-> +        num_of_tests_failed +=
-> +            (int)(!test_vsx_conv_float32_vec_to_uint32_vec(f32_v));
-> +        num_of_tests_failed +=
-> +            (int)(!test_vsx_conv_float32_vec_to_uint64_vec(f32_v));
+> +    /* Attach device to an IOAS or hwpt within iommufd */
+> +    ret = ioctl(vbasedev->fd, VFIO_DEVICE_ATTACH_IOMMUFD_PT, &attach_data);
+> +    if (ret) {
+> +        error_setg_errno(errp, errno,
+> +                         "[iommufd=%d] error attach %s (%d) to %s_id=%d",
+> +                         iommufd, vbasedev->name, vbasedev->fd, str, id);
+> +    } else {
+> +        trace_iommufd_cdev_attach_ioas_hwpt(iommufd, vbasedev->name,
+> +                                            vbasedev->fd, str, id);
 > +    }
+> +    return ret;
+> +}
 > +
-> +    for (int i = 0; i < 4; i++) {
-> +        const vsx_int64_vec_t nan_mask = vsx_int64_vec_from_mask(i);
-> +        const vsx_float64_vec_t f64_v =
-> +            vsx_float64_logical_or(f64_iota1, (vsx_float64_vec_t)nan_mask);
-> +        num_of_tests_failed +=
-> +            (int)(!test_vsx_conv_float64_vec_to_int32_vec(f64_v));
-> +        num_of_tests_failed +=
-> +            (int)(!test_vsx_conv_float64_vec_to_int64_vec(f64_v));
-> +        num_of_tests_failed +=
-> +            (int)(!test_vsx_conv_float64_vec_to_uint32_vec(f64_v));
-> +        num_of_tests_failed +=
-> +            (int)(!test_vsx_conv_float64_vec_to_uint64_vec(f64_v));
+> +static int iommufd_cdev_detach_ioas_hwpt(VFIODevice *vbasedev, bool is_ioas,
+> +                                         uint32_t id, Error **errp)
+> +{
+> +    int ret, iommufd = vbasedev->iommufd->fd;
+> +    struct vfio_device_detach_iommufd_pt detach_data = {
+> +        .argsz = sizeof(detach_data),
+> +        .flags = 0,
+> +    };
+> +    const char *str = is_ioas ? "ioas" : "hwpt";
+> +
+> +    ret = ioctl(vbasedev->fd, VFIO_DEVICE_DETACH_IOMMUFD_PT, &detach_data);
+> +    if (ret) {
+> +        error_setg_errno(errp, errno, "detach %s from %s failed",
+> +                         vbasedev->name, str);
+> +    } else {
+> +        trace_iommufd_cdev_detach_ioas_hwpt(iommufd, vbasedev->name, str, id);
 > +    }
-> +
-> +    printf("%d tests failed\n", num_of_tests_failed);
-> +    return (int)(num_of_tests_failed != 0);
+> +    return ret;
 > +}
 
+Being a bit late to the game, I might have missed some review
+history here, yet any reason why we changed the attach/detach
+APIs to specify is_ioas? The attach kernel uAPI generically
+handles this without requiring an is_ioas input, and it could
+be interpreted to attaching both ioas and hwpt (auto). On the
+hand, the detach uAPI doesn't even care about id. So, I don't
+see a value of the is_ioas except the trace logs..
+
+If we have such a hard requirement somewhere, shall we create
+an IOMMUFDPtObject structure that holds the type (ioas/hwpt)?
+
+Thanks
+Nic
 
