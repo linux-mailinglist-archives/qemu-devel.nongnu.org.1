@@ -2,84 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A9CC7E8BDB
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 18:21:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9557E8BE1
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 18:29:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1red-0005h9-G8; Sat, 11 Nov 2023 12:20:19 -0500
+	id 1r1rm3-0007LV-AX; Sat, 11 Nov 2023 12:27:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
- id 1r1reR-0005gk-GM
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 12:20:07 -0500
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
- id 1r1reP-0000kN-6K
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 12:20:07 -0500
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6b7f0170d7bso3137545b3a.2
- for <qemu-devel@nongnu.org>; Sat, 11 Nov 2023 09:20:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699723203; x=1700328003; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jF83vCDlvY+kPG9CpJzgogrw2aphukWzgva/84zO4eg=;
- b=TqfbrE2fWGoRWfdXLX2U/cfUP8Qw+cuwRqPRMOWpHJX74inukLcqhU707ozDVCAwka
- SFLQkpi26h8uBzrLOQaZNSOR7nDiS/aYihctf9I01b7whhmZ2iJriBS4X5j/GVgsgE1s
- SN2xIsch7j1SaPE472EUVlVKg3C+HaTdf+LBvhPE+RnKGhIiDkZq2G5tPHnaPGZ4FqFk
- Ntw0yeECMQygdVx7s4iHqca/VOEP0USe94YXS1vE+3IGlyYUyFOCxxzbnndiKnalCGK3
- tGrr0rJIJuFhaU8arSzlw0a5cBZp7mZXQrLNMLBxlCM6DyAz81cFnezQl609i7c3qoTY
- Mx/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699723203; x=1700328003;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jF83vCDlvY+kPG9CpJzgogrw2aphukWzgva/84zO4eg=;
- b=ou/X3NTA958LaoyP4k3ETwV0gaU0BtVQ+SlcfHxcX6+8RbuHugz9hQx5bxtlCQMuCC
- EYP55JYEHN/nhPUB3Drvu7ALuZVXXPAwq0zDw+RYjLVCyPsozl2c/ykX/kACypKGf0gp
- W7xu2Rq4kV0sjJH8e2TmtFF8etcijqzch6oupEz27w7cvMy+oK0uuVean5VHxng0GPER
- o+2yZCloJi85zQn3LHnq57D9bL2N9IKpzMx7mLEGVPq05dU3w5ry7fBrIHcN9hsVCXnq
- oNyijD46EZhKF9R4CCjzaPEOLY+cPrDihK/3dfkBoEu2SUlA0eNCsA7VxBliS7Qz3LWD
- 6sgA==
-X-Gm-Message-State: AOJu0Yys4DjQWYw81PN3cCTDL+Urw4LeOvoncmelGGyMw1UP6V0OYC5n
- 3jtq3F3KrldyL9kLQv2DuMwofS/WZL8=
-X-Google-Smtp-Source: AGHT+IEgPvdta7Gy52xuD+9k11lbGzhvvFgifa5oOmUG57QtFfX/XTgfCMMkcxjU+i2wWAy6s69kSg==
-X-Received: by 2002:a05:6a20:7490:b0:181:3649:2a31 with SMTP id
- p16-20020a056a20749000b0018136492a31mr3220669pzd.33.1699723202987; 
- Sat, 11 Nov 2023 09:20:02 -0800 (PST)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- fe19-20020a056a002f1300b0068e49cb1692sm1510813pfb.1.2023.11.11.09.20.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 11 Nov 2023 09:20:02 -0800 (PST)
-Message-ID: <7d866ee2-a166-457b-8137-4791caaff3cc@gmail.com>
-Date: Sun, 12 Nov 2023 02:19:59 +0900
+ (Exim 4.90_1) (envelope-from <SRS0=UdCb=GY=kaod.org=clg@ozlabs.org>)
+ id 1r1rm1-0007LB-RA; Sat, 11 Nov 2023 12:27:57 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=UdCb=GY=kaod.org=clg@ozlabs.org>)
+ id 1r1rlv-0004Fd-P2; Sat, 11 Nov 2023 12:27:57 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SSN1X4Hkkz4wy1;
+ Sun, 12 Nov 2023 04:27:44 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SSN1V0h4qz4wnv;
+ Sun, 12 Nov 2023 04:27:41 +1100 (AEDT)
+Message-ID: <f09db428-8828-460e-b9ce-eb123dce87af@kaod.org>
+Date: Sat, 11 Nov 2023 18:27:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/8] Firmware/edk2 20230918 patches
+Subject: Re: [PATCH v4 2/3] hw/ppc: Add nest1 chiplet model
 Content-Language: en-US
-To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>
-References: <20230918133338.2399701-1-kraxel@redhat.com>
-From: Akihiko Odaki <akihiko.odaki@gmail.com>
-In-Reply-To: <20230918133338.2399701-1-kraxel@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
+ calebs@us.ibm.com, chalapathi.v@ibm.com, saif.abrar@linux.vnet.ibm.com,
+ Chalapathi V <chalapathi.v@linux.ibm.com>
+References: <20231107074127.31821-1-chalap1@gfwr516.rchland.ibm.com>
+ <20231107074127.31821-3-chalap1@gfwr516.rchland.ibm.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20231107074127.31821-3-chalap1@gfwr516.rchland.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=akihiko.odaki@gmail.com; helo=mail-pf1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=UdCb=GY=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,183 +66,231 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/09/18 22:33, Gerd Hoffmann wrote:
-> The following changes since commit c5ea91da443b458352c1b629b490ee6631775cb4:
+On 11/7/23 08:41, Chalapathi V wrote:
+> From: Chalapathi V <chalapathi.v@linux.ibm.com>
 > 
->    Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into staging (2023-09-08 10:06:25 -0400)
+> The nest1 chiplet handle the high speed i/o traffic over PCIe and others.
+> The nest1 chiplet consists of PowerBus Fabric controller,
+> nest Memory Management Unit, chiplet control unit and more.
 > 
-> are available in the Git repository at:
+> This commit creates a nest1 chiplet model and initialize and realize the
+> pervasive chiplet model where chiplet control registers are implemented.
 > 
->    https://gitlab.com/kraxel/qemu.git tags/firmware/edk2-20230918-pull-request
+> Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
+> ---
+>   hw/ppc/meson.build                |  1 +
+>   hw/ppc/pnv_nest1_chiplet.c        | 94 +++++++++++++++++++++++++++++++++++++++
+>   include/hw/ppc/pnv_nest_chiplet.h | 41 +++++++++++++++++
+>   3 files changed, 136 insertions(+)
+>   create mode 100644 hw/ppc/pnv_nest1_chiplet.c
+>   create mode 100644 include/hw/ppc/pnv_nest_chiplet.h
 > 
-> for you to fetch changes up to 0ec0767e59261b7a1f59e904020cf52b45380e54:
-> 
->    tests/acpi: disallow virt/SSDT.memhp updates (2023-09-18 15:27:27 +0200)
-> 
-> ----------------------------------------------------------------
-> edk2: update to edk2-stable202308
-> 
-> v2: include acpi test data updates
-> 
-> ----------------------------------------------------------------
-> 
-> Gerd Hoffmann (8):
->    tests/acpi: allow virt/SSDT.memhp updates
->    edk2: update build script
->    edk2: update build config
->    edk2: workaround edk-stable202308 bug
->    edk2: update submodule to edk2-stable202308
->    edk2: update binaries to edk2-stable202308
->    tests/acpi: update virt/SSDT.memhp
->    tests/acpi: disallow virt/SSDT.memhp updates
-> 
->   roms/edk2-build.py                     | 202 ++++++++++++++++---------
->   pc-bios/edk2-aarch64-code.fd.bz2       | Bin 1508184 -> 1573561 bytes
->   pc-bios/edk2-arm-code.fd.bz2           | Bin 1483149 -> 1560966 bytes
->   pc-bios/edk2-i386-code.fd.bz2          | Bin 1695318 -> 1770410 bytes
->   pc-bios/edk2-i386-secure-code.fd.bz2   | Bin 1922002 -> 2121818 bytes
->   pc-bios/edk2-riscv-code.fd.bz2         | Bin 0 -> 1177402 bytes
->   pc-bios/edk2-riscv-vars.fd.bz2         | Bin 0 -> 231 bytes
->   pc-bios/edk2-riscv.fd.bz2              | Bin 1096418 -> 0 bytes
->   pc-bios/edk2-x86_64-code.fd.bz2        | Bin 1796544 -> 1887921 bytes
->   pc-bios/edk2-x86_64-microvm.fd.bz2     | Bin 1697788 -> 1782629 bytes
->   pc-bios/edk2-x86_64-secure-code.fd.bz2 | Bin 1999841 -> 2200701 bytes
->   roms/edk2                              |   2 +-
->   roms/edk2-build.config                 |  12 +-
->   tests/data/acpi/virt/SSDT.memhp        | Bin 1817 -> 1817 bytes
->   14 files changed, 139 insertions(+), 77 deletions(-)
->   create mode 100644 pc-bios/edk2-riscv-code.fd.bz2
->   create mode 100644 pc-bios/edk2-riscv-vars.fd.bz2
->   delete mode 100644 pc-bios/edk2-riscv.fd.bz2
-> 
+> diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
+> index c80d2f6..4e45e5c 100644
+> --- a/hw/ppc/meson.build
+> +++ b/hw/ppc/meson.build
+> @@ -51,6 +51,7 @@ ppc_ss.add(when: 'CONFIG_POWERNV', if_true: files(
+>     'pnv_homer.c',
+>     'pnv_pnor.c',
+>     'pnv_pervasive.c',
+> +  'pnv_nest1_chiplet.c',
+>   ))
+>   # PowerPC 4xx boards
+>   ppc_ss.add(when: 'CONFIG_PPC405', if_true: files(
+> diff --git a/hw/ppc/pnv_nest1_chiplet.c b/hw/ppc/pnv_nest1_chiplet.c
+> new file mode 100644
+> index 0000000..e078076
+> --- /dev/null
+> +++ b/hw/ppc/pnv_nest1_chiplet.c
+> @@ -0,0 +1,94 @@
+> +/*
+> + * QEMU PowerPC nest1 chiplet model
+> + *
+> + * Copyright (c) 2023, IBM Corporation.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * This code is licensed under the GPL version 2 or later. See the
+> + * COPYING file in the top-level directory.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/log.h"
+> +#include "hw/qdev-properties.h"
+> +#include "hw/ppc/pnv.h"
+> +#include "hw/ppc/pnv_xscom.h"
+> +#include "hw/ppc/pnv_nest_chiplet.h"
+> +#include "hw/ppc/pnv_pervasive.h"
+> +#include "hw/ppc/fdt.h"
+> +#include <libfdt.h>
+> +
+> +/*
+> + * The nest1 chiplet contains chiplet control unit,
+> + * PowerBus/RaceTrack/Bridge logic, nest Memory Management Unit(nMMU)
+> + * and more.
+> + */
+> +
+> +static void pnv_nest1_chiplet_realize(DeviceState *dev, Error **errp)
+> +{
+> +    PnvNest1Chiplet *nest1_chiplet = PNV_NEST1CHIPLET(dev);
+> +
+> +    object_initialize_child(OBJECT(nest1_chiplet), "perv_chiplet",
+> +                            &nest1_chiplet->perv_chiplet,
+> +                            TYPE_PNV_PERV_CHIPLET);
+> +
+> +    if (!qdev_realize(DEVICE(&nest1_chiplet->perv_chiplet), NULL, errp)) {
 
-Hi,
+I think we will save some bytes and ease reading by removing the '_chiplet'
+suffix in the variable names and types. A QEMU model is generally an HW
+logic unit or sub-unit. We don't need to add a Chip* suffix.
 
-This apparently broke EDK2 for AArch64. I tried the following command:
-build/qemu-system-aarch64 -drive 
-file=build/pc-bios/edk2-aarch64-code.fd,format=raw,if=pflash,readonly=on 
--M virt -cpu max -nographic -cdrom 
-Fedora-Silverblue-ostree-aarch64-37-1.7.iso
+PnvChip is an exception to this comment, because it represent a socket or
+processor, and is referred to as a chip in the POWER documentation AFAICR.
 
-Below is the output:
-BdsDxe: loading Boot0001 "UEFI Misc Device" from PciRoot(0x0)/Pci(0x2,0x0)
-BdsDxe: starting Boot0001 "UEFI Misc Device" from PciRoot(0x0)/Pci(0x2,0x0)
-
-
-Synchronous Exception at 0x0000000043695920
-PC 0x000043695920
-PC 0x000043697EE4
-PC 0x00004369A514
-PC 0x00004369B030
-PC 0x000043C04288
-PC 0x000043C04338
-PC 0x000043C051B4
-PC 0x000043C02030
-PC 0x000047685788 (0x00004767E000+0x00007788) [ 1] DxeCore.dll
-PC 0x00004732AECC (0x000047324000+0x00006ECC) [ 2] BdsDxe.dll
-PC 0x00004732DFD4 (0x000047324000+0x00009FD4) [ 2] BdsDxe.dll
-PC 0x00004768900C (0x00004767E000+0x0000B00C) [ 3] DxeCore.dll
-[ 1] 
-/home/kraxel/projects/qemu/roms/Build/ArmVirtQemu-AARCH64/DEBUG_GCC5/AARCH64/MdeModulePkg/Core/Dxe/DxeMain/DEBUG/DxeCore.dll
-[ 2] 
-/home/kraxel/projects/qemu/roms/Build/ArmVirtQemu-AARCH64/DEBUG_GCC5/AARCH64/MdeModulePkg/Universal/BdsDxe/BdsDxe/DEBUG/BdsDxe.dll
-[ 3] 
-/home/kraxel/projects/qemu/roms/Build/ArmVirtQemu-AARCH64/DEBUG_GCC5/AARCH64/MdeModulePkg/Core/Dxe/DxeMain/DEBUG/DxeCore.dll
-
-   X0 0x0000000043679960   X1 0x0000000000000000   X2 0x000000000000000D 
-   X3 0x00000000436A2F70
-   X4 0x0000000043679920   X5 0x000000004366B000   X6 0x0000000043677000 
-   X7 0x00000000436A20D0
-   X8 0x00000000436A20C8   X9 0x00000000436A20D0  X10 0x00000000436A20E0 
-  X11 0x00000000436A20D0
-  X12 0x0000000043679FFF  X13 0x0000000000000008  X14 0x0000000000000000 
-  X15 0x0000000000000000
-  X16 0x00000000473962BC  X17 0x00000000E6D79577  X18 0x0000000000000011 
-  X19 0x0000000043C83000
-  X20 0x0000000000000000  X21 0x0000000046310C98  X22 0x0000000043C972F0 
-  X23 0x0000000000000000
-  X24 0x0000000043C97000  X25 0x0000000043C973B8  X26 0x0000000043C973C0 
-  X27 0x0000000043C973C8
-  X28 0x0000000043C973D0   FP 0x000000004767D6A0   LR 0x0000000043697EE4
-
-   V0 0xAFAFAFAFAFAFAFAF AFAFAFAFAFAFAFAF   V1 0x0000000000000004 
-0000000000000000
-   V2 0x554E65213A544C55 41464544464F544E   V3 0x0000000000000000 
-0010000000000000
-   V4 0x0000000040000000 0000000000000000   V5 0x4010040140100401 
-4010040140100401
-   V6 0x0040000000001000 0040000000001000   V7 0x0000000000000000 
-0000000000000000
-   V8 0x0000000000000000 0000000000000000   V9 0x0000000000000000 
-0000000000000000
-  V10 0x0000000000000000 0000000000000000  V11 0x0000000000000000 
-0000000000000000
-  V12 0x0000000000000000 0000000000000000  V13 0x0000000000000000 
-0000000000000000
-  V14 0x0000000000000000 0000000000000000  V15 0x0000000000000000 
-0000000000000000
-  V16 0x0000000000000000 0000000000000000  V17 0x0000000000000000 
-0000000000000000
-  V18 0x0000000000000000 0000000000000000  V19 0x0000000000000000 
-0000000000000000
-  V20 0x0000000000000000 0000000000000000  V21 0x0000000000000000 
-0000000000000000
-  V22 0x0000000000000000 0000000000000000  V23 0x0000000000000000 
-0000000000000000
-  V24 0x0000000000000000 0000000000000000  V25 0x0000000000000000 
-0000000000000000
-  V26 0x0000000000000000 0000000000000000  V27 0x0000000000000000 
-0000000000000000
-  V28 0x0000000000000000 0000000000000000  V29 0x0000000000000000 
-0000000000000000
-  V30 0x0000000000000000 0000000000000000  V31 0x0000000000000000 
-0000000000000000
-
-   SP 0x000000004767D6A0  ELR 0x0000000043695920  SPSR 0x60000205  FPSR 
-0x00000000
-  ESR 0x9600004F          FAR 0x00000000436799D0
-
-  ESR : EC 0x25  IL 0x1  ISS 0x0000004F
-
-Data abort: Permission fault, third level
-
-Stack dump:
-   000004767D5A0: 0000000000000000 00000000AFAFAFAF 000000004767D6C0 
-0000000043697EDC
-   000004767D5C0: 41464544464F544E 554E65213A544C55 0010000000000000 
-0000000000000000
-   000004767D5E0: 00000000436A2F70 00000000436A2F68 0000036040100401 
-00000000436A2B28
-   000004767D600: 0040000000001000 0040000000001000 0000000000000000 
-0000000000000000
-   000004767D620: AFAFAFAFAFAFAFAF AFAFAFAFAFAFAFAF 0000000000000000 
-0000000000000004
-   000004767D640: 41464544464F544E 554E65213A544C55 0010000000000000 
-0000000000000000
-   000004767D660: 0000000000000000 0000000040000000 4010040140100401 
-4010040140100401
-   000004767D680: 0040000000001000 0040000000001000 0000000000000000 
-0000000000000000
- > 000004767D6A0: 000000004767D6C0 0000000043697EE4 0000000043677000 
-0000000043679960
-   000004767D6C0: 000000004767D6F0 000000004369A514 000000000000FC18 
-00000000436B2020
-   000004767D6E0: 000000F700000000 0000000043679960 000000004767D710 
-000000004369B030
-   000004767D700: 00000000476830E0 00000000436B2018 000000004767D720 
-0000000043C04288
-   000004767D720: 000000004767D780 0000000043C04338 0000000000000000 
-0000000043C6D000
-   000004767D740: 0000000043C83000 0000000046310C98 002A5DF04767D780 
-0000000043685000
-   000004767D760: 0000000043684000 00000000000002A6 00000000441A1C18 
-000000004392A018
-   000004767D780: 000000004767D7E0 0000000043C051B4 0000000000000000 
-0000000043C02428
+For instance, this routine would become :
 
 
-Synchronous Exception at 0x0000000043695920
-ASSERT [ArmCpuDxe] 
-/home/kraxel/projects/qemu/roms/edk2/ArmPkg/Library/DefaultExceptionHandlerLib/AArch64/DefaultExceptionHandler.c(343): 
-((BOOLEAN)(0==1))
+   static void pnv_nest1_realize(DeviceState *dev, Error **errp)
+   {
+       PnvNest1 *nest1 = PNV_NEST1(dev);
+   
+       object_initialize_child(OBJECT(nest1), "perv", &nest1->perv,
+                               TYPE_PNV_PERV);
+   
+       if (!qdev_realize(DEVICE(&nest1->perv), NULL, errp)) {
+	      return;
+       }
+   }
+
+
+which is clear enough for me. What do you think ? We can still use the
+term chiplet in the documentation.
+
+
+> +        return;
+> +    }
+> +}
+> +
+> +static int pnv_nest1_chiplet_dt_xscom(PnvXScomInterface *dev, void *fdt,
+> +                             int offset)
+> +{
+> +    g_autofree char *name = NULL;
+> +    int nest1_chiplet_offset;
+> +    const char compat[] = "ibm,power10-nest1-chiplet";
+> +
+> +    name = g_strdup_printf("nest1_chiplet@%x",
+> +                           PNV10_XSCOM_NEST1_CTRL_CHIPLET_BASE);
+> +    nest1_chiplet_offset = fdt_add_subnode(fdt, offset, name);
+> +    _FDT(nest1_chiplet_offset);
+> +
+> +    _FDT(fdt_setprop(fdt, nest1_chiplet_offset, "compatible",
+> +                            compat, sizeof(compat)));
+> +    return 0;
+> +}
+> +
+> +static void pnv_nest1_dt_populate(void *fdt)
+> +{
+> +
+
+Please remove white line.
+
+> +    uint32_t nest1_base = cpu_to_be32(PNV10_XSCOM_NEST1_CTRL_CHIPLET_BASE);
+> +    pnv_perv_dt(nest1_base, fdt, 0);
+> +}
+> +
+> +static void pnv_nest1_chiplet_class_init(ObjectClass *klass, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +    PnvNest1Class *nest1_class = PNV_NEST1CHIPLET_CLASS(klass);
+> +    PnvXScomInterfaceClass *xscomc = PNV_XSCOM_INTERFACE_CLASS(klass);
+> +
+> +    xscomc->dt_xscom = pnv_nest1_chiplet_dt_xscom;
+> +
+> +    dc->desc = "PowerNV nest1 chiplet";
+> +    dc->realize = pnv_nest1_chiplet_realize;
+> +    nest1_class->nest1_dt_populate = pnv_nest1_dt_populate;
+
+Why do you need a class handler for the Nest1 unit ? Do you have plans
+to have multiple implementations ?
+
+> +}
+> +
+> +static const TypeInfo pnv_nest1_chiplet_info = {
+> +    .name          = TYPE_PNV_NEST1_CHIPLET,
+> +    .parent        = TYPE_DEVICE,
+> +    .instance_size = sizeof(PnvNest1Chiplet),
+> +    .class_init    = pnv_nest1_chiplet_class_init,
+> +    .interfaces    = (InterfaceInfo[]) {
+> +        { TYPE_PNV_XSCOM_INTERFACE },
+> +        { }
+> +    }
+> +};
+> +
+> +static void pnv_nest1_chiplet_register_types(void)
+> +{
+> +    type_register_static(&pnv_nest1_chiplet_info);
+> +}
+> +
+> +type_init(pnv_nest1_chiplet_register_types);
+> diff --git a/include/hw/ppc/pnv_nest_chiplet.h b/include/hw/ppc/pnv_nest_chiplet.h
+> new file mode 100644
+> index 0000000..12525d3
+> --- /dev/null
+> +++ b/include/hw/ppc/pnv_nest_chiplet.h
+> @@ -0,0 +1,41 @@
+> +/*
+> + * QEMU PowerPC nest chiplet model
+> + *
+> + * Copyright (c) 2023, IBM Corporation.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * This code is licensed under the GPL version 2 or later. See the
+> + * COPYING file in the top-level directory.
+> + *
+> + */
+> +
+> +#ifndef PPC_PNV_NEST1_CHIPLET_H
+> +#define PPC_PNV_NEST1_CHIPLET_H
+> +
+> +#include "hw/ppc/pnv_pervasive.h"
+> +
+> +#define TYPE_PNV_NEST1_CHIPLET "pnv-nest1-chiplet"
+> +typedef struct PnvNest1Class PnvNest1Class;
+> +typedef struct PnvNest1Chiplet PnvNest1Chiplet;
+> +DECLARE_OBJ_CHECKERS(PnvNest1Chiplet, PnvNest1Class,
+> +                     PNV_NEST1CHIPLET, TYPE_PNV_NEST1_CHIPLET)
+> +
+> +typedef struct PnvNest1Chiplet {
+> +    DeviceState parent;
+> +
+> +    struct PnvChip *chip;
+
+Please remove chip, it is unused.
+
+> +
+> +    /* common pervasive chiplet unit */
+> +    PnvPervChiplet perv_chiplet;
+> +} PnvNest1Chiplet;
+> +
+> +struct PnvNest1Class {
+> +    DeviceClass parent_class;
+> +
+> +    DeviceRealize parent_realize;
+> +
+> +    void (*nest1_dt_populate)(void *fdt);
+
+This class needs some justification.
+
+
+Thanks,
+
+C.
+
+
+
+> +};
+> +
+> +#endif /*PPC_PNV_NEST1_CHIPLET_H */
+
 
