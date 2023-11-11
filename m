@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799157E879A
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 02:34:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 458B47E8792
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 02:33:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1crP-0002IU-Hw; Fri, 10 Nov 2023 20:32:31 -0500
+	id 1r1crQ-0002Ke-I1; Fri, 10 Nov 2023 20:32:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r1crN-0002Cp-9V
+ id 1r1crN-0002CN-5K
  for qemu-devel@nongnu.org; Fri, 10 Nov 2023 20:32:29 -0500
-Received: from mail-il1-x12e.google.com ([2607:f8b0:4864:20::12e])
+Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r1crK-0001c4-4R
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 20:32:29 -0500
-Received: by mail-il1-x12e.google.com with SMTP id
- e9e14a558f8ab-35932aa21a3so10142845ab.2
- for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 17:32:25 -0800 (PST)
+ id 1r1crL-0001cO-2Y
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 20:32:28 -0500
+Received: by mail-oo1-xc31.google.com with SMTP id
+ 006d021491bc7-58441865ffaso1483708eaf.1
+ for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 17:32:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699666345; x=1700271145; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699666346; x=1700271146; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Nq4O7G8WhjCAb939ZPjE7adWvfterxtvCh12B1XcuQc=;
- b=SDGbGANbwV8na/q+JpfYFz5Lzb4thQux8YID0ZdiQy+lsNzWaGxRYrwXSo+2V/OSBj
- 5/SAn/7RWxN+157+mtgOIWYNEy794wLFfTR5ZWdBfPX7no/yMVJE4MaenPRXKez67WWi
- oqAAEPxxV6CCDAhUZ4gmGtY4Y6P9sjMTEkMzX1+nguR2DwGmK1m+gHO8bpPXQ9X6S3z6
- Mfqh87bCFsIeQw/DJlm/xZY12BeHeYPTNgh5G11Fm23JsW5Vuks2wSpWT6iYFOvRY3iD
- wBpoQ9NGYAvcSskMtfZE47lBF3+v1i/WWnFMb6KICp5dOah2c8IFb27G4fG2shP4qV2D
- PuPw==
+ bh=oNGROZeVUOQseOR8lBT2AY8/u5jAx6va8TZMpF8TVmg=;
+ b=bptRZL6wn0FLJ8hFNrppZVrQbw9nkKFeJ7wiOjByHTF8Afnn1DVpbC+/HXUqzr7IY1
+ gb++5NFuYASjqKTSprzhX10qgGHo9IbishfAz1V6wXgbnHBQTMz2mOT/WXggL4AKW4Qa
+ FEZU8jlIuvIdieUhdJ5BR8ZWEvly5v6DYE1Dwgwife+pJiGCAejW1ihHxMsYITbQCGFe
+ Tn/B6YEUSfMbg4OEL8p8RniFHHrHAeqz/AB9ZMNE5VGHChbMRcKTrl+tJ6mRyBuyQKXk
+ jxB6/bZLYiVM1W9PgI0TDm2nzwXOOco0f09b14bna+jyvcljCoITnY70uAY7znC8EqOj
+ xXEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699666345; x=1700271145;
+ d=1e100.net; s=20230601; t=1699666346; x=1700271146;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Nq4O7G8WhjCAb939ZPjE7adWvfterxtvCh12B1XcuQc=;
- b=Ea1E3ju2A2nBD58bvCFADdB23synhLL9sD6uilKJZ9qqv12wzs9Nh5v4odxcFFKnhk
- oGVDapAj4HQNyEdi9FjvbvmvXxo/4iFeWuAMi3CF09zQjC8O88mXoWxFYCMTmAAhT0lj
- 8KhYwm9hle+xrpSCZoxHcw7V6uKBpU/BNWRhjEauSEyGR7xfdozn5gxpgPVwTwNvfJCm
- RhQzsttt0ean27lJYxvUBZp5hjmzE4kycEj3kGv0KwNMPYaiNLJV59JUbL3EoSTF33qN
- 3YSkeYDMHNCYyUUKDIojJQBfdhrvfYxl/jaiz0dStZ3ARstnzDo/jkpl0XpdWJDxJzBv
- nvJQ==
-X-Gm-Message-State: AOJu0Yw2KM+rvNtC7p3If8pCaCf+s6w7MVh+vB/Y8XVO81GKIYhFFGxn
- AfKLMfsi9Fpt09U7k500Y+48PfCUh0wGU3zoBH8=
-X-Google-Smtp-Source: AGHT+IHQpAaYmsFBcR3BJBQ4IaMMgjrRFADt/wFaKU06cwwD0AuqgnV/XHUhi6BnQ3m4lAqtdRhaCQ==
-X-Received: by 2002:a05:6e02:1c48:b0:359:777d:540a with SMTP id
- d8-20020a056e021c4800b00359777d540amr1400834ilg.7.1699666344782; 
- Fri, 10 Nov 2023 17:32:24 -0800 (PST)
+ bh=oNGROZeVUOQseOR8lBT2AY8/u5jAx6va8TZMpF8TVmg=;
+ b=gcod9WBxpV/q1FYZWPxzA8utQdMDiFlk7l5pgi5M1gsw1/THEzYKFt8vibbT0RBaqm
+ 706wSxkljp8A6ZAh/ATTdSuKugqejGAf9hTsem/JuI7TOJ9pkgZucfFYJpLEXlt+F7+U
+ 3YQqjQ7n9rjDuXidK9IcD3dOP5HTvSxOkhU/RzzabvP9RXNQa010bJkhsQ76Gpv5JgEh
+ rCoWSziiqaqyIjQD4RDQHiHBCBVyj3MTUZ9wRcrHSZm1O9qES+hympKcJuOhvLemJw+N
+ AuD3E3nIMGScn6cGxhlp0vWT747Z3gJOu5InTNSsgCy6mzPNxsSaLzG2MfGy+k7TllAZ
+ i3CQ==
+X-Gm-Message-State: AOJu0YwlIrY3UNA0g/bpEPy9/pmz2iD/Vx7lnuKXt5M3iG/RcIsXQTN5
+ BPpRbuetawv+AagGzCOwO8oLPq0SkZr3HnCtc00=
+X-Google-Smtp-Source: AGHT+IGm9FMxbmxGhiI4wQcSB/HRNtXEXUNOsjjbfOZgmiAU3Yblxt9DYeOi+z7wI17jb4RkZQ+YeA==
+X-Received: by 2002:a05:6870:e40a:b0:1f0:870e:930d with SMTP id
+ n10-20020a056870e40a00b001f0870e930dmr1026784oag.59.1699666345692; 
+ Fri, 10 Nov 2023 17:32:25 -0800 (PST)
 Received: from stoup.hsd1.or.comcast.net
  ([2601:1c0:5e02:2a20:a99c:45a6:14e9:ea6])
  by smtp.gmail.com with ESMTPSA id
- m11-20020a62f20b000000b006c1221bc58bsm333502pfh.115.2023.11.10.17.32.23
+ m11-20020a62f20b000000b006c1221bc58bsm333502pfh.115.2023.11.10.17.32.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Nov 2023 17:32:24 -0800 (PST)
+ Fri, 10 Nov 2023 17:32:25 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 09/11] target/hppa: Replace MMU_PHYS_IDX with MMU_ABS_IDX,
- MMU_ABS_W_IDX
-Date: Fri, 10 Nov 2023 17:32:10 -0800
-Message-Id: <20231111013212.229673-10-richard.henderson@linaro.org>
+Subject: [PATCH 10/11] target/hppa: Reduce TARGET_PHYS_ADDR_SPACE_BITS to 44
+Date: Fri, 10 Nov 2023 17:32:11 -0800
+Message-Id: <20231111013212.229673-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231111013212.229673-1-richard.henderson@linaro.org>
 References: <20231111013212.229673-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12e;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc31.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,177 +92,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Align the language with pa2.0, separating absolute and physical.
-The translation from absolute to physical depends on PSW.W, and
-we prefer not to flush between changes.
+This is the maximum that was ever supported, in the PA-8700 thru
+PA-8900.  If we support a larger address space than expected, we
+trip up software that did not fill in all of the page table bits,
+expecting them to be ignored.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h        | 26 +++++++++++++------------
- target/hppa/mem_helper.c | 41 ++++++++++++++++++++--------------------
- target/hppa/translate.c  |  6 +++---
- 3 files changed, 38 insertions(+), 35 deletions(-)
+ target/hppa/cpu-param.h  |  2 +-
+ target/hppa/mem_helper.c | 50 ++++++++++++++++++++++++++--------------
+ 2 files changed, 34 insertions(+), 18 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 6c0f104661..bcfed04f7c 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -31,24 +31,25 @@
-    basis.  It's probably easier to fall back to a strong memory model.  */
- #define TCG_GUEST_DEFAULT_MO        TCG_MO_ALL
- 
--#define MMU_KERNEL_IDX    7
--#define MMU_KERNEL_P_IDX  8
--#define MMU_PL1_IDX       9
--#define MMU_PL1_P_IDX     10
--#define MMU_PL2_IDX       11
--#define MMU_PL2_P_IDX     12
--#define MMU_USER_IDX      13
--#define MMU_USER_P_IDX    14
--#define MMU_PHYS_IDX      15
-+#define MMU_ABS_W_IDX     6
-+#define MMU_ABS_IDX       7
-+#define MMU_KERNEL_IDX    8
-+#define MMU_KERNEL_P_IDX  9
-+#define MMU_PL1_IDX       10
-+#define MMU_PL1_P_IDX     11
-+#define MMU_PL2_IDX       12
-+#define MMU_PL2_P_IDX     13
-+#define MMU_USER_IDX      14
-+#define MMU_USER_P_IDX    15
- 
--#define MMU_IDX_MMU_DISABLED(MIDX)  ((MIDX) == MMU_PHYS_IDX)
-+#define MMU_IDX_MMU_DISABLED(MIDX)  ((MIDX) < MMU_KERNEL_IDX)
- #define MMU_IDX_TO_PRIV(MIDX)       (((MIDX) - MMU_KERNEL_IDX) / 2)
- #define MMU_IDX_TO_P(MIDX)          (((MIDX) - MMU_KERNEL_IDX) & 1)
- #define PRIV_P_TO_MMU_IDX(PRIV, P)  ((PRIV) * 2 + !!(P) + MMU_KERNEL_IDX)
- 
- #define TARGET_INSN_START_EXTRA_WORDS 2
- 
--/* No need to flush MMU_PHYS_IDX  */
-+/* No need to flush MMU_ABS*_IDX  */
- #define HPPA_MMU_FLUSH_MASK                             \
-         (1 << MMU_KERNEL_IDX | 1 << MMU_KERNEL_P_IDX |  \
-          1 << MMU_PL1_IDX    | 1 << MMU_PL1_P_IDX    |  \
-@@ -288,7 +289,8 @@ static inline int cpu_mmu_index(CPUHPPAState *env, bool ifetch)
-     if (env->psw & (ifetch ? PSW_C : PSW_D)) {
-         return PRIV_P_TO_MMU_IDX(env->iaoq_f & 3, env->psw & PSW_P);
-     }
--    return MMU_PHYS_IDX;  /* mmu disabled */
-+    /* mmu disabled */
-+    return env->psw & PSW_W ? MMU_ABS_W_IDX : MMU_ABS_IDX;
+diff --git a/target/hppa/cpu-param.h b/target/hppa/cpu-param.h
+index 6746869a3b..7a8b216133 100644
+--- a/target/hppa/cpu-param.h
++++ b/target/hppa/cpu-param.h
+@@ -14,7 +14,7 @@
+ # define TARGET_PHYS_ADDR_SPACE_BITS  32
+ # define TARGET_VIRT_ADDR_SPACE_BITS  32
+ #else
+-# define TARGET_PHYS_ADDR_SPACE_BITS  64
++# define TARGET_PHYS_ADDR_SPACE_BITS  44
+ # define TARGET_VIRT_ADDR_SPACE_BITS  64
  #endif
- }
  
 diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index af8e86699d..7bc456d4ee 100644
+index 7bc456d4ee..08abd1a9f9 100644
 --- a/target/hppa/mem_helper.c
 +++ b/target/hppa/mem_helper.c
-@@ -53,17 +53,6 @@ hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr)
-     return (addr & MAKE_64BIT_MASK(0, 24)) | MAKE_64BIT_MASK(60, 4);
+@@ -27,30 +27,39 @@
+ 
+ hwaddr hppa_abs_to_phys_pa2_w1(vaddr addr)
+ {
+-    if (likely(extract64(addr, 58, 4) != 0xf)) {
+-        /* Memory address space */
+-        return addr & MAKE_64BIT_MASK(0, 62);
+-    }
+-    if (extract64(addr, 54, 4) != 0) {
+-        /* I/O address space */
+-        return addr | MAKE_64BIT_MASK(62, 2);
+-    }
+-    /* PDC address space */
+-    return (addr & MAKE_64BIT_MASK(0, 54)) | MAKE_64BIT_MASK(60, 4);
++    /*
++     * Figure H-8 "62-bit Absolute Accesses when PSW W-bit is 1" describes
++     * an algorithm in which a 62-bit absolute address is transformed to
++     * a 64-bit physical address.  This must then be combined with that
++     * pictured in Figure H-11 "Physical Address Space Mapping", in which
++     * the full physical address is truncated to the N-bit physical address
++     * supported by the implementation.
++     *
++     * Since the supported physical address space is below 54 bits, the
++     * H-8 algorithm is moot and all that is left is to truncate.
++     */
++    QEMU_BUILD_BUG_ON(TARGET_PHYS_ADDR_SPACE_BITS > 54);
++    return sextract64(addr, 0, TARGET_PHYS_ADDR_SPACE_BITS);
  }
  
--static hwaddr hppa_abs_to_phys(CPUHPPAState *env, vaddr addr)
--{
--    if (!hppa_is_pa20(env)) {
--        return addr;
--    } else if (env->psw & PSW_W) {
--        return hppa_abs_to_phys_pa2_w1(addr);
--    } else {
--        return hppa_abs_to_phys_pa2_w0(addr);
+ hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr)
+ {
++    /*
++     * See Figure H-10, "Absolute Accesses when PSW W-bit is 0",
++     * combined with Figure H-11, as above.
++     */
+     if (likely(extract32(addr, 28, 4) != 0xf)) {
+         /* Memory address space */
+-        return addr & MAKE_64BIT_MASK(0, 32);
 -    }
--}
--
+-    if (extract32(addr, 24, 4) != 0) {
++        addr = (uint32_t)addr;
++    } else if (extract32(addr, 24, 4) != 0) {
+         /* I/O address space */
+-        return addr | MAKE_64BIT_MASK(32, 32);
++        addr = (int32_t)addr;
++    } else {
++        /* PDC address space */
++        addr &= MAKE_64BIT_MASK(0, 24);
++        addr |= -1ull << (TARGET_PHYS_ADDR_SPACE_BITS - 4);
+     }
+-    /* PDC address space */
+-    return (addr & MAKE_64BIT_MASK(0, 24)) | MAKE_64BIT_MASK(60, 4);
++    return addr;
+ }
+ 
  static HPPATLBEntry *hppa_find_tlb(CPUHPPAState *env, vaddr addr)
- {
-     IntervalTreeNode *i = interval_tree_iter_first(&env->tlb_root, addr, addr);
-@@ -161,9 +150,22 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-         *tlb_entry = NULL;
-     }
+@@ -460,7 +469,14 @@ static void itlbt_pa20(CPUHPPAState *env, target_ulong r1,
  
--    /* Virtual translation disabled.  Direct map virtual to physical.  */
--    if (mmu_idx == MMU_PHYS_IDX) {
--        phys = addr;
-+    /* Virtual translation disabled.  Map absolute to physical.  */
-+    if (MMU_IDX_MMU_DISABLED(mmu_idx)) {
-+        switch (mmu_idx) {
-+        case MMU_ABS_W_IDX:
-+            phys = hppa_abs_to_phys_pa2_w1(addr);
-+            break;
-+        case MMU_ABS_IDX:
-+            if (hppa_is_pa20(env)) {
-+                phys = hppa_abs_to_phys_pa2_w0(addr);
-+            } else {
-+                phys = (uint32_t)addr;
-+            }
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-         prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
-         goto egress;
-     }
-@@ -261,7 +263,7 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-     }
- 
-  egress:
--    *pphys = phys = hppa_abs_to_phys(env, phys);
-+    *pphys = phys;
-     *pprot = prot;
-     trace_hppa_tlb_get_physical_address(env, ret, prot, addr, phys);
-     return ret;
-@@ -271,16 +273,15 @@ hwaddr hppa_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
- {
-     HPPACPU *cpu = HPPA_CPU(cs);
-     hwaddr phys;
--    int prot, excp;
-+    int prot, excp, mmu_idx;
- 
-     /* If the (data) mmu is disabled, bypass translation.  */
-     /* ??? We really ought to know if the code mmu is disabled too,
-        in order to get the correct debugging dumps.  */
--    if (!(cpu->env.psw & PSW_D)) {
--        return hppa_abs_to_phys(&cpu->env, addr);
--    }
-+    mmu_idx = (cpu->env.psw & PSW_D ? MMU_KERNEL_IDX :
-+               cpu->env.psw & PSW_W ? MMU_ABS_W_IDX : MMU_ABS_IDX);
- 
--    excp = hppa_get_physical_address(&cpu->env, addr, MMU_KERNEL_IDX, 0,
-+    excp = hppa_get_physical_address(&cpu->env, addr, mmu_idx, 0,
-                                      &phys, &prot, NULL);
- 
-     /* Since we're translating for debugging, the only error that is a
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 727dd8a829..4a4830c3e3 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -3172,7 +3172,7 @@ static bool trans_lda(DisasContext *ctx, arg_ldst *a)
-     int hold_mmu_idx = ctx->mmu_idx;
- 
-     CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
--    ctx->mmu_idx = MMU_PHYS_IDX;
-+    ctx->mmu_idx = ctx->tb_flags & PSW_W ? MMU_ABS_W_IDX : MMU_ABS_IDX;
-     trans_ld(ctx, a);
-     ctx->mmu_idx = hold_mmu_idx;
-     return true;
-@@ -3183,7 +3183,7 @@ static bool trans_sta(DisasContext *ctx, arg_ldst *a)
-     int hold_mmu_idx = ctx->mmu_idx;
- 
-     CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
--    ctx->mmu_idx = MMU_PHYS_IDX;
-+    ctx->mmu_idx = ctx->tb_flags & PSW_W ? MMU_ABS_W_IDX : MMU_ABS_IDX;
-     trans_st(ctx, a);
-     ctx->mmu_idx = hold_mmu_idx;
-     return true;
-@@ -4435,7 +4435,7 @@ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
-     ctx->privilege = (ctx->tb_flags >> TB_FLAG_PRIV_SHIFT) & 3;
-     ctx->mmu_idx = (ctx->tb_flags & PSW_D
-                     ? PRIV_P_TO_MMU_IDX(ctx->privilege, ctx->tb_flags & PSW_P)
--                    : MMU_PHYS_IDX);
-+                    : ctx->tb_flags & PSW_W ? MMU_ABS_W_IDX : MMU_ABS_IDX);
- 
-     /* Recover the IAOQ values from the GVA + PRIV.  */
-     uint64_t cs_base = ctx->base.tb->cs_base;
+     ent->itree.start = va_b;
+     ent->itree.last = va_e;
+-    ent->pa = (r1 << 7) & (TARGET_PAGE_MASK << mask_shift);
++
++    /* Extract all 52 bits present in the page table entry. */
++    ent->pa = r1 << (TARGET_PAGE_BITS - 5);
++    /* Align per the page size. */
++    ent->pa &= TARGET_PAGE_MASK << mask_shift;
++    /* Ignore the bits beyond physical address space. */
++    ent->pa = sextract64(ent->pa, 0, TARGET_PHYS_ADDR_SPACE_BITS);
++
+     ent->t = extract64(r2, 61, 1);
+     ent->d = extract64(r2, 60, 1);
+     ent->b = extract64(r2, 59, 1);
 -- 
 2.34.1
 
