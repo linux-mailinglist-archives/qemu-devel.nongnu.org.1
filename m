@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93DD57E879B
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 02:35:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BDA37E8796
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 02:34:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1crL-00025B-7q; Fri, 10 Nov 2023 20:32:27 -0500
+	id 1r1crM-00028F-6Q; Fri, 10 Nov 2023 20:32:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r1crI-00023p-CR
- for qemu-devel@nongnu.org; Fri, 10 Nov 2023 20:32:24 -0500
+ id 1r1crJ-000247-43
+ for qemu-devel@nongnu.org; Fri, 10 Nov 2023 20:32:25 -0500
 Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r1crG-0001ai-NU
+ id 1r1crH-0001ar-BT
  for qemu-devel@nongnu.org; Fri, 10 Nov 2023 20:32:24 -0500
 Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-6c4884521f6so2419300b3a.0
+ d2e1a72fcca58-6c4cf0aea06so1597852b3a.0
  for <qemu-devel@nongnu.org>; Fri, 10 Nov 2023 17:32:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699666341; x=1700271141; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699666342; x=1700271142; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lo0lQlUWSBjMt9Vl8JT1SFLp9AI2+HeOXlIlVWGHESw=;
- b=HWY6gNUAmvN4I1Cm6vdcidCDGZKbe/vRsQSwcaXxRFmBJ3yJ9gz0jEXNK6CQ9OWI43
- W2icdiK8/Smmi2VhqnoWGB3ZmPI2KmK3VjHFrmztzyBpTpihSwM9BKrud8v6tEtsPLHC
- Mbr/0vkqHTuVtwlz3VsnanDkKZ2eHw2ef9wUBamAT7JCWH/gJEC8S7Ab/9CPqP/eotbA
- tWkTm/9ufsFQkDfxakN/3mUsaUtdjD19mj8YPsUU3ZvEUyAgalx7a3NR8zGN5zqqwGbr
- ZlxzJ/rfuzZhzzcH/FWWnHlsbj+bVNZIfl1E1sx4wi0ShnHfEcRXxxTuTWtQ4qWJoFS+
- v1SA==
+ bh=VYBNYKyRQnZm5Azne5zwUk2eDMhVMq7sbSEJ06OYxG8=;
+ b=joIdKz9H3s/7p5IjyeoHY1pq63iuHC9fM6bx0NMhaknX1l6iQQiq+mQH64AxRQq6T1
+ M23gc6zeSDkYWgAPezB6oi7MNI/MWNNQ8iElKOvCoPyv3tRhcj/8Jq+c7XpvWdEJJF/P
+ YO3J4XTW5LuLZPIfKYv/LUv4fKw8YSdLiazj0/2mBxIauO9awi10nNaIC3trk9pPSuwp
+ fpF5Jc0ZsD9GcP8zm9Arj5XDlM478I1+/ylNlTCMd3PXWYxLEpv6gCOpstezksPUcCMd
+ pYSLPAyGYhU5AqR7F8TSzK648bF/pwDS3XIVCSP/Tb0h2bn/EPwbRNC3uQRS/pPDg3/r
+ FXLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699666341; x=1700271141;
+ d=1e100.net; s=20230601; t=1699666342; x=1700271142;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lo0lQlUWSBjMt9Vl8JT1SFLp9AI2+HeOXlIlVWGHESw=;
- b=KKDxGO7V2EioBRq90IIgbNjzXgcWQ+fQtDjTMWr9Yjj5tg6fi3kmIQNTDFwQa7P8is
- HkEavqj5hOLqnaNlibVk8faop0ub7e503dEbQH66OeNy3CzwhExnORo/JzGABM0aPDix
- cRHa8L+qgWMCPcSYrhuB5JO02stEoT9QtGPUK/f1OC+WKQ4eqXjV18R867yHQtAO1E5g
- cIBj4PYNtW2lYTLLTzhwLWlv2mAJUIl49pz1dgK0ENGrPFxu+0rwGGJZ7jARAoI64nRc
- GVq0X+3ZI/fHVzcqJQ8FJxHVbgB0jwHTNYSExvsX99esAv6qbzvNGQV2TCLe5N0flOPz
- BfLQ==
-X-Gm-Message-State: AOJu0YxjlPm7AaDBZJth/tNmUHcLXbXkJN9vZaVFWI0Y5DR4Rkh1A0Kp
- hPKNabxz1LP4hgqphCuBR0hHSY7XDfmfnQ40mBU=
-X-Google-Smtp-Source: AGHT+IGTPQFJHG2Tnf4z3GJPavkZbYNoyeS2wMj/pYx5PBgj+fKGh/MeNk/aSRQGgOKXh2PXyJaaFQ==
-X-Received: by 2002:a05:6a00:1d9b:b0:6bd:705b:56fb with SMTP id
- z27-20020a056a001d9b00b006bd705b56fbmr812005pfw.6.1699666341193; 
- Fri, 10 Nov 2023 17:32:21 -0800 (PST)
+ bh=VYBNYKyRQnZm5Azne5zwUk2eDMhVMq7sbSEJ06OYxG8=;
+ b=hjhPdVkbRQ9RxKV/IKNzpDYJqiA34Q9nuUcaWkjWHKQ9UlL4ju68rkQx7XdtQ06pBG
+ +FBRg375JecK/eRYSgOT8z6h9NlNhsVY7GtZ5c2va643JCDZRHd6qJReGinFIshaXr1k
+ PJvejASSWOFbsGez7/vBUyZ5KIq/SQ2K0PPVL+UHDMCMTs0jTehI/t6Mzbpd0Or0odxN
+ AdIIx0sJtElQ5RpygyC749hYZ4wfVLQ053AOXo17tt/K9Tlfm0sd8U4XzJU9rQlbiict
+ GH6Tw9dvZ8tQbfEP4PbXJP3Aicw9NCtZ/rhcoFJOeKQ2KkTEbts8yZvyyZeg7dZRCVSC
+ 5IEg==
+X-Gm-Message-State: AOJu0YxY4eIYLEOzGLdTD6mlDAdE+xKuWpU8TSE/HBgtaOX04CEq+IJL
+ yC7tHXghx/EgndkfYHOP9UdXdsJC3z+F4hp3S6k=
+X-Google-Smtp-Source: AGHT+IEIcz9PB3xD2hizh2bbVL55BCRTOzlvG9kfK7swTt09yV5Xvg3E0XXzfJgUIzZ/kw+i0NRQBA==
+X-Received: by 2002:a05:6a21:7988:b0:16b:bd0f:ad06 with SMTP id
+ bh8-20020a056a21798800b0016bbd0fad06mr1023101pzc.31.1699666342001; 
+ Fri, 10 Nov 2023 17:32:22 -0800 (PST)
 Received: from stoup.hsd1.or.comcast.net
  ([2601:1c0:5e02:2a20:a99c:45a6:14e9:ea6])
  by smtp.gmail.com with ESMTPSA id
- m11-20020a62f20b000000b006c1221bc58bsm333502pfh.115.2023.11.10.17.32.20
+ m11-20020a62f20b000000b006c1221bc58bsm333502pfh.115.2023.11.10.17.32.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Nov 2023 17:32:20 -0800 (PST)
+ Fri, 10 Nov 2023 17:32:21 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 05/11] target/hppa: Use PRIV_P_TO_MMU_IDX in helper_probe
-Date: Fri, 10 Nov 2023 17:32:06 -0800
-Message-Id: <20231111013212.229673-6-richard.henderson@linaro.org>
+Subject: [PATCH 06/11] target/hppa: Fix calculation of CR_IIASQ back register
+Date: Fri, 10 Nov 2023 17:32:07 -0800
+Message-Id: <20231111013212.229673-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231111013212.229673-1-richard.henderson@linaro.org>
 References: <20231111013212.229673-1-richard.henderson@linaro.org>
@@ -92,39 +92,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Direct privilege level to mmu_idx mapping has been
-false for some time.  Provide the correct value to
-hppa_get_physical_address.
+From: Helge Deller <deller@gmx.de>
 
-Fixes: fa824d99f9b ("target/hppa: Switch to use MMU indices 11-15")
+Need to use iasq_b and iaoq_b to determine back register of CR_IIASQ.
+This fixes random faults when booting up Linux user space.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/op_helper.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ target/hppa/int_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
-index a0e31c0c25..7f607c3afd 100644
---- a/target/hppa/op_helper.c
-+++ b/target/hppa/op_helper.c
-@@ -338,7 +338,7 @@ target_ulong HELPER(probe)(CPUHPPAState *env, target_ulong addr,
- #ifdef CONFIG_USER_ONLY
-     return page_check_range(addr, 1, want);
- #else
--    int prot, excp;
-+    int prot, excp, mmu_idx;
-     hwaddr phys;
- 
-     trace_hppa_tlb_probe(addr, level, want);
-@@ -347,7 +347,8 @@ target_ulong HELPER(probe)(CPUHPPAState *env, target_ulong addr,
-         return 0;
-     }
- 
--    excp = hppa_get_physical_address(env, addr, level, 0, &phys,
-+    mmu_idx = PRIV_P_TO_MMU_IDX(level, env->psw & PSW_P);
-+    excp = hppa_get_physical_address(env, addr, mmu_idx, 0, &phys,
-                                      &prot, NULL);
-     if (excp >= 0) {
-         if (env->psw & PSW_Q) {
+diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
+index 467ee7daf5..98e9d688f6 100644
+--- a/target/hppa/int_helper.c
++++ b/target/hppa/int_helper.c
+@@ -126,7 +126,7 @@ void hppa_cpu_do_interrupt(CPUState *cs)
+         env->cr[CR_IIASQ] =
+             hppa_form_gva_psw(old_psw, env->iasq_f, env->iaoq_f) >> 32;
+         env->cr_back[0] =
+-            hppa_form_gva_psw(old_psw, env->iasq_f, env->iaoq_f) >> 32;
++            hppa_form_gva_psw(old_psw, env->iasq_b, env->iaoq_b) >> 32;
+     } else {
+         env->cr[CR_IIASQ] = 0;
+         env->cr_back[0] = 0;
 -- 
 2.34.1
 
