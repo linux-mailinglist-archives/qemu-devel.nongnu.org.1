@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCFDE7E8B62
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 16:30:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47CD87E8B60
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 16:30:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1pvb-0003tB-8E; Sat, 11 Nov 2023 10:29:43 -0500
+	id 1r1pvc-0003yJ-RY; Sat, 11 Nov 2023 10:29:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r1pvZ-0003p4-Ca
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 10:29:41 -0500
+ id 1r1pva-0003u3-VH
+ for qemu-devel@nongnu.org; Sat, 11 Nov 2023 10:29:42 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r1pvW-0008Ju-Ez
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 10:29:41 -0500
+ id 1r1pvZ-0008K8-29
+ for qemu-devel@nongnu.org; Sat, 11 Nov 2023 10:29:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699716578;
+ s=mimecast20190719; t=1699716580;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qmUReIKnCgHwKeQ8mgDCHmJ5OYZe6yUipuBRHMuoC1E=;
- b=JkY35ev2ageL2WzANa6dOoZ9p8dJKMlBNjntFugAsZZyGu1YvMex7Ww+BYWM+uJYa12vuV
- EFGYuYIuR66ePcc9SFDZHrcfHtTqimB8Iqg8jK2DCZdXI8zRmpqK6kV1BAvtQy60SKs3pt
- T88Y6wdhNKDMTpzZjXPCtvgfVbxLNPU=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Hl4FPp2TiWf73lYkGpagrM0g80ds/eBjfxzWE9bvrYM=;
+ b=HpV9XTRMICeHtPm6QQLjK6NYOx3mM8Lojh8jmhXHWNN6rIUyNlLdGBbqYYz3ggXjggnghk
+ 1f1jxccEoObgXg4MIcjJL/cRSwtX61M+3LJ3AMYv+2vgHeVEOLGFINFq2siyVllukm1r1D
+ EtXk3jhoBZTO+6vZhlvfvIFNtBKMgA4=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-STAzA1yXMlGnw_cpC5_zOA-1; Sat, 11 Nov 2023 10:29:36 -0500
-X-MC-Unique: STAzA1yXMlGnw_cpC5_zOA-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9e61e969b19so115130766b.2
- for <qemu-devel@nongnu.org>; Sat, 11 Nov 2023 07:29:36 -0800 (PST)
+ us-mta-412-TXfbByv-Py6agoEX0wp_2w-1; Sat, 11 Nov 2023 10:29:38 -0500
+X-MC-Unique: TXfbByv-Py6agoEX0wp_2w-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9dd489c98e7so218416866b.2
+ for <qemu-devel@nongnu.org>; Sat, 11 Nov 2023 07:29:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699716574; x=1700321374;
+ d=1e100.net; s=20230601; t=1699716577; x=1700321377;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qmUReIKnCgHwKeQ8mgDCHmJ5OYZe6yUipuBRHMuoC1E=;
- b=mWUso/krv32f0ZvU83lU6eOygKtif8sSU79FKbd0zkxbwzgj9GOvN4OJdOGT2QtE+X
- iENehxqHYje/nO/WX33k2fhsVLv5iWJb+PZxEVN79YicQD0U5qzZZY5ClJvqJ602BqxA
- +RYzKrgmTw8wGU2Nn8yvj1gfVIRwINgMAIWahLAQd3DmnmKOX+SvQWouFt8xeFM5i+2j
- xjCGdsurIe4VKDkZAFbw3AQzGa46fR+kR2TfpzsN74jzA3C0g2qcHCbzIYwx6e7XhDIW
- 8OQrfuiuCm3K6a0nkYd+kBMxfwTGNFEd1ZSDPDfH4bRLq47cEyhmVIKzvedn+x+83Ux4
- cv7w==
-X-Gm-Message-State: AOJu0YzDTmy/8ByOleQGONTDJSUZwl53IsJtWbZxauHUjBoJh4GfllST
- 3+syvzZiB0Gh9ZebPWbxPHD40/Nz4dE49qjT0aOh/J4shd4GP7P8pSrgF76J2/2Ho4P7x+QnVzb
- WtJOnTiKHqtxeCN1zZQ4PReZHMJPaDyXhWGVXshlHSXZ/1cJauHdwneRUzWXtv/3DM3g2w5LhV0
- E=
-X-Received: by 2002:a05:6402:6c3:b0:543:4fdb:de84 with SMTP id
- n3-20020a05640206c300b005434fdbde84mr1755354edy.7.1699716574704; 
- Sat, 11 Nov 2023 07:29:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHhy75PzPkJDXpy/Mc6F/Q1W/ZMAvXal+kYUnP9W3QuHWYW08AokXIgtww6cwnmaW7CO0tcPg==
-X-Received: by 2002:a05:6402:6c3:b0:543:4fdb:de84 with SMTP id
- n3-20020a05640206c300b005434fdbde84mr1755344edy.7.1699716574430; 
- Sat, 11 Nov 2023 07:29:34 -0800 (PST)
+ bh=Hl4FPp2TiWf73lYkGpagrM0g80ds/eBjfxzWE9bvrYM=;
+ b=aZi+aP3f+4TgWxbcSZO/bAHEUvg4IEU8ev4sF4vizAG0zmy6fCGxPefbxwItaoQvaz
+ K2oYDgZwHE/RUl1s8eQZEP6i6l1eUl8S0519CloN8bXKxY6kqopgdR/6tOgmDpF9Lcre
+ A7cOH6Rwq7s2U8xf7rWcqug6yDG5GvhJ9GKZzKgZGBr2sjQLJxPOfT8muIdF+eFCt8Qx
+ mNh+po7jtG7902TVRCDovN6GDNQn5Cwb83NzouUlrVu9VPtpAAdDAoXf+2C7Cdw/6DxB
+ 9rBcnU/2tXhJANjxIWAmEJjQkOQZIm20ZfjfWyJM8b4k6sC/njgtPc12VfyxVXcZqtku
+ LoxQ==
+X-Gm-Message-State: AOJu0YyQhpBhEeG/gC2NhvOZwhLX90zymvJIGXr/bn6/dK7iVoQLspLz
+ UyaRD/qgwrtvhTxYRU3D4SWw58wtbINjis8FwqTgt5tdOPg/BlK9CdtJ7THWjzrkkVQhhw+WSOI
+ jEgXtBbxwKmjqdXwliRposfL/7OwyGN6ThpJiE5zC3FO4gWihZS1m1sENI23nC9s32aQOJjnl5M
+ w=
+X-Received: by 2002:a17:906:140d:b0:9bf:2f84:5de7 with SMTP id
+ p13-20020a170906140d00b009bf2f845de7mr1599696ejc.4.1699716576954; 
+ Sat, 11 Nov 2023 07:29:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHULk/GgzAg73MXZUOEzUZdTC7mZFIt7x+PHlkS0+w4Wl0eB+FwgjYPxLO3juinijMxDvaAMw==
+X-Received: by 2002:a17:906:140d:b0:9bf:2f84:5de7 with SMTP id
+ p13-20020a170906140d00b009bf2f845de7mr1599684ejc.4.1699716576701; 
+ Sat, 11 Nov 2023 07:29:36 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- p19-20020aa7d313000000b0053deb97e8e6sm1095621edq.28.2023.11.11.07.29.33
+ lg7-20020a170906f88700b00977eec7b7e8sm1209901ejb.68.2023.11.11.07.29.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 11 Nov 2023 07:29:33 -0800 (PST)
+ Sat, 11 Nov 2023 07:29:35 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 4/6] buildsys: Bump known good meson version to v1.2.3
-Date: Sat, 11 Nov 2023 16:29:21 +0100
-Message-ID: <20231111152923.966998-5-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 5/6] .gitlab-ci.d/cirrus: Upgrade macOS to 13 (Ventura)
+Date: Sat, 11 Nov 2023 16:29:22 +0100
+Message-ID: <20231111152923.966998-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231111152923.966998-1-pbonzini@redhat.com>
 References: <20231111152923.966998-1-pbonzini@redhat.com>
@@ -104,62 +105,80 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-We need meson v1.2.3 to build QEMU on macOS Sonoma.  It
-also builds fine all our CI jobs (as tested by also bumping
-"accepted" in pythondeps.toml), so let's use it as our
-"good enough" packaged wheel.
+macOS 14 "Sonoma" was released on September 2023 [1].
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1939
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+According to QEMU's support policy, we stop supporting the
+previous major release two years after the the new major
+release has been published. Replace the macOS 12 (Monterey)
+testing by macOS 13 (Ventura, released on October 2022, [2]).
+
+Refresh the generated files by running:
+
+  $ make lcitool-refresh
+
+[1] https://www.apple.com/newsroom/2023/09/macos-sonoma-is-available-today/
+[2] https://www.apple.com/newsroom/2022/10/macos-ventura-is-now-available/
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231109160504.93677-2-philmd@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-ID: <20231108162022.76189-1-philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- python/scripts/vendor.py                    |   4 ++--
- python/wheels/meson-0.63.3-py3-none-any.whl | Bin 926526 -> 0 bytes
- python/wheels/meson-1.2.3-py3-none-any.whl  | Bin 0 -> 964928 bytes
- pythondeps.toml                             |   2 +-
- 4 files changed, 3 insertions(+), 3 deletions(-)
- delete mode 100644 python/wheels/meson-0.63.3-py3-none-any.whl
- create mode 100644 python/wheels/meson-1.2.3-py3-none-any.whl
+ .gitlab-ci.d/cirrus.yml                              | 6 +++---
+ .gitlab-ci.d/cirrus/{macos-12.vars => macos-13.vars} | 2 +-
+ tests/lcitool/refresh                                | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+ rename .gitlab-ci.d/cirrus/{macos-12.vars => macos-13.vars} (95%)
 
-diff --git a/python/scripts/vendor.py b/python/scripts/vendor.py
-index 76274871170..1038b14ae0c 100755
---- a/python/scripts/vendor.py
-+++ b/python/scripts/vendor.py
-@@ -41,8 +41,8 @@ def main() -> int:
-     parser.parse_args()
+diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
+index e7f1f83c2c4..07dc6edae1c 100644
+--- a/.gitlab-ci.d/cirrus.yml
++++ b/.gitlab-ci.d/cirrus.yml
+@@ -59,13 +59,13 @@ x64-freebsd-13-build:
+     INSTALL_COMMAND: pkg install -y
+     TEST_TARGETS: check
  
-     packages = {
--        "meson==0.63.3":
--        "d677b809c4895dcbaac9bf6c43703fcb3609a4b24c6057c78f828590049cf43a",
-+        "meson==1.2.3":
-+        "4533a43c34548edd1f63a276a42690fce15bde9409bcf20c4b8fa3d7e4d7cac1",
+-aarch64-macos-12-base-build:
++aarch64-macos-13-base-build:
+   extends: .cirrus_build_job
+   variables:
+-    NAME: macos-12
++    NAME: macos-13
+     CIRRUS_VM_INSTANCE_TYPE: macos_instance
+     CIRRUS_VM_IMAGE_SELECTOR: image
+-    CIRRUS_VM_IMAGE_NAME: ghcr.io/cirruslabs/macos-monterey-base:latest
++    CIRRUS_VM_IMAGE_NAME: ghcr.io/cirruslabs/macos-ventura-base:latest
+     CIRRUS_VM_CPUS: 12
+     CIRRUS_VM_RAM: 24G
+     UPDATE_COMMAND: brew update
+diff --git a/.gitlab-ci.d/cirrus/macos-12.vars b/.gitlab-ci.d/cirrus/macos-13.vars
+similarity index 95%
+rename from .gitlab-ci.d/cirrus/macos-12.vars
+rename to .gitlab-ci.d/cirrus/macos-13.vars
+index 5f3fb346d1d..534f0299560 100644
+--- a/.gitlab-ci.d/cirrus/macos-12.vars
++++ b/.gitlab-ci.d/cirrus/macos-13.vars
+@@ -1,6 +1,6 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool variables macos-12 qemu
++#  $ lcitool variables macos-13 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
  
-         "tomli==2.0.1":
-         "939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc",
-diff --git a/python/wheels/meson-0.63.3-py3-none-any.whl b/python/wheels/meson-0.63.3-py3-none-any.whl
-deleted file mode 100644
-index 8a191e3a200eba6783297676729ec85ceb96f89d..0000000000000000000000000000000000000000
-Binary files a/python/wheels/meson-0.63.3-py3-none-any.whl and /dev/null differ
-diff --git a/python/wheels/meson-1.2.3-py3-none-any.whl b/python/wheels/meson-1.2.3-py3-none-any.whl
-new file mode 100644
-index 0000000000000000000000000000000000000000..a8b84e5f114ad3fbec8ae56008426a90bccfc168
-GIT binary patch
-Binary files /dev/null and b/python/wheels/meson-1.2.3-py3-none-any.whl differ
-diff --git a/pythondeps.toml b/pythondeps.toml
-index 4beadfd96f5..0e884159993 100644
---- a/pythondeps.toml
-+++ b/pythondeps.toml
-@@ -19,7 +19,7 @@
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index 92e7d30982e..2259f131b48 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -196,7 +196,7 @@ try:
+     # Cirrus packages lists for GitLab
+     #
+     generate_cirrus("freebsd-13")
+-    generate_cirrus("macos-12")
++    generate_cirrus("macos-13")
  
- [meson]
- # The install key should match the version in python/wheels/
--meson = { accepted = ">=0.63.0", installed = "0.63.3", canary = "meson" }
-+meson = { accepted = ">=0.63.0", installed = "1.2.3", canary = "meson" }
- 
- [docs]
- sphinx = { accepted = ">=1.6", installed = "5.3.0", canary = "sphinx-build" }
+     #
+     # VM packages lists
 -- 
 2.41.0
 
