@@ -2,53 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9299D7E8C78
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 21:11:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EFB17E8C8D
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 Nov 2023 21:20:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1uIY-0003UC-HD; Sat, 11 Nov 2023 15:09:42 -0500
+	id 1r1uS6-0006cX-Ed; Sat, 11 Nov 2023 15:19:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1r1uIT-0003To-TA
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 15:09:38 -0500
-Received: from mailout09.t-online.de ([194.25.134.84])
+ (Exim 4.90_1) (envelope-from
+ <BATV+309277d91504b99347a0+7384+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1r1uS3-0006bh-8x; Sat, 11 Nov 2023 15:19:31 -0500
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1r1uIO-0005YX-Qh
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 15:09:37 -0500
-Received: from fwd72.aul.t-online.de (fwd72.aul.t-online.de [10.223.144.98])
- by mailout09.t-online.de (Postfix) with SMTP id A55C1583FA;
- Sat, 11 Nov 2023 21:09:29 +0100 (CET)
-Received: from [192.168.211.200] ([93.236.156.187]) by fwd72.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1r1uIF-2jQsML0; Sat, 11 Nov 2023 21:09:23 +0100
-Message-ID: <0f4ace5b-7541-4b88-bdd1-f78aed90d01f@t-online.de>
-Date: Sat, 11 Nov 2023 21:09:23 +0100
+ (Exim 4.90_1) (envelope-from
+ <BATV+309277d91504b99347a0+7384+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1r1uS1-0000g2-BC; Sat, 11 Nov 2023 15:19:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+ :MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:
+ Sender:Reply-To:Content-ID:Content-Description;
+ bh=h5oxW5dgHw8XVPfXbwVF8tdSJ71sift0mn8OzSj2xw8=; b=QtqAWbtTKe/mQ7HwXCF9gjnyPU
+ VOSYRiSgCMwxZpYkJk8SEs+4dutFlA3RoDD0u1PV9H8Xh/SaI8SfcvHzAe5Ie8vI/kU2JSMuf6XYW
+ 4A49d0TCnlkjtKs3FcXSWY4StKVPpQlmuW2W74VkgiIxuz5DvWRfg02vU7d/Cof8eooAZhkkeMw+f
+ T/7KvoN2HKhB9LOR+0tMNxljBi26o76xnMHuVcZBMziAiB6gMXiXtCcIjUvK43FwQw4ktBXMy1uRl
+ fETc+tzG3Ld3E5cmGKBos21VP1DqgL5sBWcss/sx4zryD//+uGCxI6koXyo1eOPirLGD7aRy5N+Za
+ zkG/w2Zg==;
+Received: from [31.94.72.62] (helo=[127.0.0.1])
+ by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+ id 1r1uRO-00H0a4-2z; Sat, 11 Nov 2023 20:19:00 +0000
+Date: Sat, 11 Nov 2023 15:18:35 -0500
+From: David Woodhouse <dwmw2@infradead.org>
+To: Andrew Cooper <andrew.cooper3@citrix.com>,
+ Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>,
+ "open list:Block layer core" <qemu-block@nongnu.org>
+Subject: Re: [PATCH v1 1/7] xen-block: Do not write frontend nodes
+User-Agent: K-9 Mail for Android
+In-Reply-To: <db50c864-a429-49af-9762-8bc17d5b0336@citrix.com>
+References: <20231110204207.2927514-1-volodymyr_babchuk@epam.com>
+ <20231110204207.2927514-2-volodymyr_babchuk@epam.com>
+ <f2f7751a9ea5597e9f7a1417b761fe0802892aa8.camel@infradead.org>
+ <db50c864-a429-49af-9762-8bc17d5b0336@citrix.com>
+Message-ID: <0F786C80-FB37-4AEB-8314-3DB4AC4600E5@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: disable-pie build
-To: Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>
-References: <610aad34-da0b-4b8a-aa22-4ad19513ae28@tls.msk.ru>
- <CABgObfYMct5NwGuYtOsFdEYaV6U=Ahe8zMPc_8QRh5a-cs_SEQ@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
-In-Reply-To: <CABgObfYMct5NwGuYtOsFdEYaV6U=Ahe8zMPc_8QRh5a-cs_SEQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TOI-EXPURGATEID: 150726::1699733363-3BFFC95D-7FF98E90/0/0 CLEAN NORMAL
-X-TOI-MSGID: c3a336b1-d6a3-4525-b7f6-636b48fa9288
-Received-SPF: pass client-ip=194.25.134.84; envelope-from=vr_qemu@t-online.de;
- helo=mailout09.t-online.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+309277d91504b99347a0+7384+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,53 +81,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 11.11.23 um 17:09 schrieb Paolo Bonzini:
-> On Sat, Nov 11, 2023 at 3:40 AM Michael Tokarev <mjt@tls.msk.ru> wrote:
->> Hi!
->>
->> It looks like --disable-pie configure, which uses -fno-pie -no-pie flags
->> for the compiler, is broken: it does not not tell the *linker* about the
->> option, so the link fails (at least on debian bookworm):
-> Looks good, if you can send a patch perhaps Stefan can apply it (or
-> someone else can handle it in my stead, because I'm away next week).
+On 11 November 2023 08:43:40 GMT-05:00, Andrew Cooper <andrew=2Ecooper3@cit=
+rix=2Ecom> wrote:
+>Furthermore, the control domain doesn't always have the domid of 0=2E
 >
-> Paolo
+>If qemu wants/needs to make changes like this, the control domain has to
+>arrange for qemu's domain to have appropriate permissions on the nodes=2E
 
-No, this doesn't look good. This patch again breaks the native Windows
-build with MSYS2 and mingw64 cross compile probably too.
+Right=2E And that's simple enough: if you are running QEMU in a domain whi=
+ch doesn't have permission to create the backend directory and/or the front=
+end nodes, don't ask it to *create* devices=2E In that case it is only able=
+ to connect as the backend for devices which were created *for* it by the t=
+oolstack=2E
 
-See
+The criterion used in this patch series should be "did QEMU create this de=
+vice, or discover it"=2E
 
-https://gitlab.com/qemu-project/qemu/-/issues/1664
-
-https://lore.kernel.org/qemu-devel/20230522080816.66320-1-pbonzini@redhat.com/
-https://lore.kernel.org/qemu-devel/20230523073029.19549-1-pbonzini@redhat.com/
-
-and the big comment above the changed lines in meson.build.
-
-With best regards,
-Volker
-
->> /usr/bin/ld: libcommon.fa.p/hw_core_cpu-common.c.o: relocation R_X86_64_32 against `.rodata' can not be used when making a PIE object; recompile with
->> -fPIE
->> /usr/bin/ld: failed to set dynamic section sizes: bad value
->>
->> This is failing for *all* executables, including tests, qemu-img, etc.
->>
->> The following change fixes it:
->>
->> diff --git a/meson.build b/meson.build
->> index a9c4f28247..0b7ca45d48 100644
->> --- a/meson.build
->> +++ b/meson.build
->> @@ -278,7 +278,8 @@ endif
->>   # tries to build an executable instead of a shared library and fails.  So
->>   # don't add -no-pie anywhere and cross fingers. :(
->>   if not get_option('b_pie')
->> -  qemu_common_flags += cc.get_supported_arguments('-fno-pie', '-no-pie')
->> +  qemu_common_flags += cc.get_supported_arguments('-fno-pie')
->> +  qemu_ldflags += cc.get_supported_arguments('-no-pie')
->>   endif
->>
->>   if not get_option('stack_protector').disabled()
 
