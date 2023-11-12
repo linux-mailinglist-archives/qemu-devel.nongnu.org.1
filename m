@@ -2,75 +2,122 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E15257E91EC
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 19:07:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D527E7E91F4
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 19:11:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2Eqh-0006dl-WB; Sun, 12 Nov 2023 13:06:20 -0500
+	id 1r2Euq-0008Se-1b; Sun, 12 Nov 2023 13:10:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1r2Eqe-0006Zk-UK
- for qemu-devel@nongnu.org; Sun, 12 Nov 2023 13:06:17 -0500
-Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1r2Eqd-0002Tr-8W
- for qemu-devel@nongnu.org; Sun, 12 Nov 2023 13:06:16 -0500
-Received: by mail-oo1-xc2d.google.com with SMTP id
- 006d021491bc7-58441865ffaso2297136eaf.1
- for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 10:06:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699812373; x=1700417173; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cgM1ef5iYsHSZAGhHL/+J8RcX2j082SQkcMyzcx7HsM=;
- b=ZLSgVzGmk2pWG0Y4vTrbv77POFCHhCTSmbfTq3vy4OvX1biA0Qz3Va/bAsUCJWWLsT
- qQgd2QPzpuX4TO0JN7c+5FPGws5Hoq9rExZD7KyNuptP3T1uDZr3OZKTXhLkw4/Kd/WS
- GF8y7827xqUS9oTjJ9dEnuhuEzST7MeySBuEX160Klzqn3U30coF69DklkguyHnuXiux
- WXAYdk0FM35G8xwtzrLrQDgWOm28va7HhZbTPuQkVrnpi1J/YFLe4bt18xxsYhaXojZI
- +kSvSePJt0SJR0p/NSQQNJT+PLOfOxjNEAuXSivrzqMqgrPZ7yNF4EQUDLuG6iCf/CE2
- Qnuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699812373; x=1700417173;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cgM1ef5iYsHSZAGhHL/+J8RcX2j082SQkcMyzcx7HsM=;
- b=FOXZ4lNFux3G605xvDmliAOUZjuo/ZBBY/rPu0r+LRsahvOdvL263Kq0wUdN/squVf
- ialORqUEt1+f+Ijs6QWYdj+p2Wph44oQX1BG1BqQ9ajnqOmAA5YJZpk9/AawNO0TR4iG
- B+9Y6MVHQYaI5TbdYfx6iOZ4/2HrS4w+SlDVuoiS/V38Ftsi0ygML6nICwtWTnMtFYbe
- I4Mz76EIqsdFk2V5JejIgtllQpHwQjb2rpK2PxR2fyDevh4/PjOQmQlnH+MpnSMFm4BZ
- PlAml9Zz7M7Uy3RLKqvdzl58Q3wnzQxxHnjHsu/jSfSDAZwDiCJ/2WsSceBuGLXcPlQA
- 17dQ==
-X-Gm-Message-State: AOJu0YwcbAXmcI0xpTr7lEViCBB4J2s16+LO8PWUU2PHZ2ymPeheDle7
- 8RkQTDOD9HAOER6yUwm/lDXtTOuaKts0n4uIjOA=
-X-Google-Smtp-Source: AGHT+IHyQFIMAmxK1iGprsg7vcV/pfacLmmk9gNuxzQCbvPRIFNU3SbpBxiWFFQGENOdGUVE4zP58SLpVFSY67ZevFA=
-X-Received: by 2002:a05:6820:29b:b0:584:1457:a52a with SMTP id
- q27-20020a056820029b00b005841457a52amr5543027ood.3.1699812373657; Sun, 12 Nov
- 2023 10:06:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1r2Euk-0008ST-NZ
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 13:10:31 -0500
+Received: from mout.gmx.net ([212.227.15.18])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1r2Eui-00034R-2s
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 13:10:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+ t=1699812624; x=1700417424; i=deller@gmx.de;
+ bh=dmzmMyMjczxso0kxGqDzMzCWO5TWm8A92Ite3y6xN1A=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+ In-Reply-To;
+ b=TostYpdSPMOzUZ1iggw1yBeBJoS0OhtDaZ1kuzo2So67z6R3zUgwbl/XDdra9VW6
+ 7NGrEVpHFfOlgwdX451Te/MW3AZrZ5WMr2e3FoHdnMfwy1zMndI1OviPTYFiVXY1h
+ kd6ZBNdt8PlLZ3LjRow/RlfvhTYXa/UM31KITzBarv2esxCx+4gEmp/BUFhGN3drs
+ dn/vtoWlP+txWJyG17k1eBFaZi+6VoZ1aCoCRc3eyH/U/wjvUTQQcNZZAolJhOB8A
+ bsm8i8nmV4MmhVgwpxQ0F5t2p90EgfCaoAX0ZKlG1IGNAicJuSnOZgG+m9RRN0eOF
+ kx5Q3PPSbVn+Ty4O2Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.148.50]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MUGi9-1qtosl1Xet-00RFaF; Sun, 12
+ Nov 2023 19:10:24 +0100
+Message-ID: <fe3939cb-5292-41dc-9c2b-f9c69b8567da@gmx.de>
+Date: Sun, 12 Nov 2023 19:10:23 +0100
 MIME-Version: 1.0
-References: <20231111152923.966998-1-pbonzini@redhat.com>
-In-Reply-To: <20231111152923.966998-1-pbonzini@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Sun, 12 Nov 2023 13:06:01 -0500
-Message-ID: <CAJSP0QX52-a4ECrAm=+5ho3W-Eo7o8vfx5T0JX+h+j_9HDVRRw@mail.gmail.com>
-Subject: Re: [PULL 0/6] Biuld system and CI changes for 2023-11-10
-To: Paolo Bonzini <pbonzini@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/11] target/hppa: Update to SeaBIOS-hppa version 11
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
+References: <20231111013212.229673-1-richard.henderson@linaro.org>
+ <20231111013212.229673-2-richard.henderson@linaro.org>
+ <a8d30a85-389e-442e-8dc0-dfec07107bc1@linaro.org>
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <a8d30a85-389e-442e-8dc0-dfec07107bc1@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Provags-ID: V03:K1:Xi24F8Rxgk3LaezuMJc/aqEf+aKaZvaxeafSY1qyDppNKn7/VQM
+ o3S1q8votieFSX/ltiQnRAi45qRXvyn7mpEixQiwvGw1jNp9PIEQjT5CF27lT5qP8lmejGp
+ Aawj7tpFiMcy2BErwnkqxBB8X63hGbZi7QWHtKpJChOkJdl6/gOHKH+EnDkLq0Ee6XHM/xH
+ 2jc3+mzmbfTlXlBmapOPQ==
+UI-OutboundReport: notjunk:1;M01:P0:G8RBRDuR/Eg=;6dRiQWTVPYWMjtpy6c8ox2w16UA
+ mVMGa+yyuuQYEkXTJdnc9KjT2hEEDm8qMgdBnlfBDuFu6gL+kM3QLkLjoMAHAXILVHQoDza8n
+ myN9iHUg24dQDVNAge0BgEQEqKUUMB43hnpqGCQd8aNBfGukU8YUe7UTkRpNNQoU1/HO0yXV/
+ iL8rP18YZsQqPvXu6/KfD+Cz9dl90wkQu0Rs5ARCEBR4yroO2WnDbjVLSYYI/L5fwyMei7cp3
+ T8cvKopVL6fxCaLjtTlE1NdtPg1tBj4T+/s3ziKiThESIA1i1jnRPiP5YfdhKgk6hQaBijzZv
+ bRxpP/k4Lr+av+WQTNxZusnqVFdRHzArJUARjWud/CzZL9Y6+5TpvZdgux7rFLE4Zz49yiMhS
+ 2Ajgsram3HowQ2sMrmEEuzZ34vDQeqEN+T76Z+zEeDWSB/hijj2KMxwnrZhXY01l2WJG8ZJQA
+ ocPO9msH4V7xKplDF0FrhkruOD05iiLjTnjAY9Tmr05Ah42xdA/eLtjOWZ+wqm63SgF9iFbZy
+ 4N8twMUleepoOqJxy75tQAo5z6aIaKceq4tcKlFvKbVN6vLkh0yn2UT6Fd4tCJIYlWvaI62yG
+ KDN8H30Sr5o3n6cQIob6K6n1N+d8PZ00xJz7RWv+Y3Jx3hVydFZNbh9ChWPWRyQKbfkz8hla7
+ utPM4KFJkrpSxOZ8C1sLqwKalIP5Bd56QIvOYvwvsmk9pH5UjATOv+zo7uphBoyn09ei/0SFB
+ 01ZjqYNpg3zL+49WQnCsPAp8QSvYPSoCB+2z89FTvS5tLNop1vO+0fkg+Ki1FKrwck4geMJFP
+ MjQwxxK61XwcRsi5ZSRlYwStrif/QDe69IwSHRf9tCMBt2i9aWAFgJS7v8nnR4S4JVY6PyLje
+ FlKPCrl7Mmd18MtG5vjAQ9c94tY1TscAzKA8rfSs0E75tspvFozm+5xmk/mn4M7L/F6Q31Yzh
+ NnqiDA==
+Received-SPF: pass client-ip=212.227.15.18; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,101 +133,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 11 Nov 2023 at 23:30, Paolo Bonzini <pbonzini@redhat.com> wrote:
+On 11/12/23 18:05, Philippe Mathieu-Daud=C3=A9 wrote:
+> Hi Helge,
 >
-> The following changes since commit ad6ef0a42e314a8c6ac6c96d5f6e607a1e5644=
-b5:
+> On 11/11/23 02:32, Richard Henderson wrote:
+>> From: Helge Deller <deller@gmx.de>
+>>
+>> New SEABIOS_HPPA_VERSION 11
+>> (current master branch)
+>>
+>> Fixes and enhancements (mostly to enable 64-bit Linux kernel):
+>> ....
+>> temporary commit
 >
->   Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging =
-(2023-11-09 08:26:01 +0800)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/bonzini/qemu.git tags/for-upstream
->
-> for you to fetch changes up to 1d802d050caeff83add1054bee1fc9f98e59a3f2:
->
->   .gitlab-ci.d/cirrus: Add manual testing of macOS 14 (Sonoma) (2023-11-1=
-0 10:39:05 +0100)
->
-> ----------------------------------------------------------------
-> * document what configure does with virtual environments
-> * Bump known good meson version to v1.2.3
-> * Upgrade macOS to 13 (Ventura) and Add manual testing of macOS 14 (Sonom=
-a)
-> * use simple assertions instead of Coverity models
+> What information should go here?
 
-I'm not sure which commit causes this, but there is an msys failure:
+Heh... yes... this was a commit during development and not planned to be c=
+ommitted as is.
+See here (or below) for the "replacement" commit:
+https://github.com/hdeller/qemu-hppa/commit/e5271cd0f3b114f4ef518409f1934e=
+fd0a77d0cf
 
-"gcc" "-m64" "-mcx16" -o tests/plugin/libbb.dll
-plugins/qemu_plugin_api.lib tests/plugin/libbb.dll.p/bb.c.obj
-tests/plugin/libbb.dll.p/.._.._contrib_plugins_win32_linker.c.obj
-"-Wl,--allow-shlib-undefined" "-shared" "-Wl,--start-group"
-"-Wl,--out-implib=3Dtests/plugin/libbb.dll.a" "-fstack-protector-strong"
-"-Wl,--no-seh" "-Wl,--nxcompat" "-Wl,--dynamicbase"
-"-Wl,--high-entropy-va" "-Wl,--warn-common"
-"C:/GitLab-Runner/builds/qemu-project/qemu/msys64/mingw64/lib/libglib-2.0.d=
-ll.a"
-"C:/GitLab-Runner/builds/qemu-project/qemu/msys64/mingw64/lib/libintl.dll.a=
-"
-"C:/GitLab-Runner/builds/qemu-project/qemu/msys64/mingw64/lib/libgmodule-2.=
-0.dll.a"
-"-lkernel32" "-luser32" "-lgdi32" "-lwinspool" "-lshell32" "-lole32"
-"-loleaut32" "-luuid" "-lcomdlg32" "-ladvapi32" "-Wl,--end-group"
-C:/GitLab-Runner/builds/qemu-project/qemu/msys64/mingw64/bin/../lib/gcc/x86=
-_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe:
-tests/plugin/libbb.dll.p/bb.c.obj:bb.c:(.text+0x219): undefined
-reference to `__imp_qemu_plugin_outs'
+Either Richard will include it, or I'll send it for review seperately:
 
-Here is the failing output with this PR applied:
-https://gitlab.com/qemu-project/qemu/-/jobs/5516759417
+target/hppa: Update to SeaBIOS-hppa from version 10 to 12
 
-Here is the master branch's passing output:
-https://gitlab.com/qemu-project/qemu/-/jobs/5513282154
+SEABIOS_HPPA_VERSION 12 contains those fixes and enhancements:
+     - Reduce debug level
+     - Update README file for PA-RISC
+     - Fix debug name of CPU_HPA_xx if xx >=3D 10
+     - Disable device indexing
 
-Please take a look. Thanks!
+SEABIOS_HPPA_VERSION 11 contains those fixes and enhancements
+(mostly to enable support for 64-bit Linux kernel):
+     - Fixed 64-bit CPU detection via "mfctl,w" instruction
+     - Implement PDC_PSW for 64-bit CPUs
+     - Added PAT PDC functions:
+         - PDC_PAT_CELL
+         - PDC_PAT_CHASSIS_LOG
+         - PDC_PAT_PD_GET_ADDR_MAP
+         - PDC_PAT_CPU
+     - Fix return value of PDC_CACHE_RET_SPID space-id bits
+     - Introduce new default software IDs for the machines
+     - Fix CPU and FPU model numbers
+     - Fix 64-bit SMP rendezvous
+     - Fix Linux 64-bit kernel crash in STI due to usage of unsigned
+       32-bit "next_font" pointer in sti header files
+     - Fix graphics output to LASI artist card on PA2.0 machines
+     - More USB OHCI endianess fixes
+     - Fixes which make ODE run on B160L
+     - Fixes which make ODE detect Astro Runway port and CPUs
+     - Implement "firmware unlocking" via PDC_MODEL/PDC_MODEL_CAPABILITIES=
+ call
+     - Add subfunction 2 for PDC_MODEL_VERSIONS
 
-Stefan
-
->
-> ----------------------------------------------------------------
-> Paolo Bonzini (2):
->       tests: respect --enable/--disable-download for Avocado
->       docs: document what configure does with virtual environments
->
-> Philippe Mathieu-Daud=C3=A9 (3):
->       buildsys: Bump known good meson version to v1.2.3
->       .gitlab-ci.d/cirrus: Upgrade macOS to 13 (Ventura)
->       .gitlab-ci.d/cirrus: Add manual testing of macOS 14 (Sonoma)
->
-> Vladimir Sementsov-Ogievskiy (1):
->       coverity: physmem: use simple assertions instead of modelling
->
->  .gitlab-ci.d/cirrus.yml                            |  22 +++++-
->  .../cirrus/{macos-12.vars =3D> macos-13.vars}        |   2 +-
->  .gitlab-ci.d/cirrus/macos-14.vars                  |  16 ++++
->  configure                                          |   9 ++-
->  docs/devel/build-system.rst                        |  88 +++++++++++++++=
-+++++-
->  python/scripts/vendor.py                           |   4 +-
->  python/wheels/meson-0.63.3-py3-none-any.whl        | Bin 926526 -> 0 byt=
-es
->  python/wheels/meson-1.2.3-py3-none-any.whl         | Bin 0 -> 964928 byt=
-es
->  pythondeps.toml                                    |   5 +-
->  scripts/coverity-scan/model.c                      |  88 ---------------=
-------
->  system/physmem.c                                   |  22 ++++++
->  tests/Makefile.include                             |   2 +-
->  tests/lcitool/libvirt-ci                           |   2 +-
->  tests/lcitool/refresh                              |   3 +-
->  14 files changed, 157 insertions(+), 106 deletions(-)
->  rename .gitlab-ci.d/cirrus/{macos-12.vars =3D> macos-13.vars} (95%)
->  create mode 100644 .gitlab-ci.d/cirrus/macos-14.vars
->  delete mode 100644 python/wheels/meson-0.63.3-py3-none-any.whl
->  create mode 100644 python/wheels/meson-1.2.3-py3-none-any.whl
-> --
-> 2.41.0
->
->
 
