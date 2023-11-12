@@ -2,76 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D37B7E91BD
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 18:03:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F78C7E920D
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 19:44:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2Dr8-0001eQ-T6; Sun, 12 Nov 2023 12:02:42 -0500
+	id 1r2FQZ-0005h1-US; Sun, 12 Nov 2023 13:43:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1r2Dr6-0001eD-8g; Sun, 12 Nov 2023 12:02:40 -0500
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1r2Dr4-0003mi-G9; Sun, 12 Nov 2023 12:02:40 -0500
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-280109daaaaso2634601a91.3; 
- Sun, 12 Nov 2023 09:02:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699808553; x=1700413353; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zQ/4kVMxDgVFBscaL5pK9uosa7HK5Qf+UQCYMWovAjo=;
- b=NeuwT/KPFhZ5BpMmI9KOpslAVmC9s3kgaarb0ETPIbVq+XYZjk3jaZyaAOXPxU4mau
- zB0d0yety3Bc6uzH7QtTa/g7KK78Titu2O8STnynBGSedifEbX/rxAyf4Vk2AqRqH3MV
- zzBEwAtTwBzBiY+wyft41eCDL7qtXn1tEgUUVWm0FdgWvoQHQNUa+5f6K8FzgXltF3de
- dlpUgvCVODI/uYg+treJ6ycJruSRtw4TNzOpf/wNcF2Wc+KN9rJQg2CRR0cw2r7qvifr
- 8ctz51+VMoGeyzaZK/B49W1502gDX5wvfBqPAql2UKSkxgSjbi9zY+UcDX3RSrmWNn96
- hd0Q==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1r2FQM-0005gj-TY
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 13:43:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1r2FQH-0002XU-6D
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 13:43:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699814584;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=mwTJKcwfepq5ihk6QtJsohNKQQcTYcatZflpB/K5Pf0=;
+ b=doPvCPmcYX9dBYrJhYeIPWxihdfMcVMw1D7v/HMDpkucbEaNX/iZMxOSY16k1klZ4/G670
+ NaTctPkh6t1BuCJ4igwgfjFzWcW6m2JWZsr+u30igH6bq40UzB6PdU1y3k+F4/JFPamkZz
+ 5nQnEhMPE0KsjiM3TWy99xMU8+AgEDY=
+Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
+ [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-53-6nRORqPPPhGwnovQgFChYQ-1; Sun, 12 Nov 2023 13:43:01 -0500
+X-MC-Unique: 6nRORqPPPhGwnovQgFChYQ-1
+Received: by mail-ua1-f72.google.com with SMTP id
+ a1e0cc1a2514c-7b9b2b08b42so4184690241.1
+ for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 10:43:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699808553; x=1700413353;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zQ/4kVMxDgVFBscaL5pK9uosa7HK5Qf+UQCYMWovAjo=;
- b=AkHTqkdeu6fwIUcGFaTQcH+u0TG7WTOiYrVqgXrPNZFsI6kPbc0ZYm+HFaGdDwJZ8w
- Iv13MADWmMnHSiav8/dtlp1BM3+0NlV04AZTCd0Z49qod/tgOcRDZdt8JVzoXQZY+xNh
- ewO2HOTvRoI0lqJg3hlI5FYnWijJMwJw8brNtPq4SEVHP+F7gW04tXSsLB6wg4rmq7I/
- ZEBXPOtQe5uJbMOUFXC+xLVYEEE7pCd+BwS2j01IV+EctnQAuZfqqJNd1iz8YocqdNuP
- a0JHOuFPtiH/WRBuHRzFWgZ8D5iDIfRZC8Xs+D0+iCHMxI4Ou1OS0YJPygSv9fcAslJ+
- mzTw==
-X-Gm-Message-State: AOJu0Yx6Axkf7uuf5fZugzxmlq1N56bN/AJQB5+HBDZaifJgwi6vPnDP
- ggxuj36FqzhUEcvjXXc+fGlh4HOIPKe0Q+Y4dsiw3/osPQcUOg==
-X-Google-Smtp-Source: AGHT+IEedYOr8BQO6+aHN0VD63I9oVUDPmKgz/0ReWWPf3B3ktcoDFmN9US4mFCqqef8pfXa27WwXU5Spis94MleGeU=
-X-Received: by 2002:a17:90b:4f45:b0:280:2935:af23 with SMTP id
- pj5-20020a17090b4f4500b002802935af23mr2735076pjb.5.1699808553051; Sun, 12 Nov
- 2023 09:02:33 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699814581; x=1700419381;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mwTJKcwfepq5ihk6QtJsohNKQQcTYcatZflpB/K5Pf0=;
+ b=P1QCaZammXfQa4qMIyp6nfGYB4ISB50ZmUPJJ4XJD3hye8hghHVNuWJs5bL0zafPhu
+ okk25ZqCESKKyonPcTZ+KOimU3HeoFkLKlYhSct4RoCrS/mFnHVqmaZo+cHIn5NHqWGl
+ YB6qMYtdaCR11epKlEzvjDgAEDn5IYl5UPjNMycE2KoWa7oXWa2KtGp9rWPkwdx4PnNz
+ Yw019A4rjbHlYoTFcRQeCvX6s15aC91Jq73EBlg4kAipfurs9zHZBxHydo6iur9SlNYf
+ K0Da6xedBvLSCGz6zfsZuOzk/hH5HOzVU/59V3++pk+C3VxhSttDxGh1z6avslE+DHto
+ 4vYw==
+X-Gm-Message-State: AOJu0Yx4xgi3rFq+JS9BZlGy8jtOKrtJalNQr4E0lY3i2xneA5gAH8D0
+ QOiPN+1A5ToRNbr0zkqP9bi6odAIPkMB7O7gcn6PxWnRlcjEpvBRp2DL5KXe7fjGUNyKcbc3Q16
+ 7hzaDKDHV6LJta1KLsEtDa8DKtIkosrNMecNKktCUUg==
+X-Received: by 2002:a05:6102:c9:b0:452:6478:3e24 with SMTP id
+ u9-20020a05610200c900b0045264783e24mr3456802vsp.12.1699814580828; 
+ Sun, 12 Nov 2023 10:43:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEb+7heKdfjBZVu/GcJ7bN0NoPRd3SJxlXypaa4uGcCNIU27hM8JMYh2bqQ2bLa4kpAnANPtzTeP/ETyUTDMnU=
+X-Received: by 2002:a05:6102:c9:b0:452:6478:3e24 with SMTP id
+ u9-20020a05610200c900b0045264783e24mr3456798vsp.12.1699814580522; Sun, 12 Nov
+ 2023 10:43:00 -0800 (PST)
 MIME-Version: 1.0
-References: <20231111112252.1387418-1-jcmvbkbc@gmail.com>
- <69b0cb84-329e-4636-b7a0-24ba69fa41b7@linaro.org>
-In-Reply-To: <69b0cb84-329e-4636-b7a0-24ba69fa41b7@linaro.org>
-From: Max Filippov <jcmvbkbc@gmail.com>
-Date: Sun, 12 Nov 2023 09:02:21 -0800
-Message-ID: <CAMo8BfLfqUPrpTrBGnv3rEcyyKByqA-NCP2yP0PtUr9bhH98ZQ@mail.gmail.com>
-Subject: Re: [PATCH] linux-user: xtensa: fix signal delivery in FDPIC
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>,
- qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=jcmvbkbc@gmail.com; helo=mail-pj1-x1034.google.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <610aad34-da0b-4b8a-aa22-4ad19513ae28@tls.msk.ru>
+In-Reply-To: <610aad34-da0b-4b8a-aa22-4ad19513ae28@tls.msk.ru>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Sun, 12 Nov 2023 18:03:47 +0100
+Message-ID: <CABgObfYYnwD+hP2kh=O0jWG5soVno4hNy2iicszgXm--5CyFUg@mail.gmail.com>
+Subject: Re: disable-pie build
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: QEMU Developers <qemu-devel@nongnu.org>
+Content-Type: multipart/alternative; boundary="00000000000041a9270609f8ecff"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,95 +92,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Nov 12, 2023 at 8:51=E2=80=AFAM Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 11/11/23 03:22, Max Filippov wrote:
-> > In FDPIC signal handlers are passed around as FD pointers. Actual code
-> > address and GOT pointer must be fetched from memory by the QEMU code
-> > that implements kernel signal delivery functionality. This change is
-> > equivalent to the following kernel change:
-> > 9c2cc74fb31e ("xtensa: fix signal delivery to FDPIC process")
-> >
-> > Cc: qemu-stable@nongnu.org
-> > Fixes: d2796be69d7c ("linux-user: add support for xtensa FDPIC")
-> > Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-> > ---
-> >   linux-user/xtensa/signal.c | 28 ++++++++++++++++++++++++++--
-> >   1 file changed, 26 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/linux-user/xtensa/signal.c b/linux-user/xtensa/signal.c
-> > index f5fb8b5cbebe..32dcfa522919 100644
-> > --- a/linux-user/xtensa/signal.c
-> > +++ b/linux-user/xtensa/signal.c
-> > @@ -157,6 +157,9 @@ void setup_rt_frame(int sig, struct target_sigactio=
-n *ka,
-> >   {
-> >       abi_ulong frame_addr;
-> >       struct target_rt_sigframe *frame;
-> > +    int is_fdpic =3D info_is_fdpic(((TaskState *)thread_cpu->opaque)->=
-info);
-> > +    abi_ulong handler =3D 0;
-> > +    abi_ulong handler_fdpic_GOT =3D 0;
-> >       uint32_t ra;
-> >       bool abi_call0;
-> >       unsigned base;
-> > @@ -165,6 +168,17 @@ void setup_rt_frame(int sig, struct target_sigacti=
-on *ka,
-> >       frame_addr =3D get_sigframe(ka, env, sizeof(*frame));
-> >       trace_user_setup_rt_frame(env, frame_addr);
-> >
-> > +    if (is_fdpic) {
-> > +        abi_ulong funcdesc_ptr =3D ka->_sa_handler;
-> > +
-> > +        if (get_user_ual(handler, funcdesc_ptr)
-> > +            || get_user_ual(handler_fdpic_GOT, funcdesc_ptr + 4)) {
-> > +            goto give_sigsegv;
-> > +        }
-> > +    } else {
-> > +        handler =3D ka->_sa_handler;
-> > +    }
->
-> This part is ok, with the last hunk, because it's taking care of the fd f=
-or the handler.
->
-> > @@ -185,14 +199,21 @@ void setup_rt_frame(int sig, struct target_sigact=
-ion *ka,
-> >       }
-> >
-> >       if (ka->sa_flags & TARGET_SA_RESTORER) {
-> > -        ra =3D ka->sa_restorer;
-> > +        if (is_fdpic) {
-> > +            if (get_user_ual(ra, ka->sa_restorer)) {
-> > +                unlock_user_struct(frame, frame_addr, 0);
-> > +                goto give_sigsegv;
-> > +            }
-> > +        } else {
-> > +            ra =3D ka->sa_restorer;
-> > +        }
->
-> This part is questionable.  It does match the kernel, so as far as that g=
-oes,
->
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->
-> However, it does not handle the GOT register for the restorer, like we do=
- on ARM.  That
-> said, I can't find any libc sources for xtensa, or at least that aren't o=
-ut of date by a
+--00000000000041a9270609f8ecff
+Content-Type: text/plain; charset="UTF-8"
 
-It's WIP, available at https://github.com/jcmvbkbc/uclibc-ng-xtensa
-branch xtensa-1.0.44-fdpic
+Il sab 11 nov 2023, 03:40 Michael Tokarev <mjt@tls.msk.ru> ha scritto:
 
-> decade, so I can't tell if libc *knows* the got register won't be loaded,=
- and it doesn't
-> matter because it only uses the sigreturn syscall.
+> Hi!
+>
+> It looks like --disable-pie configure, which uses -fno-pie -no-pie flags
+> for the compiler, is broken: it does not not tell the *linker* about the
+> option, so the link fails (at least on debian bookworm):
+>
+> /usr/bin/ld: libcommon.fa.p/hw_core_cpu-common.c.o: relocation R_X86_64_32
+> against `.rodata' can not be used when making a PIE object; recompile with
+> -fPIE
+> /usr/bin/ld: failed to set dynamic section sizes: bad value
+>
+> This is failing for *all* executables, including tests, qemu-img, etc.
+>
 
-That's the case. AFAU the restorer field is not for public use and the func=
-tion
-used as a restorer by the uclibc does not care about the GOT pointer.
+Is this new in bookworm? And also can you compare 8.0, 8.1 and 8.2?
 
---=20
-Thanks.
--- Max
+Paolo
+
+The following change fixes it:
+>
+> diff --git a/meson.build b/meson.build
+> index a9c4f28247..0b7ca45d48 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -278,7 +278,8 @@ endif
+>   # tries to build an executable instead of a shared library and fails.  So
+>   # don't add -no-pie anywhere and cross fingers. :(
+>   if not get_option('b_pie')
+> -  qemu_common_flags += cc.get_supported_arguments('-fno-pie', '-no-pie')
+> +  qemu_common_flags += cc.get_supported_arguments('-fno-pie')
+> +  qemu_ldflags += cc.get_supported_arguments('-no-pie')
+>   endif
+>
+>   if not get_option('stack_protector').disabled()
+>
+>
+>
+
+--00000000000041a9270609f8ecff
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">Il sab 11 nov 2023, 03:40 Michael Tokarev &lt;<a href=
+=3D"mailto:mjt@tls.msk.ru">mjt@tls.msk.ru</a>&gt; ha scritto:<br></div><blo=
+ckquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #c=
+cc solid;padding-left:1ex">Hi!<br>
+<br>
+It looks like --disable-pie configure, which uses -fno-pie -no-pie flags<br=
+>
+for the compiler, is broken: it does not not tell the *linker* about the<br=
+>
+option, so the link fails (at least on debian bookworm):<br>
+<br>
+/usr/bin/ld: libcommon.fa.p/hw_core_cpu-common.c.o: relocation R_X86_64_32 =
+against `.rodata&#39; can not be used when making a PIE object; recompile w=
+ith <br>
+-fPIE<br>
+/usr/bin/ld: failed to set dynamic section sizes: bad value<br>
+<br>
+This is failing for *all* executables, including tests, qemu-img, etc.<br><=
+/blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">Is th=
+is new in bookworm? And also can you compare 8.0, 8.1 and 8.2?</div><div di=
+r=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"auto"><br></d=
+iv><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_=
+quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1=
+ex">The following change fixes it:<br>
+<br>
+diff --git a/meson.build b/meson.build<br>
+index a9c4f28247..0b7ca45d48 100644<br>
+--- a/meson.build<br>
++++ b/meson.build<br>
+@@ -278,7 +278,8 @@ endif<br>
+=C2=A0 # tries to build an executable instead of a shared library and fails=
+.=C2=A0 So<br>
+=C2=A0 # don&#39;t add -no-pie anywhere and cross fingers. :(<br>
+=C2=A0 if not get_option(&#39;b_pie&#39;)<br>
+-=C2=A0 qemu_common_flags +=3D cc.get_supported_arguments(&#39;-fno-pie&#39=
+;, &#39;-no-pie&#39;)<br>
++=C2=A0 qemu_common_flags +=3D cc.get_supported_arguments(&#39;-fno-pie&#39=
+;)<br>
++=C2=A0 qemu_ldflags +=3D cc.get_supported_arguments(&#39;-no-pie&#39;)<br>
+=C2=A0 endif<br>
+<br>
+=C2=A0 if not get_option(&#39;stack_protector&#39;).disabled()<br>
+<br>
+<br>
+</blockquote></div></div></div>
+
+--00000000000041a9270609f8ecff--
+
 
