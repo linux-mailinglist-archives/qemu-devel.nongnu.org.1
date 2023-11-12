@@ -2,91 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FCD67E92BD
+	by mail.lfdr.de (Postfix) with ESMTPS id 571BB7E92BC
 	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 21:38:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2HD4-00026a-US; Sun, 12 Nov 2023 15:37:34 -0500
+	id 1r2HDJ-00027v-HV; Sun, 12 Nov 2023 15:37:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r2HD3-00026S-En
- for qemu-devel@nongnu.org; Sun, 12 Nov 2023 15:37:33 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r2HDH-00027R-P6
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 15:37:47 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r2HD1-0003wX-Oz
- for qemu-devel@nongnu.org; Sun, 12 Nov 2023 15:37:33 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40806e4106dso21551155e9.1
- for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 12:37:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r2HDF-0003yP-Rl
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 15:37:47 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1cc5fa0e4d5so33827855ad.0
+ for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 12:37:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699821449; x=1700426249; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=piE5yixx1rUhhuatPeS2Qkl4Lqntg8uWoigQoIXZVfM=;
- b=QgmMJjdbjRN4zxH+jDEOcv/KR4VmuABoyfSosWrxOFuI2OQ4Qt+VgPz9WoH4idRemy
- oCcD5RRQ8D+9aPeL9HLqtxJvcjnz4m/G7YdziIMz3hi5hWU6BQl1DYY1wba1rsdKlmeF
- tVusbltnr4beKUIRy+Z8Aoji9E7g89Q3zuQnsC/VgwPGL2cEg+mhY+xRXd1HiULk5QzS
- z0Fw+vnWb1DLNh/3wOU7R3kvOrWzZuCMnaOnU3vU9z5zI8CzYesLG4UHEEu5WamkrPyo
- jwr+ZLWDNgq2Ztylm1VZri23ixQZfQV/+wyZpiRZOmVLbKc7ZHLm2MTbi+S4jblyGGgu
- si2Q==
+ d=linaro.org; s=google; t=1699821462; x=1700426262; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=KJwigCwQnODeM/MJYbpu7CUZcAfEsZ1lZIpmbiVRMAo=;
+ b=zHiX1NiMELreGr1eksfwzkUwUrS0OtNRcu7xjTpgiCPwf3Q+VBSMOCa3WkdY7nRyfF
+ sDi+Nje6Yi372pXJX132j7eQ2UQkERNVlKiIAFjjQm7gcwLVyhTiLsVQceZ4LvpqY/Yw
+ 8k4ChlowSK0XEAHITfgePRzgya0ZEiwtufsMoOSvA9DK0t3JjPOqyYBn5JyCnhkOJ28e
+ oHOB8gz2kYL56CzVXiLgXC5taklqnAAmZ/eqvEV3Vnn6ORw+dwj7EvDDJJr7FVsGyHtz
+ Th+j5h0x8II01umMM4SfM9+wbG4GSOCs8BduaZJIo7CX88AhGXvq0M4rJVqbjCDzO8pW
+ xCZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699821449; x=1700426249;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=piE5yixx1rUhhuatPeS2Qkl4Lqntg8uWoigQoIXZVfM=;
- b=DaEHXz0AK9kbMpX+LRwTfj++jF+2zhtJKxPQmOB6fbdZpXbBEy6ZGZmlqe9MIYxxH2
- Fvb6Q2Pm8AZo8eo1HkTMSwg/mPlyN4G8pJBfqra7i5jumLmmB3dYDgMIfR0aNpPfASi4
- GW0wIR8wtBDWBO87FQ3ss037DoEvEcY55DNjyb4qfk2FmoLLc0romFEfeP5f5OpggK2r
- IQ4/yHF+l6XE3gEcQBNwe/rGQwtjSv98/+HAaDjOvJAFjLk5CoxBUXAVmrUJwLYLbfIU
- yhTVRqWWXXx2L7lwuib2iHBeqtJUtF2ZHy5avkBM2T2XKb8hD+zYEcnFBQ7aJaIDVMxM
- gPsw==
-X-Gm-Message-State: AOJu0YwU/BeXee+cQgs/R0YuS8AEeu5CCeA9/DIpRp9nYGZXUrZefYtI
- 3VQO4kNbkmsuRkTi1RXDK+o=
-X-Google-Smtp-Source: AGHT+IEuwcbyYUDhvrPtmS85IhFf5GK/mXVIP6g0nWCkiXCysRWPG1vLV3lKVXc5aU+3iV291pJu6g==
-X-Received: by 2002:a05:600c:1992:b0:406:51a0:17ea with SMTP id
- t18-20020a05600c199200b0040651a017eamr4677083wmq.10.1699821448803; 
- Sun, 12 Nov 2023 12:37:28 -0800 (PST)
-Received: from [192.168.199.91] (54-240-197-234.amazon.com. [54.240.197.234])
+ d=1e100.net; s=20230601; t=1699821462; x=1700426262;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KJwigCwQnODeM/MJYbpu7CUZcAfEsZ1lZIpmbiVRMAo=;
+ b=rx2Yk7JgLBbw7PNE/soP6X/ZK/tDK7CLozatS9DGbYS4Ad6LpZSkykyE7sjBIno/AR
+ rCQUp7v3gzGXw0rgW2fB28/jY9GOeb7RM1EjJ6nkCUIj2uHIJYxhJnPHayAn6PoeuBbK
+ gdx0Y+FeySFjMUs7W0gbqGOkEcykwScQbVZw2nrdOzlD0dEWU6hl7izjcu7+mGguxWoo
+ ljrnibmTliRIbYDk+mMlFJXM/K1B9KJOTtHWBVer7Srg9V76RIuZP/SXXGAozXOvLGL3
+ ekqtV7SxHjwslo35Cn4O7UtTxprTsLx/UDPVAyWkuVc7bX+fAwz43WlUSQpE7B5L83ss
+ DjYQ==
+X-Gm-Message-State: AOJu0YxyBzIDHsXJSzeDDsCQUtHXESxxbJjDXZQksDKwkrWczgW5BkED
+ 39uLDMnImCZty0QIcf2WXKJ4Pw==
+X-Google-Smtp-Source: AGHT+IGR7mdAKLhpBhegrzp/AXIPJIVr/XVsG881ZTvct0ziv6iNq+9GmcERAQNg3CrjEdfnRIeiDg==
+X-Received: by 2002:a17:902:e849:b0:1cc:53db:f53a with SMTP id
+ t9-20020a170902e84900b001cc53dbf53amr6891692plg.8.1699821462480; 
+ Sun, 12 Nov 2023 12:37:42 -0800 (PST)
+Received: from ?IPV6:2601:1c0:5e02:2a20:527b:de4f:d565:aeba?
+ ([2601:1c0:5e02:2a20:527b:de4f:d565:aeba])
  by smtp.gmail.com with ESMTPSA id
- ay15-20020a05600c1e0f00b0040586360a36sm11700180wmb.17.2023.11.12.12.37.27
+ e12-20020a170902d38c00b001a80ad9c599sm2884852pld.294.2023.11.12.12.37.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 12 Nov 2023 12:37:28 -0800 (PST)
-From: Paul Durrant <xadimgnik@gmail.com>
-X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <4886e994-6f4b-4d9f-97fc-9f6d7a8b3641@xen.org>
-Date: Sun, 12 Nov 2023 15:37:25 -0500
+ Sun, 12 Nov 2023 12:37:42 -0800 (PST)
+Message-ID: <747930b5-f3d4-45d9-9e66-071ad2847996@linaro.org>
+Date: Sun, 12 Nov 2023 12:37:38 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 5/7] xen-bus: Set offline if backend's state is
- XenbusStateClosed
+Subject: Re: [PATCH] linux-user: xtensa: fix signal delivery in FDPIC
 Content-Language: en-US
-To: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>,
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
-References: <20231110204207.2927514-1-volodymyr_babchuk@epam.com>
- <20231110204207.2927514-6-volodymyr_babchuk@epam.com>
-Organization: Xen Project
-In-Reply-To: <20231110204207.2927514-6-volodymyr_babchuk@epam.com>
+To: Max Filippov <jcmvbkbc@gmail.com>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>,
+ qemu-stable@nongnu.org
+References: <20231111112252.1387418-1-jcmvbkbc@gmail.com>
+ <69b0cb84-329e-4636-b7a0-24ba69fa41b7@linaro.org>
+ <CAMo8BfLfqUPrpTrBGnv3rEcyyKByqA-NCP2yP0PtUr9bhH98ZQ@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAMo8BfLfqUPrpTrBGnv3rEcyyKByqA-NCP2yP0PtUr9bhH98ZQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x335.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,54 +94,26 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/11/2023 15:42, Volodymyr Babchuk wrote:
-> From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+On 11/12/23 09:02, Max Filippov wrote:
+> On Sun, Nov 12, 2023 at 8:51 AM Richard Henderson
+>> However, it does not handle the GOT register for the restorer, like we do on ARM.  That
+>> said, I can't find any libc sources for xtensa, or at least that aren't out of date by a
 > 
-> Both state (XenbusStateClosed) and online (0) are expected by
-> toolstack/xl devd to completely destroy the device. But "offline"
-> is never being set by the backend resulting in timeout during
-> domain destruction, garbage in Xestore and still running Qemu
-> instance.
+> It's WIP, available at https://github.com/jcmvbkbc/uclibc-ng-xtensa
+> branch xtensa-1.0.44-fdpic
 > 
-> Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-> Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
-> ---
->   hw/xen/xen-bus.c | 4 ++++
->   1 file changed, 4 insertions(+)
+>> decade, so I can't tell if libc *knows* the got register won't be loaded, and it doesn't
+>> matter because it only uses the sigreturn syscall.
 > 
-> diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
-> index 75474d4b43..6e7ec3af64 100644
-> --- a/hw/xen/xen-bus.c
-> +++ b/hw/xen/xen-bus.c
-> @@ -519,6 +519,10 @@ static void xen_device_backend_changed(void *opaque, const char *path)
->           xen_device_backend_set_state(xendev, XenbusStateClosed);
->       }
->   
-> +    if (xen_device_backend_get_state(xendev) == XenbusStateClosed) {
-> +        xen_device_backend_set_online(xendev, false);
-> +    }
-> +
->       /*
->        * If a backend is still 'online' then we should leave it alone but,
->        * if a backend is not 'online', then the device is a candidate
+> That's the case. AFAU the restorer field is not for public use and the function
+> used as a restorer by the uclibc does not care about the GOT pointer.
 
-I don't understand what you're trying to do here. Just a few lines up 
-from this hunk there is:
+Right-o, thanks for the pointer.
 
-  506    if (xen_device_backend_scanf(xendev, "online", "%u", &online) 
-!= 1) {
-  507        online = 0;
-  508    }
-  509
-  510    xen_device_backend_set_online(xendev, !!online);
 
-Why is this not sufficient? What happens if the frontend decides to stop 
-and start (e.g. for a driver update)? I'm guessing the backend will be 
-destroyed... which is not very friendly.
+r~
 
-   Paul
 
