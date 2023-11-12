@@ -2,93 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A767E92C5
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 21:45:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 459A77E92D7
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 22:14:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2HJa-0004os-MX; Sun, 12 Nov 2023 15:44:18 -0500
+	id 1r2Hle-0002jh-BC; Sun, 12 Nov 2023 16:13:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r2HJN-0004oV-Lc
- for qemu-devel@nongnu.org; Sun, 12 Nov 2023 15:44:06 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r2HJL-00053m-8G
- for qemu-devel@nongnu.org; Sun, 12 Nov 2023 15:44:04 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40859c464daso30529085e9.1
- for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 12:44:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699821841; x=1700426641; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=nuKkz7mQOq17IJaC3wVcZl5PT7A/RGnCalTk1Z6cm4k=;
- b=DsqUD8/08J277T9fc3Wr4Iy7inQJGywCsRhnUCuKVgziWjpeNcrBTIKQXXgc9OqgAg
- jApDsK/Y0XuVYERulrpuB1GPgc08WatXMkMSd7qJ2iRXYIZEZwOGaaebq+lVwup5H5yT
- rTDO1QTm+szHKUKAohbORtMgaicBXm3I1hrnnddJt0LJBPIFWkPiT5sUQhuNvTKzF2i+
- mSHu5+NkyStYwsgIf79CdHzQt7ePi+kQAjT6bWhE0pB7i1Ot3vaYAqAMwXY+k/nMe33X
- rOrgBGNgatDmS2XqeCxaY9Dth/kCYG+O7ni5Wnwnoi+cbJOWjAi7lnuBX0keRbda0ODb
- Vj6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699821841; x=1700426641;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nuKkz7mQOq17IJaC3wVcZl5PT7A/RGnCalTk1Z6cm4k=;
- b=gmDi2hVt2EaGEJ9G1j1gFROKnCbdWpim4aitXLlJiSqpRMRvr0uZCXC1C9iVhFxu5F
- bR15mxS7nD2oZEdm1hZVbKYMoyNqkMY1+f1H8DhzAeVeEqs3xi4XpPCb5WKsgTmI7jY8
- a1amrl7sQG90maXmqvxy6q1C2SVDHINY0cf+SxhLJ80jMq1cgxuwcLN6vSJoEVg4Jrv4
- oNC25ioO3gvZoVzQhSQRthxQPSjV++zIiflmlEQKQR6SGaGMxVRikoKGDBwW8Umykw6o
- s245/5gjAX6LdTM5yhX3IQP54zvDGj2qYUTjGhG92vp55kkQRNx/v/OG2rOV4Qh9hUft
- rROA==
-X-Gm-Message-State: AOJu0Yyhtxj70wU2INkys2wSrS6mSs7AV4a4VEq1OEmbbjbmalJmXrCU
- I+gbETqO1z8F7QFtsTXGBv4=
-X-Google-Smtp-Source: AGHT+IHlMXE6LTQ+BDcUYetES5A5LmqI1g9ZnVfbIqmm9yoH0Db+HlTXJrXAQXM9VNjzLCvl28KiCA==
-X-Received: by 2002:a5d:47c2:0:b0:32d:a7c8:eaf7 with SMTP id
- o2-20020a5d47c2000000b0032da7c8eaf7mr5145496wrc.20.1699821840859; 
- Sun, 12 Nov 2023 12:44:00 -0800 (PST)
-Received: from [192.168.199.91] (54-240-197-234.amazon.com. [54.240.197.234])
- by smtp.gmail.com with ESMTPSA id
- d11-20020a5d4f8b000000b0032d829e10c0sm3912544wru.28.2023.11.12.12.43.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 12 Nov 2023 12:44:00 -0800 (PST)
-From: Paul Durrant <xadimgnik@gmail.com>
-X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <bfa9e029-9d86-4a44-a7d4-c182bf816d84@xen.org>
-Date: Sun, 12 Nov 2023 15:43:57 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/7] xen: xenstore: add possibility to preserve owner
-Content-Language: en-US
-To: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: David Woodhouse <dwmw2@infradead.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>,
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
+ (Exim 4.90_1) (envelope-from
+ <BATV+7bd337da54ad26cefb50+7385+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1r2HlW-0002jY-Fd
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 16:13:10 -0500
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+7bd337da54ad26cefb50+7385+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1r2HlS-0003Et-Nx
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 16:13:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=STqeqpWljpxVtuL1THyGccEbEnekx31vNcW7Ydm1isI=; b=JXxv7zAP5QgHl0srlfzgD6S1V3
+ X7Lt5I+DImgAoVXI36nH44hvl5okffkn3ylgHEhwIAfC7Gi9HgyLcOn63ixc3cE7B6TFp/+e3UtV3
+ cBF6j5wp65IxlAmOadJQgkRZyfXgjrysYWBX8agNhXaYLGgPVKCzOammtNKT8JX0VNzmqdnoTW6ft
+ iVM/h+E+hR+WDtJBWw+SU6Bn3yIfcOfik8Aj5f2VwahS4vaYDUr1akUJfZhnTVFfDa45YmFeR9YrW
+ 912LMjfds3CYQUDO+WajrgzX8Sdzb4SnMz1pL7en19ge7e7hqpqqrJXg+cjt12lBDz9gDeO+xq9w0
+ 3D+BgxJA==;
+Received: from [52.94.133.131] (helo=edge-m2-r2-104.e-sfo20.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1r2HlA-00AFhu-OU; Sun, 12 Nov 2023 21:12:50 +0000
+Message-ID: <851f9138ccc9c4a9ec1c8f7f6c2cc57c652f2b96.camel@infradead.org>
+Subject: Re: [PATCH v1 4/7] xen_pvdev: Do not assume Dom0 when creating a
+ directrory
+From: David Woodhouse <dwmw2@infradead.org>
+To: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+Cc: Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, Anthony Perard <anthony.perard@citrix.com>, Paul
+ Durrant <paul@xen.org>, "open list:X86 Xen CPUs"
+ <xen-devel@lists.xenproject.org>
+Date: Sun, 12 Nov 2023 16:12:47 -0500
+In-Reply-To: <20231110204207.2927514-5-volodymyr_babchuk@epam.com>
 References: <20231110204207.2927514-1-volodymyr_babchuk@epam.com>
- <20231110204207.2927514-4-volodymyr_babchuk@epam.com>
-Organization: Xen Project
-In-Reply-To: <20231110204207.2927514-4-volodymyr_babchuk@epam.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ <20231110204207.2927514-5-volodymyr_babchuk@epam.com>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-ukdGofoPqj5JFdtwTsSS"
+User-Agent: Evolution 3.44.4-0ubuntu2 
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+7bd337da54ad26cefb50+7385+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,99 +76,190 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/11/2023 15:42, Volodymyr Babchuk wrote:
-> Add option to preserve owner when creating an entry in Xen Store. This
-> may be needed in cases when Qemu is working as device model in a
-> domain that is Domain-0, e.g. in driver domain.
-> 
-> "owner" parameter for qemu_xen_xs_create() function can have special
-> value XS_PRESERVE_OWNER, which will make specific implementation to
-> get original owner of an entry and pass it back to
-> set_permissions() call.
-> 
 
-If QEMU is running in a driver domain then it should know whether the 
-domid of the domain it is running in and use that. Yes, it is hardcoded 
-to 0 at the moment but surely a backend domid (which defaults to 0) 
-could be passed on the command line?
+--=-ukdGofoPqj5JFdtwTsSS
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-   Paul
+On Fri, 2023-11-10 at 20:42 +0000, Volodymyr Babchuk wrote:
+> From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+>=20
+> Instead of forcing the owner to domid 0, use XS_PRESERVE_OWNER to save
+> the previous owner of the directory.
+>=20
 
+You're missing the words "... if it already exists" from that sentence.
+
+If the directory *didn't* already exist, it gets created with dom0 as
+the owner still, right? Assuming XenStore allows QEMU to do that.
+
+Strictly, the node gets created (if permitted) and *then*
+xs_set_permissions() attempts to set dom0 as the owner (if permitted).
+
+> Note that for other than Dom0 domain (non toolstack domain) the
+> "driver_domain" property should be set in domain config file for the
+> toolstack to create required directories in advance.
+>=20
+> Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
 > Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
 > ---
->   hw/i386/kvm/xen_xenstore.c       | 18 ++++++++++++++++++
->   hw/xen/xen-operations.c          | 12 ++++++++++++
->   include/hw/xen/xen_backend_ops.h |  2 ++
->   3 files changed, 32 insertions(+)
-> 
-> diff --git a/hw/i386/kvm/xen_xenstore.c b/hw/i386/kvm/xen_xenstore.c
-> index 660d0b72f9..7b894a9884 100644
-> --- a/hw/i386/kvm/xen_xenstore.c
-> +++ b/hw/i386/kvm/xen_xenstore.c
-> @@ -1572,6 +1572,24 @@ static bool xs_be_create(struct qemu_xs_handle *h, xs_transaction_t t,
->           return false;
->       }
->   
-> +    if (owner == XS_PRESERVE_OWNER) {
-> +        GList *perms;
-> +        char letter;
-> +
-> +        err = xs_impl_get_perms(h->impl, 0, t, path, &perms);
-> +        if (err) {
-> +            errno = err;
-> +            return false;
-> +        }
-> +
-> +        if (sscanf(perms->data, "%c%u", &letter, &owner) != 2) {
-> +            errno = EFAULT;
-> +            g_list_free_full(perms, g_free);
-> +            return false;
-> +        }
-> +        g_list_free_full(perms, g_free);
-> +    }
-> +
->       perms_list = g_list_append(perms_list,
->                                  xs_perm_as_string(XS_PERM_NONE, owner));
->       perms_list = g_list_append(perms_list,
-> diff --git a/hw/xen/xen-operations.c b/hw/xen/xen-operations.c
-> index e00983ec44..1df59b3c08 100644
-> --- a/hw/xen/xen-operations.c
-> +++ b/hw/xen/xen-operations.c
-> @@ -300,6 +300,18 @@ static bool libxenstore_create(struct qemu_xs_handle *h, xs_transaction_t t,
->           return false;
->       }
->   
-> +    if (owner == XS_PRESERVE_OWNER) {
-> +        struct xs_permissions *tmp;
-> +        unsigned int num;
-> +
-> +        tmp = xs_get_permissions(h->xsh, 0, path, &num);
-> +        if (tmp == NULL) {
-> +            return false;
-> +        }
-> +        perms_list[0].id = tmp[0].id;
-> +        free(tmp);
-> +    }
-> +
->       return xs_set_permissions(h->xsh, t, path, perms_list,
->                                 ARRAY_SIZE(perms_list));
->   }
-> diff --git a/include/hw/xen/xen_backend_ops.h b/include/hw/xen/xen_backend_ops.h
-> index 90cca85f52..273e414559 100644
-> --- a/include/hw/xen/xen_backend_ops.h
-> +++ b/include/hw/xen/xen_backend_ops.h
-> @@ -266,6 +266,8 @@ typedef uint32_t xs_transaction_t;
->   #define XS_PERM_READ  0x01
->   #define XS_PERM_WRITE 0x02
->   
-> +#define XS_PRESERVE_OWNER        0xFFFE
-> +
->   struct xenstore_backend_ops {
->       struct qemu_xs_handle *(*open)(void);
->       void (*close)(struct qemu_xs_handle *h);
+> =C2=A0hw/xen/xen_pvdev.c | 3 ++-
+> =C2=A01 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/hw/xen/xen_pvdev.c b/hw/xen/xen_pvdev.c
+> index c5ad71e8dc..42bdd4f6c8 100644
+> --- a/hw/xen/xen_pvdev.c
+> +++ b/hw/xen/xen_pvdev.c
+> @@ -60,7 +60,8 @@ void xen_config_cleanup(void)
+> =C2=A0
+> =C2=A0int xenstore_mkdir(char *path, int p)
+> =C2=A0{
+> -=C2=A0=C2=A0=C2=A0 if (!qemu_xen_xs_create(xenstore, 0, 0, xen_domid, p,=
+ path)) {
+> +=C2=A0=C2=A0=C2=A0 if (!qemu_xen_xs_create(xenstore, 0, XS_PRESERVE_OWNE=
+R,
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 xen_domid, p, path)) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xen_pv_printf(NULL, 0, "=
+xs_mkdir %s: failed\n", path);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -1;
+> =C2=A0=C2=A0=C2=A0=C2=A0 }
 
+Why bother with xenstore_mkdir()? AFAICT it's *only* used from the
+legacy XenLegacyDevice stuff, and can't we just finish the job of
+moving from that to the XenDevice model? I've done console and net
+recently; want to keep going?
+
+And even then... the xenstore_mkdir() function is called twice from
+xen_config_dev_dirs() in hw/xen/xen_devconfig.c to create the frontend
+and backend directories =E2=80=94 which is what the rest of your patch seri=
+es
+is trying to eliminate because a driver domain doesn't have permissions
+to do that anyway.
+
+It's also called from xen_be_register() in hw/xen/xen_devconfig.c to
+create device-model/${GUEST_DOMID}/backends/${DEVICE_TYPE} (using a
+relative path, so in the driver domain's XenStore). That one presumably
+*won't* exist already, and so XS_PRESERVE_OWNER won't even have any
+effect?
+
+What practical difference does this even make? Am I missing something?
+
+--=-ukdGofoPqj5JFdtwTsSS
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTEyMjExMjQ3WjAvBgkqhkiG9w0BCQQxIgQg71B9xpEA
+M/enj3lL30hdlOWn9LedLsl25x3p+HCYoAIwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgCaJJEfvF4MsfvXnADS4HODxkhUPP0rkCGI
+Waa2r2wgJ94CVyza7eIHQIaC9eUn3oTlffrriKGhrDKprfR0cjTlCVqjeetEjMwxbJ5hB6W7UT9Z
+cK20zeXt5IaTkgmPNdmaPV+N6a+ABdiBXEzVaskTOLg7bmFx58VWrlTxpm+iWW4o4L6Y14rLAMuA
+10Q+aOaZ9WUwK7rj4UB91H2bErc+ZL8hYVGX9uOSmr/RHnd5YjN5MQOFnl/KhMJP0bSCNUuD+9VB
+RFagD+QhkHr8aRDMuBihcspTOr9DDvQKllCE5tpij+DDuXv+cfl62bmIDie0yF4DCHWacEtdlL8E
+kzDDabb7xWCfHU/VA577eAfBC8KPxp8k54n6zS/IK2IjB0RUu4FoCcDNl3JyOE1dHmNIICwdX/r+
+lucKn3XWWwK+G9ItCB4RYf4pCwi3B75tDHronF9FNzb44uOhreCaBiMvtHQZRnq3zFrAaI5nGka2
+dWiiPAjjUV56qYuG0pIaLDRS12tnRuFuT65qXYLGKgVgaOaoYUy9mcD95ffu9b3yDhYu/YdZoJgK
+bulBVWLLs7ClwcLbwRSzpPbE1rP69JsDAJDwv7h2JrFE7zEiFRIa1jSZfshFVFdziu0vdPMoXQDU
+NLBvhfXJXsanVWT29scibtSiaSh8GxLS0GvGmApxjwAAAAAAAA==
+
+
+--=-ukdGofoPqj5JFdtwTsSS--
 
