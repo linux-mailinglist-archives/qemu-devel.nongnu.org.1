@@ -2,84 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56D0D7E8E09
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 03:57:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D2AD7E8F35
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 09:52:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r20dP-0008E8-Gw; Sat, 11 Nov 2023 21:55:39 -0500
+	id 1r26BQ-0004cg-9a; Sun, 12 Nov 2023 03:51:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1r20dK-0008Ds-TX
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 21:55:34 -0500
-Received: from mail-il1-x141.google.com ([2607:f8b0:4864:20::141])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1r20dG-00065N-Oy
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 21:55:33 -0500
-Received: by mail-il1-x141.google.com with SMTP id
- e9e14a558f8ab-357cf6725acso13297385ab.3
- for <qemu-devel@nongnu.org>; Sat, 11 Nov 2023 18:55:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699757724; x=1700362524; darn=nongnu.org;
- h=content-transfer-encoding:content-language:in-reply-to:mime-version
- :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pJDClDSNaNEPVXz9zYl2X3u7oFUSHrJkfAbcZpAei/E=;
- b=QhrWZ43LZ3KIcd6253adQ4NdLXnBeYG46Cudrt5f177Gq96RAxMqrWIX/f5cmEXPQy
- PgnNCym4hE9Je8TafSWaBE896Ac5/1mWu3NwLznUG4LFmFIevBdN3ZZKc9tBXwBa9vnN
- 9/1c4/G3Xtm0fkRG25YqcjWccMbFgDs1dDRUxCsc1scD4zAVEZ7OoMKRiQIYdi4xdBw2
- 9Nkp5X05baDz4rmLWwDjjjSBwarSIo8NPSxNRR2AhtBhImnnzZeyTxxus6fdZethOHR5
- 4m9QPb+uhjqFZG0y1OAK8chV8zq74jCFkoDiMlp9S03g0reqBrwh+OFVkGVYwZUOgkW9
- mzcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699757724; x=1700362524;
- h=content-transfer-encoding:content-language:in-reply-to:mime-version
- :user-agent:date:message-id:from:references:cc:to:subject
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pJDClDSNaNEPVXz9zYl2X3u7oFUSHrJkfAbcZpAei/E=;
- b=TLBMYl0GFll8xFA3COZwpfnEdqaimKEWNufHyglaFnILUXRIcC04nKBTM1zlv63ak4
- t58VFS7CibzQGn1X2TI+1cKHZdUB3sv6Gmjz8MoROIm5Q3X/aOzXZNUN/1aU8EtcYQmS
- /FCMpiAA6NFiUMvTJEJghCIXpGve8rAMRVzSSPA+N4OcrUfnZPv0lUACjWV/4WcsPSbF
- ni/6GUxiG+1EwBSTStZuSFU8iHbFlkTpTHrbi7vK028zd3HphjJXOdLP98AsYboofgeP
- ChjvBXeWWV6i0X7JVNy5ExXpVIAoXsHwI8RDcQtZoRJnBYDDTf5+pHRKQRHsUBY7TkV0
- 6s2w==
-X-Gm-Message-State: AOJu0YzRtrhjzaGHUL4K/6xbJdn7aLSY/wGajEsRMtAr8rzRj89Tp7km
- 32eALkKE994A2yIS3v1yK6hUiA==
-X-Google-Smtp-Source: AGHT+IFG11M2848kqw5FOUX9ZIMwKvLs5O3Y35DHDylJ2269iFfKzANu/lezqwcyOI+6hxna754ZPg==
-X-Received: by 2002:a05:6e02:1bcf:b0:357:438f:6ecf with SMTP id
- x15-20020a056e021bcf00b00357438f6ecfmr4796081ilv.13.1699757724282; 
- Sat, 11 Nov 2023 18:55:24 -0800 (PST)
-Received: from ?IPv6:2804:7f0:b401:308c:fa40:2f92:19ee:4ba?
- ([2804:7f0:b401:308c:fa40:2f92:19ee:4ba])
- by smtp.gmail.com with ESMTPSA id
- 10-20020a170902c20a00b001b7f40a8959sm1914963pll.76.2023.11.11.18.55.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 11 Nov 2023 18:55:23 -0800 (PST)
-Subject: Re: QTest framework does not capture toggled irq line
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org
-References: <4daf0424-b767-b5d9-bacb-0fe879c92963@linaro.org>
- <41fc01bc-9883-48b3-8652-c526745eda90@redhat.com>
-From: Gustavo Romero <gustavo.romero@linaro.org>
-Message-ID: <bf5c6f4e-9d78-d590-7124-3521e08cc435@linaro.org>
-Date: Sat, 11 Nov 2023 23:55:21 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1r26BN-0004cX-Tr
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 03:51:05 -0500
+Received: from mailout02.t-online.de ([194.25.134.17])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1r26BK-0000mq-5z
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 03:51:05 -0500
+Received: from fwd81.aul.t-online.de (fwd81.aul.t-online.de [10.223.144.107])
+ by mailout02.t-online.de (Postfix) with SMTP id 23F6E28ACC;
+ Sun, 12 Nov 2023 09:50:58 +0100 (CET)
+Received: from [192.168.211.200] ([93.236.156.187]) by fwd81.t-online.de
+ with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
+ esmtp id 1r26BE-1kNT6H0; Sun, 12 Nov 2023 09:50:56 +0100
+Message-ID: <df72a284-3222-4f37-9bab-a0695f231f89@t-online.de>
+Date: Sun, 12 Nov 2023 09:50:55 +0100
 MIME-Version: 1.0
-In-Reply-To: <41fc01bc-9883-48b3-8652-c526745eda90@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Fix Windows 2000 and XP HDAudio Support
+To: Christopher Lentocha <christopherericlentocha@gmail.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <737e8de1-9c14-453e-35eb-bff1e6b34a4a@gmail.com>
+ <1b3f57dd-7a3f-4630-b1e1-298578bbc5b7@linaro.org>
+ <lfrzsbncmlbxoelzt4asbctne5wq7mnjtv6yo3kc6nroocxsdc@45urch4n6pi4>
+ <dcb9ee68-2839-f2f4-f9c1-46a149a315f8@gmail.com>
 Content-Language: en-US
+From: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
+In-Reply-To: <dcb9ee68-2839-f2f4-f9c1-46a149a315f8@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::141;
- envelope-from=gustavo.romero@linaro.org; helo=mail-il1-x141.google.com
-X-Spam_score_int: -62
-X-Spam_score: -6.3
-X-Spam_bar: ------
-X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.148,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-TOI-EXPURGATEID: 150726::1699779056-FEB02990-45D9F30E/0/0 CLEAN NORMAL
+X-TOI-MSGID: 41cfcd84-1f89-40b2-b4eb-434c21d990fe
+Received-SPF: pass client-ip=194.25.134.17; envelope-from=vr_qemu@t-online.de;
+ helo=mailout02.t-online.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,34 +68,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/10/23 3:16 AM, Thomas Huth wrote:
-> On 10/11/2023 04.40, Gustavo Romero wrote:
->> Hi folks,
+Am 12.11.23 um 01:37 schrieb Christopher Lentocha:
+> So wait, you want me to add it as another device name? Because 
+> it is going to be the same exact way as the 1af4 device
+> just with a number change. Ok, work it is then ...
+> (Sorry about not getting back sooner also)
+>
+> Christopher
+
+Hi Christopher,
+
+why do you want the device to be exactly the same as the generic hda
+codec? A new device gives you the opportunity to model it closer to the
+specs in the ALC885 datasheet. This could improve compatibility with the
+old guest drivers.
+
+With best regards,
+Volker
+
+> On 11/8/23 6:12 AM, Gerd Hoffmann wrote:
+>> On Wed, Nov 08, 2023 at 11:02:06AM +0100, Philippe Mathieu-Daudé wrote:
+>>> Thanks Christopher for your patch,
+>>>
+>>> I'm Cc'ing Volker and Gerd who know better this hardware model.
+>>>
+>>> On 7/11/23 20:27, Christopher Lentocha wrote:
+>>>> Change the ID to be a Realtek ALC885 so that both
+>> No.  Rewriting the existing codecs is clearly a non-starter.
 >>
->> I'm writing a test for a device that has one IRQ output line
->> that is toggled (raised then lowered) by the device to trigger
->> a CPU interrupt.
+>> You can add a 'hda-realtek-alc885' variant which tries to
+>> mimic the realtek coded close enough to make old guests
+>> without generic hda driver happy.
 >>
->> Afaics the QTest framework does not provide a way to capture
->> when an output line is raised because the API functions, e.g.
->> qtest_get_irq(), read the current state of the intercepted
->> IRQ lines, which is already low when the function is called,
->> since the line is toggled by the device.
+>>>> +#define QEMU_HDA_ID 0x10EC0885
+>> Nope.  Somemething like 'REALTEK_ALC885_ID' please.
 >>
->> I'd like to introduce a new API function to address this case,
->> called qtest_get_irq_trigger_counter():
-> ...
->> This change addresses the current QTest limitation. Is it acceptable?
-> 
->   Hi Gustavo,
-> 
-> that sounds reasonable to me.
+>> [ remaining bits of the patch snipped, needs major rework ]
+>>
+>> take care,
+>>   Gerd
+>>
 
-Thanks, Thomas! I've posted the patch here:
-
-https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg02867.html
-
-
-Cheers,
-Gustavo
 
