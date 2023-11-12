@@ -2,74 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C767E91B0
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 17:51:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C491A7E91B1
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 17:52:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2DfK-00046n-IF; Sun, 12 Nov 2023 11:50:30 -0500
+	id 1r2DgT-0004q2-Gh; Sun, 12 Nov 2023 11:51:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
- id 1r2DfJ-00046a-4C; Sun, 12 Nov 2023 11:50:29 -0500
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r2DgK-0004pd-JP
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 11:51:33 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
- id 1r2DfG-00015s-7d; Sun, 12 Nov 2023 11:50:28 -0500
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-507c5249d55so5601558e87.3; 
- Sun, 12 Nov 2023 08:50:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r2DgI-0001BP-Ur
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 11:51:32 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1cc58219376so32810745ad.1
+ for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 08:51:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699807824; x=1700412624; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=F1AvnSWiGvbigVuu/6MFNbfurAHFpFskCCpRglAvvlo=;
- b=Kaebh44fXB9K3452jJDhVAW4mAuFoWZ6MUTrdfrAe6v61kIEw2nQNOkE5RTKuKwoKa
- lGd8TgxGzYFNHA0Pw0J1pVGdumpj/EzFm0ywD3wXZtCtjqiJO+Nm6hw2igHgowopfjZ0
- Y3k8EBc4sdSgCIC/nBzdU5AJFIogHHU0+VjFbq2k+HnHr1z3cUkQyCuMIUCw/8O1InbY
- Lj3DcqVIuMcHeCAdBFMgIjqhsvtW2y62pGnFwc4VbVJmK7n1ztf312BayHR0LORBXji1
- mjskn+7nVzGScinkJ57g53miOlTF2LjYZECXbATuTUHqaITjgUfJh//GSDpIS1g6oLFf
- 3u5Q==
+ d=linaro.org; s=google; t=1699807889; x=1700412689; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=MFpseA08NP/0/C33Ov0lLdGQblo05aF1IRw1m9RHTpw=;
+ b=U3sg/6AI2/8eFeNWONbk5COV9sfZ1SRRnrEi+i0P5FJ9eVSvRNqkICPYNHsuA7xmYG
+ j4v7/LqoCA7IXGBxPPeVamiwhQgAeEjtTv485Ub/vY45mg0AbflXBGq8tAS91NO1nVbf
+ gjn+PIX4Qw+B5Tcvqg771bGRjLYUMXj9gse0IWyaUbZzbJtZhb+zxryaEp5lm4MbYQgH
+ B3mth7FUrKOL0tzqtwF71EAxyLTpraKf7kBfbeS12XxN3ykdftPZymPvrOlMp3oJtfFm
+ /NijjHjtbvqs4AzVZkgvA26LupP+AxS4nXV1yIAd+gOacQqpswlapuAW4CfBWL1OwxPt
+ KYSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699807824; x=1700412624;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=F1AvnSWiGvbigVuu/6MFNbfurAHFpFskCCpRglAvvlo=;
- b=JYEp6Y2zBPGwXIhKZkjwWObQI8LCu31heN5NOHGs1vA/iuqjnX4yBvuP9vD89+iQi6
- 87/+a7nUv7nRmELUFenWUGuOpBH8Su7f5ORKvYmanI49ermmVBQZ57rC5MHUOi6p6z5q
- UbVjBzhxL7f/K6FXoMMwXm1NH/9yJn82n02d2c8fMdElvAJBh1IdT7LojJJ9qJHrFD7z
- X7/ngU2AjnTyfQq3aIfcnfRAgMZPj1kokMkDaTVxD4VBPp3wzSz+GhVS3kZ/PVHzzHdT
- sGmf6tQGQYuASTfpUqnh7CdmxGjW7/fUjGIMwzVAk9061slBy1bWngDkKZrmaMSXPxcH
- xmdQ==
-X-Gm-Message-State: AOJu0Yx+IvJLfKwx1v52bn7ICplLEb/y+cjfr5iy6srpRnq4apZyC3Vp
- XYyQYEK+iuvkSBjsAFnVjREdmKQu0Wnu18uR
-X-Google-Smtp-Source: AGHT+IGKWcKpNgVCPlBDkhHRV9NcE2FmXyEuzD+OVsATC6+QbZGzlyTyUZhWW3/irHFY7PQ6hCohNw==
-X-Received: by 2002:a05:6512:15a2:b0:507:9ff6:75b6 with SMTP id
- bp34-20020a05651215a200b005079ff675b6mr4166409lfb.50.1699807823417; 
- Sun, 12 Nov 2023 08:50:23 -0800 (PST)
-Received: from localhost.localdomain ([176.120.189.69])
- by smtp.gmail.com with ESMTPSA id
- m7-20020a0565120a8700b005041b7735dbsm672620lfu.53.2023.11.12.08.50.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 Nov 2023 08:50:22 -0800 (PST)
-From: Nikita Ostrenkov <n.ostrenkov@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- Nikita Ostrenkov <Nikita.Ostrenkov@gmail.com>
-Subject: [PATCH] target/arm/tcg: enable pmu feature for cortex a9
-Date: Sun, 12 Nov 2023 16:50:08 +0000
-Message-Id: <20231112165008.1419-1-n.ostrenkov@gmail.com>
-X-Mailer: git-send-email 2.34.1
+ d=1e100.net; s=20230601; t=1699807889; x=1700412689;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=MFpseA08NP/0/C33Ov0lLdGQblo05aF1IRw1m9RHTpw=;
+ b=DotCuCaw6lhFOpxjQy4g1Duf5hrBoyhJgxSXbDcBJPh7hGdVogbJPdQYtVKw9VSPxp
+ XbCOLoOxuI7pyh3izq8Q4UPZYBnJqinoODTDHXfNuX+MbBnVwU9eeIp3yN0FhwKCGp1G
+ iURToZxWGmiJoVuT2Z6KLTwbTKiu0I4w5K9FPaH4uA1KZZBK05TKUy7oa1tXFh6Pm2FU
+ sRctQOV8RtOvow+YUkqxadB5L7RjwiCc4zaaiulSkZM5pME8nRxHitNwgjj0xgx4UI3S
+ E7s+J/2esWh8lB6jphlrs462k1CbGngBSnsfPcxnZDbNItJeKoDGZvYBAZ01U+ENPZRt
+ J0mw==
+X-Gm-Message-State: AOJu0Yzc4R1RcvIx1z6NjYnJk8mYT1lXVl40mfwBjVRoBtFo4odIBCYT
+ bbmFzuCQLzFJXIs0YAkE+jIPXxpw+yuE170hZEg=
+X-Google-Smtp-Source: AGHT+IFriunOTsUgW5RAoCgS/FpMr46kqgY5hhsWlWDHU75CrmHb9QC7qCRsxZG29Qwj/IGfdReKQQ==
+X-Received: by 2002:a17:902:bcc9:b0:1ca:b26a:9729 with SMTP id
+ o9-20020a170902bcc900b001cab26a9729mr5037428pls.38.1699807889320; 
+ Sun, 12 Nov 2023 08:51:29 -0800 (PST)
+Received: from [192.168.114.227] (c-24-20-177-206.hsd1.or.comcast.net.
+ [24.20.177.206]) by smtp.gmail.com with ESMTPSA id
+ r4-20020a170902be0400b001c76fcccee8sm2722818pls.156.2023.11.12.08.51.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 12 Nov 2023 08:51:28 -0800 (PST)
+Message-ID: <69b0cb84-329e-4636-b7a0-24ba69fa41b7@linaro.org>
+Date: Sun, 12 Nov 2023 08:51:26 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=n.ostrenkov@gmail.com; helo=mail-lf1-x132.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] linux-user: xtensa: fix signal delivery in FDPIC
+Content-Language: en-US
+To: Max Filippov <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>, qemu-stable@nongnu.org
+References: <20231111112252.1387418-1-jcmvbkbc@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231111112252.1387418-1-jcmvbkbc@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,27 +93,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nikita Ostrenkov <Nikita.Ostrenkov@gmail.com>
+On 11/11/23 03:22, Max Filippov wrote:
+> In FDPIC signal handlers are passed around as FD pointers. Actual code
+> address and GOT pointer must be fetched from memory by the QEMU code
+> that implements kernel signal delivery functionality. This change is
+> equivalent to the following kernel change:
+> 9c2cc74fb31e ("xtensa: fix signal delivery to FDPIC process")
+> 
+> Cc: qemu-stable@nongnu.org
+> Fixes: d2796be69d7c ("linux-user: add support for xtensa FDPIC")
+> Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+> ---
+>   linux-user/xtensa/signal.c | 28 ++++++++++++++++++++++++++--
+>   1 file changed, 26 insertions(+), 2 deletions(-)
+> 
+> diff --git a/linux-user/xtensa/signal.c b/linux-user/xtensa/signal.c
+> index f5fb8b5cbebe..32dcfa522919 100644
+> --- a/linux-user/xtensa/signal.c
+> +++ b/linux-user/xtensa/signal.c
+> @@ -157,6 +157,9 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
+>   {
+>       abi_ulong frame_addr;
+>       struct target_rt_sigframe *frame;
+> +    int is_fdpic = info_is_fdpic(((TaskState *)thread_cpu->opaque)->info);
+> +    abi_ulong handler = 0;
+> +    abi_ulong handler_fdpic_GOT = 0;
+>       uint32_t ra;
+>       bool abi_call0;
+>       unsigned base;
+> @@ -165,6 +168,17 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
+>       frame_addr = get_sigframe(ka, env, sizeof(*frame));
+>       trace_user_setup_rt_frame(env, frame_addr);
+>   
+> +    if (is_fdpic) {
+> +        abi_ulong funcdesc_ptr = ka->_sa_handler;
+> +
+> +        if (get_user_ual(handler, funcdesc_ptr)
+> +            || get_user_ual(handler_fdpic_GOT, funcdesc_ptr + 4)) {
+> +            goto give_sigsegv;
+> +        }
+> +    } else {
+> +        handler = ka->_sa_handler;
+> +    }
 
-According to the technical reference manual Cortex A9 like Cortex A7 and Cortex A15 has Perfomance Unit Monitor (PMU)
-https://developer.arm.com/documentation/100511/0401/performance-monitoring-unit/about-the-performance-monitoring-unit
----
- target/arm/tcg/cpu32.c | 1 +
- 1 file changed, 1 insertion(+)
+This part is ok, with the last hunk, because it's taking care of the fd for the handler.
 
-diff --git a/target/arm/tcg/cpu32.c b/target/arm/tcg/cpu32.c
-index 0d5d8e307d..0008c3f890 100644
---- a/target/arm/tcg/cpu32.c
-+++ b/target/arm/tcg/cpu32.c
-@@ -418,6 +418,7 @@ static void cortex_a9_initfn(Object *obj)
-     set_feature(&cpu->env, ARM_FEATURE_NEON);
-     set_feature(&cpu->env, ARM_FEATURE_THUMB2EE);
-     set_feature(&cpu->env, ARM_FEATURE_EL3);
-+    set_feature(&cpu->env, ARM_FEATURE_PMU);
-     /*
-      * Note that A9 supports the MP extensions even for
-      * A9UP and single-core A9MP (which are both different
--- 
-2.34.1
+> @@ -185,14 +199,21 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
+>       }
+>   
+>       if (ka->sa_flags & TARGET_SA_RESTORER) {
+> -        ra = ka->sa_restorer;
+> +        if (is_fdpic) {
+> +            if (get_user_ual(ra, ka->sa_restorer)) {
+> +                unlock_user_struct(frame, frame_addr, 0);
+> +                goto give_sigsegv;
+> +            }
+> +        } else {
+> +            ra = ka->sa_restorer;
+> +        }
 
+This part is questionable.  It does match the kernel, so as far as that goes,
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+However, it does not handle the GOT register for the restorer, like we do on ARM.  That 
+said, I can't find any libc sources for xtensa, or at least that aren't out of date by a 
+decade, so I can't tell if libc *knows* the got register won't be loaded, and it doesn't 
+matter because it only uses the sigreturn syscall.
+
+
+r~
 
