@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2B97E8FDC
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 14:07:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 011CE7E91A1
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 17:24:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2A9z-00043v-0o; Sun, 12 Nov 2023 08:05:55 -0500
+	id 1r2DEB-00069P-Bg; Sun, 12 Nov 2023 11:22:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1r2A9q-00042t-4a
- for qemu-devel@nongnu.org; Sun, 12 Nov 2023 08:05:46 -0500
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r2DEA-00069A-Cn
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 11:22:26 -0500
+Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1r2A9o-0005RZ-Ep
- for qemu-devel@nongnu.org; Sun, 12 Nov 2023 08:05:45 -0500
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6c32a20d5dbso3060662b3a.1
- for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 05:03:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r2DE8-0002h8-Te
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 11:22:26 -0500
+Received: by mail-ot1-x32d.google.com with SMTP id
+ 46e09a7af769-6cd1918afb2so2380614a34.0
+ for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 08:22:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1699794223; x=1700399023;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vPo68g7FF/7B8GxnVEM+yDSKbpWJ6LFTGBkER2uvllI=;
- b=zZpBSSftjnYxB/ZMVQX1CFQZa7HI3T453O87frEqizJ7o12zA+toQeNCJ01B95owgO
- icr0Hs7PAiJh/lLS92FCcrWjgxsQI0Mka7ww/lzKYPUJro+YBR2OPbL6Cep54VDX+o0n
- WiF/VLkvs5rylvv1lWK04wtlfdSljsxwhG70xguWCuv/yJyaDf01pvDL6K5j/JFNYYa+
- ARjE9Kd42a/eTYFwpg59CysMN403BvJWLK24EMXDMN3/xu0/MKoZFA8ABMUjPq3AQO8y
- 981oHWa+/sanhqW6RvbQo22MpqAqpbrx1Fn0EIzOLh0Hm3IhgCLxn3rmso5fg2HVGuMT
- FwfQ==
+ d=linaro.org; s=google; t=1699806143; x=1700410943; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=ocmIQd+SVY2U71IwwT0Nh9IIR0HnuTvPwuQ/4K+4PK0=;
+ b=YTzkZIGsmUMf8KUp+V24y79E+6iuhEtIBFMZ9me5Zty8XjI1lmww0AhQWQQxvooIHy
+ sOuMOrG5g+MI/PlAA/9+XzrXwgSPCdiL8282aMABJMwvUJjJsb8GbvsYLGEOnpmYD4l0
+ 0hUbgDqUk8D/87Ku3/mX/Fjwo5Q9n6OSNs+H09c5WmPcLYAz/IbSKU5ZAW4pz/NXVagx
+ HSbEB8R0SaXv7fw/iQmzlBc6sZrfTZ+z+HwYHZ1xHD8tA6hvIBOpyno93HlhiUNAFu7T
+ Wt7RV9FdgjA7bfIJ244rxAthQumBhqHrpPQFqW6g20vTTmYQsIXsQT0bRrJPcBoph7IN
+ Lpvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699794223; x=1700399023;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vPo68g7FF/7B8GxnVEM+yDSKbpWJ6LFTGBkER2uvllI=;
- b=OyUGnSjoIa77OhHXb3zv3ST4Lk70xL8Mb56w56/IZd8Rv702gAUfqL97vsQv3jpAuC
- C0YJtLcf7jBVJ9xqIJaKQPkRbDkbPiGmpYlXMzJAnNKCwP8HBczvgiwa4O42F1BZX+B3
- 6MusFYnnkeeSQKdj4UPR0w1pPQUZdWfQv6TMoTHypeyp19jkiUV3+pDHtW/REU7vdyHO
- 4pJN408dV9VA/9CUV7+now0eYD1Ms1GLlN29C7TcT7FUsQza3omUtrNoN+z+dJJwHDU4
- FyNMqhLYjkWZG/44DTyvT0mlwHp8uHXrUFQiyB2A9Ny6+yHOlrLFXIXD2Ir+I+jCZc5e
- Jv6A==
-X-Gm-Message-State: AOJu0Yw9Yf2J13tLuEBJnap8Cv2YF3xkkwn4pOIcC/fkZ7bVy97BhnZK
- e3fPLocHZTZbRXtPllFfOeBDdxXdfctr34TVk9aiyQ==
-X-Google-Smtp-Source: AGHT+IEAHonYS4pYT8fXZi+7WxDrLPOSV+uWKXj5rfLD3uAA2hqonyTGuin6n3DzuJPnaD86js6IIA==
-X-Received: by 2002:a05:6a21:71c1:b0:185:a3d6:7bda with SMTP id
- ay1-20020a056a2171c100b00185a3d67bdamr2800042pzc.39.1699794222541; 
- Sun, 12 Nov 2023 05:03:42 -0800 (PST)
-Received: from localhost.localdomain ([125.69.8.82])
- by smtp.gmail.com with ESMTPSA id
- ey8-20020a056a0038c800b006c2fcb25c15sm2477684pfb.162.2023.11.12.05.03.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 Nov 2023 05:03:42 -0800 (PST)
-From: Hyman Huang <yong.huang@smartx.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Hyman Huang <yong.huang@smartx.com>
-Subject: [RFC 2/2] vhost-user-test: Add negotiated features check
-Date: Sun, 12 Nov 2023 21:03:20 +0800
-Message-Id: <974a17c335b8edd47124fb163c4ea7a305cfb891.1699793550.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <cover.1699793550.git.yong.huang@smartx.com>
-References: <cover.1699793550.git.yong.huang@smartx.com>
+ d=1e100.net; s=20230601; t=1699806143; x=1700410943;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ocmIQd+SVY2U71IwwT0Nh9IIR0HnuTvPwuQ/4K+4PK0=;
+ b=BY46I425OjVau+sXrN1Y60HfrhW5w9dsgmJvLwdO8SE8nlsgnse0ukiUAG+p5FhkNS
+ lKfuNxyaDU3KoopbTvY9jLX0v5s2K3UuDECnJw/RW87bPk9cpDbcinD2OD1qoegWdWyz
+ MnF3r78lnYbu9qB5ySvvYVelElvxB7Xbypgokw1u9iAatNczmB4bvAA12PqjcmOBPIqK
+ uu0irYug5bAYwrdk1lSXpMRkiSYtnzncB0GMbrtBmex72hNSWC4ow7HB8DvtXdzH+H+v
+ cBR4AtVdwlqpBid5IH4UHpxq19YwcAMjC9gDpLw1sYN08Cdx6q+y7/mZYoOtJSvS7sG0
+ sAEQ==
+X-Gm-Message-State: AOJu0YytPi8c2rSYP0N8WpeuaHacT5w4H7O/7B8YtLZJ9JCq/RADSVpn
+ f9w/QN53N8Uxk1N8DlDBYx02hg==
+X-Google-Smtp-Source: AGHT+IEo1qbvHadS4siFtABMcZdebrPBI/SeDlx/CW9wZH5kbPpjDF8UyztF/nAV0ahvWnLWBoGC/w==
+X-Received: by 2002:a05:6830:71a7:b0:6d6:45f1:d7b4 with SMTP id
+ el39-20020a05683071a700b006d645f1d7b4mr6140058otb.35.1699806143067; 
+ Sun, 12 Nov 2023 08:22:23 -0800 (PST)
+Received: from [192.168.114.227] (c-24-20-177-206.hsd1.or.comcast.net.
+ [24.20.177.206]) by smtp.gmail.com with ESMTPSA id
+ w123-20020a636281000000b005891f3af36asm2828571pgb.87.2023.11.12.08.22.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 12 Nov 2023 08:22:22 -0800 (PST)
+Message-ID: <80d7bc69-1277-496c-94fe-e1fd974f6ea1@linaro.org>
+Date: Sun, 12 Nov 2023 08:22:19 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::435;
- envelope-from=yong.huang@smartx.com; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/arm: Correct MTE tag checking for reverse-copy MOPS
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20231110162546.2192512-1-peter.maydell@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231110162546.2192512-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,163 +93,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When a vhost-user network device is restored from an unexpected
-failure, the acked_features could be used as input for the
-VHOST_USER_SET_FEATURES command because QEMU internally backups
-the final features as acked_features after the guest acknowledges
-features during virtio-net driver initialization.
+On 11/10/23 08:25, Peter Maydell wrote:
+> When we are doing a FEAT_MOPS copy that must be performed backwards,
+> we call mte_mops_probe_rev(), passing it the address of the last byte
+> in the region we are probing.  However, allocation_tag_mem_probe()
+> wants the address of the first byte to get the tag memory for.
+> Because we passed it (ptr, size) we could incorrectly trip the
+> allocation_tag_mem_probe() check for "does this access run across to
+> the following page", and if that following page happened not to be
+> valid then we would assert.
+> 
+> We know we will always be only dealing with a single page because the
+> code that calls mte_mops_probe_rev() ensures that.  We could make
+> mte_mops_probe_rev() pass 'ptr - (size - 1)' to
+> allocation_tag_mem_probe(), but then we would have to adjust the
+> returned 'mem' pointer to get back to the tag RAM for the last byte
+> of the region.  It's simpler to just pass in a size of 1 byte,
+> because we know that allocation_tag_mem_probe() in pure-probe
+> single-page mode doesn't care about the size.
+> 
+> Fixes: 69c51dc3723b ("target/arm: Implement MTE tag-checking functions for FEAT_MOPS copies")
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   target/arm/tcg/mte_helper.c | 12 ++++++++++--
+>   1 file changed, 10 insertions(+), 2 deletions(-)
 
-The negotiated features check verifies whether the features in the
-Vhost slave device and the acked_features in QEMU are identical.
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 
-Through the usage of the vhost-user protocol, the test case seeks to
-verify that the vhost-user network device is correctly negotiating.
 
-Signed-off-by: Hyman Huang <yong.huang@smartx.com>
----
- tests/qtest/vhost-user-test.c | 100 ++++++++++++++++++++++++++++++++++
- 1 file changed, 100 insertions(+)
-
-diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-index d4e437265f..14df89f823 100644
---- a/tests/qtest/vhost-user-test.c
-+++ b/tests/qtest/vhost-user-test.c
-@@ -13,6 +13,7 @@
- #include "libqtest-single.h"
- #include "qapi/error.h"
- #include "qapi/qmp/qdict.h"
-+#include "qapi/qmp/qlist.h"
- #include "qemu/config-file.h"
- #include "qemu/option.h"
- #include "qemu/range.h"
-@@ -169,6 +170,7 @@ typedef struct TestServer {
-     int test_flags;
-     int queues;
-     struct vhost_user_ops *vu_ops;
-+    uint64_t features;
- } TestServer;
- 
- struct vhost_user_ops {
-@@ -1020,6 +1022,100 @@ static void test_multiqueue(void *obj, void *arg, QGuestAllocator *alloc)
- }
- 
- 
-+static QDict *query_virtio(QTestState *who)
-+{
-+    QDict *rsp;
-+
-+    rsp = qtest_qmp(who, "{ 'execute': 'x-query-virtio'}");
-+    g_assert(!qdict_haskey(rsp, "error"));
-+    g_assert(qdict_haskey(rsp, "return"));
-+
-+    return rsp;
-+}
-+
-+static QDict *query_virtio_status(QTestState *who, const char *path)
-+{
-+    QDict *rsp;
-+
-+    rsp = qtest_qmp(who, "{ 'execute': 'x-query-virtio-status', "
-+        "'arguments': { 'path': %s, 'show-bits': true} }", path);
-+
-+    g_assert(!qdict_haskey(rsp, "error"));
-+    g_assert(qdict_haskey(rsp, "return"));
-+
-+    return rsp;
-+}
-+
-+static uint64_t get_acked_features(QTestState *who)
-+{
-+    QDict *rsp_return, *status, *vhost_info, *dev;
-+    QList *dev_list;
-+    const QListEntry *entry;
-+    const char *name;
-+    char *path;
-+    uint64_t acked_features;
-+
-+    /* query the virtio devices */
-+    rsp_return = query_virtio(who);
-+    g_assert(rsp_return);
-+
-+    dev_list = qdict_get_qlist(rsp_return, "return");
-+    g_assert(dev_list && !qlist_empty(dev_list));
-+
-+    /* fetch the first and the sole device */
-+    entry = qlist_first(dev_list);
-+    g_assert(entry);
-+
-+    dev = qobject_to(QDict, qlist_entry_obj(entry));
-+    g_assert(dev);
-+
-+    name = qdict_get_try_str(dev, "name");
-+    g_assert_cmpstr(name, ==, "virtio-net");
-+
-+    path = g_strdup(qdict_get_try_str(dev, "path"));
-+    g_assert(path);
-+    qobject_unref(rsp_return);
-+    rsp_return = NULL;
-+
-+    /* fetch the status of the virtio-net device by QOM path */
-+    rsp_return = query_virtio_status(who, path);
-+    g_assert(rsp_return);
-+
-+    status = qdict_get_qdict(rsp_return, "return");
-+    g_assert(status);
-+
-+    vhost_info = qdict_get_qdict(status, "vhost-dev");
-+    g_assert(vhost_info);
-+
-+    acked_features = qdict_get_try_int(vhost_info, "acked-features-bits", 0);
-+
-+    qobject_unref(rsp_return);
-+    g_free(path);
-+
-+    return acked_features;
-+}
-+
-+static void acked_features_check(QTestState *qts, TestServer *s)
-+{
-+    uint64_t acked_features;
-+
-+    acked_features = get_acked_features(qts);
-+    g_assert_cmpint(acked_features, ==, s->features);
-+}
-+
-+static void test_acked_features(void *obj,
-+                                     void *arg,
-+                                     QGuestAllocator *alloc)
-+{
-+    TestServer *server = arg;
-+
-+    if (!wait_for_fds(server)) {
-+        return;
-+    }
-+
-+    acked_features_check(global_qtest, server);
-+}
-+
- static uint64_t vu_net_get_features(TestServer *s)
- {
-     uint64_t features = 0x1ULL << VHOST_F_LOG_ALL |
-@@ -1040,6 +1136,7 @@ static void vu_net_set_features(TestServer *s, CharBackend *chr,
-         qemu_chr_fe_disconnect(chr);
-         s->test_flags = TEST_FLAGS_BAD;
-     }
-+    s->features = msg->payload.u64;
- }
- 
- static void vu_net_get_protocol_features(TestServer *s, CharBackend *chr,
-@@ -1109,6 +1206,9 @@ static void register_vhost_user_test(void)
-     qos_add_test("vhost-user/multiqueue",
-                  "virtio-net",
-                  test_multiqueue, &opts);
-+    qos_add_test("vhost-user/read_acked_features",
-+                 "virtio-net",
-+                 test_acked_features, &opts);
- }
- libqos_init(register_vhost_user_test);
- 
--- 
-2.39.1
-
+r~
 
