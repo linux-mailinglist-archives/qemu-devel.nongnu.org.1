@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119997E8FDA
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2B97E8FDC
 	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 14:07:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2A9w-00042x-OY; Sun, 12 Nov 2023 08:05:52 -0500
+	id 1r2A9z-00043v-0o; Sun, 12 Nov 2023 08:05:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1r2A9m-00041i-Cw
- for qemu-devel@nongnu.org; Sun, 12 Nov 2023 08:05:42 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1r2A9q-00042t-4a
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 08:05:46 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1r2A9j-0005R9-JA
- for qemu-devel@nongnu.org; Sun, 12 Nov 2023 08:05:41 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6c10f098a27so2646881b3a.2
- for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 05:03:39 -0800 (PST)
+ id 1r2A9o-0005RZ-Ep
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 08:05:45 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6c32a20d5dbso3060662b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 05:03:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1699794218; x=1700399018;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1699794223; x=1700399023;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=O/Yl0bYXSASF6s6wzvySv0OTCo121V875jhrfdS9OGA=;
- b=V5SLam5tpr+x0WTQE1CmRJNYECklYIynA5pBn0ru/qAmrSK8/2lu3Mn7Z/+BJU8U7n
- KkCYjcs3jzQzmSYnX4NB7OvJovcND+WwHzxAuXeU02W3+hMkdlRcpJP5bjn05W8rEQC2
- Wm9ijwkDNpgC+AKMTGdm8HkTwYCfIyJvxFClDgC4fPYDkNnzu0jvL0dQW/d/ZeftMPPU
- 9TCsn2NlHIqdJuhKo9aGDCvH4Ek0C/HeCQrl+9YG6X+m8BKWJ5W9HCGkOJm9OQfKYNgT
- T9TxlQRZyUK2hKetWBOT8dQ9t9NqJqUZ7fBA05uEc2pU1FbufYpn7GYWzPNfnwARtK4l
- RygA==
+ bh=vPo68g7FF/7B8GxnVEM+yDSKbpWJ6LFTGBkER2uvllI=;
+ b=zZpBSSftjnYxB/ZMVQX1CFQZa7HI3T453O87frEqizJ7o12zA+toQeNCJ01B95owgO
+ icr0Hs7PAiJh/lLS92FCcrWjgxsQI0Mka7ww/lzKYPUJro+YBR2OPbL6Cep54VDX+o0n
+ WiF/VLkvs5rylvv1lWK04wtlfdSljsxwhG70xguWCuv/yJyaDf01pvDL6K5j/JFNYYa+
+ ARjE9Kd42a/eTYFwpg59CysMN403BvJWLK24EMXDMN3/xu0/MKoZFA8ABMUjPq3AQO8y
+ 981oHWa+/sanhqW6RvbQo22MpqAqpbrx1Fn0EIzOLh0Hm3IhgCLxn3rmso5fg2HVGuMT
+ FwfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699794218; x=1700399018;
+ d=1e100.net; s=20230601; t=1699794223; x=1700399023;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=O/Yl0bYXSASF6s6wzvySv0OTCo121V875jhrfdS9OGA=;
- b=epop/1YPjQ0ZBBnqNtVL9NxmXUWb1oe6mqcsdGS6lKY29JQalZ/gRRelB6IwzTsJL1
- VhpO+iv37vY9wL/A0iM9FWHfN50rzIllnv3aHdu0C6FHXIWwybxMKPGITOBqC4Irorgd
- BlWjAKr1g2tsf7uYRorFyGJEwkCFxWhp+rSx9OX2F5mgLMPrfkRItkyrZ0rN7C2woXh+
- WHBV2Gl9xzm86B+Z1LBnkRwc8wBXuIHAZ/Y2wSWCynNoFANvTXStZuLMYD2hEf5gZTK3
- waRKWPA6qvvBWAvjxnI0EJdNSxeZ8y5lxJedsNQXMljGLoqz4t8A6nXI+ZR+CFQY+F5l
- ggYw==
-X-Gm-Message-State: AOJu0Yy6XJVMI/TCRsI8m8i3Hj7/BYISwlTbv1pqV4/bvG8wfYHiSjtd
- PVIkzZl/moThOuJaP8EIDP7Xlu5uMOwici48HJsQ+g==
-X-Google-Smtp-Source: AGHT+IEBhSBa9ideiKG8r6vUbeBUFBAL+6k3cBEFUqciBTEJkM2FngnOhnXeBanB22MPsq8BkWmpVA==
-X-Received: by 2002:a05:6a00:1acd:b0:6c4:cf33:cbe8 with SMTP id
- f13-20020a056a001acd00b006c4cf33cbe8mr2578725pfv.6.1699794217361; 
- Sun, 12 Nov 2023 05:03:37 -0800 (PST)
+ bh=vPo68g7FF/7B8GxnVEM+yDSKbpWJ6LFTGBkER2uvllI=;
+ b=OyUGnSjoIa77OhHXb3zv3ST4Lk70xL8Mb56w56/IZd8Rv702gAUfqL97vsQv3jpAuC
+ C0YJtLcf7jBVJ9xqIJaKQPkRbDkbPiGmpYlXMzJAnNKCwP8HBczvgiwa4O42F1BZX+B3
+ 6MusFYnnkeeSQKdj4UPR0w1pPQUZdWfQv6TMoTHypeyp19jkiUV3+pDHtW/REU7vdyHO
+ 4pJN408dV9VA/9CUV7+now0eYD1Ms1GLlN29C7TcT7FUsQza3omUtrNoN+z+dJJwHDU4
+ FyNMqhLYjkWZG/44DTyvT0mlwHp8uHXrUFQiyB2A9Ny6+yHOlrLFXIXD2Ir+I+jCZc5e
+ Jv6A==
+X-Gm-Message-State: AOJu0Yw9Yf2J13tLuEBJnap8Cv2YF3xkkwn4pOIcC/fkZ7bVy97BhnZK
+ e3fPLocHZTZbRXtPllFfOeBDdxXdfctr34TVk9aiyQ==
+X-Google-Smtp-Source: AGHT+IEAHonYS4pYT8fXZi+7WxDrLPOSV+uWKXj5rfLD3uAA2hqonyTGuin6n3DzuJPnaD86js6IIA==
+X-Received: by 2002:a05:6a21:71c1:b0:185:a3d6:7bda with SMTP id
+ ay1-20020a056a2171c100b00185a3d67bdamr2800042pzc.39.1699794222541; 
+ Sun, 12 Nov 2023 05:03:42 -0800 (PST)
 Received: from localhost.localdomain ([125.69.8.82])
  by smtp.gmail.com with ESMTPSA id
- ey8-20020a056a0038c800b006c2fcb25c15sm2477684pfb.162.2023.11.12.05.03.32
+ ey8-20020a056a0038c800b006c2fcb25c15sm2477684pfb.162.2023.11.12.05.03.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 Nov 2023 05:03:36 -0800 (PST)
+ Sun, 12 Nov 2023 05:03:42 -0800 (PST)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S . Tsirkin" <mst@redhat.com>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Hyman Huang <yong.huang@smartx.com>
-Subject: [RFC 1/2] qapi/virtio: introduce the "show-bits" argument for
- x-query-virtio-status
-Date: Sun, 12 Nov 2023 21:03:19 +0800
-Message-Id: <2f146005c8573814528f4ffb5a0393eb73b154e3.1699793550.git.yong.huang@smartx.com>
+Subject: [RFC 2/2] vhost-user-test: Add negotiated features check
+Date: Sun, 12 Nov 2023 21:03:20 +0800
+Message-Id: <974a17c335b8edd47124fb163c4ea7a305cfb891.1699793550.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1699793550.git.yong.huang@smartx.com>
 References: <cover.1699793550.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42e;
- envelope-from=yong.huang@smartx.com; helo=mail-pf1-x42e.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::435;
+ envelope-from=yong.huang@smartx.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,303 +94,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch allows to display feature and status bits in virtio-status.
+When a vhost-user network device is restored from an unexpected
+failure, the acked_features could be used as input for the
+VHOST_USER_SET_FEATURES command because QEMU internally backups
+the final features as acked_features after the guest acknowledges
+features during virtio-net driver initialization.
 
-An optional argument is introduced: show-bits. For example:
-{"execute": "x-query-virtio-status",
- "arguments": {"path": "/machine/peripheral-anon/device[1]/virtio-backend",
-               "show-bits": true}
+The negotiated features check verifies whether the features in the
+Vhost slave device and the acked_features in QEMU are identical.
 
-Features and status bits could be helpful for applications to compare
-directly. For instance, when an upper application aims to ensure the
-virtio negotiation correctness between guest, QEMU, and OVS-DPDK, it use
-the "ovs-vsctl list interface" command to retrieve interface features
-(in number format) and the QMP command x-query-virtio-status to retrieve
-vhost-user net device features. If "show-bits" is added, the application
-can compare the two features directly; No need to encoding the features
-returned by the QMP command.
-
-This patch also serves as a preparation for the next one, which implements
-a vhost-user test case about acked features of vhost-user protocol.
-
-Note that since the matching HMP command is typically used for human,
-leave it unchanged.
+Through the usage of the vhost-user protocol, the test case seeks to
+verify that the vhost-user network device is correctly negotiating.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- hw/virtio/virtio-hmp-cmds.c |  2 +-
- hw/virtio/virtio-qmp.c      | 21 +++++++++++++++-
- qapi/virtio.json            | 49 ++++++++++++++++++++++++++++++++++---
- 3 files changed, 67 insertions(+), 5 deletions(-)
+ tests/qtest/vhost-user-test.c | 100 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 100 insertions(+)
 
-diff --git a/hw/virtio/virtio-hmp-cmds.c b/hw/virtio/virtio-hmp-cmds.c
-index 477c97dea2..3774f3d4bf 100644
---- a/hw/virtio/virtio-hmp-cmds.c
-+++ b/hw/virtio/virtio-hmp-cmds.c
-@@ -108,7 +108,7 @@ void hmp_virtio_status(Monitor *mon, const QDict *qdict)
- {
-     Error *err = NULL;
-     const char *path = qdict_get_try_str(qdict, "path");
--    VirtioStatus *s = qmp_x_query_virtio_status(path, &err);
-+    VirtioStatus *s = qmp_x_query_virtio_status(path, false, false, &err);
+diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
+index d4e437265f..14df89f823 100644
+--- a/tests/qtest/vhost-user-test.c
++++ b/tests/qtest/vhost-user-test.c
+@@ -13,6 +13,7 @@
+ #include "libqtest-single.h"
+ #include "qapi/error.h"
+ #include "qapi/qmp/qdict.h"
++#include "qapi/qmp/qlist.h"
+ #include "qemu/config-file.h"
+ #include "qemu/option.h"
+ #include "qemu/range.h"
+@@ -169,6 +170,7 @@ typedef struct TestServer {
+     int test_flags;
+     int queues;
+     struct vhost_user_ops *vu_ops;
++    uint64_t features;
+ } TestServer;
  
-     if (err != NULL) {
-         hmp_handle_error(mon, err);
-diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index 1dd96ed20f..2e92bf28ac 100644
---- a/hw/virtio/virtio-qmp.c
-+++ b/hw/virtio/virtio-qmp.c
-@@ -718,10 +718,15 @@ VirtIODevice *qmp_find_virtio_device(const char *path)
-     return VIRTIO_DEVICE(dev);
+ struct vhost_user_ops {
+@@ -1020,6 +1022,100 @@ static void test_multiqueue(void *obj, void *arg, QGuestAllocator *alloc)
  }
  
--VirtioStatus *qmp_x_query_virtio_status(const char *path, Error **errp)
-+VirtioStatus *qmp_x_query_virtio_status(const char *path,
-+                                        bool has_show_bits,
-+                                        bool show_bits,
-+                                        Error **errp)
+ 
++static QDict *query_virtio(QTestState *who)
++{
++    QDict *rsp;
++
++    rsp = qtest_qmp(who, "{ 'execute': 'x-query-virtio'}");
++    g_assert(!qdict_haskey(rsp, "error"));
++    g_assert(qdict_haskey(rsp, "return"));
++
++    return rsp;
++}
++
++static QDict *query_virtio_status(QTestState *who, const char *path)
++{
++    QDict *rsp;
++
++    rsp = qtest_qmp(who, "{ 'execute': 'x-query-virtio-status', "
++        "'arguments': { 'path': %s, 'show-bits': true} }", path);
++
++    g_assert(!qdict_haskey(rsp, "error"));
++    g_assert(qdict_haskey(rsp, "return"));
++
++    return rsp;
++}
++
++static uint64_t get_acked_features(QTestState *who)
++{
++    QDict *rsp_return, *status, *vhost_info, *dev;
++    QList *dev_list;
++    const QListEntry *entry;
++    const char *name;
++    char *path;
++    uint64_t acked_features;
++
++    /* query the virtio devices */
++    rsp_return = query_virtio(who);
++    g_assert(rsp_return);
++
++    dev_list = qdict_get_qlist(rsp_return, "return");
++    g_assert(dev_list && !qlist_empty(dev_list));
++
++    /* fetch the first and the sole device */
++    entry = qlist_first(dev_list);
++    g_assert(entry);
++
++    dev = qobject_to(QDict, qlist_entry_obj(entry));
++    g_assert(dev);
++
++    name = qdict_get_try_str(dev, "name");
++    g_assert_cmpstr(name, ==, "virtio-net");
++
++    path = g_strdup(qdict_get_try_str(dev, "path"));
++    g_assert(path);
++    qobject_unref(rsp_return);
++    rsp_return = NULL;
++
++    /* fetch the status of the virtio-net device by QOM path */
++    rsp_return = query_virtio_status(who, path);
++    g_assert(rsp_return);
++
++    status = qdict_get_qdict(rsp_return, "return");
++    g_assert(status);
++
++    vhost_info = qdict_get_qdict(status, "vhost-dev");
++    g_assert(vhost_info);
++
++    acked_features = qdict_get_try_int(vhost_info, "acked-features-bits", 0);
++
++    qobject_unref(rsp_return);
++    g_free(path);
++
++    return acked_features;
++}
++
++static void acked_features_check(QTestState *qts, TestServer *s)
++{
++    uint64_t acked_features;
++
++    acked_features = get_acked_features(qts);
++    g_assert_cmpint(acked_features, ==, s->features);
++}
++
++static void test_acked_features(void *obj,
++                                     void *arg,
++                                     QGuestAllocator *alloc)
++{
++    TestServer *server = arg;
++
++    if (!wait_for_fds(server)) {
++        return;
++    }
++
++    acked_features_check(global_qtest, server);
++}
++
+ static uint64_t vu_net_get_features(TestServer *s)
  {
-     VirtIODevice *vdev;
-     VirtioStatus *status;
-+    bool display_bits =
-+        has_show_bits ? show_bits : false;
- 
-     vdev = qmp_find_virtio_device(path);
-     if (vdev == NULL) {
-@@ -733,6 +738,11 @@ VirtioStatus *qmp_x_query_virtio_status(const char *path, Error **errp)
-     status->name = g_strdup(vdev->name);
-     status->device_id = vdev->device_id;
-     status->vhost_started = vdev->vhost_started;
-+    if (display_bits) {
-+        status->guest_features_bits = vdev->guest_features;
-+        status->host_features_bits = vdev->host_features;
-+        status->backend_features_bits = vdev->backend_features;
-+    }
-     status->guest_features = qmp_decode_features(vdev->device_id,
-                                                  vdev->guest_features);
-     status->host_features = qmp_decode_features(vdev->device_id,
-@@ -753,6 +763,9 @@ VirtioStatus *qmp_x_query_virtio_status(const char *path, Error **errp)
+     uint64_t features = 0x1ULL << VHOST_F_LOG_ALL |
+@@ -1040,6 +1136,7 @@ static void vu_net_set_features(TestServer *s, CharBackend *chr,
+         qemu_chr_fe_disconnect(chr);
+         s->test_flags = TEST_FLAGS_BAD;
      }
++    s->features = msg->payload.u64;
+ }
  
-     status->num_vqs = virtio_get_num_queues(vdev);
-+    if (display_bits) {
-+        status->status_bits = vdev->status;
-+    }
-     status->status = qmp_decode_status(vdev->status);
-     status->isr = vdev->isr;
-     status->queue_sel = vdev->queue_sel;
-@@ -775,6 +788,12 @@ VirtioStatus *qmp_x_query_virtio_status(const char *path, Error **errp)
-         status->vhost_dev->n_tmp_sections = hdev->n_tmp_sections;
-         status->vhost_dev->nvqs = hdev->nvqs;
-         status->vhost_dev->vq_index = hdev->vq_index;
-+        if (display_bits) {
-+            status->vhost_dev->features_bits = hdev->features;
-+            status->vhost_dev->acked_features_bits = hdev->acked_features;
-+            status->vhost_dev->backend_features_bits = hdev->backend_features;
-+            status->vhost_dev->protocol_features_bits = hdev->protocol_features;
-+        }
-         status->vhost_dev->features =
-             qmp_decode_features(vdev->device_id, hdev->features);
-         status->vhost_dev->acked_features =
-diff --git a/qapi/virtio.json b/qapi/virtio.json
-index e6dcee7b83..608b841a89 100644
---- a/qapi/virtio.json
-+++ b/qapi/virtio.json
-@@ -79,12 +79,20 @@
- #
- # @vq-index: vhost_dev vq_index
- #
-+# @features-bits: vhost_dev features in decimal format
-+#
- # @features: vhost_dev features
- #
-+# @acked-features-bits: vhost_dev acked_features in decimal format
-+#
- # @acked-features: vhost_dev acked_features
- #
-+# @backend-features-bits: vhost_dev backend_features in decimal format
-+#
- # @backend-features: vhost_dev backend_features
- #
-+# @protocol-features-bits: vhost_dev protocol_features in decimal format
-+#
- # @protocol-features: vhost_dev protocol_features
- #
- # @max-queues: vhost_dev max_queues
-@@ -102,9 +110,13 @@
-             'n-tmp-sections': 'int',
-             'nvqs': 'uint32',
-             'vq-index': 'int',
-+            'features-bits': 'uint64',
-             'features': 'VirtioDeviceFeatures',
-+            'acked-features-bits': 'uint64',
-             'acked-features': 'VirtioDeviceFeatures',
-+            'backend-features-bits': 'uint64',
-             'backend-features': 'VirtioDeviceFeatures',
-+            'protocol-features-bits': 'uint64',
-             'protocol-features': 'VhostDeviceProtocols',
-             'max-queues': 'uint64',
-             'backend-cap': 'uint64',
-@@ -124,10 +136,16 @@
- #
- # @vhost-started: VirtIODevice vhost_started flag
- #
-+# @guest-features-bits: VirtIODevice guest_features in decimal format
-+#
- # @guest-features: VirtIODevice guest_features
- #
-+# @host-features-bits: VirtIODevice host_features in decimal format
-+#
- # @host-features: VirtIODevice host_features
- #
-+# @backend-features-bits: VirtIODevice backend_features in decimal format
-+#
- # @backend-features: VirtIODevice backend_features
- #
- # @device-endian: VirtIODevice device_endian
-@@ -135,6 +153,9 @@
- # @num-vqs: VirtIODevice virtqueue count.  This is the number of
- #     active virtqueues being used by the VirtIODevice.
- #
-+# @status-bits: VirtIODevice configuration status in decimal format
-+#     (VirtioDeviceStatus)
-+#
- # @status: VirtIODevice configuration status (VirtioDeviceStatus)
- #
- # @isr: VirtIODevice ISR
-@@ -170,10 +191,14 @@
-             'device-id': 'uint16',
-             'vhost-started': 'bool',
-             'device-endian': 'str',
-+            'guest-features-bits': 'uint64',
-             'guest-features': 'VirtioDeviceFeatures',
-+            'host-features-bits': 'uint64',
-             'host-features': 'VirtioDeviceFeatures',
-+            'backend-features-bits': 'uint64',
-             'backend-features': 'VirtioDeviceFeatures',
-             'num-vqs': 'int',
-+            'status-bits': 'uint8',
-             'status': 'VirtioDeviceStatus',
-             'isr': 'uint8',
-             'queue-sel': 'uint16',
-@@ -195,6 +220,9 @@
- #
- # @path: Canonical QOM path of the VirtIODevice
- #
-+# @show-bits: Whether to display the feature & status bits.
-+#     Default is disabled. (Since 8.2)
-+#
- # Features:
- #
- # @unstable: This command is meant for debugging.
-@@ -208,7 +236,8 @@
- # 1. Poll for the status of virtio-crypto (no vhost-crypto active)
- #
- # -> { "execute": "x-query-virtio-status",
--#      "arguments": { "path": "/machine/peripheral/crypto0/virtio-backend" }
-+#      "arguments": { "path": "/machine/peripheral/crypto0/virtio-backend",
-+#                     "show-bits": true }
- #    }
- # <- { "return": {
- #          "device-endian": "little",
-@@ -216,6 +245,7 @@
- #          "disable-legacy-check": false,
- #          "name": "virtio-crypto",
- #          "started": true,
-+#          "guest-features-bits": 5100273664,
- #          "device-id": 20,
- #          "backend-features": {
- #              "transports": [],
-@@ -241,6 +271,7 @@
- #                  "VIRTIO_F_VERSION_1: Device compliant for v1 spec (legacy)"
- #              ]
- #          },
-+#          "host-features-bits": 6325010432,
- #          "host-features": {
- #              "unknown-dev-features": 1073741824,
- #              "dev-features": [],
-@@ -252,9 +283,11 @@
- #                  "VIRTIO_F_NOTIFY_ON_EMPTY: Notify when device runs out of avail. descs. on VQ"
- #              ]
- #          },
-+#          "backend-features-bits": 0,
- #          "use-guest-notifier-mask": true,
- #          "vm-running": true,
- #          "queue-sel": 1,
-+#          "status-bits": 15,
- #          "disabled": false,
- #          "vhost-started": false,
- #          "use-started": true
-@@ -264,7 +297,8 @@
- # 2. Poll for the status of virtio-net (vhost-net is active)
- #
- # -> { "execute": "x-query-virtio-status",
--#      "arguments": { "path": "/machine/peripheral-anon/device[1]/virtio-backend" }
-+#      "arguments": { "path": "/machine/peripheral-anon/device[1]/virtio-backend",
-+#                     "show-bits": true }
- #    }
- # <- { "return": {
- #          "device-endian": "little",
-@@ -272,11 +306,13 @@
- #          "disabled-legacy-check": false,
- #          "name": "virtio-net",
- #          "started": true,
-+#          "guest-features-bits": 5111807911,
- #          "device-id": 1,
- #          "vhost-dev": {
- #              "n-tmp-sections": 4,
- #              "n-mem-sections": 4,
- #              "max-queues": 1,
-+#              "features-bits": 13908344832
- #              "backend-cap": 2,
- #              "log-size": 0,
- #              "backend-features": {
-@@ -284,6 +320,8 @@
- #                  "transports": []
- #              },
- #              "nvqs": 2,
-+#              "acked-features-bits": 5100306432,
-+#              "backend-features-bits": 0,
- #              "protocol-features": {
- #                  "protocols": []
- #              },
-@@ -299,6 +337,7 @@
- #                      "VIRTIO_F_VERSION_1: Device compliant for v1 spec (legacy)"
- #                  ]
- #              },
-+#              "protocol-features-bits": 0,
- #              "features": {
- #                  "dev-features": [
- #                      "VHOST_F_LOG_ALL: Logging write descriptors supported",
-@@ -387,6 +426,7 @@
- #                  "VIRTIO_F_VERSION_1: Device compliant for v1 spec (legacy)"
- #             ]
- #          },
-+#          "host-features-bits": 6337593319,
- #          "host-features": {
- #              "dev-features": [
- #                  "VHOST_USER_F_PROTOCOL_FEATURES: Vhost-user protocol features negotiation supported",
-@@ -420,9 +460,11 @@
- #                  "VIRTIO_F_NOTIFY_ON_EMPTY: Notify when device runs out of avail. descs. on VQ"
- #             ]
- #          },
-+#          "backend-features-bits": 6337593319,
- #          "use-guest-notifier-mask": true,
- #          "vm-running": true,
- #          "queue-sel": 2,
-+#          "status-bits": 15,
- #          "disabled": false,
- #          "vhost-started": true,
- #          "use-started": true
-@@ -430,7 +472,8 @@
- #    }
- ##
- { 'command': 'x-query-virtio-status',
--  'data': { 'path': 'str' },
-+  'data': { 'path': 'str',
-+            '*show-bits': 'bool'},
-   'returns': 'VirtioStatus',
-   'features': [ 'unstable' ] }
+ static void vu_net_get_protocol_features(TestServer *s, CharBackend *chr,
+@@ -1109,6 +1206,9 @@ static void register_vhost_user_test(void)
+     qos_add_test("vhost-user/multiqueue",
+                  "virtio-net",
+                  test_multiqueue, &opts);
++    qos_add_test("vhost-user/read_acked_features",
++                 "virtio-net",
++                 test_acked_features, &opts);
+ }
+ libqos_init(register_vhost_user_test);
  
 -- 
 2.39.1
