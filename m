@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F78C7E920D
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 19:44:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49AC77E91BE
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 18:06:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2FQZ-0005h1-US; Sun, 12 Nov 2023 13:43:23 -0500
+	id 1r2DuC-0002sV-6u; Sun, 12 Nov 2023 12:05:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r2FQM-0005gj-TY
- for qemu-devel@nongnu.org; Sun, 12 Nov 2023 13:43:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r2FQH-0002XU-6D
- for qemu-devel@nongnu.org; Sun, 12 Nov 2023 13:43:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699814584;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=mwTJKcwfepq5ihk6QtJsohNKQQcTYcatZflpB/K5Pf0=;
- b=doPvCPmcYX9dBYrJhYeIPWxihdfMcVMw1D7v/HMDpkucbEaNX/iZMxOSY16k1klZ4/G670
- NaTctPkh6t1BuCJ4igwgfjFzWcW6m2JWZsr+u30igH6bq40UzB6PdU1y3k+F4/JFPamkZz
- 5nQnEhMPE0KsjiM3TWy99xMU8+AgEDY=
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
- [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-53-6nRORqPPPhGwnovQgFChYQ-1; Sun, 12 Nov 2023 13:43:01 -0500
-X-MC-Unique: 6nRORqPPPhGwnovQgFChYQ-1
-Received: by mail-ua1-f72.google.com with SMTP id
- a1e0cc1a2514c-7b9b2b08b42so4184690241.1
- for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 10:43:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2Du9-0002sI-50
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 12:05:49 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2Du6-0004jS-Mp
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 12:05:48 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-9c3aec5f326so974314366b.1
+ for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 09:05:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699808735; x=1700413535; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=e1LL1AlY9N/DGsRY7ciImhvPT3QgMB/hvHzet9kH5Yw=;
+ b=pYU8pIiapXpz47vThyuMIbvuDNva++28ssaTNFtLj2GxRN035hMtdac15TH6ECACol
+ sA3nuYx1X+jhd8b3LcZlqIPFUnX2ipG/O855cBnfeUpQhBzcObYPYVCbu3ZrE3VO67bt
+ KXgn14CEthdNdjw4bWh3r575H8FfOxNNCEzkmwFGqZEKxANgoxuJ9uO/LME7zjAHJNkU
+ A6HFO1aEhPbAsqJBWRViRtSWy4fQGmfzoOekttHjvGUMHwZ/xcURRf7xljYqxNL9id/E
+ RFpdU7IJXLe1F+OINGxNj15zEtGiHFi84jsJkJJxP8QXhkegKdT4fP535NYD5MpCKCFK
+ IIog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699814581; x=1700419381;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mwTJKcwfepq5ihk6QtJsohNKQQcTYcatZflpB/K5Pf0=;
- b=P1QCaZammXfQa4qMIyp6nfGYB4ISB50ZmUPJJ4XJD3hye8hghHVNuWJs5bL0zafPhu
- okk25ZqCESKKyonPcTZ+KOimU3HeoFkLKlYhSct4RoCrS/mFnHVqmaZo+cHIn5NHqWGl
- YB6qMYtdaCR11epKlEzvjDgAEDn5IYl5UPjNMycE2KoWa7oXWa2KtGp9rWPkwdx4PnNz
- Yw019A4rjbHlYoTFcRQeCvX6s15aC91Jq73EBlg4kAipfurs9zHZBxHydo6iur9SlNYf
- K0Da6xedBvLSCGz6zfsZuOzk/hH5HOzVU/59V3++pk+C3VxhSttDxGh1z6avslE+DHto
- 4vYw==
-X-Gm-Message-State: AOJu0Yx4xgi3rFq+JS9BZlGy8jtOKrtJalNQr4E0lY3i2xneA5gAH8D0
- QOiPN+1A5ToRNbr0zkqP9bi6odAIPkMB7O7gcn6PxWnRlcjEpvBRp2DL5KXe7fjGUNyKcbc3Q16
- 7hzaDKDHV6LJta1KLsEtDa8DKtIkosrNMecNKktCUUg==
-X-Received: by 2002:a05:6102:c9:b0:452:6478:3e24 with SMTP id
- u9-20020a05610200c900b0045264783e24mr3456802vsp.12.1699814580828; 
- Sun, 12 Nov 2023 10:43:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEb+7heKdfjBZVu/GcJ7bN0NoPRd3SJxlXypaa4uGcCNIU27hM8JMYh2bqQ2bLa4kpAnANPtzTeP/ETyUTDMnU=
-X-Received: by 2002:a05:6102:c9:b0:452:6478:3e24 with SMTP id
- u9-20020a05610200c900b0045264783e24mr3456798vsp.12.1699814580522; Sun, 12 Nov
- 2023 10:43:00 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699808735; x=1700413535;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=e1LL1AlY9N/DGsRY7ciImhvPT3QgMB/hvHzet9kH5Yw=;
+ b=LCjc0O/8WUDy06ijAD2gUExsvvmR+r+cqqi/E4y+omNuAQyjSZ3ao69vDaN2l4yiZi
+ bmm2fju0aofHRZO6LAmYfbSRWMLsod6ifkBMouBkA8F5BaqfvB4wy16emomiQuUwrJLW
+ cORM+mmgH701wmTUg32j4cUT7a+4uMHiohgGIrx7JKxb4dCp0C5s3RrjZEDA4OGeBOXy
+ 5VCfjgByurrlmkSYGSUeqiK8JxTqTu2fo84QQseAm/UrkvKgAaglVNuDkNcFNEu7OkRo
+ YywT6M3/zVOuGYsKcXkh418mhB2dOQ8q3DEQu1MsNdXhhGnK88B312kEkYk5dUBiVDFI
+ 8QRQ==
+X-Gm-Message-State: AOJu0YyQpp7m1Udvl/xQuhVwWCBzJtFSzHgtwqIojxEAyY7bJSj7Uyzr
+ opsNEzGtuwj2rOfvY+gwTUg/8A==
+X-Google-Smtp-Source: AGHT+IGEbeC27kVfHg1Sgk6mF1K9cZysDVNdU19ISd+1b2iVrO6towIuaqKWwDKPhY02rywfZY/l1g==
+X-Received: by 2002:a17:907:9728:b0:9e8:2441:5cd4 with SMTP id
+ jg40-20020a170907972800b009e824415cd4mr3244044ejc.17.1699808734884; 
+ Sun, 12 Nov 2023 09:05:34 -0800 (PST)
+Received: from [192.168.69.100]
+ (i15-lef02-th2-89-83-217-202.ft.lns.abo.bbox.fr. [89.83.217.202])
+ by smtp.gmail.com with ESMTPSA id
+ fj10-20020a1709069c8a00b009e7e7c0d1a9sm2129915ejc.185.2023.11.12.09.05.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 12 Nov 2023 09:05:34 -0800 (PST)
+Message-ID: <a8d30a85-389e-442e-8dc0-dfec07107bc1@linaro.org>
+Date: Sun, 12 Nov 2023 18:05:32 +0100
 MIME-Version: 1.0
-References: <610aad34-da0b-4b8a-aa22-4ad19513ae28@tls.msk.ru>
-In-Reply-To: <610aad34-da0b-4b8a-aa22-4ad19513ae28@tls.msk.ru>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Sun, 12 Nov 2023 18:03:47 +0100
-Message-ID: <CABgObfYYnwD+hP2kh=O0jWG5soVno4hNy2iicszgXm--5CyFUg@mail.gmail.com>
-Subject: Re: disable-pie build
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="00000000000041a9270609f8ecff"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/11] target/hppa: Update to SeaBIOS-hppa version 11
+Content-Language: en-US
+To: deller@gmx.de, Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <20231111013212.229673-1-richard.henderson@linaro.org>
+ <20231111013212.229673-2-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231111013212.229673-2-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,100 +93,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000041a9270609f8ecff
-Content-Type: text/plain; charset="UTF-8"
+Hi Helge,
 
-Il sab 11 nov 2023, 03:40 Michael Tokarev <mjt@tls.msk.ru> ha scritto:
+On 11/11/23 02:32, Richard Henderson wrote:
+> From: Helge Deller <deller@gmx.de>
+> 
+> New SEABIOS_HPPA_VERSION 11
+> (current master branch)
+> 
+> Fixes and enhancements (mostly to enable 64-bit Linux kernel):
+> ....
+> temporary commit
 
-> Hi!
->
-> It looks like --disable-pie configure, which uses -fno-pie -no-pie flags
-> for the compiler, is broken: it does not not tell the *linker* about the
-> option, so the link fails (at least on debian bookworm):
->
-> /usr/bin/ld: libcommon.fa.p/hw_core_cpu-common.c.o: relocation R_X86_64_32
-> against `.rodata' can not be used when making a PIE object; recompile with
-> -fPIE
-> /usr/bin/ld: failed to set dynamic section sizes: bad value
->
-> This is failing for *all* executables, including tests, qemu-img, etc.
->
+What information should go here?
 
-Is this new in bookworm? And also can you compare 8.0, 8.1 and 8.2?
-
-Paolo
-
-The following change fixes it:
->
-> diff --git a/meson.build b/meson.build
-> index a9c4f28247..0b7ca45d48 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -278,7 +278,8 @@ endif
->   # tries to build an executable instead of a shared library and fails.  So
->   # don't add -no-pie anywhere and cross fingers. :(
->   if not get_option('b_pie')
-> -  qemu_common_flags += cc.get_supported_arguments('-fno-pie', '-no-pie')
-> +  qemu_common_flags += cc.get_supported_arguments('-fno-pie')
-> +  qemu_ldflags += cc.get_supported_arguments('-no-pie')
->   endif
->
->   if not get_option('stack_protector').disabled()
->
->
->
-
---00000000000041a9270609f8ecff
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il sab 11 nov 2023, 03:40 Michael Tokarev &lt;<a href=
-=3D"mailto:mjt@tls.msk.ru">mjt@tls.msk.ru</a>&gt; ha scritto:<br></div><blo=
-ckquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #c=
-cc solid;padding-left:1ex">Hi!<br>
-<br>
-It looks like --disable-pie configure, which uses -fno-pie -no-pie flags<br=
->
-for the compiler, is broken: it does not not tell the *linker* about the<br=
->
-option, so the link fails (at least on debian bookworm):<br>
-<br>
-/usr/bin/ld: libcommon.fa.p/hw_core_cpu-common.c.o: relocation R_X86_64_32 =
-against `.rodata&#39; can not be used when making a PIE object; recompile w=
-ith <br>
--fPIE<br>
-/usr/bin/ld: failed to set dynamic section sizes: bad value<br>
-<br>
-This is failing for *all* executables, including tests, qemu-img, etc.<br><=
-/blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">Is th=
-is new in bookworm? And also can you compare 8.0, 8.1 and 8.2?</div><div di=
-r=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"auto"><br></d=
-iv><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_=
-quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1=
-ex">The following change fixes it:<br>
-<br>
-diff --git a/meson.build b/meson.build<br>
-index a9c4f28247..0b7ca45d48 100644<br>
---- a/meson.build<br>
-+++ b/meson.build<br>
-@@ -278,7 +278,8 @@ endif<br>
-=C2=A0 # tries to build an executable instead of a shared library and fails=
-.=C2=A0 So<br>
-=C2=A0 # don&#39;t add -no-pie anywhere and cross fingers. :(<br>
-=C2=A0 if not get_option(&#39;b_pie&#39;)<br>
--=C2=A0 qemu_common_flags +=3D cc.get_supported_arguments(&#39;-fno-pie&#39=
-;, &#39;-no-pie&#39;)<br>
-+=C2=A0 qemu_common_flags +=3D cc.get_supported_arguments(&#39;-fno-pie&#39=
-;)<br>
-+=C2=A0 qemu_ldflags +=3D cc.get_supported_arguments(&#39;-no-pie&#39;)<br>
-=C2=A0 endif<br>
-<br>
-=C2=A0 if not get_option(&#39;stack_protector&#39;).disabled()<br>
-<br>
-<br>
-</blockquote></div></div></div>
-
---00000000000041a9270609f8ecff--
-
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> ---
+>   pc-bios/hppa-firmware.img | Bin 755480 -> 681132 bytes
+>   roms/seabios-hppa         |   2 +-
+>   2 files changed, 1 insertion(+), 1 deletion(-)
 
