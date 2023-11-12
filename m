@@ -2,77 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94DF37E8DE6
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 02:40:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D0D7E8E09
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 03:57:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r1zQu-0005MT-7F; Sat, 11 Nov 2023 20:38:40 -0500
+	id 1r20dP-0008E8-Gw; Sat, 11 Nov 2023 21:55:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1r1zQr-0005M8-KR
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 20:38:37 -0500
-Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ id 1r20dK-0008Ds-TX
+ for qemu-devel@nongnu.org; Sat, 11 Nov 2023 21:55:34 -0500
+Received: from mail-il1-x141.google.com ([2607:f8b0:4864:20::141])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1r1zQp-0005Mv-O9
- for qemu-devel@nongnu.org; Sat, 11 Nov 2023 20:38:37 -0500
-Received: by mail-oo1-xc30.google.com with SMTP id
- 006d021491bc7-5844bc378feso1894639eaf.0
- for <qemu-devel@nongnu.org>; Sat, 11 Nov 2023 17:38:34 -0800 (PST)
+ id 1r20dG-00065N-Oy
+ for qemu-devel@nongnu.org; Sat, 11 Nov 2023 21:55:33 -0500
+Received: by mail-il1-x141.google.com with SMTP id
+ e9e14a558f8ab-357cf6725acso13297385ab.3
+ for <qemu-devel@nongnu.org>; Sat, 11 Nov 2023 18:55:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699753113; x=1700357913; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=5iTBJRyOtbbI2Xeif97v+vFr7FkDa6oay4Q1ew9vL9c=;
- b=a9stK5iJguUtuLOeXngWEHdu2fDVNe6fbnAz09shOMVlYvH2h9T862a/uPkOPnW/1N
- cOA2QJpCpxE23vt+Nv3NUkXwSjMs49QE0BG6dSF20p8eYhTQavtHlQVFNzEr6JvIv0cr
- uBhU1bpCe9NJ3BUNPvcj3fEnJiQDWyR9a749AB/9mdHoXAlotfZddVUuHBiHlk9c/c6+
- zQvf3ecayyh3NYR2JHxZBT3DS+CKxLECm15UCVm1dnhFBpw3AjP0byq1jelylnHKX/6E
- yFuj72+0oRMLDmCI/b3Z/Oo+ROy+g5XOjZ7RF4gyCkt5Q4FKBNsHth31h6bpJb1tXN31
- xiEA==
+ d=linaro.org; s=google; t=1699757724; x=1700362524; darn=nongnu.org;
+ h=content-transfer-encoding:content-language:in-reply-to:mime-version
+ :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pJDClDSNaNEPVXz9zYl2X3u7oFUSHrJkfAbcZpAei/E=;
+ b=QhrWZ43LZ3KIcd6253adQ4NdLXnBeYG46Cudrt5f177Gq96RAxMqrWIX/f5cmEXPQy
+ PgnNCym4hE9Je8TafSWaBE896Ac5/1mWu3NwLznUG4LFmFIevBdN3ZZKc9tBXwBa9vnN
+ 9/1c4/G3Xtm0fkRG25YqcjWccMbFgDs1dDRUxCsc1scD4zAVEZ7OoMKRiQIYdi4xdBw2
+ 9Nkp5X05baDz4rmLWwDjjjSBwarSIo8NPSxNRR2AhtBhImnnzZeyTxxus6fdZethOHR5
+ 4m9QPb+uhjqFZG0y1OAK8chV8zq74jCFkoDiMlp9S03g0reqBrwh+OFVkGVYwZUOgkW9
+ mzcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699753113; x=1700357913;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=5iTBJRyOtbbI2Xeif97v+vFr7FkDa6oay4Q1ew9vL9c=;
- b=YuHg6fmkdxOaxURxSVfYsNn5AiHkFMWgPMHxq8rl+MKXl60cXs2JWCtSk6AqIeMPJv
- 0sqQ47lV3txDSNQ25YybSv1fR5Zdn3rnPFyBq7BiXoS+fYahTCgWVYRReItqbDSVXawS
- 178l6NLWzTnLPItq7kZYqI1APBbbmGNasSwvVmBI8ljiqu7Tr9BhV2lZhew+fo/cnoWT
- pcUVCUfb+pZUMG3aSX1h+W0XXzl76r0+TCTAhcP/RGkGl7ulI2xS8Lczsq0/zRnid7N7
- ylxB+K2HIKWOpzT0twRxfeYEPNXsHBlPowRe6g0xquJnBCqwe63thWkVj28gpRpz3EgK
- 3sgg==
-X-Gm-Message-State: AOJu0Yyr5dMe9ChTpccjQr7qrpR3H10ao0kdaZDaNJDREsPaJV9jJKnN
- 3eX63n9EjSvgbx8jMLq1PUnPGCOGSMpTyndTSln/JsnR
-X-Google-Smtp-Source: AGHT+IGllvZ9C9DdmUr5g2c1OGWOGWsIOspQTJGFDEFe58fAIRobfDmGcAZVtEYmQIndzJ2rXO/8+Q==
-X-Received: by 2002:a05:6358:7f1e:b0:169:81cc:d7f9 with SMTP id
- p30-20020a0563587f1e00b0016981ccd7f9mr5425425rwn.0.1699753113159; 
- Sat, 11 Nov 2023 17:38:33 -0800 (PST)
-Received: from amd.. ([2804:7f0:b401:308c:3e7c:3fff:fe7a:e83b])
+ d=1e100.net; s=20230601; t=1699757724; x=1700362524;
+ h=content-transfer-encoding:content-language:in-reply-to:mime-version
+ :user-agent:date:message-id:from:references:cc:to:subject
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pJDClDSNaNEPVXz9zYl2X3u7oFUSHrJkfAbcZpAei/E=;
+ b=TLBMYl0GFll8xFA3COZwpfnEdqaimKEWNufHyglaFnILUXRIcC04nKBTM1zlv63ak4
+ t58VFS7CibzQGn1X2TI+1cKHZdUB3sv6Gmjz8MoROIm5Q3X/aOzXZNUN/1aU8EtcYQmS
+ /FCMpiAA6NFiUMvTJEJghCIXpGve8rAMRVzSSPA+N4OcrUfnZPv0lUACjWV/4WcsPSbF
+ ni/6GUxiG+1EwBSTStZuSFU8iHbFlkTpTHrbi7vK028zd3HphjJXOdLP98AsYboofgeP
+ ChjvBXeWWV6i0X7JVNy5ExXpVIAoXsHwI8RDcQtZoRJnBYDDTf5+pHRKQRHsUBY7TkV0
+ 6s2w==
+X-Gm-Message-State: AOJu0YzRtrhjzaGHUL4K/6xbJdn7aLSY/wGajEsRMtAr8rzRj89Tp7km
+ 32eALkKE994A2yIS3v1yK6hUiA==
+X-Google-Smtp-Source: AGHT+IFG11M2848kqw5FOUX9ZIMwKvLs5O3Y35DHDylJ2269iFfKzANu/lezqwcyOI+6hxna754ZPg==
+X-Received: by 2002:a05:6e02:1bcf:b0:357:438f:6ecf with SMTP id
+ x15-20020a056e021bcf00b00357438f6ecfmr4796081ilv.13.1699757724282; 
+ Sat, 11 Nov 2023 18:55:24 -0800 (PST)
+Received: from ?IPv6:2804:7f0:b401:308c:fa40:2f92:19ee:4ba?
+ ([2804:7f0:b401:308c:fa40:2f92:19ee:4ba])
  by smtp.gmail.com with ESMTPSA id
- w12-20020a63f50c000000b005b8ebef9fa0sm1869393pgh.83.2023.11.11.17.38.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 11 Nov 2023 17:38:32 -0800 (PST)
+ 10-20020a170902c20a00b001b7f40a8959sm1914963pll.76.2023.11.11.18.55.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 11 Nov 2023 18:55:23 -0800 (PST)
+Subject: Re: QTest framework does not capture toggled irq line
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org
+References: <4daf0424-b767-b5d9-bacb-0fe879c92963@linaro.org>
+ <41fc01bc-9883-48b3-8652-c526745eda90@redhat.com>
 From: Gustavo Romero <gustavo.romero@linaro.org>
-To: qemu-devel@nongnu.org,
-	thuth@redhat.com
-Cc: lvivier@redhat.com, pbonzini@redhat.com, philmd@linaro.org,
- gustavo.romero@linaro.org
-Subject: [PATCH] test/qtest: Add an API function to capture IRQ toggling
-Date: Sun, 12 Nov 2023 01:38:01 +0000
-Message-Id: <20231112013801.293970-1-gustavo.romero@linaro.org>
-X-Mailer: git-send-email 2.34.1
+Message-ID: <bf5c6f4e-9d78-d590-7124-3521e08cc435@linaro.org>
+Date: Sat, 11 Nov 2023 23:55:21 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
+In-Reply-To: <41fc01bc-9883-48b3-8652-c526745eda90@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
- envelope-from=gustavo.romero@linaro.org; helo=mail-oo1-xc30.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::141;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-il1-x141.google.com
+X-Spam_score_int: -62
+X-Spam_score: -6.3
+X-Spam_bar: ------
+X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.148,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,95 +96,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently the QTest API does not provide a function to allow capturing
-when an IRQ line is toggled (raised then lowered). Functions like
-qtest_get_irq() read the current state of the intercepted IRQ lines,
-which is already low when the function is called, since the line is
-toggled.
+On 11/10/23 3:16 AM, Thomas Huth wrote:
+> On 10/11/2023 04.40, Gustavo Romero wrote:
+>> Hi folks,
+>>
+>> I'm writing a test for a device that has one IRQ output line
+>> that is toggled (raised then lowered) by the device to trigger
+>> a CPU interrupt.
+>>
+>> Afaics the QTest framework does not provide a way to capture
+>> when an output line is raised because the API functions, e.g.
+>> qtest_get_irq(), read the current state of the intercepted
+>> IRQ lines, which is already low when the function is called,
+>> since the line is toggled by the device.
+>>
+>> I'd like to introduce a new API function to address this case,
+>> called qtest_get_irq_trigger_counter():
+> ...
+>> This change addresses the current QTest limitation. Is it acceptable?
+> 
+>   Hi Gustavo,
+> 
+> that sounds reasonable to me.
 
-This commit introduces a new function, qtest_get_irq_trigger_counter(),
-which returns the number of times a given intercepted IRQ line was
-triggered (raised), hence allowing to capture when an IRQ line was
-toggled.
+Thanks, Thomas! I've posted the patch here:
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
----
- tests/qtest/libqtest.c | 12 ++++++++++++
- tests/qtest/libqtest.h |  9 +++++++++
- 2 files changed, 21 insertions(+)
+https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg02867.html
 
-diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index f33a210861..21891b52f1 100644
---- a/tests/qtest/libqtest.c
-+++ b/tests/qtest/libqtest.c
-@@ -82,6 +82,7 @@ struct QTestState
-     int expected_status;
-     bool big_endian;
-     bool irq_level[MAX_IRQ];
-+    uint64_t irq_trigger_counter[MAX_IRQ];
-     GString *rx;
-     QTestTransportOps ops;
-     GList *pending_events;
-@@ -498,6 +499,7 @@ static QTestState *qtest_init_internal(const char *qemu_bin,
-     s->rx = g_string_new("");
-     for (i = 0; i < MAX_IRQ; i++) {
-         s->irq_level[i] = false;
-+        s->irq_trigger_counter[i] = 0;
-     }
- 
-     /*
-@@ -690,6 +692,7 @@ redo:
- 
-         if (strcmp(words[1], "raise") == 0) {
-             s->irq_level[irq] = true;
-+            s->irq_trigger_counter[irq]++;
-         } else {
-             s->irq_level[irq] = false;
-         }
-@@ -980,6 +983,14 @@ bool qtest_get_irq(QTestState *s, int num)
-     return s->irq_level[num];
- }
- 
-+uint64_t qtest_get_irq_trigger_counter(QTestState *s, int irq_num)
-+{
-+    /* dummy operation in order to make sure irq is up to date */
-+    qtest_inb(s, 0);
-+
-+    return s->irq_trigger_counter[irq_num];
-+}
-+
- void qtest_module_load(QTestState *s, const char *prefix, const char *libname)
- {
-     qtest_sendf(s, "module_load %s %s\n", prefix, libname);
-@@ -1799,6 +1810,7 @@ QTestState *qtest_inproc_init(QTestState **s, bool log, const char* arch,
-     qts->wstatus = 0;
-     for (int i = 0; i < MAX_IRQ; i++) {
-         qts->irq_level[i] = false;
-+        qts->irq_trigger_counter[i] = 0;
-     }
- 
-     qtest_client_set_rx_handler(qts, qtest_client_inproc_recv_line);
-diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
-index 6e3d3525bf..d1c525aea0 100644
---- a/tests/qtest/libqtest.h
-+++ b/tests/qtest/libqtest.h
-@@ -364,6 +364,15 @@ void qtest_module_load(QTestState *s, const char *prefix, const char *libname);
-  */
- bool qtest_get_irq(QTestState *s, int num);
- 
-+/**
-+ * qtest_get_irq_counter:
-+ * @s: #QTestState instance to operate on.
-+ * @num: Interrupt to observe.
-+ *
-+ * Returns: The number of times IRQ @num got triggered (raised).
-+ */
-+uint64_t qtest_get_irq_trigger_counter(QTestState *s, int num);
-+
- /**
-  * qtest_irq_intercept_in:
-  * @s: #QTestState instance to operate on.
--- 
-2.34.1
 
+Cheers,
+Gustavo
 
