@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B2737EA2B5
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 19:19:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABA5B7EA2AF
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 19:18:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2bVa-0007Wa-BS; Mon, 13 Nov 2023 13:18:03 -0500
+	id 1r2bVe-0007e0-0v; Mon, 13 Nov 2023 13:18:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2bVU-0007W0-EK
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:17:58 -0500
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2bVY-0007Yf-U8
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:18:01 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2bVS-0000Uo-0B
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:17:56 -0500
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-9e61e969b1aso491517666b.0
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 10:17:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2bVX-0000Wg-EN
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:18:00 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-9e5dd91b0acso540625266b.1
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 10:17:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699899472; x=1700504272; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699899477; x=1700504277; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=capcjVKPKqE+VLy65Ulh8a/I3TCIRtzzamG6SA9QUvo=;
- b=l1JnD9lKQY9XCOCvCr6pYPPrnnhiUrdrlNIIiqCe1QaTg89RpUlFpMVVbw+/l+0YCX
- 5dMtbg6+tbUrNBrIMZQuT/T53bKpsMVpxuuxCXBtz/4/QIxFL7PS4evQLREeHllZKZx2
- HAJrAPEvPfSPP57sGTOqAHWmUTePCmNwnWNbbWsE0MipVlvNCOuVKy05fsJUihiZpwrz
- JUZgYgZWyrAwaB+fb805TSas3IQ3KEYSrpIfCEfeC2DmrfIS19Phto7ybu7+4dh7Qchj
- TULt8aPVdwQK9f6z57MFMudETfWLGGLf82VuqHwKJaf5R8rANntZml7TtHaU5ot1CwP9
- vFkw==
+ bh=AakYZYdXvcPNi6Iu21AoMUro5aPu6dbPeOCnwN0r1zY=;
+ b=F1HzQ2zgc0RQi1wObhGWQPxS83PEi/uRTzar6dwQfceBuOS1M9Jf42Im/N0QojJ9pX
+ 2xBV+z/uVK1PgcvnuO63ex3Kt39clLIdR3IKgzpH+ObHvzorULk+J1/HBHyALbnNHbCH
+ 4TZto6YTDyHMxfA1B5DjR5U1/izLNMI0s2Ysh4K7wKjrgF+2GeLffAtdrWdaT9FsoZ+f
+ njR8YE0RUCIm821kGVh1iFtrMp2T+1fmDduNjgfZFVI/ovsRQPJ9LL8++OOW4UdHLit8
+ a5R+ZVAysljTIwcfF1QxOqOPUmhVqjB9oxtUG8L8pvjVpGb4N7nA92TMHavOD3YPYbHv
+ aJ/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699899472; x=1700504272;
+ d=1e100.net; s=20230601; t=1699899477; x=1700504277;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=capcjVKPKqE+VLy65Ulh8a/I3TCIRtzzamG6SA9QUvo=;
- b=NNY4cKr+liX6PK0rUrwKIMBRB3WVMLgalI11WCz0YG1x8mA0IWUwJSwjWDbmNpu10I
- 4S/T9dMYT0f8RODRmV7K3bPdbvgSZmT2WhhnV9QyBE3Jrsspl8wdRqH/Ee24ALE5UdnY
- E6JX3GHIpqpmVWzLioD9DMRuyBrHBPgobWvGT5tNVa6z0MujMyNEjf8RGWkV46nTs4f8
- yPK0yVxwIpNemzN9eih24msY3awfhs0Mkv/Xiqu+oQhAIpBVWerENF0bEe9J82gnAdp2
- 7Kb8EgQUuaZLSrztQCnGrACpv4cg1AFbI+kPqz1Kc+EF/XUzea0FB8zPZ0v0hDzgX3GI
- Apjw==
-X-Gm-Message-State: AOJu0YwRJ4XPKNNND7+V3uQkxgfv+eg9DHnywiiUIKoFG5i5Oy3zREvr
- xhqOLbvtov1PvtO5ZuVtI68YfoNr0NkiZOTCf60=
-X-Google-Smtp-Source: AGHT+IEGZPDtI92ETgky8DKBO1ira9DboVEb5kfZrY7ENF/JhamhFp2F86ZRXTQkelgQ/lP5c2KfCg==
-X-Received: by 2002:a17:906:a396:b0:9e5:e56b:9b7 with SMTP id
- k22-20020a170906a39600b009e5e56b09b7mr4687095ejz.42.1699899472445; 
- Mon, 13 Nov 2023 10:17:52 -0800 (PST)
+ bh=AakYZYdXvcPNi6Iu21AoMUro5aPu6dbPeOCnwN0r1zY=;
+ b=aAJ84vVYJoh05Wd3igMzYI7bo9dWi+K4HV0qmRUzvY2TlywWeP9U1m0ic1PTbiG9Bz
+ DfJTrTAZfqU6tYzuVlYlCUBb9LL4B9jmANCHMHGBF4MrV3kdkamAPmhTIRHrq4LPLk6j
+ sUU5TXcWglZGe4QUPzy77r5j25Ggiviq7aYClpWs55R3KcdLRNy6PY0AUaLJH3gBYet6
+ tgOJaCma5fS5GWZpkzY8zs1FYRYVKt4ZSuO3LgSdmtAiaUBgnoRVsDfxN+urryyG2IBs
+ V16e+t2zleMw3Vb/NCzUbDojM7qZF21639zSr9S2Z1G8qsV++1TP2DsihlkYGKVTTPJZ
+ M/Pw==
+X-Gm-Message-State: AOJu0Yzek7EqRlKsz1uOmpvNN8pJRtLCiIFKXtWhujAmAMuzzJd1JbVS
+ hMDHX5Df6PG3pOUQ5cEH8D56krbOGHRnI8RjR0g=
+X-Google-Smtp-Source: AGHT+IGadP1wkT/qgfFvtad+hX3CRGQwn0Z1gbh2a1HMBlKL2ZauDhTR37JLimRaoVjPbuW4bdpSWA==
+X-Received: by 2002:a17:906:3597:b0:9ce:96db:c83e with SMTP id
+ o23-20020a170906359700b009ce96dbc83emr6134233ejb.42.1699899477751; 
+ Mon, 13 Nov 2023 10:17:57 -0800 (PST)
 Received: from m1x-phil.lan ([176.164.221.204])
  by smtp.gmail.com with ESMTPSA id
- z9-20020a170906714900b0099d804da2e9sm4388271ejj.225.2023.11.13.10.17.51
+ ov22-20020a170906fc1600b0098951bb4dc3sm4334101ejb.184.2023.11.13.10.17.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 13 Nov 2023 10:17:52 -0800 (PST)
+ Mon, 13 Nov 2023 10:17:57 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PULL 1/5] hw/mips: LOONGSON3V depends on UNIMP device
-Date: Mon, 13 Nov 2023 19:17:40 +0100
-Message-ID: <20231113181744.49537-2-philmd@linaro.org>
+Cc: qemu-s390x@nongnu.org, Alexandra Diupina <adiupina@astralinux.ru>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 2/5] hw/display/vmware_vga: fix probably typo
+Date: Mon, 13 Nov 2023 19:17:41 +0100
+Message-ID: <20231113181744.49537-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231113181744.49537-1-philmd@linaro.org>
 References: <20231113181744.49537-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,30 +92,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: qemu-stable@nongnu.org
-Fixes: c76b409fef ("hw/mips: Add Loongson-3 machine support")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231107140615.3034763-1-marcandre.lureau@redhat.com>
+When calling trace_vmware_verify_rect_greater_than_bound() replace
+"y" with "h" and y with h
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 02218aedb1 ("hw/display/vmware_vga: replace fprintf calls with trace events")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20231110174104.13280-1-adiupina@astralinux.ru>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/mips/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ hw/display/vmware_vga.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
-index 66ec536e06..505381a0bb 100644
---- a/hw/mips/Kconfig
-+++ b/hw/mips/Kconfig
-@@ -46,6 +46,7 @@ config LOONGSON3V
-     select PCI_EXPRESS_GENERIC_BRIDGE
-     select MSI_NONBROKEN
-     select FW_CFG_MIPS
-+    select UNIMP
- 
- config MIPS_CPS
-     bool
+diff --git a/hw/display/vmware_vga.c b/hw/display/vmware_vga.c
+index 7490d43881..3f26bea190 100644
+--- a/hw/display/vmware_vga.c
++++ b/hw/display/vmware_vga.c
+@@ -336,8 +336,8 @@ static inline bool vmsvga_verify_rect(DisplaySurface *surface,
+         return false;
+     }
+     if (h > SVGA_MAX_HEIGHT) {
+-        trace_vmware_verify_rect_greater_than_bound(name, "y", SVGA_MAX_HEIGHT,
+-                                                    y);
++        trace_vmware_verify_rect_greater_than_bound(name, "h", SVGA_MAX_HEIGHT,
++                                                    h);
+         return false;
+     }
+     if (y + h > surface_height(surface)) {
 -- 
 2.41.0
 
