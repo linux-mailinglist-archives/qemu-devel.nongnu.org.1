@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE997EA1DC
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A23E7EA1DB
 	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 18:33:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2anr-0001Sj-II; Mon, 13 Nov 2023 12:32:51 -0500
+	id 1r2ano-0001S3-4Q; Mon, 13 Nov 2023 12:32:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r2ann-0001SE-Fh
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:32:47 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1r2anl-0001Rr-JE
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:32:45 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r2anj-0000v3-Q5
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:32:47 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1cc938f9612so28898165ad.1
+ id 1r2anj-0000v9-IQ
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:32:45 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1ccbb7f79cdso34221515ad.3
  for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 09:32:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699896761; x=1700501561; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699896762; x=1700501562; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=lo0lQlUWSBjMt9Vl8JT1SFLp9AI2+HeOXlIlVWGHESw=;
- b=ieR7ZysYVpogFKfFx/fUMlikQ2yy9HgJ7G4B800slT2knetGrikwZ+Q+rT2OSx/pYY
- a9xfQDmJUEp/rPjX0Ux0iQVfWOL0mRiQexMzzeFpQhyIKn1b0Dt8dkmOo4tYHZQtUFCC
- JmSvDM0yBNmvVCcFlX06Hlbhp1aMhT7ZNFTO8XvJpBs4WcnIgzssUldqcL74lwO1sKze
- dF0WUWV7yOFKmRhFtPodS9uiED9b/c/ZVLadtwT7irBFnAyNsgGskUd10pacA7OB8XnV
- tKOJtb58QHef190H44JIYh5Q5QVU4GAK8p9tJXBrDNOzS5hhaQJ7g/+Qxs4OuBDPQXgS
- Rn7A==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VYBNYKyRQnZm5Azne5zwUk2eDMhVMq7sbSEJ06OYxG8=;
+ b=S0PtDprvn/PO4ELVzuUJLN8x8PQjmX0lBLjFWw+88zS2W5ZaV9Wm2bzUDazZK5tChg
+ 84rdTiqf1Ue1XZa4SQfXzfz3c3doa4gJe33XH3AgTdeS2Fvs7Ix62Igr1ZNxDPx6WoUF
+ sFMygBJDz5Uz6uQnwamHB3Dx0W3iiL6rXqkNj9nIwv56/ArCa2IgVv7bajU0dUgWXzeu
+ 98wGtIsl7h49heTHntwyLnptf1xR5waCnReaVDCXKk1p33dFbccu5fnY3/4gcsJZc21w
+ m4nF41O8ud/SDbVB5NzVnXdW3v6sXp80Cml9dFwcQy+TB1hrXddjk9gyX1sqwPNKgvNn
+ gKTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699896761; x=1700501561;
+ d=1e100.net; s=20230601; t=1699896762; x=1700501562;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lo0lQlUWSBjMt9Vl8JT1SFLp9AI2+HeOXlIlVWGHESw=;
- b=DmL8uDiJC6Tied3nQ8cVZd7o05rzzsfILSH0Ojzq4bHgdW4/uEesYiIouourN1PJz/
- QWzZDXijk0InGPMd6kO9zzn8BcaMSncJyd7U0nZg71U5T3wQFHfKjX6ehMJH+M4/fhKS
- LRFyXZH0ttVRK5mqjy0Dfqr2eU24Z/tO74+emmwtMUe6j0oMutuEFPLXYxSRu5oghiGL
- qe3pv+/eImRI80HtQXJCuq3VtjGPfOfF08sjbpYO8cIFGn4L0cdJ20sBTlpP7SH8RYhF
- g3CtA61r3W4/6Wbpwz1PjqrTkJ6dpoIid2phc9s9InwF2YEcOTvvdC1GZF27S1xafd6i
- 6q+g==
-X-Gm-Message-State: AOJu0Yw+wyBh0sQKzX6tJd8L1bLYAxHk27WmgkB4l5NCn4u0EpW0BAK+
- EyRdySeHviYunVafZ6suztacnPuDXriGxBJyzY8=
-X-Google-Smtp-Source: AGHT+IHpAyrs/W0P68TiJcV3VNIxJxkIzzJHbPWNG9shmpCdqOTZ6pDZfv8qP/+zaN1kw1q4dZDeXA==
-X-Received: by 2002:a17:902:8201:b0:1ce:a0b:7314 with SMTP id
- x1-20020a170902820100b001ce0a0b7314mr215816pln.61.1699896761208; 
- Mon, 13 Nov 2023 09:32:41 -0800 (PST)
+ bh=VYBNYKyRQnZm5Azne5zwUk2eDMhVMq7sbSEJ06OYxG8=;
+ b=EzQgcVOkI9K6GdbR5/5Xj0cI9oY+y770SrBnJbPftILQ/VqjcOYjqay4tMgtlbXozn
+ WKOHioy+CMe1kgAA2K03oL7o2q+FSYMn1sqKXl8wycE1FtL1p7+tzZQWb1kJTuM3vUqM
+ ITWISr2ZzmkIyPPkL1Pf18HpRlQadkBZXoCOyvKVOlGODl+x/PFONUJjgmLtSsioKFMI
+ oXsLe3teCVzef1nNHFQO7ATJGNk49ZK03M5mUn6gexJ6vG4lvnGYOj3nPob3+buKfRDt
+ rEZ7cgSWYmmHWx6LOdPkRsKlVUZzFvyy+tLpNgWCTunMINmtcdvZT1u9e+F+L4fBhtmq
+ ZyLg==
+X-Gm-Message-State: AOJu0Yxq/0TVTG1OuUqDLK02Tda8mj+DmQDeqVdc7sJVAPwbM63MUIXO
+ wy2bMDjM6Y6x8Pp2G4huy6l+eDgNvbKTBDVb2PQ=
+X-Google-Smtp-Source: AGHT+IEHE0WFY/1RbFK/sTzfUI9yVdcjLNjjGDl0Ldohc30GPQHxR3ynxeUQECq7THzFNcuaQL1eJw==
+X-Received: by 2002:a17:902:f7c7:b0:1cc:70dd:62e7 with SMTP id
+ h7-20020a170902f7c700b001cc70dd62e7mr203603plw.32.1699896762150; 
+ Mon, 13 Nov 2023 09:32:42 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- e6-20020a170902d38600b001c731b62403sm4271910pld.218.2023.11.13.09.32.40
- for <qemu-devel@nongnu.org>
+ e6-20020a170902d38600b001c731b62403sm4271910pld.218.2023.11.13.09.32.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Nov 2023 09:32:40 -0800 (PST)
+ Mon, 13 Nov 2023 09:32:41 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/12] target/hppa: Use PRIV_P_TO_MMU_IDX in helper_probe
-Date: Mon, 13 Nov 2023 09:32:28 -0800
-Message-Id: <20231113173237.48233-4-richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>
+Subject: [PULL 04/12] target/hppa: Fix calculation of CR_IIASQ back register
+Date: Mon, 13 Nov 2023 09:32:29 -0800
+Message-Id: <20231113173237.48233-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231113173237.48233-1-richard.henderson@linaro.org>
 References: <20231113173237.48233-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,39 +90,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Direct privilege level to mmu_idx mapping has been
-false for some time.  Provide the correct value to
-hppa_get_physical_address.
+From: Helge Deller <deller@gmx.de>
 
-Fixes: fa824d99f9b ("target/hppa: Switch to use MMU indices 11-15")
+Need to use iasq_b and iaoq_b to determine back register of CR_IIASQ.
+This fixes random faults when booting up Linux user space.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/op_helper.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ target/hppa/int_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
-index a0e31c0c25..7f607c3afd 100644
---- a/target/hppa/op_helper.c
-+++ b/target/hppa/op_helper.c
-@@ -338,7 +338,7 @@ target_ulong HELPER(probe)(CPUHPPAState *env, target_ulong addr,
- #ifdef CONFIG_USER_ONLY
-     return page_check_range(addr, 1, want);
- #else
--    int prot, excp;
-+    int prot, excp, mmu_idx;
-     hwaddr phys;
- 
-     trace_hppa_tlb_probe(addr, level, want);
-@@ -347,7 +347,8 @@ target_ulong HELPER(probe)(CPUHPPAState *env, target_ulong addr,
-         return 0;
-     }
- 
--    excp = hppa_get_physical_address(env, addr, level, 0, &phys,
-+    mmu_idx = PRIV_P_TO_MMU_IDX(level, env->psw & PSW_P);
-+    excp = hppa_get_physical_address(env, addr, mmu_idx, 0, &phys,
-                                      &prot, NULL);
-     if (excp >= 0) {
-         if (env->psw & PSW_Q) {
+diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
+index 467ee7daf5..98e9d688f6 100644
+--- a/target/hppa/int_helper.c
++++ b/target/hppa/int_helper.c
+@@ -126,7 +126,7 @@ void hppa_cpu_do_interrupt(CPUState *cs)
+         env->cr[CR_IIASQ] =
+             hppa_form_gva_psw(old_psw, env->iasq_f, env->iaoq_f) >> 32;
+         env->cr_back[0] =
+-            hppa_form_gva_psw(old_psw, env->iasq_f, env->iaoq_f) >> 32;
++            hppa_form_gva_psw(old_psw, env->iasq_b, env->iaoq_b) >> 32;
+     } else {
+         env->cr[CR_IIASQ] = 0;
+         env->cr_back[0] = 0;
 -- 
 2.34.1
 
