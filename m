@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB5E7E9987
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 10:57:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C228D7E9988
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 10:57:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2Tg2-0004y0-CG; Mon, 13 Nov 2023 04:56:18 -0500
+	id 1r2Tg7-00050U-R5; Mon, 13 Nov 2023 04:56:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1r2Tfz-0004x2-DC
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 04:56:15 -0500
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ id 1r2Tg3-0004zR-Sb
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 04:56:19 -0500
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1r2Tfw-0005Vl-Ko
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 04:56:15 -0500
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-9c53e8b7cf4so630210266b.1
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 01:56:12 -0800 (PST)
+ id 1r2Tfy-0005Vx-IS
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 04:56:18 -0500
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-9e8b36e36e1so134441466b.0
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 01:56:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=vrull.eu; s=google; t=1699869371; x=1700474171; darn=nongnu.org;
+ d=vrull.eu; s=google; t=1699869372; x=1700474172; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iB7fJ0gWQ/iabhlhIhHFNNkXK5uKgJMYdkpTFw7eBpY=;
- b=clLCLodta6XvbP7pxBR8+o9oIuDkrEHHHSRYGyyz/j6rqYIR8ipdR3jhDeDh66XaIL
- Rpr5jRW0KwsmO2w8H4tFAVwFwDszokrviz2rjkDlpl84Va+njokWtuDaF4MzoS+f2XWC
- PFkg1s3MYCMMpk/JrCZZDTrYHQi+0eiTUPDSIkAFIWd9ezVbrwyiCpG/wN9sHGjUVc5M
- 6rDyLN1ekKufC1nuX8GwTD5ngiWHHjWGvNYcTeTxSg3Kj9gP7gi+ZLa1Vg+CA5/3K148
- xaFy85BPk1sEevJ3I7pUAuRRB61908lD6f0Jcf7g7rQFTSxJA8VfYyfS0IuyF1nTLy/i
- /9rQ==
+ bh=THyee81tu3w+McyXHKmAkftYlF7KiJwneRd5OF9ZWP8=;
+ b=QJVzT0uUBYLyU7/xNSW+aUY9b67WICFk4Z338Z+cbFooh+D3BvV52rNpPyyS9UTqq0
+ LbNcTpl6nO1I0tLfKRrAfqEuaxGWsEehzCdl08pUDpfON6IUJn0gFUBV0sB4uirKsB/L
+ GU6bqcVd6/L1bKGUL8axvB5W5tYcRopem4KEN8YJGjrog3skL7FmYxwqVrx29Df4+vkn
+ KVOG31KMveS9Rx7f9Cv4MbFow3j8EOw0NJHQChL67ndXgg5NHND31yvZnBdxR1RqtESj
+ d6VjsbTYd9B0vWb5LusXa7JPIXrr17qGhCX+z2SLG87KXpiIkooH5zIHHLN70qcyz4+V
+ VFuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699869371; x=1700474171;
+ d=1e100.net; s=20230601; t=1699869372; x=1700474172;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iB7fJ0gWQ/iabhlhIhHFNNkXK5uKgJMYdkpTFw7eBpY=;
- b=ikdPzuvZqdG1S4i+lc4RFhjciXLbbbTA94/Rd+78stKMq5+aXuZVtnDboVgqiOAYUu
- rkIN46Yu91pFw6QOGlyhGF2r8pwvigv7HOp9rG3ukv9/MZfkYXEgYvSXmbm7e7rQHf3O
- Z5+/wDPJ64l6kjUxPIAXdqsh/njnnADmCSYI7pVg4md/RaVh+6Fc59xJhfh/xUN5An8U
- C6g7l6CWNNpO1sUaTvTKquXu6DOMY5sOzv/9pfK1XCiwr9yXgnC6ZIDZeygq719vRPBU
- 4v7qKkwDoTPuQOsP/jOHYthP0aU0mUX+7OX0zxj2NedXaUQROomM7Psq49bIvcWLiery
- +IIg==
-X-Gm-Message-State: AOJu0YxoTHbNUJg/oqtqQjPh5PGDHFpBf2vjJNg7srTzUMEW8TbIC43w
- Tob3mViiRWJZESS3uLdLAfEq5QKGBNO9G7MfaVw=
-X-Google-Smtp-Source: AGHT+IGwwfO967eP37t2S+yYCQilcSkds0fv7zRJGCtrvHbt96K1FadWFwm237h6m0aNFkmI6RDV7g==
-X-Received: by 2002:a17:906:7754:b0:9db:9c5e:a9c5 with SMTP id
- o20-20020a170906775400b009db9c5ea9c5mr3971106ejn.33.1699869370748; 
- Mon, 13 Nov 2023 01:56:10 -0800 (PST)
+ bh=THyee81tu3w+McyXHKmAkftYlF7KiJwneRd5OF9ZWP8=;
+ b=HjREYpWgZFKJm/h+zxjh021v24mGVzeq7LPiV9JSdPf+Pt6nBjedYTfB6riFtQ1Bxa
+ H8xENTo6ZA2hBf7AU1C9nKRQFFOOfXrJskQXApk6HodYZ9NgvnsQrspaykzOd6l/OQc9
+ NEi2kzR4aF2ep1QwpXPhg4Z/U5oV05Sn+2llAYliSWumSpq5/bgcl6QwnnoRxGesbhfo
+ OO5IwzqoxtFLMHxBu0EX4p8L/tYDjWSA6OpzC13Y8ZIoHCoINzdJQ2fIRiZlP4wXJi9G
+ 6Y15IxZk4MXRVURrtEVxRx1eKEHu+lWwMPUzrbmu2v/kV9NhJBx3KNRoeTdnNWd21hk8
+ kl9w==
+X-Gm-Message-State: AOJu0Yx3FMSSVdKZiA7WCZQgbQTgMze3Q5xDqc+28DGCJpLVNQSBnvrE
+ 0EIs9DKTO3rMHsSR+nLH7ToQuw==
+X-Google-Smtp-Source: AGHT+IHCodu2FVEwELcN4EZgABqxQTTHF6DoBJdVzQHKDjNBTjDR80JGmp9tLZsFc1JZ6kpyZ1BEoA==
+X-Received: by 2002:a17:906:d8dc:b0:9c5:7f8b:bafc with SMTP id
+ re28-20020a170906d8dc00b009c57f8bbafcmr4393451ejb.22.1699869372179; 
+ Mon, 13 Nov 2023 01:56:12 -0800 (PST)
 Received: from beast.fritz.box (62-178-148-172.cable.dynamic.surfer.at.
  [62.178.148.172]) by smtp.gmail.com with ESMTPSA id
- a11-20020a170906190b00b0098d2d219649sm3807321eje.174.2023.11.13.01.56.09
+ a11-20020a170906190b00b0098d2d219649sm3807321eje.174.2023.11.13.01.56.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Nov 2023 01:56:09 -0800 (PST)
+ Mon, 13 Nov 2023 01:56:11 -0800 (PST)
 From: Christoph Muellner <christoph.muellner@vrull.eu>
 To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
  Alistair Francis <alistair.francis@wdc.com>,
@@ -63,29 +63,28 @@ To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
  Philipp Tomsich <philipp.tomsich@vrull.eu>,
  Palmer Dabbelt <palmer@dabbelt.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>,
- =?UTF-8?q?Christoph=20M=C3=BCllner?= <christoph.muellner@vrull.eu>,
+Cc: =?UTF-8?q?Christoph=20M=C3=BCllner?= <christoph.muellner@vrull.eu>,
  Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [RFC PATCH 1/2] RISC-V: Add support for Ztso
-Date: Mon, 13 Nov 2023 10:56:02 +0100
-Message-ID: <20231113095605.1131443-2-christoph.muellner@vrull.eu>
+Subject: [RFC PATCH 2/2] RISC-V: Add support for Ssdtso
+Date: Mon, 13 Nov 2023 10:56:03 +0100
+Message-ID: <20231113095605.1131443-3-christoph.muellner@vrull.eu>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231113095605.1131443-1-christoph.muellner@vrull.eu>
 References: <20231113095605.1131443-1-christoph.muellner@vrull.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=christoph.muellner@vrull.eu; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=christoph.muellner@vrull.eu; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,178 +100,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Palmer Dabbelt <palmer@rivosinc.com>
+From: Christoph Müllner <christoph.muellner@vrull.eu>
 
-The Ztso extension is already ratified, this adds it as a CPU property
-and adds various fences throughout the port in order to allow TSO
-targets to function on weaker hosts.  We need no fences for AMOs as
-they're already SC, the placess we need barriers are described.
-These fences are placed in the RISC-V backend rather than TCG as is
-planned for x86-on-arm64 because RISC-V allows heterogenous (and
-likely soon dynamic) hart memory models.
+The Ssdtso extension introduces a DTSO field to the {m,s,h}envcfg
+register to enable TSO at run-time.  Building on top of Ztso support,
+this patch treates Ssdtso just like Ztso (always execute in TSO mode),
+which should be fine from a correctness perspective.
 
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Similar like Ztso, this is expected to have little overhead on
+host machines that operate in TSO mode (e.g. x86).
+However, executing the TSO fences on guests without TSO, will
+have a negative performance impact, regardless if TSO is enabled
+in the guest or not (e.g. running a RV guest with Ssdtso and disabled
+DTSO bit on an aarch64 host).
+
 Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
 ---
- target/riscv/cpu.c                      |  2 ++
- target/riscv/cpu_cfg.h                  |  1 +
- target/riscv/insn_trans/trans_rva.c.inc | 11 ++++++++---
- target/riscv/insn_trans/trans_rvi.c.inc | 16 ++++++++++++++--
- target/riscv/insn_trans/trans_rvv.c.inc | 20 ++++++++++++++++++++
- target/riscv/translate.c                |  3 +++
- 6 files changed, 48 insertions(+), 5 deletions(-)
+ target/riscv/cpu.c       | 2 ++
+ target/riscv/cpu_bits.h  | 3 +++
+ target/riscv/cpu_cfg.h   | 1 +
+ target/riscv/csr.c       | 9 ++++++---
+ target/riscv/translate.c | 2 +-
+ 5 files changed, 13 insertions(+), 4 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 83c7c0cf07..b446e553b1 100644
+index b446e553b1..e01bc56471 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -118,6 +118,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zksed, PRIV_VERSION_1_12_0, ext_zksed),
-     ISA_EXT_DATA_ENTRY(zksh, PRIV_VERSION_1_12_0, ext_zksh),
-     ISA_EXT_DATA_ENTRY(zkt, PRIV_VERSION_1_12_0, ext_zkt),
-+    ISA_EXT_DATA_ENTRY(ztso, PRIV_VERSION_1_12_0, ext_ztso),
-     ISA_EXT_DATA_ENTRY(zvbb, PRIV_VERSION_1_12_0, ext_zvbb),
-     ISA_EXT_DATA_ENTRY(zvbc, PRIV_VERSION_1_12_0, ext_zvbc),
-     ISA_EXT_DATA_ENTRY(zve32f, PRIV_VERSION_1_10_0, ext_zve32f),
-@@ -1336,6 +1337,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     MULTI_EXT_CFG_BOOL("zksed", ext_zksed, false),
-     MULTI_EXT_CFG_BOOL("zksh", ext_zksh, false),
-     MULTI_EXT_CFG_BOOL("zkt", ext_zkt, false),
-+    MULTI_EXT_CFG_BOOL("ztso", ext_ztso, false),
+@@ -149,6 +149,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
+     ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
+     ISA_EXT_DATA_ENTRY(sscofpmf, PRIV_VERSION_1_12_0, ext_sscofpmf),
++    ISA_EXT_DATA_ENTRY(ssdtso, PRIV_VERSION_1_12_0, ext_ssdtso),
+     ISA_EXT_DATA_ENTRY(sstc, PRIV_VERSION_1_12_0, ext_sstc),
+     ISA_EXT_DATA_ENTRY(svadu, PRIV_VERSION_1_12_0, ext_svadu),
+     ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
+@@ -1308,6 +1309,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     MULTI_EXT_CFG_BOOL("zve32f", ext_zve32f, false),
+     MULTI_EXT_CFG_BOOL("zve64f", ext_zve64f, false),
+     MULTI_EXT_CFG_BOOL("zve64d", ext_zve64d, false),
++    MULTI_EXT_CFG_BOOL("ssdtso", ext_ssdtso, false),
+     MULTI_EXT_CFG_BOOL("sstc", ext_sstc, true),
  
-     MULTI_EXT_CFG_BOOL("zdinx", ext_zdinx, false),
-     MULTI_EXT_CFG_BOOL("zfinx", ext_zfinx, false),
+     MULTI_EXT_CFG_BOOL("smepmp", ext_smepmp, false),
+diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+index ebd7917d49..166f1a879d 100644
+--- a/target/riscv/cpu_bits.h
++++ b/target/riscv/cpu_bits.h
+@@ -751,6 +751,7 @@ typedef enum RISCVException {
+ #define MENVCFG_CBIE                       (3UL << 4)
+ #define MENVCFG_CBCFE                      BIT(6)
+ #define MENVCFG_CBZE                       BIT(7)
++#define MENVCFG_DTSO                       BIT(8)
+ #define MENVCFG_ADUE                       (1ULL << 61)
+ #define MENVCFG_PBMTE                      (1ULL << 62)
+ #define MENVCFG_STCE                       (1ULL << 63)
+@@ -764,11 +765,13 @@ typedef enum RISCVException {
+ #define SENVCFG_CBIE                       MENVCFG_CBIE
+ #define SENVCFG_CBCFE                      MENVCFG_CBCFE
+ #define SENVCFG_CBZE                       MENVCFG_CBZE
++#define SENVCFG_DTSO                       MENVCFG_DTSO
+ 
+ #define HENVCFG_FIOM                       MENVCFG_FIOM
+ #define HENVCFG_CBIE                       MENVCFG_CBIE
+ #define HENVCFG_CBCFE                      MENVCFG_CBCFE
+ #define HENVCFG_CBZE                       MENVCFG_CBZE
++#define HENVCFG_DTSO                       MENVCFG_DTSO
+ #define HENVCFG_ADUE                       MENVCFG_ADUE
+ #define HENVCFG_PBMTE                      MENVCFG_PBMTE
+ #define HENVCFG_STCE                       MENVCFG_STCE
 diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index f4605fb190..a0f951d9c1 100644
+index a0f951d9c1..bdf0d2bbc4 100644
 --- a/target/riscv/cpu_cfg.h
 +++ b/target/riscv/cpu_cfg.h
-@@ -70,6 +70,7 @@ struct RISCVCPUConfig {
-     bool ext_zihintntl;
-     bool ext_zihintpause;
+@@ -72,6 +72,7 @@ struct RISCVCPUConfig {
      bool ext_zihpm;
-+    bool ext_ztso;
+     bool ext_ztso;
      bool ext_smstateen;
++    bool ext_ssdtso;
      bool ext_sstc;
      bool ext_svadu;
-diff --git a/target/riscv/insn_trans/trans_rva.c.inc b/target/riscv/insn_trans/trans_rva.c.inc
-index 5f194a447b..85c7e31f2a 100644
---- a/target/riscv/insn_trans/trans_rva.c.inc
-+++ b/target/riscv/insn_trans/trans_rva.c.inc
-@@ -28,7 +28,11 @@ static bool gen_lr(DisasContext *ctx, arg_atomic *a, MemOp mop)
-         tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
-     }
-     tcg_gen_qemu_ld_tl(load_val, src1, ctx->mem_idx, mop);
--    if (a->aq) {
-+    /*
-+     * TSO defines AMOs as acquire+release-RCsc, but does not define LR/SC as
-+     * AMOs.  Instead treat them like loads.
-+     */
-+    if (a->aq || ctx->ztso) {
-         tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
-     }
- 
-@@ -64,9 +68,10 @@ static bool gen_sc(DisasContext *ctx, arg_atomic *a, MemOp mop)
-     gen_set_label(l1);
-     /*
-      * Address comparison failure.  However, we still need to
--     * provide the memory barrier implied by AQ/RL.
-+     * provide the memory barrier implied by AQ/RL/TSO.
-      */
--    tcg_gen_mb(TCG_MO_ALL + a->aq * TCG_BAR_LDAQ + a->rl * TCG_BAR_STRL);
-+    TCGBar bar_strl = (ctx->ztso || a->rl) ? TCG_BAR_STRL : 0;
-+    tcg_gen_mb(TCG_MO_ALL + a->aq * TCG_BAR_LDAQ + bar_strl);
-     gen_set_gpr(ctx, a->rd, tcg_constant_tl(1));
- 
-     gen_set_label(l2);
-diff --git a/target/riscv/insn_trans/trans_rvi.c.inc b/target/riscv/insn_trans/trans_rvi.c.inc
-index faf6d65064..ad40d3e87f 100644
---- a/target/riscv/insn_trans/trans_rvi.c.inc
-+++ b/target/riscv/insn_trans/trans_rvi.c.inc
-@@ -266,12 +266,20 @@ static bool gen_load_i128(DisasContext *ctx, arg_lb *a, MemOp memop)
- 
- static bool gen_load(DisasContext *ctx, arg_lb *a, MemOp memop)
+     bool ext_svinval;
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index fde7ce1a53..ee40f01185 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -2034,7 +2034,8 @@ static RISCVException write_menvcfg(CPURISCVState *env, int csrno,
+                                     target_ulong val)
  {
-+    bool out;
-+
-     decode_save_opc(ctx);
-     if (get_xl(ctx) == MXL_RV128) {
--        return gen_load_i128(ctx, a, memop);
-+        out = gen_load_i128(ctx, a, memop);
-     } else {
--        return gen_load_tl(ctx, a, memop);
-+        out = gen_load_tl(ctx, a, memop);
-+    }
-+
-+    if (ctx->ztso) {
-+        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
-     }
-+
-+    return out;
- }
+     const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
+-    uint64_t mask = MENVCFG_FIOM | MENVCFG_CBIE | MENVCFG_CBCFE | MENVCFG_CBZE;
++    uint64_t mask = MENVCFG_FIOM | MENVCFG_CBIE | MENVCFG_CBCFE |
++                    MENVCFG_CBZE | MENVCFG_DTSO;
  
- static bool trans_lb(DisasContext *ctx, arg_lb *a)
-@@ -328,6 +336,10 @@ static bool gen_store_tl(DisasContext *ctx, arg_sb *a, MemOp memop)
-     TCGv addr = get_address(ctx, a->rs1, a->imm);
-     TCGv data = get_gpr(ctx, a->rs2, EXT_NONE);
+     if (riscv_cpu_mxl(env) == MXL_RV64) {
+         mask |= (cfg->ext_svpbmt ? MENVCFG_PBMTE : 0) |
+@@ -2084,7 +2085,8 @@ static RISCVException read_senvcfg(CPURISCVState *env, int csrno,
+ static RISCVException write_senvcfg(CPURISCVState *env, int csrno,
+                                     target_ulong val)
+ {
+-    uint64_t mask = SENVCFG_FIOM | SENVCFG_CBIE | SENVCFG_CBCFE | SENVCFG_CBZE;
++    uint64_t mask = SENVCFG_FIOM | SENVCFG_CBIE | SENVCFG_CBCFE |
++                    SENVCFG_CBZE | SENVCFG_DTSO;
+     RISCVException ret;
  
-+    if (ctx->ztso) {
-+        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
-+    }
-+
-     tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, memop);
-     return true;
- }
-diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index 78bd363310..76e63fcbca 100644
---- a/target/riscv/insn_trans/trans_rvv.c.inc
-+++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -636,8 +636,28 @@ static bool ldst_us_trans(uint32_t vd, uint32_t rs1, uint32_t data,
-     tcg_gen_addi_ptr(dest, tcg_env, vreg_ofs(s, vd));
-     tcg_gen_addi_ptr(mask, tcg_env, vreg_ofs(s, 0));
+     ret = smstateen_acc_ok(env, 0, SMSTATEEN0_HSENVCFG);
+@@ -2119,7 +2121,8 @@ static RISCVException read_henvcfg(CPURISCVState *env, int csrno,
+ static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
+                                     target_ulong val)
+ {
+-    uint64_t mask = HENVCFG_FIOM | HENVCFG_CBIE | HENVCFG_CBCFE | HENVCFG_CBZE;
++    uint64_t mask = HENVCFG_FIOM | HENVCFG_CBIE | HENVCFG_CBCFE |
++                    HENVCFG_CBZE | HENVCFG_DTSO;
+     RISCVException ret;
  
-+    /*
-+     * According to the specification
-+     *
-+     *   Additionally, if the Ztso extension is implemented, then vector memory
-+     *   instructions in the V extension and Zve family of extensions follow
-+     *   RVTSO at the instruction level.  The Ztso extension does not
-+     *   strengthen the ordering of intra-instruction element accesses.
-+     *
-+     * as a result neither ordered nor unordered accesses from the V
-+     * instructions need ordering within the loop but we do still need barriers
-+     * around the loop.
-+     */
-+    if (is_store && s->ztso) {
-+        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
-+    }
-+
-     fn(dest, mask, base, tcg_env, desc);
- 
-+    if (!is_store && s->ztso) {
-+        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
-+    }
-+
-     if (!is_store) {
-         mark_vs_dirty(s);
-     }
+     ret = smstateen_acc_ok(env, 0, SMSTATEEN0_HSENVCFG);
 diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index f0be79bb16..ab56051d6d 100644
+index ab56051d6d..a9c2061099 100644
 --- a/target/riscv/translate.c
 +++ b/target/riscv/translate.c
-@@ -109,6 +109,8 @@ typedef struct DisasContext {
-     /* PointerMasking extension */
-     bool pm_mask_enabled;
-     bool pm_base_enabled;
-+    /* Ztso */
-+    bool ztso;
-     /* Use icount trigger for native debug */
-     bool itrigger;
-     /* FRM is known to contain a valid value. */
-@@ -1194,6 +1196,7 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+@@ -1196,7 +1196,7 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
      ctx->cs = cs;
      ctx->pm_mask_enabled = FIELD_EX32(tb_flags, TB_FLAGS, PM_MASK_ENABLED);
      ctx->pm_base_enabled = FIELD_EX32(tb_flags, TB_FLAGS, PM_BASE_ENABLED);
-+    ctx->ztso = cpu->cfg.ext_ztso;
+-    ctx->ztso = cpu->cfg.ext_ztso;
++    ctx->ztso = cpu->cfg.ext_ztso || cpu->cfg.ext_ssdtso;
      ctx->itrigger = FIELD_EX32(tb_flags, TB_FLAGS, ITRIGGER);
      ctx->zero = tcg_constant_tl(0);
      ctx->virt_inst_excp = false;
