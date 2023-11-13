@@ -2,70 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 542647EA0F6
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 17:09:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 887BC7EA0F8
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 17:10:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2ZUZ-0000k7-Et; Mon, 13 Nov 2023 11:08:51 -0500
+	id 1r2ZVS-0001kq-4P; Mon, 13 Nov 2023 11:09:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1r2ZUV-0000jT-Vj
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 11:08:47 -0500
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2ZVQ-0001k7-2m
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 11:09:44 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1r2ZUT-0003Gk-EA
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 11:08:47 -0500
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-5bdbe2de25fso3559758a12.3
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 08:08:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2ZVO-0003LN-DU
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 11:09:43 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-9d242846194so681641066b.1
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 08:09:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1699891723; x=1700496523; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fdhByzTYG4Z1xzCS3Jra0JQD5DDZUgvgtJrpeN1q2as=;
- b=AN0xlljc1MXl8+K9nGeaXnaOIz5Qjc1Fc7wvFknrjSL7En+Z25TQG8r5i/zKVObzSc
- TRqw2IxmkjSmPWj9/jTdu1qfpxqfEd7R6wz/AMuq3NiBuD9b9Zl0SscbI452Y2e1DDVA
- EbvOETZlQK748I4xA4By1z6MM/HBQ77u+dYiAdAQ7XM4PLexNxmktIWCLxI1aN7DdXTp
- hU3coxeV3ZTlnObkG/EYEdzodlUYRFZ8LLBsAXA7LeEjyCQ46ZpBWk1Dgi2/7Iu0HoLz
- kmgAzAPSkiQmlhVPRltyQZEhUw6bP7YtQD2ys60NDKOAml0Dq8mJHbqFtGal4Za+y1hW
- NbEQ==
+ d=linaro.org; s=google; t=1699891781; x=1700496581; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=MT2jqnM1EXDZd7Eo9GsBNo8vayQdwjXlJYvjk3d8/BQ=;
+ b=D2k7O3l8xKnz4x6wHlGOSQfJsyHaIm93c9sprzxhHXam42me7jCzDE90qRNp2778Gz
+ qNPDuqJwWF+2Dj04lnQUtKJuLuhukvMSpiwFn35aE9PACZeRTAK8QW81vG3mG8F2cE+f
+ Txq2dZTgh1PnXs0jeuUDpC4ROhEblGPg0TQqTdIBTB6V8MaXP8ZXaSuGvMwIU+QDTjNC
+ 2ckAlUu5/aMKqXEITHpzWpuxTTEZvW25W/djih2QOQGxcJ5iiaeLvPhIsj5c0fTsfW1J
+ LKfQxNx/358OOLNXBzvG2531BZPak8Tbj6Z/3ZWyuI0Zc2qRIBzgmMBgVl0CNns664RI
+ mM/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699891723; x=1700496523;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fdhByzTYG4Z1xzCS3Jra0JQD5DDZUgvgtJrpeN1q2as=;
- b=rasoqsVFGRsOe7kxr2bwGdM4ppiNKaWJkFM/ztlz8meNI9YfC4H7Jt3QqI2pvG5gkR
- stqmZ2smrdSj8o6Ewxx/w/rCz1Zs6vJ7d6YqJ/SD7dkM3buYX2LVnxRhhCWZRLS0mhFP
- hFFuiDNqUAfuJ/Aegu/9G1HTn7Oy4lXhlwKR0iuMw3j9h7KZOyGDCn1PygP6tiZucgzf
- S31eHydOT9+a5niLPDy7JP/fu2spJdCINaGciyONGvuYWBGVwn4fhzmw/uoc/nus/f7f
- inqm/bRCH0tIv6sW0eMAwZCpQwVkTahF6S92PHOlUuIr7Jh7BJwnK6ILi9a3uooVLYtp
- HV6A==
-X-Gm-Message-State: AOJu0YzEJrLLTy18++FDJOs9ArQcb1CGDtZziOInku2sCNcj6m8EAn3L
- RoH+o0tOcyugwFY5veabTJ6Kg+vraDic2CJlJQdMysWeJwAhLvHm2Vs=
-X-Google-Smtp-Source: AGHT+IGm6IbblZT4EBGblIO00wfmFxsfWX+Yg3k4BinJNFHcwKRFJ3zK5CEUUWV5Qj/iREV12rYnNDBF8ktjcYwLj/Q=
-X-Received: by 2002:a17:90b:4ad0:b0:283:27e0:654b with SMTP id
- mh16-20020a17090b4ad000b0028327e0654bmr6817249pjb.3.1699891723213; Mon, 13
- Nov 2023 08:08:43 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699891781; x=1700496581;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=MT2jqnM1EXDZd7Eo9GsBNo8vayQdwjXlJYvjk3d8/BQ=;
+ b=v1nxys14P3E5IejMZCPPuCdNbUvCfS0vX0acW+/xeXQeEGCRQBiJvwmuuHoyhB8x3I
+ Qm6fUlrA8+nOmnLycLu59mGV4PNuY+B4kApj66GW7D9dO0SLeE7ib08Rtq84TJ8aLh8v
+ iMHZWkLH4scrrNPNmHm8RsZgOrLdRx5SlbwVu+Q5ksOr5+ploxaXD/EzvZPiCJQdoDZf
+ dcRDDD6c6q9I1Sx0EKhCiKc/sMyzBrRG4T495eWCaWE4CI7U38uaovTcYf+gF1gLCXHX
+ I4MqGqxAET7M+axK9veQlTCKoHJwK0AmyqaR8AnRqWUleaOt++KrxhFusk4fyZf1Wu97
+ mlJA==
+X-Gm-Message-State: AOJu0YzFz8jl/MUSmp8OZZfVipYly1hDd+iubHjOAkKBs2C0IaPeb5Pj
+ W1aOMUvl0bERc0wZQDfuBupxeA==
+X-Google-Smtp-Source: AGHT+IGeRhJFxDoIfveJ9ETd2OdQ3oHGQ3FlHAF/NrjNVpCIp+vrcNE4rMVRNzJtDcSpxiFGnRsC1Q==
+X-Received: by 2002:a17:907:86a3:b0:9be:b41d:4f7e with SMTP id
+ qa35-20020a17090786a300b009beb41d4f7emr5851496ejc.17.1699891780129; 
+ Mon, 13 Nov 2023 08:09:40 -0800 (PST)
+Received: from [192.168.69.100] ([176.164.221.204])
+ by smtp.gmail.com with ESMTPSA id
+ qk16-20020a170906d9d000b0099297782aa9sm4153050ejb.49.2023.11.13.08.09.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 13 Nov 2023 08:09:39 -0800 (PST)
+Message-ID: <7a66c289-19e1-4690-8c6e-31a9f6344b6f@linaro.org>
+Date: Mon, 13 Nov 2023 17:09:37 +0100
 MIME-Version: 1.0
-References: <20231023153927.435083-1-dbarboza@ventanamicro.com>
-In-Reply-To: <20231023153927.435083-1-dbarboza@ventanamicro.com>
-From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Date: Mon, 13 Nov 2023 17:08:32 +0100
-Message-ID: <CAJ307EhA_m3u7VgML1thYpLozcn-iKr-FY-LtPNMzKUDSTvZQQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] riscv: zicntr/zihpm flags and disable support
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=chigot@adacore.com; helo=mail-pg1-x532.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-9.0 04/10] hw/xen: Factor xen_arch_align_ioreq_data()
+ out of handle_ioreq()
+Content-Language: en-US
+To: "Woodhouse, David" <dwmw@amazon.co.uk>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Anthony Perard <anthony.perard@citrix.com>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, Paul Durrant <paul@xen.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+References: <f791a822-f6f5-44fa-904b-f67d3f193763@email.android.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <f791a822-f6f5-44fa-904b-f67d3f193763@email.android.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,59 +103,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Daniel,
+On 13/11/23 16:58, Woodhouse, David wrote:
+> On 13 Nov 2023 10:22, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+> 
+>     Per commit f17068c1c7 ("xen-hvm: reorganize xen-hvm and move common
+>     function to xen-hvm-common"), handle_ioreq() is expected to be
+>     target-agnostic. However it uses 'target_ulong', which is a target
+>     specific definition.
+> 
+>     In order to compile this file once for all targets, factor the
+>     target-specific code out of handle_ioreq() as a per-target handler
+>     called xen_arch_align_ioreq_data().
+> 
+>     Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>     ---
+>     Should we have a 'unsigned qemu_target_long_bits();' helper
+>     such qemu_target_page_foo() API and target_words_bigendian()?
+> 
+> 
+> It can be more fun than that though. What about 
+> qemu_target_alignof_uint64() for example, which differs between i386 and 
+> x86_64 and causes even structs with *explicitly* sized fields to differ 
+> because of padding.
+> 
+> I'd *love* to see this series as a step towards my fantasy of being able 
+> to support Xen under TCG. After all, without that what's the point in 
+> being target-agnostic?
 
-This series is triggering warnings when instantiating a CPU having a
-spec version older than 1.12.
-  | $ qemu-system-riscv32 -M sifive_e
-  | qemu-system-riscv32: warning: disabling zicntr extension for hart
-0x00000000 because privilege spec version does not match
-  | qemu-system-riscv32: warning: disabling zihpm extension for hart
-0x00000000 because privilege spec version does not match
+Another win is we are building all these files once instead of one for
+each i386/x86_64/aarch64 targets, so we save CI time and Amazon trees.
 
-And IIUC cpu-tcg.c:riscv_cpu_disable_priv_spec_isa_exts(), they will
-end up being disabled as a result of these warnings.
+> However, I am mildly concerned that some of these files are accidentally 
+> using the host ELF ABI, perhaps with explicit management of 32-bit 
+> compatibility, and the target-agnosticity is purely an illusion?
+> 
+> See the "protocol" handling and the three ABIs for the ring in 
+> xen-block, for example.
 
-I think these two extensions should be skipped in the above function.
-Though we can also disable them on purpose in those old CPUs. WDYT ?
+If so I'd expect build failures or violent runtime assertions.
 
-Thanks,
-Cl=C3=A9ment
+Reviewing quickly hw/block/dataplane/xen-block.c, this code doesn't
+seem target specific at all IMHO. Otherwise I'd really expect it to
+fail compiling. But I don't know much about Xen, so I'll let block &
+xen experts to have a look.
 
-On Mon, Oct 23, 2023 at 5:40=E2=80=AFPM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> Hi,
->
-> In this v3 the patches that added the extensions flags were squashed
-> with the patches that handled the disablement of the extensions in TCG,
-> as suggested by Alistair in v2.
->
-> No other change made. Patches based on Alistair's riscv-to-apply.next.
->
-> Patches missing acks: patch 3
->
-> Changes from v2:
-> - patch 2: squashed with patch 1
-> - patch 5: squashed with patch 4
-> - v2 link: https://lore.kernel.org/qemu-riscv/20231017221226.136764-1-dba=
-rboza@ventanamicro.com/
->
-> Daniel Henrique Barboza (4):
->   target/riscv: add zicntr extension flag for TCG
->   target/riscv/kvm: add zicntr reg
->   target/riscv: add zihpm extension flag for TCG
->   target/riscv/kvm: add zihpm reg
->
->  target/riscv/cpu.c         | 15 +++++++++++++++
->  target/riscv/cpu_cfg.h     |  2 ++
->  target/riscv/csr.c         |  4 ++++
->  target/riscv/kvm/kvm-cpu.c |  2 ++
->  target/riscv/tcg/tcg-cpu.c | 21 +++++++++++++++++++++
->  5 files changed, 44 insertions(+)
->
-> --
-> 2.41.0
->
->
+> Can we be explicit about what's expected to work here and what's not in 
+> scope?
+
+What do you mean? Everything is expected to work like without this
+series applied :)
+
+Regards,
+
+Phil.
 
