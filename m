@@ -2,163 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B33E7E9CB1
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 14:03:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 312427E9CB2
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 14:03:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2WaZ-0001wI-1H; Mon, 13 Nov 2023 08:02:51 -0500
+	id 1r2Waz-0002D0-Aa; Mon, 13 Nov 2023 08:03:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=56810bf7ac=volodymyr_babchuk@epam.com>)
- id 1r2WaW-0001vv-Kp
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 08:02:48 -0500
-Received: from mx0b-0039f301.pphosted.com ([148.163.137.242])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=56810bf7ac=volodymyr_babchuk@epam.com>)
- id 1r2WaS-0007E7-Hw
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 08:02:48 -0500
-Received: from pps.filterd (m0174682.ppops.net [127.0.0.1])
- by mx0b-0039f301.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ADARw9l019551; Mon, 13 Nov 2023 13:02:26 GMT
-Received: from eur04-he1-obe.outbound.protection.outlook.com
- (mail-he1eur04lp2051.outbound.protection.outlook.com [104.47.13.51])
- by mx0b-0039f301.pphosted.com (PPS) with ESMTPS id 3ua1hsvr8u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Nov 2023 13:02:26 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gkHRNeN+tO0UfriVYDlDqK5KbfR7ev/4T6NApol17koTz7KINxTR8FkhJiJp3cH8BywL+ComU6RGD4XCHvDDc9xF+q5jjoB9aGiAfxAvjynH2yEbRQWefnHzYfXi0HEnOQ0BkL1Li9me8n2juOw5GinW1FxNLXiA6pMcbNOiDgNAkb/NYsahs+FlK5akWGggmVc0Qn7cnQvf8kJ71KTk0g8JlS6x7bJEIgMxw4sEcBxbtxL0Y/pQG9VIc1rVay93NoERjnQrjxBcdv9kMHnsKTSFZPRfNuDLcr3KeT6MoDSw6Mtil84hd+eNRihDXxxzj8fCSq8S+CPSjT9etMQPLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S0Bsvp0tx3SsNLe9WoHGxEV0h1Mr9my0t6sIA3cMthw=;
- b=BZgdk4xPs5178q3sqr4NJD5jPbNtE9NVBzSTpuaxrhClcr+GZy2MXZGvZ3QSkyO5oOlV5dOhsEOvRZLU7cKmhqHdimuzAldbdsWfTuCeBYKA7CvKfB6av6M5a4LudZM1/nT8zVU53BEL3wDgiZi+M8g1TXfWpB0PQ5CQ6WgPF6PprhzbpO+u9XUBIwAao6lMC9T6Wlowz+Hb0IcWdwh1eKKuGgLwDSgYQSU4MALVUbq+mFWOg45YpcST2ZyXP61wPFRz6/ezZ6bYOBqm9PBTiTSMXOlodBTN1blsNFMncDFTvmO5bY25DUek4KoxiBQLjLKdnRjr5zoyZI132R/78g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=epam.com; dmarc=pass action=none header.from=epam.com;
- dkim=pass header.d=epam.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=epam.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S0Bsvp0tx3SsNLe9WoHGxEV0h1Mr9my0t6sIA3cMthw=;
- b=kS54Llb9yCmjZaAJKgOpkNNmeupdwSc9EbzhwiEX9JDk41VbtHrTCMSI16iEUN1RfGjXdgfEQxYvgPGEy5g7CPlGsyXVMCHx+c8BU5sRZoFkmLkLYVmUX88uROtOA7iNa5Me9eHKfh5Xvy3hZFwfG0FyllWPF15SgMygEkgSPuSrjeh7nJ8lTImiV4ooIcBGn7qEwjUWTEj7Eh211S7mHr/yvTDSg+VTAzD7uzObmgV5Z/BImvUHFrEQzbxJCyHOKHIDSCCBbxLYM07PFJRX4sC8LcquM0rKpk0MTvcJdp1AVGWmdOmAdtL9ouAkcnhXgN5QkSti0wLtEcKZ3vmGZg==
-Received: from VI1PR03MB3710.eurprd03.prod.outlook.com (2603:10a6:803:31::18)
- by PAWPR03MB9738.eurprd03.prod.outlook.com (2603:10a6:102:2ed::15)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.29; Mon, 13 Nov
- 2023 13:02:22 +0000
-Received: from VI1PR03MB3710.eurprd03.prod.outlook.com
- ([fe80::8e03:368:1fd7:1822]) by VI1PR03MB3710.eurprd03.prod.outlook.com
- ([fe80::8e03:368:1fd7:1822%5]) with mapi id 15.20.6977.028; Mon, 13 Nov 2023
- 13:02:22 +0000
-From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
-To: David Woodhouse <dwmw2@infradead.org>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Paul Durrant
- <paul@xen.org>, "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard
- Henderson <richard.henderson@linaro.org>, Eduardo Habkost
- <eduardo@habkost.net>, Stefano Stabellini <sstabellini@kernel.org>, Anthony
- Perard <anthony.perard@citrix.com>, "open  list:X86 Xen CPUs"
- <xen-devel@lists.xenproject.org>
-Subject: Re: [PATCH v1 3/7] xen: xenstore: add possibility to preserve owner
-Thread-Topic: [PATCH v1 3/7] xen: xenstore: add possibility to preserve owner
-Thread-Index: AQHaFBZoS99E/RofVU6d/7dbafCRirB09L6AgAI+uwCAAQc9AA==
-Date: Mon, 13 Nov 2023 13:02:22 +0000
-Message-ID: <8734x97qn6.fsf@epam.com>
-References: <20231110204207.2927514-1-volodymyr_babchuk@epam.com>
- <20231110204207.2927514-4-volodymyr_babchuk@epam.com>
- <4481f0fe9eb282333fd967b7ece590ead78ccdba.camel@infradead.org>
- <9cdd033411f5c15920762808891f278001073c6b.camel@infradead.org>
-In-Reply-To: <9cdd033411f5c15920762808891f278001073c6b.camel@infradead.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: mu4e 1.10.7; emacs 29.1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI1PR03MB3710:EE_|PAWPR03MB9738:EE_
-x-ms-office365-filtering-correlation-id: 7421e2ad-b6df-4fef-4cef-08dbe448c67e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: mtFIG+3Cd2m5/X+G1HIDoTWu1iZJKH2TMAgB/D5okYTg/iaWmbHkBwOnbqNyhnDFRIKfWvH/5zXJQgesSG8sK5Mn9o0mR90eXSWTuMLDt/cGsMKuFqqvdsD4asolFk5tvswTLdDM9gxCXZZKX1Vv8bHAkG1cVmk2pwU39CN6QvjKtPVUv9hmMOU6HHHO7bZ8qcTeZi36hVtWeR4F7EtaPwKAnjAOFsFe9LJJaBtW5qEav1xXyBQcpePq3i9mijjyTK5mmN6F1TPcapYz6qjkC088VPZm4YTk/WOf3yM0/RkzdX36825+I5u2o+PdZO8j/A/S2IiA4B/DxNhLWpcd8F6oSZ9eAIpFd0qBjCfPE9O532wWy0Lz2jjjL7GJwui6P3t172B5skNJxo8zAdB+euNrl8qE3LoQ7O/CC+DwnqNkdpi/yilJEym/jeMogKfC6QUzPbghpHmvuBc6YBEYWb4iomMHYXM8+DzBMqclHqg0LvntdZkQ0vMyisnUXGEDl4puvfq3fpkvk47/a7L7+oivAJEztZmvA9y+p/48pURb3zJ8xycLvAT7Ns2oyL5zeMPPT1r5vasvqF//KuRSpZ8qsR2QgJUNNyTJKUSEh8C15SiDIMV7/p9QAMS+4rp+
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI1PR03MB3710.eurprd03.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(396003)(376002)(136003)(366004)(346002)(39860400002)(230922051799003)(451199024)(64100799003)(186009)(1800799009)(26005)(55236004)(6506007)(71200400001)(2616005)(6512007)(5660300002)(8676002)(8936002)(41300700001)(4326008)(7416002)(2906002)(4001150100001)(6486002)(478600001)(6916009)(91956017)(66446008)(54906003)(64756008)(66556008)(66946007)(76116006)(66476007)(122000001)(316002)(36756003)(86362001)(38100700002)(38070700009);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cXNOOGhONlJJUDhlRFZDWElWNzJWWHVjMHZyUUE3RXFBRGdFUDdTNEVvanN1?=
- =?utf-8?B?MnduK2NveEg5cGpSU0hYaksvYkV4ajEyNThlUE56ZG94SnYwNnFSa09LZy85?=
- =?utf-8?B?bHlXaWJxOEdvSGcvV2RrN09ERE03WWxNVDNQRmJzTTJUVjhpcHZvb21jSTQ3?=
- =?utf-8?B?UnUvVVA4cGJqL21aRHVJVHQya2YwZTEreUIvZmFLL0ZJdmdrV0lFd1duakVU?=
- =?utf-8?B?RXB0SmY2U2dWR1VUMFFSeTJLUSttZWQzRDNxbEpyM3Q0c1pISzlMWFVRN3Nu?=
- =?utf-8?B?M1hteDNoVW5TMjBnTkMrVzF6bU1oeWdJUnQzL0F3aHExSTNaTzl4VDkxTkJP?=
- =?utf-8?B?NEF1N2RxdTNoenpWYy9OZnFaVW4wOFYrS3pyUHhGcmN5OUEzZDYwN1pZbXp1?=
- =?utf-8?B?MGk1RkQvcTlRcUdOUXVDaHMyRUxqOUNVTzZLM3BvVjhIQVNiNVRIS2FaaTFr?=
- =?utf-8?B?MFZ6Wmx4aUtpaHpvN0NKTnRPME4rUjZQcitqWTUyRzBvK01hbVFqZVNXYmRp?=
- =?utf-8?B?d2J5djRiYnh1cUxHYS9qTzlYWVVpUnNrSy83ZVhkUW56bE91VnJBZHZwVjdC?=
- =?utf-8?B?SnRuVHlXTzBsR3d1cDVtQ1ZvRVk4eGxxY3o1VEdmVzlDVVhRNHNmV1B5RkFX?=
- =?utf-8?B?dkJtTGNFWWI1Mk5BdmI1NGI2NzJOYkt3SUcvd0dtYmdxTEVTZ2JqYlQrT29u?=
- =?utf-8?B?WFErdHp3YVU0dWI4OS9Ca1MzWUZ6Vzg5UE9sdkFqL2EwL1lUQ0xyRnQwRnFN?=
- =?utf-8?B?T0Z6NTNIL25IMllxZmx4ZHpHbTY2cHdVQUpuZWlMMGkrUFNwR1BuRVZSemI2?=
- =?utf-8?B?cVFMa1NBS1pkMFNleHFjM2E0OXlFRURWaTZNamg0d3c2cUJwZ1kvK01DcHpL?=
- =?utf-8?B?QmtOK0trQWRqNEZ0aDM4ZysxT3c3N0pSQlpuVkpaTFhPNWUySjZObE5iVk5I?=
- =?utf-8?B?SG5RL1hKdTBvSkM1WUxTa0FJZ0M2M3lvcVN6VFlIQUFaN2hwa2U0LzBBMWlx?=
- =?utf-8?B?OEd0VzBYYVpNYWNVSXJubTUyNkVGZW5kbVU1aGU5VW5lS29YYjNYd2JwZ3hv?=
- =?utf-8?B?SnU0YnRSMDE3Z3hsbW11R2lSSjU1MmozT3pkdDYwdFM3RytHbVVMaGxHR3Nw?=
- =?utf-8?B?SFl4bHRiQmZTU0VOZ2c5dUtzcG9HbCtmMHY2NGtHL1ZFZ2dramRnTjVLRXlV?=
- =?utf-8?B?SFZTRG15d2l0WTRhYXE5VjVJV1AxcXJQVEtjMHpXZk9KSXdNbjMvdk9vWFBo?=
- =?utf-8?B?TDFFNjQvNHR0dkZ4YUNscnZLa29YMnFtbkpUMDFMenRXVnZzN3NJc04rSTBR?=
- =?utf-8?B?ZDVaRDhubnVkWERzdjJCSUdsUXdRWnJ1STlYWVp2TmdWaXorb0t5OVJ2L0Ux?=
- =?utf-8?B?MEphSURhV2VaemtpeE9JL3pGOEhzcVVVS1FxTHFsS09Udnk0Z21jbVRoV2VQ?=
- =?utf-8?B?TzE2QmRMRWNoT0xQdTZkVFJkQU9WaThQSkV5dzNCUzhBNmd2TmhuaWY3OHJT?=
- =?utf-8?B?WVRZZkNkb3NrbjdrWlBWWllKMnZPT0RDNXZJdVYrY1lneDNCZDJ1ZnQ0blBT?=
- =?utf-8?B?dEtqbW1pNUxSUnY0UE9FYkl6OVNJZkt0Z0xTVDZjUk9DRkVwMVdTR2xFUWpj?=
- =?utf-8?B?aVpsRXVySkpIMFYybjcvbDVNVHhjWWl3VDlmV0V5ZmF1UEdIZUtFRS96aDdR?=
- =?utf-8?B?TzM1RTI3Q0xKWWUvYkpVUFFHSWsydzRGS1c4NTJCNytmb2w3dzRzemFnejI1?=
- =?utf-8?B?emtHTjdMaUZVaTRDeGppRGFiTFRXV1E1Q1hnZEF1Uzk1a2xja21HeU1BaFN6?=
- =?utf-8?B?T1RiUlhwTDRsWkxtdzB0WlNPcklHYnJhc056Z2lGc1lyS0JpdlNQMElQaXBl?=
- =?utf-8?B?VFU0OG5oZXNqWFprYzNpWmNqc3lPQTI0U24yb0k5ZE44bWtsYUFMTGFOQ1VZ?=
- =?utf-8?B?TUlzTzE1Zkt6L3I3M1NhaVI2RHl3allJVHRTa2NwTit0YWNaQXBBRkpJUFA1?=
- =?utf-8?B?NjA3TUNIM29mRVRremJDbmR5ZDBrRVRrSEpxb1F6ZnhSbDNTMlBQY2txR0Qz?=
- =?utf-8?B?aFAwam9JUy9UbHhmMEo5UElLT1RLMGhUTWM5UGRSTzU1UEI2VFlVamdPWU4w?=
- =?utf-8?B?TG82SWZaQW9pSXNZZmNDTnRoczhDL1lwZ3RYS09lWjgreUt6UHArV1FwNFpj?=
- =?utf-8?B?a3c9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <7D187F897717AE4DAA02C962164DA4E2@eurprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <robert.hoo.linux@gmail.com>)
+ id 1r2Wax-0002Az-0h
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 08:03:15 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <robert.hoo.linux@gmail.com>)
+ id 1r2Wav-0007IG-6L
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 08:03:14 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1cc5916d578so38390395ad.2
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 05:03:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1699880591; x=1700485391; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=QkdreoDyLw+6lBZYPgsGNR1ljfVy3eOmzVipN41KzmE=;
+ b=PXdkJybijilkchyj0SYj3D0zuqXmJJwkgTke1OwaPCK17fmJfFIOXU5emqn55SAC52
+ vPUDkQEUeGaTKHz2Kh4P73LLFF82WHZkYpRlQVAUOjCv6kTVJEdPPnou+GWD7y9eAeXj
+ /fOvLwJrezuzFGZur1EGez2FL7PXlvdKRIs3AcAUwj6PBDJn3c0f2elSgsXPePxwV813
+ cCqRzWT2FEHbJtS/SdzkvRDw7Qmkppz0JpPR9597xknGwOasmVwBnRuiYk/DXezQ8dRD
+ VCW2GAIK5yYSC3zFfB6RhaQL/yiPCVbk262RpStuLA8qyOWgdiHCq9Vkcxsq7xOvpL82
+ Vkyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699880591; x=1700485391;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QkdreoDyLw+6lBZYPgsGNR1ljfVy3eOmzVipN41KzmE=;
+ b=utmGFcZFcL2rvl5HO9NbTdELeWbInWb3Wl3za2imKA10yT3db7YTDI4xHkn0ZlUeb5
+ 7oTgJx/b7CqbcFJie6jaMGqgBNZpqvyWYjZF3yLFOvHj3Nxy8UR+jYtoh831n6vR2u4Z
+ uDgHut1qRzVJdLWQtnIyOsRvENYrap1K1tTSlsyMuxvMZG59JrcZQ8cO4JaUYXFnhfO4
+ +aAT/Y2UAOawWIPmh4hLn2ntIqPB3yFr6LZOWWGMYCZGCBs/bHCGsg7L+pPZNbISYf4W
+ Gcw3zn6ebFpwMHzgJMFX80yKOSkSSDwJOUtffu/tCS17rXTl3vRUg4WkmqYWch+i60RI
+ L/1w==
+X-Gm-Message-State: AOJu0YwOG/FqZBNylNJ9jsPckvURLr6zjYNVK2ryyNcrR84zsZQAr7Nz
+ IcmLGtisS5HQ9EtC6Iex/znrRI4IcvY=
+X-Google-Smtp-Source: AGHT+IHVoDCZfkZ+DhCQ4oW39HWuVpvrg5Y1FyQpsRBZE/RxNrIvbVg0yNyTmb3QrZ6urSQRI8dRzg==
+X-Received: by 2002:a17:902:e5ca:b0:1cc:4eb0:64cf with SMTP id
+ u10-20020a170902e5ca00b001cc4eb064cfmr7692228plf.52.1699880591069; 
+ Mon, 13 Nov 2023 05:03:11 -0800 (PST)
+Received: from [172.27.236.153]
+ (ec2-16-163-40-128.ap-east-1.compute.amazonaws.com. [16.163.40.128])
+ by smtp.gmail.com with ESMTPSA id
+ b20-20020a170902b61400b001c582de968dsm3971898pls.72.2023.11.13.05.03.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 13 Nov 2023 05:03:10 -0800 (PST)
+Message-ID: <8cff6965-5f45-76d0-1b56-4f9a53474ec7@gmail.com>
+Date: Mon, 13 Nov 2023 21:03:06 +0800
 MIME-Version: 1.0
-X-OriginatorOrg: epam.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3710.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7421e2ad-b6df-4fef-4cef-08dbe448c67e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Nov 2023 13:02:22.1769 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b41b72d0-4e9f-4c26-8a69-f949f367c91d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xdILqG2dy5H+bFMGOmoLkqd2aRg8bIVMTn+iT3RRVpP8uWMEU58I1bfna1XadbCt4enXKdxsfUFq0ZZ/8OXXpvnGSutNGvwblFAYUhbdUFU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR03MB9738
-X-Proofpoint-ORIG-GUID: AUMvUFhYStGjO8aSxv2pBW2cp3sDsE0D
-X-Proofpoint-GUID: AUMvUFhYStGjO8aSxv2pBW2cp3sDsE0D
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-13_03,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=781 spamscore=0
- adultscore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
- malwarescore=0 bulkscore=0 clxscore=1015 phishscore=0 suspectscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311130106
-Received-SPF: pass client-ip=148.163.137.242;
- envelope-from=prvs=56810bf7ac=volodymyr_babchuk@epam.com;
- helo=mx0b-0039f301.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] msix: unset PCIDevice::msix_vector_poll_notifier in
+ rollback
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, mst@redhat.com, marcel.apfelbaum@gmail.com
+References: <20231113081349.1307-1-robert.hoo.linux@gmail.com>
+ <53512cf6-b595-4cff-a1f2-6f1dd2c6621a@linaro.org>
+From: Robert Hoo <robert.hoo.linux@gmail.com>
+In-Reply-To: <53512cf6-b595-4cff-a1f2-6f1dd2c6621a@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=robert.hoo.linux@gmail.com; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -60
+X-Spam_score: -6.1
+X-Spam_bar: ------
+X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-3.971, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -174,29 +97,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQpIaSBEYXZpZCwNCg0KRGF2aWQgV29vZGhvdXNlIDxkd213MkBpbmZyYWRlYWQub3JnPiB3cml0
-ZXM6DQoNCj4gW1tTL01JTUUgU2lnbmVkIFBhcnQ6VW5kZWNpZGVkXV0NCj4gT24gU2F0LCAyMDIz
-LTExLTExIGF0IDExOjAxICswMDAwLCBEYXZpZCBXb29kaG91c2Ugd3JvdGU6DQo+PiANCj4+ID4g
-LS0tIGEvaHcveGVuL3hlbi1vcGVyYXRpb25zLmMNCj4+ID4gKysrIGIvaHcveGVuL3hlbi1vcGVy
-YXRpb25zLmMNCj4+ID4gQEAgLTMwMCw2ICszMDAsMTggQEAgc3RhdGljIGJvb2wgbGlieGVuc3Rv
-cmVfY3JlYXRlKHN0cnVjdCBxZW11X3hzX2hhbmRsZSAqaCwgeHNfdHJhbnNhY3Rpb25fdCB0LA0K
-Pj4gPiDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiBmYWxzZTsNCj4+ID4gwqDCoMKgwqAgfQ0KPj4g
-PiDCoA0KPj4gPiArwqDCoMKgIGlmIChvd25lciA9PSBYU19QUkVTRVJWRV9PV05FUikgew0KPj4g
-PiArwqDCoMKgwqDCoMKgwqAgc3RydWN0IHhzX3Blcm1pc3Npb25zICp0bXA7DQo+PiA+ICvCoMKg
-wqDCoMKgwqDCoCB1bnNpZ25lZCBpbnQgbnVtOw0KPj4gPiArDQo+PiA+ICvCoMKgwqDCoMKgwqDC
-oCB0bXAgPSB4c19nZXRfcGVybWlzc2lvbnMoaC0+eHNoLCAwLCBwYXRoLCAmbnVtKTsNCj4+ID4g
-K8KgwqDCoMKgwqDCoMKgIGlmICh0bXAgPT0gTlVMTCkgew0KPj4gPiArwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoCByZXR1cm4gZmFsc2U7DQo+PiA+ICvCoMKgwqDCoMKgwqDCoCB9DQo+PiA+ICvCoMKg
-wqDCoMKgwqDCoCBwZXJtc19saXN0WzBdLmlkID0gdG1wWzBdLmlkOw0KPj4gPiArwqDCoMKgwqDC
-oMKgwqAgZnJlZSh0bXApOw0KPj4gPiArwqDCoMKgIH0NCj4+ID4gKw0KPj4gDQo+PiBEb24ndCBz
-ZWUgd2hhdCBzYXZlcyB5b3UgZnJvbSBzb21lb25lIGVsc2UgY2hhbmdpbmcgaXQgYXQgdGhpcyBw
-b2ludCBvbg0KPj4gdHJ1ZSBYZW4gdGhvdWdoLiBXaGljaCBpcyB3aHkgSSdkIHByZWZlciBYZW5T
-dG9yZSB0byBkbyBpdCBuYXRpdmVseS4NCj4NCj4gSSBzdXBwb3NlIG1heWJlIHlvdSBjb3VsZCBk
-byBpdCBpbiBhIHRyYW5zYWN0aW9uICppZiogdGhlIHRyYW5zYWN0aW9uX3QNCj4geW91J3JlIHBh
-c3NlZCBpbiBpc24ndCBhbHJlYWR5IFhCVF9OVUxMPw0KDQpZZXMsIEkgbmVlZCB0byBwYXNzICJ0
-IiB0byB4c19nZXRfcGVybWlzc2lvbnMoKSwgb2YgY291cnNlLg0KDQo+IE9uZSBtaWdodCBhcmd1
-ZSB0aGF0IHRoZSBta2RpcitzZXRfcGVybXMgaW4gbGlieGVuc3RvcmVfY3JlYXRlKCkgb3VnaHQN
-Cj4gdG8gaGF2ZSBiZWVuIHdpdGhpbiB0aGUgc2FtZSB0cmFuc2FjdGlvbiAqYW55d2F5Kj8gDQoN
-ClllcywgYWxsIG9wZXJhdGlvbnMgc2hvdWxkIGJlIHBlcmZvcm1lZCBpbnNpZGUgb25lIHRyYW5z
-YWN0aW9uLg0KDQotLSANCldCUiwgVm9sb2R5bXly
+On 11/13/2023 6:05 PM, Philippe Mathieu-Daudé wrote:
+> Hi Robert,
+> 
+> On 13/11/23 09:13, Robert Hoo wrote:
+>> In the rollback in msix_set_vector_notifiers(), original patch forgot to
+>> undo msix_vector_poll_notifier pointer.
+> 
+> Out of curiosity, nobody complained during 11 years, so in which
+> use case did you notice this?
+> 
+
+Hi Philippe,
+
+I stumbled upon this when looking into another issue.
+
+I think, thanks to the caller's very standardized use, the omission has never 
+been exposed.
+
 
