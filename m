@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC7777E9FE5
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 16:23:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 976747E9FDE
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 16:23:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2YlL-00028y-Oy; Mon, 13 Nov 2023 10:22:07 -0500
+	id 1r2Ylc-0002Rv-9q; Mon, 13 Nov 2023 10:22:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2YlJ-00026Q-41
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:22:05 -0500
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2YlZ-0002G9-LY
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:22:21 -0500
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2YlG-0003Jd-OE
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:22:04 -0500
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-9d216597f64so705796766b.3
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 07:22:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2YlN-0003Kl-4n
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:22:21 -0500
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-5094cb3a036so6294104e87.2
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 07:22:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699888921; x=1700493721; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699888927; x=1700493727; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=24ML07HsEvOYl+DuxzoZlUZnhAFy4fscEFWSzx7VWys=;
- b=nG22BWFuZcnBlblgHlRLLEe2IVUdaAhNL1DUHJ+N/Bbl+wUBwObPc15u6XyuWiUvGR
- gap1AfBIIOXM80dYf+PZTH7DwynaHQnl+TEN+b11wOgCT3Cur1iOwLJTqxp9BWSWIlis
- t+dUqKNKjcN/khRVHLnW4u2uKaoe6smakQBwqgwFmfqFCV1PJC/YL22CbMqPfBsL1hBk
- 896lp4OCt4TlRwyUQUJ9mDRK1YgkFmfwR7BC0C3mccNEXfAnbS79aUiJUTZExemxpM+5
- rs7jvnSXa9cDTCQ2ehE/3Gbx4YAfqX2aIx5zCyTIghJs9IzdIrun8AJIH0zKB+a3OkTc
- WurQ==
+ bh=M3IanRET4oRDB/554uZaBMmk8ZcCL79rxTcGgU2jVuI=;
+ b=Zmg2Z92S+ZAynF5iomHSrDgJJtlXQgUrtUCYMJ0vjXah747IeUFFrnG+m80K6MmTTB
+ GDMmNOj3C+pY/A3RGXvVjzMnqRjdPN099Ast/TTi/arPfr5ChcBEHGOoz+LaR2U5tWPy
+ nQoGRlBsStg0xmpz5WlMN9zzxJ1YoAhTGOiZWq7wCMs0yd3cic+ztoDBzWUXIQYZiuHy
+ EDktE/j0TJ4veZ81zjr0bR5XbJZG6vt1+RQtQ4daf7ujYb9/jah9OZoA+/hVurT89QVT
+ 65Vnb8axpOZ4e3GDZy2aWCl8bnvAwXHDo8ZxxaSVUMFDQhAtKOBA2YgfwqfCsqFCNruu
+ cPOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699888921; x=1700493721;
+ d=1e100.net; s=20230601; t=1699888927; x=1700493727;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=24ML07HsEvOYl+DuxzoZlUZnhAFy4fscEFWSzx7VWys=;
- b=XthXuXxlSjoMzW7M+a+7/ZRisuPZXKAd104qJLqhBkwpyArk3BLA1r8wiMU9dt4SFP
- 4U+2bPWgMlg6l6e4nrP1nhkSxHMvgASz/KMYHX7RGj0I82lFFcFIYIdjm+OxKdWlHIJX
- pgJSbweLkMRJoJZTnfKhsV9UOJ1s8J5J3noj79xv9Uv+Lk5TXxq6+39kNmqtCDPD80ou
- +hi6vs3CRN73wAJvZGgTL3LNOywEynHm1vQQfkIkA/EvvUdrw5yH3rmo9h+BMoQbuo/S
- xjVWyueyuj5Ddy+Hv+/Xn6fnekvVEDKoIKesxw8l87S1qhcQ4TT8uhg9E69L8fBHOTEQ
- qN9w==
-X-Gm-Message-State: AOJu0Yyg/cPyFcAclzAp+eMmcaUJuAZh+vBmh+r/VtXmAJ+LNbdun9FH
- jqqSqZXiFXtKCkS4UKntwwtH/A==
-X-Google-Smtp-Source: AGHT+IH+PnzXWjrgKP+WWXsdazo2lewjVqkzA92vUb1Slw8L1D+s00HazVDZsJw73hj51Hyp7Aw3PQ==
-X-Received: by 2002:a17:906:5fc6:b0:9e6:5132:43e5 with SMTP id
- k6-20020a1709065fc600b009e6513243e5mr4860965ejv.16.1699888921215; 
- Mon, 13 Nov 2023 07:22:01 -0800 (PST)
+ bh=M3IanRET4oRDB/554uZaBMmk8ZcCL79rxTcGgU2jVuI=;
+ b=iJNZwnf0+giQTCm0HmkpkG7nohQir6fT9TVxKzNSNPFmEd9aUwMFBjhBY+A2MBvttv
+ jXO1mhGJzcJCml7aaOR/Pb+e5BVRYh1spqQbiQPDwsK6ZW4zDRbZc5z5KzfuGyKsp3sN
+ BsxzipEH2nsWGxHqV2lddG7zp+AdRjaPcT7WXJesKpyX3ewdhMkJXp9hl01bbmhH2mGR
+ lAi5PHtV3xeZrIW/hqfmgqNNyWTwLN723KMgMVbEbDAP+IF9yfuQNJz/RHtxy28yUuMq
+ EQCBAd/dxItQ2GGHewk6fX6vY276WGh0ssu+YChy4qhkBhQI8yMjGCzylNS/LlRGi9Zu
+ 0KqQ==
+X-Gm-Message-State: AOJu0YzjAOCGLfWsV9ujqCBVVOza2p2HcT3Z0YRHMPg5GIFNR41ibWw2
+ aBX7RPp7+PRVG03FmrEYFI1kVA==
+X-Google-Smtp-Source: AGHT+IGrSDy3wD9q51MX9RzmoZqMhawPjp2jB+lPSAfi/Dv8LmkQCpZSU6Ww+isXzJecNCmpib4vPw==
+X-Received: by 2002:ac2:5e6f:0:b0:502:a4f4:ced9 with SMTP id
+ a15-20020ac25e6f000000b00502a4f4ced9mr4406770lfr.62.1699888927362; 
+ Mon, 13 Nov 2023 07:22:07 -0800 (PST)
 Received: from m1x-phil.lan ([176.164.221.204])
  by smtp.gmail.com with ESMTPSA id
- s10-20020a1709066c8a00b009dbe08bc793sm4269124ejr.18.2023.11.13.07.21.59
+ a9-20020a17090640c900b009e5ce1acb01sm4126763ejk.103.2023.11.13.07.22.05
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 13 Nov 2023 07:22:00 -0800 (PST)
+ Mon, 13 Nov 2023 07:22:07 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: David Woodhouse <dwmw@amazon.co.uk>,
 	qemu-devel@nongnu.org
@@ -63,25 +63,26 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Stefano Stabellini <sstabellini@kernel.org>, qemu-block@nongnu.org,
  Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-arm@nongnu.org, Paul Durrant <paul@xen.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.0 07/10] sysemu/xen-mapcache: Check Xen availability
- with CONFIG_XEN_IS_POSSIBLE
-Date: Mon, 13 Nov 2023 16:21:10 +0100
-Message-ID: <20231113152114.47916-8-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>
+Subject: [PATCH-for-9.0 08/10] system/physmem: Only include 'hw/xen/xen.h'
+ when Xen is available
+Date: Mon, 13 Nov 2023 16:21:11 +0100
+Message-ID: <20231113152114.47916-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231113152114.47916-1-philmd@linaro.org>
 References: <20231113152114.47916-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,32 +99,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"sysemu/xen.h" defines CONFIG_XEN_IS_POSSIBLE as a target-agnostic
-version of CONFIG_XEN. Use it in order to use "sysemu/xen-mapcache.h"
-in target-agnostic files.
+"hw/xen/xen.h" contains declarations for Xen hardware. There is
+no point including it when Xen is not available. When Xen is not
+available, we have enough with declarations of "sysemu/xen.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/sysemu/xen-mapcache.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ system/physmem.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/sysemu/xen-mapcache.h b/include/sysemu/xen-mapcache.h
-index c8e7c2f6cf..10c2e3082a 100644
---- a/include/sysemu/xen-mapcache.h
-+++ b/include/sysemu/xen-mapcache.h
-@@ -10,10 +10,11 @@
- #define XEN_MAPCACHE_H
- 
- #include "exec/cpu-common.h"
+diff --git a/system/physmem.c b/system/physmem.c
+index fc2b0fee01..fa667437da 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -35,9 +35,9 @@
+ #include "hw/qdev-core.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/boards.h"
+-#include "hw/xen/xen.h"
+ #include "sysemu/kvm.h"
+ #include "sysemu/tcg.h"
 +#include "sysemu/xen.h"
+ #include "sysemu/qtest.h"
+ #include "qemu/timer.h"
+ #include "qemu/config-file.h"
+@@ -51,6 +51,9 @@
+ #include "sysemu/hostmem.h"
+ #include "sysemu/hw_accel.h"
+ #include "sysemu/xen-mapcache.h"
++#ifdef CONFIG_XEN
++#include "hw/xen/xen.h"
++#endif
+ #include "trace/trace-root.h"
  
- typedef hwaddr (*phys_offset_to_gaddr_t)(hwaddr phys_offset,
-                                          ram_addr_t size);
--#ifdef CONFIG_XEN
-+#ifdef CONFIG_XEN_IS_POSSIBLE
- 
- void xen_map_cache_init(phys_offset_to_gaddr_t f,
-                         void *opaque);
+ #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
 -- 
 2.41.0
 
