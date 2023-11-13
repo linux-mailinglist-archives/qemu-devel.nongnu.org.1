@@ -2,65 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D219E7E92EF
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 Nov 2023 23:13:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13EB37E93FA
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 02:18:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2Igi-0004vN-IN; Sun, 12 Nov 2023 17:12:16 -0500
+	id 1r2LZm-0000WB-Pl; Sun, 12 Nov 2023 20:17:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+7bd337da54ad26cefb50+7385+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r2Igf-0004vB-Ut; Sun, 12 Nov 2023 17:12:13 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+7bd337da54ad26cefb50+7385+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r2Igc-0008Fq-M7; Sun, 12 Nov 2023 17:12:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=Ykq+GNFsEI6/oxn9ZxmqIElY9paijDMzv0u2YG91/sU=; b=GO6wh9AeisUQjQ7uVRnlP1p7QZ
- zrwgZdC/8CRm2cezfsTBTYx9Lh0xgS9J+rOmG/0vdX9mlAzEPnlhGK4j/Ku0Bmo9kUt8UNUwp/qzC
- TmMuBisrNGXLcIdROvxSI6X0nnPERrSmAr/88es7hO67687G6aNFJfIwvpOUTYrDHzsmjzo2TMQwf
- dAgOeIV2wwFm7cUju4sWrbEZdPggR9xNQAE9KUoCEdu5/SbGxqVq6VQofqmHkMkcBuTA4MW3MHFvq
- rnjbegWDp+bqUT9XsrZjVAnPQLeGBasPVjBeGcpVYfpaHaBOpPSjvyijiKYF0hNrnwAkKYWrOKV2A
- TEc/qHwQ==;
-Received: from [52.94.133.131] (helo=edge-m2-r2-104.e-sfo20.amazon.com)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1r2IgL-00AUEI-UO; Sun, 12 Nov 2023 22:11:54 +0000
-Message-ID: <6119beefbf169cfa2626acd7201946f3f588fa3e.camel@infradead.org>
-Subject: Re: [PATCH v1 7/7] xen_arm: Add basic virtio-pci support
-From: David Woodhouse <dwmw2@infradead.org>
-To: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-Cc: Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>, Peter Maydell
- <peter.maydell@linaro.org>, Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>, "open list:X86 Xen CPUs"
- <xen-devel@lists.xenproject.org>
-Date: Sun, 12 Nov 2023 17:11:52 -0500
-In-Reply-To: <20231110204207.2927514-8-volodymyr_babchuk@epam.com>
-References: <20231110204207.2927514-1-volodymyr_babchuk@epam.com>
- <20231110204207.2927514-8-volodymyr_babchuk@epam.com>
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-hGXlJScYLLKtirDWwFxG"
-User-Agent: Evolution 3.44.4-0ubuntu2 
+ (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
+ id 1r2LZj-0000Vy-5n
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 20:17:15 -0500
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
+ id 1r2LZh-0003nP-DH
+ for qemu-devel@nongnu.org; Sun, 12 Nov 2023 20:17:14 -0500
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6be1bc5aa1cso4056127b3a.3
+ for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 17:17:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699838231; x=1700443031; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=NRil/3WXz3A5t4E/bnd1ZWl6zvRFOIC+1hfQyN4QTSY=;
+ b=eA7E5G9jZIOFefPpC3ewgqgeITsoWSr5yxzW6li+jBYDWoYZAhD4gXF4YWjkgv10MB
+ xT4Mi7sj1m5VhK46aq1+JnH6kNlgXJri3uEQvCIlDrvl4PjwkCs0IRaQvmK77Dnlwexd
+ g5esdDavdxShYQPJdq/LY+9XiVZJ5IiC/BU1Y+sVh7hE9AWRUurNq/WqvhV3aXVERAag
+ 1dYfprCttCrc9db77gTdZw4o0blr38g7ign5VXnUpS7EjvtTYzNzf+Ngx0qpzRK0VaT+
+ sCIuekPr2XE2ElEZZcv0fe1OaqkJFpfTdyXZfKId4Q20koJHf7l3Ddmg7beqwSP9YEwU
+ 2V1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699838231; x=1700443031;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=NRil/3WXz3A5t4E/bnd1ZWl6zvRFOIC+1hfQyN4QTSY=;
+ b=PB+LPiRKMrOZsR+gFemsGOnBt0YQX1/pfGKQFZnLdpDwImm5ku54jPQmjhpdT5P1EW
+ gD9ww2OjhMFP2VzXVCCt/aTJaV8pwMCy18okyMN4r8tLnc2iLCi/gy9gucZB5SAP/4j2
+ kZ1z3APORo5HcJHj/oiRMOwAi2E6Mq8cQeHo/uYz2K7+/4ngKEsEKr4zNFPOxTZIewTK
+ NNLIOiw3aDcxUt8ZGQJSUYWOjC8ATdzJGvrE+SPIQZ3qIwEEheyB/h65gy7BiZFX+Y+y
+ 1c9vK/7BMBWdlsc48FGWoRvNfhSkI5TAtagKpu3u4A0/RMLY5ZDM87h/setIAv7cxJp/
+ i4Dw==
+X-Gm-Message-State: AOJu0YztFw6aDN98lmQwFR/vWJTKVmRSSAG9+V9sRVsWm4ItkeBBET7h
+ qGQxTq0nqTYiJDKGYNeJn9spOOeWmn8Q1Z6AOKljMv42L9s=
+X-Google-Smtp-Source: AGHT+IG/Fs2zmDdNOtTCfbUNZ6zNLpnPGgYNToUhMZTQwRPzYiF/hhCG0crxVYlKrKaYPdQMMBtN5Q==
+X-Received: by 2002:a05:6a20:8f1e:b0:186:251f:7338 with SMTP id
+ b30-20020a056a208f1e00b00186251f7338mr5625026pzk.19.1699838231060; 
+ Sun, 12 Nov 2023 17:17:11 -0800 (PST)
+Received: from localhost.localdomain ([128.1.74.235])
+ by smtp.gmail.com with ESMTPSA id
+ r6-20020aa78b86000000b0064f76992905sm2918511pfd.202.2023.11.12.17.17.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 12 Nov 2023 17:17:10 -0800 (PST)
+From: Leo Yan <leo.yan@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Leo Yan <leo.yan@linaro.org>
+Subject: [PATCH v1 0/4] virtio: Refactor vhost input stub
+Date: Mon, 13 Nov 2023 09:16:38 +0800
+Message-Id: <20231113011642.48176-1-leo.yan@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+7bd337da54ad26cefb50+7385+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=leo.yan@linaro.org; helo=mail-pf1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,131 +92,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This series is to refactor vhost stub vhost-user-input.
 
---=-hGXlJScYLLKtirDWwFxG
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Since vhost input stub requires set_config() callback for communication
+event configurations between the backend and the guest, patch 01 is a
+preparison for support set_config() callback in vhost-user-base.
 
-On Fri, 2023-11-10 at 20:42 +0000, Volodymyr Babchuk wrote:
-> From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
->=20
-> This patch adds basic virtio-pci support for xen_arm machine.
+The patch 02 is to add documentation for vhost-user-input.
 
-Why only xen_arm? Couldn't this be a fairly generic device which can be
-instantiated on x86 too, both for real and emulated Xen guests? And
-riscv/ppc too?
+The patch 03 is to move virtio input stub from the input folder to the
+virtio folder.
 
---=-hGXlJScYLLKtirDWwFxG
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+The patch 04 derives vhost-user-input from vhost-user-base.  We reuse
+the common code from vhhost-user-base as possible and the input stub is
+simplized significantly.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
-ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
-oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
-SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
-xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
-RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
-bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
-NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
-KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
-5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
-C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
-gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
-VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
-by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
-b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
-BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
-QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
-c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
-AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
-qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
-v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
-Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
-tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
-Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
-ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
-GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
-h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
-9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
-P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
-2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
-BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
-7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
-lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
-lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
-AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
-Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
-FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
-BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
-cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
-aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
-LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
-BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
-Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
-lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
-WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
-hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
-IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
-dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
-NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
-xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTEyMjIxMTUyWjAvBgkqhkiG9w0BCQQxIgQgsmz61MyO
-epJVDvsWo1uNNpV2yHkIFDPEs+I2uTPU20Uwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
-A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
-dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
-DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgALtJuH3qg/h0CUc7Vnm+TyqKypvcYGfrd7
-9cH2NB7ubTVJvtWjWCzYc1CnxqcK+Ym3qbkyY5LEjM0+LEZmzNr30cLe3LrjqcWtHgvEYCIGDKJW
-JcfMshePzePLp1uSe6J5euyAw0gReBbk57TXG5/Ecu9cQW4Fp6qp63W+W3nW5Q56pVSvhlK+ZdmH
-TEPVcFy/w0noEDL6JrK9vZWHQ9YIkex6hUv9HpoLDFsRLTDnDfuu1C2vPIiPaG8w6s1t0D4q8VKf
-L0ppfn58DjS6coLQ2SvML+FY+uv3qj9uRQkNgYyzb3TXnjGdyDH415VQwYKSMDPBFmb863bB7RI7
-ggGKVQMdBp/oHzCZqagJug5IkVxszod30Oxa9KQMO1Ndxlk+Ia/3K+AndkzgtSHbOslVE2S1HAun
-X281AKYvre3cYLSoR64CaP27T7B9eDlstnBILL35OtGQmBhds7L7G+3QpubvLJTN1+I9rEKld3GW
-b2rVx6xr9n5gqVqILysHHtG/7iBno6/kW6PQ+pdqXxhrtfFxJvKq23v9EBTq41j0f4RnhmN7D9gR
-S7GKMtRvz1RcNV8V4/Lfe12Jk8cSJywQeAw37SVJyIx1DDjLJXn3Hvfgl+sRMghlO+GEzfesrYt8
-jSPNMkjsRuQLYiHAHKzqkW5lCHgN8k/YQ5ittYdG5QAAAAAAAA==
+This patch set has been tested with the backend daemon:
+
+  # ./build/contrib/vhost-user-input/vhost-user-input \
+		     -p /dev/input/event20 -s /tmp/input.sock
+
+The series is based on "[PATCH v8 0/7] virtio: cleanup
+vhost-user-generic and reduce c&p" which introduces vhost-user-base.
+Based-on: <20231107180752.3458672-1-alex.bennee@linaro.org>
 
 
---=-hGXlJScYLLKtirDWwFxG--
+Leo Yan (4):
+  hw/virtio: Support set_config() callback in vhost-user-base
+  docs/system: Add vhost-user-input documentation
+  hw/virtio: Move vhost-user-input into virtio folder
+  hw/virtio: derive vhost-user-input from vhost-user-base
+
+ docs/system/devices/vhost-user-input.rst |  44 ++++++++
+ docs/system/devices/vhost-user.rst       |   2 +-
+ hw/input/meson.build                     |   1 -
+ hw/input/vhost-user-input.c              | 136 -----------------------
+ hw/virtio/meson.build                    |   4 +-
+ hw/virtio/vhost-user-base.c              |  17 +++
+ hw/virtio/vhost-user-input-pci.c         |   3 -
+ hw/virtio/vhost-user-input.c             |  58 ++++++++++
+ include/hw/virtio/virtio-input.h         |   6 +-
+ 9 files changed, 126 insertions(+), 145 deletions(-)
+ create mode 100644 docs/system/devices/vhost-user-input.rst
+ delete mode 100644 hw/input/vhost-user-input.c
+ create mode 100644 hw/virtio/vhost-user-input.c
+
+-- 
+2.34.1
+
 
