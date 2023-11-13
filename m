@@ -2,90 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F817EA2EF
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 19:34:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8BBC7EA2EB
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 19:34:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2blN-0003NP-Nj; Mon, 13 Nov 2023 13:34:23 -0500
+	id 1r2bl6-0003Ds-1u; Mon, 13 Nov 2023 13:34:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1r2bl9-0003Gr-Sw
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:34:07 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
+ id 1r2bl2-00039C-Bt
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:34:00 -0500
+Received: from mta-04.yadro.com ([89.207.88.248])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1r2bl6-0003BD-RB
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:34:07 -0500
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ADHi7OG017417; Mon, 13 Nov 2023 18:34:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=corp-2023-03-30;
- bh=/zTcFLnh/WYofvm2te8QSmhEDBPAGjpPXzQc5HJnoEQ=;
- b=KBjdrv4+H6djneVbSakqsQhDZfXmYflFk6xpvwuX0AGbzAElv7hAV/vqNxoYC3CRcIFo
- 09zgVoak++Ei3CxIDgfGtKYgDOPL2UkPW8tV0A30x/67cHnNuRL5TtghgDNKDmnxwJLb
- oKsg1LjgDUcoy/vW7flqBNviYtzuJ88dAJo8KrbITeKs1bzbwQ15W6Eiy8/cTEeLR0t3
- TNpwjDOPnAvFW9WzpVOq9h46ArpDrqpVDmDmfxhvR7Hx4jk3Brffg5Ku3oO/slESKX5+
- RK1lziBrFaaKHcn+rzLzRwxF9S8DNVmB86NbKkqqXmWaMQhf0dkpxXNtw2LIU1BYmjW5 Ow== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ua2mdkj9p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 13 Nov 2023 18:34:03 +0000
-Received: from pps.filterd
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3ADHBSuX004584; Mon, 13 Nov 2023 18:34:02 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3ub5k23k19-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 13 Nov 2023 18:34:02 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ADIY2JS026498;
- Mon, 13 Nov 2023 18:34:02 GMT
-Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3ub5k23k09-1; Mon, 13 Nov 2023 18:34:02 +0000
-From: Steve Sistare <steven.sistare@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V5 00/12] fix migration of suspended runstate
-Date: Mon, 13 Nov 2023 10:33:48 -0800
-Message-Id: <1699900440-207345-1-git-send-email-steven.sistare@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
+ (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
+ id 1r2bky-00037n-Sp
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:34:00 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com CB4DEC0003
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
+ t=1699900430; bh=yacChMXC2cujbWnJAnFij5amP4iXDdmaMjj4kd94dzg=;
+ h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
+ b=aNUisCpuXlJy3gnVZZhlTesfxCiO/4gp5PL7vohc1LRWF8AkDpeLZhFCWhlUHLt6x
+ RCTe4SQ0mg1GJaDCQ8TgdH8EsmsfsLtfHbavkzY18eDGhY+H/JBcSVQjJRMoihpUqK
+ JXXbYoaXMxYAkEdnBzsPjzFbZNhBEy3qwHyxk8ogBYH/qXYwIrFjIiRa7ebnoTSxGB
+ JAPwscOFHT3D0UHJSzscBPx+j6sSMXlziMNoiYKJBHwfab0adFw6lFU/oo/1Jgh31D
+ AqodkGT7Eo0WgzXpQZj4GVJnRfIKd0aLlPjjg4gQBDz9zZltj4/fYAWaspFiUDHRoS
+ rMoaeY0km7A+w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
+ t=1699900430; bh=yacChMXC2cujbWnJAnFij5amP4iXDdmaMjj4kd94dzg=;
+ h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
+ b=Gj9NC5Ys28ZHrP3KBKELuACFoCvNs5Hko+k7DSEV3ZM9beO76YntTQpU2KcdxzU7Y
+ +rNz0ndqZNmgAvAvle/G8PUuH6jHuqOcD94BhvQ9gFRZVhpW+plOrtpjBHLuUNXUJk
+ e1wiQy3s3VPviped0/QV5pJ7FLAPCLGTCfjE3NHB0ymrmhiNix4l8bN7MxcqP9y6yD
+ d6Kv5um2mqTDiU/XX7Xl7WzPyaFcwKdY1Yl2mGcajGmS16pRnL44agNvgAYDh8Pykd
+ qeZOng7iuyhNqg6hiDTLuaZ0JkRcVR7a0WB2GMSkWR8Y+RLAMS3yaSXAt2dSl9lbYw
+ q3zWzplWWwlHA==
+From: Mikhail Tyutin <m.tyutin@yadro.com>
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: Richard Henderson <richard.henderson@linaro.org>,
+ =?iso-8859-1?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>, "erdnaxe@crans.org"
+ <erdnaxe@crans.org>, "ma.mandourr@gmail.com" <ma.mandourr@gmail.com>
+Subject: Instruction virtual address in TCG Plugins
+Thread-Topic: Instruction virtual address in TCG Plugins
+Thread-Index: AdoWXsbya+HqTrueTiqiLf6nDJCNng==
+Date: Mon, 13 Nov 2023 18:33:48 +0000
+Message-ID: <d4f2713a4e2d45858c82ff2efb95f8a3@yadro.com>
+Accept-Language: ru-RU, en-US
+Content-Language: ru-RU
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-13_09,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- mlxlogscore=999
- spamscore=0 suspectscore=0 phishscore=0 bulkscore=0 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311130151
-X-Proofpoint-GUID: lOweI6mHvB8wK1bcKv_XNw4r00vDCeJ0
-X-Proofpoint-ORIG-GUID: lOweI6mHvB8wK1bcKv_XNw4r00vDCeJ0
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=89.207.88.248; envelope-from=m.tyutin@yadro.com;
+ helo=mta-04.yadro.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,79 +77,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Migration of a guest in the suspended runstate is broken.  The incoming
-migration code automatically tries to wake the guest, which is wrong;
-the guest should end migration in the same runstate it started.  Further,
-for a restored snapshot, the automatic wakeup fails.  The runstate is
-RUNNING, but the guest is not.  See the commit messages for the details.
+Greetings,
 
-Changes in V2:
-  * simplify "start on wakeup request"
-  * fix postcopy, snapshot, and background migration
-  * refactor fixes for each type of migration
-  * explicitly handled suspended events and runstate in tests
-  * add test for postcopy and background migration
+What is the right way to get virtual address of either translation block or=
+ instruction inside of TCG plugin? Does
+plugin API allow that or it needs some extension?
 
-Changes in V3:
-  * rebase to tip
-  * fix hang in new function migrate_wait_for_dirty_mem
+So far I use qemu_plugin_tb_vaddr() inside of my block translation callback=
+ to get block virtual address and then
+pass it as 'userdata' argument into qemu_plugin_register_vcpu_tb_exec_cb().=
+ I use it later during code execution.
+It works well for user-mode emulation, but sometimes leads to incorrect add=
+resses in system-mode emulation.
+I suspect it is because of memory mappings by guest OS that changes virtual=
+ addresses for that block.
 
-Changes in V4:
-  * rebase to tip
-  * add patch for vm_prepare_start (thanks Peter)
-  * add patch to preserve cpu ticks
+I also looked at gen_empty_udata_cb() function and considered to extend plu=
+gin API to pass a program counter
+value as additional callback argument. I thought it would always give me va=
+lid virtual address of an instruction.
+Unfortunately, I didn't find a way to get value of that register in archite=
+cture agnostic way (it is 'pc' member in
+CPUArchState structure).
 
-Changes in V5:
-  * rebase to tip
-  * added patches to completely stop vm in suspended state:
-      cpus: refactor vm_stop
-      cpus: stop vm in suspended state
-  * added patch to partially resume vm in suspended state:
-      cpus: start vm in suspended state
-  * modified "preserve suspended ..." patches to use the above.
-  * deleted patch "preserve cpu ticks if suspended".  stop ticks in
-    vm_stop_force_state instead.
-  * deleted patch "add runstate function".  defined new helper function
-    migrate_new_runstate in "preserve suspended runstate"
-  * Added some RB's, but removed other RB's because the patches changed.
-
-Steve Sistare (12):
-  cpus: refactor vm_stop
-  cpus: stop vm in suspended state
-  cpus: pass runstate to vm_prepare_start
-  cpus: start vm in suspended state
-  migration: preserve suspended runstate
-  migration: preserve suspended for snapshot
-  migration: preserve suspended for bg_migration
-  tests/qtest: migration events
-  tests/qtest: option to suspend during migration
-  tests/qtest: precopy migration with suspend
-  tests/qtest: postcopy migration with suspend
-  tests/qtest: background migration with suspend
-
- backends/tpm/tpm_emulator.c          |   2 +-
- gdbstub/system.c                     |   2 +-
- hw/usb/hcd-ehci.c                    |   2 +-
- hw/usb/redirect.c                    |   2 +-
- hw/xen/xen-hvm-common.c              |   2 +-
- include/migration/snapshot.h         |   7 ++
- include/sysemu/runstate.h            |  12 ++-
- migration/migration-hmp-cmds.c       |  12 ++-
- migration/migration.c                |  40 ++++---
- migration/migration.h                |   1 +
- migration/savevm.c                   |  41 +++----
- system/cpus.c                        |  71 ++++++------
- system/runstate.c                    |  13 +++
- system/vl.c                          |   2 +
- tests/migration/i386/Makefile        |   5 +-
- tests/migration/i386/a-b-bootblock.S |  50 ++++++++-
- tests/migration/i386/a-b-bootblock.h |  26 +++--
- tests/qtest/migration-helpers.c      |  27 ++---
- tests/qtest/migration-helpers.h      |  11 +-
- tests/qtest/migration-test.c         | 202 ++++++++++++++++++++++++++---------
- 20 files changed, 362 insertions(+), 168 deletions(-)
-
--- 
-1.8.3.1
-
+---
+Mikhail
 
