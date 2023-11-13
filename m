@@ -2,84 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081557EA33E
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 20:03:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE7EA7EA342
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 20:03:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2cCz-0002el-MN; Mon, 13 Nov 2023 14:02:53 -0500
+	id 1r2cDP-00035U-Q4; Mon, 13 Nov 2023 14:03:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
- id 1r2cCp-0002eU-VF
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 14:02:44 -0500
-Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
- id 1r2cCl-0000LT-2x
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 14:02:43 -0500
-Received: by mail-qt1-x830.google.com with SMTP id
- d75a77b69052e-41cb615c6fbso30100991cf.1
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 11:02:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699902158; x=1700506958; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LwfL1MMbcUd8gBQwuRg85QiTdLCeCUniVkLUUu4iwTE=;
- b=kGKjfWRfkUYZatdcGS5Jv91JIqdZvcfAg4CJH2mOl3N0XR/Ehy6pNYTsyQzYPSjCD8
- gi+4Ohsd3VNXCPa1lTtwyWnTedbqPit6PyoZQzCHZr5541u+nuVaCCmghQ7L5aOjoPQB
- 8IS7s7EX8zAaQXax7Xcc74ZtD417Bt88Od9Rj/TG8U3oITlHZbjA/7LLYFQ1BeQLlDzn
- usCz/rIQLZkfaL1zRD1zeG1E05ZGzoka2133Qd2qCMWKOMyrrjL+uL4YOWa7eicMWUf2
- E0n81fwQgXt0SG+ocACAdS69c7JE2c4kGtSweSdVz3EHJU/hvbAnPrV5UqPb4fISsSPY
- P/og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699902158; x=1700506958;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LwfL1MMbcUd8gBQwuRg85QiTdLCeCUniVkLUUu4iwTE=;
- b=H9MfHF+51VpTcB6pJlcjmEjNiv+3bPFeGKrYohhLRh5Md4LdpxnvM8mhAeYhqqcZWx
- g0zDLaTbutICmuER0rt0ONh7snDiCKnN4h7I2ZT0BmuQ0Qx8hQmnkSLjUV3w1DJ8rT11
- 6388E14FdTv/Z7kAd/KPudAC4+xP74KIepUVbgfYwNVsfp2uX1gH3gtUK8gDNxTOqN+J
- Mf+9G0zj2N3FGhpGatEcOrsfDElWEBmvVcVEGCPLD+jFbU5PiE77DQ74KVAdGOIbIKak
- J5R4p9ovmSLoFyPIAl+VI2PaELbxTYYyZ33iPbG2nbqQdImrvl+ZIvDeqPmjp9VahDyk
- LNaQ==
-X-Gm-Message-State: AOJu0YykiUZr3qQn2lw66RqhkN6qD2a+4OrQ/iJeG0YJ+kAWYPl8R/wR
- KIuFiLALCOTGox6yfDymFqrCYYwWB2s1TZf0f50fuz60RZQ=
-X-Google-Smtp-Source: AGHT+IHMwhGxEm29W18CsnP44pWmxKmrYqXtwg4Rbs5f9xyIhqZTCjUumIgOXotTyRIjwQUBqPOMIQ==
-X-Received: by 2002:ac8:5bc2:0:b0:41c:dd22:e7c0 with SMTP id
- b2-20020ac85bc2000000b0041cdd22e7c0mr11728863qtb.29.1699902157983; 
- Mon, 13 Nov 2023 11:02:37 -0800 (PST)
-Received: from localhost.localdomain ([12.186.190.1])
- by smtp.gmail.com with ESMTPSA id
- kq4-20020ac86184000000b004181c32dcc3sm2124834qtb.16.2023.11.13.11.02.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Nov 2023 11:02:36 -0800 (PST)
-From: Leo Yan <leo.yan@linaro.org>
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1r2cDN-0002x2-OE
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 14:03:17 -0500
+Received: from vps-vb.mhejs.net ([37.28.154.113])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1r2cDL-0000Ni-2B
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 14:03:17 -0500
+Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <mail@maciej.szmigiero.name>)
+ id 1r2cDG-0003PW-Hj; Mon, 13 Nov 2023 20:03:10 +0100
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Leo Yan <leo.yan@linaro.org>
-Subject: [PATCH v2 4/4] hw/virtio: derive vhost-user-input from vhost-user-base
-Date: Tue, 14 Nov 2023 03:02:11 +0800
-Message-Id: <20231113190211.92412-5-leo.yan@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231113190211.92412-1-leo.yan@linaro.org>
-References: <20231113190211.92412-1-leo.yan@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] hv-balloon: define dm_hot_add_with_region to avoid Coverity
+ warning
+Date: Mon, 13 Nov 2023 20:03:04 +0100
+Message-ID: <ed4e891f91a089d756ce65626fceee713f9a3274.1699902131.git.maciej.szmigiero@oracle.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
- envelope-from=leo.yan@linaro.org; helo=mail-qt1-x830.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=37.28.154.113;
+ envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,207 +56,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch derives vhost-user-input from vhost-user-base class, so make
-the input stub as a simpler boilerplate wrapper.
+From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-With the refactoring, vhost-user-input adds the property 'chardev', this
-leads to conflict with the vhost-user-input-pci adds the same property.
-To resolve the error, remove the duplicate property from
-vhost-user-input-pci.
+Since the presence of a hot add memory region is optional in hot add
+request message it wasn't part of this message declaration
+(struct dm_hot_add).
 
-Signed-off-by: Leo Yan <leo.yan@linaro.org>
+Instead, the code allocated such enlarged message by simply adding the
+necessary size for this extra field to the size of basic hot add message
+struct.
+
+However, Coverity considers accessing this extra member to be
+an out-of-bounds access, even thought the memory is actually there.
+
+Fix this by adding an extended variant of this message that explicitly has
+an additional union dm_mem_page_range at its end.
+
+CID: #1523903
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/virtio/vhost-user-input-pci.c |   3 -
- hw/virtio/vhost-user-input.c     | 114 +++++--------------------------
- include/hw/virtio/virtio-input.h |   6 +-
- 3 files changed, 21 insertions(+), 102 deletions(-)
+ hw/hyperv/hv-balloon.c           | 10 +++++-----
+ include/hw/hyperv/dynmem-proto.h |  9 ++++++++-
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/hw/virtio/vhost-user-input-pci.c b/hw/virtio/vhost-user-input-pci.c
-index b858898a36..3f4761ce88 100644
---- a/hw/virtio/vhost-user-input-pci.c
-+++ b/hw/virtio/vhost-user-input-pci.c
-@@ -30,9 +30,6 @@ static void vhost_user_input_pci_instance_init(Object *obj)
+diff --git a/hw/hyperv/hv-balloon.c b/hw/hyperv/hv-balloon.c
+index a4b4bde0a1e9..5b8f8aac7216 100644
+--- a/hw/hyperv/hv-balloon.c
++++ b/hw/hyperv/hv-balloon.c
+@@ -512,8 +512,8 @@ ret_idle:
+ static void hv_balloon_hot_add_rb_wait(HvBalloon *balloon, StateDesc *stdesc)
+ {
+     VMBusChannel *chan = hv_balloon_get_channel(balloon);
+-    struct dm_hot_add *ha;
+-    size_t ha_size = sizeof(*ha) + sizeof(ha->range);
++    struct dm_hot_add_with_region *ha;
++    size_t ha_size = sizeof(*ha);
  
-     virtio_instance_init_common(obj, &dev->vhi, sizeof(dev->vhi),
-                                 TYPE_VHOST_USER_INPUT);
--
--    object_property_add_alias(obj, "chardev",
--                              OBJECT(&dev->vhi), "chardev");
- }
+     assert(balloon->state == S_HOT_ADD_RB_WAIT);
  
- static const VirtioPCIDeviceTypeInfo vhost_user_input_pci_info = {
-diff --git a/hw/virtio/vhost-user-input.c b/hw/virtio/vhost-user-input.c
-index 4ee3542106..bedec0468c 100644
---- a/hw/virtio/vhost-user-input.c
-+++ b/hw/virtio/vhost-user-input.c
-@@ -5,83 +5,25 @@
+@@ -529,8 +529,8 @@ static void hv_balloon_hot_add_posting(HvBalloon *balloon, StateDesc *stdesc)
+     PageRange *hot_add_range = &balloon->hot_add_range;
+     uint64_t *current_count = &balloon->ha_current_count;
+     VMBusChannel *chan = hv_balloon_get_channel(balloon);
+-    g_autofree struct dm_hot_add *ha = NULL;
+-    size_t ha_size = sizeof(*ha) + sizeof(ha->range);
++    g_autofree struct dm_hot_add_with_region *ha = NULL;
++    size_t ha_size = sizeof(*ha);
+     union dm_mem_page_range *ha_region;
+     uint64_t align, chunk_max_size;
+     ssize_t ret;
+@@ -559,7 +559,7 @@ static void hv_balloon_hot_add_posting(HvBalloon *balloon, StateDesc *stdesc)
+     *current_count = MIN(hot_add_range->count, chunk_max_size);
+ 
+     ha = g_malloc0(ha_size);
+-    ha_region = &(&ha->range)[1];
++    ha_region = &ha->region;
+     ha->hdr.type = DM_MEM_HOT_ADD_REQUEST;
+     ha->hdr.size = ha_size;
+     ha->hdr.trans_id = balloon->trans_id;
+diff --git a/include/hw/hyperv/dynmem-proto.h b/include/hw/hyperv/dynmem-proto.h
+index d0f9090ac489..834edeb59855 100644
+--- a/include/hw/hyperv/dynmem-proto.h
++++ b/include/hw/hyperv/dynmem-proto.h
+@@ -328,7 +328,8 @@ struct dm_unballoon_response {
+ /*
+  * Hot add request message. Message sent from the host to the guest.
+  *
+- * mem_range: Memory range to hot add.
++ * range: Memory range to hot add.
++ * region: Explicit hot add memory region for guest to use. Optional.
+  *
   */
  
- #include "qemu/osdep.h"
--#include "qemu/error-report.h"
--#include "qapi/error.h"
--
- #include "hw/virtio/virtio-input.h"
+@@ -337,6 +338,12 @@ struct dm_hot_add {
+     union dm_mem_page_range range;
+ } QEMU_PACKED;
  
--static int vhost_input_config_change(struct vhost_dev *dev)
--{
--    error_report("vhost-user-input: unhandled backend config change");
--    return -1;
--}
--
--static const VhostDevConfigOps config_ops = {
--    .vhost_dev_config_notifier = vhost_input_config_change,
-+static Property vinput_properties[] = {
-+    DEFINE_PROP_CHR("chardev", VHostUserBase, chardev),
-+    DEFINE_PROP_END_OF_LIST(),
- };
- 
--static void vhost_input_realize(DeviceState *dev, Error **errp)
-+static void vinput_realize(DeviceState *dev, Error **errp)
- {
--    VHostUserInput *vhi = VHOST_USER_INPUT(dev);
--    VirtIOInput *vinput = VIRTIO_INPUT(dev);
--    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-+    VHostUserBase *vub = VHOST_USER_BASE(dev);
-+    VHostUserBaseClass *vubc = VHOST_USER_BASE_GET_CLASS(dev);
- 
--    vhost_dev_set_config_notifier(&vhi->vhost->dev, &config_ops);
--    vinput->cfg_size = sizeof_field(virtio_input_config, u);
--    if (vhost_user_backend_dev_init(vhi->vhost, vdev, 2, errp) == -1) {
--        return;
--    }
--}
-+    /* Fixed for input device */
-+    vub->virtio_id = VIRTIO_ID_INPUT;
-+    vub->num_vqs = 2;
-+    vub->vq_size = 4;
-+    vub->config_size = sizeof(virtio_input_config);
- 
--static void vhost_input_change_active(VirtIOInput *vinput)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(vinput);
--
--    if (vinput->active) {
--        vhost_user_backend_start(vhi->vhost);
--    } else {
--        vhost_user_backend_stop(vhi->vhost);
--    }
--}
--
--static void vhost_input_get_config(VirtIODevice *vdev, uint8_t *config_data)
--{
--    VirtIOInput *vinput = VIRTIO_INPUT(vdev);
--    VHostUserInput *vhi = VHOST_USER_INPUT(vdev);
--    Error *local_err = NULL;
--    int ret;
--
--    memset(config_data, 0, vinput->cfg_size);
--
--    ret = vhost_dev_get_config(&vhi->vhost->dev, config_data, vinput->cfg_size,
--                               &local_err);
--    if (ret) {
--        error_report_err(local_err);
--        return;
--    }
--}
--
--static void vhost_input_set_config(VirtIODevice *vdev,
--                                   const uint8_t *config_data)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(vdev);
--    int ret;
--
--    ret = vhost_dev_set_config(&vhi->vhost->dev, config_data,
--                               0, sizeof(virtio_input_config),
--                               VHOST_SET_CONFIG_TYPE_FRONTEND);
--    if (ret) {
--        error_report("vhost-user-input: set device config space failed");
--        return;
--    }
--
--    virtio_notify_config(vdev);
--}
--
--static struct vhost_dev *vhost_input_get_vhost(VirtIODevice *vdev)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(vdev);
--    return &vhi->vhost->dev;
-+    vubc->parent_realize(dev, errp);
- }
- 
- static const VMStateDescription vmstate_vhost_input = {
-@@ -91,40 +33,20 @@ static const VMStateDescription vmstate_vhost_input = {
- 
- static void vhost_input_class_init(ObjectClass *klass, void *data)
- {
--    VirtIOInputClass *vic = VIRTIO_INPUT_CLASS(klass);
--    VirtioDeviceClass *vdc = VIRTIO_DEVICE_CLASS(klass);
-+    VHostUserBaseClass *vubc = VHOST_USER_BASE_CLASS(klass);
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
-     dc->vmsd = &vmstate_vhost_input;
--    vdc->get_config = vhost_input_get_config;
--    vdc->set_config = vhost_input_set_config;
--    vdc->get_vhost = vhost_input_get_vhost;
--    vic->realize = vhost_input_realize;
--    vic->change_active = vhost_input_change_active;
--}
--
--static void vhost_input_init(Object *obj)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(obj);
--
--    vhi->vhost = VHOST_USER_BACKEND(object_new(TYPE_VHOST_USER_BACKEND));
--    object_property_add_alias(obj, "chardev",
--                              OBJECT(vhi->vhost), "chardev");
--}
--
--static void vhost_input_finalize(Object *obj)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(obj);
--
--    object_unref(OBJECT(vhi->vhost));
-+    device_class_set_props(dc, vinput_properties);
-+    device_class_set_parent_realize(dc, vinput_realize,
-+                                    &vubc->parent_realize);
-+    set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
- }
- 
- static const TypeInfo vhost_input_info = {
-     .name          = TYPE_VHOST_USER_INPUT,
--    .parent        = TYPE_VIRTIO_INPUT,
-+    .parent        = TYPE_VHOST_USER_BASE,
-     .instance_size = sizeof(VHostUserInput),
--    .instance_init = vhost_input_init,
--    .instance_finalize = vhost_input_finalize,
-     .class_init    = vhost_input_class_init,
- };
- 
-diff --git a/include/hw/virtio/virtio-input.h b/include/hw/virtio/virtio-input.h
-index a6c9703644..e69c0aeca3 100644
---- a/include/hw/virtio/virtio-input.h
-+++ b/include/hw/virtio/virtio-input.h
-@@ -1,6 +1,8 @@
- #ifndef QEMU_VIRTIO_INPUT_H
- #define QEMU_VIRTIO_INPUT_H
- 
-+#include "hw/virtio/vhost-user.h"
-+#include "hw/virtio/vhost-user-base.h"
- #include "ui/input.h"
- #include "sysemu/vhost-user-backend.h"
- 
-@@ -97,9 +99,7 @@ struct VirtIOInputHost {
- };
- 
- struct VHostUserInput {
--    VirtIOInput                       parent_obj;
--
--    VhostUserBackend                  *vhost;
-+    VHostUserBase parent_obj;
- };
- 
- void virtio_input_send(VirtIOInput *vinput, virtio_input_event *event);
--- 
-2.34.1
-
++struct dm_hot_add_with_region {
++    struct dm_header hdr;
++    union dm_mem_page_range range;
++    union dm_mem_page_range region;
++} QEMU_PACKED;
++
+ /*
+  * Hot add response message.
+  * This message is sent by the guest to report the status of a hot add request.
 
