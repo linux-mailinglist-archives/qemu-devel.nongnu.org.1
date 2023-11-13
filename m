@@ -2,73 +2,130 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 006917EA1A8
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 18:05:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0819C7EA1A9
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 18:05:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2aMN-0007fG-3H; Mon, 13 Nov 2023 12:04:27 -0500
+	id 1r2aMy-0008Fl-Ml; Mon, 13 Nov 2023 12:05:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r2aMH-0007Xi-9s
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:04:22 -0500
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r2aMF-0004PK-Az
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:04:21 -0500
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-5437d60fb7aso7089959a12.3
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 09:04:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699895057; x=1700499857; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=tXoTXFWOeQYOegr331Fli9ECx2LaIgBkkd5shOsuOag=;
- b=mfRueeFA/TIBNaXsiQ1+Eflvl6fV2lJcjr4OknZ7kUHCsw9q5B8HlFTTv+x+U3sinb
- SgFpgocCIT2ZozG+3QR3qe1DSRU0NWZS9aiyBKXw6UeXrLI/Q1ZF0YehyCKTxeMzGIKj
- iEzRX2z7hA0agfT8bOA1wAME0BGC9fnsXLI9JN8EfPB/8q3fDk0JrBMKvojXSAOqXsfq
- izeHikygA88Okss7izV+ZuUiaSAfU3JsohniKXNak4TpJ7S8adF2dTAt0eM7Q+ssfiHY
- 35QMFDcv/BwLC1orthLuPwWKQieUuL6iFKvOLgyGtRW8++1g9TEbznMX9/L6Zna5GHgY
- 5Hlg==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2aMw-00089m-8k
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:05:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2aMs-0004TS-JV
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:04:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699895097;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=wT1ZmGQi8gdWv1A4/ebK6SW/Inpjyt/TOr+VdqXgdzc=;
+ b=Vmwr35kh34PxxSniXhI7ASY7yswt1m0QZWbr/8+k3FWJBIEzZB+4w/kQ1PNv9DHJZWf4Gh
+ ng09m/VPYOATpU4b/blgTSF9yyZqH/tbvxanRzQ9L7t58pL31Ef7jgDBD1JtNmjik1u7FL
+ Y/Cih3/k/WHDgjmWs3TemDuMo4KwHp4=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-364-PpouS6iuMzuS2qEvmc7S_Q-1; Mon, 13 Nov 2023 12:04:55 -0500
+X-MC-Unique: PpouS6iuMzuS2qEvmc7S_Q-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-77a12fbe7eeso591315385a.2
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 09:04:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699895057; x=1700499857;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=tXoTXFWOeQYOegr331Fli9ECx2LaIgBkkd5shOsuOag=;
- b=Fc362o2vKro2eLbjIanMJWa+CGSqfGZxPyNeuZzFrVAkBpejDLQ4UJdVs9BYrVCL7w
- 3iNObPbQY54s1vH7Fw0jrnEmuYY+N0IGMT11efJ+nFs7/h2/yt7KpuHqQcEAYSEqmKun
- mKirLsyN7o0IfUeVxiTufUBpLHkJrNyUlLQpQwU5DwDm7BuEnZvaEJjXwc0Rxczg1/cw
- KNl1JWwlC5gABqBWdZNfvbZ8DY3jo2jL3WAekvJFhoJiC9Nr0dONtd+lWQWjOjkfmorL
- hfEJLUBZGAmnqmDK7oqgD2HD+Fo24eo0lkJuZfXrUBBeL0yUovkamp1Eb2UsaDWy2OlI
- U/jQ==
-X-Gm-Message-State: AOJu0YywWlH7VrQvXccAmLztx0l7iMSiI3R/Y2xynm22DcNChfMCkVsc
- mcoiAwup8+wxDSW1TctOfiIHRwnn+xfRsX0FWVgrHw==
-X-Google-Smtp-Source: AGHT+IGNB4C0aKc23XbY66q8whoA7OHSXHRK+jgvY64ZhepcLnWGUBmF8KgPUvblpW9y4SI1SV3OSK6d6jQiUPhuC4U=
-X-Received: by 2002:a05:6402:1052:b0:543:52be:e6ad with SMTP id
- e18-20020a056402105200b0054352bee6admr5217435edu.5.1699895057359; Mon, 13 Nov
- 2023 09:04:17 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699895095; x=1700499895;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wT1ZmGQi8gdWv1A4/ebK6SW/Inpjyt/TOr+VdqXgdzc=;
+ b=YBlAXX5oTw79spA3Fmq1YHmn9H2nC1R1cun3aVApUXBQmIEkYYRBXojowma05436Iy
+ Aq/5ca9PVdhUuViu8zYbfO1OFJtII0/Ua4lXjQ39R5LO78LtGpCFXdDY/Pw2Z5zbq4Ad
+ D9INsWckYo+UxfqjwsUMe0ws2evW+oVpqzESjgXv3EflpEWPcsqtgjB5Pnwyh6LaxMm5
+ 0ObG8JuShblLofBYrjZAlbQmWQx/+Fsa2iFvYCZM4aYZwvWE7vVp9dZF7WvgljPkkZcE
+ z7p26kr8xyA8tkc/fAwbtsDaii9Uxq7XTZ5qdh2I5BMVpEJdZG+Xc6Pl+k9s266pMWre
+ h1ow==
+X-Gm-Message-State: AOJu0Yy5N3/MjshhGRonmx4iBCeYR2odOgktk/+NzFZm5FI3rsC3BJuy
+ coegqA0yXJcPRndhSdhvkcpi2LgO/v0cnz8QtrFg8JmftCDn2j2i4fS3UC50QQFZGpAsM1HpSlh
+ IThzETDfj8SurXaw=
+X-Received: by 2002:a05:620a:911:b0:778:96ec:661 with SMTP id
+ v17-20020a05620a091100b0077896ec0661mr7208473qkv.73.1699895095127; 
+ Mon, 13 Nov 2023 09:04:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEXS39xUYrI3J+5AyqAvv5iBgg3Rm0sdklwf6Q/p0ecn7y0r2FzUjslfn8wubq64MdO8ol0Wg==
+X-Received: by 2002:a05:620a:911:b0:778:96ec:661 with SMTP id
+ v17-20020a05620a091100b0077896ec0661mr7208459qkv.73.1699895094908; 
+ Mon, 13 Nov 2023 09:04:54 -0800 (PST)
+Received: from [192.168.0.6] (ip-109-43-177-79.web.vodafone.de.
+ [109.43.177.79]) by smtp.gmail.com with ESMTPSA id
+ f3-20020a05620a12e300b0076e1e2d6496sm1993846qkl.104.2023.11.13.09.04.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 13 Nov 2023 09:04:54 -0800 (PST)
+Message-ID: <35f75a44-b76d-456a-b7b8-67bc3e0cad9c@redhat.com>
+Date: Mon, 13 Nov 2023 18:04:50 +0100
 MIME-Version: 1.0
-References: <20231112165658.2335-1-n.ostrenkov@gmail.com>
-In-Reply-To: <20231112165658.2335-1-n.ostrenkov@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 13 Nov 2023 17:04:06 +0000
-Message-ID: <CAFEAcA_qmKctYajg2fXSd0GU0YtD_HBPGq5_BzdDDj0aLw1J9g@mail.gmail.com>
-Subject: Re: [PATCH v3] target/arm/tcg: enable pmu feature for cortex a9
-To: Nikita Ostrenkov <n.ostrenkov@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] risu: Add test summary
+Content-Language: en-US
+To: Sebastian Mitterle <smitterl@redhat.com>, peter.maydell@linaro.org
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
+References: <20231108162356.36670-1-smitterl@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20231108162356.36670-1-smitterl@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,54 +141,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 12 Nov 2023 at 16:57, Nikita Ostrenkov <n.ostrenkov@gmail.com> wrote:
->
-> According to the technical reference manual Cortex A9 like Cortex A7 and Cortex A15 has Perfomance Unit Monitor (PMU)
-> https://developer.arm.com/documentation/100511/0401/performance-monitoring-unit/about-the-performance-monitoring-unit
->
-> Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+On 08/11/2023 17.23, Sebastian Mitterle wrote:
+> Currently, a successful test run finishes silently with exit code 0.
+> The last message on the console is "starting image" which can leave
+> the user wondering if they executed the commands correctly.
+
+Thanks for the patch, I think this is a good idea - it also initially 
+puzzled me a couple of times due to the missing feedback.
+
+> Now add a summary of the number of executed instructions in case
+> of success. Don't add that message when printing the trace to
+> stdout (`-t -`).
+> 
+> Tested:
+> a) master/apprentice mode
+> b) trace mode to file
+> c) trace mode to stdout
+> 
+> Suggested-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Sebastian Mitterle <smitterl@redhat.com>
 > ---
->  target/arm/tcg/cpu32.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/target/arm/tcg/cpu32.c b/target/arm/tcg/cpu32.c
-> index 0d5d8e307d..0008c3f890 100644
-> --- a/target/arm/tcg/cpu32.c
-> +++ b/target/arm/tcg/cpu32.c
-> @@ -418,6 +418,7 @@ static void cortex_a9_initfn(Object *obj)
->      set_feature(&cpu->env, ARM_FEATURE_NEON);
->      set_feature(&cpu->env, ARM_FEATURE_THUMB2EE);
->      set_feature(&cpu->env, ARM_FEATURE_EL3);
-> +    set_feature(&cpu->env, ARM_FEATURE_PMU);
->      /*
->       * Note that A9 supports the MP extensions even for
->       * A9UP and single-core A9MP (which are both different
+>   risu.c | 12 ++++++++++--
+>   1 file changed, 10 insertions(+), 2 deletions(-)
+> 
+> diff --git a/risu.c b/risu.c
+> index 36fc82a..740663a 100644
+> --- a/risu.c
+> +++ b/risu.c
+> @@ -551,6 +551,7 @@ int main(int argc, char **argv)
+>       struct option *longopts;
+>       char *shortopts;
+>       stack_t ss;
+> +    int ret;
+>   
+>       longopts = setup_options(&shortopts);
+>   
+> @@ -635,8 +636,15 @@ int main(int argc, char **argv)
+>       arch_init();
+>   
+>       if (ismaster) {
+> -        return master();
+> +        ret = master();
+>       } else {
+> -        return apprentice();
+> +        ret = apprentice();
+>       }
+> +
+> +    if (ret == EXIT_SUCCESS && (!trace || (trace  && strcmp(trace_fn, "-") != 0))) {
 
-Thanks for this patch.
+There's a superfluous white space here ------------^
 
-There definitely seem to be some weirdnesses in our PMU emulation
-for older CPUs like the A9. In particular we define the registers
-in v7_cp_reginfo[], so you get them on all v7 cores, even if
-ARM_FEATURE_PMU is turned off; they just don't actually do anything.
-This seems to affect the cortex-a8 and cortex-a9; everything
-newer defines ARM_FEATURE_PMU. We really ought to have the PMU
-registers separated out and only defined for ARM_FEATURE_PMU CPUs.
-(Annoyingly, we can't drop ARM_FEATURE_PMU and look at ID_DFR0
-instead, because the A8 and A9 have a PMU but don't advertise
-it in ID_DFR0, because they predate the PMUv2 standardization
-of the ID_DFR0 field for that.)
+Apart from that, I wonder whether the check for trace-to-stdout is really 
+necessary, since you print the message to stderr below instead?
 
-The other thing here is that these CPUs are older versions
-of the PMU, so strictly we ought to check whether they
-have deviations from the registers we define. But since
-we're already defining all those registers anyway, it seems
-safe enough to let them actually work.
+> +        fprintf(stderr, "No mismatches found. Executed %zd checkpoints.\n",
+> +                signal_count);
+> +    }
+> +
+> +    return ret;
+>   }
 
-I've applied this to target-arm.next, with an update to also
-set ARM_FEATURE_PMU for the Cortex-A8, since that was the
-only other CPU in this odd "PMU registers present but not
-really working" state.
+  Thomas
 
-thanks
--- PMM
 
