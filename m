@@ -2,108 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C2F7EA72D
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 00:48:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD147EA72C
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 00:48:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2gde-00034Q-IF; Mon, 13 Nov 2023 18:46:42 -0500
+	id 1r2geG-0003L2-PB; Mon, 13 Nov 2023 18:47:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r2gdb-00033y-RF
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 18:46:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r2ge9-0003HV-V2; Mon, 13 Nov 2023 18:47:14 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r2gdX-0005yX-8p
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 18:46:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699919194;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sGUuKvwBfQnuZThD6dwFXx+pkZQdA2vvt9ZH1MIF/ao=;
- b=DcvNfO5XYIcezQPOjwwGHyXdnNCIMAbwf+vWyqQoOf96hI0R/ZEN48bgYykv/IhT1H4Mdt
- KrJWKFz3ayI7JOODMs1ElRNwNvN7YlEMv89eJc0dvOdhXkYlqwkSStApUPjWd9dP53MBD3
- cG7Hup3/33siUxUv4f2WtKzn8YAb9jI=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-371-9vFw9e9JNf6xwKUrYWycvw-1; Mon, 13 Nov 2023 18:46:32 -0500
-X-MC-Unique: 9vFw9e9JNf6xwKUrYWycvw-1
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-1cc29f3afe0so53689535ad.2
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 15:46:32 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699919191; x=1700523991;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sGUuKvwBfQnuZThD6dwFXx+pkZQdA2vvt9ZH1MIF/ao=;
- b=ZOZaXB4qd0QZfJUxBrszSEclZ6UuozhCqC4vz7QEgBy7ES3L3EyKaETjyWLUmBBJvc
- Hkp/lAKockMGXM4UOM1RviEqg4Q+tsqwhHCAdLJTptB5lkBpYJ5wlueh8QKg7oZ+apfT
- 3oVkUnChw21afipe5ZBRmdIWOb/amV/i4qmgJaPkj6cU05i7uXoupvQqh521km/ecKwT
- bbneqBxoGMygvQz+UjqUKmPcff6JHtOiwFYD0w4LmPiJlFhPKhZJgeqolrXQ6JYHEBkq
- KeMI12dIiyNH/U2K443CFd99uCdcyTdiDHvUmyeItMEGIOQypFqMcj8rcQKpg7Nj5O24
- B4ew==
-X-Gm-Message-State: AOJu0YyISLjtWDwwdia4ktAHm9B4xYi45zDVprlw+yWao5WPHjz8yFSi
- 9zF75CHv/BhAIS+gSuRtHowt5+JpFKWVNRtFBRfX0NOyCnNnPHZ9jIno1Fl13+Q9W3p4m34wupD
- uG3XtofvghM62y1s=
-X-Received: by 2002:a17:902:e88c:b0:1ca:a290:4c0c with SMTP id
- w12-20020a170902e88c00b001caa2904c0cmr934941plg.16.1699919191083; 
- Mon, 13 Nov 2023 15:46:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG+XNhuOhuh6GAkDOQZ6sJdClr4KK87Ig/JgqIUZkHNc22NaSNuNfvfCi3oQPVXsttOQ3uH9g==
-X-Received: by 2002:a17:902:e88c:b0:1ca:a290:4c0c with SMTP id
- w12-20020a170902e88c00b001caa2904c0cmr934885plg.16.1699919190654; 
- Mon, 13 Nov 2023 15:46:30 -0800 (PST)
-Received: from ?IPV6:2001:8003:e5b0:9f00:b890:3e54:96bb:2a15?
- ([2001:8003:e5b0:9f00:b890:3e54:96bb:2a15])
- by smtp.gmail.com with ESMTPSA id
- ba12-20020a170902720c00b001c60d0a6d84sm4535699plb.127.2023.11.13.15.46.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Nov 2023 15:46:30 -0800 (PST)
-Message-ID: <0dbc478c-45f9-44e8-a938-de71fed6c3ec@redhat.com>
-Date: Tue, 14 Nov 2023 09:46:12 +1000
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r2ge6-00065i-6M; Mon, 13 Nov 2023 18:47:13 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id B274575A4BA;
+ Tue, 14 Nov 2023 00:47:31 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id A712175A4B7; Tue, 14 Nov 2023 00:47:31 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id A54F075A406;
+ Tue, 14 Nov 2023 00:47:31 +0100 (CET)
+Date: Tue, 14 Nov 2023 00:47:31 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+cc: Kevin Wolf <kwolf@redhat.com>, jsnow@redhat.com, qemu-block@nongnu.org, 
+ qemu-devel@nongnu.org, philmd@linaro.org, shentey@gmail.com
+Subject: Re: [PATCH v2 1/3] ide/pci.c: introduce pci_ide_update_mode() function
+In-Reply-To: <41a91dda-8bac-4b7f-9655-2b09e074d808@ilande.co.uk>
+Message-ID: <d09e8c8a-2ec5-16a7-46a8-8b2fccac94e8@eik.bme.hu>
+References: <20231024224056.842607-1-mark.cave-ayland@ilande.co.uk>
+ <20231024224056.842607-2-mark.cave-ayland@ilande.co.uk>
+ <ZUj0S6GqGhZ6kOp9@redhat.com>
+ <9d3142cf-fb35-499a-bd2f-b799bfbfd2c1@ilande.co.uk>
+ <ZUobajEv5cZsXa6g@redhat.com>
+ <41a91dda-8bac-4b7f-9655-2b09e074d808@ilande.co.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/33] hw/cpu: Call object_class_is_abstract() once in
- cpu_class_by_name()
-Content-Language: en-US
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, philmd@linaro.org, clg@kaod.org,
- imp@bsdimp.com, kevans@freebsd.org, richard.henderson@linaro.org,
- pbonzini@redhat.com, peter.maydell@linaro.org, b.galvani@gmail.com,
- strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com, kfting@nuvoton.com,
- wuhaotsh@google.com, nieklinnenbank@gmail.com, rad@semihalf.com,
- quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
- laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, mrolnik@gmail.com,
- edgar.iglesias@gmail.com, bcain@quicinc.com, gaosong@loongson.cn,
- aurelien@aurel32.net, jiaxun.yang@flygoat.com, aleksandar.rikalo@syrmia.com,
- chenhuacai@kernel.org, crwulff@gmail.com, marex@denx.de, shorne@gmail.com,
- npiggin@gmail.com, ysato@users.sourceforge.jp, david@redhat.com,
- thuth@redhat.com, iii@linux.ibm.com, kbastian@mail.uni-paderborn.de,
- jcmvbkbc@gmail.com, shan.gavin@gmail.com
-References: <20231102002500.1750692-1-gshan@redhat.com>
- <20231102002500.1750692-3-gshan@redhat.com>
- <20231106154029.0354f0ed@imammedo.users.ipa.redhat.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20231106154029.0354f0ed@imammedo.users.ipa.redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Virus-Scanned: ClamAV using ClamSMTP
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,316 +63,317 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, 13 Nov 2023, Mark Cave-Ayland wrote:
+> On 07/11/2023 11:11, Kevin Wolf wrote:
+>> Am 06.11.2023 um 23:41 hat Mark Cave-Ayland geschrieben:
+>>> On 06/11/2023 14:12, Kevin Wolf wrote:
+>>> 
+>>> Hi Kevin,
+>>> 
+>>> Thanks for taking the time to review this. I'll reply inline below.
+>>> 
+>>>> Am 25.10.2023 um 00:40 hat Mark Cave-Ayland geschrieben:
+>>>>> This function reads the value of the PCI_CLASS_PROG register for PCI IDE
+>>>>> controllers and configures the PCI BARs and/or IDE ioports accordingly.
+>>>>> 
+>>>>> In the case where we switch to legacy mode, the PCI BARs are set to 
+>>>>> return zero
+>>>>> (as suggested in the "PCI IDE Controller" specification), the legacy IDE 
+>>>>> ioports
+>>>>> are enabled, and the PCI interrupt pin cleared to indicate legacy IRQ 
+>>>>> routing.
+>>>>> 
+>>>>> Conversely when we switch to native mode, the legacy IDE ioports are 
+>>>>> disabled
+>>>>> and the PCI interrupt pin set to indicate native IRQ routing. The 
+>>>>> contents of
+>>>>> the PCI BARs are unspecified, but this is not an issue since if a PCI 
+>>>>> IDE
+>>>>> controller has been switched to native mode then its BARs will need to 
+>>>>> be
+>>>>> programmed.
+>>>>> 
+>>>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>>>> Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
+>>>>> Tested-by: Bernhard Beschow <shentey@gmail.com>
+>>>>> ---
+>>>>>    hw/ide/pci.c         | 90 
+>>>>> ++++++++++++++++++++++++++++++++++++++++++++
+>>>>>    include/hw/ide/pci.h |  1 +
+>>>>>    2 files changed, 91 insertions(+)
+>>>>> 
+>>>>> diff --git a/hw/ide/pci.c b/hw/ide/pci.c
+>>>>> index a25b352537..5be643b460 100644
+>>>>> --- a/hw/ide/pci.c
+>>>>> +++ b/hw/ide/pci.c
+>>>>> @@ -104,6 +104,96 @@ const MemoryRegionOps pci_ide_data_le_ops = {
+>>>>>        .endianness = DEVICE_LITTLE_ENDIAN,
+>>>>>    };
+>>>>> +static const MemoryRegionPortio ide_portio_list[] = {
+>>>>> +    { 0, 8, 1, .read = ide_ioport_read, .write = ide_ioport_write },
+>>>>> +    { 0, 1, 2, .read = ide_data_readw, .write = ide_data_writew },
+>>>>> +    { 0, 1, 4, .read = ide_data_readl, .write = ide_data_writel },
+>>>>> +    PORTIO_END_OF_LIST(),
+>>>>> +};
+>>>>> +
+>>>>> +static const MemoryRegionPortio ide_portio2_list[] = {
+>>>>> +    { 0, 1, 1, .read = ide_status_read, .write = ide_ctrl_write },
+>>>>> +    PORTIO_END_OF_LIST(),
+>>>>> +};
+>>>> 
+>>>> This is duplicated from hw/ide/ioport.c. I think it would be better to
+>>>> use the arrays already defined there, ideally by calling ioport.c
+>>>> functions to setup and release the I/O ports.
+>>> 
+>>> The tricky part here is that hw/ide/ioport.c is defined for CONFIG_ISA, 
+>>> and
+>>> so if we did that then all PCI IDE controllers would become dependent upon
+>>> ISA too, regardless of whether they implement compatibility mode or not.
+>>> What do you think is the best solution here? Perhaps moving
+>>> ide_init_ioport() to a more ISA-specific place? I know that both myself 
+>>> and
+>>> Phil have considered whether ide_init_ioport() should be replaced by
+>>> something else further down the line.
+>> 
+>> Hm, yes, I didn't think about this.
+>> 
+>> Splitting ioport.c is one option, but even the port lists are really
+>> made for ISA, so the whole file is really ISA related.
+>> 
+>> On the other hand, pci_ide_update_mode() isn't really a pure PCI
+>> function, it's at the intersection of PCI and ISA. Can we just #ifdef it
+>> out if ISA isn't built? Devices that don't support compatibility mode
+>> should never try to call pci_ide_update_mode().
+>
+> In terms of the QEMU modelling, the PCI IDE controllers are modelled as a 
+> PCIDevice rather than an ISADevice and that's why ide_init_ioport() doesn't 
+> really make sense in PCI IDE controllers. Currently its only PCIDevice user 
+> is hw/ide/piix.c and that passes ISADevice as NULL, because there is no 
+> underlying ISADevice.
+>
+> The only ISADevice user is in hw/ide/isa.c so I think a better solution here 
+> would be to inline ide_init_ioport() into isa_ide_realizefn() and then add a 
+> separate function for PCI IDE controllers which is what I've attempted to do 
+> here.
+>
+> How about moving ide_portio_list[] and ide_portio_list2[] to hw/ide/core.c 
+> instead? The definitions in include/hw/ide/internal.h already have a 
+> dependency on PortioList so there should be no issue, and it allows them to 
+> be shared between both PCI and ISA devices.
 
-On 11/7/23 00:40, Igor Mammedov wrote:
-> On Thu,  2 Nov 2023 10:24:29 +1000
-> Gavin Shan <gshan@redhat.com> wrote:
-> 
->> From: Philippe Mathieu-Daudé <philmd@linaro.org>
->>
->> Let CPUClass::class_by_name() handlers to return abstract classes,
->> and filter them once in the public cpu_class_by_name() method.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Reviewed-by: Gavin Shan <gshan@redhat.com>
->> ---
->>   hw/core/cpu-common.c   | 8 +++++++-
->>   include/hw/core/cpu.h  | 7 ++++---
->>   target/alpha/cpu.c     | 2 +-
->>   target/arm/cpu.c       | 3 +--
->>   target/avr/cpu.c       | 3 +--
->>   target/cris/cpu.c      | 3 +--
->>   target/hexagon/cpu.c   | 3 +--
->>   target/loongarch/cpu.c | 3 +--
->>   target/m68k/cpu.c      | 3 +--
->>   target/openrisc/cpu.c  | 3 +--
->>   target/riscv/cpu.c     | 3 +--
->>   target/rx/cpu.c        | 5 +----
->>   target/sh4/cpu.c       | 3 ---
->>   target/tricore/cpu.c   | 3 +--
->>   target/xtensa/cpu.c    | 3 +--
->>   15 files changed, 23 insertions(+), 32 deletions(-)
->>
->> diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
->> index bab8942c30..bca0323e9f 100644
->> --- a/hw/core/cpu-common.c
->> +++ b/hw/core/cpu-common.c
->> @@ -150,9 +150,15 @@ static bool cpu_common_has_work(CPUState *cs)
->>   ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_model)
->>   {
->>       CPUClass *cc = CPU_CLASS(object_class_by_name(typename));
->> +    ObjectClass *oc;
->>   
->>       assert(cpu_model && cc->class_by_name);
->> -    return cc->class_by_name(cpu_model);
->> +    oc = cc->class_by_name(cpu_model);
->> +    if (oc && !object_class_is_abstract(oc)) {
->> +        return oc;
->> +    }
->> +
->> +    return NULL;
->>   }
->>   
->>   static void cpu_common_parse_features(const char *typename, char *features,
->> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
->> index 18593db5b2..ee85aafdf5 100644
->> --- a/include/hw/core/cpu.h
->> +++ b/include/hw/core/cpu.h
->> @@ -102,7 +102,7 @@ struct SysemuCPUOps;
->>   /**
->>    * CPUClass:
->>    * @class_by_name: Callback to map -cpu command line model name to an
->> - * instantiatable CPU type.
->> + *                 instantiatable CPU type.
->>    * @parse_features: Callback to parse command line arguments.
->>    * @reset_dump_flags: #CPUDumpFlags to use for reset logging.
->>    * @has_work: Callback for checking if there is work to do.
->> @@ -772,9 +772,10 @@ void cpu_reset(CPUState *cpu);
->>    * @typename: The CPU base type.
->>    * @cpu_model: The model string without any parameters.
->>    *
->> - * Looks up a CPU #ObjectClass matching name @cpu_model.
->> + * Looks up a concrete CPU #ObjectClass matching name @cpu_model.
->>    *
->> - * Returns: A #CPUClass or %NULL if not matching class is found.
->> + * Returns: A concrete #CPUClass or %NULL if no matching class is found
->> + *          or if the matching class is abstract.
->>    */
->>   ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_model);
->>   
->> diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
->> index c7ae4d6a41..9436859c7b 100644
->> --- a/target/alpha/cpu.c
->> +++ b/target/alpha/cpu.c
->> @@ -126,7 +126,7 @@ static ObjectClass *alpha_cpu_class_by_name(const char *cpu_model)
->>       int i;
->>   
->>       oc = object_class_by_name(cpu_model);
->> -    if (oc != NULL && object_class_dynamic_cast(oc, TYPE_ALPHA_CPU) != NULL &&
-> I'd split 'oc != NULL &&' into a separate patch
-> 
+That's where these came from in commit 83d14054f9555 and the reason was to 
+get rid of the ISA dependency for machines that don't need it. Would it be 
+possible to make a function that only registers the portio stuff (e.g. 
+ide_register_ports) that's not depenent on either ISADevice nor 
+PCIIDEState but takes an IDEBus? That could be used by both ide-isa and 
+PCI devices. This would just do the portio stuff for a single bus and you 
+could call it twice from your pci_ide_update_mode function then rhe 
+portio_list arrays can remain static to core.c. That seems better than 
+duplicating code and exporting these arrays.
 
-Agree. It's a good idea, but this patch has been merged as:
+>>>>> +void pci_ide_update_mode(PCIIDEState *s)
+>>>>> +{
+>>>>> +    PCIDevice *d = PCI_DEVICE(s);
+>>>>> +    uint8_t mode = d->config[PCI_CLASS_PROG];
+>>>>> +
+>>>>> +    switch (mode & 0xf) {
+>>>>> +    case 0xa:
+>>>>> +        /* Both channels legacy mode */
+>>>> 
+>>>> Why is it ok to handle only the case where both channels are set to the
+>>>> same mode? The spec describes mixed-mode setups, too, and doesn't seem
+>>>> to allow ignoring a mode change if it's only for one of the channels.
+>>> 
+>>> Certainly that can be done: only both channels were implemented initially
+>>> because that was the test case immediately available using the VIA. I can
+>>> have a look at implementing both channels separately in v2.
+>> 
+>> I don't think it would make the code more complicated, so it feels like
+>> implementing it right away would be nice.
+>> 
+>> On the other hand, if you want to see this in 8.2, I'm happy to merge
+>> this part as it is and then we can improve it on top.
+>
+> I think this helps Zoltan boot AmigaOS on the new AmigaOne machine, and I am 
+> certainly planning more work in this area during the 9.0 cycle.
 
-3a9d0d7b64 hw/cpu: Call object_class_is_abstract() once in cpu_class_by_name()
+As said before for booting AmigaOS we need either this series or my 
+original fix: 
+https://patchew.org/QEMU/cover.1697661160.git.balaton@eik.bme.hu/4095e01f4596e77a478759161ae736f0c398600a.1697661160.git.balaton@eik.bme.hu/ 
+for which you posted this as a replacement. If it's deemed too much change 
+for the freeze or you need more time ro finish this series we can take my 
+patch for now and come back to this later. (Recently I've found that my 
+patch using PCI BARs set to legacy address has a side effect that BAR4 
+shadows some ports of the FDC because BARs are 4 bytes which your series 
+avoids as it can register port 0x376 as single byte but it's easy to 
+disable floppy driver in AmigaOS so this is not a problem and can be fixed 
+later. Nobody really needs a floppy as it boots from HDD or CD and uses 
+network or other means to transfer files rather than floppies so it's not 
+needed and the additional step to disable driver is not a problem because 
+adding a graphics driver in the same place is also needed so users will 
+need to edit that config anyway. Other than this my patch solves all 
+problems for now in a simpler way and then can be replaced with your 
+series for 9.0.)
 
->> +    if (object_class_dynamic_cast(oc, TYPE_ALPHA_CPU) &&
->>           !object_class_is_abstract(oc)) {
-> 
-> stray abstract check leftover??
-> 
+>>>>> +
+>>>>> +        /* Zero BARs */
+>>>>> +        pci_set_long(d->config + PCI_BASE_ADDRESS_0, 0x0);
+>>>>> +        pci_set_long(d->config + PCI_BASE_ADDRESS_1, 0x0);
+>>>>> +        pci_set_long(d->config + PCI_BASE_ADDRESS_2, 0x0);
+>>>>> +        pci_set_long(d->config + PCI_BASE_ADDRESS_3, 0x0);
+>>>> 
+>>>> Here I'm not sure what the spec really implies. Disabling the BAR (i.e.
+>>>> making it read-only and returning 0) while in compatibility mode doesn't
+>>>> necessarily mean that the value of the register is lost. In other words,
+>>>> are we sure that a driver can't expect that the old value is still there
+>>>> when it re-enables native mode?
+>>> 
+>>> The specification is definitely a bit vague on the details here. In the
+>>> testing I've done with the VIA, there is only ever a switch from native to
+>>> legacy mode, and not the other way around. I can see the logic that once
+>>> you've gone from the native to legacy mode, the memory allocated for the
+>>> BARs is already reserved by the OS so in theory it could be possible to
+>>> switch back to native mode again... and that would work if the BARs are
+>>> preserved.
+>>> 
+>>> Would it happen in practice? I'm not really sure, but I can try to 
+>>> implement
+>>> this if you think it makes sense to take a safer approach.
+>> 
+>> I'm not sure if any driver tries to do something like this. Maybe a
+>> situation where BIOS switches to compatibility mode and then the OS to
+>> native again? But it does feel safer.
+>> 
+>> The other option would be to not zero out the BAR at all. Doing that is
+>> optional according to the spec. But then we need to make sure that we
+>> ignore any access to the memory region behind the BAR even though its
+>> address is still there.
+>> 
+>> Come to think of it, don't we need to somehow disable the memory regions
+>> described by the BARs even when we zero them out? I think updating the
+>> config space without calling pci_update_mappings() doesn't actually stop
+>> QEMU from reacting to reads and writes there, does it?
+>> 
+>> Otherwise, the guest doesn't see the memory region in the BAR any more,
+>> but it would still be active (which is almost the opposite of what we're
+>> supposed to do).
+>
+> At least the VIA appears to still respond to the BAR addresses even when 
+> switched back to compatibility mode (bug?), but without more testing after 
+> making the functionality more generic it's difficult to say. Should the BARs 
+> be disabled when switched to legacy mode? According to the spec that should
 
-Nope, It's intentional. We will fall back to @alpha_cpu_aliases if the
-CPU class corresponding to @cpu_model is abstract.
+I think the problem case is pegasos2 where firmware enables native mode 
+(with IRQ 14/15 but programming BARs) but Linux expects native mode to use 
+a PCI interrupt which does not work so it sets prog-if back to legacy mode 
+to make its driver use legacy interrupts but then keeps using BARs which 
+works on real hardware. Other guests don't set prog-if just use BARs and 
+IRQ 14/15. So it looks like real chip either still uses BARs after they 
+are programmed or you can't really swirch from native mode back to legacy 
+mode and native mode still uses legacy interrupts. I think this chip does 
+not really follow PCI specs (it's an early part from when PCI was new and 
+likely developed from an ISA superIO chip with some PCI support added so 
+maybe it only partially implemented the spec or had some excensions not 
+compying with it.)
 
->>           return oc;
->>       }
->> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
->> index 954328d72a..8c622d6b59 100644
->> --- a/target/arm/cpu.c
->> +++ b/target/arm/cpu.c
->> @@ -2399,8 +2399,7 @@ static ObjectClass *arm_cpu_class_by_name(const char *cpu_model)
->>       oc = object_class_by_name(typename);
->>       g_strfreev(cpuname);
->>       g_free(typename);
->> -    if (!oc || !object_class_dynamic_cast(oc, TYPE_ARM_CPU) ||
->> -        object_class_is_abstract(oc)) {
->> +    if (!object_class_dynamic_cast(oc, TYPE_ARM_CPU)) {
->>           return NULL;
->>       }
->>       return oc;
->> diff --git a/target/avr/cpu.c b/target/avr/cpu.c
->> index 14d8b9d1f0..113d522f75 100644
->> --- a/target/avr/cpu.c
->> +++ b/target/avr/cpu.c
->> @@ -157,8 +157,7 @@ static ObjectClass *avr_cpu_class_by_name(const char *cpu_model)
->>       ObjectClass *oc;
->>   
->>       oc = object_class_by_name(cpu_model);
->> -    if (object_class_dynamic_cast(oc, TYPE_AVR_CPU) == NULL ||
->> -        object_class_is_abstract(oc)) {
->> +    if (!object_class_dynamic_cast(oc, TYPE_AVR_CPU)) {
->>           oc = NULL;
->>       }
->>       return oc;
->> diff --git a/target/cris/cpu.c b/target/cris/cpu.c
->> index be4a44c218..1cb431cd46 100644
->> --- a/target/cris/cpu.c
->> +++ b/target/cris/cpu.c
->> @@ -95,8 +95,7 @@ static ObjectClass *cris_cpu_class_by_name(const char *cpu_model)
->>       typename = g_strdup_printf(CRIS_CPU_TYPE_NAME("%s"), cpu_model);
->>       oc = object_class_by_name(typename);
->>       g_free(typename);
->> -    if (oc != NULL && (!object_class_dynamic_cast(oc, TYPE_CRIS_CPU) ||
->> -                       object_class_is_abstract(oc))) {
->> +    if (!object_class_dynamic_cast(oc, TYPE_CRIS_CPU)) {
->>           oc = NULL;
->>       }
->>       return oc;
->> diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
->> index 1adc11b713..bd5adb7acd 100644
->> --- a/target/hexagon/cpu.c
->> +++ b/target/hexagon/cpu.c
->> @@ -63,8 +63,7 @@ static ObjectClass *hexagon_cpu_class_by_name(const char *cpu_model)
->>       oc = object_class_by_name(typename);
->>       g_strfreev(cpuname);
->>       g_free(typename);
->> -    if (!oc || !object_class_dynamic_cast(oc, TYPE_HEXAGON_CPU) ||
->> -        object_class_is_abstract(oc)) {
->> +    if (!object_class_dynamic_cast(oc, TYPE_HEXAGON_CPU)) {
->>           return NULL;
->>       }
->>       return oc;
->> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
->> index ef1bf89dac..06d1b9bb95 100644
->> --- a/target/loongarch/cpu.c
->> +++ b/target/loongarch/cpu.c
->> @@ -648,8 +648,7 @@ static ObjectClass *loongarch_cpu_class_by_name(const char *cpu_model)
->>           }
->>       }
->>   
->> -    if (object_class_dynamic_cast(oc, TYPE_LOONGARCH_CPU)
->> -        && !object_class_is_abstract(oc)) {
->> +    if (object_class_dynamic_cast(oc, TYPE_LOONGARCH_CPU)) {
->>           return oc;
->>       }
->>       return NULL;
->> diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
->> index 538d9473c2..fe381cc5d3 100644
->> --- a/target/m68k/cpu.c
->> +++ b/target/m68k/cpu.c
->> @@ -111,8 +111,7 @@ static ObjectClass *m68k_cpu_class_by_name(const char *cpu_model)
->>       typename = g_strdup_printf(M68K_CPU_TYPE_NAME("%s"), cpu_model);
->>       oc = object_class_by_name(typename);
->>       g_free(typename);
->> -    if (oc != NULL && (object_class_dynamic_cast(oc, TYPE_M68K_CPU) == NULL ||
->> -                       object_class_is_abstract(oc))) {
->> +    if (!object_class_dynamic_cast(oc, TYPE_M68K_CPU)) {
->>           return NULL;
->>       }
->>       return oc;
->> diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
->> index f5a3d5273b..cc94f37e77 100644
->> --- a/target/openrisc/cpu.c
->> +++ b/target/openrisc/cpu.c
->> @@ -164,8 +164,7 @@ static ObjectClass *openrisc_cpu_class_by_name(const char *cpu_model)
->>       typename = g_strdup_printf(OPENRISC_CPU_TYPE_NAME("%s"), cpu_model);
->>       oc = object_class_by_name(typename);
->>       g_free(typename);
->> -    if (oc != NULL && (!object_class_dynamic_cast(oc, TYPE_OPENRISC_CPU) ||
->> -                       object_class_is_abstract(oc))) {
->> +    if (!object_class_dynamic_cast(oc, TYPE_OPENRISC_CPU)) {
->>           return NULL;
->>       }
->>       return oc;
->> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->> index ac4a6c7eec..018bad6f82 100644
->> --- a/target/riscv/cpu.c
->> +++ b/target/riscv/cpu.c
->> @@ -636,8 +636,7 @@ static ObjectClass *riscv_cpu_class_by_name(const char *cpu_model)
->>       oc = object_class_by_name(typename);
->>       g_strfreev(cpuname);
->>       g_free(typename);
->> -    if (!oc || !object_class_dynamic_cast(oc, TYPE_RISCV_CPU) ||
->> -        object_class_is_abstract(oc)) {
->> +    if (!object_class_dynamic_cast(oc, TYPE_RISCV_CPU)) {
->>           return NULL;
->>       }
->>       return oc;
->> diff --git a/target/rx/cpu.c b/target/rx/cpu.c
->> index 4d0d3a0c8c..0063837e93 100644
->> --- a/target/rx/cpu.c
->> +++ b/target/rx/cpu.c
->> @@ -111,16 +111,13 @@ static ObjectClass *rx_cpu_class_by_name(const char *cpu_model)
->>       char *typename;
->>   
->>       oc = object_class_by_name(cpu_model);
->> -    if (oc != NULL && object_class_dynamic_cast(oc, TYPE_RX_CPU) != NULL &&
->> +    if (object_class_dynamic_cast(oc, TYPE_RX_CPU) &&
->>           !object_class_is_abstract(oc)) {
-> 
-> ditto wrt strays
-> 
+> be the case, but then a switch from native -> legacy mode doesn't matter 
+> because the BAR addresses are already reserved, and a switch from legacy -> 
+> native mode would require the BARs to be (re)programmed anyway. I will 
+> definitely do some testing with the functionality enabled for all PCI IDE 
+> controllers in future, however I'm minded to keep it as simple as possible.
+>
+>>>>> +        /* Clear interrupt pin */
+>>>>> +        pci_config_set_interrupt_pin(d->config, 0);
+>>>> 
+>>>> Unlike for the BARs, I don't see anything in the spec that allows
+>>>> disabling this byte. I doubt it hurts in practice, but did you see any
+>>>> drivers requiring this? According to the spec, we just must not use the
+>>>> PCI interrupt in compatbility mode, but the registers stay accessible.
+>>> 
+>>> The PCI config dumps taken from a real VIA indicate that this byte is
+>>> cleared in legacy mode, and that appears to make sense here. If you 
+>>> imagine
+>>> an early PCI IDE controller, it will always start up in legacy mode and so
+>>> you don't want to indicate to the guest OS that PCI IRQ routing is 
+>>> required
+>>> unless it has been switched to native mode first.
+>> 
+>> Ok. I assume that with a per-channel control, you would clear it only if
+>> both channels are in compatibility mode, and set it as soon as one
+>> channel is in native mode?
+>
+> Yes, I believe that's correct.
+>
+>>>> As far as I can see, the whole PCI interrupt configuration is currently
+>>>> unused anyway, and nothing in this series seems to change it. So won't
+>>>> we incorrectly continue to use the legacy interrupt even in native mode?
+>>>> (Actually, cmd646 seems to get it wrong the other way around and uses
+>>>> the PCI interrupt even in compatibility mode.)
+>>>> 
+>>>> I think this means that BMDMAState needs to have two irq lines (a legacy
+>>>> and a PCI one) and select the right one in bmdma_irq() depending on
+>>>> which mode we're in currently.
+>>> 
+>>> I need to flesh out the details a bit more (in particular testing with 
+>>> more
+>>> than just the VIA PCI IDE controller), but yes the eventual aim is to
+>>> consolidate the majority of the BMDMA and mode switching code into
+>>> hw/ide/pci.c so the individual controllers don't need to worry about this,
+>>> and everything "just works".
+>> 
+>> Zoltan's reply for patch 3 actuallys say that it's correct like this for
+>> the VIA controller, in conflict with what the spec says. So it seems
+>> that we can't make it "just work" for everyone, but we still need to
+>> allow devices to intercept it at least.
+>
+> I've replied separately to this, and as mentioned that's something that will 
+> likely require some future updates to the PCI IRQ routing code.
+>
+>> As I said there, adding a comment in the via emulation should be enough
+>> for now, and we can leave proper generic interrupt handling for another
+>> day (when we want to add switching to a model that's actually consistent
+>> with the spec).
+>
+> Agreed.
+>
+>> Maybe also leave a TODO comment at the top of this function to remind
+>> other users that interrupt handling needs to be covered by individual
+>> devices for now.
+>
+> Yes I can definitely add a comment with a TODO. For now in terms of 8.2 would 
+> you be happy with:
+>
+> - Moving ide_portio_list[] and ide_portio_list2[] to hw/ide/core.c
+>
+> - Change the configuration space access to read all zeros for BARs in 
+> compatibility mode instead of zeroing the BARs
 
-Same as above. It's intentional. We will fall back to @cpu_model-rx-cpu if
-the CPU class corresponding to @cpu_model is abstract. The point is we don't
-want rx_cpu_class_by_name() returns an abstract CPU class in the middle. The
-last returned CPU class will be validated by cpu_class_by_name() like below.
+What would this achieve other than having more complex code for nothing? 
+If anything enables native mode it will also program BARs, it's very 
+unlikely any guest would switch to legacy mode than back to native and 
+expect some values programmed before be still in BARs so you could either 
+zero the values or just leave them as nothing cares anyway. Adding a 
+separare read function for this seems like unnecessary complication to me. 
+So I'd leave this point out, the rest seems OK.
 
-ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_model)
-{
-     :
-     if (oc == NULL || object_class_is_abstract(oc)) {
-         return NULL;
-     }
-     return oc;
-}
+> - Leave it so that both channels are switched at the same time
+>
+> - Add a TODO comment to pci_ide_update_mode() indicating that individual PCI 
+> IDE
+>  controllers are responsible for their own IRQ routing
 
+One more thing is that you should set the deafult value of the BMDMA BAR 
+somewhere, this part in my patch
 
->>           return oc;
->>       }
->>       typename = g_strdup_printf(RX_CPU_TYPE_NAME("%s"), cpu_model);
->>       oc = object_class_by_name(typename);
->>       g_free(typename);
->> -    if (oc != NULL && object_class_is_abstract(oc)) {
->> -        oc = NULL;
->> -    }
->>   
->>       return oc;
->>   }
->> diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
->> index 788e41fea6..a8ec98b134 100644
->> --- a/target/sh4/cpu.c
->> +++ b/target/sh4/cpu.c
->> @@ -152,9 +152,6 @@ static ObjectClass *superh_cpu_class_by_name(const char *cpu_model)
->>   
->>       typename = g_strdup_printf(SUPERH_CPU_TYPE_NAME("%s"), s);
->>       oc = object_class_by_name(typename);
->> -    if (oc != NULL && object_class_is_abstract(oc)) {
->> -        oc = NULL;
->> -    }
-> 
-> Why they do not do
->      object_class_dynamic_cast(oc, TYPE_ABSTRACT_FOO_CPU)
-> here, do we really need this dynamic cast elsewhere at all?
-> 
+pci_set_long(pd->config + PCI_BASE_ADDRESS_4, 0xcc00 | PCI_BASE_ADDRESS_SPACE_IO);
 
-I think it was missed at the beginning. We need to ensure the class is a CPU class
-here. It's not harmful at least.
+Otherwise enabling UDMA mode does not work. It's disabled by default on 
+amigaone because real machine had problems with DMA, both the VIA chip and 
+ArticiaS were notorious for DMA errors but it can be enabled which works 
+with my patch and is much faster but hangs with your patch because AmigaOS 
+reads the BMDMA BAR value but does not set it so there should be the 
+default value there.
 
->>   out:
->>       g_free(s);
->> diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
->> index 5ca666ee12..47e1c272cf 100644
->> --- a/target/tricore/cpu.c
->> +++ b/target/tricore/cpu.c
->> @@ -132,8 +132,7 @@ static ObjectClass *tricore_cpu_class_by_name(const char *cpu_model)
->>       typename = g_strdup_printf(TRICORE_CPU_TYPE_NAME("%s"), cpu_model);
->>       oc = object_class_by_name(typename);
->>       g_free(typename);
->> -    if (!oc || !object_class_dynamic_cast(oc, TYPE_TRICORE_CPU) ||
->> -        object_class_is_abstract(oc)) {
->> +    if (!object_class_dynamic_cast(oc, TYPE_TRICORE_CPU)) {
->>           return NULL;
->>       }
->>       return oc;
->> diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
->> index ea1dae7390..5d1c090467 100644
->> --- a/target/xtensa/cpu.c
->> +++ b/target/xtensa/cpu.c
->> @@ -141,8 +141,7 @@ static ObjectClass *xtensa_cpu_class_by_name(const char *cpu_model)
->>       typename = g_strdup_printf(XTENSA_CPU_TYPE_NAME("%s"), cpu_model);
->>       oc = object_class_by_name(typename);
->>       g_free(typename);
->> -    if (oc == NULL || !object_class_dynamic_cast(oc, TYPE_XTENSA_CPU) ||
->> -        object_class_is_abstract(oc)) {
->> +    if (!object_class_dynamic_cast(oc, TYPE_XTENSA_CPU)) {
->>           return NULL;
->>       }
->>       return oc;
-> 
-
-Thanks,
-Gavin
-
+Regards,
+BALATON Zoltan
 
