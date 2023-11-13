@@ -2,56 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBC77E9A5F
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 11:35:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89B777E9A62
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 11:36:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2UHB-0004wE-BM; Mon, 13 Nov 2023 05:34:41 -0500
+	id 1r2UHB-0004vL-0K; Mon, 13 Nov 2023 05:34:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2UH9-0004uy-Aj
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:34:39 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2UH7-0004uX-UT
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:34:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2UH7-0003on-0T
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:34:39 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2UH6-0003oo-3j
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:34:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1699871674;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=iVq1Wg0U6CNdEVHe7JKqbz9R3T3J/OMt9QYqknADCbI=;
- b=dMK5+CabNipaDoNZovIXdJ+GwTQKxtHHoF0eKlfe82H8heB0KE3w69yyLd6Pb0CTNIYsr1
- TpUm7yGdKiJLu23zKo8iYzpHMRP3eXb7Zl4wCXQRwfH43u7xw/Ed9BAGFO1C1sKwkZyokZ
- 5KK2NkFgb7aR0E4hCupvdP0W4uJqa8k=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-f09ngCdpN6isvqcurCzYPg-1; Mon,
- 13 Nov 2023 05:34:33 -0500
-X-MC-Unique: f09ngCdpN6isvqcurCzYPg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vh/QcMRLH4PuQvUhmNxrq2svFkqRQw1ACSw03Qhhmf8=;
+ b=M2FxAGyA0eRUz49UdVTkVPbqoxWFy/e5l3Q+5RF2LmJ92jtGDlMsCA3bSTQs5G2T5LC89u
+ 19lXEqlv2VP+qS+pIb5z25CbHYdqcj+RcxA4EOLhcnm4J4zF6cly5+uX6f+yi1asI9/d/B
+ fs0NZul5RkzWzF3tkPAiRz2PItdYSxM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-vj6wXDEkPtGUW_3wh9e1AQ-1; Mon, 13 Nov 2023 05:34:33 -0500
+X-MC-Unique: vj6wXDEkPtGUW_3wh9e1AQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C02E92810D47
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 10:34:32 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C06A2811E86;
+ Mon, 13 Nov 2023 10:34:32 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9F91C502E
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 10:34:32 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8D35C40C6EBA;
+ Mon, 13 Nov 2023 10:34:32 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7BAA021E6A1F; Mon, 13 Nov 2023 11:34:31 +0100 (CET)
+ id 7D62021E6A26; Mon, 13 Nov 2023 11:34:31 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com
-Subject: [PULL 0/3] QAPI patches patches for 2023-11-13
-Date: Mon, 13 Nov 2023 11:34:28 +0100
-Message-ID: <20231113103431.913394-1-armbru@redhat.com>
+Cc: stefanha@redhat.com,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 1/3] qapi: Fix QAPISchemaEntity.__repr__()
+Date: Mon, 13 Nov 2023 11:34:29 +0100
+Message-ID: <20231113103431.913394-2-armbru@redhat.com>
+In-Reply-To: <20231113103431.913394-1-armbru@redhat.com>
+References: <20231113103431.913394-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -77,42 +82,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 69680740eafa1838527c90155a7432d51b8ff203:
+I messed it up on merge.  It's a debugging aid, so no impact on build.
 
-  Merge tag 'qdev-array-prop' of https://repo.or.cz/qemu/kevin into staging (2023-11-11 11:23:25 +0800)
+Fixes: e307a8174bb8 (qapi: provide a friendly string representation of QAPI classes)
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20231024104841.1569250-1-armbru@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ scripts/qapi/schema.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-are available in the Git repository at:
-
-  https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2023-11-13
-
-for you to fetch changes up to 5c24c3e2f3b22f1b77d556a14dd3bb8deed1f976:
-
-  tests/qapi-schema: Tidy up pylint warnings and advice (2023-11-13 10:36:51 +0100)
-
-----------------------------------------------------------------
-QAPI patches patches for 2023-11-13
-
-----------------------------------------------------------------
-Markus Armbruster (3):
-      qapi: Fix QAPISchemaEntity.__repr__()
-      sphinx/qapidoc: Tidy up pylint warning raise-missing-from
-      tests/qapi-schema: Tidy up pylint warnings and advice
-
- docs/sphinx/qapidoc.py         | 2 +-
- scripts/qapi/schema.py         | 3 ++-
- tests/qapi-schema/test-qapi.py | 9 ++++-----
- 3 files changed, 7 insertions(+), 7 deletions(-)
-
-Markus Armbruster (3):
-  qapi: Fix QAPISchemaEntity.__repr__()
-  sphinx/qapidoc: Tidy up pylint warning raise-missing-from
-  tests/qapi-schema: Tidy up pylint warnings and advice
-
- docs/sphinx/qapidoc.py         | 2 +-
- scripts/qapi/schema.py         | 3 ++-
- tests/qapi-schema/test-qapi.py | 9 ++++-----
- 3 files changed, 7 insertions(+), 7 deletions(-)
-
+diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+index d739e558e9..6a836950a9 100644
+--- a/scripts/qapi/schema.py
++++ b/scripts/qapi/schema.py
+@@ -76,7 +76,8 @@ def __init__(self, name: str, info, doc, ifcond=None, features=None):
+     def __repr__(self):
+         if self.name is None:
+             return "<%s at 0x%x>" % (type(self).__name__, id(self))
+-        return "<%s:%s at 0x%x>" % type(self).__name__, self.name, id(self)
++        return "<%s:%s at 0x%x>" % (type(self).__name__, self.name,
++                                    id(self))
+ 
+     def c_name(self):
+         return c_name(self.name)
 -- 
 2.41.0
 
