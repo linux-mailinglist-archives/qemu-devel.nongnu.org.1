@@ -2,73 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B8C7E9CD7
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 14:15:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE627E9CE4
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 14:16:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2WmI-00068d-Kr; Mon, 13 Nov 2023 08:14:58 -0500
+	id 1r2WnL-0007Em-53; Mon, 13 Nov 2023 08:16:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r2WmG-00068G-Rh
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 08:14:56 -0500
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1r2WnJ-0007Dc-EO; Mon, 13 Nov 2023 08:16:01 -0500
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r2WmE-0000qz-Qx
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 08:14:56 -0500
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-5079f3f3d7aso6270162e87.1
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 05:14:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1r2WnH-00017M-J5; Mon, 13 Nov 2023 08:16:01 -0500
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-5bdfbd69bd5so3164817a12.1; 
+ Mon, 13 Nov 2023 05:15:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699881293; x=1700486093; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=ARblDR+RgZsvFggZ5aLFDC/QEmos2VHlirN6bW0crxU=;
- b=i8x9+KjSVb/fCr38zzO9CWgNxJaoy4swqQmuZeAtYg7cj+/4Q9rV7zecmnAkYNM5TW
- CPpDzDyog2BXQBWa/dninzd1kq+u+YNHpp/D1wi7GFHXt1GZYl3fM7C1q2yna7PFtcpq
- yoKlCA0F5LNBDFcQJ5shVFByGXbOfOtmpAX7zMFa0wEAT/CsfzIyhFl4xN6Nf94FdRFB
- CsAOpTVU689PvxYQz3wegsRE4Dh2eN4Y7bO1woM/8PD3G7mNmp+bqvP2+jf+On18Ftiv
- MZ1o3QzgOcMbtpZ6QExNtTHlY9sEZv+tAddHdexRNBlcXLhnygiIxSOvGZkSbVa4Giib
- UZWg==
+ d=gmail.com; s=20230601; t=1699881357; x=1700486157; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kpueWlW5n9vLLdLrCbXytmXpg7CDwSs6EwHN7O4V9eo=;
+ b=EIJlHg/YMlhWLO9WdPQcPBD43kFyBJCNR+r2Doq0QvymHxn17FJrvMiCUI6ZgGh6iz
+ wcfbc/QHENr3Md+Rm2/0/NuQ+G9OAGK+sRaH46GlpR8o/KYDEWG2sx5ExIs/MMBBrN1L
+ SUrAaNdB9yIAztS/0xo+DWw8iXmyMwsSRHo16lJsUPphrAHvtQ6ywh6xXM4I5r7MSFy5
+ gt5z3MMnZfTBF7bFfKZd+G6w5AlrGeDpMEczTb9HmkugnUsHe/t17KkTTyLPuFS1deq6
+ v+fSMa1n9HPPgHvh9hfQuEgRl7W1wMp1TxVprPMDbqFFaOrK4hEkGXpUpuU8nKrc53vq
+ A8HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699881293; x=1700486093;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ARblDR+RgZsvFggZ5aLFDC/QEmos2VHlirN6bW0crxU=;
- b=pctsBbM91TlY+gTOco7/40tWOJK/ViTiMaJF5E8xmQQVzthT91VQHIfNO6mXFUydAZ
- eZ+hqK3F2d4kWLQAdWtsff7RWT/KuMfEwVPpp8644Chv/BztobI2pxsj8qe5V3kGO1E0
- pCjPv7N2+X2ViZl9q0aCDxmOD86qN4y2DMFZbvOfJv6Y8aGRiK05quTUoP435xVAgZz4
- tJKEMzDlBlD99gt9XyyrrQ6WBT/K6m9hmvCqqLIbNFmTmx08YNnZEsk5/yrRwVuapztd
- qXihsOJfSG4OXoAv2683irR2xhWjShEtyMjN2gO5F9EHWLXZrgMFiPTtf4KXDKrbY0Oa
- sPqA==
-X-Gm-Message-State: AOJu0YxJHEBf5ZABZHHH8R0yOo8oWBIaPW/qEBcdhuRZJbDwuewh9lqy
- QnHCvyx+yV4ZZYpGY91b1oSI3ma9K9HoiwQrAjv0Uw==
-X-Google-Smtp-Source: AGHT+IHRGRcyYgt6olLbMQuZFUZtGHU1+BmowyMUPllq1cThM9WT/yeJO8xIwmnyni+Y4hwk0Vd9udqeP91dAcTOH7Q=
-X-Received: by 2002:ac2:41c3:0:b0:509:4655:d8da with SMTP id
- d3-20020ac241c3000000b005094655d8damr4152386lfi.53.1699881292458; Mon, 13 Nov
- 2023 05:14:52 -0800 (PST)
-MIME-Version: 1.0
-References: <20231110090557.3219206-2-jean-philippe@linaro.org>
- <CAFEAcA_Jja7MT_cSiEJ2it+wG7LnUXfnuoo1vmoUf1-+KSgtAA@mail.gmail.com>
- <20231110114537.GA3358536@myrica>
-In-Reply-To: <20231110114537.GA3358536@myrica>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 13 Nov 2023 13:14:41 +0000
-Message-ID: <CAFEAcA9y-8Dy+5-TEERZhWuHf=+U9WEeOtnPjVvU+RaiUrbRhQ@mail.gmail.com>
-Subject: Re: [PATCH] hw/arm/virt: fix GIC maintenance IRQ registration
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12f.google.com
+ d=1e100.net; s=20230601; t=1699881357; x=1700486157;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=kpueWlW5n9vLLdLrCbXytmXpg7CDwSs6EwHN7O4V9eo=;
+ b=QuOuBlqfFcScilBXCm8FB84N162dqX/z0ogRkygtj9yYhGmXH2eHO6Ycmu+k6SS4W/
+ kf7ZXVPcVuRcefFZHQzrsiOSHYsJVJXAsJ3PolACj5GTjc8Gb0Vy4rEvNbXQI1gs7K8C
+ xftw2tBYpLLy1H3PLK72s5qq0ZYxMNwl+2a8A4dIcYCBWLmnSwu9wE3ywhAGvaHqeKZr
+ z6os2A3wFAOSm4t1D4XkBm8yX/q3WEZaEX/1RFrTeNMEwEvDLoqebm+bS5YZ0adMX4HJ
+ YYjtQ/d8SzQkKXw0z+A0X+D4rE9+RB8epgaokkXbOXdq9IAP/WfO5O/p3sbEmIOeHudb
+ vbTw==
+X-Gm-Message-State: AOJu0YyHQNBULuboU64II1qZX1Lw3+xjFgC+HFu3dQbfJiLY0M4d8FVo
+ geS/FewlMYnVF8U2JRUrGU5uO4x0HsQ=
+X-Google-Smtp-Source: AGHT+IEpAYzTm3j/ig4omE+pHCGzml4TAIF4qb3sATS1RUiD4nxhZAmS3bAyTXus2PYLaWn/K8WIQg==
+X-Received: by 2002:a17:90b:1d82:b0:280:963d:9c5 with SMTP id
+ pf2-20020a17090b1d8200b00280963d09c5mr9842572pjb.21.1699881357065; 
+ Mon, 13 Nov 2023 05:15:57 -0800 (PST)
+Received: from localhost (121-44-82-40.tpgi.com.au. [121.44.82.40])
+ by smtp.gmail.com with ESMTPSA id
+ p12-20020a17090ad30c00b002790ded9c6dsm3682389pju.31.2023.11.13.05.15.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 13 Nov 2023 05:15:56 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 13 Nov 2023 23:15:50 +1000
+Message-Id: <CWXPNBOJTWCV.24ODSFNXQ0WEX@wheely>
+Cc: <clegoate@redhat.com>, <qemu-devel@nongnu.org>, <mikey@neuling.org>,
+ <vaibhav@linux.ibm.com>, <jniethe5@gmail.com>, <sbhat@linux.ibm.com>,
+ <kconsul@linux.vnet.ibm.com>, <danielhb413@gmail.com>
+Subject: Re: [PATCH v2 00/14] Nested PAPR API (KVM on PowerVM)
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20231012104951.194876-1-harshpb@linux.ibm.com>
+In-Reply-To: <20231012104951.194876-1-harshpb@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,34 +92,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 10 Nov 2023 at 11:45, Jean-Philippe Brucker
-<jean-philippe@linaro.org> wrote:
->
-> On Fri, Nov 10, 2023 at 10:19:30AM +0000, Peter Maydell wrote:
-> > On Fri, 10 Nov 2023 at 09:07, Jean-Philippe Brucker
-> > <jean-philippe@linaro.org> wrote:
-> > >
-> > > Since commit 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic"),
-> > > GIC maintenance IRQ registration fails on arm64:
-> > >
-> > > [    0.979743] kvm [1]: Cannot register interrupt 9
-> > >
-> > > That commit re-defined VIRTUAL_PMU_IRQ to be a INTID but missed a case
-> > > where the maintenance IRQ is actually referred by its PPI index. Just
-> > > like commit fa68ecb330db ("hw/arm/virt: fix PMU IRQ registration"), use
-> > > INITID_TO_PPI(). A search of "GIC_FDT_IRQ_TYPE_PPI" indicates that there
-> > > shouldn't be more similar issues.
-> > >
-> > > Fixes: 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic")
-> > > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> >
-> > Isn't this already fixed by commit fa68ecb330dbd ?
->
-> No, that commit fixed the PMU interrupt (I copied most of its commit
-> message and referenced it), but the GIC maintenance interrupt still needed
-> to be fixed.
+This will have to wait until the next release. There should not be
+big changes to rebase on. I'll take a better look before then.
 
-Ah, yes, I see now. Applied to target-arm.next, thanks.
+Linux now has this merged upstream so it will be much easier to test.
 
--- PMM
+I posted some RFCs for new avocado tests including a KVM guest boot
+(https://lists.gnu.org/archive/html/qemu-ppc/2023-10/msg00260.html).
+Byt I guess it won't be too easy to adapt that to test the new API
+until there is a usable distro image with support. We should open an
+issue for that.
+
+Thanks,
+Nick
+
+On Thu Oct 12, 2023 at 8:49 PM AEST, Harsh Prateek Bora wrote:
+> There is an existing Nested-HV API to enable nested guests on powernv
+> machines. However, that is not supported on pseries/PowerVM LPARs.
+> This patch series implements required hcall interfaces to enable nested
+> guests with KVM on PowerVM.
+> Unlike Nested-HV, with this API, entire L2 state is retained by L0
+> during guest entry/exit and uses pre-defined Guest State Buffer (GSB)
+> format to communicate guest state between L1 and L2 via L0.
+>
+> L0 here refers to the phyp/PowerVM, or launching a Qemu TCG L0 with the
+> newly introduced option cap-nested-papr=3Dtrue.
+> L1 refers to the LPAR host on PowerVM or Linux booted on Qemu TCG with
+> above mentioned option cap-nested-papr=3Dtrue.
+> L2 refers to nested guest running on top of L1 using KVM.
+> No SW changes needed for Qemu running in L1 Linux as well as L2 Kernel.
+>
+> There is a Linux Kernel side patch series to enable support for Nested
+> PAPR in L1 and same can be found at below url:
+>
+> Linux Kernel patch series:
+> - https://lore.kernel.org/linuxppc-dev/20230914030600.16993-1-jniethe5@gm=
+ail.com/
+>
+> For more details, documentation can be referred in either of patch
+> series.
+>
+> There are scripts available to assist in setting up an environment for
+> testing nested guests at https://github.com/iamjpn/kvm-powervm-test
+>
+> A tree with this series is available at:
+> https://github.com/planetharsh/qemu/tree/upstream-kop-1012
+>
+> Thanks to Michael Neuling, Shivaprasad Bhat, Kautuk Consul, Vaibhav Jain
+> and Jordan Niethe.
+>
+> Changelog:
+>
+> v2:
+>     - Addressed review comments from Nick on v1 series.
+> v1:
+>     - https://lore.kernel.org/qemu-devel/20230906043333.448244-1-harshpb@=
+linux.ibm.com/
+>
+> Harsh Prateek Bora (14):
+>   spapr: nested:  move nested part of spapr_get_pate into spapr_nested.c
+>   spapr: nested: Introduce SpaprMachineStateNested to store related
+>     info.
+>   spapr: nested: Document Nested PAPR API
+>   spapr: nested: Introduce cap-nested-papr for Nested PAPR API
+>   spapr: nested: register nested-hv api hcalls only for cap-nested-hv
+>   spapr: nested: Introduce H_GUEST_[GET|SET]_CAPABILITIES hcalls.
+>   spapr: nested: Introduce H_GUEST_[CREATE|DELETE] hcalls.
+>   spapr: nested: Introduce H_GUEST_CREATE_VPCU hcall.
+>   spapr: nested: Initialize the GSB elements lookup table.
+>   spapr: nested: Introduce H_GUEST_[GET|SET]_STATE hcalls.
+>   spapr: nested: Use correct source for parttbl info for nested PAPR
+>     API.
+>   spapr: nested: rename nested_host_state to nested_hv_host
+>   spapr: nested: keep nested-hv exit code restricted to its API.
+>   spapr: nested: Introduce H_GUEST_RUN_VCPU hcall.
+>
+>  docs/devel/nested-papr.txt      |  500 +++++++++++
+>  hw/ppc/spapr.c                  |   32 +-
+>  hw/ppc/spapr_caps.c             |   63 ++
+>  hw/ppc/spapr_hcall.c            |    2 -
+>  hw/ppc/spapr_nested.c           | 1439 ++++++++++++++++++++++++++++++-
+>  include/hw/ppc/spapr.h          |   21 +-
+>  include/hw/ppc/spapr_cpu_core.h |    7 +-
+>  include/hw/ppc/spapr_nested.h   |  361 ++++++++
+>  target/ppc/cpu.h                |    2 +
+>  9 files changed, 2368 insertions(+), 59 deletions(-)
+>  create mode 100644 docs/devel/nested-papr.txt
+
 
