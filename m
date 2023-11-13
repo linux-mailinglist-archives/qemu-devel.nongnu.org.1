@@ -2,86 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E3307E96CC
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 07:55:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2868A7E96D2
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 08:01:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2QpU-0001dt-8h; Mon, 13 Nov 2023 01:53:52 -0500
+	id 1r2Qv3-0002ib-A8; Mon, 13 Nov 2023 01:59:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2QpQ-0001df-Na
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 01:53:48 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2Quv-0002iJ-NP
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 01:59:29 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2QpO-0003ie-IV
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 01:53:48 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2Quu-0004Zi-2T
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 01:59:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699858424;
+ s=mimecast20190719; t=1699858766;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=ZHYpzn/aVyRpljqOeyZm8kfFjRqrlWb5TALmQ8TjviY=;
- b=cZ7pM80UAIoLk6VmgX9Tqqw3sHfO6sG3TYXm+/cqA4NFJx+pMhWZCkrmhY1A7tKZX9+M1r
- /l/CkHeohH/5RzyeP44IzvHWsAY7qcq4E7YrZi6ISVdeul9OADilGazkmy5ymEGxypVUID
- Bn01+pYgKGOfuWOHioIT6zNEQee+xSQ=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UhPyJkIQck6UmTS7uABnBxJOFOH04qKEHW/7T45CqUc=;
+ b=BQsYN8fY4yLwloLVh3R7Tyj+RSAt7kYcEkTVVz7tDksqy8gDnK5TPgUBYKUzoEDWHwYmml
+ k1BqN254lZGWRoDXmHADG5cKtKRBDV/T8Sqe91HL77ZAyhM9XAfm143xjco4F6Lvm+WZly
+ FJTbi7b/LM3ydqUUXmos11qlzHc091s=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-43-07cShf_4OSe9FPVh4u6tMw-1; Mon, 13 Nov 2023 01:53:42 -0500
-X-MC-Unique: 07cShf_4OSe9FPVh4u6tMw-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-41e58a33efaso51140781cf.2
- for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 22:53:41 -0800 (PST)
+ us-mta-61-hBrweJ8OMG6ttsUm0zNhHA-1; Mon, 13 Nov 2023 01:59:25 -0500
+X-MC-Unique: hBrweJ8OMG6ttsUm0zNhHA-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-66d0b251a6aso52025466d6.2
+ for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 22:59:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699858421; x=1700463221;
+ d=1e100.net; s=20230601; t=1699858764; x=1700463564;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZHYpzn/aVyRpljqOeyZm8kfFjRqrlWb5TALmQ8TjviY=;
- b=Q10rLkNaE73lEgGqqdJsQsiYDpKEcDUXAca509CUAOT5ELq3TMRu9Je3mHn23vBKUK
- h1kvXoRdSmNgLZKWGgw8zGALRBFt0/RBoAMrvvVwJ/266mR4NxD8P7iyJzGgyA2JPYYn
- +Mssg9iV1HSID3BZz+eCCW46tW2PntAl0PJBMONYzRR6c27rV7THe24l0vvldQHQHw8o
- 3ZNVLvv6PxmaCQcmC3+0vtUKynroCuQxzl7CQDoPDYel2FPuh6DXp1EW40KHbpjho6Zs
- 1cKWQGzCnoD5ykQQCyL9Z+5xQ1plQlB+INxvmymossuIYGiobXgeUdx9kFHmPev39OYa
- 9gRA==
-X-Gm-Message-State: AOJu0YzybqfMnbzzwZ/CJggwoHf4ULZ0DHXoDHpxSQAATHH4d2gMoWhD
- QrhRugSgs8VESPnqkYbCFMSixyoX3rFB68vnTjvtbap/8trlrURcm5t6+O95zoux1mBXAl0JOYw
- CTrcBdAY3elIemJ0=
-X-Received: by 2002:a05:622a:1355:b0:3fd:dab5:9430 with SMTP id
- w21-20020a05622a135500b003fddab59430mr8225558qtk.16.1699858421557; 
- Sun, 12 Nov 2023 22:53:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHZxwsa/n2GUZ/5wkUIcaSHdbnmAiHnRVRX1coDfwONpUz+3MV6hbVsVg7/NcLSe9PwKG0laQ==
-X-Received: by 2002:a05:622a:1355:b0:3fd:dab5:9430 with SMTP id
- w21-20020a05622a135500b003fddab59430mr8225547qtk.16.1699858421326; 
- Sun, 12 Nov 2023 22:53:41 -0800 (PST)
+ bh=UhPyJkIQck6UmTS7uABnBxJOFOH04qKEHW/7T45CqUc=;
+ b=DCAsxE4MH5yMrKxqaejrF6/z88RRhAxjX3O4hyDi0xqmkop+T+A1jy0V3qBUWZLnQq
+ QfpIypi8xiSvbebBAD62aV/YnhYdTdn0POwNyJzDt3pI8R28zmpV86U2W8UADAzxzp4U
+ xbiBrp/mWv1bwyUyEnhRW7uADoDedHJ+DHwSUJuIZ+N9M9OkVutVi1VEfAmDNmLNtyCL
+ bSLwIA12IKVWe84VW4tw1Yp0aC8olc5VzxK+gBJ5IGc3c+oZBngfvg854NytZgrH9eup
+ I5E3aTOjhVS2HIUR+9Hc2pSS5+zJ5t27nLQleNOMWuPFwn9+jn9HmP/jN7/edT9MDDFE
+ MX8A==
+X-Gm-Message-State: AOJu0YyjW6OR5Go4ZpQ2syE5Akeyjs+X736qLnnxFacs+Zf/q2uH+vOa
+ 1xuu/Xuy+/Rud1pD6mYuzIf7ss71Vlg9fV2SupsrAu0fsQDvAz+LOhlMEhjKaiBOb8mGhGrG0ux
+ zL1m3kLZkVtAQlVM=
+X-Received: by 2002:a0c:ea4b:0:b0:656:3612:7954 with SMTP id
+ u11-20020a0cea4b000000b0065636127954mr7231474qvp.1.1699858764694; 
+ Sun, 12 Nov 2023 22:59:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHP62dgAEQP6F8DJ5RfMT34jpj8Egba4fjqNuLEQI9YlQXqyx1cUpCzC6gMeCeYCCFMsp/K/A==
+X-Received: by 2002:a0c:ea4b:0:b0:656:3612:7954 with SMTP id
+ u11-20020a0cea4b000000b0065636127954mr7231469qvp.1.1699858764494; 
+ Sun, 12 Nov 2023 22:59:24 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-177-79.web.vodafone.de.
  [109.43.177.79]) by smtp.gmail.com with ESMTPSA id
- q1-20020ac87341000000b0041e211c5d0bsm1731996qtp.6.2023.11.12.22.53.37
+ k5-20020a05621414e500b0066d23395d27sm1851894qvw.123.2023.11.12.22.59.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 12 Nov 2023 22:53:41 -0800 (PST)
-Message-ID: <90658733-23ab-4227-9639-9b378b062556@redhat.com>
-Date: Mon, 13 Nov 2023 07:53:35 +0100
+ Sun, 12 Nov 2023 22:59:24 -0800 (PST)
+Message-ID: <ddb3f1c5-28d1-472d-b491-703a3e1c6711@redhat.com>
+Date: Mon, 13 Nov 2023 07:59:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH-for-8.2] .gitlab-ci.d/cirrus.yml: Promote NetBSD job
- as gating
+Subject: Re: [PATCH] test/qtest: Add an API function to capture IRQ toggling
 Content-Language: en-US
-To: Reinoud Zandijk <reinoud@gorilla.13thmonkey.org>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Stefan Hajnoczi <stefanha@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Reinoud Zandijk <reinoud@netbsd.org>, Ryo ONODERA <ryoon@netbsd.org>,
- Gerd Hoffmann <kraxel@redhat.com>, Beraldo Leal <bleal@redhat.com>
-References: <20231109153510.92353-1-philmd@linaro.org>
- <737f6fe5-cf3e-4fdd-b5d8-28f71a2fa9e6@linaro.org>
- <ZU0PuHyw8X8e/p0j@redhat.com>
- <52df2072-a26e-4e73-afe0-65a877bafbdc@redhat.com>
- <ZU6cxnwMOqOEBu-F@gorilla.13thmonkey.org>
- <ZU-65RIut9TWbx_F@gorilla.13thmonkey.org>
+To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org
+Cc: lvivier@redhat.com, pbonzini@redhat.com, philmd@linaro.org
+References: <20231112013801.293970-1-gustavo.romero@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -125,9 +113,9 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <ZU-65RIut9TWbx_F@gorilla.13thmonkey.org>
+In-Reply-To: <20231112013801.293970-1-gustavo.romero@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -153,53 +141,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/11/2023 18.33, Reinoud Zandijk wrote:
-> On Fri, Nov 10, 2023 at 10:12:38PM +0100, Reinoud Zandijk wrote:
->> On Thu, Nov 09, 2023 at 06:15:51PM +0100, Thomas Huth wrote:
->>> On 09/11/2023 17.58, Daniel P. Berrangé wrote:
->>>> On Thu, Nov 09, 2023 at 04:35:56PM +0100, Philippe Mathieu-Daudé wrote:
-> ...
->>> You're right, Daniel. Seems like both, the Cirrus netbsd and the openbsd job
->>> are currently broken and only output some help text instead of compiling
->>> QEMU:
->>>
->>>   https://gitlab.com/philmd/qemu/-/jobs/5497861511#L6834
->>>
->>> ... that's why the finish so fast.
->>>
->>> IIRC last time I've seen them "working", they were running into the 80
->>> minute timeout again.
->>>
->>> So the netbsd and openbsd job are indeed not very useful anymore. I think we
->>> should rather remove them and add a proper job via our own custom
->>> KVM-capable runners instead.
->>
->> Even though I am a co-maintainer of the NetBSD support for Qemu I am not quite
->> sure what testcase this is. Is this a regression test of installing NetBSD
->> from an ISO? That somehow times out? Where can I find the resulting console
->> output? Maybe the installer changed?
+On 12/11/2023 02.38, Gustavo Romero wrote:
+> Currently the QTest API does not provide a function to allow capturing
+> when an IRQ line is toggled (raised then lowered). Functions like
+> qtest_get_irq() read the current state of the intercepted IRQ lines,
+> which is already low when the function is called, since the line is
+> toggled.
 > 
-> Re-reading the thread its about compiling Qemu on NetBSD. Doh. I am a novice
-> to the test kit you use so please forgive me if I don't make sense. Am I right
-> that it does install NetBSD OK, it then comes up and then tries to compile
-> Qemu on it but it fails due to some Python errors in the test script? Does it
-> use NetBSDs pkgsrc with its patches or has it its own method of dealing with
-> them?
+> This commit introduces a new function, qtest_get_irq_trigger_counter(),
+> which returns the number of times a given intercepted IRQ line was
+> triggered (raised), hence allowing to capture when an IRQ line was
+> toggled.
+> 
+> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+> ---
+>   tests/qtest/libqtest.c | 12 ++++++++++++
+>   tests/qtest/libqtest.h |  9 +++++++++
+>   2 files changed, 21 insertions(+)
+> 
+> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+> index f33a210861..21891b52f1 100644
+> --- a/tests/qtest/libqtest.c
+> +++ b/tests/qtest/libqtest.c
+> @@ -82,6 +82,7 @@ struct QTestState
+>       int expected_status;
+>       bool big_endian;
+>       bool irq_level[MAX_IRQ];
+> +    uint64_t irq_trigger_counter[MAX_IRQ];
+>       GString *rx;
+>       QTestTransportOps ops;
+>       GList *pending_events;
+> @@ -498,6 +499,7 @@ static QTestState *qtest_init_internal(const char *qemu_bin,
+>       s->rx = g_string_new("");
+>       for (i = 0; i < MAX_IRQ; i++) {
+>           s->irq_level[i] = false;
+> +        s->irq_trigger_counter[i] = 0;
+>       }
+>   
+>       /*
+> @@ -690,6 +692,7 @@ redo:
+>   
+>           if (strcmp(words[1], "raise") == 0) {
+>               s->irq_level[irq] = true;
+> +            s->irq_trigger_counter[irq]++;
 
-No worries, the "make vm-build-netbsd" test itself is just working fine 
-(after applying Philippe's fix from here: 
-https://lore.kernel.org/qemu-devel/20231109150900.91186-1-philmd@linaro.org/ ).
+Not sure whether you can get some "raise" events in a row without some 
+"lower" events in between ... but just in case, I wonder whether it would 
+make sense to check whether it is really a rising edge, i.e.:
 
-This thread here is about the CI job that could run in the gitlab-CI... it's 
-got a quite complicated setup - NetBSD is running as KVM guest on a runner 
-on cirrus-ci.com, and that whole thing is triggered by a gitlab-CI job - so 
-this setup is often broken and thus does not run by default in the CI.
-That's why I suggested to remove the job and replace it by a job that 
-directly runs in a KVM-capable runner on the gitlab-CI instead of taking the 
-detour via cirrus-ci.com.
+            if (strcmp(words[1], "raise") == 0) {
+                if (!s->irq_level[irq]) {
+                    s->irq_trigger_counter[irq]++;
+                }
+                s->irq_level[irq] = true;
 
-  Thomas
+What do you think?
 
+>           } else {
+>               s->irq_level[irq] = false;
+>           }
 
+Anyway:
+Acked-by: Thomas Huth <thuth@redhat.com>
 
 
