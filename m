@@ -2,82 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBFC77EA71E
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 00:37:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5327EA706
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 00:36:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2g8E-0004rJ-8I; Mon, 13 Nov 2023 18:14:14 -0500
+	id 1r2gHh-0006VY-MA; Mon, 13 Nov 2023 18:24:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
- id 1r2g8A-0004rB-T4
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 18:14:11 -0500
-Received: from mail-vk1-xa36.google.com ([2607:f8b0:4864:20::a36])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
- id 1r2g88-0000z2-Nd
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 18:14:10 -0500
-Received: by mail-vk1-xa36.google.com with SMTP id
- 71dfb90a1353d-4ac4cd60370so2307721e0c.3
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 15:14:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699917247; x=1700522047; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AhShDJzQQW9QIQOfcf+fc8sG3b5kDEZDTPLHNIis7gI=;
- b=B6fnrXsoJ1B7XzSTvY4FQkFR03/XzyEOEdK1dK5+HR2aLjQWC8t6RZcyo+FlsFwrV+
- LmMOW701yB/1yonDuDk/zJP5jbjxobW+9/Fy6JP9/wlU7WWFsunpjqhFYPgWts3I6cLx
- wuJ+i+bpFux3lmcnx4C3RcxNf5065sdKIBSEjX7iW3zxfmUiN6JAhSDwubxi1G9goMke
- skcpaPu6xymfa679k7x5hZ5qpFf8Bde7YXlL33n6thbQdVvWKre5zE48DqeT2I5tC8rj
- /Fg8lMTEZMIikrNy2/J+8p/P6TDJ4IJShnTacycA+Sscfo13Qn2cS7hO3/74FSeFDTk+
- KXxQ==
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r2gHf-0006Ui-JP
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 18:23:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r2gHd-0002T6-CJ
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 18:23:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699917836;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=OujD5ycfqz/svV9Ju/bsg82JbTieO3a6f7J8r2fIurI=;
+ b=fGj+uUNxy3cKXPJAr/Ylp03wX6v6EEjY/pg/xgLMy0DbF+B1wiVVP35nrq20kxdoo2Oh+G
+ b70cS0jdCuCJY4aZ6ciwQ0FWtreZZLEzsmRsc3GZMfRREGHk8xrXrROrVS3lKEZhCkNG4D
+ 8QgNbjAAgmAfm6Bhzl9VuZZbFzHdQBI=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-433-CnnZmhipP1S1RQC6ko6LhQ-1; Mon, 13 Nov 2023 18:23:54 -0500
+X-MC-Unique: CnnZmhipP1S1RQC6ko6LhQ-1
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-1cc482cc026so67279255ad.2
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 15:23:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699917247; x=1700522047;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AhShDJzQQW9QIQOfcf+fc8sG3b5kDEZDTPLHNIis7gI=;
- b=ZmzHRoqVaKaJKy5cjMaizu6muMOyAWYp1WLt1UE4ouqlWuKvIRI4dj6AXrum0fEdyE
- ZO6kzEfElltEnUizoweyh2b0v+81dEpohBONw3px0agOJ+SPtDOr9tLQup6uH8QoabmV
- Cjf/A97b+x1W3nKy7INm7XvEjnFMxFfmf7VTI7OJYkL/xKJ4x2e3f/OjupnP2yRvt16Z
- DUilTwGN4kzwaaw0fMaBb4VpPTuNW4heKoEiLXVdUU8+6okU1ubQnCyr9GECo0DDN2s8
- Yvo5rymntpX3/xH1sN9ozX1waXqK9IZoUOBo144KcztSG8c/xBzVBUlgs7GTD4ud2AL6
- VvZA==
-X-Gm-Message-State: AOJu0Yz0Wmu2SN1hef7oPh4qzkzyCIaUosVT3NZ0bGcy/ddnyMz2dQBt
- ts9X7mfU4vtbyYsoJqt+/bzVrDrH2XmVUhfXVXI=
-X-Google-Smtp-Source: AGHT+IEb9wazkprNN1f0rb5OY12kboYafKPwTAd7cPjvBSmnb3HjY2ges0UJw1sp9U0uw2LF0evw4WM+P0/S6QuOq2A=
-X-Received: by 2002:a05:6122:1d13:b0:49a:36e4:5565 with SMTP id
- gc19-20020a0561221d1300b0049a36e45565mr8559174vkb.16.1699917246997; Mon, 13
- Nov 2023 15:14:06 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699917833; x=1700522633;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OujD5ycfqz/svV9Ju/bsg82JbTieO3a6f7J8r2fIurI=;
+ b=jYfBJI7J3AxjpSSguUQ7hAiBtHZFqh2ul4+RNMeyRfRILPNKGYIOVfsPLxRRZ2R5vC
+ HwIUfI6Voe5Dq71brOALPC2i1HY6ijdVr1OLnnQgznp8EnpZV9uVf1Vpbvpg7Hr+IJog
+ iQvY6+iDHr+qbcq14nsD4A1Clt9c1idR+W9PWOjYoZiRepzyxPUGbXLmoujw11FMDVl0
+ 7WIy03JLkijyiaz6d1JemgE9TU7707nhk8ms/ULtkli8PsLt+lP8ipykNq6mEHyvdGUP
+ Mv8LTd+fT/13kho7bNvPuuFqCTonkGQt3FaXYcBlNpVTmqrB+EyopnQZUMs+nIG44E+k
+ F05A==
+X-Gm-Message-State: AOJu0YxyHZuq4a5EEbMIpzPrGqizs9Kz2rBgGiVb5HXV0rRqoiG71YbJ
+ XG6a2ZnGkppkiMuJM9RO7lMxz7VjuXLpNyfqJjp1LtD+m5K94AwshWx0JomNr4exqN+buUIKgw/
+ sFU+0XyldDBuvsyQ=
+X-Received: by 2002:a17:902:7d87:b0:1c9:e508:ad54 with SMTP id
+ a7-20020a1709027d8700b001c9e508ad54mr564847plm.13.1699917833526; 
+ Mon, 13 Nov 2023 15:23:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE98UpH3dmsODcyf2HUx2Br1VA7hOZQKSeZwTaVRQuRdyCsnYe+7v/N5wY/UAl9d64SCe3WIg==
+X-Received: by 2002:a17:902:7d87:b0:1c9:e508:ad54 with SMTP id
+ a7-20020a1709027d8700b001c9e508ad54mr564807plm.13.1699917833077; 
+ Mon, 13 Nov 2023 15:23:53 -0800 (PST)
+Received: from ?IPV6:2001:8003:e5b0:9f00:b890:3e54:96bb:2a15?
+ ([2001:8003:e5b0:9f00:b890:3e54:96bb:2a15])
+ by smtp.gmail.com with ESMTPSA id
+ q18-20020a170902dad200b001ca82a4a9c0sm4501618plx.309.2023.11.13.15.23.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 13 Nov 2023 15:23:51 -0800 (PST)
+Message-ID: <4f2b342b-bf32-4fee-9736-a3536ddf5d92@redhat.com>
+Date: Tue, 14 Nov 2023 09:23:33 +1000
 MIME-Version: 1.0
-References: <20231023160806.13206-1-Jonathan.Cameron@huawei.com>
- <20231023160806.13206-14-Jonathan.Cameron@huawei.com>
-In-Reply-To: <20231023160806.13206-14-Jonathan.Cameron@huawei.com>
-From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Date: Tue, 14 Nov 2023 08:13:55 +0900
-Message-ID: <CAB=+i9T3YUkU1L_yoJHiRkzQsUv0aJLLCrNb2ajLVGLh7mKe1g@mail.gmail.com>
-Subject: Re: [PATCH v2 13/17] hw/cxl: Add support for device sanitation
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: qemu-devel@nongnu.org, linux-cxl@vger.kernel.org, 
- Michael Tsirkin <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- linuxarm@huawei.com, Fan Ni <fan.ni@samsung.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Gregory Price <gregory.price@memverge.com>, Davidlohr Bueso <dave@stgolabs.net>,
- Klaus Jensen <its@irrelevant.dk>, Corey Minyard <cminyard@mvista.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a36;
- envelope-from=42.hyeyoo@gmail.com; helo=mail-vk1-xa36.google.com
-X-Spam_score_int: 0
-X-Spam_score: -0.1
-X-Spam_bar: /
-X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_NONE=-0.0001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/33] target/alpha: Tidy up alpha_cpu_class_by_name()
+Content-Language: en-US
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, philmd@linaro.org, clg@kaod.org,
+ imp@bsdimp.com, kevans@freebsd.org, richard.henderson@linaro.org,
+ pbonzini@redhat.com, peter.maydell@linaro.org, b.galvani@gmail.com,
+ strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com, kfting@nuvoton.com,
+ wuhaotsh@google.com, nieklinnenbank@gmail.com, rad@semihalf.com,
+ quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
+ laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, mrolnik@gmail.com,
+ edgar.iglesias@gmail.com, bcain@quicinc.com, gaosong@loongson.cn,
+ aurelien@aurel32.net, jiaxun.yang@flygoat.com, aleksandar.rikalo@syrmia.com,
+ chenhuacai@kernel.org, crwulff@gmail.com, marex@denx.de, shorne@gmail.com,
+ npiggin@gmail.com, ysato@users.sourceforge.jp, david@redhat.com,
+ thuth@redhat.com, iii@linux.ibm.com, kbastian@mail.uni-paderborn.de,
+ jcmvbkbc@gmail.com, shan.gavin@gmail.com
+References: <20231102002500.1750692-1-gshan@redhat.com>
+ <20231102002500.1750692-2-gshan@redhat.com>
+ <20231106152229.02d6326a@imammedo.users.ipa.redhat.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20231106152229.02d6326a@imammedo.users.ipa.redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,112 +118,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 24, 2023 at 1:14=E2=80=AFAM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> From: Davidlohr Bueso <dave@stgolabs.net>
->
-> Make use of the background operations through the sanitize command, per C=
-XL
-> 3.0 specs. Traditionally run times can be rather long, depending on the
-> size of the media.
->
-> Estimate times based on:
->          https://pmem.io/documents/NVDIMM_DSM_Interface-V1.8.pdf
->
-> Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  include/hw/cxl/cxl_device.h |  17 +++++
->  hw/cxl/cxl-mailbox-utils.c  | 140 ++++++++++++++++++++++++++++++++++++
->  hw/mem/cxl_type3.c          |  10 +++
->  3 files changed, 167 insertions(+)
->
-> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> index 2a813cdddd..70aca9024c 100644
-> --- a/include/hw/cxl/cxl_device.h
-> +++ b/include/hw/cxl/cxl_device.h
-> @@ -343,6 +343,23 @@ REG64(CXL_MEM_DEV_STS, 0)
->      FIELD(CXL_MEM_DEV_STS, MBOX_READY, 4, 1)
->      FIELD(CXL_MEM_DEV_STS, RESET_NEEDED, 5, 3)
->
-> +static inline void __toggle_media(CXLDeviceState *cxl_dstate, int val)
-> +{
-> +    uint64_t dev_status_reg;
-> +
-> +    dev_status_reg =3D FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, val)=
-;
-> +    cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] =3D dev_status_reg;
-> +}
-> +#define cxl_dev_disable_media(cxlds)                    \
-> +        do { __toggle_media((cxlds), 0x3); } while (0)
-> +#define cxl_dev_enable_media(cxlds)                     \
-> +        do { __toggle_media((cxlds), 0x1); } while (0)
+On 11/7/23 00:22, Igor Mammedov wrote:
+> On Thu,  2 Nov 2023 10:24:28 +1000
+> Gavin Shan <gshan@redhat.com> wrote:
+> 
+>> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>
+>> For target/alpha, the default CPU model name is "ev67". The default
+>> CPU model is used when no matching CPU model is found. The conditions
+>> to fall back to the default CPU model can be combined so that the code
+>> looks a bit simplified.
+> 
+> default cpu should be specified by board not by target internals.
+> 
 
-Before this patch, it is assumed that "Media Status" and "Mailbox
-Interface Ready" were always 1,
-thus mdev_reg_read() always returns 1 for both of them regardless of
-register values.
+Yes, MachineClass::default_cpu_type used to specify the default CPU type.
+I will improve the changelog in next revision to avoid the confusion.
 
-I think changes like below are needed as now the assumption is broken?
-Please note that it's only build-tested :)
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>> ---
+>>   target/alpha/cpu.c | 7 ++-----
+>>   1 file changed, 2 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
+>> index 51b7d8d1bf..c7ae4d6a41 100644
+>> --- a/target/alpha/cpu.c
+>> +++ b/target/alpha/cpu.c
+>> @@ -142,13 +142,10 @@ static ObjectClass *alpha_cpu_class_by_name(const char *cpu_model)
+>>       typename = g_strdup_printf(ALPHA_CPU_TYPE_NAME("%s"), cpu_model);
+>>       oc = object_class_by_name(typename);
+>>       g_free(typename);
+>> -    if (oc != NULL && object_class_is_abstract(oc)) {
+>> -        oc = NULL;
+>> -    }
+>>   
+>>       /* TODO: remove match everything nonsense */
+> 
+> Let's do ^^^^^ instead of just shifting code around.
+> It will break users that specify junk as input, but it's clear
+> users error so garbage in => error out.
+> 
+
+Ok. The whole chunk of code to fall back to 'ev67' will be dropped
+in next revision.
+
+> 
+>> -    /* Default to ev67; no reason not to emulate insns by default. */
+>> -    if (!oc) {
+>> +    if (!oc || object_class_is_abstract(oc)) {
+>> +        /* Default to ev67, no reason not to emulate insns by default */
+>>           oc = object_class_by_name(ALPHA_CPU_TYPE_NAME("ev67"));
+>>       }
+>>   
 
 Thanks,
-Hyeonggon
+Gavin
 
-diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
-index 61a3c4dc2e..b6ada2fd6a 100644
---- a/hw/cxl/cxl-device-utils.c
-+++ b/hw/cxl/cxl-device-utils.c
-@@ -229,12 +229,9 @@ static void mailbox_reg_write(void *opaque,
-hwaddr offset, uint64_t value,
-
- static uint64_t mdev_reg_read(void *opaque, hwaddr offset, unsigned size)
- {
--    uint64_t retval =3D 0;
--
--    retval =3D FIELD_DP64(retval, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
--    retval =3D FIELD_DP64(retval, CXL_MEM_DEV_STS, MBOX_READY, 1);
-+    CXLDeviceState *cxl_dstate =3D opaque;
-
--    return retval;
-+    return cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS];
- }
-
- static void ro_reg_write(void *opaque, hwaddr offset, uint64_t value,
-@@ -371,7 +368,13 @@ static void
-mailbox_reg_init_common(CXLDeviceState *cxl_dstate)
-     cxl_dstate->mbox_msi_n =3D msi_n;
- }
-
--static void memdev_reg_init_common(CXLDeviceState *cxl_dstate) { }
-+static void memdev_reg_init_common(CXLDeviceState *cxl_dstate) {
-+    uint64_t memdev_status_reg;
-+
-+    memdev_status_reg =3D FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
-+    memdev_status_reg =3D FIELD_DP64(memdev_status_reg,
-CXL_MEM_DEV_STS, MBOX_READY, 1);
-+    cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] =3D memdev_status_reg;
-+}
-
- void cxl_device_register_init_t3(CXLType3Dev *ct3d)
- {
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index 61b7f897f7..61f8f83ddf 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -351,9 +351,9 @@ REG64(CXL_MEM_DEV_STS, 0)
-
- static inline void __toggle_media(CXLDeviceState *cxl_dstate, int val)
- {
--    uint64_t dev_status_reg;
-+    uint64_t dev_status_reg =3D cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV=
-_STS];
-
--    dev_status_reg =3D FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, val);
-+    dev_status_reg =3D FIELD_DP64(dev_status_reg, CXL_MEM_DEV_STS,
-MEDIA_STATUS, val);
-     cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] =3D dev_status_reg;
- }
- #define cxl_dev_disable_media(cxlds)                    \
 
