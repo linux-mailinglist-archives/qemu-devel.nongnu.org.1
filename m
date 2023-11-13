@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A627EA2E5
+	by mail.lfdr.de (Postfix) with ESMTPS id 387AD7EA2E4
 	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 19:33:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2bkL-0001wc-QC; Mon, 13 Nov 2023 13:33:18 -0500
+	id 1r2bkO-0001yT-Jx; Mon, 13 Nov 2023 13:33:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1r2bkC-0001tn-PF
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:33:11 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1r2bkJ-0001wD-Nu
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:33:16 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1r2bk7-000344-HQ
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:33:07 -0500
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ id 1r2bkG-00034i-FZ
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:33:15 -0500
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ADHi6Nk017359; Mon, 13 Nov 2023 18:33:02 GMT
+ 3ADHimIY022873; Mon, 13 Nov 2023 18:33:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=message-id : date :
  subject : to : cc : references : from : in-reply-to : content-type :
  content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=JRa5T8bmotRTAZNhbIUaiD29sa5b32ZgpUeGF1b9jHc=;
- b=iUhSDequAIQsZyzNOGKNHkIqMg923D2MFUIyf9JRrdHA86IVXY6u5KmvoG6CxpyIKw11
- IeWUghZvJTQNjiX2cN2gwMawAT8YzsQ/lfLH1y6ASwERxTW9pQp7jbKpTc6DbN6Xnatp
- jfQE3otRQEnJfUzv5lGW+Rf9x6oJcrZU3L9fm/iHaPHlaKPaH8oFILF8sRn+Y2R7QMOA
- jZ7BwoAz2QbhE8qpd6QXfDYv2h1+jErMHOZ9DHHe26Tlq2f8bsCulT3/TT+sXNQDld89
- fp8T9SIQOsNYQYzO2jW2uEY+7dUXgDIQrJXLjP332ODx8jnvjBYwuYkVmuGTi2Of7FXf HA== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ua2mdkj6s-1
+ bh=5rfUEzeEN+Yplrg/KI13xV9UwwC/3iV6Wu52fsIO/a8=;
+ b=xU6iSzuAAlZVQ/EweI1E4OMI+eOGyLaNcDz5USMsWcm2I23KAkCEGUKTCsGoEmBwIqwc
+ W8Mv0n4ai0StjzE8ZML0DKr3ohZ85Sp18M+cIzrsrIiUAtRhyG9wFOkAid5ujpvJaDav
+ FrK3FspCctbC11DdcsbMSorEumTHwLYeNyorZtjh5ZsxCbg92fsIC0BvflEkFgq2k+yu
+ tJeutk8cHlrhgsmd1fw/MZkn/FbbChukL4DR2gvOV58oX0cny/1S02xrgHLvVLW1wZZ2
+ tMz8kCiAMTczeX/FzE1i1CvVy0msTmIAIICgV46ASW6zNnAT+kUPMPh3DmEodPFYhH4D Xw== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ua2r03g21-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 13 Nov 2023 18:33:02 +0000
+ Mon, 13 Nov 2023 18:33:09 +0000
 Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3ADHgrVQ029926; Mon, 13 Nov 2023 18:33:01 GMT
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 3ADHhngI013468; Mon, 13 Nov 2023 18:33:08 GMT
 Received: from nam02-sn1-obe.outbound.protection.outlook.com
- (mail-sn1nam02lp2041.outbound.protection.outlook.com [104.47.57.41])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3uaxqqaq5g-1
+ (mail-sn1nam02lp2040.outbound.protection.outlook.com [104.47.57.40])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3uaxj0tfdw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 13 Nov 2023 18:33:01 +0000
+ Mon, 13 Nov 2023 18:33:08 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aQtQC8S0iNpTJieByh68jH1m6vsjG+QdcSMDXTuci4D91jlwZvIkwV+bEH9aqaKcngoj8/YLtoegqOaLuwGSKOSG1KW1TCb1p9HS1ihMj741gnKHn12grQ98/hWdBsFa9LnKI4SjlHZshntKSIsqTEOJG50hM3g5em3mA9n3SB3a4G2DnmboWE+oNJu3D16bRm0QpWrdTw+qxSIuBtkFVdAiFWKaJf5OMBJ3/WwfdGV3Vckhq/8Dgw1Vxd5A0qmxfs5lwwPMowG4qpeFW55SeGntCAQW1HXDv4G9XsSOCHQdr7YmWUcufJNH17wCqdDdEK+lRrBQQBsfMF3FHPQN7w==
+ b=nv560xKeUt/k2/NL0HDxViK4pBx6MtF6uZlO8F9/bhTpeOI68UGOAWj2YmaHCAMTjvUqh+IPQhYsCmEafXg0p2sMLf1aCMsX7fUmaDoY0MwCyQyjQbqEy22H00WJpc1by/dAEl0dwZzq4V1xmi5q08/IFbeMTjxHgDDZRDqhmqIKbWh546s+DxpBu8acuauXwJWKrzaEV7Iya/IUvqWN3zdbQ+iSomn7OgyVb45c9uCEpGc9jFOhRbVOnW3b9HoW1AlZXFHJG7KFw++UI4wu6HuJZl5sXItMGRtmAyCzAz0sVP0LTN+xbDnUWnoSgCzHKyWS//pvWINmTricWgyRkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JRa5T8bmotRTAZNhbIUaiD29sa5b32ZgpUeGF1b9jHc=;
- b=LuZL9SIXbX/HRKk55pGo4dmxzeE6ivA9ozK4MU7EzH8RvoyahluLKBoX4+YEC+CiIq83/IrQc8mScjSGqRMhXwThGxaBSbSxwhP0tU5rwufPd0Tlut9YVHjdtGGXqyka5sLdKcY2iRj5PewtIgeqd1k8S9MPAU2rlDZCvEpCdhu2O4TMlICk+1zYVoSgVYXpHrh1buQygqaTnH7NZjct213YUizakZhE5hiUPOsI7iDwOYBTdalhGxFj4Ig7ViucMgk6Zd0QsnsS2Q0M5qSQYfvTJOVN/1+2Qbumfz4mSQAEXrQ9eDD7L31GQlAwnGtXpAPKFkNggsoap1CVNz8LZg==
+ bh=5rfUEzeEN+Yplrg/KI13xV9UwwC/3iV6Wu52fsIO/a8=;
+ b=VpTnHtNXcKPNhcHiW4MZqf4tXzFUz5C3kLWNKywMny7lJ5M2eoQ9PeZfQ+CZ8CP2NW5Gn/O5Nbf491u2sTcy19z7h/Tu5MBnp/707cCB2otiWVB+L3Af/vfXx0YqXdFtgCpj1l7wU58hUWDjGslWxtwbuBbDnxSoc8vEA0owlGzAYNU0q+WUQb6X6bcSCj3wgwr2sk4YKGRYJLwf+Hh26uL9B/NgftM8f+Yx8pXt4kXrkbULPdkbe7Z1GsjcJLgMjTNvCeJ64kz1r0FRZZ9hFLud30ipYMGIzevkrIHCzce2vQqXzbZglZa8n21jcYw3T5nxHNrsfW4yh48jDN0Wgg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JRa5T8bmotRTAZNhbIUaiD29sa5b32ZgpUeGF1b9jHc=;
- b=V7N4OP1TRMenhWhArwvJGAg3WhbMO1lkOGADC8VinFpMEK7oEvYcAuTKGZcD4JnU3O3fe+7PJ4zIz/C9E9MvSFtuTy8wsRWtu0DCEMT7TlvMvBaexaVdW3LVmIKvy1iTyBX65y6qLHQHrQUzKTzTGrh9j/8lP8m0AK1d2LCxBGY=
+ bh=5rfUEzeEN+Yplrg/KI13xV9UwwC/3iV6Wu52fsIO/a8=;
+ b=QUl80KAWRnyY73dxhph6xqLpHmZtnnMmQjpvaDYy1VF8i/x8xvRt0FflKDeExrTZBPLyI04OVfGTDQHuykBCWFmkxZAPZ7GrpMWWhe/tUa5atf/NAsx0xyb2xRYtgL4gbx/jSkd6DDTEKV4QtvkconOc6L4U3UCXf5mV1L7qAMg=
 Received: from SA2PR10MB4684.namprd10.prod.outlook.com (2603:10b6:806:119::14)
  by DS7PR10MB5359.namprd10.prod.outlook.com (2603:10b6:5:3a5::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.31; Mon, 13 Nov
- 2023 18:32:59 +0000
+ 2023 18:33:06 +0000
 Received: from SA2PR10MB4684.namprd10.prod.outlook.com
  ([fe80::d609:b162:ba7c:4e96]) by SA2PR10MB4684.namprd10.prod.outlook.com
  ([fe80::d609:b162:ba7c:4e96%4]) with mapi id 15.20.6977.029; Mon, 13 Nov 2023
- 18:32:59 +0000
-Message-ID: <18678958-498b-471a-916f-9fb4bc815ae1@oracle.com>
-Date: Mon, 13 Nov 2023 13:32:58 -0500
+ 18:33:06 +0000
+Message-ID: <f42c8267-5885-442d-a2dd-a57a77d5efe1@oracle.com>
+Date: Mon, 13 Nov 2023 13:33:05 -0500
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 06/11] migration: preserve cpu ticks if suspended
+Subject: Re: [PATCH V4 07/11] tests/qtest: migration events
 Content-Language: en-US
 To: Peter Xu <peterx@redhat.com>
 Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
 References: <1693333086-392798-1-git-send-email-steven.sistare@oracle.com>
- <1693333086-392798-7-git-send-email-steven.sistare@oracle.com>
- <ZO9yumiyrNdAkHjG@x1n>
+ <1693333086-392798-8-git-send-email-steven.sistare@oracle.com>
+ <ZO91uYBncX3VE0D6@x1n>
 From: Steven Sistare <steven.sistare@oracle.com>
 Organization: Oracle Corporation
-In-Reply-To: <ZO9yumiyrNdAkHjG@x1n>
+In-Reply-To: <ZO91uYBncX3VE0D6@x1n>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: PH8PR20CA0007.namprd20.prod.outlook.com
@@ -93,77 +93,77 @@ X-ClientProxiedBy: PH8PR20CA0007.namprd20.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SA2PR10MB4684:EE_|DS7PR10MB5359:EE_
-X-MS-Office365-Filtering-Correlation-Id: f6726ccd-44bc-4d8c-3c8a-08dbe476f613
+X-MS-Office365-Filtering-Correlation-Id: 7607dd6e-c3a9-4ec3-30dc-08dbe476fa44
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: rjHAPeFxD1BYlpucbxdzEY9ZEmIZPmR9Arb6AwGw2NiWiAuRTjyA9T22dcj+DjLk/WiliUC1G9u4gcFS3FyPYHO00pctmsgySo64OzmSLzJ8rOXNhbR65wZpHnwImR7+E7RKH2oexOYyVMVzN6GqPWfMVQGrCCtutt6cJ80ODjuhAUKccDziHsINtxpgdzhq0OHynvBDc4pFjjpRSA7yCLM1p6SldOfwtY2aYt6QAkw2Qk4zKeS89yQKn91QUng1JV9NJtszKROl9klisY0PgCvqpkTfnaUjlj1w1Su2rXobA/NqBmqpdytecPiautsBmAlotg4sT0W8lJtN5DeRagSiVuAoVfoHMhyCu1CNo5KNbSM2Se8bNdvzGqzwInxn6RJu0CrJCoZhxBnxHrcZcbMkVoF1Eg3ZA+k4iuksjPXEE06coVSWo6G3Hl0J3IEoqPSIPh0wJCLkUw9Egs+7Jq2XMl0+07trK8dNKhaxuy526tFZsLN/5mqFnHA/83QlaplzwXSGHtnJDWI/Oe2HUOEkmHcjTH1Kqz5AocjwbaA9LQHBTEwy4rEm9fV7WgDhp1we/D36xWbwWTGilQkrma9tuYrDaVU1upsImWmiSHEO/l+96cQCGL3coM53Z0isLGtb3w2qUZ8ZISvgW3YjQQ==
+X-Microsoft-Antispam-Message-Info: RIRziKf9yw1p8qDgvABL8xgKQWWojm9QNL2yGu0RrpNa2ObG254cp4iQ2Ufdu8hLEv/nAs80uKDNTAvHL0uZJFZm17JRnTQRTe6Ad1bxJUykWyVasOfsKmbUcoOiy6JR88dAb36Ig4y99aL4rRuk2S9pMC7xdhoC99X6SHrpKQk/PGU8VDRhxcBnlstsraNIS22CJ4dzVJ+brquVD7/DCCqgt/GDedIkj8pOoOd6GUZiavlOesGK/YU7s/exQ42D+f7V5UFBw+vrSoPORWEX6cAjjPfuF5oFaG/HuZaDVrh1zePb0wnst/boVRAEOq8n8LjcXPoGXcNhx1xrH8EhHlDpBXOD/+18KGXbdGqKsBiJMlhH6V0LPopaKCTsQmyeLTKMeO6BUilrtY9xiDT0Sobcgx4i6N2J8UzMJtkr/JMaj6SEhgHJGf63HpJkcIihhgF9rUlz2Eccnmqra//Lmyd7B92j6IQGAyfRXZPvxLDBQJHeY9QUuHPYfkzyiLboc9L76AOqFJr1U4xPyk0o8doLUKYR1s/WUohMyyQvXnoXZOqm7sadMzqAw0H4CW4Qylwz/+dMnBhg/DSqQXXZN6l9kx3L6KJlCS/Y6KzdXqLhiFfoz4TY1jKvKx9QFOV/vZ0tz8WPc8lJu+F+X97TyA==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:SA2PR10MB4684.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(396003)(136003)(39860400002)(366004)(346002)(230922051799003)(64100799003)(451199024)(1800799009)(186009)(2906002)(15650500001)(83380400001)(36756003)(31696002)(86362001)(38100700002)(8676002)(8936002)(4326008)(6486002)(478600001)(44832011)(36916002)(53546011)(6506007)(316002)(66946007)(66476007)(66556008)(6916009)(54906003)(31686004)(2616005)(5660300002)(41300700001)(26005)(6512007)(43740500002)(45980500001);
+ SFS:(13230031)(376002)(396003)(136003)(39860400002)(366004)(346002)(230922051799003)(64100799003)(451199024)(1800799009)(186009)(2906002)(83380400001)(36756003)(31696002)(86362001)(38100700002)(8676002)(8936002)(4326008)(6486002)(478600001)(44832011)(36916002)(53546011)(6506007)(316002)(66946007)(66476007)(66556008)(6916009)(54906003)(31686004)(2616005)(5660300002)(41300700001)(26005)(6512007)(43740500002)(45980500001);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L3hDTTZwS0NZaXhEdmJOT05VSm5VQklleWFZTEtvVzQzdWUzOVhJRkNMV0ZG?=
- =?utf-8?B?UW1NUktra2Y5WCs4enhuNEZUOE5kdkROdFFiSjFxUXJzdU9kKzVMR0UyNjhk?=
- =?utf-8?B?QzBVbloyWmdwSGpCWmo0dFQ0MXFWOFFtdGtjNkRNV3l5Qzk4Qm5UbHh2T3NS?=
- =?utf-8?B?NVBRbXlTRHRUY0g5dTZKZ2pXNUpZeHQzQzVxZ1hhUXVEVmFnd2Y5NTNJdDJO?=
- =?utf-8?B?MzE5Y1l4bmF4S2cxdUZWYVZ3UENIZDgwZTRYaklGcmVJbmprUS9pcW1BcXE2?=
- =?utf-8?B?M1ZKQkZld3J2Q0g0MGNUdng5Vmo2UkxWNXNMZTU1Q2pUUi9iY2FQeGJMaVBD?=
- =?utf-8?B?Ynp0L1VjOTBEQzMzS0xGRzFqandxcEp3TS95bnJISWFvOU1pUFE0Y2EySUpl?=
- =?utf-8?B?R2JSTi9zMkZMN2lzZ2JjdHAxSTZML0VJWE9ySWoxS0hOTklFb0J0SEtEaHh1?=
- =?utf-8?B?Y3VhcVNkbVZHTUI0OER3UW1MNXNzbDkvdzVIc2ROamttc05SWDFCUldremV5?=
- =?utf-8?B?bEJ1K2Y1TTZLNG15OHoxZ0pHT2N6WVVxMTNTYW9penVOcHk4NlNmMUs1T2Vl?=
- =?utf-8?B?TzdWVXlqQStZSTl2ZlEvQ0dnZi9ZdTRxa0V2QmlnZ0FaZFQ3VVluUDNLeTZH?=
- =?utf-8?B?WTJyRmhmRmhSdm9iQ3paSFZhSzl3WHJnb3BQN0RQNWxiMlV3SmdXVTRIWlBp?=
- =?utf-8?B?U1VZYVpFWXg2clErTzZTVkt3a0d1cUtHRlgvMVEzNmdpU1VOVm1QSmJlaHlq?=
- =?utf-8?B?d041cjE2K0podnN5bjVJcWp6SjRhYU5uU3R4ZCtvaExRd0w1bTNqaEhOQXFi?=
- =?utf-8?B?WUIyNkVCK2t2bUFrMzBBRXpFbXNES0hKTnErcmE2NGpqOTVsc2I1TWd0SDNS?=
- =?utf-8?B?Q2E2SG5TUzQ2Z21jbUhsWUVXMEpPTG04ZmJTNlgvWnVqbkdHeFMvRDM0SWMv?=
- =?utf-8?B?Zzl3L3FnVkk0R1AxOWVUL1pPUWVLK3JhSGoyZXZjeGRXMk0zaWNVL3RNV3hS?=
- =?utf-8?B?ZUE1aytTSzVCd2dpcTQrOXJJbkxOc3pHMUUzNGh2cmpYZGxpb0FBMVdzYmdX?=
- =?utf-8?B?RDJYZFhVWjFybFNiM2I4eE1EVDdkcGhuczhuTEZobU1XM1ZEOUxIQjRsMjc1?=
- =?utf-8?B?THdwbHBFZTU0eHkvb3lNeTRSVkZ1Smx3T3Q4eHdTN0tUazVSSkdNVHpVTElD?=
- =?utf-8?B?OFFFckZlREhac1lmRWs4MkxsaDN6Ly9NcHVMWGZPcW96b2F1VVRDaE9nbUto?=
- =?utf-8?B?dHVZZVExTlVKazZBQXE4S2JLU0Z4WjYzSHNxUVNadjVrZlBRd05zWXlGbWFV?=
- =?utf-8?B?YUE4NHVNNk55RS9TRkhzZ003OE1mWEZSbkt6cEVDang5QzBQaXowRk82Vkht?=
- =?utf-8?B?ZWdNRmNMSG9kZy8zaUZkUm9iYUFDUGRIb05QQUE0djFZN0JSZGNpdktlR1Ir?=
- =?utf-8?B?VitiV1AyQmE0VGU3b1E5dEJaRUFiSnFlUm1nTEdpUFFxUiswR1RmK2xYOHBr?=
- =?utf-8?B?ekNYMmRtYndieGF6a0o4OXd6S3ZlZDdVSTN0dFQ4bkxCbHlDQXk4Rnhoemwv?=
- =?utf-8?B?dm4reWhYK3J1MnppSUN6ajBTS3UrMEpJcnQ0TEJpMzUxTUJ4V01QVXNkQ3RV?=
- =?utf-8?B?RXVTWUJtdHplb1hUSGFwUVc3Ry9wTzJNQ0tmenh4SWJlajRsTVhmZVB6TXh2?=
- =?utf-8?B?dlAxSXF4QVpsTzA2UllqNDR5VkJrejEyZUNCd0I0TVREZm9oc3pOc3dBZlla?=
- =?utf-8?B?KzRUSktrZVN3OHIzenNXM3dQeFo1UlB2ZGw4eFFqQUJpU21mbHRNS3NQaFIy?=
- =?utf-8?B?ZHNnbSsxS1dHc2Ewd1hMWWlqYWRjNHBERHFLakk5NTl2UExiT1d3N09QSGls?=
- =?utf-8?B?MGJTa29OT0FqVXkvVndEOGRaY3MySXpqbkQ1bGpETnN3UGgrL1N2emlabHpI?=
- =?utf-8?B?NjBDUVVRdThGaXgxcUxKRVp2MWtPanBUL2IzWHoxb3hxUkdRR3B3Y1l1a2Zl?=
- =?utf-8?B?Vm5iaGxZL2Y1R1V0WmlqQmhiYk5DV1lpRTgxVVVVM0s1YmJrUENXeHYvM01D?=
- =?utf-8?B?dUVyZWdDRXNDTkI2WG1sVy9ZRU5FMHFVZXNsbktIMUpxZHVLQ01jaytseG1V?=
- =?utf-8?B?T1I3QkxJZEJrOGJCODBwaCt4QkhtY0Nqb3ZuVWhvS2htQktKaHRQd2NidmNa?=
- =?utf-8?B?VWc9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MzA0cEtwc2g0VVB4UGwzMERPU0tSYzVBYTJFS09iQ1V6L0t3YUo5Y2R6ZDdL?=
+ =?utf-8?B?dGdxOTJUaGNHbVg3RUN4MDY1cEtSd1lkVEVNS0tNbXBPRnlyWXM3TVFXUXpv?=
+ =?utf-8?B?SXNDTnZGQ3EzQ2dhSm9vYlY5RmIxS2tOcWlxT2NuK056NDhnWTVNV3dxQTh2?=
+ =?utf-8?B?VlBaNjc3OG12bXA1aXoyYURta2Q2UldPcHIzMlREUnBrMk90VXlvem5rTytR?=
+ =?utf-8?B?c3JUc3pUVG1USk1hc3Y3UjFaVFpBcFl6a3oydTZtNnJxaUp5RlhzTUlqMVV3?=
+ =?utf-8?B?Q0N2d2pZaDlkNi9ZRGxxVFYzZ0dscy9ZNnljYlpoeHVSdThGZkllYUJFZWI0?=
+ =?utf-8?B?U0MybmFJWlYxQk1mT1lidVkrbk5rS29Qdkl3NFVXUUlveTdoK3JCSm43Q2pl?=
+ =?utf-8?B?L3h3ajU2ZktITUI0QjFXVElnV3RLMGpTMU5telg5QXVaTFRabGRacGtiZTZO?=
+ =?utf-8?B?M1VuV0tUekRQcGJKNHJQeFhFbG5wclY2c3NycmU1WWZiRzhqSWdpUy9FTnls?=
+ =?utf-8?B?N0xtMVhNVVAxT3lHbnZrekd0YkUrTXp2em1LRVN5em1yWTcxT2NyKzFWY3lH?=
+ =?utf-8?B?T29GUXV4TzJXRHdiYmN0OHhuZmpLNE0wdDNQU0hnREJyZ1BxY3NJRnVld2c2?=
+ =?utf-8?B?L3doUTJMcEFwczY0MTRyVmsrNTB1Y2NPRmdsMzQ4MFFoTEFYWngyRGplby9S?=
+ =?utf-8?B?SVIyNmttQ0hmRUdJU252bmo5NFZUVHF5OVBmWFZPU1B1QkJScHhnVytLSlNE?=
+ =?utf-8?B?YnYybDhmRlRKZFRqOWx6Rk01Uloxb0pWbmRIaWkrbWNUMzNlUDhGLzNndk00?=
+ =?utf-8?B?RE0rTURLc2pFV1BENllyOFVUOVlkWmhkT1JDQ3dsTHJaNnA2Zk04M212MDNt?=
+ =?utf-8?B?cmczS2NEbGxFRkRlWDJ5NkM3dGxFUVk3TEpEbWNuUkJBS3lnNmpjK2lBbXNn?=
+ =?utf-8?B?REZpaElyNXppcWhKVHprV2pBMkZoUTRWa0VPRWpGd3BmQ2tFTkZmeWxnaEVw?=
+ =?utf-8?B?bnloNkJCTHRnUXdXMEpDNC9XQ2l4RVZIZjM4U0tlMGJFVXJaWlVhTk03MzFi?=
+ =?utf-8?B?QXB2YzVkSWN4QmZmS2R2NjRxckZZb2MyMERZMlFtb0F6RmUwOHY3TTlIRzFB?=
+ =?utf-8?B?V2Z6ZFp6TzFWRGtkUVRzMHdqNW1WQWhrbHZLOFNaSWtmK04zSithbk8wNlk4?=
+ =?utf-8?B?NHdNbTJPcGR5REtSVXpVOFdCckhFMlhkWjhsNUkxTW5qaGFxd25SOE1hbkNZ?=
+ =?utf-8?B?Q3dQUkFoUlRsaTNGZW5QOUpoaTU4MFZ6RHdLYWVySnFEN3pJU0ZNWjN2RTAy?=
+ =?utf-8?B?R09ZNENVVnZPTmNVaXlZdXZqNGRqUzZKbnhkS1YwRk5aM1MvRG4zZzVMTkNO?=
+ =?utf-8?B?c1kyZU5Ta2daeTk3aTZkSllVTDFaZVZhaE4rZVIrNzN0WXdaZVp4cTNuVmFV?=
+ =?utf-8?B?L2dTOGFNclZUM3BjLzQzSlVJNlg0em9JVGFuY2Yzbm9lRVVESVFwUWFhSXBo?=
+ =?utf-8?B?Y0VPYldpemR0bHB0c1IvYlB6Wk5qZXVhSk1iUkZmMjlSMFl2WUQ4MzVTNGxM?=
+ =?utf-8?B?c042YWxVUG5pS2ovemg1V0huTHAyYUl3dzJZd2h3L0tzZ2hHV0J1V0JRNzN0?=
+ =?utf-8?B?R29WSDRyTkQ1NUl4TEZyMnZZU1E3dUdPMldLS3hXTFo3UldlOGtLeHhNMlI3?=
+ =?utf-8?B?YWMxSkZJOTNsZmErbTVDNVljek80dEhYZGkxcVhWbytlZFlPeVJpT3JVRVYr?=
+ =?utf-8?B?a25LYlJKRDRBK25UWGdxSGEzd1VOeENuZVh4K21xUUhQUHdYREs0OWNtcFJM?=
+ =?utf-8?B?ZDdsNlVGSHQrSENiT0pTdGVoWlQ1QWNzUmEwcmFPUHl6TWFwUjNZdlMvQ0Zp?=
+ =?utf-8?B?WHEwdmZGcHYyNDhGRGFVUU1jMDBYeHZlUkVLYWp1YjNucW5QV3RQcWhJS20w?=
+ =?utf-8?B?bVhaUkRaZzZORmFPeEh5amZMSnB6OTJQMlFoemJmUTBaSFNoRWROWHdKaktp?=
+ =?utf-8?B?eWM0azVNTXVJZWpwNEFheFo2Q1pMb0xjVjNnZDZTajcyaXE5ckZPU05qRXho?=
+ =?utf-8?B?MmRoc1BTRFMzTnpRaUxuQmtqc0x5dW1xRjA3M0RZV09lWTQ4Y3VPZjJseURq?=
+ =?utf-8?B?bWZNbnl2YnpXSVhpaVgzeXBLM0hGRE5pRUgwVWV2cVk4TnlOdEw4VEprMGJM?=
+ =?utf-8?B?T3c9PQ==?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 38YwWiNMaypHr6zai9c23nJA6PldVI+N/OsbeD2bMhOjJW1n29dSo0wvQEZxI/Ru+BEtRB8fn2jrs4G6BKdJVQN6j0o8K+YbPodmI+cxxpcAZ8fb6uZDZMRZrd8T2sdm1c+BAQvgtUa2WrY7zypCl8C4+wiTp0QV4MAx3dtthMdzlt955NwvEVY5vFfM+zSMZFdt86B18lcZgVIOuOg0WEXM0QBJr2krIwha2VQUJnMks6WvXpCYwS9VLBqu9V+53YC2NK+FfNVLVEd3gbl6xIyEFi3O5FSdCa9Z88kUJaRuH97S+CfBnGJ1nRMOhc3TZ9CR9lurqtsZvE0jpB6WYMQ1gZDCaRnxlZcBIM7AySsD3x1LtGZfyHkwxjs4OXV4F1Ez7bQQMpPgpZeyX8E83UA3F+IPQ/NbydTQ4xLS9kK8jDc5gLsUfgNRYvNcz6vtfAGxshEXLNJFuHTEkfUGhU7ovTECBMlSyG7Psl7K3Za9X2gvFZHDbOE+hkVGQNUPep+LYPPJrrqN6xRH2s7yxiGH11ibON8EFTZ2WzsymVdpnpSn5BFQP4vSnQhtrOtfOp9R1kSTVXoCOKC0Gb5SYVVgQqFH4qJte70jB/MwpVqhn2oIUBz8GIc9bipl43wIgpNzk+xdzWXuO9+OHPLYDo4DmA8MpvFp1F1duliMgwV3nVifwGsKMUEUNOulKcI8S/pEHVdlboPxgR/yOG9eXTvvNG7aqr/t7g8VoygWbYkxiqUGyjfgGniqQ6y7CJ6e1CRTf0EAfH7V8vGyhUthxg==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 19IdFcjuwNIe4RNvxAycUpX6NmVT3zg9m45aAkA50RwlQDQV1+Uqz/ZyuLL81Qh+dMRNP/j4tRH902bZUoFSq4G8opz3HK0EnIVRH2Tk69dyZBM88awCq5mZ5zzK6foTKnOqTRhf2n5ghqsn2gbzWD0l5EoQmgk68lPopRL/WbOUDncgXSUU9c2M0pNijAPb3RrD83bJ8q/Jas39yryAF9g6zpZpUBELGAFolZHWWal3jBkR31pFATYyix6AchAV/D7z3q2It8r8t+2qL5hLhRgBnJcJzDs5fIQvrpC4W+mnUH10xZeUi+H1EANr5eSgQU7Ybifz6EvZ8YAiFyciKqhcdKfApm41f5YdWfseocaCRYgOXEFa9MUWxFeVnnduSjUyoB2ZEMmgksncIl1ij3vs5rwDABZbRpLvqO5TFzPMcy9J6xdnn80kLek26rVCEIdEzfRnUx/9vN2e7I3mHTzr0Fa181ZeWHSuivR899rsno3ZRPvffuJ/Dkz/UOqk3bzs+E/z7aul3jVdiIScYaQGx7FLkxwiSQu63Tt1oFCrwd3gBGbZh2w2A9ANIARv2qOoEzuNZiN1WvF5zwrpHrVOjRXfZHgNLBG3OFMxgBpodVkBVy55PqQyXDJrMAdtceMTLNbLcwlh1aPMvDodGuw+KWOIuIfUiPU7fBpVaVg7KIo5eye2tPb1JckiD+ftN/0Tq70ttrEBBzUB6ss0UE8pJDt9HhkYr9p06P0jPQzUsEUKxC42LeXDUQzwriYjrrHD+ZauwgndoDMwkQb53g==
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f6726ccd-44bc-4d8c-3c8a-08dbe476f613
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7607dd6e-c3a9-4ec3-30dc-08dbe476fa44
 X-MS-Exchange-CrossTenant-AuthSource: SA2PR10MB4684.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2023 18:32:58.9864 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2023 18:33:06.0109 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WCC05imoNnVHThVakQqficcOX+VHaMsbea7b9m3fb6QvZeXtaCFFo0JW10/PoP4lEMtIoG5N1KdnzbB5zJjEhzm0Ha7Wrl3oHH5j/Un+CMY=
+X-MS-Exchange-CrossTenant-UserPrincipalName: +hOkt+MKOUht/gtiDsqW0Ke6ixvCyG25y9D4+5ssRMQ8lpVP8+b4EnOcvAYA6dW8tgnAOfNqeIo7t3KGZp4osFYWmNlpwhLLNe5AS4K4Jnw=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR10MB5359
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-13_09,2023-11-09_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- mlxscore=0 adultscore=0
- suspectscore=0 mlxlogscore=807 phishscore=0 malwarescore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
- definitions=main-2311130151
-X-Proofpoint-GUID: -Un9rZ7szNI4OmJ-v_D0l0Xj3pb3FN0T
-X-Proofpoint-ORIG-GUID: -Un9rZ7szNI4OmJ-v_D0l0Xj3pb3FN0T
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+ adultscore=0
+ mlxlogscore=999 mlxscore=0 malwarescore=0 phishscore=0 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311130151
+X-Proofpoint-ORIG-GUID: dBq3MsvsjLG0IpsjqH2C1CQXbsrijVko
+X-Proofpoint-GUID: dBq3MsvsjLG0IpsjqH2C1CQXbsrijVko
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -187,35 +187,269 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/30/2023 12:47 PM, Peter Xu wrote:
-> On Tue, Aug 29, 2023 at 11:18:01AM -0700, Steve Sistare wrote:
->> During RUN_STATE_SUSPENDED, the cpu clock remains enabled, so the
->> timers_state saved to the migration stream is stale, causing time errors
->> in the guest when it wakes from suspend.
+On 8/30/2023 1:00 PM, Peter Xu wrote:
+> On Tue, Aug 29, 2023 at 11:18:02AM -0700, Steve Sistare wrote:
+>> Define a state object to capture events seen by migration tests, to allow
+>> more events to be captured in a subsequent patch, and simplify event
+>> checking in wait_for_migration_pass.  No functional change.
+>>
+>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+>> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+>> ---
+>>  tests/qtest/migration-helpers.c | 24 +++++----------
+>>  tests/qtest/migration-helpers.h |  8 +++--
+>>  tests/qtest/migration-test.c    | 68 +++++++++++++++++++----------------------
+>>  3 files changed, 44 insertions(+), 56 deletions(-)
+>>
+>> diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+>> index be00c52..b541108 100644
+>> --- a/tests/qtest/migration-helpers.c
+>> +++ b/tests/qtest/migration-helpers.c
+>> @@ -23,26 +23,16 @@
+>>   */
+>>  #define MIGRATION_STATUS_WAIT_TIMEOUT 120
+>>  
+>> -bool migrate_watch_for_stop(QTestState *who, const char *name,
+>> -                            QDict *event, void *opaque)
+>> -{
+>> -    bool *seen = opaque;
+>> -
+>> -    if (g_str_equal(name, "STOP")) {
+>> -        *seen = true;
+>> -        return true;
+>> -    }
+>> -
+>> -    return false;
+>> -}
+>> -
+>> -bool migrate_watch_for_resume(QTestState *who, const char *name,
+>> +bool migrate_watch_for_events(QTestState *who, const char *name,
+>>                                QDict *event, void *opaque)
+>>  {
+>> -    bool *seen = opaque;
+>> +    QTestMigrationState *state = opaque;
+>>  
+>> -    if (g_str_equal(name, "RESUME")) {
+>> -        *seen = true;
+>> +    if (g_str_equal(name, "STOP")) {
+>> +        state->stop_seen = true;
+>> +        return true;
+>> +    } else if (g_str_equal(name, "RESUME")) {
+>> +        state->resume_seen = true;
+>>          return true;
+>>      }
+>>  
+>> diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
+>> index 009e250..59fbb83 100644
+>> --- a/tests/qtest/migration-helpers.h
+>> +++ b/tests/qtest/migration-helpers.h
+>> @@ -15,9 +15,11 @@
+>>  
+>>  #include "libqtest.h"
+>>  
+>> -bool migrate_watch_for_stop(QTestState *who, const char *name,
+>> -                            QDict *event, void *opaque);
+>> -bool migrate_watch_for_resume(QTestState *who, const char *name,
+>> +typedef struct QTestMigrationState {
+>> +    bool stop_seen, resume_seen;
+>> +} QTestMigrationState;
+>> +
+>> +bool migrate_watch_for_events(QTestState *who, const char *name,
+>>                                QDict *event, void *opaque);
+>>  
+>>  G_GNUC_PRINTF(3, 4)
+>> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+>> index 62d3f37..526a1b7 100644
+>> --- a/tests/qtest/migration-test.c
+>> +++ b/tests/qtest/migration-test.c
+>> @@ -43,8 +43,8 @@
+>>  unsigned start_address;
+>>  unsigned end_address;
+>>  static bool uffd_feature_thread_id;
+>> -static bool got_src_stop;
+>> -static bool got_dst_resume;
+>> +static QTestMigrationState src_state;
+>> +static QTestMigrationState dst_state;
+>>  
+>>  /*
+>>   * An initial 3 MB offset is used as that corresponds
+>> @@ -188,6 +188,13 @@ static void wait_for_serial(const char *side)
+>>      } while (true);
+>>  }
+>>  
+>> +static void wait_for_stop(QTestState *who, QTestMigrationState *state)
+>> +{
+>> +    if (!state->stop_seen) {
+>> +        qtest_qmp_eventwait(who, "STOP");
+>> +    }
+>> +}
+>> +
+>>  /*
+>>   * It's tricky to use qemu's migration event capability with qtest,
+>>   * events suddenly appearing confuse the qmp()/hmp() responses.
+>> @@ -235,21 +242,19 @@ static void read_blocktime(QTestState *who)
+>>      qobject_unref(rsp_return);
+>>  }
+>>  
+>> +/*
+>> + * Wait for two changes in the migration pass count, but bail if we stop.
+>> + */
+>>  static void wait_for_migration_pass(QTestState *who)
+>>  {
+>> -    uint64_t initial_pass = get_migration_pass(who);
+>> -    uint64_t pass;
+>> +    uint64_t pass, prev_pass = 0, changes = 0;
+>>  
+>> -    /* Wait for the 1st sync */
+>> -    while (!got_src_stop && !initial_pass) {
+>> -        usleep(1000);
+>> -        initial_pass = get_migration_pass(who);
+>> -    }
+>> -
+>> -    do {
+>> +    while (changes < 2 && !src_state.stop_seen) {
+>>          usleep(1000);
+>>          pass = get_migration_pass(who);
+>> -    } while (pass == initial_pass && !got_src_stop);
+>> +        changes += (pass != prev_pass);
+>> +        prev_pass = pass;
+>> +    }
 > 
-> Instead of having this, I'm wondering whether we should just let:
+> Here won't it start to wait for 2 iterations every time instead of 1?
 > 
->         ret = vm_stop_force_state(RUN_STATE_FINISH_MIGRATE);
-> 
-> stop the vm for suspended too - I think we reached a consensus that
-> SUSPENDED should be treated the same as running here (except the vcpu
-> beingg running or not).
-> 
-> So the more risky change is we should make runstate_is_running() cover
-> SUSPENDED, but of course that again can affect many other call sites.. and
-> I'm not sure whether it's 100% working everywhere.
-> 
-> I think I mentioned the other "easier" way, which is to modify
-> vm_stop_force_state() to take suspended:
-> 
-> int vm_stop_force_state(RunState state)
->  {
-> -    if (runstate_is_running()) {
-> +    if (runstate_is_running() || runstate_is_suspended()) {
->          return vm_stop(state);
-> 
-> That resides in cpus.c but it really only affects migration, so much less
-> risky.  Do you think this should be the better (and correct) way to go?
+> Note that previously we only wait for 1 iteration as long as not the
+> initial pass.  
 
-Agreed, good idea, done in V5 - steve
+I don't think so.  Both the old and new code require at least a transition from
+pass 0 to 1, and pass 1 to 2, to return.  With the old:
+  when initial_pass becomes non-zero, done with first loop
+  when pass changes again, done with 2nd loop
+
+- Steve
+
+> And I think the change will double the counts for below..
+> 
+>             while (args->iterations > 1) {
+>                 wait_for_migration_pass(from);
+>                 args->iterations--;
+>             }
+> 
+> The event-related changes are all fine, but maybe leave this piece as before?
+> 
+>>  }
+>>  
+>>  static void check_guests_ram(QTestState *who)
+>> @@ -586,10 +591,7 @@ static void migrate_postcopy_start(QTestState *from, QTestState *to)
+>>  {
+>>      qtest_qmp_assert_success(from, "{ 'execute': 'migrate-start-postcopy' }");
+>>  
+>> -    if (!got_src_stop) {
+>> -        qtest_qmp_eventwait(from, "STOP");
+>> -    }
+>> -
+>> +    wait_for_stop(from, &src_state);
+>>      qtest_qmp_eventwait(to, "RESUME");
+>>  }
+>>  
+>> @@ -720,8 +722,9 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>>          }
+>>      }
+>>  
+>> -    got_src_stop = false;
+>> -    got_dst_resume = false;
+>> +    dst_state = (QTestMigrationState) { };
+>> +    src_state = (QTestMigrationState) { };
+>> +
+>>      bootpath = g_strdup_printf("%s/bootsect", tmpfs);
+>>      if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
+>>          /* the assembled x86 boot sector should be exactly one sector large */
+>> @@ -801,8 +804,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>>      if (!args->only_target) {
+>>          *from = qtest_init(cmd_source);
+>>          qtest_qmp_set_event_callback(*from,
+>> -                                     migrate_watch_for_stop,
+>> -                                     &got_src_stop);
+>> +                                     migrate_watch_for_events,
+>> +                                     &src_state);
+>>      }
+>>  
+>>      cmd_target = g_strdup_printf("-accel kvm%s -accel tcg "
+>> @@ -821,8 +824,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>>                                   ignore_stderr);
+>>      *to = qtest_init(cmd_target);
+>>      qtest_qmp_set_event_callback(*to,
+>> -                                 migrate_watch_for_resume,
+>> -                                 &got_dst_resume);
+>> +                                 migrate_watch_for_events,
+>> +                                 &dst_state);
+>>  
+>>      /*
+>>       * Remove shmem file immediately to avoid memory leak in test failed case.
+>> @@ -1516,9 +1519,7 @@ static void test_precopy_common(MigrateCommon *args)
+>>           */
+>>          if (args->result == MIG_TEST_SUCCEED) {
+>>              qtest_qmp_assert_success(from, "{ 'execute' : 'stop'}");
+>> -            if (!got_src_stop) {
+>> -                qtest_qmp_eventwait(from, "STOP");
+>> -            }
+>> +            wait_for_stop(from, &src_state);
+>>              migrate_ensure_converge(from);
+>>          }
+>>      }
+>> @@ -1560,9 +1561,8 @@ static void test_precopy_common(MigrateCommon *args)
+>>               */
+>>              wait_for_migration_complete(from);
+>>  
+>> -            if (!got_src_stop) {
+>> -                qtest_qmp_eventwait(from, "STOP");
+>> -            }
+>> +            wait_for_stop(from, &src_state);
+>> +
+>>          } else {
+>>              wait_for_migration_complete(from);
+>>              /*
+>> @@ -1575,7 +1575,7 @@ static void test_precopy_common(MigrateCommon *args)
+>>              qtest_qmp_assert_success(to, "{ 'execute' : 'cont'}");
+>>          }
+>>  
+>> -        if (!got_dst_resume) {
+>> +        if (!dst_state.resume_seen) {
+>>              qtest_qmp_eventwait(to, "RESUME");
+>>          }
+>>  
+>> @@ -1696,9 +1696,7 @@ static void test_ignore_shared(void)
+>>  
+>>      migrate_wait_for_dirty_mem(from, to);
+>>  
+>> -    if (!got_src_stop) {
+>> -        qtest_qmp_eventwait(from, "STOP");
+>> -    }
+>> +    wait_for_stop(from, &src_state);
+>>  
+>>      qtest_qmp_eventwait(to, "RESUME");
+>>  
+>> @@ -2139,7 +2137,7 @@ static void test_migrate_auto_converge(void)
+>>              break;
+>>          }
+>>          usleep(20);
+>> -        g_assert_false(got_src_stop);
+>> +        g_assert_false(src_state.stop_seen);
+>>      } while (true);
+>>      /* The first percentage of throttling should be at least init_pct */
+>>      g_assert_cmpint(percentage, >=, init_pct);
+>> @@ -2481,9 +2479,7 @@ static void test_multifd_tcp_cancel(void)
+>>  
+>>      migrate_ensure_converge(from);
+>>  
+>> -    if (!got_src_stop) {
+>> -        qtest_qmp_eventwait(from, "STOP");
+>> -    }
+>> +    wait_for_stop(from, &src_state);
+>>      qtest_qmp_eventwait(to2, "RESUME");
+>>  
+>>      wait_for_serial("dest_serial");
+>> -- 
+>> 1.8.3.1
+>>
+> 
 
