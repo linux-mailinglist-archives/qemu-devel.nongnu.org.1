@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A485D7E9FDC
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 16:23:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6068F7E9FE6
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 16:24:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2Ykj-0001aS-Of; Mon, 13 Nov 2023 10:21:29 -0500
+	id 1r2Ykq-0001ca-RW; Mon, 13 Nov 2023 10:21:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2Ykg-0001Zy-RB
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:21:26 -0500
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2Yko-0001br-HO
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:21:34 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2Ykf-0003DV-Ac
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:21:26 -0500
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-9e1021dbd28so691892166b.3
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 07:21:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2Ykl-0003E0-KX
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:21:34 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5409bc907edso7123532a12.0
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 07:21:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699888884; x=1700493684; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699888890; x=1700493690; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=R0n+efnCwqYZSgvX5xA6BN1n520F2bZNMKVl3gVhASA=;
- b=AmX6ck34N5q25RR3/BjTA9BuDaAR9ED2T8lSOOWfVoqbaSA7FlxiDn6cW2EXCutPgM
- zoNWmFqNouSfuFAq79N2Si+aS8JlcQnTImAt/XtPqqZoQ4fVsc8Sm64y5A1+0uEW84cY
- PgejuR3f0ckM8KhSrz5EEvvV4MJlPLi6T8JWdQO7y9Xwg1TNsVI+g+Sf0wfTC4sEoK5v
- jOA2QdvA5O+V5yhF/r9iMupT3na2U3dM8SE0PDjvtWSfx3uIXJLVSk32W8UK141beRkC
- QeBpUGjirJReSTuedHD1daulrA9lVVRIjCEM52SHhT4pfwQOh4pAuSiqx5jsBgfJb3ay
- Ahgg==
+ bh=R3bxfGqI5yyGuHTvJ252KdxHxDRKsvIzu9uNKMF+2iI=;
+ b=K+wHkT9TQ02DcnET7hfBhQXJMtbruAMVY1FgpK1CdXTMbL+iPJvcRo9neirpUpo9UC
+ 9Ez/91fAuDnqYcIHD/GkF4A98N5jGDk8WpJ6riGfKcScQq68oSqLAVen6vyUDF9dZaC3
+ iLtikgsf+NPEIplVMXIAWTPSroquYBITLTV+lcqaYxs7BWkJpz1rJSnxCb4pRUIfo3np
+ mEhgxu17QmqgwgYT5Kg/LnKl2m1Rm8sSg9NNkCiVgqyprXqU/7cIxyXFx4j5naxXFqoM
+ yLzVQQFJ2i/6cAyVS++KLcSFokmfD6gbsed5GJNh1UKq4frLgqzel+zEdRuhfgRNQn6D
+ aJiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699888884; x=1700493684;
+ d=1e100.net; s=20230601; t=1699888890; x=1700493690;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=R0n+efnCwqYZSgvX5xA6BN1n520F2bZNMKVl3gVhASA=;
- b=KB7dGrnECx0SIFR5KhJrGbxWwot6OVrfmXBlvlkGfTuejqXupbnVbQZhlWoCwCmqXO
- 4BIgqo/dK67/LcKBvt+9qES4ESCoWxJ7V1D680Kesf5WhjwkQd+ypnrU6D9+ZONPhMS/
- Ho++73VFAbefm1T8AZAtclgpIACbiv8m+oX4LUQ5CyPrI9/a0D4Hckw0JLeWt4JGJ1nF
- NT24OYb+aRHGrZerp1TPFzv+aJY5uhsBcXUCj7Sn1te8FaE/J9OfGrGNX6A7I8CWt4Uy
- G1IBMFjfa5SVicumKgJQrU1h9xy3HGQU749/vlJA1s7IEEwKTY8BMmhX5PjvCqv4AoMS
- dDhw==
-X-Gm-Message-State: AOJu0Yzy3cua/LngqagkOVsnMdaURFOmx1ve/GnraLFYHhect+a58SMG
- r5EMV0Rg0Ky5ZlyxZI7WU8wy20qkpWJchtdSbn8=
-X-Google-Smtp-Source: AGHT+IH6xxb8oSsdvX/Qxe7SX73ROr6di4a0tnTAF45WIy9EC8KmTSkElWDjJsGSvtz6GSstCFLdyw==
-X-Received: by 2002:a17:906:4c84:b0:9cb:5a8a:b19d with SMTP id
- q4-20020a1709064c8400b009cb5a8ab19dmr4350360eju.5.1699888883852; 
- Mon, 13 Nov 2023 07:21:23 -0800 (PST)
+ bh=R3bxfGqI5yyGuHTvJ252KdxHxDRKsvIzu9uNKMF+2iI=;
+ b=uK+sjjc5rILLBzmq9XfGwsxuTI3f2Xth96ghwggjtgQl73oO+jQWWVe8CCQDNEYqLS
+ kuRHf3cFvZGbVEnZ+GTiuC+M5RdPHl5LAaDEdo5TU6JxMgVqTJXsNdmNOuGXbqbTw7XA
+ ei26OAcxZ3Sz+CS69PrHrbeeU2NFhciTL1WscGlqGo4lLesWusVIHoN1BEyFHh0mqceK
+ GFc9ZQl+9Hfzy8n0YVTPfxeneOctSs9g/RQumGlBTm98PpofQEro6M5KLhua4Sh22KWg
+ w6LNOVACiXDcwllIQWOLL2E6+P4FWpIQcKfycB+lkpkYKyf2+fqYVRvm8XA7jRO1cz1/
+ smTQ==
+X-Gm-Message-State: AOJu0YyanCxUZlSmlj2mYeZv6o6YYHTSkT8UXdTyz8Culjgf9kcfO4xi
+ irGDnylAe3wPNORLOK8k4K+6Sg==
+X-Google-Smtp-Source: AGHT+IF709HFmNxhzIc8XnNuz+a2oAKUrEHD5dHSaR8itUuUqXulXss7tknv1cuy4PMkZKxP4RsDmw==
+X-Received: by 2002:a17:906:3049:b0:9bd:f155:eb54 with SMTP id
+ d9-20020a170906304900b009bdf155eb54mr4125199ejd.6.1699888890200; 
+ Mon, 13 Nov 2023 07:21:30 -0800 (PST)
 Received: from m1x-phil.lan ([176.164.221.204])
  by smtp.gmail.com with ESMTPSA id
- dx15-20020a170906a84f00b009adcb6c0f0esm4204593ejb.193.2023.11.13.07.21.21
+ o23-20020a17090611d700b009829d2e892csm4243243eja.15.2023.11.13.07.21.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 13 Nov 2023 07:21:23 -0800 (PST)
+ Mon, 13 Nov 2023 07:21:29 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: David Woodhouse <dwmw@amazon.co.uk>,
 	qemu-devel@nongnu.org
@@ -63,26 +63,30 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Stefano Stabellini <sstabellini@kernel.org>, qemu-block@nongnu.org,
  Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-arm@nongnu.org, Paul Durrant <paul@xen.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.0 01/10] sysemu/xen: Forbid using Xen headers in user
- emulation
-Date: Mon, 13 Nov 2023 16:21:04 +0100
-Message-ID: <20231113152114.47916-2-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH-for-9.0 02/10] hw/xen/xen_arch_hvm: Rename prototypes using
+ 'xen_arch_' prefix
+Date: Mon, 13 Nov 2023 16:21:05 +0100
+Message-ID: <20231113152114.47916-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231113152114.47916-1-philmd@linaro.org>
 References: <20231113152114.47916-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,54 +102,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Xen is a system specific accelerator, it makes no sense
-to include its headers in user emulation.
+Use a common 'xen_arch_' prefix for architecture-specific functions.
+Rename xen_arch_set_memory() and xen_arch_handle_ioreq().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/sysemu/xen.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/hw/arm/xen_arch_hvm.h  | 4 ++--
+ include/hw/i386/xen_arch_hvm.h | 4 ++--
+ hw/arm/xen_arm.c               | 4 ++--
+ hw/i386/xen/xen-hvm.c          | 6 +++---
+ hw/xen/xen-hvm-common.c        | 4 ++--
+ 5 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/include/sysemu/xen.h b/include/sysemu/xen.h
-index bc13ad5692..a9f591f26d 100644
---- a/include/sysemu/xen.h
-+++ b/include/sysemu/xen.h
-@@ -10,6 +10,10 @@
- #ifndef SYSEMU_XEN_H
- #define SYSEMU_XEN_H
+diff --git a/include/hw/arm/xen_arch_hvm.h b/include/hw/arm/xen_arch_hvm.h
+index 8fd645e723..6a974f2020 100644
+--- a/include/hw/arm/xen_arch_hvm.h
++++ b/include/hw/arm/xen_arch_hvm.h
+@@ -2,8 +2,8 @@
+ #define HW_XEN_ARCH_ARM_HVM_H
  
-+#ifdef CONFIG_USER_ONLY
-+#error Cannot include sysemu/xen.h from user emulation
-+#endif
-+
- #include "exec/cpu-common.h"
+ #include <xen/hvm/ioreq.h>
+-void arch_handle_ioreq(XenIOState *state, ioreq_t *req);
+-void arch_xen_set_memory(XenIOState *state,
++void xen_arch_handle_ioreq(XenIOState *state, ioreq_t *req);
++void xen_arch_set_memory(XenIOState *state,
+                          MemoryRegionSection *section,
+                          bool add);
+ #endif
+diff --git a/include/hw/i386/xen_arch_hvm.h b/include/hw/i386/xen_arch_hvm.h
+index 1000f8f543..2822304955 100644
+--- a/include/hw/i386/xen_arch_hvm.h
++++ b/include/hw/i386/xen_arch_hvm.h
+@@ -4,8 +4,8 @@
+ #include <xen/hvm/ioreq.h>
+ #include "hw/xen/xen-hvm-common.h"
  
- #ifdef NEED_CPU_H
-@@ -26,16 +30,13 @@ extern bool xen_allowed;
- 
- #define xen_enabled()           (xen_allowed)
- 
--#ifndef CONFIG_USER_ONLY
- void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length);
- void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
-                    struct MemoryRegion *mr, Error **errp);
--#endif
- 
- #else /* !CONFIG_XEN_IS_POSSIBLE */
- 
- #define xen_enabled() 0
--#ifndef CONFIG_USER_ONLY
- static inline void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length)
- {
-     /* nothing */
-@@ -45,7 +46,6 @@ static inline void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
- {
-     g_assert_not_reached();
+-void arch_handle_ioreq(XenIOState *state, ioreq_t *req);
+-void arch_xen_set_memory(XenIOState *state,
++void xen_arch_handle_ioreq(XenIOState *state, ioreq_t *req);
++void xen_arch_set_memory(XenIOState *state,
+                          MemoryRegionSection *section,
+                          bool add);
+ #endif
+diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
+index a5631529d0..28d790f4ce 100644
+--- a/hw/arm/xen_arm.c
++++ b/hw/arm/xen_arm.c
+@@ -129,14 +129,14 @@ static void xen_init_ram(MachineState *machine)
+     }
  }
--#endif
  
- #endif /* CONFIG_XEN_IS_POSSIBLE */
+-void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
++void xen_arch_handle_ioreq(XenIOState *state, ioreq_t *req)
+ {
+     hw_error("Invalid ioreq type 0x%x\n", req->type);
  
+     return;
+ }
+ 
+-void arch_xen_set_memory(XenIOState *state, MemoryRegionSection *section,
++void xen_arch_set_memory(XenIOState *state, MemoryRegionSection *section,
+                          bool add)
+ {
+ }
+diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
+index f42621e674..ffa95e3c3d 100644
+--- a/hw/i386/xen/xen-hvm.c
++++ b/hw/i386/xen/xen-hvm.c
+@@ -659,8 +659,8 @@ void qmp_xen_set_global_dirty_log(bool enable, Error **errp)
+     }
+ }
+ 
+-void arch_xen_set_memory(XenIOState *state, MemoryRegionSection *section,
+-                                bool add)
++void xen_arch_set_memory(XenIOState *state, MemoryRegionSection *section,
++                         bool add)
+ {
+     hwaddr start_addr = section->offset_within_address_space;
+     ram_addr_t size = int128_get64(section->size);
+@@ -700,7 +700,7 @@ void arch_xen_set_memory(XenIOState *state, MemoryRegionSection *section,
+     }
+ }
+ 
+-void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
++void xen_arch_handle_ioreq(XenIOState *state, ioreq_t *req)
+ {
+     switch (req->type) {
+     case IOREQ_TYPE_VMWARE_PORT:
+diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+index 565dc39c8f..1d8bd9aea7 100644
+--- a/hw/xen/xen-hvm-common.c
++++ b/hw/xen/xen-hvm-common.c
+@@ -65,7 +65,7 @@ static void xen_set_memory(struct MemoryListener *listener,
+         }
+     }
+ 
+-    arch_xen_set_memory(state, section, add);
++    xen_arch_set_memory(state, section, add);
+ }
+ 
+ void xen_region_add(MemoryListener *listener,
+@@ -452,7 +452,7 @@ static void handle_ioreq(XenIOState *state, ioreq_t *req)
+             cpu_ioreq_config(state, req);
+             break;
+         default:
+-            arch_handle_ioreq(state, req);
++            xen_arch_handle_ioreq(state, req);
+     }
+     if (req->dir == IOREQ_READ) {
+         trace_handle_ioreq_read(req, req->type, req->df, req->data_is_ptr,
 -- 
 2.41.0
 
