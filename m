@@ -2,98 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8620A7EA59B
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 22:51:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA40E7EA59E
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 22:53:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2eoT-0004cc-GP; Mon, 13 Nov 2023 16:49:45 -0500
+	id 1r2erp-0005eU-2x; Mon, 13 Nov 2023 16:53:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1r2eoR-0004cF-3T; Mon, 13 Nov 2023 16:49:43 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1r2eoO-0002zn-Si; Mon, 13 Nov 2023 16:49:42 -0500
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ADLkCkT002029; Mon, 13 Nov 2023 21:49:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=9Xi4D4IbhtezJLCRslE9R7da3TPZ6N3jvkJhQB00Uj0=;
- b=cVyg+poexcVaZz5iVW8TS/YgN0fJWL1XJjwOlIj6DhwSex8lUXT3YpveNR3k7tAg3ovN
- fCqSl3Yh+fJmM0woNs2AeV2Nol+5wHEMWpBuEOxtqJDrYIuenoU9SE2Q4NMPW24UTN9s
- z1zwkqEHeqx7SopBm/pSwlfUNIz84gQaISiDJZi0q6nex8QMBU0W24iErXr7lRwl9sMc
- F/cI0itYtRnvaehf5Cn1OhFuiFiZRjYLvgL/t8JO3XcKIT0UwZi2qB9db680z0y5JGVE
- /qfrEFuSF58nHGUrW5rXzs8PIYfopXA+n5dXPU4W06Y7naAbiB9Z8y70UXwVoFpW4BW7 Vw== 
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ubv0jr1qr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Nov 2023 21:49:37 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ADJYGIQ014693; Mon, 13 Nov 2023 21:49:37 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uamay3svb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Nov 2023 21:49:37 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3ADLnaMG30736772
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 13 Nov 2023 21:49:36 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E5A355803F;
- Mon, 13 Nov 2023 21:49:35 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6F2475804E;
- Mon, 13 Nov 2023 21:49:35 +0000 (GMT)
-Received: from [9.61.0.196] (unknown [9.61.0.196])
- by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 13 Nov 2023 21:49:35 +0000 (GMT)
-Message-ID: <fa2bacd4-2d7d-06fa-e588-685697e03840@linux.ibm.com>
-Date: Mon, 13 Nov 2023 16:49:34 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2eri-0005e3-6F
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 16:53:06 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2ere-0003jj-W6
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 16:53:04 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-53e751aeb3cso7628632a12.2
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 13:53:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699912380; x=1700517180; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1cfqOQxFSILDkSp2DTNj1jhl1bOT+HIOtitrRoDIf0k=;
+ b=J0H0mk07PlzyJHH5VN2YNsECD/O+qREo33FhqQ7PvOZaPt4llYz4hdvKYlJV/awM4U
+ reulD/xITWbydRWvRZ+/sIP53nrdSGgr/W5DAfkZIbu9psL8w+hT8cl8b2a06H33hydc
+ WcywbnJXKiWjKl1TRoCfj4/xlkMqrS+wpSuSw6x+zggL0wyilFiwjk9djjUnopatBTaz
+ rNONEFsfYEFlYHd+HG04oLKgOzWKn2KNk4PG71sR+X2tR7LZNYY6EMP0wa62f2S+amHv
+ KZJz0q4qEsglgPHtBtnhOprMuC56BhfSktTAIeI85R/8ehYsRFunxdk/iuFZr5I2Lpp+
+ wdSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699912380; x=1700517180;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1cfqOQxFSILDkSp2DTNj1jhl1bOT+HIOtitrRoDIf0k=;
+ b=OtkibL30UIDWIcoiW9zl5Z2XYkrfS3ip36KfwB8XgYiSc38R5u/GjQzyI7gvRkuepb
+ RN8WjwSGzNkbUi9zSQpTRBlikbFMXhvfZsG1FFIeSrjRpXAlwvXQ5TiGzq2GnpzybdCl
+ 5mbHSPUaYBOTOAtHhwoXxyPZeoi/KZY96rX58fa8gOD1zNQ+KWikDCw0qqw3abHOpRIF
+ HC/75xlu9J98zejFwy375ppMTiruwP4Y32Hc3qmjp3T5ifpf4rUDYCX2rbf77HcxtxId
+ 4M0iRk2qNGmrDmuRa/AirGF3T4Oc/gEohrISEfPTyFGLWdOHLghLrd8aLwJm253uaN3E
+ 88FA==
+X-Gm-Message-State: AOJu0YzUfQTr88FXCW6C9NC/8hnciCmHRf0fs1j9B2f7BkhedbquwV9L
+ enLK8OsBojNYsLMhvEZNaKclnw==
+X-Google-Smtp-Source: AGHT+IFgk0wOX3sN9GDkUC0DYL2DIEi8fIc5KpMCLkLhpgtd29TZ/sEwFdlJ7KwcEBLpHrAglSLFpA==
+X-Received: by 2002:aa7:d699:0:b0:543:f7f5:83e5 with SMTP id
+ d25-20020aa7d699000000b00543f7f583e5mr5615282edr.29.1699912379812; 
+ Mon, 13 Nov 2023 13:52:59 -0800 (PST)
+Received: from [192.168.69.100] ([176.164.221.204])
+ by smtp.gmail.com with ESMTPSA id
+ m20-20020a056402051400b005333922efb0sm4215687edv.78.2023.11.13.13.52.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 13 Nov 2023 13:52:59 -0800 (PST)
+Message-ID: <cc03e6fb-a60f-44c0-ac74-3491128db420@linaro.org>
+Date: Mon, 13 Nov 2023 22:52:57 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 2/2] s390x/pci: only limit DMA aperture if vfio DMA
- limit reported
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org
-References: <20231110175108.465851-1-mjrosato@linux.ibm.com>
- <20231110175108.465851-3-mjrosato@linux.ibm.com>
- <6222c257-2732-490c-8f84-3582f501d548@tls.msk.ru>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] spelling: hw/audio/virtio-snd.c: initalize
 Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <6222c257-2732-490c-8f84-3582f501d548@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: IlRKApGOmdZgNjHG-4eB0BgQKOR14H-7
-X-Proofpoint-GUID: IlRKApGOmdZgNjHG-4eB0BgQKOR14H-7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-13_12,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 phishscore=0
- mlxlogscore=788 spamscore=0 clxscore=1011 impostorscore=0
- priorityscore=1501 mlxscore=0 malwarescore=0 suspectscore=0 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311130169
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=mjrosato@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -59
-X-Spam_score: -6.0
-X-Spam_bar: ------
-X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.971,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+References: <20231113212033.2457365-1-mjt@tls.msk.ru>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231113212033.2457365-1-mjt@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,25 +93,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/13/23 4:24 PM, Michael Tokarev wrote:
-> 10.11.2023 20:51, Matthew Rosato wrote:
->> If the host kernel lacks vfio DMA limit reporting, do not attempt
->> to shrink the guest DMA aperture.
->>
->> Fixes: df202e3ff3 ("s390x/pci: shrink DMA aperture to be bound by vfio DMA limit")
->> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
-> 
-> Is this stable-8.1 material?
-> 
-> Thanks,
-> 
-> /mjt
-> 
+On 13/11/23 22:20, Michael Tokarev wrote:
+> Fixes: eb9ad377bb94 "virtio-sound: handle control messages and streams"
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> ---
+>   hw/audio/virtio-snd.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yes, I believe it is (sorry, should have added CC stable)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-If you have a host kernel that doesn't report the vfio DMA limit the resulting PCI device will be rendered unusable in the s390x guest due this bug.
-
-Thanks,
-Matt
 
