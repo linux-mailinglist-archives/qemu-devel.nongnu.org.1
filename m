@@ -2,45 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE7EA7EA342
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 20:03:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D8B7EA345
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 20:06:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2cDP-00035U-Q4; Mon, 13 Nov 2023 14:03:19 -0500
+	id 1r2cFw-0006Xb-5d; Mon, 13 Nov 2023 14:05:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1r2cDN-0002x2-OE
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 14:03:17 -0500
-Received: from vps-vb.mhejs.net ([37.28.154.113])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1r2cDL-0000Ni-2B
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 14:03:17 -0500
-Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
- (envelope-from <mail@maciej.szmigiero.name>)
- id 1r2cDG-0003PW-Hj; Mon, 13 Nov 2023 20:03:10 +0100
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] hv-balloon: define dm_hot_add_with_region to avoid Coverity
- warning
-Date: Mon, 13 Nov 2023 20:03:04 +0100
-Message-ID: <ed4e891f91a089d756ce65626fceee713f9a3274.1699902131.git.maciej.szmigiero@oracle.com>
-X-Mailer: git-send-email 2.42.0
+ (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
+ id 1r2cFj-0006U8-5F
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 14:05:45 -0500
+Received: from mail-qt1-x82f.google.com ([2607:f8b0:4864:20::82f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
+ id 1r2cFc-0000st-Fk
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 14:05:37 -0500
+Received: by mail-qt1-x82f.google.com with SMTP id
+ d75a77b69052e-41e3e77e675so31310061cf.1
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 11:05:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699902335; x=1700507135; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=OpaeiBvhn9XWKK7ldJ1Yp97BtwVlsLFr3N4dEk0Y+94=;
+ b=DGTgWIULs6hsWoHx+rw6yCHoQ5rmtxfdAsfZhPdRn830sPowKWtyGwe4NaT6xTbI/2
+ 3pt8kl9bhkBKIuIHr7JDfn8lnsSCKP1dBpxRIfK7UyEuz69hn1TI2asSZdUkVEmsUZnI
+ P6Yft0mtjcjODuqt1Fn7iKmQfumBj9nO3P2jPe29PClatVwmhEr5JfSFyjS1A6xAJPDG
+ BkojLYyVdFSo4vMlrIsw4xA8OIe8082dqW5z0sMagBhuvwlJEHPKly6rqks2VM57eR08
+ iToasXnr8ds2uaN/AM0/vUO0s+q0Vul0Xz0hyRbUDH0e+N9JoIEuRxA0SF4pisQa4uCN
+ jW7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699902335; x=1700507135;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=OpaeiBvhn9XWKK7ldJ1Yp97BtwVlsLFr3N4dEk0Y+94=;
+ b=j5GWbCSBFq8MMZTFGN3KocM8Rh3sA56753N4Dtr6QYTLxXITq028NMO1uCjCyUh3bP
+ wjt6M03p9Vwgtppkt5Tky8t2L2PpQL/HTTrosGoex+caH4wQ0v3G8kiYq8A8/rbPgRSu
+ Jzo7zRDfOQLun2TVEh2gXLHRkXa56peA29g8dhLjL96RxkCltRNnNeVsZt23PymO9579
+ mF5+DI7rKQonZK3mLqNkadvPM+rGQKAJtl0u1VJ2USQ00MA5TCqkN0bV1wYmuVm2qPs0
+ EzYVkeTC8xiVKJhA8vqwN23T1KT62XlE2EHRZtyuHKfP+pe9WFIOpwhOtrb2C7MmKtvc
+ YRBQ==
+X-Gm-Message-State: AOJu0YwHAxOod07Cx09iqpxSiRHW+AnJ4iGg7CbuEjuAIjDf0VHA+jRX
+ mq7fiie2cOZOUMfDIOSNbXII2w==
+X-Google-Smtp-Source: AGHT+IFUeTprAImyiGGkn7WmuRrD4GUB2z0YZs09zPr7uevlnrRQM9RiC5hfSlXcxlhlIHwPSjVqkg==
+X-Received: by 2002:a05:6214:5ece:b0:66d:a20f:ecfb with SMTP id
+ mn14-20020a0562145ece00b0066da20fecfbmr85198qvb.37.1699902334699; 
+ Mon, 13 Nov 2023 11:05:34 -0800 (PST)
+Received: from leoy-huanghe ([12.186.190.1]) by smtp.gmail.com with ESMTPSA id
+ v11-20020ad4534b000000b006655cc8f872sm1978079qvs.99.2023.11.13.11.05.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 13 Nov 2023 11:05:34 -0800 (PST)
+Date: Tue, 14 Nov 2023 03:05:32 +0800
+From: Leo Yan <leo.yan@linaro.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: Re: [PATCH v1 0/4] virtio: Refactor vhost input stub
+Message-ID: <20231113190532.GB58963@leoy-huanghe>
+References: <20231113011642.48176-1-leo.yan@linaro.org>
+ <20231113012849-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=37.28.154.113;
- envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231113012849-mutt-send-email-mst@kernel.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82f;
+ envelope-from=leo.yan@linaro.org; helo=mail-qt1-x82f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,89 +94,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+Hi Michael,
 
-Since the presence of a hot add memory region is optional in hot add
-request message it wasn't part of this message declaration
-(struct dm_hot_add).
+On Mon, Nov 13, 2023 at 01:29:49AM -0500, Michael S. Tsirkin wrote:
 
-Instead, the code allocated such enlarged message by simply adding the
-necessary size for this extra field to the size of basic hot add message
-struct.
+[...]
 
-However, Coverity considers accessing this extra member to be
-an out-of-bounds access, even thought the memory is actually there.
+> > The series is based on "[PATCH v8 0/7] virtio: cleanup
+> > vhost-user-generic and reduce c&p" which introduces vhost-user-base.
+> > Based-on: <20231107180752.3458672-1-alex.bennee@linaro.org>
+> 
+> 
+> That patchset is deferred until after the release, so this one
+> will be, too. I have tagged it, to help make sure it's not
+> lost pls ping me after the release.
 
-Fix this by adding an extended variant of this message that explicitly has
-an additional union dm_mem_page_range at its end.
+Just remind, I have sent v2.
 
-CID: #1523903
-Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
----
- hw/hyperv/hv-balloon.c           | 10 +++++-----
- include/hw/hyperv/dynmem-proto.h |  9 ++++++++-
- 2 files changed, 13 insertions(+), 6 deletions(-)
+And will monitor mailing list for the release.
 
-diff --git a/hw/hyperv/hv-balloon.c b/hw/hyperv/hv-balloon.c
-index a4b4bde0a1e9..5b8f8aac7216 100644
---- a/hw/hyperv/hv-balloon.c
-+++ b/hw/hyperv/hv-balloon.c
-@@ -512,8 +512,8 @@ ret_idle:
- static void hv_balloon_hot_add_rb_wait(HvBalloon *balloon, StateDesc *stdesc)
- {
-     VMBusChannel *chan = hv_balloon_get_channel(balloon);
--    struct dm_hot_add *ha;
--    size_t ha_size = sizeof(*ha) + sizeof(ha->range);
-+    struct dm_hot_add_with_region *ha;
-+    size_t ha_size = sizeof(*ha);
- 
-     assert(balloon->state == S_HOT_ADD_RB_WAIT);
- 
-@@ -529,8 +529,8 @@ static void hv_balloon_hot_add_posting(HvBalloon *balloon, StateDesc *stdesc)
-     PageRange *hot_add_range = &balloon->hot_add_range;
-     uint64_t *current_count = &balloon->ha_current_count;
-     VMBusChannel *chan = hv_balloon_get_channel(balloon);
--    g_autofree struct dm_hot_add *ha = NULL;
--    size_t ha_size = sizeof(*ha) + sizeof(ha->range);
-+    g_autofree struct dm_hot_add_with_region *ha = NULL;
-+    size_t ha_size = sizeof(*ha);
-     union dm_mem_page_range *ha_region;
-     uint64_t align, chunk_max_size;
-     ssize_t ret;
-@@ -559,7 +559,7 @@ static void hv_balloon_hot_add_posting(HvBalloon *balloon, StateDesc *stdesc)
-     *current_count = MIN(hot_add_range->count, chunk_max_size);
- 
-     ha = g_malloc0(ha_size);
--    ha_region = &(&ha->range)[1];
-+    ha_region = &ha->region;
-     ha->hdr.type = DM_MEM_HOT_ADD_REQUEST;
-     ha->hdr.size = ha_size;
-     ha->hdr.trans_id = balloon->trans_id;
-diff --git a/include/hw/hyperv/dynmem-proto.h b/include/hw/hyperv/dynmem-proto.h
-index d0f9090ac489..834edeb59855 100644
---- a/include/hw/hyperv/dynmem-proto.h
-+++ b/include/hw/hyperv/dynmem-proto.h
-@@ -328,7 +328,8 @@ struct dm_unballoon_response {
- /*
-  * Hot add request message. Message sent from the host to the guest.
-  *
-- * mem_range: Memory range to hot add.
-+ * range: Memory range to hot add.
-+ * region: Explicit hot add memory region for guest to use. Optional.
-  *
-  */
- 
-@@ -337,6 +338,12 @@ struct dm_hot_add {
-     union dm_mem_page_range range;
- } QEMU_PACKED;
- 
-+struct dm_hot_add_with_region {
-+    struct dm_header hdr;
-+    union dm_mem_page_range range;
-+    union dm_mem_page_range region;
-+} QEMU_PACKED;
-+
- /*
-  * Hot add response message.
-  * This message is sent by the guest to report the status of a hot add request.
+Thanks,
+Leo
 
