@@ -2,76 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA477E9CC8
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 14:13:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B8C7E9CD7
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 14:15:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2WjE-0005Ed-UY; Mon, 13 Nov 2023 08:11:48 -0500
+	id 1r2WmI-00068d-Kr; Mon, 13 Nov 2023 08:14:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r2Wj7-0005Cs-Sq
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 08:11:43 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1r2WmG-00068G-Rh
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 08:14:56 -0500
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r2Wj1-0000RJ-A7
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 08:11:36 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-53dfc28a2afso6707436a12.1
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 05:11:34 -0800 (PST)
+ id 1r2WmE-0000qz-Qx
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 08:14:56 -0500
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-5079f3f3d7aso6270162e87.1
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 05:14:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699881093; x=1700485893; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ZgTbo620SzKFbNfoBUClJikuB7okF3V9knnrZKTMLY8=;
- b=DsZ9XPupqAfJDaIJZ3AezRLULgtc9BkkWSbf3ECZ4dEQ1bMW/giIC6hmEeai7yqxZd
- scHAvsoXgC5BN+XsjzLAdfemmhszSsssS0+MkAmIaOOJnrzbWxJ3M6AL11kvQiIiq3TR
- 4xwScjKpBlIYCGd9cvtl+PPIKMLM3PyalUvpsXbR+YmmaDvUQsQeS7zECCCsRgn1Ondj
- NBFO3c0sqOivMbkpgtcxFRa+M2YNwduxlpp+VNy+xiMpRFsayaAFIkbWw01qfAp1uiq6
- xftvebEHTAMDsajS/2vvHMP/+FbBgFQ4PslaPja+n4YZ2bADv+hpLpKZJrS8dvNuGd2T
- EH8A==
+ d=linaro.org; s=google; t=1699881293; x=1700486093; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ARblDR+RgZsvFggZ5aLFDC/QEmos2VHlirN6bW0crxU=;
+ b=i8x9+KjSVb/fCr38zzO9CWgNxJaoy4swqQmuZeAtYg7cj+/4Q9rV7zecmnAkYNM5TW
+ CPpDzDyog2BXQBWa/dninzd1kq+u+YNHpp/D1wi7GFHXt1GZYl3fM7C1q2yna7PFtcpq
+ yoKlCA0F5LNBDFcQJ5shVFByGXbOfOtmpAX7zMFa0wEAT/CsfzIyhFl4xN6Nf94FdRFB
+ CsAOpTVU689PvxYQz3wegsRE4Dh2eN4Y7bO1woM/8PD3G7mNmp+bqvP2+jf+On18Ftiv
+ MZ1o3QzgOcMbtpZ6QExNtTHlY9sEZv+tAddHdexRNBlcXLhnygiIxSOvGZkSbVa4Giib
+ UZWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699881093; x=1700485893;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZgTbo620SzKFbNfoBUClJikuB7okF3V9knnrZKTMLY8=;
- b=V1eGHudALWhFC3gBo0ynrDSilf8kXulq2EcBeTZmUb01owLXtkZCfH+CPxjyLcRurn
- 81pkhtx4JIo3Tp+Ok4H00+P70W+7jRRoke8SoYzgZHgIEbRoE6Y3M26If4jPdf698lr/
- DgbKs+1Yc0Ck0QKCdmt2ZmHPy9OVV7H8Y75GJTNoVvawYFeYXrDvm0beGQUZJZ7gPNfX
- zDoCRhbOf5GK4iwaUZrJbbpoX/EsxZx+gFQWHTMrVwhcx0zex5k0v2Dnqt/BZfI6g4BP
- nLjtLRU5AV7LR40p2FUrCIc6qc0zeI7MOeFFIJ/ajupj/yoJJCHe0TUD1fCu01X1frIH
- VzvA==
-X-Gm-Message-State: AOJu0Yyblfc8RbstECoLy9P3Dne0oSana/MjaSpuIg5F1hUFK2/gHfIT
- p4WYf7saVswNJEgapT5Tv6H2ZmbM87I5WtLGocWqLw==
-X-Google-Smtp-Source: AGHT+IGeHKTmo24CQjCp6K1A7yRD9bgbQEfImpd8W+JHoeSUbzXOKe3aMFQgnVQvNjRN5z50PvNl++uWDB8FEqC8tLI=
-X-Received: by 2002:a05:6402:26c7:b0:530:77e6:849f with SMTP id
- x7-20020a05640226c700b0053077e6849fmr6012174edd.27.1699881093359; Mon, 13 Nov
- 2023 05:11:33 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699881293; x=1700486093;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ARblDR+RgZsvFggZ5aLFDC/QEmos2VHlirN6bW0crxU=;
+ b=pctsBbM91TlY+gTOco7/40tWOJK/ViTiMaJF5E8xmQQVzthT91VQHIfNO6mXFUydAZ
+ eZ+hqK3F2d4kWLQAdWtsff7RWT/KuMfEwVPpp8644Chv/BztobI2pxsj8qe5V3kGO1E0
+ pCjPv7N2+X2ViZl9q0aCDxmOD86qN4y2DMFZbvOfJv6Y8aGRiK05quTUoP435xVAgZz4
+ tJKEMzDlBlD99gt9XyyrrQ6WBT/K6m9hmvCqqLIbNFmTmx08YNnZEsk5/yrRwVuapztd
+ qXihsOJfSG4OXoAv2683irR2xhWjShEtyMjN2gO5F9EHWLXZrgMFiPTtf4KXDKrbY0Oa
+ sPqA==
+X-Gm-Message-State: AOJu0YxJHEBf5ZABZHHH8R0yOo8oWBIaPW/qEBcdhuRZJbDwuewh9lqy
+ QnHCvyx+yV4ZZYpGY91b1oSI3ma9K9HoiwQrAjv0Uw==
+X-Google-Smtp-Source: AGHT+IHRGRcyYgt6olLbMQuZFUZtGHU1+BmowyMUPllq1cThM9WT/yeJO8xIwmnyni+Y4hwk0Vd9udqeP91dAcTOH7Q=
+X-Received: by 2002:ac2:41c3:0:b0:509:4655:d8da with SMTP id
+ d3-20020ac241c3000000b005094655d8damr4152386lfi.53.1699881292458; Mon, 13 Nov
+ 2023 05:14:52 -0800 (PST)
 MIME-Version: 1.0
-References: <20231109192814.95977-1-philmd@linaro.org>
- <CAFEAcA8MJeX1Jk_-ONP1nNgHYadL7Oa8P3jGQXwNoofQnJWk8g@mail.gmail.com>
- <4ffed8f5-6624-4488-a74f-567cbd926b78@linaro.org>
-In-Reply-To: <4ffed8f5-6624-4488-a74f-567cbd926b78@linaro.org>
+References: <20231110090557.3219206-2-jean-philippe@linaro.org>
+ <CAFEAcA_Jja7MT_cSiEJ2it+wG7LnUXfnuoo1vmoUf1-+KSgtAA@mail.gmail.com>
+ <20231110114537.GA3358536@myrica>
+In-Reply-To: <20231110114537.GA3358536@myrica>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 13 Nov 2023 13:11:22 +0000
-Message-ID: <CAFEAcA_0BfGVDZWJUPs8hwYRKS8FmzppQgY+s83qxBXHjLJvnw@mail.gmail.com>
-Subject: Re: [PATCH-for-8.2 v4 00/10] hw/char/pl011: Implement TX (async) FIFO
- to avoid blocking the main loop
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Gavin Shan <gshan@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- Evgeny Iakovlev <eiakovlev@linux.microsoft.com>, qemu-arm@nongnu.org
+Date: Mon, 13 Nov 2023 13:14:41 +0000
+Message-ID: <CAFEAcA9y-8Dy+5-TEERZhWuHf=+U9WEeOtnPjVvU+RaiUrbRhQ@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm/virt: fix GIC maintenance IRQ registration
+To: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,31 +86,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 9 Nov 2023 at 20:59, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
-> wrote:
+On Fri, 10 Nov 2023 at 11:45, Jean-Philippe Brucker
+<jean-philippe@linaro.org> wrote:
 >
-> Hi Peter,
->
-> On 9/11/23 20:29, Peter Maydell wrote:
-> > On Thu, 9 Nov 2023 at 19:28, Philippe Mathieu-Daud=C3=A9 <philmd@linaro=
-.org> wrote:
-> >>
-> >> Missing review: #10
-> >>
-> >> Hi,
-> >>
-> >> This series add support for (async) FIFO on the transmit path
-> >> of the PL011 UART.
+> On Fri, Nov 10, 2023 at 10:19:30AM +0000, Peter Maydell wrote:
+> > On Fri, 10 Nov 2023 at 09:07, Jean-Philippe Brucker
+> > <jean-philippe@linaro.org> wrote:
+> > >
+> > > Since commit 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic"),
+> > > GIC maintenance IRQ registration fails on arm64:
+> > >
+> > > [    0.979743] kvm [1]: Cannot register interrupt 9
+> > >
+> > > That commit re-defined VIRTUAL_PMU_IRQ to be a INTID but missed a case
+> > > where the maintenance IRQ is actually referred by its PPI index. Just
+> > > like commit fa68ecb330db ("hw/arm/virt: fix PMU IRQ registration"), use
+> > > INITID_TO_PPI(). A search of "GIC_FDT_IRQ_TYPE_PPI" indicates that there
+> > > shouldn't be more similar issues.
+> > >
+> > > Fixes: 9036e917f8 ("{include/}hw/arm: refactor virt PPI logic")
+> > > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > >
-> > Hi; what's the rationale for the "for-8.2" targeting here?
-> > What bug are we fixing?
+> > Isn't this already fixed by commit fa68ecb330dbd ?
 >
-> The bug is on Trusted Substrate when the ZynqMP machine is used:
-> https://linaro.atlassian.net/browse/TRS-149?focusedCommentId=3D149574
+> No, that commit fixed the PMU interrupt (I copied most of its commit
+> message and referenced it), but the GIC maintenance interrupt still needed
+> to be fixed.
 
-And have we confirmed that the async FIFO support fixes that problem?
-That bug report seems to have mostly just speculation in it that
-maybe this XXX comment is why...
+Ah, yes, I see now. Applied to target-arm.next, thanks.
 
 -- PMM
 
