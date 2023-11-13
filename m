@@ -2,75 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757FB7E99F5
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 11:15:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4712E7E9A60
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 11:36:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2TxO-0002AF-HR; Mon, 13 Nov 2023 05:14:14 -0500
+	id 1r2UGs-0004ph-GG; Mon, 13 Nov 2023 05:34:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2TxM-0002A3-Er
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:14:12 -0500
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r2UGq-0004pP-6p
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:34:20 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2TxJ-0000Iy-Ku
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:14:11 -0500
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-9e2838bcb5eso623585966b.0
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 02:14:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r2UGo-0003nN-Lu
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:34:19 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-53e08b60febso6537002a12.1
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 02:34:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699870446; x=1700475246; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=NQMoa/G4WBTT5t5h67ExWC9OkfcXaE7vrmZtbsQUzkA=;
- b=mPECkMef3MEctut3ggSkiLcoMjsJP21rR8fypolRSCsUB3fOFSTTqrRgSJHOdBjFfB
- 7ewHjwhtgKKafJkTFrYjw/EhOaI7PAyE7MNC9o6vwKrgAH4gZqU/u0ly3BAIBKjlnT7h
- 8I1KBzmoPm6ZdXbILts8AZI0aaF0Dq6R8we9zdsaM2UkADpG90/3qjYB8SNwCzBxIkLY
- NNCFmtspA9k6BkbkIov05WJv4FDByemZgt1F4M3nDYqpRgeWxphm8ZPc8tv1K9+o7YqI
- XUWCn9zmXSnChtOTAP1nXMzT2IX2vLv4WUuzLkq93WeLwBkoq4GnCeWBVWNET7tbNAKt
- lzvw==
+ d=linaro.org; s=google; t=1699871656; x=1700476456; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=QrcXSqAi8vMbw67ksSuWjxTgnBx4C/i2PpT4Irf43ko=;
+ b=SMsUJzetJwZ5Z9Seskagha1tNla44ul8hdDX7cCJGK1Yj5vbFcqe3bm828BFPLZhSw
+ qbGLPx/8dF4r1rRHPuYowJrs7IUawOgTIHfEzu/obaSHTBYPCTyhRzOp1CRTfTCACrut
+ EqyaIhi+szPP9hyA0oT2jGh/R8nwq4EDJifRM5qmkAbD1su6mqHYMxi5ntP6Z93NbqN3
+ M+AuxK/lUMlvm39NjTTzfrO+5VWvi4TuBWklCYa4V5KYPr7fDy8+p6+JelAMlrOhOvZc
+ q3Ll6ytyu+UeedKNpWcXs56FFBzwZJI7Z0P+VVrQenfEsTJBjBtFQvQJV4fIv48xeji7
+ RQbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699870446; x=1700475246;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NQMoa/G4WBTT5t5h67ExWC9OkfcXaE7vrmZtbsQUzkA=;
- b=UezrRxbNp4fINAg8AfzHIdpyNNggITYY5YYWK5tO0qA794t1buGjPf8BE8ux71LuGu
- 1YUzv9DglnKGvh6hWvRmVgEBVKmQywcDrsd4h2dzrtVtJn9HpX1V/5ERv3G4wjYWuUWx
- pF4kWefE4S/z1vgCY+YjSPX1H7GqTZwHQgZ4zR7IkiCycFdXT3cmrvN1VTWbqOITxrAR
- 2xThm+tGZmQvnmiiAt2mbWT9nthczhpEjQI3Zv5V5YfCNenTDhGrIxqSskk6PAvWNZIt
- orGcJPaesLzQRerExCXnUHbxlhgZV78DGL4V4+Kk45/8BSF3TWyaEnnfvVHShOwd4HNf
- cuyA==
-X-Gm-Message-State: AOJu0Yw70bgAHNbq7hqPtg29qt9ulQHre7KggKW3ql6kBpQCJYRB4FCP
- bbBBAABEOPj1OZkzEUrvIUC3sK5KVYOyzMoLme8=
-X-Google-Smtp-Source: AGHT+IEuEA3vfjKReAOIw0XDBMguRijd+GuYMsmMEJzmk51bSmQovYudcID3P/XecarAals1bibciQ==
-X-Received: by 2002:a17:907:728b:b0:9dd:30c8:6f2f with SMTP id
- dt11-20020a170907728b00b009dd30c86f2fmr6277043ejc.27.1699870446387; 
- Mon, 13 Nov 2023 02:14:06 -0800 (PST)
-Received: from [192.168.69.100] ([176.164.221.204])
- by smtp.gmail.com with ESMTPSA id
- o9-20020a1709061b0900b0099bcf9c2ec6sm3775735ejg.75.2023.11.13.02.14.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Nov 2023 02:14:06 -0800 (PST)
-Message-ID: <d79587a5-ae52-4832-9859-aad3e8b7182d@linaro.org>
-Date: Mon, 13 Nov 2023 11:14:04 +0100
+ d=1e100.net; s=20230601; t=1699871656; x=1700476456;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QrcXSqAi8vMbw67ksSuWjxTgnBx4C/i2PpT4Irf43ko=;
+ b=Xd2KI3koV3TfSPPO7rHgEvEIaeCWVDyFpKDPUUuZ2Yu5ckJGIDm4AaCEHRwbcKGrlw
+ pvxsbypEQVYYGh/cQOEsbQaG6pjs07/PIH3kEEjm9Nv3L/RNz6nmxowVLpq4ew5gPP5C
+ 5PYD1I7BjhB47i223Qx1+oqZVXDKVW4nK7qfPiRy0PrfDPnLJ5MndZ2iDekPoSO11yBJ
+ +R2k5S0xpsLr3kx4etv7P5QyjayWSIUtIN/ZrxRYiuNUsOSuDbuZE0tXt8jrXn2r2rOm
+ 23vowxX/V+n8YY/Hn4CX8v8J0shSSiZsP9NP3IMg3gPsNxAah0yzGst2cG8TzWx/3Nj1
+ QyFQ==
+X-Gm-Message-State: AOJu0Yyy3v+4lErECXWJkvmaWnnJa2cjdMDfaPbzJ3Kd8ib5LeyifOSD
+ Vltjl477hP7PtJPIWxka3QjoYr2YbirzxT8iPsgJxgUXi4PCFwE2ww4=
+X-Google-Smtp-Source: AGHT+IEzYxYS6ER2NT1eR+xrrQe/XZ1Wl9yidR4ZvKX1NyCqBMyzxNU5ylI9GNQxu+24Ch+ghomaWFANuIrZNJg5Ekc=
+X-Received: by 2002:a05:6402:31e2:b0:53e:4dc6:a2e8 with SMTP id
+ dy2-20020a05640231e200b0053e4dc6a2e8mr4621279edb.19.1699871656458; Mon, 13
+ Nov 2023 02:34:16 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] test/qtest: Add an API function to capture IRQ toggling
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, Gustavo Romero
- <gustavo.romero@linaro.org>, qemu-devel@nongnu.org
-Cc: lvivier@redhat.com, pbonzini@redhat.com
-References: <20231112013801.293970-1-gustavo.romero@linaro.org>
- <ddb3f1c5-28d1-472d-b491-703a3e1c6711@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <ddb3f1c5-28d1-472d-b491-703a3e1c6711@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
+References: <3b2253d199165648b958570d6c4db86d6ced139d.1699545634.git.maciej.szmigiero@oracle.com>
+ <54045bb8-8cc1-403e-b22d-2b14476e30a7@redhat.com>
+In-Reply-To: <54045bb8-8cc1-403e-b22d-2b14476e30a7@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 13 Nov 2023 10:33:32 +0000
+Message-ID: <CAFEAcA_eEkU_6XRA+sOUBaM+6iXr_vFdVmOD++RbYHiq037rbA@mail.gmail.com>
+Subject: Re: [PATCH] hv-balloon: avoid alloca() usage
+To: David Hildenbrand <david@redhat.com>
+Cc: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,77 +85,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/11/23 07:59, Thomas Huth wrote:
-> On 12/11/2023 02.38, Gustavo Romero wrote:
->> Currently the QTest API does not provide a function to allow capturing
->> when an IRQ line is toggled (raised then lowered). Functions like
->> qtest_get_irq() read the current state of the intercepted IRQ lines,
->> which is already low when the function is called, since the line is
->> toggled.
->>
->> This commit introduces a new function, qtest_get_irq_trigger_counter(),
->> which returns the number of times a given intercepted IRQ line was
->> triggered (raised), hence allowing to capture when an IRQ line was
->> toggled.
->>
->> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
->> ---
->>   tests/qtest/libqtest.c | 12 ++++++++++++
->>   tests/qtest/libqtest.h |  9 +++++++++
->>   2 files changed, 21 insertions(+)
->>
->> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
->> index f33a210861..21891b52f1 100644
->> --- a/tests/qtest/libqtest.c
->> +++ b/tests/qtest/libqtest.c
->> @@ -82,6 +82,7 @@ struct QTestState
->>       int expected_status;
->>       bool big_endian;
->>       bool irq_level[MAX_IRQ];
->> +    uint64_t irq_trigger_counter[MAX_IRQ];
->>       GString *rx;
->>       QTestTransportOps ops;
->>       GList *pending_events;
->> @@ -498,6 +499,7 @@ static QTestState *qtest_init_internal(const char 
->> *qemu_bin,
->>       s->rx = g_string_new("");
->>       for (i = 0; i < MAX_IRQ; i++) {
->>           s->irq_level[i] = false;
->> +        s->irq_trigger_counter[i] = 0;
->>       }
->>       /*
->> @@ -690,6 +692,7 @@ redo:
->>           if (strcmp(words[1], "raise") == 0) {
->>               s->irq_level[irq] = true;
->> +            s->irq_trigger_counter[irq]++;
+On Mon, 13 Nov 2023 at 08:59, David Hildenbrand <david@redhat.com> wrote:
+>
+> On 09.11.23 17:02, Maciej S. Szmigiero wrote:
+> > From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+> >
+> > alloca() is frowned upon, replace it with g_malloc0() + g_autofree.
+> >
+>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+>
+> If this fixes a coverity issue of #number, we usually indicate that
+> using "CID: #number" or Fixes: CID: #number"
 
-This is 'irq_raised_counter',
+It won't actually fix the CID, though -- the Coverity issue is
+because Coverity doesn't understand that if you allocate memory
+for a struct with a single-element array + something extra then
+it's OK to index off the apparent end of the array because the
+extra memory is there. Switching the allocation from
+alloca to g_malloc won't change that, because we're still
+walking off the end of the defined struct.
 
-> Not sure whether you can get some "raise" events in a row without some 
-> "lower" events in between ... but just in case, I wonder whether it 
-> would make sense to check whether it is really a rising edge, i.e.:
-> 
->             if (strcmp(words[1], "raise") == 0) {
->                 if (!s->irq_level[irq]) {
->                     s->irq_trigger_counter[irq]++;
->                 }
->                 s->irq_level[irq] = true;
-> 
-> What do you think?
+I don't personally like that coding pattern partly because of this,
+but I'm assuming we're dealing with somebody else's API here.
+Using a proper standard variable-length-array rather than a
+one element array might also help, but again, I'm guessing we
+don't have that flexibility to change it.
 
-This is 'irq_pulsed_counter'. 'irq_lowered_counter' could also be
-useful (at least for completeness).
-
-Per Gustavo's description, he indeed wants irq_pulsed_counter (or
-irq_toggled_counter'.
-
-> 
->>           } else {
->>               s->irq_level[irq] = false;
->>           }
-> 
-> Anyway:
-> Acked-by: Thomas Huth <thuth@redhat.com>
-> 
-
+thanks
+-- PMM
 
