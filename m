@@ -2,54 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7405A7E9ABB
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 12:09:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EEFD7E9AB4
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 12:08:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2UnP-0006QA-FS; Mon, 13 Nov 2023 06:07:59 -0500
+	id 1r2UnS-0006SK-Nw; Mon, 13 Nov 2023 06:08:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2UnN-0006Pm-HX
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 06:07:57 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2UnR-0006QW-3V
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 06:08:01 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2UnM-0001Ht-2o
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 06:07:57 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2UnP-0001IS-KL
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 06:08:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699873675;
+ s=mimecast20190719; t=1699873678;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Di5BVZcEyaEAJSWtbI9y7sGg7YjWJ31KVuPJS3ElILc=;
- b=NXmHvqzG8Jl/Xup8vv/7lRPpY1AAEd0np4Ga/+JAJ1zonxOy9bkGFVwgpleU+zDdOa3IVd
- ID3JplpwMYyrVAaxHuReLvQxPv42yfyokqVbK647fwmbY3eBXGIS5QOkQCX9KP1Jn92Z9p
- VxqGjk+oxCgTjrqKI/Kjgq8wOC9of1Q=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-570-jFkc1z2UM2iNbOcPigwMHw-1; Mon, 13 Nov 2023 06:07:53 -0500
-X-MC-Unique: jFkc1z2UM2iNbOcPigwMHw-1
+ bh=mmrUoHF8gDfPo53/iEkVqM837wljFIpEgPPUhue9WXs=;
+ b=E+MQvgDN8RrRkcBY8UHdSeaw1PcAJ8tFpnWiS49dhsUEptHzCR+92/3+gU5wZqaSYqYpwB
+ RS2OLmk4UMpzkOC4+bL2d+SeB5DIoUOuAQ4yBkpqZF/KGzbgSUQq0cHn9ZIrJS0UQ0qxTz
+ 70Go4jZa2iasHka/MPsSFDKfqvSvdj8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-296-k_FyX96jPLW_sVTezcermw-1; Mon,
+ 13 Nov 2023 06:07:55 -0500
+X-MC-Unique: k_FyX96jPLW_sVTezcermw-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A6B32834FC5
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 11:07:53 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 52B423C0BE26;
+ Mon, 13 Nov 2023 11:07:55 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.105])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DDB1E2166B26;
- Mon, 13 Nov 2023 11:07:52 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0961E2166B26;
+ Mon, 13 Nov 2023 11:07:53 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 08/12] MAINTAINERS: Add a general architecture section for x86
-Date: Mon, 13 Nov 2023 12:07:36 +0100
-Message-ID: <20231113110740.38270-9-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 09/12] tests/vm/netbsd: Use Python v3.11
+Date: Mon, 13 Nov 2023 12:07:37 +0100
+Message-ID: <20231113110740.38270-10-thuth@redhat.com>
 In-Reply-To: <20231113110740.38270-1-thuth@redhat.com>
 References: <20231113110740.38270-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -77,43 +79,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's a little bit weird that the files in target/i386/ which
-are not in a subfolder there do not have any associated
-maintainer (and thus nobody might be CC:-ed on changes to
-these files). We should have a general x86 section for these
-files, similar to what we already have for s390x and mips.
-Since Paolo is already listed as maintainer for both, the
-x86 KVM and TCG CPUs, I'd like to suggest him as maintainer
-for the general files, too.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Message-ID: <20230929134551.395438-1-thuth@redhat.com>
+We requiere the 'ninja-build', which depends on 'python311':
+
+  $ pkgin show-deps ninja-build
+  direct dependencies for ninja-build-1.11.1nb1
+          python311>=3.11.0
+
+So we end up installing both Python v3.10 and v3.11:
+
+  [31/76] installing python311-3.11.5...
+  [54/76] installing python310-3.10.13...
+  [74/76] installing py310-expat-3.10.13nb1...
+
+Then the build system picks Python v3.11, and doesn't find
+py-expat because we only installed the 3.10 version:
+
+  python determined to be '/usr/pkg/bin/python3.11'
+  python version: Python 3.11.5
+
+  *** Ouch! ***
+
+  Python's pyexpat module is not found.
+  It's normally part of the Python standard library, maybe your distribution packages it separately?
+  Either install pyexpat, or alleviate the need for it in the first place by installing pip and setuptools for '/usr/pkg/bin/python3.11'.
+
+  (Hint: NetBSD's pkgsrc debundles this to e.g. 'py310-expat'.)
+
+  ERROR: python venv creation failed
+
+Fix by installing py-expat for v3.11. Remove the v3.10
+packages since we aren't using them anymore.
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20231109150900.91186-1-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tests/vm/netbsd | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c127a373ab..6999b26a0f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -131,6 +131,17 @@ K: ^Subject:.*(?i)mips
- F: docs/system/target-mips.rst
- F: configs/targets/mips*
+diff --git a/tests/vm/netbsd b/tests/vm/netbsd
+index 40b27a3469..649fcad353 100755
+--- a/tests/vm/netbsd
++++ b/tests/vm/netbsd
+@@ -30,8 +30,8 @@ class NetBSDVM(basevm.BaseVM):
+         "git-base",
+         "pkgconf",
+         "xz",
+-        "python310",
+-        "py310-expat",
++        "python311",
++        "py311-expat",
+         "ninja-build",
  
-+X86 general architecture support
-+M: Paolo Bonzini <pbonzini@redhat.com>
-+S: Maintained
-+F: configs/devices/i386-softmmu/default.mak
-+F: configs/targets/i386-softmmu.mak
-+F: configs/targets/x86_64-softmmu.mak
-+F: docs/system/target-i386*
-+F: target/i386/*.[ch]
-+F: target/i386/Kconfig
-+F: target/i386/meson.build
-+
- Guest CPU cores (TCG)
- ---------------------
- Overall TCG CPUs
+         # gnu tools
 -- 
 2.41.0
 
