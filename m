@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B287EA196
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 18:02:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 006917EA1A8
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 18:05:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2aIw-0004Iv-9r; Mon, 13 Nov 2023 12:00:54 -0500
+	id 1r2aMN-0007fG-3H; Mon, 13 Nov 2023 12:04:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r2aIc-0004DF-JS
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:00:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r2aIa-0003HM-Mo
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:00:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699894831;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=ke0I3hj/zyNokb5NbokgD8RE7oBwMJxzs481lGhfDdY=;
- b=B/fVvggf5cc5rD0j6iN/lf0YwaKyaf5uemwchP2lJgMUC1rchf2bM5fnaem2am5zKo6vEL
- bVZHfmtiKvGQG/2bLpeRhDWlm6JQ/YttC8UA6Norlw+AibZJezPXfYtiuAgB1P0/V2a3ur
- uK35AseQUH0qIZIHb0IUl9urmvgrPmI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-e_ySB_eQOFKkTAW8AiX7jA-1; Mon,
- 13 Nov 2023 12:00:29 -0500
-X-MC-Unique: e_ySB_eQOFKkTAW8AiX7jA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 03F3C1C07551;
- Mon, 13 Nov 2023 17:00:29 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.109])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id F30CC5031;
- Mon, 13 Nov 2023 17:00:27 +0000 (UTC)
-Date: Mon, 13 Nov 2023 17:00:25 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2] tests/qemu-iotests/149: Use more inclusive language
- in this test
-Message-ID: <ZVJWKdDYSeeEthmD@redhat.com>
-References: <20231113165642.62012-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r2aMH-0007Xi-9s
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:04:22 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r2aMF-0004PK-Az
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:04:21 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5437d60fb7aso7089959a12.3
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 09:04:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699895057; x=1700499857; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=tXoTXFWOeQYOegr331Fli9ECx2LaIgBkkd5shOsuOag=;
+ b=mfRueeFA/TIBNaXsiQ1+Eflvl6fV2lJcjr4OknZ7kUHCsw9q5B8HlFTTv+x+U3sinb
+ SgFpgocCIT2ZozG+3QR3qe1DSRU0NWZS9aiyBKXw6UeXrLI/Q1ZF0YehyCKTxeMzGIKj
+ iEzRX2z7hA0agfT8bOA1wAME0BGC9fnsXLI9JN8EfPB/8q3fDk0JrBMKvojXSAOqXsfq
+ izeHikygA88Okss7izV+ZuUiaSAfU3JsohniKXNak4TpJ7S8adF2dTAt0eM7Q+ssfiHY
+ 35QMFDcv/BwLC1orthLuPwWKQieUuL6iFKvOLgyGtRW8++1g9TEbznMX9/L6Zna5GHgY
+ 5Hlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699895057; x=1700499857;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tXoTXFWOeQYOegr331Fli9ECx2LaIgBkkd5shOsuOag=;
+ b=Fc362o2vKro2eLbjIanMJWa+CGSqfGZxPyNeuZzFrVAkBpejDLQ4UJdVs9BYrVCL7w
+ 3iNObPbQY54s1vH7Fw0jrnEmuYY+N0IGMT11efJ+nFs7/h2/yt7KpuHqQcEAYSEqmKun
+ mKirLsyN7o0IfUeVxiTufUBpLHkJrNyUlLQpQwU5DwDm7BuEnZvaEJjXwc0Rxczg1/cw
+ KNl1JWwlC5gABqBWdZNfvbZ8DY3jo2jL3WAekvJFhoJiC9Nr0dONtd+lWQWjOjkfmorL
+ hfEJLUBZGAmnqmDK7oqgD2HD+Fo24eo0lkJuZfXrUBBeL0yUovkamp1Eb2UsaDWy2OlI
+ U/jQ==
+X-Gm-Message-State: AOJu0YywWlH7VrQvXccAmLztx0l7iMSiI3R/Y2xynm22DcNChfMCkVsc
+ mcoiAwup8+wxDSW1TctOfiIHRwnn+xfRsX0FWVgrHw==
+X-Google-Smtp-Source: AGHT+IGNB4C0aKc23XbY66q8whoA7OHSXHRK+jgvY64ZhepcLnWGUBmF8KgPUvblpW9y4SI1SV3OSK6d6jQiUPhuC4U=
+X-Received: by 2002:a05:6402:1052:b0:543:52be:e6ad with SMTP id
+ e18-20020a056402105200b0054352bee6admr5217435edu.5.1699895057359; Mon, 13 Nov
+ 2023 09:04:17 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231113165642.62012-1-thuth@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20231112165658.2335-1-n.ostrenkov@gmail.com>
+In-Reply-To: <20231112165658.2335-1-n.ostrenkov@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 13 Nov 2023 17:04:06 +0000
+Message-ID: <CAFEAcA_qmKctYajg2fXSd0GU0YtD_HBPGq5_BzdDDj0aLw1J9g@mail.gmail.com>
+Subject: Re: [PATCH v3] target/arm/tcg: enable pmu feature for cortex a9
+To: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,117 +81,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 13, 2023 at 05:56:42PM +0100, Thomas Huth wrote:
-> Let's use 'unsupported_configs' and 'tested_configs' here instead
-> of non-inclusive words.
-> 
-> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+On Sun, 12 Nov 2023 at 16:57, Nikita Ostrenkov <n.ostrenkov@gmail.com> wrote:
+>
+> According to the technical reference manual Cortex A9 like Cortex A7 and Cortex A15 has Perfomance Unit Monitor (PMU)
+> https://developer.arm.com/documentation/100511/0401/performance-monitoring-unit/about-the-performance-monitoring-unit
+>
+> Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
 > ---
->  v2: Use different wordings (suggested by Paolo)
-> 
->  tests/qemu-iotests/149     | 16 +++++++++-------
->  tests/qemu-iotests/149.out |  8 ++++----
->  2 files changed, 13 insertions(+), 11 deletions(-)
-> 
-> diff --git a/tests/qemu-iotests/149 b/tests/qemu-iotests/149
-> index 2ae318f16f..2a8bb5787f 100755
-> --- a/tests/qemu-iotests/149
-> +++ b/tests/qemu-iotests/149
-> @@ -518,7 +518,7 @@ configs = [
->  
->  ]
->  
-> -blacklist = [
-> +unsupported_configs = [
->      # We don't have a cast-6 cipher impl for QEMU yet
->      "cast6-256-xts-plain64-sha1",
->      "cast6-128-xts-plain64-sha1",
-> @@ -528,17 +528,19 @@ blacklist = [
->      "twofish-192-xts-plain64-sha1",
->  ]
->  
-> -whitelist = []
-> +# Optionally test only the configurations in the LUKS_CONFIG
-> +# environment variable
-> +tested_configs = None
->  if "LUKS_CONFIG" in os.environ:
-> -    whitelist = os.environ["LUKS_CONFIG"].split(",")
-> +    tested_configs = os.environ["LUKS_CONFIG"].split(",")
->  
->  for config in configs:
-> -    if config.name in blacklist:
-> -        iotests.log("Skipping %s in blacklist" % config.name)
-> +    if config.name in unsupported_configs:
-> +        iotests.log("Skipping %s (cipher not supported)" % config.name)
+>  target/arm/tcg/cpu32.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/target/arm/tcg/cpu32.c b/target/arm/tcg/cpu32.c
+> index 0d5d8e307d..0008c3f890 100644
+> --- a/target/arm/tcg/cpu32.c
+> +++ b/target/arm/tcg/cpu32.c
+> @@ -418,6 +418,7 @@ static void cortex_a9_initfn(Object *obj)
+>      set_feature(&cpu->env, ARM_FEATURE_NEON);
+>      set_feature(&cpu->env, ARM_FEATURE_THUMB2EE);
+>      set_feature(&cpu->env, ARM_FEATURE_EL3);
+> +    set_feature(&cpu->env, ARM_FEATURE_PMU);
+>      /*
+>       * Note that A9 supports the MP extensions even for
+>       * A9UP and single-core A9MP (which are both different
 
-s/cipher/config/  - this is about more than just ciphers - it is the
-combination of algorithms (cipher, hash, ivgen).
+Thanks for this patch.
 
->          continue
->  
-> -    if len(whitelist) > 0 and config.name not in whitelist:
-> -        iotests.log("Skipping %s not in whitelist" % config.name)
-> +    if tested_configs is not None and config.name not in tested_configs:
-> +        iotests.log("Skipping %s (not in LUKS_CONFIG)" % config.name)
+There definitely seem to be some weirdnesses in our PMU emulation
+for older CPUs like the A9. In particular we define the registers
+in v7_cp_reginfo[], so you get them on all v7 cores, even if
+ARM_FEATURE_PMU is turned off; they just don't actually do anything.
+This seems to affect the cortex-a8 and cortex-a9; everything
+newer defines ARM_FEATURE_PMU. We really ought to have the PMU
+registers separated out and only defined for ARM_FEATURE_PMU CPUs.
+(Annoyingly, we can't drop ARM_FEATURE_PMU and look at ID_DFR0
+instead, because the A8 and A9 have a PMU but don't advertise
+it in ID_DFR0, because they predate the PMUv2 standardization
+of the ID_DFR0 field for that.)
 
-This is essentially at the demand of the person invoking it, so I'd
-say
+The other thing here is that these CPUs are older versions
+of the PMU, so strictly we ought to check whether they
+have deviations from the registers we define. But since
+we're already defining all those registers anyway, it seems
+safe enough to let them actually work.
 
-  s/not in LUKS_CONFIG/by user request/
+I've applied this to target-arm.next, with an update to also
+set ARM_FEATURE_PMU for the Cortex-A8, since that was the
+only other CPU in this odd "PMU registers present but not
+really working" state.
 
-
-
->          continue
->  
->      test_once(config, qemu_img=False)
-> diff --git a/tests/qemu-iotests/149.out b/tests/qemu-iotests/149.out
-> index 2cc5b82f7c..3c731bdf95 100644
-> --- a/tests/qemu-iotests/149.out
-> +++ b/tests/qemu-iotests/149.out
-> @@ -470,7 +470,7 @@ sudo cryptsetup -q -v luksClose qiotest-145-cast5-128-cbc-plain64-sha1
->  # Delete image
->  unlink TEST_DIR/luks-cast5-128-cbc-plain64-sha1.img
->  
-> -Skipping cast6-256-xts-plain64-sha1 in blacklist
-> +Skipping cast6-256-xts-plain64-sha1 (cipher not supported)
->  # ================= dm-crypt aes-256-cbc-plain-sha1 =================
->  # Create image
->  truncate TEST_DIR/luks-aes-256-cbc-plain-sha1.img --size 4194304MB
-> @@ -1297,7 +1297,7 @@ sudo cryptsetup -q -v luksClose qiotest-145-twofish-128-xts-plain64-sha1
->  # Delete image
->  unlink TEST_DIR/luks-twofish-128-xts-plain64-sha1.img
->  
-> -Skipping twofish-192-xts-plain64-sha1 in blacklist
-> +Skipping twofish-192-xts-plain64-sha1 (cipher not supported)
->  # ================= dm-crypt serpent-128-xts-plain64-sha1 =================
->  # Create image
->  truncate TEST_DIR/luks-serpent-128-xts-plain64-sha1.img --size 4194304MB
-> @@ -1534,8 +1534,8 @@ sudo cryptsetup -q -v luksClose qiotest-145-serpent-192-xts-plain64-sha1
->  # Delete image
->  unlink TEST_DIR/luks-serpent-192-xts-plain64-sha1.img
->  
-> -Skipping cast6-128-xts-plain64-sha1 in blacklist
-> -Skipping cast6-192-xts-plain64-sha1 in blacklist
-> +Skipping cast6-128-xts-plain64-sha1 (cipher not supported)
-> +Skipping cast6-192-xts-plain64-sha1 (cipher not supported)
->  # ================= dm-crypt aes-256-xts-plain64-sha224 =================
->  # Create image
->  truncate TEST_DIR/luks-aes-256-xts-plain64-sha224.img --size 4194304MB
-> -- 
-> 2.41.0
-> 
-> 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+thanks
+-- PMM
 
