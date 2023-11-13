@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9157EA07D
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 16:49:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D46EF7EA0B3
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 16:56:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2ZBE-0001ja-En; Mon, 13 Nov 2023 10:48:52 -0500
+	id 1r2ZHG-00035p-R2; Mon, 13 Nov 2023 10:55:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2ZBC-0001jO-SY
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:48:50 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2ZHE-00035L-A8
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:55:04 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2ZBA-0007z3-Nf
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:48:50 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2ZHC-0000g6-DG
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:55:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699890527;
+ s=mimecast20190719; t=1699890901;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=IITMFv/EI7Zu33pKhb7Vv7h1zZ2hSj6yV0+8SNIvySA=;
- b=Xb8L0kuIjG5VT1DQqV0V6GTZkB1TYxZy5XGvnmvfORyaam2/rdlnyK/95l+HVUnNwbVb6D
- Y3oaxuZU4QLpkDLdlCMXpZ8JApq5Cc2nF0VcQUuj4IHN2KIoCYYzSyahSJuBeDRR0OmH2c
- gAY1S6FzoahNaNnJgjmmTFjaFqIUnbA=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Mm5g/oKF5vcP9+nurcTyb+uUJzHdUzry68ElTYh6x3A=;
+ b=dge/spYAHZVHmy501tkmn74HQGlZXSZBzY514IFaTmRAZGe6RvGg2/3RVWR5Haa7INrpfw
+ nrVh7s4hNTQKcedjsopltpKVQLhZTKHRwtKNeACvdS0MoP4AmavOpkhIfw4rJ3yim6Klxw
+ aKfz5fGCTxukdH7otY+ml/vT3800gFA=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-552-hFbg0MtdNPuHuGT26SSz9A-1; Mon, 13 Nov 2023 10:48:45 -0500
-X-MC-Unique: hFbg0MtdNPuHuGT26SSz9A-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-66d026cae6eso52493406d6.3
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 07:48:45 -0800 (PST)
+ us-mta-658-542Lo4GkPSiLGRzAvCTvuA-1; Mon, 13 Nov 2023 10:54:57 -0500
+X-MC-Unique: 542Lo4GkPSiLGRzAvCTvuA-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-66d026cae6eso52556116d6.3
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 07:54:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699890525; x=1700495325;
+ d=1e100.net; s=20230601; t=1699890896; x=1700495696;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IITMFv/EI7Zu33pKhb7Vv7h1zZ2hSj6yV0+8SNIvySA=;
- b=ZJkUG+QF7zYlbuMwh0LjVJ+BDYYSVuUFQUP2dVvSK68wCX5TP2zgSgHPmZR/ofTVIq
- 0eJW1jcFc8z6vqtbZS35lxuq8fvmMe6kUZDfy7jvoopHCXan8Juw98JmpUik7E+IZMEp
- vxItqYbLEHO4WQGSkrEWcgphhy9teB5CYzaaQLUCRaFDq0V6ka/2z1UvzAyOMcOU+y65
- 5EWNSDM27nh1ZHJFG8wzY6Tpw4jddeZi6ffLIg8vaZJ5fI3NIrL709L6xDEDo7ViWv8I
- 6ZdW2Lf9+jb1zE9mfQTklsbZDIhknDIx5HQbbd/HC41YSXHQf90JncBYxRCwCzsH0O6a
- LKdg==
-X-Gm-Message-State: AOJu0YwjxMqNqIz7b57rMJVsqar6ZjFUCTWxV2O/KmG7N7+BrMyZw9+w
- PFj3/Dv6g5eHcawe27d2q2JwqYqwMKNqNpHrr/bqs3QWa1As9v/6J62XlSteQwkwkFp0xPgD/ma
- FmkYEBc+ZMvgGn4M=
-X-Received: by 2002:ad4:4e0f:0:b0:65d:475a:a2f6 with SMTP id
- dl15-20020ad44e0f000000b0065d475aa2f6mr7232458qvb.40.1699890525577; 
- Mon, 13 Nov 2023 07:48:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFl7nNJRjcLUkz3pHEuz/Qc19Tkk7JN0ni/2kPt6s94q2jfzcYrtlIi0vSk6NRfPCJphBnMyg==
-X-Received: by 2002:ad4:4e0f:0:b0:65d:475a:a2f6 with SMTP id
- dl15-20020ad44e0f000000b0065d475aa2f6mr7232435qvb.40.1699890525294; 
- Mon, 13 Nov 2023 07:48:45 -0800 (PST)
+ bh=Mm5g/oKF5vcP9+nurcTyb+uUJzHdUzry68ElTYh6x3A=;
+ b=KMUp+rvw4qBDNTXZkGJtkj9uPKZoBNdTNXsQlACkUgyuSOFYqKuCQad5bxLXTWhYmB
+ UR1+kqHaPOK9EV02+yQN8iGuB9WWmW8quCgmeWJHL7n36jU3q4Rr9Z4FIJZONHwQ0N/l
+ imm8LeVMYYA9/hyqw9qVkcETQFY5x0IQvVwwonRmdptEvorp3SZg0PVLXsAn/gAX17fG
+ lFRuTi3bya69i4SnCZlSHnE+P7ihiFYFB8IjtzGkAtyQvySxBjL4xSPhAC9UWjv5Jbl/
+ smBqXJYddVfEgL4kKncKk3GRjpjsZcHcFRJPJJ4STdYYmCg4Xg9mfCvDN1WONoTBWU+U
+ rQdQ==
+X-Gm-Message-State: AOJu0Yx6Ok4e7Gr/FGr4WN10jsGDMm6/pLdqEQq5nioreTqK2uJY3cX4
+ yE+tWamOd3i0oHV/4iQcQpdJ69uSUCSY7+uRBoK9VsU4UaoWa7El8GBXYywP/RCptoKcZqZJSKu
+ majXCMQ49oRBNUaI=
+X-Received: by 2002:ad4:4c4d:0:b0:673:72a4:b0bc with SMTP id
+ cs13-20020ad44c4d000000b0067372a4b0bcmr7493173qvb.38.1699890896746; 
+ Mon, 13 Nov 2023 07:54:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEnrM8N5+lHSExDqqBnqdqShfxr2q/xlkLVTGxO5/OMk7cUnCE2vb0pT6ZI3WkuwvQoXFZxhg==
+X-Received: by 2002:ad4:4c4d:0:b0:673:72a4:b0bc with SMTP id
+ cs13-20020ad44c4d000000b0067372a4b0bcmr7493163qvb.38.1699890896507; 
+ Mon, 13 Nov 2023 07:54:56 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-177-79.web.vodafone.de.
  [109.43.177.79]) by smtp.gmail.com with ESMTPSA id
- mg3-20020a056214560300b0065afcf19e23sm2134863qvb.62.2023.11.13.07.48.42
+ a4-20020a0cefc4000000b0065af9d1203dsm2169247qvt.121.2023.11.13.07.54.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Nov 2023 07:48:45 -0800 (PST)
-Message-ID: <55daeff7-8595-4f9d-b69a-cbc02b42517e@redhat.com>
-Date: Mon, 13 Nov 2023 16:48:39 +0100
+ Mon, 13 Nov 2023 07:54:56 -0800 (PST)
+Message-ID: <43bf23f8-ef98-453b-a687-5367e39f0c2b@redhat.com>
+Date: Mon, 13 Nov 2023 16:54:52 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/avocado/machine_s390_ccw_virtio.py: Fix
- SyntaxWarnings from python 3.12
+Subject: Re: [PATCH 1/2] docs/system/arm: Fix for rename of type
+ "xlnx.bbram-ctrl"
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-s390x@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>,
- Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, John Snow <jsnow@redhat.com>
-References: <20231113140721.46903-1-thuth@redhat.com>
- <2d938d82-d7ca-4cd1-b4eb-a24bc4b6c337@linaro.org>
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: alistair@alistair23.me, edgar.iglesias@gmail.com,
+ peter.maydell@linaro.org, francisco.iglesias@amd.com, qemu-arm@nongnu.org
+References: <20231113134344.1195478-1-armbru@redhat.com>
+ <20231113134344.1195478-2-armbru@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -120,19 +116,19 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <2d938d82-d7ca-4cd1-b4eb-a24bc4b6c337@linaro.org>
+In-Reply-To: <20231113134344.1195478-2-armbru@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,56 +144,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/11/2023 15.47, Philippe Mathieu-Daudé wrote:
-> On 13/11/23 15:07, Thomas Huth wrote:
->> Python 3.12 now warns about backslashes in strings that aren't used
->> for escaping a special character from Python. Silence the warning
->> by using raw strings here instead.
->>
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   tests/avocado/machine_s390_ccw_virtio.py | 18 +++++++++---------
->>   1 file changed, 9 insertions(+), 9 deletions(-)
->>
->> diff --git a/tests/avocado/machine_s390_ccw_virtio.py 
->> b/tests/avocado/machine_s390_ccw_virtio.py
->> index e1f493bc44..ffd914ded9 100644
->> --- a/tests/avocado/machine_s390_ccw_virtio.py
->> +++ b/tests/avocado/machine_s390_ccw_virtio.py
->> @@ -36,8 +36,8 @@ def wait_for_crw_reports(self):
->>       dmesg_clear_count = 1
->>       def clear_guest_dmesg(self):
->>           exec_command_and_wait_for_pattern(self, 'dmesg -c > /dev/null; '
->> -                    'echo dm_clear\ ' + str(self.dmesg_clear_count),
->> -                    'dm_clear ' + str(self.dmesg_clear_count))
->> +                    r'echo dm_clear\ ' + str(self.dmesg_clear_count),
->> +                    r'dm_clear ' + str(self.dmesg_clear_count))
->>           self.dmesg_clear_count += 1
->>       def test_s390x_devices(self):
->> @@ -121,15 +121,15 @@ def test_s390x_devices(self):
->>                                       'cat 
->> /sys/bus/ccw/devices/0.1.1111/cutype',
->>                                       '3832/01')
->>           exec_command_and_wait_for_pattern(self,
->> -                    'cat 
->> /sys/bus/pci/devices/0005\:00\:00.0/subsystem_vendor',
->> -                    '0x1af4')
->> +                    r'cat 
->> /sys/bus/pci/devices/0005\:00\:00.0/subsystem_vendor',
->> +                    r'0x1af4')
+On 13/11/2023 14.43, Markus Armbruster wrote:
+> Fixes: b65b4b7ae3c8 (xlnx-bbram: hw/nvram: Use dot in device type name)
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>   docs/system/arm/xlnx-versal-virt.rst | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Do we really need to escape the hex number?
+> diff --git a/docs/system/arm/xlnx-versal-virt.rst b/docs/system/arm/xlnx-versal-virt.rst
+> index d2d1b26692..a6a77b3799 100644
+> --- a/docs/system/arm/xlnx-versal-virt.rst
+> +++ b/docs/system/arm/xlnx-versal-virt.rst
+> @@ -194,7 +194,7 @@ To use a different index value, N, from default of 0, add:
+>   
+>   .. code-block:: bash
+>   
+> -  -global xlnx,bbram-ctrl.drive-index=N
+> +  -global xlnx.bbram-ctrl.drive-index=N
 
-No, technically not, but it look kind of ugly to me if the strings that are 
-indented on the same level start with a different prefix, so I'd prefer to 
-keep them.
+Ouch, that's now ugly, too. Imagine that we have a device called "xlnx" one 
+day, how's the reader supposed to distinguish between the "xlnx" and the 
+"xlnx.bbram-ctrl" device here?
 
-> 
-> Otherwise,
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+It feels like we should forbid both, "," and "." in device names...
 
-Thanks!
-
-  Thomas
+Anyway, for the current state:
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
