@@ -2,86 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB1427EA109
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 17:13:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6442A7EA139
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 17:24:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2ZYR-0003KH-0B; Mon, 13 Nov 2023 11:12:51 -0500
+	id 1r2ZiN-00072o-2u; Mon, 13 Nov 2023 11:23:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2ZYP-0003K1-Tj
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 11:12:49 -0500
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2ZYO-00040v-0D
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 11:12:49 -0500
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2c72e275d96so62631861fa.2
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 08:12:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699891966; x=1700496766; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Yl4xTLMqQWk2uepu3DZU0VGOTPzmuSp0w7NXUiLqnGc=;
- b=MaT2vzrqCdzZsio6YWLzJQ9pPQAckvTel6y5GGXt/juTj9JhoJniXeuCIM+mxKL3kf
- 1xqYrbf3m5e6/mB85ETelXMBjkPdtdvF9nJLiQIMKw3ttjAVtTuhAZdNZ04OMmAhoTP9
- IE9NsrlFNMp1RUx4I/LzHYG6C2kj/OLyEXn0TmFNctfzxrUDMP8TcmVD6x56j9wgeQBE
- 0H0J7AA7udUVZ8GjvC1x16kLrhcI+BpLSmJTmBzVa8RDT/XHjBguTnl0zSl3uIUUypdo
- IbXK3BH+/Ux1vQAtx7DjDbm0k5eok6VePVwUA31CVJS2bI8vf+JAV2o7dbPc7b7wjyQ3
- 03lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699891966; x=1700496766;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Yl4xTLMqQWk2uepu3DZU0VGOTPzmuSp0w7NXUiLqnGc=;
- b=hGFI/shHiXWZ9Skm0iXn2GFASylVRuYpmmHAgoCOctYetbOPQHj57xFOW+pFPyuSO5
- fDmWVNi0OFmWCZHyg/1zq45vQ0tSmk+75QAYewle8z4Vsz3N1yN7HDpzbu85TsKA13ui
- q1CEYKUsvfY77ffvNqiule3+fmx2DrNSn4bRdg8Z+yhj/PxH68jWfqKMAtTI7QSo7m3D
- SdZWVmSMHqJ8hJyOJq8XTj7Ogl8MKvSdchPGQcIwmHMpwlaMjuPMChuLqhVTfaja2wSu
- yth9es4EN2zordlNbC8Uda7nPEl4NM/IrHPhmVvfHQWrGlSE2mqE8t6lPOplxNl5jw5H
- JWeg==
-X-Gm-Message-State: AOJu0YyjZR/4ZNQrLiWW4SgyKNlEcSfPWB059gqGrTt6eKJzhV2QaCUg
- I63PdIkAiT3o7CV56/dRD0mMMw==
-X-Google-Smtp-Source: AGHT+IEZEdL+8yFH1ZJRilpNLdRY2wE8/vLXRnFFQzh3Fsd9sVG49+zMJROFTKtDj+J66GzhRaZ3PQ==
-X-Received: by 2002:a2e:9848:0:b0:2c5:2221:614f with SMTP id
- e8-20020a2e9848000000b002c52221614fmr4765063ljj.45.1699891966031; 
- Mon, 13 Nov 2023 08:12:46 -0800 (PST)
-Received: from [192.168.69.100] ([176.164.221.204])
- by smtp.gmail.com with ESMTPSA id
- gx24-20020a170906f1d800b009c503bf61c9sm4153662ejb.165.2023.11.13.08.12.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Nov 2023 08:12:45 -0800 (PST)
-Message-ID: <8e4496fb-1e6a-4724-a272-4076d5b4745d@linaro.org>
-Date: Mon, 13 Nov 2023 17:12:43 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2ZiL-000724-DS
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 11:23:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2ZiJ-0005Gw-Mm
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 11:23:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699892583;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=5FF8VvkwUcZrfN2KkFU+AGkFEcy2kySXeryCtxcW9Ug=;
+ b=Jgx5bx5Uqc4DGP+3ib88PhJ1fZzB76YKTW4WXtL8pY8Vptw2ml5gtfMMJ8UQLs4+XoGEPK
+ i0FN2vevlLl1R3B5DAjNipVE8buM5P6Dr/Csi6sm6LmILNHujiTqo7nhYnPGxDuFCKih5Q
+ hHXvBrDmUWT3wIF2+CPonaO8TvPEFqs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-256-KOSOH5WUMHmb2y3DwXQKtQ-1; Mon, 13 Nov 2023 11:22:57 -0500
+X-MC-Unique: KOSOH5WUMHmb2y3DwXQKtQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B8F82852AC0;
+ Mon, 13 Nov 2023 16:22:55 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7D2B336EE;
+ Mon, 13 Nov 2023 16:22:55 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 6C4F321E6A1F; Mon, 13 Nov 2023 17:22:54 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,  alistair@alistair23.me,
+ edgar.iglesias@gmail.com,  peter.maydell@linaro.org,
+ francisco.iglesias@amd.com,  qemu-arm@nongnu.org
+Subject: Re: [PATCH 1/2] docs/system/arm: Fix for rename of type
+ "xlnx.bbram-ctrl"
+References: <20231113134344.1195478-1-armbru@redhat.com>
+ <20231113134344.1195478-2-armbru@redhat.com>
+ <43bf23f8-ef98-453b-a687-5367e39f0c2b@redhat.com>
+Date: Mon, 13 Nov 2023 17:22:54 +0100
+In-Reply-To: <43bf23f8-ef98-453b-a687-5367e39f0c2b@redhat.com> (Thomas Huth's
+ message of "Mon, 13 Nov 2023 16:54:52 +0100")
+Message-ID: <87pm0dk4gx.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/avocado/machine_s390_ccw_virtio.py: Fix
- SyntaxWarnings from python 3.12
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>,
- Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, John Snow <jsnow@redhat.com>
-References: <20231113140721.46903-1-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231113140721.46903-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,15 +85,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/11/23 15:07, Thomas Huth wrote:
-> Python 3.12 now warns about backslashes in strings that aren't used
-> for escaping a special character from Python. Silence the warning
-> by using raw strings here instead.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   tests/avocado/machine_s390_ccw_virtio.py | 18 +++++++++---------
->   1 file changed, 9 insertions(+), 9 deletions(-)
+Thomas Huth <thuth@redhat.com> writes:
 
-Thanks, patch queued.
+> On 13/11/2023 14.43, Markus Armbruster wrote:
+>> Fixes: b65b4b7ae3c8 (xlnx-bbram: hw/nvram: Use dot in device type name)
+>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>> ---
+>>   docs/system/arm/xlnx-versal-virt.rst | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>> diff --git a/docs/system/arm/xlnx-versal-virt.rst b/docs/system/arm/xlnx-versal-virt.rst
+>> index d2d1b26692..a6a77b3799 100644
+>> --- a/docs/system/arm/xlnx-versal-virt.rst
+>> +++ b/docs/system/arm/xlnx-versal-virt.rst
+>> @@ -194,7 +194,7 @@ To use a different index value, N, from default of 0, add:
+>>     .. code-block:: bash
+>>   -  -global xlnx,bbram-ctrl.drive-index=N
+>> +  -global xlnx.bbram-ctrl.drive-index=N
+>
+> Ouch, that's now ugly, too. Imagine that we have a device called "xlnx" one day, how's the reader supposed to distinguish between the "xlnx" and the "xlnx.bbram-ctrl" device here?
+
+Hmm, it's actually worse than ugly: it doesn't work.
+
+    $ qemu-system-aarch64 -nodefaults -S -display none -M none -global xlnx.bbram-ctrl.drive-index=2
+    qemu-system-aarch64: warning: global xlnx.bbram-ctrl.drive-index has invalid class name
+
+That's because xlnx.bbram-ctrl.drive-index=N is syntactically ambiguous: it
+could be sugar for
+
+    driver=xlnx.bbram-ctrl,property=drive-index,value=N
+
+or for
+
+    driver=xlnx,property=bbram-ctrl.drive-index,value=N
+
+Our parser picks the latter.
+
+I'll respin the patch to use longhand syntax.
+
+> It feels like we should forbid both, "," and "." in device names...
+
+Yes, '.' is a bad idea, too.  But there are many names with them, and
+I'm not ready to tackle them.
+
+> Anyway, for the current state:
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+
+Thanks!
+
 
