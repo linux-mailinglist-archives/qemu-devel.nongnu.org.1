@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7F07EA46E
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 21:11:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CA507EA490
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 21:13:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2dGB-0008Mg-Ne; Mon, 13 Nov 2023 15:10:15 -0500
+	id 1r2dIH-00011V-Dk; Mon, 13 Nov 2023 15:12:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+4b2d4fa8b3c13737bab4+7386+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r2dG3-0008ML-0r; Mon, 13 Nov 2023 15:10:08 -0500
+ id 1r2dIF-000114-Ml; Mon, 13 Nov 2023 15:12:23 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+4b2d4fa8b3c13737bab4+7386+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r2dFx-0002Vv-RQ; Mon, 13 Nov 2023 15:10:06 -0500
+ id 1r2dID-00038i-73; Mon, 13 Nov 2023 15:12:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
  In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=RPMPzz9i1BequIN2qb1D2kZ94UKPCFkt9Mpn3oIoJKo=; b=OanfNBX7b+eXbQxCggOQL2bnrL
- /CDwSttmzKhHjZqislHPtGGJ49J4QT03wHvWiF7E0dd0oIGpnEXTW/0on+f0gch58aY7xO2hKP5P2
- VR5kNmeauO7WEUo7llMOCj1IZVtpTWF+yoq3XtLIRdDNIiipk9DBDz25lgP5cNGwt3ybYQeoFjNeT
- JhhT3Ts3acAkS0oxRiMPI2eMuRqNduSdlTgtDRL5e8V65yXNPdi8zUny/9+a55nxsxOHxXAYhAMr2
- Z0q2kZELyVvgtXprhygc+1cXNp8FJjVdG3etOqiHYkwODCLEOrFlklfSEvW5sxZZFHvwbxNsnUh8P
- a+W5tAbQ==;
+ bh=sQm/Tabsg7dO3SHwFkRkAeXj69ouuRh5ESlA3ivn13g=; b=labIxc4ZcCZU2BQlMoZnuQ1rx4
+ 8o1bTJSSKq3rM+ZUgNxxfNFtlo68q2GDBPHM7/MRn/iDC2lRKZ81gIz3VpIeCAhUcNgfNVQkwNJWC
+ 2PfJc2PhAEv3ma7I9L69IjuEuSsv3Due2N8XX2ME5B/4IMmQPi5tW582ScmzbEv4AtM6LiKLahD7m
+ 9LnscN8esKs0o4yLBdDw0XiescaJYaqLHaUDaVc1zJ9G7AOG7/TtdOKKWWt6Xw7e9fw+tT7JqBPO8
+ pz5/gbArWSSN84tUq/vqzTraRjLfU4hK+LQUjGTl/JIWsOagQG7CL5fLTY+hv9ZcGnYHqELeNF4vR
+ 8A1xBdvA==;
 Received: from [12.186.190.1] (helo=u3832b3a9db3152.ant.amazon.com)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1r2dFe-00GDYK-II; Mon, 13 Nov 2023 20:09:43 +0000
-Message-ID: <e9cae2ced357b35d313f601318b51e491ead81c1.camel@infradead.org>
-Subject: Re: [PATCH-for-9.0 09/10] hw/xen: Extract 'xen_igd.h' from 'xen_pt.h'
+ id 1r2dIA-00GDfw-00; Mon, 13 Nov 2023 20:12:19 +0000
+Message-ID: <e761956a53b769ab0ccedaa985eea0dcacd70990.camel@infradead.org>
+Subject: Re: [PATCH-for-9.0 10/10] hw/xen: Have most of Xen files become
+ target-agnostic
 From: David Woodhouse <dwmw2@infradead.org>
 To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, 
  qemu-devel@nongnu.org
@@ -41,16 +42,16 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Alex =?ISO-8859-1?Q?Benn=E9e?=
  xen-devel@lists.xenproject.org, Stefano Stabellini
  <sstabellini@kernel.org>,  qemu-block@nongnu.org, Thomas Huth
  <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org, Paul Durrant <paul@xen.org>,  Richard Henderson
- <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Date: Mon, 13 Nov 2023 15:09:36 -0500
-In-Reply-To: <20231113152114.47916-10-philmd@linaro.org>
+ qemu-arm@nongnu.org, Paul Durrant <paul@xen.org>,  Stefan Hajnoczi
+ <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>, Hanna Reitz
+ <hreitz@redhat.com>
+Date: Mon, 13 Nov 2023 15:12:14 -0500
+In-Reply-To: <20231113152114.47916-11-philmd@linaro.org>
 References: <20231113152114.47916-1-philmd@linaro.org>
- <20231113152114.47916-10-philmd@linaro.org>
+ <20231113152114.47916-11-philmd@linaro.org>
 Content-Type: multipart/signed; micalg="sha-256";
  protocol="application/pkcs7-signature"; 
- boundary="=-eVaaov3VWp7iZK3p/HAp"
+ boundary="=-1qdYEFrlmqNAZQBgEn0B"
 User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
@@ -81,31 +82,21 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---=-eVaaov3VWp7iZK3p/HAp
+--=-1qdYEFrlmqNAZQBgEn0B
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Mon, 2023-11-13 at 16:21 +0100, Philippe Mathieu-Daud=C3=A9 wrote:
-> "hw/xen/xen_pt.h" requires "hw/xen/xen_native.h" which is target
-> specific. It also declares IGD methods, which are not target
-> specific.
->=20
-> Target-agnostic code can use IGD methods. To allow that, extract
-> these methos into a new "hw/xen/xen_igd.h" header.
+> Previous commits re-organized the target-specific bits
+> from Xen files. We can now build the common files once
+> instead of per-target.
 >=20
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 
-> ---
-> What license for the new "hw/xen/xen_igd.h" header?
 
-The existing xen_pt.h came in with xen_pt.c (GPLv2) in commit
-eaab4d60d. I think it has to be GPLv2 (and not later) just like
-xen_pt.c?
-
-
---=-eVaaov3VWp7iZK3p/HAp
+--=-1qdYEFrlmqNAZQBgEn0B
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -197,25 +188,25 @@ IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
 dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
 NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
 xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTEzMjAwOTM2WjAvBgkqhkiG9w0BCQQxIgQg/xeb+vWh
-AjsJWOHTG4Htv3vvTuidSmbu8iXpLTa3nNIwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTEzMjAxMjE0WjAvBgkqhkiG9w0BCQQxIgQgEUzKl1UF
+mgx/+JB+i5Swm0M0VJt8RVe+QRtaOGU5Wdkwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
 BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
 A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
 dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
 DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
 Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgBpCGrOlqR09fDF3datn5pMjc7VlbWpE+Bg
-xd5M98o43GsYsjVGm9rD1VP1ZiXxEBtAFespxn/vbWnLtJAAztNllqO5mCDPRZ+YukadXJ+1RIbS
-CUD1hR4IGrKQDdmoBBrTN+63zcSiihj4IR20iI4EZwLYZI9rIBa1s3Fl7siKEcKk9TjG+x0W6KZk
-wkEcbSGOYzewdC/2FCZtvHK42Ryl0b0nklQWa1tlJT0uR5UOWiIIiQ/BgKmSF+b1kV9VRdkiu4r1
-qi/KbS8l3fKOAyNuSC/H8l0ZYMBn+VxraLf7LdDyOaf2Z3SxXdcD+lApAsrGgDIMN+D9og082THM
-neQrJoiZesFiPMox2AJ9FJUmJgXOJEyvyV5FQ0hdaNG5lVxUg6qzSn7DOJPeDhSQ8EvwWnLpiM71
-epHujsENsbtJAo3GQnxBHcpzNiX09k8emUXaIZboBpRWBO/XJQ3qhUcgjPMHL6Od9GtR0RGeNr69
-pnvgHw6W2A22ZM3S8zOj/FjfprkQzMT65FbulqXglZuVOxGg2129Kn5AuiRMePPUwRa7zh/VfFRr
-dDNGRLgd9hWNoz3/xUs5hkwiSxTYF4pOSD+xlV2l3bnTFwB4QANsYb5Os5cg27d4VyuB+nB8dgEp
-t1aEPpuEZSDqDKEP9LB8inSmBgsODIU6ZOsBndnXtwAAAAAAAA==
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAX3bFdQMDwX9ixj3RzoEwdJTiSmlmZyYq7
+ZsSJlwSGr2p0KMcQYHLWRe+0VPYLTzyJqL8G+PWoN8BojUDwoo6o3dLCMwx0fndekIeAt3EcLc89
+NLafPYwUlZ3nNgcHzLHe+yLOivzQLx2vOvOGSFSxHgJBpEtzuzuz5OAeYMen2w4PFjc6ktS9kw2q
+lS+D2RK92vTF+3mIM9xnUKNKkECakOL87dY0V86lHS/0itrT0DWlscyYqZTLGq4CtnKbacZlfIhi
+tIyFDVhgSE/EqCacG3JGvqCQKiWFwgNsvqIA7d9qwtfnNQY9QxtDIJAm+T2rb06/0eMFy81jgMUw
+K4bZzliB+hX6HDSTiY1hwrWMtXh0bvhhGXpPhXDzxfelvhgx2GuGDIt89M8cHeTMmfEvTaHaB8Vt
+boh0PbKBxWNUuoaCnveJcX/XWuLBZThC+vj2BVWfxl0krguVoAXycPiBoyBhvwNJwXQT4elLnOkN
+bIX5gQbt4nI1k0++5HLgyPvjmpx7NIOOWhlshqIuIGk0TmKabjW4EzqNIxhbgrj45LLwzBqwGaey
+gmezTM4DEqeJ6sqIXyYZm+tFgSgNIrxsnk5mBh79iSsuQ7hd4JikNx0p05EkL1HASJ7jziw7ens+
+vaZwUv6UWpzdGIIi2tikFS3WqiWZeYmGJ06oZe9oIAAAAAAAAA==
 
 
---=-eVaaov3VWp7iZK3p/HAp--
+--=-1qdYEFrlmqNAZQBgEn0B--
 
