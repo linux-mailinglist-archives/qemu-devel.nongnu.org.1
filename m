@@ -2,56 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0351C7E9ACD
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 12:10:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7405A7E9ABB
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 12:09:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2UnO-0006Q9-OH; Mon, 13 Nov 2023 06:07:58 -0500
+	id 1r2UnP-0006QA-FS; Mon, 13 Nov 2023 06:07:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2UnM-0006PB-CI
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 06:07:56 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2UnN-0006Pm-HX
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 06:07:57 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2UnL-0001Hn-1r
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 06:07:56 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2UnM-0001Ht-2o
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 06:07:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699873674;
+ s=mimecast20190719; t=1699873675;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sajgCVSXy0Eu+USTFfcVdq8ugnPJ0RIL5V9/EZ8qZIc=;
- b=KLAqHn5gVr28WYOqYbIP7Cvoij5X92vNmy0wNUrbPcV5QPHrGVemnY+vSHgKYmIz+e2UVo
- ZkDPDYqJtfIt9ov/WHS2EIRIerBsKXuA83X46QMkP4YoHXAdELBJ7Awn4kulPmu3oQLokS
- c/OZxfQDrKDpLD/yLaHtDRq0wpzSFE4=
+ bh=Di5BVZcEyaEAJSWtbI9y7sGg7YjWJ31KVuPJS3ElILc=;
+ b=NXmHvqzG8Jl/Xup8vv/7lRPpY1AAEd0np4Ga/+JAJ1zonxOy9bkGFVwgpleU+zDdOa3IVd
+ ID3JplpwMYyrVAaxHuReLvQxPv42yfyokqVbK647fwmbY3eBXGIS5QOkQCX9KP1Jn92Z9p
+ VxqGjk+oxCgTjrqKI/Kjgq8wOC9of1Q=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-240-m6UUfd7kM9C6BC99QpCtsA-1; Mon, 13 Nov 2023 06:07:52 -0500
-X-MC-Unique: m6UUfd7kM9C6BC99QpCtsA-1
+ us-mta-570-jFkc1z2UM2iNbOcPigwMHw-1; Mon, 13 Nov 2023 06:07:53 -0500
+X-MC-Unique: jFkc1z2UM2iNbOcPigwMHw-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7E71F811E7E;
- Mon, 13 Nov 2023 11:07:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A6B32834FC5
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 11:07:53 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.105])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 37C102166B26;
- Mon, 13 Nov 2023 11:07:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DDB1E2166B26;
+ Mon, 13 Nov 2023 11:07:52 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 07/12] MAINTAINERS: Extend the Stellaris section
-Date: Mon, 13 Nov 2023 12:07:35 +0100
-Message-ID: <20231113110740.38270-8-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 08/12] MAINTAINERS: Add a general architecture section for x86
+Date: Mon, 13 Nov 2023 12:07:36 +0100
+Message-ID: <20231113110740.38270-9-thuth@redhat.com>
 In-Reply-To: <20231113110740.38270-1-thuth@redhat.com>
 References: <20231113110740.38270-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -79,34 +77,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This header include/hw/timer/stellaris-gptm.h obviously belongs to the
-Stellaris machines, so let's add it to the corresponding section.
+It's a little bit weird that the files in target/i386/ which
+are not in a subfolder there do not have any associated
+maintainer (and thus nobody might be CC:-ed on changes to
+these files). We should have a general x86 section for these
+files, similar to what we already have for s390x and mips.
+Since Paolo is already listed as maintainer for both, the
+x86 KVM and TCG CPUs, I'd like to suggest him as maintainer
+for the general files, too.
 
-And hw/display/ssd0303.c and hw/display/ssd0323.c are only used
-by hw/arm/stellaris.c, so add them to the corresponding section
-in the MAINTAINERS file, too.
-
-Message-ID: <20231020060936.524988-5-thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20230929134551.395438-1-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+ MAINTAINERS | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index cc13f15996..c127a373ab 100644
+index c127a373ab..6999b26a0f 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -981,7 +981,9 @@ M: Peter Maydell <peter.maydell@linaro.org>
- L: qemu-arm@nongnu.org
- S: Maintained
- F: hw/*/stellaris*
-+F: hw/display/ssd03*
- F: include/hw/input/gamepad.h
-+F: include/hw/timer/stellaris-gptm.h
- F: docs/system/arm/stellaris.rst
+@@ -131,6 +131,17 @@ K: ^Subject:.*(?i)mips
+ F: docs/system/target-mips.rst
+ F: configs/targets/mips*
  
- STM32VLDISCOVERY
++X86 general architecture support
++M: Paolo Bonzini <pbonzini@redhat.com>
++S: Maintained
++F: configs/devices/i386-softmmu/default.mak
++F: configs/targets/i386-softmmu.mak
++F: configs/targets/x86_64-softmmu.mak
++F: docs/system/target-i386*
++F: target/i386/*.[ch]
++F: target/i386/Kconfig
++F: target/i386/meson.build
++
+ Guest CPU cores (TCG)
+ ---------------------
+ Overall TCG CPUs
 -- 
 2.41.0
 
