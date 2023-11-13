@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2868A7E96D2
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 08:01:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E4E7E9707
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 08:23:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2Qv3-0002ib-A8; Mon, 13 Nov 2023 01:59:37 -0500
+	id 1r2RGO-0000gP-NW; Mon, 13 Nov 2023 02:21:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2Quv-0002iJ-NP
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 01:59:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2RG0-0000fn-QX
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 02:21:18 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2Quu-0004Zi-2T
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 01:59:29 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2RFx-0000Ab-Rk
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 02:21:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699858766;
+ s=mimecast20190719; t=1699860072;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=UhPyJkIQck6UmTS7uABnBxJOFOH04qKEHW/7T45CqUc=;
- b=BQsYN8fY4yLwloLVh3R7Tyj+RSAt7kYcEkTVVz7tDksqy8gDnK5TPgUBYKUzoEDWHwYmml
- k1BqN254lZGWRoDXmHADG5cKtKRBDV/T8Sqe91HL77ZAyhM9XAfm143xjco4F6Lvm+WZly
- FJTbi7b/LM3ydqUUXmos11qlzHc091s=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=qfJVQsUqGpB1RqBgS62YRW+GczcLxPYNUjYdR3wiqtQ=;
+ b=fYkTbpceuolQipULgjHzmBQGCwTeK4tNlixOib3PbIjl+G6QTJv+zkIjNTcpzOaEzUBc2I
+ GNysET/E+wWmxZg9dC1s+VI5k0mT9aIK9l3L3d9mkmo0m40T6/UBG2pVgWjOm5NPIS3LrN
+ C0ima3CqHYz517zUzF5+pceXZBd1Trw=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-61-hBrweJ8OMG6ttsUm0zNhHA-1; Mon, 13 Nov 2023 01:59:25 -0500
-X-MC-Unique: hBrweJ8OMG6ttsUm0zNhHA-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-66d0b251a6aso52025466d6.2
- for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 22:59:25 -0800 (PST)
+ us-mta-250-KLZ29F_mOLKj15f7cFltYg-1; Mon, 13 Nov 2023 02:21:11 -0500
+X-MC-Unique: KLZ29F_mOLKj15f7cFltYg-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-66fbd02d104so54744386d6.1
+ for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 23:21:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699858764; x=1700463564;
+ d=1e100.net; s=20230601; t=1699860071; x=1700464871;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UhPyJkIQck6UmTS7uABnBxJOFOH04qKEHW/7T45CqUc=;
- b=DCAsxE4MH5yMrKxqaejrF6/z88RRhAxjX3O4hyDi0xqmkop+T+A1jy0V3qBUWZLnQq
- QfpIypi8xiSvbebBAD62aV/YnhYdTdn0POwNyJzDt3pI8R28zmpV86U2W8UADAzxzp4U
- xbiBrp/mWv1bwyUyEnhRW7uADoDedHJ+DHwSUJuIZ+N9M9OkVutVi1VEfAmDNmLNtyCL
- bSLwIA12IKVWe84VW4tw1Yp0aC8olc5VzxK+gBJ5IGc3c+oZBngfvg854NytZgrH9eup
- I5E3aTOjhVS2HIUR+9Hc2pSS5+zJ5t27nLQleNOMWuPFwn9+jn9HmP/jN7/edT9MDDFE
- MX8A==
-X-Gm-Message-State: AOJu0YyjW6OR5Go4ZpQ2syE5Akeyjs+X736qLnnxFacs+Zf/q2uH+vOa
- 1xuu/Xuy+/Rud1pD6mYuzIf7ss71Vlg9fV2SupsrAu0fsQDvAz+LOhlMEhjKaiBOb8mGhGrG0ux
- zL1m3kLZkVtAQlVM=
-X-Received: by 2002:a0c:ea4b:0:b0:656:3612:7954 with SMTP id
- u11-20020a0cea4b000000b0065636127954mr7231474qvp.1.1699858764694; 
- Sun, 12 Nov 2023 22:59:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHP62dgAEQP6F8DJ5RfMT34jpj8Egba4fjqNuLEQI9YlQXqyx1cUpCzC6gMeCeYCCFMsp/K/A==
-X-Received: by 2002:a0c:ea4b:0:b0:656:3612:7954 with SMTP id
- u11-20020a0cea4b000000b0065636127954mr7231469qvp.1.1699858764494; 
- Sun, 12 Nov 2023 22:59:24 -0800 (PST)
+ bh=qfJVQsUqGpB1RqBgS62YRW+GczcLxPYNUjYdR3wiqtQ=;
+ b=UTIu23CYHqtc0hFs4i+l8BnrVDFSOP646IofEe6ZfTVb4CAeo3b3+WEb43OEAEoB5q
+ HYIhHN3MHQ2AKc8WeTEU/29z4Rkv8/6wdu0zNwhkdr54KL/K0uj7UhFlJeQlwXTGiYg5
+ Z7H+twj+o4LNvBiaAVhOAfm6ItlT19HWOU3jFZeG6Shw2yBvLOAgvgxEBpgHnZPma8gJ
+ PrYf/ZrXl/WOANpmKcowIAGa/J9gQha32T26rd4mZov6V6qNxZXvFFy3CxQyqobLHOEN
+ t4kLjOdukUJd42u6Gewq2rxgqPsGPGCg9/j2A8sBGcJ1wpPAPpldzo9EQshvg0tCmQsB
+ t/3g==
+X-Gm-Message-State: AOJu0YynHsBp3CK0b2sRRq53bZ/8UrhDfG4Pa0PbxXN04S0QOsHoQKJC
+ mTX38yWdkhmw/tgW0XnjZe7izmp9Y8WgTzspeG7IDREwG4hc7d199RPB8P25gj72phmfPpeZwSS
+ rmq+XvJZFpDBrOPI=
+X-Received: by 2002:a05:620a:1590:b0:77b:b1d2:1b82 with SMTP id
+ d16-20020a05620a159000b0077bb1d21b82mr6930298qkk.20.1699860070922; 
+ Sun, 12 Nov 2023 23:21:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE0dB24YhCEHa6UDoR337vHn6WEPB2AZ35Q/9HdRw4hBB05kWdBrlGwi4GMFJj/BSei3B3B8A==
+X-Received: by 2002:a05:620a:1590:b0:77b:b1d2:1b82 with SMTP id
+ d16-20020a05620a159000b0077bb1d21b82mr6930293qkk.20.1699860070685; 
+ Sun, 12 Nov 2023 23:21:10 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-177-79.web.vodafone.de.
  [109.43.177.79]) by smtp.gmail.com with ESMTPSA id
- k5-20020a05621414e500b0066d23395d27sm1851894qvw.123.2023.11.12.22.59.22
+ s27-20020a05620a031b00b0076cbcf8ad3bsm1673862qkm.55.2023.11.12.23.21.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 12 Nov 2023 22:59:24 -0800 (PST)
-Message-ID: <ddb3f1c5-28d1-472d-b491-703a3e1c6711@redhat.com>
-Date: Mon, 13 Nov 2023 07:59:21 +0100
+ Sun, 12 Nov 2023 23:21:10 -0800 (PST)
+Message-ID: <b92285b4-156b-4a39-baba-ffc2e80e21bf@redhat.com>
+Date: Mon, 13 Nov 2023 08:21:06 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] test/qtest: Add an API function to capture IRQ toggling
+Subject: Re: [PATCH for-8.2] test-resv-mem: Fix CID 1523911
 Content-Language: en-US
-To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org
-Cc: lvivier@redhat.com, pbonzini@redhat.com, philmd@linaro.org
-References: <20231112013801.293970-1-gustavo.romero@linaro.org>
+To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, peter.maydell@linaro.org
+Cc: clg@redhat.com
+References: <20231110083654.277345-1-eric.auger@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -113,17 +114,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231112013801.293970-1-gustavo.romero@linaro.org>
+In-Reply-To: <20231110083654.277345-1-eric.auger@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -141,67 +142,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/11/2023 02.38, Gustavo Romero wrote:
-> Currently the QTest API does not provide a function to allow capturing
-> when an IRQ line is toggled (raised then lowered). Functions like
-> qtest_get_irq() read the current state of the intercepted IRQ lines,
-> which is already low when the function is called, since the line is
-> toggled.
+On 10/11/2023 09.36, Eric Auger wrote:
+> Coverity complains about passing "&expected" to "run_range_inverse_array",
+> which dereferences null "expected". I guess the problem is that the
+> compare_ranges() loop dereferences 'e' without testing it. However the
+> loop condition is based on 'ranges' which is garanteed to have
+> the same length as 'expected' given the g_assert_cmpint() just
+> before the loop. So the code looks safe to me.
 > 
-> This commit introduces a new function, qtest_get_irq_trigger_counter(),
-> which returns the number of times a given intercepted IRQ line was
-> triggered (raised), hence allowing to capture when an IRQ line was
-> toggled.
+> Nevertheless adding a test on expected before the loop to get rid of the
+> warning.
 > 
-> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+> Fixes: CID 1523901
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Reported-by: Coverity (CID 1523901)
+> 
 > ---
->   tests/qtest/libqtest.c | 12 ++++++++++++
->   tests/qtest/libqtest.h |  9 +++++++++
->   2 files changed, 21 insertions(+)
 > 
-> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-> index f33a210861..21891b52f1 100644
-> --- a/tests/qtest/libqtest.c
-> +++ b/tests/qtest/libqtest.c
-> @@ -82,6 +82,7 @@ struct QTestState
->       int expected_status;
->       bool big_endian;
->       bool irq_level[MAX_IRQ];
-> +    uint64_t irq_trigger_counter[MAX_IRQ];
->       GString *rx;
->       QTestTransportOps ops;
->       GList *pending_events;
-> @@ -498,6 +499,7 @@ static QTestState *qtest_init_internal(const char *qemu_bin,
->       s->rx = g_string_new("");
->       for (i = 0; i < MAX_IRQ; i++) {
->           s->irq_level[i] = false;
-> +        s->irq_trigger_counter[i] = 0;
->       }
->   
->       /*
-> @@ -690,6 +692,7 @@ redo:
->   
->           if (strcmp(words[1], "raise") == 0) {
->               s->irq_level[irq] = true;
-> +            s->irq_trigger_counter[irq]++;
+> Hope this fixes the Coverity warning as I cannot test.
+> ---
+>   tests/unit/test-resv-mem.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/tests/unit/test-resv-mem.c b/tests/unit/test-resv-mem.c
+> index 5963274e2c..cd8f7318cc 100644
+> --- a/tests/unit/test-resv-mem.c
+> +++ b/tests/unit/test-resv-mem.c
+> @@ -44,6 +44,10 @@ static void compare_ranges(const char *prefix, GList *ranges,
+>       print_ranges("out", ranges);
+>       print_ranges("expected", expected);
+>   #endif
+> +    if (!expected) {
+> +        g_assert_true(!ranges);
+> +        return;
+> +    }
+>       g_assert_cmpint(g_list_length(ranges), ==, g_list_length(expected));
+>       for (l = ranges, e = expected; l ; l = l->next, e = e->next) {
+>           Range *r = (Range *)l->data;
 
-Not sure whether you can get some "raise" events in a row without some 
-"lower" events in between ... but just in case, I wonder whether it would 
-make sense to check whether it is really a rising edge, i.e.:
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-            if (strcmp(words[1], "raise") == 0) {
-                if (!s->irq_level[irq]) {
-                    s->irq_trigger_counter[irq]++;
-                }
-                s->irq_level[irq] = true;
-
-What do you think?
-
->           } else {
->               s->irq_level[irq] = false;
->           }
-
-Anyway:
-Acked-by: Thomas Huth <thuth@redhat.com>
+I'll queue it (unless somebody else wants to take this?).
 
 
