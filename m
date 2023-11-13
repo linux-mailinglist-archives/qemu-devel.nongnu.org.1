@@ -2,55 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 838377E98C6
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 10:20:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C8267E98DC
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 10:26:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2T78-0003sS-87; Mon, 13 Nov 2023 04:20:14 -0500
+	id 1r2TBX-0004qV-TY; Mon, 13 Nov 2023 04:24:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1r2T76-0003sJ-RD
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 04:20:12 -0500
-Received: from smtp1.lauterbach.com ([62.154.241.196])
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1r2TBV-0004q9-Uc
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 04:24:45 -0500
+Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1r2T75-0006ZS-2c
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 04:20:12 -0500
-Received: (qmail 28542 invoked by uid 484); 13 Nov 2023 09:20:09 -0000
-X-Qmail-Scanner-Diagnostics: from nedpc1.intern.lauterbach.com by
- smtp1.lauterbach.com (envelope-from <nicolas.eder@lauterbach.com>,
- uid 484) with qmail-scanner-2.11 
- (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
- Clear:RC:1(10.2.11.92):. 
- Processed in 0.071437 secs); 13 Nov 2023 09:20:09 -0000
-Received: from nedpc1.intern.lauterbach.com (HELO [10.2.11.92])
- (Authenticated_SSL:neder@[10.2.11.92])
- (envelope-sender <nicolas.eder@lauterbach.com>)
- by smtp1.lauterbach.com (qmail-ldap-1.03) with TLS_AES_256_GCM_SHA384
- encrypted SMTP for <philmd@linaro.org>; 13 Nov 2023 09:20:08 -0000
-Message-ID: <c8071ac6-438d-43e2-92bb-1d92bb53d224@lauterbach.com>
-Date: Mon, 13 Nov 2023 10:20:08 +0100
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1r2TBU-0007tj-2f
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 04:24:45 -0500
+Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
+ (envelope-from <mail@maciej.szmigiero.name>)
+ id 1r2TBI-0001V9-WD; Mon, 13 Nov 2023 10:24:33 +0100
+Message-ID: <6ed6c5d8-c1c7-4feb-b2d3-1b51648d8228@maciej.szmigiero.name>
+Date: Mon, 13 Nov 2023 10:24:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/20] first version of mcdstub
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Christian Boenig <christian.boenig@lauterbach.com>
-References: <20231107130323.4126-1-nicolas.eder@lauterbach.com>
- <2ed8e417-438e-4d44-9e1b-f391328afc4d@linaro.org>
-From: "nicolas.eder@lauterbach.com" <nicolas.eder@lauterbach.com>
-In-Reply-To: <2ed8e417-438e-4d44-9e1b-f391328afc4d@linaro.org>
+Subject: Re: [PATCH] hv-balloon: avoid alloca() usage
+Content-Language: en-US, pl-PL
+To: David Hildenbrand <david@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+References: <3b2253d199165648b958570d6c4db86d6ced139d.1699545634.git.maciej.szmigiero@oracle.com>
+ <54045bb8-8cc1-403e-b22d-2b14476e30a7@redhat.com>
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+In-Reply-To: <54045bb8-8cc1-403e-b22d-2b14476e30a7@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=62.154.241.196;
- envelope-from=nicolas.eder@lauterbach.com; helo=smtp1.lauterbach.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=37.28.154.113;
+ envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -67,44 +99,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Phil,
-
-okay thanks! I'll add the license.
-
-Regards,
-Nicolas
-On 08/11/2023 15:27, Philippe Mathieu-Daudé wrote:
-> Hi Nicolas,
->
-> On 7/11/23 14:03, Nicolas Eder wrote:
->> SUMMARY
->> =======
+On 13.11.2023 09:59, David Hildenbrand wrote:
+> On 09.11.23 17:02, Maciej S. Szmigiero wrote:
+>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 >>
->> This patch-set introduces the first version of the mcdstub.
->
->
->>   30 files changed, 3749 insertions(+), 38 deletions(-)
->>   create mode 100644 debug/debug-common.c
->>   create mode 100644 debug/debug-gdb.c
->>   create mode 100644 debug/debug-mcd.c
->>   create mode 100644 include/cutils.h
->>   create mode 100644 include/mcdstub/arm_mcdstub.h
->>   create mode 100644 include/mcdstub/mcd_shared_defines.h
->>   create mode 100644 include/mcdstub/mcdstub.h
->>   create mode 100644 include/mcdstub/mcdstub_common.h
->>   create mode 100644 include/qemu/debug.h
->>   create mode 100644 mcdstub/mcdstub.c
->>   create mode 100644 mcdstub/meson.build
->>   create mode 100644 target/arm/mcdstub.c
->
-> These files are missing a license. Adding:
-> /* SPDX-License-Identifier: GPL-2.0-or-later */
-> on the first line is usually enough.
->
-> No need to respin a v4 yet, let's wait for technical
-> comments on your patches.
->
-> Regards,
->
-> Phil.
+>> alloca() is frowned upon, replace it with g_malloc0() + g_autofree.
+>>
+> 
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> 
+> If this fixes a coverity issue of #number, we usually indicate that using "CID: #number" or Fixes: CID: #number"
+> 
+
+Will add "CID: #1523903" to the commit message then.
+
+Thanks,
+Maciej
+
 
