@@ -2,80 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE627E9CE4
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 14:16:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EF87E9D53
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 14:37:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2WnL-0007Em-53; Mon, 13 Nov 2023 08:16:03 -0500
+	id 1r2X71-0002By-BW; Mon, 13 Nov 2023 08:36:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r2WnJ-0007Dc-EO; Mon, 13 Nov 2023 08:16:01 -0500
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r2WnH-00017M-J5; Mon, 13 Nov 2023 08:16:01 -0500
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-5bdfbd69bd5so3164817a12.1; 
- Mon, 13 Nov 2023 05:15:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699881357; x=1700486157; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kpueWlW5n9vLLdLrCbXytmXpg7CDwSs6EwHN7O4V9eo=;
- b=EIJlHg/YMlhWLO9WdPQcPBD43kFyBJCNR+r2Doq0QvymHxn17FJrvMiCUI6ZgGh6iz
- wcfbc/QHENr3Md+Rm2/0/NuQ+G9OAGK+sRaH46GlpR8o/KYDEWG2sx5ExIs/MMBBrN1L
- SUrAaNdB9yIAztS/0xo+DWw8iXmyMwsSRHo16lJsUPphrAHvtQ6ywh6xXM4I5r7MSFy5
- gt5z3MMnZfTBF7bFfKZd+G6w5AlrGeDpMEczTb9HmkugnUsHe/t17KkTTyLPuFS1deq6
- v+fSMa1n9HPPgHvh9hfQuEgRl7W1wMp1TxVprPMDbqFFaOrK4hEkGXpUpuU8nKrc53vq
- A8HA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699881357; x=1700486157;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=kpueWlW5n9vLLdLrCbXytmXpg7CDwSs6EwHN7O4V9eo=;
- b=QuOuBlqfFcScilBXCm8FB84N162dqX/z0ogRkygtj9yYhGmXH2eHO6Ycmu+k6SS4W/
- kf7ZXVPcVuRcefFZHQzrsiOSHYsJVJXAsJ3PolACj5GTjc8Gb0Vy4rEvNbXQI1gs7K8C
- xftw2tBYpLLy1H3PLK72s5qq0ZYxMNwl+2a8A4dIcYCBWLmnSwu9wE3ywhAGvaHqeKZr
- z6os2A3wFAOSm4t1D4XkBm8yX/q3WEZaEX/1RFrTeNMEwEvDLoqebm+bS5YZ0adMX4HJ
- YYjtQ/d8SzQkKXw0z+A0X+D4rE9+RB8epgaokkXbOXdq9IAP/WfO5O/p3sbEmIOeHudb
- vbTw==
-X-Gm-Message-State: AOJu0YyHQNBULuboU64II1qZX1Lw3+xjFgC+HFu3dQbfJiLY0M4d8FVo
- geS/FewlMYnVF8U2JRUrGU5uO4x0HsQ=
-X-Google-Smtp-Source: AGHT+IEpAYzTm3j/ig4omE+pHCGzml4TAIF4qb3sATS1RUiD4nxhZAmS3bAyTXus2PYLaWn/K8WIQg==
-X-Received: by 2002:a17:90b:1d82:b0:280:963d:9c5 with SMTP id
- pf2-20020a17090b1d8200b00280963d09c5mr9842572pjb.21.1699881357065; 
- Mon, 13 Nov 2023 05:15:57 -0800 (PST)
-Received: from localhost (121-44-82-40.tpgi.com.au. [121.44.82.40])
- by smtp.gmail.com with ESMTPSA id
- p12-20020a17090ad30c00b002790ded9c6dsm3682389pju.31.2023.11.13.05.15.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Nov 2023 05:15:56 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 13 Nov 2023 23:15:50 +1000
-Message-Id: <CWXPNBOJTWCV.24ODSFNXQ0WEX@wheely>
-Cc: <clegoate@redhat.com>, <qemu-devel@nongnu.org>, <mikey@neuling.org>,
- <vaibhav@linux.ibm.com>, <jniethe5@gmail.com>, <sbhat@linux.ibm.com>,
- <kconsul@linux.vnet.ibm.com>, <danielhb413@gmail.com>
-Subject: Re: [PATCH v2 00/14] Nested PAPR API (KVM on PowerVM)
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20231012104951.194876-1-harshpb@linux.ibm.com>
-In-Reply-To: <20231012104951.194876-1-harshpb@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x536.google.com
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1r2X6y-000281-8N
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 08:36:20 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1r2X6j-00058M-VF
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 08:36:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699882563;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=w0ScV907uadhC4WyMD57whs7/7sUsi6u8ESXYamvt98=;
+ b=bJjtmxyR8YmDbRnS+B5fJof+XCbdphXJApDKmC3HVoscqcFzkMxi7HyRVcOfg7CLOmpV1T
+ Kq+dR0fCF/7Ndlz8jt6IZY+yNg82C4rT0pK/9fcbT8GLPhfhBafFkID/flOryf5+Brnlx3
+ FSQZJYqMBdN/6d92pUZmFavfeDomcOg=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-365-xXppnjgVMlujZnqNrkzkeA-1; Mon,
+ 13 Nov 2023 08:35:59 -0500
+X-MC-Unique: xXppnjgVMlujZnqNrkzkeA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9ED363822E80;
+ Mon, 13 Nov 2023 13:35:58 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.85])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 24B45492BFD;
+ Mon, 13 Nov 2023 13:35:57 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ opnfv-tech-discuss@lists.opnfv.org, dev@dpdk.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paul Knight
+ <paul.knight@oasis-open.org>
+Subject: Re: [virtio] Invitation to comment on Virtual I/O Device (VIRTIO)
+ Version 1.3 - ends December 8th
+In-Reply-To: <CADgeAH_67CQZoVGEB_ddGEZA5+kUzmQe_3yfA1U6-c-K2mJi7g@mail.gmail.com>
+Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
+ Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
+ 153243,
+ =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
+ Michael O'Neill, Amy Ross"
+References: <CADgeAH_67CQZoVGEB_ddGEZA5+kUzmQe_3yfA1U6-c-K2mJi7g@mail.gmail.com>
+User-Agent: Notmuch/0.37 (https://notmuchmail.org)
+Date: Mon, 13 Nov 2023 14:35:56 +0100
+Message-ID: <87a5rhpygz.fsf@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,91 +86,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will have to wait until the next release. There should not be
-big changes to rebase on. I'll take a better look before then.
+It seems that the original mail did not make it to some of the mailing
+lists it was intended to go to, possibly due to the html part of the
+original mail. Therefore, I'm trying again, this time with plain text
+only. Apologies in advance for any duplicates.
 
-Linux now has this merged upstream so it will be much easier to test.
+On Wed, Nov 08 2023, Paul Knight <paul.knight@oasis-open.org> wrote:
 
-I posted some RFCs for new avocado tests including a KVM guest boot
-(https://lists.gnu.org/archive/html/qemu-ppc/2023-10/msg00260.html).
-Byt I guess it won't be too easy to adapt that to test the new API
-until there is a usable distro image with support. We should open an
-issue for that.
-
-Thanks,
-Nick
-
-On Thu Oct 12, 2023 at 8:49 PM AEST, Harsh Prateek Bora wrote:
-> There is an existing Nested-HV API to enable nested guests on powernv
-> machines. However, that is not supported on pseries/PowerVM LPARs.
-> This patch series implements required hcall interfaces to enable nested
-> guests with KVM on PowerVM.
-> Unlike Nested-HV, with this API, entire L2 state is retained by L0
-> during guest entry/exit and uses pre-defined Guest State Buffer (GSB)
-> format to communicate guest state between L1 and L2 via L0.
+> OASIS members and other interested parties,
 >
-> L0 here refers to the phyp/PowerVM, or launching a Qemu TCG L0 with the
-> newly introduced option cap-nested-papr=3Dtrue.
-> L1 refers to the LPAR host on PowerVM or Linux booted on Qemu TCG with
-> above mentioned option cap-nested-papr=3Dtrue.
-> L2 refers to nested guest running on top of L1 using KVM.
-> No SW changes needed for Qemu running in L1 Linux as well as L2 Kernel.
+> OASIS and the OASIS Virtual I/O Device (VIRTIO) TC are pleased to announce
+> that Virtual I/O Device (VIRTIO) Version 1.3 is now available for public
+> review and comment.
 >
-> There is a Linux Kernel side patch series to enable support for Nested
-> PAPR in L1 and same can be found at below url:
+> Specification Overview:
 >
-> Linux Kernel patch series:
-> - https://lore.kernel.org/linuxppc-dev/20230914030600.16993-1-jniethe5@gm=
-ail.com/
+> This document describes the specifications of the 'virtio' family of
+> devices. These devices are found in virtual environments, yet by design
+> they look like physical devices to the guest within the virtual machine -
+> and this document treats them as such. This similarity allows the guest to
+> use standard drivers and discovery mechanisms. The purpose of virtio and
+> this specification is that virtual environments and guests should have a
+> straightforward, efficient, standard and extensible mechanism for virtual
+> devices, rather than boutique per-environment or per-OS mechanisms.
 >
-> For more details, documentation can be referred in either of patch
-> series.
+> The documents and related files are available here:
 >
-> There are scripts available to assist in setting up an environment for
-> testing nested guests at https://github.com/iamjpn/kvm-powervm-test
+> Virtual I/O Device (VIRTIO) Version 1.3
+> Committee Specification Draft 01
+> 06 October 2023
 >
-> A tree with this series is available at:
-> https://github.com/planetharsh/qemu/tree/upstream-kop-1012
+> Editable source (Authoritative):
+> https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/tex/
+> HTML:
+> https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.html
+> PDF:
+> https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.pdf
+> Example driver listing:
+> https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/listings/
+> PDF file marked to indicate changes from Version 1.2 Committee
+> Specification 01:
+> https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01-diff-from-v1.2-cs01.pdf
 >
-> Thanks to Michael Neuling, Shivaprasad Bhat, Kautuk Consul, Vaibhav Jain
-> and Jordan Niethe.
+> For your convenience, OASIS provides a complete package of the
+> specification document and any related files in ZIP distribution files. You
+> can download the ZIP file at:
+> https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.zip
 >
-> Changelog:
+> A public review metadata record documenting this and any previous public
+> reviews is available at:
+> https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01-public-review-metadata.html
 >
-> v2:
->     - Addressed review comments from Nick on v1 series.
-> v1:
->     - https://lore.kernel.org/qemu-devel/20230906043333.448244-1-harshpb@=
-linux.ibm.com/
+> How to Provide Feedback
 >
-> Harsh Prateek Bora (14):
->   spapr: nested:  move nested part of spapr_get_pate into spapr_nested.c
->   spapr: nested: Introduce SpaprMachineStateNested to store related
->     info.
->   spapr: nested: Document Nested PAPR API
->   spapr: nested: Introduce cap-nested-papr for Nested PAPR API
->   spapr: nested: register nested-hv api hcalls only for cap-nested-hv
->   spapr: nested: Introduce H_GUEST_[GET|SET]_CAPABILITIES hcalls.
->   spapr: nested: Introduce H_GUEST_[CREATE|DELETE] hcalls.
->   spapr: nested: Introduce H_GUEST_CREATE_VPCU hcall.
->   spapr: nested: Initialize the GSB elements lookup table.
->   spapr: nested: Introduce H_GUEST_[GET|SET]_STATE hcalls.
->   spapr: nested: Use correct source for parttbl info for nested PAPR
->     API.
->   spapr: nested: rename nested_host_state to nested_hv_host
->   spapr: nested: keep nested-hv exit code restricted to its API.
->   spapr: nested: Introduce H_GUEST_RUN_VCPU hcall.
+> OASIS and the OASIS Virtual I/O Device (VIRTIO) TC value your feedback. We
+> solicit input from developers, users and others, whether OASIS members or
+> not, for the sake of improving the interoperability and quality of its
+> technical work.
 >
->  docs/devel/nested-papr.txt      |  500 +++++++++++
->  hw/ppc/spapr.c                  |   32 +-
->  hw/ppc/spapr_caps.c             |   63 ++
->  hw/ppc/spapr_hcall.c            |    2 -
->  hw/ppc/spapr_nested.c           | 1439 ++++++++++++++++++++++++++++++-
->  include/hw/ppc/spapr.h          |   21 +-
->  include/hw/ppc/spapr_cpu_core.h |    7 +-
->  include/hw/ppc/spapr_nested.h   |  361 ++++++++
->  target/ppc/cpu.h                |    2 +
->  9 files changed, 2368 insertions(+), 59 deletions(-)
->  create mode 100644 docs/devel/nested-papr.txt
+> The public review starts 09 November 2023 at 00:00 UTC and ends 08 December
+> 2023 at 23:59 UTC.
+>
+> Comments may be submitted to the TC by any person through the use of the
+> OASIS TC Comment Facility which can be used by following the instructions
+> on the TC's "Send A Comment" page (
+> https://www.oasis-open.org/committees/comments/index.php?wg_abbrev=virtio).
+>
+> Comments submitted by TC non-members for this work and for other work of
+> this TC are publicly archived and can be viewed at:
+>
+> https://lists.oasis-open.org/archives/virtio-comment/
+>
+> All comments submitted to OASIS are subject to the OASIS Feedback License,
+> which ensures that the feedback you provide carries the same obligations at
+> least as the obligations of the TC members. In connection with this public
+> review, we call your attention to the OASIS IPR Policy [1] applicable
+> especially [2] to the work of this technical committee. All members of the
+> TC should be familiar with this document, which may create obligations
+> regarding the disclosure and availability of a member's patent, copyright,
+> trademark and license rights that read on an approved OASIS specification.
+>
+> OASIS invites any persons who know of any such claims to disclose these if
+> they may be essential to the implementation of the above specification, so
+> that notice of them may be posted to the notice page for this TC's work.
+>
+> Additional information about the specification and the VIRTIO TC can be
+> found at the TC's public home page:
+> https://www.oasis-open.org/committees/virtio/
+>
+> ========== Additional references:
+>
+> [1] https://www.oasis-open.org/policies-guidelines/ipr/
+>
+> [2] https://github.com/oasis-tcs/virtio-admin/blob/master/IPR.md
+> https://www.oasis-open.org/policies-guidelines/ipr/#Non-Assertion-Mode
+> Non-Assertion Mode
+> -- 
+> Paul Knight <paul.knight@oasis-open.org>....Document Process Analyst
+> <https://www.oasis-open.org/people/staff/paul-knight>
+> OASIS <https://www.oasis-open.org/>...Setting the standard for open
+> collaboration
 
 
