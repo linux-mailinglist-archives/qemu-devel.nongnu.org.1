@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B337C7EA249
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 18:45:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A817EA24C
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 18:46:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2az8-0005tw-2m; Mon, 13 Nov 2023 12:44:30 -0500
+	id 1r2b0m-0006jP-3l; Mon, 13 Nov 2023 12:46:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r2az6-0005tS-72
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:44:28 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r2az3-0002qe-TH
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:44:27 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1cc131e52f1so42411045ad.0
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 09:44:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1699897464; x=1700502264; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=gnSo2+UetrKjdnU5+rIUqmhfiSCC40dEvQmge0DnEmg=;
- b=SkXU6DHdgXqLlCsU8adSEwrXsqTYCNVPsPVaPxCpD+6iV9r+8bMgbBbyX0TpckTgez
- Al4ctIFBGaEAu9NHxTCskZkD+8gU0JVGmnu5tup36f24xJRsBdAcGp2duh0AZakDYxnZ
- RR4ignNHmhbIzv+sW9Mb+KKOTNCQ71uMOlh3R2wGMEopJ8Mz5XTo+9o8i3Jc4eHNubS6
- Cd7l/muRe0yoWLODoGSvDaIEpwQf+W9ffo03o2LwkSO0MMWlC0fTACnXr8fWY+IrDH+b
- EPqUqK3UeIEvRp+YyYp4uQBsQcp697SiE5RRzz29Mif1M8BfSWLmxARFY8QcWBQ7WkDD
- yf+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699897464; x=1700502264;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gnSo2+UetrKjdnU5+rIUqmhfiSCC40dEvQmge0DnEmg=;
- b=D2ihuPqHvak7A/DSxbiMBhm+jzaouS/J2oW0clmwBi+un20yqrBTL74QpmIrMuVXRz
- m9IcO8D3X0W2fZfyjd8oTswNI1A2gCK7nRoajki5C/nDdg+UzCMBOXqoF5xmAeEbIyma
- 82I8zgnEpMCn9wFdvu1RVNhDCvk9bC8fiWIdXkNQex/K7BYZOFwG97KYi/d5GNV3Ytzc
- /mCWc6X9yI6WU9Tj5ix75/u5UnXi2E97HpZmNIelhojEjjiN916nimuCNQj4fJz66UFw
- P4NmZ3OedUXyKMX11+Jb3czfCys4aj4Gr+o14kwETO1HUbTdTl9b9AUSvwgoMrUzlwCe
- tozg==
-X-Gm-Message-State: AOJu0YxFNi0vuuY7DJyHXMeXa9mQAQeJvcke3JM3LCScaRjHPiOSg5dF
- muQn5tiqucPmv+BkVncoB1ekNE55TCzJbN+apQM=
-X-Google-Smtp-Source: AGHT+IGtyZGa5e9sp7Q4cSuhlS2qZesP0MRV+yk2Zzto/aNgJnG4FDsEfxCMJJi1SgXIpXqLM9QM9g==
-X-Received: by 2002:a17:902:f545:b0:1cc:3bc5:d259 with SMTP id
- h5-20020a170902f54500b001cc3bc5d259mr215332plf.30.1699897464356; 
- Mon, 13 Nov 2023 09:44:24 -0800 (PST)
-Received: from [192.168.68.107] ([152.250.131.148])
- by smtp.gmail.com with ESMTPSA id
- z12-20020a1709027e8c00b001c898328289sm4401096pla.158.2023.11.13.09.44.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Nov 2023 09:44:23 -0800 (PST)
-Message-ID: <5d226848-8af5-41ee-a353-6bc53902085d@ventanamicro.com>
-Date: Mon, 13 Nov 2023 14:44:20 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Stable-8.1.3 00/55] Patch Round-up for stable 8.1.3, freeze on
- 2023-11-19
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1r2b0d-0006iO-Bi; Mon, 13 Nov 2023 12:46:03 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1r2b0a-0003Ho-VX; Mon, 13 Nov 2023 12:46:03 -0500
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4STcJG2qJ5z6K8qY;
+ Tue, 14 Nov 2023 01:44:46 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Mon, 13 Nov 2023 17:45:57 +0000
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
+ Mon, 13 Nov 2023 17:45:57 +0000
+To: Igor Mammedov <imammedo@redhat.com>, "mst@redhat.com" <mst@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
+ "jean-philippe@linaro.org" <jean-philippe@linaro.org>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, "lpieralisi@kernel.org"
+ <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "andrew.jones@linux.dev"
+ <andrew.jones@linux.dev>, "david@redhat.com" <david@redhat.com>,
+ "philmd@linaro.org" <philmd@linaro.org>, "eric.auger@redhat.com"
+ <eric.auger@redhat.com>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "will@kernel.org"
+ <will@kernel.org>, "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
+ <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
+ <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
+ <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
+ <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
+ Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH V6 5/9] hw/acpi: Update CPUs AML with cpu-(ctrl)dev change
+Thread-Topic: [PATCH V6 5/9] hw/acpi: Update CPUs AML with cpu-(ctrl)dev change
+Thread-Index: AQHZ/cODKHUfJSIF00G1epHE+O7UK7Bdq8UAgBsIlcA=
+Date: Mon, 13 Nov 2023 17:45:56 +0000
+Message-ID: <48236d35d7f7468285226a47b0c0a4fd@huawei.com>
+References: <20231013105129.25648-1-salil.mehta@huawei.com>
+ <20231013105129.25648-6-salil.mehta@huawei.com>
+ <20231027154648.2ce47292@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20231027154648.2ce47292@imammedo.users.ipa.redhat.com>
+Accept-Language: en-US
 Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-References: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <qemu-stable-8.1.3-20231109164030@cover.tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.48.147.128]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,156 +89,209 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Michael,
+Hi Igor,
+Sorry, I missed this as well.
 
-On 11/9/23 10:42, Michael Tokarev wrote:
-> The following patches are queued for QEMU stable v8.1.3:
-> 
->    https://gitlab.com/qemu-project/qemu/-/commits/staging-8.1
-> 
-> Patch freeze is 2023-11-19, and the release is planned for 2023-11-21:
-> 
->    https://wiki.qemu.org/Planning/8.1
-> 
-> Please respond here or CC qemu-stable@nongnu.org on any additional patches
-> you think should (or shouldn't) be included in the release.
-
-It would be good to have these 2:
-
-082e9e4a58 ("target/riscv/kvm: improve 'init_multiext_cfg' error msg")
-608bdebb60 ("target/riscv/kvm: support KVM_GET_REG_LIST")
-
-The first is an error msg fix. The second fixes a problem with KVM guests when
-running Linux 6.6 and QEMU 8.1.
+> From: Igor Mammedov <imammedo@redhat.com>
+> Sent: Friday, October 27, 2023 2:47 PM
+> To: Salil Mehta <salil.mehta@huawei.com>; mst@redhat.com
+>=20
+> On Fri, 13 Oct 2023 11:51:25 +0100
+> Salil Mehta <salil.mehta@huawei.com> wrote:
+>=20
+> > CPUs Control device(\\_SB.PCI0) register interface for the x86 arch is =
+based on
+> > PCI and is IO port based and hence existing CPUs AML code assumes _CRS =
+objects
+>                                ^^^^
+> being placed in PCI0 context is no the reason why resource was described =
+as IO.
+> being IO is probably historical thing (as legacy hp was implemented as IO=
+)
 
 
-This is not a clear cherry-pick though. I'll send both in separate for you
-convenience. Thanks,
+I just meant that because it is IO port based therefore existing CPUs AML c=
+ode
+would evaluate to a system resource which describes IO Port address.
 
 
-Daniel
 
-> 
-> The changes which are staging for inclusion, with the original commit hash
-> from master branch, are given below the bottom line.
-> 
-> Thanks!
-> 
-> /mjt
-> 
-> --------------------------------------
-> 01 85fc35afa93c Yuval Shaia:
->     hw/pvrdma: Protect against buggy or malicious guest driver
-> 02 caea03279e11 Fabiano Rosas:
->     migration: Fix analyze-migration read operation signedness
-> 03 d4f34485ca8a Juan Quintela:
->     migration: Non multifd migration don't care about multifd flushes
-> 04 acf873873ae3 John Snow:
->     python/qmp: remove Server.wait_closed() call for Python 3.12
-> 05 a5e3cb3b90a6 Paolo Bonzini:
->     tests/docker: avoid invalid escape in Python string
-> 06 e4b6532cc0a5 Paolo Bonzini:
->     docs/sphinx: avoid invalid escape in Python string
-> 07 e41c40d101fc Paolo Bonzini:
->     target/hexagon: avoid invalid escape in Python string
-> 08 1b5f3f65cc71 Paolo Bonzini:
->     tests/avocado: avoid invalid escape in Python string
-> 09 86a8989d4557 Paolo Bonzini:
->     tests/vm: avoid invalid escape in Python string
-> 10 e6d8e5e6e366 Paolo Bonzini:
->     tracetool: avoid invalid escape in Python string
-> 11 e6e66b032873 Richard Henderson:
->     linux-user: Fixes for zero_bss
-> 12 6fad9b4bb91d Mikulas Patocka:
->     linux-user/mips: fix abort on integer overflow
-> 13 3b894b699c9a Mikulas Patocka:
->     linux-user/sh4: Fix crashes on signal delivery
-> 14 a1e6a5c46219 Helge Deller:
->     lasips2: LASI PS/2 devices are not user-createable
-> 15 d01448c79d89 Michal Orzel:
->     target/arm: Fix CNTPCT_EL0 trapping from EL0 when HCR_EL2.E2H is 0
-> 16 ae5f70baf549 Lu Gao:
->     hw/sd/sdhci: Block Size Register bits [14:12] is lost
-> 17 4ab9a7429bf7 Peter Maydell:
->     hw/rdma/vmw/pvrdma_cmd: Use correct struct in query_port()
-> 18 930f1865cc65 Richard Henderson:
->     target/sparc: Clear may_lookup for npc == DYNAMIC_PC
-> 19 307521d6e29e Peter Maydell:
->     target/arm: Fix syndrome for FGT traps on ERET
-> 20 6f83dc67168d Glenn Miles:
->     misc/led: LED state is set opposite of what is expected
-> 21 fed824501501 Kevin Wolf:
->     block: Fix locking in media change monitor commands
-> 22 580731dcc87e Akihiko Odaki:
->     tests/tcg: Add -fno-stack-protector
-> 23 8b097fd6b06e Andrey Drobyshev:
->     qemu-img: rebase: stop when reaching EOF of old backing file
-> 24 827171c31805 Andrey Drobyshev:
->     qemu-iotests: 024: add rebasing test case for overlay_size > backing_size
-> 25 b11293c212c2 Richard Henderson:
->     target/arm: Fix SVE STR increment
-> 26 4c09abeae870 Peter Maydell:
->     target/arm: Correctly propagate stage 1 BTI guarded bit in a two-stage walk
-> 27 721da0396cfa Cédric Le Goater:
->     util/uuid: Add UUID_STR_LEN definition
-> 28 f8d6f3b16c37 Cédric Le Goater:
->     vfio/pci: Fix buffer overrun when writing the VF token
-> 29 4ef9d97b1a37 Cédric Le Goater:
->     util/uuid: Remove UUID_FMT_LEN
-> 30 e969f992c656 David Woodhouse:
->     i386/xen: Don't advertise XENFEAT_supervisor_mode_kernel
-> 31 e7dbb62ff19c David Woodhouse:
->     i386/xen: fix per-vCPU upcall vector for Xen emulation
-> 32 18e83f28bf39 David Woodhouse:
->     hw/xen: select kernel mode for per-vCPU event channel upcall vector
-> 33 3de75ed35241 David Woodhouse:
->     hw/xen: don't clear map_track[] in xen_gnttab_reset()
-> 34 4a5780f52095 David Woodhouse:
->     hw/xen: fix XenStore watch delivery to guest
-> 35 debc995e883b David Woodhouse:
->     hw/xen: take iothread mutex in xen_evtchn_reset_op()
-> 36 a1c1082908dd David Woodhouse:
->     hw/xen: use correct default protocol for xen-block on x86
-> 37 9c549ab6895a Marc-André Lureau:
->     virtio-gpu: block migration of VMs with blob=true
-> 38 cc8fb0c3ae3c Vladimir Sementsov-Ogievskiy:
->     block/nvme: nvme_process_completion() fix bound for cid
-> 39 5722fc471296 Peter Maydell:
->     target/arm: Fix A64 LDRA immediate decode
-> 40 b2b109041ecd Jean-Louis Dupond:
->     qcow2: keep reference on zeroize with discard-no-unref enabled
-> 41 10b9e0802a07 Sam Li:
->     block/file-posix: fix update_zones_wp() caller
-> 42 ad4feaca61d7 Naohiro Aota:
->     file-posix: fix over-writing of returning zone_append offset
-> 43 08730ee0cc01 BALATON Zoltan:
->     ati-vga: Implement fallback for pixman routines
-> 44 565f85a9c293 Marc-André Lureau:
->     ui/gtk: force realization of drawing area
-> 45 47fd6ab1e334 Dongwon Kim:
->     ui/gtk-egl: apply scale factor when calculating window's dimension
-> 46 6f189a08c1b0 Antonio Caggiano:
->     ui/gtk-egl: Check EGLSurface before doing scanout
-> 47 04591b3ddd9a Philippe Mathieu-Daudé:
->     target/mips: Fix MSA BZ/BNZ opcodes displacement
-> 48 18f86aecd6a1 Philippe Mathieu-Daudé:
->     target/mips: Fix TX79 LQ/SQ opcodes
-> 49 7d7512019fc4 Fiona Ebner:
->     hw/ide: reset: cancel async DMA operation before resetting state
-> 50 cc610857bbd3 Fiona Ebner:
->     tests/qtest: ahci-test: add test exposing reset issue with pending callback
-> 51 aba2ec341c6d Ilya Leoshkevich:
->     target/s390x: Fix CLC corrupting cc_src
-> 52 43fecbe7a53f Ilya Leoshkevich:
->     tests/tcg/s390x: Test CLC with inaccessible second operand
-> 53 bea402482a8c Ilya Leoshkevich:
->     target/s390x: Fix LAALG not updating cc_src
-> 54 ebc14107f1f3 Ilya Leoshkevich:
->     tests/tcg/s390x: Test LAALG with negative cc_src
-> 55 b523a3d54f3d Niklas Cassel:
->     hw/ide/ahci: trigger either error IRQ or regular IRQ, not both
-> 
+> _CRS could have been at _SB level as motherboard resource but, in that ca=
+se
+> we would need to carve out hole in PCI's _CRS  explicitly to exclude it.
+> Hence it was placed in PCI0 context as a hack that helps to avoid us that=
+.
+> Perhaps it also applies to other targets.
+
+Sure.
+
+> > would evaluate to a system resource which describes IO Port address. Bu=
+t on ARM
+> > arch CPUs control device(\\_SB.PRES) register interface is memory-mappe=
+d hence
+> > _CRS object should evaluate to system resource which describes memory-m=
+apped
+> > base address. Update build CPUs AML function to accept both IO/MEMORY r=
+egion
+> > spaces and accordingly update the _CRS object.
+>=20
+> Also x86 should be able to switch to and work with MMIO region
+> (I think QEMU wise IO and MMIO are the same)
+> and we can just use MMIO, likely without any compat machinery.
+>=20
+> aka. existing/running/migrated x86 guests will use IO instructions to acc=
+ess region
+> (since CRS they have read, says it is IO), while new VMs will access regi=
+on as MMIO.
+
+
+Ok got it. But I guess existing CPUs AML code for ctrl-dev did not have thi=
+s
+change. Or did I miss anything?
+
+=20
+> I might be wrong though,
+>   Michael?
+>=20
+> > On x86, Legacy CPU Hotplug uses Generic ACPI GPE Block Bit 2 (GPE.2) ev=
+ent
+> > handler to notify OSPM about any CPU hot(un)plug events. Latest CPU Hot=
+plug is
+> > based on ACPI Generic Event Device framework and uses ACPI GED device f=
+or the
+> > same. Not all architectures support Legacy CPU Hotplug. Hence, make AML=
+ for
+> > GPE.2 event handler conditional.
+>=20
+> x86 has support for Legacy and Modern CPU hotplug (the later is enabled a=
+t runtime).
+> And both use GPE for event delivery, so above statement is not entirely c=
+orrect/confusing.
+
+Ok yes. I will rephrase part of it.
+
+
+Thanks
+Salil.
+
+> > Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+> > Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
+> > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Tested-by: Xianglai Li <lixianglai@loongson.cn>
+> > ---
+> >  hw/acpi/cpu.c         | 23 ++++++++++++++++-------
+> >  hw/i386/acpi-build.c  |  3 ++-
+> >  include/hw/acpi/cpu.h |  5 +++--
+> >  3 files changed, 21 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
+> > index 4b24a25003..596b6d9d81 100644
+> > --- a/hw/acpi/cpu.c
+> > +++ b/hw/acpi/cpu.c
+> > @@ -339,9 +339,10 @@ const VMStateDescription vmstate_cpu_hotplug =3D {
+> >  #define CPU_FW_EJECT_EVENT "CEJF"
+> >
+> >  void build_cpus_aml(Aml *table, MachineState *machine,
+> CPUHotplugFeatures opts,
+> > -                    build_madt_cpu_fn build_madt_cpu, hwaddr io_base,
+> > +                    build_madt_cpu_fn build_madt_cpu, hwaddr base_addr=
+,
+> >                      const char *res_root,
+> > -                    const char *event_handler_method)
+> > +                    const char *event_handler_method,
+> > +                    AmlRegionSpace rs)
+> >  {
+> >      Aml *ifctx;
+> >      Aml *field;
+> > @@ -366,13 +367,19 @@ void build_cpus_aml(Aml *table, MachineState
+> *machine, CPUHotplugFeatures opts,
+> >          aml_append(cpu_ctrl_dev, aml_mutex(CPU_LOCK, 0));
+> >
+> >          crs =3D aml_resource_template();
+> > -        aml_append(crs, aml_io(AML_DECODE16, io_base, io_base, 1,
+> > +        if (rs =3D=3D AML_SYSTEM_IO) {
+> > +            aml_append(crs, aml_io(AML_DECODE16, base_addr, base_addr,
+> 1,
+> >                                 ACPI_CPU_HOTPLUG_REG_LEN));
+> > +        } else {
+> > +            aml_append(crs, aml_memory32_fixed(base_addr,
+> > +                               ACPI_CPU_HOTPLUG_REG_LEN,
+> AML_READ_WRITE));
+> > +        }
+> > +
+> >          aml_append(cpu_ctrl_dev, aml_name_decl("_CRS", crs));
+> >
+> >          /* declare CPU hotplug MMIO region with related access fields =
+*/
+> >          aml_append(cpu_ctrl_dev,
+> > -            aml_operation_region("PRST", AML_SYSTEM_IO,
+> aml_int(io_base),
+> > +            aml_operation_region("PRST", rs, aml_int(base_addr),
+> >                                   ACPI_CPU_HOTPLUG_REG_LEN));
+> >
+> >          field =3D aml_field("PRST", AML_BYTE_ACC, AML_NOLOCK,
+> > @@ -696,9 +703,11 @@ void build_cpus_aml(Aml *table, MachineState
+> *machine, CPUHotplugFeatures opts,
+> >      aml_append(sb_scope, cpus_dev);
+> >      aml_append(table, sb_scope);
+> >
+> > -    method =3D aml_method(event_handler_method, 0, AML_NOTSERIALIZED);
+> > -    aml_append(method, aml_call0("\\_SB.CPUS." CPU_SCAN_METHOD));
+> > -    aml_append(table, method);
+> > +    if (event_handler_method) {
+> > +        method =3D aml_method(event_handler_method, 0, AML_NOTSERIALIZ=
+ED);
+> > +        aml_append(method, aml_call0("\\_SB.CPUS." CPU_SCAN_METHOD));
+> > +        aml_append(table, method);
+> > +    }
+> >
+> >      g_free(cphp_res_path);
+> >  }
+> > diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> > index 3f2b27cf75..f9f31f9db5 100644
+> > --- a/hw/i386/acpi-build.c
+> > +++ b/hw/i386/acpi-build.c
+> > @@ -1550,7 +1550,8 @@ build_dsdt(GArray *table_data, BIOSLinker *linker=
+,
+> >              .fw_unplugs_cpu =3D pm->smi_on_cpu_unplug,
+> >          };
+> >          build_cpus_aml(dsdt, machine, opts, pc_madt_cpu_entry,
+> > -                       pm->cpu_hp_io_base, "\\_SB.PCI0", "\\_GPE._E02"=
+);
+> > +                       pm->cpu_hp_io_base, "\\_SB.PCI0", "\\_GPE._E02"=
+,
+> > +                       AML_SYSTEM_IO);
+> >      }
+> >
+> >      if (pcms->memhp_io_base && nr_mem) {
+> > diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
+> > index bc901660fb..b521a4e0de 100644
+> > --- a/include/hw/acpi/cpu.h
+> > +++ b/include/hw/acpi/cpu.h
+> > @@ -60,9 +60,10 @@ typedef void (*build_madt_cpu_fn)(int uid, const
+> CPUArchIdList *apic_ids,
+> >                                    GArray *entry, bool force_enabled);
+> >
+> >  void build_cpus_aml(Aml *table, MachineState *machine,
+> CPUHotplugFeatures opts,
+> > -                    build_madt_cpu_fn build_madt_cpu, hwaddr io_base,
+> > +                    build_madt_cpu_fn build_madt_cpu, hwaddr base_addr=
+,
+> >                      const char *res_root,
+> > -                    const char *event_handler_method);
+> > +                    const char *event_handler_method,
+> > +                    AmlRegionSpace rs);
+> >
+> >  void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList
+> ***list);
+> >
+
 
