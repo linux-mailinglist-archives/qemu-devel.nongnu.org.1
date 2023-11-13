@@ -2,70 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3678E7EA2B0
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 19:18:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B2737EA2B5
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 19:19:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2bVQ-0007Uw-KE; Mon, 13 Nov 2023 13:17:52 -0500
+	id 1r2bVa-0007Wa-BS; Mon, 13 Nov 2023 13:18:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2bVO-0007UL-VQ
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:17:50 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2bVU-0007W0-EK
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:17:58 -0500
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2bVN-0000Ri-DM
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:17:50 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-9d10972e63eso699102666b.2
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 10:17:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2bVS-0000Uo-0B
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 13:17:56 -0500
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-9e61e969b1aso491517666b.0
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 10:17:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699899467; x=1700504267; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=f+1KBRO0+9/dV2cXPBXDfIDZ7AUDEqHTniy8whQ5hc8=;
- b=idcH4q0JEBFCblPVHckyf9x+QUNlR8SHCjgKu/ogXXtgKOEP9qZNvlCysNpSBoqV7F
- NzT7HZPdypmUpe/JnJFwMJ8zt93ZGwsXjpR+Nipw4M9cxo/CMuhDc9XF4jQM9yEI6T3E
- N9BJhRsr/XkhnNB5VodyI80dMyIhC8qRHjVurl9roy5u+84sPVnvWdHFDchTX/pB1MZr
- rljxWwGfv2gMNvEHwDRc2oRTwChC7zXYAc0HW24VZi7uQOTty8CjF4E08PnhwZ/M7fMG
- 9PvMjkd4ybXrqqceumuj6A76EgXCRLmI0xQ5UnvWYxVCrjENztfWTWqFdZfnAMRyTj6Z
- 9ZsQ==
+ d=linaro.org; s=google; t=1699899472; x=1700504272; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=capcjVKPKqE+VLy65Ulh8a/I3TCIRtzzamG6SA9QUvo=;
+ b=l1JnD9lKQY9XCOCvCr6pYPPrnnhiUrdrlNIIiqCe1QaTg89RpUlFpMVVbw+/l+0YCX
+ 5dMtbg6+tbUrNBrIMZQuT/T53bKpsMVpxuuxCXBtz/4/QIxFL7PS4evQLREeHllZKZx2
+ HAJrAPEvPfSPP57sGTOqAHWmUTePCmNwnWNbbWsE0MipVlvNCOuVKy05fsJUihiZpwrz
+ JUZgYgZWyrAwaB+fb805TSas3IQ3KEYSrpIfCEfeC2DmrfIS19Phto7ybu7+4dh7Qchj
+ TULt8aPVdwQK9f6z57MFMudETfWLGGLf82VuqHwKJaf5R8rANntZml7TtHaU5ot1CwP9
+ vFkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699899467; x=1700504267;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=f+1KBRO0+9/dV2cXPBXDfIDZ7AUDEqHTniy8whQ5hc8=;
- b=BNnAx2Nh6dxcRlaQhimv3Elo+uOTrsTPCgkEvrTY0O5Mkxnvs6cVb3z7AgFAH89PnU
- 7S0vDVP4ALOH0UEUsD2AHCeWcMUMGg5SciX4pskJ3zGXoamEzt3+R9G5wxgWptJiDGpV
- 6lblf7TOI027AstSNGEONHz4HiQO2zEssjszdjNKJ2qGW0R05QzSCbFhDhxWt8EjpdgY
- qrEiINHs8W/3KAavUi/CLjXOVA42QKoOF+d43VNwn7QOAnRmIjHD8oq5ZGlFwLEYbwoC
- +sI22fxXViHPHlQ7OdcuCAVXQaVN8vL1OBLBDNvRgrA8ecrOqXAfRcRNgbJiQ7LPUjiB
- ITLg==
-X-Gm-Message-State: AOJu0Yyn6DLjkPjNCHMgNWDZ2YMfvM6P43zIV//ZPtRm1a9NTScFqE68
- uuSTpnRi1aktM3zlu/KeGGsAVgJxciwjk2g9lXE=
-X-Google-Smtp-Source: AGHT+IEFnZeyeDLUezx0h5ofyAa3Gohc4BKAKAyCeIgIzCwvOL27JUBofIXCb3iRsfNYjULUapsMZA==
-X-Received: by 2002:a17:906:268b:b0:9e6:59d5:820d with SMTP id
- t11-20020a170906268b00b009e659d5820dmr5254680ejc.2.1699899467097; 
- Mon, 13 Nov 2023 10:17:47 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699899472; x=1700504272;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=capcjVKPKqE+VLy65Ulh8a/I3TCIRtzzamG6SA9QUvo=;
+ b=NNY4cKr+liX6PK0rUrwKIMBRB3WVMLgalI11WCz0YG1x8mA0IWUwJSwjWDbmNpu10I
+ 4S/T9dMYT0f8RODRmV7K3bPdbvgSZmT2WhhnV9QyBE3Jrsspl8wdRqH/Ee24ALE5UdnY
+ E6JX3GHIpqpmVWzLioD9DMRuyBrHBPgobWvGT5tNVa6z0MujMyNEjf8RGWkV46nTs4f8
+ yPK0yVxwIpNemzN9eih24msY3awfhs0Mkv/Xiqu+oQhAIpBVWerENF0bEe9J82gnAdp2
+ 7Kb8EgQUuaZLSrztQCnGrACpv4cg1AFbI+kPqz1Kc+EF/XUzea0FB8zPZ0v0hDzgX3GI
+ Apjw==
+X-Gm-Message-State: AOJu0YwRJ4XPKNNND7+V3uQkxgfv+eg9DHnywiiUIKoFG5i5Oy3zREvr
+ xhqOLbvtov1PvtO5ZuVtI68YfoNr0NkiZOTCf60=
+X-Google-Smtp-Source: AGHT+IEGZPDtI92ETgky8DKBO1ira9DboVEb5kfZrY7ENF/JhamhFp2F86ZRXTQkelgQ/lP5c2KfCg==
+X-Received: by 2002:a17:906:a396:b0:9e5:e56b:9b7 with SMTP id
+ k22-20020a170906a39600b009e5e56b09b7mr4687095ejz.42.1699899472445; 
+ Mon, 13 Nov 2023 10:17:52 -0800 (PST)
 Received: from m1x-phil.lan ([176.164.221.204])
  by smtp.gmail.com with ESMTPSA id
- ko14-20020a170907986e00b009dd701bb916sm4345396ejc.213.2023.11.13.10.17.46
+ z9-20020a170906714900b0099d804da2e9sm4388271ejj.225.2023.11.13.10.17.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 13 Nov 2023 10:17:46 -0800 (PST)
+ Mon, 13 Nov 2023 10:17:52 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 0/5] Misc fixes for 2023-11-13
-Date: Mon, 13 Nov 2023 19:17:39 +0100
-Message-ID: <20231113181744.49537-1-philmd@linaro.org>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PULL 1/5] hw/mips: LOONGSON3V depends on UNIMP device
+Date: Mon, 13 Nov 2023 19:17:40 +0100
+Message-ID: <20231113181744.49537-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231113181744.49537-1-philmd@linaro.org>
+References: <20231113181744.49537-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,54 +94,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 69680740eafa1838527c90155a7432d51b8ff203:
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-  Merge tag 'qdev-array-prop' of https://repo.or.cz/qemu/kevin into staging (2023-11-11 11:23:25 +0800)
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: qemu-stable@nongnu.org
+Fixes: c76b409fef ("hw/mips: Add Loongson-3 machine support")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20231107140615.3034763-1-marcandre.lureau@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/mips/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-are available in the Git repository at:
-
-  https://github.com/philmd/qemu.git tags/misc-fixes-20231113
-
-for you to fetch changes up to 04c0a003dd33c7f1dea989319085984822c768e6:
-
-  MAINTAINERS: update virtio-fs mailing list address (2023-11-13 19:06:06 +0100)
-
-----------------------------------------------------------------
-Misc fixes for 8.2
-
-- Missing Kconfig dependency in hw/mips (Marc-André)
-- Typo in VMWare model (Alexandra)
-- New avocado test for x86 processors addressing (Ani)
-- Fix SyntaxWarnings in avocado (Thomas)
-- Update virtio-fs mailing list address in MAINTAINERS (Stefan)
-
-----------------------------------------------------------------
-
-Alexandra Diupina (1):
-  hw/display/vmware_vga: fix probably typo
-
-Ani Sinha (1):
-  tests/avocado: add test to exercise processor address space memory
-    bound checks
-
-Marc-André Lureau (1):
-  hw/mips: LOONGSON3V depends on UNIMP device
-
-Stefan Hajnoczi (1):
-  MAINTAINERS: update virtio-fs mailing list address
-
-Thomas Huth (1):
-  tests/avocado/machine_s390_ccw_virtio.py: Fix SyntaxWarnings from
-    python 3.12
-
- MAINTAINERS                              |   2 +-
- hw/display/vmware_vga.c                  |   4 +-
- hw/mips/Kconfig                          |   1 +
- tests/avocado/machine_s390_ccw_virtio.py |  18 +-
- tests/avocado/mem-addr-space-check.py    | 356 +++++++++++++++++++++++
- 5 files changed, 369 insertions(+), 12 deletions(-)
- create mode 100644 tests/avocado/mem-addr-space-check.py
-
+diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
+index 66ec536e06..505381a0bb 100644
+--- a/hw/mips/Kconfig
++++ b/hw/mips/Kconfig
+@@ -46,6 +46,7 @@ config LOONGSON3V
+     select PCI_EXPRESS_GENERIC_BRIDGE
+     select MSI_NONBROKEN
+     select FW_CFG_MIPS
++    select UNIMP
+ 
+ config MIPS_CPS
+     bool
 -- 
 2.41.0
 
