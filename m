@@ -2,90 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 687B97E96AD
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 07:30:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C39C17E9EF3
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 15:40:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2QSY-0003oW-TP; Mon, 13 Nov 2023 01:30:10 -0500
+	id 1r2Y63-0006LG-IM; Mon, 13 Nov 2023 09:39:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r2QSO-0003dT-7d
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 01:30:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r2QSM-00009C-Ia
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 01:29:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699856996;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=6Mb0eKL822Fl8fLvSSyGy4Y4Y1gZVm3f4JhO1Q7Bm/U=;
- b=DPxoTiNhM/drZc2K/tEjjYoMMyqQZJ+y5cArXfcIyAssiYTRbBTZ3s/r69q4MPfpmXDM9V
- 6Yp4A/FDgtq0Iwi5qi7l0o5Oyi8ApJWC+xEZXjp+if+3cRFLYm/ZYDeAAnmNgYgJcaO8zc
- f8u1Hq/rSx5EL+AoHo0t8RfnoQeYiEE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-500-4hFUNvnWPiqDmHNPqAPriA-1; Mon, 13 Nov 2023 01:29:54 -0500
-X-MC-Unique: 4hFUNvnWPiqDmHNPqAPriA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-32f68d3b788so1977285f8f.3
- for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 22:29:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <potin.lai.pt@gmail.com>)
+ id 1r2QWk-00062a-HO
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 01:34:31 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <potin.lai.pt@gmail.com>)
+ id 1r2QWh-0000hW-PU
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 01:34:30 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1cc53d0030fso30664465ad.0
+ for <qemu-devel@nongnu.org>; Sun, 12 Nov 2023 22:34:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1699857257; x=1700462057; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3wZ7CYuE2VDasYRy4f/EaKf4pvD1GRLnzVdlSy29Vzs=;
+ b=lrPSuE38yVIrivxc5WYkJayqukCTyxyDaMCDaBIKgQeyuHNjCwmk7MtODuDUkFOVVp
+ d924hnoNqsUkxcUHQQZ9pyuJGPn70jMBlbidW/+A65Jau+y3UbElAoLsYbKsOeOv7srg
+ mLnnVY6rbWfTC9ncZZ4ROjmYijhlBtSEqeOD4+jYbSj6bDojh0f2a2iiScJPIRe7VJjK
+ ET/1sfXZfBWYNiL3oMzJonE899f4s6A2V96VXL34A1j+xgmogwnxTjdkBJ500R+KiUbV
+ J9lbLLUTqF3YqwpKV0R7UFpr8t5kUZQ778yKcnZP9aoZScrQdujKIBt3nniPd28dXUNC
+ iCnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699856993; x=1700461793;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6Mb0eKL822Fl8fLvSSyGy4Y4Y1gZVm3f4JhO1Q7Bm/U=;
- b=AF/9BSEkZrwCevwwJgN9tPZGtBPi0hLZgUKsP91sgEzOJLdiTl96pGIdDiyYB79GxC
- GJ9PCCs/rB2/W1kODjwewpGERDWOmW6RqMf5YEnXT9bxWQaGxXYYW41uHsrRBa4xjbbg
- d1iBuAPVxP0GdBPNlNAfJfGiI36i03Vt1vRKuqeiiCDhDXFdsTFRtUA8XdtwiGBo1umK
- 1Z4iEjopCNjsFztSq86WxUMujW1bDp6VckCf6SjMONZjUuRCzYfBvutOKLuYl9TJcNmb
- c+8iN2s7yb20bzNeRDOjeJdtrfCSW6U7ZsHDTGq/8GMRcwSyUmbroHI7JOO3Vy8bOKfa
- qHKw==
-X-Gm-Message-State: AOJu0Yw6htlobJgIpIsQrckgxvCytOUUQbzeypH5d7Ki929tZJkFDlbh
- xNSv0QATN64NGHZrnxokOq0/3RsW63ozz13cnv34hce8ZjffMri9kF80NYIyqb/FWP1tg4d1boT
- 9XUHqjTI2DZQNrMs=
-X-Received: by 2002:a05:6000:bce:b0:324:8239:2873 with SMTP id
- dm14-20020a0560000bce00b0032482392873mr3398633wrb.37.1699856993501; 
- Sun, 12 Nov 2023 22:29:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEhUkmhohzTGUrl2MF7Exhxi0bkmNwfSmBL8KrDW5OPyxDvtu30uO5DiWoj5xQOwsx88BC17Q==
-X-Received: by 2002:a05:6000:bce:b0:324:8239:2873 with SMTP id
- dm14-20020a0560000bce00b0032482392873mr3398628wrb.37.1699856993197; 
- Sun, 12 Nov 2023 22:29:53 -0800 (PST)
-Received: from redhat.com ([2a06:c701:73f2:e100:f288:9238:4f0d:83ab])
- by smtp.gmail.com with ESMTPSA id
- w3-20020a5d4b43000000b0032cc35c2ef7sm4597884wrs.29.2023.11.12.22.29.51
+ d=1e100.net; s=20230601; t=1699857257; x=1700462057;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3wZ7CYuE2VDasYRy4f/EaKf4pvD1GRLnzVdlSy29Vzs=;
+ b=M7c9EGGNPaz3ZfIph+rrGkhWPs6/SNvqtGW4011GIt2/Hfr7IZi6tKeSW7fmIHkqhZ
+ Rv0C0NiNdErvt/wzTb8+ey7+jmgKI4G4IG/0ZnMOLDJwqxGbbflpcCYfe4VJgME6WGIu
+ dbd0H9vpQSx4v7M+829iJbT5Nomcr9A8xe/gKn64ATsRxFSrWHaSLBN+tONkVhYavbm3
+ H7neMYwwEU25bBldx+61QP8JT5LUEBmWYG2ZfRiIc413RlCiP8PzS+hZh1u0FYpEGlvm
+ duMq5XW1wRkM0XJgkNmPcCsxNEAx966F+FpMXkWPLM0XPsLk08x+BdvC4NAUV0Jubp2o
+ C8tA==
+X-Gm-Message-State: AOJu0Yzfy3gBy1PH9XLfk+G+qCb0pVsHmZrJ4pl0Mgs18ytrFbfSr+Nj
+ wUAekMdBsQwFtEy8Y2ZlNQQ=
+X-Google-Smtp-Source: AGHT+IFa3+YDERqt1kFFNfOXSBUGDLQ75jaiskVwXDBxt+z0Zi20gs6o/548Fvf1jH6zDa1Goi53rw==
+X-Received: by 2002:a17:902:d506:b0:1cc:467a:338f with SMTP id
+ b6-20020a170902d50600b001cc467a338fmr8948062plg.4.1699857256875; 
+ Sun, 12 Nov 2023 22:34:16 -0800 (PST)
+Received: from localhost.localdomain (1-34-21-66.hinet-ip.hinet.net.
+ [1.34.21.66]) by smtp.gmail.com with ESMTPSA id
+ iw14-20020a170903044e00b001c5076ae6absm3409329plb.126.2023.11.12.22.34.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 Nov 2023 22:29:52 -0800 (PST)
-Date: Mon, 13 Nov 2023 01:29:49 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Leo Yan <leo.yan@linaro.org>
+ Sun, 12 Nov 2023 22:34:16 -0800 (PST)
+From: Potin Lai <potin.lai.pt@gmail.com>
+To: Patrick Venture <venture@google.com>
 Cc: qemu-devel@nongnu.org,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: Re: [PATCH v1 0/4] virtio: Refactor vhost input stub
-Message-ID: <20231113012849-mutt-send-email-mst@kernel.org>
-References: <20231113011642.48176-1-leo.yan@linaro.org>
+	Potin Lai <potin.lai.pt@gmail.com>
+Subject: [PATCH 1/1] hw/i2c: add pca9543 i2c-mux switch
+Date: Mon, 13 Nov 2023 14:31:56 +0800
+Message-Id: <20231113063156.2264941-1-potin.lai.pt@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231113011642.48176-1-leo.yan@linaro.org>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=potin.lai.pt@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 13 Nov 2023 09:39:17 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,58 +90,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 13, 2023 at 09:16:38AM +0800, Leo Yan wrote:
-> This series is to refactor vhost stub vhost-user-input.
-> 
-> Since vhost input stub requires set_config() callback for communication
-> event configurations between the backend and the guest, patch 01 is a
-> preparison for support set_config() callback in vhost-user-base.
-> 
-> The patch 02 is to add documentation for vhost-user-input.
-> 
-> The patch 03 is to move virtio input stub from the input folder to the
-> virtio folder.
-> 
-> The patch 04 derives vhost-user-input from vhost-user-base.  We reuse
-> the common code from vhhost-user-base as possible and the input stub is
-> simplized significantly.
-> 
-> This patch set has been tested with the backend daemon:
-> 
->   # ./build/contrib/vhost-user-input/vhost-user-input \
-> 		     -p /dev/input/event20 -s /tmp/input.sock
-> 
-> The series is based on "[PATCH v8 0/7] virtio: cleanup
-> vhost-user-generic and reduce c&p" which introduces vhost-user-base.
-> Based-on: <20231107180752.3458672-1-alex.bennee@linaro.org>
+Add pca9543 2-channel i2c-mux switch support.
 
+Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
+---
+ hw/i2c/i2c_mux_pca954x.c         | 12 ++++++++++++
+ include/hw/i2c/i2c_mux_pca954x.h |  1 +
+ 2 files changed, 13 insertions(+)
 
-That patchset is deferred until after the release, so this one
-will be, too. I have tagged it, to help make sure it's not
-lost pls ping me after the release.
-
-> 
-> Leo Yan (4):
->   hw/virtio: Support set_config() callback in vhost-user-base
->   docs/system: Add vhost-user-input documentation
->   hw/virtio: Move vhost-user-input into virtio folder
->   hw/virtio: derive vhost-user-input from vhost-user-base
-> 
->  docs/system/devices/vhost-user-input.rst |  44 ++++++++
->  docs/system/devices/vhost-user.rst       |   2 +-
->  hw/input/meson.build                     |   1 -
->  hw/input/vhost-user-input.c              | 136 -----------------------
->  hw/virtio/meson.build                    |   4 +-
->  hw/virtio/vhost-user-base.c              |  17 +++
->  hw/virtio/vhost-user-input-pci.c         |   3 -
->  hw/virtio/vhost-user-input.c             |  58 ++++++++++
->  include/hw/virtio/virtio-input.h         |   6 +-
->  9 files changed, 126 insertions(+), 145 deletions(-)
->  create mode 100644 docs/system/devices/vhost-user-input.rst
->  delete mode 100644 hw/input/vhost-user-input.c
->  create mode 100644 hw/virtio/vhost-user-input.c
-> 
-> -- 
-> 2.34.1
+diff --git a/hw/i2c/i2c_mux_pca954x.c b/hw/i2c/i2c_mux_pca954x.c
+index db5db956a6..6aace0fc47 100644
+--- a/hw/i2c/i2c_mux_pca954x.c
++++ b/hw/i2c/i2c_mux_pca954x.c
+@@ -30,6 +30,7 @@
+ 
+ #define PCA9548_CHANNEL_COUNT 8
+ #define PCA9546_CHANNEL_COUNT 4
++#define PCA9543_CHANNEL_COUNT 2
+ 
+ /*
+  * struct Pca954xState - The pca954x state object.
+@@ -172,6 +173,12 @@ I2CBus *pca954x_i2c_get_bus(I2CSlave *mux, uint8_t channel)
+     return pca954x->bus[channel];
+ }
+ 
++static void pca9543_class_init(ObjectClass *klass, void *data)
++{
++    Pca954xClass *s = PCA954X_CLASS(klass);
++    s->nchans = PCA9543_CHANNEL_COUNT;
++}
++
+ static void pca9546_class_init(ObjectClass *klass, void *data)
+ {
+     Pca954xClass *s = PCA954X_CLASS(klass);
+@@ -246,6 +253,11 @@ static const TypeInfo pca954x_info[] = {
+         .class_init    = pca954x_class_init,
+         .abstract      = true,
+     },
++    {
++        .name          = TYPE_PCA9543,
++        .parent        = TYPE_PCA954X,
++        .class_init    = pca9543_class_init,
++    },
+     {
+         .name          = TYPE_PCA9546,
+         .parent        = TYPE_PCA954X,
+diff --git a/include/hw/i2c/i2c_mux_pca954x.h b/include/hw/i2c/i2c_mux_pca954x.h
+index 3dd25ec983..1da5508ed5 100644
+--- a/include/hw/i2c/i2c_mux_pca954x.h
++++ b/include/hw/i2c/i2c_mux_pca954x.h
+@@ -3,6 +3,7 @@
+ 
+ #include "hw/i2c/i2c.h"
+ 
++#define TYPE_PCA9543 "pca9543"
+ #define TYPE_PCA9546 "pca9546"
+ #define TYPE_PCA9548 "pca9548"
+ 
+-- 
+2.31.1
 
 
