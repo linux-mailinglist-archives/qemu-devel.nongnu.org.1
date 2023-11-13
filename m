@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F8FA7E99CF
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 11:07:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 757FB7E99F5
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 11:15:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2TpG-0000kW-QS; Mon, 13 Nov 2023 05:05:50 -0500
+	id 1r2TxO-0002AF-HR; Mon, 13 Nov 2023 05:14:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2Tp9-0000g9-NH
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:05:45 -0500
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2TxM-0002A3-Er
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:14:12 -0500
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2Toy-00071R-T9
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:05:38 -0500
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-53e2308198eso6433935a12.1
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 02:05:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2TxJ-0000Iy-Ku
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:14:11 -0500
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-9e2838bcb5eso623585966b.0
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 02:14:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699869928; x=1700474728; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1699870446; x=1700475246; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=F0YvJCE9F0OYTvhxbgp0GCWLE4YxR69AD1kqgeQ2RUE=;
- b=bQKbK8qrwCJAvVNxiLX4HPvosUXNdXdCd84cX+A6CTAD4SXl+C7XapZoAN4rVjgpEZ
- gs83h6JG2REEdgFLJfIXwFEejEtVRZmLN7gQcR6Hhmmlfpo2grX9OUiKAfG2h1+uXzFN
- kUIuOytAWQlsT04YXOtS4NGUhudOgY4iIkj6lYihA23yLGK7ZH1T8pjqO/XtCz58L1Z9
- sYQhEISRN4WyE1DhC8Js2fzVjkKeNiEJxuvfGK7aOkcg15Q5chHncm0tpqJl6U3ZYhhu
- np7mrsEo1iOiZSwl2U+ysFdM2YSm8u4h2/r733bgVBDMA9py6+ohPb4DOWaoUKsN0TGe
- n+XA==
+ bh=NQMoa/G4WBTT5t5h67ExWC9OkfcXaE7vrmZtbsQUzkA=;
+ b=mPECkMef3MEctut3ggSkiLcoMjsJP21rR8fypolRSCsUB3fOFSTTqrRgSJHOdBjFfB
+ 7ewHjwhtgKKafJkTFrYjw/EhOaI7PAyE7MNC9o6vwKrgAH4gZqU/u0ly3BAIBKjlnT7h
+ 8I1KBzmoPm6ZdXbILts8AZI0aaF0Dq6R8we9zdsaM2UkADpG90/3qjYB8SNwCzBxIkLY
+ NNCFmtspA9k6BkbkIov05WJv4FDByemZgt1F4M3nDYqpRgeWxphm8ZPc8tv1K9+o7YqI
+ XUWCn9zmXSnChtOTAP1nXMzT2IX2vLv4WUuzLkq93WeLwBkoq4GnCeWBVWNET7tbNAKt
+ lzvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699869928; x=1700474728;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1699870446; x=1700475246;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=F0YvJCE9F0OYTvhxbgp0GCWLE4YxR69AD1kqgeQ2RUE=;
- b=WXB3u0N6uh+8EW/fHFbwfEPvNTdt/28k6U6xm4ik/1cZTlBrUVlxHwo+1NHNN1dRq0
- LPwF1qeLKDiGEtSFQ/2ibCcsR8Xz6K7Hdqk15X1GV8msShJ5dxS+z0ZOpO4LUYZgOybh
- Twj4Fl2fPHYmazXzIs2M+36hTFgJtwBGJsBqCppy07iYF/vV4/biAt8isGfrLZNss50c
- A5SWphkyh/WiJmrlWHaB+KfPgcEds+zR6b1Fdq+ZN2oYYNrBZNkR4O3SsIwuhbiao96S
- Gy7DhmsR/BF7qErlkmK7kzDd879qUdr5FRGnc+kgVyCQ/gHLast9jc10B90T2AjmRBbO
- JluQ==
-X-Gm-Message-State: AOJu0Ywqf5fUfoLiTT8FLQ2lbzQj+uofBsCa1gDiuRdQUXvrLKuXpPJY
- W3ynzrvEZ7LNhWk5f9swaVB0Nw==
-X-Google-Smtp-Source: AGHT+IGhfVpS6UgfAHC51x4FJ7DuY1j96OFdcAlxXMygePdnSTVeBrYSDTm+KIUtOPUwaxGSpoLdaQ==
-X-Received: by 2002:a17:906:cd1f:b0:9e6:9abb:d3cc with SMTP id
- oz31-20020a170906cd1f00b009e69abbd3ccmr3936935ejb.1.1699869928465; 
- Mon, 13 Nov 2023 02:05:28 -0800 (PST)
+ bh=NQMoa/G4WBTT5t5h67ExWC9OkfcXaE7vrmZtbsQUzkA=;
+ b=UezrRxbNp4fINAg8AfzHIdpyNNggITYY5YYWK5tO0qA794t1buGjPf8BE8ux71LuGu
+ 1YUzv9DglnKGvh6hWvRmVgEBVKmQywcDrsd4h2dzrtVtJn9HpX1V/5ERv3G4wjYWuUWx
+ pF4kWefE4S/z1vgCY+YjSPX1H7GqTZwHQgZ4zR7IkiCycFdXT3cmrvN1VTWbqOITxrAR
+ 2xThm+tGZmQvnmiiAt2mbWT9nthczhpEjQI3Zv5V5YfCNenTDhGrIxqSskk6PAvWNZIt
+ orGcJPaesLzQRerExCXnUHbxlhgZV78DGL4V4+Kk45/8BSF3TWyaEnnfvVHShOwd4HNf
+ cuyA==
+X-Gm-Message-State: AOJu0Yw70bgAHNbq7hqPtg29qt9ulQHre7KggKW3ql6kBpQCJYRB4FCP
+ bbBBAABEOPj1OZkzEUrvIUC3sK5KVYOyzMoLme8=
+X-Google-Smtp-Source: AGHT+IEuEA3vfjKReAOIw0XDBMguRijd+GuYMsmMEJzmk51bSmQovYudcID3P/XecarAals1bibciQ==
+X-Received: by 2002:a17:907:728b:b0:9dd:30c8:6f2f with SMTP id
+ dt11-20020a170907728b00b009dd30c86f2fmr6277043ejc.27.1699870446387; 
+ Mon, 13 Nov 2023 02:14:06 -0800 (PST)
 Received: from [192.168.69.100] ([176.164.221.204])
  by smtp.gmail.com with ESMTPSA id
- m22-20020a170906235600b009e6279fc1d6sm3734276eja.40.2023.11.13.02.05.27
+ o9-20020a1709061b0900b0099bcf9c2ec6sm3775735ejg.75.2023.11.13.02.14.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Nov 2023 02:05:27 -0800 (PST)
-Message-ID: <53512cf6-b595-4cff-a1f2-6f1dd2c6621a@linaro.org>
-Date: Mon, 13 Nov 2023 11:05:26 +0100
+ Mon, 13 Nov 2023 02:14:06 -0800 (PST)
+Message-ID: <d79587a5-ae52-4832-9859-aad3e8b7182d@linaro.org>
+Date: Mon, 13 Nov 2023 11:14:04 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] msix: unset PCIDevice::msix_vector_poll_notifier in
- rollback
+Subject: Re: [PATCH] test/qtest: Add an API function to capture IRQ toggling
 Content-Language: en-US
-To: Robert Hoo <robert.hoo.linux@gmail.com>, qemu-devel@nongnu.org,
- mst@redhat.com, marcel.apfelbaum@gmail.com
-References: <20231113081349.1307-1-robert.hoo.linux@gmail.com>
+To: Thomas Huth <thuth@redhat.com>, Gustavo Romero
+ <gustavo.romero@linaro.org>, qemu-devel@nongnu.org
+Cc: lvivier@redhat.com, pbonzini@redhat.com
+References: <20231112013801.293970-1-gustavo.romero@linaro.org>
+ <ddb3f1c5-28d1-472d-b491-703a3e1c6711@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231113081349.1307-1-robert.hoo.linux@gmail.com>
+In-Reply-To: <ddb3f1c5-28d1-472d-b491-703a3e1c6711@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,21 +93,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Robert,
+On 13/11/23 07:59, Thomas Huth wrote:
+> On 12/11/2023 02.38, Gustavo Romero wrote:
+>> Currently the QTest API does not provide a function to allow capturing
+>> when an IRQ line is toggled (raised then lowered). Functions like
+>> qtest_get_irq() read the current state of the intercepted IRQ lines,
+>> which is already low when the function is called, since the line is
+>> toggled.
+>>
+>> This commit introduces a new function, qtest_get_irq_trigger_counter(),
+>> which returns the number of times a given intercepted IRQ line was
+>> triggered (raised), hence allowing to capture when an IRQ line was
+>> toggled.
+>>
+>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+>> ---
+>>   tests/qtest/libqtest.c | 12 ++++++++++++
+>>   tests/qtest/libqtest.h |  9 +++++++++
+>>   2 files changed, 21 insertions(+)
+>>
+>> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+>> index f33a210861..21891b52f1 100644
+>> --- a/tests/qtest/libqtest.c
+>> +++ b/tests/qtest/libqtest.c
+>> @@ -82,6 +82,7 @@ struct QTestState
+>>       int expected_status;
+>>       bool big_endian;
+>>       bool irq_level[MAX_IRQ];
+>> +    uint64_t irq_trigger_counter[MAX_IRQ];
+>>       GString *rx;
+>>       QTestTransportOps ops;
+>>       GList *pending_events;
+>> @@ -498,6 +499,7 @@ static QTestState *qtest_init_internal(const char 
+>> *qemu_bin,
+>>       s->rx = g_string_new("");
+>>       for (i = 0; i < MAX_IRQ; i++) {
+>>           s->irq_level[i] = false;
+>> +        s->irq_trigger_counter[i] = 0;
+>>       }
+>>       /*
+>> @@ -690,6 +692,7 @@ redo:
+>>           if (strcmp(words[1], "raise") == 0) {
+>>               s->irq_level[irq] = true;
+>> +            s->irq_trigger_counter[irq]++;
 
-On 13/11/23 09:13, Robert Hoo wrote:
-> In the rollback in msix_set_vector_notifiers(), original patch forgot to
-> undo msix_vector_poll_notifier pointer.
+This is 'irq_raised_counter',
 
-Out of curiosity, nobody complained during 11 years, so in which
-use case did you notice this?
+> Not sure whether you can get some "raise" events in a row without some 
+> "lower" events in between ... but just in case, I wonder whether it 
+> would make sense to check whether it is really a rising edge, i.e.:
+> 
+>             if (strcmp(words[1], "raise") == 0) {
+>                 if (!s->irq_level[irq]) {
+>                     s->irq_trigger_counter[irq]++;
+>                 }
+>                 s->irq_level[irq] = true;
+> 
+> What do you think?
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This is 'irq_pulsed_counter'. 'irq_lowered_counter' could also be
+useful (at least for completeness).
 
-> Fixes: bbef882cc193 ("msi: add API to get notified about pending bit poll")
-> Signed-off-by: Robert Hoo <robert.hoo.linux@gmail.com>
-> ---
->   hw/pci/msix.c | 1 +
->   1 file changed, 1 insertion(+)
+Per Gustavo's description, he indeed wants irq_pulsed_counter (or
+irq_toggled_counter'.
+
+> 
+>>           } else {
+>>               s->irq_level[irq] = false;
+>>           }
+> 
+> Anyway:
+> Acked-by: Thomas Huth <thuth@redhat.com>
+> 
 
 
