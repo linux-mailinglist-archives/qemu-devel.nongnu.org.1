@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3319B7E9FE3
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 16:23:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BEC47E9FDA
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 16:23:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2Yl3-0001kR-EJ; Mon, 13 Nov 2023 10:21:49 -0500
+	id 1r2Yl9-0001rQ-Ez; Mon, 13 Nov 2023 10:21:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2Yl1-0001jo-4s
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:21:47 -0500
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2Yl6-0001pf-R6
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:21:53 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2Yky-0003FQ-6O
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:21:46 -0500
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-99bdeae1d0aso672058666b.1
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 07:21:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2Yl5-0003Gi-8U
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 10:21:52 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-53e08b60febso7030538a12.1
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 07:21:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699888902; x=1700493702; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699888909; x=1700493709; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YAZk+3Dse8rl86kxKUGHVuPZUfUpHgJaPljFBSi46HI=;
- b=RdBB9d80NsuplF3O4FRWUwGG37hhXYwnJ2wTtvcb/AJLDFEBRrg7YfqPYEdhKvuZ5r
- B95yaG52h1fyubvsgr3l/K4Zi+HHMbNRWZzESBZCG9Ers6v9ZqoB1IDdsFPho9LYNmy5
- 6dLjVM3bbxidw3jXXWkzGKLDmNVQSAfRm9rTb0p7vyWgRi5YOnYXfj4+XecdzlBcSBUC
- a2ORPQioWWbv+ACwdhxC7Mz62ZJkj12lW7A1ZOe89c5aJAMPTx4Csmyb9FLpc6/UGksw
- qM+ISRqoB9cQRf6TElVqJjWYW6Bw3YNeTKexMfyTn5puktA/l6gq2ewNf4vs0qm/VPYc
- 2Ieg==
+ bh=hC1GyuSTm1pIOLAiq1jl6VtM1wTJGGJIerTVB/FTO70=;
+ b=ONNMMf5ShKOTAZfEB0QNL8A4KLsvbk34jIt6rmPSjIm1fYSMX1S+tCLT0zGbTZcviE
+ OJyLqNoj5eEz7ACTykRKJEXO3hQCR1uXTEvZbMPx31TUfYRXlpqWhX9JgiWUunjGmKYp
+ zQmLSQufzXMH0MiJexx2hTGidpkVXOjfuhShf0Tdugp5tEJyCvELN/Ns2zzt9BuCmWNv
+ BTzG/1Lsn77/9WTtHUO55kXQ0xq3GBWXTiPg2PzXXMbPagtSYhmb8aPC/aEEJQJY3aPU
+ G98J7MFlLMb9AvgJ98Oe1XDvmaTACxhDlVs+JeT7A4LkNOZokw0KeLfR74L4zfLTyhHx
+ S8xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699888902; x=1700493702;
+ d=1e100.net; s=20230601; t=1699888909; x=1700493709;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YAZk+3Dse8rl86kxKUGHVuPZUfUpHgJaPljFBSi46HI=;
- b=wBFT0b3pnUhsMWlfOmZMGHNqhpfTCVMuI4eGOzQQbjhrSo02zfzY0t9nPeXpPAeoQ1
- +qEN/SP6sD3SthYgnjonUg3EuQO55rtLPgK+lM1KKiaSDl7hi/1fiambw/ZUwCFB+z87
- TOjp7v+ypuJYH4Ol4x0hHO0w4tHANeF9sm+uy/AwnhfzgW2drewtPvseufhr/NPrHctW
- CkVYZ1SNxYle69hRUK6ML609Dsk3EpBOrz+GcP9+Gk8HmhmWeL8GO9gipagdIRJBLqwZ
- KCFuF8NWbSBtrNCldumF66qT83niPBPRW8SdBh2Dp8mmWBCy4dlacNr4y1BeextFSyts
- IsUg==
-X-Gm-Message-State: AOJu0Yw0zj6Cn79GfMCTzrYojYVfBYBOPtjzl8GUmAHc23L4jsFuBCG3
- aRoJNlkWLxCQDCPdpHqqRK83iA==
-X-Google-Smtp-Source: AGHT+IGj6dXGN5MguahUCcbomoo2q2R5bpml51YnyeqNpSNRHHGNbaVXW8b4IH/nqJe1/joi6MIM1w==
-X-Received: by 2002:a17:906:84c:b0:9ae:6da8:1819 with SMTP id
- f12-20020a170906084c00b009ae6da81819mr4194118ejd.48.1699888902783; 
- Mon, 13 Nov 2023 07:21:42 -0800 (PST)
+ bh=hC1GyuSTm1pIOLAiq1jl6VtM1wTJGGJIerTVB/FTO70=;
+ b=m44vI0BTH+U2tRPwADUrf8BIZzmAHNV2dUqzXrns28r8uuDVmLLhwhGqGwCyLpkqHr
+ wytRzVhfhzzZ5qtBHyGW3wL978DI5iEBaguj5hyrhgFmS2lnlCHJ6ZozOTdWp0TBjCSn
+ Sg/t1KTi/uz22xcpk5/TNS7mq5RQ2+s0jhM9MMgjVJNks6ynSQrt9d9FR3dHTTuBvHbG
+ 9tW5ALjiDHd2cPuNaXytWuMKNKvAHvRJ1qrSOeLX0XoHXHMdiR8UkxSnRM47U1D7Ljd8
+ q2yEcHXMYjsI6ryVtsJVScp22tRv+CAtT5zVVIOtSrY7b1sFl6SeuZAoJAmLsSM8TKH5
+ TfpQ==
+X-Gm-Message-State: AOJu0YzhjfkKyWmmFjLh81iC1fYR3PDnnctmn/3aHK/vlh4kwff/9nqZ
+ +58Y8cx/ltz3nU7cXJ4BaExfEg==
+X-Google-Smtp-Source: AGHT+IGbtAixMPiQVaiouSIFTb1IQKmmFA1AcOCrzXhQQ2Afk2FYf+XnPnB9Zgf0YAtZ7aK4/lySbw==
+X-Received: by 2002:a50:ab12:0:b0:540:2ece:79 with SMTP id
+ s18-20020a50ab12000000b005402ece0079mr5690457edc.10.1699888908890; 
+ Mon, 13 Nov 2023 07:21:48 -0800 (PST)
 Received: from m1x-phil.lan ([176.164.221.204])
  by smtp.gmail.com with ESMTPSA id
- d17-20020a17090648d100b009e6cedc8bf5sm4165051ejt.29.2023.11.13.07.21.40
+ f19-20020a50a6d3000000b0054026e95beesm3942482edc.76.2023.11.13.07.21.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 13 Nov 2023 07:21:42 -0800 (PST)
+ Mon, 13 Nov 2023 07:21:48 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: David Woodhouse <dwmw@amazon.co.uk>,
 	qemu-devel@nongnu.org
@@ -63,23 +63,19 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Stefano Stabellini <sstabellini@kernel.org>, qemu-block@nongnu.org,
  Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-arm@nongnu.org, Paul Durrant <paul@xen.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH-for-9.0 04/10] hw/xen: Factor xen_arch_align_ioreq_data() out
- of handle_ioreq()
-Date: Mon, 13 Nov 2023 16:21:07 +0100
-Message-ID: <20231113152114.47916-5-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-9.0 05/10] hw/xen: Use target-agnostic
+ qemu_target_page_bits()
+Date: Mon, 13 Nov 2023 16:21:08 +0100
+Message-ID: <20231113152114.47916-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231113152114.47916-1-philmd@linaro.org>
 References: <20231113152114.47916-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,92 +98,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per commit f17068c1c7 ("xen-hvm: reorganize xen-hvm and move common
-function to xen-hvm-common"), handle_ioreq() is expected to be
-target-agnostic. However it uses 'target_ulong', which is a target
-specific definition.
-
-In order to compile this file once for all targets, factor the
-target-specific code out of handle_ioreq() as a per-target handler
-called xen_arch_align_ioreq_data().
+Instead of the target-specific TARGET_PAGE_BITS definition,
+use qemu_target_page_bits() which is target agnostic.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-Should we have a 'unsigned qemu_target_long_bits();' helper
-such qemu_target_page_foo() API and target_words_bigendian()?
----
- include/hw/xen/xen-hvm-common.h | 1 +
- hw/arm/xen_arm.c                | 8 ++++++++
- hw/i386/xen/xen-hvm.c           | 8 ++++++++
- hw/xen/xen-hvm-common.c         | 5 +----
- 4 files changed, 18 insertions(+), 4 deletions(-)
+ hw/xen/xen-hvm-common.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/xen/xen-hvm-common.h b/include/hw/xen/xen-hvm-common.h
-index 27e938d268..734bfa3183 100644
---- a/include/hw/xen/xen-hvm-common.h
-+++ b/include/hw/xen/xen-hvm-common.h
-@@ -97,6 +97,7 @@ void xen_register_ioreq(XenIOState *state, unsigned int max_cpus,
- 
- void cpu_ioreq_pio(ioreq_t *req);
- 
-+void xen_arch_align_ioreq_data(ioreq_t *req);
- void xen_arch_handle_ioreq(XenIOState *state, ioreq_t *req);
- void xen_arch_set_memory(XenIOState *state,
-                          MemoryRegionSection *section,
-diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-index 6a1d7719e9..c646fd70d0 100644
---- a/hw/arm/xen_arm.c
-+++ b/hw/arm/xen_arm.c
-@@ -128,6 +128,14 @@ static void xen_init_ram(MachineState *machine)
-     }
- }
- 
-+void xen_arch_align_ioreq_data(ioreq_t *req)
-+{
-+    if (!req->data_is_ptr && (req->dir == IOREQ_WRITE)
-+            && (req->size < sizeof(target_ulong))) {
-+        req->data &= ((target_ulong) 1 << (8 * req->size)) - 1;
-+    }
-+}
-+
- void xen_arch_handle_ioreq(XenIOState *state, ioreq_t *req)
- {
-     hw_error("Invalid ioreq type 0x%x\n", req->type);
-diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
-index f8a195270a..aff5c5b81d 100644
---- a/hw/i386/xen/xen-hvm.c
-+++ b/hw/i386/xen/xen-hvm.c
-@@ -699,6 +699,14 @@ void xen_arch_set_memory(XenIOState *state, MemoryRegionSection *section,
-     }
- }
- 
-+void xen_arch_align_ioreq_data(ioreq_t *req)
-+{
-+    if (!req->data_is_ptr && (req->dir == IOREQ_WRITE)
-+            && (req->size < sizeof(target_ulong))) {
-+        req->data &= ((target_ulong) 1 << (8 * req->size)) - 1;
-+    }
-+}
-+
- void xen_arch_handle_ioreq(XenIOState *state, ioreq_t *req)
- {
-     switch (req->type) {
 diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
-index c028c1b541..03f9417e7e 100644
+index 03f9417e7e..35b3b5407d 100644
 --- a/hw/xen/xen-hvm-common.c
 +++ b/hw/xen/xen-hvm-common.c
-@@ -426,10 +426,7 @@ static void handle_ioreq(XenIOState *state, ioreq_t *req)
-     trace_handle_ioreq(req, req->type, req->dir, req->df, req->data_is_ptr,
-                        req->addr, req->data, req->count, req->size);
+@@ -1,6 +1,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/units.h"
+ #include "qapi/error.h"
++#include "exec/target_page.h"
+ #include "trace.h"
  
--    if (!req->data_is_ptr && (req->dir == IOREQ_WRITE) &&
--            (req->size < sizeof (target_ulong))) {
--        req->data &= ((target_ulong) 1 << (8 * req->size)) - 1;
--    }
-+    xen_arch_align_ioreq_data(req);
+ #include "hw/pci/pci_host.h"
+@@ -13,6 +14,7 @@ MemoryRegion ram_memory;
+ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
+                    Error **errp)
+ {
++    unsigned target_page_bits = qemu_target_page_bits();
+     unsigned long nr_pfn;
+     xen_pfn_t *pfn_list;
+     int i;
+@@ -31,11 +33,11 @@ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
  
-     if (req->dir == IOREQ_WRITE)
-         trace_handle_ioreq_write(req, req->type, req->df, req->data_is_ptr,
+     trace_xen_ram_alloc(ram_addr, size);
+ 
+-    nr_pfn = size >> TARGET_PAGE_BITS;
++    nr_pfn = size >> target_page_bits;
+     pfn_list = g_new(xen_pfn_t, nr_pfn);
+ 
+     for (i = 0; i < nr_pfn; i++) {
+-        pfn_list[i] = (ram_addr >> TARGET_PAGE_BITS) + i;
++        pfn_list[i] = (ram_addr >> target_page_bits) + i;
+     }
+ 
+     if (xc_domain_populate_physmap_exact(xen_xc, xen_domid, nr_pfn, 0, 0, pfn_list)) {
 -- 
 2.41.0
 
