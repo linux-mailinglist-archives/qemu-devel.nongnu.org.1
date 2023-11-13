@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B247E9A63
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 11:36:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD747E9A88
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 11:48:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2UI8-0005HU-Oj; Mon, 13 Nov 2023 05:35:41 -0500
+	id 1r2UTR-00027R-Jj; Mon, 13 Nov 2023 05:47:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2UHZ-00056D-Mj
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:35:05 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2UTE-00026x-Fa
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:47:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2UHX-0003sD-Pn
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:35:05 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2UTA-00064K-Qs
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 05:47:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699871701;
+ s=mimecast20190719; t=1699872423;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=PEQIri7VdaFKnh39IYsyiZxjMYqUiG0TME3ZF3C0ddU=;
- b=XtZqA+f4+mEmihwc2yhuu0Pb7wg14OuZE0FrPUARfUwtALpfaDJURIqoQ1Ic/6RsdwLQEq
- 8g2pFeC5qyL3RJhItkRJ2b3Eqvm4L92v+NbLKBH1xY2OyqHYUaxDzJnDe8OSk/988ROg+W
- KKEHyiQK/33uXV3paDR3wp1+ZF/RbDw=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=JvDOIAXEdkz1xaZ8/TUBclsLIGJ+BRq4L7fE6xgYBDo=;
+ b=JTBMqmhFhTExCoug3d6m38Ib7rhhzibGFMfOI5ovfksV2zK3aJzNbVKbbTyCZgUS38sFRZ
+ k6NAb3/kgTo2uiuVnPNhgc52BKrEKYSS/4HmWFdBYxtmZEur5qza61yVOu3A5Ad9V0OQeE
+ b+TE6969U0UwhQCbJJo4exaEP7tODwY=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-fLUff882P5OvJH73P3bzQQ-1; Mon, 13 Nov 2023 05:34:59 -0500
-X-MC-Unique: fLUff882P5OvJH73P3bzQQ-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-77893b0a2cdso500767685a.2
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 02:34:59 -0800 (PST)
+ us-mta-599-IlP_yf9fN3qgXMbAjlIpMg-1; Mon, 13 Nov 2023 05:47:01 -0500
+X-MC-Unique: IlP_yf9fN3qgXMbAjlIpMg-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-77bc8a94064so351934485a.0
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 02:47:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699871699; x=1700476499;
+ d=1e100.net; s=20230601; t=1699872421; x=1700477221;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PEQIri7VdaFKnh39IYsyiZxjMYqUiG0TME3ZF3C0ddU=;
- b=KgWmW7kKQOzbeaIMdieBJjnz4DCgtJOozP1X5D7DRxLE+vU0qNNALXH+7Ul2hYtdcy
- 049lDTCeVXTiw14vTKePnAZM9IaJWdyCdep/d6dPdaOo3V0oDUh/WDQXt9uTu4HmvcKP
- Fh4l3qTBgRY3WTppfh2X9UWqYnxNAb2T6869IgzNPgDNYi5fr0b9FFHPJF3O31xPXHKm
- rajaBrMZla/JpJJBUOiZsFDNaMEOJusAWVQTy0HSqQHS0eHKTJxjQzNHuPE21k2T0Inb
- j/emSul/Gs+Dsb2kWRO3StEmYf/Bj6rFUVetZFDn6tLcPaFUE8s1u0j4HAe1ABhGRPmK
- c7EQ==
-X-Gm-Message-State: AOJu0YwMvGhBByG87/TNj+TVFWVyaBj92X7WVsS642pvb+t6pyOG421E
- U7G6YhhuLdoODYH6cHy5UUJFoNdRQvTDnGp8zi9wGnybV7lFNr7wkeL0gj+6BrDrkMCrR0o3+S0
- EqlZUpvvSGqSvnpw=
-X-Received: by 2002:a05:620a:468a:b0:77a:558:e579 with SMTP id
- bq10-20020a05620a468a00b0077a0558e579mr8187350qkb.28.1699871699113; 
- Mon, 13 Nov 2023 02:34:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEX8gA7EzZ18HHN4RV9un5sppit0sKldsuuPQ3gY2hxpZsLx8f3sevgxbjyNZ2mMv1sSrSxbQ==
-X-Received: by 2002:a05:620a:468a:b0:77a:558:e579 with SMTP id
- bq10-20020a05620a468a00b0077a0558e579mr8187335qkb.28.1699871698755; 
- Mon, 13 Nov 2023 02:34:58 -0800 (PST)
+ bh=JvDOIAXEdkz1xaZ8/TUBclsLIGJ+BRq4L7fE6xgYBDo=;
+ b=tKLFTqCCc+auJASCsAwHA/39D6ntwIk0WDN+F26MtwN7mf4AOi5zDpv6bkLsfBJbia
+ dE7m1tWCaHTjNbo0XPqQyl1XesOsdOJglJpzUEEhua/ZTxuLjccVcZBZ0nzft4W0fR9U
+ V4VfloG7KvQ6Rrt3nW4vnHh22BjJ75c1z6z0Jy+24glWdABe3+uzQVj0eCzBCAGZYkcM
+ 1JlmWzhRJTTKXDx9rWTl4/Xc864que54HHP+UJwhFHqTWT/nP6Dw4IvAYTiKVXEu9gsR
+ HLSLOhZGLhuflOUl7zZuBtGf7VTpw221C3UKKu5siQ617URXXdpewlczSgLrLHsdR2Ge
+ 3AZw==
+X-Gm-Message-State: AOJu0YxwfyzZmEQQflPQFH0EnjcUG+uPiWHfEXfr6CcrOeUP1nnxPmNe
+ sUdlKIAYldw0lOLZKkF/Xv2WcgAq7DUIz3exZMR14eO/UVfiL/NzA5ZtRnRRQsWwTNllkEl+EaS
+ L7rWrtwHfj81g4YY=
+X-Received: by 2002:a05:620a:e9b:b0:77b:def4:3f38 with SMTP id
+ w27-20020a05620a0e9b00b0077bdef43f38mr4042611qkm.21.1699872421475; 
+ Mon, 13 Nov 2023 02:47:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHKRIh9JXnVpLkChKai5Y7zG5OXZ3Fa7LhE8BSz2miC2jz1A/SL7g6JMcw3IzqZo4MBrR0efg==
+X-Received: by 2002:a05:620a:e9b:b0:77b:def4:3f38 with SMTP id
+ w27-20020a05620a0e9b00b0077bdef43f38mr4042599qkm.21.1699872421244; 
+ Mon, 13 Nov 2023 02:47:01 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-177-79.web.vodafone.de.
  [109.43.177.79]) by smtp.gmail.com with ESMTPSA id
- k21-20020a05620a07f500b007759e9b0eb8sm1787227qkk.99.2023.11.13.02.34.56
+ e14-20020a05620a12ce00b007740c0e52edsm1787753qkl.89.2023.11.13.02.46.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Nov 2023 02:34:58 -0800 (PST)
-Message-ID: <9b48b790-4705-4716-809f-1f24ced24833@redhat.com>
-Date: Mon, 13 Nov 2023 11:34:55 +0100
+ Mon, 13 Nov 2023 02:47:00 -0800 (PST)
+Message-ID: <91b491ca-5600-4272-b694-37d6c8ba2a90@redhat.com>
+Date: Mon, 13 Nov 2023 11:46:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] host/include/generic/host/atomic128: Fix compilation
- problem with Clang 17
+Subject: Re: [PULL 21/38] plugins: update lockstep to use g_memdup2
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org
-References: <20231108085954.313071-1-thuth@redhat.com>
- <b5945b9e-f696-4a71-b358-b95a5aaa7da9@linaro.org>
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+References: <20230703134427.1389440-1-alex.bennee@linaro.org>
+ <20230703134427.1389440-22-alex.bennee@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -115,19 +117,19 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <b5945b9e-f696-4a71-b358-b95a5aaa7da9@linaro.org>
+In-Reply-To: <20230703134427.1389440-22-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -143,61 +145,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/11/2023 18.57, Richard Henderson wrote:
-> On 11/8/23 00:59, Thomas Huth wrote:
->> When compiling QEMU with Clang 17 on a s390x, the compilation fails:
->>
->> In file included from ../accel/tcg/cputlb.c:32:
->> In file included from /root/qemu/include/exec/helper-proto-common.h:10:
->> In file included from /root/qemu/include/qemu/atomic128.h:62:
->> /root/qemu/host/include/generic/host/atomic128-ldst.h:68:15: error:
->>   __sync builtin operation MUST have natural alignment (consider using __
->> atomic). [-Werror,-Wsync-alignment]
->>     68 |     } while (!__sync_bool_compare_and_swap_16(ptr_align, old, 
->> new.i));
->>        |               ^
->> In file included from ../accel/tcg/cputlb.c:32:
->> In file included from /root/qemu/include/exec/helper-proto-common.h:10:
->> In file included from /root/qemu/include/qemu/atomic128.h:61:
->> /root/qemu/host/include/generic/host/atomic128-cas.h:36:11: error:
->>   __sync builtin operation MUST have natural alignment (consider using __a
->> tomic). [-Werror,-Wsync-alignment]
->>     36 |     r.i = __sync_val_compare_and_swap_16(ptr_align, c.i, n.i);
->>        |           ^
->> 2 errors generated.
->>
->> It's arguably a bug in Clang since we already use __builtin_assume_aligned()
->> to tell the compiler that the pointer is properly aligned. But according to
->> https://github.com/llvm/llvm-project/issues/69146 it seems like the Clang
->> folks don't see an easy fix on their side and recommend to use a type
->> declared with __attribute__((aligned(16))) to work around this problem.
->>
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1934
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   host/include/generic/host/atomic128-cas.h  | 2 +-
->>   host/include/generic/host/atomic128-ldst.h | 2 +-
->>   include/qemu/int128.h                      | 1 +
->>   3 files changed, 3 insertions(+), 2 deletions(-)
+On 03/07/2023 15.44, Alex Bennée wrote:
+> The old g_memdup is deprecated, use the replacement.
 > 
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Message-Id: <20230630180423.558337-22-alex.bennee@linaro.org>
+> 
+> diff --git a/contrib/plugins/lockstep.c b/contrib/plugins/lockstep.c
+> index e36f0b9562..3614c3564c 100644
+> --- a/contrib/plugins/lockstep.c
+> +++ b/contrib/plugins/lockstep.c
+> @@ -130,7 +130,7 @@ static void report_divergance(ExecState *us, ExecState *them)
+>           }
+>       }
+>       divergence_log = g_slist_prepend(divergence_log,
+> -                                     g_memdup(&divrec, sizeof(divrec)));
+> +                                     g_memdup2(&divrec, sizeof(divrec)));
+>   
+>       /* Output short log entry of going out of sync... */
+>       if (verbose || divrec.distance == 1 || diverged) {
 
-I just noticed that this new type needs to be declared for the #else part, 
-too, otherwise the compilation breaks with --enable-tcg-interpreter :
+FYI, this seems to trigger a compiler warning on Ubuntu 20.04:
 
-diff --git a/include/qemu/int128.h b/include/qemu/int128.h
---- a/include/qemu/int128.h
-+++ b/include/qemu/int128.h
-@@ -225,6 +225,7 @@ static inline Int128 int128_rems(Int128 a, Int128 b)
-  #else /* !CONFIG_INT128 */
-
-  typedef struct Int128 Int128;
-+typedef struct Int128 __attribute__((aligned(16))) Int128Aligned;
-
-  /*
-   * We guarantee that the in-memory byte representation of an
-
-I'll add that when picking up the patch.
+https://app.travis-ci.com/github/huth/qemu/jobs/613144955#L1914
 
   Thomas
 
