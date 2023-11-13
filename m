@@ -2,83 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898A87EA252
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 18:48:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 774B97EA268
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 18:51:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2b2n-0001tB-CN; Mon, 13 Nov 2023 12:48:17 -0500
+	id 1r2b53-000330-69; Mon, 13 Nov 2023 12:50:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
- id 1r2b2j-0001m0-1P
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:48:13 -0500
-Received: from mail-qk1-x72a.google.com ([2607:f8b0:4864:20::72a])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r2b4v-00031A-0d
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:50:30 -0500
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
- id 1r2b2h-0003bv-Fh
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:48:12 -0500
-Received: by mail-qk1-x72a.google.com with SMTP id
- af79cd13be357-778927f2dd3so239049185a.2
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 09:48:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r2b4s-0003yW-3X
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:50:28 -0500
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-5c19a328797so764352a12.3
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 09:50:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699897690; x=1700502490; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=R7gzuZMyaAX07avLNluk1XFBv4yqThnwWrvQa7RjD1k=;
- b=AF+gwx18Sqm7SJCBMqc/0oISiztiN+vJq6cbRy4mzCFBVLqBulXprs63CV1NBCd3sk
- JwvqGxytC5397lvI8fdlbE6EmrViU57RxrdQ9yz7OtjvCNmbCIdpSwNq+zpSdVBuevRC
- lpD/YmPL3nYoRj67xDiKR7oZ3a4gU6bMKQgvjcVvP3hmBnkObk/eGysjtgPmfetmkOYp
- jzWTKT9w5a68YfnlP2kzcfFUq1S0SbN3bwY4P4VMlPJXhzMa4/Ghu0yTvrIHB9+c+5pW
- Vh20SkQYpge+Uaj7qeyE4AcoTYpKNluJpMBuZsunhINdv7FCsDmJxnl8v9g8m7j9lcgp
- VKhQ==
+ d=ventanamicro.com; s=google; t=1699897816; x=1700502616; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QUWJFzILI58nvnk/d1ey4cz6Q2D0+1VXSh2CmPZY8oU=;
+ b=FVGUIn5GlNm6Hfnb3JeygpmDmXEbwO9lpqNlZvqHDXwqNIinMx0qjc0RFNTyF1IPSI
+ jMkAuw81wUciIoBk5PEoFvIL8Prlbe4/N1YyN4BkRS8c1qsrAdwpC0lnZQvuYcu48yFR
+ USecsk9EVE4gT0MeuQL4vS14iF1fdKy++hIdjUUYWUJu16wRcvzYCkBe5Qr9YcAGt4MD
+ QRqonKLIY5Kjr4oFGRwB0qkUdnZCBCWCblmZ5MODz/WjCgtV0KgduwJn9E1Lo3FZb9d5
+ R/AC8vZJi8MnUIUTyB3HOX91rXsd5pT+MlwdB94nX6LMOZkT4XipOhGEJlqP8GtYqTGn
+ /PSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699897690; x=1700502490;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=R7gzuZMyaAX07avLNluk1XFBv4yqThnwWrvQa7RjD1k=;
- b=beY6CRdM5DesHfGqUHMG2xq3/bWczR9hcshfiyFihkrOjazNDPW0LVlSeBWrrBeoiO
- Km82dUoUpq2BItyzbTOAtdXQVfMxtPL6OY4UAKX/SiAXAAY1KnFZl8K8vu8ulDO4fM23
- wkgWBqRNqwveehr4qCYOT6Bl1cJbki9cajGKJVD5SMEr0vxH3cAvyKuTY9hZ4mzbb810
- qHzcsC1K/1N/a2NKfQpfR86bG95PMD9gsVCzknB9GavVNi0I6GZu+E8y15+D1ahuk3/Q
- K31m+N0qT18E6VHremggq5lS/I9FwQ4srr76gjRCmdNjzzj31aG0NDMzSbuTnNzuTAKL
- eqjQ==
-X-Gm-Message-State: AOJu0Yyg3PNFIh+5iWK8H9JDXk7YyTwkcEItuSQvNdHpdVc46jzn7ZO6
- HjqqwyuuGYboPexjIRXD1NxyoA==
-X-Google-Smtp-Source: AGHT+IGpzK9IEbSnSP/swyL4ue6rtWrNpI4Jbm79foM+PHKkE44a5nMss0i2FiUA1xV+EwtsPs+23g==
-X-Received: by 2002:a05:620a:3955:b0:777:7178:ebf2 with SMTP id
- qs21-20020a05620a395500b007777178ebf2mr5832166qkn.18.1699897689994; 
- Mon, 13 Nov 2023 09:48:09 -0800 (PST)
-Received: from leoy-huanghe ([12.186.190.1]) by smtp.gmail.com with ESMTPSA id
- h27-20020a05620a21db00b00767dba7a4d3sm2027806qka.109.2023.11.13.09.48.09
+ d=1e100.net; s=20230601; t=1699897816; x=1700502616;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QUWJFzILI58nvnk/d1ey4cz6Q2D0+1VXSh2CmPZY8oU=;
+ b=LJxuZylpjqs5/l+SgFMTROJaG95256tJFqZruSZCR1kgiIQQFOSBs9Fdl3VZTYW/jA
+ aKbAMiUcyAy24uPni3ootlL/qBx8tvNdOA4JN2KhyCtb9OnfNiiilK62q287YnpWbcU5
+ ZMl5Z6IBj04ghPg/QzJ9HzQu+rmaE74wOjKzHmhsOHPVpUcyEYjPM2ndZn3A/+0eapV9
+ xritW8069Tum44iv36ld1xriw9uKJBmOj0lgSUNCFqhgcB0gt6+vtJcVcFo/cAdcHTxk
+ Af/UsRDL33BY9NlvWisU9w5fQClQHNowzmglMSQG5MtK85up2e//VPx+QqrU28xOIPiR
+ axqg==
+X-Gm-Message-State: AOJu0Ywjbxs0m2h9UJzMKlTx2Xiq/4lMZbwWsOIC6pdUuY3kxuaNtS4u
+ Bxrg1qykXNzoTmk8uCfOn1QgHAPQaP4UIjrRrmA=
+X-Google-Smtp-Source: AGHT+IFeJ114rL89RgO4eK7CPcPIMggTejCKEwBuEZAeufXwO5JaQAPPeR2uUl5nNkKXRxo0XNoqEA==
+X-Received: by 2002:a17:90b:3849:b0:280:aa7b:fbe8 with SMTP id
+ nl9-20020a17090b384900b00280aa7bfbe8mr5288099pjb.32.1699897816702; 
+ Mon, 13 Nov 2023 09:50:16 -0800 (PST)
+Received: from grind.. ([152.250.131.148]) by smtp.gmail.com with ESMTPSA id
+ hg23-20020a17090b301700b00277560ecd5dsm5869329pjb.46.2023.11.13.09.50.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Nov 2023 09:48:09 -0800 (PST)
-Date: Tue, 14 Nov 2023 01:48:08 +0800
-From: Leo Yan <leo.yan@linaro.org>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org,
- Alex =?iso-8859-1?Q?Benn=E9?= e <alex.bennee@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH v1 3/4] hw/virtio: Move vhost-user-input into virtio folder
-Message-ID: <20231113174808.GA58963@leoy-huanghe>
-References: <20231113011642.48176-1-leo.yan@linaro.org>
- <20231113011642.48176-4-leo.yan@linaro.org>
- <41wpa.smmzo0kr8q76@linaro.org>
+ Mon, 13 Nov 2023 09:50:16 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, mjt@tls.msk.ru, alistair.francis@wdc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH stable-8.1.3 0/2] RISC-V KVM fixes for 8.1.3
+Date: Mon, 13 Nov 2023 14:50:09 -0300
+Message-ID: <20231113175011.151022-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41wpa.smmzo0kr8q76@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72a;
- envelope-from=leo.yan@linaro.org; helo=mail-qk1-x72a.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,25 +89,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Manos,
+Hi,
 
-On Mon, Nov 13, 2023 at 09:24:09AM +0200, Manos Pitsidianakis wrote:
-> Hello Leo,
-> 
-> On Mon, 13 Nov 2023 03:16, Leo Yan <leo.yan@linaro.org> wrote:
-> > vhost-user-input is in the input folder.  On the other hand, the folder
-> > 'hw/virtio' maintains other virtio stubs (e.g. I2C, RNG, GPIO, etc).
-> > 
-> > This patch moves vhost-user-input into the virtio folder for better code
-> > organization.  No functionality change.
-> > 
-> > Signed-off-by: Leo Yan <leo.yan@linaro.org>
-> 
-> Make sure MAINTAINERS is updated as well, it points to hw/input:
+These 2 patches fixes a problem we're having with QEMU 8.1 and Linux
+6.6. More info here:
 
-You are right, will update in next spin.
+https://lore.kernel.org/kvm/6d8ff85e-b0b6-46f2-8554-b9543f3eab31@ventanamicro.com/
 
-Thanks for pointing out this and review!
 
-Leo
+Daniel Henrique Barboza (2):
+  target/riscv/kvm: improve 'init_multiext_cfg' error msg
+  target/riscv/kvm: support KVM_GET_REG_LIST
+
+ target/riscv/kvm.c | 100 +++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 97 insertions(+), 3 deletions(-)
+
+-- 
+2.41.0
+
 
