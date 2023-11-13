@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 600F37EA433
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 21:04:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7F07EA46E
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 21:11:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2d9s-00037j-LG; Mon, 13 Nov 2023 15:03:44 -0500
+	id 1r2dGB-0008Mg-Ne; Mon, 13 Nov 2023 15:10:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+4b2d4fa8b3c13737bab4+7386+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r2d9p-00037O-J1; Mon, 13 Nov 2023 15:03:41 -0500
+ id 1r2dG3-0008ML-0r; Mon, 13 Nov 2023 15:10:08 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+4b2d4fa8b3c13737bab4+7386+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r2d9j-0001d8-1H; Mon, 13 Nov 2023 15:03:41 -0500
+ id 1r2dFx-0002Vv-RQ; Mon, 13 Nov 2023 15:10:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
  In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=2dt7RjPx38FrZiUBU9K5RW9mFpHeuvrpE3dBpoplUog=; b=FzAqNIgfBnqn1mnBmfjhagZd5j
- Meuu71mdk5Eltlz/NMhrVOGPrQiQfMYXWDil1UIgVCUAd77KTazdiiSxIi3qjrocltWq8BT5R5iFS
- d9Lawh5pwaHDLh3yhf20Qk2c4Q67dy92B0O7dsMYkueqIpxJulc/exOy4xbeqIiN3DicPypn9Nxwz
- WaOHu8nrBQOSdgVIUe4J8jgxs+Zal7TU3sd/fUHL09Y1aIlUoWDQNuKz8NueruLucZnypEVO+kIn8
- Noq62JXnR+aqKa6rvQVoNWHdueoThwhvUJOzAfyKFvJM0SspDhAL+K/C5ljNv4z5kjaPasOwe8QE+
- PQXuUN1g==;
+ bh=RPMPzz9i1BequIN2qb1D2kZ94UKPCFkt9Mpn3oIoJKo=; b=OanfNBX7b+eXbQxCggOQL2bnrL
+ /CDwSttmzKhHjZqislHPtGGJ49J4QT03wHvWiF7E0dd0oIGpnEXTW/0on+f0gch58aY7xO2hKP5P2
+ VR5kNmeauO7WEUo7llMOCj1IZVtpTWF+yoq3XtLIRdDNIiipk9DBDz25lgP5cNGwt3ybYQeoFjNeT
+ JhhT3Ts3acAkS0oxRiMPI2eMuRqNduSdlTgtDRL5e8V65yXNPdi8zUny/9+a55nxsxOHxXAYhAMr2
+ Z0q2kZELyVvgtXprhygc+1cXNp8FJjVdG3etOqiHYkwODCLEOrFlklfSEvW5sxZZFHvwbxNsnUh8P
+ a+W5tAbQ==;
 Received: from [12.186.190.1] (helo=u3832b3a9db3152.ant.amazon.com)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1r2d9b-00GB4z-IQ; Mon, 13 Nov 2023 20:03:27 +0000
-Message-ID: <1681041d88a9f9062170eb6599947e24424bf37f.camel@infradead.org>
-Subject: Re: [PATCH-for-9.0 08/10] system/physmem: Only include
- 'hw/xen/xen.h' when Xen is available
+ id 1r2dFe-00GDYK-II; Mon, 13 Nov 2023 20:09:43 +0000
+Message-ID: <e9cae2ced357b35d313f601318b51e491ead81c1.camel@infradead.org>
+Subject: Re: [PATCH-for-9.0 09/10] hw/xen: Extract 'xen_igd.h' from 'xen_pt.h'
 From: David Woodhouse <dwmw2@infradead.org>
 To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, 
  qemu-devel@nongnu.org
@@ -42,15 +41,16 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Alex =?ISO-8859-1?Q?Benn=E9e?=
  xen-devel@lists.xenproject.org, Stefano Stabellini
  <sstabellini@kernel.org>,  qemu-block@nongnu.org, Thomas Huth
  <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org, Paul Durrant <paul@xen.org>, Peter Xu
- <peterx@redhat.com>, David Hildenbrand <david@redhat.com>
-Date: Mon, 13 Nov 2023 15:03:20 -0500
-In-Reply-To: <20231113152114.47916-9-philmd@linaro.org>
+ qemu-arm@nongnu.org, Paul Durrant <paul@xen.org>,  Richard Henderson
+ <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Date: Mon, 13 Nov 2023 15:09:36 -0500
+In-Reply-To: <20231113152114.47916-10-philmd@linaro.org>
 References: <20231113152114.47916-1-philmd@linaro.org>
- <20231113152114.47916-9-philmd@linaro.org>
+ <20231113152114.47916-10-philmd@linaro.org>
 Content-Type: multipart/signed; micalg="sha-256";
  protocol="application/pkcs7-signature"; 
- boundary="=-iZ/9pSLcedkHP5tz2Zm6"
+ boundary="=-eVaaov3VWp7iZK3p/HAp"
 User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
@@ -81,27 +81,31 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---=-iZ/9pSLcedkHP5tz2Zm6
+--=-eVaaov3VWp7iZK3p/HAp
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Mon, 2023-11-13 at 16:21 +0100, Philippe Mathieu-Daud=C3=A9 wrote:
-> "hw/xen/xen.h" contains declarations for Xen hardware. There is
-> no point including it when Xen is not available.
-
-... if even when Xen *is* available, AFAICT. Can you just remove the
-inclusion of hw/xen/xen.h entirely? I think that still builds, at least
-for x86.
-
->  When Xen is not
-> available, we have enough with declarations of "sysemu/xen.h".
-
-... and system/xen-mapcache.h
-
+> "hw/xen/xen_pt.h" requires "hw/xen/xen_native.h" which is target
+> specific. It also declares IGD methods, which are not target
+> specific.
+>=20
+> Target-agnostic code can use IGD methods. To allow that, extract
+> these methos into a new "hw/xen/xen_igd.h" header.
+>=20
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 
---=-iZ/9pSLcedkHP5tz2Zm6
+> ---
+> What license for the new "hw/xen/xen_igd.h" header?
+
+The existing xen_pt.h came in with xen_pt.c (GPLv2) in commit
+eaab4d60d. I think it has to be GPLv2 (and not later) just like
+xen_pt.c?
+
+
+--=-eVaaov3VWp7iZK3p/HAp
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -193,25 +197,25 @@ IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
 dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
 NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
 xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTEzMjAwMzIwWjAvBgkqhkiG9w0BCQQxIgQgoOXrxgtP
-A79vTwMs5GSgPIPk0PRKx4Sx69Sb9kXn5hIwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTEzMjAwOTM2WjAvBgkqhkiG9w0BCQQxIgQg/xeb+vWh
+AjsJWOHTG4Htv3vvTuidSmbu8iXpLTa3nNIwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
 BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
 A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
 dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
 DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
 Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgBMmN2cDXFk2wFF5am6RpsbtdcnV/9EuofW
-oMvXFk2wvCfApN8+QUaGr9d6al9Uj+M/nma2E1N1IuCU1rnTsx/gVU9OzSlreJqHB4t2Ws2SGyv0
-kjllMO36QhcKw/U9N7zV3zMmL+SKUERmb/Wmoo+toibAHcbk/Pj6mbEHK480HmlhFx5glpmgnsW8
-yiG/kIoNeoJozU+Gku3+P+XhoFrdfkY6d9upTiYmQRH4Hc3WzkfheksH/LBM56RwxjKMsA8lb4Ql
-Z4wOI4bvAm3+bHpnaWEvSz2B6oUfSMMIhDE58elPv/marHfNfGNBJgigWh/Fy52uxcvdAcwGPQFg
-I+q0Wuce+yH7ffQ2JuiCHj1RfzykNJaZ/vdkPT5Nkx1e8eS6xW9EmMI0LvMKfZ9mtcWvXBYoxam4
-TMKO6cjck65VxaOS1Mg/qfpZxsgj+Ikf7m0C1QReJT6RmlbMV4UKtKn9LSXmBoYdRYwAJ/5+11Wc
-ltEN02XkybhqBnGFXqB54wpJ2TUkZkpwilfG9RFTGqdWX/CeTe4hOWmauMGK7ktZTSLkfSl6qaz5
-POlyP/en54bROyCyr8JoS7FpyrtFHEssP/pr3CP1OUcg7MHRNoF8bvwQHgiMJy8db5LiJOc1xORC
-0ZFwgwY21FZtcCs/kJOo51FkQdxnZ+XvqxWaSo0V4QAAAAAAAA==
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgBpCGrOlqR09fDF3datn5pMjc7VlbWpE+Bg
+xd5M98o43GsYsjVGm9rD1VP1ZiXxEBtAFespxn/vbWnLtJAAztNllqO5mCDPRZ+YukadXJ+1RIbS
+CUD1hR4IGrKQDdmoBBrTN+63zcSiihj4IR20iI4EZwLYZI9rIBa1s3Fl7siKEcKk9TjG+x0W6KZk
+wkEcbSGOYzewdC/2FCZtvHK42Ryl0b0nklQWa1tlJT0uR5UOWiIIiQ/BgKmSF+b1kV9VRdkiu4r1
+qi/KbS8l3fKOAyNuSC/H8l0ZYMBn+VxraLf7LdDyOaf2Z3SxXdcD+lApAsrGgDIMN+D9og082THM
+neQrJoiZesFiPMox2AJ9FJUmJgXOJEyvyV5FQ0hdaNG5lVxUg6qzSn7DOJPeDhSQ8EvwWnLpiM71
+epHujsENsbtJAo3GQnxBHcpzNiX09k8emUXaIZboBpRWBO/XJQ3qhUcgjPMHL6Od9GtR0RGeNr69
+pnvgHw6W2A22ZM3S8zOj/FjfprkQzMT65FbulqXglZuVOxGg2129Kn5AuiRMePPUwRa7zh/VfFRr
+dDNGRLgd9hWNoz3/xUs5hkwiSxTYF4pOSD+xlV2l3bnTFwB4QANsYb5Os5cg27d4VyuB+nB8dgEp
+t1aEPpuEZSDqDKEP9LB8inSmBgsODIU6ZOsBndnXtwAAAAAAAA==
 
 
---=-iZ/9pSLcedkHP5tz2Zm6--
+--=-eVaaov3VWp7iZK3p/HAp--
 
