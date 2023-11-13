@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8596B7EA4A6
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 21:16:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 710677EA4A5
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 21:16:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2dLz-0006gm-KP; Mon, 13 Nov 2023 15:16:15 -0500
+	id 1r2dM0-00070p-7k; Mon, 13 Nov 2023 15:16:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1r2dL5-0006av-AU; Mon, 13 Nov 2023 15:15:19 -0500
+ id 1r2dLD-0006cp-QY; Mon, 13 Nov 2023 15:15:29 -0500
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1r2dKu-0003fF-Eh; Mon, 13 Nov 2023 15:15:17 -0500
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4STgXR2V3Bz6JB5X;
- Tue, 14 Nov 2023 04:10:31 +0800 (CST)
+ id 1r2dLC-0003ge-A6; Mon, 13 Nov 2023 15:15:27 -0500
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4STgYj0ggkz6K6BH;
+ Tue, 14 Nov 2023 04:11:37 +0800 (CST)
 Received: from A190218597.china.huawei.com (10.48.147.128) by
  lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 13 Nov 2023 20:14:49 +0000
+ 15.1.2507.31; Mon, 13 Nov 2023 20:15:06 +0000
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -38,10 +38,10 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
  <linuxarm@huawei.com>
-Subject: [PATCH V7 7/8] gdbstub: Add helper function to unregister GDB
- register space
-Date: Mon, 13 Nov 2023 20:12:35 +0000
-Message-ID: <20231113201236.30668-8-salil.mehta@huawei.com>
+Subject: [PATCH V7 8/8] docs/specs/acpi_hw_reduced_hotplug: Add the CPU
+ Hotplug Event Bit
+Date: Mon, 13 Nov 2023 20:12:36 +0000
+Message-ID: <20231113201236.30668-9-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20231113201236.30668-1-salil.mehta@huawei.com>
 References: <20231113201236.30668-1-salil.mehta@huawei.com>
@@ -76,59 +76,30 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add common function to help unregister the GDB register space. This shall be
-done in context to the CPU unrealization.
+GED interface is used by many hotplug events like memory hotplug, NVDIMM hotplug
+and non-hotplug events like system power down event. Each of these can be
+selected using a bit in the 32 bit GED IO interface. A bit has been reserved for
+the CPU hotplug event.
 
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Tested-by: Xianglai Li <lixianglai@loongson.cn>
-Tested-by: Miguel Luis <miguel.luis@oracle.com>
-Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
 ---
- gdbstub/gdbstub.c      | 12 ++++++++++++
- include/exec/gdbstub.h |  5 +++++
- 2 files changed, 17 insertions(+)
+ docs/specs/acpi_hw_reduced_hotplug.rst | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index b1532118d1..7bd6d45857 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -498,6 +498,18 @@ void gdb_register_coprocessor(CPUState *cpu,
-     }
- }
+diff --git a/docs/specs/acpi_hw_reduced_hotplug.rst b/docs/specs/acpi_hw_reduced_hotplug.rst
+index 0bd3f9399f..3acd6fcd8b 100644
+--- a/docs/specs/acpi_hw_reduced_hotplug.rst
++++ b/docs/specs/acpi_hw_reduced_hotplug.rst
+@@ -64,7 +64,8 @@ GED IO interface (4 byte access)
+        0: Memory hotplug event
+        1: System power down event
+        2: NVDIMM hotplug event
+-    3-31: Reserved
++       3: CPU hotplug event
++    4-31: Reserved
  
-+void gdb_unregister_coprocessor_all(CPUState *cpu)
-+{
-+    /*
-+     * Safe to nuke everything. GDBRegisterState::xml is static const char so
-+     * it won't be freed
-+     */
-+    g_array_free(cpu->gdb_regs, true);
-+
-+    cpu->gdb_regs = NULL;
-+    cpu->gdb_num_g_regs = 0;
-+}
-+
- static void gdb_process_breakpoint_remove_all(GDBProcess *p)
- {
-     CPUState *cpu = gdb_get_first_cpu_in_process(p);
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index 1a01c35f8e..3744257ed3 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -32,6 +32,11 @@ typedef int (*gdb_set_reg_cb)(CPUArchState *env, uint8_t *buf, int reg);
- void gdb_register_coprocessor(CPUState *cpu,
-                               gdb_get_reg_cb get_reg, gdb_set_reg_cb set_reg,
-                               int num_regs, const char *xml, int g_pos);
-+/**
-+ * gdb_unregister_coprocessor_all() - unregisters supplemental set of registers
-+ * @cpu - the CPU associated with registers
-+ */
-+void gdb_unregister_coprocessor_all(CPUState *cpu);
+ **write_access:**
  
- /**
-  * gdbserver_start: start the gdb server
 -- 
 2.34.1
 
