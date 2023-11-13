@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B3E7EA3F1
+	by mail.lfdr.de (Postfix) with ESMTPS id 468F77EA3F0
 	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 20:41:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2cn2-0002zy-Ch; Mon, 13 Nov 2023 14:40:08 -0500
+	id 1r2co0-0003vi-Pt; Mon, 13 Nov 2023 14:41:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+4b2d4fa8b3c13737bab4+7386+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r2cmv-0002yl-QF; Mon, 13 Nov 2023 14:40:01 -0500
+ id 1r2cnw-0003sy-Vy; Mon, 13 Nov 2023 14:41:05 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+4b2d4fa8b3c13737bab4+7386+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r2cms-0005pq-NR; Mon, 13 Nov 2023 14:40:01 -0500
+ id 1r2cnv-00068A-Di; Mon, 13 Nov 2023 14:41:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
  In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=TNulHO67NIckCB8oHPrROeoDh3QBnKCESKDLV560ROg=; b=VLEbrmDpvYCyLJf0Y3MoYe5jes
- S3c4+/lo9pwqRveNzHcGLkTpbGH8eXlVvhfuxf37IrmEhGvuxxST00XTNSoaQx3QVloN9tsgB6uzN
- iJ9oQCTRoVd5CM9mot54DM+LEJwkSWSPAAejeX9eCRUPHNJNOl/IBC5DetRQWSjonfx/mTqykD1dB
- amGx/xWPiMnH27papNLDaOv/0CamlDDAR/08hHNpVsAOymM5o5IlcD7u+YovzRGTxpllMi0UB6PTG
- 55C/sMUw32IvQlctlb229s0Adr8pNS3G9n+e4AnzFtYVdED031dfxGeZijNYgZfPfCnTQUOzg6YLl
- +f3k1V1Q==;
+ bh=vDojeE+VDCgKD8l9cL6TztmyFKIp3i3VilvUqdl3nZM=; b=l5xmldSO5l7IP+bXut+uIVT9l1
+ Bh2K88+FBvrYjSBuW/0xko022SG9cw2zTZX9E3MLg58gXBcLqI/lTlYsJWi07B1f81RfSpxlGG0Qz
+ umDJ0QnYSSKr4HvD9Z2HV1eT2fCpvJ5B0Sb6bOc9wEr8eWOPNNk25gdriObNaHYUUiz37sLcf3NbE
+ P5hr9Mb5Mq9LpQTNk/YIOVA0qxJLZV/hf8qEIgu3w9SjEr0I1KUf3mLK2NJM0OgUyyrtHtUOaHs0K
+ ds94oBh7qP50vUfkwFadk6GylcQul9Zc9s/fXR8GKg+RVsRVaYp1jScos45JZDt95pEO+9h6jcB2A
+ W3QiOuJQ==;
 Received: from [12.186.190.1] (helo=u3832b3a9db3152.ant.amazon.com)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1r2cma-00G5fM-4F; Mon, 13 Nov 2023 19:39:41 +0000
-Message-ID: <15b379e44cca703ddcbc7f93db3e9cdbc04b8305.camel@infradead.org>
-Subject: Re: [PATCH-for-9.0 05/10] hw/xen: Use target-agnostic
- qemu_target_page_bits()
+ id 1r2cns-00G5jd-Mm; Mon, 13 Nov 2023 19:41:00 +0000
+Message-ID: <9504dd64e33f63375bf2ca775929bb763d96b86f.camel@infradead.org>
+Subject: Re: [PATCH-for-9.0 06/10] hw/xen: Reduce inclusion of 'cpu.h' to
+ target-specific sources
 From: David Woodhouse <dwmw2@infradead.org>
 To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, 
  qemu-devel@nongnu.org
@@ -42,14 +42,17 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Alex =?ISO-8859-1?Q?Benn=E9e?=
  xen-devel@lists.xenproject.org, Stefano Stabellini
  <sstabellini@kernel.org>,  qemu-block@nongnu.org, Thomas Huth
  <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org, Paul Durrant <paul@xen.org>
-Date: Mon, 13 Nov 2023 14:39:34 -0500
-In-Reply-To: <20231113152114.47916-6-philmd@linaro.org>
+ qemu-arm@nongnu.org, Paul Durrant <paul@xen.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Richard Henderson
+ <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Date: Mon, 13 Nov 2023 14:40:56 -0500
+In-Reply-To: <20231113152114.47916-7-philmd@linaro.org>
 References: <20231113152114.47916-1-philmd@linaro.org>
- <20231113152114.47916-6-philmd@linaro.org>
+ <20231113152114.47916-7-philmd@linaro.org>
 Content-Type: multipart/signed; micalg="sha-256";
  protocol="application/pkcs7-signature"; 
- boundary="=-Ykjvuzguo0f2dUfjNvwE"
+ boundary="=-WvCt0F5a/IYZ1lPgeKpC"
 User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
@@ -80,19 +83,22 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---=-Ykjvuzguo0f2dUfjNvwE
+--=-WvCt0F5a/IYZ1lPgeKpC
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Mon, 2023-11-13 at 16:21 +0100, Philippe Mathieu-Daud=C3=A9 wrote:
-> Instead of the target-specific TARGET_PAGE_BITS definition,
-> use qemu_target_page_bits() which is target agnostic.
+> We rarely need to include "cpu.h" in headers. Including it
+> 'taint' headers to be target-specific. Here only the i386/arm
+> implementations requires "cpu.h", so include it there and
+> remove from the "hw/xen/xen-hvm-common.h" *common* header.
 >=20
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 
---=-Ykjvuzguo0f2dUfjNvwE
+
+--=-WvCt0F5a/IYZ1lPgeKpC
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -184,25 +190,25 @@ IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
 dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
 NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
 xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTEzMTkzOTM0WjAvBgkqhkiG9w0BCQQxIgQgJ+15/aej
-gxjORszaOOljsnbif9LyxmsNJAutxuYWcFwwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTEzMTk0MDU2WjAvBgkqhkiG9w0BCQQxIgQgM1m9I8J2
+6OD3/eEEuDKVBlWoajxtuNhJccXuBhPU4Cgwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
 BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
 A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
 dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
 DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
 Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgApIhaarkalFWI1YN4BDdTs8A3Isb4jzkZx
-dNJFAOO2jqyCjgsKcPokt1fBYvfQmPvyEQfacTxzOJWpRRIjGaAj6bqtt3fv3pxTEPnDffYCbPV5
-AaCCRa844AvXsJDoyEH8Cq36eSWOfdC7Zv8yXSGV8r8k0gUfuY8X5QqfXrSrDrRtzg/eZO0TEFD4
-NBi6QiKh87is5tB9q0Q+pX1CvpW3t/J1gvYNFx8/oAsVzNHLl51mw3hf5iGMtIFA7Mll8U0l+TzH
-fkCUBbst0RopEUfUWl64lrxiArj9BrhfjtqyNpD+Bcr8GVUG58VAIjmiDO0QMtPJBgkp5dl8jKEF
-lBbzIFmVlHvLXelMxiWtiaBOSYGDUUTDjyUgYlNi2s6VH4ZyhUyJE2N3st+UxX3ypSoAcOmtiwQH
-BZjE0AEQ4DRcAGi8eWVrXlpqEfMSKajGTyrEYx4AE82TXNeOQjMPHxqY/Et+1I+nFdwOKLe6e2ZK
-8fe0uJbrUFXZuA6wcGawAXo/ZO/LTr/ZrSkRhfWkOUXleV+krJuzOs0VXul7TBaFAqwEZTpfaWr4
-3fFPOxNxgMtsRaKH0LRBDCAnQGsVmPEcHUGz48ryDxwIcC2gUeluw/trD0AH7Y4/RcHBPWoRCJGB
-6OzQt1sy75liLdAxKae2ZC0TEKXKyXQaGjZLAmokYQAAAAAAAA==
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAhRegQUatojbl576eH3ps7PLNYs1zi61Tt
+ypApUH9RINC+A8KCYkPLjPzdLH+6k2CT2b+JcG949H4EyP5e77HT4uhhYhdLBPsJZaAZsaKHz4cW
+EUJaGNsPzgPxbuwjaiRpuFQUXruY/TCxUTq4ROiex6SNZp7/Yj0UihC5CnIkdfn9OUFSS1deJnVU
+h6BdH2wojEPanVMCYXMHSMQMUaTL12a5fTWwdEy4bzAD+VJX/TQ+lR0ubuddjuz3QdFeUWZUJwZT
+GqIPynFiNOs/fJIJ1CxWO6h/mHkYYacYTj2mWY/X1OFtwcIzVv1+z6qDiEoM4tMby9PDKSLgzze9
+eQY+xeU2aKMox81My3WG2ZKKuFeqKr13jXNOXz9vQALkRS8+E/G19ccT3hvb6bIqSpML00DroDkK
+YXgriX1LjueK/Skn9tL3ppDJ7ci3P5keJDKSQyMOf1rVuxG/sAkuCKiN7Vd62F+X4QFhSpZ6h8rf
+dk4PRepf+gX372VasuzV3AD69w7OGyd66TEpr/CHx3fWJABgnLv+jpwVR4cE4k9NLkfgwbCNyNj3
+54DGScJPY8qtY3XXJIT433BlDmLLHfu3HpkMOuB7Ntt0ezBlOlc6kW9+LI5xjjY+QG39lcNTTc1U
+Z45jkrfDtPL+BQUWVR2D5cOCeFcb2g/1GAX1Hp0S/gAAAAAAAA==
 
 
---=-Ykjvuzguo0f2dUfjNvwE--
+--=-WvCt0F5a/IYZ1lPgeKpC--
 
