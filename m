@@ -2,92 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B69E77EA1D4
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 18:28:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 817987EA1D7
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 Nov 2023 18:30:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2aiA-0006vr-Om; Mon, 13 Nov 2023 12:26:58 -0500
+	id 1r2akj-0007pQ-Qf; Mon, 13 Nov 2023 12:29:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1r2ai4-0006vd-Er
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:26:53 -0500
-Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1r2ai1-00081b-Sc
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 12:26:52 -0500
-Received: by mail-lj1-x22c.google.com with SMTP id
- 38308e7fff4ca-2c5b7764016so56898911fa.1
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 09:26:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1699896408; x=1700501208;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=gz83Dlt9d8qC/opNP8IWH83BC04U2dMchhja3ii5VJw=;
- b=uRSaKed62rK/m+pZ4ObJqKqrXabWZiaBN5MY0NS4euMYjCn1aWbk5PXjxD+edwiXFf
- DsR55pAViUj84EXp7jRKfPB9zBHYj1ZSQ7D5eXJm6sN1v/hK5imWZucith5Ex8/4GX8n
- AwTXA6dURacw46Wgnjr9EgwIcQnGl7JyKMlxNoF7MNMyViALWigcTHob+mKeSG8T/V2F
- Rvu6G0JgJLG1tx/clZihhobEuVXvqR5fUiOWm91AfGGm7tJGqjZrMkeBLyqrlQQrlOSa
- qmoXSbmuMCsYbzLHxlCrw4K8XEQ42WZppsEzgJbcUf07bLFSE7f7ib/BAvo9kxjMJ5KN
- rc/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699896408; x=1700501208;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gz83Dlt9d8qC/opNP8IWH83BC04U2dMchhja3ii5VJw=;
- b=UGFnWnGVdQQ1eeP3tqWhxrBXGSgKpjPqLgM9FLd3ejUCHyJwq/2OQn9hE3pIpPfomq
- l9gRVkuop703awLcssPZdTPAEsMkMZUY44X8d5LQwz7qoQbhOGsQfHVl6O8NMyXevcVr
- V4yq92nGA+FVt+MlOf4cM1BjLgZB5dX/XbTJyHx6pOHERgZbPs3yZCNh1GDkiBVhqYgR
- 0m04y/Hq+H8Jxxu5eldS7ro9oENP/2GXFSwN4lxAoJmIbUnq8aB+ulUDGD0vleulreC8
- LtqZnuniadwUhQSXAa4Ysky92QrPPQisbQokNDJWZrSlWtRP4n1J9APtGBQjLYTf869K
- fugw==
-X-Gm-Message-State: AOJu0YzxT4l6iLpc3lSFN1YCe/snwr13zlCF/CvcUoyW6f7FPT9j51MH
- 3KjXn1TFf3fr8cBZMmyISGgJYuybuDPya7+uu7N2uA==
-X-Google-Smtp-Source: AGHT+IEDquXLiH95JYCN+Olb22eEn6rb+0wzeVcsjZnNFnwknBjkj10HfT0wW2ia00DZ68bmIbixxC05VAiVqL+30pM=
-X-Received: by 2002:a2e:a726:0:b0:2c5:1bd3:5658 with SMTP id
- s38-20020a2ea726000000b002c51bd35658mr4991283lje.28.1699896407541; Mon, 13
- Nov 2023 09:26:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from
+ <BATV+4b2d4fa8b3c13737bab4+7386+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1r2akg-0007pB-3b; Mon, 13 Nov 2023 12:29:35 -0500
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+4b2d4fa8b3c13737bab4+7386+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1r2akd-0000AS-04; Mon, 13 Nov 2023 12:29:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=dDRCldRPFTZG0rTRzpEGqdhyEmmyv/FTFvgvq/Rnfuw=; b=VMhGlz0rwErA2w27phfszPQ2ej
+ AAOCf6IpDCi3pz3hN/2gUkr7hC6FY79s7JYZPbSwGxHuZj3dYIADcWzkeKygZcPkmu2uAPZgeTxvr
+ JQDDSRJgi+PdSwyXCT6KlqcIIsG9dDdXnNEaILnQjgtCj+w1Pd6Dx5iuy8dYLcN614jtmcBlEqJV0
+ VPQPnyTmRPVInCap4HKisClliO+S/IFBmBt/85arl0BQA91DZ65D9e1KY54f6v0xi6n+ZViFRkIOH
+ UBjlbE5awc3ZI4TFddVuUJDg3lYLDf/W6VV2vtwy/r7qSNWE3opohzHNRXEUvolxnQtTqcCUBBSOb
+ ZkbWLuGQ==;
+Received: from [12.186.190.1] (helo=u3832b3a9db3152.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1r2akV-00FWLA-O1; Mon, 13 Nov 2023 17:29:24 +0000
+Message-ID: <204a3e8c7f5d5788c92ea3d141b64162896dcdad.camel@infradead.org>
+Subject: Re: [PATCH-for-9.0 02/10] hw/xen/xen_arch_hvm: Rename prototypes
+ using 'xen_arch_' prefix
+From: David Woodhouse <dwmw2@infradead.org>
+To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Alex =?ISO-8859-1?Q?Benn=E9e?=
+ <alex.bennee@linaro.org>, Anthony Perard <anthony.perard@citrix.com>, 
+ xen-devel@lists.xenproject.org, Stefano Stabellini
+ <sstabellini@kernel.org>,  qemu-block@nongnu.org, Thomas Huth
+ <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org, Paul Durrant <paul@xen.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Richard Henderson
+ <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Date: Mon, 13 Nov 2023 12:29:20 -0500
+In-Reply-To: <20231113152114.47916-3-philmd@linaro.org>
+References: <20231113152114.47916-1-philmd@linaro.org>
+ <20231113152114.47916-3-philmd@linaro.org>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-xD0NYpOPeVgXZjGfxwVi"
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-References: <58fb3b75-dd69-4715-a8ec-4c3df3b7e4c5@daynix.com>
- <8880b6f9-f556-46f7-a191-eeec0fe208b0@daynix.com>
- <CACGkMEv=A0KS-LtgZmsMehdoUL=EuQzhkfNipKaV1kdUr2Y5Bw@mail.gmail.com>
- <d0db0fb1-0a58-45b7-a623-df6ee9096e2e@daynix.com>
- <20231101023805-mutt-send-email-mst@kernel.org>
- <39a02a4c-f8fa-437c-892f-caca84b8d85d@daynix.com>
- <20231101050838-mutt-send-email-mst@kernel.org>
- <e469b33b-c3f3-4d88-bdf2-508c4a35c827@daynix.com>
- <CAOEp5OcDMdKKPHSVd-GxT-GkBpvbWkMijSBgwihPsEnxmDR7eA@mail.gmail.com>
- <20231102053202-mutt-send-email-mst@kernel.org>
- <CAOEp5OefD2LN2MDnEkE=DOMSX0Jw8Z6gAiKAag4dtkecmr1Jgg@mail.gmail.com>
- <2fbdee21-60f4-49ff-b61b-923c895f90ba@daynix.com>
- <CAOEp5Oc+wGmxTAezMz4f03kuqsngHAcpi7pqPQDT=PWuy=L7BA@mail.gmail.com>
- <dbd1d662-bf90-4982-b316-281923a0d778@daynix.com>
- <CAOEp5Oc5VzWk7e8gKHfHan1odge39bRUh-ZMojCvkQiTFpXdGg@mail.gmail.com>
- <8439be4e-a739-4cbd-a569-89b6c7f68ab9@daynix.com>
- <CAOEp5Oee2qinrZJgMMxUQt6zmPVFPCnThfqnLFSWqsSyAoHpjQ@mail.gmail.com>
- <3c8af942-ca7d-4528-975e-2935718a2428@daynix.com>
-In-Reply-To: <3c8af942-ca7d-4528-975e-2935718a2428@daynix.com>
-From: Yuri Benditovich <yuri.benditovich@daynix.com>
-Date: Mon, 13 Nov 2023 19:26:35 +0200
-Message-ID: <CAOEp5OfXH-1ygYMJxq1phwbOJkkvnwBce=TDVLwjsXG6UgwPGA@mail.gmail.com>
-Subject: Re: [PATCH v6 11/21] virtio-net: Return an error when vhost cannot
- enable RSS
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- qemu-devel@nongnu.org, Andrew Melnychenko <andrew@daynix.com>
-Content-Type: multipart/alternative; boundary="00000000000086dc38060a0bf9c2"
-Received-SPF: none client-ip=2a00:1450:4864:20::22c;
- envelope-from=yuri.benditovich@daynix.com; helo=mail-lj1-x22c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+4b2d4fa8b3c13737bab4+7386+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,409 +82,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000086dc38060a0bf9c2
+
+--=-xD0NYpOPeVgXZjGfxwVi
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 13, 2023 at 2:44=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix=
-.com>
-wrote:
+On Mon, 2023-11-13 at 16:21 +0100, Philippe Mathieu-Daud=C3=A9 wrote:
+> Use a common 'xen_arch_' prefix for architecture-specific functions.
+> Rename xen_arch_set_memory() and xen_arch_handle_ioreq().
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
-> On 2023/11/13 20:44, Yuri Benditovich wrote:
-> >
-> >
-> > On Sat, Nov 11, 2023 at 5:28=E2=80=AFPM Akihiko Odaki <akihiko.odaki@da=
-ynix.com
-> > <mailto:akihiko.odaki@daynix.com>> wrote:
-> >
-> >     On 2023/11/03 22:14, Yuri Benditovich wrote:
-> >      >
-> >      >
-> >      > On Fri, Nov 3, 2023 at 11:55=E2=80=AFAM Akihiko Odaki
-> >     <akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>
-> >      > <mailto:akihiko.odaki@daynix.com
-> >     <mailto:akihiko.odaki@daynix.com>>> wrote:
-> >      >
-> >      >     On 2023/11/03 18:35, Yuri Benditovich wrote:
-> >      >      >
-> >      >      >
-> >      >      > On Thu, Nov 2, 2023 at 4:56=E2=80=AFPM Akihiko Odaki
-> >      >     <akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>
-> >     <mailto:akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>>
-> >      >      > <mailto:akihiko.odaki@daynix.com
-> >     <mailto:akihiko.odaki@daynix.com>
-> >      >     <mailto:akihiko.odaki@daynix.com
-> >     <mailto:akihiko.odaki@daynix.com>>>> wrote:
-> >      >      >
-> >      >      >     On 2023/11/02 19:20, Yuri Benditovich wrote:
-> >      >      >      >
-> >      >      >      >
-> >      >      >      > On Thu, Nov 2, 2023 at 11:33=E2=80=AFAM Michael S.=
- Tsirkin
-> >      >      >     <mst@redhat.com <mailto:mst@redhat.com>
-> >     <mailto:mst@redhat.com <mailto:mst@redhat.com>>
-> >      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
-> >     <mailto:mst@redhat.com <mailto:mst@redhat.com>>>
-> >      >      >      > <mailto:mst@redhat.com <mailto:mst@redhat.com>
-> >     <mailto:mst@redhat.com <mailto:mst@redhat.com>>
-> >      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
-> >     <mailto:mst@redhat.com <mailto:mst@redhat.com>>>>> wrote:
-> >      >      >      >
-> >      >      >      >     On Thu, Nov 02, 2023 at 11:09:27AM +0200, Yuri
-> >      >     Benditovich wrote:
-> >      >      >      >      > Probably we mix two different patches in th=
-is
-> >      >     discussion.
-> >      >      >      >      > Focusing on the patch in the e-mail header:
-> >      >      >      >      >
-> >      >      >      >      > IMO it is not acceptable to fail QEMU run
-> >     for one
-> >      >     feature
-> >      >      >     that we
-> >      >      >      >     can't make
-> >      >      >      >      > active when we silently drop all other
-> >     features in
-> >      >     such a
-> >      >      >     case.
-> >      >      >      >
-> >      >      >      >     If the feature is off by default then it seems
-> more
-> >      >     reasonable
-> >      >      >      >     and silent masking can be seen as a bug.
-> >      >      >      >     Most virtio features are on by default this is
-> >     why it's
-> >      >      >      >     reasonable to mask them.
-> >      >      >      >
-> >      >      >      >
-> >      >      >      > If we are talking about RSS: setting it initially
-> >     off is the
-> >      >      >     development
-> >      >      >      > time decision.
-> >      >      >      > When it will be completely stable there is no
-> reason to
-> >      >     keep it
-> >      >      >     off by
-> >      >      >      > default, so this is more a question of time and of=
- a
-> >      >     readiness of
-> >      >      >     libvirt.
-> >      >      >
-> >      >      >     It is not ok to make "on" the default; that will
-> >     enable RSS
-> >      >     even when
-> >      >      >     eBPF steering support is not present and can result i=
-n
-> >      >     performance
-> >      >      >     degradation.
-> >      >      >
-> >      >      >
-> >      >      > Exactly as it is today - with vhost=3Don the host does no=
-t
-> >     suggest RSS
-> >      >      > without  eBPF.
-> >      >      > I do not understand what you call "performance
-> >     degradation", can you
-> >      >      > describe the scenario?
-> >      >
-> >      >     I was not clear, but I was talking about the case of
-> >     vhost=3Doff or peers
-> >      >     other than tap (e.g., user). rss=3Don employs in-qemu RSS,
-> >     which incurs
-> >      >     overheads for such configurations.
-> >      >
-> >      >
-> >      > So, vhost=3Doff OR peers other than tap:
-> >      >
-> >      > In the case of peers other than tap (IMO) we're not talking abou=
-t
-> >      > performance at all.
-> >      > Backends like "user" (without vnet_hdr) do not support _many_
-> >      > performance-oriented features.
-> >      > If RSS is somehow "supported" for such backends this is rather a
-> >      > misunderstanding (IMO again).
-> >
-> >     We do not need to ensure good performance when RSS is enabled by th=
-e
-> >     guest for backends without eBPF steering program as you say. In-QEM=
-U
-> >     RSS
-> >     is only useful for testing and not meant to improve the performance=
-.
-> >
-> >     However, if you set rss=3Don, QEMU will advertise the availability =
-of
-> RSS
-> >     feature. The guest will have no mean to know if it's implemented in=
- a
-> >     way not performance-wise so it may decide to use the feature to
-> improve
-> >     the performance, which can result in performance degradation.
-> >     Therefore,
-> >     it's better not to set rss=3Don for such backends.
-> >
-> >
-> > I still do not understand what is the scenario where you see or suspect
-> > the mentioned "performance degradation".
-> > We can discuss whether such a problem exists as soon as you explain it.
->
-> The scenario is that:
-> - rss=3Don,
-> - A backend without eBPF steering support is in use, and
-> - The guest expects VIRTIO_NET_F_RSS has little overheads as hardware
-> RSS implementations do.
->
-> I consider the risk of the performance degradation in such a situation
-> is the reason why virtio-net emits a warning ("Can't load eBPF RSS -
-> fallback to software RSS") when in-QEMU RSS is in use.
->
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 
-In a described scenario (vhost=3Doff) I do not see why the performance
-degradation should happen:
-the SW RSS (if activated) will place each packet into proper queue (even if
-the auto_mq in kernel is not able to do that) and such a way the guest will
-not need to reschedule the packet to proper CPU
+--=-xD0NYpOPeVgXZjGfxwVi
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
---00000000000086dc38060a0bf9c2
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTEzMTcyOTIwWjAvBgkqhkiG9w0BCQQxIgQg6jhHz92J
+MJKBNRblGCkbjCkl6E0wkpKOVWu3VAUHOJAwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgBpVukIq67YsRl/tl8dtWxSCPgIbd+2T8W9
+PUxu92CiG6ilLC40cGJgOX0Vp4GMyZ67qLNzUTQjGV76sSankDhHGoBxZZAXZMgzq23ZL8sai/0q
+U3ZDpRtqD7IsV05CP5IkkqtOi55NwCImmhRhYHykWtraWGJxLi91U54CJurhpgjx5D8Is3guZcex
+X8pjap4fOJGejhkAY8bftsfCo3HnX00Av26wgGXGA/TbrM1CZCUsYYygmNs+w2e+JHvckQzFgd/a
+LEjivYe2dp3gs8qSoK+dHL54kyF3nWsHLpo/TlTaz6plvUtiuWQd9F4FCyM3gVzh77B2EYoSzZ7z
+AAqeV8olLrFRHmxbn5TFb5f099uQeuYvMu1dwubUXNQJHW0U8a3SAxZnrwhtTkVBbLezHB9ltGrn
+pGH9516y7rm7Yj/Lq2tfPrz5tfIV4QSOSHWCw5Iy51Ww5YGhGv43j0pb423kJUUNvQrXBxb3QWmO
+nHUid1b334Z0RLHWWNgABufE9WPJTREVi7ybSrKNX7tPMs8ue0yi/MTlus2ELSeRUTzsJPx4EH3u
+4pOC6VJqkhUSCUNIVcLjZZWTUqVC8Zmis/0DFRCHEt8BGhSv2i5QFtlFKCd9i4R9LhTa1gcU2Cei
+DPSQI/091x1ptdObTnUNmk1tbj7Lm0V+RKpOjTvScgAAAAAAAA==
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Nov 13, 2023 at 2:44=E2=80=AF=
-PM Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@daynix.com">akihiko.od=
-aki@daynix.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">On 2023/11/13 20:44, Yuri Benditovich wrote:<br>
-&gt; <br>
-&gt; <br>
-&gt; On Sat, Nov 11, 2023 at 5:28=E2=80=AFPM Akihiko Odaki &lt;<a href=3D"m=
-ailto:akihiko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix.com<=
-/a> <br>
-&gt; &lt;mailto:<a href=3D"mailto:akihiko.odaki@daynix.com" target=3D"_blan=
-k">akihiko.odaki@daynix.com</a>&gt;&gt; wrote:<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0On 2023/11/03 22:14, Yuri Benditovich wrote:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; On Fri, Nov 3, 2023 at 11:55=E2=80=AFAM Akihi=
-ko Odaki<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"mailto:akihiko.odaki@daynix.com" tar=
-get=3D"_blank">akihiko.odaki@daynix.com</a> &lt;mailto:<a href=3D"mailto:ak=
-ihiko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix.com</a>&gt;<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; &lt;mailto:<a href=3D"mailto:akihiko.odaki@da=
-ynix.com" target=3D"_blank">akihiko.odaki@daynix.com</a><br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:akihiko.odaki@daynix.c=
-om" target=3D"_blank">akihiko.odaki@daynix.com</a>&gt;&gt;&gt; wrote:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0On 2023/11/03 18:35, Yuri =
-Benditovich wrote:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; On Thu, Nov 2, 2023 =
-at 4:56=E2=80=AFPM Akihiko Odaki<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"mailto:akih=
-iko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix.com</a> &lt;ma=
-ilto:<a href=3D"mailto:akihiko.odaki@daynix.com" target=3D"_blank">akihiko.=
-odaki@daynix.com</a>&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:akihiko.odaki@daynix.c=
-om" target=3D"_blank">akihiko.odaki@daynix.com</a> &lt;mailto:<a href=3D"ma=
-ilto:akihiko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix.com</=
-a>&gt;&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; &lt;mailto:<a href=
-=3D"mailto:akihiko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix=
-.com</a><br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:akihiko.odaki@daynix.c=
-om" target=3D"_blank">akihiko.odaki@daynix.com</a>&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mail=
-to:akihiko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix.com</a>=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:akihiko.odaki@daynix.c=
-om" target=3D"_blank">akihiko.odaki@daynix.com</a>&gt;&gt;&gt;&gt; wrote:<b=
-r>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0O=
-n 2023/11/02 19:20, Yuri Benditovich wrote:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt; On Thu, Nov 2, 2023 at 11:33=E2=80=AFAM Michael S. Tsirkin<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0&=
-lt;<a href=3D"mailto:mst@redhat.com" target=3D"_blank">mst@redhat.com</a> &=
-lt;mailto:<a href=3D"mailto:mst@redhat.com" target=3D"_blank">mst@redhat.co=
-m</a>&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:mst@redhat.com" target=
-=3D"_blank">mst@redhat.com</a> &lt;mailto:<a href=3D"mailto:mst@redhat.com"=
- target=3D"_blank">mst@redhat.com</a>&gt;&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mail=
-to:mst@redhat.com" target=3D"_blank">mst@redhat.com</a> &lt;mailto:<a href=
-=3D"mailto:mst@redhat.com" target=3D"_blank">mst@redhat.com</a>&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:mst@redhat.com" target=
-=3D"_blank">mst@redhat.com</a> &lt;mailto:<a href=3D"mailto:mst@redhat.com"=
- target=3D"_blank">mst@redhat.com</a>&gt;&gt;&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt; &lt;mailto:<a href=3D"mailto:mst@redhat.com" target=3D"_blank">mst@red=
-hat.com</a> &lt;mailto:<a href=3D"mailto:mst@redhat.com" target=3D"_blank">=
-mst@redhat.com</a>&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:mst@redhat.com" target=
-=3D"_blank">mst@redhat.com</a> &lt;mailto:<a href=3D"mailto:mst@redhat.com"=
- target=3D"_blank">mst@redhat.com</a>&gt;&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mail=
-to:mst@redhat.com" target=3D"_blank">mst@redhat.com</a> &lt;mailto:<a href=
-=3D"mailto:mst@redhat.com" target=3D"_blank">mst@redhat.com</a>&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:mst@redhat.com" target=
-=3D"_blank">mst@redhat.com</a> &lt;mailto:<a href=3D"mailto:mst@redhat.com"=
- target=3D"_blank">mst@redhat.com</a>&gt;&gt;&gt;&gt;&gt; wrote:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;=C2=A0 =C2=A0 =C2=A0On Thu, Nov 02, 2023 at 11:09:27AM +0200, Yuri<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0Benditovich wrote:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Probably we mix two different patches in this=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0discussion.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Focusing on the patch in the e-mail header:<b=
-r>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; IMO it is not acceptable to fail QEMU run<br>
-&gt;=C2=A0 =C2=A0 =C2=A0for one<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0feature<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0t=
-hat we<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;=C2=A0 =C2=A0 =C2=A0can&#39;t make<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; active when we silently drop all other<br>
-&gt;=C2=A0 =C2=A0 =C2=A0features in<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0such a<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0c=
-ase.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;=C2=A0 =C2=A0 =C2=A0If the feature is off by default then it seems more=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0reasonable<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;=C2=A0 =C2=A0 =C2=A0and silent masking can be seen as a bug.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;=C2=A0 =C2=A0 =C2=A0Most virtio features are on by default this is<br>
-&gt;=C2=A0 =C2=A0 =C2=A0why it&#39;s<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;=C2=A0 =C2=A0 =C2=A0reasonable to mask them.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt; If we are talking about RSS: setting it initially<br>
-&gt;=C2=A0 =C2=A0 =C2=A0off is the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0d=
-evelopment<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt; time decision.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt; When it will be completely stable there is no reason to<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0keep it<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0o=
-ff by<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt; default, so this is more a question of time and of a<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0readiness of<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0l=
-ibvirt.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0I=
-t is not ok to make &quot;on&quot; the default; that will<br>
-&gt;=C2=A0 =C2=A0 =C2=A0enable RSS<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0even when<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0e=
-BPF steering support is not present and can result in<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0performance<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0d=
-egradation.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; Exactly as it is tod=
-ay - with vhost=3Don the host does not<br>
-&gt;=C2=A0 =C2=A0 =C2=A0suggest RSS<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; without=C2=A0 eBPF.<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; I do not understand =
-what you call &quot;performance<br>
-&gt;=C2=A0 =C2=A0 =C2=A0degradation&quot;, can you<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; describe the scenari=
-o?<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0I was not clear, but I was=
- talking about the case of<br>
-&gt;=C2=A0 =C2=A0 =C2=A0vhost=3Doff or peers<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0other than tap (e.g., user=
-). rss=3Don employs in-qemu RSS,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0which incurs<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0overheads for such configu=
-rations.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; So, vhost=3Doff OR peers other than tap:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; In the case of peers other than tap (IMO) we&=
-#39;re not talking about<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; performance at all.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Backends like &quot;user&quot; (without vnet_=
-hdr) do not support _many_<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; performance-oriented features.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; If RSS is somehow &quot;supported&quot; for s=
-uch backends this is rather a<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; misunderstanding (IMO again).<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0We do not need to ensure good performance when RSS =
-is enabled by the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0guest for backends without eBPF steering program as=
- you say. In-QEMU<br>
-&gt;=C2=A0 =C2=A0 =C2=A0RSS<br>
-&gt;=C2=A0 =C2=A0 =C2=A0is only useful for testing and not meant to improve=
- the performance.<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0However, if you set rss=3Don, QEMU will advertise t=
-he availability of RSS<br>
-&gt;=C2=A0 =C2=A0 =C2=A0feature. The guest will have no mean to know if it&=
-#39;s implemented in a<br>
-&gt;=C2=A0 =C2=A0 =C2=A0way not performance-wise so it may decide to use th=
-e feature to improve<br>
-&gt;=C2=A0 =C2=A0 =C2=A0the performance, which can result in performance de=
-gradation.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0Therefore,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0it&#39;s better not to set rss=3Don for such backen=
-ds.<br>
-&gt; <br>
-&gt; <br>
-&gt; I still do not understand what is the scenario where you see or suspec=
-t <br>
-&gt; the mentioned &quot;performance degradation&quot;.<br>
-&gt; We can discuss whether such a problem exists as soon as you explain it=
-.<br>
-<br>
-The scenario is that:<br>
-- rss=3Don,<br>
-- A backend without eBPF steering support is in use, and<br>
-- The guest expects VIRTIO_NET_F_RSS has little overheads as hardware <br>
-RSS implementations do.<br>
-<br>
-I consider the risk of the performance degradation in such a situation <br>
-is the reason why virtio-net emits a warning (&quot;Can&#39;t load eBPF RSS=
- - <br>
-fallback to software RSS&quot;) when in-QEMU RSS is in use.<br></blockquote=
-><div><br></div><div>In a described scenario (vhost=3Doff) I do not see why=
- the performance degradation should happen:</div><div>the SW RSS (if activa=
-ted) will place each packet into proper queue (even if the auto_mq in kerne=
-l is not able to do that) and such a way the guest will not need to resched=
-ule the packet to proper CPU<br></div><div><br></div></div></div>
 
---00000000000086dc38060a0bf9c2--
+--=-xD0NYpOPeVgXZjGfxwVi--
 
