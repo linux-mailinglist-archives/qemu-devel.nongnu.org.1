@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A3737EA694
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 00:04:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBFC77EA71E
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 00:37:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2fwv-0001ST-7j; Mon, 13 Nov 2023 18:02:33 -0500
+	id 1r2g8E-0004rJ-8I; Mon, 13 Nov 2023 18:14:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1r2fws-0001SF-DO
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 18:02:30 -0500
-Received: from mail-oi1-x22f.google.com ([2607:f8b0:4864:20::22f])
+ (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
+ id 1r2g8A-0004rB-T4
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 18:14:11 -0500
+Received: from mail-vk1-xa36.google.com ([2607:f8b0:4864:20::a36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1r2fwq-0006zg-JS
- for qemu-devel@nongnu.org; Mon, 13 Nov 2023 18:02:30 -0500
-Received: by mail-oi1-x22f.google.com with SMTP id
- 5614622812f47-3b2e72fe47fso3300182b6e.1
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 15:02:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
+ id 1r2g88-0000z2-Nd
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 18:14:10 -0500
+Received: by mail-vk1-xa36.google.com with SMTP id
+ 71dfb90a1353d-4ac4cd60370so2307721e0c.3
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 15:14:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699916546; x=1700521346; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=+tuKBpT3I4kfy1G+UfvPrkWVAQowwC4Vp1i+ccIq9h4=;
- b=PNiBMPx7d3Pj3V03M2a6vP/c+79vr4SM8sBmAqgCwCrHD5Z1xoHXhW948Q67lafj2s
- OLrM/iF8r9TOc+WfzPVl70wlMAOj2TlBuA9Xj71O1sg3YyY5D5szVMygFhzS87euupg5
- anj972AKYI7oRgk6mUjq1zM6UJnzHI2n2qN1NeEqunR0L8B+I0/CIKQ1L3vyL/75dU4p
- QDtvOt0wNHWF5Zf4SovVcEdmBL/naAoj7oOcc5I4RLylTkxrm1g9u0xCI6V7raMCnA5c
- Y0Gmq1po1qeo4VuWlD1Irn0eK17c5DNiG1Ft6TReNHSn0t0iRhaWZ2ggOd4v24lormJk
- xPqw==
+ d=gmail.com; s=20230601; t=1699917247; x=1700522047; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AhShDJzQQW9QIQOfcf+fc8sG3b5kDEZDTPLHNIis7gI=;
+ b=B6fnrXsoJ1B7XzSTvY4FQkFR03/XzyEOEdK1dK5+HR2aLjQWC8t6RZcyo+FlsFwrV+
+ LmMOW701yB/1yonDuDk/zJP5jbjxobW+9/Fy6JP9/wlU7WWFsunpjqhFYPgWts3I6cLx
+ wuJ+i+bpFux3lmcnx4C3RcxNf5065sdKIBSEjX7iW3zxfmUiN6JAhSDwubxi1G9goMke
+ skcpaPu6xymfa679k7x5hZ5qpFf8Bde7YXlL33n6thbQdVvWKre5zE48DqeT2I5tC8rj
+ /Fg8lMTEZMIikrNy2/J+8p/P6TDJ4IJShnTacycA+Sscfo13Qn2cS7hO3/74FSeFDTk+
+ KXxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699916546; x=1700521346;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=+tuKBpT3I4kfy1G+UfvPrkWVAQowwC4Vp1i+ccIq9h4=;
- b=kTEXCulOyKIQp2y03xIdJsZTWQLC8iM5XaM/IC7PJhqmzjcqnsbJSKjioODISI0y59
- UcP2BVIeb9i0h3zvAYf+Rw7sdv8V5soYM22M8OAbvHNKUoRG41uC2RBbuunjGPdu4BOy
- ieaI2dtAGVN9AYeBYSHxVt9Z3BmhLRF/V/OrLvWy3ichZIdAh12KuTR3pGdXa8KHdhck
- MZ1VGgpu8nvSIP5rofCyGCDYjx4qcnLVDkxxuqCKmK8yaxseJhZkHT7v0goa3Um9jWw7
- OZyuWVo8QWSaoy1CDFungNWUMOVP5UeAQXPeoWxOwvYY9Rcmp9ETX5DkWOcFp2aDo4TH
- 3jhQ==
-X-Gm-Message-State: AOJu0YzneZQXvK7sxqg6W9gPLOhCPARIAW2qwnQidajmbFejH+FtzDMX
- DSkel/KFNkDrKvNJ3LSUkvwRtYgtbGaQEhdY9D6wQ2Zi
-X-Google-Smtp-Source: AGHT+IFwPIH9GhD48JbY27u5QrIS0o4TM+QlTiRWjTP25YvRpTpoy+mai7qMCK1HDwgfAWX9R5YouQ==
-X-Received: by 2002:aca:f07:0:b0:3b6:cc01:aba2 with SMTP id
- 7-20020aca0f07000000b003b6cc01aba2mr9015073oip.55.1699916546633; 
- Mon, 13 Nov 2023 15:02:26 -0800 (PST)
-Received: from amd.. ([2804:7f0:b401:308c:3e7c:3fff:fe7a:e83b])
- by smtp.gmail.com with ESMTPSA id
- n14-20020a63e04e000000b0058d26647e45sm4566215pgj.54.2023.11.13.15.02.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Nov 2023 15:02:26 -0800 (PST)
-From: Gustavo Romero <gustavo.romero@linaro.org>
-To: qemu-devel@nongnu.org,
-	thuth@redhat.com,
-	philmd@linaro.org
-Cc: lvivier@redhat.com,
-	pbonzini@redhat.com,
-	gustavo.romero@linaro.org
-Subject: [PATCH v2] test/qtest: Add API functions to capture IRQ toggling
-Date: Mon, 13 Nov 2023 23:01:49 +0000
-Message-Id: <20231113230149.321304-1-gustavo.romero@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ d=1e100.net; s=20230601; t=1699917247; x=1700522047;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AhShDJzQQW9QIQOfcf+fc8sG3b5kDEZDTPLHNIis7gI=;
+ b=ZmzHRoqVaKaJKy5cjMaizu6muMOyAWYp1WLt1UE4ouqlWuKvIRI4dj6AXrum0fEdyE
+ ZO6kzEfElltEnUizoweyh2b0v+81dEpohBONw3px0agOJ+SPtDOr9tLQup6uH8QoabmV
+ Cjf/A97b+x1W3nKy7INm7XvEjnFMxFfmf7VTI7OJYkL/xKJ4x2e3f/OjupnP2yRvt16Z
+ DUilTwGN4kzwaaw0fMaBb4VpPTuNW4heKoEiLXVdUU8+6okU1ubQnCyr9GECo0DDN2s8
+ Yvo5rymntpX3/xH1sN9ozX1waXqK9IZoUOBo144KcztSG8c/xBzVBUlgs7GTD4ud2AL6
+ VvZA==
+X-Gm-Message-State: AOJu0Yz0Wmu2SN1hef7oPh4qzkzyCIaUosVT3NZ0bGcy/ddnyMz2dQBt
+ ts9X7mfU4vtbyYsoJqt+/bzVrDrH2XmVUhfXVXI=
+X-Google-Smtp-Source: AGHT+IEb9wazkprNN1f0rb5OY12kboYafKPwTAd7cPjvBSmnb3HjY2ges0UJw1sp9U0uw2LF0evw4WM+P0/S6QuOq2A=
+X-Received: by 2002:a05:6122:1d13:b0:49a:36e4:5565 with SMTP id
+ gc19-20020a0561221d1300b0049a36e45565mr8559174vkb.16.1699917246997; Mon, 13
+ Nov 2023 15:14:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22f;
- envelope-from=gustavo.romero@linaro.org; helo=mail-oi1-x22f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20231023160806.13206-1-Jonathan.Cameron@huawei.com>
+ <20231023160806.13206-14-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20231023160806.13206-14-Jonathan.Cameron@huawei.com>
+From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Date: Tue, 14 Nov 2023 08:13:55 +0900
+Message-ID: <CAB=+i9T3YUkU1L_yoJHiRkzQsUv0aJLLCrNb2ajLVGLh7mKe1g@mail.gmail.com>
+Subject: Re: [PATCH v2 13/17] hw/cxl: Add support for device sanitation
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: qemu-devel@nongnu.org, linux-cxl@vger.kernel.org, 
+ Michael Tsirkin <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ linuxarm@huawei.com, Fan Ni <fan.ni@samsung.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Gregory Price <gregory.price@memverge.com>, Davidlohr Bueso <dave@stgolabs.net>,
+ Klaus Jensen <its@irrelevant.dk>, Corey Minyard <cminyard@mvista.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a36;
+ envelope-from=42.hyeyoo@gmail.com; helo=mail-vk1-xa36.google.com
+X-Spam_score_int: 0
+X-Spam_score: -0.1
+X-Spam_bar: /
+X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,134 +93,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, the QTest API does not provide a function to capture when an
-IRQ line is raised or lowered, although the QTest Protocol already
-reports such IRQ transitions. As a consequence, it is also not possible
-to capture when an IRQ line is toggled. Functions like qtest_get_irq()
-only read the current state of the intercepted IRQ lines, which is
-already high (or low) when the function is called if the IRQ line is
-toggled. Therefore, these functions miss the IRQ line state transitions.
+On Tue, Oct 24, 2023 at 1:14=E2=80=AFAM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> From: Davidlohr Bueso <dave@stgolabs.net>
+>
+> Make use of the background operations through the sanitize command, per C=
+XL
+> 3.0 specs. Traditionally run times can be rather long, depending on the
+> size of the media.
+>
+> Estimate times based on:
+>          https://pmem.io/documents/NVDIMM_DSM_Interface-V1.8.pdf
+>
+> Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  include/hw/cxl/cxl_device.h |  17 +++++
+>  hw/cxl/cxl-mailbox-utils.c  | 140 ++++++++++++++++++++++++++++++++++++
+>  hw/mem/cxl_type3.c          |  10 +++
+>  3 files changed, 167 insertions(+)
+>
+> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> index 2a813cdddd..70aca9024c 100644
+> --- a/include/hw/cxl/cxl_device.h
+> +++ b/include/hw/cxl/cxl_device.h
+> @@ -343,6 +343,23 @@ REG64(CXL_MEM_DEV_STS, 0)
+>      FIELD(CXL_MEM_DEV_STS, MBOX_READY, 4, 1)
+>      FIELD(CXL_MEM_DEV_STS, RESET_NEEDED, 5, 3)
+>
+> +static inline void __toggle_media(CXLDeviceState *cxl_dstate, int val)
+> +{
+> +    uint64_t dev_status_reg;
+> +
+> +    dev_status_reg =3D FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, val)=
+;
+> +    cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] =3D dev_status_reg;
+> +}
+> +#define cxl_dev_disable_media(cxlds)                    \
+> +        do { __toggle_media((cxlds), 0x3); } while (0)
+> +#define cxl_dev_enable_media(cxlds)                     \
+> +        do { __toggle_media((cxlds), 0x1); } while (0)
 
-This commit introduces two new API functions:
-qtest_get_irq_raised_counter() and qtest_get_irq_lowered_counter().
-These functions allow capturing the number of times an observed IRQ line
-transitioned from low to high state or from high to low state,
-respectively.
+Before this patch, it is assumed that "Media Status" and "Mailbox
+Interface Ready" were always 1,
+thus mdev_reg_read() always returns 1 for both of them regardless of
+register values.
 
-When used together, these new API functions then allow checking if one
-or more pulses were generated (indicating if the IRQ line was toggled).
+I think changes like below are needed as now the assumption is broken?
+Please note that it's only build-tested :)
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
----
- tests/qtest/libqtest.c | 24 ++++++++++++++++++++++++
- tests/qtest/libqtest.h | 28 ++++++++++++++++++++++++++++
- 2 files changed, 52 insertions(+)
+Thanks,
+Hyeonggon
 
-diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index f33a210861..6ada4cae6e 100644
---- a/tests/qtest/libqtest.c
-+++ b/tests/qtest/libqtest.c
-@@ -82,6 +82,8 @@ struct QTestState
-     int expected_status;
-     bool big_endian;
-     bool irq_level[MAX_IRQ];
-+    uint64_t irq_raised_counter[MAX_IRQ];
-+    uint64_t irq_lowered_counter[MAX_IRQ];
-     GString *rx;
-     QTestTransportOps ops;
-     GList *pending_events;
-@@ -498,6 +500,8 @@ static QTestState *qtest_init_internal(const char *qemu_bin,
-     s->rx = g_string_new("");
-     for (i = 0; i < MAX_IRQ; i++) {
-         s->irq_level[i] = false;
-+        s->irq_raised_counter[i] = 0;
-+        s->irq_lowered_counter[i] = 0;
-     }
- 
-     /*
-@@ -689,8 +693,10 @@ redo:
-         g_assert_cmpint(irq, <, MAX_IRQ);
- 
-         if (strcmp(words[1], "raise") == 0) {
-+            s->irq_raised_counter[irq]++;
-             s->irq_level[irq] = true;
-         } else {
-+            s->irq_lowered_counter[irq]++;
-             s->irq_level[irq] = false;
-         }
- 
-@@ -980,6 +986,22 @@ bool qtest_get_irq(QTestState *s, int num)
-     return s->irq_level[num];
- }
- 
-+uint64_t qtest_get_irq_raised_counter(QTestState *s, int num)
-+{
-+    /* dummy operation in order to make sure irq is up to date */
-+    qtest_inb(s, 0);
-+
-+    return s->irq_raised_counter[num];
-+}
-+
-+uint64_t qtest_get_irq_lowered_counter(QTestState *s, int num)
-+{
-+    /* dummy operation in order to make sure irq is up to date */
-+    qtest_inb(s, 0);
-+
-+    return s->irq_lowered_counter[num];
-+}
-+
- void qtest_module_load(QTestState *s, const char *prefix, const char *libname)
+diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
+index 61a3c4dc2e..b6ada2fd6a 100644
+--- a/hw/cxl/cxl-device-utils.c
++++ b/hw/cxl/cxl-device-utils.c
+@@ -229,12 +229,9 @@ static void mailbox_reg_write(void *opaque,
+hwaddr offset, uint64_t value,
+
+ static uint64_t mdev_reg_read(void *opaque, hwaddr offset, unsigned size)
  {
-     qtest_sendf(s, "module_load %s %s\n", prefix, libname);
-@@ -1799,6 +1821,8 @@ QTestState *qtest_inproc_init(QTestState **s, bool log, const char* arch,
-     qts->wstatus = 0;
-     for (int i = 0; i < MAX_IRQ; i++) {
-         qts->irq_level[i] = false;
-+        qts->irq_raised_counter[i] = 0;
-+        qts->irq_lowered_counter[i] = 0;
-     }
- 
-     qtest_client_set_rx_handler(qts, qtest_client_inproc_recv_line);
-diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
-index 6e3d3525bf..a2a16914dc 100644
---- a/tests/qtest/libqtest.h
-+++ b/tests/qtest/libqtest.h
-@@ -364,6 +364,34 @@ void qtest_module_load(QTestState *s, const char *prefix, const char *libname);
-  */
- bool qtest_get_irq(QTestState *s, int num);
- 
-+/**
-+ * qtest_get_irq_raised_counter:
-+ * @s: #QTestState instance to operate on.
-+ * @num: Interrupt to observe.
-+ *
-+ * This function can be used in conjunction with the
-+ * qtest_get_irq_lowered_counter() to check if one or more pulses where
-+ * generated on the observed interrupt.
-+ *
-+ * Returns: The number of times IRQ @num was raised, i.e., transitioned from
-+ * a low state (false) to a high state (true).
-+ */
-+uint64_t qtest_get_irq_raised_counter(QTestState *s, int num);
-+
-+/**
-+ * qtest_get_irq_lowered_counter:
-+ * @s: #QTestState instance to operate on.
-+ * @num: Interrupt to observe.
-+ *
-+ * This function can be used in conjunction with the
-+ * qtest_get_irq_raised_counter() to check if one or more pulses where
-+ * generated on the observed interrupt.
-+ *
-+ * Returns: The number of times IRQ @num was lowered, i.e., transitioned from
-+ * a high state (true) to a low state (false).
-+ */
-+uint64_t qtest_get_irq_lowered_counter(QTestState *s, int num);
-+
- /**
-  * qtest_irq_intercept_in:
-  * @s: #QTestState instance to operate on.
--- 
-2.34.1
+-    uint64_t retval =3D 0;
+-
+-    retval =3D FIELD_DP64(retval, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
+-    retval =3D FIELD_DP64(retval, CXL_MEM_DEV_STS, MBOX_READY, 1);
++    CXLDeviceState *cxl_dstate =3D opaque;
 
+-    return retval;
++    return cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS];
+ }
+
+ static void ro_reg_write(void *opaque, hwaddr offset, uint64_t value,
+@@ -371,7 +368,13 @@ static void
+mailbox_reg_init_common(CXLDeviceState *cxl_dstate)
+     cxl_dstate->mbox_msi_n =3D msi_n;
+ }
+
+-static void memdev_reg_init_common(CXLDeviceState *cxl_dstate) { }
++static void memdev_reg_init_common(CXLDeviceState *cxl_dstate) {
++    uint64_t memdev_status_reg;
++
++    memdev_status_reg =3D FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
++    memdev_status_reg =3D FIELD_DP64(memdev_status_reg,
+CXL_MEM_DEV_STS, MBOX_READY, 1);
++    cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] =3D memdev_status_reg;
++}
+
+ void cxl_device_register_init_t3(CXLType3Dev *ct3d)
+ {
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index 61b7f897f7..61f8f83ddf 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -351,9 +351,9 @@ REG64(CXL_MEM_DEV_STS, 0)
+
+ static inline void __toggle_media(CXLDeviceState *cxl_dstate, int val)
+ {
+-    uint64_t dev_status_reg;
++    uint64_t dev_status_reg =3D cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV=
+_STS];
+
+-    dev_status_reg =3D FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, val);
++    dev_status_reg =3D FIELD_DP64(dev_status_reg, CXL_MEM_DEV_STS,
+MEDIA_STATUS, val);
+     cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] =3D dev_status_reg;
+ }
+ #define cxl_dev_disable_media(cxlds)                    \
 
