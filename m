@@ -2,87 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 520F07EADE5
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 11:21:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 526D57EAE0B
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 11:29:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2qXZ-0000zw-Fz; Tue, 14 Nov 2023 05:21:06 -0500
+	id 1r2qf1-0003mW-J9; Tue, 14 Nov 2023 05:28:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1r2qXX-0000yP-Aq
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:21:03 -0500
+ id 1r2qer-0003d7-Ej
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:28:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1r2qXT-0006ja-UK
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:21:03 -0500
+ id 1r2qeo-00085h-Os
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:28:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699957257;
+ s=mimecast20190719; t=1699957713;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=Fq6TSgcDUNjjoV19+XloXf5QEt90Ljy8kIheevGKY5A=;
- b=BlDA3P43TbHu+jpF3tTRuolzeuKeQ99RFD/D1SbyE25Rjw6Wwg/p7HMguGvNkttAR/VN1t
- YGAvTOxs7paSxNDtErlS8bdpCRhZUTfP44cshNfRygUiMGxOssHVwZZCmtzKAGRSkHcReO
- kLOV5e1cBiz9o/BKdhMvuxJsYrSqJ2k=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=L1FTf7BQgnbDoJi8opqoaaXzrdRJrFpqx7q1EzrOBbk=;
+ b=XUIZe6WJO62c/FbjWqBimYZybmULRjFqL1jzR4qIrn2ukz4nZsjZ9uA2on7P4q8I88b294
+ N88iAYS+c850jMYAsUDEMTBz/T7xfnHOtqSPLqeGoMLx/omDqST755Ab+ixUKM4T8qzYnD
+ 3c8sUzWeZSz+ZxmuNK/HodTd5cxakfg=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-308-WwDSWXQAM666tmnkD9ckkg-1; Tue, 14 Nov 2023 05:20:56 -0500
-X-MC-Unique: WwDSWXQAM666tmnkD9ckkg-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-32f820c471fso2554535f8f.0
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 02:20:55 -0800 (PST)
+ us-mta-368-liTTrh7EMuutA8u4AJ2LAw-1; Tue, 14 Nov 2023 05:28:32 -0500
+X-MC-Unique: liTTrh7EMuutA8u4AJ2LAw-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-32db43129c6so2785566f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 02:28:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699957255; x=1700562055;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Fq6TSgcDUNjjoV19+XloXf5QEt90Ljy8kIheevGKY5A=;
- b=Un7xPQBL8caKvmdAHTV8WBTRBKxWocKHuldCJcr3p/uRfRA2HufcKwRk+Y6+/foqWR
- NOp9s8kSmE4D/5hyiWub7zjpZaqovI2SY9CFRszN5IGpJ4dORfpyKsR6ii2LxYNfUDAq
- CkP0oAKhh2h2VWTTF3qWjgwYuKna6TpiesEuZFz2+gVcvREaZk2GjBPWZOqAIPnHTvA/
- vVwoEsBUD6lZhRuppvp5Aqf/WJ827h8cOXl5wYD56FnL9ciaxUBRJ/e2+UZ3ru9Rni0I
- tOrZ2pcnGDVFWdMbdD7JcPi8IXZGvm+z640xcUv8zyBlfKTB6fDV8plGvycZ0yv+F3tD
- Ad/w==
-X-Gm-Message-State: AOJu0Yz2jGjLRDtjuqjWnMzCgWmSaqhRI3ltepZd6oP9HqzZLs68dj5z
- YLkwZhTH8D7oaFQqFQtyJUIU37JN79Hi7VZvGo6fUZRbgUaGqIAOxuXsoJ4A2jio9W6k72r5RV+
- ENBOd+ctRi3yIGwE=
-X-Received: by 2002:a05:6000:144c:b0:32f:71e2:adfb with SMTP id
- v12-20020a056000144c00b0032f71e2adfbmr7870390wrx.3.1699957254737; 
- Tue, 14 Nov 2023 02:20:54 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE85NYnQzvH2lZ41DGes3MILPAmKZGBnv0FGdE7X2+eCTzOwY9mQ5OtxGRV2JkA8j1dQiVrTg==
-X-Received: by 2002:a05:6000:144c:b0:32f:71e2:adfb with SMTP id
- v12-20020a056000144c00b0032f71e2adfbmr7870364wrx.3.1699957254249; 
- Tue, 14 Nov 2023 02:20:54 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699957709; x=1700562509;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=L1FTf7BQgnbDoJi8opqoaaXzrdRJrFpqx7q1EzrOBbk=;
+ b=Fst6Sq6oZTfLA3gUbx2nC2OawIULPhZgWqZCA7LqXssvWu7pvIhOqBpSuvcWAVh9nJ
+ L84oi5UXQEwmDcMC3XLhpkC2pu0eThC2mHlL6QkavVKcJwToR8lsou/uxRihnxkzYE0V
+ SZu8nFCe8HzFTanSMafaYQcvuYGNNNgYz40df/TXCDBiq4JQ5pClbyxGgXGULu8o7wMf
+ UGZa2uJSLaLn3ONCnzTUbEU3yKZArY+MX/LR5iavE05L8lFHUFBHQK2sOi7xgFFvMEvb
+ EpLewf8hTo14Xd7vPDuVXIBwgDhdlYmPkLSWQjSaMqRRn1RoOlTTIuet3EONmPwDrcRX
+ i//A==
+X-Gm-Message-State: AOJu0YzUsH3M647osd+KvZxVjwkNrD37afzyepGYa3X/UcH5Z6Sp5ght
+ ouA8RK4O83kQWaN96YwZupPoH3nhrwqp8E+aEUO90/uwX2vJJEqbx8RFKMP7gheroa7jXcsg6Mw
+ j9hp4ncx088w/D5l4cT9WT6c4Lg==
+X-Received: by 2002:a5d:60ca:0:b0:32d:9d64:b429 with SMTP id
+ x10-20020a5d60ca000000b0032d9d64b429mr6084912wrt.21.1699957709367; 
+ Tue, 14 Nov 2023 02:28:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGLMIxLzmI32aAyQgazFHmX8Nuz0SGj7c2FroRM7lWLsfw/NGkduzQUrVrYLXaAUDt9pNiHzw==
+X-Received: by 2002:a5d:60ca:0:b0:32d:9d64:b429 with SMTP id
+ x10-20020a5d60ca000000b0032d9d64b429mr6084897wrt.21.1699957709071; 
+ Tue, 14 Nov 2023 02:28:29 -0800 (PST)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- j30-20020adfb31e000000b003197869bcd7sm7509627wrd.13.2023.11.14.02.20.53
+ f13-20020a5d4dcd000000b0032f7c563ffasm7416940wru.36.2023.11.14.02.28.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Nov 2023 02:20:53 -0800 (PST)
+ Tue, 14 Nov 2023 02:28:28 -0800 (PST)
 From: Juan Quintela <quintela@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>,  qemu-devel@nongnu.org,  Fabiano Rosas
- <farosas@suse.de>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Philippe
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>,  Peter Xu <peterx@redhat.com>,
+ qemu-devel@nongnu.org,  Fabiano Rosas <farosas@suse.de>,  Philippe
  =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Thomas Huth
- <thuth@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>
+ <thuth@redhat.com>
 Subject: Re: Configuring migration
-In-Reply-To: <875y24iyl8.fsf@pond.sub.org> (Markus Armbruster's message of
- "Tue, 14 Nov 2023 08:27:31 +0100")
+In-Reply-To: <ZVM5xmsaE41WJYgb@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9=22's?= message of
+ "Tue, 14 Nov 2023 09:13:30 +0000")
 References: <87sf6k2dax.fsf@pond.sub.org> <ZSVoK6YMgNzrDYGQ@x1n>
  <878r8ajngg.fsf@pond.sub.org> <ZSWvYgKcGXlucXx6@x1n>
  <875y3dixzp.fsf@pond.sub.org> <8734yhgrzl.fsf@pond.sub.org>
  <ZShI4AucDGvUvJiS@x1n> <877cnrjd71.fsf@pond.sub.org>
  <87zfzz82xq.fsf@secure.mitica> <87msvw6xm2.fsf_-_@pond.sub.org>
- <ZUPk33GUF/PvAPPo@x1n> <875y24iyl8.fsf@pond.sub.org>
+ <ZVM5xmsaE41WJYgb@redhat.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Tue, 14 Nov 2023 11:20:53 +0100
-Message-ID: <87ttpoocu2.fsf@secure.mitica>
+Date: Tue, 14 Nov 2023 11:28:28 +0100
+Message-ID: <87pm0cochf.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -109,350 +112,69 @@ Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> wrote:
-D> Cc: Paolo for QOM expertise.
->
-> Peter Xu <peterx@redhat.com> writes:
->
->> On Thu, Nov 02, 2023 at 03:25:25PM +0100, Markus Armbruster wrote:
->
-> [...]
->
->>> Migration has its own idiosyncratic configuration interface, even though
->>> its configuration needs are not special at all.  This is due to a long
->>> history of decisions that made sense at the time.
->>> 
->>> What kind of interface would we choose if we could start over now?
->>> 
->>> Let's have a look at what I consider the two most complex piece of
->>> configuration to date, namely block backends and QOM objects.
->>> 
->>> In both cases, configuration is a QAPI object type: BlockdevOptions and
->>> ObjectOptions.
->>> 
->>> The common members are the configuration common to all block backends /
->>> objects.  One of them is the type of block backend ("driver" in block
->>> parlance) or QOM object ("qom-type").
->>> 
->>> A type's variant members are the configuration specific to that type.
->>> 
->>> This is suitably expressive.
->>> 
->>> We create a state object for a given configuration object with
->>> blockdev-add / object-add.
->>> 
->>> For block devices, we even have a way to modify a state object's
->>> configuration: blockdev-reopen.  For QOM objects, there's qom-set, but I
->>> don't expect that to work in the general case.  Where "not work" can
->>> range from "does nothing" to "explodes".
->>> 
->>> Now let's try to apply this to migration.
->>> 
->>> As long as we can have just one migration, we need just one QAPI object
->>> to configure it.
->>> 
->>> We could create the object with -object / object_add.  For convenience,
->>> we'd probably want to create one with default configuration
->>> automatically on demand.
->>> 
->>> We could use qom-set to change configuration.  If we're not comfortable
->>> with using qom-set for production, we could do something like
->>> blockdev-reopen instead.
->>> 
->>> Could we move towards such a design?  Turn the existing ad hoc interface
->>> into compatibility sugar for it?
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
+> On Thu, Nov 02, 2023 at 03:25:25PM +0100, Markus Armbruster wrote:
+>> Now let's try to apply this to migration.
 >>
->> Sounds doable to me.
->>
->> I'm not familiar with BlockdevOptions, it looks like something setup once
->> and for all for all relevant parameters need to be set in the same request?
+>> As long as we can have just one migration, we need just one QAPI object
+>> to configure it.
+>>=20
+>> We could create the object with -object / object_add.  For convenience,
+>> we'd probably want to create one with default configuration
+>> automatically on demand.
+>>=20
+>> We could use qom-set to change configuration.  If we're not comfortable
+>> with using qom-set for production, we could do something like
+>> blockdev-reopen instead.
 >
-> Yes, but you can "reopen", which replaces the entire configuration.
+> Do we even need to do this via a QAPI object ?
 >
-> blockdev-add creates a new block backend device, and blockdev-reopen
-> reopens a set of existing ones.  Both take the same arguments for each
-> device.
+> Why are we not just making the obvious design change of passing everything
+> with the 'migrate' / 'migrate-incoming' commands that kick it off:
 >
->> Migration will require each cap/parameter to be set separately anytime,
->> e.g., the user can adjust downtime / bandwidth even during migration in
->> progress.
+> ie:
 >
-> "Replace entire configuration" isn't a good fit then, because users
-> would have to repeat the entire configuration just to tweak one thing.
+> { 'command': 'migrate',
+>   'data': {'uri': 'str',
+>            '*channels': [ 'MigrationChannel' ],
+> 	   '*capabilities': [ 'MigrateCapability' ],
+> 	   '*parameters': [ 'MigrateParameters' ],
+>            '*detach': 'bool', '*resume': 'bool' } }
 
-We have two types of parameters:
-- multifd_channels type: we need to set them before the migration start
-- downtime: We can change it at any time, even during migration
+Once that we are doing incompatible changes:
+- resume can be another parameter
+- detach is not needed.  QMP don't use it, and HMP don't need to pass it
+  to qmp_migrate() to make the non-detached implemntation.
 
-So I think we need two types of parameters.
-For the parameters that one can't change during migration, it could be a
-good idea to set all of them at once, i.e.
 
-(qemu) migration_set multifd on multifd-channels 6 multifd_compression none
-
-Whatever syntax we see fit.  That would make it easier to:
-- document what parameters make sense together (they need to be set at
-  the same time)
-- convert migrate_params_check()/migrate_params_test_apply()/migrate_params_apply()
-  into a sane interface.
-- this parameters don't need to be atomic, they are set by definition by
-  the main thread before the migration starts.  The other parameters
-  needs to be atomic.
-
->> Making all caps/parameters QOM objects, or one object containing both
->> attributes, sounds like a good fit.  object_property_* APIs allows setters,
->> I think that's good enough for migration to trigger whatever needed (e.g.
->> migration_rate_set() updates after bandwidth modifications).
->>
->> We can convert e.g. qmp set parameters into a loop of setting each
->> property, it'll be slightly slower because we'll need to do sanity check
->> for each property after each change, but that shouldn't be a hot path
->> anyway so seems fine.
+>      (deprecated bits trimmed for clarity)
 >
-> I figure doing initial configuration in one command is convenient.  The
-> obvious existing command for that is object-add.
+> and the counterpart:
 >
-> The obvious interface for modifying configuration is a command to change
-> just one parameter.  The obvious existing command for that is qom-set.
-
-As said before, I think we need two commands:
-
-- migrate_set_method method [list of method arguments with values]
-  Values that need to be set before migration
-
-- migrate_set_parameter parameter value
-  Values that can be changed at any time
-
-> Problem: qom-set is a death trap in general.  It can modify any QOM
-> property with a setter, and we test basically none of them.  Using it
-> for modifying migration configuration would signal it's okay to use
-> elsewhere, too.  I'm not sure we want to send that message.  Maybe we
-> want to do the opposite, and make it an unstable interface.
+> { 'command': 'migrate-incoming',
+>              'data': {'*uri': 'str',
+>                       '*channels': [ 'MigrationChannel' ],
+>                       '*capabilities': [ 'MigrateCapability' ],
+>                       '*parameters': [ 'MigrateParameters' ] } }
 >
-> Aside: I believe the root problem is our failure to tie "can write" to
-> the object's state.  Just because a property can be set with object-add
-> doesn't mean it can be validly changed at any time during the object's
-> life.
-
-Yeap.
-
-> Problem: when several parameters together have to satisfy constraints,
-> going from one valid configuration to another valid configuration may
-> require changing several parameters at once, or else go through invalid
-> intermediate configurations.
-
-There are other things that "currently" we are not considering and that
-make things really strange.
-
-(qemu) migrate_set_capability xbzrle on
-(qemu) migrate_set_parameter xbzrle_cache $foo
-(qemu) migrate $bar
-
-migration fails for whatever reason
-
-we try again with another method, let's say multifd
-
-(qemu) migrate_set_capability multifd on
-(qemu) migrate_set_parameter multifd-channels $foo2
-(qemu) migrate $bar2
-
-At this point, xbrzrle_cache is still set, but it makes no sense.  So I
-think that if we change the interface, the migrate_set_method that I
-suggested would just clean-up all values to its defaults.
-
-
-> This problem is not at all specific to the migration object.
->
-> One solution is careful design to ensure that there's always a sequence
-> of transitions through valid configuration.  Can become complicated as
-> configuration evolves.  Possible even impractical or impossible.
-
-This is a nightmare.  See migrate_params_check().  Basically everytime
-that we add a capability/parameter we need to go through all the list to
-see if anything is compatible/incompatible.  It is much better that we
-set all that kind of parameters at once, so this is much easier to understand.
-
-> Another solution is a command to modify multiple parameters together,
-> leaving alone the others (unlike blockdev-reopen, which overwrites all
-> of them).
-
-I still think we need both methods because we have the two kinds of
-parameters.
-
-Actually, it is even worse than that, because there are parameters that
-need to be set before the migration start but that are not related to
-the migration method at all.
-
-
-
->> It'l still be a pity that we still cannot reduce the triplications of qapi
->> docs immediately even with that.  But with that, it seems doable if we will
->> obsolete QMP migrate-set-parameters after we can do QOM-set.
-
-Trying to be practical, this are the capabilities:
-
-{ 'enum': 'MigrationCapability',
-  'data': [
-
-'xbzrle'  <- how we compress, but it is used on top of anything else
-             except multifd/rdma
-'rdma-pin-all' <- this is a rdma parameter, but at the time there were
-             not parameters, so here we are.
-
-'auto-converge' <- this is obsolete.  Dirty limit features are better
-                   for this.  But this again is independent of anything
-                   else.  I will have to double check to see if it can
-                   be set at any moment.
-'zero-blocks' <- only for storage migration, clearly a parameter.
-
-{ 'name': 'compress', 'features': [ 'deprecated' ] } <- migration
-           compression method
-'events' <- this should be default and make it a nop for backwards
-           compatibility.  I think libvirt sets it always.
-
-'postcopy-ram' <- we want to do postcopy.  I don't even remember why
-                  this is a capability when we have to issue a command
-                  to start it anyways
-
-{ 'name': 'x-colo', 'features': [ 'unstable' ] }, <- colo is
-                  experimental, not even enter here.
-
-'release-ram' <- This only makes sense if:
-                 * we are in postcopy
-                 * we are migration with the guest stopped (and not sure
-                   if in this case it even works)
-
-{ 'name': 'block', 'features': [ 'deprecated' ] } <- deprecated, don't
-           spent time here.
-
-'return-path' <-  basically everything except exec should have this.
-                  this is way from destination to give us back errors.
-                  exec basically is not able to give any error.
-
-'pause-before-switchover' <-  This is independent of anything else, but
-                              it makes sense to require to set it before
-                              migration start.  Used when you need to
-                              "lock" things, like block devices to a
-                              single user.  Think iscsi block devices
-                              that can only be enabled at the same time
-                              on source or destination, but not both.
-
-'multifd' <- migration method
-
-'dirty-bitmaps' <- block migration is weird.  I don't remember this one.
-
-
-'postcopy-blocktime' <- don't even remember
-
-'late-block-activate' <- I think this is somehow related to
-                         pause-before-switchover, but I don't ever
-                         remember the details.  I guess we did it wrong
-                         the fist time.
-
-{ 'name': 'x-ignore-shared', 'features': [ 'unstable' ] } <- we need to
-           mark this stable.  Basically means that:
-           * we are migratin on the same machine
-           * RAM is mmaped in source/destination shared
-           * so we don't need to migrate it.
-
-'validate-uuid' <- making sure that we are migration to the right
-                   destination.  Independent of anything else.  Should
-                   be set before migration starts.
-
-'background-snapshot' <- block devices are big and slow.  Migrating them
-           is complilaceed.  Forgot about them.
-
-'zero-copy-send' <- only valid for multifd, should be a paramter
-
-'postcopy-preempt' <-  We create a new channel for postcopy, depends on
-                       postcopy and needs to be set before migration starts.
-
-'switchover-ack' <- Independent of anything else.  Needs to be set
-           before migration starts.
-
-'dirty-limit' <- Autoconverge was bad.  We create another way of doing
-                 the same functionality.
-
-
-And now we go with migration_parametres:
-
-'announce-initial', 'announce-max',
-'announce-rounds', 'announce-step',
-	I think we should set all of them at the same time.
-        Before migration ends.  This is SDN for you, sometimes we need
-        to repeat the ARP packets to get they passed through routers.
-        Hello openstack.
-
-
-{ 'name': 'compress-level', 'features': [ 'deprecated' ] },
-{ 'name': 'compress-threads', 'features': [ 'deprecated' ] },
-{ 'name': 'decompress-threads', 'features': [ 'deprecated' ] },
-{ 'name': 'compress-wait-thread', 'features': [ 'deprecated'] },
-
-	Parameters for old compression method.  Should be set before we start.
-
-'throttle-trigger-threshold',
-'cpu-throttle-initial',
-'cpu-throttle-increment',
-'cpu-throttle-tailslow',
-'max-cpu-throttle'
-	Autoconverge parameters.  Make sense to change them after we start.
-        Remember that autoconverge was a good idea and a bad
-        implementation.
-
-'tls-creds', 'tls-hostname', 'tls-authz',
-
-        They are only needed if we are using TLS.  But we only need TLS
-        depending on the URI we are using (tcp+tls).
-
-'max-bandwidth',
-        Can be changed at any time.
-
-'avail-switchover-bandwidth',
-        Can be changed at any time.  Better explained, it shouldn't be
-        needed.  But we know that it is needed after migration starts,
-        so ...
-
-'downtime-limit',
-        Can be changed at any point.
-
-{ 'name': 'x-checkpoint-delay', 'features': [ 'unstable' ] },
-	Colo parameter.  Needs to be set before migration starts.
-
-{ 'name': 'block-incremental', 'features': [ 'deprecated' ] },
-	deprecated, but needs to be set before migration starts.
-
-'multifd-channels',
-	Needs to be set before migration starts.
-
-'xbzrle-cache-size'
-	Needs to be set before migration starts.
-        It *could* be changed after migration starts, but ...
-
-'max-postcopy-bandwidth'
-	When we are in postcopy stage, reasonable thing to do is to use
-	all available bandwidth.  When that is not true, use this parameter.
-
-
-'multifd-compression'
-'multifd-zlib-level'
-'multifd-zstd-level'
-	multifd compression parameters.  Depending of
-        multifd-compression value, the others make sense or not.
-
-'block-bitmap-mapping',
-	I don't understand/remember this new block migration, so I can't comment.
-
-{ 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
-	Needs to be set before migration starts.
-'vcpu-dirty-limit',
-	One could defend to change it after migration starts, but ....
-
-'mode'
-        set before migration starts
-
-
-So you can see that we have lots of parameters to try to make sense of.
+> such that the design is just like 99% of other commands which take
+> all their parameters directly. We already have 'migrate-set-parameters'
+> remaining for the runtime tunables, and can deprecate the usage of this
+> when migration is not already running, and similarly deprecate
+> migrate-set-capabilities.
+
+This makes sense to me, but once that we change, we could try to merge
+capabilities and parameters.  See my other email on this topic.
+Basically the distition is arbitrary, so just have one of them.
+
+Or better, as I said in the other email, we have two types of
+parameters:
+- the ones that need to be set before migration starts
+- the ones that can be changed at any time
+
+So to be simpler, I think that 1st set should be passed to the commands
+themselves and the others should only be set with
+migrate_set_parameters.
 
 Later, Juan.
 
