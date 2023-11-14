@@ -2,62 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07AF17EB7D8
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 21:32:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2895F7EB7E8
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 21:35:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r303s-0003WE-7n; Tue, 14 Nov 2023 15:31:04 -0500
+	id 1r307r-0005fW-NM; Tue, 14 Nov 2023 15:35:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1r303q-0003W0-75; Tue, 14 Nov 2023 15:31:02 -0500
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r307m-0005Z4-FZ
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 15:35:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1r303n-0002PT-Dh; Tue, 14 Nov 2023 15:31:00 -0500
-Received: from mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:88b:0:640:d9e4:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 608E160F7B;
- Tue, 14 Nov 2023 23:30:51 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:8917::1:1] (unknown
- [2a02:6b8:b081:8917::1:1])
- by mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id oUqp9e75KCg0-55G1nl2r; Tue, 14 Nov 2023 23:30:51 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1699993851;
- bh=QkgIiotU3HtTdNMsGocUrfXHnh31D68cYNmH0QmtrB4=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=QYxf4T0rqtmrFCX1+5WWBTs/hJXcKfb1sm3cjzjuZR/KcHTsR3LhPeCV32MIO2KN9
- lxRb5xfxaK+y7ZdE+0T9Viy8+D1h09n4R7iKJ+jpCxitLiit0zGTItrqSjy6aXZ32w
- ezd/s4D5LSmFu06u1o1dJzDDRdiCZpNsKLT4fN8E=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <fede2648-e39d-4288-9389-ef491b27d5b1@yandex-team.ru>
-Date: Tue, 14 Nov 2023 23:30:50 +0300
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r307k-0002lA-Bx
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 15:35:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699994103;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=QjukFoN8XHyFxKdZj8W+Exx+V4bd7SDF/PNDY0yXmtU=;
+ b=Ctm4uJ/dTwcHnyP4p/g7KgP/uIEld1a/Dbv9w0CcDu7vuJLPiNgPTxpwSs64vnLgq+l8rj
+ hcZEO4qmO7YMs9Q1e9iUfIcMmXJD3cZ60+ssxtM60T4jr6Jw+hE4oZ1+Zq0pZ12aiKFpRR
+ Zfd3bHZW27YsTxmlbdZaRwFSgsO7K7w=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-59-XzG-Ba0oP7as9egd5XqR7w-1; Tue, 14 Nov 2023 15:34:59 -0500
+X-MC-Unique: XzG-Ba0oP7as9egd5XqR7w-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4DEDC101A598;
+ Tue, 14 Nov 2023 20:34:59 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.119])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 526B25028;
+ Tue, 14 Nov 2023 20:34:57 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Erico Nunes <ernunes@redhat.com>
+Subject: [PATCH] tests/avocado/virtio-gpu: Fix test_vhost_user_vga_virgl for
+ edid support
+Date: Tue, 14 Nov 2023 21:34:56 +0100
+Message-ID: <20231114203456.319093-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH trivial 20/21] util/filemonitor-inotify.c: spelling fix:
- kenel
-Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-References: <20231114165834.2949011-1-mjt@tls.msk.ru>
- <20231114165834.2949011-21-mjt@tls.msk.ru>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20231114165834.2949011-21-mjt@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -74,17 +79,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14.11.23 19:58, Michael Tokarev wrote:
-> Fixes: 2e12dd405c66 "util/filemonitor-inotify: qemu_file_monitor_watch(): assert no overflow"
-> Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> Cc: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+The "edid" feature has been added to vhost-user-gpu in commit
+c06444261e20 ("contrib/vhost-user-gpu: implement get_edid feature"),
+so waiting for "features: +virgl -edid" in the test does not work
+anymore, it's "+edid" instead of "-edid" now!
 
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+While we're at it, move the expected string to the preceeding
+exec_command_and_wait_for_pattern() instead (since waiting for
+empty string here does not make too much sense).
 
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/avocado/virtio-gpu.py | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
+diff --git a/tests/avocado/virtio-gpu.py b/tests/avocado/virtio-gpu.py
+index 89bfecc715..6091f614a4 100644
+--- a/tests/avocado/virtio-gpu.py
++++ b/tests/avocado/virtio-gpu.py
+@@ -149,10 +149,8 @@ def test_vhost_user_vga_virgl(self):
+             # TODO: probably fails because we are missing the VirGL features
+             self.cancel("VirGL not enabled?")
+         self.wait_for_console_pattern("as init process")
+-        exec_command_and_wait_for_pattern(
+-            self, "/usr/sbin/modprobe virtio_gpu", ""
+-        )
+-        self.wait_for_console_pattern("features: +virgl -edid")
++        exec_command_and_wait_for_pattern(self, "/usr/sbin/modprobe virtio_gpu",
++                                          "features: +virgl +edid")
+         self.vm.shutdown()
+         qemu_sock.close()
+         vugp.terminate()
 -- 
-Best regards,
-Vladimir
+2.41.0
 
 
