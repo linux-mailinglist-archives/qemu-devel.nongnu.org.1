@@ -2,185 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C017EADD7
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 11:19:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 520F07EADE5
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 11:21:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2qVe-0008Lc-Hr; Tue, 14 Nov 2023 05:19:06 -0500
+	id 1r2qXZ-0000zw-Fz; Tue, 14 Nov 2023 05:21:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r2qVX-0008LJ-Tj
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:19:01 -0500
-Received: from mgamail.intel.com ([192.55.52.88])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1r2qXX-0000yP-Aq
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:21:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r2qVV-0006MI-Tk
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:18:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1699957137; x=1731493137;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=rXRfFWEdOa1SlXtY8fRI2ejfFLzO61lIhsLQGRVbImY=;
- b=RTmTGGYUauEuof75jYn8/xUbLxyUGuuqs1WhTJxbmjm4151tcl3sudE9
- dPzxObMAvWl0AESqMbs9fDuphVIw+3IBnpvDa0iVZEySX0I9eLAXnUBv7
- QwWPazEYmRcFv84mw6i8IPkAw0zX6VoARlojRiDMdMj0UHtSfGqfK9i2s
- fgmZoouF2yFwJIuN0WuXDOMi3ZwG/E0uZFCQb+prifX8pMvj/OKiKtR0n
- 8c+Cr2UomB8KDaqrWQkZ2oaQFFtDMMyfvIMQRfahESMsgdMLj8+vldpft
- eFTkiuX3LcRqi5PTmvprHhk83cdw2WkfHeoQnTWcuW5YtIS/Zo1HI/xMh g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10893"; a="421724662"
-X-IronPort-AV: E=Sophos;i="6.03,301,1694761200"; d="scan'208";a="421724662"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2023 02:18:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10893"; a="882010067"
-X-IronPort-AV: E=Sophos;i="6.03,301,1694761200"; d="scan'208";a="882010067"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by fmsmga002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 14 Nov 2023 02:18:48 -0800
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Tue, 14 Nov 2023 02:18:47 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Tue, 14 Nov 2023 02:18:47 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Tue, 14 Nov 2023 02:18:47 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.100)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Tue, 14 Nov 2023 02:18:45 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oJygGG6YpCIbHscglFHdPSPz7550W6bm2WKmQwW4Dlb9s+7xi35IjAcY0GPWONio1vRk1hiwmI3m2ONgT4MY4E/Edtgo8aXQs0zfSDO0iEfvaoGUJb3Y5/bFmPJ1dE0keteeekcEDGAvdqj8lgiAaahUgit8WlnjJH4dudH5JnbBYybgSllzQl1FSV8nRHsnRNkOruf6hLd7W/chEfUGUnbH9TCuB4OTvCLviyPSNedB5HQyboHq0mX7X4sN9S1z/koWI017vOs3rQgYNIAn1Z/VrfwEId5RtHCPVhNg9RD6WCDhbGqW4q1HknGc1VpQBCrdCVUKnFBkF9E2cQnepQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rXRfFWEdOa1SlXtY8fRI2ejfFLzO61lIhsLQGRVbImY=;
- b=FZD9OrfQqeLgQBrwQnF4pWF/8Ik0+6NosWqk+r/fbUrbbe4YPSJSKgI9gbgMmC6+FEvld9q1U371aMPGySEUnXPIZMGAvn9A7or1Ea8KPBkBAxSKarM4iPsJ5rFGqi1C/0NOOOHpeYabNGk3qvXz/gAv2IMPDYR+82Y+vQgrFY7oneDYTYKbPC8vMNVoztI60tdM6DNuQRF0u3SCUJq/30nShTGoE/TUHCubJZfgPUwPWVmLVJHi6G4MUfyP0I5MQhVgiG5rjXhRb/0Rs+FeTPvBoGmop+kEJX5EDmyMLJfBR42LnRu5+4VaCBHl5Gt5aO83w00FyFN2WF7va4snNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by IA0PR11MB7839.namprd11.prod.outlook.com (2603:10b6:208:408::16)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.31; Tue, 14 Nov
- 2023 10:18:43 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea%4]) with mapi id 15.20.6977.029; Tue, 14 Nov 2023
- 10:18:43 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>, Markus Armbruster
- <armbru@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>, "jgg@nvidia.com"
- <jgg@nvidia.com>, "nicolinc@nvidia.com" <nicolinc@nvidia.com>, "Martins,
- Joao" <joao.m.martins@oracle.com>, "eric.auger@redhat.com"
- <eric.auger@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>, "Tian, Kevin"
- <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>, "Sun, Yi Y"
- <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- =?utf-8?B?RGFuaWVsIFAuQmVycmFuZ8Op?= <berrange@redhat.com>, Eduardo Habkost
- <eduardo@habkost.net>, Thomas Huth <thuth@redhat.com>
-Subject: RE: [PATCH v4 26/41] backends/iommufd: Introduce the iommufd object
-Thread-Topic: [PATCH v4 26/41] backends/iommufd: Introduce the iommufd object
-Thread-Index: AQHaDV55xw4BryR3ak233G0Yz5k1LbBu4yyAgAERJRWAAEaqgIAAB7I3gAA3N4CAAUNKsoABGFVAgAbNFwCAAAj78A==
-Date: Tue, 14 Nov 2023 10:18:42 +0000
-Message-ID: <SJ0PR11MB67443F174486760C0816FA2892B2A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20231102071302.1818071-1-zhenzhong.duan@intel.com>
- <20231102071302.1818071-27-zhenzhong.duan@intel.com>
- <da7de379-bd8c-47d1-b7bf-412be92a2756@redhat.com>
- <87r0l0dc9q.fsf@pond.sub.org>
- <d710b361-7078-456c-86bd-6b7f23d56584@redhat.com>
- <87zfzoa65e.fsf@pond.sub.org>
- <20de5dde-2a1a-4d20-bafc-b63a8015fae7@redhat.com>
- <871qcz70vg.fsf@pond.sub.org>
- <SJ0PR11MB674457AF8A2E6545B8CEAE6A92AEA@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <7d66d02e-46b3-41fd-9722-eb7f58514c8b@redhat.com>
-In-Reply-To: <7d66d02e-46b3-41fd-9722-eb7f58514c8b@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|IA0PR11MB7839:EE_
-x-ms-office365-filtering-correlation-id: b6679242-ba3f-4747-1ef5-08dbe4fb142e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: f9TBb31kSBaPb52FacVYo3WrL4S8QbuGyHHJ9fO4YhN53uOpeFeXhIbRKj26FcB7NSrwhEQ4Ufr+GCn2vf2AQozmZdD/cZNmSsKe9XCCRN2Scz7m6egOir51WUWRDJcGGjtgLkjwOklBdlKRhWtjRLj8Lorr0AMXdxGkKPRKuCf0CoUTmWgiGF4e7Whq3BF8h2OVhWmCrH7tOQ6dNt3/e/YoM5r3g+Kod/F0GBspAMxo74bQckVCCWrsIepim2HWLfoo0O/GabBAqGPyCeEYqFA7j0E4N5iDUtqN20mzYKMcoiDbzPYymkVg7U8i/pXRHuA5Q5DzcIzztSfhA5drkkP7aqKGhc8jcV3ttkGbgaQf/2fg6NAQduEB5ViAtTQ4wYqlSLYfnX3CWojfYRyTo9u+HH4fzg6qr/K4P3rV9LD4InOn3v4cB3KPRvbrYpEokOGqF0oGlUf+TpFhJBAW55gXoFuvCPnsnrrCB428E4VtHJi51ZWMpnGJ4RUa8izZe+10RYWl03VZuctQJxL4+PuehfMqzUKqHyjbjkWuS0kb5vFIJW+ZKYBtxbrI5zaL1UPUP3cailiLC5c/hnGIT0utv6pDdLITdtKXITbxDHa+9pV/w3HKZnKo+ww0wFMY
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(346002)(136003)(366004)(39860400002)(396003)(230922051799003)(186009)(1800799009)(64100799003)(451199024)(55016003)(54906003)(38100700002)(122000001)(66476007)(66946007)(76116006)(110136005)(66556008)(66446008)(33656002)(38070700009)(86362001)(64756008)(82960400001)(83380400001)(9686003)(66574015)(71200400001)(6506007)(7416002)(7696005)(2906002)(41300700001)(316002)(478600001)(5660300002)(8936002)(52536014)(4326008)(8676002)(26005);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WlhsRmxzQXljcWJFYXhaejVzbHVWTlRuN1k3Unc4bERiL3AvYjNYV0hVOVZq?=
- =?utf-8?B?czBLbVpma1ZLclYycUpmQWlvMlYxSW4zUnVtZUs2Rkhuc2R0akJDZnQ0NlB2?=
- =?utf-8?B?VC9xRzlzOEdxNnNRREZrUndpN3BoaXNBeFFLTndSTVVpaTRCa3Boc1dwMGFx?=
- =?utf-8?B?YkE4eGQydTlhaHZYcEVuZWNvUlpucktpUzFRTStBc1NncDRhRU5nSFFxYU1Q?=
- =?utf-8?B?MTZERGRVdVk3M1VqdUdubVVuUmt3TmZSTTF1OEdQaG1ydnZDcldKRFFPREx5?=
- =?utf-8?B?bHlQRUFPeXJTUDFQckFvK2xBQnVwZndmYTRGUlFXSElWMXZxd0N1b1JtL3or?=
- =?utf-8?B?cWprOEVHemVPNm5sZU4zSWlmdkFBMnQ0N1dGbzk2RFRLNWQ4U3dRNGV1S2ZR?=
- =?utf-8?B?cnFJdU1XM2pxOUJZdjRiaW4zWm1rUWlTM1VFME5HK1pZd0ZES0hrNno3U0dX?=
- =?utf-8?B?aGg3bGdSQ1FRUnJmSFR2ZXlPdlZadXFGc1FTc25CdjBOcGlTbVhUTHlLTGhV?=
- =?utf-8?B?Q3VjYndkVElhY3NnTjZoYXdZNUhVVkViSFVqczUvUzFUbUJtVVZrN2t6ajYr?=
- =?utf-8?B?dmR3ei9lM0lhVjAzVmNJWnpWNU8zNytBL3dybmQxdldnRnd6OXNjNjk4NVR0?=
- =?utf-8?B?UHMxMFVNL2lSeEFsT29RQUowWUY0MWVYTGFGdVI4Sy9iSXBoUlN5Y0xYN0du?=
- =?utf-8?B?RExUUkFrLzd5RVJqSktFZUptZm96RWR1QmhpQitCQXBNWGhYOTBBdUlzaHF5?=
- =?utf-8?B?aUV3M2lzdUV6ZDBaeEc4ZGVUTHoxOU5OdnFJVG9FNHR0aVZKM0pFMG5aSnk5?=
- =?utf-8?B?alpHV0ppMmlLSEJ1QkQrdVBRUXUzZUU2K3ZoYnR5MGZDeEprSVdTQnlnbmtM?=
- =?utf-8?B?ZTBCWmdCK25PRDFnQXYrQS9BUm9VM2RyQ1l4S2tsK3FwdWpwbGJRdjljTCtu?=
- =?utf-8?B?ZlJlQ1E2RFhRV0wvbWcxamtGSU1hMkZtQTNOcFczVmpYN29PRm1VS29ZcU1E?=
- =?utf-8?B?V1pSWXpaQlJ1U3dpZTFsTTFobE1pT2V2K3JyamFLSUFzWmVCUmVITjlHRDhn?=
- =?utf-8?B?ZkxteHo2MUtxQmF6VEZ3dG9WL3R2UTJGTDQwRW5sRnpBSkRBbTBib000MVlw?=
- =?utf-8?B?VCtWTlZJLzRqeWUrbVhMSlRTM1Nzcjh1SFZNdld4eXpxcTNZT09HdkZzV0xo?=
- =?utf-8?B?ZUJhNDhKM2JPVXcrSm9Lbm5VSlBwcWV1WC9oZUgrMFNrd29lTDg2MjZzUC9M?=
- =?utf-8?B?UGR3ZGl3am0yRlIwZVBxd0RtNWhzM01iZ3MwSzI2RFQ0V01sdXhXa1J2aHhj?=
- =?utf-8?B?SUhTMUJIU1pFK2NOeUtJV1Zhb2JUbUFQakVQYnFoYUJSc3NQZCt5NEcrYlpK?=
- =?utf-8?B?MmRZbkZoejhhYVlVZ1V4ckJKdnR0VVZJQ3NhTDNvZTU2OHFwVXdGaWhXKzZJ?=
- =?utf-8?B?VTZNeGpCdEdqL2RsRm13cGMxbmNLdDJmQVFCTENrRTZLM0ZLN3BPS0NCdnJ1?=
- =?utf-8?B?VXM1a3c3MUJuOU5sNWF4aFpPY1lxWmtXNllDN0gwMVozNUU2aTJTdGRXVGdV?=
- =?utf-8?B?ak96RXY2Q0hVSnFHSWRhVCsvL21rZXQ1ZytLa1Y2bmI1aHNaNGU2MjZ4K0FK?=
- =?utf-8?B?dTRqQ0FlUHBUYkd1OVNaUTZMb0VvaENEb3NMZkNuQ09GNS96NXpBUnduK3Fx?=
- =?utf-8?B?cUs4OU5pV3ZFKzFuU05JckNPc04yelRycUZqNHBlMkhUS3lCOWR3dTd0bzVx?=
- =?utf-8?B?cUdKbFpTdkcvWVQvZEFXeTQ3N2VHd3FSYUNPLytNY2tqcDhmTnIyOGdJREdJ?=
- =?utf-8?B?TmVaMUF0NFg0a01vSTFXUHVrN2hxQjlWUGF3NlRvUHcrSlZ1OHYySlB3bjlv?=
- =?utf-8?B?Nmg2QWNsaE9nOEc4MXViUENsMWdpVWMyNU5HWjFBT1dJaGliakpIMmZhMEt1?=
- =?utf-8?B?QUJIV0ZLckw0Ny9NcnNXb3dmWlI3d1lYREd6WmdjcVBrNFNGMkh6NmJ1ZXBl?=
- =?utf-8?B?WVVobjlQeWRYZzRRaS95RGdTaitpSUFiQ21kdzlOL2t2b2htOTh1NlRid1NS?=
- =?utf-8?B?T0pGVUNwa0NZZ0tGUllBS0phaUxhMTA5Yk9DNktDMXlwRXdIL09VY2tNVFJK?=
- =?utf-8?Q?FEK+GM1tV1cWDZZMF91khy98H?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1r2qXT-0006ja-UK
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:21:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699957257;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=Fq6TSgcDUNjjoV19+XloXf5QEt90Ljy8kIheevGKY5A=;
+ b=BlDA3P43TbHu+jpF3tTRuolzeuKeQ99RFD/D1SbyE25Rjw6Wwg/p7HMguGvNkttAR/VN1t
+ YGAvTOxs7paSxNDtErlS8bdpCRhZUTfP44cshNfRygUiMGxOssHVwZZCmtzKAGRSkHcReO
+ kLOV5e1cBiz9o/BKdhMvuxJsYrSqJ2k=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-308-WwDSWXQAM666tmnkD9ckkg-1; Tue, 14 Nov 2023 05:20:56 -0500
+X-MC-Unique: WwDSWXQAM666tmnkD9ckkg-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-32f820c471fso2554535f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 02:20:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699957255; x=1700562055;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Fq6TSgcDUNjjoV19+XloXf5QEt90Ljy8kIheevGKY5A=;
+ b=Un7xPQBL8caKvmdAHTV8WBTRBKxWocKHuldCJcr3p/uRfRA2HufcKwRk+Y6+/foqWR
+ NOp9s8kSmE4D/5hyiWub7zjpZaqovI2SY9CFRszN5IGpJ4dORfpyKsR6ii2LxYNfUDAq
+ CkP0oAKhh2h2VWTTF3qWjgwYuKna6TpiesEuZFz2+gVcvREaZk2GjBPWZOqAIPnHTvA/
+ vVwoEsBUD6lZhRuppvp5Aqf/WJ827h8cOXl5wYD56FnL9ciaxUBRJ/e2+UZ3ru9Rni0I
+ tOrZ2pcnGDVFWdMbdD7JcPi8IXZGvm+z640xcUv8zyBlfKTB6fDV8plGvycZ0yv+F3tD
+ Ad/w==
+X-Gm-Message-State: AOJu0Yz2jGjLRDtjuqjWnMzCgWmSaqhRI3ltepZd6oP9HqzZLs68dj5z
+ YLkwZhTH8D7oaFQqFQtyJUIU37JN79Hi7VZvGo6fUZRbgUaGqIAOxuXsoJ4A2jio9W6k72r5RV+
+ ENBOd+ctRi3yIGwE=
+X-Received: by 2002:a05:6000:144c:b0:32f:71e2:adfb with SMTP id
+ v12-20020a056000144c00b0032f71e2adfbmr7870390wrx.3.1699957254737; 
+ Tue, 14 Nov 2023 02:20:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE85NYnQzvH2lZ41DGes3MILPAmKZGBnv0FGdE7X2+eCTzOwY9mQ5OtxGRV2JkA8j1dQiVrTg==
+X-Received: by 2002:a05:6000:144c:b0:32f:71e2:adfb with SMTP id
+ v12-20020a056000144c00b0032f71e2adfbmr7870364wrx.3.1699957254249; 
+ Tue, 14 Nov 2023 02:20:54 -0800 (PST)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ j30-20020adfb31e000000b003197869bcd7sm7509627wrd.13.2023.11.14.02.20.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 Nov 2023 02:20:53 -0800 (PST)
+From: Juan Quintela <quintela@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>,  qemu-devel@nongnu.org,  Fabiano Rosas
+ <farosas@suse.de>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Thomas Huth
+ <thuth@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: Configuring migration
+In-Reply-To: <875y24iyl8.fsf@pond.sub.org> (Markus Armbruster's message of
+ "Tue, 14 Nov 2023 08:27:31 +0100")
+References: <87sf6k2dax.fsf@pond.sub.org> <ZSVoK6YMgNzrDYGQ@x1n>
+ <878r8ajngg.fsf@pond.sub.org> <ZSWvYgKcGXlucXx6@x1n>
+ <875y3dixzp.fsf@pond.sub.org> <8734yhgrzl.fsf@pond.sub.org>
+ <ZShI4AucDGvUvJiS@x1n> <877cnrjd71.fsf@pond.sub.org>
+ <87zfzz82xq.fsf@secure.mitica> <87msvw6xm2.fsf_-_@pond.sub.org>
+ <ZUPk33GUF/PvAPPo@x1n> <875y24iyl8.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Tue, 14 Nov 2023 11:20:53 +0100
+Message-ID: <87ttpoocu2.fsf@secure.mitica>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6679242-ba3f-4747-1ef5-08dbe4fb142e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2023 10:18:42.9331 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0ZLseHvrT9bTmxnG9GHgwa9W+MuSHFDv0191MkNty9lXvYfzUAOCy3wxaKYCh5DnKHAqgIvJOiFH7s6D/pPoBN127P9H5zAvedL9ux6ZEn4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7839
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.88;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -195,34 +105,355 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEPDqWRyaWMgTGUgR29hdGVy
-IDxjbGdAcmVkaGF0LmNvbT4NCj5TZW50OiBUdWVzZGF5LCBOb3ZlbWJlciAxNCwgMjAyMyA1OjQx
-IFBNDQo+U3ViamVjdDogUmU6IFtQQVRDSCB2NCAyNi80MV0gYmFja2VuZHMvaW9tbXVmZDogSW50
-cm9kdWNlIHRoZSBpb21tdWZkIG9iamVjdA0KPg0KPg0KPj4+IFRoZSBvbmx5IHRvb2wgd2UgaGF2
-ZSBmb3IgY29uZmlndXJpbmcgdGhlIHNjaGVtYSBpcyB0aGUgJ2lmJw0KPj4+IGNvbmRpdGlvbmFs
-LiAgJ2lmJzogJ0NPTkZJR19JT01NVUZEJyBjb21waWxlcyB0byAjaWYNCj4+PiBkZWZpbmVkKENP
-TkZJR19JT01NVUZEKSAuLi4gI2VuZGlmLiAgWW91ciB1c2Ugb2YgI2lmZGVmIENPTkZJR19JT01N
-VUZEDQo+Pj4gYWJvdmUgc3VnZ2VzdHMgdGhpcyBpcyBmaW5lIGhlcmUuDQo+Pj4NCj4+PiBTeW1i
-b2xzIHRoYXQgYXJlIG9ubHkgZGVmaW5lZCBpbiB0YXJnZXQtZGVwZW5kZW50IGNvbXBpbGVzIChz
-ZWUNCj4+PiBleGVjL3BvaXNvbi5oKSBjYW4gb25seSBiZSB1c2VkIGluIHRhcmdldC1kZXBlbmRl
-bnQgc2NoZW1hIG1vZHVsZXMsDQo+Pj4gaS5lLiB0aGUgKi10YXJnZXQuanNvbi4NCj4+DQo+PiBJ
-J20gZnJlc2ggb24gS2NvbmZpZyAmIHFhcGksIGJ1dCBJIGhhdmUgYSB3ZWFrIGlkZWE6DQo+PiBS
-ZW1vdmUgY29uZGl0aW9uYWwgY2hlY2sgZm9yIGJhY2tlbmRzL2lvbW11ZmQuYywgbGlrZToNCj4+
-DQo+PiBzeXN0ZW1fc3MuYWRkKGZpbGVzKCdpb21tdWZkLmMnKSkNCj4+DQo+PiBUaGVuIGlvbW11
-ZmQgb2JqZWN0IGlzIGNvbW1vbiBhbmQgYWx3YXlzIHN1cHBvcnRlZCwgd2Ugd2lsbCBub3Qgc2Vl
-DQo+PiAiaW52YWxpZCBvYmplY3QgdHlwZTogaW9tbXVmZCIsIGV2ZW4gZm9yIHBsYXRmb3JtIG90
-aGVyIHRoYW4gaTM4NixzMzkweCxhcm0uDQo+Pg0KPj4gT24gdGhvc2UgcGxhdGZvcm0gbm90IHN1
-cHBvcnRpbmcgaW9tbXVmZCwgd2UgY2FuIGNyZWF0ZSBhbiBpb21tdWZkIG9iamVjdA0KPj4gd2hp
-Y2ggaXMgZHVtbXksIGFzIG5vIG9uZSB3aWxsIGxpbmsgdG8gaXQgdG8gb3BlbiAvZGV2L2lvbW11
-ZmQNCj4NCj5JbiB0aGF0IGNhc2UsIHRoZSBtYW5hZ2VtZW50IGxheWVyIHdvdWxkIGRlZmluZSBh
-IGNyaXBwbGVkIHZmaW8tcGNpDQo+ZGV2aWNlLiBJJ2QgcmF0aGVyIGxldCB0aGUgZXJyb3Igb2Nj
-dXIgb3IgZmluZCBhIHdheSB0byBtb3ZlIHRoZQ0KPiJpb21tdWZkIiBvYmplY3QgYW5kIHByb3Bl
-cnRpZXMgdG8gYSB0YXJnZXQgZGVwZW5kZW50IGZpbGUuIEkgZG9uJ3QNCj5zZWUgaG93IHRoaXMg
-Y291bGQgYmUgZG9uZSB0aG91Z2guDQoNCkkgc2VlLCBlcnJvciBvY2N1ciBpcyBiZXR0ZXIgdGhh
-biBhIGNyaXBwbGVkIHZmaW8tcGNpIGRldmljZS4gT3IgZWxzZSB3ZQ0KbmVlZCB0byB0ZWFjaCBs
-aWJ2aXJ0IHRvIGFsc28gY2hlY2sgL2Rldi9pb21tdSBleGlzdGVuY2UuDQoNClRoYW5rcw0KWmhl
-bnpob25nDQoNCg==
+Markus Armbruster <armbru@redhat.com> wrote:
+D> Cc: Paolo for QOM expertise.
+>
+> Peter Xu <peterx@redhat.com> writes:
+>
+>> On Thu, Nov 02, 2023 at 03:25:25PM +0100, Markus Armbruster wrote:
+>
+> [...]
+>
+>>> Migration has its own idiosyncratic configuration interface, even though
+>>> its configuration needs are not special at all.  This is due to a long
+>>> history of decisions that made sense at the time.
+>>> 
+>>> What kind of interface would we choose if we could start over now?
+>>> 
+>>> Let's have a look at what I consider the two most complex piece of
+>>> configuration to date, namely block backends and QOM objects.
+>>> 
+>>> In both cases, configuration is a QAPI object type: BlockdevOptions and
+>>> ObjectOptions.
+>>> 
+>>> The common members are the configuration common to all block backends /
+>>> objects.  One of them is the type of block backend ("driver" in block
+>>> parlance) or QOM object ("qom-type").
+>>> 
+>>> A type's variant members are the configuration specific to that type.
+>>> 
+>>> This is suitably expressive.
+>>> 
+>>> We create a state object for a given configuration object with
+>>> blockdev-add / object-add.
+>>> 
+>>> For block devices, we even have a way to modify a state object's
+>>> configuration: blockdev-reopen.  For QOM objects, there's qom-set, but I
+>>> don't expect that to work in the general case.  Where "not work" can
+>>> range from "does nothing" to "explodes".
+>>> 
+>>> Now let's try to apply this to migration.
+>>> 
+>>> As long as we can have just one migration, we need just one QAPI object
+>>> to configure it.
+>>> 
+>>> We could create the object with -object / object_add.  For convenience,
+>>> we'd probably want to create one with default configuration
+>>> automatically on demand.
+>>> 
+>>> We could use qom-set to change configuration.  If we're not comfortable
+>>> with using qom-set for production, we could do something like
+>>> blockdev-reopen instead.
+>>> 
+>>> Could we move towards such a design?  Turn the existing ad hoc interface
+>>> into compatibility sugar for it?
+>>
+>> Sounds doable to me.
+>>
+>> I'm not familiar with BlockdevOptions, it looks like something setup once
+>> and for all for all relevant parameters need to be set in the same request?
+>
+> Yes, but you can "reopen", which replaces the entire configuration.
+>
+> blockdev-add creates a new block backend device, and blockdev-reopen
+> reopens a set of existing ones.  Both take the same arguments for each
+> device.
+>
+>> Migration will require each cap/parameter to be set separately anytime,
+>> e.g., the user can adjust downtime / bandwidth even during migration in
+>> progress.
+>
+> "Replace entire configuration" isn't a good fit then, because users
+> would have to repeat the entire configuration just to tweak one thing.
+
+We have two types of parameters:
+- multifd_channels type: we need to set them before the migration start
+- downtime: We can change it at any time, even during migration
+
+So I think we need two types of parameters.
+For the parameters that one can't change during migration, it could be a
+good idea to set all of them at once, i.e.
+
+(qemu) migration_set multifd on multifd-channels 6 multifd_compression none
+
+Whatever syntax we see fit.  That would make it easier to:
+- document what parameters make sense together (they need to be set at
+  the same time)
+- convert migrate_params_check()/migrate_params_test_apply()/migrate_params_apply()
+  into a sane interface.
+- this parameters don't need to be atomic, they are set by definition by
+  the main thread before the migration starts.  The other parameters
+  needs to be atomic.
+
+>> Making all caps/parameters QOM objects, or one object containing both
+>> attributes, sounds like a good fit.  object_property_* APIs allows setters,
+>> I think that's good enough for migration to trigger whatever needed (e.g.
+>> migration_rate_set() updates after bandwidth modifications).
+>>
+>> We can convert e.g. qmp set parameters into a loop of setting each
+>> property, it'll be slightly slower because we'll need to do sanity check
+>> for each property after each change, but that shouldn't be a hot path
+>> anyway so seems fine.
+>
+> I figure doing initial configuration in one command is convenient.  The
+> obvious existing command for that is object-add.
+>
+> The obvious interface for modifying configuration is a command to change
+> just one parameter.  The obvious existing command for that is qom-set.
+
+As said before, I think we need two commands:
+
+- migrate_set_method method [list of method arguments with values]
+  Values that need to be set before migration
+
+- migrate_set_parameter parameter value
+  Values that can be changed at any time
+
+> Problem: qom-set is a death trap in general.  It can modify any QOM
+> property with a setter, and we test basically none of them.  Using it
+> for modifying migration configuration would signal it's okay to use
+> elsewhere, too.  I'm not sure we want to send that message.  Maybe we
+> want to do the opposite, and make it an unstable interface.
+>
+> Aside: I believe the root problem is our failure to tie "can write" to
+> the object's state.  Just because a property can be set with object-add
+> doesn't mean it can be validly changed at any time during the object's
+> life.
+
+Yeap.
+
+> Problem: when several parameters together have to satisfy constraints,
+> going from one valid configuration to another valid configuration may
+> require changing several parameters at once, or else go through invalid
+> intermediate configurations.
+
+There are other things that "currently" we are not considering and that
+make things really strange.
+
+(qemu) migrate_set_capability xbzrle on
+(qemu) migrate_set_parameter xbzrle_cache $foo
+(qemu) migrate $bar
+
+migration fails for whatever reason
+
+we try again with another method, let's say multifd
+
+(qemu) migrate_set_capability multifd on
+(qemu) migrate_set_parameter multifd-channels $foo2
+(qemu) migrate $bar2
+
+At this point, xbrzrle_cache is still set, but it makes no sense.  So I
+think that if we change the interface, the migrate_set_method that I
+suggested would just clean-up all values to its defaults.
+
+
+> This problem is not at all specific to the migration object.
+>
+> One solution is careful design to ensure that there's always a sequence
+> of transitions through valid configuration.  Can become complicated as
+> configuration evolves.  Possible even impractical or impossible.
+
+This is a nightmare.  See migrate_params_check().  Basically everytime
+that we add a capability/parameter we need to go through all the list to
+see if anything is compatible/incompatible.  It is much better that we
+set all that kind of parameters at once, so this is much easier to understand.
+
+> Another solution is a command to modify multiple parameters together,
+> leaving alone the others (unlike blockdev-reopen, which overwrites all
+> of them).
+
+I still think we need both methods because we have the two kinds of
+parameters.
+
+Actually, it is even worse than that, because there are parameters that
+need to be set before the migration start but that are not related to
+the migration method at all.
+
+
+
+>> It'l still be a pity that we still cannot reduce the triplications of qapi
+>> docs immediately even with that.  But with that, it seems doable if we will
+>> obsolete QMP migrate-set-parameters after we can do QOM-set.
+
+Trying to be practical, this are the capabilities:
+
+{ 'enum': 'MigrationCapability',
+  'data': [
+
+'xbzrle'  <- how we compress, but it is used on top of anything else
+             except multifd/rdma
+'rdma-pin-all' <- this is a rdma parameter, but at the time there were
+             not parameters, so here we are.
+
+'auto-converge' <- this is obsolete.  Dirty limit features are better
+                   for this.  But this again is independent of anything
+                   else.  I will have to double check to see if it can
+                   be set at any moment.
+'zero-blocks' <- only for storage migration, clearly a parameter.
+
+{ 'name': 'compress', 'features': [ 'deprecated' ] } <- migration
+           compression method
+'events' <- this should be default and make it a nop for backwards
+           compatibility.  I think libvirt sets it always.
+
+'postcopy-ram' <- we want to do postcopy.  I don't even remember why
+                  this is a capability when we have to issue a command
+                  to start it anyways
+
+{ 'name': 'x-colo', 'features': [ 'unstable' ] }, <- colo is
+                  experimental, not even enter here.
+
+'release-ram' <- This only makes sense if:
+                 * we are in postcopy
+                 * we are migration with the guest stopped (and not sure
+                   if in this case it even works)
+
+{ 'name': 'block', 'features': [ 'deprecated' ] } <- deprecated, don't
+           spent time here.
+
+'return-path' <-  basically everything except exec should have this.
+                  this is way from destination to give us back errors.
+                  exec basically is not able to give any error.
+
+'pause-before-switchover' <-  This is independent of anything else, but
+                              it makes sense to require to set it before
+                              migration start.  Used when you need to
+                              "lock" things, like block devices to a
+                              single user.  Think iscsi block devices
+                              that can only be enabled at the same time
+                              on source or destination, but not both.
+
+'multifd' <- migration method
+
+'dirty-bitmaps' <- block migration is weird.  I don't remember this one.
+
+
+'postcopy-blocktime' <- don't even remember
+
+'late-block-activate' <- I think this is somehow related to
+                         pause-before-switchover, but I don't ever
+                         remember the details.  I guess we did it wrong
+                         the fist time.
+
+{ 'name': 'x-ignore-shared', 'features': [ 'unstable' ] } <- we need to
+           mark this stable.  Basically means that:
+           * we are migratin on the same machine
+           * RAM is mmaped in source/destination shared
+           * so we don't need to migrate it.
+
+'validate-uuid' <- making sure that we are migration to the right
+                   destination.  Independent of anything else.  Should
+                   be set before migration starts.
+
+'background-snapshot' <- block devices are big and slow.  Migrating them
+           is complilaceed.  Forgot about them.
+
+'zero-copy-send' <- only valid for multifd, should be a paramter
+
+'postcopy-preempt' <-  We create a new channel for postcopy, depends on
+                       postcopy and needs to be set before migration starts.
+
+'switchover-ack' <- Independent of anything else.  Needs to be set
+           before migration starts.
+
+'dirty-limit' <- Autoconverge was bad.  We create another way of doing
+                 the same functionality.
+
+
+And now we go with migration_parametres:
+
+'announce-initial', 'announce-max',
+'announce-rounds', 'announce-step',
+	I think we should set all of them at the same time.
+        Before migration ends.  This is SDN for you, sometimes we need
+        to repeat the ARP packets to get they passed through routers.
+        Hello openstack.
+
+
+{ 'name': 'compress-level', 'features': [ 'deprecated' ] },
+{ 'name': 'compress-threads', 'features': [ 'deprecated' ] },
+{ 'name': 'decompress-threads', 'features': [ 'deprecated' ] },
+{ 'name': 'compress-wait-thread', 'features': [ 'deprecated'] },
+
+	Parameters for old compression method.  Should be set before we start.
+
+'throttle-trigger-threshold',
+'cpu-throttle-initial',
+'cpu-throttle-increment',
+'cpu-throttle-tailslow',
+'max-cpu-throttle'
+	Autoconverge parameters.  Make sense to change them after we start.
+        Remember that autoconverge was a good idea and a bad
+        implementation.
+
+'tls-creds', 'tls-hostname', 'tls-authz',
+
+        They are only needed if we are using TLS.  But we only need TLS
+        depending on the URI we are using (tcp+tls).
+
+'max-bandwidth',
+        Can be changed at any time.
+
+'avail-switchover-bandwidth',
+        Can be changed at any time.  Better explained, it shouldn't be
+        needed.  But we know that it is needed after migration starts,
+        so ...
+
+'downtime-limit',
+        Can be changed at any point.
+
+{ 'name': 'x-checkpoint-delay', 'features': [ 'unstable' ] },
+	Colo parameter.  Needs to be set before migration starts.
+
+{ 'name': 'block-incremental', 'features': [ 'deprecated' ] },
+	deprecated, but needs to be set before migration starts.
+
+'multifd-channels',
+	Needs to be set before migration starts.
+
+'xbzrle-cache-size'
+	Needs to be set before migration starts.
+        It *could* be changed after migration starts, but ...
+
+'max-postcopy-bandwidth'
+	When we are in postcopy stage, reasonable thing to do is to use
+	all available bandwidth.  When that is not true, use this parameter.
+
+
+'multifd-compression'
+'multifd-zlib-level'
+'multifd-zstd-level'
+	multifd compression parameters.  Depending of
+        multifd-compression value, the others make sense or not.
+
+'block-bitmap-mapping',
+	I don't understand/remember this new block migration, so I can't comment.
+
+{ 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
+	Needs to be set before migration starts.
+'vcpu-dirty-limit',
+	One could defend to change it after migration starts, but ....
+
+'mode'
+        set before migration starts
+
+
+So you can see that we have lots of parameters to try to make sense of.
+
+Later, Juan.
+
 
