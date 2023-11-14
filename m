@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F077EB6BC
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 20:07:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB837EB6BF
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 20:07:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2yko-0005CZ-Kw; Tue, 14 Nov 2023 14:07:18 -0500
+	id 1r2yl7-0005Xe-4E; Tue, 14 Nov 2023 14:07:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2ykm-00055W-45
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 14:07:16 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2yl6-0005XE-3s
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 14:07:36 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2ykk-0003bP-N9
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 14:07:15 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2yl3-0003cO-PL
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 14:07:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699988833;
+ s=mimecast20190719; t=1699988853;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=GJ9P4bZU599CPIGZ4VMZwOAZo+xXvg0cNV4rt8Ouasg=;
- b=LAzTF5YUT5SXRkIJOu3SVBlhnJXfOvvNdX3+SO3zgVOqMy5zTNslFi5ln38FCa9tm+/kZU
- pxD82W6EGYeVTb9N440uLOE5VsgrwmJxq1MTNKTdlfOlBiAosF3atsyrhLB9V3oY/Og+5b
- XdtK9m9kl3fH9qVgLb+1TcV26qb5DuM=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PbTr8bGa+7XGbfVM/u2qsnAyUjw6yXcPzhLsqzfHOvQ=;
+ b=DsELYBlit/rUp9UjBjO+SAoXqMkqTNXQQVYtzGmNhjVjlNuAfeaqcuIwBz5cWHsbklLUfe
+ Z6AN+WZrvZMjDU3W/h/YOzSoe5GHcD+Z1h3RIwYDKn1LygvLv9vdXhW1nEJMzjcIUynIli
+ O03FLhmRUVgd5aV1NXTTJhBIfmoyLYg=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-d_JTRp3FPyu4tYM4m4TbdQ-1; Tue, 14 Nov 2023 14:07:10 -0500
-X-MC-Unique: d_JTRp3FPyu4tYM4m4TbdQ-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-41eaf5d20d8so72540281cf.3
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 11:07:10 -0800 (PST)
+ us-mta-389-Mxb3T1ZdO2emjuGnidf74Q-1; Tue, 14 Nov 2023 14:07:31 -0500
+X-MC-Unique: Mxb3T1ZdO2emjuGnidf74Q-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-77bc625a8a2so604814085a.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 11:07:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699988830; x=1700593630;
+ d=1e100.net; s=20230601; t=1699988851; x=1700593651;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GJ9P4bZU599CPIGZ4VMZwOAZo+xXvg0cNV4rt8Ouasg=;
- b=aV0MRLF81DsWoCXhZaL7UEASzaQ6F+x3Zp0sT51YpfRs8O1jQUu826j2avKAAL/iYP
- M9cZ4PeUojdJFayS5EiMFsvmGtLI3da8AIQPNvkn6Olsq5ALF1kqgBEgqlIab5Bd0XRh
- aVXOxOXg3bpj/FNeLfgZXWzpshrAJTuDJ5CQjWQVVIsUPEgdtT1AqhQDiOQ1VDes9Cbz
- zzgGxo7GIh+1ovJfVKX+foDqSU3hW6TlfwauZX6rVkU3S35Fxc+UX5jQb2f10unbX3Dh
- pREuyKJ/Ji1rrEc9wi6F+qI+FCyf5foN0ve2iuDySC/oNNo0lgA7wP1ALaVVUleBXIfj
- zZLw==
-X-Gm-Message-State: AOJu0Yy+RCvuKY08EybScu3+Wrb/0EyTvHfRcSkHNggBMK0SfDruiikw
- X3NnPWB002zefNFT6HYjZY+ys1LtIEMAmc2OMXx9sHP6ADqq3lhOq/aQ1fGoMiUTly9zP4jmXtV
- 5KB8ckKXiOoBHkmM=
-X-Received: by 2002:a05:622a:4d2:b0:421:b1ad:ea33 with SMTP id
- q18-20020a05622a04d200b00421b1adea33mr3345657qtx.37.1699988830036; 
- Tue, 14 Nov 2023 11:07:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHp+SV+md39ooFZkQspg5xsi/CZKzMCnRDJT28gnT+Rq+GNRhYpOyZ3qgL655qNB7+iYBew1g==
-X-Received: by 2002:a05:622a:4d2:b0:421:b1ad:ea33 with SMTP id
- q18-20020a05622a04d200b00421b1adea33mr3345644qtx.37.1699988829772; 
- Tue, 14 Nov 2023 11:07:09 -0800 (PST)
+ bh=PbTr8bGa+7XGbfVM/u2qsnAyUjw6yXcPzhLsqzfHOvQ=;
+ b=XTNBQsC/+FZepktc5mB51Q2+Un4oyUsxuAe0We3LcZrYUjfmt8WD5s2LpJdhG4h+sn
+ f/zWDsfH5FC2VRwlhVAesHZ979PI/rR71fRedUvZhVIvupTsdiulp3hVEwlR2dpt9jyv
+ ZhKd3yB64RniSD51WtLB5B7G7s0lVXXy5sZiaVIdZb4apjDhpqSH91Lep8RWpFvN3v0e
+ jU/j1G0VoE0ckbTemTBhzm2oVfqyn22s5PVptxN1I1gEIlvjXuDdPO7bVxAmDXDkV7l0
+ 7Xm9nsYQj5k0QAKxQEQG8XNOAKXJqveeiFO41jAESOaOrToTbVJ6eacQFqtFs2BZHGAn
+ UjFA==
+X-Gm-Message-State: AOJu0YzmZkbrMMhYXJrU8L2OET8bsrDQ1KSYNGisMhW4kI1VPr35J8+j
+ ohs7CURTlCHlxzSr4BDOJCtla/6kkC/U/AtyFtnSNYf0qbqC9a7lt5FOwEobMgU2moFWKCN4n40
+ nwYUOXuNzsKD+Ni4=
+X-Received: by 2002:a0c:f908:0:b0:66d:1fcf:e1c9 with SMTP id
+ v8-20020a0cf908000000b0066d1fcfe1c9mr3198860qvn.35.1699988851331; 
+ Tue, 14 Nov 2023 11:07:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHAwjdHRiw05Quj6MwECDvYzjE61iIk/d7ISZ83ZdNX4zkfj0EVNHXMWzbNkUCW0yVmBg7EXw==
+X-Received: by 2002:a0c:f908:0:b0:66d:1fcf:e1c9 with SMTP id
+ v8-20020a0cf908000000b0066d1fcfe1c9mr3198847qvn.35.1699988851103; 
+ Tue, 14 Nov 2023 11:07:31 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-176-122.web.vodafone.de.
  [109.43.176.122]) by smtp.gmail.com with ESMTPSA id
- s23-20020ac85297000000b00419c39dd28fsm2918316qtn.20.2023.11.14.11.07.08
+ s23-20020ac85297000000b00419c39dd28fsm2918316qtn.20.2023.11.14.11.07.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 11:07:09 -0800 (PST)
-Message-ID: <9a5ab8cc-a495-4168-b7a0-8971386b19c7@redhat.com>
-Date: Tue, 14 Nov 2023 20:07:07 +0100
+ Tue, 14 Nov 2023 11:07:30 -0800 (PST)
+Message-ID: <994027da-7eb8-4916-bad0-9f43ec5f9af2@redhat.com>
+Date: Tue, 14 Nov 2023 20:07:29 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH trivial 18/21] tests/qtest/migration-test.c: spelling fix:
- bandwith
+Subject: Re: [PATCH trivial 19/21] tests/qtest/ufs-test.c: spelling fix:
+ tranfer
 Content-Language: en-US
 To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Hyman Huang <yong.huang@smartx.com>,
- Juan Quintela <quintela@redhat.com>
+Cc: qemu-trivial@nongnu.org, Jeuk Kim <jeuk20.kim@samsung.com>
 References: <20231114165834.2949011-1-mjt@tls.msk.ru>
- <20231114165834.2949011-19-mjt@tls.msk.ru>
+ <20231114165834.2949011-20-mjt@tls.msk.ru>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -116,7 +115,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231114165834.2949011-19-mjt@tls.msk.ru>
+In-Reply-To: <20231114165834.2949011-20-mjt@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -145,27 +144,26 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 14/11/2023 17.58, Michael Tokarev wrote:
-> Fixes: 17257b90be4f "tests: Add migration dirty-limit capability test"
-> Cc: Hyman Huang <yong.huang@smartx.com>
-> Cc: Juan Quintela <quintela@redhat.com>
+> Fixes: 631c872614ac "tests/qtest: Introduce tests for UFS"
+> Cc: Jeuk Kim <jeuk20.kim@samsung.com>
 > Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 > ---
->   tests/qtest/migration-test.c | 2 +-
+>   tests/qtest/ufs-test.c | 2 +-
 >   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> index 5752412b64..0fbaa6a90f 100644
-> --- a/tests/qtest/migration-test.c
-> +++ b/tests/qtest/migration-test.c
-> @@ -3138,7 +3138,7 @@ static void test_migrate_dirty_limit(void)
->       uint64_t throttle_us_per_full;
->       /*
->        * We want the test to be stable and as fast as possible.
-> -     * E.g., with 1Gb/s bandwith migration may pass without dirty limit,
-> +     * E.g., with 1Gb/s bandwidth migration may pass without dirty limit,
->        * so we need to decrease a bandwidth.
->        */
->       const int64_t dirtylimit_period = 1000, dirtylimit_value = 50;
+> diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
+> index 5daf8c9c49..95e82f9472 100644
+> --- a/tests/qtest/ufs-test.c
+> +++ b/tests/qtest/ufs-test.c
+> @@ -319,7 +319,7 @@ static void ufs_init(QUfs *ufs, QGuestAllocator *alloc)
+>       ufs_wreg(ufs, A_IE, ie);
+>       ufs_wreg(ufs, A_UTRIACR, 0);
+>   
+> -    /* Enable tranfer request and task management request */
+> +    /* Enable transfer request and task management request */
+>       cap = ufs_rreg(ufs, A_CAP);
+>       nutrs = FIELD_EX32(cap, CAP, NUTRS) + 1;
+>       nutmrs = FIELD_EX32(cap, CAP, NUTMRS) + 1;
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
