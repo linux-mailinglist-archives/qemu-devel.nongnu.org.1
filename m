@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504957EBA68
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:04:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 306437EBA67
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:03:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r33Ks-000671-IB; Tue, 14 Nov 2023 19:00:50 -0500
+	id 1r33L3-0006eR-J3; Tue, 14 Nov 2023 19:01:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33Kq-00066k-Vm
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:00:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33Ky-0006VL-Lw
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:00:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33Kn-00086P-T1
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:00:48 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33Kw-000894-UI
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:00:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700006444;
+ s=mimecast20190719; t=1700006454;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Q4eTiLCEOv9w25aK8fnhBq4hC/5pssEztOwbkb9SzsE=;
- b=ZV2+gIMweHeKxHqxABIKVG3hHL/qUllNZnTPow3jY7rug5OINy0eUcO+SkMlEe/hQGE9Ug
- Ux45Drc5pdaWD4kbfsuiENbOEYBXA1uSVYhb4QzhR8PDfTE0AJTxg8FOE0JfOvKxkvuavI
- t+7EY0HWzTn23enFGYwO6G++ABV0zCo=
+ bh=wUkDl7u9899MYESb13PAFS29ws9vFs4bZMIq95JlN7c=;
+ b=DhElUsPGQNjpzu4pADjL+Mh2ty2cpg67ju0Gz/+1WQz3VZuuamevSqpju40NPYXbl9lLjB
+ WoMQkKCfIYpJRU7X04hysShQbgW57cGz+ewVMHii+HMxS78wAAX5q5OutzEIDOfq4VTTTv
+ AXalmYMm457s4ybkt+j2r0CFEiJboUM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-xnut3d3kP0ykENvqyO8VKw-1; Tue, 14 Nov 2023 19:00:37 -0500
-X-MC-Unique: xnut3d3kP0ykENvqyO8VKw-1
+ us-mta-493-6ltCtMh2OmmI-a8RYMiZiw-1; Tue, 14 Nov 2023 19:00:50 -0500
+X-MC-Unique: 6ltCtMh2OmmI-a8RYMiZiw-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EDD8184AEE0;
- Wed, 15 Nov 2023 00:00:34 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 94747101A590;
+ Wed, 15 Nov 2023 00:00:48 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.44])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 73AE1C15885;
- Wed, 15 Nov 2023 00:00:22 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 712ADC15885;
+ Wed, 15 Nov 2023 00:00:35 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -59,25 +59,25 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
  ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
  jcmvbkbc@gmail.com, shan.gavin@gmail.com
-Subject: [PATCH v5 16/31] target/openrisc: Use generic cpu_list()
-Date: Wed, 15 Nov 2023 09:56:13 +1000
-Message-ID: <20231114235628.534334-17-gshan@redhat.com>
+Subject: [PATCH v5 17/31] target/riscv: Use generic cpu_list()
+Date: Wed, 15 Nov 2023 09:56:14 +1000
+Message-ID: <20231114235628.534334-18-gshan@redhat.com>
 In-Reply-To: <20231114235628.534334-1-gshan@redhat.com>
 References: <20231114235628.534334-1-gshan@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,34 +95,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Before it's applied:
 
-[gshan@gshan q]$ ./build/qemu-or1k -cpu ?
-Available CPUs:
-  or1200
-  any
+[gshan@gshan q]$ ./build/qemu-system-riscv64 -cpu ?
+any
+max
+rv64
+shakti-c
+sifive-e51
+sifive-u54
+thead-c906
+veyron-v1
+x-rv128
 
 After it's applied:
 
-[gshan@gshan q]$ ./build/qemu-or1k -cpu ?
+[gshan@gshan q]$ ./build/qemu-system-riscv64 -cpu ?
 Available CPUs:
   any
-  or1200
+  max
+  rv64
+  shakti-c
+  sifive-e51
+  sifive-u54
+  thead-c906
+  veyron-v1
+  x-rv128
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- target/openrisc/cpu.c | 42 ------------------------------------------
- target/openrisc/cpu.h |  3 ---
- 2 files changed, 45 deletions(-)
+ target/riscv/cpu.c | 29 -----------------------------
+ target/riscv/cpu.h |  2 --
+ 2 files changed, 31 deletions(-)
 
-diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
-index f7d53c592a..381ebe00d3 100644
---- a/target/openrisc/cpu.c
-+++ b/target/openrisc/cpu.c
-@@ -253,48 +253,6 @@ static void openrisc_cpu_class_init(ObjectClass *oc, void *data)
-     cc->tcg_ops = &openrisc_tcg_ops;
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 523e9a16ea..22d7422c89 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1733,35 +1733,6 @@ char *riscv_isa_string(RISCVCPU *cpu)
+     return isa_str;
  }
  
--/* Sort alphabetically by type name, except for "any". */
--static gint openrisc_cpu_list_compare(gconstpointer a, gconstpointer b)
+-static gint riscv_cpu_list_compare(gconstpointer a, gconstpointer b)
 -{
 -    ObjectClass *class_a = (ObjectClass *)a;
 -    ObjectClass *class_b = (ObjectClass *)b;
@@ -130,62 +142,44 @@ index f7d53c592a..381ebe00d3 100644
 -
 -    name_a = object_class_get_name(class_a);
 -    name_b = object_class_get_name(class_b);
--    if (strcmp(name_a, "any-" TYPE_OPENRISC_CPU) == 0) {
--        return 1;
--    } else if (strcmp(name_b, "any-" TYPE_OPENRISC_CPU) == 0) {
--        return -1;
--    } else {
--        return strcmp(name_a, name_b);
--    }
+-    return strcmp(name_a, name_b);
 -}
 -
--static void openrisc_cpu_list_entry(gpointer data, gpointer user_data)
+-static void riscv_cpu_list_entry(gpointer data, gpointer user_data)
 -{
--    ObjectClass *oc = data;
--    const char *typename;
--    char *name;
+-    const char *typename = object_class_get_name(OBJECT_CLASS(data));
+-    int len = strlen(typename) - strlen(RISCV_CPU_TYPE_SUFFIX);
 -
--    typename = object_class_get_name(oc);
--    name = g_strndup(typename,
--                     strlen(typename) - strlen("-" TYPE_OPENRISC_CPU));
--    qemu_printf("  %s\n", name);
--    g_free(name);
+-    qemu_printf("%.*s\n", len, typename);
 -}
 -
--void cpu_openrisc_list(void)
+-void riscv_cpu_list(void)
 -{
 -    GSList *list;
 -
--    list = object_class_get_list(TYPE_OPENRISC_CPU, false);
--    list = g_slist_sort(list, openrisc_cpu_list_compare);
--    qemu_printf("Available CPUs:\n");
--    g_slist_foreach(list, openrisc_cpu_list_entry, NULL);
+-    list = object_class_get_list(TYPE_RISCV_CPU, false);
+-    list = g_slist_sort(list, riscv_cpu_list_compare);
+-    g_slist_foreach(list, riscv_cpu_list_entry, NULL);
 -    g_slist_free(list);
 -}
 -
- #define DEFINE_OPENRISC_CPU_TYPE(cpu_model, initfn) \
-     {                                               \
-         .parent = TYPE_OPENRISC_CPU,                \
-diff --git a/target/openrisc/cpu.h b/target/openrisc/cpu.h
-index dedeb89f8e..b454014ddd 100644
---- a/target/openrisc/cpu.h
-+++ b/target/openrisc/cpu.h
-@@ -299,15 +299,12 @@ struct ArchCPU {
-     CPUOpenRISCState env;
- };
+ #define DEFINE_CPU(type_name, initfn)      \
+     {                                      \
+         .name = type_name,                 \
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index bf58b0f0b5..965a44c853 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -490,9 +490,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+                         MMUAccessType access_type, int mmu_idx,
+                         bool probe, uintptr_t retaddr);
+ char *riscv_isa_string(RISCVCPU *cpu);
+-void riscv_cpu_list(void);
  
--void cpu_openrisc_list(void);
- void openrisc_cpu_dump_state(CPUState *cpu, FILE *f, int flags);
- int openrisc_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
- int openrisc_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
- void openrisc_translate_init(void);
- int print_insn_or1k(bfd_vma addr, disassemble_info *info);
+-#define cpu_list riscv_cpu_list
+ #define cpu_mmu_index riscv_cpu_mmu_index
  
--#define cpu_list cpu_openrisc_list
--
  #ifndef CONFIG_USER_ONLY
- hwaddr openrisc_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
- 
 -- 
 2.41.0
 
