@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C7387EB534
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:00:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 230D67EB53D
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:02:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2wlz-0000At-Ej; Tue, 14 Nov 2023 12:00:24 -0500
+	id 1r2wmB-0000Xs-4P; Tue, 14 Nov 2023 12:00:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r2wlm-0008Ci-PH; Tue, 14 Nov 2023 12:00:10 -0500
+ id 1r2wlo-0008JN-PI; Tue, 14 Nov 2023 12:00:12 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r2wlj-0005Z8-UN; Tue, 14 Nov 2023 12:00:10 -0500
+ id 1r2wln-0005Zg-4g; Tue, 14 Nov 2023 12:00:12 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C1FDD33278;
+ by isrv.corpit.ru (Postfix) with ESMTP id D6B1033279;
  Tue, 14 Nov 2023 19:59:01 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8FA4D351FF;
+ by tsrv.corpit.ru (Postfix) with SMTP id A6B2235200;
  Tue, 14 Nov 2023 19:58:43 +0300 (MSK)
-Received: (nullmailer pid 2949127 invoked by uid 1000);
+Received: (nullmailer pid 2949130 invoked by uid 1000);
  Tue, 14 Nov 2023 16:58:42 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Hyman Huang <yong.huang@smartx.com>, Juan Quintela <quintela@redhat.com>
-Subject: [PATCH trivial 18/21] tests/qtest/migration-test.c: spelling fix:
- bandwith
-Date: Tue, 14 Nov 2023 19:58:31 +0300
-Message-Id: <20231114165834.2949011-19-mjt@tls.msk.ru>
+ Jeuk Kim <jeuk20.kim@samsung.com>
+Subject: [PATCH trivial 19/21] tests/qtest/ufs-test.c: spelling fix: tranfer
+Date: Tue, 14 Nov 2023 19:58:32 +0300
+Message-Id: <20231114165834.2949011-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231114165834.2949011-1-mjt@tls.msk.ru>
 References: <20231114165834.2949011-1-mjt@tls.msk.ru>
@@ -60,27 +59,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: 17257b90be4f "tests: Add migration dirty-limit capability test"
-Cc: Hyman Huang <yong.huang@smartx.com>
-Cc: Juan Quintela <quintela@redhat.com>
+Fixes: 631c872614ac "tests/qtest: Introduce tests for UFS"
+Cc: Jeuk Kim <jeuk20.kim@samsung.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- tests/qtest/migration-test.c | 2 +-
+ tests/qtest/ufs-test.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 5752412b64..0fbaa6a90f 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -3138,7 +3138,7 @@ static void test_migrate_dirty_limit(void)
-     uint64_t throttle_us_per_full;
-     /*
-      * We want the test to be stable and as fast as possible.
--     * E.g., with 1Gb/s bandwith migration may pass without dirty limit,
-+     * E.g., with 1Gb/s bandwidth migration may pass without dirty limit,
-      * so we need to decrease a bandwidth.
-      */
-     const int64_t dirtylimit_period = 1000, dirtylimit_value = 50;
+diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
+index 5daf8c9c49..95e82f9472 100644
+--- a/tests/qtest/ufs-test.c
++++ b/tests/qtest/ufs-test.c
+@@ -319,7 +319,7 @@ static void ufs_init(QUfs *ufs, QGuestAllocator *alloc)
+     ufs_wreg(ufs, A_IE, ie);
+     ufs_wreg(ufs, A_UTRIACR, 0);
+ 
+-    /* Enable tranfer request and task management request */
++    /* Enable transfer request and task management request */
+     cap = ufs_rreg(ufs, A_CAP);
+     nutrs = FIELD_EX32(cap, CAP, NUTRS) + 1;
+     nutmrs = FIELD_EX32(cap, CAP, NUTMRS) + 1;
 -- 
 2.39.2
 
