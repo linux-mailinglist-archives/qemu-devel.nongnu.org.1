@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B2C7EAE7C
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 11:58:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 437E37EAEC1
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 12:22:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2r7a-0005vU-QX; Tue, 14 Nov 2023 05:58:18 -0500
+	id 1r2rTJ-0003tI-9f; Tue, 14 Nov 2023 06:20:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r2r7Z-0005u0-9O
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:58:17 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r2rTH-0003sx-Pc
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 06:20:43 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r2r7X-0005BJ-L9
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:58:17 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5441ba3e53cso8161480a12.1
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 02:58:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r2rTG-0001HY-5b
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 06:20:43 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1cc29f39e7aso34902075ad.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 03:20:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699959493; x=1700564293; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=sZiNat6q6RWy3UbweNCQFauNKXiIFAfNH6RZUmCVylY=;
- b=X8UYiB8Vs4GH0wgGI5DftOL9EElhSMMPGkA6ZwdINEg0Pe067IUxBujMMpm8xAIaxd
- /URWVrr2xq63RzgCW4RR/XNzR3mHQdkflsMYtOawBFJbrEH8S2g3fQ+bdTfuwMD8DRzh
- FoRDDtHW2LolOeLlC1oBmrAPMMSD3veY2OO3QybKRazesksmt1tTJEjUQrEvInvc9CCk
- jqHblsEAgR8GipeKrO3yfqXAUGB02J2K3VOcM836oVrgZD7IRcueLkedzJ+uf5YhS8HH
- 1fdvdswcIIQtQc4rqtCfAUUMYJ1LN4PG3UrZW+g1z4lKIzzAFOqFv/4dPUJe25q8Xarg
- OgsQ==
+ d=ventanamicro.com; s=google; t=1699960841; x=1700565641; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nuOCvN68DpIA+eH3/8+OASw2MwSNBc35QJvzI7sI8RQ=;
+ b=ieD0P+05OQtittRbJIC22SXZNT4KLazIk9HikWwszEMquqjFSRr0+0puHzb2vkMqKG
+ YCEsumbYsuppBgYaOIDLnXPCFZcKaHGVxaDp9OEqFWmWfaN0yZrlcUbG9fxmpjN+6zyM
+ kkDzGgTpqJ8i07BadlePMtIPqCvNULfkpkw4cIWJqdrbiH2IXUejouRrA6tztkRQ1x9L
+ AnuVJxQOQPyTpIzshgWx3DJmiK9/HMlcG21/OVotY7LwY1AwcWbnVW2PIm1wWdBgrc62
+ 1pTHdCH9UG2jSCE+nT1nv978mCj0H6XurgH7GQzwzOEGpfK2O0XAKot+ZdsVzA+vONSH
+ M+dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699959493; x=1700564293;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=sZiNat6q6RWy3UbweNCQFauNKXiIFAfNH6RZUmCVylY=;
- b=UTCaX7ATHb/WVMKlDMJU+1zXy5SznnZjQZSHsfh8GJfQTNexCbylHm0VZQiYk9EPuj
- DiFSPNRleSIm8DPaQvit5Ws3/BJ5kwn5cJb8kWQOXhPmnfWytDQyMH9cC9nS1kv9/vr6
- oUA6mlPT4WVV2u9PkKxgj5XgLcDvpH6XuhMgE8Y9rEOLr/lhXi+neZ38Yy0aRonernOc
- jqL7vKzUxxI/Z4OWUnlH+b/cGYwTa/nejS876KHnZ6beZr1g7BP8t5bcAyhzABkz8JD2
- jT6ZPIwksRPLkmE5imsOXOKz4/v5nuo99r3L0wIY4UCt3mJIPJqVbyQd/6quZ9LZZeTc
- FE0A==
-X-Gm-Message-State: AOJu0YzZNORwYmmvP0WIK+fOgfVFFEE+snCylIgkUwp9aZ2X9RLd7obA
- xBnpTcaJKsccynve7/yfuaLZmfsyO8oky2rIO3N7cw==
-X-Google-Smtp-Source: AGHT+IF8AteeA9xhjlFYLluhityz9j1+WD/ypAQUvIMpxHR6Jdseab2IIbkq94p8uDdduD2FF4D/RIf8mLZQg4FCktQ=
-X-Received: by 2002:aa7:d682:0:b0:544:5b1d:ff87 with SMTP id
- d2-20020aa7d682000000b005445b1dff87mr6072387edr.38.1699959493547; Tue, 14 Nov
- 2023 02:58:13 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699960841; x=1700565641;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nuOCvN68DpIA+eH3/8+OASw2MwSNBc35QJvzI7sI8RQ=;
+ b=mXjrTt0tb/fFPiobRHT31Mq8zbbd+AedjbGYDwEdyr3wGZCUOZoqjijPXQ2UMHGT0t
+ O/5YlAAAIG65YIFx98lfzy//dyH7/DwhGf6X2op0wOfikrEiCqNW2j0cGXNnBr+Kp/wV
+ tHDhX/MyiwDv/qDOU/mDxX+hO68wy4cyddAOj7c3adR7aoGjrgZrQiTgs7doQWui1/U8
+ gkI5N6y4HF6oCihKt9iTyFuj1tOfp9fb2QpSpXyLpyWJgSlHBkdLUosd4O6GZ7us6PNQ
+ SUmphfzlEN8480VK6O3hWJZo+hHWmiliYC7qeVlvDQMYpJ80HXYWmeM2nvoGBvROXYnX
+ a9Ug==
+X-Gm-Message-State: AOJu0YxFPVp0YQP7LHEQ5Ua6B64z+s0VCmalN1FqNxQTS7I391+y3V8O
+ /7U9HiAZVhTot2kHJnyVrzSqXUYyf6diduLNM8c=
+X-Google-Smtp-Source: AGHT+IFTtqMvc/RKc+BMTfF6Ff90wBrCOgjVX3blDfQm+ZIt6J30cbyOrbUorrKSDf7vdIG84Z6RNw==
+X-Received: by 2002:a17:902:f685:b0:1cc:dade:2784 with SMTP id
+ l5-20020a170902f68500b001ccdade2784mr1943810plg.22.1699960840636; 
+ Tue, 14 Nov 2023 03:20:40 -0800 (PST)
+Received: from ?IPV6:2804:7f0:bcc0:f7fc:9d46:b65e:128d:39a8?
+ ([2804:7f0:bcc0:f7fc:9d46:b65e:128d:39a8])
+ by smtp.gmail.com with ESMTPSA id
+ l12-20020a170903244c00b001c877f27d1fsm5473588pls.11.2023.11.14.03.20.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 14 Nov 2023 03:20:40 -0800 (PST)
+Message-ID: <6439d06c-7b9b-4fe7-83dd-a33be98ef98e@ventanamicro.com>
+Date: Tue, 14 Nov 2023 08:20:35 -0300
 MIME-Version: 1.0
-References: <20231027175532.3601297-1-nabihestefan@google.com>
- <20231027175532.3601297-4-nabihestefan@google.com>
- <KL1PR03MB7744A70A81045E5DC49C8191DBB2A@KL1PR03MB7744.apcprd03.prod.outlook.com>
-In-Reply-To: <KL1PR03MB7744A70A81045E5DC49C8191DBB2A@KL1PR03MB7744.apcprd03.prod.outlook.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 14 Nov 2023 10:58:02 +0000
-Message-ID: <CAFEAcA_9HT=tccyTu9RffMxq7Cm5GEanM+OcSxfkpbnJW2m6hQ@mail.gmail.com>
-Subject: Re: [PATCH v5 03/11] hw/misc: Add qtest for NPCM7xx PCI Mailbox
-To: "KFTING@nuvoton.com" <KFTING@nuvoton.com>
-Cc: Nabih Estefan <nabihestefan@google.com>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "wuhaotsh@google.com" <wuhaotsh@google.com>, 
- "jasonwang@redhat.com" <jasonwang@redhat.com>,
- "Avi.Fishman@nuvoton.com" <Avi.Fishman@nuvoton.com>, 
- "KWLIU@nuvoton.com" <KWLIU@nuvoton.com>,
- "tomer.maimon@nuvoton.com" <tomer.maimon@nuvoton.com>, 
- "Hila.Miranda-Kuzi@nuvoton.com" <Hila.Miranda-Kuzi@nuvoton.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/riscv: don't verify ISA compatibility for zicntr
+ and zihpm
+To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bmeng@tinylab.org>
+References: <20231114094412.413408-1-chigot@adacore.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231114094412.413408-1-chigot@adacore.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,46 +96,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 14 Nov 2023 at 01:24, KFTING@nuvoton.com <KFTING@nuvoton.com> wrote=
-:
->
->
->
-> -----Original Message-----
-> From: Nabih Estefan <nabihestefan@google.com>
-> Sent: Saturday, October 28, 2023 1:55 AM
-> To: peter.maydell@linaro.org
-> Cc: qemu-arm@nongnu.org; qemu-devel@nongnu.org; CS20 KFTing <KFTING@nuvot=
-on.com>; wuhaotsh@google.com; jasonwang@redhat.com; IS20 Avi Fishman <Avi.F=
-ishman@nuvoton.com>; nabihestefan@google.com; CS20 KWLiu <KWLIU@nuvoton.com=
->; IS20 Tomer Maimon <tomer.maimon@nuvoton.com>; IN20 Hila Miranda-Kuzi <Hi=
-la.Miranda-Kuzi@nuvoton.com>
-> Subject: [PATCH v5 03/11] hw/misc: Add qtest for NPCM7xx PCI Mailbox
->
-> CAUTION - External Email: Do not click links or open attachments unless y=
-ou acknowledge the sender and content.
->
->
-> From: Hao Wu <wuhaotsh@google.com>
->
-> This patches adds a qtest for NPCM7XX PCI Mailbox module.
-> It sends read and write requests to the module, and verifies that the mod=
-ule contains the correct data after the requests.
->
-> Change-Id: Id7a4b3cbea564383b94d507552dfd16f6b5127d1
-> Signed-off-by: Hao Wu <wuhaotsh@google.com>
-> Signed-off-by: Nabih Estefan <nabihestefan@google.com>
+(adding maintainers in the CC)
+
+
+
+On 11/14/23 06:44, Clément Chigot wrote:
+> The extensions zicntr and zihpm were officially added in the privilege
+> instruction set specification 1.12. However, QEMU has been implemented
+> them long before it and thus they are forced to be on during the cpu
+> initialization to ensure compatibility (see riscv_cpu_init).
+> riscv_cpu_disable_priv_spec_isa_exts was not updated when the above
+> behavior was introduced, resulting in these extensions to be disabled
+> after all.
+> 
+
+Please add the following tags:
+
+Fixes: c004099330 ("target/riscv: add zicntr extension flag for TCG")
+Fixes: 0824121660 ("target/riscv: add zihpm extension flag for TCG")
+
+> Signed-off-by: Clément Chigot <chigot@adacore.com>
 > ---
 
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-> Signed-off-by: Tyrone Ting <kfting@nuvoton.com>
 
-Hi; can you clarify what you mean with this Signed-off-by: tag?
-Generally we use those where either you're the author of the
-code or else when you're taking somebody else's patch and
-including it in work you are sending to the list, and it
-doesn't seem like either of those are the case here.
-
-thanks
--- PMM
+>   target/riscv/tcg/tcg-cpu.c | 9 +++++++++
+>   1 file changed, 9 insertions(+)
+> 
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index 08adad304d..8a35683a34 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -250,6 +250,15 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
+>       for (edata = isa_edata_arr; edata && edata->name; edata++) {
+>           if (isa_ext_is_enabled(cpu, edata->ext_enable_offset) &&
+>               (env->priv_ver < edata->min_version)) {
+> +            /*
+> +             * These two extensions are always enabled as they were supported
+> +             * by QEMU before they were added as extensions in the ISA.
+> +             */
+> +            if (!strcmp(edata->name, "zicntr") ||
+> +                !strcmp(edata->name, "zihpm")) {
+> +                continue;
+> +            }
+> +
+>               isa_ext_update_enabled(cpu, edata->ext_enable_offset, false);
+>   #ifndef CONFIG_USER_ONLY
+>               warn_report("disabling %s extension for hart 0x" TARGET_FMT_lx
 
