@@ -2,70 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2DA27EB80A
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 21:59:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A58037EB827
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 22:07:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r30UY-0004bQ-Jo; Tue, 14 Nov 2023 15:58:38 -0500
+	id 1r30bi-00083a-H2; Tue, 14 Nov 2023 16:06:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1r30UX-0004bI-2f
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 15:58:37 -0500
-Received: from ams.source.kernel.org ([2604:1380:4601:e00::1])
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1r30bg-00083M-CX
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 16:06:00 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1r30UV-0007Lt-61
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 15:58:36 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by ams.source.kernel.org (Postfix) with ESMTP id E211BB8167D;
- Tue, 14 Nov 2023 20:58:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E72C433C8;
- Tue, 14 Nov 2023 20:58:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1699995505;
- bh=5ijplms3I2Ewm4uE9vjGzwM21ZFs35Aboi9Meu2JMI0=;
- h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=vPqjlLiyY28Zi7bn3A84BaUzYRC6OgIMwMqIf63141sqanKmaTT/O28xCBH+Ez9CG
- KN7hnnqHCEBOWSqK5gKzTz9lEP157xJcNT2OnepOWLrgSoUwTsO6LYauY6bv4hVQ0/
- CG8lVN6VVPkaxIECjp2tw6AhHbDakcrTG6VlPEGFo7o6tRqRsd0+TYUy51AhFE53xT
- KKeHLt/uV/LEHKktyhpanqS+3OX6XUxgvzMuLgJnpKoZRo3ypLagMz1fP17JnUs8/t
- aK1EHADIo9x62KA1xOb8wHcmWLws4G/oiK7xNNhhZ0O2qsmRTorEQhIcjhJkHLmlAt
- +unxIKC6Oxgmg==
-Date: Tue, 14 Nov 2023 12:58:22 -0800 (PST)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: Juergen Gross <jgross@suse.com>
-cc: David Woodhouse <dwmw2@infradead.org>, 
- Stefano Stabellini <sstabellini@kernel.org>, 
- Vikram Garhwal <vikram.garhwal@amd.com>, qemu-devel@nongnu.org, 
- paul <paul@xen.org>
-Subject: Re: [QEMU][PATCHv2 0/8] Xen: support grant mappings.
-In-Reply-To: <d84f794e-44d8-4c92-806f-7fff3fc49486@suse.com>
-Message-ID: <alpine.DEB.2.22.394.2311141253430.160649@ubuntu-linux-20-04-desktop>
-References: <20231025212422.30371-1-vikram.garhwal@amd.com>
- <48b53eefdbcd4e61d09acfd2532ea8721376d0de.camel@infradead.org>
- <alpine.DEB.2.22.394.2310261107010.271731@ubuntu-linux-20-04-desktop>
- <60882a8e4d1e9a446034c5d3dda14aed5e0e25cd.camel@infradead.org>
- <alpine.DEB.2.22.394.2310261318191.271731@ubuntu-linux-20-04-desktop>
- <2fb3dfe783bd6226d3addcdccf2e2ef2061b324e.camel@infradead.org>
- <alpine.DEB.2.22.394.2310261346370.271731@ubuntu-linux-20-04-desktop>
- <9b9543b1-b1a7-4699-89f5-2e87680d52e8@suse.com>
- <8cc48dd19e33be3c40ef6ff96bf7dd5d492186ae.camel@infradead.org>
- <d84f794e-44d8-4c92-806f-7fff3fc49486@suse.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1r30be-00005b-AR
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 16:06:00 -0500
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AEKtcx0003944; Tue, 14 Nov 2023 21:05:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ subject : from : to : cc : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=Y+4i4qmL6dVj7RxLD5VWsi/I0zJ1DTZd8vcY5UqksFI=;
+ b=dNe/lAjJg6uWh/vMVDbT+cdZAN6D4Pv1TlUlnrqcC2YqK/S4srQu1Y2alHc0P0kL6bij
+ oshA2olAy9ug1Tz0o61/cacz4yuwtSo6pEYP4Tm1SrEjsm9wJvrciXCagxfNTzb5lYpG
+ U6PT3vHNnkR94ahDHO8v+xDKFVxE5qtz4d48rJYqsyVGTZxSmfwmOUZg9Af/Hpg6uZq5
+ pLtfMq7S+2zKHuF+JJb2U7aarQC575Dbr0FYRo8cnXhNljGo17GpQFzyIGSXkrjB8zoJ
+ oziplD6kFGHbMA6Kad4y4fSE0vyQG2O5xDJPvZYM+mmws/7WIjf/6Kwdc4tJ1Vt8X38R Kg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucgby08m0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 14 Nov 2023 21:05:56 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AEKtocH004866;
+ Tue, 14 Nov 2023 21:05:55 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucgby08kn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 14 Nov 2023 21:05:55 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AEJnFTP024344; Tue, 14 Nov 2023 21:05:55 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uamayatw3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 14 Nov 2023 21:05:55 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AEL5sM439387644
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 14 Nov 2023 21:05:54 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 41FB358062;
+ Tue, 14 Nov 2023 21:05:54 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D0D7D5805A;
+ Tue, 14 Nov 2023 21:05:53 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 14 Nov 2023 21:05:53 +0000 (GMT)
+Message-ID: <718d155f-004b-417e-8cba-d79ca4475850@linux.ibm.com>
+Date: Tue, 14 Nov 2023 16:05:53 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 12/14] tests: acpi: implement TPM CRB tests for ARM virt
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
+ Joelle van Dyne <j@getutm.app>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+References: <20231114020927.62315-1-j@getutm.app>
+ <20231114020927.62315-13-j@getutm.app>
+ <CAJ+F1CKx_MfZapE_vcb_e-nk=CMC2e8FN0QrONb4mzda_KNKUQ@mail.gmail.com>
+ <b1542ca5-18a6-44bd-a639-5765580bdc4d@linux.ibm.com>
+In-Reply-To: <b1542ca5-18a6-44bd-a639-5765580bdc4d@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: cC0S6PBNS1J-AkMQfv8zr2_jbkpWKUYd
+X-Proofpoint-GUID: HTWQ_7ril8aOiZ4krqd0ygkYjiE0PYgc
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-1577491162-1699995273=:160649"
-Content-ID: <alpine.DEB.2.22.394.2311141255080.160649@ubuntu-linux-20-04-desktop>
-Received-SPF: pass client-ip=2604:1380:4601:e00::1;
- envelope-from=sstabellini@kernel.org; helo=ams.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-14_21,2023-11-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 mlxscore=0
+ adultscore=0 phishscore=0 impostorscore=0 clxscore=1015 malwarescore=0
+ priorityscore=1501 spamscore=0 mlxlogscore=999 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311140156
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,89 +120,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323329-1577491162-1699995273=:160649
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: 8BIT
-Content-ID: <alpine.DEB.2.22.394.2311141255081.160649@ubuntu-linux-20-04-desktop>
 
-On Tue, 14 Nov 2023, Juergen Gross wrote:
-> On 13.11.23 21:24, David Woodhouse wrote:
-> > On Fri, 2023-10-27 at 07:27 +0200, Juergen Gross wrote:
-> > > On 26.10.23 22:56, Stefano Stabellini wrote:
-> > > > On Thu, 26 Oct 2023, David Woodhouse wrote:
-> > > > > On Thu, 2023-10-26 at 13:36 -0700, Stefano Stabellini wrote:
-> > > > > > 
-> > > > > > > This seems like a lot of code to replace that simpler option... is
-> > > > > > > there a massive performance win from doing it this way? Would we
-> > > > > > > want
-> > > > > > > to use this trick for the Xen PV backends (qdisk, qnic) *too*?
-> > > > > > > Might it
-> > > > > > > make sense to introduce the simple version and *then* the
-> > > > > > > optimisation,
-> > > > > > > with some clear benchmarking to show the win?
-> > > > > > 
-> > > > > > This is not done for performance but for safety (as in safety
-> > > > > > certifications, ISO 26262, etc.). This is to enable unprivileged
-> > > > > > virtio
-> > > > > > backends running in a DomU. By unprivileged I mean a virtio backend
-> > > > > > that
-> > > > > > is unable to map arbitrary memory (the xenforeignmemory interface is
-> > > > > > prohibited).
-> > > > > > 
-> > > > > > The goal is to run Xen on safety-critical systems such as cars,
-> > > > > > industrial robots and more. In this configuration there is no
-> > > > > > traditional Dom0 in the system at all. If you  would like to know
-> > > > > > more:
-> > > > > > https://www.youtube.com/watch?v=tisljY6Bqv0&list=PLYyw7IQjL-zHtpYtMpFR3KYdRn0rcp5Xn&index=8
-> > > > > 
-> > > > > Yeah, I understand why we're using grant mappings instead of just
-> > > > > directly having access via foreignmem mappings. That wasn't what I was
-> > > > > confused about.
-> > > > > 
-> > > > > What I haven't worked out is why we're implementing this through an
-> > > > > automatically-populated MemoryRegion in QEMU, rather than just using
-> > > > > grant mapping ops like we always have.
-> > > > > 
-> > > > > It seems like a lot of complexity just to avoid calling
-> > > > > qemu_xen_gnttab_map_refs() from the virtio backend.
-> > > > 
-> > > > I think there are two questions here. One question is "Why do we need
-> > > > all the new grant mapping code added to xen-mapcache.c in patch #7?
-> > > > Can't we use qemu_xen_gnttab_map_refs() instead?"
-> > > 
-> > > The main motivation was to _avoid_ having to change all the backends.
-> > > 
-> > > My implementation enables _all_ qemu based virtio backends to use grant
-> > > mappings. And if a new backend is added to qemu, there will be no change
-> > > required to make it work with grants.
-> > 
-> > I'm not really convinced I buy that. This is a lot of complexity, and
-> > don't backends need to call an appropriate mapping function to map via
-> > an IOMMU if it's present anyway? Make then call a helper where you can
-> > do this in one place directly instead of through a fake MemoryRegion,
-> > and you're done, surely?
+On 11/14/23 13:03, Stefan Berger wrote:
 > 
-> That was tested with unmodified block and net backends in qemu.
 > 
-> Maybe I missed something, but I think the IOMMU accesses are _not_ covering
-> accesses to the virtio rings from qemu. And this is something you really
-> want for driver domains.
+> On 11/14/23 04:36, Marc-André Lureau wrote:
+>> Hi
+>>
+>> On Tue, Nov 14, 2023 at 6:12 AM Joelle van Dyne <j@getutm.app> wrote:
+>>>
+>>> Signed-off-by: Joelle van Dyne <j@getutm.app>
+>>> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+>>
+>> nit: you also added tests for x86, could be a different patch?
+>>
+>> For arm, the test fails until next patch with:
+>>
+>> # starting QEMU: exec ./qemu-system-aarch64 -qtest
+>> unix:/tmp/qtest-991279.sock -qtest-log /dev/null -chardev
+>> socket,path=/tmp/qtest-991279.qmp,id=char0 -mon
+>> chardev=char0,mode=control -display none -audio none -machine virt
+>> -accel tcg -nodefaults -nographic -drive
+>> if=pflash,format=raw,file=pc-bios/edk2-aarch64-code.fd,readonly=on
+>> -drive if=pflash,format=raw,file=pc-bios/edk2-arm-vars.fd,snapshot=on
+>> -cdrom tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2
+>> -cpu cortex-a57 -chardev
+>> socket,id=chr,path=/tmp/qemu-test_acpi_virt_tcg_crb-device.KZ3GE2/sock
+>> -tpmdev emulator,id=dev,chardev=chr -device tpm-crb-device,tpmdev=dev
+>> -accel qtest
+>> Warning! zero length expected file 
+>> 'tests/data/acpi/virt/TPM2.crb-device.tpm2'
+>> Warning! zero length expected file 
+>> 'tests/data/acpi/virt/DSDT.crb-device.tpm2'
+>> acpi-test: Warning!  binary file mismatch. Actual
+>> [aml:/tmp/aml-GO4ME2], Expected
+>> [aml:tests/data/acpi/virt/TPM2.crb-device.tpm2].
+>> See source file tests/qtest/bios-tables-test.c for instructions on how
+>> to update expected files.
+>> acpi-test: Warning!  binary file mismatch. Actual
+>> [aml:/tmp/aml-6N4ME2], Expected
+>> [aml:tests/data/acpi/virt/DSDT.crb-device.tpm2].
+>> See source file tests/qtest/bios-tables-test.c for instructions on how
+>> to update expected files.
+>> to see ASL diff between mismatched files install IASL, rebuild QEMU
+>> from scratch and re-run tests with V=1 environment variable set**
+>> ERROR:../tests/qtest/bios-tables-test.c:538:test_acpi_asl: assertion
+>> failed: (all_tables_match)
+>> not ok /aarch64/acpi/virt/tpm2-crb -
+>> ERROR:../tests/qtest/bios-tables-test.c:538:test_acpi_asl: assertion
+>> failed: (all_tables_match)
+>> Bail out!
+>> qemu-system-aarch64: tpm-emulator: Could not cleanly shutdown the TPM:
+>> Resource temporarily unavailable
+>> Unexpected error in qio_channel_socket_writev() at 
+>> ../io/channel-socket.c:622:
+>> /home/elmarco/src/qemu/buildall/tests/qtest/bios-tables-test: Unable
+>> to write to socket: Bad file descriptor
+>>
+> 
+> Travis testing on s390x I see the following failures for this patchset 
+> (search for 'ERROR'):
+> 
+> https://app.travis-ci.com/github/stefanberger/qemu-tpm/builds/267230363
+> 
+> Summary of Failures:
+> 
+> 134/320 qemu:qtest+qtest-aarch64 / qtest-aarch64/tpm-crb-device-test   
+> ERROR           0.70s   killed by signal 6 SIGABRT
+> 
+> 219/320 qemu:qtest+qtest-x86_64 / qtest-x86_64/tpm-crb-test   
+> ERROR           0.88s   killed by signal 6 SIGABRT
+> 
+> 
+> Summary of Failures:
+> 
+> 271/537 qemu:qtest+qtest-i386 / qtest-i386/tpm-crb-test          
+> ERROR           0.59s   killed by signal 6 SIGABRT
+> 
+> 
+> My guess is it's an endianess issue on big endian machines due to 
+> reading from the ROM device where we lost the .endianess:
+> 
+> +const MemoryRegionOps tpm_crb_memory_ops = {
+> +    .read = tpm_crb_mmio_read,
+> +    .write = tpm_crb_mmio_write,
+> +    .endianness = DEVICE_LITTLE_ENDIAN,
+> +    .valid = {
+> +        .min_access_size = 1,
+> +        .max_access_size = 4,
+> +    },
+> +};
+> 
 
-Hi Juergen, David,
+I think we need a 2nd set of registers to support the endianess 
+conversion. It's not exactly nice, though. Basically the saved_regs 
+could be used for this directly, even though I did not do that but 
+introduced n_regs: 
+https://github.com/stefanberger/qemu-tpm/commit/90f6b21c0dd93dbb13d9e80a628f5b631fd07d91 
 
-I don't think we should use the IOMMU accesses and I don't think we
-should change the virtio backends.
 
-My preference would be to either use the patch as is, or (better) to
-reuse the original Xen hooks already in place (qemu_ram_ptr_length and
-xen_invalidate_map_cache_entry, see
-https://marc.info/?l=qemu-devel&m=169828434927778).
+This patch allows the tests on s390x to run farther but the execution of 
+the command doesn't seem to work maybe due to command data that were 
+also written in wrong endianess. I don't know. I would have to get 
+access to a big endian / s390 machine to be able to fix it.
 
-Juergen did a good job at adding new hooks in a clean way, but from my
-point of view I would still prefer to only have the two existing hooks
-instead of having 4 (2 old, 2 new).
---8323329-1577491162-1699995273=:160649--
 
