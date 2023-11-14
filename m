@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D517EB177
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 15:04:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 820787EB178
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 15:04:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2u1B-0001sw-Mo; Tue, 14 Nov 2023 09:03:53 -0500
+	id 1r2u1d-000257-AY; Tue, 14 Nov 2023 09:04:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r2u1A-0001r2-4g
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:03:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r2u1X-00023U-57
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:04:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r2u18-0000lH-Go
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:03:51 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r2u1T-0000oL-OD
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:04:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699970629;
+ s=mimecast20190719; t=1699970649;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vBFrPuQAfYQV4CufXttOg1Qj84TqUeVf6pt/mhc+DyE=;
- b=Upr4PWZaqEa5esYVcFYPR7mZhJcgvC76V149eoAKBbv9k51Cb4dyBkKviGQVo0efC2O0hS
- idckygp66Mmlga0nOIKeUMqTVJEYi+oz7/vV/H+k9cuR+n3/QEewnn61bhKkcpf23MeSxY
- FqtepUoXSmlJRpwZccyNrxPyswx/O70=
+ bh=T6bDnWBFrB+QFP5Zd2QKrW1KKBPqlmKdkzVKfCobBxQ=;
+ b=MlMSNkTUMSjwdmaHws6CHeB5liJZq9kAQdwF2v2WAjPSvpZV6I4XcVy+8Cmmi2isPGSjI0
+ MqdNu/w1dJ0GOC3UORAolFnGNeetWEsa66xXvNc90BBGDmopgUZdAqbt23J3+o0f7k+ky4
+ mIQv/l1ZeqwbE27ZOwfSEm1a6jZa8D0=
 Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
  [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-410-CYWwq6cfMi2pWPil6dPkAA-1; Tue, 14 Nov 2023 09:03:47 -0500
-X-MC-Unique: CYWwq6cfMi2pWPil6dPkAA-1
+ us-mta-265-_pQz7jrfOYWmrKvv3Ut1qA-1; Tue, 14 Nov 2023 09:04:08 -0500
+X-MC-Unique: _pQz7jrfOYWmrKvv3Ut1qA-1
 Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-421b4bc2a80so48052021cf.3
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 06:03:47 -0800 (PST)
+ d75a77b69052e-41e1d05a5d7so55817761cf.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 06:04:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699970626; x=1700575426;
+ d=1e100.net; s=20230601; t=1699970648; x=1700575448;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vBFrPuQAfYQV4CufXttOg1Qj84TqUeVf6pt/mhc+DyE=;
- b=jqdgZnBlZ4jKQcAibzJK622dAWJLMwieM6UYz3945f2TVVHKY11pWAuLSxeL5TqgFD
- ckUUcrn8bXwAV3b7boWvAQxmg9/cGArlbWr4Lv/EVQg7vSHHZeCLyHxXO0ZhD5O57rgJ
- 2Kk084P+oOWAu3Ba/ucf75sqe4vx3igPSpznFKahoOzWgQsX94um1L21uGR3wiFh8PIo
- 9Y5h08v5DCpVk1s3TTtj0lpudW7UjoVCZESSKTWj9hY/ItxsRZxnSKf7rK5xOHgIpv2r
- tikH+kwN3KOi2lWrKRCRJh3sso6RyEzfS4/WT9vxH0rfPfQlYjtS/1K9+aUNeZObDj2F
- vatA==
-X-Gm-Message-State: AOJu0Yx/4LhCAwrbqus77k1lGOC3/0wt9Oe26Ak5JNrKy8piFj7ossa7
- RepMutbKdSBpUn4OEHIBn5G0cmYL0rjUhT0A5FrdFtlXLiv+3Ks52p9LAmxOb6W4ZIPWzl92JkU
- QpZeNCVhvy/B5TyY=
-X-Received: by 2002:a05:622a:1a2a:b0:418:cd5:ac97 with SMTP id
- f42-20020a05622a1a2a00b004180cd5ac97mr2436390qtb.65.1699970626683; 
- Tue, 14 Nov 2023 06:03:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFmNskHY+XfRhp7RGgidsacuBbzS6TA9BuXXzgQ+h92pLa1z/jOHJ9o6WTufnNNOFQye9ViXA==
-X-Received: by 2002:a05:622a:1a2a:b0:418:cd5:ac97 with SMTP id
- f42-20020a05622a1a2a00b004180cd5ac97mr2436341qtb.65.1699970626285; 
- Tue, 14 Nov 2023 06:03:46 -0800 (PST)
+ bh=T6bDnWBFrB+QFP5Zd2QKrW1KKBPqlmKdkzVKfCobBxQ=;
+ b=Yp6cSNhqK+rI07UzhaehH7qNr1j6ylQDJ7ul77Eomw7fsAVKjh4YOiyWmizXR3oulN
+ TksBwBAh58oB2BCa7eXv4iMESeYcQsdEFmIvEkjvfqi/jcvtFx7guQVbAqTXY1dV4CIr
+ ZiX59Oanvc7MhTevxlRLQv55eEGAyRFw6XY992ulANyGMeAXH8Zx98Yjyt08XrZg1Ggr
+ 1H9i5nj6a8dPBbX4+LJkJgFSlgqrwPSYBUUA3eNaFxxR+Mr4jsolekMoYbfI+9MkclcD
+ 4fy9RbpauXQYiOsvC44O2vvyl587OnVY6toR7KcyTzsewcFDqtBH2cxa2NH66dVJ4ZVn
+ IoiQ==
+X-Gm-Message-State: AOJu0YwzkELqi3dxes1w/ZlmK4RWA0y/+/9kEGWgqs6Uecb0D7JU2xNf
+ NjQ5m8iWulcOuDlsG2jENoQyMxuMj4TcghsGMnWfla66cMDT7Z0AGq9+1wTnlvhSVlvcqcgEOvm
+ M7gsmRuw9WFVoBP8=
+X-Received: by 2002:ac8:5812:0:b0:41c:be07:c6c7 with SMTP id
+ g18-20020ac85812000000b0041cbe07c6c7mr2331115qtg.24.1699970647946; 
+ Tue, 14 Nov 2023 06:04:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHTs92WlGvSRzvEDnQirqd8+ukTdB+uQf1RD3MXnf7pMSBJ1uVQZ38+aQDhLzFITD76G1e2eA==
+X-Received: by 2002:ac8:5812:0:b0:41c:be07:c6c7 with SMTP id
+ g18-20020ac85812000000b0041cbe07c6c7mr2331083qtg.24.1699970647624; 
+ Tue, 14 Nov 2023 06:04:07 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- h12-20020ac8568c000000b00421b14f7e7csm2743569qta.48.2023.11.14.06.03.43
+ h12-20020ac8568c000000b00421b14f7e7csm2743569qta.48.2023.11.14.06.04.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 06:03:45 -0800 (PST)
-Message-ID: <989ef60c-463c-4733-91be-5ff48c34f4e5@redhat.com>
-Date: Tue, 14 Nov 2023 15:03:43 +0100
+ Tue, 14 Nov 2023 06:04:07 -0800 (PST)
+Message-ID: <abd964a0-fadb-4554-b537-a9f355be54c9@redhat.com>
+Date: Tue, 14 Nov 2023 15:04:04 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 14/21] vfio/ap: Allow the selection of a given iommu
- backend
+Subject: Re: [PATCH v6 15/21] vfio/ap: Make vfio cdev pre-openable by passing
+ a file handle
 Content-Language: en-US
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
@@ -79,19 +79,19 @@ Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
  Jason Herne <jjherne@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
  "open list:vfio-ap" <qemu-s390x@nongnu.org>
 References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
- <20231114100955.1961974-15-zhenzhong.duan@intel.com>
+ <20231114100955.1961974-16-zhenzhong.duan@intel.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231114100955.1961974-15-zhenzhong.duan@intel.com>
+In-Reply-To: <20231114100955.1961974-16-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -110,24 +110,10 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/14/23 11:09, Zhenzhong Duan wrote:
-> Now we support two types of iommu backends, let's add the capability
-> to select one of them. This depends on whether an iommufd object has
-> been linked with the vfio-ap device:
+> This gives management tools like libvirt a chance to open the vfio
+> cdev with privilege and pass FD to qemu. This way qemu never needs
+> to have privilege to open a VFIO or iommu cdev node.
 > 
-> if the user wants to use the legacy backend, it shall not
-> link the vfio-ap device with any iommufd object:
-> 
->   -device vfio-ap,sysfsdev=/sys/bus/mdev/devices/XXX
-> 
-> This is called the legacy mode/backend.
-> 
-> If the user wants to use the iommufd backend (/dev/iommu) it
-> shall pass an iommufd object id in the vfio-ap device options:
-> 
->   -object iommufd,id=iommufd0
->   -device vfio-ap,sysfsdev=/sys/bus/mdev/devices/XXX,iommufd=iommufd0
-> 
-> Suggested-by: Alex Williamson <alex.williamson@redhat.com>
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
 
@@ -140,35 +126,60 @@ C.
 
 
 > ---
->   hw/vfio/ap.c | 6 ++++++
->   1 file changed, 6 insertions(+)
+>   hw/vfio/ap.c | 23 ++++++++++++++++++++++-
+>   1 file changed, 22 insertions(+), 1 deletion(-)
 > 
 > diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-> index bbf69ff55a..80629609ae 100644
+> index 80629609ae..b21f92291e 100644
 > --- a/hw/vfio/ap.c
 > +++ b/hw/vfio/ap.c
-> @@ -11,10 +11,12 @@
->    */
+> @@ -160,7 +160,10 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
+>       VFIOAPDevice *vapdev = VFIO_AP_DEVICE(dev);
+>       VFIODevice *vbasedev = &vapdev->vdev;
 >   
->   #include "qemu/osdep.h"
-> +#include CONFIG_DEVICES /* CONFIG_IOMMUFD */
->   #include <linux/vfio.h>
->   #include <sys/ioctl.h>
->   #include "qapi/error.h"
->   #include "hw/vfio/vfio-common.h"
-> +#include "sysemu/iommufd.h"
->   #include "hw/s390x/ap-device.h"
->   #include "qemu/error-report.h"
->   #include "qemu/event_notifier.h"
-> @@ -204,6 +206,10 @@ static void vfio_ap_unrealize(DeviceState *dev)
+> -    vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
+> +    if (vfio_device_get_name(vbasedev, errp)) {
+> +        return;
+> +    }
+> +
+>       vbasedev->ops = &vfio_ap_ops;
+>       vbasedev->type = VFIO_DEVICE_TYPE_AP;
+>       vbasedev->dev = dev;
+> @@ -230,11 +233,28 @@ static const VMStateDescription vfio_ap_vmstate = {
+>       .unmigratable = 1,
+>   };
 >   
->   static Property vfio_ap_properties[] = {
->       DEFINE_PROP_STRING("sysfsdev", VFIOAPDevice, vdev.sysfsdev),
+> +static void vfio_ap_instance_init(Object *obj)
+> +{
+> +    VFIOAPDevice *vapdev = VFIO_AP_DEVICE(obj);
+> +
+> +    vapdev->vdev.fd = -1;
+> +}
+> +
 > +#ifdef CONFIG_IOMMUFD
-> +    DEFINE_PROP_LINK("iommufd", VFIOAPDevice, vdev.iommufd,
-> +                     TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
+> +static void vfio_ap_set_fd(Object *obj, const char *str, Error **errp)
+> +{
+> +    vfio_device_set_fd(&VFIO_AP_DEVICE(obj)->vdev, str, errp);
+> +}
 > +#endif
->       DEFINE_PROP_END_OF_LIST(),
+> +
+>   static void vfio_ap_class_init(ObjectClass *klass, void *data)
+>   {
+>       DeviceClass *dc = DEVICE_CLASS(klass);
+>   
+>       device_class_set_props(dc, vfio_ap_properties);
+> +#ifdef CONFIG_IOMMUFD
+> +    object_class_property_add_str(klass, "fd", NULL, vfio_ap_set_fd);
+> +#endif
+>       dc->vmsd = &vfio_ap_vmstate;
+>       dc->desc = "VFIO-based AP device assignment";
+>       set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+> @@ -249,6 +269,7 @@ static const TypeInfo vfio_ap_info = {
+>       .name = TYPE_VFIO_AP_DEVICE,
+>       .parent = TYPE_AP_DEVICE,
+>       .instance_size = sizeof(VFIOAPDevice),
+> +    .instance_init = vfio_ap_instance_init,
+>       .class_init = vfio_ap_class_init,
 >   };
 >   
 
