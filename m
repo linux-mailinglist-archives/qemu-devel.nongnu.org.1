@@ -2,93 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00FEC7EB208
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 15:22:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC6577EB212
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 15:27:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2uJ2-0004aM-0N; Tue, 14 Nov 2023 09:22:20 -0500
+	id 1r2uMl-0006zv-MZ; Tue, 14 Nov 2023 09:26:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r2uIw-0004VR-4H
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:22:14 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r2uIt-0004Qa-Sj
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:22:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699971730;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kH7hMPp/FXrIB8zr50Zi7NwV5wPZBTH+xZ3a/04jnGU=;
- b=h/aY3WY29LaqwAo78F4Vzdv2yTI0XuKwZ6XABIFOUbGom90Mc138K2KTWNyQYGoihERhhJ
- SOJCyJNOVu2FfeKeLwHpM0BvnO4TTZhLGKzy9wHbAA2UmVhb9gM/4soI45S7ymbZY/W4UX
- XBYt6mOvXAIwTW1VmVRfr8OvqEk2Nn8=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-632-3RCmyK0TOMihPijHqPQ2-w-1; Tue, 14 Nov 2023 09:22:07 -0500
-X-MC-Unique: 3RCmyK0TOMihPijHqPQ2-w-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-41cd433742dso73095311cf.2
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 06:22:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
+ id 1r2uMc-0006zi-9p
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:26:02 -0500
+Received: from mail-qk1-x72d.google.com ([2607:f8b0:4864:20::72d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
+ id 1r2uMa-0005aI-CJ
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:26:02 -0500
+Received: by mail-qk1-x72d.google.com with SMTP id
+ af79cd13be357-77784edc2edso350585885a.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 06:25:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699971958; x=1700576758; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=oMPtT43wWsN3HgupWW6t/QvmET5ICPsbKK5toIyitLM=;
+ b=n5ys5BDHE4Or6+8kQvGKtmkMRGTYzRDtRKlIakGDNJCmiQad8hZCPxmNfla6R1Rmbp
+ 1OyFtYbQ76aPziWUijlqNwl1aY52ZpVJij7owZ+F9eDVWAYaLe7WkiaFB3wsUe7yoqQO
+ dezeIw6xQzUM9sO72ylUP8+izo/mqfktsrZ3zH8FGq78mUcEiQ3zWkJhy7dm9kURecau
+ 0Dwvy9VNmQ2O1ZIui8WaAO8wJ1LBSiYKNcDM90qaPPE9c3kK0LrG2EeL0KCrEqyEF2qg
+ tEpMoIXwOb5oSdRIQwTTdiSgMDN53Jf6jvuv2IP/LEOclFVEB/1DqI8MLPZIAHZWH1el
+ fDIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699971727; x=1700576527;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1699971958; x=1700576758;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kH7hMPp/FXrIB8zr50Zi7NwV5wPZBTH+xZ3a/04jnGU=;
- b=G3SlOtFFM0ByW6bDZ49eyz8+/EyB8iHevk4fZXoZByjZJSnU031wv1iyIQekDwzyQ8
- AIIMRwYOLPM+VLWKM89nFWRRbBb0xzPLDAeWkCVTaNSZf3OsT8shMM9J9qFmgjol+m1c
- ZuMHlyWCxVhzU61w4LVF8mzb7tMs6kDRVzJrhxQIdunQG16vsh9yV3V7zK2rtsXFRUTT
- aDeIBbhtmjdNvRCbnYtVVbO72kZtwfH3NHupHJwybVAq589zWu0o0nPDla5D0YZwVTHL
- VgMAlHqjL+nE62wBbz4KjlnPTV2Y90RTsKobW3O4AGPrO+86wNyyipEWdv0RnWS8/s/j
- 8azg==
-X-Gm-Message-State: AOJu0YxwCvpcEmlPSKIiMl6XrsZvxhDm+5p2HdlZHv3euSrL/rdCyO+2
- eDY9W2U2iRlORCQri9Ejh8jAj11RwZahtC+O24GBP/EBjlIObtjXSpgORX3Fnbz0ecEwfmICoSy
- qrpgDZLvuMWy1CGI=
-X-Received: by 2002:a05:622a:511:b0:41e:3eef:736d with SMTP id
- l17-20020a05622a051100b0041e3eef736dmr2564795qtx.5.1699971727113; 
- Tue, 14 Nov 2023 06:22:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHblWa6stiZ7FTTBHy1ye4u9VMk+NjGzUbVnt960wmx2q1c9J7sVoms7E8SO/990oqmkVN/Gg==
-X-Received: by 2002:a05:622a:511:b0:41e:3eef:736d with SMTP id
- l17-20020a05622a051100b0041e3eef736dmr2564777qtx.5.1699971726804; 
- Tue, 14 Nov 2023 06:22:06 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- o25-20020ac86d19000000b0041cc25a75e5sm2749417qtt.77.2023.11.14.06.22.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 06:22:06 -0800 (PST)
-Message-ID: <d351d0be-e284-4d09-8b40-aad4253ad5e3@redhat.com>
-Date: Tue, 14 Nov 2023 15:22:03 +0100
+ bh=oMPtT43wWsN3HgupWW6t/QvmET5ICPsbKK5toIyitLM=;
+ b=YKwA7e+n+747xtqOAvv6aQEMiXKQubiNAxHhGSmYb+GQfmtmFXfOOSh6qR0EffY8YC
+ B4rgX/Tfe4WqtrG8aWPk3ThLJDewlecPSFc1UeoP6NcT9ilouF4e8JW3RvkI1nNFw+UM
+ 7vc15wEuMDERvJ8loAYPfA4TB9zvvV17ommTqkdzmGWvf2ICK4DCD15BGdgy3W7NPJmp
+ ez/C6C5fwmMIIrd2yQkKaPzSmrApOrHrWmzrol/tK6XGPNnszKp8sZ5yZtQ+gjkNRGam
+ uW/9O+Q4WRLq84gyPrz5FiZSfkFIXpGviVMaNfOXnz63AZWdZHPkmBtckGbrRnek95BC
+ bymQ==
+X-Gm-Message-State: AOJu0YzCRSUvxumFFabaRkC+/uybcymLQwCdF03WkZ7EMpRZE9GdIU3s
+ ZFskbugMagjX2NXHXELKSWyYdLMi34NJHSpWGOuVlYCimvU=
+X-Google-Smtp-Source: AGHT+IH4U10KZvvVcUHvDvOk/ICOhLn27H/r347mxeum3z50EJuqAorCsBvQRKToJgRx3wU4vz8itQ==
+X-Received: by 2002:a05:620a:d8e:b0:77b:cc56:4a02 with SMTP id
+ q14-20020a05620a0d8e00b0077bcc564a02mr2700716qkl.11.1699971957964; 
+ Tue, 14 Nov 2023 06:25:57 -0800 (PST)
+Received: from leoy-huanghe ([12.186.190.2]) by smtp.gmail.com with ESMTPSA id
+ n11-20020a05620a294b00b007756c0853a5sm2657757qkp.58.2023.11.14.06.25.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 Nov 2023 06:25:57 -0800 (PST)
+Date: Tue, 14 Nov 2023 22:25:55 +0800
+From: Leo Yan <leo.yan@linaro.org>
+To: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: Re: [PATCH v2 2/4] docs/system: Add vhost-user-input documentation
+Message-ID: <20231114142555.GD132024@leoy-huanghe>
+References: <20231113190211.92412-1-leo.yan@linaro.org>
+ <20231113190211.92412-3-leo.yan@linaro.org>
+ <CAJ+F1CJTGWoV2kvzcxMsp6wE-6d_c2OxQfVQ+025DxK3kK3EPA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 13/21] vfio/platform: Make vfio cdev pre-openable by
- passing a file handle
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com
-References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
- <20231114100955.1961974-14-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231114100955.1961974-14-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+In-Reply-To: <CAJ+F1CJTGWoV2kvzcxMsp6wE-6d_c2OxQfVQ+025DxK3kK3EPA@mail.gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72d;
+ envelope-from=leo.yan@linaro.org; helo=mail-qk1-x72d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,98 +97,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/14/23 11:09, Zhenzhong Duan wrote:
-> This gives management tools like libvirt a chance to open the vfio
-> cdev with privilege and pass FD to qemu. This way qemu never needs
-> to have privilege to open a VFIO or iommu cdev node.
-> 
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Hi Marc-André,
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
++ Mathieu for vhost RNG stuff.
+
+On Tue, Nov 14, 2023 at 01:54:50PM +0400, Marc-André Lureau wrote:
+> Hi
+> 
+> On Mon, Nov 13, 2023 at 11:04 PM Leo Yan <leo.yan@linaro.org> wrote:
+
+[...]
+
+> > @@ -2233,6 +2233,7 @@ L: virtio-fs@redhat.com
+> >  virtio-input
+> >  M: Gerd Hoffmann <kraxel@redhat.com>
+> >  S: Odd Fixes
+> > +F: docs/system/devices/vhost-user-input.rst
+> >  F: hw/input/vhost-user-input.c
+> >  F: hw/input/virtio-input*.c
+> >  F: include/hw/virtio/virtio-input.h
+> > diff --git a/docs/system/devices/vhost-user-input.rst b/docs/system/devices/vhost-user-input.rst
+> 
+> You need to include the file in the toctree, in docs/system/device-emulation.rst
+
+Will update the toctree in next version.
+
+[...]
+
+> > +The QEMU invocation needs to create a chardev socket to communicate with the
+> > +backend daemon and share memory with the guest over a memfd.
+> > +
+> > +::
+> > +
+> > +  host# qemu-system                                                            \
+> > +      -chardev socket,path=/tmp/input.sock,id=mouse0                           \
+> > +      -device vhost-user-input-pci,chardev=mouse0                              \
+> > +      -m 4096                                                                  \
+> > +      -object memory-backend-file,id=mem,size=4G,mem-path=/dev/shm,share=on    \
+> > +      -numa node,memdev=mem
+> 
+> 
+> Well, this is not a memfd. This is taken from vhost-user-rng.rst, and
+> should probably be adjusted there too.
+
+Yeah, I copied from vhost-user-rng.rst.
+
+To be easier for our life, I will firstly fix this patch for this part,
+later we can consider to update vhost-user-rng.rst in a separate patch.
+Looped in Mathieu to be awared.
+
+> It needs shared memory, memory-backend-file can provide it and is
+> generally more available than memfd, although memfd should be
+> preferred as it offers some extra security guarantees. There is
+> already some explanations in vhost-user.rst, maybe we should just add
+> extra links.
+
+I will update the doc as:
+
+"The QEMU invocation needs to create a chardev socket to communicate with the
+backend daemon and access the VirtIO queues with the guest over the
+:ref:`_shared_memory_object`."
 
 Thanks,
-
-C.
-
-
-> ---
->   hw/vfio/platform.c | 32 ++++++++++++++++++++++++--------
->   1 file changed, 24 insertions(+), 8 deletions(-)
-> 
-> diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
-> index 98ae4bc655..a97d9c6234 100644
-> --- a/hw/vfio/platform.c
-> +++ b/hw/vfio/platform.c
-> @@ -531,14 +531,13 @@ static VFIODeviceOps vfio_platform_ops = {
->    */
->   static int vfio_base_device_init(VFIODevice *vbasedev, Error **errp)
->   {
-> -    struct stat st;
->       int ret;
->   
-> -    /* @sysfsdev takes precedence over @host */
-> -    if (vbasedev->sysfsdev) {
-> +    /* @fd takes precedence over @sysfsdev which takes precedence over @host */
-> +    if (vbasedev->fd < 0 && vbasedev->sysfsdev) {
->           g_free(vbasedev->name);
->           vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
-> -    } else {
-> +    } else if (vbasedev->fd < 0) {
->           if (!vbasedev->name || strchr(vbasedev->name, '/')) {
->               error_setg(errp, "wrong host device name");
->               return -EINVAL;
-> @@ -548,10 +547,9 @@ static int vfio_base_device_init(VFIODevice *vbasedev, Error **errp)
->                                                vbasedev->name);
->       }
->   
-> -    if (stat(vbasedev->sysfsdev, &st) < 0) {
-> -        error_setg_errno(errp, errno,
-> -                         "failed to get the sysfs host device file status");
-> -        return -errno;
-> +    ret = vfio_device_get_name(vbasedev, errp);
-> +    if (ret) {
-> +        return ret;
->       }
->   
->       ret = vfio_attach_device(vbasedev->name, vbasedev,
-> @@ -658,6 +656,20 @@ static Property vfio_platform_dev_properties[] = {
->       DEFINE_PROP_END_OF_LIST(),
->   };
->   
-> +static void vfio_platform_instance_init(Object *obj)
-> +{
-> +    VFIOPlatformDevice *vdev = VFIO_PLATFORM_DEVICE(obj);
-> +
-> +    vdev->vbasedev.fd = -1;
-> +}
-> +
-> +#ifdef CONFIG_IOMMUFD
-> +static void vfio_platform_set_fd(Object *obj, const char *str, Error **errp)
-> +{
-> +    vfio_device_set_fd(&VFIO_PLATFORM_DEVICE(obj)->vbasedev, str, errp);
-> +}
-> +#endif
-> +
->   static void vfio_platform_class_init(ObjectClass *klass, void *data)
->   {
->       DeviceClass *dc = DEVICE_CLASS(klass);
-> @@ -665,6 +677,9 @@ static void vfio_platform_class_init(ObjectClass *klass, void *data)
->   
->       dc->realize = vfio_platform_realize;
->       device_class_set_props(dc, vfio_platform_dev_properties);
-> +#ifdef CONFIG_IOMMUFD
-> +    object_class_property_add_str(klass, "fd", NULL, vfio_platform_set_fd);
-> +#endif
->       dc->vmsd = &vfio_platform_vmstate;
->       dc->desc = "VFIO-based platform device assignment";
->       sbc->connect_irq_notifier = vfio_start_irqfd_injection;
-> @@ -677,6 +692,7 @@ static const TypeInfo vfio_platform_dev_info = {
->       .name = TYPE_VFIO_PLATFORM,
->       .parent = TYPE_SYS_BUS_DEVICE,
->       .instance_size = sizeof(VFIOPlatformDevice),
-> +    .instance_init = vfio_platform_instance_init,
->       .class_init = vfio_platform_class_init,
->       .class_size = sizeof(VFIOPlatformDeviceClass),
->   };
-
+Leo
 
