@@ -2,71 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B1C07EAD29
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 10:38:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0087EAD2B
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 10:39:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2pqv-0000IK-E2; Tue, 14 Nov 2023 04:37:01 -0500
+	id 1r2psS-00018f-V1; Tue, 14 Nov 2023 04:38:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r2pqr-0000Hv-Kr
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 04:36:58 -0500
-Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
+ id 1r2psR-00018C-C9
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 04:38:35 -0500
+Received: from mail-qt1-x834.google.com ([2607:f8b0:4864:20::834])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r2pqp-0007qM-Jm
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 04:36:57 -0500
-Received: by mail-oo1-xc33.google.com with SMTP id
- 006d021491bc7-58a0d0cdcc1so2546052eaf.1
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 01:36:54 -0800 (PST)
+ id 1r2psP-0007xA-EH
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 04:38:35 -0500
+Received: by mail-qt1-x834.google.com with SMTP id
+ d75a77b69052e-41cba6e8e65so31531621cf.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 01:38:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699954614; x=1700559414; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1699954712; x=1700559512; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YKFjjCq2MLt5Ywb4JpaP15BYw44bNrhr2voccKW4RkU=;
- b=cc89ayxNt73KjztgNFVpzbMKILryfdMjoz9rbk2DhBvtDicOxNWwumpyIHM7MSOs61
- VmPn6WNwqog737FgWrh4zQTNUQVXogPjdtlGxQOn9kdiPKFkht/p9MUoSVb1YD3hx79j
- 5ILEipvxzGuSxIIVnyN+vSSXEcr7T6fpkuNt2+9BHIiZ6rXCvfFRXDnxYaSpkC5PzWgw
- wR4CSZJQd7S4xF4+MooIhdEXhU/912CofbTRGEaG3hhMelcmyJ2ePWmvV4D2zJJZF2yq
- bXkNXdF0R60gX+366E253Q4F3rv+sAIUzHFImV/mNpHiI4XRnLnkxtHhIcCabXN+trRl
- hIPA==
+ bh=kyPycBvqaj7209NicDfmYhp5/emcCPiyTYtIel/tW6I=;
+ b=Ntc9qBfyZp1pPo2wJXpas8nmdVAHnYnfBvm/caCLrs2MChIFO1ezSiqWTS4VEu2Amc
+ uZKSuR4hvh3D883MhN7aCQAISspmFA+MgYobs2y5T4bNi675+ra/JxBxVQSSvysoR8YY
+ w3ZwTNhmSqLU6hovBwxVThAVZv78KMShhGIuFRzoCVViEsUMkLdtaMRrp2sJ4QksDnQv
+ d80VRb1lLCVYUIBI8y3Y2EDLm+Mt5cwYZxMJousHypCSikWpxlom+9Ht8UrFB+WOwyw5
+ ZlRWZJSXj+dmkt9jJixCHE3KPXEYP9v8KHm0xO3DERG66oBu1TWS5eHSRdUfOKqwD3Qa
+ CXfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699954614; x=1700559414;
+ d=1e100.net; s=20230601; t=1699954712; x=1700559512;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YKFjjCq2MLt5Ywb4JpaP15BYw44bNrhr2voccKW4RkU=;
- b=iOLXTPogQj2Tiz+Pzr7ggnlA0g6/J5w5Sj145zXlap8r/v7qaSf4tH5shm60CtiV5z
- jJNTCYBAXqf4WGg7I8mDbc6F6WID53LmNOcQED0bNUwN5GHs5aPrTtruvai7t/R9uTgU
- nF6gfqCJE12KmCDuSOcCcQFnwqaJowB+4Supjr7mfMAjgDaNDcp3/Ufey7zx5UZV4C82
- 1Zt/rpnkpd9PWMDuvZ2NVvLg9gAVNt9kIqPrgXVpbELtZfKNX4zLkjhxdxz+n/NSu09g
- VQg8z+u1gct63iuaUb7y4Ldo/EE2M6roZ7szNzNS1A7XYCBiRrY+N4reP45ezokaHZl1
- Mf7A==
-X-Gm-Message-State: AOJu0Yz3RLqeS3wWuakmIV5DCaRfDgFpLIKnTLjDlH8SAjdpO68ztuOr
- RSNcEvmrhQkJ7y/iojyJD/OPUGOtrNlmDUqanVo=
-X-Google-Smtp-Source: AGHT+IFNVOW61F7KX04swc6lWU2YtR3HSopsd9F1cuSUBl5T2cKXLsOxYWZUlel+Di+j8VI2U0Ci4DkKuyJtqggfEnw=
-X-Received: by 2002:a05:6358:591d:b0:16b:c401:e714 with SMTP id
- g29-20020a056358591d00b0016bc401e714mr1920987rwf.5.1699954613681; Tue, 14 Nov
- 2023 01:36:53 -0800 (PST)
+ bh=kyPycBvqaj7209NicDfmYhp5/emcCPiyTYtIel/tW6I=;
+ b=Ezeiyt4xdOm+scA00wwajyKYZZKaKjX8NX04//KVhu3Uxd2ku57e9G/yozJ9sA9yA/
+ 2amH/obmRDqxaWn3FxENLRswd1/cf1+SLK8f8qf9JO8LaicMmbLnCDT8NtkHdQ5+Ii4r
+ VGUoXOdvg/iOBQWmTL+zZU/R4bJWuNQEdfO1Z4NJ2DjnwGd13/VMGRkukzEbhCdKqQzM
+ Rz31j2yu/cRHvIxhFYwqFbo3Jqf6sllLyldxatMBIMVcaEZrJj85/hKG9weXfZTnib6q
+ Jt13ow8j5oO8XWAqGgjQ15JoHyjAzrF+9zZuAY/j7hS2nazsGizTial04mPG4ld/jxE6
+ CPKg==
+X-Gm-Message-State: AOJu0YxWVonu976dtNXWN4Lcgmdg0etlckdi0rzk50wnV+kndY/HUJIi
+ wXRxFs5oRGojymhzLBmkUDo9TJD4h5C0TYCDU4wIyu1iUeM=
+X-Google-Smtp-Source: AGHT+IHwlbTJcAey9uhdFPyod7MxGNQ2FW0avlG7grUuKdthzCMvjDJvf3RTYgdOg0FxzyzKgdcfRaYXA6mqL2cLtWA=
+X-Received: by 2002:a05:622a:38d:b0:412:bf83:e759 with SMTP id
+ j13-20020a05622a038d00b00412bf83e759mr1799302qtx.42.1699954712148; Tue, 14
+ Nov 2023 01:38:32 -0800 (PST)
 MIME-Version: 1.0
 References: <20231114020927.62315-1-j@getutm.app>
- <20231114020927.62315-13-j@getutm.app>
-In-Reply-To: <20231114020927.62315-13-j@getutm.app>
+In-Reply-To: <20231114020927.62315-1-j@getutm.app>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 14 Nov 2023 13:36:42 +0400
-Message-ID: <CAJ+F1CKx_MfZapE_vcb_e-nk=CMC2e8FN0QrONb4mzda_KNKUQ@mail.gmail.com>
-Subject: Re: [PATCH v5 12/14] tests: acpi: implement TPM CRB tests for ARM virt
+Date: Tue, 14 Nov 2023 13:38:21 +0400
+Message-ID: <CAJ+F1CJunC52JX=YOiycHDeTVxVRwjuV9veQZ1QaN1=JCuo7nQ@mail.gmail.com>
+Subject: Re: [PATCH v5 00/14] tpm: introduce TPM CRB SysBus device
 To: Joelle van Dyne <j@getutm.app>
-Cc: qemu-devel@nongnu.org, Stefan Berger <stefanb@linux.ibm.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-oo1-xc33.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::834;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x834.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,166 +88,180 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Hi
 
-On Tue, Nov 14, 2023 at 6:12=E2=80=AFAM Joelle van Dyne <j@getutm.app> wrot=
+On Tue, Nov 14, 2023 at 6:10=E2=80=AFAM Joelle van Dyne <j@getutm.app> wrot=
 e:
 >
-> Signed-off-by: Joelle van Dyne <j@getutm.app>
-> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> The impetus for this patch set is to get TPM 2.0 working on Windows 11 AR=
+M64.
+> Windows' tpm.sys does not seem to work on a TPM TIS device (as verified w=
+ith
+> VMWare's implementation). However, the current TPM CRB device uses a fixe=
+d
+> system bus address that is reserved for RAM in ARM64 Virt machines.
+>
+> In the process of adding the TPM CRB SysBus device, we also went ahead an=
+d
+> cleaned up some of the existing TPM hardware code and fixed some bugs. We=
+ used
+> the TPM TIS devices as a template for the TPM CRB devices and refactored =
+out
+> common code. We moved the ACPI DSDT generation to the device in order to =
+handle
+> dynamic base address requirements as well as reduce redundent code in dif=
+ferent
+> machine ACPI generation. We also changed the tpm_crb device to use the IS=
+A bus
+> instead of depending on the default system bus as the device only was bui=
+lt for
+> the PC configuration.
+>
+> Another change is that the TPM CRB registers are now mapped in the same w=
+ay that
+> the pflash ROM devices are mapped. It is a memory region whose writes are
+> trapped as MMIO accesses. This was needed because Apple Silicon does not =
+decode
+> LDP (AARCH64 load pair of registers) caused page faults. @agraf suggested=
+ that
+> we do this to avoid having to do AARCH64 decoding in the HVF backend's fa=
+ult
+> handler.
+>
+> Unfortunately, it seems like the LDP fault still happens on HVF but the i=
+ssue
+> seems to be in the HVF backend which needs to be fixed in a separate patc=
+h.
+>
+> One last thing that's needed to get Windows 11 to recognize the TPM 2.0 d=
+evice
+> is for the OVMF firmware to setup the TPM device. Currently, OVMF for ARM=
+64 Virt
+> only recognizes the TPM TIS device through a FDT entry. A workaround is t=
+o
+> falsely identify the TPM CRB device as a TPM TIS device in the FDT node b=
+ut this
+> causes issues for Linux. A proper fix would involve adding an ACPI device=
+ driver
+> in OVMF.
+>
+> This has been tested on ARM64 with `tpm-crb-device` and on x86_64 with
+> `tpm-crb`. Additional testing should be performed on other architectures =
+(RISCV
+> and Loongarch for example) as well as migration cases.
+>
+> v5:
+> - Fixed a typo in "tpm_crb: use a single read-as-mem/write-as-mmio mappin=
+g"
+> - Fixed ACPI tables not being created for pc CRB device
+>
+> v4:
+> - Fixed broken test blobs
+>
+> v3:
+> - Support backwards and forwards migration of existing tpm-crb device
+> - Dropped patch which moved tpm-crb to ISA bus due to migration concerns
+> - Unified `tpm_sysbus_plug` handler for ARM and Loongarch
+> - Added ACPI table tests for tpm-crb-device
+> - Refactored TPM CRB tests to run on tpm-crb-device for ARM Virt
+>
+> v2:
+> - Fixed an issue where VMstate restore from an older version failed due t=
+o name
+>   collision of the memory block.
+> - In the ACPI table generation for CRB devices, the check for TPM 2.0 bac=
+kend is
+>   moved to the device realize as CRB does not support TPM 1.0. It will er=
+ror in
+>   that case.
+> - Dropped the patch to fix crash when PPI is enabled on TIS SysBus device=
+ since
+>   a separate patch submitted by Stefan Berger disables such an option.
+> - Fixed an issue where we default tpmEstablished=3D0 when it should be 1.
+> - In TPM CRB SysBus's ACPI entry, we accidently changed _UID from 0 to 1.=
+ This
+>   shouldn't be an issue but we changed it back just in case.
+> - Added a patch to migrate saved VMstate from an older version with the r=
+egs
+>   saved separately instead of as a RAM block.
+>
+> Joelle van Dyne (14):
+>   tpm_crb: refactor common code
+>   tpm_crb: CTRL_RSP_ADDR is 64-bits wide
+>   tpm_ppi: refactor memory space initialization
+>   tpm_crb: use a single read-as-mem/write-as-mmio mapping
+>   tpm_crb: move ACPI table building to device interface
+>   tpm-sysbus: add plug handler for TPM on SysBus
+>   hw/arm/virt: connect TPM to platform bus
+>   hw/loongarch/virt: connect TPM to platform bus
+>   tpm_tis_sysbus: move DSDT AML generation to device
+>   tests: acpi: prepare for TPM CRB tests
+>   tpm_crb_sysbus: introduce TPM CRB SysBus device
+>   tests: acpi: implement TPM CRB tests for ARM virt
+>   tests: acpi: updated expected blobs for TPM CRB
+>   tests: add TPM-CRB sysbus tests for aarch64
 
-nit: you also added tests for x86, could be a different patch?
+The series looks good to me.
+Have you checked there are no regressions with Windows HLK?
 
-For arm, the test fails until next patch with:
+thanks
 
-# starting QEMU: exec ./qemu-system-aarch64 -qtest
-unix:/tmp/qtest-991279.sock -qtest-log /dev/null -chardev
-socket,path=3D/tmp/qtest-991279.qmp,id=3Dchar0 -mon
-chardev=3Dchar0,mode=3Dcontrol -display none -audio none -machine virt
--accel tcg -nodefaults -nographic -drive
-if=3Dpflash,format=3Draw,file=3Dpc-bios/edk2-aarch64-code.fd,readonly=3Don
--drive if=3Dpflash,format=3Draw,file=3Dpc-bios/edk2-arm-vars.fd,snapshot=3D=
-on
--cdrom tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2
--cpu cortex-a57 -chardev
-socket,id=3Dchr,path=3D/tmp/qemu-test_acpi_virt_tcg_crb-device.KZ3GE2/sock
--tpmdev emulator,id=3Ddev,chardev=3Dchr -device tpm-crb-device,tpmdev=3Ddev
--accel qtest
-Warning! zero length expected file 'tests/data/acpi/virt/TPM2.crb-device.tp=
-m2'
-Warning! zero length expected file 'tests/data/acpi/virt/DSDT.crb-device.tp=
-m2'
-acpi-test: Warning!  binary file mismatch. Actual
-[aml:/tmp/aml-GO4ME2], Expected
-[aml:tests/data/acpi/virt/TPM2.crb-device.tpm2].
-See source file tests/qtest/bios-tables-test.c for instructions on how
-to update expected files.
-acpi-test: Warning!  binary file mismatch. Actual
-[aml:/tmp/aml-6N4ME2], Expected
-[aml:tests/data/acpi/virt/DSDT.crb-device.tpm2].
-See source file tests/qtest/bios-tables-test.c for instructions on how
-to update expected files.
-to see ASL diff between mismatched files install IASL, rebuild QEMU
-from scratch and re-run tests with V=3D1 environment variable set**
-ERROR:../tests/qtest/bios-tables-test.c:538:test_acpi_asl: assertion
-failed: (all_tables_match)
-not ok /aarch64/acpi/virt/tpm2-crb -
-ERROR:../tests/qtest/bios-tables-test.c:538:test_acpi_asl: assertion
-failed: (all_tables_match)
-Bail out!
-qemu-system-aarch64: tpm-emulator: Could not cleanly shutdown the TPM:
-Resource temporarily unavailable
-Unexpected error in qio_channel_socket_writev() at ../io/channel-socket.c:6=
-22:
-/home/elmarco/src/qemu/buildall/tests/qtest/bios-tables-test: Unable
-to write to socket: Bad file descriptor
-
-> ---
->  tests/qtest/bios-tables-test.c | 43 ++++++++++++++++++++++++++++++++--
->  1 file changed, 41 insertions(+), 2 deletions(-)
 >
-> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-tes=
-t.c
-> index 71af5cf69f..bb4ebf00c1 100644
-> --- a/tests/qtest/bios-tables-test.c
-> +++ b/tests/qtest/bios-tables-test.c
-> @@ -1447,6 +1447,28 @@ static void test_acpi_piix4_tcg_numamem(void)
+>  docs/specs/tpm.rst                        |   2 +
+>  hw/tpm/tpm_crb.h                          |  79 ++++++
+>  hw/tpm/tpm_ppi.h                          |  10 +-
+>  include/hw/acpi/tpm.h                     |   3 +-
+>  include/sysemu/tpm.h                      |   7 +
+>  tests/qtest/tpm-tests.h                   |   2 +
+>  tests/qtest/tpm-util.h                    |   4 +-
+>  hw/acpi/aml-build.c                       |   7 +-
+>  hw/arm/virt-acpi-build.c                  |  38 +--
+>  hw/arm/virt.c                             |   8 +
+>  hw/core/sysbus-fdt.c                      |   1 +
+>  hw/i386/acpi-build.c                      |  16 +-
+>  hw/loongarch/acpi-build.c                 |  38 +--
+>  hw/loongarch/virt.c                       |   8 +
+>  hw/riscv/virt.c                           |   1 +
+>  hw/tpm/tpm-sysbus.c                       |  47 ++++
+>  hw/tpm/tpm_crb.c                          | 302 ++++++----------------
+>  hw/tpm/tpm_crb_common.c                   | 262 +++++++++++++++++++
+>  hw/tpm/tpm_crb_sysbus.c                   | 162 ++++++++++++
+>  hw/tpm/tpm_ppi.c                          |   5 +-
+>  hw/tpm/tpm_tis_isa.c                      |   5 +-
+>  hw/tpm/tpm_tis_sysbus.c                   |  37 +++
+>  tests/qtest/bios-tables-test.c            |  47 +++-
+>  tests/qtest/tpm-crb-device-swtpm-test.c   |  72 ++++++
+>  tests/qtest/tpm-crb-device-test.c         |  71 +++++
+>  tests/qtest/tpm-crb-swtpm-test.c          |   2 +
+>  tests/qtest/tpm-crb-test.c                | 121 +--------
+>  tests/qtest/tpm-tests.c                   | 121 +++++++++
+>  tests/qtest/tpm-tis-device-swtpm-test.c   |   2 +-
+>  tests/qtest/tpm-tis-device-test.c         |   2 +-
+>  tests/qtest/tpm-tis-i2c-test.c            |   3 +
+>  tests/qtest/tpm-tis-swtpm-test.c          |   2 +-
+>  tests/qtest/tpm-tis-test.c                |   2 +-
+>  tests/qtest/tpm-util.c                    |  16 +-
+>  hw/arm/Kconfig                            |   1 +
+>  hw/loongarch/Kconfig                      |   2 +
+>  hw/riscv/Kconfig                          |   1 +
+>  hw/tpm/Kconfig                            |   5 +
+>  hw/tpm/meson.build                        |   5 +
+>  hw/tpm/trace-events                       |   2 +-
+>  tests/data/acpi/q35/DSDT.crb.tpm2         | Bin 0 -> 8355 bytes
+>  tests/data/acpi/q35/TPM2.crb.tpm2         | Bin 0 -> 76 bytes
+>  tests/data/acpi/virt/DSDT.crb-device.tpm2 | Bin 0 -> 5276 bytes
+>  tests/data/acpi/virt/TPM2.crb-device.tpm2 | Bin 0 -> 76 bytes
+>  tests/qtest/meson.build                   |   4 +
+>  45 files changed, 1057 insertions(+), 468 deletions(-)
+>  create mode 100644 hw/tpm/tpm_crb.h
+>  create mode 100644 hw/tpm/tpm-sysbus.c
+>  create mode 100644 hw/tpm/tpm_crb_common.c
+>  create mode 100644 hw/tpm/tpm_crb_sysbus.c
+>  create mode 100644 tests/qtest/tpm-crb-device-swtpm-test.c
+>  create mode 100644 tests/qtest/tpm-crb-device-test.c
+>  create mode 100644 tests/data/acpi/q35/DSDT.crb.tpm2
+>  create mode 100644 tests/data/acpi/q35/TPM2.crb.tpm2
+>  create mode 100644 tests/data/acpi/virt/DSDT.crb-device.tpm2
+>  create mode 100644 tests/data/acpi/virt/TPM2.crb-device.tpm2
 >
->  uint64_t tpm_tis_base_addr;
->
-> +static test_data tcg_tpm_test_data(const char *machine)
-> +{
-> +    if (g_strcmp0(machine, "virt") =3D=3D 0) {
-> +        test_data data =3D {
-> +            .machine =3D "virt",
-> +            .tcg_only =3D true,
-> +            .uefi_fl1 =3D "pc-bios/edk2-aarch64-code.fd",
-> +            .uefi_fl2 =3D "pc-bios/edk2-arm-vars.fd",
-> +            .cd =3D
-> +               "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso=
-.qcow2",
-> +            .ram_start =3D 0x40000000ULL,
-> +            .scan_len =3D 128ULL * 1024 * 1024,
-> +        };
-> +        return data;
-> +    } else {
-> +        test_data data =3D {
-> +            .machine =3D machine,
-> +        };
-> +        return data;
-> +    }
-> +}
-> +
->  static void test_acpi_tcg_tpm(const char *machine, const char *tpm_if,
->                                uint64_t base, enum TPMVersion tpm_version=
-)
->  {
-> @@ -1454,7 +1476,7 @@ static void test_acpi_tcg_tpm(const char *machine, =
-const char *tpm_if,
->                                            machine, tpm_if);
->      char *tmp_path =3D g_dir_make_tmp(tmp_dir_name, NULL);
->      TPMTestState test;
-> -    test_data data =3D {};
-> +    test_data data =3D tcg_tpm_test_data(machine);
->      GThread *thread;
->      const char *suffix =3D tpm_version =3D=3D TPM_VERSION_2_0 ? "tpm2" :=
- "tpm12";
->      char *args, *variant =3D g_strdup_printf(".%s.%s", tpm_if, suffix);
-> @@ -1474,13 +1496,14 @@ static void test_acpi_tcg_tpm(const char *machine=
-, const char *tpm_if,
->      thread =3D g_thread_new(NULL, tpm_emu_ctrl_thread, &test);
->      tpm_emu_test_wait_cond(&test);
->
-> -    data.machine =3D machine;
->      data.variant =3D variant;
->
->      args =3D g_strdup_printf(
-> +        " %s"
->          " -chardev socket,id=3Dchr,path=3D%s"
->          " -tpmdev emulator,id=3Ddev,chardev=3Dchr"
->          " -device tpm-%s,tpmdev=3Ddev",
-> +        g_strcmp0(machine, "virt") =3D=3D 0 ? "-cpu cortex-a57" : "",
->          test.addr->u.q_unix.path, tpm_if);
->
->      test_acpi_one(args, &data);
-> @@ -1506,6 +1529,16 @@ static void test_acpi_q35_tcg_tpm12_tis(void)
->      test_acpi_tcg_tpm("q35", "tis", 0xFED40000, TPM_VERSION_1_2);
->  }
->
-> +static void test_acpi_q35_tcg_tpm2_crb(void)
-> +{
-> +    test_acpi_tcg_tpm("q35", "crb", 0xFED40000, TPM_VERSION_2_0);
-> +}
-> +
-> +static void test_acpi_virt_tcg_tpm2_crb(void)
-> +{
-> +    test_acpi_tcg_tpm("virt", "crb-device", 0xFED40000, TPM_VERSION_2_0)=
-;
-> +}
-> +
->  static void test_acpi_tcg_dimm_pxm(const char *machine)
->  {
->      test_data data =3D {};
-> @@ -2212,6 +2245,9 @@ int main(int argc, char *argv[])
->                  qtest_add_func("acpi/q35/tpm12-tis",
->                                 test_acpi_q35_tcg_tpm12_tis);
->              }
-> +            if (tpm_model_is_available("-machine q35", "tpm-crb")) {
-> +                qtest_add_func("acpi/q35/tpm2-crb", test_acpi_q35_tcg_tp=
-m2_crb);
-> +            }
->              qtest_add_func("acpi/q35/bridge", test_acpi_q35_tcg_bridge);
->              qtest_add_func("acpi/q35/no-acpi-hotplug",
->                             test_acpi_q35_tcg_no_acpi_hotplug);
-> @@ -2301,6 +2337,9 @@ int main(int argc, char *argv[])
->                  qtest_add_func("acpi/virt/viot", test_acpi_virt_viot);
->              }
->          }
-> +        if (tpm_model_is_available("-machine virt", "tpm-crb")) {
-> +            qtest_add_func("acpi/virt/tpm2-crb", test_acpi_virt_tcg_tpm2=
-_crb);
-> +        }
->      }
->      ret =3D g_test_run();
->      boot_sector_cleanup(disk);
 > --
 > 2.41.0
 >
