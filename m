@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982837EB6E2
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 20:28:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8FA57EB6DF
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 20:27:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2z3x-0003tl-9p; Tue, 14 Nov 2023 14:27:05 -0500
+	id 1r2z3y-0003ts-3J; Tue, 14 Nov 2023 14:27:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r2z3v-0003st-5N
+ id 1r2z3v-0003tW-RS
  for qemu-devel@nongnu.org; Tue, 14 Nov 2023 14:27:03 -0500
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r2z3t-00070Z-4b
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 14:27:02 -0500
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-565334377d0so4707674a12.2
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 11:27:00 -0800 (PST)
+ id 1r2z3u-00070e-Ac
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 14:27:03 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1cc3542e328so45124915ad.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 11:27:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699990019; x=1700594819; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699990020; x=1700594820; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JLKWYDsjkvpifTsfNAx+wzg8HUX4emgmt/2POiSK9Os=;
- b=IrUj1vtl3lydx3pquErtIpRxF5qV9ufMkAsoWDpwfY9y4Z/aKDvNN3QHIGDNeQ2iIn
- gHr5zCzkVB1uRY8meJDJvWZMfu0THZk4PivtvC5kD2XvLW28oBoqJ1Fm+44PSdr3sR3T
- aUHZzh0ENKEcj1r4ze0beBH/ciK7uUBtqDJTW/ugn7UmJvh/SdQgS8kQGvvbeM5hZTCY
- eIFx9aGApo0poHDo/qMhc9lQ8cJBXoGEfsywh+sjA+/wsAGl39IQRFqip0ix7sBGxejX
- Ielt4iQJsnESeIKouWmE6OYm672zs5cmYtL5Ol+0yg63gGPcBl+Vr8sd1+LYdUN6CUhz
- 8Ecg==
+ bh=YU1go63PndchrVnK6DHWLmkVnDCLAEuAU/t//fUCSL8=;
+ b=apjY9uTQYnXdfj26MSngIfqL69GokTmwPbrjmLKVROSwvxol9MihKQNgrGalLVuRn8
+ crsTkfgh/tiZq12b0C6qmc6kyuCTpVdfV1eLtaJOUmeCNXPJ0nySum5cN6utoA+m/SGx
+ +rf5YqHY7rcZJuv8F++XiCHDZp+rJA3DkWWBsq0vBAxY4uAlwu1ecNVRBAmINZoioA6D
+ OixZqXZYPMVDEUvMbpHOCAZ6t/9MIaFck88Gst/D3TmxaQNa55vGcmnHa2wKTscOizV7
+ J4jDayVPpMWN3OQ9n4WwJzh9pJomWte0aoTRiQ6p6X1ciJCV476g+N+UWONZvFybrQLO
+ FNNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699990019; x=1700594819;
+ d=1e100.net; s=20230601; t=1699990020; x=1700594820;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JLKWYDsjkvpifTsfNAx+wzg8HUX4emgmt/2POiSK9Os=;
- b=jmH+laqxZGUTFfx5CX8BHGdeylZzQ5nv+xkW7LCA4jyrwF7q7trTjdKbrOkSbtxYRK
- Okz1O73Pe63prhhB0+CXmFIdYXUVW1X/RayhCB+q8ppwuNvUi4z2+Z/usM99CwnJXCoU
- GhBsD8VG+HxmjkdsTUvxEw+t+jlAs6sdf5bPN590o9MLXgpYYPRid1jrw+jOlE5zc4IF
- MBuLc7G5lfc+iX3T1DpqQJa6T9C4LGt/LFzWzxzEYEbB89CnycIdgBqO2JLbe+zpQWCB
- g86v/JkNpU6g6/4h/2yWzO/gIbkZsjJ7Zvkbe7pyCEK8eSRVLynumFoEK5/aaJHtsRjB
- wu5Q==
-X-Gm-Message-State: AOJu0YwtLdcUh5nypOnK+n8EZ8u9rAJNsaxV+RfHplgs9k7L4ETaMawy
- e21K1rmJDrzpit+kzX4Zr4V7OLJlwqKdp8qw5SE=
-X-Google-Smtp-Source: AGHT+IFcVkJkDAbpWNkyJdSaHiohgPVk/R7Z0L2HQbaREh5LYfeUA7IzEp4KTTUod4i/dpXraWC2Tw==
-X-Received: by 2002:a17:902:6b88:b0:1cc:2eda:bde8 with SMTP id
- p8-20020a1709026b8800b001cc2edabde8mr3228989plk.24.1699990019599; 
- Tue, 14 Nov 2023 11:26:59 -0800 (PST)
+ bh=YU1go63PndchrVnK6DHWLmkVnDCLAEuAU/t//fUCSL8=;
+ b=DeSS9kjvQQIIpqWTs2+/GZQvlcB6JWZGglNk6UPdil3xNzuGeWTdRJpFEbo71is4gJ
+ nl3z1XHQPdnakcEhoheV+lOhX+CFBxqwXxWniPOaPdhOoIVEcCTXyAupVjuGZN2PiYwH
+ eclFjprXvjP0Pk0Vi1+eWVSo3eZUO4uxRXY940q045zPQaGJXi/PrIoSyzrPqE/jLNAy
+ wEoHFDqZUy+a8ltpg8Vx70ngourgt7cUDFT1wzI2TX8V1eCC0xmkaxf1nU34N0GVYB6Y
+ Us7PptSKaSJnGrIhTJtwTWiMtagnwsYdOPiElR0X8O8VKzaiZam538NLqV/4J7si/HW3
+ Rh7A==
+X-Gm-Message-State: AOJu0Yy6FwxpFxVwZq7uvyPqzg2oexly4q7qFdO+a5nQj7ZRggsOfH1a
+ M9OP351LvnWR6M2IBd7noiNmkFtpyKCnM2F9N9I=
+X-Google-Smtp-Source: AGHT+IHAmf4TroXDJy7fnn9wm1607bIHkKVWNmmIsYJ4iKPRB/42/rC8IhBtWHXi5vZs8l98YMIVKA==
+X-Received: by 2002:a17:902:db0b:b0:1cc:5833:cf5e with SMTP id
+ m11-20020a170902db0b00b001cc5833cf5emr3872457plx.27.1699990020403; 
+ Tue, 14 Nov 2023 11:27:00 -0800 (PST)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  j18-20020a170902c3d200b001c728609574sm6052643plj.6.2023.11.14.11.26.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Nov 2023 11:26:59 -0800 (PST)
+ Tue, 14 Nov 2023 11:27:00 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Jessica Clarke <jrtc27@jrtc27.com>
-Subject: [PULL 2/3] accel/tcg: Forward probe size on to notdirty_write
-Date: Tue, 14 Nov 2023 11:26:55 -0800
-Message-Id: <20231114192656.176451-3-richard.henderson@linaro.org>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 3/3] target/sparc: Fix RETURN
+Date: Tue, 14 Nov 2023 11:26:56 -0800
+Message-Id: <20231114192656.176451-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231114192656.176451-1-richard.henderson@linaro.org>
 References: <20231114192656.176451-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,84 +92,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jessica Clarke <jrtc27@jrtc27.com>
+Perform window restore before pc update. Required in order
+to recognize any window underflow trap with the current pc.
 
-Without this, we just dirty a single byte, and so if the caller writes
-more than one byte to the host memory then we won't have invalidated any
-translation blocks that start after the first byte and overlap those
-writes. In particular, AArch64's DC ZVA implementation uses probe_access
-(via probe_write), and so we don't invalidate the entire block, only the
-TB overlapping the first byte (and, in the unusual case an unaligned VA
-is given to the instruction, we also probe that specific address in
-order to get the right VA reported on an exception, so will invalidate a
-TB overlapping that address too). Since our IC IVAU implementation is a
-no-op for system emulation that relies on the softmmu already having
-detected self-modifying code via this mechanism, this means we have
-observably wrong behaviour when jumping to code that has been DC ZVA'ed.
-In practice this is an unusual thing for software to do, as in reality
-the OS will DC ZVA the page and the application will go and write actual
-instructions to it that aren't UDF #0, but you can write a test that
-clearly shows the faulty behaviour.
-
-For functions other than probe_access it's not clear what size to use
-when 0 is passed in. Arguably a size of 0 shouldn't dirty at all, since
-if you want to actually write then you should pass in a real size, but I
-have conservatively kept the implementation as dirtying the first byte
-in that case so as to avoid breaking any assumptions about that
-behaviour.
-
-Signed-off-by: Jessica Clarke <jrtc27@jrtc27.com>
-Message-Id: <20231104031232.3246614-1-jrtc27@jrtc27.com>
-[rth: Move the dirtysize computation next to notdirty_write.]
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Fixes: 86b82fe021f4 ("target/sparc: Move JMPL, RETT, RETURN to decodetree")
+Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ target/sparc/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 765805e70b..db3f93fda9 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1479,7 +1479,8 @@ int probe_access_full(CPUArchState *env, vaddr addr, int size,
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index 6fc333a6b8..9387299559 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -4096,12 +4096,12 @@ TRANS(RETT, 32, do_add_special, a, do_rett)
+ static bool do_return(DisasContext *dc, int rd, TCGv src)
+ {
+     gen_check_align(dc, src, 3);
++    gen_helper_restore(tcg_env);
  
-     /* Handle clean RAM pages.  */
-     if (unlikely(flags & TLB_NOTDIRTY)) {
--        notdirty_write(env_cpu(env), addr, 1, *pfull, retaddr);
-+        int dirtysize = size == 0 ? 1 : size;
-+        notdirty_write(env_cpu(env), addr, dirtysize, *pfull, retaddr);
-         flags &= ~TLB_NOTDIRTY;
-     }
+     gen_mov_pc_npc(dc);
+     tcg_gen_mov_tl(cpu_npc, src);
+     gen_address_mask(dc, cpu_npc);
  
-@@ -1502,7 +1503,8 @@ int probe_access_full_mmu(CPUArchState *env, vaddr addr, int size,
- 
-     /* Handle clean RAM pages.  */
-     if (unlikely(flags & TLB_NOTDIRTY)) {
--        notdirty_write(env_cpu(env), addr, 1, *pfull, 0);
-+        int dirtysize = size == 0 ? 1 : size;
-+        notdirty_write(env_cpu(env), addr, dirtysize, *pfull, 0);
-         flags &= ~TLB_NOTDIRTY;
-     }
- 
-@@ -1524,7 +1526,8 @@ int probe_access_flags(CPUArchState *env, vaddr addr, int size,
- 
-     /* Handle clean RAM pages. */
-     if (unlikely(flags & TLB_NOTDIRTY)) {
--        notdirty_write(env_cpu(env), addr, 1, full, retaddr);
-+        int dirtysize = size == 0 ? 1 : size;
-+        notdirty_write(env_cpu(env), addr, dirtysize, full, retaddr);
-         flags &= ~TLB_NOTDIRTY;
-     }
- 
-@@ -1560,7 +1563,7 @@ void *probe_access(CPUArchState *env, vaddr addr, int size,
- 
-         /* Handle clean RAM pages.  */
-         if (flags & TLB_NOTDIRTY) {
--            notdirty_write(env_cpu(env), addr, 1, full, retaddr);
-+            notdirty_write(env_cpu(env), addr, size, full, retaddr);
-         }
-     }
- 
+-    gen_helper_restore(tcg_env);
+     dc->npc = DYNAMIC_PC_LOOKUP;
+     return true;
+ }
 -- 
 2.34.1
 
