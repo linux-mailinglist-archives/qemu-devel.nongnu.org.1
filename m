@@ -2,80 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EEAB7EB2AF
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 15:43:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB0C17EB2C1
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 15:49:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2ucq-00058K-Mh; Tue, 14 Nov 2023 09:42:48 -0500
+	id 1r2uiW-0003Ru-A9; Tue, 14 Nov 2023 09:48:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uco-00052B-8m
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:42:46 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uiU-0003RL-I7
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:48:38 -0500
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2ucm-0000Cd-5T
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:42:45 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-54394328f65so8750687a12.3
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 06:42:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uiS-0001DC-Ph
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:48:38 -0500
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-9c773ac9b15so805820266b.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 06:48:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699972962; x=1700577762; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=HKVjdYLFOCZfZk9Pbmo/DUgg/DhEXvN6KIrzrSwtmZE=;
- b=y9OqSrFmXAYGvKJWeueoO5OzpSjk+oeEIe5M4aPBCbvIOCKtQqrpHHbP3fyIJgcp6V
- 0CWMZByiaYLtrKhLgABPA1GWyr0cpgBw9GV/HUpcQv7NckXt32TV9wbEJoMFZvTmrwKt
- yMETG6NEJFAerkGW2CXqIRbbd22qx8x33Mw661jMMY/L8y8VrmLRxcUaHAsrbj6LryNh
- +ZdG8cltN09osOFcCzPeov3scUuEPtGZDgcQ6VmvKqu0W5znJvZiCB9FU+u9SBKjtzAW
- ET4Q+mASy4+bYfPPWm3qQ0xtJrqE9glRxIJzjLU1BZSPb5NMeQjGu+Sj/oZQa8kpIOcN
- bl5Q==
+ d=linaro.org; s=google; t=1699973314; x=1700578114; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gien3tKD1uU0a5g3Bm5UWg97KBauF+zI5VueJWKK7QY=;
+ b=CqzOPSUI3BHhSN26lGeGZkMgFD7XS53f2bQYnfgvdpxB6M7HxmSjxoUGDN3Ca7loiz
+ KNelB6l6LY8NaMiw5QM7id/z7PBz3AuJvM3Q4yNftGPCE9bovGBQxqlS7/5ThfdXLN6X
+ cVHHdafjmfdBSJ7lAAKTw91O5Qdjhtt8Zf8w8LFOgjYwSmKSVX664JP4p3sTzQ9+MmbE
+ bDsI5CP+hXV1MKSNw6ob+HqKn1g+DE1FcxfTVbMe1myv0IL1/SPzjUkzqZGG7GztVwQg
+ nLwKzejRwigxRcXS9KhJtMDlHQqN78HV68BpAOqVNdvPUb1pm0ztwRQJBW1ZWdrQJZFW
+ DE6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699972962; x=1700577762;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HKVjdYLFOCZfZk9Pbmo/DUgg/DhEXvN6KIrzrSwtmZE=;
- b=DN8msuFlDxBdqVwm/PI1nPKoQFZsC+9OWgpKZeCxFlk2tJKyVgg7IleHz5sARxSp0K
- G0hvD0eVTDyATr392vsmWVE9eEz2OPKQ88ZBh+hmT+GcU8p/MMyp7rgSRiDYttH776Wg
- bZDgQKgiDub0292GCn0UdcM/H9vr86MyBU5TwrieSta3ykWrNgOaMOoDlLEULz2c7he0
- 2U3K6+Qv2XQIz6o88G4gsmirRoWbZJQPmwpO2wuAeP1B9vHWpdQujUmjC3L2y+OTCPsW
- SfR1iQsm63QtXAfq0WQE/OHZA838UiV5nfpjETQkN249LR7ETd5aj34YRAvmb+cHmGrg
- QoTQ==
-X-Gm-Message-State: AOJu0YzimjqVVzny4a1iGtenJEjkvQxpzAT4IOYkIe/V/Vamb3T1yEYj
- N3LT5oqETn8ltagTsKh12Nbj3w==
-X-Google-Smtp-Source: AGHT+IEtaJpI1MeBRr8Mea8GsJTm1iOrHuuVOdV5kTZQGJCcYoMf9ITDl6j3WqvV+yhiP/TmmsUgVw==
-X-Received: by 2002:aa7:c6cc:0:b0:544:1fb7:d5e4 with SMTP id
- b12-20020aa7c6cc000000b005441fb7d5e4mr7419836eds.0.1699972962499; 
- Tue, 14 Nov 2023 06:42:42 -0800 (PST)
-Received: from [192.168.69.100] (cac94-h02-176-184-25-155.dsl.sta.abo.bbox.fr.
+ d=1e100.net; s=20230601; t=1699973314; x=1700578114;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gien3tKD1uU0a5g3Bm5UWg97KBauF+zI5VueJWKK7QY=;
+ b=leSsBX0v0lnJwraZ0e6yQPL/euzuQJc7RkdMTse4JQqCA4wrbOx1jdJb8XfORTYYxm
+ 0PyOCgdnjyiGFOie+9jWOQBtxXuCECDrc2L8LrsJdBy1HtQbBY3tRGy1Y9ueXbS6o3bV
+ KjswK6rpHYGbEowqdQ/UclsmTScTPK6PfSXgXa/b0ag77aaChNYXOJtTTTOJgPKE1NKn
+ +NTsjaK1uqWsefYpvZu+GF2GP+dHZPNRJl2yK6cxCee5O5+aN4v66oktjr2XGPd5Tw98
+ GMniHzByN9qgclCJJfKcThjUuOjgs6tDCWN389uHEwy/dUEMRO/Q6i3pcXAJTz6O+9tn
+ iwEQ==
+X-Gm-Message-State: AOJu0YzMVWFLAscPf0DXgPxcxqAEWCTJuVomV5IGjaCGwLO4gaSSSMOp
+ QBBj5e+bQxyt8Jqwi+E3DD6ckKiOLb/ieCtZK3E=
+X-Google-Smtp-Source: AGHT+IEu91zKC7LC4/S0QO2ncwyx8uhR6TfmFNS7In6xq4Ki75zEwTcPr69VvFtNgJOJ2XPvcXKX4A==
+X-Received: by 2002:a17:906:2587:b0:9dd:7133:881 with SMTP id
+ m7-20020a170906258700b009dd71330881mr8091353ejb.40.1699973314648; 
+ Tue, 14 Nov 2023 06:48:34 -0800 (PST)
+Received: from m1x-phil.lan (cac94-h02-176-184-25-155.dsl.sta.abo.bbox.fr.
  [176.184.25.155]) by smtp.gmail.com with ESMTPSA id
- u27-20020a50c05b000000b0053de19620b9sm5318059edd.2.2023.11.14.06.42.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 06:42:42 -0800 (PST)
-Message-ID: <9fc50c94-123c-414c-b074-9a742856a3ef@linaro.org>
-Date: Tue, 14 Nov 2023 15:42:40 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/avocado: Replace assertEquals() for Python 3.12
- compatibility
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ w14-20020a17090652ce00b009ae3e6c342asm5642422ejn.111.2023.11.14.06.48.33
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 14 Nov 2023 06:48:34 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>
-References: <20231114134326.287242-1-thuth@redhat.com>
- <d3c8466c-9a41-4e03-b69f-28ff39aeafd8@linaro.org>
- <f589472f-de29-48df-8355-1a60de029d32@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <f589472f-de29-48df-8355-1a60de029d32@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: [PATCH] tests/avocado: Replace assertRegexpMatches() for Python 3.12
+ compatibility
+Date: Tue, 14 Nov 2023 15:48:31 +0100
+Message-ID: <20231114144832.71612-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,56 +92,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/11/23 15:21, Thomas Huth wrote:
-> On 14/11/2023 15.10, Philippe Mathieu-Daudé wrote:
->> Hi Thomas,
->>
->> On 14/11/23 14:43, Thomas Huth wrote:
->>> assertEquals() has been removed in Python 3.12 and should be replaced by
->>> assertEqual(). See: https://docs.python.org/3.12/whatsnew/3.12.html#id3
->>
->>  From this list I see assertEquals() has been deprecated in 3.2, along
->> with assertRegexpMatches(). No warning for this single use?
->>
->> tests/avocado/version.py:25:        self.assertRegexpMatches(res, 
->> r'^(\d+\.\d+\.\d)')
->>
->> Otherwise,
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
-> Thanks!
-> 
-> I still cannot run all avocado tests yet, so I didn't notice this problem
-> yet.
+assertRegexpMatches() has been removed in Python 3.12 and should be replaced by
+assertRegex(). See: https://docs.python.org/3.12/whatsnew/3.12.html#id3
 
-At least you can run *some* tests :>
+Inspired-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ docs/devel/testing.rst   | 2 +-
+ tests/avocado/version.py | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-FYI macOS users still can't run QEMU's Avocado test suite.
-Personally I run it somewhere in a cloud machine.
+diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
+index fef64accc1..0af8f32fa3 100644
+--- a/docs/devel/testing.rst
++++ b/docs/devel/testing.rst
+@@ -1016,7 +1016,7 @@ class.  Here's a simple usage example:
+           self.vm.launch()
+           res = self.vm.cmd('human-monitor-command',
+                             command_line='info version')
+-          self.assertRegexpMatches(res, r'^(\d+\.\d+\.\d)')
++          self.assertRegex(res, r'^(\d+\.\d+\.\d)')
+ 
+ To execute your test, run:
+ 
+diff --git a/tests/avocado/version.py b/tests/avocado/version.py
+index 93ffdf3d97..c6139568a1 100644
+--- a/tests/avocado/version.py
++++ b/tests/avocado/version.py
+@@ -22,4 +22,4 @@ def test_qmp_human_info_version(self):
+         self.vm.launch()
+         res = self.vm.cmd('human-monitor-command',
+                           command_line='info version')
+-        self.assertRegexpMatches(res, r'^(\d+\.\d+\.\d)')
++        self.assertRegex(res, r'^(\d+\.\d+\.\d)')
+-- 
+2.41.0
 
-> But you're right, if I only run this test manually, it also fails.
-> Care to send a patch, or want me to include it in my patch?
-
-OK I'll send.
-
-> Anyway, I'm seeing also failures here:
-> 
->   tests/avocado/replay_kernel.py:ReplayKernelNormal.test_x86_64_pc: 
-> INTERRUPTED
->   tests/avocado/reverse_debugging.py:ReverseDebugging_ppc64.test_ppc64_pseries: INTERRUPTED
-
-Sometimes due to timeout.
-
->   tests/avocado/reverse_debugging.py:ReverseDebugging_ppc64.test_ppc64_powernv: ERROR
-
-This one is concerning.
-
-> Are these still working for you?
-> (IIRC at least the replay_kernel test was also failing for me
-> before I upgraded to Fedora 39, so it's likely not related to
-> the new Python version)
-
-Regards,
-
-Phil.
 
