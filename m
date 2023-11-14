@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0380F7EBA71
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7737EBA6F
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:05:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r33Kf-0005Up-9S; Tue, 14 Nov 2023 19:00:37 -0500
+	id 1r33Ki-0005lp-ID; Tue, 14 Nov 2023 19:00:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33KO-0004sS-6O
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:00:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33Kg-0005gG-AT
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:00:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33KL-0007v6-Mt
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:00:19 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33Kd-00083e-8w
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:00:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700006417;
+ s=mimecast20190719; t=1700006430;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MQ6OO5BRPdbvEJMn2gMZcE2xIKykdClZQVBu6Oydv2k=;
- b=Vnqit/meTEavBy2UeyQvWEdbkqqwrjXL6S/KiymwtvecOtOPzCAZC3NRik5RtWUIbRxKy/
- ia3q4rL4jt4VXzuaXVM5A+ayY9eft030A2fU35s2TO+cbSJVLn3LNJR10eds7ctHN1dbSO
- iYFNMbqbSvz1QXdEN1sJE7JV++BAqg8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-658-FeZK4i5GM7ChY_OZroJnlg-1; Tue,
- 14 Nov 2023 19:00:11 -0500
-X-MC-Unique: FeZK4i5GM7ChY_OZroJnlg-1
+ bh=wkjJc9SmULphEh7KBEubO5fjf1sUZsLSsPFKusKCiHg=;
+ b=gaPsaa47HAwTyi7itMPPNqdOQoZ3MWAliKA+MMlSKD7j92ZtudxHiz+ty+U0+hEtthn0lq
+ QLDTB4UmktvpHRW0SeKTxu/fxhZqeRR9UBbrH7mYTYSQ3I339y0lA9c9Z6T/cSMzYacVIQ
+ aRRAGFmY3kowV5c+8YaeE04Qj6MRJp4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-237-b8vccmANMAesCOE6EAogfw-1; Tue, 14 Nov 2023 19:00:23 -0500
+X-MC-Unique: b8vccmANMAesCOE6EAogfw-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E0C073800083;
- Wed, 15 Nov 2023 00:00:08 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DDD7D101A597;
+ Wed, 15 Nov 2023 00:00:21 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.44])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4E9C8C15885;
- Tue, 14 Nov 2023 23:59:56 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 663F1C15885;
+ Wed, 15 Nov 2023 00:00:09 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -59,25 +59,25 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
  ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
  jcmvbkbc@gmail.com, shan.gavin@gmail.com
-Subject: [PATCH v5 14/31] target/m68k: Use generic cpu_list()
-Date: Wed, 15 Nov 2023 09:56:11 +1000
-Message-ID: <20231114235628.534334-15-gshan@redhat.com>
+Subject: [PATCH v5 15/31] target/mips: Use generic cpu_list()
+Date: Wed, 15 Nov 2023 09:56:12 +1000
+Message-ID: <20231114235628.534334-16-gshan@redhat.com>
 In-Reply-To: <20231114235628.534334-1-gshan@redhat.com>
 References: <20231114235628.534334-1-gshan@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,112 +95,122 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Before it's applied:
 
-[gshan@gshan q]$ ./build/qemu-system-m68k -cpu ?
-cfv4e
-m5206
-m5208
-m68000
-m68010
-m68020
-m68030
-m68040
-m68060
-any
+[gshan@gshan q]$ ./build/qemu-system-mips64 -cpu ?
+MIPS '4Kc'
+MIPS '4Km'
+MIPS '4KEcR1'
+MIPS 'XBurstR1'
+MIPS '4KEmR1'
+MIPS '4KEc'
+MIPS '4KEm'
+MIPS '24Kc'
+MIPS '24KEc'
+MIPS '24Kf'
+MIPS '34Kf'
+MIPS '74Kf'
+MIPS 'XBurstR2'
+MIPS 'M14K'
+MIPS 'M14Kc'
+MIPS 'P5600'
+MIPS 'mips32r6-generic'
+MIPS 'I7200'
+MIPS 'R4000'
+MIPS 'VR5432'
+MIPS '5Kc'
+MIPS '5Kf'
+MIPS '20Kc'
+MIPS 'MIPS64R2-generic'
+MIPS '5KEc'
+MIPS '5KEf'
+MIPS 'I6400'
+MIPS 'I6500'
+MIPS 'Loongson-2E'
+MIPS 'Loongson-2F'
+MIPS 'Loongson-3A1000'
+MIPS 'Loongson-3A4000'
+MIPS 'mips64dspr2'
+MIPS 'Octeon68XX'
 
 After it's applied:
 
-[gshan@gshan q]$ ./build/qemu-system-m68k -cpu ?
+[gshan@gshan q]$ ./build/qemu-system-mips64 -cpu ?
 Available CPUs:
-  any
-  cfv4e
-  m5206
-  m5208
-  m68000
-  m68010
-  m68020
-  m68030
-  m68040
-  m68060
+  20Kc
+  24Kc
+  24KEc
+  24Kf
+  34Kf
+  4Kc
+  4KEc
+  4KEcR1
+  4KEm
+  4KEmR1
+  4Km
+  5Kc
+  5KEc
+  5KEf
+  5Kf
+  74Kf
+  I6400
+  I6500
+  I7200
+  Loongson-2E
+  Loongson-2F
+  Loongson-3A1000
+  Loongson-3A4000
+  M14K
+  M14Kc
+  mips32r6-generic
+  mips64dspr2
+  MIPS64R2-generic
+  Octeon68XX
+  P5600
+  R4000
+  VR5432
+  XBurstR1
+  XBurstR2
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- target/m68k/cpu.h    |  4 ----
- target/m68k/helper.c | 40 ----------------------------------------
- 2 files changed, 44 deletions(-)
+ target/mips/cpu-defs.c.inc | 9 ---------
+ target/mips/cpu.h          | 4 ----
+ 2 files changed, 13 deletions(-)
 
-diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
-index 6cfc696d2b..d13427b0fe 100644
---- a/target/m68k/cpu.h
-+++ b/target/m68k/cpu.h
-@@ -556,8 +556,6 @@ static inline bool m68k_feature(CPUM68KState *env, int feature)
-     return (env->features & BIT_ULL(feature)) != 0;
- }
+diff --git a/target/mips/cpu-defs.c.inc b/target/mips/cpu-defs.c.inc
+index c0c389c59a..fbf787d8ce 100644
+--- a/target/mips/cpu-defs.c.inc
++++ b/target/mips/cpu-defs.c.inc
+@@ -1018,15 +1018,6 @@ const mips_def_t mips_defs[] =
+ };
+ const int mips_defs_number = ARRAY_SIZE(mips_defs);
  
--void m68k_cpu_list(void);
--
- void register_m68k_insns (CPUM68KState *env);
- 
- enum {
-@@ -576,8 +574,6 @@ enum {
- 
- #define CPU_RESOLVING_TYPE TYPE_M68K_CPU
- 
--#define cpu_list m68k_cpu_list
--
- /* MMU modes definitions */
- #define MMU_KERNEL_IDX 0
- #define MMU_USER_IDX 1
-diff --git a/target/m68k/helper.c b/target/m68k/helper.c
-index 0a1544cd68..14508dfa11 100644
---- a/target/m68k/helper.c
-+++ b/target/m68k/helper.c
-@@ -29,46 +29,6 @@
- 
- #define SIGNBIT (1u << 31)
- 
--/* Sort alphabetically, except for "any". */
--static gint m68k_cpu_list_compare(gconstpointer a, gconstpointer b)
+-void mips_cpu_list(void)
 -{
--    ObjectClass *class_a = (ObjectClass *)a;
--    ObjectClass *class_b = (ObjectClass *)b;
--    const char *name_a, *name_b;
+-    int i;
 -
--    name_a = object_class_get_name(class_a);
--    name_b = object_class_get_name(class_b);
--    if (strcmp(name_a, "any-" TYPE_M68K_CPU) == 0) {
--        return 1;
--    } else if (strcmp(name_b, "any-" TYPE_M68K_CPU) == 0) {
--        return -1;
--    } else {
--        return strcasecmp(name_a, name_b);
+-    for (i = 0; i < ARRAY_SIZE(mips_defs); i++) {
+-        qemu_printf("MIPS '%s'\n", mips_defs[i].name);
 -    }
 -}
 -
--static void m68k_cpu_list_entry(gpointer data, gpointer user_data)
--{
--    ObjectClass *c = data;
--    const char *typename;
--    char *name;
--
--    typename = object_class_get_name(c);
--    name = g_strndup(typename, strlen(typename) - strlen("-" TYPE_M68K_CPU));
--    qemu_printf("%s\n", name);
--    g_free(name);
--}
--
--void m68k_cpu_list(void)
--{
--    GSList *list;
--
--    list = object_class_get_list(TYPE_M68K_CPU, false);
--    list = g_slist_sort(list, m68k_cpu_list_compare);
--    g_slist_foreach(list, m68k_cpu_list_entry, NULL);
--    g_slist_free(list);
--}
--
- static int cf_fpu_gdb_get_reg(CPUM68KState *env, GByteArray *mem_buf, int n)
+ static void fpu_init (CPUMIPSState *env, const mips_def_t *def)
  {
-     if (n < 8) {
+     int i;
+diff --git a/target/mips/cpu.h b/target/mips/cpu.h
+index 52f13f0363..1163a71f3c 100644
+--- a/target/mips/cpu.h
++++ b/target/mips/cpu.h
+@@ -1235,10 +1235,6 @@ struct MIPSCPUClass {
+     bool no_data_aborts;
+ };
+ 
+-void mips_cpu_list(void);
+-
+-#define cpu_list mips_cpu_list
+-
+ void cpu_wrdsp(uint32_t rs, uint32_t mask_num, CPUMIPSState *env);
+ uint32_t cpu_rddsp(uint32_t mask_num, CPUMIPSState *env);
+ 
 -- 
 2.41.0
 
