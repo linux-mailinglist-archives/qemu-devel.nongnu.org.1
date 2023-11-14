@@ -2,92 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 525007EB71A
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D2E7EB71C
 	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 20:59:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2zXR-0004pT-Ir; Tue, 14 Nov 2023 14:57:33 -0500
+	id 1r2zXt-0004vw-5t; Tue, 14 Nov 2023 14:58:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1r2zXO-0004ov-D1; Tue, 14 Nov 2023 14:57:30 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1r2zXh-0004so-Gs; Tue, 14 Nov 2023 14:57:50 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1r2zXM-0003VP-AM; Tue, 14 Nov 2023 14:57:30 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ id 1r2zXc-0003X5-GX; Tue, 14 Nov 2023 14:57:49 -0500
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AEJtjAA028821; Tue, 14 Nov 2023 19:57:24 GMT
+ 3AEJgLlA027602; Tue, 14 Nov 2023 19:57:34 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=T2h6Vld3JJl1r+1DAynq4KfyfjylIJodgYV7FUFYb5k=;
- b=YleKe/L6cVtHEmAj2SST7dRGoqguP75hDIJhwI9tVhlvkeL8676lzqBn8i3lg/DA0Gf0
- VWrfKBQrTKk6ItP10ugVXNCij+ELF+5atk+Q9IUV16TZGQEhkpMy5m0fo1uI+QoShFOj
- glzSHxoBwYKSXWMhLu5ac2wfFN+WTljS+ZTxv8s40iwPetXqh5oEPghWug39ORNXlrrJ
- 6tragp/fI2Ry+yAVECFA+LBH1a8hTEQl/0HQJ/t/HHmJU+fjmYbb7nXx/2awtvPKIE3w
- 9HHeyqI5oSyMmh4w+WDV780rD4DCHE9OpuhL+Y6NqpcZGmWxXIdAqB9L6gFxxi87ZFUH yQ== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=CmuTtpK9T5s4M6jTTweelSCKgkqrgWmB8sMHaEeXITo=;
+ b=qCXxAu2afjQX85150eTXY9/f60DUwK/Y7ngDLLK7Rhlt2ds0HSMKSdAqxbHvCMB89Sjg
+ lqZRVdzPVNvx7iv69WHRw4bSsGsfKc+4R9k3paIqOHMgmUMau51TjoUOB9GwYEsDhmLP
+ Pa4gvM5LY+Mn/x/R9+Hm89iW4Sd3kueWs1Bzo++WlCrdZouBO/OFTnilkcpFZB5RmAXI
+ V5d3DG9Qh1ZoeHLTMJuh59D6C12ZKzh+RqwQXyQ+aH5ZAvQXkTEQGeSy3TB+xLLGDnwn
+ VVbvjCuZRdXpAIWXS8O3lhZav6U2BkL2kSaXEuw4zTtG2YZfYuh6lrqYfjdTIwkP6GyL qw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucffrg11r-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucf9ngb5j-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 14 Nov 2023 19:57:24 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AEJuqNP031588;
- Tue, 14 Nov 2023 19:57:24 GMT
+ Tue, 14 Nov 2023 19:57:33 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AEJgfXO027875;
+ Tue, 14 Nov 2023 19:57:33 GMT
 Received: from ppma23.wdc07v.mail.ibm.com
  (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucffrg11h-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucf9ngb52-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 14 Nov 2023 19:57:24 +0000
+ Tue, 14 Nov 2023 19:57:32 +0000
 Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
  by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AEJnBjU022162; Tue, 14 Nov 2023 19:57:23 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uanekj48q-1
+ 3AEJn84m022137; Tue, 14 Nov 2023 19:57:31 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uanekj498-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 14 Nov 2023 19:57:23 +0000
+ Tue, 14 Nov 2023 19:57:31 +0000
 Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
  [10.241.53.101])
- by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3AEJvMV916450074
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AEJvVjG19399240
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 14 Nov 2023 19:57:23 GMT
+ Tue, 14 Nov 2023 19:57:31 GMT
 Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D6CE45805C;
- Tue, 14 Nov 2023 19:57:22 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id EFD215805C;
+ Tue, 14 Nov 2023 19:57:30 +0000 (GMT)
 Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A2D375805A;
- Tue, 14 Nov 2023 19:57:22 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id BC12F5805A;
+ Tue, 14 Nov 2023 19:57:30 +0000 (GMT)
 Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
  by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 14 Nov 2023 19:57:22 +0000 (GMT)
+ Tue, 14 Nov 2023 19:57:30 +0000 (GMT)
 From: Glenn Miles <milesg@linux.vnet.ibm.com>
 To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
 Cc: Glenn Miles <milesg@linux.vnet.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PATCH v3 0/8] Add powernv10 I2C devices and tests
-Date: Tue, 14 Nov 2023 13:56:51 -0600
-Message-Id: <20231114195659.1219821-1-milesg@linux.vnet.ibm.com>
+Subject: [PATCH v3 1/8] ppc/pnv: Add pca9552 to powernv10 for PCIe hotplug
+ power control
+Date: Tue, 14 Nov 2023 13:56:52 -0600
+Message-Id: <20231114195659.1219821-2-milesg@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20231114195659.1219821-1-milesg@linux.vnet.ibm.com>
+References: <20231114195659.1219821-1-milesg@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: n2e4sfqilBUsfN30qwFyjfOMpoHeDTXP
-X-Proofpoint-ORIG-GUID: RGrOXqaq3awF4r3IkUEZZW-aClXl9U_W
+X-Proofpoint-GUID: QslWSjAiHaMBa-aWnEvHPZG9el8NsyEs
+X-Proofpoint-ORIG-GUID: xgrXh_AIF5wpx_MVF6kjwpTij2JUUw2k
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-14_20,2023-11-14_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 spamscore=0
- clxscore=1015 impostorscore=0 malwarescore=0 mlxlogscore=709 phishscore=0
- adultscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxscore=0 malwarescore=0
+ bulkscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0
+ suspectscore=0 impostorscore=0 mlxlogscore=720 adultscore=0 phishscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311060000 definitions=main-2311140150
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -110,45 +114,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series of patches includes support, tests and fixes for
-adding PCA9552 and PCA9554 I2C devices to the powernv10 chip.
+The Power Hypervisor code expects to see a pca9552 device connected
+to the 3rd PNV I2C engine on port 1 at I2C address 0x63 (or left-
+justified address of 0xC6).  This is used by hypervisor code to
+control PCIe slot power during hotplug events.
 
-The PCA9552 device is used for PCIe slot hotplug power control
-and monitoring, while the PCA9554 device is used for presence
-detection of IBM CableCard devices.  Both devices are required
-by the Power Hypervisor Firmware on Power10 platforms.
+Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+---
+Based-on: <20231024181144.4045056-3-milesg@linux.vnet.ibm.com>
+[PATCH v3 2/2] misc/pca9552: Let external devices set pca9552 inputs
 
-Changes from previous version:
-  - Added Fixes: tag to commits 3 and 4
-  - Fixed formatting errors in commits 2 and 8
+No changes from v2
 
-Glenn Miles (8):
-  ppc/pnv: Add pca9552 to powernv10 for PCIe hotplug power control
-  ppc/pnv: Wire up pca9552 GPIO pins for PCIe hotplug power control
-  ppc/pnv: PNV I2C engines assigned incorrect XSCOM addresses
-  ppc/pnv: Fix PNV I2C invalid status after reset
-  ppc/pnv: Use resettable interface to reset child I2C buses
-  misc: Add a pca9554 GPIO device model
-  ppc/pnv: Add a pca9554 I2C device to powernv10
-  ppc/pnv: Test pnv i2c master and connected devices
+ hw/ppc/Kconfig | 1 +
+ hw/ppc/pnv.c   | 7 +++++++
+ 2 files changed, 8 insertions(+)
 
- MAINTAINERS                     |   2 +
- hw/misc/Kconfig                 |   4 +
- hw/misc/meson.build             |   1 +
- hw/misc/pca9554.c               | 328 ++++++++++++++++
- hw/ppc/Kconfig                  |   2 +
- hw/ppc/pnv.c                    |  35 +-
- hw/ppc/pnv_i2c.c                |  47 ++-
- include/hw/misc/pca9554.h       |  36 ++
- include/hw/misc/pca9554_regs.h  |  19 +
- tests/qtest/meson.build         |   1 +
- tests/qtest/pnv-host-i2c-test.c | 650 ++++++++++++++++++++++++++++++++
- 11 files changed, 1103 insertions(+), 22 deletions(-)
- create mode 100644 hw/misc/pca9554.c
- create mode 100644 include/hw/misc/pca9554.h
- create mode 100644 include/hw/misc/pca9554_regs.h
- create mode 100644 tests/qtest/pnv-host-i2c-test.c
-
+diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
+index 56f0475a8e..f77ca773cf 100644
+--- a/hw/ppc/Kconfig
++++ b/hw/ppc/Kconfig
+@@ -32,6 +32,7 @@ config POWERNV
+     select XIVE
+     select FDT_PPC
+     select PCI_POWERNV
++    select PCA9552
+ 
+ config PPC405
+     bool
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 9c29727337..7afaf1008f 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -1877,6 +1877,13 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
+                               qdev_get_gpio_in(DEVICE(&chip10->psi),
+                                                PSIHB9_IRQ_SBE_I2C));
+     }
++
++    /*
++     * Add a PCA9552 I2C device for PCIe hotplug control
++     * to engine 2, bus 1, address 0x63
++     */
++    i2c_slave_create_simple(chip10->i2c[2].busses[1], "pca9552", 0x63);
++
+ }
+ 
+ static uint32_t pnv_chip_power10_xscom_pcba(PnvChip *chip, uint64_t addr)
 -- 
 2.31.1
 
