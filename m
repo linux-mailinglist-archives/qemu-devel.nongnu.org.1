@@ -2,80 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB0C17EB2C1
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 15:49:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9217EB2D9
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 15:53:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2uiW-0003Ru-A9; Tue, 14 Nov 2023 09:48:40 -0500
+	id 1r2umb-0005o1-72; Tue, 14 Nov 2023 09:52:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uiU-0003RL-I7
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:48:38 -0500
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uiS-0001DC-Ph
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:48:38 -0500
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-9c773ac9b15so805820266b.2
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 06:48:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699973314; x=1700578114; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=gien3tKD1uU0a5g3Bm5UWg97KBauF+zI5VueJWKK7QY=;
- b=CqzOPSUI3BHhSN26lGeGZkMgFD7XS53f2bQYnfgvdpxB6M7HxmSjxoUGDN3Ca7loiz
- KNelB6l6LY8NaMiw5QM7id/z7PBz3AuJvM3Q4yNftGPCE9bovGBQxqlS7/5ThfdXLN6X
- cVHHdafjmfdBSJ7lAAKTw91O5Qdjhtt8Zf8w8LFOgjYwSmKSVX664JP4p3sTzQ9+MmbE
- bDsI5CP+hXV1MKSNw6ob+HqKn1g+DE1FcxfTVbMe1myv0IL1/SPzjUkzqZGG7GztVwQg
- nLwKzejRwigxRcXS9KhJtMDlHQqN78HV68BpAOqVNdvPUb1pm0ztwRQJBW1ZWdrQJZFW
- DE6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699973314; x=1700578114;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gien3tKD1uU0a5g3Bm5UWg97KBauF+zI5VueJWKK7QY=;
- b=leSsBX0v0lnJwraZ0e6yQPL/euzuQJc7RkdMTse4JQqCA4wrbOx1jdJb8XfORTYYxm
- 0PyOCgdnjyiGFOie+9jWOQBtxXuCECDrc2L8LrsJdBy1HtQbBY3tRGy1Y9ueXbS6o3bV
- KjswK6rpHYGbEowqdQ/UclsmTScTPK6PfSXgXa/b0ag77aaChNYXOJtTTTOJgPKE1NKn
- +NTsjaK1uqWsefYpvZu+GF2GP+dHZPNRJl2yK6cxCee5O5+aN4v66oktjr2XGPd5Tw98
- GMniHzByN9qgclCJJfKcThjUuOjgs6tDCWN389uHEwy/dUEMRO/Q6i3pcXAJTz6O+9tn
- iwEQ==
-X-Gm-Message-State: AOJu0YzMVWFLAscPf0DXgPxcxqAEWCTJuVomV5IGjaCGwLO4gaSSSMOp
- QBBj5e+bQxyt8Jqwi+E3DD6ckKiOLb/ieCtZK3E=
-X-Google-Smtp-Source: AGHT+IEu91zKC7LC4/S0QO2ncwyx8uhR6TfmFNS7In6xq4Ki75zEwTcPr69VvFtNgJOJ2XPvcXKX4A==
-X-Received: by 2002:a17:906:2587:b0:9dd:7133:881 with SMTP id
- m7-20020a170906258700b009dd71330881mr8091353ejb.40.1699973314648; 
- Tue, 14 Nov 2023 06:48:34 -0800 (PST)
-Received: from m1x-phil.lan (cac94-h02-176-184-25-155.dsl.sta.abo.bbox.fr.
- [176.184.25.155]) by smtp.gmail.com with ESMTPSA id
- w14-20020a17090652ce00b009ae3e6c342asm5642422ejn.111.2023.11.14.06.48.33
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 14 Nov 2023 06:48:34 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ (Exim 4.90_1) (envelope-from
+ <BATV+a8e905033730cff805ca+7387+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1r2umE-0005mG-3q; Tue, 14 Nov 2023 09:52:31 -0500
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+a8e905033730cff805ca+7387+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1r2umB-0002CA-JK; Tue, 14 Nov 2023 09:52:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:Sender
+ :Reply-To:Content-ID:Content-Description;
+ bh=ICHewS3Ac/ijiK+ks360OQMk79lzoLRKl9is1vU3rIo=; b=U/CUMp0TGxLvfnFsfS6JM/cNfY
+ 5wmBRW+E/1KIVJf20V5+jE5hpQoIcX1ntDj6CtV56TFeY35OnTNbWKI5T7TT0iusmxdyY4RQCoN6O
+ 8Ip7i0xzvikC5ImMhtcy/PdvZnNB5arsCne2k1TIYXV4PWFX0AcSsCK4OejpSHOklM/U3JvNlk9AJ
+ xbs4LlptfNvnJtxX2h0FDT7d05kYqCiqBpVerZMMBj2s115qnRA9XGkM+p4HCMOticwQ/2VpprjWX
+ iM+ol5pmxESEpBoFUrpDzg9qUko74mhma5Oy7pNE6vKjBY94rSAmlpK6Q+HDrf3aHgarnsIvOzmlR
+ YMNWRmZQ==;
+Received: from [12.186.190.2] (helo=[127.0.0.1])
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1r2um4-008XpM-3f; Tue, 14 Nov 2023 14:52:20 +0000
+Date: Tue, 14 Nov 2023 09:50:06 -0500
+From: David Woodhouse <dwmw2@infradead.org>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ David Woodhouse <dwmw@amazon.co.uk>, qemu-devel@nongnu.org
+CC: =?ISO-8859-1?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>,
+ Paul Durrant <paul@xen.org>, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ xen-devel@lists.xenproject.org, qemu-block@nongnu.org,
+ Anthony Perard <anthony.perard@citrix.com>, kvm@vger.kernel.org,
+ Thomas Huth <thuth@redhat.com>, Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>
-Subject: [PATCH] tests/avocado: Replace assertRegexpMatches() for Python 3.12
- compatibility
-Date: Tue, 14 Nov 2023 15:48:31 +0100
-Message-ID: <20231114144832.71612-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
+ Beraldo Leal <bleal@redhat.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH-for-9=2E0_v2_01/19=5D_tests/avocado=3A_A?=
+ =?US-ASCII?Q?dd_=27guest=3Axen=27_tag_to_tests_running_Xen_guest?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20231114143816.71079-2-philmd@linaro.org>
+References: <20231114143816.71079-1-philmd@linaro.org>
+ <20231114143816.71079-2-philmd@linaro.org>
+Message-ID: <94D9484A-917D-4970-98DE-35B84BEDA1DC@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+a8e905033730cff805ca+7387+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,40 +83,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-assertRegexpMatches() has been removed in Python 3.12 and should be replaced by
-assertRegex(). See: https://docs.python.org/3.12/whatsnew/3.12.html#id3
+On 14 November 2023 09:37:57 GMT-05:00, "Philippe Mathieu-Daud=C3=A9" <phil=
+md@linaro=2Eorg> wrote:
+>Add a tag to run all Xen-specific tests using:
+>
+>  $ make check-avocado AVOCADO_TAGS=3D'guest:xen'
+>
+>Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
+>---
+> tests/avocado/boot_xen=2Epy      | 3 +++
+> tests/avocado/kvm_xen_guest=2Epy | 1 +
+> 2 files changed, 4 insertions(+)
 
-Inspired-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- docs/devel/testing.rst   | 2 +-
- tests/avocado/version.py | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
-index fef64accc1..0af8f32fa3 100644
---- a/docs/devel/testing.rst
-+++ b/docs/devel/testing.rst
-@@ -1016,7 +1016,7 @@ class.  Here's a simple usage example:
-           self.vm.launch()
-           res = self.vm.cmd('human-monitor-command',
-                             command_line='info version')
--          self.assertRegexpMatches(res, r'^(\d+\.\d+\.\d)')
-+          self.assertRegex(res, r'^(\d+\.\d+\.\d)')
- 
- To execute your test, run:
- 
-diff --git a/tests/avocado/version.py b/tests/avocado/version.py
-index 93ffdf3d97..c6139568a1 100644
---- a/tests/avocado/version.py
-+++ b/tests/avocado/version.py
-@@ -22,4 +22,4 @@ def test_qmp_human_info_version(self):
-         self.vm.launch()
-         res = self.vm.cmd('human-monitor-command',
-                           command_line='info version')
--        self.assertRegexpMatches(res, r'^(\d+\.\d+\.\d)')
-+        self.assertRegex(res, r'^(\d+\.\d+\.\d)')
--- 
-2.41.0
+Those two are very different=2E One runs on Xen, the other on KVM=2E Do we=
+ want to use the same tag for both?
 
 
