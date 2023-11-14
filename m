@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FFAA7EAD4C
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 10:49:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A9197EAD4A
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 10:49:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2q1U-0005Nz-Je; Tue, 14 Nov 2023 04:47:56 -0500
+	id 1r2q1U-0005NK-IY; Tue, 14 Nov 2023 04:47:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1r2q1S-0005N9-J4; Tue, 14 Nov 2023 04:47:54 -0500
+ id 1r2q1R-0005Mx-Pd; Tue, 14 Nov 2023 04:47:53 -0500
 Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
  helo=Atcsqr.andestech.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1r2q1O-00011K-Ee; Tue, 14 Nov 2023 04:47:54 -0500
+ id 1r2q1O-00011P-EF; Tue, 14 Nov 2023 04:47:53 -0500
 Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
- by Atcsqr.andestech.com with ESMTP id 3AE9lHel081392;
- Tue, 14 Nov 2023 17:47:17 +0800 (+08)
+ by Atcsqr.andestech.com with ESMTP id 3AE9lMFC081442;
+ Tue, 14 Nov 2023 17:47:22 +0800 (+08)
  (envelope-from ethan84@andestech.com)
 Received: from ethan84-VirtualBox.andestech.com (10.0.12.51) by
  ATCPCS16.andestech.com (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; 
- Tue, 14 Nov 2023 17:47:13 +0800
+ Tue, 14 Nov 2023 17:47:17 +0800
 To: <qemu-devel@nongnu.org>
 CC: <peter.maydell@linaro.org>, <edgar.iglesias@gmail.com>,
  <richard.henderson@linaro.org>, <pbonzini@redhat.com>,
@@ -32,17 +32,19 @@ CC: <peter.maydell@linaro.org>, <edgar.iglesias@gmail.com>,
  <dbarboza@ventanamicro.com>, <hiwei_liu@linux.alibaba.com>,
  <qemu-riscv@nongnu.org>, <peterx@redhat.com>, <david@redhat.com>,
  Ethan Chen <ethan84@andestech.com>
-Subject: [PATCH v3 0/4] Support RISC-V IOPMP
-Date: Tue, 14 Nov 2023 17:47:01 +0800
-Message-ID: <20231114094705.109146-1-ethan84@andestech.com>
+Subject: [PATCH v3 1/4] hw/core: Add config stream
+Date: Tue, 14 Nov 2023 17:47:02 +0800
+Message-ID: <20231114094705.109146-2-ethan84@andestech.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231114094705.109146-1-ethan84@andestech.com>
+References: <20231114094705.109146-1-ethan84@andestech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.0.12.51]
 X-DNSRBL: 
 X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 3AE9lHel081392
+X-MAIL: Atcsqr.andestech.com 3AE9lMFC081442
 Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
  helo=Atcsqr.andestech.com
 X-Spam_score_int: -8
@@ -68,55 +70,38 @@ From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series implements IOPMP specification v1.0.0-draft4 rapid-k model.
+Make other device can use /hw/core/stream.c by select this config.
 
-When IOPMP is enabled, a DMA device ATCDMAC300 is added to RISC-V virt
-platform. This DMA devce is connected to the IOPMP and has the functionalities
-required by IOPMP, including:
-- Support specify source-id (SID)
-- Support asynchronous I/O to handle stall transcations
+Signed-off-by: Ethan Chen <ethan84@andestech.com>
+---
+ hw/core/Kconfig     | 3 +++
+ hw/core/meson.build | 1 +
+ 2 files changed, 4 insertions(+)
 
-IOPMP takes a transaction which partially match an entry as a partially hit
-error. The transaction size is depending on source device, destination device
-and bus.
-
-Source device can send transaction information to IOPMP StreamSink. IOPMP will
-check partially hit with transaction information. If source device does not send
-transaction information, IOPMP will skip partially hit check.
-
-Changes for v3:
-  - Remove iopmp_start_addr and iopmp_end_addr in MemTxAttrs
-  - IOPMP: Get transaction_info from StreamSink instead of MemTxAttrs
-  - ATCDMAC300: Convert ATCDMAC burst to AXI burst
-  - ATCDMAC300: Send transaction_info to IOPMP StreamSink
-
-Ethan Chen (4):
-  hw/core: Add config stream
-  Add RISC-V IOPMP support
-  hw/dma: Add Andes ATCDMAC300 support
-  hw/riscv/virt: Add IOPMP support
-
- hw/core/Kconfig                               |   3 +
- hw/core/meson.build                           |   1 +
- hw/dma/Kconfig                                |   4 +
- hw/dma/atcdmac300.c                           | 566 ++++++++++
- hw/dma/meson.build                            |   1 +
- hw/misc/Kconfig                               |   4 +
- hw/misc/meson.build                           |   1 +
- hw/misc/riscv_iopmp.c                         | 967 ++++++++++++++++++
- hw/riscv/Kconfig                              |   2 +
- hw/riscv/virt.c                               |  72 +-
- include/hw/dma/atcdmac300.h                   | 180 ++++
- include/hw/misc/riscv_iopmp.h                 | 342 +++++++
- .../hw/misc/riscv_iopmp_transaction_info.h    |  28 +
- include/hw/riscv/virt.h                       |  10 +-
- 14 files changed, 2178 insertions(+), 3 deletions(-)
- create mode 100644 hw/dma/atcdmac300.c
- create mode 100644 hw/misc/riscv_iopmp.c
- create mode 100644 include/hw/dma/atcdmac300.h
- create mode 100644 include/hw/misc/riscv_iopmp.h
- create mode 100644 include/hw/misc/riscv_iopmp_transaction_info.h
-
+diff --git a/hw/core/Kconfig b/hw/core/Kconfig
+index 9397503656..628dc3d883 100644
+--- a/hw/core/Kconfig
++++ b/hw/core/Kconfig
+@@ -27,3 +27,6 @@ config REGISTER
+ 
+ config SPLIT_IRQ
+     bool
++
++config STREAM
++    bool
+\ No newline at end of file
+diff --git a/hw/core/meson.build b/hw/core/meson.build
+index 67dad04de5..d6ce14d5ce 100644
+--- a/hw/core/meson.build
++++ b/hw/core/meson.build
+@@ -34,6 +34,7 @@ system_ss.add(when: 'CONFIG_REGISTER', if_true: files('register.c'))
+ system_ss.add(when: 'CONFIG_SPLIT_IRQ', if_true: files('split-irq.c'))
+ system_ss.add(when: 'CONFIG_XILINX_AXI', if_true: files('stream.c'))
+ system_ss.add(when: 'CONFIG_PLATFORM_BUS', if_true: files('sysbus-fdt.c'))
++system_ss.add(when: 'CONFIG_STREAM', if_true: files('stream.c'))
+ 
+ system_ss.add(files(
+   'cpu-sysemu.c',
 -- 
 2.34.1
 
