@@ -2,69 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF3157EACC4
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 10:15:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B1C07EAD29
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 10:38:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2pV7-000358-Lz; Tue, 14 Nov 2023 04:14:29 -0500
+	id 1r2pqv-0000IK-E2; Tue, 14 Nov 2023 04:37:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
- id 1r2pV5-00034w-9c
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 04:14:27 -0500
-Received: from mta-04.yadro.com ([89.207.88.248])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
- id 1r2pUy-0003Vv-WF
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 04:14:27 -0500
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com BB1F7C0003
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
- t=1699953256; bh=+SxEPp5QXIpHfCi5LXfi0MWzo7DV/USYqt8FGK+afNA=;
- h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
- b=m7dFyOnmayZnj445ey08tR5qMcj66JLPCO5YiBbIwk2tnq3h3qzLO6Mtek3CbjPqw
- 7t4S7FLa+4EjBYooFjZP+0k/NzssThZ+sfsgB1vyatdd2gropFc8O3ELF94mQ4qKru
- ibeo9jE12ETY2ld8FcEUHx1Fe8wb5GdGYKVukkTo5ziofmqnsNrPBhShSqyCu/eNI/
- oxW1Bk4JK7imwViJOh/0rDYyi+JK0zV5W7lomYVDF3HlM4wV4ksg+tJ3ylxKqAxGY1
- zKv9HS2XxSPCUsGWNGdlcazsbhhLQDX2opwiFfo7xdeujvvRiaHK3K5Hb/FKWpDSXh
- x2FKYZY1bCh7Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
- t=1699953256; bh=+SxEPp5QXIpHfCi5LXfi0MWzo7DV/USYqt8FGK+afNA=;
- h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
- b=qfpXCiCOIpZQMQ6XVaU3HswJFpV954He+4UAzjFt59Ic9Vf4PrjDP+/n8HJk6GdnL
- nr92GgUMWJVTpwzdhicC9O0h0al365g61GpW6bYV3B5FucNP3tWOUN2aKmOHg9Pz/u
- ZVnJS7M236aeze8F3TGFX7Xvt/l7W30kKanlwAzaDCUIxsnH/WX48B/uQ7AuDLb125
- zvXTenJTTJXP6EYkoI4Us/cC33fs8P8jloBfgTRNA/JXQskT9kvHXx8tCTYN0DtqsW
- XxbKmL44AsctqgjV2v8DAbNDoBqFdMigPLjEUCaCMFxyQAxuAPD9Ytb4awUw6dTkEk
- +xNfpZ+gvmAGQ==
-From: Mikhail Tyutin <m.tyutin@yadro.com>
-To: =?utf-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Richard Henderson
- <richard.henderson@linaro.org>, "erdnaxe@crans.org" <erdnaxe@crans.org>,
- "ma.mandourr@gmail.com" <ma.mandourr@gmail.com>
-Subject: RE: Instruction virtual address in TCG Plugins
-Thread-Topic: Instruction virtual address in TCG Plugins
-Thread-Index: AdoWXsbya+HqTrueTiqiLf6nDJCNngAFWYevABh5pFA=
-Date: Tue, 14 Nov 2023 09:14:15 +0000
-Message-ID: <e44e7be4b0b44ea2882fbfe09f3b58f4@yadro.com>
-References: <d4f2713a4e2d45858c82ff2efb95f8a3@yadro.com>
- <87leb1xtdx.fsf@draig.linaro.org>
-In-Reply-To: <87leb1xtdx.fsf@draig.linaro.org>
-Accept-Language: ru-RU, en-US
-Content-Language: ru-RU
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1r2pqr-0000Hv-Kr
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 04:36:58 -0500
+Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1r2pqp-0007qM-Jm
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 04:36:57 -0500
+Received: by mail-oo1-xc33.google.com with SMTP id
+ 006d021491bc7-58a0d0cdcc1so2546052eaf.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 01:36:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1699954614; x=1700559414; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=YKFjjCq2MLt5Ywb4JpaP15BYw44bNrhr2voccKW4RkU=;
+ b=cc89ayxNt73KjztgNFVpzbMKILryfdMjoz9rbk2DhBvtDicOxNWwumpyIHM7MSOs61
+ VmPn6WNwqog737FgWrh4zQTNUQVXogPjdtlGxQOn9kdiPKFkht/p9MUoSVb1YD3hx79j
+ 5ILEipvxzGuSxIIVnyN+vSSXEcr7T6fpkuNt2+9BHIiZ6rXCvfFRXDnxYaSpkC5PzWgw
+ wR4CSZJQd7S4xF4+MooIhdEXhU/912CofbTRGEaG3hhMelcmyJ2ePWmvV4D2zJJZF2yq
+ bXkNXdF0R60gX+366E253Q4F3rv+sAIUzHFImV/mNpHiI4XRnLnkxtHhIcCabXN+trRl
+ hIPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699954614; x=1700559414;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=YKFjjCq2MLt5Ywb4JpaP15BYw44bNrhr2voccKW4RkU=;
+ b=iOLXTPogQj2Tiz+Pzr7ggnlA0g6/J5w5Sj145zXlap8r/v7qaSf4tH5shm60CtiV5z
+ jJNTCYBAXqf4WGg7I8mDbc6F6WID53LmNOcQED0bNUwN5GHs5aPrTtruvai7t/R9uTgU
+ nF6gfqCJE12KmCDuSOcCcQFnwqaJowB+4Supjr7mfMAjgDaNDcp3/Ufey7zx5UZV4C82
+ 1Zt/rpnkpd9PWMDuvZ2NVvLg9gAVNt9kIqPrgXVpbELtZfKNX4zLkjhxdxz+n/NSu09g
+ VQg8z+u1gct63iuaUb7y4Ldo/EE2M6roZ7szNzNS1A7XYCBiRrY+N4reP45ezokaHZl1
+ Mf7A==
+X-Gm-Message-State: AOJu0Yz3RLqeS3wWuakmIV5DCaRfDgFpLIKnTLjDlH8SAjdpO68ztuOr
+ RSNcEvmrhQkJ7y/iojyJD/OPUGOtrNlmDUqanVo=
+X-Google-Smtp-Source: AGHT+IFNVOW61F7KX04swc6lWU2YtR3HSopsd9F1cuSUBl5T2cKXLsOxYWZUlel+Di+j8VI2U0Ci4DkKuyJtqggfEnw=
+X-Received: by 2002:a05:6358:591d:b0:16b:c401:e714 with SMTP id
+ g29-20020a056358591d00b0016bc401e714mr1920987rwf.5.1699954613681; Tue, 14 Nov
+ 2023 01:36:53 -0800 (PST)
 MIME-Version: 1.0
-Received-SPF: pass client-ip=89.207.88.248; envelope-from=m.tyutin@yadro.com;
- helo=mta-04.yadro.com
+References: <20231114020927.62315-1-j@getutm.app>
+ <20231114020927.62315-13-j@getutm.app>
+In-Reply-To: <20231114020927.62315-13-j@getutm.app>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 14 Nov 2023 13:36:42 +0400
+Message-ID: <CAJ+F1CKx_MfZapE_vcb_e-nk=CMC2e8FN0QrONb4mzda_KNKUQ@mail.gmail.com>
+Subject: Re: [PATCH v5 12/14] tests: acpi: implement TPM CRB tests for ARM virt
+To: Joelle van Dyne <j@getutm.app>
+Cc: qemu-devel@nongnu.org, Stefan Berger <stefanb@linux.ibm.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-oo1-xc33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,53 +89,174 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiA+IFdoYXQgaXMgdGhlIHJpZ2h0IHdheSB0byBnZXQgdmlydHVhbCBhZGRyZXNzIG9mIGVpdGhl
-ciB0cmFuc2xhdGlvbiBibG9jayBvciBpbnN0cnVjdGlvbiBpbnNpZGUgb2YgVENHIHBsdWdpbj8g
-RG9lcw0KPiA+IHBsdWdpbiBBUEkgYWxsb3cgdGhhdCBvciBpdCBuZWVkcyBzb21lIGV4dGVuc2lv
-bj8NCj4gPg0KPiA+IFNvIGZhciBJIHVzZSBxZW11X3BsdWdpbl90Yl92YWRkcigpIGluc2lkZSBv
-ZiBteSBibG9jayB0cmFuc2xhdGlvbiBjYWxsYmFjayB0byBnZXQgYmxvY2sgdmlydHVhbCBhZGRy
-ZXNzIGFuZCB0aGVuDQo+ID4gcGFzcyBpdCBhcyAndXNlcmRhdGEnIGFyZ3VtZW50IGludG8gcWVt
-dV9wbHVnaW5fcmVnaXN0ZXJfdmNwdV90Yl9leGVjX2NiKCkuIEkgdXNlIGl0IGxhdGVyIGR1cmlu
-ZyBjb2RlIGV4ZWN1dGlvbi4NCj4gPiBJdCB3b3JrcyB3ZWxsIGZvciB1c2VyLW1vZGUgZW11bGF0
-aW9uLCBidXQgc29tZXRpbWVzIGxlYWRzIHRvDQo+ID4gaW5jb3JyZWN0IGFkZHJlc3NlcyBpbiBz
-eXN0ZW0tbW9kZSBlbXVsYXRpb24uDQo+IA0KPiBZb3UgY2FuIHVzZSBxZW11X3BsdWdpbl9pbnNu
-X3ZhZGRyIGFuZCBxZW11X3BsdWdpbl9pbnNuX2hhZGRyLiBCdXQgeW91cg0KPiByaWdodCBzb21l
-dGhpbmcgdW5kZXIgb25lIHZhZGRyIGFuZCBiZSBleGVjdXRlZCB1bmRlciBhbm90aGVyIHdpdGgN
-Cj4gb3ZlcmxhcHBpbmcgbWFwcGluZ3MuIFRoZSBoYWRkciBzaG91bGQgYmUgc3RhYmxlIHRob3Vn
-aCBJIHRoaW5rLg0KDQpBcyBmYXIgYXMgSSBzZWUgaGFkZHIgaXMgb2sgYW5kIGNhbiBiZSB1c2Vk
-IHRvIGlkZW50aWZ5IGJsb2Nrcy4gSG93ZXZlciwgaWYgSSBoYXZlIGhhZGRyIGF0IGJsb2NrIGV4
-ZWN1dGlvbiBwaGFzZSBhbmQNCkkgd2FudCB0byBrbm93IHZhZGRyLCB0aGVyZSBpcyBubyBBUEkg
-dG8gZ2V0IHN1Y2ggbWFwcGluZy4gTWF5YmUgaXQgaXMgcG9zc2libGUgdG8gZXh0cmFjdCBmcm9t
-IHNvZnR3YXJlIE1NVSwgYnV0IEkNCmhhdmUgbm8gY2x1ZSB3aGVyZSB0byBzdGFydCB3aXRoLg0K
-DQoNCj4gPiBJIHN1c3BlY3QgaXQgaXMgYmVjYXVzZSBvZiBtZW1vcnkgbWFwcGluZ3MgYnkgZ3Vl
-c3QgT1MgdGhhdCBjaGFuZ2VzIHZpcnR1YWwgYWRkcmVzc2VzIGZvciB0aGF0IGJsb2NrLg0KPiA+
-DQo+ID4gSSBhbHNvIGxvb2tlZCBhdCBnZW5fZW1wdHlfdWRhdGFfY2IoKSBmdW5jdGlvbiBhbmQg
-Y29uc2lkZXJlZCB0byBleHRlbmQgcGx1Z2luIEFQSSB0byBwYXNzIGEgcHJvZ3JhbSBjb3VudGVy
-DQo+ID4gdmFsdWUgYXMgYWRkaXRpb25hbCBjYWxsYmFjayBhcmd1bWVudC4gSSB0aG91Z2h0IGl0
-IHdvdWxkIGFsd2F5cyBnaXZlIG1lIHZhbGlkIHZpcnR1YWwgYWRkcmVzcyBvZiBhbiBpbnN0cnVj
-dGlvbi4NCj4gPiBVbmZvcnR1bmF0ZWx5LCBJIGRpZG4ndCBmaW5kIGEgd2F5IHRvIGdldCB2YWx1
-ZSBvZiB0aGF0IHJlZ2lzdGVyIGluIGFyY2hpdGVjdHVyZSBhZ25vc3RpYyB3YXkgKGl0IGlzICdw
-YycgbWVtYmVyIGluDQo+ID4gQ1BVQXJjaFN0YXRlIHN0cnVjdHVyZSkuDQo+IA0KPiBXaGVuIHdl
-IG1lcmdlIHRoZSByZWdpc3RlciBhcGkgeW91IHNob3VsZCBiZSBhYmxlIHRvIGRvIHRoYXQuIEFs
-dGhvdWdoDQo+IGR1cmluZyB0ZXN0aW5nIEkgcmVhbGlzZWQgdGhhdCBQQyBhY3RlZCBmdW5ueSBj
-b21wYXJlZCB0byBldmVyeXRoaW5nDQo+IGVsc2UgYmVjYXVzZSB3ZSBkb24ndCBhY3R1YWxseSB1
-cGRhdGUgdGhlIHNoYWRvdyByZWdpc3RlciBldmVyeQ0KPiBpbnN0cnVjdGlvbi4NCg0KV2UgaW1w
-bGVtZW50ZWQgc2ltaWxhciBBUEkgdG8gcmVhZCByZWdpc3RlcnMgKGJ5IGNvaW5jaWRlbmNlLCBJ
-IHBvc3RlZCB0aGlzIHBhdGNoIGF0IHRoZSBzYW1lIHRpbWUgYXMgdGhlIEFQSSB5b3UNCm1lbnRp
-b25lZCkgYW5kIEkgb2JzZXJ2ZSBzaW1pbGFyIGJlaGF2aW9yLiBBcyBmYXIgYXMgSSBzZWUsIENQ
-VSBzdGF0ZSBpcyBvbmx5IHVwZGF0ZWQgaW4gYmV0d2VlbiBvZiBleGVjdXRlZCB0cmFuc2xhdGlv
-bg0KYmxvY2tzLiBTd2l0Y2hpbmcgdG8gJ3NpbmdsZXN0ZXAnIG1vZGUgaGVscHMgdG8gZml4IHRo
-YXQsIGJ1dCBleGVjdXRpb24gb3ZlcmhlYWQgaXMgaHVnZS4NCg0KVGhlcmUgaXMgYWxzbyBibG9j
-a3MgJ2NoYWluaW5nJyBtZWNoYW5pc20gd2hpY2ggaXMgbGlrZWx5IGNvbnRyaWJ1dGVzIHRvIGNv
-cnJ1cHRlZCBibG9ja3MgdmFkZHIgaW5zaWRlIG9mIGNhbGxiYWNrcy4NCk15IGd1ZXNzIGlzIHRo
-YXQgJ3BjJyB2YWx1ZSBmb3IgdGhvc2UgY2hhaW5lZCBibG9ja3MgcG9pbnRzIHRvIHRoZSBmaXJz
-dCBibG9jayBvZiBlbnRpcmUgY2hhaW4uIFVuZm9ydHVuYXRlbHksIEl0IGlzIHZlcnkNCmhhcmQg
-dG8gZGVidWcsIGJlY2F1c2UgSSBjYW4gb25seSBzZWUgYmxvY2sgY2hhaW5zIHdoZW4gSSBydW4g
-d2hvbGUgTGludXggZ3Vlc3QgT1MuIERvZXMgUWVtdSBoYXMgc21hbGwgdGVzdA0KYXBwbGljYXRp
-b24gdG8gdHJpZ2dlciBsb25nIGVub3VnaCBjaGFpbiBvZiB0cmFuc2xhdGlvbiBibG9ja3M/DQoN
-CkhhdmluZyB0aG9zZSBjb21wbGV4aXRpZXMgbWFrZXMgbWUgdGhpbmsgdG8gaW5qZWN0IGFwcHJv
-cHJpYXRlIGNvZGUgaW50byB0cmFuc2xhdGlvbiBibG9ja3MgdG8gY29tcHV0ZSBhY3R1YWwgYmxv
-Y2sNCnZhZGRyIGF0IGV4ZWN1dGlvbiBzdGFnZS4gVGhlIHByb2JsZW0gaGVyZSBpcyB0byBmaW5k
-IGEgdmFyaWFibGUgd2hlcmUgSSBjYW4gbG9hZCAncGMnIGF0IHN0YXJ0IG9mIHRyYW5zbGF0aW9u
-IGJsb2NrLg0K
+Hi
+
+On Tue, Nov 14, 2023 at 6:12=E2=80=AFAM Joelle van Dyne <j@getutm.app> wrot=
+e:
+>
+> Signed-off-by: Joelle van Dyne <j@getutm.app>
+> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+
+nit: you also added tests for x86, could be a different patch?
+
+For arm, the test fails until next patch with:
+
+# starting QEMU: exec ./qemu-system-aarch64 -qtest
+unix:/tmp/qtest-991279.sock -qtest-log /dev/null -chardev
+socket,path=3D/tmp/qtest-991279.qmp,id=3Dchar0 -mon
+chardev=3Dchar0,mode=3Dcontrol -display none -audio none -machine virt
+-accel tcg -nodefaults -nographic -drive
+if=3Dpflash,format=3Draw,file=3Dpc-bios/edk2-aarch64-code.fd,readonly=3Don
+-drive if=3Dpflash,format=3Draw,file=3Dpc-bios/edk2-arm-vars.fd,snapshot=3D=
+on
+-cdrom tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2
+-cpu cortex-a57 -chardev
+socket,id=3Dchr,path=3D/tmp/qemu-test_acpi_virt_tcg_crb-device.KZ3GE2/sock
+-tpmdev emulator,id=3Ddev,chardev=3Dchr -device tpm-crb-device,tpmdev=3Ddev
+-accel qtest
+Warning! zero length expected file 'tests/data/acpi/virt/TPM2.crb-device.tp=
+m2'
+Warning! zero length expected file 'tests/data/acpi/virt/DSDT.crb-device.tp=
+m2'
+acpi-test: Warning!  binary file mismatch. Actual
+[aml:/tmp/aml-GO4ME2], Expected
+[aml:tests/data/acpi/virt/TPM2.crb-device.tpm2].
+See source file tests/qtest/bios-tables-test.c for instructions on how
+to update expected files.
+acpi-test: Warning!  binary file mismatch. Actual
+[aml:/tmp/aml-6N4ME2], Expected
+[aml:tests/data/acpi/virt/DSDT.crb-device.tpm2].
+See source file tests/qtest/bios-tables-test.c for instructions on how
+to update expected files.
+to see ASL diff between mismatched files install IASL, rebuild QEMU
+from scratch and re-run tests with V=3D1 environment variable set**
+ERROR:../tests/qtest/bios-tables-test.c:538:test_acpi_asl: assertion
+failed: (all_tables_match)
+not ok /aarch64/acpi/virt/tpm2-crb -
+ERROR:../tests/qtest/bios-tables-test.c:538:test_acpi_asl: assertion
+failed: (all_tables_match)
+Bail out!
+qemu-system-aarch64: tpm-emulator: Could not cleanly shutdown the TPM:
+Resource temporarily unavailable
+Unexpected error in qio_channel_socket_writev() at ../io/channel-socket.c:6=
+22:
+/home/elmarco/src/qemu/buildall/tests/qtest/bios-tables-test: Unable
+to write to socket: Bad file descriptor
+
+> ---
+>  tests/qtest/bios-tables-test.c | 43 ++++++++++++++++++++++++++++++++--
+>  1 file changed, 41 insertions(+), 2 deletions(-)
+>
+> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-tes=
+t.c
+> index 71af5cf69f..bb4ebf00c1 100644
+> --- a/tests/qtest/bios-tables-test.c
+> +++ b/tests/qtest/bios-tables-test.c
+> @@ -1447,6 +1447,28 @@ static void test_acpi_piix4_tcg_numamem(void)
+>
+>  uint64_t tpm_tis_base_addr;
+>
+> +static test_data tcg_tpm_test_data(const char *machine)
+> +{
+> +    if (g_strcmp0(machine, "virt") =3D=3D 0) {
+> +        test_data data =3D {
+> +            .machine =3D "virt",
+> +            .tcg_only =3D true,
+> +            .uefi_fl1 =3D "pc-bios/edk2-aarch64-code.fd",
+> +            .uefi_fl2 =3D "pc-bios/edk2-arm-vars.fd",
+> +            .cd =3D
+> +               "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso=
+.qcow2",
+> +            .ram_start =3D 0x40000000ULL,
+> +            .scan_len =3D 128ULL * 1024 * 1024,
+> +        };
+> +        return data;
+> +    } else {
+> +        test_data data =3D {
+> +            .machine =3D machine,
+> +        };
+> +        return data;
+> +    }
+> +}
+> +
+>  static void test_acpi_tcg_tpm(const char *machine, const char *tpm_if,
+>                                uint64_t base, enum TPMVersion tpm_version=
+)
+>  {
+> @@ -1454,7 +1476,7 @@ static void test_acpi_tcg_tpm(const char *machine, =
+const char *tpm_if,
+>                                            machine, tpm_if);
+>      char *tmp_path =3D g_dir_make_tmp(tmp_dir_name, NULL);
+>      TPMTestState test;
+> -    test_data data =3D {};
+> +    test_data data =3D tcg_tpm_test_data(machine);
+>      GThread *thread;
+>      const char *suffix =3D tpm_version =3D=3D TPM_VERSION_2_0 ? "tpm2" :=
+ "tpm12";
+>      char *args, *variant =3D g_strdup_printf(".%s.%s", tpm_if, suffix);
+> @@ -1474,13 +1496,14 @@ static void test_acpi_tcg_tpm(const char *machine=
+, const char *tpm_if,
+>      thread =3D g_thread_new(NULL, tpm_emu_ctrl_thread, &test);
+>      tpm_emu_test_wait_cond(&test);
+>
+> -    data.machine =3D machine;
+>      data.variant =3D variant;
+>
+>      args =3D g_strdup_printf(
+> +        " %s"
+>          " -chardev socket,id=3Dchr,path=3D%s"
+>          " -tpmdev emulator,id=3Ddev,chardev=3Dchr"
+>          " -device tpm-%s,tpmdev=3Ddev",
+> +        g_strcmp0(machine, "virt") =3D=3D 0 ? "-cpu cortex-a57" : "",
+>          test.addr->u.q_unix.path, tpm_if);
+>
+>      test_acpi_one(args, &data);
+> @@ -1506,6 +1529,16 @@ static void test_acpi_q35_tcg_tpm12_tis(void)
+>      test_acpi_tcg_tpm("q35", "tis", 0xFED40000, TPM_VERSION_1_2);
+>  }
+>
+> +static void test_acpi_q35_tcg_tpm2_crb(void)
+> +{
+> +    test_acpi_tcg_tpm("q35", "crb", 0xFED40000, TPM_VERSION_2_0);
+> +}
+> +
+> +static void test_acpi_virt_tcg_tpm2_crb(void)
+> +{
+> +    test_acpi_tcg_tpm("virt", "crb-device", 0xFED40000, TPM_VERSION_2_0)=
+;
+> +}
+> +
+>  static void test_acpi_tcg_dimm_pxm(const char *machine)
+>  {
+>      test_data data =3D {};
+> @@ -2212,6 +2245,9 @@ int main(int argc, char *argv[])
+>                  qtest_add_func("acpi/q35/tpm12-tis",
+>                                 test_acpi_q35_tcg_tpm12_tis);
+>              }
+> +            if (tpm_model_is_available("-machine q35", "tpm-crb")) {
+> +                qtest_add_func("acpi/q35/tpm2-crb", test_acpi_q35_tcg_tp=
+m2_crb);
+> +            }
+>              qtest_add_func("acpi/q35/bridge", test_acpi_q35_tcg_bridge);
+>              qtest_add_func("acpi/q35/no-acpi-hotplug",
+>                             test_acpi_q35_tcg_no_acpi_hotplug);
+> @@ -2301,6 +2337,9 @@ int main(int argc, char *argv[])
+>                  qtest_add_func("acpi/virt/viot", test_acpi_virt_viot);
+>              }
+>          }
+> +        if (tpm_model_is_available("-machine virt", "tpm-crb")) {
+> +            qtest_add_func("acpi/virt/tpm2-crb", test_acpi_virt_tcg_tpm2=
+_crb);
+> +        }
+>      }
+>      ret =3D g_test_run();
+>      boot_sector_cleanup(disk);
+> --
+> 2.41.0
+>
+>
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
