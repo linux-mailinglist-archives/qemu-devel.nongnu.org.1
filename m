@@ -2,83 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD0F97EB4EE
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 17:33:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6197A7EB4EC
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 17:33:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2wKM-0002z8-M0; Tue, 14 Nov 2023 11:31:50 -0500
+	id 1r2wK1-0002vF-5Z; Tue, 14 Nov 2023 11:31:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2wK5-0002wT-Qh
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 11:31:36 -0500
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2wK0-0006QF-T8
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 11:31:31 -0500
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-9c53e8b7cf4so855624866b.1
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 08:31:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699979487; x=1700584287; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=WLUIW1wEN60RfjCUyh0wJRK9Kz/EqjAkfQjEh/PTjs0=;
- b=xhu4g5f1YxkJyZdUO5alRwSSjZ4qXE6yNMhDqTaCZnG6xqxKij6LrUdAmvwPJWxx9l
- wtSjbTvAn3oJdhz1e6gDNPWHnAELjViNpGneQPJrgYCW1FR86TuRqxbEVwpT+i7XM77z
- J75XdGQAxJuF3lcXqi8AYejWzLa2euty4shkpkPNVxazccRKtWq4KWZrIjp/tb5KJidK
- 0+DIXj7e8nIpwEMaLaJoQXiIiNyKwqQTRmcnoS4K3F7gMcKKwxe0+46XPx/JWtFWvYLP
- UsCuj+Ti/D1U1bWQ8/O4Hi/f5Agj5NrYJraeVbWiAGoOzJ8ZdchJytyH71qvqbpMd3Dy
- NKXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699979487; x=1700584287;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=WLUIW1wEN60RfjCUyh0wJRK9Kz/EqjAkfQjEh/PTjs0=;
- b=m1cuVYHmFrU3c4sGqR+XSKs4HP0TZ5k5tNndgf7fKvBsLZwFFrbrVcup6lApYh+uTc
- a9OsVjDr5eFR4/VopAt1YKhlJ2TEOsegWQ9r5N2dfxKJuGbYURhvcsEVtFTTlpzVfV7n
- DGshtMS4tOWztVzCYZIzE0/EQ9kPqjQ0jtSIC6ZWL/0NRKinxLkSCUu6utwLoGZYvcYp
- UAgIohEiz5ullrMrfTviZZuqkk+E+zUufMAF+RoGHVJZ8l2BPEUOpAgAeW34brbHBdeg
- zGWMDurJfyp0wbdsqztOjnDQcb6a6A7uoheVdhtFIlCEBh6C+XQ3iSMBTg5GHJEsuVzy
- i/6w==
-X-Gm-Message-State: AOJu0YzYeNC85faeYftiOiMbM1ljvKVvjJOcXQvpFUoRo5a8K6wZzs2h
- 3tFkd0pDcj4xUbXPp65vRqz5gwb84ERnpbkHr1g=
-X-Google-Smtp-Source: AGHT+IEWSkzHY5obRM6zNhXhqu10PReegPajovJZrPBLVpt+fJDzRpOh65h9KSuNBeV+qPZ25y+u/g==
-X-Received: by 2002:a17:906:b889:b0:9e0:dcf:17f6 with SMTP id
- hb9-20020a170906b88900b009e00dcf17f6mr7932359ejb.58.1699979487100; 
- Tue, 14 Nov 2023 08:31:27 -0800 (PST)
-Received: from m1x-phil.lan (cac94-h02-176-184-25-155.dsl.sta.abo.bbox.fr.
- [176.184.25.155]) by smtp.gmail.com with ESMTPSA id
- m16-20020a1709060d9000b009be14e5cd54sm5785453eji.57.2023.11.14.08.31.25
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 14 Nov 2023 08:31:26 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- David Woodhouse <dwmw@amazon.co.uk>, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- xen-devel@lists.xenproject.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH-for-9.0 0/9] hw/xen: Have ARM targets use common
- xen_memory_listener
-Date: Tue, 14 Nov 2023 17:31:14 +0100
-Message-ID: <20231114163123.74888-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2wJy-0002uI-2J
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 11:31:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2wJw-0006PM-Kr
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 11:31:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699979484;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=2IhRetqNyf+ECaS1NJt3qFrZxCNRTuGbI7jied8VWoo=;
+ b=O9D9LMG9jBkDuqxVUUQ/fOK7RXTIiPoDh2DPY7XHWcoun87yIxyd0HaRGeb3K0GGKQal9b
+ s06oFmVS3aWB8jWuwX55yrFkE9Tx/xXe+lK1BWQriHnfe4f7EwPbmgsHFf8qEbXvx1/SQU
+ 24msV1bjmG28E8jseF8T0iwcjQZF6Yo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-395-kcJAuOv_Pyi5rIML6AzCVw-1; Tue, 14 Nov 2023 11:31:19 -0500
+X-MC-Unique: kcJAuOv_Pyi5rIML6AzCVw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6E716185A7A8;
+ Tue, 14 Nov 2023 16:31:19 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.119])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7A46C40C6EB9;
+ Tue, 14 Nov 2023 16:31:16 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ qemu-ppc@nongnu.org
+Subject: [PATCH] tests/avocado/reverse_debugging: Disable the ppc64 tests by
+ default
+Date: Tue, 14 Nov 2023 17:31:15 +0100
+Message-ID: <20231114163115.298041-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,51 +81,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+The tests seem currently to be broken. Disable them by default
+until someone fixes them.
 
-While looking at Xen target-specific code, I noticed some
-generic code used by x86 which is not implemented for ARM.
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/avocado/reverse_debugging.py | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Maybe ARM machines don't need it, I don't know. But I
-wanted to see if I can get this common code target agnostic
-and build it once, possibly bringing smth useful to ARM.
-
-The changes don't break CI testing and Avocado local tests.
-If this xen_memory_listener feature isn't required for ARM,
-I'll send follow up patch that keep this series with common
-xen_memory_listener but with a runtime flag to disable.
-
-Patches do the usual "change target-specific API to a
-target-agnostic one", in particular using "exec/target_page.h"
-at runtime. Then non-x86 code is extracted, then merged to
-the generic xen/xen-hvm-common.c.
-
-Thoughts?
-
-Regards,
-
-Phil.
-
-Based-on: <20231114143816.71079-1-philmd@linaro.org>
-
-Philippe Mathieu-Daudé (9):
-  hw/xen/hvm: Inline TARGET_PAGE_ALIGN() macro
-  hw/xen/hvm: Propagate page_mask to a pair of functions
-  hw/xen/hvm: Get target page size at runtime
-  hw/xen/hvm: Expose xen_memory_listener declaration
-  hw/xen/hvm: Expose xen_read_physmap() prototype
-  hw/xen/hvm: Initialize xen_physmap QLIST in xen_read_physmap()
-  hw/xen/hvm: Extract common code to xen-hvm-common.c
-  hw/xen/hvm: Merge xen-hvm-common.c files
-  hw/xen/hvm: Inline xen_arch_set_memory()
-
- include/hw/xen/xen-hvm-common.h |   5 +-
- hw/arm/xen_arm.c                |  24 --
- hw/i386/xen/xen-hvm.c           | 441 +----------------------------
- hw/xen/xen-hvm-common.c         | 474 +++++++++++++++++++++++++++++++-
- stubs/xen-hw-stub.c             |   4 -
- 5 files changed, 468 insertions(+), 480 deletions(-)
-
+diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
+index fc47874eda..2585c78f34 100644
+--- a/tests/avocado/reverse_debugging.py
++++ b/tests/avocado/reverse_debugging.py
+@@ -11,6 +11,7 @@
+ import logging
+ 
+ from avocado import skipIf
++from avocado import skipUnless
+ from avocado_qemu import BUILD_DIR
+ from avocado.utils import gdb
+ from avocado.utils import process
+@@ -241,8 +242,8 @@ class ReverseDebugging_ppc64(ReverseDebugging):
+ 
+     REG_PC = 0x40
+ 
+-    # unidentified gitlab timeout problem
+-    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
++    # Test seems to be broken right now
++    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test gets stuck')
+     def test_ppc64_pseries(self):
+         """
+         :avocado: tags=arch:ppc64
+@@ -254,7 +255,7 @@ def test_ppc64_pseries(self):
+         self.endian_is_le = False
+         self.reverse_debugging()
+ 
+-    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
++    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test often fails')
+     def test_ppc64_powernv(self):
+         """
+         :avocado: tags=arch:ppc64
 -- 
 2.41.0
 
