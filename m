@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A3DB7EBA6D
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:05:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 828D47EBA5C
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:00:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r33If-0000Xy-7T; Tue, 14 Nov 2023 18:58:33 -0500
+	id 1r33JG-0001j0-Bf; Tue, 14 Nov 2023 18:59:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33Ic-0000XE-UZ
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 18:58:31 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33J6-0001Tw-3v
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 18:59:00 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33Ia-000726-19
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 18:58:30 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33Io-00073i-CU
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 18:58:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700006307;
+ s=mimecast20190719; t=1700006319;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LiBQ8HNskbnGJakIHTbXcUveCafNXtneVERt1nHqLFo=;
- b=gf8/L0bqBeUIbFO2duHvnxw0V54MtALJYFxDubbaNGabqmrZvnqra/wgxjAYEwxRjgvZb+
- IuxSMB+i6rShfqVBcEh38XjO/mwe3Rr02i/MQSfcsvxTXLr/gm5rc9Scv2TTwu3PBu7P8Y
- aJnN6UYfp9l9CtmnTeUnUi7BrxuhFTM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-147-SZ7MPvCIOgCBq8QawagQkw-1; Tue,
- 14 Nov 2023 18:58:21 -0500
-X-MC-Unique: SZ7MPvCIOgCBq8QawagQkw-1
+ bh=rZKg1/2JlTQ35ZjVGKYHI5rgb9pxMB3aE/K4wIwjIL8=;
+ b=cV4F9KAF55Zc3N4Lf6A9/8WCGmtRoegVC8mtA2tIPQN2urIIKoYpkmmbdQrxfBRCHUTQNp
+ e+B+LuxiJ2ei3ulsTbGt3f5LKPUUnNo2c9aG8pCrUyAREhGzZwrc7RTy7lf1Z3NCJKFHu/
+ bSCiROhwEeT54W4Z370cuT3pYfOot4M=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-689-7FEO49NsPPuaobwdMDOacA-1; Tue, 14 Nov 2023 18:58:34 -0500
+X-MC-Unique: 7FEO49NsPPuaobwdMDOacA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 00A7129ABA0F;
- Tue, 14 Nov 2023 23:58:20 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 03AB2185A782;
+ Tue, 14 Nov 2023 23:58:33 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.44])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 56771C15885;
- Tue, 14 Nov 2023 23:58:07 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 797EBC15885;
+ Tue, 14 Nov 2023 23:58:20 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -59,9 +59,9 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
  ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
  jcmvbkbc@gmail.com, shan.gavin@gmail.com
-Subject: [PATCH v5 06/31] cpu: Add generic cpu_list()
-Date: Wed, 15 Nov 2023 09:56:03 +1000
-Message-ID: <20231114235628.534334-7-gshan@redhat.com>
+Subject: [PATCH v5 07/31] target/alpha: Use generic cpu_list()
+Date: Wed, 15 Nov 2023 09:56:04 +1000
+Message-ID: <20231114235628.534334-8-gshan@redhat.com>
 In-Reply-To: <20231114235628.534334-1-gshan@redhat.com>
 References: <20231114235628.534334-1-gshan@redhat.com>
 MIME-Version: 1.0
@@ -75,7 +75,6 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -93,92 +92,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add generic cpu_list() to replace the individual target's implementation
-in the subsequent commits. Currently, there are 3 targets with no cpu_list()
-implementation: microblaze and nios2. With this applied, those two targets
-switch to the generic cpu_list().
+Before it's applied:
 
-[gshan@gshan q]$ ./build/qemu-system-microblaze -cpu ?
+[gshan@gshan q]$ ./build/qemu-system-alpha -cpu ?
 Available CPUs:
-  microblaze-cpu
+  ev4-alpha-cpu
+  ev5-alpha-cpu
+  ev56-alpha-cpu
+  ev6-alpha-cpu
+  ev67-alpha-cpu
+  ev68-alpha-cpu
+  pca56-alpha-cpu
 
-[gshan@gshan q]$ ./build/qemu-system-nios2 -cpu ?
+After it's applied:
+
+[gshan@gshan q]$ ./build/qemu-system-alpha -cpu ?
 Available CPUs:
-  nios2-cpu
+  ev4
+  ev5
+  ev56
+  ev6
+  ev67
+  ev68
+  pca56
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- bsd-user/main.c |  5 +----
- cpu-target.c    | 29 ++++++++++++++++++++++++++---
- 2 files changed, 27 insertions(+), 7 deletions(-)
+ target/alpha/cpu.c | 17 -----------------
+ target/alpha/cpu.h |  3 ---
+ 2 files changed, 20 deletions(-)
 
-diff --git a/bsd-user/main.c b/bsd-user/main.c
-index e6014f517e..4de226d211 100644
---- a/bsd-user/main.c
-+++ b/bsd-user/main.c
-@@ -378,10 +378,7 @@ int main(int argc, char **argv)
-         } else if (!strcmp(r, "cpu")) {
-             cpu_model = argv[optind++];
-             if (is_help_option(cpu_model)) {
--                /* XXX: implement xxx_cpu_list for targets that still miss it */
--#if defined(cpu_list)
--                cpu_list();
--#endif
-+                list_cpus();
-                 exit(1);
-             }
-         } else if (!strcmp(r, "B")) {
-diff --git a/cpu-target.c b/cpu-target.c
-index c078c0e91b..acfc654b95 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -24,6 +24,7 @@
- #include "hw/qdev-core.h"
- #include "hw/qdev-properties.h"
- #include "qemu/error-report.h"
-+#include "qemu/qemu-print.h"
- #include "migration/vmstate.h"
- #ifdef CONFIG_USER_ONLY
- #include "qemu.h"
-@@ -283,12 +284,34 @@ const char *parse_cpu_option(const char *cpu_option)
-     return cpu_type;
+diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
+index c19257d765..cece69bfa6 100644
+--- a/target/alpha/cpu.c
++++ b/target/alpha/cpu.c
+@@ -87,23 +87,6 @@ static void alpha_cpu_realizefn(DeviceState *dev, Error **errp)
+     acc->parent_realize(dev, errp);
  }
  
-+#ifndef cpu_list
-+static void cpu_list_entry(gpointer data, gpointer user_data)
-+{
-+    CPUClass *cc = CPU_CLASS(OBJECT_CLASS(data));
-+    const char *typename = object_class_get_name(OBJECT_CLASS(data));
-+    g_autofree char *model = cpu_model_from_type(typename);
-+
-+    if (cc->deprecation_note) {
-+        qemu_printf("  %s (deprecated)\n", model);
-+    } else {
-+        qemu_printf("  %s\n", model);
-+    }
-+}
-+
-+static void cpu_list(void)
-+{
-+    GSList *list;
-+
-+    list = object_class_get_list_sorted(TYPE_CPU, false);
-+    qemu_printf("Available CPUs:\n");
-+    g_slist_foreach(list, cpu_list_entry, NULL);
-+    g_slist_free(list);
-+}
-+#endif
-+
- void list_cpus(void)
- {
--    /* XXX: implement xxx_cpu_list for targets that still miss it */
--#if defined(cpu_list)
-     cpu_list();
--#endif
- }
+-static void alpha_cpu_list_entry(gpointer data, gpointer user_data)
+-{
+-    ObjectClass *oc = data;
+-
+-    qemu_printf("  %s\n", object_class_get_name(oc));
+-}
+-
+-void alpha_cpu_list(void)
+-{
+-    GSList *list;
+-
+-    list = object_class_get_list_sorted(TYPE_ALPHA_CPU, false);
+-    qemu_printf("Available CPUs:\n");
+-    g_slist_foreach(list, alpha_cpu_list_entry, NULL);
+-    g_slist_free(list);
+-}
+-
+ /* Models */
+ typedef struct AlphaCPUAlias {
+     const char *alias;
+diff --git a/target/alpha/cpu.h b/target/alpha/cpu.h
+index d672e911dd..ce806587ca 100644
+--- a/target/alpha/cpu.h
++++ b/target/alpha/cpu.h
+@@ -292,8 +292,6 @@ void alpha_cpu_dump_state(CPUState *cs, FILE *f, int flags);
+ int alpha_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
+ int alpha_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
  
- #if defined(CONFIG_USER_ONLY)
+-#define cpu_list alpha_cpu_list
+-
+ #include "exec/cpu-all.h"
+ 
+ enum {
+@@ -441,7 +439,6 @@ void alpha_translate_init(void);
+ 
+ #define CPU_RESOLVING_TYPE TYPE_ALPHA_CPU
+ 
+-void alpha_cpu_list(void);
+ G_NORETURN void dynamic_excp(CPUAlphaState *, uintptr_t, int, int);
+ G_NORETURN void arith_excp(CPUAlphaState *, uintptr_t, int, uint64_t);
+ 
 -- 
 2.41.0
 
