@@ -2,73 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A474B7EB567
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:15:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 873987EB5E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:57:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2wzb-0002rJ-Ft; Tue, 14 Nov 2023 12:14:27 -0500
+	id 1r2xeW-0003bT-Ml; Tue, 14 Nov 2023 12:56:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r2wzX-0002nR-IN
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 12:14:24 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r2wzV-0008EA-Ub
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 12:14:23 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-54796f18365so1618139a12.0
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 09:14:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699982060; x=1700586860; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=VjIw4Bu3EPxhdXeKr7A+9QZgOLb13tZ8T17jgSOeo4o=;
- b=V07ClREs9aD64viu8z8mwUNBMcBnhSZHN9L6prviJAvvltEd+1dJUY4dhtfI/Jmd6r
- whBds/Ju/5G1jmwKvyDsCQbBJkFKw/djPn2Pt4gPb8Mycc/yzCCawS7lsqPkKsfncmqH
- MeDHmH7I6p3skGZYYG7NXsh3hWG45UL0yK7p7uRcSBoyudd3sofcKJS2GXuzWF86mGrC
- dhgk8bY9V8aeK/GA2VziRa+LXReKZlbaKB1nr4Vs3s64hRQpPmZP++cs9CbiP1QvAAYg
- 0myGsJA8LvjKjORk2FhBjqgqNmzV7S9W5r5ErW1SD+z5AflfNLyBvf6dMYpaQ1SQuYaM
- jovQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699982060; x=1700586860;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VjIw4Bu3EPxhdXeKr7A+9QZgOLb13tZ8T17jgSOeo4o=;
- b=Y9zYbJuIbA9hnIyQ0+933YIva5VpgbQ+fwmArcKyw8r216e9TwvyrTjAaQRCD05fSZ
- jvXiUc9UfuAnMQhKtBnLpw5AQLl86ZYnFSzzZUYk/Of0NV03CyuDbx7npf3frKoSZ1FI
- LDcAWIRxAJgCJPeBSh7PJEGePObJPsugX05M1eDlQUH//u3iKodbfCEAYN1EWS/cDphO
- cKLHrHKwFhTu1mg2hjqR2nZV8NVexhwC3K53/cXGguh7gjjfDuOTlvXxW7YH/57d4ZuE
- fkudOh6cU4Fc6kAAePHjep959xOyQwRjR8EGDFVDhN5LE9mBG+x3HrWjh0lgF6nWvR1i
- X9Pg==
-X-Gm-Message-State: AOJu0YwNM129STi2rwN52ESJ6AgfUUY9hJ5PR5jGYmCZWpDa6RuImDkS
- WovrjfM6eTCgU0EOahssA/LYhWTjb3+BlJ7DxIPVgw==
-X-Google-Smtp-Source: AGHT+IH0vju27kcjmQ8fT0Duy/cjOt+YNTv1ML5wL8bcntAnpC9utzUmYUPqpOAIsa1BlbaNUVt6G2OcA8fRTwkMC4M=
-X-Received: by 2002:aa7:d48c:0:b0:545:5601:414d with SMTP id
- b12-20020aa7d48c000000b005455601414dmr3139481edr.17.1699982059869; Tue, 14
- Nov 2023 09:14:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ben.dooks@codethink.co.uk>)
+ id 1r2xeQ-0003Uh-80; Tue, 14 Nov 2023 12:56:39 -0500
+Received: from imap4.hz.codethink.co.uk ([188.40.203.114])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ben.dooks@codethink.co.uk>)
+ id 1r2xeO-0008CI-1b; Tue, 14 Nov 2023 12:56:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=codethink.co.uk; s=imap4-20230908; h=Sender:Content-Transfer-Encoding:
+ Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+ Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=lWFmJaXdNb1cvdOqSWYWj5lK+WjOKKjQscIAYFDHkGk=; b=s7BLtcsUn11XePqDDdrVw1L0j8
+ ZQTFqOTdTxcm1EKu63Dvm7PK+qviOdU71NVzyRuWHBmJV2LUCiqNUKDuBBuS4uQrUyL2nq/GflXpA
+ EvK8i1P6L4sGgYGiLIYqinfHHBrBJad/AZdU6D5ea7vvdq2e2KDgswKw4U14ftjBLtVxG78zUQgkl
+ u1LXKwoclK3j0dk6zpVntJ4xpJDY+KfPjq1LCW+UGvDtZ0t1IieoJCq0xLELRbg1eYWQxBVJPtlbw
+ gXTb3r1ZyElyXdTPdMVw7mfXxPT9ciqWOsbzS+UFiPiS/q01k4XEwp3p3zXbbFYqPqf053Ca+PfdC
+ FXfMM8Bw==;
+Received: from [167.98.27.226] (helo=[10.35.4.236])
+ by imap4.hz.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
+ id 1r2x8I-001oh5-U3; Tue, 14 Nov 2023 17:23:27 +0000
+Message-ID: <78989536-e29c-4ce1-a972-36be6c70349c@codethink.co.uk>
+Date: Tue, 14 Nov 2023 17:23:26 +0000
 MIME-Version: 1.0
-References: <20231114165404.681826-1-ben.dooks@codethink.co.uk>
-In-Reply-To: <20231114165404.681826-1-ben.dooks@codethink.co.uk>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 14 Nov 2023 17:14:08 +0000
-Message-ID: <CAFEAcA-MG+ak8+xVyqgpWqmKAryOXJtOckUmA=GysQwnpuz5SQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] hw/intc/arm_gicv3: ICC_PMR_EL1 high bits should be RAZ
-To: Ben Dooks <ben.dooks@codethink.co.uk>
+Content-Language: en-GB
+To: Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+References: <20231114165404.681826-1-ben.dooks@codethink.co.uk>
+ <CAFEAcA-MG+ak8+xVyqgpWqmKAryOXJtOckUmA=GysQwnpuz5SQ@mail.gmail.com>
+From: Ben Dooks <ben.dooks@codethink.co.uk>
+Organization: Codethink Limited.
+In-Reply-To: <CAFEAcA-MG+ak8+xVyqgpWqmKAryOXJtOckUmA=GysQwnpuz5SQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=188.40.203.114;
+ envelope-from=ben.dooks@codethink.co.uk; helo=imap4.hz.codethink.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,45 +69,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 14 Nov 2023 at 16:54, Ben Dooks <ben.dooks@codethink.co.uk> wrote:
->
-> The ICC_PMR_ELx bit msak returned from icc_fullprio_mask
-> should technically also remove any bit above 7 as these
-> are marked reserved (read 0) and should therefore should
-> not be written as anything other than 0.
->
-> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-> ---
->  hw/intc/arm_gicv3_cpuif.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-> index d07b13eb27..986044df79 100644
-> --- a/hw/intc/arm_gicv3_cpuif.c
-> +++ b/hw/intc/arm_gicv3_cpuif.c
-> @@ -803,7 +803,7 @@ static uint32_t icc_fullprio_mask(GICv3CPUState *cs)
->       * with the group priority, whose mask depends on the value of BPR
->       * for the interrupt group.)
->       */
-> -    return ~0U << (8 - cs->pribits);
-> +    return (~0U << (8 - cs->pribits)) & 0xff;
->  }
+On 14/11/2023 17:14, Peter Maydell wrote:
+> On Tue, 14 Nov 2023 at 16:54, Ben Dooks <ben.dooks@codethink.co.uk> wrote:
+>>
+>> The ICC_PMR_ELx bit msak returned from icc_fullprio_mask
+>> should technically also remove any bit above 7 as these
+>> are marked reserved (read 0) and should therefore should
+>> not be written as anything other than 0.
+>>
+>> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+>> ---
+>>   hw/intc/arm_gicv3_cpuif.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
+>> index d07b13eb27..986044df79 100644
+>> --- a/hw/intc/arm_gicv3_cpuif.c
+>> +++ b/hw/intc/arm_gicv3_cpuif.c
+>> @@ -803,7 +803,7 @@ static uint32_t icc_fullprio_mask(GICv3CPUState *cs)
+>>        * with the group priority, whose mask depends on the value of BPR
+>>        * for the interrupt group.)
+>>        */
+>> -    return ~0U << (8 - cs->pribits);
+>> +    return (~0U << (8 - cs->pribits)) & 0xff;
+>>   }
+> 
+> The upper bits of ICC_PMR_ELx are defined as RES0, which has a
+> complicated technical definition which you can find in the GIC
+> architecture specification glossary. It's valid for RES0 bits to
+> be implemented as reads-as-written, which is the way our current
+> implementation works. Valid guest code should never be writing
+> any non-zero value into those bits.
 
-The upper bits of ICC_PMR_ELx are defined as RES0, which has a
-complicated technical definition which you can find in the GIC
-architecture specification glossary. It's valid for RES0 bits to
-be implemented as reads-as-written, which is the way our current
-implementation works. Valid guest code should never be writing
-any non-zero value into those bits.
+Yeah, got some proprietary test code that is trying write-1 and
+then assuming read-0.
 
-What problem are you running into that you're trying to fix
-with this patch? If our implementation misbehaves as a result
-of letting these high bits through into cs->icc_pmr_el1 that
-would be a good reason for making the change.
+> What problem are you running into that you're trying to fix
+> with this patch? If our implementation misbehaves as a result
+> of letting these high bits through into cs->icc_pmr_el1 that
+> would be a good reason for making the change.
 
-If we do want to change this, for consistency we'd want
-to change icv_fullprio_mask() too.
+See above, local test code issue.
 
-thanks
--- PMM
+  > If we do want to change this, for consistency we'd want
+> to change icv_fullprio_mask() too.
+
+If this isn't useful then I'll keep it as a local patch for now.
+
+-- 
+Ben Dooks				http://www.codethink.co.uk/
+Senior Engineer				Codethink - Providing Genius
+
+https://www.codethink.co.uk/privacy.html
+
 
