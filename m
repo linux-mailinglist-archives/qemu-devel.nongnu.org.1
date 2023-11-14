@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09347EB53E
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:02:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F78F7EB545
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:03:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2wmw-0002cV-RV; Tue, 14 Nov 2023 12:01:23 -0500
+	id 1r2wmy-0002rm-2B; Tue, 14 Nov 2023 12:01:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r2wmB-0000gr-2B; Tue, 14 Nov 2023 12:00:35 -0500
+ id 1r2wmD-0000kt-6s; Tue, 14 Nov 2023 12:00:37 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r2wm9-0005aK-Bc; Tue, 14 Nov 2023 12:00:34 -0500
+ id 1r2wmB-0005aq-DK; Tue, 14 Nov 2023 12:00:36 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E806E3327A;
- Tue, 14 Nov 2023 19:59:01 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 051393327B;
+ Tue, 14 Nov 2023 19:59:02 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B6E3935201;
+ by tsrv.corpit.ru (Postfix) with SMTP id C85CC35202;
  Tue, 14 Nov 2023 19:58:43 +0300 (MSK)
-Received: (nullmailer pid 2949133 invoked by uid 1000);
+Received: (nullmailer pid 2949136 invoked by uid 1000);
  Tue, 14 Nov 2023 16:58:42 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH trivial 20/21] util/filemonitor-inotify.c: spelling fix: kenel
-Date: Tue, 14 Nov 2023 19:58:33 +0300
-Message-Id: <20231114165834.2949011-21-mjt@tls.msk.ru>
+ Eric Auger <eric.auger@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH trivial 21/21] util/range.c: spelling fix: inbetween
+Date: Tue, 14 Nov 2023 19:58:34 +0300
+Message-Id: <20231114165834.2949011-22-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231114165834.2949011-1-mjt@tls.msk.ru>
 References: <20231114165834.2949011-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,27 +61,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: 2e12dd405c66 "util/filemonitor-inotify: qemu_file_monitor_watch(): assert no overflow"
-Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: Peter Maydell <peter.maydell@linaro.org>
+Fixes: b439595a08d7 "range: Introduce range_inverse_array()"
+Cc: Eric Auger <eric.auger@redhat.com>
+Cc: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- util/filemonitor-inotify.c | 2 +-
+ util/range.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/util/filemonitor-inotify.c b/util/filemonitor-inotify.c
-index 2121111f38..7352b9fe53 100644
---- a/util/filemonitor-inotify.c
-+++ b/util/filemonitor-inotify.c
-@@ -89,7 +89,7 @@ static void qemu_file_monitor_watch(void *arg)
-         struct inotify_event *ev = (struct inotify_event *)(buf + used);
+diff --git a/util/range.c b/util/range.c
+index 9605ccfcbe..f3f40098d5 100644
+--- a/util/range.c
++++ b/util/range.c
+@@ -98,7 +98,7 @@ void range_inverse_array(GList *in, GList **rev,
+         out = append_new_range(out, low, MIN(range_lob(r) - 1, high));
+     }
  
-         /*
--         * We trust the kenel to provide valid buffer with complete event
-+         * We trust the kernel to provide valid buffer with complete event
-          * records.
-          */
-         assert(len - used >= sizeof(struct inotify_event));
+-    /* insert a range inbetween each original range until we reach high */
++    /* insert a range in between each original range until we reach high */
+     for (; l->next; l = l->next) {
+         r = (Range *)l->data;
+         rn = (Range *)l->next->data;
 -- 
 2.39.2
 
