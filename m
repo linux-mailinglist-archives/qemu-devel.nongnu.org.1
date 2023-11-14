@@ -2,97 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93ADE7EB7FC
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 21:44:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43D8D7EB802
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 21:56:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r30FA-0008GP-Vr; Tue, 14 Nov 2023 15:42:45 -0500
+	id 1r30RJ-0003ig-Kb; Tue, 14 Nov 2023 15:55:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r30F0-0008G7-Ps
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 15:42:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r30Ex-0004OV-Vu
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 15:42:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699994549;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3TtpAY4W+fJ6zZr9vVeLASJtJazbGOpu7CvZJWcTqXQ=;
- b=aFVwNITJ6Weeu51qB0xu9jp9Rs2T8SAK+XFoyeRxxspNzWOkHN8MgyfPcBxMhoQzoYFrG9
- XVVSl1uMVx4CaiYXFk8A2cOnkbCGtzYIVeaFtB2rxPN1Z3F/8HftqkUvF74W6/e/vNuvlV
- /a2OrWhDZEZ2HTa8Izt5UTurnmCigGw=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-682-8BoyrllsNi-ZriyXe9FNUQ-1; Tue, 14 Nov 2023 15:42:28 -0500
-X-MC-Unique: 8BoyrllsNi-ZriyXe9FNUQ-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-670991f8b5cso2851936d6.1
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 12:42:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from
+ <3rt5TZQcKCusiRagheRTbbTYR.PbZdRZh-QRiRYabaTah.beT@flex--venture.bounces.google.com>)
+ id 1r30RF-0003iC-UU
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 15:55:13 -0500
+Received: from mail-yb1-xb49.google.com ([2607:f8b0:4864:20::b49])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <3rt5TZQcKCusiRagheRTbbTYR.PbZdRZh-QRiRYabaTah.beT@flex--venture.bounces.google.com>)
+ id 1r30RE-0006yC-Cn
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 15:55:13 -0500
+Received: by mail-yb1-xb49.google.com with SMTP id
+ 3f1490d57ef6-d9caf486775so7303397276.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 12:55:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1699995310; x=1700600110; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=/0QyjxMBjq4pZ9tZszT8gz6oGvdNt3w7QoBxLLeZAqk=;
+ b=aDVpT5JvqKfnVgDLjXgfyK43/ZEQfurdIsJMiS9jEGXuI0PNkoG9C2RCNVNuAIkM9F
+ p1GRwjvYc7w2qZVOz3tBRytG6nKScAASakHqtoN9ecb7acVceTG/hrDP0Kdz1dE/+Zxb
+ Ulwb78iX89HEPPcG26Lh2sMFPFDlx9IbTX//845QYMOXOKSmv4kOVO0hVj9xW+6Dn2rg
+ zMxnmneGqgq7+uJujxZeTjy8LBk+4rNYFvRRvOTpV4mup3ogwtczrr3SCXC/ZxAyXJ5+
+ 6wyXM1BjoCOrjiK12mjUmsQdWVtSsasXxVEfTr3Ff7fd0RgjGiW5eaSQlc/2yZQNUDkF
+ 2OBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699994547; x=1700599347;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3TtpAY4W+fJ6zZr9vVeLASJtJazbGOpu7CvZJWcTqXQ=;
- b=XdQTqSOpvzsoq6WowEffaa+XvqUe0zOHI2COhlgnF5jP68n+DT3xWj6OVoHwzm0mTf
- nzMBFn/yPfxxZTtPEUfC6vVuXKuoe5z7Lwe4+hNH1lapMfuzkmk9icn6+0NlLuNHp9Ek
- uX48ieYmi55pYIxQ0Yx//ax91rqEZqiaDE3+KCIdz0jsXb+wL5xPMODwU+kZyPI/AjbV
- tW51rFQxptTO4IaYX/J/n3Hdp00KBTicc39mwIAir9LvXMhf3BBjjftkVlYMXmPpkeB8
- a4FLxnxHw+X6nx7mwvk7vaFzCAGyS8LD+i7uktUORvU6cmL8eIhoFXbsT+h/GrmRvBBI
- vPhQ==
-X-Gm-Message-State: AOJu0YyDaxmGY/mGRjjOE1pKjhWTr99iAXb+XL3na0rBT+LsAmtGJ2HX
- 6H/AzBTQJ9ivRWh/6aYd1F5tTzSEWgFNFuvOuln1hjOcf2v2SEGKvcj+TpnuFVixvxRhvB1KzRR
- VFDtCh4jU0XB3xTQ=
-X-Received: by 2002:a05:6214:412:b0:66d:7f65:71c9 with SMTP id
- z18-20020a056214041200b0066d7f6571c9mr6543219qvx.9.1699994547699; 
- Tue, 14 Nov 2023 12:42:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFSYRZCt/8CkyKdAzwrNX4NZyAH5f4EmPiboOPyvQwWHc54WsRNnERPclUmmQGqDSqL/AJ8Tg==
-X-Received: by 2002:a05:6214:412:b0:66d:7f65:71c9 with SMTP id
- z18-20020a056214041200b0066d7f6571c9mr6543180qvx.9.1699994547370; 
- Tue, 14 Nov 2023 12:42:27 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- r7-20020a0cf807000000b0065b1f90ff8csm3177960qvn.40.2023.11.14.12.42.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 12:42:26 -0800 (PST)
-Message-ID: <5f09ba2a-3e62-454a-8665-0f80508b5168@redhat.com>
-Date: Tue, 14 Nov 2023 21:42:23 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/avocado/intel_iommu: Add asset hashes to avoid
- warnings
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, qemu-devel@nongnu.org
-Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>
-References: <20231114143531.291820-1-thuth@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20231114143531.291820-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ d=1e100.net; s=20230601; t=1699995310; x=1700600110;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/0QyjxMBjq4pZ9tZszT8gz6oGvdNt3w7QoBxLLeZAqk=;
+ b=WPBja2Ymdx+9mI+68GQv8fiV6rQHHM6jm4DMznMYh+vhvyvTBMstPGGlxFHDeVBy9Z
+ RUXO4ZmYet4V5MUhGxGI8jPAHqocI8QoWznwf3i+KpS+sgQ8UMyPFjEhy2e2EHq15xVX
+ uHpjMJZEDO8tS5XrqmdyqOicwIPXihKgdOwjXkIR46qkG+1vdY5BPKkJZH6d8gsTY76T
+ Qu+WlZo79xrvI5wdvT9YfRovj1dqElaYoAqMxRwr8NzxFhb4cqZv0zaOf0+M/f2xfhBL
+ c7pr0qJvTYPL4iGE+h1vt3eFzdJc3RvlwWtONmabzFrz4o/36Lan9CNZxJpQROs7gDSR
+ 23fw==
+X-Gm-Message-State: AOJu0YzIRNzzrbqiXbnpmtzmR+O6UMYnox2DASBJpsBlfvrvNpF/2EGf
+ A5mOB0Awy8bFLi9Ppf5x448CK2rJIMLB
+X-Google-Smtp-Source: AGHT+IFIyZBOkTj52I/jZlTkv2haZ8DF+tVOGFZt82Coh1OSR/U4T5URDWYPYTRJ950IoEZxloOvpHYqMfG+
+X-Received: from venture.c.googlers.com
+ ([fda3:e722:ac3:cc00:24:72f4:c0a8:5c34])
+ (user=venture job=sendgmr) by 2002:a25:a284:0:b0:d9a:40ed:8d26 with SMTP id
+ c4-20020a25a284000000b00d9a40ed8d26mr305694ybi.0.1699995310417; Tue, 14 Nov
+ 2023 12:55:10 -0800 (PST)
+Date: Tue, 14 Nov 2023 20:55:07 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.rc0.421.g78406f8d94-goog
+Message-ID: <20231114205507.3792947-1-venture@google.com>
+Subject: [PATCH] softmmu/memory: use memcpy for multi-byte accesses
+From: Patrick Venture <venture@google.com>
+To: pbonzini@redhat.com, peterx@redhat.com, david@redhat.com, 
+ philmd@linaro.org, peter.maydell@linaro.org
+Cc: qemu-devel@nongnu.org, Patrick Venture <venture@google.com>, 
+ Chris Rauer <crauer@google.com>, Peter Foley <pefoley@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b49;
+ envelope-from=3rt5TZQcKCusiRagheRTbbTYR.PbZdRZh-QRiRYabaTah.beT@flex--venture.bounces.google.com;
+ helo=mail-yb1-xb49.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,43 +87,65 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Thomas,
+Avoids unaligned pointer issues.
 
-On 11/14/23 15:35, Thomas Huth wrote:
-> The intel_iommu test is currently succeeding with annoying warnings.
-nit: you may have precised the nature of the warning or quotes
-> Add the proper asset hashes to avoid those.
->
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  tests/avocado/intel_iommu.py | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/tests/avocado/intel_iommu.py b/tests/avocado/intel_iommu.py
-> index 474d62f6bf..77635ab56c 100644
-> --- a/tests/avocado/intel_iommu.py
-> +++ b/tests/avocado/intel_iommu.py
-> @@ -54,9 +54,11 @@ def common_vm_setup(self, custom_kernel=None):
->              return
->  
->          kernel_url = self.distro.pxeboot_url + 'vmlinuz'
-> +        kernel_hash = '5b6f6876e1b5bda314f93893271da0d5777b1f3c'
->          initrd_url = self.distro.pxeboot_url + 'initrd.img'
-> -        self.kernel_path = self.fetch_asset(kernel_url)
-> -        self.initrd_path = self.fetch_asset(initrd_url)
-> +        initrd_hash = 'dd0340a1b39bd28f88532babd4581c67649ec5b1'
-> +        self.kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-> +        self.initrd_path = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
->  
->      def run_and_check(self):
->          if self.kernel_path:
-Besides,
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Chris Rauer <crauer@google.com>
+Reviewed-by: Peter Foley <pefoley@google.com>
+Signed-off-by: Patrick Venture <venture@google.com>
+---
+ system/memory.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-Eric
+diff --git a/system/memory.c b/system/memory.c
+index 304fa843ea..02c97d5187 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -1343,16 +1343,16 @@ static uint64_t memory_region_ram_device_read(void *opaque,
+ 
+     switch (size) {
+     case 1:
+-        data = *(uint8_t *)(mr->ram_block->host + addr);
++        memcpy(&data, mr->ram_block->host + addr, sizeof(uint8_t));
+         break;
+     case 2:
+-        data = *(uint16_t *)(mr->ram_block->host + addr);
++        memcpy(&data, mr->ram_block->host + addr, sizeof(uint16_t));
+         break;
+     case 4:
+-        data = *(uint32_t *)(mr->ram_block->host + addr);
++        memcpy(&data, mr->ram_block->host + addr, sizeof(uint32_t));
+         break;
+     case 8:
+-        data = *(uint64_t *)(mr->ram_block->host + addr);
++        memcpy(&data, mr->ram_block->host + addr, sizeof(uint64_t));
+         break;
+     }
+ 
+@@ -1370,16 +1370,16 @@ static void memory_region_ram_device_write(void *opaque, hwaddr addr,
+ 
+     switch (size) {
+     case 1:
+-        *(uint8_t *)(mr->ram_block->host + addr) = (uint8_t)data;
++        memcpy(mr->ram_block->host + addr, &data, sizeof(uint8_t));
+         break;
+     case 2:
+-        *(uint16_t *)(mr->ram_block->host + addr) = (uint16_t)data;
++        memcpy(mr->ram_block->host + addr, &data, sizeof(uint16_t));
+         break;
+     case 4:
+-        *(uint32_t *)(mr->ram_block->host + addr) = (uint32_t)data;
++        memcpy(mr->ram_block->host + addr, &data, sizeof(uint32_t));
+         break;
+     case 8:
+-        *(uint64_t *)(mr->ram_block->host + addr) = data;
++        memcpy(mr->ram_block->host + addr, &data, sizeof(uint64_t));
+         break;
+     }
+ }
+-- 
+2.43.0.rc0.421.g78406f8d94-goog
 
 
