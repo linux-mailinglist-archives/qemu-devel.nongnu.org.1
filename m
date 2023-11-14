@@ -2,69 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A667EB8B6
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 22:40:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FEA97EB8EE
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 22:49:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3183-0007tG-6m; Tue, 14 Nov 2023 16:39:27 -0500
+	id 1r31GZ-0003Z1-K9; Tue, 14 Nov 2023 16:48:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <venture@google.com>)
- id 1r3181-0007t2-FX
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 16:39:25 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1r31GX-0003Ys-Qc
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 16:48:13 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <venture@google.com>)
- id 1r317z-0005n1-Kd
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 16:39:25 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-54744e66d27so4669a12.0
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 13:39:22 -0800 (PST)
+ id 1r31GU-0007cL-Ro
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 16:48:13 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-545557de8e6so5066a12.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 13:48:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1699997961; x=1700602761; darn=nongnu.org;
+ d=google.com; s=20230601; t=1699998487; x=1700603287; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=T+SOaKVfuDrxk9TjPdAdZVozr+Sase/JqG9Si3lVJOw=;
- b=UKzb0+POfNVBeq/4U3vLAdmm1XSeDdpuT6tE3CntVpetM9fiUlrcwsCROlNB7nhmfu
- z0NyeWN75JzBh9WJq0qdAhKOmjRyIaShdWoNgQB65AY/TPD9QLPXgcVqE1fT7K5iLn33
- tsEJU2tv9auv4nc2jEfwc13tdL9PPzBGqtkxjtGstaxhtsqniiN9nUI06TF2APdm4Z7d
- UT6GuZMHkSoxzPXqJ07P33Ku0Thyvp926B6mcleR40B14lqhfQuZMJxSu1r2Wie2GPfC
- DwmZFCBOMNNyeD8itKVJruCj/+nc8vB5PVdD+Hk3vs6sqRxsuTPRIW3l3gZQXHh9V0/S
- 6XLA==
+ bh=589yOBCrxeQ30NyE1oNk2MVFSh62gkuS196woEBeR/k=;
+ b=vPcF4QTvXknYjma08AlY4amKAbjcGMxaXJdGdIP2sn6FDqKSoyYXDVLjnEHT7IYT5V
+ NG4pdXUKDlm9E0ohA12gOSWHhBZiqhsy7RGIoXdgqOrdfaNFxAcaZbMHwMf+6lIq9kRq
+ AlPruBIYyvsU2vF99SN1f+XkMNWP5NsVkjBxeHz240HqV8UKn4UYr7D5j6suwk/TfEVH
+ cKG+WgFgA3gz8mXk4pssKM3vELkzLN2thjtMMTqYif5dfaTZGhU2yXDJiLUxtb29J8rK
+ wE6EZr9d28mHN11ztl+9Mo3xeCOrujq6qesNb2ezDbOknudmv388R5HQfQXC538buQuM
+ Uspw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699997961; x=1700602761;
+ d=1e100.net; s=20230601; t=1699998487; x=1700603287;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=T+SOaKVfuDrxk9TjPdAdZVozr+Sase/JqG9Si3lVJOw=;
- b=md/oNhwKmTW5isf9RuOQIsshbnCrz/ALbcaBx13vBgmc7hazF2Y3YrPvo6I0wtLbh9
- 9L71dvvkmg4o9NYd+sd5dmuBo/g8mCSSY1Nl+tjtq/RBbPdaOB0hBwK1oQLPqXIcd45m
- if+KLJmJ7Qh2AvO3foWF5l9iU5L92EQR6ykFVqJPXXv72sckSLnIvtIix9yQV5ShoBMO
- 5R6bECYvSsVuMq1VP+fOXyTnGtuJ6flqXRbDwceMETKB4IFFKdSxqH84QIidMxlojhJY
- eBdR/bYKaH8s4CZemnji2n7B2s0XMI7v0/oiVuw1X83EzHnIaiwaxZfw88/pv6IN/MZ6
- 5LIg==
-X-Gm-Message-State: AOJu0YwnznCx3bd21cFAlN483kMmFNhXwyqbEpym8FMZoLAurx3bygax
- UL2kcvmPLlQhfFtfzxYcl9YM0ZHWbhzEwEHslZivWw==
-X-Google-Smtp-Source: AGHT+IG4cTIgcITnnAlh+ojtsKrsGJNfhl5r4qhvQkpMlCSGviOxy708hmmilmo6rLp1jqCtV15la6xhlla1JjrXHgA=
-X-Received: by 2002:a05:6402:268d:b0:544:e2b8:ba6a with SMTP id
- w13-20020a056402268d00b00544e2b8ba6amr9048edd.3.1699997960502; Tue, 14 Nov
- 2023 13:39:20 -0800 (PST)
+ bh=589yOBCrxeQ30NyE1oNk2MVFSh62gkuS196woEBeR/k=;
+ b=qVEeNDRfHPDUNOqvwpguOPcvAuZ9PgLEsoVa58+N0xxn7Dc7CdSiBlyLLFjRQLRLR0
+ i7zUZWVR8OgnYIgNVsy3DQYIsSHiUg74dlUbuJBtGiZAMoDp9HxlhYY0HjlIPILuI7TK
+ uwLcp4nGep2nQ1KXLIL/H0PNis3ZLRWXPqRgUwpS7LA638y/BVCxzDgDMLOjmbvsG2tj
+ ArGEP+eFI9Wfs7+sLoYiL6pELaFOTcIsiJXgsMK8Z0WBWu/8igCzPluGZ9ip0++1wBZ3
+ EuSkqd3fsKDJbfgfuVSe61iPi48fOnkgd3ho7kdRM0yILkoUFq7+ipzriV078CM5Ur08
+ fWrw==
+X-Gm-Message-State: AOJu0YwIz/37OjGfRX8x6b3oGR3sSYZhAf8vWHA/kQPV8D9mDG3Isj98
+ PVJRXJnXkus6v1vZJDsWr4+JlbFy+xK5stobVl98B7yhOrmqeNeAVuAEaA==
+X-Google-Smtp-Source: AGHT+IEfeYyE+L9p/FHTt1xDUyzgrjqegrGd7A0yqEyI3s+LCBCZ24XYRtWkJOzMzkm3EDoNixCJGflLRd4NwmcRgwY=
+X-Received: by 2002:a05:6402:3712:b0:547:9b49:f221 with SMTP id
+ ek18-20020a056402371200b005479b49f221mr48445edb.6.1699998487230; Tue, 14 Nov
+ 2023 13:48:07 -0800 (PST)
 MIME-Version: 1.0
-References: <20231114205507.3792947-1-venture@google.com>
- <bc43ecb5-f93b-4288-a6e1-624aebfcffcc@linaro.org>
-In-Reply-To: <bc43ecb5-f93b-4288-a6e1-624aebfcffcc@linaro.org>
+References: <20231113063156.2264941-1-potin.lai.pt@gmail.com>
+In-Reply-To: <20231113063156.2264941-1-potin.lai.pt@gmail.com>
 From: Patrick Venture <venture@google.com>
-Date: Tue, 14 Nov 2023 13:39:08 -0800
-Message-ID: <CAO=notwC4PY9Kqfg_22_b-XD6i6oAh6eNGYfvdjWdWCPMLJP_A@mail.gmail.com>
-Subject: Re: [PATCH] softmmu/memory: use memcpy for multi-byte accesses
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: pbonzini@redhat.com, peterx@redhat.com, david@redhat.com, 
- philmd@linaro.org, peter.maydell@linaro.org, qemu-devel@nongnu.org, 
- Chris Rauer <crauer@google.com>, Peter Foley <pefoley@google.com>
-Content-Type: multipart/alternative; boundary="0000000000008eb4f3060a239eca"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=venture@google.com; helo=mail-ed1-x532.google.com
+Date: Tue, 14 Nov 2023 13:47:54 -0800
+Message-ID: <CAO=notx53PD6E731PB2oCyu6dSuKA=fT+R+datSPnOAQuVVfJA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] hw/i2c: add pca9543 i2c-mux switch
+To: Potin Lai <potin.lai.pt@gmail.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000f3bab6060a23bdbd"
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=venture@google.com; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -175
 X-Spam_score: -17.6
 X-Spam_bar: -----------------
@@ -89,96 +86,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000008eb4f3060a239eca
+--000000000000f3bab6060a23bdbd
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 14, 2023 at 1:18=E2=80=AFPM Richard Henderson <
-richard.henderson@linaro.org> wrote:
+On Sun, Nov 12, 2023 at 10:34=E2=80=AFPM Potin Lai <potin.lai.pt@gmail.com>=
+ wrote:
 
-> On 11/14/23 12:55, Patrick Venture wrote:
-> > Avoids unaligned pointer issues.
-> >
-> > Reviewed-by: Chris Rauer <crauer@google.com>
-> > Reviewed-by: Peter Foley <pefoley@google.com>
-> > Signed-off-by: Patrick Venture <venture@google.com>
-> > ---
-> >   system/memory.c | 16 ++++++++--------
-> >   1 file changed, 8 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/system/memory.c b/system/memory.c
-> > index 304fa843ea..02c97d5187 100644
-> > --- a/system/memory.c
-> > +++ b/system/memory.c
-> > @@ -1343,16 +1343,16 @@ static uint64_t
-> memory_region_ram_device_read(void *opaque,
-> >
-> >       switch (size) {
-> >       case 1:
-> > -        data =3D *(uint8_t *)(mr->ram_block->host + addr);
-> > +        memcpy(&data, mr->ram_block->host + addr, sizeof(uint8_t));
+> Add pca9543 2-channel i2c-mux switch support.
 >
->
-> This is incorrect, especially for big-endian hosts.
->
-> You want to use "qemu/bswap.h", ld*_he_p(), st*_he_p().
+> Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
 >
 
-Thanks, I'll take a look.
+Reviewed-by: Patrick Venture <venture@google.com>
 
 
+> ---
+>  hw/i2c/i2c_mux_pca954x.c         | 12 ++++++++++++
+>  include/hw/i2c/i2c_mux_pca954x.h |  1 +
+>  2 files changed, 13 insertions(+)
 >
+> diff --git a/hw/i2c/i2c_mux_pca954x.c b/hw/i2c/i2c_mux_pca954x.c
+> index db5db956a6..6aace0fc47 100644
+> --- a/hw/i2c/i2c_mux_pca954x.c
+> +++ b/hw/i2c/i2c_mux_pca954x.c
+> @@ -30,6 +30,7 @@
 >
-> r~
+>  #define PCA9548_CHANNEL_COUNT 8
+>  #define PCA9546_CHANNEL_COUNT 4
+> +#define PCA9543_CHANNEL_COUNT 2
+>
+>  /*
+>   * struct Pca954xState - The pca954x state object.
+> @@ -172,6 +173,12 @@ I2CBus *pca954x_i2c_get_bus(I2CSlave *mux, uint8_t
+> channel)
+>      return pca954x->bus[channel];
+>  }
+>
+> +static void pca9543_class_init(ObjectClass *klass, void *data)
+> +{
+> +    Pca954xClass *s =3D PCA954X_CLASS(klass);
+> +    s->nchans =3D PCA9543_CHANNEL_COUNT;
+> +}
+> +
+>  static void pca9546_class_init(ObjectClass *klass, void *data)
+>  {
+>      Pca954xClass *s =3D PCA954X_CLASS(klass);
+> @@ -246,6 +253,11 @@ static const TypeInfo pca954x_info[] =3D {
+>          .class_init    =3D pca954x_class_init,
+>          .abstract      =3D true,
+>      },
+> +    {
+> +        .name          =3D TYPE_PCA9543,
+> +        .parent        =3D TYPE_PCA954X,
+> +        .class_init    =3D pca9543_class_init,
+> +    },
+>      {
+>          .name          =3D TYPE_PCA9546,
+>          .parent        =3D TYPE_PCA954X,
+> diff --git a/include/hw/i2c/i2c_mux_pca954x.h
+> b/include/hw/i2c/i2c_mux_pca954x.h
+> index 3dd25ec983..1da5508ed5 100644
+> --- a/include/hw/i2c/i2c_mux_pca954x.h
+> +++ b/include/hw/i2c/i2c_mux_pca954x.h
+> @@ -3,6 +3,7 @@
+>
+>  #include "hw/i2c/i2c.h"
+>
+> +#define TYPE_PCA9543 "pca9543"
+>  #define TYPE_PCA9546 "pca9546"
+>  #define TYPE_PCA9548 "pca9548"
+>
+> --
+> 2.31.1
+>
 >
 
---0000000000008eb4f3060a239eca
+--000000000000f3bab6060a23bdbd
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Nov 14, 2023 at 1:18=E2=80=AF=
-PM Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org">ri=
-chard.henderson@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gma=
-il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
-04,204);padding-left:1ex">On 11/14/23 12:55, Patrick Venture wrote:<br>
-&gt; Avoids unaligned pointer issues.<br>
-&gt; <br>
-&gt; Reviewed-by: Chris Rauer &lt;<a href=3D"mailto:crauer@google.com" targ=
-et=3D"_blank">crauer@google.com</a>&gt;<br>
-&gt; Reviewed-by: Peter Foley &lt;<a href=3D"mailto:pefoley@google.com" tar=
-get=3D"_blank">pefoley@google.com</a>&gt;<br>
-&gt; Signed-off-by: Patrick Venture &lt;<a href=3D"mailto:venture@google.co=
-m" target=3D"_blank">venture@google.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 =C2=A0system/memory.c | 16 ++++++++--------<br>
-&gt;=C2=A0 =C2=A01 file changed, 8 insertions(+), 8 deletions(-)<br>
-&gt; <br>
-&gt; diff --git a/system/memory.c b/system/memory.c<br>
-&gt; index 304fa843ea..02c97d5187 100644<br>
-&gt; --- a/system/memory.c<br>
-&gt; +++ b/system/memory.c<br>
-&gt; @@ -1343,16 +1343,16 @@ static uint64_t memory_region_ram_device_read(=
-void *opaque,<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0switch (size) {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0case 1:<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 data =3D *(uint8_t *)(mr-&gt;ram_block-&g=
-t;host + addr);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 memcpy(&amp;data, mr-&gt;ram_block-&gt;ho=
-st + addr, sizeof(uint8_t));<br>
+<div dir=3D"ltr" class=3D"gmail_attr">On Sun, Nov 12, 2023 at 10:34=E2=80=
+=AFPM Potin Lai &lt;<a href=3D"mailto:potin.lai.pt@gmail.com">potin.lai.pt@=
+gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">Add pca9543 2-channel i2c-mux switch support.<br>
 <br>
+Signed-off-by: Potin Lai &lt;<a href=3D"mailto:potin.lai.pt@gmail.com" targ=
+et=3D"_blank">potin.lai.pt@gmail.com</a>&gt;<br></blockquote><div>=C2=A0</d=
+iv><div>Reviewed-by: Patrick Venture &lt;<a href=3D"mailto:venture@google.c=
+om">venture@google.com</a>&gt;</div><div>=C2=A0</div><blockquote class=3D"g=
+mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
+,204,204);padding-left:1ex">
+---<br>
+=C2=A0hw/i2c/i2c_mux_pca954x.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 12 ++++++=
+++++++<br>
+=C2=A0include/hw/i2c/i2c_mux_pca954x.h |=C2=A0 1 +<br>
+=C2=A02 files changed, 13 insertions(+)<br>
 <br>
-This is incorrect, especially for big-endian hosts.<br>
+diff --git a/hw/i2c/i2c_mux_pca954x.c b/hw/i2c/i2c_mux_pca954x.c<br>
+index db5db956a6..6aace0fc47 100644<br>
+--- a/hw/i2c/i2c_mux_pca954x.c<br>
++++ b/hw/i2c/i2c_mux_pca954x.c<br>
+@@ -30,6 +30,7 @@<br>
 <br>
-You want to use &quot;qemu/bswap.h&quot;, ld*_he_p(), st*_he_p().<br></bloc=
-kquote><div><br></div><div>Thanks, I&#39;ll take a look.</div><div>=C2=A0</=
-div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bor=
-der-left:1px solid rgb(204,204,204);padding-left:1ex">
+=C2=A0#define PCA9548_CHANNEL_COUNT 8<br>
+=C2=A0#define PCA9546_CHANNEL_COUNT 4<br>
++#define PCA9543_CHANNEL_COUNT 2<br>
 <br>
+=C2=A0/*<br>
+=C2=A0 * struct Pca954xState - The pca954x state object.<br>
+@@ -172,6 +173,12 @@ I2CBus *pca954x_i2c_get_bus(I2CSlave *mux, uint8_t cha=
+nnel)<br>
+=C2=A0 =C2=A0 =C2=A0return pca954x-&gt;bus[channel];<br>
+=C2=A0}<br>
 <br>
-r~<br>
++static void pca9543_class_init(ObjectClass *klass, void *data)<br>
++{<br>
++=C2=A0 =C2=A0 Pca954xClass *s =3D PCA954X_CLASS(klass);<br>
++=C2=A0 =C2=A0 s-&gt;nchans =3D PCA9543_CHANNEL_COUNT;<br>
++}<br>
++<br>
+=C2=A0static void pca9546_class_init(ObjectClass *klass, void *data)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0Pca954xClass *s =3D PCA954X_CLASS(klass);<br>
+@@ -246,6 +253,11 @@ static const TypeInfo pca954x_info[] =3D {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.class_init=C2=A0 =C2=A0 =3D pca954x_clas=
+s_init,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.abstract=C2=A0 =C2=A0 =C2=A0 =3D true,<b=
+r>
+=C2=A0 =C2=A0 =C2=A0},<br>
++=C2=A0 =C2=A0 {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .name=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TY=
+PE_PCA9543,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .parent=C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TYPE_PC=
+A954X,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .class_init=C2=A0 =C2=A0 =3D pca9543_class_ini=
+t,<br>
++=C2=A0 =C2=A0 },<br>
+=C2=A0 =C2=A0 =C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.name=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=3D TYPE_PCA9546,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.parent=C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TY=
+PE_PCA954X,<br>
+diff --git a/include/hw/i2c/i2c_mux_pca954x.h b/include/hw/i2c/i2c_mux_pca9=
+54x.h<br>
+index 3dd25ec983..1da5508ed5 100644<br>
+--- a/include/hw/i2c/i2c_mux_pca954x.h<br>
++++ b/include/hw/i2c/i2c_mux_pca954x.h<br>
+@@ -3,6 +3,7 @@<br>
+<br>
+=C2=A0#include &quot;hw/i2c/i2c.h&quot;<br>
+<br>
++#define TYPE_PCA9543 &quot;pca9543&quot;<br>
+=C2=A0#define TYPE_PCA9546 &quot;pca9546&quot;<br>
+=C2=A0#define TYPE_PCA9548 &quot;pca9548&quot;<br>
+<br>
+-- <br>
+2.31.1<br>
+<br>
 </blockquote></div></div>
 
---0000000000008eb4f3060a239eca--
+--000000000000f3bab6060a23bdbd--
 
