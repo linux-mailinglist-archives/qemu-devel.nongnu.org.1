@@ -2,57 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C147EAD53
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 10:49:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 577DE7EAD62
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 10:51:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2q1d-0005Sx-Rq; Tue, 14 Nov 2023 04:48:05 -0500
+	id 1r2q4m-0000Sb-0E; Tue, 14 Nov 2023 04:51:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1r2q1b-0005Q4-Mr; Tue, 14 Nov 2023 04:48:03 -0500
-Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
- helo=Atcsqr.andestech.com)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2q4i-0000S9-Mu
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 04:51:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1r2q1Z-00012k-HV; Tue, 14 Nov 2023 04:48:03 -0500
-Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
- by Atcsqr.andestech.com with ESMTP id 3AE9lbKI081681;
- Tue, 14 Nov 2023 17:47:37 +0800 (+08)
- (envelope-from ethan84@andestech.com)
-Received: from ethan84-VirtualBox.andestech.com (10.0.12.51) by
- ATCPCS16.andestech.com (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; 
- Tue, 14 Nov 2023 17:47:33 +0800
-To: <qemu-devel@nongnu.org>
-CC: <peter.maydell@linaro.org>, <edgar.iglesias@gmail.com>,
- <richard.henderson@linaro.org>, <pbonzini@redhat.com>,
- <palmer@dabbelt.com>, <alistair.francis@wdc.com>,
- <in.meng@windriver.com>, <liweiwei@iscas.ac.cn>,
- <dbarboza@ventanamicro.com>, <hiwei_liu@linux.alibaba.com>,
- <qemu-riscv@nongnu.org>, <peterx@redhat.com>, <david@redhat.com>,
- Ethan Chen <ethan84@andestech.com>
-Subject: [PATCH v3 4/4] hw/riscv/virt: Add IOPMP support
-Date: Tue, 14 Nov 2023 17:47:05 +0800
-Message-ID: <20231114094705.109146-5-ethan84@andestech.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231114094705.109146-1-ethan84@andestech.com>
-References: <20231114094705.109146-1-ethan84@andestech.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2q4g-0001pM-OR
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 04:51:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699955473;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FUfVVyxKxp8nmPIUQXIY5bF6nOriVH/SuR23saAG9D0=;
+ b=Exh7NhG+s17/76K6oMLXQL71CZfTD4L+6eK/+pFJg+LL25fFMvbt6NVJOAU/9YUb+69uwy
+ 1DJDlugPKvfQBxBxa9ZGeJpDj9nh3INU7NgaC5hIsGSe4XHOGelStasbo5gUDvL8+cbiBF
+ qDzN9/OJ77Z19uw72+HbegJN7Hqg0sI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-28-geuh3tAAPOuCYHrqRg2vEg-1; Tue, 14 Nov 2023 04:51:09 -0500
+X-MC-Unique: geuh3tAAPOuCYHrqRg2vEg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3D18A82B9D4;
+ Tue, 14 Nov 2023 09:51:09 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0562F1C060AE;
+ Tue, 14 Nov 2023 09:51:09 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 0C0FE21E6A1F; Tue, 14 Nov 2023 10:51:08 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, alistair@alistair23.me,  edgar.iglesias@gmail.com,
+ peter.maydell@linaro.org,  francisco.iglesias@amd.com,
+ qemu-arm@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Eduardo
+ Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH 0/2] Replace anti-social QOM type names (again)
+References: <20231113134344.1195478-1-armbru@redhat.com>
+ <ZVIo3FsmwpfHzsh8@redhat.com> <87y1f0hjdh.fsf@pond.sub.org>
+ <fb41ec92-d953-4536-b217-8c06f63115ef@redhat.com>
+Date: Tue, 14 Nov 2023 10:51:08 +0100
+In-Reply-To: <fb41ec92-d953-4536-b217-8c06f63115ef@redhat.com> (Thomas Huth's
+ message of "Tue, 14 Nov 2023 09:06:13 +0100")
+Message-ID: <871qcsfysz.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.0.12.51]
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 3AE9lbKI081681
-Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
- helo=Atcsqr.andestech.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,185 +85,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Ethan Chen <ethan84@andestech.com>
-From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- Add 'iopmp=on' option to enable a iopmp device and a dma device
- connect to the iopmp device
-- Add 'iopmp_cascade=on' option to enable iopmp cascading.
+Thomas Huth <thuth@redhat.com> writes:
 
-Signed-off-by: Ethan Chen <ethan84@andestech.com>
----
- hw/riscv/Kconfig        |  2 ++
- hw/riscv/virt.c         | 72 +++++++++++++++++++++++++++++++++++++++--
- include/hw/riscv/virt.h | 10 +++++-
- 3 files changed, 81 insertions(+), 3 deletions(-)
+> On 14/11/2023 08.41, Markus Armbruster wrote:
+>> Cc: the other QOM maintainers
+>> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+>>=20
+>>> On Mon, Nov 13, 2023 at 02:43:42PM +0100, Markus Armbruster wrote:
+>>>> We got rid of QOM type names containing ',' in 6.0, but some have
+>>>> crept back in.  Replace them just like we did in 6.0.
+>>>
+>>> It is practical to add
+>>>
+>>>     assert(strchr(name, ',') =3D=3D NULL)
+>>>
+>>> to some place in QOM to stop them coming back yet again ?
+>>
+>> This adds a naming rule to QOM.  Right now, QOM has none whatsoever,
+>> which I've long called out as a mistake.
+>>
+>> I'm all for correcting that mistake, but I'd go further than just
+>> outlawing ','.
+>
+> What prevents us from fixing this "mistake"?
 
-diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
-index b6a5eb4452..c30a104aa4 100644
---- a/hw/riscv/Kconfig
-+++ b/hw/riscv/Kconfig
-@@ -45,6 +45,8 @@ config RISCV_VIRT
-     select FW_CFG_DMA
-     select PLATFORM_BUS
-     select ACPI
-+    select ATCDMAC300
-+    select RISCV_IOPMP
- 
- config SHAKTI_C
-     bool
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index c7fc97e273..3e23ee3afc 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -53,6 +53,8 @@
- #include "hw/display/ramfb.h"
- #include "hw/acpi/aml-build.h"
- #include "qapi/qapi-visit-common.h"
-+#include "hw/misc/riscv_iopmp.h"
-+#include "hw/dma/atcdmac300.h"
- 
- /*
-  * The virt machine physical address space used by some of the devices
-@@ -97,6 +99,9 @@ static const MemMapEntry virt_memmap[] = {
-     [VIRT_UART0] =        { 0x10000000,         0x100 },
-     [VIRT_VIRTIO] =       { 0x10001000,        0x1000 },
-     [VIRT_FW_CFG] =       { 0x10100000,          0x18 },
-+    [VIRT_IOPMP] =        { 0x10200000,      0x100000 },
-+    [VIRT_IOPMP2] =       { 0x10300000,      0x100000 },
-+    [VIRT_DMAC] =         { 0x10400000,      0x100000 },
-     [VIRT_FLASH] =        { 0x20000000,     0x4000000 },
-     [VIRT_IMSIC_M] =      { 0x24000000, VIRT_IMSIC_MAX_SIZE },
-     [VIRT_IMSIC_S] =      { 0x28000000, VIRT_IMSIC_MAX_SIZE },
-@@ -1527,13 +1532,33 @@ static void virt_machine_init(MachineState *machine)
- 
-     create_platform_bus(s, mmio_irqchip);
- 
--    serial_mm_init(system_memory, memmap[VIRT_UART0].base,
--        0, qdev_get_gpio_in(mmio_irqchip, UART0_IRQ), 399193,
-+    serial_mm_init(system_memory, memmap[VIRT_UART0].base + 0x20,
-+        0x2, qdev_get_gpio_in(mmio_irqchip, UART0_IRQ), 38400,
-         serial_hd(0), DEVICE_LITTLE_ENDIAN);
- 
-     sysbus_create_simple("goldfish_rtc", memmap[VIRT_RTC].base,
-         qdev_get_gpio_in(mmio_irqchip, RTC_IRQ));
- 
-+    /* DMAC */
-+    DeviceState *dmac_dev = atcdmac300_create("atcdmac300",
-+        memmap[VIRT_DMAC].base, memmap[VIRT_DMAC].size,
-+        qdev_get_gpio_in(DEVICE(mmio_irqchip), DMAC_IRQ));
-+
-+    if (s->have_iopmp) {
-+        /* IOPMP */
-+        DeviceState *iopmp_dev = iopmp_create(memmap[VIRT_IOPMP].base,
-+            qdev_get_gpio_in(DEVICE(mmio_irqchip), IOPMP_IRQ));
-+        /* DMA with IOPMP */
-+        atcdmac300_connect_iopmp(dmac_dev, &(IOPMP(iopmp_dev)->iopmp_as),
-+            (StreamSink *)&(IOPMP(iopmp_dev)->transaction_info_sink), 0);
-+        if (s->have_iopmp_cascade) {
-+            DeviceState *iopmp_dev2 = iopmp_create(memmap[VIRT_IOPMP2].base,
-+                qdev_get_gpio_in(DEVICE(mmio_irqchip), IOPMP2_IRQ));
-+            cascade_iopmp(iopmp_dev, iopmp_dev2);
-+        }
-+    }
-+
-+
-     for (i = 0; i < ARRAY_SIZE(s->flash); i++) {
-         /* Map legacy -drive if=pflash to machine properties */
-         pflash_cfi01_legacy_drive(s->flash[i],
-@@ -1628,6 +1653,35 @@ static void virt_set_aclint(Object *obj, bool value, Error **errp)
-     s->have_aclint = value;
- }
- 
-+static bool virt_get_iopmp(Object *obj, Error **errp)
-+{
-+    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-+
-+    return s->have_iopmp;
-+}
-+
-+static void virt_set_iopmp(Object *obj, bool value, Error **errp)
-+{
-+    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-+
-+    s->have_iopmp = value;
-+}
-+
-+static bool virt_get_iopmp_cascade(Object *obj, Error **errp)
-+{
-+    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-+
-+    return s->have_iopmp_cascade;
-+}
-+
-+static void virt_set_iopmp_cascade(Object *obj, bool value, Error **errp)
-+{
-+    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-+
-+    s->have_iopmp_cascade = value;
-+}
-+
-+
- bool virt_is_acpi_enabled(RISCVVirtState *s)
- {
-     return s->acpi != ON_OFF_AUTO_OFF;
-@@ -1730,6 +1784,20 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
-                               NULL, NULL);
-     object_class_property_set_description(oc, "acpi",
-                                           "Enable ACPI");
-+
-+    object_class_property_add_bool(oc, "iopmp", virt_get_iopmp,
-+                                   virt_set_iopmp);
-+    object_class_property_set_description(oc, "iopmp",
-+                                          "Set on/off to enable/disable "
-+                                          "iopmp device");
-+
-+    object_class_property_add_bool(oc, "iopmp-cascade",
-+                                   virt_get_iopmp_cascade,
-+                                   virt_set_iopmp_cascade);
-+    object_class_property_set_description(oc, "iopmp-cascade",
-+                                          "Set on/off to enable/disable "
-+                                          "iopmp2 device which is cascaded by "
-+                                          "iopmp1 device");
- }
- 
- static const TypeInfo virt_machine_typeinfo = {
-diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
-index e5c474b26e..5fa2944d29 100644
---- a/include/hw/riscv/virt.h
-+++ b/include/hw/riscv/virt.h
-@@ -54,6 +54,8 @@ struct RISCVVirtState {
- 
-     int fdt_size;
-     bool have_aclint;
-+    bool have_iopmp;
-+    bool have_iopmp_cascade;
-     RISCVVirtAIAType aia_type;
-     int aia_guests;
-     char *oem_id;
-@@ -82,12 +84,18 @@ enum {
-     VIRT_PCIE_MMIO,
-     VIRT_PCIE_PIO,
-     VIRT_PLATFORM_BUS,
--    VIRT_PCIE_ECAM
-+    VIRT_PCIE_ECAM,
-+    VIRT_IOPMP,
-+    VIRT_IOPMP2,
-+    VIRT_DMAC,
- };
- 
- enum {
-     UART0_IRQ = 10,
-     RTC_IRQ = 11,
-+    DMAC_IRQ = 12,
-+    IOPMP_IRQ = 13,
-+    IOPMP2_IRQ = 14,
-     VIRTIO_IRQ = 1, /* 1 to 8 */
-     VIRTIO_COUNT = 8,
-     PCIE_IRQ = 0x20, /* 32 to 35 */
--- 
-2.34.1
+1. Having to clean up the naming messes we made.  This involves backward
+compatibility arguments and work-arounds.
+
+2. Inertia.
+
+> Is there any compelling reason for keeping the current lax naming rules o=
+f QOM?
+
+Can't think of any but avoiding 1.
+
+> Would there be migration issues if we'd rename the current offenders? (an=
+d even if so, couldn't we simply fix that issue by curating an allowlist of=
+ old names?)
+
+I believe migration should not be affected, since migration section
+names are entirely separate.  Mind, I'm no migration expert.
 
 
