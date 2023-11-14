@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379A37EB2B0
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EEAB7EB2AF
 	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 15:43:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2ubG-0007Zk-0x; Tue, 14 Nov 2023 09:41:10 -0500
+	id 1r2ucq-00058K-Mh; Tue, 14 Nov 2023 09:42:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uaf-0005vY-IX
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:40:35 -0500
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uco-00052B-8m
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:42:46 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uac-0008QL-AZ
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:40:31 -0500
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-9e623356e59so626970566b.0
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 06:40:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2ucm-0000Cd-5T
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:42:45 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-54394328f65so8750687a12.3
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 06:42:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699972829; x=1700577629; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=85224ACu16xcahxMJd73na2pr08geUP2BaqK8DQk41g=;
- b=B4hc9vTee9sMf3O9bj8e9LTD5nUPdAn+KpWQ6bP/RGLCp5XSc5a3OvLxUFY7tMxUjz
- N3EOVmC8FjiIzw3QwwgatIR4akxeplMc+OwiHqY3bmxlaWtvk6iJcFmX7Et1i3uMqgkv
- pIIVh9BxAnKLmTkMSreVe7SdJNRFhRcg6FpElBAvQ2J3N8BP3uWRoF1CDuA/HW1o9NU5
- Ny49uBppdO0ut+7JSEYkmagqQiFr8LjMI0AfRcA9aFuyrPppCVIwDJFQ8memp6BAjdqy
- KgmadK7JvKHkNdBGRz8/JBVR4FZaYn3gTVE0weBVR11n+iG9zrhQCVe7pl/vK4m/Nj6l
- 6uGA==
+ d=linaro.org; s=google; t=1699972962; x=1700577762; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=HKVjdYLFOCZfZk9Pbmo/DUgg/DhEXvN6KIrzrSwtmZE=;
+ b=y9OqSrFmXAYGvKJWeueoO5OzpSjk+oeEIe5M4aPBCbvIOCKtQqrpHHbP3fyIJgcp6V
+ 0CWMZByiaYLtrKhLgABPA1GWyr0cpgBw9GV/HUpcQv7NckXt32TV9wbEJoMFZvTmrwKt
+ yMETG6NEJFAerkGW2CXqIRbbd22qx8x33Mw661jMMY/L8y8VrmLRxcUaHAsrbj6LryNh
+ +ZdG8cltN09osOFcCzPeov3scUuEPtGZDgcQ6VmvKqu0W5znJvZiCB9FU+u9SBKjtzAW
+ ET4Q+mASy4+bYfPPWm3qQ0xtJrqE9glRxIJzjLU1BZSPb5NMeQjGu+Sj/oZQa8kpIOcN
+ bl5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699972829; x=1700577629;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=85224ACu16xcahxMJd73na2pr08geUP2BaqK8DQk41g=;
- b=LRoP5XQv/Njy9/BB434GfelqW4hDATRtGIHzcL2o6k8Fhbno5ImJ6MxJ7GIS5ccEJP
- XxDY+LG2j0upHqXKxljGu6QRIP2HukHcrWk46MhVUCzyw5Fb6o7/xvi2ZrDNWVu/xiOW
- LAvmnkjZpYxZbnA9HUCdTeiMnhC/baMVvdKlgypxHliOAII2Iazqua5kjbXH8ogyBViW
- phTryL1wX2UGHYvetKVs90S/4AiozeJ18sJB5lTKsajk8BR8QhoVSbjEEy1QBBOA7Asp
- jOzMy9VRjbieAz10Gwaqhs3VYhh1azKetsibFuptuhQTuUrpMsJP7gsUMQnYgNLlPTuL
- QXxQ==
-X-Gm-Message-State: AOJu0YxCkCt7UVW5mF8x5wrm6Apys4Vluu3lGrC3gCXXFUBtLxBYL1Ep
- 4pEIlsnM0EfjZWVKTe9V5HnU10w3va6xuAw2c2g=
-X-Google-Smtp-Source: AGHT+IE4fe4f8bleIo+ydEdJnHpXElyEFzfSvfuN7IjKmK4sPC2Xb+6oIBNsyuQ4jtW9IDSYhgY52Q==
-X-Received: by 2002:a17:907:969f:b0:9eb:af0e:39da with SMTP id
- hd31-20020a170907969f00b009ebaf0e39damr3096379ejc.46.1699972828864; 
- Tue, 14 Nov 2023 06:40:28 -0800 (PST)
-Received: from m1x-phil.lan (cac94-h02-176-184-25-155.dsl.sta.abo.bbox.fr.
+ d=1e100.net; s=20230601; t=1699972962; x=1700577762;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HKVjdYLFOCZfZk9Pbmo/DUgg/DhEXvN6KIrzrSwtmZE=;
+ b=DN8msuFlDxBdqVwm/PI1nPKoQFZsC+9OWgpKZeCxFlk2tJKyVgg7IleHz5sARxSp0K
+ G0hvD0eVTDyATr392vsmWVE9eEz2OPKQ88ZBh+hmT+GcU8p/MMyp7rgSRiDYttH776Wg
+ bZDgQKgiDub0292GCn0UdcM/H9vr86MyBU5TwrieSta3ykWrNgOaMOoDlLEULz2c7he0
+ 2U3K6+Qv2XQIz6o88G4gsmirRoWbZJQPmwpO2wuAeP1B9vHWpdQujUmjC3L2y+OTCPsW
+ SfR1iQsm63QtXAfq0WQE/OHZA838UiV5nfpjETQkN249LR7ETd5aj34YRAvmb+cHmGrg
+ QoTQ==
+X-Gm-Message-State: AOJu0YzimjqVVzny4a1iGtenJEjkvQxpzAT4IOYkIe/V/Vamb3T1yEYj
+ N3LT5oqETn8ltagTsKh12Nbj3w==
+X-Google-Smtp-Source: AGHT+IEtaJpI1MeBRr8Mea8GsJTm1iOrHuuVOdV5kTZQGJCcYoMf9ITDl6j3WqvV+yhiP/TmmsUgVw==
+X-Received: by 2002:aa7:c6cc:0:b0:544:1fb7:d5e4 with SMTP id
+ b12-20020aa7c6cc000000b005441fb7d5e4mr7419836eds.0.1699972962499; 
+ Tue, 14 Nov 2023 06:42:42 -0800 (PST)
+Received: from [192.168.69.100] (cac94-h02-176-184-25-155.dsl.sta.abo.bbox.fr.
  [176.184.25.155]) by smtp.gmail.com with ESMTPSA id
- t25-20020a1709066bd900b0099c53c4407dsm5561943ejs.78.2023.11.14.06.40.26
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 14 Nov 2023 06:40:28 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: David Woodhouse <dwmw@amazon.co.uk>,
-	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paul Durrant <paul@xen.org>, qemu-arm@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw2@infradead.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- xen-devel@lists.xenproject.org, qemu-block@nongnu.org,
- Anthony Perard <anthony.perard@citrix.com>, kvm@vger.kernel.org,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH-for-9.0 v2 19/19] hw/xen: Have most of Xen files become
- target-agnostic
-Date: Tue, 14 Nov 2023 15:38:15 +0100
-Message-ID: <20231114143816.71079-20-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231114143816.71079-1-philmd@linaro.org>
-References: <20231114143816.71079-1-philmd@linaro.org>
+ u27-20020a50c05b000000b0053de19620b9sm5318059edd.2.2023.11.14.06.42.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 14 Nov 2023 06:42:42 -0800 (PST)
+Message-ID: <9fc50c94-123c-414c-b074-9a742856a3ef@linaro.org>
+Date: Tue, 14 Nov 2023 15:42:40 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/avocado: Replace assertEquals() for Python 3.12
+ compatibility
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>
+References: <20231114134326.287242-1-thuth@redhat.com>
+ <d3c8466c-9a41-4e03-b69f-28ff39aeafd8@linaro.org>
+ <f589472f-de29-48df-8355-1a60de029d32@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <f589472f-de29-48df-8355-1a60de029d32@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,80 +98,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Previous commits re-organized the target-specific bits
-from Xen files. We can now build the common files once
-instead of per-target.
+On 14/11/23 15:21, Thomas Huth wrote:
+> On 14/11/2023 15.10, Philippe Mathieu-Daudé wrote:
+>> Hi Thomas,
+>>
+>> On 14/11/23 14:43, Thomas Huth wrote:
+>>> assertEquals() has been removed in Python 3.12 and should be replaced by
+>>> assertEqual(). See: https://docs.python.org/3.12/whatsnew/3.12.html#id3
+>>
+>>  From this list I see assertEquals() has been deprecated in 3.2, along
+>> with assertRegexpMatches(). No warning for this single use?
+>>
+>> tests/avocado/version.py:25:        self.assertRegexpMatches(res, 
+>> r'^(\d+\.\d+\.\d)')
+>>
+>> Otherwise,
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+> Thanks!
+> 
+> I still cannot run all avocado tests yet, so I didn't notice this problem
+> yet.
 
-Only 4 files call libxen API (thus its CPPFLAGS):
-- xen-hvm-common.c,
-- xen_pt.c, xen_pt_graphics.c, xen_pt_msi.c
+At least you can run *some* tests :>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-Reworked since v1 so dropping David's R-b tag.
----
- accel/xen/meson.build          |  2 +-
- hw/block/dataplane/meson.build |  2 +-
- hw/xen/meson.build             | 21 ++++++++++-----------
- 3 files changed, 12 insertions(+), 13 deletions(-)
+FYI macOS users still can't run QEMU's Avocado test suite.
+Personally I run it somewhere in a cloud machine.
 
-diff --git a/accel/xen/meson.build b/accel/xen/meson.build
-index 002bdb03c6..455ad5d6be 100644
---- a/accel/xen/meson.build
-+++ b/accel/xen/meson.build
-@@ -1 +1 @@
--specific_ss.add(when: 'CONFIG_XEN', if_true: files('xen-all.c'))
-+system_ss.add(when: 'CONFIG_XEN', if_true: files('xen-all.c'))
-diff --git a/hw/block/dataplane/meson.build b/hw/block/dataplane/meson.build
-index 025b3b061b..4d8bcb0bb9 100644
---- a/hw/block/dataplane/meson.build
-+++ b/hw/block/dataplane/meson.build
-@@ -1,2 +1,2 @@
- system_ss.add(when: 'CONFIG_VIRTIO_BLK', if_true: files('virtio-blk.c'))
--specific_ss.add(when: 'CONFIG_XEN_BUS', if_true: files('xen-block.c'))
-+system_ss.add(when: 'CONFIG_XEN_BUS', if_true: files('xen-block.c'))
-diff --git a/hw/xen/meson.build b/hw/xen/meson.build
-index d887fa9ba4..403cab49cf 100644
---- a/hw/xen/meson.build
-+++ b/hw/xen/meson.build
-@@ -7,26 +7,25 @@ system_ss.add(when: ['CONFIG_XEN_BUS'], if_true: files(
-   'xen_pvdev.c',
- ))
- 
--system_ss.add(when: ['CONFIG_XEN', xen], if_true: files(
-+system_ss.add(when: ['CONFIG_XEN'], if_true: files(
-   'xen-operations.c',
--))
--
--xen_specific_ss = ss.source_set()
--xen_specific_ss.add(files(
-   'xen-mapcache.c',
-+))
-+system_ss.add(when: ['CONFIG_XEN', xen], if_true: files(
-   'xen-hvm-common.c',
- ))
-+
- if have_xen_pci_passthrough
--  xen_specific_ss.add(files(
-+  system_ss.add(when: ['CONFIG_XEN'], if_true: files(
-     'xen-host-pci-device.c',
--    'xen_pt.c',
-     'xen_pt_config_init.c',
--    'xen_pt_graphics.c',
-     'xen_pt_load_rom.c',
-+  ))
-+  system_ss.add(when: ['CONFIG_XEN', xen], if_true: files(
-+    'xen_pt.c',
-+    'xen_pt_graphics.c',
-     'xen_pt_msi.c',
-   ))
- else
--  xen_specific_ss.add(files('xen_pt_stub.c'))
-+  system_ss.add(when: ['CONFIG_XEN'], if_true: files('xen_pt_stub.c'))
- endif
--
--specific_ss.add_all(when: ['CONFIG_XEN', xen], if_true: xen_specific_ss)
--- 
-2.41.0
+> But you're right, if I only run this test manually, it also fails.
+> Care to send a patch, or want me to include it in my patch?
 
+OK I'll send.
+
+> Anyway, I'm seeing also failures here:
+> 
+>   tests/avocado/replay_kernel.py:ReplayKernelNormal.test_x86_64_pc: 
+> INTERRUPTED
+>   tests/avocado/reverse_debugging.py:ReverseDebugging_ppc64.test_ppc64_pseries: INTERRUPTED
+
+Sometimes due to timeout.
+
+>   tests/avocado/reverse_debugging.py:ReverseDebugging_ppc64.test_ppc64_powernv: ERROR
+
+This one is concerning.
+
+> Are these still working for you?
+> (IIRC at least the replay_kernel test was also failing for me
+> before I upgraded to Fedora 39, so it's likely not related to
+> the new Python version)
+
+Regards,
+
+Phil.
 
