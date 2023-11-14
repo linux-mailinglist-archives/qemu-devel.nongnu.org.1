@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BAB47EBA77
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4387EBA78
 	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:07:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r33ML-00084F-T5; Tue, 14 Nov 2023 19:02:22 -0500
+	id 1r33N1-0008Qv-0y; Tue, 14 Nov 2023 19:03:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33MI-0007xI-Sh
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:02:19 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33MY-0008ME-PF
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:02:35 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33MH-0008J1-5n
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:02:18 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33MW-0008KR-0J
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:02:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700006536;
+ s=mimecast20190719; t=1700006549;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:mime-version: content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hWdc/RqFlRAYO6kCAV6W09p42TOtj3dRfTvncUijyRA=;
- b=dIJWAtKAyIjIWqL0ljN0qDPnYY+p6FBdz21JsxBK8zFy6mu/b3+z3TysBH1CC827UnNLoP
- umhU2p4j7+L+e4dzZ2+Lux9kAP51G/5aIOPQrh3DxvSZdMCG60lVRc/79k9KBw9SVVLEU6
- M3GEnBAYErVhgm1cURUcRh3U2/RCzaY=
+ bh=Lu8QJO9KDwDOmzdkBAnOVeCD39qe2P6zlwVvhT3kRpk=;
+ b=HkQPlbCIxjOSsnOsfsf6wYccil5mwwGprUvNc2bQhAI/I3vgR0yWR7WLdr8/c38DxdCEMR
+ ZLCn08a5v4Ct3RNBVa6Dc8Qpxh3/T3OfuhWzcnWEoLmZnvJoRp1uhsE3Ai4nUPPpr1YBvC
+ qlqKsyXC3mJGTjHItBxkkYj5InK+7fc=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-543-8WftOYFvN7SWt-XfaYU_fg-1; Tue,
- 14 Nov 2023 19:02:11 -0500
-X-MC-Unique: 8WftOYFvN7SWt-XfaYU_fg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-15-k69DLkiQM4WTVbvicLwblA-1; Tue,
+ 14 Nov 2023 19:02:25 -0500
+X-MC-Unique: k69DLkiQM4WTVbvicLwblA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 03D471C03141;
- Wed, 15 Nov 2023 00:02:10 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 66B2B38476A4;
+ Wed, 15 Nov 2023 00:02:23 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.44])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C969AC15885;
- Wed, 15 Nov 2023 00:01:56 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 93C3DC15885;
+ Wed, 15 Nov 2023 00:02:10 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -59,14 +59,13 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
  ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
  jcmvbkbc@gmail.com, shan.gavin@gmail.com
-Subject: [PATCH v5 23/31] machine: Constify MachineClass::valid_cpu_types[i]
-Date: Wed, 15 Nov 2023 09:56:20 +1000
-Message-ID: <20231114235628.534334-24-gshan@redhat.com>
+Subject: [PATCH v5 24/31] machine: Use error handling when CPU type is checked
+Date: Wed, 15 Nov 2023 09:56:21 +1000
+Message-ID: <20231114235628.534334-25-gshan@redhat.com>
 In-Reply-To: <20231114235628.534334-1-gshan@redhat.com>
 References: <20231114235628.534334-1-gshan@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
@@ -94,43 +93,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Constify MachineClass::valid_cpu_types[i], as suggested by Richard
-Henderson.
+QEMU will be terminated if the specified CPU type isn't supported
+in machine_run_board_init(). The list of supported CPU type names
+is tracked by mc->valid_cpu_types.
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+The error handling can be used to propagate error messages, to be
+consistent how the errors are handled for other situations in the
+same function.
+
+No functional change intended.
+
+Suggested-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Gavin Shan <gshan@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/m68k/q800.c      | 2 +-
- include/hw/boards.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/core/machine.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 1d7cd5ff1c..38d4bc2013 100644
---- a/hw/m68k/q800.c
-+++ b/hw/m68k/q800.c
-@@ -726,7 +726,7 @@ static GlobalProperty hw_compat_q800[] = {
- };
- static const size_t hw_compat_q800_len = G_N_ELEMENTS(hw_compat_q800);
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 0c17398141..5b45dbbbd5 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -1394,6 +1394,7 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
+     MachineClass *machine_class = MACHINE_GET_CLASS(machine);
+     ObjectClass *oc = object_class_by_name(machine->cpu_type);
+     CPUClass *cc;
++    Error *local_err = NULL;
  
--static const char *q800_machine_valid_cpu_types[] = {
-+static const char * const q800_machine_valid_cpu_types[] = {
-     M68K_CPU_TYPE_NAME("m68040"),
-     NULL
- };
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index a735999298..da85f86efb 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -273,7 +273,7 @@ struct MachineClass {
-     bool has_hotpluggable_cpus;
-     bool ignore_memory_transaction_failures;
-     int numa_mem_align_shift;
--    const char **valid_cpu_types;
-+    const char * const *valid_cpu_types;
-     strList *allowed_dynamic_sysbus_devices;
-     bool auto_enable_numa_with_memhp;
-     bool auto_enable_numa_with_memdev;
+     /* This checkpoint is required by replay to separate prior clock
+        reading from the other reads, because timer polling functions query
+@@ -1466,15 +1467,16 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
+ 
+         if (!machine_class->valid_cpu_types[i]) {
+             /* The user specified CPU is not valid */
+-            error_report("Invalid CPU type: %s", machine->cpu_type);
+-            error_printf("The valid types are: %s",
+-                         machine_class->valid_cpu_types[0]);
++            error_setg(&local_err, "Invalid CPU type: %s", machine->cpu_type);
++            error_append_hint(&local_err, "The valid types are: %s",
++                              machine_class->valid_cpu_types[0]);
+             for (i = 1; machine_class->valid_cpu_types[i]; i++) {
+-                error_printf(", %s", machine_class->valid_cpu_types[i]);
++                error_append_hint(&local_err, ", %s",
++                                  machine_class->valid_cpu_types[i]);
+             }
+-            error_printf("\n");
++            error_append_hint(&local_err, "\n");
+ 
+-            exit(1);
++            error_propagate(errp, local_err);
+         }
+     }
+ 
 -- 
 2.41.0
 
