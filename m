@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B788C7EBA5A
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 00:59:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A3DB7EBA6D
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:05:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r33IT-0000Ra-27; Tue, 14 Nov 2023 18:58:21 -0500
+	id 1r33If-0000Xy-7T; Tue, 14 Nov 2023 18:58:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33IR-0000Oh-4H
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 18:58:19 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33Ic-0000XE-UZ
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 18:58:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33IN-000700-FG
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 18:58:18 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33Ia-000726-19
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 18:58:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700006291;
+ s=mimecast20190719; t=1700006307;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nvoBORD4tgmo6x33JxzW5R6iviix3HiBVmKpYXj4UTQ=;
- b=VYmbO9Qw4DY82pTUG5j+qBxM9vOrteoE9f1AVTlKQfuOPGIfO0x3D/gdroKhlJ9EyXsnwt
- qoznhk6Rl46iwhZuE7GWnW2tv9R1txdTp4uokQX/nMB0EzfPs0M3DqTV3rVvsSLOOhP3cK
- qUnY/jE7pp88id5wlJncn6t7zs7qgio=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-75-TeWsArlGMdivUoWje46hUA-1; Tue, 14 Nov 2023 18:58:08 -0500
-X-MC-Unique: TeWsArlGMdivUoWje46hUA-1
+ bh=LiBQ8HNskbnGJakIHTbXcUveCafNXtneVERt1nHqLFo=;
+ b=gf8/L0bqBeUIbFO2duHvnxw0V54MtALJYFxDubbaNGabqmrZvnqra/wgxjAYEwxRjgvZb+
+ IuxSMB+i6rShfqVBcEh38XjO/mwe3Rr02i/MQSfcsvxTXLr/gm5rc9Scv2TTwu3PBu7P8Y
+ aJnN6UYfp9l9CtmnTeUnUi7BrxuhFTM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-147-SZ7MPvCIOgCBq8QawagQkw-1; Tue,
+ 14 Nov 2023 18:58:21 -0500
+X-MC-Unique: SZ7MPvCIOgCBq8QawagQkw-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D3752101A529;
- Tue, 14 Nov 2023 23:58:06 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 00A7129ABA0F;
+ Tue, 14 Nov 2023 23:58:20 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.44])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id EDBCEC15885;
- Tue, 14 Nov 2023 23:57:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 56771C15885;
+ Tue, 14 Nov 2023 23:58:07 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -59,9 +59,9 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
  ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
  jcmvbkbc@gmail.com, shan.gavin@gmail.com
-Subject: [PATCH v5 05/31] cpu: Add helper cpu_model_from_type()
-Date: Wed, 15 Nov 2023 09:56:02 +1000
-Message-ID: <20231114235628.534334-6-gshan@redhat.com>
+Subject: [PATCH v5 06/31] cpu: Add generic cpu_list()
+Date: Wed, 15 Nov 2023 09:56:03 +1000
+Message-ID: <20231114235628.534334-7-gshan@redhat.com>
 In-Reply-To: <20231114235628.534334-1-gshan@redhat.com>
 References: <20231114235628.534334-1-gshan@redhat.com>
 MIME-Version: 1.0
@@ -93,70 +93,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add helper cpu_model_from_type() to extract the CPU model name from
-the CPU type name in two circumstances: (1) The CPU type name is the
-combination of the CPU model name and suffix. (2) The CPU type name
-is same to the CPU model name.
+Add generic cpu_list() to replace the individual target's implementation
+in the subsequent commits. Currently, there are 3 targets with no cpu_list()
+implementation: microblaze and nios2. With this applied, those two targets
+switch to the generic cpu_list().
 
-The helper will be used in the subsequent commits to conver the
-CPU type name to the CPU model name.
+[gshan@gshan q]$ ./build/qemu-system-microblaze -cpu ?
+Available CPUs:
+  microblaze-cpu
 
-Suggested-by: Igor Mammedov <imammedo@redhat.com>
+[gshan@gshan q]$ ./build/qemu-system-nios2 -cpu ?
+Available CPUs:
+  nios2-cpu
+
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- cpu-target.c          | 15 +++++++++++++++
- include/hw/core/cpu.h | 12 ++++++++++++
- 2 files changed, 27 insertions(+)
+ bsd-user/main.c |  5 +----
+ cpu-target.c    | 29 ++++++++++++++++++++++++++---
+ 2 files changed, 27 insertions(+), 7 deletions(-)
 
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index e6014f517e..4de226d211 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -378,10 +378,7 @@ int main(int argc, char **argv)
+         } else if (!strcmp(r, "cpu")) {
+             cpu_model = argv[optind++];
+             if (is_help_option(cpu_model)) {
+-                /* XXX: implement xxx_cpu_list for targets that still miss it */
+-#if defined(cpu_list)
+-                cpu_list();
+-#endif
++                list_cpus();
+                 exit(1);
+             }
+         } else if (!strcmp(r, "B")) {
 diff --git a/cpu-target.c b/cpu-target.c
-index 508013e23d..c078c0e91b 100644
+index c078c0e91b..acfc654b95 100644
 --- a/cpu-target.c
 +++ b/cpu-target.c
-@@ -241,6 +241,21 @@ void cpu_exec_initfn(CPUState *cpu)
- #endif
+@@ -24,6 +24,7 @@
+ #include "hw/qdev-core.h"
+ #include "hw/qdev-properties.h"
+ #include "qemu/error-report.h"
++#include "qemu/qemu-print.h"
+ #include "migration/vmstate.h"
+ #ifdef CONFIG_USER_ONLY
+ #include "qemu.h"
+@@ -283,12 +284,34 @@ const char *parse_cpu_option(const char *cpu_option)
+     return cpu_type;
  }
  
-+char *cpu_model_from_type(const char *typename)
++#ifndef cpu_list
++static void cpu_list_entry(gpointer data, gpointer user_data)
 +{
-+    const char *suffix = "-" CPU_RESOLVING_TYPE;
++    CPUClass *cc = CPU_CLASS(OBJECT_CLASS(data));
++    const char *typename = object_class_get_name(OBJECT_CLASS(data));
++    g_autofree char *model = cpu_model_from_type(typename);
 +
-+    if (!object_class_by_name(typename)) {
-+        return NULL;
++    if (cc->deprecation_note) {
++        qemu_printf("  %s (deprecated)\n", model);
++    } else {
++        qemu_printf("  %s\n", model);
 +    }
-+
-+    if (g_str_has_suffix(typename, suffix)) {
-+        return g_strndup(typename, strlen(typename) - strlen(suffix));
-+    }
-+
-+    return g_strdup(typename);
 +}
 +
- const char *parse_cpu_option(const char *cpu_option)
- {
-     ObjectClass *oc;
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index c0c8320413..57ceb46bc1 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -779,6 +779,18 @@ void cpu_reset(CPUState *cpu);
-  */
- ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_model);
- 
-+/**
-+ * cpu_model_from_type:
-+ * @typename: The CPU type name
-+ *
-+ * Extract the CPU model name from the CPU type name. The
-+ * CPU type name is either the combination of the CPU model
-+ * name and suffix, or same to the CPU model name.
-+ *
-+ * Returns: CPU model name or NULL if the CPU class doesn't exist
-+ */
-+char *cpu_model_from_type(const char *typename);
++static void cpu_list(void)
++{
++    GSList *list;
 +
- /**
-  * cpu_create:
-  * @typename: The CPU type.
++    list = object_class_get_list_sorted(TYPE_CPU, false);
++    qemu_printf("Available CPUs:\n");
++    g_slist_foreach(list, cpu_list_entry, NULL);
++    g_slist_free(list);
++}
++#endif
++
+ void list_cpus(void)
+ {
+-    /* XXX: implement xxx_cpu_list for targets that still miss it */
+-#if defined(cpu_list)
+     cpu_list();
+-#endif
+ }
+ 
+ #if defined(CONFIG_USER_ONLY)
 -- 
 2.41.0
 
