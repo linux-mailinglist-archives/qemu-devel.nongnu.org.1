@@ -2,58 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873987EB5E6
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:57:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3DD87EB588
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:29:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2xeW-0003bT-Ml; Tue, 14 Nov 2023 12:56:45 -0500
+	id 1r2xDY-0000nu-LJ; Tue, 14 Nov 2023 12:28:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ben.dooks@codethink.co.uk>)
- id 1r2xeQ-0003Uh-80; Tue, 14 Nov 2023 12:56:39 -0500
-Received: from imap4.hz.codethink.co.uk ([188.40.203.114])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r2xDX-0000nb-6g
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 12:28:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ben.dooks@codethink.co.uk>)
- id 1r2xeO-0008CI-1b; Tue, 14 Nov 2023 12:56:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=codethink.co.uk; s=imap4-20230908; h=Sender:Content-Transfer-Encoding:
- Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
- Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=lWFmJaXdNb1cvdOqSWYWj5lK+WjOKKjQscIAYFDHkGk=; b=s7BLtcsUn11XePqDDdrVw1L0j8
- ZQTFqOTdTxcm1EKu63Dvm7PK+qviOdU71NVzyRuWHBmJV2LUCiqNUKDuBBuS4uQrUyL2nq/GflXpA
- EvK8i1P6L4sGgYGiLIYqinfHHBrBJad/AZdU6D5ea7vvdq2e2KDgswKw4U14ftjBLtVxG78zUQgkl
- u1LXKwoclK3j0dk6zpVntJ4xpJDY+KfPjq1LCW+UGvDtZ0t1IieoJCq0xLELRbg1eYWQxBVJPtlbw
- gXTb3r1ZyElyXdTPdMVw7mfXxPT9ciqWOsbzS+UFiPiS/q01k4XEwp3p3zXbbFYqPqf053Ca+PfdC
- FXfMM8Bw==;
-Received: from [167.98.27.226] (helo=[10.35.4.236])
- by imap4.hz.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
- id 1r2x8I-001oh5-U3; Tue, 14 Nov 2023 17:23:27 +0000
-Message-ID: <78989536-e29c-4ce1-a972-36be6c70349c@codethink.co.uk>
-Date: Tue, 14 Nov 2023 17:23:26 +0000
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r2xDV-0002O1-FY
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 12:28:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699982927;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Fd4euxKSdcFRmX3lUdN8u6zrBbeDkBHvnK92LLIiIMY=;
+ b=Rhwr3qIX738QTXqwvaNZidN5BrUXdKsKGeHLw/MY6bKdwIacO6li7fsq3l1EbvyLP7qJpG
+ ifaGYddhBzzFgXCpBCjVsxvUoQfj7ZT8s2f1eekYrBhnY5vEzvRdbFzIzl/tzrW6us/pc6
+ BefDsmUe5jepVEglc9UTqnyTzTPpAPw=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-659-DA6slJYRM_ObjHZXAtFK-g-1; Tue, 14 Nov 2023 12:28:46 -0500
+X-MC-Unique: DA6slJYRM_ObjHZXAtFK-g-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-66d3f71f49cso10509376d6.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 09:28:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699982926; x=1700587726;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Fd4euxKSdcFRmX3lUdN8u6zrBbeDkBHvnK92LLIiIMY=;
+ b=FxbCgsMze6fHVjWEF6YmluhF21Iq3Voz47rMT1oiYQ69hQ//iIUdpIq6RTGCuPpTcJ
+ zXIPMfepZdqeiRVdViSdFMEZlkpDH7CQwaAzDTBP6cA2myD8+nzp9w+vd9DBBAZ6jjTH
+ CkLwhiJzCYAmwLEIAnuQfqx5lb8dnc1N7BLnNALBExywW0f4AZO2W3HVD0eGGQjF6s6f
+ XUKwPaVQy3UGmshsAk6wvam2e/ytB7NFjzXF8G7zPOhB2dDWcIeJ9UjwGQEknXDCDz+I
+ WDf6yIJ5rbXWV3Dx20eicRNH2hc5c/amh3tf/aOXZNSB9zMffEc148iec5Fbj+ZRwCSJ
+ ZDcQ==
+X-Gm-Message-State: AOJu0Yx4TZRrYPQK/fYleF1PdYic3zrnOasJkMEokoq2qpyic10wNTfG
+ iH4dYWyMvOc5jJEL9W7oIOl7eKMe1vUrH+vEcyq4zKJSE20j8CVDW9FnShV6vMqj4CmsOduhRbQ
+ uJgKVWe0HkSm5Wao=
+X-Received: by 2002:a0c:e80d:0:b0:66d:6111:5c5f with SMTP id
+ y13-20020a0ce80d000000b0066d61115c5fmr2919633qvn.2.1699982925846; 
+ Tue, 14 Nov 2023 09:28:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH9qhIM6LC6tex3XxsmAVT4LCZ3vDDIdPa89Ma6kKOJTGNKRwbkpe9T5BizSsVuPKzPstLcOQ==
+X-Received: by 2002:a0c:e80d:0:b0:66d:6111:5c5f with SMTP id
+ y13-20020a0ce80d000000b0066d61115c5fmr2919618qvn.2.1699982925515; 
+ Tue, 14 Nov 2023 09:28:45 -0800 (PST)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ bm38-20020a05620a19a600b0076d6a08ac98sm2798932qkb.76.2023.11.14.09.28.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 Nov 2023 09:28:44 -0800 (PST)
+Date: Tue, 14 Nov 2023 12:28:27 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [RFC PATCH 2/2] migration/multifd: Move semaphore release into
+ main thread
+Message-ID: <ZVOuO8jyqryoeQvV@x1n>
+References: <20231109165856.15224-1-farosas@suse.de>
+ <20231109165856.15224-3-farosas@suse.de> <ZU0rY662a5C1mvyf@x1n>
+ <87pm0hzucq.fsf@suse.de> <ZVJSx6FOg8WfSbrz@x1n>
+ <877cml5ci8.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/intc/arm_gicv3: ICC_PMR_EL1 high bits should be RAZ
-Content-Language: en-GB
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-References: <20231114165404.681826-1-ben.dooks@codethink.co.uk>
- <CAFEAcA-MG+ak8+xVyqgpWqmKAryOXJtOckUmA=GysQwnpuz5SQ@mail.gmail.com>
-From: Ben Dooks <ben.dooks@codethink.co.uk>
-Organization: Codethink Limited.
-In-Reply-To: <CAFEAcA-MG+ak8+xVyqgpWqmKAryOXJtOckUmA=GysQwnpuz5SQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=188.40.203.114;
- envelope-from=ben.dooks@codethink.co.uk; helo=imap4.hz.codethink.co.uk
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <877cml5ci8.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,57 +102,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/11/2023 17:14, Peter Maydell wrote:
-> On Tue, 14 Nov 2023 at 16:54, Ben Dooks <ben.dooks@codethink.co.uk> wrote:
->>
->> The ICC_PMR_ELx bit msak returned from icc_fullprio_mask
->> should technically also remove any bit above 7 as these
->> are marked reserved (read 0) and should therefore should
->> not be written as anything other than 0.
->>
->> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
->> ---
->>   hw/intc/arm_gicv3_cpuif.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
->> index d07b13eb27..986044df79 100644
->> --- a/hw/intc/arm_gicv3_cpuif.c
->> +++ b/hw/intc/arm_gicv3_cpuif.c
->> @@ -803,7 +803,7 @@ static uint32_t icc_fullprio_mask(GICv3CPUState *cs)
->>        * with the group priority, whose mask depends on the value of BPR
->>        * for the interrupt group.)
->>        */
->> -    return ~0U << (8 - cs->pribits);
->> +    return (~0U << (8 - cs->pribits)) & 0xff;
->>   }
+On Mon, Nov 13, 2023 at 10:50:39PM -0300, Fabiano Rosas wrote:
+> Peter Xu <peterx@redhat.com> writes:
 > 
-> The upper bits of ICC_PMR_ELx are defined as RES0, which has a
-> complicated technical definition which you can find in the GIC
-> architecture specification glossary. It's valid for RES0 bits to
-> be implemented as reads-as-written, which is the way our current
-> implementation works. Valid guest code should never be writing
-> any non-zero value into those bits.
+> > On Fri, Nov 10, 2023 at 09:05:41AM -0300, Fabiano Rosas wrote:
+> >
+> > [...]
+> >
+> >> > Then assuming we have a clear model with all these threads issue fixed (no
+> >> > matter whether we'd shrink 2N threads into N threads), then what we need to
+> >> > do, IMHO, is making sure to join() all of them before destroying anything
+> >> > (say, per-channel MultiFDSendParams).  Then when we destroy everything
+> >> > safely, either mutex/sem/etc..  Because no one will race us anymore.
+> >> 
+> >> This doesn't address the race. There's a data dependency between the
+> >> multifd channels and the migration thread around the channels_ready
+> >> semaphore. So we cannot join the migration thread because it could be
+> >> stuck waiting for the semaphore, which means we cannot join+cleanup the
+> >> channel thread because the semaphore is still being used.
+> >
+> > I think this is the major part of confusion, on why this can happen.
+> >
+> > The problem is afaik multifd_save_cleanup() is only called by
+> > migrate_fd_cleanup(), which is further only called in:
+> >
+> >   1) migrate_fd_cleanup_bh()
+> >   2) migrate_fd_connect()
+> >
+> > For 1): it's only run when migration comletes/fails/etc. (in all cases,
+> > right before it quits..) and then kicks off migrate_fd_cleanup_schedule().
+> > So migration thread shouldn't be stuck, afaiu, or it won't be able to kick
+> > that BH.
+> >
+> > For 2): it's called by the main thread, where migration thread should have
+> > not yet been created.
+> >
+> > With that, I don't see how migrate_fd_cleanup() would need to worry about
+> > migration thread
+> >
+> > Did I miss something?
+> 
+> There are two points:
+> 
+> 1) multifd_new_send_channel_async() doesn't set an Error. Even if
+> multifd_channel_connect() fails, we'll still continue with
+> migrate_fd_connect(). I don't see any code that looks at the migration
+> error (s->error).
+> 
+> 2) the TLS handshake thread of one of the channels could simply not get
+> any chance to run until something else fails and we reach
+> multifd_save_cleanup() from the BH path.
+> 
+> This second point in particular is why I don't think simply joining the
+> TLS thread will avoid the race. There's nothing linking the multifd
+> channels together, we could have 7 of them operational and a 8th one
+> still going through the TLS handshake.
+> 
+> That said, I'm not sure about the exact path we take to reach the bug
+> situation. It's very hard to reproduce so I'm relying entirely on code
+> inspection.
 
-Yeah, got some proprietary test code that is trying write-1 and
-then assuming read-0.
+This whole patch, iiuc, was trying to move sem post, which will only kick
+the migration thread at different places.  IMHO, the problem is if
+multifd_save_cleanup() is only called in either migrate_fd_connect() or the
+BH as discussed above, then it means migration thread is already gone!  I
+don't see how moving that sem_post() would help in any form.  It means
+whatever thread stuck as you said can still happen.
 
-> What problem are you running into that you're trying to fix
-> with this patch? If our implementation misbehaves as a result
-> of letting these high bits through into cs->icc_pmr_el1 that
-> would be a good reason for making the change.
+You're right that I think the thread is just fully out of control of
+migration. Namely, anything we created with socket_send_channel_create().
+Fundamentally, I think it's because qio_task_run_in_thread() doesn't
+support that control, as creating its thread as DETACHED already, leaving
+the rest to luck.
 
-See above, local test code issue.
-
-  > If we do want to change this, for consistency we'd want
-> to change icv_fullprio_mask() too.
-
-If this isn't useful then I'll keep it as a local patch for now.
+Can we provide our own threads for that, at least keep the threadID around,
+then at cleanup paths we can shutdown() the IOChannels and join(), assuming
+that the shutdown() will kick the thread out of any blocked IO?
 
 -- 
-Ben Dooks				http://www.codethink.co.uk/
-Senior Engineer				Codethink - Providing Genius
-
-https://www.codethink.co.uk/privacy.html
+Peter Xu
 
 
