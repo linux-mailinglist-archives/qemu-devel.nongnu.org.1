@@ -2,92 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34E57EB0FE
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 14:38:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31BEA7EB100
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 14:39:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2tb8-0007Jl-Iu; Tue, 14 Nov 2023 08:36:58 -0500
+	id 1r2tcp-0000R9-1C; Tue, 14 Nov 2023 08:38:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r2tb6-0007JU-4y
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 08:36:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r2tb3-0003GP-Hv
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 08:36:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699969012;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1r2tcm-0000OF-Vt
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 08:38:41 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1r2tck-0003Qo-LQ
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 08:38:40 -0500
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 34C421F88C;
+ Tue, 14 Nov 2023 13:38:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1699969115; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=v8bbXmhcZEmATu0x6aiG+slJCnvjMWd36k9JMPIiaek=;
- b=S4hSxTHWbov/CWTWfkVkqAiwTFxoh9j1g0Z0phRjkmOvm1d1VHltGC01wDKalAXUkh+72w
- SrvU/UrsE9uFQp4o/A9ivVZn7zMtULUJjp5rvRz8H3omFw/xI83+usx9N8ZkNsapXNH4DX
- 2rvSPx8gmEJDh6WOKXBKqoi5dI5BSNE=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-8TficSfDMeWl1Jfg6OVD9g-1; Tue, 14 Nov 2023 08:36:51 -0500
-X-MC-Unique: 8TficSfDMeWl1Jfg6OVD9g-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-66d87503d24so67698196d6.3
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 05:36:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699969010; x=1700573810;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=v8bbXmhcZEmATu0x6aiG+slJCnvjMWd36k9JMPIiaek=;
- b=GQld12bVfO4GkXHNr3l/fhawY/pHnx6TDSF7wWM9ATgzofyK+F4O4RV3bSLl3tsaAk
- 8Ho97JpN/HQL+eKXDq7v9jGMM5CdmEgrHsrz/gn5Ljowqk6qjcaNULP0QIwszs7gYmcG
- /DXjTnpwAp3a4pgTxFT77GTCVQH16sULFlaZMmi/mlQjhcSE/wx8+KgPMkzYzqrpf34N
- iFdhQWt4Eh3XYxBKLs8sxzS6/38IdczSA3r41xT/2s8kh7wkA3jEcTOmrH8rQ0E+qA7R
- 6Z95eomRQR4toJOY4ZASyGhvCEpLa7Z1nK1eEBxSth4gF5nd5dXxkBbilBvkaWBTDTkR
- O9oQ==
-X-Gm-Message-State: AOJu0YwzBHz1xobAKb9G+fvfbffXmXFEjFJoDa62dmVBn7CoFd6Un8AE
- Pc/lQd+xx/zHSGQGp6fZlkD+Pl7nvHgL6Wm8fFykkp/KDw35MkqAogrbh2CLwaw6uyv1UxNY1bh
- gO9R0jJ+O1yN4Cwg=
-X-Received: by 2002:ad4:4531:0:b0:66f:bb3f:2e1 with SMTP id
- l17-20020ad44531000000b0066fbb3f02e1mr2047413qvu.19.1699969010480; 
- Tue, 14 Nov 2023 05:36:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHpbzxL91yKrR9CJxfppis4lzyLomxCvqm17rOe9xwtNSFaahtV7vBW9StorXG9l5eNKJWQGw==
-X-Received: by 2002:ad4:4531:0:b0:66f:bb3f:2e1 with SMTP id
- l17-20020ad44531000000b0066fbb3f02e1mr2047389qvu.19.1699969010112; 
- Tue, 14 Nov 2023 05:36:50 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- n12-20020a056214008c00b0066d1d2242desm2923604qvr.120.2023.11.14.05.36.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 05:36:49 -0800 (PST)
-Message-ID: <c83d5c6b-a9b4-41d4-90ec-93e703e70033@redhat.com>
-Date: Tue, 14 Nov 2023 14:36:47 +0100
+ bh=BOWhtalif32AexGBWJHyF5nDloZIFZUYYbcXJVEMOto=;
+ b=aqJOB4IhELZPbtqT+UqnkL8F6LsSXWSK/pzJ9FScDLluWbf0Pg+LdwCfmGnDFRTHq7WnV2
+ if/wu41Vg11vvJ8odAIe3KmQK86mxHxcsEFxtNJzwhwQNiWB9GhklNP7HTCsBK6jTTSmJW
+ k/PLtKNCZ6R2UruqZDlTg9uULtYhTuU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1699969115;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=BOWhtalif32AexGBWJHyF5nDloZIFZUYYbcXJVEMOto=;
+ b=flzRU+gQ5lsbHoS+wnVeEgPEqzaybYlx6ahXOz4RisAolwDT0XDiCnlrZB3Wli3FdCJ9GU
+ Ziq90b+/QkgI3ACA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 19DDE13460;
+ Tue, 14 Nov 2023 13:38:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id FvT0BFt4U2VlEwAAMHmgww
+ (envelope-from <cfontana@suse.de>); Tue, 14 Nov 2023 13:38:35 +0000
+Message-ID: <ad78afcc-6803-bf60-3b7a-5fceda279344@suse.de>
+Date: Tue, 14 Nov 2023 14:38:34 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 04/21] vfio/iommufd: Implement the iommufd backend
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH for-8.2] accel/tcg: Remove CF_LAST_IO
 Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com
-References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
- <20231114100955.1961974-5-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231114100955.1961974-5-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Cl=c3=a9ment_Chigot?= <chigot@adacore.com>
+References: <20231110170831.185001-1-richard.henderson@linaro.org>
+From: Claudio Fontana <cfontana@suse.de>
+In-Reply-To: <20231110170831.185001-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: -7.10
+X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=cfontana@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -80
+X-Spam_score: -8.1
+X-Spam_bar: --------
+X-Spam_report: (-8.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.695,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,567 +99,199 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/14/23 11:09, Zhenzhong Duan wrote:
-> From: Yi Liu <yi.l.liu@intel.com>
+Reviewed-by: Claudio Fontana <cfontana@suse.de>
+
+On 11/10/23 18:08, Richard Henderson wrote:
+> In cpu_exec_step_atomic, we did not set CF_LAST_IO, which can
+> lead to a loop with cpu_io_recompile.
 > 
-> Add the iommufd backend. The IOMMUFD container class is implemented
-> based on the new /dev/iommu user API. This backend obviously depends
-> on CONFIG_IOMMUFD.
+> But since 18a536f1f8 ("Always require can_do_io") we no longer need
+> a flag to indicate when the last insn should have can_do_io set, so
+> remove the flag entirely.
 > 
-> So far, the iommufd backend doesn't support dirty page sync yet due
-> to missing support in the host kernel.
-> 
-> Co-authored-by: Eric Auger <eric.auger@redhat.com>
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
-
+> Reported-by: Clément Chigot <chigot@adacore.com>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1961
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
-> v6: simplify CONFIG_IOMMUFD checking code
->      dirrectory -> directory
->      check iommufd_cdev_kvm_device_add return value
->      use prefix iommufd_cdev_* for all functions and trace event
+>  docs/devel/tcg-icount.rst        |  6 ------
+>  include/exec/translation-block.h | 13 ++++++-------
+>  accel/tcg/cpu-exec.c             |  2 +-
+>  accel/tcg/tb-maint.c             |  6 ++----
+>  accel/tcg/translate-all.c        |  4 ++--
+>  accel/tcg/translator.c           | 22 +++++++++-------------
+>  system/watchpoint.c              |  6 ++----
+>  7 files changed, 22 insertions(+), 37 deletions(-)
 > 
->   include/hw/vfio/vfio-common.h |  11 +
->   hw/vfio/common.c              |   6 +
->   hw/vfio/iommufd.c             | 428 ++++++++++++++++++++++++++++++++++
->   hw/vfio/meson.build           |   3 +
->   hw/vfio/trace-events          |  10 +
->   5 files changed, 458 insertions(+)
->   create mode 100644 hw/vfio/iommufd.c
-> 
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index 24ecc0e7ee..3dac5c167e 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -89,6 +89,14 @@ typedef struct VFIOHostDMAWindow {
->       QLIST_ENTRY(VFIOHostDMAWindow) hostwin_next;
->   } VFIOHostDMAWindow;
->   
-> +typedef struct IOMMUFDBackend IOMMUFDBackend;
-> +
-> +typedef struct VFIOIOMMUFDContainer {
-> +    VFIOContainerBase bcontainer;
-> +    IOMMUFDBackend *be;
-> +    uint32_t ioas_id;
-> +} VFIOIOMMUFDContainer;
-> +
->   typedef struct VFIODeviceOps VFIODeviceOps;
->   
->   typedef struct VFIODevice {
-> @@ -116,6 +124,8 @@ typedef struct VFIODevice {
->       OnOffAuto pre_copy_dirty_page_tracking;
->       bool dirty_pages_supported;
->       bool dirty_tracking;
-> +    int devid;
-> +    IOMMUFDBackend *iommufd;
->   } VFIODevice;
->   
->   struct VFIODeviceOps {
-> @@ -201,6 +211,7 @@ typedef QLIST_HEAD(VFIODeviceList, VFIODevice) VFIODeviceList;
->   extern VFIOGroupList vfio_group_list;
->   extern VFIODeviceList vfio_device_list;
->   extern const VFIOIOMMUOps vfio_legacy_ops;
-> +extern const VFIOIOMMUOps vfio_iommufd_ops;
->   extern const MemoryListener vfio_memory_listener;
->   extern int vfio_kvm_device_fd;
->   
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 934f4f5446..6569732b7a 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -19,6 +19,7 @@
->    */
->   
->   #include "qemu/osdep.h"
-> +#include CONFIG_DEVICES /* CONFIG_IOMMUFD */
->   #include <sys/ioctl.h>
->   #ifdef CONFIG_KVM
->   #include <linux/kvm.h>
-> @@ -1503,6 +1504,11 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
->   {
->       const VFIOIOMMUOps *ops = &vfio_legacy_ops;
->   
-> +#ifdef CONFIG_IOMMUFD
-> +    if (vbasedev->iommufd) {
-> +        ops = &vfio_iommufd_ops;
-> +    }
-> +#endif
->       return ops->attach_device(name, vbasedev, as, errp);
->   }
->   
-> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-> new file mode 100644
-> index 0000000000..06282d885c
-> --- /dev/null
-> +++ b/hw/vfio/iommufd.c
-> @@ -0,0 +1,428 @@
-> +/*
-> + * iommufd container backend
-> + *
-> + * Copyright (C) 2023 Intel Corporation.
-> + * Copyright Red Hat, Inc. 2023
-> + *
-> + * Authors: Yi Liu <yi.l.liu@intel.com>
-> + *          Eric Auger <eric.auger@redhat.com>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include <sys/ioctl.h>
-> +#include <linux/vfio.h>
-> +#include <linux/iommufd.h>
-> +
-> +#include "hw/vfio/vfio-common.h"
-> +#include "qemu/error-report.h"
-> +#include "trace.h"
-> +#include "qapi/error.h"
-> +#include "sysemu/iommufd.h"
-> +#include "hw/qdev-core.h"
-> +#include "sysemu/reset.h"
-> +#include "qemu/cutils.h"
-> +#include "qemu/chardev_open.h"
-> +
-> +static int iommufd_cdev_map(VFIOContainerBase *bcontainer, hwaddr iova,
-> +                            ram_addr_t size, void *vaddr, bool readonly)
-> +{
-> +    VFIOIOMMUFDContainer *container =
-> +        container_of(bcontainer, VFIOIOMMUFDContainer, bcontainer);
-> +
-> +    return iommufd_backend_map_dma(container->be,
-> +                                   container->ioas_id,
-> +                                   iova, size, vaddr, readonly);
-> +}
-> +
-> +static int iommufd_cdev_unmap(VFIOContainerBase *bcontainer,
-> +                              hwaddr iova, ram_addr_t size,
-> +                              IOMMUTLBEntry *iotlb)
-> +{
-> +    VFIOIOMMUFDContainer *container =
-> +        container_of(bcontainer, VFIOIOMMUFDContainer, bcontainer);
-> +
-> +    /* TODO: Handle dma_unmap_bitmap with iotlb args (migration) */
-> +    return iommufd_backend_unmap_dma(container->be,
-> +                                     container->ioas_id, iova, size);
-> +}
-> +
-> +static int iommufd_cdev_kvm_device_add(VFIODevice *vbasedev, Error **errp)
-> +{
-> +    return vfio_kvm_device_add_fd(vbasedev->fd, errp);
-> +}
-> +
-> +static void iommufd_cdev_kvm_device_del(VFIODevice *vbasedev)
-> +{
-> +    Error *err = NULL;
-> +
-> +    if (vfio_kvm_device_del_fd(vbasedev->fd, &err)) {
-> +        error_report_err(err);
-> +    }
-> +}
-> +
-> +static int iommufd_cdev_connect_and_bind(VFIODevice *vbasedev, Error **errp)
-> +{
-> +    IOMMUFDBackend *iommufd = vbasedev->iommufd;
-> +    struct vfio_device_bind_iommufd bind = {
-> +        .argsz = sizeof(bind),
-> +        .flags = 0,
-> +    };
-> +    int ret;
-> +
-> +    ret = iommufd_backend_connect(iommufd, errp);
-> +    if (ret) {
-> +        return ret;
-> +    }
-> +
-> +    /*
-> +     * Add device to kvm-vfio to be prepared for the tracking
-> +     * in KVM. Especially for some emulated devices, it requires
-> +     * to have kvm information in the device open.
-> +     */
-> +    ret = iommufd_cdev_kvm_device_add(vbasedev, errp);
-> +    if (ret) {
-> +        goto err_kvm_device_add;
-> +    }
-> +
-> +    /* Bind device to iommufd */
-> +    bind.iommufd = iommufd->fd;
-> +    ret = ioctl(vbasedev->fd, VFIO_DEVICE_BIND_IOMMUFD, &bind);
-> +    if (ret) {
-> +        error_setg_errno(errp, errno, "error bind device fd=%d to iommufd=%d",
-> +                         vbasedev->fd, bind.iommufd);
-> +        goto err_bind;
-> +    }
-> +
-> +    vbasedev->devid = bind.out_devid;
-> +    trace_iommufd_cdev_connect_and_bind(bind.iommufd, vbasedev->name,
-> +                                        vbasedev->fd, vbasedev->devid);
-> +    return ret;
-> +err_bind:
-> +    iommufd_cdev_kvm_device_del(vbasedev);
-> +err_kvm_device_add:
-> +    iommufd_backend_disconnect(iommufd);
-> +    return ret;
-> +}
-> +
-> +static void iommufd_cdev_unbind_and_disconnect(VFIODevice *vbasedev)
-> +{
-> +    /* Unbind is automatically conducted when device fd is closed */
-> +    iommufd_cdev_kvm_device_del(vbasedev);
-> +    iommufd_backend_disconnect(vbasedev->iommufd);
-> +}
-> +
-> +static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
-> +{
-> +    long int ret = -ENOTTY;
-> +    char *path, *vfio_dev_path = NULL, *vfio_path = NULL;
-> +    DIR *dir = NULL;
-> +    struct dirent *dent;
-> +    gchar *contents;
-> +    struct stat st;
-> +    gsize length;
-> +    int major, minor;
-> +    dev_t vfio_devt;
-> +
-> +    path = g_strdup_printf("%s/vfio-dev", sysfs_path);
-> +    if (stat(path, &st) < 0) {
-> +        error_setg_errno(errp, errno, "no such host device");
-> +        goto out_free_path;
-> +    }
-> +
-> +    dir = opendir(path);
-> +    if (!dir) {
-> +        error_setg_errno(errp, errno, "couldn't open directory %s", path);
-> +        goto out_free_path;
-> +    }
-> +
-> +    while ((dent = readdir(dir))) {
-> +        if (!strncmp(dent->d_name, "vfio", 4)) {
-> +            vfio_dev_path = g_strdup_printf("%s/%s/dev", path, dent->d_name);
-> +            break;
-> +        }
-> +    }
-> +
-> +    if (!vfio_dev_path) {
-> +        error_setg(errp, "failed to find vfio-dev/vfioX/dev");
-> +        goto out_close_dir;
-> +    }
-> +
-> +    if (!g_file_get_contents(vfio_dev_path, &contents, &length, NULL)) {
-> +        error_setg(errp, "failed to load \"%s\"", vfio_dev_path);
-> +        goto out_free_dev_path;
-> +    }
-> +
-> +    if (sscanf(contents, "%d:%d", &major, &minor) != 2) {
-> +        error_setg(errp, "failed to get major:minor for \"%s\"", vfio_dev_path);
-> +        goto out_free_dev_path;
-> +    }
-> +    g_free(contents);
-> +    vfio_devt = makedev(major, minor);
-> +
-> +    vfio_path = g_strdup_printf("/dev/vfio/devices/%s", dent->d_name);
-> +    ret = open_cdev(vfio_path, vfio_devt);
-> +    if (ret < 0) {
-> +        error_setg(errp, "Failed to open %s", vfio_path);
-> +    }
-> +
-> +    trace_iommufd_cdev_getfd(vfio_path, ret);
-> +    g_free(vfio_path);
-> +
-> +out_free_dev_path:
-> +    g_free(vfio_dev_path);
-> +out_close_dir:
-> +    closedir(dir);
-> +out_free_path:
-> +    if (*errp) {
-> +        error_prepend(errp, VFIO_MSG_PREFIX, path);
-> +    }
-> +    g_free(path);
-> +
-> +    return ret;
-> +}
-> +
-> +static int iommufd_cdev_attach_ioas_hwpt(VFIODevice *vbasedev, bool is_ioas,
-> +                                         uint32_t id, Error **errp)
-> +{
-> +    int ret, iommufd = vbasedev->iommufd->fd;
-> +    struct vfio_device_attach_iommufd_pt attach_data = {
-> +        .argsz = sizeof(attach_data),
-> +        .flags = 0,
-> +        .pt_id = id,
-> +    };
-> +    const char *str = is_ioas ? "ioas" : "hwpt";
-> +
-> +    /* Attach device to an IOAS or hwpt within iommufd */
-> +    ret = ioctl(vbasedev->fd, VFIO_DEVICE_ATTACH_IOMMUFD_PT, &attach_data);
-> +    if (ret) {
-> +        error_setg_errno(errp, errno,
-> +                         "[iommufd=%d] error attach %s (%d) to %s_id=%d",
-> +                         iommufd, vbasedev->name, vbasedev->fd, str, id);
-> +    } else {
-> +        trace_iommufd_cdev_attach_ioas_hwpt(iommufd, vbasedev->name,
-> +                                            vbasedev->fd, str, id);
-> +    }
-> +    return ret;
-> +}
-> +
-> +static int iommufd_cdev_detach_ioas_hwpt(VFIODevice *vbasedev, bool is_ioas,
-> +                                         uint32_t id, Error **errp)
-> +{
-> +    int ret, iommufd = vbasedev->iommufd->fd;
-> +    struct vfio_device_detach_iommufd_pt detach_data = {
-> +        .argsz = sizeof(detach_data),
-> +        .flags = 0,
-> +    };
-> +    const char *str = is_ioas ? "ioas" : "hwpt";
-> +
-> +    ret = ioctl(vbasedev->fd, VFIO_DEVICE_DETACH_IOMMUFD_PT, &detach_data);
-> +    if (ret) {
-> +        error_setg_errno(errp, errno, "detach %s from %s failed",
-> +                         vbasedev->name, str);
-> +    } else {
-> +        trace_iommufd_cdev_detach_ioas_hwpt(iommufd, vbasedev->name, str, id);
-> +    }
-> +    return ret;
-> +}
-> +
-> +static int iommufd_cdev_attach_container(VFIODevice *vbasedev,
-> +                                         VFIOIOMMUFDContainer *container,
-> +                                         Error **errp)
-> +{
-> +    return iommufd_cdev_attach_ioas_hwpt(vbasedev, true,
-> +                                         container->ioas_id, errp);
-> +}
-> +
-> +static void iommufd_cdev_detach_container(VFIODevice *vbasedev,
-> +                                          VFIOIOMMUFDContainer *container)
-> +{
-> +    Error *err = NULL;
-> +
-> +    if (iommufd_cdev_detach_ioas_hwpt(vbasedev, true,
-> +                                      container->ioas_id, &err)) {
-> +        error_report_err(err);
-> +    }
-> +}
-> +
-> +static void iommufd_cdev_container_destroy(VFIOIOMMUFDContainer *container)
-> +{
-> +    VFIOContainerBase *bcontainer = &container->bcontainer;
-> +
-> +    if (!QLIST_EMPTY(&bcontainer->device_list)) {
-> +        return;
-> +    }
-> +    memory_listener_unregister(&bcontainer->listener);
-> +    vfio_container_destroy(bcontainer);
-> +    iommufd_backend_free_id(container->be, container->ioas_id);
-> +    g_free(container);
-> +}
-> +
-> +static int iommufd_cdev_ram_block_discard_disable(bool state)
-> +{
-> +    /*
-> +     * We support coordinated discarding of RAM via the RamDiscardManager.
-> +     */
-> +    return ram_block_uncoordinated_discard_disable(state);
-> +}
-> +
-> +static int iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
-> +                               AddressSpace *as, Error **errp)
-> +{
-> +    VFIOContainerBase *bcontainer;
-> +    VFIOIOMMUFDContainer *container;
-> +    VFIOAddressSpace *space;
-> +    struct vfio_device_info dev_info = { .argsz = sizeof(dev_info) };
-> +    int ret, devfd;
-> +    uint32_t ioas_id;
-> +    Error *err = NULL;
-> +
-> +    devfd = iommufd_cdev_getfd(vbasedev->sysfsdev, errp);
-> +    if (devfd < 0) {
-> +        return devfd;
-> +    }
-> +    vbasedev->fd = devfd;
-> +
-> +    ret = iommufd_cdev_connect_and_bind(vbasedev, errp);
-> +    if (ret) {
-> +        goto err_connect_bind;
-> +    }
-> +
-> +    space = vfio_get_address_space(as);
-> +
-> +    /* try to attach to an existing container in this space */
-> +    QLIST_FOREACH(bcontainer, &space->containers, next) {
-> +        container = container_of(bcontainer, VFIOIOMMUFDContainer, bcontainer);
-> +        if (bcontainer->ops != &vfio_iommufd_ops ||
-> +            vbasedev->iommufd != container->be) {
-> +            continue;
-> +        }
-> +        if (iommufd_cdev_attach_container(vbasedev, container, &err)) {
-> +            const char *msg = error_get_pretty(err);
-> +
-> +            trace_iommufd_cdev_fail_attach_existing_container(msg);
-> +            error_free(err);
-> +            err = NULL;
-> +        } else {
-> +            ret = iommufd_cdev_ram_block_discard_disable(true);
-> +            if (ret) {
-> +                error_setg(errp,
-> +                              "Cannot set discarding of RAM broken (%d)", ret);
-> +                goto err_discard_disable;
-> +            }
-> +            goto found_container;
-> +        }
-> +    }
-> +
-> +    /* Need to allocate a new dedicated container */
-> +    ret = iommufd_backend_alloc_ioas(vbasedev->iommufd, &ioas_id, errp);
-> +    if (ret < 0) {
-> +        goto err_alloc_ioas;
-> +    }
-> +
-> +    trace_iommufd_cdev_alloc_ioas(vbasedev->iommufd->fd, ioas_id);
-> +
-> +    container = g_malloc0(sizeof(*container));
-> +    container->be = vbasedev->iommufd;
-> +    container->ioas_id = ioas_id;
-> +
-> +    bcontainer = &container->bcontainer;
-> +    vfio_container_init(bcontainer, space, &vfio_iommufd_ops);
-> +    QLIST_INSERT_HEAD(&space->containers, bcontainer, next);
-> +
-> +    ret = iommufd_cdev_attach_container(vbasedev, container, errp);
-> +    if (ret) {
-> +        goto err_attach_container;
-> +    }
-> +
-> +    ret = iommufd_cdev_ram_block_discard_disable(true);
-> +    if (ret) {
-> +        goto err_discard_disable;
-> +    }
-> +
-> +    bcontainer->pgsizes = qemu_real_host_page_size();
-> +
-> +    bcontainer->listener = vfio_memory_listener;
-> +    memory_listener_register(&bcontainer->listener, bcontainer->space->as);
-> +
-> +    if (bcontainer->error) {
-> +        ret = -1;
-> +        error_propagate_prepend(errp, bcontainer->error,
-> +                                "memory listener initialization failed: ");
-> +        goto err_listener_register;
-> +    }
-> +
-> +    bcontainer->initialized = true;
-> +
-> +found_container:
-> +    ret = ioctl(devfd, VFIO_DEVICE_GET_INFO, &dev_info);
-> +    if (ret) {
-> +        error_setg_errno(errp, errno, "error getting device info");
-> +        goto err_listener_register;
-> +    }
-> +
-> +    /*
-> +     * TODO: examine RAM_BLOCK_DISCARD stuff, should we do group level
-> +     * for discarding incompatibility check as well?
-> +     */
-> +    if (vbasedev->ram_block_discard_allowed) {
-> +        iommufd_cdev_ram_block_discard_disable(false);
-> +    }
-> +
-> +    vbasedev->group = 0;
-> +    vbasedev->num_irqs = dev_info.num_irqs;
-> +    vbasedev->num_regions = dev_info.num_regions;
-> +    vbasedev->flags = dev_info.flags;
-> +    vbasedev->reset_works = !!(dev_info.flags & VFIO_DEVICE_FLAGS_RESET);
-> +    vbasedev->bcontainer = bcontainer;
-> +    QLIST_INSERT_HEAD(&bcontainer->device_list, vbasedev, container_next);
-> +    QLIST_INSERT_HEAD(&vfio_device_list, vbasedev, global_next);
-> +
-> +    trace_iommufd_cdev_device_info(vbasedev->name, devfd, vbasedev->num_irqs,
-> +                                   vbasedev->num_regions, vbasedev->flags);
-> +    return 0;
-> +
-> +err_listener_register:
-> +    iommufd_cdev_ram_block_discard_disable(false);
-> +err_discard_disable:
-> +    iommufd_cdev_detach_container(vbasedev, container);
-> +err_attach_container:
-> +    iommufd_cdev_container_destroy(container);
-> +err_alloc_ioas:
-> +    vfio_put_address_space(space);
-> +    iommufd_cdev_unbind_and_disconnect(vbasedev);
-> +err_connect_bind:
-> +    close(vbasedev->fd);
-> +    return ret;
-> +}
-> +
-> +static void iommufd_cdev_detach(VFIODevice *vbasedev)
-> +{
-> +    VFIOContainerBase *bcontainer = vbasedev->bcontainer;
-> +    VFIOIOMMUFDContainer *container;
-> +    VFIOAddressSpace *space = bcontainer->space;
-> +
-> +    QLIST_REMOVE(vbasedev, global_next);
-> +    QLIST_REMOVE(vbasedev, container_next);
-> +    vbasedev->bcontainer = NULL;
-> +
-> +    if (!vbasedev->ram_block_discard_allowed) {
-> +        iommufd_cdev_ram_block_discard_disable(false);
-> +    }
-> +
-> +    container = container_of(bcontainer, VFIOIOMMUFDContainer, bcontainer);
-> +    iommufd_cdev_detach_container(vbasedev, container);
-> +    iommufd_cdev_container_destroy(container);
-> +    vfio_put_address_space(space);
-> +
-> +    iommufd_cdev_unbind_and_disconnect(vbasedev);
-> +    close(vbasedev->fd);
-> +}
-> +
-> +const VFIOIOMMUOps vfio_iommufd_ops = {
-> +    .dma_map = iommufd_cdev_map,
-> +    .dma_unmap = iommufd_cdev_unmap,
-> +    .attach_device = iommufd_cdev_attach,
-> +    .detach_device = iommufd_cdev_detach,
-> +};
-> diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
-> index eb6ce6229d..e5d98b6adc 100644
-> --- a/hw/vfio/meson.build
-> +++ b/hw/vfio/meson.build
-> @@ -7,6 +7,9 @@ vfio_ss.add(files(
->     'spapr.c',
->     'migration.c',
->   ))
-> +vfio_ss.add(when: 'CONFIG_IOMMUFD', if_true: files(
-> +  'iommufd.c',
-> +))
->   vfio_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
->     'display.c',
->     'pci-quirks.c',
-> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-> index 08a1f9dfa4..5d3e9e8cee 100644
-> --- a/hw/vfio/trace-events
-> +++ b/hw/vfio/trace-events
-> @@ -164,3 +164,13 @@ vfio_state_pending_estimate(const char *name, uint64_t precopy, uint64_t postcop
->   vfio_state_pending_exact(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t stopcopy_size, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy 0x%"PRIx64" postcopy 0x%"PRIx64" stopcopy size 0x%"PRIx64" precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
->   vfio_vmstate_change(const char *name, int running, const char *reason, const char *dev_state) " (%s) running %d reason %s device state %s"
->   vfio_vmstate_change_prepare(const char *name, int running, const char *reason, const char *dev_state) " (%s) running %d reason %s device state %s"
-> +
-> +#iommufd.c
-> +
-> +iommufd_cdev_connect_and_bind(int iommufd, const char *name, int devfd, int devid) " [iommufd=%d] Successfully bound device %s (fd=%d): output devid=%d"
-> +iommufd_cdev_getfd(const char *dev, int devfd) " %s (fd=%d)"
-> +iommufd_cdev_attach_ioas_hwpt(int iommufd, const char *name, int devfd, const char *str, int hwptid) " [iommufd=%d] Successfully attached device %s (%d) to %s_id=%d"
-> +iommufd_cdev_detach_ioas_hwpt(int iommufd, const char *name, const char *str, int hwptid) " [iommufd=%d] Successfully detached %s from %s_id=%d"
-> +iommufd_cdev_fail_attach_existing_container(const char *msg) " %s"
-> +iommufd_cdev_alloc_ioas(int iommufd, int ioas_id) " [iommufd=%d] new IOMMUFD container with ioasid=%d"
-> +iommufd_cdev_device_info(char *name, int devfd, int num_irqs, int num_regions, int flags) " %s (%d) num_irqs=%d num_regions=%d flags=%d"
+> diff --git a/docs/devel/tcg-icount.rst b/docs/devel/tcg-icount.rst
+> index 50c8e8dabc..7df883446a 100644
+> --- a/docs/devel/tcg-icount.rst
+> +++ b/docs/devel/tcg-icount.rst
+> @@ -62,12 +62,6 @@ To deal with this case, when an I/O access is made we:
+>    - re-compile a single [1]_ instruction block for the current PC
+>    - exit the cpu loop and execute the re-compiled block
+>  
+> -The new block is created with the CF_LAST_IO compile flag which
+> -ensures the final instruction translation starts with a call to
+> -gen_io_start() so we don't enter a perpetual loop constantly
+> -recompiling a single instruction block. For translators using the
+> -common translator_loop this is done automatically.
+> -  
+>  .. [1] sometimes two instructions if dealing with delay slots  
+>  
+>  Other I/O operations
+> diff --git a/include/exec/translation-block.h b/include/exec/translation-block.h
+> index b785751774..e2b26e16da 100644
+> --- a/include/exec/translation-block.h
+> +++ b/include/exec/translation-block.h
+> @@ -71,13 +71,12 @@ struct TranslationBlock {
+>  #define CF_NO_GOTO_TB    0x00000200 /* Do not chain with goto_tb */
+>  #define CF_NO_GOTO_PTR   0x00000400 /* Do not chain with goto_ptr */
+>  #define CF_SINGLE_STEP   0x00000800 /* gdbstub single-step in effect */
+> -#define CF_LAST_IO       0x00008000 /* Last insn may be an IO access.  */
+> -#define CF_MEMI_ONLY     0x00010000 /* Only instrument memory ops */
+> -#define CF_USE_ICOUNT    0x00020000
+> -#define CF_INVALID       0x00040000 /* TB is stale. Set with @jmp_lock held */
+> -#define CF_PARALLEL      0x00080000 /* Generate code for a parallel context */
+> -#define CF_NOIRQ         0x00100000 /* Generate an uninterruptible TB */
+> -#define CF_PCREL         0x00200000 /* Opcodes in TB are PC-relative */
+> +#define CF_MEMI_ONLY     0x00001000 /* Only instrument memory ops */
+> +#define CF_USE_ICOUNT    0x00002000
+> +#define CF_INVALID       0x00004000 /* TB is stale. Set with @jmp_lock held */
+> +#define CF_PARALLEL      0x00008000 /* Generate code for a parallel context */
+> +#define CF_NOIRQ         0x00010000 /* Generate an uninterruptible TB */
+> +#define CF_PCREL         0x00020000 /* Opcodes in TB are PC-relative */
+>  #define CF_CLUSTER_MASK  0xff000000 /* Top 8 bits are cluster ID */
+>  #define CF_CLUSTER_SHIFT 24
+>  
+> diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+> index 1a5bc90220..c938eb96f8 100644
+> --- a/accel/tcg/cpu-exec.c
+> +++ b/accel/tcg/cpu-exec.c
+> @@ -721,7 +721,7 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
+>              && cpu->neg.icount_decr.u16.low + cpu->icount_extra == 0) {
+>              /* Execute just one insn to trigger exception pending in the log */
+>              cpu->cflags_next_tb = (curr_cflags(cpu) & ~CF_USE_ICOUNT)
+> -                | CF_LAST_IO | CF_NOIRQ | 1;
+> +                | CF_NOIRQ | 1;
+>          }
+>  #endif
+>          return false;
+> diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+> index e678d20dc2..3d2a896220 100644
+> --- a/accel/tcg/tb-maint.c
+> +++ b/accel/tcg/tb-maint.c
+> @@ -1083,8 +1083,7 @@ bool tb_invalidate_phys_page_unwind(tb_page_addr_t addr, uintptr_t pc)
+>      if (current_tb_modified) {
+>          /* Force execution of one insn next time.  */
+>          CPUState *cpu = current_cpu;
+> -        cpu->cflags_next_tb =
+> -            1 | CF_LAST_IO | CF_NOIRQ | curr_cflags(current_cpu);
+> +        cpu->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(current_cpu);
+>          return true;
+>      }
+>      return false;
+> @@ -1154,8 +1153,7 @@ tb_invalidate_phys_page_range__locked(struct page_collection *pages,
+>      if (current_tb_modified) {
+>          page_collection_unlock(pages);
+>          /* Force execution of one insn next time.  */
+> -        current_cpu->cflags_next_tb =
+> -            1 | CF_LAST_IO | CF_NOIRQ | curr_cflags(current_cpu);
+> +        current_cpu->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(current_cpu);
+>          mmap_unlock();
+>          cpu_loop_exit_noexc(current_cpu);
+>      }
+> diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+> index b263857ecc..79a88f5fb7 100644
+> --- a/accel/tcg/translate-all.c
+> +++ b/accel/tcg/translate-all.c
+> @@ -304,7 +304,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
+>  
+>      if (phys_pc == -1) {
+>          /* Generate a one-shot TB with 1 insn in it */
+> -        cflags = (cflags & ~CF_COUNT_MASK) | CF_LAST_IO | 1;
+> +        cflags = (cflags & ~CF_COUNT_MASK) | 1;
+>      }
+>  
+>      max_insns = cflags & CF_COUNT_MASK;
+> @@ -632,7 +632,7 @@ void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr)
+>       * operations only (which execute after completion) so we don't
+>       * double instrument the instruction.
+>       */
+> -    cpu->cflags_next_tb = curr_cflags(cpu) | CF_MEMI_ONLY | CF_LAST_IO | n;
+> +    cpu->cflags_next_tb = curr_cflags(cpu) | CF_MEMI_ONLY | n;
+>  
+>      if (qemu_loglevel_mask(CPU_LOG_EXEC)) {
+>          vaddr pc = log_pc(cpu, tb);
+> diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+> index 575b9812ad..38c34009a5 100644
+> --- a/accel/tcg/translator.c
+> +++ b/accel/tcg/translator.c
+> @@ -89,7 +89,7 @@ static TCGOp *gen_tb_start(DisasContextBase *db, uint32_t cflags)
+>       * each translation block.  The cost is minimal, plus it would be
+>       * very easy to forget doing it in the translator.
+>       */
+> -    set_can_do_io(db, db->max_insns == 1 && (cflags & CF_LAST_IO));
+> +    set_can_do_io(db, db->max_insns == 1);
+>  
+>      return icount_start_insn;
+>  }
+> @@ -151,13 +151,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+>      ops->tb_start(db, cpu);
+>      tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
+>  
+> -    if (cflags & CF_MEMI_ONLY) {
+> -        /* We should only see CF_MEMI_ONLY for io_recompile. */
+> -        assert(cflags & CF_LAST_IO);
+> -        plugin_enabled = plugin_gen_tb_start(cpu, db, true);
+> -    } else {
+> -        plugin_enabled = plugin_gen_tb_start(cpu, db, false);
+> -    }
+> +    plugin_enabled = plugin_gen_tb_start(cpu, db, cflags & CF_MEMI_ONLY);
+>      db->plugin_enabled = plugin_enabled;
+>  
+>      while (true) {
+> @@ -169,11 +163,13 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+>              plugin_gen_insn_start(cpu, db);
+>          }
+>  
+> -        /* Disassemble one instruction.  The translate_insn hook should
+> -           update db->pc_next and db->is_jmp to indicate what should be
+> -           done next -- either exiting this loop or locate the start of
+> -           the next instruction.  */
+> -        if (db->num_insns == db->max_insns && (cflags & CF_LAST_IO)) {
+> +        /*
+> +         * Disassemble one instruction.  The translate_insn hook should
+> +         * update db->pc_next and db->is_jmp to indicate what should be
+> +         * done next -- either exiting this loop or locate the start of
+> +         * the next instruction.
+> +         */
+> +        if (db->num_insns == db->max_insns) {
+>              /* Accept I/O on the last instruction.  */
+>              set_can_do_io(db, true);
+>          }
+> diff --git a/system/watchpoint.c b/system/watchpoint.c
+> index 45d1f12faf..ba5ad13352 100644
+> --- a/system/watchpoint.c
+> +++ b/system/watchpoint.c
+> @@ -179,8 +179,7 @@ void cpu_check_watchpoint(CPUState *cpu, vaddr addr, vaddr len,
+>                   */
+>                  if (!cpu->neg.can_do_io) {
+>                      /* Force execution of one insn next time.  */
+> -                    cpu->cflags_next_tb = 1 | CF_LAST_IO | CF_NOIRQ
+> -                                          | curr_cflags(cpu);
+> +                    cpu->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(cpu);
+>                      cpu_loop_exit_restore(cpu, ra);
+>                  }
+>                  /*
+> @@ -212,8 +211,7 @@ void cpu_check_watchpoint(CPUState *cpu, vaddr addr, vaddr len,
+>                  cpu_loop_exit(cpu);
+>              } else {
+>                  /* Force execution of one insn next time.  */
+> -                cpu->cflags_next_tb = 1 | CF_LAST_IO | CF_NOIRQ
+> -                                      | curr_cflags(cpu);
+> +                cpu->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(cpu);
+>                  mmap_unlock();
+>                  cpu_loop_exit_noexc(cpu);
+>              }
 
 
