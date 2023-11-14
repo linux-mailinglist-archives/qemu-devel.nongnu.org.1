@@ -2,70 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6197A7EB4EC
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 17:33:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D102F7EB4E4
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 17:32:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2wK1-0002vF-5Z; Tue, 14 Nov 2023 11:31:30 -0500
+	id 1r2wKN-0002zc-DN; Tue, 14 Nov 2023 11:31:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2wJy-0002uI-2J
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 11:31:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2wJw-0006PM-Kr
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 11:31:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699979484;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=2IhRetqNyf+ECaS1NJt3qFrZxCNRTuGbI7jied8VWoo=;
- b=O9D9LMG9jBkDuqxVUUQ/fOK7RXTIiPoDh2DPY7XHWcoun87yIxyd0HaRGeb3K0GGKQal9b
- s06oFmVS3aWB8jWuwX55yrFkE9Tx/xXe+lK1BWQriHnfe4f7EwPbmgsHFf8qEbXvx1/SQU
- 24msV1bjmG28E8jseF8T0iwcjQZF6Yo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-395-kcJAuOv_Pyi5rIML6AzCVw-1; Tue, 14 Nov 2023 11:31:19 -0500
-X-MC-Unique: kcJAuOv_Pyi5rIML6AzCVw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6E716185A7A8;
- Tue, 14 Nov 2023 16:31:19 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.119])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7A46C40C6EB9;
- Tue, 14 Nov 2023 16:31:16 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2wKL-0002y5-HH
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 11:31:49 -0500
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2wK8-0006RD-CE
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 11:31:47 -0500
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-9d10f94f70bso854648366b.3
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 08:31:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699979493; x=1700584293; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=X6R5SODDqvfe3Gp9I1X7nXyO5kwGwphXiKxDLZtl7/E=;
+ b=Jq8HK6cnlnCiO7p56D6R7j/KACLKRoIkSITc1vEoeIf4vDuY/tjkzx7jyJGxqVVWpP
+ GYJvrutO1bef8/WYW2uOfJU3jAYTKvasvyhm5fEXvkKzV9FBvTEtRpU9i5zvQlwmkzX9
+ 4f6q/AniHIwus7ZFKs+X4kcf19XGaFZmhAjhLfnMM2j3UfD0h/OQxs5IfynJ/KedChUn
+ Ldvkl5DWpUR0MeaB8a+i0zfzQlf+hpZiQJSKaO32q6wDA76VTXkKtcaoQQsVgxwSxLmx
+ q/FWLOlsnEQdgYJKkQBh4vuf+19S2LJ8Exzwj68NNV7aSbSYsboaJV4eTe50skWsRx+w
+ Vc2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699979493; x=1700584293;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=X6R5SODDqvfe3Gp9I1X7nXyO5kwGwphXiKxDLZtl7/E=;
+ b=l7qy2AihjjNJRQcgqdx/4OxD7LTcI+3/zuIN+WI0SFmTDmKhI3Z8bsg+VwrWSZq6qP
+ Z3RGfyKFVXXk2EY3Uiva8h9Ep9TQ1uWdstLDzEs7I/vSx+KzZu7vJFwVUf0icZuaOIK9
+ d/yL9KQhhkQaQUgs5o0m4TDrfkGiKC8TX50dplIK08E0v9drrTfNTMpRPaxIA6abOY3y
+ mL4fteTSnZgWQiwzXhNiUQcm8V19H+Ny+Jrg3Vkp13kFw7v3u3UKeil5Muo2gktCcD8W
+ 9iirgpVrilACu03PGGnIdHvuFPomTa69arXPK1ipo067dVl3TVkQQxDYNJJvKoqmVE1B
+ ReQg==
+X-Gm-Message-State: AOJu0YzYNWjobx+LU+IkRCqbtNfSQlBEIn2vWhhon//oK/yIlEkaxNwC
+ aIFKMP9c+HgDBWSS6duvpA9GgbLZNWXYtWv/etY=
+X-Google-Smtp-Source: AGHT+IGutQxHrTQ0PDT/rm4Hi1BwUJSaiBc/cWKJ03y/patFhv44C9aSztIA1kKfAa9MrKB6HwgJAQ==
+X-Received: by 2002:a17:907:1c9b:b0:9e7:c9e3:d63d with SMTP id
+ nb27-20020a1709071c9b00b009e7c9e3d63dmr8902204ejc.7.1699979493603; 
+ Tue, 14 Nov 2023 08:31:33 -0800 (PST)
+Received: from m1x-phil.lan (cac94-h02-176-184-25-155.dsl.sta.abo.bbox.fr.
+ [176.184.25.155]) by smtp.gmail.com with ESMTPSA id
+ dt10-20020a170906b78a00b009a5f1d15644sm5694182ejb.119.2023.11.14.08.31.31
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 14 Nov 2023 08:31:33 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ David Woodhouse <dwmw@amazon.co.uk>, Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ xen-devel@lists.xenproject.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- qemu-ppc@nongnu.org
-Subject: [PATCH] tests/avocado/reverse_debugging: Disable the ppc64 tests by
- default
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH-for-9.0 1/9] hw/xen/hvm: Inline TARGET_PAGE_ALIGN() macro
 Date: Tue, 14 Nov 2023 17:31:15 +0100
-Message-ID: <20231114163115.298041-1-thuth@redhat.com>
+Message-ID: <20231114163123.74888-2-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231114163123.74888-1-philmd@linaro.org>
+References: <20231114163123.74888-1-philmd@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,46 +99,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The tests seem currently to be broken. Disable them by default
-until someone fixes them.
+Use TARGET_PAGE_SIZE to calculate TARGET_PAGE_ALIGN.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/avocado/reverse_debugging.py | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ hw/i386/xen/xen-hvm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
-index fc47874eda..2585c78f34 100644
---- a/tests/avocado/reverse_debugging.py
-+++ b/tests/avocado/reverse_debugging.py
-@@ -11,6 +11,7 @@
- import logging
+diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
+index f1c30d1384..8aa6a1ec3b 100644
+--- a/hw/i386/xen/xen-hvm.c
++++ b/hw/i386/xen/xen-hvm.c
+@@ -678,7 +678,7 @@ void xen_arch_set_memory(XenIOState *state, MemoryRegionSection *section,
+     trace_xen_client_set_memory(start_addr, size, log_dirty);
  
- from avocado import skipIf
-+from avocado import skipUnless
- from avocado_qemu import BUILD_DIR
- from avocado.utils import gdb
- from avocado.utils import process
-@@ -241,8 +242,8 @@ class ReverseDebugging_ppc64(ReverseDebugging):
+     start_addr &= TARGET_PAGE_MASK;
+-    size = TARGET_PAGE_ALIGN(size);
++    size = ROUND_UP(size, TARGET_PAGE_SIZE);
  
-     REG_PC = 0x40
- 
--    # unidentified gitlab timeout problem
--    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-+    # Test seems to be broken right now
-+    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test gets stuck')
-     def test_ppc64_pseries(self):
-         """
-         :avocado: tags=arch:ppc64
-@@ -254,7 +255,7 @@ def test_ppc64_pseries(self):
-         self.endian_is_le = False
-         self.reverse_debugging()
- 
--    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-+    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test often fails')
-     def test_ppc64_powernv(self):
-         """
-         :avocado: tags=arch:ppc64
+     if (add) {
+         if (!memory_region_is_rom(section->mr)) {
 -- 
 2.41.0
 
