@@ -2,79 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A9C67EAE47
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 11:46:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CB87EAE59
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 11:55:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2qv6-00026k-G2; Tue, 14 Nov 2023 05:45:24 -0500
+	id 1r2r3z-0003dF-P1; Tue, 14 Nov 2023 05:54:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r2qv4-00026X-NT
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:45:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <davydov-max@yandex-team.ru>)
+ id 1r2r3y-0003d2-6Q
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:54:34 -0500
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r2qv2-0003Cp-S4
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:45:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699958719;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=IfIm0EU0aiwrv2O9PEMJ93kwNOEpPUNdT/Da/OsD1tI=;
- b=A55WUYp1ThDrghikIQCk+Qe0gm4AwUH1TbOfkWjADsOFPfMOAMFVF2Nr2YIxXx2AZizZO0
- /Aeb7+Yw2EddawnrkF8mLIV77n3NomLwosk1R3J9syiM7PSeWGSAZ6GaLEfAuvs4g9s1Qw
- 8QJAzRHBrfCvMRN26ivVUnKjarivqbE=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-580-JGdKdvX2O_2UwkfxmqBu3Q-1; Tue,
- 14 Nov 2023 05:45:16 -0500
-X-MC-Unique: JGdKdvX2O_2UwkfxmqBu3Q-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 10DAD29AA3B5;
- Tue, 14 Nov 2023 10:45:16 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.108])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D84F6C1596F;
- Tue, 14 Nov 2023 10:45:14 +0000 (UTC)
-Date: Tue, 14 Nov 2023 10:45:12 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, Peter Xu <peterx@redhat.com>,
- qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: Configuring migration
-Message-ID: <ZVNPuOu47R7OzppW@redhat.com>
-References: <875y3dixzp.fsf@pond.sub.org> <8734yhgrzl.fsf@pond.sub.org>
- <ZShI4AucDGvUvJiS@x1n> <877cnrjd71.fsf@pond.sub.org>
- <87zfzz82xq.fsf@secure.mitica> <87msvw6xm2.fsf_-_@pond.sub.org>
- <ZVM5xmsaE41WJYgb@redhat.com> <87pm0cochf.fsf@secure.mitica>
- <ZVNNTgYD2bikZVxH@redhat.com> <87h6loobu4.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <davydov-max@yandex-team.ru>)
+ id 1r2r3v-0004dS-Nf
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:54:33 -0500
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c18:d11:0:640:6943:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id B029460E21;
+ Tue, 14 Nov 2023 13:54:24 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b661::1:13] (unknown
+ [2a02:6b8:b081:b661::1:13])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 1sgCLI6OgKo0-wZQ295k7; Tue, 14 Nov 2023 13:54:24 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1699959264;
+ bh=Urz4298mhYTAq//kNaf50IMmQlynv+IIQ0aNY3l9JI8=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=xSXXSXh0ShwsBhpnmE8rvJ9/0VhAqCzV9V+4acRvoUTbngbh8OlCqXaQ4LS4hPaAk
+ XwfIGFO9gMPJiBDyJpiv7tqRhsphBUnrmWN1M2fMuccbYENhYlmVJqDAqPJIxI9Bae
+ 9gYaYLNjc7m2BCqw+qd5Fcq7UfN/+pFpHoEhjOfg=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <e627b443-615a-422a-8a9d-0ae2b64c9202@yandex-team.ru>
+Date: Tue, 14 Nov 2023 13:54:01 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 3/4] python: add binary
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: vsementsov@yandex-team.ru, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, wangyanan55@huawei.com, jsnow@redhat.com,
+ crosa@redhat.com, bleal@redhat.com, eblake@redhat.com, armbru@redhat.com,
+ pbonzini@redhat.com, berrange@redhat.com, alxndr@bu.edu, bsd@redhat.com,
+ stefanha@redhat.com, thuth@redhat.com, darren.kenny@oracle.com,
+ Qiuhao.Li@outlook.com, lvivier@redhat.com
+References: <20231108153827.39692-1-davydov-max@yandex-team.ru>
+ <20231108153827.39692-4-davydov-max@yandex-team.ru>
+ <e52a7cea-5f89-40f0-8bba-e244c3642a0a@linaro.org>
+Content-Language: en-US
+From: Maksim Davydov <davydov-max@yandex-team.ru>
+In-Reply-To: <e52a7cea-5f89-40f0-8bba-e244c3642a0a@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87h6loobu4.fsf@secure.mitica>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=davydov-max@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,136 +79,43 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 14, 2023 at 11:42:27AM +0100, Juan Quintela wrote:
-> Daniel P. Berrangé <berrange@redhat.com> wrote:
-> > On Tue, Nov 14, 2023 at 11:28:28AM +0100, Juan Quintela wrote:
-> >> Daniel P. Berrangé <berrange@redhat.com> wrote:
-> >> > On Thu, Nov 02, 2023 at 03:25:25PM +0100, Markus Armbruster wrote:
-> >> >> Now let's try to apply this to migration.
-> >> >>
-> >> >> As long as we can have just one migration, we need just one QAPI object
-> >> >> to configure it.
-> >> >> 
-> >> >> We could create the object with -object / object_add.  For convenience,
-> >> >> we'd probably want to create one with default configuration
-> >> >> automatically on demand.
-> >> >> 
-> >> >> We could use qom-set to change configuration.  If we're not comfortable
-> >> >> with using qom-set for production, we could do something like
-> >> >> blockdev-reopen instead.
-> >> >
-> >> > Do we even need to do this via a QAPI object ?
-> >> >
-> >> > Why are we not just making the obvious design change of passing everything
-> >> > with the 'migrate' / 'migrate-incoming' commands that kick it off:
-> >> >
-> >> > ie:
-> >> >
-> >> > { 'command': 'migrate',
-> >> >   'data': {'uri': 'str',
-> >> >            '*channels': [ 'MigrationChannel' ],
-> >> > 	   '*capabilities': [ 'MigrateCapability' ],
-> >> > 	   '*parameters': [ 'MigrateParameters' ],
-> >> >            '*detach': 'bool', '*resume': 'bool' } }
-> >> 
-> >> Once that we are doing incompatible changes:
-> >
-> > This is not incompatible - it is fully backcompatible with existing
-> > usage initially, which should make it pretty trivial to introduce
-> > to the code. Mgmt apps can carry on using migrate-set-capabilities
-> > and migrate-set-parameters, and ignore these new 'capabilities'
-> > and 'parameters' fields if desired.
-> >
-> > Only once we decide to deprecate migrate-set-capabilities, would
-> > it become incompatible.
-> 
-> Oh, I mean that the interface is incompatible.  Not that we can't do the
-> current one on top of this one.
-> 
-> >> - resume can be another parameter
-> >
-> > Potentially yes, but 'resume' is conceptually different to all
-> > the other capabilities and parameters, so I could see it remaining
-> > as a distinct field as it is now
-> 
-> It is conceptually different.  But it is the _only_ one needed that
-> capability.  And putting that on the parameters and just checking it
-> first will achieve the same result.  I think that being special here
-> don't help, for instance, to check for incompatible things, we need to
-> also pass resume (it is only valid for postcopy).
-> 
-> >> - detach is not needed.  QMP don't use it, and HMP don't need to pass it
-> >>   to qmp_migrate() to make the non-detached implemntation.
-> >
-> > We could deprecate that today then.
-> 
-> Yeap.  Will do it.
-> 
-> >> >      (deprecated bits trimmed for clarity)
-> >> >
-> >> > and the counterpart:
-> >> >
-> >> > { 'command': 'migrate-incoming',
-> >> >              'data': {'*uri': 'str',
-> >> >                       '*channels': [ 'MigrationChannel' ],
-> >> >                       '*capabilities': [ 'MigrateCapability' ],
-> >> >                       '*parameters': [ 'MigrateParameters' ] } }
-> >> >
-> >> > such that the design is just like 99% of other commands which take
-> >> > all their parameters directly. We already have 'migrate-set-parameters'
-> >> > remaining for the runtime tunables, and can deprecate the usage of this
-> >> > when migration is not already running, and similarly deprecate
-> >> > migrate-set-capabilities.
-> >> 
-> >> This makes sense to me, but once that we change, we could try to merge
-> >> capabilities and parameters.  See my other email on this topic.
-> >> Basically the distition is arbitrary, so just have one of them.
-> >> 
-> >> Or better, as I said in the other email, we have two types of
-> >> parameters:
-> >> - the ones that need to be set before migration starts
-> >> - the ones that can be changed at any time
-> >> 
-> >> So to be simpler, I think that 1st set should be passed to the commands
-> >> themselves and the others should only be set with
-> >> migrate_set_parameters.
-> >
-> > As a mgmt app dev I don't want there to be an arbitrary distinction
-> > between what I can pass with 'migrate' and what I have to use a
-> > separate command for.
-> 
-> If it ever wants to set the parameter that it "can" change after
-> migration starts, it needs to know that they are different.
-> 
-> Once told that, I don't write management apps and you do so I am not
-> discussing further O:-)
-> 
-> > If I'm starting a migration, I just want to
-> > pass all the settings with the 'migrate' command. I should not have
-> > to care about separate 'migrate-set-parameters' command at all, unless
-> > I actually need to change something on the fly (many migrates will
-> > never need this).
-> 
-> 
-> What OpenStack/CNV do?
-> 
-> If my memory is right, at least one of them used progressive downtimes
-> every couple of iterations or something like that.
+Thanks for reviewing!
+I'll change patch subject to more appropriate one and fix the docstring
 
-If they're using pre-copy, yes, they both can do progressive tuning.
+On 11/10/23 10:03, Philippe Mathieu-Daudé wrote:
+> On 8/11/23 16:38, Maksim Davydov wrote:
+>> Add a supportive property to access the path to the qemu binary
+>>
+>> Signed-off-by: Maksim Davydov <davydov-max@yandex-team.ru>
+>> ---
+>>   python/qemu/machine/machine.py | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/python/qemu/machine/machine.py 
+>> b/python/qemu/machine/machine.py
+>> index 31cb9d617d..78436403b2 100644
+>> --- a/python/qemu/machine/machine.py
+>> +++ b/python/qemu/machine/machine.py
+>> @@ -328,6 +328,11 @@ def args(self) -> List[str]:
+>>           """Returns the list of arguments given to the QEMU binary."""
+>>           return self._args
+>>   +    @property
+>> +    def binary(self) -> str:
+>> +        """Returns path to the qemu binary"""
+>> +        return self._binary
+>> +
+>>       def _pre_launch(self) -> None:
+>>           if self._qmp_set:
+>>               if self._monitor_address is None:
+>
+> Better patch subject could be:
+> "python/qemu/machine: Add method to retrieve QEMUMachine::binary field"
 
-If using post-copy though, you potentially never need to change any
-tunable on the fly.
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Best regards,
+Maksim Davydov
 
 
