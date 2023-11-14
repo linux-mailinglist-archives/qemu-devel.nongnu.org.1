@@ -2,132 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB837EB6BF
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 20:07:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE3B27EB6DD
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 20:26:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2yl7-0005Xe-4E; Tue, 14 Nov 2023 14:07:37 -0500
+	id 1r2z2K-00035L-6r; Tue, 14 Nov 2023 14:25:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2yl6-0005XE-3s
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 14:07:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2yl3-0003cO-PL
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 14:07:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699988853;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=PbTr8bGa+7XGbfVM/u2qsnAyUjw6yXcPzhLsqzfHOvQ=;
- b=DsELYBlit/rUp9UjBjO+SAoXqMkqTNXQQVYtzGmNhjVjlNuAfeaqcuIwBz5cWHsbklLUfe
- Z6AN+WZrvZMjDU3W/h/YOzSoe5GHcD+Z1h3RIwYDKn1LygvLv9vdXhW1nEJMzjcIUynIli
- O03FLhmRUVgd5aV1NXTTJhBIfmoyLYg=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-389-Mxb3T1ZdO2emjuGnidf74Q-1; Tue, 14 Nov 2023 14:07:31 -0500
-X-MC-Unique: Mxb3T1ZdO2emjuGnidf74Q-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-77bc625a8a2so604814085a.0
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 11:07:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
+ id 1r2z2D-00033W-TQ
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 14:25:18 -0500
+Received: from mail-pf1-f181.google.com ([209.85.210.181])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
+ id 1r2z2B-0006lg-J9
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 14:25:17 -0500
+Received: by mail-pf1-f181.google.com with SMTP id
+ d2e1a72fcca58-6c4d06b6ddaso4130842b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 11:25:15 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699988851; x=1700593651;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PbTr8bGa+7XGbfVM/u2qsnAyUjw6yXcPzhLsqzfHOvQ=;
- b=XTNBQsC/+FZepktc5mB51Q2+Un4oyUsxuAe0We3LcZrYUjfmt8WD5s2LpJdhG4h+sn
- f/zWDsfH5FC2VRwlhVAesHZ979PI/rR71fRedUvZhVIvupTsdiulp3hVEwlR2dpt9jyv
- ZhKd3yB64RniSD51WtLB5B7G7s0lVXXy5sZiaVIdZb4apjDhpqSH91Lep8RWpFvN3v0e
- jU/j1G0VoE0ckbTemTBhzm2oVfqyn22s5PVptxN1I1gEIlvjXuDdPO7bVxAmDXDkV7l0
- 7Xm9nsYQj5k0QAKxQEQG8XNOAKXJqveeiFO41jAESOaOrToTbVJ6eacQFqtFs2BZHGAn
- UjFA==
-X-Gm-Message-State: AOJu0YzmZkbrMMhYXJrU8L2OET8bsrDQ1KSYNGisMhW4kI1VPr35J8+j
- ohs7CURTlCHlxzSr4BDOJCtla/6kkC/U/AtyFtnSNYf0qbqC9a7lt5FOwEobMgU2moFWKCN4n40
- nwYUOXuNzsKD+Ni4=
-X-Received: by 2002:a0c:f908:0:b0:66d:1fcf:e1c9 with SMTP id
- v8-20020a0cf908000000b0066d1fcfe1c9mr3198860qvn.35.1699988851331; 
- Tue, 14 Nov 2023 11:07:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHAwjdHRiw05Quj6MwECDvYzjE61iIk/d7ISZ83ZdNX4zkfj0EVNHXMWzbNkUCW0yVmBg7EXw==
-X-Received: by 2002:a0c:f908:0:b0:66d:1fcf:e1c9 with SMTP id
- v8-20020a0cf908000000b0066d1fcfe1c9mr3198847qvn.35.1699988851103; 
- Tue, 14 Nov 2023 11:07:31 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-43-176-122.web.vodafone.de.
- [109.43.176.122]) by smtp.gmail.com with ESMTPSA id
- s23-20020ac85297000000b00419c39dd28fsm2918316qtn.20.2023.11.14.11.07.29
+ d=1e100.net; s=20230601; t=1699989913; x=1700594713;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8QYKPDnIRsROURo/RnMhqWUuUuWhuyCCAyvIL9Iqwqc=;
+ b=mgOm2dHWebgr+6C0GdYpthrMOY1HVCAQLdCR8KbFHf6+c+uhfV42kvmj+zhSP3TcoC
+ w/D+RmxfGiIW9hcQsj9d3SJkJmPLYV+vboQDgmnoDKv6fkOrU1eKuwY0wmHfQNEuLYgY
+ FBTQcfubKwpkGtCLx77kHezO6ZmkSWCcFbDFj5Yz/Y9k9U2njFDXrFhsXHXgaanzmGLu
+ zeNWIYc0oM90bTSW4rx/dISm0lzdlf+ovlQuAEQdCEw4T40crUWUm5rs50bzwvEh0nuu
+ TeLXBxc/u2KFGGFl4d+HChXvmhaaWvwD4sjbTsC2i2BDFvzD6yQaE7ens/eyTkyVxfJ4
+ /xAw==
+X-Gm-Message-State: AOJu0YwFx/rCB9DwFxYwL9W1W3s5jPYHFEK36Pi+LLDHzBh8u/CbSQ7x
+ Yhv7iIDp2dek1p/av6LWH+OfS4XvwNg=
+X-Google-Smtp-Source: AGHT+IEhnar9Z+wZa8ZysSPxp/kg+HDnTqkMC3G5xdsluzzSr5vXgHE4Ku3Hg42ILFC3oNO5ofqSiQ==
+X-Received: by 2002:a05:6a00:1d8e:b0:690:d4fa:d43d with SMTP id
+ z14-20020a056a001d8e00b00690d4fad43dmr9418785pfw.6.1699989912618; 
+ Tue, 14 Nov 2023 11:25:12 -0800 (PST)
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com.
+ [209.85.216.49]) by smtp.gmail.com with ESMTPSA id
+ s19-20020a62e713000000b006c43296c8f3sm1524663pfh.52.2023.11.14.11.25.12
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 11:07:30 -0800 (PST)
-Message-ID: <994027da-7eb8-4916-bad0-9f43ec5f9af2@redhat.com>
-Date: Tue, 14 Nov 2023 20:07:29 +0100
+ Tue, 14 Nov 2023 11:25:12 -0800 (PST)
+Received: by mail-pj1-f49.google.com with SMTP id
+ 98e67ed59e1d1-280165bba25so4967181a91.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 11:25:12 -0800 (PST)
+X-Received: by 2002:a17:90b:4b8b:b0:27d:58a8:fa7f with SMTP id
+ lr11-20020a17090b4b8b00b0027d58a8fa7fmr8756073pjb.37.1699989911763; Tue, 14
+ Nov 2023 11:25:11 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH trivial 19/21] tests/qtest/ufs-test.c: spelling fix:
- tranfer
-Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Jeuk Kim <jeuk20.kim@samsung.com>
-References: <20231114165834.2949011-1-mjt@tls.msk.ru>
- <20231114165834.2949011-20-mjt@tls.msk.ru>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20231114165834.2949011-20-mjt@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+References: <20231114020927.62315-1-j@getutm.app>
+ <CAJ+F1CJunC52JX=YOiycHDeTVxVRwjuV9veQZ1QaN1=JCuo7nQ@mail.gmail.com>
+In-Reply-To: <CAJ+F1CJunC52JX=YOiycHDeTVxVRwjuV9veQZ1QaN1=JCuo7nQ@mail.gmail.com>
+From: Joelle van Dyne <j@getutm.app>
+Date: Tue, 14 Nov 2023 11:25:00 -0800
+X-Gmail-Original-Message-ID: <CA+E+eSAd_NyD4WH5VEcz8G6pSD+AMZDcrkbPHgHB5KDmG=P+aQ@mail.gmail.com>
+Message-ID: <CA+E+eSAd_NyD4WH5VEcz8G6pSD+AMZDcrkbPHgHB5KDmG=P+aQ@mail.gmail.com>
+Subject: Re: [PATCH v5 00/14] tpm: introduce TPM CRB SysBus device
+To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=209.85.210.181; envelope-from=osy86dev@gmail.com;
+ helo=mail-pf1-f181.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -143,28 +89,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/11/2023 17.58, Michael Tokarev wrote:
-> Fixes: 631c872614ac "tests/qtest: Introduce tests for UFS"
-> Cc: Jeuk Kim <jeuk20.kim@samsung.com>
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-> ---
->   tests/qtest/ufs-test.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
-> index 5daf8c9c49..95e82f9472 100644
-> --- a/tests/qtest/ufs-test.c
-> +++ b/tests/qtest/ufs-test.c
-> @@ -319,7 +319,7 @@ static void ufs_init(QUfs *ufs, QGuestAllocator *alloc)
->       ufs_wreg(ufs, A_IE, ie);
->       ufs_wreg(ufs, A_UTRIACR, 0);
->   
-> -    /* Enable tranfer request and task management request */
-> +    /* Enable transfer request and task management request */
->       cap = ufs_rreg(ufs, A_CAP);
->       nutrs = FIELD_EX32(cap, CAP, NUTRS) + 1;
->       nutmrs = FIELD_EX32(cap, CAP, NUTMRS) + 1;
+On Tue, Nov 14, 2023 at 1:38=E2=80=AFAM Marc-Andr=C3=A9 Lureau
+<marcandre.lureau@gmail.com> wrote:
+>
+> Hi
+>
+> On Tue, Nov 14, 2023 at 6:10=E2=80=AFAM Joelle van Dyne <j@getutm.app> wr=
+ote:
+> >
+> > The impetus for this patch set is to get TPM 2.0 working on Windows 11 =
+ARM64.
+> > Windows' tpm.sys does not seem to work on a TPM TIS device (as verified=
+ with
+> > VMWare's implementation). However, the current TPM CRB device uses a fi=
+xed
+> > system bus address that is reserved for RAM in ARM64 Virt machines.
+> >
+> > In the process of adding the TPM CRB SysBus device, we also went ahead =
+and
+> > cleaned up some of the existing TPM hardware code and fixed some bugs. =
+We used
+> > the TPM TIS devices as a template for the TPM CRB devices and refactore=
+d out
+> > common code. We moved the ACPI DSDT generation to the device in order t=
+o handle
+> > dynamic base address requirements as well as reduce redundent code in d=
+ifferent
+> > machine ACPI generation. We also changed the tpm_crb device to use the =
+ISA bus
+> > instead of depending on the default system bus as the device only was b=
+uilt for
+> > the PC configuration.
+> >
+> > Another change is that the TPM CRB registers are now mapped in the same=
+ way that
+> > the pflash ROM devices are mapped. It is a memory region whose writes a=
+re
+> > trapped as MMIO accesses. This was needed because Apple Silicon does no=
+t decode
+> > LDP (AARCH64 load pair of registers) caused page faults. @agraf suggest=
+ed that
+> > we do this to avoid having to do AARCH64 decoding in the HVF backend's =
+fault
+> > handler.
+> >
+> > Unfortunately, it seems like the LDP fault still happens on HVF but the=
+ issue
+> > seems to be in the HVF backend which needs to be fixed in a separate pa=
+tch.
+> >
+> > One last thing that's needed to get Windows 11 to recognize the TPM 2.0=
+ device
+> > is for the OVMF firmware to setup the TPM device. Currently, OVMF for A=
+RM64 Virt
+> > only recognizes the TPM TIS device through a FDT entry. A workaround is=
+ to
+> > falsely identify the TPM CRB device as a TPM TIS device in the FDT node=
+ but this
+> > causes issues for Linux. A proper fix would involve adding an ACPI devi=
+ce driver
+> > in OVMF.
+> >
+> > This has been tested on ARM64 with `tpm-crb-device` and on x86_64 with
+> > `tpm-crb`. Additional testing should be performed on other architecture=
+s (RISCV
+> > and Loongarch for example) as well as migration cases.
+> >
+> > v5:
+> > - Fixed a typo in "tpm_crb: use a single read-as-mem/write-as-mmio mapp=
+ing"
+> > - Fixed ACPI tables not being created for pc CRB device
+> >
+> > v4:
+> > - Fixed broken test blobs
+> >
+> > v3:
+> > - Support backwards and forwards migration of existing tpm-crb device
+> > - Dropped patch which moved tpm-crb to ISA bus due to migration concern=
+s
+> > - Unified `tpm_sysbus_plug` handler for ARM and Loongarch
+> > - Added ACPI table tests for tpm-crb-device
+> > - Refactored TPM CRB tests to run on tpm-crb-device for ARM Virt
+> >
+> > v2:
+> > - Fixed an issue where VMstate restore from an older version failed due=
+ to name
+> >   collision of the memory block.
+> > - In the ACPI table generation for CRB devices, the check for TPM 2.0 b=
+ackend is
+> >   moved to the device realize as CRB does not support TPM 1.0. It will =
+error in
+> >   that case.
+> > - Dropped the patch to fix crash when PPI is enabled on TIS SysBus devi=
+ce since
+> >   a separate patch submitted by Stefan Berger disables such an option.
+> > - Fixed an issue where we default tpmEstablished=3D0 when it should be =
+1.
+> > - In TPM CRB SysBus's ACPI entry, we accidently changed _UID from 0 to =
+1. This
+> >   shouldn't be an issue but we changed it back just in case.
+> > - Added a patch to migrate saved VMstate from an older version with the=
+ regs
+> >   saved separately instead of as a RAM block.
+> >
+> > Joelle van Dyne (14):
+> >   tpm_crb: refactor common code
+> >   tpm_crb: CTRL_RSP_ADDR is 64-bits wide
+> >   tpm_ppi: refactor memory space initialization
+> >   tpm_crb: use a single read-as-mem/write-as-mmio mapping
+> >   tpm_crb: move ACPI table building to device interface
+> >   tpm-sysbus: add plug handler for TPM on SysBus
+> >   hw/arm/virt: connect TPM to platform bus
+> >   hw/loongarch/virt: connect TPM to platform bus
+> >   tpm_tis_sysbus: move DSDT AML generation to device
+> >   tests: acpi: prepare for TPM CRB tests
+> >   tpm_crb_sysbus: introduce TPM CRB SysBus device
+> >   tests: acpi: implement TPM CRB tests for ARM virt
+> >   tests: acpi: updated expected blobs for TPM CRB
+> >   tests: add TPM-CRB sysbus tests for aarch64
+>
+> The series looks good to me.
+> Have you checked there are no regressions with Windows HLK?
+I don't have any experience with Windows HLK. Is there any guide on
+running it with QEMU? Preferably with a prebuilt image? Or maybe
+someone in the mailing list can run it?
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-
+>
+> thanks
+>
+> >
+> >  docs/specs/tpm.rst                        |   2 +
+> >  hw/tpm/tpm_crb.h                          |  79 ++++++
+> >  hw/tpm/tpm_ppi.h                          |  10 +-
+> >  include/hw/acpi/tpm.h                     |   3 +-
+> >  include/sysemu/tpm.h                      |   7 +
+> >  tests/qtest/tpm-tests.h                   |   2 +
+> >  tests/qtest/tpm-util.h                    |   4 +-
+> >  hw/acpi/aml-build.c                       |   7 +-
+> >  hw/arm/virt-acpi-build.c                  |  38 +--
+> >  hw/arm/virt.c                             |   8 +
+> >  hw/core/sysbus-fdt.c                      |   1 +
+> >  hw/i386/acpi-build.c                      |  16 +-
+> >  hw/loongarch/acpi-build.c                 |  38 +--
+> >  hw/loongarch/virt.c                       |   8 +
+> >  hw/riscv/virt.c                           |   1 +
+> >  hw/tpm/tpm-sysbus.c                       |  47 ++++
+> >  hw/tpm/tpm_crb.c                          | 302 ++++++----------------
+> >  hw/tpm/tpm_crb_common.c                   | 262 +++++++++++++++++++
+> >  hw/tpm/tpm_crb_sysbus.c                   | 162 ++++++++++++
+> >  hw/tpm/tpm_ppi.c                          |   5 +-
+> >  hw/tpm/tpm_tis_isa.c                      |   5 +-
+> >  hw/tpm/tpm_tis_sysbus.c                   |  37 +++
+> >  tests/qtest/bios-tables-test.c            |  47 +++-
+> >  tests/qtest/tpm-crb-device-swtpm-test.c   |  72 ++++++
+> >  tests/qtest/tpm-crb-device-test.c         |  71 +++++
+> >  tests/qtest/tpm-crb-swtpm-test.c          |   2 +
+> >  tests/qtest/tpm-crb-test.c                | 121 +--------
+> >  tests/qtest/tpm-tests.c                   | 121 +++++++++
+> >  tests/qtest/tpm-tis-device-swtpm-test.c   |   2 +-
+> >  tests/qtest/tpm-tis-device-test.c         |   2 +-
+> >  tests/qtest/tpm-tis-i2c-test.c            |   3 +
+> >  tests/qtest/tpm-tis-swtpm-test.c          |   2 +-
+> >  tests/qtest/tpm-tis-test.c                |   2 +-
+> >  tests/qtest/tpm-util.c                    |  16 +-
+> >  hw/arm/Kconfig                            |   1 +
+> >  hw/loongarch/Kconfig                      |   2 +
+> >  hw/riscv/Kconfig                          |   1 +
+> >  hw/tpm/Kconfig                            |   5 +
+> >  hw/tpm/meson.build                        |   5 +
+> >  hw/tpm/trace-events                       |   2 +-
+> >  tests/data/acpi/q35/DSDT.crb.tpm2         | Bin 0 -> 8355 bytes
+> >  tests/data/acpi/q35/TPM2.crb.tpm2         | Bin 0 -> 76 bytes
+> >  tests/data/acpi/virt/DSDT.crb-device.tpm2 | Bin 0 -> 5276 bytes
+> >  tests/data/acpi/virt/TPM2.crb-device.tpm2 | Bin 0 -> 76 bytes
+> >  tests/qtest/meson.build                   |   4 +
+> >  45 files changed, 1057 insertions(+), 468 deletions(-)
+> >  create mode 100644 hw/tpm/tpm_crb.h
+> >  create mode 100644 hw/tpm/tpm-sysbus.c
+> >  create mode 100644 hw/tpm/tpm_crb_common.c
+> >  create mode 100644 hw/tpm/tpm_crb_sysbus.c
+> >  create mode 100644 tests/qtest/tpm-crb-device-swtpm-test.c
+> >  create mode 100644 tests/qtest/tpm-crb-device-test.c
+> >  create mode 100644 tests/data/acpi/q35/DSDT.crb.tpm2
+> >  create mode 100644 tests/data/acpi/q35/TPM2.crb.tpm2
+> >  create mode 100644 tests/data/acpi/virt/DSDT.crb-device.tpm2
+> >  create mode 100644 tests/data/acpi/virt/TPM2.crb-device.tpm2
+> >
+> > --
+> > 2.41.0
+> >
+> >
+>
+>
+> --
+> Marc-Andr=C3=A9 Lureau
 
