@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3983F7EAA27
+	by mail.lfdr.de (Postfix) with ESMTPS id BBEF07EAA29
 	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 06:42:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2mAz-000797-TC; Tue, 14 Nov 2023 00:41:29 -0500
+	id 1r2mB8-0007AB-EX; Tue, 14 Nov 2023 00:41:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1r2mAt-00078r-QY
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 00:41:23 -0500
-Received: from mail-qk1-x72c.google.com ([2607:f8b0:4864:20::72c])
+ id 1r2mB5-00079S-GV
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 00:41:35 -0500
+Received: from mail-qk1-x72f.google.com ([2607:f8b0:4864:20::72f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1r2mAq-0001Pa-MZ
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 00:41:23 -0500
-Received: by mail-qk1-x72c.google.com with SMTP id
- af79cd13be357-778ac9c898dso269593685a.0
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 21:41:15 -0800 (PST)
+ id 1r2mB3-0001RO-Lb
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 00:41:34 -0500
+Received: by mail-qk1-x72f.google.com with SMTP id
+ af79cd13be357-7789aed0e46so347374985a.0
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 21:41:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1699940474; x=1700545274; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=TnO8MeToyY3mSdNSCZ2ykTRUMEZGsH5T7uUb7oWF16U=;
- b=V6EUhS26Cw9wNZkYRxTeSDYVB+yCEu41hyaJOU0TKzXAL6y+3oAw2CLuD9DxsH1Lsv
- ljOrPde3iZAJx49bVeIXHQfQgFfOU2eIOPZl2lI2C2TxrF5nhXLst4Zwcc/XLtLD5TQO
- M1fSGeXaZVvC+lBNZJPEX/1ym+1+YO5De71w9EcerL6H8juDTB/efgYqUM6O2MZwF7jn
- Oz1irpzULTTaehZuOAhBDTAouTznS3ARpkLlqeUtyY+GjWZG/BfIvUr3Zb48RJjwmtTt
- 4DaSCGknu2TBssxvF03J3fgGGC99iheYA8k0MryPHjMtUhM3klRXpHeyYp2+J/CaGKjc
- +ACQ==
+ d=bytedance.com; s=google; t=1699940493; x=1700545293; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=Xr+ydM0w1ChiLZUK2AmzFF5aaNpk3nnn08+T2D9fxos=;
+ b=gYG+oihFRbyXIlUjYeqK1xW72wxSkK+NIcWS8NjNRWhLz4D9wG1qjGj1whgU6lUYsP
+ 0eIyzYEHldNmR7LTvY1VfZ7SeQCe5SJDW8ONXvLHwX5rNcxQCvP4j/HucapY3ofzbsXx
+ WYIbpfM4+pTkA7d0/9dPkCv7MONdH2R7cwmL3MzC74aYWoBPkFQSyc+JMuXJPRDebVau
+ P0wPcmICJQaYhdiqgnk2o7ImmkFZ25ctLATqavy8yvcgRbnmCrk+Jlt83/v3+vAkPP+c
+ WP/V7u2ho+SkNe4g9buKxnp6SI94OMYfo8bwFKu+DZLwvNmsVDP6I9Dud2/wCohDhg2E
+ WAxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699940474; x=1700545274;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TnO8MeToyY3mSdNSCZ2ykTRUMEZGsH5T7uUb7oWF16U=;
- b=fKUv5Y/MwetClF3JTxNlPyFjVP2TQOSwMi69hrjLxtZg/2Cbc00vt8Uhh3awt8XVdE
- Q+eQOXX1IWuUGUSIju9s9UsaP4RY8/ly9L607mpB2+Y2jpxuCR9Cnzi3DF2DVxRk16zh
- 234wD5LeaDx1e0STWjlQdkrw8POHAikJjXWd8Lrtv6f1je3o8Sd8LVBTVsXyNZ+Dk5gt
- 3pX+3hVsCJAQWeyHDaQhE/9Ckih0bEdjVE7i8buYYxBrgjxRmt9x/FTwKFhDAAcylJdR
- ADn9L6xsmBmwmGCHPuIGFE/FkoZqF8Y8fTmZltr8RzwxmsAKlhnfvK6czQ25uRzgp0wh
- BpoA==
-X-Gm-Message-State: AOJu0Yx8PWzcM1qM25pw7h8125ci9A6xsqWCUQOLKTLA4i0xU6xMfqpA
- tz5EH0ybC2ogKXkBEV2i8dGClg==
-X-Google-Smtp-Source: AGHT+IEuKOTtPFrRz5znB5RtTCzC/kX5g8oQyAXsKktqAmD0Js8XEJ+9S9YX16tRPHqrAJqniprk8g==
-X-Received: by 2002:a05:620a:2551:b0:774:1d7f:2730 with SMTP id
- s17-20020a05620a255100b007741d7f2730mr1656113qko.46.1699940474586; 
- Mon, 13 Nov 2023 21:41:14 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699940493; x=1700545293;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Xr+ydM0w1ChiLZUK2AmzFF5aaNpk3nnn08+T2D9fxos=;
+ b=j1bQchCSPYnUkcIspZbMIZfbxqX85n2w/r1CO1h4SkguGWXNoZIyWiUwFds/HaMiJC
+ N12nOVRYVg11gQxjIBFVC4WbdTKzqgrQ4/ljQV2xjHIbmJ1v4NzDtC7DF+jUrxVsy/5F
+ YycNvQxAv7CREJYE+E/rRCb/JAouKikDVDb26jazhJqbEjO7aUfQ5KP4QBkth5IIn4H0
+ NXOrHEAwnWZZgL8vUHfdBHi6nPA/c/bL3NBTxvoGW4yRfsGAI8wKpQTdNd5fzRle9ihn
+ WE8y2r13sES99nT6OMJnLVWB/zYXWbxtHQNN/A3EJvJFwF7Jx6teUsLUz8A+FM+/tWZD
+ nl0Q==
+X-Gm-Message-State: AOJu0Yw37DKPC2J6N5JvbGKuGVfLmEC0VC1iOh6E0xetV3pIqted4rbT
+ /wQCUvX7yhPdW+JwL1qSJfs75g==
+X-Google-Smtp-Source: AGHT+IEA9HBOdkrDJf774Pzi34f+3p9eGpWwXEG5+on5ufo70sFE/7fe9sZw2logv71cNshNiqPNFg==
+X-Received: by 2002:a05:620a:3b06:b0:77b:c536:3722 with SMTP id
+ tl6-20020a05620a3b0600b0077bc5363722mr1024227qkn.25.1699940492818; 
+ Mon, 13 Nov 2023 21:41:32 -0800 (PST)
 Received: from n231-230-216.byted.org ([130.44.212.104])
  by smtp.gmail.com with ESMTPSA id
- w2-20020a05620a094200b0077891d2d12dsm2400367qkw.43.2023.11.13.21.41.13
+ w2-20020a05620a094200b0077891d2d12dsm2400367qkw.43.2023.11.13.21.41.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Nov 2023 21:41:14 -0800 (PST)
+ Mon, 13 Nov 2023 21:41:32 -0800 (PST)
 From: Hao Xiang <hao.xiang@bytedance.com>
 To: farosas@suse.de, peter.maydell@linaro.org, quintela@redhat.com,
  peterx@redhat.com, marcandre.lureau@redhat.com, bryan.zhang@bytedance.com,
  qemu-devel@nongnu.org
-Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH v2 00/20] Use Intel DSA accelerator to offload zero page
- checking in multifd live migration.
-Date: Tue, 14 Nov 2023 05:40:12 +0000
-Message-Id: <20231114054032.1192027-1-hao.xiang@bytedance.com>
+Subject: [PATCH v2 01/20] multifd: Add capability to enable/disable zero_page
+Date: Tue, 14 Nov 2023 05:40:13 +0000
+Message-Id: <20231114054032.1192027-2-hao.xiang@bytedance.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20231114054032.1192027-1-hao.xiang@bytedance.com>
+References: <20231114054032.1192027-1-hao.xiang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72c;
- envelope-from=hao.xiang@bytedance.com; helo=mail-qk1-x72c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72f;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-qk1-x72f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,278 +91,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2
-* Rebase on top of 3e01f1147a16ca566694b97eafc941d62fa1e8d8.
-* Leave Juan's changes in their original form instead of squashing them.
-* Add a new commit to refactor the multifd_send_thread function to prepare for introducing the DSA offload functionality.
-* Use page count to configure multifd-packet-size option.
-* Don't use the FLAKY flag in DSA tests.
-* Test if DSA integration test is setup correctly and skip the test if
-* not.
-* Fixed broken link in the previous patch cover.
+From: Juan Quintela <quintela@redhat.com>
 
-* Background:
+We have to enable it by default until we introduce the new code.
 
-I posted an RFC about DSA offloading in QEMU:
-https://patchew.org/QEMU/20230529182001.2232069-1-hao.xiang@bytedance.com/
+Signed-off-by: Juan Quintela <quintela@redhat.com>
+---
+ migration/options.c | 13 +++++++++++++
+ migration/options.h |  1 +
+ qapi/migration.json |  8 +++++++-
+ 3 files changed, 21 insertions(+), 1 deletion(-)
 
-This patchset implements the DSA offloading on zero page checking in
-multifd live migration code path.
-
-* Overview:
-
-Intel Data Streaming Accelerator(DSA) is introduced in Intel's 4th generation
-Xeon server, aka Sapphire Rapids.
-https://cdrdv2-public.intel.com/671116/341204-intel-data-streaming-accelerator-spec.pdf
-https://www.intel.com/content/www/us/en/content-details/759709/intel-data-streaming-accelerator-user-guide.html
-One of the things DSA can do is to offload memory comparison workload from
-CPU to DSA accelerator hardware. This patchset implements a solution to offload
-QEMU's zero page checking from CPU to DSA accelerator hardware. We gain
-two benefits from this change:
-1. Reduces CPU usage in multifd live migration workflow across all use
-cases.
-2. Reduces migration total time in some use cases. 
-
-* Design:
-
-These are the logical steps to perform DSA offloading:
-1. Configure DSA accelerators and create user space openable DSA work
-queues via the idxd driver.
-2. Map DSA's work queue into a user space address space.
-3. Fill an in-memory task descriptor to describe the memory operation.
-4. Use dedicated CPU instruction _enqcmd to queue a task descriptor to
-the work queue.
-5. Pull the task descriptor's completion status field until the task
-completes.
-6. Check return status.
-
-The memory operation is now totally done by the accelerator hardware but
-the new workflow introduces overheads. The overhead is the extra cost CPU
-prepares and submits the task descriptors and the extra cost CPU pulls for
-completion. The design is around minimizing these two overheads.
-
-1. In order to reduce the overhead on task preparation and submission,
-we use batch descriptors. A batch descriptor will contain N individual
-zero page checking tasks where the default N is 128 (default packet size
-/ page size) and we can increase N by setting the packet size via a new
-migration option.
-2. The multifd sender threads prepares and submits batch tasks to DSA
-hardware and it waits on a synchronization object for task completion.
-Whenever a DSA task is submitted, the task structure is added to a
-thread safe queue. It's safe to have multiple multifd sender threads to
-submit tasks concurrently.
-3. Multiple DSA hardware devices can be used. During multifd initialization,
-every sender thread will be assigned a DSA device to work with. We
-use a round-robin scheme to evenly distribute the work across all used
-DSA devices.
-4. Use a dedicated thread dsa_completion to perform busy pulling for all
-DSA task completions. The thread keeps dequeuing DSA tasks from the
-thread safe queue. The thread blocks when there is no outstanding DSA
-task. When pulling for completion of a DSA task, the thread uses CPU
-instruction _mm_pause between the iterations of a busy loop to save some
-CPU power as well as optimizing core resources for the other hypercore.
-5. DSA accelerator can encounter errors. The most popular error is a
-page fault. We have tested using devices to handle page faults but
-performance is bad. Right now, if DSA hits a page fault, we fallback to
-use CPU to complete the rest of the work. The CPU fallback is done in
-the multifd sender thread.
-6. Added a new migration option multifd-dsa-accel to set the DSA device
-path. If set, the multifd workflow will leverage the DSA devices for
-offloading.
-7. Added a new migration option multifd-normal-page-ratio to make
-multifd live migration easier to test. Setting a normal page ratio will
-make live migration recognize a zero page as a normal page and send
-the entire payload over the network. If we want to send a large network
-payload and analyze throughput, this option is useful.
-8. Added a new migration option multifd-packet-size. This can increase
-the number of pages being zero page checked and sent over the network.
-The extra synchronization between the sender threads and the dsa
-completion thread is an overhead. Using a large packet size can reduce
-that overhead.
-
-* Performance:
-
-We use two Intel 4th generation Xeon servers for testing.
-
-Architecture:        x86_64
-CPU(s):              192
-Thread(s) per core:  2
-Core(s) per socket:  48
-Socket(s):           2
-NUMA node(s):        2
-Vendor ID:           GenuineIntel
-CPU family:          6
-Model:               143
-Model name:          Intel(R) Xeon(R) Platinum 8457C
-Stepping:            8
-CPU MHz:             2538.624
-CPU max MHz:         3800.0000
-CPU min MHz:         800.0000
-
-We perform multifd live migration with below setup:
-1. VM has 100GB memory. 
-2. Use the new migration option multifd-set-normal-page-ratio to control the total
-size of the payload sent over the network.
-3. Use 8 multifd channels.
-4. Use tcp for live migration.
-4. Use CPU to perform zero page checking as the baseline.
-5. Use one DSA device to offload zero page checking to compare with the baseline.
-6. Use "perf sched record" and "perf sched timehist" to analyze CPU usage.
-
-A) Scenario 1: 50% (50GB) normal pages on an 100GB vm.
-
-	CPU usage
-
-	|---------------|---------------|---------------|---------------|
-	|		|comm		|runtime(msec)	|totaltime(msec)|
-	|---------------|---------------|---------------|---------------|
-	|Baseline	|live_migration	|5657.58	|		|
-	|		|multifdsend_0	|3931.563	|		|
-	|		|multifdsend_1	|4405.273	|		|
-	|		|multifdsend_2	|3941.968	|		|
-	|		|multifdsend_3	|5032.975	|		|
-	|		|multifdsend_4	|4533.865	|		|
-	|		|multifdsend_5	|4530.461	|		|
-	|		|multifdsend_6	|5171.916	|		|
-	|		|multifdsend_7	|4722.769	|41922		|
-	|---------------|---------------|---------------|---------------|
-	|DSA		|live_migration	|6129.168	|		|
-	|		|multifdsend_0	|2954.717	|		|
-	|		|multifdsend_1	|2766.359	|		|
-	|		|multifdsend_2	|2853.519	|		|
-	|		|multifdsend_3	|2740.717	|		|
-	|		|multifdsend_4	|2824.169	|		|
-	|		|multifdsend_5	|2966.908	|		|
-	|		|multifdsend_6	|2611.137	|		|
-	|		|multifdsend_7	|3114.732	|		|
-	|		|dsa_completion	|3612.564	|32568		|
-	|---------------|---------------|---------------|---------------|
-
-Baseline total runtime is calculated by adding up all multifdsend_X
-and live_migration threads runtime. DSA offloading total runtime is
-calculated by adding up all multifdsend_X, live_migration and
-dsa_completion threads runtime. 41922 msec VS 32568 msec runtime and
-that is 23% total CPU usage savings.
-
-	Latency
-	|---------------|---------------|---------------|---------------|---------------|---------------|
-	|		|total time	|down time	|throughput	|transferred-ram|total-ram	|
-	|---------------|---------------|---------------|---------------|---------------|---------------|	
-	|Baseline	|10343 ms	|161 ms		|41007.00 mbps	|51583797 kb	|102400520 kb	|
-	|---------------|---------------|---------------|---------------|-------------------------------|
-	|DSA offload	|9535 ms	|135 ms		|46554.40 mbps	|53947545 kb	|102400520 kb	|	
-	|---------------|---------------|---------------|---------------|---------------|---------------|
-
-Total time is 8% faster and down time is 16% faster.
-
-B) Scenario 2: 100% (100GB) zero pages on an 100GB vm.
-
-	CPU usage
-	|---------------|---------------|---------------|---------------|
-	|		|comm		|runtime(msec)	|totaltime(msec)|
-	|---------------|---------------|---------------|---------------|
-	|Baseline	|live_migration	|4860.718	|		|
-	|	 	|multifdsend_0	|748.875	|		|
-	|		|multifdsend_1	|898.498	|		|
-	|		|multifdsend_2	|787.456	|		|
-	|		|multifdsend_3	|764.537	|		|
-	|		|multifdsend_4	|785.687	|		|
-	|		|multifdsend_5	|756.941	|		|
-	|		|multifdsend_6	|774.084	|		|
-	|		|multifdsend_7	|782.900	|11154		|
-	|---------------|---------------|-------------------------------|
-	|DSA offloading	|live_migration	|3846.976	|		|
-	|		|multifdsend_0	|191.880	|		|
-	|		|multifdsend_1	|166.331	|		|
-	|		|multifdsend_2	|168.528	|		|
-	|		|multifdsend_3	|197.831	|		|
-	|		|multifdsend_4	|169.580	|		|
-	|		|multifdsend_5	|167.984	|		|
-	|		|multifdsend_6	|198.042	|		|
-	|		|multifdsend_7	|170.624	|		|
-	|		|dsa_completion	|3428.669	|8700		|
-	|---------------|---------------|---------------|---------------|
-
-Baseline total runtime is 11154 msec and DSA offloading total runtime is
-8700 msec. That is 22% CPU savings.
-
-	Latency
-	|--------------------------------------------------------------------------------------------|
-	|		|total time	|down time	|throughput	|transferred-ram|total-ram   |
-	|---------------|---------------|---------------|---------------|---------------|------------|	
-	|Baseline	|4867 ms	|20 ms		|1.51 mbps	|565 kb		|102400520 kb|
-	|---------------|---------------|---------------|---------------|----------------------------|
-	|DSA offload	|3888 ms	|18 ms		|1.89 mbps	|565 kb		|102400520 kb|	
-	|---------------|---------------|---------------|---------------|---------------|------------|
-
-Total time 20% faster and down time 10% faster.
-
-* Testing:
-
-1. Added unit tests for cover the added code path in dsa.c
-2. Added integration tests to cover multifd live migration using DSA
-offloading.
-
-* Patchset
-
-Apply this patchset on top of commit
-f78ea7ddb0e18766ece9fdfe02061744a7afc41b
-
-Hao Xiang (16):
-  meson: Introduce new instruction set enqcmd to the build system.
-  util/dsa: Add dependency idxd.
-  util/dsa: Implement DSA device start and stop logic.
-  util/dsa: Implement DSA task enqueue and dequeue.
-  util/dsa: Implement DSA task asynchronous completion thread model.
-  util/dsa: Implement zero page checking in DSA task.
-  util/dsa: Implement DSA task asynchronous submission and wait for
-    completion.
-  migration/multifd: Add new migration option for multifd DSA
-    offloading.
-  migration/multifd: Prepare to introduce DSA acceleration on the
-    multifd path.
-  migration/multifd: Enable DSA offloading in multifd sender path.
-  migration/multifd: Add test hook to set normal page ratio.
-  migration/multifd: Enable set normal page ratio test hook in multifd.
-  migration/multifd: Add migration option set packet size.
-  migration/multifd: Enable set packet size migration option.
-  util/dsa: Add unit test coverage for Intel DSA task submission and
-    completion.
-  migration/multifd: Add integration tests for multifd with Intel DSA
-    offloading.
-
-Juan Quintela (4):
-  multifd: Add capability to enable/disable zero_page
-  multifd: Support for zero pages transmission
-  multifd: Zero pages transmission
-  So we use multifd to transmit zero pages.
-
- include/qemu/dsa.h             |  119 ++++
- linux-headers/linux/idxd.h     |  356 ++++++++++
- meson.build                    |    2 +
- meson_options.txt              |    2 +
- migration/migration-hmp-cmds.c |   22 +
- migration/multifd-zlib.c       |    8 +-
- migration/multifd-zstd.c       |    8 +-
- migration/multifd.c            |  203 +++++-
- migration/multifd.h            |   28 +-
- migration/options.c            |  107 +++
- migration/options.h            |    4 +
- migration/ram.c                |   45 +-
- migration/trace-events         |    8 +-
- qapi/migration.json            |   53 +-
- scripts/meson-buildoptions.sh  |    3 +
- tests/qtest/migration-test.c   |   77 ++-
- tests/unit/meson.build         |    6 +
- tests/unit/test-dsa.c          |  466 +++++++++++++
- util/dsa.c                     | 1132 ++++++++++++++++++++++++++++++++
- util/meson.build               |    1 +
- 20 files changed, 2612 insertions(+), 38 deletions(-)
- create mode 100644 include/qemu/dsa.h
- create mode 100644 linux-headers/linux/idxd.h
- create mode 100644 tests/unit/test-dsa.c
- create mode 100644 util/dsa.c
-
+diff --git a/migration/options.c b/migration/options.c
+index 8d8ec73ad9..00c0c4a0d6 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -204,6 +204,8 @@ Property migration_properties[] = {
+     DEFINE_PROP_MIG_CAP("x-switchover-ack",
+                         MIGRATION_CAPABILITY_SWITCHOVER_ACK),
+     DEFINE_PROP_MIG_CAP("x-dirty-limit", MIGRATION_CAPABILITY_DIRTY_LIMIT),
++    DEFINE_PROP_MIG_CAP("main-zero-page",
++            MIGRATION_CAPABILITY_MAIN_ZERO_PAGE),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+@@ -284,6 +286,17 @@ bool migrate_multifd(void)
+     return s->capabilities[MIGRATION_CAPABILITY_MULTIFD];
+ }
+ 
++bool migrate_use_main_zero_page(void)
++{
++    //MigrationState *s;
++
++    //s = migrate_get_current();
++
++    // We will enable this when we add the right code.
++    // return s->enabled_capabilities[MIGRATION_CAPABILITY_MAIN_ZERO_PAGE];
++    return true;
++}
++
+ bool migrate_pause_before_switchover(void)
+ {
+     MigrationState *s = migrate_get_current();
+diff --git a/migration/options.h b/migration/options.h
+index 246c160aee..c901eb57c6 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -88,6 +88,7 @@ int migrate_multifd_channels(void);
+ MultiFDCompression migrate_multifd_compression(void);
+ int migrate_multifd_zlib_level(void);
+ int migrate_multifd_zstd_level(void);
++bool migrate_use_main_zero_page(void);
+ uint8_t migrate_throttle_trigger_threshold(void);
+ const char *migrate_tls_authz(void);
+ const char *migrate_tls_creds(void);
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 975761eebd..09e4393591 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -531,6 +531,12 @@
+ #     and can result in more stable read performance.  Requires KVM
+ #     with accelerator property "dirty-ring-size" set.  (Since 8.1)
+ #
++#
++# @main-zero-page: If enabled, the detection of zero pages will be
++#                  done on the main thread.  Otherwise it is done on
++#                  the multifd threads.
++#                  (since 8.2)
++#
+ # Features:
+ #
+ # @deprecated: Member @block is deprecated.  Use blockdev-mirror with
+@@ -555,7 +561,7 @@
+            { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
+            'validate-uuid', 'background-snapshot',
+            'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
+-           'dirty-limit'] }
++           'dirty-limit', 'main-zero-page'] }
+ 
+ ##
+ # @MigrationCapabilityStatus:
 -- 
 2.30.2
 
