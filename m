@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A46E7EAE7A
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 11:58:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B2C7EAE7C
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 11:58:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2r6Z-00051p-3r; Tue, 14 Nov 2023 05:57:15 -0500
+	id 1r2r7a-0005vU-QX; Tue, 14 Nov 2023 05:58:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r2r6W-00051L-M8
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:57:12 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r2r7Z-0005u0-9O
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:58:17 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r2r6T-0004zu-Dr
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:57:12 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-32fadd4ad09so3752573f8f.1
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 02:57:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r2r7X-0005BJ-L9
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:58:17 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5441ba3e53cso8161480a12.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 02:58:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699959427; x=1700564227; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1699959493; x=1700564293; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Lziij9RreatelhcVmwRhxBV9sdZ+MO3/jgGNTGLBLc4=;
- b=v0LiNiCraufXHwLB5FDbXVpM3wjvcaBsdye8l0MdQp2hIvcgstxOMcOp1EHtSO0fqk
- EV3ZdtCqvLaZExZDe/EfLcD0WDZWcsdwCwXkx6DVWNEEww8oQmSJ4CtPBd83CKka7tYp
- ocizajLHDg51GXMzz2kkC7cgHTB+DpB7gTJwK72BpQzpSYOQvV3BueCtTScUxs+X/ZPU
- LzvaLpLtiTtynluGXF0OoMNg/K7ij+l+dfF4MbQ/3bx4CQXT81t77LLml5lhCsKrh94S
- 5XwSIRg1qock9sLEXZmXhzsrb4UNCwjYdGD645nHVgcpx0/IP3IHFRuJHgLySHbTinkS
- KYWg==
+ bh=sZiNat6q6RWy3UbweNCQFauNKXiIFAfNH6RZUmCVylY=;
+ b=X8UYiB8Vs4GH0wgGI5DftOL9EElhSMMPGkA6ZwdINEg0Pe067IUxBujMMpm8xAIaxd
+ /URWVrr2xq63RzgCW4RR/XNzR3mHQdkflsMYtOawBFJbrEH8S2g3fQ+bdTfuwMD8DRzh
+ FoRDDtHW2LolOeLlC1oBmrAPMMSD3veY2OO3QybKRazesksmt1tTJEjUQrEvInvc9CCk
+ jqHblsEAgR8GipeKrO3yfqXAUGB02J2K3VOcM836oVrgZD7IRcueLkedzJ+uf5YhS8HH
+ 1fdvdswcIIQtQc4rqtCfAUUMYJ1LN4PG3UrZW+g1z4lKIzzAFOqFv/4dPUJe25q8Xarg
+ OgsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699959427; x=1700564227;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=Lziij9RreatelhcVmwRhxBV9sdZ+MO3/jgGNTGLBLc4=;
- b=skCSO2X8eEcBE5JdY/JWNEe17oPY2omtWS0KvKyAH22/LOfxx4wq8+SXxylHozuwss
- SIEyfPuCtB7kdRHNPfdPCn7J3EPekoy2ZhMioyLnclEy6/e43F67tHQuUCt7zDy3xv3T
- kjBgRceEEOJ3X94feQVYjfUhj9QPMtnPBH2zaxfAKPO6FXz45LEtH8/eesH5LVbRwWFO
- 51/bCxgxTHsSB27zP0QIONN/5OoY2qFny/81icG2g1Qmh+aYenJJ05HmrLMMvgqSXH6/
- Hx4HfOOw3o0z8T5A232ODN0quptKlDZFbJ4BWeu6Ht2ZcbMbx9FixdPQFvLIeFv+PBFj
- aofg==
-X-Gm-Message-State: AOJu0YzG5QyskGBy4n8YPaAtZix003Bj2HkSqTlfODDuKfxNWdD+cf/i
- oxjjFI+tsbq8BlrMJnfUt+/k8g==
-X-Google-Smtp-Source: AGHT+IEqtm1qb7mTRNo5l3xCrr/iF9TZY2dahu9pE/SRn038Nvg9ewNJO2IjQIBK4VHqaMHQ/jkC0g==
-X-Received: by 2002:a05:6000:1865:b0:32d:a54a:f57c with SMTP id
- d5-20020a056000186500b0032da54af57cmr8583956wri.25.1699959427462; 
- Tue, 14 Nov 2023 02:57:07 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- o9-20020a5d58c9000000b0032d9caeab0fsm7546999wrf.77.2023.11.14.02.57.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Nov 2023 02:57:06 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0FDAC5F751;
- Tue, 14 Nov 2023 10:57:06 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Mikhail Tyutin <m.tyutin@yadro.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,  Richard Henderson
- <richard.henderson@linaro.org>,  "erdnaxe@crans.org" <erdnaxe@crans.org>,
- "ma.mandourr@gmail.com" <ma.mandourr@gmail.com>
-Subject: Re: Instruction virtual address in TCG Plugins
-In-Reply-To: <e44e7be4b0b44ea2882fbfe09f3b58f4@yadro.com> (Mikhail Tyutin's
- message of "Tue, 14 Nov 2023 09:14:15 +0000")
-References: <d4f2713a4e2d45858c82ff2efb95f8a3@yadro.com>
- <87leb1xtdx.fsf@draig.linaro.org>
- <e44e7be4b0b44ea2882fbfe09f3b58f4@yadro.com>
-User-Agent: mu4e 1.11.24; emacs 29.1
-Date: Tue, 14 Nov 2023 10:57:06 +0000
-Message-ID: <874jhoy54t.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1699959493; x=1700564293;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=sZiNat6q6RWy3UbweNCQFauNKXiIFAfNH6RZUmCVylY=;
+ b=UTCaX7ATHb/WVMKlDMJU+1zXy5SznnZjQZSHsfh8GJfQTNexCbylHm0VZQiYk9EPuj
+ DiFSPNRleSIm8DPaQvit5Ws3/BJ5kwn5cJb8kWQOXhPmnfWytDQyMH9cC9nS1kv9/vr6
+ oUA6mlPT4WVV2u9PkKxgj5XgLcDvpH6XuhMgE8Y9rEOLr/lhXi+neZ38Yy0aRonernOc
+ jqL7vKzUxxI/Z4OWUnlH+b/cGYwTa/nejS876KHnZ6beZr1g7BP8t5bcAyhzABkz8JD2
+ jT6ZPIwksRPLkmE5imsOXOKz4/v5nuo99r3L0wIY4UCt3mJIPJqVbyQd/6quZ9LZZeTc
+ FE0A==
+X-Gm-Message-State: AOJu0YzZNORwYmmvP0WIK+fOgfVFFEE+snCylIgkUwp9aZ2X9RLd7obA
+ xBnpTcaJKsccynve7/yfuaLZmfsyO8oky2rIO3N7cw==
+X-Google-Smtp-Source: AGHT+IF8AteeA9xhjlFYLluhityz9j1+WD/ypAQUvIMpxHR6Jdseab2IIbkq94p8uDdduD2FF4D/RIf8mLZQg4FCktQ=
+X-Received: by 2002:aa7:d682:0:b0:544:5b1d:ff87 with SMTP id
+ d2-20020aa7d682000000b005445b1dff87mr6072387edr.38.1699959493547; Tue, 14 Nov
+ 2023 02:58:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20231027175532.3601297-1-nabihestefan@google.com>
+ <20231027175532.3601297-4-nabihestefan@google.com>
+ <KL1PR03MB7744A70A81045E5DC49C8191DBB2A@KL1PR03MB7744.apcprd03.prod.outlook.com>
+In-Reply-To: <KL1PR03MB7744A70A81045E5DC49C8191DBB2A@KL1PR03MB7744.apcprd03.prod.outlook.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 14 Nov 2023 10:58:02 +0000
+Message-ID: <CAFEAcA_9HT=tccyTu9RffMxq7Cm5GEanM+OcSxfkpbnJW2m6hQ@mail.gmail.com>
+Subject: Re: [PATCH v5 03/11] hw/misc: Add qtest for NPCM7xx PCI Mailbox
+To: "KFTING@nuvoton.com" <KFTING@nuvoton.com>
+Cc: Nabih Estefan <nabihestefan@google.com>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, 
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "wuhaotsh@google.com" <wuhaotsh@google.com>, 
+ "jasonwang@redhat.com" <jasonwang@redhat.com>,
+ "Avi.Fishman@nuvoton.com" <Avi.Fishman@nuvoton.com>, 
+ "KWLIU@nuvoton.com" <KWLIU@nuvoton.com>,
+ "tomer.maimon@nuvoton.com" <tomer.maimon@nuvoton.com>, 
+ "Hila.Miranda-Kuzi@nuvoton.com" <Hila.Miranda-Kuzi@nuvoton.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,83 +96,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mikhail Tyutin <m.tyutin@yadro.com> writes:
-
->> > What is the right way to get virtual address of either translation blo=
-ck or instruction inside of TCG plugin? Does
->> > plugin API allow that or it needs some extension?
->> >
->> > So far I use qemu_plugin_tb_vaddr() inside of my block translation cal=
-lback to get block virtual address and then
->> > pass it as 'userdata' argument into qemu_plugin_register_vcpu_tb_exec_=
-cb(). I use it later during code execution.
->> > It works well for user-mode emulation, but sometimes leads to
->> > incorrect addresses in system-mode emulation.
->>=20
->> You can use qemu_plugin_insn_vaddr and qemu_plugin_insn_haddr. But your
->> right something under one vaddr and be executed under another with
->> overlapping mappings. The haddr should be stable though I think.
+On Tue, 14 Nov 2023 at 01:24, KFTING@nuvoton.com <KFTING@nuvoton.com> wrote=
+:
 >
-> As far as I see haddr is ok and can be used to identify blocks. However, =
-if I have haddr at block execution phase and
-> I want to know vaddr, there is no API to get such mapping. Maybe it is po=
-ssible to extract from software MMU, but I
-> have no clue where to start with.
-
-The translator doesn't know (at least since CF_PCREL) because the whole
-point of that change was to avoid re-translating the same code from
-multiple mappings. However we do have the ability to resolve a PC at
-fault time so we could expose that to a execution callback.
-
->> > I suspect it is because of memory mappings by guest OS that changes vi=
-rtual addresses for that block.
->> >
->> > I also looked at gen_empty_udata_cb() function and considered to exten=
-d plugin API to pass a program counter
->> > value as additional callback argument. I thought it would always give =
-me valid virtual address of an instruction.
->> > Unfortunately, I didn't find a way to get value of that register in ar=
-chitecture agnostic way (it is 'pc' member in
->> > CPUArchState structure).
->>=20
->> When we merge the register api you should be able to do that. Although
->> during testing I realised that PC acted funny compared to everything
->> else because we don't actually update the shadow register every
->> instruction.
 >
-> We implemented similar API to read registers (by coincidence, I posted th=
-is patch at the same time as the API you
-> mentioned) and I observe similar behavior. As far as I see, CPU state is =
-only updated in between of executed translation
-> blocks. Switching to 'singlestep' mode helps to fix that, but execution o=
-verhead is huge.
 >
-> There is also blocks 'chaining' mechanism which is likely contributes to =
-corrupted blocks vaddr inside of callbacks.
-> My guess is that 'pc' value for those chained blocks points to the first =
-block of entire chain. Unfortunately, It is very
-> hard to debug, because I can only see block chains when I run whole Linux=
- guest OS. Does Qemu has small test
-> application to trigger long enough chain of translation blocks?
+> -----Original Message-----
+> From: Nabih Estefan <nabihestefan@google.com>
+> Sent: Saturday, October 28, 2023 1:55 AM
+> To: peter.maydell@linaro.org
+> Cc: qemu-arm@nongnu.org; qemu-devel@nongnu.org; CS20 KFTing <KFTING@nuvot=
+on.com>; wuhaotsh@google.com; jasonwang@redhat.com; IS20 Avi Fishman <Avi.F=
+ishman@nuvoton.com>; nabihestefan@google.com; CS20 KWLiu <KWLIU@nuvoton.com=
+>; IS20 Tomer Maimon <tomer.maimon@nuvoton.com>; IN20 Hila Miranda-Kuzi <Hi=
+la.Miranda-Kuzi@nuvoton.com>
+> Subject: [PATCH v5 03/11] hw/misc: Add qtest for NPCM7xx PCI Mailbox
+>
+> CAUTION - External Email: Do not click links or open attachments unless y=
+ou acknowledge the sender and content.
+>
+>
+> From: Hao Wu <wuhaotsh@google.com>
+>
+> This patches adds a qtest for NPCM7XX PCI Mailbox module.
+> It sends read and write requests to the module, and verifies that the mod=
+ule contains the correct data after the requests.
+>
+> Change-Id: Id7a4b3cbea564383b94d507552dfd16f6b5127d1
+> Signed-off-by: Hao Wu <wuhaotsh@google.com>
+> Signed-off-by: Nabih Estefan <nabihestefan@google.com>
+> ---
 
-No all registers should be resolved by the end of any block. There is
-currently no optimisation of register usage between TBs. If you are
-seeing PC corruption that would be a bug - but fundamentally things
-would break pretty quick if tb_lookup() and friends didn't have an
-accurate PC.
 
-As for block chains any moderately complex loop should trigger chaining.
+> Signed-off-by: Tyrone Ting <kfting@nuvoton.com>
 
-> Having those complexities makes me think to inject appropriate code into =
-translation blocks to compute actual block
-> vaddr at execution stage. The problem here is to find a variable where
-> I can load 'pc' at start of translation block.
+Hi; can you clarify what you mean with this Signed-off-by: tag?
+Generally we use those where either you're the author of the
+code or else when you're taking somebody else's patch and
+including it in work you are sending to the list, and it
+doesn't seem like either of those are the case here.
 
-I think it would be pretty easy to ensure there is a rectified PC value
-written before calling any callback - arguably the QEMU_PLUGIN_CB_R_REGS
-flag should do this.
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+thanks
+-- PMM
 
