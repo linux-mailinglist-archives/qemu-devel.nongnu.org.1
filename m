@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE67A7EB533
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:00:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B32D7EB543
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:03:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2wlC-00071V-3F; Tue, 14 Nov 2023 11:59:34 -0500
+	id 1r2wlG-00076S-Mq; Tue, 14 Nov 2023 11:59:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r2wl9-0006yZ-5P; Tue, 14 Nov 2023 11:59:31 -0500
+ id 1r2wlA-00071Q-VU; Tue, 14 Nov 2023 11:59:33 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r2wl7-00051P-KJ; Tue, 14 Nov 2023 11:59:30 -0500
+ id 1r2wl9-00054W-CY; Tue, 14 Nov 2023 11:59:32 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4BFE933272;
+ by isrv.corpit.ru (Postfix) with ESMTP id 62CDA33273;
  Tue, 14 Nov 2023 19:59:01 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 1C864351F9;
+ by tsrv.corpit.ru (Postfix) with SMTP id 2E307351FA;
  Tue, 14 Nov 2023 19:58:43 +0300 (MSK)
-Received: (nullmailer pid 2949108 invoked by uid 1000);
+Received: (nullmailer pid 2949111 invoked by uid 1000);
  Tue, 14 Nov 2023 16:58:42 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- David Hildenbrand <david@redhat.com>
-Subject: [PATCH trivial 12/21] hw/mem/memory-device.c: spelling fix: ontaining
-Date: Tue, 14 Nov 2023 19:58:25 +0300
-Message-Id: <20231114165834.2949011-13-mjt@tls.msk.ru>
+ Luc Michel <luc.michel@amd.com>, Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH trivial 13/21] hw/net/cadence_gem.c: spelling fixes: Octects
+Date: Tue, 14 Nov 2023 19:58:26 +0300
+Message-Id: <20231114165834.2949011-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231114165834.2949011-1-mjt@tls.msk.ru>
 References: <20231114165834.2949011-1-mjt@tls.msk.ru>
@@ -59,26 +59,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: 6c1b28e9e405 "memory-device: Support empty memory devices"
-Cc: David Hildenbrand <david@redhat.com>
+Fixes: c755c943aa2e "hw/net/cadence_gem: use REG32 macro for register definitions"
+Cc: Luc Michel <luc.michel@amd.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/mem/memory-device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/net/cadence_gem.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
-index e0704b8dc3..a1b1af26bc 100644
---- a/hw/mem/memory-device.c
-+++ b/hw/mem/memory-device.c
-@@ -29,7 +29,7 @@ static bool memory_device_is_empty(const MemoryDeviceState *md)
-     /* dropping const here is fine as we don't touch the memory region */
-     mr = mdc->get_memory_region((MemoryDeviceState *)md, &local_err);
-     if (local_err) {
--        /* Not empty, we'll report errors later when ontaining the MR again. */
-+        /* Not empty, we'll report errors later when containing the MR again. */
-         error_free(local_err);
-         return false;
-     }
+diff --git a/hw/net/cadence_gem.c b/hw/net/cadence_gem.c
+index 5b989f5b52..19adbc0e19 100644
+--- a/hw/net/cadence_gem.c
++++ b/hw/net/cadence_gem.c
+@@ -225,8 +225,8 @@ REG32(WOLAN, 0xb8) /* Wake on LAN reg */
+ REG32(IPGSTRETCH, 0xbc) /* IPG Stretch reg */
+ REG32(SVLAN, 0xc0) /* Stacked VLAN reg */
+ REG32(MODID, 0xfc) /* Module ID reg */
+-REG32(OCTTXLO, 0x100) /* Octects transmitted Low reg */
+-REG32(OCTTXHI, 0x104) /* Octects transmitted High reg */
++REG32(OCTTXLO, 0x100) /* Octets transmitted Low reg */
++REG32(OCTTXHI, 0x104) /* Octets transmitted High reg */
+ REG32(TXCNT, 0x108) /* Error-free Frames transmitted */
+ REG32(TXBCNT, 0x10c) /* Error-free Broadcast Frames */
+ REG32(TXMCNT, 0x110) /* Error-free Multicast Frame */
+@@ -245,8 +245,8 @@ REG32(EXCESSCOLLCNT, 0x140) /* Excessive Collision Frames */
+ REG32(LATECOLLCNT, 0x144) /* Late Collision Frames */
+ REG32(DEFERTXCNT, 0x148) /* Deferred Transmission Frames */
+ REG32(CSENSECNT, 0x14c) /* Carrier Sense Error Counter */
+-REG32(OCTRXLO, 0x150) /* Octects Received register Low */
+-REG32(OCTRXHI, 0x154) /* Octects Received register High */
++REG32(OCTRXLO, 0x150) /* Octets Received register Low */
++REG32(OCTRXHI, 0x154) /* Octets Received register High */
+ REG32(RXCNT, 0x158) /* Error-free Frames Received */
+ REG32(RXBROADCNT, 0x15c) /* Error-free Broadcast Frames RX */
+ REG32(RXMULTICNT, 0x160) /* Error-free Multicast Frames RX */
 -- 
 2.39.2
 
