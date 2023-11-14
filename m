@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F31C27EB2B3
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 15:44:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 424E47EB2AC
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 15:43:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2ub6-0006g8-Oo; Tue, 14 Nov 2023 09:41:01 -0500
+	id 1r2ubB-0007Eh-Vm; Tue, 14 Nov 2023 09:41:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uaN-0005TH-Rp
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:40:20 -0500
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uaW-0005Zz-7r
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:40:25 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uaH-0008HN-V8
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:40:12 -0500
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-9d0b4dfd60dso855681866b.1
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 06:40:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uaP-0008IN-Qw
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:40:23 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-9e62f903e88so626386666b.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 06:40:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699972808; x=1700577608; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699972815; x=1700577615; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CAcrCtDRFE27SgAEHRwd23jK5KSLpjZ+znXdyGAiZas=;
- b=pw4rr5y5YglSRcKSHE5jDik+jl4PM6PNbDi+mule542cInNX2HTpV+fc8yjZDzGp3Y
- 4nnNPI51CyG9sbjzbyaeDyunyqG6McZRMtzsjT6oQUxAhg82mNCeTGwsGeHWnRN4fmZo
- YpNiPjq5EI3OWmofH8/gd9tGFR6Kc8mi+h/ikzC3Cgg50/jyBUwgA44Hi/EG41Gi/ENB
- SSTle2jsyQVzWNrFHXk62KJlgZJYRPM2FnEO0CC/x76V9NMPqD+ActaZoLTTQLhTt2j2
- kKN5Cp/g3jLO9L7Nw5pC88246QCjpcZjpSJPhT2sZHYJ1fBx19ulecrCYt+VlmARaJ6B
- qDTg==
+ bh=cJTBhe5AIq+piFF54yNuiwKWHopSqD7by2+9eio+MdU=;
+ b=zcOskpQ632xXIRJRbNrkKYgrLgESDKporKbfd38FkhS8c3WCGpyusLf/CFnXnmN3+k
+ twJMbAZYn0zd1WiAd+/ORir3/pLxqso3II8rv/dgd/8GOhvFrg9n0XlpSEmSG1SrvHW5
+ IOsOGZUcqdeoLo5ohvyQvQqiwZSr1MynZ1rqyGi75O3l3bwQh71LFP5/8RvAaxZQdErg
+ YAZtaM8D6GY0SwmmeEVDjadRRpmRWose1qQdH7qLekQqofIHftU4GClk7OjQxptg4+H9
+ 6OS+Wt4PoXL2IcUwwR3GDxvAgGbx7dzpZuCjXzTGe5MrazSoZnpjUquEmsnDNBZfNkvg
+ 5K5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699972808; x=1700577608;
+ d=1e100.net; s=20230601; t=1699972815; x=1700577615;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CAcrCtDRFE27SgAEHRwd23jK5KSLpjZ+znXdyGAiZas=;
- b=qib3eDEYqd7gpXD5Lu7Bp6DtThDsrXRTFUQl1y0pEDzXmnokTf2xvrOpLwCIMGg6tv
- mgOBAhsxzVSTwhttar6Yix+WvD5+eSC6Qs9Th5A6UXTMjl0ttY42jk1Wj3ZLSZaJonFk
- lCo0OrXhQYAkiMlkOiy0CAfvHz2jUS+DvGJnGgsNW6GF4aQXgAv1/gkgq0hm8h6QAIk1
- ntFQhQKK5YDQke3qAqu8wUy7dKXzTPM+qrh8hxsitZPhcwzkrvc4W616XTs8JcE8hAKg
- lRUlz9vB33eHfdG4b85D53BPsLeisOiY5BlXQWfQAutWy4m0c+L3xlQ5L3ROMua1mA6T
- dNiA==
-X-Gm-Message-State: AOJu0Yxu8+8wkWvBIq9fX5IEw0vyQGc/oqDVg6rZdYiwMTbfhCYCu+o7
- zJuxcCZ8slARX7biRYOi35Mk/Q==
-X-Google-Smtp-Source: AGHT+IFRbdN3aM58BgezwVky3EFK69MoaorjbUe4txfqvi/Mr07fntHT95KnMqBlE8Dz9TGy0ZX5tw==
-X-Received: by 2002:a17:907:9848:b0:9dd:5adc:b1d2 with SMTP id
- jj8-20020a170907984800b009dd5adcb1d2mr6678484ejc.38.1699972808614; 
- Tue, 14 Nov 2023 06:40:08 -0800 (PST)
+ bh=cJTBhe5AIq+piFF54yNuiwKWHopSqD7by2+9eio+MdU=;
+ b=IchERD4mjwKFJ7qn2EZVOJxGBd0FcPzfcFrDSdt7eAYERot/m7OFVKsSqncrKIgwA+
+ xvGhbUtzkndNmDAjay3BDl+3W63kHwQx92vfRTXCqjJngErewEpAmOOZaKUa8QdcHWQ8
+ C6plIQJv8Lz7+NgG7OApHc83Nq732j49sr07Wo85bBYZ7jfXNkXc5HCer529CScYXLlG
+ 4Jo+FIhg6fay8cXd2iHFec8/SUejqGxxXdZsEuXyE2ubfG1960EH+54SqLDyXqTsyQDf
+ R4oYMOBHngiXAe+hQN0ooS2iAUb1Mb49YkPp11X56MH1P2P/fDtdkYF6ExGQlEhmM5JR
+ Hkzg==
+X-Gm-Message-State: AOJu0YwBrwDGC9AyIc7VumWYKlsrYz+Wsm02K//dNacKz3qi+pmM5liL
+ ZsBZS8SYo8KcN4YORyZWDIfLvQ==
+X-Google-Smtp-Source: AGHT+IE8dPcoX4Dac2Uu05H6YcGwd8wvx56/VSesXpaOIpMKV8Ekj9QVQKSryNOPBDH4ia71GkoHQw==
+X-Received: by 2002:a17:906:6a1f:b0:9b2:df16:851d with SMTP id
+ qw31-20020a1709066a1f00b009b2df16851dmr9925246ejc.57.1699972815506; 
+ Tue, 14 Nov 2023 06:40:15 -0800 (PST)
 Received: from m1x-phil.lan (cac94-h02-176-184-25-155.dsl.sta.abo.bbox.fr.
  [176.184.25.155]) by smtp.gmail.com with ESMTPSA id
- y10-20020a1709064b0a00b009dd7bc622fbsm5606206eju.113.2023.11.14.06.40.06
+ le5-20020a170907170500b00988f168811bsm5631076ejc.135.2023.11.14.06.40.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 14 Nov 2023 06:40:08 -0800 (PST)
+ Tue, 14 Nov 2023 06:40:15 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: David Woodhouse <dwmw@amazon.co.uk>,
 	qemu-devel@nongnu.org
@@ -65,18 +65,21 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  xen-devel@lists.xenproject.org, qemu-block@nongnu.org,
  Anthony Perard <anthony.perard@citrix.com>, kvm@vger.kernel.org,
  Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.0 v2 16/19] hw/xen/xen_pt: Add missing license
-Date: Tue, 14 Nov 2023 15:38:12 +0100
-Message-ID: <20231114143816.71079-17-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH-for-9.0 v2 17/19] hw/xen: Extract 'xen_igd.h' from 'xen_pt.h'
+Date: Tue, 14 Nov 2023 15:38:13 +0100
+Message-ID: <20231114143816.71079-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231114143816.71079-1-philmd@linaro.org>
 References: <20231114143816.71079-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,21 +102,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit eaab4d60d3 ("Introduce Xen PCI Passthrough, qdevice")
-introduced both xen_pt.[ch], but only added the license to
-xen_pt.c. Use the same license for xen_pt.h.
+"hw/xen/xen_pt.h" requires "hw/xen/xen_native.h" which is target
+specific. It also declares IGD methods, which are not target
+specific.
 
-Suggested-by: David Woodhouse <dwmw@amazon.co.uk>
+Target-agnostic code can use IGD methods. To allow that, extract
+these methos into a new "hw/xen/xen_igd.h" header.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/xen/xen_pt.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ hw/xen/xen_pt.h             | 14 --------------
+ include/hw/xen/xen_igd.h    | 33 +++++++++++++++++++++++++++++++++
+ accel/xen/xen-all.c         |  1 +
+ hw/i386/pc_piix.c           |  1 +
+ hw/xen/xen_pt.c             |  3 ++-
+ hw/xen/xen_pt_config_init.c |  3 ++-
+ hw/xen/xen_pt_graphics.c    |  3 ++-
+ hw/xen/xen_pt_stub.c        |  2 +-
+ 8 files changed, 42 insertions(+), 18 deletions(-)
+ create mode 100644 include/hw/xen/xen_igd.h
 
 diff --git a/hw/xen/xen_pt.h b/hw/xen/xen_pt.h
-index 31bcfdf705..d3180bb134 100644
+index d3180bb134..095a0f0365 100644
 --- a/hw/xen/xen_pt.h
 +++ b/hw/xen/xen_pt.h
-@@ -1,3 +1,13 @@
+@@ -15,9 +15,6 @@
+ #include "xen-host-pci-device.h"
+ #include "qom/object.h"
+ 
+-bool xen_igd_gfx_pt_enabled(void);
+-void xen_igd_gfx_pt_set(bool value, Error **errp);
+-
+ void xen_pt_log(const PCIDevice *d, const char *f, ...) G_GNUC_PRINTF(2, 3);
+ 
+ #define XEN_PT_ERR(d, _f, _a...) xen_pt_log(d, "%s: Error: "_f, __func__, ##_a)
+@@ -62,12 +59,6 @@ typedef struct XenPTDeviceClass {
+     XenPTQdevRealize pci_qdev_realize;
+ } XenPTDeviceClass;
+ 
+-uint32_t igd_read_opregion(XenPCIPassthroughState *s);
+-void xen_igd_reserve_slot(PCIBus *pci_bus);
+-void igd_write_opregion(XenPCIPassthroughState *s, uint32_t val);
+-void xen_igd_passthrough_isa_bridge_create(XenPCIPassthroughState *s,
+-                                           XenHostPCIDevice *dev);
+-
+ /* function type for config reg */
+ typedef int (*xen_pt_conf_reg_init)
+     (XenPCIPassthroughState *, XenPTRegInfo *, uint32_t real_offset,
+@@ -353,11 +344,6 @@ static inline bool xen_pt_has_msix_mapping(XenPCIPassthroughState *s, int bar)
+ void *pci_assign_dev_load_option_rom(PCIDevice *dev, int *size,
+                                      unsigned int domain, unsigned int bus,
+                                      unsigned int slot, unsigned int function);
+-static inline bool is_igd_vga_passthrough(XenHostPCIDevice *dev)
+-{
+-    return (xen_igd_gfx_pt_enabled()
+-            && ((dev->class_code >> 0x8) == PCI_CLASS_DISPLAY_VGA));
+-}
+ int xen_pt_register_vga_regions(XenHostPCIDevice *dev);
+ int xen_pt_unregister_vga_regions(XenHostPCIDevice *dev);
+ void xen_pt_setup_vga(XenPCIPassthroughState *s, XenHostPCIDevice *dev,
+diff --git a/include/hw/xen/xen_igd.h b/include/hw/xen/xen_igd.h
+new file mode 100644
+index 0000000000..7ffca06c10
+--- /dev/null
++++ b/include/hw/xen/xen_igd.h
+@@ -0,0 +1,33 @@
 +/*
 + * Copyright (c) 2007, Neocleus Corporation.
 + * Copyright (c) 2007, Intel Corporation.
@@ -124,9 +178,108 @@ index 31bcfdf705..d3180bb134 100644
 + * Allen Kay <allen.m.kay@intel.com>
 + * Guy Zana <guy@neocleus.com>
 + */
- #ifndef XEN_PT_H
- #define XEN_PT_H
++#ifndef XEN_IGD_H
++#define XEN_IGD_H
++
++#include "hw/xen/xen-host-pci-device.h"
++
++typedef struct XenPCIPassthroughState XenPCIPassthroughState;
++
++bool xen_igd_gfx_pt_enabled(void);
++void xen_igd_gfx_pt_set(bool value, Error **errp);
++
++uint32_t igd_read_opregion(XenPCIPassthroughState *s);
++void xen_igd_reserve_slot(PCIBus *pci_bus);
++void igd_write_opregion(XenPCIPassthroughState *s, uint32_t val);
++void xen_igd_passthrough_isa_bridge_create(XenPCIPassthroughState *s,
++                                           XenHostPCIDevice *dev);
++
++static inline bool is_igd_vga_passthrough(XenHostPCIDevice *dev)
++{
++    return (xen_igd_gfx_pt_enabled()
++            && ((dev->class_code >> 0x8) == PCI_CLASS_DISPLAY_VGA));
++}
++
++#endif
+diff --git a/accel/xen/xen-all.c b/accel/xen/xen-all.c
+index 5ff0cb8bd9..0bdefce537 100644
+--- a/accel/xen/xen-all.c
++++ b/accel/xen/xen-all.c
+@@ -15,6 +15,7 @@
+ #include "hw/xen/xen_native.h"
+ #include "hw/xen/xen-legacy-backend.h"
+ #include "hw/xen/xen_pt.h"
++#include "hw/xen/xen_igd.h"
+ #include "chardev/char.h"
+ #include "qemu/accel.h"
+ #include "sysemu/cpus.h"
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index eace854335..a607dcb56c 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -56,6 +56,7 @@
+ #ifdef CONFIG_XEN
+ #include <xen/hvm/hvm_info_table.h>
+ #include "hw/xen/xen_pt.h"
++#include "hw/xen/xen_igd.h"
+ #endif
+ #include "hw/xen/xen-x86.h"
+ #include "hw/xen/xen.h"
+diff --git a/hw/xen/xen_pt.c b/hw/xen/xen_pt.c
+index 36e6f93c37..a8edabdabc 100644
+--- a/hw/xen/xen_pt.c
++++ b/hw/xen/xen_pt.c
+@@ -59,7 +59,8 @@
+ #include "hw/pci/pci.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/qdev-properties-system.h"
+-#include "xen_pt.h"
++#include "hw/xen/xen_pt.h"
++#include "hw/xen/xen_igd.h"
+ #include "hw/xen/xen.h"
+ #include "hw/xen/xen-legacy-backend.h"
+ #include "qemu/range.h"
+diff --git a/hw/xen/xen_pt_config_init.c b/hw/xen/xen_pt_config_init.c
+index 2b8680b112..ba4cd78238 100644
+--- a/hw/xen/xen_pt_config_init.c
++++ b/hw/xen/xen_pt_config_init.c
+@@ -15,7 +15,8 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "qemu/timer.h"
+-#include "xen_pt.h"
++#include "hw/xen/xen_pt.h"
++#include "hw/xen/xen_igd.h"
+ #include "hw/xen/xen-legacy-backend.h"
  
+ #define XEN_PT_MERGE_VALUE(value, data, val_mask) \
+diff --git a/hw/xen/xen_pt_graphics.c b/hw/xen/xen_pt_graphics.c
+index 0aed3bb6fd..6c2e3f4840 100644
+--- a/hw/xen/xen_pt_graphics.c
++++ b/hw/xen/xen_pt_graphics.c
+@@ -3,7 +3,8 @@
+  */
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+-#include "xen_pt.h"
++#include "hw/xen/xen_pt.h"
++#include "hw/xen/xen_igd.h"
+ #include "xen-host-pci-device.h"
+ 
+ static unsigned long igd_guest_opregion;
+diff --git a/hw/xen/xen_pt_stub.c b/hw/xen/xen_pt_stub.c
+index 5c108446a8..72feebeb20 100644
+--- a/hw/xen/xen_pt_stub.c
++++ b/hw/xen/xen_pt_stub.c
+@@ -6,7 +6,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "hw/xen/xen_pt.h"
++#include "hw/xen/xen_igd.h"
+ #include "qapi/error.h"
+ 
+ bool xen_igd_gfx_pt_enabled(void)
 -- 
 2.41.0
 
