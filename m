@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4387EBA78
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:07:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 351917EBA7D
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:09:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r33N1-0008Qv-0y; Tue, 14 Nov 2023 19:03:04 -0500
+	id 1r33N8-0000Gu-Ty; Tue, 14 Nov 2023 19:03:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33MY-0008ME-PF
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:02:35 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33Mo-0008Tk-6n
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:02:54 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33MW-0008KR-0J
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:02:34 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33Mm-0008Ms-LX
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:02:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700006549;
+ s=mimecast20190719; t=1700006568;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Lu8QJO9KDwDOmzdkBAnOVeCD39qe2P6zlwVvhT3kRpk=;
- b=HkQPlbCIxjOSsnOsfsf6wYccil5mwwGprUvNc2bQhAI/I3vgR0yWR7WLdr8/c38DxdCEMR
- ZLCn08a5v4Ct3RNBVa6Dc8Qpxh3/T3OfuhWzcnWEoLmZnvJoRp1uhsE3Ai4nUPPpr1YBvC
- qlqKsyXC3mJGTjHItBxkkYj5InK+7fc=
+ bh=mQSpWBUC1kwJ34qh0zAux7Kt73lQzg9r7Q8/AIyMDL4=;
+ b=Hxbt97AK+hob/vnSJ/SiI0jRsBx07sxaNgn8+SrAAXs2yTmeCslGhu6ekN9I8p3CB+RITL
+ biQj+kgM0J9qAsQafD1i6lcwpymAIQsz6u4S5IGQa3uWPEcKUVIT/VwwNxKwf1FZskbItL
+ wKarJwhuTKHsto2juEpFDpIkhWrayF4=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-15-k69DLkiQM4WTVbvicLwblA-1; Tue,
- 14 Nov 2023 19:02:25 -0500
-X-MC-Unique: k69DLkiQM4WTVbvicLwblA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-25-Tkyawx-9PNCtB1x1EM0Ygg-1; Tue,
+ 14 Nov 2023 19:02:41 -0500
+X-MC-Unique: Tkyawx-9PNCtB1x1EM0Ygg-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 66B2B38476A4;
- Wed, 15 Nov 2023 00:02:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1F11B29ABA02;
+ Wed, 15 Nov 2023 00:02:37 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.44])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 93C3DC15885;
- Wed, 15 Nov 2023 00:02:10 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 05F09C15885;
+ Wed, 15 Nov 2023 00:02:23 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -59,9 +59,9 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
  ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
  jcmvbkbc@gmail.com, shan.gavin@gmail.com
-Subject: [PATCH v5 24/31] machine: Use error handling when CPU type is checked
-Date: Wed, 15 Nov 2023 09:56:21 +1000
-Message-ID: <20231114235628.534334-25-gshan@redhat.com>
+Subject: [PATCH v5 25/31] machine: Introduce helper is_cpu_type_supported()
+Date: Wed, 15 Nov 2023 09:56:22 +1000
+Message-ID: <20231114235628.534334-26-gshan@redhat.com>
 In-Reply-To: <20231114235628.534334-1-gshan@redhat.com>
 References: <20231114235628.534334-1-gshan@redhat.com>
 MIME-Version: 1.0
@@ -93,57 +93,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU will be terminated if the specified CPU type isn't supported
-in machine_run_board_init(). The list of supported CPU type names
-is tracked by mc->valid_cpu_types.
-
-The error handling can be used to propagate error messages, to be
-consistent how the errors are handled for other situations in the
-same function.
+The logic, to check if the specified CPU type is supported in
+machine_run_board_init(), is independent enough. Factor it out into
+helper is_cpu_type_supported(). machine_run_board_init() looks a bit
+clean with this. Since we're here, @machine_class is renamed to @mc
+to avoid multiple line spanning of code. The comments are tweaked a
+bit either.
 
 No functional change intended.
 
-Suggested-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- hw/core/machine.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ hw/core/machine.c | 82 +++++++++++++++++++++++++----------------------
+ 1 file changed, 44 insertions(+), 38 deletions(-)
 
 diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 0c17398141..5b45dbbbd5 100644
+index 5b45dbbbd5..49e0bc874d 100644
 --- a/hw/core/machine.c
 +++ b/hw/core/machine.c
-@@ -1394,6 +1394,7 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
+@@ -1387,13 +1387,51 @@ out:
+     return r;
+ }
+ 
++static void is_cpu_type_supported(MachineState *machine, Error **errp)
++{
++    MachineClass *mc = MACHINE_GET_CLASS(machine);
++    ObjectClass *oc = object_class_by_name(machine->cpu_type);
++    CPUClass *cc;
++    int i;
++
++    /*
++     * Check if the user specified CPU type is supported when the valid
++     * CPU types have been determined. Note that the user specified CPU
++     * type is provided through '-cpu' option.
++     */
++    if (mc->valid_cpu_types && machine->cpu_type) {
++        for (i = 0; mc->valid_cpu_types[i]; i++) {
++            if (object_class_dynamic_cast(oc, mc->valid_cpu_types[i])) {
++                break;
++            }
++        }
++
++        /* The user specified CPU type isn't valid */
++        if (!mc->valid_cpu_types[i]) {
++            error_setg(errp, "Invalid CPU type: %s", machine->cpu_type);
++            error_append_hint(errp, "The valid types are: %s",
++                              mc->valid_cpu_types[0]);
++            for (i = 1; mc->valid_cpu_types[i]; i++) {
++                error_append_hint(errp, ", %s", mc->valid_cpu_types[i]);
++            }
++
++            error_append_hint(errp, "\n");
++            return;
++        }
++    }
++
++    /* Check if CPU type is deprecated and warn if so */
++    cc = CPU_CLASS(oc);
++    if (cc && cc->deprecation_note) {
++        warn_report("CPU model %s is deprecated -- %s",
++                    machine->cpu_type, cc->deprecation_note);
++    }
++}
+ 
+ void machine_run_board_init(MachineState *machine, const char *mem_path, Error **errp)
+ {
+     ERRP_GUARD();
      MachineClass *machine_class = MACHINE_GET_CLASS(machine);
-     ObjectClass *oc = object_class_by_name(machine->cpu_type);
-     CPUClass *cc;
-+    Error *local_err = NULL;
+-    ObjectClass *oc = object_class_by_name(machine->cpu_type);
+-    CPUClass *cc;
+     Error *local_err = NULL;
  
      /* This checkpoint is required by replay to separate prior clock
-        reading from the other reads, because timer polling functions query
-@@ -1466,15 +1467,16 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
- 
-         if (!machine_class->valid_cpu_types[i]) {
-             /* The user specified CPU is not valid */
--            error_report("Invalid CPU type: %s", machine->cpu_type);
--            error_printf("The valid types are: %s",
--                         machine_class->valid_cpu_types[0]);
-+            error_setg(&local_err, "Invalid CPU type: %s", machine->cpu_type);
-+            error_append_hint(&local_err, "The valid types are: %s",
-+                              machine_class->valid_cpu_types[0]);
-             for (i = 1; machine_class->valid_cpu_types[i]; i++) {
--                error_printf(", %s", machine_class->valid_cpu_types[i]);
-+                error_append_hint(&local_err, ", %s",
-+                                  machine_class->valid_cpu_types[i]);
-             }
--            error_printf("\n");
-+            error_append_hint(&local_err, "\n");
- 
--            exit(1);
-+            error_propagate(errp, local_err);
-         }
+@@ -1449,42 +1487,10 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
+         machine->ram = machine_consume_memdev(machine, machine->memdev);
      }
  
+-    /* If the machine supports the valid_cpu_types check and the user
+-     * specified a CPU with -cpu check here that the user CPU is supported.
+-     */
+-    if (machine_class->valid_cpu_types && machine->cpu_type) {
+-        int i;
+-
+-        for (i = 0; machine_class->valid_cpu_types[i]; i++) {
+-            if (object_class_dynamic_cast(oc,
+-                                          machine_class->valid_cpu_types[i])) {
+-                /* The user specified CPU is in the valid field, we are
+-                 * good to go.
+-                 */
+-                break;
+-            }
+-        }
+-
+-        if (!machine_class->valid_cpu_types[i]) {
+-            /* The user specified CPU is not valid */
+-            error_setg(&local_err, "Invalid CPU type: %s", machine->cpu_type);
+-            error_append_hint(&local_err, "The valid types are: %s",
+-                              machine_class->valid_cpu_types[0]);
+-            for (i = 1; machine_class->valid_cpu_types[i]; i++) {
+-                error_append_hint(&local_err, ", %s",
+-                                  machine_class->valid_cpu_types[i]);
+-            }
+-            error_append_hint(&local_err, "\n");
+-
+-            error_propagate(errp, local_err);
+-        }
+-    }
+-
+-    /* Check if CPU type is deprecated and warn if so */
+-    cc = CPU_CLASS(oc);
+-    if (cc && cc->deprecation_note) {
+-        warn_report("CPU model %s is deprecated -- %s", machine->cpu_type,
+-                    cc->deprecation_note);
++    /* Check if the CPU type is supported */
++    is_cpu_type_supported(machine, &local_err);
++    if (local_err) {
++        error_propagate(errp, local_err);
+     }
+ 
+     if (machine->cgs) {
 -- 
 2.41.0
 
