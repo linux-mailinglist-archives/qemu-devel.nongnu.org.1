@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A0E97EBA7C
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:09:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA70E7EBA70
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:05:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r33Lp-0007CK-E2; Tue, 14 Nov 2023 19:01:52 -0500
+	id 1r33M4-0007Nv-LQ; Tue, 14 Nov 2023 19:02:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33LQ-00075g-MI
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:01:24 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33Ln-0007GF-8H
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:01:49 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33LO-0008C1-Tp
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:01:24 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r33Lb-0008D2-NG
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:01:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700006482;
+ s=mimecast20190719; t=1700006495;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KwHrw3QcDvP6vtNRpEI2GW8H/o8KdTjf8rIuv3BkvEA=;
- b=b2iTjdIcP3tq6y/D2Ae76WTsIdPL7CWNrpMfW+6P5l9zaVo/J0wSFaTt5GqJOkeCRtE1YL
- WJw9zKAKC7OtQh+bn/Euu1NPNAsrqZ9TrOU0BkqCX7T5T6rTuRmuOidppptvEtwcBY3O5Y
- 0rQisfEXhW7njINj7eQvoahqABrNdeQ=
+ bh=PVpSfOoz03h777B/rb6Tl132+Io9+3dWRLTS26mmxwY=;
+ b=BZO18xtf4Po+tDD7ZJfb9+JN79F1rcPml8lJ8Aj2JlBfSM6lz3Ac/WnEkGZRNpxx+5Kebf
+ JDG5JNAB56kYVgsydqDf3IGXTXox3hCuqrm3gKq4IyBNoSV82eo+YrUMgbNN7NRCPtJNoL
+ jTnNfGL3oNkicQgAezovFANGe8T/fxI=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-jeXBJGvTNh6s3qNRsGQtpA-1; Tue,
- 14 Nov 2023 19:01:18 -0500
-X-MC-Unique: jeXBJGvTNh6s3qNRsGQtpA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-373-kDujcUSEPguZ7CIxUmsmhQ-1; Tue,
+ 14 Nov 2023 19:01:31 -0500
+X-MC-Unique: kDujcUSEPguZ7CIxUmsmhQ-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1336D280D203;
- Wed, 15 Nov 2023 00:01:16 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 722323800083;
+ Wed, 15 Nov 2023 00:01:29 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.44])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C2555C15885;
- Wed, 15 Nov 2023 00:01:02 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9DA01C15887;
+ Wed, 15 Nov 2023 00:01:16 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -59,9 +59,9 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
  ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
  jcmvbkbc@gmail.com, shan.gavin@gmail.com
-Subject: [PATCH v5 19/31] target/sh4: Use generic cpu_list()
-Date: Wed, 15 Nov 2023 09:56:16 +1000
-Message-ID: <20231114235628.534334-20-gshan@redhat.com>
+Subject: [PATCH v5 20/31] target/tricore: Use generic cpu_list()
+Date: Wed, 15 Nov 2023 09:56:17 +1000
+Message-ID: <20231114235628.534334-21-gshan@redhat.com>
 In-Reply-To: <20231114235628.534334-1-gshan@redhat.com>
 References: <20231114235628.534334-1-gshan@redhat.com>
 MIME-Version: 1.0
@@ -75,9 +75,8 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,76 +92,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Before it's applied:
+No changes in the output from the following command.
 
-[gshan@gshan q]$ ./build/qemu-system-sh4 -cpu ?
-sh7750r
-sh7751r
-sh7785
-
-After it's applied:
-
-[gshan@gshan q]$ ./build/qemu-system-sh4 -cpu ?
+[gshan@gshan q]$ ./build/qemu-system-tricore -cpu ?
 Available CPUs:
-  sh7750r
-  sh7751r
-  sh7785
+  tc1796
+  tc1797
+  tc27x
+  tc37x
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- target/sh4/cpu.c | 17 -----------------
- target/sh4/cpu.h |  3 ---
- 2 files changed, 20 deletions(-)
+ target/tricore/cpu.h    |  4 ----
+ target/tricore/helper.c | 22 ----------------------
+ 2 files changed, 26 deletions(-)
 
-diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
-index a8ec98b134..806a0ef875 100644
---- a/target/sh4/cpu.c
-+++ b/target/sh4/cpu.c
-@@ -122,23 +122,6 @@ static void superh_cpu_disas_set_info(CPUState *cpu, disassemble_info *info)
-     info->print_insn = print_insn_sh;
+diff --git a/target/tricore/cpu.h b/target/tricore/cpu.h
+index de3ab53a83..2d4446cea5 100644
+--- a/target/tricore/cpu.h
++++ b/target/tricore/cpu.h
+@@ -246,10 +246,6 @@ void fpu_set_state(CPUTriCoreState *env);
+ 
+ #define MMU_USER_IDX 2
+ 
+-void tricore_cpu_list(void);
+-
+-#define cpu_list tricore_cpu_list
+-
+ static inline int cpu_mmu_index(CPUTriCoreState *env, bool ifetch)
+ {
+     return 0;
+diff --git a/target/tricore/helper.c b/target/tricore/helper.c
+index 7e5da3cb23..174f666e1e 100644
+--- a/target/tricore/helper.c
++++ b/target/tricore/helper.c
+@@ -96,28 +96,6 @@ bool tricore_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+     }
  }
  
--static void superh_cpu_list_entry(gpointer data, gpointer user_data)
+-static void tricore_cpu_list_entry(gpointer data, gpointer user_data)
 -{
--    const char *typename = object_class_get_name(OBJECT_CLASS(data));
--    int len = strlen(typename) - strlen(SUPERH_CPU_TYPE_SUFFIX);
+-    ObjectClass *oc = data;
+-    const char *typename;
+-    char *name;
 -
--    qemu_printf("%.*s\n", len, typename);
+-    typename = object_class_get_name(oc);
+-    name = g_strndup(typename, strlen(typename) - strlen("-" TYPE_TRICORE_CPU));
+-    qemu_printf("  %s\n", name);
+-    g_free(name);
 -}
 -
--void sh4_cpu_list(void)
+-void tricore_cpu_list(void)
 -{
 -    GSList *list;
 -
--    list = object_class_get_list_sorted(TYPE_SUPERH_CPU, false);
--    g_slist_foreach(list, superh_cpu_list_entry, NULL);
+-    list = object_class_get_list_sorted(TYPE_TRICORE_CPU, false);
+-    qemu_printf("Available CPUs:\n");
+-    g_slist_foreach(list, tricore_cpu_list_entry, NULL);
 -    g_slist_free(list);
 -}
 -
- static ObjectClass *superh_cpu_class_by_name(const char *cpu_model)
+ void fpu_set_state(CPUTriCoreState *env)
  {
-     ObjectClass *oc;
-diff --git a/target/sh4/cpu.h b/target/sh4/cpu.h
-index 360eac1fbe..e6fc6b87d4 100644
---- a/target/sh4/cpu.h
-+++ b/target/sh4/cpu.h
-@@ -238,7 +238,6 @@ G_NORETURN void superh_cpu_do_unaligned_access(CPUState *cpu, vaddr addr,
-                                                uintptr_t retaddr);
- 
- void sh4_translate_init(void);
--void sh4_cpu_list(void);
- 
- #if !defined(CONFIG_USER_ONLY)
- hwaddr superh_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
-@@ -272,8 +271,6 @@ void cpu_load_tlb(CPUSH4State * env);
- 
- #define CPU_RESOLVING_TYPE TYPE_SUPERH_CPU
- 
--#define cpu_list sh4_cpu_list
--
- /* MMU modes definitions */
- #define MMU_USER_IDX 1
- static inline int cpu_mmu_index (CPUSH4State *env, bool ifetch)
+     switch (extract32(env->PSW, 24, 2)) {
 -- 
 2.41.0
 
