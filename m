@@ -2,101 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B798C7EAABD
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 08:06:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FBD47EAAE7
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 08:29:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2nSb-0002NT-RL; Tue, 14 Nov 2023 02:03:47 -0500
+	id 1r2npr-0001Ut-G8; Tue, 14 Nov 2023 02:27:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r2nSY-0002NF-OD
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 02:03:43 -0500
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r2nSU-0005w8-0b
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 02:03:42 -0500
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-6b77ab73c6fso4090952b3a.1
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 23:03:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1699945415; x=1700550215;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=uwOkxso6IKuq57jpXNQfljB76+Ogi+dh97xjTn9Jh3c=;
- b=z5vh83P+Nlp528I0usm/GxTf4zqzOBV48ckmUD6MZcF8ZiLgE8kxdfOOECBABBTmUG
- RkEFN7zUygGWvUYSUURw7csenJBD7D5pi5HRcIeqoJ0kcAh5/fczSodBHHEvHK/OETqM
- +vwHcJFHFrqdwclp3D0g8/lPqMeZl0wO5SGO3xWkdrlkB+fF6Bu8BObzOPmyPzjOm7Mj
- fMbdWyUCxiV1e+rEsjhgERXJQcx6R2kr929kuIUGvp+Rhl7WFR7oRx+PnGtEZ133NVhk
- VgULRjw5JnEGE8f2i6DXs6QGZULxYDUYqBJrYPfWABgfyKTSpoPkSawMttLiPg3FMc4W
- mnqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699945415; x=1700550215;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uwOkxso6IKuq57jpXNQfljB76+Ogi+dh97xjTn9Jh3c=;
- b=TiIptT+vaIhUSoKdiDQs1eYD3nVSMUGwE/PhJcEBm0B1Xljv5P5wpKuoUbU1u5FfUt
- sD7CIef+K1F5/RhJBU2lpHWYn30S24F3Ud8hRvquL4mK+x6j0eTbts9eMuG67CCQQZK4
- TERg6pY5dF/R+ISUtxYZudSRsBYKV9o6Pm50jQEk60V4b3rpejJcdDghE+lIbW5ZmqD4
- PnSYSmkcULf4UxOGuWqymrPERcn+89pcazm0rz3Elcmq8QXTkQcbG7szyINOngqIJ0vV
- jSIXotQ98bO1BeqjrnovSmDs7ARA4ZzBxYlUy79sa9YTtEXGKMN/DT3Co7Y3T4gG28Kq
- 20Qw==
-X-Gm-Message-State: AOJu0YwWgRZAbsH+OKE9MSg+z0t8T8jFF6vXOGVnZcH0GB5uNEMlbRs7
- /ElR4EpszwBaDPsQCM+/Ojy2PQ==
-X-Google-Smtp-Source: AGHT+IFnaOym9nTYI6ng2NrtMTqEBcrPh/487NPmkivqpWWUE8RrbY6XffFxVJrAdztBDTjDij0j0g==
-X-Received: by 2002:a05:6a00:1f07:b0:6c4:d58a:9630 with SMTP id
- be7-20020a056a001f0700b006c4d58a9630mr2679258pfb.4.1699945415032; 
- Mon, 13 Nov 2023 23:03:35 -0800 (PST)
-Received: from [157.82.201.2] ([157.82.201.2])
- by smtp.gmail.com with ESMTPSA id
- r1-20020aa78441000000b006c0328b2440sm598450pfn.150.2023.11.13.23.03.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Nov 2023 23:03:34 -0800 (PST)
-Message-ID: <637b0f33-6b12-4623-b504-d3ea64908813@daynix.com>
-Date: Tue, 14 Nov 2023 16:03:31 +0900
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2npl-0001Ub-1a
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 02:27:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2nph-0001BB-S5
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 02:27:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699946855;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UXyEsAe5/p27gMsUmjRUyLgK169u336Qd7Wja72A0KM=;
+ b=KyeI4/Kc4sQM9XI8gPJRv56hxhsLkvPBbwzgr0dPBwSNso8rYmbKWxOILb1AEYZKkUqApt
+ Llmt0f4H+bE/29AAdw0SSbwYLbInXg4JmjMRSIsI41jAxK6aFsPg5Po4N4+FFTdZoHKLQY
+ wwaNZxUfR+gILhp6IoksvZqwLWy+bZc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-350-NcXkfnLLPla6kuKSDuz6ZQ-1; Tue, 14 Nov 2023 02:27:33 -0500
+X-MC-Unique: NcXkfnLLPla6kuKSDuz6ZQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 339BC811E7B;
+ Tue, 14 Nov 2023 07:27:33 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E9BFC502E;
+ Tue, 14 Nov 2023 07:27:32 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id D5A1021E6A1F; Tue, 14 Nov 2023 08:27:31 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Juan Quintela <quintela@redhat.com>,  qemu-devel@nongnu.org,  Fabiano
+ Rosas <farosas@suse.de>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Thomas Huth
+ <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: Configuring migration
+References: <87sf6k2dax.fsf@pond.sub.org> <ZSVoK6YMgNzrDYGQ@x1n>
+ <878r8ajngg.fsf@pond.sub.org> <ZSWvYgKcGXlucXx6@x1n>
+ <875y3dixzp.fsf@pond.sub.org> <8734yhgrzl.fsf@pond.sub.org>
+ <ZShI4AucDGvUvJiS@x1n> <877cnrjd71.fsf@pond.sub.org>
+ <87zfzz82xq.fsf@secure.mitica> <87msvw6xm2.fsf_-_@pond.sub.org>
+ <ZUPk33GUF/PvAPPo@x1n>
+Date: Tue, 14 Nov 2023 08:27:31 +0100
+In-Reply-To: <ZUPk33GUF/PvAPPo@x1n> (Peter Xu's message of "Thu, 2 Nov 2023
+ 14:05:19 -0400")
+Message-ID: <875y24iyl8.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 11/21] virtio-net: Return an error when vhost cannot
- enable RSS
-To: Andrew Melnychenko <andrew@daynix.com>,
- Yuri Benditovich <yuri.benditovich@daynix.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- qemu-devel@nongnu.org
-References: <58fb3b75-dd69-4715-a8ec-4c3df3b7e4c5@daynix.com>
- <d0db0fb1-0a58-45b7-a623-df6ee9096e2e@daynix.com>
- <20231101023805-mutt-send-email-mst@kernel.org>
- <39a02a4c-f8fa-437c-892f-caca84b8d85d@daynix.com>
- <20231101050838-mutt-send-email-mst@kernel.org>
- <e469b33b-c3f3-4d88-bdf2-508c4a35c827@daynix.com>
- <CAOEp5OcDMdKKPHSVd-GxT-GkBpvbWkMijSBgwihPsEnxmDR7eA@mail.gmail.com>
- <20231102053202-mutt-send-email-mst@kernel.org>
- <CAOEp5OefD2LN2MDnEkE=DOMSX0Jw8Z6gAiKAag4dtkecmr1Jgg@mail.gmail.com>
- <2fbdee21-60f4-49ff-b61b-923c895f90ba@daynix.com>
- <CAOEp5Oc+wGmxTAezMz4f03kuqsngHAcpi7pqPQDT=PWuy=L7BA@mail.gmail.com>
- <dbd1d662-bf90-4982-b316-281923a0d778@daynix.com>
- <CAOEp5Oc5VzWk7e8gKHfHan1odge39bRUh-ZMojCvkQiTFpXdGg@mail.gmail.com>
- <8439be4e-a739-4cbd-a569-89b6c7f68ab9@daynix.com>
- <CAOEp5Oee2qinrZJgMMxUQt6zmPVFPCnThfqnLFSWqsSyAoHpjQ@mail.gmail.com>
- <3c8af942-ca7d-4528-975e-2935718a2428@daynix.com>
- <CAOEp5OfXH-1ygYMJxq1phwbOJkkvnwBce=TDVLwjsXG6UgwPGA@mail.gmail.com>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CAOEp5OfXH-1ygYMJxq1phwbOJkkvnwBce=TDVLwjsXG6UgwPGA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,205 +89,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/11/14 2:26, Yuri Benditovich wrote:
-> 
-> 
-> On Mon, Nov 13, 2023 at 2:44 PM Akihiko Odaki <akihiko.odaki@daynix.com 
-> <mailto:akihiko.odaki@daynix.com>> wrote:
-> 
->     On 2023/11/13 20:44, Yuri Benditovich wrote:
->      >
->      >
->      > On Sat, Nov 11, 2023 at 5:28 PM Akihiko Odaki
->     <akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>
->      > <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>>> wrote:
->      >
->      >     On 2023/11/03 22:14, Yuri Benditovich wrote:
->      >      >
->      >      >
->      >      > On Fri, Nov 3, 2023 at 11:55 AM Akihiko Odaki
->      >     <akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>
->     <mailto:akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>>
->      >      > <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>
->      >     <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>>>> wrote:
->      >      >
->      >      >     On 2023/11/03 18:35, Yuri Benditovich wrote:
->      >      >      >
->      >      >      >
->      >      >      > On Thu, Nov 2, 2023 at 4:56 PM Akihiko Odaki
->      >      >     <akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com> <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>>
->      >     <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com> <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>>>
->      >      >      > <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>
->      >     <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>>
->      >      >     <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>
->      >     <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>>>>> wrote:
->      >      >      >
->      >      >      >     On 2023/11/02 19:20, Yuri Benditovich wrote:
->      >      >      >      >
->      >      >      >      >
->      >      >      >      > On Thu, Nov 2, 2023 at 11:33 AM Michael S.
->     Tsirkin
->      >      >      >     <mst@redhat.com <mailto:mst@redhat.com>
->     <mailto:mst@redhat.com <mailto:mst@redhat.com>>
->      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
->     <mailto:mst@redhat.com <mailto:mst@redhat.com>>>
->      >      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
->     <mailto:mst@redhat.com <mailto:mst@redhat.com>>
->      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
->     <mailto:mst@redhat.com <mailto:mst@redhat.com>>>>
->      >      >      >      > <mailto:mst@redhat.com
->     <mailto:mst@redhat.com> <mailto:mst@redhat.com <mailto:mst@redhat.com>>
->      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
->     <mailto:mst@redhat.com <mailto:mst@redhat.com>>>
->      >      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
->     <mailto:mst@redhat.com <mailto:mst@redhat.com>>
->      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
->     <mailto:mst@redhat.com <mailto:mst@redhat.com>>>>>> wrote:
->      >      >      >      >
->      >      >      >      >     On Thu, Nov 02, 2023 at 11:09:27AM
->     +0200, Yuri
->      >      >     Benditovich wrote:
->      >      >      >      >      > Probably we mix two different patches
->     in this
->      >      >     discussion.
->      >      >      >      >      > Focusing on the patch in the e-mail
->     header:
->      >      >      >      >      >
->      >      >      >      >      > IMO it is not acceptable to fail QEMU run
->      >     for one
->      >      >     feature
->      >      >      >     that we
->      >      >      >      >     can't make
->      >      >      >      >      > active when we silently drop all other
->      >     features in
->      >      >     such a
->      >      >      >     case.
->      >      >      >      >
->      >      >      >      >     If the feature is off by default then it
->     seems more
->      >      >     reasonable
->      >      >      >      >     and silent masking can be seen as a bug.
->      >      >      >      >     Most virtio features are on by default
->     this is
->      >     why it's
->      >      >      >      >     reasonable to mask them.
->      >      >      >      >
->      >      >      >      >
->      >      >      >      > If we are talking about RSS: setting it
->     initially
->      >     off is the
->      >      >      >     development
->      >      >      >      > time decision.
->      >      >      >      > When it will be completely stable there is
->     no reason to
->      >      >     keep it
->      >      >      >     off by
->      >      >      >      > default, so this is more a question of time
->     and of a
->      >      >     readiness of
->      >      >      >     libvirt.
->      >      >      >
->      >      >      >     It is not ok to make "on" the default; that will
->      >     enable RSS
->      >      >     even when
->      >      >      >     eBPF steering support is not present and can
->     result in
->      >      >     performance
->      >      >      >     degradation.
->      >      >      >
->      >      >      >
->      >      >      > Exactly as it is today - with vhost=on the host
->     does not
->      >     suggest RSS
->      >      >      > without  eBPF.
->      >      >      > I do not understand what you call "performance
->      >     degradation", can you
->      >      >      > describe the scenario?
->      >      >
->      >      >     I was not clear, but I was talking about the case of
->      >     vhost=off or peers
->      >      >     other than tap (e.g., user). rss=on employs in-qemu RSS,
->      >     which incurs
->      >      >     overheads for such configurations.
->      >      >
->      >      >
->      >      > So, vhost=off OR peers other than tap:
->      >      >
->      >      > In the case of peers other than tap (IMO) we're not
->     talking about
->      >      > performance at all.
->      >      > Backends like "user" (without vnet_hdr) do not support _many_
->      >      > performance-oriented features.
->      >      > If RSS is somehow "supported" for such backends this is
->     rather a
->      >      > misunderstanding (IMO again).
->      >
->      >     We do not need to ensure good performance when RSS is enabled
->     by the
->      >     guest for backends without eBPF steering program as you say.
->     In-QEMU
->      >     RSS
->      >     is only useful for testing and not meant to improve the
->     performance.
->      >
->      >     However, if you set rss=on, QEMU will advertise the
->     availability of RSS
->      >     feature. The guest will have no mean to know if it's
->     implemented in a
->      >     way not performance-wise so it may decide to use the feature
->     to improve
->      >     the performance, which can result in performance degradation.
->      >     Therefore,
->      >     it's better not to set rss=on for such backends.
->      >
->      >
->      > I still do not understand what is the scenario where you see or
->     suspect
->      > the mentioned "performance degradation".
->      > We can discuss whether such a problem exists as soon as you
->     explain it.
-> 
->     The scenario is that:
->     - rss=on,
->     - A backend without eBPF steering support is in use, and
->     - The guest expects VIRTIO_NET_F_RSS has little overheads as hardware
->     RSS implementations do.
-> 
->     I consider the risk of the performance degradation in such a situation
->     is the reason why virtio-net emits a warning ("Can't load eBPF RSS -
->     fallback to software RSS") when in-QEMU RSS is in use.
-> 
-> 
-> In a described scenario (vhost=off) I do not see why the performance 
-> degradation should happen:
-> the SW RSS (if activated) will place each packet into proper queue (even 
-> if the auto_mq in kernel is not able to do that) and such a way the 
-> guest will not need to reschedule the packet to proper CPU
-> 
+Cc: Paolo for QOM expertise.
 
-The scenario I'm concerned is that the guest has its own packet steering 
-mechanism which is feature-wise superior to RSS. For example, Linux has 
-such a mechanism called RPS, which has some advantages due to its 
-extensible nature according to:
-https://www.kernel.org/doc/html/v6.6/networking/scaling.html#rps-receive-packet-steering
+Peter Xu <peterx@redhat.com> writes:
 
-Such a guest may still prefer hardware RSS if available since hardware 
-RSS is expected to have less overheads. However, it is not true for 
-in-qemu RSS, and using in-QEMU RSS instead of the guest-side steering 
-mechanism may just hide useful features the guest-side steering 
-mechanism has and result in performance degradation.
+> On Thu, Nov 02, 2023 at 03:25:25PM +0100, Markus Armbruster wrote:
 
-Andrew, I appreciate if you also tell the rationale behind the warning 
-you put for software RSS ("Can't load eBPF RSS - fallback to software RSS").
+[...]
+
+>> Migration has its own idiosyncratic configuration interface, even though
+>> its configuration needs are not special at all.  This is due to a long
+>> history of decisions that made sense at the time.
+>> 
+>> What kind of interface would we choose if we could start over now?
+>> 
+>> Let's have a look at what I consider the two most complex piece of
+>> configuration to date, namely block backends and QOM objects.
+>> 
+>> In both cases, configuration is a QAPI object type: BlockdevOptions and
+>> ObjectOptions.
+>> 
+>> The common members are the configuration common to all block backends /
+>> objects.  One of them is the type of block backend ("driver" in block
+>> parlance) or QOM object ("qom-type").
+>> 
+>> A type's variant members are the configuration specific to that type.
+>> 
+>> This is suitably expressive.
+>> 
+>> We create a state object for a given configuration object with
+>> blockdev-add / object-add.
+>> 
+>> For block devices, we even have a way to modify a state object's
+>> configuration: blockdev-reopen.  For QOM objects, there's qom-set, but I
+>> don't expect that to work in the general case.  Where "not work" can
+>> range from "does nothing" to "explodes".
+>> 
+>> Now let's try to apply this to migration.
+>> 
+>> As long as we can have just one migration, we need just one QAPI object
+>> to configure it.
+>> 
+>> We could create the object with -object / object_add.  For convenience,
+>> we'd probably want to create one with default configuration
+>> automatically on demand.
+>> 
+>> We could use qom-set to change configuration.  If we're not comfortable
+>> with using qom-set for production, we could do something like
+>> blockdev-reopen instead.
+>> 
+>> Could we move towards such a design?  Turn the existing ad hoc interface
+>> into compatibility sugar for it?
+>
+> Sounds doable to me.
+>
+> I'm not familiar with BlockdevOptions, it looks like something setup once
+> and for all for all relevant parameters need to be set in the same request?
+
+Yes, but you can "reopen", which replaces the entire configuration.
+
+blockdev-add creates a new block backend device, and blockdev-reopen
+reopens a set of existing ones.  Both take the same arguments for each
+device.
+
+> Migration will require each cap/parameter to be set separately anytime,
+> e.g., the user can adjust downtime / bandwidth even during migration in
+> progress.
+
+"Replace entire configuration" isn't a good fit then, because users
+would have to repeat the entire configuration just to tweak one thing.
+
+> Making all caps/parameters QOM objects, or one object containing both
+> attributes, sounds like a good fit.  object_property_* APIs allows setters,
+> I think that's good enough for migration to trigger whatever needed (e.g.
+> migration_rate_set() updates after bandwidth modifications).
+>
+> We can convert e.g. qmp set parameters into a loop of setting each
+> property, it'll be slightly slower because we'll need to do sanity check
+> for each property after each change, but that shouldn't be a hot path
+> anyway so seems fine.
+
+I figure doing initial configuration in one command is convenient.  The
+obvious existing command for that is object-add.
+
+The obvious interface for modifying configuration is a command to change
+just one parameter.  The obvious existing command for that is qom-set.
+
+Problem: qom-set is a death trap in general.  It can modify any QOM
+property with a setter, and we test basically none of them.  Using it
+for modifying migration configuration would signal it's okay to use
+elsewhere, too.  I'm not sure we want to send that message.  Maybe we
+want to do the opposite, and make it an unstable interface.
+
+Aside: I believe the root problem is our failure to tie "can write" to
+the object's state.  Just because a property can be set with object-add
+doesn't mean it can be validly changed at any time during the object's
+life.
+
+Problem: when several parameters together have to satisfy constraints,
+going from one valid configuration to another valid configuration may
+require changing several parameters at once, or else go through invalid
+intermediate configurations.
+
+This problem is not at all specific to the migration object.
+
+One solution is careful design to ensure that there's always a sequence
+of transitions through valid configuration.  Can become complicated as
+configuration evolves.  Possible even impractical or impossible.
+
+Another solution is a command to modify multiple parameters together,
+leaving alone the others (unlike blockdev-reopen, which overwrites all
+of them).
+
+> It'l still be a pity that we still cannot reduce the triplications of qapi
+> docs immediately even with that.  But with that, it seems doable if we will
+> obsolete QMP migrate-set-parameters after we can do QOM-set.
+
+Yes.
+
 
