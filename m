@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A21377EAD6F
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 10:54:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 667507EAD73
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 10:55:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2q7C-0001Md-1d; Tue, 14 Nov 2023 04:53:50 -0500
+	id 1r2q8R-00025e-9r; Tue, 14 Nov 2023 04:55:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2q70-0001Ls-GJ
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 04:53:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2q6n-00026E-Bl
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 04:53:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699955604;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=a8NK1q3KrKsTAMJZUrfbutrhQtRrWCViGnO8H/cuqyc=;
- b=W19CF2P9pfwzN4WqJ8Ce12HBkSKgY+OQF4XIClJfF2eOvrfYAO7oNhMhzpcM+4utDDV4/P
- 5zJuhLTo10QchPYIXeZniDzs/9OwT+n3pabhBEVsEAW6QaUZEWJsn8YHictaMycczZNK5R
- b9eYStAxW5fh9DqcVsIcpH+EsAxLsz4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-Q8_zBxfVOxmvnYsg02i3Ig-1; Tue,
- 14 Nov 2023 04:53:22 -0500
-X-MC-Unique: Q8_zBxfVOxmvnYsg02i3Ig-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2423429AA3BD;
- Tue, 14 Nov 2023 09:53:22 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 02DED1C060AE;
- Tue, 14 Nov 2023 09:53:22 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id EF09721E6A1F; Tue, 14 Nov 2023 10:53:20 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>,  Juan Quintela
- <quintela@redhat.com>,  Peter Xu <peterx@redhat.com>,
- qemu-devel@nongnu.org,  Fabiano Rosas <farosas@suse.de>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Thomas Huth
- <thuth@redhat.com>
-Subject: Re: Configuring migration
-References: <87sf6k2dax.fsf@pond.sub.org> <ZSVoK6YMgNzrDYGQ@x1n>
- <878r8ajngg.fsf@pond.sub.org> <ZSWvYgKcGXlucXx6@x1n>
- <875y3dixzp.fsf@pond.sub.org> <8734yhgrzl.fsf@pond.sub.org>
- <ZShI4AucDGvUvJiS@x1n> <877cnrjd71.fsf@pond.sub.org>
- <87zfzz82xq.fsf@secure.mitica> <87msvw6xm2.fsf_-_@pond.sub.org>
- <ZVM5xmsaE41WJYgb@redhat.com>
-Date: Tue, 14 Nov 2023 10:53:20 +0100
-In-Reply-To: <ZVM5xmsaE41WJYgb@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Tue, 14 Nov 2023 09:13:30 +0000")
-Message-ID: <87wmukek4v.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1r2q8P-00025V-Bw
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 04:55:05 -0500
+Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1r2q8N-0002JS-E5
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 04:55:05 -0500
+Received: by mail-qt1-x82b.google.com with SMTP id
+ d75a77b69052e-41cd444d9d0so31552721cf.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 01:55:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1699955702; x=1700560502; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=26pUyhgwWDfV9d3ORUC9ulIef5AmKbOAKF5qSHVwYJQ=;
+ b=Ac/pTtnTFCF6yHYIPzORDfOCKE2nE43zwwrL13xEnZ2QjEso0eZck0KFHHGJvzUGdJ
+ uDene8eui37ZAWmvFDuaHZs3L4hwdKaXFwL4RIAjG/am8f7TP8gupyfnx53ap4EIGjx+
+ WAmtH3hMcaLGZAAVI2z0eSo8ZvIS2AZrYFmuGj3wU4SaleRB3Rf/bbuowv+7KNyMCkoO
+ boYyeRnpctvcSR4zi2Sq5FHj1p9fM7ATDnpGUKcYEks9GSfNtiBtDwTZxCWa9rTocsLJ
+ 9K5NNUMTHCvSmqSLoSl/oN1enct6hmqkn8RL5AYgVzXWWkmgy5Qs9PMpTfO4NghQ8RP4
+ q+dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699955702; x=1700560502;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=26pUyhgwWDfV9d3ORUC9ulIef5AmKbOAKF5qSHVwYJQ=;
+ b=CoJc5zR+42pbKuCGr96CwrlUj9I/CQy2n8U/EPTSo19cmpcUGYxbNT9C4zzO6S4rJz
+ S6xKh6bnQVhmFLnhzpbXAFGvc8nGs/BSKfPV357q7Pa4cmII5PsJJpEh9nYG9DD8GoJr
+ uFEbVSKVxenG3FWZiixr3Ap2C086j6znhJ8sb1NjNIF/MrPh8g+5SSGTGIXXOBpRRVeT
+ 4AoniLClQYfyu4NtAbzkNm46CGp9K0KZgkywivNil7CO6hdtTGUplSaiM0OG7F7Tx7dW
+ dD3JVYc7tvKNIsnZW7XsNFCBQ5VaQ/uvr7EmVhRnM3MbMtZlYUZKjEoYUaoEVAhJtU02
+ v6rQ==
+X-Gm-Message-State: AOJu0Yzgy8U8gFv0Glvq7scOXD2edJG6JsqTlGrn2MQRQl/S5LrmPNiB
+ nW/rQEE1MAxuKrK8M1B6/3XBfepJ+jXg6hEitZk=
+X-Google-Smtp-Source: AGHT+IE/67/2M6d9plTXIi+fpuoCYJsbAyQEXOIthjVUeu65/NZSJOGe77QErCBpEXUxlrgRZRt0hP5IUnS3NzQE9xU=
+X-Received: by 2002:ac8:4e85:0:b0:41c:d0b5:c605 with SMTP id
+ 5-20020ac84e85000000b0041cd0b5c605mr1901168qtp.22.1699955702095; Tue, 14 Nov
+ 2023 01:55:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20231113190211.92412-1-leo.yan@linaro.org>
+ <20231113190211.92412-3-leo.yan@linaro.org>
+In-Reply-To: <20231113190211.92412-3-leo.yan@linaro.org>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 14 Nov 2023 13:54:50 +0400
+Message-ID: <CAJ+F1CJTGWoV2kvzcxMsp6wE-6d_c2OxQfVQ+025DxK3kK3EPA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] docs/system: Add vhost-user-input documentation
+To: Leo Yan <leo.yan@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,54 +90,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+Hi
 
-> On Thu, Nov 02, 2023 at 03:25:25PM +0100, Markus Armbruster wrote:
->> Now let's try to apply this to migration.
->>
->> As long as we can have just one migration, we need just one QAPI object
->> to configure it.
->>=20
->> We could create the object with -object / object_add.  For convenience,
->> we'd probably want to create one with default configuration
->> automatically on demand.
->>=20
->> We could use qom-set to change configuration.  If we're not comfortable
->> with using qom-set for production, we could do something like
->> blockdev-reopen instead.
+On Mon, Nov 13, 2023 at 11:04=E2=80=AFPM Leo Yan <leo.yan@linaro.org> wrote=
+:
 >
-> Do we even need to do this via a QAPI object ?
+> This adds basic documentation for vhost-user-input.
+>
+> Signed-off-by: Leo Yan <leo.yan@linaro.org>
+> ---
+>  MAINTAINERS                              |  1 +
+>  docs/system/devices/vhost-user-input.rst | 44 ++++++++++++++++++++++++
+>  docs/system/devices/vhost-user.rst       |  2 +-
+>  3 files changed, 46 insertions(+), 1 deletion(-)
+>  create mode 100644 docs/system/devices/vhost-user-input.rst
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 86c649784e..ef72c6d512 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2233,6 +2233,7 @@ L: virtio-fs@redhat.com
+>  virtio-input
+>  M: Gerd Hoffmann <kraxel@redhat.com>
+>  S: Odd Fixes
+> +F: docs/system/devices/vhost-user-input.rst
+>  F: hw/input/vhost-user-input.c
+>  F: hw/input/virtio-input*.c
+>  F: include/hw/virtio/virtio-input.h
+> diff --git a/docs/system/devices/vhost-user-input.rst b/docs/system/devic=
+es/vhost-user-input.rst
 
-No.  It's merely one way to skin the cat.
+You need to include the file in the toctree, in docs/system/device-emulatio=
+n.rst
 
-> Why are we not just making the obvious design change of passing everything
-> with the 'migrate' / 'migrate-incoming' commands that kick it off:
->
-> ie:
->
-> { 'command': 'migrate',
->   'data': {'uri': 'str',
->            '*channels': [ 'MigrationChannel' ],
-> 	   '*capabilities': [ 'MigrateCapability' ],
-> 	   '*parameters': [ 'MigrateParameters' ],
->            '*detach': 'bool', '*resume': 'bool' } }
->
->      (deprecated bits trimmed for clarity)
->
-> and the counterpart:
->
-> { 'command': 'migrate-incoming',
->              'data': {'*uri': 'str',
->                       '*channels': [ 'MigrationChannel' ],
->                       '*capabilities': [ 'MigrateCapability' ],
->                       '*parameters': [ 'MigrateParameters' ] } }
->
-> such that the design is just like 99% of other commands which take
-> all their parameters directly. We already have 'migrate-set-parameters'
-> remaining for the runtime tunables, and can deprecate the usage of this
-> when migration is not already running, and similarly deprecate
-> migrate-set-capabilities.
+> new file mode 100644
+> index 0000000000..4ff9dd4b27
+> --- /dev/null
+> +++ b/docs/system/devices/vhost-user-input.rst
+> @@ -0,0 +1,44 @@
+> +.. _vhost_user_input:
+> +
+> +QEMU vhost-user-input - Input emulation
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +This document describes the setup and usage of the Virtio input device.
+> +The Virtio input device is a paravirtualized device for input events.
+> +
+> +Description
+> +-----------
+> +
+> +The vhost-user-input device implementation was designed to work with a d=
+aemon
+> +polling on input devices and passes input events to the guest.
+> +
+> +QEMU provides a backend implementation in contrib/vhost-user-input.
+> +
+> +Linux kernel support
+> +--------------------
+> +
+> +Virtio input requires a guest Linux kernel built with the
+> +``CONFIG_VIRTIO_INPUT`` option.
+> +
+> +Examples
+> +--------
+> +
+> +The backend daemon should be started first:
+> +
+> +::
+> +
+> +  host# vhost-user-input --socket-path=3Dinput.sock      \
+> +      --evdev-path=3D/dev/input/event17
+> +
+> +The QEMU invocation needs to create a chardev socket to communicate with=
+ the
+> +backend daemon and share memory with the guest over a memfd.
+> +
+> +::
+> +
+> +  host# qemu-system                                                     =
+       \
+> +      -chardev socket,path=3D/tmp/input.sock,id=3Dmouse0                =
+           \
+> +      -device vhost-user-input-pci,chardev=3Dmouse0                     =
+         \
+> +      -m 4096                                                           =
+       \
+> +      -object memory-backend-file,id=3Dmem,size=3D4G,mem-path=3D/dev/shm=
+,share=3Don    \
+> +      -numa node,memdev=3Dmem
 
-We still need commands to adjust configuration while migration runs.
 
+Well, this is not a memfd. This is taken from vhost-user-rng.rst, and
+should probably be adjusted there too.
+
+It needs shared memory, memory-backend-file can provide it and is
+generally more available than memfd, although memfd should be
+preferred as it offers some extra security guarantees. There is
+already some explanations in vhost-user.rst, maybe we should just add
+extra links.
+
+> +      ...
+> diff --git a/docs/system/devices/vhost-user.rst b/docs/system/devices/vho=
+st-user.rst
+> index c6afc4836f..75b40f08c6 100644
+> --- a/docs/system/devices/vhost-user.rst
+> +++ b/docs/system/devices/vhost-user.rst
+> @@ -42,7 +42,7 @@ platform details for what sort of virtio bus to use.
+>      - See https://github.com/rust-vmm/vhost-device
+>    * - vhost-user-input
+>      - Generic input driver
+> -    - See contrib/vhost-user-input
+> +    - :ref:`vhost_user_input`
+>    * - vhost-user-rng
+>      - Entropy driver
+>      - :ref:`vhost_user_rng`
+> --
+> 2.34.1
+>
+>
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
