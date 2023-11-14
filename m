@@ -2,81 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F3827EB598
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:35:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35DA87EB5C4
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:46:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2xJW-0003LE-CD; Tue, 14 Nov 2023 12:35:02 -0500
+	id 1r2xTC-0003jC-MD; Tue, 14 Nov 2023 12:45:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r2xJP-0003KJ-GP
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 12:34:55 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2xTA-0003iS-BV
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 12:45:00 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r2xJO-0003iW-3k
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 12:34:55 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2xT8-0005Sd-Vu
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 12:45:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699983293;
+ s=mimecast20190719; t=1699983897;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1qFu2gHMN06BqPlJo2fr1q/wSEUSz+K+Pjgf8wNvgcg=;
- b=GpeNYAGWBac3Cz/XnID/eQijZryWq+SpGV5J/X27UWtebj/96/LBDXozjb9UzJ6R5j3ek4
- 28YytcnXOto46ARbhaQm6AjK16zWTyUi5ULCp/5xkm41bE7gdVgz8mtW/x3bs1J5FESlEe
- lW2AVeXaPjSrOzbAQqAYyqHso8hU+OQ=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=e60Sl91e4yGRqtQU/klL2SS4cWB1dXPNtVTCFQdbmVM=;
+ b=iUg9UM1d1mUYCtWPX1gGdlnKXeLrVFlxEECRDLZjZh5iNLw8u3CAztHTvlRi/WXqv9JTxC
+ uX63fgjoFR6U1nx57JCaeyRMS5gTLdcgOJDTjQ3Aokl/OfzF0xUpZMT8vMCefTqSENlxxy
+ aTESrk1mBGsvehtZoNvzSBq+1uytafc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-370-9NTohd_WPxiMNkeS5jMrDw-1; Tue, 14 Nov 2023 12:34:51 -0500
-X-MC-Unique: 9NTohd_WPxiMNkeS5jMrDw-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-41cc9224395so71720841cf.1
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 09:34:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699983291; x=1700588091;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1qFu2gHMN06BqPlJo2fr1q/wSEUSz+K+Pjgf8wNvgcg=;
- b=Y+qiAYgenjKN+Zf5KaBd8VyZWtXJpbHt/WVPTMEVD6L2TpRHgntXzcrt+ge6MRk8qq
- luuez50oQbPSoZ5CtdNWpolWS2/doMC4FZggfvxdOVOzhKtVctXsj6RDXpi8RzFQg41a
- XCi77UEY01sOe8+c9lFqqvjOmtalScgZX5dtjOyY1LXKpyZJIrVAn7ET4dRefWrZ1IJZ
- 5dSL5jqDHxqfWx8zG62oLak/XOCxMrTqLaIpvyHd37gEXfbvqHZhpbmtT08Tiuk+FpYd
- WIn9lF+qx6ch8IrXOSSzmCJ17PFUT3WV0rY8GxseoJyDEAyGu/cTMHRgqFEctyu1K39X
- wiuw==
-X-Gm-Message-State: AOJu0Yz0t2bczagfWi/TKhIkbD1HzCJdnevGzoac++FMylXvNOYLE5l1
- A2uNBvtgC3RFxaxpWvSv6yn1S6W9Fphpchcqh83KCY3o/AbMGLyugCiXNJu9TvSKeWDqXy4q8er
- KxsEMB49zURUQE3Q=
-X-Received: by 2002:a05:622a:1ca:b0:41c:dbd9:ad3e with SMTP id
- t10-20020a05622a01ca00b0041cdbd9ad3emr3200415qtw.57.1699983291361; 
- Tue, 14 Nov 2023 09:34:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGBFycB17RMXPKgivlh3EBme1FR5whWTDSIBy7kEELCdhQlpGkm4+XhJ4OBk0ONhMx4QFNx4w==
-X-Received: by 2002:a05:622a:1ca:b0:41c:dbd9:ad3e with SMTP id
- t10-20020a05622a01ca00b0041cdbd9ad3emr3200402qtw.57.1699983291158; 
- Tue, 14 Nov 2023 09:34:51 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- j7-20020ac85507000000b0041520676966sm2895982qtq.47.2023.11.14.09.34.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 09:34:50 -0800 (PST)
-Message-ID: <3da742bf-5cd1-4c28-9280-63cb1ec754ea@redhat.com>
-Date: Tue, 14 Nov 2023 18:34:48 +0100
+ us-mta-130-jcRFuntaNvO3LB_cUqpb0Q-1; Tue, 14 Nov 2023 12:44:52 -0500
+X-MC-Unique: jcRFuntaNvO3LB_cUqpb0Q-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3E282185A78A;
+ Tue, 14 Nov 2023 17:44:52 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E5E8F492BFD;
+ Tue, 14 Nov 2023 17:44:51 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id D9B9421E6A1F; Tue, 14 Nov 2023 18:44:50 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Dinah B <dinahbaum123@gmail.com>
+Cc: qemu-devel@nongnu.org,  Eduardo Habkost <eduardo@habkost.net>,  Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>,  Philippe =?utf-8?Q?Mathieu-Daud?=
+ =?utf-8?Q?=C3=A9?=
+ <philmd@linaro.org>,  Yanan Wang <wangyanan55@huawei.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 3/3] cpu, softmmu/vl.c: Change parsing of -cpu
+ argument to allow -cpu cpu,help to print options for the CPU type similar
+ to how the '-device' option works.
+References: <20230730064057.357598-1-dinahbaum123@gmail.com>
+ <20230730064057.357598-4-dinahbaum123@gmail.com>
+ <87tttix39v.fsf@pond.sub.org>
+ <CAH50XRepiYcR9_e0AtuwTk1Nn34TXvZ87F5VVWg3aSx8BRJHPg@mail.gmail.com>
+ <87edkmt397.fsf@pond.sub.org>
+ <CAH50XRcOF2Sa0psZt_trCM-F68iR_pgyb8VsqJ_byFtPPgJRaw@mail.gmail.com>
+Date: Tue, 14 Nov 2023 18:44:50 +0100
+In-Reply-To: <CAH50XRcOF2Sa0psZt_trCM-F68iR_pgyb8VsqJ_byFtPPgJRaw@mail.gmail.com>
+ (Dinah B.'s message of "Tue, 14 Nov 2023 11:22:23 -0500")
+Message-ID: <87leb0w7ot.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH trivial 21/21] util/range.c: spelling fix: inbetween
-Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Eric Auger <eric.auger@redhat.com>
-References: <20231114165834.2949011-1-mjt@tls.msk.ru>
- <20231114165834.2949011-22-mjt@tls.msk.ru>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231114165834.2949011-22-mjt@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,36 +91,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/14/23 17:58, Michael Tokarev wrote:
-> Fixes: b439595a08d7 "range: Introduce range_inverse_array()"
-> Cc: Eric Auger <eric.auger@redhat.com>
-> Cc: Cédric Le Goater <clg@redhat.com>
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Dinah B <dinahbaum123@gmail.com> writes:
 
+> Hi,
+>
+> Is there a way to distinguish between qemu-system-* vs qemu-* builds?
+> At first I thought #CONFIG_LINUX_USER might be it but not all non-mmu
+> builds set this.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
-
-> ---
->   util/range.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/util/range.c b/util/range.c
-> index 9605ccfcbe..f3f40098d5 100644
-> --- a/util/range.c
-> +++ b/util/range.c
-> @@ -98,7 +98,7 @@ void range_inverse_array(GList *in, GList **rev,
->           out = append_new_range(out, low, MIN(range_lob(r) - 1, high));
->       }
->   
-> -    /* insert a range inbetween each original range until we reach high */
-> +    /* insert a range in between each original range until we reach high */
->       for (; l->next; l = l->next) {
->           r = (Range *)l->data;
->           rn = (Range *)l->next->data;
+What are you trying to accomplish?
 
 
