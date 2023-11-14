@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FEA97EB8EE
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 22:49:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B649F7EB8F9
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 22:55:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r31GZ-0003Z1-K9; Tue, 14 Nov 2023 16:48:15 -0500
+	id 1r31MP-0004gB-IW; Tue, 14 Nov 2023 16:54:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <venture@google.com>)
- id 1r31GX-0003Ys-Qc
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 16:48:13 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <venture@google.com>)
- id 1r31GU-0007cL-Ro
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 16:48:13 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-545557de8e6so5066a12.0
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 13:48:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1699998487; x=1700603287; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=589yOBCrxeQ30NyE1oNk2MVFSh62gkuS196woEBeR/k=;
- b=vPcF4QTvXknYjma08AlY4amKAbjcGMxaXJdGdIP2sn6FDqKSoyYXDVLjnEHT7IYT5V
- NG4pdXUKDlm9E0ohA12gOSWHhBZiqhsy7RGIoXdgqOrdfaNFxAcaZbMHwMf+6lIq9kRq
- AlPruBIYyvsU2vF99SN1f+XkMNWP5NsVkjBxeHz240HqV8UKn4UYr7D5j6suwk/TfEVH
- cKG+WgFgA3gz8mXk4pssKM3vELkzLN2thjtMMTqYif5dfaTZGhU2yXDJiLUxtb29J8rK
- wE6EZr9d28mHN11ztl+9Mo3xeCOrujq6qesNb2ezDbOknudmv388R5HQfQXC538buQuM
- Uspw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699998487; x=1700603287;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=589yOBCrxeQ30NyE1oNk2MVFSh62gkuS196woEBeR/k=;
- b=qVEeNDRfHPDUNOqvwpguOPcvAuZ9PgLEsoVa58+N0xxn7Dc7CdSiBlyLLFjRQLRLR0
- i7zUZWVR8OgnYIgNVsy3DQYIsSHiUg74dlUbuJBtGiZAMoDp9HxlhYY0HjlIPILuI7TK
- uwLcp4nGep2nQ1KXLIL/H0PNis3ZLRWXPqRgUwpS7LA638y/BVCxzDgDMLOjmbvsG2tj
- ArGEP+eFI9Wfs7+sLoYiL6pELaFOTcIsiJXgsMK8Z0WBWu/8igCzPluGZ9ip0++1wBZ3
- EuSkqd3fsKDJbfgfuVSe61iPi48fOnkgd3ho7kdRM0yILkoUFq7+ipzriV078CM5Ur08
- fWrw==
-X-Gm-Message-State: AOJu0YwIz/37OjGfRX8x6b3oGR3sSYZhAf8vWHA/kQPV8D9mDG3Isj98
- PVJRXJnXkus6v1vZJDsWr4+JlbFy+xK5stobVl98B7yhOrmqeNeAVuAEaA==
-X-Google-Smtp-Source: AGHT+IEfeYyE+L9p/FHTt1xDUyzgrjqegrGd7A0yqEyI3s+LCBCZ24XYRtWkJOzMzkm3EDoNixCJGflLRd4NwmcRgwY=
-X-Received: by 2002:a05:6402:3712:b0:547:9b49:f221 with SMTP id
- ek18-20020a056402371200b005479b49f221mr48445edb.6.1699998487230; Tue, 14 Nov
- 2023 13:48:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from
+ <BATV+a8e905033730cff805ca+7387+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1r31MN-0004fy-DX; Tue, 14 Nov 2023 16:54:15 -0500
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+a8e905033730cff805ca+7387+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1r31MJ-0000p8-Qb; Tue, 14 Nov 2023 16:54:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=lIpK2xZJXJK3e1Rw7hzsTPTJJHLZdJIeowi4R+xdxM4=; b=vKd9FbK0NWQ4w3GDGE4c9/u/gb
+ b+fVtk3jHBIH3kueRYxX9R68sOe6VE6k6LskwOpLD5wa4ZeT6fRHjq3zwSGvFgYl7LNA61Fq64Qs9
+ avOj8HFikZUAA7s/BJnxWxUrctBP2+wRZe/79oA7oE/sOPaVywzkJw83jdHMGkKkU7Soejht0Y0vY
+ FHS1Oq2d2rvGZaOZzjvmR3QGuVrdKg0EpOT4UYxGFC885StFx5AdKUK9qTKsiJcAl4eitVg2rt1wb
+ Hn92Z5+qz4iTeG06pCHm3gKas0ZYMwFdoGmyGUS7lUCuZNUy3b6wbtf4CWcFun02BXVB+UBXeZk/w
+ Jg3VrDGw==;
+Received: from [12.186.190.1] (helo=u3832b3a9db3152.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1r31MD-00ANIx-Fx; Tue, 14 Nov 2023 21:54:05 +0000
+Message-ID: <049d66a6a9ac6010d8f2a21d984cd551bc508bb6.camel@infradead.org>
+Subject: Re: [PATCH v1 1/7] xen-block: Do not write frontend nodes
+From: David Woodhouse <dwmw2@infradead.org>
+To: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, Oleksandr Tyshchenko
+ <Oleksandr_Tyshchenko@epam.com>,  Stefano Stabellini
+ <sstabellini@kernel.org>, Anthony Perard <anthony.perard@citrix.com>, Paul
+ Durrant <paul@xen.org>,  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz
+ <hreitz@redhat.com>, "open list:X86 Xen CPUs"
+ <xen-devel@lists.xenproject.org>, "open list:Block layer core"
+ <qemu-block@nongnu.org>
+Date: Tue, 14 Nov 2023 16:54:02 -0500
+In-Reply-To: <87sf5858dn.fsf@epam.com>
+References: <20231110204207.2927514-1-volodymyr_babchuk@epam.com>
+ <20231110204207.2927514-2-volodymyr_babchuk@epam.com>
+ <f2f7751a9ea5597e9f7a1417b761fe0802892aa8.camel@infradead.org>
+ <db50c864-a429-49af-9762-8bc17d5b0336@citrix.com>
+ <0F786C80-FB37-4AEB-8314-3DB4AC4600E5@infradead.org>
+ <d4eb2378-d276-47eb-a8a2-b3551020f814@citrix.com>
+ <81BF040F-EE19-4367-9C4F-94FF2623C75B@infradead.org>
+ <87sf5858dn.fsf@epam.com>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-+rAfGcIUlWaQvhyppOHW"
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-References: <20231113063156.2264941-1-potin.lai.pt@gmail.com>
-In-Reply-To: <20231113063156.2264941-1-potin.lai.pt@gmail.com>
-From: Patrick Venture <venture@google.com>
-Date: Tue, 14 Nov 2023 13:47:54 -0800
-Message-ID: <CAO=notx53PD6E731PB2oCyu6dSuKA=fT+R+datSPnOAQuVVfJA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] hw/i2c: add pca9543 i2c-mux switch
-To: Potin Lai <potin.lai.pt@gmail.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000f3bab6060a23bdbd"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=venture@google.com; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+a8e905033730cff805ca+7387+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,167 +85,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000f3bab6060a23bdbd
+
+--=-+rAfGcIUlWaQvhyppOHW
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Nov 12, 2023 at 10:34=E2=80=AFPM Potin Lai <potin.lai.pt@gmail.com>=
- wrote:
+On Tue, 2023-11-14 at 21:32 +0000, Volodymyr Babchuk wrote:
+>=20
+> > I think we want to kill the xen_backend_set_device() function and
+> > instead set the backend as a property of the XenDevice *before*
+> > realizing it.
+>=20
+> Not sure that I got this. Right now device is property of
+> XenBackendInstance. Are you proposing to make this other way around?
+>=20
+> Right now I am looking for a place where to store the information of
+> XenDevice creator. My plan was to add "found_in_xenbus" property to
+> XenDevice and set it in xen_backend_device_create.
 
-> Add pca9543 2-channel i2c-mux switch support.
->
-> Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
->
+A bit like this?
 
-Reviewed-by: Patrick Venture <venture@google.com>
+https://lore.kernel.org/qemu-devel/916e6f41e2da700375f84a2fda7b85d4b58dfb31=
+.camel@infradead.org
 
 
-> ---
->  hw/i2c/i2c_mux_pca954x.c         | 12 ++++++++++++
->  include/hw/i2c/i2c_mux_pca954x.h |  1 +
->  2 files changed, 13 insertions(+)
->
-> diff --git a/hw/i2c/i2c_mux_pca954x.c b/hw/i2c/i2c_mux_pca954x.c
-> index db5db956a6..6aace0fc47 100644
-> --- a/hw/i2c/i2c_mux_pca954x.c
-> +++ b/hw/i2c/i2c_mux_pca954x.c
-> @@ -30,6 +30,7 @@
->
->  #define PCA9548_CHANNEL_COUNT 8
->  #define PCA9546_CHANNEL_COUNT 4
-> +#define PCA9543_CHANNEL_COUNT 2
->
->  /*
->   * struct Pca954xState - The pca954x state object.
-> @@ -172,6 +173,12 @@ I2CBus *pca954x_i2c_get_bus(I2CSlave *mux, uint8_t
-> channel)
->      return pca954x->bus[channel];
->  }
->
-> +static void pca9543_class_init(ObjectClass *klass, void *data)
-> +{
-> +    Pca954xClass *s =3D PCA954X_CLASS(klass);
-> +    s->nchans =3D PCA9543_CHANNEL_COUNT;
-> +}
-> +
->  static void pca9546_class_init(ObjectClass *klass, void *data)
->  {
->      Pca954xClass *s =3D PCA954X_CLASS(klass);
-> @@ -246,6 +253,11 @@ static const TypeInfo pca954x_info[] =3D {
->          .class_init    =3D pca954x_class_init,
->          .abstract      =3D true,
->      },
-> +    {
-> +        .name          =3D TYPE_PCA9543,
-> +        .parent        =3D TYPE_PCA954X,
-> +        .class_init    =3D pca9543_class_init,
-> +    },
->      {
->          .name          =3D TYPE_PCA9546,
->          .parent        =3D TYPE_PCA954X,
-> diff --git a/include/hw/i2c/i2c_mux_pca954x.h
-> b/include/hw/i2c/i2c_mux_pca954x.h
-> index 3dd25ec983..1da5508ed5 100644
-> --- a/include/hw/i2c/i2c_mux_pca954x.h
-> +++ b/include/hw/i2c/i2c_mux_pca954x.h
-> @@ -3,6 +3,7 @@
->
->  #include "hw/i2c/i2c.h"
->
-> +#define TYPE_PCA9543 "pca9543"
->  #define TYPE_PCA9546 "pca9546"
->  #define TYPE_PCA9548 "pca9548"
->
-> --
-> 2.31.1
->
->
+--=-+rAfGcIUlWaQvhyppOHW
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
---000000000000f3bab6060a23bdbd
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTE0MjE1NDAyWjAvBgkqhkiG9w0BCQQxIgQg+1V0pBk5
+v/7lnJol3OiaDwB7rtTQuEZYJEsuddlVjeMwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAAxxa96vjvjXeRkF7y+hMXIArkE71mSIVl
+xICoHW7pZFmjUKxZ6p09UXx8/elW3sgCJWAhC6Ns74mYKhOOG8zqDBHAL5auVfnOt5n3kn2Ro3xN
+fmgJuamjIKY0xYcyLIfvQGL7JkPl+r7TvqMlUps5PzjQ/xuwE3BiRFsLZXp5zPqUBtQXNNohsOhK
+QgTMNeaCb0FCj1DdcIJG7xh9+qMKoqRKIll5NAWWaQ9gJG2cfVADy2IwHbiDFSds8gtSGo3ogVtZ
+orz3z3l3S6XKUPFG5Y3jx9S1C1f3MjR/XoqCj71KtNn76n7ulVG8TiFnfTeu4OHM1jOWa7NXuL+r
+LVOFtmVlZQ6yW8yMmTQLt7CkdjlmgrQTkMX4At8RFBLAyIFLiA1cbZ434XB+SRs06zX5dNme+tCG
+sWbVf6Ohrr+Qyz6giv8mHpZ7e5myioH1WeJWud1G3k9iH7GnkFSKTW8txVAnF9qUucjVAgqLbK4p
+TXrWZGxFTx8P0+qUfMXirmbckmQj4JwLn3irwMqzLfmZQu/i/8CaR7H0ammqqLRpXU+AVGLzDyt3
+csPSPa8YqXfB6HccnyrOqFKDL0UbgNARn4wW/etQJWe+LK/PeksxSzYG79IRLXNStqyu/H0um+Nc
+tJPboQAOVG5nOVGsnljIgFI8QBrlREp21/dE88gekAAAAAAAAA==
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Sun, Nov 12, 2023 at 10:34=E2=80=
-=AFPM Potin Lai &lt;<a href=3D"mailto:potin.lai.pt@gmail.com">potin.lai.pt@=
-gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">Add pca9543 2-channel i2c-mux switch support.<br>
-<br>
-Signed-off-by: Potin Lai &lt;<a href=3D"mailto:potin.lai.pt@gmail.com" targ=
-et=3D"_blank">potin.lai.pt@gmail.com</a>&gt;<br></blockquote><div>=C2=A0</d=
-iv><div>Reviewed-by: Patrick Venture &lt;<a href=3D"mailto:venture@google.c=
-om">venture@google.com</a>&gt;</div><div>=C2=A0</div><blockquote class=3D"g=
-mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
-,204,204);padding-left:1ex">
----<br>
-=C2=A0hw/i2c/i2c_mux_pca954x.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 12 ++++++=
-++++++<br>
-=C2=A0include/hw/i2c/i2c_mux_pca954x.h |=C2=A0 1 +<br>
-=C2=A02 files changed, 13 insertions(+)<br>
-<br>
-diff --git a/hw/i2c/i2c_mux_pca954x.c b/hw/i2c/i2c_mux_pca954x.c<br>
-index db5db956a6..6aace0fc47 100644<br>
---- a/hw/i2c/i2c_mux_pca954x.c<br>
-+++ b/hw/i2c/i2c_mux_pca954x.c<br>
-@@ -30,6 +30,7 @@<br>
-<br>
-=C2=A0#define PCA9548_CHANNEL_COUNT 8<br>
-=C2=A0#define PCA9546_CHANNEL_COUNT 4<br>
-+#define PCA9543_CHANNEL_COUNT 2<br>
-<br>
-=C2=A0/*<br>
-=C2=A0 * struct Pca954xState - The pca954x state object.<br>
-@@ -172,6 +173,12 @@ I2CBus *pca954x_i2c_get_bus(I2CSlave *mux, uint8_t cha=
-nnel)<br>
-=C2=A0 =C2=A0 =C2=A0return pca954x-&gt;bus[channel];<br>
-=C2=A0}<br>
-<br>
-+static void pca9543_class_init(ObjectClass *klass, void *data)<br>
-+{<br>
-+=C2=A0 =C2=A0 Pca954xClass *s =3D PCA954X_CLASS(klass);<br>
-+=C2=A0 =C2=A0 s-&gt;nchans =3D PCA9543_CHANNEL_COUNT;<br>
-+}<br>
-+<br>
-=C2=A0static void pca9546_class_init(ObjectClass *klass, void *data)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0Pca954xClass *s =3D PCA954X_CLASS(klass);<br>
-@@ -246,6 +253,11 @@ static const TypeInfo pca954x_info[] =3D {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.class_init=C2=A0 =C2=A0 =3D pca954x_clas=
-s_init,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.abstract=C2=A0 =C2=A0 =C2=A0 =3D true,<b=
-r>
-=C2=A0 =C2=A0 =C2=A0},<br>
-+=C2=A0 =C2=A0 {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .name=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TY=
-PE_PCA9543,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .parent=C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TYPE_PC=
-A954X,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .class_init=C2=A0 =C2=A0 =3D pca9543_class_ini=
-t,<br>
-+=C2=A0 =C2=A0 },<br>
-=C2=A0 =C2=A0 =C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.name=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=3D TYPE_PCA9546,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.parent=C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TY=
-PE_PCA954X,<br>
-diff --git a/include/hw/i2c/i2c_mux_pca954x.h b/include/hw/i2c/i2c_mux_pca9=
-54x.h<br>
-index 3dd25ec983..1da5508ed5 100644<br>
---- a/include/hw/i2c/i2c_mux_pca954x.h<br>
-+++ b/include/hw/i2c/i2c_mux_pca954x.h<br>
-@@ -3,6 +3,7 @@<br>
-<br>
-=C2=A0#include &quot;hw/i2c/i2c.h&quot;<br>
-<br>
-+#define TYPE_PCA9543 &quot;pca9543&quot;<br>
-=C2=A0#define TYPE_PCA9546 &quot;pca9546&quot;<br>
-=C2=A0#define TYPE_PCA9548 &quot;pca9548&quot;<br>
-<br>
--- <br>
-2.31.1<br>
-<br>
-</blockquote></div></div>
 
---000000000000f3bab6060a23bdbd--
+--=-+rAfGcIUlWaQvhyppOHW--
 
