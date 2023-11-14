@@ -2,58 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D3E7EAE09
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 11:28:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D757EADF3
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 11:26:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2qbt-0002rR-Ps; Tue, 14 Nov 2023 05:25:33 -0500
+	id 1r2qcD-0002sW-1b; Tue, 14 Nov 2023 05:25:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r2qbq-0002rH-FA
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:25:30 -0500
+ id 1r2qbv-0002rz-I7
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:25:35 -0500
 Received: from mgamail.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r2qbl-0007aG-64
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:25:28 -0500
+ id 1r2qbr-0007aG-Tt
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 05:25:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1699957525; x=1731493525;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=CIdqqye4bg9BrsaVi4Y11Ggn297bquKsvE76qgLuHJQ=;
- b=IHbDL1xGbR6cEh7GyxgxC+++IpXFq9eJmX2ShEV9836mu6JbVnu88bjL
- 7smpzYezVV1iOcrrgRcpGytm2jS4DsdcX/3wdrtZy5uKjZ/Bd4M1wWJwi
- s9moZuzuy3YoOhVOj+V2tGwFFfYRV+r77n+ltmyT65k6Je2gmbEh/lCD3
- gAGKLSnoQTtwCpGGIvmwXTblIuZFEUgwq8By8d/+4pdv63MjY6tUNKM6N
- PsjO6eCx3K1BmU1PmkOxW9uwEVLynxT0oceLyWxpkPtDbKuaeKt0jHob6
- k1JL2YIBqvR5KCpbJ9Ck5J2NIAInm6FXCXbqw9AGNSnHlPyM6B32ydsks g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10893"; a="394543369"
-X-IronPort-AV: E=Sophos;i="6.03,301,1694761200"; d="scan'208";a="394543369"
+ t=1699957531; x=1731493531;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=beaeu8IqmX/V0s1PBASYA1xe7/Nv1dxUUJPGBO8qNNQ=;
+ b=Q39HfA4lZZX19LsN2tV9ot71Mc6B5jIy/P2ZRj34U89owpOWPMtfOm9n
+ ifn5t+4Lgu+liJZKLozqMbfH0ve7M3l0euRs4ylH0jZlzfWppDtAqjo5r
+ y28zFyL7tU8mN7VbuIBzKdUI7eXs2lFBSXPef+3eLa+DX7AsCXGWiJnDW
+ GOnMJMqVuZy51TKhxHSkYU11wzew/w1KVGZCYoIUEFZwK5qplSW3l3DqG
+ 25m6w1TwZRM7o7VFYRrLomqxSofqw1QSkm3/kNAoeHEI84xdhrEiYrEfU
+ LU3kAydFpulWJW9ENlIBh3Au9NG5fQGPZZ9mjicQ8+Qcz9ZWtQoRU7ZY2 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10893"; a="394543397"
+X-IronPort-AV: E=Sophos;i="6.03,301,1694761200"; d="scan'208";a="394543397"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2023 02:25:22 -0800
+ 14 Nov 2023 02:25:30 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10893"; a="888212754"
-X-IronPort-AV: E=Sophos;i="6.03,301,1694761200"; d="scan'208";a="888212754"
+X-IronPort-AV: E=McAfee;i="6600,9927,10893"; a="888212788"
+X-IronPort-AV: E=Sophos;i="6.03,301,1694761200"; d="scan'208";a="888212788"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2023 02:25:18 -0800
+ 14 Nov 2023 02:25:22 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
  peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v6 00/21] vfio: Adopt iommufd
-Date: Tue, 14 Nov 2023 18:09:34 +0800
-Message-Id: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH v6 01/21] backends/iommufd: Introduce the iommufd object
+Date: Tue, 14 Nov 2023 18:09:35 +0800
+Message-Id: <20231114100955.1961974-2-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
+References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=134.134.136.65;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -79,317 +84,450 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+From: Eric Auger <eric.auger@redhat.com>
 
-Thanks all for giving guides and comments on previous series, this is
-the remaining part of the iommufd support.
+Introduce an iommufd object which allows the interaction
+with the host /dev/iommu device.
 
-Based on Cédric's suggestion, replace old config method for IOMMUFD
-with Kconfig.
+The /dev/iommu can have been already pre-opened outside of qemu,
+in which case the fd can be passed directly along with the
+iommufd object:
 
-Based on Jason's suggestion, drop the implementation of manually
-allocating hwpt and switch to IOAS attach/detach.
+This allows the iommufd object to be shared accross several
+subsystems (VFIO, VDPA, ...). For example, libvirt would open
+the /dev/iommu once.
 
-Beside current test, we also tested mdev with mtty for better cover range.
+If no fd is passed along with the iommufd object, the /dev/iommu
+is opened by the qemu code.
 
-PATCH 1: Introduce iommufd object
-PATCH 2-9: add IOMMUFD container and cdev support
-PATCH 10-17: fd passing for cdev and linking to IOMMUFD
-PATCH 18: make VFIOContainerBase parameter const
-PATCH 19-21: Compile out for IOMMUFD for arm, s390x and x86
+Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+---
+v6: remove redundant call, alloc_hwpt, get/put_ioas
 
-
-We have done wide test with different combinations, e.g:
-- PCI device were tested
-- FD passing and hot reset with some trick.
-- device hotplug test with legacy and iommufd backends
-- with or without vIOMMU for legacy and iommufd backends
-- divices linked to different iommufds
-- VFIO migration with a E800 net card(no dirty sync support) passthrough
-- platform, ccw and ap were only compile-tested due to environment limit
-- test mdev pass through with mtty and mix with real device and different BE
-
-Given some iommufd kernel limitations, the iommufd backend is
-not yet fully on par with the legacy backend w.r.t. features like:
-- p2p mappings (you will see related error traces)
-- dirty page sync
-- and etc.
-
-
-qemu code: https://github.com/yiliu1765/qemu/commits/zhenzhong/iommufd_cdev_v6
-Based on vfio-next, commit id: 1a22fb936e
-
---------------------------------------------------------------------------
-
-Below are some background and graph about the design:
-
-With the introduction of iommufd, the Linux kernel provides a generic
-interface for userspace drivers to propagate their DMA mappings to kernel
-for assigned devices. This series does the porting of the VFIO devices
-onto the /dev/iommu uapi and let it coexist with the legacy implementation.
-
-At QEMU level, interactions with the /dev/iommu are abstracted by a new
-iommufd object (compiled in with the CONFIG_IOMMUFD option).
-
-Any QEMU device (e.g. vfio device) wishing to use /dev/iommu must be
-linked with an iommufd object. In this series, the vfio-pci device is
-granted with such capability (other VFIO devices are not yet ready):
-
-It gets a new optional parameter named iommufd which allows to pass
-an iommufd object:
-
-    -object iommufd,id=iommufd0
-    -device vfio-pci,host=0000:02:00.0,iommufd=iommufd0
-
-Note the /dev/iommu and vfio cdev can be externally opened by a
-management layer. In such a case the fd is passed:
-
-    -object iommufd,id=iommufd0,fd=22
-    -device vfio-pci,iommufd=iommufd0,fd=23
-
-If the fd parameter is not passed, the fd is opened by QEMU.
-See https://www.mail-archive.com/qemu-devel@nongnu.org/msg937155.html
-for detailed discuss on this requirement.
-
-If no iommufd option is passed to the vfio-pci device, iommufd is not
-used and the end-user gets the behavior based on the legacy vfio iommu
-interfaces:
-
-    -device vfio-pci,host=0000:02:00.0
-
-While the legacy kernel interface is group-centric, the new iommufd
-interface is device-centric, relying on device fd and iommufd.
-
-To support both interfaces in the QEMU VFIO device we reworked the vfio
-container abstraction so that the generic VFIO code can use either
-backend.
-
-The VFIOContainer object becomes a base object derived into
-a) the legacy VFIO container and
-b) the new iommufd based container.
-
-The base object implements generic code such as code related to
-memory_listener and address space management whereas the derived
-objects implement callbacks specific to either BE, legacy and
-iommufd. Indeed each backend has its own way to setup secure context
-and dma management interface. The below diagram shows how it looks
-like with both BEs.
-
-                    VFIO                           AddressSpace/Memory
-    +-------+  +----------+  +-----+  +-----+
-    |  pci  |  | platform |  |  ap |  | ccw |
-    +---+---+  +----+-----+  +--+--+  +--+--+     +----------------------+
-        |           |           |        |        |   AddressSpace       |
-        |           |           |        |        +------------+---------+
-    +---V-----------V-----------V--------V----+               /
-    |           VFIOAddressSpace              | <------------+
-    |                  |                      |  MemoryListener
-    |          VFIOContainer list             |
-    +-------+----------------------------+----+
-            |                            |
-            |                            |
-    +-------V------+            +--------V----------+
-    |   iommufd    |            |    vfio legacy    |
-    |  container   |            |     container     |
-    +-------+------+            +--------+----------+
-            |                            |
-            | /dev/iommu                 | /dev/vfio/vfio
-            | /dev/vfio/devices/vfioX    | /dev/vfio/$group_id
-Userspace   |                            |
-============+============================+===========================
-Kernel      |  device fd                 |
-            +---------------+            | group/container fd
-            | (BIND_IOMMUFD |            | (SET_CONTAINER/SET_IOMMU)
-            |  ATTACH_IOAS) |            | device fd
-            |               |            |
-            |       +-------V------------V-----------------+
-    iommufd |       |                vfio                  |
-(map/unmap  |       +---------+--------------------+-------+
-ioas_copy)  |                 |                    | map/unmap
-            |                 |                    |
-     +------V------+    +-----V------+      +------V--------+
-     | iommfd core |    |  device    |      |  vfio iommu   |
-     +-------------+    +------------+      +---------------+
-
-[Secure Context setup]
-- iommufd BE: uses device fd and iommufd to setup secure context
-              (bind_iommufd, attach_ioas)
-- vfio legacy BE: uses group fd and container fd to setup secure context
-                  (set_container, set_iommu)
-[Device access]
-- iommufd BE: device fd is opened through /dev/vfio/devices/vfioX
-- vfio legacy BE: device fd is retrieved from group fd ioctl
-[DMA Mapping flow]
-1. VFIOAddressSpace receives MemoryRegion add/del via MemoryListener
-2. VFIO populates DMA map/unmap via the container BEs
-   *) iommufd BE: uses iommufd
-   *) vfio legacy BE: uses container fd
-
-
-Changelog:
-v6:
-- simplify CONFIG_IOMMUFD checking code further (Cédric)
-- check iommufd_cdev_kvm_device_add return value (Cédric)
-- dirrectory -> directory (Cédric)
-- propagate iommufd_cdev_get_info_iova_range err and print as warning (Cédric)
-- introduce a helper vfio_device_set_fd (Cédric)
-- Move #include "sysemu/iommufd.h" in platform.c (Cédric)
-- simplify iommufd backend uAPI, remove alloc_hwpt, get/put_ioas
-- Dare to keep Matthew's RB as related change is minor
-
-v5:
-- Change to use Kconfig for CONFIG_IOMMUFD and drop stub file (Cédric)
-- Add (uintptr_t) to info->allowed_iovas (Cédric)
-- Switch to IOAS attach/detach and hide hwpt (Jason)
-- move chardev_open.[h|c] under the IOMMUFD entry (Cédric)
-- Move vfio_legacy_pci_hot_reset into container.c (Cédric)
-- Add missed pgsizes initialization in vfio_get_info_iova_range
-- split linking iommufd patch into three to be cleaner
-- Fix comments on PCI BAR unmap
-
-v4:
-- add CONFIG_IOMMUFD check for IOMMUFDProperties (Markus)
-- add doc for default case without fd (Markus)
-- Fix build issue reported by Markus and Cédric
-- Simply use SPDX identifier in new file (Cédric)
-- make vfio_container_init/destroy helper a seperate patch (Cédric)
-- make vrdl_list movement a seperate patch (Cédric)
-- add const for some callback parameters (Cédric)
-- add g_assert in VFIOIOMMUOps callback (Cédric)
-- introduce pci_hot_reset callback (Cédric)
-- remove VFIOIOMMUSpaprOps (Cédric)
-- initialize g_autofree to NULL (Cédric)
-- adjust func name prefix and trace event in iommufd.c (Cédric)
-- add RB
-
-v3:
-- Rename base container as VFIOContainerBase and legacy container as container (Cédric)
-- Drop VFIO_IOMMU_BACKEND_OPS class and use struct instead (Cédric)
-- Cleanup container.c by introducing spapr backend and move spapr code out (Cédric)
-- Introduce vfio_iommu_spapr_ops (Cédric)
-- Add doc of iommufd in qom.json and have iommufd member sorted (Markus)
-- patch19 and patch21 are splitted to two parts to facilitate review
-
-v2:
-- patch "vfio: Add base container" in v1 is split into patch1-15 per Cédric
-- add fd passing to platform/ap/ccw vfio device
-- add (uintptr_t) cast in iommufd_backend_map_dma() per Cédric
-- rename char_dev.h to chardev_open.h for same naming scheme per Daniel
-- add full copyright per Daniel and Jason
-
-
-Note changelog below are from full IOMMUFD series:
-
-v1:
-- Alloc hwpt instead of using auto hwpt
-- elaborate iommufd code per Nicolin
-- consolidate two patches and drop as.c
-- typo error fix and function rename
-
-rfcv4:
-- rebase on top of v8.0.3
-- Add one patch from Yi which is about vfio device add in kvm
-- Remove IOAS_COPY optimization and focus on functions in this patchset
-- Fix wrong name issue reported and fix suggested by Matthew
-- Fix compilation issue reported and fix sugggsted by Nicolin
-- Use query_dirty_bitmap callback to replace get_dirty_bitmap for better
-granularity
-- Add dev_iter_next() callback to avoid adding so many callback
-  at container scope, add VFIODevice.hwpt to support that
-- Restore all functions back to common from container whenever possible,
-  mainly migration and reset related functions
-- Add --enable/disable-iommufd config option, enabled by default in linux
-- Remove VFIODevice.hwpt_next as it's redundant with VFIODevice.next
-- Adapt new VFIO_DEVICE_PCI_HOT_RESET uAPI for IOMMUFD backed device
-- vfio_kvm_device_add/del_group call vfio_kvm_device_add/del_fd to remove
-redundant code
-- Add FD passing support for vfio device backed by IOMMUFD
-- Fix hot unplug resource leak issue in vfio_legacy_detach_device()
-- Fix FD leak in vfio_get_devicefd()
-
-rfcv3:
-- rebase on top of v7.2.0
-- Fix the compilation with CONFIG_IOMMUFD unset by using true classes for
-  VFIO backends
-- Fix use after free in error path, reported by Alister
-- Split common.c in several steps to ease the review
-
-rfcv2:
-- remove the first three patches of rfcv1
-- add open cdev helper suggested by Jason
-- remove the QOMification of the VFIOContainer and simply use standard ops
-(David)
-- add "-object iommufd" suggested by Alex
-
-Thanks
-Zhenzhong
-
-
-Cédric Le Goater (3):
-  hw/arm: Activate IOMMUFD for virt machines
-  kconfig: Activate IOMMUFD for s390x machines
-  hw/i386: Activate IOMMUFD for q35 machines
-
-Eric Auger (2):
-  backends/iommufd: Introduce the iommufd object
-  vfio/pci: Allow the selection of a given iommu backend
-
-Yi Liu (2):
-  util/char_dev: Add open_cdev()
-  vfio/iommufd: Implement the iommufd backend
-
-Zhenzhong Duan (14):
-  vfio/common: return early if space isn't empty
-  vfio/iommufd: Relax assert check for iommufd backend
-  vfio/iommufd: Add support for iova_ranges and pgsizes
-  vfio/pci: Extract out a helper vfio_pci_get_pci_hot_reset_info
-  vfio/pci: Introduce a vfio pci hot reset interface
-  vfio/iommufd: Enable pci hot reset through iommufd cdev interface
-  vfio/pci: Make vfio cdev pre-openable by passing a file handle
-  vfio/platform: Allow the selection of a given iommu backend
-  vfio/platform: Make vfio cdev pre-openable by passing a file handle
-  vfio/ap: Allow the selection of a given iommu backend
-  vfio/ap: Make vfio cdev pre-openable by passing a file handle
-  vfio/ccw: Allow the selection of a given iommu backend
-  vfio/ccw: Make vfio cdev pre-openable by passing a file handle
-  vfio: Make VFIOContainerBase poiner parameter const in VFIOIOMMUOps
-    callbacks
-
- MAINTAINERS                           |  10 +
- qapi/qom.json                         |  19 +
- hw/vfio/pci.h                         |   6 +
- include/hw/vfio/vfio-common.h         |  26 +-
- include/hw/vfio/vfio-container-base.h |  15 +-
- include/qemu/chardev_open.h           |  16 +
- include/sysemu/iommufd.h              |  44 ++
- backends/iommufd.c                    | 228 ++++++++++
- hw/vfio/ap.c                          |  29 +-
- hw/vfio/ccw.c                         |  31 +-
- hw/vfio/common.c                      |  24 +-
- hw/vfio/container-base.c              |   6 +-
- hw/vfio/container.c                   | 208 ++++++++-
- hw/vfio/helpers.c                     |  44 ++
- hw/vfio/iommufd.c                     | 630 ++++++++++++++++++++++++++
- hw/vfio/pci.c                         | 212 ++-------
- hw/vfio/platform.c                    |  38 +-
- util/chardev_open.c                   |  81 ++++
- backends/Kconfig                      |   4 +
- backends/meson.build                  |   1 +
- backends/trace-events                 |  10 +
- hw/arm/Kconfig                        |   1 +
- hw/i386/Kconfig                       |   1 +
- hw/s390x/Kconfig                      |   1 +
- hw/vfio/meson.build                   |   3 +
- hw/vfio/trace-events                  |  11 +
- qemu-options.hx                       |  12 +
- util/meson.build                      |   1 +
- 28 files changed, 1493 insertions(+), 219 deletions(-)
- create mode 100644 include/qemu/chardev_open.h
+ MAINTAINERS              |   7 ++
+ qapi/qom.json            |  19 ++++
+ include/sysemu/iommufd.h |  44 ++++++++
+ backends/iommufd.c       | 228 +++++++++++++++++++++++++++++++++++++++
+ backends/Kconfig         |   4 +
+ backends/meson.build     |   1 +
+ backends/trace-events    |  10 ++
+ qemu-options.hx          |  12 +++
+ 8 files changed, 325 insertions(+)
  create mode 100644 include/sysemu/iommufd.h
  create mode 100644 backends/iommufd.c
- create mode 100644 hw/vfio/iommufd.c
- create mode 100644 util/chardev_open.c
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ff1238bb98..a4891f7bda 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2166,6 +2166,13 @@ F: hw/vfio/ap.c
+ F: docs/system/s390x/vfio-ap.rst
+ L: qemu-s390x@nongnu.org
+ 
++iommufd
++M: Yi Liu <yi.l.liu@intel.com>
++M: Eric Auger <eric.auger@redhat.com>
++S: Supported
++F: backends/iommufd.c
++F: include/sysemu/iommufd.h
++
+ vhost
+ M: Michael S. Tsirkin <mst@redhat.com>
+ S: Supported
+diff --git a/qapi/qom.json b/qapi/qom.json
+index c53ef978ff..1fd8555a75 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -794,6 +794,23 @@
+ { 'struct': 'VfioUserServerProperties',
+   'data': { 'socket': 'SocketAddress', 'device': 'str' } }
+ 
++##
++# @IOMMUFDProperties:
++#
++# Properties for iommufd objects.
++#
++# @fd: file descriptor name previously passed via 'getfd' command,
++#     which represents a pre-opened /dev/iommu.  This allows the
++#     iommufd object to be shared accross several subsystems
++#     (VFIO, VDPA, ...), and the file descriptor to be shared
++#     with other process, e.g. DPDK.  (default: QEMU opens
++#     /dev/iommu by itself)
++#
++# Since: 8.2
++##
++{ 'struct': 'IOMMUFDProperties',
++  'data': { '*fd': 'str' } }
++
+ ##
+ # @RngProperties:
+ #
+@@ -934,6 +951,7 @@
+     'input-barrier',
+     { 'name': 'input-linux',
+       'if': 'CONFIG_LINUX' },
++    'iommufd',
+     'iothread',
+     'main-loop',
+     { 'name': 'memory-backend-epc',
+@@ -1003,6 +1021,7 @@
+       'input-barrier':              'InputBarrierProperties',
+       'input-linux':                { 'type': 'InputLinuxProperties',
+                                       'if': 'CONFIG_LINUX' },
++      'iommufd':                    'IOMMUFDProperties',
+       'iothread':                   'IothreadProperties',
+       'main-loop':                  'MainLoopProperties',
+       'memory-backend-epc':         { 'type': 'MemoryBackendEpcProperties',
+diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
+new file mode 100644
+index 0000000000..9b3a86f57d
+--- /dev/null
++++ b/include/sysemu/iommufd.h
+@@ -0,0 +1,44 @@
++#ifndef SYSEMU_IOMMUFD_H
++#define SYSEMU_IOMMUFD_H
++
++#include "qom/object.h"
++#include "qemu/thread.h"
++#include "exec/hwaddr.h"
++#include "exec/cpu-common.h"
++
++#define TYPE_IOMMUFD_BACKEND "iommufd"
++OBJECT_DECLARE_TYPE(IOMMUFDBackend, IOMMUFDBackendClass,
++                    IOMMUFD_BACKEND)
++#define IOMMUFD_BACKEND(obj) \
++    OBJECT_CHECK(IOMMUFDBackend, (obj), TYPE_IOMMUFD_BACKEND)
++#define IOMMUFD_BACKEND_GET_CLASS(obj) \
++    OBJECT_GET_CLASS(IOMMUFDBackendClass, (obj), TYPE_IOMMUFD_BACKEND)
++#define IOMMUFD_BACKEND_CLASS(klass) \
++    OBJECT_CLASS_CHECK(IOMMUFDBackendClass, (klass), TYPE_IOMMUFD_BACKEND)
++struct IOMMUFDBackendClass {
++    ObjectClass parent_class;
++};
++
++struct IOMMUFDBackend {
++    Object parent;
++
++    /*< protected >*/
++    int fd;            /* /dev/iommu file descriptor */
++    bool owned;        /* is the /dev/iommu opened internally */
++    QemuMutex lock;
++    uint32_t users;
++
++    /*< public >*/
++};
++
++int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp);
++void iommufd_backend_disconnect(IOMMUFDBackend *be);
++
++int iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
++                               Error **errp);
++void iommufd_backend_free_id(IOMMUFDBackend *be, uint32_t id);
++int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
++                            ram_addr_t size, void *vaddr, bool readonly);
++int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
++                              hwaddr iova, ram_addr_t size);
++#endif
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+new file mode 100644
+index 0000000000..ea3e2a8f85
+--- /dev/null
++++ b/backends/iommufd.c
+@@ -0,0 +1,228 @@
++/*
++ * iommufd container backend
++ *
++ * Copyright (C) 2023 Intel Corporation.
++ * Copyright Red Hat, Inc. 2023
++ *
++ * Authors: Yi Liu <yi.l.liu@intel.com>
++ *          Eric Auger <eric.auger@redhat.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "sysemu/iommufd.h"
++#include "qapi/error.h"
++#include "qapi/qmp/qerror.h"
++#include "qemu/module.h"
++#include "qom/object_interfaces.h"
++#include "qemu/error-report.h"
++#include "monitor/monitor.h"
++#include "trace.h"
++#include <sys/ioctl.h>
++#include <linux/iommufd.h>
++
++static void iommufd_backend_init(Object *obj)
++{
++    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
++
++    be->fd = -1;
++    be->users = 0;
++    be->owned = true;
++    qemu_mutex_init(&be->lock);
++}
++
++static void iommufd_backend_finalize(Object *obj)
++{
++    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
++
++    if (be->owned) {
++        close(be->fd);
++        be->fd = -1;
++    }
++}
++
++static void iommufd_backend_set_fd(Object *obj, const char *str, Error **errp)
++{
++    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
++    int fd = -1;
++
++    fd = monitor_fd_param(monitor_cur(), str, errp);
++    if (fd == -1) {
++        error_prepend(errp, "Could not parse remote object fd %s:", str);
++        return;
++    }
++    qemu_mutex_lock(&be->lock);
++    be->fd = fd;
++    be->owned = false;
++    qemu_mutex_unlock(&be->lock);
++    trace_iommu_backend_set_fd(be->fd);
++}
++
++static void iommufd_backend_class_init(ObjectClass *oc, void *data)
++{
++    object_class_property_add_str(oc, "fd", NULL, iommufd_backend_set_fd);
++}
++
++int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
++{
++    int fd, ret = 0;
++
++    qemu_mutex_lock(&be->lock);
++    if (be->users == UINT32_MAX) {
++        error_setg(errp, "too many connections");
++        ret = -E2BIG;
++        goto out;
++    }
++    if (be->owned && !be->users) {
++        fd = qemu_open_old("/dev/iommu", O_RDWR);
++        if (fd < 0) {
++            error_setg_errno(errp, errno, "/dev/iommu opening failed");
++            ret = fd;
++            goto out;
++        }
++        be->fd = fd;
++    }
++    be->users++;
++out:
++    trace_iommufd_backend_connect(be->fd, be->owned,
++                                  be->users, ret);
++    qemu_mutex_unlock(&be->lock);
++    return ret;
++}
++
++void iommufd_backend_disconnect(IOMMUFDBackend *be)
++{
++    qemu_mutex_lock(&be->lock);
++    if (!be->users) {
++        goto out;
++    }
++    be->users--;
++    if (!be->users && be->owned) {
++        close(be->fd);
++        be->fd = -1;
++    }
++out:
++    trace_iommufd_backend_disconnect(be->fd, be->users);
++    qemu_mutex_unlock(&be->lock);
++}
++
++int iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
++                               Error **errp)
++{
++    int ret, fd = be->fd;
++    struct iommu_ioas_alloc alloc_data  = {
++        .size = sizeof(alloc_data),
++        .flags = 0,
++    };
++
++    ret = ioctl(fd, IOMMU_IOAS_ALLOC, &alloc_data);
++    if (ret) {
++        error_setg_errno(errp, errno, "Failed to allocate ioas");
++        return ret;
++    }
++
++    *ioas_id = alloc_data.out_ioas_id;
++    trace_iommufd_backend_alloc_ioas(fd, *ioas_id, ret);
++
++    return ret;
++}
++
++void iommufd_backend_free_id(IOMMUFDBackend *be, uint32_t id)
++{
++    int ret, fd = be->fd;
++    struct iommu_destroy des = {
++        .size = sizeof(des),
++        .id = id,
++    };
++
++    ret = ioctl(fd, IOMMU_DESTROY, &des);
++    trace_iommufd_backend_free_id(fd, id, ret);
++    if (ret) {
++        error_report("Failed to free id: %u %m", id);
++    }
++}
++
++int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
++                            ram_addr_t size, void *vaddr, bool readonly)
++{
++    int ret, fd = be->fd;
++    struct iommu_ioas_map map = {
++        .size = sizeof(map),
++        .flags = IOMMU_IOAS_MAP_READABLE |
++                 IOMMU_IOAS_MAP_FIXED_IOVA,
++        .ioas_id = ioas_id,
++        .__reserved = 0,
++        .user_va = (uintptr_t)vaddr,
++        .iova = iova,
++        .length = size,
++    };
++
++    if (!readonly) {
++        map.flags |= IOMMU_IOAS_MAP_WRITEABLE;
++    }
++
++    ret = ioctl(fd, IOMMU_IOAS_MAP, &map);
++    trace_iommufd_backend_map_dma(fd, ioas_id, iova, size,
++                                  vaddr, readonly, ret);
++    if (ret) {
++        ret = -errno;
++        error_report("IOMMU_IOAS_MAP failed: %m");
++    }
++    return ret;
++}
++
++int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
++                              hwaddr iova, ram_addr_t size)
++{
++    int ret, fd = be->fd;
++    struct iommu_ioas_unmap unmap = {
++        .size = sizeof(unmap),
++        .ioas_id = ioas_id,
++        .iova = iova,
++        .length = size,
++    };
++
++    ret = ioctl(fd, IOMMU_IOAS_UNMAP, &unmap);
++    /*
++     * IOMMUFD takes mapping as some kind of object, unmapping
++     * nonexistent mapping is treated as deleting a nonexistent
++     * object and return ENOENT. This is different from legacy
++     * backend which allows it. vIOMMU may trigger a lot of
++     * redundant unmapping, to avoid flush the log, treat them
++     * as succeess for IOMMUFD just like legacy backend.
++     */
++    if (ret && errno == ENOENT) {
++        trace_iommufd_backend_unmap_dma_non_exist(fd, ioas_id, iova, size, ret);
++        ret = 0;
++    } else {
++        trace_iommufd_backend_unmap_dma(fd, ioas_id, iova, size, ret);
++    }
++
++    if (ret) {
++        ret = -errno;
++        error_report("IOMMU_IOAS_UNMAP failed: %m");
++    }
++    return ret;
++}
++
++static const TypeInfo iommufd_backend_info = {
++    .name = TYPE_IOMMUFD_BACKEND,
++    .parent = TYPE_OBJECT,
++    .instance_size = sizeof(IOMMUFDBackend),
++    .instance_init = iommufd_backend_init,
++    .instance_finalize = iommufd_backend_finalize,
++    .class_size = sizeof(IOMMUFDBackendClass),
++    .class_init = iommufd_backend_class_init,
++    .interfaces = (InterfaceInfo[]) {
++        { TYPE_USER_CREATABLE },
++        { }
++    }
++};
++
++static void register_types(void)
++{
++    type_register_static(&iommufd_backend_info);
++}
++
++type_init(register_types);
+diff --git a/backends/Kconfig b/backends/Kconfig
+index f35abc1609..2cb23f62fa 100644
+--- a/backends/Kconfig
++++ b/backends/Kconfig
+@@ -1 +1,5 @@
+ source tpm/Kconfig
++
++config IOMMUFD
++    bool
++    depends on VFIO
+diff --git a/backends/meson.build b/backends/meson.build
+index 914c7c4afb..9a5cea480d 100644
+--- a/backends/meson.build
++++ b/backends/meson.build
+@@ -20,6 +20,7 @@ if have_vhost_user
+   system_ss.add(when: 'CONFIG_VIRTIO', if_true: files('vhost-user.c'))
+ endif
+ system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost.c'))
++system_ss.add(when: 'CONFIG_IOMMUFD', if_true: files('iommufd.c'))
+ if have_vhost_user_crypto
+   system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost-user.c'))
+ endif
+diff --git a/backends/trace-events b/backends/trace-events
+index 652eb76a57..d45c6e31a6 100644
+--- a/backends/trace-events
++++ b/backends/trace-events
+@@ -5,3 +5,13 @@ dbus_vmstate_pre_save(void)
+ dbus_vmstate_post_load(int version_id) "version_id: %d"
+ dbus_vmstate_loading(const char *id) "id: %s"
+ dbus_vmstate_saving(const char *id) "id: %s"
++
++# iommufd.c
++iommufd_backend_connect(int fd, bool owned, uint32_t users, int ret) "fd=%d owned=%d users=%d (%d)"
++iommufd_backend_disconnect(int fd, uint32_t users) "fd=%d users=%d"
++iommu_backend_set_fd(int fd) "pre-opened /dev/iommu fd=%d"
++iommufd_backend_map_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, void *vaddr, bool readonly, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" addr=%p readonly=%d (%d)"
++iommufd_backend_unmap_dma_non_exist(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " Unmap nonexistent mapping: iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
++iommufd_backend_unmap_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
++iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas, int ret) " iommufd=%d ioas=%d (%d)"
++iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 42fd09e4de..70507c0ee6 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -5224,6 +5224,18 @@ SRST
+ 
+         The ``share`` boolean option is on by default with memfd.
+ 
++    ``-object iommufd,id=id[,fd=fd]``
++        Creates an iommufd backend which allows control of DMA mapping
++        through the /dev/iommu device.
++
++        The ``id`` parameter is a unique ID which frontends (such as
++        vfio-pci of vdpa) will use to connect with the iommufd backend.
++
++        The ``fd`` parameter is an optional pre-opened file descriptor
++        resulting from /dev/iommu opening. Usually the iommufd is shared
++        across all subsystems, bringing the benefit of centralized
++        reference counting.
++
+     ``-object rng-builtin,id=id``
+         Creates a random number generator backend which obtains entropy
+         from QEMU builtin functions. The ``id`` parameter is a unique ID
 -- 
 2.34.1
 
