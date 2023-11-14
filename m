@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485177EAFC0
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 13:22:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E02627EAFD1
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 13:26:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2sQW-00010D-EV; Tue, 14 Nov 2023 07:21:58 -0500
+	id 1r2sUG-0002Fk-Dz; Tue, 14 Nov 2023 07:25:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r2sQN-0000z9-QB
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 07:21:47 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2sUE-0002FK-RK
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 07:25:46 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r2sQM-0005y3-Aj
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 07:21:47 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 4DED91F86A;
- Tue, 14 Nov 2023 12:21:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1699964504; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dLhHLaPI8auL6sA6J6LP30S1Uv5qvRDJH2D8NUoDj4w=;
- b=bTx7kZQuz8f/7NpL4HuuWoT5gbtx0Jpn6ZeRUElXIfmAjKct1UsGV221ACrOpIsWDVMOxK
- 7JCJw5xnw/H+SB6U4v5VdtRPUDPNiZP416ovoBmoXR2HERWGjW6YnURVhwo01egJYipKeU
- wvJaH8DCRf2OfxCrDPwitNuIomsSVFA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1699964504;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dLhHLaPI8auL6sA6J6LP30S1Uv5qvRDJH2D8NUoDj4w=;
- b=86xuC9QvL/qIHA7nq9RPoFl2Ol9fs6Z9p1Mrrw0fl/yy6PHIzyKr010/i38V9joRkDASbo
- dUvxD9QRsdQqHmAg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D358E13416;
- Tue, 14 Nov 2023 12:21:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id mQT4JldmU2XfZgAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 14 Nov 2023 12:21:43 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Peter Maydell
- <peter.maydell@linaro.org>, Steve Sistare <steven.sistare@oracle.com>
-Subject: Re: [PATCH] migration: fix coverity migrate_mode finding
-In-Reply-To: <1699907025-215450-1-git-send-email-steven.sistare@oracle.com>
-References: <1699907025-215450-1-git-send-email-steven.sistare@oracle.com>
-Date: Tue, 14 Nov 2023 09:21:41 -0300
-Message-ID: <87zfzgbk4q.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2sUD-0006cg-Cr
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 07:25:46 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-53e751aeb3cso8588870a12.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 04:25:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699964743; x=1700569543; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/OaNUIXzZbTozIX8X4xF9tfJTPhcFd4ZMAc/W8lKR1s=;
+ b=LSl/GOMtvtoJ99SfZdWjcS8L0Jj3BHe+DbOOypd3xa0M8L6tOBu+y0q+9nfxtMmNTE
+ K/UyBpZkSRzt//38z5OGHLiqwqhDaodDugnyqLw5QxLi/AS+besNsxSbvyGclurWF7/O
+ pSESxSEvgiDJwR/K/LdAKTn16dzkiLG1l5M0UMoU+FH8+dNwuTJ5MKx/ry3dmOVEcIDo
+ nxSpz4JbNSSWxtE5tExPzCpZY+QL9dUjdkapO5dMl0ODoel/IXX41ldts5mzioM2VZtv
+ 6TzG7ASQX4rJLzLRo/UCEmy214XvxzAzgkuN2zNKpQwIWlnTCnWg1gQutaWS8qdy7ipk
+ /J1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699964743; x=1700569543;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/OaNUIXzZbTozIX8X4xF9tfJTPhcFd4ZMAc/W8lKR1s=;
+ b=Wn3+Hzaqyn/442XTr352rzl6GEmccG3aV8YiBqsayENfJAmHZy2GsGBEubSyciez5u
+ GNHXocjs1/KlSOSVM6ZLreIXCJFo11UV+zPUo/HW3scuMf8heQ74/5wnrvUFnhq81/4n
+ G9Q3BvsFXobgx+rLupUBotIUl+3DqzBemaJHmTes3SM2R9NHbjCmoc5kpi72V2mb1R17
+ 6wSESQUxsqmGCFrfl+qci+ZpvNXWaP2T9qidkz2mtAUlpjKTpnfqTp3hqKkXsSVFGmmx
+ IKd7glsVTMZ2+xSt3HaknKJEa8KiQesQVlH6VgvQf+lh1ss0mWHNKvOtVP8z9ts49l2N
+ 0nBg==
+X-Gm-Message-State: AOJu0Yz+eci+e2JQwZH5aunY2+IegyJ5CoLF+XZnouf/pB+/idJVPmBm
+ rYDo+donyxD7Y47HSB+JixbNiw==
+X-Google-Smtp-Source: AGHT+IHM6IuBxGUDmhvjGjE56b7qH2UrMdIaZaFuXREseUVLlPhT1pToLbIdRgtL7O9mZ4K3ubCdVQ==
+X-Received: by 2002:a17:906:5245:b0:9e5:2b1f:13f4 with SMTP id
+ y5-20020a170906524500b009e52b1f13f4mr6552715ejm.42.1699964743415; 
+ Tue, 14 Nov 2023 04:25:43 -0800 (PST)
+Received: from [192.168.69.100] (cac94-h02-176-184-25-155.dsl.sta.abo.bbox.fr.
+ [176.184.25.155]) by smtp.gmail.com with ESMTPSA id
+ rs4-20020a170907036400b009a1a653770bsm5412508ejb.87.2023.11.14.04.25.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 14 Nov 2023 04:25:42 -0800 (PST)
+Message-ID: <86153cf2-129d-4e1e-8949-786764bdf607@linaro.org>
+Date: Tue, 14 Nov 2023 13:25:40 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Score: -6.73
-X-Spamd-Result: default: False [-6.73 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.63)[98.38%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[7];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
- RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-9.0 07/10] sysemu/xen-mapcache: Check Xen availability
+ with CONFIG_XEN_IS_POSSIBLE
+Content-Language: en-US
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Anthony Perard <anthony.perard@citrix.com>, xen-devel@lists.xenproject.org,
+ Stefano Stabellini <sstabellini@kernel.org>, qemu-block@nongnu.org,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org, Paul Durrant <paul@xen.org>
+References: <20231113152114.47916-1-philmd@linaro.org>
+ <20231113152114.47916-8-philmd@linaro.org>
+ <9ba10b4a92ac6782d0c581b1e1ee5d5efee44c33.camel@infradead.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <9ba10b4a92ac6782d0c581b1e1ee5d5efee44c33.camel@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,43 +99,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steve Sistare <steven.sistare@oracle.com> writes:
+On 13/11/23 20:52, David Woodhouse wrote:
+> On Mon, 2023-11-13 at 16:21 +0100, Philippe Mathieu-Daudé wrote:
+>> "sysemu/xen.h" defines CONFIG_XEN_IS_POSSIBLE as a target-agnostic
+>> version of CONFIG_XEN. Use it in order to use "sysemu/xen-mapcache.h"
+>> in target-agnostic files.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+> Noting that CONFIG_XEN_IS_POSSIBLE is for Xen accelerator support, and
+> may not be set in all cases when we're hosting Xen-compatible guests,
 
-> Coverity diagnoses a possible out-of-range array index here ...
->
->     static GSList *migration_blockers[MIG_MODE__MAX];
->
->     fill_source_migration_info() {
->         GSList *cur_blocker = migration_blockers[migrate_mode()];
->
-> ... because it does not know that MIG_MODE__MAX will never be returned as
-> a migration mode.  To fix, assert so in migrate_mode().
->
-> Fixes: fa3673e497a1 ("migration: per-mode blockers")
->
-> Reported-by: Peter Maydell <peter.maydell@linaro.org>
-> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> ---
->  migration/options.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/migration/options.c b/migration/options.c
-> index 8d8ec73..3e3e0b9 100644
-> --- a/migration/options.c
-> +++ b/migration/options.c
-> @@ -833,8 +833,10 @@ uint64_t migrate_max_postcopy_bandwidth(void)
->  MigMode migrate_mode(void)
->  {
->      MigrationState *s = migrate_get_current();
-> +    MigMode mode = s->parameters.mode;
->  
-> -    return s->parameters.mode;
-> +    assert(mode >= 0 && mode < MIG_MODE__MAX);
-> +    return mode;
->  }
->  
->  int migrate_multifd_channels(void)
+As is CONFIG_XEN.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Maybe be worth renaming CONFIG_ACCEL_XEN if you think we need
+guest hw specific CONFIG_foo_XEN variables.
+
+> Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+
+Thanks!
 
