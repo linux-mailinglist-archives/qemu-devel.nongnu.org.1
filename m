@@ -2,75 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7446C7EAFBC
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 13:21:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 485177EAFC0
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 13:22:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2sOl-0008BY-TK; Tue, 14 Nov 2023 07:20:07 -0500
+	id 1r2sQW-00010D-EV; Tue, 14 Nov 2023 07:21:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r2sOj-0008BI-I6
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 07:20:05 -0500
-Received: from mail-qt1-x836.google.com ([2607:f8b0:4864:20::836])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r2sQN-0000z9-QB
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 07:21:47 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r2sOe-0005NX-B1
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 07:20:05 -0500
-Received: by mail-qt1-x836.google.com with SMTP id
- d75a77b69052e-42033328ad0so35548201cf.0
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 04:19:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1699964399; x=1700569199; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gctLALT8xLMhRnaFjp6XsEhqzTIgHTmasau9reYb0sg=;
- b=jVEbe7jZOH6i/TfqMk2oxz6ouao2jLQ2UC6AowjTUL6c7rjs8K88qwyULEV2sQk5Qn
- EpYU72Hf2rhVlo96NOVUheki7uKuWsnbVX/p2IjWPL4HjiLbJdBJI4qWyugiRfuvfb5K
- dyaQQEVEyRk/50fgVaXfqPYj8a+qtD2KJHSvp7j8HsqbuOUUAbnqdp5ob3C7SItKFSYo
- Qa6VTCw8gFJC8JsQBOoh48Hn3M0C8mTOX6xHYqyFaVRggkyOcgUYRVrUG7EuTLQ6og7g
- ZoCV2hqKYNMePvZ0JVzfE+a3xZTlNnEHCNujDoD8DRlc8ao6LldO5H48D291wvjufqMW
- cd/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699964399; x=1700569199;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gctLALT8xLMhRnaFjp6XsEhqzTIgHTmasau9reYb0sg=;
- b=XJ7XME4QIeUmz5In06aXXl/XbM2neQCf0VI9F5C56Cweh7XD4BKQmGWIn/M04DhIHE
- MKdp75ZvtrRlFcf3l6CPFRLKmOY8enp7A5W/i086lC0GrY59ONCeNvNPdYB1xGuKKbzd
- JaWiNbb9zznDZ6SVzt2XY7o4iwy7DkUi0zlOzf7TLQFtEoJC0rWroj8DZwM7rxLKVprF
- dc2isXr2pXF9BXss70RpISTMtnA4K349ii1BE89jTWaZUc6XreQqn46pL2C+pSpG1hxV
- DScD6SSwuLMPlClipnA2AFsKy8yjQBvYIGFDZAnsNlaHtLqCEGZEmb3iEfSeN+aXQ0r7
- MBhA==
-X-Gm-Message-State: AOJu0YzsQN58JSXvaPcNYQO0+a+c8bG9mHLsUNmHGHhGaMYBmVE66Xig
- nYWZU0iLd4NwXoXkfqWxKODfTZbqdh3W9TdJvKw=
-X-Google-Smtp-Source: AGHT+IHo9SWjv98VPOgcCCHAfhp2C10LqxNucrXZZLEgeLwB+mSJP2Lxrfirhr7d3W07sTuWoQ0jOuEmn+3pTB8eMKg=
-X-Received: by 2002:ac8:7f02:0:b0:41e:2aab:8dc with SMTP id
- f2-20020ac87f02000000b0041e2aab08dcmr2160101qtk.37.1699964399064; Tue, 14 Nov
- 2023 04:19:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r2sQM-0005y3-Aj
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 07:21:47 -0500
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 4DED91F86A;
+ Tue, 14 Nov 2023 12:21:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1699964504; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=dLhHLaPI8auL6sA6J6LP30S1Uv5qvRDJH2D8NUoDj4w=;
+ b=bTx7kZQuz8f/7NpL4HuuWoT5gbtx0Jpn6ZeRUElXIfmAjKct1UsGV221ACrOpIsWDVMOxK
+ 7JCJw5xnw/H+SB6U4v5VdtRPUDPNiZP416ovoBmoXR2HERWGjW6YnURVhwo01egJYipKeU
+ wvJaH8DCRf2OfxCrDPwitNuIomsSVFA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1699964504;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=dLhHLaPI8auL6sA6J6LP30S1Uv5qvRDJH2D8NUoDj4w=;
+ b=86xuC9QvL/qIHA7nq9RPoFl2Ol9fs6Z9p1Mrrw0fl/yy6PHIzyKr010/i38V9joRkDASbo
+ dUvxD9QRsdQqHmAg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D358E13416;
+ Tue, 14 Nov 2023 12:21:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id mQT4JldmU2XfZgAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 14 Nov 2023 12:21:43 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>, Peter Maydell
+ <peter.maydell@linaro.org>, Steve Sistare <steven.sistare@oracle.com>
+Subject: Re: [PATCH] migration: fix coverity migrate_mode finding
+In-Reply-To: <1699907025-215450-1-git-send-email-steven.sistare@oracle.com>
+References: <1699907025-215450-1-git-send-email-steven.sistare@oracle.com>
+Date: Tue, 14 Nov 2023 09:21:41 -0300
+Message-ID: <87zfzgbk4q.fsf@suse.de>
 MIME-Version: 1.0
-References: <20231018133621.721259-1-edmund.raile@proton.me>
-In-Reply-To: <20231018133621.721259-1-edmund.raile@proton.me>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 14 Nov 2023 16:19:47 +0400
-Message-ID: <CAJ+F1CLoxcTmY7-9eUjyBVaa4z_vTZFneK8SLXxvV5ud7qkAXw@mail.gmail.com>
-Subject: Re: [PATCH v3] ui/gtk-clipboard: async owner_change clipboard_request
-To: Edmund Raile <edmund.raile@proton.me>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::836;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x836.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: -6.73
+X-Spamd-Result: default: False [-6.73 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.63)[98.38%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[7];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,219 +96,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Steve Sistare <steven.sistare@oracle.com> writes:
 
-On Wed, Oct 18, 2023 at 5:38=E2=80=AFPM Edmund Raile <edmund.raile@proton.m=
-e> wrote:
+> Coverity diagnoses a possible out-of-range array index here ...
 >
-> Previous implementation of both functions was blocking and caused guest
-> freezes / crashes on host clipboard owner change.
->  * use callbacks instead of waiting for GTK to deliver
->    clipboard content type evaluation and contents
->  * evaluate a serial in the info struct to discard old events
+>     static GSList *migration_blockers[MIG_MODE__MAX];
 >
-> Fixes: d11ebe2ca257 ("ui/gtk: add clipboard support")
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1150
-> Signed-off-by: Edmund Raile <edmund.raile@proton.me>
+>     fill_source_migration_info() {
+>         GSList *cur_blocker = migration_blockers[migrate_mode()];
+>
+> ... because it does not know that MIG_MODE__MAX will never be returned as
+> a migration mode.  To fix, assert so in migrate_mode().
+>
+> Fixes: fa3673e497a1 ("migration: per-mode blockers")
+>
+> Reported-by: Peter Maydell <peter.maydell@linaro.org>
+> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 > ---
+>  migration/options.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
-> Gitlab user kolAflash is to credit for determining that the main issue
-> of the QEMU-UI-GTK clipboard is the call to the blocking function
-> gtk_clipboard_wait_is_text_available in gd_owner_change, causing guests
-> to freeze / crash when GTK takes too long.
-> Marc-Andr=C3=A9 Lureau suggested:
->  * gd_clipboard_request might express the same issue due to using
->    gtk_clipboard_wait_for_text
->  * the callbacks could use the QemuClipboardInfo struct's serial field
->    to discard old events
->
-> This patch implements asynchronous gd_clipboard_request and
-> gd_owner_change with serial checking.
->
-> What I haven't implemented is gd_clipboard_notify's
-> QEMU_CLIPBOARD_RESET_SERIAL handling, I don't know how to.
->
-> Please help me test this patch.
-> The issue mentions the conditions, so far it has been stable.
-> Note that you will need to build QEMU with `enable-gtk-clipboard`.
-> command line options for qemu-vdagent:
-> -device virtio-serial,packed=3Don,ioeventfd=3Don \
-> -device virtserialport,name=3Dcom.redhat.spice.0,chardev=3Dvdagent0 \
-> -chardev qemu-vdagent,id=3Dvdagent0,name=3Dvdagent,clipboard=3Don,mouse=
-=3Doff \
-> The guests spice-vdagent user service may have to be started manually.
->
-> If testing is sufficient and shows no way to break this, we could undo
-> or modify 29e0bfffab87d89c65c0890607e203b1579590a3
-> to have the GTK UI's clipboard built-in by default again.
->
-> Previous threads:
->  * https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg06027.html
->  * https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg04397.html
-> I am not responding to either of the previous threads so as to not break
-> anything in the mailing list by correcting my mistake in the subject.
->
->  ui/gtk-clipboard.c | 84 ++++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 70 insertions(+), 14 deletions(-)
->
-> diff --git a/ui/gtk-clipboard.c b/ui/gtk-clipboard.c
-> index 8d8a636fd1..07fe8b0ce1 100644
-> --- a/ui/gtk-clipboard.c
-> +++ b/ui/gtk-clipboard.c
-> @@ -133,26 +133,85 @@ static void gd_clipboard_notify(Notifier *notifier,=
- void *data)
->      }
->  }
->
-> +/*
-> + * asynchronous clipboard text transfer callback
-> + * called when host (gtk) is ready to deliver to guest
-> + */
-> +static void gd_clipboard_request_text_callback
-> +    (GtkClipboard *clipboard, const gchar *text, gpointer data)
-> +{
-> +    QemuClipboardInfo *info =3D (QemuClipboardInfo *)data;
-> +
-
-No need for cast with a gpointer.
-
-> +    if (!text || !qemu_clipboard_check_serial(info, true)) {
-> +        return;
-> +    }
-> +
-> +    qemu_clipboard_set_data(info->owner, info, QEMU_CLIPBOARD_TYPE_TEXT,
-> +                            strlen(text), text, true);
-> +    return;
-
-drop that return; line
-
-unref(info) (see below)
-
-> +}
-> +
-> +/*
-> + * asynchronous clipboard data transfer initiator
-> + * guest requests, host delivers when ready
-> + */
->  static void gd_clipboard_request(QemuClipboardInfo *info,
->                                   QemuClipboardType type)
+> diff --git a/migration/options.c b/migration/options.c
+> index 8d8ec73..3e3e0b9 100644
+> --- a/migration/options.c
+> +++ b/migration/options.c
+> @@ -833,8 +833,10 @@ uint64_t migrate_max_postcopy_bandwidth(void)
+>  MigMode migrate_mode(void)
 >  {
->      GtkDisplayState *gd =3D container_of(info->owner, GtkDisplayState, c=
-bpeer);
-> -    char *text;
->
->      switch (type) {
->      case QEMU_CLIPBOARD_TYPE_TEXT:
-> -        text =3D gtk_clipboard_wait_for_text(gd->gtkcb[info->selection])=
-;
-> -        if (text) {
-> -            qemu_clipboard_set_data(&gd->cbpeer, info, type,
-> -                                    strlen(text), text, true);
-> -            g_free(text);
-> -        }
-> +        gtk_clipboard_request_text
-> +            (gd->gtkcb[info->selection],
-> +             gd_clipboard_request_text_callback, info);
-
-You should ref() info here
-
->          break;
->      default:
->          break;
->      }
+>      MigrationState *s = migrate_get_current();
+> +    MigMode mode = s->parameters.mode;
+>  
+> -    return s->parameters.mode;
+> +    assert(mode >= 0 && mode < MIG_MODE__MAX);
+> +    return mode;
 >  }
->
-> +/*
-> + * asynchronous clipboard text availability notification callback
-> + * called when host (gtk) is ready to notify guest
-> + */
-> +static void gd_owner_change_text_callback
-> +    (GtkClipboard *clipboard, const gchar *text, gpointer data)
-> +{
-> +    QemuClipboardInfo *info =3D (QemuClipboardInfo *)data;
-> +
-> +    static uint32_t notification_serial_last;
-> +
-> +    /*
-> +     * performing the subtraction of uints as ints
-> +     * is a neat trick to guard against rollover issues
-> +     */
-> +    if (!text ||
-> +        (((int32_t)(info->serial - notification_serial_last)) <=3D 0))
+>  
+>  int migrate_multifd_channels(void)
 
-You should only handle the last update, so a simple comparison with a
-GtkDisplayState clipboard_request_serial field should do.
-
-> +    {
-> +        goto end;
-> +    }
-> +
-> +    notification_serial_last =3D info->serial;
-> +
-> +    info->types[QEMU_CLIPBOARD_TYPE_TEXT].available =3D true;
-> +    qemu_clipboard_update(info);
-> +
-> +    goto end;
-
-drop that line
-
-> +
-> +end:
-> +    /*
-> +     * this notification info struct is temporary
-> +     * and can safely be freed after use
-> +     */
-> +    qemu_clipboard_info_unref(info);
-> +    return;
-
-needless return;
-
-> +}
-> +
-> +/*
-> + * asynchronous clipboard data availability notification initiator
-> + * host notifies guest when ready
-> + */
->  static void gd_owner_change(GtkClipboard *clipboard,
->                              GdkEvent *event,
->                              gpointer data)
-> @@ -160,22 +219,19 @@ static void gd_owner_change(GtkClipboard *clipboard=
-,
->      GtkDisplayState *gd =3D data;
->      QemuClipboardSelection s =3D gd_find_selection(gd, clipboard);
->      QemuClipboardInfo *info;
-> +    static uint32_t notification_serial;
-
-You should use a GtkDisplayState field instead.
->
->      if (gd->cbowner[s]) {
->          /* ignore notifications about our own grabs */
->          return;
->      }
->
-> -
->      switch (event->owner_change.reason) {
->      case GDK_OWNER_CHANGE_NEW_OWNER:
->          info =3D qemu_clipboard_info_new(&gd->cbpeer, s);
-> -        if (gtk_clipboard_wait_is_text_available(clipboard)) {
-> -            info->types[QEMU_CLIPBOARD_TYPE_TEXT].available =3D true;
-> -        }
-> -
-> -        qemu_clipboard_update(info);
-> -        qemu_clipboard_info_unref(info);
-> +        info->serial =3D ++notification_serial;
-> +        gtk_clipboard_request_text
-> +            (clipboard, gd_owner_change_text_callback, info);
->          break;
->      default:
->          qemu_clipboard_peer_release(&gd->cbpeer, s);
-> --
-> 2.42.0
->
->
->
-
-
---
-Marc-Andr=C3=A9 Lureau
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
