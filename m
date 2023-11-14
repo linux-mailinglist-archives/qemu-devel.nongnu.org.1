@@ -2,57 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82D967EB583
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:28:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E027EB531
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:00:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2xBT-00081i-1U; Tue, 14 Nov 2023 12:26:43 -0500
+	id 1r2wkt-0006h5-9H; Tue, 14 Nov 2023 11:59:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1r2xBP-0007zT-UR; Tue, 14 Nov 2023 12:26:39 -0500
-Received: from imap4.hz.codethink.co.uk ([188.40.203.114])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1r2wkc-0006by-1O; Tue, 14 Nov 2023 11:58:58 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1r2xBM-0001vP-M2; Tue, 14 Nov 2023 12:26:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=codethink.co.uk; s=imap4-20230908; h=Sender:Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=aByQA5qmzql9xsLx/xcn8ZEzU30AG61TvPWwUn+kHqw=; b=CkzhEHnbCS9Nztqxu+61Hct5K3
- bQX+vtTmwjFaXfBIdiBNSfEoCNhbz3eJ9AIrxrxjbEl1ZmFZYl2AD8YkHJd0smu0fUy4+CHz2EFWt
- Yof8JE5b7YcLDTxhvzFp7IdeHhp2ga3cy/y6tzlV+HbaqumCmhTBojBDKK0B0qg5OpJAWXEODme1x
- n7jGNAkV3fT93ZJc4hn/XWuIG4K48+ocdayl4LnAxzBhCopGETLNTNlyIHltJzj1LycXsES/cEffb
- sq3TYJ5LTT+4IfUbeo0SgoF7BvABx+bR2L5KwEFFougwH7BcFmhQo67m8z5+w0ZgVLoIUgvZ5/o63
- NRRtIZLA==;
-Received: from [167.98.27.226] (helo=rainbowdash)
- by imap4.hz.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
- id 1r2wfu-001nru-Bl; Tue, 14 Nov 2023 16:54:06 +0000
-Received: from ben by rainbowdash with local (Exim 4.97)
- (envelope-from <ben@rainbowdash>) id 1r2wft-00000002rNP-3u5E;
- Tue, 14 Nov 2023 16:54:05 +0000
-From: Ben Dooks <ben.dooks@codethink.co.uk>
-To: peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Ben Dooks <ben.dooks@codethink.co.uk>
-Subject: [PATCH] hw/intc/arm_gicv3: ICC_PMR_EL1 high bits should be RAZ
-Date: Tue, 14 Nov 2023 16:54:04 +0000
-Message-Id: <20231114165404.681826-1-ben.dooks@codethink.co.uk>
-X-Mailer: git-send-email 2.37.2.352.g3c44437643
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1r2wkR-0004m1-Mw; Tue, 14 Nov 2023 11:58:50 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 5B3A133266;
+ Tue, 14 Nov 2023 19:59:00 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 26D43351ED;
+ Tue, 14 Nov 2023 19:58:42 +0300 (MSK)
+Received: (nullmailer pid 2949071 invoked by uid 1000);
+ Tue, 14 Nov 2023 16:58:42 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH trivial 00/21] spelling fixes for 8.2
+Date: Tue, 14 Nov 2023 19:58:13 +0300
+Message-Id: <20231114165834.2949011-1-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=188.40.203.114;
- envelope-from=srv_ts003@codethink.com; helo=imap4.hz.codethink.co.uk
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,30 +57,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ICC_PMR_ELx bit msak returned from icc_fullprio_mask
-should technically also remove any bit above 7 as these
-are marked reserved (read 0) and should therefore should
-not be written as anything other than 0.
+For newly added lines after 8.1.
 
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
----
- hw/intc/arm_gicv3_cpuif.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Michael Tokarev (21):
+  bsd-user: spelling fixes: necesary, agrument, undocummented
+  linux-user: spelling fixes: othe, necesary
+  hw/cxl: spelling fixes: limitaions, potentialy, intialized
+  gdbstub: spelling fix: respectivelly
+  docs/about/deprecated.rst: spelling fix: becase
+  docs/devel/migration.rst: spelling fix: doen't
+  docs/system/arm/emulation.rst: spelling fix: Enhacements
+  target/arm/tcg: spelling fixes: alse, addreses
+  target/hppa: spelling fixes: Indicies, Truely
+  migration/rdma.c: spelling fix: asume
+  contrib/vhost-user-gpu/virgl.c: spelling fix: mesage
+  hw/mem/memory-device.c: spelling fix: ontaining
+  hw/net/cadence_gem.c: spelling fixes: Octects
+  include/block/ufs.h: spelling fix: setted
+  include/hw/hyperv/dynmem-proto.h: spelling fix: nunber
+  include/hw/virtio/vhost.h: spelling fix: sate
+  target/riscv/cpu.h: spelling fix: separatly
+  tests/qtest/migration-test.c: spelling fix: bandwith
+  tests/qtest/ufs-test.c: spelling fix: tranfer
+  util/filemonitor-inotify.c: spelling fix: kenel
+  util/range.c: spelling fix: inbetween
 
-diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-index d07b13eb27..986044df79 100644
---- a/hw/intc/arm_gicv3_cpuif.c
-+++ b/hw/intc/arm_gicv3_cpuif.c
-@@ -803,7 +803,7 @@ static uint32_t icc_fullprio_mask(GICv3CPUState *cs)
-      * with the group priority, whose mask depends on the value of BPR
-      * for the interrupt group.)
-      */
--    return ~0U << (8 - cs->pribits);
-+    return (~0U << (8 - cs->pribits)) & 0xff;
- }
- 
- static inline int icc_min_bpr(GICv3CPUState *cs)
+ bsd-user/bsd-mem.h               | 2 +-
+ bsd-user/freebsd/os-proc.c       | 2 +-
+ bsd-user/freebsd/os-stat.h       | 6 +++---
+ contrib/vhost-user-gpu/virgl.c   | 2 +-
+ docs/about/deprecated.rst        | 2 +-
+ docs/devel/migration.rst         | 8 ++++----
+ docs/system/arm/emulation.rst    | 2 +-
+ gdbstub/gdbstub.c                | 2 +-
+ hw/cxl/cxl-component-utils.c     | 4 ++--
+ hw/cxl/cxl-mailbox-utils.c       | 2 +-
+ hw/mem/memory-device.c           | 2 +-
+ hw/net/cadence_gem.c             | 8 ++++----
+ include/block/ufs.h              | 2 +-
+ include/hw/cxl/cxl_device.h      | 2 +-
+ include/hw/hyperv/dynmem-proto.h | 6 +++---
+ include/hw/virtio/vhost.h        | 2 +-
+ linux-user/ppc/vdso.S            | 2 +-
+ linux-user/syscall.c             | 2 +-
+ migration/rdma.c                 | 2 +-
+ target/arm/tcg/helper-a64.c      | 2 +-
+ target/arm/tcg/hflags.c          | 2 +-
+ target/hppa/cpu.h                | 2 +-
+ target/hppa/machine.c            | 2 +-
+ target/riscv/cpu.h               | 4 ++--
+ tests/qtest/migration-test.c     | 2 +-
+ tests/qtest/ufs-test.c           | 2 +-
+ util/filemonitor-inotify.c       | 2 +-
+ util/range.c                     | 2 +-
+ 28 files changed, 40 insertions(+), 40 deletions(-)
+
 -- 
-2.37.2.352.g3c44437643
+2.39.2
 
 
