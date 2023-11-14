@@ -2,133 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B957EB3A1
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 16:32:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 576877EB404
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 16:45:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2vP8-0006id-0b; Tue, 14 Nov 2023 10:32:42 -0500
+	id 1r2vZ8-0003KU-Ua; Tue, 14 Nov 2023 10:43:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2vP6-0006iD-1O
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 10:32:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2vP4-0002Cy-Ew
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 10:32:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699975957;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Pehq16gIO7zBsiO8T2BWpaRQP9qU6FDsmBz2qudGvzM=;
- b=hlqoiUSlJyM8jIer9ft6BlDpXrAYIJ5mpNlol1u+SL2KEqx5PJX/VY1RzJVgciJhjFbehp
- QHY4ft8AlMvtiEB0jnpvo4PgGmlZqa4Ds+R9a6H3c7zNCvWoroaSGZ1wjILeaigZa8jexx
- xKGmdZrDdHLb+d5vXfIpoHmen036STM=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-34-lgPkl8ikN5C-UOPAMXTejw-1; Tue, 14 Nov 2023 10:32:35 -0500
-X-MC-Unique: lgPkl8ikN5C-UOPAMXTejw-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-66d412e2450so67931606d6.2
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 07:32:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2vZ6-0003J2-EL
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 10:43:00 -0500
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2vZ4-00049b-7r
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 10:43:00 -0500
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-9e5dd91b0acso684600166b.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 07:42:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1699976576; x=1700581376; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=gCFoXhGCZFhwzHOt1ECCBxHdb8kGrjYPklFidAhJw58=;
+ b=ACv+NtnMJk4j6bY/hA4rIxvzmtji5PBfMwtFyyik/+QgDmjfPEtqVQEdYfJYD9UIwj
+ g8/hZyKZnL4b4r4oN1uyoJNfDTo2ehSZYEJqOCmcPoPe0E6G0V57yMCgP5LqOXFI3Icg
+ /+yQYnZvyb4IFMe3mJNJpXaKy7cDs9GxyiUMfERhJVG7IMyPkIDZVXyGC0sK7hAEaIUq
+ xZgWryY+1SgNc+QFJhhzQcO5IXwwLqAXUweZw4uXQvoy/oImOJPOJa6TJ5RTh2Uioj6E
+ KvOiAe5KerCHGzEDCLkc0rdW/bTMq/AfMNDDG5qv+Axvb6YN6SqGec5UQ1h6Uuq3ojPW
+ V73w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699975949; x=1700580749;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1699976576; x=1700581376;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Pehq16gIO7zBsiO8T2BWpaRQP9qU6FDsmBz2qudGvzM=;
- b=SGa2HosCnwGPsMb/4Q4qx16lfS5+aFFXC32ocWxsa9xuHHm1Wfyfe3ljno8ZYyHX3n
- p2lrSAdtX5cug94/VHYy9ZZHTjxF6rNOOQgclGE2MOjHwfG/w9paL0c4GnyRFOTBv3Zl
- Fgxucpeo/fjZzqVCXE3mPiBL1HAovaomoOkesbwb9Ptp/iY02CDcu9VpUzFLgQxMVoHn
- Lh1GunyqfUa3At/Vd6LL5riYX+/JDhAz2kEU1wiKh7yjpfvEa06ML6WeSX+A/zMsDSiK
- VC0SrTVMar+czBfKtDr6hdYWYl24+5KBsxTgRYNFQtiKO+khFWNGr6mMnjiSRGIgInOc
- dwzA==
-X-Gm-Message-State: AOJu0YwQm03IWKRrfIbKZ1FFczZ2FCLRRr+UZPX9T9EYAPGrobGj0iTZ
- /UQ4POYHkNdD1UWXcJI0cZIKxgphAgFantvRTjz2ZMpJXM6uLdGoMqlAmKqDzHQpylRbNHZQ4e/
- 6AgaMc7maWq7q9jI=
-X-Received: by 2002:ac8:5e0c:0:b0:41e:204b:f953 with SMTP id
- h12-20020ac85e0c000000b0041e204bf953mr2280361qtx.64.1699975948930; 
- Tue, 14 Nov 2023 07:32:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE4qgSVnMMMhCe/3vi03n2BQQsMBd/4j7lRg6mXfophRgscWJbJl2U3mA2SGvwXmbyhhJ8sUQ==
-X-Received: by 2002:ac8:5e0c:0:b0:41e:204b:f953 with SMTP id
- h12-20020ac85e0c000000b0041e204bf953mr2280346qtx.64.1699975948612; 
- Tue, 14 Nov 2023 07:32:28 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-43-176-122.web.vodafone.de.
- [109.43.176.122]) by smtp.gmail.com with ESMTPSA id
- s23-20020ac85297000000b00419c39dd28fsm2784978qtn.20.2023.11.14.07.32.27
+ bh=gCFoXhGCZFhwzHOt1ECCBxHdb8kGrjYPklFidAhJw58=;
+ b=vNtEv6vrOijuPZg22eWtGCyJ8h+42KAqOqAQfHNnBQAQk6yqPPRRr4ZrIqjfYI9LeI
+ Y+wNhtu4VYqI72QlBOsxsXpI8MiirY+uHKJo1GGCR96wDQia8MAvoumQGmtYSfrS/UJ1
+ 3GpLNrWymVEmFYWGcr8OENpNzyUk6JQjdZvGiv51pchP69pNWtkiKXg04z5w2akuyF3N
+ eUQT/tZsW41Flo/IIGs1Ck1zrcCN2K4Dg64SrnnIdVCrs0B/huzVlIgfliuK81gaN5h+
+ 1DuGS+7OA3dRpxCOT2lGA82o+0n0H2PklvAzkGixHpaEJ/XuOIjp2c1KCHVwd0RdSR5U
+ Yr5g==
+X-Gm-Message-State: AOJu0YwdZI0yoUuXgNjO3XjAvZZ/UKkOIdl9SHoV8QLJmbxEi2UYaBXB
+ /T/cEu2bxUneBr3I3x2dBUce/A==
+X-Google-Smtp-Source: AGHT+IHp79TSN3T1f0iR/8hTGuWsFNTOnvRmliGhAL1mNCFX7w4yOvOUPmAnOLIhILS3nzzmhv8aFA==
+X-Received: by 2002:a17:906:1919:b0:9e4:121c:b9fd with SMTP id
+ a25-20020a170906191900b009e4121cb9fdmr7690326eje.12.1699976576191; 
+ Tue, 14 Nov 2023 07:42:56 -0800 (PST)
+Received: from [192.168.69.100] (cac94-h02-176-184-25-155.dsl.sta.abo.bbox.fr.
+ [176.184.25.155]) by smtp.gmail.com with ESMTPSA id
+ dx5-20020a170906a84500b0099bd1a78ef5sm5691278ejb.74.2023.11.14.07.42.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 07:32:28 -0800 (PST)
-Message-ID: <0809c3c0-16dc-490d-a141-d97556f22692@redhat.com>
-Date: Tue, 14 Nov 2023 16:32:25 +0100
+ Tue, 14 Nov 2023 07:42:55 -0800 (PST)
+Message-ID: <e298292d-fc40-44ca-9de2-1b159519836b@linaro.org>
+Date: Tue, 14 Nov 2023 16:42:52 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/avocado: Replace assertRegexpMatches() for Python
- 3.12 compatibility
+Subject: Re: [PATCH-for-9.0 v2 01/19] tests/avocado: Add 'guest:xen' tag to
+ tests running Xen guest
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>
-References: <20231114144832.71612-1-philmd@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20231114144832.71612-1-philmd@linaro.org>
+To: David Woodhouse <dwmw2@infradead.org>, David Woodhouse
+ <dwmw@amazon.co.uk>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paul Durrant <paul@xen.org>, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ xen-devel@lists.xenproject.org, qemu-block@nongnu.org,
+ Anthony Perard <anthony.perard@citrix.com>, kvm@vger.kernel.org,
+ Thomas Huth <thuth@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+References: <20231114143816.71079-1-philmd@linaro.org>
+ <20231114143816.71079-2-philmd@linaro.org>
+ <94D9484A-917D-4970-98DE-35B84BEDA1DC@infradead.org>
+ <407f32ee-e489-4c05-9c3d-fa6c29bb1d99@linaro.org>
+ <074BCACF-C8D0-440A-A805-CDB0DB21C416@infradead.org>
+ <04917b57-d778-41a2-b320-c8c0afbe9ffb@linaro.org>
+ <37D11113-662D-49FD-B1F1-757217EAFEEA@infradead.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <37D11113-662D-49FD-B1F1-757217EAFEEA@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -145,41 +108,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/11/2023 15.48, Philippe Mathieu-Daudé wrote:
-> assertRegexpMatches() has been removed in Python 3.12 and should be replaced by
-> assertRegex(). See: https://docs.python.org/3.12/whatsnew/3.12.html#id3
+On 14/11/23 16:19, David Woodhouse wrote:
+> On 14 November 2023 10:13:14 GMT-05:00, "Philippe Mathieu-Daudé" <philmd@linaro.org> wrote:
+>> On 14/11/23 16:08, David Woodhouse wrote:
+>>> On 14 November 2023 10:00:09 GMT-05:00, "Philippe Mathieu-Daudé" <philmd@linaro.org> wrote:
+>>>> On 14/11/23 15:50, David Woodhouse wrote:
+>>>>> On 14 November 2023 09:37:57 GMT-05:00, "Philippe Mathieu-Daudé" <philmd@linaro.org> wrote:
+>>>>>> Add a tag to run all Xen-specific tests using:
+>>>>>>
+>>>>>>     $ make check-avocado AVOCADO_TAGS='guest:xen'
+>>>>>>
+>>>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>>>>> ---
+>>>>>> tests/avocado/boot_xen.py      | 3 +++
+>>>>>> tests/avocado/kvm_xen_guest.py | 1 +
+>>>>>> 2 files changed, 4 insertions(+)
+>>>>>
+>>>>> Those two are very different. One runs on Xen, the other on KVM. Do we want to use the same tag for both?
+>>>>
+>>>> My understanding is,
+>>>> - boot_xen.py runs Xen on TCG
+>>>> - kvm_xen_guest.py runs Xen on KVM
+>>>> so both runs Xen guests.
+>>>
+>>> Does boot_xen.py actually boot *Xen*? And presumably at least one Xen guest *within* Xen?
+>>
+>> I'll let Alex confirm, but yes, I expect Xen guest within Xen guest within TCG. So the tags "accel:tcg" (already present) and "guest:xen".
+>>
+>>> kvm_xen_guest.py boots a "Xen guest" under KVM directly without any real Xen being present. It's *emulating* Xen.
+>>
+>> Yes, so the tag "guest:xen" is correct.
+>>
+>>> They do both run Xen guests (or at least guests which use Xen hypercalls and *think* they're running under Xen). But is that the important classification for lumping them together?
+>>
+>> The idea of AVOCADO_TAGS is to restrict testing to what you want to cover. So here this allow running 'anything that can run Xen guest'
+>> in a single command, for example it is handy on my macOS aarch64 host.
 > 
-> Inspired-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   docs/devel/testing.rst   | 2 +-
->   tests/avocado/version.py | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
-> index fef64accc1..0af8f32fa3 100644
-> --- a/docs/devel/testing.rst
-> +++ b/docs/devel/testing.rst
-> @@ -1016,7 +1016,7 @@ class.  Here's a simple usage example:
->             self.vm.launch()
->             res = self.vm.cmd('human-monitor-command',
->                               command_line='info version')
-> -          self.assertRegexpMatches(res, r'^(\d+\.\d+\.\d)')
-> +          self.assertRegex(res, r'^(\d+\.\d+\.\d)')
->   
->   To execute your test, run:
->   
-> diff --git a/tests/avocado/version.py b/tests/avocado/version.py
-> index 93ffdf3d97..c6139568a1 100644
-> --- a/tests/avocado/version.py
-> +++ b/tests/avocado/version.py
-> @@ -22,4 +22,4 @@ def test_qmp_human_info_version(self):
->           self.vm.launch()
->           res = self.vm.cmd('human-monitor-command',
->                             command_line='info version')
-> -        self.assertRegexpMatches(res, r'^(\d+\.\d+\.\d)')
-> +        self.assertRegex(res, r'^(\d+\.\d+\.\d)')
+> Ok, that makes sense then. Thanks for your patience.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+No problem, I'll add a better description in v3.
+
+> Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+
+Thanks!
 
 
