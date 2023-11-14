@@ -2,140 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3AC57EA82F
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 02:25:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F707EA848
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 02:39:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2iAE-0008Vj-RU; Mon, 13 Nov 2023 20:24:27 -0500
+	id 1r2iNK-0002re-Fw; Mon, 13 Nov 2023 20:37:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <KFTING@nuvoton.com>)
- id 1r2iA7-0008TD-7g; Mon, 13 Nov 2023 20:24:20 -0500
-Received: from mail-psaapc01on20602.outbound.protection.outlook.com
- ([2a01:111:f400:feae::602]
- helo=APC01-PSA-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <KFTING@nuvoton.com>)
- id 1r2i9z-0007LA-Qz; Mon, 13 Nov 2023 20:24:18 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D+i8OQmBF//TQZqEza/s2mYcxy13INJNTo2C28JSWqNw/4MWH55gJPxK9md1yzWg61S2OwlOsAiRJbKyTJEYfwZvpkLYCCUWwaklc9jJWBX/U/Af3U8J1pyO6RQSvgALDLGGZZ9lW/uCgkdHAMhw3HRIJrUuWotUVtPrQPagwsoXfDYXcwPD/BwrAtohwPw8zPVDWyi5IIik18019oLsaVHr0hBuULC+tC91mQttu+yuBajAFSHqA6QlpCfdrZJgtNz7Y+BLmFw7f0DncQvLlD+ou7OIeUIC/vb72UShuEQqT0qFRm9R/0j8o9/HZGqWw7uWR1vwsstNbtApxhV5cw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sIwZlpSj6q1Lj2S+k8NotQ+zeT5BvJdNg1YZw5MztKY=;
- b=a36lT9dgchzrlvK6OCG1F9w2XY7USQ4ijodUiVtehVfXCC7Bv96Eo3zPIEO5bqY7N1/rOUT6uon2bdAFydpXVAIEoRTRLoqMqniDMZY24qdp3j13Qvzle0aQ6UF3hqEt57xG4z7befs2psw6otLT6dipewGRErVrlOtaunHj+zHSYr0Wgsj9Msr5b4A9MhsKHw0TW4hk8RFZI78G2Y5u6oS6UQ9d9OjbeL9gfC8PC7TMOxaaoogrrbP3f3wuMWTYKLvlH8yl4LCNqINVOVpZ5r+Q55BxSufIcUS3eW9fgQ0GibJWkkHDWi2utPs+yHJLE8bI9FxPYS91Pm4dkDw+zQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nuvoton.com; dmarc=pass action=none header.from=nuvoton.com;
- dkim=pass header.d=nuvoton.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nuvoton.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sIwZlpSj6q1Lj2S+k8NotQ+zeT5BvJdNg1YZw5MztKY=;
- b=flOa8LBILxzNurKk2dX6LYs49re/VjVcqiPN55wzxEg3uSuPQMOOiM2ZeRuJE1vIOqrMm/FR5vZvdqy8halDMWyBQg11dbEDv+kryUUXL2ci/vOARu5wXXie2/hU6oxRmS2uJgNUDKNU8MN52mAnAmO9V04M1vz5Bg1iUjlwfOM=
-Received: from KL1PR03MB7744.apcprd03.prod.outlook.com (2603:1096:820:ed::12)
- by SI2PR03MB6109.apcprd03.prod.outlook.com (2603:1096:4:14d::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.31; Tue, 14 Nov
- 2023 01:24:02 +0000
-Received: from KL1PR03MB7744.apcprd03.prod.outlook.com
- ([fe80::1947:30aa:d3b2:ac3b]) by KL1PR03MB7744.apcprd03.prod.outlook.com
- ([fe80::1947:30aa:d3b2:ac3b%5]) with mapi id 15.20.6977.029; Tue, 14 Nov 2023
- 01:24:02 +0000
-From: "KFTING@nuvoton.com" <KFTING@nuvoton.com>
-To: Nabih Estefan <nabihestefan@google.com>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>
-CC: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "wuhaotsh@google.com" <wuhaotsh@google.com>,
- "jasonwang@redhat.com" <jasonwang@redhat.com>, "Avi.Fishman@nuvoton.com"
- <Avi.Fishman@nuvoton.com>, "KWLIU@nuvoton.com" <KWLIU@nuvoton.com>,
- "tomer.maimon@nuvoton.com" <tomer.maimon@nuvoton.com>,
- "Hila.Miranda-Kuzi@nuvoton.com" <Hila.Miranda-Kuzi@nuvoton.com>
-Subject: RE: [PATCH v5 03/11] hw/misc: Add qtest for NPCM7xx PCI Mailbox
-Thread-Topic: [PATCH v5 03/11] hw/misc: Add qtest for NPCM7xx PCI Mailbox
-Thread-Index: AQHaCP7Q61gwJ7Nz0k+5kv3ABox+AbB5IF6w
-Date: Tue, 14 Nov 2023 01:24:01 +0000
-Message-ID: <KL1PR03MB7744A70A81045E5DC49C8191DBB2A@KL1PR03MB7744.apcprd03.prod.outlook.com>
-References: <20231027175532.3601297-1-nabihestefan@google.com>
- <20231027175532.3601297-4-nabihestefan@google.com>
-In-Reply-To: <20231027175532.3601297-4-nabihestefan@google.com>
-Accept-Language: zh-TW, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nuvoton.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: KL1PR03MB7744:EE_|SI2PR03MB6109:EE_
-x-ms-office365-filtering-correlation-id: 1cb2c765-35bc-47e4-533d-08dbe4b0626b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: zUcH2SfVMzHGpH+TOUhWXAMAwesiWziDqGzgEyqKVAVEWAiu/KQOI3EOlo7gpeqF0hJFoQyQJGErQb8lqtr4STkVlKG7VlWnoOYaDoHrWNCS6GftlXPUdf1ZyIoq8J7rbZbeZpuc+nI4cDkPZI76Yrm+rk56g62oQbA1Qzul4vp6GRsxgj7Cgl2IoqVAaWvXozphoKQ+UvNQKy/DXad+V/PlIGMF++LmYG63qH274pbhvQEqOjkL1Hlt7+npnmNdNm43TsZK0iKbZ2euscvzyD7tvT7CaPuGVDY8CXD1pRHHZO+YH2CTSDnBf07sd3VCulD8VEDzUJusdPWKrfB9RhrrJv94kAFkqpmXKD/8eCtJVW95IbTvhPyxL13Kgi+7pNcPmhyVGbwqW935+ynoS2DGdqtSaw3tK8H8bhENPhnMlEmpcJP+OJh5yJDC6kTTeuutt7BZfmZAm22eHpg8s9qiUC4/Di04yndCjFCBpw6kK1h9Z/cDadg+Me/U2nj8MeDJ6ZPfrwvgcWwQRqFJIY15NXrQAu/syr/6N5dgFmX9mqnHAqZrLqIW1MtXqBbre1PEIoo4YgyqgekvYGZPxW7efhn+5esuzbXO00Nt3AgskqVLz/lkewTSqPaD11ByxXP0f4e3hb2xnRZGl4gaO+bX5cHMZ0bdAm4el9ZVK0tB20Fvtm9bgvr7y82IsxiOiZ6yGLlPiMHQljpoOFt+b1Nlb9mZ6DV8J9kWDC7dh9c=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:KL1PR03MB7744.apcprd03.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(366004)(346002)(136003)(39860400002)(396003)(230173577357003)(230273577357003)(230922051799003)(1800799009)(186009)(64100799003)(451199024)(55016003)(4326008)(41300700001)(2906002)(15650500001)(5660300002)(52536014)(83380400001)(316002)(8676002)(8936002)(38070700009)(64756008)(66476007)(66446008)(66556008)(54906003)(86362001)(66946007)(33656002)(38100700002)(71200400001)(7696005)(6506007)(53546011)(478600001)(76116006)(110136005)(122000001)(107886003)(9686003)(26005)(2004002);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?aEUrWGV0WDNnTyszZGM1NzZrMVN0WTk2RklmRlRNR1ZhK1pmRkJkbCt4azd2?=
- =?utf-8?B?aVFNSmdXZGlNdkJkQklZc3lJVUpwWFBFdWJGeW5HL3lIUFZKRVN1WDdJZjZE?=
- =?utf-8?B?UXp4dDJKUURYMmRRNThGWnBUMHU2SzRGNnp0L1BRenBFdkZ0Tkd6WWladG1F?=
- =?utf-8?B?RjVIbGo1OHlibjFKRW1ta09oSXFKWDJKV1hlRjNJQTg4Z2YwR1o0R2V2RU1a?=
- =?utf-8?B?b3ptRWJ6RUJKaUhadXpXZVVwVGtvQ3NocDRxUnZlZWJUZU9jSy9zSzY5Mnlo?=
- =?utf-8?B?SHcwRWRRUWN5WllJdWRvTUtFRXh5K1RkSTJLeURrNUlnOW5BVlhDU0M0alVJ?=
- =?utf-8?B?TURjNTN0d21saHFVQmdiMHY2ZWFiamdWbXVtS29ZeVVZZWlvaTFsS2dqR2g4?=
- =?utf-8?B?UVJqR1JCVm8vWHBEKzA1MlNPRHdPMXJ0ZjZlOStScWJ2Q0RLS2VNRGZmd3o1?=
- =?utf-8?B?VW9PT1RiQ0hUalZmOWw5Ynk2MlI1dGVzdVlKL1lPc0hjcktYN2tLYytTemFR?=
- =?utf-8?B?UHZ0aWE3c3NBU2lQUXNnZnoyM0tveUJ6YVc1OUFsbXl3Y1lCeGVuMVgvT3Qx?=
- =?utf-8?B?L2YybW55SkszM3d0YVBLSUpyOGRBaXV1YUtLUjZ2b2ZwYk9HRVlPdWdVUVc2?=
- =?utf-8?B?b0dzbFJQbzNTb05meWpXQXg4VVJCZTMvU3l1TE1oWjBqY3Q5end0eVB0eW5U?=
- =?utf-8?B?TWszMDFndlhnVVVnTXZPNm1EaVN4T21MZEVCaEMwRXFSL09UYm9MdlppckxJ?=
- =?utf-8?B?cGxlVTQ1d05SeVllbmJmTWFhUk5QV3NsVWRSVTFWbEdlRmplNDhpQUVMbXkr?=
- =?utf-8?B?QjBJdkFYU2hmaGF6UXVVUWtqQTBnN2phVXprSVhNZUZDNk55RXBjVDExdUNH?=
- =?utf-8?B?VVZRMmRRejlwclNHL3FwNmRvWFdNZ2RKN2VhOTNMRERucjgxakRXZ294VmVR?=
- =?utf-8?B?SjBoZklCM2FiKzhJYm00MkdXVDhhbVIwcXlHb3R4MVpCeTNoa2cwcVNQV3Vy?=
- =?utf-8?B?MUUvQjJ3NVkrNUJwdmVSMGsrZmsvWHZWeVhtUGZCWHR1bzJwbkZEcnQ1V2Nk?=
- =?utf-8?B?Q3hYeG4wZ3BzVmNONWVSRTM1eGVVaHIyOUU0RmlRMWxqUjJoQVRnQ3Arejcz?=
- =?utf-8?B?NWpPMkZxUnRCY3NlblR4SUx0SkVyVC9meDlPeWx4Yk9uTWNsZUE5enFwS1hB?=
- =?utf-8?B?YmRtbVhVTmdlL0VMRk1wVlYwQW1NeDJLaEZJbE5heVdVbDNSYWhEWmpJakFx?=
- =?utf-8?B?V0V2M3ZhRlZwaEtrK3NhMnQ5ZW1VeHVHUngyOHBjYk1KbmZOZjIxWmkreG5q?=
- =?utf-8?B?amFJTHd4eGRiWDlUSGV0SmxKd0p3VmxzVEpkMkhaUEYwNHZHUVJDbkpqR3hY?=
- =?utf-8?B?U1RlbEVsN0NOQkp5S3B4aWdFNHZIYWZwWnl4aklJOFh1MnIwMWFwdFEyejRL?=
- =?utf-8?B?ZExNdmV5NEY1dXYxbFlzM3pwRjN6K01VSkViWitIWGozZFBia202SkJjOVBa?=
- =?utf-8?B?UGNPbXdwb0VleUpMdkZyYmpCb1RnK044YlJKem12RjJscTg0WVpHOUI5Q1N2?=
- =?utf-8?B?M0ZDN2ViTGpVZGVoZ3N0c3ptWUxCNjVKZXBUYWptTEtKTnZpWFIxN3hYaEpF?=
- =?utf-8?B?QWFOTUxQM0JhcXNNdkJadlptbjlFcldCT1FYSWljelExWEVrUjJKUFhncDdC?=
- =?utf-8?B?RlJZVFl3SU51NmJ0MHRLdUd0dFFwcWRYU09aMzM1QUVaNE05VndjTy8vbnIr?=
- =?utf-8?B?TG4rL1RCRS90SWtJRjZ3UGtSdDV0STl5eXQ3ZkJwekpPWkltcWtCRzQ5SmFm?=
- =?utf-8?B?dWFNL3pMT1IrWitKdjd5Skx4SUIzYVhYNGtGR3JlR1Z5TWxSK3FpUDQ3VXJa?=
- =?utf-8?B?MjZwY3RoQkVVNFlVVFc2U0h0NE5td2Z3VFZrcktiZkZkbE9SaENYYkhiaHJY?=
- =?utf-8?B?WW5mMmZ4Q2dKdWdXMGNveHE5eFRERy9kTlp6TzJIc3lZc1JRbVVZT2FNUGlL?=
- =?utf-8?B?bDZvUHRqZjdIUzgvakVCZjY2cm5SSEFwNUVzTERvNWNMQXBqWHl5TmQ1bFB3?=
- =?utf-8?B?S3h1RDNYQ1FucmhqcjR5TjBITFJVRytOWHNXK0FDcnBMRDY5ME5BQzZ1TTBV?=
- =?utf-8?Q?Ui5UZ1ZbXM6gTVSkKYzqXJ06z?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
+ id 1r2iNF-0002rK-By
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 20:37:54 -0500
+Received: from mail-oa1-f42.google.com ([209.85.160.42])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
+ id 1r2iN7-0002Ff-OB
+ for qemu-devel@nongnu.org; Mon, 13 Nov 2023 20:37:52 -0500
+Received: by mail-oa1-f42.google.com with SMTP id
+ 586e51a60fabf-1eb39505ba4so3331028fac.0
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 17:37:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699925861; x=1700530661;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4Pzj3VImTrzR+e81oZM92kHfHpbTRcefjMYJ3M0Y3LI=;
+ b=tEWt/55NKlIgU2w9uY21fsgM8OvwzlAkkq59dVPz/UpysrMxR/xUzJ8GEn9lsryEt7
+ r9743tllnlAIWAWVVmwgrWLkOIrF/ydS7jE+iOW2K30ouTuAIdYxRDiw1WLBpjCnigRE
+ lIy/Hw/5DUZUllbzzpHjFgBz1xpqQoc2rungTysvVporkFU1LAZNGPwwgGEU3BaULwfX
+ Xm7QleUINFVK9ViVscbwTRHXqmC823aHxXHeNHXEIfuH+fK9OhEH6mvWLRPgkMj+Qdo8
+ CL/nSyvHAnc6fSa0RBw7sWb7qI588RgdNYZ1Md/D+YSsiyuyB3CL9SExWlak6IpWgqrs
+ KArw==
+X-Gm-Message-State: AOJu0YymZ/Cmqw4MAParIBItjelMLMkp/7vMXos6UWNlmJsIG4cYovuo
+ S2EM15uB8rJbYeEqB5JwCsMCGUj83jw=
+X-Google-Smtp-Source: AGHT+IGT+k4TihuvB0gKRpWJ9BzdQJ45ZTH1JIPxE5n7lLNz13HJt2X32PsB9s09h+MhKE4lNCTHyA==
+X-Received: by 2002:a05:6870:fb88:b0:1f0:d96:8d9c with SMTP id
+ kv8-20020a056870fb8800b001f00d968d9cmr10724031oab.9.1699925860898; 
+ Mon, 13 Nov 2023 17:37:40 -0800 (PST)
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com.
+ [209.85.216.45]) by smtp.gmail.com with ESMTPSA id
+ p1-20020a62ab01000000b006c0316485f9sm214101pff.64.2023.11.13.17.37.40
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 13 Nov 2023 17:37:40 -0800 (PST)
+Received: by mail-pj1-f45.google.com with SMTP id
+ 98e67ed59e1d1-280260db156so4593366a91.2
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 17:37:40 -0800 (PST)
+X-Received: by 2002:a17:90b:4f8b:b0:263:f630:228f with SMTP id
+ qe11-20020a17090b4f8b00b00263f630228fmr9433897pjb.23.1699925860068; Mon, 13
+ Nov 2023 17:37:40 -0800 (PST)
 MIME-Version: 1.0
-X-OriginatorOrg: nuvoton.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: KL1PR03MB7744.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1cb2c765-35bc-47e4-533d-08dbe4b0626b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2023 01:24:01.9208 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a3f24931-d403-4b4a-94f1-7d83ac638e07
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pCH87+9C8KH8souGum4tAGJ2PjXdf04d0MelvCrjFI41EeR0cI6LWEmAN/HdkMlMepvKyS3Y9eWhIWtGLs0DTw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SI2PR03MB6109
-Received-SPF: pass client-ip=2a01:111:f400:feae::602;
- envelope-from=KFTING@nuvoton.com;
- helo=APC01-PSA-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+References: <20231031040021.65582-1-j@getutm.app>
+ <20231031040021.65582-5-j@getutm.app>
+ <e7a4c833-3e61-4a7f-ab9e-3921eb581613@linux.ibm.com>
+In-Reply-To: <e7a4c833-3e61-4a7f-ab9e-3921eb581613@linux.ibm.com>
+From: Joelle van Dyne <j@getutm.app>
+Date: Mon, 13 Nov 2023 17:37:28 -0800
+X-Gmail-Original-Message-ID: <CA+E+eSA27LvGBY4TyZg5zWLZ6J=d=deiaM9-FjpQCNy=m+dHog@mail.gmail.com>
+Message-ID: <CA+E+eSA27LvGBY4TyZg5zWLZ6J=d=deiaM9-FjpQCNy=m+dHog@mail.gmail.com>
+Subject: Re: [PATCH v4 04/14] tpm_crb: use a single read-as-mem/write-as-mmio
+ mapping
+To: Stefan Berger <stefanb@linux.ibm.com>
+Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org, 
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=209.85.160.42; envelope-from=osy86dev@gmail.com;
+ helo=mail-oa1-f42.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -151,168 +92,323 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBOYWJpaCBFc3RlZmFuIDxuYWJp
-aGVzdGVmYW5AZ29vZ2xlLmNvbT4NClNlbnQ6IFNhdHVyZGF5LCBPY3RvYmVyIDI4LCAyMDIzIDE6
-NTUgQU0NClRvOiBwZXRlci5tYXlkZWxsQGxpbmFyby5vcmcNCkNjOiBxZW11LWFybUBub25nbnUu
-b3JnOyBxZW11LWRldmVsQG5vbmdudS5vcmc7IENTMjAgS0ZUaW5nIDxLRlRJTkdAbnV2b3Rvbi5j
-b20+OyB3dWhhb3RzaEBnb29nbGUuY29tOyBqYXNvbndhbmdAcmVkaGF0LmNvbTsgSVMyMCBBdmkg
-RmlzaG1hbiA8QXZpLkZpc2htYW5AbnV2b3Rvbi5jb20+OyBuYWJpaGVzdGVmYW5AZ29vZ2xlLmNv
-bTsgQ1MyMCBLV0xpdSA8S1dMSVVAbnV2b3Rvbi5jb20+OyBJUzIwIFRvbWVyIE1haW1vbiA8dG9t
-ZXIubWFpbW9uQG51dm90b24uY29tPjsgSU4yMCBIaWxhIE1pcmFuZGEtS3V6aSA8SGlsYS5NaXJh
-bmRhLUt1emlAbnV2b3Rvbi5jb20+DQpTdWJqZWN0OiBbUEFUQ0ggdjUgMDMvMTFdIGh3L21pc2M6
-IEFkZCBxdGVzdCBmb3IgTlBDTTd4eCBQQ0kgTWFpbGJveA0KDQpDQVVUSU9OIC0gRXh0ZXJuYWwg
-RW1haWw6IERvIG5vdCBjbGljayBsaW5rcyBvciBvcGVuIGF0dGFjaG1lbnRzIHVubGVzcyB5b3Ug
-YWNrbm93bGVkZ2UgdGhlIHNlbmRlciBhbmQgY29udGVudC4NCg0KDQpGcm9tOiBIYW8gV3UgPHd1
-aGFvdHNoQGdvb2dsZS5jb20+DQoNClRoaXMgcGF0Y2hlcyBhZGRzIGEgcXRlc3QgZm9yIE5QQ003
-WFggUENJIE1haWxib3ggbW9kdWxlLg0KSXQgc2VuZHMgcmVhZCBhbmQgd3JpdGUgcmVxdWVzdHMg
-dG8gdGhlIG1vZHVsZSwgYW5kIHZlcmlmaWVzIHRoYXQgdGhlIG1vZHVsZSBjb250YWlucyB0aGUg
-Y29ycmVjdCBkYXRhIGFmdGVyIHRoZSByZXF1ZXN0cy4NCg0KQ2hhbmdlLUlkOiBJZDdhNGIzY2Jl
-YTU2NDM4M2I5NGQ1MDc1NTJkZmQxNmY2YjUxMjdkMQ0KU2lnbmVkLW9mZi1ieTogSGFvIFd1IDx3
-dWhhb3RzaEBnb29nbGUuY29tPg0KU2lnbmVkLW9mZi1ieTogTmFiaWggRXN0ZWZhbiA8bmFiaWhl
-c3RlZmFuQGdvb2dsZS5jb20+DQotLS0NCiB0ZXN0cy9xdGVzdC9tZXNvbi5idWlsZCAgICAgICAg
-ICAgICB8ICAgMSArDQogdGVzdHMvcXRlc3QvbnBjbTd4eF9wY2lfbWJveC10ZXN0LmMgfCAyMzgg
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KIDIgZmlsZXMgY2hhbmdlZCwgMjM5IGluc2Vy
-dGlvbnMoKykNCiBjcmVhdGUgbW9kZSAxMDA2NDQgdGVzdHMvcXRlc3QvbnBjbTd4eF9wY2lfbWJv
-eC10ZXN0LmMNCg0KZGlmZiAtLWdpdCBhL3Rlc3RzL3F0ZXN0L21lc29uLmJ1aWxkIGIvdGVzdHMv
-cXRlc3QvbWVzb24uYnVpbGQgaW5kZXggZDYwMjJlYmQ2NC4uZGFlYzIxOWEzMiAxMDA2NDQNCi0t
-LSBhL3Rlc3RzL3F0ZXN0L21lc29uLmJ1aWxkDQorKysgYi90ZXN0cy9xdGVzdC9tZXNvbi5idWls
-ZA0KQEAgLTE4Myw2ICsxODMsNyBAQCBxdGVzdHNfc3BhcmM2NCA9IFwNCiBxdGVzdHNfbnBjbTd4
-eCA9IFwNCiAgIFsnbnBjbTd4eF9hZGMtdGVzdCcsDQogICAgJ25wY203eHhfZ3Bpby10ZXN0JywN
-CisgICAnbnBjbTd4eF9wY2lfbWJveC10ZXN0JywNCiAgICAnbnBjbTd4eF9wd20tdGVzdCcsDQog
-ICAgJ25wY203eHhfcm5nLXRlc3QnLA0KICAgICducGNtN3h4X3NkaGNpLXRlc3QnLA0KZGlmZiAt
-LWdpdCBhL3Rlc3RzL3F0ZXN0L25wY203eHhfcGNpX21ib3gtdGVzdC5jIGIvdGVzdHMvcXRlc3Qv
-bnBjbTd4eF9wY2lfbWJveC10ZXN0LmMNCm5ldyBmaWxlIG1vZGUgMTAwNjQ0DQppbmRleCAwMDAw
-MDAwMDAwLi4yNGVlYzE4ZTNjDQotLS0gL2Rldi9udWxsDQorKysgYi90ZXN0cy9xdGVzdC9ucGNt
-N3h4X3BjaV9tYm94LXRlc3QuYw0KQEAgLTAsMCArMSwyMzggQEANCisvKg0KKyAqIFFUZXN0cyBm
-b3IgTnV2b3RvbiBOUENNN3h4IFBDSSBNYWlsYm94IE1vZHVsZXMuDQorICoNCisgKiBDb3B5cmln
-aHQgMjAyMSBHb29nbGUgTExDDQorICoNCisgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2Fy
-ZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yIG1vZGlmeQ0KK2l0DQorICogdW5kZXIg
-dGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcyBwdWJsaXNoZWQg
-YnkNCit0aGUNCisgKiBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIg
-b2YgdGhlIExpY2Vuc2UsIG9yDQorICogKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lv
-bi4NCisgKg0KKyAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0
-IGl0IHdpbGwgYmUgdXNlZnVsLCBidXQNCitXSVRIT1VUDQorICogQU5ZIFdBUlJBTlRZOyB3aXRo
-b3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YgTUVSQ0hBTlRBQklMSVRZDQorb3INCisg
-KiBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gU2VlIHRoZSBHTlUgR2VuZXJhbCBQ
-dWJsaWMgTGljZW5zZQ0KKyAqIGZvciBtb3JlIGRldGFpbHMuDQorICovDQorDQorI2luY2x1ZGUg
-InFlbXUvb3NkZXAuaCINCisjaW5jbHVkZSAicWVtdS9iaXRvcHMuaCINCisjaW5jbHVkZSAicWFw
-aS9xbXAvcWRpY3QuaCINCisjaW5jbHVkZSAicWFwaS9xbXAvcW51bS5oIg0KKyNpbmNsdWRlICJs
-aWJxdGVzdC1zaW5nbGUuaCINCisNCisjZGVmaW5lIFBDSV9NQk9YX0JBICAgICAgICAgMHhmMDg0
-ODAwMA0KKyNkZWZpbmUgUENJX01CT1hfSVJRICAgICAgICA4DQorDQorLyogcmVnaXN0ZXIgb2Zm
-c2V0ICovDQorI2RlZmluZSBQQ0lfTUJPWF9TVEFUICAgICAgIDB4MDANCisjZGVmaW5lIFBDSV9N
-Qk9YX0NUTCAgICAgICAgMHgwNA0KKyNkZWZpbmUgUENJX01CT1hfQ01EICAgICAgICAweDA4DQor
-DQorI2RlZmluZSBDT0RFX09LICAgICAgICAgICAgIDB4MDANCisjZGVmaW5lIENPREVfSU5WQUxJ
-RF9PUCAgICAgMHhhMA0KKyNkZWZpbmUgQ09ERV9JTlZBTElEX1NJWkUgICAweGExDQorI2RlZmlu
-ZSBDT0RFX0VSUk9SICAgICAgICAgIDB4ZmYNCisNCisjZGVmaW5lIE9QX1JFQUQgICAgICAgICAg
-ICAgMHgwMQ0KKyNkZWZpbmUgT1BfV1JJVEUgICAgICAgICAgICAweDAyDQorI2RlZmluZSBPUF9J
-TlZBTElEICAgICAgICAgIDB4NDENCisNCisNCitzdGF0aWMgaW50IHNvY2s7DQorc3RhdGljIGlu
-dCBmZDsNCisNCisvKg0KKyAqIENyZWF0ZSBhIGxvY2FsIFRDUCBzb2NrZXQgd2l0aCBhbnkgcG9y
-dCwgdGhlbiBzYXZlIG9mZiB0aGUgcG9ydCB3ZSBnb3QuDQorICovDQorc3RhdGljIGluX3BvcnRf
-dCBvcGVuX3NvY2tldCh2b2lkKQ0KK3sNCisgICAgc3RydWN0IHNvY2thZGRyX2luIG15YWRkcjsN
-CisgICAgc29ja2xlbl90IGFkZHJsZW47DQorDQorICAgIG15YWRkci5zaW5fZmFtaWx5ID0gQUZf
-SU5FVDsNCisgICAgbXlhZGRyLnNpbl9hZGRyLnNfYWRkciA9IGh0b25sKElOQUREUl9MT09QQkFD
-Syk7DQorICAgIG15YWRkci5zaW5fcG9ydCA9IDA7DQorICAgIHNvY2sgPSBzb2NrZXQoQUZfSU5F
-VCwgU09DS19TVFJFQU0sIElQUFJPVE9fVENQKTsNCisgICAgZ19hc3NlcnQoc29jayAhPSAtMSk7
-DQorICAgIGdfYXNzZXJ0KGJpbmQoc29jaywgKHN0cnVjdCBzb2NrYWRkciAqKSAmbXlhZGRyLCBz
-aXplb2YobXlhZGRyKSkgIT0gLTEpOw0KKyAgICBhZGRybGVuID0gc2l6ZW9mKG15YWRkcik7DQor
-ICAgIGdfYXNzZXJ0KGdldHNvY2tuYW1lKHNvY2ssIChzdHJ1Y3Qgc29ja2FkZHIgKikgJm15YWRk
-ciAsICZhZGRybGVuKSAhPSAtMSk7DQorICAgIGdfYXNzZXJ0KGxpc3Rlbihzb2NrLCAxKSAhPSAt
-MSk7DQorICAgIHJldHVybiBudG9ocyhteWFkZHIuc2luX3BvcnQpOw0KK30NCisNCitzdGF0aWMg
-dm9pZCBzZXR1cF9mZCh2b2lkKQ0KK3sNCisgICAgZmRfc2V0IHJlYWRmZHM7DQorDQorICAgIEZE
-X1pFUk8oJnJlYWRmZHMpOw0KKyAgICBGRF9TRVQoc29jaywgJnJlYWRmZHMpOw0KKyAgICBnX2Fz
-c2VydChzZWxlY3Qoc29jayArIDEsICZyZWFkZmRzLCBOVUxMLCBOVUxMLCBOVUxMKSA9PSAxKTsN
-CisNCisgICAgZmQgPSBhY2NlcHQoc29jaywgTlVMTCwgMCk7DQorICAgIGdfYXNzZXJ0KGZkID49
-IDApOw0KK30NCisNCitzdGF0aWMgdWludDhfdCByZWFkX3Jlc3BvbnNlKHVpbnQ4X3QgKmJ1Ziwg
-c2l6ZV90IGxlbikgew0KKyAgICB1aW50OF90IGNvZGU7DQorICAgIHNzaXplX3QgcmV0ID0gcmVh
-ZChmZCwgJmNvZGUsIDEpOw0KKw0KKyAgICBpZiAocmV0ID09IC0xKSB7DQorICAgICAgICByZXR1
-cm4gQ09ERV9FUlJPUjsNCisgICAgfQ0KKyAgICBpZiAoY29kZSAhPSBDT0RFX09LKSB7DQorICAg
-ICAgICByZXR1cm4gY29kZTsNCisgICAgfQ0KKyAgICBnX3Rlc3RfbWVzc2FnZSgicmVzcG9uc2Ug
-Y29kZTogJXgiLCBjb2RlKTsNCisgICAgaWYgKGxlbiA+IDApIHsNCisgICAgICAgIHJldCA9IHJl
-YWQoZmQsIGJ1ZiwgbGVuKTsNCisgICAgICAgIGlmIChyZXQgPCBsZW4pIHsNCisgICAgICAgICAg
-ICByZXR1cm4gQ09ERV9FUlJPUjsNCisgICAgICAgIH0NCisgICAgfQ0KKyAgICByZXR1cm4gQ09E
-RV9PSzsNCit9DQorDQorc3RhdGljIHZvaWQgcmVjZWl2ZV9kYXRhKHVpbnQ2NF90IG9mZnNldCwg
-dWludDhfdCAqYnVmLCBzaXplX3QgbGVuKSB7DQorICAgIHVpbnQ4X3Qgb3AgPSBPUF9SRUFEOw0K
-KyAgICB1aW50OF90IGNvZGU7DQorICAgIHNzaXplX3QgcnY7DQorDQorICAgIHdoaWxlIChsZW4g
-PiAwKSB7DQorICAgICAgICB1aW50OF90IHNpemU7DQorDQorICAgICAgICBpZiAobGVuID49IDgp
-IHsNCisgICAgICAgICAgICBzaXplID0gODsNCisgICAgICAgIH0gZWxzZSBpZiAobGVuID49IDQp
-IHsNCisgICAgICAgICAgICBzaXplID0gNDsNCisgICAgICAgIH0gZWxzZSBpZiAobGVuID49IDIp
-IHsNCisgICAgICAgICAgICBzaXplID0gMjsNCisgICAgICAgIH0gZWxzZSB7DQorICAgICAgICAg
-ICAgc2l6ZSA9IDE7DQorICAgICAgICB9DQorDQorICAgICAgICBnX3Rlc3RfbWVzc2FnZSgicmVj
-ZWl2aW5nICV1IGJ5dGVzIiwgc2l6ZSk7DQorICAgICAgICAvKiBXcml0ZSBvcCAqLw0KKyAgICAg
-ICAgcnYgPSB3cml0ZShmZCwgJm9wLCAxKTsNCisgICAgICAgIGdfYXNzZXJ0X2NtcGludChydiwg
-PT0sIDEpOw0KKyAgICAgICAgLyogV3JpdGUgb2Zmc2V0ICovDQorICAgICAgICBydiA9IHdyaXRl
-KGZkLCAodWludDhfdCAqKSZvZmZzZXQsIHNpemVvZih1aW50NjRfdCkpOw0KKyAgICAgICAgZ19h
-c3NlcnRfY21waW50KHJ2LCA9PSwgc2l6ZW9mKHVpbnQ2NF90KSk7DQorICAgICAgICAvKiBXcml0
-ZSBzaXplICovDQorICAgICAgICBnX2Fzc2VydF9jbXBpbnQod3JpdGUoZmQsICZzaXplLCAxKSwg
-PT0sIDEpOw0KKw0KKyAgICAgICAgLyogUmVhZCBkYXRhIGFuZCBFeHBlY3QgcmVzcG9uc2UgKi8N
-CisgICAgICAgIGNvZGUgPSByZWFkX3Jlc3BvbnNlKGJ1Ziwgc2l6ZSk7DQorICAgICAgICBnX2Fz
-c2VydF9jbXBoZXgoY29kZSwgPT0sIENPREVfT0spOw0KKw0KKyAgICAgICAgYnVmICs9IHNpemU7
-DQorICAgICAgICBvZmZzZXQgKz0gc2l6ZTsNCisgICAgICAgIGxlbiAtPSBzaXplOw0KKyAgICB9
-DQorfQ0KKw0KK3N0YXRpYyB2b2lkIHNlbmRfZGF0YSh1aW50NjRfdCBvZmZzZXQsIGNvbnN0IHVp
-bnQ4X3QgKmJ1Ziwgc2l6ZV90IGxlbikNCit7DQorICAgIHVpbnQ4X3Qgb3AgPSBPUF9XUklURTsN
-CisgICAgdWludDhfdCBjb2RlOw0KKyAgICBzc2l6ZV90IHJ2Ow0KKw0KKyAgICB3aGlsZSAobGVu
-ID4gMCkgew0KKyAgICAgICAgdWludDhfdCBzaXplOw0KKw0KKyAgICAgICAgaWYgKGxlbiA+PSA4
-KSB7DQorICAgICAgICAgICAgc2l6ZSA9IDg7DQorICAgICAgICB9IGVsc2UgaWYgKGxlbiA+PSA0
-KSB7DQorICAgICAgICAgICAgc2l6ZSA9IDQ7DQorICAgICAgICB9IGVsc2UgaWYgKGxlbiA+PSAy
-KSB7DQorICAgICAgICAgICAgc2l6ZSA9IDI7DQorICAgICAgICB9IGVsc2Ugew0KKyAgICAgICAg
-ICAgIHNpemUgPSAxOw0KKyAgICAgICAgfQ0KKw0KKyAgICAgICAgZ190ZXN0X21lc3NhZ2UoInNl
-bmRpbmcgJXUgYnl0ZXMiLCBzaXplKTsNCisgICAgICAgIC8qIFdyaXRlIG9wICovDQorICAgICAg
-ICBydiA9IHdyaXRlKGZkLCAmb3AsIDEpOw0KKyAgICAgICAgZ19hc3NlcnRfY21waW50KHJ2LCA9
-PSwgMSk7DQorICAgICAgICAvKiBXcml0ZSBvZmZzZXQgKi8NCisgICAgICAgIHJ2ID0gd3JpdGUo
-ZmQsICh1aW50OF90ICopJm9mZnNldCwgc2l6ZW9mKHVpbnQ2NF90KSk7DQorICAgICAgICBnX2Fz
-c2VydF9jbXBpbnQocnYsID09LCBzaXplb2YodWludDY0X3QpKTsNCisgICAgICAgIC8qIFdyaXRl
-IHNpemUgKi8NCisgICAgICAgIGdfYXNzZXJ0X2NtcGludCh3cml0ZShmZCwgJnNpemUsIDEpLCA9
-PSwgMSk7DQorICAgICAgICAvKiBXcml0ZSBkYXRhICovDQorICAgICAgICBnX2Fzc2VydF9jbXBp
-bnQod3JpdGUoZmQsIGJ1Ziwgc2l6ZSksID09LCBzaXplKTsNCisNCisgICAgICAgIC8qIEV4cGVj
-dCByZXNwb25zZSAqLw0KKyAgICAgICAgY29kZSA9IHJlYWRfcmVzcG9uc2UoTlVMTCwgMCk7DQor
-ICAgICAgICBnX2Fzc2VydF9jbXBoZXgoY29kZSwgPT0sIENPREVfT0spOw0KKw0KKyAgICAgICAg
-YnVmICs9IHNpemU7DQorICAgICAgICBvZmZzZXQgKz0gc2l6ZTsNCisgICAgICAgIGxlbiAtPSBz
-aXplOw0KKyAgICB9DQorfQ0KKw0KK3N0YXRpYyB2b2lkIHRlc3RfaW52YWxpZF9vcCh2b2lkKQ0K
-K3sNCisgICAgdWludDhfdCBvcCA9IE9QX0lOVkFMSUQ7DQorICAgIHVpbnQ4X3QgY29kZTsNCisg
-ICAgdWludDhfdCBidWZbMV07DQorDQorICAgIGdfYXNzZXJ0X2NtcGludCh3cml0ZShmZCwgJm9w
-LCAxKSwgPT0sIDEpOw0KKyAgICBjb2RlID0gcmVhZF9yZXNwb25zZShidWYsIDEpOw0KKyAgICBn
-X2Fzc2VydF9jbXBoZXgoY29kZSwgPT0sIENPREVfSU5WQUxJRF9PUCk7IH0NCisNCisvKiBTZW5k
-IGRhdGEgdmlhIGNoYXJkZXYgYW5kIHJlYWQgdGhlbSBpbiBndWVzdC4gKi8gc3RhdGljIHZvaWQN
-Cit0ZXN0X2d1ZXN0X3JlYWQodm9pZCkgew0KKyAgICBjb25zdCBjaGFyICpkYXRhID0gIkhlbGxv
-IFdvcmxkISI7DQorICAgIHVpbnQ2NF90IG9mZnNldCA9IDB4YTA7DQorICAgIGNoYXIgYnVmWzEw
-MF07DQorICAgIHNpemVfdCBsZW4gPSBzdHJsZW4oZGF0YSk7DQorDQorICAgIHNlbmRfZGF0YShv
-ZmZzZXQsICh1aW50OF90ICopZGF0YSwgbGVuKTsNCisgICAgbWVtcmVhZChQQ0lfTUJPWF9CQSAr
-IG9mZnNldCwgYnVmLCBsZW4pOw0KKyAgICBnX2Fzc2VydF9jbXBpbnQoc3RybmNtcChkYXRhLCBi
-dWYsIGxlbiksID09LCAwKTsgfQ0KKw0KKy8qIFdyaXRlIGRhdGEgaW4gZ3Vlc3QgYW5kIHJlYWQg
-b3V0IHZpYSBjaGFyZGV2LiAqLyBzdGF0aWMgdm9pZA0KK3Rlc3RfZ3Vlc3Rfd3JpdGUodm9pZCkg
-ew0KKyAgICBjb25zdCBjaGFyICpkYXRhID0gIkhlbGxvIFdvcmxkISI7DQorICAgIHVpbnQ2NF90
-IG9mZnNldCA9IDB4YTA7DQorICAgIGNoYXIgYnVmWzEwMF07DQorICAgIHNpemVfdCBsZW4gPSBz
-dHJsZW4oZGF0YSk7DQorDQorICAgIG1lbXdyaXRlKFBDSV9NQk9YX0JBICsgb2Zmc2V0LCBkYXRh
-LCBsZW4pOw0KKyAgICByZWNlaXZlX2RhdGEob2Zmc2V0LCAodWludDhfdCAqKWJ1ZiwgbGVuKTsN
-CisgICAgZ19hc3NlcnRfY21waW50KHN0cm5jbXAoZGF0YSwgYnVmLCBsZW4pLCA9PSwgMCk7IH0N
-CisNCitpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpDQorew0KKyAgICBpbnQgcmV0Ow0K
-KyAgICBpbnQgcG9ydDsNCisNCisgICAgZ190ZXN0X2luaXQoJmFyZ2MsICZhcmd2LCBOVUxMKTsN
-CisgICAgcG9ydCA9IG9wZW5fc29ja2V0KCk7DQorICAgIGdfdGVzdF9tZXNzYWdlKCJwb3J0PSVk
-IiwgcG9ydCk7DQorICAgIGdsb2JhbF9xdGVzdCA9IHF0ZXN0X2luaXRmKCItbWFjaGluZSBucGNt
-NzUwLWV2YiAiDQorICAgICAgICAiLWNoYXJkZXYgc29ja2V0LGlkPW5wY203eHgtcGNpbWJveC1j
-aHIsaG9zdD1sb2NhbGhvc3QsIg0KKyAgICAgICAgInBvcnQ9JWQscmVjb25uZWN0PTEwICINCisg
-ICAgICAgICItZ2xvYmFsIGRyaXZlcj1ucGNtN3h4LXBjaS1tYm94LHByb3BlcnR5PWNoYXJkZXYs
-Ig0KKyAgICAgICAgInZhbHVlPW5wY203eHgtcGNpbWJveC1jaHIiLA0KKyAgICAgICAgcG9ydCk7
-DQorICAgIHNldHVwX2ZkKCk7DQorICAgIHF0ZXN0X2lycV9pbnRlcmNlcHRfaW4oZ2xvYmFsX3F0
-ZXN0LCAiL21hY2hpbmUvc29jL2E5bXBjb3JlL2dpYyIpOw0KKw0KKyAgICBxdGVzdF9hZGRfZnVu
-YygiL25wY203eHhfcGNpX21ib3gvaW52YWxpZF9vcCIsIHRlc3RfaW52YWxpZF9vcCk7DQorICAg
-IHF0ZXN0X2FkZF9mdW5jKCIvbnBjbTd4eF9wY2lfbWJveC9yZWFkIiwgdGVzdF9ndWVzdF9yZWFk
-KTsNCisgICAgcXRlc3RfYWRkX2Z1bmMoIi9ucGNtN3h4X3BjaV9tYm94L3dyaXRlIiwgdGVzdF9n
-dWVzdF93cml0ZSk7DQorICAgIHJldCA9IGdfdGVzdF9ydW4oKTsNCisgICAgcXRlc3RfcXVpdChn
-bG9iYWxfcXRlc3QpOw0KKw0KKyAgICByZXR1cm4gcmV0Ow0KK30NCi0tDQoyLjQyLjAuODIwLmc4
-M2E3MjFhMTM3LWdvb2cNCg0KU2lnbmVkLW9mZi1ieTogVHlyb25lIFRpbmcgPGtmdGluZ0BudXZv
-dG9uLmNvbT4NCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXw0KIFRoZSBwcml2aWxlZ2VkIGNvbmZpZGVudGlhbCBpbmZvcm1h
-dGlvbiBjb250YWluZWQgaW4gdGhpcyBlbWFpbCBpcyBpbnRlbmRlZCBmb3IgdXNlIG9ubHkgYnkg
-dGhlIGFkZHJlc3NlZXMgYXMgaW5kaWNhdGVkIGJ5IHRoZSBvcmlnaW5hbCBzZW5kZXIgb2YgdGhp
-cyBlbWFpbC4gSWYgeW91IGFyZSBub3QgdGhlIGFkZHJlc3NlZSBpbmRpY2F0ZWQgaW4gdGhpcyBl
-bWFpbCBvciBhcmUgbm90IHJlc3BvbnNpYmxlIGZvciBkZWxpdmVyeSBvZiB0aGUgZW1haWwgdG8g
-c3VjaCBhIHBlcnNvbiwgcGxlYXNlIGtpbmRseSByZXBseSB0byB0aGUgc2VuZGVyIGluZGljYXRp
-bmcgdGhpcyBmYWN0IGFuZCBkZWxldGUgYWxsIGNvcGllcyBvZiBpdCBmcm9tIHlvdXIgY29tcHV0
-ZXIgYW5kIG5ldHdvcmsgc2VydmVyIGltbWVkaWF0ZWx5LiBZb3VyIGNvb3BlcmF0aW9uIGlzIGhp
-Z2hseSBhcHByZWNpYXRlZC4gSXQgaXMgYWR2aXNlZCB0aGF0IGFueSB1bmF1dGhvcml6ZWQgdXNl
-IG9mIGNvbmZpZGVudGlhbCBpbmZvcm1hdGlvbiBvZiBOdXZvdG9uIGlzIHN0cmljdGx5IHByb2hp
-Yml0ZWQ7IGFuZCBhbnkgaW5mb3JtYXRpb24gaW4gdGhpcyBlbWFpbCBpcnJlbGV2YW50IHRvIHRo
-ZSBvZmZpY2lhbCBidXNpbmVzcyBvZiBOdXZvdG9uIHNoYWxsIGJlIGRlZW1lZCBhcyBuZWl0aGVy
-IGdpdmVuIG5vciBlbmRvcnNlZCBieSBOdXZvdG9uLg0K
+On Wed, Nov 1, 2023 at 2:25=E2=80=AFPM Stefan Berger <stefanb@linux.ibm.com=
+> wrote:
+>
+>
+>
+> On 10/31/23 00:00, Joelle van Dyne wrote:
+> > On Apple Silicon, when Windows performs a LDP on the CRB MMIO space,
+> > the exception is not decoded by hardware and we cannot trap the MMIO
+> > read. This led to the idea from @agraf to use the same mapping type as
+> > ROM devices: namely that reads should be seen as memory type and
+> > writes should trap as MMIO.
+> >
+> > Once that was done, the second memory mapping of the command buffer
+> > region was redundent and was removed.
+> >
+> > A note about the removal of the read trap for `CRB_LOC_STATE`:
+> > The only usage was to return the most up-to-date value for
+> > `tpmEstablished`. However, `tpmEstablished` is only cleared when a
+> > TPM2_HashStart operation is called which only exists for locality 4.
+> > We do not handle locality 4. Indeed, the comment for the write handler
+> > of `CRB_LOC_CTRL` makes the same argument for why it is not calling
+> > the backend to reset the `tpmEstablished` bit (to 1).
+> > As this bit is unused, we do not need to worry about updating it for
+> > reads.
+> >
+> > In order to maintain migration compatibility with older versions of
+> > QEMU, we store a copy of the register data and command data which is
+> > used only during save/restore.
+> >
+> > Signed-off-by: Joelle van Dyne <j@getutm.app>
+> > ---
+>
+> > diff --git a/hw/tpm/tpm_crb_common.c b/hw/tpm/tpm_crb_common.c
+> > index bee0b71fee..605e8576e9 100644
+> > --- a/hw/tpm/tpm_crb_common.c
+> > +++ b/hw/tpm/tpm_crb_common.c
+> > @@ -31,31 +31,12 @@
+> >   #include "qom/object.h"
+> >   #include "tpm_crb.h"
+> >
+> > -static uint64_t tpm_crb_mmio_read(void *opaque, hwaddr addr,
+> > -                                  unsigned size)
+> > +static uint8_t tpm_crb_get_active_locty(TPMCRBState *s, uint32_t *regs=
+)
+> >   {
+> > -    TPMCRBState *s =3D opaque;
+> > -    void *regs =3D (void *)&s->regs + (addr & ~3);
+> > -    unsigned offset =3D addr & 3;
+> > -    uint32_t val =3D *(uint32_t *)regs >> (8 * offset);
+> > -
+> > -    switch (addr) {
+> > -    case A_CRB_LOC_STATE:
+> > -        val |=3D !tpm_backend_get_tpm_established_flag(s->tpmbe);
+> > -        break;
+> > -    }
+> > -
+> > -    trace_tpm_crb_mmio_read(addr, size, val);
+> > -
+> > -    return val;
+> > -}
+> > -
+> > -static uint8_t tpm_crb_get_active_locty(TPMCRBState *s)
+> > -{
+> > -    if (!ARRAY_FIELD_EX32(s->regs, CRB_LOC_STATE, locAssigned)) {
+> > +    if (!ARRAY_FIELD_EX32(regs, CRB_LOC_STATE, locAssigned)) {
+> >           return TPM_CRB_NO_LOCALITY;
+> >       }
+> > -    return ARRAY_FIELD_EX32(s->regs, CRB_LOC_STATE, activeLocality);
+> > +    return ARRAY_FIELD_EX32(regs, CRB_LOC_STATE, activeLocality);
+> >   }
+> >
+> >   static void tpm_crb_mmio_write(void *opaque, hwaddr addr,
+> > @@ -63,35 +44,47 @@ static void tpm_crb_mmio_write(void *opaque, hwaddr=
+ addr,
+> >   {
+> >       TPMCRBState *s =3D opaque;
+> >       uint8_t locty =3D  addr >> 12;
+> > +    uint32_t *regs;
+> > +    void *mem;
+> >
+> >       trace_tpm_crb_mmio_write(addr, size, val);
+> > +    regs =3D memory_region_get_ram_ptr(&s->mmio);
+> > +    mem =3D &regs[R_CRB_DATA_BUFFER];
+> > +    assert(regs);
+> > +
+> > +    if (addr >=3D A_CRB_DATA_BUFFER) {
+>
+>
+> Can you write here /* receive TPM command bytes */ ?
+Will do.
+
+>
+>
+> > +        assert(addr + size <=3D TPM_CRB_ADDR_SIZE);
+> > +        assert(size <=3D sizeof(val));
+> > +        memcpy(mem + addr - A_CRB_DATA_BUFFER, &val, size);
+>
+> > +        memory_region_set_dirty(&s->mmio, addr, size);
+> > +        return;
+> > +    }
+> >
+> >       switch (addr) {
+> >       case A_CRB_CTRL_REQ:
+> >           switch (val) {
+> >           case CRB_CTRL_REQ_CMD_READY:
+> > -            ARRAY_FIELD_DP32(s->regs, CRB_CTRL_STS,
+> > +            ARRAY_FIELD_DP32(regs, CRB_CTRL_STS,
+> >                                tpmIdle, 0);
+> >               break;
+> >           case CRB_CTRL_REQ_GO_IDLE:
+> > -            ARRAY_FIELD_DP32(s->regs, CRB_CTRL_STS,
+> > +            ARRAY_FIELD_DP32(regs, CRB_CTRL_STS,
+> >                                tpmIdle, 1);
+> >               break;
+> >           }
+> >           break;
+> >       case A_CRB_CTRL_CANCEL:
+> >           if (val =3D=3D CRB_CANCEL_INVOKE &&
+> > -            s->regs[R_CRB_CTRL_START] & CRB_START_INVOKE) {
+> > +            regs[R_CRB_CTRL_START] & CRB_START_INVOKE) {
+> >               tpm_backend_cancel_cmd(s->tpmbe);
+> >           }
+> >           break;
+> >       case A_CRB_CTRL_START:
+> >           if (val =3D=3D CRB_START_INVOKE &&
+> > -            !(s->regs[R_CRB_CTRL_START] & CRB_START_INVOKE) &&
+> > -            tpm_crb_get_active_locty(s) =3D=3D locty) {
+> > -            void *mem =3D memory_region_get_ram_ptr(&s->cmdmem);
+> > +            !(regs[R_CRB_CTRL_START] & CRB_START_INVOKE) &&
+> > +            tpm_crb_get_active_locty(s, regs) =3D=3D locty) {
+> >
+> > -            s->regs[R_CRB_CTRL_START] |=3D CRB_START_INVOKE;
+> > +            regs[R_CRB_CTRL_START] |=3D CRB_START_INVOKE;
+> >               s->cmd =3D (TPMBackendCmd) {
+> >                   .in =3D mem,
+> >                   .in_len =3D MIN(tpm_cmd_get_size(mem), s->be_buffer_s=
+ize),
+> > @@ -108,26 +101,27 @@ static void tpm_crb_mmio_write(void *opaque, hwad=
+dr addr,
+> >               /* not loc 3 or 4 */
+> >               break;
+> >           case CRB_LOC_CTRL_RELINQUISH:
+> > -            ARRAY_FIELD_DP32(s->regs, CRB_LOC_STATE,
+> > +            ARRAY_FIELD_DP32(regs, CRB_LOC_STATE,
+> >                                locAssigned, 0);
+> > -            ARRAY_FIELD_DP32(s->regs, CRB_LOC_STS,
+> > +            ARRAY_FIELD_DP32(regs, CRB_LOC_STS,
+> >                                Granted, 0);
+> >               break;
+> >           case CRB_LOC_CTRL_REQUEST_ACCESS:
+> > -            ARRAY_FIELD_DP32(s->regs, CRB_LOC_STS,
+> > +            ARRAY_FIELD_DP32(regs, CRB_LOC_STS,
+> >                                Granted, 1);
+> > -            ARRAY_FIELD_DP32(s->regs, CRB_LOC_STS,
+> > +            ARRAY_FIELD_DP32(regs, CRB_LOC_STS,
+> >                                beenSeized, 0);
+> > -            ARRAY_FIELD_DP32(s->regs, CRB_LOC_STATE,
+> > +            ARRAY_FIELD_DP32(regs, CRB_LOC_STATE,
+> >                                locAssigned, 1);
+> >               break;
+> >           }
+> >           break;
+> >       }
+> > +
+> > +    memory_region_set_dirty(&s->mmio, 0, A_CRB_DATA_BUFFER);
+> >   }
+> >
+> >   const MemoryRegionOps tpm_crb_memory_ops =3D {
+> > -    .read =3D tpm_crb_mmio_read,
+> >       .write =3D tpm_crb_mmio_write,
+> >       .endianness =3D DEVICE_LITTLE_ENDIAN,
+> >       .valid =3D {
+> > @@ -138,12 +132,16 @@ const MemoryRegionOps tpm_crb_memory_ops =3D {
+> >
+> >   void tpm_crb_request_completed(TPMCRBState *s, int ret)
+> >   {
+> > -    s->regs[R_CRB_CTRL_START] &=3D ~CRB_START_INVOKE;
+> > +    uint32_t *regs =3D memory_region_get_ram_ptr(&s->mmio);
+> > +
+> > +    assert(regs);
+> > +    regs[R_CRB_CTRL_START] &=3D ~CRB_START_INVOKE;
+> >       if (ret !=3D 0) {
+> > -        ARRAY_FIELD_DP32(s->regs, CRB_CTRL_STS,
+> > +        ARRAY_FIELD_DP32(regs, CRB_CTRL_STS,
+> >                            tpmSts, 1); /* fatal error */
+> >       }
+> > -    memory_region_set_dirty(&s->cmdmem, 0, CRB_CTRL_CMD_SIZE);
+> > +
+> > +    memory_region_set_dirty(&s->mmio, 0, TPM_CRB_ADDR_SIZE);
+> >   }
+> >
+> >   enum TPMVersion tpm_crb_get_version(TPMCRBState *s)
+> > @@ -160,45 +158,50 @@ int tpm_crb_pre_save(TPMCRBState *s)
+> >
+> >   void tpm_crb_reset(TPMCRBState *s, uint64_t baseaddr)
+> >   {
+> > +    uint32_t *regs =3D memory_region_get_ram_ptr(&s->mmio);
+> > +
+> > +    assert(regs);
+> >       if (s->ppi_enabled) {
+> >           tpm_ppi_reset(&s->ppi);
+> >       }
+> >       tpm_backend_reset(s->tpmbe);
+> >
+> > -    memset(s->regs, 0, sizeof(s->regs));
+> > +    memset(regs, 0, TPM_CRB_ADDR_SIZE);
+> >
+> > -    ARRAY_FIELD_DP32(s->regs, CRB_LOC_STATE,
+> > +    ARRAY_FIELD_DP32(regs, CRB_LOC_STATE,
+> >                        tpmRegValidSts, 1);
+> > -    ARRAY_FIELD_DP32(s->regs, CRB_CTRL_STS,
+> > +    ARRAY_FIELD_DP32(regs, CRB_LOC_STATE,
+> > +                     tpmEstablished, 1);
+> > +    ARRAY_FIELD_DP32(regs, CRB_CTRL_STS,
+> >                        tpmIdle, 1);
+> > -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> > +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+> >                        InterfaceType, CRB_INTF_TYPE_CRB_ACTIVE);
+> > -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> > +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+> >                        InterfaceVersion, CRB_INTF_VERSION_CRB);
+> > -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> > +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+> >                        CapLocality, CRB_INTF_CAP_LOCALITY_0_ONLY);
+> > -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> > +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+> >                        CapCRBIdleBypass, CRB_INTF_CAP_IDLE_FAST);
+> > -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> > +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+> >                        CapDataXferSizeSupport, CRB_INTF_CAP_XFER_SIZE_6=
+4);
+> > -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> > +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+> >                        CapFIFO, CRB_INTF_CAP_FIFO_NOT_SUPPORTED);
+> > -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> > +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+> >                        CapCRB, CRB_INTF_CAP_CRB_SUPPORTED);
+> > -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> > +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+> >                        InterfaceSelector, CRB_INTF_IF_SELECTOR_CRB);
+> > -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
+> > +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
+> >                        RID, 0b0000);
+> > -    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID2,
+> > +    ARRAY_FIELD_DP32(regs, CRB_INTF_ID2,
+> >                        VID, PCI_VENDOR_ID_IBM);
+> >
+> >       baseaddr +=3D A_CRB_DATA_BUFFER;
+> > -    s->regs[R_CRB_CTRL_CMD_SIZE] =3D CRB_CTRL_CMD_SIZE;
+> > -    s->regs[R_CRB_CTRL_CMD_LADDR] =3D (uint32_t)baseaddr;
+> > -    s->regs[R_CRB_CTRL_CMD_HADDR] =3D (uint32_t)(baseaddr >> 32);
+> > -    s->regs[R_CRB_CTRL_RSP_SIZE] =3D CRB_CTRL_CMD_SIZE;
+> > -    s->regs[R_CRB_CTRL_RSP_LADDR] =3D (uint32_t)baseaddr;
+> > -    s->regs[R_CRB_CTRL_RSP_HADDR] =3D (uint32_t)(baseaddr >> 32);
+> > +    regs[R_CRB_CTRL_CMD_SIZE] =3D CRB_CTRL_CMD_SIZE;
+> > +    regs[R_CRB_CTRL_CMD_LADDR] =3D (uint32_t)baseaddr;
+> > +    regs[R_CRB_CTRL_CMD_HADDR] =3D (uint32_t)(baseaddr >> 32);
+> > +    regs[R_CRB_CTRL_RSP_SIZE] =3D CRB_CTRL_CMD_SIZE;
+> > +    regs[R_CRB_CTRL_RSP_LADDR] =3D (uint32_t)baseaddr;
+> > +    regs[R_CRB_CTRL_RSP_HADDR] =3D (uint32_t)(baseaddr >> 32);
+> >
+> >       s->be_buffer_size =3D MIN(tpm_backend_get_buffer_size(s->tpmbe),
+> >                               CRB_CTRL_CMD_SIZE);
+> > @@ -206,15 +209,33 @@ void tpm_crb_reset(TPMCRBState *s, uint64_t basea=
+ddr)
+> >       if (tpm_backend_startup_tpm(s->tpmbe, s->be_buffer_size) < 0) {
+> >           exit(1);
+> >       }
+> > +
+> > +    memory_region_rom_device_set_romd(&s->mmio, true);
+> > +    memory_region_set_dirty(&s->mmio, 0, TPM_CRB_ADDR_SIZE);
+> >   }
+> >
+> >   void tpm_crb_init_memory(Object *obj, TPMCRBState *s, Error **errp)
+> >   {
+> > -    memory_region_init_io(&s->mmio, obj, &tpm_crb_memory_ops, s,
+> > -        "tpm-crb-mmio", sizeof(s->regs));
+> > -    memory_region_init_ram(&s->cmdmem, obj,
+> > -        "tpm-crb-cmd", CRB_CTRL_CMD_SIZE, errp);
+> > +    memory_region_init_rom_device_nomigrate(&s->mmio, obj, &tpm_crb_me=
+mory_ops,
+> > +        s, "tpm-crb-mem", TPM_CRB_ADDR_SIZE, errp);
+> >       if (s->ppi_enabled) {
+> >           tpm_ppi_init_memory(&s->ppi, obj);
+> >       }
+> >   }
+> > +
+> > +void tpm_crb_mem_save(TPMCRBState *s, uint32_t *saved_regs, void *save=
+d_cmdmem)
+> > +{
+> > +    uint32_t *regs =3D memory_region_get_ram_ptr(&s->mmio);
+> > +
+> > +    memcpy(saved_regs, regs, TPM_CRB_R_MAX);
+> > +    memcpy(saved_cmdmem, &regs[R_CRB_DATA_BUFFER], A_CRB_DATA_BUFFER);
+>
+> I find it confusing that this function is here rather than in
+> tpm_crb_non_pre_save().
+I factored it that way to be consistent with the other callbacks in
+-common. The idea is that the -common code has no visibility into the
+instance specific data structure and therefore needs to get that info
+(saved_regs, saved_cmdmem) from the concrete instance.
+
+>
+> The size should be CRB_CTRL_CMD_SIZE.
+Good catch, will fix.
+
+>
+> > +}
+> > +
+> > +void tpm_crb_mem_load(TPMCRBState *s, const uint32_t *saved_regs,
+> > +                      const void *saved_cmdmem)
+> > +{
+> > +    uint32_t *regs =3D memory_region_get_ram_ptr(&s->mmio);
+> > +
+> > +    memcpy(regs, saved_regs, TPM_CRB_R_MAX);
+> > +    memcpy(&regs[R_CRB_DATA_BUFFER], saved_cmdmem, A_CRB_DATA_BUFFER);
+> > +}
+>
+> Same comments; size seems wrong.
 
