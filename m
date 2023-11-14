@@ -2,92 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32AEB7EB371
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 16:23:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E14F7EB383
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 16:28:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2vFL-0008K2-M1; Tue, 14 Nov 2023 10:22:35 -0500
+	id 1r2vJc-0000zy-5e; Tue, 14 Nov 2023 10:27:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2vFK-0008Js-72
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 10:22:34 -0500
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2vFF-0000NH-9c
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 10:22:33 -0500
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-9d10f94f70bso843534966b.3
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 07:22:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699975347; x=1700580147; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MUHR/sFEjdzbvDET4onhF+bWIy1sGTTug2OAYdlSeSM=;
- b=Ssvo5/el/dxoSl10Gapnfjfu1BZqdq4m3P3aVdOqQy9N/4F7KmVn2G/ubV4nLou4UY
- PdY1IegQzQGoGH7upxdobDye7XT4q8xKSoSJNmZHgXbnQmvse2m9wWelCubNwZpghBR3
- HKe8qNg2axOuQ8l6tDl9e5ABDKSBxHB/5h4PMpryFXNEUWm8ALqKro9n9FRbBLpHdExG
- s+UMJyMKqB2mHupczWT3qxkRynEgGH6qf5FuQKvfgGrtfMK8WJFqUPVX/s1YOx3g/2CW
- RemIEzO9im0XQaSXZIfSB1zrSgx7LtiJpnoAdbXQW+ndCV/IYB831nvDASnXcaUX4Cwa
- PVUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699975347; x=1700580147;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MUHR/sFEjdzbvDET4onhF+bWIy1sGTTug2OAYdlSeSM=;
- b=gl5poc+VGv3iN091hkFHqeLT0idxUClROv8pR64RmLtzqXcC6N2wAUq6+vPk1K9Psu
- qUKWQOBs1laX13gxqrh2hkx2jryINmb3hOIsUBqGj7RiKhGKdNjVV0d3ECkeOV8qtsUr
- hqVuGJ6fNZzByTMyTQjrT/sapDAU1STme+Qkikhd6BoEzNjerGaoWqyA5urM/tbb9RRx
- svWPbw0kg+3F2XTH6yqUH/ME8Q9L0QjRrHTSyYmTsraNUkrlZrjLCmL6IwccIfQ48KMO
- EvUmU6v9l2gwguqPwyWMXwRtkEVBl9TpZQIp3plRIZCZoDjyJMbxtOsfSsWnpqeS8JT1
- 7KQA==
-X-Gm-Message-State: AOJu0YxMHJSrNUosiK3WKyZLcxOK8nek/zJ+TrRZkE419qeg7fblY5PC
- PunBw7RACDiE48qYJj+GdEHmJA==
-X-Google-Smtp-Source: AGHT+IF5d1ESnNl3DW6y2+imScFbz4lvkI6XZHXfhsQrAJwxX/tlICwDYWPVmK4nZgJvWNEuauG4+g==
-X-Received: by 2002:a17:906:3615:b0:9be:834a:f80b with SMTP id
- q21-20020a170906361500b009be834af80bmr7614130ejb.75.1699975346999; 
- Tue, 14 Nov 2023 07:22:26 -0800 (PST)
-Received: from [192.168.69.100] (cac94-h02-176-184-25-155.dsl.sta.abo.bbox.fr.
- [176.184.25.155]) by smtp.gmail.com with ESMTPSA id
- ov3-20020a170906fc0300b00977cad140a8sm5694156ejb.218.2023.11.14.07.22.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 07:22:26 -0800 (PST)
-Message-ID: <7fd25b34-6fd9-4f7c-90b4-e44338b2b09e@linaro.org>
-Date: Tue, 14 Nov 2023 16:22:23 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.0 v2 06/19] hw/pci/msi: Restrict xen_is_pirq_msi()
- call to Xen
-Content-Language: en-US
-To: David Woodhouse <dwmw2@infradead.org>, David Woodhouse
- <dwmw@amazon.co.uk>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paul Durrant <paul@xen.org>, qemu-arm@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- xen-devel@lists.xenproject.org, qemu-block@nongnu.org,
- Anthony Perard <anthony.perard@citrix.com>, kvm@vger.kernel.org,
- Thomas Huth <thuth@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-References: <20231114143816.71079-1-philmd@linaro.org>
- <20231114143816.71079-7-philmd@linaro.org>
- <EEC18CA6-88F2-4F18-BDE5-5E9AAE5778A7@infradead.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <EEC18CA6-88F2-4F18-BDE5-5E9AAE5778A7@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1r2vJZ-0000zS-Kz; Tue, 14 Nov 2023 10:26:57 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1r2vJW-0001E3-7H; Tue, 14 Nov 2023 10:26:56 -0500
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AEFGO7t002001; Tue, 14 Nov 2023 15:26:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=e5L3jYwvCYAoXcdm7aUjhPMmDjibyLauW11yNWm8ffY=;
+ b=pbKgVl49uxbVY9GukGw5uKIMJzcUAV1zU5LrAjqaAFahZAAWJf4XO9LY9Xfe+6jn3HH4
+ rcp2BOVWw3R0mIvlQEIX6EEltYyba84Hu/YUB2872gUtm26bvvVEIofOCfolnvv9QodS
+ hzNLo9RWZu5N2PK6eMOwYq+hSL1QtV21nK7ZELwy8d3XQy2x/vMeVcJvPRWAUF2MsyzS
+ 2H9AJu1qfa4tfWOODcwZI7J7QKCVw1GUdOUd4GJnY1CvMPJDrCRDJn4V/EOFfqybJhmt
+ YFL8MYI1NyYnbUMXQiaoa52QWMnu8QsjyWK/TikGoMV92D3lHbUW4GR+juEWQiVj3gCh QA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucb5fgx1y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 14 Nov 2023 15:26:51 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AEFGjXQ005063;
+ Tue, 14 Nov 2023 15:26:50 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucb5fgx1k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 14 Nov 2023 15:26:50 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AEE2M7A029428; Tue, 14 Nov 2023 15:26:50 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uakxss2sx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 14 Nov 2023 15:26:49 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AEFQn5G18023028
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 14 Nov 2023 15:26:49 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2CC2758058;
+ Tue, 14 Nov 2023 15:26:49 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C7CFB5805E;
+ Tue, 14 Nov 2023 15:26:48 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
+ by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 14 Nov 2023 15:26:48 +0000 (GMT)
+Message-ID: <be493d52dd58df3205b0055ce75d7026bc18b8c2.camel@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 4/8] ppc/pnv: Fix PNV I2C invalid status after reset
+From: Miles Glenn <milesg@linux.vnet.ibm.com>
+To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, qemu-devel@nongnu.org, 
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, =?ISO-8859-1?Q?Fr=E9d=E9ric?=
+ Barrat <fbarrat@linux.ibm.com>
+Date: Tue, 14 Nov 2023 09:26:48 -0600
+In-Reply-To: <1605799c-86d5-46be-b7ac-ed7e465d7013@kaod.org>
+References: <20231110194925.475909-1-milesg@linux.vnet.ibm.com>
+ <20231110194925.475909-5-milesg@linux.vnet.ibm.com>
+ <1605799c-86d5-46be-b7ac-ed7e465d7013@kaod.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: MXViNFGH3QOR9QzC6r4nJ9MXyw2KLKhC
+X-Proofpoint-ORIG-GUID: cY2klaiCGCaF5S0kd_1OdIH38EQ167ds
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-14_14,2023-11-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=995
+ priorityscore=1501 malwarescore=0 bulkscore=0 phishscore=0 spamscore=0
+ adultscore=0 impostorscore=0 mlxscore=0 clxscore=1015 lowpriorityscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311140118
+Received-SPF: none client-ip=148.163.158.5;
+ envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,41 +115,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/11/23 16:13, David Woodhouse wrote:
-> On 14 November 2023 09:38:02 GMT-05:00, "Philippe Mathieu-Daudé" <philmd@linaro.org> wrote:
->> Similarly to the restriction in hw/pci/msix.c (see commit
->> e1e4bf2252 "msix: fix msix_vector_masked"), restrict the
->> xen_is_pirq_msi() call in msi_is_masked() to Xen.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On Mon, 2023-11-13 at 10:10 +0100, Cédric Le Goater wrote:
+> On 11/10/23 20:49, Glenn Miles wrote:
+> > The PNV I2C Controller was clearing the status register
+> > after a reset without repopulating the "upper threshold
+> > for I2C ports", "Command Complete" and the SCL/SDA input
+> > level fields.
+> > 
+> > Fixed this for resets caused by a system reset as well
+> > as from writing to the "Immediate Reset" register.
+> > 
+> > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+> > ---
+> >   hw/ppc/pnv_i2c.c | 42 ++++++++++++++++++------------------------
+> >   1 file changed, 18 insertions(+), 24 deletions(-)
+> > 
+> > diff --git a/hw/ppc/pnv_i2c.c b/hw/ppc/pnv_i2c.c
+> > index b2c738da50..f80589157b 100644
+> > --- a/hw/ppc/pnv_i2c.c
+> > +++ b/hw/ppc/pnv_i2c.c
+> > @@ -462,6 +462,23 @@ static uint64_t pnv_i2c_xscom_read(void
+> > *opaque, hwaddr addr,
+> >       return val;
+> >   }
+> >   
+> > +static void pnv_i2c_reset(void *dev)
+> > +{
+> > +    PnvI2C *i2c = PNV_I2C(dev);
+> > +
+> > +    memset(i2c->regs, 0, sizeof(i2c->regs));
+> > +
+> > +    i2c->regs[I2C_STAT_REG] =
+> > +        SETFIELD(I2C_STAT_UPPER_THRS, 0ull, i2c->num_busses - 1) |
+> > +        I2C_STAT_CMD_COMP | I2C_STAT_SCL_INPUT_LEVEL |
+> > +        I2C_STAT_SDA_INPUT_LEVEL;
+> > +    i2c->regs[I2C_EXTD_STAT_REG] =
+> > +        SETFIELD(I2C_EXTD_STAT_FIFO_SIZE, 0ull, PNV_I2C_FIFO_SIZE)
+> > |
+> > +        SETFIELD(I2C_EXTD_STAT_I2C_VERSION, 0ull, 23); /* last
+> > version */
+> > +
+> > +    fifo8_reset(&i2c->fifo);
+> > +}
+> > +
+> >   static void pnv_i2c_xscom_write(void *opaque, hwaddr addr,
+> >                                   uint64_t val, unsigned size)
+> >   {
+> > @@ -499,16 +516,7 @@ static void pnv_i2c_xscom_write(void *opaque,
+> > hwaddr addr,
+> >           break;
+> >   
+> >       case I2C_RESET_I2C_REG:
+> > -        i2c->regs[I2C_MODE_REG] = 0;
+> > -        i2c->regs[I2C_CMD_REG] = 0;
+> > -        i2c->regs[I2C_WATERMARK_REG] = 0;
+> > -        i2c->regs[I2C_INTR_MASK_REG] = 0;
+> > -        i2c->regs[I2C_INTR_COND_REG] = 0;
+> > -        i2c->regs[I2C_INTR_RAW_COND_REG] = 0;
+> > -        i2c->regs[I2C_STAT_REG] = 0;
+> > -        i2c->regs[I2C_RESIDUAL_LEN_REG] = 0;
+> > -        i2c->regs[I2C_EXTD_STAT_REG] &=
+> > -            (I2C_EXTD_STAT_FIFO_SIZE | I2C_EXTD_STAT_I2C_VERSION);
+> > +        pnv_i2c_reset(i2c);
 > 
-> Hm, we do also support the Xen abomination of snooping on MSI table writes to see if they're targeted at a Xen PIRQ, then actually unmasking the MSI from QEMU when the guest binds the corresponding event channel to that PIRQ.
+> or simply call device_cold_reset()
 > 
-> I think this is going to break in CI as kvm_xen_guest.py does deliberately exercise that use case, doesn't it?
+> 
+> Thanks,
+> 
+> C.
+> 
 
-Hmmm I see what you mean.
+The device_cold_reset() function performs a recursive reset, which
+I believe performs a reset on the specified device as well as a reset
+on all child devices.  For the case of doing an "immediate reset" of
+the i2c controller, I think we just want to reset the i2c controller
+and not any child devices, so I think I prefer leaving it how it is
+if that is ok.
 
-So you mentioned these checks:
+Thanks,
 
-- host Xen accel
-- Xen accel emulated to guest via KVM host accel
+Glenn
 
-Maybe we need here:
+> 
+> 
+> >           break;
+> >   
+> >       case I2C_RESET_ERRORS:
+> > @@ -620,20 +628,6 @@ static int pnv_i2c_dt_xscom(PnvXScomInterface
+> > *dev, void *fdt,
+> >       return 0;
+> >   }
+> >   
+> > -static void pnv_i2c_reset(void *dev)
+> > -{
+> > -    PnvI2C *i2c = PNV_I2C(dev);
+> > -
+> > -    memset(i2c->regs, 0, sizeof(i2c->regs));
+> > -
+> > -    i2c->regs[I2C_STAT_REG] = I2C_STAT_CMD_COMP;
+> > -    i2c->regs[I2C_EXTD_STAT_REG] =
+> > -        SETFIELD(I2C_EXTD_STAT_FIFO_SIZE, 0ull, PNV_I2C_FIFO_SIZE)
+> > |
+> > -        SETFIELD(I2C_EXTD_STAT_I2C_VERSION, 0ull, 23); /* last
+> > version */
+> > -
+> > -    fifo8_reset(&i2c->fifo);
+> > -}
+> > -
+> >   static void pnv_i2c_realize(DeviceState *dev, Error **errp)
+> >   {
+> >       PnvI2C *i2c = PNV_I2C(dev);
 
-- guest expected to run Xen
-
-   Being (
-                 Xen accel emulated to guest via KVM host accel
-	OR
-                 host Xen accel
-         )
-
-If so, possibly few places incorrectly check 'xen_enabled()'
-instead of this 'xen_guest()'.
-
-"Xen on KVM" is a tricky case...
-
-> I deliberately *didn't* switch to testing the Xen PV net device, with a comment that testing MSI and irqchip permutations was far more entertaining. So I hope it should catch this?
-
-¯\_(ツ)_/¯
 
