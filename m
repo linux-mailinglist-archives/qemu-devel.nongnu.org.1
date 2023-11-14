@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B27827EB0C3
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 14:22:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64BD47EB0C8
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 14:22:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2tM9-0000E6-19; Tue, 14 Nov 2023 08:21:31 -0500
+	id 1r2tNB-0000wc-7G; Tue, 14 Nov 2023 08:22:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r2tLw-00009R-Oz
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 08:21:17 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r2tLv-0000Wk-2j
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 08:21:16 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-540c54944c4so11304138a12.1
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 05:21:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699968073; x=1700572873; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=JdxmbrIi+h2LJQZ3W6CRYV+Xqy1ExBQdhYEjD5um7Dc=;
- b=XzWAVwZQMSFR4RdttcH5UIo58RWwc5kGVp6/3cGdcg/GEn+pPkP7ZorxanksTWOGih
- o1gJLLJQPINgbCDcoP+gpHKhR/AdYZPPrXeadk9n+rmE4zz2wPBGgr6dZICEWVq9MBv+
- gldqgqJYETo7JBsVgCeyuzj2ftsiDWRARVbv03RsO1bnY5jSpEcOUm0v1/kDjcmUdVO3
- mVIiNmN8rB/PA4a1x76bqQHG/X+UQV7/Vfa6E3LYPx31omSS+HPfX+mR68EZVS51NLa6
- yNpA/Q/Pdk7KavDXblDuBslaSG4M27OszU4PylIh2UqfIeLDu6A0LFB1ZpNb6rnsJbLG
- 8UWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699968073; x=1700572873;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=JdxmbrIi+h2LJQZ3W6CRYV+Xqy1ExBQdhYEjD5um7Dc=;
- b=vZdZaUT4u904C3eUiaPWAEpgax0ze3uJkKOerxsvOgUgARvk9o0zZ9TyXbAFdUdESf
- NH2qAaC01wm+j3lVGlbH7I350OjyCCWXTOIn2r3VAFCnQIo30q09VhmYhy97xQTrEx0+
- 5NxVUiC1kWuZoXvC7SOVps/+Bnex85anm+S05Zj2ydjZd0j2R1nhD+tCXWuPiaowxTRk
- jK3o/jTnEEZwNMOLvYrW+gy+Gbu4ek4/b0DdhfFqWu4HPMzVn1J2R7slWl1TneDXMMJs
- v9cxuDoTY2metzlJqgRWQw7+w4IvJo7cWmZvdBs4kuS+meXCpSA1w8OX/oAzTOC5uqmj
- QacA==
-X-Gm-Message-State: AOJu0Yxc2uyrON4wdXl7niBvjs4nxBnIOPl824yVCnrGkZhiPVFgDU54
- ZkODR0niMXYYCf8iSf5OAhBKUujKiAsPXcNwRlUgBA==
-X-Google-Smtp-Source: AGHT+IEdB40nOOtz0F449s5NxyJIeA9hmye/eB21OeffjLolhZ9Ix+qbF674xB9bxqoaaygd28utThjhZ2eEdv1RxGk=
-X-Received: by 2002:a05:6402:1e8f:b0:542:f0af:21e6 with SMTP id
- f15-20020a0564021e8f00b00542f0af21e6mr2195918edf.14.1699968073035; Tue, 14
- Nov 2023 05:21:13 -0800 (PST)
-MIME-Version: 1.0
-References: <20231114130415.283228-1-thuth@redhat.com>
-In-Reply-To: <20231114130415.283228-1-thuth@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 14 Nov 2023 13:21:01 +0000
-Message-ID: <CAFEAcA_LcmowH28KG9LXRQRPFkAbmDCoPz5RDDK0TG+Am-p73w@mail.gmail.com>
-Subject: Re: [PATCH] qom/object: Limit type names to alphanumerical and some
- few special characters
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2tN8-0000w1-5O
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 08:22:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r2tN4-0000dn-No
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 08:22:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699968145;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gvGWqZ8/7FbAFuxPAmqQW16PF584pQ24MzR3WlnGlbI=;
+ b=YZNxk0yrnIJupzlebo5OqpZ7oMATG+1oHx0KeB0wBMTLWR6GGMwFMgr/0mE07jschagTa2
+ nLdzM7ZnP6IBvW7GiOxB76/95M92nOtJiTlxvM+mBTFmZMB8k+aQAbS6UWSOvDk+Kxltgy
+ 58C8f2MG/Phkl6y2Tjjmkdz5XQGOvxA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-546-mC5FaDVDN92qqY8_Nyy-Lw-1; Tue, 14 Nov 2023 08:22:24 -0500
+X-MC-Unique: mC5FaDVDN92qqY8_Nyy-Lw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C716D84AEC2;
+ Tue, 14 Nov 2023 13:22:23 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8ADDE2026D4C;
+ Tue, 14 Nov 2023 13:22:23 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 459C821E6A1F; Tue, 14 Nov 2023 14:22:22 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
 To: Thomas Huth <thuth@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org, 
- Eduardo Habkost <eduardo@habkost.net>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+Cc: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  QEMU Developers
+ <qemu-devel@nongnu.org>,  Paolo Bonzini <pbonzini@redhat.com>,  Eduardo
+ Habkost <eduardo@habkost.net>
+Subject: Re: [RFC PATCH] qom/object: Disallow comma in type names
+References: <20231114090537.154151-1-thuth@redhat.com>
+ <ZVM+hvRk5KYn5WYh@redhat.com>
+ <c023a3a5-4435-4381-860f-edb5da227c76@redhat.com>
+Date: Tue, 14 Nov 2023 14:22:22 +0100
+In-Reply-To: <c023a3a5-4435-4381-860f-edb5da227c76@redhat.com> (Thomas Huth's
+ message of "Tue, 14 Nov 2023 10:56:05 +0100")
+Message-ID: <87wmuk8o6p.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,42 +86,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 14 Nov 2023 at 13:05, Thomas Huth <thuth@redhat.com> wrote:
+Thomas Huth <thuth@redhat.com> writes:
+
+> Forgot to CC: qemu-devel (sorry) - thanks to Markus for the hint.
+> So let's repeat it here:
 >
-> QOM names currently don't have any enforced naming rules. This
-> can be problematic, e.g. when they are used on the command line
-> for the "-device" option (where the comma is used to separate
-> properties). To avoid that such problematic type names come in
-> again, let's restrict the set of acceptable characters during the
-> type registration.
->
-> Ideally, we'd apply here the same rules as for QAPI, i.e. all type
-> names should begin with a letter, and contain only ASCII letters,
-> digits, hyphen, and underscore. However, we already have so many
-> pre-existing types like:
->
->     486-x86_64-cpu
->     cfi.pflash01
->     power5+_v2.1-spapr-cpu-core
->     virt-2.6-machine::hotplug-handler
->     aspeed.i2c.slave::vmstate-if
->     pc-i440fx-3.0-machine::nmi
+> On 14/11/2023 10.31, Daniel P. Berrang=C3=A9 wrote:
+>> On Tue, Nov 14, 2023 at 10:05:37AM +0100, Thomas Huth wrote:
+>>> QOM names currently don't have any enforced naming rules. This can
+>>> be problematic, e.g. when they are used on the command line for
+>>> the "-device" option (where the comma is used to separate properties).
+>>> To avoid that such problematic type names come in again, let's
+>>> disallow them now by adding an g_assert() during the type registration.
+>>>
+>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>> ---
+>>>   Based-on: <20231113134344.1195478-1-armbru@redhat.com>
+>>>   (without Markus' patches, the g_assert() triggers with the current
+>>>    code base)
+>>>=20=20=20
+>>>   See discussion here:
+>>>   https://lore.kernel.org/qemu-devel/87y1f0hjdh.fsf@pond.sub.org/
+>>>
+>>>   Questions: Should we disallow other characters, too? Slash and
+>>>   backslash maybe (since they can cause trouble with module names)?
+>>>   Dot and colon would maybe be good candidates, too, but they seem
+>>>   to be in wide use already, so these don't really seem to be
+>>>   feasible...
+>>=20
+>> There's two questions.
+>>=20
+>>    * What should we enforce today
+>>    * What should we ideally enforce in future
+>>=20
+>> Ideally the answers would be the same, but getting there will
+>> almost certainly require some cleanup first.
+>>=20
+>> Given that we can now define QOM types using QAPI, I feel we
+>> preserve everyone's sanity by enforcing the same rules for
+>> QOM and QAPI type naming. IOW
 
-I think all these '::' are specifically interface types --
-see type_initialize_interface(), which constructs the
-interface type name by gluing together the class name and
-the interface name with a '::'. The rule we ought to be
-requiring for ':' I think is "no : in the type name, unless
-it is the one generated by type_initialize_interface()".
+Agree!
 
-I think we could do that by having the type_name_is_valid()
-checks done in:
- * type_initialize_interface(), on ti->name and interface_type->name
- * type_register_internal(), on info->name
+>>    All QOM type names must begin with a letter, and contain
+>>    only ASCII letters, digits, hyphen, and underscore.
+>>=20
+>> is the answer for the second question.
 
-If we do that, can we take ':' out of the list of characters
-we permit in type_name_is_valid() ?
+As long as type names only occur as *values*, the next sentence's first
+exception applies, too:
 
-thanks
--- PMM
+      There are two exceptions: enum values may start with a digit, and
+      names that are downstream extensions (see section `Downstream
+      extensions`_) start with underscore.
+
+This is of course docs/devel/qapi-code-gen.rst.
+
+I'm willing to tweak the QAPI naming rules within reason.
+
+>> In terms of what we can enforce today, we can block ',',
+>> but we can't block '.' without some cleanup, and possibly
+>> the same for ':'. Can we assume we don't have any other
+>> non-alphanumeric chars used ?
+
+I ran qom-list-types (without 'abstract': true) for all 31
+qemu-system-FOO, extracted the type names, and sorted them into buckets.
+
+* I found 3255 distinct names
+
+* 2445 names conform to the QAPI naming rule "only letters, digits,
+  hyphen, and underscore, starting with a letter"
+
+* 157 more names conform with the enum exception "may start with a
+  digit"
+
+* The remainder contain unwanted characters
+
+  - 9 contain ',' and no other unwanted characters
+
+    My "hw: Replace anti-social QOM type names (again)" fixes them.
+
+  - 638 contain '.' and no other unwanted characters
+
+    That's a lot.
+
+    Perhaps we can permit '.' in enum names.  Needs thought.
+
+  - 6 contain '.' and '+'
+
+    Sun-UltraSparc-IIIi+-sparc64-cpu
+    Sun-UltraSparc-IV+-sparc64-cpu
+    power5+_v2.1-powerpc64-cpu
+    power5+_v2.1-spapr-cpu-core
+    power7+_v2.1-powerpc64-cpu
+    power7+_v2.1-spapr-cpu-core
+
+    Spell out "plus"?
+
+I found no names with ':'.  Looks like we use ':' only for abstract
+types (which includes interfaces).
+
+The only #define TYPE_FOO with a colon I can see is
+
+    #define TYPE_RAM_DISCARD_MANAGER "qemu:ram-discard-manager"
+
+An interface type.  Let's ditch the "qemu:".
+
+There are a bunch of interface names containing "::".  These come from
+type_initialize_interface():
+
+    info.name =3D g_strdup_printf("%s::%s", ti->name, interface_type->name);
+
+>> If so, I think that today we we could probably get away with
+>> saying:
+>>=20
+>>    All QOM type names must begin with a letter, and contain
+>>    only ASCII letters, digits, hyphen, underscore, period
+>>    and colon. Usage of period and colon is deprecated.
+
+I think we should reserve colon for QOM internal use.
+
+[...]
+
 
