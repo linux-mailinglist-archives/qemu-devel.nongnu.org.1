@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC477EB276
+	by mail.lfdr.de (Postfix) with ESMTPS id D26C07EB277
 	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 15:39:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2uYc-0002Z9-HL; Tue, 14 Nov 2023 09:38:26 -0500
+	id 1r2uYk-0002bM-8g; Tue, 14 Nov 2023 09:38:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uYa-0002Ys-QQ
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:38:24 -0500
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uYg-0002aU-KP
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:38:30 -0500
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uYY-0007hF-QL
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:38:24 -0500
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-53e04b17132so8861078a12.0
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 06:38:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uYf-0007iM-3y
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:38:30 -0500
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-9c773ac9b15so803904366b.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 06:38:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699972701; x=1700577501; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=FMnSSW8jr/cJKCHmkfkuNGM9r6aQH+5mtjx4iGXWqMs=;
- b=x1c9VYGVBIa2E6Vhy3xFtAK2qPHrnH8oaemeaNSWbU0v3OsXxYUHUwjfBvHegBalBx
- NcMjM7lN196i9r2VMpCC04PDsAfUW0tGh97hLj0/DwML+f54AM55rI7I3UZIvwiWS09w
- ijmgfxxFwrnFS2inV5XoO3ErmepwSD5ROZHeVSGmsZ/s+B2R7mT8GhSW84OUes0xxL3B
- UsihIxwAgUA0ggPCfHb90vC2pMBzM4B4PzOEzIUNzHZYZtuGrSZODTOjJiDx49Sj0MGt
- 1xHt2lZCzJMtKpOTxHfC+Cx7S9r9TZwuabTQK06PWHeWxg/jIssdpPpL0PseNOUpBwRB
- V73w==
+ d=linaro.org; s=google; t=1699972707; x=1700577507; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7bjOOh298/gVm20zFogtcW7Ag9vjCtjGY9z1KnDRo3U=;
+ b=cX1/q5wPI0mDPKtHoJZD9Qucuxvwf7jEbEbmK9eeh+o/x0Xbie7b4I707qwViObxSx
+ e2jGmlbjAU/hRYuatqBYz5uehdGcHHVsXUfE96NmLU08rBcufkG2fw3uv26GS1aB+g6I
+ LePBE7onYdPVYsDjGuzn9MkERgbw5jZBsQn2uTWAVre+haYdLxxNu3bYmtNtb/7U1nqm
+ 3Gr/gWwAJO+Z2d+XNL3HdfbwX1fh+olwvoOyuNARW9lfiX5WDuzzAvsV8kdPLE5CzkHc
+ Vh/Yru6rQfIhINCrjkbTmffyQuCdS1/+uOYpHF2Vdnnmsn4atKh9CaM9JumroPAZ4mTP
+ TVqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699972701; x=1700577501;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FMnSSW8jr/cJKCHmkfkuNGM9r6aQH+5mtjx4iGXWqMs=;
- b=UbG000HpkTfGdA+mLY+OmHdvurtrl5sg+uwNMA2T6ZHjUuzUmG8ZdcQ/WsHKmXwZW9
- kS4mgVK3JrBakTGvmqdQP3MG3ZVxn2KdDJ5uFTZ5ff1FXqmgs1UDfIxbu3j6FAuHgbGR
- 3BO4X207/8oB0Smi7Aau6cbPZ1siiADbD6nhUxXrJfl0E4cJHnE16ml2bzna1cDXXIy1
- bZ3cPSKX1uxYtbYgnX2VOupC0RwAf0QQUQDcGnyflwMZCdnjeeN7B4BzqmUQVup68Tdh
- AE/pG/hStli/uF69+t7BJq+oIZ2pWCJFxBYFb3xwmOIcGcc3vSnoNg7qXV2XMc0q0BZA
- 51FA==
-X-Gm-Message-State: AOJu0Yze+TTLWZidMzXDEeJMFZHswAGz3pAWjfDfUWQsRR/6+Q5gd863
- H4sV3fpUwhEJ5NtZtK1772px2w==
-X-Google-Smtp-Source: AGHT+IGalhPiUDY/2vhmD3Lr4wAa0t8q7dAjDO0/CMsaGIPZeXHvHP6kcXfcCCLtVPKEbEl31jhTGg==
-X-Received: by 2002:aa7:cf12:0:b0:526:9cfb:c12 with SMTP id
- a18-20020aa7cf12000000b005269cfb0c12mr6182599edy.38.1699972700668; 
- Tue, 14 Nov 2023 06:38:20 -0800 (PST)
+ d=1e100.net; s=20230601; t=1699972707; x=1700577507;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=7bjOOh298/gVm20zFogtcW7Ag9vjCtjGY9z1KnDRo3U=;
+ b=lDFQmcpKlFB2J5zWG+pGTGzm2PU2ubEoRhxkDj8PY15Ww7YNFMkOGx/8u6OXTRV1/w
+ Mx2t2CyP14+t91+akyLkg1kaUKdRRLh9G0jwXqMODl2NyoccUxZPRFi8qKxW9vaLBdEV
+ NXLwfKOxyXR+o9u9ZyR7M8e0EdW2SR9JL2gyjSBRb660avI8MjscNHxueLay2KXUQS1X
+ q9UcOqtcAW+HiHk7iIq9yvJ9qqwkmxpc1J6Kq4GT6B1/tcPa5KJxoKguPIhGODsRfN3l
+ 6CXXzs4bWwwrnSVvrA8fomgUDzuemobhEhwJ7obQCQauC0f6uphx3hiaPXVMqXl+4Btn
+ Qn7Q==
+X-Gm-Message-State: AOJu0YwJX/m+XAEbK2QeI7XaFNXZWBxNwZ7+NKpx7mbeanjJwpKgvpBm
+ 5OZukM+pyIq3fdspHt2Ar8obLw==
+X-Google-Smtp-Source: AGHT+IGmC/f0NBuJq3lX6zmQbmq53YN/p3zW7ekfEdUOO96zzY8Hw2NKquJgt5a7Y31IS7pqqhAiDQ==
+X-Received: by 2002:a17:906:e084:b0:9c6:64be:a3c9 with SMTP id
+ gh4-20020a170906e08400b009c664bea3c9mr7562718ejb.39.1699972707580; 
+ Tue, 14 Nov 2023 06:38:27 -0800 (PST)
 Received: from m1x-phil.lan (cac94-h02-176-184-25-155.dsl.sta.abo.bbox.fr.
  [176.184.25.155]) by smtp.gmail.com with ESMTPSA id
- r17-20020aa7da11000000b0054554a7bbedsm5137696eds.24.2023.11.14.06.38.18
+ v21-20020a1709064e9500b009df5d874ca7sm5636254eju.23.2023.11.14.06.38.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 14 Nov 2023 06:38:20 -0800 (PST)
+ Tue, 14 Nov 2023 06:38:27 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: David Woodhouse <dwmw@amazon.co.uk>,
 	qemu-devel@nongnu.org
@@ -64,24 +65,29 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  xen-devel@lists.xenproject.org, qemu-block@nongnu.org,
  Anthony Perard <anthony.perard@citrix.com>, kvm@vger.kernel.org,
  Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.0 v2 00/19] hw/xen: Have most of Xen files become
- target-agnostic
-Date: Tue, 14 Nov 2023 15:37:56 +0100
-Message-ID: <20231114143816.71079-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: [PATCH-for-9.0 v2 01/19] tests/avocado: Add 'guest:xen' tag to tests
+ running Xen guest
+Date: Tue, 14 Nov 2023 15:37:57 +0100
+Message-ID: <20231114143816.71079-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231114143816.71079-1-philmd@linaro.org>
+References: <20231114143816.71079-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,93 +103,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Missing review: 4-10,13,16,18-19
-
-Since v1:
-- Rework handle_ioreq() patch (Richard)
-- Call xen_enabled() and remove various stubs
-- Use QEMU_ALIGNED() in xen_blkif header
-- Rename ram_memory -> xen_memory
-- Have files using Xen API also use its CPPFLAGS
-- Add missing license
-- Added Avocado tag
-- Added R-b tags
-
-Hi,
-
-After discussing with Alex Bennée I realized most Xen code
-should be target-agnostic. David Woodhouse confirmed that
-last week, so I had a quick look and here is the result.
-
-More work is required to be able to instanciate Xen HW in
-an heterogeneous machine, but this doesn't make sense yet
-until we can run multiple accelerators concurrently.
-
-Tested running on x86_64/aarch64 Linux hosts:
+Add a tag to run all Xen-specific tests using:
 
   $ make check-avocado AVOCADO_TAGS='guest:xen'
 
-Regards,
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ tests/avocado/boot_xen.py      | 3 +++
+ tests/avocado/kvm_xen_guest.py | 1 +
+ 2 files changed, 4 insertions(+)
 
-Phil.
-
-Philippe Mathieu-Daudé (19):
-  tests/avocado: Add 'guest:xen' tag to tests running Xen guest
-  sysemu/xen: Forbid using Xen headers in user emulation
-  sysemu/xen-mapcache: Check Xen availability with
-    CONFIG_XEN_IS_POSSIBLE
-  system/physmem: Do not include 'hw/xen/xen.h' but 'sysemu/xen.h'
-  hw/display: Restrict xen_register_framebuffer() call to Xen
-  hw/pci/msi: Restrict xen_is_pirq_msi() call to Xen
-  hw/xen: Remove unnecessary xen_hvm_inject_msi() stub
-  hw/xen: Remove unused Xen stubs
-  hw/block/xen_blkif: Align structs with QEMU_ALIGNED() instead of
-    #pragma
-  hw/xen: Rename 'ram_memory' global variable as 'xen_memory'
-  hw/xen/xen_arch_hvm: Rename prototypes using 'xen_arch_' prefix
-  hw/xen: Merge 'hw/xen/arch_hvm.h' in 'hw/xen/xen-hvm-common.h'
-  hw/xen: Remove use of 'target_ulong' in handle_ioreq()
-  hw/xen: Use target-agnostic qemu_target_page_bits()
-  hw/xen: Reduce inclusion of 'cpu.h' to target-specific sources
-  hw/xen/xen_pt: Add missing license
-  hw/xen: Extract 'xen_igd.h' from 'xen_pt.h'
-  hw/i386/xen: Compile 'xen-hvm.c' with Xen CPPFLAGS
-  hw/xen: Have most of Xen files become target-agnostic
-
- hw/block/xen_blkif.h            |  8 +++-----
- hw/xen/xen_pt.h                 | 24 ++++++++++--------------
- include/hw/arm/xen_arch_hvm.h   |  9 ---------
- include/hw/i386/xen_arch_hvm.h  | 11 -----------
- include/hw/xen/arch_hvm.h       |  5 -----
- include/hw/xen/xen-hvm-common.h |  9 +++++++--
- include/hw/xen/xen_igd.h        | 33 +++++++++++++++++++++++++++++++++
- include/sysemu/xen-mapcache.h   |  3 ++-
- include/sysemu/xen.h            |  8 ++++----
- accel/xen/xen-all.c             |  1 +
- hw/arm/xen_arm.c                | 12 ++++++------
- hw/display/vga.c                |  5 ++++-
- hw/i386/pc_piix.c               |  1 +
- hw/i386/xen/xen-hvm.c           | 18 +++++++++---------
- hw/pci/msi.c                    |  3 ++-
- hw/xen/xen-hvm-common.c         | 23 ++++++++++++-----------
- hw/xen/xen_pt.c                 |  3 ++-
- hw/xen/xen_pt_config_init.c     |  3 ++-
- hw/xen/xen_pt_graphics.c        |  3 ++-
- hw/xen/xen_pt_stub.c            |  2 +-
- stubs/xen-hw-stub.c             | 28 ----------------------------
- system/physmem.c                |  2 +-
- accel/xen/meson.build           |  2 +-
- hw/block/dataplane/meson.build  |  2 +-
- hw/i386/xen/meson.build         |  4 +++-
- hw/xen/meson.build              | 21 ++++++++++-----------
- tests/avocado/boot_xen.py       |  3 +++
- tests/avocado/kvm_xen_guest.py  |  1 +
- 28 files changed, 121 insertions(+), 126 deletions(-)
- delete mode 100644 include/hw/arm/xen_arch_hvm.h
- delete mode 100644 include/hw/i386/xen_arch_hvm.h
- delete mode 100644 include/hw/xen/arch_hvm.h
- create mode 100644 include/hw/xen/xen_igd.h
-
+diff --git a/tests/avocado/boot_xen.py b/tests/avocado/boot_xen.py
+index fc2faeedb5..f7f35d4740 100644
+--- a/tests/avocado/boot_xen.py
++++ b/tests/avocado/boot_xen.py
+@@ -61,6 +61,9 @@ def launch_xen(self, xen_path):
+ 
+ 
+ class BootXen(BootXenBase):
++    """
++    :avocado: tags=guest:xen
++    """
+ 
+     def test_arm64_xen_411_and_dom0(self):
+         """
+diff --git a/tests/avocado/kvm_xen_guest.py b/tests/avocado/kvm_xen_guest.py
+index 5391283113..63607707d6 100644
+--- a/tests/avocado/kvm_xen_guest.py
++++ b/tests/avocado/kvm_xen_guest.py
+@@ -22,6 +22,7 @@ class KVMXenGuest(QemuSystemTest, LinuxSSHMixIn):
+     :avocado: tags=arch:x86_64
+     :avocado: tags=machine:q35
+     :avocado: tags=accel:kvm
++    :avocado: tags=guest:xen
+     :avocado: tags=kvm_xen_guest
+     """
+ 
 -- 
 2.41.0
 
