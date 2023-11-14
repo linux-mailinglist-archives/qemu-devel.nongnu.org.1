@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C5FA7EB299
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 15:40:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF16C7EB2A3
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 15:42:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2uaH-0004ye-MB; Tue, 14 Nov 2023 09:40:09 -0500
+	id 1r2uaf-0005HJ-Hf; Tue, 14 Nov 2023 09:40:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uZg-0004Jq-Mx
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:39:32 -0500
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uZp-0004YK-GM
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:39:45 -0500
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uZd-0007tq-Jn
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:39:32 -0500
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-5079f6efd64so7528211e87.2
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 06:39:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2uZk-0007w4-Ah
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 09:39:38 -0500
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-9be02fcf268so853378466b.3
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 06:39:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699972768; x=1700577568; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699972774; x=1700577574; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BqgJC9hPHkcXARLwNhCfo2KLP+5VvJiIzbHQjbp4PnI=;
- b=fbuqc9ntQwV48E1LvGAMhPZiv6ZOdxC9YiiubQOHzAfoSvTDbJ5QGTbc2kpbzAxHBM
- bOcH8tuj6ZxliQNiIVU4KiLoqxgS9qTaBsQ88YqDjTG/BKNVbKn4qantvcxZvcT5z+zG
- 16q3WzFp5Se6AsIrB2f6LZSeJNrpNoHztBtO04TyvJ5rEh6PpbYeqnz8Kw3W9ok9ee+Z
- n3FYAaOGtoiD+m0MsRyHa6xP399r0Ne2/EGkMGEZXpWutkgZGEUpZSvuRTw3C3JVdiMd
- G/3zYdPAxcfNzmrzEfXwMqgI9gTvq8i81pUUD5A0MnF+8fl8Z/FBKpwyv41oG7CDBDXP
- fX0Q==
+ bh=6XE67RaqwP19rEjPR9cmWaIkbDnma1jGWKj3qDcuG2M=;
+ b=T/ICPmyfsrFjMiZkCn266Mdd00NiRZcxqt8rUfwotXheChrvheE2VDZ/NMsp7bf75R
+ WePQJRGmGVjrtxSMWBpayRpvXwGGRRydop2ew6NSjxqIgR9JCeqTAYAyyZXRjQkdAxIK
+ 1WzoMgy+piHxXZ5JInrYCK8evokrXJGEaadX1/usX6KgwCHoipgIbbkjMXQCj0+caRv5
+ TzNq9AJI41xVDHBH4Tlrt1D31lnDD1IQVnP/mqqHETKYbAHAiRl3I/As2ecN2aS+mYuV
+ XbXw+R9fORxJD+5BDb90TPFd0cI43nEfdpvuJivd1Rm1p7nsveGd/9MtLPgIWG80dHQx
+ sx9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699972768; x=1700577568;
+ d=1e100.net; s=20230601; t=1699972774; x=1700577574;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BqgJC9hPHkcXARLwNhCfo2KLP+5VvJiIzbHQjbp4PnI=;
- b=SgVqT9DaeHnu+IcgYPRVcaHYWsOIo4EurFVbyHkXaUneGhjinfV4103clz0hdiPLAN
- Cp9HmnTMjICgP1+5KNw2baHzr0Yqdi+9ZnKNg2+8DtOfPoeBeqJZ5fr20r68iRRRu16r
- MjPUWfh0iJ1muoXiHFLDVeyKAD8JtWfhk5mXBpulJyGZ93vEQApTAm+Kg86+EzntgA7q
- v/N35Qv6GvW40e3pKKRkAFW4jkF2PGqutJP6HTOjOL57SoRz5b326Shkz2vWoiX4p2Vl
- 4BWhcbqVHJyrJUr3vJIyWgHh/DfTOg4EaevlGBUC6YaKYizj1PFwIPuArHq9/qNidTSB
- 2egw==
-X-Gm-Message-State: AOJu0Yx5IUtZb30yI5pMdyH1Euk2M6rHvnrL+Qwf7bg9hq7OqM3215a1
- 1/p5HJyCQlM/xv934AVYLotLGw==
-X-Google-Smtp-Source: AGHT+IG5cdmuSMLF1QQ3nk9d4MKQ+Rf9u6gyzBn2OUTA0N6PdU8Lc7kj9gwB2wtfxvTcro7nwctRJA==
-X-Received: by 2002:a05:6512:3d90:b0:507:9a49:2d3d with SMTP id
- k16-20020a0565123d9000b005079a492d3dmr7641727lfv.31.1699972767814; 
- Tue, 14 Nov 2023 06:39:27 -0800 (PST)
+ bh=6XE67RaqwP19rEjPR9cmWaIkbDnma1jGWKj3qDcuG2M=;
+ b=Kra1CrkWKZJjP0cnqAflPYnUxiyo3OtfuZHdL6F25Z3wj0mnD0YdO072gR7d1I/BUe
+ /Awyh4CnRSfgqmNOCmTXGPrYPYuABE2o/1uhOiL7OarlnYMkPp7EhAv9scMUKFV52nlR
+ aATYIV4zP1TOvCoj49psE8h8MFYvo7Ca0laCsOLzdLPJVeTaQecsV6RFNhNaUYnXS63S
+ NdNvBvBjmaPLGS0c22Yn1wQQ3e4mlCLKVkzdEkSH6Nmc1vKKdRsmXVSkZmA6CaXpuZ6v
+ g4xm1tzDCqkhKnkC6AVuh+p7pwwIwL9URzCX7zaSQpIsmy3XOSt/aP6lt9z/o0r7iDxY
+ f2hg==
+X-Gm-Message-State: AOJu0YyCcdhyDezpQ7pSh/nba2o7E6vIqu7JBfgWXqBDb9qWlEsOX1q+
+ u6iTd9ciQxRuaUo1ffOycQBvtg==
+X-Google-Smtp-Source: AGHT+IH5uADtxqVb0gu9wkOPtm794L9VQ3NjNtPGCuhDFtQMH4f3XXf2p8ohPfBbgEKWHzCsn1iRrg==
+X-Received: by 2002:a17:906:899:b0:9df:e457:cef6 with SMTP id
+ n25-20020a170906089900b009dfe457cef6mr5737290eje.77.1699972774671; 
+ Tue, 14 Nov 2023 06:39:34 -0800 (PST)
 Received: from m1x-phil.lan (cac94-h02-176-184-25-155.dsl.sta.abo.bbox.fr.
  [176.184.25.155]) by smtp.gmail.com with ESMTPSA id
- c19-20020a50f613000000b00542d3e470f9sm5256915edn.10.2023.11.14.06.39.25
+ qx25-20020a170906fcd900b0098e34446464sm5684531ejb.25.2023.11.14.06.39.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 14 Nov 2023 06:39:27 -0800 (PST)
+ Tue, 14 Nov 2023 06:39:34 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: David Woodhouse <dwmw@amazon.co.uk>,
 	qemu-devel@nongnu.org
@@ -67,21 +67,21 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
  "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH-for-9.0 v2 10/19] hw/xen: Rename 'ram_memory' global variable
- as 'xen_memory'
-Date: Tue, 14 Nov 2023 15:38:06 +0100
-Message-ID: <20231114143816.71079-11-philmd@linaro.org>
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH-for-9.0 v2 11/19] hw/xen/xen_arch_hvm: Rename prototypes using
+ 'xen_arch_' prefix
+Date: Tue, 14 Nov 2023 15:38:07 +0100
+Message-ID: <20231114143816.71079-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231114143816.71079-1-philmd@linaro.org>
 References: <20231114143816.71079-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,122 +104,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To avoid a potential global variable shadow in
-hw/i386/pc_piix.c::pc_init1(), rename Xen's
-"ram_memory" as "xen_memory".
+Use a common 'xen_arch_' prefix for architecture-specific functions.
+Rename xen_arch_set_memory() and xen_arch_handle_ioreq().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/xen/xen-hvm-common.h |  2 +-
- hw/arm/xen_arm.c                |  6 +++---
- hw/i386/xen/xen-hvm.c           | 10 +++++-----
- hw/xen/xen-hvm-common.c         |  6 +++---
- 4 files changed, 12 insertions(+), 12 deletions(-)
+ include/hw/arm/xen_arch_hvm.h  | 4 ++--
+ include/hw/i386/xen_arch_hvm.h | 4 ++--
+ hw/arm/xen_arm.c               | 4 ++--
+ hw/i386/xen/xen-hvm.c          | 6 +++---
+ hw/xen/xen-hvm-common.c        | 4 ++--
+ 5 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/include/hw/xen/xen-hvm-common.h b/include/hw/xen/xen-hvm-common.h
-index 4e9904f1a6..d3fa5ed29b 100644
---- a/include/hw/xen/xen-hvm-common.h
-+++ b/include/hw/xen/xen-hvm-common.h
-@@ -16,7 +16,7 @@
- #include "qemu/error-report.h"
+diff --git a/include/hw/arm/xen_arch_hvm.h b/include/hw/arm/xen_arch_hvm.h
+index 8fd645e723..6a974f2020 100644
+--- a/include/hw/arm/xen_arch_hvm.h
++++ b/include/hw/arm/xen_arch_hvm.h
+@@ -2,8 +2,8 @@
+ #define HW_XEN_ARCH_ARM_HVM_H
+ 
  #include <xen/hvm/ioreq.h>
+-void arch_handle_ioreq(XenIOState *state, ioreq_t *req);
+-void arch_xen_set_memory(XenIOState *state,
++void xen_arch_handle_ioreq(XenIOState *state, ioreq_t *req);
++void xen_arch_set_memory(XenIOState *state,
+                          MemoryRegionSection *section,
+                          bool add);
+ #endif
+diff --git a/include/hw/i386/xen_arch_hvm.h b/include/hw/i386/xen_arch_hvm.h
+index 1000f8f543..2822304955 100644
+--- a/include/hw/i386/xen_arch_hvm.h
++++ b/include/hw/i386/xen_arch_hvm.h
+@@ -4,8 +4,8 @@
+ #include <xen/hvm/ioreq.h>
+ #include "hw/xen/xen-hvm-common.h"
  
--extern MemoryRegion ram_memory;
-+extern MemoryRegion xen_memory;
- extern MemoryListener xen_io_listener;
- extern DeviceListener xen_device_listener;
- 
+-void arch_handle_ioreq(XenIOState *state, ioreq_t *req);
+-void arch_xen_set_memory(XenIOState *state,
++void xen_arch_handle_ioreq(XenIOState *state, ioreq_t *req);
++void xen_arch_set_memory(XenIOState *state,
+                          MemoryRegionSection *section,
+                          bool add);
+ #endif
 diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-index a5631529d0..8a185da193 100644
+index 8a185da193..bf19407879 100644
 --- a/hw/arm/xen_arm.c
 +++ b/hw/arm/xen_arm.c
-@@ -111,17 +111,17 @@ static void xen_init_ram(MachineState *machine)
-         block_len = GUEST_RAM1_BASE + ram_size[1];
+@@ -129,14 +129,14 @@ static void xen_init_ram(MachineState *machine)
      }
+ }
  
--    memory_region_init_ram(&ram_memory, NULL, "xen.ram", block_len,
-+    memory_region_init_ram(&xen_memory, NULL, "xen.ram", block_len,
-                            &error_fatal);
+-void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
++void xen_arch_handle_ioreq(XenIOState *state, ioreq_t *req)
+ {
+     hw_error("Invalid ioreq type 0x%x\n", req->type);
  
--    memory_region_init_alias(&ram_lo, NULL, "xen.ram.lo", &ram_memory,
-+    memory_region_init_alias(&ram_lo, NULL, "xen.ram.lo", &xen_memory,
-                              GUEST_RAM0_BASE, ram_size[0]);
-     memory_region_add_subregion(sysmem, GUEST_RAM0_BASE, &ram_lo);
-     DPRINTF("Initialized region xen.ram.lo: base 0x%llx size 0x%lx\n",
-             GUEST_RAM0_BASE, ram_size[0]);
+     return;
+ }
  
-     if (ram_size[1] > 0) {
--        memory_region_init_alias(&ram_hi, NULL, "xen.ram.hi", &ram_memory,
-+        memory_region_init_alias(&ram_hi, NULL, "xen.ram.hi", &xen_memory,
-                                  GUEST_RAM1_BASE, ram_size[1]);
-         memory_region_add_subregion(sysmem, GUEST_RAM1_BASE, &ram_hi);
-         DPRINTF("Initialized region xen.ram.hi: base 0x%llx size 0x%lx\n",
+-void arch_xen_set_memory(XenIOState *state, MemoryRegionSection *section,
++void xen_arch_set_memory(XenIOState *state, MemoryRegionSection *section,
+                          bool add)
+ {
+ }
 diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
-index f42621e674..1ae943370b 100644
+index 1ae943370b..5150984e46 100644
 --- a/hw/i386/xen/xen-hvm.c
 +++ b/hw/i386/xen/xen-hvm.c
-@@ -149,12 +149,12 @@ static void xen_ram_init(PCMachineState *pcms,
-          */
-         block_len = (4 * GiB) + x86ms->above_4g_mem_size;
+@@ -659,8 +659,8 @@ void qmp_xen_set_global_dirty_log(bool enable, Error **errp)
      }
--    memory_region_init_ram(&ram_memory, NULL, "xen.ram", block_len,
-+    memory_region_init_ram(&xen_memory, NULL, "xen.ram", block_len,
-                            &error_fatal);
--    *ram_memory_p = &ram_memory;
-+    *ram_memory_p = &xen_memory;
+ }
  
-     memory_region_init_alias(&ram_640k, NULL, "xen.ram.640k",
--                             &ram_memory, 0, 0xa0000);
-+                             &xen_memory, 0, 0xa0000);
-     memory_region_add_subregion(sysmem, 0, &ram_640k);
-     /* Skip of the VGA IO memory space, it will be registered later by the VGA
-      * emulated device.
-@@ -163,12 +163,12 @@ static void xen_ram_init(PCMachineState *pcms,
-      * the Options ROM, so it is registered here as RAM.
-      */
-     memory_region_init_alias(&ram_lo, NULL, "xen.ram.lo",
--                             &ram_memory, 0xc0000,
-+                             &xen_memory, 0xc0000,
-                              x86ms->below_4g_mem_size - 0xc0000);
-     memory_region_add_subregion(sysmem, 0xc0000, &ram_lo);
-     if (x86ms->above_4g_mem_size > 0) {
-         memory_region_init_alias(&ram_hi, NULL, "xen.ram.hi",
--                                 &ram_memory, 0x100000000ULL,
-+                                 &xen_memory, 0x100000000ULL,
-                                  x86ms->above_4g_mem_size);
-         memory_region_add_subregion(sysmem, 0x100000000ULL, &ram_hi);
+-void arch_xen_set_memory(XenIOState *state, MemoryRegionSection *section,
+-                                bool add)
++void xen_arch_set_memory(XenIOState *state, MemoryRegionSection *section,
++                         bool add)
+ {
+     hwaddr start_addr = section->offset_within_address_space;
+     ram_addr_t size = int128_get64(section->size);
+@@ -700,7 +700,7 @@ void arch_xen_set_memory(XenIOState *state, MemoryRegionSection *section,
      }
+ }
+ 
+-void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
++void xen_arch_handle_ioreq(XenIOState *state, ioreq_t *req)
+ {
+     switch (req->type) {
+     case IOREQ_TYPE_VMWARE_PORT:
 diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
-index 565dc39c8f..cf4053c9f2 100644
+index cf4053c9f2..cf6ed11f70 100644
 --- a/hw/xen/xen-hvm-common.c
 +++ b/hw/xen/xen-hvm-common.c
-@@ -9,7 +9,7 @@
- #include "hw/boards.h"
- #include "hw/xen/arch_hvm.h"
- 
--MemoryRegion ram_memory;
-+MemoryRegion xen_memory;
- 
- void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
-                    Error **errp)
-@@ -26,7 +26,7 @@ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
-         return;
+@@ -65,7 +65,7 @@ static void xen_set_memory(struct MemoryListener *listener,
+         }
      }
  
--    if (mr == &ram_memory) {
-+    if (mr == &xen_memory) {
-         return;
+-    arch_xen_set_memory(state, section, add);
++    xen_arch_set_memory(state, section, add);
+ }
+ 
+ void xen_region_add(MemoryListener *listener,
+@@ -452,7 +452,7 @@ static void handle_ioreq(XenIOState *state, ioreq_t *req)
+             cpu_ioreq_config(state, req);
+             break;
+         default:
+-            arch_handle_ioreq(state, req);
++            xen_arch_handle_ioreq(state, req);
      }
- 
-@@ -53,7 +53,7 @@ static void xen_set_memory(struct MemoryListener *listener,
- {
-     XenIOState *state = container_of(listener, XenIOState, memory_listener);
- 
--    if (section->mr == &ram_memory) {
-+    if (section->mr == &xen_memory) {
-         return;
-     } else {
-         if (add) {
+     if (req->dir == IOREQ_READ) {
+         trace_handle_ioreq_read(req, req->type, req->df, req->data_is_ptr,
 -- 
 2.41.0
 
