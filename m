@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6426F7EAAFF
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 08:43:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B611B7EAB03
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 08:44:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2o3y-0005wp-Fv; Tue, 14 Nov 2023 02:42:22 -0500
+	id 1r2o51-0007P3-Ff; Tue, 14 Nov 2023 02:43:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2o3v-0005wU-U8
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 02:42:19 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2o4l-0007Jc-EL
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 02:43:11 -0500
 Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2o3s-0003ds-UQ
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 02:42:19 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r2o4j-0003mf-Tl
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 02:43:11 -0500
 Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-53e751aeb3cso8127567a12.2
- for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 23:42:16 -0800 (PST)
+ 4fb4d7f45d1cf-540c54944c4so10691081a12.1
+ for <qemu-devel@nongnu.org>; Mon, 13 Nov 2023 23:43:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1699947735; x=1700552535; darn=nongnu.org;
+ d=linaro.org; s=google; t=1699947785; x=1700552585; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=afwXf5UyfyHio4t/MoTziNc/oom0veIJS2FP26Ef0EA=;
- b=INSJog/tP7iFUyoEYA4aOoU7iNXWkpBWfNn/Gse+nWo4j+SrQxmy8Hr/dkzmWaEUI/
- pxRfh4XXGoifIODGiKw7rOvLjdwTmJ/AZSyGg1G+zC8mlI9iACjbfBBjZXUyq2PTeaH/
- llZeT31xPkxyjLPz5n1tmUeW2fC2FJ/V9CkyXMaw1q3p112tGOiJrIraifTLqD0+4eND
- 0tAKmx/rzmm56joWUjGc5bnJzGxzICNPz5yrX4kTNyKfVLqI4sWlX2fOuofKoisDRD4p
- MbZ9+dl9LXKtc9bhZKfy0G4JndKElgsl5WbxuN9fWU75ZK9sNOeqPAfsR0rIIHgIs0qg
- I30g==
+ bh=iGJSh7ARTE57eUspw2fZ/Y9FEN8W9w9Q7cghnGFYjQE=;
+ b=kp4QYm0Yqe8jneVzF41+8k+pHEwH9SKcRdlGvPk/RUXGWT9pfFUs62+A2VrNct/DvI
+ aDUtuG7o8TvGdQmHb/0cqcIkchajPmSF2xH7G7PiyA6+M2zz8FuZVmgDmFcyP+a0os1r
+ UtiC3axfmgIWWfA+BZbrO7aEhThlMvhWnFvNKQH06u/cfnPBAy1RwzQ0i1b5OOqMRQ5D
+ LeQYPngqYahfvj2Bgmd4GTtzMJosJs5VmmN23TnOliQgHDauW5+tcoA9dJkOMUiS5ZrH
+ XT9wrnHKrhfGZ/kaO9mpkVnOx4iAmp2K6r3z5mgt8KTb3RZec7HLP8XTUPIiRplKbDs2
+ njbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1699947735; x=1700552535;
+ d=1e100.net; s=20230601; t=1699947785; x=1700552585;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=afwXf5UyfyHio4t/MoTziNc/oom0veIJS2FP26Ef0EA=;
- b=F9lkViww3ZF/dfgEJ1URB70EikYSHzCCKtVZTcq846WcbV/Z7FvyqStqsIK1vAZPEJ
- f8BsFlL3F7rfwbnHCw7jV2XDSEguvnBtq0jzVlzvgY4FM8oN6sYAZbgtknFzu2XTkcqK
- LD7meoNG5m+N+mCOJNYKjU5FNVPTylhPSOLUf5Q4dvYl1kejaSct58g5XBnFLaGUMXPV
- siGKbpVo/u0diX9QLi3I6redgWAP9nHDgry9lAhSEp7H59eZ6SigelDKG8/pg8/sWRsO
- NxEGQHP7gumUGHL82q4E4Tofu0/E2oKMBDDN8U7+3vB7Goghgn6FPX5Nhsgn59zXvtgF
- VbLQ==
-X-Gm-Message-State: AOJu0Ywr4hudTBtSVu9wAWcG5NrpOvUdZdvVaRgOKDWkh4l1BiBE5f3k
- 06nHCZ0YKPkJaPe0agvQM/PyT3nDRkwGtsw9IQ0=
-X-Google-Smtp-Source: AGHT+IFce6dsUWO8qArRxaXq4VW8P2txycNkeinwY/EAXtRKE4RItRlBpr4najyISG4uncQiB0ABBQ==
-X-Received: by 2002:a05:6402:884:b0:545:5674:4293 with SMTP id
- e4-20020a056402088400b0054556744293mr6387649edy.28.1699947734901; 
- Mon, 13 Nov 2023 23:42:14 -0800 (PST)
+ bh=iGJSh7ARTE57eUspw2fZ/Y9FEN8W9w9Q7cghnGFYjQE=;
+ b=a6jpu4AiR9rAE1C5gqcJIDPtBjdZ2NYFl3qqUDHnZkU1B3slM9sdGdQFKxC0ICUR5G
+ 6OSI+cuvRNNZN46F3jxbbzG5i0GHuWHMda0aW9SUCc/ln/HjnfqGcMXSeUvcuip/OGpm
+ BEkLkzNjeBH4fNcY/fAnMTu9rmQgR8BrUZTF73AOtJKqM4+08DM824GNI8au51dHf10z
+ Mahg5afUfx9oPCPnh6XuLWSmAuUUlkH0XuC4wNac327O4HiVibX8+G1J0qqYSuBYCC9N
+ sG/xdSQBbCGmYE9WxkW9dCj9RBRTCdEEau7gk6XxT6nz2/dwBkDNRQOmhO+4+R7KV3XH
+ /0ew==
+X-Gm-Message-State: AOJu0YyYEqVGCuWFOP/8Aql9bybzC56rAq6CwfbGESeqJcKQ/ReC7LbK
+ J2AyTcsVw4Em1lEfnl9lHuETGw==
+X-Google-Smtp-Source: AGHT+IGc3/NG8UqFInjKsnJ47x00sT9L6VqttZpc9DaeBplNVfbIFLh/QxmAKcqUI5QOxgCuVcfEEA==
+X-Received: by 2002:aa7:da07:0:b0:542:ff1b:6c7a with SMTP id
+ r7-20020aa7da07000000b00542ff1b6c7amr1704591eds.9.1699947784705; 
+ Mon, 13 Nov 2023 23:43:04 -0800 (PST)
 Received: from [192.168.69.100] (cac94-h02-176-184-25-155.dsl.sta.abo.bbox.fr.
  [176.184.25.155]) by smtp.gmail.com with ESMTPSA id
- er22-20020a056402449600b0054130b1bc77sm4739041edb.51.2023.11.13.23.42.12
+ er22-20020a056402449600b0054130b1bc77sm4739041edb.51.2023.11.13.23.43.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Nov 2023 23:42:14 -0800 (PST)
-Message-ID: <e6680657-59de-4845-a3a3-af8df11fc443@linaro.org>
-Date: Tue, 14 Nov 2023 08:42:12 +0100
+ Mon, 13 Nov 2023 23:43:04 -0800 (PST)
+Message-ID: <987f44c2-0fff-471f-b69a-fac0da5794df@linaro.org>
+Date: Tue, 14 Nov 2023 08:43:02 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.0 04/10] hw/xen: Factor xen_arch_align_ioreq_data()
- out of handle_ioreq()
+Subject: Re: [PATCH-for-9.0 08/10] system/physmem: Only include 'hw/xen/xen.h'
+ when Xen is available
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- Paul Durrant <paul@xen.org>, David Woodhouse <dwmw@amazon.co.uk>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, qemu-devel@nongnu.org
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- xen-devel@lists.xenproject.org, qemu-block@nongnu.org,
+ Anthony Perard <anthony.perard@citrix.com>, xen-devel@lists.xenproject.org,
+ Stefano Stabellini <sstabellini@kernel.org>, qemu-block@nongnu.org,
  Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+ qemu-arm@nongnu.org, Paul Durrant <paul@xen.org>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>
 References: <20231113152114.47916-1-philmd@linaro.org>
- <20231113152114.47916-5-philmd@linaro.org>
- <a50b0790-03d7-458c-834b-907e130bb5fd@linaro.org>
+ <20231113152114.47916-9-philmd@linaro.org>
+ <1681041d88a9f9062170eb6599947e24424bf37f.camel@infradead.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <a50b0790-03d7-458c-834b-907e130bb5fd@linaro.org>
+In-Reply-To: <1681041d88a9f9062170eb6599947e24424bf37f.camel@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::535;
@@ -103,81 +100,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/11/23 19:16, Richard Henderson wrote:
-> On 11/13/23 07:21, Philippe Mathieu-Daudé wrote:
->> diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
->> index c028c1b541..03f9417e7e 100644
->> --- a/hw/xen/xen-hvm-common.c
->> +++ b/hw/xen/xen-hvm-common.c
->> @@ -426,10 +426,7 @@ static void handle_ioreq(XenIOState *state, 
->> ioreq_t *req)
->>       trace_handle_ioreq(req, req->type, req->dir, req->df, 
->> req->data_is_ptr,
->>                          req->addr, req->data, req->count, req->size);
->> -    if (!req->data_is_ptr && (req->dir == IOREQ_WRITE) &&
->> -            (req->size < sizeof (target_ulong))) {
->> -        req->data &= ((target_ulong) 1 << (8 * req->size)) - 1;
->> -    }
+On 13/11/23 21:03, David Woodhouse wrote:
+> On Mon, 2023-11-13 at 16:21 +0100, Philippe Mathieu-Daudé wrote:
+>> "hw/xen/xen.h" contains declarations for Xen hardware. There is
+>> no point including it when Xen is not available.
 > 
+> ... if even when Xen *is* available, AFAICT. Can you just remove the
+> inclusion of hw/xen/xen.h entirely? I think that still builds, at least
+> for x86.
+
+Yep, also on aarch64, thanks!
+
+>>   When Xen is not
+>> available, we have enough with declarations of "sysemu/xen.h".
 > 
-> I suspect this should never have been using target_ulong at all: 
-> req->data is uint64_t.
+> ... and system/xen-mapcache.h
+> 
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
 
-This could replace it:
-
--- >8 --
--    if (!req->data_is_ptr && (req->dir == IOREQ_WRITE) &&
--            (req->size < sizeof (target_ulong))) {
--        req->data &= ((target_ulong) 1 << (8 * req->size)) - 1;
-+    if (!req->data_is_ptr && (req->dir == IOREQ_WRITE)) {
-+        req->data = extract64(req->data, 0, BITS_PER_BYTE * req->size);
-      }
----
-
-Some notes while looking at this.
-
-Per xen/include/public/hvm/ioreq.h header:
-
-#define IOREQ_TYPE_PIO          0 /* pio */
-#define IOREQ_TYPE_COPY         1 /* mmio ops */
-#define IOREQ_TYPE_PCI_CONFIG   2
-#define IOREQ_TYPE_VMWARE_PORT  3
-#define IOREQ_TYPE_TIMEOFFSET   7
-#define IOREQ_TYPE_INVALIDATE   8 /* mapcache */
-
-   struct ioreq {
-     uint64_t addr;          /* physical address */
-     uint64_t data;          /* data (or paddr of data) */
-     uint32_t count;         /* for rep prefixes */
-     uint32_t size;          /* size in bytes */
-     uint32_t vp_eport;      /* evtchn for notifications to/from device 
-model */
-     uint16_t _pad0;
-     uint8_t state:4;
-     uint8_t data_is_ptr:1;  /* if 1, data above is the guest paddr
-                              * of the real data to use. */
-     uint8_t dir:1;          /* 1=read, 0=write */
-     uint8_t df:1;
-     uint8_t _pad1:1;
-     uint8_t type;           /* I/O type */
-   };
-   typedef struct ioreq ioreq_t;
-
-If 'data' is not a pointer, it is a u64.
-
-- In PIO / VMWARE_PORT modes, only 32-bit are used.
-
-- In MMIO COPY mode, memory is accessed by chunks of 64-bit
-
-- In PCI_CONFIG mode, access is u8 or u16 or u32.
-
-- None of TIMEOFFSET / INVALIDATE use 'req'.
-
-- Fallback is only used in x86 for VMWARE_PORT.
-
---
-
-Regards,
-
-Phil.
 
