@@ -2,87 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31BEA7EB100
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 14:39:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 585397EB116
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 14:44:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2tcp-0000R9-1C; Tue, 14 Nov 2023 08:38:43 -0500
+	id 1r2tha-0003S9-Ds; Tue, 14 Nov 2023 08:43:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1r2tcm-0000OF-Vt
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 08:38:41 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1r2tck-0003Qo-LQ
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 08:38:40 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2thW-0003R5-Qr
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 08:43:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2thU-0004b0-OB
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 08:43:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699969411;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=XVMlYwwSb/Iv/EeZL4Ge584nu9vZ2+HhuFFRPjHX7VM=;
+ b=SqG2Z20dm6j91LUSwjXDpAdKGx2bQWcqljkNmlNsdXEwDC2WYzk3Vx4nM9jBwnYOEDJhkL
+ V1g12ZF4vsXQthwGxBN8sow+BFFDZTScXWkOXxD6BzttvP5ybB6LoQYAF/mhjqYcU1W2TL
+ xySqGQLQX8hDZHf/kpKMOfE4XMaptcY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-141-xxIl5gvvMUmh4dFqEdSK8Q-1; Tue,
+ 14 Nov 2023 08:43:29 -0500
+X-MC-Unique: xxIl5gvvMUmh4dFqEdSK8Q-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 34C421F88C;
- Tue, 14 Nov 2023 13:38:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1699969115; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BOWhtalif32AexGBWJHyF5nDloZIFZUYYbcXJVEMOto=;
- b=aqJOB4IhELZPbtqT+UqnkL8F6LsSXWSK/pzJ9FScDLluWbf0Pg+LdwCfmGnDFRTHq7WnV2
- if/wu41Vg11vvJ8odAIe3KmQK86mxHxcsEFxtNJzwhwQNiWB9GhklNP7HTCsBK6jTTSmJW
- k/PLtKNCZ6R2UruqZDlTg9uULtYhTuU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1699969115;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BOWhtalif32AexGBWJHyF5nDloZIFZUYYbcXJVEMOto=;
- b=flzRU+gQ5lsbHoS+wnVeEgPEqzaybYlx6ahXOz4RisAolwDT0XDiCnlrZB3Wli3FdCJ9GU
- Ziq90b+/QkgI3ACA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 19DDE13460;
- Tue, 14 Nov 2023 13:38:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id FvT0BFt4U2VlEwAAMHmgww
- (envelope-from <cfontana@suse.de>); Tue, 14 Nov 2023 13:38:35 +0000
-Message-ID: <ad78afcc-6803-bf60-3b7a-5fceda279344@suse.de>
-Date: Tue, 14 Nov 2023 14:38:34 +0100
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 31F78380673F;
+ Tue, 14 Nov 2023 13:43:29 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.119])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BDFDE40C6EB9;
+ Tue, 14 Nov 2023 13:43:27 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>
+Subject: [PATCH] tests/avocado: Replace assertEquals() for Python 3.12
+ compatibility
+Date: Tue, 14 Nov 2023 14:43:26 +0100
+Message-ID: <20231114134326.287242-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH for-8.2] accel/tcg: Remove CF_LAST_IO
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Cl=c3=a9ment_Chigot?= <chigot@adacore.com>
-References: <20231110170831.185001-1-richard.henderson@linaro.org>
-From: Claudio Fontana <cfontana@suse.de>
-In-Reply-To: <20231110170831.185001-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Score: -7.10
-X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
- TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-3.00)[-1.000];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-1.00)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=cfontana@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -80
-X-Spam_score: -8.1
-X-Spam_bar: --------
-X-Spam_report: (-8.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.695,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,199 +78,210 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Claudio Fontana <cfontana@suse.de>
+assertEquals() has been removed in Python 3.12 and should be replaced by
+assertEqual(). See: https://docs.python.org/3.12/whatsnew/3.12.html#id3
 
-On 11/10/23 18:08, Richard Henderson wrote:
-> In cpu_exec_step_atomic, we did not set CF_LAST_IO, which can
-> lead to a loop with cpu_io_recompile.
-> 
-> But since 18a536f1f8 ("Always require can_do_io") we no longer need
-> a flag to indicate when the last insn should have can_do_io set, so
-> remove the flag entirely.
-> 
-> Reported-by: Clément Chigot <chigot@adacore.com>
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1961
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  docs/devel/tcg-icount.rst        |  6 ------
->  include/exec/translation-block.h | 13 ++++++-------
->  accel/tcg/cpu-exec.c             |  2 +-
->  accel/tcg/tb-maint.c             |  6 ++----
->  accel/tcg/translate-all.c        |  4 ++--
->  accel/tcg/translator.c           | 22 +++++++++-------------
->  system/watchpoint.c              |  6 ++----
->  7 files changed, 22 insertions(+), 37 deletions(-)
-> 
-> diff --git a/docs/devel/tcg-icount.rst b/docs/devel/tcg-icount.rst
-> index 50c8e8dabc..7df883446a 100644
-> --- a/docs/devel/tcg-icount.rst
-> +++ b/docs/devel/tcg-icount.rst
-> @@ -62,12 +62,6 @@ To deal with this case, when an I/O access is made we:
->    - re-compile a single [1]_ instruction block for the current PC
->    - exit the cpu loop and execute the re-compiled block
->  
-> -The new block is created with the CF_LAST_IO compile flag which
-> -ensures the final instruction translation starts with a call to
-> -gen_io_start() so we don't enter a perpetual loop constantly
-> -recompiling a single instruction block. For translators using the
-> -common translator_loop this is done automatically.
-> -  
->  .. [1] sometimes two instructions if dealing with delay slots  
->  
->  Other I/O operations
-> diff --git a/include/exec/translation-block.h b/include/exec/translation-block.h
-> index b785751774..e2b26e16da 100644
-> --- a/include/exec/translation-block.h
-> +++ b/include/exec/translation-block.h
-> @@ -71,13 +71,12 @@ struct TranslationBlock {
->  #define CF_NO_GOTO_TB    0x00000200 /* Do not chain with goto_tb */
->  #define CF_NO_GOTO_PTR   0x00000400 /* Do not chain with goto_ptr */
->  #define CF_SINGLE_STEP   0x00000800 /* gdbstub single-step in effect */
-> -#define CF_LAST_IO       0x00008000 /* Last insn may be an IO access.  */
-> -#define CF_MEMI_ONLY     0x00010000 /* Only instrument memory ops */
-> -#define CF_USE_ICOUNT    0x00020000
-> -#define CF_INVALID       0x00040000 /* TB is stale. Set with @jmp_lock held */
-> -#define CF_PARALLEL      0x00080000 /* Generate code for a parallel context */
-> -#define CF_NOIRQ         0x00100000 /* Generate an uninterruptible TB */
-> -#define CF_PCREL         0x00200000 /* Opcodes in TB are PC-relative */
-> +#define CF_MEMI_ONLY     0x00001000 /* Only instrument memory ops */
-> +#define CF_USE_ICOUNT    0x00002000
-> +#define CF_INVALID       0x00004000 /* TB is stale. Set with @jmp_lock held */
-> +#define CF_PARALLEL      0x00008000 /* Generate code for a parallel context */
-> +#define CF_NOIRQ         0x00010000 /* Generate an uninterruptible TB */
-> +#define CF_PCREL         0x00020000 /* Opcodes in TB are PC-relative */
->  #define CF_CLUSTER_MASK  0xff000000 /* Top 8 bits are cluster ID */
->  #define CF_CLUSTER_SHIFT 24
->  
-> diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-> index 1a5bc90220..c938eb96f8 100644
-> --- a/accel/tcg/cpu-exec.c
-> +++ b/accel/tcg/cpu-exec.c
-> @@ -721,7 +721,7 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
->              && cpu->neg.icount_decr.u16.low + cpu->icount_extra == 0) {
->              /* Execute just one insn to trigger exception pending in the log */
->              cpu->cflags_next_tb = (curr_cflags(cpu) & ~CF_USE_ICOUNT)
-> -                | CF_LAST_IO | CF_NOIRQ | 1;
-> +                | CF_NOIRQ | 1;
->          }
->  #endif
->          return false;
-> diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-> index e678d20dc2..3d2a896220 100644
-> --- a/accel/tcg/tb-maint.c
-> +++ b/accel/tcg/tb-maint.c
-> @@ -1083,8 +1083,7 @@ bool tb_invalidate_phys_page_unwind(tb_page_addr_t addr, uintptr_t pc)
->      if (current_tb_modified) {
->          /* Force execution of one insn next time.  */
->          CPUState *cpu = current_cpu;
-> -        cpu->cflags_next_tb =
-> -            1 | CF_LAST_IO | CF_NOIRQ | curr_cflags(current_cpu);
-> +        cpu->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(current_cpu);
->          return true;
->      }
->      return false;
-> @@ -1154,8 +1153,7 @@ tb_invalidate_phys_page_range__locked(struct page_collection *pages,
->      if (current_tb_modified) {
->          page_collection_unlock(pages);
->          /* Force execution of one insn next time.  */
-> -        current_cpu->cflags_next_tb =
-> -            1 | CF_LAST_IO | CF_NOIRQ | curr_cflags(current_cpu);
-> +        current_cpu->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(current_cpu);
->          mmap_unlock();
->          cpu_loop_exit_noexc(current_cpu);
->      }
-> diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-> index b263857ecc..79a88f5fb7 100644
-> --- a/accel/tcg/translate-all.c
-> +++ b/accel/tcg/translate-all.c
-> @@ -304,7 +304,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
->  
->      if (phys_pc == -1) {
->          /* Generate a one-shot TB with 1 insn in it */
-> -        cflags = (cflags & ~CF_COUNT_MASK) | CF_LAST_IO | 1;
-> +        cflags = (cflags & ~CF_COUNT_MASK) | 1;
->      }
->  
->      max_insns = cflags & CF_COUNT_MASK;
-> @@ -632,7 +632,7 @@ void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr)
->       * operations only (which execute after completion) so we don't
->       * double instrument the instruction.
->       */
-> -    cpu->cflags_next_tb = curr_cflags(cpu) | CF_MEMI_ONLY | CF_LAST_IO | n;
-> +    cpu->cflags_next_tb = curr_cflags(cpu) | CF_MEMI_ONLY | n;
->  
->      if (qemu_loglevel_mask(CPU_LOG_EXEC)) {
->          vaddr pc = log_pc(cpu, tb);
-> diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-> index 575b9812ad..38c34009a5 100644
-> --- a/accel/tcg/translator.c
-> +++ b/accel/tcg/translator.c
-> @@ -89,7 +89,7 @@ static TCGOp *gen_tb_start(DisasContextBase *db, uint32_t cflags)
->       * each translation block.  The cost is minimal, plus it would be
->       * very easy to forget doing it in the translator.
->       */
-> -    set_can_do_io(db, db->max_insns == 1 && (cflags & CF_LAST_IO));
-> +    set_can_do_io(db, db->max_insns == 1);
->  
->      return icount_start_insn;
->  }
-> @@ -151,13 +151,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
->      ops->tb_start(db, cpu);
->      tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
->  
-> -    if (cflags & CF_MEMI_ONLY) {
-> -        /* We should only see CF_MEMI_ONLY for io_recompile. */
-> -        assert(cflags & CF_LAST_IO);
-> -        plugin_enabled = plugin_gen_tb_start(cpu, db, true);
-> -    } else {
-> -        plugin_enabled = plugin_gen_tb_start(cpu, db, false);
-> -    }
-> +    plugin_enabled = plugin_gen_tb_start(cpu, db, cflags & CF_MEMI_ONLY);
->      db->plugin_enabled = plugin_enabled;
->  
->      while (true) {
-> @@ -169,11 +163,13 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
->              plugin_gen_insn_start(cpu, db);
->          }
->  
-> -        /* Disassemble one instruction.  The translate_insn hook should
-> -           update db->pc_next and db->is_jmp to indicate what should be
-> -           done next -- either exiting this loop or locate the start of
-> -           the next instruction.  */
-> -        if (db->num_insns == db->max_insns && (cflags & CF_LAST_IO)) {
-> +        /*
-> +         * Disassemble one instruction.  The translate_insn hook should
-> +         * update db->pc_next and db->is_jmp to indicate what should be
-> +         * done next -- either exiting this loop or locate the start of
-> +         * the next instruction.
-> +         */
-> +        if (db->num_insns == db->max_insns) {
->              /* Accept I/O on the last instruction.  */
->              set_can_do_io(db, true);
->          }
-> diff --git a/system/watchpoint.c b/system/watchpoint.c
-> index 45d1f12faf..ba5ad13352 100644
-> --- a/system/watchpoint.c
-> +++ b/system/watchpoint.c
-> @@ -179,8 +179,7 @@ void cpu_check_watchpoint(CPUState *cpu, vaddr addr, vaddr len,
->                   */
->                  if (!cpu->neg.can_do_io) {
->                      /* Force execution of one insn next time.  */
-> -                    cpu->cflags_next_tb = 1 | CF_LAST_IO | CF_NOIRQ
-> -                                          | curr_cflags(cpu);
-> +                    cpu->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(cpu);
->                      cpu_loop_exit_restore(cpu, ra);
->                  }
->                  /*
-> @@ -212,8 +211,7 @@ void cpu_check_watchpoint(CPUState *cpu, vaddr addr, vaddr len,
->                  cpu_loop_exit(cpu);
->              } else {
->                  /* Force execution of one insn next time.  */
-> -                cpu->cflags_next_tb = 1 | CF_LAST_IO | CF_NOIRQ
-> -                                      | curr_cflags(cpu);
-> +                cpu->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(cpu);
->                  mmap_unlock();
->                  cpu_loop_exit_noexc(cpu);
->              }
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ docs/devel/testing.rst                  |  2 +-
+ tests/avocado/cpu_queries.py            |  2 +-
+ tests/avocado/empty_cpu_model.py        |  2 +-
+ tests/avocado/pc_cpu_hotplug_props.py   |  2 +-
+ tests/avocado/x86_cpu_model_versions.py | 96 ++++++++++++-------------
+ 5 files changed, 52 insertions(+), 52 deletions(-)
+
+diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
+index fef64accc1..87ed30af22 100644
+--- a/docs/devel/testing.rst
++++ b/docs/devel/testing.rst
+@@ -1077,7 +1077,7 @@ and hypothetical example follows:
+               'human-monitor-command',
+               command_line='info version')
+ 
+-          self.assertEquals(first_res, second_res, third_res)
++          self.assertEqual(first_res, second_res, third_res)
+ 
+ At test "tear down", ``avocado_qemu.Test`` handles all the QEMUMachines
+ shutdown.
+diff --git a/tests/avocado/cpu_queries.py b/tests/avocado/cpu_queries.py
+index 86c2d5c92d..d3faa14720 100644
+--- a/tests/avocado/cpu_queries.py
++++ b/tests/avocado/cpu_queries.py
+@@ -32,4 +32,4 @@ def test(self):
+             model = {'name': c['name']}
+             e = self.vm.cmd('query-cpu-model-expansion', model=model,
+                             type='full')
+-            self.assertEquals(e['model']['name'], c['name'])
++            self.assertEqual(e['model']['name'], c['name'])
+diff --git a/tests/avocado/empty_cpu_model.py b/tests/avocado/empty_cpu_model.py
+index 22f504418d..d906ef3d3c 100644
+--- a/tests/avocado/empty_cpu_model.py
++++ b/tests/avocado/empty_cpu_model.py
+@@ -15,5 +15,5 @@ def test(self):
+         self.vm.set_qmp_monitor(enabled=False)
+         self.vm.launch()
+         self.vm.wait()
+-        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
++        self.assertEqual(self.vm.exitcode(), 1, "QEMU exit code should be 1")
+         self.assertRegex(self.vm.get_log(), r'-cpu option cannot be empty')
+diff --git a/tests/avocado/pc_cpu_hotplug_props.py b/tests/avocado/pc_cpu_hotplug_props.py
+index b56f51d02a..4bd3e02665 100644
+--- a/tests/avocado/pc_cpu_hotplug_props.py
++++ b/tests/avocado/pc_cpu_hotplug_props.py
+@@ -32,4 +32,4 @@ def test_no_die_id(self):
+         self.vm.add_args('-smp', '1,sockets=2,cores=2,threads=2,maxcpus=8')
+         self.vm.add_args('-device', 'qemu64-x86_64-cpu,socket-id=1,core-id=0,thread-id=0')
+         self.vm.launch()
+-        self.assertEquals(len(self.vm.cmd('query-cpus-fast')), 2)
++        self.assertEqual(len(self.vm.cmd('query-cpus-fast')), 2)
+diff --git a/tests/avocado/x86_cpu_model_versions.py b/tests/avocado/x86_cpu_model_versions.py
+index 9e07b8a55d..9d6df4af7d 100644
+--- a/tests/avocado/x86_cpu_model_versions.py
++++ b/tests/avocado/x86_cpu_model_versions.py
+@@ -121,94 +121,94 @@ def test_4_1_alias(self):
+ 
+         self.assertFalse(cpus['Cascadelake-Server']['static'],
+                          'unversioned Cascadelake-Server CPU model must not be static')
+-        self.assertEquals(cpus['Cascadelake-Server'].get('alias-of'), 'Cascadelake-Server-v1',
+-                          'Cascadelake-Server must be an alias of Cascadelake-Server-v1')
++        self.assertEqual(cpus['Cascadelake-Server'].get('alias-of'), 'Cascadelake-Server-v1',
++                         'Cascadelake-Server must be an alias of Cascadelake-Server-v1')
+         self.assertNotIn('alias-of', cpus['Cascadelake-Server-v1'],
+                          'Cascadelake-Server-v1 must not be an alias')
+ 
+         self.assertFalse(cpus['qemu64']['static'],
+                          'unversioned qemu64 CPU model must not be static')
+-        self.assertEquals(cpus['qemu64'].get('alias-of'), 'qemu64-v1',
+-                          'qemu64 must be an alias of qemu64-v1')
++        self.assertEqual(cpus['qemu64'].get('alias-of'), 'qemu64-v1',
++                         'qemu64 must be an alias of qemu64-v1')
+         self.assertNotIn('alias-of', cpus['qemu64-v1'],
+                          'qemu64-v1 must not be an alias')
+ 
+         self.validate_variant_aliases(cpus)
+ 
+         # On pc-*-4.1, -noTSX and -IBRS models should be aliases:
+-        self.assertEquals(cpus["Haswell"].get('alias-of'),
+-                          "Haswell-v1",
++        self.assertEqual(cpus["Haswell"].get('alias-of'),
++                         "Haswell-v1",
+                          "Haswell must be an alias")
+-        self.assertEquals(cpus["Haswell-noTSX"].get('alias-of'),
+-                          "Haswell-v2",
++        self.assertEqual(cpus["Haswell-noTSX"].get('alias-of'),
++                         "Haswell-v2",
+                          "Haswell-noTSX must be an alias")
+-        self.assertEquals(cpus["Haswell-IBRS"].get('alias-of'),
+-                          "Haswell-v3",
++        self.assertEqual(cpus["Haswell-IBRS"].get('alias-of'),
++                         "Haswell-v3",
+                          "Haswell-IBRS must be an alias")
+-        self.assertEquals(cpus["Haswell-noTSX-IBRS"].get('alias-of'),
+-                          "Haswell-v4",
++        self.assertEqual(cpus["Haswell-noTSX-IBRS"].get('alias-of'),
++                         "Haswell-v4",
+                          "Haswell-noTSX-IBRS must be an alias")
+ 
+-        self.assertEquals(cpus["Broadwell"].get('alias-of'),
+-                          "Broadwell-v1",
++        self.assertEqual(cpus["Broadwell"].get('alias-of'),
++                         "Broadwell-v1",
+                          "Broadwell must be an alias")
+-        self.assertEquals(cpus["Broadwell-noTSX"].get('alias-of'),
+-                          "Broadwell-v2",
++        self.assertEqual(cpus["Broadwell-noTSX"].get('alias-of'),
++                         "Broadwell-v2",
+                          "Broadwell-noTSX must be an alias")
+-        self.assertEquals(cpus["Broadwell-IBRS"].get('alias-of'),
+-                          "Broadwell-v3",
++        self.assertEqual(cpus["Broadwell-IBRS"].get('alias-of'),
++                         "Broadwell-v3",
+                          "Broadwell-IBRS must be an alias")
+-        self.assertEquals(cpus["Broadwell-noTSX-IBRS"].get('alias-of'),
+-                          "Broadwell-v4",
++        self.assertEqual(cpus["Broadwell-noTSX-IBRS"].get('alias-of'),
++                         "Broadwell-v4",
+                          "Broadwell-noTSX-IBRS must be an alias")
+ 
+-        self.assertEquals(cpus["Nehalem"].get('alias-of'),
+-                          "Nehalem-v1",
++        self.assertEqual(cpus["Nehalem"].get('alias-of'),
++                         "Nehalem-v1",
+                          "Nehalem must be an alias")
+-        self.assertEquals(cpus["Nehalem-IBRS"].get('alias-of'),
+-                          "Nehalem-v2",
++        self.assertEqual(cpus["Nehalem-IBRS"].get('alias-of'),
++                         "Nehalem-v2",
+                          "Nehalem-IBRS must be an alias")
+ 
+-        self.assertEquals(cpus["Westmere"].get('alias-of'),
+-                          "Westmere-v1",
++        self.assertEqual(cpus["Westmere"].get('alias-of'),
++                         "Westmere-v1",
+                          "Westmere must be an alias")
+-        self.assertEquals(cpus["Westmere-IBRS"].get('alias-of'),
+-                          "Westmere-v2",
++        self.assertEqual(cpus["Westmere-IBRS"].get('alias-of'),
++                         "Westmere-v2",
+                          "Westmere-IBRS must be an alias")
+ 
+-        self.assertEquals(cpus["SandyBridge"].get('alias-of'),
+-                          "SandyBridge-v1",
++        self.assertEqual(cpus["SandyBridge"].get('alias-of'),
++                         "SandyBridge-v1",
+                          "SandyBridge must be an alias")
+-        self.assertEquals(cpus["SandyBridge-IBRS"].get('alias-of'),
+-                          "SandyBridge-v2",
++        self.assertEqual(cpus["SandyBridge-IBRS"].get('alias-of'),
++                         "SandyBridge-v2",
+                          "SandyBridge-IBRS must be an alias")
+ 
+-        self.assertEquals(cpus["IvyBridge"].get('alias-of'),
+-                          "IvyBridge-v1",
++        self.assertEqual(cpus["IvyBridge"].get('alias-of'),
++                         "IvyBridge-v1",
+                          "IvyBridge must be an alias")
+-        self.assertEquals(cpus["IvyBridge-IBRS"].get('alias-of'),
+-                          "IvyBridge-v2",
++        self.assertEqual(cpus["IvyBridge-IBRS"].get('alias-of'),
++                         "IvyBridge-v2",
+                          "IvyBridge-IBRS must be an alias")
+ 
+-        self.assertEquals(cpus["Skylake-Client"].get('alias-of'),
+-                          "Skylake-Client-v1",
++        self.assertEqual(cpus["Skylake-Client"].get('alias-of'),
++                         "Skylake-Client-v1",
+                          "Skylake-Client must be an alias")
+-        self.assertEquals(cpus["Skylake-Client-IBRS"].get('alias-of'),
+-                          "Skylake-Client-v2",
++        self.assertEqual(cpus["Skylake-Client-IBRS"].get('alias-of'),
++                         "Skylake-Client-v2",
+                          "Skylake-Client-IBRS must be an alias")
+ 
+-        self.assertEquals(cpus["Skylake-Server"].get('alias-of'),
+-                          "Skylake-Server-v1",
++        self.assertEqual(cpus["Skylake-Server"].get('alias-of'),
++                         "Skylake-Server-v1",
+                          "Skylake-Server must be an alias")
+-        self.assertEquals(cpus["Skylake-Server-IBRS"].get('alias-of'),
+-                          "Skylake-Server-v2",
++        self.assertEqual(cpus["Skylake-Server-IBRS"].get('alias-of'),
++                         "Skylake-Server-v2",
+                          "Skylake-Server-IBRS must be an alias")
+ 
+-        self.assertEquals(cpus["EPYC"].get('alias-of'),
+-                          "EPYC-v1",
++        self.assertEqual(cpus["EPYC"].get('alias-of'),
++                         "EPYC-v1",
+                          "EPYC must be an alias")
+-        self.assertEquals(cpus["EPYC-IBPB"].get('alias-of'),
+-                          "EPYC-v2",
++        self.assertEqual(cpus["EPYC-IBPB"].get('alias-of'),
++                         "EPYC-v2",
+                          "EPYC-IBPB must be an alias")
+ 
+         self.validate_aliases(cpus)
+-- 
+2.41.0
 
 
