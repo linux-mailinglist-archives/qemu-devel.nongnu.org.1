@@ -2,105 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F287EB670
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 19:35:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C9E7EB688
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 19:41:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2yEz-00019t-NM; Tue, 14 Nov 2023 13:34:25 -0500
+	id 1r2yKM-0005Dt-TG; Tue, 14 Nov 2023 13:39:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1r2yEs-000198-8L; Tue, 14 Nov 2023 13:34:19 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2yKK-0005DK-FX
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 13:39:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1r2yEp-0006C1-N7; Tue, 14 Nov 2023 13:34:17 -0500
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AEIBlGL025838; Tue, 14 Nov 2023 18:34:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=Z8U5bK0l55aT7xctG01Sh43Y0ExKRBBJE8+m1aJbwWM=;
- b=B2yfdN1xoo5WrgBx0SyysuYwTBP7MwWNv92T9yNWqRMJstUb+JsOOj/RMTk1mBUsM/U2
- e24XeTNsCO6n1kFfVoqyTcjMYFEgjfq1gP9vn0+A5KcMKSzuqBxcwKzrWhzNH24vjWxL
- 3+SM/fd32SxRhKBAhhfQuk1O6YSVzJb+v39Rnk10mbMI5DtEezxQWp8bLKRiEDrJPbuQ
- LKo34G6gn6mCEx6ZqznkICMpwdkDrdWIbbZW8yB3qnVfO8kVuYH25PyNAxtOkZWoJeSK
- uGly8x5GsKFxlXyM0f8qhp8eN491iPVWwShY+9m8N+zrOW8MY8BQl6SGrEEAsyKxHpGX 0w== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucdy60k5n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 14 Nov 2023 18:34:05 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AEICO9R027695;
- Tue, 14 Nov 2023 18:34:05 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucdy60k59-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 14 Nov 2023 18:34:05 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AEGXuG3009525; Tue, 14 Nov 2023 18:34:04 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uakxst5wy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 14 Nov 2023 18:34:04 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3AEIY3dx8389160
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 14 Nov 2023 18:34:03 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5D73C58062;
- Tue, 14 Nov 2023 18:34:03 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 262AD5805E;
- Tue, 14 Nov 2023 18:34:03 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 14 Nov 2023 18:34:03 +0000 (GMT)
-Message-ID: <105757d802eb509315a71426b5f0b794664aa42e.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 4/8] ppc/pnv: Fix PNV I2C invalid status after reset
-From: Miles Glenn <milesg@linux.vnet.ibm.com>
-To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, qemu-devel@nongnu.org, 
- qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, =?ISO-8859-1?Q?Fr=E9d=E9ric?=
- Barrat <fbarrat@linux.ibm.com>
-Date: Tue, 14 Nov 2023 12:34:02 -0600
-In-Reply-To: <38f88e9d-7679-4cd6-b117-3c893f9e3e7c@kaod.org>
-References: <20231110194925.475909-1-milesg@linux.vnet.ibm.com>
- <20231110194925.475909-5-milesg@linux.vnet.ibm.com>
- <1605799c-86d5-46be-b7ac-ed7e465d7013@kaod.org>
- <be493d52dd58df3205b0055ce75d7026bc18b8c2.camel@linux.vnet.ibm.com>
- <38f88e9d-7679-4cd6-b117-3c893f9e3e7c@kaod.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r2yKG-0007N9-0y
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 13:39:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1699987191;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=UObGP3QFNtfIy2GcrKFIqF0pXREqdq7AWbYwSz/+ais=;
+ b=aXQuIOXIeDOYXCC3K0CGw8r/L9T2uL4arY7vsyVx7LBjEURU9rucHwA432miHDLu4QGiBj
+ V36sa4VQfAZOLmnCxRKY5MB/RaPVBNyY0N6G/UUH8jkE4uhP3I+6NDFZTG/cBiDNkqb1p3
+ 2G5UP3XTDXL9p+NoK6pF2NKoxB7dfzs=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-691-ogwxTBnyPAe0HMZwT-Xcgw-1; Tue, 14 Nov 2023 13:39:47 -0500
+X-MC-Unique: ogwxTBnyPAe0HMZwT-Xcgw-1
+Received: by mail-yw1-f200.google.com with SMTP id
+ 00721157ae682-5a828bdcfbaso82475547b3.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 10:39:47 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1699987187; x=1700591987;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UObGP3QFNtfIy2GcrKFIqF0pXREqdq7AWbYwSz/+ais=;
+ b=JLN1iSr6xDfD9E7WA22/hRegUR9KfHI8fUhFN2bT4jDiUdLbbDd0rQgk0OFsfIm1NT
+ hw70EWagQy636ewaQp7RWKU3lMkNsyBFRFuxZbZecjwJufE3VlAuenULHtzmwo19WNG+
+ hET3wtnUmApwGG9gGgvSU473GClAmgQ10SM2dgrxhHrNmj3A8ZwBxQT3LK8JWCJZvemD
+ o3OMRE0Lq+e5BMReE1oQfNxg1ty+TAwsWK7budVloc67p8jCgIHj9QqmXZdZoVu8Reu1
+ mqfosjLCHbGvH5JtYQ6ZjxUrQsURlIBvNL09htEvwu9LQL4kkoaXo4SVA/CXMYohpSDz
+ KSSw==
+X-Gm-Message-State: AOJu0YxDXBweAzJKJ2kDMXVAciFW9cGlO7HUfvY0RokEPP3DWjvgvRF7
+ a//pgIA7jO05M4ApK5wBkpSFSjzwh6gK12GyyNjUFjYOpO9uIHaO2BdrSXSCRX6igpnFOoqnXfm
+ N9YVLcCLoNHrj2Ao=
+X-Received: by 2002:a0d:e213:0:b0:5b3:1d71:6df2 with SMTP id
+ l19-20020a0de213000000b005b31d716df2mr11099256ywe.33.1699987187033; 
+ Tue, 14 Nov 2023 10:39:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEEuxQI3TmusSkkIf+uaFTbliyRKTcNhS8VCs+oJ3iYdYfWxKgU0JF1HQ+hzmFhWVkZu7jo7A==
+X-Received: by 2002:a0d:e213:0:b0:5b3:1d71:6df2 with SMTP id
+ l19-20020a0de213000000b005b31d716df2mr11099235ywe.33.1699987186663; 
+ Tue, 14 Nov 2023 10:39:46 -0800 (PST)
+Received: from [192.168.0.6] (ip-109-43-176-122.web.vodafone.de.
+ [109.43.176.122]) by smtp.gmail.com with ESMTPSA id
+ e14-20020a05620a12ce00b007740c0e52edsm2851812qkl.89.2023.11.14.10.39.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 14 Nov 2023 10:39:46 -0800 (PST)
+Message-ID: <8e77b041-a09a-4534-85c0-37d018f137f9@redhat.com>
+Date: Tue, 14 Nov 2023 19:39:42 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/avocado/replay_kernel: Mark the test_x86_64_pc as
+ flaky
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20231114153019.295131-1-thuth@redhat.com>
+ <2ab35329-f45f-437e-9d2a-99ad0fbbccda@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <2ab35329-f45f-437e-9d2a-99ad0fbbccda@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: XRWGWwlESlReq4j6iqcQsl4ZXksL5Hey
-X-Proofpoint-ORIG-GUID: 09rp7FpaEjgQT7eGHiGt0pD3vu8PJKtD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-14_19,2023-11-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- lowpriorityscore=0 suspectscore=0 clxscore=1015 mlxlogscore=999
- spamscore=0 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311140141
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,139 +148,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-11-14 at 18:55 +0100, Cédric Le Goater wrote:
-> On 11/14/23 16:26, Miles Glenn wrote:
-> > On Mon, 2023-11-13 at 10:10 +0100, Cédric Le Goater wrote:
-> > > On 11/10/23 20:49, Glenn Miles wrote:
-> > > > The PNV I2C Controller was clearing the status register
-> > > > after a reset without repopulating the "upper threshold
-> > > > for I2C ports", "Command Complete" and the SCL/SDA input
-> > > > level fields.
-> > > > 
-> > > > Fixed this for resets caused by a system reset as well
-> > > > as from writing to the "Immediate Reset" register.
-> > > > 
-> > > > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> > > > ---
-> > > >    hw/ppc/pnv_i2c.c | 42 ++++++++++++++++++------------------
-> > > > ------
-> > > >    1 file changed, 18 insertions(+), 24 deletions(-)
-> > > > 
-> > > > diff --git a/hw/ppc/pnv_i2c.c b/hw/ppc/pnv_i2c.c
-> > > > index b2c738da50..f80589157b 100644
-> > > > --- a/hw/ppc/pnv_i2c.c
-> > > > +++ b/hw/ppc/pnv_i2c.c
-> > > > @@ -462,6 +462,23 @@ static uint64_t pnv_i2c_xscom_read(void
-> > > > *opaque, hwaddr addr,
-> > > >        return val;
-> > > >    }
-> > > >    
-> > > > +static void pnv_i2c_reset(void *dev)
-> > > > +{
-> > > > +    PnvI2C *i2c = PNV_I2C(dev);
-> > > > +
-> > > > +    memset(i2c->regs, 0, sizeof(i2c->regs));
-> > > > +
-> > > > +    i2c->regs[I2C_STAT_REG] =
-> > > > +        SETFIELD(I2C_STAT_UPPER_THRS, 0ull, i2c->num_busses -
-> > > > 1) |
-> > > > +        I2C_STAT_CMD_COMP | I2C_STAT_SCL_INPUT_LEVEL |
-> > > > +        I2C_STAT_SDA_INPUT_LEVEL;
-> > > > +    i2c->regs[I2C_EXTD_STAT_REG] =
-> > > > +        SETFIELD(I2C_EXTD_STAT_FIFO_SIZE, 0ull,
-> > > > PNV_I2C_FIFO_SIZE)
-> > > > +        SETFIELD(I2C_EXTD_STAT_I2C_VERSION, 0ull, 23); /* last
-> > > > version */
-> > > > +
-> > > > +    fifo8_reset(&i2c->fifo);
-> > > > +}
-> > > > +
-> > > >    static void pnv_i2c_xscom_write(void *opaque, hwaddr addr,
-> > > >                                    uint64_t val, unsigned size)
-> > > >    {
-> > > > @@ -499,16 +516,7 @@ static void pnv_i2c_xscom_write(void
-> > > > *opaque,
-> > > > hwaddr addr,
-> > > >            break;
-> > > >    
-> > > >        case I2C_RESET_I2C_REG:
-> > > > -        i2c->regs[I2C_MODE_REG] = 0;
-> > > > -        i2c->regs[I2C_CMD_REG] = 0;
-> > > > -        i2c->regs[I2C_WATERMARK_REG] = 0;
-> > > > -        i2c->regs[I2C_INTR_MASK_REG] = 0;
-> > > > -        i2c->regs[I2C_INTR_COND_REG] = 0;
-> > > > -        i2c->regs[I2C_INTR_RAW_COND_REG] = 0;
-> > > > -        i2c->regs[I2C_STAT_REG] = 0;
-> > > > -        i2c->regs[I2C_RESIDUAL_LEN_REG] = 0;
-> > > > -        i2c->regs[I2C_EXTD_STAT_REG] &=
-> > > > -            (I2C_EXTD_STAT_FIFO_SIZE |
-> > > > I2C_EXTD_STAT_I2C_VERSION);
-> > > > +        pnv_i2c_reset(i2c);
-> > > 
-> > > or simply call device_cold_reset()
-> > > 
-> > > 
-> > > Thanks,
-> > > 
-> > > C.
-> > > 
-> > 
-> > The device_cold_reset() function performs a recursive reset, which
-> > I believe performs a reset on the specified device as well as a
-> > reset
-> > on all child devices.  For the case of doing an "immediate reset"
-> > of
-> > the i2c controller, I think we just want to reset the i2c
-> > controller
-> > and not any child devices, so I think I prefer leaving it how it is
-> > if that is ok.
+On 14/11/2023 17.36, Philippe Mathieu-Daudé wrote:
+> On 14/11/23 16:30, Thomas Huth wrote:
+>> It's failing very often, so don't run this by default anymore
+>> until it gets fixed.
+>>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   tests/avocado/replay_kernel.py | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
+>> index a18610542e..53cb7e5091 100644
+>> --- a/tests/avocado/replay_kernel.py
+>> +++ b/tests/avocado/replay_kernel.py
+>> @@ -81,7 +81,8 @@ def run_rr(self, kernel_path, kernel_command_line, 
+>> console_pattern,
+>>           logger.info('replay overhead {:.2%}'.format(t2 / t1 - 1))
+>>   class ReplayKernelNormal(ReplayKernelBase):
+>> -    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
+>> +
+>> +    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test sometimes gets 
+>> stuck')
+>>       def test_x86_64_pc(self):
+>>           """
+>>           :avocado: tags=arch:x86_64
 > 
-> OK. Is is a fix for 8.2 ?
-> 
-> Thanks,
-> 
-> C.
-> 
+> Hmm I suspect https://gitlab.com/qemu-project/qemu/-/issues/1961 which
+> has a fix ready:
+> https://lore.kernel.org/qemu-devel/20231110170831.185001-1-richard.henderson@linaro.org/
 
-Yes, I will send out a v3 stating that.
+I just gave it a try, too, and it does not fix the issue for me.
 
-Thanks,
+Is this test still working for anybody?
 
-Glenn
-
-> 
-> > Thanks,
-> > 
-> > Glenn
-> > 
-> > > 
-> > > >            break;
-> > > >    
-> > > >        case I2C_RESET_ERRORS:
-> > > > @@ -620,20 +628,6 @@ static int
-> > > > pnv_i2c_dt_xscom(PnvXScomInterface
-> > > > *dev, void *fdt,
-> > > >        return 0;
-> > > >    }
-> > > >    
-> > > > -static void pnv_i2c_reset(void *dev)
-> > > > -{
-> > > > -    PnvI2C *i2c = PNV_I2C(dev);
-> > > > -
-> > > > -    memset(i2c->regs, 0, sizeof(i2c->regs));
-> > > > -
-> > > > -    i2c->regs[I2C_STAT_REG] = I2C_STAT_CMD_COMP;
-> > > > -    i2c->regs[I2C_EXTD_STAT_REG] =
-> > > > -        SETFIELD(I2C_EXTD_STAT_FIFO_SIZE, 0ull,
-> > > > PNV_I2C_FIFO_SIZE)
-> > > > -        SETFIELD(I2C_EXTD_STAT_I2C_VERSION, 0ull, 23); /* last
-> > > > version */
-> > > > -
-> > > > -    fifo8_reset(&i2c->fifo);
-> > > > -}
-> > > > -
-> > > >    static void pnv_i2c_realize(DeviceState *dev, Error **errp)
-> > > >    {
-> > > >        PnvI2C *i2c = PNV_I2C(dev);
+  Thomas
 
 
