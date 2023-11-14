@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53557EB58E
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:35:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 446117EB592
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 Nov 2023 18:35:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r2xIS-0002l1-OS; Tue, 14 Nov 2023 12:33:56 -0500
+	id 1r2xIT-0002lH-CB; Tue, 14 Nov 2023 12:33:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r2xIP-0002kV-BC
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 12:33:54 -0500
+ id 1r2xIR-0002ko-1g
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 12:33:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r2xIM-0003WA-Qc
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 12:33:52 -0500
+ id 1r2xIP-0003WY-2I
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 12:33:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1699983227;
+ s=mimecast20190719; t=1699983232;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=MZwSXNXnfPVjJfXOKlDxEgLrBgbfVfuneuVsFxXMuV4=;
- b=Bkd8VNTTJqnT9WP8v+HXzaq5q92aJh00jWfP9cPaCoFuSGwvro3Cu1bgXmcV7zeD1ttmBe
- N/9kzl7zpH7ZtWslbyUmr0fKIF5x5VgtJZtgx3VnOIgIeOz95wGBVg/gOUifxm/d7WYua3
- IU8xdsKzmIuH36G8yD3/GeVvnuGVQl4=
+ bh=KpdT6iGeXE4g5DQXkDI9k+EaPyPRnCH0BTly+8DR41o=;
+ b=fs242sdCgdDkaNRM4ve7aKzBNUR9uquoox2voOmFO8LmZbbNq12GFng66Y3Tx7J28oqDZ3
+ zNoqLxs5aXX88Ca6GFLVDapAD/V+A+QIFkVWeHjJbTSTPzLsVyeaaKxPOOpuXw6bpgrUWv
+ i2ELNbVnbOmNIq7xFwMUiBDZVNI5KZI=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-391-y7QpyT9TOaiAqce4JSBT-w-1; Tue,
- 14 Nov 2023 12:33:44 -0500
-X-MC-Unique: y7QpyT9TOaiAqce4JSBT-w-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-263-s6u6GfHDMbq6A61omH_vyA-1; Tue,
+ 14 Nov 2023 12:33:47 -0500
+X-MC-Unique: s6u6GfHDMbq6A61omH_vyA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 867F938130BE;
- Tue, 14 Nov 2023 17:33:43 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ACA453813BF2;
+ Tue, 14 Nov 2023 17:33:45 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.64])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 033DC25C0;
- Tue, 14 Nov 2023 17:33:42 +0000 (UTC)
-Date: Tue, 14 Nov 2023 12:31:30 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0D95240C6EBA;
+ Tue, 14 Nov 2023 17:33:44 +0000 (UTC)
+Date: Tue, 14 Nov 2023 12:31:35 -0500
 From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 00/12] target/hppa: last minute hppa64 fixes
-Message-ID: <20231114173130.GA273934@fedora>
-References: <20231113173237.48233-1-richard.henderson@linaro.org>
+Subject: Re: [PULL 0/4] target-arm queue
+Message-ID: <20231114173135.GA273962@fedora>
+References: <20231113174635.2540484-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="j3alfDw1R3+1m+i0"
+ protocol="application/pgp-signature"; boundary="jJ9/N/GRWeQXDEfk"
 Content-Disposition: inline
-In-Reply-To: <20231113173237.48233-1-richard.henderson@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+In-Reply-To: <20231113174635.2540484-1-peter.maydell@linaro.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -81,7 +81,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---j3alfDw1R3+1m+i0
+--jJ9/N/GRWeQXDEfk
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
@@ -89,21 +89,21 @@ Applied, thanks.
 
 Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
 
---j3alfDw1R3+1m+i0
+--jJ9/N/GRWeQXDEfk
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVTrvIACgkQnKSrs4Gr
-c8gP6AgAjT4NpLITWaFjOThOM+K1SWvjXCTHD2kBmkVArp6x1+kW6qgfUymwF9Ey
-YXatz2lCiRFz2O08zzHnhKvNl18KdlSifyDStCqnOb2ksDjr/OCtxnbE0vGs4fHK
-yQjtCeT7yYiOKTS3C/o37/PJ56O6JsycHZ/cTo8e1GXyeUm5Q6kzdNcooOcy28C3
-DlK8wevZ94tf5SLlGvdndWpmXXesIM5eJQJrEDzIenx5CXLmZaz1YqE+sYO4Q/+Z
-X2bxfQJIuPzmK3/6C5qz8UFObtsKP8BqOKikSxc0dqIkPeUhiUChDRyLn/cS+1TJ
-F8BdVvR57gGVINkbF3iRFm3smTvoSg==
-=WS1k
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVTrvcACgkQnKSrs4Gr
+c8gqtAgAxftVqs10En0C6FwrdUQb3ETMKKFWZXKpYx6uagz6idYygXsE5L+AQCZL
+uVanyEUa4KxI9FSgiBv0wOx9cuJPH4GnRta9E4xcw1yhuWCC0DmODkQjuUk4TnKC
+6qxcngBbjyQK/EjUsHBic10vkEo21yFMkyN4WcsWbm8s2NoWWG4U1byykVwDFwPb
+fi+mLrhcvoi7SrVz7QuEV5kB70eVkk7cpSQpQ7+QLaZwSonbkHpEcdd0hum6yJPo
+lKEnup/I0fIviVlheYz+K/lOcccELkBGW1VEBcWfv+RGkvTY77YcsJF8125aTG9v
+5c1eKzqkoyUCRkCj9fb2yRcSWRRs6g==
+=tsSs
 -----END PGP SIGNATURE-----
 
---j3alfDw1R3+1m+i0--
+--jJ9/N/GRWeQXDEfk--
 
 
