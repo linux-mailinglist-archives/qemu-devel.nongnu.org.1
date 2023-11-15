@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8897ED819
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 00:24:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C41D57ED81E
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 00:24:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3PDD-0007WF-Ku; Wed, 15 Nov 2023 18:22:23 -0500
+	id 1r3PDO-0007c1-CR; Wed, 15 Nov 2023 18:22:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3PD7-0007W3-95
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 18:22:17 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3PDL-0007b1-Sr
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 18:22:31 -0500
 Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3PCs-0003IG-4q
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 18:22:16 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3PCw-0003KA-26
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 18:22:31 -0500
 Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-53dfc28a2afso323312a12.1
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 15:21:59 -0800 (PST)
+ 4fb4d7f45d1cf-5435336ab0bso341988a12.1
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 15:22:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700090518; x=1700695318; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=kkOZV3biFdXSEp/vYh8ReEbONrvb3kSMa+0ggMMO8o0=;
- b=YrX2IwIELFkdal7kNL8agK0O1lig8RVkWIcLUaBmjLwcDkYEbAatmR3/IXs2FRtrhB
- dTUZEe0vl9o8UCWgNQmpvZSjruLm56eRKJofuJVCQL6ghJvthMhllH+JVHSFjgNjJzYv
- MIG+xDPcdcO2HvVFaOF1qVwWhINK6F9uxrWtIF4ugOBDZhP13voYD5MJ1ZpyouvRDy2X
- Y/xhY9mTw6r2GemuWw2QbFFp3QxP49cDqDCt1PYMwMU8DauU6n0Ut2DRw9A63eu5IMfb
- UWjIWKRsupe2fJojkLyYv5pZNZTR2vcj4NfrbJXaOQxYVE69uCsqu24zewEk4p96MG8Y
- bo2g==
+ d=linaro.org; s=google; t=1700090524; x=1700695324; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=SjjgBM6Far3ZU6D7cHhKn6yCQMmOx1k1V2GiDQ4UpRs=;
+ b=cyUzvsLVbcaS9GosKcnf2v2lEJ6g6WNDhYKZZsMhU4A3QKV3vCHbrXt58iR709uaIK
+ 9NGlPRb28Bv2ggUyY+ffBG2GAbZViYhyKWepsMbOyzS5BhmP069q+/HIhfEDFHUcM+ak
+ yTqcInlSuB3OoqA6Mv3Oh8GGz2ib7U+nhRGa9XTY3g1AOCwvcAei3bYoL4Uakl67exsb
+ ZkbK6LU6JkFeaCJs8+7irfCElBCtrxjANt35BRlggaDbG4SndIdPDefxbjuOgYi7Q2m8
+ mhPqJMgZNv0FFpes5UIXDnWQMwBizCRG8AzN3VyNCSTinFwLfp7BDbwh8qGUhGvSwocR
+ utXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700090518; x=1700695318;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=kkOZV3biFdXSEp/vYh8ReEbONrvb3kSMa+0ggMMO8o0=;
- b=dt0zisvSmPcetxGlL8KZB1ZqkK9orgC5VJdHZYx8WZXTZLlOu9RvJI0bm1z+OrxkiX
- obkQSJmtd7n7LoJyPNTxWq9cYev66I+F3wbkxP4Xed8Xgsv3ZS0EPWGB4Sydxx0QTPuv
- VkUZe1S4woj/azmDIZo7qp03Z6qb8bz/SEUVGHXmkEOe8MDsPZeJz8V6tUwwBJqzyAdu
- PDMEoDOdcJ/rndhuV6BQ2KDJYGCaDZISAbwZ6MeUUXgwJB8Tzx4w7UHLMXM+4AeFSgSr
- FE3WOSCcD/AwDaVAsA6eahoxHMMFaOwk0+tmZnDQ0uGVbiQZj5Hh8gKvqTGC6+czXmkB
- lPKw==
-X-Gm-Message-State: AOJu0Yz8zMq6X/0a9GwhEWpSVLITUrw3aJhCVdshZPY2mugk3Hbk1v5I
- HAzwuyggIuU1QxAydBnrrLzM20BNOUe1C/kwJdg=
-X-Google-Smtp-Source: AGHT+IELSkv+ph6w5HIg3ubuwDj3U49bjEhCb8UFq/EnJ+0RMUXlpXHD+Yw9vxiPGE/s9MfTYseRrA==
-X-Received: by 2002:a05:6402:40e:b0:542:d8a6:bf14 with SMTP id
- q14-20020a056402040e00b00542d8a6bf14mr10711894edv.33.1700090518116; 
- Wed, 15 Nov 2023 15:21:58 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700090524; x=1700695324;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SjjgBM6Far3ZU6D7cHhKn6yCQMmOx1k1V2GiDQ4UpRs=;
+ b=Xy3TdBzWtmaQZQkt9MNnYOEIXAP5WU5XqZszq36Vjvxlu3HdhkZcOTUklb9GAcAc7C
+ En7kvWoMQqQpOrvy7o2rkwOFBAhj0pwaHF/M93BDlv4M4bZznHNtaUmrl/BPPFBasGZz
+ MS4/BOVrsOIuhpPwaCfTqOpxaSGQ72XUIwZCryUkHmoMJCoAcfD5Tt+92CMR/M4bG0hj
+ H03fc616wbyv+JB1fyQx8KE62yQZYmqZcohy6JO9PhIO40z0bLlPUJBoRdyjLCxaFWKx
+ brT8yCWjvVCiped+yDvDQ2extoQVvIXL7Yx0hqVXIhG3GxqYo4/EVv3CamKtSWVZmnM/
+ /2Fw==
+X-Gm-Message-State: AOJu0YwFcDTRFsZOz/Y2hD9DIrRUAvkRv9QQ33CjwREE660Mx92HQOSF
+ 76/1zZPxyz6Ezs81NPezXFrwF6yJDZi20bUBjnM=
+X-Google-Smtp-Source: AGHT+IGVQqCH25wFx2mPGXXFA671mZ6zjwxmqsNg2TD/Xsv1XY+TFPFBWHOVllzxG6CPQL0hiUhETA==
+X-Received: by 2002:a17:907:c09:b0:9e7:de43:af91 with SMTP id
+ ga9-20020a1709070c0900b009e7de43af91mr13824977ejc.41.1700090524467; 
+ Wed, 15 Nov 2023 15:22:04 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.130.62])
  by smtp.gmail.com with ESMTPSA id
- v6-20020a056402174600b00530a9488623sm7063267edx.46.2023.11.15.15.21.55
+ dt20-20020a170906b79400b009cb2fd85371sm7580944ejb.8.2023.11.15.15.22.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 15 Nov 2023 15:21:57 -0800 (PST)
+ Wed, 15 Nov 2023 15:22:04 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
@@ -66,13 +67,15 @@ Cc: qemu-arm@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
  Alistair Francis <alistair@alistair23.me>,
  Alexandre Iooss <erdnaxe@crans.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-8.2? 0/6] hw/arm/stm32xxx: Report error when incorrect CPU
- is used
-Date: Thu, 16 Nov 2023 00:21:47 +0100
-Message-ID: <20231115232154.4515-1-philmd@linaro.org>
+Subject: [PATCH-for-8.2? 1/6] hw/arm/stm32f405: Report error when incorrect
+ CPU is used
+Date: Thu, 16 Nov 2023 00:21:48 +0100
+Message-ID: <20231115232154.4515-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231115232154.4515-1-philmd@linaro.org>
+References: <20231115232154.4515-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::534;
  envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
@@ -80,9 +83,9 @@ X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,57 +101,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Both 'netduinoplus2' and 'olimex-stm32-h405' machines ignore the
+CPU type requested by the command line. This might confuse users,
+since the following will create a machine with a Cortex-M4 CPU:
 
-While reviewing this [1] series from Arnaud and Inès,
-I realized STM32 based boards don't check the requested
-CPU type is correct, and ignore it. Possibly confusing
-users.
-Since these simple boards code is used as template,
-I took the opportunity to sanitize it a bit, using the
-MachineClass::valid_cpu_types which seems simpler (to me)
-for newcomers.
+  $ qemu-system-aarch64 -M netduinoplus2 -cpu cortex-r5f
 
-First 3 patches are candidate for 8.2 but this is a long
-standing issue, not a regression from 8.1.
+Set the MachineClass::valid_cpu_types field (introduced in commit
+c9cf636d48 "machine: Add a valid_cpu_types property").
+Remove the now unused MachineClass::default_cpu_type field.
 
-Other patches are similar cleanups, for 9.0. Besides, the
-CPU list output will be nicer with Gavin Shan work [2]
-integrated.
+We now get:
 
-Regards,
+  $ qemu-system-aarch64 -M netduinoplus2 -cpu cortex-r5f
+  qemu-system-aarch64: Invalid CPU type: cortex-r5f-arm-cpu
+  The valid types are: cortex-m4-arm-cpu
 
-Phil.
+Since the SoC family can only use Cortex-M4 CPUs, hard-code the
+CPU type name at the SoC level, removing the QOM property
+entirely.
 
-[1] https://lore.kernel.org/qemu-devel/170003673257.14701.8139061802716120109-0@git.sr.ht/
-[2] https://lore.kernel.org/qemu-devel/20231114235628.534334-1-gshan@redhat.com/
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/hw/arm/stm32f405_soc.h | 4 ----
+ hw/arm/netduinoplus2.c         | 7 ++++++-
+ hw/arm/olimex-stm32-h405.c     | 8 ++++++--
+ hw/arm/stm32f405_soc.c         | 8 +-------
+ 4 files changed, 13 insertions(+), 14 deletions(-)
 
-Philippe Mathieu-Daudé (6):
-  hw/arm/stm32f405: Report error when incorrect CPU is used
-  hw/arm/stm32f205: Report error when incorrect CPU is used
-  hw/arm/stm32f100: Report error when incorrect CPU is used
-  hw/arm/msf2: Simplify setting MachineClass::valid_cpu_types[]
-  hw/arm/npcm7xx_boards: Simplify setting
-    MachineClass::valid_cpu_types[]
-  hw/arm/musca: Simplify setting MachineClass::valid_cpu_types[]
-
- include/hw/arm/msf2-soc.h      |  3 ---
- include/hw/arm/stm32f100_soc.h |  4 ----
- include/hw/arm/stm32f205_soc.h |  4 ----
- include/hw/arm/stm32f405_soc.h |  4 ----
- hw/arm/msf2-soc.c              |  3 +--
- hw/arm/msf2-som.c              | 16 ++++++----------
- hw/arm/musca.c                 | 13 +++++--------
- hw/arm/netduino2.c             |  7 ++++++-
- hw/arm/netduinoplus2.c         |  7 ++++++-
- hw/arm/npcm7xx_boards.c        | 13 +++++--------
- hw/arm/olimex-stm32-h405.c     |  8 ++++++--
- hw/arm/stm32f100_soc.c         |  9 ++-------
- hw/arm/stm32f205_soc.c         |  9 ++-------
- hw/arm/stm32f405_soc.c         |  8 +-------
- hw/arm/stm32vldiscovery.c      |  7 ++++++-
- 15 files changed, 46 insertions(+), 69 deletions(-)
-
+diff --git a/include/hw/arm/stm32f405_soc.h b/include/hw/arm/stm32f405_soc.h
+index c968ce3ab2..d15c03c4b5 100644
+--- a/include/hw/arm/stm32f405_soc.h
++++ b/include/hw/arm/stm32f405_soc.h
+@@ -51,11 +51,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(STM32F405State, STM32F405_SOC)
+ #define CCM_SIZE (64 * 1024)
+ 
+ struct STM32F405State {
+-    /*< private >*/
+     SysBusDevice parent_obj;
+-    /*< public >*/
+-
+-    char *cpu_type;
+ 
+     ARMv7MState armv7m;
+ 
+diff --git a/hw/arm/netduinoplus2.c b/hw/arm/netduinoplus2.c
+index 515c081605..e411806dd7 100644
+--- a/hw/arm/netduinoplus2.c
++++ b/hw/arm/netduinoplus2.c
+@@ -44,7 +44,6 @@ static void netduinoplus2_init(MachineState *machine)
+     clock_set_hz(sysclk, SYSCLK_FRQ);
+ 
+     dev = qdev_new(TYPE_STM32F405_SOC);
+-    qdev_prop_set_string(dev, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4"));
+     qdev_connect_clock_in(dev, "sysclk", sysclk);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
+@@ -55,7 +54,13 @@ static void netduinoplus2_init(MachineState *machine)
+ 
+ static void netduinoplus2_machine_init(MachineClass *mc)
+ {
++    static const char *machine_valid_cpu_types[] = {
++        ARM_CPU_TYPE_NAME("cortex-m4"),
++        NULL
++    };
++
+     mc->desc = "Netduino Plus 2 Machine (Cortex-M4)";
++    mc->valid_cpu_types = machine_valid_cpu_types;
+     mc->init = netduinoplus2_init;
+ }
+ 
+diff --git a/hw/arm/olimex-stm32-h405.c b/hw/arm/olimex-stm32-h405.c
+index 3aa61c91b7..694b1dd6ed 100644
+--- a/hw/arm/olimex-stm32-h405.c
++++ b/hw/arm/olimex-stm32-h405.c
+@@ -47,7 +47,6 @@ static void olimex_stm32_h405_init(MachineState *machine)
+     clock_set_hz(sysclk, SYSCLK_FRQ);
+ 
+     dev = qdev_new(TYPE_STM32F405_SOC);
+-    qdev_prop_set_string(dev, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4"));
+     qdev_connect_clock_in(dev, "sysclk", sysclk);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
+@@ -58,9 +57,14 @@ static void olimex_stm32_h405_init(MachineState *machine)
+ 
+ static void olimex_stm32_h405_machine_init(MachineClass *mc)
+ {
++    static const char *machine_valid_cpu_types[] = {
++        ARM_CPU_TYPE_NAME("cortex-m4"),
++        NULL
++    };
++
+     mc->desc = "Olimex STM32-H405 (Cortex-M4)";
+     mc->init = olimex_stm32_h405_init;
+-    mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-m4");
++    mc->valid_cpu_types = machine_valid_cpu_types;
+ 
+     /* SRAM pre-allocated as part of the SoC instantiation */
+     mc->default_ram_size = 0;
+diff --git a/hw/arm/stm32f405_soc.c b/hw/arm/stm32f405_soc.c
+index cef23d7ee4..a65bbe298d 100644
+--- a/hw/arm/stm32f405_soc.c
++++ b/hw/arm/stm32f405_soc.c
+@@ -149,7 +149,7 @@ static void stm32f405_soc_realize(DeviceState *dev_soc, Error **errp)
+ 
+     armv7m = DEVICE(&s->armv7m);
+     qdev_prop_set_uint32(armv7m, "num-irq", 96);
+-    qdev_prop_set_string(armv7m, "cpu-type", s->cpu_type);
++    qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4"));
+     qdev_prop_set_bit(armv7m, "enable-bitband", true);
+     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
+     qdev_connect_clock_in(armv7m, "refclk", s->refclk);
+@@ -287,17 +287,11 @@ static void stm32f405_soc_realize(DeviceState *dev_soc, Error **errp)
+     create_unimplemented_device("RNG",         0x50060800, 0x400);
+ }
+ 
+-static Property stm32f405_soc_properties[] = {
+-    DEFINE_PROP_STRING("cpu-type", STM32F405State, cpu_type),
+-    DEFINE_PROP_END_OF_LIST(),
+-};
+-
+ static void stm32f405_soc_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+ 
+     dc->realize = stm32f405_soc_realize;
+-    device_class_set_props(dc, stm32f405_soc_properties);
+     /* No vmstate or reset required: device has no internal state */
+ }
+ 
 -- 
 2.41.0
 
