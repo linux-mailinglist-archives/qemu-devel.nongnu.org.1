@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80E47EC388
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 14:25:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CAC57EC3A0
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 14:29:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3Frv-0000cn-E1; Wed, 15 Nov 2023 08:23:47 -0500
+	id 1r3FwJ-0001fl-Ca; Wed, 15 Nov 2023 08:28:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r3Frp-0000b2-Dt
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 08:23:41 -0500
+ id 1r3FwF-0001fP-F9
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 08:28:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r3Frn-0003k4-CT
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 08:23:41 -0500
+ id 1r3FwE-0005Xt-1f
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 08:28:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700054617;
+ s=mimecast20190719; t=1700054892;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+DF2oOpIF/uXYqCsDTpAvnxPJMZ9sDUoO7PvnqczXug=;
- b=bHsPn3WMmvymNhPhMwMhCfkv0gw77zeToCA2HjBSm3B4PqC5TA8IUGaWv0zh1i9Xd8RYmq
- N5bpGhuqUcbEjxIjDDSg1GtreUUXBA0zNBokIPBXDqimbTy0/deB0kDoXVulaDPcLlFjkW
- +z895ZtN2ckhon555nOGcflbfTjF72I=
+ bh=f+YHwUeco2/iCeeYoD3Z004kOu+tAlUIPnVt/EHtbnQ=;
+ b=KP7Gr2mJTb9DBCwFrw1/3PA9keOxzkIFm89iTHP/FFCPeLa+o5gcWoQqCNZvZrDRYshkZy
+ ffucqb94uRo+qDYOsrmdK5OCCgkCkz+pTON+uTxtDcGX8i5/wWGEx9uEd6pAr8PgdO5fty
+ K2BCo2CmN3pnUVeT8AVcruqUE162hmA=
 Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
  [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-36-xWGVUfjsMK-L6vgcrVif0g-1; Wed, 15 Nov 2023 08:23:36 -0500
-X-MC-Unique: xWGVUfjsMK-L6vgcrVif0g-1
+ us-mta-64-yB4BVUfXN2eXY5vquk4fqQ-1; Wed, 15 Nov 2023 08:28:06 -0500
+X-MC-Unique: yB4BVUfXN2eXY5vquk4fqQ-1
 Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-66cffe51b07so75640236d6.3
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 05:23:36 -0800 (PST)
+ 6a1803df08f44-67445c67d5dso78783096d6.2
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 05:28:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700054614; x=1700659414;
+ d=1e100.net; s=20230601; t=1700054885; x=1700659685;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=+DF2oOpIF/uXYqCsDTpAvnxPJMZ9sDUoO7PvnqczXug=;
- b=HzvmkmSyNtvBDnM6+wNmJwIPKQNQ0omvbgoS8ZKnYVihQDsgUueudV1PDXW26Ha++k
- 5hoyYpFsyJIZro+NLK0A6psM9gphmipg3YEwzkaV0T+itCnKN1xOxvFye7AvEexWndwO
- cTyM5BZTurH1q3KNKtYX65rC2OcDGiTkopLG+xmFyVOutceyp0IdPz8aL+/rOSdhu1P1
- DMwFLuVgM6fBCTzhsh8c0JL2k6VuOqGr/TUeZHMCYRy/IbrplT8tCdmCXY6FU6GPAzyq
- 0u/3XfVRNCo9FhF1Y7taNQkV0gMz56idQq7WNzN7Bf/ZPlOLNfgZdj/1s+VrU9WNAZnq
- +K2g==
-X-Gm-Message-State: AOJu0Yzp0hrlmLgUXjq9FZUcDEsB9Z4nu9amidMYRqam+krLucbw/Y3m
- DCU8AAU3tS3vRE5sB+uHICxgsqsJmZkbgkQ1M389kkTxsMMQ9IcjDxm+hPm7eqH5UaDzwqJGyrA
- ttpaq62r58131V+I7W9oUtpY=
-X-Received: by 2002:a05:6214:5ecc:b0:66f:bb9b:b37 with SMTP id
- mn12-20020a0562145ecc00b0066fbb9b0b37mr5399227qvb.7.1700054614419; 
- Wed, 15 Nov 2023 05:23:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE6N7c+ddPNOHkgyfyPg5H+tHerijgiiWCFV1Am5VsZsf3J6Sm2fnDdCyrzz/5Z/GgPi6iTxQ==
-X-Received: by 2002:a05:6214:5ecc:b0:66f:bb9b:b37 with SMTP id
- mn12-20020a0562145ecc00b0066fbb9b0b37mr5399205qvb.7.1700054614140; 
- Wed, 15 Nov 2023 05:23:34 -0800 (PST)
+ bh=f+YHwUeco2/iCeeYoD3Z004kOu+tAlUIPnVt/EHtbnQ=;
+ b=NG+rjhoV+ExsO+aoMSj8on8fRd40xCd123y92qg5mgHRIvYFuX7Wzs6XF4f6fFhys5
+ Pk3ZvKkYLqwGP5qwe8n5B9rI0oTC54QaORk78Psj25c36LjHDNEIJ+TaTSjafqcN7cwn
+ V0vWeusuapGPoLC7pjPVFieK/t8udpceR6iIn8rbj/NtyC9QozdM/8CcOaBm2M6kURJ+
+ i4Gkq28vvMyzd7YuiNp3s4HqK2Q8lHCeqt4QW7aWNv0sSCa/FDJ/Hg59433fwLyjM1Ah
+ TPY6hJ8dwvBCgrQhDMzXiKdoeOqjf1ywfQk7EIOhgPyeRogkPZZ/mxlPTPFFYV5vQB27
+ dlHA==
+X-Gm-Message-State: AOJu0YwxxjyBk56QULS0a7I82Lg/Aa5PJCA3rGX5maTqLKaIhDUBP3xy
+ Whn55Itwt6b0nNi2n2Fsi1Y6V32lw2J1m0cwh1JDcSCKZaH3OaaHswNw1ZvyZiEWCRiVQbra3xP
+ 1BzMMc+HaPF/D50s=
+X-Received: by 2002:a0c:cd88:0:b0:671:e02a:8bf6 with SMTP id
+ v8-20020a0ccd88000000b00671e02a8bf6mr5788948qvm.34.1700054885732; 
+ Wed, 15 Nov 2023 05:28:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGb02zX4j68sAh2cO27n18g6mjx50EAEIih13/4+lXSIhLFUpkBkZHAvOtfMhsqtJHTqm6Z2w==
+X-Received: by 2002:a0c:cd88:0:b0:671:e02a:8bf6 with SMTP id
+ v8-20020a0ccd88000000b00671e02a8bf6mr5788931qvm.34.1700054885485; 
+ Wed, 15 Nov 2023 05:28:05 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
  ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- q10-20020a0cf5ca000000b0065b0554ae78sm537905qvm.100.2023.11.15.05.23.31
+ k5-20020a0cd685000000b0065b0771f2edsm530406qvi.136.2023.11.15.05.28.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 Nov 2023 05:23:33 -0800 (PST)
-Message-ID: <1df69fcc-813e-44ee-b19f-bb24a4b493d2@redhat.com>
-Date: Wed, 15 Nov 2023 14:23:29 +0100
+ Wed, 15 Nov 2023 05:28:04 -0800 (PST)
+Message-ID: <94e860f6-b50e-4ef3-82f3-e2b3fd59a3d3@redhat.com>
+Date: Wed, 15 Nov 2023 14:28:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 02/21] util/char_dev: Add open_cdev()
+Subject: Re: [PATCH v6 03/21] vfio/common: return early if space isn't empty
 Content-Language: en-US
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
@@ -78,9 +78,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  yi.y.sun@intel.com, chao.p.peng@intel.com
 References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
- <20231114100955.1961974-3-zhenzhong.duan@intel.com>
+ <20231114100955.1961974-4-zhenzhong.duan@intel.com>
 From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20231114100955.1961974-3-zhenzhong.duan@intel.com>
+In-Reply-To: <20231114100955.1961974-4-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124;
@@ -112,164 +112,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 11/14/23 11:09, Zhenzhong Duan wrote:
-> From: Yi Liu <yi.l.liu@intel.com>
+> This is a trivial optimization. If there is active container in space,
+> vfio_reset_handler will never be unregistered. So revert the check of
+> space->containers and return early.
 >
-> /dev/vfio/devices/vfioX may not exist. In that case it is still possible
-> to open /dev/char/$major:$minor instead. Add helper function to abstract
-> the cdev open.
->
-> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
+Thanks
 
 Eric
-
-
 > ---
->  MAINTAINERS                 |  3 ++
->  include/qemu/chardev_open.h | 16 ++++++++
->  util/chardev_open.c         | 81 +++++++++++++++++++++++++++++++++++++
->  util/meson.build            |  1 +
->  4 files changed, 101 insertions(+)
->  create mode 100644 include/qemu/chardev_open.h
->  create mode 100644 util/chardev_open.c
+>  hw/vfio/common.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
 >
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index a4891f7bda..869ec3d5af 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2172,6 +2172,9 @@ M: Eric Auger <eric.auger@redhat.com>
->  S: Supported
->  F: backends/iommufd.c
->  F: include/sysemu/iommufd.h
-> +F: include/qemu/chardev_open.h
-> +F: util/chardev_open.c
-> +
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 572ae7c934..934f4f5446 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -1462,10 +1462,13 @@ VFIOAddressSpace *vfio_get_address_space(AddressSpace *as)
 >  
->  vhost
->  M: Michael S. Tsirkin <mst@redhat.com>
-> diff --git a/include/qemu/chardev_open.h b/include/qemu/chardev_open.h
-> new file mode 100644
-> index 0000000000..64e8fcfdcb
-> --- /dev/null
-> +++ b/include/qemu/chardev_open.h
-> @@ -0,0 +1,16 @@
-> +/*
-> + * QEMU Chardev Helper
-> + *
-> + * Copyright (C) 2023 Intel Corporation.
-> + *
-> + * Authors: Yi Liu <yi.l.liu@intel.com>
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2.  See
-> + * the COPYING file in the top-level directory.
-> + */
+>  void vfio_put_address_space(VFIOAddressSpace *space)
+>  {
+> -    if (QLIST_EMPTY(&space->containers)) {
+> -        QLIST_REMOVE(space, list);
+> -        g_free(space);
+> +    if (!QLIST_EMPTY(&space->containers)) {
+> +        return;
+>      }
 > +
-> +#ifndef QEMU_CHARDEV_OPEN_H
-> +#define QEMU_CHARDEV_OPEN_H
+> +    QLIST_REMOVE(space, list);
+> +    g_free(space);
 > +
-> +int open_cdev(const char *devpath, dev_t cdev);
-> +#endif
-> diff --git a/util/chardev_open.c b/util/chardev_open.c
-> new file mode 100644
-> index 0000000000..f776429788
-> --- /dev/null
-> +++ b/util/chardev_open.c
-> @@ -0,0 +1,81 @@
-> +/*
-> + * Copyright (c) 2019, Mellanox Technologies. All rights reserved.
-> + * Copyright (C) 2023 Intel Corporation.
-> + *
-> + * This software is available to you under a choice of one of two
-> + * licenses.  You may choose to be licensed under the terms of the GNU
-> + * General Public License (GPL) Version 2, available from the file
-> + * COPYING in the main directory of this source tree, or the
-> + * OpenIB.org BSD license below:
-> + *
-> + *      Redistribution and use in source and binary forms, with or
-> + *      without modification, are permitted provided that the following
-> + *      conditions are met:
-> + *
-> + *      - Redistributions of source code must retain the above
-> + *        copyright notice, this list of conditions and the following
-> + *        disclaimer.
-> + *
-> + *      - Redistributions in binary form must reproduce the above
-> + *        copyright notice, this list of conditions and the following
-> + *        disclaimer in the documentation and/or other materials
-> + *        provided with the distribution.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-> + * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-> + * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-> + * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-> + * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-> + * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-> + * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-> + * SOFTWARE.
-> + *
-> + * Authors: Yi Liu <yi.l.liu@intel.com>
-> + *
-> + * Copied from
-> + * https://github.com/linux-rdma/rdma-core/blob/master/util/open_cdev.c
-> + *
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qemu/chardev_open.h"
-> +
-> +static int open_cdev_internal(const char *path, dev_t cdev)
-> +{
-> +    struct stat st;
-> +    int fd;
-> +
-> +    fd = qemu_open_old(path, O_RDWR);
-> +    if (fd == -1) {
-> +        return -1;
-> +    }
-> +    if (fstat(fd, &st) || !S_ISCHR(st.st_mode) ||
-> +        (cdev != 0 && st.st_rdev != cdev)) {
-> +        close(fd);
-> +        return -1;
-> +    }
-> +    return fd;
-> +}
-> +
-> +static int open_cdev_robust(dev_t cdev)
-> +{
-> +    g_autofree char *devpath = NULL;
-> +
-> +    /*
-> +     * This assumes that udev is being used and is creating the /dev/char/
-> +     * symlinks.
-> +     */
-> +    devpath = g_strdup_printf("/dev/char/%u:%u", major(cdev), minor(cdev));
-> +    return open_cdev_internal(devpath, cdev);
-> +}
-> +
-> +int open_cdev(const char *devpath, dev_t cdev)
-> +{
-> +    int fd;
-> +
-> +    fd = open_cdev_internal(devpath, cdev);
-> +    if (fd == -1 && cdev != 0) {
-> +        return open_cdev_robust(cdev);
-> +    }
-> +    return fd;
-> +}
-> diff --git a/util/meson.build b/util/meson.build
-> index c2322ef6e7..174c133368 100644
-> --- a/util/meson.build
-> +++ b/util/meson.build
-> @@ -108,6 +108,7 @@ if have_block
->      util_ss.add(files('filemonitor-stub.c'))
->    endif
->    util_ss.add(when: 'CONFIG_LINUX', if_true: files('vfio-helpers.c'))
-> +  util_ss.add(when: 'CONFIG_LINUX', if_true: files('chardev_open.c'))
->  endif
->  
->  if cpu == 'aarch64'
+>      if (QLIST_EMPTY(&vfio_address_spaces)) {
+>          qemu_unregister_reset(vfio_reset_handler, NULL);
+>      }
 
 
