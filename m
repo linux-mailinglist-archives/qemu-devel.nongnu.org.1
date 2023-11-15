@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D6F7ED81A
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 00:24:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6963C7ED81D
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 00:24:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3PDQ-0007cF-QF; Wed, 15 Nov 2023 18:22:36 -0500
+	id 1r3PDW-0007dC-EY; Wed, 15 Nov 2023 18:22:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3PDN-0007bX-0a
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 18:22:33 -0500
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3PDT-0007d1-LW
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 18:22:39 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3PDL-0003T0-DK
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 18:22:32 -0500
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2c83ffcdbe3so2446821fa.1
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 15:22:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3PDR-0003U4-4Q
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 18:22:38 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-9f27af23443so33276566b.0
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 15:22:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700090549; x=1700695349; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700090555; x=1700695355; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2b/fiTOaFIPayjBXev06ScNhrp2HmeigNrv9VMh5ovk=;
- b=kSp+JYLMDgnYLsCdGO7WBL65O7ChFMPwz8VB9cx+lWlsLPMB9Ts3cmKbTSnS+mQSZt
- irk5nrlWHbU52C4lbdrci5G8EPqzxuOkTPbvUTHszKyPWyojkiHIPdwsRO8EKPKO1td7
- G85j8GFXrwcYhKmQ8Kn5HbZaXCGGdkGwwqopTX5nIFFRsy6ZQ2RrlbG4ozVLYbves/7i
- iYJ9yi0OjqakQC3wstKLkRAskBaBXw+UKD2XAgdw3m0oQVdo0m0ebiRibKdx0kvZ/CZ9
- l4n/Py+UL42c/hrdSAbuCR/I4jHmTe4yOpdk1G9wmueufanK2aOpQYWGuXWi2lKaDv7y
- 9RlQ==
+ bh=XdaILDX0UTZX18ZacnU/N5Y1jh+ZT87BDkgwEDab2Z8=;
+ b=ZBGSnvPTjQN5h8fVPyZcQQicvqm24OPrOaxk6gSQ8aXzXknpZ1vHpwONBCgRr5k8qo
+ 8b/tdOctbpFsiRs+N8tePfK4EuoiYLt/oyDCjm7VVY5hsBpI3tmzsWJEbPCrwF1NKc6Y
+ smYZUk4KaVq63TP3V7WswqSAYz9EjfGui+ueTl8YSPNrdwHf8rpB505D0rxkEnQ1ZzYB
+ X3gsVTB2EnegCr8TfTtE27FmNz2djtJ/oUq+mrhl3et3eu4/cD6qo8Iq6wpza2jafjCM
+ Cfu4+hRbr2/UJSXUSaj7tRp10AQV8Ob1HUrI0Pqo0h3LSJ6F/9SGDAlsVCUU7YMlZGr+
+ hJtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700090549; x=1700695349;
+ d=1e100.net; s=20230601; t=1700090555; x=1700695355;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2b/fiTOaFIPayjBXev06ScNhrp2HmeigNrv9VMh5ovk=;
- b=dpH2DLMEtiTyuMT+rplgxm9XSLYo+pt3u+Zu8XaDnX5gKy96PPJNsdX85LbfHPoSB8
- OOle0qMH0hBhrXPH5GN/XItmZHmyaOG7PQAIp0NJ1CLdmldlmkVD8tsosnAJLS0OU56m
- mQPYV/FaEp+xqxmSb1WG5aLEsH0z3pjEq76akxYXsPlHysjg/Wgw42rWKHjHPbUrOGYc
- W8VexHlgcGDqQQxGM2y5TXLeFE8IEDsY22z6WmjfSid50LpYq0S9q8BvRcxICrOsBcxk
- fwpk5TSXVHObO6eKSntDkAt6ByngZ/i5MBhFpPbtakFtVUB/FHumImLTggEgurLfBoLY
- sflg==
-X-Gm-Message-State: AOJu0YzGfE6u6RtpRur8RzZKT9bI81tCS0YNI65XVpykinUnzW7vbyjd
- qKuqHQvB4o5HW/sGVClpH82LZy10AOZmQP0UAdI=
-X-Google-Smtp-Source: AGHT+IHEbeePqx0jQtu88QOZNtD+dZ9Ms5p6Swi3vNEO+Zb/Qjl7zdx+dHncO06iF/Yw51YlPKFDBQ==
-X-Received: by 2002:a2e:be28:0:b0:2c0:20e3:990f with SMTP id
- z40-20020a2ebe28000000b002c020e3990fmr5655014ljq.10.1700090549239; 
- Wed, 15 Nov 2023 15:22:29 -0800 (PST)
+ bh=XdaILDX0UTZX18ZacnU/N5Y1jh+ZT87BDkgwEDab2Z8=;
+ b=cT0x0WYmwYQtPJNuuLJypE8iC71esLQhdQL+EW8tA2365flbFi2dEbvO5HOs0uM1BO
+ fiaQGEfwU4OBCdufJQCbN9kK4uwcP1DPO6Eo3lYzuh7a/a8abSkPok1zi5u4pifqerSl
+ 7KtOScEPJ2UVjGFTkza0b9kuwCSR/1YY8DlnUr3WWwZuNMzgh9ruB7bfX8g460B9iici
+ SRdl+PuBRJ6rD8ahBbTbIyRWZoXTS1st8YxEzDUZ8O9HdHEb9o3opH6YSYTS4Eh/NT1R
+ 1cdl6oSejKGPc+n2AgKysT/uqfA+n++bEMSxhJstMXZbCbQqFeSeNScSmPVXsP/eTCjo
+ OqbQ==
+X-Gm-Message-State: AOJu0Yxn69u2AXqxzWmRsolwdj8j+pXM4hpw+udD8Acw00JPSEVG2pTr
+ aqioGv6Z5Y9so+aagrYyyFYQsSa/uEnl6+uTwvY=
+X-Google-Smtp-Source: AGHT+IHVjGNPOwda86AXQFkb3vmYWTJzEzUmoQI1HYhGi+2FnU2uwdEcEOTkDQ/Z2WCxW81Xv0vtHw==
+X-Received: by 2002:a17:906:6c4:b0:9e4:121c:c292 with SMTP id
+ v4-20020a17090606c400b009e4121cc292mr7264894ejb.77.1700090555672; 
+ Wed, 15 Nov 2023 15:22:35 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.130.62])
  by smtp.gmail.com with ESMTPSA id
- o23-20020a17090611d700b009829d2e892csm7773426eja.15.2023.11.15.15.22.27
+ bh2-20020a170906a0c200b009e6b055fa88sm7750745ejb.148.2023.11.15.15.22.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 15 Nov 2023 15:22:28 -0800 (PST)
+ Wed, 15 Nov 2023 15:22:35 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
@@ -67,25 +67,25 @@ Cc: qemu-arm@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
  Alistair Francis <alistair@alistair23.me>,
  Alexandre Iooss <erdnaxe@crans.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.0 5/6] hw/arm/npcm7xx_boards: Simplify setting
+Subject: [PATCH-for-9.0 6/6] hw/arm/musca: Simplify setting
  MachineClass::valid_cpu_types[]
-Date: Thu, 16 Nov 2023 00:21:52 +0100
-Message-ID: <20231115232154.4515-6-philmd@linaro.org>
+Date: Thu, 16 Nov 2023 00:21:53 +0100
+Message-ID: <20231115232154.4515-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231115232154.4515-1-philmd@linaro.org>
 References: <20231115232154.4515-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,68 +101,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The npcm7xx Soc is created with a Cortex-A9 core, see in
-hw/arm/npcm7xx.c:
-
-  static void npcm7xx_init(Object *obj)
-  {
-      NPCM7xxState *s = NPCM7XX(obj);
-
-      for (int i = 0; i < NPCM7XX_MAX_NUM_CPUS; i++) {
-          object_initialize_child(obj, "cpu[*]", &s->cpu[i],
-                                  ARM_CPU_TYPE_NAME("cortex-a9"));
-      }
-
-The MachineClass::default_cpu_type field is ignored: delete it.
+Musca boards use the embedded subsystems (SSE) tied to a specific
+Cortex core. Our models only use the Cortex-M33.
 
 Use the common code introduced in commit c9cf636d48 ("machine: Add
 a valid_cpu_types property") to check for valid CPU type at the
 board level.
 
+Remove the now unused MachineClass::default_cpu_type field.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/npcm7xx_boards.c | 13 +++++--------
+ hw/arm/musca.c | 13 +++++--------
  1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/hw/arm/npcm7xx_boards.c b/hw/arm/npcm7xx_boards.c
-index 2aef579aac..98f9af27e7 100644
---- a/hw/arm/npcm7xx_boards.c
-+++ b/hw/arm/npcm7xx_boards.c
-@@ -121,15 +121,8 @@ static NPCM7xxState *npcm7xx_create_soc(MachineState *machine,
-                                         uint32_t hw_straps)
+diff --git a/hw/arm/musca.c b/hw/arm/musca.c
+index 6eeee57c9d..d3658354ba 100644
+--- a/hw/arm/musca.c
++++ b/hw/arm/musca.c
+@@ -355,7 +355,6 @@ static void musca_init(MachineState *machine)
  {
-     NPCM7xxMachineClass *nmc = NPCM7XX_MACHINE_GET_CLASS(machine);
--    MachineClass *mc = MACHINE_CLASS(nmc);
-     Object *obj;
+     MuscaMachineState *mms = MUSCA_MACHINE(machine);
+     MuscaMachineClass *mmc = MUSCA_MACHINE_GET_CLASS(mms);
+-    MachineClass *mc = MACHINE_GET_CLASS(machine);
+     MemoryRegion *system_memory = get_system_memory();
+     DeviceState *ssedev;
+     DeviceState *dev_splitter;
+@@ -366,12 +365,6 @@ static void musca_init(MachineState *machine)
+     assert(mmc->num_irqs <= MUSCA_NUMIRQ_MAX);
+     assert(mmc->num_mpcs <= MUSCA_MPC_MAX);
  
 -    if (strcmp(machine->cpu_type, mc->default_cpu_type) != 0) {
--        error_report("This board can only be used with %s",
+-        error_report("This board can only be used with CPU %s",
 -                     mc->default_cpu_type);
 -        exit(1);
 -    }
 -
-     obj = object_new_with_props(nmc->soc_type, OBJECT(machine), "soc",
-                                 &error_abort, NULL);
-     object_property_set_uint(obj, "power-on-straps", hw_straps, &error_abort);
-@@ -462,13 +455,17 @@ static void npcm7xx_set_soc_type(NPCM7xxMachineClass *nmc, const char *type)
+     mms->sysclk = clock_new(OBJECT(machine), "SYSCLK");
+     clock_set_hz(mms->sysclk, SYSCLK_FRQ);
+     mms->s32kclk = clock_new(OBJECT(machine), "S32KCLK");
+@@ -603,12 +596,16 @@ static void musca_init(MachineState *machine)
  
- static void npcm7xx_machine_class_init(ObjectClass *oc, void *data)
+ static void musca_class_init(ObjectClass *oc, void *data)
  {
 +    static const char *machine_valid_cpu_types[] = {
-+        ARM_CPU_TYPE_NAME("cortex-a9"),
++        ARM_CPU_TYPE_NAME("cortex-m33"),
 +        NULL
 +    };
      MachineClass *mc = MACHINE_CLASS(oc);
  
-     mc->no_floppy = 1;
-     mc->no_cdrom = 1;
-     mc->no_parallel = 1;
-     mc->default_ram_id = "ram";
--    mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-a9");
+     mc->default_cpus = 2;
+     mc->min_cpus = mc->default_cpus;
+     mc->max_cpus = mc->default_cpus;
+-    mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-m33");
 +    mc->valid_cpu_types = machine_valid_cpu_types;
+     mc->init = musca_init;
  }
  
- /*
 -- 
 2.41.0
 
