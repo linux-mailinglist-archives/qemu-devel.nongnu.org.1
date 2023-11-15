@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D18B77EC997
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 18:23:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C987EC99F
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 18:25:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3Jbb-0002qG-Ie; Wed, 15 Nov 2023 12:23:11 -0500
+	id 1r3Jd8-0003nL-Uu; Wed, 15 Nov 2023 12:24:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r3JbX-0002oW-H2
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:23:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r3JbU-0003gX-2q
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:23:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700068982;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VNyNBAJbLpVl/w0buGaJ4FeKuVpZ9d+E88kn6+ccA4Y=;
- b=B4KomX8g+AbEHTkr5W2rIMzzH4hp/CqIgkpS5VA8E8YYk0QZVVSdqHkRgbU9eg30HpG4cI
- ljgOEQkIL8gjcxDWhofWgiDPBFXRiNImz9y30UuoitboyW5wtXo7VMu0/WLv+kTvqNcmih
- FzZnkgAsB9hGX3VaWn4lyX4Nqv+jPuw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-59-9HRgckS_O8KVQGq_wKSAnw-1; Wed,
- 15 Nov 2023 12:23:00 -0500
-X-MC-Unique: 9HRgckS_O8KVQGq_wKSAnw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A718F29ABA18;
- Wed, 15 Nov 2023 17:22:58 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.144])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 774511C060AE;
- Wed, 15 Nov 2023 17:22:56 +0000 (UTC)
-Date: Wed, 15 Nov 2023 17:22:53 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
- Ani Sinha <anisinha@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH] tests/avocado/reverse_debugging: Disable the ppc64 tests
- by default
-Message-ID: <ZVT-bY9YOr69QTPX@redhat.com>
-References: <20231114163115.298041-1-thuth@redhat.com>
- <12b4420e-1440-4516-8276-e0e907003c16@linaro.org>
- <9f6247e4-7e81-44f8-a63b-8ee11f722710@redhat.com>
- <CWYYRW53VEPJ.3UL1X7GB1P4H2@wheely>
- <6877d6d6-bfbf-4475-8c61-dd537265b278@redhat.com>
- <ZVTETYrfL8f48qe3@redhat.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1r3Jd7-0003n7-4u
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:24:45 -0500
+Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1r3Jd5-00057J-Au
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:24:44 -0500
+Received: by mail-oo1-xc2f.google.com with SMTP id
+ 006d021491bc7-586b512ba0aso3240242eaf.3
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 09:24:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1700069081; x=1700673881; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=OZIbJ/zXqlqmOxjpbYGlY5znVEsIl1YL6vxfbdnWV08=;
+ b=aulu5B06VNvgsSBLj+EkPlSAgkgVstKQbF18qT/wJz/OOm8jFJQavzfdp4XmyvV2a6
+ OGXuZFjAyIfjgEn888d0f1/RsNDFU2fjqzOpVDFV/m5hCif/q/+NfBP95c726ELJ23Ep
+ ljeTurd3uxmx9LTgETG/olPf34FfXGKEltas3LCEqZIkHYN3GaZ8QMBvtDn9eC8g/vdO
+ hm4PAV8N20TBPe+06s1hsgYFS5OHyS34IKbIsxnft8RUcBxi91xjIkd5LUERqUDOrV0W
+ 89CZgp1DVb25kfnXuoFufARQhkZvE2m/+eL2d8KEDI6Jc4b3HzYbnuu+o6xynoSAy1Ih
+ uJhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700069081; x=1700673881;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=OZIbJ/zXqlqmOxjpbYGlY5znVEsIl1YL6vxfbdnWV08=;
+ b=SggP2M6FHCSEEPuljskj/amdQ5B7owWf2mfurvBT0TI+pMY4KgGjxBuEH7/rKYEMvy
+ yILnaTSLGALc1KSPrM8nJwC7m7k1E2XEIYYH3j4g+vWb0vlsBKfUaJmsLMSI1Xy2ol+h
+ xroCPzUcVhHQD6Rcd22M+fo1auMUKXmuZ5O4JnlGT8xRR93MKQJ0sopu4zpomsYoz7GE
+ iSg2ywZAupu1kKomWBXFC/IZykE/ZJyP429Wt9djv0dDggm1cGd9uU2Hr2qrjqQgriWJ
+ oYax13WGY8uZOz9o6gPPUrdhtnu1myluco5QMWGOM5HialTHpDF2iijnjP1YbvGs6lJy
+ B3Bw==
+X-Gm-Message-State: AOJu0YwcsLX603A36BP3CPJh+P+t+OuhT9ZyEAgGEpfIsYwbo2tnHBWI
+ 5tvgl5dAexGuUaZ7HDyw5gEbyR4RWyJrg6Lm6GM=
+X-Google-Smtp-Source: AGHT+IFOPdNYCelEs8uYYtlBLGiI2LMzhQ1/UoPaXSZAjMSCnCFO/1FdvItKs1j7LcAlLbeGvmrJ7Pyk0XOa83mk498=
+X-Received: by 2002:a4a:2452:0:b0:581:9066:49 with SMTP id
+ v18-20020a4a2452000000b0058190660049mr12227250oov.0.1700069081426; 
+ Wed, 15 Nov 2023 09:24:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZVTETYrfL8f48qe3@redhat.com>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20231114003644.7026-1-michael.christie@oracle.com>
+ <20231114003644.7026-3-michael.christie@oracle.com>
+ <bucsvfqgs73w73tt4l5z35smccpebjq36hcozpgrkeydm3jumj@zisakm4noecq>
+ <20231115125718.GA301867@fedora>
+ <04faa337-d0dc-4683-a05f-2dee0dea0eb4@oracle.com>
+In-Reply-To: <04faa337-d0dc-4683-a05f-2dee0dea0eb4@oracle.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 15 Nov 2023 12:24:29 -0500
+Message-ID: <CAJSP0QXxjCyORGg70gEjSA6OynsS=FmsAZOV1h-XcU1kLNRHKQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] vhost-scsi: Add support for a worker thread per
+ virtqueue
+To: Mike Christie <michael.christie@oracle.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, fam@euphon.net, 
+ jasowang@redhat.com, mst@redhat.com, pbonzini@redhat.com, 
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,113 +89,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 15, 2023 at 01:14:53PM +0000, Daniel P. Berrangé wrote:
-> On Wed, Nov 15, 2023 at 07:23:01AM +0100, Thomas Huth wrote:
-> > On 15/11/2023 02.15, Nicholas Piggin wrote:
-> > > On Wed Nov 15, 2023 at 4:29 AM AEST, Thomas Huth wrote:
-> > > > On 14/11/2023 17.37, Philippe Mathieu-Daudé wrote:
-> > > > > On 14/11/23 17:31, Thomas Huth wrote:
-> > > > > > The tests seem currently to be broken. Disable them by default
-> > > > > > until someone fixes them.
-> > > > > > 
-> > > > > > Signed-off-by: Thomas Huth <thuth@redhat.com>
-> > > > > > ---
-> > > > > >    tests/avocado/reverse_debugging.py | 7 ++++---
-> > > > > >    1 file changed, 4 insertions(+), 3 deletions(-)
-> > > > > 
-> > > > > Similarly, I suspect https://gitlab.com/qemu-project/qemu/-/issues/1961
-> > > > > which has a fix ready:
-> > > > > https://lore.kernel.org/qemu-devel/20231110170831.185001-1-richard.henderson@linaro.org/
-> > > > > 
-> > > > > Maybe wait the fix gets in first?
-> > > > 
-> > > > No, I applied Richard's patch, but the problem persists. Does this test
-> > > > still work for you?
-> > > 
-> > > I bisected it to 1d4796cd008373 ("python/machine: use socketpair() for
-> > > console connections"),
-> > 
-> > Maybe John (who wrote that commit) can help?
-> 
-> I find it hard to believe this commit is a direct root cause of the
-> problem since all it does is change the QEMU startup sequence so that
-> instead of QEMU listening for a monitor connection, it is given a
-> pre-opened monitor connection.
-> 
-> At the very most that should affect the startup timing a little.
-> 
-> I notice all the reverse debugging tests have a skip on gitlab
-> with a comment:
-> 
->     # unidentified gitlab timeout problem
-> 
-> this makes be suspicious that John's patch has merely made this
-> (henceforth undiagnosed) timeout more likely to ocurr.
+On Wed, 15 Nov 2023 at 11:57, Mike Christie <michael.christie@oracle.com> wrote:
+>
+> On 11/15/23 6:57 AM, Stefan Hajnoczi wrote:
+> > On Wed, Nov 15, 2023 at 12:43:02PM +0100, Stefano Garzarella wrote:
+> >> On Mon, Nov 13, 2023 at 06:36:44PM -0600, Mike Christie wrote:
+> >>> This adds support for vhost-scsi to be able to create a worker thread
+> >>> per virtqueue. Right now for vhost-net we get a worker thread per
+> >>> tx/rx virtqueue pair which scales nicely as we add more virtqueues and
+> >>> CPUs, but for scsi we get the single worker thread that's shared by all
+> >>> virtqueues. When trying to send IO to more than 2 virtqueues the single
+> >>> thread becomes a bottlneck.
+> >>>
+> >>> This patch adds a new setting, virtqueue_workers, which can be set to:
+> >>>
+> >>> 1: Existing behavior whre we get the single thread.
+> >>> -1: Create a worker per IO virtqueue.
+> >>
+> >> I find this setting a bit odd. What about a boolean instead?
+> >>
+> >> `per_virtqueue_workers`:
+> >>     false: Existing behavior whre we get the single thread.
+> >>     true: Create a worker per IO virtqueue.
+> >
+> > Me too, I thought there would be round-robin assignment for 1 <
+> > worker_cnt < (dev->nvqs - VHOST_SCSI_VQ_NUM_FIXED) but instead only 1
+> > and -1 have any meaning.
+> >
+> > Do you want to implement round-robin assignment?
+> >
+>
+> It was an int because I originally did round robin but at some point
+> dropped it. I found that our users at least:
+>
+> 1. Are used to configuring number of virtqueues.
+> 2. In the userspace guest OS are used to checking the queue to CPU
+> mappings to figure out how their app should optimize itself.
+>
+> So users would just do a virtqueue per vCPU or if trying to reduce
+> mem usage would do N virtqueues < vCPUs. For both cases they just did the
+> worker per virtqueue.
+>
+> However, I left it an int in case in the future someone wanted
+> the future.
 
-After an absolutely horrendous hours long debugging session I think
-I figured out the problem. The QEMU process is blocking in
+Okay. I have a slight preference for a vq_workers bool parameter in
+that case. An int parameter can be added later if the number of
+workers need to be specified. But if you want to keep -1/1 then I
+guess it's fine unless someone else has a strong opinion.
 
-    qemu_chr_write_buffer
-
-spinning in the loop on EAGAIN.
-
-The Python  Machine() class has passed one of a pre-created socketpair
-FDs for the serial port chardev. The guest is trying to write to this
-and blocking.  Nothing in the Machine() class is reading from the
-other end of the serial port console.
-
-
-Before John's change, the serial port uses a chardev in server mode
-and crucially  'wait=off', and the Machine() class never opened the
-console socket unless the test case wanted to read from it.
-
-IOW, QEMU had a background job setting there waiting for a connection
-that would never come.
-
-As a result when QEMU started executing the guest, all the serial port
-writes get sent into to the void.
-
-
-So John's patch has had a semantic change in behaviour, because the
-console socket is permanently open, and thus socket buffers are liable
-to fill up.
-
-As a demo I increased the socket buffers to 1MB and everything then
-succeeded.
-
-@@ -357,6 +360,10 @@ def _pre_launch(self) -> None:
- 
-         if self._console_set:
-             self._cons_sock_pair = socket.socketpair()
-+            self._cons_sock_pair[0].setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024*1024);
-+            self._cons_sock_pair[0].setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024*1024);
-+            self._cons_sock_pair[1].setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024*1024);
-+            self._cons_sock_pair[1].setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024*1024);
-             os.set_inheritable(self._cons_sock_pair[0].fileno(), True)
- 
-         # NOTE: Make sure any opened resources are *definitely* freed in
-
-
-The Machine class doesn't know if anything will ever use the console,
-so as is the change is unsafe.
-
-The original goal of John's change was to guarantee we capture early
-boot messages as some test need that.  
-
-I think we need to be able to have a flag to say whether the caller needs
-an "early console" facility, and only use the pre-opened FD passing for
-that case. Tests we need early console will have to ask for that guarantee
-explicitly.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Stefan
 
