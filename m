@@ -2,52 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEE277EBEF7
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 10:01:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 863E77EBF2E
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 10:11:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3BkX-0000oh-SP; Wed, 15 Nov 2023 03:59:54 -0500
+	id 1r3BuP-0008Kq-FD; Wed, 15 Nov 2023 04:10:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3BkR-0000nb-Ty; Wed, 15 Nov 2023 03:59:49 -0500
+ id 1r3BuJ-0008EA-FO; Wed, 15 Nov 2023 04:09:59 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3BkQ-000493-0p; Wed, 15 Nov 2023 03:59:47 -0500
+ id 1r3BuC-00006v-1o; Wed, 15 Nov 2023 04:09:58 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 89A38336B5;
- Wed, 15 Nov 2023 12:00:00 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 6B8D5336C5;
+ Wed, 15 Nov 2023 12:10:06 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id ED1AE353A1;
- Wed, 15 Nov 2023 11:59:40 +0300 (MSK)
-Message-ID: <6d464c16-6108-47c9-bd3d-81bd0944764f@tls.msk.ru>
-Date: Wed, 15 Nov 2023 11:59:40 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5E368353B3;
+ Wed, 15 Nov 2023 12:09:45 +0300 (MSK)
+Message-ID: <0dc785c6-c36a-4b0e-99bc-400e751ebe2a@tls.msk.ru>
+Date: Wed, 15 Nov 2023 12:09:45 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH trivial 06/21] docs/devel/migration.rst: spelling fix:
- doen't
+Subject: Re: [PATCH for-8.2] linux-user: Fix loaddr computation for some elf
+ files
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Juan Quintela <quintela@redhat.com>
-References: <20231114165834.2949011-1-mjt@tls.msk.ru>
- <20231114165834.2949011-7-mjt@tls.msk.ru>
- <f2bfef4a-3a2c-4d32-adf6-52317f85a045@redhat.com>
- <7259b384-cc7f-4400-9891-83e656765ce2@tls.msk.ru>
- <dcd5e473-7598-478e-8597-9efec38a4ba8@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: laurent@vivier.eu, qemu-stable@nongnu.org
+References: <20231114201742.183271-1-richard.henderson@linaro.org>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <dcd5e473-7598-478e-8597-9efec38a4ba8@redhat.com>
+In-Reply-To: <20231114201742.183271-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -68
 X-Spam_score: -6.9
 X-Spam_bar: ------
 X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,75 +59,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-15.11.2023 09:46, Thomas Huth:
-..
->> The "really-really-fixed" one (without resending):
->>
->> -  This combination is not possible as the qemu-5.1 doen't understand
->> +  This combination is not possible as the qemu-5.1 doesn't understand
->>     pc-5.2 machine type.  So nothing to worry here.
->>
->> ;)
+14.11.2023 23:17, Richard Henderson:
+> The file offset of the load segment is not relevant to the
+> low address, only the beginning of the virtual address page.
+> 
+> Cc: qemu-stable@nongnu.org
+> Fixes: a93934fecd4 ("elf: take phdr offset into account when calculating the program load address")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1952
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Actually there's more in there than this 1 fix: the change has
-other fixes too, and one of them is in heading, so "underline"
-in the next line should be fixed too.
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 
-These spelling fixes are.. tough :)  Lemme see if I did multiple
-changes like this somewhere else, pretending there's just one fix..
-
-Actual commit (with your R-b tag still, as apparently you reviewed
-all changes).
-With updated Subject, new Fixes: tag, and a change in heading underlining):
-
-From: Michael Tokarev <mjt@tls.msk.ru>
-Date: Tue Nov 14 19:08:48 2023 +0300
-
-     docs/devel/migration.rst: spelling fixes: doen't, diferent, responsability, recomend
-
-     Fixes: 593c28c02c81 "migration/doc: How to migrate when hosts have different features"
-     Fixes: 1aefe2ca1423 "migration/doc: Add documentation for backwards compatiblity"
-     Reviewed-by: Thomas Huth <thuth@redhat.com>
-     Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-
-diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
-index 5adf4f12f7..ec55089b25 100644
---- a/docs/devel/migration.rst
-+++ b/docs/devel/migration.rst
-@@ -1061,7 +1061,7 @@ QEMU version, in this case pc-5.1.
-
-  4 - qemu-5.1 -M pc-5.2  -> migrates to -> qemu-5.1 -M pc-5.2
-
--  This combination is not possible as the qemu-5.1 doen't understand
-+  This combination is not possible as the qemu-5.1 doesn't understand
-    pc-5.2 machine type.  So nothing to worry here.
-
-  Now it comes the interesting ones, when both QEMU processes are
-@@ -1214,8 +1214,8 @@ machine types to have the right value::
-           ...
-       };
-
--A device with diferent features on both sides
-----------------------------------------------
-+A device with different features on both sides
-+----------------------------------------------
-
-  Let's assume that we are using the same QEMU binary on both sides,
-  just to make the things easier.  But we have a device that has
-@@ -1294,12 +1294,12 @@ Host B:
-
-  $ qemu-system-x86_64 -cpu host,taa-no=off
-
--And you would be able to migrate between them.  It is responsability
-+And you would be able to migrate between them.  It is responsibility
-  of the management application or of the user to make sure that the
-  configuration is correct.  QEMU doesn't know how to look at this kind
-  of features in general.
-
--Notice that we don't recomend to use -cpu host for migration.  It is
-+Notice that we don't recommend to use -cpu host for migration.  It is
-  used in this example because it makes the example simpler.
-
-  Other devices have worse control about individual features.  If they
+> ---
+>   linux-user/elfload.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+> index 4cd6891d7b..cf9e74468b 100644
+> --- a/linux-user/elfload.c
+> +++ b/linux-user/elfload.c
+> @@ -3308,7 +3308,7 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
+>       for (i = 0; i < ehdr->e_phnum; ++i) {
+>           struct elf_phdr *eppnt = phdr + i;
+>           if (eppnt->p_type == PT_LOAD) {
+> -            abi_ulong a = eppnt->p_vaddr - eppnt->p_offset;
+> +            abi_ulong a = eppnt->p_vaddr & TARGET_PAGE_MASK;
+>               if (a < loaddr) {
+>                   loaddr = a;
+>               }
 
 
