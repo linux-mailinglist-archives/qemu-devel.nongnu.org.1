@@ -2,90 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40337EC42F
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 14:57:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE6717EC445
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 15:00:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3GNL-0001iv-Gu; Wed, 15 Nov 2023 08:56:15 -0500
+	id 1r3GQm-0003VE-4f; Wed, 15 Nov 2023 08:59:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r3GNJ-0001ij-03
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 08:56:13 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r3GQg-0003Sy-UQ
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 08:59:42 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r3GNH-0001CK-CR
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 08:56:12 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r3GQc-00028b-Uv
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 08:59:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700056570;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ s=mimecast20190719; t=1700056777;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=9SDQmL/iJb3hBS8oJk89gKl54Ke2Jtw0efKH55fadE4=;
- b=Kiydce5My4vkzBr5+lChwjQdA3p4uew0BP90SX0BaQhpndpu3SbVE/qfE7n/K+GpBNOv4I
- 4b1k6W9Ymv5p8orWeUzpeBQZkGxPMB7SMWiHu/eHji8MPIamJSwrLaY4OQnR0laQqbWGsn
- sHuWjOB7sIXAATyPQeoSrB232dhnP10=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dJPMsw1zuLSzI4ZUVYc2YYmiLrvV0DrBl/hmqNpU8G0=;
+ b=FGMN7bTPSUux0W5C08tGR2q9zGRVcoECTfoyaTTIwQvNIr4ng/vJuYQvtAX6TYjlpVWTIY
+ 2goMFLdmJlYm4pwtQJNQwp00EbU0L3Jmxm0KK/2XNYo+akl6zRryNx3sTUtoe/ODTLa01/
+ /Qk1bhVvA+x/OHQNErirHejUW7K0q5E=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-224-tCLsK6J2OYGL9Kk_Fnojlg-1; Wed, 15 Nov 2023 08:56:09 -0500
-X-MC-Unique: tCLsK6J2OYGL9Kk_Fnojlg-1
-Received: by mail-yw1-f200.google.com with SMTP id
- 00721157ae682-5afbcffe454so144654217b3.3
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 05:56:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700056568; x=1700661368;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9SDQmL/iJb3hBS8oJk89gKl54Ke2Jtw0efKH55fadE4=;
- b=X1t177qcfLrkpJwmQsjSWOTlpWYAVXNZ+gXDdC/rN2xHWtHwt/QrrEKfz5lTTIHGRY
- 5LS/4ykMbZVhSrHBY2hFoll5X2yf14zOsSHEkM2aaUHP9y5Sv7+kDkVo3h1hyIDyyvZb
- NNxtnApp1ToF4HyhC99UZaue0jYsPAED2rGtseZUpV1SrbZ80I7S4NhNBvnMFRDAjW4Q
- rCTS8twc3WjEArcVHgU629YumQ7uS8/x4DSdIGHSYRbW2/0kt7GD1WWnfVymNwgQgavj
- 4/ZB41G927sF/n9if27K2dUHBHZ8HCLPBpFo1yDWwoNiyNuV/BweqOk2mkzvM6EZCO6Q
- TX6g==
-X-Gm-Message-State: AOJu0YyGTNBFgWKoVVwe/dZaE3LjTCBfXUclAXQRcK2Kj5w13HDI8sqU
- 9SxdDCFsy3E0sg2HFNH1mDc4QsTQ1Lv8eBGbTO/jM+QldCtiARzBCy7EuLPIxAzDH3zZ5j0YzsY
- kaaB0epqMOFai1v0=
-X-Received: by 2002:a25:e613:0:b0:da3:9565:637d with SMTP id
- d19-20020a25e613000000b00da39565637dmr11581392ybh.9.1700056568528; 
- Wed, 15 Nov 2023 05:56:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGcJEPZ+f4vowu3Yk09uDaSII3kQJ4uvN26cFv6bGn14YX2GaPXWTQQFQ7G+n1jfVvG79Hpqw==
-X-Received: by 2002:a25:e613:0:b0:da3:9565:637d with SMTP id
- d19-20020a25e613000000b00da39565637dmr11581380ybh.9.1700056568272; 
- Wed, 15 Nov 2023 05:56:08 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- l16-20020ad44d10000000b00656e2464719sm552132qvl.92.2023.11.15.05.56.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 Nov 2023 05:56:07 -0800 (PST)
-Message-ID: <cf6bbf4e-b0e9-457a-a54f-ee669b93bd9e@redhat.com>
-Date: Wed, 15 Nov 2023 14:56:02 +0100
+ us-mta-584-oeQpcfg0Otm1kDWlbahd7w-1; Wed, 15 Nov 2023 08:59:34 -0500
+X-MC-Unique: oeQpcfg0Otm1kDWlbahd7w-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C21A3101A53B;
+ Wed, 15 Nov 2023 13:59:33 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6100EC1596F;
+ Wed, 15 Nov 2023 13:59:33 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 6945821E6A1F; Wed, 15 Nov 2023 14:59:32 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: <ankita@nvidia.com>
+Cc: <jgg@nvidia.com>,  <alex.williamson@redhat.com>,  <clg@redhat.com>,
+ <shannon.zhaosl@gmail.com>,  <peter.maydell@linaro.org>,
+ <ani@anisinha.ca>,  <berrange@redhat.com>,  <eduardo@habkost.net>,
+ <imammedo@redhat.com>,  <mst@redhat.com>,  <eblake@redhat.com>,
+ <david@redhat.com>,  <gshan@redhat.com>,  <Jonathan.Cameron@huawei.com>,
+ <aniketa@nvidia.com>,  <cjia@nvidia.com>,  <kwankhede@nvidia.com>,
+ <targupta@nvidia.com>,  <vsethi@nvidia.com>,  <acurrid@nvidia.com>,
+ <dnigam@nvidia.com>,  <udhoke@nvidia.com>,  <qemu-arm@nongnu.org>,
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v3 1/2] qom: new object to associate device to numa node
+References: <20231107190039.19434-1-ankita@nvidia.com>
+ <20231107190039.19434-2-ankita@nvidia.com>
+Date: Wed, 15 Nov 2023 14:59:32 +0100
+In-Reply-To: <20231107190039.19434-2-ankita@nvidia.com> (ankita@nvidia.com's
+ message of "Wed, 8 Nov 2023 00:30:38 +0530")
+Message-ID: <87leaznmm3.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 05/21] vfio/iommufd: Relax assert check for iommufd
- backend
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com
-References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
- <20231114100955.1961974-6-zhenzhong.duan@intel.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20231114100955.1961974-6-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -93,7 +73,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,64 +86,246 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+<ankita@nvidia.com> writes:
 
-
-On 11/14/23 11:09, Zhenzhong Duan wrote:
-> Currently iommufd doesn't support dirty page sync yet,
-> but it will not block us doing live migration if VFIO
-> migration is force enabled.
+> From: Ankit Agrawal <ankita@nvidia.com>
 >
-> So in this case we allow set_dirty_page_tracking to be NULL.
-> Note we don't need same change for query_dirty_bitmap because
-> when dirty page sync isn't supported, query_dirty_bitmap will
-> never be called.
+> NVIDIA GPU's support MIG (Mult-Instance GPUs) feature [1], which allows
+> partitioning of the GPU device resources (including device memory) into
+> several (upto 8) isolated instances. Each of the partitioned memory needs
+> a dedicated NUMA node to operate. The partitions are not fixed and they
+> can be created/deleted at runtime.
 >
-> Suggested-by: Cédric Le Goater <clg@redhat.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+> Unfortunately Linux OS does not provide a means to dynamically create/destroy
+> NUMA nodes and such feature implementation is not expected to be trivial. The
+> nodes that OS discovers at the boot time while parsing SRAT remains fixed. So
+> we utilize the Generic Initiator Affinity structures that allows association
+> between nodes and devices. Multiple GI structures per BDF is possible,
+> allowing creation of multiple nodes by exposing unique PXM in each of these
+> structures.
+>
+> Introduce a new acpi-generic-initiator object to allow host admin provide the
+> device and the corresponding NUMA nodes. Qemu maintain this association and
+> use this object to build the requisite GI Affinity Structure.
+>
+> An admin can provide the range of nodes using a ':' delimited numalist and
 
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Please don't create special-purpose syntax, use existing general-purpose
+syntax.  See also review of qom.json below.
 
-
-Eric
+> link it to a device by providing its id. The node ids are extracted from
+> numalist and stores as a uint16List. The following sample creates 8 nodes
+> and link them to the device dev0:
+>
+> -numa node,nodeid=2 \
+> -numa node,nodeid=3 \
+> -numa node,nodeid=4 \
+> -numa node,nodeid=5 \
+> -numa node,nodeid=6 \
+> -numa node,nodeid=7 \
+> -numa node,nodeid=8 \
+> -numa node,nodeid=9 \
+> -device vfio-pci-nohotplug,host=0009:01:00.0,bus=pcie.0,addr=04.0,rombar=0,id=dev0 \
+> -object acpi-generic-initiator,id=gi0,device=dev0,numalist=2:3:4:5:6:7:8:9 \
+>
+> [1] https://www.nvidia.com/en-in/technologies/multi-instance-gpu
+>
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
 > ---
->  hw/vfio/container-base.c | 4 ++++
->  hw/vfio/container.c      | 4 ----
->  2 files changed, 4 insertions(+), 4 deletions(-)
+>  hw/acpi/acpi-generic-initiator.c         | 80 ++++++++++++++++++++++++
+>  hw/acpi/meson.build                      |  1 +
+>  include/hw/acpi/acpi-generic-initiator.h | 29 +++++++++
+>  qapi/qom.json                            | 16 +++++
+>  4 files changed, 126 insertions(+)
+>  create mode 100644 hw/acpi/acpi-generic-initiator.c
+>  create mode 100644 include/hw/acpi/acpi-generic-initiator.h
 >
-> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-> index 71f7274973..eee2dcfe76 100644
-> --- a/hw/vfio/container-base.c
-> +++ b/hw/vfio/container-base.c
-> @@ -55,6 +55,10 @@ void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
->  int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
->                                             bool start)
->  {
-> +    if (!bcontainer->dirty_pages_supported) {
-> +        return 0;
-> +    }
+> diff --git a/hw/acpi/acpi-generic-initiator.c b/hw/acpi/acpi-generic-initiator.c
+> new file mode 100644
+> index 0000000000..0699c878e2
+> --- /dev/null
+> +++ b/hw/acpi/acpi-generic-initiator.c
+> @@ -0,0 +1,80 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (c) 2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved
+> + */
 > +
->      g_assert(bcontainer->ops->set_dirty_page_tracking);
->      return bcontainer->ops->set_dirty_page_tracking(bcontainer, start);
->  }
-> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-> index 6bacf38222..ed2d721b2b 100644
-> --- a/hw/vfio/container.c
-> +++ b/hw/vfio/container.c
-> @@ -216,10 +216,6 @@ static int vfio_legacy_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
->          .argsz = sizeof(dirty),
->      };
+> +#include "qemu/osdep.h"
+> +#include "hw/qdev-properties.h"
+> +#include "qapi/error.h"
+> +#include "qapi/visitor.h"
+> +#include "qom/object_interfaces.h"
+> +#include "qom/object.h"
+> +#include "hw/qdev-core.h"
+> +#include "hw/vfio/vfio-common.h"
+> +#include "hw/vfio/pci.h"
+> +#include "hw/pci/pci_device.h"
+> +#include "sysemu/numa.h"
+> +#include "hw/acpi/acpi-generic-initiator.h"
+> +
+> +OBJECT_DEFINE_TYPE_WITH_INTERFACES(AcpiGenericInitiator, acpi_generic_initiator,
+> +                   ACPI_GENERIC_INITIATOR, OBJECT,
+> +                   { TYPE_USER_CREATABLE },
+> +                   { NULL })
+> +
+> +OBJECT_DECLARE_SIMPLE_TYPE(AcpiGenericInitiator, ACPI_GENERIC_INITIATOR)
+> +
+> +static void acpi_generic_initiator_init(Object *obj)
+> +{
+> +    AcpiGenericInitiator *gi = ACPI_GENERIC_INITIATOR(obj);
+> +    gi->device = NULL;
+> +    gi->nodelist = NULL;
+> +}
+> +
+> +static void acpi_generic_initiator_finalize(Object *obj)
+> +{
+> +    AcpiGenericInitiator *gi = ACPI_GENERIC_INITIATOR(obj);
+> +
+> +    g_free(gi->device);
+> +    qapi_free_uint16List(gi->nodelist);
+> +}
+> +
+> +static void acpi_generic_initiator_set_device(Object *obj, const char *val,
+> +                                              Error **errp)
+> +{
+> +    AcpiGenericInitiator *gi = ACPI_GENERIC_INITIATOR(obj);
+> +
+> +    gi->device = g_strdup(val);
+> +}
+> +
+> +static void acpi_generic_initiator_set_nodelist(Object *obj, const char *val,
+> +                                            Error **errp)
+> +{
+> +    AcpiGenericInitiator *gi = ACPI_GENERIC_INITIATOR(obj);
+> +    char *value = g_strdup(val);
+> +    uint16_t node;
+> +    uint16List **tail = &(gi->nodelist);
+> +    char *nodestr = value ? strtok(value, ":") : NULL;
+> +
+> +    while (nodestr) {
+> +        if (sscanf(nodestr, "%hu", &node) != 1) {
+> +            error_setg(errp, "failed to read node-id");
+> +            return;
+> +        }
+> +
+> +        if (node >= MAX_NODES) {
+> +            error_setg(errp, "invalid node-id");
+> +            return;
+> +        }
+> +
+> +        QAPI_LIST_APPEND(tail, node);
+> +        nodestr = strtok(NULL, ":");
+> +    }
+> +}
+> +
+> +static void acpi_generic_initiator_class_init(ObjectClass *oc, void *data)
+> +{
+> +    object_class_property_add_str(oc, ACPI_GENERIC_INITIATOR_DEVICE_PROP, NULL,
+> +                                  acpi_generic_initiator_set_device);
+> +    object_class_property_add_str(oc, ACPI_GENERIC_INITIATOR_NODELIST_PROP,
+> +                                  NULL, acpi_generic_initiator_set_nodelist);
+> +}
+> diff --git a/hw/acpi/meson.build b/hw/acpi/meson.build
+> index fc1b952379..2268589519 100644
+> --- a/hw/acpi/meson.build
+> +++ b/hw/acpi/meson.build
+> @@ -1,5 +1,6 @@
+>  acpi_ss = ss.source_set()
+>  acpi_ss.add(files(
+> +  'acpi-generic-initiator.c',
+>    'acpi_interface.c',
+>    'aml-build.c',
+>    'bios-linker-loader.c',
+> diff --git a/include/hw/acpi/acpi-generic-initiator.h b/include/hw/acpi/acpi-generic-initiator.h
+> new file mode 100644
+> index 0000000000..bb127b2541
+> --- /dev/null
+> +++ b/include/hw/acpi/acpi-generic-initiator.h
+> @@ -0,0 +1,29 @@
+> +#ifndef ACPI_GENERIC_INITIATOR_H
+> +#define ACPI_GENERIC_INITIATOR_H
+> +
+> +#include "hw/mem/pc-dimm.h"
+> +#include "hw/acpi/bios-linker-loader.h"
+> +#include "qemu/uuid.h"
+> +#include "hw/acpi/aml-build.h"
+> +#include "qom/object.h"
+> +#include "qom/object_interfaces.h"
+> +
+> +#define TYPE_ACPI_GENERIC_INITIATOR "acpi-generic-initiator"
+> +
+> +#define ACPI_GENERIC_INITIATOR_DEVICE_PROP "device"
+> +#define ACPI_GENERIC_INITIATOR_NODELIST_PROP "nodelist"
+> +
+> +typedef struct AcpiGenericInitiator {
+> +    /* private */
+> +    Object parent;
+> +
+> +    /* public */
+> +    char *device;
+> +    uint16List *nodelist;
+> +} AcpiGenericInitiator;
+> +
+> +typedef struct AcpiGenericInitiatorClass {
+> +        ObjectClass parent_class;
+> +} AcpiGenericInitiatorClass;
+> +
+> +#endif
+> diff --git a/qapi/qom.json b/qapi/qom.json
+> index fa3e88c8e6..66d2bffdcc 100644
+> --- a/qapi/qom.json
+> +++ b/qapi/qom.json
+> @@ -779,6 +779,20 @@
+>  { 'struct': 'VfioUserServerProperties',
+>    'data': { 'socket': 'SocketAddress', 'device': 'str' } }
 >  
-> -    if (!bcontainer->dirty_pages_supported) {
-> -        return 0;
-> -    }
-> -
->      if (start) {
->          dirty.flags = VFIO_IOMMU_DIRTY_PAGES_FLAG_START;
->      } else {
+> +##
+> +# @AcpiGenericInitiatorProperties:
+> +#
+> +# Properties for acpi-generic-initiator objects.
+> +#
+> +# @device: the ID of the device to be associated with the node
+> +#
+> +# @nodelist: delimited numa node list
+> +#
+> +# Since: 8.2
+> +##
+> +{ 'struct': 'AcpiGenericInitiatorProperties',
+> +  'data': { 'device': 'str', 'nodelist': 'str' } }
+
+Do not encode structured data in strings.  Instead:
+
+    'nodes': ['uint16']
+
+This matches MemoryBackendProperties member @host-nodes.
+
+Check out host_memory_backend_get_host_nodes() and
+host_memory_backend_set_host_nodes() to see how to work with such a
+member.
+
+> +
+>  ##
+>  # @RngProperties:
+>  #
+> @@ -896,6 +910,7 @@
+>  ##
+>  { 'enum': 'ObjectType',
+>    'data': [
+> +    'acpi-generic-initiator',
+>      'authz-list',
+>      'authz-listfile',
+>      'authz-pam',
+> @@ -966,6 +981,7 @@
+>              'id': 'str' },
+>    'discriminator': 'qom-type',
+>    'data': {
+> +      'acpi-generic-initiator':     'AcpiGenericInitiatorProperties',
+>        'authz-list':                 'AuthZListProperties',
+>        'authz-listfile':             'AuthZListFileProperties',
+>        'authz-pam':                  'AuthZPAMProperties',
 
 
