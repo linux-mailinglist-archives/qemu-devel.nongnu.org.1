@@ -2,75 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850E77EBEB9
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 09:42:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE277EBEF7
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 10:01:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3BTk-0000Pw-7Z; Wed, 15 Nov 2023 03:42:33 -0500
+	id 1r3BkX-0000oh-SP; Wed, 15 Nov 2023 03:59:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r3BTg-0000Pl-Fe
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 03:42:28 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1r3BkR-0000nb-Ty; Wed, 15 Nov 2023 03:59:49 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r3BTe-00062S-K7
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 03:42:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700037745;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=U6pafuJ4+58baCKMCthYqE5MGa3ku79koEQ3Kw89Idg=;
- b=GPGdW60oUWIE1AIJIMN1go0BWG9/GHVmZsRX++ec/Ny3VnvnSdsD9r1X6wzgNzGShLz/YE
- G+upu81pvalZTWPrziRLTtwc9bhgpmemvvUbW1Rt0rgiqOX65uGQpcoGDRPv8E0dwXl5/Z
- oW1OV3FdDwcTTHG4zH4hH/+oPTo0vF4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-318-8CZvbNALNNeh7zDDmgfC3A-1; Wed, 15 Nov 2023 03:41:40 -0500
-X-MC-Unique: 8CZvbNALNNeh7zDDmgfC3A-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8D88C811E7E;
- Wed, 15 Nov 2023 08:41:40 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 412E31C060AE;
- Wed, 15 Nov 2023 08:41:40 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3487921E6A1F; Wed, 15 Nov 2023 09:41:39 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Steven Sistare <steven.sistare@oracle.com>,  qemu-devel@nongnu.org,
- Michael Roth <michael.roth@amd.com>,  "Dr. David Alan Gilbert"
- <dave@treblig.org>
-Subject: Re: [PATCH] monitor: flush messages on abort
-References: <1699027289-213995-1-git-send-email-steven.sistare@oracle.com>
- <ZUUu2IuUQ/Od7+Vr@redhat.com>
- <3d45ebc0-de9f-4051-9c08-47e40fea65da@oracle.com>
- <ZUi7izJoVpU+iiuC@redhat.com>
-Date: Wed, 15 Nov 2023 09:41:39 +0100
-In-Reply-To: <ZUi7izJoVpU+iiuC@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Mon, 6 Nov 2023 10:10:19 +0000")
-Message-ID: <875y23s918.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1r3BkQ-000493-0p; Wed, 15 Nov 2023 03:59:47 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 89A38336B5;
+ Wed, 15 Nov 2023 12:00:00 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id ED1AE353A1;
+ Wed, 15 Nov 2023 11:59:40 +0300 (MSK)
+Message-ID: <6d464c16-6108-47c9-bd3d-81bd0944764f@tls.msk.ru>
+Date: Wed, 15 Nov 2023 11:59:40 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH trivial 06/21] docs/devel/migration.rst: spelling fix:
+ doen't
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Juan Quintela <quintela@redhat.com>
+References: <20231114165834.2949011-1-mjt@tls.msk.ru>
+ <20231114165834.2949011-7-mjt@tls.msk.ru>
+ <f2bfef4a-3a2c-4d32-adf6-52317f85a045@redhat.com>
+ <7259b384-cc7f-4400-9891-83e656765ce2@tls.msk.ru>
+ <dcd5e473-7598-478e-8597-9efec38a4ba8@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <dcd5e473-7598-478e-8597-9efec38a4ba8@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,178 +63,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+15.11.2023 09:46, Thomas Huth:
+..
+>> The "really-really-fixed" one (without resending):
+>>
+>> -  This combination is not possible as the qemu-5.1 doen't understand
+>> +  This combination is not possible as the qemu-5.1 doesn't understand
+>>     pc-5.2 machine type.  So nothing to worry here.
+>>
+>> ;)
 
-> On Fri, Nov 03, 2023 at 03:51:00PM -0400, Steven Sistare wrote:
->> On 11/3/2023 1:33 PM, Daniel P. Berrang=C3=A9 wrote:
->> > On Fri, Nov 03, 2023 at 09:01:29AM -0700, Steve Sistare wrote:
->> >> Buffered monitor output is lost when abort() is called.  The pattern
->> >> error_report() followed by abort() occurs about 60 times, so valuable
->> >> information is being lost when the abort is called in the context of a
->> >> monitor command.
->> >=20
->> > I'm curious, was there a particular abort() scenario that you hit ?
->>=20
->> Yes, while tweaking the suspended state, and forgetting to add transitio=
-ns:
->>=20
->>         error_report("invalid runstate transition: '%s' -> '%s'",
->>         abort();
->>=20
->> But I have previously hit this for other errors.
+Actually there's more in there than this 1 fix: the change has
+other fixes too, and one of them is in heading, so "underline"
+in the next line should be fixed too.
 
-Can you provide a reproducer?
+These spelling fixes are.. tough :)  Lemme see if I did multiple
+changes like this somewhere else, pretending there's just one fix..
 
->> > For some crude statistics:
->> >=20
->> >   $ for i in abort return exit goto ; do echo -n "$i: " ; git grep --a=
-fter 1 error_report | grep $i | wc -l ; done
->> >   abort: 47
->> >   return: 512
->> >   exit: 458
->> >   goto: 177
->> >=20
->> > to me those numbers say that calling "abort()" after error_report
->> > should be considered a bug, and we can blanket replace all the
->> > abort() calls with exit(EXIT_FAILURE), and thus avoid the need to
->> > special case flushing the monitor.
->>=20
->> And presumably add an atexit handler to flush the monitor ala monitor_ab=
-ort.
->> AFAICT currently no destructor is called for the monitor at exit time.
->
-> The HMP monitor flushes at each newline,  and exit() will take care of
-> flushing stdout, so I don't think there's anything else needed.
+Actual commit (with your R-b tag still, as apparently you reviewed
+all changes).
+With updated Subject, new Fixes: tag, and a change in heading underlining):
 
-Correct.
+From: Michael Tokarev <mjt@tls.msk.ru>
+Date: Tue Nov 14 19:08:48 2023 +0300
 
->> > Also I think there's a decent case to be made for error_report()
->> > to call monitor_flush().
+     docs/devel/migration.rst: spelling fixes: doen't, diferent, responsability, recomend
 
-No, because the messages printed by error_report() all end in newline,
-and printing a newline to a monitor triggers monitor_flush_locked().
+     Fixes: 593c28c02c81 "migration/doc: How to migrate when hosts have different features"
+     Fixes: 1aefe2ca1423 "migration/doc: Add documentation for backwards compatiblity"
+     Reviewed-by: Thomas Huth <thuth@redhat.com>
+     Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
->> A good start, but that would not help for monitors with skip_flush=3Dtru=
-e, which=20
->> need to format the buffered string in a json response, which is the case=
- I=20
->> tripped over.
->
-> 'skip_flush' is only set to 'true' when using a QMP monitor and invoking
-> "hmp-monitor-command".
+diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+index 5adf4f12f7..ec55089b25 100644
+--- a/docs/devel/migration.rst
++++ b/docs/devel/migration.rst
+@@ -1061,7 +1061,7 @@ QEMU version, in this case pc-5.1.
 
-Correct.
+  4 - qemu-5.1 -M pc-5.2  -> migrates to -> qemu-5.1 -M pc-5.2
 
-> In such a case, the error message needs to be built into a JSON error
-> reply and sent over the socket. Your patch doesn't help this case
-> since you've just printed to stderr.  I don't think it is reasonable
-> to expect QMP monitors to send replies on SIG_ABRT anyway. So I don't
-> think the skip_flush=3Dtrue scenario is a problem to be concerned with.
->
->> >> To fix, install a SIGABRT handler to flush the monitor buffer to stde=
-rr.
->> >>
->> >> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->> >> ---
->> >>  monitor/monitor.c | 38 ++++++++++++++++++++++++++++++++++++++
->> >>  1 file changed, 38 insertions(+)
->> >>
->> >> diff --git a/monitor/monitor.c b/monitor/monitor.c
->> >> index dc352f9..65dace0 100644
->> >> --- a/monitor/monitor.c
->> >> +++ b/monitor/monitor.c
->> >> @@ -701,6 +701,43 @@ void monitor_cleanup(void)
->> >>      }
->> >>  }
->> >>=20=20
->> >> +#ifdef CONFIG_LINUX
->> >> +
->> >> +static void monitor_abort(int signal, siginfo_t *info, void *c)
->> >> +{
->> >> +    Monitor *mon =3D monitor_cur();
->> >> +
->> >> +    if (!mon || qemu_mutex_trylock(&mon->mon_lock)) {
->> >> +        return;
->> >> +    }
->> >> +
->> >> +    if (mon->outbuf && mon->outbuf->len) {
->> >> +        fputs("SIGABRT received: ", stderr);
->> >> +        fputs(mon->outbuf->str, stderr);
->> >> +        if (mon->outbuf->str[mon->outbuf->len - 1] !=3D '\n') {
->> >> +            fputc('\n', stderr);
->> >> +        }
->> >> +    }
->> >> +
->> >> +    qemu_mutex_unlock(&mon->mon_lock);
->> >=20
->> > The SIGABRT handling does not only fire in response to abort()
->> > calls, but also in response to bad memory scenarios, so we have
->> > to be careful what we do in signal handlers.
->> >=20
->> > In particular using mutexes in signal handlers is a big red
->> > flag generally. Mutex APIs are not declare async signal
->> > safe, so this code is technically a POSIX compliance
->> > violation.
+-  This combination is not possible as the qemu-5.1 doen't understand
++  This combination is not possible as the qemu-5.1 doesn't understand
+    pc-5.2 machine type.  So nothing to worry here.
 
-"Technically a POSIX compliance violation" sounds like something only
-pedants would care about.  It's actually a recipe for deadlocks and
-crashes.
+  Now it comes the interesting ones, when both QEMU processes are
+@@ -1214,8 +1214,8 @@ machine types to have the right value::
+           ...
+       };
 
->> Righto.  I would need to mask all signals in the sigaction to be on the =
-safe(r) side.
->
-> This is still doomed, because SIGABRT could fire while 'mon_lock' is
-> already held, and so this code would deadlock trying to acquire the
-> lock.
+-A device with diferent features on both sides
+----------------------------------------------
++A device with different features on both sides
++----------------------------------------------
 
-Yup.
+  Let's assume that we are using the same QEMU binary on both sides,
+  just to make the things easier.  But we have a device that has
+@@ -1294,12 +1294,12 @@ Host B:
 
-There is no way to make async signal unsafe code safe.
+  $ qemu-system-x86_64 -cpu host,taa-no=off
 
->> > So I think we'd be safer just eliminating the explicit abort()
->> > calls and adding monitor_flush call to error_report.
->>=20
->> I like adding a handler because it is future proof.  No need to play wha=
-ck-a-mole when
->> developers re-introduce abort() calls in the future.  A minor benefit is=
- I would not
->> need ack's from 50 maintainers to change 50 call sites from abort to exi=
-t.
->
-> That's a bit of a crazy exaggeration. THe aborts() don't cover 50 differe=
-nt
-> subsystems, and we don't require explicit acks from every subsystem maint=
-ainer
-> for trivial cleanups like this.
->
->> A slight risk of the exit solution is that something bad happened at the=
- call site, so=20
->> qemu state can no longer be trusted.  Calling abort immediately may be s=
-afer than calling=20
->> exit which will call the existing atexit handlers and could have side ef=
-fects.
->
-> If that was a real problem, then we already face it because we have
-> ~500 places already calling exit() and only 50 calling abort().
->
->> A third option is to define qemu_abort() which flushes the monitor, and =
-replaces all abort
->> calls.  That avoids async-signal-mutex hand wringing, but is still subje=
-ct to whack-a-mole.
->>=20
->> So: atexit, signal handler, or qemu_abort?  I will go with your preferen=
-ce.
->
-> Just replace abort -> exit.
+-And you would be able to migrate between them.  It is responsability
++And you would be able to migrate between them.  It is responsibility
+  of the management application or of the user to make sure that the
+  configuration is correct.  QEMU doesn't know how to look at this kind
+  of features in general.
 
-I disagree.
+-Notice that we don't recomend to use -cpu host for migration.  It is
++Notice that we don't recommend to use -cpu host for migration.  It is
+  used in this example because it makes the example simpler.
 
-Use exit(1) for fatal errors.
-
-Use abort() for programming errors (a.k.a. bugs).
-
-> I'm not seeing a need for an atexit handler on top.
-
-I'm not yet seeing a need for anything.  A reproducer may change that.
+  Other devices have worse control about individual features.  If they
 
 
