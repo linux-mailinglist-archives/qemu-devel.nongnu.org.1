@@ -2,86 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0BB77F92C4
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 Nov 2023 14:01:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 315F07F9329
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 Nov 2023 15:44:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7Eji-0006sa-Ka; Sun, 26 Nov 2023 07:59:46 -0500
+	id 1r7GLk-0003I2-LJ; Sun, 26 Nov 2023 09:43:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <petrcvekcz@gmail.com>)
- id 1r7Ejg-0006sL-D5
- for qemu-devel@nongnu.org; Sun, 26 Nov 2023 07:59:44 -0500
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <petrcvekcz@gmail.com>)
- id 1r7Eje-00014B-TA
- for qemu-devel@nongnu.org; Sun, 26 Nov 2023 07:59:44 -0500
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-507c5249d55so5119237e87.3
- for <qemu-devel@nongnu.org>; Sun, 26 Nov 2023 04:59:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701003580; x=1701608380; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FLi0SpP7WqgaMZFFAdvJpqkdh2j+byTwMwwVccc4dz0=;
- b=Tf9/M5N6wkTmZDAAswrfaoJLlW26PTZsqeSautmUdPs+poorAI6AH0m4BGuPgIPPjM
- eKA3gCV5uyOmTHpKnoA/t8hCcB9N7hzdnbT1HXo4MLDXW9AVkBCrDmMngcZQZlsvEVZr
- 4EHES/pWcjtFHikQMNqqhMQjNpNgeXox6en14gIY7lj1nlP0WfIj9y/V1CBBqARm5oGc
- o2pSJeXy4cp26mogW3rKpQ5HS5mlQ1Jh4SKRVFRzXdzZ3DmwLV5CknJBgs7FfT+6GJ3o
- 0dpl/UZ5/y5ELQdy4O9OgGpy9REJePvEExqwJozCgQpG1rswk20cdZqFtpVKorQt3yoH
- 7ezg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701003580; x=1701608380;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FLi0SpP7WqgaMZFFAdvJpqkdh2j+byTwMwwVccc4dz0=;
- b=JauO9zknpvcoSDrNTTqGdJYkan8lyFvNeXt7M6rWEMRdjh+UBuNjqJASNHL+cmz3Nl
- lq8nTrLTQZgZJv3s3YNroahu6hSebAsK+59gG9q3CyckHOQ3y8ZlI2jeneIdQzb/vmQ5
- lZ0rwQiV2ZlQU9n5viX8Pl+W+jt4xM6IXpe2VQBEL8lT+huvfLEZp8PKxfvhBrI8DNgw
- 3q8oQJdrXU2vM1hl3FixHIuseZOW51gFPz1/sQYMurRGhGryzNXjqJTuC2oqej2cB7HC
- BXAJShimEtkP+Ar1oPdesEejtp/L0X9tN0jlu7jVcpXeEzhYjLMEZe4BpvnFA5rB/+pu
- R2rg==
-X-Gm-Message-State: AOJu0YxNTZZp4lT3xp09GyjylzUgzwN40ctuHfM+WplL7P/RPJDZyrLx
- NZwn/I90UvDNwR6ZuI9OEGA=
-X-Google-Smtp-Source: AGHT+IEHwJgoP7MmEIGutTj02R6+L41NvEQA0p6ccuZzyI0DGBiKbM3N8UVzQKJrawKqE+O5PzYI2w==
-X-Received: by 2002:a19:6415:0:b0:504:4165:54ab with SMTP id
- y21-20020a196415000000b00504416554abmr4497955lfb.56.1701003580116; 
- Sun, 26 Nov 2023 04:59:40 -0800 (PST)
-Received: from ?IPV6:2001:1ae9:1e8:b200:ae52:b385:81fe:eeab?
- (2001-1ae9-1e8-b200-ae52-b385-81fe-eeab.ip6.tmcz.cz.
- [2001:1ae9:1e8:b200:ae52:b385:81fe:eeab])
- by smtp.gmail.com with ESMTPSA id
- d5-20020a05600c34c500b0040b349c91acsm11033486wmq.16.2023.11.26.04.59.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 26 Nov 2023 04:59:39 -0800 (PST)
-Message-ID: <3380b626-0d94-489f-bf98-6146c1420a51@gmail.com>
-Date: Sun, 26 Nov 2023 13:59:31 +0100
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1r7GLS-0003G9-8M; Sun, 26 Nov 2023 09:42:52 -0500
+Received: from mail-b.sr.ht ([173.195.146.151])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1r7GLF-0006XQ-Gp; Sun, 26 Nov 2023 09:42:41 -0500
+Authentication-Results: mail-b.sr.ht; dkim=none 
+Received: from git.sr.ht (unknown [173.195.146.142])
+ by mail-b.sr.ht (Postfix) with ESMTPSA id C199311EF5E;
+ Sun, 26 Nov 2023 14:42:33 +0000 (UTC)
+From: ~inesvarhol <inesvarhol@git.sr.ht>
+Date: Wed, 15 Nov 2023 08:59:28 +0100
+Subject: [PATCH qemu 1/2] hw/arm: Add minimal support for the STM32L4x5 SoC
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] qemu/timer: Don't use RDTSC on i486
-To: Samuel Tardieu <samuel.tardieu@telecom-paris.fr>
-Cc: pbonzini@redhat.com, marcel.apfelbaum@gmail.com, mst@redhat.com,
- qemu-devel@nongnu.org
-References: <6826113a-d428-401e-b5a3-56ad5d8fbaa4@gmail.com>
- <87msv065vx.fsf@telecom-paris.fr>
-Content-Language: en-US, cs
-From: Petr Cvek <petrcvekcz@gmail.com>
-In-Reply-To: <87msv065vx.fsf@telecom-paris.fr>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=petrcvekcz@gmail.com; helo=mail-lf1-x12a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Message-ID: <170100975340.4879.5844108484092111139-1@git.sr.ht>
+X-Mailer: git.sr.ht
+In-Reply-To: <170100975340.4879.5844108484092111139-0@git.sr.ht>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, alistair@alistair23.me, philmd@linaro.org,
+ peter.maydell@linaro.org, ines.varhol@telecom-paris.fr,
+ arnaud.minier@telecom-paris.fr
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
+ helo=mail-b.sr.ht
+X-Spam_score_int: 15
+X-Spam_score: 1.5
+X-Spam_bar: +
+X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,27 +53,458 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~inesvarhol <inesvarhol@proton.me>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Actually I was thinking about mentioning it in the commit message also, but I wasn't able
-to find any specification for that (if all compilers use it).
+From: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 
-Other problem is the __tune_i386__ is also set when -mtune=i386 (but with -march=i686).
+This patch adds a new STM32L4x5 SoC, it is necessary to add support for
+the B-L475E-IOT01A board.
+The implementation is derived from the STM32F405 SoC.
+The implementation contains no peripherals, only memory regions are
+implemented.
 
-But if the general idea of changing the code for 486 is OK it can be added also.
+Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
-Petr
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+---
+ MAINTAINERS                    |   8 +
+ hw/arm/Kconfig                 |   5 +
+ hw/arm/meson.build             |   1 +
+ hw/arm/stm32l4x5_soc.c         | 277 +++++++++++++++++++++++++++++++++
+ include/hw/arm/stm32l4x5_soc.h |  68 ++++++++
+ 5 files changed, 359 insertions(+)
+ create mode 100644 hw/arm/stm32l4x5_soc.c
+ create mode 100644 include/hw/arm/stm32l4x5_soc.h
 
-Dne 26. 11. 23 v 13:37 Samuel Tardieu napsal(a):
-> 
-> Petr Cvek <petrcvekcz@gmail.com> writes:
-> 
->> GCC defines __i386__ for i386 and i486, which both lack RDTSC instruction.
->> The i386 seems to be impossible to distinguish, but i486 can be identified
->> by checking for undefined __i486__.
-> 
-> Couldn't you check for an undefined __tune_i386__, which would be set by both GCC and LLVM when using -march=i386.
-> 
->  Sam
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ff1238bb98..32458d41dd 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1122,6 +1122,14 @@ L: qemu-arm@nongnu.org
+ S: Maintained
+ F: hw/arm/olimex-stm32-h405.c
+=20
++STM32L4x5 SoC Family
++M: Arnaud Minier <arnaud.minier@telecom-paris.fr>
++M: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
++L: qemu-arm@nongnu.org
++S: Maintained
++F: hw/arm/stm32l4x5_soc.c
++F: include/hw/arm/stm32l4x5_soc.h
++
+ SmartFusion2
+ M: Subbaraya Sundeep <sundeep.lkml@gmail.com>
+ M: Peter Maydell <peter.maydell@linaro.org>
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index 3ada335a24..d2b94d9a47 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -448,6 +448,11 @@ config STM32F405_SOC
+     select STM32F4XX_SYSCFG
+     select STM32F4XX_EXTI
+=20
++config STM32L4X5_SOC
++    bool
++    select ARM_V7M
++    select OR_IRQ
++
+ config XLNX_ZYNQMP_ARM
+     bool
+     default y if PIXMAN
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index 68245d3ad1..9766da10c4 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -42,6 +42,7 @@ arm_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2836.c'=
+, 'raspi.c'))
+ arm_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_soc.c'))
+ arm_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_soc.c'))
+ arm_ss.add(when: 'CONFIG_STM32F405_SOC', if_true: files('stm32f405_soc.c'))
++arm_ss.add(when: 'CONFIG_STM32L4X5_SOC', if_true: files('stm32l4x5_soc.c'))
+ arm_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: files('xlnx-zynqmp.c', '=
+xlnx-zcu102.c'))
+ arm_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal.c', 'xlnx=
+-versal-virt.c'))
+ arm_ss.add(when: 'CONFIG_FSL_IMX25', if_true: files('fsl-imx25.c', 'imx25_pd=
+k.c'))
+diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
+new file mode 100644
+index 0000000000..f476878b2c
+--- /dev/null
++++ b/hw/arm/stm32l4x5_soc.c
+@@ -0,0 +1,277 @@
++/*
++ * STM32L4x5 SoC family
++ *
++ * SPDX-License-Identifier: MIT
++ *
++ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
++ * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a c=
+opy
++ * of this software and associated documentation files (the "Software"), to =
+deal
++ * in the Software without restriction, including without limitation the rig=
+hts
++ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++ * copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING F=
+ROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++ * THE SOFTWARE.
++ *
++ * Heavily inspired by the stm32f405_soc by Alistair Francis.
++ * The reference used is the STMicroElectronics RM0351 Reference manual
++ * for STM32L4x5 and STM32L4x6 advanced Arm =C2=AE -based 32-bit MCUs.
++ * https://www.st.com/en/microcontrollers-microprocessors/stm32l4x5/document=
+ation.html
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/units.h"
++#include "qapi/error.h"
++#include "exec/address-spaces.h"
++#include "sysemu/sysemu.h"
++#include "hw/arm/stm32l4x5_soc.h"
++#include "hw/qdev-clock.h"
++#include "hw/misc/unimp.h"
++
++#define FLASH_BASE_ADDRESS 0x08000000
++#define SRAM1_BASE_ADDRESS 0x20000000
++#define SRAM1_SIZE (96 * KiB)
++#define SRAM2_BASE_ADDRESS 0x10000000
++#define SRAM2_SIZE (32 * KiB)
++
++static void stm32l4x5_soc_initfn(Object *obj)
++{
++    Stm32l4x5SocState *s =3D STM32L4X5_SOC(obj);
++
++    s->sysclk =3D qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
++    s->refclk =3D qdev_init_clock_in(DEVICE(s), "refclk", NULL, NULL, 0);
++}
++
++static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
++{
++    ERRP_GUARD();
++    Stm32l4x5SocState *s =3D STM32L4X5_SOC(dev_soc);
++    const Stm32l4x5SocClass *sc =3D STM32L4X5_SOC_GET_CLASS(dev_soc);
++    MemoryRegion *system_memory =3D get_system_memory();
++    DeviceState *armv7m;
++
++    /*
++     * We use s->refclk internally and only define it with qdev_init_clock_i=
+n()
++     * so it is correctly parented and not leaked on an init/deinit; it is n=
+ot
++     * intended as an externally exposed clock.
++     */
++    if (clock_has_source(s->refclk)) {
++        error_setg(errp, "refclk clock must not be wired up by the board cod=
+e");
++        return;
++    }
++
++    if (!clock_has_source(s->sysclk)) {
++        error_setg(errp, "sysclk clock must be wired up by the board code");
++        return;
++    }
++
++    /*
++     * TODO: ideally we should model the SoC RCC and its ability to
++     * change the sysclk frequency and define different sysclk sources.
++     */
++
++    /* The refclk always runs at frequency HCLK / 8 */
++    clock_set_mul_div(s->refclk, 8, 1);
++    clock_set_source(s->refclk, s->sysclk);
++
++    memory_region_init_rom(&s->flash, OBJECT(dev_soc), "flash",
++                           sc->flash_size, errp);
++    if (*errp) {
++        return;
++    }
++    memory_region_init_alias(&s->flash_alias, OBJECT(dev_soc),
++                             "flash_boot_alias", &s->flash, 0,
++                             sc->flash_size);
++
++    memory_region_add_subregion(system_memory, FLASH_BASE_ADDRESS, &s->flash=
+);
++    memory_region_add_subregion(system_memory, 0, &s->flash_alias);
++
++    memory_region_init_ram(&s->sram1, OBJECT(dev_soc), "SRAM1", SRAM1_SIZE,
++                           errp);
++    if (*errp) {
++        return;
++    }
++    memory_region_add_subregion(system_memory, SRAM1_BASE_ADDRESS, &s->sram1=
+);
++
++    memory_region_init_ram(&s->sram2, OBJECT(dev_soc), "SRAM2", SRAM2_SIZE,
++                           errp);
++    if (*errp) {
++        return;
++    }
++    memory_region_add_subregion(system_memory, SRAM2_BASE_ADDRESS, &s->sram2=
+);
++
++    object_initialize_child(OBJECT(dev_soc), "armv7m", &s->armv7m, TYPE_ARMV=
+7M);
++    armv7m =3D DEVICE(&s->armv7m);
++    qdev_prop_set_uint32(armv7m, "num-irq", 96);
++    qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4"));
++    qdev_prop_set_bit(armv7m, "enable-bitband", true);
++    qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
++    qdev_connect_clock_in(armv7m, "refclk", s->refclk);
++    object_property_set_link(OBJECT(&s->armv7m), "memory",
++                             OBJECT(system_memory), &error_abort);
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->armv7m), errp)) {
++        return;
++    }
++
++    /* APB1 BUS */
++    create_unimplemented_device("TIM2",      0x40000000, 0x400);
++    create_unimplemented_device("TIM3",      0x40000400, 0x400);
++    create_unimplemented_device("TIM4",      0x40000800, 0x400);
++    create_unimplemented_device("TIM5",      0x40000C00, 0x400);
++    create_unimplemented_device("TIM6",      0x40001000, 0x400);
++    create_unimplemented_device("TIM7",      0x40001400, 0x400);
++    /* RESERVED:    0x40001800, 0x1000 */
++    create_unimplemented_device("RTC",       0x40002800, 0x400);
++    create_unimplemented_device("WWDG",      0x40002C00, 0x400);
++    create_unimplemented_device("IWDG",      0x40003000, 0x400);
++    /* RESERVED:    0x40001800, 0x400 */
++    create_unimplemented_device("SPI2",      0x40003800, 0x400);
++    create_unimplemented_device("SPI3",      0x40003C00, 0x400);
++    /* RESERVED:    0x40004000, 0x400 */
++    create_unimplemented_device("USART2",    0x40004400, 0x400);
++    create_unimplemented_device("USART3",    0x40004800, 0x400);
++    create_unimplemented_device("UART4",     0x40004C00, 0x400);
++    create_unimplemented_device("UART5",     0x40005000, 0x400);
++    create_unimplemented_device("I2C1",      0x40005400, 0x400);
++    create_unimplemented_device("I2C2",      0x40005800, 0x400);
++    create_unimplemented_device("I2C3",      0x40005C00, 0x400);
++    /* RESERVED:    0x40006000, 0x400 */
++    create_unimplemented_device("CAN1",      0x40006400, 0x400);
++    /* RESERVED:    0x40006800, 0x400 */
++    create_unimplemented_device("PWR",       0x40007000, 0x400);
++    create_unimplemented_device("DAC1",      0x40007400, 0x400);
++    create_unimplemented_device("OPAMP",     0x40007800, 0x400);
++    create_unimplemented_device("LPTIM1",    0x40007C00, 0x400);
++    create_unimplemented_device("LPUART1",   0x40008000, 0x400);
++    /* RESERVED:    0x40008400, 0x400 */
++    create_unimplemented_device("SWPMI1",    0x40008800, 0x400);
++    /* RESERVED:    0x40008C00, 0x800 */
++    create_unimplemented_device("LPTIM2",    0x40009400, 0x400);
++    /* RESERVED:    0x40009800, 0x6800 */
++
++    /* APB2 BUS */
++    create_unimplemented_device("SYSCFG",    0x40010000, 0x30);
++    create_unimplemented_device("VREFBUF",   0x40010030, 0x1D0);
++    create_unimplemented_device("COMP",      0x40010200, 0x200);
++    create_unimplemented_device("EXTI",      0x40010400, 0x400);
++    /* RESERVED:    0x40010800, 0x1400 */
++    create_unimplemented_device("FIREWALL",  0x40011C00, 0x400);
++    /* RESERVED:    0x40012000, 0x800 */
++    create_unimplemented_device("SDMMC1",    0x40012800, 0x400);
++    create_unimplemented_device("TIM1",      0x40012C00, 0x400);
++    create_unimplemented_device("SPI1",      0x40013000, 0x400);
++    create_unimplemented_device("TIM8",      0x40013400, 0x400);
++    create_unimplemented_device("USART1",    0x40013800, 0x400);
++    /* RESERVED:    0x40013C00, 0x400 */
++    create_unimplemented_device("TIM15",     0x40014000, 0x400);
++    create_unimplemented_device("TIM16",     0x40014400, 0x400);
++    create_unimplemented_device("TIM17",     0x40014800, 0x400);
++    /* RESERVED:    0x40014C00, 0x800 */
++    create_unimplemented_device("SAI1",      0x40015400, 0x400);
++    create_unimplemented_device("SAI2",      0x40015800, 0x400);
++    /* RESERVED:    0x40015C00, 0x400 */
++    create_unimplemented_device("DFSDM1",    0x40016000, 0x400);
++    /* RESERVED:    0x40016400, 0x9C00 */
++
++    /* AHB1 BUS */
++    create_unimplemented_device("DMA1",      0x40020000, 0x400);
++    create_unimplemented_device("DMA2",      0x40020400, 0x400);
++    /* RESERVED:    0x40020800, 0x800 */
++    create_unimplemented_device("RCC",       0x40021000, 0x400);
++    /* RESERVED:    0x40021400, 0xC00 */
++    create_unimplemented_device("FLASH",     0x40022000, 0x400);
++    /* RESERVED:    0x40022400, 0xC00 */
++    create_unimplemented_device("CRC",       0x40023000, 0x400);
++    /* RESERVED:    0x40023400, 0x400 */
++    create_unimplemented_device("TSC",       0x40024000, 0x400);
++
++    /* RESERVED:    0x40024400, 0x7FDBC00 */
++
++    /* AHB2 BUS */
++    create_unimplemented_device("GPIOA",     0x48000000, 0x400);
++    create_unimplemented_device("GPIOB",     0x48000400, 0x400);
++    create_unimplemented_device("GPIOC",     0x48000800, 0x400);
++    create_unimplemented_device("GPIOD",     0x48000C00, 0x400);
++    create_unimplemented_device("GPIOE",     0x48001000, 0x400);
++    create_unimplemented_device("GPIOF",     0x48001400, 0x400);
++    create_unimplemented_device("GPIOG",     0x48001800, 0x400);
++    create_unimplemented_device("GPIOH",     0x48001C00, 0x400);
++    /* RESERVED:    0x48002000, 0x7FDBC00 */
++    create_unimplemented_device("OTG_FS",    0x50000000, 0x40000);
++    create_unimplemented_device("ADC",       0x50040000, 0x400);
++    /* RESERVED:    0x50040400, 0x20400 */
++    create_unimplemented_device("RNG",       0x50060800, 0x400);
++
++    /* AHB3 BUS */
++    create_unimplemented_device("FMC",       0xA0000000, 0x1000);
++    create_unimplemented_device("QUADSPI",   0xA0001000, 0x400);
++}
++
++static void stm32l4x5_soc_class_init(ObjectClass *klass, void *data)
++{
++
++    DeviceClass *dc =3D DEVICE_CLASS(klass);
++
++    dc->realize =3D stm32l4x5_soc_realize;
++    /* Reason: Mapped at fixed location on the system bus */
++    dc->user_creatable =3D false;
++    /* No vmstate or reset required: device has no internal state */
++}
++
++static void stm32l4x5xc_soc_class_init(ObjectClass *oc, void *data)
++{
++    Stm32l4x5SocClass *ssc =3D STM32L4X5_SOC_CLASS(oc);
++
++    ssc->flash_size =3D 256 * KiB;
++}
++
++static void stm32l4x5xe_soc_class_init(ObjectClass *oc, void *data)
++{
++    Stm32l4x5SocClass *ssc =3D STM32L4X5_SOC_CLASS(oc);
++
++    ssc->flash_size =3D 512 * KiB;
++}
++
++static void stm32l4x5xg_soc_class_init(ObjectClass *oc, void *data)
++{
++    Stm32l4x5SocClass *ssc =3D STM32L4X5_SOC_CLASS(oc);
++
++    ssc->flash_size =3D 1 * MiB;
++}
++
++static const TypeInfo stm32l4x5_soc_types[] =3D {
++    {
++        .name           =3D TYPE_STM32L4X5XC_SOC,
++        .parent         =3D TYPE_STM32L4X5_SOC,
++        .class_init     =3D stm32l4x5xc_soc_class_init,
++    }, {
++        .name           =3D TYPE_STM32L4X5XE_SOC,
++        .parent         =3D TYPE_STM32L4X5_SOC,
++        .class_init     =3D stm32l4x5xe_soc_class_init,
++    }, {
++        .name           =3D TYPE_STM32L4X5XG_SOC,
++        .parent         =3D TYPE_STM32L4X5_SOC,
++        .class_init     =3D stm32l4x5xg_soc_class_init,
++    }, {
++        .name           =3D TYPE_STM32L4X5_SOC,
++        .parent         =3D TYPE_SYS_BUS_DEVICE,
++        .instance_size  =3D sizeof(Stm32l4x5SocState),
++        .instance_init  =3D stm32l4x5_soc_initfn,
++        .class_size     =3D sizeof(Stm32l4x5SocClass),
++        .class_init     =3D stm32l4x5_soc_class_init,
++        .abstract       =3D true,
++    }
++};
++
++DEFINE_TYPES(stm32l4x5_soc_types)
+diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_soc.h
+new file mode 100644
+index 0000000000..564201fee5
+--- /dev/null
++++ b/include/hw/arm/stm32l4x5_soc.h
+@@ -0,0 +1,68 @@
++/*
++ * STM32L4x5 SoC family
++ *
++ * SPDX-License-Identifier: MIT
++ *
++ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
++ * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a c=
+opy
++ * of this software and associated documentation files (the "Software"), to =
+deal
++ * in the Software without restriction, including without limitation the rig=
+hts
++ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++ * copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING F=
+ROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++ * THE SOFTWARE.
++ *
++ * Heavily inspired by the stm32f405_soc by Alistair Francis.
++ * The reference used is the STMicroElectronics RM0351 Reference manual
++ * for STM32L4x5 and STM32L4x6 advanced Arm =C2=AE -based 32-bit MCUs.
++ * https://www.st.com/en/microcontrollers-microprocessors/stm32l4x5/document=
+ation.html
++ */
++
++#ifndef HW_ARM_STM32L4x5_SOC_H
++#define HW_ARM_STM32L4x5_SOC_H
++
++#include "exec/memory.h"
++#include "qemu/units.h"
++#include "hw/qdev-core.h"
++#include "hw/arm/armv7m.h"
++#include "qom/object.h"
++
++#define TYPE_STM32L4X5_SOC "stm32l4x5-soc"
++#define TYPE_STM32L4X5XC_SOC "stm32l4x5xc-soc"
++#define TYPE_STM32L4X5XE_SOC "stm32l4x5xe-soc"
++#define TYPE_STM32L4X5XG_SOC "stm32l4x5xg-soc"
++OBJECT_DECLARE_TYPE(Stm32l4x5SocState, Stm32l4x5SocClass, STM32L4X5_SOC)
++
++struct Stm32l4x5SocState {
++    SysBusDevice parent_obj;
++
++    ARMv7MState armv7m;
++
++    MemoryRegion sram1;
++    MemoryRegion sram2;
++    MemoryRegion flash;
++    MemoryRegion flash_alias;
++
++    Clock *sysclk;
++    Clock *refclk;
++};
++
++struct Stm32l4x5SocClass {
++    SysBusDeviceClass parent_class;
++
++    size_t flash_size;
++};
++
++#endif
+--=20
+2.38.5
+
 
