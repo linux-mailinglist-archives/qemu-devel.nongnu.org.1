@@ -2,70 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E4E7EC05E
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 11:23:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CDB7EC0BF
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 11:32:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3D2T-0003KL-Vu; Wed, 15 Nov 2023 05:22:30 -0500
+	id 1r3DAv-0006cO-Qf; Wed, 15 Nov 2023 05:31:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1r3D2Q-0003JW-2X
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 05:22:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1r3D2N-0005p9-VT
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 05:22:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700043740;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=X+vdUCP8QcQyY6rCf/ZhNb44cHngi8TlCy6eUaEtkYc=;
- b=Y/P908gyyPwxDAeTo2JzLVSoUQRgheAxdbDViTkcKwN/dY5YrJHgHLjSgA6DGVK3jj7rBt
- YosthATICNP9FCBMXulttBSE9B8UGSFk0E+mqP4q6Jdak8fv6gAPNqwSru0HnQVv6SID7U
- 9b6ShTrWj7lTC5lFoiZ7mpMNKeVJZ9U=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-604-REtEfAUNPYqRMmL80zYbfw-1; Wed, 15 Nov 2023 05:22:18 -0500
-X-MC-Unique: REtEfAUNPYqRMmL80zYbfw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 90CB2811E7B
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 10:22:18 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.45.226.54])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D5A6F40C6EB9;
- Wed, 15 Nov 2023 10:22:17 +0000 (UTC)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: qemu-devel@nongnu.org,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH RESEND v2 2/2] i386: Exclude 'hv-syndbg' from 'hv-passthrough'
-Date: Wed, 15 Nov 2023 11:22:15 +0100
-Message-ID: <20231115102215.372012-3-vkuznets@redhat.com>
-In-Reply-To: <20231115102215.372012-1-vkuznets@redhat.com>
-References: <20231115102215.372012-1-vkuznets@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r3DAs-0006cF-QP
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 05:31:10 -0500
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r3DAh-00016z-A6
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 05:31:10 -0500
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2c509f2c46cso93935241fa.1
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 02:30:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700044257; x=1700649057; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=iIZz/ye7u6KbEjFTQznTg1nQegrXOWkaci8BCgPMsgI=;
+ b=zYHURx/AaJuO7Jw1UtGW6kfYzWC7MDrls/9O25S4mcM+zpEIfjHSV1howaDyIzTkVK
+ VfPG73XBrs4pBHBSCrmx9JQ1Syas7gYDLv+n7gRx1STwxdyU0jJeWrxdwZtGzvfUuQdB
+ pkQjCPZJwxELGzfJPrUMZayhUI+Q4EXHwiR/7IFjsm51veRsTCi0atdHsCgkUMuvDvpj
+ 4jTEOanjch9gPFc0XzopUJUonTip6AtTk8dIC5KaE8ydSwUwVO/iRfr3yaITq4GzNsML
+ vHww3nDJn8CNf0Yp8GuM3vudFXxZH60EHjtbVouH9G8p0QUCWopLpisdgh09SV3hUIWc
+ 1A8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700044257; x=1700649057;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=iIZz/ye7u6KbEjFTQznTg1nQegrXOWkaci8BCgPMsgI=;
+ b=fstdd2ppLbbHc5SXfNZjgTu6cf4eosHJEfGWAkB4PHqdynYpV0sClp9HVeTM68Rc5O
+ rmrUKnMRj6HDHX6DbPzNXUn0LNpflVjwrr37hrhb3dnJqHlTc7nN2tB6jVxNQp63Nuz2
+ ZNQknx72X7niKVrgZvpsstPw63cELGYYQ6TbTgXtPibjDwNzuieotycgI+VBYUzi6Be6
+ fIe8nZxiP1hzurAvr7CB8Xo9LtEnFGDsTjykxT/6QaHnXZYcdz9OBacCwIAESLD78X01
+ UhpOe7eHSUNZEmKhc+C+8LP82g4zElR2W/U1qwnpmAd1XKzYP/gZe+dBORbhlUYMAIg9
+ 8zwQ==
+X-Gm-Message-State: AOJu0YxREyHYFMO05nEoXgHAhsiGMFeFUfcKrBAibrADOEN3tzaEwFvj
+ PLFHqumrsHiuyC3nh51b4obNQrod0m7Qpl51Ft7qMA==
+X-Google-Smtp-Source: AGHT+IHSPUGWsYxOMVxpwKs5yX90QfCWv+0s2UUX3eu4VBAhFplrQD89aAnwI7LoWlebJ78LweWXD/0dcWap9vWQDPQ=
+X-Received: by 2002:a05:6512:3b8d:b0:503:2555:d1e7 with SMTP id
+ g13-20020a0565123b8d00b005032555d1e7mr12389369lfv.45.1700044257076; Wed, 15
+ Nov 2023 02:30:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=vkuznets@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20231114205507.3792947-1-venture@google.com>
+ <bc43ecb5-f93b-4288-a6e1-624aebfcffcc@linaro.org>
+In-Reply-To: <bc43ecb5-f93b-4288-a6e1-624aebfcffcc@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 15 Nov 2023 10:30:13 +0000
+Message-ID: <CAFEAcA89CADp4FhwHd2O_7F07OfwpFZCb534jOjSK4uUt+sqfA@mail.gmail.com>
+Subject: Re: [PATCH] softmmu/memory: use memcpy for multi-byte accesses
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Patrick Venture <venture@google.com>, pbonzini@redhat.com,
+ peterx@redhat.com, 
+ david@redhat.com, philmd@linaro.org, qemu-devel@nongnu.org, 
+ Chris Rauer <crauer@google.com>, Peter Foley <pefoley@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,89 +87,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Windows with Hyper-V role enabled doesn't boot with 'hv-passthrough' when
-no debugger is configured, this significantly limits the usefulness of the
-feature as there's no support for subtracting Hyper-V features from CPU
-flags at this moment (e.g. "-cpu host,hv-passthrough,-hv-syndbg" does not
-work). While this is also theoretically fixable, 'hv-syndbg' is likely
-very special and unneeded in the default set. Genuine Hyper-V doesn't seem
-to enable it either.
+On Tue, 14 Nov 2023 at 21:18, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 11/14/23 12:55, Patrick Venture wrote:
+> > Avoids unaligned pointer issues.
+> >
+> > Reviewed-by: Chris Rauer <crauer@google.com>
+> > Reviewed-by: Peter Foley <pefoley@google.com>
+> > Signed-off-by: Patrick Venture <venture@google.com>
+> > ---
+> >   system/memory.c | 16 ++++++++--------
+> >   1 file changed, 8 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/system/memory.c b/system/memory.c
+> > index 304fa843ea..02c97d5187 100644
+> > --- a/system/memory.c
+> > +++ b/system/memory.c
+> > @@ -1343,16 +1343,16 @@ static uint64_t memory_region_ram_device_read(void *opaque,
+> >
+> >       switch (size) {
+> >       case 1:
+> > -        data = *(uint8_t *)(mr->ram_block->host + addr);
+> > +        memcpy(&data, mr->ram_block->host + addr, sizeof(uint8_t));
+>
+>
+> This is incorrect, especially for big-endian hosts.
+>
+> You want to use "qemu/bswap.h", ld*_he_p(), st*_he_p().
 
-Introduce 'skip_passthrough' flag to 'kvm_hyperv_properties' and use it as
-one-off to skip 'hv-syndbg' when enabling features in 'hv-passthrough'
-mode. Note, "-cpu host,hv-passthrough,hv-syndbg" can still be used if
-needed.
+More specifically, we have a ldn_he_p() and stn_he_p() that
+take the size in bytes of the data to read, so we should be
+able to replace the switch-on-size in these functions with
+a single call to the appropriate one of those.
 
-As both 'hv-passthrough' and 'hv-syndbg' are debug features, the change
-should not have any effect on production environments.
-
-Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
----
- docs/system/i386/hyperv.rst | 13 +++++++++----
- target/i386/kvm/kvm.c       |  7 +++++--
- 2 files changed, 14 insertions(+), 6 deletions(-)
-
-diff --git a/docs/system/i386/hyperv.rst b/docs/system/i386/hyperv.rst
-index 2505dc4c86e0..009947e39141 100644
---- a/docs/system/i386/hyperv.rst
-+++ b/docs/system/i386/hyperv.rst
-@@ -262,14 +262,19 @@ Supplementary features
- ``hv-passthrough``
-   In some cases (e.g. during development) it may make sense to use QEMU in
-   'pass-through' mode and give Windows guests all enlightenments currently
--  supported by KVM. This pass-through mode is enabled by "hv-passthrough" CPU
--  flag.
-+  supported by KVM.
- 
-   Note: ``hv-passthrough`` flag only enables enlightenments which are known to QEMU
-   (have corresponding 'hv-' flag) and copies ``hv-spinlocks`` and ``hv-vendor-id``
-   values from KVM to QEMU. ``hv-passthrough`` overrides all other 'hv-' settings on
--  the command line. Also, enabling this flag effectively prevents migration as the
--  list of enabled enlightenments may differ between target and destination hosts.
-+  the command line.
-+
-+  Note: ``hv-passthrough`` does not enable ``hv-syndbg`` which can prevent certain
-+  Windows guests from booting when used without proper configuration. If needed,
-+  ``hv-syndbg`` can be enabled additionally.
-+
-+  Note: ``hv-passthrough`` effectively prevents migration as the list of enabled
-+  enlightenments may differ between target and destination hosts.
- 
- ``hv-enforce-cpuid``
-   By default, KVM allows the guest to use all currently supported Hyper-V
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 2fcb1f6673d8..0c745562b667 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -823,6 +823,7 @@ static struct {
-         uint32_t bits;
-     } flags[2];
-     uint64_t dependencies;
-+    bool skip_passthrough;
- } kvm_hyperv_properties[] = {
-     [HYPERV_FEAT_RELAXED] = {
-         .desc = "relaxed timing (hv-relaxed)",
-@@ -951,7 +952,8 @@ static struct {
-             {.func = HV_CPUID_FEATURES, .reg = R_EDX,
-              .bits = HV_FEATURE_DEBUG_MSRS_AVAILABLE}
-         },
--        .dependencies = BIT(HYPERV_FEAT_SYNIC) | BIT(HYPERV_FEAT_RELAXED)
-+        .dependencies = BIT(HYPERV_FEAT_SYNIC) | BIT(HYPERV_FEAT_RELAXED),
-+        .skip_passthrough = true,
-     },
-     [HYPERV_FEAT_MSR_BITMAP] = {
-         .desc = "enlightened MSR-Bitmap (hv-emsr-bitmap)",
-@@ -1360,7 +1362,8 @@ bool kvm_hyperv_expand_features(X86CPU *cpu, Error **errp)
-          * hv_build_cpuid_leaf() uses this info to build guest CPUIDs.
-          */
-         for (feat = 0; feat < ARRAY_SIZE(kvm_hyperv_properties); feat++) {
--            if (hyperv_feature_supported(cs, feat)) {
-+            if (hyperv_feature_supported(cs, feat) &&
-+                !kvm_hyperv_properties[feat].skip_passthrough) {
-                 cpu->hyperv_features |= BIT(feat);
-             }
-         }
--- 
-2.41.0
-
+thanks
+-- PMM
 
