@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D007EC6F6
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 16:15:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 951877EC701
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 16:17:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3HaE-00044Q-CA; Wed, 15 Nov 2023 10:13:38 -0500
+	id 1r3Hdo-0007qL-Ag; Wed, 15 Nov 2023 10:17:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r3HZh-0003uJ-Jx
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:13:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r3HZe-0003II-Hi
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:13:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700061181;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OE/PtN9h0k7LC2WHk+1a688AyRXRE9rchXSc9yKvW2s=;
- b=JI3odbZWSh4G+Yl3ATAPndt/NKZ/m+hFaaQYsBBiIT3FUiTtzJiu8SfYIIFhWqgEZ+5olg
- ju8IxFKowpyRuOHiwwkJb3qdzwf9p5VBTkqCcP1aZHxAEZlGWFd2bpbFPGy3Fgsb+qam1O
- DyBDrL58EssRSlCctnRegmnkHYpr5gc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-685-04SPW4wvMUSJOwM12qjJ9g-1; Wed,
- 15 Nov 2023 10:12:58 -0500
-X-MC-Unique: 04SPW4wvMUSJOwM12qjJ9g-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 570C53810D3D;
- Wed, 15 Nov 2023 15:12:56 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id EB693492BFE;
- Wed, 15 Nov 2023 15:12:55 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 6BE4C180AC1B; Wed, 15 Nov 2023 16:12:43 +0100 (CET)
-From: Gerd Hoffmann <kraxel@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Hdm-0007pt-Jf
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:17:18 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Hdk-0005n4-DT
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:17:18 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40790b0a224so53797285e9.0
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 07:17:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700061434; x=1700666234; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0alafnMtesIHAdBuYm/oZ4SZ4FUqrIv4OM5Vdsj26zQ=;
+ b=Oh4ltF86Tvwgetx/Cy2kE8/5maSFpGS15uaKe3e0xvrXal66u0dJaMblzZ3sK03dqp
+ jO+zi1vic5sPlH4Z6MHvVghYTEt21wM4YDKVTq+Bls0YFnn0gf81rAWMTKvCPQLXjmNM
+ vXS58gY/e9+A2Nlld54vHLtj3nZM6USALVUOUhKvMPCvLZ8Pp8M6HfHaWw9q8HO93Snz
+ hykXsOx2aGD0pg1YiBUPgco9mjhbCUPpoPrinDpqaGbJ3ukMtGxpHE1PrMJwH20cOzkU
+ /kI/ueC3M1WPm5HtUzqnEEd3qrKLbKxPu0XTmjg3QRmSNEFJi+lCwEtNZfEcJyBNJGDD
+ u1TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700061434; x=1700666234;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0alafnMtesIHAdBuYm/oZ4SZ4FUqrIv4OM5Vdsj26zQ=;
+ b=s8ApRFFiARphpBXW3wkjFdjmP5dQEQx/NEnGhE95ZA68uA+FO72fI0g12/FD2amlKA
+ QwojTDc9NpdOCe8qMDXC/vL7UHN0nmP5RFP0hlGnWeopsMEp22rv7uz4qjHv88m1FGye
+ dlBxZ+ewJNoBf62jVWnJ/UALEHCHgWbUo4i1YjCUdHs4o7oIMYvCy0oOyDPWm2ujUyKI
+ auHAede1EwJznQl/euiwTzjIKp81kEgyyKCwBfsD9EQqhLD2BIZq9PKkBJXmPSUmMHy2
+ UbkdwRhMuHwJ7BQYoA9MQnkTc6zy9OpwsLKckPctMYaCM7raWptCwPVq5mUCL4Xi6Ycn
+ xXjQ==
+X-Gm-Message-State: AOJu0YyFj2NT959Zgzzx3P4qd2TbAHwNUTbZKmRrMEN9y8bxcOG9C541
+ HVrQ6pWuK9RzGpEUG2N1yBvNKAeFoysvUtmx400=
+X-Google-Smtp-Source: AGHT+IHMldOQVgunT4NDeGTTTmFEpCHOtZH4pRBtYNtvMnmU2eBGVQlFG0K5+FT9jQPTR+v2+1n4gQ==
+X-Received: by 2002:a05:600c:1ca7:b0:3fe:f667:4e4c with SMTP id
+ k39-20020a05600c1ca700b003fef6674e4cmr10926561wms.12.1700061434428; 
+ Wed, 15 Nov 2023 07:17:14 -0800 (PST)
+Received: from m1x-phil.lan ([176.176.130.62])
+ by smtp.gmail.com with ESMTPSA id
+ p17-20020a05600c469100b004064e3b94afsm21447860wmo.4.2023.11.15.07.17.13
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 15 Nov 2023 07:17:14 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Eric Blake <eblake@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?L=C3=A1szl=C3=B3=20=C3=89rsek?= <lersek@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- graf@amazon.com,
+Cc: Pavel Pisa <pisa@cmp.felk.cvut.cz>, Jason Wang <jasowang@redhat.com>,
+ Vikram Garhwal <fnu.vikram@xilinx.com>,
+ Anton Kochkov <anton.kochkov@proton.me>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH 16/16] docs: add uefi variable service documentation and TODO
- list.
-Date: Wed, 15 Nov 2023 16:12:38 +0100
-Message-ID: <20231115151242.184645-17-kraxel@redhat.com>
-In-Reply-To: <20231115151242.184645-1-kraxel@redhat.com>
-References: <20231115151242.184645-1-kraxel@redhat.com>
+ Qiang Liu <cyruscyliu@gmail.com>
+Subject: [PATCH-for-8.2] hw/net/can/xlnx-zynqmp: Avoid underflow while popping
+ TX FIFO
+Date: Wed, 15 Nov 2023 16:17:11 +0100
+Message-ID: <20231115151711.89170-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,122 +93,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- docs/devel/index-internals.rst |  1 +
- docs/devel/uefi-vars.rst       | 66 ++++++++++++++++++++++++++++++++++
- hw/uefi/TODO.md                | 17 +++++++++
- 3 files changed, 84 insertions(+)
- create mode 100644 docs/devel/uefi-vars.rst
- create mode 100644 hw/uefi/TODO.md
+Per https://docs.xilinx.com/r/en-US/ug1085-zynq-ultrascale-trm/Message-Format
 
-diff --git a/docs/devel/index-internals.rst b/docs/devel/index-internals.rst
-index 6f81df92bcab..eee676704cfa 100644
---- a/docs/devel/index-internals.rst
-+++ b/docs/devel/index-internals.rst
-@@ -17,6 +17,7 @@ Details about QEMU's various subsystems including how to add features to them.
-    s390-cpu-topology
-    s390-dasd-ipl
-    tracing
-+   uefi-vars
-    vfio-migration
-    writing-monitor-commands
-    virtio-backends
-diff --git a/docs/devel/uefi-vars.rst b/docs/devel/uefi-vars.rst
-new file mode 100644
-index 000000000000..8da69f3545af
---- /dev/null
-+++ b/docs/devel/uefi-vars.rst
-@@ -0,0 +1,66 @@
-+==============
-+UEFI variables
-+==============
+  Message Format
+
+  The same message format is used for RXFIFO, TXFIFO, and TXHPB.
+  Each message includes four words (16 bytes). Software must read
+  and write all four words regardless of the actual number of data
+  bytes and valid fields in the message.
+
+There is no mention in this reference manual about what the
+hardware does when not all four words are written. To fix the
+reported underflow behavior when DATA2 register is written,
+I choose to fill the data with the previous content of the
+ID / DLC / DATA1 registers, which is how I expect hardware
+would do.
+
+Note there is no hardware flag raised under such condition.
+
+Reported-by: Qiang Liu <cyruscyliu@gmail.com>
+Fixes: 98e5d7a2b7 ("hw/net/can: Introduce Xilinx ZynqMP CAN controller")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1425
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+Tested with the CAN tests from 'make check-qtest-aarch64'
+---
+ hw/net/can/xlnx-zynqmp-can.c | 49 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 46 insertions(+), 3 deletions(-)
+
+diff --git a/hw/net/can/xlnx-zynqmp-can.c b/hw/net/can/xlnx-zynqmp-can.c
+index e93e6c5e19..58938b574e 100644
+--- a/hw/net/can/xlnx-zynqmp-can.c
++++ b/hw/net/can/xlnx-zynqmp-can.c
+@@ -434,6 +434,51 @@ static bool tx_ready_check(XlnxZynqMPCANState *s)
+     return true;
+ }
+ 
++static void read_tx_frame(XlnxZynqMPCANState *s, Fifo32 *fifo, uint32_t *data)
++{
++    unsigned used = fifo32_num_used(fifo);
++    bool is_txhpb = fifo == &s->txhpb_fifo;
 +
-+Guest UEFI variable management
-+==============================
++    assert(used > 0);
++    used %= CAN_FRAME_SIZE;
 +
-+Traditional approach for UEFI Variable storage in qemu guests is to
-+work as close as possible to physical hardware.  That means provide
-+pflash as storage and leave the management of variables and flash to
-+the guest.
++    /*
++     * Frame Message Format
++     *
++     * Each frame includes four words (16 bytes). Software must read and write
++     * all four words regardless of the actual number of data bytes and valid
++     * fields in the message.
++     * If software misbehave (not writting all four words), we use the previous
++     * registers content to initialize each missing word.
++     */
++    if (used > 0) {
++        /* ID, DLC, DATA1 missing */
++        data[0] = s->regs[is_txhpb ? R_TXHPB_ID : R_TXFIFO_ID];
++    } else {
++        data[0] = fifo32_pop(fifo);
++    }
++    if (used == 1 || used == 2) {
++        /* DLC, DATA1 missing */
++        data[1] = s->regs[is_txhpb ? R_TXHPB_DLC : R_TXFIFO_DLC];
++    } else {
++        data[1] = fifo32_pop(fifo);
++    }
++    if (used == 1) {
++        /* DATA1 missing */
++        data[2] = s->regs[is_txhpb ? R_TXHPB_DATA1 : R_TXFIFO_DATA1];
++    } else {
++        data[2] = fifo32_pop(fifo);
++    }
++    /* DATA2 triggered the transfer thus is always available */
++    data[3] = fifo32_pop(fifo);
 +
-+Secure boot support comes with the requirement that the UEFI variable
-+storage must be protected against direct access by the OS.  All update
-+requests must pass the sanity checks.  (Parts of) the firmware must
-+run with a higher priviledge level than the OS so this can be enforced
-+by the firmware.  On x86 this has been implemented using System
-+Management Mode (SMM) in qemu and kvm, which again is the same
-+approach taken by physical hardware.  Only priviedged code running in
-+SMM mode is allowed to access flash storage.
++    if (used) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Incomplete CAN frame (only %u/%u slots used)\n",
++                      TYPE_XLNX_ZYNQMP_CAN, used, CAN_FRAME_SIZE);
++    }
++}
 +
-+Communication with the firmware code running in SMM mode works by
-+serializing the requests to a shared buffer, then trapping into SMM
-+mode via SMI.  The SMM code processes the request, stores the reply in
-+the same buffer and returns.
-+
-+Host UEFI variable service
-+==========================
-+
-+Instead of running the priviledged code inside the guest we can run it
-+on the host.  The serialization protocol cen be reused.  The
-+communication with the host uses a virtual device, which essentially
-+allows to configure the shared buffer location and size and to trap to
-+the host to process the requests.
-+
-+The ``uefi-vars`` device implements the UEFI virtual device.  It comes
-+in ``uefi-vars-isa`` and ``uefi-vars-sysbus`` flavours.  The device
-+reimplements the handlers needed, specifically
-+``EfiSmmVariableProtocol`` and ``VarCheckPolicyLibMmiHandler``.  It
-+also consumes events (``EfiEndOfDxeEventGroup``,
-+``EfiEventReadyToBoot`` and ``EfiEventExitBootServices``).
-+
-+The advantage of the approach is that we do not need a special
-+prividge level for the firmware to protect itself, i.e. it does not
-+depend on SMM emulation on x64, which allows to remove a bunch of
-+complex code for SMM emulation from the linux kernel
-+(CONFIG_KVM_SMM=n).  It also allows to support secure boot on arm
-+without implementing secure world (el3) emulation in kvm.
-+
-+Of course there are also downsides.  The added device increases the
-+attack surface of the host, and we are adding some code duplication
-+because we have to reimplement some edk2 functionality in qemu.
-+
-+usage on x86_64 (isa)
-+---------------------
-+
-+.. code::
-+
-+   qemu-system-x86_64 -device uefi-vars-isa,jsonfile=/path/to/vars.json
-+
-+usage on aarch64 (sysbus)
-+-------------------------
-+
-+.. code::
-+
-+   qemu-system-aarch64 -M virt,x-uefi-vars=on
-diff --git a/hw/uefi/TODO.md b/hw/uefi/TODO.md
-new file mode 100644
-index 000000000000..5d1cd15a798e
---- /dev/null
-+++ b/hw/uefi/TODO.md
-@@ -0,0 +1,17 @@
-+
-+uefi variable service - todo list
-+---------------------------------
-+
-+* implement reading/writing variable update time.
-+* implement authenticated variable updates.
-+  - used for 'dbx' updates.
-+
-+known issues and limitations
-+----------------------------
-+
-+* secure boot variables are read-only
-+  - due to auth vars not being implemented yet.
-+* works only on little endian hosts
-+  - accessing structs in guest ram is done without endian conversion.
-+* works only for 64-bit guests
-+  - UINTN is mapped to uint64_t, for 32-bit guests that would be uint32_t
+ static void transfer_fifo(XlnxZynqMPCANState *s, Fifo32 *fifo)
+ {
+     qemu_can_frame frame;
+@@ -451,9 +496,7 @@ static void transfer_fifo(XlnxZynqMPCANState *s, Fifo32 *fifo)
+     }
+ 
+     while (!fifo32_is_empty(fifo)) {
+-        for (i = 0; i < CAN_FRAME_SIZE; i++) {
+-            data[i] = fifo32_pop(fifo);
+-        }
++        read_tx_frame(s, fifo, data);
+ 
+         if (ARRAY_FIELD_EX32(s->regs, STATUS_REGISTER, LBACK)) {
+             /*
 -- 
 2.41.0
 
