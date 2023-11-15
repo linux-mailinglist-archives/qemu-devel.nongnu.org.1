@@ -2,69 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710807EC687
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 16:01:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4BF97EC6F8
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 16:15:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3HMS-00018I-F0; Wed, 15 Nov 2023 09:59:24 -0500
+	id 1r3Ha8-00040W-Kb; Wed, 15 Nov 2023 10:13:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3HMQ-000183-Dm
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 09:59:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r3HZf-0003tw-Ld
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:13:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3HMA-0006BI-LG
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 09:59:22 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r3HZQ-0003Ep-JM
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:12:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700060343;
+ s=mimecast20190719; t=1700061167;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=igOMKaweWQUYv2qN7vt0WAbQMpKKoP+4pbm/WsX6qFU=;
- b=YSUqnRwTglUEyT4sMDU9zD8scOvAZtvBV6+7MzmqDgrWpTVYH1HwYL7saAfsZoKTn1yQZj
- 3n1c9CNWZETT65dtacscm2PMlxs+KoIKqfOYpD0KAO/joCFY63D8rTCv4FBB814ZT8/4cE
- GrUrLr00OKILusdiHD0rxUWR1MSqTkk=
+ bh=aOdtLnBeupD44njXn4MsoVi1WSu1OdmrTBNNCcdehoI=;
+ b=FroqMcVdU3gnBL1dVXvHSKylIpbdh60aNVmkjU7vhMU4a0qsqOuOt5gLQ1oKN9HFBmZpxt
+ lejGAL0YFlwo/0KcU0Lr8EOXu+hAkYaSiDDSHNuxik3jZS4jOipSDpLS0v+gwLNM3cu03W
+ dt2gYCCeqGe67o66h3lL5pStNsM3fUI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-274-zisV09nSP1mmesJAg3JOnQ-1; Wed, 15 Nov 2023 09:58:58 -0500
-X-MC-Unique: zisV09nSP1mmesJAg3JOnQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-629-2aoodDrQN1G2NwdYBE0c6w-1; Wed, 15 Nov 2023 10:12:44 -0500
+X-MC-Unique: 2aoodDrQN1G2NwdYBE0c6w-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CF2CF811E8E;
- Wed, 15 Nov 2023 14:58:55 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.193.133])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A59D5492BE0;
- Wed, 15 Nov 2023 14:58:53 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 238EA8630DE;
+ Wed, 15 Nov 2023 15:12:44 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.192.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AB54A36EE;
+ Wed, 15 Nov 2023 15:12:43 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 63795180AC06; Wed, 15 Nov 2023 16:12:42 +0100 (CET)
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Eric Blake <eblake@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?L=C3=A1szl=C3=B3=20=C3=89rsek?= <lersek@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ graf@amazon.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>
-Subject: [PATCH] tests/avocado/multiprocess: Add asset hashes to silence
- warnings
-Date: Wed, 15 Nov 2023 15:58:52 +0100
-Message-ID: <20231115145852.494052-1-thuth@redhat.com>
+ Markus Armbruster <armbru@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PATCH 00/16] hw/uefi: add uefi variable service
+Date: Wed, 15 Nov 2023 16:12:22 +0100
+Message-ID: <20231115151242.184645-1-kraxel@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,82 +85,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The multiprocess test is currently succeeding with an annoying warning:
+This patch adds a virtual device to qemu which the uefi firmware can use
+to store variables.  This moves the UEFI variable management from
+privileged guest code (managing vars in pflash) to the host.  Main
+advantage is that the need to have privilege separation in the guest
+goes away.
 
- (1/2) tests/avocado/multiprocess.py:Multiprocess.test_multiprocess_x86_64:
-       WARN: Test passed but there were warnings during execution. Check
-       the log for details
+On x86 privileged guest code runs in SMM.  It's supported by kvm, but
+not liked much by various stakeholders in cloud space due to the
+complexity SMM emulation brings.
 
-In the log, you can find an entry like:
+On arm privileged guest code runs in el3 (aka secure world).  This is
+not supported by kvm, which is unlikely to change anytime soon given
+that even el2 support (nested virt) is being worked on for years and is
+not yet in mainline.
 
- WARNI| No hash provided. Cannot check the asset file integrity.
+The design idea is to reuse the request serialization protocol edk2 uses
+for communication between SMM and non-SMM code, so large chunks of the
+edk2 variable driver stack can be used unmodified.  Only the driver
+which traps into SMM mode must be replaced by a driver which talks to
+qemu instead.
 
-Add the proper asset hashes to avoid those warnings.
+A edk2 test branch can be found here (build with "-D QEMU_VARS=TRUE").
+https://github.com/kraxel/edk2/commits/devel/secure-boot-external-vars
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/avocado/multiprocess.py | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+The uefi-vars device must re-implement the privileged edk2 protocols
+(i.e. the code running in SMM mode).  The implementation is not complete
+yet, specifically updating authenticated variables is not implemented.
+These variables are simply read-only for now.
 
-diff --git a/tests/avocado/multiprocess.py b/tests/avocado/multiprocess.py
-index 9112a4cacc..ee7490ae08 100644
---- a/tests/avocado/multiprocess.py
-+++ b/tests/avocado/multiprocess.py
-@@ -18,8 +18,8 @@ class Multiprocess(QemuSystemTest):
-     """
-     KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
- 
--    def do_test(self, kernel_url, initrd_url, kernel_command_line,
--                machine_type):
-+    def do_test(self, kernel_url, kernel_hash, initrd_url, initrd_hash,
-+                kernel_command_line, machine_type):
-         """Main test method"""
-         self.require_accelerator('kvm')
-         self.require_multiprocess()
-@@ -30,8 +30,8 @@ def do_test(self, kernel_url, initrd_url, kernel_command_line,
-         os.set_inheritable(proxy_sock.fileno(), True)
-         os.set_inheritable(remote_sock.fileno(), True)
- 
--        kernel_path = self.fetch_asset(kernel_url)
--        initrd_path = self.fetch_asset(initrd_url)
-+        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-+        initrd_path = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
- 
-         # Create remote process
-         remote_vm = self.get_vm()
-@@ -72,13 +72,16 @@ def test_multiprocess_x86_64(self):
-         kernel_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
-                       '/linux/releases/31/Everything/x86_64/os/images'
-                       '/pxeboot/vmlinuz')
-+        kernel_hash = '5b6f6876e1b5bda314f93893271da0d5777b1f3c'
-         initrd_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
-                       '/linux/releases/31/Everything/x86_64/os/images'
-                       '/pxeboot/initrd.img')
-+        initrd_hash = 'dd0340a1b39bd28f88532babd4581c67649ec5b1'
-         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-                                'console=ttyS0 rdinit=/bin/bash')
-         machine_type = 'pc'
--        self.do_test(kernel_url, initrd_url, kernel_command_line, machine_type)
-+        self.do_test(kernel_url, kernel_hash, initrd_url, initrd_hash,
-+                     kernel_command_line, machine_type)
- 
-     def test_multiprocess_aarch64(self):
-         """
-@@ -87,10 +90,13 @@ def test_multiprocess_aarch64(self):
-         kernel_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
-                       '/linux/releases/31/Everything/aarch64/os/images'
-                       '/pxeboot/vmlinuz')
-+        kernel_hash = '3505f2751e2833c681de78cee8dda1e49cabd2e8'
-         initrd_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
-                       '/linux/releases/31/Everything/aarch64/os/images'
-                       '/pxeboot/initrd.img')
-+        initrd_hash = '519a1962daf17d67fc3a9c89d45affcb399607db'
-         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-                                'rdinit=/bin/bash console=ttyAMA0')
-         machine_type = 'virt,gic-version=3'
--        self.do_test(kernel_url, initrd_url, kernel_command_line, machine_type)
-+        self.do_test(kernel_url, kernel_hash, initrd_url, initrd_hash,
-+                     kernel_command_line, machine_type)
+But there is enough functionality working that it is possible to run
+guests, including guests in secure boot mode, so I'm sending this out
+for feedback (before tackling the remaining 20% which evidently will
+need 80% of the time ;)
+
+Because the guest can not write to authenticated variables (yet) it can
+not enroll secure boot keys itself, this must be done on the host.  The
+virt-firmware tools (https://gitlab.com/kraxel/virt-firmware) can be
+used for that:
+
+virt-fw-vars --enroll-redhat --secure-boot --output-json uefivars.json
+
+enjoy & take care,
+  Gerd
+
+Gerd Hoffmann (16):
+  hw/uefi: add include/hw/uefi/var-service-api.h
+  hw/uefi: add include/hw/uefi/var-service-edk2.h
+  hw/uefi: add include/hw/uefi/var-service.h
+  hw/uefi: add var-service-guid.c
+  hw/uefi: add var-service-core.c
+  hw/uefi: add var-service-vars.c
+  hw/uefi: add var-service-auth.c
+  hw/uefi: add var-service-policy.c
+  hw/uefi: add support for storing persistent variables on disk
+  hw/uefi: add trace-events
+  hw/uefi: add to Kconfig
+  hw/uefi: add to meson
+  hw/uefi: add uefi-vars-sysbus device
+  hw/uefi: add uefi-vars-isa device
+  hw/arm: add uefi variable support to virt machine type
+  docs: add uefi variable service documentation and TODO list.
+
+ include/hw/arm/virt.h              |   2 +
+ include/hw/uefi/var-service-api.h  |  40 ++
+ include/hw/uefi/var-service-edk2.h | 184 +++++++++
+ include/hw/uefi/var-service.h      | 119 ++++++
+ hw/arm/virt.c                      |  41 ++
+ hw/uefi/var-service-auth.c         |  91 +++++
+ hw/uefi/var-service-core.c         | 350 +++++++++++++++++
+ hw/uefi/var-service-guid.c         |  61 +++
+ hw/uefi/var-service-isa.c          |  88 +++++
+ hw/uefi/var-service-json.c         | 194 ++++++++++
+ hw/uefi/var-service-policy.c       | 390 +++++++++++++++++++
+ hw/uefi/var-service-sysbus.c       |  87 +++++
+ hw/uefi/var-service-vars.c         | 602 +++++++++++++++++++++++++++++
+ docs/devel/index-internals.rst     |   1 +
+ docs/devel/uefi-vars.rst           |  66 ++++
+ hw/Kconfig                         |   1 +
+ hw/meson.build                     |   1 +
+ hw/uefi/Kconfig                    |   9 +
+ hw/uefi/TODO.md                    |  17 +
+ hw/uefi/meson.build                |  18 +
+ hw/uefi/trace-events               |  16 +
+ meson.build                        |   1 +
+ qapi/meson.build                   |   1 +
+ qapi/qapi-schema.json              |   1 +
+ qapi/uefi.json                     |  40 ++
+ 25 files changed, 2421 insertions(+)
+ create mode 100644 include/hw/uefi/var-service-api.h
+ create mode 100644 include/hw/uefi/var-service-edk2.h
+ create mode 100644 include/hw/uefi/var-service.h
+ create mode 100644 hw/uefi/var-service-auth.c
+ create mode 100644 hw/uefi/var-service-core.c
+ create mode 100644 hw/uefi/var-service-guid.c
+ create mode 100644 hw/uefi/var-service-isa.c
+ create mode 100644 hw/uefi/var-service-json.c
+ create mode 100644 hw/uefi/var-service-policy.c
+ create mode 100644 hw/uefi/var-service-sysbus.c
+ create mode 100644 hw/uefi/var-service-vars.c
+ create mode 100644 docs/devel/uefi-vars.rst
+ create mode 100644 hw/uefi/Kconfig
+ create mode 100644 hw/uefi/TODO.md
+ create mode 100644 hw/uefi/meson.build
+ create mode 100644 hw/uefi/trace-events
+ create mode 100644 qapi/uefi.json
+
 -- 
 2.41.0
 
