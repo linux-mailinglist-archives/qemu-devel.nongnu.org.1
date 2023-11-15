@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 927B37EBECD
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 09:49:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1136C7EBECE
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 09:49:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3BZB-0003I6-Sk; Wed, 15 Nov 2023 03:48:09 -0500
+	id 1r3BZL-0003Iv-GP; Wed, 15 Nov 2023 03:48:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r3BZ9-0003Hy-CZ
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 03:48:07 -0500
+ id 1r3BZJ-0003IX-Ab; Wed, 15 Nov 2023 03:48:17 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r3BZ7-0007nA-Ta
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 03:48:07 -0500
+ id 1r3BZH-0007uT-Mu; Wed, 15 Nov 2023 03:48:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700038086; x=1731574086;
+ t=1700038096; x=1731574096;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DXZgRlcEsVhbTjmQcjBUO2mDr+hNClUzdVf9Lc2eios=;
- b=MZHUmAeZEory7vWPmgi0iZHB0SVBeX7SGFHbbz8ze8XJ/+fihqhM8ckP
- VxF1Lz2afkanlcVVDiNIZe/FOpSBxvXUGRVb9OUX7+CZi7V7P9/sCrQ6C
- fR02aqUuWF26prQLVQgUCMIIHmvJt6ExFnpBMBUYbQS+YGej/eG1x4b4O
- n/r3Co1xx1Kf63vH0xMbmO5/AWZ76nnhPZKRBXDTAxUjf6PfMd0IIgfLZ
- JMKJIcsOiw2YXD7lHAUopOUmIpnWIIyAOdXQJknavdg0hkLFuAksZeZUP
- xTPeobzZYPmF2gkpVlHIVWRCWB7IU3QaDlgSChBzzsES9a4vwcJe05YB1 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="12385050"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="12385050"
+ bh=Vnso+25nvjyRZ+a3ImY5eYjjdq0AgeyWNE86VlUd59Y=;
+ b=VcdGfEMemTRpjfvQmI+9amFo91mj8bp3eox5lTuOAim8Dj22Ye3JIClO
+ VA6ZwjXm+bFs+Oy5OENkqV+5RzyHvID5MVHBPYIltU5kXdMycTWqubygN
+ 5kvqWyuVN4zCt1b+SahwvO6mniAwocVjm7IAbY8ESUWoRanqGOke46B/+
+ kJWroeI5EWKQMoT4uyiLlUNvpcEuur/ESTTrI5vJFfKN4+rSp9hS5Ilhe
+ J1+ulRblL85YIYoxfg7l2ngnBh9x1KroHKEY/RXqxfCtQZmRJLLcFn9f/
+ st0tEiQgSh0BquyqOyFFmWpB+yyCpvLAeuLLnpyhBVwfwNQplp9q2+GoJ Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="12385059"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="12385059"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Nov 2023 00:48:05 -0800
+ 15 Nov 2023 00:48:10 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="1012199429"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="1012199429"
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="1012199443"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="1012199443"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Nov 2023 00:47:58 -0800
+ 15 Nov 2023 00:48:04 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
  peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH 2/4] vfio/platform: Move VFIODevice initializations in
- vfio_platform_instance_init
-Date: Wed, 15 Nov 2023 16:32:16 +0800
-Message-Id: <20231115083218.1973627-3-zhenzhong.duan@intel.com>
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Tony Krowiak <akrowiak@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Jason Herne <jjherne@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-s390x@nongnu.org (open list:vfio-ap)
+Subject: [PATCH 3/4] vfio/ap: Move VFIODevice initializations in
+ vfio_ap_instance_init
+Date: Wed, 15 Nov 2023 16:32:17 +0800
+Message-Id: <20231115083218.1973627-4-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231115083218.1973627-1-zhenzhong.duan@intel.com>
 References: <20231115083218.1973627-1-zhenzhong.duan@intel.com>
@@ -82,43 +83,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some of the VFIODevice initializations is in vfio_platform_realize,
-move all of them in vfio_platform_instance_init.
+Some of the VFIODevice initializations is in vfio_ap_realize,
+move all of them in vfio_ap_instance_init.
 
 No functional change intended.
 
 Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/platform.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ hw/vfio/ap.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
-index a97d9c6234..506eb8193f 100644
---- a/hw/vfio/platform.c
-+++ b/hw/vfio/platform.c
-@@ -581,10 +581,6 @@ static void vfio_platform_realize(DeviceState *dev, Error **errp)
-     VFIODevice *vbasedev = &vdev->vbasedev;
-     int i, ret;
+diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+index b21f92291e..31ea9644c5 100644
+--- a/hw/vfio/ap.c
++++ b/hw/vfio/ap.c
+@@ -164,18 +164,6 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
+         return;
+     }
  
--    vbasedev->type = VFIO_DEVICE_TYPE_PLATFORM;
+-    vbasedev->ops = &vfio_ap_ops;
+-    vbasedev->type = VFIO_DEVICE_TYPE_AP;
 -    vbasedev->dev = dev;
--    vbasedev->ops = &vfio_platform_ops;
 -
-     qemu_mutex_init(&vdev->intp_mutex);
- 
-     trace_vfio_platform_realize(vbasedev->sysfsdev ?
-@@ -659,8 +655,12 @@ static Property vfio_platform_dev_properties[] = {
- static void vfio_platform_instance_init(Object *obj)
+-    /*
+-     * vfio-ap devices operate in a way compatible with discarding of
+-     * memory in RAM blocks, as no pages are pinned in the host.
+-     * This needs to be set before vfio_get_device() for vfio common to
+-     * handle ram_block_discard_disable().
+-     */
+-    vapdev->vdev.ram_block_discard_allowed = true;
+-
+     ret = vfio_attach_device(vbasedev->name, vbasedev,
+                              &address_space_memory, errp);
+     if (ret) {
+@@ -236,8 +224,20 @@ static const VMStateDescription vfio_ap_vmstate = {
+ static void vfio_ap_instance_init(Object *obj)
  {
-     VFIOPlatformDevice *vdev = VFIO_PLATFORM_DEVICE(obj);
-+    VFIODevice *vbasedev = &vdev->vbasedev;
+     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(obj);
++    VFIODevice *vbasedev = &vapdev->vdev;
  
--    vdev->vbasedev.fd = -1;
-+    vbasedev->type = VFIO_DEVICE_TYPE_PLATFORM;
-+    vbasedev->ops = &vfio_platform_ops;
-+    vbasedev->dev = DEVICE(vdev);
+-    vapdev->vdev.fd = -1;
++    vbasedev->type = VFIO_DEVICE_TYPE_AP;
++    vbasedev->ops = &vfio_ap_ops;
++    vbasedev->dev = DEVICE(vapdev);
 +    vbasedev->fd = -1;
++
++    /*
++     * vfio-ap devices operate in a way compatible with discarding of
++     * memory in RAM blocks, as no pages are pinned in the host.
++     * This needs to be set before vfio_get_device() for vfio common to
++     * handle ram_block_discard_disable().
++     */
++    vbasedev->ram_block_discard_allowed = true;
  }
  
  #ifdef CONFIG_IOMMUFD
