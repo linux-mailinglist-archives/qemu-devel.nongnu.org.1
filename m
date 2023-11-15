@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1136C7EBECE
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 09:49:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E777EBECF
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 09:49:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3BZL-0003Iv-GP; Wed, 15 Nov 2023 03:48:19 -0500
+	id 1r3BZM-0003JS-4j; Wed, 15 Nov 2023 03:48:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r3BZJ-0003IX-Ab; Wed, 15 Nov 2023 03:48:17 -0500
+ id 1r3BZK-0003Ik-A9; Wed, 15 Nov 2023 03:48:18 -0500
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r3BZH-0007uT-Mu; Wed, 15 Nov 2023 03:48:17 -0500
+ id 1r3BZI-0007ub-N3; Wed, 15 Nov 2023 03:48:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700038096; x=1731574096;
+ t=1700038097; x=1731574097;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Vnso+25nvjyRZ+a3ImY5eYjjdq0AgeyWNE86VlUd59Y=;
- b=VcdGfEMemTRpjfvQmI+9amFo91mj8bp3eox5lTuOAim8Dj22Ye3JIClO
- VA6ZwjXm+bFs+Oy5OENkqV+5RzyHvID5MVHBPYIltU5kXdMycTWqubygN
- 5kvqWyuVN4zCt1b+SahwvO6mniAwocVjm7IAbY8ESUWoRanqGOke46B/+
- kJWroeI5EWKQMoT4uyiLlUNvpcEuur/ESTTrI5vJFfKN4+rSp9hS5Ilhe
- J1+ulRblL85YIYoxfg7l2ngnBh9x1KroHKEY/RXqxfCtQZmRJLLcFn9f/
- st0tEiQgSh0BquyqOyFFmWpB+yyCpvLAeuLLnpyhBVwfwNQplp9q2+GoJ Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="12385059"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="12385059"
+ bh=4T25mDurpLt8WQ4FJZmMzpzp4n1j01lUEeg9qooKvDg=;
+ b=CFmHTP/5NjS1seAJl6SWSPmcrRmn1veg1htnmWxkrM6Wv1R2N5z10ubs
+ xnA0NECR2WPVmqU9qgd3Vds3xYbEg6HHoWBKG5Pf081rUmLr18DnYADaO
+ yrJgkP1TO2XwXs6EKQL07nwz+IRZg9oCGukVphGrrH1WjBq3D6YJvoyfB
+ h3sjSSWpgNJHlUGkMk08qBh5de2HP+K6SXxgTYvwe1SBpF1kk/HWRnqfS
+ r6DvE9WNe5NpxWNaKUhZvX5qKAP4nAYTPFdSsB6kcYlYs0IfQguniHm2V
+ 5JnpgwUM2DJZoKb43DHt8iVJuR57rAqlMrbZgLQYJt+Disjdem/yFRn0Y A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="12385068"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="12385068"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Nov 2023 00:48:10 -0800
+ 15 Nov 2023 00:48:15 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="1012199443"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="1012199443"
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="1012199457"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="1012199457"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Nov 2023 00:48:04 -0800
+ 15 Nov 2023 00:48:09 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
@@ -46,13 +46,13 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Jason Herne <jjherne@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- qemu-s390x@nongnu.org (open list:vfio-ap)
-Subject: [PATCH 3/4] vfio/ap: Move VFIODevice initializations in
- vfio_ap_instance_init
-Date: Wed, 15 Nov 2023 16:32:17 +0800
-Message-Id: <20231115083218.1973627-4-zhenzhong.duan@intel.com>
+ Eric Farman <farman@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-s390x@nongnu.org (open list:vfio-ccw)
+Subject: [PATCH 4/4] vfio/ccw: Move VFIODevice initializations in
+ vfio_ccw_instance_init
+Date: Wed, 15 Nov 2023 16:32:18 +0800
+Message-Id: <20231115083218.1973627-5-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231115083218.1973627-1-zhenzhong.duan@intel.com>
 References: <20231115083218.1973627-1-zhenzhong.duan@intel.com>
@@ -83,57 +83,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some of the VFIODevice initializations is in vfio_ap_realize,
-move all of them in vfio_ap_instance_init.
+Some of the VFIODevice initializations is in vfio_ccw_realize,
+move all of them in vfio_ccw_instance_init.
 
 No functional change intended.
 
 Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/ap.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ hw/vfio/ccw.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index b21f92291e..31ea9644c5 100644
---- a/hw/vfio/ap.c
-+++ b/hw/vfio/ap.c
-@@ -164,18 +164,6 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
+diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
+index b116b10fe7..8de2fd809b 100644
+--- a/hw/vfio/ccw.c
++++ b/hw/vfio/ccw.c
+@@ -594,20 +594,6 @@ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
          return;
      }
  
--    vbasedev->ops = &vfio_ap_ops;
--    vbasedev->type = VFIO_DEVICE_TYPE_AP;
+-    vbasedev->ops = &vfio_ccw_ops;
+-    vbasedev->type = VFIO_DEVICE_TYPE_CCW;
 -    vbasedev->dev = dev;
 -
 -    /*
--     * vfio-ap devices operate in a way compatible with discarding of
--     * memory in RAM blocks, as no pages are pinned in the host.
--     * This needs to be set before vfio_get_device() for vfio common to
--     * handle ram_block_discard_disable().
+-     * All vfio-ccw devices are believed to operate in a way compatible with
+-     * discarding of memory in RAM blocks, ie. pages pinned in the host are
+-     * in the current working set of the guest driver and therefore never
+-     * overlap e.g., with pages available to the guest balloon driver.  This
+-     * needs to be set before vfio_get_device() for vfio common to handle
+-     * ram_block_discard_disable().
 -     */
--    vapdev->vdev.ram_block_discard_allowed = true;
+-    vbasedev->ram_block_discard_allowed = true;
 -
-     ret = vfio_attach_device(vbasedev->name, vbasedev,
+     ret = vfio_attach_device(cdev->mdevid, vbasedev,
                               &address_space_memory, errp);
      if (ret) {
-@@ -236,8 +224,20 @@ static const VMStateDescription vfio_ap_vmstate = {
- static void vfio_ap_instance_init(Object *obj)
+@@ -695,8 +681,22 @@ static const VMStateDescription vfio_ccw_vmstate = {
+ static void vfio_ccw_instance_init(Object *obj)
  {
-     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(obj);
-+    VFIODevice *vbasedev = &vapdev->vdev;
- 
--    vapdev->vdev.fd = -1;
-+    vbasedev->type = VFIO_DEVICE_TYPE_AP;
-+    vbasedev->ops = &vfio_ap_ops;
-+    vbasedev->dev = DEVICE(vapdev);
-+    vbasedev->fd = -1;
+     VFIOCCWDevice *vcdev = VFIO_CCW(obj);
++    VFIODevice *vbasedev = &vcdev->vdev;
 +
++    vbasedev->type = VFIO_DEVICE_TYPE_CCW;
++    vbasedev->ops = &vfio_ccw_ops;
++    vbasedev->dev = DEVICE(vcdev);
++    vbasedev->fd = -1;
+ 
+-    vcdev->vdev.fd = -1;
 +    /*
-+     * vfio-ap devices operate in a way compatible with discarding of
-+     * memory in RAM blocks, as no pages are pinned in the host.
-+     * This needs to be set before vfio_get_device() for vfio common to
-+     * handle ram_block_discard_disable().
++     * All vfio-ccw devices are believed to operate in a way compatible with
++     * discarding of memory in RAM blocks, ie. pages pinned in the host are
++     * in the current working set of the guest driver and therefore never
++     * overlap e.g., with pages available to the guest balloon driver.  This
++     * needs to be set before vfio_get_device() for vfio common to handle
++     * ram_block_discard_disable().
 +     */
 +    vbasedev->ram_block_discard_allowed = true;
  }
