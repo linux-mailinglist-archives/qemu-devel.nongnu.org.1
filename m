@@ -2,81 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7176F7EC9C0
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 18:36:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3807E7EC992
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 18:21:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3Jn3-0003hj-Jf; Wed, 15 Nov 2023 12:35:01 -0500
+	id 1r3JZ2-0007eU-1t; Wed, 15 Nov 2023 12:20:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <bounce-md_30504962.6554fd7e.v1-62533e98bbfc4db9867c94103d9014ee@bounce.vates.tech>)
- id 1r3Jmo-0003Zt-Bh
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:34:47 -0500
-Received: from mail186-12.suw21.mandrillapp.com ([198.2.186.12])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r3JZ0-0007dh-4t
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:20:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <bounce-md_30504962.6554fd7e.v1-62533e98bbfc4db9867c94103d9014ee@bounce.vates.tech>)
- id 1r3Jml-0000ot-P3
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:34:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vates.tech;
- s=mandrill; t=1700068734; x=1700329234;
- i=thierry.escande@vates.tech;
- bh=i1KUIQO9g2CZuRmPbda+2Zt1MIb/whRGYxYd60ywESM=;
- h=From:Subject:To:Cc:Message-Id:In-Reply-To:References:Feedback-ID:
- Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
- Subject:From;
- b=VazxA3WrRgG9hDWv8eZ6XbTouX+X4MpF2UURlDULyXTY1P3L/r6+0qtL/hJ0fGBTi
- NLDlz+uOzfFZkyuKT9DI+XrulWhejfPpBRxG3/SCNxE1+mwstcEu90FmwAvQR9BPKJ
- uPhkuyQeSNXP0u2d/+CG4Sp8DuA/BWsJHX1V8tIs=
-Received: from pmta10.mandrill.prod.suw01.rsglab.com (localhost [127.0.0.1])
- by mail186-12.suw21.mandrillapp.com (Mailchimp) with ESMTP id
- 4SVqdV239Fz705lSg
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 17:18:54 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
- i=@mandrillapp.com; q=dns/txt; s=mandrill; t=1700068734; h=from :
- subject : to : cc : message-id : in-reply-to : references : date :
- mime-version : content-type : content-transfer-encoding : from :
- x-mandrill-user : list-unsubscribe;
- bh=i1KUIQO9g2CZuRmPbda+2Zt1MIb/whRGYxYd60ywESM=;
- b=BzAm5UQ06P50D8CQjB8nixF+Zgw24WgGdUXxf5lIEeDFxR4TtRGuBeQ1XDIVjSbah91jt
- pl3XfVE8Pwc0KpAJ+v5+Ken10nVoe1BonCmnG6Q7PlkAWHSa1nwCQpih3hxmdR3E6cRvSK4
- 5zhmvZKTmdiW16nZ863K6tQBREpHVCA=
-From: Thierry Escande <thierry.escande@vates.tech>
-Subject: =?utf-8?Q?[PATCH=204/4]=20ich9:=20Enable=20root=20PCI=20hotplug=20by=20default?=
-Received: from [37.26.189.201] by mandrillapp.com id
- 62533e98bbfc4db9867c94103d9014ee; Wed, 15 Nov 2023 17:18:54 +0000
-X-Mailer: git-send-email 2.42.0
-X-Bm-Disclaimer: Yes
-X-Bm-Milter-Handled: a6f8c62a-75f8-4756-90d1-92e0b788484c
-X-Bm-Transport-Timestamp: 1700068732696
-To: qemu-devel@nongnu.org
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20231115171837.18866-5-thierry.escande@vates.tech>
-In-Reply-To: <20231115171837.18866-1-thierry.escande@vates.tech>
-References: <20231115171837.18866-1-thierry.escande@vates.tech>
-X-Native-Encoded: 1
-X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,
- =20including=20all=20headers,
- =20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30504962.62533e98bbfc4db9867c94103d9014ee?=
-X-Mandrill-User: md_30504962
-Feedback-ID: 30504962:30504962.20231115:md
-Date: Wed, 15 Nov 2023 17:18:54 +0000
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r3JYx-0003Be-UI
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:20:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700068826;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Fs5CFy7AAhw3zDxVkVe9qC5yEduYxeGxxxWq/U4n+Ig=;
+ b=LMScZ4fJHTu4kPqbQa3jWzTNpMjg6adneynQfnuXt74KaDrN5bYUr/d3LxyC7+bxDFxiOF
+ 3Xs9cyCilaM6kj4hTMAwZhmNBJQKtnNgemJ2qS6JmVLrKb648zm7JkN25+Ggki1awUa6ve
+ NZ2d7P0IModUZTtAgYOQH1wvnizwsBk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-358-hQO0MfOWPUm-WrwOmbpu2w-1; Wed, 15 Nov 2023 12:20:25 -0500
+X-MC-Unique: hQO0MfOWPUm-WrwOmbpu2w-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DE62E104E894;
+ Wed, 15 Nov 2023 17:20:18 +0000 (UTC)
+Received: from merkur.fritz.box (unknown [10.39.194.188])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 095C6143;
+ Wed, 15 Nov 2023 17:20:17 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com,
+ qemu-devel@nongnu.org
+Subject: [PATCH for-8.2 0/4] block: Fix deadlocks with the stream job
+Date: Wed, 15 Nov 2023 18:20:08 +0100
+Message-ID: <20231115172012.112727-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=198.2.186.12;
- envelope-from=bounce-md_30504962.6554fd7e.v1-62533e98bbfc4db9867c94103d9014ee@bounce.vates.tech;
- helo=mail186-12.suw21.mandrillapp.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,34 +75,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch initializes use_acpi_root_pci_hotplug to true and enables
-device PCI hotplug on q35 machine by default.
+This series contains three fixes for deadlocks that follow the same
+pattern: A nested event loop in the main thread waits for an iothread to
+make progress, but the AioContext lock of that iothread is still held by
+the main loop, so it can never make progress.
 
-Signed-off-by: Thierry Escande <thierry.escande@vates.tech>
----
- hw/acpi/ich9.c | 1 +
- 1 file changed, 1 insertion(+)
+We're planning to fully remove the AioContext lock in 9.0, which would
+automatically get rid of this kind of bugs, but it's still there in 8.2,
+so let's fix them individually for this release.
 
-diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
-index e38c9bb998..ad2c8ad8ed 100644
---- a/hw/acpi/ich9.c
-+++ b/hw/acpi/ich9.c
-@@ -450,6 +450,7 @@ void ich9_pm_add_properties(Object *obj, ICH9LPCPMRegs *pm)
-     pm->disable_s4 = 0;
-     pm->s4_val = 2;
-     pm->acpi_pci_hotplug.use_acpi_hotplug_bridge = true;
-+    pm->acpi_pci_hotplug.use_acpi_root_pci_hotplug = true;
-     pm->keep_pci_slot_hpc = true;
-     pm->enable_tco = true;
- 
+Kevin Wolf (4):
+  block: Fix bdrv_graph_wrlock() call in blk_remove_bs()
+  block: Fix deadlocks in bdrv_graph_wrunlock()
+  stream: Fix AioContext locking during bdrv_graph_wrlock()
+  iotests: Test two stream jobs in a single iothread
+
+ include/block/graph-lock.h                    | 15 +++-
+ block.c                                       | 26 +++----
+ block/backup.c                                |  2 +-
+ block/blklogwrites.c                          |  4 +-
+ block/blkverify.c                             |  2 +-
+ block/block-backend.c                         | 10 ++-
+ block/commit.c                                | 10 +--
+ block/graph-lock.c                            | 23 +++++-
+ block/mirror.c                                | 14 ++--
+ block/qcow2.c                                 |  2 +-
+ block/quorum.c                                |  4 +-
+ block/replication.c                           | 10 +--
+ block/snapshot.c                              |  2 +-
+ block/stream.c                                | 10 +--
+ block/vmdk.c                                  | 10 +--
+ blockdev.c                                    |  4 +-
+ blockjob.c                                    |  8 +-
+ tests/unit/test-bdrv-drain.c                  | 20 ++---
+ tests/unit/test-bdrv-graph-mod.c              | 10 +--
+ scripts/block-coroutine-wrapper.py            |  2 +-
+ tests/qemu-iotests/tests/iothreads-stream     | 73 +++++++++++++++++++
+ tests/qemu-iotests/tests/iothreads-stream.out | 11 +++
+ 22 files changed, 197 insertions(+), 75 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/iothreads-stream
+ create mode 100644 tests/qemu-iotests/tests/iothreads-stream.out
+
 -- 
-2.42.0
+2.41.0
 
-
-
-Thierry Escande | Vates XCP-ng Developer
-
-XCP-ng & Xen Orchestra - Vates solutions
-
-web: https://vates.tech
 
