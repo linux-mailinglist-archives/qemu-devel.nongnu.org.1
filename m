@@ -2,98 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6518A7EC307
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 13:54:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E587EC32C
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 14:01:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3FOM-0005DR-Lp; Wed, 15 Nov 2023 07:53:14 -0500
+	id 1r3FUV-0007mP-QM; Wed, 15 Nov 2023 07:59:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r3FOJ-0005Cu-Rc
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 07:53:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1r3FUS-0007lx-QD
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 07:59:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r3FOH-0004oc-Av
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 07:53:11 -0500
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1r3FUK-00074E-90
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 07:59:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700052787;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ s=mimecast20190719; t=1700053160;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=xV9NmOapni/oDlg8eV0ONphd6hKZ6X/pGG3sbnIsD+A=;
- b=PeJpl56RykDUQu4WPXogpxEdKsT79HXHpf5W1S2bGMefYR5OO02jeFhjWDwUyUj/W2Qq74
- jzdXj9NttpZuAklFV8m+u2EUkC4Ebzbm7DPNlu3KuVLGakUVTAZBbbJ7NAFFcq5yR1R/wg
- F9WnNbvDHA+JdqDLpxu7xBrc4PM5RIY=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-54-4ZG3D-irNUyQ9SBe-vgxBA-1; Wed, 15 Nov 2023 07:53:04 -0500
-X-MC-Unique: 4ZG3D-irNUyQ9SBe-vgxBA-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7788ea971caso766805985a.2
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 04:53:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700052784; x=1700657584;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=xV9NmOapni/oDlg8eV0ONphd6hKZ6X/pGG3sbnIsD+A=;
- b=i96Wj9EynKMIX3cUuW8/EFov0RZVfgM0IOihTI7p7m3vdoy66b15n53sSGkWZHzrZE
- Xqyl9K/LHFov8/7JAXkztBe3w54HU4+Z+k30FpWivfSH7r98PzwotvIrEQRuUAS/0zK5
- YZD1gxNXwctT1XOm6y5vCGYTsxo2qPvjwOnXGVgbtV0krT0exOPNLUw8vO15VEETDTuq
- ffk7JQ8cBR+C91pVLgEOnInk0xtovxnJ81vEkfAFHvl43aFcBwNDRLBcJNZh/iU2mOcZ
- 90K9t1TO6FKx7AujaBTSdoxtXgYiCm5hD4iw5Wu6LvRDtk8Q0IDG8Dd/cjsF1UCjobNe
- XyyA==
-X-Gm-Message-State: AOJu0YxjlRQymy8/nidfr6KfyaXsIxwDfvc9mUQzZIRjQFoI8eBQKxT7
- ddfaKPagS3Fj2CJLq2WzOPcXc3XiXvUlbYN+kT0l072l+c01TdEWytn92PBH8yR0jFqd4tcMI2e
- xxsYfYgF0rZkAius=
-X-Received: by 2002:a05:620a:2548:b0:775:c2a1:1f1e with SMTP id
- s8-20020a05620a254800b00775c2a11f1emr6167347qko.50.1700052783732; 
- Wed, 15 Nov 2023 04:53:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFT2PvT52QnjUp3EvQIie0bri/P65D3Q2ttPMZqNUjAlid5NQ/83cOVGmcUet+3AxxhrAPqnQ==
-X-Received: by 2002:a05:620a:2548:b0:775:c2a1:1f1e with SMTP id
- s8-20020a05620a254800b00775c2a11f1emr6167329qko.50.1700052783391; 
- Wed, 15 Nov 2023 04:53:03 -0800 (PST)
-Received: from [192.168.43.95] ([37.170.101.238])
- by smtp.gmail.com with ESMTPSA id
- qd6-20020a05620a658600b007758b25ac3bsm3448190qkn.82.2023.11.15.04.52.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 Nov 2023 04:53:02 -0800 (PST)
-Message-ID: <2599bd21-31fa-490e-aecd-0749c4abe657@redhat.com>
-Date: Wed, 15 Nov 2023 13:52:56 +0100
+ bh=mGsQus5M/lznIKU18II+lHdaMPFHPVIR4mPte/zsqEQ=;
+ b=ZYyu7xUHze3yYMpiNU0DLI2wdx9kOfNtKJD1YQVgbQ1mNhj1M+A4dAQDrqr1ceI5TPmK3j
+ OiJAxsIbUW9KdquWWutVk6ybv+QLEvQtVGnwgExdBck0TBbfknfZUUPvSlEHCgU06UVpN6
+ seWGFKlI3hP5CaEnMxhhlSPaDgcukRs=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-45-EBQnjiV8MnGOf-mWp0uyqQ-1; Wed,
+ 15 Nov 2023 07:59:15 -0500
+X-MC-Unique: EBQnjiV8MnGOf-mWp0uyqQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0CFFB2808FD9;
+ Wed, 15 Nov 2023 12:59:15 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.171])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5009E2166B27;
+ Wed, 15 Nov 2023 12:59:14 +0000 (UTC)
+Date: Wed, 15 Nov 2023 07:57:18 -0500
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Mike Christie <michael.christie@oracle.com>, fam@euphon.net,
+ jasowang@redhat.com, mst@redhat.com, pbonzini@redhat.com,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH 2/2] vhost-scsi: Add support for a worker thread per
+ virtqueue
+Message-ID: <20231115125718.GA301867@fedora>
+References: <20231114003644.7026-1-michael.christie@oracle.com>
+ <20231114003644.7026-3-michael.christie@oracle.com>
+ <bucsvfqgs73w73tt4l5z35smccpebjq36hcozpgrkeydm3jumj@zisakm4noecq>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/21] backends/iommufd: Introduce the iommufd object
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
- <20231114100955.1961974-2-zhenzhong.duan@intel.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20231114100955.1961974-2-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="2MjSwn6YSfTFx6zR"
+Content-Disposition: inline
+In-Reply-To: <bucsvfqgs73w73tt4l5z35smccpebjq36hcozpgrkeydm3jumj@zisakm4noecq>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -108,463 +81,197 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhenzhong,
 
-On 11/14/23 11:09, Zhenzhong Duan wrote:
-> From: Eric Auger <eric.auger@redhat.com>
->
-> Introduce an iommufd object which allows the interaction
-> with the host /dev/iommu device.
->
-> The /dev/iommu can have been already pre-opened outside of qemu,
-> in which case the fd can be passed directly along with the
-> iommufd object:
->
-> This allows the iommufd object to be shared accross several
-> subsystems (VFIO, VDPA, ...). For example, libvirt would open
-> the /dev/iommu once.
->
-> If no fd is passed along with the iommufd object, the /dev/iommu
-> is opened by the qemu code.
->
-> Suggested-by: Alex Williamson <alex.williamson@redhat.com>
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
-> v6: remove redundant call, alloc_hwpt, get/put_ioas
->
->  MAINTAINERS              |   7 ++
->  qapi/qom.json            |  19 ++++
->  include/sysemu/iommufd.h |  44 ++++++++
->  backends/iommufd.c       | 228 +++++++++++++++++++++++++++++++++++++++
->  backends/Kconfig         |   4 +
->  backends/meson.build     |   1 +
->  backends/trace-events    |  10 ++
->  qemu-options.hx          |  12 +++
->  8 files changed, 325 insertions(+)
->  create mode 100644 include/sysemu/iommufd.h
->  create mode 100644 backends/iommufd.c
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index ff1238bb98..a4891f7bda 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2166,6 +2166,13 @@ F: hw/vfio/ap.c
->  F: docs/system/s390x/vfio-ap.rst
->  L: qemu-s390x@nongnu.org
->  
-> +iommufd
-> +M: Yi Liu <yi.l.liu@intel.com>
-> +M: Eric Auger <eric.auger@redhat.com>
-Zhenzhong, don't you want to be added here?
-> +S: Supported
-> +F: backends/iommufd.c
-> +F: include/sysemu/iommufd.h
-> +
->  vhost
->  M: Michael S. Tsirkin <mst@redhat.com>
->  S: Supported
-> diff --git a/qapi/qom.json b/qapi/qom.json
-> index c53ef978ff..1fd8555a75 100644
-> --- a/qapi/qom.json
-> +++ b/qapi/qom.json
-> @@ -794,6 +794,23 @@
->  { 'struct': 'VfioUserServerProperties',
->    'data': { 'socket': 'SocketAddress', 'device': 'str' } }
->  
-> +##
-> +# @IOMMUFDProperties:
-> +#
-> +# Properties for iommufd objects.
-> +#
-> +# @fd: file descriptor name previously passed via 'getfd' command,
+--2MjSwn6YSfTFx6zR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-"previously passed via 'getfd' command", I wonder if this applies here or whether it is copy/paste of 
-RemoteObjectProperties.fd doc?
+On Wed, Nov 15, 2023 at 12:43:02PM +0100, Stefano Garzarella wrote:
+> On Mon, Nov 13, 2023 at 06:36:44PM -0600, Mike Christie wrote:
+> > This adds support for vhost-scsi to be able to create a worker thread
+> > per virtqueue. Right now for vhost-net we get a worker thread per
+> > tx/rx virtqueue pair which scales nicely as we add more virtqueues and
+> > CPUs, but for scsi we get the single worker thread that's shared by all
+> > virtqueues. When trying to send IO to more than 2 virtqueues the single
+> > thread becomes a bottlneck.
+> >=20
+> > This patch adds a new setting, virtqueue_workers, which can be set to:
+> >=20
+> > 1: Existing behavior whre we get the single thread.
+> > -1: Create a worker per IO virtqueue.
+>=20
+> I find this setting a bit odd. What about a boolean instead?
+>=20
+> `per_virtqueue_workers`:
+>     false: Existing behavior whre we get the single thread.
+>     true: Create a worker per IO virtqueue.
 
-> +#     which represents a pre-opened /dev/iommu.  This allows the
-> +#     iommufd object to be shared accross several subsystems
-> +#     (VFIO, VDPA, ...), and the file descriptor to be shared
-> +#     with other process, e.g. DPDK.  (default: QEMU opens
-> +#     /dev/iommu by itself)
-> +#
-> +# Since: 8.2
-> +##
-> +{ 'struct': 'IOMMUFDProperties',
-> +  'data': { '*fd': 'str' } }
-> +
->  ##
->  # @RngProperties:
->  #
-> @@ -934,6 +951,7 @@
->      'input-barrier',
->      { 'name': 'input-linux',
->        'if': 'CONFIG_LINUX' },
-> +    'iommufd',
->      'iothread',
->      'main-loop',
->      { 'name': 'memory-backend-epc',
-> @@ -1003,6 +1021,7 @@
->        'input-barrier':              'InputBarrierProperties',
->        'input-linux':                { 'type': 'InputLinuxProperties',
->                                        'if': 'CONFIG_LINUX' },
-> +      'iommufd':                    'IOMMUFDProperties',
->        'iothread':                   'IothreadProperties',
->        'main-loop':                  'MainLoopProperties',
->        'memory-backend-epc':         { 'type': 'MemoryBackendEpcProperties',
-> diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
-> new file mode 100644
-> index 0000000000..9b3a86f57d
-> --- /dev/null
-> +++ b/include/sysemu/iommufd.h
-> @@ -0,0 +1,44 @@
-> +#ifndef SYSEMU_IOMMUFD_H
-> +#define SYSEMU_IOMMUFD_H
-> +
-> +#include "qom/object.h"
-> +#include "qemu/thread.h"
-> +#include "exec/hwaddr.h"
-> +#include "exec/cpu-common.h"
-> +
-> +#define TYPE_IOMMUFD_BACKEND "iommufd"
-> +OBJECT_DECLARE_TYPE(IOMMUFDBackend, IOMMUFDBackendClass,
-> +                    IOMMUFD_BACKEND)
-> +#define IOMMUFD_BACKEND(obj) \
-> +    OBJECT_CHECK(IOMMUFDBackend, (obj), TYPE_IOMMUFD_BACKEND)
-> +#define IOMMUFD_BACKEND_GET_CLASS(obj) \
-> +    OBJECT_GET_CLASS(IOMMUFDBackendClass, (obj), TYPE_IOMMUFD_BACKEND)
-> +#define IOMMUFD_BACKEND_CLASS(klass) \
-> +    OBJECT_CLASS_CHECK(IOMMUFDBackendClass, (klass), TYPE_IOMMUFD_BACKEND)
-> +struct IOMMUFDBackendClass {
-> +    ObjectClass parent_class;
-> +};
-> +
-> +struct IOMMUFDBackend {
-> +    Object parent;
-> +
-> +    /*< protected >*/
-> +    int fd;            /* /dev/iommu file descriptor */
-> +    bool owned;        /* is the /dev/iommu opened internally */
-> +    QemuMutex lock;
-> +    uint32_t users;
-> +
-> +    /*< public >*/
-> +};
-> +
-> +int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp);
-> +void iommufd_backend_disconnect(IOMMUFDBackend *be);
-> +
-> +int iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
-> +                               Error **errp);
-> +void iommufd_backend_free_id(IOMMUFDBackend *be, uint32_t id);
-> +int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
-> +                            ram_addr_t size, void *vaddr, bool readonly);
-> +int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
-> +                              hwaddr iova, ram_addr_t size);
-> +#endif
-> diff --git a/backends/iommufd.c b/backends/iommufd.c
-> new file mode 100644
-> index 0000000000..ea3e2a8f85
-> --- /dev/null
-> +++ b/backends/iommufd.c
-> @@ -0,0 +1,228 @@
-> +/*
-> + * iommufd container backend
-> + *
-> + * Copyright (C) 2023 Intel Corporation.
-> + * Copyright Red Hat, Inc. 2023
-> + *
-> + * Authors: Yi Liu <yi.l.liu@intel.com>
-> + *          Eric Auger <eric.auger@redhat.com>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "sysemu/iommufd.h"
-> +#include "qapi/error.h"
-> +#include "qapi/qmp/qerror.h"
-> +#include "qemu/module.h"
-> +#include "qom/object_interfaces.h"
-> +#include "qemu/error-report.h"
-> +#include "monitor/monitor.h"
-> +#include "trace.h"
-> +#include <sys/ioctl.h>
-> +#include <linux/iommufd.h>
-> +
-> +static void iommufd_backend_init(Object *obj)
-> +{
-> +    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
-> +
-> +    be->fd = -1;
-> +    be->users = 0;
-> +    be->owned = true;
-> +    qemu_mutex_init(&be->lock);
-> +}
-> +
-> +static void iommufd_backend_finalize(Object *obj)
-> +{
-> +    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
-> +
-> +    if (be->owned) {
-> +        close(be->fd);
-> +        be->fd = -1;
-> +    }
-> +}
-> +
-> +static void iommufd_backend_set_fd(Object *obj, const char *str, Error **errp)
-> +{
-> +    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
-> +    int fd = -1;
-> +
-> +    fd = monitor_fd_param(monitor_cur(), str, errp);
-> +    if (fd == -1) {
-> +        error_prepend(errp, "Could not parse remote object fd %s:", str);
-> +        return;
-> +    }
-> +    qemu_mutex_lock(&be->lock);
-> +    be->fd = fd;
-> +    be->owned = false;
-> +    qemu_mutex_unlock(&be->lock);
-> +    trace_iommu_backend_set_fd(be->fd);
-> +}
-> +
-> +static void iommufd_backend_class_init(ObjectClass *oc, void *data)
-> +{
-> +    object_class_property_add_str(oc, "fd", NULL, iommufd_backend_set_fd);
-> +}
-> +
-> +int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
-> +{
-> +    int fd, ret = 0;
-> +
-> +    qemu_mutex_lock(&be->lock);
-> +    if (be->users == UINT32_MAX) {
-> +        error_setg(errp, "too many connections");
-> +        ret = -E2BIG;
-> +        goto out;
-> +    }
-> +    if (be->owned && !be->users) {
-> +        fd = qemu_open_old("/dev/iommu", O_RDWR);
-> +        if (fd < 0) {
-> +            error_setg_errno(errp, errno, "/dev/iommu opening failed");
-> +            ret = fd;
-> +            goto out;
-> +        }
-> +        be->fd = fd;
-> +    }
-> +    be->users++;
-> +out:
-> +    trace_iommufd_backend_connect(be->fd, be->owned,
-> +                                  be->users, ret);
-> +    qemu_mutex_unlock(&be->lock);
-> +    return ret;
-> +}
-> +
-> +void iommufd_backend_disconnect(IOMMUFDBackend *be)
-> +{
-> +    qemu_mutex_lock(&be->lock);
-> +    if (!be->users) {
-> +        goto out;
-> +    }
-> +    be->users--;
-> +    if (!be->users && be->owned) {
-> +        close(be->fd);
-> +        be->fd = -1;
-> +    }
-> +out:
-> +    trace_iommufd_backend_disconnect(be->fd, be->users);
-> +    qemu_mutex_unlock(&be->lock);
-> +}
-> +
-> +int iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
-> +                               Error **errp)
-> +{
-> +    int ret, fd = be->fd;
-> +    struct iommu_ioas_alloc alloc_data  = {
-> +        .size = sizeof(alloc_data),
-> +        .flags = 0,
-> +    };
-> +
-> +    ret = ioctl(fd, IOMMU_IOAS_ALLOC, &alloc_data);
-> +    if (ret) {
-> +        error_setg_errno(errp, errno, "Failed to allocate ioas");
-> +        return ret;
-> +    }
-> +
-> +    *ioas_id = alloc_data.out_ioas_id;
-> +    trace_iommufd_backend_alloc_ioas(fd, *ioas_id, ret);
-> +
-> +    return ret;
-> +}
-> +
-> +void iommufd_backend_free_id(IOMMUFDBackend *be, uint32_t id)
-> +{
-> +    int ret, fd = be->fd;
-> +    struct iommu_destroy des = {
-> +        .size = sizeof(des),
-> +        .id = id,
-> +    };
-> +
-> +    ret = ioctl(fd, IOMMU_DESTROY, &des);
-> +    trace_iommufd_backend_free_id(fd, id, ret);
-> +    if (ret) {
-> +        error_report("Failed to free id: %u %m", id);
-> +    }
-> +}
-> +
-> +int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
-> +                            ram_addr_t size, void *vaddr, bool readonly)
-> +{
-> +    int ret, fd = be->fd;
-> +    struct iommu_ioas_map map = {
-> +        .size = sizeof(map),
-> +        .flags = IOMMU_IOAS_MAP_READABLE |
-> +                 IOMMU_IOAS_MAP_FIXED_IOVA,
-> +        .ioas_id = ioas_id,
-> +        .__reserved = 0,
-> +        .user_va = (uintptr_t)vaddr,
-> +        .iova = iova,
-> +        .length = size,
-> +    };
-> +
-> +    if (!readonly) {
-> +        map.flags |= IOMMU_IOAS_MAP_WRITEABLE;
-> +    }
-> +
-> +    ret = ioctl(fd, IOMMU_IOAS_MAP, &map);
-> +    trace_iommufd_backend_map_dma(fd, ioas_id, iova, size,
-> +                                  vaddr, readonly, ret);
-> +    if (ret) {
-> +        ret = -errno;
-> +        error_report("IOMMU_IOAS_MAP failed: %m");
-> +    }
-> +    return ret;
-> +}
-> +
-> +int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
-> +                              hwaddr iova, ram_addr_t size)
-> +{
-> +    int ret, fd = be->fd;
-> +    struct iommu_ioas_unmap unmap = {
-> +        .size = sizeof(unmap),
-> +        .ioas_id = ioas_id,
-> +        .iova = iova,
-> +        .length = size,
-> +    };
-> +
-> +    ret = ioctl(fd, IOMMU_IOAS_UNMAP, &unmap);
-> +    /*
-> +     * IOMMUFD takes mapping as some kind of object, unmapping
-> +     * nonexistent mapping is treated as deleting a nonexistent
-> +     * object and return ENOENT. This is different from legacy
-> +     * backend which allows it. vIOMMU may trigger a lot of
-> +     * redundant unmapping, to avoid flush the log, treat them
-> +     * as succeess for IOMMUFD just like legacy backend.
-> +     */
-> +    if (ret && errno == ENOENT) {
-> +        trace_iommufd_backend_unmap_dma_non_exist(fd, ioas_id, iova, size, ret);
-> +        ret = 0;
-> +    } else {
-> +        trace_iommufd_backend_unmap_dma(fd, ioas_id, iova, size, ret);
-> +    }
-> +
-> +    if (ret) {
-> +        ret = -errno;
-> +        error_report("IOMMU_IOAS_UNMAP failed: %m");
-> +    }
-> +    return ret;
-> +}
-> +
-> +static const TypeInfo iommufd_backend_info = {
-> +    .name = TYPE_IOMMUFD_BACKEND,
-> +    .parent = TYPE_OBJECT,
-> +    .instance_size = sizeof(IOMMUFDBackend),
-> +    .instance_init = iommufd_backend_init,
-> +    .instance_finalize = iommufd_backend_finalize,
-> +    .class_size = sizeof(IOMMUFDBackendClass),
-> +    .class_init = iommufd_backend_class_init,
-> +    .interfaces = (InterfaceInfo[]) {
-> +        { TYPE_USER_CREATABLE },
-> +        { }
-> +    }
-> +};
-> +
-> +static void register_types(void)
-> +{
-> +    type_register_static(&iommufd_backend_info);
-> +}
-> +
-> +type_init(register_types);
-> diff --git a/backends/Kconfig b/backends/Kconfig
-> index f35abc1609..2cb23f62fa 100644
-> --- a/backends/Kconfig
-> +++ b/backends/Kconfig
-> @@ -1 +1,5 @@
->  source tpm/Kconfig
-> +
-> +config IOMMUFD
-> +    bool
-> +    depends on VFIO
-I don't know the state of vDPA/iommufd integration but this extra might
-be added in short term.
-> diff --git a/backends/meson.build b/backends/meson.build
-> index 914c7c4afb..9a5cea480d 100644
-> --- a/backends/meson.build
-> +++ b/backends/meson.build
-> @@ -20,6 +20,7 @@ if have_vhost_user
->    system_ss.add(when: 'CONFIG_VIRTIO', if_true: files('vhost-user.c'))
->  endif
->  system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost.c'))
-> +system_ss.add(when: 'CONFIG_IOMMUFD', if_true: files('iommufd.c'))
->  if have_vhost_user_crypto
->    system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost-user.c'))
->  endif
-> diff --git a/backends/trace-events b/backends/trace-events
-> index 652eb76a57..d45c6e31a6 100644
-> --- a/backends/trace-events
-> +++ b/backends/trace-events
-> @@ -5,3 +5,13 @@ dbus_vmstate_pre_save(void)
->  dbus_vmstate_post_load(int version_id) "version_id: %d"
->  dbus_vmstate_loading(const char *id) "id: %s"
->  dbus_vmstate_saving(const char *id) "id: %s"
-> +
-> +# iommufd.c
-> +iommufd_backend_connect(int fd, bool owned, uint32_t users, int ret) "fd=%d owned=%d users=%d (%d)"
-> +iommufd_backend_disconnect(int fd, uint32_t users) "fd=%d users=%d"
-> +iommu_backend_set_fd(int fd) "pre-opened /dev/iommu fd=%d"
-> +iommufd_backend_map_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, void *vaddr, bool readonly, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" addr=%p readonly=%d (%d)"
-> +iommufd_backend_unmap_dma_non_exist(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " Unmap nonexistent mapping: iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
-> +iommufd_backend_unmap_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
-> +iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas, int ret) " iommufd=%d ioas=%d (%d)"
-> +iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index 42fd09e4de..70507c0ee6 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -5224,6 +5224,18 @@ SRST
->  
->          The ``share`` boolean option is on by default with memfd.
->  
-> +    ``-object iommufd,id=id[,fd=fd]``
-> +        Creates an iommufd backend which allows control of DMA mapping
-> +        through the /dev/iommu device.
-> +
-> +        The ``id`` parameter is a unique ID which frontends (such as
-> +        vfio-pci of vdpa) will use to connect with the iommufd backend.
-> +
-> +        The ``fd`` parameter is an optional pre-opened file descriptor
-> +        resulting from /dev/iommu opening. Usually the iommufd is shared
-> +        across all subsystems, bringing the benefit of centralized
-> +        reference counting.
-> +
->      ``-object rng-builtin,id=id``
->          Creates a random number generator backend which obtains entropy
->          from QEMU builtin functions. The ``id`` parameter is a unique ID
+Me too, I thought there would be round-robin assignment for 1 <
+worker_cnt < (dev->nvqs - VHOST_SCSI_VQ_NUM_FIXED) but instead only 1
+and -1 have any meaning.
+
+Do you want to implement round-robin assignment?
+
+>=20
+> >=20
+> > Signed-off-by: Mike Christie <michael.christie@oracle.com>
+> > ---
+> > hw/scsi/vhost-scsi.c            | 68 +++++++++++++++++++++++++++++++++
+> > include/hw/virtio/virtio-scsi.h |  1 +
+> > 2 files changed, 69 insertions(+)
+> >=20
+> > diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+> > index 3126df9e1d9d..5cf669b6563b 100644
+> > --- a/hw/scsi/vhost-scsi.c
+> > +++ b/hw/scsi/vhost-scsi.c
+> > @@ -31,6 +31,9 @@
+> > #include "qemu/cutils.h"
+> > #include "sysemu/sysemu.h"
+> >=20
+> > +#define VHOST_SCSI_WORKER_PER_VQ    -1
+> > +#define VHOST_SCSI_WORKER_DEF        1
+> > +
+> > /* Features supported by host kernel. */
+> > static const int kernel_feature_bits[] =3D {
+> >     VIRTIO_F_NOTIFY_ON_EMPTY,
+> > @@ -165,6 +168,62 @@ static const VMStateDescription vmstate_virtio_vho=
+st_scsi =3D {
+> >     .pre_save =3D vhost_scsi_pre_save,
+> > };
+> >=20
+> > +static int vhost_scsi_set_workers(VHostSCSICommon *vsc, int workers_cn=
+t)
+> > +{
+> > +    struct vhost_dev *dev =3D &vsc->dev;
+> > +    struct vhost_vring_worker vq_worker;
+> > +    struct vhost_worker_state worker;
+> > +    int i, ret;
+> > +
+> > +    /* Use default worker */
+> > +    if (workers_cnt =3D=3D VHOST_SCSI_WORKER_DEF ||
+> > +        dev->nvqs =3D=3D VHOST_SCSI_VQ_NUM_FIXED + 1) {
+> > +        return 0;
+> > +    }
+> > +
+> > +    if (workers_cnt !=3D VHOST_SCSI_WORKER_PER_VQ) {
+> > +        return -EINVAL;
+> > +    }
+> > +
+> > +    /*
+> > +     * ctl/evt share the first worker since it will be rare for them
+> > +     * to send cmds while IO is running.
+> > +     */
+> > +    for (i =3D VHOST_SCSI_VQ_NUM_FIXED + 1; i < dev->nvqs; i++) {
+> > +        memset(&worker, 0, sizeof(worker));
+> > +
+> > +        ret =3D dev->vhost_ops->vhost_new_worker(dev, &worker);
+>=20
+> Should we call vhost_free_worker() in the vhost_scsi_unrealize() or are
+> workers automatically freed when `vhostfd` is closed?
+>=20
+> The rest LGTM.
+>=20
+> Thanks,
+> Stefano
+>=20
+> > +        if (ret =3D=3D -ENOTTY) {
+> > +            /*
+> > +             * worker ioctls are not implemented so just ignore and
+> > +             * and continue device setup.
+> > +             */
+> > +            ret =3D 0;
+> > +            break;
+> > +        } else if (ret) {
+> > +            break;
+> > +        }
+> > +
+> > +        memset(&vq_worker, 0, sizeof(vq_worker));
+> > +        vq_worker.worker_id =3D worker.worker_id;
+> > +        vq_worker.index =3D i;
+> > +
+> > +        ret =3D dev->vhost_ops->vhost_attach_vring_worker(dev, &vq_wor=
+ker);
+> > +        if (ret =3D=3D -ENOTTY) {
+> > +            /*
+> > +             * It's a bug for the kernel to have supported the worker =
+creation
+> > +             * ioctl but not attach.
+> > +             */
+> > +            dev->vhost_ops->vhost_free_worker(dev, &worker);
+> > +            break;
+> > +        } else if (ret) {
+> > +            break;
+> > +        }
+> > +    }
+> > +
+> > +    return ret;
+> > +}
+> > +
+> > static void vhost_scsi_realize(DeviceState *dev, Error **errp)
+> > {
+> >     VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
+> > @@ -232,6 +291,13 @@ static void vhost_scsi_realize(DeviceState *dev, E=
+rror **errp)
+> >         goto free_vqs;
+> >     }
+> >=20
+> > +    ret =3D vhost_scsi_set_workers(vsc, vs->conf.virtqueue_workers);
+> > +    if (ret < 0) {
+> > +        error_setg(errp, "vhost-scsi: vhost worker setup failed: %s",
+> > +                   strerror(-ret));
+> > +        goto free_vqs;
+> > +    }
+> > +
+> >     /* At present, channel and lun both are 0 for bootable vhost-scsi d=
+isk */
+> >     vsc->channel =3D 0;
+> >     vsc->lun =3D 0;
+> > @@ -297,6 +363,8 @@ static Property vhost_scsi_properties[] =3D {
+> >                                                  VIRTIO_SCSI_F_T10_PI,
+> >                                                  false),
+> >     DEFINE_PROP_BOOL("migratable", VHostSCSICommon, migratable, false),
+> > +    DEFINE_PROP_INT32("virtqueue_workers", VirtIOSCSICommon,
+> > +                      conf.virtqueue_workers, VHOST_SCSI_WORKER_DEF),
+> >     DEFINE_PROP_END_OF_LIST(),
+> > };
+> >=20
+> > diff --git a/include/hw/virtio/virtio-scsi.h b/include/hw/virtio/virtio=
+-scsi.h
+> > index 779568ab5d28..f70624ece564 100644
+> > --- a/include/hw/virtio/virtio-scsi.h
+> > +++ b/include/hw/virtio/virtio-scsi.h
+> > @@ -51,6 +51,7 @@ typedef struct virtio_scsi_config VirtIOSCSIConfig;
+> > struct VirtIOSCSIConf {
+> >     uint32_t num_queues;
+> >     uint32_t virtqueue_size;
+> > +    int virtqueue_workers;
+> >     bool seg_max_adjust;
+> >     uint32_t max_sectors;
+> >     uint32_t cmd_per_lun;
+> > --=20
+> > 2.34.1
+> >=20
+>=20
+
+--2MjSwn6YSfTFx6zR
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVUwC4ACgkQnKSrs4Gr
+c8ivoggAxgBP3tgsekhLDxp3QepZU7jAh0hIulGCjnXRyFuzzznYe5Ar6Lq+VhXb
+bmF6Is5a57FOHSrmcZyQkf1xEGETDbHIWIrunLKA2xAUj6DWEFT3/EyhVp1qrJQ7
+PFu2WwZsIeu4n/tT/z1MwDO3cbWspZTljUTJp0B7sGWZJn6xhxigsayUFbcmvXLK
+dgaNxGCD+veWkmAbP+vOh4mdBHqn2JFvhTtiu8JkpTJCJp7cLWTnReWlwa9lnOL3
+MazdxHUxkVzBe/P4A3+WxYPAVQPBYI5/5tM5w50/Rv96w/nHkXeVhS+apWu4FBUc
+5h5J1gaHlY6OkGKj/GaILgelgbFIRA==
+=fTWY
+-----END PGP SIGNATURE-----
+
+--2MjSwn6YSfTFx6zR--
 
 
