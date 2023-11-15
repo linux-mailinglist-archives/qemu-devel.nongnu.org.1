@@ -2,90 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C807EBF80
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 10:31:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B95B87EBFB9
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 10:51:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3CE3-00018k-Vz; Wed, 15 Nov 2023 04:30:24 -0500
+	id 1r3CWs-0004JV-3X; Wed, 15 Nov 2023 04:49:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1r3CE2-00014T-0d; Wed, 15 Nov 2023 04:30:22 -0500
-Received: from out1-smtp.messagingengine.com ([66.111.4.25])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1r3CWo-0004E5-Vw
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 04:49:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1r3CE0-0001Hl-6z; Wed, 15 Nov 2023 04:30:21 -0500
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
- by mailout.nyi.internal (Postfix) with ESMTP id 66EC05C01D5;
- Wed, 15 Nov 2023 04:30:18 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute2.internal (MEProxy); Wed, 15 Nov 2023 04:30:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-type:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm3; t=1700040618; x=
- 1700127018; bh=8+QBdNf6wLMyfzrSfhbvWTF80iZEuxzWtB3qvsCV0bs=; b=t
- j2pClV2OlvHc+CqPOaz2XsOdwL5UP9Hpaoc2Y+wcGa7G/j3Lj4l+fTZ7rqy4jmwN
- 8U13UbY4jnVydhE7UuozAOQoKvMoU8pCOdwO8gHWj/k5W243SXMvscOFBev7xZag
- hzLKhlS1T57uAQ3ydhRnhrUZB8qYPS4GspMjCp32f6CZOQEbuCTMInd3vJ8XnOgp
- GXwiBylGf603KKGts89Q2YZX5rVqYjb+Vj6KQWRuB9zsyO3FCUtbminTcTLGCVRp
- LwIbQ9kuFSg3OGzzSPfv8HH2qXF9zBACcvvYFWr8YUsM6S1RnbdOdG906AT1hqgf
- ldvB5ftcDMg+VYszAPusg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:sender:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm1; t=1700040618; x=1700127018; bh=8+QBdNf6wLMyf
- zrSfhbvWTF80iZEuxzWtB3qvsCV0bs=; b=zPVpowQDUEawvBpb1+EJpTdV9HW3s
- wo9beWZJ0fu/JJS+7G90ARzbtcAgMO5wBenZr+jZrABHvYzx19UVSuJL6xwoVZ0f
- j/QRK2sEhpfi/Y5OoWJlhExV/ErhXhgpZyX9I2znXbnc7CjxwEkeDSXya/cbOKHq
- bykzkIRdI4kXpOtYajIroTTp8S94PoQ/nH0ObYN/P88sARxiGPhOfMLbitMzGnS1
- cU6ryVILrQKK4Tp0t17wJLcZ0wrK2rir8NzSRMjcgCjGw6ptGXc8oxSjvCfgO8bn
- MvtJMNcRWpg0q4UZHWagBTdiTkK4WdAz/2y6stl9af2lIxwAePir9xwuA==
-X-ME-Sender: <xms:qo9UZYyh45LOpWip_zMUptZrwArdkl8qnw8kfwqinddLRyqbgspJeA>
- <xme:qo9UZcSsFavrHGLZNjHeUtKOJCPnfqGuhQBqYxgbDMhWA5lbPsF5pSrbsmr99qR3U
- AjMgr2NDmNkhmhQwas>
-X-ME-Received: <xmr:qo9UZaX_goXISKNdzXgCY3OFIqnOcTePTmkOL5ko1Bs4PfkfEy_P8PNd2coE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudefiedgtdegucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepmfhlrghu
- shculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrth
- htvghrnhepjefgjeefffdvuefhieefhffggfeuleehudekveejvedtuddugeeigeetffff
- jeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
- htshesihhrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:qo9UZWiDdJF3bmM_62lsB9fzOfAWov8UnkxAkRzKUoaSCftwBoSZbg>
- <xmx:qo9UZaAnzyz0sEb_Z6aCcbvW5f_-VZfY8UmAksMtaFEnpt5pxLfG_Q>
- <xmx:qo9UZXI7NPp_OIbMmuRd2L_FJTf7nNPypSTTzoNk0Uu5iDCftNmiKw>
- <xmx:qo9UZVPdyfzDY9BgxC0NhArkd8cTHb3vVP-2_-aJmRi51ilmaNZnxg>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 15 Nov 2023 04:30:17 -0500 (EST)
-Date: Wed, 15 Nov 2023 10:30:13 +0100
-From: Klaus Jensen <its@irrelevant.dk>
-To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, Keith Busch <kbusch@kernel.org>,
- "open list:nvme" <qemu-block@nongnu.org>
-Subject: Re: [RFC PATCH v3 65/78] hw/nvme: add fallthrough pseudo-keyword
-Message-ID: <ZVSPpXuaX2ENybrf@cormorant.local>
-References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
- <82f908be2888b88fd93f1c5531f54d25d1da1a59.1697186560.git.manos.pitsidianakis@linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1r3CWV-000811-9B
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 04:49:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700041758;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=bkVCl1Fy0QgrprtZ3g6lmWufTHz/Gn0ecLzEQyt84Pg=;
+ b=RgTz5k9ROlwz9XwofL2mTIvcrhDbTkcuGdvuf5nQdSF7Vy1RQ3tSSkfOgbn1dQZ2v3tzkW
+ w0n1iJREicJEqTQ3t0Tahsm0TuH/W9K+8XxJUrpemE+SLbHy6/DtGYAvsw/tvqcu9HT0Nj
+ PdSijKrU+3FL6yHV8P7IZFJQjdElaQc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-614-5uV_f6W9PDGULEw0r7f0pw-1; Wed, 15 Nov 2023 04:49:14 -0500
+X-MC-Unique: 5uV_f6W9PDGULEw0r7f0pw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A47C6185A780;
+ Wed, 15 Nov 2023 09:49:13 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.144])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4B13F492BE0;
+ Wed, 15 Nov 2023 09:49:11 +0000 (UTC)
+Date: Wed, 15 Nov 2023 09:49:09 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Zongmin Zhou <zhouzongmin@kylinos.cn>
+Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de,
+ leobras@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH] migration: free 'saddr' since be no longer used
+Message-ID: <ZVSUFTBwSKHxVV_9@redhat.com>
+References: <20231115032739.933043-1-zhouzongmin@kylinos.cn>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="rKla3oN3pYsDg+qU"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <82f908be2888b88fd93f1c5531f54d25d1da1a59.1697186560.git.manos.pitsidianakis@linaro.org>
-Received-SPF: pass client-ip=66.111.4.25; envelope-from=its@irrelevant.dk;
- helo=out1-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+In-Reply-To: <20231115032739.933043-1-zhouzongmin@kylinos.cn>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,191 +77,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
---rKla3oN3pYsDg+qU
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Oct 13 11:46, Emmanouil Pitsidianakis wrote:
-> In preparation of raising -Wimplicit-fallthrough to 5, replace all
-> fall-through comments with the fallthrough attribute pseudo-keyword.
->=20
-> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+On Wed, Nov 15, 2023 at 11:27:39AM +0800, Zongmin Zhou wrote:
+> Since socket_parse() will allocate memory for 'saddr',
+> and its value will pass to 'addr' that allocated
+> by migrate_uri_parse(),so free 'saddr' to avoid memory leak.
+> 
+> Fixes: 72a8192e225c ("migration: convert migration 'uri' into 'MigrateAddress'")
+> Signed-off-by: Zongmin Zhou<zhouzongmin@kylinos.cn>
 > ---
->  hw/nvme/ctrl.c | 24 ++++++++++++------------
->  hw/nvme/dif.c  |  4 ++--
->  2 files changed, 14 insertions(+), 14 deletions(-)
->=20
-> diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-> index f026245d1e..acb2012fb9 100644
-> --- a/hw/nvme/ctrl.c
-> +++ b/hw/nvme/ctrl.c
-> @@ -1918,7 +1918,7 @@ static uint16_t nvme_zrm_finish(NvmeNamespace *ns, =
-NvmeZone *zone)
->      case NVME_ZONE_STATE_IMPLICITLY_OPEN:
->      case NVME_ZONE_STATE_EXPLICITLY_OPEN:
->          nvme_aor_dec_open(ns);
-> -        /* fallthrough */
-> +        fallthrough;
->      case NVME_ZONE_STATE_CLOSED:
->          nvme_aor_dec_active(ns);
-> =20
-> @@ -1929,7 +1929,7 @@ static uint16_t nvme_zrm_finish(NvmeNamespace *ns, =
-NvmeZone *zone)
->              }
+>  migration/migration.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/migration/migration.c b/migration/migration.c
+> index 28a34c9068..30ed4bf6b6 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -493,6 +493,7 @@ bool migrate_uri_parse(const char *uri, MigrationChannel **channel,
 >          }
-> =20
-> -        /* fallthrough */
-> +        fallthrough;
->      case NVME_ZONE_STATE_EMPTY:
->          nvme_assign_zone_state(ns, zone, NVME_ZONE_STATE_FULL);
->          return NVME_SUCCESS;
-> @@ -1946,7 +1946,7 @@ static uint16_t nvme_zrm_close(NvmeNamespace *ns, N=
-vmeZone *zone)
->      case NVME_ZONE_STATE_IMPLICITLY_OPEN:
->          nvme_aor_dec_open(ns);
->          nvme_assign_zone_state(ns, zone, NVME_ZONE_STATE_CLOSED);
-> -        /* fall through */
-> +        fallthrough;
->      case NVME_ZONE_STATE_CLOSED:
->          return NVME_SUCCESS;
-> =20
-> @@ -1961,7 +1961,7 @@ static uint16_t nvme_zrm_reset(NvmeNamespace *ns, N=
-vmeZone *zone)
->      case NVME_ZONE_STATE_EXPLICITLY_OPEN:
->      case NVME_ZONE_STATE_IMPLICITLY_OPEN:
->          nvme_aor_dec_open(ns);
-> -        /* fallthrough */
-> +        fallthrough;
->      case NVME_ZONE_STATE_CLOSED:
->          nvme_aor_dec_active(ns);
-> =20
-> @@ -1971,12 +1971,12 @@ static uint16_t nvme_zrm_reset(NvmeNamespace *ns,=
- NvmeZone *zone)
->              }
->          }
-> =20
-> -        /* fallthrough */
-> +        fallthrough;
->      case NVME_ZONE_STATE_FULL:
->          zone->w_ptr =3D zone->d.zslba;
->          zone->d.wp =3D zone->w_ptr;
->          nvme_assign_zone_state(ns, zone, NVME_ZONE_STATE_EMPTY);
-> -        /* fallthrough */
-> +        fallthrough;
->      case NVME_ZONE_STATE_EMPTY:
->          return NVME_SUCCESS;
-> =20
-> @@ -2017,7 +2017,7 @@ static uint16_t nvme_zrm_open_flags(NvmeCtrl *n, Nv=
-meNamespace *ns,
->      case NVME_ZONE_STATE_EMPTY:
->          act =3D 1;
-> =20
-> -        /* fallthrough */
-> +        fallthrough;
-> =20
->      case NVME_ZONE_STATE_CLOSED:
->          if (n->params.auto_transition_zones) {
-> @@ -2040,7 +2040,7 @@ static uint16_t nvme_zrm_open_flags(NvmeCtrl *n, Nv=
-meNamespace *ns,
->              return NVME_SUCCESS;
->          }
-> =20
-> -        /* fallthrough */
-> +        fallthrough;
-> =20
->      case NVME_ZONE_STATE_IMPLICITLY_OPEN:
->          if (flags & NVME_ZRM_AUTO) {
-> @@ -2049,7 +2049,7 @@ static uint16_t nvme_zrm_open_flags(NvmeCtrl *n, Nv=
-meNamespace *ns,
-> =20
->          nvme_assign_zone_state(ns, zone, NVME_ZONE_STATE_EXPLICITLY_OPEN=
-);
-> =20
-> -        /* fallthrough */
-> +        fallthrough;
-> =20
->      case NVME_ZONE_STATE_EXPLICITLY_OPEN:
->          if (flags & NVME_ZRM_ZRWA) {
-> @@ -3582,7 +3582,7 @@ static uint16_t nvme_do_write(NvmeCtrl *n, NvmeRequ=
-est *req, bool append,
->                      return NVME_INVALID_PROT_INFO | NVME_DNR;
->                  }
-> =20
-> -                /* fallthrough */
-> +                fallthrough;
-> =20
->              case NVME_ID_NS_DPS_TYPE_2:
->                  if (piremap) {
-> @@ -3737,7 +3737,7 @@ static uint16_t nvme_offline_zone(NvmeNamespace *ns=
-, NvmeZone *zone,
->      switch (state) {
->      case NVME_ZONE_STATE_READ_ONLY:
->          nvme_assign_zone_state(ns, zone, NVME_ZONE_STATE_OFFLINE);
-> -        /* fall through */
-> +        fallthrough;
->      case NVME_ZONE_STATE_OFFLINE:
->          return NVME_SUCCESS;
->      default:
-> @@ -4914,7 +4914,7 @@ static uint16_t nvme_cmd_effects(NvmeCtrl *n, uint8=
-_t csi, uint32_t buf_len,
->      switch (NVME_CC_CSS(ldl_le_p(&n->bar.cc))) {
->      case NVME_CC_CSS_NVM:
->          src_iocs =3D nvme_cse_iocs_nvm;
-> -        /* fall through */
-> +        fallthrough;
->      case NVME_CC_CSS_ADMIN_ONLY:
->          break;
->      case NVME_CC_CSS_CSI:
-> diff --git a/hw/nvme/dif.c b/hw/nvme/dif.c
-> index 01b19c3373..00dd96bdb3 100644
-> --- a/hw/nvme/dif.c
-> +++ b/hw/nvme/dif.c
-> @@ -161,7 +161,7 @@ static uint16_t nvme_dif_prchk_crc16(NvmeNamespace *n=
-s, NvmeDifTuple *dif,
->              break;
->          }
-> =20
-> -        /* fallthrough */
-> +        fallthrough;
->      case NVME_ID_NS_DPS_TYPE_1:
->      case NVME_ID_NS_DPS_TYPE_2:
->          if (be16_to_cpu(dif->g16.apptag) !=3D 0xffff) {
-> @@ -229,7 +229,7 @@ static uint16_t nvme_dif_prchk_crc64(NvmeNamespace *n=
-s, NvmeDifTuple *dif,
->              break;
->          }
-> =20
-> -        /* fallthrough */
-> +        fallthrough;
->      case NVME_ID_NS_DPS_TYPE_1:
->      case NVME_ID_NS_DPS_TYPE_2:
->          if (be16_to_cpu(dif->g64.apptag) !=3D 0xffff) {
-> --=20
-> 2.39.2
->=20
->=20
+>          addr->u.socket.type = saddr->type;
+>          addr->u.socket.u = saddr->u;
 
-Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
+'saddr->u' is a union embedded in SocketAddress, containing:
 
---rKla3oN3pYsDg+qU
-Content-Type: application/pgp-signature; name="signature.asc"
+    union { /* union tag is @type */
+        InetSocketAddressWrapper inet;
+        UnixSocketAddressWrapper q_unix;
+        VsockSocketAddressWrapper vsock;
+        StringWrapper fd;
+    } u;
 
------BEGIN PGP SIGNATURE-----
+THis assignment is *shallow* copying the contents of the union.
 
-iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmVUj6UACgkQTeGvMW1P
-DenihQf8DpqZsZ4ECe9YCch8w4hU0snlIQpNk29izSAFMybGSW5D6+lWCrkYXbye
-cmJ/y2KgflPO+cDorpPkXGnYeJkp3+vTYEXhAjHP5La30RYxQgAYEsf3QL1GBx+z
-vOA3b1yPX1t/KYTMmpe1UoxjnP4u8zi1fRNiS98pDVXb2GXa51Wljl4vz/Qouwin
-0tmvKgiqoghhMRMK+aQMlR3Jq7QK/ctJWjCARS5rdMlo2R6OAs9b7IDS4kfsoj6a
-QHE15ADwI1PHoHzVlpamhMVobhTCafTVpR24MlzEP4cHZ3/zyYj+vV1bV2leQfkw
-MjoIjTOHfCo47/Qr6iDQdolOKBD16A==
-=SUMM
------END PGP SIGNATURE-----
+All the type specifics structs that are members of this union
+containing allocated strings, and with this shallow copy, we
+are stealing the pointers to these allocated strings
 
---rKla3oN3pYsDg+qU--
+
+> +        qapi_free_SocketAddress(saddr);
+
+This meanwhle is doing a *deep* free of the contents of the
+SocketAddress, which includes all the pointers we just stole.
+
+IOW, unless I'm mistaken somehow, this is going to cause a
+double-free
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
