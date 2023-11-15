@@ -2,84 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 913967EC9EB
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 18:53:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 293C87EC9EF
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 18:54:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3K39-0003mj-39; Wed, 15 Nov 2023 12:51:39 -0500
+	id 1r3K5l-0004hS-0x; Wed, 15 Nov 2023 12:54:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r3K35-0003mD-Rp
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:51:35 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1r3K5j-0004gN-M1
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:54:19 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r3K32-0000Xx-6u
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:51:35 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1r3K5h-0001E0-GM
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:54:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700070691;
+ s=mimecast20190719; t=1700070856;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=cBjFLRXFDH6X4i55ctUHRXTQufDk4VkHqoIYs5yvEh8=;
- b=Y34xh5BjUD2+TDfHmQVb9ZLYTULuAXKjYYzvuVHeVBGlC/MNQauvePM+eDFjYJY0RvYvvX
- Wjy0vUpVRseTIXQjCj4mvDpIwXYtQn3kXE4Aouqb8EEgMF5tb7ftfLbKy+SLeSaUD1Wp6i
- fg/JB+VVoEct0hfhjdNDIY0nysTDics=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=I1g4kH5e0QOxYeN/gT9eon+toAKgT2qefjWRU4sgFFc=;
+ b=WkshKcb+3kZ9qj4Ycnqisdfi7W/MQFkoRXyb27UTAy1F/4HgcgIfVVqSTDOmZEDmSaggtG
+ ZmmgQR4EOQJ+FxYLKuvWx7ARqhGtEBH/qEcyz1NqUgAmI93vweh3QAsr9DB7LP2lbfeG0B
+ Wl2Zb9gFNll9a8+8WAsW+RGUC/RlBSo=
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
+ [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-367-dbsraTB5M2GH0y9EbB6e6Q-1; Wed, 15 Nov 2023 12:51:28 -0500
-X-MC-Unique: dbsraTB5M2GH0y9EbB6e6Q-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0CE1189F9E1;
- Wed, 15 Nov 2023 17:51:27 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.144])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 95D2E492BFD;
- Wed, 15 Nov 2023 17:51:22 +0000 (UTC)
-Date: Wed, 15 Nov 2023 17:51:19 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Michael Roth <michael.roth@amd.com>,
- Sean Christopherson <seanjc@google.com>,
- Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
- Isaku Yamahata <isaku.yamahata@gmail.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: Re: [PATCH v3 52/70] i386/tdx: handle TDG.VP.VMCALL<GetQuote>
-Message-ID: <ZVUFF-sm2aeCcDnr@redhat.com>
-References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
- <20231115071519.2864957-53-xiaoyao.li@intel.com>
+ us-mta-211-6AoG7GygNSaouhSX_W0s3w-1; Wed, 15 Nov 2023 12:54:14 -0500
+X-MC-Unique: 6AoG7GygNSaouhSX_W0s3w-1
+Received: by mail-oi1-f197.google.com with SMTP id
+ 5614622812f47-3b3447c72c4so8219913b6e.1
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 09:54:14 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700070854; x=1700675654;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=I1g4kH5e0QOxYeN/gT9eon+toAKgT2qefjWRU4sgFFc=;
+ b=nkO4DlDERPhIYQkiTu9W3Id/Cr0FLKsx/2HbmSqVY6wRxbffvkTd2bLGrFPz8luqp1
+ QrkBlooCVZE5Lu51RbNSXYVPAgCKOmQKIw3zqyi8FldqFgqKwKVrthF36LDJKK+FxpCb
+ Z/ZCUWhtMaejYO7LJiJeVqv5uyqATs5cyIVsFJukYmMFmKcPllsO3HljM3cXrCgxQVHd
+ EqTD0MmjY9VF1YoB4+3mGd4c/fJ+mTq1o1wJGNiRj0UhXA1yTXG2rwe2CkAWvRzYBO0p
+ KMO+p+Nw9roQpM6Pa8sAPqj2gAt+Ge2hBuZ4kPPa6cvkINlgcloz4fcoJpECRoHvzKo+
+ eEbA==
+X-Gm-Message-State: AOJu0YwyQom3ZbAsd+2DqUMsvUKly7/dIO5skvpslACvecY6xOgKr9bL
+ xsmpn9lmaf4t9WOx618s1LbbbZ9wPPnmm5VlZVvc9U9DB7cFfITJfWHPFN2leWGmcbM1mfbZ449
+ hVeTrWFNPoclwJV0=
+X-Received: by 2002:a05:6808:2e43:b0:3b2:f275:18a8 with SMTP id
+ gp3-20020a0568082e4300b003b2f27518a8mr21438411oib.22.1700070853973; 
+ Wed, 15 Nov 2023 09:54:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IErjgRp/2Sk+iVt2nGkoE7yKrK4oGiJ4j5x1/YL6FyqqH3IKCPPY6r+81oDxasjfwuk9NyXbA==
+X-Received: by 2002:a05:6808:2e43:b0:3b2:f275:18a8 with SMTP id
+ gp3-20020a0568082e4300b003b2f27518a8mr21438387oib.22.1700070853689; 
+ Wed, 15 Nov 2023 09:54:13 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ bm38-20020a05620a19a600b0076d6a08ac98sm3623388qkb.76.2023.11.15.09.54.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 15 Nov 2023 09:54:12 -0800 (PST)
+Message-ID: <7a28f5f6-68a7-4920-b222-3a8a0f9bb771@redhat.com>
+Date: Wed, 15 Nov 2023 18:54:07 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231115071519.2864957-53-xiaoyao.li@intel.com>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 08/21] vfio/pci: Introduce a vfio pci hot reset
+ interface
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com
+References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
+ <20231114100955.1961974-9-zhenzhong.duan@intel.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20231114100955.1961974-9-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -6
+X-Spam_score: -0.7
+X-Spam_bar: /
+X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,533 +106,459 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 15, 2023 at 02:15:01AM -0500, Xiaoyao Li wrote:
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
-> 
-> For GetQuote, delegate a request to Quote Generation Service.
-> Add property "quote-generation-socket" to tdx-guest, whihc is a property
-> of type SocketAddress to specify Quote Generation Service(QGS).
-> 
-> On request, connect to the QGS, read request buffer from shared guest
-> memory, send the request buffer to the server and store the response
-> into shared guest memory and notify TD guest by interrupt.
-> 
-> command line example:
->   qemu-system-x86_64 \
->     -object '{"qom-type":"tdx-guest","id":"tdx0","quote-generation-socket":{"type": "vsock", "cid":"2","port":"1234"}}' \
->     -machine confidential-guest-support=tdx0
-> 
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Codeveloped-by: Chenyi Qiang <chenyi.qiang@intel.com>
-> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> ---
-> Changes in v3:
-> - rename property "quote-generation-service" to "quote-generation-socket";
-> - change the type of "quote-generation-socket" from str to
->   SocketAddress;
-> - squash next patch into this one;
-> ---
->  qapi/qom.json         |   5 +-
->  target/i386/kvm/tdx.c | 430 ++++++++++++++++++++++++++++++++++++++++++
->  target/i386/kvm/tdx.h |   6 +
->  3 files changed, 440 insertions(+), 1 deletion(-)
 
-> @@ -969,6 +1001,7 @@ static void tdx_guest_class_init(ObjectClass *oc, void *data)
->  {
+
+On 11/14/23 11:09, Zhenzhong Duan wrote:
+> Legacy vfio pci and iommufd cdev have different process to hot reset
+> vfio device, expand current code to abstract out pci_hot_reset callback
+> for legacy vfio, this same interface will also be used by iommufd
+> cdev vfio device.
+>
+> Rename vfio_pci_hot_reset to vfio_legacy_pci_hot_reset and move it
+> into container.c.
+>
+> vfio_pci_[pre/post]_reset and vfio_pci_host_match are exported so
+> they could be called in legacy and iommufd pci_hot_reset callback.
+>
+> Suggested-by: Cédric Le Goater <clg@redhat.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+
+Eric
+> ---
+> v6: pci_hot_reset return -errno if fails
+>
+>  hw/vfio/pci.h                         |   3 +
+>  include/hw/vfio/vfio-container-base.h |   3 +
+>  hw/vfio/container.c                   | 170 ++++++++++++++++++++++++++
+>  hw/vfio/pci.c                         | 168 +------------------------
+>  4 files changed, 182 insertions(+), 162 deletions(-)
+>
+> diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+> index 1006061afb..6e64a2654e 100644
+> --- a/hw/vfio/pci.h
+> +++ b/hw/vfio/pci.h
+> @@ -218,6 +218,9 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr);
+>  
+>  extern const PropertyInfo qdev_prop_nv_gpudirect_clique;
+>  
+> +void vfio_pci_pre_reset(VFIOPCIDevice *vdev);
+> +void vfio_pci_post_reset(VFIOPCIDevice *vdev);
+> +bool vfio_pci_host_match(PCIHostDeviceAddress *addr, const char *name);
+>  int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
+>                                      struct vfio_pci_hot_reset_info **info_p);
+>  
+> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+> index 4b6f017c6f..45bb19c767 100644
+> --- a/include/hw/vfio/vfio-container-base.h
+> +++ b/include/hw/vfio/vfio-container-base.h
+> @@ -106,6 +106,9 @@ struct VFIOIOMMUOps {
+>      int (*set_dirty_page_tracking)(VFIOContainerBase *bcontainer, bool start);
+>      int (*query_dirty_bitmap)(VFIOContainerBase *bcontainer, VFIOBitmap *vbmap,
+>                                hwaddr iova, hwaddr size);
+> +    /* PCI specific */
+> +    int (*pci_hot_reset)(VFIODevice *vbasedev, bool single);
+> +
+>      /* SPAPR specific */
+>      int (*add_window)(VFIOContainerBase *bcontainer,
+>                        MemoryRegionSection *section,
+> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+> index ed2d721b2b..1dbf9b9a17 100644
+> --- a/hw/vfio/container.c
+> +++ b/hw/vfio/container.c
+> @@ -33,6 +33,7 @@
+>  #include "trace.h"
+>  #include "qapi/error.h"
+>  #include "migration/migration.h"
+> +#include "pci.h"
+>  
+>  VFIOGroupList vfio_group_list =
+>      QLIST_HEAD_INITIALIZER(vfio_group_list);
+> @@ -922,6 +923,174 @@ static void vfio_legacy_detach_device(VFIODevice *vbasedev)
+>      vfio_put_group(group);
 >  }
 >  
-> +#define TDG_VP_VMCALL_GET_QUOTE                         0x10002ULL
->  #define TDG_VP_VMCALL_SETUP_EVENT_NOTIFY_INTERRUPT      0x10004ULL
->  
->  #define TDG_VP_VMCALL_SUCCESS           0x0000000000000000ULL
-> @@ -977,6 +1010,400 @@ static void tdx_guest_class_init(ObjectClass *oc, void *data)
->  #define TDG_VP_VMCALL_GPA_INUSE         0x8000000000000001ULL
->  #define TDG_VP_VMCALL_ALIGN_ERROR       0x8000000000000002ULL
->  
-> +#define TDX_GET_QUOTE_STRUCTURE_VERSION 1ULL
-> +
-> +#define TDX_VP_GET_QUOTE_SUCCESS                0ULL
-> +#define TDX_VP_GET_QUOTE_IN_FLIGHT              (-1ULL)
-> +#define TDX_VP_GET_QUOTE_ERROR                  0x8000000000000000ULL
-> +#define TDX_VP_GET_QUOTE_QGS_UNAVAILABLE        0x8000000000000001ULL
-> +
-> +/* Limit to avoid resource starvation. */
-> +#define TDX_GET_QUOTE_MAX_BUF_LEN       (128 * 1024)
-> +#define TDX_MAX_GET_QUOTE_REQUEST       16
-> +
-> +/* Format of pages shared with guest. */
-> +struct tdx_get_quote_header {
-> +    /* Format version: must be 1 in little endian. */
-> +    uint64_t structure_version;
-> +
-> +    /*
-> +     * GetQuote status code in little endian:
-> +     *   Guest must set error_code to 0 to avoid information leak.
-> +     *   Qemu sets this before interrupting guest.
-> +     */
-> +    uint64_t error_code;
-> +
-> +    /*
-> +     * in-message size in little endian: The message will follow this header.
-> +     * The in-message will be send to QGS.
-> +     */
-> +    uint32_t in_len;
-> +
-> +    /*
-> +     * out-message size in little endian:
-> +     * On request, out_len must be zero to avoid information leak.
-> +     * On return, message size from QGS. Qemu overwrites this field.
-> +     * The message will follows this header.  The in-message is overwritten.
-> +     */
-> +    uint32_t out_len;
-> +
-> +    /*
-> +     * Message buffer follows.
-> +     * Guest sets message that will be send to QGS.  If out_len > in_len, guest
-> +     * should zero remaining buffer to avoid information leak.
-> +     * Qemu overwrites this buffer with a message returned from QGS.
-> +     */
-> +};
-> +
-> +static hwaddr tdx_shared_bit(X86CPU *cpu)
+> +static int vfio_legacy_pci_hot_reset(VFIODevice *vbasedev, bool single)
 > +{
-> +    return (cpu->phys_bits > 48) ? BIT_ULL(51) : BIT_ULL(47);
-> +}
+> +    VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
+> +    VFIOGroup *group;
+> +    struct vfio_pci_hot_reset_info *info = NULL;
+> +    struct vfio_pci_dependent_device *devices;
+> +    struct vfio_pci_hot_reset *reset;
+> +    int32_t *fds;
+> +    int ret, i, count;
+> +    bool multi = false;
 > +
-> +struct tdx_get_quote_task {
-> +    uint32_t apic_id;
-> +    hwaddr gpa;
-> +    uint64_t buf_len;
-> +    char *out_data;
-> +    uint64_t out_len;
-> +    struct tdx_get_quote_header hdr;
-> +    int event_notify_interrupt;
-> +    QIOChannelSocket *ioc;
-> +};
+> +    trace_vfio_pci_hot_reset(vdev->vbasedev.name, single ? "one" : "multi");
 > +
-> +struct x86_msi {
-> +    union {
-> +        struct {
-> +            uint32_t    reserved_0              : 2,
-> +                        dest_mode_logical       : 1,
-> +                        redirect_hint           : 1,
-> +                        reserved_1              : 1,
-> +                        virt_destid_8_14        : 7,
-> +                        destid_0_7              : 8,
-> +                        base_address            : 12;
-> +        } QEMU_PACKED x86_address_lo;
-> +        uint32_t address_lo;
-> +    };
-> +    union {
-> +        struct {
-> +            uint32_t    reserved        : 8,
-> +                        destid_8_31     : 24;
-> +        } QEMU_PACKED x86_address_hi;
-> +        uint32_t address_hi;
-> +    };
-> +    union {
-> +        struct {
-> +            uint32_t    vector                  : 8,
-> +                        delivery_mode           : 3,
-> +                        dest_mode_logical       : 1,
-> +                        reserved                : 2,
-> +                        active_low              : 1,
-> +                        is_level                : 1;
-> +        } QEMU_PACKED x86_data;
-> +        uint32_t data;
-> +    };
-> +};
-> +
-> +static void tdx_td_notify(struct tdx_get_quote_task *t)
-> +{
-> +    struct x86_msi x86_msi;
-> +    struct kvm_msi msi;
-> +    int ret;
-> +
-> +    /* It is optional for host VMM to interrupt TD. */
-> +    if(!(32 <= t->event_notify_interrupt && t->event_notify_interrupt <= 255))
-> +        return;
-> +
-> +    x86_msi = (struct x86_msi) {
-> +        .x86_address_lo  = {
-> +            .reserved_0 = 0,
-> +            .dest_mode_logical = 0,
-> +            .redirect_hint = 0,
-> +            .reserved_1 = 0,
-> +            .virt_destid_8_14 = 0,
-> +            .destid_0_7 = t->apic_id & 0xff,
-> +        },
-> +        .x86_address_hi = {
-> +            .reserved = 0,
-> +            .destid_8_31 = t->apic_id >> 8,
-> +        },
-> +        .x86_data = {
-> +            .vector = t->event_notify_interrupt,
-> +            .delivery_mode = APIC_DM_FIXED,
-> +            .dest_mode_logical = 0,
-> +            .reserved = 0,
-> +            .active_low = 0,
-> +            .is_level = 0,
-> +        },
-> +    };
-> +    msi = (struct kvm_msi) {
-> +        .address_lo = x86_msi.address_lo,
-> +        .address_hi = x86_msi.address_hi,
-> +        .data = x86_msi.data,
-> +        .flags = 0,
-> +        .devid = 0,
-> +    };
-> +    ret = kvm_vm_ioctl(kvm_state, KVM_SIGNAL_MSI, &msi);
-> +    if (ret < 0) {
-> +        /* In this case, no better way to tell it to guest.  Log it. */
-> +        error_report("TDX: injection %d failed, interrupt lost (%s).\n",
-> +                     t->event_notify_interrupt, strerror(-ret));
+> +    if (!single) {
+> +        vfio_pci_pre_reset(vdev);
 > +    }
-> +}
+> +    vdev->vbasedev.needs_reset = false;
 > +
-> +static void tdx_get_quote_read(void *opaque)
-> +{
-> +    struct tdx_get_quote_task *t = opaque;
-> +    ssize_t size = 0;
-> +    Error *err = NULL;
-
-This error is set, but never read and more importantly
-never freed.  If you're not going to use it just pass
-NULL to the methods, otherwise use error_report_err to
-print and free it.
-
-> +    MachineState *ms;
-> +    TdxGuest *tdx;
+> +    ret = vfio_pci_get_pci_hot_reset_info(vdev, &info);
 > +
-> +    while (true) {
-> +        char *buf;
-> +        size_t buf_size;
+> +    if (ret) {
+> +        goto out_single;
+> +    }
+> +    devices = &info->devices[0];
 > +
-> +        if (t->out_len < t->buf_len) {
-> +            buf = t->out_data + t->out_len;
-> +            buf_size = t->buf_len - t->out_len;
-> +        } else {
-> +            /*
-> +             * The received data is too large to fit in the shared GPA.
-> +             * Discard the received data and try to know the data size.
-> +             */
-> +            buf = t->out_data;
-> +            buf_size = t->buf_len;
+> +    trace_vfio_pci_hot_reset_has_dep_devices(vdev->vbasedev.name);
+> +
+> +    /* Verify that we have all the groups required */
+> +    for (i = 0; i < info->count; i++) {
+> +        PCIHostDeviceAddress host;
+> +        VFIOPCIDevice *tmp;
+> +        VFIODevice *vbasedev_iter;
+> +
+> +        host.domain = devices[i].segment;
+> +        host.bus = devices[i].bus;
+> +        host.slot = PCI_SLOT(devices[i].devfn);
+> +        host.function = PCI_FUNC(devices[i].devfn);
+> +
+> +        trace_vfio_pci_hot_reset_dep_devices(host.domain,
+> +                host.bus, host.slot, host.function, devices[i].group_id);
+> +
+> +        if (vfio_pci_host_match(&host, vdev->vbasedev.name)) {
+> +            continue;
 > +        }
 > +
-> +        size = qio_channel_read(QIO_CHANNEL(t->ioc), buf, buf_size, &err);
-> +        if (!size) {
-> +            break;
-> +        }
-> +
-> +        if (size < 0) {
-> +            if (size == QIO_CHANNEL_ERR_BLOCK) {
-> +                return;
-> +            } else {
+> +        QLIST_FOREACH(group, &vfio_group_list, next) {
+> +            if (group->groupid == devices[i].group_id) {
 > +                break;
 > +            }
 > +        }
-> +        t->out_len += size;
-> +    }
-> +    /*
-> +     * If partial read successfully but return error at last, also treat it
-> +     * as failure.
-> +     */
-> +    if (size < 0) {
-> +        t->hdr.error_code = cpu_to_le64(TDX_VP_GET_QUOTE_QGS_UNAVAILABLE);
-> +        goto error;
-> +    }
-> +    if (t->out_len > 0 && t->out_len > t->buf_len) {
-> +        /*
-> +         * There is no specific error code defined for this case(E2BIG) at the
-> +         * moment.
-> +         * TODO: Once an error code for this case is defined in GHCI spec ,
-> +         * update the error code.
-> +         */
-> +        t->hdr.error_code = cpu_to_le64(TDX_VP_GET_QUOTE_ERROR);
-> +        t->hdr.out_len = cpu_to_le32(t->out_len);
-> +        goto error_hdr;
+> +
+> +        if (!group) {
+> +            if (!vdev->has_pm_reset) {
+> +                error_report("vfio: Cannot reset device %s, "
+> +                             "depends on group %d which is not owned.",
+> +                             vdev->vbasedev.name, devices[i].group_id);
+> +            }
+> +            ret = -EPERM;
+> +            goto out;
+> +        }
+> +
+> +        /* Prep dependent devices for reset and clear our marker. */
+> +        QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
+> +            if (!vbasedev_iter->dev->realized ||
+> +                vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
+> +                continue;
+> +            }
+> +            tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
+> +            if (vfio_pci_host_match(&host, tmp->vbasedev.name)) {
+> +                if (single) {
+> +                    ret = -EINVAL;
+> +                    goto out_single;
+> +                }
+> +                vfio_pci_pre_reset(tmp);
+> +                tmp->vbasedev.needs_reset = false;
+> +                multi = true;
+> +                break;
+> +            }
+> +        }
 > +    }
 > +
-> +    if (address_space_write(
-> +            &address_space_memory, t->gpa + sizeof(t->hdr),
-> +            MEMTXATTRS_UNSPECIFIED, t->out_data, t->out_len) != MEMTX_OK) {
-> +        goto error;
+> +    if (!single && !multi) {
+> +        ret = -EINVAL;
+> +        goto out_single;
 > +    }
-> +    /*
-> +     * Even if out_len == 0, it's a success.  It's up to the QGS-client contract
-> +     * how to interpret the zero-sized message as return message.
-> +     */
-> +    t->hdr.out_len = cpu_to_le32(t->out_len);
-> +    t->hdr.error_code = cpu_to_le64(TDX_VP_GET_QUOTE_SUCCESS);
 > +
-> +error:
-> +    if (t->hdr.error_code != cpu_to_le64(TDX_VP_GET_QUOTE_SUCCESS)) {
-> +        t->hdr.out_len = cpu_to_le32(0);
+> +    /* Determine how many group fds need to be passed */
+> +    count = 0;
+> +    QLIST_FOREACH(group, &vfio_group_list, next) {
+> +        for (i = 0; i < info->count; i++) {
+> +            if (group->groupid == devices[i].group_id) {
+> +                count++;
+> +                break;
+> +            }
+> +        }
 > +    }
-> +error_hdr:
-> +    if (address_space_write(
-> +            &address_space_memory, t->gpa,
-> +            MEMTXATTRS_UNSPECIFIED, &t->hdr, sizeof(t->hdr)) != MEMTX_OK) {
-> +        error_report("TDX: failed to update GetQuote header.");
+> +
+> +    reset = g_malloc0(sizeof(*reset) + (count * sizeof(*fds)));
+> +    reset->argsz = sizeof(*reset) + (count * sizeof(*fds));
+> +    fds = &reset->group_fds[0];
+> +
+> +    /* Fill in group fds */
+> +    QLIST_FOREACH(group, &vfio_group_list, next) {
+> +        for (i = 0; i < info->count; i++) {
+> +            if (group->groupid == devices[i].group_id) {
+> +                fds[reset->count++] = group->fd;
+> +                break;
+> +            }
+> +        }
 > +    }
-> +    tdx_td_notify(t);
 > +
-> +    qemu_set_fd_handler(t->ioc->fd, NULL, NULL, NULL);
-> +    qio_channel_close(QIO_CHANNEL(t->ioc), &err);
-
-Likely overwriting a previously set 'err'
-
-> +    object_unref(OBJECT(t->ioc));
-> +    g_free(t->out_data);
-> +    g_free(t);
+> +    /* Bus reset! */
+> +    ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_PCI_HOT_RESET, reset);
+> +    g_free(reset);
+> +    if (ret) {
+> +        ret = -errno;
+> +    }
 > +
-> +    /* Maintain the number of in-flight requests. */
-> +    ms = MACHINE(qdev_get_machine());
-> +    tdx = TDX_GUEST(ms->cgs);
-> +    qemu_mutex_lock(&tdx->lock);
-> +    tdx->quote_generation_num--;
-> +    qemu_mutex_unlock(&tdx->lock);
+> +    trace_vfio_pci_hot_reset_result(vdev->vbasedev.name,
+> +                                    ret ? strerror(errno) : "Success");
+> +
+> +out:
+> +    /* Re-enable INTx on affected devices */
+> +    for (i = 0; i < info->count; i++) {
+> +        PCIHostDeviceAddress host;
+> +        VFIOPCIDevice *tmp;
+> +        VFIODevice *vbasedev_iter;
+> +
+> +        host.domain = devices[i].segment;
+> +        host.bus = devices[i].bus;
+> +        host.slot = PCI_SLOT(devices[i].devfn);
+> +        host.function = PCI_FUNC(devices[i].devfn);
+> +
+> +        if (vfio_pci_host_match(&host, vdev->vbasedev.name)) {
+> +            continue;
+> +        }
+> +
+> +        QLIST_FOREACH(group, &vfio_group_list, next) {
+> +            if (group->groupid == devices[i].group_id) {
+> +                break;
+> +            }
+> +        }
+> +
+> +        if (!group) {
+> +            break;
+> +        }
+> +
+> +        QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
+> +            if (!vbasedev_iter->dev->realized ||
+> +                vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
+> +                continue;
+> +            }
+> +            tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
+> +            if (vfio_pci_host_match(&host, tmp->vbasedev.name)) {
+> +                vfio_pci_post_reset(tmp);
+> +                break;
+> +            }
+> +        }
+> +    }
+> +out_single:
+> +    if (!single) {
+> +        vfio_pci_post_reset(vdev);
+> +    }
+> +    g_free(info);
+> +
+> +    return ret;
 > +}
 > +
-> +/*
-> + * TODO: If QGS doesn't reply for long time, make it an error and interrupt
-> + * guest.
-> + */
-> +static void tdx_handle_get_quote_connected(QIOTask *task, gpointer opaque)
-> +{
-> +    struct tdx_get_quote_task *t = opaque;
-> +    Error *err = NULL;
-
-Same leak problem in this method
-
-> +    char *in_data = NULL;
-
-g_autofree for simpler cleanup
-
-> +    MachineState *ms;
-> +    TdxGuest *tdx;
-> +
-> +    t->hdr.error_code = cpu_to_le64(TDX_VP_GET_QUOTE_ERROR);
-> +    if (qio_task_propagate_error(task, NULL)) {
-> +        t->hdr.error_code = cpu_to_le64(TDX_VP_GET_QUOTE_QGS_UNAVAILABLE);
-> +        goto error;
-> +    }
-> +
-> +    in_data = g_malloc(le32_to_cpu(t->hdr.in_len));
-
-IF  't->hdr.in_len' is going from the guest then they needs
-bounds checking, otherwise its a trivial denial of service
-to make QEMU allocate all of host RAM.
-
-> +    if (!in_data) {
-> +        goto error;
-> +    }
-> +
-> +    if (address_space_read(&address_space_memory, t->gpa + sizeof(t->hdr),
-> +                           MEMTXATTRS_UNSPECIFIED, in_data,
-> +                           le32_to_cpu(t->hdr.in_len)) != MEMTX_OK) {
-> +        goto error;
-> +    }
-> +
-> +    qio_channel_set_blocking(QIO_CHANNEL(t->ioc), false, NULL);
-> +
-> +    if (qio_channel_write_all(QIO_CHANNEL(t->ioc), in_data,
-> +                              le32_to_cpu(t->hdr.in_len), &err) ||
-> +        err) {
-> +        t->hdr.error_code = cpu_to_le64(TDX_VP_GET_QUOTE_QGS_UNAVAILABLE);
-> +        goto error;
-> +    }
-> +
-> +    g_free(in_data);
-> +    qemu_set_fd_handler(t->ioc->fd, tdx_get_quote_read, NULL, t);
-
-Dn't use  qemu_set_fd_handler() with QIOChannel objects.
-qio_channel_add_watch() is the API for dealing with event
-callbacks
-
-> +
-> +    return;
-> +error:
-> +    t->hdr.out_len = cpu_to_le32(0);
-> +
-> +    if (address_space_write(
-> +            &address_space_memory, t->gpa,
-> +            MEMTXATTRS_UNSPECIFIED, &t->hdr, sizeof(t->hdr)) != MEMTX_OK) {
-> +        error_report("TDX: failed to update GetQuote header.\n");
-> +    }
-> +    tdx_td_notify(t);
-> +
-> +    qio_channel_close(QIO_CHANNEL(t->ioc), &err);
-> +    object_unref(OBJECT(t->ioc));
-> +    g_free(t);
-> +    g_free(in_data);
-> +
-> +    /* Maintain the number of in-flight requests. */
-> +    ms = MACHINE(qdev_get_machine());
-> +    tdx = TDX_GUEST(ms->cgs);
-> +    qemu_mutex_lock(&tdx->lock);
-> +    tdx->quote_generation_num--;
-> +    qemu_mutex_unlock(&tdx->lock);
-> +    return;
-> +}
-> +
-> +static void tdx_handle_get_quote(X86CPU *cpu, struct kvm_tdx_vmcall *vmcall)
-> +{
-> +    hwaddr gpa = vmcall->in_r12;
-> +    uint64_t buf_len = vmcall->in_r13;
-> +    struct tdx_get_quote_header hdr;
-> +    MachineState *ms;
-> +    TdxGuest *tdx;
-> +    QIOChannelSocket *ioc;
-> +    struct tdx_get_quote_task *t;
-> +
-> +    vmcall->status_code = TDG_VP_VMCALL_INVALID_OPERAND;
-> +
-> +    /* GPA must be shared. */
-> +    if (!(gpa & tdx_shared_bit(cpu))) {
-> +        return;
-> +    }
-> +    gpa &= ~tdx_shared_bit(cpu);
-> +
-> +    if (!QEMU_IS_ALIGNED(gpa, 4096) || !QEMU_IS_ALIGNED(buf_len, 4096)) {
-> +        vmcall->status_code = TDG_VP_VMCALL_ALIGN_ERROR;
-> +        return;
-> +    }
-> +    if (buf_len == 0) {
-> +        return;
-> +    }
-> +
-> +    if (address_space_read(&address_space_memory, gpa, MEMTXATTRS_UNSPECIFIED,
-> +                           &hdr, sizeof(hdr)) != MEMTX_OK) {
-> +        return;
-> +    }
-> +    if (le64_to_cpu(hdr.structure_version) != TDX_GET_QUOTE_STRUCTURE_VERSION) {
-> +        return;
-> +    }
-> +    /*
-> +     * Paranoid: Guest should clear error_code and out_len to avoid information
-> +     * leak.  Enforce it.  The initial value of them doesn't matter for qemu to
-> +     * process the request.
-> +     */
-> +    if (le64_to_cpu(hdr.error_code) != TDX_VP_GET_QUOTE_SUCCESS ||
-> +        le32_to_cpu(hdr.out_len) != 0) {
-> +        return;
-> +    }
-> +
-> +    /* Only safe-guard check to avoid too large buffer size. */
-> +    if (buf_len > TDX_GET_QUOTE_MAX_BUF_LEN ||
-> +        le32_to_cpu(hdr.in_len) > TDX_GET_QUOTE_MAX_BUF_LEN ||
-> +        le32_to_cpu(hdr.in_len) > buf_len) {
-> +        return;
-> +    }
-> +
-> +    /* Mark the buffer in-flight. */
-> +    hdr.error_code = cpu_to_le64(TDX_VP_GET_QUOTE_IN_FLIGHT);
-> +    if (address_space_write(&address_space_memory, gpa, MEMTXATTRS_UNSPECIFIED,
-> +                            &hdr, sizeof(hdr)) != MEMTX_OK) {
-> +        return;
-> +    }
-> +
-> +    ms = MACHINE(qdev_get_machine());
-> +    tdx = TDX_GUEST(ms->cgs);
-> +    ioc = qio_channel_socket_new();
-> +
-> +    t = g_malloc(sizeof(*t));
-> +    t->apic_id = tdx->event_notify_apic_id;
-> +    t->gpa = gpa;
-> +    t->buf_len = buf_len;
-> +    t->out_data = g_malloc(t->buf_len);
-> +    t->out_len = 0;
-> +    t->hdr = hdr;
-> +    t->ioc = ioc;
-> +
-> +    qemu_mutex_lock(&tdx->lock);
-> +    if (!tdx->quote_generation ||
-> +        /* Prevent too many in-flight get-quote request. */
-> +        tdx->quote_generation_num >= TDX_MAX_GET_QUOTE_REQUEST) {
-> +        qemu_mutex_unlock(&tdx->lock);
-> +        vmcall->status_code = TDG_VP_VMCALL_RETRY;
-> +        object_unref(OBJECT(ioc));
-> +        g_free(t->out_data);
-> +        g_free(t);
-> +        return;
-> +    }
-> +    tdx->quote_generation_num++;
-> +    t->event_notify_interrupt = tdx->event_notify_interrupt;
-> +    qio_channel_socket_connect_async(
-> +        ioc, tdx->quote_generation, tdx_handle_get_quote_connected, t, NULL,
-> +        NULL);
-> +    qemu_mutex_unlock(&tdx->lock);
-> +
-> +    vmcall->status_code = TDG_VP_VMCALL_SUCCESS;
-> +}
-> +
->  static void tdx_handle_setup_event_notify_interrupt(X86CPU *cpu,
->                                                      struct kvm_tdx_vmcall *vmcall)
+>  const VFIOIOMMUOps vfio_legacy_ops = {
+>      .dma_map = vfio_legacy_dma_map,
+>      .dma_unmap = vfio_legacy_dma_unmap,
+> @@ -929,4 +1098,5 @@ const VFIOIOMMUOps vfio_legacy_ops = {
+>      .detach_device = vfio_legacy_detach_device,
+>      .set_dirty_page_tracking = vfio_legacy_set_dirty_page_tracking,
+>      .query_dirty_bitmap = vfio_legacy_query_dirty_bitmap,
+> +    .pci_hot_reset = vfio_legacy_pci_hot_reset,
+>  };
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index eb55e8ae88..d00c3472c7 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -2374,7 +2374,7 @@ static int vfio_add_capabilities(VFIOPCIDevice *vdev, Error **errp)
+>      return 0;
+>  }
+>  
+> -static void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
+> +void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
 >  {
-> @@ -1005,6 +1432,9 @@ static void tdx_handle_vmcall(X86CPU *cpu, struct kvm_tdx_vmcall *vmcall)
->      }
+>      PCIDevice *pdev = &vdev->pdev;
+>      uint16_t cmd;
+> @@ -2411,7 +2411,7 @@ static void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
+>      vfio_pci_write_config(pdev, PCI_COMMAND, cmd, 2);
+>  }
 >  
->      switch (vmcall->subfunction) {
-> +    case TDG_VP_VMCALL_GET_QUOTE:
-> +        tdx_handle_get_quote(cpu, vmcall);
-> +        break;
->      case TDG_VP_VMCALL_SETUP_EVENT_NOTIFY_INTERRUPT:
->          tdx_handle_setup_event_notify_interrupt(cpu, vmcall);
->          break;
-> diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
-> index 4a8d67cc9fdb..4a989805493e 100644
-> --- a/target/i386/kvm/tdx.h
-> +++ b/target/i386/kvm/tdx.h
-> @@ -5,8 +5,10 @@
->  #include CONFIG_DEVICES /* CONFIG_TDX */
->  #endif
+> -static void vfio_pci_post_reset(VFIOPCIDevice *vdev)
+> +void vfio_pci_post_reset(VFIOPCIDevice *vdev)
+>  {
+>      Error *err = NULL;
+>      int nr;
+> @@ -2435,7 +2435,7 @@ static void vfio_pci_post_reset(VFIOPCIDevice *vdev)
+>      vfio_quirk_reset(vdev);
+>  }
 >  
-> +#include <linux/kvm.h>
->  #include "exec/confidential-guest-support.h"
->  #include "hw/i386/tdvf.h"
-> +#include "io/channel-socket.h"
->  #include "sysemu/kvm.h"
+> -static bool vfio_pci_host_match(PCIHostDeviceAddress *addr, const char *name)
+> +bool vfio_pci_host_match(PCIHostDeviceAddress *addr, const char *name)
+>  {
+>      char tmp[13];
 >  
->  #define TYPE_TDX_GUEST "tdx-guest"
-> @@ -47,6 +49,10 @@ typedef struct TdxGuest {
->      /* runtime state */
->      int event_notify_interrupt;
->      uint32_t event_notify_apic_id;
-> +
-> +    /* GetQuote */
-> +    int quote_generation_num;
-> +    SocketAddress *quote_generation;
->  } TdxGuest;
-
-IMHO all the quote generation logic would benefit from being split
-out into a completely separate self contained files
-
-eg 'tdx-quote-generation.{c,h}'
-
-this should define an object "TdxQuoteGenerator" which  holds these
-two quote_generation_num and quote_generation  fields, and exposes
-a high level API for each command taking inputs & outputs,
-and doing serialization to/from the socket.  This API should do
-verification of all command inputs eg the length field to prevent
-guest denial of service.
-
-The tdx_handle_get_quote() method could then call into this API.
-
-This will give us clean separation between interaction with guest
-memory, and interaction with the socket.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> @@ -2485,166 +2485,10 @@ int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
+>  
+>  static int vfio_pci_hot_reset(VFIOPCIDevice *vdev, bool single)
+>  {
+> -    VFIOGroup *group;
+> -    struct vfio_pci_hot_reset_info *info = NULL;
+> -    struct vfio_pci_dependent_device *devices;
+> -    struct vfio_pci_hot_reset *reset;
+> -    int32_t *fds;
+> -    int ret, i, count;
+> -    bool multi = false;
+> -
+> -    trace_vfio_pci_hot_reset(vdev->vbasedev.name, single ? "one" : "multi");
+> -
+> -    if (!single) {
+> -        vfio_pci_pre_reset(vdev);
+> -    }
+> -    vdev->vbasedev.needs_reset = false;
+> -
+> -    ret = vfio_pci_get_pci_hot_reset_info(vdev, &info);
+> -
+> -    if (ret) {
+> -        goto out_single;
+> -    }
+> -    devices = &info->devices[0];
+> -
+> -    trace_vfio_pci_hot_reset_has_dep_devices(vdev->vbasedev.name);
+> -
+> -    /* Verify that we have all the groups required */
+> -    for (i = 0; i < info->count; i++) {
+> -        PCIHostDeviceAddress host;
+> -        VFIOPCIDevice *tmp;
+> -        VFIODevice *vbasedev_iter;
+> -
+> -        host.domain = devices[i].segment;
+> -        host.bus = devices[i].bus;
+> -        host.slot = PCI_SLOT(devices[i].devfn);
+> -        host.function = PCI_FUNC(devices[i].devfn);
+> -
+> -        trace_vfio_pci_hot_reset_dep_devices(host.domain,
+> -                host.bus, host.slot, host.function, devices[i].group_id);
+> -
+> -        if (vfio_pci_host_match(&host, vdev->vbasedev.name)) {
+> -            continue;
+> -        }
+> -
+> -        QLIST_FOREACH(group, &vfio_group_list, next) {
+> -            if (group->groupid == devices[i].group_id) {
+> -                break;
+> -            }
+> -        }
+> -
+> -        if (!group) {
+> -            if (!vdev->has_pm_reset) {
+> -                error_report("vfio: Cannot reset device %s, "
+> -                             "depends on group %d which is not owned.",
+> -                             vdev->vbasedev.name, devices[i].group_id);
+> -            }
+> -            ret = -EPERM;
+> -            goto out;
+> -        }
+> -
+> -        /* Prep dependent devices for reset and clear our marker. */
+> -        QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
+> -            if (!vbasedev_iter->dev->realized ||
+> -                vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
+> -                continue;
+> -            }
+> -            tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
+> -            if (vfio_pci_host_match(&host, tmp->vbasedev.name)) {
+> -                if (single) {
+> -                    ret = -EINVAL;
+> -                    goto out_single;
+> -                }
+> -                vfio_pci_pre_reset(tmp);
+> -                tmp->vbasedev.needs_reset = false;
+> -                multi = true;
+> -                break;
+> -            }
+> -        }
+> -    }
+> -
+> -    if (!single && !multi) {
+> -        ret = -EINVAL;
+> -        goto out_single;
+> -    }
+> -
+> -    /* Determine how many group fds need to be passed */
+> -    count = 0;
+> -    QLIST_FOREACH(group, &vfio_group_list, next) {
+> -        for (i = 0; i < info->count; i++) {
+> -            if (group->groupid == devices[i].group_id) {
+> -                count++;
+> -                break;
+> -            }
+> -        }
+> -    }
+> -
+> -    reset = g_malloc0(sizeof(*reset) + (count * sizeof(*fds)));
+> -    reset->argsz = sizeof(*reset) + (count * sizeof(*fds));
+> -    fds = &reset->group_fds[0];
+> -
+> -    /* Fill in group fds */
+> -    QLIST_FOREACH(group, &vfio_group_list, next) {
+> -        for (i = 0; i < info->count; i++) {
+> -            if (group->groupid == devices[i].group_id) {
+> -                fds[reset->count++] = group->fd;
+> -                break;
+> -            }
+> -        }
+> -    }
+> -
+> -    /* Bus reset! */
+> -    ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_PCI_HOT_RESET, reset);
+> -    g_free(reset);
+> -
+> -    trace_vfio_pci_hot_reset_result(vdev->vbasedev.name,
+> -                                    ret ? strerror(errno) : "Success");
+> -
+> -out:
+> -    /* Re-enable INTx on affected devices */
+> -    for (i = 0; i < info->count; i++) {
+> -        PCIHostDeviceAddress host;
+> -        VFIOPCIDevice *tmp;
+> -        VFIODevice *vbasedev_iter;
+> -
+> -        host.domain = devices[i].segment;
+> -        host.bus = devices[i].bus;
+> -        host.slot = PCI_SLOT(devices[i].devfn);
+> -        host.function = PCI_FUNC(devices[i].devfn);
+> -
+> -        if (vfio_pci_host_match(&host, vdev->vbasedev.name)) {
+> -            continue;
+> -        }
+> -
+> -        QLIST_FOREACH(group, &vfio_group_list, next) {
+> -            if (group->groupid == devices[i].group_id) {
+> -                break;
+> -            }
+> -        }
+> -
+> -        if (!group) {
+> -            break;
+> -        }
+> -
+> -        QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
+> -            if (!vbasedev_iter->dev->realized ||
+> -                vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
+> -                continue;
+> -            }
+> -            tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
+> -            if (vfio_pci_host_match(&host, tmp->vbasedev.name)) {
+> -                vfio_pci_post_reset(tmp);
+> -                break;
+> -            }
+> -        }
+> -    }
+> -out_single:
+> -    if (!single) {
+> -        vfio_pci_post_reset(vdev);
+> -    }
+> -    g_free(info);
+> +    VFIODevice *vbasedev = &vdev->vbasedev;
+> +    const VFIOIOMMUOps *ops = vbasedev->bcontainer->ops;
+>  
+> -    return ret;
+> +    return ops->pci_hot_reset(vbasedev, single);
+>  }
+>  
+>  /*
 
 
