@@ -2,51 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3807E7EC992
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C8A57EC994
 	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 18:21:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3JZ2-0007eU-1t; Wed, 15 Nov 2023 12:20:32 -0500
+	id 1r3JZ1-0007e0-EP; Wed, 15 Nov 2023 12:20:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r3JZ0-0007dh-4t
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r3JZ0-0007dl-A4
  for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:20:30 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r3JYx-0003Be-UI
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:20:29 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r3JYy-0003CL-Q4
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:20:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700068826;
+ s=mimecast20190719; t=1700068828;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=Fs5CFy7AAhw3zDxVkVe9qC5yEduYxeGxxxWq/U4n+Ig=;
- b=LMScZ4fJHTu4kPqbQa3jWzTNpMjg6adneynQfnuXt74KaDrN5bYUr/d3LxyC7+bxDFxiOF
- 3Xs9cyCilaM6kj4hTMAwZhmNBJQKtnNgemJ2qS6JmVLrKb648zm7JkN25+Ggki1awUa6ve
- NZ2d7P0IModUZTtAgYOQH1wvnizwsBk=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=70hLchKKDMD2HpZFpzNZq73fWIcmHKXu1vjidAtQ9QA=;
+ b=Ar0BblzNwQuDCg+Yiaup88aFtMovxRWCqvceauJTLbRHIMewfIelUo6oKRTGkLl8d9H2kY
+ VDR3lXUI6WGRZaY9Yhyfawm6/AMG8BVgCh1DJve7g6kJW/NRKvphxicdNb5hDtHwspJbP1
+ tlF6NB1PMICYwf89kSBonmt9AMMk7ko=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-358-hQO0MfOWPUm-WrwOmbpu2w-1; Wed, 15 Nov 2023 12:20:25 -0500
-X-MC-Unique: hQO0MfOWPUm-WrwOmbpu2w-1
+ us-mta-502-ctUyZJtqPximIYwcBk0V_w-1; Wed, 15 Nov 2023 12:20:26 -0500
+X-MC-Unique: ctUyZJtqPximIYwcBk0V_w-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DE62E104E894;
- Wed, 15 Nov 2023 17:20:18 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EBC96185A7AD;
+ Wed, 15 Nov 2023 17:20:19 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.188])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 095C6143;
- Wed, 15 Nov 2023 17:20:17 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1E3FE36E;
+ Wed, 15 Nov 2023 17:20:19 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com,
  qemu-devel@nongnu.org
-Subject: [PATCH for-8.2 0/4] block: Fix deadlocks with the stream job
-Date: Wed, 15 Nov 2023 18:20:08 +0100
-Message-ID: <20231115172012.112727-1-kwolf@redhat.com>
+Subject: [PATCH for-8.2 1/4] block: Fix bdrv_graph_wrlock() call in
+ blk_remove_bs()
+Date: Wed, 15 Nov 2023 18:20:09 +0100
+Message-ID: <20231115172012.112727-2-kwolf@redhat.com>
+In-Reply-To: <20231115172012.112727-1-kwolf@redhat.com>
+References: <20231115172012.112727-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
@@ -75,47 +79,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series contains three fixes for deadlocks that follow the same
-pattern: A nested event loop in the main thread waits for an iothread to
-make progress, but the AioContext lock of that iothread is still held by
-the main loop, so it can never make progress.
+While not all callers of blk_remove_bs() are correct in this respect,
+the assumption in the function is that callers hold the AioContext lock
+of the BlockBackend (this is required by the drain calls in it).
 
-We're planning to fully remove the AioContext lock in 9.0, which would
-automatically get rid of this kind of bugs, but it's still there in 8.2,
-so let's fix them individually for this release.
+In order to avoid deadlock in the nested event loop, bdrv_graph_wrlock()
+has then to be called with the root BlockDriverState as its parameter
+instead of NULL, so that this AioContext lock is temporarily dropped.
 
-Kevin Wolf (4):
-  block: Fix bdrv_graph_wrlock() call in blk_remove_bs()
-  block: Fix deadlocks in bdrv_graph_wrunlock()
-  stream: Fix AioContext locking during bdrv_graph_wrlock()
-  iotests: Test two stream jobs in a single iothread
+Fixes: https://issues.redhat.com/browse/RHEL-1761
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+---
+ block/block-backend.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
- include/block/graph-lock.h                    | 15 +++-
- block.c                                       | 26 +++----
- block/backup.c                                |  2 +-
- block/blklogwrites.c                          |  4 +-
- block/blkverify.c                             |  2 +-
- block/block-backend.c                         | 10 ++-
- block/commit.c                                | 10 +--
- block/graph-lock.c                            | 23 +++++-
- block/mirror.c                                | 14 ++--
- block/qcow2.c                                 |  2 +-
- block/quorum.c                                |  4 +-
- block/replication.c                           | 10 +--
- block/snapshot.c                              |  2 +-
- block/stream.c                                | 10 +--
- block/vmdk.c                                  | 10 +--
- blockdev.c                                    |  4 +-
- blockjob.c                                    |  8 +-
- tests/unit/test-bdrv-drain.c                  | 20 ++---
- tests/unit/test-bdrv-graph-mod.c              | 10 +--
- scripts/block-coroutine-wrapper.py            |  2 +-
- tests/qemu-iotests/tests/iothreads-stream     | 73 +++++++++++++++++++
- tests/qemu-iotests/tests/iothreads-stream.out | 11 +++
- 22 files changed, 197 insertions(+), 75 deletions(-)
- create mode 100755 tests/qemu-iotests/tests/iothreads-stream
- create mode 100644 tests/qemu-iotests/tests/iothreads-stream.out
-
+diff --git a/block/block-backend.c b/block/block-backend.c
+index 4053134781..f6f05ead28 100644
+--- a/block/block-backend.c
++++ b/block/block-backend.c
+@@ -882,6 +882,8 @@ BlockBackend *blk_by_public(BlockBackendPublic *public)
+ 
+ /*
+  * Disassociates the currently associated BlockDriverState from @blk.
++ *
++ * The caller must hold the AioContext lock for the BlockBackend.
+  */
+ void blk_remove_bs(BlockBackend *blk)
+ {
+@@ -916,7 +918,7 @@ void blk_remove_bs(BlockBackend *blk)
+     root = blk->root;
+     blk->root = NULL;
+ 
+-    bdrv_graph_wrlock(NULL);
++    bdrv_graph_wrlock(root->bs);
+     bdrv_root_unref_child(root);
+     bdrv_graph_wrunlock();
+ }
 -- 
 2.41.0
 
