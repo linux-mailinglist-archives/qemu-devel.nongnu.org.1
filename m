@@ -2,175 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709EE7EBC8F
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 05:18:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBD07EBCF0
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 07:11:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r37Kg-0006g3-DQ; Tue, 14 Nov 2023 23:16:54 -0500
+	id 1r395h-0000Ql-Of; Wed, 15 Nov 2023 01:09:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r37Kd-0006fu-1d
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 23:16:51 -0500
-Received: from mgamail.intel.com ([192.55.52.93])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r37Ka-0001Tn-Nz
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 23:16:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700021808; x=1731557808;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=Wa6Ait7lSQ8YXfiVImactRuRATXCyz9tjaKjFXW45To=;
- b=Gxk2ugML+CpeAr7iaF/niuOW3bMSW6+Yq1dZ00WKapeq78oCUNCw8gDP
- fGlifSf0Bmqgb/arB+eqzWmr4CTdGyM6amUPxN6Uwj3izUV1ZRsaPkOQm
- iXsKcaalZE6UiL7eR0tnTfEhl/9QFVzTYjk7cSkv2wCrNEGnaVfNIOmDX
- sTVk9ovKd+f+vqNx+js8Avzn5+y2VoLNslEnaFV3zLaLUyHjLzzQxgHCl
- xqZwAkZfbYx0gDvQPhNg+UY6Tvk05KA98htUp/TunZCgFJdLjtBEAlhfk
- BmrDJVw42rghDcBbKHF9uKeGIRzv1R/E/3BGRiqKBg6S//u8ewTDHyf3X A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="387971372"
-X-IronPort-AV: E=Sophos;i="6.03,303,1694761200"; d="scan'208";a="387971372"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2023 20:16:45 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="758378555"
-X-IronPort-AV: E=Sophos;i="6.03,303,1694761200"; d="scan'208";a="758378555"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by orsmga007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 14 Nov 2023 20:16:45 -0800
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Tue, 14 Nov 2023 20:16:44 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Tue, 14 Nov 2023 20:16:43 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Tue, 14 Nov 2023 20:16:43 -0800
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.168)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Tue, 14 Nov 2023 20:16:43 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NBZ1amEPqCLw//HIv3hBTTL+jxNBsZ76+PKBwPlNzg29D8YQ/CbiME47faZ0n5SdAW/TEYmrUo2VhBhedcMmaY6cWbQYzscfWlEbJZy+H1b/HdkUMPQA7W0i8B53gqHIKKu93krmf1YAJfmYDIFnmpqtf0NYW/jayFaq3Gvu5OQmnUtapkm8ni8GdaNuWY5HSro2s5ZkHn+dXArtYiWDiDYcElKUzOFk5EE3iVwJj0e7ygYvF7e9OMTpigVafJmF6dma4sDuYgTwJmdLF54i7B1HBcRu+CtEInSe/nd9fUts/ouMY70gOjQ37OltwkGKr1GIFhf/cc6q1QJDaO3eqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Wa6Ait7lSQ8YXfiVImactRuRATXCyz9tjaKjFXW45To=;
- b=Qees7/ZvqEx7RgvEPUFyEePEZjfVBYqQtn3tV6sB6S/QAnId39P6bYFCbAoHppV6Ptb7Zpq+T3h1ctqwb7U8Zh6M+CRFeVJQuMyQcERo70kul5EnCE8UBAtlvXx1NLcNtl6Eu42LEKKPGmKsCLejTDO7Rqol7nbICSZEq1ffkFXkXBCMFJ0pWle7xdeAFL3JU+XMVhLMSPiPwsFmmc9ylGDi/e2R35qId6qj6sMUfAs80JxQnGudsD6G6/KGXDoI+WlubxU8KhMUcFbPkEK3YeUkxccazpe53NstlXNIOBT7J78Hxy+OOQGKJm43gO6sGP8S4udh2QPeAgn17LuWpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by PH7PR11MB8599.namprd11.prod.outlook.com (2603:10b6:510:2ff::6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.17; Wed, 15 Nov
- 2023 04:16:37 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea%4]) with mapi id 15.20.6977.029; Wed, 15 Nov 2023
- 04:16:36 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "joao.m.martins@oracle.com"
- <joao.m.martins@oracle.com>, "eric.auger@redhat.com" <eric.auger@redhat.com>, 
- "peterx@redhat.com" <peterx@redhat.com>, "jasowang@redhat.com"
- <jasowang@redhat.com>, "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L"
- <yi.l.liu@intel.com>, "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P"
- <chao.p.peng@intel.com>
-Subject: RE: [PATCH v6 00/21] vfio: Adopt iommufd
-Thread-Topic: [PATCH v6 00/21] vfio: Adopt iommufd
-Thread-Index: AQHaFuTmNDpqSpZXBE69ql2uW35WS7B55nOAgADbwxA=
-Date: Wed, 15 Nov 2023 04:16:36 +0000
-Message-ID: <SJ0PR11MB6744D64803CD4F84570E8D0E92B1A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
- <598a9514-e96d-48da-9447-c168882e0b75@redhat.com>
-In-Reply-To: <598a9514-e96d-48da-9447-c168882e0b75@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|PH7PR11MB8599:EE_
-x-ms-office365-filtering-correlation-id: a0818339-d367-4495-a930-08dbe591a869
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: rNCPiGiO+ohnFMGf4up4oXqk7iyCP25yXk+I/zDnqcbe4Qe0bjfDA1zKk+Upluq3mx5Jnk+oDxZvB9wRPUI4+tmDb/24hLEwnxV+Il3suqzGGaU5Rs2ubD2xaeFD4hhwZvvm3sWolyil5rvLSLZizzHrCts3XgiHBfK08sf1DKp6wn/Z+mEN11WKS8LNKvFSt9EXjZE5kYR6y653g+6YOP0tLEu69RhMnfF7st8uo2LPTUqu0sVKrOAemnptZvSkYW85IFKThbLXPR0RKrAaUqPzw+4XbT8hLjjtqWbKsOzSIPq9APP2/TWr9DP3raS/Q58ul1IQjZ9O6XPYRs8+6KiUzKaf6SKMehodtEiD89XqSlkXC4Bqh8ebUk46mAUjz/PGrtB39Zi9y3jhRtz7vtC1bfi1JPSImkZ5tJ3kGJ5kLi2xTVL9/MQubxwBdMX7q+uXZHInCUN4yroLRD3GnmMBho6UVIr/5c2C4iEb8XM1FZL2XCI6rxU82rpVeqZ+O9tsBS9YnKohQDjUPGa9t3m3xe6diU1JJGaBBB7kcdpbB4dtPpcrENciOdoHRt1gvQa3GQfQPcoZBNq1FOMyyPWLP8+D9o5+xRiMBF9oqTvSxaUACJmUyblN8euZogQwig+styzTL82Pu0V8aVHCXQ==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(396003)(39860400002)(366004)(346002)(376002)(230922051799003)(1800799009)(451199024)(64100799003)(186009)(82960400001)(9686003)(66574015)(107886003)(26005)(966005)(478600001)(52536014)(86362001)(4326008)(8676002)(8936002)(5660300002)(41300700001)(33656002)(2906002)(76116006)(66476007)(38070700009)(54906003)(64756008)(66556008)(66946007)(66446008)(316002)(110136005)(6506007)(7696005)(71200400001)(55016003)(38100700002)(122000001)(83380400001);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?aE43YW1HVlJNTFAzYmFkcksyMzl3M2FJc3BQTFBEVTJuUjdRaEhmWjM4UTlR?=
- =?utf-8?B?Y2Z3WmFFaUIySkQ4akhpQWtVQkxiVHlxTERXS1dUa3k5LzRVbThnTzhvWWxl?=
- =?utf-8?B?NllYdUsxZzlNd3FLMWQzVWxEb2tBcS9HMlZWYXRET25QeUd1RmRBMlNsRlA1?=
- =?utf-8?B?VFdJdVFKdTFvRGlRS2VxSytTZno2WEtWOGlqS044a0d4QmswL0pVRDZ6LzFH?=
- =?utf-8?B?TnpUcTVSL2xRQUpPZ29jaERvSmNHOFIzOWJSK1pzdURBT1pOQUNYVEpBcUQr?=
- =?utf-8?B?eGR5b283SDVvUXNJQUZ0WHZHdjN5SmloSEpBSitRaE5OTVZSRmplUHJ6Wi9J?=
- =?utf-8?B?U1lpd0UreFJieXM2SHF6K3ByOHlTR3VIeThsaGpBQUVXYzFjMGNud2NwOUJr?=
- =?utf-8?B?WDlqd2hWSGRGaGQ3OVRlQkQvRXUvSklVOGpTWGxLbUFJR0hQcHlWaTlMendk?=
- =?utf-8?B?eWh2ZVhqMHVpbmIvcDNpNXF0WVhBSFRaOUlsVEJCbE9UMU9oT09IQlJlOVdm?=
- =?utf-8?B?YlJ3UWc5MVVJcHNLTnFyQTJXYUwyVUFkNnA3Y29oSWtmZDBPZUlhYnJ5a0or?=
- =?utf-8?B?OGRnQ1FoYzFjUW4vb0NrVzUrYzVpSCtseWFHeGYzby9HZW12cXQ3bWR0YzJm?=
- =?utf-8?B?Ti92a3krNmlSOEU3MHR1MUx1UFB2NXhHZ0E1aUZFakMzMm9PRlg4OGU3OHhQ?=
- =?utf-8?B?elBOVytqQ2JidGVDZE9IZEdzUEFlQU8xREh4VCtoMXlwcDNPb3hUalFpRWdj?=
- =?utf-8?B?Z2Y2TVM3eGg4S244SzRuM2Q1eHZWSmZ6dDdsZE9FT0lkYzd5MHVielBNRjFi?=
- =?utf-8?B?dGxWYVBjK2pQY0Z3OURSK3R2MWdIbXNpTy9ZMlNaRFMxNFFZWGxEOVdLdkNV?=
- =?utf-8?B?R1RxdjNPZE9tWGJoL2gzOHRlaEVyYTdRNFIzQ0h3RGJDSDNYNUU1YzF0N1Zi?=
- =?utf-8?B?NHVPSzU3aUo3eldKMXk3cVU3eXJ4eWRVRHhxTlI1NTJnd2lmc3VTMDN3L0t2?=
- =?utf-8?B?TGNzVytMQ1BxU1NjbDFydXBkVElnbWJXOUNwVFRweVNvdGdPWVZTTEwvRmxY?=
- =?utf-8?B?RUZHenhpb3JTWGpwcncwL3RnRlJpelNZNVFRYUcxZzZqUytwUlFEQVJPeS9h?=
- =?utf-8?B?cUZhRWRueXptTDdOM25xU2Nub2F1N2ZyaHRhZUhGb2pwWThqaWJQNW9tYk1a?=
- =?utf-8?B?WU9LY2c2QXlRNGFBdnNlTTVGNWdydHE3QVdPRkhuSG9jdWJsV2IvSVBWQlFj?=
- =?utf-8?B?UFhIa2NWTkRxK3lvc0Vqa1FzaG5PekMvN3MyMis3ZnpsR0VZOUNMejl6VzBa?=
- =?utf-8?B?NTlqZ052OG5ZcDhQcThFMi96TWp2NUo1YzlBanpHU0xMUXQ3alA4ZUxoZmFh?=
- =?utf-8?B?REhFK29reDgzQ01MVFdvUThMUHAwZWVmQ3dMUExxNnozZFFCd3dhVExYRWRk?=
- =?utf-8?B?VFF4cmxJWHg1aVgwSnI5dXYxTko0M0UzZmZ2RzdjNk96MGZ3b0IwQm5xaFds?=
- =?utf-8?B?NTZkTUxPN0lSNWNSTU5GelRDUDZLeGcvTnJralVPWUtIRnZ5OHpVeWdiMG52?=
- =?utf-8?B?d2NDeG51RDQ3YzdscmFnZ1lUTmNjZG5MV3hyTWF4NXhVOWtOczZsck5FV25B?=
- =?utf-8?B?cjR5cEJkVkRzV1llTjR0SmpreTJPK2JNbkR4WUNhSVF6cE9ERFlKVkxURjNU?=
- =?utf-8?B?b0VyQUxxdFJKNjBaSlFhbW5ETTI0TDFhSzE2ZVo0elYzUlNOWENjcWtDVkhw?=
- =?utf-8?B?NDdZbFV5M1gxU1BXUWpvczVkSXppWnVZQzdna3NFVnpPcWtOTWxrazFWRGw0?=
- =?utf-8?B?UUFtWkFVTUpiaytlYWRILzVMK0ZZM2RGVzZRVm1wazgwQ0F2L1dPdzFnejFP?=
- =?utf-8?B?YzJlYmFXTlVMUUV2dWxuYTIwUEVrb3doM3hMRUNiUmZ2ZGU3WmE3bC90UzJs?=
- =?utf-8?B?aFdjT2FlaGFyc2FJeTU2LzByU2cyYUErd0VUTWlpanRxR1dkRUx4cEVkem1U?=
- =?utf-8?B?UTRVUStBTDMrTDg0ZkNhUk90MExwcDVGODRTdjhhcnVEM2NXbi9NRTZJSFlj?=
- =?utf-8?B?bVdtcXROSEJ5VDRxOFJzQUZyU1YxS0NuU1ZadCtIK2lFSHlxdWFlVjRHMVc0?=
- =?utf-8?Q?sjjAdeYiJpG62Yn+hzaE4tZvh?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1r395e-0000QM-Is
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 01:09:30 -0500
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1r395b-0002dg-7A
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 01:09:30 -0500
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-5a9bf4fbd3fso5192507a12.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 22:09:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1700028565; x=1700633365;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=WXcnmaGuUlPsci1nsyR4gfbSFL2+eczZ5kaZaZau6Vk=;
+ b=Wi5ySPu2RZtupaRWwmkz+k99Q4tqGklq4ZJbpNeg0WBqmtragKRjoXrHz/Wvcx/xZh
+ yXL3ZC1bTl5reGvRYk0TBAsebVV6ZFeSGsgx/DPL/GPkHXZ08Gdgw+i7usuXtvVER8o7
+ VDCRtmI9dEi3gfPlq07uq4zgkCTxEj2jgvoEHNhsYUFn98lxRSTjHzRTSD+WHukg9Js0
+ MHSLTYInrNjIT5TOcSv8c8T7tuVCp/m7++4ccs2JL/Ksk7eD1PgvFu7amzQfLcgiUhDq
+ cGHXzU2QETRV9itF62iNv+c74Xf+jipmSZOshEMComodQQseIAxqROyd697m57MZkv4K
+ rNRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700028565; x=1700633365;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WXcnmaGuUlPsci1nsyR4gfbSFL2+eczZ5kaZaZau6Vk=;
+ b=Dq3T/RXQ2Ai/jIwi2iXRz5il+pIEIG3Ai1BuJQ/ku20jPMQ1WKoxOyR3o1cAC2DS7Q
+ 8PQ1GVeluKVPQdTv4e4uvEfLsFqC+Br9hF3wZfAZhWPmkqowLMOgUTBm7u15CJyh22n2
+ 8zVgKWhwrB2kCM+D8J3yvB70vRylhR7Pw+DmsKQ8t33HHLKTGBcoLDmfEB47MPX177BW
+ vcUGqmyODHcmJNND6rnPnDVEvRMXhkJAqx43K3hx/CTwKiR1flNSIBLKWPBHyy4TnHDl
+ DqT+hd7AlvnueM4Az9PwNVv88p75WIbKmRwxLis/3mO86+LJrtBOZ610pDfFQUZpGFoF
+ DfAg==
+X-Gm-Message-State: AOJu0Yyj5oMCRCH1DT2b8dJXDnGiyKpJfvQz6UrQl6rrVHERGtT1kJGv
+ jNh69jrzywnAFuvoviu0LEuOzg==
+X-Google-Smtp-Source: AGHT+IGOQBlsSl6o0j3d5do5RwT7DPf/hGbOpT2SPm7tGhVn8XCSDf78H5GzbE/BrboXUMYnpP57wQ==
+X-Received: by 2002:a05:6a20:1447:b0:15d:b243:6131 with SMTP id
+ a7-20020a056a20144700b0015db2436131mr14476341pzi.44.1700028564472; 
+ Tue, 14 Nov 2023 22:09:24 -0800 (PST)
+Received: from [157.82.201.2] ([157.82.201.2])
+ by smtp.gmail.com with ESMTPSA id
+ l18-20020a170903121200b001bf52834696sm6574070plh.207.2023.11.14.22.09.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 14 Nov 2023 22:09:24 -0800 (PST)
+Message-ID: <036085f8-7837-4842-bd8b-6c2b4ec560e0@daynix.com>
+Date: Wed, 15 Nov 2023 15:09:21 +0900
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a0818339-d367-4495-a930-08dbe591a869
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Nov 2023 04:16:36.1155 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AJq7UBmtIlNf93nWoYE6w0wO6xFd35DB0gcG/v1LeR7SMwd/BeM0XfSurx0e/ekXkDvMyAMwSiLJkO0Mcj3rQQFnpnZ8rfyLtL+sPdyickQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8599
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.93;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 11/21] virtio-net: Return an error when vhost cannot
+ enable RSS
+To: Jason Wang <jasowang@redhat.com>,
+ Yuri Benditovich <yuri.benditovich@daynix.com>
+Cc: Andrew Melnychenko <andrew@daynix.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
+References: <58fb3b75-dd69-4715-a8ec-4c3df3b7e4c5@daynix.com>
+ <39a02a4c-f8fa-437c-892f-caca84b8d85d@daynix.com>
+ <20231101050838-mutt-send-email-mst@kernel.org>
+ <e469b33b-c3f3-4d88-bdf2-508c4a35c827@daynix.com>
+ <CAOEp5OcDMdKKPHSVd-GxT-GkBpvbWkMijSBgwihPsEnxmDR7eA@mail.gmail.com>
+ <20231102053202-mutt-send-email-mst@kernel.org>
+ <CAOEp5OefD2LN2MDnEkE=DOMSX0Jw8Z6gAiKAag4dtkecmr1Jgg@mail.gmail.com>
+ <2fbdee21-60f4-49ff-b61b-923c895f90ba@daynix.com>
+ <CAOEp5Oc+wGmxTAezMz4f03kuqsngHAcpi7pqPQDT=PWuy=L7BA@mail.gmail.com>
+ <dbd1d662-bf90-4982-b316-281923a0d778@daynix.com>
+ <CAOEp5Oc5VzWk7e8gKHfHan1odge39bRUh-ZMojCvkQiTFpXdGg@mail.gmail.com>
+ <8439be4e-a739-4cbd-a569-89b6c7f68ab9@daynix.com>
+ <CAOEp5Oee2qinrZJgMMxUQt6zmPVFPCnThfqnLFSWqsSyAoHpjQ@mail.gmail.com>
+ <3c8af942-ca7d-4528-975e-2935718a2428@daynix.com>
+ <CAOEp5OfXH-1ygYMJxq1phwbOJkkvnwBce=TDVLwjsXG6UgwPGA@mail.gmail.com>
+ <637b0f33-6b12-4623-b504-d3ea64908813@daynix.com>
+ <CAOEp5Oc3mb=v-F3Xfx-ypzojq7hLeoPmxu53WA9_4mTx1j50BA@mail.gmail.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <CAOEp5Oc3mb=v-F3Xfx-ypzojq7hLeoPmxu53WA9_4mTx1j50BA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -186,52 +112,308 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgQ8OpZHJpYywNCg0KPi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogQ8OpZHJp
-YyBMZSBHb2F0ZXIgPGNsZ0ByZWRoYXQuY29tPg0KPlNlbnQ6IFR1ZXNkYXksIE5vdmVtYmVyIDE0
-LCAyMDIzIDEwOjUyIFBNDQo+U3ViamVjdDogUmU6IFtQQVRDSCB2NiAwMC8yMV0gdmZpbzogQWRv
-cHQgaW9tbXVmZA0KPg0KPkhlbGxvIFpoZW56aG9uZywNCj4NCj5PbiAxMS8xNC8yMyAxMTowOSwg
-Wmhlbnpob25nIER1YW4gd3JvdGU6DQo+PiBIaSwNCj4+DQo+PiBUaGFua3MgYWxsIGZvciBnaXZp
-bmcgZ3VpZGVzIGFuZCBjb21tZW50cyBvbiBwcmV2aW91cyBzZXJpZXMsIHRoaXMgaXMNCj4+IHRo
-ZSByZW1haW5pbmcgcGFydCBvZiB0aGUgaW9tbXVmZCBzdXBwb3J0Lg0KPj4NCj4+IEJhc2VkIG9u
-IEPDqWRyaWMncyBzdWdnZXN0aW9uLCByZXBsYWNlIG9sZCBjb25maWcgbWV0aG9kIGZvciBJT01N
-VUZEDQo+PiB3aXRoIEtjb25maWcuDQo+Pg0KPj4gQmFzZWQgb24gSmFzb24ncyBzdWdnZXN0aW9u
-LCBkcm9wIHRoZSBpbXBsZW1lbnRhdGlvbiBvZiBtYW51YWxseQ0KPj4gYWxsb2NhdGluZyBod3B0
-IGFuZCBzd2l0Y2ggdG8gSU9BUyBhdHRhY2gvZGV0YWNoLg0KPj4NCj4+IEJlc2lkZSBjdXJyZW50
-IHRlc3QsIHdlIGFsc28gdGVzdGVkIG1kZXYgd2l0aCBtdHR5IGZvciBiZXR0ZXIgY292ZXIgcmFu
-Z2UuDQo+Pg0KPj4gUEFUQ0ggMTogSW50cm9kdWNlIGlvbW11ZmQgb2JqZWN0DQo+PiBQQVRDSCAy
-LTk6IGFkZCBJT01NVUZEIGNvbnRhaW5lciBhbmQgY2RldiBzdXBwb3J0DQo+PiBQQVRDSCAxMC0x
-NzogZmQgcGFzc2luZyBmb3IgY2RldiBhbmQgbGlua2luZyB0byBJT01NVUZEDQo+PiBQQVRDSCAx
-ODogbWFrZSBWRklPQ29udGFpbmVyQmFzZSBwYXJhbWV0ZXIgY29uc3QNCj4+IFBBVENIIDE5LTIx
-OiBDb21waWxlIG91dCBmb3IgSU9NTVVGRCBmb3IgYXJtLCBzMzkweCBhbmQgeDg2DQo+Pg0KPj4N
-Cj4+IFdlIGhhdmUgZG9uZSB3aWRlIHRlc3Qgd2l0aCBkaWZmZXJlbnQgY29tYmluYXRpb25zLCBl
-Lmc6DQo+PiAtIFBDSSBkZXZpY2Ugd2VyZSB0ZXN0ZWQNCj4+IC0gRkQgcGFzc2luZyBhbmQgaG90
-IHJlc2V0IHdpdGggc29tZSB0cmljay4NCj4+IC0gZGV2aWNlIGhvdHBsdWcgdGVzdCB3aXRoIGxl
-Z2FjeSBhbmQgaW9tbXVmZCBiYWNrZW5kcw0KPj4gLSB3aXRoIG9yIHdpdGhvdXQgdklPTU1VIGZv
-ciBsZWdhY3kgYW5kIGlvbW11ZmQgYmFja2VuZHMNCj4+IC0gZGl2aWNlcyBsaW5rZWQgdG8gZGlm
-ZmVyZW50IGlvbW11ZmRzDQo+PiAtIFZGSU8gbWlncmF0aW9uIHdpdGggYSBFODAwIG5ldCBjYXJk
-KG5vIGRpcnR5IHN5bmMgc3VwcG9ydCkgcGFzc3Rocm91Z2gNCj4+IC0gcGxhdGZvcm0sIGNjdyBh
-bmQgYXAgd2VyZSBvbmx5IGNvbXBpbGUtdGVzdGVkIGR1ZSB0byBlbnZpcm9ubWVudCBsaW1pdA0K
-Pj4gLSB0ZXN0IG1kZXYgcGFzcyB0aHJvdWdoIHdpdGggbXR0eSBhbmQgbWl4IHdpdGggcmVhbCBk
-ZXZpY2UgYW5kIGRpZmZlcmVudCBCRQ0KPj4NCj4+IEdpdmVuIHNvbWUgaW9tbXVmZCBrZXJuZWwg
-bGltaXRhdGlvbnMsIHRoZSBpb21tdWZkIGJhY2tlbmQgaXMNCj4+IG5vdCB5ZXQgZnVsbHkgb24g
-cGFyIHdpdGggdGhlIGxlZ2FjeSBiYWNrZW5kIHcuci50LiBmZWF0dXJlcyBsaWtlOg0KPj4gLSBw
-MnAgbWFwcGluZ3MgKHlvdSB3aWxsIHNlZSByZWxhdGVkIGVycm9yIHRyYWNlcykNCj4+IC0gZGly
-dHkgcGFnZSBzeW5jDQo+PiAtIGFuZCBldGMuDQo+Pg0KPj4NCj4+IHFlbXUgY29kZToNCj5odHRw
-czovL2dpdGh1Yi5jb20veWlsaXUxNzY1L3FlbXUvY29tbWl0cy96aGVuemhvbmcvaW9tbXVmZF9j
-ZGV2X3Y2DQo+PiBCYXNlZCBvbiB2ZmlvLW5leHQsIGNvbW1pdCBpZDogMWEyMmZiOTM2ZQ0KPg0K
-PkkganVzdCBoYWQgYSBmZXcgY29tbWVudHMgdGhhdCBJIGFkZHJlc3NlZCBteXNlbGYgaW4gOg0K
-Pg0KPiAgIGh0dHBzOi8vZ2l0aHViLmNvbS9sZWdvYXRlci9xZW11L2NvbW1pdHMvdmZpby04LjIN
-Cj4NCj5QbGVhc2UgdGFrZSBhIGxvb2sgYW5kIEkgd2lsbCBwb3NzaWJseSBtZXJnZSB0aGUgbW9k
-aWZpZWQgdjYgaW4gdmZpby1uZXh0DQo+YWZ0ZXIgYSBmZXcgZGF5cyBvciBuZXh0IHdlZWsgd2hl
-biBwZW9wbGUgYXJlIGJhY2sgZnJvbSBMUEMuDQoNCkdvb2QgZm9yIG1lLCBvbmx5IGEgbWlub3Ig
-c3VnZ2VzdGlvbiB0byB1c2UgT0JKRUNUX0RFQ0xBUkVfVFlQRS4NCg0KPg0KPkkgd291bGQgbGlr
-ZSB0byBwcm9wb3NlIHRoaXMgc2VyaWVzIGZvciBhbiBlYXJseSBtZXJnZSBpbiBRRU1VIDkuMC4g
-U28sIHdlDQo+aGF2ZSBhIGZldyB3ZWVrcyB0byBwb2xpc2ggYW5kIHRlc3QgYSBiaXQgbW9yZS4g
-SSBkaWRuJ3QgZ2V0IGZlZWRiYWNrIGZyb20NCj5BUk0gZm9yIGluc3RhbmNlICh0aGF0J3MgYSBt
-ZXNzYWdlIGluIGEgYm90dGxlIGZvciBFcmljIDopLg0KDQpHbGFkIHRvIGtub3csIHRoYW5rcyB2
-ZXJ5IG11Y2ggZm9yIHlvdXIgYWN0aXZlIHJldmlldyBhbmQgZ3VpZGFuY2UNCnNpbmNlIG15IGZp
-cnN0IHZlcnNpb27wn5iKDQpJJ2xsIGRvIG1vcmUgdGVzdCByZWNlbnQgZGF5cy4NCg0KPg0KPk15
-IGxhc3QgcmVxdWVzdCB3b3VsZCBiZSB0byB0YWtlIHNvbWUgb2YgdGhlIGRvY3VtZW50YXRpb24s
-IGJlbG93IGluIHRoaXMNCj5lbWFpbCwgYW5kIGluY2x1ZGUgaXQgaW4gUUVNVS4gSXQgY2FuIGJl
-IGRvbmUgbGF0ZXIuDQoNClN1cmUsIHdpbGwgZG8uDQoNCkJScy4NClpoZW56aG9uZw0K
+
+
+On 2023/11/15 7:09, Yuri Benditovich wrote:
+> 
+> 
+> On Tue, Nov 14, 2023 at 9:03 AM Akihiko Odaki <akihiko.odaki@daynix.com 
+> <mailto:akihiko.odaki@daynix.com>> wrote:
+> 
+>     On 2023/11/14 2:26, Yuri Benditovich wrote:
+>      >
+>      >
+>      > On Mon, Nov 13, 2023 at 2:44 PM Akihiko Odaki
+>     <akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>
+>      > <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>>> wrote:
+>      >
+>      >     On 2023/11/13 20:44, Yuri Benditovich wrote:
+>      >      >
+>      >      >
+>      >      > On Sat, Nov 11, 2023 at 5:28 PM Akihiko Odaki
+>      >     <akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>
+>     <mailto:akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>>
+>      >      > <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>
+>      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>>>> wrote:
+>      >      >
+>      >      >     On 2023/11/03 22:14, Yuri Benditovich wrote:
+>      >      >      >
+>      >      >      >
+>      >      >      > On Fri, Nov 3, 2023 at 11:55 AM Akihiko Odaki
+>      >      >     <akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com> <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>>
+>      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com> <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>>>
+>      >      >      > <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>
+>      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>>
+>      >      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>
+>      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>>>>> wrote:
+>      >      >      >
+>      >      >      >     On 2023/11/03 18:35, Yuri Benditovich wrote:
+>      >      >      >      >
+>      >      >      >      >
+>      >      >      >      > On Thu, Nov 2, 2023 at 4:56 PM Akihiko Odaki
+>      >      >      >     <akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>
+>      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>> <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>
+>      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>>>
+>      >      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>
+>      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>> <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>
+>      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>>>>
+>      >      >      >      > <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>
+>      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>>
+>      >      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>
+>      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>>>
+>      >      >      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>
+>      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>>
+>      >      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>
+>      >     <mailto:akihiko.odaki@daynix.com
+>     <mailto:akihiko.odaki@daynix.com>>>>>> wrote:
+>      >      >      >      >
+>      >      >      >      >     On 2023/11/02 19:20, Yuri Benditovich wrote:
+>      >      >      >      >      >
+>      >      >      >      >      >
+>      >      >      >      >      > On Thu, Nov 2, 2023 at 11:33 AM
+>     Michael S.
+>      >     Tsirkin
+>      >      >      >      >     <mst@redhat.com <mailto:mst@redhat.com>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>>
+>      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>>>
+>      >      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>>
+>      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>>>>
+>      >      >      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>>
+>      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>>>
+>      >      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>>
+>      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>>>>>
+>      >      >      >      >      > <mailto:mst@redhat.com
+>     <mailto:mst@redhat.com>
+>      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>>>
+>      >      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>>
+>      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>>>>
+>      >      >      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>>
+>      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>>>
+>      >      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>>
+>      >     <mailto:mst@redhat.com <mailto:mst@redhat.com>
+>     <mailto:mst@redhat.com <mailto:mst@redhat.com>>>>>>> wrote:
+>      >      >      >      >      >
+>      >      >      >      >      >     On Thu, Nov 02, 2023 at 11:09:27AM
+>      >     +0200, Yuri
+>      >      >      >     Benditovich wrote:
+>      >      >      >      >      >      > Probably we mix two different
+>     patches
+>      >     in this
+>      >      >      >     discussion.
+>      >      >      >      >      >      > Focusing on the patch in the
+>     e-mail
+>      >     header:
+>      >      >      >      >      >      >
+>      >      >      >      >      >      > IMO it is not acceptable to
+>     fail QEMU run
+>      >      >     for one
+>      >      >      >     feature
+>      >      >      >      >     that we
+>      >      >      >      >      >     can't make
+>      >      >      >      >      >      > active when we silently drop
+>     all other
+>      >      >     features in
+>      >      >      >     such a
+>      >      >      >      >     case.
+>      >      >      >      >      >
+>      >      >      >      >      >     If the feature is off by default
+>     then it
+>      >     seems more
+>      >      >      >     reasonable
+>      >      >      >      >      >     and silent masking can be seen as
+>     a bug.
+>      >      >      >      >      >     Most virtio features are on by
+>     default
+>      >     this is
+>      >      >     why it's
+>      >      >      >      >      >     reasonable to mask them.
+>      >      >      >      >      >
+>      >      >      >      >      >
+>      >      >      >      >      > If we are talking about RSS: setting it
+>      >     initially
+>      >      >     off is the
+>      >      >      >      >     development
+>      >      >      >      >      > time decision.
+>      >      >      >      >      > When it will be completely stable
+>     there is
+>      >     no reason to
+>      >      >      >     keep it
+>      >      >      >      >     off by
+>      >      >      >      >      > default, so this is more a question
+>     of time
+>      >     and of a
+>      >      >      >     readiness of
+>      >      >      >      >     libvirt.
+>      >      >      >      >
+>      >      >      >      >     It is not ok to make "on" the default;
+>     that will
+>      >      >     enable RSS
+>      >      >      >     even when
+>      >      >      >      >     eBPF steering support is not present and can
+>      >     result in
+>      >      >      >     performance
+>      >      >      >      >     degradation.
+>      >      >      >      >
+>      >      >      >      >
+>      >      >      >      > Exactly as it is today - with vhost=on the host
+>      >     does not
+>      >      >     suggest RSS
+>      >      >      >      > without  eBPF.
+>      >      >      >      > I do not understand what you call "performance
+>      >      >     degradation", can you
+>      >      >      >      > describe the scenario?
+>      >      >      >
+>      >      >      >     I was not clear, but I was talking about the
+>     case of
+>      >      >     vhost=off or peers
+>      >      >      >     other than tap (e.g., user). rss=on employs
+>     in-qemu RSS,
+>      >      >     which incurs
+>      >      >      >     overheads for such configurations.
+>      >      >      >
+>      >      >      >
+>      >      >      > So, vhost=off OR peers other than tap:
+>      >      >      >
+>      >      >      > In the case of peers other than tap (IMO) we're not
+>      >     talking about
+>      >      >      > performance at all.
+>      >      >      > Backends like "user" (without vnet_hdr) do not
+>     support _many_
+>      >      >      > performance-oriented features.
+>      >      >      > If RSS is somehow "supported" for such backends this is
+>      >     rather a
+>      >      >      > misunderstanding (IMO again).
+>      >      >
+>      >      >     We do not need to ensure good performance when RSS is
+>     enabled
+>      >     by the
+>      >      >     guest for backends without eBPF steering program as
+>     you say.
+>      >     In-QEMU
+>      >      >     RSS
+>      >      >     is only useful for testing and not meant to improve the
+>      >     performance.
+>      >      >
+>      >      >     However, if you set rss=on, QEMU will advertise the
+>      >     availability of RSS
+>      >      >     feature. The guest will have no mean to know if it's
+>      >     implemented in a
+>      >      >     way not performance-wise so it may decide to use the
+>     feature
+>      >     to improve
+>      >      >     the performance, which can result in performance
+>     degradation.
+>      >      >     Therefore,
+>      >      >     it's better not to set rss=on for such backends.
+>      >      >
+>      >      >
+>      >      > I still do not understand what is the scenario where you
+>     see or
+>      >     suspect
+>      >      > the mentioned "performance degradation".
+>      >      > We can discuss whether such a problem exists as soon as you
+>      >     explain it.
+>      >
+>      >     The scenario is that:
+>      >     - rss=on,
+>      >     - A backend without eBPF steering support is in use, and
+>      >     - The guest expects VIRTIO_NET_F_RSS has little overheads as
+>     hardware
+>      >     RSS implementations do.
+>      >
+>      >     I consider the risk of the performance degradation in such a
+>     situation
+>      >     is the reason why virtio-net emits a warning ("Can't load
+>     eBPF RSS -
+>      >     fallback to software RSS") when in-QEMU RSS is in use.
+>      >
+>      >
+>      > In a described scenario (vhost=off) I do not see why the performance
+>      > degradation should happen:
+>      > the SW RSS (if activated) will place each packet into proper
+>     queue (even
+>      > if the auto_mq in kernel is not able to do that) and such a way the
+>      > guest will not need to reschedule the packet to proper CPU
+>      >
+> 
+>     The scenario I'm concerned is that the guest has its own packet
+>     steering
+>     mechanism which is feature-wise superior to RSS. For example, Linux has
+>     such a mechanism called RPS, which has some advantages due to its
+>     extensible nature according to:
+>     https://www.kernel.org/doc/html/v6.6/networking/scaling.html#rps-receive-packet-steering <https://www.kernel.org/doc/html/v6.6/networking/scaling.html#rps-receive-packet-steering>
+> 
+>     Such a guest may still prefer hardware RSS if available since hardware
+>     RSS is expected to have less overheads. However, it is not true for
+>     in-qemu RSS, and using in-QEMU RSS instead of the guest-side steering
+>     mechanism may just hide useful features the guest-side steering
+>     mechanism has and result in performance degradation.
+> 
+> 
+> Note that in terms of per-packet computation for RSS the in-QEMU RSS 
+> does exactly the same operations in native code that the eBPF does in 
+> the emulation.
+> So, I wouldn't say that SW RSS brings some "performance degradation".
+> We prefer eBPF as it can serve both vhost and non-vhost setups.
+
+I see the eBPF steering program in a different way.
+
+tuntap can have several queues, and the assignment of packets is 
+automatically done by tuntap by default. However, the default assignment 
+policy may not be good for all applications, and some may need a 
+different policy. Such an application can still re-assign packets to 
+application-internal queues that reside on different CPUs and that's 
+what 'in-qemu' RSS does. However, that incurs communication overheads 
+across CPUs. The eBPF steering program can eliminate the overheads by 
+allowing the userspace to override the packet assignment policy with eBPF.
+
+The eBPF steering program feature of tuntap and its benefit are 
+independent of the vhost usage. In fact, the feature predates the usage 
+in QEMU that combines vhost and eBPF steering program. The initial 
+proposal of the eBPF steering program I found is submitted by Jason and 
+available at:
+https://lore.kernel.org/lkml/1506500637-13881-1-git-send-email-jasowang@redhat.com/
+
+Jason, please point out if you find something wrong in my understanding 
+with the eBPF steering program feature or something to add.
 
