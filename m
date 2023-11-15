@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 670437ED443
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 21:57:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 244997ED42C
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 21:57:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3MvW-0004mP-4H; Wed, 15 Nov 2023 15:55:58 -0500
+	id 1r3MvY-0004qQ-4L; Wed, 15 Nov 2023 15:56:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r3MvP-0004lZ-4x
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 15:55:51 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1r3MvV-0004ne-Hl
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 15:55:57 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r3MvK-00088w-QL
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 15:55:49 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4083f61312eso416845e9.3
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 12:55:44 -0800 (PST)
+ id 1r3MvQ-00089b-Cn
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 15:55:57 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-40836ea8cbaso511115e9.0
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 12:55:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700081743; x=1700686543; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700081747; x=1700686547; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YWoiSiUm6iXSwHJIP4SnJtrzbg+5jh5ZVQXK2gBfc2c=;
- b=E13MFcddCMe4zVl37hof2xzTGekFHag1ckcvXLayNm31VRZMtA9Vfl5/Ok4tOH2q4r
- oenTpd6Lq9yXGiB5KypstawKpbJWL7TAwN5ExoGnLsL/39rgZAI/bxk4XgxzZrKHP9w5
- L6cZXbwsDMFuY9hfKWwhnZDuw9eli8+CI6kHsPeB4rBLOHD8B+lt5roq5o5YYV6DyEfN
- wzYtlV4lbtUdO4CRz85tVuwfpTFEGZT9iez9hkf/OnHGYQqPJaiDat+CvKF8tgM7pyuQ
- IkU5nCpcOGsR0iYo1uC41f3958+4JveiHw14AKlDrdlx/W7khs3gE8fpRaQi4GSur2GU
- 2m0Q==
+ bh=NCRqk6YT3bsj71ZXwzX8pG0SOXxV0ZtG0Z5l0HsDHlo=;
+ b=cJUSxv36xVFCy5pa12IDcOreCEqhzkURC/N2wkaGTpydHvYJ23RxoLjccubMIVjVAm
+ hdfYN6Q36thlq/RE0efKz46k2xQfjnATzUhH4+Vn6NpAH/IjKbwsqoILrmWXQbG9H69g
+ MTPXeI9lSJk3XcS9l158lCkWZ0bKJ0QWtj6U6OGL/E6LfclIniY238UyNFB7pFU51jRb
+ rgPWjR8+X0KJvcQNMhholiMYgt8yrCEAiZcUtu57AWW8TEPrPtYzM0u9pfKh03hVsSCz
+ lD8cquaP3IvR0QKw59+3LHvigU6oBru8Q1IuP7DruC0ZkzVRYUi61V3K7eZRuECN3hJM
+ qpcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700081743; x=1700686543;
+ d=1e100.net; s=20230601; t=1700081747; x=1700686547;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YWoiSiUm6iXSwHJIP4SnJtrzbg+5jh5ZVQXK2gBfc2c=;
- b=ZQPuAFR2wZvZ9HqciWqZBo9Uw86RXJYjPyZ683L7heDXY6t2KV1kGRAmw+AU2PvUKR
- Olcli6lLzMZ7W3s3+gasqauovdjqq2FVpC2QswNHkx0d9qNLmK/GI0da6G9+3QV67XXz
- w4gum1JEv4KRPzl23gL29Qttj21VcLTDYTJ08cCDSepfN6uS2dtgqYDAeFBYZfRdJ7gK
- Rr1PrscmFCTzV1ykfbJKM5nByj1f8Bhg6syPVSp7e1oOHt5WBLSjd2gYVz2rfJvLdK69
- hafD8B5YigQMJT/NEk21i7MlFOtjevLixLN/2xB4iY1JfXwe0wJz01b+0IBkmY97tQ/F
- hMkw==
-X-Gm-Message-State: AOJu0YwlVN4PeTjommUxjy7oA//SWHDs/tzXNLGM0zYVtxYGAhkRoFAF
- ogOAz+a0Gjwdnpwk0rgWGj42Ag==
-X-Google-Smtp-Source: AGHT+IFQOXtrR474OUPGH8xtaCKm+uKoLOvuqASPAkglLHlzqLiV6A6jMwH3pApQRbamVxr7D5wsfg==
-X-Received: by 2002:a05:600c:3143:b0:3fb:feb0:6f40 with SMTP id
- h3-20020a05600c314300b003fbfeb06f40mr11721890wmo.11.1700081743645; 
- Wed, 15 Nov 2023 12:55:43 -0800 (PST)
+ bh=NCRqk6YT3bsj71ZXwzX8pG0SOXxV0ZtG0Z5l0HsDHlo=;
+ b=cSHuiqYjKwygj0OIylQrq9iKCMocMUD2dHVJkGC1VJEP4IWMVC3wNe+W6KOOfRuIrp
+ emKcL5ITk7HEZg95X7b+BdTKd/7aW3GkRneqLqodmxmlykkkG7K2GGc3vM54RyZJW+vF
+ AL8WZsUJQbtc3+CtKY6Sr+qTAc51g53CThYQDemNEEbISW38N9rrshJqtGT16xljltge
+ gwIemh6owd10oLWhCIUYOFhE+XGMnfQLfpcFugASRLx/I53YmTlKZnnh8z3TnJVmf+Lq
+ WaceF2tKApv6ru62rYcrDZDBvDf2XCLDdj1Lh6xoixNkJgXL8UDR67T7FHmntJC9EJvS
+ FRJw==
+X-Gm-Message-State: AOJu0Yw8jHsnozF18qj0jQetcmPeRlGpNHchlmfao45MGsz7MNbUvb7c
+ E5Xq+eB8H7pilOzI8D8zFzktPw==
+X-Google-Smtp-Source: AGHT+IGtQuYHmRL/4VHaYNmuvFvkM2SvYkOHnV9nnuBfbCM4aqgQ8Hz03CJ/ns8MElp15us3fBMWIw==
+X-Received: by 2002:a05:600c:4d01:b0:406:8c7a:9520 with SMTP id
+ u1-20020a05600c4d0100b004068c7a9520mr10301980wmp.36.1700081746521; 
+ Wed, 15 Nov 2023 12:55:46 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- fb11-20020a05600c520b00b004076f522058sm909879wmb.0.2023.11.15.12.55.43
+ x15-20020adfffcf000000b0031984b370f2sm11513405wrs.47.2023.11.15.12.55.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 15 Nov 2023 12:55:43 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E5A635F7B0;
- Wed, 15 Nov 2023 20:55:42 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 0B7845F7B1;
+ Wed, 15 Nov 2023 20:55:43 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
@@ -67,25 +67,25 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
  Alexandre Iooss <erdnaxe@crans.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 02/10] .gitlab-ci.d/cirrus: Upgrade macOS to 13 (Ventura)
-Date: Wed, 15 Nov 2023 20:55:34 +0000
-Message-Id: <20231115205542.3092038-3-alex.bennee@linaro.org>
+ Anders Roxell <anders.roxell@linaro.org>
+Subject: [PATCH 03/10] tests/docker: merge debian-native with debian-amd64
+Date: Wed, 15 Nov 2023 20:55:35 +0000
+Message-Id: <20231115205542.3092038-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231115205542.3092038-1-alex.bennee@linaro.org>
 References: <20231115205542.3092038-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,82 +101,225 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+debian-native isn't really needed and suffers from the problem of
+tracking a distros dependencies rather than the projects. With a
+little surgery we can make the debian-amd64 container architecture
+neutral and allow people to use it to build a native QEMU.
 
-macOS 14 "Sonoma" was released on September 2023 [1].
+Rename it so it follows the same non-arch pattern of the other distro
+containers.
 
-According to QEMU's support policy, we stop supporting the
-previous major release two years after the the new major
-release has been published. Replace the macOS 12 (Monterey)
-testing by macOS 13 (Ventura, released on October 2022, [2]).
-
-Refresh the generated files by running:
-
-  $ make lcitool-refresh
-
-[1] https://www.apple.com/newsroom/2023/09/macos-sonoma-is-available-today/
-[2] https://www.apple.com/newsroom/2022/10/macos-ventura-is-now-available/
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20231108162022.76189-1-philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
 ---
- .gitlab-ci.d/cirrus.yml                              | 6 +++---
- .gitlab-ci.d/cirrus/{macos-12.vars => macos-13.vars} | 2 +-
- tests/lcitool/refresh                                | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
- rename .gitlab-ci.d/cirrus/{macos-12.vars => macos-13.vars} (95%)
+ .gitlab-ci.d/buildtest.yml                    | 12 ++---
+ .gitlab-ci.d/containers.yml                   |  2 +-
+ tests/docker/Makefile.include                 |  3 --
+ tests/docker/dockerfiles/debian-native.docker | 54 -------------------
+ .../{debian-amd64.docker => debian.docker}    |  7 ++-
+ tests/lcitool/refresh                         |  9 ++--
+ 6 files changed, 18 insertions(+), 69 deletions(-)
+ delete mode 100644 tests/docker/dockerfiles/debian-native.docker
+ rename tests/docker/dockerfiles/{debian-amd64.docker => debian.docker} (96%)
 
-diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index e7f1f83c2c..07dc6edae1 100644
---- a/.gitlab-ci.d/cirrus.yml
-+++ b/.gitlab-ci.d/cirrus.yml
-@@ -59,13 +59,13 @@ x64-freebsd-13-build:
-     INSTALL_COMMAND: pkg install -y
-     TEST_TARGETS: check
- 
--aarch64-macos-12-base-build:
-+aarch64-macos-13-base-build:
-   extends: .cirrus_build_job
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index da72f7c690..7f9af83b10 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -70,7 +70,7 @@ build-system-debian:
+   needs:
+     job: amd64-debian-container
    variables:
--    NAME: macos-12
-+    NAME: macos-13
-     CIRRUS_VM_INSTANCE_TYPE: macos_instance
-     CIRRUS_VM_IMAGE_SELECTOR: image
--    CIRRUS_VM_IMAGE_NAME: ghcr.io/cirruslabs/macos-monterey-base:latest
-+    CIRRUS_VM_IMAGE_NAME: ghcr.io/cirruslabs/macos-ventura-base:latest
-     CIRRUS_VM_CPUS: 12
-     CIRRUS_VM_RAM: 24G
-     UPDATE_COMMAND: brew update
-diff --git a/.gitlab-ci.d/cirrus/macos-12.vars b/.gitlab-ci.d/cirrus/macos-13.vars
-similarity index 95%
-rename from .gitlab-ci.d/cirrus/macos-12.vars
-rename to .gitlab-ci.d/cirrus/macos-13.vars
-index 5f3fb346d1..534f029956 100644
---- a/.gitlab-ci.d/cirrus/macos-12.vars
-+++ b/.gitlab-ci.d/cirrus/macos-13.vars
-@@ -1,6 +1,6 @@
- # THIS FILE WAS AUTO-GENERATED
- #
--#  $ lcitool variables macos-12 qemu
-+#  $ lcitool variables macos-13 qemu
- #
- # https://gitlab.com/libvirt/libvirt-ci
+-    IMAGE: debian-amd64
++    IMAGE: debian
+     CONFIGURE_ARGS: --with-coroutine=sigaltstack
+     TARGETS: arm-softmmu i386-softmmu riscv64-softmmu sh4eb-softmmu
+       sparc-softmmu xtensa-softmmu
+@@ -82,7 +82,7 @@ check-system-debian:
+     - job: build-system-debian
+       artifacts: true
+   variables:
+-    IMAGE: debian-amd64
++    IMAGE: debian
+     MAKE_CHECK_ARGS: check
  
+ avocado-system-debian:
+@@ -91,7 +91,7 @@ avocado-system-debian:
+     - job: build-system-debian
+       artifacts: true
+   variables:
+-    IMAGE: debian-amd64
++    IMAGE: debian
+     MAKE_CHECK_ARGS: check-avocado
+     AVOCADO_TAGS: arch:arm arch:i386 arch:riscv64 arch:sh4 arch:sparc arch:xtensa
+ 
+@@ -101,7 +101,7 @@ crash-test-debian:
+     - job: build-system-debian
+       artifacts: true
+   variables:
+-    IMAGE: debian-amd64
++    IMAGE: debian
+   script:
+     - cd build
+     - make NINJA=":" check-venv
+@@ -589,7 +589,7 @@ build-tools-and-docs-debian:
+     # when running on 'master' we use pre-existing container
+     optional: true
+   variables:
+-    IMAGE: debian-amd64
++    IMAGE: debian
+     MAKE_CHECK_ARGS: check-unit ctags TAGS cscope
+     CONFIGURE_ARGS: --disable-system --disable-user --enable-docs --enable-tools
+     QEMU_JOB_PUBLISH: 1
+@@ -609,7 +609,7 @@ build-tools-and-docs-debian:
+ # of what topic branch they're currently using
+ pages:
+   extends: .base_job_template
+-  image: $CI_REGISTRY_IMAGE/qemu/debian-amd64:$QEMU_CI_CONTAINER_TAG
++  image: $CI_REGISTRY_IMAGE/qemu/debian:$QEMU_CI_CONTAINER_TAG
+   stage: test
+   needs:
+     - job: build-tools-and-docs-debian
+diff --git a/.gitlab-ci.d/containers.yml b/.gitlab-ci.d/containers.yml
+index 8637a13d86..ae79d4c58b 100644
+--- a/.gitlab-ci.d/containers.yml
++++ b/.gitlab-ci.d/containers.yml
+@@ -11,7 +11,7 @@ amd64-debian-container:
+   extends: .container_job_template
+   stage: containers
+   variables:
+-    NAME: debian-amd64
++    NAME: debian
+ 
+ amd64-ubuntu2204-container:
+   extends: .container_job_template
+diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
+index cd4688bf07..5ba5b50ab9 100644
+--- a/tests/docker/Makefile.include
++++ b/tests/docker/Makefile.include
+@@ -88,9 +88,6 @@ DOCKER_PARTIAL_IMAGES += debian-s390x-cross
+ DOCKER_PARTIAL_IMAGES += fedora
+ endif
+ 
+-# The native build should never use the registry
+-docker-image-debian-native: DOCKER_REGISTRY=
+-
+ # alpine has no adduser
+ docker-image-alpine: NOUSER=1
+ 
+diff --git a/tests/docker/dockerfiles/debian-native.docker b/tests/docker/dockerfiles/debian-native.docker
+deleted file mode 100644
+index abac7d7cd7..0000000000
+--- a/tests/docker/dockerfiles/debian-native.docker
++++ /dev/null
+@@ -1,54 +0,0 @@
+-#
+-# Docker Debian Native
+-#
+-# This is intended to build QEMU on native host systems. Debian is
+-# chosen due to the broadest range on supported host systems for QEMU.
+-#
+-# This docker target is based on the docker.io Debian Bullseye base
+-# image rather than QEMU's base because we would otherwise confuse the
+-# build grabbing stuff from the registry built for other
+-# architectures.
+-#
+-FROM docker.io/library/debian:bullseye-slim
+-MAINTAINER Alex Bennée <alex.bennee@linaro.org>
+-
+-# Duplicate deb line as deb-src
+-RUN cat /etc/apt/sources.list | sed "s/^deb\ /deb-src /" >> /etc/apt/sources.list
+-
+-# Install common build utilities
+-RUN apt update && \
+-    DEBIAN_FRONTEND=noninteractive apt install -yy eatmydata
+-
+-RUN apt update && \
+-    DEBIAN_FRONTEND=noninteractive eatmydata \
+-    apt build-dep -yy --arch-only qemu
+-
+-RUN apt update && \
+-    DEBIAN_FRONTEND=noninteractive eatmydata \
+-    apt install -y --no-install-recommends \
+-        cscope \
+-        genisoimage \
+-        exuberant-ctags \
+-        global \
+-        libbz2-dev \
+-        liblzo2-dev \
+-        libgcrypt20-dev \
+-        libfdt-dev \
+-        librdmacm-dev \
+-        libsasl2-dev \
+-        libsnappy-dev \
+-        libvte-dev \
+-        netcat-openbsd \
+-        ninja-build \
+-        openssh-client \
+-        python3-numpy \
+-        python3-opencv \
+-        python3-venv
+-
+-ENV QEMU_CONFIGURE_OPTS $QEMU_CONFIGURE_OPTS
+-ENV DEF_TARGET_LIST "none"
+-# As a final step configure the user (if env is defined)
+-ARG USER
+-ARG UID
+-RUN if [ "${USER}" ]; then \
+-  id ${USER} 2>/dev/null || useradd -u ${UID} -U ${USER}; fi
+diff --git a/tests/docker/dockerfiles/debian-amd64.docker b/tests/docker/dockerfiles/debian.docker
+similarity index 96%
+rename from tests/docker/dockerfiles/debian-amd64.docker
+rename to tests/docker/dockerfiles/debian.docker
+index 9b50fb2f63..b5e642d5b6 100644
+--- a/tests/docker/dockerfiles/debian-amd64.docker
++++ b/tests/docker/dockerfiles/debian.docker
+@@ -155,10 +155,13 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
+   apt install -y --no-install-recommends \
+   cscope\
+   global\
+-  linux-headers-amd64
++  linux-headers-generic
+ RUN git clone https://github.com/luigirizzo/netmap.git /usr/src/netmap
+ RUN cd /usr/src/netmap && git checkout v11.3
+-RUN cd /usr/src/netmap/LINUX && ./configure --no-drivers --no-apps --kernel-dir=$(ls -d /usr/src/linux-headers-*-amd64) && make install
++RUN cd /usr/src/netmap/LINUX && \
++  ./configure --no-drivers --no-apps \
++  --kernel-dir=$(ls -d /usr/src/linux-headers-*-$(dpkg --print-architecture)) \
++  && make install
+ ENV QEMU_CONFIGURE_OPTS --enable-netmap
+ # As a final step configure the user (if env is defined)
+ ARG USER
 diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 10c54a377c..7c211eba2e 100755
+index 7c211eba2e..993683cf48 100755
 --- a/tests/lcitool/refresh
 +++ b/tests/lcitool/refresh
-@@ -203,7 +203,7 @@ try:
-     # Cirrus packages lists for GitLab
-     #
-     generate_cirrus("freebsd-13")
--    generate_cirrus("macos-12")
-+    generate_cirrus("macos-13")
+@@ -99,10 +99,13 @@ debian12_extras = [
+     "  apt install -y --no-install-recommends \\\n",
+     "  cscope\\\n",
+     "  global\\\n",
+-    "  linux-headers-amd64\n",
++    "  linux-headers-generic\n",
+     "RUN git clone https://github.com/luigirizzo/netmap.git /usr/src/netmap\n",
+     "RUN cd /usr/src/netmap && git checkout v11.3\n",
+-    "RUN cd /usr/src/netmap/LINUX && ./configure --no-drivers --no-apps --kernel-dir=$(ls -d /usr/src/linux-headers-*-amd64) && make install\n",
++    "RUN cd /usr/src/netmap/LINUX && \\\n",
++    "  ./configure --no-drivers --no-apps \\\n",
++    "  --kernel-dir=$(ls -d /usr/src/linux-headers-*-$(dpkg --print-architecture)) \\\n",
++    "  && make install\n",
+     "ENV QEMU_CONFIGURE_OPTS --enable-netmap\n"
+ ]
  
+@@ -123,7 +126,7 @@ try:
      #
-     # VM packages lists
+     generate_dockerfile("alpine", "alpine-318")
+     generate_dockerfile("centos8", "centos-stream-8")
+-    generate_dockerfile("debian-amd64", "debian-12",
++    generate_dockerfile("debian", "debian-12",
+                         trailer="".join(debian12_extras))
+     generate_dockerfile("fedora", "fedora-38")
+     generate_dockerfile("opensuse-leap", "opensuse-leap-15")
 -- 
 2.39.2
 
