@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BDCC7EBAEE
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 02:28:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D60657EBAF0
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 02:33:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r34g1-0004cM-5I; Tue, 14 Nov 2023 20:26:45 -0500
+	id 1r34lK-00066N-9K; Tue, 14 Nov 2023 20:32:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r34fx-0004bw-Dt
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 20:26:41 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1r34lI-000661-T3
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 20:32:12 -0500
+Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r34fv-0003OS-RW
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 20:26:41 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1cc30bf9e22so3074675ad.1
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 17:26:39 -0800 (PST)
+ id 1r34lF-0004va-MP
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 20:32:11 -0500
+Received: by mail-il1-x12b.google.com with SMTP id
+ e9e14a558f8ab-35aa6107e9fso18775005ab.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 17:32:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700011598; x=1700616398; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=linaro.org; s=google; t=1700011928; x=1700616728; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=jZpgIw8NKaz2b/Y+I1DUaKIx0Tu7c0o37rofpwN3XgQ=;
- b=TPTHh17UPpvTvnpQmd5bozL80+IgGpZ76yyriRr54uCDEMANb/m3Pszt4Vd9rAUAwP
- gw28878mJX2qpgD3Ij/YCIaOY2IZOgbwuIceh5Lht6sVsF7QA4F6ih44Dktfg/jkdT7K
- O/1dq3cOloIYt3Ne/BihlQ40Ed6dUYkeTMAFGQMNqe2LdcyB1vHuUyiCkj5TR/a6eGbA
- XLnCboSMM0JcvtlgdoUjpTiYrgnOKu/dCcrsXuHXeyKRaj/QTI5nr7NLETDgIgx3mE+A
- EQHSr6K4l83Hp4yyza+TLo0ANNm3gEhT5wUIE/GpkUif7+s6ZgB6QHAO5AUsmENbk+EG
- 9gfw==
+ bh=bnyM18GWbxTr2+1uLL36CuPQZ9ByvKq9AfsBxbpDY/A=;
+ b=lDcQjsIQ3vVe5m4olwQctpSP677yU2GHH0I1cYcS+b64NLx1kgxioXNgboRGIWzjb0
+ HCPnIXZiid/nwEVucdCp7YPiQs+rzSipy+Sl2QmIq2Ri3brbATkHPoflhuUv+K3tebef
+ /8lBQ/hNzV6F2yF4gAeBtYPZ4VjKrkUSt3isVohZ7k1X43fkkEowXdJWx3XJKcXS5PZq
+ Su7NcKZQk8crphFkm48ENcK+bhtntXtiamW1iLm67J2Kb2WnGWIk03bovRE9Rucif29a
+ 34Dxt3UKiNQ8kEqRow4toWZX3AGRStBg0MHpIkKnGDOYA+L7RK+Uu/BarPk9Pd2vuwsS
+ doXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700011598; x=1700616398;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=1e100.net; s=20230601; t=1700011928; x=1700616728;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jZpgIw8NKaz2b/Y+I1DUaKIx0Tu7c0o37rofpwN3XgQ=;
- b=Lz9pfwPzE5YGn67fb/n9y9ZDjdndumBNoPB2nmnRjTxuvLATM0qK3Y8BS7/NN3/8ok
- EWGHZxZLd02RCEHOB+ah9R0F4SyY6mqtzlVwFcHyfxRD/vqgjC0Xn63yDA2xVypm/lDU
- JQcUwvSdknkWuL4QZqKgyPUIe2N1WVqUpqayjKguZ2lQIabHAVLESj90IJ4RZ/0zrWEg
- wyeVBvHq+tPrmqOlGhSleFEtFykV796yeDaTuqGbYtGeEoV4CljMQlBym6wepid0SB9C
- IPQX++V7gA/NFYf73FtWigqvG+sBFuS9D132e200mjPcg+YQHBu1iWDMRg4LRLBvxbhi
- tZfw==
-X-Gm-Message-State: AOJu0YzzUBN5Ml6vx2d3+wlRCNY5TQw7qeFyKxgCeOzta55cYOmuAaHj
- A6SYE0cu3J+Ol0KHyfApFid3ag==
-X-Google-Smtp-Source: AGHT+IHT8m5YB7xfKJ3m+5xePsJHjYXfLNk/qbIO5JHwCkWLROB/tyP7+3twVknd4CVbBChdPVvb7Q==
-X-Received: by 2002:a17:903:2284:b0:1cc:332f:9e4b with SMTP id
- b4-20020a170903228400b001cc332f9e4bmr5716935plh.1.1700011598356; 
- Tue, 14 Nov 2023 17:26:38 -0800 (PST)
+ bh=bnyM18GWbxTr2+1uLL36CuPQZ9ByvKq9AfsBxbpDY/A=;
+ b=UEzObJsA/ZdI6rWF2/0c5K+3Jk4An2BE/PhFay+vHPCe9p8HHjXUfHoKGYhCBMorA8
+ DfJ817eb/s9PDjm2Qr9TjzFi+/dcQfIThwgi22w1r/Z5wyn/OfJeXXgU+aVUaha57zJb
+ 0i4PIJXVaA0F8qIM9AQvzMUFdqRqC21fjYSyYU2CoZUXrv7SK7UEnIUMVATUGzKg76Oc
+ QKIc5cemuvnfOpW7XhlPdGrwxMmDT5Z3XuC3cBq9yPZnzaMFkZDbNL9xI8pa62r72waf
+ DqOuXlBIXI4tFPmwxn3NHz/vNb3lXhYLrZ1SlEPMBTrVy6NrzReLVEshVSoWFEb1oiFs
+ MMIw==
+X-Gm-Message-State: AOJu0YwyvFEUnbCcEWo4YNla310l0pi2itl/XO15ieIfG2WMULTPuab0
+ jsxb1wlsyyrf147oH0uZSYP1qWdHFqh8Euxp1r0=
+X-Google-Smtp-Source: AGHT+IG5PWrbSD6oMWVJrdbGuLjtHbGsBvCSDE5q7u3nnBMv5bVu345QQUvk5I3424La4DZhDW39XQ==
+X-Received: by 2002:a05:6e02:18cf:b0:359:d24d:6274 with SMTP id
+ s15-20020a056e0218cf00b00359d24d6274mr15956695ilu.0.1700011927915; 
+ Tue, 14 Nov 2023 17:32:07 -0800 (PST)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- e17-20020a17090301d100b001bbb7af4963sm6347718plh.68.2023.11.14.17.26.37
+ ff1-20020a056a002f4100b006a7083f9f6esm273108pfb.23.2023.11.14.17.32.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 17:26:38 -0800 (PST)
-Message-ID: <3a3779a9-773d-4515-a6cf-5430e63cba24@linaro.org>
-Date: Tue, 14 Nov 2023 17:26:36 -0800
+ Tue, 14 Nov 2023 17:32:07 -0800 (PST)
+Message-ID: <84c136f2-73c0-417b-8513-ad9956ea631a@linaro.org>
+Date: Tue, 14 Nov 2023 17:32:05 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 24/31] machine: Use error handling when CPU type is
- checked
+Subject: Re: [PATCH v5 26/31] machine: Print CPU model name instead of CPU
+ type name
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
 To: Gavin Shan <gshan@redhat.com>
 Cc: qemu-devel@nongnu.org
 References: <20231114235628.534334-1-gshan@redhat.com>
- <20231114235628.534334-25-gshan@redhat.com>
- <e954760c-aca8-427b-a286-2c57bd7609a7@linaro.org>
-In-Reply-To: <e954760c-aca8-427b-a286-2c57bd7609a7@linaro.org>
+ <20231114235628.534334-27-gshan@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231114235628.534334-27-gshan@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,45 +95,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/14/23 17:21, Richard Henderson wrote:
-> On 11/14/23 15:56, Gavin Shan wrote:
->> QEMU will be terminated if the specified CPU type isn't supported
->> in machine_run_board_init(). The list of supported CPU type names
->> is tracked by mc->valid_cpu_types.
->>
->> The error handling can be used to propagate error messages, to be
->> consistent how the errors are handled for other situations in the
->> same function.
->>
->> No functional change intended.
->>
->> Suggested-by: Igor Mammedov <imammedo@redhat.com>
->> Signed-off-by: Gavin Shan <gshan@redhat.com>
->> ---
->>   hw/core/machine.c | 14 ++++++++------
->>   1 file changed, 8 insertions(+), 6 deletions(-)
->>
->> diff --git a/hw/core/machine.c b/hw/core/machine.c
->> index 0c17398141..5b45dbbbd5 100644
->> --- a/hw/core/machine.c
->> +++ b/hw/core/machine.c
->> @@ -1394,6 +1394,7 @@ void machine_run_board_init(MachineState *machine, const char 
->> *mem_path, Error *
->>       MachineClass *machine_class = MACHINE_GET_CLASS(machine);
->>       ObjectClass *oc = object_class_by_name(machine->cpu_type);
->>       CPUClass *cc;
->> +    Error *local_err = NULL;
+On 11/14/23 15:56, Gavin Shan wrote:
+> The names of supported CPU models instead of CPU types should be
+> printed when the user specified CPU type isn't supported, to be
+> consistent with the output from '-cpu ?'.
 > 
+> Correct the error messages to print CPU model names instead of CPU
+> type names.
 > 
-> There is no need for local_error; just use errp throughout.
+> Signed-off-by: Gavin Shan <gshan@redhat.com>
+> ---
+>   hw/core/machine.c | 19 +++++++++++++++----
+>   1 file changed, 15 insertions(+), 4 deletions(-)
 > 
-> With that,
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index 49e0bc874d..58512b4b89 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -1392,6 +1392,7 @@ static void is_cpu_type_supported(MachineState *machine, Error **errp)
+>       MachineClass *mc = MACHINE_GET_CLASS(machine);
+>       ObjectClass *oc = object_class_by_name(machine->cpu_type);
+>       CPUClass *cc;
+> +    char *model;
 
-Alternately, is this because passing &error_fatal will abort on the first error_setg, 
-without all the hints?
+Move to inner block.
 
-In which case you can move local_error into the inner block and add a comment to that effect.
+> @@ -1408,11 +1409,21 @@ static void is_cpu_type_supported(MachineState *machine, Error **errp)
+>   
+>           /* The user specified CPU type isn't valid */
+>           if (!mc->valid_cpu_types[i]) {
+> -            error_setg(errp, "Invalid CPU type: %s", machine->cpu_type);
+> -            error_append_hint(errp, "The valid types are: %s",
+> -                              mc->valid_cpu_types[0]);
+> +            model = cpu_model_from_type(machine->cpu_type);
+> +            g_assert(model != NULL);
+> +            error_setg(errp, "Invalid CPU type: %s", model);
+
+I see no reason for these asserts -- printf of NULL will print "(nil)".
+Aborting in the middle of error reporting won't be helpful.
+
 
 
 r~
