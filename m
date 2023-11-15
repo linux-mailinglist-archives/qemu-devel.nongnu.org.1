@@ -2,56 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC637ED755
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 23:36:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 120FB7ED775
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 23:43:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3OTI-0006xc-3k; Wed, 15 Nov 2023 17:34:56 -0500
+	id 1r3Oa7-0004Xh-2X; Wed, 15 Nov 2023 17:41:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=a0ac=G4=kaod.org=clg@ozlabs.org>)
- id 1r3OTF-0006x6-Mp; Wed, 15 Nov 2023 17:34:53 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=a0ac=G4=kaod.org=clg@ozlabs.org>)
- id 1r3OTD-0003yS-Fl; Wed, 15 Nov 2023 17:34:53 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SVydx2Kjsz4xGQ;
- Thu, 16 Nov 2023 09:34:45 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SVydv4X03z4x5p;
- Thu, 16 Nov 2023 09:34:43 +1100 (AEDT)
-Message-ID: <bd0875a1-4258-457d-8a9b-cfa12f0d84ef@kaod.org>
-Date: Wed, 15 Nov 2023 23:34:41 +0100
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Oa5-0004Ve-5Y
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 17:41:57 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Oa2-0001ZW-WA
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 17:41:56 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-9d216597f64so26910866b.3
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 14:41:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700088113; x=1700692913; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=b+UnXhKnws6ugFoCSiNu4WShyOgi+X5yc/tmfC/jB1o=;
+ b=v6+fE40v98L7ThkToU8CSKlLbhezQvqIDA326swBVCiaSvA2hCsM4u2KA2EEMrhW3l
+ RplgPYY0ekYzywKItbo1AzkIN9c6L1h3jMO41eLaSnWuLhQqf92ARvq1GfnbYdKrDF/h
+ y7RnAyuHDdddgR0zpKYRVVA2oDOQqDYj+AjR/ghj4SIarttiuX8zd5V5cxbgEcViDJWC
+ Cnm34TQ6C0sx3fgzPecHXFnf9VGtvf0Dl/YTVraXsWtc/ta87ZB51jBZEogF40duSShz
+ 2+ATfbpMtk502gP7F2h2fZ8YAkIN8fvXr0aOc6v77/bj4dc7TFIZqcTTksh6Tgqegnv3
+ 3dNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700088113; x=1700692913;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=b+UnXhKnws6ugFoCSiNu4WShyOgi+X5yc/tmfC/jB1o=;
+ b=GODqa1ClEAIAlEWgBcFQYpfHR3Esnl8+LEmHEXeEosfG4GL26ddlUO5cF+sGjoNFwo
+ pJ6UO5hLX9w2xkjjURL3fslR8dntTrGODApAUmZWkke0xQ3NSy4miOtKKDfZfCekHTK3
+ KDDOb9QtbbmkMG0jI8oWrx7Nh+oEqYS7u3/L+gD+3fDHfphUy7aXVW+xeL3f/U6yrk+9
+ QD0KnFiiC3veLW1eis9g8OMSyhK/woBCbJqo7p2gZ0T+Ng64Cotrc0jMOF2V9MK5JAbg
+ xjxVe7nm7VeVOBMcJ3B9B0VYUh7eeUU26DpoYSmNRea1puQWBac0V6I/b96cnHl+3rbU
+ pmzA==
+X-Gm-Message-State: AOJu0YyKCHixsulkBfDNFlJB0g4thmY112+M1dFCPZ9aen4Q0hgkIrQk
+ K329gyQiv5ChRzvWb9P3R6E9Vw==
+X-Google-Smtp-Source: AGHT+IF3/AuK46/Cbi9ClzQfr2z0OX8xHHE0oWAuIM5xT4oaa7sBvmgzSIch5GRY6cEyqXjc1Gv7+w==
+X-Received: by 2002:a17:906:5385:b0:9b2:765b:273b with SMTP id
+ g5-20020a170906538500b009b2765b273bmr10375391ejo.70.1700088113246; 
+ Wed, 15 Nov 2023 14:41:53 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.130.62])
+ by smtp.gmail.com with ESMTPSA id
+ dx9-20020a170906a84900b009c3828fec06sm7550338ejb.81.2023.11.15.14.41.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 15 Nov 2023 14:41:52 -0800 (PST)
+Message-ID: <1292144c-49a7-42e2-be73-a655485a620c@linaro.org>
+Date: Wed, 15 Nov 2023 23:41:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/8] ppc/pnv: Add pca9552 to powernv10 for PCIe hotplug
- power control
+Subject: Re: [PATCH 07/10] hw/core: skip loading debug on all failures
 Content-Language: en-US
-To: Miles Glenn <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
-References: <20231114195659.1219821-1-milesg@linux.vnet.ibm.com>
- <20231114195659.1219821-2-milesg@linux.vnet.ibm.com>
- <54fad54f-a52e-41c6-90ba-7bc0b637cd59@kaod.org>
- <d5c90e92aa4cf313925de81872e95d0b62c36cce.camel@linux.vnet.ibm.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <d5c90e92aa4cf313925de81872e95d0b62c36cce.camel@linux.vnet.ibm.com>
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Beraldo Leal <bleal@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
+ Alexandre Iooss <erdnaxe@crans.org>
+References: <20231115205542.3092038-1-alex.bennee@linaro.org>
+ <20231115205542.3092038-8-alex.bennee@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231115205542.3092038-8-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=a0ac=G4=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,103 +97,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/15/23 17:37, Miles Glenn wrote:
-> On Wed, 2023-11-15 at 08:28 +0100, Cédric Le Goater wrote:
->> On 11/14/23 20:56, Glenn Miles wrote:
->>> The Power Hypervisor code expects to see a pca9552 device connected
->>> to the 3rd PNV I2C engine on port 1 at I2C address 0x63 (or left-
->>> justified address of 0xC6).  This is used by hypervisor code to
->>> control PCIe slot power during hotplug events.
->>>
->>> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
->>> ---
->>> Based-on: <20231024181144.4045056-3-milesg@linux.vnet.ibm.com>
->>> [PATCH v3 2/2] misc/pca9552: Let external devices set pca9552
->>> inputs
->>>
->>> No changes from v2
->>>
->>>    hw/ppc/Kconfig | 1 +
->>>    hw/ppc/pnv.c   | 7 +++++++
->>>    2 files changed, 8 insertions(+)
->>>
->>> diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
->>> index 56f0475a8e..f77ca773cf 100644
->>> --- a/hw/ppc/Kconfig
->>> +++ b/hw/ppc/Kconfig
->>> @@ -32,6 +32,7 @@ config POWERNV
->>>        select XIVE
->>>        select FDT_PPC
->>>        select PCI_POWERNV
->>> +    select PCA9552
->>>    
->>>    config PPC405
->>>        bool
->>> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
->>> index 9c29727337..7afaf1008f 100644
->>> --- a/hw/ppc/pnv.c
->>> +++ b/hw/ppc/pnv.c
->>> @@ -1877,6 +1877,13 @@ static void
->>> pnv_chip_power10_realize(DeviceState *dev, Error **errp)
->>>                                  qdev_get_gpio_in(DEVICE(&chip10-
->>>> psi),
->>>                                                   PSIHB9_IRQ_SBE_I2C
->>> ));
->>>        }
->>> +
->>> +    /*
->>> +     * Add a PCA9552 I2C device for PCIe hotplug control
->>> +     * to engine 2, bus 1, address 0x63
->>> +     */
->>> +    i2c_slave_create_simple(chip10->i2c[2].busses[1], "pca9552",
->>> 0x63);
->>
->> You didn't answer my question in v2. Is this a P10 chip device or a
->> board/machine device ?
->>
->> Thanks,
->>
->> C.
->>
->>
+On 15/11/23 21:55, Alex Bennée wrote:
+> ELF_LOAD_FAILED is one of many negative return codes we can have. Lets
+> treat any positive size_t as a success for loading.
 > 
-> Sorry, you're right, I did miss that one, and after looking at the
-> Denali spec, I see that the topology is indeed different from Rainier
-> (which is what I have been modeling).  For the Denali, the PCA9552
-> has a different I2C address (0x62 instead of 0x63) and the GPIO
-> connections are also different.  Also, there is no PCA9554 chip because
-> it looks like they were able to cover all of the functionality with
-> just the  GPIO's of the PCA9552.  So, good catch!
-> 
-> I'll look at what they did on the Aspeed machines like you suggested.
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   hw/core/loader.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-It should be a machine class extension with an i2c_setup handler and
-a new "powernv10-rainier" machine modeling the board layout. The rest
-looks good.
-
-Please include the pca9552 series in the respin. The pca9554 model will
-need a MAINTAINER (you?) I would be happy to let you take over pca9552
-if you agree.
-
-First, let's get patch 3 and 4 in QEMU 8.2.
-
-Thanks,
-
-C.
-
-
-
-
-> 
-> Thanks,
-> 
-> Glenn
-> 
->>
->>>    }
->>>    
->>>    static uint32_t pnv_chip_power10_xscom_pcba(PnvChip *chip,
->>> uint64_t addr)
-> 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
