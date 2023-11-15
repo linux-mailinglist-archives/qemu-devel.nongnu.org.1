@@ -2,66 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8D67EBBE2
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 04:29:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 888F27EBC6D
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 04:55:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r36Zm-0001Ow-9H; Tue, 14 Nov 2023 22:28:27 -0500
+	id 1r36xv-0008KZ-Ol; Tue, 14 Nov 2023 22:53:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhouzongmin@kylinos.cn>)
- id 1r36Zd-0001Oa-0V
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 22:28:18 -0500
-Received: from mailgw.kylinos.cn ([124.126.103.232])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r36xu-0008KQ-EA
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 22:53:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhouzongmin@kylinos.cn>)
- id 1r36ZZ-0000qJ-Br
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 22:28:16 -0500
-X-UUID: c49783e2d35246a19197472fd8911b0b-20231115
-X-CID-O-RULE: Release_Ham
-X-CID-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.32, REQID:8f2cbd5a-96f1-4c9d-a74b-763f310ed1a5, IP:15,
- URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
- ON:release,TS:0
-X-CID-INFO: VERSION:1.1.32, REQID:8f2cbd5a-96f1-4c9d-a74b-763f310ed1a5, IP:15,
- UR
- L:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION
- :release,TS:0
-X-CID-META: VersionHash:5f78ec9, CLOUDID:1e836795-10ce-4e4b-85c2-c9b5229ff92b,
- B
- ulkID:231115112423BLFFFSOH,BulkQuantity:1,Recheck:0,SF:66|38|24|17|19|44|1
- 02,TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:40,QS:nil,BEC:nil,COL
- :0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
-X-UUID: c49783e2d35246a19197472fd8911b0b-20231115
-X-User: zhouzongmin@kylinos.cn
-Received: from thinkpadx13gen2i.. [(116.128.244.169)] by mailgw
- (envelope-from <zhouzongmin@kylinos.cn>)
- (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
- with ESMTP id 1728887177; Wed, 15 Nov 2023 11:27:43 +0800
-From: Zongmin Zhou <zhouzongmin@kylinos.cn>
-To: quintela@redhat.com,
-	peterx@redhat.com,
-	farosas@suse.de
-Cc: leobras@redhat.com, qemu-devel@nongnu.org,
- Zongmin Zhou <zhouzongmin@kylinos.cn>
-Subject: [PATCH] migration: free 'saddr' since be no longer used
-Date: Wed, 15 Nov 2023 11:27:39 +0800
-Message-Id: <20231115032739.933043-1-zhouzongmin@kylinos.cn>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r36xs-0007MJ-Lq
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 22:53:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700020399;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TLsBshritBkNiOuYVYOhLB4LOlnqTjzm/Dp3F+beaHg=;
+ b=XcsUYD+Vkj8bB5IJlOkWkDz1Wwb0DZqEkfB+zqF/xnWt9AVYr1gS7SeY3RwR38N4lnrx+x
+ tl1EVGZqyBrlqzHndvTUTvaV1vbTV+y6jffdua5B1ZKBAN/58K6wauUQd8L4kcQjHhkUkU
+ aUp6vFBpAt/BDO3o/s1mirEnBkPNxMI=
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
+ [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-673-dz5sqjnuOB2D2v1lEy4xgA-1; Tue, 14 Nov 2023 22:53:17 -0500
+X-MC-Unique: dz5sqjnuOB2D2v1lEy4xgA-1
+Received: by mail-oi1-f198.google.com with SMTP id
+ 5614622812f47-3b2ef9a0756so7509342b6e.2
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 19:53:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700020397; x=1700625197;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TLsBshritBkNiOuYVYOhLB4LOlnqTjzm/Dp3F+beaHg=;
+ b=nB+26+mW+MwsvrGC23DuimDY5fquMGqo3m6UdzxKKwhG6iEgDtJSdomWF8+Sv0QJ0/
+ 26DCSA6YX9b4ll3gGWLcsnVvS2MBZ4YF2ZlROPX64L4a8A4nqfYnzydGM2G8gTfl2QBO
+ IS15AEyTmB5iScbNfsnJAP1VrUId9yFkKixSaEolVVvfjJHQGrEstQbUziRYcRG7g8nM
+ OessoQJYTL7/+fCKPUqfTV3Hul6uqMUx9Tr20c66GCbPNA5djq16i4A6Fx8rVCAQthnM
+ xS9G09IolXBGGmge+INu+8SKaVp29Zs+Zk0kIs+n5RXh1vTl8ERNsIiLijgz1eONSOq4
+ /Y6g==
+X-Gm-Message-State: AOJu0YwwJ4IwWgdyvgOItVh3LRo56BxJ94bXWr6CkLtQC6iBtAL3ZsAy
+ bg0xYQzhS/odsQCq7eKHOMkSq5xz1xVRjeeMUdRxWacdAEWmlF+wzjq1Y3AsrwRA4JG5UQtOvtK
+ LSOms54MyCvBT5xQ=
+X-Received: by 2002:a05:6808:493:b0:3a6:fb16:c782 with SMTP id
+ z19-20020a056808049300b003a6fb16c782mr13816275oid.30.1700020396854; 
+ Tue, 14 Nov 2023 19:53:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGsiKsF/BeKYAn2++MnOy4hL4Sna3JIfVTzbswPzes7MDTICgDYq7AB1LW1xw/uxG6BlvgpVQ==
+X-Received: by 2002:a05:6808:493:b0:3a6:fb16:c782 with SMTP id
+ z19-20020a056808049300b003a6fb16c782mr13816234oid.30.1700020396558; 
+ Tue, 14 Nov 2023 19:53:16 -0800 (PST)
+Received: from ?IPV6:2001:8003:e5b0:9f00:b890:3e54:96bb:2a15?
+ ([2001:8003:e5b0:9f00:b890:3e54:96bb:2a15])
+ by smtp.gmail.com with ESMTPSA id
+ x14-20020aa784ce000000b006b97d5cbb7csm1950057pfn.60.2023.11.14.19.53.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 14 Nov 2023 19:53:15 -0800 (PST)
+Message-ID: <6c5eccd4-0261-4633-a5d7-bb880220df94@redhat.com>
+Date: Wed, 15 Nov 2023 13:53:02 +1000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=124.126.103.232;
- envelope-from=zhouzongmin@kylinos.cn; helo=mailgw.kylinos.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V7 8/8] docs/specs/acpi_hw_reduced_hotplug: Add the CPU
+ Hotplug Event Bit
+Content-Language: en-US
+To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org
+Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
+ lpieralisi@kernel.org, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, imammedo@redhat.com, andrew.jones@linux.dev,
+ david@redhat.com, philmd@linaro.org, eric.auger@redhat.com,
+ oliver.upton@linux.dev, pbonzini@redhat.com, mst@redhat.com,
+ will@kernel.org, rafael@kernel.org, alex.bennee@linaro.org,
+ linux@armlinux.org.uk, darren@os.amperecomputing.com,
+ ilkka@os.amperecomputing.com, vishnu@os.amperecomputing.com,
+ karl.heubaum@oracle.com, miguel.luis@oracle.com, salil.mehta@opnsrc.net,
+ zhukeqian1@huawei.com, wangxiongfeng2@huawei.com, wangyanan55@huawei.com,
+ jiakernel2@gmail.com, maobibo@loongson.cn, lixianglai@loongson.cn,
+ linuxarm@huawei.com
+References: <20231113201236.30668-1-salil.mehta@huawei.com>
+ <20231113201236.30668-9-salil.mehta@huawei.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20231113201236.30668-9-salil.mehta@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,29 +114,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since socket_parse() will allocate memory for 'saddr',
-and its value will pass to 'addr' that allocated
-by migrate_uri_parse(),so free 'saddr' to avoid memory leak.
+On 11/14/23 06:12, Salil Mehta wrote:
+> GED interface is used by many hotplug events like memory hotplug, NVDIMM hotplug
+> and non-hotplug events like system power down event. Each of these can be
+> selected using a bit in the 32 bit GED IO interface. A bit has been reserved for
+> the CPU hotplug event.
+> 
+> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> ---
+>   docs/specs/acpi_hw_reduced_hotplug.rst | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
 
-Fixes: 72a8192e225c ("migration: convert migration 'uri' into 'MigrateAddress'")
-Signed-off-by: Zongmin Zhou<zhouzongmin@kylinos.cn>
----
- migration/migration.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/migration/migration.c b/migration/migration.c
-index 28a34c9068..30ed4bf6b6 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -493,6 +493,7 @@ bool migrate_uri_parse(const char *uri, MigrationChannel **channel,
-         }
-         addr->u.socket.type = saddr->type;
-         addr->u.socket.u = saddr->u;
-+        qapi_free_SocketAddress(saddr);
-     } else if (strstart(uri, "file:", NULL)) {
-         addr->transport = MIGRATION_ADDRESS_TYPE_FILE;
-         addr->u.file.filename = g_strdup(uri + strlen("file:"));
--- 
-2.34.1
+Reviewed-by: Gavin Shan <Gshan@redhat.com>
 
 
