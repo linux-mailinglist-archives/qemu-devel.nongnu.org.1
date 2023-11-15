@@ -2,99 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9638A7EC87F
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 17:26:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC2DC7EC8B2
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 17:38:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3Ihi-0001AL-2Q; Wed, 15 Nov 2023 11:25:26 -0500
+	id 1r3ItR-0006N2-F1; Wed, 15 Nov 2023 11:37:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r3Ihg-00019q-0p
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 11:25:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1r3ItP-0006Mj-M5; Wed, 15 Nov 2023 11:37:31 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r3Ihe-0003OR-9f
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 11:25:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700065521;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OAGPXkdcZ44WD5mb/hNotNFQBXrLqfNplgNPJ9c1E74=;
- b=bEQdYhrwpi4UnSM1i07bTuv5i2trYqR34Kg6RxWgjqqqaQ9bY8RTcx5vDuMguAfbSNk2vO
- VZXooVp//XtZazQMejejrdOHg0burljpB5QFbz560Hh//hr3NBvseDs46ZPFhjMFQTKqEv
- veOrWBqxDgMzrYB6kvbizjlmtTMdgbU=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-355-PIlxOM8VPXCfal9lKNDyuA-1; Wed, 15 Nov 2023 11:25:20 -0500
-X-MC-Unique: PIlxOM8VPXCfal9lKNDyuA-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-77c067efb88so67147585a.1
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 08:25:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700065519; x=1700670319;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OAGPXkdcZ44WD5mb/hNotNFQBXrLqfNplgNPJ9c1E74=;
- b=oXrRA9u5Ko0oVIS34uJtb+idm+PSGNw1t3ZBhNXjWdv9HS8AuL3pbxn21UEEkqpzw0
- +jyaZwjrnkbxCMED+SiQIH7F3AxBsCWm6KwvvwGSOet7wZFMUSYTN7/Wtu5JVDTnYOPB
- 5RpHbEsd0yNKFyZBIWxGZrWffrITK462Yr4AoZ6waIqKikPpHdL2bbpGO8m8+TwBQvYZ
- ZOIAiRKGnuTWVLxD0bHU7qY2EjI60nl8nIJh83Q10nRsSOVmpcmHoJYkO9+XmeYtt3la
- feAY5soXGfJFgwnQ+6GcqRsJMUnJinY6lcfZB4vOGF7p4NWtk0/KtmYju9RCRA0otC6D
- SYyg==
-X-Gm-Message-State: AOJu0YzQ/9QvGFaa6igV3aSUq2eq1wFZc5O9bbcmtCEv3DqHxFfSxfy8
- cAte9osZ5Cb+tPTXEBW1+1hwp/fYBbkMNr3ILrebho5TyRviNBdvUAzG7F0wfL1AygtELVIk1kh
- +QEhiKniWcYcqxi4=
-X-Received: by 2002:a05:620a:17aa:b0:778:b158:9963 with SMTP id
- ay42-20020a05620a17aa00b00778b1589963mr9683802qkb.13.1700065519653; 
- Wed, 15 Nov 2023 08:25:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG6Rp4kV/WPdUp/JbPVto5rm++pFJz62lUaYEJA9Bl2YWVp5mmZugw309iaB3qB1+p54T8TNA==
-X-Received: by 2002:a05:620a:17aa:b0:778:b158:9963 with SMTP id
- ay42-20020a05620a17aa00b00778b1589963mr9683777qkb.13.1700065519400; 
- Wed, 15 Nov 2023 08:25:19 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ts5-20020a05620a3d8500b00767e98535b7sm3563411qkn.67.2023.11.15.08.25.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 Nov 2023 08:25:18 -0800 (PST)
-Message-ID: <98c8fa48-c9f8-4355-92f2-0ca2af3d5dc7@redhat.com>
-Date: Wed, 15 Nov 2023 17:25:14 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 06/21] vfio/iommufd: Add support for iova_ranges and
- pgsizes
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, peterx@redhat.com, jasowang@redhat.com,
- kevin.tian@intel.com, yi.l.liu@intel.com, yi.y.sun@intel.com,
- chao.p.peng@intel.com
-References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
- <20231114100955.1961974-7-zhenzhong.duan@intel.com>
- <fa72e44b-e865-47c3-855f-b947a4e5c1e5@redhat.com>
-Content-Language: en-US
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <fa72e44b-e865-47c3-855f-b947a4e5c1e5@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1r3ItN-0000VF-Kt; Wed, 15 Nov 2023 11:37:31 -0500
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AFGOFQU026608; Wed, 15 Nov 2023 16:37:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=qxP6rCX4vlme++SksTngm2DRUW4sNdyJUIjXK8EQGhE=;
+ b=TBiMwN2Ro8heEzRoxrSDcCMPXL4RrpaKzfBphj2cwYpiPFJzHmgJC3pWfgO0lq6v0oFF
+ vXVWzYBZOxnoCO7ZJhfQh0vOupiPsY4TrKUqqpWRLULPAt2+p+oOHnr+5tO+Zh+MnQcr
+ NUvJryS45yECX+eBqgszVTHQRLoo77Xca+dLOogeYMVgrAu0RJ5YhFx+HBcHLIr+FYn5
+ NkY62n+M4VJlgin+QPwllCATU126yjgPBW0gtYA+Eh97tJZ+VPw0dl87dcs9qI/nMKI8
+ A+sIHkBPbIR3HGfpMenffKAIjt6Wc1M5GFqPvnk2HpN3SrCLRlLLvMCB3ayygzJf/xn2 Kg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ud06rtwdk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 15 Nov 2023 16:37:20 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AFGOdQp028969;
+ Wed, 15 Nov 2023 16:37:20 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ud06rtwdc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 15 Nov 2023 16:37:20 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AFGAAUP018837; Wed, 15 Nov 2023 16:37:19 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uanekrd87-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 15 Nov 2023 16:37:19 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
+ [10.241.53.104])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AFGbI5l46531038
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 15 Nov 2023 16:37:19 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C8B935805D;
+ Wed, 15 Nov 2023 16:37:18 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A2D1B58052;
+ Wed, 15 Nov 2023 16:37:18 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
+ by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 15 Nov 2023 16:37:18 +0000 (GMT)
+Message-ID: <d5c90e92aa4cf313925de81872e95d0b62c36cce.camel@linux.vnet.ibm.com>
+Subject: Re: [PATCH v3 1/8] ppc/pnv: Add pca9552 to powernv10 for PCIe
+ hotplug power control
+From: Miles Glenn <milesg@linux.vnet.ibm.com>
+To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, qemu-devel@nongnu.org, 
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, =?ISO-8859-1?Q?Fr=E9d=E9ric?=
+ Barrat <fbarrat@linux.ibm.com>
+Date: Wed, 15 Nov 2023 10:37:18 -0600
+In-Reply-To: <54fad54f-a52e-41c6-90ba-7bc0b637cd59@kaod.org>
+References: <20231114195659.1219821-1-milesg@linux.vnet.ibm.com>
+ <20231114195659.1219821-2-milesg@linux.vnet.ibm.com>
+ <54fad54f-a52e-41c6-90ba-7bc0b637cd59@kaod.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 60IAovydDZmdFvz99rNQ5ubkwvGqJ0LE
+X-Proofpoint-GUID: qoL-w0-_SMkMMVEqJ0lQpS-R4KzifUXf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-15_15,2023-11-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=990
+ malwarescore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
+ suspectscore=0 phishscore=0 impostorscore=0 adultscore=0 clxscore=1015
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311150126
+Received-SPF: none client-ip=148.163.158.5;
+ envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,131 +113,86 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 11/14/23 14:46, Cédric Le Goater wrote:
-> On 11/14/23 11:09, Zhenzhong Duan wrote:
->> Some vIOMMU such as virtio-iommu use IOVA ranges from host side to
->> setup reserved ranges for passthrough device, so that guest will not
->> use an IOVA range beyond host support.
->>
->> Use an uAPI of IOMMUFD to get IOVA ranges of host side and pass to
->> vIOMMU just like the legacy backend, if this fails, fallback to
->> 64bit IOVA range.
->>
->> Also use out_iova_alignment returned from uAPI as pgsizes instead of
->> qemu_real_host_page_size() as a fallback.
->>
->> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->> ---
->> v6: propagate iommufd_cdev_get_info_iova_range err and print as warning
->>
->>   hw/vfio/iommufd.c | 55 ++++++++++++++++++++++++++++++++++++++++++++++-
->>   1 file changed, 54 insertions(+), 1 deletion(-)
->>
->> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
->> index 06282d885c..e5bf528e89 100644
->> --- a/hw/vfio/iommufd.c
->> +++ b/hw/vfio/iommufd.c
->> @@ -267,6 +267,53 @@ static int
->> iommufd_cdev_ram_block_discard_disable(bool state)
->>       return ram_block_uncoordinated_discard_disable(state);
->>   }
->>   +static int iommufd_cdev_get_info_iova_range(VFIOIOMMUFDContainer
->> *container,
->> +                                            uint32_t ioas_id, Error
->> **errp)
->> +{
->> +    VFIOContainerBase *bcontainer = &container->bcontainer;
->> +    struct iommu_ioas_iova_ranges *info;
->> +    struct iommu_iova_range *iova_ranges;
->> +    int ret, sz, fd = container->be->fd;
->> +
->> +    info = g_malloc0(sizeof(*info));
->> +    info->size = sizeof(*info);
->> +    info->ioas_id = ioas_id;
->> +
->> +    ret = ioctl(fd, IOMMU_IOAS_IOVA_RANGES, info);
->> +    if (ret && errno != EMSGSIZE) {
->> +        goto error;
->> +    }
->> +
->> +    sz = info->num_iovas * sizeof(struct iommu_iova_range);
->> +    info = g_realloc(info, sizeof(*info) + sz);
->> +    info->allowed_iovas = (uintptr_t)(info + 1);
->> +
->> +    ret = ioctl(fd, IOMMU_IOAS_IOVA_RANGES, info);
->> +    if (ret) {
->> +        goto error;
->> +    }
->> +
->> +    iova_ranges = (struct iommu_iova_range
->> *)(uintptr_t)info->allowed_iovas;
->> +
->> +    for (int i = 0; i < info->num_iovas; i++) {
->> +        Range *range = g_new(Range, 1);
->> +
->> +        range_set_bounds(range, iova_ranges[i].start,
->> iova_ranges[i].last);
->> +        bcontainer->iova_ranges =
->> +            range_list_insert(bcontainer->iova_ranges, range);
->> +    }
->> +    bcontainer->pgsizes = info->out_iova_alignment;
->> +
->> +    g_free(info);
->> +    return 0;
->> +
->> +error:
->> +    ret = -errno;
->> +    g_free(info);
->> +    error_setg_errno(errp, errno, "Cannot get IOVA ranges");
->> +    return ret;
->> +}
->> +
->>   static int iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
->>                                  AddressSpace *as, Error **errp)
->>   {
->> @@ -341,7 +388,13 @@ static int iommufd_cdev_attach(const char *name,
->> VFIODevice *vbasedev,
->>           goto err_discard_disable;
->>       }
->>   -    bcontainer->pgsizes = qemu_real_host_page_size();
->> +    ret = iommufd_cdev_get_info_iova_range(container, ioas_id, &err);
->> +    if (ret) {
->> +        warn_report_err(err);
->> +        err = NULL;
->> +        error_printf("Fallback to default 64bit IOVA range and 4K
->> page size\n");
->
-> This would be better :
->
->         error_append_hint(&err,
->                    "Fallback to default 64bit IOVA range and 4K page
-> size\n");
->         warn_report_err(err);
->
-> I will take care of it if you agree. With that,
->
-> Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-With Cédric's suggestion,
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Eric
->
+On Wed, 2023-11-15 at 08:28 +0100, Cédric Le Goater wrote:
+> On 11/14/23 20:56, Glenn Miles wrote:
+> > The Power Hypervisor code expects to see a pca9552 device connected
+> > to the 3rd PNV I2C engine on port 1 at I2C address 0x63 (or left-
+> > justified address of 0xC6).  This is used by hypervisor code to
+> > control PCIe slot power during hotplug events.
+> > 
+> > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+> > ---
+> > Based-on: <20231024181144.4045056-3-milesg@linux.vnet.ibm.com>
+> > [PATCH v3 2/2] misc/pca9552: Let external devices set pca9552
+> > inputs
+> > 
+> > No changes from v2
+> > 
+> >   hw/ppc/Kconfig | 1 +
+> >   hw/ppc/pnv.c   | 7 +++++++
+> >   2 files changed, 8 insertions(+)
+> > 
+> > diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
+> > index 56f0475a8e..f77ca773cf 100644
+> > --- a/hw/ppc/Kconfig
+> > +++ b/hw/ppc/Kconfig
+> > @@ -32,6 +32,7 @@ config POWERNV
+> >       select XIVE
+> >       select FDT_PPC
+> >       select PCI_POWERNV
+> > +    select PCA9552
+> >   
+> >   config PPC405
+> >       bool
+> > diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+> > index 9c29727337..7afaf1008f 100644
+> > --- a/hw/ppc/pnv.c
+> > +++ b/hw/ppc/pnv.c
+> > @@ -1877,6 +1877,13 @@ static void
+> > pnv_chip_power10_realize(DeviceState *dev, Error **errp)
+> >                                 qdev_get_gpio_in(DEVICE(&chip10-
+> > >psi),
+> >                                                  PSIHB9_IRQ_SBE_I2C
+> > ));
+> >       }
+> > +
+> > +    /*
+> > +     * Add a PCA9552 I2C device for PCIe hotplug control
+> > +     * to engine 2, bus 1, address 0x63
+> > +     */
+> > +    i2c_slave_create_simple(chip10->i2c[2].busses[1], "pca9552",
+> > 0x63);
+> 
+> You didn't answer my question in v2. Is this a P10 chip device or a
+> board/machine device ?
+> 
 > Thanks,
->
+> 
 > C.
->
->
->> +        bcontainer->pgsizes = qemu_real_host_page_size();
->> +    }
->>         bcontainer->listener = vfio_memory_listener;
->>       memory_listener_register(&bcontainer->listener,
->> bcontainer->space->as);
->
+> 
+> 
+
+Sorry, you're right, I did miss that one, and after looking at the
+Denali spec, I see that the topology is indeed different from Rainier
+(which is what I have been modeling).  For the Denali, the PCA9552
+has a different I2C address (0x62 instead of 0x63) and the GPIO
+connections are also different.  Also, there is no PCA9554 chip because
+it looks like they were able to cover all of the functionality with
+just the  GPIO's of the PCA9552.  So, good catch!
+
+I'll look at what they did on the Aspeed machines like you suggested.
+
+Thanks,
+
+Glenn
+
+> 
+> >   }
+> >   
+> >   static uint32_t pnv_chip_power10_xscom_pcba(PnvChip *chip,
+> > uint64_t addr)
 
 
