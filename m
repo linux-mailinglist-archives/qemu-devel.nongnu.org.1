@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CCEA7EBD5E
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:11:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B244E7EBD60
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:12:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3A3N-0005wu-KD; Wed, 15 Nov 2023 02:11:13 -0500
+	id 1r3A3u-0006bE-Cc; Wed, 15 Nov 2023 02:11:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3A3J-0005s1-Vi
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:11:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3A3q-0006W3-LE
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:11:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3A3G-0008Qw-8V
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:11:09 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3A3p-00008Z-7K
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:11:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700032264;
+ s=mimecast20190719; t=1700032300;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=vyYvIwgoX8s2l9OAUxo0mdoe4rNc+RJ6+JP/2F1nBYM=;
- b=aMV2ILz9uB40Sr0ZRc8sc8mMplMcfafqtDG3G3qZrx3QQJDdzmCZ8Iwvuah30oPugWp+np
- 90Yeq341wN6u6Lq9vnyFl95jAKRoJugtYkwN79itu69akd9OcyN0dhF8TRgcBIB28hGMSD
- xmyqYn/69bdr1p2tacXhd7/LbAPYKfk=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+qGdi+kvAahtMTtdJnl3jkU3M2Mj4LL0j78oWdshVzU=;
+ b=Iz4cH7KE80EuvZXTNRe2y9MVEafqNHZpP16/LDfzTHM7DZNABmGawRilqU2cKrMXJP+0E0
+ AzKCDn+2d3BIasHmr6XXjnSCDvJMkU+3YCHks9Y/XFr0SSC9RXsBB1+6xAhZDni30iyg8/
+ X12gUsV0GyvI15qLTZV05Nfl6S/6Q+U=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-387-ltx3_VklNBWXNxjgAOmsdw-1; Wed, 15 Nov 2023 02:10:59 -0500
-X-MC-Unique: ltx3_VklNBWXNxjgAOmsdw-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9d4b8735f48so455692466b.1
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 23:10:59 -0800 (PST)
+ us-mta-202-nmHcmcqZN1y78PyM486_7A-1; Wed, 15 Nov 2023 02:11:38 -0500
+X-MC-Unique: nmHcmcqZN1y78PyM486_7A-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-9e626f31251so348099066b.3
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 23:11:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700032258; x=1700637058;
+ d=1e100.net; s=20230601; t=1700032297; x=1700637097;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vyYvIwgoX8s2l9OAUxo0mdoe4rNc+RJ6+JP/2F1nBYM=;
- b=FpoiZ1psWb76T4jX2/eW5J4dm+DBo4N3SCP0QlOrqRbJ0nh83WRiHaT0RPEx5QVCee
- 4hokIFPvdJ17T4HUDduZ1u0PJWViOPflD5qdXrs5ylN0nQ7nLduM1J3cmenkhxI0kk1M
- 5FFOwmUrTFZQLTd/eJOpFdfSX195P6ltR5rMfdjcxomZuUBUaIjz4RPGtuLkhJqrl77k
- bvzno1LIiiNWaYNiFWXjF1TiA6o9ZAMLk4RpixdbYLcqspwdY4IpYgnZuUXOP4cr/YM6
- 36olw0H3gcQEtKfQmd+NKoGJ7xfbYwIIFt3vyekWSlPtHxz6w5HEKM9o/0Qj7i2ldxN9
- vk4w==
-X-Gm-Message-State: AOJu0YxW+oaEEmVkOJ37hcCEjRgVIN7s42fUsyfoAO47aW8PODiOugdX
- FGaXd37Z/EVip6V4c829oiDjQ4pXD+Le71UMLcPgoz5Nl1FixQXpVWCwRWY+Tsha5TGo7H0k3Wk
- tQuOkhioc/TdA3+E=
-X-Received: by 2002:a17:906:cd1f:b0:9e6:9abb:d3cc with SMTP id
- oz31-20020a170906cd1f00b009e69abbd3ccmr7838853ejb.1.1700032258239; 
- Tue, 14 Nov 2023 23:10:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEB3d37s4Shg/qhLbVjkxg5vL9RW6a1sbYeRrS39YQb2zMz9vKF/24WdrlBAj90djpzpMAJIA==
-X-Received: by 2002:a17:906:cd1f:b0:9e6:9abb:d3cc with SMTP id
- oz31-20020a170906cd1f00b009e69abbd3ccmr7838842ejb.1.1700032257993; 
- Tue, 14 Nov 2023 23:10:57 -0800 (PST)
+ bh=+qGdi+kvAahtMTtdJnl3jkU3M2Mj4LL0j78oWdshVzU=;
+ b=LbXwQI+F5X/sIkO+mZNKVyfj//xT4ZVRt5rNI/3t5jE1pbnATYwRGYb4g/tJTdUNnh
+ IzwdNIBARXN43K4wlwzuQQUYDGucsX91jTWZ1qaJyTsM64QRTmhBkvlVD7uugXU2kzPJ
+ BWpVhZy85FmbC2FmU9sTCnGM0wi5r3kcczLvzVsTkQu6Q5HTaQQ9+NnDqqYN1uOviA8Q
+ qp8jkKWLhKJf5o+sYFnAtoAFyuF03C+ZD9spu3R/T5wO2LxJ9486RsV90MPorN9kkwVJ
+ mFQoVy4xyjGCoOh+fiAXnl6bpLs0q79XT9j57JphhLqUKtgi7SMwvkQi5ZZgh2jM5rT5
+ BZHQ==
+X-Gm-Message-State: AOJu0YzqJqup3fQEpEhUOS0RcFqkHVvP882dFrD4ubeO/mKxpG5jrGfi
+ iNdv/yyAAVSQ8DdNxnYBgtkJAr2/sEH/xkqRkOyFW7oNQbHns8zL+HYSFGnJc2ki04B5fxsGRhD
+ 21KZXHjIdQCC1pT8=
+X-Received: by 2002:a17:906:475a:b0:9c5:cfa3:d030 with SMTP id
+ j26-20020a170906475a00b009c5cfa3d030mr8798213ejs.54.1700032297449; 
+ Tue, 14 Nov 2023 23:11:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFCJdDZmIOC/vRiwtUvckyoO2lLBK76WHACtJFXBP9TPr0PYjcqiRclVj1phzlY5WcmGWGnig==
+X-Received: by 2002:a17:906:475a:b0:9c5:cfa3:d030 with SMTP id
+ j26-20020a170906475a00b009c5cfa3d030mr8798199ejs.54.1700032297246; 
+ Tue, 14 Nov 2023 23:11:37 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-176-122.web.vodafone.de.
  [109.43.176.122]) by smtp.gmail.com with ESMTPSA id
- lt7-20020a170906fa8700b009a1a5a7ebacsm6554420ejb.201.2023.11.14.23.10.57
+ lt7-20020a170906fa8700b009a1a5a7ebacsm6554420ejb.201.2023.11.14.23.11.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 23:10:57 -0800 (PST)
-Message-ID: <4f194a58-89ec-4991-acd1-445c0e8782e1@redhat.com>
-Date: Wed, 15 Nov 2023 08:10:57 +0100
+ Tue, 14 Nov 2023 23:11:36 -0800 (PST)
+Message-ID: <2cfdcce2-00aa-4177-9cdc-e74fcc57763d@redhat.com>
+Date: Wed, 15 Nov 2023 08:11:35 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH trivial 03/21] hw/cxl: spelling fixes: limitaions,
- potentialy, intialized
+Subject: Re: [PATCH trivial 04/21] gdbstub: spelling fix: respectivelly
 Content-Language: en-US
 To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Jonathan Cameron <jonathan.cameron@huawei.com>,
- Fan Ni <fan.ni@samsung.com>
+Cc: qemu-trivial@nongnu.org, Matheus Branco Borella <dark.ryu.550@gmail.com>, 
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 References: <20231114165834.2949011-1-mjt@tls.msk.ru>
- <20231114165834.2949011-4-mjt@tls.msk.ru>
+ <20231114165834.2949011-5-mjt@tls.msk.ru>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -116,19 +115,19 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231114165834.2949011-4-mjt@tls.msk.ru>
+In-Reply-To: <20231114165834.2949011-5-mjt@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,19 +144,29 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 14/11/2023 17.58, Michael Tokarev wrote:
-> Fixes: 388d6b574e28 "hw/cxl: Use switch statements for read and write of cachemem registers"
-> Fixes: 3314efd276ad "hw/cxl/mbox: Add Physical Switch Identify command."
-> Fixes: 004e3a93b814 "hw/cxl: Add tunneled command support to mailbox for switch cci."
-> Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Cc: Fan Ni <fan.ni@samsung.com>
+> Fixes: 761e3c10881b "gdbstub: fixes cases where wrong threads were reported to GDB on SIGINT"
+> Cc: Matheus Branco Borella <dark.ryu.550@gmail.com>
+> Cc: "Alex Bennée" <alex.bennee@linaro.org
+> Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
 > Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 > ---
->   hw/cxl/cxl-component-utils.c | 4 ++--
->   hw/cxl/cxl-mailbox-utils.c   | 2 +-
->   include/hw/cxl/cxl_device.h  | 2 +-
->   3 files changed, 4 insertions(+), 4 deletions(-)
+>   gdbstub/gdbstub.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+> index ebb912da1b..46d752bbc2 100644
+> --- a/gdbstub/gdbstub.c
+> +++ b/gdbstub/gdbstub.c
+> @@ -692,7 +692,7 @@ static int gdb_handle_vcont(const char *p)
+>       /*
+>        * target_count and last_target keep track of how many CPUs we are going to
+>        * step or resume, and a pointer to the state structure of one of them,
+> -     * respectivelly
+> +     * respectively
+>        */
+>       int target_count = 0;
+>       CPUState *last_target = NULL;
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-
 
 
