@@ -2,87 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E9A7ED342
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 21:47:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3451A7ED35A
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 21:49:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3MlP-00015W-LI; Wed, 15 Nov 2023 15:45:31 -0500
+	id 1r3Mop-00024S-Lp; Wed, 15 Nov 2023 15:49:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r3MlL-000156-Ak; Wed, 15 Nov 2023 15:45:27 -0500
-Received: from mail-qv1-xf31.google.com ([2607:f8b0:4864:20::f31])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Mon-00022M-8b
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 15:49:01 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r3MlG-0002vA-Df; Wed, 15 Nov 2023 15:45:27 -0500
-Received: by mail-qv1-xf31.google.com with SMTP id
- 6a1803df08f44-66d093265dfso423606d6.3; 
- Wed, 15 Nov 2023 12:45:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Mol-0003h7-0c
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 15:49:00 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40a48775c58so363285e9.3
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 12:48:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700081119; x=1700685919; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=bY+5CSehvVBGtwgNuboXUV3/1/gJ/dZP7ytCrDrqtfQ=;
- b=MMnmnNIBP96BeJTjSc3UEi0EVVX59lS7e55MrHWcR/PnGaBPQKuCRNClcU0U78wPk8
- qeudxdiwN6Y1gHDfMozPhM5tQj7IG8392EyWGncAtvy1vdT/M6GCCNPbS+0IEFLHABfK
- CTivlRUw2j0z0PWiVHSoAloGyVKd3l0+WQDm7fv15Imnz/uZUNUC15jcbA2p5pZTMdOt
- 5/ae8kOAr0H8TYkYIOXFAZq99hsLWLT8lirVp6oJGc48RH3aBVtrB3j6+0iD7jxgSK36
- h5kQINIRa+bDqg28nxBplmcux78gvTOg0+0bKToNd6IoiSXR1Aio3Uo7yticwcp7eJt0
- fpiQ==
+ d=linaro.org; s=google; t=1700081337; x=1700686137; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=7uoFzP027E314xblzySCEGxa40cu6sZwXa3vlWS3OdA=;
+ b=sx5YUSCq01Tn6meAw5fD77+g3UD+CI8Funo3M7phCBytHvAO1ns8BcEzu7rNlg6nWV
+ WFOR7pXFQqn1bwKCv7Zj4El3CTX31J7kMbc67GBr21Xd/1+Me3YANrtLDfIPkNczxDs5
+ y484arHsw5v+A8mi9j1FkUi+iY5Na5kKw1RsZdukUgPjQpwhNX7Z3OAh4bI1J5h/UhjV
+ 6sTdt9WzN8/osleN0xlXtXgdwNeCQAB5wxTsuFAVjjmwOX1l5T0H/bhP7QhBZ2Wmo2V+
+ AlG/2/41qboGrprRNtxGCF7UiuYZN/6CqS7f981gOXQaQEV9zX/KiCxL/pwRnLMKNtmY
+ XErQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700081119; x=1700685919;
- h=content-transfer-encoding:in-reply-to:organization:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bY+5CSehvVBGtwgNuboXUV3/1/gJ/dZP7ytCrDrqtfQ=;
- b=t+a1pAT8JQezy6H3rGU70D6CvyLKyK1ZbRMqMsaKyoCfyQRrU18cUdbrwzc+zNmbtj
- HqI2O0VRtUlbhesjG8anJbPnsIi3wv9Fy9Tw1/B7RQ1ewJsViD82H+F9+ENz+C2wwNce
- W0dwKhxkrx56VglwSYNEx+1hSspohQ9QyzV6JTh6p2LaTv14Vd7dlDD4AqI4SktqNp4v
- ngJHs+2ntKU6qY5gtp0CTwQSAgK1lcCeKwn4VbcY/HHHdUab60EN0OpP79AS0YzbeVGq
- JtXw+BJj4i8FnrX7nu8FNTTGEwdVehm+hg9/gGkkdfNJX8rk81TN3Qz8cb3fFBxPTKAW
- 52zg==
-X-Gm-Message-State: AOJu0YxQ0M/xzoImarl5wbHs3jCOL13lJFbyj64cAkGXQ9dA7hPolGzq
- rEsfkdva+vzn3uM8UoijWNM=
-X-Google-Smtp-Source: AGHT+IFgPcfE9Xh25SpD1WU5BPRKZgmYrNpCNYZXXrb4uiJ+zbf5znm3WLPnO37uQtF4D2nqSDLRFw==
-X-Received: by 2002:a05:6214:1306:b0:66f:ba6e:73e8 with SMTP id
- pn6-20020a056214130600b0066fba6e73e8mr9414369qvb.41.1700081119356; 
- Wed, 15 Nov 2023 12:45:19 -0800 (PST)
-Received: from [172.20.0.103] ([12.191.197.195])
+ d=1e100.net; s=20230601; t=1700081337; x=1700686137;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7uoFzP027E314xblzySCEGxa40cu6sZwXa3vlWS3OdA=;
+ b=tkbtzFrz+aK9N+zioeJirRnF1N+xDOFz7GCQPGTJqkTWXm7Tu46iXPdskJg6clPAl4
+ zcFq/9RNeNlxUn8BP0B+iSC3COsJ5n35ehux1/ZxBbjBepGY8K0W+VZ4syS2FG6uHBAy
+ CrqR7MNiG2trflk+eubYPgh4fcCMYz3v1tGgYuNXlShU35NT5zMv9PWkaqiycW352+5w
+ GT4k4jDRV+t0IlU0qmdWInTj6usSxwcj0hscgOei+xrOcHh+vI11zpJpY6s4En4DH1gF
+ sRWdWYjWNvEXL+b9OgmTTbwdOMjLUwmohbZn1YKflVBqrlWPFRHaVCRJW0GKpV3FakFb
+ TmBg==
+X-Gm-Message-State: AOJu0YwpTZ8WYX0ipMFIYGSwecWrX3yxfqxJkQpG/hVnZELg+R/VWXzm
+ /Ox04bOxqHObkOdH7MAoH6vtuw==
+X-Google-Smtp-Source: AGHT+IGcsXqXkSODosLaCvA/0B3CFHYUVQDQINbipTtHgS5USugLfpDM/UX9o+KopqAsc/FduroUFg==
+X-Received: by 2002:a05:600c:3acc:b0:3fe:1232:93fa with SMTP id
+ d12-20020a05600c3acc00b003fe123293famr357541wms.22.1700081337382; 
+ Wed, 15 Nov 2023 12:48:57 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.130.62])
  by smtp.gmail.com with ESMTPSA id
- ki10-20020a05622a770a00b00418189b689csm3459337qtb.10.2023.11.15.12.45.18
+ s9-20020a05600c45c900b0040651505684sm853944wmo.29.2023.11.15.12.48.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 Nov 2023 12:45:18 -0800 (PST)
-From: Paul Durrant <xadimgnik@gmail.com>
-X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <1388a0c0-cfc2-4957-9bce-08499e9ac84d@xen.org>
-Date: Wed, 15 Nov 2023 15:45:17 -0500
+ Wed, 15 Nov 2023 12:48:57 -0800 (PST)
+Message-ID: <53d3883b-39a4-4ca6-87df-f7d726c806c7@linaro.org>
+Date: Wed, 15 Nov 2023 21:48:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] hw/xen: clean up xen_block_find_free_vdev() to avoid
- Coverity false positive
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-Cc: Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, xen-devel@lists.xenproject.org,
- qemu-block@nongnu.org
-References: <20231115172723.1161679-1-dwmw2@infradead.org>
- <20231115172723.1161679-4-dwmw2@infradead.org>
+Subject: Re: [PATCH 1/4] ich9: Remove unused hotplug field from ICH9LPCPMRegs
+ struct
 Content-Language: en-US
-Organization: Xen Project
-In-Reply-To: <20231115172723.1161679-4-dwmw2@infradead.org>
+To: Thierry Escande <thierry.escande@vates.tech>, qemu-devel@nongnu.org
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>
+References: <20231115171837.18866-1-thierry.escande@vates.tech>
+ <20231115171837.18866-2-thierry.escande@vates.tech>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231115171837.18866-2-thierry.escande@vates.tech>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f31;
- envelope-from=xadimgnik@gmail.com; helo=mail-qv1-xf31.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,26 +92,22 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/11/2023 12:24, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
+On 15/11/23 18:18, Thierry Escande wrote:
+> This patch removes the unused field use_acpi_hotplug_bridge from the
+> ICH9LPCPMRegs structure as it is now part of AcpiPciHpState.
 > 
-> Coverity couldn't see that nr_existing was always going to be zero when
-> qemu_xen_xs_directory() returned NULL in the ENOENT case (CID 1523906).
+> Hotplug fields have been removed from piix4 state structure by commit
+> 6536e427ce49 (pcihp: move fields enabling hotplug into AcpiPciHpState)
+> so do the same for ich9.
 > 
-> Perhaps more to the point, neither could Peter at first glance. Improve
-> the code to hopefully make it clearer to Coverity and human reviewers
-> alike.
-> 
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> Signed-off-by: Thierry Escande <thierry.escande@vates.tech>
 > ---
->   hw/block/xen-block.c | 24 +++++++++++++++++++++---
->   1 file changed, 21 insertions(+), 3 deletions(-)
-> 
+>   include/hw/acpi/ich9.h | 1 -
+>   1 file changed, 1 deletion(-)
 
-Reviewed-by: Paul Durrant <paul@xen.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
