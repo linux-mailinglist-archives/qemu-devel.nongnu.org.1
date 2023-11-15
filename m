@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 569367EBAA2
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:39:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A117D7EBAA6
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:41:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r33w3-0006CB-Jv; Tue, 14 Nov 2023 19:39:15 -0500
+	id 1r33xu-0007WW-FS; Tue, 14 Nov 2023 19:41:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r33vn-0006Br-Sr
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:38:59 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1r33xs-0007WN-4r
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:41:08 -0500
+Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r33vm-0007qi-D3
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:38:59 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1cc30bf9e22so2850645ad.1
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 16:38:57 -0800 (PST)
+ id 1r33xq-0000MQ-Gh
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:41:07 -0500
+Received: by mail-oi1-x235.google.com with SMTP id
+ 5614622812f47-3b2f28caab9so3869221b6e.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 16:41:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700008737; x=1700613537; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700008865; x=1700613665; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=4G2BTMKOI+HjAvNWZ/w8cgmInvN8O5quMrPd9ioDbhQ=;
- b=nWd1oVnFJ3CbgY+PE6wnsB7q7Rg6Q3ksAgCsA9JxBgy1daMcRHfzrZS6paJGri1Eow
- eAJlvypxaSVA+OaMtcTO87+zifWajCPfILRmYRuyuMlaANjnTpJLH+8lzn9On1/5Qlnq
- r+ckX3eukmPKgZhdSM8D5IfYC6CUyaEkz7+5RsktXEJzqw7ycC3l0aVgSHGUrtRuAlIz
- BMrQoxtiATFi866WPFh4Rc+dad7U2UTdKpU2PBfmpwdHkFOx6SA0A5dD0sMSBKUWl16k
- kTgAgOTixO9NPo/PJoCN4zJjACe2ByQE1A3VlC5q+ndGJ9YheJcudr1pDnGs+645U95i
- +ACw==
+ bh=T6WnmlHy8oDXvoi7JvNmVa3K272wf2HZSTr/P/dEjc0=;
+ b=qyAp0bjwIeyiKBT3v1KAXAptN3B9Os7Gjlxuh+QVerzo+07YpJYhtwYV/b/v7OHIRZ
+ gsj1qtLhL9HpJX0pkNYayF51DZYRd9OT1KnL3ZUKjzb/Y2NMpv0PBkUGXCnF4plWWEzu
+ XOOCiZXMuFO2C13qsneEtZtuJ6QOSJBf4rawT634cQys/xommO4e//HixPI20+vCNDZn
+ /aMpOpv6Zi0Kskfz9sIVczGmt/+0PVMTw076IyyQkJFlPiTddDLBQpWwi6CvLVkZC7nW
+ oH/NUkXqKDJoZZcMckVuRSFEXG3TndC0zjNLRyepFNGLe0Sgbldzz7nlhAUnoT3PLh2Z
+ xobA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700008737; x=1700613537;
+ d=1e100.net; s=20230601; t=1700008865; x=1700613665;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4G2BTMKOI+HjAvNWZ/w8cgmInvN8O5quMrPd9ioDbhQ=;
- b=TUAKBePUTjusSFe3axDIfNMbPmxQ/9bWZSRQb+jVnIzhtZ0cMI2HtcUfOFRYrwLbsd
- FOntJQgArADww5oEL/1YeLBtnEike5MDdWrNfCz7UFtwdVXyIqjvW4JoQxa/lyMTfPo0
- BSxSod4488sxZzBlcoo2F4FvA6PywWmwcaVl9KNLo4P8e3Dvb158n6zl1uO/GfMl2Z1v
- NuXAcYIllLCj6ChteUmkkyeBdkywNMG8D5MyLijYRXWuq+3jIHNUXGT23EYpI7Nf2F28
- rX+JdVYThD6ENZNPyo82u+sBz7XOthxW18tz+g9wSen3xvgH3UpzUAGR3HGX3DU0H0v3
- mT2w==
-X-Gm-Message-State: AOJu0YxJCOTe7gdqvuUgr6aQGX18lxsrvT23bc87WpRbKa1jaVhI9xAv
- TUMLu6leXCPwABjhmszlI/tIcIE/L4fX4sCpQjY=
-X-Google-Smtp-Source: AGHT+IFvzKxgmBmGfG/7REL0vYxokSCoi/+yxLDGgCTl8+cazVMwT+fkmaqXJ5MNs3AVj8wrUHbkDw==
-X-Received: by 2002:a17:902:e80a:b0:1cc:5549:aab8 with SMTP id
- u10-20020a170902e80a00b001cc5549aab8mr5200195plg.5.1700008737159; 
- Tue, 14 Nov 2023 16:38:57 -0800 (PST)
+ bh=T6WnmlHy8oDXvoi7JvNmVa3K272wf2HZSTr/P/dEjc0=;
+ b=Vt4M3MphSU4nLO51K9DkuikCxt9t+kDda6OwZYCt/GxgSfi0/MTq4nLxvS0AI8+nV/
+ FLLhktylfRif2LSU2+wKhL1VbZ8t78Z3gY8m63oFcX1PsPnlDAu48A0yc54cu/vIEkE0
+ DGURT505qg8ekCrl8hYWW2OgjDjx7Y0pTR6pT0uS4UgwNCTl8M3sfBggCz/jBlQb/ONB
+ wEWYroITOcxGv5M5iu3G8F17r7fFTQ+umh2VXre7CX8jRQg9/KLsrnhzo7xaMZL2EWmS
+ J6cjgtBIVaB8rK6TF/v3HWRcKhFy/9im02NYSt/9rUttlXTS2kXTcc/mqIvyq+GWb+Hm
+ OW6Q==
+X-Gm-Message-State: AOJu0Yx/MrGzWydANMBcnT0ZMF14nAIq1XVXayo8MVv6/KMtKPa3QXKe
+ KBV+0bURs/AAtIWTt7PcsTKaXA==
+X-Google-Smtp-Source: AGHT+IEmIHQQm9MMSxl8LRzcKpgSjrqbKN9BETTwJPHey6r5baK4l1cKUC+3MTCy9G8NoJBX6vweDQ==
+X-Received: by 2002:a05:6808:3d9:b0:3b6:d1cc:4c6 with SMTP id
+ o25-20020a05680803d900b003b6d1cc04c6mr13200813oie.16.1700008864773; 
+ Tue, 14 Nov 2023 16:41:04 -0800 (PST)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- i4-20020a17090332c400b001bbfa86ca3bsm6275251plr.78.2023.11.14.16.38.56
+ 2-20020a630202000000b005b3a91e8a94sm120068pgc.76.2023.11.14.16.41.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 16:38:56 -0800 (PST)
-Message-ID: <39415308-dca0-4a46-ae56-30f8b988934e@linaro.org>
-Date: Tue, 14 Nov 2023 16:38:55 -0800
+ Tue, 14 Nov 2023 16:41:04 -0800 (PST)
+Message-ID: <c0708795-671d-4c75-94e8-db15947534e7@linaro.org>
+Date: Tue, 14 Nov 2023 16:41:02 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 07/31] target/alpha: Use generic cpu_list()
+Subject: Re: [PATCH v5 08/31] target/arm: Use generic cpu_list()
 Content-Language: en-US
 To: Gavin Shan <gshan@redhat.com>
 Cc: qemu-devel@nongnu.org
 References: <20231114235628.534334-1-gshan@redhat.com>
- <20231114235628.534334-8-gshan@redhat.com>
+ <20231114235628.534334-9-gshan@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231114235628.534334-8-gshan@redhat.com>
+In-Reply-To: <20231114235628.534334-9-gshan@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,35 +95,64 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/14/23 15:56, Gavin Shan wrote:
-> Before it's applied:
+> No changes of the output from the following command before and
+> after it's applied.
 > 
-> [gshan@gshan q]$ ./build/qemu-system-alpha -cpu ?
+> [gshan@gshan q]$ ./build/qemu-system-aarch64 -cpu ?
 > Available CPUs:
->    ev4-alpha-cpu
->    ev5-alpha-cpu
->    ev56-alpha-cpu
->    ev6-alpha-cpu
->    ev67-alpha-cpu
->    ev68-alpha-cpu
->    pca56-alpha-cpu
-> 
-> After it's applied:
-> 
-> [gshan@gshan q]$ ./build/qemu-system-alpha -cpu ?
-> Available CPUs:
->    ev4
->    ev5
->    ev56
->    ev6
->    ev67
->    ev68
->    pca56
+>    a64fx
+>    arm1026
+>    arm1136
+>    arm1136-r2
+>    arm1176
+>    arm11mpcore
+>    arm926
+>    arm946
+>    cortex-a15
+>    cortex-a35
+>    cortex-a53
+>    cortex-a55
+>    cortex-a57
+>    cortex-a7
+>    cortex-a710
+>    cortex-a72
+>    cortex-a76
+>    cortex-a8
+>    cortex-a9
+>    cortex-m0
+>    cortex-m3
+>    cortex-m33
+>    cortex-m4
+>    cortex-m55
+>    cortex-m7
+>    cortex-r5
+>    cortex-r52
+>    cortex-r5f
+>    max
+>    neoverse-n1
+>    neoverse-n2
+>    neoverse-v1
+>    pxa250
+>    pxa255
+>    pxa260
+>    pxa261
+>    pxa262
+>    pxa270-a0
+>    pxa270-a1
+>    pxa270
+>    pxa270-b0
+>    pxa270-b1
+>    pxa270-c0
+>    pxa270-c5
+>    sa1100
+>    sa1110
+>    ti925t
 > 
 > Signed-off-by: Gavin Shan <gshan@redhat.com>
 > ---
->   target/alpha/cpu.c | 17 -----------------
->   target/alpha/cpu.h |  3 ---
->   2 files changed, 20 deletions(-)
+>   target/arm/cpu.h    |  3 ---
+>   target/arm/helper.c | 46 ---------------------------------------------
+>   2 files changed, 49 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
