@@ -2,68 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6DE7EBD24
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 07:37:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A117EBD2A
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 07:43:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r39VF-0007pT-Mi; Wed, 15 Nov 2023 01:35:57 -0500
+	id 1r39b6-0001OD-V9; Wed, 15 Nov 2023 01:42:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r39VB-0007p9-Eq
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 01:35:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1r39b4-0001Nt-BZ; Wed, 15 Nov 2023 01:41:58 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r39VA-0005lz-1F
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 01:35:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700030150;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=oZCUhNdEsLUDesvgO/JedfYU9O6Jx3lWHDx60QOG5k4=;
- b=JqGo/ORFcxk4dElgIvFKdw9j59n+84ons0PXj8HPMxYFHU8vAO2Fq9g1Cci2RoRBVjd87b
- 5/FIRzpesuoqxawOlD3IHiQ8d3HmnSiqpn1Mw5G/Lmk1VXow6GftpUi+kIzaSqkl4j5cp3
- NEcwN8NLxQuD8WwyD2ImAQpfX+GGRZE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-473-P7dyN18-OvaWAUDD-OJ8TQ-1; Wed, 15 Nov 2023 01:35:46 -0500
-X-MC-Unique: P7dyN18-OvaWAUDD-OJ8TQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 747F285A58C;
- Wed, 15 Nov 2023 06:35:46 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 52D142026D4C;
- Wed, 15 Nov 2023 06:35:46 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4522E21E6A1F; Wed, 15 Nov 2023 07:35:45 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net, 
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH] MAINTAINERS: Fully cover target/i386/*
-References: <20231030085336.2681386-1-armbru@redhat.com>
-Date: Wed, 15 Nov 2023 07:35:45 +0100
-In-Reply-To: <20231030085336.2681386-1-armbru@redhat.com> (Markus Armbruster's
- message of "Mon, 30 Oct 2023 09:53:36 +0100")
-Message-ID: <87pm0bttfi.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1r39b1-0006fe-Qg; Wed, 15 Nov 2023 01:41:57 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 5DAAF33552;
+ Wed, 15 Nov 2023 09:42:05 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 3FD3635315;
+ Wed, 15 Nov 2023 09:41:45 +0300 (MSK)
+Message-ID: <7259b384-cc7f-4400-9891-83e656765ce2@tls.msk.ru>
+Date: Wed, 15 Nov 2023 09:41:45 +0300
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH trivial 06/21] docs/devel/migration.rst: spelling fix:
+ doen't
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Juan Quintela <quintela@redhat.com>
+References: <20231114165834.2949011-1-mjt@tls.msk.ru>
+ <20231114165834.2949011-7-mjt@tls.msk.ru>
+ <f2bfef4a-3a2c-4d32-adf6-52317f85a045@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <f2bfef4a-3a2c-4d32-adf6-52317f85a045@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,7 +61,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas addressed this differently in commit d229996b402 (MAINTAINERS:
-Add a general architecture section for x86).  Ignore my patch.
+14.11.2023 22:05, Thomas Huth wrote:
+> On 14/11/2023 17.58, Michael Tokarev wrote:
+>> Fixes: 1aefe2ca1423 "migration/doc: Add documentation for backwards compatiblity"
+>> Cc: Juan Quintela <quintela@redhat.com>
+>> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+>> ---
+>>   docs/devel/migration.rst | 8 ++++----
+>>   1 file changed, 4 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+>> index 5adf4f12f7..51b1f61f5e 100644
+>> --- a/docs/devel/migration.rst
+>> +++ b/docs/devel/migration.rst
+>> @@ -1061,7 +1061,7 @@ QEMU version, in this case pc-5.1.
+>>   4 - qemu-5.1 -M pc-5.2  -> migrates to -> qemu-5.1 -M pc-5.2
+>> -  This combination is not possible as the qemu-5.1 doen't understand
+>> +  This combination is not possible as the qemu-5.1 does't understand
+> 
+> You replaced one typo with another one :-)
+
+Heh. Lovely! :)
+
+The "really-really-fixed" one (without resending):
+
+-  This combination is not possible as the qemu-5.1 doen't understand
++  This combination is not possible as the qemu-5.1 doesn't understand
+    pc-5.2 machine type.  So nothing to worry here.
+
+;)
+
+Thank you for the review and for spotting it!
+
+/mjt
 
 
