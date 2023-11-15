@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA56D7EBACF
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 02:07:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC607EBAD0
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 02:09:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r34N7-0001sq-RT; Tue, 14 Nov 2023 20:07:13 -0500
+	id 1r34ON-0004Jp-Vz; Tue, 14 Nov 2023 20:08:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r34N5-0001ql-QI
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 20:07:11 -0500
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1r34OK-0004Id-Uu
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 20:08:29 -0500
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r34N4-0006oK-60
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 20:07:11 -0500
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6b1d1099a84so6280684b3a.1
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 17:07:07 -0800 (PST)
+ id 1r34OJ-0006vC-Di
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 20:08:28 -0500
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6c4884521f6so5395373b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 17:08:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700010425; x=1700615225; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700010505; x=1700615305; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=okFvJHiAdcLla/TKinrA7d7VqaVy5nrIyjB5j36uDc4=;
- b=Vy45Lu+TSGpqyswoi8V9Cv9DiiloSAS1gxMQZUqQBvru0ckhmLORbXzhlgYz+2Egmr
- VwLA2eM5AjsAaAJDyWYvDRyZ5e7CDuCg8oiyiNvtu1wSQeEBuX/9ce2SRoON+V1btUpj
- hMpWp2sHrd273FxGRh2/qmT7cfRGI4If7N56YYY018Wqacgp9jA4oORNR06u0ZNfBgLt
- 49P2x7KP+mMNPUKurMC2K0Gq/9jrhi9OT/AWGalmOVdtBPT7XvG3DW48kE2N4f9ZlLQ/
- F3mfCEkRsJoTXIqe7spnuV3mCAovkLalr7fMr4oX+wl4GtMb2NA4hTjepXW9pd4FzqHQ
- oG4g==
+ bh=M1D7/YT7Q5Umzl0SZdP/D+JpNa8dQogLNgrHUdnEcrA=;
+ b=SF7Jyw1TeL/wkDnCTxT3+qDlmblNxEI4vRU35Fk8AogET4mGPSgXHbuKzqDJeA17Od
+ PIXOVhr913dy60a6t1pWl9cX5gSQI4UuT3nACidO6n7iqtAHZAEGhAVLueB76WCMmQZy
+ rHopSjB+zflZAIVjEDIMHA0NUcQvELPVcqu3lxnTWUjmTBtnn0L0NPljgFm8YRokbdOF
+ LjJ0iv6tzH2KHEXgRzpTYyPDi0EldD9a0LPPYXACie1cfcriW2M25tKcnXIw+SV5LhVm
+ sM4MOBXwZydk2kA52bZFqyfHxl/kAb7i7QUC7PXcqdORmCF61zKXclTPJtvvA7UUZnli
+ 3yTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700010425; x=1700615225;
+ d=1e100.net; s=20230601; t=1700010505; x=1700615305;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=okFvJHiAdcLla/TKinrA7d7VqaVy5nrIyjB5j36uDc4=;
- b=lifjZMZ/cTDEwu7o3F9wdIXIuXMEgHaHV3EmKyfsupJVjlbnwohpRPGzCuUK71Bzi5
- pjpddklVpaUhmG/KHeaa/nTDa+NrmEQH7ZeJcSIGvEhqy4iWTI6TfXZO675pvqXI1MsP
- vM+4ong0uv9kaAJXWT1WtGPeY/m4coZ8zzkW1qfVp6a44hpU9Xka2ALQDPxL3sWDm7lu
- 0J9HIzEMiwoowmRMu2wuTenL7EepbK0Ux/XLPT9WS6VROSbv4T6KEfiIW+GNilViyfwn
- Od5sdUMcUH9C5mv6FTXY2TE+ad8e8AD9NRy5sc6RPHMsmeMgjDiSPin/n/4GYzpHRXuy
- U/AQ==
-X-Gm-Message-State: AOJu0Ywe9TrciyGtQpIU6wAiBGdD0EH7JDlQPRZ3R/V3ni6GUt6NzELJ
- Ckz8XWyUwU4hRK1Q8PPfcqnekQ==
-X-Google-Smtp-Source: AGHT+IF23uLdasfPLdk1JTebbV1wXI2ukXi3/iUrg4/xmJiaS2qHRG77jL2ltV0mJML7aYtHPc6YrA==
-X-Received: by 2002:a05:6a20:4424:b0:169:7d6f:9f22 with SMTP id
- ce36-20020a056a20442400b001697d6f9f22mr13676274pzb.54.1700010425551; 
- Tue, 14 Nov 2023 17:07:05 -0800 (PST)
+ bh=M1D7/YT7Q5Umzl0SZdP/D+JpNa8dQogLNgrHUdnEcrA=;
+ b=dCL0WQwhVhhVzufpP6tws4GkrKBeWpE2nYKKQjMrx85Ba+3higZF4bqSzdIlYLs5jd
+ z2ulGt6g40oEKJ82w7R5OGkMPxRKFaAjG8tuCGV5uuT2Y/FlojF7u/TBk8CYTBUiuiIc
+ 1+D70bi95bQ9ZcqBfH4p9uKzVp+p/Lc8rNcdZr4t4Qm8qfpXf90kJ0ZkptZKjHuOioMP
+ tTwl//q4uX6Rv6n6SeM58hYD03BstN4qfg1weAEa5XTQt93667DwBif7CiOWitBbC3zc
+ 0uw0qfvItIW8mbPbok3JCTS5ZPkzAsQMA3t2xCqJJMUAdET7hEEr1Yl1mNDZh25AUkXc
+ 7Mtg==
+X-Gm-Message-State: AOJu0Yyrc1aynBXWR/FBeb39N80Jk8jwXGSL7zVzvbZfcN5fWhPHvSRr
+ +ibmHM3EZeSObr+MUuCi4BoJmA==
+X-Google-Smtp-Source: AGHT+IHWxIftyvgVh4qu/K739wzJYsr5HIXeV7lhc/gZVY3T2c62tASp5quu1EvhW0RXGS3lbMVO1A==
+X-Received: by 2002:a05:6a21:185:b0:186:97bb:318e with SMTP id
+ le5-20020a056a21018500b0018697bb318emr8357748pzb.28.1700010505300; 
+ Tue, 14 Nov 2023 17:08:25 -0800 (PST)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- 26-20020a17090a001a00b0028105e3c7d8sm8707354pja.0.2023.11.14.17.07.04
+ 26-20020a17090a001a00b0028105e3c7d8sm8707354pja.0.2023.11.14.17.08.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 17:07:05 -0800 (PST)
-Message-ID: <81e7412b-aaf2-4277-8d44-d28dbb04e3ac@linaro.org>
-Date: Tue, 14 Nov 2023 17:07:03 -0800
+ Tue, 14 Nov 2023 17:08:24 -0800 (PST)
+Message-ID: <6b9d3d54-42a7-4eb7-84ce-1993ccc954a0@linaro.org>
+Date: Tue, 14 Nov 2023 17:08:23 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 18/31] target/rx: Use generic cpu_list()
+Subject: Re: [PATCH v5 19/31] target/sh4: Use generic cpu_list()
 Content-Language: en-US
 To: Gavin Shan <gshan@redhat.com>
 Cc: qemu-devel@nongnu.org
 References: <20231114235628.534334-1-gshan@redhat.com>
- <20231114235628.534334-19-gshan@redhat.com>
+ <20231114235628.534334-20-gshan@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231114235628.534334-19-gshan@redhat.com>
+In-Reply-To: <20231114235628.534334-20-gshan@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,22 +97,24 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 11/14/23 15:56, Gavin Shan wrote:
 > Before it's applied:
 > 
-> [gshan@gshan q]$ ./build/qemu-system-rx -cpu ?
-> Available CPUs:
->    rx62n-rx-cpu
+> [gshan@gshan q]$ ./build/qemu-system-sh4 -cpu ?
+> sh7750r
+> sh7751r
+> sh7785
 > 
 > After it's applied:
 > 
-> [gshan@gshan q]$ ./build/qemu-system-rx -cpu ?
+> [gshan@gshan q]$ ./build/qemu-system-sh4 -cpu ?
 > Available CPUs:
->    rx62n
+>    sh7750r
+>    sh7751r
+>    sh7785
 > 
 > Signed-off-by: Gavin Shan <gshan@redhat.com>
 > ---
->   target/rx/cpu.c | 16 ----------------
->   target/rx/cpu.h |  3 ---
->   2 files changed, 19 deletions(-)
-
+>   target/sh4/cpu.c | 17 -----------------
+>   target/sh4/cpu.h |  3 ---
+>   2 files changed, 20 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
