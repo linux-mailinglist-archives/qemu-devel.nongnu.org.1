@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9791D7ECA48
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 19:12:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE0A7ECA4C
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 19:15:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3KLh-0004S2-IA; Wed, 15 Nov 2023 13:10:51 -0500
+	id 1r3KOz-00065x-EN; Wed, 15 Nov 2023 13:14:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r3KLd-0004Rp-VW
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 13:10:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r3KOw-00065m-Ol
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 13:14:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r3KLb-0000Ke-E1
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 13:10:45 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r3KOv-00020i-AO
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 13:14:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700071842;
+ s=mimecast20190719; t=1700072048;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=G26Q+pxS8s09wKVuDjO+e992p0wNXwDweuDLtOZfdxk=;
- b=GQpbXLIGZABIAliqbGqp7ZRgm0qAL3iCSjEq55M+vv1wLZ+x+VW1CkaXg2hnYOU8pJWoss
- nRjC3fiJIu6TA0uFPp2Eb4QGdHDJf/oO3E7ThZatrXowpZUpb6ubsHlm7hdyvtWu8adTQw
- zoqTVlYQk81hNsqL3UxUJvcF69Qx5/c=
+ bh=NaknKTR8UN8VcS/6We16sC3tdmrNMztYJ2qVacKu8zk=;
+ b=ZqHzkDsF9z7L3iQL2/3F1JVgm9dbSN0gfOLqhJ0EKeRF8a9yrePQy/r0Nq8IUlM/TiCXwO
+ 7SJgUq63vY3mXC3A0JjYpMoupqirzlDgnmGwEw4VgxOnt55Y63F2I7iFAPuxxkDNFZYOUI
+ gf0l+GQa2kWtE6QP21aXvzgRLQ2MqXE=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-38-KX5aLoxsPG-glcPORIpN-Q-1; Wed, 15 Nov 2023 13:10:40 -0500
-X-MC-Unique: KX5aLoxsPG-glcPORIpN-Q-1
+ us-mta-353-v70ETZb0MwCkkgmvCfof7Q-1; Wed, 15 Nov 2023 13:14:07 -0500
+X-MC-Unique: v70ETZb0MwCkkgmvCfof7Q-1
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-408374a3d6bso44545345e9.0
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 10:10:40 -0800 (PST)
+ 5b1f17b1804b1-4092164ed09so46076895e9.2
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 10:14:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700071839; x=1700676639;
+ d=1e100.net; s=20230601; t=1700072046; x=1700676846;
  h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
  :references:cc:to:content-language:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G26Q+pxS8s09wKVuDjO+e992p0wNXwDweuDLtOZfdxk=;
- b=fP7rG1F9ZTTQh3gVK5VBad21eGBNeGPcTNXZC66rMPi5KbJj5qMf6Z8u16sv+gSlH7
- ME/pF9NuiLr9mZ18qJyefbC9wr1w8i2AmAxBf3Rbqt5UZ6eYRHDXj45DeAOzR6xx6Qn6
- B4rW/95+Yt6/8UU3G0x5GXvjFirHWopJYholBcv0BPSsI1XRF3vyM9/5SIp7UmIjKHmh
- HJRkEiWnk5ews1LlK/v47ooYmG/kf/easY9k6j2UBGxsNOWTVws5r1/u1jnHZuaUwPR3
- UpTnHP68Io10gmYK5Y0ZoV2TTx0OYKirGt2b67991Pt+cy/sp6ZWCxDurJnB/jRZIZpI
- h9qw==
-X-Gm-Message-State: AOJu0YzBIfevV56LpAtPk9hzi48NeKEPf4HV6y6Uq7hpS1grUnPuQDuz
- KAlhhZkbk3Vw5ytLdkDdf2SaM4ovrF/MYuWYsmjogu0s68Bom71GG1DkInleR3AcrwD0Psgu1rh
- jPnxjVKdjQ0Csr+A=
-X-Received: by 2002:a05:600c:3b03:b0:406:535a:cfb4 with SMTP id
- m3-20020a05600c3b0300b00406535acfb4mr109786wms.1.1700071839467; 
- Wed, 15 Nov 2023 10:10:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFWPLGqv1Trj9TK3Rp0EBXqDfHnOQRzyGK0LXlLgkXJDTjhmIk797XC/+D1Yny6LpnE9jdAcw==
-X-Received: by 2002:a05:600c:3b03:b0:406:535a:cfb4 with SMTP id
- m3-20020a05600c3b0300b00406535acfb4mr109753wms.1.1700071839010; 
- Wed, 15 Nov 2023 10:10:39 -0800 (PST)
+ bh=NaknKTR8UN8VcS/6We16sC3tdmrNMztYJ2qVacKu8zk=;
+ b=XZTuOtXjo+gp/h158+dAplu/1Yt6PnNRkJ16/9RtBJLjLM5CjsF9QyZ7GB1P1RcH2c
+ /EdNS4aUiE8Qr+T6MqldPqZHIKG05hOtqrwZGZV9SPv6NRdT2Zlza/jlNspOtmtKrxFe
+ 0QruVUs+sDgFetDCG70/P2Jc2Uyt4KoVEn+uFyLdUYAndesADANT0MjCaUDRfkEUq8rt
+ dnLJUG9u12XIbEnlTP3NLTw03nZl1S+ZeuZhl0bxlgQB6sfhPuv5zdonvh2KoibHsedu
+ Iz9McbYkhxDplSEsJmg+0vgdNSyu1ORbNbJnrh5LLo/GodLUkE8WS3Yj3SvtovmFYzpF
+ t/wA==
+X-Gm-Message-State: AOJu0YznuB/xGPLK+vnE2jz2Vt24qwRRM7cliHKT6xFVdWppTLVJ0EhK
+ dTujurhSGr9Ap5QIz4HATdsYeFJVqlIcn2hhdQttNUawVWbpAvW2rx6oswkFBmXBV+DbaHBk0nW
+ 5uyTKJiYGystfZ4A=
+X-Received: by 2002:a05:600c:46ce:b0:406:84b2:67f with SMTP id
+ q14-20020a05600c46ce00b0040684b2067fmr11114782wmo.20.1700072045902; 
+ Wed, 15 Nov 2023 10:14:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFIF9S+an3CODAL2v4yKPQ5t2+/NtigcrL0Gri4ePtq8VvQhp/tiwH5hck/SYyATp/m/0E+eg==
+X-Received: by 2002:a05:600c:46ce:b0:406:84b2:67f with SMTP id
+ q14-20020a05600c46ce00b0040684b2067fmr11114757wmo.20.1700072045479; 
+ Wed, 15 Nov 2023 10:14:05 -0800 (PST)
 Received: from ?IPV6:2003:cb:c706:ed00:59ee:f048:4ed9:62a6?
  (p200300cbc706ed0059eef0484ed962a6.dip0.t-ipconnect.de.
  [2003:cb:c706:ed00:59ee:f048:4ed9:62a6])
  by smtp.gmail.com with ESMTPSA id
- c15-20020a5d4f0f000000b0032db430fb9bsm11167394wru.68.2023.11.15.10.10.37
+ az23-20020a05600c601700b004054dcbf92asm475533wmb.20.2023.11.15.10.14.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 Nov 2023 10:10:38 -0800 (PST)
-Message-ID: <bc84fa4f-4866-4321-8f30-1388eed7e64f@redhat.com>
-Date: Wed, 15 Nov 2023 19:10:37 +0100
+ Wed, 15 Nov 2023 10:14:05 -0800 (PST)
+Message-ID: <af2a5b80-f259-45b1-9d92-812e3c4bc06c@redhat.com>
+Date: Wed, 15 Nov 2023 19:14:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/70] RAMBlock/guest_memfd: Enable
- KVM_GUEST_MEMFD_ALLOW_HUGEPAGE
+Subject: Re: [PATCH v3 04/70] HostMem: Add mechanism to opt in kvm guest memfd
+ via MachineState
 Content-Language: en-US
 To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
@@ -86,7 +86,7 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
  <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>
 References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
- <20231115071519.2864957-4-xiaoyao.li@intel.com>
+ <20231115071519.2864957-5-xiaoyao.li@intel.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -133,17 +133,17 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20231115071519.2864957-4-xiaoyao.li@intel.com>
+In-Reply-To: <20231115071519.2864957-5-xiaoyao.li@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -162,62 +162,19 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 15.11.23 08:14, Xiaoyao Li wrote:
-> KVM allows KVM_GUEST_MEMFD_ALLOW_HUGEPAGE for guest memfd. When the
-> flag is set, KVM tries to allocate memory with transparent hugeapge at
-> first and falls back to non-hugepage on failure.
+> Add a new member "require_guest_memfd" to memory backends. When it's set
+> to true, it enables RAM_GUEST_MEMFD in ram_flags, thus private kvm
+> guest_memfd will be allocated during RAMBlock allocation.
 > 
-> However, KVM defines one restriction that size must be hugepage size
-> aligned when KVM_GUEST_MEMFD_ALLOW_HUGEPAGE is set.
+> Memory backend's @require_guest_memfd is wired with @require_guest_memfd
+> field of MachineState. MachineState::require_guest_memfd is supposed to
+> be set by any VMs that requires KVM guest memfd as private memory, e.g.,
+> TDX VM.
 > 
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> ---
-> v3:
->   - New one in v3.
-> ---
->   system/physmem.c | 38 ++++++++++++++++++++++++++++++++++++--
->   1 file changed, 36 insertions(+), 2 deletions(-)
-> 
-> diff --git a/system/physmem.c b/system/physmem.c
-> index 0af2213cbd9c..c56b17e44df6 100644
-> --- a/system/physmem.c
-> +++ b/system/physmem.c
-> @@ -1803,6 +1803,40 @@ static void dirty_memory_extend(ram_addr_t old_ram_size,
->       }
->   }
->   
-> +#ifdef CONFIG_KVM
-> +#define HPAGE_PMD_SIZE_PATH "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size"
-> +#define DEFAULT_PMD_SIZE (1ul << 21)
-> +
-> +static uint32_t get_thp_size(void)
-> +{
-> +    gchar *content = NULL;
-> +    const char *endptr;
-> +    static uint64_t thp_size = 0;
-> +    uint64_t tmp;
-> +
-> +    if (thp_size != 0) {
-> +        return thp_size;
-> +    }
-> +
-> +    if (g_file_get_contents(HPAGE_PMD_SIZE_PATH, &content, NULL, NULL) &&
-> +        !qemu_strtou64(content, &endptr, 0, &tmp) &&
-> +        (!endptr || *endptr == '\n')) {
-> +        /* Sanity-check the value and fallback to something reasonable. */
-> +        if (!tmp || !is_power_of_2(tmp)) {
-> +            warn_report("Read unsupported THP size: %" PRIx64, tmp);
-> +        } else {
-> +            thp_size = tmp;
-> +        }
-> +    }
-> +
-> +    if (!thp_size) {
-> +        thp_size = DEFAULT_PMD_SIZE;
-> +    }
 
-... did you shamelessly copy that from hw/virtio/virtio-mem.c ? ;)
-
-This should be factored out into a common helper.
+I'm confused, why do we need this if it's going to be the same for all 
+memory backends right now?
 
 -- 
 Cheers,
