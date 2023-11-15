@@ -2,70 +2,124 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D60D7EBD64
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:14:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE157EBD65
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:14:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3A6L-0001Ue-SF; Wed, 15 Nov 2023 02:14:18 -0500
+	id 1r3A6S-0001o1-0k; Wed, 15 Nov 2023 02:14:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r3A62-0001Ox-Ux
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:13:58 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3A6N-0001ft-SR
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:14:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r3A61-0001AX-Is
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:13:58 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3A6L-0001On-4k
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:14:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700032437;
+ s=mimecast20190719; t=1700032451;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3KZcCyZ7DYFN96iW0pf73fVMxiHfkj1Q4aPot78Zwco=;
- b=LSEx0X8MGH/Uzx3MLM3i5RvEwPMNbAYPouXpbCQZqZ0N2b8+lc2yv6pFpm6uxd6+JpFgHE
- YdnrlJwH21dfCB4kD35QmGbcPaOP/s1sS2lIad6/BCTfCWbEMRXr4PoYSEQQicHhReUEpX
- 0aWnm+ZQRF/lIMi3NuSKPp+CUNddSGo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=F//FlxVTpUdyQIQYOo8WvFnmGTu65xhpdiiqzfiX8VA=;
+ b=Kc6JHKWN1eR0GqOc1/vhui6iSihmk7dY4rh2TwLyICjpED6kiAZFHmynYNZT9dCGlhFBk6
+ 9Cr9Q5/iQfwB27d8N+yunI98FBDkoADi4JKU8I8UtThBghRM8Wwkd23e1WnE5mJ/3Ws3fi
+ l3YsaUt9bvMrSNmsabUo0x1EO+aGQK0=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-604-60GkYaErMOyY3JI6Pb1SQw-1; Wed, 15 Nov 2023 02:13:54 -0500
-X-MC-Unique: 60GkYaErMOyY3JI6Pb1SQw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3E81A82A62E;
- Wed, 15 Nov 2023 07:13:54 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 10D30492BE8;
- Wed, 15 Nov 2023 07:13:54 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 04E8721E6A1F; Wed, 15 Nov 2023 08:13:53 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  npiggin@gmail.com,  danielhb413@gmail.com,
- clg@kaod.org,  david@gibson.dropbear.id.au,  harshpb@linux.ibm.com,
- dave@treblig.org,  jasowang@redhat.com,  michael.roth@amd.com,
- kkostiuk@redhat.com,  mst@redhat.com,  david@redhat.com,
- kraxel@redhat.com,  marcandre.lureau@redhat.com,  qemu-ppc@nongnu.org
-Subject: Re: [PATCH 7/7] target/i386/cpu: Improve error message for property
- "vendor"
-References: <20231031111059.3407803-1-armbru@redhat.com>
- <20231031111059.3407803-8-armbru@redhat.com>
- <d2c8e554-3bdf-e89d-c579-c9a432e8e08f@linaro.org>
-Date: Wed, 15 Nov 2023 08:13:52 +0100
-In-Reply-To: <d2c8e554-3bdf-e89d-c579-c9a432e8e08f@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Tue, 31 Oct 2023 15:07:00
- +0100")
-Message-ID: <87bkbvtrnz.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ us-mta-692-z27KjJaKPyOBYUmtREosxg-1; Wed, 15 Nov 2023 02:14:09 -0500
+X-MC-Unique: z27KjJaKPyOBYUmtREosxg-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9a681c3470fso451720966b.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 23:14:09 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700032448; x=1700637248;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=F//FlxVTpUdyQIQYOo8WvFnmGTu65xhpdiiqzfiX8VA=;
+ b=ULGmF3m15W+4UaYYcHTfv2KS378IfjZ1ExhL0R9gn2R53MTQdjnlnH1sEJmEvQwyNF
+ 7fzwfqdAgJ/xaaIqvFqpeCzrLjiNaXz0rPfaSX8rNC3RCfgbRIgMys2beoxMLgJI0Cok
+ kmnyf76GuUIZQP7OO2j/r7OGtanStilbbcl+UDVP90XtxHOCP75vl6fldE4Soz2mFIr2
+ 88SDVyBqjDUqBvRUnmL/Srj1xJ7OnpZUOmdE5TUNvffgx+XI57lrXVBQyE+bayhdte8p
+ hCZ/tkL1/2haZsOHLE/3fBfMLQuNHLVost4GL5B52YRtTyxzMkZ4C2skyzhOL42PM4gk
+ S5Tw==
+X-Gm-Message-State: AOJu0YzqnImv9oRA8mMjtIK1B4m9/PsK1FkuxgOr7XL5EnBh1a0QEXQ8
+ WKIO5k8O+JD9IDGUeF5EFPHkA39ikULmqVnUHg5wqu70oPqPPjSrbbOP8027WH3cFwik5uSptli
+ VLcUnOHeuKyTjYpzGv5ifSsU=
+X-Received: by 2002:a17:906:fc07:b0:9c7:5db4:c943 with SMTP id
+ ov7-20020a170906fc0700b009c75db4c943mr8898048ejb.40.1700032448613; 
+ Tue, 14 Nov 2023 23:14:08 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHRo5FXOTDE9LwrZhrzFtL7kqXbL7tgGSkX5nmTvwSkRgDRvQmxJPmPgg9k+SeE+T9gMvI4YA==
+X-Received: by 2002:a17:906:fc07:b0:9c7:5db4:c943 with SMTP id
+ ov7-20020a170906fc0700b009c75db4c943mr8898034ejb.40.1700032448295; 
+ Tue, 14 Nov 2023 23:14:08 -0800 (PST)
+Received: from [192.168.0.6] (ip-109-43-176-122.web.vodafone.de.
+ [109.43.176.122]) by smtp.gmail.com with ESMTPSA id
+ lt7-20020a170906fa8700b009a1a5a7ebacsm6554420ejb.201.2023.11.14.23.14.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 14 Nov 2023 23:14:07 -0800 (PST)
+Message-ID: <1799c423-e7c1-4c1a-93e2-2eb8bd9c6d38@redhat.com>
+Date: Wed, 15 Nov 2023 08:14:07 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH trivial 16/21] include/hw/virtio/vhost.h: spelling fix:
+ sate
+Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+References: <20231114165834.2949011-1-mjt@tls.msk.ru>
+ <20231114165834.2949011-17-mjt@tls.msk.ru>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20231114165834.2949011-17-mjt@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -90,43 +144,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+On 14/11/2023 17.58, Michael Tokarev wrote:
+> Fixes: 4a00d5d7f4b6 "vhost: Add high-level state save/load functions"
+> Cc: Hanna Czenczek <hreitz@redhat.com>
+> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> ---
+>   include/hw/virtio/vhost.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+> index 05d7204a08..02477788df 100644
+> --- a/include/hw/virtio/vhost.h
+> +++ b/include/hw/virtio/vhost.h
+> @@ -456,7 +456,7 @@ int vhost_save_backend_state(struct vhost_dev *dev, QEMUFile *f, Error **errp);
+>    * Must only be called while the device and all its vrings are stopped
+>    * (`VHOST_TRANSFER_STATE_PHASE_STOPPED`).
+>    *
+> - * @dev: The vhost device to which to send the sate
+> + * @dev: The vhost device to which to send the state
+>    * @f: Migration stream from which to load the state
+>    * @errp: Potential error message
+>    *
 
-> On 31/10/23 12:10, Markus Armbruster wrote:
->> Improve
->>      $ qemu-system-x86_64 -device max-x86_64-cpu,vendor=3Dme
->>      qemu-system-x86_64: -device max-x86_64-cpu,vendor=3Dme: Property '.=
-vendor' doesn't take value 'me'
->> to
->>      qemu-system-x86_64: -device max-x86_64-cpu,vendor=3D0123456789abc: =
-value of property 'vendor' must consist of excactly 12 characters
->> Signed-off-by: Markus Armbruster <armbru@redhat.com>
->> ---
->>   target/i386/cpu.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
->> index fc8484cb5e..e708628c16 100644
->> --- a/target/i386/cpu.c
->> +++ b/target/i386/cpu.c
->> @@ -5192,7 +5192,8 @@ static void x86_cpuid_set_vendor(Object *obj, cons=
-t char *value,
->>       int i;
->>         if (strlen(value) !=3D CPUID_VENDOR_SZ) {
->> -        error_setg(errp, QERR_PROPERTY_VALUE_BAD, "", "vendor", value);
->> +        error_setg(errp, "value of property 'vendor' must consist of"
->> +                   " excactly " stringify(CPUID_VENDOR_SZ) " characters=
-");
->
-> Typo "exactly" (and in example), otherwise:
-
-Fixed.
-
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->
->>           return;
->>       }
->>=20=20=20
-
-Thanks!
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
