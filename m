@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D5F67EBD61
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:12:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93BF57EBD62
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:12:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3A4K-0007NG-AJ; Wed, 15 Nov 2023 02:12:12 -0500
+	id 1r3A4h-0008DG-I6; Wed, 15 Nov 2023 02:12:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3A4J-0007Me-5T
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:12:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3A4f-0008BS-GT
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:12:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3A4G-0000B6-ID
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:12:10 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3A4e-0000GA-11
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:12:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700032327;
+ s=mimecast20190719; t=1700032351;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Fec/+VlpBTxA7k0HCkkw+iJ1evK0El5XrzBmSSuM1fU=;
- b=K5pfw+BZd6LpgLsMwscuqkD/8HSQyNH0m6BfE2rbbIQPL4zL7jw+IiCEekpuV/hs4/CaYb
- TKCgH8d/SmtiG+PHRSsfurwBks9BfG/WJ82QDVS9DgvVGTtUqPCDANiDPrRzaLuFf/Q8Kt
- GCAxVO3mA66iKYKKlQMj2q4mAI7eu60=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=KtiVRAyjBbYE/OAjNbxz25haFD/kXG0gA5r5hENmdcc=;
+ b=FwVg3Vi4UFj6C5R9GSqVxWrpNA57JmR38/fifJr4w590BiTucl959kT9RY1jfkLkTQHtLs
+ x5zdBPtAor7qun5G76jTVOzp3KX67hveW90k9vaa/Eqvkzd1UDkC1B7U1BpGHerAwXdN6C
+ b055GorGfjJpn2uHQQcQAVbMeXtaqOI=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-Tfcan7_KPAe53i35cA3qFg-1; Wed, 15 Nov 2023 02:12:06 -0500
-X-MC-Unique: Tfcan7_KPAe53i35cA3qFg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9d223144f23so453350866b.3
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 23:12:06 -0800 (PST)
+ us-mta-610-3kl72uhLNQCSwtuc-LiBJQ-1; Wed, 15 Nov 2023 02:12:30 -0500
+X-MC-Unique: 3kl72uhLNQCSwtuc-LiBJQ-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9e293cd8269so445087166b.0
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 23:12:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700032325; x=1700637125;
+ d=1e100.net; s=20230601; t=1700032349; x=1700637149;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Fec/+VlpBTxA7k0HCkkw+iJ1evK0El5XrzBmSSuM1fU=;
- b=WwNsOZZjMufkuvX8/e3XGYLWZVtIgZi9ZP+biZz2LQkW5vFG4WrUjOyWDTuma/X+LS
- mm7ofoC7tUJoRlySGc/THpT1DTqSlky6vsrd6Rvq2JSmMGo+UZuKw27OoyA/Bi20Atlv
- 0pk7JiVhRZlpQigQwxkHo2s5aRF2V/T1iVhvF8fe5jHNkL86Jd33zMLRsbLtktNL2Ynj
- JPFLnUGkcLZDbxSnp5ugi2dCmWpJGSdvCP2AsI4rRHErN/PEXut85mMbuuWrUr/4aXit
- qrmjfqqefy+mf6kmgqnSYTbv5xoexRIIRegHRV+8mruJj2Q8j6UynIPuFchU9CeF9dc9
- Ok/A==
-X-Gm-Message-State: AOJu0YypHuveV5l+kjxlus/r/Qnqzu2LXbfwcq77hysT0wwU4q53G5Iy
- RTxfTJZPgHhg/ZEi5m4pZywT0vWhZUGhEuPPmNfeN9YG4uIg9CDogS7YzfhjW7U6bTttOHOpNdI
- Ugw+deF5r3nIUCug=
-X-Received: by 2002:a17:906:2416:b0:9be:77cd:4c2c with SMTP id
- z22-20020a170906241600b009be77cd4c2cmr8442869eja.28.1700032325226; 
- Tue, 14 Nov 2023 23:12:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEJWTZc1++cwxSgrI4EbShzQ6q+uPkHvUqaFaxybBjUn0e1RwBWYZ7GzWRhDIA4PCGbcpPIDQ==
-X-Received: by 2002:a17:906:2416:b0:9be:77cd:4c2c with SMTP id
- z22-20020a170906241600b009be77cd4c2cmr8442860eja.28.1700032324873; 
- Tue, 14 Nov 2023 23:12:04 -0800 (PST)
+ bh=KtiVRAyjBbYE/OAjNbxz25haFD/kXG0gA5r5hENmdcc=;
+ b=lkzM/z+SvITVDlAKckpXKkpiIelxDA6RzW67jPSXFO4q6t2EppiD2vjq5q7KonKiLw
+ N5l7+1MUNR4qfvqFKaAaqVPNnc3X2zt4FG6Q/x4Elh3x8+78/ssNfsQf6O2Uh94fnCmw
+ 3uUK/OuBfxt4xfgEQAMynNZA6trFCeDzUxROzqzDprKkOQfC2OaybjuBK5NPrCupLhJr
+ HG/YWqnbIPMYiETvU2efJ/8yG2ktOkfeSXT3YwHAJYcpKubj+KFdzDFtn22IKZZ8qKWB
+ 6VhRMpnOWPIrxlTTgZsCsVf4b3QQFOLwYEjzut1kFEi2AJVeTPT+jm6kse3AT3UkLv3M
+ jcKQ==
+X-Gm-Message-State: AOJu0Yy4eornQNhhYvzjjJUSGoUXGucU7XECh+yQ3Tv3rESTtqqo7jqy
+ Vl4wFDQvlMrud+jFCb643pXQpK8l4B1rDgLE31nYKbcrCqHGml8zIW1Xwd1BQjxyvJlc4IhFgbw
+ uKcbTr1PewcDSY00=
+X-Received: by 2002:a17:906:e215:b0:9d3:8d1e:cf0 with SMTP id
+ gf21-20020a170906e21500b009d38d1e0cf0mr7948578ejb.54.1700032349147; 
+ Tue, 14 Nov 2023 23:12:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFMBDPSgk2cDP7yfp/mZPbgFrD8ncPtKcHR9zzQlxU8VmnUA56gAokROvA9W2y9HPSX70PcOw==
+X-Received: by 2002:a17:906:e215:b0:9d3:8d1e:cf0 with SMTP id
+ gf21-20020a170906e21500b009d38d1e0cf0mr7948565ejb.54.1700032348939; 
+ Tue, 14 Nov 2023 23:12:28 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-176-122.web.vodafone.de.
  [109.43.176.122]) by smtp.gmail.com with ESMTPSA id
- lt7-20020a170906fa8700b009a1a5a7ebacsm6554420ejb.201.2023.11.14.23.12.03
+ lt7-20020a170906fa8700b009a1a5a7ebacsm6554420ejb.201.2023.11.14.23.12.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 23:12:04 -0800 (PST)
-Message-ID: <fac8c73f-06c1-46c2-bff9-8222ee0ba5a3@redhat.com>
-Date: Wed, 15 Nov 2023 08:12:03 +0100
+ Tue, 14 Nov 2023 23:12:28 -0800 (PST)
+Message-ID: <c33b464c-5fe0-4931-8cc0-dbfdc53b481f@redhat.com>
+Date: Wed, 15 Nov 2023 08:12:28 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH trivial 10/21] migration/rdma.c: spelling fix: asume
+Subject: Re: [PATCH trivial 12/21] hw/mem/memory-device.c: spelling fix:
+ ontaining
 Content-Language: en-US
 To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Juan Quintela <quintela@redhat.com>
+Cc: qemu-trivial@nongnu.org, David Hildenbrand <david@redhat.com>
 References: <20231114165834.2949011-1-mjt@tls.msk.ru>
- <20231114165834.2949011-11-mjt@tls.msk.ru>
+ <20231114165834.2949011-13-mjt@tls.msk.ru>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -114,19 +115,19 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231114165834.2949011-11-mjt@tls.msk.ru>
+In-Reply-To: <20231114165834.2949011-13-mjt@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -143,26 +144,26 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 14/11/2023 17.58, Michael Tokarev wrote:
-> Fixes: 67c31c9c1af1 "migration: Don't abuse qemu_file transferred for RDMA"
-> Cc: Juan Quintela <quintela@redhat.com>
+> Fixes: 6c1b28e9e405 "memory-device: Support empty memory devices"
+> Cc: David Hildenbrand <david@redhat.com>
 > Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 > ---
->   migration/rdma.c | 2 +-
+>   hw/mem/memory-device.c | 2 +-
 >   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/migration/rdma.c b/migration/rdma.c
-> index 6a29e53daf..04debab5d9 100644
-> --- a/migration/rdma.c
-> +++ b/migration/rdma.c
-> @@ -2204,7 +2204,7 @@ retry:
->       stat64_add(&mig_stats.normal_pages, sge.length / qemu_target_page_size());
->       /*
->        * We are adding to transferred the amount of data written, but no
-> -     * overhead at all.  I will asume that RDMA is magicaly and don't
-> +     * overhead at all.  I will assume that RDMA is magicaly and don't
->        * need to transfer (at least) the addresses where it wants to
->        * write the pages.  Here it looks like it should be something
->        * like:
+> diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
+> index e0704b8dc3..a1b1af26bc 100644
+> --- a/hw/mem/memory-device.c
+> +++ b/hw/mem/memory-device.c
+> @@ -29,7 +29,7 @@ static bool memory_device_is_empty(const MemoryDeviceState *md)
+>       /* dropping const here is fine as we don't touch the memory region */
+>       mr = mdc->get_memory_region((MemoryDeviceState *)md, &local_err);
+>       if (local_err) {
+> -        /* Not empty, we'll report errors later when ontaining the MR again. */
+> +        /* Not empty, we'll report errors later when containing the MR again. */
+>           error_free(local_err);
+>           return false;
+>       }
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
