@@ -2,89 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9956D7EC829
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 17:07:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5938D7EC843
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 17:16:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3IPk-0002CR-T1; Wed, 15 Nov 2023 11:06:52 -0500
+	id 1r3IY5-0005lB-0W; Wed, 15 Nov 2023 11:15:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r3IPi-0002C1-0J
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 11:06:50 -0500
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r3IPg-00083b-Dl
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 11:06:49 -0500
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2c504a5e1deso93981421fa.2
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 08:06:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700064405; x=1700669205; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lxBV5F+ejfImJH4NDWExPgkTZLPFCvyWoyiPiO4uvDk=;
- b=R4GAkj6FVFX+nV+IaGLtwnI5YHkeSX78+t5zLek81ZvOzduZW5z4r3X2CxwCSH2yOh
- ztL5f4g/IOWI2FbjRrCQMGdyxX1TLXNkoqPoW2uNNfLMulCFOzECEqwBOo5WMGJft8LX
- 4LV/Nagk/hFuN6GKQJt7FkakstH3gYLNDHzUhFfdi3SDs61WrlKjDfFJ40lHD3BMJoCP
- bAXwJFMh/qqTsKi/Kgf0i4nWCmufFtNokJBz1dBMJ6zk9kCevCVpqY8Fu66za4Pc7ZsE
- pMVVVsm1Bldz1ly+zo/v4cdigbCdA+ISt+5E4DZkm91mhvFTbVHOD5QLxt+587JXp/aA
- Pz5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700064405; x=1700669205;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=lxBV5F+ejfImJH4NDWExPgkTZLPFCvyWoyiPiO4uvDk=;
- b=LRaUcfjggJuNWMVZnF/+28JMCgjD2cqwksiyyr+ufPMJNsocppXJpgVb5c0gkUKaH8
- mvb0ePWl3yuL0zDIbIf5iJveI+6erYe3wrYs5BkwuG/2N30eT9A/H0F9XQL1Xoq+B6Th
- KAEjoezuLoDrdrLHubZUC8rEq54EyhsIofvqx5RNML8S7soi15Fow00xauyHf+NegPDM
- 9ugFwwaGqt1WhS3IdjBRJ/elWrDLVNpkWR6Yp6346ep9fnr2QT3uo9mcLhYdC7wFBAQv
- 7bpNluG+JW1fFHOwZwg8gaFNTN9LCc+9+GYHuV29tKh+dkO4PQ6N8s46XLtbqJa8wZDI
- SWpg==
-X-Gm-Message-State: AOJu0YwOY6BccfrcnJ7jQKfqZTOxcVtp3R7vl4hmGLijCnntxGjwA+lT
- Ub4ZZmEjp+30zFdNxphyOfnkHA==
-X-Google-Smtp-Source: AGHT+IHS9ppf59HLDBJjLjjsZFdQvgJE8N8GYHr12xe963xVfRZaG9I7ES4z9ZZdKxOYc6zPastFuA==
-X-Received: by 2002:a2e:a377:0:b0:2c8:33fd:ca8c with SMTP id
- i23-20020a2ea377000000b002c833fdca8cmr4093384ljn.45.1700064405114; 
- Wed, 15 Nov 2023 08:06:45 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- j6-20020adff006000000b0033142b1a1eesm10550283wro.87.2023.11.15.08.06.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Nov 2023 08:06:44 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 6836A5F7A4;
- Wed, 15 Nov 2023 16:06:44 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Beraldo Leal <bleal@redhat.com>,  Wainer dos
- Santos Moschetta <wainersm@redhat.com>,  Daniel P . =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9?=
- <berrange@redhat.com>,  Cleber Rosa <crosa@redhat.com>,  Thomas Huth
- <thuth@redhat.com>
-Subject: Re: [PATCH-for-8.2?] tests/avocado: Make fetch_asset()
- inconditionally require a crypto hash
-In-Reply-To: <20231115153247.89486-1-philmd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Wed, 15 Nov 2023 16:32:47
- +0100")
-References: <20231115153247.89486-1-philmd@linaro.org>
-User-Agent: mu4e 1.11.24; emacs 29.1
-Date: Wed, 15 Nov 2023 16:06:44 +0000
-Message-ID: <87wmujuhkb.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r3IXv-0005f7-UY
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 11:15:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r3IXt-0002P0-V0
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 11:15:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700064915;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qfx4gIohobWr46SszJdmblBTjzb57bNgE+CFFlirW0k=;
+ b=d9TUPcoaMTX3TWVe4vaq6Sb4WD+Oewjy4FeAxR5BhCgo7Es7vvuQuf6yGfQt57jhVODDt9
+ sA/h7Mzh0E14mcqI4tOHjGI6TWbzSszNhFBa2eC2J5Ek1SiW5D6+7nAXvj6IiQAVDLHb/N
+ t5kSeGbTdwpFld5AFWOn2oaHUEbEvfU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-127-p3ahkPTgODeUhuOz987HEA-1; Wed, 15 Nov 2023 11:15:14 -0500
+X-MC-Unique: p3ahkPTgODeUhuOz987HEA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E838C101A52D;
+ Wed, 15 Nov 2023 16:15:13 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B4D70492BE0;
+ Wed, 15 Nov 2023 16:15:13 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id C11F221E6A1F; Wed, 15 Nov 2023 17:15:12 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org,
+ Michael Roth <michael.roth@amd.com>,  "Dr. David Alan Gilbert"
+ <dave@treblig.org>
+Subject: Re: [PATCH] monitor: flush messages on abort
+References: <1699027289-213995-1-git-send-email-steven.sistare@oracle.com>
+ <ZUUu2IuUQ/Od7+Vr@redhat.com>
+ <3d45ebc0-de9f-4051-9c08-47e40fea65da@oracle.com>
+ <ZUi7izJoVpU+iiuC@redhat.com> <875y23s918.fsf@pond.sub.org>
+ <17078387-f782-42dc-a5bf-25ee22bc518a@oracle.com>
+Date: Wed, 15 Nov 2023 17:15:12 +0100
+In-Reply-To: <17078387-f782-42dc-a5bf-25ee22bc518a@oracle.com> (Steven
+ Sistare's message of "Wed, 15 Nov 2023 10:52:43 -0500")
+Message-ID: <87a5rfkn73.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,15 +89,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+Steven Sistare <steven.sistare@oracle.com> writes:
 
-s/inconditionally/unconditionally/
+> On 11/15/2023 3:41 AM, Markus Armbruster wrote:
+>> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+>>=20
+>>> On Fri, Nov 03, 2023 at 03:51:00PM -0400, Steven Sistare wrote:
+>>>> On 11/3/2023 1:33 PM, Daniel P. Berrang=C3=A9 wrote:
+>>>>> On Fri, Nov 03, 2023 at 09:01:29AM -0700, Steve Sistare wrote:
+>>>>>> Buffered monitor output is lost when abort() is called.  The pattern
+>>>>>> error_report() followed by abort() occurs about 60 times, so valuable
+>>>>>> information is being lost when the abort is called in the context of=
+ a
+>>>>>> monitor command.
+>>>>>
+>>>>> I'm curious, was there a particular abort() scenario that you hit ?
+>>>>
+>>>> Yes, while tweaking the suspended state, and forgetting to add transit=
+ions:
+>>>>
+>>>>         error_report("invalid runstate transition: '%s' -> '%s'",
+>>>>         abort();
+>>>>
+>>>> But I have previously hit this for other errors.
+>>=20
+>> Can you provide a reproducer?
+>
+> I sometimes hit this when developing new code.  I do not have a reproduce=
+r for upstream
+> branches. The patch is aimed at helping developers, not users.
 
-Otherwise:
+I'm asking because I can't see how the error message could be lost.  A
+reproducer would let me find out.  "Apply this set of broken patches,
+then do that" would serve.
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+[...]
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
