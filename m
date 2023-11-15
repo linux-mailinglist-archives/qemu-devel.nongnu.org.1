@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E2A7ED36C
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 21:52:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7018F7ED36D
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 21:52:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3Mr8-0002vL-QS; Wed, 15 Nov 2023 15:51:26 -0500
+	id 1r3Mrf-0003Kg-1j; Wed, 15 Nov 2023 15:51:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r3Mr6-0002un-JS
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 15:51:24 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Mrc-0003IH-5v
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 15:51:56 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r3Mr4-0004Lb-Sz
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 15:51:24 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1cc5b705769so1139495ad.0
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 12:51:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Mra-0004QD-Dl
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 15:51:55 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-33139ecdca7so71831f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 12:51:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1700081480; x=1700686280; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:cc:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=l43tlOgsYJ+rr/5eLqphSGu7z320lk7WToOcB8zTvKY=;
- b=l1du3WiJ3BdfAcdyHNjsbIoU9VbfoADBdhf2INJP7hZARdU1VZCbOXCBOglBiiu+aT
- xSOeK69+0MT2VzKCRjTIZ15Fx6dde4WUPv4WBaWvxby9zfbrFtzsOjoK32xckfaoat/k
- 7fBOu0sKO6e3QfQ3pEK9PutmHhDcWBhn8nsauC+AOqOnSnI74BPSr2jRygjUNq6yYyM9
- QlAHy3Xah3MPnNXffPRrJDWF92NLd5u5r3CmlJ3iNtxK1X1gEyZG8O2k2beP5U+Odjjl
- kqmMAikZZ1cW6OrlSaMQFywgj+hj2aiU3kaWkIRE3gm4xYe5OgIVYtzRGNNN2ket30yO
- OO4Q==
+ d=linaro.org; s=google; t=1700081512; x=1700686312; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=WUOuiVx0sbzDsigWcQKOEegvye4SJYDrqQTnsd5ZUSk=;
+ b=SIJ07cFZOmdapY2YYVCXxHHYyhzuT6bU/4QHpa0HbLLixwnthwSB3Gdr5mPihSJALX
+ lQgzGlEmjcwsepAeVHDFWK0v1g4OUCCP9wlHo8gPbBCfkFIXLrfW3zfGXjeaDprsnY7X
+ KQMDGir+LgnykUFYXRLtlq5X1HYRqKy+HiCTtpSQUdDdzIz3pwSpy1BddZIpgbKfwXoJ
+ GVJtyXRTtGdYOWvaCLgRMDBU63cOvj6tXrjSojBWYZF0XKbOGTEiIyyztLwiewQmH68D
+ UDc5GuH2e5e4Ny5R7ep7y2VfcNTtfzeEp+rOURCEuFoHmsWAh6JOkVyCCS1QVBVULwH4
+ +rdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700081480; x=1700686280;
- h=content-transfer-encoding:in-reply-to:from:cc:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=l43tlOgsYJ+rr/5eLqphSGu7z320lk7WToOcB8zTvKY=;
- b=Dj0MsnbTryld7O0PBfQXhN9m2vX4M7dGbjNv6VR7nP1e7eOAhjfGidRKD9OVGBdvHC
- ROC9CyCUtVc3+YRY86FEUoJQSJ0ire6+TchMixYn25Y1Uziw9imxQ9ho0OKPwpOFTi/5
- PRvzxtAci62Wjb8+J7fITo51HW5P1qtpImNwXZ85++FKM8ILQGMCjzZDXTBUu3R7BPHM
- Uky2QJ0LuA/tUO+rHgownmQBcjV4YoZESHJq31UozPDY9qcyEDUQyCvXkalJKMU6fZI0
- 2q/I+byBdH5nMWTUubUmkAWIuvOd29DX3xBew6CxcVeMqGy1H6Fm7OmNTrn0MtUsaoBm
- wJHQ==
-X-Gm-Message-State: AOJu0YwBUUS59//QN9WWsNEImt0Wvv6Vd+ZAjW05LDyRqGpcxevhtWeF
- jBSoZ2/BN1e+f9a1Yf6YSoQ7wg==
-X-Google-Smtp-Source: AGHT+IENSY4oWYsYroAlh70eBHuoxGlB8qqPgp/EWH6wYzCxKz+QmtB6N+H0bA8/3aZ1dQWzdDEVYg==
-X-Received: by 2002:a17:902:d2c3:b0:1b0:f8:9b2d with SMTP id
- n3-20020a170902d2c300b001b000f89b2dmr7149135plc.29.1700081480385; 
- Wed, 15 Nov 2023 12:51:20 -0800 (PST)
-Received: from [192.168.68.109] ([152.250.131.148])
+ d=1e100.net; s=20230601; t=1700081512; x=1700686312;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WUOuiVx0sbzDsigWcQKOEegvye4SJYDrqQTnsd5ZUSk=;
+ b=idt7nxfY0LBIHU6fTEKsy5cRLgnBLkjsfx3KNYwRZu8KuCbCR/+jPEKqbwAi1VX7rm
+ XzMA5F+/Hxq4DQXvgzeL5iGf7QSG9qJkLNnPHHknUMazKxWBLDie9gepVefUy3eTQf2I
+ oTpNv4rXTbRURAY9TQYgtuy+L2LlSB6WknM/kViaVTpJ3wRY0gSH3YAaUT5yYXnlDF8s
+ 8b+jcdTxXnB5X0CZjDrKnMwVhV07uoz/hw8aNmiVSdK5L+5jEzhxqU674nGm8OgO2cTO
+ GppPyzAK5cfp9c52m62whMa/GRtl9pcME+vlCgtDkrdzLeG561EjJl2H6vjCEiQT+jKr
+ QTDA==
+X-Gm-Message-State: AOJu0YwPWopLu6bRTOXkpNiSyzjpNwXcZH/p2gz4bl/QWHdZGpjiEGDK
+ K9qYabqaEC4OUjB0sxqLZkYUFyGi94FBJ6RsgIE=
+X-Google-Smtp-Source: AGHT+IEDUrhB5/7GmTmv/9fjiBt6/lfv6Bflndxpnz5i6h5R2VuWEttprPuHqPoLvOeYklAuzs8tDw==
+X-Received: by 2002:a5d:4576:0:b0:32f:7bf6:db01 with SMTP id
+ a22-20020a5d4576000000b0032f7bf6db01mr7880224wrc.67.1700081512126; 
+ Wed, 15 Nov 2023 12:51:52 -0800 (PST)
+Received: from m1x-phil.lan ([176.176.130.62])
  by smtp.gmail.com with ESMTPSA id
- s13-20020a170902988d00b001b567bbe82dsm7818390plp.150.2023.11.15.12.51.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 Nov 2023 12:51:19 -0800 (PST)
-Message-ID: <035908b8-4964-4878-a0c3-bca06af45b54@ventanamicro.com>
-Date: Wed, 15 Nov 2023 17:51:16 -0300
+ l10-20020a5d674a000000b0032d09f7a713sm11484002wrw.18.2023.11.15.12.51.51
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 15 Nov 2023 12:51:51 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH-for-8.2? v2] tests/avocado: Make fetch_asset() unconditionally
+ require a crypto hash
+Date: Wed, 15 Nov 2023 21:51:49 +0100
+Message-ID: <20231115205149.90765-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Fix CLINT clock frequency for SiFive E
-Content-Language: en-US
-To: rcardenas.rod@gmail.com, qemu-devel@nongnu.org
-References: <20231110161457.60528-1-rcardenas.rod@gmail.com>
-Cc: "open list:RISC-V" <qemu-riscv@nongnu.org>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231110161457.60528-1-rcardenas.rod@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,87 +93,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Roman!
+In a perfect world we'd have reproducible tests,
+but then we'd be sure we run the same binaries.
+If a binary artifact isn't hashed, we have no idea
+what we are running. Therefore enforce hashing for
+all our artifacts.
 
-It helps to add the maintainers/reviewers in the CC when sending the patch. You
-can see who need to be CCed by using the get_maintainer.pl script. E.g:
+With this change, unhashed artifacts produce:
 
-./scripts/get_maintainer.pl \[PATCH\]\ Fix\ CLINT\ clock\ frequency\ for\ SiFive\ E\ -\ rcardenas.rod@gmail.com\ -\ 2023-11-10\ 1314.eml
+  $ avocado run tests/avocado/multiprocess.py
+   (1/2) tests/avocado/multiprocess.py:Multiprocess.test_multiprocess_x86_64:
+   ERROR: QemuBaseTest.fetch_asset() missing 1 required positional argument: 'asset_hash' (0.19 s)
 
-Alistair Francis <Alistair.Francis@wdc.com> (supporter:SiFive Machines)
-Bin Meng <bin.meng@windriver.com> (supporter:SiFive Machines)
-Palmer Dabbelt <palmer@dabbelt.com> (supporter:SiFive Machines)
-Weiwei Li <liwei1518@gmail.com> (reviewer:RISC-V TCG CPUs)
-Daniel Henrique Barboza <dbarboza@ventanamicro.com> (reviewer:RISC-V TCG CPUs)
-Liu Zhiwei <zhiwei_liu@linux.alibaba.com> (reviewer:RISC-V TCG CPUs)
-qemu-riscv@nongnu.org (open list:SiFive Machines)
-qemu-devel@nongnu.org (open list:All patches CC here)
+Inspired-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+---
+Based-on: <20231115145852.494052-1-thuth@redhat.com>
+  "tests/avocado/multiprocess: Add asset hashes to silence warnings"
+Based-on: <20231114143531.291820-1-thuth@redhat.com>
+    "tests/avocado/intel_iommu: Add asset hashes to avoid warnings"
+Supersedes: <20231115153247.89486-1-philmd@linaro.org>
 
+v2: Fixed type in subject (Alex)
+---
+ tests/avocado/avocado_qemu/__init__.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I'm CCing all these folks in the reply.
+diff --git a/tests/avocado/avocado_qemu/__init__.py b/tests/avocado/avocado_qemu/__init__.py
+index d71e989db6..304c428168 100644
+--- a/tests/avocado/avocado_qemu/__init__.py
++++ b/tests/avocado/avocado_qemu/__init__.py
+@@ -254,7 +254,7 @@ def setUp(self, bin_prefix):
+             self.cancel("No QEMU binary defined or found in the build tree")
+ 
+     def fetch_asset(self, name,
+-                    asset_hash=None, algorithm=None,
++                    asset_hash, algorithm=None,
+                     locations=None, expire=None,
+                     find_only=False, cancel_on_missing=True):
+         return super().fetch_asset(name,
+-- 
+2.41.0
 
-
-On 11/10/23 13:14, rcardenas.rod@gmail.com wrote:
-> From: Román Cárdenas Rodríguez <rcardenas.rod@gmail.com>
-> 
-> ---
->   hw/riscv/sifive_e.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/riscv/sifive_e.c b/hw/riscv/sifive_e.c
-> index 0d37adc542..87d9602383 100644
-> --- a/hw/riscv/sifive_e.c
-> +++ b/hw/riscv/sifive_e.c
-> @@ -225,7 +225,7 @@ static void sifive_e_soc_realize(DeviceState *dev, Error **errp)
->               RISCV_ACLINT_SWI_SIZE,
->           RISCV_ACLINT_DEFAULT_MTIMER_SIZE, 0, ms->smp.cpus,
->           RISCV_ACLINT_DEFAULT_MTIMECMP, RISCV_ACLINT_DEFAULT_MTIME,
-> -        RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ, false);
-> +        SIFIVE_E_LFCLK_DEFAULT_FREQ, false);
-
-I'm not sure if this is correct. The last commit that touched this line was b8fb878aa2
-("hw/intc: Upgrade the SiFive CLINT implementation to RISC-V ACLINT"). If you see the commit
-diff, the previous value was:
-
--            SIFIVE_CLINT_TIMEBASE_FREQ, false);
-
-In this same commit we can see that the existing value of that macro back then was:
-
--    SIFIVE_CLINT_TIMEBASE_FREQ = 10000000
-
-
-Which is the same value of RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ.
-
-
-The value you're changing to, SIFIVE_E_LFCLK_DEFAULT_FREQ (32768), seems to be related to the
-SIFIVE AON watchdog implemented in hw/misc/sifive_e_aon.c:
-
-static void sifive_e_aon_init(Object *obj)
-{
-     SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
-     SiFiveEAONState *r = SIFIVE_E_AON(obj);
-
-     memory_region_init_io(&r->mmio, OBJECT(r), &sifive_e_aon_ops, r,
-                           TYPE_SIFIVE_E_AON, SIFIVE_E_AON_MAX);
-     sysbus_init_mmio(sbd, &r->mmio);
-
-     /* watchdog timer */
-     r->wdog_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-                                  sifive_e_aon_wdt_expired_cb, r);
-     r->wdogclk_freq = SIFIVE_E_LFCLK_DEFAULT_FREQ;   <==========
-     sysbus_init_irq(sbd, &r->wdog_irq);
-}
-
-
-
-Thanks,
-
-
-Daniel
-
-
-
->       sifive_e_prci_create(memmap[SIFIVE_E_DEV_PRCI].base);
->   
->       /* AON */
 
