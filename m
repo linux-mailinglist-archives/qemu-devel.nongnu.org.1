@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B007ED774
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 23:43:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8897ED819
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 00:24:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3Oae-0004pb-LQ; Wed, 15 Nov 2023 17:42:32 -0500
+	id 1r3PDD-0007WF-Ku; Wed, 15 Nov 2023 18:22:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Oac-0004pE-VA
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 17:42:30 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3PD7-0007W3-95
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 18:22:17 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Oab-0001i6-E4
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 17:42:30 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5446c9f3a77so321334a12.0
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 14:42:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3PCs-0003IG-4q
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 18:22:16 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-53dfc28a2afso323312a12.1
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 15:21:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700088146; x=1700692946; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=44wk12gWSx+VOHlf6Bx4iWBZ3gfXmmZ565tPJii52M0=;
- b=zFUemcs7Q1vHkMgwwuGy4QVCPZIXsnes5zgs79RnoJoe5k3Z1LbUqWKjQeOlMG+HZY
- KFLpQ0d+kl6yu/99U226xK4eYPZ8zZt89GNLezh1jv1ia5gSL7yY5YM54yRIKOIObCut
- J3AKD0RPFytYt8gDi8EUYZnhWhIIBvDZuSNydSZG9Ixxm5/bR+BPyQpiQwo/ud+lO0gA
- wBd50TJ2n61jDi2toMjpOn61kVTY1R6ELl1mfaBLXz6zw/F0UsyVGrZ2qyeyEqewnvu4
- TSWlVXML2QAqPa6q44aNcWKqeCBELbIP7wkEazVPKisHx1HmbOpBKKz7yYy9H0hEuMpF
- maMQ==
+ d=linaro.org; s=google; t=1700090518; x=1700695318; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=kkOZV3biFdXSEp/vYh8ReEbONrvb3kSMa+0ggMMO8o0=;
+ b=YrX2IwIELFkdal7kNL8agK0O1lig8RVkWIcLUaBmjLwcDkYEbAatmR3/IXs2FRtrhB
+ dTUZEe0vl9o8UCWgNQmpvZSjruLm56eRKJofuJVCQL6ghJvthMhllH+JVHSFjgNjJzYv
+ MIG+xDPcdcO2HvVFaOF1qVwWhINK6F9uxrWtIF4ugOBDZhP13voYD5MJ1ZpyouvRDy2X
+ Y/xhY9mTw6r2GemuWw2QbFFp3QxP49cDqDCt1PYMwMU8DauU6n0Ut2DRw9A63eu5IMfb
+ UWjIWKRsupe2fJojkLyYv5pZNZTR2vcj4NfrbJXaOQxYVE69uCsqu24zewEk4p96MG8Y
+ bo2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700088146; x=1700692946;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=44wk12gWSx+VOHlf6Bx4iWBZ3gfXmmZ565tPJii52M0=;
- b=kKKGY16M1fV3NvTJS2KKFh2DKL6dtb5jMFKV+x2eOzAr/PQU1UNbmsYg0sVOCEDOe2
- PTI8cb53Mdbu854FytxW2Jx4QzMBTsJU49T8gZszqmx/E3FrATA6sFpmkIBlhRVIQg0L
- 3/vsdyv/Yp+TJzwKpWIiI5R4ZJEZJygGwuwqStyuOKsKLdIcu/9c38yHniJSUS/wfj+G
- UB9tor/xemhQf1ySfUKLxeJwSQde03mhFjwybEeoOYu+fpxA8+4ClxqjqYTs70TY3ass
- a5OBle8gCPt3B1rNyQFi8g/UI1RkaHaV7zESTeLtmJWNEm9dtzNMtM9vtwla97L6um3W
- wYJA==
-X-Gm-Message-State: AOJu0YzI3sEsLaW8WBEmzjlMcsRGxIZox4NJp1/jidUi16sqsPZuzAmN
- Mgz3jrRGzoPgd0n8yE/DT/g5pch4yYOzC57GvRY=
-X-Google-Smtp-Source: AGHT+IFse9caeGquSlr2m9eSwd9C/SlEcfYReLU6l+yLtocabrZIn7zBpXT3NsC6q1UMIYahqXjjAg==
-X-Received: by 2002:a17:906:711b:b0:9e5:dac6:86f9 with SMTP id
- x27-20020a170906711b00b009e5dac686f9mr10542523ejj.69.1700088145858; 
- Wed, 15 Nov 2023 14:42:25 -0800 (PST)
-Received: from [192.168.69.100] ([176.176.130.62])
+ d=1e100.net; s=20230601; t=1700090518; x=1700695318;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kkOZV3biFdXSEp/vYh8ReEbONrvb3kSMa+0ggMMO8o0=;
+ b=dt0zisvSmPcetxGlL8KZB1ZqkK9orgC5VJdHZYx8WZXTZLlOu9RvJI0bm1z+OrxkiX
+ obkQSJmtd7n7LoJyPNTxWq9cYev66I+F3wbkxP4Xed8Xgsv3ZS0EPWGB4Sydxx0QTPuv
+ VkUZe1S4woj/azmDIZo7qp03Z6qb8bz/SEUVGHXmkEOe8MDsPZeJz8V6tUwwBJqzyAdu
+ PDMEoDOdcJ/rndhuV6BQ2KDJYGCaDZISAbwZ6MeUUXgwJB8Tzx4w7UHLMXM+4AeFSgSr
+ FE3WOSCcD/AwDaVAsA6eahoxHMMFaOwk0+tmZnDQ0uGVbiQZj5Hh8gKvqTGC6+czXmkB
+ lPKw==
+X-Gm-Message-State: AOJu0Yz8zMq6X/0a9GwhEWpSVLITUrw3aJhCVdshZPY2mugk3Hbk1v5I
+ HAzwuyggIuU1QxAydBnrrLzM20BNOUe1C/kwJdg=
+X-Google-Smtp-Source: AGHT+IELSkv+ph6w5HIg3ubuwDj3U49bjEhCb8UFq/EnJ+0RMUXlpXHD+Yw9vxiPGE/s9MfTYseRrA==
+X-Received: by 2002:a05:6402:40e:b0:542:d8a6:bf14 with SMTP id
+ q14-20020a056402040e00b00542d8a6bf14mr10711894edv.33.1700090518116; 
+ Wed, 15 Nov 2023 15:21:58 -0800 (PST)
+Received: from m1x-phil.lan ([176.176.130.62])
  by smtp.gmail.com with ESMTPSA id
- dx9-20020a170906a84900b009c3828fec06sm7550338ejb.81.2023.11.15.14.42.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 Nov 2023 14:42:25 -0800 (PST)
-Message-ID: <5e90da45-7d64-4e2d-b914-540b0466201a@linaro.org>
-Date: Wed, 15 Nov 2023 23:42:23 +0100
+ v6-20020a056402174600b00530a9488623sm7063267edx.46.2023.11.15.15.21.55
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 15 Nov 2023 15:21:57 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Tyrone Ting <kfting@nuvoton.com>, Subbaraya Sundeep <sbhatta@marvell.com>,
+ Hao Wu <wuhaotsh@google.com>, Felipe Balbi <balbi@kernel.org>,
+ Gavin Shan <gshan@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Subbaraya Sundeep <sundeep.lkml@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Alistair Francis <alistair@alistair23.me>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-8.2? 0/6] hw/arm/stm32xxx: Report error when incorrect CPU
+ is used
+Date: Thu, 16 Nov 2023 00:21:47 +0100
+Message-ID: <20231115232154.4515-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/10] testing: move arm system tests into their own folder
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Beraldo Leal <bleal@redhat.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
- Alexandre Iooss <erdnaxe@crans.org>
-References: <20231115205542.3092038-1-alex.bennee@linaro.org>
- <20231115205542.3092038-9-alex.bennee@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231115205542.3092038-9-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,21 +98,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/11/23 21:55, Alex Bennée wrote:
-> Prepare for expanding the arm system tests by cleaning up the test
-> directory.
-> 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   tests/tcg/arm/Makefile.softmmu-target           | 5 ++---
->   tests/tcg/arm/{ => system}/test-armv6m-undef.S  | 0
->   tests/tcg/arm/{ => system}/test-armv6m-undef.ld | 0
->   3 files changed, 2 insertions(+), 3 deletions(-)
->   rename tests/tcg/arm/{ => system}/test-armv6m-undef.S (100%)
->   rename tests/tcg/arm/{ => system}/test-armv6m-undef.ld (100%)
+Hi,
 
-Thanks!
+While reviewing this [1] series from Arnaud and Inès,
+I realized STM32 based boards don't check the requested
+CPU type is correct, and ignore it. Possibly confusing
+users.
+Since these simple boards code is used as template,
+I took the opportunity to sanitize it a bit, using the
+MachineClass::valid_cpu_types which seems simpler (to me)
+for newcomers.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+First 3 patches are candidate for 8.2 but this is a long
+standing issue, not a regression from 8.1.
+
+Other patches are similar cleanups, for 9.0. Besides, the
+CPU list output will be nicer with Gavin Shan work [2]
+integrated.
+
+Regards,
+
+Phil.
+
+[1] https://lore.kernel.org/qemu-devel/170003673257.14701.8139061802716120109-0@git.sr.ht/
+[2] https://lore.kernel.org/qemu-devel/20231114235628.534334-1-gshan@redhat.com/
+
+Philippe Mathieu-Daudé (6):
+  hw/arm/stm32f405: Report error when incorrect CPU is used
+  hw/arm/stm32f205: Report error when incorrect CPU is used
+  hw/arm/stm32f100: Report error when incorrect CPU is used
+  hw/arm/msf2: Simplify setting MachineClass::valid_cpu_types[]
+  hw/arm/npcm7xx_boards: Simplify setting
+    MachineClass::valid_cpu_types[]
+  hw/arm/musca: Simplify setting MachineClass::valid_cpu_types[]
+
+ include/hw/arm/msf2-soc.h      |  3 ---
+ include/hw/arm/stm32f100_soc.h |  4 ----
+ include/hw/arm/stm32f205_soc.h |  4 ----
+ include/hw/arm/stm32f405_soc.h |  4 ----
+ hw/arm/msf2-soc.c              |  3 +--
+ hw/arm/msf2-som.c              | 16 ++++++----------
+ hw/arm/musca.c                 | 13 +++++--------
+ hw/arm/netduino2.c             |  7 ++++++-
+ hw/arm/netduinoplus2.c         |  7 ++++++-
+ hw/arm/npcm7xx_boards.c        | 13 +++++--------
+ hw/arm/olimex-stm32-h405.c     |  8 ++++++--
+ hw/arm/stm32f100_soc.c         |  9 ++-------
+ hw/arm/stm32f205_soc.c         |  9 ++-------
+ hw/arm/stm32f405_soc.c         |  8 +-------
+ hw/arm/stm32vldiscovery.c      |  7 ++++++-
+ 15 files changed, 46 insertions(+), 69 deletions(-)
+
+-- 
+2.41.0
 
 
