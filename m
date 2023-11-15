@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3277EC7FB
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 16:57:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4E9D7EC828
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 17:06:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3IFh-0002x2-84; Wed, 15 Nov 2023 10:56:32 -0500
+	id 1r3IOP-0001I4-3K; Wed, 15 Nov 2023 11:05:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r3IFe-0002wm-Mc
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:56:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r3IOH-0001F8-4P
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 11:05:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r3IFc-0005MW-6v
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:56:26 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r3IOD-0007Y5-Dc
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 11:05:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700063781;
+ s=mimecast20190719; t=1700064316;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GFOptn6yyaE70AsxGCPMOgi0h3blHRDaoiTO1lXov7Q=;
- b=e0t3EesqatBju9tLW5at3Qh/DVUDd3w07M0NLiQ+SGH/dnP87up9XRFkIamqz8SriKoob3
- TG8bORjRFhB7Oz8WyhxzlHLmDCEBtlnnPZiJdRnH96/laLC06V99UJiy5eCWVuxIaSVoqw
- SwR/SG5RXRJkA/A9UFcv/qN5s8x+sig=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-20-8k0g6HarPEKPuKwnii4kQg-1; Wed, 15 Nov 2023 10:56:17 -0500
-X-MC-Unique: 8k0g6HarPEKPuKwnii4kQg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ bh=JSGPbx10bC9t/6xcSj9jlqbEkOSqYXB2PJy7WqzdPgo=;
+ b=AjsD+2C6pBo1oU/J2E8oUq5IGvj+yrbrUm8NtgobHbSfEBfQXTsTApseLJw7O8E6f3CP7x
+ /2TyFr/3AwXJEZOU6HETFS+crO6ADMbWLe7bjowZK9U0Hj4Cjp6BGPWDDDnlZuH0dOu4Rs
+ I9BjObiGdZ9s8m+EGkNyCQ67eT+M9D0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-397-VC8uLtPHOOiP51y8BqxY9Q-1; Wed,
+ 15 Nov 2023 11:05:11 -0500
+X-MC-Unique: VC8uLtPHOOiP51y8BqxY9Q-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4AEB38058E9;
- Wed, 15 Nov 2023 15:56:17 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.71])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 89A55C1596F;
- Wed, 15 Nov 2023 15:56:15 +0000 (UTC)
-Date: Wed, 15 Nov 2023 09:56:13 -0600
-From: Eric Blake <eblake@redhat.com>
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- =?utf-8?B?TMOhc3psw7Mgw4lyc2Vr?= <lersek@redhat.com>, 
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, graf@amazon.com, 
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH 16/16] docs: add uefi variable service documentation and
- TODO list.
-Message-ID: <qrlcw7fn6hgd53nswpdnyybivzrtziekiubn7wu5hotmeyim2v@fs2db6jzbgzg>
-References: <20231115151242.184645-1-kraxel@redhat.com>
- <20231115151242.184645-17-kraxel@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6E32F38116F3;
+ Wed, 15 Nov 2023 16:05:11 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 25F0940C6EB9;
+ Wed, 15 Nov 2023 16:05:11 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3068D21E6A1F; Wed, 15 Nov 2023 17:05:10 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org,
+ Michael Roth <michael.roth@amd.com>,  "Dr. David Alan Gilbert"
+ <dave@treblig.org>
+Subject: Re: [PATCH] monitor: flush messages on abort
+References: <1699027289-213995-1-git-send-email-steven.sistare@oracle.com>
+ <ZUUu2IuUQ/Od7+Vr@redhat.com>
+ <3d45ebc0-de9f-4051-9c08-47e40fea65da@oracle.com>
+ <ZUi7izJoVpU+iiuC@redhat.com>
+ <587d8444-17a4-4d19-a856-ac55e46069c5@oracle.com>
+Date: Wed, 15 Nov 2023 17:05:10 +0100
+In-Reply-To: <587d8444-17a4-4d19-a856-ac55e46069c5@oracle.com> (Steven
+ Sistare's message of "Wed, 15 Nov 2023 10:30:29 -0500")
+Message-ID: <87sf57knnt.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231115151242.184645-17-kraxel@redhat.com>
-User-Agent: NeoMutt/20231103
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,105 +89,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 15, 2023 at 04:12:38PM +0100, Gerd Hoffmann wrote:
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
->  docs/devel/index-internals.rst |  1 +
->  docs/devel/uefi-vars.rst       | 66 ++++++++++++++++++++++++++++++++++
->  hw/uefi/TODO.md                | 17 +++++++++
->  3 files changed, 84 insertions(+)
->  create mode 100644 docs/devel/uefi-vars.rst
->  create mode 100644 hw/uefi/TODO.md
+Steven Sistare <steven.sistare@oracle.com> writes:
 
-> +
-> +Guest UEFI variable management
-> +==============================
-> +
-> +Traditional approach for UEFI Variable storage in qemu guests is to
+> On 11/6/2023 5:10 AM, Daniel P. Berrang=C3=A9 wrote:
+>> On Fri, Nov 03, 2023 at 03:51:00PM -0400, Steven Sistare wrote:
+>>> On 11/3/2023 1:33 PM, Daniel P. Berrang=C3=A9 wrote:
+>>>> On Fri, Nov 03, 2023 at 09:01:29AM -0700, Steve Sistare wrote:
+>>>>> Buffered monitor output is lost when abort() is called.  The pattern
+>>>>> error_report() followed by abort() occurs about 60 times, so valuable
+>>>>> information is being lost when the abort is called in the context of a
+>>>>> monitor command.
+>>>>
+>>>> I'm curious, was there a particular abort() scenario that you hit ?
+>>>
+>>> Yes, while tweaking the suspended state, and forgetting to add transiti=
+ons:
+>>>
+>>>         error_report("invalid runstate transition: '%s' -> '%s'",
+>>>         abort();
+>>>
+>>> But I have previously hit this for other errors.
+>>>
+>>>> For some crude statistics:
+>>>>
+>>>>   $ for i in abort return exit goto ; do echo -n "$i: " ; git grep --a=
+fter 1 error_report | grep $i | wc -l ; done
+>>>>   abort: 47
+>>>>   return: 512
+>>>>   exit: 458
+>>>>   goto: 177
+>>>>
+>>>> to me those numbers say that calling "abort()" after error_report
+>>>> should be considered a bug, and we can blanket replace all the
+>>>> abort() calls with exit(EXIT_FAILURE), and thus avoid the need to
+>>>> special case flushing the monitor.
+>>>
+>>> And presumably add an atexit handler to flush the monitor ala monitor_a=
+bort.
+>>> AFAICT currently no destructor is called for the monitor at exit time.
+>>=20
+>> The HMP monitor flushes at each newline,  and exit() will take care of
+>> flushing stdout, so I don't think there's anything else needed.
+>>=20
+>>>> Also I think there's a decent case to be made for error_report()
+>>>> to call monitor_flush().
+>>>
+>>> A good start, but that would not help for monitors with skip_flush=3Dtr=
+ue, which=20
+>>> need to format the buffered string in a json response, which is the cas=
+e I=20
+>>> tripped over.
+>>=20
+>> 'skip_flush' is only set to 'true' when using a QMP monitor and invoking
+>> "hmp-monitor-command".
+>
+> OK, that is narrower than I thought.  Now I see that other QMP monitors s=
+end=20
+> error_report() to stderr, hence it is visible after abort and exit:
+>
+> int error_vprintf(const char *fmt, va_list ap) {
+>     if (cur_mon && !monitor_cur_is_qmp())
+>         return monitor_vprintf(cur_mon, fmt, ap);
+>     return vfprintf(stderr, fmt, ap);                <-- HERE
+>
+> That surprises me, I thought that would be returned to the monitor caller=
+ in the
+> json response. I guess the rationale is that the "main" error, if any, wi=
+ll be
+> set and returned by the err object that is passed down the stack during c=
+ommand
+> evaluation.
 
-The traditional
+Three cases:
 
-> +work as close as possible to physical hardware.  That means provide
+1. !cur_mon
 
-providing
+   Not executing a monitor command.  We want to report errors etc to
+   stderr.
 
-> +pflash as storage and leave the management of variables and flash to
+2. cur_mon && !monitor_cur_is_qmp()
 
-leaving
+   Executing an HMP command.  We want to report errors to the current
+   monitor.
 
-> +the guest.
+2. cur_mon && monitor_cur_is_qmp()
 
-> +
-> +Secure boot support comes with the requirement that the UEFI variable
-> +storage must be protected against direct access by the OS.  All update
-> +requests must pass the sanity checks.  (Parts of) the firmware must
-> +run with a higher priviledge level than the OS so this can be enforced
+   Executing a QMP command.  What we want is less obvious.
 
-privilege
+   Somewhere up the call stack is the QMP command's handler function.
+   It takes an Error **errp argument.
 
-> +by the firmware.  On x86 this has been implemented using System
-> +Management Mode (SMM) in qemu and kvm, which again is the same
-> +approach taken by physical hardware.  Only priviedged code running in
+   Within such a function, any errors need to be passed up the call
+   chain into that argument.  Reporting them with error_report() is
+   *wrong*.  Reporting must be left to the function's caller.
 
-privileged
+   A QMP command handler returns it output, it doesn't print it.  So
+   calling monitor_printf() is wrong, too.
 
-> +SMM mode is allowed to access flash storage.
-> +
-> +Communication with the firmware code running in SMM mode works by
-> +serializing the requests to a shared buffer, then trapping into SMM
-> +mode via SMI.  The SMM code processes the request, stores the reply in
-> +the same buffer and returns.
-> +
-> +Host UEFI variable service
-> +==========================
-> +
-> +Instead of running the priviledged code inside the guest we can run it
+   But what about warn_report()?  Is that wrong, too?  We decided it's
+   not, mostly because we have nothing else to offer.
 
-privileged
+   The stupidest way to keep it useful in QMP command context is to have
+   error_vprintf() print to stderr.  So that's what it does.
 
-> +on the host.  The serialization protocol cen be reused.  The
+   We could instead accumulate error_vprintf() output in a buffer, and
+   include it with the QMP reply.  However, it's not clear what a
+   management application could do with it.  So we stick to stupid.
 
-can
-
-> +communication with the host uses a virtual device, which essentially
-> +allows to configure the shared buffer location and size and to trap to
-
-s/allows to configure/configures/
-s/and to trap/, and traps/
-
-> +the host to process the requests.
-> +
-> +The ``uefi-vars`` device implements the UEFI virtual device.  It comes
-> +in ``uefi-vars-isa`` and ``uefi-vars-sysbus`` flavours.  The device
-> +reimplements the handlers needed, specifically
-> +``EfiSmmVariableProtocol`` and ``VarCheckPolicyLibMmiHandler``.  It
-> +also consumes events (``EfiEndOfDxeEventGroup``,
-> +``EfiEventReadyToBoot`` and ``EfiEventExitBootServices``).
-> +
-> +The advantage of the approach is that we do not need a special
-> +prividge level for the firmware to protect itself, i.e. it does not
-
-privilege
-
-> +depend on SMM emulation on x64, which allows to remove a bunch of
-
-s/allows to remove/allows the removal of/
-
-> +complex code for SMM emulation from the linux kernel
-> +(CONFIG_KVM_SMM=n).  It also allows to support secure boot on arm
-
-s/to support/support for/
-
-> +without implementing secure world (el3) emulation in kvm.
-> +
-> +Of course there are also downsides.  The added device increases the
-> +attack surface of the host, and we are adding some code duplication
-> +because we have to reimplement some edk2 functionality in qemu.
-> +
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+[...]
 
 
