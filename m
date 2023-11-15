@@ -2,53 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555C47ED1FC
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 21:29:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2E9A7ED342
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 21:47:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3MUY-0001h8-Vn; Wed, 15 Nov 2023 15:28:07 -0500
+	id 1r3MlP-00015W-LI; Wed, 15 Nov 2023 15:45:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1r3MUV-0001fB-3R
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 15:28:03 -0500
-Received: from mailout03.t-online.de ([194.25.134.81])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1r3MUT-0008Sg-4H
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 15:28:02 -0500
-Received: from fwd82.aul.t-online.de (fwd82.aul.t-online.de [10.223.144.108])
- by mailout03.t-online.de (Postfix) with SMTP id 8CF4EC0AF;
- Wed, 15 Nov 2023 21:27:55 +0100 (CET)
-Received: from [192.168.211.200] ([93.236.156.187]) by fwd82.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1r3MUM-21csIj0; Wed, 15 Nov 2023 21:27:54 +0100
-Message-ID: <04ed8955-81eb-4cf1-8a5c-b14eb127831b@t-online.de>
-Date: Wed, 15 Nov 2023 21:27:53 +0100
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1r3MlL-000156-Ak; Wed, 15 Nov 2023 15:45:27 -0500
+Received: from mail-qv1-xf31.google.com ([2607:f8b0:4864:20::f31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1r3MlG-0002vA-Df; Wed, 15 Nov 2023 15:45:27 -0500
+Received: by mail-qv1-xf31.google.com with SMTP id
+ 6a1803df08f44-66d093265dfso423606d6.3; 
+ Wed, 15 Nov 2023 12:45:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1700081119; x=1700685919; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:content-language
+ :references:cc:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=bY+5CSehvVBGtwgNuboXUV3/1/gJ/dZP7ytCrDrqtfQ=;
+ b=MMnmnNIBP96BeJTjSc3UEi0EVVX59lS7e55MrHWcR/PnGaBPQKuCRNClcU0U78wPk8
+ qeudxdiwN6Y1gHDfMozPhM5tQj7IG8392EyWGncAtvy1vdT/M6GCCNPbS+0IEFLHABfK
+ CTivlRUw2j0z0PWiVHSoAloGyVKd3l0+WQDm7fv15Imnz/uZUNUC15jcbA2p5pZTMdOt
+ 5/ae8kOAr0H8TYkYIOXFAZq99hsLWLT8lirVp6oJGc48RH3aBVtrB3j6+0iD7jxgSK36
+ h5kQINIRa+bDqg28nxBplmcux78gvTOg0+0bKToNd6IoiSXR1Aio3Uo7yticwcp7eJt0
+ fpiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700081119; x=1700685919;
+ h=content-transfer-encoding:in-reply-to:organization:content-language
+ :references:cc:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bY+5CSehvVBGtwgNuboXUV3/1/gJ/dZP7ytCrDrqtfQ=;
+ b=t+a1pAT8JQezy6H3rGU70D6CvyLKyK1ZbRMqMsaKyoCfyQRrU18cUdbrwzc+zNmbtj
+ HqI2O0VRtUlbhesjG8anJbPnsIi3wv9Fy9Tw1/B7RQ1ewJsViD82H+F9+ENz+C2wwNce
+ W0dwKhxkrx56VglwSYNEx+1hSspohQ9QyzV6JTh6p2LaTv14Vd7dlDD4AqI4SktqNp4v
+ ngJHs+2ntKU6qY5gtp0CTwQSAgK1lcCeKwn4VbcY/HHHdUab60EN0OpP79AS0YzbeVGq
+ JtXw+BJj4i8FnrX7nu8FNTTGEwdVehm+hg9/gGkkdfNJX8rk81TN3Qz8cb3fFBxPTKAW
+ 52zg==
+X-Gm-Message-State: AOJu0YxQ0M/xzoImarl5wbHs3jCOL13lJFbyj64cAkGXQ9dA7hPolGzq
+ rEsfkdva+vzn3uM8UoijWNM=
+X-Google-Smtp-Source: AGHT+IFgPcfE9Xh25SpD1WU5BPRKZgmYrNpCNYZXXrb4uiJ+zbf5znm3WLPnO37uQtF4D2nqSDLRFw==
+X-Received: by 2002:a05:6214:1306:b0:66f:ba6e:73e8 with SMTP id
+ pn6-20020a056214130600b0066fba6e73e8mr9414369qvb.41.1700081119356; 
+ Wed, 15 Nov 2023 12:45:19 -0800 (PST)
+Received: from [172.20.0.103] ([12.191.197.195])
+ by smtp.gmail.com with ESMTPSA id
+ ki10-20020a05622a770a00b00418189b689csm3459337qtb.10.2023.11.15.12.45.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 15 Nov 2023 12:45:18 -0800 (PST)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <1388a0c0-cfc2-4957-9bce-08499e9ac84d@xen.org>
+Date: Wed, 15 Nov 2023 15:45:17 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: virtio-sound segmentation fault
+Subject: Re: [PATCH 3/3] hw/xen: clean up xen_block_find_free_vdev() to avoid
+ Coverity false positive
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, xen-devel@lists.xenproject.org,
+ qemu-block@nongnu.org
+References: <20231115172723.1161679-1-dwmw2@infradead.org>
+ <20231115172723.1161679-4-dwmw2@infradead.org>
 Content-Language: en-US
-References: <1444ddb7-8a77-4918-997d-c4ed6a6273ee@t-online.de>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org
-From: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
-In-Reply-To: <1444ddb7-8a77-4918-997d-c4ed6a6273ee@t-online.de>
-X-Forwarded-Message-Id: <1444ddb7-8a77-4918-997d-c4ed6a6273ee@t-online.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TOI-EXPURGATEID: 150726::1700080074-04981954-6945F7CD/0/0 CLEAN NORMAL
-X-TOI-MSGID: e2f102a3-a179-4adc-9d12-4e679dc84e75
-Received-SPF: pass client-ip=194.25.134.81; envelope-from=vr_qemu@t-online.de;
- helo=mailout03.t-online.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Organization: Xen Project
+In-Reply-To: <20231115172723.1161679-4-dwmw2@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f31;
+ envelope-from=xadimgnik@gmail.com; helo=mail-qv1-xf31.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -62,70 +97,26 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc: qemu-devel
+On 15/11/2023 12:24, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> Coverity couldn't see that nr_existing was always going to be zero when
+> qemu_xen_xs_directory() returned NULL in the ENOENT case (CID 1523906).
+> 
+> Perhaps more to the point, neither could Peter at first glance. Improve
+> the code to hopefully make it clearer to Coverity and human reviewers
+> alike.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   hw/block/xen-block.c | 24 +++++++++++++++++++++---
+>   1 file changed, 21 insertions(+), 3 deletions(-)
+> 
 
-Hi Manos,
+Reviewed-by: Paul Durrant <paul@xen.org>
 
-it's easy to trigger a segmentation fault with the virtio-sound device.
-The basic problem is that in function virtio_snd_realize() there is no
-code in the errror paths to undo the previous steps.
-
-To reproduce the segmentation fault start QEMU with an empty PCIe root
-port. The necessary command line options are
-
--device
-pcie-root-port,port=224,chassis=1,id=pcie.1,addr=0x1c,multifunction=on
--audiodev pipewire,id=audio0
-
-Then hotplug a virtio-sound device with the compat monitor. Please note
-the missing audiodev argument so that AUD_register_card() in
-virtio_snd_realize() fails. It's also necessary to apply your
-"virtio-snd: check AUD_register_card return value" patch, otherwise the
-device_add command fails immediately with a segmentation fault.
-
-QEMU 8.1.90 monitor - type 'help' for more information
-(qemu) device_add virtio-sound,bus=pcie.1
-Error: no default audio driver available
-Perhaps you wanted to use -audio or set audiodev=audio0?
-(qemu) device_add virtio-sound,bus=pcie.1,audiodev=audio0
-(qemu)
-
-Now shutdown the guest. Most of the time QEMU will dump core because
-there is no qemu_del_vm_change_state_handler() in the
-virtio_snd_realize() error path.
-
-Core was generated by `./qemu-system-x86_64 -machine
-q35,usb=off,vmport=off,hpet=off,dump-guest-core=o'.
-Program terminated with signal SIGSEGV, Segmentation fault.
-(gdb) bt
-#0  0x00005649d3aa70d2 in object_dynamic_cast_assert
-    (obj=obj@entry=0x5649d6da73d0,
-typename=typename@entry=0x5649d3d944a5 "device",
-file=file@entry=0x5649d3c9b8e0
-"/home/ruemelin/rpmbuild/BUILD/qemu-master/include/hw/qdev-core.h",
-line=line@entry=77, func=func@entry=0x5649d3e89d45 <__func__.16> "DEVICE")
-    at ../qemu-master/qom/object.c:887
-#1  0x00005649d3a1521f in DEVICE (obj=0x5649d6da73d0) at
-/home/ruemelin/rpmbuild/BUILD/qemu-master/include/hw/qdev-core.h:77
-#2  virtio_vmstate_change (opaque=0x5649d6da73d0, running=<optimized
-out>, state=<optimized out>)
-    at ../qemu-master/hw/virtio/virtio.c:3188
-#3  0x00005649d387fdc0 in vm_state_notify (running=running@entry=false,
-state=state@entry=RUN_STATE_SHUTDOWN)
-    at ../qemu-master/system/runstate.c:381
-#4  0x00005649d3876de0 in do_vm_stop (send_stop=false,
-state=RUN_STATE_SHUTDOWN) at ../qemu-master/system/cpus.c:270
-#5  vm_shutdown () at ../qemu-master/system/cpus.c:288
-#6  0x00005649d3880908 in qemu_cleanup (status=status@entry=0) at
-../qemu-master/system/runstate.c:857
-#7  0x00005649d366dc91 in qemu_default_main () at
-../qemu-master/system/main.c:38
-#8  0x00007f1bc4e3e24d in __libc_start_main () at /lib64/libc.so.6
-#9  0x00005649d366dbba in _start () at ../sysdeps/x86_64/start.S:120
-
-With best regards,
-Volker
 
