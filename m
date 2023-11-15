@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6937EBDA9
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:19:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7280B7EBDB3
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:20:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3AAF-00064E-QH; Wed, 15 Nov 2023 02:18:19 -0500
+	id 1r3AAL-0006oR-NT; Wed, 15 Nov 2023 02:18:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1r3AAD-0005qr-2r
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:18:17 -0500
+ id 1r3AAI-0006Rj-Fo
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:18:22 -0500
 Received: from mgamail.intel.com ([192.55.52.115])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1r3AA9-0002U6-7F
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:18:15 -0500
+ id 1r3AAG-0002U6-IH
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:18:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700032693; x=1731568693;
+ t=1700032700; x=1731568700;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=q/vGUcTjmW3xLkhpTgJb1cHgy5ooIIHzznjqzU/8EUA=;
- b=Dz4YluU+D5HzhdzfwbHBsotz9uKBCtevYLlEJu1L/Q28QxCDUxwXMDTs
- hZAgF3A3ROWD3Gc8TuTVvVuXWU/mZ82NX2lWqXtRCytR51XYJNmI7/zVx
- fHzWuRNNzisqjOs5r8rYZvwqzdMFwnMfEKjhf3JI+TZAUGliLfy0pbJGs
- JfR61qfbLTwdPUTeFES4w6WPwPBjx35YN/JpXwm66eHt0gpMsaXC9CyGK
- Q9A2TccDkvxhAUAeZBB67fdlKO0jyFdpewA1EdE/qXVKv0GK5ojcuHP1f
- cXRGisxSMhbQ0c2xcQjKmSr8t3XOYSh4DHW4FTny1p/dcSl2dnDIBS09v A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="390622717"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="390622717"
+ bh=5O7epVfh+eaGuaMUcPZZ2+NxBoJSly8Dy416m4dfTBM=;
+ b=RqUxcr2KXvWcJCqMOv78vAkL3UK2SRHYEeoUmoS6W2m/0wWh5pVnwQBP
+ hc56fZ7OOije+LYHifSRKnjuRcdKwuA5jhUgALokdwSC/qE1elCxrFaeG
+ EMVdEoe7Cb1W6m3H/mw03aRCbsPo4cn8XzjFbUil66jblLktfEGXKFP0I
+ 87y6Gt5hy3BfoHKBbLrqrnUhP7B5PndqQB/4CfLDZ5KDzeme3kTohhRzp
+ /+rtmu6xdd6e0OOsoHJdI6H3N12h4OAa5YPlog394oZEhJp8Cw5z71Xwf
+ ykjyQxt8ysvX7ZK9A7hFYAgSf3zr7kHYzeB06IL5dsPwtJI+t7k+Ml8eb w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="390622748"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="390622748"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2023 23:18:11 -0800
+ 14 Nov 2023 23:18:19 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="714798324"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="714798324"
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="714798420"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="714798420"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orsmga003.jf.intel.com with ESMTP; 14 Nov 2023 23:18:04 -0800
+ by orsmga003.jf.intel.com with ESMTP; 14 Nov 2023 23:18:11 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>,
@@ -58,10 +58,9 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v3 24/70] i386/kvm: Move architectural CPUID leaf generation
- to separate helper
-Date: Wed, 15 Nov 2023 02:14:33 -0500
-Message-Id: <20231115071519.2864957-25-xiaoyao.li@intel.com>
+Subject: [PATCH v3 25/70] kvm: Introduce kvm_arch_pre_create_vcpu()
+Date: Wed, 15 Nov 2023 02:14:34 -0500
+Message-Id: <20231115071519.2864957-26-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231115071519.2864957-1-xiaoyao.li@intel.com>
 References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
@@ -92,519 +91,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sean Christopherson <sean.j.christopherson@intel.com>
+Introduce kvm_arch_pre_create_vcpu(), to perform arch-dependent
+work prior to create any vcpu. This is for i386 TDX because it needs
+call TDX_INIT_VM before creating any vcpu.
 
-Move the architectural (for lack of a better term) CPUID leaf generation
-to a separate helper so that the generation code can be reused by TDX,
-which needs to generate a canonical VM-scoped configuration.
-
-Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- target/i386/kvm/kvm.c      | 454 +++++++++++++++++++------------------
- target/i386/kvm/kvm_i386.h |   3 +
- 2 files changed, 235 insertions(+), 222 deletions(-)
+Changes in v3:
+- pass @errp to kvm_arch_pre_create_vcpu(); (Per Daniel)
+---
+ accel/kvm/kvm-all.c  | 10 ++++++++++
+ include/sysemu/kvm.h |  1 +
+ 2 files changed, 11 insertions(+)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index f2627dd61d2b..dafe4d262977 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -1733,6 +1733,236 @@ static void kvm_init_nested_state(CPUX86State *env)
-     }
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 082f31446c97..6b5f4d62f961 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -428,6 +428,11 @@ static int kvm_get_vcpu(KVMState *s, unsigned long vcpu_id)
+     return kvm_vm_ioctl(s, KVM_CREATE_VCPU, (void *)vcpu_id);
  }
  
-+uint32_t kvm_x86_arch_cpuid(CPUX86State *env, struct kvm_cpuid_entry2 *entries,
-+                            uint32_t cpuid_i)
++int __attribute__ ((weak)) kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
 +{
-+    uint32_t limit, i, j;
-+    uint32_t unused;
-+    struct kvm_cpuid_entry2 *c;
-+
-+    cpu_x86_cpuid(env, 0, 0, &limit, &unused, &unused, &unused);
-+
-+    for (i = 0; i <= limit; i++) {
-+        if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
-+            fprintf(stderr, "unsupported level value: 0x%x\n", limit);
-+            abort();
-+        }
-+        c = &entries[cpuid_i++];
-+
-+        switch (i) {
-+        case 2: {
-+            /* Keep reading function 2 till all the input is received */
-+            int times;
-+
-+            c->function = i;
-+            c->flags = KVM_CPUID_FLAG_STATEFUL_FUNC |
-+                       KVM_CPUID_FLAG_STATE_READ_NEXT;
-+            cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
-+            times = c->eax & 0xff;
-+
-+            for (j = 1; j < times; ++j) {
-+                if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
-+                    fprintf(stderr, "cpuid_data is full, no space for "
-+                            "cpuid(eax:2):eax & 0xf = 0x%x\n", times);
-+                    abort();
-+                }
-+                c = &entries[cpuid_i++];
-+                c->function = i;
-+                c->flags = KVM_CPUID_FLAG_STATEFUL_FUNC;
-+                cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
-+            }
-+            break;
-+        }
-+        case 0x1f:
-+            if (env->nr_dies < 2) {
-+                cpuid_i--;
-+                break;
-+            }
-+            /* fallthrough */
-+        case 4:
-+        case 0xb:
-+        case 0xd:
-+            for (j = 0; ; j++) {
-+                if (i == 0xd && j == 64) {
-+                    break;
-+                }
-+
-+                c->function = i;
-+                c->flags = KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
-+                c->index = j;
-+                cpu_x86_cpuid(env, i, j, &c->eax, &c->ebx, &c->ecx, &c->edx);
-+
-+                if (i == 4 && c->eax == 0) {
-+                    break;
-+                }
-+                if (i == 0xb && !(c->ecx & 0xff00)) {
-+                    break;
-+                }
-+                if (i == 0x1f && !(c->ecx & 0xff00)) {
-+                    break;
-+                }
-+                if (i == 0xd && c->eax == 0) {
-+                    continue;
-+                }
-+                if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
-+                    fprintf(stderr, "cpuid_data is full, no space for "
-+                            "cpuid(eax:0x%x,ecx:0x%x)\n", i, j);
-+                    abort();
-+                }
-+                c = &entries[cpuid_i++];
-+            }
-+            break;
-+        case 0x7:
-+        case 0x12:
-+            for (j = 0; ; j++) {
-+                c->function = i;
-+                c->flags = KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
-+                c->index = j;
-+                cpu_x86_cpuid(env, i, j, &c->eax, &c->ebx, &c->ecx, &c->edx);
-+
-+                if (j > 1 && (c->eax & 0xf) != 1) {
-+                    break;
-+                }
-+
-+                if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
-+                    fprintf(stderr, "cpuid_data is full, no space for "
-+                                "cpuid(eax:0x12,ecx:0x%x)\n", j);
-+                    abort();
-+                }
-+                c = &entries[cpuid_i++];
-+            }
-+            break;
-+        case 0x14:
-+        case 0x1d:
-+        case 0x1e: {
-+            uint32_t times;
-+
-+            c->function = i;
-+            c->index = 0;
-+            c->flags = KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
-+            cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
-+            times = c->eax;
-+
-+            for (j = 1; j <= times; ++j) {
-+                if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
-+                    fprintf(stderr, "cpuid_data is full, no space for "
-+                                "cpuid(eax:0x%x,ecx:0x%x)\n", i, j);
-+                    abort();
-+                }
-+                c = &entries[cpuid_i++];
-+                c->function = i;
-+                c->index = j;
-+                c->flags = KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
-+                cpu_x86_cpuid(env, i, j, &c->eax, &c->ebx, &c->ecx, &c->edx);
-+            }
-+            break;
-+        }
-+        default:
-+            c->function = i;
-+            c->flags = 0;
-+            cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
-+            if (!c->eax && !c->ebx && !c->ecx && !c->edx) {
-+                /*
-+                 * KVM already returns all zeroes if a CPUID entry is missing,
-+                 * so we can omit it and avoid hitting KVM's 80-entry limit.
-+                 */
-+                cpuid_i--;
-+            }
-+            break;
-+        }
-+    }
-+
-+    if (limit >= 0x0a) {
-+        uint32_t eax, edx;
-+
-+        cpu_x86_cpuid(env, 0x0a, 0, &eax, &unused, &unused, &edx);
-+
-+        has_architectural_pmu_version = eax & 0xff;
-+        if (has_architectural_pmu_version > 0) {
-+            num_architectural_pmu_gp_counters = (eax & 0xff00) >> 8;
-+
-+            /* Shouldn't be more than 32, since that's the number of bits
-+             * available in EBX to tell us _which_ counters are available.
-+             * Play it safe.
-+             */
-+            if (num_architectural_pmu_gp_counters > MAX_GP_COUNTERS) {
-+                num_architectural_pmu_gp_counters = MAX_GP_COUNTERS;
-+            }
-+
-+            if (has_architectural_pmu_version > 1) {
-+                num_architectural_pmu_fixed_counters = edx & 0x1f;
-+
-+                if (num_architectural_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
-+                    num_architectural_pmu_fixed_counters = MAX_FIXED_COUNTERS;
-+                }
-+            }
-+        }
-+    }
-+
-+    cpu_x86_cpuid(env, 0x80000000, 0, &limit, &unused, &unused, &unused);
-+
-+    for (i = 0x80000000; i <= limit; i++) {
-+        if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
-+            fprintf(stderr, "unsupported xlevel value: 0x%x\n", limit);
-+            abort();
-+        }
-+        c = &entries[cpuid_i++];
-+
-+        switch (i) {
-+        case 0x8000001d:
-+            /* Query for all AMD cache information leaves */
-+            for (j = 0; ; j++) {
-+                c->function = i;
-+                c->flags = KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
-+                c->index = j;
-+                cpu_x86_cpuid(env, i, j, &c->eax, &c->ebx, &c->ecx, &c->edx);
-+
-+                if (c->eax == 0) {
-+                    break;
-+                }
-+                if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
-+                    fprintf(stderr, "cpuid_data is full, no space for "
-+                            "cpuid(eax:0x%x,ecx:0x%x)\n", i, j);
-+                    abort();
-+                }
-+                c = &entries[cpuid_i++];
-+            }
-+            break;
-+        default:
-+            c->function = i;
-+            c->flags = 0;
-+            cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
-+            if (!c->eax && !c->ebx && !c->ecx && !c->edx) {
-+                /*
-+                 * KVM already returns all zeroes if a CPUID entry is missing,
-+                 * so we can omit it and avoid hitting KVM's 80-entry limit.
-+                 */
-+                cpuid_i--;
-+            }
-+            break;
-+        }
-+    }
-+
-+    /* Call Centaur's CPUID instructions they are supported. */
-+    if (env->cpuid_xlevel2 > 0) {
-+        cpu_x86_cpuid(env, 0xC0000000, 0, &limit, &unused, &unused, &unused);
-+
-+        for (i = 0xC0000000; i <= limit; i++) {
-+            if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
-+                fprintf(stderr, "unsupported xlevel2 value: 0x%x\n", limit);
-+                abort();
-+            }
-+            c = &entries[cpuid_i++];
-+
-+            c->function = i;
-+            c->flags = 0;
-+            cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
-+        }
-+    }
-+
-+    return cpuid_i;
++    return 0;
 +}
 +
- int kvm_arch_init_vcpu(CPUState *cs)
+ int kvm_init_vcpu(CPUState *cpu, Error **errp)
  {
-     struct {
-@@ -1749,8 +1979,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     KVMState *s = kvm_state;
+@@ -436,6 +441,11 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
  
-     X86CPU *cpu = X86_CPU(cs);
-     CPUX86State *env = &cpu->env;
--    uint32_t limit, i, j, cpuid_i;
--    uint32_t unused;
-+    uint32_t cpuid_i;
-     struct kvm_cpuid_entry2 *c;
-     uint32_t signature[3];
-     int kvm_base = KVM_CPUID_SIGNATURE;
-@@ -1903,8 +2132,6 @@ int kvm_arch_init_vcpu(CPUState *cs)
-         c->edx = env->features[FEAT_KVM_HINTS];
-     }
+     trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
  
--    cpu_x86_cpuid(env, 0, 0, &limit, &unused, &unused, &unused);
--
-     if (cpu->kvm_pv_enforce_cpuid) {
-         r = kvm_vcpu_enable_cap(cs, KVM_CAP_ENFORCE_PV_FEATURE_CPUID, 0, 1);
-         if (r < 0) {
-@@ -1915,224 +2142,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
-         }
-     }
- 
--    for (i = 0; i <= limit; i++) {
--        if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
--            fprintf(stderr, "unsupported level value: 0x%x\n", limit);
--            abort();
--        }
--        c = &cpuid_data.entries[cpuid_i++];
--
--        switch (i) {
--        case 2: {
--            /* Keep reading function 2 till all the input is received */
--            int times;
--
--            c->function = i;
--            c->flags = KVM_CPUID_FLAG_STATEFUL_FUNC |
--                       KVM_CPUID_FLAG_STATE_READ_NEXT;
--            cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
--            times = c->eax & 0xff;
--
--            for (j = 1; j < times; ++j) {
--                if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
--                    fprintf(stderr, "cpuid_data is full, no space for "
--                            "cpuid(eax:2):eax & 0xf = 0x%x\n", times);
--                    abort();
--                }
--                c = &cpuid_data.entries[cpuid_i++];
--                c->function = i;
--                c->flags = KVM_CPUID_FLAG_STATEFUL_FUNC;
--                cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
--            }
--            break;
--        }
--        case 0x1f:
--            if (env->nr_dies < 2) {
--                cpuid_i--;
--                break;
--            }
--            /* fallthrough */
--        case 4:
--        case 0xb:
--        case 0xd:
--            for (j = 0; ; j++) {
--                if (i == 0xd && j == 64) {
--                    break;
--                }
--
--                c->function = i;
--                c->flags = KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
--                c->index = j;
--                cpu_x86_cpuid(env, i, j, &c->eax, &c->ebx, &c->ecx, &c->edx);
--
--                if (i == 4 && c->eax == 0) {
--                    break;
--                }
--                if (i == 0xb && !(c->ecx & 0xff00)) {
--                    break;
--                }
--                if (i == 0x1f && !(c->ecx & 0xff00)) {
--                    break;
--                }
--                if (i == 0xd && c->eax == 0) {
--                    continue;
--                }
--                if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
--                    fprintf(stderr, "cpuid_data is full, no space for "
--                            "cpuid(eax:0x%x,ecx:0x%x)\n", i, j);
--                    abort();
--                }
--                c = &cpuid_data.entries[cpuid_i++];
--            }
--            break;
--        case 0x7:
--        case 0x12:
--            for (j = 0; ; j++) {
--                c->function = i;
--                c->flags = KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
--                c->index = j;
--                cpu_x86_cpuid(env, i, j, &c->eax, &c->ebx, &c->ecx, &c->edx);
--
--                if (j > 1 && (c->eax & 0xf) != 1) {
--                    break;
--                }
--
--                if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
--                    fprintf(stderr, "cpuid_data is full, no space for "
--                                "cpuid(eax:0x12,ecx:0x%x)\n", j);
--                    abort();
--                }
--                c = &cpuid_data.entries[cpuid_i++];
--            }
--            break;
--        case 0x14:
--        case 0x1d:
--        case 0x1e: {
--            uint32_t times;
--
--            c->function = i;
--            c->index = 0;
--            c->flags = KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
--            cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
--            times = c->eax;
--
--            for (j = 1; j <= times; ++j) {
--                if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
--                    fprintf(stderr, "cpuid_data is full, no space for "
--                                "cpuid(eax:0x%x,ecx:0x%x)\n", i, j);
--                    abort();
--                }
--                c = &cpuid_data.entries[cpuid_i++];
--                c->function = i;
--                c->index = j;
--                c->flags = KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
--                cpu_x86_cpuid(env, i, j, &c->eax, &c->ebx, &c->ecx, &c->edx);
--            }
--            break;
--        }
--        default:
--            c->function = i;
--            c->flags = 0;
--            cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
--            if (!c->eax && !c->ebx && !c->ecx && !c->edx) {
--                /*
--                 * KVM already returns all zeroes if a CPUID entry is missing,
--                 * so we can omit it and avoid hitting KVM's 80-entry limit.
--                 */
--                cpuid_i--;
--            }
--            break;
--        }
--    }
--
--    if (limit >= 0x0a) {
--        uint32_t eax, edx;
--
--        cpu_x86_cpuid(env, 0x0a, 0, &eax, &unused, &unused, &edx);
--
--        has_architectural_pmu_version = eax & 0xff;
--        if (has_architectural_pmu_version > 0) {
--            num_architectural_pmu_gp_counters = (eax & 0xff00) >> 8;
--
--            /* Shouldn't be more than 32, since that's the number of bits
--             * available in EBX to tell us _which_ counters are available.
--             * Play it safe.
--             */
--            if (num_architectural_pmu_gp_counters > MAX_GP_COUNTERS) {
--                num_architectural_pmu_gp_counters = MAX_GP_COUNTERS;
--            }
--
--            if (has_architectural_pmu_version > 1) {
--                num_architectural_pmu_fixed_counters = edx & 0x1f;
--
--                if (num_architectural_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
--                    num_architectural_pmu_fixed_counters = MAX_FIXED_COUNTERS;
--                }
--            }
--        }
--    }
--
--    cpu_x86_cpuid(env, 0x80000000, 0, &limit, &unused, &unused, &unused);
--
--    for (i = 0x80000000; i <= limit; i++) {
--        if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
--            fprintf(stderr, "unsupported xlevel value: 0x%x\n", limit);
--            abort();
--        }
--        c = &cpuid_data.entries[cpuid_i++];
--
--        switch (i) {
--        case 0x8000001d:
--            /* Query for all AMD cache information leaves */
--            for (j = 0; ; j++) {
--                c->function = i;
--                c->flags = KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
--                c->index = j;
--                cpu_x86_cpuid(env, i, j, &c->eax, &c->ebx, &c->ecx, &c->edx);
--
--                if (c->eax == 0) {
--                    break;
--                }
--                if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
--                    fprintf(stderr, "cpuid_data is full, no space for "
--                            "cpuid(eax:0x%x,ecx:0x%x)\n", i, j);
--                    abort();
--                }
--                c = &cpuid_data.entries[cpuid_i++];
--            }
--            break;
--        default:
--            c->function = i;
--            c->flags = 0;
--            cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
--            if (!c->eax && !c->ebx && !c->ecx && !c->edx) {
--                /*
--                 * KVM already returns all zeroes if a CPUID entry is missing,
--                 * so we can omit it and avoid hitting KVM's 80-entry limit.
--                 */
--                cpuid_i--;
--            }
--            break;
--        }
--    }
--
--    /* Call Centaur's CPUID instructions they are supported. */
--    if (env->cpuid_xlevel2 > 0) {
--        cpu_x86_cpuid(env, 0xC0000000, 0, &limit, &unused, &unused, &unused);
--
--        for (i = 0xC0000000; i <= limit; i++) {
--            if (cpuid_i == KVM_MAX_CPUID_ENTRIES) {
--                fprintf(stderr, "unsupported xlevel2 value: 0x%x\n", limit);
--                abort();
--            }
--            c = &cpuid_data.entries[cpuid_i++];
--
--            c->function = i;
--            c->flags = 0;
--            cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
--        }
--    }
--
-+    cpuid_i = kvm_x86_arch_cpuid(env, cpuid_data.entries, cpuid_i);
-     cpuid_data.cpuid.nent = cpuid_i;
- 
-     if (((env->cpuid_version >> 8)&0xF) >= 6
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index c3ef46a97a7b..cbf52c1c6d17 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -24,6 +24,9 @@
- #define kvm_ioapic_in_kernel() \
-     (kvm_irqchip_in_kernel() && !kvm_irqchip_is_split())
- 
-+uint32_t kvm_x86_arch_cpuid(CPUX86State *env, struct kvm_cpuid_entry2 *entries,
-+                            uint32_t cpuid_i);
++    ret = kvm_arch_pre_create_vcpu(cpu, errp);
++    if (ret < 0) {
++        goto err;
++    }
 +
- #else
+     ret = kvm_get_vcpu(s, kvm_arch_vcpu_id(cpu));
+     if (ret < 0) {
+         error_setg_errno(errp, -ret, "kvm_init_vcpu: kvm_get_vcpu failed (%lu)",
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index 0e88958190a4..2f6592859ac6 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -341,6 +341,7 @@ int kvm_arch_get_default_type(MachineState *ms);
  
- #define kvm_pit_in_kernel()      0
+ int kvm_arch_init(MachineState *ms, KVMState *s);
+ 
++int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp);
+ int kvm_arch_init_vcpu(CPUState *cpu);
+ int kvm_arch_destroy_vcpu(CPUState *cpu);
+ 
 -- 
 2.34.1
 
