@@ -2,79 +2,130 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE427EBDFF
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:24:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE3A7EBD69
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:15:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3AFJ-0000oG-21; Wed, 15 Nov 2023 02:23:35 -0500
+	id 1r3A7I-00044p-5q; Wed, 15 Nov 2023 02:15:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1r3AEn-0007rS-Uj
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:23:03 -0500
-Received: from mgamail.intel.com ([192.55.52.115])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3A7G-000444-3t
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:15:14 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1r3AEl-0005mw-Vt
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:23:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700032979; x=1731568979;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=bd6HZW/Pw5TN9crVCH44/stsQg4jpEidGx7gJrLBbgM=;
- b=WT23yyvhKhTjr7faRKYSn2QrBkkRv7MvC3ol7mSZC5Gv5neew92fu6Nn
- BOqHMN3Up1kR8xmm7Qk8Jvmin2eBSPJdH1xhU2hzAsEvibEaxj8cSy1JJ
- yQPOj4rQWMDesUkE+zAXy88V79mhqYWi7FpejjIzDpCzz1spJEGhYd9/N
- D61N1n1tbRzOZcfnedKKbKC6EFBPaG4NDhdgSfJWLtfBRja/yRboD3JQQ
- ZzQw2v9lX8LEHdqm0EArEVtFDvB7QuMaUPetPEj2g8nGO8EkuMGYPPJSC
- Zb5dhWzTwPG0J2o15FUhfcKD0OeQkHSewz9mBVpqmJ6HQL/h2tFXamzx4 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="390623508"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="390623508"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2023 23:22:57 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="714800322"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="714800322"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orsmga003.jf.intel.com with ESMTP; 14 Nov 2023 23:22:51 -0800
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
- Michael Roth <michael.roth@amd.com>,
- Sean Christopherson <seanjc@google.com>,
- Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
- Isaku Yamahata <isaku.yamahata@gmail.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v3 57/70] i386/tdx: Wire TDX_REPORT_FATAL_ERROR with
- GuestPanic facility
-Date: Wed, 15 Nov 2023 02:15:06 -0500
-Message-Id: <20231115071519.2864957-58-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231115071519.2864957-1-xiaoyao.li@intel.com>
-References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3A7E-0001gW-NJ
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:15:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700032512;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=lB6udpVYL4COw12qJTP2y8H2h3HHViZAGllMmJe3eSo=;
+ b=Ohs4Chb47yCajBg0i5WmcE6+nvn+0wz8t19uni0pLF3LXUNlsIXmdEpjSSXIcb6otux1/Z
+ mVtHotOddnaJa4eTldNUu/qOwSX7IVdaajngOLfVClqdA4fJgDkFHytbDuhEnUiHcHf53m
+ 596q6aUm/aPZQFg/hR7kJuxBEOoAR28=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-655-EA5BRx1KOpWNhgu0eUr94Q-1; Wed, 15 Nov 2023 02:15:10 -0500
+X-MC-Unique: EA5BRx1KOpWNhgu0eUr94Q-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-9e5dd91b0ebso328306766b.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 23:15:10 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700032509; x=1700637309;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lB6udpVYL4COw12qJTP2y8H2h3HHViZAGllMmJe3eSo=;
+ b=bpulbidAkDngR2hUPibEZI7XICTV4xNuwm0une7FYPOqJJ4KftLuw4tPgvpk43E1bk
+ eMyzz+ZqTjLypoODD3QzoSFjN1QY5s3RwuUOuFrE6LPN+DF5C8Q84QiqwtmNvBKsFD/0
+ xyyZ264qzeS/fTFtD8V8OHHfUFGyB1AUulQPpkoxdAzGM+o8L1SadRpYeXfvWR8CPiKc
+ MWJly2y9BnJd/MyLISNfy7iT6gJoqm+nhD4ITupOPzjb3zO8Gx8M4B8jkCFCE2Z+Jpr1
+ zVx2uxTCKeUHxL4PLV8EahoZMeLaoqzSPWACO6lmuPdnBvII/7fJvEoomme7dPeLml7e
+ iT9g==
+X-Gm-Message-State: AOJu0YxstQXmVnqXLOZkH0TNkFdBV9UjeBAbUwNPgL4IkaHOMUs9eAcQ
+ 037qHO6mW/CttWCVcznAquGVXuo592UyXPN5PgKQWQPAmSLBDUatxEskECTfHqfe7uwTJOk2xoS
+ 6aqdCHnFCrQWGD9o=
+X-Received: by 2002:a17:906:4757:b0:9e7:192b:81a9 with SMTP id
+ j23-20020a170906475700b009e7192b81a9mr7675172ejs.45.1700032509618; 
+ Tue, 14 Nov 2023 23:15:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEgpiwCLNBOzv1ercXter90EHQ/8EhMr6HuBVCkVGp6jC+vuMQQC5LADv5yMCqy5HOACIaw+g==
+X-Received: by 2002:a17:906:4757:b0:9e7:192b:81a9 with SMTP id
+ j23-20020a170906475700b009e7192b81a9mr7675158ejs.45.1700032509339; 
+ Tue, 14 Nov 2023 23:15:09 -0800 (PST)
+Received: from [192.168.0.6] (ip-109-43-176-122.web.vodafone.de.
+ [109.43.176.122]) by smtp.gmail.com with ESMTPSA id
+ lt7-20020a170906fa8700b009a1a5a7ebacsm6554420ejb.201.2023.11.14.23.15.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 14 Nov 2023 23:15:08 -0800 (PST)
+Message-ID: <7b042607-6296-4693-9390-d3cd94770182@redhat.com>
+Date: Wed, 15 Nov 2023 08:15:07 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.115; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH trivial 17/21] target/riscv/cpu.h: spelling fix: separatly
+Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Rajnesh Kanwal <rkanwal@rivosinc.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+References: <20231114165834.2949011-1-mjt@tls.msk.ru>
+ <20231114165834.2949011-18-mjt@tls.msk.ru>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20231114165834.2949011-18-mjt@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,203 +143,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Integrate TDX's TDX_REPORT_FATAL_ERROR into QEMU GuestPanic facility
+On 14/11/2023 17.58, Michael Tokarev wrote:
+> Fixes: 40336d5b1d4c "target/riscv: Add HS-mode virtual interrupt and IRQ filtering support."
+> Cc: Rajnesh Kanwal <rkanwal@rivosinc.com>
+> Cc: Alistair Francis <alistair.francis@wdc.com>
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> ---
+>   target/riscv/cpu.h | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index bf58b0f0b5..d74b361be6 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -214,13 +214,13 @@ struct CPUArchState {
+>   
+>       /*
+>        * When mideleg[i]=0 and mvien[i]=1, sie[i] is no more
+> -     * alias of mie[i] and needs to be maintained separatly.
+> +     * alias of mie[i] and needs to be maintained separately.
+>        */
+>       uint64_t sie;
+>   
+>       /*
+>        * When hideleg[i]=0 and hvien[i]=1, vsie[i] is no more
+> -     * alias of sie[i] (mie[i]) and needs to be maintained separatly.
+> +     * alias of sie[i] (mie[i]) and needs to be maintained separately.
+>        */
+>       uint64_t vsie;
+>   
 
-Originated-from: Isaku Yamahata <isaku.yamahata@intel.com>
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
----
-Changes from v2:
-- Add docmentation of new type and struct (Daniel)
-- refine the error message handling (Daniel)
----
- qapi/run-state.json   | 27 ++++++++++++++++++++--
- system/runstate.c     | 54 +++++++++++++++++++++++++++++++++++++++++++
- target/i386/kvm/tdx.c | 24 +++++++++++++++++--
- 3 files changed, 101 insertions(+), 4 deletions(-)
-
-diff --git a/qapi/run-state.json b/qapi/run-state.json
-index f216ba54ec4c..e18f62eaef77 100644
---- a/qapi/run-state.json
-+++ b/qapi/run-state.json
-@@ -496,10 +496,12 @@
- #
- # @s390: s390 guest panic information type (Since: 2.12)
- #
-+# @tdx: tdx guest panic information type (Since: 8.2)
-+#
- # Since: 2.9
- ##
- { 'enum': 'GuestPanicInformationType',
--  'data': [ 'hyper-v', 's390' ] }
-+  'data': [ 'hyper-v', 's390', 'tdx' ] }
- 
- ##
- # @GuestPanicInformation:
-@@ -514,7 +516,8 @@
-  'base': {'type': 'GuestPanicInformationType'},
-  'discriminator': 'type',
-  'data': {'hyper-v': 'GuestPanicInformationHyperV',
--          's390': 'GuestPanicInformationS390'}}
-+          's390': 'GuestPanicInformationS390',
-+          'tdx' : 'GuestPanicInformationTdx'}}
- 
- ##
- # @GuestPanicInformationHyperV:
-@@ -577,6 +580,26 @@
-           'psw-addr': 'uint64',
-           'reason': 'S390CrashReason'}}
- 
-+##
-+# @GuestPanicInformationTdx:
-+#
-+# TDX GHCI TDG.VP.VMCALL<ReportFatalError> specific guest panic information
-+#
-+# @error-code: TD-specific error code
-+#
-+# @gpa: 4KB-aligned guest physical address of the page that containing
-+#     additional error data
-+#
-+# @message: TD guest provided message string.  (It's not so trustable
-+#     and cannot be assumed to be well formed because it comes from guest)
-+#
-+# Since: 8.2
-+##
-+{'struct': 'GuestPanicInformationTdx',
-+ 'data': {'error-code': 'uint64',
-+          'gpa': 'uint64',
-+          'message': 'str'}}
-+
- ##
- # @MEMORY_FAILURE:
- #
-diff --git a/system/runstate.c b/system/runstate.c
-index ea9d6c2a32a4..9275e2f265f3 100644
---- a/system/runstate.c
-+++ b/system/runstate.c
-@@ -518,6 +518,52 @@ static void qemu_system_wakeup(void)
-     }
- }
- 
-+static char* tdx_parse_panic_message(char *message)
-+{
-+    bool printable = false;
-+    char *buf = NULL;
-+    int len = 0, i;
-+
-+    /*
-+     * Although message is defined as a json string, we shouldn't
-+     * unconditionally treat it as is because the guest generated it and
-+     * it's not necessarily trustable.
-+     */
-+    if (message) {
-+        /* The caller guarantees the NUL-terminated string. */
-+        len = strlen(message);
-+
-+        printable = len > 0;
-+        for (i = 0; i < len; i++) {
-+            if (!(0x20 <= message[i] && message[i] <= 0x7e)) {
-+                printable = false;
-+                break;
-+            }
-+        }
-+    }
-+
-+    if (!printable && len) {
-+        /* 3 = length of "%02x " */
-+        buf = g_malloc(len * 3);
-+        for (i = 0; i < len; i++) {
-+            if (message[i] == '\0') {
-+                break;
-+            } else {
-+                sprintf(buf + 3 * i, "%02x ", message[i]);
-+            }
-+        }
-+        if (i > 0)
-+            /* replace the last ' '(space) to NUL */
-+            buf[i * 3 - 1] = '\0';
-+        else
-+            buf[0] = '\0';
-+
-+        return buf;
-+    }
-+
-+    return message;
-+}
-+
- void qemu_system_guest_panicked(GuestPanicInformation *info)
- {
-     qemu_log_mask(LOG_GUEST_ERROR, "Guest crashed");
-@@ -559,7 +605,15 @@ void qemu_system_guest_panicked(GuestPanicInformation *info)
-                           S390CrashReason_str(info->u.s390.reason),
-                           info->u.s390.psw_mask,
-                           info->u.s390.psw_addr);
-+        } else if (info->type == GUEST_PANIC_INFORMATION_TYPE_TDX) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          " TDX guest reports fatal error:\"%s\""
-+                          " error code: 0x%016" PRIx64 " gpa page: 0x%016" PRIx64 "\n",
-+                          tdx_parse_panic_message(info->u.tdx.message),
-+                          info->u.tdx.error_code,
-+                          info->u.tdx.gpa);
-         }
-+
-         qapi_free_GuestPanicInformation(info);
-     }
- }
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index a42b5cea36c5..23504ba3b05e 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -20,6 +20,7 @@
- #include "qom/object_interfaces.h"
- #include "standard-headers/asm-x86/kvm_para.h"
- #include "sysemu/kvm.h"
-+#include "sysemu/runstate.h"
- #include "sysemu/sysemu.h"
- #include "exec/address-spaces.h"
- #include "exec/ramblock.h"
-@@ -1479,11 +1480,26 @@ static void tdx_handle_get_quote(X86CPU *cpu, struct kvm_tdx_vmcall *vmcall)
-     vmcall->status_code = TDG_VP_VMCALL_SUCCESS;
- }
- 
-+static void tdx_panicked_on_fatal_error(X86CPU *cpu, uint64_t error_code,
-+                                        uint64_t gpa, char *message)
-+{
-+    GuestPanicInformation *panic_info;
-+
-+    panic_info = g_new0(GuestPanicInformation, 1);
-+    panic_info->type = GUEST_PANIC_INFORMATION_TYPE_TDX;
-+    panic_info->u.tdx.error_code = error_code;
-+    panic_info->u.tdx.gpa = gpa;
-+    panic_info->u.tdx.message = message;
-+
-+    qemu_system_guest_panicked(panic_info);
-+}
-+
- static void tdx_handle_report_fatal_error(X86CPU *cpu,
-                                           struct kvm_tdx_vmcall *vmcall)
- {
-     uint64_t error_code = vmcall->in_r12;
-     char *message = NULL;
-+    uint64_t gpa = -1ull;
- 
-     if (error_code & 0xffff) {
-         error_report("invalid error code of TDG.VP.VMCALL<REPORT_FATAL_ERROR>\n");
-@@ -1511,8 +1527,12 @@ static void tdx_handle_report_fatal_error(X86CPU *cpu,
-         assert((char *)tmp == message + GUEST_PANIC_INFO_TDX_MESSAGE_MAX);
-     }
- 
--    error_report("TD guest reports fatal error. %s\n", message ? : "");
--    exit(1);
-+#define TDX_REPORT_FATAL_ERROR_GPA_VALID    BIT_ULL(63)
-+    if (error_code & TDX_REPORT_FATAL_ERROR_GPA_VALID) {
-+        gpa = vmcall->in_r13;
-+    }
-+
-+    tdx_panicked_on_fatal_error(cpu, error_code, gpa, message);
- }
- 
- static void tdx_handle_setup_event_notify_interrupt(X86CPU *cpu,
--- 
-2.34.1
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
