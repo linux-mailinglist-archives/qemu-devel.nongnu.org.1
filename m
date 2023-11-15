@@ -2,178 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC9337EC9D8
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 18:43:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 677877EC9DB
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 18:44:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3Jtk-0000Q0-1u; Wed, 15 Nov 2023 12:41:56 -0500
+	id 1r3Jv9-0001Ek-EO; Wed, 15 Nov 2023 12:43:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1r3Jtd-0000Ne-Ka
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:41:51 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1r3JtY-0004pE-4X
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:41:49 -0500
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AFHNsX9011959; Wed, 15 Nov 2023 17:41:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=IcZK4obKdt/KSai2BIevigkGfbgfwn6Hvpho+eOEOlE=;
- b=kHx4j/RN48NKxyaDNkOm3HnGY3mfIgJ3clYOtdd8gxumG4jY3046DJNx/8FXdDIJGTzJ
- e1L8zeTCZOACQv3ufSYs9Qudl4vQoaEQF0Q/857jeq74fZM3WApcVWDsAl63J8KvJaXy
- hmk6l6ThBKG0vK72q65c7a/FZt2SlZPON1uWGpH64End+aIF36bTVWaNWtzct1vvgbDn
- /23v4P/a9LFqZ9ObAb5NdG65jAcpnpCpBDS2vTNl03aa54hIdDBK5XzOPZuBbWN3VjQK
- JihfmL0aTxGENH/7czHPdrGvuhlrwQg0xCDlIwGSARyoRx/ECLJufix7x3EfU3rT85h0 Nw== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ua2mdsbu0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Nov 2023 17:41:41 +0000
-Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3AFHVLcq003938; Wed, 15 Nov 2023 17:41:40 GMT
-Received: from nam10-bn7-obe.outbound.protection.outlook.com
- (mail-bn7nam10lp2101.outbound.protection.outlook.com [104.47.70.101])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3uaxj484tw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Nov 2023 17:41:40 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ipTrqnnLXlpdHIQhN6mIni/lwnx7FT/iery5pRi/d9Mk3sqMZhc9M4hCQmdnt36wzJur/Vx9VSkRUWsgzzP0VPxgjAW3uVKmQwnKg0TzmQEqCZb8ukKLif7mWphvyGRHUu8bF2n4Fg1oNK94JmwSr64x7tMoaEpKqasVMz6jphsJm6fIXHMtVyEvgOxENKptgKaYNJ7ekxWVAjAbAYikJV02DeQ8UErWYtT9msWjMvYDC4XsKp3TT7TNNQecAQYaBnwSg93UyXzzSESiAN5D4i/1otLVWoSlbRa4pWyXFrwiYzXK3kSwMHdggn3HCV5bbtnq40o/edhxENadxfm7sQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IcZK4obKdt/KSai2BIevigkGfbgfwn6Hvpho+eOEOlE=;
- b=DWyhF9sSnMm/pt82R1797HSC7ghf0JldgLI9qDQnyQ6Hr3193vO2KJti39bMSBiED0UXSshIlExAyNfKrcUG7g0w3FyP1SzOU7cC/a2tBT9M211zmR93BDCDO4b9FLa9NsnWz4rhXD8R8UVYx9pr/APxTbTOkPDv0KzuYw1Fuo2JeqTBII0zNDvR61uebVkzee+yH5F843AZD9uRqcf4jcyW8ZEACK3eAOSP8sFUc5b2v4Sy3UXhdepech3CFsGexDqvubGY/fJNoGuZVIopq9pC8IvCflk/Rgq57eopL1e0mP8vFt5dqtytJq0YD1078xJLoA4rRzn4VbcAmvlhDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+ (Exim 4.90_1) (envelope-from <ufimtseva@gmail.com>)
+ id 1r3Jv6-0001EL-PT
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:43:20 -0500
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ufimtseva@gmail.com>)
+ id 1r3Jv3-000596-Va
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:43:20 -0500
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-507a98517f3so9410298e87.0
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 09:43:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IcZK4obKdt/KSai2BIevigkGfbgfwn6Hvpho+eOEOlE=;
- b=QfNRlVWbvE5SFIfRJygwi5ybNJD5aCOqfd+fT0WYHzMsDUcr6Eps6FhHzcbhZUimoiSVLbD4q/92f1kfqJ/onb0xYVHP6T4tRhRxlk+Zd8EP/suX1+ZK9PaeD2QQ5gAcj25Y4XoKymapFO4wohG3lohnp4oLBPOpCjeIBZiUxfY=
-Received: from SA2PR10MB4684.namprd10.prod.outlook.com (2603:10b6:806:119::14)
- by MW4PR10MB5882.namprd10.prod.outlook.com (2603:10b6:303:18f::8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.17; Wed, 15 Nov
- 2023 17:41:38 +0000
-Received: from SA2PR10MB4684.namprd10.prod.outlook.com
- ([fe80::d609:b162:ba7c:4e96]) by SA2PR10MB4684.namprd10.prod.outlook.com
- ([fe80::d609:b162:ba7c:4e96%4]) with mapi id 15.20.7002.015; Wed, 15 Nov 2023
- 17:41:38 +0000
-Message-ID: <1f51f77e-6793-49a8-b6a2-4f3b1d6a761c@oracle.com>
-Date: Wed, 15 Nov 2023 12:41:35 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] monitor: flush messages on abort
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>
-References: <1699027289-213995-1-git-send-email-steven.sistare@oracle.com>
- <ZUUu2IuUQ/Od7+Vr@redhat.com>
- <3d45ebc0-de9f-4051-9c08-47e40fea65da@oracle.com>
- <ZUi7izJoVpU+iiuC@redhat.com> <875y23s918.fsf@pond.sub.org>
- <17078387-f782-42dc-a5bf-25ee22bc518a@oracle.com>
- <87a5rfkn73.fsf@pond.sub.org>
-From: Steven Sistare <steven.sistare@oracle.com>
-Organization: Oracle Corporation
-In-Reply-To: <87a5rfkn73.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MN2PR04CA0036.namprd04.prod.outlook.com
- (2603:10b6:208:d4::49) To SA2PR10MB4684.namprd10.prod.outlook.com
- (2603:10b6:806:119::14)
+ d=gmail.com; s=20230601; t=1700070195; x=1700674995; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RJJdpz1jkQqkifk+VhhkVAAHiOy0sGKO7S8sFm6iwBc=;
+ b=EuvQfy7ge8bi20VY1JkNg6qzuIbOnFJ1QSjUqNITIXy9OruxlAvbGa4ldWQD9ZNeEd
+ tqM1M12BNc/RLTee8qCDPJf8PRufQjQik4OFE1LG9rS58VhhqHSMMZZep4E0DRtEgdnF
+ 5BaMv2ovxm49gGzVYg25ZWLJQOEJPWQulLsoO6bxxZW7LpTAvU0pWaXwBHjJ8Ukfn+sZ
+ +dAdaQgOYDJFjZuFGCroaXNVTVkQ2lEKrk+SzZqhqMSSZLAty2pQHaKf7yKqmSkoB+Gh
+ 5gtdctwvz62EPLM/iEkZrs1yoHiCRJoDoqhuljEWMvKIdU0gD/4en1rmboi2pCe1Yvij
+ Tz1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700070195; x=1700674995;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=RJJdpz1jkQqkifk+VhhkVAAHiOy0sGKO7S8sFm6iwBc=;
+ b=w6O51D5EMv3HGacfQIMLv3Cd9+vOIrUDcggY8RGJQhE+lLDphEgUJGxQL4/aeyBPyS
+ I2KFa8yf7wVeJbFUtFkbQYj6GF8zhnGOou883YSx0goh0Y5kQ8bB8FjBbXcrC9tt4WIt
+ PxcHIsYGcozkykr5tEA4uMqZBnrxcU2hd4WFUyUBT6bnc9DYKe3T+uFvRuZFlNvFJRE1
+ 6k3zR/G6ulbn11EjVRoCwRYUVAGO8361HYAdxJpNojerRV8kI69gddQVnmz156A9FWkk
+ ytNGkIhNhCt1MPK3D8mHhPVQG6jo9JsSgboDVTgLrOttJ4KiqRiH4y3uLP/dftfTn93j
+ +dPw==
+X-Gm-Message-State: AOJu0Yyf4XEMM43M5z49zGLovVfGtcJ5ClhskECCl1sQKt/sUAQXFhE9
+ pqA1MtXuHEmtl2d3tpqzBQ5LGWj6tYLSzv9tU5w=
+X-Google-Smtp-Source: AGHT+IHoZirQyPIgmSWy2vTn4Bgmfy50UPcxCk1aiahBYm7fhfafcPoVY4dlqsAdgRESaFQpe3cIfZnXRZobTlpyJ9M=
+X-Received: by 2002:a19:4f47:0:b0:4fb:7559:aea3 with SMTP id
+ a7-20020a194f47000000b004fb7559aea3mr8907994lfk.39.1700070195179; Wed, 15 Nov
+ 2023 09:43:15 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PR10MB4684:EE_|MW4PR10MB5882:EE_
-X-MS-Office365-Filtering-Correlation-Id: 39b93212-4df4-40dd-47ba-08dbe6021e9f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: qz/28Z8OLhfHBscGwedft9t9aTFCRifCsjiCrTWp/NIOs75PaGXoeK033ofjH41Yjdvux47Pthb7Bda17kIWAPt0XnPTzcsI77//Hq2I99FCf3RTO0c0eD+jcz0BmdyziDsJFgkUHBa+d1i6UjKsinQ2kCi3vkB0NfTNgXz8nkgycN+XZikHgMbcSPMlQvCMLXZQJrZldpfp46/bdqsgndpAm42/jICk07xhE1SV/zenPdhhwD9PepfeyiJlxCAEVKAfFllrgeFwhCXPd1sy9ybq43IGSovttJR6Sx6kn4/d9NXXevoLxnxHxR1w+kjluv5yzrjdG974iYq2a8PAuw5bw3voB5sFqW6RsgtX76sbGo4DZaABvXYoWiVVcTTJmKvwwjHkPZB0AvsTTh/+8ubICHkvmuiqGjEc7toJ4tmz0f605q/sn00qwSJziKjv/QPx1CAyPKNedrlfiTzaJjgo03Vi/OvW7vC4V1CEuBwhoszjjooZx5Pjw5dMxVWvWH9zJ6RLBTzEZG2ZRiKw5NVeVWlwyF3dCsDV4rpBiBFqOFrghJHMSaOnH/EGlkBOsc19DuW5jXEEZd+ubyHibVkErf5I4MrQvMJcqSsF4waOrAsSLDu2vaA2VpRI6/KVKOrYHVg7+S9mA3UAiN4c7g==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA2PR10MB4684.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(136003)(346002)(396003)(39860400002)(366004)(230922051799003)(451199024)(1800799009)(186009)(64100799003)(38100700002)(41300700001)(66476007)(6916009)(66556008)(31696002)(36756003)(66946007)(54906003)(86362001)(6486002)(478600001)(2616005)(2906002)(26005)(15650500001)(6512007)(6506007)(6666004)(5660300002)(83380400001)(53546011)(36916002)(31686004)(316002)(44832011)(4326008)(8936002)(8676002)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VDRuTnFmUVlSS0ZlSnl3akt3UmxSQUtmbllPdFhKS0grMGJYR1RqN3Y5Wkpz?=
- =?utf-8?B?eERyYVExVGtKQ3Nta2pWd2dlWlRYNGVtZFVSKzJHbi9RVnk2bTBXTWRBK0xC?=
- =?utf-8?B?dHhZNEc5ZHNpRktWVUtCWEp6U0YrZWYrYkZNTHlyZkRUaG8yT3dQcm5QbitR?=
- =?utf-8?B?aHdKOU5YTEg0MzQ3T204WExzeVBreEZqNWZCUTZXb2hlVkdpNnBJL25OeTRx?=
- =?utf-8?B?M3BFV1lvY2dsRDUvUWFvRXk2b1A2eHJHNGR2a2E2S0dMbG9jZUtGdk1TNG91?=
- =?utf-8?B?YngvRjBFbVNsL2lHN3daQnY1M0FxbWQrcEErZ1RQREh5UlU4a1h5NGxVcWVW?=
- =?utf-8?B?aVVuTUQwa1FVR3ZEV0lGMUJ5aFJaQStDT0Y2TzAxbE9vN1pxWU1VY3NLSExN?=
- =?utf-8?B?OG1sSDJyZzYxZHBhUGYrc0l4ZmJuWU9tbXN3cUIzK0dDck5iRXZtQ3g1WFNG?=
- =?utf-8?B?MTF3UVFYd0xKSnI1Ui9uZVBzZG5leVdXcE5EbjNFQ3QvYWlXUDdIaFZoQW1h?=
- =?utf-8?B?TmU2WlBkVjBLeTVmT1N3a3ZNaXMxS2hSRnZOVXQ2WG80WGlsN0szUzYrdTVV?=
- =?utf-8?B?VW8rQWNZSThJRkJTRVJIV0tIMTVJWFJVWWJQaEp5eHhYdUxoaHM2U2ZXRk9P?=
- =?utf-8?B?VnM0L2FlbGw4MXBaL2tBbkdvd3pQUGhiSkg3R2dsRDlsSEszdE4ycEZpUFVk?=
- =?utf-8?B?RVVMRDhRb3N2bE9FckJJTVZwMWhVZGhPZUM3Q0pudnp4T1FSLy9zbm9va20x?=
- =?utf-8?B?SGhTUEpTOXJqeW43STNQdUNJWG1aOVc1RkJTZnBZYk5XZGQxT0UvNStiLzEx?=
- =?utf-8?B?elQ3MkkyNElPTEk5WlUzOGg0VVVkMVc5WjNwUVl6SDVkaGtrNlhWbCs1em8r?=
- =?utf-8?B?ZmVDWU96VEZVYXl3a1lnQ2pVSjRTaUw0MEEramVtSXlsQkZ4dGszZm5xVnkw?=
- =?utf-8?B?ZmV1eU9rS1NDaTBhc0tCemVkR21tbVNkNldNNFl4QU42MTIzMFA3aGhXVmVp?=
- =?utf-8?B?MGtTdjNmc2oxbXhsb0lYd1JYR3BKb1pyNHkra2xBdXcvYXJDVFdYUUZpSEJu?=
- =?utf-8?B?Y3NGMjN0K3g0SlhlSGdTWCtPMXpTUU40VGZlR1ZFaUtjbzFGTlppM0EzYU5m?=
- =?utf-8?B?QXdmaUhDc3lhR09DbmV4TG00dnB2WVFiOEljdmx0ckx0ZFhkbkRMNnYwcTVr?=
- =?utf-8?B?a0hHM2hteVNpU25BQjUxeUc2M1RnenJXRGRxZ1R0T2gyQ2dReUZ6TkE3ZFVU?=
- =?utf-8?B?YWcyMFJyWGx5djVnTnFSMi94VzYvSXRTbnVYeFhQWW1xenBXYmFMTTJFRDZD?=
- =?utf-8?B?TFd3TFdTbjNlQnlzNlp1VUtXUTdabnEzMTJwRmhScGoyR1JBdVh1bXN2OU80?=
- =?utf-8?B?VmFhVVFsSXJJMytkRjhKUE5pUzhMZWRwdGcyK1MrT2xJdmJuQm5jMUI2Nmh0?=
- =?utf-8?B?N05TNFk0b3ZXeXF5anRTZFk0blJSc1V3eVMrTWREOHNWS045WmdVaXZmODM2?=
- =?utf-8?B?dU4yVnE4Z3VyRFgzdm5nQzVidys1eEFSeTNMWGZnTEVoVmloa2NyZkVJajhx?=
- =?utf-8?B?MEJIalBONjVYUGhpWXZsMXlhVUtCMGUxcUhIMWJCV2JLRXgwNjBEai9hakw0?=
- =?utf-8?B?Sk15VHhHc1A0NUppY0lSVGU2RS8xenduZjRXa0dCTjBZbklBQ1J0OUY5TitD?=
- =?utf-8?B?RVp4bVRvbGVUeEFFTjlOTzhwYll1UWFBZGhEbjkvOEFYVnFZQmw4RU56SmUv?=
- =?utf-8?B?SjQzOEZWYnVSRW40YUh2c05XcFpsRC8yZzdLcE9tVkZ3bmxtRy8vTzBKZXE5?=
- =?utf-8?B?cDdyMjFmRmQ0M2pXQU50UjEzZGZBQzY3bjk0ZUt5OWxndVdNeC9rOHBXYzFG?=
- =?utf-8?B?UGU3Y1dQM2xFMXFUd1pJYm5UNDdyNUUwaGxwVlY0T1lvd3FVZDErNEpGT1NQ?=
- =?utf-8?B?S0FjUzI1d0VEL0tjMlRWSlMrblVoKzR2YTB4OVIrRzhvdW9pWHRXNW5kbFdu?=
- =?utf-8?B?TVRUWFBqWnZheHNQQVdFaEc2bFB3TnA3VVNmZmdaU3h2SlhBSHFpQUovZm5u?=
- =?utf-8?B?VEoza1ZONnFPQTZBWXZBaHZrZVlaMU1Wdm9xOTZ0enNISGhmMll0ZVkwdFJZ?=
- =?utf-8?B?bEVEMnVPbWMxZS9WVkkvSzJId0E5M29XSGhkUTJNVXVtRFRyU2tQQ1plSzdF?=
- =?utf-8?B?VGc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: dL+nvl7/01IhFo3aels5L8963hUFoCkyDzK0ypXoCbghEMRoesbk525GWRfFtuHzjTv43Pn8zWkjwGezfSHX18IdiUex50sIhWhoBOiKJqLs8f+kVBZ6BNdAC8Lupf6yeDmax0bnxtwOIzMARUu0p8970uLaVhMhLSIzIq7+XdPgJiF37pHPXo9zSvcCcn20oBydKwS22QCmDyclqohB0GKWuYzgAD73ErBNfKPrmgdbiRZ1kJkcACKJN2TVHWtbWXumcjMgOQWcO3qbS3jdHqF63DG3SsRk/QATx5lB8JlTqLp2ZkNI6aJ/z6VknaqNT4uhnan49nBpl0yai+esjJL31Y4sIDFIDS01CR8tV3gLKZd8Gjo6vUMcN5X7bo5y9cZ0gy795gU7U9Y23m7OQMSRAPX5Tk21hcOS+0hWKFcnCQ+OigotdZzZHIFT3G9rjs/2LGmG85DkmksKxszTYalwdV1Q/yrd50DdbKnJOQcdo5wtxW1r/EZyRJBJ3dzcQNE4H7EH5CT2w3n/Bu93lDF1gTQ1fa8Ld8VehClu71DCAw/zakPaquqATCaiN840lbsHmsUgapoTgPySD8asLqMe6f52SOBBYpLqjDtfyh8/uoXG6qwY0kFhlde5A0jbOK8o8rG7SxVzWAriID3wcpab2eKHivB8zN/O6qBT8IRa+iNtum2dxVkQe0OLEqCEkKOHasn5ou0PoBdNyUJ6IvMM485/uT7qYV4FF19mxrt7lPEoW6hM/3gmqviD2IHjqCHke1ZJ5KVzqahiRdIbA5fVNFJVLZ7yochf8S0KhuRAnTboQajHZPZ8XQ92VJCcHyrJ1zE9wI4sqGxq2K3ptA==
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39b93212-4df4-40dd-47ba-08dbe6021e9f
-X-MS-Exchange-CrossTenant-AuthSource: SA2PR10MB4684.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2023 17:41:38.2351 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y2SyckIyRKNe5MhTvA4zmUjRTLOBVjeM5MKXBmE78QePf23DRDCV8yuB/Mrz+g0vSGrHkcLj16t4jEnwbgy1EOgVKKqLahtQIkvYokmpkNU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB5882
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-15_17,2023-11-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- adultscore=0
- mlxlogscore=999 mlxscore=0 malwarescore=0 phishscore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311150137
-X-Proofpoint-GUID: pNfA1oPgjjQ9h91lZJm_To1Sm3rXa2xz
-X-Proofpoint-ORIG-GUID: pNfA1oPgjjQ9h91lZJm_To1Sm3rXa2xz
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20231114054032.1192027-1-hao.xiang@bytedance.com>
+In-Reply-To: <20231114054032.1192027-1-hao.xiang@bytedance.com>
+From: Elena Ufimtseva <ufimtseva@gmail.com>
+Date: Wed, 15 Nov 2023 09:43:03 -0800
+Message-ID: <CAEr7rXj4Oqq8umVDJfqrA0ooQt5E=XrWDVBOA_bhkRnzzDauFw@mail.gmail.com>
+Subject: Re: [PATCH v2 00/20] Use Intel DSA accelerator to offload zero page
+ checking in multifd live migration.
+To: Hao Xiang <hao.xiang@bytedance.com>
+Cc: farosas@suse.de, peter.maydell@linaro.org, quintela@redhat.com, 
+ peterx@redhat.com, marcandre.lureau@redhat.com, bryan.zhang@bytedance.com, 
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=ufimtseva@gmail.com; helo=mail-lf1-x129.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -190,81 +89,322 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/15/2023 11:15 AM, Markus Armbruster wrote:
-> Steven Sistare <steven.sistare@oracle.com> writes:
->> On 11/15/2023 3:41 AM, Markus Armbruster wrote:
->>> Daniel P. Berrangé <berrange@redhat.com> writes:
->>>
->>>> On Fri, Nov 03, 2023 at 03:51:00PM -0400, Steven Sistare wrote:
->>>>> On 11/3/2023 1:33 PM, Daniel P. Berrangé wrote:
->>>>>> On Fri, Nov 03, 2023 at 09:01:29AM -0700, Steve Sistare wrote:
->>>>>>> Buffered monitor output is lost when abort() is called.  The pattern
->>>>>>> error_report() followed by abort() occurs about 60 times, so valuable
->>>>>>> information is being lost when the abort is called in the context of a
->>>>>>> monitor command.
->>>>>>
->>>>>> I'm curious, was there a particular abort() scenario that you hit ?
->>>>>
->>>>> Yes, while tweaking the suspended state, and forgetting to add transitions:
->>>>>
->>>>>         error_report("invalid runstate transition: '%s' -> '%s'",
->>>>>         abort();
->>>>>
->>>>> But I have previously hit this for other errors.
->>>
->>> Can you provide a reproducer?
->>
->> I sometimes hit this when developing new code.  I do not have a reproducer for upstream
->> branches. The patch is aimed at helping developers, not users.
-> 
-> I'm asking because I can't see how the error message could be lost.  A
-> reproducer would let me find out.  "Apply this set of broken patches,
-> then do that" would serve.
+Hello Hao,
 
-$ patch -p1 << EOF
-diff --git a/monitor/qmp-cmds.c b/monitor/qmp-cmds.c
-index b0f948d..c9a3aee 100644
---- a/monitor/qmp-cmds.c
-+++ b/monitor/qmp-cmds.c
-@@ -47,8 +47,12 @@ void qmp_quit(Error **errp)
-     qemu_system_shutdown_request(SHUTDOWN_CAUSE_HOST_QMP_QUIT);
- }
-
-+#include "qemu/error-report.h"
-+
- void qmp_stop(Error **errp)
- {
-+    error_report("injected failure");
-+    abort();
-     /* if there is a dump in background, we should wait until the dump
-      * finished */
-     if (qemu_system_dump_in_progress()) {
-EOF
-
-# This example loses the error message:
-
-$ args='-display none -chardev socket,id=mon1,server=on,path=mon1.sock,wait=off -mon mon1,mode=control'
-$ qemu-system-x86_64 $args < /dev/null &
-[1] 18048
-$ echo '{"execute":"qmp_capabilities"} {"execute":"human-monitor-command","arguments":{"command-line":"stop"}}' | ncat -U mon1.sock
-{"QMP": {"version": {"qemu": {"micro": 50, "minor": 1, "major": 8}, "package": "v8.1.0-2976-g4025fde-dirty"}, "capabilities": ["oob"]}}
-{"return": {}}
-Ncat: Connection reset by peer.
-$
-[1]+  Aborted                 qemu-system-x86_64 $args < /dev/null
+On Mon, Nov 13, 2023 at 9:42=E2=80=AFPM Hao Xiang <hao.xiang@bytedance.com>=
+ wrote:
+>
+> v2
+> * Rebase on top of 3e01f1147a16ca566694b97eafc941d62fa1e8d8.
+> * Leave Juan's changes in their original form instead of squashing them.
+> * Add a new commit to refactor the multifd_send_thread function to prepar=
+e for introducing the DSA offload functionality.
+> * Use page count to configure multifd-packet-size option.
+> * Don't use the FLAKY flag in DSA tests.
+> * Test if DSA integration test is setup correctly and skip the test if
+> * not.
+> * Fixed broken link in the previous patch cover.
+>
+> * Background:
+>
+> I posted an RFC about DSA offloading in QEMU:
+> https://patchew.org/QEMU/20230529182001.2232069-1-hao.xiang@bytedance.com=
+/
+>
+> This patchset implements the DSA offloading on zero page checking in
+> multifd live migration code path.
+>
 
 
-# This example preserves the error message. I include it to show the ncat-based test is valid.
+Do you have performance numbers with different packet sizes for DSA
+and non-DSA cases?
+What have you found was an optimal size for DSA offloading?
 
-$ qemu-system-x86_64 $args < /dev/null &
-[1] 18060
-$ echo '{"execute":"qmp_capabilities"} {"execute":"stop"}' | ncat -U mon1.sock
-{"QMP": {"version": {"qemu": {"micro": 50, "minor": 1, "major": 8}, "package": "v8.1.0-2976-g4025fde-dirty"}, "capabilities": ["oob"]}}
-{"return": {}}
-injected failure                <============= qemu stderr
-Ncat: Connection reset by peer.
-$
-[1]+  Aborted                 qemu-system-x86_64 $args < /dev/null
+Thank you!
+> * Overview:
+>
+> Intel Data Streaming Accelerator(DSA) is introduced in Intel's 4th genera=
+tion
+> Xeon server, aka Sapphire Rapids.
+> https://cdrdv2-public.intel.com/671116/341204-intel-data-streaming-accele=
+rator-spec.pdf
+> https://www.intel.com/content/www/us/en/content-details/759709/intel-data=
+-streaming-accelerator-user-guide.html
+> One of the things DSA can do is to offload memory comparison workload fro=
+m
+> CPU to DSA accelerator hardware. This patchset implements a solution to o=
+ffload
+> QEMU's zero page checking from CPU to DSA accelerator hardware. We gain
+> two benefits from this change:
+> 1. Reduces CPU usage in multifd live migration workflow across all use
+> cases.
+> 2. Reduces migration total time in some use cases.
+>
+> * Design:
+>
+> These are the logical steps to perform DSA offloading:
+> 1. Configure DSA accelerators and create user space openable DSA work
+> queues via the idxd driver.
+> 2. Map DSA's work queue into a user space address space.
+> 3. Fill an in-memory task descriptor to describe the memory operation.
+> 4. Use dedicated CPU instruction _enqcmd to queue a task descriptor to
+> the work queue.
+> 5. Pull the task descriptor's completion status field until the task
+> completes.
+> 6. Check return status.
+>
+> The memory operation is now totally done by the accelerator hardware but
+> the new workflow introduces overheads. The overhead is the extra cost CPU
+> prepares and submits the task descriptors and the extra cost CPU pulls fo=
+r
+> completion. The design is around minimizing these two overheads.
+>
+> 1. In order to reduce the overhead on task preparation and submission,
+> we use batch descriptors. A batch descriptor will contain N individual
+> zero page checking tasks where the default N is 128 (default packet size
+> / page size) and we can increase N by setting the packet size via a new
+> migration option.
+> 2. The multifd sender threads prepares and submits batch tasks to DSA
+> hardware and it waits on a synchronization object for task completion.
+> Whenever a DSA task is submitted, the task structure is added to a
+> thread safe queue. It's safe to have multiple multifd sender threads to
+> submit tasks concurrently.
+> 3. Multiple DSA hardware devices can be used. During multifd initializati=
+on,
+> every sender thread will be assigned a DSA device to work with. We
+> use a round-robin scheme to evenly distribute the work across all used
+> DSA devices.
+> 4. Use a dedicated thread dsa_completion to perform busy pulling for all
+> DSA task completions. The thread keeps dequeuing DSA tasks from the
+> thread safe queue. The thread blocks when there is no outstanding DSA
+> task. When pulling for completion of a DSA task, the thread uses CPU
+> instruction _mm_pause between the iterations of a busy loop to save some
+> CPU power as well as optimizing core resources for the other hypercore.
+> 5. DSA accelerator can encounter errors. The most popular error is a
+> page fault. We have tested using devices to handle page faults but
+> performance is bad. Right now, if DSA hits a page fault, we fallback to
+> use CPU to complete the rest of the work. The CPU fallback is done in
+> the multifd sender thread.
+> 6. Added a new migration option multifd-dsa-accel to set the DSA device
+> path. If set, the multifd workflow will leverage the DSA devices for
+> offloading.
+> 7. Added a new migration option multifd-normal-page-ratio to make
+> multifd live migration easier to test. Setting a normal page ratio will
+> make live migration recognize a zero page as a normal page and send
+> the entire payload over the network. If we want to send a large network
+> payload and analyze throughput, this option is useful.
+> 8. Added a new migration option multifd-packet-size. This can increase
+> the number of pages being zero page checked and sent over the network.
+> The extra synchronization between the sender threads and the dsa
+> completion thread is an overhead. Using a large packet size can reduce
+> that overhead.
+>
+> * Performance:
+>
+> We use two Intel 4th generation Xeon servers for testing.
+>
+> Architecture:        x86_64
+> CPU(s):              192
+> Thread(s) per core:  2
+> Core(s) per socket:  48
+> Socket(s):           2
+> NUMA node(s):        2
+> Vendor ID:           GenuineIntel
+> CPU family:          6
+> Model:               143
+> Model name:          Intel(R) Xeon(R) Platinum 8457C
+> Stepping:            8
+> CPU MHz:             2538.624
+> CPU max MHz:         3800.0000
+> CPU min MHz:         800.0000
+>
+> We perform multifd live migration with below setup:
+> 1. VM has 100GB memory.
+> 2. Use the new migration option multifd-set-normal-page-ratio to control =
+the total
+> size of the payload sent over the network.
+> 3. Use 8 multifd channels.
+> 4. Use tcp for live migration.
+> 4. Use CPU to perform zero page checking as the baseline.
+> 5. Use one DSA device to offload zero page checking to compare with the b=
+aseline.
+> 6. Use "perf sched record" and "perf sched timehist" to analyze CPU usage=
+.
+>
+> A) Scenario 1: 50% (50GB) normal pages on an 100GB vm.
+>
+>         CPU usage
+>
+>         |---------------|---------------|---------------|---------------|
+>         |               |comm           |runtime(msec)  |totaltime(msec)|
+>         |---------------|---------------|---------------|---------------|
+>         |Baseline       |live_migration |5657.58        |               |
+>         |               |multifdsend_0  |3931.563       |               |
+>         |               |multifdsend_1  |4405.273       |               |
+>         |               |multifdsend_2  |3941.968       |               |
+>         |               |multifdsend_3  |5032.975       |               |
+>         |               |multifdsend_4  |4533.865       |               |
+>         |               |multifdsend_5  |4530.461       |               |
+>         |               |multifdsend_6  |5171.916       |               |
+>         |               |multifdsend_7  |4722.769       |41922          |
+>         |---------------|---------------|---------------|---------------|
+>         |DSA            |live_migration |6129.168       |               |
+>         |               |multifdsend_0  |2954.717       |               |
+>         |               |multifdsend_1  |2766.359       |               |
+>         |               |multifdsend_2  |2853.519       |               |
+>         |               |multifdsend_3  |2740.717       |               |
+>         |               |multifdsend_4  |2824.169       |               |
+>         |               |multifdsend_5  |2966.908       |               |
+>         |               |multifdsend_6  |2611.137       |               |
+>         |               |multifdsend_7  |3114.732       |               |
+>         |               |dsa_completion |3612.564       |32568          |
+>         |---------------|---------------|---------------|---------------|
+>
+> Baseline total runtime is calculated by adding up all multifdsend_X
+> and live_migration threads runtime. DSA offloading total runtime is
+> calculated by adding up all multifdsend_X, live_migration and
+> dsa_completion threads runtime. 41922 msec VS 32568 msec runtime and
+> that is 23% total CPU usage savings.
+>
+>         Latency
+>         |---------------|---------------|---------------|---------------|=
+---------------|---------------|
+>         |               |total time     |down time      |throughput     |=
+transferred-ram|total-ram      |
+>         |---------------|---------------|---------------|---------------|=
+---------------|---------------|
+>         |Baseline       |10343 ms       |161 ms         |41007.00 mbps  |=
+51583797 kb    |102400520 kb   |
+>         |---------------|---------------|---------------|---------------|=
+-------------------------------|
+>         |DSA offload    |9535 ms        |135 ms         |46554.40 mbps  |=
+53947545 kb    |102400520 kb   |
+>         |---------------|---------------|---------------|---------------|=
+---------------|---------------|
+>
+> Total time is 8% faster and down time is 16% faster.
+>
+> B) Scenario 2: 100% (100GB) zero pages on an 100GB vm.
+>
+>         CPU usage
+>         |---------------|---------------|---------------|---------------|
+>         |               |comm           |runtime(msec)  |totaltime(msec)|
+>         |---------------|---------------|---------------|---------------|
+>         |Baseline       |live_migration |4860.718       |               |
+>         |               |multifdsend_0  |748.875        |               |
+>         |               |multifdsend_1  |898.498        |               |
+>         |               |multifdsend_2  |787.456        |               |
+>         |               |multifdsend_3  |764.537        |               |
+>         |               |multifdsend_4  |785.687        |               |
+>         |               |multifdsend_5  |756.941        |               |
+>         |               |multifdsend_6  |774.084        |               |
+>         |               |multifdsend_7  |782.900        |11154          |
+>         |---------------|---------------|-------------------------------|
+>         |DSA offloading |live_migration |3846.976       |               |
+>         |               |multifdsend_0  |191.880        |               |
+>         |               |multifdsend_1  |166.331        |               |
+>         |               |multifdsend_2  |168.528        |               |
+>         |               |multifdsend_3  |197.831        |               |
+>         |               |multifdsend_4  |169.580        |               |
+>         |               |multifdsend_5  |167.984        |               |
+>         |               |multifdsend_6  |198.042        |               |
+>         |               |multifdsend_7  |170.624        |               |
+>         |               |dsa_completion |3428.669       |8700           |
+>         |---------------|---------------|---------------|---------------|
+>
+> Baseline total runtime is 11154 msec and DSA offloading total runtime is
+> 8700 msec. That is 22% CPU savings.
+>
+>         Latency
+>         |----------------------------------------------------------------=
+----------------------------|
+>         |               |total time     |down time      |throughput     |=
+transferred-ram|total-ram   |
+>         |---------------|---------------|---------------|---------------|=
+---------------|------------|
+>         |Baseline       |4867 ms        |20 ms          |1.51 mbps      |=
+565 kb         |102400520 kb|
+>         |---------------|---------------|---------------|---------------|=
+----------------------------|
+>         |DSA offload    |3888 ms        |18 ms          |1.89 mbps      |=
+565 kb         |102400520 kb|
+>         |---------------|---------------|---------------|---------------|=
+---------------|------------|
+>
+> Total time 20% faster and down time 10% faster.
+>
+> * Testing:
+>
+> 1. Added unit tests for cover the added code path in dsa.c
+> 2. Added integration tests to cover multifd live migration using DSA
+> offloading.
+>
+> * Patchset
+>
+> Apply this patchset on top of commit
+> f78ea7ddb0e18766ece9fdfe02061744a7afc41b
+>
+> Hao Xiang (16):
+>   meson: Introduce new instruction set enqcmd to the build system.
+>   util/dsa: Add dependency idxd.
+>   util/dsa: Implement DSA device start and stop logic.
+>   util/dsa: Implement DSA task enqueue and dequeue.
+>   util/dsa: Implement DSA task asynchronous completion thread model.
+>   util/dsa: Implement zero page checking in DSA task.
+>   util/dsa: Implement DSA task asynchronous submission and wait for
+>     completion.
+>   migration/multifd: Add new migration option for multifd DSA
+>     offloading.
+>   migration/multifd: Prepare to introduce DSA acceleration on the
+>     multifd path.
+>   migration/multifd: Enable DSA offloading in multifd sender path.
+>   migration/multifd: Add test hook to set normal page ratio.
+>   migration/multifd: Enable set normal page ratio test hook in multifd.
+>   migration/multifd: Add migration option set packet size.
+>   migration/multifd: Enable set packet size migration option.
+>   util/dsa: Add unit test coverage for Intel DSA task submission and
+>     completion.
+>   migration/multifd: Add integration tests for multifd with Intel DSA
+>     offloading.
+>
+> Juan Quintela (4):
+>   multifd: Add capability to enable/disable zero_page
+>   multifd: Support for zero pages transmission
+>   multifd: Zero pages transmission
+>   So we use multifd to transmit zero pages.
+>
+>  include/qemu/dsa.h             |  119 ++++
+>  linux-headers/linux/idxd.h     |  356 ++++++++++
+>  meson.build                    |    2 +
+>  meson_options.txt              |    2 +
+>  migration/migration-hmp-cmds.c |   22 +
+>  migration/multifd-zlib.c       |    8 +-
+>  migration/multifd-zstd.c       |    8 +-
+>  migration/multifd.c            |  203 +++++-
+>  migration/multifd.h            |   28 +-
+>  migration/options.c            |  107 +++
+>  migration/options.h            |    4 +
+>  migration/ram.c                |   45 +-
+>  migration/trace-events         |    8 +-
+>  qapi/migration.json            |   53 +-
+>  scripts/meson-buildoptions.sh  |    3 +
+>  tests/qtest/migration-test.c   |   77 ++-
+>  tests/unit/meson.build         |    6 +
+>  tests/unit/test-dsa.c          |  466 +++++++++++++
+>  util/dsa.c                     | 1132 ++++++++++++++++++++++++++++++++
+>  util/meson.build               |    1 +
+>  20 files changed, 2612 insertions(+), 38 deletions(-)
+>  create mode 100644 include/qemu/dsa.h
+>  create mode 100644 linux-headers/linux/idxd.h
+>  create mode 100644 tests/unit/test-dsa.c
+>  create mode 100644 util/dsa.c
+>
+> --
+> 2.30.2
+>
+>
 
-- Steve
+
+--=20
+Elena
 
