@@ -2,107 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54C87EBA86
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:15:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC96F7EBA84
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:14:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r33YX-00037W-IL; Tue, 14 Nov 2023 19:14:57 -0500
+	id 1r33WY-0001kn-Mq; Tue, 14 Nov 2023 19:12:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1r33YV-00037C-LR
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:14:55 -0500
-Received: from mail-mw2nam10on2051.outbound.protection.outlook.com
- ([40.107.94.51] helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1r33WU-0001kR-SP
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:12:50 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1r33YT-0001z1-3O
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:14:55 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Q9hVyaS6rRmjXBGMwg+89qMhohiFFylBhQXdfzrX2j7zkmnTzLlEQLRb+hdewIBs1Styw4DRIfJZvCJ3VqwcqWEfIDSIkFHebTDGq/EwnIlxwT+MKNb5ip+ZIbR1tZRxwPmBdBVuWCUDuovKHKEvOcSJoLUROLuuDt7I0KjfrZaebuNKNedkZ0W9l2Chd5Ai3y9J0If0xV4U1DqMrJtWNonPqz52RaS1RGQQ/j/WIzourN/upDn3kifoDyRZQVnPCYaBzqQMvDtfR/NMpR9q7Sv7FkySLAHxjWbFwkLMldbNVUIlxed2P9B3LH4WM2KrwdLqZxSy1myGiZhdJ1QYnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UrivDq39IrDTBtqKA3G4MTvZSpI29Fq1CxasFzkp/+0=;
- b=AyqhFe8PUDL0Q8qUOt0PIrNTy/xRVPralntvwfL9NZo/thCG+thkGLsKQwcDbLm/GcZT1FGnj1nzF7GYm1JW+YuV4qlh0Aa9v4ZTXWKrxCDdVGLgXZw0w5fa5uwltGlqh2GUfChlEQos69NvdCXmqWSWtwpaTs03NPvy/92B2FctDHZJxLpHX6nz30r36dU2mHXi05OCH+12Cw6TYGfUVuaP9kGRzqiyJFifRgBaUUT9aL5Ama5GG6ZelvmrdhWi4C8ZG/InyVs1Q/KBVlFFicMNWLjkCNXx/aJjCZrTNvbgvGnvbj+z7igUj7CRSAocLQit/2Vth450ur7VCEmM2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UrivDq39IrDTBtqKA3G4MTvZSpI29Fq1CxasFzkp/+0=;
- b=gDSeXGDBqVVkwm4lZn/OQHNdTv4eVQ1P/pqIwvtuv4w8hVOLvSkw8cCXNMge/vXLRPPjXWlm2egT5q8lPzplxAIwklm2LizZyFRIMe61OVrtqa9mZuGSqvIbUAJ7iHIRB0KPpkNBmpgxLquxT3FUbGLCJqr+z34lB14r0WKNGks=
-Received: from MWH0EPF00056D16.namprd21.prod.outlook.com
- (2603:10b6:30f:fff2:0:1:0:1d) by DM6PR12MB4076.namprd12.prod.outlook.com
- (2603:10b6:5:213::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.31; Wed, 15 Nov
- 2023 00:09:42 +0000
-Received: from CO1PEPF000044FC.namprd21.prod.outlook.com
- (2a01:111:f403:f807::1) by MWH0EPF00056D16.outlook.office365.com
- (2603:1036:d20::b) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.5 via Frontend
- Transport; Wed, 15 Nov 2023 00:09:42 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000044FC.mail.protection.outlook.com (10.167.241.202) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7025.0 via Frontend Transport; Wed, 15 Nov 2023 00:09:42 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Tue, 14 Nov
- 2023 18:09:41 -0600
-Content-Type: text/plain; charset="utf-8"
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1r33WR-0001dO-6z
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:12:49 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AF07FJG013431; Wed, 15 Nov 2023 00:12:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ subject : from : to : cc : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=NSgxtRyTqKOkTGfUhc7fRQTfpzN5laBArqCx5kWrxKE=;
+ b=j5eX4Lr7ctQ7iNdTuTNQff3LxhKYVTVc0+mV+6/MWJ30EIrTVj2GcV5bs/azgS5O3/Lz
+ LJGcTueWwopOEH+y+ngz5+z8xU5siv16mNXrlEOS6tGOvy7Lq2YNV6+eVN68AZO9uJVg
+ 8+IGEWhvo15G1Rz2cWhSrETiw+G1vVhYkgdFwqIdiOTMpO1sHbxIPhBmDGe/jscbjG7S
+ zoMdgt6uiVyjj6jlM64zoupYKcLWyJINXw28JRHRTjwAJNcuvj0LwOHgSW5LO1/WlUtg
+ y8vu9Bhjv0zFpQ1elSbxg1hFNUDHtxMcvYjMkohnbk9e7w/eLFloEO+eCZU5Qu53zqgu kA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uck5qg7fp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 15 Nov 2023 00:12:43 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AF088DQ018701;
+ Wed, 15 Nov 2023 00:12:42 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uck5qg7f7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 15 Nov 2023 00:12:42 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AEMV6df022165; Wed, 15 Nov 2023 00:12:41 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uanekkfgs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 15 Nov 2023 00:12:41 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AF0Ce2j10683058
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 15 Nov 2023 00:12:40 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C716B5805E;
+ Wed, 15 Nov 2023 00:12:40 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6D98358051;
+ Wed, 15 Nov 2023 00:12:40 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 15 Nov 2023 00:12:40 +0000 (GMT)
+Message-ID: <7412f9ab-6826-4e64-a583-a4dc8a921b70@linux.ibm.com>
+Date: Tue, 14 Nov 2023 19:12:40 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 12/14] tests: acpi: implement TPM CRB tests for ARM virt
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
+ Joelle van Dyne <j@getutm.app>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+References: <20231114020927.62315-1-j@getutm.app>
+ <20231114020927.62315-13-j@getutm.app>
+ <CAJ+F1CKx_MfZapE_vcb_e-nk=CMC2e8FN0QrONb4mzda_KNKUQ@mail.gmail.com>
+ <b1542ca5-18a6-44bd-a639-5765580bdc4d@linux.ibm.com>
+ <718d155f-004b-417e-8cba-d79ca4475850@linux.ibm.com>
+In-Reply-To: <718d155f-004b-417e-8cba-d79ca4475850@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: C0k-zq0tN__tgwRhTbU2GHxrHgz2BRbx
+X-Proofpoint-ORIG-GUID: uZpc_MAcyTQPa43MVQHUVJ__hRiC55k1
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: [ANNOUNCE] QEMU 8.2.0-rc0 is now available
-From: Michael Roth <michael.roth@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: <stefanha@redhat.com>
-Date: Tue, 14 Nov 2023 18:08:46 -0600
-Message-ID: <170000692689.770168.7402752279922677160@amd.com>
-User-Agent: alot/0.9
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000044FC:EE_|DM6PR12MB4076:EE_
-X-MS-Office365-Filtering-Correlation-Id: 518f8175-eb0f-4061-21a8-08dbe56f2af1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Cd03LBFVjwaeWVb85gLgRrmyDvILcTZNeILwi1vSrdLYWU8X/egenhSM90Eon5i8ckCCO8PWigOhKYYmd2MdMfyyqV2Wvz8gUucJ7A54sTAfeZnEeXVXEynMvC02l69wi708M5lbds2foZsKyKdIyrnxQ5zd7lb4nnJbmyJSth93unbX3ni4hmlVrgVErNgWMXA0c5icEY99clg6pATuNdHeHMrM0hYo+z+ALgv17KWLow4P2DPOtjp/T5kNnkAXfS78I9Yepp9ddewJtdxGcbhLwdw44T3hVSJ8nYu5HQzOw2QTaMhknRfKcNcPSJ85fpjqm9OOgWJ0P4iWfq0P4asnTX4KiMnvbIU79SmtkZZACwPu/W6lcGdQY1rQFmdACLDNUCivI60JQRfaq2WmFFhlbmjpBcWlhi0QOu7DGXwihKSe7zU1hkd4EGbK2eyyOg910yc1UAj6dtd7t9XSqSzxPGej8gVAnWnDtloEQ1DJuCtjBIQZ5wJaK5qcTKfUfNmdIm2BL3z/Zd9edDaGDwSBqObaUqC/qWBFCzyaST7+9++T4Q0y/jTwKg14zKmeo0+McCj3P49NvuIlEocdpyE5IUhRXke0GKdTu0rF4KqGwEaEFyVts9K+COWRpVu2BYOK0PcOaqWnXAO1Ghx5knRLNnfnoXKF89sjpAoFQnjRwGzyJdPU1kVg85AaTOpUrZnZKZKSAYMqUJBjZYRv1I0jfjpeA6EE9H+kIUdGY97tBkQNfJBZN9F+28GhN+R8u9iv6aRxIaccYQekUXRY6g==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(136003)(346002)(376002)(39860400002)(396003)(230922051799003)(451199024)(186009)(1800799009)(64100799003)(82310400011)(40470700004)(36840700001)(46966006)(86362001)(8936002)(4326008)(8676002)(316002)(6916009)(966005)(70206006)(70586007)(47076005)(40480700001)(44832011)(478600001)(5660300002)(2616005)(40460700003)(2906002)(426003)(336012)(36756003)(82740400003)(83380400001)(356005)(36860700001)(81166007)(4744005)(26005)(41300700001)(16526019)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2023 00:09:42.5914 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 518f8175-eb0f-4061-21a8-08dbe56f2af1
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044FC.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4076
-Received-SPF: softfail client-ip=40.107.94.51;
- envelope-from=Michael.Roth@amd.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-14_23,2023-11-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 clxscore=1015 suspectscore=0
+ impostorscore=0 malwarescore=0 mlxlogscore=999 spamscore=0 mlxscore=0
+ phishscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311150000
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,28 +121,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
 
-On behalf of the QEMU Team, I'd like to announce the availability of the
-first release candidate for the QEMU 8.2 release. This release is meant
-for testing purposes and should not be used in a production environment.
 
-  http://download.qemu.org/qemu-8.2.0-rc0.tar.xz
-  http://download.qemu.org/qemu-8.2.0-rc0.tar.xz.sig
+On 11/14/23 16:05, Stefan Berger wrote:
+> 
+> 
+> On 11/14/23 13:03, Stefan Berger wrote:
+>>
+>>
+>> On 11/14/23 04:36, Marc-André Lureau wrote:
+>>> Hi
+>>>
+>>> On Tue, Nov 14, 2023 at 6:12 AM Joelle van Dyne <j@getutm.app> wrote:
+>>>>
+>>>> Signed-off-by: Joelle van Dyne <j@getutm.app>
+>>>> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+>>>
+>>> nit: you also added tests for x86, could be a different patch?
+>>>
+>>> For arm, the test fails until next patch with:
+>>>
+>>> # starting QEMU: exec ./qemu-system-aarch64 -qtest
+>>> unix:/tmp/qtest-991279.sock -qtest-log /dev/null -chardev
+>>> socket,path=/tmp/qtest-991279.qmp,id=char0 -mon
+>>> chardev=char0,mode=control -display none -audio none -machine virt
+>>> -accel tcg -nodefaults -nographic -drive
+>>> if=pflash,format=raw,file=pc-bios/edk2-aarch64-code.fd,readonly=on
+>>> -drive if=pflash,format=raw,file=pc-bios/edk2-arm-vars.fd,snapshot=on
+>>> -cdrom tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2
+>>> -cpu cortex-a57 -chardev
+>>> socket,id=chr,path=/tmp/qemu-test_acpi_virt_tcg_crb-device.KZ3GE2/sock
+>>> -tpmdev emulator,id=dev,chardev=chr -device tpm-crb-device,tpmdev=dev
+>>> -accel qtest
+>>> Warning! zero length expected file 
+>>> 'tests/data/acpi/virt/TPM2.crb-device.tpm2'
+>>> Warning! zero length expected file 
+>>> 'tests/data/acpi/virt/DSDT.crb-device.tpm2'
+>>> acpi-test: Warning!  binary file mismatch. Actual
+>>> [aml:/tmp/aml-GO4ME2], Expected
+>>> [aml:tests/data/acpi/virt/TPM2.crb-device.tpm2].
+>>> See source file tests/qtest/bios-tables-test.c for instructions on how
+>>> to update expected files.
+>>> acpi-test: Warning!  binary file mismatch. Actual
+>>> [aml:/tmp/aml-6N4ME2], Expected
+>>> [aml:tests/data/acpi/virt/DSDT.crb-device.tpm2].
+>>> See source file tests/qtest/bios-tables-test.c for instructions on how
+>>> to update expected files.
+>>> to see ASL diff between mismatched files install IASL, rebuild QEMU
+>>> from scratch and re-run tests with V=1 environment variable set**
+>>> ERROR:../tests/qtest/bios-tables-test.c:538:test_acpi_asl: assertion
+>>> failed: (all_tables_match)
+>>> not ok /aarch64/acpi/virt/tpm2-crb -
+>>> ERROR:../tests/qtest/bios-tables-test.c:538:test_acpi_asl: assertion
+>>> failed: (all_tables_match)
+>>> Bail out!
+>>> qemu-system-aarch64: tpm-emulator: Could not cleanly shutdown the TPM:
+>>> Resource temporarily unavailable
+>>> Unexpected error in qio_channel_socket_writev() at 
+>>> ../io/channel-socket.c:622:
+>>> /home/elmarco/src/qemu/buildall/tests/qtest/bios-tables-test: Unable
+>>> to write to socket: Bad file descriptor
+>>>
+>>
+>> Travis testing on s390x I see the following failures for this patchset 
+>> (search for 'ERROR'):
+>>
+>> https://app.travis-ci.com/github/stefanberger/qemu-tpm/builds/267230363
+>>
+>> Summary of Failures:
+>>
+>> 134/320 qemu:qtest+qtest-aarch64 / qtest-aarch64/tpm-crb-device-test 
+>> ERROR           0.70s   killed by signal 6 SIGABRT
+>>
+>> 219/320 qemu:qtest+qtest-x86_64 / qtest-x86_64/tpm-crb-test 
+>> ERROR           0.88s   killed by signal 6 SIGABRT
+>>
+>>
+>> Summary of Failures:
+>>
+>> 271/537 qemu:qtest+qtest-i386 / qtest-i386/tpm-crb-test 
+>> ERROR           0.59s   killed by signal 6 SIGABRT
+>>
+>>
+>> My guess is it's an endianess issue on big endian machines due to 
+>> reading from the ROM device where we lost the .endianess:
+>>
+>> +const MemoryRegionOps tpm_crb_memory_ops = {
+>> +    .read = tpm_crb_mmio_read,
+>> +    .write = tpm_crb_mmio_write,
+>> +    .endianness = DEVICE_LITTLE_ENDIAN,
+>> +    .valid = {
+>> +        .min_access_size = 1,
+>> +        .max_access_size = 4,
+>> +    },
+>> +};
+>>
+> 
+> I think we need a 2nd set of registers to support the endianess 
+> conversion. It's not exactly nice, though. Basically the saved_regs 
+> could be used for this directly, even though I did not do that but 
+> introduced n_regs: 
+> https://github.com/stefanberger/qemu-tpm/commit/90f6b21c0dd93dbb13d9e80a628f5b631fd07d91
+> 
+> This patch allows the tests on s390x to run farther but the execution of 
+> the command doesn't seem to work maybe due to command data that were 
+> also written in wrong endianess. I don't know. I would have to get 
+> access to a big endian / s390 machine to be able to fix it.
+> 
+> 
 
-You can help improve the quality of the QEMU 8.2 release by testing this
-release and reporting bugs using our GitLab issue tracker:
+The latest version now passes on Travis s390x: 
+https://app.travis-ci.com/github/stefanberger/qemu-tpm/builds/267245220
 
-  https://gitlab.com/qemu-project/qemu/-/milestones/10
-
-The release plan, as well a documented known issues for release
-candidates, are available at:
-
-  http://wiki.qemu.org/Planning/8.2
-
-Please add entries to the ChangeLog for the 8.2 release below:
-
-  http://wiki.qemu.org/ChangeLog/8.2
-
-Thank you to everyone involved!
 
