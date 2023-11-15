@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A927EBD97
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:18:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05DBF7EBDB4
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:20:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3A9M-0007jO-Qt; Wed, 15 Nov 2023 02:17:24 -0500
+	id 1r3A9R-0008VS-Oi; Wed, 15 Nov 2023 02:17:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1r3A9H-0007LH-Uu
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:17:20 -0500
+ id 1r3A9O-000898-Eu
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:17:26 -0500
 Received: from mgamail.intel.com ([192.55.52.115])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1r3A9G-0002JU-Bf
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:17:19 -0500
+ id 1r3A9M-0002JU-I7
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:17:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700032638; x=1731568638;
+ t=1700032644; x=1731568644;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=2DXsVL99TAo2oH2QjWpmYGGPXjhsdpW2NL2gA0U62WE=;
- b=Ey6AqUBodF+bP+EdsyPgNK88mJEswJbpyPwqwXmOa2haxI0P/t8bHmKt
- B5DWr5k4jeUw35v1LjzGQ9Xvo3oijodXTcTJkjrH5yQQF+Cn4Ym3Uz/MO
- MXxdQX2+cgviNZnlhD8bRp4J47KliXxidQY1J1HB4heS3X3D8fu5SPQY9
- 6beQNOHOMbaEflhs9y0QjH70O1DPUwSQyWXIVWaDekiJyXhQHFIWaNLGe
- H4ve9qkK+udKXB2FH/BySut0vwkdo5eXTk0WAmo7UZcutjA7w75jK9YN1
- a4rQ6rlKi9A9/PKf7gVXIPv/P7DXDhdn4RReDoLmdfiPDfsHSgAwpqxW9 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="390622414"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="390622414"
+ bh=2aIf+3aXWcIiqaCxid8ljc4M63IomUYn9s02lZO4wq4=;
+ b=eb9Xl/HsNlPYUA/7nlPrqk2ek/cZXIHRImJBY48b7KGFw/4vaKYyTuxY
+ AmPqwjqbIANVqEhv4MoBptt3LXdccAgo+QCxyTT0iRKa0svPZsXykYsgA
+ 5/w/tU5k6kMj4QPNSDQuKWUJ7LDBXWYmttnzvVvPZWDy6kePqLdjiRelw
+ zny8liDeJr/nPPdA23zvB8/hl5RkKmm6lUKnvmNPb+XPg5emG2LfCHy84
+ YWMHOkI7PqjHe895+M8wSQ+X39B0/Fif/4jzdDxhoj7U8TGpXi6vhFuR6
+ Z8mcNji6PqrwPqUtR63GEVMpLZEyppZrKbJ9xNsO9EmumnDtlKNjXhL9p w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="390622456"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="390622456"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2023 23:17:17 -0800
+ 14 Nov 2023 23:17:23 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="714797653"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="714797653"
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="714797714"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="714797714"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orsmga003.jf.intel.com with ESMTP; 14 Nov 2023 23:17:11 -0800
+ by orsmga003.jf.intel.com with ESMTP; 14 Nov 2023 23:17:17 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>,
@@ -58,13 +58,14 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v3 15/70] target/i386: Parse TDX vm type
-Date: Wed, 15 Nov 2023 02:14:24 -0500
-Message-Id: <20231115071519.2864957-16-xiaoyao.li@intel.com>
+Subject: [PATCH v3 16/70] target/i386: Introduce kvm_confidential_guest_init()
+Date: Wed, 15 Nov 2023 02:14:25 -0500
+Message-Id: <20231115071519.2864957-17-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231115071519.2864957-1-xiaoyao.li@intel.com>
 References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.55.52.115; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
@@ -91,51 +92,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TDX VM requires VM type KVM_X86_TDX_VM to be passed to
-kvm_ioctl(KVM_CREATE_VM).
-
-If tdx-guest object is specified to confidential-guest-support, like,
-
-  qemu -machine ...,confidential-guest-support=tdx0 \
-       -object tdx-guest,id=tdx0,...
-
-it parses VM type as KVM_X86_TDX_VM.
+Introduce a separate function kvm_confidential_guest_init(), which
+dispatches specific confidential guest initialization function by
+ms->cgs type.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/kvm/kvm.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ target/i386/kvm/kvm.c | 11 ++++++++++-
+ target/i386/sev.c     |  1 -
+ target/i386/sev.h     |  2 ++
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 2e47fda25f95..c4050cbf998e 100644
+index c4050cbf998e..dc69f4b7b196 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -32,6 +32,7 @@
- #include "sysemu/runstate.h"
- #include "kvm_i386.h"
- #include "sev.h"
-+#include "tdx.h"
- #include "xen-emu.h"
- #include "hyperv.h"
- #include "hyperv-proto.h"
-@@ -164,12 +165,17 @@ static int kvm_get_one_msr(X86CPU *cpu, int index, uint64_t *value);
- static const char* vm_type_name[] = {
-     [KVM_X86_DEFAULT_VM] = "default",
-     [KVM_X86_SW_PROTECTED_VM] = "sw-protected-vm",
-+    [KVM_X86_TDX_VM] = "tdx",
- };
+@@ -2542,6 +2542,15 @@ int kvm_arch_get_default_type(MachineState *ms)
+     return 0;
+ }
  
- int kvm_get_vm_type(MachineState *ms, const char *vm_type)
- {
-     int kvm_type = KVM_X86_DEFAULT_VM;
- 
-+    if (ms->cgs && object_dynamic_cast(OBJECT(ms->cgs), TYPE_TDX_GUEST)) {
-+        kvm_type = KVM_X86_TDX_VM;
++static int kvm_confidential_guest_init(MachineState *ms, Error **errp)
++{
++    if (object_dynamic_cast(OBJECT(ms->cgs), TYPE_SEV_GUEST)) {
++        return sev_kvm_init(ms->cgs, errp);
 +    }
 +
-     /*
-      * old KVM doesn't support KVM_CAP_VM_TYPES and KVM_X86_DEFAULT_VM
-      * is always supported
++    return 0;
++}
++
+ int kvm_arch_init(MachineState *ms, KVMState *s)
+ {
+     uint64_t identity_base = 0xfffbc000;
+@@ -2562,7 +2571,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+      * mechanisms are supported in future (e.g. TDX), they'll need
+      * their own initialization either here or elsewhere.
+      */
+-    ret = sev_kvm_init(ms->cgs, &local_err);
++    ret = kvm_confidential_guest_init(ms, &local_err);
+     if (ret < 0) {
+         error_report_err(local_err);
+         return ret;
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index 9a7124668258..0dd45956bb00 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -39,7 +39,6 @@
+ #include "hw/i386/pc.h"
+ #include "exec/address-spaces.h"
+ 
+-#define TYPE_SEV_GUEST "sev-guest"
+ OBJECT_DECLARE_SIMPLE_TYPE(SevGuestState, SEV_GUEST)
+ 
+ 
+diff --git a/target/i386/sev.h b/target/i386/sev.h
+index e7499c95b1e8..1fe25d096dc4 100644
+--- a/target/i386/sev.h
++++ b/target/i386/sev.h
+@@ -20,6 +20,8 @@
+ 
+ #include "exec/confidential-guest-support.h"
+ 
++#define TYPE_SEV_GUEST "sev-guest"
++
+ #define SEV_POLICY_NODBG        0x1
+ #define SEV_POLICY_NOKS         0x2
+ #define SEV_POLICY_ES           0x4
 -- 
 2.34.1
 
