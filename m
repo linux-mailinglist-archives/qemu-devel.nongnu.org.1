@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1017EBDA1
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:18:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7BB7EBD83
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:17:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3A94-0006Te-TD; Wed, 15 Nov 2023 02:17:08 -0500
+	id 1r3A93-0006R4-W8; Wed, 15 Nov 2023 02:17:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1r3A8W-0005t3-RG
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:16:33 -0500
+ id 1r3A8Z-00060o-Jz
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:16:40 -0500
 Received: from mgamail.intel.com ([192.55.52.115])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1r3A8T-0002Gw-Nh
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:16:32 -0500
+ id 1r3A8W-0002AL-2K
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:16:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700032589; x=1731568589;
+ t=1700032592; x=1731568592;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=5oFP29/6hPQTSjt7+TkWWvWCU+lwZOG63ox2Xe0ioV4=;
- b=T+8BCeG5/ph4MkAb2iBdM9JRWVcLk9UOS9W++lHzgxe+8UxNRSeN/Klv
- 2qC1WQBuwia8rGR1sD/p0KjD/XzLcwhLi4uO4Rihia2JPyAUA542UgGU8
- C4PHv6rriRbI/VsHaAj+ANKd1URKbXGT8bmUIAXLyNW6fkcahnvQoqqEd
- jnF+A0fK5eSRBr3hPXRM00rTN13fhE6nQi1k1ZBu2L1nLy0Y5taweRe6F
- bOfpSiA8FfXtsv+Bc/MuKH99cmSAwN07pma68XUBbE87CYI2/OWe9RVpv
- 2w3qnyrMIPnFnj39YVC3mMdERdKOrDRug9upSixCXDd0Cx3j83QI/Lp3C Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="390622164"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="390622164"
+ bh=I+Zt4PPlUf4SBKG5BHDSP7VkS1LcDTzb79bbPWPOk4I=;
+ b=cdm6QWEmSA8eMsfLMD1xGXCeVJlqjLjaRjpHuRhf9+4cJsP0qjeYBs9O
+ KdtNaeVYGIEQfHXKb/drK3IjVbZb2eL8XjqobkbjqZCX40JCZ6+DZeB78
+ PTjFAsEb9HP1fVe3iLAhhLSn2fctaiuydS5EqKYK6RDXlGJ9Y5Dce1vRo
+ OgGUg1u8DVAtz/VXBIY1gIotLTVoxP5w0zlb+iHw/5GdbNfmv88BTsXsb
+ Xv3TJ0SAoq/tgBwGXUywn9Aro/XA9bgXDwzmrdJ3Wmph+DXAi+F5rOl6x
+ 3zaUz/2eOgVx1gsOBb5kVu3BvgDG4cY4TWWBpTYRDhpqiBYNQalmgsv5I Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="390622194"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="390622194"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2023 23:16:16 -0800
+ 14 Nov 2023 23:16:24 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="714796990"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="714796990"
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="714797046"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="714797046"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orsmga003.jf.intel.com with ESMTP; 14 Nov 2023 23:16:08 -0800
+ by orsmga003.jf.intel.com with ESMTP; 14 Nov 2023 23:16:16 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>,
@@ -58,9 +58,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v3 06/70] kvm: Introduce support for memory_attributes
-Date: Wed, 15 Nov 2023 02:14:15 -0500
-Message-Id: <20231115071519.2864957-7-xiaoyao.li@intel.com>
+Subject: [PATCH v3 07/70] physmem: Relax the alignment check of host_startaddr
+ in ram_block_discard_range()
+Date: Wed, 15 Nov 2023 02:14:16 -0500
+Message-Id: <20231115071519.2864957-8-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231115071519.2864957-1-xiaoyao.li@intel.com>
 References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
@@ -91,98 +92,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce the helper functions to set the attributes of a range of
-memory to private or shared.
+Commit d3a5038c461 ("exec: ram_block_discard_range") introduced
+ram_block_discard_range() which grabs some code from
+ram_discard_range(). However, during code movement, it changed alignment
+check of host_startaddr from qemu_host_page_size to rb->page_size.
 
-This is necessary to notify KVM the private/shared attribute of each gpa
-range. KVM needs the information to decide the GPA needs to be mapped at
-hva-based shared memory or guest_memfd based private memory.
+When ramblock is back'ed by hugepage, it requires the startaddr to be
+huge page size aligned, which is a overkill. e.g., TDX's private-shared
+page conversion is done at 4KB granularity. Shared page is discarded
+when it gets converts to private and when shared page back'ed by
+hugepage it is going to fail on this check.
+
+So change to alignment check back to qemu_host_page_size.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- accel/kvm/kvm-all.c  | 42 ++++++++++++++++++++++++++++++++++++++++++
- include/sysemu/kvm.h |  3 +++
- 2 files changed, 45 insertions(+)
+Changes in v3:
+ - Newly added in v3;
+---
+ system/physmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 69afeb47c9c0..76e2404d54d2 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -102,6 +102,7 @@ bool kvm_has_guest_debug;
- static int kvm_sstep_flags;
- static bool kvm_immediate_exit;
- static bool kvm_guest_memfd_supported;
-+static uint64_t kvm_supported_memory_attributes;
- static hwaddr kvm_max_slot_size = ~0;
+diff --git a/system/physmem.c b/system/physmem.c
+index c56b17e44df6..8a4e42c7cf60 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -3532,7 +3532,7 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
  
- static const KVMCapabilityInfo kvm_required_capabilites[] = {
-@@ -1305,6 +1306,44 @@ void kvm_set_max_memslot_size(hwaddr max_slot_size)
-     kvm_max_slot_size = max_slot_size;
- }
+     uint8_t *host_startaddr = rb->host + start;
  
-+static int kvm_set_memory_attributes(hwaddr start, hwaddr size, uint64_t attr)
-+{
-+    struct kvm_memory_attributes attrs;
-+    int r;
-+
-+    attrs.attributes = attr;
-+    attrs.address = start;
-+    attrs.size = size;
-+    attrs.flags = 0;
-+
-+    r = kvm_vm_ioctl(kvm_state, KVM_SET_MEMORY_ATTRIBUTES, &attrs);
-+    if (r) {
-+        warn_report("%s: failed to set memory (0x%lx+%#zx) with attr 0x%lx error '%s'",
-+                     __func__, start, size, attr, strerror(errno));
-+    }
-+    return r;
-+}
-+
-+int kvm_set_memory_attributes_private(hwaddr start, hwaddr size)
-+{
-+    if (!(kvm_supported_memory_attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-+        error_report("KVM doesn't support PRIVATE memory attribute\n");
-+        return -EINVAL;
-+    }
-+
-+    return kvm_set_memory_attributes(start, size, KVM_MEMORY_ATTRIBUTE_PRIVATE);
-+}
-+
-+int kvm_set_memory_attributes_shared(hwaddr start, hwaddr size)
-+{
-+    if (!(kvm_supported_memory_attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-+        error_report("KVM doesn't support PRIVATE memory attribute\n");
-+        return -EINVAL;
-+    }
-+
-+    return kvm_set_memory_attributes(start, size, 0);
-+}
-+
- /* Called with KVMMemoryListener.slots_lock held */
- static void kvm_set_phys_mem(KVMMemoryListener *kml,
-                              MemoryRegionSection *section, bool add)
-@@ -2440,6 +2479,9 @@ static int kvm_init(MachineState *ms)
- 
-     kvm_guest_memfd_supported = kvm_check_extension(s, KVM_CAP_GUEST_MEMFD);
- 
-+    ret = kvm_check_extension(s, KVM_CAP_MEMORY_ATTRIBUTES);
-+    kvm_supported_memory_attributes = ret > 0 ? ret : 0;
-+
-     if (object_property_find(OBJECT(current_machine), "kvm-type")) {
-         g_autofree char *kvm_type = object_property_get_str(OBJECT(current_machine),
-                                                             "kvm-type",
-diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index fedc28c7d17f..0e88958190a4 100644
---- a/include/sysemu/kvm.h
-+++ b/include/sysemu/kvm.h
-@@ -540,4 +540,7 @@ bool kvm_dirty_ring_enabled(void);
- uint32_t kvm_dirty_ring_size(void);
- 
- int kvm_create_guest_memfd(uint64_t size, uint64_t flags, Error **errp);
-+
-+int kvm_set_memory_attributes_private(hwaddr start, hwaddr size);
-+int kvm_set_memory_attributes_shared(hwaddr start, hwaddr size);
- #endif
+-    if (!QEMU_PTR_IS_ALIGNED(host_startaddr, rb->page_size)) {
++    if (!QEMU_PTR_IS_ALIGNED(host_startaddr, qemu_host_page_size)) {
+         error_report("ram_block_discard_range: Unaligned start address: %p",
+                      host_startaddr);
+         goto err;
 -- 
 2.34.1
 
