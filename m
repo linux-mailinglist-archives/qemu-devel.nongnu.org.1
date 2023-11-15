@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680197EBA8F
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:23:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F217EBA91
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 01:28:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r33fs-0005MV-Ng; Tue, 14 Nov 2023 19:22:32 -0500
+	id 1r33jZ-00079V-Ql; Tue, 14 Nov 2023 19:26:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r33fp-0005MF-WF
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:22:30 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1r33jY-000797-1z
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:26:20 -0500
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r33fo-0003SQ-Aa
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:22:29 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1cc921a4632so56675905ad.1
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 16:22:27 -0800 (PST)
+ id 1r33jV-0004nI-UG
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 19:26:19 -0500
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-5c184b3bbc4so2387832a12.1
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 16:26:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700007746; x=1700612546; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700007976; x=1700612776; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=1jKU3Cl/YGpR2OL8VokXMtgrBtzPhbEfYBG2YcAc7QI=;
- b=Ml4C3nzqVbnMuC/nwbXpoQrXGEdynRbiSq33Y39k67QTystZCuphZPDOFQNPb8yN8c
- xkonbT3hxDGl5hBZzSvOLamNAqXkQ+10rHUQhpEzGtg0L6i/z8ZMd/CDKpYYrzbgIyX1
- sdp2G4vNPO1eT7uvGAY9NoyLUYHCyxaettoX7TDS0jVRQMaUOEPatcHHAHvB/RUKxzvM
- O5UmiK9AFf+UV1Vd7bNY19xjERgVjf1sFejvz/14p5/cVqoM4Z5hnZGlz9U4Qrls/HMJ
- 5IAFjtz8sH+GDIcLc4EbzUDzwlewUrehg0rsOivcDc1v1ACepLMA3R3EVP1uvmmmDh6l
- RIdw==
+ bh=Vh0f+DLVSskNc/Ix2R5WGG/tkbWUsXl0JR36nuVWWBQ=;
+ b=O1tJzsLJvqL4DCFR5RGSOtZBh/wrOVZnTBknzqI7bAyMrukN20SHUCM5JbI3zVk5Fu
+ hYGRLsXY6pWM6XJuX044P6bklAAACgQ1h30hM5sAG17LR3IWYK/EVtfmeuQb/nyPVwPR
+ 3asN15nzVkfLVB4RjFowhPl1snQ3t8XNvW4aRTuw9vhxHg2V8CXNXP6W2YmJnPdP6+xW
+ aady1DSSswEOoJMSi8/ZibUKBskQDzh1T/K0YkPEophpOS4IOXycoJEmwNi2kfM19VxB
+ kSIzY1EvNTwzzkpNcUrbIXr7DYEkW9hLemRliNu2AfE5LNJ4Qwh5gDmKu8iBGQMRDLaG
+ j48w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700007746; x=1700612546;
+ d=1e100.net; s=20230601; t=1700007976; x=1700612776;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1jKU3Cl/YGpR2OL8VokXMtgrBtzPhbEfYBG2YcAc7QI=;
- b=vZvOGbpKe7LoX6HMqtKplrxIfEOJBTGfZE8Tm47Dyz7Fd9CPW/VN+oxn+8v9+yoGXR
- 6m2eft6VtdLGwv4HTZDjnCVgfL7BLawIcV7Oy++ae3HcLCzB89iwtyNXZ7CWY3oZ/gR4
- 69qsClVtWKS+d2mVw315ebsfQEdov1ll3tlmLVIdYDZvceRylwh27XTk0yz8cPO+VgdF
- rBImy5+f7XIK0EepJbAp9pLTIvjYTPiLTw6GoEMFK0GPDy3daqXN2awxTTh0z1Yl7Dnj
- nVyc8Y7Ao5YI9f5dWomPjN46T1EG+IFJEhStZA6tMjgENdi9tV5T6kYGqol7F+rVvwLv
- nUzQ==
-X-Gm-Message-State: AOJu0Ywqc7TYHd4cz7+tecirhQ/BfitZGtelFx5IJhtL0c3xZ6G7rgj5
- NCKJERzYeTRWImaZP6h/YJzSjw==
-X-Google-Smtp-Source: AGHT+IHfcTNhWU1KUX4r/m5UrBBRxk0yFsx4p+geYL5HoLm0eGcBsaNhgjJIOskFOBt5ZZVKmgyzCg==
-X-Received: by 2002:a17:903:4288:b0:1cc:4559:ff with SMTP id
- ju8-20020a170903428800b001cc455900ffmr3483946plb.13.1700007746441; 
- Tue, 14 Nov 2023 16:22:26 -0800 (PST)
+ bh=Vh0f+DLVSskNc/Ix2R5WGG/tkbWUsXl0JR36nuVWWBQ=;
+ b=foR0Tf+w1iXf89WRbEaVf5Ic69llET6OZfpT1Kn82oGCPHEIDhH3uba9ixtcEw4K73
+ yJ4uFI/eDc42uh3CKpyDNcrd37tj/4TmDxx5sVdfxwQsC/uTL6oCNgbrZH4/0TSDa/jx
+ hw+Gql67R/Eg7alOf8ds7mhsz6hqsWB5SYXGvzxiE1ci/Co0QaMC0Oo4vGHmHAjYkPLn
+ U+Fr+v69WbIOg4Un82w9ciHOmJUEEbZbzjpQBIyG+3Pq1PesdFnnLL/qVNuy7QdXE2SY
+ xTq3UJSOxvZYq7XjedUcF+V6iLsTyRnx8mTUuG4rLhiLikCvXSJAVPQQ6x1LU6MgyF/6
+ 972g==
+X-Gm-Message-State: AOJu0Yy4d/ccySQuN2tyWSmUoMHGzWk/i7QO6Gs3Fgm2saZ0Rg8CoOkM
+ A6TtNimzCQxNJVcYCVw5Cwz8tUSyYEzBVO+mQ+g=
+X-Google-Smtp-Source: AGHT+IE6bI8yR4rpNExj5oaYra6990mZ0hcEy3uS43iWnCoCG/sDRVI8kmzuciTsQhfAH50vxYNA2A==
+X-Received: by 2002:a17:902:db0d:b0:1cc:4467:a563 with SMTP id
+ m13-20020a170902db0d00b001cc4467a563mr3737133plx.3.1700007976010; 
+ Tue, 14 Nov 2023 16:26:16 -0800 (PST)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- x16-20020a170902ec9000b001cc2bc10510sm6181997plg.128.2023.11.14.16.22.25
+ l18-20020a170903245200b001b9be3b94d3sm6273870pls.140.2023.11.14.16.26.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 16:22:26 -0800 (PST)
-Message-ID: <55804c4c-2274-4b21-a27c-186c0999c859@linaro.org>
-Date: Tue, 14 Nov 2023 16:22:24 -0800
+ Tue, 14 Nov 2023 16:26:15 -0800 (PST)
+Message-ID: <b81fb193-d5f4-4b08-bfd8-b28e3253ecf0@linaro.org>
+Date: Tue, 14 Nov 2023 16:26:14 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/31] target/alpha: Remove 'ev67' CPU class
+Subject: Re: [PATCH v5 02/31] target/hppa: Remove object_class_is_abstract()
 Content-Language: en-US
 To: Gavin Shan <gshan@redhat.com>
 Cc: qemu-devel@nongnu.org
 References: <20231114235628.534334-1-gshan@redhat.com>
- <20231114235628.534334-2-gshan@redhat.com>
+ <20231114235628.534334-3-gshan@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231114235628.534334-2-gshan@redhat.com>
+In-Reply-To: <20231114235628.534334-3-gshan@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,44 +95,31 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/14/23 15:55, Gavin Shan wrote:
-> 'ev67' CPU class will be returned to match everything, which makes
-> no sense as mentioned in the comments. Remove the logic to fall
-> back to 'ev67' CPU class to match everything.
+> No need to check if @oc is abstract because it has been covered
+> by cpu_class_by_name().
 > 
 > Signed-off-by: Gavin Shan <gshan@redhat.com>
 > ---
->   target/alpha/cpu.c | 7 ++-----
->   1 file changed, 2 insertions(+), 5 deletions(-)
+>   target/hppa/cpu.c | 1 -
+>   1 file changed, 1 deletion(-)
 
-The subject is wrong -- ev67 cpu class is still present.
-Better as
-
-   target/alpha: Remove fallback to ev67 cpu class
-
-with that,
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
 
 > 
-> diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
-> index 39cf841b3e..91fe8ae095 100644
-> --- a/target/alpha/cpu.c
-> +++ b/target/alpha/cpu.c
-> @@ -141,11 +141,8 @@ static ObjectClass *alpha_cpu_class_by_name(const char *cpu_model)
->       typename = g_strdup_printf(ALPHA_CPU_TYPE_NAME("%s"), cpu_model);
->       oc = object_class_by_name(typename);
->       g_free(typename);
-> -
-> -    /* TODO: remove match everything nonsense */
-> -    if (!oc || object_class_is_abstract(oc)) {
-> -        /* Default to ev67; no reason not to emulate insns by default. */
-> -        oc = object_class_by_name(ALPHA_CPU_TYPE_NAME("ev67"));
-> +    if (!oc || !object_class_dynamic_cast(oc, TYPE_ALPHA_CPU)) {
-> +        return NULL;
->       }
+> diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
+> index 04de1689d7..fc4d2abad7 100644
+> --- a/target/hppa/cpu.c
+> +++ b/target/hppa/cpu.c
+> @@ -163,7 +163,6 @@ static ObjectClass *hppa_cpu_class_by_name(const char *cpu_model)
+>       ObjectClass *oc = object_class_by_name(typename);
 >   
->       return oc;
+>       if (oc &&
+> -        !object_class_is_abstract(oc) &&
+>           object_class_dynamic_cast(oc, TYPE_HPPA_CPU)) {
+>           return oc;
+>       }
 
 
