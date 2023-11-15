@@ -2,80 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C5C7EBE07
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:25:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3684B7EBE1C
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:29:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3AGC-0002Ps-TF; Wed, 15 Nov 2023 02:24:28 -0500
+	id 1r3AKh-0004uj-VI; Wed, 15 Nov 2023 02:29:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1r3AGA-0002LO-Na
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:24:26 -0500
-Received: from mgamail.intel.com ([192.55.52.115])
+ (Exim 4.90_1) (envelope-from <SRS0=a0ac=G4=kaod.org=clg@ozlabs.org>)
+ id 1r3AKg-0004uE-5Z; Wed, 15 Nov 2023 02:29:06 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1r3AG8-0007Df-60
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:24:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700033064; x=1731569064;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=klfzRXQXY4gU48ZNC2oRdXZ/A2KblsfGhFWWh4dKX9U=;
- b=lbxuZjPwivOwAXFQyQ3k3QfByYwQjOhmLrKsJxwkqaXm0fBLFAqmKpTq
- BAd1wwjXmHwcShw/kxfCA+1QuLlbINi3KYqL2+LBq3FWaVFXhaI1qR1dV
- 1LXOodGrR0aP8hE2dEe2Qs4XX5yh87aynbLQoUrrH/rJSyHX6V/z3LhXs
- OHIMhi2uQthdXnplcFC+UWjzjMh0yPwLqLyi1+Ch1HNKQTj7U36m+cUsa
- 9OwmS0A1DiGvmF7ngZDADrxfai+NFu3EDdwMZg9WHWLf/fOxe6eFJYcw/
- EdINP16dQ6jTuTgrJFQyqoBTueSiPJ0cQOGBTQ/d3SbyuZ89Bu1snNxBP Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="390623755"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="390623755"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2023 23:24:23 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="714800609"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="714800609"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orsmga003.jf.intel.com with ESMTP; 14 Nov 2023 23:24:16 -0800
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
- Michael Roth <michael.roth@amd.com>,
- Sean Christopherson <seanjc@google.com>,
- Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
- Isaku Yamahata <isaku.yamahata@gmail.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v3 70/70] docs: Add TDX documentation
-Date: Wed, 15 Nov 2023 02:15:19 -0500
-Message-Id: <20231115071519.2864957-71-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231115071519.2864957-1-xiaoyao.li@intel.com>
-References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <SRS0=a0ac=G4=kaod.org=clg@ozlabs.org>)
+ id 1r3AKd-00010m-HI; Wed, 15 Nov 2023 02:29:05 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SVZXk1l5Gz4xVj;
+ Wed, 15 Nov 2023 18:28:54 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SVZXh4DmVz4xVd;
+ Wed, 15 Nov 2023 18:28:52 +1100 (AEDT)
+Message-ID: <54fad54f-a52e-41c6-90ba-7bc0b637cd59@kaod.org>
+Date: Wed, 15 Nov 2023 08:28:46 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.115; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/8] ppc/pnv: Add pca9552 to powernv10 for PCIe hotplug
+ power control
+Content-Language: en-US
+To: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
+References: <20231114195659.1219821-1-milesg@linux.vnet.ibm.com>
+ <20231114195659.1219821-2-milesg@linux.vnet.ibm.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20231114195659.1219821-2-milesg@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=a0ac=G4=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,169 +66,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add docs/system/i386/tdx.rst for TDX support, and add tdx in
-confidential-guest-support.rst
+On 11/14/23 20:56, Glenn Miles wrote:
+> The Power Hypervisor code expects to see a pca9552 device connected
+> to the 3rd PNV I2C engine on port 1 at I2C address 0x63 (or left-
+> justified address of 0xC6).  This is used by hypervisor code to
+> control PCIe slot power during hotplug events.
+> 
+> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+> ---
+> Based-on: <20231024181144.4045056-3-milesg@linux.vnet.ibm.com>
+> [PATCH v3 2/2] misc/pca9552: Let external devices set pca9552 inputs
+> 
+> No changes from v2
+> 
+>   hw/ppc/Kconfig | 1 +
+>   hw/ppc/pnv.c   | 7 +++++++
+>   2 files changed, 8 insertions(+)
+> 
+> diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
+> index 56f0475a8e..f77ca773cf 100644
+> --- a/hw/ppc/Kconfig
+> +++ b/hw/ppc/Kconfig
+> @@ -32,6 +32,7 @@ config POWERNV
+>       select XIVE
+>       select FDT_PPC
+>       select PCI_POWERNV
+> +    select PCA9552
+>   
+>   config PPC405
+>       bool
+> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+> index 9c29727337..7afaf1008f 100644
+> --- a/hw/ppc/pnv.c
+> +++ b/hw/ppc/pnv.c
+> @@ -1877,6 +1877,13 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
+>                                 qdev_get_gpio_in(DEVICE(&chip10->psi),
+>                                                  PSIHB9_IRQ_SBE_I2C));
+>       }
+> +
+> +    /*
+> +     * Add a PCA9552 I2C device for PCIe hotplug control
+> +     * to engine 2, bus 1, address 0x63
+> +     */
+> +    i2c_slave_create_simple(chip10->i2c[2].busses[1], "pca9552", 0x63);
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
----
-Changes since v1:
- - Add prerequisite of private gmem;
- - update example command to launch TD;
+You didn't answer my question in v2. Is this a P10 chip device or a
+board/machine device ?
 
-Changes since RFC v4:
- - add the restriction that kernel-irqchip must be split
----
- docs/system/confidential-guest-support.rst |   1 +
- docs/system/i386/tdx.rst                   | 113 +++++++++++++++++++++
- docs/system/target-i386.rst                |   1 +
- 3 files changed, 115 insertions(+)
- create mode 100644 docs/system/i386/tdx.rst
+Thanks,
 
-diff --git a/docs/system/confidential-guest-support.rst b/docs/system/confidential-guest-support.rst
-index 0c490dbda2b7..66129fbab64c 100644
---- a/docs/system/confidential-guest-support.rst
-+++ b/docs/system/confidential-guest-support.rst
-@@ -38,6 +38,7 @@ Supported mechanisms
- Currently supported confidential guest mechanisms are:
- 
- * AMD Secure Encrypted Virtualization (SEV) (see :doc:`i386/amd-memory-encryption`)
-+* Intel Trust Domain Extension (TDX) (see :doc:`i386/tdx`)
- * POWER Protected Execution Facility (PEF) (see :ref:`power-papr-protected-execution-facility-pef`)
- * s390x Protected Virtualization (PV) (see :doc:`s390x/protvirt`)
- 
-diff --git a/docs/system/i386/tdx.rst b/docs/system/i386/tdx.rst
-new file mode 100644
-index 000000000000..1872e4f5a8be
---- /dev/null
-+++ b/docs/system/i386/tdx.rst
-@@ -0,0 +1,113 @@
-+Intel Trusted Domain eXtension (TDX)
-+====================================
-+
-+Intel Trusted Domain eXtensions (TDX) refers to an Intel technology that extends
-+Virtual Machine Extensions (VMX) and Multi-Key Total Memory Encryption (MKTME)
-+with a new kind of virtual machine guest called a Trust Domain (TD). A TD runs
-+in a CPU mode that is designed to protect the confidentiality of its memory
-+contents and its CPU state from any other software, including the hosting
-+Virtual Machine Monitor (VMM), unless explicitly shared by the TD itself.
-+
-+Prerequisites
-+-------------
-+
-+To run TD, the physical machine needs to have TDX module loaded and initialized
-+while KVM hypervisor has TDX support and has TDX enabled. If those requirements
-+are met, the ``KVM_CAP_VM_TYPES`` will report the support of ``KVM_X86_TDX_VM``.
-+
-+Trust Domain Virtual Firmware (TDVF)
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Trust Domain Virtual Firmware (TDVF) is required to provide TD services to boot
-+TD Guest OS. TDVF needs to be copied to guest private memory and measured before
-+a TD boots.
-+
-+The VM scope ``MEMORY_ENCRYPT_OP`` ioctl provides command ``KVM_TDX_INIT_MEM_REGION``
-+to copy the TDVF image to TD's private memory space.
-+
-+Since TDX doesn't support readonly memslot, TDVF cannot be mapped as pflash
-+device and it actually works as RAM. "-bios" option is chosen to load TDVF.
-+
-+OVMF is the opensource firmware that implements the TDVF support. Thus the
-+command line to specify and load TDVF is ``-bios OVMF.fd``
-+
-+KVM private gmem
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+TD's memory (RAM) needs to be able to be transformed between private and shared.
-+And its BIOS (OVMF/TDVF) needs to be mapped as private. Thus QEMU needs to
-+allocate private gmem for them via KVM's IOCTL (KVM_CREATE_GUEST_MEMFD), which
-+requires KVM is newer enough that reports KVM_CAP_GUEST_MEMFD.
-+
-+Feature Control
-+---------------
-+
-+Unlike non-TDX VM, the CPU features (enumerated by CPU or MSR) of a TD is not
-+under full control of VMM. VMM can only configure part of features of a TD on
-+``KVM_TDX_INIT_VM`` command of VM scope ``MEMORY_ENCRYPT_OP`` ioctl.
-+
-+The configurable features have three types:
-+
-+- Attributes:
-+  - PKS (bit 30) controls whether Supervisor Protection Keys is exposed to TD,
-+  which determines related CPUID bit and CR4 bit;
-+  - PERFMON (bit 63) controls whether PMU is exposed to TD.
-+
-+- XSAVE related features (XFAM):
-+  XFAM is a 64b mask, which has the same format as XCR0 or IA32_XSS MSR. It
-+  determines the set of extended features available for use by the guest TD.
-+
-+- CPUID features:
-+  Only some bits of some CPUID leaves are directly configurable by VMM.
-+
-+What features can be configured is reported via TDX capabilities.
-+
-+TDX capabilities
-+~~~~~~~~~~~~~~~~
-+
-+The VM scope ``MEMORY_ENCRYPT_OP`` ioctl provides command ``KVM_TDX_CAPABILITIES``
-+to get the TDX capabilities from KVM. It returns a data structure of
-+``struct kvm_tdx_capabilites``, which tells the supported configuration of
-+attributes, XFAM and CPUIDs.
-+
-+Launching a TD (TDX VM)
-+-----------------------
-+
-+To launch a TDX guest, below are new added and required:
-+
-+.. parsed-literal::
-+
-+    |qemu_system_x86| \\
-+        -object tdx-guest,id=tdx0 \\
-+        -machine ...,kernel-irqchip=split,confidential-guest-support=tdx0 \\
-+        -bios OVMF.fd \\
-+
-+Debugging
-+---------
-+
-+Bit 0 of TD attributes, is DEBUG bit, which decides if the TD runs in off-TD
-+debug mode. When in off-TD debug mode, TD's VCPU state and private memory are
-+accessible via given SEAMCALLs. This requires KVM to expose APIs to invoke those
-+SEAMCALLs and resonponding QEMU change.
-+
-+It's targeted as future work.
-+
-+restrictions
-+------------
-+
-+ - kernel-irqchip must be split;
-+
-+ - No readonly support for private memory;
-+
-+ - No SMM support: SMM support requires manipulating the guset register states
-+   which is not allowed;
-+
-+Live Migration
-+--------------
-+
-+TODO
-+
-+References
-+----------
-+
-+- `TDX Homepage <https://www.intel.com/content/www/us/en/developer/articles/technical/intel-trust-domain-extensions.html>`__
-diff --git a/docs/system/target-i386.rst b/docs/system/target-i386.rst
-index 1b8a1f248abb..4d58cdbc4e06 100644
---- a/docs/system/target-i386.rst
-+++ b/docs/system/target-i386.rst
-@@ -29,6 +29,7 @@ Architectural features
-    i386/kvm-pv
-    i386/sgx
-    i386/amd-memory-encryption
-+   i386/tdx
- 
- OS requirements
- ~~~~~~~~~~~~~~~
--- 
-2.34.1
+C.
+
+
+
+>   }
+>   
+>   static uint32_t pnv_chip_power10_xscom_pcba(PnvChip *chip, uint64_t addr)
 
 
