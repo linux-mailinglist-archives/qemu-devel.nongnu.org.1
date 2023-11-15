@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02437F1484
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 14:38:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D93E47F18B8
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 17:36:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r54T5-00052l-KH; Mon, 20 Nov 2023 08:37:39 -0500
+	id 1r57F6-00017S-1v; Mon, 20 Nov 2023 11:35:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1r50jU-0005KY-AB; Mon, 20 Nov 2023 04:38:20 -0500
+ id 1r57Et-00016K-RF; Mon, 20 Nov 2023 11:35:12 -0500
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1r50jR-0008CV-W5; Mon, 20 Nov 2023 04:38:20 -0500
+ id 1r57Eq-0006z0-JL; Mon, 20 Nov 2023 11:35:11 -0500
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 3B83E11EFCC;
- Mon, 20 Nov 2023 09:38:15 +0000 (UTC)
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 252C511F051;
+ Mon, 20 Nov 2023 16:35:05 +0000 (UTC)
 From: ~inesvarhol <inesvarhol@git.sr.ht>
 Date: Wed, 15 Nov 2023 08:59:28 +0100
-Subject: [PATCH RFC v2 1/2] hw/arm: Add minimal support for the STM32L4x5 SoC
+Subject: [PATCH RFC v3 1/2] hw/arm: Add minimal support for the STM32L4x5 SoC
 MIME-Version: 1.0
-Message-ID: <170047309499.17129.4986209009679789101-1@git.sr.ht>
+Message-ID: <170049810484.22920.612074576971878323-1@git.sr.ht>
 X-Mailer: git.sr.ht
-In-Reply-To: <170047309499.17129.4986209009679789101-0@git.sr.ht>
+In-Reply-To: <170049810484.22920.612074576971878323-0@git.sr.ht>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, alistair@alistair23.me, philmd@linaro.org,
  peter.maydell@linaro.org, ines.varhol@telecom-paris.fr,
@@ -42,7 +42,6 @@ X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 20 Nov 2023 08:37:36 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,14 +65,16 @@ The implementation is derived from the STM32F405 SoC.
 The implementation contains no peripherals, only memory regions are
 implemented.
 
+Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+
 Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 ---
  hw/arm/Kconfig                 |   5 +
  hw/arm/meson.build             |   1 +
- hw/arm/stm32l4x5_soc.c         | 276 +++++++++++++++++++++++++++++++++
- include/hw/arm/stm32l4x5_soc.h |  67 ++++++++
- 4 files changed, 349 insertions(+)
+ hw/arm/stm32l4x5_soc.c         | 275 +++++++++++++++++++++++++++++++++
+ include/hw/arm/stm32l4x5_soc.h |  63 ++++++++
+ 4 files changed, 344 insertions(+)
  create mode 100644 hw/arm/stm32l4x5_soc.c
  create mode 100644 include/hw/arm/stm32l4x5_soc.h
 
@@ -111,10 +112,10 @@ xlnx-zcu102.c'))
 k.c'))
 diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
 new file mode 100644
-index 0000000000..9a22b48d76
+index 0000000000..198d3f6d3e
 --- /dev/null
 +++ b/hw/arm/stm32l4x5_soc.c
-@@ -0,0 +1,276 @@
+@@ -0,0 +1,275 @@
 +/*
 + * STM32L4x5 SoC family
 + *
@@ -167,8 +168,6 @@ ROM,
 +static void stm32l4x5_soc_initfn(Object *obj)
 +{
 +    Stm32l4x5SocState *s =3D STM32L4X5_SOC(obj);
-+
-+    object_initialize_child(obj, "armv7m", &s->armv7m, TYPE_ARMV7M);
 +
 +    s->sysclk =3D qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
 +    s->refclk =3D qdev_init_clock_in(DEVICE(s), "refclk", NULL, NULL, 0);
@@ -238,6 +237,8 @@ e");
 +    memory_region_add_subregion(system_memory, SRAM2_BASE_ADDRESS, &s->sram2=
 );
 +
++    object_initialize_child(OBJECT(dev_soc), "armv7m", &s->armv7m, TYPE_ARMV=
+7M);
 +    armv7m =3D DEVICE(&s->armv7m);
 +    qdev_prop_set_uint32(armv7m, "num-irq", 96);
 +    qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4"));
@@ -359,21 +360,21 @@ e");
 +{
 +    Stm32l4x5SocClass *ssc =3D STM32L4X5_SOC_CLASS(oc);
 +
-+    ssc->flash_size =3D STM32L4x5xC_SOC_FLASH_SIZE;
++    ssc->flash_size =3D 256 * KiB;
 +}
 +
 +static void stm32l4x5xe_soc_class_init(ObjectClass *oc, void *data)
 +{
 +    Stm32l4x5SocClass *ssc =3D STM32L4X5_SOC_CLASS(oc);
 +
-+    ssc->flash_size =3D STM32L4x5xE_SOC_FLASH_SIZE;
++    ssc->flash_size =3D 512 * KiB;
 +}
 +
 +static void stm32l4x5xg_soc_class_init(ObjectClass *oc, void *data)
 +{
 +    Stm32l4x5SocClass *ssc =3D STM32L4X5_SOC_CLASS(oc);
 +
-+    ssc->flash_size =3D STM32L4x5xG_SOC_FLASH_SIZE;
++    ssc->flash_size =3D 1 * MiB;
 +}
 +
 +static const TypeInfo stm32l4x5_soc_types[] =3D {
@@ -403,10 +404,10 @@ e");
 +DEFINE_TYPES(stm32l4x5_soc_types)
 diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_soc.h
 new file mode 100644
-index 0000000000..00799c8929
+index 0000000000..ab61c4b8a1
 --- /dev/null
 +++ b/include/hw/arm/stm32l4x5_soc.h
-@@ -0,0 +1,67 @@
+@@ -0,0 +1,63 @@
 +/*
 + * STM32L4x5 SoC family
 + *
@@ -452,10 +453,6 @@ ROM,
 +#define TYPE_STM32L4X5XE_SOC "stm32l4x5xe-soc"
 +#define TYPE_STM32L4X5XG_SOC "stm32l4x5xg-soc"
 +OBJECT_DECLARE_TYPE(Stm32l4x5SocState, Stm32l4x5SocClass, STM32L4X5_SOC)
-+
-+#define STM32L4x5xC_SOC_FLASH_SIZE (256 * KiB)
-+#define STM32L4x5xE_SOC_FLASH_SIZE (512 * KiB)
-+#define STM32L4x5xG_SOC_FLASH_SIZE (1024 * KiB)
 +
 +struct Stm32l4x5SocState {
 +    SysBusDevice parent_obj;
