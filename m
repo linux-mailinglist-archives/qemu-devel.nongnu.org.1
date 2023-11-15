@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFCCF7EBDDF
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:22:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9EC57EBDE8
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:23:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3AE0-000689-0C; Wed, 15 Nov 2023 02:22:12 -0500
+	id 1r3ADz-0005xO-7F; Wed, 15 Nov 2023 02:22:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1r3ADh-0005ah-N6
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:22:01 -0500
+ id 1r3ADq-0005jI-9x
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:22:03 -0500
 Received: from mgamail.intel.com ([192.55.52.115])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1r3ADg-0005ES-3M
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:21:53 -0500
+ id 1r3ADo-0005ES-0l
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:22:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700032912; x=1731568912;
+ t=1700032919; x=1731568919;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=lkg6hwxIh05gDQhiNR9QnTfJy/LZE9wpuQdw/yJVsdI=;
- b=mkvMr9j7EvjmafsmTGBeah2SObpuyoQvVFwTB0SbDhCUurTZvRRY5WPe
- TjrkSb8ynMGF4dh47ZuCL/6EFIvRXTGgPIfsWZHPTXWNU5JQsBv6mlzHi
- P8n/lSOMDkdtjKEVjcmCjLwTB43QqlQIFE6nHCt05ifZ48DwEe4IU5WbB
- e1WFejLeOGLu8tN4SgjgDjEgEZ8D/AsDbpUxW9rz1mxlWH6TQO19ErtSa
- H6tX9p5qr68zr+W8QGLWqrXEQxg9BkxN/fCBrR54XkjGsCIjYn7tvjknZ
- W4sxx/kkXkzJpLj9btAVs7EkPkA3kl1yk5mm2U32nBP46IbmyfeCY8WZ6 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="390623327"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="390623327"
+ bh=5u+WKJc4+yttRr+qCCOD151Jg4QmLt+f0sR3Wiffs48=;
+ b=XD0OoJ4VAOTq5fT3flepPId5p/I+EZyjFpfLWwvEpQqxmPMWDNSyFm3r
+ E0W+t7jO6fLV284B0D7PG3wHxF9CUgG3KETzGa0suimDfcW798zT9lIis
+ w7k9NDZTdHVaG35bKJFuqU/oc2g4Xykdk721Zdp8kr4/ktanF/VPoI55M
+ a/o8D+sYRYARh5DXfEq2tXb41QuGEIuu8rKMHtooRKfd1pNl6cZ0YRL1e
+ 6/z/581zFecWoNfA/ifIhThUyOzoXxtqG4g6JlDszGT+1kBohmF+XkIpr
+ h4Er5yF5hvRkEvjyBpLrOYB9vUY5GZnf60TccWq8wp/AMSP/eyEQwtkFA g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="390623342"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="390623342"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2023 23:21:51 -0800
+ 14 Nov 2023 23:21:57 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="714800077"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="714800077"
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="714800116"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="714800116"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orsmga003.jf.intel.com with ESMTP; 14 Nov 2023 23:21:43 -0800
+ by orsmga003.jf.intel.com with ESMTP; 14 Nov 2023 23:21:51 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>,
@@ -58,9 +58,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v3 46/70] i386/tdx: Add TDVF memory via KVM_TDX_INIT_MEM_REGION
-Date: Wed, 15 Nov 2023 02:14:55 -0500
-Message-Id: <20231115071519.2864957-47-xiaoyao.li@intel.com>
+Subject: [PATCH v3 47/70] memory: Introduce
+ memory_region_init_ram_guest_memfd()
+Date: Wed, 15 Nov 2023 02:14:56 -0500
+Message-Id: <20231115071519.2864957-48-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231115071519.2864957-1-xiaoyao.li@intel.com>
 References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
@@ -91,64 +92,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+Introduce memory_region_init_ram_guest_memfd() to allocate private
+guset memfd on the MemoryRegion initialization. It's for the use case of
+TDVF, which must be private on TDX case.
 
-TDVF firmware (CODE and VARS) needs to be added/copied to TD's private
-memory via KVM_TDX_INIT_MEM_REGION, as well as TD HOB and TEMP memory.
-
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-
 ---
-Changes in v1:
-  - rename variable @metadata to @flags
----
- target/i386/kvm/tdx.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ include/exec/memory.h |  6 ++++++
+ system/memory.c       | 27 +++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 2e286087b232..6bb3249fa610 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -582,6 +582,7 @@ static void tdx_finalize_vm(Notifier *notifier, void *unused)
- {
-     TdxFirmware *tdvf = &tdx_guest->tdvf;
-     TdxFirmwareEntry *entry;
-+    int r;
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index c8b0385b19ad..ca23a1a6b336 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -1590,6 +1590,12 @@ void memory_region_init_ram(MemoryRegion *mr,
+                             uint64_t size,
+                             Error **errp);
  
-     tdx_init_ram_entries();
- 
-@@ -607,6 +608,29 @@ static void tdx_finalize_vm(Notifier *notifier, void *unused)
-           sizeof(TdxRamEntry), &tdx_ram_entry_compare);
- 
-     tdvf_hob_create(tdx_guest, tdx_get_hob_entry(tdx_guest));
++void memory_region_init_ram_guest_memfd(MemoryRegion *mr,
++                                        Object *owner,
++                                        const char *name,
++                                        uint64_t size,
++                                        Error **errp);
 +
-+    for_each_tdx_fw_entry(tdvf, entry) {
-+        struct kvm_tdx_init_mem_region mem_region = {
-+            .source_addr = (__u64)entry->mem_ptr,
-+            .gpa = entry->address,
-+            .nr_pages = entry->size / 4096,
-+        };
-+
-+        __u32 flags = entry->attributes & TDVF_SECTION_ATTRIBUTES_MR_EXTEND ?
-+                      KVM_TDX_MEASURE_MEMORY_REGION : 0;
-+
-+        r = tdx_vm_ioctl(KVM_TDX_INIT_MEM_REGION, flags, &mem_region);
-+        if (r < 0) {
-+             error_report("KVM_TDX_INIT_MEM_REGION failed %s", strerror(-r));
-+             exit(1);
-+        }
-+
-+        if (entry->type == TDVF_SECTION_TYPE_TD_HOB ||
-+            entry->type == TDVF_SECTION_TYPE_TEMP_MEM) {
-+            qemu_ram_munmap(-1, entry->mem_ptr, entry->size);
-+            entry->mem_ptr = NULL;
-+        }
-+    }
+ /**
+  * memory_region_init_rom: Initialize a ROM memory region.
+  *
+diff --git a/system/memory.c b/system/memory.c
+index b0c58232b6f7..166eb9fd6f7d 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -3632,6 +3632,33 @@ void memory_region_init_ram(MemoryRegion *mr,
+     vmstate_register_ram(mr, owner_dev);
  }
  
- static Notifier tdx_machine_done_notify = {
++void memory_region_init_ram_guest_memfd(MemoryRegion *mr,
++                                        Object *owner,
++                                        const char *name,
++                                        uint64_t size,
++                                        Error **errp)
++{
++    DeviceState *owner_dev;
++    Error *err = NULL;
++
++    memory_region_init_ram_flags_nomigrate(mr, owner, name, size,
++                                           RAM_GUEST_MEMFD, &err);
++    if (err) {
++        error_propagate(errp, err);
++        return;
++    }
++    memory_region_set_default_private(mr);
++
++    /* This will assert if owner is neither NULL nor a DeviceState.
++     * We only want the owner here for the purposes of defining a
++     * unique name for migration. TODO: Ideally we should implement
++     * a naming scheme for Objects which are not DeviceStates, in
++     * which case we can relax this restriction.
++     */
++    owner_dev = DEVICE(owner);
++    vmstate_register_ram(mr, owner_dev);
++}
++
+ void memory_region_init_rom(MemoryRegion *mr,
+                             Object *owner,
+                             const char *name,
 -- 
 2.34.1
 
