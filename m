@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847E47EBAC3
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 02:01:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F0A7EBAC4
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 02:02:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r34HN-0003Ie-RT; Tue, 14 Nov 2023 20:01:17 -0500
+	id 1r34IR-0004XC-B1; Tue, 14 Nov 2023 20:02:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r34HK-0003GC-IJ
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 20:01:14 -0500
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1r34IN-0004X4-VI
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 20:02:19 -0500
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r34HI-0005NO-Rw
- for qemu-devel@nongnu.org; Tue, 14 Nov 2023 20:01:14 -0500
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6c10f098a27so5024714b3a.2
- for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 17:01:12 -0800 (PST)
+ id 1r34IL-0005aO-IQ
+ for qemu-devel@nongnu.org; Tue, 14 Nov 2023 20:02:19 -0500
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-6bd32d1a040so6526059b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 14 Nov 2023 17:02:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700010069; x=1700614869; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700010136; x=1700614936; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=jnbc3C/4milNJmZ9IrjzWMed2qYeAUSFQhPEWjwTNhQ=;
- b=WmKyToPP1Dc12EpMofD/hguaMJFJMNrmYwIfXV4ttv6ZVYkdUr7kugDw617n/yOpFN
- DZ4DLO9WN1WxdhIkPekMc8xTEiM5CKzORaaVjVVafq1dPNJ64ISO2jq4GuQ+W1EuOGHX
- qPWKd2Sk0B8TxFxP7ezc7g8Po/prKU1VGz76cBzG4UtSPn+uId71uFkjoJuUPLzsLwM6
- sxDz3FbHF4dIvZ1ZfrDRIm8AAT/XsC7yy7vSFCN5k9loZOKnZiccx/H/4Eap2wlXZLUK
- naO45EvCdfi2u2/pkR1RSslBnq+dmjmhAr25mi74ltfuVvV+OQDJMLOp7ZbWDZyN4S73
- 2Fkw==
+ bh=K7SLFkFQRF7j3uv5Sfj9Whegr7DV8LXc6u/xFxK1L2c=;
+ b=ZAiS5mfhHlgquGa+d4WLuUW6y89+r5JOx2HTpJhPjnuLakMaXQPKCFc0TcJSmtuoxI
+ nFyto9igfrRNaaiQiGsnjhq0cAB/d3LULMHXndVpjUNla03UMz7ZgnbWc5JnoSRv8fGO
+ TOtLGYuSzQna0v9gsh6dI60cycERc4JNsjWaHTn4miawkl8Ea/7/wYCHOIqTTEbsDnbX
+ SAi9usqksEIdUjpi33L6fZ0uZASswGmP/XazjrjY4bMbivBk3ujrJXxf3t5c2JPRqDTv
+ RBn37v/Ch2IcG9/Tm0Eo3xHFtqplqU4/ik3+nLO7u/TWJb+d+R7jbpifKBE3yAvrdBFF
+ AlJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700010069; x=1700614869;
+ d=1e100.net; s=20230601; t=1700010136; x=1700614936;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jnbc3C/4milNJmZ9IrjzWMed2qYeAUSFQhPEWjwTNhQ=;
- b=HKX/wL3gWq407ue9Gp/Th1b+4iqCOt0dTKl9ChN0ASbl8W7FYYHL8jwpGUhpAvIp3F
- KehDDx4ia9CAvfoi5U2Y2cB5ixhtz2NXphoNaKxKRjK8KHmddTwF0zYb8eJ6OYZKt1nx
- 2gGi20ffeaVmKjI8WWFS3DtIXf3e3C+owMcrvq/+Vk39NGEaa+vBWdTQ8kSQXAbCZZgT
- vPJSiMUThM6umRDs0JX3xKB2xm2f//FLwJPqf2EqrNPKtl+pXK/jm4cdAgI5d9wbPqXI
- 6iB4ARp9L3QCf+UV47q2gV1d5rte0RhPCE0Jey4h+hjcuk19zemejPc/dRg/sfQmDPF8
- Fs3w==
-X-Gm-Message-State: AOJu0Yw208yJrlHZknolqdmKMl6eyL1LU1WKmnMxvntfW1wgwdi082ZO
- tRmJc6nYHwJHC+hGK6sUXrTlYQ==
-X-Google-Smtp-Source: AGHT+IHOKWdvCqIXu71hUvo4KKpn1MXhzcJCTFLhjEU7DX2zsfnAprwrXeqKh1AEEeNtotnvUcq4EQ==
-X-Received: by 2002:a05:6a20:440d:b0:186:487b:5443 with SMTP id
- ce13-20020a056a20440d00b00186487b5443mr9433500pzb.1.1700010069319; 
- Tue, 14 Nov 2023 17:01:09 -0800 (PST)
+ bh=K7SLFkFQRF7j3uv5Sfj9Whegr7DV8LXc6u/xFxK1L2c=;
+ b=nwI+3Dr9L65yMBkHNRlQoMiQ4Pjq2a2fF85YUUXwDdfOUQScMBcMitql1js5qP+XXY
+ 6DK454WYfK3VgXkppXmCk+I5eLu344BmFNwhT1sTqUqB0GXOM4YIMHNcfFjqrdOeZJJN
+ aFVx1pAS+jfL1Rdfuciy3yVC1oWIimSDmidoga5eZbKaQF34+SkJ3Cfkkc5VYCSjr14S
+ DstqkPfedcWq8wBAMr9V68QU4h14Lyl1OZqbeOlkyUkHiz2gx+U/ijUo6GdbfecvHEmW
+ aBEUew2fXQUWzCnjB6KSHgONU0MZ0otG5/YsKHTMyEV+wgaB6N7LyrFCkOWraYASp1/c
+ T0Gw==
+X-Gm-Message-State: AOJu0Yxld986K/czvIorvu+D87s9f1DUfTFRTffk15LbUEjnH8Nb8eOs
+ 5CftVW5KTBQT/MaVE3zNJGCIog==
+X-Google-Smtp-Source: AGHT+IFDX61NlRb1L7Q+eA0z63Xq2j1mvyl/amlukNMwZOuezk86Nre8fCoPes12f2/arHjnU0en2w==
+X-Received: by 2002:a05:6a20:9389:b0:187:6676:67f2 with SMTP id
+ x9-20020a056a20938900b00187667667f2mr230116pzh.62.1700010135869; 
+ Tue, 14 Nov 2023 17:02:15 -0800 (PST)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- d9-20020a056a00198900b006be0b0fc83asm1748118pfl.125.2023.11.14.17.01.08
+ d9-20020a056a00198900b006be0b0fc83asm1748118pfl.125.2023.11.14.17.02.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 17:01:08 -0800 (PST)
-Message-ID: <3d53d20e-64b0-477f-aa02-8880c3bfdffc@linaro.org>
-Date: Tue, 14 Nov 2023 17:01:07 -0800
+ Tue, 14 Nov 2023 17:02:15 -0800 (PST)
+Message-ID: <a3c176fb-0cda-4b59-bdfc-79234cdff78b@linaro.org>
+Date: Tue, 14 Nov 2023 17:02:14 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 14/31] target/m68k: Use generic cpu_list()
+Subject: Re: [PATCH v5 15/31] target/mips: Use generic cpu_list()
 Content-Language: en-US
 To: Gavin Shan <gshan@redhat.com>
 Cc: qemu-devel@nongnu.org
 References: <20231114235628.534334-1-gshan@redhat.com>
- <20231114235628.534334-15-gshan@redhat.com>
+ <20231114235628.534334-16-gshan@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231114235628.534334-15-gshan@redhat.com>
+In-Reply-To: <20231114235628.534334-16-gshan@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,38 +97,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 11/14/23 15:56, Gavin Shan wrote:
 > Before it's applied:
 > 
-> [gshan@gshan q]$ ./build/qemu-system-m68k -cpu ?
-> cfv4e
-> m5206
-> m5208
-> m68000
-> m68010
-> m68020
-> m68030
-> m68040
-> m68060
-> any
+> [gshan@gshan q]$ ./build/qemu-system-mips64 -cpu ?
+> MIPS '4Kc'
+> MIPS '4Km'
+> MIPS '4KEcR1'
+> MIPS 'XBurstR1'
+> MIPS '4KEmR1'
+> MIPS '4KEc'
+> MIPS '4KEm'
+> MIPS '24Kc'
+> MIPS '24KEc'
+> MIPS '24Kf'
+> MIPS '34Kf'
+> MIPS '74Kf'
+> MIPS 'XBurstR2'
+> MIPS 'M14K'
+> MIPS 'M14Kc'
+> MIPS 'P5600'
+> MIPS 'mips32r6-generic'
+> MIPS 'I7200'
+> MIPS 'R4000'
+> MIPS 'VR5432'
+> MIPS '5Kc'
+> MIPS '5Kf'
+> MIPS '20Kc'
+> MIPS 'MIPS64R2-generic'
+> MIPS '5KEc'
+> MIPS '5KEf'
+> MIPS 'I6400'
+> MIPS 'I6500'
+> MIPS 'Loongson-2E'
+> MIPS 'Loongson-2F'
+> MIPS 'Loongson-3A1000'
+> MIPS 'Loongson-3A4000'
+> MIPS 'mips64dspr2'
+> MIPS 'Octeon68XX'
 > 
 > After it's applied:
 > 
-> [gshan@gshan q]$ ./build/qemu-system-m68k -cpu ?
+> [gshan@gshan q]$ ./build/qemu-system-mips64 -cpu ?
 > Available CPUs:
->    any
->    cfv4e
->    m5206
->    m5208
->    m68000
->    m68010
->    m68020
->    m68030
->    m68040
->    m68060
+>    20Kc
+>    24Kc
+>    24KEc
+>    24Kf
+>    34Kf
+>    4Kc
+>    4KEc
+>    4KEcR1
+>    4KEm
+>    4KEmR1
+>    4Km
+>    5Kc
+>    5KEc
+>    5KEf
+>    5Kf
+>    74Kf
+>    I6400
+>    I6500
+>    I7200
+>    Loongson-2E
+>    Loongson-2F
+>    Loongson-3A1000
+>    Loongson-3A4000
+>    M14K
+>    M14Kc
+>    mips32r6-generic
+>    mips64dspr2
+>    MIPS64R2-generic
+>    Octeon68XX
+>    P5600
+>    R4000
+>    VR5432
+>    XBurstR1
+>    XBurstR2
 > 
 > Signed-off-by: Gavin Shan <gshan@redhat.com>
 > ---
->   target/m68k/cpu.h    |  4 ----
->   target/m68k/helper.c | 40 ----------------------------------------
->   2 files changed, 44 deletions(-)
+>   target/mips/cpu-defs.c.inc | 9 ---------
+>   target/mips/cpu.h          | 4 ----
+>   2 files changed, 13 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
