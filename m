@@ -2,98 +2,149 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 293C87EC9EF
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 18:54:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 570077ECA05
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 18:55:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3K5l-0004hS-0x; Wed, 15 Nov 2023 12:54:21 -0500
+	id 1r3K6b-0005MA-S9; Wed, 15 Nov 2023 12:55:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r3K5j-0004gN-M1
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:54:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r3K6W-0005KP-9d
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:55:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r3K5h-0001E0-GM
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:54:19 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r3K6U-0001VQ-NC
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 12:55:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700070856;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1700070904;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=I1g4kH5e0QOxYeN/gT9eon+toAKgT2qefjWRU4sgFFc=;
- b=WkshKcb+3kZ9qj4Ycnqisdfi7W/MQFkoRXyb27UTAy1F/4HgcgIfVVqSTDOmZEDmSaggtG
- ZmmgQR4EOQJ+FxYLKuvWx7ARqhGtEBH/qEcyz1NqUgAmI93vweh3QAsr9DB7LP2lbfeG0B
- Wl2Zb9gFNll9a8+8WAsW+RGUC/RlBSo=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=rrb6M19WrHuGT/usUBDh4mmFfmysT90cKOTMO6FosIw=;
+ b=FBdXTDQTvG5UqEn5MkrXtGXOFRHhulPQdDri5fyXwdk0/USPk9ebTkrbvkg+nSmCCxdyBW
+ 7fUJaWW8frKJzzvzbupVprolbNzHhfcscedYrLZZMrUAw22oQYLWPRbchEZfioQUCSa0er
+ Ryz6iuYrMJlImFDlpE/Bbst7619dAfE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-6AoG7GygNSaouhSX_W0s3w-1; Wed, 15 Nov 2023 12:54:14 -0500
-X-MC-Unique: 6AoG7GygNSaouhSX_W0s3w-1
-Received: by mail-oi1-f197.google.com with SMTP id
- 5614622812f47-3b3447c72c4so8219913b6e.1
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 09:54:14 -0800 (PST)
+ us-mta-660-bdoLJfpVMdm7mp-U3kAMqA-1; Wed, 15 Nov 2023 12:55:02 -0500
+X-MC-Unique: bdoLJfpVMdm7mp-U3kAMqA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-40a5290de84so23960955e9.0
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 09:55:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700070854; x=1700675654;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=I1g4kH5e0QOxYeN/gT9eon+toAKgT2qefjWRU4sgFFc=;
- b=nkO4DlDERPhIYQkiTu9W3Id/Cr0FLKsx/2HbmSqVY6wRxbffvkTd2bLGrFPz8luqp1
- QrkBlooCVZE5Lu51RbNSXYVPAgCKOmQKIw3zqyi8FldqFgqKwKVrthF36LDJKK+FxpCb
- Z/ZCUWhtMaejYO7LJiJeVqv5uyqATs5cyIVsFJukYmMFmKcPllsO3HljM3cXrCgxQVHd
- EqTD0MmjY9VF1YoB4+3mGd4c/fJ+mTq1o1wJGNiRj0UhXA1yTXG2rwe2CkAWvRzYBO0p
- KMO+p+Nw9roQpM6Pa8sAPqj2gAt+Ge2hBuZ4kPPa6cvkINlgcloz4fcoJpECRoHvzKo+
- eEbA==
-X-Gm-Message-State: AOJu0YwyQom3ZbAsd+2DqUMsvUKly7/dIO5skvpslACvecY6xOgKr9bL
- xsmpn9lmaf4t9WOx618s1LbbbZ9wPPnmm5VlZVvc9U9DB7cFfITJfWHPFN2leWGmcbM1mfbZ449
- hVeTrWFNPoclwJV0=
-X-Received: by 2002:a05:6808:2e43:b0:3b2:f275:18a8 with SMTP id
- gp3-20020a0568082e4300b003b2f27518a8mr21438411oib.22.1700070853973; 
- Wed, 15 Nov 2023 09:54:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IErjgRp/2Sk+iVt2nGkoE7yKrK4oGiJ4j5x1/YL6FyqqH3IKCPPY6r+81oDxasjfwuk9NyXbA==
-X-Received: by 2002:a05:6808:2e43:b0:3b2:f275:18a8 with SMTP id
- gp3-20020a0568082e4300b003b2f27518a8mr21438387oib.22.1700070853689; 
- Wed, 15 Nov 2023 09:54:13 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ d=1e100.net; s=20230601; t=1700070901; x=1700675701;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :references:cc:to:content-language:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rrb6M19WrHuGT/usUBDh4mmFfmysT90cKOTMO6FosIw=;
+ b=UJFF7rz9oyG3jphqGe0C5Di2K1ncKCdSvfhgpjG54dbbwm3GEcmNG8/WjaKpRi2lpg
+ ocvkULb45X4/fyo4rJ/M3zRvu7S6rIHL61FvLzKinxUYTv8DS7JOpJ23I7bb6MooKZBx
+ Ep8pZxExYoFhsrOCs/fQQ8JkFqnH9SbE3IPi0FN2yvJ0IqXu6smmKLdJ1c7I6kXmTJEq
+ gu9qjVofRZxbwItepniwuCbxIdVKRjfle00Z/7zdMnLpRn4m/6NdDhRRTzs+q7rz6qwo
+ oAEUCMPHjNDIbfbTELT79EyRkl30nWFAwKu2eAZt1yer8l3iDO2APStbXRjGCN793mOT
+ XL9A==
+X-Gm-Message-State: AOJu0Yyx2XFyhZExjTlQzvkCRRIWTR8VoOUY8+bd3Gng/VVMwePreTsM
+ HHpRJl2qqpjYnurTz4ODrZWbPpu7i24RGmwtjBSzMW2ZigR+N1vFyuE/Ne9dnk38ZG1pQrc7OMs
+ EoMhsfywOXFySnaw=
+X-Received: by 2002:a05:600c:3ca5:b0:408:492a:8f3 with SMTP id
+ bg37-20020a05600c3ca500b00408492a08f3mr11011703wmb.5.1700070901260; 
+ Wed, 15 Nov 2023 09:55:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IENgl857OXZFuAiB4vMOuOG+fz4OwkCGd44sN6ecy4wAdbOyw7R2x8xEe05Ol9ykmbRkq5QPA==
+X-Received: by 2002:a05:600c:3ca5:b0:408:492a:8f3 with SMTP id
+ bg37-20020a05600c3ca500b00408492a08f3mr11011689wmb.5.1700070900857; 
+ Wed, 15 Nov 2023 09:55:00 -0800 (PST)
+Received: from ?IPV6:2003:cb:c706:ed00:59ee:f048:4ed9:62a6?
+ (p200300cbc706ed0059eef0484ed962a6.dip0.t-ipconnect.de.
+ [2003:cb:c706:ed00:59ee:f048:4ed9:62a6])
  by smtp.gmail.com with ESMTPSA id
- bm38-20020a05620a19a600b0076d6a08ac98sm3623388qkb.76.2023.11.15.09.54.09
+ d15-20020a05600c34cf00b0040a4cc876e0sm407328wmq.40.2023.11.15.09.54.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 Nov 2023 09:54:12 -0800 (PST)
-Message-ID: <7a28f5f6-68a7-4920-b222-3a8a0f9bb771@redhat.com>
-Date: Wed, 15 Nov 2023 18:54:07 +0100
+ Wed, 15 Nov 2023 09:55:00 -0800 (PST)
+Message-ID: <ed599765-65b7-4253-8de2-61afba178e2d@redhat.com>
+Date: Wed, 15 Nov 2023 18:54:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 08/21] vfio/pci: Introduce a vfio pci hot reset
- interface
+Subject: Re: [PATCH v3 02/70] RAMBlock: Add support of KVM private guest memfd
 Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com
-References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
- <20231114100955.1961974-9-zhenzhong.duan@intel.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20231114100955.1961974-9-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -6
-X-Spam_score: -0.7
-X-Spam_bar: /
-X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Michael Roth <michael.roth@amd.com>, Sean Christopherson
+ <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
+ Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
+ <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>
+References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
+ <20231115071519.2864957-3-xiaoyao.li@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20231115071519.2864957-3-xiaoyao.li@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,459 +157,27 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 15.11.23 08:14, Xiaoyao Li wrote:
+> Add KVM guest_memfd support to RAMBlock so both normal hva based memory
+> and kvm guest memfd based private memory can be associated in one RAMBlock.
+> 
+> Introduce new flag RAM_GUEST_MEMFD. When it's set, it calls KVM ioctl to
+> create private guest_memfd during RAMBlock setup.
+> 
+> Note, RAM_GUEST_MEMFD is supposed to be set for memory backends of
+> confidential guests, such as TDX VM. How and when to set it for memory
+> backends will be implemented in the following patches.
 
+Can you elaborate (and add to the patch description if there is good 
+reason) why we need that flag and why we cannot simply rely on the VM 
+type instead to decide whether to allocate a guest_memfd or not?
 
-On 11/14/23 11:09, Zhenzhong Duan wrote:
-> Legacy vfio pci and iommufd cdev have different process to hot reset
-> vfio device, expand current code to abstract out pci_hot_reset callback
-> for legacy vfio, this same interface will also be used by iommufd
-> cdev vfio device.
->
-> Rename vfio_pci_hot_reset to vfio_legacy_pci_hot_reset and move it
-> into container.c.
->
-> vfio_pci_[pre/post]_reset and vfio_pci_host_match are exported so
-> they could be called in legacy and iommufd pci_hot_reset callback.
->
-> Suggested-by: Cédric Le Goater <clg@redhat.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+-- 
+Cheers,
 
-Eric
-> ---
-> v6: pci_hot_reset return -errno if fails
->
->  hw/vfio/pci.h                         |   3 +
->  include/hw/vfio/vfio-container-base.h |   3 +
->  hw/vfio/container.c                   | 170 ++++++++++++++++++++++++++
->  hw/vfio/pci.c                         | 168 +------------------------
->  4 files changed, 182 insertions(+), 162 deletions(-)
->
-> diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-> index 1006061afb..6e64a2654e 100644
-> --- a/hw/vfio/pci.h
-> +++ b/hw/vfio/pci.h
-> @@ -218,6 +218,9 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr);
->  
->  extern const PropertyInfo qdev_prop_nv_gpudirect_clique;
->  
-> +void vfio_pci_pre_reset(VFIOPCIDevice *vdev);
-> +void vfio_pci_post_reset(VFIOPCIDevice *vdev);
-> +bool vfio_pci_host_match(PCIHostDeviceAddress *addr, const char *name);
->  int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
->                                      struct vfio_pci_hot_reset_info **info_p);
->  
-> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-> index 4b6f017c6f..45bb19c767 100644
-> --- a/include/hw/vfio/vfio-container-base.h
-> +++ b/include/hw/vfio/vfio-container-base.h
-> @@ -106,6 +106,9 @@ struct VFIOIOMMUOps {
->      int (*set_dirty_page_tracking)(VFIOContainerBase *bcontainer, bool start);
->      int (*query_dirty_bitmap)(VFIOContainerBase *bcontainer, VFIOBitmap *vbmap,
->                                hwaddr iova, hwaddr size);
-> +    /* PCI specific */
-> +    int (*pci_hot_reset)(VFIODevice *vbasedev, bool single);
-> +
->      /* SPAPR specific */
->      int (*add_window)(VFIOContainerBase *bcontainer,
->                        MemoryRegionSection *section,
-> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-> index ed2d721b2b..1dbf9b9a17 100644
-> --- a/hw/vfio/container.c
-> +++ b/hw/vfio/container.c
-> @@ -33,6 +33,7 @@
->  #include "trace.h"
->  #include "qapi/error.h"
->  #include "migration/migration.h"
-> +#include "pci.h"
->  
->  VFIOGroupList vfio_group_list =
->      QLIST_HEAD_INITIALIZER(vfio_group_list);
-> @@ -922,6 +923,174 @@ static void vfio_legacy_detach_device(VFIODevice *vbasedev)
->      vfio_put_group(group);
->  }
->  
-> +static int vfio_legacy_pci_hot_reset(VFIODevice *vbasedev, bool single)
-> +{
-> +    VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
-> +    VFIOGroup *group;
-> +    struct vfio_pci_hot_reset_info *info = NULL;
-> +    struct vfio_pci_dependent_device *devices;
-> +    struct vfio_pci_hot_reset *reset;
-> +    int32_t *fds;
-> +    int ret, i, count;
-> +    bool multi = false;
-> +
-> +    trace_vfio_pci_hot_reset(vdev->vbasedev.name, single ? "one" : "multi");
-> +
-> +    if (!single) {
-> +        vfio_pci_pre_reset(vdev);
-> +    }
-> +    vdev->vbasedev.needs_reset = false;
-> +
-> +    ret = vfio_pci_get_pci_hot_reset_info(vdev, &info);
-> +
-> +    if (ret) {
-> +        goto out_single;
-> +    }
-> +    devices = &info->devices[0];
-> +
-> +    trace_vfio_pci_hot_reset_has_dep_devices(vdev->vbasedev.name);
-> +
-> +    /* Verify that we have all the groups required */
-> +    for (i = 0; i < info->count; i++) {
-> +        PCIHostDeviceAddress host;
-> +        VFIOPCIDevice *tmp;
-> +        VFIODevice *vbasedev_iter;
-> +
-> +        host.domain = devices[i].segment;
-> +        host.bus = devices[i].bus;
-> +        host.slot = PCI_SLOT(devices[i].devfn);
-> +        host.function = PCI_FUNC(devices[i].devfn);
-> +
-> +        trace_vfio_pci_hot_reset_dep_devices(host.domain,
-> +                host.bus, host.slot, host.function, devices[i].group_id);
-> +
-> +        if (vfio_pci_host_match(&host, vdev->vbasedev.name)) {
-> +            continue;
-> +        }
-> +
-> +        QLIST_FOREACH(group, &vfio_group_list, next) {
-> +            if (group->groupid == devices[i].group_id) {
-> +                break;
-> +            }
-> +        }
-> +
-> +        if (!group) {
-> +            if (!vdev->has_pm_reset) {
-> +                error_report("vfio: Cannot reset device %s, "
-> +                             "depends on group %d which is not owned.",
-> +                             vdev->vbasedev.name, devices[i].group_id);
-> +            }
-> +            ret = -EPERM;
-> +            goto out;
-> +        }
-> +
-> +        /* Prep dependent devices for reset and clear our marker. */
-> +        QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
-> +            if (!vbasedev_iter->dev->realized ||
-> +                vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
-> +                continue;
-> +            }
-> +            tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
-> +            if (vfio_pci_host_match(&host, tmp->vbasedev.name)) {
-> +                if (single) {
-> +                    ret = -EINVAL;
-> +                    goto out_single;
-> +                }
-> +                vfio_pci_pre_reset(tmp);
-> +                tmp->vbasedev.needs_reset = false;
-> +                multi = true;
-> +                break;
-> +            }
-> +        }
-> +    }
-> +
-> +    if (!single && !multi) {
-> +        ret = -EINVAL;
-> +        goto out_single;
-> +    }
-> +
-> +    /* Determine how many group fds need to be passed */
-> +    count = 0;
-> +    QLIST_FOREACH(group, &vfio_group_list, next) {
-> +        for (i = 0; i < info->count; i++) {
-> +            if (group->groupid == devices[i].group_id) {
-> +                count++;
-> +                break;
-> +            }
-> +        }
-> +    }
-> +
-> +    reset = g_malloc0(sizeof(*reset) + (count * sizeof(*fds)));
-> +    reset->argsz = sizeof(*reset) + (count * sizeof(*fds));
-> +    fds = &reset->group_fds[0];
-> +
-> +    /* Fill in group fds */
-> +    QLIST_FOREACH(group, &vfio_group_list, next) {
-> +        for (i = 0; i < info->count; i++) {
-> +            if (group->groupid == devices[i].group_id) {
-> +                fds[reset->count++] = group->fd;
-> +                break;
-> +            }
-> +        }
-> +    }
-> +
-> +    /* Bus reset! */
-> +    ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_PCI_HOT_RESET, reset);
-> +    g_free(reset);
-> +    if (ret) {
-> +        ret = -errno;
-> +    }
-> +
-> +    trace_vfio_pci_hot_reset_result(vdev->vbasedev.name,
-> +                                    ret ? strerror(errno) : "Success");
-> +
-> +out:
-> +    /* Re-enable INTx on affected devices */
-> +    for (i = 0; i < info->count; i++) {
-> +        PCIHostDeviceAddress host;
-> +        VFIOPCIDevice *tmp;
-> +        VFIODevice *vbasedev_iter;
-> +
-> +        host.domain = devices[i].segment;
-> +        host.bus = devices[i].bus;
-> +        host.slot = PCI_SLOT(devices[i].devfn);
-> +        host.function = PCI_FUNC(devices[i].devfn);
-> +
-> +        if (vfio_pci_host_match(&host, vdev->vbasedev.name)) {
-> +            continue;
-> +        }
-> +
-> +        QLIST_FOREACH(group, &vfio_group_list, next) {
-> +            if (group->groupid == devices[i].group_id) {
-> +                break;
-> +            }
-> +        }
-> +
-> +        if (!group) {
-> +            break;
-> +        }
-> +
-> +        QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
-> +            if (!vbasedev_iter->dev->realized ||
-> +                vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
-> +                continue;
-> +            }
-> +            tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
-> +            if (vfio_pci_host_match(&host, tmp->vbasedev.name)) {
-> +                vfio_pci_post_reset(tmp);
-> +                break;
-> +            }
-> +        }
-> +    }
-> +out_single:
-> +    if (!single) {
-> +        vfio_pci_post_reset(vdev);
-> +    }
-> +    g_free(info);
-> +
-> +    return ret;
-> +}
-> +
->  const VFIOIOMMUOps vfio_legacy_ops = {
->      .dma_map = vfio_legacy_dma_map,
->      .dma_unmap = vfio_legacy_dma_unmap,
-> @@ -929,4 +1098,5 @@ const VFIOIOMMUOps vfio_legacy_ops = {
->      .detach_device = vfio_legacy_detach_device,
->      .set_dirty_page_tracking = vfio_legacy_set_dirty_page_tracking,
->      .query_dirty_bitmap = vfio_legacy_query_dirty_bitmap,
-> +    .pci_hot_reset = vfio_legacy_pci_hot_reset,
->  };
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index eb55e8ae88..d00c3472c7 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -2374,7 +2374,7 @@ static int vfio_add_capabilities(VFIOPCIDevice *vdev, Error **errp)
->      return 0;
->  }
->  
-> -static void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
-> +void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
->  {
->      PCIDevice *pdev = &vdev->pdev;
->      uint16_t cmd;
-> @@ -2411,7 +2411,7 @@ static void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
->      vfio_pci_write_config(pdev, PCI_COMMAND, cmd, 2);
->  }
->  
-> -static void vfio_pci_post_reset(VFIOPCIDevice *vdev)
-> +void vfio_pci_post_reset(VFIOPCIDevice *vdev)
->  {
->      Error *err = NULL;
->      int nr;
-> @@ -2435,7 +2435,7 @@ static void vfio_pci_post_reset(VFIOPCIDevice *vdev)
->      vfio_quirk_reset(vdev);
->  }
->  
-> -static bool vfio_pci_host_match(PCIHostDeviceAddress *addr, const char *name)
-> +bool vfio_pci_host_match(PCIHostDeviceAddress *addr, const char *name)
->  {
->      char tmp[13];
->  
-> @@ -2485,166 +2485,10 @@ int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
->  
->  static int vfio_pci_hot_reset(VFIOPCIDevice *vdev, bool single)
->  {
-> -    VFIOGroup *group;
-> -    struct vfio_pci_hot_reset_info *info = NULL;
-> -    struct vfio_pci_dependent_device *devices;
-> -    struct vfio_pci_hot_reset *reset;
-> -    int32_t *fds;
-> -    int ret, i, count;
-> -    bool multi = false;
-> -
-> -    trace_vfio_pci_hot_reset(vdev->vbasedev.name, single ? "one" : "multi");
-> -
-> -    if (!single) {
-> -        vfio_pci_pre_reset(vdev);
-> -    }
-> -    vdev->vbasedev.needs_reset = false;
-> -
-> -    ret = vfio_pci_get_pci_hot_reset_info(vdev, &info);
-> -
-> -    if (ret) {
-> -        goto out_single;
-> -    }
-> -    devices = &info->devices[0];
-> -
-> -    trace_vfio_pci_hot_reset_has_dep_devices(vdev->vbasedev.name);
-> -
-> -    /* Verify that we have all the groups required */
-> -    for (i = 0; i < info->count; i++) {
-> -        PCIHostDeviceAddress host;
-> -        VFIOPCIDevice *tmp;
-> -        VFIODevice *vbasedev_iter;
-> -
-> -        host.domain = devices[i].segment;
-> -        host.bus = devices[i].bus;
-> -        host.slot = PCI_SLOT(devices[i].devfn);
-> -        host.function = PCI_FUNC(devices[i].devfn);
-> -
-> -        trace_vfio_pci_hot_reset_dep_devices(host.domain,
-> -                host.bus, host.slot, host.function, devices[i].group_id);
-> -
-> -        if (vfio_pci_host_match(&host, vdev->vbasedev.name)) {
-> -            continue;
-> -        }
-> -
-> -        QLIST_FOREACH(group, &vfio_group_list, next) {
-> -            if (group->groupid == devices[i].group_id) {
-> -                break;
-> -            }
-> -        }
-> -
-> -        if (!group) {
-> -            if (!vdev->has_pm_reset) {
-> -                error_report("vfio: Cannot reset device %s, "
-> -                             "depends on group %d which is not owned.",
-> -                             vdev->vbasedev.name, devices[i].group_id);
-> -            }
-> -            ret = -EPERM;
-> -            goto out;
-> -        }
-> -
-> -        /* Prep dependent devices for reset and clear our marker. */
-> -        QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
-> -            if (!vbasedev_iter->dev->realized ||
-> -                vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
-> -                continue;
-> -            }
-> -            tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
-> -            if (vfio_pci_host_match(&host, tmp->vbasedev.name)) {
-> -                if (single) {
-> -                    ret = -EINVAL;
-> -                    goto out_single;
-> -                }
-> -                vfio_pci_pre_reset(tmp);
-> -                tmp->vbasedev.needs_reset = false;
-> -                multi = true;
-> -                break;
-> -            }
-> -        }
-> -    }
-> -
-> -    if (!single && !multi) {
-> -        ret = -EINVAL;
-> -        goto out_single;
-> -    }
-> -
-> -    /* Determine how many group fds need to be passed */
-> -    count = 0;
-> -    QLIST_FOREACH(group, &vfio_group_list, next) {
-> -        for (i = 0; i < info->count; i++) {
-> -            if (group->groupid == devices[i].group_id) {
-> -                count++;
-> -                break;
-> -            }
-> -        }
-> -    }
-> -
-> -    reset = g_malloc0(sizeof(*reset) + (count * sizeof(*fds)));
-> -    reset->argsz = sizeof(*reset) + (count * sizeof(*fds));
-> -    fds = &reset->group_fds[0];
-> -
-> -    /* Fill in group fds */
-> -    QLIST_FOREACH(group, &vfio_group_list, next) {
-> -        for (i = 0; i < info->count; i++) {
-> -            if (group->groupid == devices[i].group_id) {
-> -                fds[reset->count++] = group->fd;
-> -                break;
-> -            }
-> -        }
-> -    }
-> -
-> -    /* Bus reset! */
-> -    ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_PCI_HOT_RESET, reset);
-> -    g_free(reset);
-> -
-> -    trace_vfio_pci_hot_reset_result(vdev->vbasedev.name,
-> -                                    ret ? strerror(errno) : "Success");
-> -
-> -out:
-> -    /* Re-enable INTx on affected devices */
-> -    for (i = 0; i < info->count; i++) {
-> -        PCIHostDeviceAddress host;
-> -        VFIOPCIDevice *tmp;
-> -        VFIODevice *vbasedev_iter;
-> -
-> -        host.domain = devices[i].segment;
-> -        host.bus = devices[i].bus;
-> -        host.slot = PCI_SLOT(devices[i].devfn);
-> -        host.function = PCI_FUNC(devices[i].devfn);
-> -
-> -        if (vfio_pci_host_match(&host, vdev->vbasedev.name)) {
-> -            continue;
-> -        }
-> -
-> -        QLIST_FOREACH(group, &vfio_group_list, next) {
-> -            if (group->groupid == devices[i].group_id) {
-> -                break;
-> -            }
-> -        }
-> -
-> -        if (!group) {
-> -            break;
-> -        }
-> -
-> -        QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
-> -            if (!vbasedev_iter->dev->realized ||
-> -                vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
-> -                continue;
-> -            }
-> -            tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
-> -            if (vfio_pci_host_match(&host, tmp->vbasedev.name)) {
-> -                vfio_pci_post_reset(tmp);
-> -                break;
-> -            }
-> -        }
-> -    }
-> -out_single:
-> -    if (!single) {
-> -        vfio_pci_post_reset(vdev);
-> -    }
-> -    g_free(info);
-> +    VFIODevice *vbasedev = &vdev->vbasedev;
-> +    const VFIOIOMMUOps *ops = vbasedev->bcontainer->ops;
->  
-> -    return ret;
-> +    return ops->pci_hot_reset(vbasedev, single);
->  }
->  
->  /*
+David / dhildenb
 
 
