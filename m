@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E0A47EC6FC
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 16:16:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F1E7EC6F2
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 16:15:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3Ha5-000409-36; Wed, 15 Nov 2023 10:13:29 -0500
+	id 1r3HaS-0004DC-O3; Wed, 15 Nov 2023 10:13:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r3HZe-0003ty-OC
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:13:04 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r3HZl-0003ue-3L
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:13:12 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r3HZX-0003F7-F9
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:13:00 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r3HZe-0003Fz-Rz
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:13:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700061169;
+ s=mimecast20190719; t=1700061173;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ixo3RPtScabaQ65t94xklOJOsajoCXrPZRKo6pZCxJ8=;
- b=S6WR4WLsWGKXRMAyMKPOx9nm85Y8u/dvbiUg8iQ6VNf4ID1hztW6qpa2c5XXsaBeCl5P/n
- ZPgOm0KhP49ymRlcPf32YYQH8i24HgbufQZzrZxZ4RM5LfXDLqTvu4rZcU5ioHPozgxoMS
- pYG2ASvKfj+/p8j5E0E+oqVs18BLeGc=
+ bh=ufPmoErkPOcsfutWdcjiUmWq22i+A4yQqAPSFLyrQtY=;
+ b=QF561aZBaWsgw+q4aQ9NvEqhk1V2YQCcXJHvYQgYTqrqKuQo5t0pIHYpRF17lsbkZ/GpyV
+ 6f1eCJwFZrjiMr3SFFkUDKBXjpuJWXRGnpWuDuuNn4H1rgNcdDBNV3PjUuxsiFAUWMPlvl
+ 0yNnbXVwurpgOCreo7LHGxOHX04SA60=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-223-XZ3QajBmNKOhymC-m0gvHg-1; Wed, 15 Nov 2023 10:12:46 -0500
-X-MC-Unique: XZ3QajBmNKOhymC-m0gvHg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ us-mta-141-e_tT9oE_NMCmevnKCfsAqg-1; Wed, 15 Nov 2023 10:12:47 -0500
+X-MC-Unique: e_tT9oE_NMCmevnKCfsAqg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AD91285A59D;
- Wed, 15 Nov 2023 15:12:45 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F3FAD85A58C;
+ Wed, 15 Nov 2023 15:12:46 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.192.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 411F8C15881;
- Wed, 15 Nov 2023 15:12:45 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AB5F6492BE0;
+ Wed, 15 Nov 2023 15:12:46 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 8B4B5180AC09; Wed, 15 Nov 2023 16:12:42 +0100 (CET)
+ id 98399180AC0C; Wed, 15 Nov 2023 16:12:42 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Eric Blake <eblake@redhat.com>,
@@ -55,14 +55,14 @@ Cc: qemu-arm@nongnu.org, Eric Blake <eblake@redhat.com>,
  graf@amazon.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH 03/16] hw/uefi: add include/hw/uefi/var-service.h
-Date: Wed, 15 Nov 2023 16:12:25 +0100
-Message-ID: <20231115151242.184645-4-kraxel@redhat.com>
+Subject: [PATCH 04/16] hw/uefi: add var-service-guid.c
+Date: Wed, 15 Nov 2023 16:12:26 +0100
+Message-ID: <20231115151242.184645-5-kraxel@redhat.com>
 In-Reply-To: <20231115151242.184645-1-kraxel@redhat.com>
 References: <20231115151242.184645-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -72,7 +72,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,139 +88,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add state structs and function declarations for the uefi-vars device.
+Add variables for a bunch of GUIDs we will need.
 
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- include/hw/uefi/var-service.h | 119 ++++++++++++++++++++++++++++++++++
- 1 file changed, 119 insertions(+)
- create mode 100644 include/hw/uefi/var-service.h
+ hw/uefi/var-service-guid.c | 61 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
+ create mode 100644 hw/uefi/var-service-guid.c
 
-diff --git a/include/hw/uefi/var-service.h b/include/hw/uefi/var-service.h
+diff --git a/hw/uefi/var-service-guid.c b/hw/uefi/var-service-guid.c
 new file mode 100644
-index 000000000000..2b8d3052e59f
+index 000000000000..afdc15c4e7e6
 --- /dev/null
-+++ b/include/hw/uefi/var-service.h
-@@ -0,0 +1,119 @@
++++ b/hw/uefi/var-service-guid.c
+@@ -0,0 +1,61 @@
 +/*
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
-+ * uefi-vars device - state struct and function prototypes
++ * uefi vars device - GUIDs
 + */
-+#ifndef QEMU_UEFI_VAR_SERVICE_H
-+#define QEMU_UEFI_VAR_SERVICE_H
 +
-+#include "qemu/uuid.h"
-+#include "qemu/queue.h"
++#include "qemu/osdep.h"
++#include "sysemu/dma.h"
 +
-+#include "hw/uefi/var-service-edk2.h"
++#include "hw/uefi/var-service.h"
 +
-+#define MAX_BUFFER_SIZE (64 * 1024)
++/* variable namespaces */
 +
-+typedef struct uefi_variable uefi_variable;
-+typedef struct uefi_var_policy uefi_var_policy;
-+typedef struct uefi_vars_state uefi_vars_state;
-+
-+struct uefi_variable {
-+    QemuUUID                          guid;
-+    uint16_t                          *name;
-+    uint32_t                          name_size;
-+    uint32_t                          attributes;
-+    void                              *data;
-+    uint32_t                          data_size;
-+    QTAILQ_ENTRY(uefi_variable)       next;
++QemuUUID EfiGlobalVariable = {
++    .data = UUID_LE(0x8be4df61, 0x93ca, 0x11d2, 0xaa, 0x0d,
++                    0x00, 0xe0, 0x98, 0x03, 0x2b, 0x8c)
 +};
 +
-+struct uefi_var_policy {
-+    variable_policy_entry             *entry;
-+    uint32_t                          entry_size;
-+    uint16_t                          *name;
-+    uint32_t                          name_size;
-+    uint32_t                          hashmarks;
-+    QTAILQ_ENTRY(uefi_var_policy)     next;
++QemuUUID EfiImageSecurityDatabase = {
++    .data = UUID_LE(0xd719b2cb, 0x3d3a, 0x4596, 0xa3, 0xbc,
++                    0xda, 0xd0, 0x0e, 0x67, 0x65, 0x6f)
 +};
 +
-+struct uefi_vars_state {
-+    MemoryRegion                      mr;
-+    uint16_t                          sts;
-+    uint32_t                          buf_size;
-+    uint32_t                          buf_addr_lo;
-+    uint32_t                          buf_addr_hi;
-+    uint8_t                           *buffer;
-+    QTAILQ_HEAD(, uefi_variable)      variables;
-+    QTAILQ_HEAD(, uefi_var_policy)    var_policies;
-+
-+    /* boot phases */
-+    bool                              end_of_dxe;
-+    bool                              ready_to_boot;
-+    bool                              exit_boot_service;
-+    bool                              policy_locked;
-+
-+    /* storage accounting */
-+    uint64_t                          max_storage;
-+    uint64_t                          used_storage;
-+
-+    char                              *jsonfile;
-+    int                               jsonfd;
++QemuUUID EfiCustomModeEnable = {
++    .data = UUID_LE(0xc076ec0c, 0x7028, 0x4399, 0xa0, 0x72,
++                    0x71, 0xee, 0x5c, 0x44, 0x8b, 0x9f)
 +};
 +
-+/* vars-service-guid.c */
-+extern QemuUUID EfiGlobalVariable;
-+extern QemuUUID EfiImageSecurityDatabase;
-+extern QemuUUID EfiCustomModeEnable;
-+extern QemuUUID EfiSecureBootEnableDisable;
-+extern QemuUUID EfiSmmVariableProtocolGuid;
-+extern QemuUUID VarCheckPolicyLibMmiHandlerGuid;
-+extern QemuUUID EfiEndOfDxeEventGroupGuid;
-+extern QemuUUID EfiEventReadyToBootGuid;
-+extern QemuUUID EfiEventExitBootServicesGuid;
++QemuUUID EfiSecureBootEnableDisable = {
++    .data = UUID_LE(0xf0a30bc7, 0xaf08, 0x4556, 0x99, 0xc4,
++                    0x0, 0x10, 0x9, 0xc9, 0x3a, 0x44)
++};
 +
-+/* vars-service-core.c */
-+extern const VMStateDescription vmstate_uefi_vars;
-+size_t uefi_strlen(const uint16_t *str, size_t len);
-+gboolean uefi_str_equal(const uint16_t *a, size_t alen,
-+                        const uint16_t *b, size_t blen);
-+char *uefi_ucs2_to_ascii(const uint16_t *ucs2, uint64_t ucs2_size);
-+void uefi_trace_variable(const char *action, QemuUUID guid,
-+                         const uint16_t *name, uint64_t name_size);
-+void uefi_trace_status(const char *action, efi_status status);
-+void uefi_vars_init(Object *obj, uefi_vars_state *uv);
-+void uefi_vars_realize(uefi_vars_state *uv, Error **errp);
-+void uefi_vars_hard_reset(uefi_vars_state *uv);
++/* protocols */
 +
-+/* vars-service-json.c */
-+void uefi_vars_json_init(uefi_vars_state *uv, Error **errp);
-+void uefi_vars_json_save(uefi_vars_state *uv);
-+void uefi_vars_json_load(uefi_vars_state *uv, Error **errp);
++QemuUUID EfiSmmVariableProtocolGuid = {
++    .data = UUID_LE(0xed32d533, 0x99e6, 0x4209, 0x9c, 0xc0,
++                    0x2d, 0x72, 0xcd, 0xd9, 0x98, 0xa7)
++};
 +
-+/* vars-service-vars.c */
-+extern const VMStateDescription vmstate_uefi_variable;
-+uefi_variable *uefi_vars_find_variable(uefi_vars_state *uv, QemuUUID guid,
-+                                       const uint16_t *name,
-+                                       uint64_t name_size);
-+void uefi_vars_set_variable(uefi_vars_state *uv, QemuUUID guid,
-+                            const uint16_t *name, uint64_t name_size,
-+                            uint32_t attributes,
-+                            void *data, uint64_t data_size);
-+void uefi_vars_clear_volatile(uefi_vars_state *uv);
-+void uefi_vars_clear_all(uefi_vars_state *uv);
-+void uefi_vars_update_storage(uefi_vars_state *uv);
-+uint32_t uefi_vars_mm_vars_proto(uefi_vars_state *uv);
++QemuUUID VarCheckPolicyLibMmiHandlerGuid = {
++    .data = UUID_LE(0xda1b0d11, 0xd1a7, 0x46c4, 0x9d, 0xc9,
++                    0xf3, 0x71, 0x48, 0x75, 0xc6, 0xeb)
++};
 +
-+/* vars-service-auth.c */
-+void uefi_vars_auth_init(uefi_vars_state *uv);
++/* events */
 +
-+/* vars-service-policy.c */
-+extern const VMStateDescription vmstate_uefi_var_policy;
-+efi_status uefi_vars_policy_check(uefi_vars_state *uv,
-+                                  uefi_variable *var,
-+                                  gboolean is_newvar);
-+void uefi_vars_policies_clear(uefi_vars_state *uv);
-+uefi_var_policy *uefi_vars_add_policy(uefi_vars_state *uv,
-+                                      variable_policy_entry *pe);
-+uint32_t uefi_vars_mm_check_policy_proto(uefi_vars_state *uv);
++QemuUUID EfiEndOfDxeEventGroupGuid = {
++    .data = UUID_LE(0x02CE967A, 0xDD7E, 0x4FFC, 0x9E, 0xE7,
++                    0x81, 0x0C, 0xF0, 0x47, 0x08, 0x80)
++};
 +
-+#endif /* QEMU_UEFI_VAR_SERVICE_H */
++QemuUUID EfiEventReadyToBootGuid = {
++    .data = UUID_LE(0x7CE88FB3, 0x4BD7, 0x4679, 0x87, 0xA8,
++                    0xA8, 0xD8, 0xDE, 0xE5, 0x0D, 0x2B)
++};
++
++QemuUUID EfiEventExitBootServicesGuid = {
++    .data = UUID_LE(0x27ABF055, 0xB1B8, 0x4C26, 0x80, 0x48,
++                    0x74, 0x8F, 0x37, 0xBA, 0xA2, 0xDF)
++};
 -- 
 2.41.0
 
