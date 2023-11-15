@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F44B7EBDFC
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:24:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 341107EBE10
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 08:27:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3AFp-0001I8-11; Wed, 15 Nov 2023 02:24:06 -0500
+	id 1r3AFw-0001kC-0f; Wed, 15 Nov 2023 02:24:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1r3AFK-0000wY-HK
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:23:36 -0500
+ id 1r3AFQ-00013q-CZ
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:23:41 -0500
 Received: from mgamail.intel.com ([192.55.52.115])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1r3AFH-0007Df-DI
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:23:33 -0500
+ id 1r3AFO-0007Df-RY
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 02:23:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700033011; x=1731569011;
+ t=1700033018; x=1731569018;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=H2r+ccbc41orXJzKOTmTCpHgbj6YS/1xLLl39/BjPwI=;
- b=UmIsuhauVY/oCn+l61HvmF6yLV0uIu7pDDgFX7dFTU9h4l8/xlSWrCLv
- fe53azL49uTdcuaS3M2S5xF9+sow+CHnKBzDQeV9ecHyVbYTy03JSNqSo
- ccLCHTdsFGTV59tpwokziql/9ZSsh/ZfhX6b2LfetDp6ZXFCztZMOL/y5
- N0hqeFKioRL2OvDzeCR+8loEpt9qkfEVeAc9xsEKXkSvl9RF0x1uSJR81
- d04N5+6SBWlC2UqqBFwsrpcfmhVVBO8v9uQTFsJ7arbreBqb0RtywCGmk
- K5hdOILy/bCs6fbONYDhDt8mEaTfI/n3U1txNBF7AeYhobEtD92lK3td0 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="390623619"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="390623619"
+ bh=kAhbpSvf5mcqCqnuUHwzUyFR0bBkU6DMg1Kt+jDOu9k=;
+ b=XMfg9sGt575tZgjQwYb2GmKyfIzpvGCKhaZZphJDGb5jRgoFZ7Kpac6x
+ 3rcDypTDmaJOBItewjxRqyxjKVNOMrF3tGcQkMHUNaHa9RUe7fL1GH9qC
+ VvsvT3YktTCRk89eVt9Z70wIVNM0LRSAZtuUTcm4rMMFMafnpSG1s3HMN
+ ZzbFkXt07ba0siX6OjBIfLGheLOg9PwaqpNb2mSAbzWzBE7LZ2YjeXdbn
+ dX5pBk0iJDglKRmQRx7tf/mq6V1XzTWtufRyTIuHk7bWV104NwkxtHa8y
+ jl6WxTifSyytleGiHMAB0kCf5svPYbklo/zl0XxEP3uVO4wvneaDBlnf6 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="390623645"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="390623645"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2023 23:23:29 -0800
+ 14 Nov 2023 23:23:36 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="714800388"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="714800388"
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="714800395"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; d="scan'208";a="714800395"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orsmga003.jf.intel.com with ESMTP; 14 Nov 2023 23:23:23 -0800
+ by orsmga003.jf.intel.com with ESMTP; 14 Nov 2023 23:23:29 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>,
@@ -58,9 +58,9 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v3 62/70] i386/tdx: Don't allow system reset for TDX VMs
-Date: Wed, 15 Nov 2023 02:15:11 -0500
-Message-Id: <20231115071519.2864957-63-xiaoyao.li@intel.com>
+Subject: [PATCH v3 63/70] i386/tdx: LMCE is not supported for TDX
+Date: Wed, 15 Nov 2023 02:15:12 -0500
+Message-Id: <20231115071519.2864957-64-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231115071519.2864957-1-xiaoyao.li@intel.com>
 References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
@@ -91,27 +91,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TDX CPU state is protected and thus vcpu state cann't be reset by VMM.
+LMCE is not supported TDX since KVM doesn't provide emulation for
+MSR_IA32_FEAT_CTL.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- target/i386/kvm/kvm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/i386/kvm/kvm-cpu.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index f1c4dd759b3e..a74a0d8e0891 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -5675,7 +5675,7 @@ bool kvm_has_waitpkg(void)
+diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
+index 9c791b7b0520..8c618869533c 100644
+--- a/target/i386/kvm/kvm-cpu.c
++++ b/target/i386/kvm/kvm-cpu.c
+@@ -15,6 +15,7 @@
+ #include "sysemu/sysemu.h"
+ #include "hw/boards.h"
  
- bool kvm_arch_cpu_check_are_resettable(void)
- {
--    return !sev_es_enabled();
-+    return !sev_es_enabled() && !is_tdx_vm();
++#include "tdx.h"
+ #include "kvm_i386.h"
+ #include "hw/core/accel-cpu.h"
+ 
+@@ -60,6 +61,10 @@ static bool lmce_supported(void)
+     if (kvm_ioctl(kvm_state, KVM_X86_GET_MCE_CAP_SUPPORTED, &mce_cap) < 0) {
+         return false;
+     }
++
++    if (is_tdx_vm())
++        return false;
++
+     return !!(mce_cap & MCG_LMCE_P);
  }
  
- #define ARCH_REQ_XCOMP_GUEST_PERM       0x1025
 -- 
 2.34.1
 
