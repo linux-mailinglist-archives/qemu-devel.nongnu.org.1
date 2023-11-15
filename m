@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4BF97EC6F8
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 16:15:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A8B7EC6FD
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 16:16:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3Ha8-00040W-Kb; Wed, 15 Nov 2023 10:13:32 -0500
+	id 1r3HaU-0004DH-2a; Wed, 15 Nov 2023 10:13:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r3HZf-0003tw-Ld
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:13:05 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r3HZe-0003u0-OY
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:13:04 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r3HZQ-0003Ep-JM
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:12:59 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r3HZQ-0003Em-T1
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 10:13:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1700061167;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=aOdtLnBeupD44njXn4MsoVi1WSu1OdmrTBNNCcdehoI=;
- b=FroqMcVdU3gnBL1dVXvHSKylIpbdh60aNVmkjU7vhMU4a0qsqOuOt5gLQ1oKN9HFBmZpxt
- lejGAL0YFlwo/0KcU0Lr8EOXu+hAkYaSiDDSHNuxik3jZS4jOipSDpLS0v+gwLNM3cu03W
- dt2gYCCeqGe67o66h3lL5pStNsM3fUI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-2aoodDrQN1G2NwdYBE0c6w-1; Wed, 15 Nov 2023 10:12:44 -0500
-X-MC-Unique: 2aoodDrQN1G2NwdYBE0c6w-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=3HjbIQIXvlNjSa0gvdvOx/3peo6nOqkjgT0g3BYPEDw=;
+ b=bgKHcqWlcWHFn/E+cJM6qgCUmsdebxwjYBemM6UvDHkwd/BrjE5hbo1L+fo1ykGj/xELHm
+ YLoJCPKJhBvcqbFK9MXeUIPU11bA5mMvds7u6VgA0pSTZ/6R+GkjD4g+QCmCdvWTYVl1Gt
+ gpJh3kmFhqT528btdK1DxBeAm8RX3LY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-473-384p8qH9OIOesBzJxg7MqA-1; Wed,
+ 15 Nov 2023 10:12:44 -0500
+X-MC-Unique: 384p8qH9OIOesBzJxg7MqA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 238EA8630DE;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 073733C000B4;
  Wed, 15 Nov 2023 15:12:44 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.192.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AB54A36EE;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id ADDFE2166B27;
  Wed, 15 Nov 2023 15:12:43 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 63795180AC06; Wed, 15 Nov 2023 16:12:42 +0100 (CET)
+ id 6F844180AC07; Wed, 15 Nov 2023 16:12:42 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Eric Blake <eblake@redhat.com>,
@@ -54,13 +55,14 @@ Cc: qemu-arm@nongnu.org, Eric Blake <eblake@redhat.com>,
  graf@amazon.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH 00/16] hw/uefi: add uefi variable service
-Date: Wed, 15 Nov 2023 16:12:22 +0100
-Message-ID: <20231115151242.184645-1-kraxel@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 01/16] hw/uefi: add include/hw/uefi/var-service-api.h
+Date: Wed, 15 Nov 2023 16:12:23 +0100
+Message-ID: <20231115151242.184645-2-kraxel@redhat.com>
+In-Reply-To: <20231115151242.184645-1-kraxel@redhat.com>
+References: <20231115151242.184645-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -68,7 +70,8 @@ X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,112 +88,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds a virtual device to qemu which the uefi firmware can use
-to store variables.  This moves the UEFI variable management from
-privileged guest code (managing vars in pflash) to the host.  Main
-advantage is that the need to have privilege separation in the guest
-goes away.
+This file defines the register interface of the uefi-vars device.
+It's only a handful of registers: magic value, command and status
+registers, location and size of the communication buffer.
 
-On x86 privileged guest code runs in SMM.  It's supported by kvm, but
-not liked much by various stakeholders in cloud space due to the
-complexity SMM emulation brings.
-
-On arm privileged guest code runs in el3 (aka secure world).  This is
-not supported by kvm, which is unlikely to change anytime soon given
-that even el2 support (nested virt) is being worked on for years and is
-not yet in mainline.
-
-The design idea is to reuse the request serialization protocol edk2 uses
-for communication between SMM and non-SMM code, so large chunks of the
-edk2 variable driver stack can be used unmodified.  Only the driver
-which traps into SMM mode must be replaced by a driver which talks to
-qemu instead.
-
-A edk2 test branch can be found here (build with "-D QEMU_VARS=TRUE").
-https://github.com/kraxel/edk2/commits/devel/secure-boot-external-vars
-
-The uefi-vars device must re-implement the privileged edk2 protocols
-(i.e. the code running in SMM mode).  The implementation is not complete
-yet, specifically updating authenticated variables is not implemented.
-These variables are simply read-only for now.
-
-But there is enough functionality working that it is possible to run
-guests, including guests in secure boot mode, so I'm sending this out
-for feedback (before tackling the remaining 20% which evidently will
-need 80% of the time ;)
-
-Because the guest can not write to authenticated variables (yet) it can
-not enroll secure boot keys itself, this must be done on the host.  The
-virt-firmware tools (https://gitlab.com/kraxel/virt-firmware) can be
-used for that:
-
-virt-fw-vars --enroll-redhat --secure-boot --output-json uefivars.json
-
-enjoy & take care,
-  Gerd
-
-Gerd Hoffmann (16):
-  hw/uefi: add include/hw/uefi/var-service-api.h
-  hw/uefi: add include/hw/uefi/var-service-edk2.h
-  hw/uefi: add include/hw/uefi/var-service.h
-  hw/uefi: add var-service-guid.c
-  hw/uefi: add var-service-core.c
-  hw/uefi: add var-service-vars.c
-  hw/uefi: add var-service-auth.c
-  hw/uefi: add var-service-policy.c
-  hw/uefi: add support for storing persistent variables on disk
-  hw/uefi: add trace-events
-  hw/uefi: add to Kconfig
-  hw/uefi: add to meson
-  hw/uefi: add uefi-vars-sysbus device
-  hw/uefi: add uefi-vars-isa device
-  hw/arm: add uefi variable support to virt machine type
-  docs: add uefi variable service documentation and TODO list.
-
- include/hw/arm/virt.h              |   2 +
- include/hw/uefi/var-service-api.h  |  40 ++
- include/hw/uefi/var-service-edk2.h | 184 +++++++++
- include/hw/uefi/var-service.h      | 119 ++++++
- hw/arm/virt.c                      |  41 ++
- hw/uefi/var-service-auth.c         |  91 +++++
- hw/uefi/var-service-core.c         | 350 +++++++++++++++++
- hw/uefi/var-service-guid.c         |  61 +++
- hw/uefi/var-service-isa.c          |  88 +++++
- hw/uefi/var-service-json.c         | 194 ++++++++++
- hw/uefi/var-service-policy.c       | 390 +++++++++++++++++++
- hw/uefi/var-service-sysbus.c       |  87 +++++
- hw/uefi/var-service-vars.c         | 602 +++++++++++++++++++++++++++++
- docs/devel/index-internals.rst     |   1 +
- docs/devel/uefi-vars.rst           |  66 ++++
- hw/Kconfig                         |   1 +
- hw/meson.build                     |   1 +
- hw/uefi/Kconfig                    |   9 +
- hw/uefi/TODO.md                    |  17 +
- hw/uefi/meson.build                |  18 +
- hw/uefi/trace-events               |  16 +
- meson.build                        |   1 +
- qapi/meson.build                   |   1 +
- qapi/qapi-schema.json              |   1 +
- qapi/uefi.json                     |  40 ++
- 25 files changed, 2421 insertions(+)
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+---
+ include/hw/uefi/var-service-api.h | 40 +++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
  create mode 100644 include/hw/uefi/var-service-api.h
- create mode 100644 include/hw/uefi/var-service-edk2.h
- create mode 100644 include/hw/uefi/var-service.h
- create mode 100644 hw/uefi/var-service-auth.c
- create mode 100644 hw/uefi/var-service-core.c
- create mode 100644 hw/uefi/var-service-guid.c
- create mode 100644 hw/uefi/var-service-isa.c
- create mode 100644 hw/uefi/var-service-json.c
- create mode 100644 hw/uefi/var-service-policy.c
- create mode 100644 hw/uefi/var-service-sysbus.c
- create mode 100644 hw/uefi/var-service-vars.c
- create mode 100644 docs/devel/uefi-vars.rst
- create mode 100644 hw/uefi/Kconfig
- create mode 100644 hw/uefi/TODO.md
- create mode 100644 hw/uefi/meson.build
- create mode 100644 hw/uefi/trace-events
- create mode 100644 qapi/uefi.json
 
+diff --git a/include/hw/uefi/var-service-api.h b/include/hw/uefi/var-service-api.h
+new file mode 100644
+index 000000000000..37fdab32741f
+--- /dev/null
++++ b/include/hw/uefi/var-service-api.h
+@@ -0,0 +1,40 @@
++/*
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * uefi-vars device - API of the virtual device for guest/host communication.
++ */
++#ifndef QEMU_UEFI_VAR_SERVICE_API_H
++#define QEMU_UEFI_VAR_SERVICE_API_H
++
++
++/* isa: io range */
++#define UEFI_VARS_IO_BASE                   0x520
++
++/* sysbus: fdt node path */
++#define UEFI_VARS_FDT_NODE       "qemu-uefi-vars"
++#define UEFI_VARS_FDT_COMPAT     "qemu,uefi-vars"
++
++/* registers */
++#define UEFI_VARS_REG_MAGIC                  0x00  /* 16 bit */
++#define UEFI_VARS_REG_CMD_STS                0x02  /* 16 bit */
++#define UEFI_VARS_REG_BUFFER_SIZE            0x04  /* 32 bit */
++#define UEFI_VARS_REG_BUFFER_ADDR_LO         0x08  /* 32 bit */
++#define UEFI_VARS_REG_BUFFER_ADDR_HI         0x0c  /* 32 bit */
++#define UEFI_VARS_REGS_SIZE                  0x10
++
++/* magic value */
++#define UEFI_VARS_MAGIC_VALUE               0xef1
++
++/* command values */
++#define UEFI_VARS_CMD_RESET                  0x01
++#define UEFI_VARS_CMD_MM                     0x02
++
++/* status values */
++#define UEFI_VARS_STS_SUCCESS                0x00
++#define UEFI_VARS_STS_BUSY                   0x01
++#define UEFI_VARS_STS_ERR_UNKNOWN            0x10
++#define UEFI_VARS_STS_ERR_NOT_SUPPORTED      0x11
++#define UEFI_VARS_STS_ERR_BAD_BUFFER_SIZE    0x12
++
++
++#endif /* QEMU_UEFI_VAR_SERVICE_API_H */
 -- 
 2.41.0
 
