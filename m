@@ -2,92 +2,162 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1E47ED474
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 21:58:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D16D57ED55E
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 Nov 2023 22:04:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3MwY-0005XC-D0; Wed, 15 Nov 2023 15:57:02 -0500
+	id 1r3N2l-0005Gf-EC; Wed, 15 Nov 2023 16:03:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r3MwW-0005VH-A4
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 15:57:00 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r3MwT-0008MC-7J
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 15:57:00 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40839807e82so581705e9.0
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 12:56:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700081815; x=1700686615; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=F4MofaPQ6v4c+mXj7pRLNccnw8VhmsNz1e7rwUPbixU=;
- b=RsrWwSPZxTyNE/CLEnYy8+KAghrGktQtIu4XPKiBlATqu+oaxA4dEEHuw80/XGv/Jh
- LWRKBl//w7ALGEegojp06rpEWtWLyk29gj9K9mJBxALkmTdtFPm3iZOLMw6z6jePhaQi
- 2NHn5yzCUsvchC7IQY9HOHwcKmjpPcZr2WOzAJQRLTsMYCJznCvxOcNN6LFwluPNUg71
- c1Vu9rEv6dlSKsPiI7hMXUYyQi5hVCF53FnKkvtIFLz8TQoEO34JOHCkJ+CXj7YINSo+
- rjQ+IyKtUdRgR18V4Z6jAWP9TkOnTjUd6J1KDZGenaXuGNmHTs+ZBaXVrUykEpnPtzcP
- rUng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700081815; x=1700686615;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=F4MofaPQ6v4c+mXj7pRLNccnw8VhmsNz1e7rwUPbixU=;
- b=tAboBmxIWCaPnwI5BfUzPUycNc7A10UOq9iUjKKeZV5wZF/Y+nseCoFr0FtgrJ2bHY
- QZd+ng0Jtl9qxya3z9oyz+ivxgqLPxjC0NPYxCGN+QQrBcC1OavDaDE3n18DbKYF0+IT
- I/WglM5KPkKz7m23gE2DYffsoDEfceoxm+IlrFuSrNQO6geKzcedEDa7pdOhbKdw198/
- OAR7KV31EjDgnsEka7KimYRMQXknFl0RpQrla/Fyku7NqBDay5nr4oh9c88en7S80xYj
- XQ9Ws+imX29NqVdQEjdQVY/Fd3VwRbUrnDlDRH/VAWJGV/h1Xq+CdwgJhdV88BGXqzSO
- y7ag==
-X-Gm-Message-State: AOJu0YxGcH+6HqYMuTo7hmR/qUa9ldG4vCeG/N4q3/66jDXW5CsWZ5MX
- vorf1OuW5h2bl4A5sx5Ph4iffA==
-X-Google-Smtp-Source: AGHT+IG6g/0L86fbNEbD59HhUvrCcWb1eaV84Hx0KXbbfeYRYFuLbiSDMfLCVGpkLicNhwRdvWN0Hw==
-X-Received: by 2002:a05:600c:5025:b0:3fe:d67d:5040 with SMTP id
- n37-20020a05600c502500b003fed67d5040mr6401904wmr.5.1700081814867; 
- Wed, 15 Nov 2023 12:56:54 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- n25-20020a05600c181900b00405442edc69sm853717wmp.14.2023.11.15.12.56.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Nov 2023 12:56:54 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 28ECA5F76C;
- Wed, 15 Nov 2023 20:56:54 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: "Nicholas Piggin" <npiggin@gmail.com>
-Cc: <qemu-devel@nongnu.org>,  "Akihiko Odaki" <akihiko.odaki@daynix.com>,
- "Luis Machado" <luis.machado@linaro.org>,  "Ilya Leoshkevich"
- <iii@linux.ibm.com>,  <qemu-s390x@nongnu.org>,  "Daniel Henrique Barboza"
- <danielhb413@gmail.com>,  <qemu-ppc@nongnu.org>,  Philippe =?utf-8?Q?Math?=
- =?utf-8?Q?ieu-Daud=C3=A9?=
- <philmd@linaro.org>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- "Richard Henderson" <richard.henderson@linaro.org>,  "David Hildenbrand"
- <david@redhat.com>, "gdb@gnu.org" <gdb@gnu.org>
-Subject: Re: [PULL 06/23] tests/tcg: add an explicit gdbstub register tester
-In-Reply-To: <CWXN9HF4AXGM.19H4A5BU366S1@wheely> (Nicholas Piggin's message of
- "Mon, 13 Nov 2023 21:23:43 +1000")
-References: <20231107142354.3151266-1-alex.bennee@linaro.org>
- <20231107142354.3151266-7-alex.bennee@linaro.org>
- <CWXN9HF4AXGM.19H4A5BU366S1@wheely>
-User-Agent: mu4e 1.11.24; emacs 29.1
-Date: Wed, 15 Nov 2023 20:56:54 +0000
-Message-ID: <87il62vip5.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <bcain@quicinc.com>) id 1r3N2Y-0005Cv-6i
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 16:03:14 -0500
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <bcain@quicinc.com>) id 1r3N2W-0003k6-Bh
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 16:03:13 -0500
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AF9NO7X002864; Wed, 15 Nov 2023 21:03:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=qcppdkim1;
+ bh=XgaibUi1OhFaIDq1WiM7WghrPnug3/PSJwT3xDy/Wpg=;
+ b=ZfZe9V88boQ5OiM8Kfw7S9fGI6yA9o9rFTVKmDVaVg36hLEiLump2/sBkR2m+lHRmF4u
+ DVPtNAcTGELpaxBprD1kpHTnaQI8gG56917VPr5IYN0SPxnsiegEFU3JXOYhIEEroClp
+ OBfu6sssvf6AJlkk4PTHtHtTAFLyRUUa/dtjtM6w2QuveY169CcCQv7x5S/dKgW0FW32
+ yA3FZ7wwpE+WrU/q9oHdS73z1nrymRAPIIcu+F5eOrtnv5GJ0tevhKSia99gnWxmJcu1
+ AldmB64xBw+fY0y52sc+3+qQZW6rXr9sjUnwCeecb9IrxQcKMLV0bmoV+PZx6kSHg9XQ Xg== 
+Received: from nam10-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10lp2100.outbound.protection.outlook.com [104.47.55.100])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ucuac1jv7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 15 Nov 2023 21:03:07 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=n0wTlXGuKMyi4TZoAWMbZRg53Smw+vuDeIM6VlTXcViwf7jlc13U6hzAA0AR1uotXyHhms999vJkdxNJssxEdcleZTbwbDTZOoigCe6uUGAka7E5dl9kUGmPcubngBY3CV36Af5sCAQhtMoUy1q8Z7whj372sJMmkbKxY9iqhtycsoDzQrOFiNbXvTXjLMVV3sZcBN96ZadCrZ6aCfzO4J06U4TS6L/0EosgMHbWeDoEKWD+1icFvrTZmqgMy5XTBEBMlMEgrdnyyqjJhiIjqYHcoBNW0QpJZjjrcuyRlfLu9cfgWOKYabJTSRIKomRdUeUXFGB3GXQmD5ZdWDJcHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XgaibUi1OhFaIDq1WiM7WghrPnug3/PSJwT3xDy/Wpg=;
+ b=Q+4CCGqNXWmz75sJSE2Q6UPaZaUjXJW8WfTObsPy6zbbp39lQq3/qT1QvHi/AQUslln3jgp0fV4jthWVQTFWOxJSGP0nIx6Qpa8ff/B2nIxyBP+yhfDSmNsQYcou8Kmw5b9ip3b0RVSt3FuvS0kx5r6pMbP9De+FSeh4UdSRkF1rwMJF8qGbllpB6ZGkte4SxOixsde7DPheDagXEsX1jcx48JFaGZmbxpQwxjQ3GhN4j8hx989w33YWkmyaBqIn0H7Fz9AxiTyW0p5dJpVEBLDqiwffdwhzktof/BfP1sWcKgm0y7IqDfJu8nQObTgTyM4jJPmexDSHFATWckF8iQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=quicinc.com; dmarc=pass action=none header.from=quicinc.com;
+ dkim=pass header.d=quicinc.com; arc=none
+Received: from SN6PR02MB4205.namprd02.prod.outlook.com (2603:10b6:805:35::17)
+ by CO6PR02MB7602.namprd02.prod.outlook.com (2603:10b6:303:b0::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.17; Wed, 15 Nov
+ 2023 21:03:05 +0000
+Received: from SN6PR02MB4205.namprd02.prod.outlook.com
+ ([fe80::546b:93ec:1242:265c]) by SN6PR02MB4205.namprd02.prod.outlook.com
+ ([fe80::546b:93ec:1242:265c%6]) with mapi id 15.20.7002.018; Wed, 15 Nov 2023
+ 21:03:04 +0000
+From: Brian Cain <bcain@quicinc.com>
+To: Brian Cain <bcain@quicinc.com>, Taylor Simpson <ltaylorsimpson@gmail.com>, 
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "Matheus Bernardino (QUIC)" <quic_mathbern@quicinc.com>, Sid Manning
+ <sidneym@quicinc.com>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>,
+ "philmd@linaro.org" <philmd@linaro.org>, "ale@rev.ng" <ale@rev.ng>,
+ "anjo@rev.ng" <anjo@rev.ng>
+Subject: RE: [RFC PATCH] Hexagon (target/hexagon) Make generators object
+ oriented
+Thread-Topic: [RFC PATCH] Hexagon (target/hexagon) Make generators object
+ oriented
+Thread-Index: AQHaE1NXmbv5ymjOZU6CrdzTksAFm7B7z8cQgAAXjoA=
+Date: Wed, 15 Nov 2023 21:03:04 +0000
+Message-ID: <SN6PR02MB42051D1CC449EDA779378046B8B1A@SN6PR02MB4205.namprd02.prod.outlook.com>
+References: <20231109212549.356168-1-ltaylorsimpson@gmail.com>
+ <SN6PR02MB4205D15E8A90CBFDE1C81D0FB8B1A@SN6PR02MB4205.namprd02.prod.outlook.com>
+In-Reply-To: <SN6PR02MB4205D15E8A90CBFDE1C81D0FB8B1A@SN6PR02MB4205.namprd02.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4205:EE_|CO6PR02MB7602:EE_
+x-ms-office365-filtering-correlation-id: 31fa4adb-68c1-4e74-ce24-08dbe61e42d9
+x-ld-processed: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: WUDSHDSb90asabA1zhAwmynJ+yIjFPUqan0q92JjV/UjHdYZOWe8SSFxcdSVoB6q3e0RZL1W7mDBCuG50l7sG919+0TtgmVuCy8NlySy3xT6Y90bFIM3n3RCtg5EoilN8f4lZDkF+MKJqWUPd0ZlLIRTPtGFTSI+oVB0M5nfjnOC4aGnEu457f1HP1mw98prhz4+NGnbvLrLtfd2XvdjT6WuGxbCiIHpk7jm4tTvdi9lAp4Y70yzI4r1VrQUT4GX683gxSdupYGDvwgEiSbjQ9VdzrBcuY2RSgndcp7JN58k30TODPoREDto1PO8V9u92pjijtoig/aHWQQqsz7c1kIh0JrD1FZ6aEP3cLtkloBzASsMzOOYtR/XEsobMCJARJqZywc6sNP6auGNA2CsSxczvKbkR1gifTBTdFjFNIw7/xMqkQ62yMkEnbvVglWTbom1o/jL8RBoV0hxHfCaDVzChPRJ8wgpo1LYScQTLNpykJfAGmWLEvFwPrEyYmb+rAH9VN2Zb0IfmDDAh3Ro27uBQ/GAkWKItlyUqkWA17I8bCNy12z5s/5Ofon84T5SBXp4BdvcjredGMx24noAo34WBHddWeEuvi4yvg0uif9bH1d4qONUtiC7Au3zZCnQ
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SN6PR02MB4205.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376002)(39860400002)(366004)(346002)(396003)(136003)(230922051799003)(186009)(64100799003)(1800799009)(451199024)(2906002)(4744005)(41300700001)(33656002)(316002)(52536014)(66556008)(66946007)(110136005)(66446008)(55016003)(54906003)(66476007)(76116006)(38100700002)(64756008)(4326008)(8676002)(8936002)(478600001)(38070700009)(122000001)(86362001)(5660300002)(83380400001)(26005)(2940100002)(71200400001)(7696005)(6506007)(9686003);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?enVyQ1lmd3EyL3owcWxaYys4Z054ZTYzWG5udXZNOGJXbzAvTm9ZVVlTL01p?=
+ =?utf-8?B?bVIxU2xicWNYa1BGZEdQcHRObkE3NDAwU2EycW1LUlQ4ZGtFZzdJcTRCNDBD?=
+ =?utf-8?B?QkowU0hPNjFNRDZTREZBcE5Vczh1WlcyczFxcGVYaU9XVWN5ZjQvZDdrZzBp?=
+ =?utf-8?B?ZlhPUFN5bFowb2JPaDFsVGZORWdHYkRaY1NzVFFtZjdaa0RZNUpDVjFtUFpZ?=
+ =?utf-8?B?WGNSUytJaEExbkZKQTRtTnB1RnJNZ0JrRFhIMXUxUk5xUDRiR0drcjJnUEta?=
+ =?utf-8?B?K1JJaStoL0l6Qi9uQk85bzNxeEx3UVY5UTNGRis1bVBRalNYTkFuQkV3UVIx?=
+ =?utf-8?B?bE5Nb1ZqQTFoeW84ZGUxSTE2YWNNdktiZ3dYd1o2am45amgxcVVMNEhCbmta?=
+ =?utf-8?B?TmtybkNhck9scHJvUWVUK3VlSVY0eklNbnc4MEI3b050b2ZYK1lCWGNiYmlz?=
+ =?utf-8?B?MFo4UXIwVXFZNCtDSGZ5SDh0ZkMvY2wzdVFseE5JVGpYSE5uNFFQYTFBMW5B?=
+ =?utf-8?B?cWJvRGZIRlpScm9zOWJYMlFObnFxdGhTV3BQNnQ5ZVlCTVlGb1ZaUVhNd3cv?=
+ =?utf-8?B?RVBBYW5URVNVV1Jvc2xHSFpuQnFMVFZHaURpUEZ5eGdRUENaMk1BcG1nK3dy?=
+ =?utf-8?B?YmZzcTFyeGYzYXZiTWlMbWtHUTdKeUQxclVtSTBwSHNpZ01aeWNjaU5uL2R0?=
+ =?utf-8?B?QVRNRWw4aVFKd2UrcDdGeW0ydHZSckwrYmYvc2ZpVWJOcHNmRHlLSzJOVTRk?=
+ =?utf-8?B?UGtlRUUwekF5Ri9GTEZlRGdnTGN2c0VnYUxCNHBvNUQ4aWtsRkZSYTNXa3dV?=
+ =?utf-8?B?Z0k0WE42bWVxL2FoNitGckxQZmZzMGt2N291aGV2Ty9tNHNOSDIyR0tXeTIr?=
+ =?utf-8?B?dE9hcXJObEJPR2k5Q0RIemNZYTlrQmQwQTJ4bEFidXVLVHpiUENUWS9KcGZq?=
+ =?utf-8?B?YThhRjlCUlJFUmhIYzRGZE9taFVGK2hFWDBXSmVSZ2VOb2hoS25wc1FZNnpw?=
+ =?utf-8?B?UFpIbnR6UlZrdmJSRitwd2c3REtTNWlkUjVHZWpuRS9GS0Zyb3BYeXZyY21m?=
+ =?utf-8?B?ZnlFNVBFbzNEandNTTdnelNMa2NTOTJjQ2lrU1puWS95eXJDcWJ6TGo2MHRn?=
+ =?utf-8?B?bm9nTFdNd2k2aDNnd0FqV3F0QitlUElRVkt0VGVwcnFlUW5TUFdHQmJ5aVRR?=
+ =?utf-8?B?bXdybm05YWE2TFVjd3RtVnpGS252MHhmQ1UxOWQ3aUd4clBaNmtHYzNRL3FU?=
+ =?utf-8?B?V05OcnVrSWF4a0ZPVzd4UnFuaUEralRBUlNSVzd3VEdvd3VWaUJsSnVoQzdH?=
+ =?utf-8?B?WXgvOXpRU0NXY3ZTQkpVamtxeENRMVMyNm9SM25KejdBWndQT1F0K21veUdz?=
+ =?utf-8?B?bUZBbklNdTlLZEMxQW1OejdRR3QvU3ZJcCs4M2lhWSt5YUl6VGZoWExkczdS?=
+ =?utf-8?B?K01xMEt3RGsvUi9Dcno1VHRwcEU0ZHRRQmtoVWxDWTlpT2FsdlZwOE9KbFlF?=
+ =?utf-8?B?MEVKZWozbG5GLzYvZG5ZdlRoejE1N2R1NGVqeHRyTXRPRXpFS096dGZDSVJM?=
+ =?utf-8?B?c0ZLcXRJdFpNdElhNFhTSU1yR1U2SkFWSzVMc2RRcThWcExDMGdjSmhSMEpD?=
+ =?utf-8?B?YndCZmhKdzEyRnN6c2pwT0lIZ0Z1dllqSVBpR0J5YnlKZHd2N2dwK0wxbzlI?=
+ =?utf-8?B?TVhBNkpteUttTVdmaHBxOFdDK09rRldBZ1d6aGN1S1BQc3ZVZTBqUy9mbU9v?=
+ =?utf-8?B?MUNTRHlvUlNvRWpxT04vUCtrbHB3N0RHRGZpUFMwdmdQajczWnFWTlVEZjJE?=
+ =?utf-8?B?RVEyYkNsd3VacWhQdW9mbTFscnU0YjhxVmdhRlcvYXI1SHNqTk1icFdCWEI0?=
+ =?utf-8?B?Rk9MM2ZSdVVNa2lzVGdxY3laSkN6NktDcXc0R2hRZ2NPZUhsNDlYNDhWTXc2?=
+ =?utf-8?B?dENJOEtiZGZrcU82QWFaZHA0cDlOeDd4bGI4bjI0R1JQaGQ0azRuYnBrdE1x?=
+ =?utf-8?B?QVdUTi94cFBseHhodnphcGYxUVl2c2UxdGdMcWpta1Zya2ZGYjBKZTdCek92?=
+ =?utf-8?B?VFA3SUNqRldtT2xXTHZTTk4yQWdPcU90SUVjOW1NQWg4UE9XNlNwQ2ZHRmV5?=
+ =?utf-8?Q?Tt8c=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 8H2ywkt0GB3cPTiy3X9GC74EjC8l2jBiPIkzg+aglNl7ZT4SvwRfSmXH/uThA/DlKfYMvCKUnCpYFF0/jR7YzFZ73fwtuLrMz7sVg2os+UkAScedIkAhD13k7a1ZVTM/YcRhPI45MywGghpeZx44Nj++p+/fgtfwiN6h9g1M4bOB0vTOxmBHeQt6L/LdseJmk19lSBc5zWfvJQL0auzxHsUje8BDHd1Io06TQEM33tM1AESgsgmeE+C+P42aA8eRF+REJYtYiSGFKJ4GoTgVg/aE+ssR27b273TO7SrN5PilNlNqsVFByMiGkkYYD4xb/Up9BozlgIFN1FfaCMHgvq561c7PWA8dWnxxztFYl/nt/IHa28N8zGP5kXXfno79dYU7GVXzvgysJvQlhO/mA04/rhTC1uG2YwJtevIh6qFfIlg8qB/C/N5nJa3HDuVPhSheRWoJQCmRiqGmzS8cdXQgsZm6ydopx5T2ri6oNhNWdjAUjPcWodUxkf2nEftOFZFnmt+6VTQ1ioQFDsO50Dcv3bE7w7pVRwFeMX1UAXjWwe/0M7M8HyD3+WzI2LZ0FjuKEOias2eG/ls40uAWIkQojQbw4VyvcEgxGFm348vRP1v14j8cSDGNVvMyQBmiPbAbA9dFu+fl2TIq6Gs7CNhwZoWGlxcaVl1X0qYxgVJtXYEpbQx/RhdGPp5IYymA9mAGJ9Dv588P91coa3XwlC4msIE5qZTABilSbXoY/VaLvlsf2ctC6UljBL4aYvxFRzDnoYpz+Di4I07wyISN+Rq4+Ah1CsIuM8ucmfitrrXrm/8r4XSVFZ/PsNLBoFAHHE7qg5qTFQkzQ2mfqrLB+A==
+X-OriginatorOrg: quicinc.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4205.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 31fa4adb-68c1-4e74-ce24-08dbe61e42d9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Nov 2023 21:03:04.7635 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: DBi99JXCkkDqs/1A3JLHJLJsKCuGqBPtbmbVI8v1VV7a10ggrYfmiKVkFc7hZO3WekQnlKsedMY1DQezj5eLuw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR02MB7602
+X-Proofpoint-ORIG-GUID: Vst-9tZv0PLxtGmi5D7FFV1gMYULbuR4
+X-Proofpoint-GUID: Vst-9tZv0PLxtGmi5D7FFV1gMYULbuR4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-15_20,2023-11-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxlogscore=499
+ spamscore=0 malwarescore=0 mlxscore=0 bulkscore=0 clxscore=1015
+ adultscore=0 lowpriorityscore=0 impostorscore=0 priorityscore=1501
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311150167
+Received-SPF: pass client-ip=205.220.168.131; envelope-from=bcain@quicinc.com;
+ helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,426 +174,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Nicholas Piggin" <npiggin@gmail.com> writes:
-
-> On Wed Nov 8, 2023 at 12:23 AM AEST, Alex Benn=C3=A9e wrote:
->> We already do a couple of "info registers" for specific tests but this
->> is a more comprehensive multiarch test. It also has some output
->> helpful for debugging the gdbstub by showing which XML features are
->> advertised and what the underlying register numbers are.
->>
->> My initial motivation was to see if there are any duplicate register
->> names exposed via the gdbstub while I was reviewing the proposed
->> register interface for TCG plugins.
->>
->> Mismatches between the xml and remote-desc are reported for debugging
->> but do not fail the test.
->>
->> We also skip the tests for the following arches for now until we can
->> investigate and fix any issues:
->>
->>   - s390x (fails to read v0l->v15l, not seen in remote-registers)
->>   - ppc64 (fails to read vs0h->vs31h, not seen in remote-registers)
->
-> binutils-gdb.git/gdb/rs6000-tdep.c has:
->
-> static const char *
-> rs6000_register_name (struct gdbarch *gdbarch, int regno)
-> {
->   ppc_gdbarch_tdep *tdep =3D (ppc_gdbarch_tdep *) gdbarch_tdep (gdbarch);
->
->   /* The upper half "registers" have names in the XML description,
->      but we present only the low GPRs and the full 64-bit registers
->      to the user.  */
->   if (tdep->ppc_ev0_upper_regnum >=3D 0
->       && tdep->ppc_ev0_upper_regnum <=3D regno
->       && regno < tdep->ppc_ev0_upper_regnum + ppc_num_gprs)
->     return "";
->
->   /* Hide the upper halves of the vs0~vs31 registers.  */
->   if (tdep->ppc_vsr0_regnum >=3D 0
->       && tdep->ppc_vsr0_upper_regnum <=3D regno
->       && regno < tdep->ppc_vsr0_upper_regnum + ppc_num_gprs)
->     return "";
->
-> (s390 looks similar for V0-V15 lower).
->
-> I guess it is because the upper half is not a real register but an
-> extension of an existing FP register to make a vector register. I
-> just don't know how that should be resolved with QEMU.
->
-> Should we put an exception in the test case for these? Or is there
-> something we should be doing differently with the XML regs?
-
-Yeah I suspect this is just inconsistency between targets on gdb. My
-naive assumption was XML should match the displayed registers but it
-seems there is additional filtering going on.
-
-It seems in this case the registers are still there and have regnums (so
-I assume the stub could be asked for them) but the names have been
-squashed. I guess we could detect that and accept it?
-
->
-> i386 gdb does similar:
->
-> static const char *
-> i386_register_name (struct gdbarch *gdbarch, int regnum)
-> {
->   /* Hide the upper YMM registers.  */
->   if (i386_ymmh_regnum_p (gdbarch, regnum))
->     return "";
->
->   /* Hide the upper YMM16-31 registers.  */
->   if (i386_ymmh_avx512_regnum_p (gdbarch, regnum))
->     return "";
->
->   /* Hide the upper ZMM registers.  */
->   if (i386_zmmh_regnum_p (gdbarch, regnum))
->     return "";
->
->   return tdesc_register_name (gdbarch, regnum);
-> }
->
-> So, I'm not sure how they don't fail this test. Does QEMU just
-> not have YMM/ZMM in XML regmap?
-
-No I think we only send the core one with XMM regs and there are no
-additional registers sent via gdb_register_coprocessor.
-
->
-> Thanks,
-> Nick
->
->
->>
->> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
->> Cc: Luis Machado <luis.machado@linaro.org>
->> Cc: Ilya Leoshkevich <iii@linux.ibm.com>
->> Cc: qemu-s390x@nongnu.org
->> Cc: Nicholas Piggin <npiggin@gmail.com>
->> Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
->> Cc: qemu-ppc@nongnu.org
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> Message-Id: <20231106185112.2755262-7-alex.bennee@linaro.org>
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index b86ea7f75a..26e7633346 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -2927,7 +2927,7 @@ F: gdbstub/*
->>  F: include/exec/gdbstub.h
->>  F: include/gdbstub/*
->>  F: gdb-xml/
->> -F: tests/tcg/multiarch/gdbstub/
->> +F: tests/tcg/multiarch/gdbstub/*
->>  F: scripts/feature_to_c.py
->>  F: scripts/probe-gdb-support.py
->>=20=20
->> diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/M=
-akefile.target
->> index f3bfaf1a22..d31ba8d6ae 100644
->> --- a/tests/tcg/multiarch/Makefile.target
->> +++ b/tests/tcg/multiarch/Makefile.target
->> @@ -93,12 +93,21 @@ run-gdbstub-thread-breakpoint: testthread
->>  		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
->>  		--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-thread-breakpoint.py, \
->>  	hitting a breakpoint on non-main thread)
->> +
->> +run-gdbstub-registers: sha512
->> +	$(call run-test, $@, $(GDB_SCRIPT) \
->> +		--gdb $(GDB) \
->> +		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
->> +		--bin $< --test $(MULTIARCH_SRC)/gdbstub/registers.py, \
->> +	checking register enumeration)
->> +
->>  else
->>  run-gdbstub-%:
->>  	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst=
- -%,,$(TARGET_NAME)) support")
->>  endif
->>  EXTRA_RUNS +=3D run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
->> -	      run-gdbstub-proc-mappings run-gdbstub-thread-breakpoint
->> +	      run-gdbstub-proc-mappings run-gdbstub-thread-breakpoint \
->> +	      run-gdbstub-registers
->>=20=20
->>  # ARM Compatible Semi Hosting Tests
->>  #
->> diff --git a/tests/tcg/multiarch/gdbstub/registers.py b/tests/tcg/multia=
-rch/gdbstub/registers.py
->> new file mode 100644
->> index 0000000000..ff6076b09e
->> --- /dev/null
->> +++ b/tests/tcg/multiarch/gdbstub/registers.py
->> @@ -0,0 +1,197 @@
->> +# Exercise the register functionality by exhaustively iterating
->> +# through all supported registers on the system.
->> +#
->> +# This is launched via tests/guest-debug/run-test.py but you can also
->> +# call it directly if using it for debugging/introspection:
->> +#
->> +# SPDX-License-Identifier: GPL-2.0-or-later
->> +
->> +import gdb
->> +import sys
->> +import xml.etree.ElementTree as ET
->> +
->> +initial_vlen =3D 0
->> +failcount =3D 0
->> +
->> +def report(cond, msg):
->> +    "Report success/fail of test."
->> +    if cond:
->> +        print("PASS: %s" % (msg))
->> +    else:
->> +        print("FAIL: %s" % (msg))
->> +        global failcount
->> +        failcount +=3D 1
->> +
->> +
->> +def fetch_xml_regmap():
->> +    """
->> +    Iterate through the XML descriptions and validate.
->> +
->> +    We check for any duplicate registers and report them. Return a
->> +    reg_map hash containing the names, regnums and initial values of
->> +    all registers.
->> +    """
->> +
->> +    # First check the XML descriptions we have sent. Most arches
->> +    # support XML but a few of the ancient ones don't in which case we
->> +    # need to gracefully fail.
->> +
->> +    try:
->> +        xml =3D gdb.execute("maint print xml-tdesc", False, True)
->> +    except (gdb.error):
->> +        print("SKIP: target does not support XML")
->> +        return None
->> +
->> +    total_regs =3D 0
->> +    reg_map =3D {}
->> +    frame =3D gdb.selected_frame()
->> +
->> +    tree =3D ET.fromstring(xml)
->> +    for f in tree.findall("feature"):
->> +        name =3D f.attrib["name"]
->> +        regs =3D f.findall("reg")
->> +
->> +        total =3D len(regs)
->> +        total_regs +=3D total
->> +        base =3D int(regs[0].attrib["regnum"])
->> +        top =3D int(regs[-1].attrib["regnum"])
->> +
->> +        print(f"feature: {name} has {total} registers from {base} to {t=
-op}")
->> +
->> +        for r in regs:
->> +            name =3D r.attrib["name"]
->> +            regnum =3D int(r.attrib["regnum"])
->> +            try:
->> +                value =3D frame.read_register(name)
->> +            except ValueError:
->> +                report(False, f"failed to read reg: {name}")
->> +
->> +            entry =3D { "name": name, "initial": value, "regnum": regnu=
-m }
->> +
->> +            if name in reg_map:
->> +                report(False, f"duplicate register {entry} vs {reg_map[=
-name]}")
->> +                continue
->> +
->> +            reg_map[name] =3D entry
->> +
->> +    # Validate we match
->> +    report(total_regs =3D=3D len(reg_map.keys()),
->> +           f"counted all {total_regs} registers in XML")
->> +
->> +    return reg_map
->> +
->> +def crosscheck_remote_xml(reg_map):
->> +    """
->> +    Cross-check the list of remote-registers with the XML info.
->> +    """
->> +
->> +    remote =3D gdb.execute("maint print remote-registers", False, True)
->> +    r_regs =3D remote.split("\n")
->> +
->> +    total_regs =3D len(reg_map.keys())
->> +    total_r_regs =3D 0
->> +
->> +    for r in r_regs:
->> +        fields =3D r.split()
->> +        # Some of the registers reported here are "pseudo" registers th=
-at
->> +        # gdb invents based on actual registers so we need to filter th=
-em
->> +        # out.
->> +        if len(fields) =3D=3D 8:
->> +            r_name =3D fields[0]
->> +            r_regnum =3D int(fields[6])
->> +
->> +            # check in the XML
->> +            try:
->> +                x_reg =3D reg_map[r_name]
->> +            except KeyError:
->> +                report(False, f"{r_name} not in XML description")
->> +                continue
->> +
->> +            x_reg["seen"] =3D True
->> +            x_regnum =3D x_reg["regnum"]
->> +            if r_regnum !=3D x_regnum:
->> +                report(False, f"{r_name} {r_regnum} =3D=3D {x_regnum} (=
-xml)")
->> +            else:
->> +                total_r_regs +=3D 1
->> +
->> +    # Just print a mismatch in totals as gdb will filter out 64 bit
->> +    # registers on a 32 bit machine. Also print what is missing to
->> +    # help with debug.
->> +    if total_regs !=3D total_r_regs:
->> +        print(f"xml-tdesc has ({total_regs}) registers")
->> +        print(f"remote-registers has ({total_r_regs}) registers")
->> +
->> +        for x_key in reg_map.keys():
->> +            x_reg =3D reg_map[x_key]
->> +            if "seen" not in x_reg:
->> +                print(f"{x_reg} wasn't seen in remote-registers")
->> +
->> +def complete_and_diff(reg_map):
->> +    """
->> +    Let the program run to (almost) completion and then iterate
->> +    through all the registers we know about and report which ones have
->> +    changed.
->> +    """
->> +    # Let the program get to the end and we can check what changed
->> +    b =3D gdb.Breakpoint("_exit")
->> +    if b.pending: # workaround Microblaze weirdness
->> +        b.delete()
->> +        gdb.Breakpoint("_Exit")
->> +
->> +    gdb.execute("continue")
->> +
->> +    frame =3D gdb.selected_frame()
->> +    changed =3D 0
->> +
->> +    for e in reg_map.values():
->> +        name =3D e["name"]
->> +        old_val =3D e["initial"]
->> +
->> +        try:
->> +            new_val =3D frame.read_register(name)
->> +        except:
->> +            report(False, f"failed to read {name} at end of run")
->> +            continue
->> +
->> +        if new_val !=3D old_val:
->> +            print(f"{name} changes from {old_val} to {new_val}")
->> +            changed +=3D 1
->> +
->> +    # as long as something changed we can be confident its working
->> +    report(changed > 0, f"{changed} registers were changed")
->> +
->> +
->> +def run_test():
->> +    "Run through the tests"
->> +
->> +    reg_map =3D fetch_xml_regmap()
->> +
->> +    if reg_map is not None:
->> +        crosscheck_remote_xml(reg_map)
->> +        complete_and_diff(reg_map)
->> +
->> +
->> +#
->> +# This runs as the script it sourced (via -x, via run-test.py)
->> +#
->> +try:
->> +    inferior =3D gdb.selected_inferior()
->> +    arch =3D inferior.architecture()
->> +    print("ATTACHED: %s" % arch.name())
->> +except (gdb.error, AttributeError):
->> +    print("SKIPPING (not connected)", file=3Dsys.stderr)
->> +    exit(0)
->> +
->> +if gdb.parse_and_eval('$pc') =3D=3D 0:
->> +    print("SKIP: PC not set")
->> +    exit(0)
->> +
->> +try:
->> +    run_test()
->> +except (gdb.error):
->> +    print ("GDB Exception: %s" % (sys.exc_info()[0]))
->> +    failcount +=3D 1
->> +    pass
->> +
->> +print("All tests complete: %d failures" % failcount)
->> +exit(failcount)
->> diff --git a/tests/tcg/multiarch/system/Makefile.softmmu-target b/tests/=
-tcg/multiarch/system/Makefile.softmmu-target
->> index dee4f58dea..32dc0f9830 100644
->> --- a/tests/tcg/multiarch/system/Makefile.softmmu-target
->> +++ b/tests/tcg/multiarch/system/Makefile.softmmu-target
->> @@ -48,9 +48,20 @@ run-gdbstub-untimely-packet: hello
->>  	$(call quiet-command, \
->>  		(! grep -Fq 'Packet instead of Ack, ignoring it' untimely-packet.gdb.=
-err), \
->>  		"GREP", file untimely-packet.gdb.err)
->> +
->> +run-gdbstub-registers: memory
->> +	$(call run-test, $@, $(GDB_SCRIPT) \
->> +		--gdb $(GDB) \
->> +		--qemu $(QEMU) \
->> +		--output $<.registers.gdb.out \
->> +		--qargs \
->> +		"-monitor none -display none -chardev file$(COMMA)path=3D$<.out$(COMM=
-A)id=3Doutput $(QEMU_OPTS)" \
->> +		--bin $< --test $(MULTIARCH_SRC)/gdbstub/registers.py, \
->> +	softmmu gdbstub support)
->>  else
->>  run-gdbstub-%:
->>  	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst=
- -%,,$(TARGET_NAME)) support")
->>  endif
->>=20=20
->> -MULTIARCH_RUNS +=3D run-gdbstub-memory run-gdbstub-interrupt run-gdbstu=
-b-untimely-packet
->> +MULTIARCH_RUNS +=3D run-gdbstub-memory run-gdbstub-interrupt \
->> +	run-gdbstub-untimely-packet run-gdbstub-registers
->> diff --git a/tests/tcg/ppc64/Makefile.target b/tests/tcg/ppc64/Makefile.=
-target
->> index 5721c159f2..1d08076756 100644
->> --- a/tests/tcg/ppc64/Makefile.target
->> +++ b/tests/tcg/ppc64/Makefile.target
->> @@ -38,4 +38,11 @@ PPC64_TESTS +=3D signal_save_restore_xer
->>  PPC64_TESTS +=3D xxspltw
->>  PPC64_TESTS +=3D test-aes
->>=20=20
->> +ifneq ($(GDB),)
->> +# Skip for now until vsx registers sorted out
->> +run-gdbstub-registers:
->> +	$(call skip-test, $<, "BROKEN reading VSX registers")
->> +endif
->> +
->> +
->>  TESTS +=3D $(PPC64_TESTS)
->> diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.=
-target
->> index 826f0a18e4..49af091c38 100644
->> --- a/tests/tcg/s390x/Makefile.target
->> +++ b/tests/tcg/s390x/Makefile.target
->> @@ -100,6 +100,10 @@ run-gdbstub-svc: hello-s390x-asm
->>  		--bin $< --test $(S390X_SRC)/gdbstub/test-svc.py, \
->>  	single-stepping svc)
->>=20=20
->> +# Skip for now until vx registers sorted out
->> +run-gdbstub-registers:
->> +	$(call skip-test, $<, "BROKEN reading VX registers")
->> +
->>  EXTRA_RUNS +=3D run-gdbstub-signals-s390x run-gdbstub-svc
->>  endif
->>=20=20
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBxZW11LWRldmVsLWJvdW5jZXMr
+YmNhaW49cXVpY2luYy5jb21Abm9uZ251Lm9yZyA8cWVtdS1kZXZlbC0NCi4uLg0KPiBBRkFJQ1Qg
+dGhlIGtleXMgZm9yIHJlZ2lzdGVycyBhbmQgbmV3X3JlZ2lzdGVycyBjYW4gYmUgZGVyaXZlZCBm
+cm9tIHRoZSB2YWx1ZXMNCj4gdGhlbXNlbHZlcy4gIFJhdGhlciB0aGFuIHdvcnJ5IGFib3V0IGNv
+cHkvcGFzdGUgZXJyb3JzIGNhdXNpbmcgdGhlc2Ugbm90IHRvDQo+IGNvcnJlc3BvbmQsIHlvdSBj
+YW4gY3JlYXRlIGEgZGljdGlvbmFyeSBmcm9tIGFuIGl0ZXJhYmxlIGxpa2Ugc286DQo+IA0KPiBy
+ZWdpc3RlcnMgPSAoDQo+ICAgICBHcHJEZXN0KCJSIiwgImQiKSwNCj4gICAgIEdwckRlc3QoIlIi
+LCAiZSIpLA0KPiAgICAgR3ByU291cmNlKCJSIiwgInMiKSwNCj4gICAgIEdwclNvdXJjZSgiUiIs
+ICJ0IiksDQo+IC4uLg0KPiApDQo+IHJlZ2lzdGVycyA9IHsgcmVnLnJlZ3R5cGUgKyByZWcucmVn
+aWQgZm9yIHJlZyBpbiByZWdpc3RlcnMgfQ0KDQpTb3JyeSwgZm9yZ290IHRoZSB2YWx1ZSAtIHRo
+YXQgd291bGQgeWllbGQgYSBzZXQgYW5kIG5vdCBhIGRpY3QuDQoNCnJlZ2lzdGVycyA9IHsgcmVn
+LnJlZ3R5cGUgKyByZWcucmVnaWQ6IHJlZyBmb3IgcmVnIGluIHJlZ2lzdGVycyB9DQo=
 
