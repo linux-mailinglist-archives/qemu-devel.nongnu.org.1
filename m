@@ -2,72 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4457EE623
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 18:49:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9897EE629
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 18:53:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3gUR-0005gd-6j; Thu, 16 Nov 2023 12:49:19 -0500
+	id 1r3gXZ-0006s9-9T; Thu, 16 Nov 2023 12:52:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r3gUO-0005gF-Tg
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 12:49:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r3gUN-0000Dl-2N
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 12:49:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700156954;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=m1SkVei98m6H3xodn9W/QDpr9B7r0y4wA6iegBDoYzc=;
- b=IouLzulEjKPyl9nOwEC71LAXOddswFks6787oafvLxa4IzKNPlqxRTlD8huOXUcy1asUNK
- 1Ewv4xMM1XjyuSA/XF2Ox3dqZY/BsmVS3xQuhj8jQVgp4A9CbsbMhS/nbDPHlGbOKnDBLs
- bJLyhm7PrOdaQDMJSht4YDmNa0CdVs0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-352-eYbhWakPOR2nJdqZnz7mDA-1; Thu,
- 16 Nov 2023 12:49:10 -0500
-X-MC-Unique: eYbhWakPOR2nJdqZnz7mDA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 657FF3811F39;
- Thu, 16 Nov 2023 17:49:10 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.34])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5A6F51C060AE;
- Thu, 16 Nov 2023 17:49:09 +0000 (UTC)
-Date: Thu, 16 Nov 2023 17:49:06 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [RFC PATCH] configure: don't try a "native" cross for i386
-Message-ID: <ZVZWEhYbF_0MzEFA@redhat.com>
-References: <20231116172820.2481604-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r3gXW-0006rp-Og
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 12:52:31 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r3gXU-0003Yd-T4
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 12:52:30 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-53d9f001b35so1652922a12.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 09:52:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700157147; x=1700761947; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mVZVzC8npsEzmH+7oN4Wn0psaEvUB4jX0CvxIhJCDFs=;
+ b=sCmChZLc9gv4mN4Grw7vMsu9VY1HQJ2Z6SUHmL/eVzCe6XO1NeYyJa3yUq5xDTysVS
+ 7pno4+zB3m0elQaZuG2UtT6B/uwiwJBS8+KTghrYQMRE+WkNDB9f69eIjTTWE/aP9jAP
+ mAekxTxmC6LNHi7d5ZR/aw2Ug82s6YiCCzGVLfGM0gO6mkP51Jc+HVxpJqGgIReksE3R
+ gT3YzIvXQXOGi5yp4EBAVSWd1HWx0Y4hu3EF/Bfi2v1PGti5qIEekjgJjm7GgqmJP6TV
+ VHgx5YxGxog2hgQkUhXSgSNFOARSCZCg+VEEQjuc5GGfUfy/Hhz4G88TmZSpjs580rmL
+ ucAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700157147; x=1700761947;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=mVZVzC8npsEzmH+7oN4Wn0psaEvUB4jX0CvxIhJCDFs=;
+ b=P6i804wnA6n8t99CKEHMF63PJ/duV85lJaaCLnL31//AVjba4qwpCBFazeguTgLMKR
+ LxYFh4g2nT2n1vunE2GmDaJ3u8WVnnPLmXhwwpD1Xm9AvMuNEA9eiOSZp0MjthiBBJju
+ S2e5e6IFT9vv3kCXw7B64PBkS+g4smYDUQvMZRS4inp8FNYlMzvKIiunrMqIn+NCQHij
+ 1R25nbgjU3IgegtALAEgu6wLbyDrUZsdF1LLnAo6+IiSz0QAQOrpflEwwtB9aJotiLV3
+ rPOuoGspFmwg4aIp2rdJxXkB5nxvzRqEWi058TeJdyZrObutD+Rxy0E+TvYdBWQEQ9yb
+ 5MLw==
+X-Gm-Message-State: AOJu0YxnyCW9xdINeyf5acpa4FqCbIhKADngzecT9arZniE3LwIEWKtq
+ oVxHpeHBbVssvO/8YK5yg054iHvlKPQkfa+IZUDkkw==
+X-Google-Smtp-Source: AGHT+IFmxoUKhRqLqGBHvIKze3VIeITt97NWaJcWW4ikmM3eQWguQaVWgDNj6kBoZ9/VXhRdrzGchPScqbqmIOqqUEw=
+X-Received: by 2002:aa7:c3c9:0:b0:543:5d2e:a9c3 with SMTP id
+ l9-20020aa7c3c9000000b005435d2ea9c3mr15001139edr.20.1700157147066; Thu, 16
+ Nov 2023 09:52:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231116172820.2481604-1-alex.bennee@linaro.org>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20231107101524.2993389-1-marcandre.lureau@redhat.com>
+ <20231107101524.2993389-10-marcandre.lureau@redhat.com>
+In-Reply-To: <20231107101524.2993389-10-marcandre.lureau@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 16 Nov 2023 17:52:15 +0000
+Message-ID: <CAFEAcA8QwVTLRO8eOxRan1Uwd4uCstMXkTa6_eLnfNxAupNy=w@mail.gmail.com>
+Subject: Re: [PULL v3 09/25] ui/console: allow to override the default VC
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org, stefanha@gmail.com, 
+ Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,84 +85,34 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 16, 2023 at 05:28:20PM +0000, Alex Bennée wrote:
-> As 32 bit x86 become rarer we are starting to run into problems with
-> search paths. Although we switched to a Debian container we still
-> favour the native CC on a Bookworm host. As a result we have a broken
-> cross compile setup which then fails to build with:
-> 
->     BUILD   i386-linux-user guest-tests
->   In file included from /usr/include/linux/stat.h:5,
->                    from /usr/include/bits/statx.h:31,
->                    from /usr/include/sys/stat.h:465,
->                    from /home/alex/lsrc/qemu.git/tests/tcg/multiarch/linux/linux-test.c:28:
->   /usr/include/linux/types.h:5:10: fatal error: asm/types.h: No such file or directory
->       5 | #include <asm/types.h>
->         |          ^~~~~~~~~~~~~
->   compilation terminated.
->   make[1]: *** [Makefile:119: linux-test] Error 1
->   make: *** [/home/alex/lsrc/qemu.git/tests/Makefile.include:50: build-tcg-tests-i386-linux-user] Error 2
-> 
-> So lets stop trying to be cute and honour cross_prefix_i386 when
-> searching locally. We also need to ensure we are using the correct
-> prefix if we do end up using the container version. We can also drop
-> the extra CFLAGS while we are at it.
-> 
-> Fixes: 791e6fedc5 (tests/docker: replace fedora-i386 with debian-i686)
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->  configure | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+On Tue, 7 Nov 2023 at 10:24, <marcandre.lureau@redhat.com> wrote:
+>
+> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> If a display is backed by a specialized VC, allow to override the
+> default "vc:80Cx24C".
+>
+> As suggested by Paolo, if the display doesn't implement a VC (get_vc()
+> returns NULL), use a fallback that will use a muxed console on stdio.
+>
+> This changes the behaviour of "qemu -display none", to create a muxed
+> serial/monitor by default (on TTY & not daemonized).
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+This breaks existing command line setups -- if I say
+"-display none" I just mean "don't do a display", not
+"please also give me a monitor". We already have a
+"do what I mean" option for "no graphics", which is
+"-nographic". The advantage of -display none is that
+it does only and exactly what it says it does.
 
-> 
-> diff --git a/configure b/configure
-> index 5e7b76e3a1..2343d629ec 100755
-> --- a/configure
-> +++ b/configure
-> @@ -1190,7 +1190,6 @@ fi
->  : ${cross_cc_cflags_armeb="-mbig-endian"}
->  : ${cross_cc_hexagon="hexagon-unknown-linux-musl-clang"}
->  : ${cross_cc_cflags_hexagon="-mv73 -O2 -static"}
-> -: ${cross_cc_cflags_i386="-m32"}
->  : ${cross_cc_cflags_ppc="-m32 -mbig-endian"}
->  : ${cross_cc_cflags_ppc64="-m64 -mbig-endian"}
->  : ${cross_cc_ppc64le="$cross_cc_ppc64"}
-> @@ -1308,7 +1307,7 @@ probe_target_compiler() {
->          ;;
->        i386)
->          container_image=debian-i686-cross
-> -        container_cross_prefix=
-> +        container_cross_prefix=i686-linux-gnu-
->          ;;
->        loongarch64)
->          container_image=debian-loongarch-cross
-> @@ -1394,7 +1393,6 @@ probe_target_compiler() {
->    case "$target_arch:$cpu" in
->      aarch64_be:aarch64 | \
->      armeb:arm | \
-> -    i386:x86_64 | \
->      mips*:mips64 | \
->      ppc*:ppc64 | \
->      sparc:sparc64 | \
+Setups using semihosting for output now get a spurious
+load of output from the monitor on their terminal.
 
-I kinda wonder if we have people using the rest of this arch compat
-stuff too ? With debian making it easy to parallel install the full
-cross-arch toolchains + matching libraries, it shouldn't be needed in
-general for any arch ?  Getting rid of QEMU specific special cases
-like this in configure would be nice.
+I think we should revert this; I'll send a patch.
 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+thanks
+-- PMM
 
