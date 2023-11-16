@@ -2,79 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2517EE656
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 19:03:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E9BA7EE65F
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 19:06:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3ggO-0000y8-6b; Thu, 16 Nov 2023 13:01:40 -0500
+	id 1r3gkK-0002LW-7f; Thu, 16 Nov 2023 13:05:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1r3ggK-0000xp-Sl; Thu, 16 Nov 2023 13:01:37 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1r3ggI-0002QI-NZ; Thu, 16 Nov 2023 13:01:36 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-53e07db272cso1697687a12.3; 
- Thu, 16 Nov 2023 10:01:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700157692; x=1700762492; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hrZoE2RAshPUg3s4PRjlTQD6BKAoKYIVmreeXNy9wEU=;
- b=aXnOceKI0UndbeKBRnUM6l1tQBKNLEFU0IA6w/FJ350kDUPE67Q/2oAhlx8xzlOTAy
- NQVvH3IFVw7BINZ8g5IJG20x8ENk3vXrpS8jJhKFvQFoOjIGL50PuVupR6y0hi75PwJP
- /Kc8fYfQBGBV1B+8utStrjrc/wOPGTTg/eUbiEKOBQDk1VgqlINoQwAtki/8V19OQhdR
- xq0iupfMZVmqNUfB5qrA6YjbURPG6Kw5PCbf6dwyZ7EseOnIdKoLnEamrX1Ld3LB41T4
- spXsfJy2jZfX460zXou40IC053Eu4IyIRou71rVc3deBUVi+P0hAXZ92139Nu6uoUvym
- 1d5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700157692; x=1700762492;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hrZoE2RAshPUg3s4PRjlTQD6BKAoKYIVmreeXNy9wEU=;
- b=fqk5BoDccvC/bTxu+ZnfAAZyk8vph+q01m3V+JLFkQUcbrOd52ttdAQbPqRQyebvnj
- AJQAzHy8irR/V5xL+W1eob8PZ6iDWWmXPOV/yS3Ab5Dytb0WJW7D0gjWxQZxzWjO19QV
- YrF7tsCf61RfQYltP411a/7I9y56336CvSR2TrHUekfErpzX4vaigVuCa2YqD4H2SEHX
- PFyu7mTDRFZHNPjcL17kcybe5dquXoo8of7BhQ0VsC9m48UZUfp/XYVNVTDKAJMQkvvJ
- IO+97S+to85FaJkO852XoO2HfcvEq+I/RTmoYSwH/V6x8Fwr9tMg/d1zF3FXlFJRF693
- ITdw==
-X-Gm-Message-State: AOJu0YysJxqtIYjup3Zx/yzBng00SAHNH+1bSGhbPzxp0i6I3Afa26a8
- lQpZxGfCFiMxiLgQlgB7xJt5lkcLu0Cj3OOP/ic=
-X-Google-Smtp-Source: AGHT+IH++Va6W/3Q4jp9VhW2JId8JatMjaF4Eu0N7b8C0vw5rnayvq+X5pHxoguD5gEi0vhZu3cqNqbL1NtEBuB7LaM=
-X-Received: by 2002:a17:906:1188:b0:9d5:9ff5:ce with SMTP id
- n8-20020a170906118800b009d59ff500cemr11173876eja.34.1700157691534; Thu, 16
- Nov 2023 10:01:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3gkH-0002Kv-Na
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 13:05:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3gkG-00040V-0l
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 13:05:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700157938;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=+ruPnXfnYkgnqPOHxNYE+5bMTUEHSxvFb07H/goCRIQ=;
+ b=gRT8J0VBfrJaHdvIrlcyp86/k9vW9cbp88Lie+enidhspWzGge/O2txpf8gGdgM8Q4FW5w
+ QUKxGzX+qq7CIlWDaOItVRSjZ8P+yL3ysMceoxOAP9j26XmBQDoZxLeYkxwujagRsDcRGS
+ HO02lXhHlQQHgRv8sCY0R6cM0ycMh8M=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-696-54z8h9dDMKeTBokwNWskzQ-1; Thu,
+ 16 Nov 2023 13:05:36 -0500
+X-MC-Unique: 54z8h9dDMKeTBokwNWskzQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 82E111C0BA4A
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 18:05:36 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.117])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DCAE31121306;
+ Thu, 16 Nov 2023 18:05:35 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 00/10] Avocado test fixes
+Date: Thu, 16 Nov 2023 19:05:24 +0100
+Message-ID: <20231116180534.566469-1-thuth@redhat.com>
 MIME-Version: 1.0
-References: <20231030121847.4522-1-faithilikerun@gmail.com>
- <20231030121847.4522-3-faithilikerun@gmail.com>
- <i43illqyyzu7wbotuw2fbuft7izdmfo7jkwnds4yrigewachhw@7pudpozwjer5>
- <878r7f19xm.fsf@pond.sub.org>
-In-Reply-To: <878r7f19xm.fsf@pond.sub.org>
-From: Sam Li <faithilikerun@gmail.com>
-Date: Fri, 17 Nov 2023 02:01:05 +0800
-Message-ID: <CAAAx-8JLLzk+GeGM1b8gVKZO+j_HFL6ugceUU6RTn+x0nDJo0w@mail.gmail.com>
-Subject: Re: [PATCH v5 2/4] qcow2: add configurations for zoned format
- extension
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>, dlemoal@kernel.org, hare@suse.de, 
- dmitry.fomichev@wdc.com, stefanha@redhat.com, qemu-block@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=faithilikerun@gmail.com; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,144 +75,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> =E4=BA=8E2023=E5=B9=B411=E6=9C=883=E6=
-=97=A5=E5=91=A8=E4=BA=94 17:08=E5=86=99=E9=81=93=EF=BC=9A
->
-> Eric Blake <eblake@redhat.com> writes:
->
-> > On Mon, Oct 30, 2023 at 08:18:45PM +0800, Sam Li wrote:
-> >> To configure the zoned format feature on the qcow2 driver, it
-> >> requires settings as: the device size, zone model, zone size,
-> >> zone capacity, number of conventional zones, limits on zone
-> >> resources (max append bytes, max open zones, and max_active_zones).
-> >>
-> >> To create a qcow2 file with zoned format, use command like this:
-> >> $ qemu-img create -f qcow2 test.qcow2 -o size=3D768M -o
-> >> zone_size=3D64M -o zone_capacity=3D64M -o conventional_zones=3D0 -o
-> >> max_append_bytes=3D4096 -o max_open_zones=3D0 -o max_active_zones=3D0
-> >> -o zone_model=3Dhost-managed
-> >>
-> >> Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> >>
-> >> fix config?
-> >
-> > Is this comment supposed to be part of the commit message?  If not,...
-> >
-> >> ---
-> >
-> > ...place it here under the divider, so 'git am' won't include it, if th=
-ere is nothing further to change on this patch.
->
-> [...]
->
-> >> +++ b/qapi/block-core.json
-> >> @@ -4981,6 +4981,21 @@
-> >>  { 'enum': 'Qcow2CompressionType',
-> >>    'data': [ 'zlib', { 'name': 'zstd', 'if': 'CONFIG_ZSTD' } ] }
-> >>
-> >> +##
-> >> +# @Qcow2ZoneModel:
-> >> +#
-> >> +# Zoned device model used in qcow2 image file
-> >> +#
-> >> +# @non-zoned: non-zoned model is for regular block devices
-> >> +#
-> >> +# @host-managed: host-managed model only allows sequential write over=
- the
-> >> +#     device zones
-> >> +#
-> >> +# Since 8.2
-> >> +##
-> >> +{ 'enum': 'Qcow2ZoneModel',
-> >> +  'data': ['non-zoned', 'host-managed'] }
-> >> +
-> >>  ##
-> >>  # @BlockdevCreateOptionsQcow2:
-> >>  #
-> >> @@ -5023,6 +5038,27 @@
-> >>  # @compression-type: The image cluster compression method
-> >>  #     (default: zlib, since 5.1)
-> >>  #
-> >> +# @zone-model: @Qcow2ZoneModel.  The zone device model.
-> >> +#     (default: non-zoned, since 8.2)
-> >> +#
-> >> +# @zone-size: Total number of bytes within zones (since 8.2)
-> >
-> > If @zone-model is "non-zoned", does it make sense to even allow
-> > @zone-size and friends?  Should this use a QMP union, where you can
-> > pass in the remaining zone-* fields only when zone-model is set to
-> > host-managed?
->
-> Valid question; needs an answer.
+The following changes since commit 34a5cb6d8434303c170230644b2a7c1d5781d197:
 
-Yes, it should use a QMP union. It's better to separate those fields
-for zoned and non-zoned.
+  Merge tag 'pull-tcg-20231114' of https://gitlab.com/rth7680/qemu into staging (2023-11-15 08:05:25 -0500)
 
->
-> >> +#
-> >> +# @zone-capacity: The number of usable logical blocks within zones
-> >> +#     in bytes.  A zone capacity is always smaller or equal to the
-> >> +#     zone size (since 8.2)
-> >> +#
-> >> +# @conventional-zones: The number of conventional zones of the
-> >> +#     zoned device (since 8.2)
-> >> +#
-> >> +# @max-open-zones: The maximal number of open zones (since 8.2)
-> >> +#
-> >> +# @max-active-zones: The maximal number of zones in the implicit
-> >> +#     open, explicit open or closed state (since 8.2)
-> >> +#
-> >> +# @max-append-bytes: The maximal number of bytes of a zone
-> >> +#     append request that can be issued to the device.  It must be
-> >> +#     512-byte aligned (since 8.2)
-> >> +#
-> >>  # Since: 2.12
-> >>  ##
-> >>  { 'struct': 'BlockdevCreateOptionsQcow2',
-> >> @@ -5039,7 +5075,14 @@
-> >>              '*preallocation':   'PreallocMode',
-> >>              '*lazy-refcounts':  'bool',
-> >>              '*refcount-bits':   'int',
-> >> -            '*compression-type':'Qcow2CompressionType' } }
-> >> +            '*compression-type':'Qcow2CompressionType',
-> >> +            '*zone-model':         'Qcow2ZoneModel',
-> >> +            '*zone-size':          'size',
-> >> +            '*zone-capacity':      'size',
-> >> +            '*conventional-zones': 'uint32',
-> >> +            '*max-open-zones':     'uint32',
-> >> +            '*max-active-zones':   'uint32',
-> >> +            '*max-append-bytes':   'uint32' } }
-> >
-> > In other words, I'm envisioning something like an optional
-> > '*zone':'ZoneStruct', where:
-> >
-> > { 'struct': 'ZoneHostManaged',
-> >   'data': { 'size': 'size', '*capacity': 'size', ..., '*max-append-byte=
-s': 'uint32' } }
-> > { 'union': 'ZoneStruct',
-> >   'base': { 'model': 'Qcow2ZoneModel' },
-> >   'discriminator': 'model',
-> >   'data': { 'non-zoned': {},
-> >             'host-managed': 'ZoneHostManaged' } }
-> >
-> > then over the wire, QMP can use the existing:
-> > { ..., "compression-type":"zstd" }
-> >
-> > as a synonym for the new but explicit non-zoned:
-> > { ..., "compression-type":"zstd", "zone":{"mode":"non-zoned"} }
->
-> I.e. @zone is optional, and defaults to {"mode": "non-zoned"}.
->
-> > and when we want to use zones, we pass:
-> > { ..., "compression-type":"zstd", "zone":{"mode":"host-managed", "size"=
-:16777216} }
-> >
-> > where you don't have to have zone- prefixing everywhere because it is
-> > instead contained in the smart union object where it is obvious from
-> > the 'mode' field what other fields should be present.
->
+are available in the Git repository at:
 
-Yes, it's better. Thanks!
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2023-11-16
 
-Sam
+for you to fetch changes up to c4d74ab24a02c90b7a3240510b3dd4e1bec536dd:
+
+  tests/avocado: Enable reverse_debugging.py tests in gitlab CI (2023-11-16 14:22:56 +0100)
+
+----------------------------------------------------------------
+* Fix the avocado tests for running with Python 3.12
+* Add some asset hashes to silence warnings
+* Fix the broken reverse_debugging test
+
+----------------------------------------------------------------
+Nicholas Piggin (2):
+      tests/avocado: reverse_debugging drain console to prevent hang
+      tests/avocado: Enable reverse_debugging.py tests in gitlab CI
+
+Philippe Mathieu-Daudé (2):
+      tests/avocado: Replace assertRegexpMatches() for Python 3.12 compatibility
+      tests/avocado: Make fetch_asset() unconditionally require a crypto hash
+
+Thomas Huth (6):
+      tests/avocado: Replace assertEquals() for Python 3.12 compatibility
+      tests/avocado/virtio-gpu: Fix test_vhost_user_vga_virgl for edid support
+      tests/avocado/intel_iommu: Add asset hashes to avoid warnings
+      tests/avocado/multiprocess: Add asset hashes to silence warnings
+      tests/avocado/replay_kernel: Mark the test_x86_64_pc as flaky
+      tests/avocado/mem-addr-space-check: Replace assertEquals() for Python 3.12
+
+ docs/devel/testing.rst                  |  4 +-
+ tests/avocado/avocado_qemu/__init__.py  |  2 +-
+ tests/avocado/cpu_queries.py            |  2 +-
+ tests/avocado/empty_cpu_model.py        |  2 +-
+ tests/avocado/intel_iommu.py            |  6 +-
+ tests/avocado/mem-addr-space-check.py   | 14 ++---
+ tests/avocado/multiprocess.py           | 18 ++++--
+ tests/avocado/pc_cpu_hotplug_props.py   |  2 +-
+ tests/avocado/replay_kernel.py          |  3 +-
+ tests/avocado/reverse_debugging.py      | 12 ++--
+ tests/avocado/version.py                |  2 +-
+ tests/avocado/virtio-gpu.py             |  6 +-
+ tests/avocado/x86_cpu_model_versions.py | 97 +++++++++++++++++----------------
+ 13 files changed, 88 insertions(+), 82 deletions(-)
+
 
