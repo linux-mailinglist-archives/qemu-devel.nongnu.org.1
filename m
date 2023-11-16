@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1265B7EE669
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 19:07:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 207C57EE662
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 19:07:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3gkZ-0002St-0k; Thu, 16 Nov 2023 13:06:00 -0500
+	id 1r3gkT-0002RK-4H; Thu, 16 Nov 2023 13:05:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3gkM-0002No-3o
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 13:05:47 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3gkN-0002On-SL
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 13:05:48 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3gkK-000422-KR
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 13:05:45 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3gkL-00042N-AY
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 13:05:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700157943;
+ s=mimecast20190719; t=1700157944;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iRQrsg9JElMsYFARg6ZaoqvlXVxBOPdXlhFTERZzbH0=;
- b=deN+1OT0AFFP06tTJ0N2uvS63Y63UC1NcYjyx6hGyu/aVonjy5oPiC0GIgXWi1cVV8Q4VE
- T5FLs4VzIOxxAiPN/cbuLkj3TLzL1Dl4zUXBCGzaSBoYkKoACbCJga0Am5Z7Ez4GH7/abE
- 8tlzkFPERl8lmHD5gWjyHcD9CC5ZNbM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-153-14uBFUXKO72gR4VFo--f1w-1; Thu,
- 16 Nov 2023 13:05:41 -0500
-X-MC-Unique: 14uBFUXKO72gR4VFo--f1w-1
+ bh=PkLOx5YuLoi1SO1djyzQQvQR+C5F8GgJGgGKA1Lui/0=;
+ b=ZVAhbOrhOiaW7T6zWt1d0fZnbNZIdh8JWc6bcG50LSCU7dFB5d1/kJpUE0Xtn25q2HLtS/
+ 9ZhtssH3W7awBVUGIfrlwXhow+nLLI/yDdL6RDD22rFNfkI4yo5vqSS59DFON2j/rcXoKR
+ dLYOLUVTaQbVUnSbpx4Yjomuvys2FDY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-267-e7t5s_XoOR6JHPIEJx-DbQ-1; Thu, 16 Nov 2023 13:05:43 -0500
+X-MC-Unique: e7t5s_XoOR6JHPIEJx-DbQ-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 97A451C0BA46
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 18:05:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CFF67101A54C
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 18:05:42 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.117])
- by smtp.corp.redhat.com (Postfix) with ESMTP id ACAD71121306;
- Thu, 16 Nov 2023 18:05:40 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D8BCD1121306;
+ Thu, 16 Nov 2023 18:05:41 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Eric Auger <eric.auger@redhat.com>
-Subject: [PULL 04/10] tests/avocado/intel_iommu: Add asset hashes to avoid
+Subject: [PULL 05/10] tests/avocado/multiprocess: Add asset hashes to silence
  warnings
-Date: Thu, 16 Nov 2023 19:05:28 +0100
-Message-ID: <20231116180534.566469-5-thuth@redhat.com>
+Date: Thu, 16 Nov 2023 19:05:29 +0100
+Message-ID: <20231116180534.566469-6-thuth@redhat.com>
 In-Reply-To: <20231116180534.566469-1-thuth@redhat.com>
 References: <20231116180534.566469-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -79,34 +78,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The intel_iommu test is currently succeeding with annoying warnings.
-Add the proper asset hashes to avoid those.
+The multiprocess test is currently succeeding with an annoying warning:
 
-Message-ID: <20231114143531.291820-1-thuth@redhat.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+ (1/2) tests/avocado/multiprocess.py:Multiprocess.test_multiprocess_x86_64:
+       WARN: Test passed but there were warnings during execution. Check
+       the log for details
+
+In the log, you can find an entry like:
+
+ WARNI| No hash provided. Cannot check the asset file integrity.
+
+Add the proper asset hashes to avoid those warnings.
+
+Message-ID: <20231115145852.494052-1-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/avocado/intel_iommu.py | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tests/avocado/multiprocess.py | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/tests/avocado/intel_iommu.py b/tests/avocado/intel_iommu.py
-index 474d62f6bf..77635ab56c 100644
---- a/tests/avocado/intel_iommu.py
-+++ b/tests/avocado/intel_iommu.py
-@@ -54,9 +54,11 @@ def common_vm_setup(self, custom_kernel=None):
-             return
+diff --git a/tests/avocado/multiprocess.py b/tests/avocado/multiprocess.py
+index 9112a4cacc..ee7490ae08 100644
+--- a/tests/avocado/multiprocess.py
++++ b/tests/avocado/multiprocess.py
+@@ -18,8 +18,8 @@ class Multiprocess(QemuSystemTest):
+     """
+     KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
  
-         kernel_url = self.distro.pxeboot_url + 'vmlinuz'
+-    def do_test(self, kernel_url, initrd_url, kernel_command_line,
+-                machine_type):
++    def do_test(self, kernel_url, kernel_hash, initrd_url, initrd_hash,
++                kernel_command_line, machine_type):
+         """Main test method"""
+         self.require_accelerator('kvm')
+         self.require_multiprocess()
+@@ -30,8 +30,8 @@ def do_test(self, kernel_url, initrd_url, kernel_command_line,
+         os.set_inheritable(proxy_sock.fileno(), True)
+         os.set_inheritable(remote_sock.fileno(), True)
+ 
+-        kernel_path = self.fetch_asset(kernel_url)
+-        initrd_path = self.fetch_asset(initrd_url)
++        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
++        initrd_path = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
+ 
+         # Create remote process
+         remote_vm = self.get_vm()
+@@ -72,13 +72,16 @@ def test_multiprocess_x86_64(self):
+         kernel_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
+                       '/linux/releases/31/Everything/x86_64/os/images'
+                       '/pxeboot/vmlinuz')
 +        kernel_hash = '5b6f6876e1b5bda314f93893271da0d5777b1f3c'
-         initrd_url = self.distro.pxeboot_url + 'initrd.img'
--        self.kernel_path = self.fetch_asset(kernel_url)
--        self.initrd_path = self.fetch_asset(initrd_url)
+         initrd_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
+                       '/linux/releases/31/Everything/x86_64/os/images'
+                       '/pxeboot/initrd.img')
 +        initrd_hash = 'dd0340a1b39bd28f88532babd4581c67649ec5b1'
-+        self.kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-+        self.initrd_path = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
+         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+                                'console=ttyS0 rdinit=/bin/bash')
+         machine_type = 'pc'
+-        self.do_test(kernel_url, initrd_url, kernel_command_line, machine_type)
++        self.do_test(kernel_url, kernel_hash, initrd_url, initrd_hash,
++                     kernel_command_line, machine_type)
  
-     def run_and_check(self):
-         if self.kernel_path:
+     def test_multiprocess_aarch64(self):
+         """
+@@ -87,10 +90,13 @@ def test_multiprocess_aarch64(self):
+         kernel_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
+                       '/linux/releases/31/Everything/aarch64/os/images'
+                       '/pxeboot/vmlinuz')
++        kernel_hash = '3505f2751e2833c681de78cee8dda1e49cabd2e8'
+         initrd_url = ('https://archives.fedoraproject.org/pub/archive/fedora'
+                       '/linux/releases/31/Everything/aarch64/os/images'
+                       '/pxeboot/initrd.img')
++        initrd_hash = '519a1962daf17d67fc3a9c89d45affcb399607db'
+         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+                                'rdinit=/bin/bash console=ttyAMA0')
+         machine_type = 'virt,gic-version=3'
+-        self.do_test(kernel_url, initrd_url, kernel_command_line, machine_type)
++        self.do_test(kernel_url, kernel_hash, initrd_url, initrd_hash,
++                     kernel_command_line, machine_type)
 -- 
 2.41.0
 
