@@ -2,67 +2,180 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7128E7EE58F
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 17:53:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD6E7EE5AB
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 18:05:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3fbd-0005AH-R2; Thu, 16 Nov 2023 11:52:41 -0500
+	id 1r3fmZ-0003a3-8n; Thu, 16 Nov 2023 12:03:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+0547470b7b70d81452c7+7389+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r3fba-00059N-9W
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 11:52:38 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1r3fmS-0003XG-Gh
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 12:03:52 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+0547470b7b70d81452c7+7389+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r3fbV-0003Ul-3M
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 11:52:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=po4LWqxolfCZei4qN22lyty17sOdFXI3Fg60OVf8KCM=; b=RnUIquWmfD4JJ86HVxoihiAuP1
- tAevH8SiJM89/OA/Z54e5XIOZrZ7prkb95DKIu9NhD4GR4kARysgLldBx3xAJ9uQmXW5+Z9vdkVG5
- PMRFV6z/KD32UOWQCdWGl1Z1B9EqvhYBaUxPf35GcqSRPisn7yQDCJWc9XlZjq8L4A0jQUDxt9WcN
- v3l9JSjKklT2x075uo6S7FK6qh4Shd2qRyBsUAwwM8wbOexnhQfANTjuZG/QhpZ8POiMGRebbLZb4
- RLZYxJeDXOLru4ApBoYjc4UxsQcE+EbBmxEHZpVPyDwUEpuSTjrAPLULjqjBRJQWA86h8VdZANuSR
- QvFhkJfw==;
-Received: from [52.95.4.28] (helo=freeip.amazon.com)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1r3fbP-0048jC-Kr; Thu, 16 Nov 2023 16:52:28 +0000
-Message-ID: <e87a921017457e5a9e30a62ceeb19b33298e415e.camel@infradead.org>
-Subject: Re: [PULL v3 09/25] ui/console: allow to override the default VC
-From: David Woodhouse <dwmw2@infradead.org>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: marcandre.lureau@redhat.com, qemu-devel@nongnu.org, Gerd Hoffmann
- <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, paul
- <paul@xen.org>
-Date: Thu, 16 Nov 2023 11:52:24 -0500
-In-Reply-To: <3aa4a6f9cddbacc17b714d8e3473dfd427026b58.camel@infradead.org>
-References: <20231107101524.2993389-1-marcandre.lureau@redhat.com>
- <20231107101524.2993389-10-marcandre.lureau@redhat.com>
- <4f89df97e82375b22afca0f59102954434dc08cc.camel@infradead.org>
- <CAJSP0QVbaj0qTor_SEFD9qU8x1c3+-rnyDCQro1Eq3fOpQa5Mg@mail.gmail.com>
- <3aa4a6f9cddbacc17b714d8e3473dfd427026b58.camel@infradead.org>
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-5PDuprMITLYcRVjhkWPH"
-User-Agent: Evolution 3.44.4-0ubuntu2 
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1r3fmP-0005xo-II
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 12:03:52 -0500
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AGGXrI2012781; Thu, 16 Nov 2023 17:03:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=4O4ulc7/WfLjPkgE1re3Hsvaz0QSGoCSBn/0rE0oM0g=;
+ b=P7vrZT8mwP6fvpL0+RN0sbF27h6+bxYawE+wSsMJs1BNPQIReldS8VeSDNciQnKsqX0W
+ WIiaVr6b/VteRKioM+BP4lSzJgAuXgviuYo0USdhQLealxBhGhWYYhWSqeH1pw7Qz2f1
+ 55kknftpAsyRksT6VpVeO6XhEVYitsgzqmbKbDkztvRhjA3BBEomiHACLW2d9w1d0C4H
+ 9o69EGYqHPzYj48NhKS6LG6vlJo+Lk2AvT2CQ6asGtE09sdqJa2kBkj2Xl9W5H36LvFz
+ if7TB6gGiUxsLKSkSKx2cZ0ZD79MNLIjLfLxn90L9TUASvH+xy6IxB3sDtBCQ3OO4fT+ SQ== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ua2qdbf5v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 16 Nov 2023 17:03:42 +0000
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 3AGGP7C4036968; Thu, 16 Nov 2023 17:03:41 GMT
+Received: from nam11-bn8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11lp2169.outbound.protection.outlook.com [104.47.58.169])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3ub5k76r00-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 16 Nov 2023 17:03:41 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Yj4nYaCaeYZEMppQKUh2OVbnA23jC6y/ArGbQTYFMBHNSqrw7SfvtZddYTFDQEAI1a0F+P9DoOCi357SrVAUy30O4xxZJUXyKiOH7G7gRKfCxCQjF6FO0K0DmsAC/Wjnw1B6ciIDaooEyTJ6kAcNnmE2nlPpUSMv8lRGv+nYRGwsUdlk0tYW7KUhvfp9Pnf9OrSFZ4oUKu7l9uDuRWEqURKjOmCAS8yHc+kBtjSpITE+qkzG3fpRN7HiTb0F+uO90yptd9EehhO7euNvM74bUpDpbeA9DAfEYTcY4E2p24h/O8km0AEcm9qis6NXaVHbjiQKIce+cXoMFVjTgPL1CA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4O4ulc7/WfLjPkgE1re3Hsvaz0QSGoCSBn/0rE0oM0g=;
+ b=Uf2vLHH3bPyA1Y6vcCl/QlaD+w+9gf1Do+3iOByjDAPBiJF7XE26qshmS+IM5bbP+TweNu4wO8cyczkWUpAbDyouoUYGatekWWoBjb2dp2W21GjEI4UDFw1cF2NQMdWfIDKaslN+/cq4kXXVfT1eq9ixt3o0ThMX56JxnYc7+MnZ3VxCeD5MdPsFhLGK0O3mvmEAYhhrPHYYry7+GKcvtONkWcw0awI5pcbBoe+YxltTx3GlCOJ0otrZNu1iXbD1bplGCoLfqLeK6pM5Io5wg/MRRv45mRUoHJPZ7dhL5rnrzuvt6uQ1yitGk3H/T71Ya/Ft7w76zTiMEe6g7UDtow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4O4ulc7/WfLjPkgE1re3Hsvaz0QSGoCSBn/0rE0oM0g=;
+ b=APMfhEwtiui/GQNJvDotRpA3pa/PzE0QoXYk6BXuY5ar3St0yGFzNkA9LQuO9U0oWNrlZLY46EdqqVuM9JXdWPmhpu7C17QVc7Q6SrAa3FBhumJofm2lodavFnd+kNxroLj6EDqrU3aHjtVRjfBOkdKmcGU5EwhGJu2mt+icJE4=
+Received: from SA2PR10MB4684.namprd10.prod.outlook.com (2603:10b6:806:119::14)
+ by MN0PR10MB6008.namprd10.prod.outlook.com (2603:10b6:208:3c8::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.21; Thu, 16 Nov
+ 2023 17:03:30 +0000
+Received: from SA2PR10MB4684.namprd10.prod.outlook.com
+ ([fe80::d609:b162:ba7c:4e96]) by SA2PR10MB4684.namprd10.prod.outlook.com
+ ([fe80::d609:b162:ba7c:4e96%4]) with mapi id 15.20.7002.015; Thu, 16 Nov 2023
+ 17:03:30 +0000
+Message-ID: <45bfd9b2-09dd-471f-9c54-b7f746bf0baf@oracle.com>
+Date: Thu, 16 Nov 2023 12:03:28 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] monitor: flush messages on abort
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>
+References: <1699027289-213995-1-git-send-email-steven.sistare@oracle.com>
+ <ZUUu2IuUQ/Od7+Vr@redhat.com>
+ <3d45ebc0-de9f-4051-9c08-47e40fea65da@oracle.com>
+ <ZUi7izJoVpU+iiuC@redhat.com> <875y23s918.fsf@pond.sub.org>
+ <17078387-f782-42dc-a5bf-25ee22bc518a@oracle.com>
+ <87a5rfkn73.fsf@pond.sub.org>
+ <1f51f77e-6793-49a8-b6a2-4f3b1d6a761c@oracle.com>
+ <8734x5ennk.fsf@pond.sub.org>
+From: Steven Sistare <steven.sistare@oracle.com>
+Organization: Oracle Corporation
+In-Reply-To: <8734x5ennk.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MN2PR08CA0025.namprd08.prod.outlook.com
+ (2603:10b6:208:239::30) To SA2PR10MB4684.namprd10.prod.outlook.com
+ (2603:10b6:806:119::14)
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+0547470b7b70d81452c7+7389+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PR10MB4684:EE_|MN0PR10MB6008:EE_
+X-MS-Office365-Filtering-Correlation-Id: c9350475-50d3-41c9-1e54-08dbe6c5f5a2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: w85ARe7Jd2tc959IqaL2gMfQoCCWwP15LFF8cAXq2b9ES14m5uSWPZsiOC/RBjJ7Jm++YNVpfdFj4NEk5yO+nvyNoEPXIBhzB7B+zTXFyIZ0hd++TsX9+y/oPycYAuDsgrl2LP71OZuQZcct/aUJwO2XxR3V+hacH5CQj793TjT4udcftenI03VkEo/75XeTTfHZWDzfMf4n0ipffxbjlMiV9dNBrdTtKgIBWoE5vYNCvX/LrYRFltQK6K3GW1u4Oe3h63bArDDkWl4alAnwGqVZvmPhKrGNouU35NYOI5lJ0X4fJAMDt+hBQ/AJ5Jz2EaV8aJl3qB9N3T+lxcjLMm3y3AE6Ho+yIGU/zhMFyusvu/DPUgjkVrUPJqRFYc4O83F2U8+zKXtRQAIVymvT9/WTTEIJqzXw/9R6yIAtw8F1DOXcHGR9psjJddmr/kNnpgg1F4bdHF2r5hoe0amX/Ii77a7AD2TlBWlGVHj6Hh6uioYP1OuzpkbdrETowJz2mmo7MNrEGpzEUvSgat6KCJSAz/S58Pe9+GgQDB0kn0KLt0XIZJmVtorcUEg6Ai9p5VldYxiE0Z/FU44N0N1WUZU4oWwmINzthtCsTAsUEdXRX7t/dC7/tQZt1pgUCs7/Fy6uf1uYp8z68LtxnZnIOg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA2PR10MB4684.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376002)(366004)(39860400002)(396003)(346002)(136003)(230922051799003)(451199024)(1800799009)(64100799003)(186009)(83380400001)(36916002)(53546011)(6512007)(26005)(6506007)(66899024)(2616005)(316002)(6916009)(66476007)(54906003)(66556008)(36756003)(66946007)(4326008)(8676002)(38100700002)(8936002)(15650500001)(2906002)(41300700001)(44832011)(5660300002)(31696002)(31686004)(6486002)(86362001)(478600001)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?c2FobGtZTFVEMWdiZjZZQ1hSYXlHbUxCbUhJaVQvVys0ZVpsSVhYT01sbEdO?=
+ =?utf-8?B?V0kxblhUU1dKRDVDUkJWRzJOb0l4c3ZlRzgyekFBUDRRSzFMNUJ3a2xHYjVC?=
+ =?utf-8?B?cHNMV1kyWmFiVUY4RURIRHBWOFRVMW52YjlqOEpxeFB0N0ZEdTRzSnBpQnRa?=
+ =?utf-8?B?eHhuTVdUY1YwNkpadzZGSWcySXN6LytUa21hd3RWZUVxYnk5K2JjczBtdkh2?=
+ =?utf-8?B?VVJ6TkRES1l2OXhwRU5TRVRPbmZxK1RIcjFocWNtOFZ5aHFwbkFuNGJOYmpZ?=
+ =?utf-8?B?VlljMmlZRlpyZEZ5SHJ1dDQ4SWhvbVczQkJIWG5VYUdmR1Z6WjR4bituYTdx?=
+ =?utf-8?B?RjQrb1VWL3g1TGZKRGVnS3M1Sk5aYXkwRE0yT2t5T0Z0TEZWRWlvd284Q0Ur?=
+ =?utf-8?B?d2JsenBoWUI0VHJ3TklLcUh3Tm5memVWYVA4Y2MzUWRCSUlPVzVHWXJiQ1M4?=
+ =?utf-8?B?blRTTjJKRzhIckxTaW5IY3BPWktJczlBVEVMNzN4VElVSDd5eG5sYkh5UFFi?=
+ =?utf-8?B?ZUU4b0hlK0JVbzVVeTV3Y0xDeVpuN25PdDNWUVlPRVVCWFNXWFNvTFdnSXlG?=
+ =?utf-8?B?TzhiRDVvb1NDRm43azZMcWVvT2hDTWYrOEhHdTZSV0F1bENYZ3RvY09GRk04?=
+ =?utf-8?B?eGF3U2RJV3IzUExSazhkbUZ6ODE2MUhvWFMvR1Qxb2lLVVNRS2VvUVFPTHNZ?=
+ =?utf-8?B?MEhtSko2K0JNQkVtalhma05OYUZjbS9yR20xYlZwZVVoQ2FocFdpQ0Y1d0JH?=
+ =?utf-8?B?aXJDK3RyVzFNYlUwN0NPNUdUYW1JS292V0hSWUFUR0ZXNCtnUVpaR2l1VG1E?=
+ =?utf-8?B?dzlETUJqTkNUS1JhM0UrNUhLSjF4clJITFdXRmExTnFjMExNa0lqS29qWHMv?=
+ =?utf-8?B?OWVZbnNLdkhjQlJiRlVTTG4xKzJkdFZvZFpTM0orM2VISU9YUXBUbm5FNSs2?=
+ =?utf-8?B?YXlEeEZqdGRzeG5TS1UwSk9oMjFuLzVOVjNZek82cFI1RFdxRGpzTXlWUldx?=
+ =?utf-8?B?RllTdDl5NmhYa0RCczQ2TWZuMU1FRElubThJYWpQTTh0MDUvYnFFNnF1ekZv?=
+ =?utf-8?B?S0dqaTA5VUkvbzdsYWdmd1NIZGdjMGhHZWxpVWMvYys4UTlvZ0huNkpBcktK?=
+ =?utf-8?B?TmdpbTRqVUVZeWE2OUtFb3hTVnRwblE2REdxT09PWWl6RGQxbVRNVXU1VXV1?=
+ =?utf-8?B?dlpIVklaeVRpM0VQemRRV0V6TnRPYUsxK0RKSFRkT3dadEFzK0dJaWNrT3BT?=
+ =?utf-8?B?eGhlZjJJeDdpa00rVHl2d242dVljK2F4R0RPc1loZFBUR3RHTGdTQjR2SWwy?=
+ =?utf-8?B?T2M4N1J3QTFSbzNxWG9PSERsUmdnb3NYTGpYT1YrS2k3dWhUK0Y3V20raHQ2?=
+ =?utf-8?B?YndiQ05Kd1VHUHVmZnFWa3grWDhjS2tRZVBabjZXQkpNcWhrRWRIRlMxMFNT?=
+ =?utf-8?B?MUU0R3JYeVFUMGJ0dlk5YnBtY3RWUmY1VHhnR0hEQ3RJSExVT3E4NFJON2lN?=
+ =?utf-8?B?MnlUNERrOW9TOXJ3aWpOL3E5a2UreTRibHFoZG41QTRISFlzQ0xtSmhQN2tm?=
+ =?utf-8?B?TlpXU0Ixcis2Sm5lcFY3aC82RmNEaHZDQXVxVWR0WEhIK093SDBuWW9xN3VW?=
+ =?utf-8?B?d0tqRzVWS1p4S29VMTdwTzJRQXZPMWZUMXVyNVhHSkhTSGR2OXpadGhNWjBo?=
+ =?utf-8?B?LzVObnJnY1pUTU02UHlDSjJHWDBSRGJOQTBQaTVFU0IyTjNMZGx2aDB0OGdF?=
+ =?utf-8?B?WGtCdHdJYzEyMzE4ZlVSUnJ5OUtLS3l0SHEvSHJ0WXMyNFR5SHZNdTZrUkRJ?=
+ =?utf-8?B?S0g4NmJTaFU0bWZkbkVTYTFEeWFiVlpKYmRtQ1NHN3pyRGo2UmNLVFRMekxP?=
+ =?utf-8?B?UHQ3RzZhc0dacFVNa01MOGdFZnA5bnNpYmNuaUMwdE8rZkFvUGhrQU96R21C?=
+ =?utf-8?B?MXRwWW5ZOFFHSzhwd25wSHRlOEdVREJMbWJQeUdkQUJqM1hnVWZxY25QbnFQ?=
+ =?utf-8?B?QndtOG9WaWFpYTkvWlNldEk0bVM0TitGS1A5Mm1uK1lCUmZFakNDT3RmSkx3?=
+ =?utf-8?B?UFJxeUtkbGxlaVl4NGZlMmJzMW1oZWkrMWkrUlhRNzJPUy9LZGQwV2tUK1Bi?=
+ =?utf-8?B?SEp5TTVQNTNJQ0N2SmhzbTRqL1lMNzFuQlJNMldPZTNoWkZRTjZVdnhvRk9s?=
+ =?utf-8?B?MUE9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: l0qNLIqTP84RHSSNsDLOjF04HbRMQrP1M9xJCH1W/Gxu6fAjy6iSPBxVe+qp8lHrijXyi72zLre54w8AXhAxj+REF5+KY43rjDHTZPVgtAA4WGeDY5MFoJQ+fPygbX9EbKsUJRMuknLv5oMTIIdLE4gdgE1hPNfWSUwcYo3dYTpRHVmkqwTZvIyBj6hxGkcL4ByiVcXG7TyMz0TqrKdwQVq9crPulqbHmE7hztWjsNyF9Oeq6NKQ7hgb2bk7nvTTDMT702JOZfi+vUdWIdtxEN3Md/Z+RVoe63KfBAKWvnhXrxF28eb33DE0PDH06rtaYqGhhWTvVTwcB55htBwX4knlRcym6JF6u5Q607T3AnrZhnyPQnn1Nb+5TDEc8D6ImF8vcLMpuskbCq4Rg0cW2bl3IfkSQBLo7qOdte+0ecTjEbUcPK7Rna6AMKrmho40enoQJE1g2Hk36bxapk2UvkM5e9EfYRWfspffBvnUEfoC+s5OwXe2nhjgMYqnHIR1N5RUfEiW0YXL9T9Fo6OKhL4KkHC7QYH1CKBb2uSBWvFTjSDLzBNpjt5af0dMGkaKOEf5WJD6TdDDbyDqlPvg6gEfSfJy9ZkHUiltH2NKWB0257wiLIdPTF08mQHrG9F+yU3JaJGZh4HZ9Pncvc98O8/rbqLhgBwAgU7AF5BA3rN+TG+gwpkq6ACmxmiSMyu3r6MHJyeOm394hNFcVtgqevAqwuAIZp+DeWwStp1vysJTHlTJjaZY++l0f11CpsJP6uJQUhKhYhcXoptF9FZWANd1I5twvmMSim9HNLTuQaspFjFf+e7uN70kqeWpCj7ChxoqeiE2fSWMDXJC0QkznQ==
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9350475-50d3-41c9-1e54-08dbe6c5f5a2
+X-MS-Exchange-CrossTenant-AuthSource: SA2PR10MB4684.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2023 17:03:30.8167 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +rgxwpFxZl449KRazXbSYaGBjSxnIt6jc6xwFzR2gsFXf7NPmqLu7GFwhope+VmSBoWid1S4u6cWrOFgzebbQZmjEzzSIONU4UDrvAWUJ90=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR10MB6008
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-16_17,2023-11-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ mlxlogscore=999
+ spamscore=0 suspectscore=0 phishscore=0 bulkscore=0 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311160134
+X-Proofpoint-ORIG-GUID: TLMgiaMJA5cY6fJpoQXZrwRmL0E51wpr
+X-Proofpoint-GUID: TLMgiaMJA5cY6fJpoQXZrwRmL0E51wpr
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,198 +192,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 11/16/2023 10:14 AM, Markus Armbruster wrote:
+> Steven Sistare <steven.sistare@oracle.com> writes:
+>> On 11/15/2023 11:15 AM, Markus Armbruster wrote:
+>>> Steven Sistare <steven.sistare@oracle.com> writes:
+>>>> On 11/15/2023 3:41 AM, Markus Armbruster wrote:
+>>>>> Daniel P. Berrangé <berrange@redhat.com> writes:
+>>>>>
+>>>>>> On Fri, Nov 03, 2023 at 03:51:00PM -0400, Steven Sistare wrote:
+>>>>>>> On 11/3/2023 1:33 PM, Daniel P. Berrangé wrote:
+>>>>>>>> On Fri, Nov 03, 2023 at 09:01:29AM -0700, Steve Sistare wrote:
+>>>>>>>>> Buffered monitor output is lost when abort() is called.  The pattern
+>>>>>>>>> error_report() followed by abort() occurs about 60 times, so valuable
+>>>>>>>>> information is being lost when the abort is called in the context of a
+>>>>>>>>> monitor command.
+>>>>>>>>
+>>>>>>>> I'm curious, was there a particular abort() scenario that you hit ?
+>>>>>>>
+>>>>>>> Yes, while tweaking the suspended state, and forgetting to add transitions:
+>>>>>>>
+>>>>>>>         error_report("invalid runstate transition: '%s' -> '%s'",
+>>>>>>>         abort();
+>>>>>>>
+>>>>>>> But I have previously hit this for other errors.
+>>>>>
+>>>>> Can you provide a reproducer?
+>>>>
+>>>> I sometimes hit this when developing new code.  I do not have a reproducer for upstream
+>>>> branches. The patch is aimed at helping developers, not users.
+>>>
+>>> I'm asking because I can't see how the error message could be lost.  A
+>>> reproducer would let me find out.  "Apply this set of broken patches,
+>>> then do that" would serve.
+>>
+>> $ patch -p1 << EOF
+>> diff --git a/monitor/qmp-cmds.c b/monitor/qmp-cmds.c
+>> index b0f948d..c9a3aee 100644
+>> --- a/monitor/qmp-cmds.c
+>> +++ b/monitor/qmp-cmds.c
+>> @@ -47,8 +47,12 @@ void qmp_quit(Error **errp)
+>>      qemu_system_shutdown_request(SHUTDOWN_CAUSE_HOST_QMP_QUIT);
+>>  }
+>>
+>> +#include "qemu/error-report.h"
+>> +
+>>  void qmp_stop(Error **errp)
+>>  {
+>> +    error_report("injected failure");
+>> +    abort();
+>>      /* if there is a dump in background, we should wait until the dump
+>>       * finished */
+>>      if (qemu_system_dump_in_progress()) {
+>> EOF
+>>
+>> # This example loses the error message:
+>>
+>> $ args='-display none -chardev socket,id=mon1,server=on,path=mon1.sock,wait=off -mon mon1,mode=control'
+>> $ qemu-system-x86_64 $args < /dev/null &
+>> [1] 18048
+>> $ echo '{"execute":"qmp_capabilities"} {"execute":"human-monitor-command","arguments":{"command-line":"stop"}}' | ncat -U mon1.sock
+>> {"QMP": {"version": {"qemu": {"micro": 50, "minor": 1, "major": 8}, "package": "v8.1.0-2976-g4025fde-dirty"}, "capabilities": ["oob"]}}
+>> {"return": {}}
+>> Ncat: Connection reset by peer.
+>> $
+>> [1]+  Aborted                 qemu-system-x86_64 $args < /dev/null
+>>
+>>
+>> # This example preserves the error message. I include it to show the ncat-based test is valid.
+>>
+>> $ qemu-system-x86_64 $args < /dev/null &
+>> [1] 18060
+>> $ echo '{"execute":"qmp_capabilities"} {"execute":"stop"}' | ncat -U mon1.sock
+>> {"QMP": {"version": {"qemu": {"micro": 50, "minor": 1, "major": 8}, "package": "v8.1.0-2976-g4025fde-dirty"}, "capabilities": ["oob"]}}
+>> {"return": {}}
+>> injected failure                <============= qemu stderr
+>> Ncat: Connection reset by peer.
+>> $
+>> [1]+  Aborted                 qemu-system-x86_64 $args < /dev/null
+>>
+>> - Steve
+> 
+> Reproduced, thanks!
+> 
+> Confirms my reading of the code.  Two cases:
+> 
+> 1. Normal monitor output
+> 
+>    Flushed on newline.  A partial last line can be lost on crash or
+>    exit().
+> 
+>    Works as intended.
+> 
+> 2. Output being captured for QMP command human-monitor-command
+> 
+>    Never flushed.  Instead, the entire buffer is included in the
+>    command's success response.  Naturally there is no response on crash.
+> 
+>    Works as intended.
+> 
+> Here's how to fish unflushed output out of a core dump:
+> 
+>     (gdb) bt
+>     #0  0x00007efeba52fecc in __pthread_kill_implementation () at /lib64/libc.so.6
+>     #1  0x00007efeba4dfab6 in raise () at /lib64/libc.so.6
+>     #2  0x00007efeba4c97fc in abort () at /lib64/libc.so.6
+>     #3  0x000055588dcc848c in qmp_stop (errp=0x0) at ../monitor/qmp-cmds.c:53
+>     #4  0x000055588dcc36ab in hmp_stop (mon=0x7ffc01d47cc0, qdict=0x555891d19200)
+>         at ../monitor/hmp-cmds.c:119
+>     #5  0x000055588dcc714e in handle_hmp_command_exec
+>         (mon=0x7ffc01d47cc0, cmd=0x55588f0689d0 <hmp_cmds+7760>, qdict=0x555891d19200) at ../monitor/hmp.c:1106
+>     #6  0x000055588dcc737b in handle_hmp_command
+>         (mon=0x7ffc01d47cc0, cmdline=0x7efea80036f4 "") at ../monitor/hmp.c:1158
+>     #7  0x000055588dcc8922 in qmp_human_monitor_command
+>         (command_line=0x7efea80036f0 "stop", has_cpu_index=false, cpu_index=0, errp=0x7ffc01d47dd0) at ../monitor/qmp-cmds.c:184
+> 
+>     [...]
+> 
+>     (gdb) up 4
+>     #4  0x000055588dcc36ab in hmp_stop (mon=0x7ffc01d47cc0, qdict=0x555891d19200)
+>         at ../monitor/hmp-cmds.c:119
+>     119	    qmp_stop(NULL);
+>     (gdb) p mon->outbuf
+>     $1 = (GString *) 0x555890a65260
+>     (gdb) p *$
+>     $2 = {str = 0x7efea8002c00 "injected failure\r\n", len = 18, 
+>       allocated_len = 128}
 
---=-5PDuprMITLYcRVjhkWPH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Yes. thanks.  With the patch, the computer does the work for us, and sometimes the message
+is definitive enough to fix without further investigation, eg
+  invalid runstate transition: 'suspended -> 'save-vm'
 
-On Thu, 2023-11-09 at 11:45 +0000, David Woodhouse wrote:
-> On Thu, 2023-11-09 at 19:34 +0800, Stefan Hajnoczi wrote:
-> > On Thu, 9 Nov 2023 at 19:10, David Woodhouse <dwmw2@infradead.org> wrot=
-e:
-> > >=20
-> > > On Tue, 2023-11-07 at 14:15 +0400, marcandre.lureau@redhat.com=C2=A0w=
-rote:
-> > > > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> > > >=20
-> > > > If a display is backed by a specialized VC, allow to override the
-> > > > default "vc:80Cx24C".
-> > > >=20
-> > > > As suggested by Paolo, if the display doesn't implement a VC (get_v=
-c()
-> > > > returns NULL), use a fallback that will use a muxed console on stdi=
-o.
-> > > >=20
-> > > > This changes the behaviour of "qemu -display none", to create a mux=
-ed
-> > > > serial/monitor by default (on TTY & not daemonized).
-> > > >=20
-> > > > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> > > > Reviewed-by: Thomas Huth <thuth@redhat.com>
-> > >=20
-> > > Hrm. This breaks the command line documented at
-> > > https://qemu-project.gitlab.io/qemu/system/i386/xen.html
-> > >=20
-> > > =C2=A0$ ./qemu-system-x86_64 --accel kvm,xen-version=3D0x40011,kernel=
--irqchip=3Dsplit \
-> > > =C2=A0=C2=A0=C2=A0 -display none -chardev stdio,mux=3Don,id=3Dchar0,s=
-ignal=3Doff -mon char0 \
-> > > =C2=A0=C2=A0=C2=A0 -device xen-console,chardev=3Dchar0=C2=A0 -drive f=
-ile=3D${GUEST_IMAGE},if=3Dxen
-> > >=20
-> > > qemu-system-x86_64: cannot use stdio by multiple character devices
-> > > qemu-system-x86_64: could not connect serial device to character back=
-end 'stdio'
-> > >=20
-> > > Can we make it create a Xen console by default, instead of a serial
-> > > port? And/or make it *not* use stdio if something else on the command
-> > > line already does?
-> >=20
-> > I have filed this in QEMU's bug tracker so it's not forgotten:
-> > https://gitlab.com/qemu-project/qemu/-/issues/1974
-> >=20
-> > Here is the list of open 8.2 bugs:
-> > https://gitlab.com/qemu-project/qemu/-/milestones/10
-> >=20
-> > Stefan
->=20
-> Thanks. Added a link there to the patch I just sent, along with a note
-> suggesting that perhaps we should go a bit further.
->=20
-> We're changing the QEMU behaviour in 8.2 to add these new devices using
-> stdio, and *failing* if something else on the command line already used
-> stdio.
->=20
-> My patch avoids adding a serial port if there's already a xen-console,
-> which is all well and good. But surely we shouldn't *fail* if something
-> else is already using stdio; we should just *not* add the new default
-> serial port? This might break other command lines which use stdio but
-> *not* for a serial port? This breaks too:
->=20
-> =C2=A0$ ./qemu-system-x86_64 -display none -chardev stdio,id=3Dchar0
-> qemu-system-x86_64: cannot use stdio by multiple character devices
-> qemu-system-x86_64: could not connect serial device to character backend =
-'mon:stdio'
+But, it's no big deal, and I withdraw the patch request.  Thanks for looking at it.
 
-Regardless of possible further improvements, please could I have a
-review for the patch at
-https://lore.kernel.org/qemu-devel/20231115172723.1161679-3-dwmw2@infradead=
-.org/
-which at least makes the documented command line work again.
-
-Thanks.
-
---=-5PDuprMITLYcRVjhkWPH
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
-ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
-oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
-SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
-xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
-RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
-bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
-NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
-KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
-5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
-C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
-gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
-VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
-by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
-b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
-BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
-QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
-c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
-AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
-qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
-v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
-Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
-tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
-Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
-ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
-GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
-h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
-9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
-P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
-2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
-BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
-7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
-lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
-lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
-AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
-Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
-FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
-BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
-cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
-aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
-LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
-BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
-Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
-lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
-WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
-hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
-IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
-dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
-NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
-xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTE2MTY1MjI0WjAvBgkqhkiG9w0BCQQxIgQg7UxdOR0b
-1cCif2VIYY23oqyZvcoFNutaLD9uGpLIdkkwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
-A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
-dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
-DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAxj9acKtXir9ND/y6KlUDKuzsvI9cUzrEp
-qfSfugHTh4x3Kr0exFOO6OCcdZrF1pGXfhB/N0fTUa1lFul7tbPJ2SuNyhGltpNj9rk7xY4sc4iM
-3PBHH7Uu5eVIvZbX6SV/HhgaR/7E6WDm5cdmGtoHZmxCCUY6IhVBYFG8ZRc/9/HRZ/GCZgvYHj6V
-+14GF6ja2L6ck6Ynoku0BSSYXVSFsLsz+izmLEPvJEPOwOX2vqp6yyfmfDoZihTcHTth2l8KVGjG
-tvWnV/JUEaD9kfCUrfoLkogMebU4OriDXcnVWyVoWnB/YY+N/RXu8rJfOY4jnXfcAF4w1zM5Yf16
-TDY1Bw0cgn7hX8tVcOy94reGJRC1uj6cEtQ40L2BvRrrHmop5PL6JeeU5S6DwC6FJFybcb9pcuHN
-ZL6lbo6HNCSjadLH/Xuy3V6u7q1HLS81ZYgKVo7D3+kJiMRXVLydoV6WwmXeZ7Fl96gAhsDCYBfX
-UMI4O7Kj0Kv995Rfw2tikJSOWOzBWFKHPfs3QreYeczhXJ6l3YB0xvVkNDi0Rn2HG/i8epRDHeRf
-TebCXT03d+vX+T8sQpA9oI/8Wm98ZOaro9ZC6f3/VO1zjTwxUS++3l69YbkHlESDAy1aBtVh3apy
-Jk9YvQD7eCUooyJKUSAIpMPd1DCZazg1cyyNlEkfSwAAAAAAAA==
-
-
---=-5PDuprMITLYcRVjhkWPH--
+- Steve
 
