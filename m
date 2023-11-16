@@ -2,58 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C96D7EE622
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4457EE623
 	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 18:49:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3gTa-0005O7-Hs; Thu, 16 Nov 2023 12:48:26 -0500
+	id 1r3gUR-0005gd-6j; Thu, 16 Nov 2023 12:49:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berto@igalia.com>)
- id 1r3gTX-0005NM-NH; Thu, 16 Nov 2023 12:48:23 -0500
-Received: from fanzine.igalia.com ([178.60.130.6] helo=fanzine2.igalia.com)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1r3gUO-0005gF-Tg
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 12:49:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berto@igalia.com>)
- id 1r3gTV-0007yI-MG; Thu, 16 Nov 2023 12:48:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:
- Sender:Reply-To:Content-Transfer-Encoding:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=653MZfYRJ5FIjab9wmCavU2cYolP76Wfg+280xIN9C0=; b=lg8tn1hLJfdHxoTnNuAPbNibZp
- Arn7CYWSEYgQNsvOV2y4phSu+hnW6DMxJY6TDvlZHRk9G9fHyf630ihebvBcqX4ZTC4iIwVnySKYr
- MoeOxbkFHZfn9yETXllJmHeajP5zJIBgewZ8ZLZr6Kg6WhBEpRmEk7jbg30n4szyXdjQPDTFO25Qh
- +d+ozJOAhFlLNhgtL65sM3k2jpvfzmlSN6rOvRBE/tpdfR/yU2ZpO0eURyiKRhtTsTMyoHaVI5a6X
- bJDwXn8JcmLwlvwrr/dzTCuOlfmUE2AgSeOtUGoZkDCwFklCHMWjYJYf9XnC1GUotpaZMh/9syuGq
- vCgMwJGw==;
-Received: from [192.168.12.109] (helo=zeus.local)
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1r3gTJ-0045b3-NY; Thu, 16 Nov 2023 18:48:09 +0100
-Received: from berto by zeus.local with local (Exim 4.96)
- (envelope-from <berto@igalia.com>) id 1r3gTJ-002k97-1u;
- Thu, 16 Nov 2023 18:48:09 +0100
-Date: Thu, 16 Nov 2023 18:48:09 +0100
-From: Alberto Garcia <berto@igalia.com>
-To: qemu-block@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Czenczek <hreitz@redhat.com>,
- qemu-devel@nongnu.org
-Subject: Converting images to stdout
-Message-ID: <ZVZV2ZKcxoSargry@zeus.local>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1r3gUN-0000Dl-2N
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 12:49:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700156954;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=m1SkVei98m6H3xodn9W/QDpr9B7r0y4wA6iegBDoYzc=;
+ b=IouLzulEjKPyl9nOwEC71LAXOddswFks6787oafvLxa4IzKNPlqxRTlD8huOXUcy1asUNK
+ 1Ewv4xMM1XjyuSA/XF2Ox3dqZY/BsmVS3xQuhj8jQVgp4A9CbsbMhS/nbDPHlGbOKnDBLs
+ bJLyhm7PrOdaQDMJSht4YDmNa0CdVs0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-352-eYbhWakPOR2nJdqZnz7mDA-1; Thu,
+ 16 Nov 2023 12:49:10 -0500
+X-MC-Unique: eYbhWakPOR2nJdqZnz7mDA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 657FF3811F39;
+ Thu, 16 Nov 2023 17:49:10 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.34])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5A6F51C060AE;
+ Thu, 16 Nov 2023 17:49:09 +0000 (UTC)
+Date: Thu, 16 Nov 2023 17:49:06 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+Subject: Re: [RFC PATCH] configure: don't try a "native" cross for i386
+Message-ID: <ZVZWEhYbF_0MzEFA@redhat.com>
+References: <20231116172820.2481604-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Received-SPF: pass client-ip=178.60.130.6; envelope-from=berto@igalia.com;
- helo=fanzine2.igalia.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231116172820.2481604-1-alex.bennee@linaro.org>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,52 +81,84 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+On Thu, Nov 16, 2023 at 05:28:20PM +0000, Alex Bennée wrote:
+> As 32 bit x86 become rarer we are starting to run into problems with
+> search paths. Although we switched to a Debian container we still
+> favour the native CC on a Bookworm host. As a result we have a broken
+> cross compile setup which then fails to build with:
+> 
+>     BUILD   i386-linux-user guest-tests
+>   In file included from /usr/include/linux/stat.h:5,
+>                    from /usr/include/bits/statx.h:31,
+>                    from /usr/include/sys/stat.h:465,
+>                    from /home/alex/lsrc/qemu.git/tests/tcg/multiarch/linux/linux-test.c:28:
+>   /usr/include/linux/types.h:5:10: fatal error: asm/types.h: No such file or directory
+>       5 | #include <asm/types.h>
+>         |          ^~~~~~~~~~~~~
+>   compilation terminated.
+>   make[1]: *** [Makefile:119: linux-test] Error 1
+>   make: *** [/home/alex/lsrc/qemu.git/tests/Makefile.include:50: build-tcg-tests-i386-linux-user] Error 2
+> 
+> So lets stop trying to be cute and honour cross_prefix_i386 when
+> searching locally. We also need to ensure we are using the correct
+> prefix if we do end up using the container version. We can also drop
+> the extra CFLAGS while we are at it.
+> 
+> Fixes: 791e6fedc5 (tests/docker: replace fedora-i386 with debian-i686)
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>  configure | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 
-I haven't written here in a while :) but I have something small that I
-would like to discuss.
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-Using qemu-img to convert an image and writing the result directly to
-stdout is a question that has already been raised in the past (see
-[1] for an example) and it's clear that it's generally not possible
-because the images need to be seekable.
+> 
+> diff --git a/configure b/configure
+> index 5e7b76e3a1..2343d629ec 100755
+> --- a/configure
+> +++ b/configure
+> @@ -1190,7 +1190,6 @@ fi
+>  : ${cross_cc_cflags_armeb="-mbig-endian"}
+>  : ${cross_cc_hexagon="hexagon-unknown-linux-musl-clang"}
+>  : ${cross_cc_cflags_hexagon="-mv73 -O2 -static"}
+> -: ${cross_cc_cflags_i386="-m32"}
+>  : ${cross_cc_cflags_ppc="-m32 -mbig-endian"}
+>  : ${cross_cc_cflags_ppc64="-m64 -mbig-endian"}
+>  : ${cross_cc_ppc64le="$cross_cc_ppc64"}
+> @@ -1308,7 +1307,7 @@ probe_target_compiler() {
+>          ;;
+>        i386)
+>          container_image=debian-i686-cross
+> -        container_cross_prefix=
+> +        container_cross_prefix=i686-linux-gnu-
+>          ;;
+>        loongarch64)
+>          container_image=debian-loongarch-cross
+> @@ -1394,7 +1393,6 @@ probe_target_compiler() {
+>    case "$target_arch:$cpu" in
+>      aarch64_be:aarch64 | \
+>      armeb:arm | \
+> -    i386:x86_64 | \
+>      mips*:mips64 | \
+>      ppc*:ppc64 | \
+>      sparc:sparc64 | \
 
-While I think that there's almost certainly no generic way to do
-something like that for every combination of input and output formats,
-I do think that it should be relatively easy to produce a qcow2 file
-directly to stdout as long as the input file is on disk.
+I kinda wonder if we have people using the rest of this arch compat
+stuff too ? With debian making it easy to parallel install the full
+cross-arch toolchains + matching libraries, it shouldn't be needed in
+general for any arch ?  Getting rid of QEMU specific special cases
+like this in configure would be nice.
 
-I'm interested in this use case, and I think that the method would be
-as simple as this:
 
-1. Decide a cluster size for the output qcow2 file.
-2. Read the input file once to determine which clusters need to be
-   allocated in the output file and which ones don't.
-3. That infomation is enough to determine the number and contents of
-   the refcount table, refcount blocks, and L1/L2 tables.
-4. Write the qcow2 header + metadata + allocated data to stdout.
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-Since this would be qcow2-specific I would probably implement this as
-a separate tool instead of adding it directly to qemu-img. This could
-go to the scripts/ directory because I can imagine that such a tool
-could be useful for other people.
-
-Because this would be an external tool it would only support a qcow2
-file with the default options. Other features like compression would
-be out of scope.
-
-For the same reason the input would be a raw file for simplicity,
-other input files could be presented in raw format using
-qemu-storage-daemon.
-
-And that's the general idea, comments and questions are welcome.
-
-Thanks!
-
-Berto
-
-[1] https://lists.nongnu.org/archive/html/qemu-discuss/2020-01/msg00014.html
 
