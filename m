@@ -2,68 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248CF7EE667
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 19:07:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 581317EE65E
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 19:06:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3gkZ-0002Sx-1O; Thu, 16 Nov 2023 13:06:00 -0500
+	id 1r3gkd-0002UF-OU; Thu, 16 Nov 2023 13:06:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3gkS-0002RU-JA
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 13:05:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3gkU-0002Sk-48
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 13:05:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3gkQ-00043Z-Mg
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 13:05:52 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3gkS-00043v-Gg
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 13:05:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700157950;
+ s=mimecast20190719; t=1700157951;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FRnaGY+Jev9ZahpeHvw73uuMO5QTSDopK7RVrPjV6uY=;
- b=f/LyCU+KwpV1CihROFVL5QwHMZnAfsh/4qrAlsOg2L6B12fl7O0Cgg5bccR1OBmLzsNf2u
- E2R1aI/hrmXVFfFZAh+WGHfvgrVG2mgFAmyarXnx7MWiWbucs+pv9H72DF88TwQ+WReb7I
- OZxNPcLfpaR0qAF/E/R0w9Am8tzLfNo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-618-sFFypTdIMF-y_2H-8aO6OQ-1; Thu, 16 Nov 2023 13:05:47 -0500
-X-MC-Unique: sFFypTdIMF-y_2H-8aO6OQ-1
+ bh=OI6jInKvfEQ2SeOWQTOmL2JfEqfOfTs6vwhO3MUj/QM=;
+ b=MlKsCN+plIaXje4mUIYDmCXD1VPPQRcTXasX42UmgIkMcfFbRjKF0apTXIt0SF71V/QKrS
+ BY5Gm3z2laB9I3TxreTCe/8afHZttct4uuB62sIPbXJgd8NYf7p5yLXwwGgR7rfLmYhlsP
+ U7vHsaS2LHHtALwtLPT+BgIwV7DdrXw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-169-gBKeyG35NTaMJ6B3NDsfyg-1; Thu,
+ 16 Nov 2023 13:05:49 -0500
+X-MC-Unique: gBKeyG35NTaMJ6B3NDsfyg-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A5389811E7D;
- Thu, 16 Nov 2023 18:05:47 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8D7302808FC7;
+ Thu, 16 Nov 2023 18:05:49 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.117])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9CDD51121306;
- Thu, 16 Nov 2023 18:05:46 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 46E131121306;
+ Thu, 16 Nov 2023 18:05:48 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Stefan Hajnoczi <stefanha@redhat.com>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 08/10] tests/avocado/mem-addr-space-check: Replace
- assertEquals() for Python 3.12
-Date: Thu, 16 Nov 2023 19:05:32 +0100
-Message-ID: <20231116180534.566469-9-thuth@redhat.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Subject: [PULL 09/10] tests/avocado: reverse_debugging drain console to
+ prevent hang
+Date: Thu, 16 Nov 2023 19:05:33 +0100
+Message-ID: <20231116180534.566469-10-thuth@redhat.com>
 In-Reply-To: <20231116180534.566469-1-thuth@redhat.com>
 References: <20231116180534.566469-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,84 +79,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-assertEquals() has been removed in Python 3.12 and should be replaced by
-assertEqual(). See: https://docs.python.org/3.12/whatsnew/3.12.html#id3
+From: Nicholas Piggin <npiggin@gmail.com>
 
-Message-ID: <20231116061956.14676-1-thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Ani Sinha <anisinha@redhat.com>
+Like replay_linux.py, reverse_debugging.py starts the vm with console
+set but does not interact with it (e.g., with wait_for_console_pattern).
+In this situation, the console should have a drainer attached so the
+socket does not fill. replay_linux.py has a drainer, but it is missing
+from reverse_debugging.py.
+
+Per analysis in Link: this can cause the console socket/pipe to fill and
+QEMU get stuck in qemu_chr_write_buffer, leading to strange test case
+failures (ppc64 fails because it prints a lot to console in early bios).
+Attaching a drainer prevents this.
+
+Note, this commit does not fix bugs introduced by the commits referenced
+in the first two Fixes: tags, but together those commits conspire to
+irritate the problem and cause test case failure, which this commit
+fixes.
+
+Link: https://lore.kernel.org/qemu-devel/ZVT-bY9YOr69QTPX@redhat.com/
+Fixes: 1d4796cd0083 ("python/machine: use socketpair() for console connections")
+Fixes: 761a13b23946 ("tests/avocado: ppc64 reverse debugging tests for pseries and powernv")
+Fixes: be52eca30978 ("tests/acceptance: add reverse debugging test")
+Tested-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Message-ID: <20231116115354.228678-1-npiggin@gmail.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/avocado/mem-addr-space-check.py | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ tests/avocado/reverse_debugging.py | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/avocado/mem-addr-space-check.py b/tests/avocado/mem-addr-space-check.py
-index be949222a4..363c3f12a6 100644
---- a/tests/avocado/mem-addr-space-check.py
-+++ b/tests/avocado/mem-addr-space-check.py
-@@ -49,7 +49,7 @@ def test_phybits_low_pse36(self):
-         self.vm.set_qmp_monitor(enabled=False)
-         self.vm.launch()
-         self.vm.wait()
--        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertEqual(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-         self.assertRegex(self.vm.get_log(), r'phys-bits too low')
+diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
+index fc47874eda..128d85bc0e 100644
+--- a/tests/avocado/reverse_debugging.py
++++ b/tests/avocado/reverse_debugging.py
+@@ -12,6 +12,7 @@
  
-     def test_phybits_low_pae(self):
-@@ -69,7 +69,7 @@ def test_phybits_low_pae(self):
-         self.vm.set_qmp_monitor(enabled=False)
-         self.vm.launch()
-         self.vm.wait()
--        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertEqual(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-         self.assertRegex(self.vm.get_log(), r'phys-bits too low')
+ from avocado import skipIf
+ from avocado_qemu import BUILD_DIR
++from avocado.utils import datadrainer
+ from avocado.utils import gdb
+ from avocado.utils import process
+ from avocado.utils.network.ports import find_free_port
+@@ -52,6 +53,10 @@ def run_vm(self, record, shift, args, replay_path, image_path, port):
+         if args:
+             vm.add_args(*args)
+         vm.launch()
++        console_drainer = datadrainer.LineLogger(vm.console_socket.fileno(),
++                                    logger=self.log.getChild('console'),
++                                    stop_check=(lambda : not vm.is_running()))
++        console_drainer.start()
+         return vm
  
-     def test_phybits_ok_pentium_pse36(self):
-@@ -149,7 +149,7 @@ def test_phybits_low_nonpse36(self):
-         self.vm.set_qmp_monitor(enabled=False)
-         self.vm.launch()
-         self.vm.wait()
--        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertEqual(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-         self.assertRegex(self.vm.get_log(), r'phys-bits too low')
- 
-     # now lets test some 64-bit CPU cases.
-@@ -179,7 +179,7 @@ def test_phybits_low_tcg_q35_70_amd(self):
-         self.vm.set_qmp_monitor(enabled=False)
-         self.vm.launch()
-         self.vm.wait()
--        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertEqual(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-         self.assertRegex(self.vm.get_log(), r'phys-bits too low')
- 
-     def test_phybits_low_tcg_q35_71_amd(self):
-@@ -202,7 +202,7 @@ def test_phybits_low_tcg_q35_71_amd(self):
-         self.vm.set_qmp_monitor(enabled=False)
-         self.vm.launch()
-         self.vm.wait()
--        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertEqual(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-         self.assertRegex(self.vm.get_log(), r'phys-bits too low')
- 
-     def test_phybits_ok_tcg_q35_70_amd(self):
-@@ -288,7 +288,7 @@ def test_phybits_low_tcg_q35_71_amd_41bits(self):
-         self.vm.set_qmp_monitor(enabled=False)
-         self.vm.launch()
-         self.vm.wait()
--        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertEqual(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-         self.assertRegex(self.vm.get_log(), r'phys-bits too low')
- 
-     def test_phybits_ok_tcg_q35_71_amd_41bits(self):
-@@ -332,7 +332,7 @@ def test_phybits_low_tcg_q35_intel_cxl(self):
-         self.vm.set_qmp_monitor(enabled=False)
-         self.vm.launch()
-         self.vm.wait()
--        self.assertEquals(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-+        self.assertEqual(self.vm.exitcode(), 1, "QEMU exit code should be 1")
-         self.assertRegex(self.vm.get_log(), r'phys-bits too low')
- 
-     def test_phybits_ok_tcg_q35_intel_cxl(self):
+     @staticmethod
 -- 
 2.41.0
 
