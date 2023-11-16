@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821827EDC3B
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:46:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F5D7EDC36
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:46:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3X3Z-0005lN-Cq; Thu, 16 Nov 2023 02:44:57 -0500
+	id 1r3X3b-0005lu-6m; Thu, 16 Nov 2023 02:45:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X3V-0005k4-Od; Thu, 16 Nov 2023 02:44:53 -0500
+ id 1r3X3Y-0005lO-JT; Thu, 16 Nov 2023 02:44:56 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X3T-0004pN-90; Thu, 16 Nov 2023 02:44:53 -0500
+ id 1r3X3W-0004qN-Uo; Thu, 16 Nov 2023 02:44:56 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E407B33BDA;
+ by isrv.corpit.ru (Postfix) with ESMTP id F345F33BDB;
  Thu, 16 Nov 2023 10:45:02 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7AA3835840;
+ by tsrv.corpit.ru (Postfix) with SMTP id 89B7335841;
  Thu, 16 Nov 2023 10:44:41 +0300 (MSK)
-Received: (nullmailer pid 3202490 invoked by uid 1000);
+Received: (nullmailer pid 3202493 invoked by uid 1000);
  Thu, 16 Nov 2023 07:44:41 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 01/27] hw/watchdog/wdt_aspeed: Remove unused
- 'hw/misc/aspeed_scu.h' header
-Date: Thu, 16 Nov 2023 10:44:15 +0300
-Message-Id: <20231116074441.3202417-2-mjt@tls.msk.ru>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 02/27] MAINTAINERS: Add tests/decode/ to the "Overall TCG CPUs"
+ section
+Date: Thu, 16 Nov 2023 10:44:16 +0300
+Message-Id: <20231116074441.3202417-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231116074441.3202417-1-mjt@tls.msk.ru>
 References: <20231116074441.3202417-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,29 +60,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 
-Aspeed watchdog doesn't use anything from the System Control Unit.
+The tests/decode/ folder belongs to scripts/decodetree.py, so
+it should be listed in the same section as the script.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/watchdog/wdt_aspeed.c | 1 -
- 1 file changed, 1 deletion(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/watchdog/wdt_aspeed.c b/hw/watchdog/wdt_aspeed.c
-index d267aa185c..273a49d360 100644
---- a/hw/watchdog/wdt_aspeed.c
-+++ b/hw/watchdog/wdt_aspeed.c
-@@ -14,7 +14,6 @@
- #include "qemu/module.h"
- #include "qemu/timer.h"
- #include "sysemu/watchdog.h"
--#include "hw/misc/aspeed_scu.h"
- #include "hw/qdev-properties.h"
- #include "hw/sysbus.h"
- #include "hw/watchdog/wdt_aspeed.h"
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ff1238bb98..695e0bd34f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -174,6 +174,7 @@ F: include/hw/core/tcg-cpu-ops.h
+ F: host/include/*/host/cpuinfo.h
+ F: util/cpuinfo-*.c
+ F: include/tcg/
++F: tests/decode/
+ 
+ FPU emulation
+ M: Aurelien Jarno <aurelien@aurel32.net>
 -- 
 2.39.2
 
