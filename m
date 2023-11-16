@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17FF7EDC2B
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:46:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 573EF7EDC26
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:45:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3X3b-0005mF-TP; Thu, 16 Nov 2023 02:45:01 -0500
+	id 1r3X3h-0005nn-Q7; Thu, 16 Nov 2023 02:45:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X3Y-0005lV-V9; Thu, 16 Nov 2023 02:44:56 -0500
+ id 1r3X3b-0005mx-Jd; Thu, 16 Nov 2023 02:44:59 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X3X-0004qV-7M; Thu, 16 Nov 2023 02:44:56 -0500
+ id 1r3X3a-0004se-0q; Thu, 16 Nov 2023 02:44:59 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0DE3233BDC;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1D0EC33BDD;
  Thu, 16 Nov 2023 10:45:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 98C3135842;
+ by tsrv.corpit.ru (Postfix) with SMTP id A7ABC35843;
  Thu, 16 Nov 2023 10:44:41 +0300 (MSK)
-Received: (nullmailer pid 3202496 invoked by uid 1000);
+Received: (nullmailer pid 3202499 invoked by uid 1000);
  Thu, 16 Nov 2023 07:44:41 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 03/27] tests/data/qobject/qdict.txt: Avoid non-inclusive words
-Date: Thu, 16 Nov 2023 10:44:17 +0300
-Message-Id: <20231116074441.3202417-4-mjt@tls.msk.ru>
+Subject: [PULL 04/27] qapi/pragma.json: Improve the comment about the lists of
+ QAPI rule exceptions
+Date: Thu, 16 Nov 2023 10:44:18 +0300
+Message-Id: <20231116074441.3202417-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231116074441.3202417-1-mjt@tls.msk.ru>
 References: <20231116074441.3202417-1-mjt@tls.msk.ru>
@@ -61,30 +62,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-qdict.txt only consists of more or less random test data. We
-can simply drop the lines with the problematic words here.
+Let's use more inclusive language here.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- tests/data/qobject/qdict.txt | 4 ----
- 1 file changed, 4 deletions(-)
+ qapi/pragma.json | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/data/qobject/qdict.txt b/tests/data/qobject/qdict.txt
-index 122fda4524..e2edc88161 100644
---- a/tests/data/qobject/qdict.txt
-+++ b/tests/data/qobject/qdict.txt
-@@ -1866,10 +1866,6 @@ blackfin: 4096
- blackfin.c: 7552
- blackfin.h: 1089
- blackfin_sram.h: 1207
--blacklist.c: 8658
--blacklist.h: 108
--blackstamp.c: 9838
--BlackStamp_defconfig: 27434
- blinken.h: 617
- blizzard.c: 41338
- blizzard.h: 249
+diff --git a/qapi/pragma.json b/qapi/pragma.json
+index 7f810b0e97..0aa4eeddd3 100644
+--- a/qapi/pragma.json
++++ b/qapi/pragma.json
+@@ -3,8 +3,8 @@
+ 
+ { 'pragma': { 'doc-required': true } }
+ 
+-# Whitelists to permit QAPI rule violations; think twice before you
+-# add to them!
++# Entries in these lists are allowed to violate the QAPI rules (for
++# historical reasons); think twice before you add to them!
+ { 'pragma': {
+     # Command names containing '_'
+     'command-name-exceptions': [
 -- 
 2.39.2
 
