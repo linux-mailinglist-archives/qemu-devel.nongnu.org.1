@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8897EE030
+	by mail.lfdr.de (Postfix) with ESMTPS id 40ABF7EE031
 	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 12:55:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3awo-0006hK-Gt; Thu, 16 Nov 2023 06:54:14 -0500
+	id 1r3awt-0006i1-D8; Thu, 16 Nov 2023 06:54:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r3awk-0006gp-EL; Thu, 16 Nov 2023 06:54:10 -0500
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1r3awq-0006hj-Lb; Thu, 16 Nov 2023 06:54:17 -0500
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r3awi-0007ec-Ow; Thu, 16 Nov 2023 06:54:10 -0500
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-6bd73395bceso551352b3a.0; 
- Thu, 16 Nov 2023 03:54:08 -0800 (PST)
+ id 1r3awp-0007hC-80; Thu, 16 Nov 2023 06:54:16 -0500
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-6c431ca7826so635708b3a.0; 
+ Thu, 16 Nov 2023 03:54:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700135646; x=1700740446; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=CDWoSHE0j1N1eAwMlXB/CsHQVHc/NREvoWLU+Iu7ryM=;
- b=Rz14px5XpgvYWpE5N63U5YM5hJ4WX83R1I2G4Fqkqj2oQ4YdW4enbl5G2khFgt7TW1
- rZThhMsKCuvjwefxWWmTp71erzfUzngPQylMDEYpKkWO1aqkYH06leRXi7KI6JljmWjF
- tlbN4uvpavqYjZD/PvrO40roZeWADz4qg27Eq3gKaAzoqCi/h9ZyAXaD18BBomo2uVVa
- JJoNIU7hqI6mJciaEcUrQcZKgLEEcPzJFekYT/WCiYbSXGmh6CaHrpC9E7XXkdRef8N2
- dT8J05MG6cLjTzHYFynfIyBRSdDV+EGSR6v2eChTEYT8QJYiqgqhOY3CYdhaPEBRjxDt
- PNOg==
+ d=gmail.com; s=20230601; t=1700135652; x=1700740452; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=khu5P4E16LAd1R2e6yUGq0YwfAOQmxoguNRACDoGfCg=;
+ b=Ggihks2ADxgnmYv6LYoRpvf4YZC3xtuHDtqckIgwJJRaX2uyoj5g41/nIKdCLa0kvC
+ oWOr4WxfmA0771drr4nxt3q33NzJqEnOQXISA+d/b4Xnz657djXADDIfn1iHROkJgAtQ
+ UBnsqWaaZRF2dbUDFl4vGs52sDLjUHQ3Ae5jbUOgrONjrIsAn4KXxZLBdgPYiskPuHTu
+ aZMb4hWfu2VLd+sMx1seISDkfy3X6z6c+rcXsiBiDPhisDA1iM96gNgXCyLHvnXRl8yX
+ dWTK2ludjYU2JTj1xn7j0B5FTni+p//1ZfGBAO37K39/W6pBrJ0VZcOa5zAHyuGMOWAg
+ VhUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700135646; x=1700740446;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CDWoSHE0j1N1eAwMlXB/CsHQVHc/NREvoWLU+Iu7ryM=;
- b=Md9G1hE89urlaHqU4yUbNgHzA5SVuQFnMXNOgPb6R8GjWtQNLdYgbtlL1cxl+46O8G
- vJEQARNCvXYfvUXBP/K5Jkb4n/3Tuum3Jujl9KPvQQhcssNOXTHxxYSrdGCm6X7hhZrS
- h20+rNrvI7tFJmnz0zn3vvDw9tsTDexFNRFBT2G58mj/RbOFnQljOtX/HrWNqobU8YL5
- li9A5e7AMARbQKPDiyDZtMXLOn4glWZwz7++8c4FPY0prIigq7C//M7rifXxQ4N0XV/i
- IouzbQnkYps+tWpYxwEL1wsBgecThOBtuCcru2GTSkGVPuqxTcRIfYsTGCSvfefnJfKD
- xwXg==
-X-Gm-Message-State: AOJu0YzVnSfuHFWVyV9lmT7ThMMY7Gam8ggvlz3mYqhcKnC94Vi5xBL7
- W/TWF83K+X0yx3qik20Xa9g+CEGf9pI=
-X-Google-Smtp-Source: AGHT+IGzE0K7Q6r/Jt7kZxeh4svCSSEIXz4g0ueBLZV8KUy+cqPzL13fUEJ9vsztaBFLm3CbHunIzw==
-X-Received: by 2002:a05:6a20:7da2:b0:14e:2208:d62f with SMTP id
- v34-20020a056a207da200b0014e2208d62fmr2638073pzj.22.1700135645614; 
- Thu, 16 Nov 2023 03:54:05 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700135652; x=1700740452;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=khu5P4E16LAd1R2e6yUGq0YwfAOQmxoguNRACDoGfCg=;
+ b=rRvodotZke8T1nvB0gNJF6BBae1DxoVBSCNON/69hQtc4Jqsn4GrC+OibPyWelP81n
+ MBX5uuQn/vd1M32F70ecu1wfPZppeQg6VFOzGuSm4zez2P7EXA3blkFZkiQh7riDusuV
+ E0D9CMYRU4OwmjnKD4FcOKGNS2N/NkOYITyxaUkdeu7bm6fExRlDHc8+dnPESL2cGl04
+ KGMCT4XQvM6JrKzYruRMZ09fHPeRKw1rtd38ZDfYgf843EEQFSrAj95wG1T59b3pOdwI
+ 1YStyG1ICbJuTpBUJa8ZvOQ7mfKBXnv1s5CjT2UghYpmFR4qB8p/qsHnpCZMjQelNZmw
+ 0N3w==
+X-Gm-Message-State: AOJu0YxesbEplqopFuBIGwLLxe+3QU+K5om+8oMUJza+6ra0urMBGKR8
+ 9XbGa/iyUHxW6NDNBwl47dbEP7KUW/c=
+X-Google-Smtp-Source: AGHT+IFymt2qv910Oa/LderXVtoyd1pY2xzwWMs/AkszvU1nAyn732QPn/4KMAQr6wYZ+Pu7Ddu6/g==
+X-Received: by 2002:a05:6a00:1e18:b0:68f:f650:3035 with SMTP id
+ gx24-20020a056a001e1800b0068ff6503035mr13497466pfb.12.1700135652048; 
+ Thu, 16 Nov 2023 03:54:12 -0800 (PST)
 Received: from wheely.local0.net ([210.84.53.86])
  by smtp.gmail.com with ESMTPSA id
- n19-20020a62e513000000b006c60b150383sm4507960pff.12.2023.11.16.03.53.59
+ n19-20020a62e513000000b006c60b150383sm4507960pff.12.2023.11.16.03.54.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Nov 2023 03:54:05 -0800 (PST)
+ Thu, 16 Nov 2023 03:54:11 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -66,15 +67,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  "Thomas Huth" <thuth@redhat.com>, "John Snow" <jsnow@redhat.com>,
  qemu-ppc@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 1/3] tests/avocado: reverse_debugging drain console to prevent
- hang
-Date: Thu, 16 Nov 2023 21:53:52 +1000
-Message-ID: <20231116115354.228678-1-npiggin@gmail.com>
+Subject: [PATCH 2/3] chardev: report blocked write to chardev backend
+Date: Thu, 16 Nov 2023 21:53:53 +1000
+Message-ID: <20231116115354.228678-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231116115354.228678-1-npiggin@gmail.com>
+References: <20231116115354.228678-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,55 +99,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Like replay_linux.py, reverse_debugging.py starts the vm with console
-set but does not interact with it (e.g., with wait_for_console_pattern).
-In this situation, the console should have a drainer attached so the
-socket does not fill. replay_linux.py has a drainer, but it is missing
-from reverse_debugging.py.
+If a chardev socket is not read, it will eventually fill and QEMU
+can block attempting to write to it. A difficult bug in avocado
+tests where the console socket was not being read from caused this
+hang.
 
-Per analysis in Link: this can cause the console socket/pipe to fill and
-QEMU get stuck in qemu_chr_write_buffer, leading to strange test case
-failures (ppc64 fails because it prints a lot to console in early bios).
-Attaching a drainer prevents this.
+warn if a chardev write is blocked for 100ms.
 
-Note, this commit does not fix bugs introduced by the commits referenced
-in the first two Fixes: tags, but together those commits conspire to
-irritate the problem and cause test case failure, which this commit
-fixes.
-
-Link: https://lore.kernel.org/qemu-devel/ZVT-bY9YOr69QTPX@redhat.com/
-Fixes: 1d4796cd0083 ("python/machine: use socketpair() for console connections")
-Fixes: 761a13b23946 ("tests/avocado: ppc64 reverse debugging tests for pseries and powernv")
-Fixes: be52eca30978 ("tests/acceptance: add reverse debugging test")
-Tested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/avocado/reverse_debugging.py | 5 +++++
- 1 file changed, 5 insertions(+)
+This is not necessary for the fix but it does trigger in the
+failing avocado test without the previous patch applied. Maybe
+it would be helpful?
 
-diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
-index fc47874eda..128d85bc0e 100644
---- a/tests/avocado/reverse_debugging.py
-+++ b/tests/avocado/reverse_debugging.py
-@@ -12,6 +12,7 @@
+Thanks,
+Nick
+
+ chardev/char.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/chardev/char.c b/chardev/char.c
+index 996a024c7a..7c375e3cc4 100644
+--- a/chardev/char.c
++++ b/chardev/char.c
+@@ -114,6 +114,8 @@ static int qemu_chr_write_buffer(Chardev *s,
+ {
+     ChardevClass *cc = CHARDEV_GET_CLASS(s);
+     int res = 0;
++    int nr_retries = 0;
++
+     *offset = 0;
  
- from avocado import skipIf
- from avocado_qemu import BUILD_DIR
-+from avocado.utils import datadrainer
- from avocado.utils import gdb
- from avocado.utils import process
- from avocado.utils.network.ports import find_free_port
-@@ -52,6 +53,10 @@ def run_vm(self, record, shift, args, replay_path, image_path, port):
-         if args:
-             vm.add_args(*args)
-         vm.launch()
-+        console_drainer = datadrainer.LineLogger(vm.console_socket.fileno(),
-+                                    logger=self.log.getChild('console'),
-+                                    stop_check=(lambda : not vm.is_running()))
-+        console_drainer.start()
-         return vm
+     qemu_mutex_lock(&s->chr_write_lock);
+@@ -126,6 +128,10 @@ static int qemu_chr_write_buffer(Chardev *s,
+             } else {
+                 g_usleep(100);
+             }
++            if (++nr_retries == 1000) { /* 100ms */
++                warn_report("Chardev '%s' write blocked for > 100ms, "
++                            "socket buffer full?", s->label);
++            }
+             goto retry;
+         }
  
-     @staticmethod
 -- 
 2.42.0
 
