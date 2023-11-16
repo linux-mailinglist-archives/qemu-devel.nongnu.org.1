@@ -2,86 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE027EE6CC
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 19:34:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 475847EE70F
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 19:58:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3hAu-0004a1-Hr; Thu, 16 Nov 2023 13:33:14 -0500
+	id 1r3hYC-0005td-TD; Thu, 16 Nov 2023 13:57:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r3hAn-0004Jy-Fp
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 13:33:05 -0500
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r3hAi-0002ZS-Fu
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 13:33:03 -0500
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6c4d06b6ddaso1027141b3a.3
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 10:32:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1700159578; x=1700764378; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=VZ6GM2dKcS6mkSmOYBXd+y+aSuA3VKtwauyHooCA7zM=;
- b=FYxPfUnaQbtD9nX6/3zIW1dZf74NYsSJKijLcfxmdBbgL4uogDy0UylSkt32HTcfvV
- DRUcfNrjhiwK82DVdqyAFvvAG0tkuqbC0Bp6ZdUEprdPAEzXYQAcfoLL9UqUApGXyoNv
- P3TDb5+4fSnE4IAmQLE+HWdvasp6bCDzQs6wFzG2JkGckFZRWaHGCgkScocSon6UaJxL
- IlkCnPG9QbZLMNhaUq0icvw/2qki/eFkskaCk81pPv18NDsO6l5ARGbB78hZSrc5tISX
- KQpSSbe1PDE8X1r0HGn/dQXPljCP5+GqoUjz7MARM/FODb04Q6/TwJaHHeHHenjE86c1
- TTUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700159578; x=1700764378;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VZ6GM2dKcS6mkSmOYBXd+y+aSuA3VKtwauyHooCA7zM=;
- b=gU/4FaMPeBjNqAXRfeHZtIVBU2/ULYcmZ/hh3XiGaqnxXwTQKc5oVhN8LT5Nd0UePs
- ouej9vqZWktFPB+tTHBPHeM73Cu4YCMFS9b2G7EaifOOb68+bi8DvLa3KUGNA/bxnvcB
- ghyubG79ThEVRvirSa6cCNjcUcYMhuhLrFIWV8CtmJxT7IP6A3R0gcYTyd8H9vkGaWWR
- +tYSTYxr8H9UovsSOj18jNA/GXA5tBr/h1ErHf/I3TRLP8ye95HfbInDDgnmnSzPWr86
- 9MkCi8b6bxJUnlSqFrCA3VbJmTDaaAArRcU9MkVPH+sAnkcRxSYrJwCeIYUpQ1gBb8AR
- fB+Q==
-X-Gm-Message-State: AOJu0YyUzFzd6rbO0M0Ez6Xq1TUSXeoq84azkqbF/Hi9UnJsTK3eMj0c
- QS7BedqFlzT/5/fcce9gK78cOg==
-X-Google-Smtp-Source: AGHT+IHRrtIFZTvM013J6SRW+W20a8RhF86w+Xx8dmb86TgIdCxmZSiyI5afZXbi8W3nE/c6z+sTPg==
-X-Received: by 2002:a05:6a20:1611:b0:188:39e:9054 with SMTP id
- l17-20020a056a20161100b00188039e9054mr26520pzj.6.1700159578637; 
- Thu, 16 Nov 2023 10:32:58 -0800 (PST)
-Received: from ?IPV6:2804:7f0:bdcd:fb00:6501:2693:db52:c621?
- ([2804:7f0:bdcd:fb00:6501:2693:db52:c621])
- by smtp.gmail.com with ESMTPSA id
- m63-20020a625842000000b006bdd1ce6915sm36435pfb.193.2023.11.16.10.32.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Nov 2023 10:32:58 -0800 (PST)
-Message-ID: <e97bf3de-12d8-42ca-b728-4f9edcbc50e2@ventanamicro.com>
-Date: Thu, 16 Nov 2023 15:32:54 -0300
+ (Exim 4.90_1) (envelope-from
+ <BATV+0547470b7b70d81452c7+7389+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1r3hYA-0005tV-Vk
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 13:57:14 -0500
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+0547470b7b70d81452c7+7389+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1r3hY5-0002Ip-Pj
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 13:57:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:Sender
+ :Reply-To:Content-ID:Content-Description;
+ bh=WmEXYsKGmKNQw51vviAPrneH8YnuKGEUgfTeS7n4L6U=; b=beZ53cEcla0C1aEDQU0bSDaYP2
+ fiV2wWE6ST95kKalnTkhGz5/cYkEnKfNfXfOFAizq2TOo+IKqP/1yXB7pFhHq9wFGXZ38hmJ4XLg1
+ Xy05Lir5Wl0t94tR+KPdulwlh1I0fjHOSNpyh+cEq47vpK/q21KTR3J9ho25XztCY7P2/BKv17+O0
+ yLho3xw0Xk1S7SKuvFNyEal3N3xJ+rKdI0Rntf3DeT1YlCSUxTYC2AjUtPLIW9hMAf2ARWmzca5kJ
+ mwXgkM5YMLRr2Sy7o4pDqYFQWaiOM4dAUu2D9nbjmVrS0qt40zpeRpgRvIPc8sxuJTQTtizu5VzUb
+ Sw4yagjA==;
+Received: from [50.201.115.146] (helo=[127.0.0.1])
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1r3hY1-004jO5-42; Thu, 16 Nov 2023 18:57:05 +0000
+Date: Thu, 16 Nov 2023 13:56:55 -0500
+From: David Woodhouse <dwmw2@infradead.org>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+CC: =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_for-8=2E2=5D_Revert_=22ui/conso?=
+ =?US-ASCII?Q?le=3A_allow_to_override_the_default_VC=22?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20231116182228.3062796-1-peter.maydell@linaro.org>
+References: <20231116182228.3062796-1-peter.maydell@linaro.org>
+Message-ID: <1A6C710D-57B1-423D-BA55-3E4D30019203@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Fix SiFive E CLINT clock frequency (#1978)
-Content-Language: en-US
-To: =?UTF-8?Q?Rom=C3=A1n_C=C3=A1rdenas?= <rcardenas.rod@gmail.com>,
- qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Alistair.Francis@wdc.com,
- bin.meng@windriver.com, palmer@dabbelt.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org
-References: <20231116120702.53170-1-rcardenas.rod@gmail.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231116120702.53170-1-rcardenas.rod@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+0547470b7b70d81452c7+7389+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,54 +75,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I believe you forgot to add your Signed-off-by tag. Without it we can't accept
-the patch hehe
-
-Since you'll need to send another version with the S-o-b, please change the commit
-title to
-
-"riscv: Fix SiFive E CLINT clock frequency"
-
-That way other people will quickly identify which sub-tree this patch belongs. The Gitlab
-bug number you put it in the end of the commit msg in a tag:
-
-On 11/16/23 09:07, Román Cárdenas wrote:
-> If you check the manual of SiFive E310 (https://cdn.sparkfun.com/assets/7/f/0/2/7/fe310-g002-manual-v19p05.pdf?_gl=1*w2ieef*_ga*MTcyNDI2MjM0Ny4xNjk2ODcwNTM3*_ga_T369JS7J9N*MTY5Njg3MDUzNy4xLjAuMTY5Njg3MDUzNy42MC4wLjA.), you can see in Figure 1 that the CLINT is connected to the real time clock, which also feeds the AON peripheral (they share the same clock).
-> 
-> In page 43, the docs also say that the timer registers of the CLINT count ticks from the rtcclk.
-> 
-> I am currently playing with bare metal applications both in QEMU and a physical SiFive E310 board and I confirm that the CLINT clock in the physical board runs at 32.768 kHz. In QEMU, the same app produces a completely different outcome, as sometimes a new CLINT interrupt is triggered before finishing other tasks.
-> 
-> You can check issue #1978 on GitLab for more information.
+On 16 November 2023 13:22:28 GMT-05:00, Peter Maydell <peter=2Emaydell@lina=
+ro=2Eorg> wrote:
+>This reverts commit 1bec1cc0da497e55c16e2a7b50f94cdb2a02197f=2E  This
+>commit changed the behaviour of the "-display none" option, so that
+>it now creates a QEMU monitor on the terminal=2E  "-display none"
+>should not be tangled up with whether we create a monitor or a serial
+>terminal; it should purely and only disable the graphical window=2E
+>Changing its behaviour like this breaks command lines which, for
+>example, use semihosting for their output and don't want a graphical
+>window, as they now get a monitor they never asked for=2E
 >
+>It also breaks the command line we document for Xen in
+>docs/system/i386/xen=2Ehtml:
+>
+> $ =2E/qemu-system-x86_64 --accel kvm,xen-version=3D0x40011,kernel-irqchi=
+p=3Dsplit \
+>    -display none -chardev stdio,mux=3Don,id=3Dchar0,signal=3Doff -mon ch=
+ar0 \
+>    -device xen-console,chardev=3Dchar0  -drive file=3D${GUEST_IMAGE},if=
+=3Dxen
+>
+>qemu-system-x86_64: cannot use stdio by multiple character devices
+>qemu-system-x86_64: could not connect serial device to character backend =
+'stdio'
+>
+>Revert the commit to restore the previous handling of "-display
+>none"=2E
+>
+>Resolves: https://gitlab=2Ecom/qemu-project/qemu/-/issues/1974
+>Signed-off-by: Peter Maydell <peter=2Emaydell@linaro=2Eorg>
 
-Like this:
+Reviewed-by: <dwmw@amazon=2Eco=2Euk>
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1978
-
-
-The rest of the commit msg and the code looks good to me. Thanks,
-
-
-
-Daniel
-
-  
-> ---
->   hw/riscv/sifive_e.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/riscv/sifive_e.c b/hw/riscv/sifive_e.c
-> index 0d37adc542..87d9602383 100644
-> --- a/hw/riscv/sifive_e.c
-> +++ b/hw/riscv/sifive_e.c
-> @@ -225,7 +225,7 @@ static void sifive_e_soc_realize(DeviceState *dev, Error **errp)
->               RISCV_ACLINT_SWI_SIZE,
->           RISCV_ACLINT_DEFAULT_MTIMER_SIZE, 0, ms->smp.cpus,
->           RISCV_ACLINT_DEFAULT_MTIMECMP, RISCV_ACLINT_DEFAULT_MTIME,
-> -        RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ, false);
-> +        SIFIVE_E_LFCLK_DEFAULT_FREQ, false);
->       sifive_e_prci_create(memmap[SIFIVE_E_DEV_PRCI].base);
->   
->       /* AON */
 
