@@ -2,88 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127A47EDD3C
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 10:01:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3CBF7EDDF5
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 10:48:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3YEc-0001FC-Dd; Thu, 16 Nov 2023 04:00:26 -0500
+	id 1r3Yyo-000070-Nj; Thu, 16 Nov 2023 04:48:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r3YEa-0001Ex-Ro
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 04:00:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from
+ <zhouyang@zhouyang-HP-Pro-Tower-480-G9-PCI-Desktop-PC.mioffice.cn>)
+ id 1r3XFX-0001iD-NR
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 02:57:19 -0500
+Received: from [1.202.162.39]
+ (helo=zhouyang-HP-Pro-Tower-480-G9-PCI-Desktop-PC.mioffice.cn)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r3YET-0002XI-Nn
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 04:00:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700125216;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iTwgxD8MGIOc3VLAYiYE2OeHdjjGj6HyKXzHHg65YgI=;
- b=ITVTyyQwWg1Orw2Jv8QgLNmszcsevoKaChIsYq018Qt3jDuEpBF6i3B5rnsnZy5LIPsamg
- Wi5W7+6uKVxEhiEC3Q+b3uNxmLk3Te1QXc96SMqvFqOq3jn6CtxO2SBnh+8Qzs6UKNYDjR
- 7ob0jCqeiQZwsQqDB6gZu61j35vNX3s=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-398-LIiSLHL5N7O6JLQuZz6r2g-1; Thu, 16 Nov 2023 04:00:13 -0500
-X-MC-Unique: LIiSLHL5N7O6JLQuZz6r2g-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DC9E5811E8F;
- Thu, 16 Nov 2023 09:00:12 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.34])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2CCA72026D4C;
- Thu, 16 Nov 2023 09:00:09 +0000 (UTC)
-Date: Thu, 16 Nov 2023 09:00:07 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
- Ani Sinha <anisinha@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH] tests/avocado/reverse_debugging: Disable the ppc64 tests
- by default
-Message-ID: <ZVXaF5rYLC1vY8wZ@redhat.com>
-References: <20231114163115.298041-1-thuth@redhat.com>
- <12b4420e-1440-4516-8276-e0e907003c16@linaro.org>
- <9f6247e4-7e81-44f8-a63b-8ee11f722710@redhat.com>
- <CWYYRW53VEPJ.3UL1X7GB1P4H2@wheely>
- <6877d6d6-bfbf-4475-8c61-dd537265b278@redhat.com>
- <ZVTETYrfL8f48qe3@redhat.com> <ZVT-bY9YOr69QTPX@redhat.com>
- <CWZU7DEIX9E4.26PTZ0GK1ZAUP@wheely>
+ (Exim 4.90_1) (envelope-from
+ <zhouyang@zhouyang-HP-Pro-Tower-480-G9-PCI-Desktop-PC.mioffice.cn>)
+ id 1r3XFT-0004P0-Sr
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 02:57:19 -0500
+Received: by zhouyang-HP-Pro-Tower-480-G9-PCI-Desktop-PC.mioffice.cn (Postfix,
+ from userid 1000)
+ id DC74DCC0C36; Thu, 16 Nov 2023 15:50:20 +0800 (CST)
+To: qemu-devel@nongnu.org
+Cc: kraxel@redhat.com,
+	zhouyang23 <zhouyang23@xiaomi.com>
+Subject: [PATCH] hw/audio: Fix logic error in hda audio
+Date: Thu, 16 Nov 2023 15:50:19 +0800
+Message-Id: <20231116075019.296115-1-zhouyang23@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CWZU7DEIX9E4.26PTZ0GK1ZAUP@wheely>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 1.202.162.39 (failed)
+Received-SPF: none client-ip=1.202.162.39;
+ envelope-from=zhouyang@zhouyang-HP-Pro-Tower-480-G9-PCI-Desktop-PC.mioffice.cn;
+ helo=zhouyang-HP-Pro-Tower-480-G9-PCI-Desktop-PC.mioffice.cn
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NO_DNS_FOR_FROM=0.001, RDNS_NONE=0.793,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 16 Nov 2023 04:48:08 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,142 +57,52 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-to:  zhouyang23 <zhouyang23@xiaomi.com>
+From:  zhouyang23 via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 16, 2023 at 11:15:25AM +1000, Nicholas Piggin wrote:
-> On Thu Nov 16, 2023 at 3:22 AM AEST, Daniel P. Berrangé wrote:
-> > On Wed, Nov 15, 2023 at 01:14:53PM +0000, Daniel P. Berrangé wrote:
-> > > On Wed, Nov 15, 2023 at 07:23:01AM +0100, Thomas Huth wrote:
-> > > > On 15/11/2023 02.15, Nicholas Piggin wrote:
-> > > > > On Wed Nov 15, 2023 at 4:29 AM AEST, Thomas Huth wrote:
-> > > > > > On 14/11/2023 17.37, Philippe Mathieu-Daudé wrote:
-> > > > > > > On 14/11/23 17:31, Thomas Huth wrote:
-> > > > > > > > The tests seem currently to be broken. Disable them by default
-> > > > > > > > until someone fixes them.
-> > > > > > > > 
-> > > > > > > > Signed-off-by: Thomas Huth <thuth@redhat.com>
-> > > > > > > > ---
-> > > > > > > >    tests/avocado/reverse_debugging.py | 7 ++++---
-> > > > > > > >    1 file changed, 4 insertions(+), 3 deletions(-)
-> > > > > > > 
-> > > > > > > Similarly, I suspect https://gitlab.com/qemu-project/qemu/-/issues/1961
-> > > > > > > which has a fix ready:
-> > > > > > > https://lore.kernel.org/qemu-devel/20231110170831.185001-1-richard.henderson@linaro.org/
-> > > > > > > 
-> > > > > > > Maybe wait the fix gets in first?
-> > > > > > 
-> > > > > > No, I applied Richard's patch, but the problem persists. Does this test
-> > > > > > still work for you?
-> > > > > 
-> > > > > I bisected it to 1d4796cd008373 ("python/machine: use socketpair() for
-> > > > > console connections"),
-> > > > 
-> > > > Maybe John (who wrote that commit) can help?
-> > > 
-> > > I find it hard to believe this commit is a direct root cause of the
-> > > problem since all it does is change the QEMU startup sequence so that
-> > > instead of QEMU listening for a monitor connection, it is given a
-> > > pre-opened monitor connection.
-> > > 
-> > > At the very most that should affect the startup timing a little.
-> > > 
-> > > I notice all the reverse debugging tests have a skip on gitlab
-> > > with a comment:
-> > > 
-> > >     # unidentified gitlab timeout problem
-> > > 
-> > > this makes be suspicious that John's patch has merely made this
-> > > (henceforth undiagnosed) timeout more likely to ocurr.
-> >
-> > After an absolutely horrendous hours long debugging session I think
-> > I figured out the problem. The QEMU process is blocking in
-> >
-> >     qemu_chr_write_buffer
-> >
-> > spinning in the loop on EAGAIN.
-> 
-> Great work.
-> 
-> Why does this make the gdb socket give an empty response? Something
-> just times out?
+Commit b7639b7dd0 introduced a logic error about mixer and nomixer.
+Cause use micro_mixemu when there is no mixer in HDAAudioState, but
+use micro_nomixemu wehen there has a mixer in HDAAuditState.
 
-There's no empty response - avocado is sending SIGTERM to the
-test because no response ever arrived after 10 seconds 
+Signed-off-by: zhouyang23 <zhouyang23@xiaomi.com>
+---
+ hw/audio/hda-codec.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> > @@ -357,6 +360,10 @@ def _pre_launch(self) -> None:
-> >  
-> >          if self._console_set:
-> >              self._cons_sock_pair = socket.socketpair()
-> > +            self._cons_sock_pair[0].setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024*1024);
-> > +            self._cons_sock_pair[0].setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024*1024);
-> > +            self._cons_sock_pair[1].setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024*1024);
-> > +            self._cons_sock_pair[1].setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024*1024);
-> >              os.set_inheritable(self._cons_sock_pair[0].fileno(), True)
-> >  
-> >          # NOTE: Make sure any opened resources are *definitely* freed in
-> 
-> So perhaps ppc64 fails just because it prints more to the console in early
-> boot than other targets?
-
-Yes, that's exactly it - the ppc firmware is very verbose, so is enough
-to tip it over the limit.
-
-> > The Machine class doesn't know if anything will ever use the console,
-> > so as is the change is unsafe.
-> >
-> > The original goal of John's change was to guarantee we capture early
-> > boot messages as some test need that.  
-> >
-> > I think we need to be able to have a flag to say whether the caller needs
-> > an "early console" facility, and only use the pre-opened FD passing for
-> > that case. Tests we need early console will have to ask for that guarantee
-> > explicitly.
-> 
-> The below patch makes this test work. Maybe as a quick fix it is
-> better than disabling the test.
-> 
-> I guess we still have a problem if a test invokes vm.launch()
-> directly without subsequently waiting for a console pattern or
-> doing something with the console as you say. Your suggesstion is
-> add something like vm.launch(console=True) ? 
-> 
-> Thanks,
-> Nick
-> ---
-> 
-> diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
-> index fc47874eda..128d85bc0e 100644
-> --- a/tests/avocado/reverse_debugging.py
-> +++ b/tests/avocado/reverse_debugging.py
-> @@ -12,6 +12,7 @@
->  
->  from avocado import skipIf
->  from avocado_qemu import BUILD_DIR
-> +from avocado.utils import datadrainer
->  from avocado.utils import gdb
->  from avocado.utils import process
->  from avocado.utils.network.ports import find_free_port
-> @@ -52,6 +53,10 @@ def run_vm(self, record, shift, args, replay_path, image_path, port):
->          if args:
->              vm.add_args(*args)
->          vm.launch()
-> +        console_drainer = datadrainer.LineLogger(vm.console_socket.fileno(),
-> +                                    logger=self.log.getChild('console'),
-> +                                    stop_check=(lambda : not vm.is_running()))
-> +        console_drainer.start()
->          return vm
->  
->      @staticmethod
-
-Yes, thus should do the trick.
-
-With regards,
-Daniel
+diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
+index b9ad1f4c39..87bacb3bee 100644
+--- a/hw/audio/hda-codec.c
++++ b/hw/audio/hda-codec.c
+@@ -857,7 +857,7 @@ static void hda_audio_init_output(HDACodecDevice *hda, Error **errp)
+     HDAAudioState *a = HDA_AUDIO(hda);
+     const struct desc_codec *desc = &output_nomixemu;
+ 
+-    if (!a->mixer) {
++    if (a->mixer) {
+         desc = &output_mixemu;
+     }
+ 
+@@ -869,7 +869,7 @@ static void hda_audio_init_duplex(HDACodecDevice *hda, Error **errp)
+     HDAAudioState *a = HDA_AUDIO(hda);
+     const struct desc_codec *desc = &duplex_nomixemu;
+ 
+-    if (!a->mixer) {
++    if (a->mixer) {
+         desc = &duplex_mixemu;
+     }
+ 
+@@ -881,7 +881,7 @@ static void hda_audio_init_micro(HDACodecDevice *hda, Error **errp)
+     HDAAudioState *a = HDA_AUDIO(hda);
+     const struct desc_codec *desc = &micro_nomixemu;
+ 
+-    if (!a->mixer) {
++    if (a->mixer) {
+         desc = &micro_mixemu;
+     }
+ 
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.34.1
 
 
