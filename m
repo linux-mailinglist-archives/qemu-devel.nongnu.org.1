@@ -2,54 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBC57EDEA3
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 11:35:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D66817EDE96
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 11:34:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3ZhL-0004Gm-VH; Thu, 16 Nov 2023 05:34:11 -0500
+	id 1r3ZhN-0004HQ-BU; Thu, 16 Nov 2023 05:34:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1r3ZhJ-0004Fq-BR; Thu, 16 Nov 2023 05:34:09 -0500
+ id 1r3ZhK-0004G6-TH; Thu, 16 Nov 2023 05:34:10 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1r3ZhH-0006Hx-LH; Thu, 16 Nov 2023 05:34:09 -0500
+ id 1r3ZhJ-0006KO-Bl; Thu, 16 Nov 2023 05:34:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=rDnB6s29L8ULZ5Fck3KUKcaMHfXPQIZUcEf3B7HEzQU=; b=kN3y3NY3kSCGb4f/J4MK0ePZtY
- P6g7Z8E+Z9E/yjMNZb8pHVJi6X7Owkw7aHg1N9/zy7/7UE8nbqHpuQYUNHlV+A/HE2iXjtWPB8Hi9
- PAi/ZA/pTzM2HsfZjCQF0u3zkDwmhA6EEhvgwTmsmyZ0vZgKz7ObLLP7G5b0fWfRQwQSq1UBV9Nps
- K3kq4vOVibm5vhfo2gp4QQ4rTzY+7JHMdEeXsPVT8eTzsGxdvCHr4GZtt25Ryn4CSBRBSBkijD/IO
- rusif81hlv0guCO/kPAceKxHsfs07JQnbrhjBN7odmwy8X9MvWx0o23Nl9/qDdx4dj3rNYxnuj9tH
- CxxeVkkCXAUwsXbUXYWr4bH6Wi7ogbzR+4dDJ24opckBrUZmUpY2WZwcaoRAl5BnbGqXv4SqklOk0
- f70S5yTcGvcgFca2A9wdKxg0VlnUCL97q6+ucUNCkrZFW0F3Dhto5rBgNtFfU/9fNLrsSEwS1XndL
- XECgxvzO5TQTNHjMvz+WmuhrDpO8gwsF/1TAxqIXi8lgkvLbqFlK+6pxwr18nM6RCAIOdMaSaFW0P
- 04WkJemYohz3LSIOkAI9TIcOezZASggD8QK+zdO6cjZTywWnp8BJ/a5wGkIvj0x4fvO2daTcnexO/
- w1Ry2FLXoZi/B9EF22eiyohXxkfSmHmGR+pLN9N7M=;
+ References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=99JoRfo2bDLXfSmRKNCRIX4XbY16dpu/h8y4PDn1Mzw=; b=G1r+n2hxc1N9w/gBsgUnM42EYs
+ vFkBKIkUy1MfhyvK8adqiLxVpa9Z+hFWe6OAA6WwLxZXtgF+qHHodqqy+1rhz5yQiFkR2iVBXIBwH
+ TbWVMq3SttrGMv8eLAdv8Eh5P6o+gz5VWgcbtkGxNU3hP7Om3IbX6mWkuKW3sa0zuLe2yG5NVkrEN
+ LCdZlIvm6wlJrA96Zd2xknSOLSh8LRKnD1NB/67yEGEPfJJl/IR5WTN3dnnESWnM2MImfrKjScM0d
+ JREU/MSBoPjWo8X3TQo3oXFgRhNvy+ERjiJQa51bQr0do8IpPeRMO38K6GTaLuHJzfWaNLgmTbcX0
+ YRl+Con8lXu8X/64WK0YF3SlNSGgAdzsq/N3m/ku5Q4JhkHHJRHQwpFgKdXPjbNlz1Dh06YxgMh96
+ OyO2f1FLOPCxMA0u+BI8ga3uf36vx/FGUntGzSsL6suYZZrlrVAdySI9tzD7F0XXYtLAa+4jF/ck5
+ opCXTNB3HRkIu5fNk8BmrDw3n1h6RSlkvwb5NgYPgc9HIqDd0B/UY7QjGQSTbMfLCBeAKcQu8ZveK
+ 30T1Egg8BxpGNKsgpwOE/piD2HY35VtFHwPjtAGrTvKTQiWeCRr54CKszQuvoF8gA2vRO/bHU2eHr
+ XQHvl2TS+40qt8crQ9LBq31H+wn1jaeeueweDSWZc=;
 Received: from host86-130-37-248.range86-130.btcentralplus.com
  ([86.130.37.248] helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1r3Zgw-0001bP-9Z; Thu, 16 Nov 2023 10:33:50 +0000
+ id 1r3Zh0-0001bP-Qb; Thu, 16 Nov 2023 10:33:54 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: kwolf@redhat.com, jsnow@redhat.com, qemu-block@nongnu.org,
  qemu-devel@nongnu.org, balaton@eik.bme.hu, philmd@linaro.org,
  shentey@gmail.com
-Date: Thu, 16 Nov 2023 10:33:51 +0000
-Message-Id: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
+Date: Thu, 16 Nov 2023 10:33:52 +0000
+Message-Id: <20231116103355.588580-2-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
+References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.130.37.248
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v3 0/4] ide: implement simple legacy/native mode switching for
- PCI IDE controllers
+Subject: [PATCH v3 1/4] ide/ioport: move ide_portio_list[] and
+ ide_portio_list2[] definitions to IDE core
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -75,57 +77,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series adds a simple implementation of legacy/native mode switching for PCI
-IDE controllers and updates the via-ide device to use it.
-
-The approach I take here is to add a new pci_ide_update_mode() function which handles
-management of the PCI BARs and legacy IDE ioports for each mode to avoid exposing
-details of the internal logic to individual PCI IDE controllers.
-
-As noted in [1] this is extracted from a local WIP branch I have which contains
-further work in this area. However for the moment I've kept it simple (and
-restricted it to the via-ide device) which is good enough for Zoltan's PPC
-images whilst paving the way for future improvements after 8.2.
+These definitions are present in ioport.c which is currently only available when
+CONFIG_IDE_ISA is enabled. Move them to the IDE core so that they can be made
+available to PCI IDE controllers that support switching to legacy mode.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+---
+ hw/ide/core.c             | 12 ++++++++++++
+ hw/ide/ioport.c           | 12 ------------
+ include/hw/ide/internal.h |  3 +++
+ 3 files changed, 15 insertions(+), 12 deletions(-)
 
-[1] https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05403.html
-
-v3:
-- Rebase onto master
-- Move ide_portio_list[] and ide_portio_list2[] to IDE core to prevent duplication in
-  hw/ide/pci.c
-- Don't zero BARs when switching from native mode to legacy mode, instead always force
-  them to read zero as suggested in the PCI IDE specification (note: this also appears
-  to fix the fuloong2e machine booting from IDE)
-- Add comments in pci_ide_update_mode() suggested by Kevin
-- Drop the existing R-B and T-B tags: whilst this passes my local tests, the behaviour
-  around zero BARs feels different enough here
-
-v2:
-- Rebase onto master
-- Mask the bottom 4 bits of PCI_CLASS_PROG in pci_ide_update_mode() in patch 1
-- Add patch 2 to remove the default BAR addresses to avoid confusion
-- Don't set PCI_INTERRUPT_PIN directly in via_ide_reset() as it is already set
-  by pci_ide_update_mode() in patch 3, and reword the commit message accordingly
-- Add Tested-By tags from Zoltan and Bernhard
-
-
-Mark Cave-Ayland (4):
-  ide/ioport: move ide_portio_list[] and ide_portio_list2[] definitions
-    to IDE core
-  ide/pci: introduce pci_ide_update_mode() function
-  ide/via: don't attempt to set default BAR addresses
-  hw/ide/via: implement legacy/native mode switching
-
- hw/ide/core.c             | 12 ++++++
- hw/ide/ioport.c           | 12 ------
- hw/ide/pci.c              | 84 +++++++++++++++++++++++++++++++++++++++
- hw/ide/via.c              | 44 ++++++++++++++++----
- include/hw/ide/internal.h |  3 ++
- include/hw/ide/pci.h      |  1 +
- 6 files changed, 137 insertions(+), 19 deletions(-)
-
+diff --git a/hw/ide/core.c b/hw/ide/core.c
+index 63ba665f3d..8a0579bff4 100644
+--- a/hw/ide/core.c
++++ b/hw/ide/core.c
+@@ -81,6 +81,18 @@ static const char *IDE_DMA_CMD_str(enum ide_dma_cmd enval)
+ 
+ static void ide_dummy_transfer_stop(IDEState *s);
+ 
++const MemoryRegionPortio ide_portio_list[] = {
++    { 0, 8, 1, .read = ide_ioport_read, .write = ide_ioport_write },
++    { 0, 1, 2, .read = ide_data_readw, .write = ide_data_writew },
++    { 0, 1, 4, .read = ide_data_readl, .write = ide_data_writel },
++    PORTIO_END_OF_LIST(),
++};
++
++const MemoryRegionPortio ide_portio2_list[] = {
++    { 0, 1, 1, .read = ide_status_read, .write = ide_ctrl_write },
++    PORTIO_END_OF_LIST(),
++};
++
+ static void padstr(char *str, const char *src, int len)
+ {
+     int i, v;
+diff --git a/hw/ide/ioport.c b/hw/ide/ioport.c
+index e2ecc6230c..0b283ac783 100644
+--- a/hw/ide/ioport.c
++++ b/hw/ide/ioport.c
+@@ -28,18 +28,6 @@
+ #include "hw/ide/internal.h"
+ #include "trace.h"
+ 
+-static const MemoryRegionPortio ide_portio_list[] = {
+-    { 0, 8, 1, .read = ide_ioport_read, .write = ide_ioport_write },
+-    { 0, 1, 2, .read = ide_data_readw, .write = ide_data_writew },
+-    { 0, 1, 4, .read = ide_data_readl, .write = ide_data_writel },
+-    PORTIO_END_OF_LIST(),
+-};
+-
+-static const MemoryRegionPortio ide_portio2_list[] = {
+-    { 0, 1, 1, .read = ide_status_read, .write = ide_ctrl_write },
+-    PORTIO_END_OF_LIST(),
+-};
+-
+ int ide_init_ioport(IDEBus *bus, ISADevice *dev, int iobase, int iobase2)
+ {
+     int ret;
+diff --git a/include/hw/ide/internal.h b/include/hw/ide/internal.h
+index 2bfa7533d6..3bdcc75597 100644
+--- a/include/hw/ide/internal.h
++++ b/include/hw/ide/internal.h
+@@ -354,6 +354,9 @@ enum ide_dma_cmd {
+ 
+ extern const char *IDE_DMA_CMD_lookup[IDE_DMA__COUNT];
+ 
++extern const MemoryRegionPortio ide_portio_list[];
++extern const MemoryRegionPortio ide_portio2_list[];
++
+ #define ide_cmd_is_read(s) \
+         ((s)->dma_cmd == IDE_DMA_READ)
+ 
 -- 
 2.39.2
 
