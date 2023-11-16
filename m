@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F7077EDC28
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:46:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 579F17EDC57
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:50:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3X44-0005vL-60; Thu, 16 Nov 2023 02:45:44 -0500
+	id 1r3X4V-0006VL-Ry; Thu, 16 Nov 2023 02:45:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X3f-0005oQ-7r; Thu, 16 Nov 2023 02:45:03 -0500
+ id 1r3X3l-0005sK-MH; Thu, 16 Nov 2023 02:45:11 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X3d-0004vw-EU; Thu, 16 Nov 2023 02:45:02 -0500
+ id 1r3X3i-00057Y-Fj; Thu, 16 Nov 2023 02:45:09 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 45A3E33BE0;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5356733BE1;
  Thu, 16 Nov 2023 10:45:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D207735846;
+ by tsrv.corpit.ru (Postfix) with SMTP id DFB9F35847;
  Thu, 16 Nov 2023 10:44:41 +0300 (MSK)
-Received: (nullmailer pid 3202508 invoked by uid 1000);
+Received: (nullmailer pid 3202511 invoked by uid 1000);
  Thu, 16 Nov 2023 07:44:41 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 07/27] bsd-user: spelling fixes: necesary, agrument,
- undocummented
-Date: Thu, 16 Nov 2023 10:44:21 +0300
-Message-Id: <20231116074441.3202417-8-mjt@tls.msk.ru>
+Subject: [PULL 08/27] linux-user: spelling fixes: othe, necesary
+Date: Thu, 16 Nov 2023 10:44:22 +0300
+Message-Id: <20231116074441.3202417-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231116074441.3202417-1-mjt@tls.msk.ru>
 References: <20231116074441.3202417-1-mjt@tls.msk.ru>
@@ -59,22 +58,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: a99d74034754 "bsd-user: Implement do_obreak function"
-Fixes: 8632729060bf "bsd-user: Implement freebsd_exec_common, used in implementing execve/fexecve."
-Fixes: bf14f13d8be8 "bsd-user: Implement stat related syscalls"
-Reviewed-by: Warner Losh <imp@bsdimp.com>
+Fixes: e34136d93059 "linux-user/ppc: Add vdso"
+Fixes: 86f04735ac20 "linux-user: Fix brk() to release pages"
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- bsd-user/bsd-mem.h         | 2 +-
- bsd-user/freebsd/os-proc.c | 2 +-
- bsd-user/freebsd/os-stat.h | 6 +++---
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ linux-user/ppc/vdso.S | 2 +-
+ linux-user/syscall.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
-index c3e72e3b86..21d9bab889 100644
---- a/bsd-user/bsd-mem.h
-+++ b/bsd-user/bsd-mem.h
-@@ -235,7 +235,7 @@ static inline abi_long do_obreak(abi_ulong brk_val)
+diff --git a/linux-user/ppc/vdso.S b/linux-user/ppc/vdso.S
+index 689010db13..2e79ea9808 100644
+--- a/linux-user/ppc/vdso.S
++++ b/linux-user/ppc/vdso.S
+@@ -227,7 +227,7 @@ endf	__kernel_sigtramp_rt
+ #ifndef _ARCH_PPC64
+ 	/*
+ 	 * The non-rt sigreturn has the same layout at a different offset.
+-	 * Move the CFA and leave all othe other descriptions the same.
++	 * Move the CFA and leave all the other descriptions the same.
+ 	 */
+ 	.cfi_def_cfa	1, SIGNAL_FRAMESIZE + offsetof_sigframe_mcontext
+ 	nop
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 65ac3ac796..16ca5ea7b6 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -831,7 +831,7 @@ abi_long do_brk(abi_ulong brk_val)
          return target_brk;
      }
  
@@ -83,50 +93,6 @@ index c3e72e3b86..21d9bab889 100644
      if (new_brk < old_brk) {
          target_munmap(new_brk, old_brk - new_brk);
  
-diff --git a/bsd-user/freebsd/os-proc.c b/bsd-user/freebsd/os-proc.c
-index 4e67ae4d56..e0203e259b 100644
---- a/bsd-user/freebsd/os-proc.c
-+++ b/bsd-user/freebsd/os-proc.c
-@@ -115,7 +115,7 @@ abi_long freebsd_exec_common(abi_ulong path_or_fd, abi_ulong guest_argp,
-     }
- 
-     qarg0 = argp = g_new0(char *, argc + 9);
--    /* save the first agrument for the emulator */
-+    /* save the first argument for the emulator */
-     *argp++ = (char *)getprogname();
-     qargp = argp;
-     *argp++ = (char *)getprogname();
-diff --git a/bsd-user/freebsd/os-stat.h b/bsd-user/freebsd/os-stat.h
-index b20e270774..3bdc66aa98 100644
---- a/bsd-user/freebsd/os-stat.h
-+++ b/bsd-user/freebsd/os-stat.h
-@@ -146,7 +146,7 @@ static inline abi_long do_freebsd_fstatat(abi_long arg1, abi_long arg2,
-     return ret;
- }
- 
--/* undocummented nstat(char *path, struct nstat *ub) syscall */
-+/* undocumented nstat(char *path, struct nstat *ub) syscall */
- static abi_long do_freebsd11_nstat(abi_long arg1, abi_long arg2)
- {
-     abi_long ret;
-@@ -162,7 +162,7 @@ static abi_long do_freebsd11_nstat(abi_long arg1, abi_long arg2)
-     return ret;
- }
- 
--/* undocummented nfstat(int fd, struct nstat *sb) syscall */
-+/* undocumented nfstat(int fd, struct nstat *sb) syscall */
- static abi_long do_freebsd11_nfstat(abi_long arg1, abi_long arg2)
- {
-     abi_long ret;
-@@ -175,7 +175,7 @@ static abi_long do_freebsd11_nfstat(abi_long arg1, abi_long arg2)
-     return ret;
- }
- 
--/* undocummented nlstat(char *path, struct nstat *ub) syscall */
-+/* undocumented nlstat(char *path, struct nstat *ub) syscall */
- static abi_long do_freebsd11_nlstat(abi_long arg1, abi_long arg2)
- {
-     abi_long ret;
 -- 
 2.39.2
 
