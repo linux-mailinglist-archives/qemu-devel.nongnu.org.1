@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3037ED900
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 02:48:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8147ED908
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 02:48:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3RQN-0005It-Qm; Wed, 15 Nov 2023 20:44:08 -0500
+	id 1r3RQK-0005Gc-Sp; Wed, 15 Nov 2023 20:44:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r3RQI-0005Eq-3x
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r3RQI-0005Ep-3J
  for qemu-devel@nongnu.org; Wed, 15 Nov 2023 20:44:02 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r3RQD-0001zZ-P9
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r3RQC-0001zV-Sn
  for qemu-devel@nongnu.org; Wed, 15 Nov 2023 20:44:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1700099036;
@@ -22,33 +22,34 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DEsxYWL/rvlUKgzze2QNRGRzTzXyfu0i4Gw01lfJ6SI=;
- b=PFBRti6wz4m0gzQAuAJX77ReKO8cidd19RwtQ1TdtVkzn0HoynzWxxhF9cLVAbT2FFpW/O
- j+ezATN8fxCbxMhpHdUEcxWb2y7puILrac6E/rnU/uqt8Z8TGvfrZqgN1qRf9DJMWhkKkc
- gLTD2Move7ovah1M/ujXQsGAkv7OaSs=
+ bh=HYLkqBBvaIhpzJOuU0P3RkHpLlo+uQ+r8gLb/DfUIYQ=;
+ b=QbcyyOkXeWfc/0HRttLGxQZ/eEsbSSd1SlK7y4fNfCpiL2NvCO56Ue9g5Ew0aOm+k1z2tF
+ vTmD084M5kfffOlkIaRqGEQTI/bIKXE2OstJXmzp2ui05Hr9QJG8CxpqUlI5ZWAP1/oETW
+ fEuqZybopxyBabCZghKQl1589jfAsoM=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-292-F_tLtw9RN768TLHrAPfXtQ-1; Wed,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-50-d-EWvkQQNhOZ5xqTmAOxwA-1; Wed,
  15 Nov 2023 20:43:54 -0500
-X-MC-Unique: F_tLtw9RN768TLHrAPfXtQ-1
+X-MC-Unique: d-EWvkQQNhOZ5xqTmAOxwA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A43773813F24;
- Thu, 16 Nov 2023 01:43:53 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 040ED1C05EC9;
+ Thu, 16 Nov 2023 01:43:54 +0000 (UTC)
 Received: from scv.localdomain (unknown [10.22.32.122])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5FDB3C15881;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B58F7C15881;
  Thu, 16 Nov 2023 01:43:53 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 07/19] qapi/introspect: assert schema.lookup_type did not fail
-Date: Wed, 15 Nov 2023 20:43:38 -0500
-Message-ID: <20231116014350.653792-8-jsnow@redhat.com>
+Subject: [PATCH 08/19] qapi/schema: add static typing and assertions to
+ lookup_type()
+Date: Wed, 15 Nov 2023 20:43:39 -0500
+Message-ID: <20231116014350.653792-9-jsnow@redhat.com>
 In-Reply-To: <20231116014350.653792-1-jsnow@redhat.com>
 References: <20231116014350.653792-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -79,40 +80,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-lookup_type() is capable of returning None, but introspect.py isn't
-prepared for that. (And rightly so, if these built-in types are absent,
-something has gone hugely wrong.)
-
-RFC: This is slightly cumbersome as-is, but a patch at the end of this series
-tries to address it with some slightly slicker lookup functions that
-don't need as much hand-holding.
+This function is a bit hard to type as-is; mypy needs some assertions to
+assist with the type narrowing.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- scripts/qapi/introspect.py | 8 ++++++--
+ scripts/qapi/schema.py | 8 ++++++--
  1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
-index 67c7d89aae0..42981bce163 100644
---- a/scripts/qapi/introspect.py
-+++ b/scripts/qapi/introspect.py
-@@ -227,10 +227,14 @@ def _use_type(self, typ: QAPISchemaType) -> str:
+diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+index a1094283828..3308f334872 100644
+--- a/scripts/qapi/schema.py
++++ b/scripts/qapi/schema.py
+@@ -968,8 +968,12 @@ def lookup_entity(self, name, typ=None):
+             return None
+         return ent
  
-         # Map the various integer types to plain int
-         if typ.json_type() == 'int':
--            typ = self._schema.lookup_type('int')
-+            tmp = self._schema.lookup_type('int')
-+            assert tmp is not None
-+            typ = tmp
-         elif (isinstance(typ, QAPISchemaArrayType) and
-               typ.element_type.json_type() == 'int'):
--            typ = self._schema.lookup_type('intList')
-+            tmp = self._schema.lookup_type('intList')
-+            assert tmp is not None
-+            typ = tmp
-         # Add type to work queue if new
-         if typ not in self._used_types:
-             self._used_types.append(typ)
+-    def lookup_type(self, name):
+-        return self.lookup_entity(name, QAPISchemaType)
++    def lookup_type(self, name: str) -> Optional[QAPISchemaType]:
++        typ = self.lookup_entity(name, QAPISchemaType)
++        if typ is None:
++            return None
++        assert isinstance(typ, QAPISchemaType)
++        return typ
+ 
+     def resolve_type(self, name, info, what):
+         typ = self.lookup_type(name)
 -- 
 2.41.0
 
