@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F5D7EDC36
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:46:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B17FF7EDC2B
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:46:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3X3b-0005lu-6m; Thu, 16 Nov 2023 02:45:00 -0500
+	id 1r3X3b-0005mF-TP; Thu, 16 Nov 2023 02:45:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X3Y-0005lO-JT; Thu, 16 Nov 2023 02:44:56 -0500
+ id 1r3X3Y-0005lV-V9; Thu, 16 Nov 2023 02:44:56 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X3W-0004qN-Uo; Thu, 16 Nov 2023 02:44:56 -0500
+ id 1r3X3X-0004qV-7M; Thu, 16 Nov 2023 02:44:56 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F345F33BDB;
- Thu, 16 Nov 2023 10:45:02 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0DE3233BDC;
+ Thu, 16 Nov 2023 10:45:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 89B7335841;
+ by tsrv.corpit.ru (Postfix) with SMTP id 98C3135842;
  Thu, 16 Nov 2023 10:44:41 +0300 (MSK)
-Received: (nullmailer pid 3202493 invoked by uid 1000);
+Received: (nullmailer pid 3202496 invoked by uid 1000);
  Thu, 16 Nov 2023 07:44:41 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 02/27] MAINTAINERS: Add tests/decode/ to the "Overall TCG CPUs"
- section
-Date: Thu, 16 Nov 2023 10:44:16 +0300
-Message-Id: <20231116074441.3202417-3-mjt@tls.msk.ru>
+Subject: [PULL 03/27] tests/data/qobject/qdict.txt: Avoid non-inclusive words
+Date: Thu, 16 Nov 2023 10:44:17 +0300
+Message-Id: <20231116074441.3202417-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231116074441.3202417-1-mjt@tls.msk.ru>
 References: <20231116074441.3202417-1-mjt@tls.msk.ru>
@@ -62,27 +61,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The tests/decode/ folder belongs to scripts/decodetree.py, so
-it should be listed in the same section as the script.
+qdict.txt only consists of more or less random test data. We
+can simply drop the lines with the problematic words here.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ tests/data/qobject/qdict.txt | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ff1238bb98..695e0bd34f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -174,6 +174,7 @@ F: include/hw/core/tcg-cpu-ops.h
- F: host/include/*/host/cpuinfo.h
- F: util/cpuinfo-*.c
- F: include/tcg/
-+F: tests/decode/
- 
- FPU emulation
- M: Aurelien Jarno <aurelien@aurel32.net>
+diff --git a/tests/data/qobject/qdict.txt b/tests/data/qobject/qdict.txt
+index 122fda4524..e2edc88161 100644
+--- a/tests/data/qobject/qdict.txt
++++ b/tests/data/qobject/qdict.txt
+@@ -1866,10 +1866,6 @@ blackfin: 4096
+ blackfin.c: 7552
+ blackfin.h: 1089
+ blackfin_sram.h: 1207
+-blacklist.c: 8658
+-blacklist.h: 108
+-blackstamp.c: 9838
+-BlackStamp_defconfig: 27434
+ blinken.h: 617
+ blizzard.c: 41338
+ blizzard.h: 249
 -- 
 2.39.2
 
