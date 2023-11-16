@@ -2,67 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCFC27EE0D8
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 13:48:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76ED97EE0FC
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 14:02:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3bld-0006Gy-JO; Thu, 16 Nov 2023 07:46:45 -0500
+	id 1r3bzP-0000PO-3Q; Thu, 16 Nov 2023 08:00:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1r3bla-0006GL-PO
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 07:46:42 -0500
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1r3bzA-0000Lp-C6
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:00:48 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1r3blZ-0005hX-3N
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 07:46:42 -0500
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1r3bz7-0007e3-2y
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:00:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700138799;
+ s=mimecast20190719; t=1700139629;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=37/vd5BT2BR+X/Vmpl9N9wIK1MYiu2a3rUJxZx7ieP0=;
- b=QRpgmZEAKvU7ojQixLhutnNadbBJs0GLoUVLQM+UZeOFptPA2Gv0Qhimxxapq2ieOf243z
- wbgpIB2vDPRhoexQurOPrOM6tyf4bhME7DK4jzOOL1dyLh86hwfz90fGHW3zajg4Sa9V37
- wc1PNKcFsImyNvIdazL+gAB7fVK0fQk=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=AQuFmj0jMzEFdih45oeivi5MMVVyGrfsPJwS4X2kEZE=;
+ b=SmCnUnSCvLh/uMqgjwSTDjoBix0BYK9WISlHJIMuIM4YN0bcMn7NV8wP/TwIR26lTdH1Gt
+ RbL8t+IWgoiyBzNSVm04VREUVoY2g0ge+JjZVNZ0nCx46EWmp4ZwEw7VQqvzvDu76in14r
+ TDzuSRS82lO0Y29sYGKiSvZUhoILp64=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-184-4hzgqoaDPX-ydVN_ZLGjbw-1; Thu,
- 16 Nov 2023 07:46:35 -0500
-X-MC-Unique: 4hzgqoaDPX-ydVN_ZLGjbw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-384-KahXGICiPE2IETxMsjWKmg-1; Thu,
+ 16 Nov 2023 08:00:26 -0500
+X-MC-Unique: KahXGICiPE2IETxMsjWKmg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C4BC43C1ACD5;
- Thu, 16 Nov 2023 12:46:34 +0000 (UTC)
-Received: from [10.39.193.151] (unknown [10.39.193.151])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D04E37ACE;
- Thu, 16 Nov 2023 12:46:32 +0000 (UTC)
-Message-ID: <5d7cc3e7-a534-0352-6a86-fb95fdf3ccfa@redhat.com>
-Date: Thu, 16 Nov 2023 13:46:31 +0100
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 89FC4381AE57;
+ Thu, 16 Nov 2023 13:00:25 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.10])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C51AD2026D68;
+ Thu, 16 Nov 2023 13:00:24 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-stable@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>,
+ qemu-s390x@nongnu.org (open list:S390 Virtio-ccw)
+Subject: [PATCH] avocado: fix Python invalid escape sequence
+Date: Thu, 16 Nov 2023 17:00:22 +0400
+Message-ID: <20231116130022.1270356-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH 01/16] hw/uefi: add include/hw/uefi/var-service-api.h
-To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Eric Blake <eblake@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, graf@amazon.com,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-References: <20231115151242.184645-1-kraxel@redhat.com>
- <20231115151242.184645-2-kraxel@redhat.com>
-Content-Language: en-US
-From: Laszlo Ersek <lersek@redhat.com>
-In-Reply-To: <20231115151242.184645-2-kraxel@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -71,7 +69,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,64 +85,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/15/23 16:12, Gerd Hoffmann wrote:
-> This file defines the register interface of the uefi-vars device.
-> It's only a handful of registers: magic value, command and status
-> registers, location and size of the communication buffer.
-> 
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
->  include/hw/uefi/var-service-api.h | 40 +++++++++++++++++++++++++++++++
->  1 file changed, 40 insertions(+)
->  create mode 100644 include/hw/uefi/var-service-api.h
-> 
-> diff --git a/include/hw/uefi/var-service-api.h b/include/hw/uefi/var-service-api.h
-> new file mode 100644
-> index 000000000000..37fdab32741f
-> --- /dev/null
-> +++ b/include/hw/uefi/var-service-api.h
-> @@ -0,0 +1,40 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * uefi-vars device - API of the virtual device for guest/host communication.
-> + */
-> +#ifndef QEMU_UEFI_VAR_SERVICE_API_H
-> +#define QEMU_UEFI_VAR_SERVICE_API_H
-> +
-> +
-> +/* isa: io range */
-> +#define UEFI_VARS_IO_BASE                   0x520
-> +
-> +/* sysbus: fdt node path */
-> +#define UEFI_VARS_FDT_NODE       "qemu-uefi-vars"
-> +#define UEFI_VARS_FDT_COMPAT     "qemu,uefi-vars"
-> +
-> +/* registers */
-> +#define UEFI_VARS_REG_MAGIC                  0x00  /* 16 bit */
-> +#define UEFI_VARS_REG_CMD_STS                0x02  /* 16 bit */
-> +#define UEFI_VARS_REG_BUFFER_SIZE            0x04  /* 32 bit */
-> +#define UEFI_VARS_REG_BUFFER_ADDR_LO         0x08  /* 32 bit */
-> +#define UEFI_VARS_REG_BUFFER_ADDR_HI         0x0c  /* 32 bit */
-> +#define UEFI_VARS_REGS_SIZE                  0x10
-> +
-> +/* magic value */
-> +#define UEFI_VARS_MAGIC_VALUE               0xef1
-> +
-> +/* command values */
-> +#define UEFI_VARS_CMD_RESET                  0x01
-> +#define UEFI_VARS_CMD_MM                     0x02
-> +
-> +/* status values */
-> +#define UEFI_VARS_STS_SUCCESS                0x00
-> +#define UEFI_VARS_STS_BUSY                   0x01
-> +#define UEFI_VARS_STS_ERR_UNKNOWN            0x10
-> +#define UEFI_VARS_STS_ERR_NOT_SUPPORTED      0x11
-> +#define UEFI_VARS_STS_ERR_BAD_BUFFER_SIZE    0x12
-> +
-> +
-> +#endif /* QEMU_UEFI_VAR_SERVICE_API_H */
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Reviewed-by: Laszlo Ersek <lersek@redhat.com>
+This is an error in Python 3.12; fix it by using a raw string literal.
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ tests/avocado/machine_s390_ccw_virtio.py | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/tests/avocado/machine_s390_ccw_virtio.py b/tests/avocado/machine_s390_ccw_virtio.py
+index e1f493bc44..74a52c506d 100644
+--- a/tests/avocado/machine_s390_ccw_virtio.py
++++ b/tests/avocado/machine_s390_ccw_virtio.py
+@@ -36,7 +36,7 @@ def wait_for_crw_reports(self):
+     dmesg_clear_count = 1
+     def clear_guest_dmesg(self):
+         exec_command_and_wait_for_pattern(self, 'dmesg -c > /dev/null; '
+-                    'echo dm_clear\ ' + str(self.dmesg_clear_count),
++                    r'echo dm_clear\ ' + str(self.dmesg_clear_count),
+                     'dm_clear ' + str(self.dmesg_clear_count))
+         self.dmesg_clear_count += 1
+ 
+@@ -121,14 +121,14 @@ def test_s390x_devices(self):
+                                     'cat /sys/bus/ccw/devices/0.1.1111/cutype',
+                                     '3832/01')
+         exec_command_and_wait_for_pattern(self,
+-                    'cat /sys/bus/pci/devices/0005\:00\:00.0/subsystem_vendor',
++                    r'cat /sys/bus/pci/devices/0005\:00\:00.0/subsystem_vendor',
+                     '0x1af4')
+         exec_command_and_wait_for_pattern(self,
+-                    'cat /sys/bus/pci/devices/0005\:00\:00.0/subsystem_device',
++                    r'cat /sys/bus/pci/devices/0005\:00\:00.0/subsystem_device',
+                     '0x0001')
+         # check fid propagation
+         exec_command_and_wait_for_pattern(self,
+-                        'cat /sys/bus/pci/devices/000a\:00\:00.0/function_id',
++                        r'cat /sys/bus/pci/devices/000a\:00\:00.0/function_id',
+                         '0x0000000c')
+         # add another device
+         self.clear_guest_dmesg()
+@@ -235,7 +235,7 @@ def test_s390x_fedora(self):
+                         'while ! (dmesg | grep gpudrmfb) ; do sleep 1 ; done',
+                         'virtio_gpudrmfb frame buffer device')
+             exec_command_and_wait_for_pattern(self,
+-                'echo -e "\e[?25l" > /dev/tty0', ':/#')
++                r'echo -e "\e[?25l" > /dev/tty0', ':/#')
+             exec_command_and_wait_for_pattern(self, 'for ((i=0;i<250;i++)); do '
+                 'echo " The  qu ick  fo x j ump s o ver  a  laz y d og" >> fox.txt;'
+                 'done',
+-- 
+2.41.0
 
 
