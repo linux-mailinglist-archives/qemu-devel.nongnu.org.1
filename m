@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4314D7EE138
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A23C7EE139
 	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 14:14:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3cB4-0006dO-3x; Thu, 16 Nov 2023 08:13:02 -0500
+	id 1r3cBs-0006yG-2A; Thu, 16 Nov 2023 08:13:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3cAw-0006aV-LW
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:12:54 -0500
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3cBp-0006xE-6s
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:13:49 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3cAt-0001p9-PC
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:12:54 -0500
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-9bf86b77a2aso118078666b.0
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 05:12:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3cBm-00024C-JN
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:13:48 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-53e07db272cso1208569a12.3
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 05:13:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700140369; x=1700745169; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1700140425; x=1700745225; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=CTN5nhM8Tx7uYm7STWff6UxgS7isKGpgJKfWN0i6ZM8=;
- b=zs095gRLMOHO9/NGw3eyhTohJdKsFsWRcyoTKrINwiGXLol8L43mAb/Rqv2LTzhq5a
- JvBA3YjxIhIgEv/1ed3fLZy3gwcySVLNzPV4lCHRVnXPJaOAyFMB8d+kxqwRQwnt/osS
- ld5uBA3MxmnONG6BC0P1vOu8uPjmtb+k758ee+niZ/1hC0bLyRm0gOKRII7hsou+uF1z
- R5Ke3uiREgHOfJHDQRtxAig93EsIh49nZYFHmLAOWDZDYsBMqvbhiGR88AXk6C30uAaB
- 9EsEoAsBY3NtZZC+h/z5ImBri6OzrPU20BUIPQJBdLdY4JfLioUo0CnEjFbOBV0raPx2
- JVBg==
+ bh=BjHr6lsSP8bNMGrU+6gn7WIpj6FMhww5OQNzSo2gfDk=;
+ b=FRJLP6BPLA3H/WTROOTmLYKrnsfqQUmilJWUmVB3R83qz+uE3BtDzCPQh+XeozT9sI
+ 41DQ9wdMCM3CfM7XT+MgV8pHeaBDInXjzp4IYa/DawatYLf695X00gRzVdc5V2n5c0MR
+ 7eKuoJKXyHC97nb/BJWgtWJ/hPJFjOhydTSl4kLqsMFnFcHltNFUI4DkNN+raa78+NhT
+ 72XesGSfhBnM9Yw+Ds+O/twfAQ+JPECUl7WtuHyp8du+3PuaRqJ1N/cniEyzudGBY/zs
+ 1VX+6nsbi3Ih0FxfhBAEhBc6x0OO/JpSLcVL8aDdg/WPySUlXHHH72PU0pY8WB8qMeP+
+ pmEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700140369; x=1700745169;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1700140425; x=1700745225;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CTN5nhM8Tx7uYm7STWff6UxgS7isKGpgJKfWN0i6ZM8=;
- b=cqhrjJ6Rs2d5FWfgF/oZBNzN6KHhr15vAZAkUHxwmDxG3+thc6ICGuc44LzJkXthOA
- PJCnm+20h2h1mg+a/Z1vhReSHLoo61qloy7Zju1RDI8lvId3c5yEmkgmOO/lEHC7uHe/
- 65ltyMag1pZMmTJM005SZnesA9YCLBkHbB2rUd2BiIUMLSUJhsuZl6rtJ5hGLcn7GD4f
- Y5qTRFQrQi6GOjSnuxEMexG6wEMJNC+765OWLPEtwUeKvQmn7Soj0LqqJuK3bxNNwi1a
- WYe7Yb3f35BJfGLLdcaz6irVXySpQPD42qN+2oZBHckVxG756qftlF3nymsv7cFiIBDl
- 2oow==
-X-Gm-Message-State: AOJu0YxRq8hdfe8bj9ggIeXJLJ8heBjuQEta5FMLYB8I/ewEON6+cXys
- bjg69D9thCe6QP8Egz1lPP0JBA==
-X-Google-Smtp-Source: AGHT+IEsjSvhurH28ATnjblxuM2K52lQUmu4nN9E7XkNMWvDa1fNIb7uAnna8Aceko0yE1qjdxujdw==
-X-Received: by 2002:a17:906:494b:b0:9dd:c54d:1ee9 with SMTP id
- f11-20020a170906494b00b009ddc54d1ee9mr10720540ejt.53.1700140369377; 
- Thu, 16 Nov 2023 05:12:49 -0800 (PST)
+ bh=BjHr6lsSP8bNMGrU+6gn7WIpj6FMhww5OQNzSo2gfDk=;
+ b=QlGt48CJRNxXfzuqtE05GGbgqFi0a8QLAD4qi7/hE3Uee/yhDZQjKuf71vKIDthm4s
+ 1iWiKhZHcxEFGbQOF/vzr9zK10pR2vBF8qkQIyZNsowi4AdxtULPXv3qvwZP6B08MjAr
+ Y18OHNQYJyCtfNrpjK4gfEcQpqqHLGI02Jbi0KERDbtDZtuTrylinSn6+XeSk8QpmWYI
+ m4GO9kBGKL+1oc//zZlHZ/2hXxaufiaqx2nUmloWgmDULlkwRokreV5c+8rQMFWd7vxk
+ cVDsFCng2+2K493mMA6j1hZOrnyg4/ti9bg525Xj66/LqXFP0cpOVbJTSt5eOOuBtgz3
+ Q+Ng==
+X-Gm-Message-State: AOJu0Yx/t43NJfdRLjoHgfxebH+uFQJ2pGK4KTBB7XzaPHGe/c0oQLsx
+ iXre7+wIyRkN/7ZxEEDE8t0oKA==
+X-Google-Smtp-Source: AGHT+IEtAW9g/2HF0ODVNxihCI5zGLWUP9/+zpQrRuf7uTyP3Da6tTKaCZXmgeJlLvQE7kqjch+LXQ==
+X-Received: by 2002:a17:907:9455:b0:9dd:79ce:fc72 with SMTP id
+ dl21-20020a170907945500b009dd79cefc72mr14417608ejc.71.1700140425100; 
+ Thu, 16 Nov 2023 05:13:45 -0800 (PST)
 Received: from [192.168.69.100] ([176.187.220.205])
  by smtp.gmail.com with ESMTPSA id
- e10-20020a170906080a00b009a193a5acffsm8415558ejd.121.2023.11.16.05.12.47
+ e10-20020a170906080a00b009a193a5acffsm8415558ejd.121.2023.11.16.05.13.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Nov 2023 05:12:48 -0800 (PST)
-Message-ID: <da8f8d1c-581f-4d22-9a47-b6d15f87daa0@linaro.org>
-Date: Thu, 16 Nov 2023 14:12:46 +0100
+ Thu, 16 Nov 2023 05:13:44 -0800 (PST)
+Message-ID: <1d8bd393-8edb-402c-b375-f4bc0f3e6edf@linaro.org>
+Date: Thu, 16 Nov 2023 14:13:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] avocado: fix Python invalid escape sequence
+Subject: Re: [PATCH v3 1/4] ide/ioport: move ide_portio_list[] and
+ ide_portio_list2[] definitions to IDE core
 Content-Language: en-US
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>,
- "open list:S390 Virtio-ccw" <qemu-s390x@nongnu.org>
-References: <20231116130022.1270356-1-marcandre.lureau@redhat.com>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, kwolf@redhat.com,
+ jsnow@redhat.com, qemu-block@nongnu.org, qemu-devel@nongnu.org,
+ balaton@eik.bme.hu, shentey@gmail.com
+References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
+ <20231116103355.588580-2-mark.cave-ayland@ilande.co.uk>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231116130022.1270356-1-marcandre.lureau@redhat.com>
+In-Reply-To: <20231116103355.588580-2-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,61 +94,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Marc-André,
-
-On 16/11/23 14:00, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On 16/11/23 11:33, Mark Cave-Ayland wrote:
+> These definitions are present in ioport.c which is currently only available when
+> CONFIG_IDE_ISA is enabled. Move them to the IDE core so that they can be made
+> available to PCI IDE controllers that support switching to legacy mode.
 > 
-> This is an error in Python 3.12; fix it by using a raw string literal.
-> 
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > ---
->   tests/avocado/machine_s390_ccw_virtio.py | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/avocado/machine_s390_ccw_virtio.py b/tests/avocado/machine_s390_ccw_virtio.py
-> index e1f493bc44..74a52c506d 100644
-> --- a/tests/avocado/machine_s390_ccw_virtio.py
-> +++ b/tests/avocado/machine_s390_ccw_virtio.py
-> @@ -36,7 +36,7 @@ def wait_for_crw_reports(self):
->       dmesg_clear_count = 1
->       def clear_guest_dmesg(self):
->           exec_command_and_wait_for_pattern(self, 'dmesg -c > /dev/null; '
-> -                    'echo dm_clear\ ' + str(self.dmesg_clear_count),
-> +                    r'echo dm_clear\ ' + str(self.dmesg_clear_count),
->                       'dm_clear ' + str(self.dmesg_clear_count))
->           self.dmesg_clear_count += 1
->   
-> @@ -121,14 +121,14 @@ def test_s390x_devices(self):
->                                       'cat /sys/bus/ccw/devices/0.1.1111/cutype',
->                                       '3832/01')
->           exec_command_and_wait_for_pattern(self,
-> -                    'cat /sys/bus/pci/devices/0005\:00\:00.0/subsystem_vendor',
-> +                    r'cat /sys/bus/pci/devices/0005\:00\:00.0/subsystem_vendor',
->                       '0x1af4')
->           exec_command_and_wait_for_pattern(self,
-> -                    'cat /sys/bus/pci/devices/0005\:00\:00.0/subsystem_device',
-> +                    r'cat /sys/bus/pci/devices/0005\:00\:00.0/subsystem_device',
->                       '0x0001')
->           # check fid propagation
->           exec_command_and_wait_for_pattern(self,
-> -                        'cat /sys/bus/pci/devices/000a\:00\:00.0/function_id',
-> +                        r'cat /sys/bus/pci/devices/000a\:00\:00.0/function_id',
->                           '0x0000000c')
->           # add another device
->           self.clear_guest_dmesg()
-> @@ -235,7 +235,7 @@ def test_s390x_fedora(self):
->                           'while ! (dmesg | grep gpudrmfb) ; do sleep 1 ; done',
->                           'virtio_gpudrmfb frame buffer device')
->               exec_command_and_wait_for_pattern(self,
-> -                'echo -e "\e[?25l" > /dev/tty0', ':/#')
-> +                r'echo -e "\e[?25l" > /dev/tty0', ':/#')
->               exec_command_and_wait_for_pattern(self, 'for ((i=0;i<250;i++)); do '
->                   'echo " The  qu ick  fo x j ump s o ver  a  laz y d og" >> fox.txt;'
->                   'done',
+>   hw/ide/core.c             | 12 ++++++++++++
+>   hw/ide/ioport.c           | 12 ------------
+>   include/hw/ide/internal.h |  3 +++
+>   3 files changed, 15 insertions(+), 12 deletions(-)
 
-Isn't it commit 0b2af475e9 ("tests/avocado/machine_s390_ccw_virtio.py: 
-Fix SyntaxWarnings from python 3.12")?
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
