@@ -2,39 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C997EDC5E
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:51:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E03A7EDC34
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:46:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3X3n-0005oq-9j; Thu, 16 Nov 2023 02:45:11 -0500
+	id 1r3X3r-0005q4-Hz; Thu, 16 Nov 2023 02:45:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X3b-0005n5-UW; Thu, 16 Nov 2023 02:45:01 -0500
+ id 1r3X3e-0005oP-Rx; Thu, 16 Nov 2023 02:45:03 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X3a-0004uY-CE; Thu, 16 Nov 2023 02:44:59 -0500
+ id 1r3X3d-0004vn-2T; Thu, 16 Nov 2023 02:45:02 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2ACC733BDE;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3878B33BDF;
  Thu, 16 Nov 2023 10:45:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B6CC835844;
+ by tsrv.corpit.ru (Postfix) with SMTP id C4A6335845;
  Thu, 16 Nov 2023 10:44:41 +0300 (MSK)
-Received: (nullmailer pid 3202502 invoked by uid 1000);
+Received: (nullmailer pid 3202505 invoked by uid 1000);
  Thu, 16 Nov 2023 07:44:41 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 05/27] hw/audio/virtio-snd.c: spelling: initalize
-Date: Thu, 16 Nov 2023 10:44:19 +0300
-Message-Id: <20231116074441.3202417-6-mjt@tls.msk.ru>
+Subject: [PULL 06/27] qapi/migration.json: spelling: transfering
+Date: Thu, 16 Nov 2023 10:44:20 +0300
+Message-Id: <20231116074441.3202417-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231116074441.3202417-1-mjt@tls.msk.ru>
 References: <20231116074441.3202417-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,27 +58,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: eb9ad377bb94 "virtio-sound: handle control messages and streams"
+Fixes: 074dbce5fcce "migration: New migrate and migrate-incoming argument 'channels'"
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Stefan Weil <sw@weilnetz.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/audio/virtio-snd.c | 2 +-
+ qapi/migration.json | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
-index a18a9949a7..2fe966e311 100644
---- a/hw/audio/virtio-snd.c
-+++ b/hw/audio/virtio-snd.c
-@@ -1126,7 +1126,7 @@ static void virtio_snd_realize(DeviceState *dev, Error **errp)
-         status = virtio_snd_set_pcm_params(vsnd, i, &default_params);
-         if (status != cpu_to_le32(VIRTIO_SND_S_OK)) {
-             error_setg(errp,
--                       "Can't initalize stream params, device responded with %s.",
-+                       "Can't initialize stream params, device responded with %s.",
-                        print_code(status));
-             return;
-         }
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 975761eebd..eb2f883513 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -1658,7 +1658,7 @@
+ #
+ # Migration stream channel parameters.
+ #
+-# @channel-type: Channel type for transfering packet information.
++# @channel-type: Channel type for transferring packet information.
+ #
+ # @addr: Migration endpoint configuration on destination interface.
+ #
 -- 
 2.39.2
 
