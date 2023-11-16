@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A177EE032
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 12:55:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8017EE041
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 12:58:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3awx-0006j1-Rz; Thu, 16 Nov 2023 06:54:23 -0500
+	id 1r3azx-0000Rn-Ci; Thu, 16 Nov 2023 06:57:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r3aww-0006ia-6X; Thu, 16 Nov 2023 06:54:22 -0500
-Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r3azv-0000RD-07
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 06:57:27 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r3awu-0007hf-LJ; Thu, 16 Nov 2023 06:54:21 -0500
-Received: by mail-oi1-x236.google.com with SMTP id
- 5614622812f47-3b6c31e604cso416417b6e.2; 
- Thu, 16 Nov 2023 03:54:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r3azt-0008Mt-1D
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 06:57:26 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1cc53d0030fso5479315ad.0
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 03:57:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700135659; x=1700740459; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Gzk4ZadGqJKUIrJ6o9T7fB4bf6vD/1bzcOXqYlBNRKw=;
- b=B9QJAByrUTiAfSj0rzCpLdib3Wj1oHTcytNn0Lk+qFIdCML28463TsquNqroTne52w
- EwNg06YHjpJdIjpUg03jFbMt3TYgpYqfEr/0w70f0a2sduRLyN53xwiNKxtcNiNVgNuS
- Q7hqNs7HSKanrvIlqKfGvwow3hxlsjIE13b42tg8b5oSDhThjtqWgDxgJ5Q58TH2+mJN
- zxSP8kW6OQEjn5GfuZk0BLMZx8W/52fiZzVyl/UtV077N6qQygB7gpfb6QykqTilJBUa
- h6cgf5WP/8AwkMCg9+MnKbQ4kv+N3yTrevZjlJP+zFeyHOaxenjchTBKtxSelRrEyJIi
- h/Kg==
+ d=ventanamicro.com; s=google; t=1700135843; x=1700740643; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=S6FK7P8Z5Z31rsSNv/rs3uzXVy4fYvm6ZuAPPa0ZWbE=;
+ b=bET2fzrKLkhOjwv+21T5/9EMKkI/dSHz8UreK0mvz5tK3TjWiw+NToo+NZ4g9giJrj
+ aNVCU+J+uHmhLI7YYdIxw5otUhI65xD5TA4jjq7zDiEEnkUPWCPhzKGuqr75J5F4XKxp
+ Ry8KZ2b6z92yVQMPgoxOwh5nKiBud6hkDequtT6MqnIW8Bhtw3QWYAVinnRu0v7sdOZz
+ Sce85bi0ju5yFg9HEBj8LzINRkbAMBKtVzMF7/Au5WaEFU+j3CmfF7gUaNXCVitC5ieP
+ 0MkW60xiYmXRQSG3uo4B7I7RrU4PyL9qtGfufc1ouIw6QZnFoiRVI86giBII9QgvbOZ3
+ iUKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700135659; x=1700740459;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Gzk4ZadGqJKUIrJ6o9T7fB4bf6vD/1bzcOXqYlBNRKw=;
- b=Ulc5dt291trH2rlBeAYpmfl2uHE8wXXsuHFrrdmDNZNdbgRVHXpkmuM8nNCzVwd/g7
- 1IWN/QkKjHi2XiTdHq6A6uERv0oVnXYkTi9mbqFx9Im7FIek8Ihh3mocQbs3hxkP5UL5
- 2uGbyCydD8FMzCGdvqAYbPTo9LJ7/aJnDCqlW4KSMFQx9R+B8McIfn91f/HqCBubmelp
- Z8tsKeb6pM8D14mrffTg3rXj3mR9t9VAN2SXGnbaszSuMgb4NCZf8v9rgpEuKFRk1tp7
- Vhgib8oBC69mlOlcRDFz+KKW3GOjjT2v1KccqU/dNKmZF/RH4DNEsFTI/3CUuUnn+yHx
- yDNQ==
-X-Gm-Message-State: AOJu0Yw67csnIC/2YNmX31pSGuy76LxhagS+VQDWilRRmy8a32ZenPTm
- bEP6B4E9ss9433PGbHiKYpx1WZtqvzc=
-X-Google-Smtp-Source: AGHT+IEA/zCsQdaFOmZ17GgMPqLKuGhZSpXfxbkoirHYmP4iLfvFhubFuN3LYy3Ie+jlp5/uS7PAIw==
-X-Received: by 2002:a05:6808:1a0e:b0:3b6:ad44:fd79 with SMTP id
- bk14-20020a0568081a0e00b003b6ad44fd79mr22119362oib.20.1700135658799; 
- Thu, 16 Nov 2023 03:54:18 -0800 (PST)
-Received: from wheely.local0.net ([210.84.53.86])
+ d=1e100.net; s=20230601; t=1700135843; x=1700740643;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=S6FK7P8Z5Z31rsSNv/rs3uzXVy4fYvm6ZuAPPa0ZWbE=;
+ b=olvDdHYLuCJLvva/ANnY7jCtMa7u55ONpb4FtqGy4JnktXFDju7MxnGm7fdJBOQ8Yk
+ g5E/hq32f49haSPFAe+aCfw8Q0/W98i/bRoGBx19onYLip/8QG83KFwXDzsblsBlvvOj
+ fIjBRY5eBbfdjpsPaebObFH8b1qpVvFsb4K72TJoT5y/o8tMxkUYHqp4/+t/Xxsw8hLa
+ buitgIZBxc/Al+8Hhm1BN9UAe1zswNJUq5IiARxCuQgdcDw6TUve1A25HZmBZUzWLtNu
+ lC+zGf6boPNOv5B5a6qdt1od8VAyrlr/dAtKjnvOTxe31JrZezJ5WPgKjmYKWzFty06U
+ f9OA==
+X-Gm-Message-State: AOJu0Ywq4ma3xs7X9iaBomrp3icvoJq3w+dbV+6++k+n+buBJl7EZtFk
+ O+Rp0QTUWsyEHwdu6rficsuncQ==
+X-Google-Smtp-Source: AGHT+IE31yq4Yxy3Vx/xkCUWDn2VKqztirCFpUWSD/8lnGTqg56fbcBDpeiIsmIjlyh3/1WtFUCY4A==
+X-Received: by 2002:a17:903:244b:b0:1cc:4a83:d839 with SMTP id
+ l11-20020a170903244b00b001cc4a83d839mr2450662pls.17.1700135843363; 
+ Thu, 16 Nov 2023 03:57:23 -0800 (PST)
+Received: from [192.168.68.109] ([152.250.131.148])
  by smtp.gmail.com with ESMTPSA id
- n19-20020a62e513000000b006c60b150383sm4507960pff.12.2023.11.16.03.54.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Nov 2023 03:54:18 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- "Thomas Huth" <thuth@redhat.com>, "John Snow" <jsnow@redhat.com>,
- qemu-ppc@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 3/3] tests/avocado: Enable reverse_debugging.py tests in
- gitlab CI
-Date: Thu, 16 Nov 2023 21:53:54 +1000
-Message-ID: <20231116115354.228678-3-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231116115354.228678-1-npiggin@gmail.com>
-References: <20231116115354.228678-1-npiggin@gmail.com>
+ x16-20020a170902ec9000b001c6052152fdsm9064427plg.50.2023.11.16.03.57.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 Nov 2023 03:57:22 -0800 (PST)
+Message-ID: <d5232072-018a-40e2-8c25-096ed18ca641@ventanamicro.com>
+Date: Thu, 16 Nov 2023 08:57:18 -0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Fix CLINT clock frequency for SiFive E
+Content-Language: en-US
+To: =?UTF-8?B?Um9tw6FuIEPDoXJkZW5hcyBSb2Ryw61ndWV6?= <rcardenas.rod@gmail.com>
+Cc: qemu-devel@nongnu.org, "open list:RISC-V" <qemu-riscv@nongnu.org>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+References: <20231110161457.60528-1-rcardenas.rod@gmail.com>
+ <035908b8-4964-4878-a0c3-bca06af45b54@ventanamicro.com>
+ <ECB4CA72-630F-4DAC-9386-D0884DB9DA9F@gmail.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <ECB4CA72-630F-4DAC-9386-D0884DB9DA9F@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
- envelope-from=npiggin@gmail.com; helo=mail-oi1-x236.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,64 +98,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's try enable reverse_debugging.py in gitlab CI.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-Maybe we could try this again at some point? The bug might have been
-noticed sooner.
 
-They only take a couple of seconds to run so should not take too much
-overhead. But my gitlab CI pipeline doesn't run the avocado tests for
-some reason, so I can't see if it's still causing problems.
+On 11/15/23 18:06, Román Cárdenas Rodríguez wrote:
+> Hi, Daniel!
+> 
+> Sorry for that, I’m quite new to this way of contributing (you may notice that I sent the same patch several times, I apologize).
+> 
+> If you check the manual of SiFive E310 (https://cdn.sparkfun.com/assets/7/f/0/2/7/fe310-g002-manual-v19p05.pdf?_gl=1*w2ieef*_ga*MTcyNDI2MjM0Ny4xNjk2ODcwNTM3*_ga_T369JS7J9N*MTY5Njg3MDUzNy4xLjAuMTY5Njg3MDUzNy42MC4wLjA. <https://cdn.sparkfun.com/assets/7/f/0/2/7/fe310-g002-manual-v19p05.pdf?_gl=1*w2ieef*_ga*MTcyNDI2MjM0Ny4xNjk2ODcwNTM3*_ga_T369JS7J9N*MTY5Njg3MDUzNy4xLjAuMTY5Njg3MDUzNy42MC4wLjA.>), you can see in Figure 1 that the CLINT is connected to the real time clock, which also feeds the AON peripheral (they share the same clock).
+> 
+> In page 43, the docs also say that the timer registers of the CLINT count ticks from the rtcclk.
+> 
+> I attached a couple of screenshots to ease the process.
+> 
+> Thank you very much for your time, let me know if I can help you with further documentation
+> 
+> PS: I am currently playing with bare metal applications both in QEMU and a physical SiFive E310 board and I confirm that the CLINT clock in the physical board runs at 32.768 kHz. In QEMU, the same app produces a completely different outcome, as sometimes a new CLINT interrupt is triggered before finishing other tasks.
+
+
+I read the doc and this makes sense.
+
+Can you please re-send the patch, same code, but with all this information in the commit
+message? We need this context to justify changing the existing sifive-e board clock.
+
+ps: It would be nice if someone from Sifive could drop an ACK in this change.
+
 
 Thanks,
-Nick
----
 
- tests/avocado/reverse_debugging.py | 7 -------
- 1 file changed, 7 deletions(-)
+Daniel
 
-diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
-index 128d85bc0e..b1410e7a69 100644
---- a/tests/avocado/reverse_debugging.py
-+++ b/tests/avocado/reverse_debugging.py
-@@ -205,8 +205,6 @@ def get_pc(self, g):
-         return self.get_reg_le(g, self.REG_PC) \
-             + self.get_reg_le(g, self.REG_CS) * 0x10
- 
--    # unidentified gitlab timeout problem
--    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-     def test_x86_64_pc(self):
-         """
-         :avocado: tags=arch:x86_64
-@@ -222,8 +220,6 @@ class ReverseDebugging_AArch64(ReverseDebugging):
- 
-     REG_PC = 32
- 
--    # unidentified gitlab timeout problem
--    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-     def test_aarch64_virt(self):
-         """
-         :avocado: tags=arch:aarch64
-@@ -246,8 +242,6 @@ class ReverseDebugging_ppc64(ReverseDebugging):
- 
-     REG_PC = 0x40
- 
--    # unidentified gitlab timeout problem
--    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-     def test_ppc64_pseries(self):
-         """
-         :avocado: tags=arch:ppc64
-@@ -259,7 +253,6 @@ def test_ppc64_pseries(self):
-         self.endian_is_le = False
-         self.reverse_debugging()
- 
--    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-     def test_ppc64_powernv(self):
-         """
-         :avocado: tags=arch:ppc64
--- 
-2.42.0
-
+> 
+> 
+> Screenshot 2023-11-15 at 21.58.17.png
+> 
+> Screenshot 2023-11-15 at 21.57.27.png
+> 
+>> On 15 Nov 2023, at 21:51, Daniel Henrique Barboza <dbarboza@ventanamicro.com> wrote:
+>>
+>> Hi Roman!
+>>
+>> It helps to add the maintainers/reviewers in the CC when sending the patch. You
+>> can see who need to be CCed by using the get_maintainer.pl script. E.g:
+>>
+>> ./scripts/get_maintainer.pl \[PATCH\]\ Fix\ CLINT\ clock\ frequency\ for\ SiFive\ E\ -\ rcardenas.rod@gmail.com\ -\ 2023-11-10\ 1314.eml
+>>
+>> Alistair Francis <Alistair.Francis@wdc.com> (supporter:SiFive Machines)
+>> Bin Meng <bin.meng@windriver.com> (supporter:SiFive Machines)
+>> Palmer Dabbelt <palmer@dabbelt.com> (supporter:SiFive Machines)
+>> Weiwei Li <liwei1518@gmail.com> (reviewer:RISC-V TCG CPUs)
+>> Daniel Henrique Barboza <dbarboza@ventanamicro.com> (reviewer:RISC-V TCG CPUs)
+>> Liu Zhiwei <zhiwei_liu@linux.alibaba.com> (reviewer:RISC-V TCG CPUs)
+>> qemu-riscv@nongnu.org (open list:SiFive Machines)
+>> qemu-devel@nongnu.org (open list:All patches CC here)
+>>
+>>
+>> I'm CCing all these folks in the reply.
+>>
+>>
+>> On 11/10/23 13:14, rcardenas.rod@gmail.com wrote:
+>>> From: Román Cárdenas Rodríguez <rcardenas.rod@gmail.com>
+>>> ---
+>>>  hw/riscv/sifive_e.c | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>> diff --git a/hw/riscv/sifive_e.c b/hw/riscv/sifive_e.c
+>>> index 0d37adc542..87d9602383 100644
+>>> --- a/hw/riscv/sifive_e.c
+>>> +++ b/hw/riscv/sifive_e.c
+>>> @@ -225,7 +225,7 @@ static void sifive_e_soc_realize(DeviceState *dev, Error **errp)
+>>>              RISCV_ACLINT_SWI_SIZE,
+>>>          RISCV_ACLINT_DEFAULT_MTIMER_SIZE, 0, ms->smp.cpus,
+>>>          RISCV_ACLINT_DEFAULT_MTIMECMP, RISCV_ACLINT_DEFAULT_MTIME,
+>>> -        RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ, false);
+>>> +        SIFIVE_E_LFCLK_DEFAULT_FREQ, false);
+>>
+>> I'm not sure if this is correct. The last commit that touched this line was b8fb878aa2
+>> ("hw/intc: Upgrade the SiFive CLINT implementation to RISC-V ACLINT"). If you see the commit
+>> diff, the previous value was:
+>>
+>> -            SIFIVE_CLINT_TIMEBASE_FREQ, false);
+>>
+>> In this same commit we can see that the existing value of that macro back then was:
+>>
+>> -    SIFIVE_CLINT_TIMEBASE_FREQ = 10000000
+>>
+>>
+>> Which is the same value of RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ.
+>>
+>>
+>> The value you're changing to, SIFIVE_E_LFCLK_DEFAULT_FREQ (32768), seems to be related to the
+>> SIFIVE AON watchdog implemented in hw/misc/sifive_e_aon.c:
+>>
+>> static void sifive_e_aon_init(Object *obj)
+>> {
+>>    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
+>>    SiFiveEAONState *r = SIFIVE_E_AON(obj);
+>>
+>>    memory_region_init_io(&r->mmio, OBJECT(r), &sifive_e_aon_ops, r,
+>>                          TYPE_SIFIVE_E_AON, SIFIVE_E_AON_MAX);
+>>    sysbus_init_mmio(sbd, &r->mmio);
+>>
+>>    /* watchdog timer */
+>>    r->wdog_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
+>>                                 sifive_e_aon_wdt_expired_cb, r);
+>>    r->wdogclk_freq = SIFIVE_E_LFCLK_DEFAULT_FREQ;   <==========
+>>    sysbus_init_irq(sbd, &r->wdog_irq);
+>> }
+>>
+>>
+>>
+>> Thanks,
+>>
+>>
+>> Daniel
+>>
+>>
+>>
+>>>      sifive_e_prci_create(memmap[SIFIVE_E_DEV_PRCI].base);
+>>>        /* AON */
+> 
 
