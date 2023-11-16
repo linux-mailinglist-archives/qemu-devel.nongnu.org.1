@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08CA27ED905
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 02:48:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F807ED901
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 02:48:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3RQP-0005Jn-Lp; Wed, 15 Nov 2023 20:44:09 -0500
+	id 1r3RQY-0005LI-Bs; Wed, 15 Nov 2023 20:44:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r3RQJ-0005GL-L1
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 20:44:03 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r3RQL-0005In-3y
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 20:44:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r3RQF-000206-D4
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 20:44:03 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r3RQF-000208-HB
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 20:44:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1700099038;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oK5TLvGHeEz6GjH3xnyCpoO4sbbIXKIwxy0cQYHdnKU=;
- b=dlazBobFX5fhJ1/b2hDjl3r7HQON6JUgVDe2mNb5vzWH21p6B9oEM1w3lidjjxoASueq6V
- OmPfJbq8DDDhTTytzvtqrVaU/PCQGifPgN/zKD2z8CSoKgb65F8MUhxa/LOs+aaTmtU91H
- +RY7eYQGn8Xj9sGQqiPovIovNtRJDaU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-467-D7I6cy5ZNd-imEiGH6G__g-1; Wed,
- 15 Nov 2023 20:43:54 -0500
-X-MC-Unique: D7I6cy5ZNd-imEiGH6G__g-1
+ bh=QXJzx/jpVoPhmJMyDwQ8ccRKvqe6ESeYERwYom9inLk=;
+ b=Ow6rXgaBaVsA59YbAe7uc1uP5jKzjur9n0Cp+XCrdEJzLOdnY108IbCK8Qp3guB8Zn5CmB
+ j481prJjXrWtPqgNZHpMvLdg8J6LSQdBO/6xOWKz0imZw2UVYuNZfpLJxx5I2HxWwAKSFQ
+ ndo0mQ+29PUuklU0mwdI/b8yG7a25As=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-507-Mt4ACs1HMxGBvCyWTu9jfg-1; Wed, 15 Nov 2023 20:43:55 -0500
+X-MC-Unique: Mt4ACs1HMxGBvCyWTu9jfg-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A656E3813F43;
- Thu, 16 Nov 2023 01:43:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 05BA1101A529;
+ Thu, 16 Nov 2023 01:43:55 +0000 (UTC)
 Received: from scv.localdomain (unknown [10.22.32.122])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 66600C15881;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B6CE3C15881;
  Thu, 16 Nov 2023 01:43:54 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 10/19] qapi/schema: make QAPISchemaArrayType.element_type
- non-Optional
-Date: Wed, 15 Nov 2023 20:43:41 -0500
-Message-ID: <20231116014350.653792-11-jsnow@redhat.com>
+Subject: [PATCH 11/19] qapi/schema: fix QAPISchemaArrayType.check's call to
+ resolve_type
+Date: Wed, 15 Nov 2023 20:43:42 -0500
+Message-ID: <20231116014350.653792-12-jsnow@redhat.com>
 In-Reply-To: <20231116014350.653792-1-jsnow@redhat.com>
 References: <20231116014350.653792-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -80,54 +80,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This field should always be present and defined. Change this to be a
-runtime @property that can emit an error if it's called prior to
-check().
+There's more conditionals in here than we can reasonably pack into a
+terse little statement, so break it apart into something more explicit.
 
-This helps simplify typing by avoiding the need to interrogate the value
-for None at multiple callsites.
-
-RFC: Yes, this is a slightly different technique than the one I used for
-QAPISchemaObjectTypeMember.type; I think I prefer this one as being a
-little less hokey, but it is more SLOC. Dealer's choice for which style
-wins out -- now you have an example of both.
+(When would a built-in array ever cause a QAPISemError? I don't know,
+maybe never - but the type system wasn't happy all the same.)
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- scripts/qapi/schema.py | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ scripts/qapi/schema.py | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index c9a194103e1..462acb2bb61 100644
+index 462acb2bb61..164d86c4064 100644
 --- a/scripts/qapi/schema.py
 +++ b/scripts/qapi/schema.py
-@@ -366,7 +366,16 @@ def __init__(self, name, info, element_type):
-         super().__init__(name, info, None)
-         assert isinstance(element_type, str)
-         self._element_type_name = element_type
--        self.element_type = None
-+        self._element_type: Optional[QAPISchemaType] = None
-+
-+    @property
-+    def element_type(self) -> QAPISchemaType:
-+        if self._element_type is None:
-+            raise RuntimeError(
-+                "QAPISchemaArray has no element_type until "
-+                "after check() has been run."
-+            )
-+        return self._element_type
- 
-     def need_has_if_optional(self):
-         # When FOO is an array, we still need has_FOO to distinguish
-@@ -375,7 +384,7 @@ def need_has_if_optional(self):
+@@ -384,9 +384,16 @@ def need_has_if_optional(self):
  
      def check(self, schema):
          super().check(schema)
--        self.element_type = schema.resolve_type(
-+        self._element_type = schema.resolve_type(
-             self._element_type_name, self.info,
-             self.info and self.info.defn_meta)
++
++        if self.info:
++            assert self.info.defn_meta  # guaranteed to be set by expr.py
++            what = self.info.defn_meta
++        else:
++            what = 'built-in array'
++
+         self._element_type = schema.resolve_type(
+-            self._element_type_name, self.info,
+-            self.info and self.info.defn_meta)
++            self._element_type_name, self.info, what
++        )
          assert not isinstance(self.element_type, QAPISchemaArrayType)
+ 
+     def set_module(self, schema):
 -- 
 2.41.0
 
