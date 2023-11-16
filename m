@@ -2,86 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49CB77EE171
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 14:21:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6457EE179
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 14:24:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3cJD-0007To-Aa; Thu, 16 Nov 2023 08:21:27 -0500
+	id 1r3cKt-00009G-Mr; Thu, 16 Nov 2023 08:23:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3cJB-0007TN-Hm
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:21:25 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3cKl-00008T-G4
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:23:03 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3cJ7-0004af-BI
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:21:23 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40a4d04af5cso5771325e9.0
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 05:21:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3cKi-0004vv-Sc
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:23:03 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-407c3adef8eso6899545e9.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 05:22:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700140879; x=1700745679; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700140978; x=1700745778; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=lzURwf51z/kgo8BUf8SZ1FfJfn+CyvPV4/i5NprL4cE=;
- b=K4Q4lbea75d+0Ec37DQzuZR/u2eXfMNRyzJukHflaJV9WTwyv3JFqZs/0JaKG2eRO7
- xkbkAeqAi75WNGAQOrksq4qUCH+AENaTlVn7h+ckvQ+KFjl4XToF+pYEEvLt4/toaG/3
- j6F0EYQkdmgzZxxBgJlTfHMIYVq+kfa4BPgpasoKkc01uitkYIxATLWcPSauJOOxYCqX
- 7GNvRrCrjsQCF975kOhNdMjQwHQy0IX8vYS8/VBoVANf0/iOp+NUDt9mYJvAbszTV9Mk
- 9haFj25xADWQ7ieSPQP6wnduLcsoiAF4jC2cBXtziBPqjvxVp32CovyGbERWmgWSxTjm
- Vw4g==
+ bh=wpYKtitWZaN9Cy7xbji8Hdt44lw8x0AaY5nlqTz8g08=;
+ b=MoQnX3wzHi5LHE0upoMtQhEv4qBEbfXkF8u1Ttv3UgmyB3jf3gcO10Iz1eVz93Yegj
+ kLJsuDZhChDpqPByXXiJvOR4b2woT4LW6guYHHw94L4j824lEvGJiJ9wcB6XuoG8Yy71
+ iyEdhJPReElkXB1lEdibhkHSVgr3GyUcBgmb76pHfJO9O8ij/B79O8bzUKlUJmZKelh/
+ 58XN54xN2k9Ecu6hyVjxiSUz97oWKUBZSGf4xUOhVoaNzyJd5HsVFLUBdtcbObns39YW
+ ak9xv/kcJbuF/C6krLq11y1328QxWwpwpqtVPTKi3sxZ/nQYsPCzDHqeyTl812XFirh0
+ f4Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700140879; x=1700745679;
+ d=1e100.net; s=20230601; t=1700140978; x=1700745778;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lzURwf51z/kgo8BUf8SZ1FfJfn+CyvPV4/i5NprL4cE=;
- b=YlEODQSEUt5Ny3WH493mOMkd2lQ6i0GD3lYsyYu5t+PaZNtqux+kjWIw6KDKzxLQrx
- p8NtKwnJGifoLlvGSq/rqMUtXVRmVEd5JUECyVp78aE74nljs4IHI5RjhntA7YIuprFI
- ynin+DKI8MZfQ0dB1BKu5c2AmIAEpv6MuUUbuVbg101plFh+MC9ZU/ROF0iuF9g3RrgK
- eK9AO71GoOnVwRlT5zPZUY4mwIEhNGbN81UaSlB16S189seanxXeISByCXX7m+gdIlHW
- 1h10N7w9LYETktpyRgpSglCuGOGdlfi4/Vt84W0D3IHUGoAtBvaF0PvVQWXTXxMUjP4+
- Jv1Q==
-X-Gm-Message-State: AOJu0Yw41h+QqEtOtWimZyuDtlfgSEDGneK9IbB1MaI+iwRGrp2OzQ/w
- jlMPF0Fs809gFLZdcsZzCXRSGg==
-X-Google-Smtp-Source: AGHT+IEBW6zE4hK786YvZVu2FUlTRxUwAuxjVYFZ9HDVflOY6YmjD1VanV7N/hVdLW+vjKb43k7Gng==
-X-Received: by 2002:a05:600c:4f54:b0:408:4120:bad2 with SMTP id
- m20-20020a05600c4f5400b004084120bad2mr11726867wmq.9.1700140879244; 
- Thu, 16 Nov 2023 05:21:19 -0800 (PST)
+ bh=wpYKtitWZaN9Cy7xbji8Hdt44lw8x0AaY5nlqTz8g08=;
+ b=MrcnnrqRaPX6eVyelOfT8fS03DD+nuDSHl9Qf/N7JzLYZrVvfzOKGbmhhmFuIcPz2Y
+ CRLK/NjTQqN8wdEDKWNE3oZTmewL9AlJrZlzUkhc7I2e1IjOdv7jYnWGQF4W+EpkvC1K
+ FMncGKcLtOGhh+8hBZ7kxIqwL+bYMOpPek2h6GAM3kglrfrMHzOOqFJvmuXd+sB2dMTr
+ 1MeOinucIUnRLZGZVT29atU8OhyJSHSZrrnDdwIvaDN0WmAC/ykL6XRO4W9+SpTt+RtN
+ q55UHMPw4497Bdr2buK9Vfx10KF2BKgk5h98lNVqLzm0j9TLJ38H6/27dm2O6alNZfjL
+ hXWQ==
+X-Gm-Message-State: AOJu0YzW4gS2D8F53ehCwapYmHYyvjJH83USTYTyiKBoDnKpGT2gcY7V
+ 6nLVtu4XM+jyK+TSI7h0y6U+gA==
+X-Google-Smtp-Source: AGHT+IFINyivybY853n8GsSvVw7z7z9HK7QrEFixJrFNFRt1mPqTH1kjJ3nouSNTzlK6pOSxHOXsKg==
+X-Received: by 2002:a05:600c:4f54:b0:40a:49bc:fa9d with SMTP id
+ m20-20020a05600c4f5400b0040a49bcfa9dmr12965675wmq.26.1700140977580; 
+ Thu, 16 Nov 2023 05:22:57 -0800 (PST)
 Received: from [192.168.69.100] ([176.187.220.205])
  by smtp.gmail.com with ESMTPSA id
- z6-20020a05600c0a0600b004068e09a70bsm3718284wmp.31.2023.11.16.05.21.18
+ z6-20020a05600c0a0600b004068e09a70bsm3718284wmp.31.2023.11.16.05.22.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Nov 2023 05:21:18 -0800 (PST)
-Message-ID: <862c25dd-1393-4ffd-9880-2e405ec037ca@linaro.org>
-Date: Thu, 16 Nov 2023 14:21:17 +0100
+ Thu, 16 Nov 2023 05:22:57 -0800 (PST)
+Message-ID: <603ed1f0-ad44-4e51-9e60-7c9b4afb10b5@linaro.org>
+Date: Thu, 16 Nov 2023 14:22:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] qom/object: Limit type names to alphanumerical and some
- few special characters
+Subject: Re: [PATCH v5 06/31] cpu: Add generic cpu_list()
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- Eduardo Habkost <eduardo@habkost.net>, David Hildenbrand <david@redhat.com>
-References: <20231114130415.283228-1-thuth@redhat.com>
- <CAFEAcA_LcmowH28KG9LXRQRPFkAbmDCoPz5RDDK0TG+Am-p73w@mail.gmail.com>
- <e04933cf-1c74-4475-8007-888d9d0591f2@redhat.com>
+To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
+ imp@bsdimp.com, kevans@freebsd.org, richard.henderson@linaro.org,
+ pbonzini@redhat.com, peter.maydell@linaro.org, imammedo@redhat.com,
+ b.galvani@gmail.com, strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com,
+ kfting@nuvoton.com, wuhaotsh@google.com, nieklinnenbank@gmail.com,
+ rad@semihalf.com, quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
+ laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, mrolnik@gmail.com,
+ edgar.iglesias@gmail.com, bcain@quicinc.com, gaosong@loongson.cn,
+ aurelien@aurel32.net, jiaxun.yang@flygoat.com, aleksandar.rikalo@syrmia.com,
+ chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
+ ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
+ jcmvbkbc@gmail.com, shan.gavin@gmail.com
+References: <20231114235628.534334-1-gshan@redhat.com>
+ <20231114235628.534334-7-gshan@redhat.com>
+ <80da2d00-0d96-4252-b2aa-f7859e44bece@linaro.org>
+ <55922c30-be4b-459d-835b-819e1dcd2437@linaro.org>
+ <93d5e7fa-b1c6-43cc-b3af-026e7a5964b5@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <e04933cf-1c74-4475-8007-888d9d0591f2@redhat.com>
+In-Reply-To: <93d5e7fa-b1c6-43cc-b3af-026e7a5964b5@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,20 +109,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/11/23 12:17, Thomas Huth wrote:
-> On 14/11/2023 14.21, Peter Maydell wrote:
->> On Tue, 14 Nov 2023 at 13:05, Thomas Huth <thuth@redhat.com> wrote:
-
-> There just seem to be two stragglers left:
+On 16/11/23 11:34, Gavin Shan wrote:
+> Hi Phil,
 > 
-> 1) #define TYPE_DUMMY "qemu:dummy" in tests/unit/test-io-task.c ...
->     easy to fix, it's just a unit test anyway
+> On 11/16/23 17:51, Philippe Mathieu-Daudé wrote:
+>> On 16/11/23 08:39, Philippe Mathieu-Daudé wrote:
+>>> On 15/11/23 00:56, Gavin Shan wrote:
+>>>> Add generic cpu_list() to replace the individual target's 
+>>>> implementation
+>>>> in the subsequent commits. Currently, there are 3 targets with no 
+>>>> cpu_list()
+>>>> implementation: microblaze and nios2. With this applied, those two 
+>>>> targets
+>>>> switch to the generic cpu_list().
+>>>>
+>>>> [gshan@gshan q]$ ./build/qemu-system-microblaze -cpu ?
+>>>> Available CPUs:
+>>>>    microblaze-cpu
+>>>>
+>>>> [gshan@gshan q]$ ./build/qemu-system-nios2 -cpu ?
+>>>> Available CPUs:
+>>>>    nios2-cpu
+>>>>
+>>>> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+>>>> Signed-off-by: Gavin Shan <gshan@redhat.com>
+>>>> ---
+>>>>   bsd-user/main.c |  5 +----
+>>>>   cpu-target.c    | 29 ++++++++++++++++++++++++++---
+>>>>   2 files changed, 27 insertions(+), 7 deletions(-)
+>>>
+>>>
+>>>> diff --git a/cpu-target.c b/cpu-target.c
+>>>> index c078c0e91b..acfc654b95 100644
+>>>> --- a/cpu-target.c
+>>>> +++ b/cpu-target.c
+>>>> @@ -24,6 +24,7 @@
+>>>>   #include "hw/qdev-core.h"
+>>>>   #include "hw/qdev-properties.h"
+>>>>   #include "qemu/error-report.h"
+>>>> +#include "qemu/qemu-print.h"
+>>>>   #include "migration/vmstate.h"
+>>>>   #ifdef CONFIG_USER_ONLY
+>>>>   #include "qemu.h"
+>>>> @@ -283,12 +284,34 @@ const char *parse_cpu_option(const char 
+>>>> *cpu_option)
+>>>>       return cpu_type;
+>>>>   }
+>>>> +#ifndef cpu_list
+>>>> +static void cpu_list_entry(gpointer data, gpointer user_data)
+>>>> +{
+>>>> +    CPUClass *cc = CPU_CLASS(OBJECT_CLASS(data));
+>>>> +    const char *typename = object_class_get_name(OBJECT_CLASS(data));
+>>>> +    g_autofree char *model = cpu_model_from_type(typename);
+>>>> +
+>>>> +    if (cc->deprecation_note) {
+>>>> +        qemu_printf("  %s (deprecated)\n", model);
+>>>> +    } else {
+>>>> +        qemu_printf("  %s\n", model);
+>>>> +    }
+>>>> +}
+>>>> +
+>>>> +static void cpu_list(void)
+>>>> +{
+>>>> +    GSList *list;
+>>>> +
+>>>> +    list = object_class_get_list_sorted(TYPE_CPU, false);
+>>>> +    qemu_printf("Available CPUs:\n");
+>>>
+>>> Since this output will likely be displayed a lot, IMHO it is worth
+>>> doing a first pass to get the number of available CPUs. If it is 1,
+>>> print using singular but even better smth like:
+>>>
+>>>         "This machine can only be used with the following CPU:"
+>>
+>> Hmm I missed this code is common to user/system emulation.
+>>
+>> System helper could be clever by using the intersection of cpu_list()
+>> and MachineClass::valid_cpu_types[] sets.
+>>
 > 
-> 2) #define TYPE_RAM_DISCARD_MANAGER "qemu:ram-discard-manager"
->     in include/exec/memory.h ... I believe it should be OK to
->     simply rename it, since it's about an interface type...
->     Or do we use these interface names in migration streams, too?
+> When cpu_list() is called, it's possible the machine type option isn't
+> parsed yet. Besides, this function is usually used by "qemu-system-arm 
+> -cpu ?".
 
-No, QOM interfaces aren't part of any state, so not migrated.
+Not sure this is a good example :)
+
+   $ qemu-system-arm -cpu ?
+   qemu-system-arm: No machine specified, and there is no default
+   Use -machine help to list supported machines
+
+> So I wouldn't connect to MachineClass::valid_cpu_types[] here if you agree.
+
+Agreed.
 
 
