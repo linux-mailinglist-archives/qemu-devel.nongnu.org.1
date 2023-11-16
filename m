@@ -2,94 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFEB7EDDA9
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 10:34:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A13207EDDAB
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 10:35:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3Ykq-0007ga-6Q; Thu, 16 Nov 2023 04:33:44 -0500
+	id 1r3Ylq-0008NF-OB; Thu, 16 Nov 2023 04:34:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Ykn-0007f7-HW
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 04:33:41 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Ykk-0001zJ-LQ
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 04:33:41 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-32faea0fa1fso314125f8f.1
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 01:33:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700127215; x=1700732015; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BKHKZOdUPEdAi4OebjmiImqBlPQ23rLgYgjM01kf4k8=;
- b=NEBsSW9LvXVibOtJaYGptPw6WBex2KYSLRnFixVzqcy0N8Ebprwctip5YxfOzraFdQ
- JooihvsvMtN+nVjlFhBPyUqJDajW717XPVRWT2w8MYJKjXbkvFClu508xPhfEOBwFYdj
- VfW7GGzpD0VFfY0XGCNFe7Swr2FOuXgxQepvdwTiEPfReDMk2Apk2FFJy0tQy0BSZWGv
- rnjXgEO7RPgVL6Sdh4SUYTewwpAvtZ8hMI01cPmViDKguaJimvJVSe6w04gvgfpsDn8t
- sU+SFCHyvWJGpzwxqT68Xi1n1Y53BScKq1P05eocuUhxxWsAwKWXCUcCOk4i2bBQqGNm
- FZLw==
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1r3Yli-0008H6-3Z
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 04:34:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1r3Ylf-00027O-96
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 04:34:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700127274;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=QuTQg4Oyw0769gWhs5zrEa0uRXRA0CYB8AH2mm3Alio=;
+ b=Qhy+eINqONiJGkAqinAIBWMvx/1jUkLVtu8u3+uBWZius1Q0xKtFMqg2Hi5IpD6rWUlQ9H
+ 75P/oHdDpmPWXA5QoDaNpkqS+GhwTrW+VKO4IklpxvSZ+shV8c+JAuw69SQtYcNSPOYlF4
+ 3O1KYeM77Ir5sIjPSBIuGVFTk6v8FO4=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-537-lFM6rTf7Nj-imFisNt8gEA-1; Thu, 16 Nov 2023 04:34:32 -0500
+X-MC-Unique: lFM6rTf7Nj-imFisNt8gEA-1
+Received: by mail-pg1-f198.google.com with SMTP id
+ 41be03b00d2f7-5bd4037c930so89891a12.0
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 01:34:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700127215; x=1700732015;
+ d=1e100.net; s=20230601; t=1700127271; x=1700732071;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BKHKZOdUPEdAi4OebjmiImqBlPQ23rLgYgjM01kf4k8=;
- b=WI1IPsRexVnKgpPvMi2fl+TN90VprAE+Jw38K+aG1WY3fkPNyWucAoSznoY0JlMyN6
- lmDDGrPvakq9p7iZNDFIJDg8LOQLPS+jueJiOZnfAvurLiHsur+leiPgZDkztxEXVuWy
- RR04by+K7t5BvJQMUUXIb0zLPN9KhAx1qN8vA8q0uMX0Ffo6JbaqxRsXGZsqj3qentPi
- bJG9BkVaYQ/yrDuzIVj3zu3cV3veDIQTpOjOayYlVIawv3v7+PHnIZaqvIftE6OqupRk
- Rk2H+S4lSpi/NnQg23UCZpEI6Cy5K8QmTFBqAZUeaLFCZJSAO5lBuXdqsmSishA0RVgB
- gknw==
-X-Gm-Message-State: AOJu0YzpCGtEq1+5GZd2HroOFbieUMjLQruxYwhobNauq1C7fEl2UiHP
- PAt4DmzXtCopgj89Ocy51LvwmQ==
-X-Google-Smtp-Source: AGHT+IFEPhS7QanbNHuKpcOCpbU/nu1NEE5rgpyZneU/O1Bc7kxZiSLZV0ikK66kl3i0GsnJkcc5kQ==
-X-Received: by 2002:a5d:6da4:0:b0:32d:9d03:29e6 with SMTP id
- u4-20020a5d6da4000000b0032d9d0329e6mr905695wrs.27.1700127215562; 
- Thu, 16 Nov 2023 01:33:35 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.220.205])
+ bh=QuTQg4Oyw0769gWhs5zrEa0uRXRA0CYB8AH2mm3Alio=;
+ b=FoAg2ClEm/5xtGn9JlNTU6Id4+C7iwnmzn+ebcjZsqOWAlXihKXx+Pb/TT3UCoEWRs
+ o69xAI3WPkIxFKeDoGUd8LKMCLgkFRw4OpCoJ87JYVEkDC/a6WN+D9Za003Z5NaMfrXN
+ nsNKCHpHadLgn6tPdPHoq3qGVrV1VJgn1rw5tLSOyVa7KoRPHs9oDf+RDdWUs6uicX/7
+ J7Yrh0Q7iUnaKYVdgV1287LLPKsPSiqUE9K+eE0judNaZvhLO9yOR6w2Zq67SUtP9QdJ
+ DOoM6m0oxUNHRZmGzM6Cs91V8fodou6SB0S/hqShHGLk6CTqTzHmgPB1tkVo6aSJbhYK
+ Z5zQ==
+X-Gm-Message-State: AOJu0YwXibO0UXpLT32KUSgemuc3bVUa3YtGzCHS4BvX2woeRod0U1fz
+ GrreOD/2+TGAn8xD4EUs1+dPKX1X13QdFcqulYKNGyQxEpKvq09q24QCX3jHmPdw3HH+F4+Zj4N
+ M3gSe26q+lcJ5iDA=
+X-Received: by 2002:a17:902:e74f:b0:1cd:fbc7:270e with SMTP id
+ p15-20020a170902e74f00b001cdfbc7270emr5851476plf.2.1700127271316; 
+ Thu, 16 Nov 2023 01:34:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGJ3UeuSMW7xPsMYOmA57fbxtROXVUGVQani83bu2ED+ywYPs4rrxWnRJXXPCovjl8EldRadQ==
+X-Received: by 2002:a17:902:e74f:b0:1cd:fbc7:270e with SMTP id
+ p15-20020a170902e74f00b001cdfbc7270emr5851458plf.2.1700127270996; 
+ Thu, 16 Nov 2023 01:34:30 -0800 (PST)
+Received: from [10.72.112.142] ([43.228.180.230])
  by smtp.gmail.com with ESMTPSA id
- j7-20020a5d6187000000b0032dc74c093dsm13044830wru.103.2023.11.16.01.33.31
+ l14-20020a170902f68e00b001ca4ad86357sm8743043plg.227.2023.11.16.01.34.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Nov 2023 01:33:35 -0800 (PST)
-Message-ID: <25571924-3569-48f4-8b60-17f14e8261ea@linaro.org>
-Date: Thu, 16 Nov 2023 10:33:30 +0100
+ Thu, 16 Nov 2023 01:34:30 -0800 (PST)
+Message-ID: <eb794c0d-51c8-ecbd-2b24-d93ae00466a0@redhat.com>
+Date: Thu, 16 Nov 2023 17:34:28 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 25/31] machine: Introduce helper is_cpu_type_supported()
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v1] arm/kvm: Enable support for KVM_ARM_VCPU_PMU_V3_FILTER
 Content-Language: en-US
-To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
- imp@bsdimp.com, kevans@freebsd.org, richard.henderson@linaro.org,
- pbonzini@redhat.com, peter.maydell@linaro.org, imammedo@redhat.com,
- b.galvani@gmail.com, strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com,
- kfting@nuvoton.com, wuhaotsh@google.com, nieklinnenbank@gmail.com,
- rad@semihalf.com, quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
- laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, mrolnik@gmail.com,
- edgar.iglesias@gmail.com, bcain@quicinc.com, gaosong@loongson.cn,
- aurelien@aurel32.net, jiaxun.yang@flygoat.com, aleksandar.rikalo@syrmia.com,
- chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
- ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
- jcmvbkbc@gmail.com, shan.gavin@gmail.com
-References: <20231114235628.534334-1-gshan@redhat.com>
- <20231114235628.534334-26-gshan@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231114235628.534334-26-gshan@redhat.com>
+To: Sebastian Ott <sebott@redhat.com>
+Cc: qemu-arm@nongnu.org, eric.auger@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, kvm@vger.kernel.org, qemu-devel@nongnu.org
+References: <20231113081713.153615-1-shahuang@redhat.com>
+ <3a570842-aaec-6447-b043-d908e83717ec@redhat.com>
+From: Shaoqin Huang <shahuang@redhat.com>
+In-Reply-To: <3a570842-aaec-6447-b043-d908e83717ec@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=shahuang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.895, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,74 +105,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/11/23 00:56, Gavin Shan wrote:
-> The logic, to check if the specified CPU type is supported in
-> machine_run_board_init(), is independent enough. Factor it out into
-> helper is_cpu_type_supported(). machine_run_board_init() looks a bit
-> clean with this. Since we're here, @machine_class is renamed to @mc
-> to avoid multiple line spanning of code. The comments are tweaked a
-> bit either.
+Hi Sebastian,
+
+On 11/15/23 20:17, Sebastian Ott wrote:
+> Hi,
 > 
-> No functional change intended.
+> On Mon, 13 Nov 2023, Shaoqin Huang wrote:
+>> +    ``pmu-filter={A,D}:start-end[;...]``
+>> +        KVM implements pmu event filtering to prevent a guest from 
+>> being able to
+>> +    sample certain events. It has the following format:
+>> +
+>> +    pmu-filter="{A,D}:start-end[;{A,D}:start-end...]"
+>> +
+>> +    The A means "allow" and D means "deny", start if the first event 
+>> of the
+>                                                        ^
+>                                                        is
 > 
-> Signed-off-by: Gavin Shan <gshan@redhat.com>
-> ---
->   hw/core/machine.c | 82 +++++++++++++++++++++++++----------------------
->   1 file changed, 44 insertions(+), 38 deletions(-)
+
+Thanks for point it out.
+
+> Also it should be stated that the first filter action defines if the whole
+> list is an allow or a deny list.
 > 
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index 5b45dbbbd5..49e0bc874d 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -1387,13 +1387,51 @@ out:
->       return r;
->   }
->   
-> +static void is_cpu_type_supported(MachineState *machine, Error **errp)
+>> +static void kvm_arm_pmu_filter_init(CPUState *cs)
+>> +{
+>> +    struct kvm_pmu_event_filter filter;
+>> +    struct kvm_device_attr attr = {
+>> +        .group      = KVM_ARM_VCPU_PMU_V3_CTRL,
+>> +        .attr       = KVM_ARM_VCPU_PMU_V3_FILTER,
+>> +    };
+>> +    KVMState *kvm_state = cs->kvm_state;
+>> +    char *tmp;
+>> +    char *str, act;
+>> +
+>> +    if (!kvm_state->kvm_pmu_filter)
+>> +        return;
+>> +
+>> +    tmp = g_strdup(kvm_state->kvm_pmu_filter);
+>> +
+>> +    for (str = strtok(tmp, ";"); str != NULL; str = strtok(NULL, ";")) {
+>> +        unsigned short start = 0, end = 0;
+>> +
+>> +        sscanf(str, "%c:%hx-%hx", &act, &start, &end);
+>> +        if ((act != 'A' && act != 'D') || (!start && !end)) {
+>> +            error_report("skipping invalid filter %s\n", str);
+>> +            continue;
+>> +        }
+>> +
+>> +        filter = (struct kvm_pmu_event_filter) {
+>> +            .base_event     = start,
+>> +            .nevents        = end - start + 1,
+>> +            .action         = act == 'A' ? KVM_PMU_EVENT_ALLOW :
+>> +                                           KVM_PMU_EVENT_DENY,
+>> +        };
+>> +
+>> +        attr.addr = (uint64_t)&filter;
+> 
+> That could move to the initialization of attr (the address of filter
+> doesn't change).
+> 
 
-'const MachineState *'.
+It looks better. Will change it.
 
-> +{
-> +    MachineClass *mc = MACHINE_GET_CLASS(machine);
-> +    ObjectClass *oc = object_class_by_name(machine->cpu_type);
-> +    CPUClass *cc;
-> +    int i;
-> +
-> +    /*
-> +     * Check if the user specified CPU type is supported when the valid
-> +     * CPU types have been determined. Note that the user specified CPU
-> +     * type is provided through '-cpu' option.
-> +     */
-> +    if (mc->valid_cpu_types && machine->cpu_type) {
-> +        for (i = 0; mc->valid_cpu_types[i]; i++) {
-> +            if (object_class_dynamic_cast(oc, mc->valid_cpu_types[i])) {
-> +                break;
-> +            }
-> +        }
-> +
-> +        /* The user specified CPU type isn't valid */
-> +        if (!mc->valid_cpu_types[i]) {
-> +            error_setg(errp, "Invalid CPU type: %s", machine->cpu_type);
-> +            error_append_hint(errp, "The valid types are: %s",
-> +                              mc->valid_cpu_types[0]);
+>> +        if (!kvm_arm_set_device_attr(cs, &attr, "PMU Event Filter")) {
+>> +            error_report("Failed to init PMU Event Filter\n");
+>> +            abort();
+>> +        }
+>> +    }
+>> +
+>> +    g_free(tmp);
+>> +}
+>> +
+>> void kvm_arm_pmu_init(CPUState *cs)
+>> {
+>>     struct kvm_device_attr attr = {
+>>         .group = KVM_ARM_VCPU_PMU_V3_CTRL,
+>>         .attr = KVM_ARM_VCPU_PMU_V3_INIT,
+>>     };
+>> +    static bool pmu_filter_init = false;
+>>
+>>     if (!ARM_CPU(cs)->has_pmu) {
+>>         return;
+>>     }
+>> +    if (!pmu_filter_init) {
+>> +        kvm_arm_pmu_filter_init(cs);
+>> +        pmu_filter_init = true;
+> 
+> pmu_filter_init could move inside kvm_arm_pmu_filter_init() - maybe
+> together with a comment that this only needs to be called for 1 vcpu.
 
-This hint could be clearer if only an unique CPU is allowed.
+Good idea. Will do that.
 
-> +            for (i = 1; mc->valid_cpu_types[i]; i++) {
-> +                error_append_hint(errp, ", %s", mc->valid_cpu_types[i]);
-> +            }
-> +
-> +            error_append_hint(errp, "\n");
-> +            return;
-> +        }
-> +    }
-> +
-> +    /* Check if CPU type is deprecated and warn if so */
-> +    cc = CPU_CLASS(oc);
-> +    if (cc && cc->deprecation_note) {
-> +        warn_report("CPU model %s is deprecated -- %s",
-> +                    machine->cpu_type, cc->deprecation_note);
-> +    }
-> +}
+Thanks,
+Shaoqin
+
+> 
+> Thanks,
+> Sebastian
+> 
 
 
