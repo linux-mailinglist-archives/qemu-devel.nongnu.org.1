@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A47C7EDC40
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:48:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC0867EDC54
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:50:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3X5J-0000cA-37; Thu, 16 Nov 2023 02:46:45 -0500
+	id 1r3X5N-00016P-9n; Thu, 16 Nov 2023 02:46:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X4s-0007Q8-LT; Thu, 16 Nov 2023 02:46:22 -0500
+ id 1r3X4s-0007Q7-Lf; Thu, 16 Nov 2023 02:46:22 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X4o-0005bC-TR; Thu, 16 Nov 2023 02:46:17 -0500
+ id 1r3X4q-0005fY-No; Thu, 16 Nov 2023 02:46:18 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E826833BEC;
- Thu, 16 Nov 2023 10:45:03 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 020BA33BED;
+ Thu, 16 Nov 2023 10:45:04 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 800DE35852;
+ by tsrv.corpit.ru (Postfix) with SMTP id 8DC4835853;
  Thu, 16 Nov 2023 10:44:42 +0300 (MSK)
-Received: (nullmailer pid 3202544 invoked by uid 1000);
+Received: (nullmailer pid 3202547 invoked by uid 1000);
  Thu, 16 Nov 2023 07:44:41 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 19/27] hw/net/cadence_gem.c: spelling fixes: Octects
-Date: Thu, 16 Nov 2023 10:44:33 +0300
-Message-Id: <20231116074441.3202417-20-mjt@tls.msk.ru>
+Subject: [PULL 20/27] include/block/ufs.h: spelling fix: setted
+Date: Thu, 16 Nov 2023 10:44:34 +0300
+Message-Id: <20231116074441.3202417-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231116074441.3202417-1-mjt@tls.msk.ru>
 References: <20231116074441.3202417-1-mjt@tls.msk.ru>
@@ -58,40 +58,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: c755c943aa2e "hw/net/cadence_gem: use REG32 macro for register definitions"
+Fixes: bc4e68d362ec "hw/ufs: Initial commit for emulated Universal-Flash-Storage"
+Reviewed-by: Jeuk Kim <jeuk20.kim@samsung.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Luc Michel <luc.michel@amd.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/net/cadence_gem.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/block/ufs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/net/cadence_gem.c b/hw/net/cadence_gem.c
-index 5b989f5b52..19adbc0e19 100644
---- a/hw/net/cadence_gem.c
-+++ b/hw/net/cadence_gem.c
-@@ -225,8 +225,8 @@ REG32(WOLAN, 0xb8) /* Wake on LAN reg */
- REG32(IPGSTRETCH, 0xbc) /* IPG Stretch reg */
- REG32(SVLAN, 0xc0) /* Stacked VLAN reg */
- REG32(MODID, 0xfc) /* Module ID reg */
--REG32(OCTTXLO, 0x100) /* Octects transmitted Low reg */
--REG32(OCTTXHI, 0x104) /* Octects transmitted High reg */
-+REG32(OCTTXLO, 0x100) /* Octets transmitted Low reg */
-+REG32(OCTTXHI, 0x104) /* Octets transmitted High reg */
- REG32(TXCNT, 0x108) /* Error-free Frames transmitted */
- REG32(TXBCNT, 0x10c) /* Error-free Broadcast Frames */
- REG32(TXMCNT, 0x110) /* Error-free Multicast Frame */
-@@ -245,8 +245,8 @@ REG32(EXCESSCOLLCNT, 0x140) /* Excessive Collision Frames */
- REG32(LATECOLLCNT, 0x144) /* Late Collision Frames */
- REG32(DEFERTXCNT, 0x148) /* Deferred Transmission Frames */
- REG32(CSENSECNT, 0x14c) /* Carrier Sense Error Counter */
--REG32(OCTRXLO, 0x150) /* Octects Received register Low */
--REG32(OCTRXHI, 0x154) /* Octects Received register High */
-+REG32(OCTRXLO, 0x150) /* Octets Received register Low */
-+REG32(OCTRXHI, 0x154) /* Octets Received register High */
- REG32(RXCNT, 0x158) /* Error-free Frames Received */
- REG32(RXBROADCNT, 0x15c) /* Error-free Broadcast Frames RX */
- REG32(RXMULTICNT, 0x160) /* Error-free Multicast Frames RX */
+diff --git a/include/block/ufs.h b/include/block/ufs.h
+index 0b6ec0814d..d61598b8f3 100644
+--- a/include/block/ufs.h
++++ b/include/block/ufs.h
+@@ -657,7 +657,7 @@ typedef struct QEMU_PACKED UtpTaskReqDesc {
+ #define UFS_UPIU_MAX_WB_LUN_ID 8
+ 
+ /*
+- * WriteBooster buffer lifetime has a limit setted by vendor.
++ * WriteBooster buffer lifetime has a limit set by vendor.
+  * If it is over the limit, WriteBooster feature will be disabled.
+  */
+ #define UFS_WB_EXCEED_LIFETIME 0x0B
 -- 
 2.39.2
 
