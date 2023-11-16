@@ -2,35 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FD407EDC55
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:50:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 821827EDC3B
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:46:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3X3X-0005kR-Es; Thu, 16 Nov 2023 02:44:55 -0500
+	id 1r3X3Z-0005lN-Cq; Thu, 16 Nov 2023 02:44:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X3V-0005jx-DT; Thu, 16 Nov 2023 02:44:53 -0500
+ id 1r3X3V-0005k4-Od; Thu, 16 Nov 2023 02:44:53 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X3T-0004pM-4j; Thu, 16 Nov 2023 02:44:53 -0500
+ id 1r3X3T-0004pN-90; Thu, 16 Nov 2023 02:44:53 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D66E133BD9;
+ by isrv.corpit.ru (Postfix) with ESMTP id E407B33BDA;
  Thu, 16 Nov 2023 10:45:02 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 5FE8C3583F;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7AA3835840;
  Thu, 16 Nov 2023 10:44:41 +0300 (MSK)
-Received: (nullmailer pid 3202486 invoked by uid 1000);
+Received: (nullmailer pid 3202490 invoked by uid 1000);
  Thu, 16 Nov 2023 07:44:41 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 00/27] Trivial patches for 2023-11-16
-Date: Thu, 16 Nov 2023 10:44:14 +0300
-Message-Id: <20231116074441.3202417-1-mjt@tls.msk.ru>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 01/27] hw/watchdog/wdt_aspeed: Remove unused
+ 'hw/misc/aspeed_scu.h' header
+Date: Thu, 16 Nov 2023 10:44:15 +0300
+Message-Id: <20231116074441.3202417-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231116074441.3202417-1-mjt@tls.msk.ru>
+References: <20231116074441.3202417-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -57,92 +61,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 9c673a41eefc50f1cb2fe3c083e7de842c7d276a:
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-  Update version for v8.2.0-rc0 release (2023-11-14 12:35:47 -0500)
+Aspeed watchdog doesn't use anything from the System Control Unit.
 
-are available in the Git repository at:
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ hw/watchdog/wdt_aspeed.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
+diff --git a/hw/watchdog/wdt_aspeed.c b/hw/watchdog/wdt_aspeed.c
+index d267aa185c..273a49d360 100644
+--- a/hw/watchdog/wdt_aspeed.c
++++ b/hw/watchdog/wdt_aspeed.c
+@@ -14,7 +14,6 @@
+ #include "qemu/module.h"
+ #include "qemu/timer.h"
+ #include "sysemu/watchdog.h"
+-#include "hw/misc/aspeed_scu.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/sysbus.h"
+ #include "hw/watchdog/wdt_aspeed.h"
+-- 
+2.39.2
 
-for you to fetch changes up to f779357882b4758551ff30074b4b915d7d249d3d:
-
-  util/range.c: spelling fix: inbetween (2023-11-15 12:06:05 +0300)
-
-----------------------------------------------------------------
-trivial patches for 2023-11-16
-
-Mostly spelling fixes in various parts in code added since 8.1,
-plus a few other tiny things (comment rewording, removal of unused
-file, forgotten MAINTAINERS change).
-
-----------------------------------------------------------------
-Michael Tokarev (23):
-      hw/audio/virtio-snd.c: spelling: initalize
-      qapi/migration.json: spelling: transfering
-      bsd-user: spelling fixes: necesary, agrument, undocummented
-      linux-user: spelling fixes: othe, necesary
-      hw/cxl: spelling fixes: limitaions, potentialy, intialized
-      gdbstub: spelling fix: respectivelly
-      docs/about/deprecated.rst: spelling fix: becase
-      docs/devel/migration.rst: spelling fixes: doen't, diferent, responsability, recomend
-      docs/system/arm/emulation.rst: spelling fix: Enhacements
-      target/arm/tcg: spelling fixes: alse, addreses
-      target/hppa: spelling fixes: Indicies, Truely
-      migration/rdma.c: spelling fix: asume
-      contrib/vhost-user-gpu/virgl.c: spelling fix: mesage
-      hw/mem/memory-device.c: spelling fix: ontaining
-      hw/net/cadence_gem.c: spelling fixes: Octects
-      include/block/ufs.h: spelling fix: setted
-      include/hw/hyperv/dynmem-proto.h: spelling fix: nunber, atleast
-      include/hw/virtio/vhost.h: spelling fix: sate
-      target/riscv/cpu.h: spelling fix: separatly
-      tests/qtest/migration-test.c: spelling fix: bandwith
-      tests/qtest/ufs-test.c: spelling fix: tranfer
-      util/filemonitor-inotify.c: spelling fix: kenel
-      util/range.c: spelling fix: inbetween
-
-Philippe Mathieu-Daudé (1):
-      hw/watchdog/wdt_aspeed: Remove unused 'hw/misc/aspeed_scu.h' header
-
-Thomas Huth (3):
-      MAINTAINERS: Add tests/decode/ to the "Overall TCG CPUs" section
-      tests/data/qobject/qdict.txt: Avoid non-inclusive words
-      qapi/pragma.json: Improve the comment about the lists of QAPI rule exceptions
-
- MAINTAINERS                      |  1 +
- bsd-user/bsd-mem.h               |  2 +-
- bsd-user/freebsd/os-proc.c       |  2 +-
- bsd-user/freebsd/os-stat.h       |  6 +++---
- contrib/vhost-user-gpu/virgl.c   |  2 +-
- docs/about/deprecated.rst        |  2 +-
- docs/devel/migration.rst         | 10 +++++-----
- docs/system/arm/emulation.rst    |  2 +-
- gdbstub/gdbstub.c                |  2 +-
- hw/audio/virtio-snd.c            |  2 +-
- hw/cxl/cxl-component-utils.c     |  4 ++--
- hw/cxl/cxl-mailbox-utils.c       |  2 +-
- hw/mem/memory-device.c           |  2 +-
- hw/net/cadence_gem.c             |  8 ++++----
- hw/watchdog/wdt_aspeed.c         |  1 -
- include/block/ufs.h              |  2 +-
- include/hw/cxl/cxl_device.h      |  2 +-
- include/hw/hyperv/dynmem-proto.h |  6 +++---
- include/hw/virtio/vhost.h        |  2 +-
- linux-user/ppc/vdso.S            |  2 +-
- linux-user/syscall.c             |  2 +-
- migration/rdma.c                 |  2 +-
- qapi/migration.json              |  2 +-
- qapi/pragma.json                 |  4 ++--
- target/arm/tcg/helper-a64.c      |  2 +-
- target/arm/tcg/hflags.c          |  2 +-
- target/hppa/cpu.h                |  2 +-
- target/hppa/machine.c            |  2 +-
- target/riscv/cpu.h               |  4 ++--
- tests/data/qobject/qdict.txt     |  4 ----
- tests/qtest/migration-test.c     |  2 +-
- tests/qtest/ufs-test.c           |  2 +-
- util/filemonitor-inotify.c       |  2 +-
- util/range.c                     |  2 +-
- 34 files changed, 46 insertions(+), 50 deletions(-)
 
