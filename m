@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678617EE2BC
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 15:26:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6AE97EE2C0
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 15:28:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3dJD-00016b-6N; Thu, 16 Nov 2023 09:25:31 -0500
+	id 1r3dLR-0002QT-Tn; Thu, 16 Nov 2023 09:27:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1r3dJ9-00015Y-1q
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 09:25:28 -0500
+ id 1r3dLP-0002Pi-4l
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 09:27:47 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1r3dJ5-00055x-EQ
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 09:25:26 -0500
+ id 1r3dLN-0005sR-N7
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 09:27:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700144722;
+ s=mimecast20190719; t=1700144865;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=9Wqc4E+SeAwYIqfSAukcWD+ySCBrSbiPEqBz02d6V84=;
- b=bq0IJAEQH90Kit8FRM54+rtWq4//3zpS5qk93qlJzrt1BllqtZscv9iNSwRgKEIVgV2cHS
- UBqOTUcIQ9xYJzO1vTpb3w74PKFXLx0AnmK9svmYZ2czoSxJrA0CnxW00uDHdB7rpN6cw1
- gyeoyJ+0DVNIBd4YF9YiR6wlAEAabRc=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VbNpAlf7TahvLQtqGdDwWUt1flVSQ/lOfjRYQbgGBYo=;
+ b=Z9wpz4kIircfezr6VsbH3ALMPZjVSUEQ1PmWyGVXpYpCm+hXLLozWZnQVZw6VamtzUprK/
+ bDN0q6yvY/pOsJ2Xxlr/RdjXq/DD1Dt8BaxkkuP0CxPVGmG00wwfBUJDgwloAtl5HXsvuX
+ R/t6sKJW2ashUW+kSLsyM0dsDJGBqig=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-tuTReJvSOXqh6yjmHseejw-1; Thu, 16 Nov 2023 09:25:21 -0500
-X-MC-Unique: tuTReJvSOXqh6yjmHseejw-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-32f790a39d2so392664f8f.2
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 06:25:20 -0800 (PST)
+ us-mta-602-DSkHMVx5NqSmo9BUiGtFTw-1; Thu, 16 Nov 2023 09:27:43 -0500
+X-MC-Unique: DSkHMVx5NqSmo9BUiGtFTw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4084e4ce543so5100315e9.3
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 06:27:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700144719; x=1700749519;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9Wqc4E+SeAwYIqfSAukcWD+ySCBrSbiPEqBz02d6V84=;
- b=wwzCkBmZfe+BOpam1Mi7Ii+NeJJsNCp0Uu1FpSWQVLwkfxLK4QztExY6i/dNoSzbaj
- l1+M1Fsm00Ed5wcWDoiCB4kVRkLHvulIrlNqKgfH9ZzRQGOOpMdjno79qiA1oUIk1sdO
- eNyo6Yo0toobr9yENe8NMY9DOxz8P6uXKsrK6Jzmx2HojV8YuYE1YwbvddwaZPx5I7Vs
- Jbo+CZVIFvBzu31U7fuJz/3hBmNaJTV4IMAVknEUxMmIwfLDhl30iUoi4LGR44MsPTcl
- pQMW82oFiNmipyUHwo653o68SpByNn1dX5iCcAmHrIgq5aOQQcun12WRCD82cLjYLlFT
- aXRA==
-X-Gm-Message-State: AOJu0YxnEC+Yb9U2i1IWaIRfrZmYkSOuAS4P+ACA3ZapSJ6Qma1vyCL6
- B/D6ZXZdE1H53W22tqAvLLygq9yAzcT401Iyxus8ZwiCd0vYGtHCbBebGGdDRqFK0tE7yt06W5x
- sYqhcd8El/rvGvg4kza+IgcTM0w==
-X-Received: by 2002:a05:6000:1202:b0:32d:9332:8168 with SMTP id
- e2-20020a056000120200b0032d93328168mr9553770wrx.54.1700144718929; 
- Thu, 16 Nov 2023 06:25:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH2hJYbPl5LELqVowgZnw8wcrp+SpAt3TRIjwzAJRyt5kviG4OarmvmfXVtetLwwbRPzvxcxA==
-X-Received: by 2002:a05:6000:1202:b0:32d:9332:8168 with SMTP id
- e2-20020a056000120200b0032d93328168mr9553760wrx.54.1700144718593; 
- Thu, 16 Nov 2023 06:25:18 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700144862; x=1700749662;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VbNpAlf7TahvLQtqGdDwWUt1flVSQ/lOfjRYQbgGBYo=;
+ b=KSJiY3t8dbvohT6T+kzT+onqHvbW6Ti++t4vAJcgY8G/i7nlF304Z+tKqtHyCoeDC5
+ yqTTY4EDP4t2dghO0KFrc/i+91arKSAHSM2S1cuIRqMhi38S7ackb4dbIylQZdijSxV8
+ 17m6b1YxDhnk0kTVJml40GODnMZqV8jc/ZOg/7sYY+oWvmjyllnrJ04ZcChOKbD4Osi8
+ JSEvYvKoZaT+ipmHsuomNvdZLakMxzXPB8oZLkpvdOcgF9h32DUeD22yMKy+rZtjfQK9
+ Npfz+mpGlmW0RGHPaPs8+ay6spV3Ut9vB0DOCSsJIIygBBtO0iFRfGfOG3BQ/EhakB0B
+ gC4w==
+X-Gm-Message-State: AOJu0Yxh2WSxcZKMrte21lrs+8CqE1e6tWjRODP8lHbhbtyvrxaQfKmk
+ 3ajfrBNoJ7voLGQMFIdtVKwvNv6Np0RdOZW3oovZyKo+vnZrEJIhK6iBkvhoGIfPYMo1wQ0/SMz
+ VxM/qmeBSVdvJTnQ=
+X-Received: by 2002:a05:600c:4708:b0:409:6edc:6e5c with SMTP id
+ v8-20020a05600c470800b004096edc6e5cmr14337445wmo.0.1700144862629; 
+ Thu, 16 Nov 2023 06:27:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IExIoNwzsud8c8ibhtly/HkKlHbk5ieviVV2vwvFv5UvThRpmRhMDjcSHT0VvXkwd0EqwVsdg==
+X-Received: by 2002:a05:600c:4708:b0:409:6edc:6e5c with SMTP id
+ v8-20020a05600c470800b004096edc6e5cmr14337427wmo.0.1700144862246; 
+ Thu, 16 Nov 2023 06:27:42 -0800 (PST)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- d3-20020adfa403000000b00331424a1266sm13620210wra.84.2023.11.16.06.25.18
+ u5-20020a05600c138500b003fee6e170f9sm3872406wmf.45.2023.11.16.06.27.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Nov 2023 06:25:18 -0800 (PST)
+ Thu, 16 Nov 2023 06:27:41 -0800 (PST)
 From: Juan Quintela <quintela@redhat.com>
 To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org,  qemu-trivial@nongnu.org
-Subject: Re: [PATCH trivial 05/21] docs/about/deprecated.rst: spelling fix:
- becase
-In-Reply-To: <20231114165834.2949011-6-mjt@tls.msk.ru> (Michael Tokarev's
- message of "Tue, 14 Nov 2023 19:58:18 +0300")
+Cc: Thomas Huth <thuth@redhat.com>,  qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org
+Subject: Re: [PATCH trivial 06/21] docs/devel/migration.rst: spelling fix:
+ doen't
+In-Reply-To: <7259b384-cc7f-4400-9891-83e656765ce2@tls.msk.ru> (Michael
+ Tokarev's message of "Wed, 15 Nov 2023 09:41:45 +0300")
 References: <20231114165834.2949011-1-mjt@tls.msk.ru>
- <20231114165834.2949011-6-mjt@tls.msk.ru>
+ <20231114165834.2949011-7-mjt@tls.msk.ru>
+ <f2bfef4a-3a2c-4d32-adf6-52317f85a045@redhat.com>
+ <7259b384-cc7f-4400-9891-83e656765ce2@tls.msk.ru>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Thu, 16 Nov 2023 15:25:17 +0100
-Message-ID: <87edgprd0y.fsf@secure.mitica>
+Date: Thu, 16 Nov 2023 15:27:41 +0100
+Message-ID: <87a5rdrcwy.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -103,27 +109,43 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Michael Tokarev <mjt@tls.msk.ru> wrote:
-> Fixes: 864128df465a "migration: Deprecate old compression method"
-> Cc: Juan Quintela <quintela@redhat.com>
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-> ---
->  docs/about/deprecated.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> 14.11.2023 22:05, Thomas Huth wrote:
+>> On 14/11/2023 17.58, Michael Tokarev wrote:
+>>> Fixes: 1aefe2ca1423 "migration/doc: Add documentation for backwards com=
+patiblity"
+>>> Cc: Juan Quintela <quintela@redhat.com>
+>>> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+>>> ---
+>>> =C2=A0 docs/devel/migration.rst | 8 ++++----
+>>> =C2=A0 1 file changed, 4 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+>>> index 5adf4f12f7..51b1f61f5e 100644
+>>> --- a/docs/devel/migration.rst
+>>> +++ b/docs/devel/migration.rst
+>>> @@ -1061,7 +1061,7 @@ QEMU version, in this case pc-5.1.
+>>> =C2=A0 4 - qemu-5.1 -M pc-5.2=C2=A0 -> migrates to -> qemu-5.1 -M pc-5.2
+>>> -=C2=A0 This combination is not possible as the qemu-5.1 doen't underst=
+and
+>>> +=C2=A0 This combination is not possible as the qemu-5.1 does't underst=
+and
+>> You replaced one typo with another one :-)
 >
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 78550c07bf..6c84db90b5 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -514,5 +514,5 @@ old compression method (since 8.2)
->  
->  Compression method fails too much.  Too many races.  We are going to
->  remove it if nobody fixes it.  For starters, migration-test
-> -compression tests are disabled becase they fail randomly.  If you need
-> +compression tests are disabled because they fail randomly.  If you need
->  compression, use multifd compression methods.
+> Heh. Lovely! :)
+>
+> The "really-really-fixed" one (without resending):
+>
+> -  This combination is not possible as the qemu-5.1 doen't understand
+> +  This combination is not possible as the qemu-5.1 doesn't understand
+>    pc-5.2 machine type.  So nothing to worry here.
+>
+> ;)
+>
+> Thank you for the review and for spotting it!
+>
+> /mjt
 
 Reviewed-by: Juan Quintela <quintela@redhat.com>
-
-queued.
+with the change.
 
 
