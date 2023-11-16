@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72DF07EE63B
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 18:56:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2517EE656
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 19:03:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3gb5-0008Bt-KB; Thu, 16 Nov 2023 12:56:12 -0500
+	id 1r3ggO-0000y8-6b; Thu, 16 Nov 2023 13:01:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1r3gb2-0008Bg-E4; Thu, 16 Nov 2023 12:56:08 -0500
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ id 1r3ggK-0000xp-Sl; Thu, 16 Nov 2023 13:01:37 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1r3gb0-00059C-9L; Thu, 16 Nov 2023 12:56:08 -0500
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-50a938dd873so1657880e87.3; 
- Thu, 16 Nov 2023 09:56:05 -0800 (PST)
+ id 1r3ggI-0002QI-NZ; Thu, 16 Nov 2023 13:01:36 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-53e07db272cso1697687a12.3; 
+ Thu, 16 Nov 2023 10:01:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700157364; x=1700762164; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1700157692; x=1700762492; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=P4NwNpGC8Scjjdim/USlCb7d4yzddiUu3ZLjqBdMvoM=;
- b=CtctmbIbOivHq4f42Tab0hyk1cwF90LCo/E9phiVdhs/PTY9gSTnmQZhsyntBXUubt
- 6DZnuZUaEa6V24HxYMyNZFt9z5DVXQJVA+N7Z0VRtPcB1CMKjFCVw5ZeCOoo90rQSoq8
- Q6po3rRVxTJqDEfyhQZ/WramUC1qWGxgJvywsV4NhFz1MbYSu19XZPSvpFL1MN4dHbT1
- 2VbKub5kY7Um6LhZxejSiOVE9UNvgpYl1eOc2LELXDWx6D99wNLKN1gYwFkElmYzBkJi
- 7kV62hX5Jo5wencL7oHZ8PLd0yd5bC4ENxU0/5ZD7n5Oo6crbL5/Z5LkfcwzhzNZBsJW
- TZtQ==
+ bh=hrZoE2RAshPUg3s4PRjlTQD6BKAoKYIVmreeXNy9wEU=;
+ b=aXnOceKI0UndbeKBRnUM6l1tQBKNLEFU0IA6w/FJ350kDUPE67Q/2oAhlx8xzlOTAy
+ NQVvH3IFVw7BINZ8g5IJG20x8ENk3vXrpS8jJhKFvQFoOjIGL50PuVupR6y0hi75PwJP
+ /Kc8fYfQBGBV1B+8utStrjrc/wOPGTTg/eUbiEKOBQDk1VgqlINoQwAtki/8V19OQhdR
+ xq0iupfMZVmqNUfB5qrA6YjbURPG6Kw5PCbf6dwyZ7EseOnIdKoLnEamrX1Ld3LB41T4
+ spXsfJy2jZfX460zXou40IC053Eu4IyIRou71rVc3deBUVi+P0hAXZ92139Nu6uoUvym
+ 1d5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700157364; x=1700762164;
+ d=1e100.net; s=20230601; t=1700157692; x=1700762492;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=P4NwNpGC8Scjjdim/USlCb7d4yzddiUu3ZLjqBdMvoM=;
- b=ithT+8iqv/EET8MA5c0OoNoT/XeXrTd5hKWGh11FwzFbZQ25D/GnYJkHVsKAandork
- aNVxR6CemeU7yFkh+u3gax5NdvuOU5tDoUCP1ae6jfQt6ZsFDOUxyvibSiW/ZIZLeotm
- 5Dmtq9bRpQ8vT8iA56lq9Ylf6yL9q7zLB0qy4rG2AwZT9NWnY2mplPWPmUXNxyx9jbf5
- MfU8nWo6DEQN+rCbqrj4cg5X7YOaEiBp3/hZgv2+i09sh2mi6u0TmP1BGuyStOstqSt0
- RHcy/ERyRvhdyOPhFBg2Kk0JJrRMWLp2ufAKwPxlgoHvhJS9Nv4U5sjM/4vWaz7AUSSa
- lncg==
-X-Gm-Message-State: AOJu0YxjrUTAHxlDNCxNgcTH6We3Kehbj18nN6OtK4GJ8+ewi4OzgAq9
- wRg++sCpu+gl/OMtI6HkYMwv3Re17y+Izc9N4zI=
-X-Google-Smtp-Source: AGHT+IGTarWtDEhpLQJ31GEqrc+mqXA76dmp7DKeVuptr2fZv71IxuqbEDGbYPNkL4PvN9cFrJUSKhoEPquzfUrI4dU=
-X-Received: by 2002:a05:6512:e99:b0:507:c872:7f84 with SMTP id
- bi25-20020a0565120e9900b00507c8727f84mr13718890lfb.29.1700157362960; Thu, 16
- Nov 2023 09:56:02 -0800 (PST)
+ bh=hrZoE2RAshPUg3s4PRjlTQD6BKAoKYIVmreeXNy9wEU=;
+ b=fqk5BoDccvC/bTxu+ZnfAAZyk8vph+q01m3V+JLFkQUcbrOd52ttdAQbPqRQyebvnj
+ AJQAzHy8irR/V5xL+W1eob8PZ6iDWWmXPOV/yS3Ab5Dytb0WJW7D0gjWxQZxzWjO19QV
+ YrF7tsCf61RfQYltP411a/7I9y56336CvSR2TrHUekfErpzX4vaigVuCa2YqD4H2SEHX
+ PFyu7mTDRFZHNPjcL17kcybe5dquXoo8of7BhQ0VsC9m48UZUfp/XYVNVTDKAJMQkvvJ
+ IO+97S+to85FaJkO852XoO2HfcvEq+I/RTmoYSwH/V6x8Fwr9tMg/d1zF3FXlFJRF693
+ ITdw==
+X-Gm-Message-State: AOJu0YysJxqtIYjup3Zx/yzBng00SAHNH+1bSGhbPzxp0i6I3Afa26a8
+ lQpZxGfCFiMxiLgQlgB7xJt5lkcLu0Cj3OOP/ic=
+X-Google-Smtp-Source: AGHT+IH++Va6W/3Q4jp9VhW2JId8JatMjaF4Eu0N7b8C0vw5rnayvq+X5pHxoguD5gEi0vhZu3cqNqbL1NtEBuB7LaM=
+X-Received: by 2002:a17:906:1188:b0:9d5:9ff5:ce with SMTP id
+ n8-20020a170906118800b009d59ff500cemr11173876eja.34.1700157691534; Thu, 16
+ Nov 2023 10:01:31 -0800 (PST)
 MIME-Version: 1.0
 References: <20231030121847.4522-1-faithilikerun@gmail.com>
  <20231030121847.4522-3-faithilikerun@gmail.com>
- <20231102103128.GC726730@fedora>
-In-Reply-To: <20231102103128.GC726730@fedora>
+ <i43illqyyzu7wbotuw2fbuft7izdmfo7jkwnds4yrigewachhw@7pudpozwjer5>
+ <878r7f19xm.fsf@pond.sub.org>
+In-Reply-To: <878r7f19xm.fsf@pond.sub.org>
 From: Sam Li <faithilikerun@gmail.com>
-Date: Fri, 17 Nov 2023 01:55:36 +0800
-Message-ID: <CAAAx-8K-qpE0o__==Znus_W53zd5uzKaWG28F4_nk_s6YoxmoQ@mail.gmail.com>
+Date: Fri, 17 Nov 2023 02:01:05 +0800
+Message-ID: <CAAAx-8JLLzk+GeGM1b8gVKZO+j_HFL6ugceUU6RTn+x0nDJo0w@mail.gmail.com>
 Subject: Re: [PATCH v5 2/4] qcow2: add configurations for zoned format
  extension
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
- dlemoal@kernel.org, hare@suse.de, 
- dmitry.fomichev@wdc.com, qemu-block@nongnu.org, 
- Markus Armbruster <armbru@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>, dlemoal@kernel.org, hare@suse.de, 
+ dmitry.fomichev@wdc.com, stefanha@redhat.com, qemu-block@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=faithilikerun@gmail.com; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=faithilikerun@gmail.com; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,19 +91,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stefan Hajnoczi <stefanha@redhat.com> =E4=BA=8E2023=E5=B9=B411=E6=9C=883=E6=
-=97=A5=E5=91=A8=E4=BA=94 11:24=E5=86=99=E9=81=93=EF=BC=9A
+Markus Armbruster <armbru@redhat.com> =E4=BA=8E2023=E5=B9=B411=E6=9C=883=E6=
+=97=A5=E5=91=A8=E4=BA=94 17:08=E5=86=99=E9=81=93=EF=BC=9A
 >
-> On Mon, Oct 30, 2023 at 08:18:45PM +0800, Sam Li wrote:
-> > +typedef struct Qcow2ZoneListEntry {
-> > +    QLIST_ENTRY(Qcow2ZoneListEntry) exp_open_zone_entry;
-> > +    QLIST_ENTRY(Qcow2ZoneListEntry) imp_open_zone_entry;
-> > +    QLIST_ENTRY(Qcow2ZoneListEntry) closed_zone_entry;
+> Eric Blake <eblake@redhat.com> writes:
 >
-> Where is closed_zone_entry used?
+> > On Mon, Oct 30, 2023 at 08:18:45PM +0800, Sam Li wrote:
+> >> To configure the zoned format feature on the qcow2 driver, it
+> >> requires settings as: the device size, zone model, zone size,
+> >> zone capacity, number of conventional zones, limits on zone
+> >> resources (max append bytes, max open zones, and max_active_zones).
+> >>
+> >> To create a qcow2 file with zoned format, use command like this:
+> >> $ qemu-img create -f qcow2 test.qcow2 -o size=3D768M -o
+> >> zone_size=3D64M -o zone_capacity=3D64M -o conventional_zones=3D0 -o
+> >> max_append_bytes=3D4096 -o max_open_zones=3D0 -o max_active_zones=3D0
+> >> -o zone_model=3Dhost-managed
+> >>
+> >> Signed-off-by: Sam Li <faithilikerun@gmail.com>
+> >>
+> >> fix config?
+> >
+> > Is this comment supposed to be part of the commit message?  If not,...
+> >
+> >> ---
+> >
+> > ...place it here under the divider, so 'git am' won't include it, if th=
+ere is nothing further to change on this patch.
+>
+> [...]
+>
+> >> +++ b/qapi/block-core.json
+> >> @@ -4981,6 +4981,21 @@
+> >>  { 'enum': 'Qcow2CompressionType',
+> >>    'data': [ 'zlib', { 'name': 'zstd', 'if': 'CONFIG_ZSTD' } ] }
+> >>
+> >> +##
+> >> +# @Qcow2ZoneModel:
+> >> +#
+> >> +# Zoned device model used in qcow2 image file
+> >> +#
+> >> +# @non-zoned: non-zoned model is for regular block devices
+> >> +#
+> >> +# @host-managed: host-managed model only allows sequential write over=
+ the
+> >> +#     device zones
+> >> +#
+> >> +# Since 8.2
+> >> +##
+> >> +{ 'enum': 'Qcow2ZoneModel',
+> >> +  'data': ['non-zoned', 'host-managed'] }
+> >> +
+> >>  ##
+> >>  # @BlockdevCreateOptionsQcow2:
+> >>  #
+> >> @@ -5023,6 +5038,27 @@
+> >>  # @compression-type: The image cluster compression method
+> >>  #     (default: zlib, since 5.1)
+> >>  #
+> >> +# @zone-model: @Qcow2ZoneModel.  The zone device model.
+> >> +#     (default: non-zoned, since 8.2)
+> >> +#
+> >> +# @zone-size: Total number of bytes within zones (since 8.2)
+> >
+> > If @zone-model is "non-zoned", does it make sense to even allow
+> > @zone-size and friends?  Should this use a QMP union, where you can
+> > pass in the remaining zone-* fields only when zone-model is set to
+> > host-managed?
+>
+> Valid question; needs an answer.
 
-When the number of implicitly open zones are reaching the max
-implicitly open zone and one implicitly open zone is closed, it will
-add one closed zone to closed_zone_entry. (Will be in the next
-version)
+Yes, it should use a QMP union. It's better to separate those fields
+for zoned and non-zoned.
+
+>
+> >> +#
+> >> +# @zone-capacity: The number of usable logical blocks within zones
+> >> +#     in bytes.  A zone capacity is always smaller or equal to the
+> >> +#     zone size (since 8.2)
+> >> +#
+> >> +# @conventional-zones: The number of conventional zones of the
+> >> +#     zoned device (since 8.2)
+> >> +#
+> >> +# @max-open-zones: The maximal number of open zones (since 8.2)
+> >> +#
+> >> +# @max-active-zones: The maximal number of zones in the implicit
+> >> +#     open, explicit open or closed state (since 8.2)
+> >> +#
+> >> +# @max-append-bytes: The maximal number of bytes of a zone
+> >> +#     append request that can be issued to the device.  It must be
+> >> +#     512-byte aligned (since 8.2)
+> >> +#
+> >>  # Since: 2.12
+> >>  ##
+> >>  { 'struct': 'BlockdevCreateOptionsQcow2',
+> >> @@ -5039,7 +5075,14 @@
+> >>              '*preallocation':   'PreallocMode',
+> >>              '*lazy-refcounts':  'bool',
+> >>              '*refcount-bits':   'int',
+> >> -            '*compression-type':'Qcow2CompressionType' } }
+> >> +            '*compression-type':'Qcow2CompressionType',
+> >> +            '*zone-model':         'Qcow2ZoneModel',
+> >> +            '*zone-size':          'size',
+> >> +            '*zone-capacity':      'size',
+> >> +            '*conventional-zones': 'uint32',
+> >> +            '*max-open-zones':     'uint32',
+> >> +            '*max-active-zones':   'uint32',
+> >> +            '*max-append-bytes':   'uint32' } }
+> >
+> > In other words, I'm envisioning something like an optional
+> > '*zone':'ZoneStruct', where:
+> >
+> > { 'struct': 'ZoneHostManaged',
+> >   'data': { 'size': 'size', '*capacity': 'size', ..., '*max-append-byte=
+s': 'uint32' } }
+> > { 'union': 'ZoneStruct',
+> >   'base': { 'model': 'Qcow2ZoneModel' },
+> >   'discriminator': 'model',
+> >   'data': { 'non-zoned': {},
+> >             'host-managed': 'ZoneHostManaged' } }
+> >
+> > then over the wire, QMP can use the existing:
+> > { ..., "compression-type":"zstd" }
+> >
+> > as a synonym for the new but explicit non-zoned:
+> > { ..., "compression-type":"zstd", "zone":{"mode":"non-zoned"} }
+>
+> I.e. @zone is optional, and defaults to {"mode": "non-zoned"}.
+>
+> > and when we want to use zones, we pass:
+> > { ..., "compression-type":"zstd", "zone":{"mode":"host-managed", "size"=
+:16777216} }
+> >
+> > where you don't have to have zone- prefixing everywhere because it is
+> > instead contained in the smart union object where it is obvious from
+> > the 'mode' field what other fields should be present.
+>
+
+Yes, it's better. Thanks!
+
+Sam
 
