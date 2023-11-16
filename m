@@ -2,75 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54FA87ED8CB
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 02:05:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 407AD7ED8D9
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 02:17:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3QnU-0006PD-RB; Wed, 15 Nov 2023 20:03:56 -0500
+	id 1r3Qyr-0004aH-Kq; Wed, 15 Nov 2023 20:15:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1r3QnQ-0006Oq-T2
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 20:03:52 -0500
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1r3Qyp-0004Zu-P5; Wed, 15 Nov 2023 20:15:39 -0500
+Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1r3QnN-0007Wi-EB
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 20:03:52 -0500
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-282ff1a97dcso170924a91.1
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 17:01:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1r3Qyn-0002wo-MA; Wed, 15 Nov 2023 20:15:39 -0500
+Received: by mail-oi1-x235.google.com with SMTP id
+ 5614622812f47-3b6c31e604cso178617b6e.2; 
+ Wed, 15 Nov 2023 17:15:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1700096505; x=1700701305;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Ba+u/1M4G+n4jNG3nxiH6+e104+FX6BEKEDEHFGQPFM=;
- b=ero3ET5ZSRdtV7lCe17liV+OBzBCItegSwMtKMdhG4GzesFtJx6QSCtxdcgxHlBglV
- xojd1Qb0DuK79VEDtngp5HXBqKcBDEeEfXdt4g/paTgEF/emx+iaGuZNUA9OE5AQHQ+O
- DD4Av1/03gOXwoTKK7PCii1moH+8VOZs47klr35hDEUlqglu0Q64MI9Ez9wNd4KfvY89
- lO3Ny8RQ7hCmIFboO1KaJ/aFxGTDTiIVxJ+oix5GiII5AKSQAg9dhfdl/qdWg2en8KxA
- ZTYYZpNCOnsPnuPGPYJfq+hKN0dckq1NExarGHA+mv16/tvWFWflt0m0AvdIBKC+uF5E
- dIIw==
+ d=gmail.com; s=20230601; t=1700097335; x=1700702135; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=n8lnafgpV8D7wSCfOOxM9Oz7iijX+G35oRBXKSe5XFo=;
+ b=AoX/gteTlUJ0EM5xE9puqKA2kIuk+sZxtCzbRHtj5TstfGLbZH6ZzjDIdStAlzGMsV
+ dYoG9YrpQOWt7INo5pUe6wUBMAWs4jnF42kgjry0YvWFfF4KWrGxWtEIwGd+IzIJa9zt
+ xYPCJJ5Z+fSGcuNylzTXMP8w5W4X7cpjJi4kM3Wp6iGbtKEgtOIi9Iw6IU/cTN0ZeKZ9
+ Jpui5ohFg0cVbrn/bI8GDeWSLzArAG7XGIz/CW7XKsFWfbwM1sWdC6cOQe2BnlHd9rqE
+ /zyO0zBMYCyivCwRcVK+6xzGSmwk7zWwrHp7q3Ht0gc9fxCdu0hg+FQWoWtWmu95Ds9+
+ uUew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700096505; x=1700701305;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Ba+u/1M4G+n4jNG3nxiH6+e104+FX6BEKEDEHFGQPFM=;
- b=jkJeN1B0XvQAFzviRSA3oGaRoas4SKdBJs6HvdSgHHHtpbM7vGKWPs6IECXUJqGoiP
- L9C0JScZFR0xymNhlUhJhEiFmQ80TpETkEUpjUMu8tyWsyIAMLo6jyXBSNCatRxG/5aw
- wTAAiCqPz8mD1QyfNHWuMO7D1adJa7d/s76+4ttQ+7bFSd0iRxYqrGe6YRffHPRNY668
- K+Zyw57WcCmS/Vd+vILJfd2g+dn/y08x0Pau7i4WhZWSWG/rt353U/SBz6TjDELNjG7T
- XA7eEik0huv/FdDwpzfgaDqPzn/o0JngtFlm03xLZtkXTiGjHBLMY4mBMwqnQ/+VgEhW
- Z4og==
-X-Gm-Message-State: AOJu0YwOHyNUXepWBHbPLgJUkGJ5eydRDw5BdrnQfaSt5hu2WsQbgELj
- rCjjn69DIb7Rl3UTND1zJdCkG1zEeennqnaS4Nk+Q5WJ4qncsN072LxZCA==
-X-Google-Smtp-Source: AGHT+IEgdxO69h/AdCKVsKLEJZDYOHrptapG+VrLP3T2zHlw0g82mBaSA1m/TQ5tjs1gzRdfh+Y4A+gOUtDkvtjlC+I=
-X-Received: by 2002:a17:90b:4f45:b0:280:2935:af23 with SMTP id
- pj5-20020a17090b4f4500b002802935af23mr13504295pjb.5.1700096504761; Wed, 15
- Nov 2023 17:01:44 -0800 (PST)
-MIME-Version: 1.0
-References: <cover.1699793550.git.yong.huang@smartx.com>
-In-Reply-To: <cover.1699793550.git.yong.huang@smartx.com>
-From: Yong Huang <yong.huang@smartx.com>
-Date: Thu, 16 Nov 2023 09:01:28 +0800
-Message-ID: <CAK9dgmbjF__gwDn+oEehiyS0P2vSGh-onfFXCHsuOGZhzNhc+g@mail.gmail.com>
-Subject: Re: [RFC 0/2] vhost-user-test: Add negotiated features check
-To: qemu-devel@nongnu.org
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, Eric Blake <eblake@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000401ff8060a3a901a"
-Received-SPF: none client-ip=2607:f8b0:4864:20::1033;
- envelope-from=yong.huang@smartx.com; helo=mail-pj1-x1033.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ d=1e100.net; s=20230601; t=1700097335; x=1700702135;
+ h=in-reply-to:references:to:from:subject:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=n8lnafgpV8D7wSCfOOxM9Oz7iijX+G35oRBXKSe5XFo=;
+ b=VOtWOd2VD5mdBjP5JJHRuO9BtaALzhZFZLdepsJrgehCy/LcaahgI6aE9+GeE1zxyv
+ 5+LaVzKhw0AOUpwNOHmp2SA1Ut3an+sGJNbvJlmAEZwbNHVZZU2rGNmN4kLTEJShp5wT
+ b/Es02GnBuAWiF00yLQ3up6BHJqeJb4DSTPfbIcph6vjzrM1og/8Jt8/fOMnr0hkvOXH
+ eTp8S9x4C1R3PvtABVX1JXVHwOaGJLHXeT6Y/BqsSFjTSG+h19owFJLVCwcCJe+o9xi0
+ ax0MJ9O3n3Ux9ygbcRFiEuhlk5fL+W+Wtr7PLfbXS5N6IyjaNyO3Je8+pZV9ZSf5TolT
+ CFJA==
+X-Gm-Message-State: AOJu0Yz5JjTiBi2bqxFHA66bJkJcQcxGbmrxRzF+Yn3vgbLy3n3GUjxt
+ R0G1rzc5uk7XbKyeGFvwEfk=
+X-Google-Smtp-Source: AGHT+IGRJeTksVSfdELlRy4nCm/zLjL8FDJxX6jiZAJWyQu1rYBI4viF4vm27uBYb4kjlyTbkfOEig==
+X-Received: by 2002:a05:6808:11ca:b0:3b5:7044:37f with SMTP id
+ p10-20020a05680811ca00b003b57044037fmr20073648oiv.17.1700097335370; 
+ Wed, 15 Nov 2023 17:15:35 -0800 (PST)
+Received: from localhost (121-44-82-40.tpgi.com.au. [121.44.82.40])
+ by smtp.gmail.com with ESMTPSA id
+ e70-20020a636949000000b005b6f075da0dsm1791207pgc.25.2023.11.15.17.15.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 15 Nov 2023 17:15:34 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 16 Nov 2023 11:15:25 +1000
+Message-Id: <CWZU7DEIX9E4.26PTZ0GK1ZAUP@wheely>
+Subject: Re: [PATCH] tests/avocado/reverse_debugging: Disable the ppc64
+ tests by default
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?b?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?= <berrange@redhat.com>, "Thomas
+ Huth" <thuth@redhat.com>, "John Snow" <jsnow@redhat.com>, "Ani Sinha"
+ <anisinha@redhat.com>, "Wainer dos Santos Moschetta" <wainersm@redhat.com>,
+ "Beraldo Leal" <bleal@redhat.com>, "Cleber Rosa" <crosa@redhat.com>, "Pavel
+ Dovgalyuk" <pavel.dovgaluk@ispras.ru>, "Paolo Bonzini"
+ <pbonzini@redhat.com>, <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>,
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+X-Mailer: aerc 0.15.2
+References: <20231114163115.298041-1-thuth@redhat.com>
+ <12b4420e-1440-4516-8276-e0e907003c16@linaro.org>
+ <9f6247e4-7e81-44f8-a63b-8ee11f722710@redhat.com>
+ <CWYYRW53VEPJ.3UL1X7GB1P4H2@wheely>
+ <6877d6d6-bfbf-4475-8c61-dd537265b278@redhat.com>
+ <ZVTETYrfL8f48qe3@redhat.com> <ZVT-bY9YOr69QTPX@redhat.com>
+In-Reply-To: <ZVT-bY9YOr69QTPX@redhat.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
+ envelope-from=npiggin@gmail.com; helo=mail-oi1-x235.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,116 +102,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000401ff8060a3a901a
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Thu Nov 16, 2023 at 3:22 AM AEST, Daniel P. Berrang=C3=A9 wrote:
+> On Wed, Nov 15, 2023 at 01:14:53PM +0000, Daniel P. Berrang=C3=A9 wrote:
+> > On Wed, Nov 15, 2023 at 07:23:01AM +0100, Thomas Huth wrote:
+> > > On 15/11/2023 02.15, Nicholas Piggin wrote:
+> > > > On Wed Nov 15, 2023 at 4:29 AM AEST, Thomas Huth wrote:
+> > > > > On 14/11/2023 17.37, Philippe Mathieu-Daud=C3=A9 wrote:
+> > > > > > On 14/11/23 17:31, Thomas Huth wrote:
+> > > > > > > The tests seem currently to be broken. Disable them by defaul=
+t
+> > > > > > > until someone fixes them.
+> > > > > > >=20
+> > > > > > > Signed-off-by: Thomas Huth <thuth@redhat.com>
+> > > > > > > ---
+> > > > > > >  =C2=A0 tests/avocado/reverse_debugging.py | 7 ++++---
+> > > > > > >  =C2=A0 1 file changed, 4 insertions(+), 3 deletions(-)
+> > > > > >=20
+> > > > > > Similarly, I suspect https://gitlab.com/qemu-project/qemu/-/iss=
+ues/1961
+> > > > > > which has a fix ready:
+> > > > > > https://lore.kernel.org/qemu-devel/20231110170831.185001-1-rich=
+ard.henderson@linaro.org/
+> > > > > >=20
+> > > > > > Maybe wait the fix gets in first?
+> > > > >=20
+> > > > > No, I applied Richard's patch, but the problem persists. Does thi=
+s test
+> > > > > still work for you?
+> > > >=20
+> > > > I bisected it to 1d4796cd008373 ("python/machine: use socketpair() =
+for
+> > > > console connections"),
+> > >=20
+> > > Maybe John (who wrote that commit) can help?
+> >=20
+> > I find it hard to believe this commit is a direct root cause of the
+> > problem since all it does is change the QEMU startup sequence so that
+> > instead of QEMU listening for a monitor connection, it is given a
+> > pre-opened monitor connection.
+> >=20
+> > At the very most that should affect the startup timing a little.
+> >=20
+> > I notice all the reverse debugging tests have a skip on gitlab
+> > with a comment:
+> >=20
+> >     # unidentified gitlab timeout problem
+> >=20
+> > this makes be suspicious that John's patch has merely made this
+> > (henceforth undiagnosed) timeout more likely to ocurr.
+>
+> After an absolutely horrendous hours long debugging session I think
+> I figured out the problem. The QEMU process is blocking in
+>
+>     qemu_chr_write_buffer
+>
+> spinning in the loop on EAGAIN.
 
-ping
+Great work.
 
-On Sun, Nov 12, 2023 at 9:03=E2=80=AFPM Hyman Huang <yong.huang@smartx.com>=
- wrote:
+Why does this make the gdb socket give an empty response? Something
+just times out?
 
-> The patchset "Fix the virtio features negotiation flaw" fix a
-> vhost-user negotiation flaw:
-> c9bdc449f9 vhost-user: Fix the virtio features negotiation flaw
-> bebcac052a vhost-user: Refactor the chr_closed_bh
-> 937b7d96e4 vhost-user: Refactor vhost acked features saving
 >
-> While the test case remain unmerged, the detail reference:
->
-> https://lore.kernel.org/qemu-devel/cover.1667232396.git.huangy81@chinatel=
-ecom.cn/
->
-> Since Michael pointed out that the info virtio makes sense to query
-> the negotiation feature, this patchset uses the x-query-virtio-status
-> to retrieve the features instead of exporting netdev capabilities and
-> information as we did in the previous patchset to aid in confirming
-> the negotiation's validity.
->
-> To do that, we first introduce an "show-bits" argument for
-> x-query-virtio-status such that the feature bits can be used
-> directly, and then implement the test case for negotiated features
-> check. As we post, the code is divided into two patches.
->
-> Please review, thanks,
-> Yong
->
-> Hyman Huang (2):
->   qapi/virtio: introduce the "show-bits" argument for
->     x-query-virtio-status
->   vhost-user-test: Add negotiated features check
->
->  hw/virtio/virtio-hmp-cmds.c   |   2 +-
->  hw/virtio/virtio-qmp.c        |  21 ++++++-
->  qapi/virtio.json              |  49 ++++++++++++++++-
->  tests/qtest/vhost-user-test.c | 100 ++++++++++++++++++++++++++++++++++
->  4 files changed, 167 insertions(+), 5 deletions(-)
->
-> --
-> 2.39.1
+> The Python  Machine() class has passed one of a pre-created socketpair
+> FDs for the serial port chardev. The guest is trying to write to this
+> and blocking.  Nothing in the Machine() class is reading from the
+> other end of the serial port console.
 >
 >
+> Before John's change, the serial port uses a chardev in server mode
+> and crucially  'wait=3Doff', and the Machine() class never opened the
+> console socket unless the test case wanted to read from it.
+>
+> IOW, QEMU had a background job setting there waiting for a connection
+> that would never come.
+>
+> As a result when QEMU started executing the guest, all the serial port
+> writes get sent into to the void.
+>
+>
+> So John's patch has had a semantic change in behaviour, because the
+> console socket is permanently open, and thus socket buffers are liable
+> to fill up.
+>
+> As a demo I increased the socket buffers to 1MB and everything then
+> succeeded.
+>
+> @@ -357,6 +360,10 @@ def _pre_launch(self) -> None:
+> =20
+>          if self._console_set:
+>              self._cons_sock_pair =3D socket.socketpair()
+> +            self._cons_sock_pair[0].setsockopt(socket.SOL_SOCKET, socket=
+.SO_SNDBUF, 1024*1024);
+> +            self._cons_sock_pair[0].setsockopt(socket.SOL_SOCKET, socket=
+.SO_RCVBUF, 1024*1024);
+> +            self._cons_sock_pair[1].setsockopt(socket.SOL_SOCKET, socket=
+.SO_SNDBUF, 1024*1024);
+> +            self._cons_sock_pair[1].setsockopt(socket.SOL_SOCKET, socket=
+.SO_RCVBUF, 1024*1024);
+>              os.set_inheritable(self._cons_sock_pair[0].fileno(), True)
+> =20
+>          # NOTE: Make sure any opened resources are *definitely* freed in
 
---=20
-Best regards
+So perhaps ppc64 fails just because it prints more to the console in early
+boot than other targets?
 
---000000000000401ff8060a3a901a
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> The Machine class doesn't know if anything will ever use the console,
+> so as is the change is unsafe.
+>
+> The original goal of John's change was to guarantee we capture early
+> boot messages as some test need that. =20
+>
+> I think we need to be able to have a flag to say whether the caller needs
+> an "early console" facility, and only use the pre-opened FD passing for
+> that case. Tests we need early console will have to ask for that guarante=
+e
+> explicitly.
 
-<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
-t-family:&quot;comic sans ms&quot;,sans-serif">ping</div></div><br><div cla=
-ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Sun, Nov 12, 20=
-23 at 9:03=E2=80=AFPM Hyman Huang &lt;<a href=3D"mailto:yong.huang@smartx.c=
-om">yong.huang@smartx.com</a>&gt; wrote:<br></div><blockquote class=3D"gmai=
-l_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-lef=
-t-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">The patc=
-hset &quot;Fix the virtio features negotiation flaw&quot; fix a<br>
-vhost-user negotiation flaw:<br>
-c9bdc449f9 vhost-user: Fix the virtio features negotiation flaw<br>
-bebcac052a vhost-user: Refactor the chr_closed_bh<br>
-937b7d96e4 vhost-user: Refactor vhost acked features saving<br>
-<br>
-While the test case remain unmerged, the detail reference:<br>
-<a href=3D"https://lore.kernel.org/qemu-devel/cover.1667232396.git.huangy81=
-@chinatelecom.cn/" rel=3D"noreferrer" target=3D"_blank">https://lore.kernel=
-.org/qemu-devel/cover.1667232396.git.huangy81@chinatelecom.cn/</a><br>
-<br>
-Since Michael pointed out that the info virtio makes sense to query<br>
-the negotiation feature, this patchset uses the x-query-virtio-status<br>
-to retrieve the features instead of exporting netdev capabilities and<br>
-information as we did in the previous patchset to aid in confirming<br>
-the negotiation&#39;s validity.<br>
-<br>
-To do that, we first introduce an &quot;show-bits&quot; argument for<br>
-x-query-virtio-status such that the feature bits can be used<br>
-directly, and then implement the test case for negotiated features<br>
-check. As we post, the code is divided into two patches.<br>
-<br>
-Please review, thanks,<br>
-Yong<br>
-<br>
-Hyman Huang (2):<br>
-=C2=A0 qapi/virtio: introduce the &quot;show-bits&quot; argument for<br>
-=C2=A0 =C2=A0 x-query-virtio-status<br>
-=C2=A0 vhost-user-test: Add negotiated features check<br>
-<br>
-=C2=A0hw/virtio/virtio-hmp-cmds.c=C2=A0 =C2=A0|=C2=A0 =C2=A02 +-<br>
-=C2=A0hw/virtio/virtio-qmp.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 21 ++++++-<=
-br>
-=C2=A0qapi/virtio.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=
-=A0 49 ++++++++++++++++-<br>
-=C2=A0tests/qtest/vhost-user-test.c | 100 +++++++++++++++++++++++++++++++++=
-+<br>
-=C2=A04 files changed, 167 insertions(+), 5 deletions(-)<br>
-<br>
--- <br>
-2.39.1<br>
-<br>
-</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
-gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
-iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
-</div></div></div>
+The below patch makes this test work. Maybe as a quick fix it is
+better than disabling the test.
 
---000000000000401ff8060a3a901a--
+I guess we still have a problem if a test invokes vm.launch()
+directly without subsequently waiting for a console pattern or
+doing something with the console as you say. Your suggesstion is
+add something like vm.launch(console=3DTrue) ?=20
+
+Thanks,
+Nick
+---
+
+diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_deb=
+ugging.py
+index fc47874eda..128d85bc0e 100644
+--- a/tests/avocado/reverse_debugging.py
++++ b/tests/avocado/reverse_debugging.py
+@@ -12,6 +12,7 @@
+=20
+ from avocado import skipIf
+ from avocado_qemu import BUILD_DIR
++from avocado.utils import datadrainer
+ from avocado.utils import gdb
+ from avocado.utils import process
+ from avocado.utils.network.ports import find_free_port
+@@ -52,6 +53,10 @@ def run_vm(self, record, shift, args, replay_path, image=
+_path, port):
+         if args:
+             vm.add_args(*args)
+         vm.launch()
++        console_drainer =3D datadrainer.LineLogger(vm.console_socket.filen=
+o(),
++                                    logger=3Dself.log.getChild('console'),
++                                    stop_check=3D(lambda : not vm.is_runni=
+ng()))
++        console_drainer.start()
+         return vm
+=20
+     @staticmethod
 
