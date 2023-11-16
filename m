@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A35EF7EDC3F
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:47:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 413377EDC49
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:49:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3X5L-0000zT-Ka; Thu, 16 Nov 2023 02:46:47 -0500
+	id 1r3X5O-0001Hg-MW; Thu, 16 Nov 2023 02:46:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X5I-0000tv-UW; Thu, 16 Nov 2023 02:46:44 -0500
+ id 1r3X5K-00011n-Lg; Thu, 16 Nov 2023 02:46:46 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X5H-0005gm-5f; Thu, 16 Nov 2023 02:46:44 -0500
+ id 1r3X5H-0005gp-82; Thu, 16 Nov 2023 02:46:45 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2A55233BF0;
+ by isrv.corpit.ru (Postfix) with ESMTP id 37E0533BF1;
  Thu, 16 Nov 2023 10:45:04 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B6C5435856;
+ by tsrv.corpit.ru (Postfix) with SMTP id C41B235857;
  Thu, 16 Nov 2023 10:44:42 +0300 (MSK)
-Received: (nullmailer pid 3202557 invoked by uid 1000);
+Received: (nullmailer pid 3202560 invoked by uid 1000);
  Thu, 16 Nov 2023 07:44:41 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 23/27] target/riscv/cpu.h: spelling fix: separatly
-Date: Thu, 16 Nov 2023 10:44:37 +0300
-Message-Id: <20231116074441.3202417-24-mjt@tls.msk.ru>
+Subject: [PULL 24/27] tests/qtest/migration-test.c: spelling fix: bandwith
+Date: Thu, 16 Nov 2023 10:44:38 +0300
+Message-Id: <20231116074441.3202417-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231116074441.3202417-1-mjt@tls.msk.ru>
 References: <20231116074441.3202417-1-mjt@tls.msk.ru>
@@ -58,33 +58,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: 40336d5b1d4c "target/riscv: Add HS-mode virtual interrupt and IRQ filtering support."
+Fixes: 17257b90be4f "tests: Add migration dirty-limit capability test"
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- target/riscv/cpu.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/qtest/migration-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index bf58b0f0b5..d74b361be6 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -214,13 +214,13 @@ struct CPUArchState {
- 
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 5752412b64..0fbaa6a90f 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -3138,7 +3138,7 @@ static void test_migrate_dirty_limit(void)
+     uint64_t throttle_us_per_full;
      /*
-      * When mideleg[i]=0 and mvien[i]=1, sie[i] is no more
--     * alias of mie[i] and needs to be maintained separatly.
-+     * alias of mie[i] and needs to be maintained separately.
+      * We want the test to be stable and as fast as possible.
+-     * E.g., with 1Gb/s bandwith migration may pass without dirty limit,
++     * E.g., with 1Gb/s bandwidth migration may pass without dirty limit,
+      * so we need to decrease a bandwidth.
       */
-     uint64_t sie;
- 
-     /*
-      * When hideleg[i]=0 and hvien[i]=1, vsie[i] is no more
--     * alias of sie[i] (mie[i]) and needs to be maintained separatly.
-+     * alias of sie[i] (mie[i]) and needs to be maintained separately.
-      */
-     uint64_t vsie;
- 
+     const int64_t dirtylimit_period = 1000, dirtylimit_value = 50;
 -- 
 2.39.2
 
