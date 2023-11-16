@@ -2,107 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447927EE978
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 23:45:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D677EE9E8
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 00:15:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3l5U-0001Ow-DM; Thu, 16 Nov 2023 17:43:52 -0500
+	id 1r3lYj-0003mS-VW; Thu, 16 Nov 2023 18:14:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1r3l5S-0001Oc-A4; Thu, 16 Nov 2023 17:43:50 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r3lYi-0003lk-FX
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 18:14:04 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1r3l5P-0005G0-Sx; Thu, 16 Nov 2023 17:43:50 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AGMhRMc011068; Thu, 16 Nov 2023 22:43:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=jguFUC0k2jwbmeaa3JEhUtRtYx6NMlNEtDGU5ut9ZFI=;
- b=EFvHOLFzGp0jr3P0JQxDdgynlfdk5agdZ19CQPTzOeNYqlnNZnukYL/Qc//IpAqu/nZx
- dHQICdotJaZIuLjEwob40GuMzHu9afncM1ZZHThRxEAErfdS9ywCx7qcny+j5j64c9gc
- 2PIvedv2xPaRKRsfKdhcFfL8WIz/hGGcpY3iMVVKTwaSLl3w8MNQ2XAO8Q+qKoI+jTYp
- Lfmb+j58o8HDgk4PH5FPJMaqkr/B1/9o8Iy+8NlSf3E5F4GY9L/Od5z7Hyut6nECcYcn
- c6aZfYB/wWnZL3E4YdGc+Sg/eYSyCvHWK7kN48LM/svbEpZ4JJqRPpcIYC9arYPeA/sq uA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3udv46r074-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Nov 2023 22:43:36 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AGMhaWw011279;
- Thu, 16 Nov 2023 22:43:36 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3udv46r06x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Nov 2023 22:43:36 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AGKrT3E029901; Thu, 16 Nov 2023 22:43:35 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uamxnssw1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Nov 2023 22:43:35 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
- [10.39.53.229])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3AGMhZlg26935936
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 16 Nov 2023 22:43:35 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2AB7358059;
- Thu, 16 Nov 2023 22:43:35 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B314558058;
- Thu, 16 Nov 2023 22:43:34 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 16 Nov 2023 22:43:34 +0000 (GMT)
-Message-ID: <07f8b838e5a6696f81b6fc056105cf8dddbcaab4.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH v3 1/8] ppc/pnv: Add pca9552 to powernv10 for PCIe
- hotplug power control
-From: Miles Glenn <milesg@linux.vnet.ibm.com>
-To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, qemu-devel@nongnu.org, 
- qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, =?ISO-8859-1?Q?Fr=E9d=E9ric?=
- Barrat <fbarrat@linux.ibm.com>
-Date: Thu, 16 Nov 2023 16:43:34 -0600
-In-Reply-To: <bd0875a1-4258-457d-8a9b-cfa12f0d84ef@kaod.org>
-References: <20231114195659.1219821-1-milesg@linux.vnet.ibm.com>
- <20231114195659.1219821-2-milesg@linux.vnet.ibm.com>
- <54fad54f-a52e-41c6-90ba-7bc0b637cd59@kaod.org>
- <d5c90e92aa4cf313925de81872e95d0b62c36cce.camel@linux.vnet.ibm.com>
- <bd0875a1-4258-457d-8a9b-cfa12f0d84ef@kaod.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r3lYf-0002d4-Fx
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 18:14:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700176440;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uhX49lsCrLvnu60dw4Rb1gmQVUOoYKUwb+Zbt/YIRWs=;
+ b=Abj9oAhqS4dKEjV3xbC+jD6DNhJex2A3sBki2r9VtvDFi3l9MqMhBihLBlHVyW7SH1ZwE1
+ ZHXz8kkJO4Hh87/1YV2rcF7GSRRB7U5g0ByfcJzfo/T6BDHFDlkq/Jflf1pAcBbt45UqTM
+ 5H2a+jFTd9PPAIleg7ehM4R81+2vUb8=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-687-6BohWB_KNJ-ov5j7TR0Vfg-1; Thu, 16 Nov 2023 18:13:58 -0500
+X-MC-Unique: 6BohWB_KNJ-ov5j7TR0Vfg-1
+Received: by mail-pl1-f197.google.com with SMTP id
+ d9443c01a7336-1ce5b6ec63cso4413155ad.3
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 15:13:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700176437; x=1700781237;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uhX49lsCrLvnu60dw4Rb1gmQVUOoYKUwb+Zbt/YIRWs=;
+ b=WZmbqj0MAPYNECxlqpTEmCngqaDDrc8BS9LwYTSOVxj8g6X/vDHrZxJQbe8VXcVByj
+ 46JIQlFWu776vtCRs0I1ZowxJdC5GORxShL6ajXw5LIx+rUQs/IVjGsyoitcwpbTQ6bg
+ eYMd32c9f55trgZjje7w0deHna1i7z59UJZ20LdadpP55Qq3RIkzw/lzyIrTIW6f9vTc
+ G34byTiKyHpw4HdUhA2ADjLvNIWHC9wF1H3OOLFUtKFmogd09r37AIPNsLQ6pP6HvMDj
+ yCcnrfA1F0LMJUkpSGFIuRdMH0O7F3IrqGHUCxnz9P0AF1y1omwiOTt7twRM4n2ffTEV
+ I7zw==
+X-Gm-Message-State: AOJu0YzxVtf4blbTirZELCoDDj9u/eS6Dk9vDvSkGmK0VMqiwV81IFP7
+ 7M4fWPx9AZk7EoncukSnQieNVJ4rfpBIsYeuvaor1fJT2DY9XtNwH+clYcNEH7un85NvsQ8irKt
+ vaK1abBt44YQOp4A=
+X-Received: by 2002:a17:902:f544:b0:1cc:4146:9eb0 with SMTP id
+ h4-20020a170902f54400b001cc41469eb0mr11890991plf.57.1700176437608; 
+ Thu, 16 Nov 2023 15:13:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGTzNOnMUgzoONjPAFvDlwVae7gNn9JR1MSRQO8ewU+K1vYK/NxBMswQpT1PoPrJXR/xW/pcg==
+X-Received: by 2002:a17:902:f544:b0:1cc:4146:9eb0 with SMTP id
+ h4-20020a170902f54400b001cc41469eb0mr11890936plf.57.1700176437262; 
+ Thu, 16 Nov 2023 15:13:57 -0800 (PST)
+Received: from ?IPV6:2001:8003:e5b0:9f00:b890:3e54:96bb:2a15?
+ ([2001:8003:e5b0:9f00:b890:3e54:96bb:2a15])
+ by smtp.gmail.com with ESMTPSA id
+ w20-20020a170902d71400b001c726147a45sm184151ply.190.2023.11.16.15.13.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 Nov 2023 15:13:56 -0800 (PST)
+Message-ID: <41f9dd8e-eb57-47b6-b159-328024bc339d@redhat.com>
+Date: Fri, 17 Nov 2023 09:13:39 +1000
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 03/31] cpu: Call object_class_dynamic_cast() once in
+ cpu_class_by_name()
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
+ imp@bsdimp.com, kevans@freebsd.org, richard.henderson@linaro.org,
+ pbonzini@redhat.com, peter.maydell@linaro.org, imammedo@redhat.com,
+ b.galvani@gmail.com, strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com,
+ kfting@nuvoton.com, wuhaotsh@google.com, nieklinnenbank@gmail.com,
+ rad@semihalf.com, quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
+ laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, mrolnik@gmail.com,
+ edgar.iglesias@gmail.com, bcain@quicinc.com, gaosong@loongson.cn,
+ aurelien@aurel32.net, jiaxun.yang@flygoat.com, aleksandar.rikalo@syrmia.com,
+ chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
+ ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
+ jcmvbkbc@gmail.com, shan.gavin@gmail.com
+References: <20231114235628.534334-1-gshan@redhat.com>
+ <20231114235628.534334-4-gshan@redhat.com>
+ <d7a80e9e-9ffd-476c-ac98-a92838e11b5e@linaro.org>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <d7a80e9e-9ffd-476c-ac98-a92838e11b5e@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0M3cYZhxO0QLkbdNxcHRplRKAjIyDUc2
-X-Proofpoint-GUID: AX_7p5XSm8hmqaeTSKKznoqN1qDdx_jJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-16_23,2023-11-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=0 mlxlogscore=999 phishscore=0 bulkscore=0 adultscore=0
- spamscore=0 malwarescore=0 priorityscore=1501 impostorscore=0
- clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311160176
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -6
+X-Spam_score: -0.7
+X-Spam_bar: /
+X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,129 +118,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2023-11-15 at 23:34 +0100, Cédric Le Goater wrote:
-> On 11/15/23 17:37, Miles Glenn wrote:
-> > On Wed, 2023-11-15 at 08:28 +0100, Cédric Le Goater wrote:
-> > > On 11/14/23 20:56, Glenn Miles wrote:
-> > > > The Power Hypervisor code expects to see a pca9552 device
-> > > > connected
-> > > > to the 3rd PNV I2C engine on port 1 at I2C address 0x63 (or
-> > > > left-
-> > > > justified address of 0xC6).  This is used by hypervisor code to
-> > > > control PCIe slot power during hotplug events.
-> > > > 
-> > > > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> > > > ---
-> > > > Based-on: <20231024181144.4045056-3-milesg@linux.vnet.ibm.com>
-> > > > [PATCH v3 2/2] misc/pca9552: Let external devices set pca9552
-> > > > inputs
-> > > > 
-> > > > No changes from v2
-> > > > 
-> > > >    hw/ppc/Kconfig | 1 +
-> > > >    hw/ppc/pnv.c   | 7 +++++++
-> > > >    2 files changed, 8 insertions(+)
-> > > > 
-> > > > diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
-> > > > index 56f0475a8e..f77ca773cf 100644
-> > > > --- a/hw/ppc/Kconfig
-> > > > +++ b/hw/ppc/Kconfig
-> > > > @@ -32,6 +32,7 @@ config POWERNV
-> > > >        select XIVE
-> > > >        select FDT_PPC
-> > > >        select PCI_POWERNV
-> > > > +    select PCA9552
-> > > >    
-> > > >    config PPC405
-> > > >        bool
-> > > > diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> > > > index 9c29727337..7afaf1008f 100644
-> > > > --- a/hw/ppc/pnv.c
-> > > > +++ b/hw/ppc/pnv.c
-> > > > @@ -1877,6 +1877,13 @@ static void
-> > > > pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-> > > >                                  qdev_get_gpio_in(DEVICE(&chip1
-> > > > 0-
-> > > > > psi),
-> > > >                                                   PSIHB9_IRQ_SB
-> > > > E_I2C
-> > > > ));
-> > > >        }
-> > > > +
-> > > > +    /*
-> > > > +     * Add a PCA9552 I2C device for PCIe hotplug control
-> > > > +     * to engine 2, bus 1, address 0x63
-> > > > +     */
-> > > > +    i2c_slave_create_simple(chip10->i2c[2].busses[1],
-> > > > "pca9552",
-> > > > 0x63);
-> > > 
-> > > You didn't answer my question in v2. Is this a P10 chip device or
-> > > a
-> > > board/machine device ?
-> > > 
-> > > Thanks,
-> > > 
-> > > C.
-> > > 
-> > > 
-> > 
-> > Sorry, you're right, I did miss that one, and after looking at the
-> > Denali spec, I see that the topology is indeed different from
-> > Rainier
-> > (which is what I have been modeling).  For the Denali, the PCA9552
-> > has a different I2C address (0x62 instead of 0x63) and the GPIO
-> > connections are also different.  Also, there is no PCA9554 chip
-> > because
-> > it looks like they were able to cover all of the functionality with
-> > just the  GPIO's of the PCA9552.  So, good catch!
-> > 
-> > I'll look at what they did on the Aspeed machines like you
-> > suggested.
+Hi Phil,
+
+On 11/17/23 02:08, Philippe Mathieu-Daudé wrote:
+> On 15/11/23 00:56, Gavin Shan wrote:
+>> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>
+>> For all targets, the CPU class returned from CPUClass::class_by_name()
+>> and object_class_dynamic_cast(oc, CPU_RESOLVING_TYPE) need to be
+>> compatible. Lets apply the check in cpu_class_by_name() for once,
+>> instead of having the check in CPUClass::class_by_name() for individual
+>> target.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>> Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 > 
-> It should be a machine class extension with an i2c_setup handler and
-> a new "powernv10-rainier" machine modeling the board layout. The rest
-> looks good.
-> 
-> Please include the pca9552 series in the respin. The pca9554 model
-> will
-> need a MAINTAINER (you?) I would be happy to let you take over
-> pca9552
-> if you agree.
-> 
-> First, let's get patch 3 and 4 in QEMU 8.2.
-> 
-> Thanks,
-> 
-> C.
-> 
+> Gavin, this patch is missing your S-o-b tag. Do you mind responding to
+> this email with it? Thanks!
 > 
 
-Well, I was hoping to sweep the pca9554 model under the PowerNV
-maintainership (like pca9552 is under the BMC aspeed maintainership).
-I did update the PowerNV list to include it, but perhaps that was
-presumptuous of me. :-)
+Yes, please add my s-o-b if you need:
 
-I would be ok with being added as a reviewer under the PowerNV list,
-but I wonder if I shouldn't have more opensource experience before
-becoming a maintainer? TBH, I have no idea what that would entail.
-
-As for patches 3 and 4, it sounds like I should split those changes out
-from the current patch series so that they can make it into QEMU 8.2. 
-Correct?
+Signed-off-by: Gavin Shan <gshan@redhat.com>
 
 Thanks,
+Gavin
 
-Glenn
+>> ---
+>>   hw/core/cpu-common.c   | 8 +++++---
+>>   target/alpha/cpu.c     | 3 ---
+>>   target/arm/cpu.c       | 4 +---
+>>   target/avr/cpu.c       | 8 +-------
+>>   target/cris/cpu.c      | 4 +---
+>>   target/hexagon/cpu.c   | 4 +---
+>>   target/hppa/cpu.c      | 7 +------
+>>   target/loongarch/cpu.c | 8 +-------
+>>   target/m68k/cpu.c      | 4 +---
+>>   target/openrisc/cpu.c  | 4 +---
+>>   target/riscv/cpu.c     | 4 +---
+>>   target/tricore/cpu.c   | 4 +---
+>>   target/xtensa/cpu.c    | 4 +---
+>>   13 files changed, 16 insertions(+), 50 deletions(-)
 > 
-> 
-> > Thanks,
-> > 
-> > Glenn
-> > 
-> > > >    }
-> > > >    
-> > > >    static uint32_t pnv_chip_power10_xscom_pcba(PnvChip *chip,
-> > > > uint64_t addr)
 
 
