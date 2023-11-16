@@ -2,105 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA0E77EDF7B
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 12:19:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 387AE7EDF93
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 12:22:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3aNy-0006G8-Om; Thu, 16 Nov 2023 06:18:14 -0500
+	id 1r3aRo-0007uD-L8; Thu, 16 Nov 2023 06:22:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1r3aNx-0006Do-Bx
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 06:18:13 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1r3aRm-0007ty-Ix
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 06:22:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1r3aNv-0008Nm-8U
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 06:18:13 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1r3aRY-00027G-OY
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 06:22:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700133490;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1700133715;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1bm4XsT48ouV0dU7OyzDmTxU4as3NAKfpZrdbV42nGQ=;
- b=GbYo1IuTEAI3mHkg9XAX6CRHeODOA8qqD31hT0s/8ew9UTLCgkNTuKXdo5chHe8aZczNIr
- FiLTOg02OMvG4pCJkEioNitj7Skx+cF/cIg3LfeghXjR58mdnDxsdKu0f8lrAYrLq7CbPB
- +nWzEQRy1ulu60Bduh9mCdAvEnarUgo=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=T1gaQnwmhiIvqwheRag9lppivBOQBPv9o6ksKSqZSeU=;
+ b=DhTREGDsn+jLyHA7+WRa+Pa0Bvb2GcULOCm56Gp/cjTxc8zcGvteSlQQZuYQ1dtS16hLWw
+ lJbDhHVXzO5apJH/Rt2IKL9Qm3VgFax5isVoe8emN4plYywGvdtC+Z+OYw2hY63iieLkvc
+ yZLCvB84ivkA4O3AFz/5XR2jfge4YMg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-Fw13IGwgOMWfF3VK2LiU5w-1; Thu, 16 Nov 2023 06:18:08 -0500
-X-MC-Unique: Fw13IGwgOMWfF3VK2LiU5w-1
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-5c19a2f606dso742536a12.3
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 03:18:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700133487; x=1700738287;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1bm4XsT48ouV0dU7OyzDmTxU4as3NAKfpZrdbV42nGQ=;
- b=i0epN+d9+bY2H8KsfD4uMDwejXyUAgxt6VJ9eHwQcLprKQQxcFq4t0GwnXZTmweB4X
- RTeQD5jibuGR3ElR68hLAOH0wxGtkdnVOlwQkiKUY4uyP9IvqIbqud2wdtrf9+erPGos
- XyW9BmxHSPB46UJHaaI4O3o+PhtZlwjF5ccidOOzqG8YgRwneHIrqq8SHYGWg/OWZUr3
- +sYIAuj2qn06yFKf7Z7BvNigMMlubnR97X+YoANgUmTGyOjoXWXtGHr5VvL6qxMgIEB+
- CIiWhkNa+KlBqN7GlN/jqKUZMEelxv2vbHAzv4Hw5ip9DNDMoAd9oWVcMdXHhVVnvc2D
- n6ew==
-X-Gm-Message-State: AOJu0YzAcKXKG9jm1VhanF0gbDHUzkUiUTleEvWN8XZARY3vO/MDRtZf
- F3ZYIMsoNic3ymAPvjT24fdK3tQvTvVdKWvwzHapAa8xyViWQGQ1VSsoBAn3S0hA5wViSuvuX/J
- VPXxF+c/9OB+7cbw=
-X-Received: by 2002:a17:902:ea07:b0:1c7:29fd:33b6 with SMTP id
- s7-20020a170902ea0700b001c729fd33b6mr8543671plg.40.1700133487296; 
- Thu, 16 Nov 2023 03:18:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF66vghBp6qP/3JBewUJbUbh0sBLp36G/hroJ9ZGedzYQYFxkzqzfXWjGturrXGdYKhKhVzhQ==
-X-Received: by 2002:a17:902:ea07:b0:1c7:29fd:33b6 with SMTP id
- s7-20020a170902ea0700b001c729fd33b6mr8543649plg.40.1700133486935; 
- Thu, 16 Nov 2023 03:18:06 -0800 (PST)
-Received: from smtpclient.apple ([203.212.246.21])
- by smtp.gmail.com with ESMTPSA id
- ix2-20020a170902f80200b001b9dab0397bsm8969527plb.29.2023.11.16.03.18.01
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 16 Nov 2023 03:18:06 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.200.91.1.1\))
-Subject: Re: [PATCH] tests/avocado/reverse_debugging: Disable the ppc64 tests
- by default
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <ZVXY-YnI2TiCFX3V@redhat.com>
-Date: Thu, 16 Nov 2023 16:47:48 +0530
-Cc: Nicholas Piggin <npiggin@gmail.com>, Thomas Huth <thuth@redhat.com>,
- John Snow <jsnow@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- QEMU Developers <qemu-devel@nongnu.org>,
- =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <9CE61EC5-2C8B-4CE3-A34F-4E29E5DFF047@redhat.com>
-References: <20231114163115.298041-1-thuth@redhat.com>
- <12b4420e-1440-4516-8276-e0e907003c16@linaro.org>
- <9f6247e4-7e81-44f8-a63b-8ee11f722710@redhat.com>
- <CWYYRW53VEPJ.3UL1X7GB1P4H2@wheely>
- <6877d6d6-bfbf-4475-8c61-dd537265b278@redhat.com>
- <ZVTETYrfL8f48qe3@redhat.com> <ZVT-bY9YOr69QTPX@redhat.com>
- <CWZU7DEIX9E4.26PTZ0GK1ZAUP@wheely>
- <9853904F-F5F7-4744-98B0-0B61A60DAD7B@redhat.com>
- <CX01UGZ8PCU9.1TMVG7FPP29YF@wheely> <ZVXY-YnI2TiCFX3V@redhat.com>
-To: =?utf-8?B?IkRhbmllbCBQLiBCZXJyYW5nw6ki?= <berrange@redhat.com>
-X-Mailer: Apple Mail (2.3774.200.91.1.1)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ us-mta-653-ArdN8kGlPL2zfQPnC-ix3A-1; Thu, 16 Nov 2023 06:21:52 -0500
+X-MC-Unique: ArdN8kGlPL2zfQPnC-ix3A-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 55410185A782;
+ Thu, 16 Nov 2023 11:21:52 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.34])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 15EDE1C060AE;
+ Thu, 16 Nov 2023 11:21:50 +0000 (UTC)
+Date: Thu, 16 Nov 2023 11:21:48 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>
+Subject: Re: [PATCH] monitor: flush messages on abort
+Message-ID: <ZVX7TCAwPIlQ42Gs@redhat.com>
+References: <1699027289-213995-1-git-send-email-steven.sistare@oracle.com>
+ <ZUUu2IuUQ/Od7+Vr@redhat.com>
+ <3d45ebc0-de9f-4051-9c08-47e40fea65da@oracle.com>
+ <ZUi7izJoVpU+iiuC@redhat.com>
+ <587d8444-17a4-4d19-a856-ac55e46069c5@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <587d8444-17a4-4d19-a856-ac55e46069c5@oracle.com>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -115,197 +85,101 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, Nov 15, 2023 at 10:30:29AM -0500, Steven Sistare wrote:
+> 
+> 
+> On 11/6/2023 5:10 AM, Daniel P. Berrangé wrote:
+> > On Fri, Nov 03, 2023 at 03:51:00PM -0400, Steven Sistare wrote:
+> >> On 11/3/2023 1:33 PM, Daniel P. Berrangé wrote:
+> >>> On Fri, Nov 03, 2023 at 09:01:29AM -0700, Steve Sistare wrote:
+> >>>> Buffered monitor output is lost when abort() is called.  The pattern
+> >>>> error_report() followed by abort() occurs about 60 times, so valuable
+> >>>> information is being lost when the abort is called in the context of a
+> >>>> monitor command.
+> >>>
+> >>> I'm curious, was there a particular abort() scenario that you hit ?
+> >>
+> >> Yes, while tweaking the suspended state, and forgetting to add transitions:
+> >>
+> >>         error_report("invalid runstate transition: '%s' -> '%s'",
+> >>         abort();
+> >>
+> >> But I have previously hit this for other errors.
+> >>
+> >>> For some crude statistics:
+> >>>
+> >>>   $ for i in abort return exit goto ; do echo -n "$i: " ; git grep --after 1 error_report | grep $i | wc -l ; done
+> >>>   abort: 47
+> >>>   return: 512
+> >>>   exit: 458
+> >>>   goto: 177
+> >>>
+> >>> to me those numbers say that calling "abort()" after error_report
+> >>> should be considered a bug, and we can blanket replace all the
+> >>> abort() calls with exit(EXIT_FAILURE), and thus avoid the need to
+> >>> special case flushing the monitor.
+> >>
+> >> And presumably add an atexit handler to flush the monitor ala monitor_abort.
+> >> AFAICT currently no destructor is called for the monitor at exit time.
+> > 
+> > The HMP monitor flushes at each newline,  and exit() will take care of
+> > flushing stdout, so I don't think there's anything else needed.
+> > 
+> >>> Also I think there's a decent case to be made for error_report()
+> >>> to call monitor_flush().
+> >>
+> >> A good start, but that would not help for monitors with skip_flush=true, which 
+> >> need to format the buffered string in a json response, which is the case I 
+> >> tripped over.
+> > 
+> > 'skip_flush' is only set to 'true' when using a QMP monitor and invoking
+> > "hmp-monitor-command".
+> 
+> OK, that is narrower than I thought.  Now I see that other QMP monitors send 
+> error_report() to stderr, hence it is visible after abort and exit:
+> 
+> int error_vprintf(const char *fmt, va_list ap) {
+>     if (cur_mon && !monitor_cur_is_qmp())
+>         return monitor_vprintf(cur_mon, fmt, ap);
+>     return vfprintf(stderr, fmt, ap);                <-- HERE
+> 
+> That surprises me, I thought that would be returned to the monitor caller in the
+> json response. I guess the rationale is that the "main" error, if any, will be
+> set and returned by the err object that is passed down the stack during command
+> evaluation.
+> 
+> > In such a case, the error message needs to be built into a JSON error
+> > reply and sent over the socket. Your patch doesn't help this case
+> > since you've just printed to stderr.  
+> 
+> Same as vfprintf above!
+> 
+> > I don't think it is reasonable
+> > to expect QMP monitors to send replies on SIG_ABRT anyway. 
+> 
+> I agree.  My patch causes the error to be seen somewhere, anywhere, instead
+> of being dropped on the floor.
+> 
+> > So I don't
+> > think the skip_flush=true scenario is a problem to be concerned with.
+> 
+> It is indeed a narrow case, and not worth much effort or code change.
+> I'm inclined to drop it, but I appreciate the time you have spent reviewing it.
 
+If you know of scenarios that can trigger abort() as a result of
+either QMP or HMP commands, then we still need to fix those. Nothing
+that is reachable from the monitor commands should ever end up in
+abort(), as a general rule.
 
-> On 16-Nov-2023, at 2:25=E2=80=AFPM, Daniel P. Berrang=C3=A9 =
-<berrange@redhat.com> wrote:
->=20
-> On Thu, Nov 16, 2023 at 05:14:43PM +1000, Nicholas Piggin wrote:
->> On Thu Nov 16, 2023 at 1:55 PM AEST, Ani Sinha wrote:
->>>=20
->>>=20
->>>> On 16-Nov-2023, at 6:45=E2=80=AFAM, Nicholas Piggin =
-<npiggin@gmail.com> wrote:
->>>>=20
->>>> On Thu Nov 16, 2023 at 3:22 AM AEST, Daniel P. Berrang=C3=A9 wrote:
->>>>> On Wed, Nov 15, 2023 at 01:14:53PM +0000, Daniel P. Berrang=C3=A9 =
-wrote:
->>>>>> On Wed, Nov 15, 2023 at 07:23:01AM +0100, Thomas Huth wrote:
->>>>>>> On 15/11/2023 02.15, Nicholas Piggin wrote:
->>>>>>>> On Wed Nov 15, 2023 at 4:29 AM AEST, Thomas Huth wrote:
->>>>>>>>> On 14/11/2023 17.37, Philippe Mathieu-Daud=C3=A9 wrote:
->>>>>>>>>> On 14/11/23 17:31, Thomas Huth wrote:
->>>>>>>>>>> The tests seem currently to be broken. Disable them by =
-default
->>>>>>>>>>> until someone fixes them.
->>>>>>>>>>>=20
->>>>>>>>>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>>>>>>>>>> ---
->>>>>>>>>>>  tests/avocado/reverse_debugging.py | 7 ++++---
->>>>>>>>>>>  1 file changed, 4 insertions(+), 3 deletions(-)
->>>>>>>>>>=20
->>>>>>>>>> Similarly, I suspect =
-https://gitlab.com/qemu-project/qemu/-/issues/1961
->>>>>>>>>> which has a fix ready:
->>>>>>>>>> =
-https://lore.kernel.org/qemu-devel/20231110170831.185001-1-richard.henders=
-on@linaro.org/
->>>>>>>>>>=20
->>>>>>>>>> Maybe wait the fix gets in first?
->>>>>>>>>=20
->>>>>>>>> No, I applied Richard's patch, but the problem persists. Does =
-this test
->>>>>>>>> still work for you?
->>>>>>>>=20
->>>>>>>> I bisected it to 1d4796cd008373 ("python/machine: use =
-socketpair() for
->>>>>>>> console connections"),
->>>>>>>=20
->>>>>>> Maybe John (who wrote that commit) can help?
->>>>>>=20
->>>>>> I find it hard to believe this commit is a direct root cause of =
-the
->>>>>> problem since all it does is change the QEMU startup sequence so =
-that
->>>>>> instead of QEMU listening for a monitor connection, it is given a
->>>>>> pre-opened monitor connection.
->>>>>>=20
->>>>>> At the very most that should affect the startup timing a little.
->>>>>>=20
->>>>>> I notice all the reverse debugging tests have a skip on gitlab
->>>>>> with a comment:
->>>>>>=20
->>>>>>   # unidentified gitlab timeout problem
->>>>>>=20
->>>>>> this makes be suspicious that John's patch has merely made this
->>>>>> (henceforth undiagnosed) timeout more likely to ocurr.
->>>>>=20
->>>>> After an absolutely horrendous hours long debugging session I =
-think
->>>>> I figured out the problem. The QEMU process is blocking in
->>>>>=20
->>>>>   qemu_chr_write_buffer
->>>>>=20
->>>>> spinning in the loop on EAGAIN.
->>>>=20
->>>> Great work.
->>>>=20
->>>> Why does this make the gdb socket give an empty response? Something
->>>> just times out?
->>>>=20
->>>>>=20
->>>>> The Python  Machine() class has passed one of a pre-created =
-socketpair
->>>>> FDs for the serial port chardev. The guest is trying to write to =
-this
->>>>> and blocking.  Nothing in the Machine() class is reading from the
->>>>> other end of the serial port console.
->>>>>=20
->>>>>=20
->>>>> Before John's change, the serial port uses a chardev in server =
-mode
->>>>> and crucially  'wait=3Doff', and the Machine() class never opened =
-the
->>>>> console socket unless the test case wanted to read from it.
->>>>>=20
->>>>> IOW, QEMU had a background job setting there waiting for a =
-connection
->>>>> that would never come.
->>>>>=20
->>>>> As a result when QEMU started executing the guest, all the serial =
-port
->>>>> writes get sent into to the void.
->>>>>=20
->>>>>=20
->>>>> So John's patch has had a semantic change in behaviour, because =
-the
->>>>> console socket is permanently open, and thus socket buffers are =
-liable
->>>>> to fill up.
->>>>>=20
->>>>> As a demo I increased the socket buffers to 1MB and everything =
-then
->>>>> succeeded.
->>>>>=20
->>>>> @@ -357,6 +360,10 @@ def _pre_launch(self) -> None:
->>>>>=20
->>>>>        if self._console_set:
->>>>>            self._cons_sock_pair =3D socket.socketpair()
->>>>> +            self._cons_sock_pair[0].setsockopt(socket.SOL_SOCKET, =
-socket.SO_SNDBUF, 1024*1024);
->>>>> +            self._cons_sock_pair[0].setsockopt(socket.SOL_SOCKET, =
-socket.SO_RCVBUF, 1024*1024);
->>>>> +            self._cons_sock_pair[1].setsockopt(socket.SOL_SOCKET, =
-socket.SO_SNDBUF, 1024*1024);
->>>>> +            self._cons_sock_pair[1].setsockopt(socket.SOL_SOCKET, =
-socket.SO_RCVBUF, 1024*1024);
->>>>>            os.set_inheritable(self._cons_sock_pair[0].fileno(), =
-True)
->>>>>=20
->>>>>        # NOTE: Make sure any opened resources are *definitely* =
-freed in
->>>>=20
->>>> So perhaps ppc64 fails just because it prints more to the console =
-in early
->>>> boot than other targets?
->>>>=20
->>>>> The Machine class doesn't know if anything will ever use the =
-console,
->>>>> so as is the change is unsafe.
->>>>>=20
->>>>> The original goal of John's change was to guarantee we capture =
-early
->>>>> boot messages as some test need that. =20
->>>>>=20
->>>>> I think we need to be able to have a flag to say whether the =
-caller needs
->>>>> an "early console" facility, and only use the pre-opened FD =
-passing for
->>>>> that case. Tests we need early console will have to ask for that =
-guarantee
->>>>> explicitly.
->>>>=20
->>>> The below patch makes this test work. Maybe as a quick fix it is
->>>> better than disabling the test.
->>>>=20
->>>> I guess we still have a problem if a test invokes vm.launch()
->>>> directly without subsequently waiting for a console pattern or
->>>> doing something with the console as you say. Your suggesstion is
->>>> add something like vm.launch(console=3DTrue) ?=20
->>>=20
->>> I think what he is saying is to add a new property for QEMUMachine() =
-with which the test can explicitly tell the machine init code that it is =
-going to drain the console logs. By default it can be false. When tests =
-use console_drainer, they can set the property to true and inspect the =
-early console logs after draining it.=20
->>=20
->> Hmm... well we do have QEMUMachine.set_console already. Is this =
-enough?
->> If the test case is not going to drain or interact with the console
->> then it could set it to false. Or am I missing something?
->=20
-> Yeah, set_console is enough - i missed that that exists.
->=20
-> Thus problem is more specific. It hits when a test calls
-> set_console(True), but then fails to read from the console.
-
-So then it is a test issue in that the test requests console to be =
-enabled but does not look at the console o/p.
-
->=20
->=20
-> With regards,
-> Daniel
-> --=20
-> |: https://berrange.com      -o-    =
-https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-            =
-https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-    =
-https://www.instagram.com/dberrange :|
-
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
