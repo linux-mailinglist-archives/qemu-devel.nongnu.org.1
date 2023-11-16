@@ -2,39 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2205A7EDC50
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:50:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 849BE7EDC5B
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:51:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3X54-0007lp-3o; Thu, 16 Nov 2023 02:46:32 -0500
+	id 1r3X5E-0000La-Cp; Thu, 16 Nov 2023 02:46:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X4S-0006fB-Bg; Thu, 16 Nov 2023 02:45:53 -0500
+ id 1r3X4p-0007OB-7C; Thu, 16 Nov 2023 02:46:18 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r3X4Q-0005aT-Bi; Thu, 16 Nov 2023 02:45:52 -0500
+ id 1r3X4m-0005ap-32; Thu, 16 Nov 2023 02:46:13 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CD11433BEA;
+ by isrv.corpit.ru (Postfix) with ESMTP id DA9B633BEB;
  Thu, 16 Nov 2023 10:45:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 652FA35850;
+ by tsrv.corpit.ru (Postfix) with SMTP id 72A1335851;
  Thu, 16 Nov 2023 10:44:42 +0300 (MSK)
-Received: (nullmailer pid 3202538 invoked by uid 1000);
+Received: (nullmailer pid 3202541 invoked by uid 1000);
  Thu, 16 Nov 2023 07:44:41 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 17/27] contrib/vhost-user-gpu/virgl.c: spelling fix: mesage
-Date: Thu, 16 Nov 2023 10:44:31 +0300
-Message-Id: <20231116074441.3202417-18-mjt@tls.msk.ru>
+Subject: [PULL 18/27] hw/mem/memory-device.c: spelling fix: ontaining
+Date: Thu, 16 Nov 2023 10:44:32 +0300
+Message-Id: <20231116074441.3202417-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231116074441.3202417-1-mjt@tls.msk.ru>
 References: <20231116074441.3202417-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,26 +58,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: e3c82fe04f31 "contrib/vhost-user-gpu: add support for sending dmabuf modifiers"
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Fixes: 6c1b28e9e405 "memory-device: Support empty memory devices"
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- contrib/vhost-user-gpu/virgl.c | 2 +-
+ hw/mem/memory-device.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/contrib/vhost-user-gpu/virgl.c b/contrib/vhost-user-gpu/virgl.c
-index 1da6cc1588..d1ccdf7d06 100644
---- a/contrib/vhost-user-gpu/virgl.c
-+++ b/contrib/vhost-user-gpu/virgl.c
-@@ -401,7 +401,7 @@ virgl_cmd_set_scanout(VuGpu *g,
- 
-         if (g->use_modifiers) {
-             /*
--             * The mesage uses all the fields set in dmabuf_scanout plus
-+             * The message uses all the fields set in dmabuf_scanout plus
-              * modifiers which is appended after VhostUserGpuDMABUFScanout.
-              */
-             msg.request = VHOST_USER_GPU_DMABUF_SCANOUT2;
+diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
+index e0704b8dc3..a1b1af26bc 100644
+--- a/hw/mem/memory-device.c
++++ b/hw/mem/memory-device.c
+@@ -29,7 +29,7 @@ static bool memory_device_is_empty(const MemoryDeviceState *md)
+     /* dropping const here is fine as we don't touch the memory region */
+     mr = mdc->get_memory_region((MemoryDeviceState *)md, &local_err);
+     if (local_err) {
+-        /* Not empty, we'll report errors later when ontaining the MR again. */
++        /* Not empty, we'll report errors later when containing the MR again. */
+         error_free(local_err);
+         return false;
+     }
 -- 
 2.39.2
 
