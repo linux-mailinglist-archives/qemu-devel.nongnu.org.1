@@ -2,57 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845E67EE5EF
+	by mail.lfdr.de (Postfix) with ESMTPS id 798307EE5EE
 	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 18:29:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3gAM-0008Ij-7T; Thu, 16 Nov 2023 12:28:34 -0500
+	id 1r3gAJ-0008Hj-LC; Thu, 16 Nov 2023 12:28:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1r3gAI-0008Hi-Vc; Thu, 16 Nov 2023 12:28:30 -0500
-Received: from imap4.hz.codethink.co.uk ([188.40.203.114])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1r3gAG-0002W9-SZ; Thu, 16 Nov 2023 12:28:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=codethink.co.uk; s=imap4-20230908; h=Sender:Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=AC/pq7elg+KPYfHSJloGfLwZZpYUAD8i0EJrt5jkPTw=; b=YtUUsMZDhOISieUPB55XfiW0is
- ZYyh2QIk/N2h4xNX2dwEJl4sqJrhlRIIDx6zI8xMSicyY/2Qn5jXwNfFL4LGWaVJ2+4DYAJTVzNUM
- 8krvnF1A4irPnH/x4x1KG3dTdRbqL3IQEKw4wSMugNBCm8W+1F2VfyILzbKCCYd+6fEPgsrNXB3iF
- aO7XCOkuAhsXlGAId672dSDO8o5S/t+8xG/bkSOPwoBEmoAgs57W7hDpOVkA76BrbRA3QCJLlXAix
- KrOZRxWkT1Oj/R/conISN4hB2uk4RURw2V5I9t/iuuWelyYn3uWj7EghcHfrsmAT5YrkeDxNBX7av
- DmnvIClw==;
-Received: from [167.98.27.226] (helo=rainbowdash)
- by imap4.hz.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
- id 1r3gA8-000cbp-6v; Thu, 16 Nov 2023 17:28:21 +0000
-Received: from ben by rainbowdash with local (Exim 4.97)
- (envelope-from <ben@rainbowdash>) id 1r3gA8-00000003K8I-2w99;
- Thu, 16 Nov 2023 17:28:20 +0000
-From: Ben Dooks <ben.dooks@codethink.co.uk>
-To: qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, Ben Dooks <ben.dooks@codethink.co.uk>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2] hw/intc/arm_gicv3: ICC_PMR_EL1 high bits should be RAZ
-Date: Thu, 16 Nov 2023 17:28:18 +0000
-Message-Id: <20231116172818.792364-1-ben.dooks@codethink.co.uk>
-X-Mailer: git-send-email 2.37.2.352.g3c44437643
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r3gAH-0008HU-Dj
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 12:28:29 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r3gAF-0002WV-LC
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 12:28:29 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4083f61312eso8678225e9.3
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 09:28:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700155705; x=1700760505; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TqVK9uOL2ddFONTKxAz6R/c/cKH2txHZFCYADHu1FbQ=;
+ b=OYgEHkiHj+5jb8ITJDik3BtyAqmtRm1ebCMSf2jV9EzSVVz9/DC9wE7KtMOA/ePnQw
+ TF6V4mUu+uW7XZk5xoG6BGa6VEkFP5tDDuFZ3igjS9eP2RaJgeSNIrODiaTpEMzdUpKz
+ 31w2ef0m4l4BfUXmHi+5xhc0PrXUtW68tvQRCM72giGETJA6nUB7lDFfjEqhqIbEacyJ
+ fMstrgf4w8lucDsxj1hgP+KF9ydql/2s7J3xyF8HqJpjKu5zXz1UkRISksFKHl+DIOx0
+ 9ExL7W7y40oIGycmDZ76Uuoq2WJyXOeoWgCyTaECEPbKpVGxABAVHv277iHp+wJfJviT
+ uaAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700155705; x=1700760505;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TqVK9uOL2ddFONTKxAz6R/c/cKH2txHZFCYADHu1FbQ=;
+ b=Nix7LrDv9pmMg9wZxdiDHps+Jocqk2RxSv2oZtdTj3/QZpM8EJaIKvF7i6xHV6g6uz
+ AIT+r+OvxWBhxrO6geGSP2hpUT+ZYXGUEx0RBN519gG0jNO9MhBn3L0G0e1JHuJ9IG3q
+ I7pumYcWklLtDdexp9rk+9WsVpYANtiwazhw7ji/DXQj7a2fAPJcWCcZ08XexfmiPASH
+ ZThbvbNVBRaxK2PBIrwl3bKqqBrqtSrCqi2k+fwNz4hk5IWKWkSzWGxyS2CvBGuLP23U
+ xiCVxKRtJo47gMZqpsXzODUaiJrbxUJUpcaUhnarB8Q3gzeaQqoAIy28++dpTbmHbknl
+ qs2A==
+X-Gm-Message-State: AOJu0Yy/fhRDdZY6HdV09wRCp/ZxKmlCTU6cV1+cNDvBFrwD/P13sWxz
+ gIAt7ljz4XXs2AyIiVnSb0DmoA==
+X-Google-Smtp-Source: AGHT+IGaDc0sP+i1kRerNMP3xk5ctQx7tJU8LwXtw6Mldk4z8QqISmfNLtJKJ2lhbZdePUMiZSQ+kQ==
+X-Received: by 2002:a05:600c:4584:b0:409:5a1a:fe16 with SMTP id
+ r4-20020a05600c458400b004095a1afe16mr12475201wmo.28.1700155705080; 
+ Thu, 16 Nov 2023 09:28:25 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ f14-20020a056000128e00b003313069be5dsm14241951wrx.46.2023.11.16.09.28.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 16 Nov 2023 09:28:24 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 58F645F7B6;
+ Thu, 16 Nov 2023 17:28:24 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
+Subject: [RFC PATCH] configure: don't try a "native" cross for i386
+Date: Thu, 16 Nov 2023 17:28:20 +0000
+Message-Id: <20231116172820.2481604-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=188.40.203.114;
- envelope-from=srv_ts003@codethink.com; helo=imap4.hz.codethink.co.uk
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,59 +92,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ICC_PMR_ELx and ICV_PMR_ELx bit masks returned from
-ic{c,v}_fullprio_mask should technically also remove any
-bit above 7 as these are marked reserved (read 0) and should
-therefore should not be written as anything other than 0.
+As 32 bit x86 become rarer we are starting to run into problems with
+search paths. Although we switched to a Debian container we still
+favour the native CC on a Bookworm host. As a result we have a broken
+cross compile setup which then fails to build with:
 
-This was noted during a run of a proprietary test system and
-discused on the mailing list [1] and initially thought not to
-be an issue due to RES0 being technically allowed to be
-written to and read back as long as the implementation does
-not use the RES0 bits. It is very possible that the values
-are used in comparison without masking, as pointed out by
-Peter in [2], if (cs->hppi.prio >= cs->icc_pmr_el1) may well
-do the wrong thing.
+    BUILD   i386-linux-user guest-tests
+  In file included from /usr/include/linux/stat.h:5,
+                   from /usr/include/bits/statx.h:31,
+                   from /usr/include/sys/stat.h:465,
+                   from /home/alex/lsrc/qemu.git/tests/tcg/multiarch/linux/linux-test.c:28:
+  /usr/include/linux/types.h:5:10: fatal error: asm/types.h: No such file or directory
+      5 | #include <asm/types.h>
+        |          ^~~~~~~~~~~~~
+  compilation terminated.
+  make[1]: *** [Makefile:119: linux-test] Error 1
+  make: *** [/home/alex/lsrc/qemu.git/tests/Makefile.include:50: build-tcg-tests-i386-linux-user] Error 2
 
-Masking these values in ic{c,v}_fullprio_mask() should fix
-this and prevent any future problems with playing with the
-values.
+So lets stop trying to be cute and honour cross_prefix_i386 when
+searching locally. We also need to ensure we are using the correct
+prefix if we do end up using the container version. We can also drop
+the extra CFLAGS while we are at it.
 
-[1]: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00607.html
-[2]: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00737.html
-
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: 791e6fedc5 (tests/docker: replace fedora-i386 with debian-i686)
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
-v2:
- - fixes as suggested by Peter Maydell to include icv_fullprio_mask()
----
- hw/intc/arm_gicv3_cpuif.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ configure | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-index d07b13eb27..ab1a00508e 100644
---- a/hw/intc/arm_gicv3_cpuif.c
-+++ b/hw/intc/arm_gicv3_cpuif.c
-@@ -146,7 +146,7 @@ static uint32_t icv_fullprio_mask(GICv3CPUState *cs)
-      * with the group priority, whose mask depends on the value of VBPR
-      * for the interrupt group.)
-      */
--    return ~0U << (8 - cs->vpribits);
-+    return (~0U << (8 - cs->vpribits)) & 0xff;
- }
- 
- static int ich_highest_active_virt_prio(GICv3CPUState *cs)
-@@ -803,7 +803,7 @@ static uint32_t icc_fullprio_mask(GICv3CPUState *cs)
-      * with the group priority, whose mask depends on the value of BPR
-      * for the interrupt group.)
-      */
--    return ~0U << (8 - cs->pribits);
-+    return (~0U << (8 - cs->pribits)) & 0xff;
- }
- 
- static inline int icc_min_bpr(GICv3CPUState *cs)
+diff --git a/configure b/configure
+index 5e7b76e3a1..2343d629ec 100755
+--- a/configure
++++ b/configure
+@@ -1190,7 +1190,6 @@ fi
+ : ${cross_cc_cflags_armeb="-mbig-endian"}
+ : ${cross_cc_hexagon="hexagon-unknown-linux-musl-clang"}
+ : ${cross_cc_cflags_hexagon="-mv73 -O2 -static"}
+-: ${cross_cc_cflags_i386="-m32"}
+ : ${cross_cc_cflags_ppc="-m32 -mbig-endian"}
+ : ${cross_cc_cflags_ppc64="-m64 -mbig-endian"}
+ : ${cross_cc_ppc64le="$cross_cc_ppc64"}
+@@ -1308,7 +1307,7 @@ probe_target_compiler() {
+         ;;
+       i386)
+         container_image=debian-i686-cross
+-        container_cross_prefix=
++        container_cross_prefix=i686-linux-gnu-
+         ;;
+       loongarch64)
+         container_image=debian-loongarch-cross
+@@ -1394,7 +1393,6 @@ probe_target_compiler() {
+   case "$target_arch:$cpu" in
+     aarch64_be:aarch64 | \
+     armeb:arm | \
+-    i386:x86_64 | \
+     mips*:mips64 | \
+     ppc*:ppc64 | \
+     sparc:sparc64 | \
 -- 
-2.37.2.352.g3c44437643
+2.39.2
 
 
