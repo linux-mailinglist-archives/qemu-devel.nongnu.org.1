@@ -2,89 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C187EE48E
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 16:46:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE8D37EE4A6
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 16:49:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3eZ8-0004RK-41; Thu, 16 Nov 2023 10:46:02 -0500
+	id 1r3ebo-0005q0-TF; Thu, 16 Nov 2023 10:48:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3eYx-0004Nb-M3
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 10:45:52 -0500
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3eYv-0002Rd-JD
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 10:45:51 -0500
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-9f2a53704aaso128769366b.3
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 07:45:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700149548; x=1700754348; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=m4RyCgPNieXnLopOdVZWxmb/8p015nFktcyrzFQayGQ=;
- b=HgHrtwqVnbs9dy5QV2lKsRDvW0+y31CsktRHmKg0+M6qpCS/AjP2KOlg6KJf2hpDmM
- jufEJPFPeq0fNWzzzpOZ7X8Tvu/7NkmfkTHvdG6J8rsgPHdAmQlmnCTXCAVI5YtIkLuG
- VJyv7nS74Tn0dxBwHWOnW6F7SWir39VqmYaGYF17jxEbaJU46F8ZWiblTk7sn1e3uHBi
- yHzTqspHcX4P/nlF9awrDHm+kn2B8QanD0VWl/kNlrAq3tQ/t2q+Ri1LyA4/MLryX+O1
- rDPCiMKvOdasW3Vm2ACOT2EW5UrXRV3Y9UGHsxIIMQxbIkHpCPJHKH+HL2epT13pEKut
- +hTQ==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1r3ebl-0005pe-9T
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 10:48:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1r3ebj-0004iP-ME
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 10:48:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700149722;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PncKhv7RlipPGQAqM/anQZy5pF106X6pETcgPdX4raM=;
+ b=ECqDV5SwUFQV+w1ccavyIX/lSsli6yOwLpuNXvfL93ORj1lYoWpK6bjg+ZnMktiGjh4pqk
+ DzAiPy1fG71zdB7YNmVsrjqJB48XK8coS8YMS9TOb2FCyKOrqGHu8EhlyU7TMnd3VA8Hb1
+ XgQpDA6vcyrmB2c6GPvIDv3YqCUQ4Ho=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-564-Yg6eWlmFPLKMVyLX_bq4Fw-1; Thu, 16 Nov 2023 10:48:41 -0500
+X-MC-Unique: Yg6eWlmFPLKMVyLX_bq4Fw-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-32fd5f7b674so440230f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 07:48:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700149548; x=1700754348;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1700149720; x=1700754520;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=m4RyCgPNieXnLopOdVZWxmb/8p015nFktcyrzFQayGQ=;
- b=do/DSz2MIpl14SnKjwbbVFknnMHxT1lqjIKw2+d++k4B6kXpIaep41C7HutdRYCSAQ
- Xov5Qh+WXdRGw0Sxn2F0HhTRcn6f28LWUcLfhM+yPGc/1nwVbWFK0aH4CQEjSC0dgdaz
- 1qq56HU9hUuTgN4Nf2ltbcED3EkOVXixWkt8X1XSv1o2phbOdBiHhH3hWAO5ltJStwRx
- IjDueEvc9Xl+2blRj48lDaUkAB/lAwPjcmP1cZhCFIkXGC1pHfWOv8NQumiTUgaHGI6H
- 3+H3tzEu9/wcZl0QAskvdWe5W8uiDEcF+5OgbB9199AqMhSbjwrqvijBUKMQ2oAda9CP
- 9eSA==
-X-Gm-Message-State: AOJu0YwXY4J1HLU0brVZp3vu1gMl2zFoYt3IDJE7+a+LWQH78ueLM1it
- tFRpKGjLKozST0Z0Xr+M5GWv/A==
-X-Google-Smtp-Source: AGHT+IHA1pHponPcDZjr+hRQzJqyBR/dDwGIXVFUnVOX4iMufiQukM0ljVTBBfO6EQquAJbZavdDmA==
-X-Received: by 2002:a17:906:3655:b0:9ae:5253:175b with SMTP id
- r21-20020a170906365500b009ae5253175bmr14391579ejb.34.1700149547803; 
- Thu, 16 Nov 2023 07:45:47 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.220.205])
- by smtp.gmail.com with ESMTPSA id
- fi5-20020a170906da0500b009e5db336137sm8634527ejb.196.2023.11.16.07.45.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Nov 2023 07:45:47 -0800 (PST)
-Message-ID: <dba8c159-f3e1-41e0-bc88-3811b143b1ce@linaro.org>
-Date: Thu, 16 Nov 2023 16:45:45 +0100
+ bh=PncKhv7RlipPGQAqM/anQZy5pF106X6pETcgPdX4raM=;
+ b=DoVbI6aBVDlz3MiyMIBLwOl8saGJvbIKqz7mVcrucVmyvKNrcYMnKdMzpPdKCveHkh
+ LiJQSeA1Y6I5HnHZRHRY5zYCfR/eN+WlF5GLBloqWNfGB6gk8IAj/gXP6IUbP57PBr63
+ xpmCx39V3ExkQNhOH+xixbP5XTOB2cAXfxJO/oTMRljMvtFDvBu7ij1pFYAnypQJtfm/
+ 64mr1mjvdlgO9EMuhlFZNGICSo60nN0OfJvxY4e/14dSIRXbkIqVPxCGxzyAd/57uqnS
+ OPuIK+4QcZS85HDQySW4hVxb8xwq2QvlBgTyZOnJA20a6l2bq/xGfh94bWCRO+iNNkp0
+ vd+Q==
+X-Gm-Message-State: AOJu0Yzp3XXa9Z1oTDEb1SiBLcfTW1P2jC68gT4+kRcreDYt4Owx5QiC
+ zybDY6O/VLPk2UKXb0yu3XAtWL4DzYNJLheJge1EoKu4X7MgskBKAfir0jaEZQqjOEDpx+HuqW+
+ ZNBfCpRxUcfN+Jb4=
+X-Received: by 2002:adf:ea07:0:b0:32d:9b32:8a7e with SMTP id
+ q7-20020adfea07000000b0032d9b328a7emr9586643wrm.71.1700149720416; 
+ Thu, 16 Nov 2023 07:48:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFac2nQfnvyZPu9OCoRJwdCoFP9DagmaFNfKyEtEYLHOlCY3FhKEua6ToLYQm/ia+uv7r0Grw==
+X-Received: by 2002:adf:ea07:0:b0:32d:9b32:8a7e with SMTP id
+ q7-20020adfea07000000b0032d9b328a7emr9586621wrm.71.1700149720034; 
+ Thu, 16 Nov 2023 07:48:40 -0800 (PST)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ b13-20020a05600010cd00b0032db8f7f378sm14080769wrx.71.2023.11.16.07.48.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 16 Nov 2023 07:48:39 -0800 (PST)
+From: Juan Quintela <quintela@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,  Alex
+ =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,  Gavin Shan <gshan@redhat.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Peter Maydell <peter.maydell@linaro.org>,  Evgeny Iakovlev
+ <eiakovlev@linux.microsoft.com>,  qemu-arm@nongnu.org
+Subject: Re: [PATCH-for-8.2 v4 09/10] hw/char/pl011: Add transmit FIFO to
+ PL011State
+In-Reply-To: <45ef60fe-dcb6-461d-97e1-d19e5174075d@linaro.org> (Richard
+ Henderson's message of "Thu, 9 Nov 2023 15:24:16 -0800")
+References: <20231109192814.95977-1-philmd@linaro.org>
+ <20231109192814.95977-10-philmd@linaro.org>
+ <45ef60fe-dcb6-461d-97e1-d19e5174075d@linaro.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Thu, 16 Nov 2023 16:48:38 +0100
+Message-ID: <87o7fthf6x.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/5] tests/unit/test-io-task: Rename "qemu:dummy" to
- avoid colon in the name
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Cc: Alistair Francis <alistair@alistair23.me>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Francisco Iglesias <francisco.iglesias@amd.com>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <20231116131454.541434-1-thuth@redhat.com>
- <20231116131454.541434-5-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231116131454.541434-5-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,20 +109,63 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/11/23 14:14, Thomas Huth wrote:
-> Type names should not contain special characters like ":" (so that
-> they are easier to use with QAPI and other parts). We are going to
-> forbid such names in an upcoming patch. Thus let's replace the ":"
-> here with a "-".
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   tests/unit/test-io-task.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+Richard Henderson <richard.henderson@linaro.org> wrote:
+> On 11/9/23 11:28, Philippe Mathieu-Daud=C3=A9 wrote:
+>> @@ -436,6 +438,24 @@ static const VMStateDescription vmstate_pl011_clock=
+ =3D {
+>>       }
+>>   };
+>>   +static bool pl011_xmit_fifo_state_needed(void *opaque)
+>> +{
+>> +    PL011State* s =3D opaque;
+>> +
+>> +    return !fifo8_is_empty(&s->xmit_fifo);
+>> +}
+>> +
+>> +static const VMStateDescription vmstate_pl011_xmit_fifo =3D {
+>> +    .name =3D "pl011/xmit_fifo",
+>> +    .version_id =3D 1,
+>> +    .minimum_version_id =3D 1,
+>> +    .needed =3D pl011_xmit_fifo_state_needed,
+>> +    .fields =3D (VMStateField[]) {
+>> +        VMSTATE_FIFO8(xmit_fifo, PL011State),
+>> +        VMSTATE_END_OF_LIST()
+>> +    }
+>> +};
+>> +
+>>   static int pl011_post_load(void *opaque, int version_id)
+>>   {
+>>       PL011State* s =3D opaque;
+>> @@ -487,7 +507,11 @@ static const VMStateDescription vmstate_pl011 =3D {
+>>       .subsections =3D (const VMStateDescription * []) {
+>>           &vmstate_pl011_clock,
+>>           NULL
+>> -    }
+>> +    },
+>> +    .subsections =3D (const VMStateDescription * []) {
+>> +        &vmstate_pl011_xmit_fifo,
+>> +        NULL
+>> +    },
+>>   };
+>
+> It just occurred to me that you may need a vmstate_pl011 pre_load() to
+> empty the FIFO, which will then be filled if and only if the saved
+> vmstate_pl011_xmit_fifo subsection is present.
+>
+> Juan, have I got this correct about how migration would or should handle =
+a missing subsection?
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I hav'nt looked about how the device is created. But if it is created
+with the fifo empty you don't need the pre_load().
+
+I have no idea about this device, but sometimes it just happens that if
+the fifo has data, you need to put an irq somewhere or mark it some
+place that there is pending job on this device.
+
+Later, Juan.
 
 
