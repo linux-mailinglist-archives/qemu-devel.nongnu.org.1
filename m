@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F807ED901
+	by mail.lfdr.de (Postfix) with ESMTPS id 710F87ED902
 	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 02:48:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3RQY-0005LI-Bs; Wed, 15 Nov 2023 20:44:18 -0500
+	id 1r3RQN-0005Iy-Qv; Wed, 15 Nov 2023 20:44:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r3RQL-0005In-3y
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 20:44:05 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r3RQI-0005Ex-78
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 20:44:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r3RQF-000208-HB
- for qemu-devel@nongnu.org; Wed, 15 Nov 2023 20:44:04 -0500
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r3RQD-0001zi-RW
+ for qemu-devel@nongnu.org; Wed, 15 Nov 2023 20:44:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700099038;
+ s=mimecast20190719; t=1700099037;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QXJzx/jpVoPhmJMyDwQ8ccRKvqe6ESeYERwYom9inLk=;
- b=Ow6rXgaBaVsA59YbAe7uc1uP5jKzjur9n0Cp+XCrdEJzLOdnY108IbCK8Qp3guB8Zn5CmB
- j481prJjXrWtPqgNZHpMvLdg8J6LSQdBO/6xOWKz0imZw2UVYuNZfpLJxx5I2HxWwAKSFQ
- ndo0mQ+29PUuklU0mwdI/b8yG7a25As=
+ bh=gi5EYqfimKMm9nEhPGFz0iR7hcyEZzY6gH4iQaJdxSU=;
+ b=EfHsGCBzR9GlbFtMAuMUU5qWN8lfx8e6KZyyOAt1SYMYWNbBCNe7HIibvxLrWoPZ1D6ohY
+ W9zyy0eZgbAIHqN2lxg69tAvcfudPgLU1L64s3V2jAIdsiZpzxRyIr9Ww9lpXXSdGR6Y7T
+ 4HTyAxTknWIVmZDZEdWCGZFfcnaWUqQ=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-507-Mt4ACs1HMxGBvCyWTu9jfg-1; Wed, 15 Nov 2023 20:43:55 -0500
-X-MC-Unique: Mt4ACs1HMxGBvCyWTu9jfg-1
+ us-mta-412-NmgZ6iOIMmCGsDMei6hEew-1; Wed, 15 Nov 2023 20:43:55 -0500
+X-MC-Unique: NmgZ6iOIMmCGsDMei6hEew-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 05BA1101A529;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 55F13101A53B;
  Thu, 16 Nov 2023 01:43:55 +0000 (UTC)
 Received: from scv.localdomain (unknown [10.22.32.122])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B6CE3C15881;
- Thu, 16 Nov 2023 01:43:54 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 169C9C15881;
+ Thu, 16 Nov 2023 01:43:55 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 11/19] qapi/schema: fix QAPISchemaArrayType.check's call to
- resolve_type
-Date: Wed, 15 Nov 2023 20:43:42 -0500
-Message-ID: <20231116014350.653792-12-jsnow@redhat.com>
+Subject: [PATCH 12/19] qapi/schema: split "checked" field into "checking" and
+ "checked"
+Date: Wed, 15 Nov 2023 20:43:43 -0500
+Message-ID: <20231116014350.653792-13-jsnow@redhat.com>
 In-Reply-To: <20231116014350.653792-1-jsnow@redhat.com>
 References: <20231116014350.653792-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,40 +80,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There's more conditionals in here than we can reasonably pack into a
-terse little statement, so break it apart into something more explicit.
+Differentiate between "actively in the process of checking" and
+"checking has completed". This allows us to clean up the types of some
+internal fields such as QAPISchemaObjectType's members field which
+currently uses "None" as a canary for determining if check has
+completed.
 
-(When would a built-in array ever cause a QAPISemError? I don't know,
-maybe never - but the type system wasn't happy all the same.)
+This simplifies the typing from a cumbersome Optional[List[T]] to merely
+a List[T], which is more pythonic: it is safe to iterate over an empty
+list with "for x in []" whereas with an Optional[List[T]] you have to
+rely on the more cumbersome "if L: for x in L: ..."
+
+RFC: are we guaranteed to have members here? can we just use "if
+members" without adding the new field?
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- scripts/qapi/schema.py | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ scripts/qapi/schema.py | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
 diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index 462acb2bb61..164d86c4064 100644
+index 164d86c4064..200bc0730d6 100644
 --- a/scripts/qapi/schema.py
 +++ b/scripts/qapi/schema.py
-@@ -384,9 +384,16 @@ def need_has_if_optional(self):
+@@ -18,7 +18,7 @@
+ from collections import OrderedDict
+ import os
+ import re
+-from typing import List, Optional
++from typing import List, Optional, cast
+ 
+ from .common import (
+     POINTER_SUFFIX,
+@@ -447,22 +447,24 @@ def __init__(self, name, info, doc, ifcond, features,
+         self.base = None
+         self.local_members = local_members
+         self.variants = variants
+-        self.members = None
++        self.members: List[QAPISchemaObjectTypeMember] = []
++        self._checking = False
  
      def check(self, schema):
-         super().check(schema)
-+
-+        if self.info:
-+            assert self.info.defn_meta  # guaranteed to be set by expr.py
-+            what = self.info.defn_meta
-+        else:
-+            what = 'built-in array'
-+
-         self._element_type = schema.resolve_type(
--            self._element_type_name, self.info,
--            self.info and self.info.defn_meta)
-+            self._element_type_name, self.info, what
-+        )
-         assert not isinstance(self.element_type, QAPISchemaArrayType)
+         # This calls another type T's .check() exactly when the C
+         # struct emitted by gen_object() contains that T's C struct
+         # (pointers don't count).
+-        if self.members is not None:
+-            # A previous .check() completed: nothing to do
+-            return
+-        if self._checked:
++        if self._checking:
+             # Recursed: C struct contains itself
+             raise QAPISemError(self.info,
+                                "object %s contains itself" % self.name)
++        if self._checked:
++            # A previous .check() completed: nothing to do
++            return
  
-     def set_module(self, schema):
++        self._checking = True
+         super().check(schema)
+-        assert self._checked and self.members is None
++        assert self._checked and not self.members
+ 
+         seen = OrderedDict()
+         if self._base_name:
+@@ -479,13 +481,17 @@ def check(self, schema):
+         for m in self.local_members:
+             m.check(schema)
+             m.check_clash(self.info, seen)
+-        members = seen.values()
++
++        # check_clash is abstract, but local_members is asserted to be
++        # List[QAPISchemaObjectTypeMember]. Cast to the narrower type.
++        members = cast(List[QAPISchemaObjectTypeMember], list(seen.values()))
+ 
+         if self.variants:
+             self.variants.check(schema, seen)
+             self.variants.check_clash(self.info, seen)
+ 
+-        self.members = members  # mark completed
++        self.members = members
++        self._checking = False  # mark completed
+ 
+     # Check that the members of this type do not cause duplicate JSON members,
+     # and update seen to track the members seen so far. Report any errors
 -- 
 2.41.0
 
