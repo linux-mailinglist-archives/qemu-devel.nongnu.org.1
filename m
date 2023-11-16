@@ -2,48 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B0567EE0CC
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 13:40:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCFC27EE0D8
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 13:48:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3beD-0004Wx-ES; Thu, 16 Nov 2023 07:39:06 -0500
+	id 1r3bld-0006Gy-JO; Thu, 16 Nov 2023 07:46:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r3be3-0004WY-FO; Thu, 16 Nov 2023 07:38:55 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1r3bla-0006GL-PO
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 07:46:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r3be0-00041c-Tt; Thu, 16 Nov 2023 07:38:55 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 32208756094;
- Thu, 16 Nov 2023 13:39:18 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 26C8275607B; Thu, 16 Nov 2023 13:39:18 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 23C94756078;
- Thu, 16 Nov 2023 13:39:18 +0100 (CET)
-Date: Thu, 16 Nov 2023 13:39:18 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-cc: kwolf@redhat.com, jsnow@redhat.com, qemu-block@nongnu.org, 
- qemu-devel@nongnu.org, philmd@linaro.org, shentey@gmail.com
-Subject: Re: [PATCH v3 4/4] hw/ide/via: implement legacy/native mode switching
-In-Reply-To: <20231116103355.588580-5-mark.cave-ayland@ilande.co.uk>
-Message-ID: <47c5b753-cd57-adda-e40a-f28a1c721aef@eik.bme.hu>
-References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
- <20231116103355.588580-5-mark.cave-ayland@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1r3blZ-0005hX-3N
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 07:46:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700138799;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=37/vd5BT2BR+X/Vmpl9N9wIK1MYiu2a3rUJxZx7ieP0=;
+ b=QRpgmZEAKvU7ojQixLhutnNadbBJs0GLoUVLQM+UZeOFptPA2Gv0Qhimxxapq2ieOf243z
+ wbgpIB2vDPRhoexQurOPrOM6tyf4bhME7DK4jzOOL1dyLh86hwfz90fGHW3zajg4Sa9V37
+ wc1PNKcFsImyNvIdazL+gAB7fVK0fQk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-184-4hzgqoaDPX-ydVN_ZLGjbw-1; Thu,
+ 16 Nov 2023 07:46:35 -0500
+X-MC-Unique: 4hzgqoaDPX-ydVN_ZLGjbw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C4BC43C1ACD5;
+ Thu, 16 Nov 2023 12:46:34 +0000 (UTC)
+Received: from [10.39.193.151] (unknown [10.39.193.151])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D04E37ACE;
+ Thu, 16 Nov 2023 12:46:32 +0000 (UTC)
+Message-ID: <5d7cc3e7-a534-0352-6a86-fb95fdf3ccfa@redhat.com>
+Date: Thu, 16 Nov 2023 13:46:31 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Virus-Scanned: ClamAV using ClamSMTP
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Subject: Re: [PATCH 01/16] hw/uefi: add include/hw/uefi/var-service-api.h
+To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Eric Blake <eblake@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, graf@amazon.com,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20231115151242.184645-1-kraxel@redhat.com>
+ <20231115151242.184645-2-kraxel@redhat.com>
+Content-Language: en-US
+From: Laszlo Ersek <lersek@redhat.com>
+In-Reply-To: <20231115151242.184645-2-kraxel@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,137 +87,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 16 Nov 2023, Mark Cave-Ayland wrote:
-> Allow the VIA IDE controller to switch between both legacy and native modes by
-> calling pci_ide_update_mode() to reconfigure the device whenever PCI_CLASS_PROG
-> is updated.
->
-> This patch moves the initial setting of PCI_CLASS_PROG from via_ide_realize() to
-> via_ide_reset(), and removes the direct setting of PCI_INTERRUPT_PIN during PCI
-> bus reset since this is now managed by pci_ide_update_mode(). This ensures that
-> the device configuration is always consistent with respect to the currently
-> selected mode.
->
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+On 11/15/23 16:12, Gerd Hoffmann wrote:
+> This file defines the register interface of the uefi-vars device.
+> It's only a handful of registers: magic value, command and status
+> registers, location and size of the communication buffer.
+> 
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 > ---
-> hw/ide/via.c | 39 +++++++++++++++++++++++++++++++++++++--
-> 1 file changed, 37 insertions(+), 2 deletions(-)
->
-> diff --git a/hw/ide/via.c b/hw/ide/via.c
-> index 87b134083a..47223b1268 100644
-> --- a/hw/ide/via.c
-> +++ b/hw/ide/via.c
-> @@ -28,6 +28,7 @@
-> #include "hw/pci/pci.h"
-> #include "migration/vmstate.h"
-> #include "qemu/module.h"
-> +#include "qemu/range.h"
-> #include "sysemu/dma.h"
-> #include "hw/isa/vt82c686.h"
-> #include "hw/ide/pci.h"
-> @@ -128,11 +129,14 @@ static void via_ide_reset(DeviceState *dev)
->         ide_bus_reset(&d->bus[i]);
->     }
->
-> +    pci_config_set_prog_interface(pci_conf, 0x8a); /* legacy mode */
-> +    pci_ide_update_mode(d);
+>  include/hw/uefi/var-service-api.h | 40 +++++++++++++++++++++++++++++++
+>  1 file changed, 40 insertions(+)
+>  create mode 100644 include/hw/uefi/var-service-api.h
+> 
+> diff --git a/include/hw/uefi/var-service-api.h b/include/hw/uefi/var-service-api.h
+> new file mode 100644
+> index 000000000000..37fdab32741f
+> --- /dev/null
+> +++ b/include/hw/uefi/var-service-api.h
+> @@ -0,0 +1,40 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * uefi-vars device - API of the virtual device for guest/host communication.
+> + */
+> +#ifndef QEMU_UEFI_VAR_SERVICE_API_H
+> +#define QEMU_UEFI_VAR_SERVICE_API_H
 > +
->     pci_set_word(pci_conf + PCI_COMMAND, PCI_COMMAND_IO | PCI_COMMAND_WAIT);
->     pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
->                  PCI_STATUS_DEVSEL_MEDIUM);
->
-> -    pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
-> +    pci_set_byte(pci_conf + PCI_INTERRUPT_LINE, 0xe);
->
->     /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
->     pci_set_long(pci_conf + 0x40, 0x0a090600);
-> @@ -154,6 +158,36 @@ static void via_ide_reset(DeviceState *dev)
->     pci_set_long(pci_conf + 0xc0, 0x00020001);
-> }
->
-> +static uint32_t via_ide_cfg_read(PCIDevice *pd, uint32_t addr, int len)
-> +{
-> +    uint32_t val = pci_default_read_config(pd, addr, len);
-> +    uint8_t mode = pd->config[PCI_CLASS_PROG];
 > +
-> +    if ((mode & 0xf) == 0xa && ranges_overlap(addr, len,
-> +                                              PCI_BASE_ADDRESS_0, 24)) {
-
-You could break the line after && which is more readable. I don't get what 
-the below calculation does. Does it really have to be so complicated? It's 
-not likely BARs will be accesssed unaligned or did you find something that 
-does that? I think it would be insane for a guest to do a 4 bytes read at 
-PCI_BASE_ADDRESS_0 - 2 and expect to get something useful so don't think 
-we need to handle that case. So maybe just care about
-addr >= PCI_BASE_ADDRESS_0 %% addr + len < PCI_BASE_ADDRESS_0 + 24 and 
-return 0 without fancy calculation that's likely never needed.
-
-> +        /* BARs always read back zero in legacy mode */
-> +        for (int i = addr; i < addr + len; i++) {
-> +            if (i >= PCI_BASE_ADDRESS_0 && i < PCI_BASE_ADDRESS_0 + 24) {
-> +                val &= ~(0xffULL << ((i - addr) << 3));
-> +            }
-> +        }
-> +    }
+> +/* isa: io range */
+> +#define UEFI_VARS_IO_BASE                   0x520
 > +
-> +    return val;
-> +}
+> +/* sysbus: fdt node path */
+> +#define UEFI_VARS_FDT_NODE       "qemu-uefi-vars"
+> +#define UEFI_VARS_FDT_COMPAT     "qemu,uefi-vars"
 > +
-> +static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
-> +                              uint32_t val, int len)
-> +{
-> +    PCIIDEState *d = PCI_IDE(pd);
+> +/* registers */
+> +#define UEFI_VARS_REG_MAGIC                  0x00  /* 16 bit */
+> +#define UEFI_VARS_REG_CMD_STS                0x02  /* 16 bit */
+> +#define UEFI_VARS_REG_BUFFER_SIZE            0x04  /* 32 bit */
+> +#define UEFI_VARS_REG_BUFFER_ADDR_LO         0x08  /* 32 bit */
+> +#define UEFI_VARS_REG_BUFFER_ADDR_HI         0x0c  /* 32 bit */
+> +#define UEFI_VARS_REGS_SIZE                  0x10
 > +
-> +    pci_default_write_config(pd, addr, val, len);
+> +/* magic value */
+> +#define UEFI_VARS_MAGIC_VALUE               0xef1
 > +
-> +    if (range_covers_byte(addr, len, PCI_CLASS_PROG)) {
-> +        pci_ide_update_mode(d);
-> +    }
-
-Have you missed this reply to your previous version or just ignored it?
-
-https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg03180.html
-
-You'd need to set BAR4 to the default value when switching to legacy mode 
-(you could check if it's already set and only reset when unset if you're 
-concerned with that but I think it would not matter in practice) otherwise 
-UDMA does not work in AmigaOS.
-
-Other than that I'd still like to keep potio_list arrays static somehow 
-but that may need changes to isa_register_portio_list() so this could be 
-addressed later but you could still consider moving the portio stuff from 
-patch 2 into a function operating on IDEBus which can be in core.c next to 
-the arrays as this could be reused by ide-isa later. Or is that just the 
-same as ide_init_ioport without the ISADevice *dev argument and 
-isa_register_portio_list inlined. The only thing isa_register_portio_list 
-has is an additional call to isa_init_ioport but maybe that could be done 
-separately then ide_init_ioport is not dependent on ISA any more so can be 
-moved back to core.c?
-
-Regards,
-BALATON Zoltan
-
-> +}
+> +/* command values */
+> +#define UEFI_VARS_CMD_RESET                  0x01
+> +#define UEFI_VARS_CMD_MM                     0x02
 > +
-> static void via_ide_realize(PCIDevice *dev, Error **errp)
-> {
->     PCIIDEState *d = PCI_IDE(dev);
-> @@ -161,7 +195,6 @@ static void via_ide_realize(PCIDevice *dev, Error **errp)
->     uint8_t *pci_conf = dev->config;
->     int i;
->
-> -    pci_config_set_prog_interface(pci_conf, 0x8a); /* legacy mode */
->     pci_set_long(pci_conf + PCI_CAPABILITY_LIST, 0x000000c0);
->     dev->wmask[PCI_INTERRUPT_LINE] = 0;
->     dev->wmask[PCI_CLASS_PROG] = 5;
-> @@ -216,6 +249,8 @@ static void via_ide_class_init(ObjectClass *klass, void *data)
->     /* Reason: only works as function of VIA southbridge */
->     dc->user_creatable = false;
->
-> +    k->config_read = via_ide_cfg_read;
-> +    k->config_write = via_ide_cfg_write;
->     k->realize = via_ide_realize;
->     k->exit = via_ide_exitfn;
->     k->vendor_id = PCI_VENDOR_ID_VIA;
->
+> +/* status values */
+> +#define UEFI_VARS_STS_SUCCESS                0x00
+> +#define UEFI_VARS_STS_BUSY                   0x01
+> +#define UEFI_VARS_STS_ERR_UNKNOWN            0x10
+> +#define UEFI_VARS_STS_ERR_NOT_SUPPORTED      0x11
+> +#define UEFI_VARS_STS_ERR_BAD_BUFFER_SIZE    0x12
+> +
+> +
+> +#endif /* QEMU_UEFI_VAR_SERVICE_API_H */
+
+Reviewed-by: Laszlo Ersek <lersek@redhat.com>
+
 
