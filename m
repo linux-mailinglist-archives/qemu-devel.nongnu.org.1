@@ -2,135 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C001E7EDF7A
+	by mail.lfdr.de (Postfix) with ESMTPS id CA0E77EDF7B
 	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 12:19:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3aNM-0005rU-Nl; Thu, 16 Nov 2023 06:17:36 -0500
+	id 1r3aNy-0006G8-Om; Thu, 16 Nov 2023 06:18:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3aNB-0005rG-Vo
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 06:17:29 -0500
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1r3aNx-0006Do-Bx
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 06:18:13 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3aNA-0008Ds-9q
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 06:17:25 -0500
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1r3aNv-0008Nm-8U
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 06:18:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700133442;
+ s=mimecast20190719; t=1700133490;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=xUL23OdJUNWIkD1pw+4V2KCssVfdvESVaYD7IDVY57A=;
- b=O7I6zQtjdZizrWQ9FK7ku8AcZpz4hUbH2nJP4Ty1NOF1jhiURrnkNl8of3FaA67kH06Zf4
- 0XjWo68M+0GFZYHuX7cdapCtj3/oQS9xinsEnPqvGB4huZakl2ci+Vy726Dh6o/xwfKbRg
- vRHt4n9pPMmTibBzb9p2/n3L229KLjA=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=1bm4XsT48ouV0dU7OyzDmTxU4as3NAKfpZrdbV42nGQ=;
+ b=GbYo1IuTEAI3mHkg9XAX6CRHeODOA8qqD31hT0s/8ew9UTLCgkNTuKXdo5chHe8aZczNIr
+ FiLTOg02OMvG4pCJkEioNitj7Skx+cF/cIg3LfeghXjR58mdnDxsdKu0f8lrAYrLq7CbPB
+ +nWzEQRy1ulu60Bduh9mCdAvEnarUgo=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-192-pO423qU4MPeiQ-5m2BMKrQ-1; Thu, 16 Nov 2023 06:17:21 -0500
-X-MC-Unique: pO423qU4MPeiQ-5m2BMKrQ-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-66fe14725aeso8863246d6.2
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 03:17:21 -0800 (PST)
+ us-mta-624-Fw13IGwgOMWfF3VK2LiU5w-1; Thu, 16 Nov 2023 06:18:08 -0500
+X-MC-Unique: Fw13IGwgOMWfF3VK2LiU5w-1
+Received: by mail-pg1-f198.google.com with SMTP id
+ 41be03b00d2f7-5c19a2f606dso742536a12.3
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 03:18:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700133440; x=1700738240;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xUL23OdJUNWIkD1pw+4V2KCssVfdvESVaYD7IDVY57A=;
- b=XLjM/djf3ZFQVYXfhSdQ6Z3ZU9RL+c/bAFdOlepoxfPlxszAkOk7VTyFt4HVamfR4p
- nEsVGVpyo7L23ePMuNz2WJH1hvz6X/EE4zu7dtZMP8sgC7TVfarpyHOhquOnWEwqjw94
- P8XtI6xD9roM385wzOrk3b8tAEmCIzOWvJ6UNYSyyd+lvpIrJ3UfCXhY70LEdg7ZJ4by
- SyTzU7/GddRilsAiik6B6+4zT12vwbm9WjY7BQ/k1wijXZU6rp4GcmzFJFKm/5zEqLm3
- HwDoclMg9isvAa0f9AkhrSH3gxQ0l96YSHogWLOvuoY0GppMnXuvW/92bdMEi54Zcddq
- YFaQ==
-X-Gm-Message-State: AOJu0Yw++v29Tbfx3YL0LtHIS1gTJW0AtrSQ1Pj7BOl0nLjVoentPjSh
- 8uG3NOZy44e31INTfPBmL871ebHagEC9evDdgG0sczDqM2yQr3DcBEkQ9tOjua/x/vAZmB/z+40
- eoChB3BiswsU9jKE=
-X-Received: by 2002:a0c:f706:0:b0:66d:1e25:9777 with SMTP id
- w6-20020a0cf706000000b0066d1e259777mr7938907qvn.64.1700133440799; 
- Thu, 16 Nov 2023 03:17:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFV8Y9LhhLbfG/q3R8icq1U9GL/vRbfZlpAebCJ1lD70w7iVUzmEFSLk8anVAE9hOVAh03M9g==
-X-Received: by 2002:a0c:f706:0:b0:66d:1e25:9777 with SMTP id
- w6-20020a0cf706000000b0066d1e259777mr7938895qvn.64.1700133440525; 
- Thu, 16 Nov 2023 03:17:20 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-43-176-122.web.vodafone.de.
- [109.43.176.122]) by smtp.gmail.com with ESMTPSA id
- v14-20020a0cdd8e000000b0065b29403540sm1284111qvk.127.2023.11.16.03.17.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Nov 2023 03:17:20 -0800 (PST)
-Message-ID: <e04933cf-1c74-4475-8007-888d9d0591f2@redhat.com>
-Date: Thu, 16 Nov 2023 12:17:15 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] qom/object: Limit type names to alphanumerical and some
- few special characters
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- Eduardo Habkost <eduardo@habkost.net>, David Hildenbrand <david@redhat.com>
-References: <20231114130415.283228-1-thuth@redhat.com>
- <CAFEAcA_LcmowH28KG9LXRQRPFkAbmDCoPz5RDDK0TG+Am-p73w@mail.gmail.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <CAFEAcA_LcmowH28KG9LXRQRPFkAbmDCoPz5RDDK0TG+Am-p73w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ d=1e100.net; s=20230601; t=1700133487; x=1700738287;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1bm4XsT48ouV0dU7OyzDmTxU4as3NAKfpZrdbV42nGQ=;
+ b=i0epN+d9+bY2H8KsfD4uMDwejXyUAgxt6VJ9eHwQcLprKQQxcFq4t0GwnXZTmweB4X
+ RTeQD5jibuGR3ElR68hLAOH0wxGtkdnVOlwQkiKUY4uyP9IvqIbqud2wdtrf9+erPGos
+ XyW9BmxHSPB46UJHaaI4O3o+PhtZlwjF5ccidOOzqG8YgRwneHIrqq8SHYGWg/OWZUr3
+ +sYIAuj2qn06yFKf7Z7BvNigMMlubnR97X+YoANgUmTGyOjoXWXtGHr5VvL6qxMgIEB+
+ CIiWhkNa+KlBqN7GlN/jqKUZMEelxv2vbHAzv4Hw5ip9DNDMoAd9oWVcMdXHhVVnvc2D
+ n6ew==
+X-Gm-Message-State: AOJu0YzAcKXKG9jm1VhanF0gbDHUzkUiUTleEvWN8XZARY3vO/MDRtZf
+ F3ZYIMsoNic3ymAPvjT24fdK3tQvTvVdKWvwzHapAa8xyViWQGQ1VSsoBAn3S0hA5wViSuvuX/J
+ VPXxF+c/9OB+7cbw=
+X-Received: by 2002:a17:902:ea07:b0:1c7:29fd:33b6 with SMTP id
+ s7-20020a170902ea0700b001c729fd33b6mr8543671plg.40.1700133487296; 
+ Thu, 16 Nov 2023 03:18:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF66vghBp6qP/3JBewUJbUbh0sBLp36G/hroJ9ZGedzYQYFxkzqzfXWjGturrXGdYKhKhVzhQ==
+X-Received: by 2002:a17:902:ea07:b0:1c7:29fd:33b6 with SMTP id
+ s7-20020a170902ea0700b001c729fd33b6mr8543649plg.40.1700133486935; 
+ Thu, 16 Nov 2023 03:18:06 -0800 (PST)
+Received: from smtpclient.apple ([203.212.246.21])
+ by smtp.gmail.com with ESMTPSA id
+ ix2-20020a170902f80200b001b9dab0397bsm8969527plb.29.2023.11.16.03.18.01
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 16 Nov 2023 03:18:06 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.200.91.1.1\))
+Subject: Re: [PATCH] tests/avocado/reverse_debugging: Disable the ppc64 tests
+ by default
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <ZVXY-YnI2TiCFX3V@redhat.com>
+Date: Thu, 16 Nov 2023 16:47:48 +0530
+Cc: Nicholas Piggin <npiggin@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ John Snow <jsnow@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ QEMU Developers <qemu-devel@nongnu.org>,
+ =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9CE61EC5-2C8B-4CE3-A34F-4E29E5DFF047@redhat.com>
+References: <20231114163115.298041-1-thuth@redhat.com>
+ <12b4420e-1440-4516-8276-e0e907003c16@linaro.org>
+ <9f6247e4-7e81-44f8-a63b-8ee11f722710@redhat.com>
+ <CWYYRW53VEPJ.3UL1X7GB1P4H2@wheely>
+ <6877d6d6-bfbf-4475-8c61-dd537265b278@redhat.com>
+ <ZVTETYrfL8f48qe3@redhat.com> <ZVT-bY9YOr69QTPX@redhat.com>
+ <CWZU7DEIX9E4.26PTZ0GK1ZAUP@wheely>
+ <9853904F-F5F7-4744-98B0-0B61A60DAD7B@redhat.com>
+ <CX01UGZ8PCU9.1TMVG7FPP29YF@wheely> <ZVXY-YnI2TiCFX3V@redhat.com>
+To: =?utf-8?B?IkRhbmllbCBQLiBCZXJyYW5nw6ki?= <berrange@redhat.com>
+X-Mailer: Apple Mail (2.3774.200.91.1.1)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -6
-X-Spam_score: -0.7
-X-Spam_bar: /
-X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -146,62 +118,194 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/11/2023 14.21, Peter Maydell wrote:
-> On Tue, 14 Nov 2023 at 13:05, Thomas Huth <thuth@redhat.com> wrote:
->>
->> QOM names currently don't have any enforced naming rules. This
->> can be problematic, e.g. when they are used on the command line
->> for the "-device" option (where the comma is used to separate
->> properties). To avoid that such problematic type names come in
->> again, let's restrict the set of acceptable characters during the
->> type registration.
->>
->> Ideally, we'd apply here the same rules as for QAPI, i.e. all type
->> names should begin with a letter, and contain only ASCII letters,
->> digits, hyphen, and underscore. However, we already have so many
->> pre-existing types like:
->>
->>      486-x86_64-cpu
->>      cfi.pflash01
->>      power5+_v2.1-spapr-cpu-core
->>      virt-2.6-machine::hotplug-handler
->>      aspeed.i2c.slave::vmstate-if
->>      pc-i440fx-3.0-machine::nmi
-> 
-> I think all these '::' are specifically interface types --
-> see type_initialize_interface(), which constructs the
-> interface type name by gluing together the class name and
-> the interface name with a '::'. The rule we ought to be
-> requiring for ':' I think is "no : in the type name, unless
-> it is the one generated by type_initialize_interface()".
-> 
-> I think we could do that by having the type_name_is_valid()
-> checks done in:
->   * type_initialize_interface(), on ti->name and interface_type->name
->   * type_register_internal(), on info->name
-> 
-> If we do that, can we take ':' out of the list of characters
-> we permit in type_name_is_valid() ?
 
-Thanks, that's a very good idea! Actually, after looking at the code for a 
-while, I think it should even be enough to add a check to 
-type_register_internal(), since type_initialize_interface() is rather used 
-with base types and interface types that should have been registered already 
-via type_register...() before.
 
-There just seem to be two stragglers left:
+> On 16-Nov-2023, at 2:25=E2=80=AFPM, Daniel P. Berrang=C3=A9 =
+<berrange@redhat.com> wrote:
+>=20
+> On Thu, Nov 16, 2023 at 05:14:43PM +1000, Nicholas Piggin wrote:
+>> On Thu Nov 16, 2023 at 1:55 PM AEST, Ani Sinha wrote:
+>>>=20
+>>>=20
+>>>> On 16-Nov-2023, at 6:45=E2=80=AFAM, Nicholas Piggin =
+<npiggin@gmail.com> wrote:
+>>>>=20
+>>>> On Thu Nov 16, 2023 at 3:22 AM AEST, Daniel P. Berrang=C3=A9 wrote:
+>>>>> On Wed, Nov 15, 2023 at 01:14:53PM +0000, Daniel P. Berrang=C3=A9 =
+wrote:
+>>>>>> On Wed, Nov 15, 2023 at 07:23:01AM +0100, Thomas Huth wrote:
+>>>>>>> On 15/11/2023 02.15, Nicholas Piggin wrote:
+>>>>>>>> On Wed Nov 15, 2023 at 4:29 AM AEST, Thomas Huth wrote:
+>>>>>>>>> On 14/11/2023 17.37, Philippe Mathieu-Daud=C3=A9 wrote:
+>>>>>>>>>> On 14/11/23 17:31, Thomas Huth wrote:
+>>>>>>>>>>> The tests seem currently to be broken. Disable them by =
+default
+>>>>>>>>>>> until someone fixes them.
+>>>>>>>>>>>=20
+>>>>>>>>>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>>>>>>>>>> ---
+>>>>>>>>>>>  tests/avocado/reverse_debugging.py | 7 ++++---
+>>>>>>>>>>>  1 file changed, 4 insertions(+), 3 deletions(-)
+>>>>>>>>>>=20
+>>>>>>>>>> Similarly, I suspect =
+https://gitlab.com/qemu-project/qemu/-/issues/1961
+>>>>>>>>>> which has a fix ready:
+>>>>>>>>>> =
+https://lore.kernel.org/qemu-devel/20231110170831.185001-1-richard.henders=
+on@linaro.org/
+>>>>>>>>>>=20
+>>>>>>>>>> Maybe wait the fix gets in first?
+>>>>>>>>>=20
+>>>>>>>>> No, I applied Richard's patch, but the problem persists. Does =
+this test
+>>>>>>>>> still work for you?
+>>>>>>>>=20
+>>>>>>>> I bisected it to 1d4796cd008373 ("python/machine: use =
+socketpair() for
+>>>>>>>> console connections"),
+>>>>>>>=20
+>>>>>>> Maybe John (who wrote that commit) can help?
+>>>>>>=20
+>>>>>> I find it hard to believe this commit is a direct root cause of =
+the
+>>>>>> problem since all it does is change the QEMU startup sequence so =
+that
+>>>>>> instead of QEMU listening for a monitor connection, it is given a
+>>>>>> pre-opened monitor connection.
+>>>>>>=20
+>>>>>> At the very most that should affect the startup timing a little.
+>>>>>>=20
+>>>>>> I notice all the reverse debugging tests have a skip on gitlab
+>>>>>> with a comment:
+>>>>>>=20
+>>>>>>   # unidentified gitlab timeout problem
+>>>>>>=20
+>>>>>> this makes be suspicious that John's patch has merely made this
+>>>>>> (henceforth undiagnosed) timeout more likely to ocurr.
+>>>>>=20
+>>>>> After an absolutely horrendous hours long debugging session I =
+think
+>>>>> I figured out the problem. The QEMU process is blocking in
+>>>>>=20
+>>>>>   qemu_chr_write_buffer
+>>>>>=20
+>>>>> spinning in the loop on EAGAIN.
+>>>>=20
+>>>> Great work.
+>>>>=20
+>>>> Why does this make the gdb socket give an empty response? Something
+>>>> just times out?
+>>>>=20
+>>>>>=20
+>>>>> The Python  Machine() class has passed one of a pre-created =
+socketpair
+>>>>> FDs for the serial port chardev. The guest is trying to write to =
+this
+>>>>> and blocking.  Nothing in the Machine() class is reading from the
+>>>>> other end of the serial port console.
+>>>>>=20
+>>>>>=20
+>>>>> Before John's change, the serial port uses a chardev in server =
+mode
+>>>>> and crucially  'wait=3Doff', and the Machine() class never opened =
+the
+>>>>> console socket unless the test case wanted to read from it.
+>>>>>=20
+>>>>> IOW, QEMU had a background job setting there waiting for a =
+connection
+>>>>> that would never come.
+>>>>>=20
+>>>>> As a result when QEMU started executing the guest, all the serial =
+port
+>>>>> writes get sent into to the void.
+>>>>>=20
+>>>>>=20
+>>>>> So John's patch has had a semantic change in behaviour, because =
+the
+>>>>> console socket is permanently open, and thus socket buffers are =
+liable
+>>>>> to fill up.
+>>>>>=20
+>>>>> As a demo I increased the socket buffers to 1MB and everything =
+then
+>>>>> succeeded.
+>>>>>=20
+>>>>> @@ -357,6 +360,10 @@ def _pre_launch(self) -> None:
+>>>>>=20
+>>>>>        if self._console_set:
+>>>>>            self._cons_sock_pair =3D socket.socketpair()
+>>>>> +            self._cons_sock_pair[0].setsockopt(socket.SOL_SOCKET, =
+socket.SO_SNDBUF, 1024*1024);
+>>>>> +            self._cons_sock_pair[0].setsockopt(socket.SOL_SOCKET, =
+socket.SO_RCVBUF, 1024*1024);
+>>>>> +            self._cons_sock_pair[1].setsockopt(socket.SOL_SOCKET, =
+socket.SO_SNDBUF, 1024*1024);
+>>>>> +            self._cons_sock_pair[1].setsockopt(socket.SOL_SOCKET, =
+socket.SO_RCVBUF, 1024*1024);
+>>>>>            os.set_inheritable(self._cons_sock_pair[0].fileno(), =
+True)
+>>>>>=20
+>>>>>        # NOTE: Make sure any opened resources are *definitely* =
+freed in
+>>>>=20
+>>>> So perhaps ppc64 fails just because it prints more to the console =
+in early
+>>>> boot than other targets?
+>>>>=20
+>>>>> The Machine class doesn't know if anything will ever use the =
+console,
+>>>>> so as is the change is unsafe.
+>>>>>=20
+>>>>> The original goal of John's change was to guarantee we capture =
+early
+>>>>> boot messages as some test need that. =20
+>>>>>=20
+>>>>> I think we need to be able to have a flag to say whether the =
+caller needs
+>>>>> an "early console" facility, and only use the pre-opened FD =
+passing for
+>>>>> that case. Tests we need early console will have to ask for that =
+guarantee
+>>>>> explicitly.
+>>>>=20
+>>>> The below patch makes this test work. Maybe as a quick fix it is
+>>>> better than disabling the test.
+>>>>=20
+>>>> I guess we still have a problem if a test invokes vm.launch()
+>>>> directly without subsequently waiting for a console pattern or
+>>>> doing something with the console as you say. Your suggesstion is
+>>>> add something like vm.launch(console=3DTrue) ?=20
+>>>=20
+>>> I think what he is saying is to add a new property for QEMUMachine() =
+with which the test can explicitly tell the machine init code that it is =
+going to drain the console logs. By default it can be false. When tests =
+use console_drainer, they can set the property to true and inspect the =
+early console logs after draining it.=20
+>>=20
+>> Hmm... well we do have QEMUMachine.set_console already. Is this =
+enough?
+>> If the test case is not going to drain or interact with the console
+>> then it could set it to false. Or am I missing something?
+>=20
+> Yeah, set_console is enough - i missed that that exists.
+>=20
+> Thus problem is more specific. It hits when a test calls
+> set_console(True), but then fails to read from the console.
 
-1) #define TYPE_DUMMY "qemu:dummy" in tests/unit/test-io-task.c ...
-    easy to fix, it's just a unit test anyway
+So then it is a test issue in that the test requests console to be =
+enabled but does not look at the console o/p.
 
-2) #define TYPE_RAM_DISCARD_MANAGER "qemu:ram-discard-manager"
-    in include/exec/memory.h ... I believe it should be OK to
-    simply rename it, since it's about an interface type...
-    Or do we use these interface names in migration streams, too?
+>=20
+>=20
+> With regards,
+> Daniel
+> --=20
+> |: https://berrange.com      -o-    =
+https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-            =
+https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-    =
+https://www.instagram.com/dberrange :|
 
-I'll try to come up with some patches to rename them ... let's see how it 
-goes...
-
-  Thomas
 
 
