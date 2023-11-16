@@ -2,75 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B5C7EE427
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 16:25:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 523B27EE48B
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 16:45:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3eDb-0002LE-39; Thu, 16 Nov 2023 10:23:47 -0500
+	id 1r3eXd-0002Gl-46; Thu, 16 Nov 2023 10:44:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1r3eDY-0002Jv-7m
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 10:23:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1r3eDU-0003W0-EY
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 10:23:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700148219;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rMFovMmAZzuE9DyDNWbNcGOU9+nIkR+RL3127aCRJ1g=;
- b=VkZ++OU6r1eqPNW417CeTtrRkTZ2IN6BS2+6MQcsVDLgfFKocQQywUwkGlNAt3KEaIY+Lh
- vFNlEPpXSNyCtXQN2myjwUlkYU8j90CLsbU+w2sIOsL1QLfr6iNaYIEY85hltbbV26V4TY
- ++EtC4y6Ksdkt4+c8ZlFiWsdxQE4rqE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-519-40x4p16VOx6cXvHD0A6-CA-1; Thu, 16 Nov 2023 10:23:36 -0500
-X-MC-Unique: 40x4p16VOx6cXvHD0A6-CA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6787F101A54C;
- Thu, 16 Nov 2023 15:23:35 +0000 (UTC)
-Received: from [10.39.193.151] (unknown [10.39.193.151])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 53AA11C060AE;
- Thu, 16 Nov 2023 15:23:33 +0000 (UTC)
-Message-ID: <177badae-dcde-947e-0a28-03b6dfb2f55d@redhat.com>
-Date: Thu, 16 Nov 2023 16:23:32 +0100
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3eXa-0002GT-51
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 10:44:26 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3eXX-0001zZ-Cu
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 10:44:25 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-9dd6dc9c00cso140512766b.3
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 07:44:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700149461; x=1700754261; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fWQnUEhRJrxW01oguvF8ZMZ9FfRiBaREpNV93GqJxUQ=;
+ b=tvad7VcLbPMq5ZSC2E56CCoOdCF3VPG9qoVJT6b+9X4ScP30Q0j3LuzwkdPoQbJEqk
+ s/b/hdVRDfGF1scTr8LI916k/qBBSlZ42X+XtPcpRZOulhq9aV3a51UjoihKEF1TGruw
+ f8/B/FAjzh8UHpVje6lu4/ysO8KVpAtEVbNrO5R7XRe6i0Nx97qu9c0lVw3ADHHZ15ro
+ FduIPUTcQmx0yIq6nwDSzIo3B48PXqPZ+ry9djlkiDYM7Z59EcqBqUvu8d9D/7CHRwBC
+ heKf1LWwOoxARQO+5rDdeKRv8dz2sSNO72EZfJyrp+3abpVz4C00F9XPfqI+mZyNzOMJ
+ UhEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700149461; x=1700754261;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fWQnUEhRJrxW01oguvF8ZMZ9FfRiBaREpNV93GqJxUQ=;
+ b=SVEzwFFzEH0MCBcix34X4z/TqOh0rLeTbGVEs24Q7YDo/Zr4KFVcuX6zby+XWmD2mp
+ P0fpPPRW7ydywhuSeEE/wcjZS7mWad46a9N6oIYsKdk5D6S2eN+MtlKZVvfslan/wQwU
+ QyV3hQuhk8vGUlvs4r/LX6ZCzXmFQ8KEVFUY3MzF3/guVvyZmcc5nL/aCH4ysyITDGmT
+ LX8pjacAlQoTeHMqXVL+CgEIM5f6FcMsXMYPYIWAQlT91O+2ktEBCZ46/MQSwGpxVJEt
+ UKyMff+OYNXz6mIFgZq+pK4XfnAAPFTBlJlbLRQBrJ1ivCfYwJAsV+NAZYuw+ppAcbLz
+ Ckvg==
+X-Gm-Message-State: AOJu0YzWTyZxFyoQrKOFJoDQw4qoU6medn0gg4bnXQhXwmpbZOkIFbeO
+ B8kuYuvrlODbbOqalrYCG8OxRg==
+X-Google-Smtp-Source: AGHT+IFPKTzY6LdnH9IRdXJvnEmp2IGjdP10xizKTmXIH8VPns3mzV4jWsDPIrCYGeus6hV2Pk3tHQ==
+X-Received: by 2002:a17:907:72ca:b0:9e8:b694:3312 with SMTP id
+ du10-20020a17090772ca00b009e8b6943312mr2577037ejc.14.1700149461303; 
+ Thu, 16 Nov 2023 07:44:21 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.220.205])
+ by smtp.gmail.com with ESMTPSA id
+ fi5-20020a170906da0500b009e5db336137sm8634527ejb.196.2023.11.16.07.44.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 Nov 2023 07:44:20 -0800 (PST)
+Message-ID: <89ee4de6-db99-4434-8422-77b1923296b0@linaro.org>
+Date: Thu, 16 Nov 2023 16:44:19 +0100
 MIME-Version: 1.0
-Subject: Re: [PATCH 02/16] hw/uefi: add include/hw/uefi/var-service-edk2.h
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-8.2] hw/net/can/xlnx-zynqmp: Avoid underflow while
+ popping TX FIFO
 Content-Language: en-US
-To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Eric Blake <eblake@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, graf@amazon.com,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-References: <20231115151242.184645-1-kraxel@redhat.com>
- <20231115151242.184645-3-kraxel@redhat.com>
-From: Laszlo Ersek <lersek@redhat.com>
-In-Reply-To: <20231115151242.184645-3-kraxel@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=lersek@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+To: Francisco Iglesias <francisco.iglesias@amd.com>, qemu-devel@nongnu.org
+Cc: Pavel Pisa <pisa@cmp.felk.cvut.cz>, Jason Wang <jasowang@redhat.com>,
+ Vikram Garhwal <fnu.vikram@xilinx.com>,
+ Anton Kochkov <anton.kochkov@proton.me>, Qiang Liu <cyruscyliu@gmail.com>
+References: <20231115151711.89170-1-philmd@linaro.org>
+ <9282e81c-51a6-46be-bcfa-dfec2f04a817@amd.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <9282e81c-51a6-46be-bcfa-dfec2f04a817@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,375 +95,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/15/23 16:12, Gerd Hoffmann wrote:
-> A bunch of #defines and structs copied over from edk2,
-> mostly needed to decode and encode the messages in the
-> communication buffer.
+Hi Francisco,
+
+On 16/11/23 15:17, Francisco Iglesias wrote:
+> Hi Philippe, good catch!
+
+Well this was fuzzed by Qiang Liu.
+
+> On 2023-11-15 16:17, Philippe Mathieu-Daudé wrote:
+>> Per 
+>> https://docs.xilinx.com/r/en-US/ug1085-zynq-ultrascale-trm/Message-Format
+>>
+>>    Message Format
+>>
+>>    The same message format is used for RXFIFO, TXFIFO, and TXHPB.
+>>    Each message includes four words (16 bytes). Software must read
+>>    and write all four words regardless of the actual number of data
+>>    bytes and valid fields in the message.
+>>
+>> There is no mention in this reference manual about what the
+>> hardware does when not all four words are written. To fix the
+>> reported underflow behavior when DATA2 register is written,
+>> I choose to fill the data with the previous content of the
+>> ID / DLC / DATA1 registers, which is how I expect hardware
+>> would do.
+>>
+>> Note there is no hardware flag raised under such condition.
+>>
+>> Reported-by: Qiang Liu <cyruscyliu@gmail.com>
+>> Fixes: 98e5d7a2b7 ("hw/net/can: Introduce Xilinx ZynqMP CAN controller")
+>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1425
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> Tested with the CAN tests from 'make check-qtest-aarch64'
+>> ---
+>>   hw/net/can/xlnx-zynqmp-can.c | 49 +++++++++++++++++++++++++++++++++---
+>>   1 file changed, 46 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/hw/net/can/xlnx-zynqmp-can.c b/hw/net/can/xlnx-zynqmp-can.c
+>> index e93e6c5e19..58938b574e 100644
+>> --- a/hw/net/can/xlnx-zynqmp-can.c
+>> +++ b/hw/net/can/xlnx-zynqmp-can.c
+>> @@ -434,6 +434,51 @@ static bool tx_ready_check(XlnxZynqMPCANState *s)
+>>       return true;
+>>   }
+>> +static void read_tx_frame(XlnxZynqMPCANState *s, Fifo32 *fifo, 
+>> uint32_t *data)
+>> +{
+>> +    unsigned used = fifo32_num_used(fifo);
 > 
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
->  include/hw/uefi/var-service-edk2.h | 184 +++++++++++++++++++++++++++++
->  1 file changed, 184 insertions(+)
->  create mode 100644 include/hw/uefi/var-service-edk2.h
+> For the case when there are multiple frames in the fifo we need to swap 
+> above to:
 > 
-> diff --git a/include/hw/uefi/var-service-edk2.h b/include/hw/uefi/var-service-edk2.h
-> new file mode 100644
-> index 000000000000..354b74d1d71c
-> --- /dev/null
-> +++ b/include/hw/uefi/var-service-edk2.h
-> @@ -0,0 +1,184 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * uefi-vars device - structs and defines from edk2
-> + *
-> + * Note: The edk2 UINTN type has been mapped to uint64_t,
-> + *       so the structs are compatible with 64bit edk2 builds.
-
-(1) What is the failure mode if the guest runs a 32-bit DXE phase and
-tries to access this device?
-
-> + */
-> +#ifndef QEMU_UEFI_VAR_SERVICE_EDK2_H
-> +#define QEMU_UEFI_VAR_SERVICE_EDK2_H
-> +
-> +#include "qemu/uuid.h"
-> +
-> +#define MAX_BIT                   0x8000000000000000ULL
-> +#define ENCODE_ERROR(StatusCode)  (MAX_BIT | (StatusCode))
-> +#define EFI_SUCCESS               0
-
-(2) Probably better to make this 0ULL, so that its type is consistent
-with that of the error codes.
-
-(3) BTW, these error codes are not edk2-specific; they are from the UEFI
-spec (Appendix D, "Status Codes"). I'm mentioning it because it might
-clarify the commit message.
-
-> +#define EFI_INVALID_PARAMETER     ENCODE_ERROR(2)
-> +#define EFI_UNSUPPORTED           ENCODE_ERROR(3)
-> +#define EFI_BAD_BUFFER_SIZE       ENCODE_ERROR(4)
-> +#define EFI_BUFFER_TOO_SMALL      ENCODE_ERROR(5)
-
-(4) any particular reason for skipping NOT_READY (6) and DEVICE_ERROR (7)?
-
-(If this file only defines status codes that the code actually uses,
-that's best!)
-
-> +#define EFI_WRITE_PROTECTED       ENCODE_ERROR(8)
-> +#define EFI_OUT_OF_RESOURCES      ENCODE_ERROR(9)
-> +#define EFI_NOT_FOUND             ENCODE_ERROR(14)
-> +#define EFI_ACCESS_DENIED         ENCODE_ERROR(15)
-> +#define EFI_ALREADY_STARTED       ENCODE_ERROR(20)
-> +
-> +#define EFI_VARIABLE_NON_VOLATILE                           0x01
-> +#define EFI_VARIABLE_BOOTSERVICE_ACCESS                     0x02
-> +#define EFI_VARIABLE_RUNTIME_ACCESS                         0x04
-> +#define EFI_VARIABLE_HARDWARE_ERROR_RECORD                  0x08
-> +#define EFI_VARIABLE_AUTHENTICATED_WRITE_ACCESS             0x10  // deprecated
-> +#define EFI_VARIABLE_TIME_BASED_AUTHENTICATED_WRITE_ACCESS  0x20
-> +#define EFI_VARIABLE_APPEND_WRITE                           0x40
-> +
-> +/* SecureBootEnable */
-
-(5) L"SecureBootEnable"
-
-(6) mentioning the variable namespace GUID might be worthwhile as well
-(gEfiSecureBootEnableDisableGuid -- F0A30BC7-AF08-4556-99C4-001009C93A44)
-
-(7) this variable is an edk2 extension indeed; might be worth mentioning
-
-> +#define SECURE_BOOT_ENABLE         1
-> +#define SECURE_BOOT_DISABLE        0
-> +
-> +/* SecureBoot */
-
-(8) L"SecureBoot"
-
-(9) this one is standard, so the namespace GUID is not important to
-mention -- but maybe mention that it is standard
-
-> +#define SECURE_BOOT_MODE_ENABLE    1
-> +#define SECURE_BOOT_MODE_DISABLE   0
-> +
-> +/* CustomMode */
-
-the usual comments:
-
-(10) L"CustomMode"
-
-(11) GUID: gEfiCustomModeEnableGuid -- C076EC0C-7028-4399-A072-71EE5C448B9F
-
-(12) edk2 extension
-
-> +#define CUSTOM_SECURE_BOOT_MODE    1
-> +#define STANDARD_SECURE_BOOT_MODE  0
-> +
-> +/* SetupMode */
-
-(13) L"SetupMode"
-
-(14) standard
-
-> +#define SETUP_MODE                 1
-> +#define USER_MODE                  0
-> +
-> +typedef uint64_t efi_status;
-> +typedef struct mm_header mm_header;
-> +
-> +/* EFI_MM_COMMUNICATE_HEADER */
-> +struct mm_header {
-> +    QemuUUID  guid;
-> +    uint64_t  length;
-> +};
-
-(15) QEMU_PACKED
-
-> +
-> +/* --- EfiSmmVariableProtocol ---------------------------------------- */
-
-(16) this is a bit too cryptic like this; what we mean here is that
-mm_header.guid is gEfiSmmVariableProtocolGuid
-(ED32D533-99E6-4209-9CC0-2D72CDD998A7) for the following functions
-
-(17) do you want to define SMM_VARIABLE_COMMUNICATE_HEADER as well?
-(because the function codes make sense inside that header) -- ah wait,
-those are below; OK
-
-(18) slight inconsistency: the function macros are named SMM_*, but the
-types are named mm_*.
-
-However... that inconsistency seems to be there in edk2 to as well; we
-don't have (for example) "MM_VARIABLE_FUNCTION_GET_VARIABLE"
-
-> +
-> +#define SMM_VARIABLE_FUNCTION_GET_VARIABLE            1
-> +#define SMM_VARIABLE_FUNCTION_GET_NEXT_VARIABLE_NAME  2
-> +#define SMM_VARIABLE_FUNCTION_SET_VARIABLE            3
-> +#define SMM_VARIABLE_FUNCTION_QUERY_VARIABLE_INFO     4
-> +#define SMM_VARIABLE_FUNCTION_READY_TO_BOOT           5
-> +#define SMM_VARIABLE_FUNCTION_EXIT_BOOT_SERVICE       6
-> +#define SMM_VARIABLE_FUNCTION_LOCK_VARIABLE           8
-> +#define SMM_VARIABLE_FUNCTION_GET_PAYLOAD_SIZE       11
-> +
-> +typedef struct mm_variable mm_variable;
-> +typedef struct mm_variable_access mm_variable_access;
-> +typedef struct mm_next_variable mm_next_variable;
-> +typedef struct mm_next_variable mm_lock_variable;
-> +typedef struct mm_variable_info mm_variable_info;
-> +typedef struct mm_get_payload_size mm_get_payload_size;
-> +
-> +/* SMM_VARIABLE_COMMUNICATE_HEADER */
-> +struct mm_variable {
-> +    uint64_t  function;
-> +    uint64_t  status;
-> +};
-
-(19) you have a typedef for efi_status above; no need to decode it to
-uint64_t here (for the status field)
-
-(20) This too should be QEMU_PACKED. (Will not make a difference in
-practice, but this is wire protocol, so best be clear.)
-
-BTW I'm just noticing that SMM_VARIABLE_COMMUNICATE_HEADER in edk2's
-"MdeModulePkg/Include/Guid/SmmVariableCommon.h" is *not* marked packed.
-That's a bug in edk2, of course (documentation bug).
-
-(21) a comment about the general request structure would be helpful:
-mm_header + mm_variable + function payload (any).
-
-> +
-> +/* SMM_VARIABLE_COMMUNICATE_ACCESS_VARIABLE */
-
-(22) worth mentioning functions 1 and 3?
-
-> +struct QEMU_PACKED mm_variable_access {
-
-I can see you packed this! :)
-
-> +    QemuUUID  guid;
-> +    uint64_t  data_size;
-
-correct, but we'll have to be careful with the range checks / buffer
-size checks later, because UEFI_VARS_REG_BUFFER_SIZE is only 32-bit!
-
-> +    uint64_t  name_size;
-> +    uint32_t  attributes;
-> +    /* Name */
-> +    /* Data */
-> +};
-> +
-> +/* SMM_VARIABLE_COMMUNICATE_GET_NEXT_VARIABLE_NAME */
-
-(23) worth mentioning function 2, or is that obvious from the name?
-
-> +struct mm_next_variable {
-> +    QemuUUID  guid;
-> +    uint64_t  name_size;
-> +    /* Name */
-> +};
-
-(24) should be packed
-
-> +
-> +/* SMM_VARIABLE_COMMUNICATE_QUERY_VARIABLE_INFO */
-> +struct QEMU_PACKED mm_variable_info {
-> +    uint64_t max_storage_size;
-> +    uint64_t free_storage_size;
-> +    uint64_t max_variable_size;
-> +    uint32_t attributes;
-> +};
-
-(25) mention function 4?
-
-> +
-> +/* SMM_VARIABLE_COMMUNICATE_GET_PAYLOAD_SIZE */
-
-(26) mention function 11?
-
-> +struct mm_get_payload_size {
-> +    uint64_t  payload_size;
-> +};
-
-(27) should be packed (just for documentation / exluding trailing padding)
-
-> +
-> +/* --- VarCheckPolicyLibMmiHandler ----------------------------------- */
-
-(28) Please be clearer: this means that we place GUID
-DA1B0D11-D1A7-46C4-9DC9-F3714875C6EB into mm_header.guid.
-
-(29) Also record that the generic structure is mm_header +
-mm_check_policy + command payload (if any).
-
-> +
-> +#define VAR_CHECK_POLICY_COMMAND_DISABLE     0x01
-> +#define VAR_CHECK_POLICY_COMMAND_IS_ENABLED  0x02
-> +#define VAR_CHECK_POLICY_COMMAND_REGISTER    0x03
-> +#define VAR_CHECK_POLICY_COMMAND_DUMP        0x04
-> +#define VAR_CHECK_POLICY_COMMAND_LOCK        0x05
-> +
-> +typedef struct mm_check_policy mm_check_policy;
-> +typedef struct mm_check_policy_is_enabled mm_check_policy_is_enabled;
-> +typedef struct mm_check_policy_dump_params mm_check_policy_dump_params;
-> +
-> +/* VAR_CHECK_POLICY_COMM_HEADER */
-> +struct QEMU_PACKED mm_check_policy {
-> +    uint32_t  signature;
-> +    uint32_t  revision;
-> +    uint32_t  command;
-> +    uint64_t  result;
-
-(30) field "result" should have "efi_status"
-
-(31) define the macros for (a) signature (VCPC) and (b) revision (1)?
-
-> +};
-> +
-> +/* VAR_CHECK_POLICY_COMM_IS_ENABLED_PARAMS */
-
-(32) mention command 2? (Just guessing)
-
-> +struct QEMU_PACKED mm_check_policy_is_enabled {
-> +    uint8_t   state;
-> +};
-
-(33) given that this is a "BOOLEAN" in the original, we might want to
-introduce a typedef "edk2_boolean" for uint8_t. Just an idea.
-
-> +
-> +/* VAR_CHECK_POLICY_COMM_DUMP_PARAMS */
-
-(34) mention command 4?
-
-> +struct QEMU_PACKED mm_check_policy_dump_params {
-> +    uint32_t  page_requested;
-> +    uint32_t  total_size;
-> +    uint32_t  page_size;
-> +    uint8_t   has_more;
-
-(35) consider updating the last field's type to "edk2_boolean".
-
-> +};
-> +
-> +/* --- Edk2VariablePolicyProtocol ------------------------------------ */
-
-(36) the proper spelling is "EdkiiVariablePolicyProtocol" (note: roman
-numeral "ii" rather than arabic numeral 2)
-
-(37) Mentioning this protocol here is confusing, IMO. Please correct me
-if I'm wrong, but the protocol appears to be used between DXE
-components, and not on the DXE<->SMM boundary.
-
-Instead, we need the following ABIs as payloads for
-VAR_CHECK_POLICY_COMMAND_REGISTER.
-
-Therefore I would remove the EdkiiVariablePolicyProtocol mention above
-altogether, and instead clarify that these are for:
-
-- mm_header + mm_check_policy (command 3) + variable_policy_entry,
-  or
-
-- mm_header + mm_check_policy (command 3) +
-  variable_policy_entry (policy 3) + variable_lock_on_var_state
-
-> +
-> +#define VARIABLE_POLICY_ENTRY_REVISION  0x00010000
-> +
-> +#define VARIABLE_POLICY_TYPE_NO_LOCK            0
-> +#define VARIABLE_POLICY_TYPE_LOCK_NOW           1
-> +#define VARIABLE_POLICY_TYPE_LOCK_ON_CREATE     2
-> +#define VARIABLE_POLICY_TYPE_LOCK_ON_VAR_STATE  3
-> +
-> +typedef struct variable_policy_entry variable_policy_entry;
-> +typedef struct variable_lock_on_var_state variable_lock_on_var_state;
-> +
-> +/* VARIABLE_POLICY_ENTRY */
-> +struct variable_policy_entry {
-
-(38) should be packed
-
-> +    uint32_t      version;
-> +    uint16_t      size;
-> +    uint16_t      offset_to_name;
-> +    QemuUUID      namespace;
-> +    uint32_t      min_size;
-> +    uint32_t      max_size;
-
-(39) also define the macros for "no min size" and "no max size"?
-
-> +    uint32_t      attributes_must_have;
-> +    uint32_t      attributes_cant_have;
-
-(40) define the macros that invalidate these fields?
-
-> +    uint8_t       lock_policy_type;
-> +    uint8_t       padding[3];
-> +    /* LockPolicy */
-> +    /* Name */
-> +};
-> +
-> +/* VARIABLE_LOCK_ON_VAR_STATE_POLICY */
-> +struct variable_lock_on_var_state {
-
-(41) should be packed
-
-> +    QemuUUID      namespace;
-> +    uint8_t       value;
-> +    uint8_t       padding;
-> +    /* Name */
-
-(42) probably worth mentioning the link
-
-https://github.com/tianocore/edk2/blob/master/MdeModulePkg/Library/VariablePolicyLib/ReadMe.md
-
-around these parts too, not just in patch 8.
-
-> +};
-> +
-> +
-> +#endif /* QEMU_UEFI_VAR_SERVICE_EDK2_H */
-
-Laszlo
+> unsigned used = fifo32_num_used(fifo) > CAN_FRAME_SIZE ? 0 : 
+> fifo32_num_used(fifo);
+
+Isn't this ...
+
+> With above minor modification:
+> 
+> Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+> 
+> Best regards,
+> Francisco
+> 
+>> +    bool is_txhpb = fifo == &s->txhpb_fifo;
+>> +
+>> +    assert(used > 0);
+>> +    used %= CAN_FRAME_SIZE;
+
+... done here?
+
+>> +    /*
+>> +     * Frame Message Format
+>> +     *
+>> +     * Each frame includes four words (16 bytes). Software must read 
+>> and write
+>> +     * all four words regardless of the actual number of data bytes 
+>> and valid
+>> +     * fields in the message.
+>> +     * If software misbehave (not writting all four words), we use 
+>> the previous
+>> +     * registers content to initialize each missing word.
+>> +     */
+>> +    if (used > 0) {
+>> +        /* ID, DLC, DATA1 missing */
+>> +        data[0] = s->regs[is_txhpb ? R_TXHPB_ID : R_TXFIFO_ID];
+>> +    } else {
+>> +        data[0] = fifo32_pop(fifo);
+>> +    }
+>> +    if (used == 1 || used == 2) {
+>> +        /* DLC, DATA1 missing */
+>> +        data[1] = s->regs[is_txhpb ? R_TXHPB_DLC : R_TXFIFO_DLC];
+>> +    } else {
+>> +        data[1] = fifo32_pop(fifo);
+>> +    }
+>> +    if (used == 1) {
+>> +        /* DATA1 missing */
+>> +        data[2] = s->regs[is_txhpb ? R_TXHPB_DATA1 : R_TXFIFO_DATA1];
+>> +    } else {
+>> +        data[2] = fifo32_pop(fifo);
+>> +    }
+>> +    /* DATA2 triggered the transfer thus is always available */
+>> +    data[3] = fifo32_pop(fifo);
+>> +
+>> +    if (used) {
+>> +        qemu_log_mask(LOG_GUEST_ERROR,
+>> +                      "%s: Incomplete CAN frame (only %u/%u slots 
+>> used)\n",
+>> +                      TYPE_XLNX_ZYNQMP_CAN, used, CAN_FRAME_SIZE);
+>> +    }
+>> +}
 
 
