@@ -2,89 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E211B7EDD80
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 10:20:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 884767EDD7C
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 10:19:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3YXn-0003ZU-Bo; Thu, 16 Nov 2023 04:20:15 -0500
+	id 1r3YUy-0001zs-M7; Thu, 16 Nov 2023 04:17:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r3YXk-0003ZD-KI
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 04:20:12 -0500
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r3YXf-0002aF-7R
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 04:20:12 -0500
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-507e85ebf50so741456e87.1
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 01:20:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700126405; x=1700731205; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=P+83mzGPcTCEuRN4V/vbE0WFrnq4hzyjoU9q4zDERpA=;
- b=cUSigqrECfADNP3NrUlue+M4sOOQWuYhbqFuUKW18cWSjeFhuB0b/Cmjml1vuDhOcW
- q5MysiSqfUWQ0b0S7J2NCa93/Ih2LdE89X6JZ8jdosURKyxGgbStYM6rQ74ZI0lMYJgU
- kb3Fz/oo51NtdgzDBiwvabOzYdFGEPHDQBlneqmbDN4gm/Ld+3+J54e1yDQ2ZOD9PbRi
- Ttj1mon67CZUb8XqeTS/YZNV0tgqSRLxVIzPkyj15lFP5A/12A6KyNP/7c1S4XS/R1k9
- MnHKehZEi5tzvMVD1iGnDcohZn+2CPMiXrFFqDm5V9GYNFDzvP2lCcXDaKm3068uTBLq
- N8vw==
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1r3YUv-0001zN-7F
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 04:17:17 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1r3YUn-0002Ep-Ru
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 04:17:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700126227;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JMjI2XfaZPZ8aJPRJ2OB+Zq7VaBJBQrbnLsWTaiaZso=;
+ b=cX+w2CZdL+KsVhjKwE8dOO0ffnmjx0DpQSaoC3qkMZyZV39StOuy+9kdKobsBky0T64dim
+ p2sigo3VN4/rQzMClzAAPoA7mEcdGhv2eFTCGqqdmeIy5xu3qtzpHr+jYkHEUef2bWDkj2
+ 4fXTuPL+8nUVyasy8j/iMWlMiOxw/bs=
+Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
+ [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-611-9FwwjGSoMW2lkHDhFhw2aQ-1; Thu, 16 Nov 2023 04:17:05 -0500
+X-MC-Unique: 9FwwjGSoMW2lkHDhFhw2aQ-1
+Received: by mail-yb1-f199.google.com with SMTP id
+ 3f1490d57ef6-da0cb98f66cso746223276.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 01:17:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700126405; x=1700731205;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=P+83mzGPcTCEuRN4V/vbE0WFrnq4hzyjoU9q4zDERpA=;
- b=d4S1+8pjT39LZQhMKIJ3oCxLg8qlA5NirjfUgXUb77OReHNJ8fsnBn2+bgf6wjgSTk
- GUFRFRIeHsSExr39loIc/0VH/gk3HwFTS7Ep/H/HgBaBv2y3Drl+UEA75QMth+tOVvAk
- ggoDHkQ4y6WOKtI3mYW3IzPpnTvqViFgy0pcd9L6sf0oQiLJeuQUXDVpZql7IMwpka1Q
- uf0LdwVLneL57FQB4Ep4/RO04ojKbje/BAmI3D2ICkXukQZBPd6LQ11plSyfbfQBqSAL
- G3SFtD8thbSsd6obJBMv+47KwpIjdfWXuJK8+PlJ04SGCEcT1K/0k1PPct2YTo5bXm3r
- Lr4A==
-X-Gm-Message-State: AOJu0YwtOxFcsy4deqDLrkbI20unv0YelkAZXav6bvX5m8BIH++cugXT
- mduPaHSNDn0ThvYSLY+ci9tWdQ==
-X-Google-Smtp-Source: AGHT+IHlccRFkIVtecwUQldCq3K/ySQAdX7Wt2QMr/xdP+vnxcsrgK4dOsmD1hA3p8bAd84h3shB1A==
-X-Received: by 2002:a19:f819:0:b0:509:489f:d84e with SMTP id
- a25-20020a19f819000000b00509489fd84emr10357854lff.37.1700126405259; 
- Thu, 16 Nov 2023 01:20:05 -0800 (PST)
-Received: from meli.delivery (adsl-149.37.6.3.tellas.gr. [37.6.3.149])
+ d=1e100.net; s=20230601; t=1700126225; x=1700731025;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JMjI2XfaZPZ8aJPRJ2OB+Zq7VaBJBQrbnLsWTaiaZso=;
+ b=vPDmV4HHoEwngNzyh3wZmXbx93vwlSMQ1aUx6bg6+DJ5DSbk5NIk0B5IQPaEsyQTel
+ OmpAMRCSx1vy4jgr42DE/9bFnd546bd0FiM16gIHQla8BHrgbwedbfn+i5QIRZfmbD2j
+ gOyPLE866vNosdauIGF8j5aVOn4ki/fEHECVaH+F7rpkYsM/73t+EqVQ1gXrNkFqolgy
+ HWw/KwuWRuUOfK47d6ER6fV4A+B3t49uFtlED5QmZOcXSoUtGfFuGDj+H3j60/UtAd4S
+ UUX3Cu0hluegMmLAduze6j5SZ/rprKH7PKWJMPZnA5As/fSzZknx3AUzSHLGrajTjv/h
+ UhJg==
+X-Gm-Message-State: AOJu0YxYdg+JwtfKx6ijfs00Z2wcqhzsbavoKR0qjmzwKYknpThE+8VQ
+ 8CDgqN2V01wZgjxpq3C2+wTOSA4m8aOnCP4o/6ppiXFgwv/ygcBDt1/MItesu2JDvGF97eIDszA
+ DYuNrOE6sl/daNew=
+X-Received: by 2002:a25:4215:0:b0:daf:936f:4547 with SMTP id
+ p21-20020a254215000000b00daf936f4547mr11461019yba.19.1700126225371; 
+ Thu, 16 Nov 2023 01:17:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEQx0/s9WnUaEvefnQxiYuQQs59358SoLrpA+3H2oMXu4YxSiMnzQPA4wjlxH3ouZLUR4dJJg==
+X-Received: by 2002:a25:4215:0:b0:daf:936f:4547 with SMTP id
+ p21-20020a254215000000b00daf936f4547mr11460994yba.19.1700126225117; 
+ Thu, 16 Nov 2023 01:17:05 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- dn17-20020a0560000c1100b0032db1d741a6sm12726356wrb.99.2023.11.16.01.20.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Nov 2023 01:20:05 -0800 (PST)
-Date: Thu, 16 Nov 2023 11:16:32 +0200
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Volker R=?UTF-8?B?w7w=?= melin <vr_qemu@t-online.de>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PATCH-for-8.2] virtio-sound: add realize() error cleanup path
-User-Agent: meli 0.8.2
-References: <20231116072046.4002957-1-manos.pitsidianakis@linaro.org>
- <88363f15-697b-4b04-ad4d-af0aa5fb75aa@linaro.org>
- <47h4g.6wu5d10yw748@linaro.org>
- <688bc783-e56f-4e24-95f6-a69aa4bc8863@linaro.org>
- <47klp.p79qnee6q9fx@linaro.org>
- <3839ec93-8fc3-4e30-b554-6bb257e3da6d@linaro.org>
-In-Reply-To: <3839ec93-8fc3-4e30-b554-6bb257e3da6d@linaro.org>
-Message-ID: <47lxe.wzcd1i39zcr1@linaro.org>
+ p11-20020ad451cb000000b0066d04196c3dsm1240544qvq.49.2023.11.16.01.17.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 Nov 2023 01:17:04 -0800 (PST)
+Message-ID: <60f67b6b-a9f8-4bf2-a05a-6edc01c5da7e@redhat.com>
+Date: Thu, 16 Nov 2023 10:17:00 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 19/21] hw/arm: Activate IOMMUFD for virt machines
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
+References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
+ <20231114100955.1961974-20-zhenzhong.duan@intel.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20231114100955.1961974-20-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x12d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,54 +107,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 16 Nov 2023 10:54, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->On 16/11/23 09:48, Manos Pitsidianakis wrote:
->> On Thu, 16 Nov 2023 10:42, Philippe Mathieu-Daudé <philmd@linaro.org> 
->> wrote:
->>> On 16/11/23 08:33, Manos Pitsidianakis wrote:
->>>> On Thu, 16 Nov 2023 09:32, Philippe Mathieu-Daudé <philmd@linaro.org> 
->>>> wrote:
->>>>>> ---
->>>>>>
->>>>>> Notes:
->>>>>>      Requires patch 
->>>>>> <20231109162034.2108018-1-manos.pitsidianakis@linaro.org>
->>>>>
->>>>> This is the 'Based-on: ' tag I guess.
->>>>
->>>> There is
->>>>
->>>>   prerequisite-patch-id: 484ec9f7f6109c10d4be0484fe8e3c2550c415f4
->>>
->>> $ git show 484ec9f7f6109c10d4be0484fe8e3c2550c415f4
->>> fatal: bad object 484ec9f7f6109c10d4be0484fe8e3c2550c415f4
->>>
->>> In which tree can we find this commit? Better to use the msg-id,
->>> so tools cat fetch prerequisite.
->>>
->>> I guess the 'patches' tool understand 'Based-on'. Or was it 'patchew'?
->> 
->> It's not a commit SHA, that's why. It's a sha produced by git-patch-id 
->> --stable. It hashes the diffs of the plain-text patch.
->> 
->> https://git-scm.com/docs/git-patch-id
+
+
+On 11/14/23 11:09, Zhenzhong Duan wrote:
+> From: Cédric Le Goater <clg@redhat.com>
 >
->Hmm OK I didn't know, but not sure this could be useful in my patch
->workflow.
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>  hw/arm/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+> index 3ada335a24..660f49db49 100644
+> --- a/hw/arm/Kconfig
+> +++ b/hw/arm/Kconfig
+> @@ -8,6 +8,7 @@ config ARM_VIRT
+>      imply TPM_TIS_SYSBUS
+>      imply TPM_TIS_I2C
+>      imply NVDIMM
+> +    imply IOMMUFD
+>      select ARM_GIC
+>      select ACPI
+>      select ARM_SMMUV3
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-Didn't know either :) I found out because it's put there automatically 
-by format-patch.
+Eric
 
-I just read in the qemu docs ("submitting a patch"):
-
-   It is also okay to base patches on top of other on-going work that is 
-   not yet part of the git master branch. To aid continuous integration 
-   tools, such as patchew, you should add a tag line Based-on: 
-   $MESSAGE_ID to your cover letter to make the series dependency 
-   obvious.
-
-So that settles it.
 
