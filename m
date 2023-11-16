@@ -2,81 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691C57EE141
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 14:15:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF53A7EE142
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 14:15:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3cD1-00005W-80; Thu, 16 Nov 2023 08:15:03 -0500
+	id 1r3cD7-0000Lq-I9; Thu, 16 Nov 2023 08:15:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3cCq-0008Lu-CH
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:14:53 -0500
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3cCo-0002Dm-JM
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:14:52 -0500
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-5435336ab0bso1238376a12.1
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 05:14:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700140489; x=1700745289; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=i0PGe71PXVAUO8kr839stx3fGDJiHTEO+jgSGCO/uGA=;
- b=DV1sAPgjovdYMM3nKt9LYNblPxUSbFex4klJE9Kdi4lT4qIe5RuuwGJBy0FLeFjzfj
- AmqtlDpdjRm9d+xm7CdJdP7CSWCq4bSHXXMmx/z6g3bv6o08ofBA+iSW9g806JJaEVCu
- vcxC3l898/uXG3rlbQt6N4NDheuVBxAU9MVGAkDvmWMqL/YLhXdXkL7Qfks2xM/zzeYH
- tCbtKLyfNE6qLP5bdkEaKi7i0SDkJSx6UJPHxOe9xzCxT/25H1qNyIxjFre0oKxH9fE5
- db588IoyJL3jX6pMCB9TxDzBhCwJxaKnsFvsEHirLCW1DfYuW8Blex5yG+u7zpGoCBke
- NcWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700140489; x=1700745289;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=i0PGe71PXVAUO8kr839stx3fGDJiHTEO+jgSGCO/uGA=;
- b=TRVpABH2LXrYqzBLgWEUpV/5Mm3088k4Qx5R+ZYuQcOHkkDJC4buBq9a1S3Xmbuk4b
- s+8ZmFhMnjGqdNtNESBfE2pjJ5EptF+9pjHpFqGEvDtbt9Hhv4bolndChWQCb3d0nCVg
- iec6YjQz12I4mpoNR6+BYaEhc46VLkhaqq0G09NGXAwoXVBbohIXFzqcUc4lVNaRAn2p
- 5wo9oH3Wu639UJGN0aBYifCz6QpcG+ll2A1lfr8nIedJy4Kwb91fx/RYvjw8+uRRCTm+
- Rzr5Ge3RMcMXseVgoA7zZCMOwYaHbSua2dW/uCdYllvu8TSaG9kOlbD55/S24I2JLAZ3
- 0MwQ==
-X-Gm-Message-State: AOJu0Yykv1Jpz8G2WeA+heGE5Qr8cqBmH7VUocN8ZOb+4f1lDOwT3Pvy
- 0uMFHQR8DWyTop5RvCDrrgdY2Q==
-X-Google-Smtp-Source: AGHT+IGS/rCj5T19UY+smh61A0D0sCrhP+ZVsmJexhxrl0VwigAMinZUVctkTQs4t+A4J8IQV4tIhQ==
-X-Received: by 2002:a17:906:7e10:b0:9db:dfb0:a35f with SMTP id
- e16-20020a1709067e1000b009dbdfb0a35fmr12927227ejr.18.1700140489254; 
- Thu, 16 Nov 2023 05:14:49 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.220.205])
- by smtp.gmail.com with ESMTPSA id
- e10-20020a170906080a00b009a193a5acffsm8415558ejd.121.2023.11.16.05.14.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Nov 2023 05:14:48 -0800 (PST)
-Message-ID: <4d48a1c5-381c-4c49-8454-861c29a2449f@linaro.org>
-Date: Thu, 16 Nov 2023 14:14:47 +0100
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3cD5-0000L0-QE
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:15:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3cD2-0002MK-TW
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:15:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700140503;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=snw9xEK0v7SZldty7P6Pm+UZKNzNQ4TzJt6o9iZnLqQ=;
+ b=RSvPOSL/9vCMeeNRhPzHF0PAyNMBZnrIx6VOWDklPp36OC28acd7NmfVtt9F+xNh9QtOd0
+ wgMGPTimNmKWlpIN7ylcIPlNH28nvOZfvjOBORInu2NgccMn82J0tU7qoUhHF+3aWEy+Ct
+ QmdvPtM3sreeA/mVLKjcWgi6FX5YU7I=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-266-ZzT34rk3MZyQzgosbFQGdQ-1; Thu,
+ 16 Nov 2023 08:14:59 -0500
+X-MC-Unique: ZzT34rk3MZyQzgosbFQGdQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2E3963C2364F;
+ Thu, 16 Nov 2023 13:14:59 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.72])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 31B701C060B0;
+ Thu, 16 Nov 2023 13:14:55 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Cc: Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH v2 0/5] Limit type names to alphanumerical and some few
+ special characters
+Date: Thu, 16 Nov 2023 14:14:49 +0100
+Message-ID: <20231116131454.541434-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] ide/via: don't attempt to set default BAR addresses
-Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, kwolf@redhat.com,
- jsnow@redhat.com, qemu-block@nongnu.org, qemu-devel@nongnu.org,
- balaton@eik.bme.hu, shentey@gmail.com
-References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
- <20231116103355.588580-4-mark.cave-ayland@ilande.co.uk>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231116103355.588580-4-mark.cave-ayland@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_FILL_THIS_FORM_SHORT=0.01,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,21 +84,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/11/23 11:33, Mark Cave-Ayland wrote:
-> The via-ide device currently attempts to set the default BAR addresses to the
-> values shown in the datasheet, but this doesn't work for 2 reasons: firstly
-> BARS 1-4 do not set the bottom 2 bits to PCI_BASE_ADDRESS_SPACE_IO, and
-> secondly the initial PCI bus reset clears the values of all PCI device BARs
-> after the device itself has been reset.
-> 
-> Remove the setting of the default BAR addresses from via_ide_reset() to ensure
-> there is no doubt that these values are never exposed to the guest.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   hw/ide/via.c | 5 -----
->   1 file changed, 5 deletions(-)
+QOM names currently don't have any enforced naming rules. This
+can be problematic, e.g. when they are used on the command line
+for the "-device" option (where the comma is used to separate
+properties). To avoid that such problematic type names come in
+again, let's restrict the set of acceptable characters during the
+type registration.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+First four patches are clean-ups related to comma and colons
+in type names, and the final patch introduces the check for
+valid names.
+
+v2:
+- Include Markus' patches in the series
+- Add patches to clean up colons in type names
+- Add the check to type_register_internal() instead of type_new()
+  so that we can disallow colons, too
+- Only allow '+' in legacy names
+
+Markus Armbruster (2):
+  docs/system/arm: Fix for rename of type "xlnx.bbram-ctrl"
+  hw: Replace anti-social QOM type names (again)
+
+Thomas Huth (3):
+  memory: Remove "qemu:" prefix from the "qemu:ram-discard-manager" type
+    name
+  tests/unit/test-io-task: Rename "qemu:dummy" to avoid colon in the
+    name
+  qom/object: Limit type names to alphanumerical and some few special
+    characters
+
+ docs/system/arm/xlnx-versal-virt.rst     |  4 +--
+ include/exec/memory.h                    |  2 +-
+ include/hw/misc/xlnx-versal-cframe-reg.h |  2 +-
+ include/hw/misc/xlnx-versal-cfu.h        |  6 ++--
+ include/hw/misc/xlnx-versal-crl.h        |  2 +-
+ include/hw/nvram/xlnx-efuse.h            |  2 +-
+ include/hw/nvram/xlnx-versal-efuse.h     |  4 +--
+ include/hw/nvram/xlnx-zynqmp-efuse.h     |  2 +-
+ qom/object.c                             | 41 ++++++++++++++++++++++++
+ tests/unit/test-io-task.c                |  2 +-
+ 10 files changed, 54 insertions(+), 13 deletions(-)
+
+-- 
+2.41.0
 
 
