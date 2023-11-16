@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9CF97EE524
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 17:26:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB037EE54B
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 17:38:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3fBB-0001AF-CU; Thu, 16 Nov 2023 11:25:21 -0500
+	id 1r3fMB-0004Pc-VA; Thu, 16 Nov 2023 11:36:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r3fB8-00016E-AJ
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 11:25:18 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from
+ <3FEVWZQcKCikaJSYZWJLTTLQJ.HTRVJRZ-IJaJQSTSLSZ.TWL@flex--venture.bounces.google.com>)
+ id 1r3fMA-0004Ox-Ax
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 11:36:42 -0500
+Received: from mail-yb1-xb4a.google.com ([2607:f8b0:4864:20::b4a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r3fB6-00033V-7w
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 11:25:17 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5409bc907edso1475199a12.0
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 08:25:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from
+ <3FEVWZQcKCikaJSYZWJLTTLQJ.HTRVJRZ-IJaJQSTSLSZ.TWL@flex--venture.bounces.google.com>)
+ id 1r3fM7-0002Dx-4V
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 11:36:41 -0500
+Received: by mail-yb1-xb4a.google.com with SMTP id
+ 3f1490d57ef6-d9cb79eb417so1233642276.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 08:36:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700151911; x=1700756711; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=bkbUHelvEVfyi281Puw91VQq2VTw+7wRvwEQdRJirao=;
- b=KiB8HKsujsFA+WpMbhIxv5pQqMO6bYLzOm3+PnUs/TECknZRZhLsKlihObAfRzb4Rq
- YM+v+4JjAwI3N8Eto+mvK8rmDOOKYXLBsNgjRsyH6ct1ePwa5UFGgzohgoyWXYdUHsbb
- XtXXAklhCypMvP+huuZKTGtSUCK/ngRi01R2DK46uYNfN+USrcZ4EKe+BOqgJQv5UpFO
- FxHqbBBlkZ1FTSbUqU0pZbkzCi1zJEOqUEvgiVq+T5hwQBWaNxEITnxTr+UVog1zPNTK
- 4NybzFQLsvOjypsc0H9Pj/uhFziibwCv1ShKyrfE6FuX4Lyiox9VP3LUKcvjxooNCaWE
- RqKg==
+ d=google.com; s=20230601; t=1700152596; x=1700757396; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=5CTn0KBxEijOlL5af+zRIi/ha7gH4yvTFUhlq3cejJo=;
+ b=z4DXnRp6BpPBbodJVLHSCRvm+Nxeq436QcbRD97cwpYnfmm8zUn5obae9B2/Hluquz
+ 6UO+GRSJ/a7ECKHX10gyOv7kkDREEpog5MH6PL0kioSxauf+yKtrtnvajb0v1sx9yfUp
+ l+Kb1zxq7194RdFuaMaafc+NkxuA9AtLd1PdFTgnKTv2w8Evph2D7/ARMjJyW/tjfdl/
+ zsuTameQBzx0DhFkOX8grXL0B9uayoCXcIsReTLZEwiLO1pULiHZPTKxHjn+WEgsehGI
+ 2HHMb65uuLp62YBomaMsGDtNzXC01w8hdA7jLKl7kheNMlz/XZ4xzIuucj0BZAUHnN8p
+ BPfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700151911; x=1700756711;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bkbUHelvEVfyi281Puw91VQq2VTw+7wRvwEQdRJirao=;
- b=iq3R4Fo7Y8+bk2CAAl8jqp3+N/0W/hqJh9QtQrmLr3pKeDE+Xqoy9TMdutIj4Uzhlt
- +YswGtxFeGH+uoORStBGdGeKWyx08hTOOiTcM8BYuVY8VPfd4txOVEL3V7y7QPw419RX
- +SPGknOvR3ggLa52VYRf0culP5L80NbFOt+W5it/DyI31T8/H9T5TkQlFGAU8p+ThcKC
- ffcF2tTBuyF1vtjwfobTVEWSPsXA4AFT37U2D4P9lCa9HLufcq0P2YQJ3pRnCUUvNhex
- v4k79VIA+YtiyaQt6nb6fYZJg+v6RGeL8vVdu0Wc98488Tj5wi00SCWZmth7D2oOeQ+O
- kpKA==
-X-Gm-Message-State: AOJu0Ywb/jJdMJTeqmSV29276OvTTvivhiSrhTxAXXG3/jRo6vruF/ja
- 5wQL7xwim+Bw7Cjw0JA9Gp5BTnLRxXzGT/BW9b4sfQ==
-X-Google-Smtp-Source: AGHT+IGjROsfyGeAC6BJyZ2QZhDhllWxmamZMwiaOMCvUe/GPhVTlCw4G/6fg2fiQg0Ouc/ssaGNeH3kWnIyLnlacXQ=
-X-Received: by 2002:aa7:c759:0:b0:543:5a91:a8b2 with SMTP id
- c25-20020aa7c759000000b005435a91a8b2mr12902665eds.19.1700151911080; Thu, 16
- Nov 2023 08:25:11 -0800 (PST)
-MIME-Version: 1.0
-References: <20231027175532.3601297-1-nabihestefan@google.com>
- <20231027175532.3601297-4-nabihestefan@google.com>
- <KL1PR03MB7744A70A81045E5DC49C8191DBB2A@KL1PR03MB7744.apcprd03.prod.outlook.com>
- <CAFEAcA_9HT=tccyTu9RffMxq7Cm5GEanM+OcSxfkpbnJW2m6hQ@mail.gmail.com>
- <KL1PR03MB7744B774223D04CF466EC2BEDBB1A@KL1PR03MB7744.apcprd03.prod.outlook.com>
-In-Reply-To: <KL1PR03MB7744B774223D04CF466EC2BEDBB1A@KL1PR03MB7744.apcprd03.prod.outlook.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 16 Nov 2023 16:24:58 +0000
-Message-ID: <CAFEAcA98TjKa7tK+dgp7d0R4BcYv+s-jo+AwTn0L2RFYZkm09A@mail.gmail.com>
-Subject: Re: [PATCH v5 03/11] hw/misc: Add qtest for NPCM7xx PCI Mailbox
-To: "KFTING@nuvoton.com" <KFTING@nuvoton.com>
-Cc: Nabih Estefan <nabihestefan@google.com>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "wuhaotsh@google.com" <wuhaotsh@google.com>, 
- "Avi.Fishman@nuvoton.com" <Avi.Fishman@nuvoton.com>,
- "KWLIU@nuvoton.com" <KWLIU@nuvoton.com>, 
- "tomer.maimon@nuvoton.com" <tomer.maimon@nuvoton.com>, 
- "Hila.Miranda-Kuzi@nuvoton.com" <Hila.Miranda-Kuzi@nuvoton.com>
+ d=1e100.net; s=20230601; t=1700152596; x=1700757396;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5CTn0KBxEijOlL5af+zRIi/ha7gH4yvTFUhlq3cejJo=;
+ b=dA1r6gJh4SIRxyr+q9DShWdKuDp0nOvwDS+DXGA14wrRw0qyR2XxK9mgu5z1QP0o8q
+ 1LlZwcXl85gwilVMLIm0Xydmg1LY8aTG7sO3QMNhvvPZv+HQzPI+r4Dc5Ld4p6M18+qc
+ /WRLmngenYckcreIPpiKbIrQTL9Wac8lFItBctnQM+xozRRbIsuuBQKxtIyqFDKJBbBA
+ eHNpUww0EmRTrwMC7ndyYS0zTCxsVMRY4VzICGuZ1ud8EtQzuKobnitYcgAmfk6dNc8r
+ DoacS3XNh59UXoAmMFgpz+UACY2ATn0f99zxEvmGa7hb8lyLBpFcJD52Qbk28wF0HaCY
+ plZw==
+X-Gm-Message-State: AOJu0Yy+pmI2i4rxAW1A4ozQ9GrIOW/xR13cMZEQ8lzasHKY5Q0P3n3h
+ UBNesqPEoGk8ORg5lp9bMOmCH0r3IBU9
+X-Google-Smtp-Source: AGHT+IGh/SjmEekb+cIIgdZV4J0XNU+2nQji5iQRxwTj1L3JdDdJqNB3Nc0fCJGXP7Q6fNVniHCEaurU37eN
+X-Received: from venture.c.googlers.com
+ ([fda3:e722:ac3:cc00:24:72f4:c0a8:5c34])
+ (user=venture job=sendgmr) by 2002:a25:6cc2:0:b0:da0:c9a5:b529 with SMTP id
+ h185-20020a256cc2000000b00da0c9a5b529mr422065ybc.12.1700152596214; Thu, 16
+ Nov 2023 08:36:36 -0800 (PST)
+Date: Thu, 16 Nov 2023 16:36:33 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.rc0.421.g78406f8d94-goog
+Message-ID: <20231116163633.276671-1-venture@google.com>
+Subject: [PATCH v2] system/memory: use ldn_he_p/stn_he_p
+From: Patrick Venture <venture@google.com>
+To: pbonzini@redhat.com, peterx@redhat.com, david@redhat.com, 
+ philmd@linaro.org, peter.maydell@linaro.org, richard.henderson@linaro.org
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, 
+ Patrick Venture <venture@google.com>, Chris Rauer <crauer@google.com>,
+ Peter Foley <pefoley@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b4a;
+ envelope-from=3FEVWZQcKCikaJSYZWJLTTLQJ.HTRVJRZ-IJaJQSTSLSZ.TWL@flex--venture.bounces.google.com;
+ helo=mail-yb1-xb4a.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,37 +91,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 15 Nov 2023 at 01:35, KFTING@nuvoton.com <KFTING@nuvoton.com> wrote:
-> Peter Maydell wrote:
-> On Tue, 14 Nov 2023 at 01:24, KFTING@nuvoton.com <KFTING@nuvoton.com> wrote:
-> > Signed-off-by: Tyrone Ting <kfting@nuvoton.com>
->
-> Hi; can you clarify what you mean with this Signed-off-by: tag?
-> Generally we use those where either you're the author of the code or else when you're taking somebody else's patch and including it in work you are sending to the list, and it doesn't seem like either of those are the case here.
+Using direct pointer dereferencing can allow for unaligned accesses,
+which was seen during execution with sanitizers enabled.
 
-> Thank you for your comments. In the email thread " [PATCH v4 00/11] Implementation of NPI Mailbox and GMAC Networking Module",
-> it says " Hi; I'm afraid this is going to miss the 8.2 release, because it is still missing any review from Google or Nuvoton people."
->
-> Is it okay to post "Acked by:" or "Reviewed by:" by someone from Nuvoton?
+Reviewed-by: Chris Rauer <crauer@google.com>
+Reviewed-by: Peter Foley <pefoley@google.com>
+Signed-off-by: Patrick Venture <venture@google.com>
+Cc: qemu-stable@nongnu.org
+---
+v2: changed commit mesage to be more accurate and switched from using
+memcpy to using the endian appropriate assignment load and store.
+---
+ system/memory.c | 32 ++------------------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
 
-If you've reviewed the code and believe it to be good (i.e.,
-it doesn't need any changes), then, yes, by all means please
-post your Reviewed-by tag. Anybody who has done the work of
-code review on a patch can send in a Reviewed-by tag to say
-they've done it.
+diff --git a/system/memory.c b/system/memory.c
+index 304fa843ea..affc7ea83c 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -1339,22 +1339,7 @@ static uint64_t memory_region_ram_device_read(void *opaque,
+                                               hwaddr addr, unsigned size)
+ {
+     MemoryRegion *mr = opaque;
+-    uint64_t data = (uint64_t)~0;
+-
+-    switch (size) {
+-    case 1:
+-        data = *(uint8_t *)(mr->ram_block->host + addr);
+-        break;
+-    case 2:
+-        data = *(uint16_t *)(mr->ram_block->host + addr);
+-        break;
+-    case 4:
+-        data = *(uint32_t *)(mr->ram_block->host + addr);
+-        break;
+-    case 8:
+-        data = *(uint64_t *)(mr->ram_block->host + addr);
+-        break;
+-    }
++    uint64_t data = ldn_he_p(mr->ram_block->host + addr, size);
+ 
+     trace_memory_region_ram_device_read(get_cpu_index(), mr, addr, data, size);
+ 
+@@ -1368,20 +1353,7 @@ static void memory_region_ram_device_write(void *opaque, hwaddr addr,
+ 
+     trace_memory_region_ram_device_write(get_cpu_index(), mr, addr, data, size);
+ 
+-    switch (size) {
+-    case 1:
+-        *(uint8_t *)(mr->ram_block->host + addr) = (uint8_t)data;
+-        break;
+-    case 2:
+-        *(uint16_t *)(mr->ram_block->host + addr) = (uint16_t)data;
+-        break;
+-    case 4:
+-        *(uint32_t *)(mr->ram_block->host + addr) = (uint32_t)data;
+-        break;
+-    case 8:
+-        *(uint64_t *)(mr->ram_block->host + addr) = data;
+-        break;
+-    }
++    stn_he_p(mr->ram_block->host + addr, size, data);
+ }
+ 
+ static const MemoryRegionOps ram_device_mem_ops = {
+-- 
+2.43.0.rc0.421.g78406f8d94-goog
 
-If you've reviewed the code and think there's something
-that needs to be changed or that you have a question about
-that, you can reply to the patch to say so.
-
-We basically follow the same process here that the Linux
-kernel does; you can read about the various tags here:
-https://www.kernel.org/doc/html/v4.17/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes
-
-The meaning of "Acked-by:" is a little more disputed;
-personally I use that for "I haven't reviewed this code,
-but as a maintainer of the subsystem I don't object to it".
-
-thanks
--- PMM
 
