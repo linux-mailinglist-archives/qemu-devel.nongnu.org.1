@@ -2,84 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB8927EDC14
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:37:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7255A7EDC1C
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 08:41:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3WvK-0001kR-BY; Thu, 16 Nov 2023 02:36:26 -0500
+	id 1r3Wyy-0003SM-Il; Thu, 16 Nov 2023 02:40:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r3WvG-0001k2-LN
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 02:36:23 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Wyt-0003Ql-QD
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 02:40:08 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r3WvE-00019J-Vw
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 02:36:22 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40859c466efso3410315e9.3
- for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 23:36:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Wyp-0001zU-HY
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 02:40:05 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-32da7ac5c4fso357615f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 15 Nov 2023 23:40:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700120179; x=1700724979; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=PeVBVe2R/kykkKpzO6ObLdS+R1638xU34whQnHv43/4=;
- b=jbDKSBDyURz+RUw7kEISjoxMTNuIUNqMsKIAscGRiJoRAvlza+t37h7Z7TaIEzOzr6
- GfJvGG2DZ+75o4yzGXcwoMD3z7+nH6JwyI4uMlG3Z0G0UBWU239roaNd8GYsFuZfF7/d
- ArsYLR91qmp3fMPY170sXtf2jSM2VmEiPuwPaxVervcSQmv4C1Dfy+Y6Rcar6eRt1qGC
- evDijGRzPUzUvkKZ3SONbcIKMRi1IARw30gqZDdW5t4FCPjqz/E8xhZmlMuZk0xHtjhQ
- 9aRWeUCp25+m2hC9IA4KPz7EZ4E+1cnma99peLbZJOkThICEATGB5N6ziOnF+v6kTuuG
- 5xDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700120179; x=1700724979;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ d=linaro.org; s=google; t=1700120400; x=1700725200; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=PeVBVe2R/kykkKpzO6ObLdS+R1638xU34whQnHv43/4=;
- b=EP0G4k0VgYI4D4TJINsiCoi7mOEYIdPsZaKiyFHRfP7Ae9kZCn9MBzu1tldLbgI1WE
- m/gM8YDVsi1ovG0qgz0JDlYgy9iskCxN1rI3Dd2eABEczI9kDV3k3AwEB44Xn4N7DhwA
- fdfr5Zh1KKT4kymKmWGhCMZGjiTMcvFlEd+7XWkZgQkp7OvAkrNGTSKcVeJP9E+9xKwz
- Svm4MlCmxziw2LhDAeY44ljfH/NEbgsytGAdkrC1I7XSXfi2cmQBdb4e8RIvVbSLIhTk
- ncv52KSImi2xoGvSJBEYl0KEpETw0u28M19jb+g4lv9LDhbZlN+BActV9wqoKq6uoFPP
- 35kg==
-X-Gm-Message-State: AOJu0Yx2Ma6WhR44ZgQaCOM4nNiF4XMxqyZuH2pnitB6TZG0Nuhp0DIs
- iEU72WAXuu+S2W7YIYWNpO7lNw==
-X-Google-Smtp-Source: AGHT+IHEEkfeCGZuxysLGpd95Edm/tcScBUi/JALhnnTsgeZERcRTtyKzrIxMvx27NXo91pk7gn4RQ==
-X-Received: by 2002:a05:600c:46d5:b0:40a:3750:46ff with SMTP id
- q21-20020a05600c46d500b0040a375046ffmr11926175wmo.11.1700120178943; 
- Wed, 15 Nov 2023 23:36:18 -0800 (PST)
-Received: from meli.delivery (adsl-29.109.242.224.tellas.gr. [109.242.224.29])
+ bh=3nJglrJHM96BrOxQ7yaaayAhXcBPoScHrFicrVIEwhk=;
+ b=QwZ104B/vcqmbOQ6ovhRiCxGRhr9IiQkMjatGBjjP6ceDZgeTdYHxM/d81fZwOUdXR
+ hasb/4Ef+R8PnfCoSSHKjY8MEhP4mY2I6j6GM6hoKELWXdE8RxCdmoS2/Q/PGGaoHNH6
+ f9MjUvM2mJMvn7Q9nEHV1fqMvXB5InBXSeIX15Nnbr39whZUKKY5VZBRcSAwaM2dSHyC
+ P44jBMhR1A7oCc1lRC/uWY9yij4zGql3fE9GJSbAVL3BGXPDgNdtozn8G60IMNVQNkma
+ z5y0cVMQ7/BimJwI7mXlmpNqIcLkSN2dRZEky/N6V/wEeRjHdcWupZtgsD/qQzdMEw1/
+ J85A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700120400; x=1700725200;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3nJglrJHM96BrOxQ7yaaayAhXcBPoScHrFicrVIEwhk=;
+ b=kw+lRusOoStOocksdmGCan5ueJ4DgbZJqz0osfRXhBIzMLgGMy696AkH9VwtKYMx9A
+ wQ9ZPYF+mukH8Z1MfwfkJORG+5erDhWhJ1nWQ/ij12zaa5Z5C/VAgv020OBY/jnMnNkm
+ Bphfq0aphkqlrYREarmw8pswtZnxiVhpZm12BVOk+hL+Mi046JTF9nknzZLFwT6Ucmt7
+ IEoMl+HEahnS21L9B7XraQ0yV4fAyGbUjHskEzZdJtyhepVsTo/ZLTKG1o7f4+wFBuYX
+ rs9GJhNskdztTkd0blE/MNncdtFBdT3YlsJ2gDAERt6Vbi6iVOM75XRnFebnzU7y3ZEd
+ KOUA==
+X-Gm-Message-State: AOJu0YzX2XQnhhOGN52LEfj7JZfxtiy0CLlLG+0XU/fwnSRH8uectSGt
+ 3DMeCepeLa9bgUU6Vsm1JAWBwA==
+X-Google-Smtp-Source: AGHT+IEPxaE52Lv+JR6bK7qeEL+NPX2F0YrpVOjhI4P3Sn+uyy5/ZE7Y3YEoR///0JZYlvvpZ4UTNw==
+X-Received: by 2002:a05:6000:1865:b0:32f:a48f:3658 with SMTP id
+ d5-20020a056000186500b0032fa48f3658mr15956372wri.69.1700120400598; 
+ Wed, 15 Nov 2023 23:40:00 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.220.205])
  by smtp.gmail.com with ESMTPSA id
- y14-20020a05600c2b0e00b0040644e699a0sm2321151wme.45.2023.11.15.23.36.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Nov 2023 23:36:18 -0800 (PST)
-Date: Thu, 16 Nov 2023 09:33:46 +0200
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Volker R=?UTF-8?B?w7w=?= melin <vr_qemu@t-online.de>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH-for-8.2] virtio-sound: add realize() error cleanup path
-User-Agent: meli 0.8.2
-References: <20231116072046.4002957-1-manos.pitsidianakis@linaro.org>
- <88363f15-697b-4b04-ad4d-af0aa5fb75aa@linaro.org>
-In-Reply-To: <88363f15-697b-4b04-ad4d-af0aa5fb75aa@linaro.org>
-Message-ID: <47h4g.6wu5d10yw748@linaro.org>
+ q2-20020a056000136200b003313a1e0ba1sm12597012wrz.89.2023.11.15.23.39.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 15 Nov 2023 23:40:00 -0800 (PST)
+Message-ID: <80da2d00-0d96-4252-b2aa-f7859e44bece@linaro.org>
+Date: Thu, 16 Nov 2023 08:39:55 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 06/31] cpu: Add generic cpu_list()
+Content-Language: en-US
+To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
+ imp@bsdimp.com, kevans@freebsd.org, richard.henderson@linaro.org,
+ pbonzini@redhat.com, peter.maydell@linaro.org, imammedo@redhat.com,
+ b.galvani@gmail.com, strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com,
+ kfting@nuvoton.com, wuhaotsh@google.com, nieklinnenbank@gmail.com,
+ rad@semihalf.com, quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
+ laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, mrolnik@gmail.com,
+ edgar.iglesias@gmail.com, bcain@quicinc.com, gaosong@loongson.cn,
+ aurelien@aurel32.net, jiaxun.yang@flygoat.com, aleksandar.rikalo@syrmia.com,
+ chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
+ ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
+ jcmvbkbc@gmail.com, shan.gavin@gmail.com
+References: <20231114235628.534334-1-gshan@redhat.com>
+ <20231114235628.534334-7-gshan@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231114235628.534334-7-gshan@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,20 +106,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 16 Nov 2023 09:32, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->> ---
->> 
->> Notes:
->>      Requires patch <20231109162034.2108018-1-manos.pitsidianakis@linaro.org>
->
->This is the 'Based-on: ' tag I guess.
+Hi Gavin,
 
-There is
+On 15/11/23 00:56, Gavin Shan wrote:
+> Add generic cpu_list() to replace the individual target's implementation
+> in the subsequent commits. Currently, there are 3 targets with no cpu_list()
+> implementation: microblaze and nios2. With this applied, those two targets
+> switch to the generic cpu_list().
+> 
+> [gshan@gshan q]$ ./build/qemu-system-microblaze -cpu ?
+> Available CPUs:
+>    microblaze-cpu
+> 
+> [gshan@gshan q]$ ./build/qemu-system-nios2 -cpu ?
+> Available CPUs:
+>    nios2-cpu
+> 
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Gavin Shan <gshan@redhat.com>
+> ---
+>   bsd-user/main.c |  5 +----
+>   cpu-target.c    | 29 ++++++++++++++++++++++++++---
+>   2 files changed, 27 insertions(+), 7 deletions(-)
 
-  prerequisite-patch-id: 484ec9f7f6109c10d4be0484fe8e3c2550c415f4
 
-At the end of the patch, added by git-format-patch. Is it best practice 
-to include it in the commit message too?
+> diff --git a/cpu-target.c b/cpu-target.c
+> index c078c0e91b..acfc654b95 100644
+> --- a/cpu-target.c
+> +++ b/cpu-target.c
+> @@ -24,6 +24,7 @@
+>   #include "hw/qdev-core.h"
+>   #include "hw/qdev-properties.h"
+>   #include "qemu/error-report.h"
+> +#include "qemu/qemu-print.h"
+>   #include "migration/vmstate.h"
+>   #ifdef CONFIG_USER_ONLY
+>   #include "qemu.h"
+> @@ -283,12 +284,34 @@ const char *parse_cpu_option(const char *cpu_option)
+>       return cpu_type;
+>   }
+>   
+> +#ifndef cpu_list
+> +static void cpu_list_entry(gpointer data, gpointer user_data)
+> +{
+> +    CPUClass *cc = CPU_CLASS(OBJECT_CLASS(data));
+> +    const char *typename = object_class_get_name(OBJECT_CLASS(data));
+> +    g_autofree char *model = cpu_model_from_type(typename);
+> +
+> +    if (cc->deprecation_note) {
+> +        qemu_printf("  %s (deprecated)\n", model);
+> +    } else {
+> +        qemu_printf("  %s\n", model);
+> +    }
+> +}
+> +
+> +static void cpu_list(void)
+> +{
+> +    GSList *list;
+> +
+> +    list = object_class_get_list_sorted(TYPE_CPU, false);
+> +    qemu_printf("Available CPUs:\n");
 
-Thanks :)
+Since this output will likely be displayed a lot, IMHO it is worth
+doing a first pass to get the number of available CPUs. If it is 1,
+print using singular but even better smth like:
+
+        "This machine can only be used with the following CPU:"
+
+That said, this can be done later on top, so:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> +    g_slist_foreach(list, cpu_list_entry, NULL);
+> +    g_slist_free(list);
+> +}
+> +#endif
+
+
 
