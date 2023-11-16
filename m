@@ -2,93 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0BE87EDDE9
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 10:46:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 513067EDE01
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 10:53:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3YwO-000767-Il; Thu, 16 Nov 2023 04:45:40 -0500
+	id 1r3Z2m-0001yp-HB; Thu, 16 Nov 2023 04:52:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r3YwG-00072D-Rh; Thu, 16 Nov 2023 04:45:33 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Z2k-0001y9-9r
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 04:52:14 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r3YwF-0001E6-6d; Thu, 16 Nov 2023 04:45:32 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1cc4f777ab9so5628685ad.0; 
- Thu, 16 Nov 2023 01:45:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3Z2h-0007hS-Pq
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 04:52:14 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-33139ecdca7so387124f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 01:52:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700127929; x=1700732729; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iTiBQW4F9yrgbUsaSPnroBpPJ8tnCP5a+PAMYAIcAog=;
- b=nlISh8yZEZ5SXaApuDHYcjQ34x2VmDYVa7e0ZuhqBaShdn4cHuqvIPIb9UAWDdHbug
- UXCp775wgu9hXUg+hQtPj5qXJsR7pFZvs/MUXgZv4+kHCwCYtTH0BPWCygeebvJg/fz6
- 0Rt4Ih+cHudUuIzZFLK6bUQVLqMdtNtKgp11cA6nYNgppxINetWPEGbjzQxDgfZFi8vr
- Mq22vFIBJMXOvxS7tc2qYeyNUkectRNIRFtH29oTZKfq8X1CHfffTMcnnhmqb/j4/I3H
- f/wszNcUr4GFdXKnPWtMPLHhPs4hPm1YPvMawXu0JjAwxfjp51MFETcHWtVJScALqI5z
- 6GhA==
+ d=linaro.org; s=google; t=1700128330; x=1700733130; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=eJbwXVt2Z6najqF1TVzKDP+6ZWX+M46efpJixXq1zIk=;
+ b=TIaR9wNrOBGtN4NyiR8xr6A29FrW4hgB7226w+Qwst/lxDb1jpAlB9SMWQk3MRg4u9
+ yKjbCRA1VzqFqvGgmYu826wqrzQ522D52YCSfQjcgCihtI6S+ofyLBXabXL8DbuKliC5
+ NQQMxN99qonu+26GfOqQTmf/xpwDAAAYVVeGEQ9A/K1okSJMxJg4vIGQi3xw8U7zi9nr
+ SqjP0UHUjvuixLyJ9LyM2xxbEo+2EmgCTzgTBDUEMwlhpl2MdzDrmABgmkH4MgTfOoIo
+ VQ4TP4Aa5vIDA6rf9iOhDHJ39o8rf0gj0VCRTb7emCcq4yqIjWRjTvbZjVxamKoSyjyD
+ Eytw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700127929; x=1700732729;
- h=in-reply-to:references:to:from:subject:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=iTiBQW4F9yrgbUsaSPnroBpPJ8tnCP5a+PAMYAIcAog=;
- b=eBGHEO8KKs6b7Uy226NSObZDYcFSNcdaYVks6Y/T/zIw5o4S92h5vM5xXhmGbEur2C
- tepg94EYjgJZchUEm6ZqDpb2GvYZBhsvmA2lNdkmF33MiLQyzWT6VAhpg6Dur/0CTYQ6
- 8xxzqfjOBeNscjbKMosw9CUfB/F8gdoGtbErjLlwp7WDA7o3fCrDrt5Nsshn8guyTXaC
- fV3Vi1upCTxB612jxv1hWmuQgfpoVHme6xg5JevtoaWAqJ6ge/ttynsXAsgXPBFfPYgR
- v1K3OeIrYbOgKU655yVoWzDmYH1KpfuU9J2K842tPYlr7i+bP4mxqYaqIxOv4qLa6F2l
- m7OA==
-X-Gm-Message-State: AOJu0YxAUbQGyDHdTIizx85LMEV7zZQk51pO7QKsv1dgR51aX42lQ2N3
- 5KyO1Mr2QqhdYnYY2OyCJgU=
-X-Google-Smtp-Source: AGHT+IHQFKvtSPvqnNogSFXa0gqQtMxvtlSLZjk37PToEgf8TMRbipPN0aNum477X7WGl6ygm/B62A==
-X-Received: by 2002:a17:902:9a8a:b0:1cc:3fce:8aa8 with SMTP id
- w10-20020a1709029a8a00b001cc3fce8aa8mr8151861plp.6.1700127929209; 
- Thu, 16 Nov 2023 01:45:29 -0800 (PST)
-Received: from localhost ([210.84.53.86]) by smtp.gmail.com with ESMTPSA id
- p18-20020a170902e75200b001b8b45b177esm8803390plf.274.2023.11.16.01.45.23
+ d=1e100.net; s=20230601; t=1700128330; x=1700733130;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eJbwXVt2Z6najqF1TVzKDP+6ZWX+M46efpJixXq1zIk=;
+ b=Nv0QK6kV5GbE4ezMBOZSLWdPWn8XwT1gG/CtsGIjUgCcfjAkKC+NagwLCxSpsgODpy
+ xdNYdZtJbygwuH8xERStgWe0z9yGZ76ZTx8ceFgh51x+qtV/c7f22ZkU44dxbHVNCx3x
+ vn1GqcWkcqWEnQXdIAuljSwgzW+6mfIp1DPlDjx3hPp2K8yTGU191ja4mWMO+hWJyaAx
+ X51RwO+6qZ5ZKlk+NMjrhx2YsOPynTtNopYEUbfW4g9G0ba0OtSlPuStEedPfATbjgSQ
+ OovsrPPAVsHxRKZfAZVhUCiOP1ggIuyfJoQbo4ciNASculGTRrNg2jNS0ZRWuCh3I64o
+ erRw==
+X-Gm-Message-State: AOJu0YwGumrhmarrb8RQ48AcSbs7riQYf6Ke2FVrcMj4G8VjiG+ZmQAj
+ i/YWhA2vm00sJxk81+zG4FXhAg==
+X-Google-Smtp-Source: AGHT+IEAIgUPS1JS0xNpf4FVCAqwXMUQpzOJhJjL+OXXkziOcno7C00ZISMYFE1Ys/C2aF80vS4/kQ==
+X-Received: by 2002:a5d:4584:0:b0:32d:88f6:ec2f with SMTP id
+ p4-20020a5d4584000000b0032d88f6ec2fmr9906336wrq.60.1700128329483; 
+ Thu, 16 Nov 2023 01:52:09 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.220.205])
+ by smtp.gmail.com with ESMTPSA id
+ e1-20020a056000120100b003296b488961sm12812220wrx.31.2023.11.16.01.52.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Nov 2023 01:45:28 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 16 Nov 2023 19:45:20 +1000
-Message-Id: <CX051SMKMNFP.1GWS0WCUV5KDJ@wheely>
-Subject: Re: [PATCH] tests/avocado/reverse_debugging: Disable the ppc64
- tests by default
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Thomas Huth" <thuth@redhat.com>,
- =?utf-8?b?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?= <berrange@redhat.com>, "John Snow"
- <jsnow@redhat.com>, "Ani Sinha" <anisinha@redhat.com>, "Wainer dos Santos
- Moschetta" <wainersm@redhat.com>, "Beraldo Leal" <bleal@redhat.com>,
- "Cleber Rosa" <crosa@redhat.com>, "Pavel Dovgalyuk"
- <pavel.dovgaluk@ispras.ru>, "Paolo Bonzini" <pbonzini@redhat.com>,
- <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>,
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-X-Mailer: aerc 0.15.2
-References: <20231114163115.298041-1-thuth@redhat.com>
- <12b4420e-1440-4516-8276-e0e907003c16@linaro.org>
- <9f6247e4-7e81-44f8-a63b-8ee11f722710@redhat.com>
- <CWYYRW53VEPJ.3UL1X7GB1P4H2@wheely>
- <6877d6d6-bfbf-4475-8c61-dd537265b278@redhat.com>
- <ZVTETYrfL8f48qe3@redhat.com> <ZVT-bY9YOr69QTPX@redhat.com>
- <CWZU7DEIX9E4.26PTZ0GK1ZAUP@wheely>
- <b1587362-a84c-44d5-9d07-6e2307c15152@redhat.com>
-In-Reply-To: <b1587362-a84c-44d5-9d07-6e2307c15152@redhat.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x630.google.com
+ Thu, 16 Nov 2023 01:52:09 -0800 (PST)
+Message-ID: <08b7421e-f261-45e7-b741-34eb0ccd818d@linaro.org>
+Date: Thu, 16 Nov 2023 10:52:04 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 23/31] machine: Constify
+ MachineClass::valid_cpu_types[i]
+Content-Language: en-US
+To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
+ imp@bsdimp.com, kevans@freebsd.org, richard.henderson@linaro.org,
+ pbonzini@redhat.com, peter.maydell@linaro.org, imammedo@redhat.com,
+ b.galvani@gmail.com, strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com,
+ kfting@nuvoton.com, wuhaotsh@google.com, nieklinnenbank@gmail.com,
+ rad@semihalf.com, quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
+ laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, mrolnik@gmail.com,
+ edgar.iglesias@gmail.com, bcain@quicinc.com, gaosong@loongson.cn,
+ aurelien@aurel32.net, jiaxun.yang@flygoat.com, aleksandar.rikalo@syrmia.com,
+ chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
+ ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
+ jcmvbkbc@gmail.com, shan.gavin@gmail.com
+References: <20231114235628.534334-1-gshan@redhat.com>
+ <20231114235628.534334-24-gshan@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231114235628.534334-24-gshan@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,77 +107,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu Nov 16, 2023 at 5:09 PM AEST, Thomas Huth wrote:
-> On 16/11/2023 02.15, Nicholas Piggin wrote:
-> > On Thu Nov 16, 2023 at 3:22 AM AEST, Daniel P. Berrang=C3=A9 wrote:
-> >> On Wed, Nov 15, 2023 at 01:14:53PM +0000, Daniel P. Berrang=C3=A9 wrot=
-e:
-> ...
-> >> The Machine class doesn't know if anything will ever use the console,
-> >> so as is the change is unsafe.
-> >>
-> >> The original goal of John's change was to guarantee we capture early
-> >> boot messages as some test need that.
-> >>
-> >> I think we need to be able to have a flag to say whether the caller ne=
-eds
-> >> an "early console" facility, and only use the pre-opened FD passing fo=
-r
-> >> that case. Tests we need early console will have to ask for that guara=
-ntee
-> >> explicitly.
-> >=20
-> > The below patch makes this test work. Maybe as a quick fix it is
-> > better than disabling the test.
-> >=20
-> > I guess we still have a problem if a test invokes vm.launch()
-> > directly without subsequently waiting for a console pattern or
-> > doing something with the console as you say. Your suggesstion is
-> > add something like vm.launch(console=3DTrue) ?
-> >=20
-> > Thanks,
-> > Nick
-> > ---
-> >=20
-> > diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse=
-_debugging.py
-> > index fc47874eda..128d85bc0e 100644
-> > --- a/tests/avocado/reverse_debugging.py
-> > +++ b/tests/avocado/reverse_debugging.py
-> > @@ -12,6 +12,7 @@
-> >  =20
-> >   from avocado import skipIf
-> >   from avocado_qemu import BUILD_DIR
-> > +from avocado.utils import datadrainer
-> >   from avocado.utils import gdb
-> >   from avocado.utils import process
-> >   from avocado.utils.network.ports import find_free_port
-> > @@ -52,6 +53,10 @@ def run_vm(self, record, shift, args, replay_path, i=
-mage_path, port):
-> >           if args:
-> >               vm.add_args(*args)
-> >           vm.launch()
-> > +        console_drainer =3D datadrainer.LineLogger(vm.console_socket.f=
-ileno(),
-> > +                                    logger=3Dself.log.getChild('consol=
-e'),
-> > +                                    stop_check=3D(lambda : not vm.is_r=
-unning()))
-> > +        console_drainer.start()
-> >           return vm
-> >  =20
-> >       @staticmethod
->
-> Tested-by: Thomas Huth <thuth@redhat.com>
+On 15/11/23 00:56, Gavin Shan wrote:
+> Constify MachineClass::valid_cpu_types[i], as suggested by Richard
+> Henderson.
+> 
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Gavin Shan <gshan@redhat.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/m68k/q800.c      | 2 +-
+>   include/hw/boards.h | 2 +-
+>   2 files changed, 2 insertions(+), 2 deletions(-)
 
-Thank you.
+Preferably:
 
-> Could you please send this as a proper patch, with a S-o-b line, and a sh=
-ort=20
-> comment in front of the newly added code explaining it?
+-- >8 --
+diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+index 1d7cd5ff1c..83d1571d02 100644
+--- a/hw/m68k/q800.c
++++ b/hw/m68k/q800.c
+@@ -726,19 +726,18 @@ static GlobalProperty hw_compat_q800[] = {
+  };
+  static const size_t hw_compat_q800_len = G_N_ELEMENTS(hw_compat_q800);
 
-Yep, just testing it now. Should have it sent out in an hour or two.
+-static const char *q800_machine_valid_cpu_types[] = {
+-    M68K_CPU_TYPE_NAME("m68040"),
+-    NULL
+-};
+-
+  static void q800_machine_class_init(ObjectClass *oc, void *data)
+  {
++    static const char * const valid_cpu_types[] = {
++        M68K_CPU_TYPE_NAME("m68040"),
++        NULL
++    };
+      MachineClass *mc = MACHINE_CLASS(oc);
 
-Thanks,
-Nick
+      mc->desc = "Macintosh Quadra 800";
+      mc->init = q800_machine_init;
+      mc->default_cpu_type = M68K_CPU_TYPE_NAME("m68040");
+-    mc->valid_cpu_types = q800_machine_valid_cpu_types;
++    mc->valid_cpu_types = valid_cpu_types;
+      mc->max_cpus = 1;
+      mc->block_default_type = IF_SCSI;
+      mc->default_ram_id = "m68k_mac.ram";
+---
+
+Since commit 3d1611bfa1 ("hw/hppa: Allow C3700 with 64-bit and B160L
+with 32-bit CPU only") we need to update hw/hppa/machine.c:
+
+-- >8 --
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index 9d08f39490..c8da7c18d5 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -672,19 +672,18 @@ static void hppa_nmi(NMIState *n, int cpu_index, 
+Error **errp)
+      }
+  }
+
+-static const char *HP_B160L_machine_valid_cpu_types[] = {
+-    TYPE_HPPA_CPU,
+-    NULL
+-};
+-
+  static void HP_B160L_machine_init_class_init(ObjectClass *oc, void *data)
+  {
++    static const char * const valid_cpu_types[] = {
++        TYPE_HPPA_CPU,
++        NULL
++    };
+      MachineClass *mc = MACHINE_CLASS(oc);
+      NMIClass *nc = NMI_CLASS(oc);
+
+      mc->desc = "HP B160L workstation";
+      mc->default_cpu_type = TYPE_HPPA_CPU;
+-    mc->valid_cpu_types = HP_B160L_machine_valid_cpu_types;
++    mc->valid_cpu_types = valid_cpu_types;
+      mc->init = machine_HP_B160L_init;
+      mc->reset = hppa_machine_reset;
+      mc->block_default_type = IF_SCSI;
+@@ -709,19 +708,18 @@ static const TypeInfo 
+HP_B160L_machine_init_typeinfo = {
+      },
+  };
+
+-static const char *HP_C3700_machine_valid_cpu_types[] = {
+-    TYPE_HPPA64_CPU,
+-    NULL
+-};
+-
+  static void HP_C3700_machine_init_class_init(ObjectClass *oc, void *data)
+  {
++    static const char * const valid_cpu_types[] = {
++        TYPE_HPPA64_CPU,
++        NULL
++    };
+      MachineClass *mc = MACHINE_CLASS(oc);
+      NMIClass *nc = NMI_CLASS(oc);
+
+      mc->desc = "HP C3700 workstation";
+      mc->default_cpu_type = TYPE_HPPA64_CPU;
+-    mc->valid_cpu_types = HP_C3700_machine_valid_cpu_types;
++    mc->valid_cpu_types = valid_cpu_types;
+      mc->init = machine_HP_C3700_init;
+      mc->reset = hppa_machine_reset;
+      mc->block_default_type = IF_SCSI;
+---
 
