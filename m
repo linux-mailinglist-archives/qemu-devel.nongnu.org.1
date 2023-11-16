@@ -2,65 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7071C7EDE97
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 11:34:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 443307EDEA0
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 11:35:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3Zhc-0004Tu-9W; Thu, 16 Nov 2023 05:34:28 -0500
+	id 1r3Zhv-0004vz-5G; Thu, 16 Nov 2023 05:34:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1r3ZhY-0004TN-Sm; Thu, 16 Nov 2023 05:34:24 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r3Zhr-0004re-CG
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 05:34:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1r3ZhX-0006Mw-7Y; Thu, 16 Nov 2023 05:34:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=A1do6B7C6RUKP3/eJDsTVMNi3wGlkehd5XlPDy0atpA=; b=dNdi0XFlYxUmq/n/QlF/kGpgVp
- CXKrWrr4fgYDE7DlH9KKaFTnxeBpAwcFJ61PpZwUb8vwLuey4hVOrrWqHg17/fFQb5oGzaR7uuMXh
- t1Yo2hj5b7Hdn2HZ7PGvLk8X8eDBF3OR+BJLkFTzUVOHtP8saiIipNSgb7mAhwpT1IZU1urGjmgvM
- Gb3hTuyfjqXg5V6EWHFJpiWIKeuo7kscA4X9vBa+4A48DhSXRU4DKkTq2tEK6bBnNbGlyxhAcDbG2
- OtERF005WKbYmmcCVRBcbl4Gv8bx+/JQFvsxtQf0mhB8MrXYysswRiXOZqjcL/kPJPZttLOpeD3Vv
- mAPYRXD3OcSZaGCtQSypzt5gtaNuiRuaRnh1aUOE2wTz39gNSNdYl3Zdf2PeexweszoRoYeungemV
- z1iz/wXgzLH2rBQv3UKKcNmIk4ByYiuJIilySiWHEnwBilLNMSYPhUo+wHEuqUryiPMoxaA9hfui/
- u7in8moCLfoEV9MSUujFHBzqvYNfcODPt81eZANpFSFNXPEkflIWtJTkKDc0rWFE6l5TJYpiv15MM
- qUPDdng79haUzbX35PuIRclbtP4oOk1TW3RHW5pIFnru+L7b6LCq4M3Nv/q1BeBjCYOPFs/BMWJ8b
- ZuZNkBDATYD2wnDBGOd7jaWG9abLRki2KoNf72lLs=;
-Received: from host86-130-37-248.range86-130.btcentralplus.com
- ([86.130.37.248] helo=localhost.localdomain)
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1r3ZhE-0001bP-2E; Thu, 16 Nov 2023 10:34:08 +0000
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: kwolf@redhat.com, jsnow@redhat.com, qemu-block@nongnu.org,
- qemu-devel@nongnu.org, balaton@eik.bme.hu, philmd@linaro.org,
- shentey@gmail.com
-Date: Thu, 16 Nov 2023 10:33:55 +0000
-Message-Id: <20231116103355.588580-5-mark.cave-ayland@ilande.co.uk>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
-References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r3Zho-0006PD-Ek
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 05:34:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700130879;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TkF5SooOT9kaUjO3QP6Bxrm8owBD8rkz72Yox0uZtMI=;
+ b=YKK81AM3jgRIWUDKjvFHajMTDISFcWdK01AywQQu0cs+gzBGKwm87CzYK65BB9qFPorZdk
+ PiRIUCE6jdXM1zvLX8wknMKSDNrfYGW7/LV7iS70ZtMgqBEREagKMIGayc2GtuEK4DC6NR
+ Lv+69DVZGao6kOsKq/4fSzvzla3xmG0=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-487-f4UVjwxiNtaWx_NP2Wdqxg-1; Thu, 16 Nov 2023 05:34:34 -0500
+X-MC-Unique: f4UVjwxiNtaWx_NP2Wdqxg-1
+Received: by mail-pf1-f197.google.com with SMTP id
+ d2e1a72fcca58-6c337818f4cso802087b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 02:34:34 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700130873; x=1700735673;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TkF5SooOT9kaUjO3QP6Bxrm8owBD8rkz72Yox0uZtMI=;
+ b=Zjn5N/e5teug3fhp8DUjsXpCHl/P7xcbxo/UohzRB484/Xib5wiorT3fJ1nV06kZ2u
+ bnADYZuHzIvo8YY3LPPPND899auhil76XL1P4xGqkKyzslx12+/o5Q4Ys2889XUXiynf
+ RDlwH4VxBz3pEjX87NIlCuMO/EneWsSsJ+XdM3iH0nsNLjFMn5aldpUV4tNo1I1lalwo
+ 8s6a58GdqbdRBv7G21fZzmogIZp0JRx0x6Qd3DfRncNiAmd5lajHafz+s16EYmhrFj4z
+ PJQ2Si70IFnzV+XSeqVbzmN560y7wVlUaxQborrYj2KXJRGH1qD+34iQyeF72YXTE6/I
+ EQSg==
+X-Gm-Message-State: AOJu0YyvNU1Jf80mG+iwDsxz0jHxtTyfAa5shG9ImU5btuLUbEnPEdE/
+ AKtfY70TYmHfRQ+GJo4hegjjKXTZ5tg3RMqM9gH6jb23N9hrg+HBtQhExtzikPW/Lg4/l4L5qY/
+ r6CxDANudinT+m5w=
+X-Received: by 2002:a05:6a21:339d:b0:16b:8154:2168 with SMTP id
+ yy29-20020a056a21339d00b0016b81542168mr15293469pzb.26.1700130873520; 
+ Thu, 16 Nov 2023 02:34:33 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEXVC2W+6nWb8fReoqIvdLuCo5Ah5gmebUD5Got/4aW26J/CaJEghKTksyRJIm21CFv/JPg5A==
+X-Received: by 2002:a05:6a21:339d:b0:16b:8154:2168 with SMTP id
+ yy29-20020a056a21339d00b0016b81542168mr15293426pzb.26.1700130873188; 
+ Thu, 16 Nov 2023 02:34:33 -0800 (PST)
+Received: from ?IPV6:2001:8003:e5b0:9f00:b890:3e54:96bb:2a15?
+ ([2001:8003:e5b0:9f00:b890:3e54:96bb:2a15])
+ by smtp.gmail.com with ESMTPSA id
+ by14-20020a056a02058e00b005bd980cca56sm2289210pgb.29.2023.11.16.02.34.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 Nov 2023 02:34:32 -0800 (PST)
+Message-ID: <93d5e7fa-b1c6-43cc-b3af-026e7a5964b5@redhat.com>
+Date: Thu, 16 Nov 2023 20:34:16 +1000
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 06/31] cpu: Add generic cpu_list()
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
+ imp@bsdimp.com, kevans@freebsd.org, richard.henderson@linaro.org,
+ pbonzini@redhat.com, peter.maydell@linaro.org, imammedo@redhat.com,
+ b.galvani@gmail.com, strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com,
+ kfting@nuvoton.com, wuhaotsh@google.com, nieklinnenbank@gmail.com,
+ rad@semihalf.com, quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
+ laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, mrolnik@gmail.com,
+ edgar.iglesias@gmail.com, bcain@quicinc.com, gaosong@loongson.cn,
+ aurelien@aurel32.net, jiaxun.yang@flygoat.com, aleksandar.rikalo@syrmia.com,
+ chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
+ ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
+ jcmvbkbc@gmail.com, shan.gavin@gmail.com
+References: <20231114235628.534334-1-gshan@redhat.com>
+ <20231114235628.534334-7-gshan@redhat.com>
+ <80da2d00-0d96-4252-b2aa-f7859e44bece@linaro.org>
+ <55922c30-be4b-459d-835b-819e1dcd2437@linaro.org>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <55922c30-be4b-459d-835b-819e1dcd2437@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 86.130.37.248
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v3 4/4] hw/ide/via: implement legacy/native mode switching
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,104 +118,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow the VIA IDE controller to switch between both legacy and native modes by
-calling pci_ide_update_mode() to reconfigure the device whenever PCI_CLASS_PROG
-is updated.
+Hi Phil,
 
-This patch moves the initial setting of PCI_CLASS_PROG from via_ide_realize() to
-via_ide_reset(), and removes the direct setting of PCI_INTERRUPT_PIN during PCI
-bus reset since this is now managed by pci_ide_update_mode(). This ensures that
-the device configuration is always consistent with respect to the currently
-selected mode.
+On 11/16/23 17:51, Philippe Mathieu-Daudé wrote:
+> On 16/11/23 08:39, Philippe Mathieu-Daudé wrote:
+>> On 15/11/23 00:56, Gavin Shan wrote:
+>>> Add generic cpu_list() to replace the individual target's implementation
+>>> in the subsequent commits. Currently, there are 3 targets with no cpu_list()
+>>> implementation: microblaze and nios2. With this applied, those two targets
+>>> switch to the generic cpu_list().
+>>>
+>>> [gshan@gshan q]$ ./build/qemu-system-microblaze -cpu ?
+>>> Available CPUs:
+>>>    microblaze-cpu
+>>>
+>>> [gshan@gshan q]$ ./build/qemu-system-nios2 -cpu ?
+>>> Available CPUs:
+>>>    nios2-cpu
+>>>
+>>> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+>>> Signed-off-by: Gavin Shan <gshan@redhat.com>
+>>> ---
+>>>   bsd-user/main.c |  5 +----
+>>>   cpu-target.c    | 29 ++++++++++++++++++++++++++---
+>>>   2 files changed, 27 insertions(+), 7 deletions(-)
+>>
+>>
+>>> diff --git a/cpu-target.c b/cpu-target.c
+>>> index c078c0e91b..acfc654b95 100644
+>>> --- a/cpu-target.c
+>>> +++ b/cpu-target.c
+>>> @@ -24,6 +24,7 @@
+>>>   #include "hw/qdev-core.h"
+>>>   #include "hw/qdev-properties.h"
+>>>   #include "qemu/error-report.h"
+>>> +#include "qemu/qemu-print.h"
+>>>   #include "migration/vmstate.h"
+>>>   #ifdef CONFIG_USER_ONLY
+>>>   #include "qemu.h"
+>>> @@ -283,12 +284,34 @@ const char *parse_cpu_option(const char *cpu_option)
+>>>       return cpu_type;
+>>>   }
+>>> +#ifndef cpu_list
+>>> +static void cpu_list_entry(gpointer data, gpointer user_data)
+>>> +{
+>>> +    CPUClass *cc = CPU_CLASS(OBJECT_CLASS(data));
+>>> +    const char *typename = object_class_get_name(OBJECT_CLASS(data));
+>>> +    g_autofree char *model = cpu_model_from_type(typename);
+>>> +
+>>> +    if (cc->deprecation_note) {
+>>> +        qemu_printf("  %s (deprecated)\n", model);
+>>> +    } else {
+>>> +        qemu_printf("  %s\n", model);
+>>> +    }
+>>> +}
+>>> +
+>>> +static void cpu_list(void)
+>>> +{
+>>> +    GSList *list;
+>>> +
+>>> +    list = object_class_get_list_sorted(TYPE_CPU, false);
+>>> +    qemu_printf("Available CPUs:\n");
+>>
+>> Since this output will likely be displayed a lot, IMHO it is worth
+>> doing a first pass to get the number of available CPUs. If it is 1,
+>> print using singular but even better smth like:
+>>
+>>         "This machine can only be used with the following CPU:"
+> 
+> Hmm I missed this code is common to user/system emulation.
+> 
+> System helper could be clever by using the intersection of cpu_list()
+> and MachineClass::valid_cpu_types[] sets.
+> 
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
----
- hw/ide/via.c | 39 +++++++++++++++++++++++++++++++++++++--
- 1 file changed, 37 insertions(+), 2 deletions(-)
+When cpu_list() is called, it's possible the machine type option isn't
+parsed yet. Besides, this function is usually used by "qemu-system-arm -cpu ?".
+So I wouldn't connect to MachineClass::valid_cpu_types[] here if you agree.
 
-diff --git a/hw/ide/via.c b/hw/ide/via.c
-index 87b134083a..47223b1268 100644
---- a/hw/ide/via.c
-+++ b/hw/ide/via.c
-@@ -28,6 +28,7 @@
- #include "hw/pci/pci.h"
- #include "migration/vmstate.h"
- #include "qemu/module.h"
-+#include "qemu/range.h"
- #include "sysemu/dma.h"
- #include "hw/isa/vt82c686.h"
- #include "hw/ide/pci.h"
-@@ -128,11 +129,14 @@ static void via_ide_reset(DeviceState *dev)
-         ide_bus_reset(&d->bus[i]);
-     }
- 
-+    pci_config_set_prog_interface(pci_conf, 0x8a); /* legacy mode */
-+    pci_ide_update_mode(d);
-+
-     pci_set_word(pci_conf + PCI_COMMAND, PCI_COMMAND_IO | PCI_COMMAND_WAIT);
-     pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
-                  PCI_STATUS_DEVSEL_MEDIUM);
- 
--    pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
-+    pci_set_byte(pci_conf + PCI_INTERRUPT_LINE, 0xe);
- 
-     /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
-     pci_set_long(pci_conf + 0x40, 0x0a090600);
-@@ -154,6 +158,36 @@ static void via_ide_reset(DeviceState *dev)
-     pci_set_long(pci_conf + 0xc0, 0x00020001);
- }
- 
-+static uint32_t via_ide_cfg_read(PCIDevice *pd, uint32_t addr, int len)
-+{
-+    uint32_t val = pci_default_read_config(pd, addr, len);
-+    uint8_t mode = pd->config[PCI_CLASS_PROG];
-+
-+    if ((mode & 0xf) == 0xa && ranges_overlap(addr, len,
-+                                              PCI_BASE_ADDRESS_0, 24)) {
-+        /* BARs always read back zero in legacy mode */
-+        for (int i = addr; i < addr + len; i++) {
-+            if (i >= PCI_BASE_ADDRESS_0 && i < PCI_BASE_ADDRESS_0 + 24) {
-+                val &= ~(0xffULL << ((i - addr) << 3));
-+            }
-+        }
-+    }
-+
-+    return val;
-+}
-+
-+static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
-+                              uint32_t val, int len)
-+{
-+    PCIIDEState *d = PCI_IDE(pd);
-+
-+    pci_default_write_config(pd, addr, val, len);
-+
-+    if (range_covers_byte(addr, len, PCI_CLASS_PROG)) {
-+        pci_ide_update_mode(d);
-+    }
-+}
-+
- static void via_ide_realize(PCIDevice *dev, Error **errp)
- {
-     PCIIDEState *d = PCI_IDE(dev);
-@@ -161,7 +195,6 @@ static void via_ide_realize(PCIDevice *dev, Error **errp)
-     uint8_t *pci_conf = dev->config;
-     int i;
- 
--    pci_config_set_prog_interface(pci_conf, 0x8a); /* legacy mode */
-     pci_set_long(pci_conf + PCI_CAPABILITY_LIST, 0x000000c0);
-     dev->wmask[PCI_INTERRUPT_LINE] = 0;
-     dev->wmask[PCI_CLASS_PROG] = 5;
-@@ -216,6 +249,8 @@ static void via_ide_class_init(ObjectClass *klass, void *data)
-     /* Reason: only works as function of VIA southbridge */
-     dc->user_creatable = false;
- 
-+    k->config_read = via_ide_cfg_read;
-+    k->config_write = via_ide_cfg_write;
-     k->realize = via_ide_realize;
-     k->exit = via_ide_exitfn;
-     k->vendor_id = PCI_VENDOR_ID_VIA;
--- 
-2.39.2
+Thanks,
+Gavin
+
+>> That said, this can be done later on top, so:
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>
+>>> +    g_slist_foreach(list, cpu_list_entry, NULL);
+>>> +    g_slist_free(list);
+>>> +}
+>>> +#endif
+>>
+>>
+> 
 
 
