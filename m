@@ -2,76 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58F337EE17D
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 14:25:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0247E7EE17E
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 Nov 2023 14:25:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3cMB-0001OS-Ho; Thu, 16 Nov 2023 08:24:31 -0500
+	id 1r3cMe-0002AF-DN; Thu, 16 Nov 2023 08:25:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r3cM5-0001J5-L8
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:24:27 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r3cMc-00026U-R6
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:24:58 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r3cLt-0006LX-2Z
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:24:24 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r3cMa-00081z-8G
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 08:24:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700141050;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=7w1l0Eciv16lpsD68WHs8ywsOhPhLud/8f3oZC21GlQ=;
- b=Ql6taUWEHvtp86DWodZBtWAtZ5Ps+IsM9KkM3QgLDynXuHMHmlu49a2VAoMQAdB42hwQyi
- oUBhkCChIFF2jciH6rLj9vDniIJS0FaXmHW98iahRnCrIJ3p1WKPitFM+VOI+KYDM19i6O
- /pkwGzuIZjyPnyKVviKjCXZ2YZ7V5ao=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-314-5FrnNVxpOlCkFUnmEgX67Q-1; Thu,
- 16 Nov 2023 08:24:08 -0500
-X-MC-Unique: 5FrnNVxpOlCkFUnmEgX67Q-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BFF3F3C0FC8B;
- Thu, 16 Nov 2023 13:24:07 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.34])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A88FB492BE0;
- Thu, 16 Nov 2023 13:24:04 +0000 (UTC)
-Date: Thu, 16 Nov 2023 13:24:02 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Alistair Francis <alistair@alistair23.me>,
+ s=mimecast20190719; t=1700141095;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=LxmPHvhzinOokygtNaWlGZUAgJIulhyqnUhkXEAukBE=;
+ b=HtFLBFVMYuglhfE1t5myM0pH+Cgb9UnwkjHkGGARne4XD0wHTlJ3HIt6bdMwcZiah7iZT/
+ UyDijeQR89++O83SHBWSvSaHEi5oNBl7pFryr/86AAS1VNem6ekUjHxfqzmgZWQPOvFVXw
+ L2/Dq2BTVnUAfopLZJ2Mav1H+Vj/LzM=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-50-iCwCTx0GNuii3kKKeZfHzg-1; Thu, 16 Nov 2023 08:24:54 -0500
+X-MC-Unique: iCwCTx0GNuii3kKKeZfHzg-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2c50d4a1a33so6951301fa.0
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 05:24:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700141092; x=1700745892;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :references:cc:to:content-language:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LxmPHvhzinOokygtNaWlGZUAgJIulhyqnUhkXEAukBE=;
+ b=AHmqxYgf87u6gvtYnCNr+5NEmW8XxMjyFgW7O+hbzEXF9gk7Pzr218Jk+1KP0SX+8p
+ a4mbpA52Nt4iNeGDCkEANNaY4yjqbl6txQXR63JqCB91gMFrrVVxfkOSkI4aKadaO+Lc
+ wE8XpgTyckiquI2s1sqmdh0L/o9A5kDETSRMyahBOpD89RL5tLUW6bWKRR70i4RyrJds
+ YGehPPdOck7CgORN7FyL/6jtggd7tcmUmOxUnotee5FHTBzJzdwWChziNhELzgnCusDx
+ r51B71qLvJ6OwmWCw8Ay/rGJWQ/HaDWbfSRBZsMmpnl1JUVCllEM27VCnQuLkkiKrnSC
+ iTSA==
+X-Gm-Message-State: AOJu0Yzf8x8BWcNUu0hMqB9LQc3hanyRRcvY087xk57DlcAryI9NI2iU
+ NvjmYJkrjv3jN/byqg9LrFr67XnLNEp7Kk9OJnnicT8y3SNVcmyapx0kEqIiaPeA+ZkKVwKVQq5
+ /0Pz49zBLvrjug2M=
+X-Received: by 2002:a2e:9556:0:b0:2c5:55a:b6ae with SMTP id
+ t22-20020a2e9556000000b002c5055ab6aemr5936071ljh.16.1700141092672; 
+ Thu, 16 Nov 2023 05:24:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHjtAGHj+LIHeYGHRwgnjJP8BmcLdZEW1KEnvV4H5b4EnV4BFM+1BEvh4QmJE4gtgZrWaGa8A==
+X-Received: by 2002:a2e:9556:0:b0:2c5:55a:b6ae with SMTP id
+ t22-20020a2e9556000000b002c5055ab6aemr5936053ljh.16.1700141092361; 
+ Thu, 16 Nov 2023 05:24:52 -0800 (PST)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
+ ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+ by smtp.gmail.com with ESMTPSA id
+ z17-20020a1c4c11000000b0040a44179a88sm3518712wmf.42.2023.11.16.05.24.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 Nov 2023 05:24:51 -0800 (PST)
+Message-ID: <4e003f0d-d724-41e6-8761-5b5b45c21a09@redhat.com>
+Date: Thu, 16 Nov 2023 14:24:51 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/5] memory: Remove "qemu:" prefix from the
+ "qemu:ram-discard-manager" type name
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Cc: Alistair Francis <alistair@alistair23.me>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Francisco Iglesias <francisco.iglesias@amd.com>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH v2 5/5] qom/object: Limit type names to alphanumerical
- and some few special characters
-Message-ID: <ZVYX8mcanVBl9-ho@redhat.com>
 References: <20231116131454.541434-1-thuth@redhat.com>
- <20231116131454.541434-6-thuth@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231116131454.541434-6-thuth@redhat.com>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ <20231116131454.541434-4-thuth@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20231116131454.541434-4-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,100 +153,40 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 16, 2023 at 02:14:54PM +0100, Thomas Huth wrote:
-> QOM names currently don't have any enforced naming rules. This
-> can be problematic, e.g. when they are used on the command line
-> for the "-device" option (where the comma is used to separate
-> properties). To avoid that such problematic type names come in
-> again, let's restrict the set of acceptable characters during the
-> type registration.
-> 
-> Ideally, we'd apply here the same rules as for QAPI, i.e. all type
-> names should begin with a letter, and contain only ASCII letters,
-> digits, hyphen, and underscore. However, we already have so many
-> pre-existing types like:
-> 
->     486-x86_64-cpu
->     cfi.pflash01
->     power5+_v2.1-spapr-cpu-core
->     virt-2.6-machine
->     pc-i440fx-3.0-machine
-> 
-> ... so that we have to allow "." and "+" for now, too. While the
-> dot is used in a lot of places, the "+" can fortunately be limited
-> to two classes of legacy names ("power" and "Sun-UltraSparc" CPUs).
-> 
-> We also cannot enforce the rule that names must start with a letter
-> yet, since there are lot of types that start with a digit. Still,
-> at least limiting the first characters to the alphanumerical range
-> should be way better than nothing.
+On 16.11.23 14:14, Thomas Huth wrote:
+> Type names should not contain special characters like ":". Let's
+> remove the whole prefix here since it does not really seem to be
+> helpful to have such a prefix here. The type name is only used
+> internally for an interface, so the renaming should not affect
+> the user interface or migration.
 > 
 > Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->  qom/object.c | 41 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 41 insertions(+)
+>   include/exec/memory.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/qom/object.c b/qom/object.c
-> index 95c0dc8285..571ef68950 100644
-> --- a/qom/object.c
-> +++ b/qom/object.c
-> @@ -138,9 +138,50 @@ static TypeImpl *type_new(const TypeInfo *info)
->      return ti;
->  }
->  
-> +static bool type_name_is_valid(const char *name)
-> +{
-> +    const int slen = strlen(name);
-> +
-> +    g_assert(slen > 1);
-> +
-> +    /*
-> +     * Ideally, the name should start with a letter - however, we've got
-> +     * too many names starting with a digit already, so allow digits here,
-> +     * too (except '0' which is not used yet)
-> +     */
-> +    if (!g_ascii_isalnum(name[0]) || name[0] == '0') {
-> +        return false;
-> +    }
-> +
-> +    for (int i = 1; i < slen; i++) {
-> +        if (name[i] != '-' && name[i] != '_' && name[i] != '.' &&
-> +            !g_ascii_isalnum(name[i])) {
-> +            if (name[i] == '+') {
-> +                if (i == 6 && !strncmp(name, "power", 5)) {
-> +                    /* It's a legacy name like "power5+" */
-> +                    continue;
-> +                }
-> +                if (i >= 17 && !strncmp(name, "Sun-UltraSparc", 14)) {
-> +                    /* It's a legacy name like "Sun-UltraSparc-IV+" */
-> +                    continue;
-> +                }
-> +            }
-> +            return false;
-> +        }
-> +    }
+> diff --git a/include/exec/memory.h b/include/exec/memory.h
+> index 831f7c996d..f172e82ac9 100644
+> --- a/include/exec/memory.h
+> +++ b/include/exec/memory.h
+> @@ -43,7 +43,7 @@ typedef struct IOMMUMemoryRegionClass IOMMUMemoryRegionClass;
+>   DECLARE_OBJ_CHECKERS(IOMMUMemoryRegion, IOMMUMemoryRegionClass,
+>                        IOMMU_MEMORY_REGION, TYPE_IOMMU_MEMORY_REGION)
+>   
+> -#define TYPE_RAM_DISCARD_MANAGER "qemu:ram-discard-manager"
+> +#define TYPE_RAM_DISCARD_MANAGER "ram-discard-manager"
+>   typedef struct RamDiscardManagerClass RamDiscardManagerClass;
+>   typedef struct RamDiscardManager RamDiscardManager;
+>   DECLARE_OBJ_CHECKERS(RamDiscardManager, RamDiscardManagerClass,
 
-Replace this big loop with strspn, which has an asm optimized impl
-in glibc
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-      ALPHA_LC "abcdefghijklmnopqrstuvwxyz"
-      ALPHA_UC "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-      OTHER "0123456789-_."
-
-      return (strspn(name, ALPHA_UC ALPHA_LC OTHER) == slen) ||
-          (g_str_has_prefix(name, "power") && slen > 6 && name[6] == '+') ||
-	  (g_str_has_prefix(name, "Sun-UltraSparc") && slen > 17 && name[17] == '+');
-
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Cheers,
+
+David / dhildenb
 
 
