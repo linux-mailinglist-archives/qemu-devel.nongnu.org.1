@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC64D7EF20F
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 12:47:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 162287EF210
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 12:47:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3xIa-0005LV-Uo; Fri, 17 Nov 2023 06:46:12 -0500
+	id 1r3xIg-0005O2-Qw; Fri, 17 Nov 2023 06:46:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3xIR-0005DP-2W
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 06:46:03 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3xIS-0005Hi-T9
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 06:46:06 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3xIP-0005mQ-0q
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 06:46:02 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3xIQ-0005mW-RX
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 06:46:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700221560;
+ s=mimecast20190719; t=1700221561;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iPOoQZBtmDGWtRUDTroXwVRjEOxLziND47rIsvYpCAI=;
- b=AapiN5sPXZqiZpN8a33u6clF3AwFzLJkGtr5OUugzxphRAgdgSdhRW1DVsICVjQWLuIdQ7
- NUEer69GQoiKJWff2EvxDLD3UaQVdnIFK9hrIg+KPlVaT0tTeVniPCqk+Md9Fpz9H7FJfI
- EwwpusYfmaZa9JKN57NM6zZBAQcI9RU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-82-egwTS2cVNRCv7UZSFSqWNQ-1; Fri, 17 Nov 2023 06:45:55 -0500
-X-MC-Unique: egwTS2cVNRCv7UZSFSqWNQ-1
+ bh=hUx1Y+YVOHfY8FYP0ISfdbkREh46U4FT600eIjFdKdw=;
+ b=ejQaXtyBP1F6tJDnqmy5oHt3/PtGpW0YItOdePDCD0oa0mmD+Wr4ipG+9/8RahVF/Xsn++
+ DHgWgNvs/9npZ2XlmHIxQVpu6pLneVQlN4gHfqpXpzMnTujMdUWmjAuGo3U7I0Q8LtIec/
+ 9pu4+tO+ULH1TvHCv2JlLz0U06T/Kh0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-592-Yph25XrQNmugToWN8d9wZA-1; Fri,
+ 17 Nov 2023 06:45:58 -0500
+X-MC-Unique: Yph25XrQNmugToWN8d9wZA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 95700101A53B;
- Fri, 17 Nov 2023 11:45:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 14BB61C06361;
+ Fri, 17 Nov 2023 11:45:58 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.124])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6FCF05028;
- Fri, 17 Nov 2023 11:45:51 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E927F5028;
+ Fri, 17 Nov 2023 11:45:54 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -53,14 +53,13 @@ Cc: Alistair Francis <alistair@alistair23.me>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Francisco Iglesias <francisco.iglesias@amd.com>,
  Eduardo Habkost <eduardo@habkost.net>, Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v3 4/5] tests/unit/test-io-task: Rename "qemu:dummy" to avoid
- colon in the name
-Date: Fri, 17 Nov 2023 12:44:56 +0100
-Message-ID: <20231117114457.177308-5-thuth@redhat.com>
+Subject: [PATCH v3 5/5] qom/object: Limit type names to alphanumerical and
+ some few special characters
+Date: Fri, 17 Nov 2023 12:44:57 +0100
+Message-ID: <20231117114457.177308-6-thuth@redhat.com>
 In-Reply-To: <20231117114457.177308-1-thuth@redhat.com>
 References: <20231117114457.177308-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -88,31 +87,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Type names should not contain special characters like ":" (so that
-they are easier to use with QAPI and other parts). We are going to
-forbid such names in an upcoming patch. Thus let's replace the ":"
-here with a "-".
+QOM names currently don't have any enforced naming rules. This
+can be problematic, e.g. when they are used on the command line
+for the "-device" option (where the comma is used to separate
+properties). To avoid that such problematic type names come in
+again, let's restrict the set of acceptable characters during the
+type registration.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Ideally, we'd apply here the same rules as for QAPI, i.e. all type
+names should begin with a letter, and contain only ASCII letters,
+digits, hyphen, and underscore. However, we already have so many
+pre-existing types like:
+
+    486-x86_64-cpu
+    cfi.pflash01
+    power5+_v2.1-spapr-cpu-core
+    virt-2.6-machine
+    pc-i440fx-3.0-machine
+
+... so that we have to allow "." and "+" for now, too. While the
+dot is used in a lot of places, the "+" can fortunately be limited
+to two classes of legacy names ("power" and "Sun-UltraSparc" CPUs).
+
+We also cannot enforce the rule that names must start with a letter
+yet, since there are lot of types that start with a digit. Still,
+at least limiting the first characters to the alphanumerical range
+should be way better than nothing.
+
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/unit/test-io-task.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ qom/object.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/tests/unit/test-io-task.c b/tests/unit/test-io-task.c
-index 953a50ae66..115dba8970 100644
---- a/tests/unit/test-io-task.c
-+++ b/tests/unit/test-io-task.c
-@@ -25,7 +25,7 @@
- #include "qapi/error.h"
- #include "qemu/module.h"
+diff --git a/qom/object.c b/qom/object.c
+index 95c0dc8285..654e1afaf2 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -138,9 +138,50 @@ static TypeImpl *type_new(const TypeInfo *info)
+     return ti;
+ }
  
--#define TYPE_DUMMY "qemu:dummy"
-+#define TYPE_DUMMY "qemu-dummy"
++static bool type_name_is_valid(const char *name)
++{
++    const int slen = strlen(name);
++    int plen;
++
++    g_assert(slen > 1);
++
++    /*
++     * Ideally, the name should start with a letter - however, we've got
++     * too many names starting with a digit already, so allow digits here,
++     * too (except '0' which is not used yet)
++     */
++    if (!g_ascii_isalnum(name[0]) || name[0] == '0') {
++        return false;
++    }
++
++    plen = strspn(name, "abcdefghijklmnopqrstuvwxyz"
++                        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
++                        "0123456789-_.");
++
++    /* Allow some legacy names with '+' in it for compatibility reasons */
++    if (name[plen] == '+') {
++        if (plen == 6 && g_str_has_prefix(name, "power")) {
++            /* Allow "power5+" and "power7+" CPU names*/
++            return true;
++        }
++        if (plen >= 17 && g_str_has_prefix(name, "Sun-UltraSparc-I")) {
++            /* Allow "Sun-UltraSparc-IV+" and "Sun-UltraSparc-IIIi+" */
++            return true;
++        }
++    }
++
++    return plen == slen;
++}
++
+ static TypeImpl *type_register_internal(const TypeInfo *info)
+ {
+     TypeImpl *ti;
++
++    if (!type_name_is_valid(info->name)) {
++        fprintf(stderr, "Registering '%s' with illegal type name\n", info->name);
++        abort();
++    }
++
+     ti = type_new(info);
  
- typedef struct DummyObject DummyObject;
- typedef struct DummyObjectClass DummyObjectClass;
+     type_table_add(ti);
 -- 
 2.42.0
 
