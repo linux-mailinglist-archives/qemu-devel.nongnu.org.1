@@ -2,49 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91B57EF121
+	by mail.lfdr.de (Postfix) with ESMTPS id E3EDE7EF122
 	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 11:54:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3wTP-0001lj-9m; Fri, 17 Nov 2023 05:53:19 -0500
+	id 1r3wTY-0001mY-RX; Fri, 17 Nov 2023 05:53:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1r3wTM-0001l6-JT
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 05:53:16 -0500
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1r3wTT-0001mK-3K
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 05:53:23 -0500
+Received: from sin.source.kernel.org ([145.40.73.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1r3wTL-0007Nc-7S
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 05:53:16 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1r3wTR-0007To-9f
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 05:53:22 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 5B90061D48;
+ by sin.source.kernel.org (Postfix) with ESMTP id 2E88DCE20BB;
+ Fri, 17 Nov 2023 10:53:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809BEC433C8;
  Fri, 17 Nov 2023 10:53:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C908C433C7;
- Fri, 17 Nov 2023 10:53:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1700218394;
- bh=BGYpMXNnIPmvyJmJfYKOdxOhIUIVwGpqkpYnTEIsqmw=;
+ s=k20201202; t=1700218395;
+ bh=eMNDac8ymUVYhp0HcDOxjGXT2sMkHtpPUx0j/kuVikw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=iBLvZd9/VTgF60Q1bsUDr0i/ZqEOaIbe3/V2xUkm2ZIFpbN5/dIUSgsVnDoCdpxG4
- 3qvYwX+RE7jASQBAXc0IgyuRKCjWPZktzqfjCBUzElXh4qT9JRI/h3ABeiX8dl2JS7
- lDbSI/WBWhGYq0Ovg4JjCcRRhe+EFDbtQxcnQy4gyF7wYKzc8k5EBwozzEHZhndmx0
- XOqwXx2AJy9C0X4rapoYoQ0Eph1lGknPC25caxvlSShHzPrE/9RaexSXmJBqm2vqO5
- 29W5QgBrW5kokWrccEORSiiSIXRaXi+lE59r0J2106jHU1gexizxkJ8IjOP+F4uk0d
- v0YZa5a279WAQ==
+ b=Gehi3A7l2i5Lh3fD5yUGKpjMj/vyF0Bkxan3a4A3iSyabL/NAoLotK5fe0aJr7DgP
+ Lpgg+goLIOXI+Azj50gjp7DaXeCJE0KjvQywA3usN5r4USmSms3k+C9cSq2mv74xvw
+ DnaqBzD6PWhuzcAOKzTz80qEj75QtqkFZ/WQYNyuF9aXDZKAGAqhHzJTYTh5xflNNB
+ SMNW/4hqwZkHLuxBc9t6/jBt/E1rqyTulI7XnSMh1E0YNVc9RjFM/MF2T7EfWRJb7F
+ MHjd2gbRC5d0JkHg3ZFyLSqaI6hlRA4hZumQM4YYZAzYq8PSohpci0zpjfsi9qI5gC
+ fNobmKc0d5VoA==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Helge Deller <deller@gmx.de>
-Subject: [PATCH v2 1/2] target/hppa: Fix 64-bit SHRPD instruction
-Date: Fri, 17 Nov 2023 11:53:08 +0100
-Message-ID: <20231117105309.149225-2-deller@kernel.org>
+Subject: [PATCH v2 2/2] disas/hppa: Show hexcode of instruction along with
+ disassembly
+Date: Fri, 17 Nov 2023 11:53:09 +0100
+Message-ID: <20231117105309.149225-3-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231117105309.149225-1-deller@kernel.org>
 References: <20231117105309.149225-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
+Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
+ helo=sin.source.kernel.org
 X-Spam_score_int: -44
 X-Spam_score: -4.5
 X-Spam_bar: ----
@@ -69,31 +70,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-When shifting the two joined 64-bit registers right, shift the upper
-64-bit register to the left and the lower 64-bit register to the right
-before merging them with OR.
+On hppa many instructions can be expressed by different bytecodes.
+To be able to debug qemu translation bugs it's therefore necessary to see the
+currently executed byte codes without the need to lookup the sequence without
+the full executable.
+With this patch the instruction byte code is shown beside the disassembly.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- target/hppa/translate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ disas/hppa.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 4a4830c3e3..3ef39b1bd7 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -3438,9 +3438,9 @@ static bool trans_shrp_sar(DisasContext *ctx, arg_shrp_sar *a)
-             TCGv_i64 n = tcg_temp_new_i64();
+diff --git a/disas/hppa.c b/disas/hppa.c
+index dcf9a47f34..38fc05acc4 100644
+--- a/disas/hppa.c
++++ b/disas/hppa.c
+@@ -1979,6 +1979,9 @@ print_insn_hppa (bfd_vma memaddr, disassemble_info *info)
+ 	  if (opcode->arch == pa20w)
+ 	    continue;
+ #endif
++	  (*info->fprintf_func) (info->stream, " %02x %02x %02x %02x   ",
++                (insn >> 24) & 0xff, (insn >> 16) & 0xff,
++                (insn >>  8) & 0xff, insn & 0xff);
+ 	  (*info->fprintf_func) (info->stream, "%s", opcode->name);
  
-             tcg_gen_xori_i64(n, cpu_sar, 63);
--            tcg_gen_shl_i64(t, src2, n);
-+            tcg_gen_shl_i64(t, src1, n);
-             tcg_gen_shli_i64(t, t, 1);
--            tcg_gen_shr_i64(dest, src1, cpu_sar);
-+            tcg_gen_shr_i64(dest, src2, cpu_sar);
-             tcg_gen_or_i64(dest, dest, t);
-         } else {
-             TCGv_i64 t = tcg_temp_new_i64();
+ 	  if (!strchr ("cfCY?-+nHNZFIuv{", opcode->args[0]))
 -- 
 2.41.0
 
