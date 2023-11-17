@@ -2,95 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7DE7EECB2
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 08:35:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F36847EECB4
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 08:37:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3tMf-0006an-PZ; Fri, 17 Nov 2023 02:34:09 -0500
+	id 1r3tOk-0000gi-PT; Fri, 17 Nov 2023 02:36:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3tMe-0006ae-EC
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 02:34:08 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1r3tOj-0000gG-34; Fri, 17 Nov 2023 02:36:17 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3tMc-00068S-Mg
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 02:34:08 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40838915cecso13239215e9.2
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 23:34:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1r3tOh-00020l-EY; Fri, 17 Nov 2023 02:36:16 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-692c02adeefso1550156b3a.3; 
+ Thu, 16 Nov 2023 23:36:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700206445; x=1700811245; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=GUG/da0yQm5vkAjxdGxAQZYhgv/9yGi8exyh3Zhe7yk=;
- b=TUWHVLsP7CbIjEcKYgsmUqs/brDghelIVicoxd+cIPpQ4VTZsmFOylSPLgcGDX1iGL
- U4m0ThMz6oYTrYii2aUOMk+tup7JCgE5qC4kzq17Z5m4BfMj5bS03fZTzVY4QezCnWGw
- J+UREQ3XP0rbaiilnTfRkyhYy+NAJ+qmxmVCiH0/ldPppiJFKOEnZPtJZ6td16332s1I
- d4NTtuC7kGeTs2cASRlRqjGokRksmIMXBk0Qru5mrGURvL9ha0m6kwscD+tGtp2KxcBw
- p/JFRntWOhrLR/LymKIQg6WRbNk1iT6KWj0l4Valnm1xrWthnUnuBSfA5UJu8KVwirrW
- +YxA==
+ d=gmail.com; s=20230601; t=1700206573; x=1700811373; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/U272Shfbi09nmiC8esoIUSvWSwAt7r+8XrgEzsrEX0=;
+ b=eb7s+6MNUk3FgeHwpsMU8x36pCTC+85RXe35xOQP428OvPjN6v3rn1mLxr37pmaHW/
+ eyFnzXoyBzpuDJCnn4dnEIN4qcqUFYakEw2L8tIoedb4MRbVHnXESe/LPcYp5N26qeuo
+ FoaWxvezdefFNEYotmIXpfB804anWoUN32FhqBRUpC3Hd+Pey87X0f6GmVM0UeQks3hR
+ 7Y507ikSNmiunfLIUYTZlTonI471yNTqledSdLh0HxrdMO/D5aWPiisIJTvVfx9ABXC0
+ 31lWxUWsDkxvgX51U5eFq7ayqgLYkF3/LmAIWiD1qDBgrMs6djTUKkFc0hhNmgRBms49
+ dqDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700206445; x=1700811245;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GUG/da0yQm5vkAjxdGxAQZYhgv/9yGi8exyh3Zhe7yk=;
- b=mUR8m1FuqAYApuiQg+FAOtoT5ReqRMSu+P25MLRL5KUS5EDzu9dQrJeSDoySGoJ1Zm
- oFgDEzIakVY0a2/l+m29j0q1Lkq+f7qTZcOyRLfa1akWUZnymPv1Lfo3xthpchhEjjlK
- 5ADzcGsO9yYuZdAqrKrfiN78nU1TdDP8JWIp2VewX3KVnsfAF8rVThWvoSzI9OhwQ6mZ
- sHp+z8Hi74zm/95Xv1uT+pMRqyUpBMRuRR7Mqbydazu4ayUzo/YbulGkWR6cg+pdzEIG
- wPjQtojv366O84PikRO3Ax6teQjEeg8WtpQVvdQDq4pl0qWiXYLoQd1ITK0RaXwvB+V1
- oGwg==
-X-Gm-Message-State: AOJu0Ywmp1arYWqdy093zZBXV8mUxwBxLB++ghBQ8Vt8Ait2EMEZkhnx
- lOkb6/4DcepN+pY8ahUJDV8WzA==
-X-Google-Smtp-Source: AGHT+IEtoCKUwFq+pgycxTgFJBYrRNeX0Xdz8ARFoOchyUviFs6pr50nGZx6OvoxJWcTOw0fcg7IEQ==
-X-Received: by 2002:a05:600c:1d02:b0:405:a30:151e with SMTP id
- l2-20020a05600c1d0200b004050a30151emr14823869wms.12.1700206444811; 
- Thu, 16 Nov 2023 23:34:04 -0800 (PST)
-Received: from [192.168.69.100] (bd137-h02-176-184-46-187.dsl.sta.abo.bbox.fr.
- [176.184.46.187]) by smtp.gmail.com with ESMTPSA id
- f19-20020a1c6a13000000b0040a4751efaasm1698120wmc.17.2023.11.16.23.34.01
+ d=1e100.net; s=20230601; t=1700206573; x=1700811373;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=/U272Shfbi09nmiC8esoIUSvWSwAt7r+8XrgEzsrEX0=;
+ b=xAgbqVFgkYtrMM/UtPrCEHwHwZ3fIzGzVeSzv0pXJxKcuGfuh854qV7caHaMjcpv8I
+ mG+pY1z3bQjdacIwtXBzMfuNT7+KnTRRsu31Hf5RP3vIa/I0e8BwA7yczJS7SoaSuPEf
+ AHZkPaEUF5lFlTbfEouMEcSJgNp1urv3YvpJb+TIh9Tavu7bjXXoQnlEBDeI7J1AikSD
+ WcD4+FITB5Csd6Qava+pTkNiICl6goSnYNoubG0gUNrmC1J5smAVFW1nPGXuE9MRx40B
+ abZcDTqkoMCBskoK08McrzJ0NP6Dk2ZS/8dry/UCOPhgZ8o40l9cDD1TSG0ROjrHcQHb
+ RAPw==
+X-Gm-Message-State: AOJu0YwF+EDi0WRoh+ktqO6BGd/su7gZADPvMZmQ8QYruEpASTLLlvOh
+ TazB+UK3dpUnEkCr59WLLnE=
+X-Google-Smtp-Source: AGHT+IGZzxxr2DLAaavstft3FInE/Z0ZL1zZ7tDcYcOrSfTPJ1l1Xp+caq2FjdalyYyrCmwkEt8yJA==
+X-Received: by 2002:aa7:8550:0:b0:6c5:7a6:e1d with SMTP id
+ y16-20020aa78550000000b006c507a60e1dmr16823253pfn.29.1700206572832; 
+ Thu, 16 Nov 2023 23:36:12 -0800 (PST)
+Received: from localhost ([1.146.110.245]) by smtp.gmail.com with ESMTPSA id
+ p17-20020a056a000b5100b006889511ab14sm853246pfo.37.2023.11.16.23.35.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Nov 2023 23:34:04 -0800 (PST)
-Message-ID: <ebaa5c70-e410-465a-a94e-1a254506a81e@linaro.org>
-Date: Fri, 17 Nov 2023 08:34:00 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/31] Unified CPU type check
-Content-Language: en-US
-To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
- imp@bsdimp.com, kevans@freebsd.org, richard.henderson@linaro.org,
- pbonzini@redhat.com, peter.maydell@linaro.org, imammedo@redhat.com,
- b.galvani@gmail.com, strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com,
- kfting@nuvoton.com, wuhaotsh@google.com, nieklinnenbank@gmail.com,
- rad@semihalf.com, quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
- laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, mrolnik@gmail.com,
- edgar.iglesias@gmail.com, bcain@quicinc.com, gaosong@loongson.cn,
- aurelien@aurel32.net, jiaxun.yang@flygoat.com, aleksandar.rikalo@syrmia.com,
- chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
- ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
- jcmvbkbc@gmail.com, shan.gavin@gmail.com
-References: <20231114235628.534334-1-gshan@redhat.com>
- <efc49f7b-70f5-4ce9-8179-79e8a6abd732@linaro.org>
- <78526851-6d44-4c18-97b8-57462fb42ab7@linaro.org>
- <7252553e-9ab3-4c8e-a867-55c57d0178ba@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <7252553e-9ab3-4c8e-a867-55c57d0178ba@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+ Thu, 16 Nov 2023 23:36:12 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 17 Nov 2023 17:35:42 +1000
+Message-Id: <CX0WX30H69LM.3MYDJODZ4LQWF@wheely>
+Cc: "Paolo Bonzini" <pbonzini@redhat.com>, "Pavel Dovgalyuk"
+ <pavel.dovgaluk@ispras.ru>, "Cleber Rosa" <crosa@redhat.com>,
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, "Wainer dos
+ Santos Moschetta" <wainersm@redhat.com>, "Beraldo Leal" <bleal@redhat.com>,
+ "Ani Sinha" <anisinha@redhat.com>, =?utf-8?b?RGFuaWVsIFAgLiBCZXJyYW5nw6k=?=
+ <berrange@redhat.com>, "John Snow" <jsnow@redhat.com>,
+ <qemu-ppc@nongnu.org>, =?utf-8?q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+Subject: Re: [PATCH 3/3] tests/avocado: Enable reverse_debugging.py tests in
+ gitlab CI
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Thomas Huth" <thuth@redhat.com>, <qemu-devel@nongnu.org>,
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+X-Mailer: aerc 0.15.2
+References: <20231116115354.228678-1-npiggin@gmail.com>
+ <20231116115354.228678-3-npiggin@gmail.com>
+ <24a194bc-81c6-44ae-9113-94ed28cc4f71@redhat.com>
+In-Reply-To: <24a194bc-81c6-44ae-9113-94ed28cc4f71@redhat.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -108,41 +100,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/11/23 00:26, Gavin Shan wrote:
-> Hi Phil,
-> 
-> On 11/17/23 02:20, Philippe Mathieu-Daudé wrote:
->> On 16/11/23 14:35, Philippe Mathieu-Daudé wrote:
->>>
->>> I'm queuing patches 1-3 & 5-23 to my cpus-next tree. No need to
->>> repost them, please base them on my tree. I'll follow up with the
->>> branch link when I finish my testing and push it.
->>
->> Here are these patches queued:
->>
->>    https://github.com/philmd/qemu.git branches/cpus-next
+On Fri Nov 17, 2023 at 4:11 AM AEST, Thomas Huth wrote:
+> On 16/11/2023 12.53, Nicholas Piggin wrote:
+> > Let's try enable reverse_debugging.py in gitlab CI.
+> >=20
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> > Maybe we could try this again at some point? The bug might have been
+> > noticed sooner.
+> >=20
+> > They only take a couple of seconds to run so should not take too much
+> > overhead. But my gitlab CI pipeline doesn't run the avocado tests for
+> > some reason, so I can't see if it's still causing problems.
+> >=20
+> > Thanks,
+> > Nick
+> > ---
+> >=20
+> >   tests/avocado/reverse_debugging.py | 7 -------
+> >   1 file changed, 7 deletions(-)
+>
+> FYI, I gave it a try, and it survived my CI run:
+>
+>   https://gitlab.com/thuth/qemu/-/jobs/5552213972#L403
+>
+> So I went ahead and put it (together with the first patch) in my current=
+=20
+> pull request, let's see how it goes...
 
-Oops, no clue why I wrote github instead of gitlab, sorry =)
+Great, thank you.
 
->> I might queue more patches before the 9.0 merge window opens.
->>
-> 
-> Thanks for queuing these patches, but I don't see 'cpus-next' branch
-> in the repository. Please let me know if I checked out the code properly.
-> 
-> $ git clone https://github.com/philmd/qemu.git philmd
-> $ cd philmd
-> $ git branch
-> * staging
-> $ git branch -a | grep cpus-next
-> $ echo $?
-> 1
+> (for the second patch, I hope our chardev maintainer Marc-Andr=C3=A9 coul=
+d=20
+> comment on that first)
 
-No need to clone, you can use in your current cloned repository:
+Yeah that would be good, no rush for that one. Maybe it's not desirable
+for other reasons too.
 
-   $ git fetch https://gitlab.com/philmd/qemu.git cpus-next:cpus-next
+Thanks,
+Nick
 
-Regards,
-
-Phil.
 
