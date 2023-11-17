@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A56A7EECCD
+	by mail.lfdr.de (Postfix) with ESMTPS id 40CE67EECCC
 	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 08:40:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3tSD-00050E-T7; Fri, 17 Nov 2023 02:39:53 -0500
+	id 1r3tSJ-00054H-Qh; Fri, 17 Nov 2023 02:39:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r3tS9-0004yx-1t
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 02:39:49 -0500
+ id 1r3tSH-00051Q-24
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 02:39:57 -0500
 Received: from mgamail.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r3tS5-0006Zf-6l
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 02:39:48 -0500
+ id 1r3tSA-0007Hk-6l
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 02:39:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700206785; x=1731742785;
+ t=1700206790; x=1731742790;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=oDpceN9UpFAa3nnomI7eCB+Z2zqmrgByiUKpHzUKN2Q=;
- b=eg7S9i95BEauq1al4tTTh3MfUXruLGlbcWQhYMH3LiVfZN7ayM3o6bJq
- vMz8t0dQjUiFlY8yySsCxz/rXHcUvGJSQUgSnYx6xq0/G7GLNd+xlMUca
- lPiSHsmDMDm3/eAkoxsMR18zxDdmQpuXiUVOsBbcqEMBpBCvpiUK7YFFB
- HVlMFPCsTTZN9JI+ChRS498h9l41Ons3XOo2EukWUiSHCmoFIBK9zJmf5
- ZPJ7kCL43M6t18J91G4JlowXInt/44mwlO+2529Px5Bu472zSvXl5XLmS
- 75TgFrVOu22j60OYRqndesb+pAKJ23M2udpqdXtEh84oquGmFWf+Yq60v g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10896"; a="395180323"
-X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; d="scan'208";a="395180323"
+ bh=ru+xsMo5O18Ysv5/OaA6hVZFHETPTpuNOeacSlFbQ4A=;
+ b=RTH7qHoi/b9W2i3KrpVlx1bo4pg5GHo+b/9L63YdGdDp/0l5vs97OLxH
+ v4dX4s6C6VZNCPiZlWqTqGvhvRASDkR6NAUcHII5SKDBhA6O/mMiX8bz6
+ hnQLKjI3+hviJHkBOJTIKoMaIQqMLFwjj3w8ke+rgAS15/yarh1ohVpRm
+ mbShlJ8BLWye9M5o2uVT5L9IS0kavT7QIwlPcsQ7TPzVquyUDb0vQgM2x
+ xLlLc/nC0bkxdmsGQGOhg1eA8gPqB6ZHaqbIVCDrysA3C5HEDTwfLn8C9
+ t9/RK3oayHwqgP/bLWC52kE5125nwPX06XLLpUzbUtMzffxuclGvZY2ft Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10896"; a="395180334"
+X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; d="scan'208";a="395180334"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Nov 2023 23:39:43 -0800
+ 16 Nov 2023 23:39:47 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10896"; a="883042684"
-X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; d="scan'208";a="883042684"
+X-IronPort-AV: E=McAfee;i="6600,9927,10896"; a="883042711"
+X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; d="scan'208";a="883042711"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmsmga002.fm.intel.com with ESMTP; 16 Nov 2023 23:39:39 -0800
+ by fmsmga002.fm.intel.com with ESMTP; 16 Nov 2023 23:39:43 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -50,10 +50,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Zhuocheng Ding <zhuocheng.ding@intel.com>, Babu Moger <babu.moger@amd.com>,
  Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v6 05/16] i386: Decouple CPUID[0x1F] subleaf with specific
- topology level
-Date: Fri, 17 Nov 2023 15:50:55 +0800
-Message-Id: <20231117075106.432499-6-zhao1.liu@linux.intel.com>
+Subject: [PATCH v6 06/16] i386: Introduce module-level cpu topology to
+ CPUX86State
+Date: Fri, 17 Nov 2023 15:50:56 +0800
+Message-Id: <20231117075106.432499-7-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231117075106.432499-1-zhao1.liu@linux.intel.com>
 References: <20231117075106.432499-1-zhao1.liu@linux.intel.com>
@@ -61,11 +61,11 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=134.134.136.65;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+X-Spam_score_int: -42
+X-Spam_score: -4.3
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,212 +83,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Zhuocheng Ding <zhuocheng.ding@intel.com>
 
-At present, the subleaf 0x02 of CPUID[0x1F] is bound to the "die" level.
+smp command has the "clusters" parameter but x86 hasn't supported that
+level. "cluster" is a CPU topology level concept above cores, in which
+the cores may share some resources (L2 cache or some others like L3
+cache tags, depending on the Archs) [1][2]. For x86, the resource shared
+by cores at the cluster level is mainly the L2 cache.
 
-In fact, the specific topology level exposed in 0x1F depends on the
-platform's support for extension levels (module, tile and die).
+However, using cluster to define x86's L2 cache topology will cause the
+compatibility problem:
 
-To help expose "module" level in 0x1F, decouple CPUID[0x1F] subleaf
-with specific topology level.
+Currently, x86 defaults that the L2 cache is shared in one core, which
+actually implies a default setting "cores per L2 cache is 1" and
+therefore implicitly defaults to having as many L2 caches as cores.
 
+For example (i386 PC machine):
+-smp 16,sockets=2,dies=2,cores=2,threads=2,maxcpus=16 (*)
+
+Considering the topology of the L2 cache, this (*) implicitly means "1
+core per L2 cache" and "2 L2 caches per die".
+
+If we use cluster to configure L2 cache topology with the new default
+setting "clusters per L2 cache is 1", the above semantics will change
+to "2 cores per cluster" and "1 cluster per L2 cache", that is, "2
+cores per L2 cache".
+
+So the same command (*) will cause changes in the L2 cache topology,
+further affecting the performance of the virtual machine.
+
+Therefore, x86 should only treat cluster as a cpu topology level and
+avoid using it to change L2 cache by default for compatibility.
+
+"cluster" in smp is the CPU topology level which is between "core" and
+die.
+
+For x86, the "cluster" in smp is corresponding to the module level [2],
+which is above the core level. So use the "module" other than "cluster"
+in i386 code.
+
+And please note that x86 already has a cpu topology level also named
+"cluster" [3], this level is at the upper level of the package. Here,
+the cluster in x86 cpu topology is completely different from the
+"clusters" as the smp parameter. After the module level is introduced,
+the cluster as the smp parameter will actually refer to the module level
+of x86.
+
+[1]: 864c3b5c32f0 ("hw/core/machine: Introduce CPU cluster topology support")
+[2]: Yanan's comment about "cluster",
+     https://lists.gnu.org/archive/html/qemu-devel/2023-02/msg04051.html
+[3]: SDM, vol.3, ch.9, 9.9.1 Hierarchical Mapping of Shared Resources.
+
+Signed-off-by: Zhuocheng Ding <zhuocheng.ding@intel.com>
+Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Tested-by: Babu Moger <babu.moger@amd.com>
 Tested-by: Yongwei Ma <yongwei.ma@intel.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
-Changes since v3:
- * New patch to prepare to expose module level in 0x1F.
- * Move the CPUTopoLevel enumeration definition from "i386: Add cache
-   topology info in CPUCacheInfo" to this patch. Note, to align with
-   topology types in SDM, revert the name of CPU_TOPO_LEVEL_UNKNOW to
-   CPU_TOPO_LEVEL_INVALID.
+Changes since v1:
+ * The background of the introduction of the "cluster" parameter and its
+   exact meaning were revised according to Yanan's explanation. (Yanan)
 ---
- target/i386/cpu.c | 136 +++++++++++++++++++++++++++++++++++++---------
- target/i386/cpu.h |  15 +++++
- 2 files changed, 126 insertions(+), 25 deletions(-)
+ hw/i386/x86.c     | 1 +
+ target/i386/cpu.c | 1 +
+ target/i386/cpu.h | 5 +++++
+ 3 files changed, 7 insertions(+)
 
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index b3d054889bba..24628c1d2f73 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -306,6 +306,7 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+     init_topo_info(&topo_info, x86ms);
+ 
+     env->nr_dies = ms->smp.dies;
++    env->nr_modules = ms->smp.clusters;
+ 
+     /*
+      * If APIC ID is not set,
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index fe9098353ac3..1713499c44cd 100644
+index 1713499c44cd..f600c0ee9df1 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -269,6 +269,116 @@ static void encode_cache_cpuid4(CPUCacheInfo *cache,
-            (cache->complex_indexing ? CACHE_COMPLEX_IDX : 0);
- }
+@@ -7698,6 +7698,7 @@ static void x86_cpu_initfn(Object *obj)
+     CPUX86State *env = &cpu->env;
  
-+static uint32_t num_cpus_by_topo_level(X86CPUTopoInfo *topo_info,
-+                                       enum CPUTopoLevel topo_level)
-+{
-+    switch (topo_level) {
-+    case CPU_TOPO_LEVEL_SMT:
-+        return 1;
-+    case CPU_TOPO_LEVEL_CORE:
-+        return topo_info->threads_per_core;
-+    case CPU_TOPO_LEVEL_DIE:
-+        return topo_info->threads_per_core * topo_info->cores_per_die;
-+    case CPU_TOPO_LEVEL_PACKAGE:
-+        return topo_info->threads_per_core * topo_info->cores_per_die *
-+               topo_info->dies_per_pkg;
-+    default:
-+        g_assert_not_reached();
-+    }
-+    return 0;
-+}
-+
-+static uint32_t apicid_offset_by_topo_level(X86CPUTopoInfo *topo_info,
-+                                            enum CPUTopoLevel topo_level)
-+{
-+    switch (topo_level) {
-+    case CPU_TOPO_LEVEL_SMT:
-+        return 0;
-+    case CPU_TOPO_LEVEL_CORE:
-+        return apicid_core_offset(topo_info);
-+    case CPU_TOPO_LEVEL_DIE:
-+        return apicid_die_offset(topo_info);
-+    case CPU_TOPO_LEVEL_PACKAGE:
-+        return apicid_pkg_offset(topo_info);
-+    default:
-+        g_assert_not_reached();
-+    }
-+    return 0;
-+}
-+
-+static uint32_t cpuid1f_topo_type(enum CPUTopoLevel topo_level)
-+{
-+    switch (topo_level) {
-+    case CPU_TOPO_LEVEL_INVALID:
-+        return CPUID_1F_ECX_TOPO_LEVEL_INVALID;
-+    case CPU_TOPO_LEVEL_SMT:
-+        return CPUID_1F_ECX_TOPO_LEVEL_SMT;
-+    case CPU_TOPO_LEVEL_CORE:
-+        return CPUID_1F_ECX_TOPO_LEVEL_CORE;
-+    case CPU_TOPO_LEVEL_DIE:
-+        return CPUID_1F_ECX_TOPO_LEVEL_DIE;
-+    default:
-+        /* Other types are not supported in QEMU. */
-+        g_assert_not_reached();
-+    }
-+    return 0;
-+}
-+
-+static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
-+                                X86CPUTopoInfo *topo_info,
-+                                uint32_t *eax, uint32_t *ebx,
-+                                uint32_t *ecx, uint32_t *edx)
-+{
-+    static DECLARE_BITMAP(topo_bitmap, CPU_TOPO_LEVEL_MAX);
-+    X86CPU *cpu = env_archcpu(env);
-+    unsigned long level, next_level;
-+    uint32_t num_cpus_next_level, offset_next_level;
-+
-+    /*
-+     * Initialize the bitmap to decide which levels should be
-+     * encoded in 0x1f.
-+     */
-+    if (!count) {
-+        /* SMT and core levels are exposed in 0x1f leaf by default. */
-+        set_bit(CPU_TOPO_LEVEL_SMT, topo_bitmap);
-+        set_bit(CPU_TOPO_LEVEL_CORE, topo_bitmap);
-+
-+        if (env->nr_dies > 1) {
-+            set_bit(CPU_TOPO_LEVEL_DIE, topo_bitmap);
-+        }
-+    }
-+
-+    *ecx = count & 0xff;
-+    *edx = cpu->apic_id;
-+
-+    level = find_first_bit(topo_bitmap, CPU_TOPO_LEVEL_MAX);
-+    if (level == CPU_TOPO_LEVEL_MAX) {
-+        num_cpus_next_level = 0;
-+        offset_next_level = 0;
-+
-+        /* Encode CPU_TOPO_LEVEL_INVALID into the last subleaf of 0x1f. */
-+        level = CPU_TOPO_LEVEL_INVALID;
-+    } else {
-+        next_level = find_next_bit(topo_bitmap, CPU_TOPO_LEVEL_MAX, level + 1);
-+        if (next_level == CPU_TOPO_LEVEL_MAX) {
-+            next_level = CPU_TOPO_LEVEL_PACKAGE;
-+        }
-+
-+        num_cpus_next_level = num_cpus_by_topo_level(topo_info, next_level);
-+        offset_next_level = apicid_offset_by_topo_level(topo_info, next_level);
-+    }
-+
-+    *eax = offset_next_level;
-+    *ebx = num_cpus_next_level;
-+    *ecx |= cpuid1f_topo_type(level) << 8;
-+
-+    assert(!(*eax & ~0x1f));
-+    *ebx &= 0xffff; /* The count doesn't need to be reliable. */
-+    if (level != CPU_TOPO_LEVEL_MAX) {
-+        clear_bit(level, topo_bitmap);
-+    }
-+}
-+
- /* Encode cache info for CPUID[0x80000005].ECX or CPUID[0x80000005].EDX */
- static uint32_t encode_cache_cpuid80000005(CPUCacheInfo *cache)
- {
-@@ -6283,31 +6393,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             break;
-         }
+     env->nr_dies = 1;
++    env->nr_modules = 1;
  
--        *ecx = count & 0xff;
--        *edx = cpu->apic_id;
--        switch (count) {
--        case 0:
--            *eax = apicid_core_offset(&topo_info);
--            *ebx = topo_info.threads_per_core;
--            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_SMT << 8;
--            break;
--        case 1:
--            *eax = apicid_die_offset(&topo_info);
--            *ebx = topo_info.cores_per_die * topo_info.threads_per_core;
--            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_CORE << 8;
--            break;
--        case 2:
--            *eax = apicid_pkg_offset(&topo_info);
--            *ebx = cpus_per_pkg;
--            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_DIE << 8;
--            break;
--        default:
--            *eax = 0;
--            *ebx = 0;
--            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_INVALID << 8;
--        }
--        assert(!(*eax & ~0x1f));
--        *ebx &= 0xffff; /* The count doesn't need to be reliable. */
-+        encode_topo_cpuid1f(env, count, &topo_info, eax, ebx, ecx, edx);
-         break;
-     case 0xD: {
-         /* Processor Extended State */
+     object_property_add(obj, "feature-words", "X86CPUFeatureWordInfo",
+                         x86_cpu_get_feature_words,
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 5aa0b8cf4137..a214d056ac4b 100644
+index a214d056ac4b..da58d41c9969 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -1008,6 +1008,21 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
- #define CPUID_MWAIT_IBE     (1U << 1) /* Interrupts can exit capability */
- #define CPUID_MWAIT_EMX     (1U << 0) /* enumeration supported */
+@@ -1904,6 +1904,11 @@ typedef struct CPUArchState {
  
-+/*
-+ * CPUTopoLevel is the general i386 topology hierarchical representation,
-+ * ordered by increasing hierarchical relationship.
-+ * Its enumeration value is not bound to the type value of Intel (CPUID[0x1F])
-+ * or AMD (CPUID[0x80000026]).
-+ */
-+enum CPUTopoLevel {
-+    CPU_TOPO_LEVEL_INVALID,
-+    CPU_TOPO_LEVEL_SMT,
-+    CPU_TOPO_LEVEL_CORE,
-+    CPU_TOPO_LEVEL_DIE,
-+    CPU_TOPO_LEVEL_PACKAGE,
-+    CPU_TOPO_LEVEL_MAX,
-+};
-+
- /* CPUID[0xB].ECX level types */
- #define CPUID_B_ECX_TOPO_LEVEL_INVALID  0
- #define CPUID_B_ECX_TOPO_LEVEL_SMT      1
+     /* Number of dies within this CPU package. */
+     unsigned nr_dies;
++    /*
++     * Number of modules within this CPU package.
++     * Module level in x86 cpu topology is corresponding to smp.clusters.
++     */
++    unsigned nr_modules;
+ } CPUX86State;
+ 
+ struct kvm_msrs;
 -- 
 2.34.1
 
