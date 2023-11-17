@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC28B7EF922
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 22:04:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7CB7EFA1E
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 22:20:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r45ze-0005Yr-6G; Fri, 17 Nov 2023 16:03:14 -0500
+	id 1r46Eo-0004Pb-FH; Fri, 17 Nov 2023 16:18:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <isaku.yamahata@intel.com>)
- id 1r45zb-0005YH-Mx
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 16:03:11 -0500
-Received: from mgamail.intel.com ([192.55.52.115])
+ id 1r46El-0004PD-Ep
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 16:18:51 -0500
+Received: from mgamail.intel.com ([134.134.136.100])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <isaku.yamahata@intel.com>)
- id 1r45zZ-0005At-8m
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 16:03:11 -0500
+ id 1r46Eh-0004VB-JZ
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 16:18:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700254989; x=1731790989;
+ t=1700255927; x=1731791927;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=7JF/vWM+ZZeUdd9cPjB6/JC44J5sV6hwsvD6NCm73yU=;
- b=T/4QoICg0Ve5D1vOgdYYHLXaMKLMvu+T+hbCKMl47AOEjTBJgLJK9iWq
- Sx5MqjUeu/018rQszYzkvpqOMokCy3RVGmDO4d4fgt4zJZPHvcNhWKopb
- Eo8nar2uB6oF5xLaAb0630Mq07Ia1KP1wscH2ePmyWMRBfo6Ic1kIq5s6
- EmJJAvm5UX1SjMBl4pNaDqrE7bwJWw9o6HOzNyvIWJuTGpNm8lTs0dSPg
- NDmdsnXaEn63px5KXj2YG9acSGYRKk9LK7VXrn7ENgmtobM24Du2aV1t5
- ystX/kOkfndPFBVWFbQHhKpMo/XRVXjAUu/jPKvJYABPVU/WaJEJo6/iQ Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10897"; a="391151605"
-X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; d="scan'208";a="391151605"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2023 13:03:05 -0800
+ bh=zMIPv8ix5WN4qvG0q4zW/+35uhcmtjjsIBen/HZxkmI=;
+ b=EGkvPDsFEbxVE5Q4yoasu3Eh1YmNJW973lkgX8NUjGoakdnidtGEyscX
+ VKA+Xhzx4jCkIySVC967PsEpLzzfZiu1j+yt6KBdFENrZk+INr+fwltML
+ 8xyI+xLmDiM/+0QuYx5IbMspuRtZq22kyNcISJ2g2eHNn0ijkX79NwJsF
+ o7Hxr2Sk0Pa6EVnkNOcIAa1FG3tSgKcbE+8goECTTDSxCGPo1mssjLRjs
+ YktwK0Sopkh7E0NJgXPphFF0vrQ/AvG/31K1ScJuL1H0OrIf8spEQlNdT
+ rIq9hMKO10eaowwwr+uxaPmL6mYPT3YhhUh9BJv4SwwaIREjePQvqVkcS Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10897"; a="457871531"
+X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; d="scan'208";a="457871531"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2023 13:18:43 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10897"; a="1013042135"
-X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; d="scan'208";a="1013042135"
+X-IronPort-AV: E=McAfee;i="6600,9927,10897"; a="831720325"
+X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; d="scan'208";a="831720325"
 Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
- by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2023 13:03:04 -0800
-Date: Fri, 17 Nov 2023 13:03:04 -0800
+ by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2023 13:18:43 -0800
+Date: Fri, 17 Nov 2023 13:18:43 -0800
 From: Isaku Yamahata <isaku.yamahata@linux.intel.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
@@ -61,16 +61,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>,
  isaku.yamahata@linux.intel.com, isaku.yamahata@intel.com
-Subject: Re: [PATCH v3 09/70] physmem: Introduce ram_block_convert_range()
- for page conversion
-Message-ID: <20231117210304.GC1645850@ls.amr.corp.intel.com>
+Subject: Re: [PATCH v3 18/70] i386/tdx: Get tdx_capabilities via
+ KVM_TDX_CAPABILITIES
+Message-ID: <20231117211843.GA1648821@ls.amr.corp.intel.com>
 References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
- <20231115071519.2864957-10-xiaoyao.li@intel.com>
+ <20231115071519.2864957-19-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231115071519.2864957-10-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=192.55.52.115;
+In-Reply-To: <20231115071519.2864957-19-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=134.134.136.100;
  envelope-from=isaku.yamahata@intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
@@ -94,110 +94,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 15, 2023 at 02:14:18AM -0500,
+On Wed, Nov 15, 2023 at 02:14:27AM -0500,
 Xiaoyao Li <xiaoyao.li@intel.com> wrote:
 
-> It's used for discarding opposite memory after memory conversion, for
-> confidential guest.
+> KVM provides TDX capabilities via sub command KVM_TDX_CAPABILITIES of
+> IOCTL(KVM_MEMORY_ENCRYPT_OP). Get the capabilities when initializing
+> TDX context. It will be used to validate user's setting later.
 > 
-> When page is converted from shared to private, the original shared
-> memory can be discarded via ram_block_discard_range();
+> Since there is no interface reporting how many cpuid configs contains in
+> KVM_TDX_CAPABILITIES, QEMU chooses to try starting with a known number
+> and abort when it exceeds KVM_MAX_CPUID_ENTRIES.
 > 
-> When page is converted from private to shared, the original private
-> memory is back'ed by guest_memfd. Introduce
-> ram_block_discard_guest_memfd_range() for discarding memory in
-> guest_memfd.
+> Besides, introduce the interfaces to invoke TDX "ioctls" at different
+> scope (KVM, VM and VCPU) in preparation.
 > 
-> Originally-from: Isaku Yamahata <isaku.yamahata@intel.com>
-> Codeveloped-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > ---
->  include/exec/cpu-common.h |  2 ++
->  system/physmem.c          | 50 +++++++++++++++++++++++++++++++++++++++
->  2 files changed, 52 insertions(+)
+> Changes in v3:
+> - rename __tdx_ioctl() to tdx_ioctl_internal()
+> - Pass errp in get_tdx_capabilities();
 > 
-> diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-> index 41115d891940..de728a18eef2 100644
-> --- a/include/exec/cpu-common.h
-> +++ b/include/exec/cpu-common.h
-> @@ -175,6 +175,8 @@ typedef int (RAMBlockIterFunc)(RAMBlock *rb, void *opaque);
+> changes in v2:
+>   - Make the error message more clear;
+> 
+> changes in v1:
+>   - start from nr_cpuid_configs = 6 for the loop;
+>   - stop the loop when nr_cpuid_configs exceeds KVM_MAX_CPUID_ENTRIES;
+> ---
+>  target/i386/kvm/kvm.c      |   2 -
+>  target/i386/kvm/kvm_i386.h |   2 +
+>  target/i386/kvm/tdx.c      | 102 ++++++++++++++++++++++++++++++++++++-
+>  3 files changed, 103 insertions(+), 3 deletions(-)
+> 
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 7abcdebb1452..28e60c5ea4a7 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -1687,8 +1687,6 @@ static int hyperv_init_vcpu(X86CPU *cpu)
 >  
->  int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque);
->  int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length);
-> +int ram_block_convert_range(RAMBlock *rb, uint64_t start, size_t length,
-> +                            bool shared_to_private);
+>  static Error *invtsc_mig_blocker;
 >  
->  #endif
+> -#define KVM_MAX_CPUID_ENTRIES  100
+> -
+>  static void kvm_init_xsave(CPUX86State *env)
+>  {
+>      if (has_xsave2) {
+> diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
+> index 55fb25fa8e2e..c3ef46a97a7b 100644
+> --- a/target/i386/kvm/kvm_i386.h
+> +++ b/target/i386/kvm/kvm_i386.h
+> @@ -13,6 +13,8 @@
 >  
-> diff --git a/system/physmem.c b/system/physmem.c
-> index ddfecddefcd6..cd6008fa09ad 100644
-> --- a/system/physmem.c
-> +++ b/system/physmem.c
-> @@ -3641,6 +3641,29 @@ err:
->      return ret;
->  }
+>  #include "sysemu/kvm.h"
 >  
-> +static int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
-> +                                               size_t length)
+> +#define KVM_MAX_CPUID_ENTRIES  100
+> +
+>  #ifdef CONFIG_KVM
+>  
+>  #define kvm_pit_in_kernel() \
+> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+> index 621a05beeb4e..cb0040187b27 100644
+> --- a/target/i386/kvm/tdx.c
+> +++ b/target/i386/kvm/tdx.c
+> @@ -12,17 +12,117 @@
+>   */
+>  
+>  #include "qemu/osdep.h"
+> +#include "qemu/error-report.h"
+>  #include "qapi/error.h"
+>  #include "qom/object_interfaces.h"
+> +#include "sysemu/kvm.h"
+>  
+>  #include "hw/i386/x86.h"
+> +#include "kvm_i386.h"
+>  #include "tdx.h"
+>  
+> +static struct kvm_tdx_capabilities *tdx_caps;
+> +
+> +enum tdx_ioctl_level{
+> +    TDX_PLATFORM_IOCTL,
+> +    TDX_VM_IOCTL,
+> +    TDX_VCPU_IOCTL,
+> +};
+> +
+> +static int tdx_ioctl_internal(void *state, enum tdx_ioctl_level level, int cmd_id,
+> +                        __u32 flags, void *data)
 > +{
-> +    int ret = -1;
+> +    struct kvm_tdx_cmd tdx_cmd;
+> +    int r;
 > +
-> +#ifdef CONFIG_FALLOCATE_PUNCH_HOLE
-> +    ret = fallocate(rb->guest_memfd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-> +                    start, length);
+> +    memset(&tdx_cmd, 0x0, sizeof(tdx_cmd));
 > +
-> +    if (ret) {
-> +        ret = -errno;
-> +        error_report("%s: Failed to fallocate %s:%" PRIx64 " +%zx (%d)",
-> +                     __func__, rb->idstr, start, length, ret);
+> +    tdx_cmd.id = cmd_id;
+> +    tdx_cmd.flags = flags;
+> +    tdx_cmd.data = (__u64)(unsigned long)data;
+> +
+> +    switch (level) {
+> +    case TDX_PLATFORM_IOCTL:
+> +        r = kvm_ioctl(kvm_state, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd);
+> +        break;
+> +    case TDX_VM_IOCTL:
+> +        r = kvm_vm_ioctl(kvm_state, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd);
+> +        break;
+> +    case TDX_VCPU_IOCTL:
+> +        r = kvm_vcpu_ioctl(state, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd);
+> +        break;
+> +    default:
+> +        error_report("Invalid tdx_ioctl_level %d", level);
+> +        exit(1);
 > +    }
-> +#else
-> +    ret = -ENOSYS;
-> +    error_report("%s: fallocate not available %s:%" PRIx64 " +%zx (%d)",
-> +                 __func__, rb->idstr, start, length, ret);
-> +#endif
 > +
-> +    return ret;
+> +    return r;
 > +}
 > +
->  bool ramblock_is_pmem(RAMBlock *rb)
->  {
->      return rb->flags & RAM_PMEM;
-> @@ -3828,3 +3851,30 @@ bool ram_block_discard_is_required(void)
->      return qatomic_read(&ram_block_discard_required_cnt) ||
->             qatomic_read(&ram_block_coordinated_discard_required_cnt);
->  }
-> +
-> +int ram_block_convert_range(RAMBlock *rb, uint64_t start, size_t length,
-> +                            bool shared_to_private)
+> +static inline int tdx_platform_ioctl(int cmd_id, __u32 flags, void *data)
 > +{
-> +    if (!rb || rb->guest_memfd < 0) {
-> +        return -1;
-> +    }
+> +    return tdx_ioctl_internal(NULL, TDX_PLATFORM_IOCTL, cmd_id, flags, data);
+> +}
 > +
-> +    if (!QEMU_PTR_IS_ALIGNED(start, qemu_host_page_size) ||
-> +        !QEMU_PTR_IS_ALIGNED(length, qemu_host_page_size)) {
-> +        return -1;
-> +    }
+> +static inline int tdx_vm_ioctl(int cmd_id, __u32 flags, void *data)
+> +{
+> +    return tdx_ioctl_internal(NULL, TDX_VM_IOCTL, cmd_id, flags, data);
+> +}
 > +
-> +    if (!length) {
-> +        return -1;
-> +    }
-> +
-> +    if (start + length > rb->max_length) {
-> +        return -1;
-> +    }
-> +
-> +    if (shared_to_private) {
-> +        return ram_block_discard_range(rb, start, length);
-> +    } else {
-> +        return ram_block_discard_guest_memfd_range(rb, start, length);
-> +    }
+> +static inline int tdx_vcpu_ioctl(void *vcpu_fd, int cmd_id, __u32 flags,
+> +                                 void *data)
+> +{
+> +    return  tdx_ioctl_internal(vcpu_fd, TDX_VCPU_IOCTL, cmd_id, flags, data);
 > +}
 
-Originally this function issued KVM_SET_MEMORY_ATTRIBUTES, the function name
-mad sense. But now it doesn't, and it issues only punch hole. We should rename
-it to represent what it actually does. discard_range?
+As all of ioctl variants aren't used yet, we can split out them. An independent
+patch to define ioctl functions.
+
+
+> +
+> +static int get_tdx_capabilities(Error **errp)
+> +{
+> +    struct kvm_tdx_capabilities *caps;
+> +    /* 1st generation of TDX reports 6 cpuid configs */
+> +    int nr_cpuid_configs = 6;
+> +    size_t size;
+> +    int r;
+> +
+> +    do {
+> +        size = sizeof(struct kvm_tdx_capabilities) +
+> +               nr_cpuid_configs * sizeof(struct kvm_tdx_cpuid_config);
+> +        caps = g_malloc0(size);
+> +        caps->nr_cpuid_configs = nr_cpuid_configs;
+> +
+> +        r = tdx_vm_ioctl(KVM_TDX_CAPABILITIES, 0, caps);
+> +        if (r == -E2BIG) {
+> +            g_free(caps);
+> +            nr_cpuid_configs *= 2;
+
+g_realloc()?  Maybe a matter of preference.
+
+Other than this, it looks good to me.
 -- 
 Isaku Yamahata <isaku.yamahata@linux.intel.com>
 
