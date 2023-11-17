@@ -2,83 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D217EEFEB
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 11:17:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 410887EF031
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 11:23:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3vsz-0006bC-L5; Fri, 17 Nov 2023 05:15:41 -0500
+	id 1r3vzD-0001WC-Dx; Fri, 17 Nov 2023 05:22:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r3vsj-0006T9-5O
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 05:15:27 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1r3vym-00018q-GG
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 05:21:40 -0500
+Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r3vsf-00022j-9N
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 05:15:24 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1ce28faa92dso16185595ad.2
- for <qemu-devel@nongnu.org>; Fri, 17 Nov 2023 02:15:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1r3vyk-000655-F6
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 05:21:40 -0500
+Received: by mail-qt1-x82c.google.com with SMTP id
+ d75a77b69052e-41e3e77e675so10174741cf.1
+ for <qemu-devel@nongnu.org>; Fri, 17 Nov 2023 02:21:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1700216108; x=1700820908; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BYYmNehUUhi33mj3OOW7nG7/+uUkFUiFSW8Tj2ElYyk=;
- b=j5mFwzP/j5VhLZgYsU8onOALZdg7ZimkneAjoi00Izn8JACB5YGX/r/T8aLKHT2Szm
- P5UzHfUBVQnd9RstUhqXxmm/3PDb8VAG5aVf4PcN29OyKRky3DUVwCg0MGEQdsqHBQvw
- GK9IzZEJDY29QtZxdNnJAxwsZil2EaN46Li8tsVxl32tdw60A7hZ9UfwsOQ7ouJ7lm36
- T++xTjCq9zDL9OnzZ0F4vjC3/pzPNTH+/7ZxAjoqXX/qS57DhE26+t5MjKFa78JAJalp
- 6Oq6vaJcOBb2mDatqSkb5hgNPRho5KoMaPuhLV8kHcYGh41k0CO1O17dACj5tuTAJ4zb
- uSnQ==
+ d=gmail.com; s=20230601; t=1700216497; x=1700821297; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=SShuaqOYC/5DjCvbDYpSYYu0tgc9g7OWXuH65nmeWIY=;
+ b=N/bJjtXjRj35Ikc2r7fkpsY5C1jJmmfYm9V/CPev1NB88ZEGHXeYN25dhhmr7WI1NW
+ PYGrWEGE239OIAgmdFZ+ek3yyIittovI01AOeRapjstRyefIq8mWLnSrFx5Pv7P28b2f
+ 2A72pO76f96knAYmOh90o/0RUQstPxaNlohB+EExuPjd5JJmgGpOO7bA/3FXgE6yAkIf
+ a/+vk3IcikE3BOJyq/u4cWEmfhnKQ4gpzN4ynlV2BcBxMx22WhF+oSZLUHWqsXV+Ugff
+ B39Dos2XG/MJ6qG5qtDD1BDF8iNrxN8vPOXKG9D7vuKY9GiB4sHC2Gx61wk1u2vFBmS1
+ oOig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700216108; x=1700820908;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BYYmNehUUhi33mj3OOW7nG7/+uUkFUiFSW8Tj2ElYyk=;
- b=To0jsPoi21D0JVNy0nHUK0AFZWVZmBzf59vyGPaB94mntG3Sq036N76VIFSAiqS0Zq
- t9c7HKh2iDkZuFiBuoYPz57109KVBIw92tPgCnTC2bT7Egt4uw0lp4xcm5CibpKdHhw2
- 74yGbGeHWw213Bg23rXMvpBqFaJKYDuFeBQxfq1xsSHjihGWgTA2q8iBOwY70fnmOSji
- lFe4eQt9S30FV7GZItoZojGCuo1g5mc5OaGLnCQ38pq4XrGO0UJWyXTIP0P6TaH22WYA
- FgdzCia02MrG3ZzMDV0LE5DBbGSl1l8pN3pTHJth/nGrwmszZ7c6OIUduw+OPuC4dsRo
- HwaA==
-X-Gm-Message-State: AOJu0YwSaia0NyPJfZTl0c7uSODeWTBXcKSDtsSsEXRjCSi+RUjLYoV1
- s8JqCa2qGx1JQT0nyyf22f+6LA==
-X-Google-Smtp-Source: AGHT+IGvP54bSMrkyjknLOhepa7O/vqrMa1t+9/Zu6ERJWD5vMzDQI5kISuWp7dGl5IBec1Akb4SNQ==
-X-Received: by 2002:a17:902:9894:b0:1cc:e66:3732 with SMTP id
- s20-20020a170902989400b001cc0e663732mr11523276plp.19.1700216108017; 
- Fri, 17 Nov 2023 02:15:08 -0800 (PST)
-Received: from [192.168.68.109] ([152.250.131.148])
- by smtp.gmail.com with ESMTPSA id
- l14-20020a170902f68e00b001ca4ad86357sm1051036plg.227.2023.11.17.02.15.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 17 Nov 2023 02:15:07 -0800 (PST)
-Message-ID: <62bcbb0c-7d24-4363-b068-51fb12aa96d0@ventanamicro.com>
-Date: Fri, 17 Nov 2023 07:15:03 -0300
+ d=1e100.net; s=20230601; t=1700216497; x=1700821297;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SShuaqOYC/5DjCvbDYpSYYu0tgc9g7OWXuH65nmeWIY=;
+ b=ATakaR6bPBPPGl34JcjYkVUgPHRCcLxaxJZsLb9YRKGvjEx1swrub62V2r5mZByPpD
+ +G8W3lpKgWcScZ+v/CgVbq0dTTGq7HGSGEPNFJ+F16riuvpUSVhNJ2zPo2UeT/dwtXRf
+ EZpqVlGhcbIUO06wwNQZ54Qsy/6CL3BwDKsaiv0qfF9hBjxwz1Xk68CT5fNIF0iBzzIw
+ pV7LPamGqW/QRdQr9PyAEYP1r4+z0MsWMpHD496/W95kmzimssa0seIgdPppybUC152f
+ YSsTkmRfaP7S5j5vaZVndVSS+fLlyp/Ug/Heq6XcRR0iXLCUjVAKOh0qm+6Amv/dyYKb
+ lfVw==
+X-Gm-Message-State: AOJu0YyvYXZ5CN5sxALfN89/ObhOgu1p+9engf/PBk4Ew7dMTBx+xEeL
+ KmsqBOB4kxt8o7TRx6K0ToMvFojAEHl5XdxW7Fg=
+X-Google-Smtp-Source: AGHT+IFhOBNVQMGqwIiQo4lWcSbXzxUK9tWHy6KvMu1xP47tUPRpymZHhcgpyAH/jwGK9XefhcQoWOhP5euCE/9Nmh8=
+X-Received: by 2002:a05:622a:174a:b0:41e:173e:82b7 with SMTP id
+ l10-20020a05622a174a00b0041e173e82b7mr11288936qtk.66.1700216496667; Fri, 17
+ Nov 2023 02:21:36 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] riscv: Fix SiFive E CLINT clock frequency
-Content-Language: en-US
-To: =?UTF-8?Q?Rom=C3=A1n_C=C3=A1rdenas?= <rcardenas.rod@gmail.com>,
- qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Alistair.Francis@wdc.com,
- bin.meng@windriver.com, palmer@dabbelt.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org
-References: <20231117082840.55705-1-rcardenas.rod@gmail.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231117082840.55705-1-rcardenas.rod@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62a.google.com
+References: <20231116182228.3062796-1-peter.maydell@linaro.org>
+In-Reply-To: <20231116182228.3062796-1-peter.maydell@linaro.org>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Fri, 17 Nov 2023 14:21:25 +0400
+Message-ID: <CAJ+F1C+o-jAZu-tmJvUvF+E2HtXBARTAGAYNsCicnc6zVqhYnA@mail.gmail.com>
+Subject: Re: [PATCH for-8.2] Revert "ui/console: allow to override the default
+ VC"
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw2@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,47 +88,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi
 
+On Thu, Nov 16, 2023 at 10:25=E2=80=AFPM Peter Maydell <peter.maydell@linar=
+o.org> wrote:
+>
+> This reverts commit 1bec1cc0da497e55c16e2a7b50f94cdb2a02197f.  This
+> commit changed the behaviour of the "-display none" option, so that
+> it now creates a QEMU monitor on the terminal.  "-display none"
+> should not be tangled up with whether we create a monitor or a serial
+> terminal; it should purely and only disable the graphical window.
+> Changing its behaviour like this breaks command lines which, for
+> example, use semihosting for their output and don't want a graphical
+> window, as they now get a monitor they never asked for.
+>
+> It also breaks the command line we document for Xen in
+> docs/system/i386/xen.html:
+>
+>  $ ./qemu-system-x86_64 --accel kvm,xen-version=3D0x40011,kernel-irqchip=
+=3Dsplit \
+>     -display none -chardev stdio,mux=3Don,id=3Dchar0,signal=3Doff -mon ch=
+ar0 \
+>     -device xen-console,chardev=3Dchar0  -drive file=3D${GUEST_IMAGE},if=
+=3Dxen
+>
+> qemu-system-x86_64: cannot use stdio by multiple character devices
+> qemu-system-x86_64: could not connect serial device to character backend =
+'stdio'
+>
+> Revert the commit to restore the previous handling of "-display
+> none".
+>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1974
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
-On 11/17/23 05:28, Román Cárdenas wrote:
-> If you check the manual of SiFive E310 (https://cdn.sparkfun.com/assets/7/f/0/2/7/fe310-g002-manual-v19p05.pdf),
-> you can see in Figure 1 that the CLINT is connected to the real time clock, which also feeds the AON peripheral (they share the same clock).
-> In page 43, the docs also say that the timer registers of the CLINT count ticks from the rtcclk.
-> 
-> I am currently playing with bare metal applications both in QEMU and a physical SiFive E310 board and
-> I confirm that the CLINT clock in the physical board runs at 32.768 kHz.
-> In QEMU, the same app produces a completely different outcome, as sometimes a new CLINT interrupt is triggered before finishing other tasks.
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1978
-> 
-> Signed-off-by: Román Cárdenas <rcardenas.rod@gmail.com>
+By simply reverting, we break qemu with --disable-pixman:
+qemu-system-x86_64: 'vc' is not a valid char driver name
+
+The change of behaviour was a consequence of Paolo suggestion from v2:
+https://patchew.org/QEMU/20230918135206.2739222-1-marcandre.lureau@redhat.c=
+om/20230918135206.2739222-6-marcandre.lureau@redhat.com/#4b890258-3426-0e0f=
+-dd65-6114b9bee5e3@redhat.com
+
+Let's get back to the current behaviour and not add muxed console in
+any case (disable pixman or not). I'll try to make a patch asap.
+
 > ---
+>  include/ui/console.h |  2 --
+>  system/vl.c          | 27 ++++++++++-----------------
+>  ui/console.c         | 17 -----------------
+>  3 files changed, 10 insertions(+), 36 deletions(-)
+>
+> diff --git a/include/ui/console.h b/include/ui/console.h
+> index a4a49ffc640..acb61a7f152 100644
+> --- a/include/ui/console.h
+> +++ b/include/ui/console.h
+> @@ -462,14 +462,12 @@ struct QemuDisplay {
+>      DisplayType type;
+>      void (*early_init)(DisplayOptions *opts);
+>      void (*init)(DisplayState *ds, DisplayOptions *opts);
+> -    const char *vc;
+>  };
+>
+>  void qemu_display_register(QemuDisplay *ui);
+>  bool qemu_display_find_default(DisplayOptions *opts);
+>  void qemu_display_early_init(DisplayOptions *opts);
+>  void qemu_display_init(DisplayState *ds, DisplayOptions *opts);
+> -const char *qemu_display_get_vc(DisplayOptions *opts);
+>  void qemu_display_help(void);
+>
+>  /* vnc.c */
+> diff --git a/system/vl.c b/system/vl.c
+> index 5af7ced2a16..3d64a90f253 100644
+> --- a/system/vl.c
+> +++ b/system/vl.c
+> @@ -1372,7 +1372,6 @@ static void qemu_setup_display(void)
+>  static void qemu_create_default_devices(void)
+>  {
+>      MachineClass *machine_class =3D MACHINE_GET_CLASS(current_machine);
+> -    const char *vc =3D qemu_display_get_vc(&dpy);
+>
+>      if (is_daemonized()) {
+>          /* According to documentation and historically, -nographic redir=
+ects
+> @@ -1391,30 +1390,24 @@ static void qemu_create_default_devices(void)
+>          }
+>      }
+>
+> -    if (nographic || (!vc && !is_daemonized() && isatty(STDOUT_FILENO)))=
+ {
+> -        if (default_parallel) {
+> +    if (nographic) {
+> +        if (default_parallel)
+>              add_device_config(DEV_PARALLEL, "null");
+> -        }
+>          if (default_serial && default_monitor) {
+>              add_device_config(DEV_SERIAL, "mon:stdio");
+>          } else {
+> -            if (default_serial) {
+> +            if (default_serial)
+>                  add_device_config(DEV_SERIAL, "stdio");
+> -            }
+> -            if (default_monitor) {
+> +            if (default_monitor)
+>                  monitor_parse("stdio", "readline", false);
+> -            }
+>          }
+>      } else {
+> -        if (default_serial) {
+> -            add_device_config(DEV_SERIAL, vc ?: "null");
+> -        }
+> -        if (default_parallel) {
+> -            add_device_config(DEV_PARALLEL, vc ?: "null");
+> -        }
+> -        if (default_monitor && vc) {
+> -            monitor_parse(vc, "readline", false);
+> -        }
+> +        if (default_serial)
+> +            add_device_config(DEV_SERIAL, "vc:80Cx24C");
+> +        if (default_parallel)
+> +            add_device_config(DEV_PARALLEL, "vc:80Cx24C");
+> +        if (default_monitor)
+> +            monitor_parse("vc:80Cx24C", "readline", false);
+>      }
+>
+>      if (default_net) {
+> diff --git a/ui/console.c b/ui/console.c
+> index 8e688d35695..676d0cbaba2 100644
+> --- a/ui/console.c
+> +++ b/ui/console.c
+> @@ -1677,23 +1677,6 @@ void qemu_display_init(DisplayState *ds, DisplayOp=
+tions *opts)
+>      dpys[opts->type]->init(ds, opts);
+>  }
+>
+> -const char *qemu_display_get_vc(DisplayOptions *opts)
+> -{
+> -    assert(opts->type < DISPLAY_TYPE__MAX);
+> -    if (opts->type =3D=3D DISPLAY_TYPE_NONE) {
+> -        return NULL;
+> -    }
+> -    assert(dpys[opts->type] !=3D NULL);
+> -    if (dpys[opts->type]->vc) {
+> -        return dpys[opts->type]->vc;
+> -    } else {
+> -#ifdef CONFIG_PIXMAN
+> -        return "vc:80Cx24C";
+> -#endif
+> -    }
+> -    return NULL;
+> -}
+> -
+>  void qemu_display_help(void)
+>  {
+>      int idx;
+> --
+> 2.34.1
+>
+>
 
 
-As I said in an earlier version, it would be nice if someone from Sifive could give
-an ACK/NACK for this change.
-
-For now:
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
-
-
-
->   hw/riscv/sifive_e.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/riscv/sifive_e.c b/hw/riscv/sifive_e.c
-> index 0d37adc542..87d9602383 100644
-> --- a/hw/riscv/sifive_e.c
-> +++ b/hw/riscv/sifive_e.c
-> @@ -225,7 +225,7 @@ static void sifive_e_soc_realize(DeviceState *dev, Error **errp)
->               RISCV_ACLINT_SWI_SIZE,
->           RISCV_ACLINT_DEFAULT_MTIMER_SIZE, 0, ms->smp.cpus,
->           RISCV_ACLINT_DEFAULT_MTIMECMP, RISCV_ACLINT_DEFAULT_MTIME,
-> -        RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ, false);
-> +        SIFIVE_E_LFCLK_DEFAULT_FREQ, false);
->       sifive_e_prci_create(memmap[SIFIVE_E_DEV_PRCI].base);
->   
->       /* AON */
+--=20
+Marc-Andr=C3=A9 Lureau
 
