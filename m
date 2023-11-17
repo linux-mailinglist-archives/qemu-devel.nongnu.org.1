@@ -2,84 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF1F7EEB0B
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 03:30:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 236757EEB3C
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 03:52:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3obJ-0000Uc-2C; Thu, 16 Nov 2023 21:28:57 -0500
+	id 1r3oxE-0002d5-V8; Thu, 16 Nov 2023 21:51:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1r3obG-0000UB-Mu
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 21:28:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhouzongmin@kylinos.cn>)
+ id 1r3oxD-0002cx-3z
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 21:51:35 -0500
+Received: from mailgw.kylinos.cn ([124.126.103.232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1r3obF-0000I0-1l
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 21:28:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700188131;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=y0ymwrbU24RHNFL/YBU+MbSMEepRsGgh4iA3W1I/qrI=;
- b=cVEJuJ2bIonSEvTb6ha1mCI7FDSA6WAeOQ5tepGf0c8GeFi4h497DUfD5XOKek8qglr6f1
- YRmgdzU5jeTFNtoFqnxC2LgExYffIZXDVqXgM/BjHmxJyB+tQycgbgbBm/moEJWXjd0622
- kx9y6SzuXkTWUPPHFtKK3xdrPGORpMI=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-622-FlcO8YO-OwqBxt18hjagnA-1; Thu, 16 Nov 2023 21:28:49 -0500
-X-MC-Unique: FlcO8YO-OwqBxt18hjagnA-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-507be692ce4so1422171e87.2
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 18:28:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700188128; x=1700792928;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=y0ymwrbU24RHNFL/YBU+MbSMEepRsGgh4iA3W1I/qrI=;
- b=YKpCHfhj8PvqWc+K1F5V4V8dMUHad1xfeQ/EvUgVKh5vbPvgfUHeyc3fXRKwsqZ5Qr
- mNlWbzL2tYZmqz2CzphJLnzGDtPl3XwM4J59YTXsgs8yL+6EpDMycDo2c4L4ztzgp8WN
- Jo8aQS7xdiOZuXsiNXkDy4d3GZYsn/iSMr5IA6ktTX8yDvKYwAFJLEYGlbpFEyFdgya9
- MVpYCYNQAgLpeyGXwdVRGpLV05GsiewxEM/V3dJRsNL3r1bPRpUL2foki6nqoUHB3jUh
- JOv//se1l+ZkydfB1+ab3Ya2sPQ9msYyjASv99BVInZ8c9d4zrFMNR2kd50tgTm6ARqb
- mnoA==
-X-Gm-Message-State: AOJu0YyEsJD4RHze2Crltiokddl9jgq/kTyaWSeigcCQXbYTge/iwp5S
- CdYn++/s2NTMbSn/eRs9YGMk/UNiVnzQ+P9fAriKwqvpngoazfcm8u3l+t+ll9k4jb8PtaGgmoP
- dtNPzGzUtuosI9jVl7402Knh4lQIa/Kk=
-X-Received: by 2002:a05:6512:3e5:b0:503:36cb:5438 with SMTP id
- n5-20020a05651203e500b0050336cb5438mr10837173lfq.21.1700188128558; 
- Thu, 16 Nov 2023 18:28:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGLgfV7X4OEx6svVeEF+1aIxjk2NO3diXCYgSgLmJSzhgcLoA3n7BHk8bGwntwGEjToZsfbkK3PH91c1HM2zVc=
-X-Received: by 2002:a05:6512:3e5:b0:503:36cb:5438 with SMTP id
- n5-20020a05651203e500b0050336cb5438mr10837169lfq.21.1700188128158; Thu, 16
- Nov 2023 18:28:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhouzongmin@kylinos.cn>)
+ id 1r3ox7-0002nf-IS
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 21:51:34 -0500
+X-UUID: c3657482deb44bf9b7a8f18476b405d4-20231117
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.32, REQID:b31d5a39-c5f5-419d-8b11-e30cd25ec5e0, IP:10,
+ URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+ ON:release,TS:-5
+X-CID-INFO: VERSION:1.1.32, REQID:b31d5a39-c5f5-419d-8b11-e30cd25ec5e0, IP:10,
+ UR
+ L:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+ :release,TS:-5
+X-CID-META: VersionHash:5f78ec9, CLOUDID:ff2ba1fc-4a48-46e2-b946-12f04f20af8c,
+ B
+ ulkID:2311171051224FE9T5VP,BulkQuantity:0,Recheck:0,SF:44|64|66|24|17|19|1
+ 02,TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,CO
+ L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
+X-UUID: c3657482deb44bf9b7a8f18476b405d4-20231117
+Received: from mail.kylinos.cn [(39.156.73.10)] by mailgw
+ (envelope-from <zhouzongmin@kylinos.cn>) (Generic MTA)
+ with ESMTP id 891262736; Fri, 17 Nov 2023 10:51:20 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+ by mail.kylinos.cn (NSMail) with SMTP id 3149FE0080FF;
+ Fri, 17 Nov 2023 10:51:20 +0800 (CST)
+X-ns-mid: postfix-6556D528-133057348
+Received: from [172.20.12.156] (unknown [172.20.12.156])
+ by mail.kylinos.cn (NSMail) with ESMTPA id E4F8AE0080FF;
+ Fri, 17 Nov 2023 10:51:18 +0800 (CST)
+Message-ID: <6dab8a5d-4982-41b6-92a0-f06c561969c3@kylinos.cn>
+Date: Fri, 17 Nov 2023 10:51:18 +0800
 MIME-Version: 1.0
-References: <20231114030937.5461-1-jasowang@redhat.com>
- <3feb59f0c647f23f078cd0bb60af9e56f0845230.camel@infradead.org>
-In-Reply-To: <3feb59f0c647f23f078cd0bb60af9e56f0845230.camel@infradead.org>
-From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 17 Nov 2023 10:28:36 +0800
-Message-ID: <CACGkMEvtqUWrrNzwjR1Y5kR7GV_q9Dfx69+tagCcOBnTpuEdxQ@mail.gmail.com>
-Subject: Re: [PULL 0/2] Net patches
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] migration: free 'saddr' since be no longer used
+Content-Language: en-US
+To: quintela@redhat.com
+Cc: peterx@redhat.com, berrange@redhat.com, farosas@suse.de,
+ leobras@redhat.com, qemu-devel@nongnu.org
+References: <ZVT1c3Ptd_P3Nfb_@x1n>
+ <20231116063448.2333616-1-zhouzongmin@kylinos.cn>
+ <87il61rdab.fsf@secure.mitica>
+From: Zongmin Zhou <zhouzongmin@kylinos.cn>
+In-Reply-To: <87il61rdab.fsf@secure.mitica>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=124.126.103.232;
+ envelope-from=zhouzongmin@kylinos.cn; helo=mailgw.kylinos.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,43 +85,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 17, 2023 at 12:49=E2=80=AFAM David Woodhouse <dwmw2@infradead.o=
-rg> wrote:
+
+On 2023/11/16 22:19, Juan Quintela wrote:
+> Zongmin Zhou <zhouzongmin@kylinos.cn> wrote:
+>> Since socket_parse() will allocate memory for 'saddr',and its value
+>> will pass to 'addr' that allocated by migrate_uri_parse(),
+>> then 'saddr' will no longer used,need to free.
+>> But due to 'saddr->u' is shallow copying the contents of the union,
+>> the members of this union containing allocated strings,and will be used after that.
+>> So just free 'saddr' itself without doing a deep free on the contents of the SocketAddress.
+>>
+>> Fixes: 72a8192e225c ("migration: convert migration 'uri' into 'MigrateAddress'")
+>> Signed-off-by: Zongmin Zhou<zhouzongmin@kylinos.cn>
+>> ---
+>>   migration/migration.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/migration/migration.c b/migration/migration.c
+>> index 28a34c9068..9bdbcdaf49 100644
+>> --- a/migration/migration.c
+>> +++ b/migration/migration.c
+>> @@ -493,6 +493,7 @@ bool migrate_uri_parse(const char *uri, MigrationChannel **channel,
+>>           }
+>>           addr->u.socket.type = saddr->type;
+>>           addr->u.socket.u = saddr->u;
+>> +        g_free(saddr);
+>>       } else if (strstart(uri, "file:", NULL)) {
+>>           addr->transport = MIGRATION_ADDRESS_TYPE_FILE;
+>>           addr->u.file.filename = g_strdup(uri + strlen("file:"));
+> Once that we are here, can we move the declaration of saddr to this
+> block, so we are sure that we don't use saddr anywhere?
+do you mean to do the changes below at this block?
+SocketAddress *saddr = socket_parse(uri, errp);
+That sounds good and make it clear that 'saddr' is only used on this block.
+> As Peter said, putting a comment why we don't use
+> qapi_free_SocketAddress() will be a good idea.
+
+I have put some comments on patch v2 to explain
+
+why just free 'saddr' itself without doing a deep free on the contents 
+of the SocketAddress .
+
+Maybe need to explicit clarify why g_free is used instead of 
+qapi_free_SocketAddress()?
+
+
+Best regards!
+
 >
-> On Tue, 2023-11-14 at 11:09 +0800, Jason Wang wrote:
-> > The following changes since commit 69680740eafa1838527c90155a7432d51b8f=
-f203:
-> >
-> >   Merge tag 'qdev-array-prop' of https://repo.or.cz/qemu/kevin into sta=
-ging (2023-11-11 11:23:25 +0800)
-> >
-> > are available in the git repository at:
-> >
-> >   https://github.com/jasowang/qemu.git tags/net-pull-request
-> >
-> > for you to fetch changes up to d90014fc337ab77f37285b1a30fd4f545056be0a=
-:
-> >
-> >   igb: Add Function Level Reset to PF and VF (2023-11-13 15:33:37 +0800=
-)
+> Later, Juan.
 >
-> Hi Jason,
->
-> I note this doesn't include the net_cleanup() fix from
-> https://lore.kernel.org/qemu-devel/20231115172723.1161679-2-dwmw2@infrade=
-ad.org/
->
-
-Yes, it's in the list of patches that need review and it seems fine.
-
-> Do you mind if I submit that in a pull request with the other fixes
-> from that series?
-
-I've queued this for rc1. Pull request will be sent no later than 21st.
-
-Thanks
-
->
-> Thanks.
-
 
