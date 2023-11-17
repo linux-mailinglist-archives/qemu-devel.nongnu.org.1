@@ -2,137 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB697EEC5A
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF647EEC5B
 	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 07:46:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3sbC-00005N-Qf; Fri, 17 Nov 2023 01:45:06 -0500
+	id 1r3sbi-00008m-H4; Fri, 17 Nov 2023 01:45:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3sb3-000057-B2
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 01:44:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3sb0-0004su-IG
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 01:44:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700203493;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=WA8Gv2suexyGmSYNSsVhw5+/XPj2+gOok6dRxJCxeQU=;
- b=L5zopojCelB/ZdhNjHmDYvrEAfFQ2d9Xx2nm2t3rbz+bpoo/xFjdVGaq2ACdwghy/28jiR
- D0+6TyHbHm5MjhEy3Pare0k8E+hFFZGU11lXUbp+WGjoP6YqC7pdbGWuqGrTovAUBE4xJm
- b4CC1ccseegWPfXN5HKo2cnE8wLTKfo=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-226-p2CzH3jbMSCUm9BCNXv9jQ-1; Fri, 17 Nov 2023 01:44:51 -0500
-X-MC-Unique: p2CzH3jbMSCUm9BCNXv9jQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9d223144f23so114939666b.3
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 22:44:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700203490; x=1700808290;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WA8Gv2suexyGmSYNSsVhw5+/XPj2+gOok6dRxJCxeQU=;
- b=iPryW3aEdvrASZUWji42NcN6ox2pV24gkS9+/WTbr3bpeEU1DXVj0JBNAOTeRD3iSd
- whGYtWGH6Ys5dnSyXwW8Zbapsg7sqj8BkVoOdQG91FR3WEGEUl6euSlJCs55sRCY6GQH
- zGKPO7iaOeqM4FGXjVNjovYkz6kRaL8CXPwkLOYIoDmglnSI0RjiCuvzkfHQ+wBHSNqI
- 3yUuC+kJObGbQ92LgA/JW3IYl2tM4XiYQfuWGHOLo0eE99OI+QdGdl2ig0Imvl455W7D
- mNBvtAWXw/ZpWiKa2tKwpM4LepFAn1Xja6oQSYZWJ6//j3x5l5UK237JgAa1QggKXBD1
- YgGA==
-X-Gm-Message-State: AOJu0YxXRKW6OBWQU85Y7PGzYPQk3yQ1k4J4IJdQ1qz7ytvPF/GvvF49
- 0bdF4G9eN6IvoSiD349Q8B5s2XL4LLU7wLiXZzQQfJogr3+FEnJbLCQdA33TVNSAtrZG0U8LjeC
- 8+bGRxPOBua2af9s=
-X-Received: by 2002:aa7:c74a:0:b0:541:783:4b17 with SMTP id
- c10-20020aa7c74a000000b0054107834b17mr3940533eds.7.1700203490228; 
- Thu, 16 Nov 2023 22:44:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IElU/FFFBxwf445C263EQ5Ab7sUPNnZKjZ/Rd3Cl7kmcgCYFfIsphMtCsBsuEgx4xLt62fo6A==
-X-Received: by 2002:aa7:c74a:0:b0:541:783:4b17 with SMTP id
- c10-20020aa7c74a000000b0054107834b17mr3940518eds.7.1700203489898; 
- Thu, 16 Nov 2023 22:44:49 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-43-176-122.web.vodafone.de.
- [109.43.176.122]) by smtp.gmail.com with ESMTPSA id
- q1-20020aa7da81000000b0053e625da9absm415096eds.41.2023.11.16.22.44.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Nov 2023 22:44:49 -0800 (PST)
-Message-ID: <83ff4ad3-16c6-40a5-95a6-3860200828e8@redhat.com>
-Date: Fri, 17 Nov 2023 07:44:47 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1r3sbe-00008J-2j
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 01:45:35 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1r3sbb-0005Aa-7p
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 01:45:33 -0500
+Received: from loongson.cn (unknown [10.20.42.173])
+ by gateway (Coremail) with SMTP id _____8AxV_EFDFdl9L46AA--.51077S3;
+ Fri, 17 Nov 2023 14:45:26 +0800 (CST)
+Received: from [10.20.42.173] (unknown [10.20.42.173])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxH90BDFdl4g1FAA--.22750S3; 
+ Fri, 17 Nov 2023 14:45:23 +0800 (CST)
 Subject: Re: [PATCH] linux-headers: Synchronize linux headers from linux
  v6.7.0-rc1
-To: maobibo <maobibo@loongson.cn>, gaosong <gaosong@loongson.cn>,
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, gaosong <gaosong@loongson.cn>,
  Tianrui Zhao <zhaotianrui@loongson.cn>, qemu-devel@nongnu.org,
  mst@redhat.com, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- lixianglai@loongson.cn, clg@redhat.com
+ lixianglai@loongson.cn
 References: <20231114015412.53135-1-zhaotianrui@loongson.cn>
  <be0da6a9-6f1e-11d9-f088-328ea33aee36@loongson.cn>
  <771dd5ff-45d0-40bd-87dd-40f666d3355d@redhat.com>
  <257d6562-51fb-867a-e65c-13418c6ce888@loongson.cn>
+ <800a75b9-8c0c-459b-8cad-ab36e9a08d69@redhat.com>
+From: maobibo <maobibo@loongson.cn>
+Message-ID: <7de1a120-22d4-0eb0-905b-44ec7894f045@loongson.cn>
+Date: Fri, 17 Nov 2023 14:45:20 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <800a75b9-8c0c-459b-8cad-ab36e9a08d69@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <257d6562-51fb-867a-e65c-13418c6ce888@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-CM-TRANSID: AQAAf8AxH90BDFdl4g1FAA--.22750S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj9xXoWrtw47Gr4UtFyDCF17XrW3CFX_yoWftFgE93
+ yUAwnrKw4UK3yUJan8tr4fursxJF4UA3s5t348JF40g345ArWxGrWDKryxAF9xtayxAFn8
+ uryYvFy5Aw4jgosvyTuYvTs0mTUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvT
+ s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+ cSsGvfJTRUUUbhxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+ vaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+ w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+ W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE
+ 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+ AE67vIY487MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCj
+ c4AY6r1j6r4UMxCIbckI1I0E14v26r1q6r43MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
+ Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY
+ 6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6x
+ AIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY
+ 1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1RBT5UUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.193,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -150,38 +90,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/11/2023 02.14, maobibo wrote:
-> Thomas,
+
+
+On 2023/11/17 下午2:35, Cédric Le Goater wrote:
+> Hello,
 > 
-> Linux 6.7-rc1 has already released, LoongArch KVM is supported in this 
-> version. LoongArch qemu KVM function depends on linux-headers and I do not 
-> know whether LoongArch qemu KVM can be merged in 8.2 cycle.
+> On 11/17/23 02:14, maobibo wrote:
+>> Thomas,
+>>
+>> Linux 6.7-rc1 has already released, LoongArch KVM is supported in this 
+>> version. LoongArch qemu KVM function depends on linux-headers and I do 
+>> not know whether LoongArch qemu KVM can be merged in 8.2 cycle.
+> 
+> It's too late for 8.2. See https://wiki.qemu.org/Planning/8.2.
 
-QEMU is in hard freeze now, see:
+Got it, and thanks for the clarification.
 
-https://wiki.qemu.org/Planning/8.2
-
-That means, only bug fixes now, no new features will be merged until 8.2 has 
-been released.
-
-  Thomas
-
+Regards
+Bibo Mao
 
 > 
+> Thanks,
 > 
-> On 2023/11/16 下午9:19, Thomas Huth wrote:
->> On 15/11/2023 11.07, gaosong wrote:
->>> Hi,
+> C.
+> 
+> 
+> 
+>> Regards
+>> Bibo Mao
+>>
+>>
+>> On 2023/11/16 下午9:19, Thomas Huth wrote:
+>>> On 15/11/2023 11.07, gaosong wrote:
+>>>> Hi,
+>>>>
+>>>> Can this patch be merged in during the 8.2 cycle?
 >>>
->>> Can this patch be merged in during the 8.2 cycle?
+>>>   Hi!
+>>>
+>>> We normally do linux-headers updates along with the patches that need 
+>>> the new definitions ... so is there an urgent reason to push this 
+>>> stand-alone
+>>> patch into 8.2 without any patches that require these new definitions?
+>>>
+>>>   Thomas
 >>
->>   Hi!
 >>
->> We normally do linux-headers updates along with the patches that need the 
->> new definitions ... so is there an urgent reason to push this stand-alone
->> patch into 8.2 without any patches that require these new definitions?
->>
->>   Thomas
-> 
 
 
