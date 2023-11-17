@@ -2,84 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A3D27EF32A
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 13:59:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D3CB7EF3B7
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 14:31:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3yR8-0005Pt-Pc; Fri, 17 Nov 2023 07:59:06 -0500
+	id 1r3yvQ-00065k-DS; Fri, 17 Nov 2023 08:30:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r3yQz-0005N4-Ql
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 07:58:58 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1r3yv4-00065S-Qv
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 08:30:02 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r3yQy-0007l5-02
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 07:58:57 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1r3yv2-0000zW-KL
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 08:30:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700225934;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1700227796;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qmvDnzn+nudHMUHN+IVqUsSYUiBvOg3k8FDa6m3FW9Y=;
- b=WhPh4/m8nAzK2YwhIel+RxF2/WS4Vl8ptMGc5IcfjgIcj8MQ9S5s/L47jZsaPpzyfuC9lw
- 1CJ1cX/VUbDh2l2MNZeNZv02+MHwTkapqbgV2pCSwPdQT5Cm7FLrXvj2BKo3XDygs1jACP
- oAtx0tz1JCk1vebTsWSmCusQHITCZ1s=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6SJi5EdTN4r0EJkJzZuatIgcctJmpY0NwUyZPcAK7Mc=;
+ b=gUXf7xPSlg8huf9MGhv+KVi6YOOLqQfu74PelLPC0FHfPuC4Zl/pEB8ROj/yXFYxPfuWU1
+ FWH7C/HqfwBDAU9vQtgCtcbIZW2g5ZBVcpDeXyc4WYV8ySdcIpKQ3fNhgBRhC5yDIlxxH5
+ icbEC37NOtPzf6Uo66FnJUBqEOdxUYk=
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
+ [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-446-GjKKQWzxM8yzXq6LahYt6Q-1; Fri, 17 Nov 2023 07:58:52 -0500
-X-MC-Unique: GjKKQWzxM8yzXq6LahYt6Q-1
-Received: by mail-yw1-f200.google.com with SMTP id
- 00721157ae682-5c7047f5ee7so11489427b3.0
- for <qemu-devel@nongnu.org>; Fri, 17 Nov 2023 04:58:52 -0800 (PST)
+ us-mta-612-UWqkSxFQN8KYe6pNKRHdzw-1; Fri, 17 Nov 2023 08:29:54 -0500
+X-MC-Unique: UWqkSxFQN8KYe6pNKRHdzw-1
+Received: by mail-oo1-f69.google.com with SMTP id
+ 006d021491bc7-58a83a73ce9so2135282eaf.2
+ for <qemu-devel@nongnu.org>; Fri, 17 Nov 2023 05:29:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700225932; x=1700830732;
+ d=1e100.net; s=20230601; t=1700227793; x=1700832593;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qmvDnzn+nudHMUHN+IVqUsSYUiBvOg3k8FDa6m3FW9Y=;
- b=ZbdNzj1KevOjzpeYn83UeTcsMyyB0dhWtqgLzMsduN9qtbm/54B8vm0cxhLkbq7u59
- uwhxxqRoreR+aKxgTIGypC4LLyOzVvvCjkwchDoGetHevQyTSvbbLAIP3dzD1LRIV4cl
- pJRnFEDrrEHhDerQsNyQUTc5gbF1MxCMgWd8023kNVLcPgr0TjPaFR920ymb6qgFwscT
- X80iyjIH03kWrBa+0mO23hWPwe2ilGlKM74q0RNyPFO3CXIKzFARl5Ug0u1xy8t4+SSA
- I6VPckMXlce2Q6fA6VckgMwsxGmCl6juyPsBVkGLwGjQXYziUXwJ0h492YsIfLehwSsJ
- a3nQ==
-X-Gm-Message-State: AOJu0Yzd6bRC7MZEIaEXb8tryLTSa1TpfJ32iXUVhk4RaxJpabPsPxJN
- MOZLCrYJXZw4Ex/uYd/3YCQ+EP3C6BrqCImPNzPWLB3y5Sr0aJHVTFvirh7Rr0YlZn7ScsQtQjX
- ZtXSBaYHz7kD6kWM=
-X-Received: by 2002:a25:32cf:0:b0:da3:76d3:e4fb with SMTP id
- y198-20020a2532cf000000b00da376d3e4fbmr16407600yby.26.1700225932155; 
- Fri, 17 Nov 2023 04:58:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF4RpyMq0bnUl03FlBJOQJeahl6ZRUOW0gaQyGPuRsgV+7pPPIIxz1wTeftXs0YKcoM6ompGw==
-X-Received: by 2002:a25:32cf:0:b0:da3:76d3:e4fb with SMTP id
- y198-20020a2532cf000000b00da376d3e4fbmr16407582yby.26.1700225931832; 
- Fri, 17 Nov 2023 04:58:51 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6SJi5EdTN4r0EJkJzZuatIgcctJmpY0NwUyZPcAK7Mc=;
+ b=RG4ZvpT1SsMM1T2Wu5NDgyx66s8OS6Uc/XwqlBT1EAx8fFzZo1VQMvjicCxLVPMGGq
+ XQk4Ofw1vSkvMshmsmskfU2DYX4h6mFBO0UB9aAgz9fIgwLK3DlmHvLaSjguxuOCTVx/
+ wMdRQUXPaxI95xwFFA/jWax41Va2+TFwhEc/+0qfW788A15F/vittmB6XPRVhoxtZt1B
+ iOup+ffMp6pX94iaZTMc0fcU3bgMLRk2CuuTiEkQhmMMKT1P/QMmpSyGnxSyLNY9Jyll
+ XfZK4MiFVnxwIHywxB3gXIyVomkyFE6yc/EWaHFE6GRF8gkVUYxVIUgT8nPLIau8LQYE
+ PjaA==
+X-Gm-Message-State: AOJu0YwVJDr9y50Cmja9btjZb4KzxYxTit7Mf74ewMCCFY5B3uzHSnX8
+ wGvxVUrOvgdSFgG6Ios0UFh42j3+7Rclon+uhYn25LLfJ/xR78YLe47ZvBRaBlpNbNnTFUJckNY
+ cd61iXTNzgtiTAdA=
+X-Received: by 2002:a05:6358:7249:b0:16b:cc89:c1a9 with SMTP id
+ i9-20020a056358724900b0016bcc89c1a9mr16296187rwa.27.1700227793654; 
+ Fri, 17 Nov 2023 05:29:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGju/1T6QIqShxWv2BNlP62g0f2dBPQTXd76adSF0usRmoYCCaiYge23rmv8FjMXwggkXHV9A==
+X-Received: by 2002:a05:6358:7249:b0:16b:cc89:c1a9 with SMTP id
+ i9-20020a056358724900b0016bcc89c1a9mr16296158rwa.27.1700227793367; 
+ Fri, 17 Nov 2023 05:29:53 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- jy13-20020a0562142b4d00b0065b229ecb8dsm609510qvb.3.2023.11.17.04.58.49
+ qh26-20020a0562144c1a00b006577e289d37sm634364qvb.2.2023.11.17.05.29.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 17 Nov 2023 04:58:51 -0800 (PST)
-Message-ID: <9e2a138d-48b1-47d1-88f5-2794c3692854@redhat.com>
-Date: Fri, 17 Nov 2023 13:58:48 +0100
+ Fri, 17 Nov 2023 05:29:52 -0800 (PST)
+Message-ID: <248389a7-3f89-42ae-98e7-34d6612cf186@redhat.com>
+Date: Fri, 17 Nov 2023 14:29:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs/devel: Add VFIO iommufd backend documentation
+Subject: Re: [PATCH v6 01/21] backends/iommufd: Introduce the iommufd object
 Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com
-References: <20231117093512.1999666-1-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231117093512.1999666-1-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
+ <nicolinc@nvidia.com>, "joao.m.martins@oracle.com"
+ <joao.m.martins@oracle.com>, "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
+ "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
+ "lersek@redhat.com" <lersek@redhat.com>
+References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
+ <20231114100955.1961974-2-zhenzhong.duan@intel.com>
+ <c964fdf3-d6ef-40cd-b4c0-32f1fb8501ae@redhat.com>
+ <SJ0PR11MB6744B1B91C890A9A1B81E89792B7A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <SJ0PR11MB6744B1B91C890A9A1B81E89792B7A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,171 +118,90 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/17/23 10:35, Zhenzhong Duan wrote:
-> Suggested-by: Cédric Le Goater <clg@redhat.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Hi Cédric,
 
-The content looks good but it lacks formatting. Please try to generate
-the docs.
+On 11/17/23 12:39, Duan, Zhenzhong wrote:
+> Hi Cédric,
+>
+>> -----Original Message-----
+>> From: Cédric Le Goater <clg@redhat.com>
+>> Sent: Friday, November 17, 2023 7:10 PM
+>> Subject: Re: [PATCH v6 01/21] backends/iommufd: Introduce the iommufd object
+>>
+>> Hello,
+>>
+>>> +int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+>> hwaddr iova,
+>>> +                            ram_addr_t size, void *vaddr, bool readonly)
+>>> +{
+>>> +    int ret, fd = be->fd;
+>>> +    struct iommu_ioas_map map = {
+>>> +        .size = sizeof(map),
+>>> +        .flags = IOMMU_IOAS_MAP_READABLE |
+>>> +                 IOMMU_IOAS_MAP_FIXED_IOVA,
+>>> +        .ioas_id = ioas_id,
+>>> +        .__reserved = 0,
+>>> +        .user_va = (uintptr_t)vaddr,
+>>> +        .iova = iova,
+>>> +        .length = size,
+>>> +    };
+>>> +
+>>> +    if (!readonly) {
+>>> +        map.flags |= IOMMU_IOAS_MAP_WRITEABLE;
+>>> +    }
+>>> +
+>>> +    ret = ioctl(fd, IOMMU_IOAS_MAP, &map);
+>>> +    trace_iommufd_backend_map_dma(fd, ioas_id, iova, size,
+>>> +                                  vaddr, readonly, ret);
+>>> +    if (ret) {
+>>> +        ret = -errno;
+>>> +        error_report("IOMMU_IOAS_MAP failed: %m");
+>>> +    }
+>>> +    return ret;
+>>> +}
+>> When using a UEFI guest, QEMU reports errors when mapping regions
+>> in the top PCI space :
+>>
+>>   iommufd_backend_map_dma  iommufd=10 ioas=2 iova=0x380000001000
+>> size=0x3000 addr=0x7fce2c28b000 readonly=0 (-1)
+>>   qemu-system-x86_64: IOMMU_IOAS_MAP failed: Invalid argument
+>>   qemu-system-x86_64: vfio_container_dma_map(0x55a21b03a150,
+>> 0x380000001000, 0x3000, 0x7fce2c28b000) = -22 (Invalid argument)
+>>
+>>   iommufd_backend_map_dma  iommufd=10 ioas=2 iova=0x380000004000
+>> size=0x4000 addr=0x7fce2c980000 readonly=0 (-1)
+>>   qemu-system-x86_64: IOMMU_IOAS_MAP failed: Invalid argument
+>>   qemu-system-x86_64: vfio_container_dma_map(0x55a21b03a150,
+>> 0x380000004000, 0x4000, 0x7fce2c980000) = -22 (Invalid argument)
+>>
+>> This is because IOMMUFD reserved IOVAs areas are :
+>>
+>>  [ fee00000 - feefffff ]
+>>  [ 8000000000 - ffffffffffffffff ] (39 bits address space)
+>>
+>> which were allocated when the device was initially attached.
+>> The topology is basic. Something is wrong.
+> 	
+> Thanks for your report. This looks a hardware limit of
+> host IOMMU address width(39) < guest physical address width.
+>
+> A similar issue with a fix submitted below, ccing related people.
+> https://lists.gnu.org/archive/html/qemu-devel/2023-11/msg02937.html
+> It looks the fix will not work for hotplug.
+>
+> Or below qemu cmdline may help:
+> "-cpu host,host-phys-bits-limit=39"
 
-Thanks,
+don't you have the same issue with legacy VFIO code, you should?
 
-C.
-
-
-> ---
->   MAINTAINERS                    |   1 +
->   docs/devel/index-internals.rst |   1 +
->   docs/devel/vfio-iommufd.rst    | 115 +++++++++++++++++++++++++++++++++
->   3 files changed, 117 insertions(+)
->   create mode 100644 docs/devel/vfio-iommufd.rst
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index d86ba56a49..07990456ed 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2175,6 +2175,7 @@ F: backends/iommufd.c
->   F: include/sysemu/iommufd.h
->   F: include/qemu/chardev_open.h
->   F: util/chardev_open.c
-> +F: docs/devel/vfio-iommufd.rst
->   
->   vhost
->   M: Michael S. Tsirkin <mst@redhat.com>
-> diff --git a/docs/devel/index-internals.rst b/docs/devel/index-internals.rst
-> index 6f81df92bc..3def4a138b 100644
-> --- a/docs/devel/index-internals.rst
-> +++ b/docs/devel/index-internals.rst
-> @@ -18,5 +18,6 @@ Details about QEMU's various subsystems including how to add features to them.
->      s390-dasd-ipl
->      tracing
->      vfio-migration
-> +   vfio-iommufd
->      writing-monitor-commands
->      virtio-backends
-> diff --git a/docs/devel/vfio-iommufd.rst b/docs/devel/vfio-iommufd.rst
-> new file mode 100644
-> index 0000000000..59804a7f26
-> --- /dev/null
-> +++ b/docs/devel/vfio-iommufd.rst
-> @@ -0,0 +1,115 @@
-> +===============================
-> +IOMMUFD BACKEND usage with VFIO
-> +===============================
-> +
-> +(Same meaning for backend/container/BE)
-> +
-> +With the introduction of iommufd, the Linux kernel provides a generic
-> +interface for user space drivers to propagate their DMA mappings to kernel
-> +for assigned devices. While the legacy kernel interface is group-centric,
-> +the new iommufd interface is device-centric, relying on device fd and iommufd.
-> +
-> +To support both interfaces in the QEMU VFIO device, introduce a base container
-> +to abstract the common part of VFIO legacy and iommufd container. So that the
-> +generic VFIO code can use either container.
-> +
-> +The base container implements generic functions such as memory_listener and
-> +address space management whereas the derived container implements callbacks
-> +specific to either legacy or iommufd. Each container has its own way to setup
-> +secure context and dma management interface. The below diagram shows how it
-> +looks like with both containers.
-> +
-> +                    VFIO                           AddressSpace/Memory
-> +    +-------+  +----------+  +-----+  +-----+
-> +    |  pci  |  | platform |  |  ap |  | ccw |
-> +    +---+---+  +----+-----+  +--+--+  +--+--+     +----------------------+
-> +        |           |           |        |        |   AddressSpace       |
-> +        |           |           |        |        +------------+---------+
-> +    +---V-----------V-----------V--------V----+               /
-> +    |           VFIOAddressSpace              | <------------+
-> +    |                  |                      |  MemoryListener
-> +    |        VFIOContainerBase list           |
-> +    +-------+----------------------------+----+
-> +            |                            |
-> +            |                            |
-> +    +-------V------+            +--------V----------+
-> +    |   iommufd    |            |    vfio legacy    |
-> +    |  container   |            |     container     |
-> +    +-------+------+            +--------+----------+
-> +            |                            |
-> +            | /dev/iommu                 | /dev/vfio/vfio
-> +            | /dev/vfio/devices/vfioX    | /dev/vfio/$group_id
-> +Userspace   |                            |
-> +============+============================+===========================
-> +Kernel      |  device fd                 |
-> +            +---------------+            | group/container fd
-> +            | (BIND_IOMMUFD |            | (SET_CONTAINER/SET_IOMMU)
-> +            |  ATTACH_IOAS) |            | device fd
-> +            |               |            |
-> +            |       +-------V------------V-----------------+
-> +    iommufd |       |                vfio                  |
-> +(map/unmap  |       +---------+--------------------+-------+
-> +ioas_copy)  |                 |                    | map/unmap
-> +            |                 |                    |
-> +     +------V------+    +-----V------+      +------V--------+
-> +     | iommfd core |    |  device    |      |  vfio iommu   |
-> +     +-------------+    +------------+      +---------------+
-> +
-> +[Secure Context setup]
-> +- iommufd BE: uses device fd and iommufd to setup secure context
-> +              (bind_iommufd, attach_ioas)
-> +- vfio legacy BE: uses group fd and container fd to setup secure context
-> +                  (set_container, set_iommu)
-> +
-> +[Device access]
-> +- iommufd BE: device fd is opened through /dev/vfio/devices/vfioX
-> +- vfio legacy BE: device fd is retrieved from group fd ioctl
-> +
-> +[DMA Mapping flow]
-> +1. VFIOAddressSpace receives MemoryRegion add/del via MemoryListener
-> +2. VFIO populates DMA map/unmap via the container BEs
-> +   *) iommufd BE: uses iommufd
-> +   *) vfio legacy BE: uses container fd
-> +
-> +
-> +Example configuration
-> +=====================
-> +
-> +Step 1: configure the host device
-> +---------------------------------
-> +
-> +It's exactly same as the VFIO device with legacy VFIO container.
-> +
-> +Step 2: configure QEMU
-> +----------------------
-> +
-> +Interactions with the /dev/iommu are abstracted by a new
-> +iommufd object (compiled in with the CONFIG_IOMMUFD option).
-> +
-> +Any QEMU device (e.g. VFIO device) wishing to use /dev/iommu must be
-> +linked with an iommufd object. It gets a new optional property named
-> +iommufd which allows to pass an iommufd object. Take vfio-pci device
-> +for example:
-> +
-> +    -object iommufd,id=iommufd0
-> +    -device vfio-pci,host=0000:02:00.0,iommufd=iommufd0
-> +
-> +Note the /dev/iommu and VFIO cdev can be externally opened by a
-> +management layer. In such a case the fd is passed, the fd supports
-> +a string naming the fd or a number, for example:
-> +
-> +    -object iommufd,id=iommufd0,fd=22
-> +    -device vfio-pci,iommufd=iommufd0,fd=23
-> +
-> +If the fd property is not passed, the fd is opened by QEMU.
-> +
-> +If no iommufd property is passed to the vfio-pci device, iommufd is
-> +not used and the user gets the behavior based on the legacy VFIO
-> +container:
-> +
-> +    -device vfio-pci,host=0000:02:00.0
-> +
-> +Supported platform
-> +==================
-> +
-> +Supports X86, ARM and S390X currently.
+Eric
+>
+> Thanks
+> Zhenzhong
+>
 
 
