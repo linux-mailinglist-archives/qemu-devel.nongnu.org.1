@@ -2,110 +2,141 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D3CB7EF3B7
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 14:31:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3B47EF3D9
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 14:49:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3yvQ-00065k-DS; Fri, 17 Nov 2023 08:30:24 -0500
+	id 1r3zCv-0004KP-ND; Fri, 17 Nov 2023 08:48:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r3yv4-00065S-Qv
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 08:30:02 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3zCt-0004Js-Eg
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 08:48:27 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r3yv2-0000zW-KL
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 08:30:02 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3zCr-0007ZD-O5
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 08:48:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700227796;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1700228903;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6SJi5EdTN4r0EJkJzZuatIgcctJmpY0NwUyZPcAK7Mc=;
- b=gUXf7xPSlg8huf9MGhv+KVi6YOOLqQfu74PelLPC0FHfPuC4Zl/pEB8ROj/yXFYxPfuWU1
- FWH7C/HqfwBDAU9vQtgCtcbIZW2g5ZBVcpDeXyc4WYV8ySdcIpKQ3fNhgBRhC5yDIlxxH5
- icbEC37NOtPzf6Uo66FnJUBqEOdxUYk=
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
- [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=3M724XqkonEAHAMLFt5kwSmMf3grQ0PGt6o5NKc3C+k=;
+ b=FVeb0JOGoZAdRuP5HeXy76pXo7HWgPe6OvqxPL2+qvSDDb6uArsrd0EDfKP7Y50XRfrSOY
+ 05ksVTo+34kZFpj/TXni98ZoQGqxtWTGsodzRzsfU2VbaDPfqvcOHZrQFfpOQZMpgHoRB7
+ 8tqPP26DNTMA5N4BePnSSgBn7Fbf20A=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-UWqkSxFQN8KYe6pNKRHdzw-1; Fri, 17 Nov 2023 08:29:54 -0500
-X-MC-Unique: UWqkSxFQN8KYe6pNKRHdzw-1
-Received: by mail-oo1-f69.google.com with SMTP id
- 006d021491bc7-58a83a73ce9so2135282eaf.2
- for <qemu-devel@nongnu.org>; Fri, 17 Nov 2023 05:29:54 -0800 (PST)
+ us-mta-326-8kHbK6t2NGmNxzPE7aXWpg-1; Fri, 17 Nov 2023 08:48:22 -0500
+X-MC-Unique: 8kHbK6t2NGmNxzPE7aXWpg-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-778b5354c7bso247338385a.1
+ for <qemu-devel@nongnu.org>; Fri, 17 Nov 2023 05:48:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700227793; x=1700832593;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=6SJi5EdTN4r0EJkJzZuatIgcctJmpY0NwUyZPcAK7Mc=;
- b=RG4ZvpT1SsMM1T2Wu5NDgyx66s8OS6Uc/XwqlBT1EAx8fFzZo1VQMvjicCxLVPMGGq
- XQk4Ofw1vSkvMshmsmskfU2DYX4h6mFBO0UB9aAgz9fIgwLK3DlmHvLaSjguxuOCTVx/
- wMdRQUXPaxI95xwFFA/jWax41Va2+TFwhEc/+0qfW788A15F/vittmB6XPRVhoxtZt1B
- iOup+ffMp6pX94iaZTMc0fcU3bgMLRk2CuuTiEkQhmMMKT1P/QMmpSyGnxSyLNY9Jyll
- XfZK4MiFVnxwIHywxB3gXIyVomkyFE6yc/EWaHFE6GRF8gkVUYxVIUgT8nPLIau8LQYE
- PjaA==
-X-Gm-Message-State: AOJu0YwVJDr9y50Cmja9btjZb4KzxYxTit7Mf74ewMCCFY5B3uzHSnX8
- wGvxVUrOvgdSFgG6Ios0UFh42j3+7Rclon+uhYn25LLfJ/xR78YLe47ZvBRaBlpNbNnTFUJckNY
- cd61iXTNzgtiTAdA=
-X-Received: by 2002:a05:6358:7249:b0:16b:cc89:c1a9 with SMTP id
- i9-20020a056358724900b0016bcc89c1a9mr16296187rwa.27.1700227793654; 
- Fri, 17 Nov 2023 05:29:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGju/1T6QIqShxWv2BNlP62g0f2dBPQTXd76adSF0usRmoYCCaiYge23rmv8FjMXwggkXHV9A==
-X-Received: by 2002:a05:6358:7249:b0:16b:cc89:c1a9 with SMTP id
- i9-20020a056358724900b0016bcc89c1a9mr16296158rwa.27.1700227793367; 
- Fri, 17 Nov 2023 05:29:53 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- qh26-20020a0562144c1a00b006577e289d37sm634364qvb.2.2023.11.17.05.29.49
+ d=1e100.net; s=20230601; t=1700228900; x=1700833700;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3M724XqkonEAHAMLFt5kwSmMf3grQ0PGt6o5NKc3C+k=;
+ b=LdRCWhOEnvzROIh5awF/NbkTpxYl19nsHUiSo8MfusRXE0fV88gWYWFi71ncma2+oD
+ LcfcVb16uvKdJoaKIF888dTbMEL6fTgpzWsztkxMVaO/n+OB6dBCu2BCrvshWB87RVqk
+ /qlS4RlLoEnT2t3j8SOJYn9XEBs9jCTpduU6KNu1WU3XQk++g0h7oBBvQ8F25NQl17w3
+ 9VZ8hadmZHaGy+BQtUQaB1GNGvXc0Uh5Nu1WAOXN9asw0/5yFP0KKoUdgloiqQR5V42J
+ Tkg0C9Cg02CNUvxkCphWljm113yjvqSk+YCQF3yBQM5g2BxZd7MBmcOv1AEqOiZIJdag
+ Gc7w==
+X-Gm-Message-State: AOJu0YymBmKy6R6wEiajCbhNT/1kQZMqMeaChNrGUfDDH5mbt7O2fk3t
+ n6UVN0tngPwJywiSvDns7jVuSJp/jknsHkpVViV8TiJ2lozxgz85Y0a7Q96oeJydAwruNrVI92o
+ P2Ya9CszXaYESkXA=
+X-Received: by 2002:a05:620a:6545:b0:774:1adc:c572 with SMTP id
+ qc5-20020a05620a654500b007741adcc572mr9052321qkn.74.1700228900439; 
+ Fri, 17 Nov 2023 05:48:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG9I9rTno84jXhndR3AG/Xt3PJncVv98HsPan71YacGUPlfB0g8Dcr/qSLSiYtFTTaTo3y1/Q==
+X-Received: by 2002:a05:620a:6545:b0:774:1adc:c572 with SMTP id
+ qc5-20020a05620a654500b007741adcc572mr9052309qkn.74.1700228900129; 
+ Fri, 17 Nov 2023 05:48:20 -0800 (PST)
+Received: from [192.168.0.6] (ip-109-43-176-122.web.vodafone.de.
+ [109.43.176.122]) by smtp.gmail.com with ESMTPSA id
+ m18-20020ae9e012000000b007742ad3047asm600045qkk.54.2023.11.17.05.48.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 17 Nov 2023 05:29:52 -0800 (PST)
-Message-ID: <248389a7-3f89-42ae-98e7-34d6612cf186@redhat.com>
-Date: Fri, 17 Nov 2023 14:29:48 +0100
+ Fri, 17 Nov 2023 05:48:19 -0800 (PST)
+Message-ID: <d6c244d5-5b1c-4a0f-a07f-94d0c853c8e1@redhat.com>
+Date: Fri, 17 Nov 2023 14:48:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/21] backends/iommufd: Introduce the iommufd object
+Subject: Re: [PATCH v3 5/5] qom/object: Limit type names to alphanumerical and
+ some few special characters
 Content-Language: en-US
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "joao.m.martins@oracle.com"
- <joao.m.martins@oracle.com>, "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Gerd Hoffmann <kraxel@redhat.com>,
- "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
- "lersek@redhat.com" <lersek@redhat.com>
-References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
- <20231114100955.1961974-2-zhenzhong.duan@intel.com>
- <c964fdf3-d6ef-40cd-b4c0-32f1fb8501ae@redhat.com>
- <SJ0PR11MB6744B1B91C890A9A1B81E89792B7A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <SJ0PR11MB6744B1B91C890A9A1B81E89792B7A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>
+Cc: Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <20231117114457.177308-1-thuth@redhat.com>
+ <20231117114457.177308-6-thuth@redhat.com>
+ <a774e56e-cac9-40e8-b8d0-cedce6a1bc7e@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <a774e56e-cac9-40e8-b8d0-cedce6a1bc7e@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,90 +149,103 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric,
+On 17/11/2023 13.25, Philippe Mathieu-Daudé wrote:
+> On 17/11/23 12:44, Thomas Huth wrote:
+>> QOM names currently don't have any enforced naming rules. This
+>> can be problematic, e.g. when they are used on the command line
+>> for the "-device" option (where the comma is used to separate
+>> properties). To avoid that such problematic type names come in
+>> again, let's restrict the set of acceptable characters during the
+>> type registration.
+>>
+>> Ideally, we'd apply here the same rules as for QAPI, i.e. all type
+>> names should begin with a letter, and contain only ASCII letters,
+>> digits, hyphen, and underscore. However, we already have so many
+>> pre-existing types like:
+>>
+>>      486-x86_64-cpu
+>>      cfi.pflash01
+>>      power5+_v2.1-spapr-cpu-core
+>>      virt-2.6-machine
+>>      pc-i440fx-3.0-machine
+>>
+>> ... so that we have to allow "." and "+" for now, too. While the
+>> dot is used in a lot of places, the "+" can fortunately be limited
+>> to two classes of legacy names ("power" and "Sun-UltraSparc" CPUs).
+>>
+>> We also cannot enforce the rule that names must start with a letter
+>> yet, since there are lot of types that start with a digit. Still,
+>> at least limiting the first characters to the alphanumerical range
+>> should be way better than nothing.
+>>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   qom/object.c | 41 +++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 41 insertions(+)
+>>
+>> diff --git a/qom/object.c b/qom/object.c
+>> index 95c0dc8285..654e1afaf2 100644
+>> --- a/qom/object.c
+>> +++ b/qom/object.c
+>> @@ -138,9 +138,50 @@ static TypeImpl *type_new(const TypeInfo *info)
+>>       return ti;
+>>   }
+>> +static bool type_name_is_valid(const char *name)
+>> +{
+>> +    const int slen = strlen(name);
+>> +    int plen;
+>> +
+>> +    g_assert(slen > 1);
+>> +
+>> +    /*
+>> +     * Ideally, the name should start with a letter - however, we've got
+>> +     * too many names starting with a digit already, so allow digits here,
+>> +     * too (except '0' which is not used yet)
+>> +     */
+>> +    if (!g_ascii_isalnum(name[0]) || name[0] == '0') {
+>> +        return false;
+>> +    }
+>> +
+>> +    plen = strspn(name, "abcdefghijklmnopqrstuvwxyz"
+>> +                        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+>> +                        "0123456789-_.");
+>> +
+>> +    /* Allow some legacy names with '+' in it for compatibility reasons */
+>> +    if (name[plen] == '+') {
+>> +        if (plen == 6 && g_str_has_prefix(name, "power")) {
+>> +            /* Allow "power5+" and "power7+" CPU names*/
+>> +            return true;
+>> +        }
+>> +        if (plen >= 17 && g_str_has_prefix(name, "Sun-UltraSparc-I")) {
+>> +            /* Allow "Sun-UltraSparc-IV+" and "Sun-UltraSparc-IIIi+" */
+>> +            return true;
+>> +        }
+>> +    }
+>> +
+>> +    return plen == slen;
+>> +}
+>> +
+>>   static TypeImpl *type_register_internal(const TypeInfo *info)
+>>   {
+>>       TypeImpl *ti;
+>> +
+>> +    if (!type_name_is_valid(info->name)) {
+>> +        fprintf(stderr, "Registering '%s' with illegal type name\n", 
+>> info->name);
+> 
+> Shouldn't we use error_report() instead of fprintf()? Regardless,
 
-On 11/17/23 12:39, Duan, Zhenzhong wrote:
-> Hi Cédric,
->
->> -----Original Message-----
->> From: Cédric Le Goater <clg@redhat.com>
->> Sent: Friday, November 17, 2023 7:10 PM
->> Subject: Re: [PATCH v6 01/21] backends/iommufd: Introduce the iommufd object
->>
->> Hello,
->>
->>> +int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id,
->> hwaddr iova,
->>> +                            ram_addr_t size, void *vaddr, bool readonly)
->>> +{
->>> +    int ret, fd = be->fd;
->>> +    struct iommu_ioas_map map = {
->>> +        .size = sizeof(map),
->>> +        .flags = IOMMU_IOAS_MAP_READABLE |
->>> +                 IOMMU_IOAS_MAP_FIXED_IOVA,
->>> +        .ioas_id = ioas_id,
->>> +        .__reserved = 0,
->>> +        .user_va = (uintptr_t)vaddr,
->>> +        .iova = iova,
->>> +        .length = size,
->>> +    };
->>> +
->>> +    if (!readonly) {
->>> +        map.flags |= IOMMU_IOAS_MAP_WRITEABLE;
->>> +    }
->>> +
->>> +    ret = ioctl(fd, IOMMU_IOAS_MAP, &map);
->>> +    trace_iommufd_backend_map_dma(fd, ioas_id, iova, size,
->>> +                                  vaddr, readonly, ret);
->>> +    if (ret) {
->>> +        ret = -errno;
->>> +        error_report("IOMMU_IOAS_MAP failed: %m");
->>> +    }
->>> +    return ret;
->>> +}
->> When using a UEFI guest, QEMU reports errors when mapping regions
->> in the top PCI space :
->>
->>   iommufd_backend_map_dma  iommufd=10 ioas=2 iova=0x380000001000
->> size=0x3000 addr=0x7fce2c28b000 readonly=0 (-1)
->>   qemu-system-x86_64: IOMMU_IOAS_MAP failed: Invalid argument
->>   qemu-system-x86_64: vfio_container_dma_map(0x55a21b03a150,
->> 0x380000001000, 0x3000, 0x7fce2c28b000) = -22 (Invalid argument)
->>
->>   iommufd_backend_map_dma  iommufd=10 ioas=2 iova=0x380000004000
->> size=0x4000 addr=0x7fce2c980000 readonly=0 (-1)
->>   qemu-system-x86_64: IOMMU_IOAS_MAP failed: Invalid argument
->>   qemu-system-x86_64: vfio_container_dma_map(0x55a21b03a150,
->> 0x380000004000, 0x4000, 0x7fce2c980000) = -22 (Invalid argument)
->>
->> This is because IOMMUFD reserved IOVAs areas are :
->>
->>  [ fee00000 - feefffff ]
->>  [ 8000000000 - ffffffffffffffff ] (39 bits address space)
->>
->> which were allocated when the device was initially attached.
->> The topology is basic. Something is wrong.
-> 	
-> Thanks for your report. This looks a hardware limit of
-> host IOMMU address width(39) < guest physical address width.
->
-> A similar issue with a fix submitted below, ccing related people.
-> https://lists.gnu.org/archive/html/qemu-devel/2023-11/msg02937.html
-> It looks the fix will not work for hotplug.
->
-> Or below qemu cmdline may help:
-> "-cpu host,host-phys-bits-limit=39"
+It doesn't work here yet - the type registration happens so early that we 
+cannot use error_report() here yet.
 
-don't you have the same issue with legacy VFIO code, you should?
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Eric
->
-> Thanks
-> Zhenzhong
->
+Thanks!
+
+  Thomas
+
 
 
