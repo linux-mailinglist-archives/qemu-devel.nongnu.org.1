@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B927EEB34
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 03:49:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF1F7EEB0B
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 03:30:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3otH-00011e-Nd; Thu, 16 Nov 2023 21:47:32 -0500
+	id 1r3obJ-0000Uc-2C; Thu, 16 Nov 2023 21:28:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1r3oRq-0007zO-MK
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 21:19:10 -0500
-Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1r3oRo-0003Tx-Li
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 21:19:10 -0500
-Received: by mail-qt1-x832.google.com with SMTP id
- d75a77b69052e-41cbf31da84so8175291cf.0
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 18:19:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1700187546; x=1700792346; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=MDsi/eHH6cNPGDKxqKHoPLffLHpmLdfKEynt7jrqP/g=;
- b=mQpjsPAMI0HvKj8W6ESqo4B2CzRCLTtr+rDJ2C27u2npNqkN9bYTVEhQlrIjeEHb2S
- NE3QHNYpo1ORf6liOfzviJeHum8tQuN3NoErqu6qyuurDjytAfq7W2v9jNYscGftySAL
- Y9ULm959mPumuh56VSTNVFqxbibSj8xnLNOk0=
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1r3obG-0000UB-Mu
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 21:28:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1r3obF-0000I0-1l
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 21:28:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700188131;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=y0ymwrbU24RHNFL/YBU+MbSMEepRsGgh4iA3W1I/qrI=;
+ b=cVEJuJ2bIonSEvTb6ha1mCI7FDSA6WAeOQ5tepGf0c8GeFi4h497DUfD5XOKek8qglr6f1
+ YRmgdzU5jeTFNtoFqnxC2LgExYffIZXDVqXgM/BjHmxJyB+tQycgbgbBm/moEJWXjd0622
+ kx9y6SzuXkTWUPPHFtKK3xdrPGORpMI=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-622-FlcO8YO-OwqBxt18hjagnA-1; Thu, 16 Nov 2023 21:28:49 -0500
+X-MC-Unique: FlcO8YO-OwqBxt18hjagnA-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-507be692ce4so1422171e87.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 18:28:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700187546; x=1700792346;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=MDsi/eHH6cNPGDKxqKHoPLffLHpmLdfKEynt7jrqP/g=;
- b=iR6JApHMCL55TuXxUYSd+D5x+Nrwrf+hJCZv06kR9qMofp/U1Ei0rF7QOz/mFUiSLd
- tQk6LLe//08iKEvq4KE/bVhi99JyC+WYlmFJ7l5HNtwT2CrznTTk7rhkfND1dAnRWLhB
- Wvti4Ai7tIPpDwcP7Phr1hnj4zfOWvCS29OKXafOK0OH/ZkGOx3n4zrRGsIceT6PfYrV
- P+hSpGQJNeVJtdMDYAYwuqrIVjxEnEbcAGTnKLjZGr4vzNzjH0X3IAfDM2H6QnX9rn81
- Tin0he2CulObL0Emz+94OiRreBQOdesl46pLClvDww/bu5zPy27uv3fKO7dHTCaTGYJr
- fNPw==
-X-Gm-Message-State: AOJu0YwoG0hYNyYxx5yy3cxbIIGz4PNglOFsMUci9HXAtL83aqwYCY7y
- dW2CbD4gS6hbrvtW1WzwGA0kcC+WsVakTJP+bT4=
-X-Google-Smtp-Source: AGHT+IFnXsA6a5MH1h9KYInDPwYCXG2dG7/OwrFssKYsMKa6JtvWMfbqyof7F5nSO8JrpB0MK9rSPA==
-X-Received: by 2002:a05:622a:1003:b0:41e:3ca6:2b37 with SMTP id
- d3-20020a05622a100300b0041e3ca62b37mr12229907qte.2.1700187546417; 
- Thu, 16 Nov 2023 18:19:06 -0800 (PST)
-Received: from kea.bld.corp.google.com ([100.107.108.219])
- by smtp.gmail.com with ESMTPSA id
- o10-20020ac86d0a000000b004181aa90b46sm250970qtt.89.2023.11.16.18.19.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Nov 2023 18:19:06 -0800 (PST)
-From: Simon Glass <sjg@chromium.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Simon Glass <sjg@chromium.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: [PATCH v2] hw/arm/virt: Allow additions to the generated device tree
-Date: Thu, 16 Nov 2023 19:18:26 -0700
-Message-ID: <20231117021840.117874-1-sjg@chromium.org>
-X-Mailer: git-send-email 2.43.0.rc0.421.g78406f8d94-goog
+ d=1e100.net; s=20230601; t=1700188128; x=1700792928;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=y0ymwrbU24RHNFL/YBU+MbSMEepRsGgh4iA3W1I/qrI=;
+ b=YKpCHfhj8PvqWc+K1F5V4V8dMUHad1xfeQ/EvUgVKh5vbPvgfUHeyc3fXRKwsqZ5Qr
+ mNlWbzL2tYZmqz2CzphJLnzGDtPl3XwM4J59YTXsgs8yL+6EpDMycDo2c4L4ztzgp8WN
+ Jo8aQS7xdiOZuXsiNXkDy4d3GZYsn/iSMr5IA6ktTX8yDvKYwAFJLEYGlbpFEyFdgya9
+ MVpYCYNQAgLpeyGXwdVRGpLV05GsiewxEM/V3dJRsNL3r1bPRpUL2foki6nqoUHB3jUh
+ JOv//se1l+ZkydfB1+ab3Ya2sPQ9msYyjASv99BVInZ8c9d4zrFMNR2kd50tgTm6ARqb
+ mnoA==
+X-Gm-Message-State: AOJu0YyEsJD4RHze2Crltiokddl9jgq/kTyaWSeigcCQXbYTge/iwp5S
+ CdYn++/s2NTMbSn/eRs9YGMk/UNiVnzQ+P9fAriKwqvpngoazfcm8u3l+t+ll9k4jb8PtaGgmoP
+ dtNPzGzUtuosI9jVl7402Knh4lQIa/Kk=
+X-Received: by 2002:a05:6512:3e5:b0:503:36cb:5438 with SMTP id
+ n5-20020a05651203e500b0050336cb5438mr10837173lfq.21.1700188128558; 
+ Thu, 16 Nov 2023 18:28:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGLgfV7X4OEx6svVeEF+1aIxjk2NO3diXCYgSgLmJSzhgcLoA3n7BHk8bGwntwGEjToZsfbkK3PH91c1HM2zVc=
+X-Received: by 2002:a05:6512:3e5:b0:503:36cb:5438 with SMTP id
+ n5-20020a05651203e500b0050336cb5438mr10837169lfq.21.1700188128158; Thu, 16
+ Nov 2023 18:28:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
- envelope-from=sjg@chromium.org; helo=mail-qt1-x832.google.com
+References: <20231114030937.5461-1-jasowang@redhat.com>
+ <3feb59f0c647f23f078cd0bb60af9e56f0845230.camel@infradead.org>
+In-Reply-To: <3feb59f0c647f23f078cd0bb60af9e56f0845230.camel@infradead.org>
+From: Jason Wang <jasowang@redhat.com>
+Date: Fri, 17 Nov 2023 10:28:36 +0800
+Message-ID: <CACGkMEvtqUWrrNzwjR1Y5kR7GV_q9Dfx69+tagCcOBnTpuEdxQ@mail.gmail.com>
+Subject: Re: [PULL 0/2] Net patches
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 16 Nov 2023 21:47:26 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,302 +95,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-At present qemu creates a device tree automatically with the 'virt' generic
-virtual platform. This is very convenient in most cases but there is not
-much control over what is generated.
+On Fri, Nov 17, 2023 at 12:49=E2=80=AFAM David Woodhouse <dwmw2@infradead.o=
+rg> wrote:
+>
+> On Tue, 2023-11-14 at 11:09 +0800, Jason Wang wrote:
+> > The following changes since commit 69680740eafa1838527c90155a7432d51b8f=
+f203:
+> >
+> >   Merge tag 'qdev-array-prop' of https://repo.or.cz/qemu/kevin into sta=
+ging (2023-11-11 11:23:25 +0800)
+> >
+> > are available in the git repository at:
+> >
+> >   https://github.com/jasowang/qemu.git tags/net-pull-request
+> >
+> > for you to fetch changes up to d90014fc337ab77f37285b1a30fd4f545056be0a=
+:
+> >
+> >   igb: Add Function Level Reset to PF and VF (2023-11-13 15:33:37 +0800=
+)
+>
+> Hi Jason,
+>
+> I note this doesn't include the net_cleanup() fix from
+> https://lore.kernel.org/qemu-devel/20231115172723.1161679-2-dwmw2@infrade=
+ad.org/
+>
 
-Add a way to provide a device tree binary file with additional properties
-to add before booting. This provides flexibility for situations where
-Linux needs some tweak to operate correctly. It also allows configuration
-information to be passed to U-Boot, supporting verified boot, for example.
+Yes, it's in the list of patches that need review and it seems fine.
 
-The term 'merge' is used here to avoid confusion with device tree overlays,
-which are a particular type of format.
+> Do you mind if I submit that in a pull request with the other fixes
+> from that series?
 
-[resending this as the original patch has gone stale]
+I've queued this for rc1. Pull request will be sent no later than 21st.
 
-Signed-off-by: Simon Glass <sjg@chromium.org>
----
+Thanks
 
-Changes in v2:
-- Rebase to master
-
- docs/system/arm/virt.rst |  13 +++-
- hw/arm/virt.c            | 135 +++++++++++++++++++++++++++++++++++++++
- hw/core/machine.c        |  20 ++++++
- include/hw/boards.h      |   1 +
- qemu-options.hx          |   8 +++
- system/vl.c              |   3 +
- 6 files changed, 178 insertions(+), 2 deletions(-)
-
-diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
-index 7c4c80180c..0f63a773f2 100644
---- a/docs/system/arm/virt.rst
-+++ b/docs/system/arm/virt.rst
-@@ -186,8 +186,17 @@ Hardware configuration information for bare-metal programming
- The ``virt`` board automatically generates a device tree blob ("dtb")
- which it passes to the guest. This provides information about the
- addresses, interrupt lines and other configuration of the various devices
--in the system. Guest code can rely on and hard-code the following
--addresses:
-+in the system.
-+
-+The optional ``-dtbi`` argument is used to specify a device tree blob to merge
-+with this generated device tree, to add any properties required by the guest but
-+not included by qemu. Properties are merged after the generated device tree is
-+created, so take precedence over generated properties. This can be useful for
-+overriding the ``stdout-path`` for Linux, for example, or to add configuration
-+information needed by U-Boot. This is intended for simple nodes and properties
-+and does not support use of phandles or device tree overlays.
-+
-+Guest code can rely on and hard-code the following addresses:
- 
- - Flash memory starts at address 0x0000_0000
- 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index be2856c018..fb790a2e24 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -41,6 +41,7 @@
- #include "hw/vfio/vfio-calxeda-xgmac.h"
- #include "hw/vfio/vfio-amd-xgbe.h"
- #include "hw/display/ramfb.h"
-+#include <libfdt.h>
- #include "net/net.h"
- #include "sysemu/device_tree.h"
- #include "sysemu/numa.h"
-@@ -320,6 +321,135 @@ static void create_fdt(VirtMachineState *vms)
-     }
- }
- 
-+
-+/*
-+ * From U-Boot v2021.07 (under BSD-2-Clause license)
-+ *
-+ * This does not use the qemu_fdt interface because that requires node names.
-+ * Here we are using offsets.
-+ *
-+ * overlay_apply_node - Merges a node into the base device tree
-+ * @fdt: Base Device Tree blob
-+ * @target: Node offset in the base device tree to apply the fragment to
-+ * @fdto: Device tree overlay blob
-+ * @node: Node offset in the overlay holding the changes to merge
-+ *
-+ * overlay_apply_node() merges a node into a target base device tree
-+ * node pointed.
-+ *
-+ * This is part of the final step in the device tree overlay
-+ * application process, when all the phandles have been adjusted and
-+ * resolved and you just have to merge overlay into the base device
-+ * tree.
-+ *
-+ * returns:
-+ *      0 on success
-+ *      Negative error code on failure
-+ */
-+static int overlay_apply_node(void *fdt, int target, void *fdto, int node)
-+{
-+    int property;
-+    int subnode;
-+
-+    fdt_for_each_property_offset(property, fdto, node) {
-+        const char *name;
-+        const void *prop;
-+        int prop_len;
-+        int ret;
-+
-+        prop = fdt_getprop_by_offset(fdto, property, &name, &prop_len);
-+        if (prop_len == -FDT_ERR_NOTFOUND) {
-+            return -FDT_ERR_INTERNAL;
-+        }
-+        if (prop_len < 0) {
-+            return prop_len;
-+        }
-+
-+        ret = fdt_setprop(fdt, target, name, prop, prop_len);
-+        if (ret) {
-+            return ret;
-+        }
-+    }
-+
-+    fdt_for_each_subnode(subnode, fdto, node) {
-+        const char *name = fdt_get_name(fdto, subnode, NULL);
-+        int nnode;
-+        int ret;
-+
-+        nnode = fdt_add_subnode(fdt, target, name);
-+        if (nnode == -FDT_ERR_EXISTS) {
-+            nnode = fdt_subnode_offset(fdt, target, name);
-+            if (nnode == -FDT_ERR_NOTFOUND) {
-+                return -FDT_ERR_INTERNAL;
-+            }
-+        }
-+
-+        if (nnode < 0) {
-+            return nnode;
-+        }
-+
-+        ret = overlay_apply_node(fdt, nnode, fdto, subnode);
-+        if (ret) {
-+            return ret;
-+        }
-+    }
-+
-+    return 0;
-+}
-+
-+/* Merge nodes and properties into fdt from fdto */
-+static int merge_fdt(void *fdt, void *fdto)
-+{
-+    int err;
-+
-+    err = overlay_apply_node(fdt, 0, fdto, 0);
-+    if (err) {
-+        fprintf(stderr, "Device tree error %s\n", fdt_strerror(err));
-+        return -1;
-+    }
-+
-+    return 0;
-+}
-+
-+/* Finish creating the device tree, merging in the -dtbi file if needed */
-+static int complete_fdt(VirtMachineState *vms)
-+{
-+    MachineState *ms = MACHINE(vms);
-+
-+    if (ms->dtbi) {
-+        char *filename;
-+        void *fdt;
-+        int size;
-+        int ret;
-+
-+        filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, ms->dtbi);
-+        if (!filename) {
-+            fprintf(stderr, "Couldn't open dtbi file %s\n", ms->dtbi);
-+            goto fail;
-+        }
-+
-+        fdt = load_device_tree(filename, &size);
-+        if (!fdt) {
-+            fprintf(stderr, "Couldn't open dtbi file %s\n", filename);
-+            g_free(filename);
-+            goto fail;
-+        }
-+
-+        ret = merge_fdt(ms->fdt, fdt);
-+        g_free(fdt);
-+        if (ret) {
-+            fprintf(stderr, "Failed to merge in dtbi file %s\n", filename);
-+            g_free(filename);
-+            goto fail;
-+        }
-+        g_free(filename);
-+    }
-+    return 0;
-+
-+fail:
-+    return -1;
-+}
-+
- static void fdt_add_timer_nodes(const VirtMachineState *vms)
- {
-     /* On real hardware these interrupts are level-triggered.
-@@ -2314,6 +2444,11 @@ static void machvirt_init(MachineState *machine)
- 
-     create_platform_bus(vms);
- 
-+    if (complete_fdt(vms)) {
-+        error_report("mach-virt: Failed to complete device tree");
-+        exit(1);
-+    }
-+
-     if (machine->nvdimms_state->is_enabled) {
-         const struct AcpiGenericAddress arm_virt_nvdimm_acpi_dsmio = {
-             .space_id = AML_AS_SYSTEM_MEMORY,
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 0c17398141..f156481754 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -349,6 +349,21 @@ static void machine_set_dtb(Object *obj, const char *value, Error **errp)
-     ms->dtb = g_strdup(value);
- }
- 
-+static char *machine_get_dtbi(Object *obj, Error **errp)
-+{
-+    MachineState *ms = MACHINE(obj);
-+
-+    return g_strdup(ms->dtbi);
-+}
-+
-+static void machine_set_dtbi(Object *obj, const char *value, Error **errp)
-+{
-+    MachineState *ms = MACHINE(obj);
-+
-+    g_free(ms->dtbi);
-+    ms->dtbi = g_strdup(value);
-+}
-+
- static char *machine_get_dumpdtb(Object *obj, Error **errp)
- {
-     MachineState *ms = MACHINE(obj);
-@@ -994,6 +1009,11 @@ static void machine_class_init(ObjectClass *oc, void *data)
-     object_class_property_set_description(oc, "dtb",
-         "Linux kernel device tree file");
- 
-+    object_class_property_add_str(oc, "dtbi",
-+        machine_get_dtbi, machine_set_dtbi);
-+    object_class_property_set_description(oc, "dtbi",
-+        "Linux kernel device tree file to merge with the generated device tree");
-+
-     object_class_property_add_str(oc, "dumpdtb",
-         machine_get_dumpdtb, machine_set_dumpdtb);
-     object_class_property_set_description(oc, "dumpdtb",
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index a735999298..bb6548e98d 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -359,6 +359,7 @@ struct MachineState {
- 
-     void *fdt;
-     char *dtb;
-+    char *dtbi;  /* filename of device tree to merge with the generated one */
-     char *dumpdtb;
-     int phandle_start;
-     char *dt_compatible;
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 42fd09e4de..20c1ac1c44 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -4033,6 +4033,14 @@ the guest image is:
- 
- ERST
- 
-+DEF("dtbi", HAS_ARG, QEMU_OPTION_dtbi, \
-+    "-dtbi   file    merge 'file' with generated device tree\n", QEMU_ARCH_ARM)
-+SRST
-+``-dtbi file``
-+    Merge a device tree binary (dtb) file into the generated device tree and
-+    pass the result to the kernel on boot.
-+ERST
-+
- DEFHEADING()
- 
- DEFHEADING(Debug/Expert options:)
-diff --git a/system/vl.c b/system/vl.c
-index 5af7ced2a1..6684b1bdd0 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2907,6 +2907,9 @@ void qemu_init(int argc, char **argv)
-             case QEMU_OPTION_dtb:
-                 qdict_put_str(machine_opts_dict, "dtb", optarg);
-                 break;
-+            case QEMU_OPTION_dtbi:
-+                qdict_put_str(machine_opts_dict, "dtbi", optarg);
-+                break;
-             case QEMU_OPTION_cdrom:
-                 drive_add(IF_DEFAULT, 2, optarg, CDROM_OPTS);
-                 break;
--- 
-2.43.0.rc0.421.g78406f8d94-goog
+>
+> Thanks.
 
 
