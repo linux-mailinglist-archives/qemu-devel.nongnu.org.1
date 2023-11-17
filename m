@@ -2,86 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E17B67EF6FE
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9A07EF6FD
 	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 18:34:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r42iM-0004em-F5; Fri, 17 Nov 2023 12:33:10 -0500
+	id 1r42ik-0004h4-8X; Fri, 17 Nov 2023 12:33:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r42iK-0004cH-Ih
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 12:33:08 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r42iI-0005Lh-VF
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 12:33:08 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40806e4106dso13855705e9.1
- for <qemu-devel@nongnu.org>; Fri, 17 Nov 2023 09:33:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700242384; x=1700847184; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1hE9SYlzRhx4fMCqOERRNXzoYvzH7kMD30RphHScvQA=;
- b=ozVkygs+6Sovm0QeQvdSq8JwJ94NywJUM5fUtve/n1WlGa8iZAc/LFlZaJs4sm3zK6
- lKCHqRTlhHNIDLprwXG/64sx+ObtBWlGL4XJLcgQ4ZXeSwBUVRravjhSqatY6q0slQJt
- ko7iU5M5hyxLyb5SGKKH6m3/CwC+czQjFI8qKA+JKsJ1XdNbir2cS5HIRMhhjWgBrpn1
- Q5JJFA/4n81WqPOyVHh/RwCXxX94Z6fTIvAU0jmYfMIWVnYtDZ2iCMjgnUbFqrHu6jU3
- 3iH9c94jHV3fT7JuN+lkJiB12ZnJgPpM8Oj7U3TUNFZgl+LvuwrVRi8ObJdydSJm59//
- dBMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700242384; x=1700847184;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=1hE9SYlzRhx4fMCqOERRNXzoYvzH7kMD30RphHScvQA=;
- b=lG9yIvvy8We9PJGYvhZD0prII28mfa2ZsXHAHmwBAr3HF9oTHEpn6FhPAHamZZrpMW
- UJrav/tRD3TZ5M5ag5tRJ1rAvN9+GuNeNyvs2VrNvzCWBVljhp1GfVVGJI8wAMnyJeNC
- imJ2VZNPJliCduD0AOBRiHhhty/ffmm9y5rksHF94rW1D6BCHp1dTXT1l07MdatRaUlY
- SxpFRCho9/g7mlNyL5BlewElPSgfiLYzaPl1boO9+6abJ2AmIM7Sv2UdGMgpOx+n1wxu
- ixL6eWDBAsCA25iAVmnx7jnesdkFvLs0QXRLjvuBez7SJ/Kf6DiH0KvscJZ2BPijcFZz
- g8rg==
-X-Gm-Message-State: AOJu0YwCeaKhz3sh6qhhZUjNi2r6X+cvUlfVarsumRzOA1zqtmF4yM7Q
- lPrWk91ZqP8Dtjiw4DVRU5rLdw==
-X-Google-Smtp-Source: AGHT+IFf63rioapzxj1ZaX5Zjkwac3MmhHxtTmN2/U2bvA6dhoW3BPKQbMcLSaqmhTa1r/IsGKUjUg==
-X-Received: by 2002:a05:600c:a41:b0:408:3634:b81e with SMTP id
- c1-20020a05600c0a4100b004083634b81emr5083260wmq.13.1700242384175; 
- Fri, 17 Nov 2023 09:33:04 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- m21-20020a05600c3b1500b003fe61c33df5sm8050204wms.3.2023.11.17.09.33.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Nov 2023 09:33:03 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 612C5656E7;
- Fri, 17 Nov 2023 17:33:03 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,  Chris Wulff
- <crwulff@gmail.com>,  Marek Vasut <marex@denx.de>,
- devel@lists.libvirt.org,  Sandra Loosemore <sandra@codesourcery.com>
-Subject: Re: [PATCH-for-8.2] target/nios2: Deprecate the Nios II architecture
-In-Reply-To: <20231117070250.32932-1-philmd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Fri, 17 Nov 2023 08:02:50
- +0100")
-References: <20231117070250.32932-1-philmd@linaro.org>
-User-Agent: mu4e 1.11.24; emacs 29.1
-Date: Fri, 17 Nov 2023 17:33:03 +0000
-Message-ID: <87y1ewnv3k.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <SRS0=h+oX=G6=gmx.de=deller@kernel.org>)
+ id 1r42ii-0004gw-KU
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 12:33:32 -0500
+Received: from sin.source.kernel.org ([145.40.73.55])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=h+oX=G6=gmx.de=deller@kernel.org>)
+ id 1r42ig-0005Qm-G4
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 12:33:32 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sin.source.kernel.org (Postfix) with ESMTP id 75420CE2493;
+ Fri, 17 Nov 2023 17:33:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A5CC433C7;
+ Fri, 17 Nov 2023 17:33:22 +0000 (UTC)
+Date: Fri, 17 Nov 2023 18:33:20 +0100
+From: Helge Deller <deller@gmx.de>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH v2 2/2] disas/hppa: Show hexcode of instruction along
+ with disassembly
+Message-ID: <ZVej4L9FHe9zZF9A@p100>
+References: <20231117105309.149225-1-deller@kernel.org>
+ <20231117105309.149225-3-deller@kernel.org>
+ <6e256fa7-69eb-47de-a06b-f99d66318918@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6e256fa7-69eb-47de-a06b-f99d66318918@linaro.org>
+Received-SPF: pass client-ip=145.40.73.55;
+ envelope-from=SRS0=h+oX=G6=gmx.de=deller@kernel.org;
+ helo=sin.source.kernel.org
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,21 +62,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+* Richard Henderson <richard.henderson@linaro.org>:
+> On 11/17/23 02:53, deller@kernel.org wrote:
+> > From: Helge Deller <deller@gmx.de>
+> > 
+> > On hppa many instructions can be expressed by different bytecodes.
+> > To be able to debug qemu translation bugs it's therefore necessary to see the
+> > currently executed byte codes without the need to lookup the sequence without
+> > the full executable.
+> > With this patch the instruction byte code is shown beside the disassembly.
+> > 
+> > Signed-off-by: Helge Deller <deller@gmx.de>
+> > ---
+> >   disas/hppa.c | 3 +++
+> >   1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/disas/hppa.c b/disas/hppa.c
+> > index dcf9a47f34..38fc05acc4 100644
+> > --- a/disas/hppa.c
+> > +++ b/disas/hppa.c
+> > @@ -1979,6 +1979,9 @@ print_insn_hppa (bfd_vma memaddr, disassemble_info *info)
+> >   	  if (opcode->arch == pa20w)
+> >   	    continue;
+> >   #endif
+> > +	  (*info->fprintf_func) (info->stream, " %02x %02x %02x %02x   ",
+> > +                (insn >> 24) & 0xff, (insn >> 16) & 0xff,
+> > +                (insn >>  8) & 0xff, insn & 0xff);
+> >   	  (*info->fprintf_func) (info->stream, "%s", opcode->name);
+> >   	  if (!strchr ("cfCY?-+nHNZFIuv{", opcode->args[0]))
+> 
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> 
+> A possible improvement is to push this outside of the search loop and then change
+> 
+>      }
+> -  (*info->fprintf_func) (info->stream, "#%8x", insn);
+> +  info->fprintf_func(info->stream, "<unknown>");
+>    return sizeof (insn);
+> 
+> so the byte decode is shared with the rare case of garbage in the insn stream.
 
-> See commit 9ba1caf510 ("MAINTAINERS: Mark the Nios II CPU as orphan"),
-> last contribution from Chris was in 2012 [1] and Marek in 2018 [2].
->
-> [1] https://lore.kernel.org/qemu-devel/1352607539-10455-2-git-send-email-=
-crwulff@gmail.com/
-> [2] https://lore.kernel.org/qemu-devel/805fc7b5-03f0-56d4-abfd-ed010d4fa7=
-69@denx.de/
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Like below?
 
-Queued to for-8.2/random-fixes, thanks.
+From: Helge Deller <deller@gmx.de>
+Subject: [PATCH] disas/hppa: Show hexcode of instruction along with
+ disassembly
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+On hppa many instructions can be expressed by different bytecodes.
+To be able to debug qemu translation bugs it's therefore necessary to see the
+currently executed byte codes without the need to lookup the sequence without
+the full executable.
+With this patch the instruction byte code is shown beside the disassembly.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+diff --git a/disas/hppa.c b/disas/hppa.c
+index dcf9a47f34..cce4f4aa37 100644
+--- a/disas/hppa.c
++++ b/disas/hppa.c
+@@ -1968,6 +1968,10 @@ print_insn_hppa (bfd_vma memaddr, disassemble_info *info)
+ 
+   insn = bfd_getb32 (buffer);
+ 
++  info->fprintf_func(info->stream, " %02x %02x %02x %02x   ",
++                (insn >> 24) & 0xff, (insn >> 16) & 0xff,
++                (insn >>  8) & 0xff, insn & 0xff);
++
+   for (i = 0; i < NUMOPCODES; ++i)
+     {
+       const struct pa_opcode *opcode = &pa_opcodes[i];
+@@ -2826,6 +2830,6 @@ print_insn_hppa (bfd_vma memaddr, disassemble_info *info)
+ 	  return sizeof (insn);
+ 	}
+     }
+-  (*info->fprintf_func) (info->stream, "#%8x", insn);
++  info->fprintf_func(info->stream, "<unknown>");
+   return sizeof (insn);
+ }
 
