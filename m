@@ -2,84 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E007EEA79
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 01:53:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E59547EEAA3
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 02:16:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3n56-0000OA-9h; Thu, 16 Nov 2023 19:51:36 -0500
+	id 1r3nRh-0000JD-Q7; Thu, 16 Nov 2023 20:14:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r3n51-0000Nu-3J
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 19:51:32 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r3n4z-00040v-8H
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 19:51:30 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6c39ad730aaso1322733b3a.0
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 16:51:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700182287; x=1700787087; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Wq/flwwXajlQHXITu6euiqED0XX9fjXWOv9XxLTCQ30=;
- b=eVO2Hb8jZVCdAiL61jxZDlyCLjPi61Zwry6AvYS+3vtkwuoegXLgH5K0cUgE0IxSVq
- MfemCuTJoSTgQ5DsamGLMVGTS4lgG/EyDFx0R5WeIBHKA2fommkRsXeyEBk9w+YGxIQT
- RLpeBTnsCy7Z3Z/zM6qxn8ZahkrPnUpckKioiSaPqqdpGmmdOUqsJgUbFEz51ck/Kd2T
- 9nJcRK4iElQbsyVoQtDzI4jv+5CaXK6xu38aLYJIlu49pC1QT+mAjsvNQ25odleGRqMh
- 9jtKoFtnh9HEG+6IDTsh+2ubgmVo4byzkKts0vMhXu4PLyVxagIyFP0EF1kA4imcPZxb
- xUhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700182287; x=1700787087;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Wq/flwwXajlQHXITu6euiqED0XX9fjXWOv9XxLTCQ30=;
- b=UYKfSZIfsqmbz0L/DNwWP5V5bXie611la+bSOcFHTkoh8P2503fU7Gew0tdHeU9r9I
- Z2t/ixzsVCjpyHk48YzIKm5UH1ZQRzWpbttHThItBv86OOQWwZ3ZphJv7hCUselwvbN9
- ejLpd4rMgjUfXjHooLAVFYhrjBow+R/R9Z8K2bQwrVEhrmf6BcZVL1tsObKOJzfG2N8e
- splNm10FrWojdPgWswK2E1DjfsCoAonp0MlWawGVv5IH4lAiaM5BCIEfG/QHzzYckx1g
- tTYOcxzUMw8oS/W2K7OZEcov2mDskJvMfHl6lKmb982yBpMNlvi0rocl7i5OUQhK5cd8
- L1Cg==
-X-Gm-Message-State: AOJu0YwQG0Boblx4MiEK4AZOlURKdQEXa9x2eGwBoNUtlXas51Bo0EK+
- X7SfUkrdU4+AVRNAz3HT7oV6Ng==
-X-Google-Smtp-Source: AGHT+IGvoSUKccYQA6KrcmRXCPYlvUqzIEcJ0sDvl+/bnB9owDcRfBdgWf1ibE8SmRly8L90eYWgbg==
-X-Received: by 2002:a05:6a21:3e04:b0:186:11da:59c8 with SMTP id
- bk4-20020a056a213e0400b0018611da59c8mr15663130pzc.61.1700182286966; 
- Thu, 16 Nov 2023 16:51:26 -0800 (PST)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- m124-20020a625882000000b006c03d1ba03asm343837pfb.220.2023.11.16.16.51.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Nov 2023 16:51:26 -0800 (PST)
-Message-ID: <2ba04a3b-a02b-46d6-af30-13bc0f93b690@linaro.org>
-Date: Thu, 16 Nov 2023 16:51:23 -0800
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1r3nRe-0000In-QT
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 20:14:54 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1r3nRb-0008Bf-K1
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 20:14:54 -0500
+Received: from loongson.cn (unknown [10.20.42.173])
+ by gateway (Coremail) with SMTP id _____8CxNvF_vlZl_606AA--.49809S3;
+ Fri, 17 Nov 2023 09:14:40 +0800 (CST)
+Received: from [10.20.42.173] (unknown [10.20.42.173])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Dxnd59vlZlwL1EAA--.21255S3; 
+ Fri, 17 Nov 2023 09:14:39 +0800 (CST)
+Subject: Re: [PATCH] linux-headers: Synchronize linux headers from linux
+ v6.7.0-rc1
+To: Thomas Huth <thuth@redhat.com>, gaosong <gaosong@loongson.cn>,
+ Tianrui Zhao <zhaotianrui@loongson.cn>, qemu-devel@nongnu.org,
+ mst@redhat.com, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ lixianglai@loongson.cn, clg@redhat.com
+References: <20231114015412.53135-1-zhaotianrui@loongson.cn>
+ <be0da6a9-6f1e-11d9-f088-328ea33aee36@loongson.cn>
+ <771dd5ff-45d0-40bd-87dd-40f666d3355d@redhat.com>
+From: maobibo <maobibo@loongson.cn>
+Message-ID: <257d6562-51fb-867a-e65c-13418c6ce888@loongson.cn>
+Date: Fri, 17 Nov 2023 09:14:38 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL v3 09/25] ui/console: allow to override the default VC
-To: Peter Maydell <peter.maydell@linaro.org>, marcandre.lureau@redhat.com
-Cc: qemu-devel@nongnu.org, stefanha@gmail.com,
- Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20231107101524.2993389-1-marcandre.lureau@redhat.com>
- <20231107101524.2993389-10-marcandre.lureau@redhat.com>
- <CAFEAcA8QwVTLRO8eOxRan1Uwd4uCstMXkTa6_eLnfNxAupNy=w@mail.gmail.com>
+In-Reply-To: <771dd5ff-45d0-40bd-87dd-40f666d3355d@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA8QwVTLRO8eOxRan1Uwd4uCstMXkTa6_eLnfNxAupNy=w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-CM-TRANSID: AQAAf8Dxnd59vlZlwL1EAA--.21255S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj9xXoWrJF43CrW5tr1rAw4kCrW8Xwc_yoWxXFXEv3
+ 4UZ3s2gw1Dtw4UW3Z8tr4furnrJF18uwn7J34xXFs2gryfJFZ7JrWqkryxJF90gayxAFsI
+ 9r1YqrW5Aw1jqosvyTuYvTs0mTUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvT
+ s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+ cSsGvfJTRUUUbxxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+ vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+ w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+ WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x0267AKxVW8
+ JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+ xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v2
+ 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
+ vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+ wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
+ 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
+ xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
+ 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU70PfDUUU
+ U
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.193,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,36 +87,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/16/23 09:52, Peter Maydell wrote:
-> On Tue, 7 Nov 2023 at 10:24, <marcandre.lureau@redhat.com> wrote:
->>
->> From: Marc-André Lureau <marcandre.lureau@redhat.com>
->>
->> If a display is backed by a specialized VC, allow to override the
->> default "vc:80Cx24C".
->>
->> As suggested by Paolo, if the display doesn't implement a VC (get_vc()
->> returns NULL), use a fallback that will use a muxed console on stdio.
->>
->> This changes the behaviour of "qemu -display none", to create a muxed
->> serial/monitor by default (on TTY & not daemonized).
-> 
-> This breaks existing command line setups -- if I say
-> "-display none" I just mean "don't do a display", not
-> "please also give me a monitor". We already have a
-> "do what I mean" option for "no graphics", which is
-> "-nographic". The advantage of -display none is that
-> it does only and exactly what it says it does.
-> 
-> Setups using semihosting for output now get a spurious
-> load of output from the monitor on their terminal.
-> 
-> I think we should revert this; I'll send a patch.
+Thomas,
 
-Yes indeed.  I think this may be why I've seen my xterm go into strange i/o modes during 
-"make check-tcg" of the semihosting tests.
+Linux 6.7-rc1 has already released, LoongArch KVM is supported in this 
+version. LoongArch qemu KVM function depends on linux-headers and I do 
+not know whether LoongArch qemu KVM can be merged in 8.2 cycle.
+
+Regards
+Bibo Mao
 
 
-r~
+On 2023/11/16 下午9:19, Thomas Huth wrote:
+> On 15/11/2023 11.07, gaosong wrote:
+>> Hi,
+>>
+>> Can this patch be merged in during the 8.2 cycle?
+> 
+>   Hi!
+> 
+> We normally do linux-headers updates along with the patches that need 
+> the new definitions ... so is there an urgent reason to push this 
+> stand-alone
+> patch into 8.2 without any patches that require these new definitions?
+> 
+>   Thomas
 
 
