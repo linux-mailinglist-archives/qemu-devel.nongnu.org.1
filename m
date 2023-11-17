@@ -2,74 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA247EECB3
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 08:35:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD7DE7EECB2
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 08:35:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3tNx-0007ru-19; Fri, 17 Nov 2023 02:35:29 -0500
+	id 1r3tMf-0006an-PZ; Fri, 17 Nov 2023 02:34:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <1584389042@qq.com>) id 1r3tNq-0007jJ-Cm
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 02:35:22 -0500
-Received: from out162-62-57-210.mail.qq.com ([162.62.57.210])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <1584389042@qq.com>) id 1r3tNk-0007Un-Ar
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 02:35:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
- t=1700206504; bh=JQP3G2hYc0pvEPsB15pNhsE1PGXF/F4yhfc3JDgo3Tg=;
- h=From:To:Subject:Date;
- b=WMUlO2+dq+IbEYidmSQLXhTe77xlkp2HDa8OvrXZNGMgB0x/HTELT65AhqMCF2rRT
- kExLAyGZIpzTikb3QT+dUsegix2E31ZDX2V8FrIzOOSKVj7EJZUKDN2ivMfrprLD83
- r/JOYglxBgKxHtjk0EtFP13KjlJf6BqJQJuc2hPw=
-X-QQ-FEAT: oHWrrGTW1dCni6VLWI7Xi3lwP5c1dnPf
-X-QQ-SSF: 00000000000000F0000000000000
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-X-QQ-XMAILINFO: ODm3YadP5aQzYv61q87l9jfizUZ1dfp0GmYnrmyzjQBET66vSVkoTtF3uYImOl
- 5NOI8vDyi0s/INOYCjc2sOaXkaHU0BnWWZLbacCFUwewFc9Y1X4dQvAaRwRNrRWU52oCrPAnfYTeX
- F+dareq0Lr4QkncJEX4nJVIpvH4CjDfwhhsePLspIbHf18eL3pPwq8324Gw6zvBPLoTVIMNSf7Fj1
- N5JKZAG0khaeKOrcD593tswCbYC9o8womJXfIQDI6EgxZGD0WauObQ3GMw/TZEZpQg2q9jyZ+kOVZ
- ++PEgic1eNK+7n/N9B3abv2ZNxaj3jABtYEGnrmhxze5CIuPr0xtyrR4bRCeR9LmzsTZeiX6nol8t
- AQHdJWUtwtu6Bvf/vbi1bxei/XbWapFfnahF1Mzt5KYPTWnkNbubekbFaMJnDvuE6Gy4MN+6KJeCN
- 57stvh7lx6bBndrrkYxqQ/EzjM7UvDXhi5XWy6BJxE4sGLC9Vm9fy3pGXxqbc6LxSWD9kJFsBdRWM
- PtDllLebl57Q3xek3krsTBZ+J3HeIr8khgElbqoGoIigPICM/wf0V5cbSalCMyOloPwOL8qYabzXf
- 1vISIoIHf4K9BdoNpnhNY7ZBjWeRLkvVYB65ZNJC9+cT5K6BGJeHq9n6YXP5uJQ3xqLrnsaWNmIdh
- VauiS2atvefKJJBFg06Ylss3zOitcdiQGn23Mjz4l5PQRByFK4dF16LezkU09vWf6I8SLVxnZ/Gww
- mlNn7Yy5PbfrqNiD6d8MVzlP1s0lXHbKDYTpvkccTyhmveST2tcl1jO2vGFxGt7BYOAz3knjC1YLc
- zhqMNyIVNNUnmvy7rQtO0VWkIOdWKLZHTA74HgpaIxB7Cot8JhyTKaz8tMOOy9pFrhyPuh1HoPJom
- +eGjOY6X5jeCGztIpT+jH4xvpAa3QpWC3ibDfTpdi4TyFWD1KziQDzma7zdwdPNAqph3ojkucVnmY
- kbv1CtRUtNw4sfODYZ9fG9+wy7llkuJXCzGUMQdA==
-X-HAS-ATTACH: no
-X-QQ-BUSINESS-ORIGIN: 2
-X-Originating-IP: 124.16.180.156
-X-QQ-STYLE: 
-X-QQ-mid: webmail240t1700206310t237374
-From: "=?gb18030?B?t70=?=" <1584389042@qq.com>
-To: "=?gb18030?B?cWVtdS1kZXZlbA==?=" <qemu-devel@nongnu.org>
-Subject: Assessment of the difficulty in porting CPU architecture for qemu
-Mime-Version: 1.0
-Content-Type: multipart/alternative;
- boundary="----=_NextPart_655716E5_17EE9120_1F8C20CF"
-Content-Transfer-Encoding: 8Bit
-Date: Fri, 17 Nov 2023 15:31:49 +0800
-X-Priority: 3
-Message-ID: <tencent_29796A8EF3E655396E27566AC5CE1103A509@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-Received-SPF: pass client-ip=162.62.57.210; envelope-from=1584389042@qq.com;
- helo=out162-62-57-210.mail.qq.com
-X-Spam_score_int: 68
-X-Spam_score: 6.8
-X-Spam_bar: ++++++
-X-Spam_report: (6.8 / 5.0 requ) BAYES_00=-1.9, CHARSET_FARAWAY_HEADER=3.2,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- HELO_DYNAMIC_IPADDR=1.951, HTML_MESSAGE=0.001, MIME_CHARSET_FARAWAY=2.45,
- NO_FM_NAME_IP_HOSTN=0.121, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RDNS_DYNAMIC=0.982, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
-X-Spam_action: reject
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3tMe-0006ae-EC
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 02:34:08 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3tMc-00068S-Mg
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 02:34:08 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-40838915cecso13239215e9.2
+ for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 23:34:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700206445; x=1700811245; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=GUG/da0yQm5vkAjxdGxAQZYhgv/9yGi8exyh3Zhe7yk=;
+ b=TUWHVLsP7CbIjEcKYgsmUqs/brDghelIVicoxd+cIPpQ4VTZsmFOylSPLgcGDX1iGL
+ U4m0ThMz6oYTrYii2aUOMk+tup7JCgE5qC4kzq17Z5m4BfMj5bS03fZTzVY4QezCnWGw
+ J+UREQ3XP0rbaiilnTfRkyhYy+NAJ+qmxmVCiH0/ldPppiJFKOEnZPtJZ6td16332s1I
+ d4NTtuC7kGeTs2cASRlRqjGokRksmIMXBk0Qru5mrGURvL9ha0m6kwscD+tGtp2KxcBw
+ p/JFRntWOhrLR/LymKIQg6WRbNk1iT6KWj0l4Valnm1xrWthnUnuBSfA5UJu8KVwirrW
+ +YxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700206445; x=1700811245;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GUG/da0yQm5vkAjxdGxAQZYhgv/9yGi8exyh3Zhe7yk=;
+ b=mUR8m1FuqAYApuiQg+FAOtoT5ReqRMSu+P25MLRL5KUS5EDzu9dQrJeSDoySGoJ1Zm
+ oFgDEzIakVY0a2/l+m29j0q1Lkq+f7qTZcOyRLfa1akWUZnymPv1Lfo3xthpchhEjjlK
+ 5ADzcGsO9yYuZdAqrKrfiN78nU1TdDP8JWIp2VewX3KVnsfAF8rVThWvoSzI9OhwQ6mZ
+ sHp+z8Hi74zm/95Xv1uT+pMRqyUpBMRuRR7Mqbydazu4ayUzo/YbulGkWR6cg+pdzEIG
+ wPjQtojv366O84PikRO3Ax6teQjEeg8WtpQVvdQDq4pl0qWiXYLoQd1ITK0RaXwvB+V1
+ oGwg==
+X-Gm-Message-State: AOJu0Ywmp1arYWqdy093zZBXV8mUxwBxLB++ghBQ8Vt8Ait2EMEZkhnx
+ lOkb6/4DcepN+pY8ahUJDV8WzA==
+X-Google-Smtp-Source: AGHT+IEtoCKUwFq+pgycxTgFJBYrRNeX0Xdz8ARFoOchyUviFs6pr50nGZx6OvoxJWcTOw0fcg7IEQ==
+X-Received: by 2002:a05:600c:1d02:b0:405:a30:151e with SMTP id
+ l2-20020a05600c1d0200b004050a30151emr14823869wms.12.1700206444811; 
+ Thu, 16 Nov 2023 23:34:04 -0800 (PST)
+Received: from [192.168.69.100] (bd137-h02-176-184-46-187.dsl.sta.abo.bbox.fr.
+ [176.184.46.187]) by smtp.gmail.com with ESMTPSA id
+ f19-20020a1c6a13000000b0040a4751efaasm1698120wmc.17.2023.11.16.23.34.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 Nov 2023 23:34:04 -0800 (PST)
+Message-ID: <ebaa5c70-e410-465a-a94e-1a254506a81e@linaro.org>
+Date: Fri, 17 Nov 2023 08:34:00 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 00/31] Unified CPU type check
+Content-Language: en-US
+To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
+ imp@bsdimp.com, kevans@freebsd.org, richard.henderson@linaro.org,
+ pbonzini@redhat.com, peter.maydell@linaro.org, imammedo@redhat.com,
+ b.galvani@gmail.com, strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com,
+ kfting@nuvoton.com, wuhaotsh@google.com, nieklinnenbank@gmail.com,
+ rad@semihalf.com, quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
+ laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, mrolnik@gmail.com,
+ edgar.iglesias@gmail.com, bcain@quicinc.com, gaosong@loongson.cn,
+ aurelien@aurel32.net, jiaxun.yang@flygoat.com, aleksandar.rikalo@syrmia.com,
+ chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
+ ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
+ jcmvbkbc@gmail.com, shan.gavin@gmail.com
+References: <20231114235628.534334-1-gshan@redhat.com>
+ <efc49f7b-70f5-4ce9-8179-79e8a6abd732@linaro.org>
+ <78526851-6d44-4c18-97b8-57462fb42ab7@linaro.org>
+ <7252553e-9ab3-4c8e-a867-55c57d0178ba@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <7252553e-9ab3-4c8e-a867-55c57d0178ba@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,54 +108,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
+On 17/11/23 00:26, Gavin Shan wrote:
+> Hi Phil,
+> 
+> On 11/17/23 02:20, Philippe Mathieu-Daudé wrote:
+>> On 16/11/23 14:35, Philippe Mathieu-Daudé wrote:
+>>>
+>>> I'm queuing patches 1-3 & 5-23 to my cpus-next tree. No need to
+>>> repost them, please base them on my tree. I'll follow up with the
+>>> branch link when I finish my testing and push it.
+>>
+>> Here are these patches queued:
+>>
+>>    https://github.com/philmd/qemu.git branches/cpus-next
 
-------=_NextPart_655716E5_17EE9120_1F8C20CF
-Content-Type: text/plain;
-	charset="gb18030"
-Content-Transfer-Encoding: base64
+Oops, no clue why I wrote github instead of gitlab, sorry =)
 
-Jm5ic3A7SGVsbG8gZXZlcnlvbmUhIEkgYW0gd29ya2luZyBvbiBpbXBsZW1lbnRpbmcgYSB0
-b29sIHRvIGFzc2VzcyB0aGUgY29tcGxleGl0eSBvZiBDUFUgYXJjaGl0ZWN0dXJlIHBvcnRp
-bmcuIEl0IHByaW1hcmlseSBmb2N1c2VzIG9uIFJJU0MtViBhcmNoaXRlY3R1cmUgcG9ydGlu
-Zy4gSW4gZmFjdCwgdGhlIHRvb2wgbWF5IGhhdmUgYW4gYXZlcmFnZSBlc3RpbWF0ZSBvZiB2
-YXJpb3VzIGFyY2hpdGVjdHVyZSBwb3J0aW5nIGVmZm9ydHMuTXkgZm9jdXMgaXMgb24gdGhl
-IG92ZXJhbGwgd29ya2xvYWQgYW5kIGRpZmZpY3VsdHkgb2YgdHJhbnNwbGFudGF0aW9uIGlu
-IHRoZSBwYXN0IGFuZCBmdXR1cmUsZXZlbiBpZiBhIHByb2plY3QgaGFzIGFscmVhZHkgYmVl
-biBwb3J0ZWQuQXMgcGFydCBvZiBteSBkYXRhc2V0LCBJIGhhdmUgY29sbGVjdGVkIHRoZSAq
-KnFlbXUqKiBwcm9qZWN0LiAqKkkgd291bGQgbGlrZSB0byBnYXRoZXIgY29tbXVuaXR5IG9w
-aW5pb25zIHRvIHN1cHBvcnQgbXkgYXNzZXNzbWVudC4gSSBhcHByZWNpYXRlIHlvdXIgaGVs
-cCBhbmQgcmVzcG9uc2UhKiogQmFzZWQgb24gc2Nhbm5pbmcgdG9vbHMsIHRoZSBwb3J0aW5n
-IGNvbXBsZXhpdHkgaXMgZGV0ZXJtaW5lZCB0byBiZSBoaWdoLCB3aXRoIGEgc2lnbmlmaWNh
-bnQgYW1vdW50IG9mIGNvZGUgcmVsYXRlZCB0byB0aGUgQ1BVIGFyY2hpdGVjdHVyZSBpbiB0
-aGUgcHJvamVjdC4mbmJzcDsgSXMgdGhpcyBhc3Nlc3NtZW50IGFjY3VyYXRlP0RvIHlvdSBo
-YXZlIGFueSBvcGluaW9ucyBvbiBwZXJzb25uZWwgYWxsb2NhdGlvbiBhbmQgY29uc3VtcHRp
-b24gdGltZaO/IEkgbG9vayBmb3J3YXJkIHRvIHlvdXIgaGVscCBhbmQgcmVzcG9uc2Uu
+>> I might queue more patches before the 9.0 merge window opens.
+>>
+> 
+> Thanks for queuing these patches, but I don't see 'cpus-next' branch
+> in the repository. Please let me know if I checked out the code properly.
+> 
+> $ git clone https://github.com/philmd/qemu.git philmd
+> $ cd philmd
+> $ git branch
+> * staging
+> $ git branch -a | grep cpus-next
+> $ echo $?
+> 1
 
-------=_NextPart_655716E5_17EE9120_1F8C20CF
-Content-Type: text/html;
-	charset="gb18030"
-Content-Transfer-Encoding: base64
+No need to clone, you can use in your current cloned repository:
 
-PG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0ZXh0L2h0bWw7IGNo
-YXJzZXQ9R0IxODAzMCI+PGRpdj4mbmJzcDtIZWxsbyBldmVyeW9uZSEgSSBhbSB3b3JraW5n
-IG9uIGltcGxlbWVudGluZyBhIHRvb2wgdG8gYXNzZXNzIHRoZSBjb21wbGV4aXR5IG9mIENQ
-VSBhcmNoaXRlY3R1cmUgcG9ydGluZy4gSXQgcHJpbWFyaWx5IGZvY3VzZXMgb24gUklTQy1W
-IGFyY2hpdGVjdHVyZSBwb3J0aW5nLiBJbiBmYWN0LCB0aGUgdG9vbCBtYXkgaGF2ZSBhbiBh
-dmVyYWdlIGVzdGltYXRlIG9mIHZhcmlvdXMgYXJjaGl0ZWN0dXJlIHBvcnRpbmcgZWZmb3J0
-cy5NeSBmb2N1cyBpcyBvbiB0aGUgb3ZlcmFsbCB3b3JrbG9hZCBhbmQgZGlmZmljdWx0eSBv
-ZiB0cmFuc3BsYW50YXRpb24gaW4gdGhlIHBhc3QgYW5kIGZ1dHVyZSxldmVuIGlmIGEgcHJv
-amVjdCBoYXMgYWxyZWFkeSBiZWVuIHBvcnRlZC5BcyBwYXJ0IG9mIG15IGRhdGFzZXQsIEkg
-aGF2ZSBjb2xsZWN0ZWQgdGhlICoqcWVtdSoqIHByb2plY3QuICoqSSB3b3VsZCBsaWtlIHRv
-IGdhdGhlciBjb21tdW5pdHkgb3BpbmlvbnMgdG8gc3VwcG9ydCBteSBhc3Nlc3NtZW50LiBJ
-IGFwcHJlY2lhdGUgeW91ciBoZWxwIGFuZCByZXNwb25zZSEqKiBCYXNlZCBvbiBzY2Fubmlu
-ZyB0b29scywgdGhlIHBvcnRpbmcgY29tcGxleGl0eSBpcyBkZXRlcm1pbmVkIHRvIGJlIGhp
-Z2gsIHdpdGggYSBzaWduaWZpY2FudCBhbW91bnQgb2YgY29kZSByZWxhdGVkIHRvIHRoZSBD
-UFUgYXJjaGl0ZWN0dXJlIGluIHRoZSBwcm9qZWN0LiZuYnNwOyBJcyB0aGlzIGFzc2Vzc21l
-bnQgYWNjdXJhdGU/RG8geW91IGhhdmUgYW55IG9waW5pb25zIG9uIHBlcnNvbm5lbCBhbGxv
-Y2F0aW9uIGFuZCBjb25zdW1wdGlvbiB0aW1lo78gSSBsb29rIGZvcndhcmQgdG8geW91ciBo
-ZWxwIGFuZCByZXNwb25zZS48L2Rpdj4=
+   $ git fetch https://gitlab.com/philmd/qemu.git cpus-next:cpus-next
 
-------=_NextPart_655716E5_17EE9120_1F8C20CF--
+Regards,
 
+Phil.
 
