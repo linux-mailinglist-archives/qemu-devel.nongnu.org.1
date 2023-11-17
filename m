@@ -2,141 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF3B47EF3D9
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 14:49:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D757EF3E5
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 14:55:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3zCv-0004KP-ND; Fri, 17 Nov 2023 08:48:29 -0500
+	id 1r3zIN-0006Ld-1o; Fri, 17 Nov 2023 08:54:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3zCt-0004Js-Eg
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 08:48:27 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1r3zIK-0006LR-Ps
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 08:54:04 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r3zCr-0007ZD-O5
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 08:48:27 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1r3zIH-0004pw-0E
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 08:54:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700228903;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1700229238;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=3M724XqkonEAHAMLFt5kwSmMf3grQ0PGt6o5NKc3C+k=;
- b=FVeb0JOGoZAdRuP5HeXy76pXo7HWgPe6OvqxPL2+qvSDDb6uArsrd0EDfKP7Y50XRfrSOY
- 05ksVTo+34kZFpj/TXni98ZoQGqxtWTGsodzRzsfU2VbaDPfqvcOHZrQFfpOQZMpgHoRB7
- 8tqPP26DNTMA5N4BePnSSgBn7Fbf20A=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=qqxopdpd/ArBnu474I3sYmZykxoMw559NjOsm+2Sx/g=;
+ b=gBgl2EfS95zS61AzvfRuA7zLbO9deJEA3hUVxumDC8Gk5tsF+wtTTG026GoNcE/Gf1WXiE
+ IbvZ+nFRt+KBqL7JAKMYztMN4aMCshbIo32Dz3D4V5oFOxUJvnqMzDJPh1Ol/ujNU2SMwq
+ SX6h4GfJNtz0YrgKvZ7yyTpAkqpRICM=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-326-8kHbK6t2NGmNxzPE7aXWpg-1; Fri, 17 Nov 2023 08:48:22 -0500
-X-MC-Unique: 8kHbK6t2NGmNxzPE7aXWpg-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-778b5354c7bso247338385a.1
- for <qemu-devel@nongnu.org>; Fri, 17 Nov 2023 05:48:21 -0800 (PST)
+ us-mta-684-ABMvzufoM_iDC6e2tvNvVg-1; Fri, 17 Nov 2023 08:53:56 -0500
+X-MC-Unique: ABMvzufoM_iDC6e2tvNvVg-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-66cffe51b07so23504846d6.3
+ for <qemu-devel@nongnu.org>; Fri, 17 Nov 2023 05:53:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700228900; x=1700833700;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3M724XqkonEAHAMLFt5kwSmMf3grQ0PGt6o5NKc3C+k=;
- b=LdRCWhOEnvzROIh5awF/NbkTpxYl19nsHUiSo8MfusRXE0fV88gWYWFi71ncma2+oD
- LcfcVb16uvKdJoaKIF888dTbMEL6fTgpzWsztkxMVaO/n+OB6dBCu2BCrvshWB87RVqk
- /qlS4RlLoEnT2t3j8SOJYn9XEBs9jCTpduU6KNu1WU3XQk++g0h7oBBvQ8F25NQl17w3
- 9VZ8hadmZHaGy+BQtUQaB1GNGvXc0Uh5Nu1WAOXN9asw0/5yFP0KKoUdgloiqQR5V42J
- Tkg0C9Cg02CNUvxkCphWljm113yjvqSk+YCQF3yBQM5g2BxZd7MBmcOv1AEqOiZIJdag
- Gc7w==
-X-Gm-Message-State: AOJu0YymBmKy6R6wEiajCbhNT/1kQZMqMeaChNrGUfDDH5mbt7O2fk3t
- n6UVN0tngPwJywiSvDns7jVuSJp/jknsHkpVViV8TiJ2lozxgz85Y0a7Q96oeJydAwruNrVI92o
- P2Ya9CszXaYESkXA=
-X-Received: by 2002:a05:620a:6545:b0:774:1adc:c572 with SMTP id
- qc5-20020a05620a654500b007741adcc572mr9052321qkn.74.1700228900439; 
- Fri, 17 Nov 2023 05:48:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG9I9rTno84jXhndR3AG/Xt3PJncVv98HsPan71YacGUPlfB0g8Dcr/qSLSiYtFTTaTo3y1/Q==
-X-Received: by 2002:a05:620a:6545:b0:774:1adc:c572 with SMTP id
- qc5-20020a05620a654500b007741adcc572mr9052309qkn.74.1700228900129; 
- Fri, 17 Nov 2023 05:48:20 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-43-176-122.web.vodafone.de.
- [109.43.176.122]) by smtp.gmail.com with ESMTPSA id
- m18-20020ae9e012000000b007742ad3047asm600045qkk.54.2023.11.17.05.48.16
+ d=1e100.net; s=20230601; t=1700229236; x=1700834036;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qqxopdpd/ArBnu474I3sYmZykxoMw559NjOsm+2Sx/g=;
+ b=qUQE5YODpR7yRi3hNvTkjnCQsPqu9x6c1ZeDgqc9ZEcMTE/aWDfaZ/5ddi8Serv5th
+ ua938C1a8BpGyzLn8z3gOuD6ow/lkQifKkuWjY5hxCmjvQ0KXS7Yj9crQuOb4Ol+XWCc
+ tuFVxz11a4p88tVppJiujjCCq3pA2iVI/HIOSLbL562snZvntX6rM7K3xMzZmDb8yruw
+ k9ce7GgtlTnk+RVUf8be0OegKqCGxpjLs4ULJiGuFX9cIMkUEtN1Lto7YUGUZkXeyl6n
+ 7kX7MF4PRS4NyFisCdNIPES/pzjE5qV6B2WHf9TzN5+WTX9LX927Vk453Kc6/111bZY+
+ yoIA==
+X-Gm-Message-State: AOJu0YzYkv7VpJJuVQIiJuwl5PSwBh63DqnD+D51rJSQjJBFjwOkxfMI
+ 8I6DqQDvUM8N5IvQvUF16WJ71cretyfI69kXtKavcH1RcHA+1SW/ehThOaZsOS/ZkBzQ1dsHKFz
+ 2M2NB7/D6uhiPjQQ=
+X-Received: by 2002:a0c:fd8d:0:b0:671:a3db:c11d with SMTP id
+ p13-20020a0cfd8d000000b00671a3dbc11dmr11517648qvr.24.1700229236055; 
+ Fri, 17 Nov 2023 05:53:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFPZ/3fBxvECP9RHkFxy46+DEmgBxfaTIn+gencrmjLDv3rIhw+j4vZKrmW4nr0mFyWFWAEgw==
+X-Received: by 2002:a0c:fd8d:0:b0:671:a3db:c11d with SMTP id
+ p13-20020a0cfd8d000000b00671a3dbc11dmr11517636qvr.24.1700229235706; 
+ Fri, 17 Nov 2023 05:53:55 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ml18-20020a056214585200b00655e2005350sm643024qvb.9.2023.11.17.05.53.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 17 Nov 2023 05:48:19 -0800 (PST)
-Message-ID: <d6c244d5-5b1c-4a0f-a07f-94d0c853c8e1@redhat.com>
-Date: Fri, 17 Nov 2023 14:48:12 +0100
+ Fri, 17 Nov 2023 05:53:54 -0800 (PST)
+Message-ID: <cbc7ab3f-bffb-4626-bc64-3c258dc610ec@redhat.com>
+Date: Fri, 17 Nov 2023 14:53:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/5] qom/object: Limit type names to alphanumerical and
- some few special characters
+Subject: Re: [PATCH v6 09/21] vfio/iommufd: Enable pci hot reset through
+ iommufd cdev interface
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Cc: Alistair Francis <alistair@alistair23.me>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Francisco Iglesias <francisco.iglesias@amd.com>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <20231117114457.177308-1-thuth@redhat.com>
- <20231117114457.177308-6-thuth@redhat.com>
- <a774e56e-cac9-40e8-b8d0-cedce6a1bc7e@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <a774e56e-cac9-40e8-b8d0-cedce6a1bc7e@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com
+References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
+ <20231114100955.1961974-10-zhenzhong.duan@intel.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20231114100955.1961974-10-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -149,103 +106,210 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/11/2023 13.25, Philippe Mathieu-Daudé wrote:
-> On 17/11/23 12:44, Thomas Huth wrote:
->> QOM names currently don't have any enforced naming rules. This
->> can be problematic, e.g. when they are used on the command line
->> for the "-device" option (where the comma is used to separate
->> properties). To avoid that such problematic type names come in
->> again, let's restrict the set of acceptable characters during the
->> type registration.
->>
->> Ideally, we'd apply here the same rules as for QAPI, i.e. all type
->> names should begin with a letter, and contain only ASCII letters,
->> digits, hyphen, and underscore. However, we already have so many
->> pre-existing types like:
->>
->>      486-x86_64-cpu
->>      cfi.pflash01
->>      power5+_v2.1-spapr-cpu-core
->>      virt-2.6-machine
->>      pc-i440fx-3.0-machine
->>
->> ... so that we have to allow "." and "+" for now, too. While the
->> dot is used in a lot of places, the "+" can fortunately be limited
->> to two classes of legacy names ("power" and "Sun-UltraSparc" CPUs).
->>
->> We also cannot enforce the rule that names must start with a letter
->> yet, since there are lot of types that start with a digit. Still,
->> at least limiting the first characters to the alphanumerical range
->> should be way better than nothing.
->>
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   qom/object.c | 41 +++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 41 insertions(+)
->>
->> diff --git a/qom/object.c b/qom/object.c
->> index 95c0dc8285..654e1afaf2 100644
->> --- a/qom/object.c
->> +++ b/qom/object.c
->> @@ -138,9 +138,50 @@ static TypeImpl *type_new(const TypeInfo *info)
->>       return ti;
->>   }
->> +static bool type_name_is_valid(const char *name)
->> +{
->> +    const int slen = strlen(name);
->> +    int plen;
->> +
->> +    g_assert(slen > 1);
->> +
->> +    /*
->> +     * Ideally, the name should start with a letter - however, we've got
->> +     * too many names starting with a digit already, so allow digits here,
->> +     * too (except '0' which is not used yet)
->> +     */
->> +    if (!g_ascii_isalnum(name[0]) || name[0] == '0') {
->> +        return false;
->> +    }
->> +
->> +    plen = strspn(name, "abcdefghijklmnopqrstuvwxyz"
->> +                        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
->> +                        "0123456789-_.");
->> +
->> +    /* Allow some legacy names with '+' in it for compatibility reasons */
->> +    if (name[plen] == '+') {
->> +        if (plen == 6 && g_str_has_prefix(name, "power")) {
->> +            /* Allow "power5+" and "power7+" CPU names*/
->> +            return true;
->> +        }
->> +        if (plen >= 17 && g_str_has_prefix(name, "Sun-UltraSparc-I")) {
->> +            /* Allow "Sun-UltraSparc-IV+" and "Sun-UltraSparc-IIIi+" */
->> +            return true;
->> +        }
->> +    }
->> +
->> +    return plen == slen;
->> +}
->> +
->>   static TypeImpl *type_register_internal(const TypeInfo *info)
->>   {
->>       TypeImpl *ti;
->> +
->> +    if (!type_name_is_valid(info->name)) {
->> +        fprintf(stderr, "Registering '%s' with illegal type name\n", 
->> info->name);
-> 
-> Shouldn't we use error_report() instead of fprintf()? Regardless,
 
-It doesn't work here yet - the type registration happens so early that we 
-cannot use error_report() here yet.
 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On 11/14/23 11:09, Zhenzhong Duan wrote:
+> Add a new callback iommufd_cdev_pci_hot_reset to do iommufd specific
+> check and reset operation.
 
-Thanks!
+nit: Implement the newly introduced pci_hot_reset callback?
+>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+> v6: pci_hot_reset return -errno if fails
+>
+>  hw/vfio/iommufd.c    | 145 +++++++++++++++++++++++++++++++++++++++++++
+>  hw/vfio/trace-events |   1 +
+>  2 files changed, 146 insertions(+)
+>
+> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+> index e5bf528e89..3eec428162 100644
+> --- a/hw/vfio/iommufd.c
+> +++ b/hw/vfio/iommufd.c
+> @@ -24,6 +24,7 @@
+>  #include "sysemu/reset.h"
+>  #include "qemu/cutils.h"
+>  #include "qemu/chardev_open.h"
+> +#include "pci.h"
+>  
+>  static int iommufd_cdev_map(VFIOContainerBase *bcontainer, hwaddr iova,
+>                              ram_addr_t size, void *vaddr, bool readonly)
+> @@ -473,9 +474,153 @@ static void iommufd_cdev_detach(VFIODevice *vbasedev)
+>      close(vbasedev->fd);
+>  }
+>  
+> +static VFIODevice *iommufd_cdev_pci_find_by_devid(__u32 devid)
+> +{
+> +    VFIODevice *vbasedev_iter;
+> +
+> +    QLIST_FOREACH(vbasedev_iter, &vfio_device_list, global_next) {
+> +        if (vbasedev_iter->bcontainer->ops != &vfio_iommufd_ops) {
+> +            continue;
+> +        }
+> +        if (devid == vbasedev_iter->devid) {
+> +            return vbasedev_iter;
+> +        }
+> +    }
+> +    return NULL;
+> +}
+> +
+> +static int iommufd_cdev_pci_hot_reset(VFIODevice *vbasedev, bool single)
+> +{
+> +    VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
+> +    struct vfio_pci_hot_reset_info *info = NULL;
+> +    struct vfio_pci_dependent_device *devices;
+> +    struct vfio_pci_hot_reset *reset;
+> +    int ret, i;
+> +    bool multi = false;
+> +
+> +    trace_vfio_pci_hot_reset(vdev->vbasedev.name, single ? "one" : "multi");
+> +
+> +    if (!single) {
+> +        vfio_pci_pre_reset(vdev);
+> +    }
+> +    vdev->vbasedev.needs_reset = false;
+> +
+> +    ret = vfio_pci_get_pci_hot_reset_info(vdev, &info);
+> +
+> +    if (ret) {
+> +        goto out_single;
+> +    }
+> +
+> +    assert(info->flags & VFIO_PCI_HOT_RESET_FLAG_DEV_ID);
+> +
+> +    devices = &info->devices[0];
+> +
+> +    if (!(info->flags & VFIO_PCI_HOT_RESET_FLAG_DEV_ID_OWNED)) {
+> +        if (!vdev->has_pm_reset) {
+> +            for (i = 0; i < info->count; i++) {
+> +                if (devices[i].devid == VFIO_PCI_DEVID_NOT_OWNED) {
+> +                    error_report("vfio: Cannot reset device %s, "
+> +                                 "depends on device %04x:%02x:%02x.%x "
+> +                                 "which is not owned.",
+> +                                 vdev->vbasedev.name, devices[i].segment,
+> +                                 devices[i].bus, PCI_SLOT(devices[i].devfn),
+> +                                 PCI_FUNC(devices[i].devfn));
+> +                }
+> +            }
+> +        }
+> +        ret = -EPERM;
+> +        goto out_single;
+> +    }
+> +
+> +    trace_vfio_pci_hot_reset_has_dep_devices(vdev->vbasedev.name);
+> +
+> +    for (i = 0; i < info->count; i++) {
+> +        VFIOPCIDevice *tmp;
+> +        VFIODevice *vbasedev_iter;
+> +
+> +        trace_iommufd_cdev_pci_hot_reset_dep_devices(devices[i].segment,
+> +                                                     devices[i].bus,
+> +                                                     PCI_SLOT(devices[i].devfn),
+> +                                                     PCI_FUNC(devices[i].devfn),
+> +                                                     devices[i].devid);
+> +
+> +        /*
+> +         * If a VFIO cdev device is resettable, all the dependent devices
+> +         * are either bound to same iommufd or within same iommu_groups as
+> +         * one of the iommufd bound devices.
+> +         */
+> +        assert(devices[i].devid != VFIO_PCI_DEVID_NOT_OWNED);
+> +
+> +        if (devices[i].devid == vdev->vbasedev.devid ||
+> +            devices[i].devid == VFIO_PCI_DEVID_OWNED) {
+> +            continue;
+> +        }
+> +
+> +        vbasedev_iter = iommufd_cdev_pci_find_by_devid(devices[i].devid);
+> +        if (!vbasedev_iter || !vbasedev_iter->dev->realized ||
+> +            vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
+> +            continue;
+> +        }
+> +        tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
+> +        if (single) {
+> +            ret = -EINVAL;
+> +            goto out_single;
+> +        }
+> +        vfio_pci_pre_reset(tmp);
+> +        tmp->vbasedev.needs_reset = false;
+> +        multi = true;
+> +    }
+> +
+> +    if (!single && !multi) {
+> +        ret = -EINVAL;
+> +        goto out_single;
+> +    }
+> +
+> +    /* Use zero length array for hot reset with iommufd backend */
+> +    reset = g_malloc0(sizeof(*reset));
+> +    reset->argsz = sizeof(*reset);
+> +
+> +     /* Bus reset! */
+> +    ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_PCI_HOT_RESET, reset);
+> +    g_free(reset);
+> +    if (ret) {
+> +        ret = -errno;
+> +    }
+> +
+> +    trace_vfio_pci_hot_reset_result(vdev->vbasedev.name,
+> +                                    ret ? strerror(errno) : "Success");
+> +
+> +    /* Re-enable INTx on affected devices */
+> +    for (i = 0; i < info->count; i++) {
+> +        VFIOPCIDevice *tmp;
+> +        VFIODevice *vbasedev_iter;
+> +
+> +        if (devices[i].devid == vdev->vbasedev.devid ||
+> +            devices[i].devid == VFIO_PCI_DEVID_OWNED) {
+> +            continue;
+> +        }
+> +
+> +        vbasedev_iter = iommufd_cdev_pci_find_by_devid(devices[i].devid);
+> +        if (!vbasedev_iter || !vbasedev_iter->dev->realized ||
+> +            vbasedev_iter->type != VFIO_DEVICE_TYPE_PCI) {
+> +            continue;
+> +        }
+> +        tmp = container_of(vbasedev_iter, VFIOPCIDevice, vbasedev);
+nit: I see this block of code also is used above for the pre_reset. May
+be interesting to introduce an helper? Could be done later though
+> +        vfio_pci_post_reset(tmp);
+> +    }
+> +out_single:
+> +    if (!single) {
+> +        vfio_pci_post_reset(vdev);
+> +    }
+> +    g_free(info);
+> +
+> +    return ret;
+> +}
+> +
+>  const VFIOIOMMUOps vfio_iommufd_ops = {
+>      .dma_map = iommufd_cdev_map,
+>      .dma_unmap = iommufd_cdev_unmap,
+>      .attach_device = iommufd_cdev_attach,
+>      .detach_device = iommufd_cdev_detach,
+> +    .pci_hot_reset = iommufd_cdev_pci_hot_reset,
+>  };
+> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+> index 5d3e9e8cee..d838232d5a 100644
+> --- a/hw/vfio/trace-events
+> +++ b/hw/vfio/trace-events
+> @@ -174,3 +174,4 @@ iommufd_cdev_detach_ioas_hwpt(int iommufd, const char *name, const char *str, in
+>  iommufd_cdev_fail_attach_existing_container(const char *msg) " %s"
+>  iommufd_cdev_alloc_ioas(int iommufd, int ioas_id) " [iommufd=%d] new IOMMUFD container with ioasid=%d"
+>  iommufd_cdev_device_info(char *name, int devfd, int num_irqs, int num_regions, int flags) " %s (%d) num_irqs=%d num_regions=%d flags=%d"
+> +iommufd_cdev_pci_hot_reset_dep_devices(int domain, int bus, int slot, int function, int dev_id) "\t%04x:%02x:%02x.%x devid %d"
+Otherwise looks good to me.
 
-  Thomas
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+
+
+Eric
+
 
 
 
