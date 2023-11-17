@@ -2,83 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA3EA7EED74
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 09:20:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D967EED7F
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 09:25:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3u44-0007gH-Si; Fri, 17 Nov 2023 03:19:00 -0500
+	id 1r3u9R-0001Bs-HZ; Fri, 17 Nov 2023 03:24:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3u40-0007ZG-TM
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 03:18:58 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
+ id 1r3u9O-0001Bf-Sq
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 03:24:30 -0500
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r3u3w-0006rC-4k
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 03:18:53 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4081ccf69dcso16978095e9.0
- for <qemu-devel@nongnu.org>; Fri, 17 Nov 2023 00:18:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
+ id 1r3u9N-00015m-1u
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 03:24:30 -0500
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2c788f5bf53so22279921fa.2
+ for <qemu-devel@nongnu.org>; Fri, 17 Nov 2023 00:24:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700209129; x=1700813929; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=RlTvPcgFK4oRDrU5WnnMAz29f5x4fwJ5JgGgaQozQbE=;
- b=hrUFBIOuLKtaj8vMIID3w/ustl3ep+g0D2xi7fdLqGLDrrI/8VONsSVJJUqkEGmtIm
- ngR5bZ/qxg23ofIogfaRQB/bbuxRx6veFMxkn8ekVUNAB9uNOyVFXJCewiNf23exjNPf
- H1MC46lXMzFFGXvfs/9D0r9i4714X5mWvVwlxEOj2kOtbJRTsH9AULWcHrc9tPdCRKqS
- IXbHuDgcv1xBy9ccYEACoC24U6qsIWfTomuXBcFyZVAEN5OGUvRosAcp/EvxsF95g1S3
- rzD01amvP81Bi6bRepAUmkUrBKUSVpq0bmWLLGtNAMzLTFo9XcRSin/TGRnet0KsawxO
- 6ZMQ==
+ d=gmail.com; s=20230601; t=1700209467; x=1700814267; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=9OqgtBrDr+vmRiWZS6+S26NtOh1CvIVadNMRqyM4VsA=;
+ b=Xy3wM1U6+taylt003Kcm6/cXj3lZZD01yfxh02UioxEdeMmgzbORkcI/0wCpAjqXN6
+ Qu9cYEwxvuipTpJxmZJ1YS7IiISLi6vj1Q0BNtCgvYeg1jmn95Vn4aE3FI9Y+Jkkb9bN
+ lf32K6ftSkvchTqEt1K2ljAYjjxPuSSa5RoF81izMQbzXjs0hJSyfuSA1db6fBw+nLa8
+ 1GMxg+NfuAWr/fkc/XzJ9ToawwNEDvm1pkX8CcDtdnHpf5GdXI2NRdSuVGz98/agvIxu
+ EJhBUTs5PIaAY4HaZyX9ibyXiMv6uMgAEQsGsqH6l6aYJLgZ0m1RKBqgPmWRSPWguTxO
+ AmYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700209129; x=1700813929;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RlTvPcgFK4oRDrU5WnnMAz29f5x4fwJ5JgGgaQozQbE=;
- b=GFMRoBPHDZ7WYiIsFE2ScpstnicvlAVI1Ntyue3OWIvfSJT/1nq4AFGLxJ2D4yCfkJ
- v5IHWPalqZfcdao90rMAS/A/xaHQldwY+cndjD7Ye/u1qW6eAlIbZyg7hKbKDiHah/1t
- 96E6/a6gPkSSxiqw+yua1gb2TAiFpCzdxGwS8VI8lz1cnV1t6MYniOjajLDo/CKpaiQx
- m9AxpCivjVuP+sOH2yLJiIKDTZYrRqlqwOXPKsJUOuhC4qNs6ejEIiW8+P5/5UcsdZPk
- F2Q42D2uasPlSDSyFBN4pIVHkkWl3rB1J8qMa2v1cP0ejteqwEGoakN8WkQL0AW3/QIi
- g6AQ==
-X-Gm-Message-State: AOJu0Yzp1GCmTDgGWdzNUIqD/o7WapaBuGG3KxGtohP9VSdx/qYFxptq
- YW67J7dIaIqRDvVWywhw2MpVXA==
-X-Google-Smtp-Source: AGHT+IENiXztF3lnYAIMKq/zMUBwHs6/QoSKYiuEAvrMfrUiC2jK6aAnnP5VGUbYaPZ2DHw+NRYVrA==
-X-Received: by 2002:a5d:59a4:0:b0:32d:c792:fcaf with SMTP id
- p4-20020a5d59a4000000b0032dc792fcafmr3198714wrr.26.1700209129076; 
- Fri, 17 Nov 2023 00:18:49 -0800 (PST)
-Received: from [192.168.69.100] (bd137-h02-176-184-46-187.dsl.sta.abo.bbox.fr.
- [176.184.46.187]) by smtp.gmail.com with ESMTPSA id
- x5-20020a5d6b45000000b0032f7fab0712sm1578975wrw.52.2023.11.17.00.18.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 17 Nov 2023 00:18:48 -0800 (PST)
-Message-ID: <7abb3a05-0779-4bb1-926c-403b50664135@linaro.org>
-Date: Fri, 17 Nov 2023 09:18:46 +0100
+ d=1e100.net; s=20230601; t=1700209467; x=1700814267;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9OqgtBrDr+vmRiWZS6+S26NtOh1CvIVadNMRqyM4VsA=;
+ b=uPfpYzTkjk7t9OaHI0otuLBY2DbfpK7RLjCv4GB9NGOs7fZdjNGwUTL14QdMHWV6tK
+ FLJujzHG5NxZlcv70/yvrDfeBUOa6WCld/w3jxF/Ki2/daeeEmzm2tNNSV8OALoXWqpJ
+ Ino9AAbmEgPlH8DT+9oMMzQthwmL68DKr66ibiE8rRtPS8mNUn8sPlbx8PVU6q2uF8dE
+ mD/NL90zTXG6ZzsNOWVoO59sDsYAtUTq/YUrkpXSSQlWkddYVQJFrGUXTy+AgRs70KJT
+ 5XZ3b6696xCEkVqwimonm8XKoLqZX9RdiMYHu0RGph8E8mFE1Gg/+DfcIZsloV0Y0GhL
+ CSJA==
+X-Gm-Message-State: AOJu0YxD5G2qF15uGaQSZX0Yd9d6whPLRhWVnYrpLznchYb++63hY7Gp
+ Ha7eazqyKRI5YZFH/QMzZ00Ah5XjfN9Oeg==
+X-Google-Smtp-Source: AGHT+IFIrIWTMqL2FaH174DRu8XmS21n7woMbiq2HX1RVAA8D1EFsVcJ6Cx5R7TWupfC1nPnlypqhQ==
+X-Received: by 2002:a2e:a58f:0:b0:2c2:8f22:d9c2 with SMTP id
+ m15-20020a2ea58f000000b002c28f22d9c2mr9550282ljp.22.1700209466381; 
+ Fri, 17 Nov 2023 00:24:26 -0800 (PST)
+Received: from localhost.localdomain ([185.174.159.112])
+ by smtp.gmail.com with ESMTPSA id
+ y16-20020a2e9790000000b002c6ec789f77sm138311lji.7.2023.11.17.00.24.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 17 Nov 2023 00:24:25 -0800 (PST)
+From: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>, Nikita Ostrenkov <n.ostrenkov@gmail.com>
+Subject: [PATCH] hw/usb: fix xhci port notify
+Date: Fri, 17 Nov 2023 08:24:11 +0000
+Message-Id: <20231117082411.2586-1-n.ostrenkov@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] system/memory: use ldn_he_p/stn_he_p
-Content-Language: en-US
-To: Patrick Venture <venture@google.com>, pbonzini@redhat.com,
- peterx@redhat.com, david@redhat.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
- Chris Rauer <crauer@google.com>, Peter Foley <pefoley@google.com>
-References: <20231116163633.276671-1-venture@google.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231116163633.276671-1-venture@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=n.ostrenkov@gmail.com; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,21 +88,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/11/23 17:36, Patrick Venture wrote:
-> Using direct pointer dereferencing can allow for unaligned accesses,
-> which was seen during execution with sanitizers enabled.
-> 
-> Reviewed-by: Chris Rauer <crauer@google.com>
-> Reviewed-by: Peter Foley <pefoley@google.com>
-> Signed-off-by: Patrick Venture <venture@google.com>
-> Cc: qemu-stable@nongnu.org
-> ---
-> v2: changed commit mesage to be more accurate and switched from using
-> memcpy to using the endian appropriate assignment load and store.
-> ---
->   system/memory.c | 32 ++------------------------------
->   1 file changed, 2 insertions(+), 30 deletions(-)
+From MCF5253 Reference manual https://www.nxp.com/docs/en/reference-manual/MCF5253RM.pdf
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Host mode: The controller sets this bit to a one when on any port a Connect Status occurs, a PortEnable/Disable Change occurs, an Over Current Change occurs, or the Force Port Resume bit is set as theresult of a J-K transition on the suspended port.
+---
+ hw/usb/hcd-xhci.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
+index 4b60114207..1b2f4ac721 100644
+--- a/hw/usb/hcd-xhci.c
++++ b/hw/usb/hcd-xhci.c
+@@ -2627,6 +2627,7 @@ static void xhci_port_notify(XHCIPort *port, uint32_t bits)
+     if (!xhci_running(port->xhci)) {
+         return;
+     }
++    port->xhci->usbsts |= USBSTS_PCD;
+     xhci_event(port->xhci, &ev, 0);
+ }
+ 
+-- 
+2.34.1
 
 
