@@ -2,104 +2,156 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2987EE9F7
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 00:28:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3475D7EEA2A
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 01:11:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3llU-0005kQ-9o; Thu, 16 Nov 2023 18:27:16 -0500
+	id 1r3mQU-0006q8-O1; Thu, 16 Nov 2023 19:09:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r3llQ-0005jy-FY
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 18:27:12 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ira.weiny@intel.com>)
+ id 1r3mQK-0006oD-EB
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 19:09:30 -0500
+Received: from mgamail.intel.com ([134.134.136.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r3llO-00039C-Re
- for qemu-devel@nongnu.org; Thu, 16 Nov 2023 18:27:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700177229;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bsVUf95nsvz8HsXCQuGgq3Eei7P+SUSqTDa5H9h4TAs=;
- b=GncoRWWWLsKVCCvVH2ZjTj6G7kf2P/ROh2kX7psMEccwp0nM/CfLy1/+8dG5z1Wdx9e+Ma
- aQEhKAEZw+jGiAYr4zrx7Ir4pb5qSh7cZveMzotMnhM+Plns5SjOZtO6pdcZ8FaJderb2l
- yGWPwnP4Bix5HdeL1NCuxhLZFwZ6i6A=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-74-xnIPiq-pOOGPcDCOgbsK-g-1; Thu, 16 Nov 2023 18:27:08 -0500
-X-MC-Unique: xnIPiq-pOOGPcDCOgbsK-g-1
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-1cc23f2226bso15663425ad.2
- for <qemu-devel@nongnu.org>; Thu, 16 Nov 2023 15:27:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700177227; x=1700782027;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bsVUf95nsvz8HsXCQuGgq3Eei7P+SUSqTDa5H9h4TAs=;
- b=ILyXvF8iEtYbNivETAMx1weq5TBEnBogU9oWe4JHVxH2U5tuXIQH9mciS76LG8co+8
- jLRBTDWLvF7uat1uWdt6lCXEQzMPrnH4l7ULGyrmOH8sLQh7FesQSmxKRuyD5RiyPDcO
- SUpUrgOzqTaYrigpzpEjXAfyrQEE1W4f6MrAefRW4uecnXFzLpbRmfALmhluhgmD1opx
- j2Vxv8X/v+/q/wRG/c6GttJx+ZH+x2tPwBRdf/ZD1dTVWncb9lGJcxh58NpQavGLikfd
- +zzEo5fR02h1YEEOOEGvdxjlrWLFTLEWKLzisYbrhqFlwhaKoeK2oagXH4Sx/fgaIwcP
- CSRg==
-X-Gm-Message-State: AOJu0YzIiAY3afSttdCZA4msdOx6PEGJ9Yo+y7WsjNRcUBmoPJUU0IoP
- vyNRdUWegDtn2HNVNJeRkKnP9j8YdrXUnJkgWxUKl1VdpI0Pi7gQIuAmFM1yEeokFsF9oFunudD
- 4EuHE+0ALpepi6qU=
-X-Received: by 2002:a17:902:ecc8:b0:1cc:3875:e654 with SMTP id
- a8-20020a170902ecc800b001cc3875e654mr12056082plh.26.1700177227017; 
- Thu, 16 Nov 2023 15:27:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE3vxHbcjnWTgT6Z/kSUD7c/8W3id7f/D5dsO7xEi1omqLkh+Epr9AU49QKPClN+smHHORp+w==
-X-Received: by 2002:a17:902:ecc8:b0:1cc:3875:e654 with SMTP id
- a8-20020a170902ecc800b001cc3875e654mr12056063plh.26.1700177226745; 
- Thu, 16 Nov 2023 15:27:06 -0800 (PST)
-Received: from ?IPV6:2001:8003:e5b0:9f00:b890:3e54:96bb:2a15?
- ([2001:8003:e5b0:9f00:b890:3e54:96bb:2a15])
- by smtp.gmail.com with ESMTPSA id
- d8-20020a170903230800b001cc0e3a29a8sm202183plh.89.2023.11.16.15.26.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Nov 2023 15:27:06 -0800 (PST)
-Message-ID: <7252553e-9ab3-4c8e-a867-55c57d0178ba@redhat.com>
-Date: Fri, 17 Nov 2023 09:26:50 +1000
+ (Exim 4.90_1) (envelope-from <ira.weiny@intel.com>)
+ id 1r3mQB-0001sc-ER
+ for qemu-devel@nongnu.org; Thu, 16 Nov 2023 19:09:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1700179759; x=1731715759;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=EbUYtE0Im5RTiYQmTnhIuaOQM6HwFRHbOOjQn1nC89U=;
+ b=Kzi9PwxM9+m/NP+ukBWDdG3wrFz6jefOm4XEy/laLJZ6sLPCMYe86E5U
+ KGy6wlxH1kbJVhVW7UXEbIt3w01Y7W00oO5r5pZR1r+J+F38GEBwaHbVZ
+ d4LmwsG9TCUjRf4jd6dAaA+An2mbM5Fnc21KbgIqF8SIl7UlUh10XUW+w
+ R9QmjP2QbEgXCIadAthDxBMnNEYXmU8p7pMAcZZ+FX3j6ygxiR6Yx/zY8
+ bQOZs8TZBou4nQdGgWn7YFNf+MZC6yEthQAOpNQHHfdj/8QOLKDR2UOen
+ 4vsEPHJLvvTEU9phPk1mY+uyDNjT08z2tMzX71h/N0Uov8FfSPSZyvXG8 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10896"; a="394059804"
+X-IronPort-AV: E=Sophos;i="6.04,205,1695711600"; d="scan'208";a="394059804"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Nov 2023 16:09:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10896"; a="882939296"
+X-IronPort-AV: E=Sophos;i="6.04,205,1695711600"; d="scan'208";a="882939296"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+ by fmsmga002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 16 Nov 2023 16:09:13 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Thu, 16 Nov 2023 16:09:12 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Thu, 16 Nov 2023 16:09:12 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34 via Frontend Transport; Thu, 16 Nov 2023 16:09:12 -0800
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.169)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.34; Thu, 16 Nov 2023 16:09:11 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TYbOlx90jkRSj26Ntbv1qbiq/Ly0+k0eyUzsshyOuWP6Gas87lQswwZDcvxmGiFOYNLrCBgjALg6Y7pAlhJ8lOP3nHUdtVBulFljfQwe808pC/Bg1kLX2jaXNAg743S/xPUaFgeoYtDv+nEe1AAKEr2cUPFdKYVscmYkFX/hWBUfpfv4qHrR2RZTIOX0oSed+2X4LaF9crcMEUxXvXzk8AZcX1dsirTHocxkXVpWNiOZiiIkJYkNf7u62z+1vKEAc/OK6xVRSj55qLo60mZjqGkxnI6G/zdTVbevOOw3O2+7T+bjHBFNHNTpWkzK+5uurescRdYC7+e2vQCl6sy2cg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KsRppB+TmJWlWK/Lyl3Ww9uTFHVzsR8eD5FAOokC8P0=;
+ b=SJLHHqGoSORHgSLNBBndw8xc4XI+HMeqzZqEgT7sC0Ex6NlUou0v3qRHnmnSeWOwi0QTTJduK2zn/GL9P0kTh7uF5YK0Nr1Y5F8x56HzcdqcP9NjCurV0Nq05Hcgo0eUKExjGMSZ4hhFCD/tJtgGbgsRVM6XvB0ixlW23iFGC2gEOWQjloMXfhYL9xJEIs7Y73HkJk9A6CUFQPgzZNJP3CJF5wIgmMXuIakwECJtje1hRVfomsjeoTGgrKeVTdqX0tlVBM4Rw2yIuVqNAlT9xc3E6nn8hWpe9pO0WEBK0/NPfOXmVW02pIT1vECWOvDW92RGtlk9Iwxs8kO6c1vtLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
+ by PH0PR11MB4951.namprd11.prod.outlook.com (2603:10b6:510:43::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.31; Fri, 17 Nov
+ 2023 00:09:09 +0000
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::d3b2:2f2:701e:e8c7]) by SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::d3b2:2f2:701e:e8c7%5]) with mapi id 15.20.7002.018; Fri, 17 Nov 2023
+ 00:09:09 +0000
+Date: Thu, 16 Nov 2023 16:09:03 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+To: <nifan.cxl@gmail.com>, <qemu-devel@nongnu.org>
+CC: <jonathan.cameron@huawei.com>, <linux-cxl@vger.kernel.org>,
+ <ira.weiny@intel.com>, <dan.j.williams@intel.com>,
+ <a.manzanares@samsung.com>, <dave@stgolabs.net>, <nmtadam.samsung@gmail.com>, 
+ <nifan@outlook.com>, <jim.harris@samsung.com>, Fan Ni <nifan.cxl@gmail.com>
+Subject: Re: [PATCH v3 0/9] Enabling DCD emulation support in Qemu
+Message-ID: <6556af1fc8791_1a4bd32947e@iweiny-mobl.notmuch>
+References: <20231107180907.553451-1-nifan.cxl@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20231107180907.553451-1-nifan.cxl@gmail.com>
+X-ClientProxiedBy: BY3PR04CA0012.namprd04.prod.outlook.com
+ (2603:10b6:a03:217::17) To SA1PR11MB6733.namprd11.prod.outlook.com
+ (2603:10b6:806:25c::17)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/31] Unified CPU type check
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
- imp@bsdimp.com, kevans@freebsd.org, richard.henderson@linaro.org,
- pbonzini@redhat.com, peter.maydell@linaro.org, imammedo@redhat.com,
- b.galvani@gmail.com, strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com,
- kfting@nuvoton.com, wuhaotsh@google.com, nieklinnenbank@gmail.com,
- rad@semihalf.com, quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
- laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, mrolnik@gmail.com,
- edgar.iglesias@gmail.com, bcain@quicinc.com, gaosong@loongson.cn,
- aurelien@aurel32.net, jiaxun.yang@flygoat.com, aleksandar.rikalo@syrmia.com,
- chenhuacai@kernel.org, shorne@gmail.com, npiggin@gmail.com, clg@kaod.org,
- ysato@users.sourceforge.jp, kbastian@mail.uni-paderborn.de,
- jcmvbkbc@gmail.com, shan.gavin@gmail.com
-References: <20231114235628.534334-1-gshan@redhat.com>
- <efc49f7b-70f5-4ce9-8179-79e8a6abd732@linaro.org>
- <78526851-6d44-4c18-97b8-57462fb42ab7@linaro.org>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <78526851-6d44-4c18-97b8-57462fb42ab7@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR11MB6733:EE_|PH0PR11MB4951:EE_
+X-MS-Office365-Filtering-Correlation-Id: 00b4c4af-0efd-4bbc-4f7d-08dbe7016b5e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ErNzVurXFbOahUlsTNxIkL7umucDAhBmNP6QrHSHnHpnZHaKttAlfioi5Ybxyr/gPfCePNOKBXFc9Hts51zANI9qQq0RGrme4cwBy7E0B9BdPgjiemXMgzfffYKQghLbYsdpyGePsNCdg3j1B//bOuGf30AO66AQL5Q+N3ln6qA9RITfOcP0erQyGEK2m59p3SC0p+QyjUe4984c9gOk58PklHZjyEIW6VFGHkPnJjG9TmK4u8Rlvg/UXLZLT+c/2Rid8KTWkdKrTOKNMLp3mFv14lslTr1TMSol+X10rn+JXDajKiC56qPqmI2q7rN1UGH/jkOCgUj+k4P3ofFDVDvfkFfL64LTi4UTfd9oRwtbf1ipJFQeEp0zjlFfrmPaOaHNIBWDtQigzlK37nQAwZ3WFdM8Kl1nPRJXSpCtX30gRBmNnAADWyT/VvAjSTRPV1bpnAC0uQFCeycEF9mv3ckDavcPwN/yanZmGtpmN4vuzDpuGKD91hH7a1JTVCmwLy4QrALhV1ADJl2YkjlKufhrQcXXDQYBshj4wNAgKGj6XsiOODCPYLQRs5eHxlseDpQVeos0hxV/anQa8mKX6A==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA1PR11MB6733.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(39860400002)(346002)(366004)(376002)(136003)(396003)(230922051799003)(186009)(451199024)(64100799003)(1800799009)(6512007)(6506007)(26005)(6666004)(41300700001)(82960400001)(9686003)(83380400001)(8676002)(8936002)(6486002)(44832011)(4326008)(316002)(2906002)(4001150100001)(5660300002)(966005)(478600001)(66556008)(66946007)(66476007)(86362001)(38100700002)(66899024);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?IoXYdlCDUZMwTshSkkoUcsqCWJHXFJRyE7YxbtYHTfmXHC8VOtF6HfBSAKrg?=
+ =?us-ascii?Q?xsv6T9GvUqHLnIikKUlV++93DG25ut7//sG/u0Ai1XVEZOGfM0LMLVqwP9LP?=
+ =?us-ascii?Q?VuVfb/2vOPaz1YGSpdugnJll/4yLPBmWIVAdMdfTV5hoqGvB+jvBh/QI5V3d?=
+ =?us-ascii?Q?LFswz2fPOMNadcPjsW4QaACo07PLHqmKnpHmIKpiBexd4ZK/xLUdQjdkqVhc?=
+ =?us-ascii?Q?3D/+nbRH0AjKpVegM8EAcyQQgXk4m1dUn7aR3ejnik+7290zS6p1Z2QWu+04?=
+ =?us-ascii?Q?aB89w0ZZ/Fj8E6ZncIs/PPO8CO17QQPiHzHZCy3KrPmOZ8YWUZ5QF2s1hdbQ?=
+ =?us-ascii?Q?TZ1kynVmxYKyHP6cy7AzEwkKJnb5JTMivBfuwHb5zpcAE4Z/ShMXkgYFtxrG?=
+ =?us-ascii?Q?OxKvba0QVMBBXr2FiRUXA344CEQ0gt5F5Ie7eZQ8MXZVQa9Y3ypr2WllD7yp?=
+ =?us-ascii?Q?gEpacK4cidnhLNsGwqrFY354YpVsaztY/jQOPXyD/DKJawUuuOn5BfBsnFpV?=
+ =?us-ascii?Q?pyk34qsRJSgKvU6YeSSYfFZZ8RPAq8JMpcF4LwrnXnJDkQ+ZO96/XM1uXxUA?=
+ =?us-ascii?Q?2h5Ou0G7Sv4ByJSq4fdMgss4HAohEgiaFzwvr1tNdmRplsW/hmJNbEC99ins?=
+ =?us-ascii?Q?92QTDx2FCmuaUavJ2/ZLQrt2DAOrXftnsVV33foFfa7myBuyhZxd9dbOZ5CG?=
+ =?us-ascii?Q?4pTznaYVI90i1PaA/eAk5mxgd/k6pWUsxIcVDxhTawVgMSomwtVj/VYb8qMX?=
+ =?us-ascii?Q?JHSY1YymA4qAU3iuE7W2QaXrlk3yI5b61riXfSpiwxbvQUGe34jGeyTTHrGb?=
+ =?us-ascii?Q?MiAiu5vV0OYNuZFLn8eVppGiadDw2l6psMruSQ2ifDohEpGIJSJ63gN7AtbY?=
+ =?us-ascii?Q?SLLElvZbHTLT/kWxrM3rHwfTLQJpURuAKnib2Mw2JENLujDCxplfjeI40wBw?=
+ =?us-ascii?Q?rxkAktYpy9xKNBXoYe2GEwa5YpIfei23CL6woV5JWWdmQSvyRnE/vXy2LK3u?=
+ =?us-ascii?Q?V6AD7WDU45GcIZkL+5zkYDiAbKV5Hh04AnlHuWoEujA/wxp0eclRpao8H8kf?=
+ =?us-ascii?Q?01Rjqo0kaBmd4sguvDFYg/cuMX8BV/0gWsoTaaEI6P70H8e7BkHEyGDX9qJc?=
+ =?us-ascii?Q?MWKj5x6E6dJ8dhxx9RsBxTFdGutCpYkFqgizKQJZncRfa14VBWZY6MoPPGJY?=
+ =?us-ascii?Q?nCIjPtS2hSL9iC/aZISD8iohX5i4A6sP6SOiIDx/1vrpPCISORBr/8J5QXP3?=
+ =?us-ascii?Q?o0nX1aTsr7gTPdvnpAl07BiHJCdpt8/ICDPjqTBVbfDwl0sVV0QhWWJeo15d?=
+ =?us-ascii?Q?/WUzaa8446YE9q0RvskIFnl6kHBV/hc7gJtG+9sIzcJ1wLI8ZFR2foQmeh/a?=
+ =?us-ascii?Q?upQ94y/mMptGxjfLxbpaK7jfllfCGlHmOPDj4GN5BvCp2Cg+Ns0QxfqOPN0J?=
+ =?us-ascii?Q?stiT24X0JxurK0bbu0u7oht2cTaOSgknTJIJVCPQSrO9R2JITDW6AMZfc7zW?=
+ =?us-ascii?Q?mmvBu+OUb2ci6TlGTGfcgj8rRU/7y6z/1gAyU1Y0cGvglQXS34Y90QKu59Rz?=
+ =?us-ascii?Q?8KIhZp6sxpa6HysiZKtdg6i+cwAgb7pJuRr4HZgd?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 00b4c4af-0efd-4bbc-4f7d-08dbe7016b5e
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6733.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2023 00:09:08.7449 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xHrRfylM/DpcL8FhZbVZvhpMOj6WwDS+zAyRSlMiJhbUYexQkXjIsMYMJVJlIKAK3bllq8xGJ5eHC36H4VDNQg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4951
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=134.134.136.24; envelope-from=ira.weiny@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.117,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -117,34 +169,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Phil,
-
-On 11/17/23 02:20, Philippe Mathieu-Daudé wrote:
-> On 16/11/23 14:35, Philippe Mathieu-Daudé wrote:
->>
->> I'm queuing patches 1-3 & 5-23 to my cpus-next tree. No need to
->> repost them, please base them on my tree. I'll follow up with the
->> branch link when I finish my testing and push it.
+nifan.cxl@ wrote:
+> From: Fan Ni <nifan.cxl@gmail.com>
 > 
-> Here are these patches queued:
 > 
->    https://github.com/philmd/qemu.git branches/cpus-next
+> The patch series are based on Jonathan's branch cxl-2023-09-26.
+
+Finally getting around to trying this new series and the patch series does not
+seem to apply on top of this branch?
+
+Just to verify is this the top commit this work was based on?
+
+   d4edf131bbac [jonathan/cxl-2023-09-26] cxl/vendor: SK hynix Niagara Multi-Headed SLD Device
+
+I seem to have found some issue with CDAT checksumming[1] which I'm not quite
+sure about.
+
+I went ahead and pulled your latest work from:
+
+    https://github.com/moking/qemu-jic-clone.git dcd-dev
+
+    abe893944bb3  hw/mem/cxl_type3: Add dpa range validation for accesses to dc regions
+
+It still has this same problem.
+
+Before I dig into this, is this the latest dcd branch?
+
+Has anything changed in how you specify DCD devices on the qemu command line
+with this latest work?  Here is what I have:
+
+...
+-device cxl-type3,bus=hb0rp0,memdev=cxl-mem0,num-dc-regions=2,nonvolatile-dc-memdev=cxl-dc-mem0,id=cxl-dev0,lsa=cxl-lsa0,sn=0
+-device cxl-type3,bus=hb0rp1,memdev=cxl-mem1,num-dc-regions=2,nonvolatile-dc-memdev=cxl-dc-mem1,id=cxl-dev1,lsa=cxl-lsa1,sn=1
+-device cxl-type3,bus=hb1rp0,memdev=cxl-mem2,num-dc-regions=2,nonvolatile-dc-memdev=cxl-dc-mem2,id=cxl-dev2,lsa=cxl-lsa2,sn=2
+-device cxl-type3,bus=hb1rp1,memdev=cxl-mem3,num-dc-regions=2,nonvolatile-dc-memdev=cxl-dc-mem3,id=cxl-dev3,lsa=cxl-lsa3,sn=3
+...
+
+
+Ira
+
+[1] https://lore.kernel.org/all/20231116-fix-cdat-devm-free-v1-1-b148b40707d7@intel.com/
+
+ 
+> The main changes include,
+> 1. Update cxl_find_dc_region to detect the case the range of the extent cross
+>     multiple DC regions.
+> 2. Add comments to explain the checks performed in function
+>     cxl_detect_malformed_extent_list. (Jonathan)
+> 3. Minimize the checks in cmd_dcd_add_dyn_cap_rsp.(Jonathan)
+> 4. Update total_extent_count in add/release dynamic capacity response function.
+>     (Ira and Jorgen Hansen).
+> 5. Fix the logic issue in test_bits and renamed it to
+>     test_any_bits_set to clear its function.
+> 6. Add pending extent list for dc extent add event.
+> 7. When add extent response is received, use the pending-to-add list to
+>     verify the extents are valid.
+> 8. Add test_any_bits_set and cxl_insert_extent_to_extent_list declaration to
+>     cxl_device.h so it can be used in different files.
+> 9. Updated ct3d_qmp_cxl_event_log_enc to include dynamic capacity event
+>     log type.
+> 10. Extract the functionality to delete extent from extent list to a helper
+>     function.
+> 11. Move the update of the bitmap which reflects which blocks are backed with
+> dc extents from the moment when a dc extent is offered to the moment when it
+> is accepted from the host.
+> 12. Free dc_name after calling address_space_init to avoid memory leak when
+>     returning early. (Nathan)
+> 13. Add code to detect and reject QMP requests without any extents. (Jonathan)
+> 14. Add code to detect and reject QMP requests where the extent len is 0.
+> 15. Change the QMP interface and move the region-id out of extents and now
+>     each command only takes care of extent add/release request in a single
+>     region. (Jonathan)
+> 16. Change the region bitmap length from decode_len to len.
+> 17. Rename "dpa" to "offset" in the add/release dc extent qmp interface.
+>     (Jonathan)
+> 18. Block any dc extent release command if the exact extent is not already in
+>     the extent list of the device.
 > 
-> I might queue more patches before the 9.0 merge window opens.
+> The code is tested together with Ira's kernel DCD support:
+> https://github.com/weiny2/linux-kernel/tree/dcd-v3-2023-10-30
+> 
+> Cover letter from v2 is here:
+> https://lore.kernel.org/linux-cxl/20230724162313.34196-1-fan.ni@samsung.com/T/#m63039621087023691c9749a0af1212deb5549ddf
+> 
+> Last version (v2) is here:
+> https://lore.kernel.org/linux-cxl/20230725183939.2741025-1-fan.ni@samsung.com/
+> 
+> More DCD related discussions are here:
+> https://lore.kernel.org/linux-cxl/650cc29ab3f64_50d07294e7@iweiny-mobl.notmuch/
+> 
+> 
+> 
+> Fan Ni (9):
+>   hw/cxl/cxl-mailbox-utils: Add dc_event_log_size field to output
+>     payload of identify memory device command
+>   hw/cxl/cxl-mailbox-utils: Add dynamic capacity region representative
+>     and mailbox command support
+>   include/hw/cxl/cxl_device: Rename mem_size as static_mem_size for
+>     type3 memory devices
+>   hw/mem/cxl_type3: Add support to create DC regions to type3 memory
+>     devices
+>   hw/mem/cxl_type3: Add host backend and address space handling for DC
+>     regions
+>   hw/mem/cxl_type3: Add DC extent list representative and get DC extent
+>     list mailbox support
+>   hw/cxl/cxl-mailbox-utils: Add mailbox commands to support add/release
+>     dynamic capacity response
+>   hw/cxl/events: Add qmp interfaces to add/release dynamic capacity
+>     extents
+>   hw/mem/cxl_type3: Add dpa range validation for accesses to dc regions
+> 
+>  hw/cxl/cxl-mailbox-utils.c  | 469 +++++++++++++++++++++++++++++-
+>  hw/mem/cxl_type3.c          | 548 +++++++++++++++++++++++++++++++++---
+>  hw/mem/cxl_type3_stubs.c    |  14 +
+>  include/hw/cxl/cxl_device.h |  64 ++++-
+>  include/hw/cxl/cxl_events.h |  15 +
+>  qapi/cxl.json               |  60 +++-
+>  6 files changed, 1123 insertions(+), 47 deletions(-)
+> 
+> -- 
+> 2.42.0
 > 
 
-Thanks for queuing these patches, but I don't see 'cpus-next' branch
-in the repository. Please let me know if I checked out the code properly.
-
-$ git clone https://github.com/philmd/qemu.git philmd
-$ cd philmd
-$ git branch
-* staging
-$ git branch -a | grep cpus-next
-$ echo $?
-1
-
-Thanks,
-Gavin
 
 
