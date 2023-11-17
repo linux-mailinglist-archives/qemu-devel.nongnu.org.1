@@ -2,57 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E7A17EF823
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 21:06:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D267EF8C0
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 21:37:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r455p-0004Ab-NK; Fri, 17 Nov 2023 15:05:33 -0500
+	id 1r45Yx-0004lF-2k; Fri, 17 Nov 2023 15:35:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1r455n-00049a-AS
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 15:05:31 -0500
-Received: from ams.source.kernel.org ([145.40.68.75])
+ (Exim 4.90_1) (envelope-from <isaku.yamahata@intel.com>)
+ id 1r45Yu-0004kh-Jp
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 15:35:36 -0500
+Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1r455l-0003im-HP
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 15:05:31 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by ams.source.kernel.org (Postfix) with ESMTP id 1DF11B81F9E;
- Fri, 17 Nov 2023 20:05:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99537C433C7;
- Fri, 17 Nov 2023 20:05:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1700251527;
- bh=eAy/LFLzmaW02da1AUF0gjqMNYPnqZX0DIgT7YiUwkE=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=LD7GL91gGil2oXfDZC+Mg2zmtiI9zXAXwx48R6iJEkXXkeRd4juCIoLwRFQ28r70z
- Xg6l5EhwK7zJ9QMaSL+4TAffrYNG0X9iGFcx1ymSCGxZGCY5tDDV5Z4Up4jjqPJ+GX
- 01TvNR7QapPchKt3zYzKeW6jpbGmXdBuLBt06FlMYdhq8WcjQ3VIxLo54fAglIakfG
- qD6sqTdl5ctHm5tU2BIEcI3GrwWq6+mW+TUaFXN4hjpJmfDODby+ofleZwGYRERdDU
- kh0BS8ZQNHruNAE3pDdAj9EtXFLBs2meaxoS92/oOX2SKGYl2jdm58Ga03kjRBW/lF
- ZGBbOlltVHQNQ==
-From: deller@kernel.org
-To: Richard Henderson <richard.henderson@linaro.org>,
-	qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 2/2] disas/hppa: Show hexcode of instruction along with
- disassembly
-Date: Fri, 17 Nov 2023 21:05:21 +0100
-Message-ID: <20231117200521.417330-3-deller@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231117200521.417330-1-deller@kernel.org>
-References: <20231117200521.417330-1-deller@kernel.org>
+ (Exim 4.90_1) (envelope-from <isaku.yamahata@intel.com>)
+ id 1r45Yr-0003Ch-MS
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 15:35:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1700253334; x=1731789334;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=ljCjq1+xc8Fj39kUso8LFL0h1hRR9SHQuzNazVjwe3Q=;
+ b=BMLjk9VlVfJy093054SdSjRGcg69E7vRnHgbNtiEBgLNKUgKpY7+WRMl
+ W2dH125Rb/5PeRg7FQWxHUnpbCkQv/KEC9GkBi9OYlNoG05vYid/bNsR6
+ j6wkWJ5kF4yGKmqlVkSBXHHZuBCFiPbZRJYjo6jSb/Nxbw9HChfRAH96j
+ 5JAeeDVlsI8tlj43Sf4bu5lHpYk8j+A+04mEzXM9xQIt8rakl6jBvl4Ps
+ oIQewaUA3IK2qTCK66eSCVMdjWH2584Xr8BN3vaMMgaozz4JtELmu7knd
+ TW7zX4uiduEIToSJnIBlCdUDz0B1wyyvBzLt4ZEl1wUdhzxyQN+ztlKHK A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10897"; a="4449337"
+X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; 
+   d="scan'208";a="4449337"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2023 12:35:30 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10897"; a="759258431"
+X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; d="scan'208";a="759258431"
+Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
+ by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2023 12:35:29 -0800
+Date: Fri, 17 Nov 2023 12:35:28 -0800
+From: Isaku Yamahata <isaku.yamahata@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Michael Roth <michael.roth@amd.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@gmail.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ isaku.yamahata@linux.intel.com, isaku.yamahata@intel.com
+Subject: Re: [PATCH v3 02/70] RAMBlock: Add support of KVM private guest memfd
+Message-ID: <20231117203528.GA1645850@ls.amr.corp.intel.com>
+References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
+ <20231115071519.2864957-3-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=145.40.68.75; envelope-from=deller@kernel.org;
- helo=ams.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231115071519.2864957-3-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=192.198.163.8;
+ envelope-from=isaku.yamahata@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,44 +93,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+On Wed, Nov 15, 2023 at 02:14:11AM -0500,
+Xiaoyao Li <xiaoyao.li@intel.com> wrote:
 
-On hppa many instructions can be expressed by different bytecodes.
-To be able to debug qemu translation bugs it's therefore necessary to see the
-currently executed byte codes without the need to lookup the sequence without
-the full executable.
-With this patch the instruction byte code is shown beside the disassembly.
+> diff --git a/system/physmem.c b/system/physmem.c
+> index fc2b0fee0188..0af2213cbd9c 100644
+> --- a/system/physmem.c
+> +++ b/system/physmem.c
+> @@ -1841,6 +1841,20 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+>          }
+>      }
+>  
+> +#ifdef CONFIG_KVM
+> +    if (kvm_enabled() && new_block->flags & RAM_GUEST_MEMFD &&
+> +        new_block->guest_memfd < 0) {
+> +        /* TODO: to decide if KVM_GUEST_MEMFD_ALLOW_HUGEPAGE is supported */
+> +        uint64_t flags = 0;
+> +        new_block->guest_memfd = kvm_create_guest_memfd(new_block->max_length,
+> +                                                        flags, errp);
+> +        if (new_block->guest_memfd < 0) {
+> +            qemu_mutex_unlock_ramlist();
+> +            return;
+> +        }
+> +    }
+> +#endif
+> +
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- disas/hppa.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/disas/hppa.c b/disas/hppa.c
-index dcf9a47f34..cce4f4aa37 100644
---- a/disas/hppa.c
-+++ b/disas/hppa.c
-@@ -1968,6 +1968,10 @@ print_insn_hppa (bfd_vma memaddr, disassemble_info *info)
- 
-   insn = bfd_getb32 (buffer);
- 
-+  info->fprintf_func(info->stream, " %02x %02x %02x %02x   ",
-+                (insn >> 24) & 0xff, (insn >> 16) & 0xff,
-+                (insn >>  8) & 0xff, insn & 0xff);
-+
-   for (i = 0; i < NUMOPCODES; ++i)
-     {
-       const struct pa_opcode *opcode = &pa_opcodes[i];
-@@ -2826,6 +2830,6 @@ print_insn_hppa (bfd_vma memaddr, disassemble_info *info)
- 	  return sizeof (insn);
- 	}
-     }
--  (*info->fprintf_func) (info->stream, "#%8x", insn);
-+  info->fprintf_func(info->stream, "<unknown>");
-   return sizeof (insn);
- }
+We should define kvm_create_guest_memfd() stub in accel/stub/kvm-stub.c.
+We can remove this #ifdef.
 -- 
-2.41.0
-
+Isaku Yamahata <isaku.yamahata@linux.intel.com>
 
