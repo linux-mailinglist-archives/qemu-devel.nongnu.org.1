@@ -2,49 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7EE7EF822
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E7A17EF823
 	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 21:06:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r455o-0004A6-Pe; Fri, 17 Nov 2023 15:05:32 -0500
+	id 1r455p-0004Ab-NK; Fri, 17 Nov 2023 15:05:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1r455m-00049O-3J
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 15:05:30 -0500
-Received: from ams.source.kernel.org ([2604:1380:4601:e00::1])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1r455n-00049a-AS
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 15:05:31 -0500
+Received: from ams.source.kernel.org ([145.40.68.75])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1r455k-0003ie-HX
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 15:05:29 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1r455l-0003im-HP
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 15:05:31 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by ams.source.kernel.org (Postfix) with ESMTP id C8B92B82174;
+ by ams.source.kernel.org (Postfix) with ESMTP id 1DF11B81F9E;
+ Fri, 17 Nov 2023 20:05:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99537C433C7;
  Fri, 17 Nov 2023 20:05:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE1DC433C8;
- Fri, 17 Nov 2023 20:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1700251526;
- bh=2sujSVvWm+rle9jxbWC68MiniTq2gvn2wCWIHfSYthA=;
+ s=k20201202; t=1700251527;
+ bh=eAy/LFLzmaW02da1AUF0gjqMNYPnqZX0DIgT7YiUwkE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=kbftJA/5J27TBprH7bqYrWXvItHNhGj8gtImdJGx1Ervz38QNRtHH6WzqJFMQTQNX
- avwPxqlgm1nwydzIUV65TtoxRIwxVxWLTpEDyjCSX0a1qa7ZK2ESWA8QdmRPUgCGtN
- +uv73J5aq2hWXpWQjFKyH2Lv0yVucl9FgOl0lxY9P+Y32GW1QYvI9gKCGKFNm1n5Ep
- jJQHkaZfzlzxNgn7AFVJN43Tefb5A8UZAjIhNo43yEOx3SDes7v+nEIX0VQaiPtB/r
- kV5ALxYO1rX1SM2JgcmrnYwbumNepP2/bzEZGpDCD7AGv6PwrgEmyq0ezjT8klbHzl
- 14yw0ZFPRdJcg==
+ b=LD7GL91gGil2oXfDZC+Mg2zmtiI9zXAXwx48R6iJEkXXkeRd4juCIoLwRFQ28r70z
+ Xg6l5EhwK7zJ9QMaSL+4TAffrYNG0X9iGFcx1ymSCGxZGCY5tDDV5Z4Up4jjqPJ+GX
+ 01TvNR7QapPchKt3zYzKeW6jpbGmXdBuLBt06FlMYdhq8WcjQ3VIxLo54fAglIakfG
+ qD6sqTdl5ctHm5tU2BIEcI3GrwWq6+mW+TUaFXN4hjpJmfDODby+ofleZwGYRERdDU
+ kh0BS8ZQNHruNAE3pDdAj9EtXFLBs2meaxoS92/oOX2SKGYl2jdm58Ga03kjRBW/lF
+ ZGBbOlltVHQNQ==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 1/2] target/hppa: Fix 64-bit SHRPD instruction
-Date: Fri, 17 Nov 2023 21:05:20 +0100
-Message-ID: <20231117200521.417330-2-deller@kernel.org>
+Subject: [PULL 2/2] disas/hppa: Show hexcode of instruction along with
+ disassembly
+Date: Fri, 17 Nov 2023 21:05:21 +0100
+Message-ID: <20231117200521.417330-3-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231117200521.417330-1-deller@kernel.org>
 References: <20231117200521.417330-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4601:e00::1;
- envelope-from=deller@kernel.org; helo=ams.source.kernel.org
+Received-SPF: pass client-ip=145.40.68.75; envelope-from=deller@kernel.org;
+ helo=ams.source.kernel.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -69,32 +70,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-When shifting the two joined 64-bit registers right, shift the upper
-64-bit register to the left and the lower 64-bit register to the right
-before merging them with OR.
+On hppa many instructions can be expressed by different bytecodes.
+To be able to debug qemu translation bugs it's therefore necessary to see the
+currently executed byte codes without the need to lookup the sequence without
+the full executable.
+With this patch the instruction byte code is shown beside the disassembly.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ disas/hppa.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 4a4830c3e3..3ef39b1bd7 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -3438,9 +3438,9 @@ static bool trans_shrp_sar(DisasContext *ctx, arg_shrp_sar *a)
-             TCGv_i64 n = tcg_temp_new_i64();
+diff --git a/disas/hppa.c b/disas/hppa.c
+index dcf9a47f34..cce4f4aa37 100644
+--- a/disas/hppa.c
++++ b/disas/hppa.c
+@@ -1968,6 +1968,10 @@ print_insn_hppa (bfd_vma memaddr, disassemble_info *info)
  
-             tcg_gen_xori_i64(n, cpu_sar, 63);
--            tcg_gen_shl_i64(t, src2, n);
-+            tcg_gen_shl_i64(t, src1, n);
-             tcg_gen_shli_i64(t, t, 1);
--            tcg_gen_shr_i64(dest, src1, cpu_sar);
-+            tcg_gen_shr_i64(dest, src2, cpu_sar);
-             tcg_gen_or_i64(dest, dest, t);
-         } else {
-             TCGv_i64 t = tcg_temp_new_i64();
+   insn = bfd_getb32 (buffer);
+ 
++  info->fprintf_func(info->stream, " %02x %02x %02x %02x   ",
++                (insn >> 24) & 0xff, (insn >> 16) & 0xff,
++                (insn >>  8) & 0xff, insn & 0xff);
++
+   for (i = 0; i < NUMOPCODES; ++i)
+     {
+       const struct pa_opcode *opcode = &pa_opcodes[i];
+@@ -2826,6 +2830,6 @@ print_insn_hppa (bfd_vma memaddr, disassemble_info *info)
+ 	  return sizeof (insn);
+ 	}
+     }
+-  (*info->fprintf_func) (info->stream, "#%8x", insn);
++  info->fprintf_func(info->stream, "<unknown>");
+   return sizeof (insn);
+ }
 -- 
 2.41.0
 
