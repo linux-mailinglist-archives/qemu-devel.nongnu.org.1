@@ -2,59 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 937A37EEF4F
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 10:54:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB577EEF50
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 10:54:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3vXk-0007sd-O5; Fri, 17 Nov 2023 04:53:44 -0500
+	id 1r3vXj-0007rm-RZ; Fri, 17 Nov 2023 04:53:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r3vXj-0007pH-0Z
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 04:53:43 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r3vXh-0007oy-Eq
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 04:53:41 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r3vXh-0006fT-74
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 04:53:42 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r3vXf-0006fQ-LR
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 04:53:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1700214819;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jw/isfbp3xt/B11NQG83ja0Vh09xM5FOXvP5SNGXNnM=;
- b=TnawN/KZxO0na2gRij57q2QsZvtkX8hm5jcVU+V+tZUxf015rFQ4tz6aY9VtjPVh5jz42r
- iE5PX8BwjdwKgFMIE56PgF4vUDZ8BFGF+H7mQBecM3Uu+lYAjm5kJbOilI43LKEF96g1dy
- JPp3zeLkrrNapEwphpDkaLvP+lA5KMc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-98-rl3qgInoOO6Dp_d5EXxt7Q-1; Fri, 17 Nov 2023 04:53:37 -0500
-X-MC-Unique: rl3qgInoOO6Dp_d5EXxt7Q-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ bh=CHPoP9r353pL/nxEH9yEuVzWmT10zTbW5debocMeFww=;
+ b=STCi4iTRzY4HvmHJetT8EDecyhVy4xiXb97S2P9/3RakNhTpJBeHZmqBo63SUrmzIp05oj
+ tgLhegeACAluKZ+Xvs4XrsgbXW8PEg1GIjrgb1Jr3WrHj0zJgRMmPcfq7vTG+mQ1FVtXhV
+ qKqG+0ovxP8udBDrajHG9gEDA2TMe2E=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-146-BkvK3e6RPvGkcoBADsP2VA-1; Fri,
+ 17 Nov 2023 04:53:37 -0500
+X-MC-Unique: BkvK3e6RPvGkcoBADsP2VA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED98D85A59D
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EEBA81C05AB0
  for <qemu-devel@nongnu.org>; Fri, 17 Nov 2023 09:53:36 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CCD681121306
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CDB1040C6EB9
  for <qemu-devel@nongnu.org>; Fri, 17 Nov 2023 09:53:36 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E3E6621E6921; Fri, 17 Nov 2023 10:53:34 +0100 (CET)
+ id E6E0121E6922; Fri, 17 Nov 2023 10:53:34 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com
-Subject: [PULL 5/7] net: Fix a misleading error message
-Date: Fri, 17 Nov 2023 10:53:32 +0100
-Message-ID: <20231117095334.1819613-6-armbru@redhat.com>
+Cc: stefanha@redhat.com, David Hildenbrand <david@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Mario Casquero <mcasquer@redhat.com>
+Subject: [PULL 6/7] balloon: Fix a misleading error message
+Date: Fri, 17 Nov 2023 10:53:33 +0100
+Message-ID: <20231117095334.1819613-7-armbru@redhat.com>
 In-Reply-To: <20231117095334.1819613-1-armbru@redhat.com>
 References: <20231117095334.1819613-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -82,43 +84,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 The error message
 
-    $ qemu-system-x86_64 -netdev user,id=net0,ipv6-net=fec0::0/
-    qemu-system-x86_64: -netdev user,id=net0,ipv6-net=fec0::0/: Parameter 'ipv6-prefixlen' expects a number
+    {"execute": "balloon", "arguments":{"value": -1}}
+    {"error": {"class": "GenericError", "desc": "Parameter 'target' expects a size"}}
 
-points to ipv6-prefixlen instead of ipv6-net.  Fix:
+points to 'target' instead of 'value'.  Fix:
 
-    qemu-system-x86_64: -netdev user,id=net0,ipv6-net=fec0::0/: parameter 'ipv6-net' expects a number after '/'
+    {"error": {"class": "GenericError", "desc": "Parameter 'value' expects a size"}}
+
+Root cause: qmp_balloon()'s parameter is named @target.  Rename it to
+@value to match the QAPI schema.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20231031111059.3407803-6-armbru@redhat.com>
+Message-ID: <20231031111059.3407803-7-armbru@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Mario Casquero <mcasquer@redhat.com>
 ---
- net/net.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ system/balloon.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/net.c b/net/net.c
-index c0c0cbe99e..8e67a20abc 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -1227,7 +1227,7 @@ static int net_client_init(QemuOpts *opts, bool is_netdev, Error **errp)
-     int ret = -1;
-     Visitor *v = opts_visitor_new(opts);
+diff --git a/system/balloon.c b/system/balloon.c
+index e0e8969a4b..fda7af832e 100644
+--- a/system/balloon.c
++++ b/system/balloon.c
+@@ -90,17 +90,17 @@ BalloonInfo *qmp_query_balloon(Error **errp)
+     return info;
+ }
  
--    /* Parse convenience option format ip6-net=fec0::0[/64] */
-+    /* Parse convenience option format ipv6-net=fec0::0[/64] */
-     const char *ip6_net = qemu_opt_get(opts, "ipv6-net");
+-void qmp_balloon(int64_t target, Error **errp)
++void qmp_balloon(int64_t value, Error **errp)
+ {
+     if (!have_balloon(errp)) {
+         return;
+     }
  
-     if (ip6_net) {
-@@ -1247,8 +1247,8 @@ static int net_client_init(QemuOpts *opts, bool is_netdev, Error **errp)
-         if (substrings[1] &&
-             qemu_strtoul(substrings[1], NULL, 10, &prefix_len))
-         {
--            error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
--                       "ipv6-prefixlen", "a number");
-+            error_setg(errp,
-+                       "parameter 'ipv6-net' expects a number after '/'");
-             goto out;
-         }
+-    if (target <= 0) {
+-        error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "target", "a size");
++    if (value <= 0) {
++        error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "value", "a size");
+         return;
+     }
  
+-    trace_balloon_event(balloon_opaque, target);
+-    balloon_event_fn(balloon_opaque, target);
++    trace_balloon_event(balloon_opaque, value);
++    balloon_event_fn(balloon_opaque, value);
+ }
 -- 
 2.41.0
 
