@@ -2,97 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A246C7EF3E6
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 14:57:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F26187EF431
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 15:13:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r3zKm-0007Yd-TD; Fri, 17 Nov 2023 08:56:36 -0500
+	id 1r3zZS-0002zI-WF; Fri, 17 Nov 2023 09:11:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r3zKj-0007YS-Is
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 08:56:33 -0500
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1r3zZR-0002yt-8F
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 09:11:45 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r3zKg-0005am-4g
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 08:56:31 -0500
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1r3zZP-0002Do-D1
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 09:11:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700229388;
+ s=mimecast20190719; t=1700230301;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=C72q2Tq6iOYYNx3UA+eKwsyf4+fqsKrjtrc1kybbzhA=;
- b=ZPyg1CYWtvgHRg+SobxYl/cxseBMVBeqnGHTeUjn8nBhYsACCsCQSIIT9fNWaComK0RO/S
- SglBgZ5uL7RuT8iQAShbAUWMzneQQfxy6dYZ01PH69iWhhYQl/j5dT30yLpaf0PeGpa9HM
- pFJGVes3c+PGM7jOAMWt11M5lPzb2v8=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-131-U81TUpSON96BEX499LudrQ-1; Fri, 17 Nov 2023 08:56:27 -0500
-X-MC-Unique: U81TUpSON96BEX499LudrQ-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-66d1e755077so24572466d6.0
- for <qemu-devel@nongnu.org>; Fri, 17 Nov 2023 05:56:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700229387; x=1700834187;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=C72q2Tq6iOYYNx3UA+eKwsyf4+fqsKrjtrc1kybbzhA=;
- b=u8/bkXAgwtQK3jvfb9ErduE1qIlt8eTVYZbgBY3gjvJa6K3xJGTmm0wKPNScBNchnX
- e9KYnZVWpZ+KSLoI0b+Qswtap7tIfZlYkZG7wj2Uo0PxZfEltDDouSWLsSX+p4GOcvHb
- QjG4lABhqhjaFjHgJTh242nFhowGxDH3I+bk1z1cxmwJct0cCs8VUPsXM4Kllo8tQ8gD
- 4yos5gDVHM3Li56pHNDmzW2Z/RgVB27WJZXgC2e4RWzMAzhvnDRjlDmwbUKKrF1do2oh
- 3awCVdJo/vN2FeF8is2+JuzZGR2D1MElf0Uvb5se770Vr5X5LStCn+wqSmPUHHm8Huad
- bp9A==
-X-Gm-Message-State: AOJu0Yy9SgQzCzg7Ru1Cebt6fyC4eadH1JzEzI+JZLFKCuAXKRoZOwFQ
- STJYEohVfCeygxfMAiGSC9k+b5mXY+zSKzAXQ/+iTRWhmXoRmtyMwp2xqVw4Opni80oMtoDGtBX
- 1CjmyhNlK6P47FEg=
-X-Received: by 2002:a0c:eb4e:0:b0:677:a09a:83bd with SMTP id
- c14-20020a0ceb4e000000b00677a09a83bdmr11941447qvq.19.1700229387146; 
- Fri, 17 Nov 2023 05:56:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFu5/zdtXqrr83X188pMCW/t0/hGnk4xm6NRrFppXOBOxFxjBLCOBXUu5WQvHUlANV+XkvDKQ==
-X-Received: by 2002:a0c:eb4e:0:b0:677:a09a:83bd with SMTP id
- c14-20020a0ceb4e000000b00677a09a83bdmr11941414qvq.19.1700229386888; 
- Fri, 17 Nov 2023 05:56:26 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- e13-20020ad450cd000000b006263a9e7c63sm639103qvq.104.2023.11.17.05.56.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 17 Nov 2023 05:56:26 -0800 (PST)
-Message-ID: <c0c265d6-aaea-4071-b280-b93df459165e@redhat.com>
-Date: Fri, 17 Nov 2023 14:56:22 +0100
+ bh=usiL2lHe2AK65DsOZ/8Ygh8JDYZPAUL0m68vZU89Oxg=;
+ b=ip/q/36lCUwaocmytbITOVl/KIG7qL/zA1sdeCv2ofy+qjWOMs3Mjz0Ig8OaIySXUt4LIT
+ 2ECAHNd9pWaQnYNLMifXKTO9LdbBXHliMaiaKqgwN3QbxYWVA6b1TtoHJcG0P6Zks173MH
+ vdge1/C5U9yxhC4khFx0gOB08LwIOd4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-169-kPwlT3d_MI2u88Vm16xHPw-1; Fri,
+ 17 Nov 2023 09:11:36 -0500
+X-MC-Unique: kPwlT3d_MI2u88Vm16xHPw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 030703823329;
+ Fri, 17 Nov 2023 14:11:36 +0000 (UTC)
+Received: from [10.39.193.21] (unknown [10.39.193.21])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D50E51C060B0;
+ Fri, 17 Nov 2023 14:11:33 +0000 (UTC)
+Message-ID: <a41a545b-c78e-f261-6f8e-e4d7ffe94767@redhat.com>
+Date: Fri, 17 Nov 2023 15:11:32 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/21] backends/iommufd: Introduce the iommufd object
+Subject: Re: [PATCH 03/16] hw/uefi: add include/hw/uefi/var-service.h
 Content-Language: en-US
-To: eric.auger@redhat.com, "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "joao.m.martins@oracle.com"
- <joao.m.martins@oracle.com>, "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Gerd Hoffmann <kraxel@redhat.com>,
- "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
- "lersek@redhat.com" <lersek@redhat.com>
-References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
- <20231114100955.1961974-2-zhenzhong.duan@intel.com>
- <c964fdf3-d6ef-40cd-b4c0-32f1fb8501ae@redhat.com>
- <SJ0PR11MB6744B1B91C890A9A1B81E89792B7A@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <248389a7-3f89-42ae-98e7-34d6612cf186@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <248389a7-3f89-42ae-98e7-34d6612cf186@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Eric Blake <eblake@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, graf@amazon.com,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20231115151242.184645-1-kraxel@redhat.com>
+ <20231115151242.184645-4-kraxel@redhat.com>
+From: Laszlo Ersek <lersek@redhat.com>
+In-Reply-To: <20231115151242.184645-4-kraxel@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lersek@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -117,91 +87,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/17/23 14:29, Eric Auger wrote:
-> Hi Cédric,
+On 11/15/23 16:12, Gerd Hoffmann wrote:
+> Add state structs and function declarations for the uefi-vars device.
 > 
-> On 11/17/23 12:39, Duan, Zhenzhong wrote:
->> Hi Cédric,
->>
->>> -----Original Message-----
->>> From: Cédric Le Goater <clg@redhat.com>
->>> Sent: Friday, November 17, 2023 7:10 PM
->>> Subject: Re: [PATCH v6 01/21] backends/iommufd: Introduce the iommufd object
->>>
->>> Hello,
->>>
->>>> +int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id,
->>> hwaddr iova,
->>>> +                            ram_addr_t size, void *vaddr, bool readonly)
->>>> +{
->>>> +    int ret, fd = be->fd;
->>>> +    struct iommu_ioas_map map = {
->>>> +        .size = sizeof(map),
->>>> +        .flags = IOMMU_IOAS_MAP_READABLE |
->>>> +                 IOMMU_IOAS_MAP_FIXED_IOVA,
->>>> +        .ioas_id = ioas_id,
->>>> +        .__reserved = 0,
->>>> +        .user_va = (uintptr_t)vaddr,
->>>> +        .iova = iova,
->>>> +        .length = size,
->>>> +    };
->>>> +
->>>> +    if (!readonly) {
->>>> +        map.flags |= IOMMU_IOAS_MAP_WRITEABLE;
->>>> +    }
->>>> +
->>>> +    ret = ioctl(fd, IOMMU_IOAS_MAP, &map);
->>>> +    trace_iommufd_backend_map_dma(fd, ioas_id, iova, size,
->>>> +                                  vaddr, readonly, ret);
->>>> +    if (ret) {
->>>> +        ret = -errno;
->>>> +        error_report("IOMMU_IOAS_MAP failed: %m");
->>>> +    }
->>>> +    return ret;
->>>> +}
->>> When using a UEFI guest, QEMU reports errors when mapping regions
->>> in the top PCI space :
->>>
->>>    iommufd_backend_map_dma  iommufd=10 ioas=2 iova=0x380000001000
->>> size=0x3000 addr=0x7fce2c28b000 readonly=0 (-1)
->>>    qemu-system-x86_64: IOMMU_IOAS_MAP failed: Invalid argument
->>>    qemu-system-x86_64: vfio_container_dma_map(0x55a21b03a150,
->>> 0x380000001000, 0x3000, 0x7fce2c28b000) = -22 (Invalid argument)
->>>
->>>    iommufd_backend_map_dma  iommufd=10 ioas=2 iova=0x380000004000
->>> size=0x4000 addr=0x7fce2c980000 readonly=0 (-1)
->>>    qemu-system-x86_64: IOMMU_IOAS_MAP failed: Invalid argument
->>>    qemu-system-x86_64: vfio_container_dma_map(0x55a21b03a150,
->>> 0x380000004000, 0x4000, 0x7fce2c980000) = -22 (Invalid argument)
->>>
->>> This is because IOMMUFD reserved IOVAs areas are :
->>>
->>>   [ fee00000 - feefffff ]
->>>   [ 8000000000 - ffffffffffffffff ] (39 bits address space)
->>>
->>> which were allocated when the device was initially attached.
->>> The topology is basic. Something is wrong.
->> 	
->> Thanks for your report. This looks a hardware limit of
->> host IOMMU address width(39) < guest physical address width.
->>
->> A similar issue with a fix submitted below, ccing related people.
->> https://lists.gnu.org/archive/html/qemu-devel/2023-11/msg02937.html
->> It looks the fix will not work for hotplug.
->>
->> Or below qemu cmdline may help:
->> "-cpu host,host-phys-bits-limit=39"
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+> ---
+>  include/hw/uefi/var-service.h | 119 ++++++++++++++++++++++++++++++++++
+>  1 file changed, 119 insertions(+)
+>  create mode 100644 include/hw/uefi/var-service.h
 > 
-> don't you have the same issue with legacy VFIO code, you should?
+> diff --git a/include/hw/uefi/var-service.h b/include/hw/uefi/var-service.h
+> new file mode 100644
+> index 000000000000..2b8d3052e59f
+> --- /dev/null
+> +++ b/include/hw/uefi/var-service.h
+> @@ -0,0 +1,119 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * uefi-vars device - state struct and function prototypes
+> + */
+> +#ifndef QEMU_UEFI_VAR_SERVICE_H
+> +#define QEMU_UEFI_VAR_SERVICE_H
+> +
+> +#include "qemu/uuid.h"
+> +#include "qemu/queue.h"
+> +
+> +#include "hw/uefi/var-service-edk2.h"
+> +
+> +#define MAX_BUFFER_SIZE (64 * 1024)
+> +
+> +typedef struct uefi_variable uefi_variable;
+> +typedef struct uefi_var_policy uefi_var_policy;
+> +typedef struct uefi_vars_state uefi_vars_state;
+> +
+> +struct uefi_variable {
+> +    QemuUUID                          guid;
+> +    uint16_t                          *name;
+> +    uint32_t                          name_size;
+> +    uint32_t                          attributes;
+> +    void                              *data;
+> +    uint32_t                          data_size;
+> +    QTAILQ_ENTRY(uefi_variable)       next;
+> +};
+> +
+> +struct uefi_var_policy {
+> +    variable_policy_entry             *entry;
+> +    uint32_t                          entry_size;
+> +    uint16_t                          *name;
+> +    uint32_t                          name_size;
+> +    uint32_t                          hashmarks;
+> +    QTAILQ_ENTRY(uefi_var_policy)     next;
+> +};
 
-I tend to be lazy and use seabios for guests on the command line.
-I do see the error with legacy VFIO and uefi.
+- I wonder if the size fields should be size_t. uint32_t is not wrong
+either; we'll just have to be careful when doing comparisons etc.
 
-However, with the address space size work-around and iommufd, the
-error is different, an EFAULT now. Some page pinning issue it seems.
+- care to explain (in a comment) hashmarks? I think it's related to the
+wildcard policy stuff, but a hint would be appreciated.
 
-Thanks,
+> +
+> +struct uefi_vars_state {
+> +    MemoryRegion                      mr;
+> +    uint16_t                          sts;
+> +    uint32_t                          buf_size;
+> +    uint32_t                          buf_addr_lo;
+> +    uint32_t                          buf_addr_hi;
 
-C.
+spelling out endianness here would be useful IMO
+
+> +    uint8_t                           *buffer;
+> +    QTAILQ_HEAD(, uefi_variable)      variables;
+> +    QTAILQ_HEAD(, uefi_var_policy)    var_policies;
+> +
+> +    /* boot phases */
+> +    bool                              end_of_dxe;
+> +    bool                              ready_to_boot;
+> +    bool                              exit_boot_service;
+
+There are some variations of the 8 possible that don't make sense. at
+the same time, a single enum could be too limiting. depends on what the
+code will do with these.
+
+> +    bool                              policy_locked;
+> +
+> +    /* storage accounting */
+> +    uint64_t                          max_storage;
+> +    uint64_t                          used_storage;
+> +
+> +    char                              *jsonfile;
+> +    int                               jsonfd;
+> +};
+> +
+> +/* vars-service-guid.c */
+> +extern QemuUUID EfiGlobalVariable;
+> +extern QemuUUID EfiImageSecurityDatabase;
+> +extern QemuUUID EfiCustomModeEnable;
+> +extern QemuUUID EfiSecureBootEnableDisable;
+> +extern QemuUUID EfiSmmVariableProtocolGuid;
+> +extern QemuUUID VarCheckPolicyLibMmiHandlerGuid;
+> +extern QemuUUID EfiEndOfDxeEventGroupGuid;
+> +extern QemuUUID EfiEventReadyToBootGuid;
+> +extern QemuUUID EfiEventExitBootServicesGuid;
+
+the spelling of these names appears a bit questionable:
+
+- camelcase is idiomatic in edk2, but (I think?) not in QEMU, for variables
+
+- the "Guid" suffix is inconsistently used / carried over from edk2
+
+> +
+> +/* vars-service-core.c */
+> +extern const VMStateDescription vmstate_uefi_vars;
+> +size_t uefi_strlen(const uint16_t *str, size_t len);
+> +gboolean uefi_str_equal(const uint16_t *a, size_t alen,
+> +                        const uint16_t *b, size_t blen);
+> +char *uefi_ucs2_to_ascii(const uint16_t *ucs2, uint64_t ucs2_size);
+> +void uefi_trace_variable(const char *action, QemuUUID guid,
+> +                         const uint16_t *name, uint64_t name_size);
+> +void uefi_trace_status(const char *action, efi_status status);
+> +void uefi_vars_init(Object *obj, uefi_vars_state *uv);
+> +void uefi_vars_realize(uefi_vars_state *uv, Error **errp);
+> +void uefi_vars_hard_reset(uefi_vars_state *uv);
+> +
+> +/* vars-service-json.c */
+> +void uefi_vars_json_init(uefi_vars_state *uv, Error **errp);
+> +void uefi_vars_json_save(uefi_vars_state *uv);
+> +void uefi_vars_json_load(uefi_vars_state *uv, Error **errp);
+> +
+> +/* vars-service-vars.c */
+> +extern const VMStateDescription vmstate_uefi_variable;
+> +uefi_variable *uefi_vars_find_variable(uefi_vars_state *uv, QemuUUID guid,
+> +                                       const uint16_t *name,
+> +                                       uint64_t name_size);
+> +void uefi_vars_set_variable(uefi_vars_state *uv, QemuUUID guid,
+> +                            const uint16_t *name, uint64_t name_size,
+> +                            uint32_t attributes,
+> +                            void *data, uint64_t data_size);
+> +void uefi_vars_clear_volatile(uefi_vars_state *uv);
+> +void uefi_vars_clear_all(uefi_vars_state *uv);
+> +void uefi_vars_update_storage(uefi_vars_state *uv);
+> +uint32_t uefi_vars_mm_vars_proto(uefi_vars_state *uv);
+> +
+> +/* vars-service-auth.c */
+> +void uefi_vars_auth_init(uefi_vars_state *uv);
+> +
+> +/* vars-service-policy.c */
+> +extern const VMStateDescription vmstate_uefi_var_policy;
+> +efi_status uefi_vars_policy_check(uefi_vars_state *uv,
+> +                                  uefi_variable *var,
+> +                                  gboolean is_newvar);
+> +void uefi_vars_policies_clear(uefi_vars_state *uv);
+> +uefi_var_policy *uefi_vars_add_policy(uefi_vars_state *uv,
+> +                                      variable_policy_entry *pe);
+> +uint32_t uefi_vars_mm_check_policy_proto(uefi_vars_state *uv);
+> +
+> +#endif /* QEMU_UEFI_VAR_SERVICE_H */
+
+I guess I'll have to see these in use to think anything of them.
+
+(I prefer a more "functional" structuring for a series, where the thing
+sort of builds & works from patch#1 onwards, it's only the actual
+functionality that is introduced layer by layer. But, that's not an
+objection; this patch certainly works as the collection of APIs the rest
+is going to implement and call later.)
+
+Again we'll have to keep an eye on the integer types.
+
+with some comments inserted:
+
+Reviewed-by: Laszlo Ersek <lersek@redhat.com>
+
+
+Laszlo
 
 
