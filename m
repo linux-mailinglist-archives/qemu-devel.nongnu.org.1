@@ -2,81 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01C047EFA35
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 Nov 2023 22:20:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A0BF7EFD20
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Nov 2023 03:27:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r46GS-0005A7-B7; Fri, 17 Nov 2023 16:20:36 -0500
+	id 1r4B27-0006i9-OT; Fri, 17 Nov 2023 21:26:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <isaku.yamahata@intel.com>)
- id 1r46GO-00059F-S5
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 16:20:32 -0500
-Received: from mgamail.intel.com ([192.55.52.115])
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1r4B25-0006hj-F3
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 21:26:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <isaku.yamahata@intel.com>)
- id 1r46GM-0004rL-VU
- for qemu-devel@nongnu.org; Fri, 17 Nov 2023 16:20:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700256030; x=1731792030;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=n2y1j5HibPwd3gevMA9Pbsa8cS7PY+LR97YvXnnB6FE=;
- b=kTLNTV4hwaiJuXoI/Xg/jGZnTzRnV5isRC0aaW4ANwDAWY1vZPDlRX9V
- Xwy8vwxHX4Jo802gnuLLjclPWHLvHvbWibtcAKADQxuVJujDyd2ybyKhO
- xeIE685Omf4ORBsA0BVf+mF1j4GyfsS9fyEC7af5ynvKllcT4dDD1M7Gv
- /HJD+v1q2iYN16Uu5bZXSoyz2j/KKB9GbHtJQiswYMif/o8Qt/aV4I1gs
- 5pv02gOuJaWIH/SNSLXc3tvzQ9gapwt8bMTsPPiJ1EoGwuQXWTPZHGQ2b
- PddO+cK03Vnvw7GL/4V2aOfWqAeD7jJhQgUg274iMiOV0yZjGUAi78AI2 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10897"; a="391153678"
-X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; d="scan'208";a="391153678"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2023 13:20:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10897"; a="1013043694"
-X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; d="scan'208";a="1013043694"
-Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
- by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2023 13:20:28 -0800
-Date: Fri, 17 Nov 2023 13:20:28 -0800
-From: Isaku Yamahata <isaku.yamahata@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cornelia Huck <cohuck@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Michael Roth <michael.roth@amd.com>,
- Sean Christopherson <seanjc@google.com>,
- Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
- Isaku Yamahata <isaku.yamahata@gmail.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- isaku.yamahata@linux.intel.com, isaku.yamahata@intel.com
-Subject: Re: [PATCH v3 19/70] i386/tdx: Introduce is_tdx_vm() helper and
- cache tdx_guest object
-Message-ID: <20231117212028.GB1648821@ls.amr.corp.intel.com>
-References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
- <20231115071519.2864957-20-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1r4B21-0000gs-PK
+ for qemu-devel@nongnu.org; Fri, 17 Nov 2023 21:26:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700274361;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=keZnHuG7P8xBB9h7Yrga9Zc6p1ydIWQxCuNT1SYHShk=;
+ b=OOqeFHazW3WCJ0EQzRfiblgBOIPJK8Rb9G+FZqYeV4wVHY7wK9nv6kovWHfXshdDBDyFzD
+ 7nm1OggGFJAYVxRP64GsgcMo7SRZsHTXoMinT4RwHNt8K8K+tVD3qAc1MQBWF7jFx91f0V
+ Q72fNByvyrIUzamx9/n8cVlq148ZFV8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-458-jGZWedWRNMywk1aHm32JFA-1; Fri,
+ 17 Nov 2023 21:24:35 -0500
+X-MC-Unique: jGZWedWRNMywk1aHm32JFA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EDD363C01C29;
+ Sat, 18 Nov 2023 02:24:34 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.72.112.50])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id ADF415028;
+ Sat, 18 Nov 2023 02:24:32 +0000 (UTC)
+From: Dehan Meng <demeng@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: demeng@redhat.com,
+	kkostiuk@redhat.com,
+	michael.roth@amd.com
+Subject: [PATCH] qga/linux: Add new api 'guest-network-get-route'
+Date: Sat, 18 Nov 2023 10:24:28 +0800
+Message-Id: <20231118022428.118778-1-demeng@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231115071519.2864957-20-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=192.55.52.115;
- envelope-from=isaku.yamahata@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=demeng@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,101 +76,220 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 15, 2023 at 02:14:28AM -0500,
-Xiaoyao Li <xiaoyao.li@intel.com> wrote:
+The Route information of the Linux VM needs to be used
+by administrators and users when debugging network problems
+and troubleshooting.
 
-> It will need special handling for TDX VMs all around the QEMU.
-> Introduce is_tdx_vm() helper to query if it's a TDX VM.
-> 
-> Cache tdx_guest object thus no need to cast from ms->cgs every time.
-> 
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
-> changes in v3:
-> - replace object_dynamic_cast with TDX_GUEST();
-> ---
->  target/i386/kvm/tdx.c | 15 ++++++++++++++-
->  target/i386/kvm/tdx.h | 10 ++++++++++
->  2 files changed, 24 insertions(+), 1 deletion(-)
-> 
-> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-> index cb0040187b27..cf8889f0a8f9 100644
-> --- a/target/i386/kvm/tdx.c
-> +++ b/target/i386/kvm/tdx.c
-> @@ -21,8 +21,16 @@
->  #include "kvm_i386.h"
->  #include "tdx.h"
->  
-> +static TdxGuest *tdx_guest;
-> +
->  static struct kvm_tdx_capabilities *tdx_caps;
->  
-> +/* It's valid after kvm_confidential_guest_init()->kvm_tdx_init() */
-> +bool is_tdx_vm(void)
-> +{
-> +    return !!tdx_guest;
-> +}
-> +
->  enum tdx_ioctl_level{
->      TDX_PLATFORM_IOCTL,
->      TDX_VM_IOCTL,
-> @@ -114,15 +122,20 @@ static int get_tdx_capabilities(Error **errp)
->  
->  int tdx_kvm_init(MachineState *ms, Error **errp)
->  {
-> +    TdxGuest *tdx = TDX_GUEST(OBJECT(ms->cgs));
->      int r = 0;
->  
->      ms->require_guest_memfd = true;
->  
->      if (!tdx_caps) {
->          r = get_tdx_capabilities(errp);
-> +        if (r) {
-> +            return r;
-> +        }
->      }
->  
-> -    return r;
-> +    tdx_guest = tdx;
-> +    return 0;
->  }
->  
->  /* tdx guest */
-> diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
-> index c8a23d95258d..4036ca2f3f99 100644
-> --- a/target/i386/kvm/tdx.h
-> +++ b/target/i386/kvm/tdx.h
-> @@ -1,6 +1,10 @@
->  #ifndef QEMU_I386_TDX_H
->  #define QEMU_I386_TDX_H
->  
-> +#ifndef CONFIG_USER_ONLY
-> +#include CONFIG_DEVICES /* CONFIG_TDX */
-> +#endif
-> +
->  #include "exec/confidential-guest-support.h"
->  
->  #define TYPE_TDX_GUEST "tdx-guest"
-> @@ -16,6 +20,12 @@ typedef struct TdxGuest {
->      uint64_t attributes;    /* TD attributes */
->  } TdxGuest;
->  
-> +#ifdef CONFIG_TDX
-> +bool is_tdx_vm(void);
-> +#else
-> +#define is_tdx_vm() 0
-> +#endif /* CONFIG_TDX */
-> +
->  int tdx_kvm_init(MachineState *ms, Error **errp);
->  
->  #endif /* QEMU_I386_TDX_H */
-> -- 
-> 2.34.1
-> 
-> 
+Signed-off-by: Dehan Meng <demeng@redhat.com>
+---
+ qga/commands-posix.c | 82 ++++++++++++++++++++++++++++++++++++++++++++
+ qga/commands-win32.c |  6 ++++
+ qga/qapi-schema.json | 80 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 168 insertions(+)
 
-Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
+diff --git a/qga/commands-posix.c b/qga/commands-posix.c
+index 6169bbf7a0..83a3c46b3c 100644
+--- a/qga/commands-posix.c
++++ b/qga/commands-posix.c
+@@ -2747,6 +2747,82 @@ GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
+     return head;
+ }
+ 
++char *hexToIPAddress(unsigned int hexValue, char ipAddress[16]);
++
++char *hexToIPAddress(unsigned int hexValue, char ipAddress[16])
++{
++    unsigned int byte1 = (hexValue >> 24) & 0xFF;
++    unsigned int byte2 = (hexValue >> 16) & 0xFF;
++    unsigned int byte3 = (hexValue >> 8) & 0xFF;
++    unsigned int byte4 = hexValue & 0xFF;
++
++    snprintf(ipAddress, 16, "%u.%u.%u.%u", byte4, byte3, byte2, byte1);
++
++    return ipAddress;
++}
++
++GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
++{
++    GuestNetworkRouteList *head = NULL, **tail = &head;
++    const char *routeFile = "/proc/net/route";
++    FILE *fp;
++    size_t n;
++    char *line = NULL;
++
++    fp = fopen(routeFile, "r");
++    if (fp == NULL) {
++        error_setg_errno(errp, errno, "open(\"%s\")", routeFile);
++        return NULL;
++    }
++
++    while (getline(&line, &n, fp) != -1) {
++        GuestNetworkRoute *route = NULL;
++        GuestNetworkRouteStat *networkroute;
++        int i;
++        char Iface[16];
++        unsigned int Destination, Gateway, Mask, Flags;
++        int RefCnt, Use, Metric, MTU, Window, IRTT;
++
++        /* Parse the line and extract the values */
++        i = (sscanf(line, "%s %X %X %x %d %d %d %X %d %d %d",
++                    Iface, &Destination, &Gateway, &Flags, &RefCnt,
++                    &Use, &Metric, &Mask, &MTU, &Window, &IRTT) == 11);
++        if (i == EOF) {
++            continue;
++        }
++
++        route = g_new0(GuestNetworkRoute, 1);
++        route->type = GUEST_NETWORK_ROUTE_TYPE_LINUX;
++
++        /*
++         *Additional logic to convert hex values to
++         *decimal and IP address format
++         */
++        char DestAddress[16];
++        char GateAddress[16];
++        char MaskAddress[16];
++
++        networkroute = &route->u.q_linux;
++        networkroute->iface = g_strdup(Iface);
++        networkroute->destination = hexToIPAddress(Destination, DestAddress);
++        networkroute->gateway = hexToIPAddress(Gateway, GateAddress);
++        networkroute->mask = hexToIPAddress(Mask, MaskAddress);
++        networkroute->metric = Metric;
++        networkroute->flags = Flags;
++        networkroute->refcnt = RefCnt;
++        networkroute->use = Use;
++        networkroute->mtu = MTU;
++        networkroute->window = Window;
++        networkroute->irtt = IRTT;
++
++        QAPI_LIST_APPEND(tail, route);
++    }
++
++    free(line);
++    fclose(fp);
++    return head;
++}
++
+ #else /* defined(__linux__) */
+ 
+ void qmp_guest_suspend_disk(Error **errp)
+@@ -3118,6 +3194,12 @@ GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
+     return NULL;
+ }
+ 
++GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
++{
++    error_setg(errp, QERR_UNSUPPORTED);
++    return NULL;
++}
++
+ #endif /* CONFIG_FSFREEZE */
+ 
+ #if !defined(CONFIG_FSTRIM)
+diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+index 697c65507c..e62c04800a 100644
+--- a/qga/commands-win32.c
++++ b/qga/commands-win32.c
+@@ -2522,3 +2522,9 @@ GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
+     error_setg(errp, QERR_UNSUPPORTED);
+     return NULL;
+ }
++
++GuestNetworkRouteList *qmp_guest_network_get_route(Error **errp)
++{
++    error_setg(errp, QERR_UNSUPPORTED);
++    return NULL;
++}
+diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+index 876e2a8ea8..eed9539bb7 100644
+--- a/qga/qapi-schema.json
++++ b/qga/qapi-schema.json
+@@ -1789,3 +1789,83 @@
+ { 'command': 'guest-get-cpustats',
+   'returns': ['GuestCpuStats']
+ }
++
++##
++# @GuestNetworkRouteType:
++#
++# An enumeration of OS type
++#
++# Since: 8.2
++##
++{ 'enum': 'GuestNetworkRouteType',
++  'data': [ 'linux' ] }
++
++##
++# @GuestNetworkRouteStat:
++#
++# Route information, currently, only linux supported.
++#
++# @iface: The destination network or host's egress network interface in the routing table
++#
++# @destination: The IP address of the target network or host, The final destination of the packet
++#
++# @gateway: The IP address of the next hop router
++#
++# @mask: Subnet Mask
++#
++# @metric: Route metric
++#
++# @flags: Route flags (not for windows)
++#
++# @irtt: Initial round-trip delay (not for windows)
++#
++# @refcnt: The route's reference count (not for windows)
++#
++# @use: Route usage count (not for windows)
++#
++# @window: TCP window size, used for flow control (not for windows)
++#
++# @mtu: Data link layer maximum packet size (not for windows)
++#
++# Since: 8.2
++
++##
++{ 'struct': 'GuestNetworkRouteStat',
++  'data': {'iface': 'str',
++           'destination': 'str',
++           'gateway': 'str',
++           'metric': 'int',
++           'mask': 'str',
++           '*irtt': 'int',
++           '*flags': 'uint64',
++           '*refcnt': 'int',
++           '*use': 'int',
++           '*window': 'int',
++           '*mtu': 'int'
++           }}
++
++##
++# @GuestNetworkRoute:
++#
++# Get route information of system.
++#
++# - @linux: Linux style network route
++#
++# Since: 8.2
++##
++{ 'union': 'GuestNetworkRoute',
++  'base': { 'type': 'GuestNetworkRouteType' },
++  'discriminator': 'type',
++  'data': { 'linux': 'GuestNetworkRouteStat' } }
++
++##
++# @guest-network-get-route:
++#
++# Retrieve information about route of network.
++# Returns: List of route info of guest.
++#
++# Since: 8.2
++##
++{ 'command': 'guest-network-get-route',
++  'returns': ['GuestNetworkRoute']
++}
 -- 
-Isaku Yamahata <isaku.yamahata@linux.intel.com>
+2.35.1
+
 
