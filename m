@@ -2,55 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D52727EFE4F
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Nov 2023 08:37:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D4F7EFEA9
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Nov 2023 10:20:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4Fsk-0001xC-V4; Sat, 18 Nov 2023 02:36:46 -0500
+	id 1r4HTk-0002St-OM; Sat, 18 Nov 2023 04:19:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=9Slt=G7=kaod.org=clg@ozlabs.org>)
- id 1r4Fsh-0001gJ-Ua; Sat, 18 Nov 2023 02:36:44 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=9Slt=G7=kaod.org=clg@ozlabs.org>)
- id 1r4Fsg-0007R6-1n; Sat, 18 Nov 2023 02:36:43 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SXQZD2mgZz4x5G;
- Sat, 18 Nov 2023 18:36:36 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SXQZB5XpMz4x5m;
- Sat, 18 Nov 2023 18:36:34 +1100 (AEDT)
-Message-ID: <456ef745-46c1-4dc2-baf7-ce1c146955b5@kaod.org>
-Date: Sat, 18 Nov 2023 08:36:34 +0100
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1r4HTi-0002R4-FT
+ for qemu-devel@nongnu.org; Sat, 18 Nov 2023 04:19:02 -0500
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1r4HTg-00054v-Go
+ for qemu-devel@nongnu.org; Sat, 18 Nov 2023 04:19:02 -0500
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-6ce291b5df9so1778340a34.2
+ for <qemu-devel@nongnu.org>; Sat, 18 Nov 2023 01:18:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1700299138; x=1700903938;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=bzPbn/UXtEGcJrWyb4phGcKNnE54oqJAK5ni2viz46M=;
+ b=jD6EOOj6WJCzcS1foWbqWQK/B3nDhvtI/hTkMVWQbxusL4qTmHwe+QPuQZop82UNhl
+ HR2gBuMrHf6Ye1YQZbmockeutv55b3fO/h22B090goEdsAMFxpCvqYwQYHcC3P9pEQet
+ DLLV3UQecFBnDZZXD7iozT+w9ZwUnYJM5jUjPbhq24gsn8Tonzi6NpU8ygCHFgYGVOVB
+ QwZbwnNdfllzBfpR8BrTTiTErwPiRZWIB5VQeIPwu0NcRzaj5pzORPdoG20TXTospCzz
+ x5jBYO21YktNq9TUGGsBSCZcr8UJQZWHEofqfttcw+Vr0MZ71CoHlMf5RVXe9ZBOSdN+
+ 6hmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700299138; x=1700903938;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bzPbn/UXtEGcJrWyb4phGcKNnE54oqJAK5ni2viz46M=;
+ b=kiuZxpyUmh0SDfNa+u5PUJsJEPrGOHmFBdSSZfN1SQgEGKErjwPZnfdBQjWHod9+JM
+ /Uwvk+WIKl2UAy50LAB+oG1Bk//x/PAbIcv2UQE4wSJmTKU2cx/AZXAPRcNrOisObmhr
+ dWzj1XGmUqu0t3rWzl21A6Kt2n85g3tJ9KER6nigHBsI2tjkYkOVilplnW+ulccPYoJk
+ b6nn/3ZfYOwvj1Qgrga1JIg52shaxSqFc3Vj09sp5hAb3IPYxxEs1vAoyTSoATIbkCAd
+ 2Z6ChzFJ+q71FiToalf1TzvGf0FOEXv9RfQFDwz9zASy9ngye330DnL728ZbDIRsvYlh
+ xS1g==
+X-Gm-Message-State: AOJu0YzHLlkPbSRhg72Y5UOe05KlFNnpvjtl8AQLcxmHi4ub8ny3wdGB
+ 6T+g9N4Ycwsf6CWacCUMRrta1s+i391W79SYXwg=
+X-Google-Smtp-Source: AGHT+IEffugknbHh1B/SU8SRq8jn96B9fZ4Vx8T1UBqYSaICWkHfMzyx0B+DhMlBO4Mxqugl/5cy2w==
+X-Received: by 2002:a9d:4b0a:0:b0:6c6:4843:2ac5 with SMTP id
+ q10-20020a9d4b0a000000b006c648432ac5mr1959432otf.21.1700299138303; 
+ Sat, 18 Nov 2023 01:18:58 -0800 (PST)
+Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
+ x20-20020a63fe54000000b005bdd8dcfe19sm2668576pgj.10.2023.11.18.01.18.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 18 Nov 2023 01:18:57 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Andrew Melnychenko <andrew@daynix.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ "Zhang, Chen" <chen.zhang@intel.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v7 00/19] virtio-net RSS/hash report fixes and improvements
+Date: Sat, 18 Nov 2023 18:18:14 +0900
+Message-ID: <20231118091837.5758-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.42.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/8] ppc/pnv: Fix PNV I2C invalid status after reset
-Content-Language: en-US
-To: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
-References: <20231114195659.1219821-1-milesg@linux.vnet.ibm.com>
- <20231114195659.1219821-5-milesg@linux.vnet.ibm.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231114195659.1219821-5-milesg@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=9Slt=G7=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,99 +91,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/14/23 20:56, Glenn Miles wrote:
-> The PNV I2C Controller was clearing the status register
-> after a reset without repopulating the "upper threshold
-> for I2C ports", "Command Complete" and the SCL/SDA input
-> level fields.
-> 
-> Fixed this for resets caused by a system reset as well
-> as from writing to the "Immediate Reset" register.
-> 
-> Fixes: 263b81ee15af ("ppc/pnv: Add an I2C controller model")
-> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> ---
+Based-on: <20230524064704.47711-1-akihiko.odaki@daynix.com>
+("[PATCH 0/2] net: Update MemReentrancyGuard for NIC")
 
+This series contains fixes and improvements for virtio-net RSS and hash
+reporting feature.
 
-Applied to ppc-next.
+V6 -> V7:
+  Dropped patch "virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT".
+  Dropped the changes to remove packet flags.
+  Re-introduced tap_receive() and changed it to call tap_receive_iov().
+  Removed tap_get_vnet_hdr_len().
+  Fixed tap initialization not to call tap_fd_set_vnet_hdr_len() for tap
+  without virtio-net header.
+  Changed to call error_report() instead of warn_report() for
+  programming errors.
 
-Thanks,
+V5 -> V6:
+  Corrected the message for patch "virtio-net: Return an error when vhost
+  cannot enable RSS".
+  Removed changes to introduce asserts from "virtio-net: Return an error
+  when vhost cannot enable RSS".
+  Reorganized patches "virtio-net: Return an error when vhost cannot enable
+  RSS" and "virtio-net: Do not clear VIRTIO_NET_F_RSS". This version now
+  contains patches "virtio-net: Return an error when vhost cannot enable
+  RSS" and "virtio-net: Enable software RSS".
+  Rebased.
 
-C.
+V4 -> V5:
+  Added patch "virtio-net: Do not write hashes to peer buffer".
 
+V3 -> V4:
+  Extract patches "tap: Remove tap_receive()" and  "net: Remove flag
+  propagation" from "net: Remove receive_raw()".
+  Added patch "virtio-net: Always set populate_hash".
+  Added patch "virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT".
+  Added patch "ebpf: Use standard section name".
+  Added patch "ebpf: Simplify error handling".
+  Added patch "ebpf: Return 0 when configuration fails".
+  Added patch "ebpf: Refactor tun_rss_steering_prog()".
+  Added patch "ebpf: Add a separate target for skeleton".
 
-> Changes from v2:
->      -Added Fixes: tag
-> 
->   hw/ppc/pnv_i2c.c | 42 ++++++++++++++++++------------------------
->   1 file changed, 18 insertions(+), 24 deletions(-)
-> 
-> diff --git a/hw/ppc/pnv_i2c.c b/hw/ppc/pnv_i2c.c
-> index b2c738da50..f80589157b 100644
-> --- a/hw/ppc/pnv_i2c.c
-> +++ b/hw/ppc/pnv_i2c.c
-> @@ -462,6 +462,23 @@ static uint64_t pnv_i2c_xscom_read(void *opaque, hwaddr addr,
->       return val;
->   }
->   
-> +static void pnv_i2c_reset(void *dev)
-> +{
-> +    PnvI2C *i2c = PNV_I2C(dev);
-> +
-> +    memset(i2c->regs, 0, sizeof(i2c->regs));
-> +
-> +    i2c->regs[I2C_STAT_REG] =
-> +        SETFIELD(I2C_STAT_UPPER_THRS, 0ull, i2c->num_busses - 1) |
-> +        I2C_STAT_CMD_COMP | I2C_STAT_SCL_INPUT_LEVEL |
-> +        I2C_STAT_SDA_INPUT_LEVEL;
-> +    i2c->regs[I2C_EXTD_STAT_REG] =
-> +        SETFIELD(I2C_EXTD_STAT_FIFO_SIZE, 0ull, PNV_I2C_FIFO_SIZE) |
-> +        SETFIELD(I2C_EXTD_STAT_I2C_VERSION, 0ull, 23); /* last version */
-> +
-> +    fifo8_reset(&i2c->fifo);
-> +}
-> +
->   static void pnv_i2c_xscom_write(void *opaque, hwaddr addr,
->                                   uint64_t val, unsigned size)
->   {
-> @@ -499,16 +516,7 @@ static void pnv_i2c_xscom_write(void *opaque, hwaddr addr,
->           break;
->   
->       case I2C_RESET_I2C_REG:
-> -        i2c->regs[I2C_MODE_REG] = 0;
-> -        i2c->regs[I2C_CMD_REG] = 0;
-> -        i2c->regs[I2C_WATERMARK_REG] = 0;
-> -        i2c->regs[I2C_INTR_MASK_REG] = 0;
-> -        i2c->regs[I2C_INTR_COND_REG] = 0;
-> -        i2c->regs[I2C_INTR_RAW_COND_REG] = 0;
-> -        i2c->regs[I2C_STAT_REG] = 0;
-> -        i2c->regs[I2C_RESIDUAL_LEN_REG] = 0;
-> -        i2c->regs[I2C_EXTD_STAT_REG] &=
-> -            (I2C_EXTD_STAT_FIFO_SIZE | I2C_EXTD_STAT_I2C_VERSION);
-> +        pnv_i2c_reset(i2c);
->           break;
->   
->       case I2C_RESET_ERRORS:
-> @@ -620,20 +628,6 @@ static int pnv_i2c_dt_xscom(PnvXScomInterface *dev, void *fdt,
->       return 0;
->   }
->   
-> -static void pnv_i2c_reset(void *dev)
-> -{
-> -    PnvI2C *i2c = PNV_I2C(dev);
-> -
-> -    memset(i2c->regs, 0, sizeof(i2c->regs));
-> -
-> -    i2c->regs[I2C_STAT_REG] = I2C_STAT_CMD_COMP;
-> -    i2c->regs[I2C_EXTD_STAT_REG] =
-> -        SETFIELD(I2C_EXTD_STAT_FIFO_SIZE, 0ull, PNV_I2C_FIFO_SIZE) |
-> -        SETFIELD(I2C_EXTD_STAT_I2C_VERSION, 0ull, 23); /* last version */
-> -
-> -    fifo8_reset(&i2c->fifo);
-> -}
-> -
->   static void pnv_i2c_realize(DeviceState *dev, Error **errp)
->   {
->       PnvI2C *i2c = PNV_I2C(dev);
+V2 -> V3:
+  Added patch "tap: Remove tap_probe_vnet_hdr_len()".
+  Added patch "tap: Remove qemu_using_vnet_hdr()".
+  Added patch "net: Move virtio-net header length assertion".
+  Added patch "net: Remove receive_raw()".
+  Added patch "tap: Shrink zeroed virtio-net header".
+  Dropped patch "tap: Fix virtio-net header buffer size".
+
+V1 -> V2:
+  Added patch "ebpf: Fix RSS error handling".
+
+Akihiko Odaki (19):
+  tap: Remove tap_probe_vnet_hdr_len()
+  tap: Remove qemu_using_vnet_hdr()
+  net: Move virtio-net header length assertion
+  net: Remove receive_raw()
+  tap: Call tap_receive_iov() from tap_receive()
+  tap: Shrink zeroed virtio-net header
+  virtio-net: Copy header only when necessary
+  virtio-net: Disable RSS on reset
+  virtio-net: Unify the logic to update NIC state for RSS
+  virtio-net: Return an error when vhost cannot enable RSS
+  virtio-net: Report RSS warning at device realization
+  virtio-net: Always set populate_hash
+  virtio-net: Do not write hashes to peer buffer
+  ebpf: Fix RSS error handling
+  ebpf: Use standard section name
+  ebpf: Simplify error handling
+  ebpf: Return 0 when configuration fails
+  ebpf: Refactor tun_rss_steering_prog()
+  ebpf: Add a separate target for skeleton
+
+ ebpf/rss.bpf.skeleton.h  | 1557 +++++++++++++++++++-------------------
+ include/net/net.h        |    8 -
+ net/tap_int.h            |    1 -
+ ebpf/ebpf_rss.c          |   12 +-
+ hw/net/e1000e.c          |    1 -
+ hw/net/igb.c             |    1 -
+ hw/net/net_tx_pkt.c      |    4 +-
+ hw/net/virtio-net.c      |  308 ++++----
+ hw/net/vmxnet3.c         |    2 -
+ net/dump.c               |    4 +-
+ net/net.c                |   47 +-
+ net/netmap.c             |    5 -
+ net/tap-bsd.c            |    5 -
+ net/tap-linux.c          |   20 -
+ net/tap-solaris.c        |    5 -
+ net/tap-stub.c           |    5 -
+ net/tap.c                |   77 +-
+ tools/ebpf/rss.bpf.c     |   46 +-
+ tools/ebpf/Makefile.ebpf |   15 +-
+ 19 files changed, 986 insertions(+), 1137 deletions(-)
+
+-- 
+2.42.1
 
 
