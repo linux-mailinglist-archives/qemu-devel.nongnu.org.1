@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F267EFEC2
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Nov 2023 10:30:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3191D7EFEB7
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Nov 2023 10:28:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4Hb2-0006DR-HZ; Sat, 18 Nov 2023 04:26:36 -0500
+	id 1r4Hb6-0006Di-4h; Sat, 18 Nov 2023 04:26:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r4Hb0-0006D4-BQ
- for qemu-devel@nongnu.org; Sat, 18 Nov 2023 04:26:34 -0500
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ id 1r4Hb4-0006DX-Tn
+ for qemu-devel@nongnu.org; Sat, 18 Nov 2023 04:26:38 -0500
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r4Hay-0003iT-Uf
- for qemu-devel@nongnu.org; Sat, 18 Nov 2023 04:26:34 -0500
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-5b8f68ba4e5so2048056a12.1
- for <qemu-devel@nongnu.org>; Sat, 18 Nov 2023 01:26:32 -0800 (PST)
+ id 1r4Hb3-0003ig-HJ
+ for qemu-devel@nongnu.org; Sat, 18 Nov 2023 04:26:38 -0500
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6c4cf0aea06so2756730b3a.0
+ for <qemu-devel@nongnu.org>; Sat, 18 Nov 2023 01:26:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1700299591; x=1700904391;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1700299595; x=1700904395;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xzliMeH7ucLi+5KlHbqTM6VmGafQ4Ql4J7jH/gf4kF0=;
- b=jxvYL/GrKparnqkeTszKyZLm0oitUDwJAFazCO/Jk7QqbmB28szutcnb2jrocxVVWA
- +DNWNqQg4vwEBfnw+zqoSCImZotjZ5+zSitkjHmo7vFtxvOk9iqxL7HV37aXPTqkmkyk
- UiGdTy1RQZGs5g5WlqX3qjtnMF5qH6SuSMQz7RvzdsYlaFDS6CXAh7a33o/9l7ViKheA
- 17RO+WKo3tF5dPasIfzjspFi3HRVPSywZ9n50htk07IjofLZ1g6U4XzGKD1aodliKJbf
- 6re1jPUt+tME6B1J1FZOwdmbyXrB9+nhLcyMxlJQQ8EoQBmuOeFc8pBi6jmLJgGp2iRw
- isFg==
+ bh=jDHUkFeUiZ95sNfG9WI8P/VDBC1XV4qMk7GmcffU3mw=;
+ b=H09KqmrVXlyUrfVcZ05XFqu5lAiEkwvTQHK4DyI16b7AFZJkmFGnmqhN+OqZf1x9Cw
+ 4NbEdujl07PiKvR5KOL1phBAuKS4g/mtAUg9csR22wI3oAQboOz5R3LCval47M+reA9E
+ NsCCXzoVuZkLiZJkhEzz3Gz/1oC0J67qwib9qZ/Fh7T+jfQxFY2jWwDQ+88aDgwIbWEy
+ t+tRuCP+mS6PECwLiNWvR9Gj+hcesVUN5KVU/gHqj07sJyDH+uxVq6JZxVKNnox6fEei
+ 1hPz4nzZHfo5D/Cexa8pDIfGEzO6bta9KTQSFpYPtoh4U+Ht8bGzC1aYU8ROkzu9Fk2o
+ dCPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700299591; x=1700904391;
+ d=1e100.net; s=20230601; t=1700299595; x=1700904395;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xzliMeH7ucLi+5KlHbqTM6VmGafQ4Ql4J7jH/gf4kF0=;
- b=Sd75xzxlXPP30tvpxjHRZ/onq+pKK//mY45Ju8smJS9sePS25ggv4dGBLfBKob3m5q
- YcAhuaN7hMeEsVaNwguhdq4kcq/K2CebtpTlbqIjPWh6+V6uUxKAac+V3y5f+OZjhJ+h
- Of8vtGloxs8wlnChW+rel+/revuu4jbKInx7Pnimtyq6IlTFpjAV0mSu2XkwfP5L8sei
- dNUvF+YmKfhDFOZqM0nDa9DnMZDY0Po0drhgfFdXTuyQB/T8M4w9Cu49BPnULvQW+sGv
- 2w5C7nu04l9G4Iq7k7Vfaky53mZ0P3jZlxFIR6M34593ux5ZrzFf21TRiL+RGmmMsjYn
- 5ffg==
-X-Gm-Message-State: AOJu0YxzZFuXEiyFVXup9jWXBDqx/tPha6abRWlmRfqGKjCyrzkHKeO9
- +rHGEiCwku+pYbdgG+3d/XSEW0asMVYhnUXfBbk=
-X-Google-Smtp-Source: AGHT+IH3RcI//cpbXHlTwdcpLFs3V+n9uQ1Tb1qIUPDPUO4LwCzhasoVuPFWHURMXoX7jIGlLP/zBg==
-X-Received: by 2002:a17:903:22cb:b0:1cc:e76e:f216 with SMTP id
- y11-20020a17090322cb00b001cce76ef216mr2305074plg.24.1700299591488; 
- Sat, 18 Nov 2023 01:26:31 -0800 (PST)
+ bh=jDHUkFeUiZ95sNfG9WI8P/VDBC1XV4qMk7GmcffU3mw=;
+ b=us/uyerMNlgVoBhKcXu/S+VFizpsnwfI+Ihcjlfs+p0z0QwOlQz5FZAP/D/Qh1Qsaz
+ S8TkhRum/6qGJTaQ+GiSA3d3/hZwnwcfCW9Nm8sojDfM/0ob1lvy0/ZtZCasbw0Krza+
+ wP4E0In7wkBfQanQ1FQS8Wo2ObFy7zB8bHH+semnO3yDcEhCCoDmM38qRuV/MH82ikWZ
+ Tc5emP/iW67up2QTUBr8h5YZs4aZkL2SUR4XFQhv3ZvMoVz63X1NROsbw2e1Bvrcit15
+ ZXADnKxK9GsOafb43tUSfiyFRgoXgyGte5VempbXGKWJFdA0ZKmAurgEXgVe/hojuTBf
+ suOg==
+X-Gm-Message-State: AOJu0YynOEF/ZjayUcgBhyAZrBTMdBwHoqpwjhWKILIyjwB3cehx43B7
+ fh5Irvou9CZIyuzYm4RgrFJZ+JJTyCiqqkQNTPo=
+X-Google-Smtp-Source: AGHT+IEGYXUch+ckHJLagcaFiOarK2Uu7xlFqNKyIwqAFiFSW4Y3mCSnvCteY5sVWDMmg904mcaRbg==
+X-Received: by 2002:a05:6a00:1951:b0:6c2:c8d2:94de with SMTP id
+ s17-20020a056a00195100b006c2c8d294demr2659461pfk.3.1700299595586; 
+ Sat, 18 Nov 2023 01:26:35 -0800 (PST)
 Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- p4-20020a170902bd0400b001b850c9d7b3sm2616635pls.249.2023.11.18.01.26.29
+ y10-20020a62f24a000000b006c69851c7c9sm2607398pfl.181.2023.11.18.01.26.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 18 Nov 2023 01:26:30 -0800 (PST)
+ Sat, 18 Nov 2023 01:26:35 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
  Andrew Melnychenko <andrew@daynix.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- "Zhang, Chen" <chen.zhang@intel.com>, Akihiko Odaki <aodaki@redhat.com>
-Subject: [PATCH RESEND v7 05/19] tap: Call tap_receive_iov() from tap_receive()
-Date: Sat, 18 Nov 2023 18:25:45 +0900
-Message-ID: <20231118092601.7132-6-akihiko.odaki@daynix.com>
+ "Zhang, Chen" <chen.zhang@intel.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH RESEND v7 06/19] tap: Shrink zeroed virtio-net header
+Date: Sat, 18 Nov 2023 18:25:46 +0900
+Message-ID: <20231118092601.7132-7-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231118092601.7132-1-akihiko.odaki@daynix.com>
 References: <20231118092601.7132-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::52c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,66 +94,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <aodaki@redhat.com>
+tap prepends a zeroed virtio-net header when writing a packet to a
+tap with virtio-net header enabled but not in use. This only happens
+when s->host_vnet_hdr_len == sizeof(struct virtio_net_hdr).
 
-This will save duplicate logic found in both of tap_receive_iov() and
-tap_receive().
-
-Suggested-by: "Zhang, Chen" <chen.zhang@intel.com>
-Signed-off-by: Akihiko Odaki <aodaki@redhat.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- net/tap.c | 35 +++++------------------------------
- 1 file changed, 5 insertions(+), 30 deletions(-)
+ net/tap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/tap.c b/net/tap.c
-index 09ad8ae255..4d450d2972 100644
+index 4d450d2972..7666ada8d9 100644
 --- a/net/tap.c
 +++ b/net/tap.c
-@@ -133,39 +133,14 @@ static ssize_t tap_receive_iov(NetClientState *nc, const struct iovec *iov,
-     return tap_write_packet(s, iovp, iovcnt);
- }
- 
--static ssize_t tap_receive_raw(NetClientState *nc, const uint8_t *buf, size_t size)
--{
--    TAPState *s = DO_UPCAST(TAPState, nc, nc);
--    struct iovec iov[2];
--    int iovcnt = 0;
+@@ -119,7 +119,7 @@ static ssize_t tap_receive_iov(NetClientState *nc, const struct iovec *iov,
+     TAPState *s = DO_UPCAST(TAPState, nc, nc);
+     const struct iovec *iovp = iov;
+     g_autofree struct iovec *iov_copy = NULL;
 -    struct virtio_net_hdr_mrg_rxbuf hdr = { };
--
--    if (s->host_vnet_hdr_len) {
--        iov[iovcnt].iov_base = &hdr;
--        iov[iovcnt].iov_len  = s->host_vnet_hdr_len;
--        iovcnt++;
--    }
--
--    iov[iovcnt].iov_base = (char *)buf;
--    iov[iovcnt].iov_len  = size;
--    iovcnt++;
--
--    return tap_write_packet(s, iov, iovcnt);
--}
--
- static ssize_t tap_receive(NetClientState *nc, const uint8_t *buf, size_t size)
- {
--    TAPState *s = DO_UPCAST(TAPState, nc, nc);
--    struct iovec iov[1];
--
--    if (s->host_vnet_hdr_len && !s->using_vnet_hdr) {
--        return tap_receive_raw(nc, buf, size);
--    }
--
--    iov[0].iov_base = (char *)buf;
--    iov[0].iov_len  = size;
-+    struct iovec iov = {
-+        .iov_base = (void *)buf,
-+        .iov_len = size
-+    };
++    struct virtio_net_hdr hdr = { };
  
--    return tap_write_packet(s, iov, 1);
-+    return tap_receive_iov(nc, &iov, 1);
- }
- 
- #ifndef __sun__
+     if (s->host_vnet_hdr_len && !s->using_vnet_hdr) {
+         iov_copy = g_new(struct iovec, iovcnt + 1);
 -- 
 2.42.1
 
