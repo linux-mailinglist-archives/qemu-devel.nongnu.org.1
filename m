@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E68387F0155
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Nov 2023 18:38:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8A97F01EE
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Nov 2023 19:27:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4PFK-0003SI-7P; Sat, 18 Nov 2023 12:36:42 -0500
+	id 1r4Q1T-0007su-HP; Sat, 18 Nov 2023 13:26:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r4PFI-0003Rx-Sl
- for qemu-devel@nongnu.org; Sat, 18 Nov 2023 12:36:40 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
+ id 1r4Q1R-0007sb-DQ; Sat, 18 Nov 2023 13:26:25 -0500
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r4PFG-0008J7-R3
- for qemu-devel@nongnu.org; Sat, 18 Nov 2023 12:36:40 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-548696eac92so1073922a12.3
- for <qemu-devel@nongnu.org>; Sat, 18 Nov 2023 09:36:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
+ id 1r4Q1P-0005T8-TQ; Sat, 18 Nov 2023 13:26:25 -0500
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-5bd85b1939aso1917446a12.2; 
+ Sat, 18 Nov 2023 10:26:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700328996; x=1700933796; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DC2MaIfS6LlWkY/Yuul9WyhF96mD7ttUTd+lMSh2lXs=;
- b=nhSL55NBw+/zxoZu7++M6Y4W473Bbsx42juoKUbJK2zoDGo60gmZAjhd/DgPuyw+Md
- +5RfX3xyPWJ7BxbAshzRzNXf2XwiySZQqE6Ojj+K1Tu0Ep0HR3soqzJIdTYMiQPhVDIH
- xDviTZ7CP4RRK9VURaOcznrwkOd2MMy8Yq+ePogP3FBgl593XrCUdri93TKl8hFGzzrl
- oNdETAc69HG5stKgIvDObDTa7yN8paat5UEk9nKabR2qRzpi3WwTGJpiO7W6qfzPSE//
- bPZQGN/JRiyV9Se6rxO5imPNWytTNiEdETrcjFD03kGN9+b6WvbsG8mw2fp676mx3muB
- w99w==
+ d=gmail.com; s=20230601; t=1700331981; x=1700936781; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=yp6QoVwJvjvNngNM4cZnjf0zeYba0gsZwUeMxVOgmHw=;
+ b=GcNEieGpj9uO4hbYcjzygwILWH1apo71aclQPOXzLlMsIDuLCJ6JJK8JyFapr/7MHg
+ Vt2YX+CUhydQfWt6fCHmf1TGDU7CJeHu9VM+i92dOQvO+0JH1urdns9QaDZG12YaYm1o
+ G8OhbCyFwU/d4GaTUz5FKlPmo6SsDbGn0Bj57XXcK8hLG8o8toTkVTGNPit8o8owSPZb
+ E250uN6ZNoC4Il3SadTEPyZUAXaj+BmfSYJI/x2Dm3Pfm0ac2pB8X4UnnAcbg35hCIUQ
+ XBZMOxX+jf6uBJ02AXDanXpyJ07HM7gdb7C/BcdpZk7rjr09ivev4ZZv2SIkoTt5v7cL
+ Mjcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700328996; x=1700933796;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DC2MaIfS6LlWkY/Yuul9WyhF96mD7ttUTd+lMSh2lXs=;
- b=FjXeM27WW5oIHaAmEufj8wknx/gEyuZ2k9KPooBVp3LsKq1eMTv68GMrzogvzvDWWU
- FHfIppr0mu/Mqd+x9Bq92aJydeM1Xe5nOTBz7w8DZAR5BdX+HbNJ0GYrTDhMhgu+JZHj
- SYiSEnSUrniRvsb7RgJwGeW3M9qrVZTZYXhW53fLrVqsw65NBkrsSPVWELyOQMgiZZpz
- UMqqhsR8bwMIygjN+6cEEHN42i+qitCR33al+pZSc0gZGjabCrz3k7gZZ64l60Cc3slJ
- Y3uS7H3Fr+Rfk97RnKL/MrINdp2LyZmTWBKS0TygipWsDw8r8x2qLMLXSJ2G9cZt/Ls5
- LNfQ==
-X-Gm-Message-State: AOJu0YxoRPgcHWeQ6TagXJyXdQi+jmascsNPdG6DzYqLDZHoiiVXkCTU
- dOWCfg+xPUz4Hkb874id8zCQ6IUKhfCDK1ciYB4=
-X-Google-Smtp-Source: AGHT+IFOKSWoML1tEryZjCtjqE7NSsvtKow/YqxYAsoQZ1EDcVQl33MNQljYSY0oqJLruhRgdTl7Gg==
-X-Received: by 2002:a17:907:7b92:b0:9be:6ccb:6a8f with SMTP id
- ne18-20020a1709077b9200b009be6ccb6a8fmr3005941ejc.48.1700328995593; 
- Sat, 18 Nov 2023 09:36:35 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.211.152])
+ d=1e100.net; s=20230601; t=1700331981; x=1700936781;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=yp6QoVwJvjvNngNM4cZnjf0zeYba0gsZwUeMxVOgmHw=;
+ b=g4pWO2I7A68R32bCJq/eXIHC8va47yHHrdPXCoEGEhjQ/DGQ0KcDlV8oeZhi+o6N6R
+ ouDGeID+x7DWjQ2OcV2SG5QqC9hFfYLC5ccNz5xzGw31EwiyF2y55eqbAkfi5QXHdn49
+ U550mjI9lWxw1grofVFL6lNyZ5G+fIXWu1AaUZklFX5PwjMG6o+9/XPYa2s4RW5IMLxh
+ xlXzoo71H1k85L9fpuLvvINkCO8ZCcODceK36S2h/J4cfYYu40+jeCYz7ArDh6ZSLtxB
+ gBXIGbklRVhmPF+vPnFhlD7XrsSPbR14v5J1h21lHmrAnHlREyOOXjjrKr61OggOMivf
+ 3iPQ==
+X-Gm-Message-State: AOJu0Yzm8Skdy6GmG/dF+cZGJhlqKF/+iZo/4hSWTXzq662gKqq/HDFZ
+ yyDQ34qoZBtfVNi5VSwd7THSj2B1hkY8kw==
+X-Google-Smtp-Source: AGHT+IHgJ0H4mFlsQWSO6ediiYDFLAJERiIy9xWatUjUDy/uq5zsOOo6MdfL280dsnkC5y91PVMHpQ==
+X-Received: by 2002:a17:90b:1e07:b0:280:767:d3eb with SMTP id
+ pg7-20020a17090b1e0700b002800767d3ebmr2603158pjb.30.1700331981205; 
+ Sat, 18 Nov 2023 10:26:21 -0800 (PST)
+Received: from dhoffman-NUC13RNGi9.hsd1.or.comcast.net
+ ([2601:1c0:577f:e480:7761:abec:4d36:7df4])
  by smtp.gmail.com with ESMTPSA id
- um16-20020a170906cf9000b009b913aa7cdasm2086267ejb.92.2023.11.18.09.36.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 18 Nov 2023 09:36:35 -0800 (PST)
-Message-ID: <e6f3b219-5e81-4a28-82b9-ab3e30046032@linaro.org>
-Date: Sat, 18 Nov 2023 18:36:33 +0100
+ 27-20020a17090a001b00b00268b439a0cbsm3507932pja.23.2023.11.18.10.26.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 18 Nov 2023 10:26:20 -0800 (PST)
+From: Daniel Hoffman <dhoff749@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Daniel Hoffman <dhoff749@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH] hw/i386: fix short-circuit logic with non-optimizing builds
+Date: Sat, 18 Nov 2023 10:25:31 -0800
+Message-Id: <20231118182531.2619772-1-dhoff749@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-8.2] target/arm: Fix SME FMOPA (16-bit), BFMOPA
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-stable@nongnu.org
-References: <20231117193135.1180657-1-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231117193135.1180657-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=dhoff749@gmail.com; helo=mail-pg1-x52d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,18 +93,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/11/23 20:31, Richard Henderson wrote:
-> Perform the loop increment unconditionally, not nested
-> within the predication.
-> 
-> Cc: qemu-stable@nongnu.org
-> Fixes: 3916841ac75 ("target/arm: Implement FMOPA, FMOPS (widening)")
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1985
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/arm/tcg/sme_helper.c | 10 ++++------
->   1 file changed, 4 insertions(+), 6 deletions(-)
+`kvm_enabled()` is compiled down to `0` and short-circuit logic is
+used to remmove references to undefined symbols at the compile stage.
+Some build configurations with some compilers don't attempt to
+simplify this logic down in some cases (the pattern appears to be
+that the literal false must be the first term) and this was causing
+some builds to emit references to undefined symbols.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
+---
+ hw/i386/x86.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index b3d054889bb..d339c8f3ef8 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -132,7 +132,7 @@ void x86_cpus_init(X86MachineState *x86ms, int default_cpu_version)
+      * Can we support APIC ID 255 or higher?  With KVM, that requires
+      * both in-kernel lapic and X2APIC userspace API.
+      */
+-    if (x86ms->apic_id_limit > 255 && kvm_enabled() &&
++    if (kvm_enabled() && x86ms->apic_id_limit > 255 &&
+         (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())) {
+         error_report("current -smp configuration requires kernel "
+                      "irqchip and X2APIC API support.");
+@@ -418,8 +418,8 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+     }
+     cpu->thread_id = topo_ids.smt_id;
+ 
+-    if (hyperv_feat_enabled(cpu, HYPERV_FEAT_VPINDEX) &&
+-        kvm_enabled() && !kvm_hv_vpindex_settable()) {
++    if (kvm_enabled() && hyperv_feat_enabled(cpu, HYPERV_FEAT_VPINDEX) &&
++        !kvm_hv_vpindex_settable()) {
+         error_setg(errp, "kernel doesn't allow setting HyperV VP_INDEX");
+         return;
+     }
+-- 
+2.40.1
 
 
