@@ -2,51 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C267EFE4D
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Nov 2023 08:36:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E5CA7EFE50
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Nov 2023 08:37:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4Fqv-0007Nh-64; Sat, 18 Nov 2023 02:34:53 -0500
+	id 1r4Fsa-0001YB-EZ; Sat, 18 Nov 2023 02:36:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r4Fqs-0007N0-49; Sat, 18 Nov 2023 02:34:50 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <SRS0=9Slt=G7=kaod.org=clg@ozlabs.org>)
+ id 1r4FsY-0001Xy-AA; Sat, 18 Nov 2023 02:36:34 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r4Fqp-0004v9-SR; Sat, 18 Nov 2023 02:34:49 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 735E43460E;
- Sat, 18 Nov 2023 10:34:36 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id E6AFF36059;
- Sat, 18 Nov 2023 10:34:34 +0300 (MSK)
-Message-ID: <d01c1fdf-dd90-4743-b04b-14069b1b8971@tls.msk.ru>
-Date: Sat, 18 Nov 2023 10:34:34 +0300
+ (Exim 4.90_1) (envelope-from <SRS0=9Slt=G7=kaod.org=clg@ozlabs.org>)
+ id 1r4FsV-0007QD-Hz; Sat, 18 Nov 2023 02:36:34 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SXQYy49Tpz4x5M;
+ Sat, 18 Nov 2023 18:36:22 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SXQYw6swQz4x3D;
+ Sat, 18 Nov 2023 18:36:20 +1100 (AEDT)
+Message-ID: <a8a8f9ea-9c21-4898-a01a-29b38087471a@kaod.org>
+Date: Sat, 18 Nov 2023 08:36:15 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] hw/ide/ahci: fix legacy software reset
+Subject: Re: [PATCH v3 3/8] ppc/pnv: PNV I2C engines assigned incorrect XSCOM
+ addresses
+To: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
+References: <20231114195659.1219821-1-milesg@linux.vnet.ibm.com>
+ <20231114195659.1219821-4-milesg@linux.vnet.ibm.com>
 Content-Language: en-US
-To: Kevin Wolf <kwolf@redhat.com>, Niklas Cassel <nks@flawful.org>
-Cc: John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org, Damien Le Moal <dlemoal@kernel.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Niklas Cassel <niklas.cassel@wdc.com>
-References: <20231108222657.117984-1-nks@flawful.org>
- <ZU39Fus85X+625bj@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <ZU39Fus85X+625bj@redhat.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20231114195659.1219821-4-milesg@linux.vnet.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=9Slt=G7=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,25 +65,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-10.11.2023 12:51, Kevin Wolf:
-> Am 08.11.2023 um 23:26 hat Niklas Cassel geschrieben:
->> From: Niklas Cassel <niklas.cassel@wdc.com>
->>
->> Legacy software contains a standard mechanism for generating a reset to a
->> Serial ATA device - setting the SRST (software reset) bit in the Device
->> Control register.
-...
->> Fixes: e2a5d9b3d9c3 ("hw/ide/ahci: simplify and document PxCI handling")
->> Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
->> Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Nick,
+
+Since I started collecting fixes for 8.2 while you were away, I will
+finish this cycle with a last PR next week and let you take over 9.0.
+
+
+
+On 11/14/23 20:56, Glenn Miles wrote:
+> The PNV I2C engines for power9 and power10 were being assigned a base
+> XSCOM address that was off by one I2C engine's address range such
+> that engine 0 had engine 1's address and so on.  The xscom address
+> assignment was being based on the device tree engine numbering, which
+> starts at 1.  Rather than changing the device tree numbering to start
+> with 0, the addressing was changed to be based on the existing device
+> tree numbers minus one.
 > 
-> Thanks, applied to the block branch.
+> Fixes: 1ceda19c28a1 ("ppc/pnv: Connect PNV I2C controller to powernv10)
+> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+> ---
+> 
+> Changes from v2:
+>      - Added Fixes: tag
 
-Another friendly ping?
 
-This change, once again, missed the next stable-8.1.x release, it seems
-(the deadline for which is tomorrow).
+Applied to ppc-next.
 
-/mjt
+Thanks,
+
+C.
+
+
+
+
+> 
+>   hw/ppc/pnv.c     | 6 ++++--
+>   hw/ppc/pnv_i2c.c | 2 +-
+>   2 files changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+> index 645379d5bf..e82e9b30ec 100644
+> --- a/hw/ppc/pnv.c
+> +++ b/hw/ppc/pnv.c
+> @@ -1623,7 +1623,8 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
+>               return;
+>           }
+>           pnv_xscom_add_subregion(chip, PNV9_XSCOM_I2CM_BASE +
+> -                               chip9->i2c[i].engine * PNV9_XSCOM_I2CM_SIZE,
+> +                                (chip9->i2c[i].engine - 1) *
+> +                                        PNV9_XSCOM_I2CM_SIZE,
+>                                   &chip9->i2c[i].xscom_regs);
+>           qdev_connect_gpio_out(DEVICE(&chip9->i2c[i]), 0,
+>                                 qdev_get_gpio_in(DEVICE(&chip9->psi),
+> @@ -1871,7 +1872,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
+>               return;
+>           }
+>           pnv_xscom_add_subregion(chip, PNV10_XSCOM_I2CM_BASE +
+> -                                chip10->i2c[i].engine * PNV10_XSCOM_I2CM_SIZE,
+> +                                (chip10->i2c[i].engine - 1) *
+> +                                        PNV10_XSCOM_I2CM_SIZE,
+>                                   &chip10->i2c[i].xscom_regs);
+>           qdev_connect_gpio_out(DEVICE(&chip10->i2c[i]), 0,
+>                                 qdev_get_gpio_in(DEVICE(&chip10->psi),
+> diff --git a/hw/ppc/pnv_i2c.c b/hw/ppc/pnv_i2c.c
+> index f75e59e709..b2c738da50 100644
+> --- a/hw/ppc/pnv_i2c.c
+> +++ b/hw/ppc/pnv_i2c.c
+> @@ -593,7 +593,7 @@ static int pnv_i2c_dt_xscom(PnvXScomInterface *dev, void *fdt,
+>       int i2c_offset;
+>       const char i2c_compat[] = "ibm,power8-i2cm\0ibm,power9-i2cm";
+>       uint32_t i2c_pcba = PNV9_XSCOM_I2CM_BASE +
+> -        i2c->engine * PNV9_XSCOM_I2CM_SIZE;
+> +        (i2c->engine - 1) * PNV9_XSCOM_I2CM_SIZE;
+>       uint32_t reg[2] = {
+>           cpu_to_be32(i2c_pcba),
+>           cpu_to_be32(PNV9_XSCOM_I2CM_SIZE)
 
 
