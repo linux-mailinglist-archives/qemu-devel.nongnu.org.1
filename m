@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E5CA7EFE50
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Nov 2023 08:37:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D52727EFE4F
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Nov 2023 08:37:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4Fsa-0001YB-EZ; Sat, 18 Nov 2023 02:36:36 -0500
+	id 1r4Fsk-0001xC-V4; Sat, 18 Nov 2023 02:36:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=9Slt=G7=kaod.org=clg@ozlabs.org>)
- id 1r4FsY-0001Xy-AA; Sat, 18 Nov 2023 02:36:34 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ id 1r4Fsh-0001gJ-Ua; Sat, 18 Nov 2023 02:36:44 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=9Slt=G7=kaod.org=clg@ozlabs.org>)
- id 1r4FsV-0007QD-Hz; Sat, 18 Nov 2023 02:36:34 -0500
+ id 1r4Fsg-0007R6-1n; Sat, 18 Nov 2023 02:36:43 -0500
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SXQYy49Tpz4x5M;
- Sat, 18 Nov 2023 18:36:22 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SXQZD2mgZz4x5G;
+ Sat, 18 Nov 2023 18:36:36 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SXQYw6swQz4x3D;
- Sat, 18 Nov 2023 18:36:20 +1100 (AEDT)
-Message-ID: <a8a8f9ea-9c21-4898-a01a-29b38087471a@kaod.org>
-Date: Sat, 18 Nov 2023 08:36:15 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SXQZB5XpMz4x5m;
+ Sat, 18 Nov 2023 18:36:34 +1100 (AEDT)
+Message-ID: <456ef745-46c1-4dc2-baf7-ce1c146955b5@kaod.org>
+Date: Sat, 18 Nov 2023 08:36:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/8] ppc/pnv: PNV I2C engines assigned incorrect XSCOM
- addresses
+Subject: Re: [PATCH v3 4/8] ppc/pnv: Fix PNV I2C invalid status after reset
+Content-Language: en-US
 To: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
  qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
 References: <20231114195659.1219821-1-milesg@linux.vnet.ibm.com>
- <20231114195659.1219821-4-milesg@linux.vnet.ibm.com>
-Content-Language: en-US
+ <20231114195659.1219821-5-milesg@linux.vnet.ibm.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231114195659.1219821-4-milesg@linux.vnet.ibm.com>
+In-Reply-To: <20231114195659.1219821-5-milesg@linux.vnet.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=9Slt=G7=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,28 +66,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nick,
-
-Since I started collecting fixes for 8.2 while you were away, I will
-finish this cycle with a last PR next week and let you take over 9.0.
-
-
-
 On 11/14/23 20:56, Glenn Miles wrote:
-> The PNV I2C engines for power9 and power10 were being assigned a base
-> XSCOM address that was off by one I2C engine's address range such
-> that engine 0 had engine 1's address and so on.  The xscom address
-> assignment was being based on the device tree engine numbering, which
-> starts at 1.  Rather than changing the device tree numbering to start
-> with 0, the addressing was changed to be based on the existing device
-> tree numbers minus one.
+> The PNV I2C Controller was clearing the status register
+> after a reset without repopulating the "upper threshold
+> for I2C ports", "Command Complete" and the SCL/SDA input
+> level fields.
 > 
-> Fixes: 1ceda19c28a1 ("ppc/pnv: Connect PNV I2C controller to powernv10)
+> Fixed this for resets caused by a system reset as well
+> as from writing to the "Immediate Reset" register.
+> 
+> Fixes: 263b81ee15af ("ppc/pnv: Add an I2C controller model")
 > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 > ---
-> 
-> Changes from v2:
->      - Added Fixes: tag
 
 
 Applied to ppc-next.
@@ -96,49 +87,78 @@ Thanks,
 C.
 
 
-
-
+> Changes from v2:
+>      -Added Fixes: tag
 > 
->   hw/ppc/pnv.c     | 6 ++++--
->   hw/ppc/pnv_i2c.c | 2 +-
->   2 files changed, 5 insertions(+), 3 deletions(-)
+>   hw/ppc/pnv_i2c.c | 42 ++++++++++++++++++------------------------
+>   1 file changed, 18 insertions(+), 24 deletions(-)
 > 
-> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index 645379d5bf..e82e9b30ec 100644
-> --- a/hw/ppc/pnv.c
-> +++ b/hw/ppc/pnv.c
-> @@ -1623,7 +1623,8 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
->               return;
->           }
->           pnv_xscom_add_subregion(chip, PNV9_XSCOM_I2CM_BASE +
-> -                               chip9->i2c[i].engine * PNV9_XSCOM_I2CM_SIZE,
-> +                                (chip9->i2c[i].engine - 1) *
-> +                                        PNV9_XSCOM_I2CM_SIZE,
->                                   &chip9->i2c[i].xscom_regs);
->           qdev_connect_gpio_out(DEVICE(&chip9->i2c[i]), 0,
->                                 qdev_get_gpio_in(DEVICE(&chip9->psi),
-> @@ -1871,7 +1872,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
->               return;
->           }
->           pnv_xscom_add_subregion(chip, PNV10_XSCOM_I2CM_BASE +
-> -                                chip10->i2c[i].engine * PNV10_XSCOM_I2CM_SIZE,
-> +                                (chip10->i2c[i].engine - 1) *
-> +                                        PNV10_XSCOM_I2CM_SIZE,
->                                   &chip10->i2c[i].xscom_regs);
->           qdev_connect_gpio_out(DEVICE(&chip10->i2c[i]), 0,
->                                 qdev_get_gpio_in(DEVICE(&chip10->psi),
 > diff --git a/hw/ppc/pnv_i2c.c b/hw/ppc/pnv_i2c.c
-> index f75e59e709..b2c738da50 100644
+> index b2c738da50..f80589157b 100644
 > --- a/hw/ppc/pnv_i2c.c
 > +++ b/hw/ppc/pnv_i2c.c
-> @@ -593,7 +593,7 @@ static int pnv_i2c_dt_xscom(PnvXScomInterface *dev, void *fdt,
->       int i2c_offset;
->       const char i2c_compat[] = "ibm,power8-i2cm\0ibm,power9-i2cm";
->       uint32_t i2c_pcba = PNV9_XSCOM_I2CM_BASE +
-> -        i2c->engine * PNV9_XSCOM_I2CM_SIZE;
-> +        (i2c->engine - 1) * PNV9_XSCOM_I2CM_SIZE;
->       uint32_t reg[2] = {
->           cpu_to_be32(i2c_pcba),
->           cpu_to_be32(PNV9_XSCOM_I2CM_SIZE)
+> @@ -462,6 +462,23 @@ static uint64_t pnv_i2c_xscom_read(void *opaque, hwaddr addr,
+>       return val;
+>   }
+>   
+> +static void pnv_i2c_reset(void *dev)
+> +{
+> +    PnvI2C *i2c = PNV_I2C(dev);
+> +
+> +    memset(i2c->regs, 0, sizeof(i2c->regs));
+> +
+> +    i2c->regs[I2C_STAT_REG] =
+> +        SETFIELD(I2C_STAT_UPPER_THRS, 0ull, i2c->num_busses - 1) |
+> +        I2C_STAT_CMD_COMP | I2C_STAT_SCL_INPUT_LEVEL |
+> +        I2C_STAT_SDA_INPUT_LEVEL;
+> +    i2c->regs[I2C_EXTD_STAT_REG] =
+> +        SETFIELD(I2C_EXTD_STAT_FIFO_SIZE, 0ull, PNV_I2C_FIFO_SIZE) |
+> +        SETFIELD(I2C_EXTD_STAT_I2C_VERSION, 0ull, 23); /* last version */
+> +
+> +    fifo8_reset(&i2c->fifo);
+> +}
+> +
+>   static void pnv_i2c_xscom_write(void *opaque, hwaddr addr,
+>                                   uint64_t val, unsigned size)
+>   {
+> @@ -499,16 +516,7 @@ static void pnv_i2c_xscom_write(void *opaque, hwaddr addr,
+>           break;
+>   
+>       case I2C_RESET_I2C_REG:
+> -        i2c->regs[I2C_MODE_REG] = 0;
+> -        i2c->regs[I2C_CMD_REG] = 0;
+> -        i2c->regs[I2C_WATERMARK_REG] = 0;
+> -        i2c->regs[I2C_INTR_MASK_REG] = 0;
+> -        i2c->regs[I2C_INTR_COND_REG] = 0;
+> -        i2c->regs[I2C_INTR_RAW_COND_REG] = 0;
+> -        i2c->regs[I2C_STAT_REG] = 0;
+> -        i2c->regs[I2C_RESIDUAL_LEN_REG] = 0;
+> -        i2c->regs[I2C_EXTD_STAT_REG] &=
+> -            (I2C_EXTD_STAT_FIFO_SIZE | I2C_EXTD_STAT_I2C_VERSION);
+> +        pnv_i2c_reset(i2c);
+>           break;
+>   
+>       case I2C_RESET_ERRORS:
+> @@ -620,20 +628,6 @@ static int pnv_i2c_dt_xscom(PnvXScomInterface *dev, void *fdt,
+>       return 0;
+>   }
+>   
+> -static void pnv_i2c_reset(void *dev)
+> -{
+> -    PnvI2C *i2c = PNV_I2C(dev);
+> -
+> -    memset(i2c->regs, 0, sizeof(i2c->regs));
+> -
+> -    i2c->regs[I2C_STAT_REG] = I2C_STAT_CMD_COMP;
+> -    i2c->regs[I2C_EXTD_STAT_REG] =
+> -        SETFIELD(I2C_EXTD_STAT_FIFO_SIZE, 0ull, PNV_I2C_FIFO_SIZE) |
+> -        SETFIELD(I2C_EXTD_STAT_I2C_VERSION, 0ull, 23); /* last version */
+> -
+> -    fifo8_reset(&i2c->fifo);
+> -}
+> -
+>   static void pnv_i2c_realize(DeviceState *dev, Error **errp)
+>   {
+>       PnvI2C *i2c = PNV_I2C(dev);
 
 
