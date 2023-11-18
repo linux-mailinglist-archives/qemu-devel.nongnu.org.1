@@ -2,77 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6288A7EFEAA
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Nov 2023 10:20:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73AD47EFEAB
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Nov 2023 10:20:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4HTo-0002Ta-0P; Sat, 18 Nov 2023 04:19:08 -0500
+	id 1r4HTs-0002U0-Ty; Sat, 18 Nov 2023 04:19:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r4HTl-0002Sz-5U
- for qemu-devel@nongnu.org; Sat, 18 Nov 2023 04:19:05 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1r4HTq-0002Tm-Lz
+ for qemu-devel@nongnu.org; Sat, 18 Nov 2023 04:19:10 -0500
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r4HTj-00055W-Jl
- for qemu-devel@nongnu.org; Sat, 18 Nov 2023 04:19:04 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1cc5b705769so24993515ad.0
- for <qemu-devel@nongnu.org>; Sat, 18 Nov 2023 01:19:03 -0800 (PST)
+ id 1r4HTo-00055v-MH
+ for qemu-devel@nongnu.org; Sat, 18 Nov 2023 04:19:10 -0500
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-5bd33abbb90so1945941a12.2
+ for <qemu-devel@nongnu.org>; Sat, 18 Nov 2023 01:19:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1700299142; x=1700903942;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1700299147; x=1700903947;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=V2WqTGsj76jZXQ8vdPVVfqT8PnTeJYClWaZDpNJ/6/w=;
- b=L6weqCdFYx7zhfRx69rNEq6T/9bZDkNeWx21V2CLAf5VHyxYFNgdn5sTsgY4gLDTV3
- HZkSJZ2FIqZqHabnJ461mrGydP/qzXQ1sB7cNxMFzTjlt2l6MOAzX4Fa0X8occhqZG3W
- /BfBzuTK+Vox5Jtc2YB5hHJl3ewLX5Aheu8WVv+Lxr7SUe35b5ar2TUpqe4naqGwGtB9
- PPJFJ8swaqFPX9ZVccYJs5t4eQk4xDZvCL3tR28rguCAGa7Dab4MrXriGrISCH1k789+
- oOIZ3Y+FzJ9pWJWHwyWmQ0GyN5VBWy1m6f+40H9uOrTVjFiH8pFAIvF9PzFuYn9FZ9EI
- PNsA==
+ bh=SA+gp7Q4DsFINtAgCtzcNmDa0U0Sm402hHQG0dlxYmY=;
+ b=zC0rodCv0Bwl00ZhFGN931Wtzzx/yNB/Uai1G14XCB6xGxkKHfA9sfZ/+GhJVOOiuW
+ RURRU9CCSdqYtaMKve+Ea7nxOn79H3+bETPl8wv0RSaKtj9M7Iu/FGYn/6KH3E+LlXLJ
+ kIxkJviIMsCxfiWo5WNx29ZKSe9sceH/qlezxbqTK6+rTn7wCEbz/P/QW2F9Bpk31AJ5
+ aI4kUTvBYQefzTkVKSvMXvAxeccUZ/4YPyVCenL3cWmTXz/tscWYQ0BFCLJ0hT5Th0MR
+ uhZeTu7kNDxGmc5KGZUCFRZ+GjMbOCXwPf41EbWhjZYHeHE2zqBJ/x22jfnibbI99eSN
+ RJtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700299142; x=1700903942;
+ d=1e100.net; s=20230601; t=1700299147; x=1700903947;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=V2WqTGsj76jZXQ8vdPVVfqT8PnTeJYClWaZDpNJ/6/w=;
- b=cfVVt3tV8lmTd9DQiHdQ0w3jiAcNQpyLTqXzNAvbujknjpnio+bgulmt84PaFcpiNE
- FupGLuoQVl1L1wFcLqr4K1EOdmMUPEJ5uh76jwKYSRDpX7e0UhzqDmHw20buYLkrQegW
- fTPv4B7+/KMDlgCqKGv5BuDSxnqa6FqR/KVAhtiASTQXzDDoKugH0TTCTqqkUd6NN2zg
- JjTySAbKlL6FyiFudkcYtD9RwTlMFdEiyEzq/6aPK/5jyHgHyZfBZdJ0sK8icwg5hpRW
- AWbdvwKie0UMJ8pCkxKdARu/1rtB4Sio+49mqP5yr3AUFQBQ+0ZZJhGCI1x4dAsJPI1B
- h0Fw==
-X-Gm-Message-State: AOJu0YwL7ZqcYrhihlauPLJMtc1Gg4DKOJdGkZGqWcnzt8EuhZGw/+/X
- p2NNWJvvAAicMKXSjFK4IbDffCqEz0JD4C2mXDo=
-X-Google-Smtp-Source: AGHT+IF8vexX91+ock5vsnajJ6Zv+UnpHq02XiURJfsH44zkEh/p7qcrX3A8xk6vE3ufkoEHEzFrLA==
-X-Received: by 2002:a17:902:ec92:b0:1cf:532e:9a77 with SMTP id
- x18-20020a170902ec9200b001cf532e9a77mr942439plg.58.1700299141995; 
- Sat, 18 Nov 2023 01:19:01 -0800 (PST)
+ bh=SA+gp7Q4DsFINtAgCtzcNmDa0U0Sm402hHQG0dlxYmY=;
+ b=QCJqbPFeZsgY6NwT5V79b7Crlm21TuvKkxj6f86+1VxZn2vSUyZeZfqM+iUlV9aDkx
+ wNFIrP8eo5oV/s+lnkkoSkQamDCaK0lWykeWu5Shb5QGnLmfsbzls/D5YEktaHY4ZdjM
+ Jv6Y22/ibAtqKv2wj0UJIkqCRGJpRfgji3Je2kj0+sXhwycAOlRZPlbk1+4+PWZz2GLs
+ itAWotY9OSvBuR7N0kwElqvo5ZZ/zo2DC8ZCM88Aq9eHio+eSBthXHAnBa8ElzA9WwPa
+ OILhYnjzVawzJtGOKcHWLIwW7sXadUySP/ft2s7v4kWdUgyhJt6qD+Z6mqgLa1DGcqP4
+ X9EQ==
+X-Gm-Message-State: AOJu0YxqJLBIZN81fgIjv35O2Z6s8kc0U09cDjlDR4ojQ2ydOqALIftv
+ Kgy8MCttoZHOEnEMHkf529D1jM1jOzmA4T60840=
+X-Google-Smtp-Source: AGHT+IFVwKtaUDKs9H8SawdsPGnNjg6rYzkLXoEf7lgXQHNSd1eW341yAWl2aYmxRWIZHh82uYLc2w==
+X-Received: by 2002:a05:6a20:9382:b0:189:7c2:508d with SMTP id
+ x2-20020a056a20938200b0018907c2508dmr1758851pzh.12.1700299146962; 
+ Sat, 18 Nov 2023 01:19:06 -0800 (PST)
 Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- o24-20020a170902779800b001bd28b9c3ddsm2602785pll.299.2023.11.18.01.19.00
+ ji6-20020a170903324600b001c9d6923e7dsm2631409plb.222.2023.11.18.01.19.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 18 Nov 2023 01:19:01 -0800 (PST)
+ Sat, 18 Nov 2023 01:19:06 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
  Andrew Melnychenko <andrew@daynix.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
  "Zhang, Chen" <chen.zhang@intel.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v7 01/19] tap: Remove tap_probe_vnet_hdr_len()
-Date: Sat, 18 Nov 2023 18:18:15 +0900
-Message-ID: <20231118091837.5758-2-akihiko.odaki@daynix.com>
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Luigi Rizzo <rizzo@iet.unipi.it>,
+ Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
+ Vincenzo Maffione <v.maffione@gmail.com>
+Subject: [PATCH v7 02/19] tap: Remove qemu_using_vnet_hdr()
+Date: Sat, 18 Nov 2023 18:18:16 +0900
+Message-ID: <20231118091837.5758-3-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231118091837.5758-1-akihiko.odaki@daynix.com>
 References: <20231118091837.5758-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,138 +99,268 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It was necessary since an Linux older than 2.6.35 may implement the
-virtio-net header but may not allow to change its length. Remove it
-since such an old Linux is no longer supported.
+Since qemu_set_vnet_hdr_len() is always called when
+qemu_using_vnet_hdr() is called, we can merge them and save some code.
+
+For consistency, express that the virtio-net header is not in use by
+returning 0 with qemu_get_vnet_hdr_len() instead of having a dedicated
+function, qemu_get_using_vnet_hdr().
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- net/tap_int.h     |  1 -
- net/tap-bsd.c     |  5 -----
- net/tap-linux.c   | 20 --------------------
- net/tap-solaris.c |  5 -----
- net/tap-stub.c    |  5 -----
- net/tap.c         |  8 ++------
- 6 files changed, 2 insertions(+), 42 deletions(-)
+ include/net/net.h   |  7 -------
+ hw/net/e1000e.c     |  1 -
+ hw/net/igb.c        |  1 -
+ hw/net/net_tx_pkt.c |  4 ++--
+ hw/net/virtio-net.c |  3 ---
+ hw/net/vmxnet3.c    |  2 --
+ net/dump.c          |  4 +---
+ net/net.c           | 24 +-----------------------
+ net/netmap.c        |  5 -----
+ net/tap.c           | 28 +---------------------------
+ 10 files changed, 5 insertions(+), 74 deletions(-)
 
-diff --git a/net/tap_int.h b/net/tap_int.h
-index 9a2175655b..8857ff299d 100644
---- a/net/tap_int.h
-+++ b/net/tap_int.h
-@@ -35,7 +35,6 @@ ssize_t tap_read_packet(int tapfd, uint8_t *buf, int maxlen);
+diff --git a/include/net/net.h b/include/net/net.h
+index ffbd2c8d56..374a827190 100644
+--- a/include/net/net.h
++++ b/include/net/net.h
+@@ -57,8 +57,6 @@ typedef bool (HasUfo)(NetClientState *);
+ typedef bool (HasUso)(NetClientState *);
+ typedef bool (HasVnetHdr)(NetClientState *);
+ typedef bool (HasVnetHdrLen)(NetClientState *, int);
+-typedef bool (GetUsingVnetHdr)(NetClientState *);
+-typedef void (UsingVnetHdr)(NetClientState *, bool);
+ typedef void (SetOffload)(NetClientState *, int, int, int, int, int, int, int);
+ typedef int (GetVnetHdrLen)(NetClientState *);
+ typedef void (SetVnetHdrLen)(NetClientState *, int);
+@@ -88,10 +86,7 @@ typedef struct NetClientInfo {
+     HasUso *has_uso;
+     HasVnetHdr *has_vnet_hdr;
+     HasVnetHdrLen *has_vnet_hdr_len;
+-    GetUsingVnetHdr *get_using_vnet_hdr;
+-    UsingVnetHdr *using_vnet_hdr;
+     SetOffload *set_offload;
+-    GetVnetHdrLen *get_vnet_hdr_len;
+     SetVnetHdrLen *set_vnet_hdr_len;
+     SetVnetLE *set_vnet_le;
+     SetVnetBE *set_vnet_be;
+@@ -194,8 +189,6 @@ bool qemu_has_ufo(NetClientState *nc);
+ bool qemu_has_uso(NetClientState *nc);
+ bool qemu_has_vnet_hdr(NetClientState *nc);
+ bool qemu_has_vnet_hdr_len(NetClientState *nc, int len);
+-bool qemu_get_using_vnet_hdr(NetClientState *nc);
+-void qemu_using_vnet_hdr(NetClientState *nc, bool enable);
+ void qemu_set_offload(NetClientState *nc, int csum, int tso4, int tso6,
+                       int ecn, int ufo, int uso4, int uso6);
+ int qemu_get_vnet_hdr_len(NetClientState *nc);
+diff --git a/hw/net/e1000e.c b/hw/net/e1000e.c
+index e41a6c1038..4edb58858e 100644
+--- a/hw/net/e1000e.c
++++ b/hw/net/e1000e.c
+@@ -352,7 +352,6 @@ e1000e_init_net_peer(E1000EState *s, PCIDevice *pci_dev, uint8_t *macaddr)
+     for (i = 0; i < s->conf.peers.queues; i++) {
+         nc = qemu_get_subqueue(s->nic, i);
+         qemu_set_vnet_hdr_len(nc->peer, sizeof(struct virtio_net_hdr));
+-        qemu_using_vnet_hdr(nc->peer, true);
+     }
+ }
  
- void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp);
- int tap_probe_vnet_hdr(int fd, Error **errp);
--int tap_probe_vnet_hdr_len(int fd, int len);
- int tap_probe_has_ufo(int fd);
- int tap_probe_has_uso(int fd);
- void tap_fd_set_offload(int fd, int csum, int tso4, int tso6, int ecn, int ufo,
-diff --git a/net/tap-bsd.c b/net/tap-bsd.c
-index 274ea7bd2c..b4c84441ba 100644
---- a/net/tap-bsd.c
-+++ b/net/tap-bsd.c
-@@ -217,11 +217,6 @@ int tap_probe_has_uso(int fd)
+diff --git a/hw/net/igb.c b/hw/net/igb.c
+index 8b713843d9..cfdb148051 100644
+--- a/hw/net/igb.c
++++ b/hw/net/igb.c
+@@ -339,7 +339,6 @@ igb_init_net_peer(IGBState *s, PCIDevice *pci_dev, uint8_t *macaddr)
+     for (i = 0; i < s->conf.peers.queues; i++) {
+         nc = qemu_get_subqueue(s->nic, i);
+         qemu_set_vnet_hdr_len(nc->peer, sizeof(struct virtio_net_hdr));
+-        qemu_using_vnet_hdr(nc->peer, true);
+     }
+ }
+ 
+diff --git a/hw/net/net_tx_pkt.c b/hw/net/net_tx_pkt.c
+index 2e5f58b3c9..668871f8d8 100644
+--- a/hw/net/net_tx_pkt.c
++++ b/hw/net/net_tx_pkt.c
+@@ -578,7 +578,7 @@ static void net_tx_pkt_sendv(
+ {
+     NetClientState *nc = opaque;
+ 
+-    if (qemu_get_using_vnet_hdr(nc->peer)) {
++    if (qemu_get_vnet_hdr_len(nc->peer)) {
+         qemu_sendv_packet(nc, virt_iov, virt_iov_cnt);
+     } else {
+         qemu_sendv_packet(nc, iov, iov_cnt);
+@@ -808,7 +808,7 @@ static bool net_tx_pkt_do_sw_fragmentation(struct NetTxPkt *pkt,
+ 
+ bool net_tx_pkt_send(struct NetTxPkt *pkt, NetClientState *nc)
+ {
+-    bool offload = qemu_get_using_vnet_hdr(nc->peer);
++    bool offload = !!qemu_get_vnet_hdr_len(nc->peer);
+     return net_tx_pkt_send_custom(pkt, offload, net_tx_pkt_sendv, nc);
+ }
+ 
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 80c56f0cfc..e12176acb1 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -3728,9 +3728,6 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+ 
+     peer_test_vnet_hdr(n);
+     if (peer_has_vnet_hdr(n)) {
+-        for (i = 0; i < n->max_queue_pairs; i++) {
+-            qemu_using_vnet_hdr(qemu_get_subqueue(n->nic, i)->peer, true);
+-        }
+         n->host_hdr_len = sizeof(struct virtio_net_hdr);
+     } else {
+         n->host_hdr_len = 0;
+diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
+index 6fb4102d03..81ab8ada55 100644
+--- a/hw/net/vmxnet3.c
++++ b/hw/net/vmxnet3.c
+@@ -2091,8 +2091,6 @@ static void vmxnet3_net_init(VMXNET3State *s)
+     if (s->peer_has_vhdr) {
+         qemu_set_vnet_hdr_len(qemu_get_queue(s->nic)->peer,
+             sizeof(struct virtio_net_hdr));
+-
+-        qemu_using_vnet_hdr(qemu_get_queue(s->nic)->peer, 1);
+     }
+ 
+     qemu_format_nic_info_str(qemu_get_queue(s->nic), s->conf.macaddr.a);
+diff --git a/net/dump.c b/net/dump.c
+index 16073f2458..956e34a123 100644
+--- a/net/dump.c
++++ b/net/dump.c
+@@ -154,10 +154,8 @@ static ssize_t filter_dump_receive_iov(NetFilterState *nf, NetClientState *sndr,
+                                        int iovcnt, NetPacketSent *sent_cb)
+ {
+     NetFilterDumpState *nfds = FILTER_DUMP(nf);
+-    int offset = qemu_get_using_vnet_hdr(nf->netdev) ?
+-                 qemu_get_vnet_hdr_len(nf->netdev) : 0;
+ 
+-    dump_receive_iov(&nfds->ds, iov, iovcnt, offset);
++    dump_receive_iov(&nfds->ds, iov, iovcnt, qemu_get_vnet_hdr_len(nf->netdev));
      return 0;
  }
  
--int tap_probe_vnet_hdr_len(int fd, int len)
--{
--    return 0;
--}
--
- void tap_fd_set_vnet_hdr_len(int fd, int len)
- {
- }
-diff --git a/net/tap-linux.c b/net/tap-linux.c
-index c7e514ecb0..1226d5fda2 100644
---- a/net/tap-linux.c
-+++ b/net/tap-linux.c
-@@ -185,26 +185,6 @@ int tap_probe_has_uso(int fd)
-     return 1;
+diff --git a/net/net.c b/net/net.c
+index cb88651db2..f603030dd6 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -524,24 +524,6 @@ bool qemu_has_vnet_hdr_len(NetClientState *nc, int len)
+     return nc->info->has_vnet_hdr_len(nc, len);
  }
  
--/* Verify that we can assign given length */
--int tap_probe_vnet_hdr_len(int fd, int len)
+-bool qemu_get_using_vnet_hdr(NetClientState *nc)
 -{
--    int orig;
--    if (ioctl(fd, TUNGETVNETHDRSZ, &orig) == -1) {
+-    if (!nc || !nc->info->get_using_vnet_hdr) {
+-        return false;
+-    }
+-
+-    return nc->info->get_using_vnet_hdr(nc);
+-}
+-
+-void qemu_using_vnet_hdr(NetClientState *nc, bool enable)
+-{
+-    if (!nc || !nc->info->using_vnet_hdr) {
+-        return;
+-    }
+-
+-    nc->info->using_vnet_hdr(nc, enable);
+-}
+-
+ void qemu_set_offload(NetClientState *nc, int csum, int tso4, int tso6,
+                           int ecn, int ufo, int uso4, int uso6)
+ {
+@@ -554,11 +536,7 @@ void qemu_set_offload(NetClientState *nc, int csum, int tso4, int tso6,
+ 
+ int qemu_get_vnet_hdr_len(NetClientState *nc)
+ {
+-    if (!nc || !nc->info->get_vnet_hdr_len) {
 -        return 0;
 -    }
--    if (ioctl(fd, TUNSETVNETHDRSZ, &len) == -1) {
--        return 0;
--    }
--    /* Restore original length: we can't handle failure. */
--    if (ioctl(fd, TUNSETVNETHDRSZ, &orig) == -1) {
--        fprintf(stderr, "TUNGETVNETHDRSZ ioctl() failed: %s. Exiting.\n",
--                strerror(errno));
--        abort();
--        return -errno;
--    }
--    return 1;
--}
 -
- void tap_fd_set_vnet_hdr_len(int fd, int len)
- {
-     if (ioctl(fd, TUNSETVNETHDRSZ, &len) == -1) {
-diff --git a/net/tap-solaris.c b/net/tap-solaris.c
-index 08b13af512..51b7830bef 100644
---- a/net/tap-solaris.c
-+++ b/net/tap-solaris.c
-@@ -221,11 +221,6 @@ int tap_probe_has_uso(int fd)
-     return 0;
+-    return nc->info->get_vnet_hdr_len(nc);
++    return nc->vnet_hdr_len;
  }
  
--int tap_probe_vnet_hdr_len(int fd, int len)
--{
--    return 0;
--}
--
- void tap_fd_set_vnet_hdr_len(int fd, int len)
- {
- }
-diff --git a/net/tap-stub.c b/net/tap-stub.c
-index 4b24f61e3a..38673434cb 100644
---- a/net/tap-stub.c
-+++ b/net/tap-stub.c
-@@ -52,11 +52,6 @@ int tap_probe_has_uso(int fd)
-     return 0;
+ void qemu_set_vnet_hdr_len(NetClientState *nc, int len)
+diff --git a/net/netmap.c b/net/netmap.c
+index 241b27c8e9..297510e190 100644
+--- a/net/netmap.c
++++ b/net/netmap.c
+@@ -351,10 +351,6 @@ static bool netmap_has_vnet_hdr(NetClientState *nc)
+     return netmap_has_vnet_hdr_len(nc, sizeof(struct virtio_net_hdr));
  }
  
--int tap_probe_vnet_hdr_len(int fd, int len)
+-static void netmap_using_vnet_hdr(NetClientState *nc, bool enable)
 -{
--    return 0;
 -}
 -
- void tap_fd_set_vnet_hdr_len(int fd, int len)
+ static void netmap_set_vnet_hdr_len(NetClientState *nc, int len)
  {
- }
+     NetmapState *s = DO_UPCAST(NetmapState, nc, nc);
+@@ -393,7 +389,6 @@ static NetClientInfo net_netmap_info = {
+     .has_ufo = netmap_has_vnet_hdr,
+     .has_vnet_hdr = netmap_has_vnet_hdr,
+     .has_vnet_hdr_len = netmap_has_vnet_hdr_len,
+-    .using_vnet_hdr = netmap_using_vnet_hdr,
+     .set_offload = netmap_set_offload,
+     .set_vnet_hdr_len = netmap_set_vnet_hdr_len,
+ };
 diff --git a/net/tap.c b/net/tap.c
-index c23d0323c2..a1f4d9d49f 100644
+index a1f4d9d49f..ea2dadc943 100644
 --- a/net/tap.c
 +++ b/net/tap.c
-@@ -259,11 +259,7 @@ static bool tap_has_vnet_hdr(NetClientState *nc)
+@@ -262,13 +262,6 @@ static bool tap_has_vnet_hdr_len(NetClientState *nc, int len)
+     return tap_has_vnet_hdr(nc);
+ }
  
- static bool tap_has_vnet_hdr_len(NetClientState *nc, int len)
+-static int tap_get_vnet_hdr_len(NetClientState *nc)
+-{
+-    TAPState *s = DO_UPCAST(TAPState, nc, nc);
+-
+-    return s->host_vnet_hdr_len;
+-}
+-
+ static void tap_set_vnet_hdr_len(NetClientState *nc, int len)
  {
+     TAPState *s = DO_UPCAST(TAPState, nc, nc);
+@@ -280,23 +273,7 @@ static void tap_set_vnet_hdr_len(NetClientState *nc, int len)
+ 
+     tap_fd_set_vnet_hdr_len(s->fd, len);
+     s->host_vnet_hdr_len = len;
+-}
+-
+-static bool tap_get_using_vnet_hdr(NetClientState *nc)
+-{
+-    TAPState *s = DO_UPCAST(TAPState, nc, nc);
+-
+-    return s->using_vnet_hdr;
+-}
+-
+-static void tap_using_vnet_hdr(NetClientState *nc, bool using_vnet_hdr)
+-{
 -    TAPState *s = DO_UPCAST(TAPState, nc, nc);
 -
 -    assert(nc->info->type == NET_CLIENT_DRIVER_TAP);
+-    assert(!!s->host_vnet_hdr_len == using_vnet_hdr);
 -
--    return !!tap_probe_vnet_hdr_len(s->fd, len);
-+    return tap_has_vnet_hdr(nc);
+-    s->using_vnet_hdr = using_vnet_hdr;
++    s->using_vnet_hdr = true;
  }
  
- static int tap_get_vnet_hdr_len(NetClientState *nc)
-@@ -432,7 +428,7 @@ static TAPState *net_tap_fd_init(NetClientState *peer,
-      * Make sure host header length is set correctly in tap:
-      * it might have been modified by another instance of qemu.
-      */
--    if (tap_probe_vnet_hdr_len(s->fd, s->host_vnet_hdr_len)) {
-+    if (vnet_hdr) {
-         tap_fd_set_vnet_hdr_len(s->fd, s->host_vnet_hdr_len);
-     }
-     tap_read_poll(s, true);
+ static int tap_set_vnet_le(NetClientState *nc, bool is_le)
+@@ -394,10 +371,7 @@ static NetClientInfo net_tap_info = {
+     .has_uso = tap_has_uso,
+     .has_vnet_hdr = tap_has_vnet_hdr,
+     .has_vnet_hdr_len = tap_has_vnet_hdr_len,
+-    .get_using_vnet_hdr = tap_get_using_vnet_hdr,
+-    .using_vnet_hdr = tap_using_vnet_hdr,
+     .set_offload = tap_set_offload,
+-    .get_vnet_hdr_len = tap_get_vnet_hdr_len,
+     .set_vnet_hdr_len = tap_set_vnet_hdr_len,
+     .set_vnet_le = tap_set_vnet_le,
+     .set_vnet_be = tap_set_vnet_be,
 -- 
 2.42.1
 
