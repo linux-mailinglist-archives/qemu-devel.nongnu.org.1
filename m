@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5EF7EFEC1
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 Nov 2023 10:30:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 067DE7EFF6F
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 Nov 2023 13:12:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4Hc3-0000Ic-6x; Sat, 18 Nov 2023 04:27:39 -0500
+	id 1r4K9q-00046B-Bn; Sat, 18 Nov 2023 07:10:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r4Hbt-0008Hi-DK
- for qemu-devel@nongnu.org; Sat, 18 Nov 2023 04:27:30 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1r4K9o-00045u-CJ
+ for qemu-devel@nongnu.org; Sat, 18 Nov 2023 07:10:40 -0500
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r4Hbr-0003uA-TG
- for qemu-devel@nongnu.org; Sat, 18 Nov 2023 04:27:29 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6bd32d1a040so2847794b3a.3
- for <qemu-devel@nongnu.org>; Sat, 18 Nov 2023 01:27:27 -0800 (PST)
+ id 1r4K9l-0004YX-Ua
+ for qemu-devel@nongnu.org; Sat, 18 Nov 2023 07:10:40 -0500
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-5c2139492d9so596895a12.0
+ for <qemu-devel@nongnu.org>; Sat, 18 Nov 2023 04:10:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1700299646; x=1700904446;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1700309436; x=1700914236;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ h=content-transfer-encoding:subject:from:to:content-language
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
  :message-id:reply-to;
- bh=g0IWpuVugnOHhHW4iRdjHhQop01tKq8JlW1RJdmELNI=;
- b=y0kUqMNk2IIhRCE34sF6BT0RZn1oMFXmOz4QIK/ELB4rVlrVWeARP5qzsJ3p3Jjg0H
- MX7cP010pbabqtLFn6h1TCiQxPNJAIqeoaxfArOapKjemadNUYVdoRQIJEx2HfKOvuS1
- 1UGFrJOqOAVTLsrZq+3MGIDCFAi9cZK/iA1n5MYau84YM3t0dCNpnG+L+xTailmG0QJb
- +1kArvdg2NF13CgnT55KwEBVnPoV1FpK/v/xhOzj2Zna9szi3y25qUoL6Sz9LGsLlMtq
- nW9vwUfsKggtZJ6t+n4kIvTLSk2UQaCtHZDL2UiEN5ZdFyxIjd94oBfNwtsloSUdjUW+
- 2YqA==
+ bh=qVeDlYP/jY5Kc2oqfXCUuVwRL0RzlNUiNOgs0AHKgo8=;
+ b=n/yQlR45P/XQ2cNVk4i6cr7tC047nslgG3rxFDbVcdFmYGk4+EllcQUj3gxR6ZlGkA
+ Cc0BjEEspq7nWLT1QckI2qlLQwmSLiHh78AtFGlmxuZTrBuP//mLeNaKh18zXRfZrjQf
+ t8LO8ETPfDvklZ5ce62FEPL4tHPS59Fzy0R2wzRle4tnWRxn4v+R1/FlIZNTM1yI+V77
+ +xoQwO6JDxxxUBllmTrQZN2gTyJoHRzoh9X1mkLnHGqboouMSaVB9w0NpHWImIpsI37Q
+ /zXWur6UnO39mb+8Xe8KEFwKVVh5iijxMyjSLxjUuVnT5HDliujfIReZPL1OLSzMvBvo
+ 7XNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700299646; x=1700904446;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=g0IWpuVugnOHhHW4iRdjHhQop01tKq8JlW1RJdmELNI=;
- b=bxGeWUA+285cVpQcVM3Ap2A1l2u9x4/onOwRED55ko1vElzOn9h7ohFJpw5KvWpI1l
- Vtj5lNbCkzhruQDeqnAbjaengvVNvamgBXwpVJgJOVHDjfQI+h3NJyPmMM8jTOUcSB9Q
- o3kABDD/Piops3b0wN64hzYpCKNJvj9umcyCuZLiMj6kP81gOPCdJXDnquinq1Nv0wRP
- qr+T3Sx7RKQENVH1dY+q1vcNzwEN7sWQoKe8LVl/Jn4yiCwobztkEpqKMTcGx8qju5Qf
- OXJbASZR9xvjPmFmOkgFkR4C7BLXDYl3AueJBbPzhG1PE+hCUqfJIzwtPser5u666vOA
- c35A==
-X-Gm-Message-State: AOJu0Yxa0Jbo9TlkU4PzvW3JEgOy2wKZ8lxBUqRJvc8yUnedj3+g8wun
- XpeTq/xi0fGIrCeL3W9SZ/aZQz+6GTxviSxj6Wo=
-X-Google-Smtp-Source: AGHT+IHxurB82PoPrYzYMGAHFKHRmZndjq8sGwA7ifSrECwz6uDvLo3Dsnfb844zJu6D9dowl9BS9w==
-X-Received: by 2002:a05:6a00:1ad3:b0:6b1:e876:168b with SMTP id
- f19-20020a056a001ad300b006b1e876168bmr2559731pfv.11.1700299646389; 
- Sat, 18 Nov 2023 01:27:26 -0800 (PST)
-Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- x27-20020aa793bb000000b006c33c82da66sm2643437pff.75.2023.11.18.01.27.24
+ d=1e100.net; s=20230601; t=1700309436; x=1700914236;
+ h=content-transfer-encoding:subject:from:to:content-language
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=qVeDlYP/jY5Kc2oqfXCUuVwRL0RzlNUiNOgs0AHKgo8=;
+ b=UZBb8sJXTOW+hMi7wPJxW424zv8KDxFY7/EwA5cpP69ewPu3rx7cobvLIbLXQOxgEv
+ nmRR+s9xFC4J5tNs+8Q3NLRYhzS1YlR6FLxWftXmf4MCK3102L7o7gntgPDkbQ0ES0+X
+ RmM1830g40aSfrQYXA4L99pi4dcHtdXPobEut+0jx66igtO9NDUXB3eyt8FBAGFrOUqL
+ PwzLGi5X7xd/BV3bAz2xYO49U6kGG/3QOQdn19NcE2nSs9n0Vx2+OetvSTgXv9DDaflM
+ X+zu6KVgApIRc4KBstUyumu4vi5ZR6WuszNUzbj4IP5Nd8hTGfTxbXBrazmKMFdaE7Av
+ nBRw==
+X-Gm-Message-State: AOJu0YzwXTouOxLssXmmJWykqUzLgOK5F3Gg6CoN45bjvsX8VfEnYUP9
+ tyZBJ0bmhCR7sbdtxV1IVMqIOg==
+X-Google-Smtp-Source: AGHT+IHFwo15ky8BpzVkHSniloieGheZ+99kBtpfKrADmlEJygctmLm1gQXBMJe0pcAOd7DtY78CHw==
+X-Received: by 2002:a05:6a21:328b:b0:187:d189:53df with SMTP id
+ yt11-20020a056a21328b00b00187d18953dfmr1594083pzb.16.1700309436413; 
+ Sat, 18 Nov 2023 04:10:36 -0800 (PST)
+Received: from [157.82.205.15] ([157.82.205.15])
+ by smtp.gmail.com with ESMTPSA id
+ md24-20020a17090b23d800b00273744e6eccsm2910112pjb.12.2023.11.18.04.10.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 18 Nov 2023 01:27:26 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
- Andrew Melnychenko <andrew@daynix.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- "Zhang, Chen" <chen.zhang@intel.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH RESEND v7 19/19] ebpf: Add a separate target for skeleton
-Date: Sat, 18 Nov 2023 18:25:59 +0900
-Message-ID: <20231118092601.7132-20-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231118092601.7132-1-akihiko.odaki@daynix.com>
-References: <20231118092601.7132-1-akihiko.odaki@daynix.com>
+ Sat, 18 Nov 2023 04:10:35 -0800 (PST)
+Message-ID: <5d46f455-f530-4e5e-9ae7-13a2297d4bc5@daynix.com>
+Date: Sat, 18 Nov 2023 21:10:33 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::434;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x434.google.com
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Washizu Yui <yui.washidu@gmail.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [RFC] Flexible SR-IOV support for virtio-net
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::531;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,51 +93,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This generalizes the rule to generate the skeleton and allows to add
-another.
+Hi,
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- tools/ebpf/Makefile.ebpf | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+We are planning to add PCIe SR-IOV support to the virtio-net driver for 
+Windows ("NetKVM")[1], and we want a SR-IOV feature for virtio-net 
+emulation code in QEMU to test it. I expect there are other people 
+interested in such a feature, considering that people are using igb[2] 
+to test SR-IOV support in VMs.
 
-diff --git a/tools/ebpf/Makefile.ebpf b/tools/ebpf/Makefile.ebpf
-index 3391e7ce08..572ca5987a 100755
---- a/tools/ebpf/Makefile.ebpf
-+++ b/tools/ebpf/Makefile.ebpf
-@@ -1,23 +1,24 @@
--OBJS = rss.bpf.o
-+SKELETONS = rss.bpf.skeleton.h
- 
- LLVM_STRIP ?= llvm-strip
- CLANG ?= clang
- INC_FLAGS = `$(CLANG) -print-file-name=include`
- EXTRA_CFLAGS ?= -O2 -g -target bpf
- 
--all: $(OBJS)
-+all: $(SKELETONS)
- 
- .PHONY: clean
- 
- clean:
--	rm -f $(OBJS)
--	rm -f rss.bpf.skeleton.h
-+	rm -f $(SKELETONS) $(SKELETONS:%.skeleton.h=%.o)
- 
--$(OBJS):  %.o:%.c
-+%.o: %.c
- 	$(CLANG) $(INC_FLAGS) \
-                 -D__KERNEL__ -D__ASM_SYSREG_H \
-                 -I../include $(LINUXINCLUDE) \
-                 $(EXTRA_CFLAGS) -c $< -o $@
- 	$(LLVM_STRIP) -g $@
--	bpftool gen skeleton rss.bpf.o > rss.bpf.skeleton.h
--	cp rss.bpf.skeleton.h ../../ebpf/
-+
-+%.skeleton.h: %.o
-+	bpftool gen skeleton $< > $@
-+	cp $@ ../../ebpf/
--- 
-2.42.1
+Washizu Yui have already proposed an RFC patch to add a SR-IOV feature 
+to virtio-net emulation[3][4] but it's preliminary and has no 
+configurability for VFs.
 
+Now I'm proposing to add SR-IOV support to virtio-net with full 
+configurability for VFs by following the implementation of virtio-net 
+failover[5]. I'm planning to write patches myself, but I know there are 
+people interested in such patches so I'd like to let you know the idea 
+beforehand.
+
+The idea:
+
+The problem when implementing configurability for VFs is that SR-IOV VFs 
+can be realized and unrealized at runtime with a request from the guest. 
+So a naive implementation cannot deal with a command line like the 
+following:
+-device virtio-net-pci,addr=0x0.0x0,sriov=on
+-device virtio-net-pci,addr=0x0.0x1
+-device virtio-net-pci,addr=0x0.0x2
+
+This will realize the virtio-net functions in 0x0.0x1 and 0x0.0x2 when 
+the guest starts instead of when the guest requests to enable VFs.
+
+However, reviewing the virtio-net emulation code, I realized the 
+virtio-net failover also "hides" devices when the guest starts. The 
+following command line hides hostdev0 when the guest starts, and adds it 
+when the guest requests VIRTIO_NET_F_STANDBY feature:
+
+-device virtio-net-pci,netdev=hostnet1,id=net1,mac=52:54:00:6f:55:cc, \
+   bus=root2,failover=on
+-device vfiopci,host=5e:00.2,id=hostdev0,bus=root1,failover_pair_id=net1
+
+So it should be also possible to do similar to "hide" VFs and 
+realize/unrealize them when the guest requests.
+
+There are two things I hate with this idea when contrasting it with the 
+conventional multifunction feature[6] though. One is that the PF must be 
+added before VFs; a similar limitation is imposed for failover.
+
+Another is that it will be specific to virtio-net. I was considering to 
+implement a "generic" SR-IOV feature that will work on various devices, 
+but I realized that will need lots of configuration validations. We may 
+eventually want it, but probably it's better to avoid such a big leap as 
+the first step.
+
+Please tell me if you have questions or suggestions.
+
+Regards,
+Akihiko Odaki
+
+[1] https://github.com/virtio-win/kvm-guest-drivers-windows
+[2] https://qemu.readthedocs.io/en/v8.1.0/system/devices/igb.html
+[3] 
+https://patchew.org/QEMU/1689731808-3009-1-git-send-email-yui.washidu@gmail.com/
+[4] 
+https://netdevconf.info/0x17/sessions/talk/unleashing-sr-iov-offload-on-virtual-machines.html
+[5] https://qemu.readthedocs.io/en/v8.1.0/system/virtio-net-failover.html
+[6] https://gitlab.com/qemu-project/qemu/-/blob/v8.1.2/docs/pcie.txt
 
