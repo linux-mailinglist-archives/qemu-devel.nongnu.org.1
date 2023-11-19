@@ -2,44 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F627F0848
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Nov 2023 19:22:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A3C97F0844
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Nov 2023 19:21:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4mPO-0005ET-LP; Sun, 19 Nov 2023 13:20:38 -0500
+	id 1r4mPQ-0005J9-A3; Sun, 19 Nov 2023 13:20:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r4mPH-0005Cf-TL; Sun, 19 Nov 2023 13:20:32 -0500
+ id 1r4mPK-0005EA-5D; Sun, 19 Nov 2023 13:20:35 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r4mPG-00086n-9f; Sun, 19 Nov 2023 13:20:31 -0500
+ id 1r4mPG-00086m-8O; Sun, 19 Nov 2023 13:20:33 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C97B534903;
+ by isrv.corpit.ru (Postfix) with ESMTP id E4DF434904;
  Sun, 19 Nov 2023 21:20:10 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 3033436242;
+ by tsrv.corpit.ru (Postfix) with SMTP id 492D936243;
  Sun, 19 Nov 2023 21:20:07 +0300 (MSK)
-Received: (nullmailer pid 3314144 invoked by uid 1000);
+Received: (nullmailer pid 3314147 invoked by uid 1000);
  Sun, 19 Nov 2023 18:20:06 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.3 55/59] target/riscv/kvm: improve 'init_multiext_cfg'
- error msg
-Date: Sun, 19 Nov 2023 21:19:51 +0300
-Message-Id: <20231119182006.3314111-2-mjt@tls.msk.ru>
+ Andrew Jones <ajones@ventanamicro.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.3 56/59] target/riscv/kvm: support KVM_GET_REG_LIST
+Date: Sun, 19 Nov 2023 21:19:52 +0300
+Message-Id: <20231119182006.3314111-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.3-20231119211540@cover.tls.msk.ru>
 References: <qemu-stable-8.1.3-20231119211540@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -66,45 +62,150 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Our error message is returning the value of 'ret', which will be always
--1 in case of error, and will not be that useful:
+KVM for RISC-V started supporting KVM_GET_REG_LIST in Linux 6.6. It
+consists of a KVM ioctl() that retrieves a list of all available regs
+for get_one_reg/set_one_reg. Regs that aren't present in the list aren't
+supported in the host.
 
-qemu-system-riscv64: Unable to read ISA_EXT KVM register ssaia, error -1
+This simplifies our lives when initing the KVM regs since we don't have
+to always attempt a KVM_GET_ONE_REG for all regs QEMU knows. We'll only
+attempt a get_one_reg() if we're sure the reg is supported, i.e. it was
+retrieved by KVM_GET_REG_LIST. Any error in get_one_reg() will then
+always considered fatal, instead of having to handle special error codes
+that might indicate a non-fatal failure.
 
-Improve the error message by outputting 'errno' instead of 'ret'. Use
-strerrorname_np() to output the error name instead of the error code.
-This will give us what we need to know right away:
+Start by moving the current kvm_riscv_init_multiext_cfg() logic into a
+new kvm_riscv_read_multiext_legacy() helper. We'll prioritize using
+KVM_GET_REG_LIST, so check if we have it available and, in case we
+don't, use the legacy() logic.
 
-qemu-system-riscv64: Unable to read ISA_EXT KVM register ssaia, error code: ENOENT
-
-Given that we're going to exit(1) in this condition instead of
-attempting to recover, remove the 'kvm_riscv_destroy_scratch_vcpu()'
-call.
+Otherwise, retrieve the available reg list and use it to check if the
+host supports our known KVM regs, doing the usual get_one_reg() for
+the supported regs and setting cpu->cfg accordingly.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231003132148.797921-2-dbarboza@ventanamicro.com>
+Message-ID: <20231003132148.797921-3-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 082e9e4a58ba80ec056220a2f762a1c6b9a3a96c)
+(cherry picked from commit 608bdebb6075b757e5505f6bbc60c45a54a1390b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: trivial context tweak in target/riscv/kvm.c)
 
 diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-index dbcf26f27d..c8e1bb9087 100644
+index c8e1bb9087..3fb29299d9 100644
 --- a/target/riscv/kvm.c
 +++ b/target/riscv/kvm.c
-@@ -727,8 +727,8 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
-                 val = false;
-             } else {
-                 error_report("Unable to read ISA_EXT KVM register %s, "
--                             "error %d", multi_ext_cfg->name, ret);
--                kvm_riscv_destroy_scratch_vcpu(kvmcpu);
-+                             "error code: %s", multi_ext_cfg->name,
-+                             strerrorname_np(errno));
-                 exit(EXIT_FAILURE);
-             }
-         } else {
+@@ -706,7 +706,8 @@ static void kvm_riscv_read_cbomz_blksize(RISCVCPU *cpu, KVMScratchCPU *kvmcpu,
+     }
+ }
+ 
+-static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
++static void kvm_riscv_read_multiext_legacy(RISCVCPU *cpu,
++                                           KVMScratchCPU *kvmcpu)
+ {
+     CPURISCVState *env = &cpu->env;
+     uint64_t val;
+@@ -747,6 +748,99 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
+     }
+ }
+ 
++static int uint64_cmp(const void *a, const void *b)
++{
++    uint64_t val1 = *(const uint64_t *)a;
++    uint64_t val2 = *(const uint64_t *)b;
++
++    if (val1 < val2) {
++        return -1;
++    }
++
++    if (val1 > val2) {
++        return 1;
++    }
++
++    return 0;
++}
++
++static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
++{
++    KVMCPUConfig *multi_ext_cfg;
++    struct kvm_one_reg reg;
++    struct kvm_reg_list rl_struct;
++    struct kvm_reg_list *reglist;
++    uint64_t val, reg_id, *reg_search;
++    int i, ret;
++
++    rl_struct.n = 0;
++    ret = ioctl(kvmcpu->cpufd, KVM_GET_REG_LIST, &rl_struct);
++
++    /*
++     * If KVM_GET_REG_LIST isn't supported we'll get errno 22
++     * (EINVAL). Use read_legacy() in this case.
++     */
++    if (errno == EINVAL) {
++        return kvm_riscv_read_multiext_legacy(cpu, kvmcpu);
++    } else if (errno != E2BIG) {
++        /*
++         * E2BIG is an expected error message for the API since we
++         * don't know the number of registers. The right amount will
++         * be written in rl_struct.n.
++         *
++         * Error out if we get any other errno.
++         */
++        error_report("Error when accessing get-reg-list, code: %s",
++                     strerrorname_np(errno));
++        exit(EXIT_FAILURE);
++    }
++
++    reglist = g_malloc(sizeof(struct kvm_reg_list) +
++                       rl_struct.n * sizeof(uint64_t));
++    reglist->n = rl_struct.n;
++    ret = ioctl(kvmcpu->cpufd, KVM_GET_REG_LIST, reglist);
++    if (ret) {
++        error_report("Error when reading KVM_GET_REG_LIST, code %s ",
++                     strerrorname_np(errno));
++        exit(EXIT_FAILURE);
++    }
++
++    /* sort reglist to use bsearch() */
++    qsort(&reglist->reg, reglist->n, sizeof(uint64_t), uint64_cmp);
++
++    for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
++        multi_ext_cfg = &kvm_multi_ext_cfgs[i];
++        reg_id = kvm_riscv_reg_id(&cpu->env, KVM_REG_RISCV_ISA_EXT,
++                                  multi_ext_cfg->kvm_reg_id);
++        reg_search = bsearch(&reg_id, reglist->reg, reglist->n,
++                             sizeof(uint64_t), uint64_cmp);
++        if (!reg_search) {
++            continue;
++        }
++
++        reg.id = reg_id;
++        reg.addr = (uint64_t)&val;
++        ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
++        if (ret != 0) {
++            error_report("Unable to read ISA_EXT KVM register %s, "
++                         "error code: %s", multi_ext_cfg->name,
++                         strerrorname_np(errno));
++            exit(EXIT_FAILURE);
++        }
++
++        multi_ext_cfg->supported = true;
++        kvm_cpu_cfg_set(cpu, multi_ext_cfg, val);
++    }
++
++    if (cpu->cfg.ext_icbom) {
++        kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cbom_blocksize);
++    }
++
++    if (cpu->cfg.ext_icboz) {
++        kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cboz_blocksize);
++    }
++}
++
+ void kvm_riscv_init_user_properties(Object *cpu_obj)
+ {
+     RISCVCPU *cpu = RISCV_CPU(cpu_obj);
 -- 
 2.39.2
 
