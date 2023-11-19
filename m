@@ -2,72 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC137F0860
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Nov 2023 19:53:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D17FC7F0864
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Nov 2023 19:54:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4mtz-00009o-OJ; Sun, 19 Nov 2023 13:52:15 -0500
+	id 1r4mvt-0001Y2-Ma; Sun, 19 Nov 2023 13:54:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1r4mtv-00008y-Ae
- for qemu-devel@nongnu.org; Sun, 19 Nov 2023 13:52:11 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1r4mvr-0001XV-Gi
+ for qemu-devel@nongnu.org; Sun, 19 Nov 2023 13:54:11 -0500
+Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1r4mtt-0003gY-Jq
- for qemu-devel@nongnu.org; Sun, 19 Nov 2023 13:52:10 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1cc316ccc38so27343285ad.1
- for <qemu-devel@nongnu.org>; Sun, 19 Nov 2023 10:52:08 -0800 (PST)
+ id 1r4mvq-0003zD-1p
+ for qemu-devel@nongnu.org; Sun, 19 Nov 2023 13:54:11 -0500
+Received: by mail-oa1-x30.google.com with SMTP id
+ 586e51a60fabf-1f4e17c1edfso2127284fac.0
+ for <qemu-devel@nongnu.org>; Sun, 19 Nov 2023 10:54:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700419927; x=1701024727; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ejbEqFbr7avFbmFjfeMvr0ehDIwsw0t4r/DfUcHLu5Q=;
- b=GIPGR1O3rJrdHpaoFK8YdroGlNNklHnlvTTmVP4JjtIhchUzlbRn4Kq9MlVxK9xkRs
- BPk7/LzLBI7o2HjLVP4EGKyskcrzN/Qrb6zuAnDPLH+T4hcElNWi4m42UosHtd0mICTR
- FyZg8kPVpwkKJA8orgSdjQEypzl+z+UzPjG2oabEksRgXppVnQnUUd3wGJtdSrQjGhET
- pfV3CkCDB/pKvBcUqRBer2uI3FXyQ3m1hPE86ynNU1ER6lnyBD1wWirH4qS408QQBKeQ
- ZiegZ8a3kBF6GZySiY+WaU6IGyMu1WhMrowEU4VdfW1Re+9W0aDrZihIJIhcJA3DQ0RK
- iV4A==
+ d=gmail.com; s=20230601; t=1700420048; x=1701024848; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qa5oM3yTig0cJ2VRlfTAOL9mObbfkuL2y2jzn0LIBec=;
+ b=S+gCbIbM/6rJVDxxt0UuwGFF2OoAfKAz72TVmmZ1ueO6vSYnmmn1WmwUsREvG+vzYf
+ /hBTJa2hvGR4CHXON/O0j6Hqgz3tTvsH307jBNK/c8sBN0gvctp6xdJDC/GUog9bhxWh
+ cu056DlR8ID0ZeLcJOalD3xn4sv9zNBb5LHiD0FNH3GGqDOf5i6pTOuhHdZg1WmKVe99
+ b4qc0hYu7krhYh1Kh8bYpJPtnv8BfRabgIrK+xVZ17FCB0ydcN/S3KLuGkIw5iUxjSTr
+ f48qbCtoFN/vk0N8L3I6ip61l/1cLEhbLfvr6CfHRzi8MSxtPD0i/xuG1kKTQJNwZD5/
+ rVuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700419927; x=1701024727;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ejbEqFbr7avFbmFjfeMvr0ehDIwsw0t4r/DfUcHLu5Q=;
- b=XguIep6xBzQ4QafAO/VNLcCXcF3m05dgqzsiy6n1AzctbY05I4TTcJTcTIslrbf2PI
- tA2Nbf5MBzpNQsOmUzrGeocnavgj2SkUc8SyAqTEw04r9T5QTs2VkjjzEFr3YxarcSgW
- 7Q9j9GGObvc0MzZf1vZhBzxym2TpygxPQoEDkJSAaG9CGIfCqJWcDa8nNJV4zFGGsvkJ
- sjdoOap0K1mtkSVzO3bKjddYSD6thtJzBQjVNP3CTEwp1suP0eAsMEEPh3kWaS1IBcmr
- gV6c/Kb6e5BiD7d9bNp/1xJBNHOVKt0mMVUNDyUwEqnwvIBxinbgmB+xsARpr2cvZ1B4
- TwMg==
-X-Gm-Message-State: AOJu0YzTAuH7MxfRb+Fjkixi+imVpUn4czQDzaId9yhn2R8HkwqVKKcp
- qsDnVu5AmS6+v/+jIjcyet2b0JIhb1w=
-X-Google-Smtp-Source: AGHT+IErHwsiP/vhryd0JUKXbxWc2aMldjvGz1koeRobOOJFJP/9XT8ktAhHumNWI+7/G8fEH98/mg==
-X-Received: by 2002:a05:6a21:9209:b0:174:7f7:d049 with SMTP id
- tl9-20020a056a21920900b0017407f7d049mr4668128pzb.9.1700419927269; 
- Sun, 19 Nov 2023 10:52:07 -0800 (PST)
-Received: from octofox.hsd1.ca.comcast.net
- ([2601:646:a201:19d0:85eb:a1c:1b3a:a140])
- by smtp.gmail.com with ESMTPSA id
- y21-20020a170902ed5500b001cc3b988fd6sm4607665plb.265.2023.11.19.10.52.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 19 Nov 2023 10:52:06 -0800 (PST)
-From: Max Filippov <jcmvbkbc@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
-	Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PULL] target/xtensa fixes for v8.2
-Date: Sun, 19 Nov 2023 10:51:38 -0800
-Message-Id: <20231119185138.838278-1-jcmvbkbc@gmail.com>
-X-Mailer: git-send-email 2.39.2
+ d=1e100.net; s=20230601; t=1700420048; x=1701024848;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qa5oM3yTig0cJ2VRlfTAOL9mObbfkuL2y2jzn0LIBec=;
+ b=gHr7I/uR2cQGfeWBW5sELYyDUa08s+m+1biSyxhQlDn6pFxqUlauNgIgpzoe17GGJq
+ NYXW5VjU81c3YRIU4bE2kOgOQg+4IavtujmBjgiQhuvLFjgxgNXcCKvLAS9oem4SsL7p
+ C92Wx34qDjuaI+qwtwGF8UwFQVmzYuGzpcy10PFgm2z5Nk98Oci31zWs6BJvDaNxpjZ8
+ C5n0RcpjmDNaYPpCUrxtiFCz89VYn9r/6fAvQK8nM8k+UKBXjAMvaxELsBTRWoeAK+qI
+ b4Ql8IkbR2sby3BSGu8GjLFP96n68tsx9jCZO4XiiHRrZzjP2DEpwQMYOZdk2RPf06Cq
+ 7IwA==
+X-Gm-Message-State: AOJu0YzjjFrxRIl9tt7UUlXu/1utfc77X0KUf3PfEClykJoe211eUJJP
+ 4ogb//SdMNgznsbmimNZ6M1NA8DUpwRI8XWa1G80WKZE
+X-Google-Smtp-Source: AGHT+IGN2KJ4H0K/eHdepMyU6ECyZmq5llQId4gPfuPuLrKxRvvD4r1ur4r7xuQNvHGiK3wx/1poUzlfuDYJL/CLMVA=
+X-Received: by 2002:a05:6870:2c87:b0:1ef:b8c2:5541 with SMTP id
+ oh7-20020a0568702c8700b001efb8c25541mr6869896oab.47.1700420048277; Sun, 19
+ Nov 2023 10:54:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=jcmvbkbc@gmail.com; helo=mail-pl1-x629.google.com
+References: <20231119185138.838278-1-jcmvbkbc@gmail.com>
+In-Reply-To: <20231119185138.838278-1-jcmvbkbc@gmail.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Sun, 19 Nov 2023 10:53:57 -0800
+Message-ID: <CAMo8BfLz2NX5aiPnhTh2sQNADiCr7kZeJrqt5kmpLVkAJGkKow@mail.gmail.com>
+Subject: Re: [PULL] target/xtensa fixes for v8.2
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:4860:4864:20::30;
+ envelope-from=jcmvbkbc@gmail.com; helo=mail-oa1-x30.google.com
 X-Spam_score_int: 4
 X-Spam_score: 0.4
 X-Spam_bar: /
@@ -91,27 +87,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit b411438aa4ecaf4bbde90e20283e5899fec10f58:
+On Sun, Nov 19, 2023 at 10:52=E2=80=AFAM Max Filippov <jcmvbkbc@gmail.com> =
+wrote:
+>
+> The following changes since commit b411438aa4ecaf4bbde90e20283e5899fec10f=
+58:
+>
+>   target/xtensa: Use tcg_gen_sextract_i32 (2023-10-21 19:17:28 -0700)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/OSLL/qemu-xtensa.git tags/20231119-xtensa
+>
+> for you to fetch changes up to 79cc6538fba73b3c071d76d912486e96540df98f:
+>
+>   linux-user: xtensa: fix signal delivery in FDPIC (2023-11-19 10:38:07 -=
+0800)
+>
+> ----------------------------------------------------------------
+> target/xtensa updates for v8.2:
+>
+> - fix signal delivery in FDPIC
+>
+> ----------------------------------------------------------------
+> Max Filippov (1):
+>       linux-user: xtensa: fix signal delivery in FDPIC
+>
+>  linux-user/xtensa/signal.c | 28 ++++++++++++++++++++++++++--
+>  1 file changed, 26 insertions(+), 2 deletions(-)
 
-  target/xtensa: Use tcg_gen_sextract_i32 (2023-10-21 19:17:28 -0700)
+Sorry, wrong tag, please ignore.
 
-are available in the Git repository at:
-
-  https://github.com/OSLL/qemu-xtensa.git tags/20231119-xtensa
-
-for you to fetch changes up to 79cc6538fba73b3c071d76d912486e96540df98f:
-
-  linux-user: xtensa: fix signal delivery in FDPIC (2023-11-19 10:38:07 -0800)
-
-----------------------------------------------------------------
-target/xtensa updates for v8.2:
-
-- fix signal delivery in FDPIC
-
-----------------------------------------------------------------
-Max Filippov (1):
-      linux-user: xtensa: fix signal delivery in FDPIC
-
- linux-user/xtensa/signal.c | 28 ++++++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+--=20
+Thanks.
+-- Max
 
