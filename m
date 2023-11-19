@@ -2,81 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 398D37F08CF
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Nov 2023 21:20:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A5C7F08D2
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Nov 2023 21:26:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4oGW-00038s-MZ; Sun, 19 Nov 2023 15:19:36 -0500
+	id 1r4oMW-0004m9-Jf; Sun, 19 Nov 2023 15:25:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
- id 1r4oGV-00038e-53; Sun, 19 Nov 2023 15:19:35 -0500
-Received: from mail-qk1-x72d.google.com ([2607:f8b0:4864:20::72d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
- id 1r4oGT-0000DL-Ks; Sun, 19 Nov 2023 15:19:34 -0500
-Received: by mail-qk1-x72d.google.com with SMTP id
- af79cd13be357-77a453eb01cso249467285a.0; 
- Sun, 19 Nov 2023 12:19:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700425172; x=1701029972; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=toP+qbVrREpGudIghfFr3/qdKElUphH+SaeFRoysiu0=;
- b=b7D89z7kvLXSx2muPOgLa3KKeE9WuaPikh+90WgOVNtro0fIMUu2ZmKrtE9Oi30yWP
- 93o7fKychI7D9DGcDxSHfW1utvmha2EY2/z4NdT0A2Ww1dpyFYSdhtS2V4ZHGXAp950x
- THGEpQBEJ1zknq/5lIqXN70RWyvKQKA80rQ9x1EI31qYr2c0P02amP27vxT1M9hebZIf
- R9uYXuaKMXVBJwDtt3GcTA8k6NAgVUwo05Gn/RT21N6zaMygIEihBW8kAOsz5z1fzQUk
- SaBsiBKRp8CDgBju5gIj/pAUu7Nmuaq6XTYMOlFxyXrZqnWdg3cNzrwQqG2Qh087mB3/
- 1HTA==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r4oMU-0004lm-Gp
+ for qemu-devel@nongnu.org; Sun, 19 Nov 2023 15:25:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r4oMS-0001ZH-R6
+ for qemu-devel@nongnu.org; Sun, 19 Nov 2023 15:25:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700425538;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=+PtcTIapM78r+eYfM6iYcINUllsD4Z4mVxqdpMTFjOA=;
+ b=B0LDBpyb3nTxMa9dPo7+nGchbWQZt5sRkk9uH1omPYbxhThgnFXcubaX3oSLZaDUwP7FL+
+ T+h4Mh6AKdNiPYoutNK4mu9ySae5kL8kWufF5OjHiH361JCXn/KLau68ohy9Jl0tFWIeFw
+ YIa1G/AqODWaCEC8PS1FvGtT959b9CI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-623-D7TMJlL-N1yaqOVohg9DEw-1; Sun, 19 Nov 2023 15:25:36 -0500
+X-MC-Unique: D7TMJlL-N1yaqOVohg9DEw-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-40a36dd4a58so9163935e9.3
+ for <qemu-devel@nongnu.org>; Sun, 19 Nov 2023 12:25:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700425172; x=1701029972;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=toP+qbVrREpGudIghfFr3/qdKElUphH+SaeFRoysiu0=;
- b=QiS3vFw4FyzGxn6mXX1FhU2PHorMLU1Mpb4/gDlWRmZwGM7OXbXsOkXmtHC8b0rtRL
- J0GzQgwJGFiChg63TAZn054pixG93LFQE/lfSoJD0FHUDf8PTrv6kdBm623xeMqwy6vh
- jdrGhn4dWO8DHR1pLbgjX+92U4skiDlgugNa+SDarqRnTfuy7yTQDhJCBrnQWL3rwtrj
- j1TNoG3Hn+iHg9phlkpi1YlUXMJoBkdmayQyuTEwT1SrtQZR1vYVgeTat07YVRRP9rkK
- HqXPM5H0K/SM8zdz+ZhuXWAl7Pp9c4nwpw335UNRF/2y7T6QcOOsrwDOnF3/jQk1x+x0
- D1Tg==
-X-Gm-Message-State: AOJu0Yxy5L4e6x8JGr5WKYnpigTpYMB/5mDL0N8hyuEmOm3wkfdgzIuA
- oV4SMhAyBQ/USETt09B4nJiouErIFhwos9xjRe0=
-X-Google-Smtp-Source: AGHT+IHzUpckRwA4eAvcQ29vnlBWSbZQwLBLoEmYpNWNoACmpPTN16kArHQrVxoOX6c3Kwf7/z8Fz6ot2j+rxhBA65M=
-X-Received: by 2002:ac8:5a45:0:b0:41c:dd22:e7bf with SMTP id
- o5-20020ac85a45000000b0041cdd22e7bfmr8110955qta.42.1700425172247; Sun, 19 Nov
- 2023 12:19:32 -0800 (PST)
-MIME-Version: 1.0
+ d=1e100.net; s=20230601; t=1700425535; x=1701030335;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+PtcTIapM78r+eYfM6iYcINUllsD4Z4mVxqdpMTFjOA=;
+ b=A+5x9F3N4J/AHeQbu7pLCW1KXld5wDkNASBwrCsDrOZyWxwal4L6lhyaiK//g+x5l3
+ mzigchL5mJ80zaTCpgAFq4O+dYVnPAIHJ2AKm8gIeMm4cSEse5hxiYCEiav6/0Opc02L
+ XLs/WBIQPTK5ZPZpzZ9EyfY33DlEoFdtKO0B0z5ibamePYdKXmF2aMgGlvHvSOMlc5Y4
+ lvNLlmCxZVZG2kVpSCI9W5gnitR05KbX2asJmMVevwCXIHWuJgZMuHvc/Q8hhMnEqJAM
+ wopfV7NlEHQ6LhpizpIB8KISoEbNuiL6V+MGegLd2cbr5AW5vmngR+2/nK5XTnd+iL0G
+ xPeA==
+X-Gm-Message-State: AOJu0YwzvGCiXlhHxtaXP3Uc+0nsZKRIA73daHAInQsmy29K/uoAyu1c
+ uhe5DeWZFAtuQGFlGW13rN9xusABf77IalQlrUBtPVIQHiFZRh40s3Y6mRujdjxVjseypO4XpKv
+ Wh2HmTJYrdY/MEK4=
+X-Received: by 2002:a05:600c:4445:b0:40a:392c:5b79 with SMTP id
+ v5-20020a05600c444500b0040a392c5b79mr4237573wmn.14.1700425535334; 
+ Sun, 19 Nov 2023 12:25:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEWjdHoPyrkf72qaVZJnHhEOnNFJfJrDc3Y/UGyXqAc+YzGNxBH1Cl9NkWdk62dHkt8fAA+7A==
+X-Received: by 2002:a05:600c:4445:b0:40a:392c:5b79 with SMTP id
+ v5-20020a05600c444500b0040a392c5b79mr4237560wmn.14.1700425535008; 
+ Sun, 19 Nov 2023 12:25:35 -0800 (PST)
+Received: from redhat.com ([2a02:14f:1f3:2252:367f:6745:f63f:d25])
+ by smtp.gmail.com with ESMTPSA id
+ gw18-20020a05600c851200b004064e3b94afsm15586683wmb.4.2023.11.19.12.25.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 19 Nov 2023 12:25:34 -0800 (PST)
+Date: Sun, 19 Nov 2023 15:25:30 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Dan Hoffman <dhoff749@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH] hw/i386: fix short-circuit logic with non-optimizing
+ builds
+Message-ID: <20231119152434-mutt-send-email-mst@kernel.org>
 References: <20231118182531.2619772-1-dhoff749@gmail.com>
  <20231119022223-mutt-send-email-mst@kernel.org>
  <CAFXChKJGE92WEfOWsE0=eSfSM55abCA4baOsoPE8V--iWU1GGg@mail.gmail.com>
  <20231119150225-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20231119150225-mutt-send-email-mst@kernel.org>
-From: Dan Hoffman <dhoff749@gmail.com>
-Date: Sun, 19 Nov 2023 14:19:25 -0600
-Message-ID: <CAFXChKJ5-QEG+9Jsd6ZjkHJtssB0UdKS2Uy2iq1DMPjucuwUfA@mail.gmail.com>
-Subject: Re: [PATCH] hw/i386: fix short-circuit logic with non-optimizing
- builds
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72d;
- envelope-from=dhoff749@gmail.com; helo=mail-qk1-x72d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ <CAFXChKJ5-QEG+9Jsd6ZjkHJtssB0UdKS2Uy2iq1DMPjucuwUfA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFXChKJ5-QEG+9Jsd6ZjkHJtssB0UdKS2Uy2iq1DMPjucuwUfA@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,65 +107,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Clang 16.0.6
+On Sun, Nov 19, 2023 at 02:19:25PM -0600, Dan Hoffman wrote:
+> Clang 16.0.6
+> 
+> I can re-submit with the compiler and version if that helps.
 
-I can re-submit with the compiler and version if that helps.
+Worth mentioning this and the flags used I think.
 
-On Sun, Nov 19, 2023 at 2:02=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
->
-> On Sun, Nov 19, 2023 at 11:03:54AM -0600, Dan Hoffman wrote:
-> > On Sun, Nov 19, 2023 at 1:23=E2=80=AFAM Michael S. Tsirkin <mst@redhat.=
-com> wrote:
-> > >
-> > > On Sat, Nov 18, 2023 at 10:25:31AM -0800, Daniel Hoffman wrote:
-> > > > `kvm_enabled()` is compiled down to `0` and short-circuit logic is
-> > > > used to remmove references to undefined symbols at the compile stag=
-e.
-> > > > Some build configurations with some compilers don't attempt to
-> > > > simplify this logic down in some cases (the pattern appears to be
-> > > > that the literal false must be the first term) and this was causing
-> > > > some builds to emit references to undefined symbols.
+> On Sun, Nov 19, 2023 at 2:02 PM Michael S. Tsirkin <mst@redhat.com> wrote:
+> >
+> > On Sun, Nov 19, 2023 at 11:03:54AM -0600, Dan Hoffman wrote:
+> > > On Sun, Nov 19, 2023 at 1:23 AM Michael S. Tsirkin <mst@redhat.com> wrote:
 > > > >
-> > > > Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
+> > > > On Sat, Nov 18, 2023 at 10:25:31AM -0800, Daniel Hoffman wrote:
+> > > > > `kvm_enabled()` is compiled down to `0` and short-circuit logic is
+> > > > > used to remmove references to undefined symbols at the compile stage.
+> > > > > Some build configurations with some compilers don't attempt to
+> > > > > simplify this logic down in some cases (the pattern appears to be
+> > > > > that the literal false must be the first term) and this was causing
+> > > > > some builds to emit references to undefined symbols.
+> > > > >
+> > > > > Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
+> > > >
+> > > > Could we add a bit more detail here? Will help make sure
+> > > > this does not break again in the future.
 > > >
-> > > Could we add a bit more detail here? Will help make sure
-> > > this does not break again in the future.
+> > > The configuration script was ran as such:  ../configure
+> > > --without-default-features --target-list=x86_64-softmmu,i386-softmmu
+> > > --enable-debug --enable-tcg-interpreter --enable-debug-tcg
+> > > --enable-debug-mutex
+> > >
+> > > I'm pretty sure the only relevant flags here are
+> > > --without-default-features, --target-list including x86_64-softmmu and
+> > > --enable-debug
+> > >
+> > > The only error I see is this: [...]/hw/i386/x86.c:422:(.text+0x1004):
+> > > undefined reference to `kvm_hv_vpindex_settable' (the other
+> > > kvm_enabled() was moved for the sake of consistency). My compiler is
+> > > clang (16.0.6).
+> > >
+> > > I haven't looked into the heuristics or logic for how the compile-time
+> > > short-circuit logic works, but I assumed only the first parameter is
+> > > "guaranteed" to be checked for a literal false (guaranteed is in
+> > > quotes because that's just how clang works, not because it's a feature
+> > > of the language IIRC).
+> > >
+> > > This pattern relies on somes subtle behavior with the compiler, so my
+> > > suggestion going forward would be to not rely on code optimizations
+> > > removing undefined references based on short-circuit logic (instead
+> > > have some configuration macro defined that disables all relevant
+> > > code). I'm a new contributor, so I submitted the minimum to make it
+> > > work on my machine.
+> > >
+> > > If you have any other questions, please let me know.
+> > >
+> > > Thanks!
 > >
-> > The configuration script was ran as such:  ../configure
-> > --without-default-features --target-list=3Dx86_64-softmmu,i386-softmmu
-> > --enable-debug --enable-tcg-interpreter --enable-debug-tcg
-> > --enable-debug-mutex
+> > which compiler is this?
 > >
-> > I'm pretty sure the only relevant flags here are
-> > --without-default-features, --target-list including x86_64-softmmu and
-> > --enable-debug
+> > --
+> > MST
 > >
-> > The only error I see is this: [...]/hw/i386/x86.c:422:(.text+0x1004):
-> > undefined reference to `kvm_hv_vpindex_settable' (the other
-> > kvm_enabled() was moved for the sake of consistency). My compiler is
-> > clang (16.0.6).
-> >
-> > I haven't looked into the heuristics or logic for how the compile-time
-> > short-circuit logic works, but I assumed only the first parameter is
-> > "guaranteed" to be checked for a literal false (guaranteed is in
-> > quotes because that's just how clang works, not because it's a feature
-> > of the language IIRC).
-> >
-> > This pattern relies on somes subtle behavior with the compiler, so my
-> > suggestion going forward would be to not rely on code optimizations
-> > removing undefined references based on short-circuit logic (instead
-> > have some configuration macro defined that disables all relevant
-> > code). I'm a new contributor, so I submitted the minimum to make it
-> > work on my machine.
-> >
-> > If you have any other questions, please let me know.
-> >
-> > Thanks!
->
-> which compiler is this?
->
-> --
-> MST
->
+
 
