@@ -2,37 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3F57F084B
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Nov 2023 19:22:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F627F0848
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Nov 2023 19:22:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4mPI-0005CE-N3; Sun, 19 Nov 2023 13:20:32 -0500
+	id 1r4mPO-0005ET-LP; Sun, 19 Nov 2023 13:20:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r4mPE-0005A0-Uf; Sun, 19 Nov 2023 13:20:29 -0500
+ id 1r4mPH-0005Cf-TL; Sun, 19 Nov 2023 13:20:32 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r4mP8-0007ye-VB; Sun, 19 Nov 2023 13:20:24 -0500
+ id 1r4mPG-00086n-9f; Sun, 19 Nov 2023 13:20:31 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B04E534902;
+ by isrv.corpit.ru (Postfix) with ESMTP id C97B534903;
  Sun, 19 Nov 2023 21:20:10 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 19FF036241;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3033436242;
  Sun, 19 Nov 2023 21:20:07 +0300 (MSK)
-Received: (nullmailer pid 3314141 invoked by uid 1000);
+Received: (nullmailer pid 3314144 invoked by uid 1000);
  Sun, 19 Nov 2023 18:20:06 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+Cc: qemu-stable@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.3 54/59] tracetool: avoid invalid escape in Python string
-Date: Sun, 19 Nov 2023 21:19:50 +0300
-Message-Id: <20231119182006.3314111-1-mjt@tls.msk.ru>
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.3 55/59] target/riscv/kvm: improve 'init_multiext_cfg'
+ error msg
+Date: Sun, 19 Nov 2023 21:19:51 +0300
+Message-Id: <20231119182006.3314111-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.3-20231119211540@cover.tls.msk.ru>
 References: <qemu-stable-8.1.3-20231119211540@cover.tls.msk.ru>
@@ -62,31 +64,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-This is an error in Python 3.12; fix it by using a raw string literal.
+Our error message is returning the value of 'ret', which will be always
+-1 in case of error, and will not be that useful:
 
-Cc:  <qemu-stable@nongnu.org>
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+qemu-system-riscv64: Unable to read ISA_EXT KVM register ssaia, error -1
+
+Improve the error message by outputting 'errno' instead of 'ret'. Use
+strerrorname_np() to output the error name instead of the error code.
+This will give us what we need to know right away:
+
+qemu-system-riscv64: Unable to read ISA_EXT KVM register ssaia, error code: ENOENT
+
+Given that we're going to exit(1) in this condition instead of
+attempting to recover, remove the 'kvm_riscv_destroy_scratch_vcpu()'
+call.
+
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20231108105649.60453-1-marcandre.lureau@redhat.com>
-(cherry picked from commit 4d96307c5b4fac40c6ca25f38318b4b65d315de0)
+Message-ID: <20231003132148.797921-2-dbarboza@ventanamicro.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+(cherry picked from commit 082e9e4a58ba80ec056220a2f762a1c6b9a3a96c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
-index b29594d75e..b887540a55 100644
---- a/scripts/tracetool/__init__.py
-+++ b/scripts/tracetool/__init__.py
-@@ -91,7 +91,7 @@ def out(*lines, **kwargs):
- def validate_type(name):
-     bits = name.split(" ")
-     for bit in bits:
--        bit = re.sub("\*", "", bit)
-+        bit = re.sub(r"\*", "", bit)
-         if bit == "":
-             continue
-         if bit == "const":
+diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+index dbcf26f27d..c8e1bb9087 100644
+--- a/target/riscv/kvm.c
++++ b/target/riscv/kvm.c
+@@ -727,8 +727,8 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
+                 val = false;
+             } else {
+                 error_report("Unable to read ISA_EXT KVM register %s, "
+-                             "error %d", multi_ext_cfg->name, ret);
+-                kvm_riscv_destroy_scratch_vcpu(kvmcpu);
++                             "error code: %s", multi_ext_cfg->name,
++                             strerrorname_np(errno));
+                 exit(EXIT_FAILURE);
+             }
+         } else {
 -- 
 2.39.2
 
