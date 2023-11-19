@@ -2,79 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF087F0805
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Nov 2023 18:05:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00AC87F0849
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Nov 2023 19:22:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4lDR-0000Lj-2w; Sun, 19 Nov 2023 12:04:13 -0500
+	id 1r4mPI-0005C3-OD; Sun, 19 Nov 2023 13:20:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
- id 1r4lDM-0000KO-ES; Sun, 19 Nov 2023 12:04:08 -0500
-Received: from mail-qt1-x834.google.com ([2607:f8b0:4864:20::834])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
- id 1r4lDH-0005Jf-5a; Sun, 19 Nov 2023 12:04:05 -0500
-Received: by mail-qt1-x834.google.com with SMTP id
- d75a77b69052e-41e1921da84so23127091cf.1; 
- Sun, 19 Nov 2023 09:04:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700413441; x=1701018241; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FOn+Brn1l1hcFlplY1Qqcu1/Tt5OE5fxHb2aBdBdd6s=;
- b=U6xNMvVEpBS9bGfXlPrybIE1op2e/7FEKEVqFZmUtT5+mIhgkDE0lq4dHTFUkJ3Tnh
- We8zT7sJAj8xNJnQxs8iIn5WBRm86ocjry01feGVg3zD5Cdtz6zvessAHUdyOh9q/Q1f
- BVGNkC+4YeTugPFpp8xTcGRbNfhLNummjxrXaIhUJo3RQOD8L01o0F408eNnhuY6rQNx
- I8lGbU6Y08VCYPl0FdUfwe0cqYTJ52sIs8IOunFN7u2CXz3znZrxWoDm0slpUYp5ifzg
- lQzwUIgWblXvzIlLjkj73+x+g/Lqykxpjybg7oHScnXJK+7Kcr74YPoKBplfW+AbMk8r
- ngRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700413441; x=1701018241;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FOn+Brn1l1hcFlplY1Qqcu1/Tt5OE5fxHb2aBdBdd6s=;
- b=PA8s+6IbMjoxwjK+9wjyMb4Xbvo8NnarIG/qCFAW1ySfdga9rbnV7HrV9tnYCo0rxN
- lqQK5OU9ZAgsc+CPogXgd9jmnvbrENZ2VCC5+uT77iVbG4X9S+GaeVmDIndauCDkERLJ
- 3Tz84w+HGWnhAQ+LjImmi5lkXnb+CO6oQPkGDGtm4DzzV3gjOEsFn9pgcZW8i+2PvBuE
- iL8bmqYu7wVUYJA8eEoNnPr1YZ448cX6Y7vfxksBoEgdvK1sSVnVNs549aUX3cunrfKk
- HpG5P/LXFKEepRGY0F0eVUonHlh88h5R9FgYJm8mZLFXlQXv+a/wVBGhY4NTFUmIRIzd
- lOWQ==
-X-Gm-Message-State: AOJu0Yx1nKQgjoQsIhGbzQGhf5HPr87drRnhWOoJbcm95EXcoY6F04k1
- Ug5nOs2Frn46sDDpKx0NtjRQkV6dDEKf1Od5SAI=
-X-Google-Smtp-Source: AGHT+IHiK6GfpUlysfcgTgc3GKnrNdrT6WKQG/oZk9j785FZGx7crqTcOElJkxJw+ACK10+SUaJMJFBWwd5J28XRhPg=
-X-Received: by 2002:a05:622a:1812:b0:420:ec71:3f2e with SMTP id
- t18-20020a05622a181200b00420ec713f2emr8549067qtc.24.1700413441141; Sun, 19
- Nov 2023 09:04:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1r4mPE-00059z-Uf; Sun, 19 Nov 2023 13:20:29 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1r4mP8-0007yg-O4; Sun, 19 Nov 2023 13:20:25 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id A266C34901;
+ Sun, 19 Nov 2023 21:20:10 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 0732836240;
+ Sun, 19 Nov 2023 21:20:07 +0300 (MSK)
+Received: (nullmailer pid 3314136 invoked by uid 1000);
+ Sun, 19 Nov 2023 18:20:06 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.3 v2 00/59] Patch Round-up for stable 8.1.3,
+ frozen on 2023-11-19
+Date: Sun, 19 Nov 2023 21:19:49 +0300
+Message-Id: <qemu-stable-8.1.3-20231119211540@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20231118182531.2619772-1-dhoff749@gmail.com>
- <20231119022223-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20231119022223-mutt-send-email-mst@kernel.org>
-From: Dan Hoffman <dhoff749@gmail.com>
-Date: Sun, 19 Nov 2023 11:03:54 -0600
-Message-ID: <CAFXChKJGE92WEfOWsE0=eSfSM55abCA4baOsoPE8V--iWU1GGg@mail.gmail.com>
-Subject: Re: [PATCH] hw/i386: fix short-circuit logic with non-optimizing
- builds
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::834;
- envelope-from=dhoff749@gmail.com; helo=mail-qt1-x834.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,50 +58,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Nov 19, 2023 at 1:23=E2=80=AFAM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
->
-> On Sat, Nov 18, 2023 at 10:25:31AM -0800, Daniel Hoffman wrote:
-> > `kvm_enabled()` is compiled down to `0` and short-circuit logic is
-> > used to remmove references to undefined symbols at the compile stage.
-> > Some build configurations with some compilers don't attempt to
-> > simplify this logic down in some cases (the pattern appears to be
-> > that the literal false must be the first term) and this was causing
-> > some builds to emit references to undefined symbols.
-> >
-> > Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
->
-> Could we add a bit more detail here? Will help make sure
-> this does not break again in the future.
+The following patches are queued for QEMU stable v8.1.3:
 
-The configuration script was ran as such:  ../configure
---without-default-features --target-list=3Dx86_64-softmmu,i386-softmmu
---enable-debug --enable-tcg-interpreter --enable-debug-tcg
---enable-debug-mutex
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-8.1
 
-I'm pretty sure the only relevant flags here are
---without-default-features, --target-list including x86_64-softmmu and
---enable-debug
+Patch freeze is 2023-11-19 (frozen), and the release is planned for 2023-11-21:
 
-The only error I see is this: [...]/hw/i386/x86.c:422:(.text+0x1004):
-undefined reference to `kvm_hv_vpindex_settable' (the other
-kvm_enabled() was moved for the sake of consistency). My compiler is
-clang (16.0.6).
+  https://wiki.qemu.org/Planning/8.1
 
-I haven't looked into the heuristics or logic for how the compile-time
-short-circuit logic works, but I assumed only the first parameter is
-"guaranteed" to be checked for a literal false (guaranteed is in
-quotes because that's just how clang works, not because it's a feature
-of the language IIRC).
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
-This pattern relies on somes subtle behavior with the compiler, so my
-suggestion going forward would be to not rely on code optimizations
-removing undefined references based on short-circuit logic (instead
-have some configuration macro defined that disables all relevant
-code). I'm a new contributor, so I submitted the minimum to make it
-work on my machine.
+v2: added more changes,
+removed 6f189a08c1 ("ui/gtk-egl: Check EGLSurface before doing scanout"),
+since this one caused a regression and the fix hasn't been found its way
+to master still. Hopefully this one can be included (together with the fix)
+in the next stable release.
 
-If you have any other questions, please let me know.
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
 Thanks!
+
+/mjt
+
+--------------------------------------
+01* 85fc35afa93c Yuval Shaia:
+   hw/pvrdma: Protect against buggy or malicious guest driver
+02* caea03279e11 Fabiano Rosas:
+   migration: Fix analyze-migration read operation signedness
+03* d4f34485ca8a Juan Quintela:
+   migration: Non multifd migration don't care about multifd flushes
+04* acf873873ae3 John Snow:
+   python/qmp: remove Server.wait_closed() call for Python 3.12
+05* a5e3cb3b90a6 Paolo Bonzini:
+   tests/docker: avoid invalid escape in Python string
+06* e4b6532cc0a5 Paolo Bonzini:
+   docs/sphinx: avoid invalid escape in Python string
+07* e41c40d101fc Paolo Bonzini:
+   target/hexagon: avoid invalid escape in Python string
+08* 1b5f3f65cc71 Paolo Bonzini:
+   tests/avocado: avoid invalid escape in Python string
+09* 86a8989d4557 Paolo Bonzini:
+   tests/vm: avoid invalid escape in Python string
+10* e6d8e5e6e366 Paolo Bonzini:
+   tracetool: avoid invalid escape in Python string
+11* e6e66b032873 Richard Henderson:
+   linux-user: Fixes for zero_bss
+12* 6fad9b4bb91d Mikulas Patocka:
+   linux-user/mips: fix abort on integer overflow
+13* 3b894b699c9a Mikulas Patocka:
+   linux-user/sh4: Fix crashes on signal delivery
+14* a1e6a5c46219 Helge Deller:
+   lasips2: LASI PS/2 devices are not user-createable
+15* d01448c79d89 Michal Orzel:
+   target/arm: Fix CNTPCT_EL0 trapping from EL0 when HCR_EL2.E2H is 0
+16* ae5f70baf549 Lu Gao:
+   hw/sd/sdhci: Block Size Register bits [14:12] is lost
+17* 4ab9a7429bf7 Peter Maydell:
+   hw/rdma/vmw/pvrdma_cmd: Use correct struct in query_port()
+18* 930f1865cc65 Richard Henderson:
+   target/sparc: Clear may_lookup for npc == DYNAMIC_PC
+19* 307521d6e29e Peter Maydell:
+   target/arm: Fix syndrome for FGT traps on ERET
+20* 6f83dc67168d Glenn Miles:
+   misc/led: LED state is set opposite of what is expected
+21* fed824501501 Kevin Wolf:
+   block: Fix locking in media change monitor commands
+22* 580731dcc87e Akihiko Odaki:
+   tests/tcg: Add -fno-stack-protector
+23* 8b097fd6b06e Andrey Drobyshev:
+   qemu-img: rebase: stop when reaching EOF of old backing file
+24* 827171c31805 Andrey Drobyshev:
+   qemu-iotests: 024: add rebasing test case for overlay_size > backing_size
+25* b11293c212c2 Richard Henderson:
+   target/arm: Fix SVE STR increment
+26* 4c09abeae870 Peter Maydell:
+   target/arm: Correctly propagate stage 1 BTI guarded bit in a two-stage walk
+27* 721da0396cfa Cédric Le Goater:
+   util/uuid: Add UUID_STR_LEN definition
+28* f8d6f3b16c37 Cédric Le Goater:
+   vfio/pci: Fix buffer overrun when writing the VF token
+29* 4ef9d97b1a37 Cédric Le Goater:
+   util/uuid: Remove UUID_FMT_LEN
+30* e969f992c656 David Woodhouse:
+   i386/xen: Don't advertise XENFEAT_supervisor_mode_kernel
+31* e7dbb62ff19c David Woodhouse:
+   i386/xen: fix per-vCPU upcall vector for Xen emulation
+32* 18e83f28bf39 David Woodhouse:
+   hw/xen: select kernel mode for per-vCPU event channel upcall vector
+33* 3de75ed35241 David Woodhouse:
+   hw/xen: don't clear map_track[] in xen_gnttab_reset()
+34* 4a5780f52095 David Woodhouse:
+   hw/xen: fix XenStore watch delivery to guest
+35* debc995e883b David Woodhouse:
+   hw/xen: take iothread mutex in xen_evtchn_reset_op()
+36* a1c1082908dd David Woodhouse:
+   hw/xen: use correct default protocol for xen-block on x86
+37* 9c549ab6895a Marc-André Lureau:
+   virtio-gpu: block migration of VMs with blob=true
+38* cc8fb0c3ae3c Vladimir Sementsov-Ogievskiy:
+   block/nvme: nvme_process_completion() fix bound for cid
+39* 5722fc471296 Peter Maydell:
+   target/arm: Fix A64 LDRA immediate decode
+40* b2b109041ecd Jean-Louis Dupond:
+   qcow2: keep reference on zeroize with discard-no-unref enabled
+41* 10b9e0802a07 Sam Li:
+   block/file-posix: fix update_zones_wp() caller
+42* ad4feaca61d7 Naohiro Aota:
+   file-posix: fix over-writing of returning zone_append offset
+43* 08730ee0cc01 BALATON Zoltan:
+   ati-vga: Implement fallback for pixman routines
+44* 565f85a9c293 Marc-André Lureau:
+   ui/gtk: force realization of drawing area
+45* 47fd6ab1e334 Dongwon Kim:
+   ui/gtk-egl: apply scale factor when calculating window's dimension
+46* 04591b3ddd9a Philippe Mathieu-Daudé:
+   target/mips: Fix MSA BZ/BNZ opcodes displacement
+47* 18f86aecd6a1 Philippe Mathieu-Daudé:
+   target/mips: Fix TX79 LQ/SQ opcodes
+48* 7d7512019fc4 Fiona Ebner:
+   hw/ide: reset: cancel async DMA operation before resetting state
+49* cc610857bbd3 Fiona Ebner:
+   tests/qtest: ahci-test: add test exposing reset issue with pending callback
+50* aba2ec341c6d Ilya Leoshkevich:
+   target/s390x: Fix CLC corrupting cc_src
+51* 43fecbe7a53f Ilya Leoshkevich:
+   tests/tcg/s390x: Test CLC with inaccessible second operand
+52* bea402482a8c Ilya Leoshkevich:
+   target/s390x: Fix LAALG not updating cc_src
+53* ebc14107f1f3 Ilya Leoshkevich:
+   tests/tcg/s390x: Test LAALG with negative cc_src
+54 4d96307c5b4f Marc-André Lureau:
+   tracetool: avoid invalid escape in Python string
+55 082e9e4a58ba Daniel Henrique Barboza:
+   target/riscv/kvm: improve 'init_multiext_cfg' error msg
+56 608bdebb6075 Daniel Henrique Barboza:
+   target/riscv/kvm: support KVM_GET_REG_LIST
+57 8011b508cf0d Matthew Rosato:
+   s390x/pci: only limit DMA aperture if vfio DMA limit reported
+58 fc58891d0422 Peter Maydell:
+   target/arm: HVC at EL3 should go to EL3, not EL2
+59 52c773ce893f Marc-André Lureau:
+   hw/mips: LOONGSON3V depends on UNIMP device
+
+(commit(s) marked with * were in previous series and are not resent)
 
