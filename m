@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAFA37F04D5
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Nov 2023 09:41:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E9D7F0562
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Nov 2023 11:18:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4dLm-0003Fx-QH; Sun, 19 Nov 2023 03:40:18 -0500
+	id 1r4es1-0003CN-WD; Sun, 19 Nov 2023 05:17:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r4dLk-0003DA-K4
- for qemu-devel@nongnu.org; Sun, 19 Nov 2023 03:40:16 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1r4erm-00038D-WF
+ for qemu-devel@nongnu.org; Sun, 19 Nov 2023 05:17:33 -0500
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r4dLi-000689-85
- for qemu-devel@nongnu.org; Sun, 19 Nov 2023 03:40:16 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1cf5901b4c8so3767935ad.1
- for <qemu-devel@nongnu.org>; Sun, 19 Nov 2023 00:40:13 -0800 (PST)
+ id 1r4erk-0005B8-UV
+ for qemu-devel@nongnu.org; Sun, 19 Nov 2023 05:17:26 -0500
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-285196556fcso335957a91.0
+ for <qemu-devel@nongnu.org>; Sun, 19 Nov 2023 02:17:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1700383211; x=1700988011;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1700389041; x=1700993841;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=FA/5Bi7G0NWzKyGaCdZ2k3FjRDwQqnhhFEZvbR4rPX4=;
- b=yK4Ro606NT1xldONgSZecG2XXn8dwwKCBKLxQeqpNu0ahYjNOf68HFGDfIoVswVPVg
- oRyoxECkIBavopbqxq6Wv8Gwla9mCQcTdcx5EqBmM+8eRE1hqTLtlwcsCNF70G4ou0zY
- CXDPQbNYyeqjmG541/mXN0o3cjCQCZGM2wNdOuQNN23Lte4H6NHd78MK3tXp9dZINRBZ
- 5OS5X/HCAlJUdLvG/RzEjV7XdqIN8UEM13PXvAWjzRFmM4SKsH7xlATdQER0MKKlNy81
- yuFw0mNEDecJohm79CJYOxMz7zM75wZAJqgjM38+ilwupu736EvN6CjZ8EnWoWtMyRis
- tu4A==
+ bh=+5L02nXQHrhWgW8h3ky7PXJRSckRlBeH1hAu0xsoy88=;
+ b=YQxQrxCaGFBjHFBniedw97WhBHCapAQe8KiCONeFWKVjrStU4HbZPeWI9wazK8SbdK
+ oxBxDT/kh/VeSXLlPnVAsxZTEgaKVDR8zwLK+csMLmk4dm7uD5i1+Sc1XweAHXh39J7y
+ g7VIN7EG2XFSYTEcZtj6cmBbry4zWks/gom6oO7ehiY9Ot0+mSSwPXUpHNm/1faWWgY8
+ OUtPj0brV19+yOCeP6CtLSPPw8/eKpBvJnp8Euuwj6slc8vEFx+jl/xyvpIlAu5BOI3u
+ kXFW+uPuubgmy8ORtpc9I72qyz9KDhg480qGOaKRA82g8NtUJ0wc3oMf31KpJDXlTIYz
+ vD0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700383211; x=1700988011;
+ d=1e100.net; s=20230601; t=1700389041; x=1700993841;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=FA/5Bi7G0NWzKyGaCdZ2k3FjRDwQqnhhFEZvbR4rPX4=;
- b=YI/ZKIYbvzEw+L7hw3fIzStrNkvuXqgOi1lzF9ILDTQViVtc2JfCTNjenJh8ZS1J+E
- s/BX0Mojee8jxu5/UyIk1wEuzETZoqje1tIBKTGD9MM7R3z3J+TAcMdlhsVwWK44TEJw
- 1MKBpIYiEuP8JOaXF0TeNH8Uiq6uhAF6sA3yHJTOuDcMnaVyGBsUeqjsyhp4wZK7mEWG
- tlKX86cyrT7IM4E1XoRfHuIHObzFe6oU/iTKBylZ4Wjd3L1jwb5hdb3q0yTmUGZydIQy
- jq/OpYr5/rmsUWzMH24Tj/miPz4EGkXPYutZJxm0OE91Kvsty44AmagUC/30GFrkukkR
- CHZg==
-X-Gm-Message-State: AOJu0Yzwi5IIFDppP69t6Rupx6kXGjGJOOVCl44xYl7dftBhtsiI4gID
- CDwa1lw9IWKyDfxh5h+xU86bXA==
-X-Google-Smtp-Source: AGHT+IGRmDNQt1zR+KXGlRu+eMD2m+EcA5IYpLXy2ECqsMggEcDclcVleHpF2gUiInbNJe+SPJd9yw==
-X-Received: by 2002:a17:902:da88:b0:1cc:3fc9:7d09 with SMTP id
- j8-20020a170902da8800b001cc3fc97d09mr5801252plx.15.1700383211622; 
- Sun, 19 Nov 2023 00:40:11 -0800 (PST)
+ bh=+5L02nXQHrhWgW8h3ky7PXJRSckRlBeH1hAu0xsoy88=;
+ b=ChWCdUkSkQ4zFNJvueGwBojLj8aIqzyJsfcpYZL+0zWEU85K/8tL1NNK/Nsu1aTb7U
+ 8MU5uM3zjkYIN7ReKjelo9/Px5LbJ+wP47S4qYR6vHk6vI5d3qBj/kS5S5UID+SNTdK9
+ W2z3u65Nj43boXeaybfMVxsx/a4yQG0AWUgO8NzfG8e7/qLdSVLZ7MDBXRlT3f59XZOI
+ 9qSbR1lcFFFKL4V96Ev+iaJM8QCkLiVx3OrDgJl1oCECh1tFqX8AmUufuiLiReJvUM/P
+ gVWzlEZ4+hofzaCUcnzl1g7tSrnyhXFe9HbExLG7EwMS+BS5LjhcB2KqOxYKd8lAuie+
+ Gsvg==
+X-Gm-Message-State: AOJu0YzIxxLKNIFoTtLgHVA690YKVVTtBjtqTWPioMpk1TqHWO61C4fl
+ TqwkE4jvsczxLelmDbcvWrfujA==
+X-Google-Smtp-Source: AGHT+IF6k2Hq5c6Gmf54n8jes95PEIhFJx4GzNf58oFqouLAsk+xMcQWxZUMXQi7L7ECTtry6LShNA==
+X-Received: by 2002:a17:90a:fe0a:b0:27d:853:9109 with SMTP id
+ ck10-20020a17090afe0a00b0027d08539109mr3969400pjb.20.1700389041513; 
+ Sun, 19 Nov 2023 02:17:21 -0800 (PST)
 Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- b6-20020a170902b60600b001b86dd825e7sm4018691pls.108.2023.11.19.00.40.10
+ d13-20020a17090ad3cd00b00280202c092fsm3866805pjw.33.2023.11.19.02.17.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 19 Nov 2023 00:40:11 -0800 (PST)
+ Sun, 19 Nov 2023 02:17:21 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org
-Subject: [PATCH] audio: Free consumed default audio devices
-Date: Sun, 19 Nov 2023 17:39:38 +0900
-Message-ID: <20231119083940.20558-1-akihiko.odaki@daynix.com>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Subject: [PATCH] configure: Make only once with pseudo-"in source tree" builds
+Date: Sun, 19 Nov 2023 19:16:02 +0900
+Message-ID: <20231119101604.47325-1-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::635;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x635.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -90,35 +90,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Failed default audio devices were removed from the list but not freed,
-and that made LeakSanitizer sad. Free default audio devices as they are
-consumed.
+Pseudo-"in source tree" build used to run make in the build directory
+as many times as goals. Worse, although .NOTPARALLEL is specified,
+it does not work for patterns, and run make in parallel, which can break
+things.
 
+Add a new rule "build", and let it call make. The pattern rule only
+needs to specify "build" as its prerequisite and have a no-op recipe so
+that it does more than canceling built-in implicit rules.
+
+Fixes: dedad02720 ("configure: add support for pseudo-"in source tree" builds")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- audio/audio.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ configure | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/audio/audio.c b/audio/audio.c
-index f91e05b72c..becf6cdf46 100644
---- a/audio/audio.c
-+++ b/audio/audio.c
-@@ -1758,12 +1758,14 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
-                 goto out;
-             }
-             s->dev = dev = e->dev;
-+            QSIMPLEQ_REMOVE_HEAD(&default_audiodevs, next);
-+            g_free(e);
-             drvname = AudiodevDriver_str(dev->driver);
-             driver = audio_driver_lookup(drvname);
-             if (!audio_driver_init(s, driver, dev, NULL)) {
-                 break;
-             }
--            QSIMPLEQ_REMOVE_HEAD(&default_audiodevs, next);
-+            qapi_free_Audiodev(dev);
-         }
-     }
+diff --git a/configure b/configure
+index abcb199aa8..d73a9d811b 100755
+--- a/configure
++++ b/configure
+@@ -41,12 +41,7 @@ then
+ # This file is auto-generated by configure to support in-source tree
+ # 'make' command invocation
  
+-ifeq ($(MAKECMDGOALS),)
+-recurse: all
+-endif
+-
+-.NOTPARALLEL: %
+-%: force
++build:
+ 	@echo 'changing dir to build for $(MAKE) "$(MAKECMDGOALS)"...'
+ 	@$(MAKE) -C build -f Makefile $(MAKECMDGOALS)
+ 	@if test "$(MAKECMDGOALS)" = "distclean" && \
+@@ -54,8 +49,9 @@ endif
+ 	then \
+ 	    rm -rf build GNUmakefile ; \
+ 	fi
+-force: ;
+-.PHONY: force
++%: build
++	@
++.PHONY: build
+ GNUmakefile: ;
+ 
+ EOF
 -- 
 2.42.1
 
