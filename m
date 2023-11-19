@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 498D37F097B
+	by mail.lfdr.de (Postfix) with ESMTPS id B8CE07F097C
 	for <lists+qemu-devel@lfdr.de>; Sun, 19 Nov 2023 23:52:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4qdF-0004sd-Rb; Sun, 19 Nov 2023 17:51:13 -0500
+	id 1r4qdJ-0004ui-EC; Sun, 19 Nov 2023 17:51:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r4qdD-0004sQ-CQ
- for qemu-devel@nongnu.org; Sun, 19 Nov 2023 17:51:11 -0500
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r4qdH-0004sx-Vv
+ for qemu-devel@nongnu.org; Sun, 19 Nov 2023 17:51:16 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r4qdB-0002Bx-JQ
- for qemu-devel@nongnu.org; Sun, 19 Nov 2023 17:51:11 -0500
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-507973f3b65so5312080e87.3
- for <qemu-devel@nongnu.org>; Sun, 19 Nov 2023 14:51:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r4qdG-0002CN-3p
+ for qemu-devel@nongnu.org; Sun, 19 Nov 2023 17:51:15 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5484ef5e3d2so3162830a12.3
+ for <qemu-devel@nongnu.org>; Sun, 19 Nov 2023 14:51:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700434267; x=1701039067; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=E2tt04UpuG6XbqbE1qTCQTpaogMB+9LfwSnlQdSGlHY=;
- b=VqoPUainv4eB7PHm33ASfOi2AtJopmtvf5LkAMxcZ6pjUgRhjj5l8Mrr0ZKxOchqTj
- ZgFkad3hrjEgXmUUha+PHO5aU8lKSbrSdEoqQfWjt/ai2vv7AKg3MVZf5sEuYCuRudqG
- VmSTL2/AyaDPE+JPm7m3/zS9g+omX7rhZ8Meqi4MXn0c1+k+mmN+SkiSbN/FUBnI+5gc
- sev6fqeSny0YW58ytBvsWQwfDuvKk4/LZ/olYU1h0s7p+S8JEZqil7eLCcYNjLcbHwiA
- A0zCRPSZV4XqrAkhdBNifA1D6oLt4UKPpi8sXtSKqKp2rXeRO6XDNhHN4i8/fhxOViWX
- n4UA==
+ d=linaro.org; s=google; t=1700434272; x=1701039072; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=h4OQ2JZwpVK0ANfHSLEyOk1u/diKUfR9mXGb8Hv9bX8=;
+ b=QSuoeG0T1X9eWDSn/tteZrUv6rDp3+k8Vu6nsTuFDa+4tNDxdHoCyfOC/xPzU/7hEJ
+ P7PB0pUv4SgjSX7My1zYNaQdGcvkPp2eRdtGDj8fJ2ryP2nKsVocP9fXc9cOOBR9zonK
+ KvD3aFulhtMIw4wYke39fNMaRboyySNtJFnjqQ+jCRDDjVXFWHoU0tY/FXjzi8Wqyxlc
+ f4PQIYXvKiqqlAka6Rzj62nXHYntAv4DouZ0tJPkZHfRA+P1lAOw7b7P1R1znOdHdjZM
+ 9hZmsn80rGJBBbUOel0K8D5vahtTUva8czs91WYbLU2gmUOY7fE/4AeThvHRNaB1humZ
+ TT2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700434267; x=1701039067;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=E2tt04UpuG6XbqbE1qTCQTpaogMB+9LfwSnlQdSGlHY=;
- b=UCOAZF2tnuGsoo1WmHplQgpbJrNSRI5NL8/iSEgSBkxwXWUfL8VMyrev/vqIzUW8h4
- tqkyaF6E/uur7/58lCfaCFHteIDrJQ4YRXbmCtH+R44gmzFsdL633Bltq1xgDT3ByRNE
- 4ZDLcpi81OZC00zlvoSvPztk8ER6+MFQrGiPHGGskS/hdk7OjFnFaOuLMaJA8O9kdCWu
- OCgk7NylUBRYJILYycACr4dVH4FlREA8IchnKPK0G8W0s+UJ2hW+D9Tq7FAARj3IhJb4
- I1Ap6TFcmjrYC3HcgaERkeA29xF1OImC1mCQMC2nd6UG4layRT2oGGLukpRCcfdRQ9rY
- yv/Q==
-X-Gm-Message-State: AOJu0YxGDjyhdYIw3TyqijiOwi8rg7YSZEWCo2vaCy29WJkM9ISgmCjY
- iio4YVGWOKTSv83rrvDGW+JmDYtdETMhPDTmwZc=
-X-Google-Smtp-Source: AGHT+IHBx7ealZbgOV9F66r/1+IAFYeGEf58zczvEyE1Yb1SHrgOOV7quHbmcLevIz4qiWON/oujnA==
-X-Received: by 2002:a05:6512:2112:b0:503:36cb:5438 with SMTP id
- q18-20020a056512211200b0050336cb5438mr3429202lfr.21.1700434265933; 
- Sun, 19 Nov 2023 14:51:05 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700434272; x=1701039072;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=h4OQ2JZwpVK0ANfHSLEyOk1u/diKUfR9mXGb8Hv9bX8=;
+ b=ZPFUvMcfMRabI/0izazEWUItEQr9cDLyq7L4FHTDDcRfc1CMuNGOOtiEhtrK1DX6Cg
+ 2NGZ7h/7F1sixOxGyOAYIcDzt6SHs7ggpcc6C2MY64liaWyKuULlT+uWIlL08SSO/Z+N
+ /vmzjxJ70C0eWdX0zuD2f+7aZ9S2ljMQG/meDFe8pP4yZwqop/N/oPCHeRi9nLYwHJqM
+ +Mra14AR0hSVbcng14TB1s2GS1FaNw4v9tg0PVjN2A9BhUi2oS4E1NsXkoG/lP7CGjXj
+ O7YNglCk3x6UL+d+VxT4ACUp3deZjQFUxIZtzcdlUQ/JsXimWjjdVXHX8oNAeYUDB4Qz
+ Wnsg==
+X-Gm-Message-State: AOJu0Yy2iUowAtHZrExRlDFNH8bfLm1ruz3RinG8soQAf0FyKBPVUeul
+ vvSeepr4smkl50K9h28YESiCNluPSlUkxS/t2do=
+X-Google-Smtp-Source: AGHT+IGkw2qVKPSiPjIY5AjfLPJzyreHedFK+rH53i21GvYeiS+47WcwY1YZjYNPnsgx6h9EKI3syg==
+X-Received: by 2002:aa7:d648:0:b0:543:5364:33b4 with SMTP id
+ v8-20020aa7d648000000b00543536433b4mr4292607edr.11.1700434272299; 
+ Sun, 19 Nov 2023 14:51:12 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.211.133])
  by smtp.gmail.com with ESMTPSA id
- q3-20020aa7cc03000000b0054847e78203sm2710430edt.29.2023.11.19.14.51.04
+ p9-20020a056402044900b0054868b36118sm2058684edw.32.2023.11.19.14.51.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 19 Nov 2023 14:51:05 -0800 (PST)
+ Sun, 19 Nov 2023 14:51:11 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Kochkov <anton.kochkov@proton.me>,
  Francisco Iglesias <francisco.iglesias@amd.com>,
  Vikram Garhwal <vikram.garhwal@amd.com>, Jason Wang <jasowang@redhat.com>,
  Pavel Pisa <pisa@cmp.felk.cvut.cz>, Vikram Garhwal <fnu.vikram@xilinx.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-8.2 v2 0/2] hw/net/can/xlnx-zynqmp: Avoid underflow while
- popping FIFOs
-Date: Sun, 19 Nov 2023 23:51:00 +0100
-Message-ID: <20231119225102.49227-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Qiang Liu <cyruscyliu@gmail.com>
+Subject: [PATCH-for-8.2 v2 1/2] hw/net/can/xlnx-zynqmp: Avoid underflow while
+ popping TX FIFOs
+Date: Sun, 19 Nov 2023 23:51:01 +0100
+Message-ID: <20231119225102.49227-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231119225102.49227-1-philmd@linaro.org>
+References: <20231119225102.49227-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,23 +96,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix a pair of fuzzed bugs.
+Per https://docs.xilinx.com/r/en-US/ug1085-zynq-ultrascale-trm/Message-Format
 
-Patch #1 is reviewed, #2 is new.
+  Message Format
 
-Tested with the CAN tests from 'make check-qtest-aarch64'.
+  The same message format is used for RXFIFO, TXFIFO, and TXHPB.
+  Each message includes four words (16 bytes). Software must read
+  and write all four words regardless of the actual number of data
+  bytes and valid fields in the message.
 
-Regards,
+There is no mention in this reference manual about what the
+hardware does when not all four words are written. To fix the
+reported underflow behavior when DATA2 register is written,
+I choose to fill the data with the previous content of the
+ID / DLC / DATA1 registers, which is how I expect hardware
+would do.
 
-Phil.
+Note there is no hardware flag raised under such condition.
 
-Philippe Mathieu-Daudé (2):
-  hw/net/can/xlnx-zynqmp: Avoid underflow while popping TX FIFOs
-  hw/net/can/xlnx-zynqmp: Avoid underflow while popping RX FIFO
+Reported-by: Qiang Liu <cyruscyliu@gmail.com>
+Fixes: 98e5d7a2b7 ("hw/net/can: Introduce Xilinx ZynqMP CAN controller")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1425
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Francisco Iglesias <francisco.iglesias@amd.com>
+---
+ hw/net/can/xlnx-zynqmp-can.c | 49 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 46 insertions(+), 3 deletions(-)
 
- hw/net/can/xlnx-zynqmp-can.c | 66 ++++++++++++++++++++++++++++++------
- 1 file changed, 55 insertions(+), 11 deletions(-)
-
+diff --git a/hw/net/can/xlnx-zynqmp-can.c b/hw/net/can/xlnx-zynqmp-can.c
+index e93e6c5e19..58938b574e 100644
+--- a/hw/net/can/xlnx-zynqmp-can.c
++++ b/hw/net/can/xlnx-zynqmp-can.c
+@@ -434,6 +434,51 @@ static bool tx_ready_check(XlnxZynqMPCANState *s)
+     return true;
+ }
+ 
++static void read_tx_frame(XlnxZynqMPCANState *s, Fifo32 *fifo, uint32_t *data)
++{
++    unsigned used = fifo32_num_used(fifo);
++    bool is_txhpb = fifo == &s->txhpb_fifo;
++
++    assert(used > 0);
++    used %= CAN_FRAME_SIZE;
++
++    /*
++     * Frame Message Format
++     *
++     * Each frame includes four words (16 bytes). Software must read and write
++     * all four words regardless of the actual number of data bytes and valid
++     * fields in the message.
++     * If software misbehave (not writting all four words), we use the previous
++     * registers content to initialize each missing word.
++     */
++    if (used > 0) {
++        /* ID, DLC, DATA1 missing */
++        data[0] = s->regs[is_txhpb ? R_TXHPB_ID : R_TXFIFO_ID];
++    } else {
++        data[0] = fifo32_pop(fifo);
++    }
++    if (used == 1 || used == 2) {
++        /* DLC, DATA1 missing */
++        data[1] = s->regs[is_txhpb ? R_TXHPB_DLC : R_TXFIFO_DLC];
++    } else {
++        data[1] = fifo32_pop(fifo);
++    }
++    if (used == 1) {
++        /* DATA1 missing */
++        data[2] = s->regs[is_txhpb ? R_TXHPB_DATA1 : R_TXFIFO_DATA1];
++    } else {
++        data[2] = fifo32_pop(fifo);
++    }
++    /* DATA2 triggered the transfer thus is always available */
++    data[3] = fifo32_pop(fifo);
++
++    if (used) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Incomplete CAN frame (only %u/%u slots used)\n",
++                      TYPE_XLNX_ZYNQMP_CAN, used, CAN_FRAME_SIZE);
++    }
++}
++
+ static void transfer_fifo(XlnxZynqMPCANState *s, Fifo32 *fifo)
+ {
+     qemu_can_frame frame;
+@@ -451,9 +496,7 @@ static void transfer_fifo(XlnxZynqMPCANState *s, Fifo32 *fifo)
+     }
+ 
+     while (!fifo32_is_empty(fifo)) {
+-        for (i = 0; i < CAN_FRAME_SIZE; i++) {
+-            data[i] = fifo32_pop(fifo);
+-        }
++        read_tx_frame(s, fifo, data);
+ 
+         if (ARRAY_FIELD_EX32(s->regs, STATUS_REGISTER, LBACK)) {
+             /*
 -- 
 2.41.0
 
