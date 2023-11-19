@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3AE7F097A
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 Nov 2023 23:52:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 181FE7F097F
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 Nov 2023 23:55:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4qdQ-0004vf-On; Sun, 19 Nov 2023 17:51:24 -0500
+	id 1r4qgr-0007Tx-6e; Sun, 19 Nov 2023 17:54:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r4qdO-0004vJ-B3
- for qemu-devel@nongnu.org; Sun, 19 Nov 2023 17:51:22 -0500
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r4qgp-0007Tf-Ie
+ for qemu-devel@nongnu.org; Sun, 19 Nov 2023 17:54:55 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r4qdM-0002D1-KV
- for qemu-devel@nongnu.org; Sun, 19 Nov 2023 17:51:22 -0500
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-991c786369cso519170366b.1
- for <qemu-devel@nongnu.org>; Sun, 19 Nov 2023 14:51:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r4qgo-0002g3-0M
+ for qemu-devel@nongnu.org; Sun, 19 Nov 2023 17:54:55 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4083dbc43cfso9331805e9.3
+ for <qemu-devel@nongnu.org>; Sun, 19 Nov 2023 14:54:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700434279; x=1701039079; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=l+TRmFh4XF/6EizUthtIP3l2xJd8V/WH+CN52HJC1Pc=;
- b=O1XTQe4AzyRJPngyScEGoTUfBoIm/m+5dgawTavcTbATLw1zdTBUViYQV7cjSykvZX
- SGMs7/fMvqTPlZuDIGLiH4lS7d4YgGV1+lBbpLPKT2zf4l5g7lwpkfVdS9n96lL0Vp3v
- T+yfgQ00HcONVRcXYo5A2OihxZgQU52p/1MgcBwDtVyJHl4xI2oxDcladez8NRjPfTG8
- r6BA/epBOlc0NjuoXK1dyxBjqtmWqAHqjJSPTDKwMfL6cvZ3o3Q6Booo1bl5aztV0qBc
- JVmFPsKZVhPq0eXxDU8u3oD7XEUisrAyB6lrqnRG8UbSEgPAfIdRpLwaHoeYsSdxBCRL
- GmMg==
+ d=linaro.org; s=google; t=1700434492; x=1701039292; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hH3FGY+gRiDBbE29BRC2yieIeafm/xNMpFbiUIaQ2NI=;
+ b=OXI+NgwKK1V6WUHZx845LxwNcJFC8/MCjL+I+g7J2I+SEkpBp8ydrQVthxX2OtKWb5
+ 3WUSublhKGQxbnZlBrwVqVinJO7ZzfT8Lmt+F9RGhBkTtR0pR3IGmVkbhNxN4vrtyAXh
+ 81WXuxkMefwhe8MdDswQofw30IOC2NP9lzSqyCk/F8WP5RvvGsudoo3+DIm3DtJjXahY
+ 9E2xfom9U5wtSmycFALA/geWDl8hJ0q0Da9std1lFJbdqXAOM/dL6LCA3s5xmKEeHxN/
+ a7elvRUyfZFo31yaiph3isjlw0GMDTCdRzo7OuOPyc4t0h/UlDpxCkJifhVoSUTra5AY
+ rWMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700434279; x=1701039079;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=l+TRmFh4XF/6EizUthtIP3l2xJd8V/WH+CN52HJC1Pc=;
- b=ACqLnxF2YufgaSBCZDo1rEm9UFh1BTKCh94MVTCwddiqa4AyMcpNjUuRBfVwEDVxv0
- eVTrI618tsux/jvMFpaMmufP748csDaDLLgJE9Hg9+1ist+Cwl2DFVivYl8dftD4DqFe
- orDUnTJmJoISJCtwbXQbeZS7k7IDoCOc3ProRnBEQX9pKV2vZpyGMMpCc8Wr7InJ8Yc+
- sQhfL0yW2QnSOayK8DEENYjwV7G2WGuIpDszYcd4fdhL8SjgguADy2NALFAqqUp/t/cD
- a35/3duLc7B9EUg/0BuGX3ITgVbX8RBRRan5wW/AFGOELx5w71dttY0w8alP42CuvFze
- fOzA==
-X-Gm-Message-State: AOJu0YwKfaROFhxX/zmXFL7yxdMf0jryaVsH5MRlgCiJaVSydbdu62RZ
- 5hVjL/a213jEN+oVSKLtLuepF8KUaOxZcIOd6RE=
-X-Google-Smtp-Source: AGHT+IGCPzfuH/3uFAixlyzgnH1RIdWiHEF/2AA3xaEYCv2ZgltPrqPRoNhKK9f6PCgU49rijitZAQ==
-X-Received: by 2002:a17:906:2da:b0:9ff:1e84:76fc with SMTP id
- 26-20020a17090602da00b009ff1e8476fcmr212961ejk.5.1700434279173; 
- Sun, 19 Nov 2023 14:51:19 -0800 (PST)
-Received: from m1x-phil.lan ([176.187.211.133])
+ d=1e100.net; s=20230601; t=1700434492; x=1701039292;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hH3FGY+gRiDBbE29BRC2yieIeafm/xNMpFbiUIaQ2NI=;
+ b=QA67DsSIU7dTkFIIcM+KN2w/9qyrJdZSPZ+1J5ig+F7IgAVWgL8qmX9iHLPhmB/j05
+ /STcFc0hAb29qMzhLByHysts5QYX/5Zg7aH5WeUVimTYMv40U9ck+Bc7lLj3D1hKbZnp
+ 212U21L9TIQMRxryamsKyS9+/i3VFtUPWxThZsslYxFm90hWlTvlYjpueg8Hlxyd2iIS
+ FfigkJp2rjOVZEtrDKvyqKfpUywjeEnufadylJIdSWgpTkR724v/8k7CKZBHQtKCS+MK
+ 874MgtLEq93KARe6QCrIblabCfofV7C7MiM9HNbhdBD5KJhAd/49xl3Ka7KclZwj6w/G
+ AYKA==
+X-Gm-Message-State: AOJu0YxmcSZZ/rSXf3GSQdLEJoufic66I7ruu7VJAco63DJDguIoXaqy
+ Yy19p2fQaM0Bg6FHumyFEzDLiQ==
+X-Google-Smtp-Source: AGHT+IF0mRiI3dn+unvC/E+XLohkuG5HAlmtKtwzYBgMmaLBRSB+r9HClqszayGBxfduudRZ5m3KYA==
+X-Received: by 2002:a05:600c:230a:b0:408:37d4:b5ba with SMTP id
+ 10-20020a05600c230a00b0040837d4b5bamr4772475wmo.12.1700434491537; 
+ Sun, 19 Nov 2023 14:54:51 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.211.133])
  by smtp.gmail.com with ESMTPSA id
- jz2-20020a170906bb0200b009ddf38056f8sm3272534ejb.118.2023.11.19.14.51.17
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 19 Nov 2023 14:51:18 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Anton Kochkov <anton.kochkov@proton.me>,
- Francisco Iglesias <francisco.iglesias@amd.com>,
- Vikram Garhwal <vikram.garhwal@amd.com>, Jason Wang <jasowang@redhat.com>,
- Pavel Pisa <pisa@cmp.felk.cvut.cz>, Vikram Garhwal <fnu.vikram@xilinx.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Qiang Liu <cyruscyliu@gmail.com>
-Subject: [PATCH-for-8.2 v2 2/2] hw/net/can/xlnx-zynqmp: Avoid underflow while
- popping RX FIFO
-Date: Sun, 19 Nov 2023 23:51:02 +0100
-Message-ID: <20231119225102.49227-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231119225102.49227-1-philmd@linaro.org>
-References: <20231119225102.49227-1-philmd@linaro.org>
+ je14-20020a05600c1f8e00b0040596352951sm16039184wmb.5.2023.11.19.14.54.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 19 Nov 2023 14:54:51 -0800 (PST)
+Message-ID: <3c44d5a5-818b-46b6-a07f-af655a060032@linaro.org>
+Date: Sun, 19 Nov 2023 23:54:49 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] hw/i386: fix short-circuit logic with non-optimizing
+ builds
+Content-Language: en-US
+To: Daniel Hoffman <dhoff749@gmail.com>, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-trivial@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+References: <20231119203116.3027230-1-dhoff749@gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231119203116.3027230-1-dhoff749@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,73 +95,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per https://docs.xilinx.com/r/en-US/ug1085-zynq-ultrascale-trm/Message-Format
+Hi,
 
-  Message Format
+On 19/11/23 21:31, Daniel Hoffman wrote:
+> `kvm_enabled()` is compiled down to `0` and short-circuit logic is
+> used to remove references to undefined symbols at the compile stage.
+> Some build configurations with some compilers don't attempt to
+> simplify this logic down in some cases (the pattern appears to be
+> that the literal false must be the first term) and this was causing
+> some builds to emit references to undefined symbols.
+> 
+> An example of such a configuration is clang 16.0.6 with the following
+> configure: ./configure --enable-debug --without-default-features
+> --target-list=x86_64-softmmu --enable-tcg-interpreter
 
-  The same message format is used for RXFIFO, TXFIFO, and TXHPB.
-  Each message includes four words (16 bytes). Software must read
-  and write all four words regardless of the actual number of data
-  bytes and valid fields in the message.
+Is the '--enable-debug' option triggering this?
 
-There is no mention in this reference manual about what the
-hardware does when not all four words are read. To fix the
-reported underflow behavior, I choose to fill the 4 frame data
-registers when the first register (ID) is accessed, which is how
-I expect hardware would do.
+I'm surprised the order of conditions matters for code elision...
 
-Reported-by: Qiang Liu <cyruscyliu@gmail.com>
-Fixes: 98e5d7a2b7 ("hw/net/can: Introduce Xilinx ZynqMP CAN controller")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1427
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/net/can/xlnx-zynqmp-can.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
-
-diff --git a/hw/net/can/xlnx-zynqmp-can.c b/hw/net/can/xlnx-zynqmp-can.c
-index 58938b574e..c63fb4a83c 100644
---- a/hw/net/can/xlnx-zynqmp-can.c
-+++ b/hw/net/can/xlnx-zynqmp-can.c
-@@ -777,14 +777,18 @@ static void update_rx_fifo(XlnxZynqMPCANState *s, const qemu_can_frame *frame)
-     }
- }
- 
--static uint64_t can_rxfifo_pre_read(RegisterInfo *reg, uint64_t val)
-+static uint64_t can_rxfifo_post_read_id(RegisterInfo *reg, uint64_t val)
- {
-     XlnxZynqMPCANState *s = XLNX_ZYNQMP_CAN(reg->opaque);
-+    unsigned used = fifo32_num_used(&s->rx_fifo);
- 
--    if (!fifo32_is_empty(&s->rx_fifo)) {
--        val = fifo32_pop(&s->rx_fifo);
--    } else {
-+    if (used < CAN_FRAME_SIZE) {
-         ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, RXUFLW, 1);
-+    } else {
-+        val = s->regs[R_RXFIFO_ID] = fifo32_pop(&s->rx_fifo);
-+        s->regs[R_RXFIFO_DLC] = fifo32_pop(&s->rx_fifo);
-+        s->regs[R_RXFIFO_DATA1] = fifo32_pop(&s->rx_fifo);
-+        s->regs[R_RXFIFO_DATA2] = fifo32_pop(&s->rx_fifo);
-     }
- 
-     can_update_irq(s);
-@@ -945,14 +949,11 @@ static const RegisterAccessInfo can_regs_info[] = {
-         .post_write = can_tx_post_write,
-     },{ .name = "RXFIFO_ID",  .addr = A_RXFIFO_ID,
-         .ro = 0xffffffff,
--        .post_read = can_rxfifo_pre_read,
-+        .post_read = can_rxfifo_post_read_id,
-     },{ .name = "RXFIFO_DLC",  .addr = A_RXFIFO_DLC,
-         .rsvd = 0xfff0000,
--        .post_read = can_rxfifo_pre_read,
-     },{ .name = "RXFIFO_DATA1",  .addr = A_RXFIFO_DATA1,
--        .post_read = can_rxfifo_pre_read,
-     },{ .name = "RXFIFO_DATA2",  .addr = A_RXFIFO_DATA2,
--        .post_read = can_rxfifo_pre_read,
-     },{ .name = "AFR",  .addr = A_AFR,
-         .rsvd = 0xfffffff0,
-         .post_write = can_filter_enable_post_write,
--- 
-2.41.0
+> Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
+> ---
+>   hw/i386/x86.c | 15 ++++++++++++---
+>   1 file changed, 12 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+> index b3d054889bb..2b6291ad8d5 100644
+> --- a/hw/i386/x86.c
+> +++ b/hw/i386/x86.c
+> @@ -131,8 +131,12 @@ void x86_cpus_init(X86MachineState *x86ms, int default_cpu_version)
+>       /*
+>        * Can we support APIC ID 255 or higher?  With KVM, that requires
+>        * both in-kernel lapic and X2APIC userspace API.
+> +     *
+> +     * kvm_enabled() must go first to ensure that kvm_* references are
+> +     * not emitted for the linker to consume (kvm_enabled() is
+> +     * a literal `0` in configurations where kvm_* aren't defined)
+>        */
+> -    if (x86ms->apic_id_limit > 255 && kvm_enabled() &&
+> +    if (kvm_enabled() && x86ms->apic_id_limit > 255 &&
+>           (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())) {
+>           error_report("current -smp configuration requires kernel "
+>                        "irqchip and X2APIC API support.");
+> @@ -418,8 +422,13 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+>       }
+>       cpu->thread_id = topo_ids.smt_id;
+>   
+> -    if (hyperv_feat_enabled(cpu, HYPERV_FEAT_VPINDEX) &&
+> -        kvm_enabled() && !kvm_hv_vpindex_settable()) {
+> +    /*
+> +    * kvm_enabled() must go first to ensure that kvm_* references are
+> +    * not emitted for the linker to consume (kvm_enabled() is
+> +    * a literal `0` in configurations where kvm_* aren't defined)
+> +    */
+> +    if (kvm_enabled() && hyperv_feat_enabled(cpu, HYPERV_FEAT_VPINDEX) &&
+> +        !kvm_hv_vpindex_settable()) {
+>           error_setg(errp, "kernel doesn't allow setting HyperV VP_INDEX");
+>           return;
+>       }
 
 
