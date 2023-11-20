@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A86347F1F62
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 22:45:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D8C7F1F67
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 22:46:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5C4h-0004gb-8h; Mon, 20 Nov 2023 16:44:59 -0500
+	id 1r5C5S-0005bz-I8; Mon, 20 Nov 2023 16:45:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r5C4f-0004fj-4C
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:44:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1r5C5E-0005U7-KF
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:45:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r5C4d-0005jI-HF
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:44:56 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1r5C59-0005wU-Pd
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:45:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700516694;
+ s=mimecast20190719; t=1700516726;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wsbnpeoZWj2VPBLWki02m6mwj7Vt8/qngsaV/AEmJFY=;
- b=PI813Pk7y9chPtR6vwmT3orzxJaciMKMFvH67mcFg/4kTkS5fFmlUgaVwWhjQ3JuxIAskJ
- DIFzDM9BWuwcw5plK66Hn39oUOvx18I/JOQwqwx2mpzRXggwjhDn7Z+O9OLf41kGGS/5A+
- p6GaTzJ31u5+9fB2zY04cNp2tPdDfpg=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=yOi8zo4jI/uumYmIqWG8dRZhTC7Umkqv7tQVWJif/z0=;
+ b=c/mWOfwS11M63g+Pt2NR/Vi4dMTfr1BjjrymyDZ+GVvMR3flosOooWTcV1Gti8DTFx4624
+ 5s+/A5O1+cnJ3KgAu2PMD7m/s+f4c0FK2AovkP9HLNebeqD5tfl33TzlfonKKYhimZgZES
+ XPXMuAVlSanF3Xjr4CObQKZ5j8XDW9E=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-138-dswACzqJPkqiEBSbEuhHbQ-1; Mon, 20 Nov 2023 16:44:52 -0500
-X-MC-Unique: dswACzqJPkqiEBSbEuhHbQ-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-421be23b19aso15606501cf.1
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 13:44:52 -0800 (PST)
+ us-mta-657-2X9WDuReMtOfcfuBPuJepw-1; Mon, 20 Nov 2023 16:45:25 -0500
+X-MC-Unique: 2X9WDuReMtOfcfuBPuJepw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9fcfa742e49so116719066b.2
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 13:45:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700516692; x=1701121492;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wsbnpeoZWj2VPBLWki02m6mwj7Vt8/qngsaV/AEmJFY=;
- b=pbXkb5k9oUYeRcXzyyj7OAWcTCKLyOEvx/I93sJ+xJsvBpus6tBEZP7sq69RUEPXfJ
- MaYCjfgSa36new//SixOHWTeL12ZlDnv3uENetNVk2DjnDyG5ShCZh4X6PDiqNoQDqcH
- lvrBPZsDywJ4YMr8Bv25UutsyOUvJdluDDLIQiPFLUvcoER6yom4/8a8UpEf5eMy9XL/
- yTYBVnO+WQ2+gLnFjoef8TN7IuErtI6eCOD9iTbwtlm0bMQZ4dhVhVjzUhOUXpmvmYSa
- uku9jwFU2gJnJKc7i2nKEOt8TtEPPLdRdMm1W4aAUgocSLecvMROosa5djHfGjUIvvWv
- qtDg==
-X-Gm-Message-State: AOJu0YxD1zKozdi2Hn04liIccVLgiA9KkJM4zZfsTMSfpIRGko1mcccm
- tLrQy2P945nlpniXMtD7KD1ixc9TfR9CZ8Mqe9tZ+0/uml6nWLEAM5A6UW/ZwBkvhO+/LE35LoI
- FcAvxPKLLtEKZPd8=
-X-Received: by 2002:a05:622a:5915:b0:41c:d444:d08a with SMTP id
- ga21-20020a05622a591500b0041cd444d08amr11659537qtb.5.1700516692072; 
- Mon, 20 Nov 2023 13:44:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHDD8QoTQUvuO4NhERVM9Sk2azNkf6ScRJIG1moG22fsOrEpddjCw8Wafn5sDRwaChizaqJIQ==
-X-Received: by 2002:a05:622a:5915:b0:41c:d444:d08a with SMTP id
- ga21-20020a05622a591500b0041cd444d08amr11659526qtb.5.1700516691754; 
- Mon, 20 Nov 2023 13:44:51 -0800 (PST)
-Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d21-20020ac851d5000000b0041eb13a8195sm2937822qtn.61.2023.11.20.13.44.50
+ d=1e100.net; s=20230601; t=1700516723; x=1701121523;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=yOi8zo4jI/uumYmIqWG8dRZhTC7Umkqv7tQVWJif/z0=;
+ b=NYwmA5qTavSoQsbbsX2SjjKD0CeROU05o/cIM+os4Zhkp1fWc9tpIdFwAV60xPKzLi
+ T4NamtPoxwCO6Xe+oF9H+4fssUGOpmTQkkpHjR8M8yp3fTboVPDBSPq9bzB1Yyth7yTy
+ 9AhLgF4X4foNZg/Gh1xBqkRXU1xCjMr/RRYMWCbRbzBysbchifKEaaB9OKdzHhboKwDB
+ PHqdcNKJ4fFFHhwFZRjLNvDBR4B8Ka0ifvlornirYAK+Cd25KSrEpyGGOM09/QWjxDiq
+ 8ynQAAybZo7+5E0DQkeswEby5DvytXkv+p/hWy3p1tQCcgHEoIPOk777xUU1HY7rCIna
+ uL3w==
+X-Gm-Message-State: AOJu0YzBWIzAzDYUz1Aki7EbbFti6Uzfm5YlxJrez0eFPlk9Z3aw90Hh
+ vYTkWCKeqOaV2PX/4Wj+8LJo4+5UiS3kT6YcsCqk0xDQACIy1Th0yxGgzVLwOEGUDOIT/VSa+PY
+ 6Ms3P1XEyNvjNTCi21TgHgL4o5skcz0lJ4i48RiGtlrjBQylJeTdCLMCr8Sjlr8FFQ/9UNUGdMT
+ A=
+X-Received: by 2002:a17:906:a86:b0:9fd:a5da:cff7 with SMTP id
+ y6-20020a1709060a8600b009fda5dacff7mr3577216ejf.29.1700516723393; 
+ Mon, 20 Nov 2023 13:45:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEdlY0f+gM4n0j5GU3iqvKD4uvFJdi2YTP59pvNPLv8Fpasxw8gtjs/swSvSWiwOPow8+JXPQ==
+X-Received: by 2002:a17:906:a86:b0:9fd:a5da:cff7 with SMTP id
+ y6-20020a1709060a8600b009fda5dacff7mr3577206ejf.29.1700516722908; 
+ Mon, 20 Nov 2023 13:45:22 -0800 (PST)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
+ by smtp.gmail.com with ESMTPSA id
+ h11-20020a170906530b00b009d23e00a90esm4365376ejo.24.2023.11.20.13.45.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 20 Nov 2023 13:44:51 -0800 (PST)
-Date: Mon, 20 Nov 2023 16:44:50 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH V5 02/12] cpus: stop vm in suspended state
-Message-ID: <ZVvTUuNYzGgFcg4m@x1n>
-References: <1699900440-207345-1-git-send-email-steven.sistare@oracle.com>
- <1699900440-207345-3-git-send-email-steven.sistare@oracle.com>
- <ZVu6ohk8_8xzyL-x@x1n>
- <e32d4434-c877-4f98-ac76-da8fa292395c@oracle.com>
+ Mon, 20 Nov 2023 13:45:22 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v2] disas/cris: Pass buffer size to format_dec() to avoid
+ overflow warning
+Date: Mon, 20 Nov 2023 22:45:20 +0100
+Message-ID: <20231120214520.59431-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <e32d4434-c877-4f98-ac76-da8fa292395c@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,45 +101,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 20, 2023 at 03:55:54PM -0500, Steven Sistare wrote:
-> If we drop force, then all calls to vm_stop will completely stop the
-> suspended state, eg an hmp "stop" command. This causes two problems.
-> First, that is a change in user-visible behavior for something that
-> currently works,
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-IMHO it depends on what should be the correct behavior.  IOW, when VM is in
-SUSPENDED state and then the user sends "stop" QMP command, what should we
-expect?
+Propagate the buffer size to format_dec() and use snprintf().
 
-My understanding is we should expect to fully stop the VM, including the
-ticks, for example.  Keeping the ticks running even after QMP "stop"
-doesn't sound right, isn't it?
+This should silence this UBSan -Wformat-overflow warning:
 
-> vs the migration code where we are fixing brokenness.
+  In file included from /usr/include/stdio.h:906,
+                   from include/qemu/osdep.h:114,
+                   from ../disas/cris.c:21:
+  In function 'sprintf',
+      inlined from 'format_dec' at ../disas/cris.c:1737:3,
+      inlined from 'print_with_operands' at ../disas/cris.c:2477:12,
+      inlined from 'print_insn_cris_generic.constprop' at ../disas/cris.c:2690:8:
+  /usr/include/bits/stdio2.h:30:10: warning: null destination pointer [-Wformat-overflow=]
+   30 |   return __builtin___sprintf_chk (__s, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   31 |                                   __glibc_objsize (__s), __fmt,
+      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   32 |                                   __va_arg_pack ());
+      |                                   ~~~~~~~~~~~~~~~~~
 
-This is not a migration-only bug if above holds, IMO.
+Reported-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20231120132222.82138-1-philmd@linaro.org>
+[Rewritten to fix logic and avoid repeated expression. - Paolo]
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ disas/cris.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-> Second, it does not quite work, because the state becomes
-> RUN_STATE_PAUSED, so the suspended state is forgotten, and the hmp "cont"
-> will try to set the running state.  I could fix that by introducing a new
-> state RUN_STATE_SUSPENDED_STOPPED, but again it is a user-visible change
-> in existing behavior.  (I even implemented that while developing, then I
-> realized it was not needed to fix the migration bugs.)
-
-Good point.
-
-Now with above comments, what's your thoughts on whether we should change
-the user behavior?  My answer is still a yes.
-
-Maybe SUSPENDED should not be a RunState at all? SUSPENDED is guest visible
-behavior, while something like QMP "stop" is not guest visible.  Maybe we
-should remember it separately?
-
-It means qemu_system_suspend() could remember that in a separate field (as
-part of guest state), then when wakeup we should conditionally go back
-with/without vcpus running depending on the new "suspended" state.
-
+diff --git a/disas/cris.c b/disas/cris.c
+index 0b0a3fb9165..409a224c5d1 100644
+--- a/disas/cris.c
++++ b/disas/cris.c
+@@ -1731,10 +1731,10 @@ format_hex (unsigned long number,
+    unsigned (== 0).  */
+ 
+ static char *
+-format_dec (long number, char *outbuffer, int signedp)
++format_dec (long number, char *outbuffer, size_t outsize, int signedp)
+ {
+   last_immediate = number;
+-  sprintf (outbuffer, signedp ? "%ld" : "%lu", number);
++  snprintf (outbuffer, outsize, signedp ? "%ld" : "%lu", number);
+ 
+   return outbuffer + strlen (outbuffer);
+ }
+@@ -1876,6 +1876,12 @@ print_flags (struct cris_disasm_data *disdata, unsigned int insn, char *cp)
+   return cp;
+ }
+ 
++#define FORMAT_DEC(number, tp, signedp)                      \
++    format_dec (number, tp, ({                                \
++            assert(tp >= temp && tp <= temp + sizeof(temp)); \
++            temp + sizeof(temp) - tp;                        \
++        }), signedp)
++
+ /* Print out an insn with its operands, and update the info->insn_type
+    fields.  The prefix_opcodep and the rest hold a prefix insn that is
+    supposed to be output as an address mode.  */
+@@ -2105,7 +2111,7 @@ print_with_operands (const struct cris_opcode *opcodep,
+ 	    if ((*cs == 'z' && (insn & 0x20))
+ 		|| (opcodep->match == BDAP_QUICK_OPCODE
+ 		    && (nbytes <= 2 || buffer[1 + nbytes] == 0)))
+-	      tp = format_dec (number, tp, signedp);
++	      tp = FORMAT_DEC (number, tp, signedp);
+ 	    else
+ 	      {
+ 		unsigned int highbyte = (number >> 24) & 0xff;
+@@ -2241,7 +2247,7 @@ print_with_operands (const struct cris_opcode *opcodep,
+ 				       with_reg_prefix);
+ 		      if (number >= 0)
+ 			*tp++ = '+';
+-		      tp = format_dec (number, tp, 1);
++		      tp = FORMAT_DEC (number, tp, 1);
+ 
+ 		      info->flags |= CRIS_DIS_FLAG_MEM_TARGET_IS_REG;
+ 		      info->target = (prefix_insn >> 12) & 15;
+@@ -2340,7 +2346,7 @@ print_with_operands (const struct cris_opcode *opcodep,
+ 			  {
+ 			    if (number >= 0)
+ 			      *tp++ = '+';
+-			    tp = format_dec (number, tp, 1);
++			    tp = FORMAT_DEC (number, tp, 1);
+ 			  }
+ 		      }
+ 		    else
+@@ -2397,7 +2403,7 @@ print_with_operands (const struct cris_opcode *opcodep,
+ 	break;
+ 
+       case 'I':
+-	tp = format_dec (insn & 63, tp, 0);
++	tp = FORMAT_DEC (insn & 63, tp, 0);
+ 	break;
+ 
+       case 'b':
+@@ -2426,11 +2432,11 @@ print_with_operands (const struct cris_opcode *opcodep,
+       break;
+ 
+     case 'c':
+-      tp = format_dec (insn & 31, tp, 0);
++      tp = FORMAT_DEC (insn & 31, tp, 0);
+       break;
+ 
+     case 'C':
+-      tp = format_dec (insn & 15, tp, 0);
++      tp = FORMAT_DEC (insn & 15, tp, 0);
+       break;
+ 
+     case 'o':
+@@ -2463,7 +2469,7 @@ print_with_operands (const struct cris_opcode *opcodep,
+ 	if (number > 127)
+ 	  number = number - 256;
+ 
+-	tp = format_dec (number, tp, 1);
++	tp = FORMAT_DEC (number, tp, 1);
+ 	*tp++ = ',';
+ 	tp = format_reg (disdata, (insn >> 12) & 15, tp, with_reg_prefix);
+       }
+@@ -2474,7 +2480,7 @@ print_with_operands (const struct cris_opcode *opcodep,
+       break;
+ 
+     case 'i':
+-      tp = format_dec ((insn & 32) ? (insn & 31) | ~31L : insn & 31, tp, 1);
++      tp = FORMAT_DEC ((insn & 32) ? (insn & 31) | ~31L : insn & 31, tp, 1);
+       break;
+ 
+     case 'P':
 -- 
-Peter Xu
+2.41.0
 
 
