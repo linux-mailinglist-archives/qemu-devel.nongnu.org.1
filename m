@@ -2,84 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E97C7F145E
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 14:24:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 457027F1479
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 14:32:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r54GW-0000jY-MY; Mon, 20 Nov 2023 08:24:40 -0500
+	id 1r54MI-00022t-Lu; Mon, 20 Nov 2023 08:30:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r54GV-0000j6-3E
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 08:24:39 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r54GT-0000f6-6a
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 08:24:38 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3316d09c645so1811128f8f.0
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 05:24:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700486675; x=1701091475; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AR0LWDdSiuGc77jYCg8UMLWTv5LotfOa7/OQ9nxIszE=;
- b=YomPpXtDvHb20al/syCR3WJgnmgaipm04yD13j91MBJbOvy6Ybq64BIwzw5JIiDP6u
- 5RquFziBkc6bGvwinnYQ3qbX8+BG04+n2jvUitTkNr39H1vgB1exHS4C6/KfIzWOFZ2a
- BxlIiIujoHaWp8bU6wzMgsUcZsmrvr+m1FlIn001X3Pm5jdhHBaSCA+ANkvY4Y0EZ9Zg
- VjmcjMuS06kXHV/TA2uPjsLWdHLoQYkpyometiyJrBVfC0y7l97353+2S00AtqsOAZ6s
- QG9GzpNwUWFkuEQszFlNmmm6pahzGVfqcJuMnKOvYLRPHfygFVkuB1cdbU0TQJXcycrJ
- lNtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700486675; x=1701091475;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AR0LWDdSiuGc77jYCg8UMLWTv5LotfOa7/OQ9nxIszE=;
- b=XV0xiJKShXax+1J4TBFBC7m0N2H7e4hVEuL2tc8GYWHVx0yHwRRmZ8UplWWxiiWr6q
- u6S8+nxwqfjbliUKwMOoBTlvp4pmNPdqWhda/5/GZla0m0V/JG5EBiqPO+uUx5vFLA+I
- CuS4AubQ/zXdXaEq284f2xyWnJfKg5BqT87fSD+nLQHhCbpjZrGw0ThoepO3ySMV9YgV
- ItqdID99R39ZtRHePao4PPjk9yC4+eDGl3ybQiJo2WjW6I764sKpCbBI8+xRQsMEZ6cT
- 1JgJnPusmtfDrQ+mb4qHgA31XGz7hLc8ul3ouGdkOunaHkA5AcnduzaPNMuJT2R8kmXR
- PJSw==
-X-Gm-Message-State: AOJu0Yyrpk26iUbGDYkUBlhdCdxTTkIch3bBJpSxPJVArgBtAFktrGmS
- Jp3786yZ0NeJCHynU/tkAdRndD5ya+t+LumNDPU=
-X-Google-Smtp-Source: AGHT+IGvaE4CE7qrYrHYSTxt2hfo96XDaIBpYqMhLn0dq5qoLJWu5ZP7s0PPYAPka9QwH8mdHjnGzw==
-X-Received: by 2002:a5d:5f92:0:b0:331:72f3:d59f with SMTP id
- dr18-20020a5d5f92000000b0033172f3d59fmr6451549wrb.27.1700486675678; 
- Mon, 20 Nov 2023 05:24:35 -0800 (PST)
-Received: from [192.168.69.100] ([176.176.181.190])
- by smtp.gmail.com with ESMTPSA id
- v9-20020a5d5909000000b0032f9688ea48sm11231397wrd.10.2023.11.20.05.24.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Nov 2023 05:24:35 -0800 (PST)
-Message-ID: <4f4fb8dc-5a7e-402d-a797-3f24aef178fb@linaro.org>
-Date: Mon, 20 Nov 2023 14:24:33 +0100
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r54M8-00021o-Lq; Mon, 20 Nov 2023 08:30:30 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r54M5-0001u7-4P; Mon, 20 Nov 2023 08:30:28 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id B4ED2756094;
+ Mon, 20 Nov 2023 14:30:57 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id A127D75607B; Mon, 20 Nov 2023 14:30:57 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9C429756066;
+ Mon, 20 Nov 2023 14:30:57 +0100 (CET)
+Date: Mon, 20 Nov 2023 14:30:57 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+cc: kwolf@redhat.com, jsnow@redhat.com, qemu-block@nongnu.org, 
+ qemu-devel@nongnu.org, philmd@linaro.org, shentey@gmail.com, 
+ Rene Engel <ReneEngel80@emailn.de>
+Subject: Re: [PATCH v3 0/4] ide: implement simple legacy/native mode switching
+ for PCI IDE controllers
+In-Reply-To: <3c442b7f-4f9e-5adf-e576-8f2930834bd3@eik.bme.hu>
+Message-ID: <a0a01470-c059-6a0f-21af-32ed43357c25@eik.bme.hu>
+References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
+ <c4bb80e8-e985-b6b2-aac1-f6e8d446b8ea@eik.bme.hu>
+ <6e7576bd-ac39-424e-ac7e-898c58a6a2fa@ilande.co.uk>
+ <3c442b7f-4f9e-5adf-e576-8f2930834bd3@eik.bme.hu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] meson: -Wno-error=format-overflow for ubsan
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-References: <20231120112329.4149-1-akihiko.odaki@daynix.com>
- <f9aff170-5ec8-4bfb-a100-3d312baedbef@linaro.org>
-In-Reply-To: <f9aff170-5ec8-4bfb-a100-3d312baedbef@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1732991673-1700487057=:81200"
+X-Virus-Scanned: ClamAV using ClamSMTP
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,60 +64,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/11/23 14:16, Philippe Mathieu-Daudé wrote:
-> Hi Akihiko,
-> 
-> On 20/11/23 12:23, Akihiko Odaki wrote:
->> ubsan causes wrong -Wformat-overflow warnings as follows:
->>
->> In file included from /usr/include/stdio.h:906,
->>                   from /home/alarm/q/var/qemu/include/qemu/osdep.h:114,
->>                   from ../disas/cris.c:21:
->> In function 'sprintf',
->>      inlined from 'format_dec' at ../disas/cris.c:1737:3,
->>      inlined from 'print_with_operands' at ../disas/cris.c:2477:12,
->>      inlined from 'print_insn_cris_generic.constprop' at 
->> ../disas/cris.c:2690:8:
->> /usr/include/bits/stdio2.h:30:10: warning: null destination pointer 
->> [-Wformat-overflow=]
->>     30 |   return __builtin___sprintf_chk (__s, __USE_FORTIFY_LEVEL - 1,
->>        |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>     31 |                                   __glibc_objsize (__s), __fmt,
->>        |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>     32 |                                   __va_arg_pack ());
->>        |                                   ~~~~~~~~~~~~~~~~~
->>
->> Don't let these errors stop the build.
-> 
-> Which compiler/version?
-> 
->>
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->> ---
->>   meson.build | 4 +++-
->>   1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/meson.build b/meson.build
->> index d7d841e71e..02f1a18080 100644
->> --- a/meson.build
->> +++ b/meson.build
->> @@ -365,7 +365,9 @@ if get_option('sanitizers')
->>     # Detect static linking issue with ubsan - 
->> https://gcc.gnu.org/bugzilla/show_bug.cgi?id=84285
->>     if cc.links('int main(int argc, char **argv) { return argc + 1; }',
->>                 args: [qemu_ldflags, '-fsanitize=undefined'])
->> -    qemu_cflags = ['-fsanitize=undefined'] + qemu_cflags
->> +    # 87884 – ubsan causes wrong -Wformat-overflow warning
->> +    # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87884
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-I posted an alternative less intrusive patch, see:
-https://lore.kernel.org/all/20231120132222.82138-1-philmd@linaro.org/
+--3866299591-1732991673-1700487057=:81200
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
->> +    qemu_cflags = ['-fsanitize=undefined', 
->> '-Wno-error=format-overflow'] + qemu_cflags
->>       qemu_ldflags = ['-fsanitize=undefined'] + qemu_ldflags
->>     endif
->>   endif
-> 
+On Mon, 20 Nov 2023, BALATON Zoltan wrote:
+> On Mon, 20 Nov 2023, Mark Cave-Ayland wrote:
+>> On 19/11/2023 21:43, BALATON Zoltan wrote:
+>>> On Thu, 16 Nov 2023, Mark Cave-Ayland wrote:
+>>>> This series adds a simple implementation of legacy/native mode switching 
+>>>> for PCI
+>>>> IDE controllers and updates the via-ide device to use it.
+>>>> 
+>>>> The approach I take here is to add a new pci_ide_update_mode() function 
+>>>> which handles
+>>>> management of the PCI BARs and legacy IDE ioports for each mode to avoid 
+>>>> exposing
+>>>> details of the internal logic to individual PCI IDE controllers.
+>>>> 
+>>>> As noted in [1] this is extracted from a local WIP branch I have which 
+>>>> contains
+>>>> further work in this area. However for the moment I've kept it simple 
+>>>> (and
+>>>> restricted it to the via-ide device) which is good enough for Zoltan's 
+>>>> PPC
+>>>> images whilst paving the way for future improvements after 8.2.
+>>>> 
+>>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>>> 
+>>>> [1] https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05403.html
+>>>> 
+>>>> v3:
+>>>> - Rebase onto master
+>>>> - Move ide_portio_list[] and ide_portio_list2[] to IDE core to prevent 
+>>>> duplication in
+>>>>  hw/ide/pci.c
+>>>> - Don't zero BARs when switching from native mode to legacy mode, instead 
+>>>> always force
+>>>>  them to read zero as suggested in the PCI IDE specification (note: this 
+>>>> also appears
+>>>>  to fix the fuloong2e machine booting from IDE)
+>>> 
+>>> Not sure you're getting this, see also:
+>>> https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg04167.html
+>>> but this seems to break latest version of the AmigaOS driver for some 
+>>> reason. I assume this is the BAR zeroing that causes this as it works with 
+>>> v2 series and nothing else changed in v3 that could cause this. Testing 
+>>> was done by Rene Engel, cc'd so maybe he can add more info. It seems to 
+>>> work with my patch that sets BARs to legacy values and with v2 that sets 
+>>> them to 0 but not with v3 which should also read 0 but maybe something is 
+>>> off here.
+>> 
+>> Is this document here accurate as to how it works on real hardware? 
+>> https://intuitionbase.com/hints.php.
+>
+> That should be about right. On QEMU the U-boot env vars won't work because 
+> NVRAM is not emulated yet so they can't be saved but you can call idetool 
+> from startup-sequence boot script instead for same effect (UDMA is enabled a 
+> bit later with that but after that it's the same).
+>
+>> I can't understand why the base OS is attempting any access to BAR 4 if 
+>> BMDMA isn't enabled by default on real hardware due to hardware bugs.
+>
+> Real hardware had problems with DMA (the VIA chip was also infamous for it on 
+> PC hardware and later also the ArticiaS was found to have its own problems) 
+> so the default is to use IDE in PIO mode and UDMA has to be enabled manually. 
+> But if it works (and it should on QEMU) it's much faster so we want to enable 
+> it.
+>
+>> Are we sure that the idetool hacks given in the link above to enable BMDMA 
+>> haven't already been run on the AmigaOS install when testing an earlier 
+>> version of the patches?
+>
+> It was tested with my original series and works with that as my patch sets 
+> the default vaules for BARs and the driver reads it correctly. Then we tested 
+> your series too and I've noted for v2 already that it misses the degault 
+> value for BAR4. Other BARs don't matter as it will apparently use ISA IDE 
+> ports when it gets 0 or it knows that in legacy mode these shoud be the port 
+> values but seems to read BAR4 for UDMA and only works if the right default 
+> value is there, otherwise it lists DMA BAR 0 on start.
 
+This probably wasn't clear so what I mean is:
+
+a1ide.device 53.22 (28.6.2017)
+[a1ide/dev_init] Found chip #0
+[a1ide/init_port] ---> Port 0
+[a1ide/init_port] IOBase 000001F0, AltBase 000003F6
+[a1ide/init_port] bmcr_base 0000CC00
+[a1ide/init_port] MMIOBase 00000000
+
+This is with my patch: 
+https://patchew.org/QEMU/cover.1697661160.git.balaton@eik.bme.hu/4095e01f4596e77a478759161ae736f0c398600a.1697661160.git.balaton@eik.bme.hu/ 
+With yours bmcr_base is 0 and then when enabling UDMA with idetool it 
+hangs as it needs this value from BAR4.
+
+Regards,
+BALATON Zoltan
+
+>> Finally is there a bootable AmigaOS demo ISO somewhere that can be used for 
+>> testing?
+>
+> Unfortunately AmigaOS4 is only available commercially, no free demo is 
+> avaialable.
+>
+> Regards,
+> BALATON Zoltan
+--3866299591-1732991673-1700487057=:81200--
 
