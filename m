@@ -2,67 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8692C7F2163
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 00:25:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A097F21A3
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 00:53:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5DcA-0000Vy-W9; Mon, 20 Nov 2023 18:23:39 -0500
+	id 1r5E3N-0006qS-Kd; Mon, 20 Nov 2023 18:51:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r5Dc8-0000VY-F5
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 18:23:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1r5E3L-0006qE-EE; Mon, 20 Nov 2023 18:51:43 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r5Dc5-0001K4-Uo
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 18:23:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700522612;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OjvB5XaG6FkII6vnZ4jyOLOtBjWKvMTzHv6LnzAVYqk=;
- b=MYGPml/ouIWqYB2HGMi4BNdoygp7CPTSG8W+Os5O823OTeRf0KQD8SubmK61ItnW3wRR9F
- k36nW0Eg+pYaEBAGaRsfYlXSGSqAlHta8OcOTTBhjFbyDiy87OGXN3e7gMngHQqrnO3fIl
- 4atqa9GlVRY99UNWOwdQavxEBshheko=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-204-RDNtR6tlOJa1pZriWZAxJw-1; Mon, 20 Nov 2023 18:23:30 -0500
-X-MC-Unique: RDNtR6tlOJa1pZriWZAxJw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F422085A58A;
- Mon, 20 Nov 2023 23:23:29 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.71])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id EF4592166B27;
- Mon, 20 Nov 2023 23:23:28 +0000 (UTC)
-Date: Mon, 20 Nov 2023 17:23:27 -0600
-From: Eric Blake <eblake@redhat.com>
-To: Alberto Garcia <berto@igalia.com>
-Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
- Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: Converting images to stdout
-Message-ID: <6hipeyoml7qpxcycxbydmldohcwsle56tpeavzddpciycb4vfm@gmr7uf56skye>
-References: <ZVZV2ZKcxoSargry@zeus.local>
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1r5E3J-0001gb-5I; Mon, 20 Nov 2023 18:51:43 -0500
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AKNgGaL022765; Mon, 20 Nov 2023 23:51:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=pdmN+H7ne3+qQ1tWEwIOOSK29khNstGmbfKaQciUQ8U=;
+ b=eTLbhuX+GAJXNEifMY2tq6VAMX5roxSZ6haso/0Qhz3WaRzunGNot0fqz5+qZ+jyiVe8
+ tYojUUgHXBhDXDr4n7odGPW2ItP2bW+969ApX6DAjUuhr+ueBwqspIzgJVkqdkIQ6LSO
+ LScsjukKts2ZYfGs4UZ15kQogHofW91t/Ogtsg4pYj8XS5da7zHmVu0uagTqYxtNK0j9
+ MZolcYK2hAQtWExQdZw9QuZURFgqDvImEyutRi9dOpmDoplTq539X7Z2XG3+mvDP8/5R
+ d+by4Pw3NC0eJRqTdCdEmqcSxIbryssSkdtXaO8X2ga6suh1FuF+9zxF3q9hDYuOLDBb Ag== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ughc004vv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 20 Nov 2023 23:51:34 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AKNm2oh006502;
+ Mon, 20 Nov 2023 23:51:34 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ughc004vh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 20 Nov 2023 23:51:34 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AKNmpoA004682; Mon, 20 Nov 2023 23:51:33 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uf7yyd0nn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 20 Nov 2023 23:51:32 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AKNpW1714877286
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 20 Nov 2023 23:51:32 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 34A225805D;
+ Mon, 20 Nov 2023 23:51:32 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 027FD58055;
+ Mon, 20 Nov 2023 23:51:32 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
+ by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 20 Nov 2023 23:51:31 +0000 (GMT)
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
+To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+Cc: Glenn Miles <milesg@linux.vnet.ibm.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
+Subject: [PATCH v4 00/11] Add powernv10 I2C devices and tests
+Date: Mon, 20 Nov 2023 17:51:01 -0600
+Message-Id: <20231120235112.1951342-1-milesg@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZVZV2ZKcxoSargry@zeus.local>
-User-Agent: NeoMutt/20231103
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: EOPT6zwP_KWfjr66NzLXUlCUtJiVJz7N
+X-Proofpoint-GUID: Q7x6VXVzE4cdWa7vSH20nULq42q0NJba
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-20_22,2023-11-20_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ lowpriorityscore=0 impostorscore=0 suspectscore=0 bulkscore=0 phishscore=0
+ priorityscore=1501 mlxlogscore=644 spamscore=0 adultscore=0 clxscore=1015
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311200175
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,80 +112,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 16, 2023 at 06:48:09PM +0100, Alberto Garcia wrote:
-> Hi,
-> 
-> I haven't written here in a while :) but I have something small that I
-> would like to discuss.
-> 
-> Using qemu-img to convert an image and writing the result directly to
-> stdout is a question that has already been raised in the past (see
-> [1] for an example) and it's clear that it's generally not possible
-> because the images need to be seekable.
-> 
-> While I think that there's almost certainly no generic way to do
-> something like that for every combination of input and output formats,
-> I do think that it should be relatively easy to produce a qcow2 file
-> directly to stdout as long as the input file is on disk.
+This series of patches includes support, tests and fixes for
+adding PCA9552 and PCA9554 I2C devices to the powernv10 chip.
 
-Indeed, it does seem like this should be easy enough to cobble together.
+The PCA9552 device is used for PCIe slot hotplug power control
+and monitoring, while the PCA9554 device is used for presence
+detection of IBM CableCard devices.  Both devices are required
+by the Power Hypervisor Firmware on Power10 platforms.
 
-> 
-> I'm interested in this use case, and I think that the method would be
-> as simple as this:
-> 
-> 1. Decide a cluster size for the output qcow2 file.
-> 2. Read the input file once to determine which clusters need to be
->    allocated in the output file and which ones don't.
-> 3. That infomation is enough to determine the number and contents of
->    the refcount table, refcount blocks, and L1/L2 tables.
-> 4. Write the qcow2 header + metadata + allocated data to stdout.
+Changes from previous version:
+  - Pulled in fixes/changes for pca9552 devices
+  - Created new powernv10-rainier machine type
+  - Adds pca9552/pca9554 devices to powernv10-rainier machine
+  - Modified MAINTAINERS to make myself maintainer of
+    the pca955x devices
 
-It may also be possible to write a qcow2 file that uses the external
-data bit, so that you are only writing the qcow2 header + metadata,
-and reusing the existing input file as the external data.
 
-> 
-> Since this would be qcow2-specific I would probably implement this as
-> a separate tool instead of adding it directly to qemu-img. This could
-> go to the scripts/ directory because I can imagine that such a tool
-> could be useful for other people.
+Glenn Miles (11):
+  misc/pca9552: Fix inverted input status
+  misc/pca9552: Let external devices set pca9552 inputs
+  ppc/pnv: New powernv10-rainier machine type
+  ppc/pnv: Add pca9552 to powernv10-rainier for PCIe hotplug power
+    control
+  ppc/pnv: Wire up pca9552 GPIO pins for PCIe hotplug power control
+  ppc/pnv: PNV I2C engines assigned incorrect XSCOM addresses
+  ppc/pnv: Fix PNV I2C invalid status after reset
+  ppc/pnv: Use resettable interface to reset child I2C buses
+  misc: Add a pca9554 GPIO device model
+  ppc/pnv: Add a pca9554 I2C device to powernv10-rainier
+  ppc/pnv: Test pnv i2c master and connected devices
 
-Also sounds reasonable.
-
-> 
-> Because this would be an external tool it would only support a qcow2
-> file with the default options. Other features like compression would
-> be out of scope.
-
-Why is compression not viable?  Are you worried that the qcow2
-metadata (such as refcounts) becomes too complex?
-
-I've also wondered how easy or hard it would be to write a tool that
-can take an existing qcow2 file and defragment and/or compress it
-in-place (rather than having to copy it to a second qcow2 file).
-
-> 
-> For the same reason the input would be a raw file for simplicity,
-> other input files could be presented in raw format using
-> qemu-storage-daemon.
-
-Yes, getting seekable input from any other format is easy enough; it's
-the streaming output that is the trickier task.
-
-> 
-> And that's the general idea, comments and questions are welcome.
-> 
-> Thanks!
-> 
-> Berto
-> 
-> [1] https://lists.nongnu.org/archive/html/qemu-discuss/2020-01/msg00014.html
-> 
+ MAINTAINERS                     |  10 +-
+ hw/misc/Kconfig                 |   4 +
+ hw/misc/meson.build             |   1 +
+ hw/misc/pca9552.c               |  58 ++-
+ hw/misc/pca9554.c               | 328 ++++++++++++++++
+ hw/ppc/Kconfig                  |   2 +
+ hw/ppc/pnv.c                    |  83 +++-
+ hw/ppc/pnv_i2c.c                |  47 ++-
+ include/hw/misc/pca9552.h       |   3 +-
+ include/hw/misc/pca9554.h       |  36 ++
+ include/hw/misc/pca9554_regs.h  |  19 +
+ include/hw/ppc/pnv.h            |   1 +
+ tests/qtest/meson.build         |   1 +
+ tests/qtest/pca9552-test.c      |   6 +-
+ tests/qtest/pnv-host-i2c-test.c | 650 ++++++++++++++++++++++++++++++++
+ 15 files changed, 1212 insertions(+), 37 deletions(-)
+ create mode 100644 hw/misc/pca9554.c
+ create mode 100644 include/hw/misc/pca9554.h
+ create mode 100644 include/hw/misc/pca9554_regs.h
+ create mode 100644 tests/qtest/pnv-host-i2c-test.c
 
 -- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+2.31.1
 
 
