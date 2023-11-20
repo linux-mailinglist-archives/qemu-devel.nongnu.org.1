@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB887F19C8
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 18:26:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6128A7F19D0
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 18:26:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r581Y-0000Zy-TB; Mon, 20 Nov 2023 12:25:28 -0500
+	id 1r582V-0001QA-4x; Mon, 20 Nov 2023 12:26:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r581R-0000Ys-7c
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 12:25:23 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1r582S-0001OE-Os
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 12:26:24 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r581O-0006tZ-6Q
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 12:25:20 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-548a2c20f50so2231656a12.1
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 09:25:16 -0800 (PST)
+ id 1r582Q-00077a-KG
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 12:26:24 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5446c9f3a77so6844151a12.0
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 09:26:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700501115; x=1701105915; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700501181; x=1701105981; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Rt6yvIhC3Ev+7ooito66m4fp8ulzbX39qgkqxP3R/Fg=;
- b=NSCdwAspkNBm+0y+NfhhAU/AeJ66rtbxqv52HO6B1ef4ump7AT8ty1gN+eIDmmO8+4
- 8u6WEnOwWaZvS/XLHRocobjr3UpVL44IeVJQuE2DUHnlp90UcB5qZLxPxevfZsYst9PZ
- dApiPVZgRGBdkRaqdUaF9wHfUp1d9I83xwqV2EFjG7AOfUojzqLVUl7cUvuJ3nT9/1fO
- WfyeVdxqwvjXhZknyQ1n8vio88f5C+3WBj1HZN4lSJ7t3t6/TQrIhNHhT/lwvng7PUY2
- qdZuzMKbrLzBvS81+gLBVf3Bj34hxvuvnItIETuN0W5j/CR2oXJgEJ5mkSLux65MWo8k
- xtOw==
+ bh=PW/m+doSsfC1tDv8iaxMIsedk/4LD5Ru6zO6xuPKDM8=;
+ b=Hk8PqPbBg19dxna7JJpH+tsI8WtW4Rsed4G3Nhk0hkcpx2i1fTG2xYod89UpcSLRlv
+ m9UMCs12pdMZYGxfy1cGceizKzXNbltUMy/YnL03ycasTu9gWqA0OCMMtrXIjfCegzsJ
+ ApSnkug5qqSVxvo1D0CHtAxtXa83IQj912q0ZIG0QRzqpoFZnyuvBEHSjCQ7+alpGsUp
+ R1KG5hzrsXvpN0kUv8OYe/tCVb7cBTiUALhz5tbkxvZw/36Fg8hPVYd2vG8/PTqH3G4w
+ AHYMDUfcNUZ1c3glro5sqFS6TCNVoWkJX4lyJan26rKPSSjA0Th2uBCpsA78QqmZLwSS
+ Dv7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700501115; x=1701105915;
+ d=1e100.net; s=20230601; t=1700501181; x=1701105981;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Rt6yvIhC3Ev+7ooito66m4fp8ulzbX39qgkqxP3R/Fg=;
- b=Iex2pSuLiqqauD0IldtDERzYyJsE9Tgfdf04cb1+5o982HfKd2CeabX1ceU4eakdBf
- Rd3g/pWUGbqX3Od57Q6h7mFUfybBrTsVl5SR94OQBTPW7+TnjG6RaSFQsjwV225k3iyX
- c1jwhIvf0KsyTLTTvdp36Mwykvmnv4KairzndURnyox9EP03BuSo+f39DZ/SZ5TKPCmC
- jsgkitIAyLXBSo2/vWu1eoMK5TV7dcegacnLAlAC5P7xDp6CohPWyCsBez9voUOptwu9
- fT0jtyRL/+027baItO5m7B3rKz2mr3iMQEZk9FMLRQR410gI3jzyXydGJVRpbC+wJ0B1
- 2Mjw==
-X-Gm-Message-State: AOJu0YwfrvrublB+3gBd1Ko3kqr0s8Y0PNCzxEjx4tbIZdQs/xMWjQBI
- 2bDhj+UwRJpLj6MeY0ucmTjEfElff/PQc5lAfZTuEg==
-X-Google-Smtp-Source: AGHT+IHUPzvuL4D5bW87jvt9+3tI9CkZu1gwEXCUgdaVDL8WlhPbVavuyUvtrEYJRofrLc/NHtSqA3dIg0mB2JPZKzk=
-X-Received: by 2002:a05:6402:688:b0:543:52be:e6ad with SMTP id
- f8-20020a056402068800b0054352bee6admr68352edy.5.1700501115673; Mon, 20 Nov
- 2023 09:25:15 -0800 (PST)
+ bh=PW/m+doSsfC1tDv8iaxMIsedk/4LD5Ru6zO6xuPKDM8=;
+ b=ihdJ1LU2V6R7XBp8lG/15FgIQP+Q3GyFtEAFNi1m6vXXV/u1GLZJR38rfomsgbCii8
+ btEEL1JG0OGuPn86vONyiac3Ga0uPlLtnuOy6O3PabBwpuGpSSLz6ps/JanHWsum4Y2G
+ TLtYO3awQh5ljscxW1uWTJunnDKiO2LHl1CiWQLwGLIR9gH5xGN0LT6o+9QyVyNFuIYa
+ 8aP7kCs+wSbU0C1ihkKaFKoBkwcrbvCApLIt2KRcMi2Tqqyp0V/D35HYyPvtQlgux9E9
+ ZJTc6dQi11ESnMJTdHLR72o/rXrvqRCCHYc5qBWik/nTcTZZyXPzIjytEjjJZOhYmTlj
+ KJ5g==
+X-Gm-Message-State: AOJu0YxLPwN6g36hDsbsxUupNQc83uu6mKYk6AV8P8n1VXfKECTm1K/o
+ jd2F6X6K38lJSaYnAmzoCT+C4WU/yk+yZe22WYHlWQ==
+X-Google-Smtp-Source: AGHT+IHv7i9e38rfFjRA1pZ+oR+DEuzKU77OFXNetiLLG1xsefvr3Sg219ZgLRFuezyPzjTYIZfiHo6cetQgD8rKZn4=
+X-Received: by 2002:a05:6402:797:b0:548:af73:6747 with SMTP id
+ d23-20020a056402079700b00548af736747mr36231edy.38.1700501181058; Mon, 20 Nov
+ 2023 09:26:21 -0800 (PST)
 MIME-Version: 1.0
 References: <20231120150833.2552739-1-alex.bennee@linaro.org>
- <20231120150833.2552739-12-alex.bennee@linaro.org>
-In-Reply-To: <20231120150833.2552739-12-alex.bennee@linaro.org>
+ <20231120150833.2552739-9-alex.bennee@linaro.org>
+In-Reply-To: <20231120150833.2552739-9-alex.bennee@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 20 Nov 2023 17:25:04 +0000
-Message-ID: <CAFEAcA_QP7QZb04Op-U_jYGpVckSkzgQrFnJghywLK1NgX6sxQ@mail.gmail.com>
-Subject: Re: [PATCH v2 11/14] tests/tcg: enable arm softmmu tests
+Date: Mon, 20 Nov 2023 17:26:10 +0000
+Message-ID: <CAFEAcA-oYNZ=kNJ8C6FkGi==H4cHoTJ5xo3PC6P1RRH+0A3Zow@mail.gmail.com>
+Subject: Re: [PATCH v2 08/14] docs/system: clarify limits of using gdbstub in
+ system emulation
 To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
 Cc: qemu-devel@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>, 
  =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
@@ -75,8 +76,8 @@ Cc: qemu-devel@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Nicholas Piggin <npiggin@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,43 +103,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Mon, 20 Nov 2023 at 15:08, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
 te:
 >
-> To make it easier to test 32 bit Arm softmmu issues implement a basic
-> boot.S so we can build the multiarch tests. Currently CHECK_UNALIGNED
-> is disabled as I haven't got the right magic set for it to work.
+> It seems some users will try and use the gdbstub to debug userspace
+> inside a system emulation. While possible clarify the limitations of
+> this approach and direct the users to a less head scratching way of
+> debugging user-space.
 >
-> Message-Id: <20231115205542.3092038-10-alex.bennee@linaro.org>
 > Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
-
-> +# Running
-> +QEMU_BASE_MACHINE=3D-M virt -cpu max -display none
-> +QEMU_OPTS+=3D$(QEMU_BASE_MACHINE) -semihosting-config enable=3Don,target=
-=3Dnative,chardev=3Doutput -kernel
+> Clarifies: https://gitlab.com/qemu-project/qemu/-/issues/1274
+> ---
+>  docs/system/gdb.rst | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
+>
+> diff --git a/docs/system/gdb.rst b/docs/system/gdb.rst
+> index 9906991b84..c0cc0c9c7e 100644
+> --- a/docs/system/gdb.rst
+> +++ b/docs/system/gdb.rst
+> @@ -60,7 +60,7 @@ As TCG cannot track all memory accesses in user-mode th=
+ere is no
+>  support for watchpoints.
+>
+>  Relocating code
+> ----------------
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+>  On modern kernels confusion can be caused by code being relocated by
+>  features such as address space layout randomisation. To avoid
+> @@ -68,6 +68,17 @@ confusion when debugging such things you either need t=
+o update gdb's
+>  view of where things are in memory or perhaps more trivially disable
+>  ASLR when booting the system.
+>
+> +Debugging user-space in system emulation
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 > +
+> +While technically possible to debug a user-space program running
 
-A minor thing, but I just ran into an awkwardness in the
-equivalent set of variables in the aarch64 subdirectory:
-if you ever want to define a different machine type then
-there's no convenient way to say "give me the standard
-options but a different machine", because the QEMU_OPTS
-has the base machine in it and there's no variable with
-just the semihosting etc options in it. For aarch64 I opted for:
+"While it is"
 
-+QEMU_BASE_ARGS=3D-semihosting-config enable=3Don,target=3Dnative,chardev=
-=3Doutput
-+QEMU_OPTS+=3D$(QEMU_BASE_MACHINE) $(QEMU_BASE_ARGS) -kernel
+> +inside a system image it does present challenges. Kernel preemption
 
-because then you can have a particular test do something like
-+QEMU_EL2_MACHINE=3D-machine virt,virtualization=3Don,gic-version=3D2 -cpu
-cortex-a57 -smp 4
-+run-vtimer: QEMU_OPTS=3D$(QEMU_EL2_MACHINE) $(QEMU_BASE_ARGS) -kernel
+"image, "
 
-You could argue about whether '-display none' should be in
-QEMU_BASE_ARGS. I figure -kernel should not be because it
-has the weird "must go last" property.
+> +and execution mode changes between kernel and user mode can make it
+> +hard to follow whats going on. Unless you are specifically trying to
 
-(These tweaks to the aarch64 makefile coming soon in a different
-patch...)
+"what's"
+
+> +debug some interaction between kernel and user-space you are better
+> +off running your guest program with gdb either in the guest or using
+> +a gdbserver exposed via a port to the outside world.
+> +
+>  Debugging multicore machines
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
 
 thanks
 -- PMM
