@@ -2,65 +2,130 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44C77F1491
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 14:44:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34BE37F1497
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 14:47:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r54YJ-0000Fx-0l; Mon, 20 Nov 2023 08:43:03 -0500
+	id 1r54bb-0001ms-0T; Mon, 20 Nov 2023 08:46:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r54YG-0000FA-Ps
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 08:43:00 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r54bD-0001mH-BV
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 08:46:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r54YC-0001Dy-Rv
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 08:43:00 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r54bB-00020l-TE
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 08:46:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700487776;
+ s=mimecast20190719; t=1700487960;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MTg8xXl3K/KKajN8KRjwgK1+/HyxLRXZXQ/6TB0oAMM=;
- b=Jt3WeZ9wI5oL1NAtfODUT3V39E0upFSyi7jueDl/tnJKUxpYri01P2LFoO8fG79y10hJVR
- X3jBdKk9yNxRdSwNJuTVkojKwLP1jZBSb4bLQNrcnC3Q00eMLXWLcw92tKNcUx4ZQQu6VS
- kOv25wvTk3X93yJHWG+a9QjYEGo9yl4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-504-mBgKMohoPQSTa7LJoPLtTg-1; Mon,
- 20 Nov 2023 08:42:52 -0500
-X-MC-Unique: mBgKMohoPQSTa7LJoPLtTg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 06B76280AA22;
- Mon, 20 Nov 2023 13:42:52 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.132])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 97188492BFC;
- Mon, 20 Nov 2023 13:42:50 +0000 (UTC)
-Date: Mon, 20 Nov 2023 14:42:47 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, jsnow@redhat.com,
- qemu-block@nongnu.org, qemu-devel@nongnu.org, philmd@linaro.org,
- shentey@gmail.com, Rene Engel <ReneEngel80@emailn.de>
-Subject: Re: [PATCH v3 0/4] ide: implement simple legacy/native mode
- switching for PCI IDE controllers
-Message-ID: <ZVtiV8XXHxS+cw8o@redhat.com>
-References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
- <c4bb80e8-e985-b6b2-aac1-f6e8d446b8ea@eik.bme.hu>
- <295aec31-e9c1-49d8-9bea-edad8f7b81e4@ilande.co.uk>
- <63ff9c1a-5d05-985a-bf2f-69420b72db90@eik.bme.hu>
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=QA5tmiG6e9t32uSN5H4zI4ph2+KrCggOB3rI6JYdJeU=;
+ b=Fk3RxFK/YTx174N19dwJU7fORMCFBBOnUC/vzMOVmbQl9Hh+5dzOPVD/045bGlVyhLyDYJ
+ BSXEK4isKaxLkA5b+4wekS2p5qUJ/9MPrfad7x4T8YGhhCCv7EGyeZV/b8ebAP6gChfP6P
+ UjB33PqYhMXWeWRg7nuy31BXDI09WJk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-492-M0U2WAkAN9-rDOsgah6K7g-1; Mon, 20 Nov 2023 08:45:58 -0500
+X-MC-Unique: M0U2WAkAN9-rDOsgah6K7g-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4084e263ec4so12991535e9.2
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 05:45:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700487958; x=1701092758;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :references:cc:to:content-language:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QA5tmiG6e9t32uSN5H4zI4ph2+KrCggOB3rI6JYdJeU=;
+ b=gEKrrK16jZrlx1r7ON3ywLJ24o2PhUB7wkWhPUaYUCppcQs2Ock1RuIa+jV6QlxgRM
+ QN8L2y2STIe1CKGtwhQ5AilwVNjFRONPeCOzuH7wDpXAYXn9aMFyZoi+n3m5V6srAIHw
+ byhqO8nMbh6S5cB8Fu3jvKWbT2TmdFIACpn8p2if6Xug+tgnry30PtzPwsqJAhhcW9HQ
+ JvT35+Mbq4xHcAFzYVtuRzoL4U/CMTgu9RkFZvVfrBsp2/AqVtvgW9GUkWElHgOrIdqx
+ r1iF6WZsH/gOSqZ0UPswcfRfzsFZtmRz6mE/CHft+FVwux8tzR7hxk3YS+ZTJS8AuGGL
+ 2xbg==
+X-Gm-Message-State: AOJu0YybTAShMtdWbIfXDzNzrkcVR6sbgidZwUCsY5G973g95hpoGoIz
+ +t44llKljE3n8pxHV2qJ6qyN/dp1oI5Xed5iEvYy1jjIba42P1Y4z3qYaVC+GgFQeD8hj78DlbR
+ f+McFUswMVhkwRlE=
+X-Received: by 2002:a05:600c:a07:b0:409:637b:88e2 with SMTP id
+ z7-20020a05600c0a0700b00409637b88e2mr6450133wmp.0.1700487957822; 
+ Mon, 20 Nov 2023 05:45:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHfazUA8G6ZK/ANSeRLXx+BGP0G1VqybO5pHd739+G+m5ku6EK/gjaJCScRkDt6HZNzsSGDpw==
+X-Received: by 2002:a05:600c:a07:b0:409:637b:88e2 with SMTP id
+ z7-20020a05600c0a0700b00409637b88e2mr6450114wmp.0.1700487957408; 
+ Mon, 20 Nov 2023 05:45:57 -0800 (PST)
+Received: from ?IPV6:2003:cb:c746:7700:9885:6589:b1e3:f74c?
+ (p200300cbc746770098856589b1e3f74c.dip0.t-ipconnect.de.
+ [2003:cb:c746:7700:9885:6589:b1e3:f74c])
+ by smtp.gmail.com with ESMTPSA id
+ t8-20020a05600c198800b0040531f5c51asm13697246wmq.5.2023.11.20.05.45.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 20 Nov 2023 05:45:57 -0800 (PST)
+Message-ID: <d7c53e08-28a0-4e5f-a29b-ba7cf6151786@redhat.com>
+Date: Mon, 20 Nov 2023 14:45:56 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] system: Use &error_abort in
+ memory_region_init_ram_[device_]ptr()
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, Peter Xu <peterx@redhat.com>
+References: <20231120133112.82447-1-philmd@linaro.org>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20231120133112.82447-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <63ff9c1a-5d05-985a-bf2f-69420b72db90@eik.bme.hu>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,74 +150,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 20.11.2023 um 14:09 hat BALATON Zoltan geschrieben:
-> On Mon, 20 Nov 2023, Mark Cave-Ayland wrote:
-> > On 19/11/2023 21:43, BALATON Zoltan wrote:
-> > > On Thu, 16 Nov 2023, Mark Cave-Ayland wrote:
-> > > > This series adds a simple implementation of legacy/native mode
-> > > > switching for PCI
-> > > > IDE controllers and updates the via-ide device to use it.
-> > > > 
-> > > > The approach I take here is to add a new pci_ide_update_mode()
-> > > > function which handles
-> > > > management of the PCI BARs and legacy IDE ioports for each mode
-> > > > to avoid exposing
-> > > > details of the internal logic to individual PCI IDE controllers.
-> > > > 
-> > > > As noted in [1] this is extracted from a local WIP branch I have
-> > > > which contains
-> > > > further work in this area. However for the moment I've kept it simple (and
-> > > > restricted it to the via-ide device) which is good enough for Zoltan's PPC
-> > > > images whilst paving the way for future improvements after 8.2.
-> > > > 
-> > > > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> > > > 
-> > > > [1] https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05403.html
-> > > > 
-> > > > v3:
-> > > > - Rebase onto master
-> > > > - Move ide_portio_list[] and ide_portio_list2[] to IDE core to
-> > > > prevent duplication in
-> > > > †hw/ide/pci.c
-> > > > - Don't zero BARs when switching from native mode to legacy
-> > > > mode, instead always force
-> > > > †them to read zero as suggested in the PCI IDE specification
-> > > > (note: this also appears
-> > > > †to fix the fuloong2e machine booting from IDE)
-> > > 
-> > > Not sure you're getting this, see also:
-> > > https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg04167.html
-> > > but this seems to break latest version of the AmigaOS driver for
-> > > some reason. I assume this is the BAR zeroing that causes this as it
-> > > works with v2 series and nothing else changed in v3 that could cause
-> > > this. Testing was done by Rene Engel, cc'd so maybe he can add more
-> > > info. It seems to work with my patch that sets BARs to legacy values
-> > > and with v2 that sets them to 0 but not with v3 which should also
-> > > read 0 but maybe something is off here.
-> > 
-> > I've been AFK for a few days, so just starting to catch up on various
-> > bits and pieces.
+On 20.11.23 14:31, Philippe Mathieu-Daud√© wrote:
+> If an unexpected error condition happens, we have to abort
+> (&fatal_error is meant for expected errors).
 > 
-> OK just wasn't sure if you saw my emails at all as it happened before that
-> some spam filters disliked my mail server and put messages in the spam
-> folder.
+> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+> Suggested-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
+> ---
+>   system/memory.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> > The only difference I can think of regarding the BAR zeroing is that the
-> > BMDMA BAR is zeroed here. Does the following diff fix things?
-> 
-> This helps, with this the latest driver does not crash but still reads BAR4
-> as 0 instead of 0xcc00 so UDMA won't work but at least it boots.
+> diff --git a/system/memory.c b/system/memory.c
+> index 304fa843ea..4d9cb0a7ff 100644
+> --- a/system/memory.c
+> +++ b/system/memory.c
+> @@ -1692,7 +1692,7 @@ void memory_region_init_ram_ptr(MemoryRegion *mr,
+>   
+>       /* qemu_ram_alloc_from_ptr cannot fail with ptr != NULL.  */
+>       assert(ptr != NULL);
+> -    mr->ram_block = qemu_ram_alloc_from_ptr(size, ptr, mr, &error_fatal);
+> +    mr->ram_block = qemu_ram_alloc_from_ptr(size, ptr, mr, &error_abort);
+>   }
+>   
+>   void memory_region_init_ram_device_ptr(MemoryRegion *mr,
+> @@ -1711,7 +1711,7 @@ void memory_region_init_ram_device_ptr(MemoryRegion *mr,
+>   
+>       /* qemu_ram_alloc_from_ptr cannot fail with ptr != NULL.  */
+>       assert(ptr != NULL);
+> -    mr->ram_block = qemu_ram_alloc_from_ptr(size, ptr, mr, &error_fatal);
+> +    mr->ram_block = qemu_ram_alloc_from_ptr(size, ptr, mr, &error_abort);
+>   }
+>   
+>   void memory_region_init_alias(MemoryRegion *mr,
 
-And disabling only the first four BARs is actually what the spec says,
-too. So I'll make this change to the queued patches.
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-If I understand correctly, UDMA didn't work before this series either,
-so it's a separate goal and doing it in its own patch is best anyway.
+-- 
+Cheers,
 
-As we don't seem to have a good place to set a default, maybe just
-overriding it in via_ide_cfg_read(), too, and making it return 0xcc01 in
-compatibility mode is enough?
-
-Kevin
+David / dhildenb
 
 
