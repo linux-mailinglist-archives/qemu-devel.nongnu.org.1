@@ -2,53 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 457027F1479
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E4F7F147A
 	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 14:32:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r54MI-00022t-Lu; Mon, 20 Nov 2023 08:30:38 -0500
+	id 1r54NL-0002M2-HH; Mon, 20 Nov 2023 08:31:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r54M8-00021o-Lq; Mon, 20 Nov 2023 08:30:30 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r54M5-0001u7-4P; Mon, 20 Nov 2023 08:30:28 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id B4ED2756094;
- Mon, 20 Nov 2023 14:30:57 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id A127D75607B; Mon, 20 Nov 2023 14:30:57 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 9C429756066;
- Mon, 20 Nov 2023 14:30:57 +0100 (CET)
-Date: Mon, 20 Nov 2023 14:30:57 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-cc: kwolf@redhat.com, jsnow@redhat.com, qemu-block@nongnu.org, 
- qemu-devel@nongnu.org, philmd@linaro.org, shentey@gmail.com, 
- Rene Engel <ReneEngel80@emailn.de>
-Subject: Re: [PATCH v3 0/4] ide: implement simple legacy/native mode switching
- for PCI IDE controllers
-In-Reply-To: <3c442b7f-4f9e-5adf-e576-8f2930834bd3@eik.bme.hu>
-Message-ID: <a0a01470-c059-6a0f-21af-32ed43357c25@eik.bme.hu>
-References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
- <c4bb80e8-e985-b6b2-aac1-f6e8d446b8ea@eik.bme.hu>
- <6e7576bd-ac39-424e-ac7e-898c58a6a2fa@ilande.co.uk>
- <3c442b7f-4f9e-5adf-e576-8f2930834bd3@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r54Mz-0002Au-AO
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 08:31:27 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r54Mx-0002Dl-Kq
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 08:31:21 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a00191363c1so63737566b.0
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 05:31:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700487076; x=1701091876; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mfC3l79DWpuZ90eQhFhTtFylDgZoM5JZUYr7UxSsrVs=;
+ b=sO6zfui6dwJ6djVRAPJuB7SGOK1vmYUmSa+RF7HXmWbuqvoQAH70CALaMYqkzcuMMK
+ loxV4malG4EIJg/AMn81g5ddChJnnp8GH0Zt5VHmppxHsnUmovRiwtliJZ0g5t/v4zn0
+ E2ocRqIJlFoyz0q+FsTNRV8xAUAq3UtswXgsXMjJil4TtejC1fYAjd5VekwnpFcLS+rB
+ wpiWYDB3iCU/55JePRpr0ir0OS/ghFxUFn+IdJfNXLce7X6trRd+xRtxaJX0OF2Tc1lg
+ ltJ/FxuBJnFViMzr4NJLVVIR936+XEU6br4217Q38+zn8NwUSAJFpl2omUm91nXbein1
+ e7vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700487076; x=1701091876;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mfC3l79DWpuZ90eQhFhTtFylDgZoM5JZUYr7UxSsrVs=;
+ b=HqXJxjLIpgVn0LlRLVU9CSgDBprtKKE94D/ylTCc/mUjgLyB+mymb+2Zw8oIBmlchm
+ 2s8xUM+zw7CecYFoA1THOc+Rr+cfWflfRwCh/CtKuq3NYcaLaEGXFchASmKngtCtfFN6
+ db8W8Z2felzwgUZIxHwjNwUCNQKAvO8hLytcwXF0XQk9Pk2Q6lqQw6uxCV/XkyTL69iM
+ hk/DYckTHvsOTAOq2jaxWeFrYbmNry0++Vo3GZjrFNDjZ8bu/aGKo5UjaApT2SsrTzBT
+ vucrev0uLwGrrZZ9wNQ5aR0OlE15WA3TwNh+9NNLbTT/9RF5qSEIjLT/iKrujiSFB61U
+ OhRQ==
+X-Gm-Message-State: AOJu0YyEdACzcRATcyN2O827r51mvRpcjFQHUdc4nE0xtHwkA6++qRUc
+ 92hD7dP2ddzf1Nt6861sRE4i9MtCZDFhdRBPhEc=
+X-Google-Smtp-Source: AGHT+IGDJO1pHsPU1hxcgLfrpgQ1N1NW+jSbv2/n7+BaKcLXxFKhqCTc9ewjR8kxQtRpDsTTbu0vYQ==
+X-Received: by 2002:a17:906:3986:b0:9d5:ecf9:e6b5 with SMTP id
+ h6-20020a170906398600b009d5ecf9e6b5mr5056721eje.59.1700487075801; 
+ Mon, 20 Nov 2023 05:31:15 -0800 (PST)
+Received: from m1x-phil.lan ([176.176.181.190])
+ by smtp.gmail.com with ESMTPSA id
+ sd22-20020a170906ce3600b009fbf15cee7fsm2087892ejb.69.2023.11.20.05.31.14
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 20 Nov 2023 05:31:15 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PATCH] system: Use &error_abort in
+ memory_region_init_ram_[device_]ptr()
+Date: Mon, 20 Nov 2023 14:31:11 +0100
+Message-ID: <20231120133112.82447-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1732991673-1700487057=:81200"
-X-Virus-Scanned: ClamAV using ClamSMTP
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,113 +91,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+If an unexpected error condition happens, we have to abort
+(&fatal_error is meant for expected errors).
 
---3866299591-1732991673-1700487057=:81200
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+Suggested-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ system/memory.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On Mon, 20 Nov 2023, BALATON Zoltan wrote:
-> On Mon, 20 Nov 2023, Mark Cave-Ayland wrote:
->> On 19/11/2023 21:43, BALATON Zoltan wrote:
->>> On Thu, 16 Nov 2023, Mark Cave-Ayland wrote:
->>>> This series adds a simple implementation of legacy/native mode switching 
->>>> for PCI
->>>> IDE controllers and updates the via-ide device to use it.
->>>> 
->>>> The approach I take here is to add a new pci_ide_update_mode() function 
->>>> which handles
->>>> management of the PCI BARs and legacy IDE ioports for each mode to avoid 
->>>> exposing
->>>> details of the internal logic to individual PCI IDE controllers.
->>>> 
->>>> As noted in [1] this is extracted from a local WIP branch I have which 
->>>> contains
->>>> further work in this area. However for the moment I've kept it simple 
->>>> (and
->>>> restricted it to the via-ide device) which is good enough for Zoltan's 
->>>> PPC
->>>> images whilst paving the way for future improvements after 8.2.
->>>> 
->>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>>> 
->>>> [1] https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05403.html
->>>> 
->>>> v3:
->>>> - Rebase onto master
->>>> - Move ide_portio_list[] and ide_portio_list2[] to IDE core to prevent 
->>>> duplication in
->>>>  hw/ide/pci.c
->>>> - Don't zero BARs when switching from native mode to legacy mode, instead 
->>>> always force
->>>>  them to read zero as suggested in the PCI IDE specification (note: this 
->>>> also appears
->>>>  to fix the fuloong2e machine booting from IDE)
->>> 
->>> Not sure you're getting this, see also:
->>> https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg04167.html
->>> but this seems to break latest version of the AmigaOS driver for some 
->>> reason. I assume this is the BAR zeroing that causes this as it works with 
->>> v2 series and nothing else changed in v3 that could cause this. Testing 
->>> was done by Rene Engel, cc'd so maybe he can add more info. It seems to 
->>> work with my patch that sets BARs to legacy values and with v2 that sets 
->>> them to 0 but not with v3 which should also read 0 but maybe something is 
->>> off here.
->> 
->> Is this document here accurate as to how it works on real hardware? 
->> https://intuitionbase.com/hints.php.
->
-> That should be about right. On QEMU the U-boot env vars won't work because 
-> NVRAM is not emulated yet so they can't be saved but you can call idetool 
-> from startup-sequence boot script instead for same effect (UDMA is enabled a 
-> bit later with that but after that it's the same).
->
->> I can't understand why the base OS is attempting any access to BAR 4 if 
->> BMDMA isn't enabled by default on real hardware due to hardware bugs.
->
-> Real hardware had problems with DMA (the VIA chip was also infamous for it on 
-> PC hardware and later also the ArticiaS was found to have its own problems) 
-> so the default is to use IDE in PIO mode and UDMA has to be enabled manually. 
-> But if it works (and it should on QEMU) it's much faster so we want to enable 
-> it.
->
->> Are we sure that the idetool hacks given in the link above to enable BMDMA 
->> haven't already been run on the AmigaOS install when testing an earlier 
->> version of the patches?
->
-> It was tested with my original series and works with that as my patch sets 
-> the default vaules for BARs and the driver reads it correctly. Then we tested 
-> your series too and I've noted for v2 already that it misses the degault 
-> value for BAR4. Other BARs don't matter as it will apparently use ISA IDE 
-> ports when it gets 0 or it knows that in legacy mode these shoud be the port 
-> values but seems to read BAR4 for UDMA and only works if the right default 
-> value is there, otherwise it lists DMA BAR 0 on start.
+diff --git a/system/memory.c b/system/memory.c
+index 304fa843ea..4d9cb0a7ff 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -1692,7 +1692,7 @@ void memory_region_init_ram_ptr(MemoryRegion *mr,
+ 
+     /* qemu_ram_alloc_from_ptr cannot fail with ptr != NULL.  */
+     assert(ptr != NULL);
+-    mr->ram_block = qemu_ram_alloc_from_ptr(size, ptr, mr, &error_fatal);
++    mr->ram_block = qemu_ram_alloc_from_ptr(size, ptr, mr, &error_abort);
+ }
+ 
+ void memory_region_init_ram_device_ptr(MemoryRegion *mr,
+@@ -1711,7 +1711,7 @@ void memory_region_init_ram_device_ptr(MemoryRegion *mr,
+ 
+     /* qemu_ram_alloc_from_ptr cannot fail with ptr != NULL.  */
+     assert(ptr != NULL);
+-    mr->ram_block = qemu_ram_alloc_from_ptr(size, ptr, mr, &error_fatal);
++    mr->ram_block = qemu_ram_alloc_from_ptr(size, ptr, mr, &error_abort);
+ }
+ 
+ void memory_region_init_alias(MemoryRegion *mr,
+-- 
+2.41.0
 
-This probably wasn't clear so what I mean is:
-
-a1ide.device 53.22 (28.6.2017)
-[a1ide/dev_init] Found chip #0
-[a1ide/init_port] ---> Port 0
-[a1ide/init_port] IOBase 000001F0, AltBase 000003F6
-[a1ide/init_port] bmcr_base 0000CC00
-[a1ide/init_port] MMIOBase 00000000
-
-This is with my patch: 
-https://patchew.org/QEMU/cover.1697661160.git.balaton@eik.bme.hu/4095e01f4596e77a478759161ae736f0c398600a.1697661160.git.balaton@eik.bme.hu/ 
-With yours bmcr_base is 0 and then when enabling UDMA with idetool it 
-hangs as it needs this value from BAR4.
-
-Regards,
-BALATON Zoltan
-
->> Finally is there a bootable AmigaOS demo ISO somewhere that can be used for 
->> testing?
->
-> Unfortunately AmigaOS4 is only available commercially, no free demo is 
-> avaialable.
->
-> Regards,
-> BALATON Zoltan
---3866299591-1732991673-1700487057=:81200--
 
