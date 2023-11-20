@@ -2,83 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 512CA7F0BDF
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 07:34:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 692B77F0CA3
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 08:14:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4xq9-0007SQ-NZ; Mon, 20 Nov 2023 01:33:01 -0500
+	id 1r4ySN-0003ZR-CV; Mon, 20 Nov 2023 02:12:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1r4xq7-0007S7-VD
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 01:32:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1r4xq6-0003eh-Bx
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 01:32:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700461976;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7oD6gUbnQRW6v0pn+q/tci9tLbPPW0Z16l5J3s22AKM=;
- b=YLo+icusef7CxY07uFywMdFseh4WGHzlvXeK94dUgM73LwycM3CydJv2qYTaTQyl0vAn7k
- M4rcSNIDx7AMgXVU4g9V4Q3iOzkjiesmXPYjdwGQ3cLwv2ilQk9SiUIl96cqFKSyLps7h9
- 0mSrwmnxrGcKYPNiss+EUf/TNIGd9rk=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-345-9PWdCoiGNTa7SCVecPG_Yw-1; Mon, 20 Nov 2023 01:32:54 -0500
-X-MC-Unique: 9PWdCoiGNTa7SCVecPG_Yw-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-543714a9d86so3066142a12.2
- for <qemu-devel@nongnu.org>; Sun, 19 Nov 2023 22:32:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700461973; x=1701066773;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7oD6gUbnQRW6v0pn+q/tci9tLbPPW0Z16l5J3s22AKM=;
- b=nVdpy9CKTmxeeevEpYxNxTtNyTclODB/SOHIWIlVQQru+x5799UXsFw0Ni9H5xYINz
- Dzb6/+7MTHwLRVb0VPxHpAJo598YpBZUinrZ3m1G3N+3pSSXkfBVaG0g14slhOPRhUaL
- tI9/HCTsKizXkJAeSyMFmTskhZvBB3n8je0b5wg1ShutWvluYapVqCzuFATPUmevdg0a
- p1+oo5uv32PP1zFfNCANhVSAIy2i+jxMYxuB+aouxnfnio/GXkJwBLccPYk1ONynyOTb
- W9i+ufJD/DpiaJoNWN0DkVa9nlmlba+2Ub5bLkSIMjWRi/34PV5tJa+r6r8APblgn10J
- Cnlg==
-X-Gm-Message-State: AOJu0YwcoYdxVPHYB6Xg21VX+MPCgfwkfWRpryW0IrXo9Yo1hNFsyBKN
- EVRp2lk+UNFeMw0hgIOHHnG9VaJfHjTatK66NyJR//ANIPNYJX1VdFFsREnK0mCYjXVdbUIoZMu
- DcEE9UwFhxeaAIb6vdgdOGwPUCyuxABU=
-X-Received: by 2002:aa7:c658:0:b0:533:c75a:6f6 with SMTP id
- z24-20020aa7c658000000b00533c75a06f6mr4828679edr.12.1700461973358; 
- Sun, 19 Nov 2023 22:32:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHe2CqE+eSfTCXi8XnVwhiKweL1xjrCIMHKkoqYegGnbqNTDRklZBGBEAZwEWOnHU4xizZ+AyqjSIySU0bKyYc=
-X-Received: by 2002:aa7:c658:0:b0:533:c75a:6f6 with SMTP id
- z24-20020aa7c658000000b00533c75a06f6mr4828675edr.12.1700461973074; Sun, 19
- Nov 2023 22:32:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1r4ySJ-0003Y8-0S
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 02:12:27 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1r4ySG-0002BM-C2
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 02:12:26 -0500
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8DxqOrOBltlAyg7AA--.15591S3;
+ Mon, 20 Nov 2023 15:12:14 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Cx7y_MBltluFNHAA--.25125S2; 
+ Mon, 20 Nov 2023 15:12:12 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, philmd@linaro.org, git@xen0n.name, c@jia.je,
+ maobibo@loongson.cn
+Subject: [PATCH 1/1] tcg/loongarch64: Fix tcg_out_mov() Aborted
+Date: Mon, 20 Nov 2023 14:59:16 +0800
+Message-Id: <20231120065916.374045-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-References: <20231119083940.20558-1-akihiko.odaki@daynix.com>
-In-Reply-To: <20231119083940.20558-1-akihiko.odaki@daynix.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Mon, 20 Nov 2023 10:32:41 +0400
-Message-ID: <CAMxuvayt2PHtZmFPWyMsXP5kLXYVT3Bhwowsk__8_Z_jTxvWjw@mail.gmail.com>
-Subject: Re: [PATCH] audio: Free consumed default audio devices
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8Cx7y_MBltluFNHAA--.25125S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,48 +62,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+On LoongArch host,  we got an Aborted from tcg_out_mov().
 
-On Sun, Nov 19, 2023 at 12:40=E2=80=AFPM Akihiko Odaki <akihiko.odaki@dayni=
-x.com> wrote:
->
-> Failed default audio devices were removed from the list but not freed,
-> and that made LeakSanitizer sad. Free default audio devices as they are
-> consumed.
->
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  audio/audio.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/audio/audio.c b/audio/audio.c
-> index f91e05b72c..becf6cdf46 100644
-> --- a/audio/audio.c
-> +++ b/audio/audio.c
-> @@ -1758,12 +1758,14 @@ static AudioState *audio_init(Audiodev *dev, Erro=
-r **errp)
->                  goto out;
->              }
->              s->dev =3D dev =3D e->dev;
-> +            QSIMPLEQ_REMOVE_HEAD(&default_audiodevs, next);
-> +            g_free(e);
->              drvname =3D AudiodevDriver_str(dev->driver);
->              driver =3D audio_driver_lookup(drvname);
->              if (!audio_driver_init(s, driver, dev, NULL)) {
->                  break;
->              }
-> -            QSIMPLEQ_REMOVE_HEAD(&default_audiodevs, next);
-> +            qapi_free_Audiodev(dev);
+qemu-x86_64 configure with '--enable-debug'.
 
-I'd set s->dev to NULL, to avoid potential dangling pointers.
-
-(it looks like like this could already hit a double-free on error path)
-
->          }
->      }
+> (gdb) b /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312
+> Breakpoint 1 at 0x2576f0: file /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc, line 312.
+> (gdb) run hello
+[...]
+> Thread 1 "qemu-x86_64" hit Breakpoint 1, tcg_out_mov (s=0xaaaae91760 <tcg_init_ctx>, type=TCG_TYPE_V128, ret=TCG_REG_V2,
+>     arg=TCG_REG_V0) at /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312
+> 312           g_assert_not_reached();
+> (gdb) bt
+> #0  tcg_out_mov (s=0xaaaae91760 <tcg_init_ctx>, type=TCG_TYPE_V128, ret=TCG_REG_V2, arg=TCG_REG_V0)
+>     at /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312
+> #1  0x000000aaaad0fee0 in tcg_reg_alloc_mov (s=0xaaaae91760 <tcg_init_ctx>, op=0xaaaaf67c20) at ../tcg/tcg.c:4632
+> #2  0x000000aaaad142f4 in tcg_gen_code (s=0xaaaae91760 <tcg_init_ctx>, tb=0xffe8030340 <code_gen_buffer+197328>,
+>     pc_start=4346094) at ../tcg/tcg.c:6135
+[...]
+> (gdb) c
+> Continuing.
+> **
+> ERROR:/home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312:tcg_out_mov: code should not be reached
+> Bail out! ERROR:/home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312:tcg_out_mov: code should not be reached
 >
-> --
-> 2.42.1
->
+> Thread 1 "qemu-x86_64" received signal SIGABRT, Aborted.
+> 0x000000fff7b1c390 in raise () from /lib64/libc.so.6
+> (gdb) q
+
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ tcg/loongarch64/tcg-target.c.inc | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+index a588fb3085..5f68040230 100644
+--- a/tcg/loongarch64/tcg-target.c.inc
++++ b/tcg/loongarch64/tcg-target.c.inc
+@@ -308,6 +308,9 @@ static bool tcg_out_mov(TCGContext *s, TCGType type, TCGReg ret, TCGReg arg)
+          */
+         tcg_out_opc_or(s, ret, arg, TCG_REG_ZERO);
+         break;
++    case TCG_TYPE_V128:
++        tcg_out_opc_vaddi_du(s, ret, arg, 0);
++        break;
+     default:
+         g_assert_not_reached();
+     }
+-- 
+2.25.1
 
 
