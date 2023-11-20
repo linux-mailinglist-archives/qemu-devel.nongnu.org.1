@@ -2,87 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96EA37F1481
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 14:37:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B44C77F1491
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 14:44:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r54Rb-000443-67; Mon, 20 Nov 2023 08:36:07 -0500
+	id 1r54YJ-0000Fx-0l; Mon, 20 Nov 2023 08:43:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r54RY-00043f-6X; Mon, 20 Nov 2023 08:36:04 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r54RV-00058T-5j; Mon, 20 Nov 2023 08:36:02 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1cf69f1163aso1160265ad.3; 
- Mon, 20 Nov 2023 05:35:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700487359; x=1701092159; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yVSIBwGW/LKHkZiz/2s/wS4fLe692J0zjzS8RQDpQig=;
- b=FI3jZwd1KwrtERtXzMuZc6+3mrXpF8dbpgH0wG1c0BusaQKppdSpQb2KT6f97qhSP2
- eOtP6bZeEqSfaYkPqCtwqxTpnUcnu/Cq3avycM2aZK9648HRz7s1Dh/LrREArX0g1HFN
- 3F/LTm8shNCnaaaYIYk4niHMZlXDvej5TEh4eMCICwyyJutQSZQnjj06A4EAZOQxgjVb
- LZ/CcEtycRzYtyKYxcKKFWuaGbeXg3Z8peqbVHXY9CUuvP4VSe4QimtcsgQ5vI5dEuum
- fVr6Y7s+NYX8fpjP3NsH5bJZufUla80nGLNgv8wpIyIUjuj+vIJXlUm+Qcv+GUHFcke7
- LHcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700487359; x=1701092159;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=yVSIBwGW/LKHkZiz/2s/wS4fLe692J0zjzS8RQDpQig=;
- b=docyy3nB7QRgoWyAqjRLt3abeumzbY6UCIef5+k0Uqmi903B+CCuPHzhX6FJ3SydLG
- D48oxmISsRGn4VvnYpIr/4dUue4ojDJnDnPqtftx+ajyWxRhUkS8YnBxP50l9r9HGm6r
- nSeOezerKkySiEsqW3i3nhwt/AskrsOHPc4g6cjwrNnDW5xDWmJJliXUrZFEUftec0bd
- 1bLq7g5waYUBMCayLKek+IXPY+2gT83GKHbgBdT5+IV1s0fF//DOojxYvNBXeUoGjRwm
- ftEbEGEWIplI2Q84H/l17/QbzPe3zCxfOyp+PonJm0YWPHKBhhODhPojQOMqbD39JVz5
- c1fA==
-X-Gm-Message-State: AOJu0YxqapdlgSBXayZc9Elqrdj3NMA58dThe5c5PlJ3DhyGmvTqBFQi
- mmnbblu9dWAznyE36z51EfA=
-X-Google-Smtp-Source: AGHT+IF8Jc4R6RKObesbHgPssITgZNjdfx3LD08teq+ffbu7g5re0zJy9Wzlli4RB4lWxXA87bZegg==
-X-Received: by 2002:a17:902:d503:b0:1cc:b09a:b811 with SMTP id
- b3-20020a170902d50300b001ccb09ab811mr6107388plg.14.1700487358925; 
- Mon, 20 Nov 2023 05:35:58 -0800 (PST)
-Received: from localhost (203-219-179-16.tpgi.com.au. [203.219.179.16])
- by smtp.gmail.com with ESMTPSA id
- e4-20020a170902d38400b001ca2484e87asm6047828pld.262.2023.11.20.05.35.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Nov 2023 05:35:58 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 20 Nov 2023 23:35:50 +1000
-Message-Id: <CX3OGGIB0IAN.1CDYNM9U7M5Y3@wheely>
-Cc: <qemu-devel@nongnu.org>, "Paolo Bonzini" <pbonzini@redhat.com>, "Pavel
- Dovgalyuk" <pavel.dovgaluk@ispras.ru>, "Cleber Rosa" <crosa@redhat.com>,
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, "Wainer dos
- Santos Moschetta" <wainersm@redhat.com>, "Beraldo Leal" <bleal@redhat.com>,
- "Ani Sinha" <anisinha@redhat.com>, =?utf-8?b?RGFuaWVsIFAgLiBCZXJyYW5nw6k=?=
- <berrange@redhat.com>, "Thomas Huth" <thuth@redhat.com>, "John Snow"
- <jsnow@redhat.com>, <qemu-ppc@nongnu.org>, =?utf-8?q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-Subject: Re: [PATCH 2/3] chardev: report blocked write to chardev backend
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-X-Mailer: aerc 0.15.2
-References: <20231116115354.228678-1-npiggin@gmail.com>
- <20231116115354.228678-2-npiggin@gmail.com>
- <CAMxuvawXTrQ3Mu-aGbELnQyBRU4W9kuMQo-XM_zm4FbRymHkqA@mail.gmail.com>
-In-Reply-To: <CAMxuvawXTrQ3Mu-aGbELnQyBRU4W9kuMQo-XM_zm4FbRymHkqA@mail.gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r54YG-0000FA-Ps
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 08:43:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r54YC-0001Dy-Rv
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 08:43:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700487776;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=MTg8xXl3K/KKajN8KRjwgK1+/HyxLRXZXQ/6TB0oAMM=;
+ b=Jt3WeZ9wI5oL1NAtfODUT3V39E0upFSyi7jueDl/tnJKUxpYri01P2LFoO8fG79y10hJVR
+ X3jBdKk9yNxRdSwNJuTVkojKwLP1jZBSb4bLQNrcnC3Q00eMLXWLcw92tKNcUx4ZQQu6VS
+ kOv25wvTk3X93yJHWG+a9QjYEGo9yl4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-504-mBgKMohoPQSTa7LJoPLtTg-1; Mon,
+ 20 Nov 2023 08:42:52 -0500
+X-MC-Unique: mBgKMohoPQSTa7LJoPLtTg-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 06B76280AA22;
+ Mon, 20 Nov 2023 13:42:52 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.193.132])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 97188492BFC;
+ Mon, 20 Nov 2023 13:42:50 +0000 (UTC)
+Date: Mon, 20 Nov 2023 14:42:47 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, jsnow@redhat.com,
+ qemu-block@nongnu.org, qemu-devel@nongnu.org, philmd@linaro.org,
+ shentey@gmail.com, Rene Engel <ReneEngel80@emailn.de>
+Subject: Re: [PATCH v3 0/4] ide: implement simple legacy/native mode
+ switching for PCI IDE controllers
+Message-ID: <ZVtiV8XXHxS+cw8o@redhat.com>
+References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
+ <c4bb80e8-e985-b6b2-aac1-f6e8d446b8ea@eik.bme.hu>
+ <295aec31-e9c1-49d8-9bea-edad8f7b81e4@ilande.co.uk>
+ <63ff9c1a-5d05-985a-bf2f-69420b72db90@eik.bme.hu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <63ff9c1a-5d05-985a-bf2f-69420b72db90@eik.bme.hu>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,74 +85,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon Nov 20, 2023 at 10:06 PM AEST, Marc-Andr=C3=A9 Lureau wrote:
-> Hi
->
-> On Thu, Nov 16, 2023 at 3:54=E2=80=AFPM Nicholas Piggin <npiggin@gmail.co=
-m> wrote:
-> >
-> > If a chardev socket is not read, it will eventually fill and QEMU
-> > can block attempting to write to it. A difficult bug in avocado
-> > tests where the console socket was not being read from caused this
-> > hang.
-> >
-> > warn if a chardev write is blocked for 100ms.
-> >
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> > This is not necessary for the fix but it does trigger in the
-> > failing avocado test without the previous patch applied. Maybe
-> > it would be helpful?
-> >
-> > Thanks,
-> > Nick
-> >
-> >  chardev/char.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> >
-> > diff --git a/chardev/char.c b/chardev/char.c
-> > index 996a024c7a..7c375e3cc4 100644
-> > --- a/chardev/char.c
-> > +++ b/chardev/char.c
-> > @@ -114,6 +114,8 @@ static int qemu_chr_write_buffer(Chardev *s,
-> >  {
-> >      ChardevClass *cc =3D CHARDEV_GET_CLASS(s);
-> >      int res =3D 0;
-> > +    int nr_retries =3D 0;
-> > +
-> >      *offset =3D 0;
-> >
-> >      qemu_mutex_lock(&s->chr_write_lock);
-> > @@ -126,6 +128,10 @@ static int qemu_chr_write_buffer(Chardev *s,
-> >              } else {
-> >                  g_usleep(100);
-> >              }
-> > +            if (++nr_retries =3D=3D 1000) { /* 100ms */
-> > +                warn_report("Chardev '%s' write blocked for > 100ms, "
-> > +                            "socket buffer full?", s->label);
-> > +            }
->
-> That shouldn't happen, the frontend should poll and only write when it
-> can. What is the qemu command being used here?
+Am 20.11.2023 um 14:09 hat BALATON Zoltan geschrieben:
+> On Mon, 20 Nov 2023, Mark Cave-Ayland wrote:
+> > On 19/11/2023 21:43, BALATON Zoltan wrote:
+> > > On Thu, 16 Nov 2023, Mark Cave-Ayland wrote:
+> > > > This series adds a simple implementation of legacy/native mode
+> > > > switching for PCI
+> > > > IDE controllers and updates the via-ide device to use it.
+> > > > 
+> > > > The approach I take here is to add a new pci_ide_update_mode()
+> > > > function which handles
+> > > > management of the PCI BARs and legacy IDE ioports for each mode
+> > > > to avoid exposing
+> > > > details of the internal logic to individual PCI IDE controllers.
+> > > > 
+> > > > As noted in [1] this is extracted from a local WIP branch I have
+> > > > which contains
+> > > > further work in this area. However for the moment I've kept it simple (and
+> > > > restricted it to the via-ide device) which is good enough for Zoltan's PPC
+> > > > images whilst paving the way for future improvements after 8.2.
+> > > > 
+> > > > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> > > > 
+> > > > [1] https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05403.html
+> > > > 
+> > > > v3:
+> > > > - Rebase onto master
+> > > > - Move ide_portio_list[] and ide_portio_list2[] to IDE core to
+> > > > prevent duplication in
+> > > >  hw/ide/pci.c
+> > > > - Don't zero BARs when switching from native mode to legacy
+> > > > mode, instead always force
+> > > >  them to read zero as suggested in the PCI IDE specification
+> > > > (note: this also appears
+> > > >  to fix the fuloong2e machine booting from IDE)
+> > > 
+> > > Not sure you're getting this, see also:
+> > > https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg04167.html
+> > > but this seems to break latest version of the AmigaOS driver for
+> > > some reason. I assume this is the BAR zeroing that causes this as it
+> > > works with v2 series and nothing else changed in v3 that could cause
+> > > this. Testing was done by Rene Engel, cc'd so maybe he can add more
+> > > info. It seems to work with my patch that sets BARs to legacy values
+> > > and with v2 that sets them to 0 but not with v3 which should also
+> > > read 0 but maybe something is off here.
+> > 
+> > I've been AFK for a few days, so just starting to catch up on various
+> > bits and pieces.
+> 
+> OK just wasn't sure if you saw my emails at all as it happened before that
+> some spam filters disliked my mail server and put messages in the spam
+> folder.
+> 
+> > The only difference I can think of regarding the BAR zeroing is that the
+> > BMDMA BAR is zeroed here. Does the following diff fix things?
+> 
+> This helps, with this the latest driver does not crash but still reads BAR4
+> as 0 instead of 0xcc00 so UDMA won't work but at least it boots.
 
-You can follow it through the thread here
+And disabling only the first four BARs is actually what the spec says,
+too. So I'll make this change to the queued patches.
 
-https://lore.kernel.org/qemu-devel/ZVT-bY9YOr69QTPX@redhat.com/
+If I understand correctly, UDMA didn't work before this series either,
+so it's a separate goal and doing it in its own patch is best anyway.
 
-In short, a console device is attached to a socket pair and nothing
-ever reads from it. It eventually fills, and writing to it fails
-indefinitely here.
+As we don't seem to have a good place to set a default, maybe just
+overriding it in via_ide_cfg_read(), too, and making it return 0xcc01 in
+compatibility mode is enough?
 
-It can be reproduced with:
+Kevin
 
-make check-avocado
-AVOCADO_TESTS=3Dtests/avocado/reverse_debugging.py:test_ppc64_pseries
-
-
-> I think this change can be worth for debugging though.
->
-> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-
-Thanks,
-Nick
 
