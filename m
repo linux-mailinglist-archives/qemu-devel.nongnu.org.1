@@ -2,84 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0920A7F1D34
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 20:18:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF3D7F1D3F
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 20:19:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r59ly-0003io-3q; Mon, 20 Nov 2023 14:17:30 -0500
+	id 1r59nR-0004b6-I3; Mon, 20 Nov 2023 14:19:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r59ls-0003fz-3Q
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 14:17:25 -0500
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r59lo-0001ct-6E
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 14:17:22 -0500
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6c396ef9a3dso3935188b3a.1
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 11:17:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1700507837; x=1701112637; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=phERt2I0QChkIR0lqBCXxCvgPAXalYdszJgVYdI6K7Y=;
- b=ZtibrjTn8qAQMgWRo8I8aIFJcqhC484v8UhgoI0b75ufD+5knNPqajco3XJ74/8v8M
- Ll9/4Zv9ATcthIGicGIH+AxKvFLYw5Y8NPzv6TZDMrD3TyAjhyuRR5pVDH0/8D6s5heC
- ysl1kS/+YG5BvaxuVpbCeM4XGqI5vTStFJYIDdhiwWII+uIfULiBrRlKOL5EyF46vPhV
- 6xlVarNGperzkeBUYrsWK9vcyfWne6kPum4HEU36/U6ImcfKcKmnH9nhMzRmtdYIWXfe
- gEGK7uCxEJV4UIaSj0DItlPoiVx9fI07R3PmXNwgcZN5/iNmWFYrRVc6U7u5njxfsaRE
- +cCg==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r59nO-0004aZ-It
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 14:18:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r59nM-0001vS-Jw
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 14:18:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700507935;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xUaTNbMWV/2zpwUJAGxk2dei5iWxNVWv7jOFPfd2C7s=;
+ b=Bma5jzu5rZ0qPVF7AolV18q3+Dk/Oms7rR0XYkjFMapxUuK0xGKEOzC65XkCxIbtiZJk+T
+ M/t/fw9STSmr6LdUeQZJMz+ykwvvLvfvcWHzoKJOcje67L4wHPwPjInU61qdZ2uHbAniRC
+ Paf+mkFxZY3EOKByLDKH5t8S1iXIDp0=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-442-h9wJJJIzOQ6spEaFMmlTEA-1; Mon, 20 Nov 2023 14:18:53 -0500
+X-MC-Unique: h9wJJJIzOQ6spEaFMmlTEA-1
+Received: by mail-pg1-f198.google.com with SMTP id
+ 41be03b00d2f7-5bdd8eee498so5517217a12.0
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 11:18:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700507837; x=1701112637;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=phERt2I0QChkIR0lqBCXxCvgPAXalYdszJgVYdI6K7Y=;
- b=NugPsF7S2/kvTRvHqJkG1TpK5no1SwhmtRBplIwWPMKJsHMBR3VuAKE80+PBeHMdnz
- nlH2lcycnoZsN12TwXpukS3rdU1dbiUx7NGep3EXdXPA9kwzywLe7Iwru4o4NEohvD07
- CXPxgMY4/1X18hTg1tGDo6/9b8CpANF3mqP4ETgPtj3XohfFph6iU++BH8WlWpZZiirI
- t47NlPvnZ+CCaSCJGKlPLxRH31zJtdRg7DOx65/5iQWMhkuGtMe232UjqAbTJ0YQj5jZ
- uOsTTtyyxj0dt98qQzcJ555shgjzp3kzYUglsGqlitS1w8WhNMx9C54XYqGXuXDe/dnH
- JVFw==
-X-Gm-Message-State: AOJu0YyvEk8VjNUylFuolxn13jXFxGMNbKz4zGxVZ7uzHTCJ6Q5mMiK0
- HzkbO0sWUFKjOJPQC/VcmBAATrmvhcvVbwnlmMc=
-X-Google-Smtp-Source: AGHT+IFh3BbNeYZBbtuLuG5LiS2AF2tzVqX4WLap8BKzEqQqPo4gy2UPKOk26IMc6O946c2abLlKQw==
-X-Received: by 2002:a05:6a20:4410:b0:188:865:72fd with SMTP id
- ce16-20020a056a20441000b00188086572fdmr7974728pzb.28.1700507837236; 
- Mon, 20 Nov 2023 11:17:17 -0800 (PST)
-Received: from [192.168.68.109] ([152.250.131.119])
- by smtp.gmail.com with ESMTPSA id
- fb26-20020a056a002d9a00b006c2fd6a7fe3sm6404743pfb.22.2023.11.20.11.17.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Nov 2023 11:17:16 -0800 (PST)
-Message-ID: <f415b8ed-914c-4090-b13d-12e6b3fc41be@ventanamicro.com>
-Date: Mon, 20 Nov 2023 16:17:13 -0300
+ d=1e100.net; s=20230601; t=1700507932; x=1701112732;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=xUaTNbMWV/2zpwUJAGxk2dei5iWxNVWv7jOFPfd2C7s=;
+ b=Gu93c3qqkonoEMvHFkUo/O4OPWCI3NPW2hcAI8Q678EFCHkGmROQIFFWBNTpIqLTZK
+ fAqoh2ihObscpF5eBL04LGFuV3TVl7ezExAm6gYC5AvGglT26K28z8kAZahfv+2z4F/R
+ a4XSasJFmEk7Jk/2Ija/yV2za14LjdnXHBN7+nhbismo4qjuToonmj0QtLPRwZ6OIKcc
+ R1H4CFQ1X+ziEA6d+ckhCXAvoqC5XKTTh2c7KJ1hc0VToTslTlRycxC6QyroSbesLtk0
+ K6ijhM0WXZ/cIw7vXFiGCJIpcvLBBifWJAxx4ymgiJIgfflP17txb6dyQIPWfsUdZHtM
+ Zxug==
+X-Gm-Message-State: AOJu0YzUtGTg/0KCNkMu6b2/XJe5fUFqi51G4l2UfUnwIZM8yVF7tO6e
+ xoSEGHQWe1rhrweP/ICU2cboZWXxuMcjD37bo/tcr3pGm2FeqOOhYiPM6hZhiv7L3n2ozPsYbXQ
+ f1BsohtMTce+5zJaRoI2JkUPccZBw48E=
+X-Received: by 2002:a05:6a20:7351:b0:180:f9c4:a796 with SMTP id
+ v17-20020a056a20735100b00180f9c4a796mr6958242pzc.54.1700507932201; 
+ Mon, 20 Nov 2023 11:18:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHhm6Dq3NqnuSzxzlg1DmrTd1LNKmMtyCkc87o+ALMEJVespBUcZHnmV3HR9aJRKOsTjdpO73fxh2US/4SglTc=
+X-Received: by 2002:a05:6a20:7351:b0:180:f9c4:a796 with SMTP id
+ v17-20020a056a20735100b00180f9c4a796mr6958221pzc.54.1700507931894; Mon, 20
+ Nov 2023 11:18:51 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] target/riscv/cpu_helper.c: Fix mxr bit behavior
-Content-Language: en-US
-To: Ivan Klokov <ivan.klokov@syntacore.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- bin.meng@windriver.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com
-References: <20231120120609.37960-1-ivan.klokov@syntacore.com>
- <20231120120609.37960-3-ivan.klokov@syntacore.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231120120609.37960-3-ivan.klokov@syntacore.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x431.google.com
+References: <20231114163115.298041-1-thuth@redhat.com>
+ <12b4420e-1440-4516-8276-e0e907003c16@linaro.org>
+ <9f6247e4-7e81-44f8-a63b-8ee11f722710@redhat.com>
+ <CWYYRW53VEPJ.3UL1X7GB1P4H2@wheely>
+ <6877d6d6-bfbf-4475-8c61-dd537265b278@redhat.com>
+ <ZVTETYrfL8f48qe3@redhat.com> <ZVT-bY9YOr69QTPX@redhat.com>
+In-Reply-To: <ZVT-bY9YOr69QTPX@redhat.com>
+From: John Snow <jsnow@redhat.com>
+Date: Mon, 20 Nov 2023 14:18:40 -0500
+Message-ID: <CAFn=p-aDO_fZOsiBMdHhn6GP3ZadCrUAN4=C6o4d95UVMo3vOA@mail.gmail.com>
+Subject: Re: [PATCH] tests/avocado/reverse_debugging: Disable the ppc64 tests
+ by default
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>, 
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-ppc@nongnu.org, 
+ Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,72 +105,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, Nov 15, 2023 at 12:23=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@=
+redhat.com> wrote:
+>
+> On Wed, Nov 15, 2023 at 01:14:53PM +0000, Daniel P. Berrang=C3=A9 wrote:
+> > On Wed, Nov 15, 2023 at 07:23:01AM +0100, Thomas Huth wrote:
+> > > On 15/11/2023 02.15, Nicholas Piggin wrote:
+> > > > On Wed Nov 15, 2023 at 4:29 AM AEST, Thomas Huth wrote:
+> > > > > On 14/11/2023 17.37, Philippe Mathieu-Daud=C3=A9 wrote:
+> > > > > > On 14/11/23 17:31, Thomas Huth wrote:
+> > > > > > > The tests seem currently to be broken. Disable them by defaul=
+t
+> > > > > > > until someone fixes them.
+> > > > > > >
+> > > > > > > Signed-off-by: Thomas Huth <thuth@redhat.com>
+> > > > > > > ---
+> > > > > > >    tests/avocado/reverse_debugging.py | 7 ++++---
+> > > > > > >    1 file changed, 4 insertions(+), 3 deletions(-)
+> > > > > >
+> > > > > > Similarly, I suspect https://gitlab.com/qemu-project/qemu/-/iss=
+ues/1961
+> > > > > > which has a fix ready:
+> > > > > > https://lore.kernel.org/qemu-devel/20231110170831.185001-1-rich=
+ard.henderson@linaro.org/
+> > > > > >
+> > > > > > Maybe wait the fix gets in first?
+> > > > >
+> > > > > No, I applied Richard's patch, but the problem persists. Does thi=
+s test
+> > > > > still work for you?
+> > > >
+> > > > I bisected it to 1d4796cd008373 ("python/machine: use socketpair() =
+for
+> > > > console connections"),
+> > >
+> > > Maybe John (who wrote that commit) can help?
+> >
+> > I find it hard to believe this commit is a direct root cause of the
+> > problem since all it does is change the QEMU startup sequence so that
+> > instead of QEMU listening for a monitor connection, it is given a
+> > pre-opened monitor connection.
+> >
+> > At the very most that should affect the startup timing a little.
+> >
+> > I notice all the reverse debugging tests have a skip on gitlab
+> > with a comment:
+> >
+> >     # unidentified gitlab timeout problem
+> >
+> > this makes be suspicious that John's patch has merely made this
+> > (henceforth undiagnosed) timeout more likely to ocurr.
+>
+> After an absolutely horrendous hours long debugging session I think
+> I figured out the problem. The QEMU process is blocking in
+>
+>     qemu_chr_write_buffer
+>
+> spinning in the loop on EAGAIN.
+>
+> The Python  Machine() class has passed one of a pre-created socketpair
+> FDs for the serial port chardev. The guest is trying to write to this
+> and blocking.  Nothing in the Machine() class is reading from the
+> other end of the serial port console.
+>
+>
+> Before John's change, the serial port uses a chardev in server mode
+> and crucially  'wait=3Doff', and the Machine() class never opened the
+> console socket unless the test case wanted to read from it.
+>
+> IOW, QEMU had a background job setting there waiting for a connection
+> that would never come.
+>
+> As a result when QEMU started executing the guest, all the serial port
+> writes get sent into to the void.
+>
+>
+> So John's patch has had a semantic change in behaviour, because the
+> console socket is permanently open, and thus socket buffers are liable
+> to fill up.
+>
+> As a demo I increased the socket buffers to 1MB and everything then
+> succeeded.
+>
+> @@ -357,6 +360,10 @@ def _pre_launch(self) -> None:
+>
+>          if self._console_set:
+>              self._cons_sock_pair =3D socket.socketpair()
+> +            self._cons_sock_pair[0].setsockopt(socket.SOL_SOCKET, socket=
+.SO_SNDBUF, 1024*1024);
+> +            self._cons_sock_pair[0].setsockopt(socket.SOL_SOCKET, socket=
+.SO_RCVBUF, 1024*1024);
+> +            self._cons_sock_pair[1].setsockopt(socket.SOL_SOCKET, socket=
+.SO_SNDBUF, 1024*1024);
+> +            self._cons_sock_pair[1].setsockopt(socket.SOL_SOCKET, socket=
+.SO_RCVBUF, 1024*1024);
+>              os.set_inheritable(self._cons_sock_pair[0].fileno(), True)
+>
+>          # NOTE: Make sure any opened resources are *definitely* freed in
+>
+>
+> The Machine class doesn't know if anything will ever use the console,
+> so as is the change is unsafe.
+>
+> The original goal of John's change was to guarantee we capture early
+> boot messages as some test need that.
+>
+> I think we need to be able to have a flag to say whether the caller needs
+> an "early console" facility, and only use the pre-opened FD passing for
+> that case. Tests we need early console will have to ask for that guarante=
+e
+> explicitly.
 
+Tch. I see. Thank you for diagnosing this.
 
-On 11/20/23 09:06, Ivan Klokov wrote:
-> According to RISCV Specification sect 9.5 on two stage translation when
-> V=1 the vsstatus(mstatus in QEMU's terms) field MXR, which makes
-> execute-only pages readable, only overrides VS-stage page protection.
-> Setting MXR at HS-level(mstatus_hs), however, overrides both VS-stage
-> and G-stage execute-only permissions.
-> 
-> The hypervisor extension changes the behavior of MXR\MPV\MPRV bits.
-> Due to RISCV Specification sect. 9.4.1 when MPRV=1, explicit memory
-> accesses are translated and protected, and endianness is applied, as
-> though the current virtualization mode were set to MPV and the current
-> nominal privilege mode were set to MPP. vsstatus.MXR makes readable
-> those pages marked executable at the VS translation stage.
-> 
+From the machine.py perspective, you have to *opt in* to having a
+console, so I hadn't considered that a caller would enable the console
+and then ... not read from it. Surely that's a bug in the caller?
 
-Please add
+If you don't intend to read from the console, you shouldn't call set_consol=
+e().
 
-Fixes: 36a18664ba ("target/riscv: Implement second stage MMU")
+(The async rewrite I have been toying with on and off has a built-in
+drainer that writes to a log file that would probably remedy this, but
+the client tests should still be fixed, I think. Otherwise, do you
+have any suggestions for how I might make this failure state more
+obvious/friendly? I wonder if on close of the machine.py object I
+could detect that the pipe is full and emit a warning about that.)
 
-> Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
-> ---
+--js
 
+>
+> With regards,
+> Daniel
+> --
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
+ge :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
+om :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
+ge :|
+>
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
->   target/riscv/cpu_helper.c | 24 ++++++++++++++++++++----
->   1 file changed, 20 insertions(+), 4 deletions(-)
-> 
-> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> index 9ff0952e46..e7e23b34f4 100644
-> --- a/target/riscv/cpu_helper.c
-> +++ b/target/riscv/cpu_helper.c
-> @@ -1032,13 +1032,29 @@ restart:
->           prot |= PAGE_WRITE;
->       }
->       if (pte & PTE_X) {
-> -        bool mxr;
-> +        bool mxr = false;
->   
-> -        if (first_stage == true) {
-> +        /*
-> +         * Use mstatus for first stage or for the second stage without
-> +         * virt_enabled (MPRV+MPV)
-> +         */
-> +        if (first_stage || !env->virt_enabled) {
->               mxr = get_field(env->mstatus, MSTATUS_MXR);
-> -        } else {
-> -            mxr = get_field(env->vsstatus, MSTATUS_MXR);
->           }
-> +
-> +        /* MPRV+MPV case, check VSSTATUS */
-> +        if (first_stage && two_stage && !env->virt_enabled) {
-> +            mxr |= get_field(env->vsstatus, MSTATUS_MXR);
-> +        }
-> +
-> +        /*
-> +         * Setting MXR at HS-level overrides both VS-stage and G-stage
-> +         * execute-only permissions
-> +         */
-> +        if (env->virt_enabled) {
-> +            mxr |= get_field(env->mstatus_hs, MSTATUS_MXR);
-> +        }
-> +
->           if (mxr) {
->               prot |= PAGE_READ;
->           }
 
