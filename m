@@ -2,94 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA6E7F1302
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 13:17:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDEEE7F130A
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 13:19:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r53CN-0003az-Ff; Mon, 20 Nov 2023 07:16:19 -0500
+	id 1r53F8-0005Ik-Rs; Mon, 20 Nov 2023 07:19:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r53CL-0003Zy-Aq
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 07:16:17 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r53CG-0000e1-1b
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 07:16:17 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-548b54ed16eso1342265a12.0
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 04:16:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700482569; x=1701087369; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mFwTUgdGmz6e1RnmeB28qxX070DArTGK86lTEvx/A3M=;
- b=P8xyxCURrmXbo8Pssl/G1OGebfFR3ZZUDigVfkVT/4R6HgaOHnE9fi/DpFgcgG0NUl
- Hz4X6AU5b3Ax53Uv6L73joMhpTW/dj9a7Qxu/SndMPXiTp/BjTSDfzW8JrlNRjQOBMog
- ku48C3rTDSmiIXR9JO0ZOUS8zAaN20r+AyZBMpGSiu732WLY/nSuC01AGeB2HxX+f2kz
- JgVUIK0A6P44Gkl3YZRjisXsDmYkennwdKauu3kEwZ+Gm2XFla5mb5FDwTowLSDEZJEh
- n3Cru0/Fo3bD+Bldki8m8IZz+64B9TCdAWZvV+X83dftk8qVsO3abCv0zUgFeh7uKCoK
- dlZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700482569; x=1701087369;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mFwTUgdGmz6e1RnmeB28qxX070DArTGK86lTEvx/A3M=;
- b=CLLC7QiM8nnJM3n7V5uWAsQZuBxgGmk8bfvU5BqWgwvL//CiDd6vTsaZrXr12hFhgO
- NpBfndQeYB42/hB+tUjMaL+9cG1YjIuIgdvI0cXGoDBLA1S+6POjk0RYI/tvCJZOwT5L
- dqChZ5VYsSBg09WGk0AdHOkQQB4pt/F5WKUZoilpcGWAUZblSCg1iRsmKaeI/pIwN5Rm
- 9OvvrPuWXN4FfrqgKkpagiSIgk2Vhb8/fj+O/xp8hw/GNow9eS9YXMZ7ktMsP0Rsad7a
- D0pexhlYT+Q3pr9mTcK3WL3CEgRx2H89yZ99+oIgZdqBwVaNjZil11krRrR0jPq5S411
- axxQ==
-X-Gm-Message-State: AOJu0YyyTbyBG6rl6fBpVVoia0e1Vts42ojFHEzFIkkzdAzgzhUvZZ1n
- sLyvV3uKK+HcOCKO3RheyTGx9A==
-X-Google-Smtp-Source: AGHT+IFO/Th0OkauubHlx+ksS3YieIsh5pl7kF/TT/D3qMHgpuc9aHoPik5K5GpISrhjOZKaLmpt6w==
-X-Received: by 2002:a17:906:2249:b0:9dd:4811:7111 with SMTP id
- 9-20020a170906224900b009dd48117111mr5298369ejr.4.1700482569345; 
- Mon, 20 Nov 2023 04:16:09 -0800 (PST)
-Received: from [192.168.69.100] ([176.176.181.190])
- by smtp.gmail.com with ESMTPSA id
- n12-20020a17090673cc00b009dd606ce80fsm3862535ejl.31.2023.11.20.04.16.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Nov 2023 04:16:08 -0800 (PST)
-Message-ID: <3bd74930-f445-47b2-bb76-8451aa7b995a@linaro.org>
-Date: Mon, 20 Nov 2023 13:16:05 +0100
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1r53F1-0005Hg-7e; Mon, 20 Nov 2023 07:19:04 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1r53Ez-00019j-2q; Mon, 20 Nov 2023 07:19:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=wSIyu1c87+kdw6tqh3o2N+fuPl9pBDaG3HCyjVUszvM=; b=vms439mZQW5qmZgS2ESri4HSOA
+ K2t57jO69lBHhbUV9EjbS3HjPPq4JScwSJ0HmkbuTHizgCHZ7YR5uhsYkZZRbHvv4qfSi9Fp2Utjw
+ JX/sLLrhOhfTT8KigwzVEtdeKHahX0hgzqg/JcKSu2WLcPTUlqaH/0nj29/yz/BcyffhA6tr7xvZy
+ 1lUmSHlrsywwW8lIk8C0kmFdxKoO6LFUpXpvETn66S5Xnw9lBOkS2p6uMSv00Q9Oh8s1K3tU98tPq
+ Lls6U8FBKiDYJ9efiHG+M1pvZEeyOGC6uVcbBTG8vaOYUQE09hGgIrbQVqWtSfPOEotQJAcWfAbqq
+ 3T7CGvDeJFRKNbxduE+rhT6Ft4AB3Vaai7zGm2nkwEogCD823uo1hANT13L9GmKtz+pZCUSG+Kukw
+ /jSbLjHpmp3oTAax4puXemX0gwRVK8mZx+5kWsCwZ2dPraPtUiwS4/0aBfEkeCCXC7JDT2iI2+wo9
+ NM1hksj5F/KkwHBUYQO9mT3i6WgFKDvnyQ0sXOa2daaGIwXgbNVYx4SyqNRi8XtOYhJvdJnZ1aBpr
+ rjy+h+q3l8pDyR/GhWFdSBKCnPWNbUUXBZJ/Gtw/xT0mKV4s47/ZydIhN6FbYEiD0j5haEuhdn7op
+ +t9s5IeAGwD33WS4d+KJUaiFFTf9tmjl+S73q2khw=;
+Received: from host86-130-37-248.range86-130.btcentralplus.com
+ ([86.130.37.248] helo=[10.8.0.6])
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1r53EZ-000ByU-5O; Mon, 20 Nov 2023 12:18:39 +0000
+Message-ID: <295aec31-e9c1-49d8-9bea-edad8f7b81e4@ilande.co.uk>
+Date: Mon, 20 Nov 2023 12:18:45 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] hw/intc/riscv_aclint:Change the way to get CPUState
- from hard-base to pu_index
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: kwolf@redhat.com, jsnow@redhat.com, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org, philmd@linaro.org, shentey@gmail.com,
+ Rene Engel <ReneEngel80@emailn.de>
+References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
+ <c4bb80e8-e985-b6b2-aac1-f6e8d446b8ea@eik.bme.hu>
 Content-Language: en-US
-To: LeoHou <LeoHou@canaan-creative.com>, Dongxue Zhang <elta.era@gmail.com>
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- Anup Patel <apatel@ventanamicro.com>, Bin Meng <bin.meng@windriver.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?B?5L6v6Iux5LmQ?= <houyingle@canaan-creative.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Mayuresh Chitale <mchitale@ventanamicro.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Palmer Dabbelt <palmer@rivosinc.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>, QEMU Developers <qemu-devel@nongnu.org>,
- qemu-riscv <qemu-riscv@nongnu.org>, =?UTF-8?B?5byg5Lic6Zuq?=
- <zhangdongxue@canaan-creative.com>,
- "leohou1402@gmail.com" <leohou1402@gmail.com>
-References: <cover.1699496263.git.houyingle@canaan-creative.com>
- <6d1d8cc8c2b37b145e4a826095619097fa4a34d5.1699496263.git.houyingle@canaan-creative.com>
- <CAEomy4TmM0ShGkuV2mprB8Xm0Kn62ZWZA7Gnfvt07pioY9fCCA@mail.gmail.com>
- <bf0c7c6d-a940-4968-ab18-4af6125b8d0b@linaro.org>
- <BJSPR01MB062758831AA8BF73856F5DFC95B3A@BJSPR01MB0627.CHNPR01.prod.partner.outlook.cn>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <BJSPR01MB062758831AA8BF73856F5DFC95B3A@BJSPR01MB0627.CHNPR01.prod.partner.outlook.cn>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <c4bb80e8-e985-b6b2-aac1-f6e8d446b8ea@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-SA-Exim-Connect-IP: 86.130.37.248
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v3 0/4] ide: implement simple legacy/native mode switching
+ for PCI IDE controllers
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,82 +105,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/11/23 05:25, LeoHou wrote:
-> On 9/11/23 23:26, Philippe Mathieu-Daudé  wrote:
->   
->> Hi Leo,
+On 19/11/2023 21:43, BALATON Zoltan wrote:
+
+> On Thu, 16 Nov 2023, Mark Cave-Ayland wrote:
+>> This series adds a simple implementation of legacy/native mode switching for PCI
+>> IDE controllers and updates the via-ide device to use it.
 >>
->> First, I can't find your patch in my mailbox, so I'm replying to
->> Dongxue's review.
+>> The approach I take here is to add a new pci_ide_update_mode() function which handles
+>> management of the PCI BARs and legacy IDE ioports for each mode to avoid exposing
+>> details of the internal logic to individual PCI IDE controllers.
 >>
->> On 9/11/23 03:41, Dongxue Zhang wrote:
->>> Reviewed-by: Dongxue Zhang <zhangdongxue@canaan-creative.com>
->>>
->>>
->>>> On Thu, Nov 9, 2023 at 10:22 AM Leo Hou <LeoHou@canaan-creative.com> wrote:
->>>>
->>>> From: Leo Hou <houyingle@canaan-creative.com>
->>>>
->>>> cpu_by_arch_id() uses hartid-base as the index to obtain the corresponding CPUState structure variable.
->>>> qemu_get_cpu() uses cpu_index as the index to obtain the corresponding CPUState structure variable.
->>>>
->>>> In heterogeneous CPU or multi-socket scenarios, multiple aclint needs to be instantiated,
->>>> and the hartid-base of each cpu bound by aclint can start from 0. If cpu_by_arch_id() is still used
->>>> in this case, all aclint will bind to the earliest initialized hart with hartid-base 0 and cause conflicts.
->>>>
->>>> So with cpu_index as the index, use qemu_get_cpu() to get the CPUState struct variable,
->>>> and connect the aclint interrupt line to the hart of the CPU indexed with cpu_index
->>>> (the corresponding hartid-base can start at 0). It's more reasonable.
->>>>
->>>> Signed-off-by: Leo Hou <houyingle@canaan-creative.com>
->>>> ---
->>>>     hw/intc/riscv_aclint.c | 16 ++++++++--------
->>>>     1 file changed, 8 insertions(+), 8 deletions(-)
->>>>
->>>> diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
->>>> index ab1a0b4b3a..be8f539fcb 100644
->>>> --- a/hw/intc/riscv_aclint.c
->>>> +++ b/hw/intc/riscv_aclint.c
->>>> @@ -130,7 +130,7 @@ static uint64_t riscv_aclint_mtimer_read(void *opaque, hwaddr addr,
->>>>             addr < (mtimer->timecmp_base + (mtimer->num_harts << 3))) {
->>>>             size_t hartid = mtimer->hartid_base +
->>>>                             ((addr - mtimer->timecmp_base) >> 3);
->>>> -        CPUState *cpu = cpu_by_arch_id(hartid);
->>>> +        CPUState *cpu = qemu_get_cpu(hartid);
+>> As noted in [1] this is extracted from a local WIP branch I have which contains
+>> further work in this area. However for the moment I've kept it simple (and
+>> restricted it to the via-ide device) which is good enough for Zoltan's PPC
+>> images whilst paving the way for future improvements after 8.2.
 >>
->> There is some code smell here. qemu_get_cpu() shouldn't be called by
->> device models, but only by accelerators.
+>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>
+>> [1] https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05403.html
+>>
+>> v3:
+>> - Rebase onto master
+>> - Move ide_portio_list[] and ide_portio_list2[] to IDE core to prevent duplication in
+>>  hw/ide/pci.c
+>> - Don't zero BARs when switching from native mode to legacy mode, instead always force
+>>  them to read zero as suggested in the PCI IDE specification (note: this also appears
+>>  to fix the fuloong2e machine booting from IDE)
 > 
-> Yes, qemu_get_cpu() is designed to be called by accelerators.
-> But there is currently no new API to support multi-socket and
-> heterogeneous processor architectures，and sifive_plic has been
-> designed with qemu_get_cpu().
-> Please refer to:
-> [1] https://lore.kernel.org/qemu-devel/1519683480-33201-16-git-send-email-mjc@sifive.com/
-> [2] https://lore.kernel.org/qemu-devel/20200825184836.1282371-3-alistair.francis@wdc.com/
-> 
-> 
->> Maybe the timer should get a link of the hart array it belongs to,
->> and offset to this array base hartid?
-> 
-> The same problem exists not only with timer, but also with aclint.
-> There needs to be a general approach to this problem.
+> Not sure you're getting this, see also:
+> https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg04167.html
+> but this seems to break latest version of the AmigaOS driver for some reason. I 
+> assume this is the BAR zeroing that causes this as it works with v2 series and 
+> nothing else changed in v3 that could cause this. Testing was done by Rene Engel, 
+> cc'd so maybe he can add more info. It seems to work with my patch that sets BARs to 
+> legacy values and with v2 that sets them to 0 but not with v3 which should also read 
+> 0 but maybe something is off here.
 
-Right. However since there is no heterogeneous support in QEMU
-at present, we don't need this patch in the next release.
+I've been AFK for a few days, so just starting to catch up on various bits and pieces.
 
-So I'd rather wait and work on a correct fix. Up to the maintainer.
+The only difference I can think of regarding the BAR zeroing is that the BMDMA BAR is 
+zeroed here. Does the following diff fix things?
 
-Regards,
+diff --git a/hw/ide/via.c b/hw/ide/via.c
+index 47223b1268..2d3124ebd7 100644
+--- a/hw/ide/via.c
++++ b/hw/ide/via.c
+@@ -164,10 +164,10 @@ static uint32_t via_ide_cfg_read(PCIDevice *pd, uint32_t addr, 
+int len)
+      uint8_t mode = pd->config[PCI_CLASS_PROG];
 
-Phil.
+      if ((mode & 0xf) == 0xa && ranges_overlap(addr, len,
+-                                              PCI_BASE_ADDRESS_0, 24)) {
++                                              PCI_BASE_ADDRESS_0, 16)) {
+          /* BARs always read back zero in legacy mode */
+          for (int i = addr; i < addr + len; i++) {
+-            if (i >= PCI_BASE_ADDRESS_0 && i < PCI_BASE_ADDRESS_0 + 24) {
++            if (i >= PCI_BASE_ADDRESS_0 && i < PCI_BASE_ADDRESS_0 + 16) {
+                  val &= ~(0xffULL << ((i - addr) << 3));
+              }
+          }
 
->> I'm going to
->> NACK
->> this patch until further review / clarifications.
-> 
-> Regards,
-> 
-> Leo Hou.
+>> - Add comments in pci_ide_update_mode() suggested by Kevin
+>> - Drop the existing R-B and T-B tags: whilst this passes my local tests, the behaviour
+>>  around zero BARs feels different enough here
+>>
+>> v2:
+>> - Rebase onto master
+>> - Mask the bottom 4 bits of PCI_CLASS_PROG in pci_ide_update_mode() in patch 1
+>> - Add patch 2 to remove the default BAR addresses to avoid confusion
+>> - Don't set PCI_INTERRUPT_PIN directly in via_ide_reset() as it is already set
+>>  by pci_ide_update_mode() in patch 3, and reword the commit message accordingly
+>> - Add Tested-By tags from Zoltan and Bernhard
+>>
+>>
+>> Mark Cave-Ayland (4):
+>>  ide/ioport: move ide_portio_list[] and ide_portio_list2[] definitions
+>>    to IDE core
+>>  ide/pci: introduce pci_ide_update_mode() function
+>>  ide/via: don't attempt to set default BAR addresses
+>>  hw/ide/via: implement legacy/native mode switching
+>>
+>> hw/ide/core.c             | 12 ++++++
+>> hw/ide/ioport.c           | 12 ------
+>> hw/ide/pci.c              | 84 +++++++++++++++++++++++++++++++++++++++
+>> hw/ide/via.c              | 44 ++++++++++++++++----
+>> include/hw/ide/internal.h |  3 ++
+>> include/hw/ide/pci.h      |  1 +
+>> 6 files changed, 137 insertions(+), 19 deletions(-)
+
+
+ATB,
+
+Mark.
 
 
