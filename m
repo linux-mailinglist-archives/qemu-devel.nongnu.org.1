@@ -2,75 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7AD57F16C5
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 16:10:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7143B7F16D5
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 16:11:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r55uo-00083F-3a; Mon, 20 Nov 2023 10:10:23 -0500
+	id 1r55vH-0001B1-9t; Mon, 20 Nov 2023 10:10:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r55uf-0007sl-Qm
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 10:10:14 -0500
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r55ud-0001qQ-9V
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 10:10:12 -0500
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-548f0b7ab9eso64533a12.3
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 07:10:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700493008; x=1701097808; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=BJkZtwx9gdYhkGl+klhmyKqVkxegZSBtdMc5DAI2KV8=;
- b=PWDrAKc4zROdVrGR+d3j3mKNKOLW4o0woOo9HiCMeA+ILuNX42cry1lZuiauVw3eX0
- DWDIu1ROoUbTwuRuq8+VkSYen82xi95MEXFp1D7v+XieqP1kuR9ZcVI5in768Pq8gyjn
- 2KXwS4jbtGq3sDnv0gyAagtYL4QpfyY7tUlgkziV129ZZwCEbLu7wieA/a7c46v83HOy
- z1rgDRe6IonGJ6YIrUFcMaT+SxnhJHjitYwvoTcpnoAiTRxkB2dLHHbiujAafnBnr5Ut
- eSHuMz2X5VlD/EtyJs5sGwVhHRAAzSfnJtRHjdpbenlj/ViKraUMPqWMmEi0yh28vdpe
- wm4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700493008; x=1701097808;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=BJkZtwx9gdYhkGl+klhmyKqVkxegZSBtdMc5DAI2KV8=;
- b=VOnXcRe+kK29LubumX1ShmpOxzO8xe2FkIm/S++PkRxK6yQx1cL4wxOMkrWApkZW6X
- LYvWV+bvpowgQ0MAn3/fPAb+4TmErohJbibOlyUp9tyk2jhR68FCTVvZb7w7lwO/+Oa3
- pLg8dmso1GrrTUX0qdSReP0GDCbPMGXGbPI5EIsWUHdKjkESE0orCfRO+wMuID3TE+I4
- lUAF8tNP1fOJ5w+cyMFwb3cwuPr6YN0jmsyjSvNELVWFT6LoVGpLvRKQ+ZZ34VAmzoZl
- u1PFq5gRvkZmPyu1OnGkcpnoGVs9K+MEtZU8/0UzXutEGeffIoR6EOyQCxYy3YHWda2r
- 8pCQ==
-X-Gm-Message-State: AOJu0YwIJDGac4RVOJyuYEeplRMAtMncFsXgXjbw8TELzn5D2nXobB1Y
- bayB45davzyAu/aQjPM4WvGPLSWDWizX6AGlldG9YA==
-X-Google-Smtp-Source: AGHT+IEzAdSiuu2T7XZhafp/LXz4Z5/QS7REme0c4S4Cdn59DLWpb4idZFRWhyFPVhtKJvnb7wH6cst4LWcfkbTXHhg=
-X-Received: by 2002:a05:6402:183:b0:548:e994:be with SMTP id
- r3-20020a056402018300b00548e99400bemr263173edv.35.1700493008096; Mon, 20 Nov
- 2023 07:10:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r55vE-00017k-OA; Mon, 20 Nov 2023 10:10:48 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r55vC-00021z-8M; Mon, 20 Nov 2023 10:10:48 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id B4D6E75A4BE;
+ Mon, 20 Nov 2023 16:11:19 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id A8DD275A406; Mon, 20 Nov 2023 16:11:19 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id A6D40756094;
+ Mon, 20 Nov 2023 16:11:19 +0100 (CET)
+Date: Mon, 20 Nov 2023 16:11:19 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Kevin Wolf <kwolf@redhat.com>
+cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, jsnow@redhat.com, 
+ qemu-block@nongnu.org, qemu-devel@nongnu.org, philmd@linaro.org, 
+ shentey@gmail.com, Rene Engel <ReneEngel80@emailn.de>
+Subject: Re: [PATCH v3 0/4] ide: implement simple legacy/native mode switching
+ for PCI IDE controllers
+In-Reply-To: <ZVt0B1pSsWWK7ReX@redhat.com>
+Message-ID: <085a9043-6850-0022-1f7c-ebf365b5570c@eik.bme.hu>
+References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
+ <c4bb80e8-e985-b6b2-aac1-f6e8d446b8ea@eik.bme.hu>
+ <295aec31-e9c1-49d8-9bea-edad8f7b81e4@ilande.co.uk>
+ <63ff9c1a-5d05-985a-bf2f-69420b72db90@eik.bme.hu>
+ <ZVtiV8XXHxS+cw8o@redhat.com>
+ <b9ea9c20-f9a5-9b79-6e70-624665fb5148@eik.bme.hu>
+ <ZVt0B1pSsWWK7ReX@redhat.com>
 MIME-Version: 1.0
-References: <20231114103443.1652308-1-marcin.juszkiewicz@linaro.org>
-In-Reply-To: <20231114103443.1652308-1-marcin.juszkiewicz@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 20 Nov 2023 15:09:56 +0000
-Message-ID: <CAFEAcA81x-Ettc35oju0D2R0TAhkX5mtzA1BeTM4UYySbASG_g@mail.gmail.com>
-Subject: Re: [PATCH 1/1] target/arm: enable FEAT_RNG on Neoverse-N2
-To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Virus-Scanned: ClamAV using ClamSMTP
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,36 +66,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 14 Nov 2023 at 10:34, Marcin Juszkiewicz
-<marcin.juszkiewicz@linaro.org> wrote:
+On Mon, 20 Nov 2023, Kevin Wolf wrote:
+> Am 20.11.2023 um 14:47 hat BALATON Zoltan geschrieben:
+>> On Mon, 20 Nov 2023, Kevin Wolf wrote:
+>>> Am 20.11.2023 um 14:09 hat BALATON Zoltan geschrieben:
+>>>> On Mon, 20 Nov 2023, Mark Cave-Ayland wrote:
+>>>>> The only difference I can think of regarding the BAR zeroing is that the
+>>>>> BMDMA BAR is zeroed here. Does the following diff fix things?
+>>>>
+>>>> This helps, with this the latest driver does not crash but still reads BAR4
+>>>> as 0 instead of 0xcc00 so UDMA won't work but at least it boots.
+>>>
+>>> And disabling only the first four BARs is actually what the spec says,
+>>> too. So I'll make this change to the queued patches.
+>>>
+>>> If I understand correctly, UDMA didn't work before this series either,
+>>> so it's a separate goal and doing it in its own patch is best anyway.
+>>
+>> UDMA works with my original series, did not work with earlier versions of
+>> this alternative from Mark but could be fixed up on top unless Mark can send
+>> a v4 now.
+>>
+>>> As we don't seem to have a good place to set a default, maybe just
+>>> overriding it in via_ide_cfg_read(), too, and making it return 0xcc01 in
+>>> compatibility mode is enough?
+>>
+>> I could give that a try and see if that helps but all this
+>> via_ide_cfg_read() seems like an unnecessary complication to me. Why can't
+>> we just set the BARs (o for BAR1-3 and default for BAR4) then we don't need
+>> to override config read?
 >
-> I noticed that Neoverse-V1 has FEAT_RNG enabled so let enable it also on
-> Neoverse-N2.
->
-> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-> ---
->  target/arm/tcg/cpu64.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-> index 08db1dbcc7..fcda99e158 100644
-> --- a/target/arm/tcg/cpu64.c
-> +++ b/target/arm/tcg/cpu64.c
-> @@ -1018,7 +1018,7 @@ static void aarch64_neoverse_n2_initfn(Object *obj)
->      cpu->isar.id_aa64dfr1  = 0;
->      cpu->id_aa64afr0       = 0;
->      cpu->id_aa64afr1       = 0;
-> -    cpu->isar.id_aa64isar0 = 0x0221111110212120ull; /* with Crypto */
-> +    cpu->isar.id_aa64isar0 = 0x1221111110212120ull; /* with Crypto and FEAT_RNG */
->      cpu->isar.id_aa64isar1 = 0x0011111101211052ull;
->      cpu->isar.id_aa64mmfr0 = 0x0000022200101125ull;
->      cpu->isar.id_aa64mmfr1 = 0x0000000010212122ull;
-> --
-> 2.41.0
+> I would be fine with setting 0xcc00 as the default value for BAR 4, but
+> as you said yourself, we can't do that in reset because it will be
+> overwritten by the PCI core code. Where else could we meaningfully do
+> that? As far as I understand, we don't have any hint that the
+> native/compatibility mode switch resets it on real hardware, so I'm
+> hesitant to do it there (and if the guest OS doesn't even switch, it
+> would never get set).
 
+Luckily machines which need legacy mode also seem to set it explicitly on 
+startup so we can set the defaults there. The check to see if something 
+changed the BARs before is enough to avoid breaking it when legacy mode is 
+set after native mode which does not seem to reset BARs according to how 
+pegasos2 Linux behaves that sets legacy mode after firmware set native and 
+proframmed BARs but the keep using BAR addresses. The AmigaOne I think 
+just uses the default values with setting legacy mode doing nothing as 
+that's the default but we can detect this as setting legacy mode with BARs 
+unset so that's a good place to set default values which is what my patch 
+did and I added a lot of comments trying to explain this.
 
+> As for BAR 0-3, didn't we conclude that the via device still accepts I/O
+> to the configured addresses even though they read as zeros? Having
+> inconsistent config space and PCIIORegion seems like a bad idea, the
+> next call to pci_update_mappings() would break it.
 
-Applied to target-arm.next, thanks.
+I don't quite get this but then we could also just leave BARs alone and it 
+would still work. It probably does not matter what it reads back when the 
+device is in legacy mode. What would call pci_update_mappings() if device 
+is in legacy and if something switches it to native it will very likely 
+also program BARs. I can't imagine what would want to turn on native mode 
+without trying to use a PCI driver and program BARs.
 
--- PMM
+Regards,
+BALATON Zoltan
 
