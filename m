@@ -2,51 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 692B77F0CA3
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 08:14:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D61787F0CB1
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 08:17:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4ySN-0003ZR-CV; Mon, 20 Nov 2023 02:12:31 -0500
+	id 1r4yW9-0005jB-Je; Mon, 20 Nov 2023 02:16:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1r4ySJ-0003Y8-0S
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 02:12:27 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1r4ySG-0002BM-C2
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 02:12:26 -0500
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxqOrOBltlAyg7AA--.15591S3;
- Mon, 20 Nov 2023 15:12:14 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Cx7y_MBltluFNHAA--.25125S2; 
- Mon, 20 Nov 2023 15:12:12 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, philmd@linaro.org, git@xen0n.name, c@jia.je,
- maobibo@loongson.cn
-Subject: [PATCH 1/1] tcg/loongarch64: Fix tcg_out_mov() Aborted
-Date: Mon, 20 Nov 2023 14:59:16 +0800
-Message-Id: <20231120065916.374045-1-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r4yW7-0005i9-SP
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 02:16:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r4yW6-0004JG-47
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 02:16:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700464581;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=orkFtJ4lDkQFQ2lzWrpbQFx7qZ9pgHqFdGDUVIMlrB0=;
+ b=R+hN8mqqSUac1MiiSz3B2WwgVzm5IHrxLlwOXKX5oHji3x1A7AeGcA6n5uGwO/Ec5bv+wA
+ tfFeitJggFABAUFxmLK6LMU+xmFz8a6a/tTwwZfSE1V/C0vWIf7sfDZtSH7Si9dbCY0mah
+ bsx8HWPVr6Mt3LJMBGwwTouAmYMnu/Q=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-599-iCbSRjgmMvifNZyHBOVJNw-1; Mon, 20 Nov 2023 02:16:19 -0500
+X-MC-Unique: iCbSRjgmMvifNZyHBOVJNw-1
+Received: by mail-pl1-f199.google.com with SMTP id
+ d9443c01a7336-1cc252cbde2so45874805ad.0
+ for <qemu-devel@nongnu.org>; Sun, 19 Nov 2023 23:16:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700464578; x=1701069378;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=orkFtJ4lDkQFQ2lzWrpbQFx7qZ9pgHqFdGDUVIMlrB0=;
+ b=nffS0NrXgTxBshDYPPF47PqjS3LK9gc8ZTqEdPLxakWfOF6IaC0uULcRRMUmb5i/CH
+ y11BR8JJ8C3asD6W6cGkRjmPUMsY813UjrPPX2UBG4Vtw6N0E5E0a4XNmmDAteKJoNaP
+ 7fNcUHXyOWo3yvka77BClNHrgqCgbTanQ4/cIymQ1Bi343+Zi0EOOuSbVYXBn40yx1NG
+ BGc/FFY8rTV0M4SWc6sNeM8T66xi4QazjpKrBqYy9fTL0xIBILiRuW2hJ9dWnd/q6VXc
+ dJ4FTOOK9HxzTwkqWvfe5obvYhrDN4xyzXwHdSWjIG+VZe8W/uC7fkGiiACVyQ+1Zrim
+ OPzQ==
+X-Gm-Message-State: AOJu0Yz5WjDqyFigAzkp9jS/Wlq0hjBLIxHUI5DqOOL3faO76W2Nhfyo
+ LrzfZfxxBVPaUayrP4IesFtaSaepG/HEJ4vvTwWqJZfpmpZ8C0wbHl5HWN02Ro5KFnRlU66o5Nm
+ MP4LzE2J7xwvxO0I=
+X-Received: by 2002:a17:902:f54c:b0:1cc:7d96:3fe7 with SMTP id
+ h12-20020a170902f54c00b001cc7d963fe7mr5755017plf.28.1700464578254; 
+ Sun, 19 Nov 2023 23:16:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEcWH4A2KTimHFfoaB10wqleJ6x8e3QQiyewH4tB/npYSLfCAGVq3q27BreykfMgIZudWRdWQ==
+X-Received: by 2002:a17:902:f54c:b0:1cc:7d96:3fe7 with SMTP id
+ h12-20020a170902f54c00b001cc7d963fe7mr5755006plf.28.1700464577943; 
+ Sun, 19 Nov 2023 23:16:17 -0800 (PST)
+Received: from ?IPV6:2001:8003:e5b0:9f00:b890:3e54:96bb:2a15?
+ ([2001:8003:e5b0:9f00:b890:3e54:96bb:2a15])
+ by smtp.gmail.com with ESMTPSA id
+ b11-20020a170902d50b00b001cf66056a1bsm434487plg.97.2023.11.19.23.16.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 19 Nov 2023 23:16:17 -0800 (PST)
+Message-ID: <8cb8cbc1-29da-4b32-b23b-2caa4f75f20f@redhat.com>
+Date: Mon, 20 Nov 2023 17:16:08 +1000
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-8.2? v2 2/4] hw/arm/stm32f405: Report error when
+ incorrect CPU is used
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Subbaraya Sundeep <sundeep.lkml@gmail.com>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Igor Mammedov <imammedo@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
+ Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Felipe Balbi <balbi@kernel.org>, qemu-arm@nongnu.org,
+ =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
+ Alistair Francis <alistair@alistair23.me>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Peter Maydell <peter.maydell@linaro.org>, Helge Deller <deller@gmx.de>,
+ Subbaraya Sundeep <sbhatta@marvell.com>, Alexandre Iooss <erdnaxe@crans.org>
+References: <20231117071704.35040-1-philmd@linaro.org>
+ <20231117071704.35040-3-philmd@linaro.org>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20231117071704.35040-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Cx7y_MBltluFNHAA--.25125S2
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,54 +115,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On LoongArch host,  we got an Aborted from tcg_out_mov().
+On 11/17/23 17:17, Philippe Mathieu-Daudé wrote:
+> Both 'netduinoplus2' and 'olimex-stm32-h405' machines ignore the
+> CPU type requested by the command line. This might confuse users,
+> since the following will create a machine with a Cortex-M4 CPU:
+> 
+>    $ qemu-system-aarch64 -M netduinoplus2 -cpu cortex-r5f
+> 
+> Set the MachineClass::valid_cpu_types field (introduced in commit
+> c9cf636d48 "machine: Add a valid_cpu_types property").
+> Remove the now unused MachineClass::default_cpu_type field.
+> 
+> We now get:
+> 
+>    $ qemu-system-aarch64 -M netduinoplus2 -cpu cortex-r5f
+>    qemu-system-aarch64: Invalid CPU type: cortex-r5f-arm-cpu
+>    The valid types are: cortex-m4-arm-cpu
+> 
+> Since the SoC family can only use Cortex-M4 CPUs, hard-code the
+> CPU type name at the SoC level, removing the QOM property
+> entirely.
+> 
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   include/hw/arm/stm32f405_soc.h | 4 ----
+>   hw/arm/netduinoplus2.c         | 7 ++++++-
+>   hw/arm/olimex-stm32-h405.c     | 8 ++++++--
+>   hw/arm/stm32f405_soc.c         | 8 +-------
+>   4 files changed, 13 insertions(+), 14 deletions(-)
+> 
 
-qemu-x86_64 configure with '--enable-debug'.
-
-> (gdb) b /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312
-> Breakpoint 1 at 0x2576f0: file /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc, line 312.
-> (gdb) run hello
-[...]
-> Thread 1 "qemu-x86_64" hit Breakpoint 1, tcg_out_mov (s=0xaaaae91760 <tcg_init_ctx>, type=TCG_TYPE_V128, ret=TCG_REG_V2,
->     arg=TCG_REG_V0) at /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312
-> 312           g_assert_not_reached();
-> (gdb) bt
-> #0  tcg_out_mov (s=0xaaaae91760 <tcg_init_ctx>, type=TCG_TYPE_V128, ret=TCG_REG_V2, arg=TCG_REG_V0)
->     at /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312
-> #1  0x000000aaaad0fee0 in tcg_reg_alloc_mov (s=0xaaaae91760 <tcg_init_ctx>, op=0xaaaaf67c20) at ../tcg/tcg.c:4632
-> #2  0x000000aaaad142f4 in tcg_gen_code (s=0xaaaae91760 <tcg_init_ctx>, tb=0xffe8030340 <code_gen_buffer+197328>,
->     pc_start=4346094) at ../tcg/tcg.c:6135
-[...]
-> (gdb) c
-> Continuing.
-> **
-> ERROR:/home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312:tcg_out_mov: code should not be reached
-> Bail out! ERROR:/home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312:tcg_out_mov: code should not be reached
->
-> Thread 1 "qemu-x86_64" received signal SIGABRT, Aborted.
-> 0x000000fff7b1c390 in raise () from /lib64/libc.so.6
-> (gdb) q
-
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- tcg/loongarch64/tcg-target.c.inc | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index a588fb3085..5f68040230 100644
---- a/tcg/loongarch64/tcg-target.c.inc
-+++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -308,6 +308,9 @@ static bool tcg_out_mov(TCGContext *s, TCGType type, TCGReg ret, TCGReg arg)
-          */
-         tcg_out_opc_or(s, ret, arg, TCG_REG_ZERO);
-         break;
-+    case TCG_TYPE_V128:
-+        tcg_out_opc_vaddi_du(s, ret, arg, 0);
-+        break;
-     default:
-         g_assert_not_reached();
-     }
--- 
-2.25.1
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 
 
