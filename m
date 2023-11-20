@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F957F1F3B
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 22:34:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB7A7F1F37
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 22:34:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Btg-0000vv-5L; Mon, 20 Nov 2023 16:33:36 -0500
+	id 1r5Btq-00018c-Ry; Mon, 20 Nov 2023 16:33:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5Bte-0000ve-Da
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:33:34 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5Bto-00016F-S7
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:33:44 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5Btb-000396-Tb
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:33:34 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40b27b498c3so1308845e9.0
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 13:33:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5Btm-0003BQ-AZ
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:33:44 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4083f61312eso22408275e9.3
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 13:33:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700516010; x=1701120810; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700516021; x=1701120821; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=a3R2bk2+TIy0U91qpyefgUOXYaNCg17GUPUMA/PpOZ0=;
- b=Wjdo8LXTJVtWVNM7cf4DD3DmNfX1hWErdwZCCu9PccWQm3yMMHmUFkW+buausZipmQ
- Cks/JK2/bl1sAvsbfBdpn0RBD51tgagCvxHP4NbcAGiqXB1FZmz5iTuUI7vS+jVhRbFm
- jMUvhOK+/kzz1sS+POgnZWRZD4S5IP09pC1sFgzpI7u37K6IkIaDbbma1aF2RzXjjqH4
- tUwGp72RGhA5apPitaoq4dRWJV/BsJiPKxTIf5pl8HUsobeFrU1w5ZmlxqsZr7g9EKLt
- l4UcFHIBTqO23kxZ2tNQmTcXrlYPV9BgSn1D3GT8BD2lDDOMmsuhe+tOQgv3/Sb++5pf
- C/oA==
+ bh=LbDA9YGRe7qNIe50oT0Ny26RZPp0o8gVGjIEnbyILZM=;
+ b=cAxnqNxGWqekkN92GLQ8zKXsAL5t26rbEEO/cjQITi6I/0iv2iMR0CCdu6mTHnApur
+ 7/bppD+qcmdr58agvZ27FQMBH8ot648OuHSjwlHSXnrDfgyFDDaDdTxP9kQtT5b3e9r6
+ c364UHE/lPI9C1jbs9TlF9HAkMQQHFrpozOd9mIn8kz/rphv90aUL0LYJzOnyrLshkBR
+ xmdEP+INbq+jiHPFGZweskQOrCD4ivCfkIbvKIZ4t9UwXV2n2WqOynxRtCS8/I2GkJ0R
+ Rsx28Sr6PGMUPPzzWeKLqBwmyHaOvCt24S5rHVqGCx7d91t3+sRA/fvja+BxsPyVkGG/
+ mIuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700516010; x=1701120810;
+ d=1e100.net; s=20230601; t=1700516021; x=1701120821;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=a3R2bk2+TIy0U91qpyefgUOXYaNCg17GUPUMA/PpOZ0=;
- b=UCEs/dGkA9NYid079cXY0cG3dzJkUJsXBsnPhLYYt8ZFEOe3lyNyBH7dFcZB+tvq/h
- WaGrjgt6ZhyYw3s0NGU3EPS1FTVD/rIdMmG0Ga1X2xOZlyB83o51/65JrqZPrujgP6e7
- wfe/qaavHILyzRAhp2HJdfNnY6Bgyq6rNw0NZz5Vf587DvFGBmR5fh5jeKzah9yVljlA
- +tGd45e3SkFGmpepmpiAzq0plo5wbHe36nzpbyFj+W2QgmRiZIuTxY9CVBboK0tM9kdz
- vE9uvGSrI5u3L/hrEFMLxu4KwiowJAZdOrRVIbp115x5A+uT7b4nsKagAn2w7cltWPP6
- iqTw==
-X-Gm-Message-State: AOJu0YyQTpSyL7QRjWUGa/pGUMBEYu2sVEl4WW/2+uB3ObGwyAmlkChf
- di3xgytRwQYDg553QpLaFwE0aoMa9CnemToYkuk=
-X-Google-Smtp-Source: AGHT+IF4Fu/EHZIo8KqkEPLn1ulASCMhy1UyZQ70zwysYhCk8FlaAqB80HRdcHL78ePjqfq/OB+LbA==
-X-Received: by 2002:a05:600c:1ca4:b0:405:359a:c965 with SMTP id
- k36-20020a05600c1ca400b00405359ac965mr6739626wms.4.1700516009941; 
- Mon, 20 Nov 2023 13:33:29 -0800 (PST)
+ bh=LbDA9YGRe7qNIe50oT0Ny26RZPp0o8gVGjIEnbyILZM=;
+ b=ChlJx/sfcH2zFnTi6483RnlilYAXqdt61onBnuMOA2Sdz1LH8zvcDM35BVhVRONU+3
+ aedLFTc42VlYYnbbbl2AdwLe74VGurXvCQQwqX1+sgu17iQg91koHUBj6t+uO7FmtxG6
+ znSaF1o7diu4vvB3rJyKCa5fuMNIfKqNxLFU56OnZRPkTtN6zySLdnUIsgK8UtpOoAZn
+ 3a49tIn1zJEG81045oadhey3c5fzsHjJpjM0k0u9qEdO6o3uQLyQMVxpkSnupqEPT9dM
+ GArsU/Zw3N0Zic9DvYadKJsuxuTmmY+s/XHxHd2avc/M9xihy8r0bPmJAD4vNBLnBdsQ
+ /RQw==
+X-Gm-Message-State: AOJu0YwhdyJRR5xZqPuQ6zMaDTxSeGVsgcrPoTAR8/WUU/vOZ5pCi7RO
+ AweZA1/2lQnwnN+Ol6dhxODkqKuG1vdAog4VfMc=
+X-Google-Smtp-Source: AGHT+IGV4DlNWGMbTD3xq4BBT3E729eZTiGtQ1hohduWzUYFvKfsGB15/8I9/AEUED0Q+S8SHsYNkQ==
+X-Received: by 2002:a05:600c:1994:b0:405:40ec:415d with SMTP id
+ t20-20020a05600c199400b0040540ec415dmr6998432wmq.39.1700516020706; 
+ Mon, 20 Nov 2023 13:33:40 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.190])
  by smtp.gmail.com with ESMTPSA id
- n18-20020a05600c3b9200b00407efbc4361sm19623645wms.9.2023.11.20.13.33.27
+ j32-20020a05600c1c2000b004094c5d929asm14891734wms.10.2023.11.20.13.33.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 20 Nov 2023 13:33:29 -0800 (PST)
+ Mon, 20 Nov 2023 13:33:40 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -65,18 +65,18 @@ Cc: David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Xu <peterx@redhat.com>
-Subject: [PATCH-for-9.0 02/25] memory: Have memory_region_init_ram_nomigrate()
+Subject: [PATCH-for-9.0 03/25] memory: Have memory_region_init_rom_nomigrate()
  handler return a boolean
-Date: Mon, 20 Nov 2023 22:32:36 +0100
-Message-ID: <20231120213301.24349-3-philmd@linaro.org>
+Date: Mon, 20 Nov 2023 22:32:37 +0100
+Message-ID: <20231120213301.24349-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231120213301.24349-1-philmd@linaro.org>
 References: <20231120213301.24349-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,46 +106,50 @@ return a boolean indicating whether an error is set or not.
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
  include/exec/memory.h | 4 +++-
- system/memory.c       | 5 +++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ system/memory.c       | 8 ++++++--
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/include/exec/memory.h b/include/exec/memory.h
-index f038a7e5cf..4140eb0c95 100644
+index 4140eb0c95..8e6fb55f59 100644
 --- a/include/exec/memory.h
 +++ b/include/exec/memory.h
-@@ -1288,8 +1288,10 @@ void memory_region_init_io(MemoryRegion *mr,
-  *
-  * Note that this function does not do anything to cause the data in the
-  * RAM memory region to be migrated; that is the responsibility of the caller.
+@@ -1498,8 +1498,10 @@ void memory_region_init_alias(MemoryRegion *mr,
+  *        must be unique within any device
+  * @size: size of the region.
+  * @errp: pointer to Error*, to store an error if it happens.
 + *
 + * Return: true on success, else false setting @errp with error.
   */
--void memory_region_init_ram_nomigrate(MemoryRegion *mr,
-+bool memory_region_init_ram_nomigrate(MemoryRegion *mr,
+-void memory_region_init_rom_nomigrate(MemoryRegion *mr,
++bool memory_region_init_rom_nomigrate(MemoryRegion *mr,
                                        Object *owner,
                                        const char *name,
                                        uint64_t size,
 diff --git a/system/memory.c b/system/memory.c
-index 313dbb2544..337b12a674 100644
+index 337b12a674..bfe0b62d59 100644
 --- a/system/memory.c
 +++ b/system/memory.c
-@@ -1574,13 +1574,14 @@ void memory_region_init_io(MemoryRegion *mr,
-     mr->terminates = true;
+@@ -1729,14 +1729,18 @@ void memory_region_init_alias(MemoryRegion *mr,
+     mr->alias_offset = offset;
  }
  
--void memory_region_init_ram_nomigrate(MemoryRegion *mr,
-+bool memory_region_init_ram_nomigrate(MemoryRegion *mr,
+-void memory_region_init_rom_nomigrate(MemoryRegion *mr,
++bool memory_region_init_rom_nomigrate(MemoryRegion *mr,
                                        Object *owner,
                                        const char *name,
                                        uint64_t size,
                                        Error **errp)
  {
 -    memory_region_init_ram_flags_nomigrate(mr, owner, name, size, 0, errp);
-+    return memory_region_init_ram_flags_nomigrate(mr, owner, name,
-+                                                  size, 0, errp);
++    bool rv;
++
++    rv = memory_region_init_ram_flags_nomigrate(mr, owner, name, size, 0, errp);
+     mr->readonly = true;
++
++    return rv;
  }
  
- bool memory_region_init_ram_flags_nomigrate(MemoryRegion *mr,
+ void memory_region_init_rom_device_nomigrate(MemoryRegion *mr,
 -- 
 2.41.0
 
