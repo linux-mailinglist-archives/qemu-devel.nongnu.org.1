@@ -2,103 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417527F11E3
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 12:24:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79A527F11E6
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 12:24:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r52MY-0003hA-FD; Mon, 20 Nov 2023 06:22:46 -0500
+	id 1r52O6-0004Em-GO; Mon, 20 Nov 2023 06:24:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r52MV-0003go-Ib
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 06:22:43 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1r52MS-0005v8-FM
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 06:22:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700479359;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pFkeGT6qs0Z/Jop/Gv7TRkQQ/N/wjzVkt9bNgHoDQXw=;
- b=PPIh170cyXGcQWsL25HcDXdl6e75l6mZp2tfw/+UOdNAmO60wY+ri3CoAHHyDJwo0geRFI
- t82738pzAvKLf1sgVohdWZhZ2rVqTQAX5ruORImEH9R2aQGdCj1pFNI/gjmpksDWcREDws
- SaTC2pRJFDhDuUV84Q0Qcxdh+v0/tn0=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-441-Jno1jBvKN-iFLg4gernoRg-1; Mon, 20 Nov 2023 06:22:34 -0500
-X-MC-Unique: Jno1jBvKN-iFLg4gernoRg-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-670991f8b5cso30086356d6.1
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 03:22:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1r52Np-0004D1-2p
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 06:24:05 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1r52Nj-00077P-LE
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 06:24:02 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1cc1ee2d8dfso37607475ad.3
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 03:23:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1700479436; x=1701084236;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=bR4kc8wOrFfjmtOt3ZkWz10Jcqjs8BczuOQt6Gw4Imw=;
+ b=ULdsyoXGw1L/b7wjc4GrCPbpyZEgQrv4s6Lf3Ku3iI+wJ8pdm1VijyX0OJSHmikmpg
+ BASHT3CqHjm0opAcgSaNcrACXwSDhP3PeT9gCMFgCFxjhVjgif74vbD4AEPAi8/l3pII
+ QmC6m9k4gWlXErefD3SNEzppcXOBl5CN8scEOiKxO5dwZgiUKLwfLRYoNPNPMbe+8xzu
+ z7t4zSfYpR0gbWm+Ij44l9Hmf0spb6BI7smwUO3Ehu9TIDLbRTb20VQOpzI4ySmupcnE
+ VXRc86XOgw13WYBCv9wn4EufjKo470185SBlD3OFNJCaE9lsdMaojd9fmdhvXDPRefTm
+ PemA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700479354; x=1701084154;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1700479436; x=1701084236;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=pFkeGT6qs0Z/Jop/Gv7TRkQQ/N/wjzVkt9bNgHoDQXw=;
- b=cVDVDv3etjzPbQIyEQwAINCawpUcIpiQULpxMTijp64ohYhD+f2cSYs9CdImHX7uuX
- 2U3la8jx4ipDQz2e5oVtOBJvRRAJ1NoS702P2wQImGSzlatXD2tLX/Y35M0qqDFJBUvD
- nDYeZcDZYNEtAZfCTsZTmVa6bW3dMahJ3iJy3kco3ZlYjbHVPtSA+UU5fnhI/RITI2Ei
- XaNv9NUpVgIhFz25oit4VHiIiB/udsq5L0wWvyLKbNXS1lP2YbwAhwjDs0MzfaEZ6hm0
- NvZrY5fnLU2Gb5qPztjXjEskzFWuKAWmtAYcH3XljE0iGoIVG7vt4od9m/wwz363CUR1
- cZZA==
-X-Gm-Message-State: AOJu0YxhyckbOf+B7bA8I2JISxnPkwxxd6bLQCj719pE4R33fy0SibvY
- bPDbTop7nvuYEq0Yx0AwY4TuyzhUhazQzgN78oDwAkOUFq+1dCdZ2clTYQJhIVqjB7E8RNM9odv
- xNSmHA5XRxutt3dw=
-X-Received: by 2002:ad4:5f47:0:b0:66d:5cfe:82a6 with SMTP id
- p7-20020ad45f47000000b0066d5cfe82a6mr11822281qvg.27.1700479354495; 
- Mon, 20 Nov 2023 03:22:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGS6F8e6ba4tBkvTM9Fb3sp0+syfcNFAG+vS01VKEed3BY19s4EVe0tfJAWQj3cQBrs/FG9Gg==
-X-Received: by 2002:ad4:5f47:0:b0:66d:5cfe:82a6 with SMTP id
- p7-20020ad45f47000000b0066d5cfe82a6mr11822270qvg.27.1700479354245; 
- Mon, 20 Nov 2023 03:22:34 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- f26-20020ad4559a000000b006710660a548sm2824607qvx.27.2023.11.20.03.22.30
+ bh=bR4kc8wOrFfjmtOt3ZkWz10Jcqjs8BczuOQt6Gw4Imw=;
+ b=l5hmZvUFQJKZRRXw8pPkH6wf2t4HdYFo2dioauaF+PqetvP9ehoA8dDt+EITvaR2os
+ S7W6nV3Vh3NORmdknuucfav0KgPM9/YwHQDiBx2p3ntmEW8fW1nIXT6NF2v/ihdZVxXd
+ rFbWsbuen7WtGfkMxqJrdlvCFugZylcMmL3+ycEEopY4Qj7nrXyDGzFPR4JAWp2ViiUD
+ z8tss/u5/T8taCJfU480AozepnR1h5cFleChFliY7CamsPsIqIK/k9Pgq5NdXuFql44/
+ 3ZJ4+aoVzVsjncDoZ3/zIz72wgQs3XBcVhifvxDw038CIvWgucnhTBCMZDgPFYpF7l7I
+ Dl5g==
+X-Gm-Message-State: AOJu0YxMJuZ0Ln0MU3mmmrpgcwtBEb/mIj+jaCod6ZV9ZUyxdnTmW9i7
+ kqBuM9okUlwPShw4kjzvQmOSHQ==
+X-Google-Smtp-Source: AGHT+IFpdxjbHJyzV6/yzAGAq/OE0TyL7GpGcANgD5c8ClPhhp0IFaY330I7o6KNAAnWL6AhpfjqRA==
+X-Received: by 2002:a17:90b:1b12:b0:283:3f5f:b29b with SMTP id
+ nu18-20020a17090b1b1200b002833f5fb29bmr7129350pjb.27.1700479436455; 
+ Mon, 20 Nov 2023 03:23:56 -0800 (PST)
+Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
+ p3-20020a17090ab90300b00285125abb33sm3450621pjr.4.2023.11.20.03.23.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Nov 2023 03:22:33 -0800 (PST)
-Message-ID: <f0e43c2b-f2af-4886-9cf6-e522fb531c15@redhat.com>
-Date: Mon, 20 Nov 2023 12:22:29 +0100
+ Mon, 20 Nov 2023 03:23:56 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Subject: [PATCH] meson: -Wno-error=format-overflow for ubsan
+Date: Mon, 20 Nov 2023 20:23:26 +0900
+Message-ID: <20231120112329.4149-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.42.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 00/21] vfio: Adopt iommufd
-Content-Language: en-US
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhat.com" <clg@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
- "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
- "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
- "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>
-References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
- <ab076809-9441-4933-a948-83fbb0855dd7@redhat.com>
- <SJ0PR11MB6744FD09AC64D1C9B3609DF692B4A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <SJ0PR11MB6744FD09AC64D1C9B3609DF692B4A@SJ0PR11MB6744.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,73 +91,49 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhengzhong
+ubsan causes wrong -Wformat-overflow warnings as follows:
 
-On 11/20/23 11:09, Duan, Zhenzhong wrote:
->
->> -----Original Message-----
->> From: Eric Auger <eric.auger@redhat.com>
->> Sent: Monday, November 20, 2023 5:15 PM
->> Subject: Re: [PATCH v6 00/21] vfio: Adopt iommufd
->>
->> Hi Zhenzhong,
->>
->> On 11/14/23 11:09, Zhenzhong Duan wrote:
->>> Hi,
->>>
->>> Thanks all for giving guides and comments on previous series, this is
->>> the remaining part of the iommufd support.
->>>
->>> Based on Cédric's suggestion, replace old config method for IOMMUFD
->>> with Kconfig.
->>>
->>> Based on Jason's suggestion, drop the implementation of manually
->>> allocating hwpt and switch to IOAS attach/detach.
->>>
->>> Beside current test, we also tested mdev with mtty for better cover range.
->>>
->>> PATCH 1: Introduce iommufd object
->>> PATCH 2-9: add IOMMUFD container and cdev support
->>> PATCH 10-17: fd passing for cdev and linking to IOMMUFD
->>> PATCH 18: make VFIOContainerBase parameter const
->>> PATCH 19-21: Compile out for IOMMUFD for arm, s390x and x86
->>>
->>>
->>> We have done wide test with different combinations, e.g:
->>> - PCI device were tested
->>> - FD passing and hot reset with some trick.
->>> - device hotplug test with legacy and iommufd backends
->>> - with or without vIOMMU for legacy and iommufd backends
->>> - divices linked to different iommufds
->>> - VFIO migration with a E800 net card(no dirty sync support) passthrough
->>> - platform, ccw and ap were only compile-tested due to environment limit
->>> - test mdev pass through with mtty and mix with real device and different BE
->>>
->>> Given some iommufd kernel limitations, the iommufd backend is
->>> not yet fully on par with the legacy backend w.r.t. features like:
->>> - p2p mappings (you will see related error traces)
->>> - dirty page sync
->>> - and etc.
->> Feel free to add my T-b:
->> Tested-by: Eric Auger <eric.auger@redhat.com>
-> Thanks Eric, you mean all the patches or arm part?
+In file included from /usr/include/stdio.h:906,
+                 from /home/alarm/q/var/qemu/include/qemu/osdep.h:114,
+                 from ../disas/cris.c:21:
+In function 'sprintf',
+    inlined from 'format_dec' at ../disas/cris.c:1737:3,
+    inlined from 'print_with_operands' at ../disas/cris.c:2477:12,
+    inlined from 'print_insn_cris_generic.constprop' at ../disas/cris.c:2690:8:
+/usr/include/bits/stdio2.h:30:10: warning: null destination pointer [-Wformat-overflow=]
+   30 |   return __builtin___sprintf_chk (__s, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   31 |                                   __glibc_objsize (__s), __fmt,
+      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   32 |                                   __va_arg_pack ());
+      |                                   ~~~~~~~~~~~~~~~~~
 
-Yeah sorry I failed to give details. I have tested on ARM with vfio-pci
-atm. So all the generic patches + ARM virt / PCI specific ones. As for
-VFIO-PLATFORM I need to resurrect a new environment because I have some
-trouble with AMD overdrive which do not expose iommu groups atm. I need
-to figure this out or create a new vfio-platform environment to test.
-Working on it ...
+Don't let these errors stop the build.
 
-Thanks
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+ meson.build | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Eric
->
-> BRs.
-> Zhenzhong
+diff --git a/meson.build b/meson.build
+index d7d841e71e..02f1a18080 100644
+--- a/meson.build
++++ b/meson.build
+@@ -365,7 +365,9 @@ if get_option('sanitizers')
+   # Detect static linking issue with ubsan - https://gcc.gnu.org/bugzilla/show_bug.cgi?id=84285
+   if cc.links('int main(int argc, char **argv) { return argc + 1; }',
+               args: [qemu_ldflags, '-fsanitize=undefined'])
+-    qemu_cflags = ['-fsanitize=undefined'] + qemu_cflags
++    # 87884 – ubsan causes wrong -Wformat-overflow warning
++    # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87884
++    qemu_cflags = ['-fsanitize=undefined', '-Wno-error=format-overflow'] + qemu_cflags
+     qemu_ldflags = ['-fsanitize=undefined'] + qemu_ldflags
+   endif
+ endif
+-- 
+2.42.1
 
 
