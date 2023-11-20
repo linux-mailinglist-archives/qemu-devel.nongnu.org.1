@@ -2,55 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706497F1507
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 15:01:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D437F1516
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 15:02:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r54oX-0006A6-Lz; Mon, 20 Nov 2023 08:59:49 -0500
+	id 1r54qF-0006kR-RF; Mon, 20 Nov 2023 09:01:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r54oV-00069q-PY; Mon, 20 Nov 2023 08:59:47 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r54q2-0006hd-6t
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 09:01:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r54oT-0006o8-Ao; Mon, 20 Nov 2023 08:59:47 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id E7857756094;
- Mon, 20 Nov 2023 15:00:16 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id DAF7F75607B; Mon, 20 Nov 2023 15:00:16 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id D8EEF756066;
- Mon, 20 Nov 2023 15:00:16 +0100 (CET)
-Date: Mon, 20 Nov 2023 15:00:16 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Kevin Wolf <kwolf@redhat.com>
-cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, jsnow@redhat.com, 
- qemu-block@nongnu.org, qemu-devel@nongnu.org, philmd@linaro.org, 
- shentey@gmail.com, Rene Engel <ReneEngel80@emailn.de>
-Subject: Re: [PATCH v3 0/4] ide: implement simple legacy/native mode switching
- for PCI IDE controllers
-In-Reply-To: <b9ea9c20-f9a5-9b79-6e70-624665fb5148@eik.bme.hu>
-Message-ID: <096c619b-d00c-60f6-79d7-971a07225757@eik.bme.hu>
-References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
- <c4bb80e8-e985-b6b2-aac1-f6e8d446b8ea@eik.bme.hu>
- <295aec31-e9c1-49d8-9bea-edad8f7b81e4@ilande.co.uk>
- <63ff9c1a-5d05-985a-bf2f-69420b72db90@eik.bme.hu>
- <ZVtiV8XXHxS+cw8o@redhat.com>
- <b9ea9c20-f9a5-9b79-6e70-624665fb5148@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r54pv-0007Dn-Fp
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 09:01:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700488871;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=XMEKTOtGqnJL6oLeCSsrQVTCnPHP5Rl23/Rt6nwAXes=;
+ b=beZQecDpY7Bl0mr0Xua6yvPJ7SSmF4jC8otliZQJp4EzVvrj0kUb3o+9pjjWdmUIDBwBxA
+ AEnBq+Pm9XBsy7TBmKmCUF271LHO6fhBZkmNuXT6x2Diqvi32XebCVhmMmFOB1Jw9AWiiu
+ EVRPXIjTJfpHmnCxS3OrgP/mRJO/4ZA=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-29-CYQKszzPNeSD7QN1UFSdCg-1; Mon, 20 Nov 2023 09:01:08 -0500
+X-MC-Unique: CYQKszzPNeSD7QN1UFSdCg-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6755f01ca7dso11778756d6.1
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 06:01:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700488866; x=1701093666;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XMEKTOtGqnJL6oLeCSsrQVTCnPHP5Rl23/Rt6nwAXes=;
+ b=RamnvTN3PV7ZSdSRH5JZgUjE16/chVTigBNgVaZuRE8GU9MeiBDvSxC6GllEKW4FGV
+ hD4gplZnV6LjFaBp2SbgxVx1rYIUPT4CDuMJcji6FxRHGdw0odBFbcn36jtQtTAckSbY
+ zod+1rqJ0psL5ikOmVq4vpFe9CMgCxHFW4TAely7c9UN4FtBqr8VBs9hcjE5B5wJtKJC
+ qD9kx1SRzho8JgR3i4lkWZa0Oa21RnGHo4DAKZxdNnel07mvmd3pKiCVm7nhQ0gC4KCj
+ PuoSm2OiFlVAjZmilI8k7U0rXsqsDqkDLD31etRbOMx9r21nUrBjmF0YxE+f+5YetOul
+ xy0Q==
+X-Gm-Message-State: AOJu0YxolVpRKIy+Iw58mzDGM/hmfJs5Kn2/9dlLqpX1CkWHVGCG6IB4
+ PeyFEG4gYnMywKwiNIGzlyD6Wlajpz2z7oXRtyH2IdqwqHpm5dUpezFwxbtKgbfUqELG37d5AOg
+ HIPQUycW5mvzM0Qc=
+X-Received: by 2002:ad4:5009:0:b0:679:df1b:c3c1 with SMTP id
+ s9-20020ad45009000000b00679df1bc3c1mr1838682qvo.3.1700488866577; 
+ Mon, 20 Nov 2023 06:01:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHSl2lHTvkzF7Gcpt7dpLqMO92eXsSjidLIpYjtiUnRtQmSn4lmIZtwU8y9mllH5ypy2NhutQ==
+X-Received: by 2002:ad4:5009:0:b0:679:df1b:c3c1 with SMTP id
+ s9-20020ad45009000000b00679df1bc3c1mr1838633qvo.3.1700488865890; 
+ Mon, 20 Nov 2023 06:01:05 -0800 (PST)
+Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ o5-20020ac86985000000b0040399fb5ef3sm2675939qtq.0.2023.11.20.06.01.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 20 Nov 2023 06:01:05 -0800 (PST)
+Date: Mon, 20 Nov 2023 09:01:03 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Zongmin Zhou <zhouzongmin@kylinos.cn>
+Cc: berrange@redhat.com, farosas@suse.de, leobras@redhat.com,
+ qemu-devel@nongnu.org, quintela@redhat.com
+Subject: Re: [PATCH v3] migration: free 'saddr' since be no longer used
+Message-ID: <ZVtmn0WXTKPxCbKU@x1n>
+References: <ZVdw_XMJ4mKMFejd@x1n>
+ <20231120031428.908295-1-zhouzongmin@kylinos.cn>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1988432963-1700488816=:81200"
-X-Virus-Scanned: ClamAV using ClamSMTP
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231120031428.908295-1-zhouzongmin@kylinos.cn>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,127 +97,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Mon, Nov 20, 2023 at 11:14:28AM +0800, Zongmin Zhou wrote:
+> Since socket_parse() will allocate memory for 'saddr',and its value
+> will pass to 'addr' that allocated by migrate_uri_parse(),
+> then 'saddr' will no longer used,need to free.
+> But due to 'saddr->u' is shallow copying the contents of the union,
+> the members of this union containing allocated strings,and will be used after that.
+> So just free 'saddr' itself without doing a deep free on the contents of the SocketAddress.
+> 
+> Fixes: 72a8192e225c ("migration: convert migration 'uri' into 'MigrateAddress'")
+> Signed-off-by: Zongmin Zhou<zhouzongmin@kylinos.cn>
 
---3866299591-1988432963-1700488816=:81200
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-On Mon, 20 Nov 2023, BALATON Zoltan wrote:
-> On Mon, 20 Nov 2023, Kevin Wolf wrote:
->> Am 20.11.2023 um 14:09 hat BALATON Zoltan geschrieben:
->>> On Mon, 20 Nov 2023, Mark Cave-Ayland wrote:
->>>> On 19/11/2023 21:43, BALATON Zoltan wrote:
->>>>> On Thu, 16 Nov 2023, Mark Cave-Ayland wrote:
->>>>>> This series adds a simple implementation of legacy/native mode
->>>>>> switching for PCI
->>>>>> IDE controllers and updates the via-ide device to use it.
->>>>>> 
->>>>>> The approach I take here is to add a new pci_ide_update_mode()
->>>>>> function which handles
->>>>>> management of the PCI BARs and legacy IDE ioports for each mode
->>>>>> to avoid exposing
->>>>>> details of the internal logic to individual PCI IDE controllers.
->>>>>> 
->>>>>> As noted in [1] this is extracted from a local WIP branch I have
->>>>>> which contains
->>>>>> further work in this area. However for the moment I've kept it simple 
->>>>>> (and
->>>>>> restricted it to the via-ide device) which is good enough for Zoltan's 
->>>>>> PPC
->>>>>> images whilst paving the way for future improvements after 8.2.
->>>>>> 
->>>>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>>>>> 
->>>>>> [1] https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05403.html
->>>>>> 
->>>>>> v3:
->>>>>> - Rebase onto master
->>>>>> - Move ide_portio_list[] and ide_portio_list2[] to IDE core to
->>>>>> prevent duplication in
->>>>>>  hw/ide/pci.c
->>>>>> - Don't zero BARs when switching from native mode to legacy
->>>>>> mode, instead always force
->>>>>>  them to read zero as suggested in the PCI IDE specification
->>>>>> (note: this also appears
->>>>>>  to fix the fuloong2e machine booting from IDE)
->>>>> 
->>>>> Not sure you're getting this, see also:
->>>>> https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg04167.html
->>>>> but this seems to break latest version of the AmigaOS driver for
->>>>> some reason. I assume this is the BAR zeroing that causes this as it
->>>>> works with v2 series and nothing else changed in v3 that could cause
->>>>> this. Testing was done by Rene Engel, cc'd so maybe he can add more
->>>>> info. It seems to work with my patch that sets BARs to legacy values
->>>>> and with v2 that sets them to 0 but not with v3 which should also
->>>>> read 0 but maybe something is off here.
->>>> 
->>>> I've been AFK for a few days, so just starting to catch up on various
->>>> bits and pieces.
->>> 
->>> OK just wasn't sure if you saw my emails at all as it happened before that
->>> some spam filters disliked my mail server and put messages in the spam
->>> folder.
->>> 
->>>> The only difference I can think of regarding the BAR zeroing is that the
->>>> BMDMA BAR is zeroed here. Does the following diff fix things?
->>> 
->>> This helps, with this the latest driver does not crash but still reads 
->>> BAR4
->>> as 0 instead of 0xcc00 so UDMA won't work but at least it boots.
->> 
->> And disabling only the first four BARs is actually what the spec says,
->> too. So I'll make this change to the queued patches.
->> 
->> If I understand correctly, UDMA didn't work before this series either,
->> so it's a separate goal and doing it in its own patch is best anyway.
->
-> UDMA works with my original series, did not work with earlier versions of 
-> this alternative from Mark but could be fixed up on top unless Mark can send 
-> a v4 now.
->
->> As we don't seem to have a good place to set a default, maybe just
->> overriding it in via_ide_cfg_read(), too, and making it return 0xcc01 in
->> compatibility mode is enough?
->
-> I could give that a try and see if that helps but all this via_ide_cfg_read() 
-> seems like an unnecessary complication to me. Why can't we just set the BARs 
-> (o for BAR1-3 and default for BAR4) then we don't need to override config 
-> read?
+-- 
+Peter Xu
 
-Seems to work with this:
-
-diff --git a/hw/ide/via.c b/hw/ide/via.c
-index 47223b1268..214ebe48a1 100644
---- a/hw/ide/via.c
-+++ b/hw/ide/via.c
-@@ -164,14 +164,17 @@ static uint32_t via_ide_cfg_read(PCIDevice *pd, uint32_t addr, int len)
-      uint8_t mode = pd->config[PCI_CLASS_PROG];
-
-      if ((mode & 0xf) == 0xa && ranges_overlap(addr, len,
--                                              PCI_BASE_ADDRESS_0, 24)) {
-+                                              PCI_BASE_ADDRESS_0, 16)) {
-          /* BARs always read back zero in legacy mode */
-          for (int i = addr; i < addr + len; i++) {
--            if (i >= PCI_BASE_ADDRESS_0 && i < PCI_BASE_ADDRESS_0 + 24) {
-+            if (i >= PCI_BASE_ADDRESS_0 && i < PCI_BASE_ADDRESS_0 + 16) {
-                  val &= ~(0xffULL << ((i - addr) << 3));
-              }
-          }
-      }
-+    if (addr == PCI_BASE_ADDRESS_4) {
-+        val = 0xcc01;
-+    }
-
-      return val;
-  }
-
-But I still think all the above mess could be avoided and just set the BAR 
-value to 0 for BAR0-3 and to 0xcc01 for BAR4 instead should be enough and 
-would not mess up the device model unnecessarily.
-
-Regards,
-BALATON Zoltan
---3866299591-1988432963-1700488816=:81200--
 
