@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A527F11E6
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 12:24:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDAD17F11F6
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 12:28:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r52O6-0004Em-GO; Mon, 20 Nov 2023 06:24:22 -0500
+	id 1r52S3-0005Zs-Iv; Mon, 20 Nov 2023 06:28:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r52Np-0004D1-2p
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 06:24:05 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1r52S0-0005Zb-CZ
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 06:28:25 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r52Nj-00077P-LE
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 06:24:02 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1cc1ee2d8dfso37607475ad.3
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 03:23:57 -0800 (PST)
+ id 1r52Ry-0000w9-Sa
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 06:28:24 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1cc2575dfc7so29086445ad.1
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 03:28:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1700479436; x=1701084236;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1700479701; x=1701084501;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=bR4kc8wOrFfjmtOt3ZkWz10Jcqjs8BczuOQt6Gw4Imw=;
- b=ULdsyoXGw1L/b7wjc4GrCPbpyZEgQrv4s6Lf3Ku3iI+wJ8pdm1VijyX0OJSHmikmpg
- BASHT3CqHjm0opAcgSaNcrACXwSDhP3PeT9gCMFgCFxjhVjgif74vbD4AEPAi8/l3pII
- QmC6m9k4gWlXErefD3SNEzppcXOBl5CN8scEOiKxO5dwZgiUKLwfLRYoNPNPMbe+8xzu
- z7t4zSfYpR0gbWm+Ij44l9Hmf0spb6BI7smwUO3Ehu9TIDLbRTb20VQOpzI4ySmupcnE
- VXRc86XOgw13WYBCv9wn4EufjKo470185SBlD3OFNJCaE9lsdMaojd9fmdhvXDPRefTm
- PemA==
+ bh=3EfKbgzm6zbLpJMfXMO0+9ezmggL4KqRAur7OyZvOtM=;
+ b=qOWrJ9PnZca2sUknuqtL5z+WltRzkGhxaK397TlJtSDxp7TKKMih124AaqQFITAnAQ
+ LYcfNByE/KN8Y6qXQj5A9g99zMbmcaofyl7cjPFuw5MNgOJe/2PisO0cP6z/GLdznzUA
+ LesDwaHEW4ovhLTiX7Fd9EsrolyXu1Y5uSGssVhogDwhTibZI1eWRlDyfBrjIJn9C5ob
+ Qhv29eqNDQDuk7nTY9RjOwBzlXmZU4jjyvKrqipYbUzXMaQA0oyxWoKCQv4z/28wdLtT
+ 69ip1/NNc8A0HlND/y9AX/1uqGMAZR3bBvO6IkFB72HWxPKCp4iCCMdh9H5QhEJ+BLAO
+ FRvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700479436; x=1701084236;
+ d=1e100.net; s=20230601; t=1700479701; x=1701084501;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=bR4kc8wOrFfjmtOt3ZkWz10Jcqjs8BczuOQt6Gw4Imw=;
- b=l5hmZvUFQJKZRRXw8pPkH6wf2t4HdYFo2dioauaF+PqetvP9ehoA8dDt+EITvaR2os
- S7W6nV3Vh3NORmdknuucfav0KgPM9/YwHQDiBx2p3ntmEW8fW1nIXT6NF2v/ihdZVxXd
- rFbWsbuen7WtGfkMxqJrdlvCFugZylcMmL3+ycEEopY4Qj7nrXyDGzFPR4JAWp2ViiUD
- z8tss/u5/T8taCJfU480AozepnR1h5cFleChFliY7CamsPsIqIK/k9Pgq5NdXuFql44/
- 3ZJ4+aoVzVsjncDoZ3/zIz72wgQs3XBcVhifvxDw038CIvWgucnhTBCMZDgPFYpF7l7I
- Dl5g==
-X-Gm-Message-State: AOJu0YxMJuZ0Ln0MU3mmmrpgcwtBEb/mIj+jaCod6ZV9ZUyxdnTmW9i7
- kqBuM9okUlwPShw4kjzvQmOSHQ==
-X-Google-Smtp-Source: AGHT+IFpdxjbHJyzV6/yzAGAq/OE0TyL7GpGcANgD5c8ClPhhp0IFaY330I7o6KNAAnWL6AhpfjqRA==
-X-Received: by 2002:a17:90b:1b12:b0:283:3f5f:b29b with SMTP id
- nu18-20020a17090b1b1200b002833f5fb29bmr7129350pjb.27.1700479436455; 
- Mon, 20 Nov 2023 03:23:56 -0800 (PST)
+ bh=3EfKbgzm6zbLpJMfXMO0+9ezmggL4KqRAur7OyZvOtM=;
+ b=GFCZJ4NvL7Iom+dzOnmzWvkGP5FxsaIO8drplS0QC/muK+VCxF0kSt6L+9db6CYC6x
+ UIuAILdvP1PaNr1m6c3YYc4r1oQ00pBvpBBtHMYj+MQA9l40ErzgQwFTuL0Tq/ORydcN
+ D1TYuqAS+UkSKSjA8vheSwotuEXIy0VLCMbl8jFtReYvPNxAzGX9iSEY7B63dQc0fzU8
+ 3ThohHh2h/BDC19qaVEUnxRS0nDxm+XtDlH7YHAFs9qTtWto7GSwBuADYYc+v4BH4yT5
+ NAmWwINHVF16jQ3EHYt9Z87HBgMrTLWcWAb/lA4ovigOh74Ryxhv48ok1UMN375KaeHn
+ H1FA==
+X-Gm-Message-State: AOJu0YzeMsoWNAu9rSzlxqJgUZFsYr9R2vR1jf24e7Y3p+o71iwOh8sZ
+ xwq5nEPiDXkWDPr/G46LIQx9jA==
+X-Google-Smtp-Source: AGHT+IFnfnEKoMb7koq1Kz8eDOJgVhUZ3ZVfWag5jYXfkinILAJoX6HcLea1ta7WgsMTrwzo2gVv/Q==
+X-Received: by 2002:a17:902:f54c:b0:1ca:b820:74ed with SMTP id
+ h12-20020a170902f54c00b001cab82074edmr6638327plf.14.1700479701529; 
+ Mon, 20 Nov 2023 03:28:21 -0800 (PST)
 Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- p3-20020a17090ab90300b00285125abb33sm3450621pjr.4.2023.11.20.03.23.54
+ d12-20020a170902cecc00b001c73f3a9b88sm5874696plg.110.2023.11.20.03.28.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Nov 2023 03:23:56 -0800 (PST)
+ Mon, 20 Nov 2023 03:28:21 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Subject: [PATCH] meson: -Wno-error=format-overflow for ubsan
-Date: Mon, 20 Nov 2023 20:23:26 +0900
-Message-ID: <20231120112329.4149-1-akihiko.odaki@daynix.com>
+Subject: [PATCH v2] audio: Free consumed default audio devices
+Date: Mon, 20 Nov 2023 20:28:02 +0900
+Message-ID: <20231120112804.9736-1-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62f.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,45 +91,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ubsan causes wrong -Wformat-overflow warnings as follows:
-
-In file included from /usr/include/stdio.h:906,
-                 from /home/alarm/q/var/qemu/include/qemu/osdep.h:114,
-                 from ../disas/cris.c:21:
-In function 'sprintf',
-    inlined from 'format_dec' at ../disas/cris.c:1737:3,
-    inlined from 'print_with_operands' at ../disas/cris.c:2477:12,
-    inlined from 'print_insn_cris_generic.constprop' at ../disas/cris.c:2690:8:
-/usr/include/bits/stdio2.h:30:10: warning: null destination pointer [-Wformat-overflow=]
-   30 |   return __builtin___sprintf_chk (__s, __USE_FORTIFY_LEVEL - 1,
-      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   31 |                                   __glibc_objsize (__s), __fmt,
-      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   32 |                                   __va_arg_pack ());
-      |                                   ~~~~~~~~~~~~~~~~~
-
-Don't let these errors stop the build.
+Failed default audio devices were removed from the list but not freed,
+and that made LeakSanitizer sad. Free default audio devices as they are
+consumed.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- meson.build | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+V1 -> V2: Set s->dev NULL after free (Marc-André Lureau)
 
-diff --git a/meson.build b/meson.build
-index d7d841e71e..02f1a18080 100644
---- a/meson.build
-+++ b/meson.build
-@@ -365,7 +365,9 @@ if get_option('sanitizers')
-   # Detect static linking issue with ubsan - https://gcc.gnu.org/bugzilla/show_bug.cgi?id=84285
-   if cc.links('int main(int argc, char **argv) { return argc + 1; }',
-               args: [qemu_ldflags, '-fsanitize=undefined'])
--    qemu_cflags = ['-fsanitize=undefined'] + qemu_cflags
-+    # 87884 – ubsan causes wrong -Wformat-overflow warning
-+    # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87884
-+    qemu_cflags = ['-fsanitize=undefined', '-Wno-error=format-overflow'] + qemu_cflags
-     qemu_ldflags = ['-fsanitize=undefined'] + qemu_ldflags
-   endif
- endif
+ audio/audio.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/audio/audio.c b/audio/audio.c
+index f91e05b72c..8d1e4ad922 100644
+--- a/audio/audio.c
++++ b/audio/audio.c
+@@ -1758,12 +1758,15 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
+                 goto out;
+             }
+             s->dev = dev = e->dev;
++            QSIMPLEQ_REMOVE_HEAD(&default_audiodevs, next);
++            g_free(e);
+             drvname = AudiodevDriver_str(dev->driver);
+             driver = audio_driver_lookup(drvname);
+             if (!audio_driver_init(s, driver, dev, NULL)) {
+                 break;
+             }
+-            QSIMPLEQ_REMOVE_HEAD(&default_audiodevs, next);
++            qapi_free_Audiodev(dev);
++            s->dev = NULL;
+         }
+     }
+ 
 -- 
 2.42.1
 
