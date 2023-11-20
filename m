@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3AE7F1F39
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 22:34:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC647F1F42
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 22:36:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5BtT-0000rG-7I; Mon, 20 Nov 2023 16:33:23 -0500
+	id 1r5Bta-0000su-Kr; Mon, 20 Nov 2023 16:33:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5BtQ-0000qg-TI
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:33:21 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5BtX-0000sA-Gm
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:33:27 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5BtO-00037J-58
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:33:20 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-332c7d4a6a7so845257f8f.2
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 13:33:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5BtV-00038C-0R
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:33:27 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-40839652b97so18294705e9.3
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 13:33:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700515996; x=1701120796; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=hTS81rcfQfLYfQDgcPUQbgGkksTLDJmJ/NWa4pFo3AE=;
- b=kRHWp2v+cqgTP7Qcv2CEVV2AK9DkO3QlLyqLwRzlr2DyHbSjx6HCowqurzeaA9wfps
- +MY7Yc4ciEQINq4lctpBuXjjap3qpyrUIdQAuiX10uwgw8p7fAbLAhaaGyw38S4Zs9+B
- StMG1uZQYoH4hCRGBtGqQemXt3EecdGt1OUUs2jT58ePfjqPP9Qiecat1avxrBVcw98a
- N+tCOkMz/qNPdNFaYm2o9hDinkY+gcLqg9lQxtaIy39JRjx6jKuH6Ke3JQw7NHzN5cIO
- LbahMaBLhcrNkkZDKDBoOo912geTo5Ui7rudX59l76KN6c10TIEEa2ag5DCE4jRvq/zF
- IVlQ==
+ d=linaro.org; s=google; t=1700516003; x=1701120803; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yy1snK9B+SCgWiCxmQTHuCxjH+9ISs/0CoWZHoMFEnQ=;
+ b=nBb/tg7vnqbGh4qi0HIlSVpJFdSijMscvVO5AeDmwK9EtEwD1XMFB2FHFA8C0msjNz
+ QMUXEDuqMQs6de49qxwMW6sH/+Y3/wqm95tMX8dKKSYtg2Q0mj5wOPU/dWM9vxl0TJMz
+ dDIHvxplGtKyyXBvEV+X7eUxdTjRa7UxwRczhAii9OpXfUpLiga1tyvmBMfdNQB8UD+B
+ nJdy8Ty9b5UIAJArKxC84DiQUq5fLsN4G6hwCx8r2zJO0ijcZs9IJcwvMqEZrp11+a8d
+ QnFvC50goDhyyybdecjtSMmop3UkE6t3STiZ1WZTP7gu3UrFtFkm2KBRaYY+wnXwZbo/
+ zY2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700515996; x=1701120796;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=hTS81rcfQfLYfQDgcPUQbgGkksTLDJmJ/NWa4pFo3AE=;
- b=vtf/yN0NsyhLY51SJIq5OjN0rWuZb/+lhV1W4In7gJelQVWFJ1rSOXG4Oir6HzXvCL
- 28W2gXXsGMTCZ1VW0iXe65WK6PgSGg3t2KhHWnjVG7BCfrfuRLYEJJvKkxv5PhBj69G0
- FnGOlPnowpUZFB9R8yg+bV+S1iy0F73bzxw2cUm7qzXcV81e+iqQcw6e5UzriVU//8I1
- qHQUiAHoOZsZTVBUigtQdZLbihoSTcK4V9FM651+bK7IvuejD1PC9yPP+LxpLFHjwtXd
- vbOQnuxxCof2gvGEK7a/vYC/kuzM6AZ8y2J7zDpjYGuQJMMtIYL27524n8pf/Qmy7Q2N
- 44gw==
-X-Gm-Message-State: AOJu0YyJSFZ5rKslMo2fXtX2YPcutFzgMx89B0jQyN9Jtjh1pV13lfBQ
- VNCE5fWjapSHj3kF0DtQShAOId7tXpTYed4Zfe8=
-X-Google-Smtp-Source: AGHT+IEUZaPQ0WGY6zKRrJOTlw513AG12Fp0kK3RZpdajNQXtcUZb/Xg4yVvB/XIeKzzLRwodgeTJA==
-X-Received: by 2002:adf:fd0c:0:b0:32f:889a:2b9f with SMTP id
- e12-20020adffd0c000000b0032f889a2b9fmr5519318wrr.15.1700515996324; 
- Mon, 20 Nov 2023 13:33:16 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700516003; x=1701120803;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yy1snK9B+SCgWiCxmQTHuCxjH+9ISs/0CoWZHoMFEnQ=;
+ b=YhlGm+c00NCKAym/thZDOC2t+/Oluz46r8p+9g7r5NAqD7Oo4qVKmYvO+glZpc6H9S
+ queSdrSBLWGOZrbkpq0thS93qZiAYEOspRETD9XuOwLOvcA3xFwY/8W6q9vBTHr+xVnu
+ WAwy01Nj+M+ATmj99eQvJAfgCDJAuLoBQDgbc7ZBPYolEwY4WuKuOc2oLtKuP0JHBHGt
+ JGZdq00h6XyqTUBWfaX4chtFPXYaJubd37YBb2CPUo8oziBWbnsPX7EMhQVSOeqJCjz+
+ 1RQsuzUIcQMVEgvNsGyYQYYxXhDDJ2qOSCoInC0KDGiT5hvRw4eLLyBFODr3U+b4jBWm
+ 7mgw==
+X-Gm-Message-State: AOJu0Yzjuj5Y3Z/9lh+KEkWelyWKS43Lccor0fZQYS2Gi1Bj691FVkNP
+ D2151NYnQUD6cVEzXTFqx7Ew508VOz4jvozY8sE=
+X-Google-Smtp-Source: AGHT+IEkr26kiTb0vYXxIqK3/wBlqfrekq6CRZlLvz+0+kUPl7IXjrSmAPlwz1l/ysLWkRuBzcmP7A==
+X-Received: by 2002:a05:6000:18a2:b0:32f:a3fb:835b with SMTP id
+ b2-20020a05600018a200b0032fa3fb835bmr7271877wri.44.1700516003375; 
+ Mon, 20 Nov 2023 13:33:23 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.190])
  by smtp.gmail.com with ESMTPSA id
- dd11-20020a0560001e8b00b0032db8f7f378sm12302913wrb.71.2023.11.20.13.33.13
+ k15-20020a5d518f000000b00332cba50ac3sm1859981wrv.45.2023.11.20.13.33.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 20 Nov 2023 13:33:15 -0800 (PST)
+ Mon, 20 Nov 2023 13:33:23 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -64,15 +65,18 @@ Cc: David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Xu <peterx@redhat.com>
-Subject: [PATCH-for-9.0 00/25] memory: Propagate Error* when possible
-Date: Mon, 20 Nov 2023 22:32:34 +0100
-Message-ID: <20231120213301.24349-1-philmd@linaro.org>
+Subject: [PATCH-for-9.0 01/25] memory: Have
+ memory_region_init_ram_flags_nomigrate() return a boolean
+Date: Mon, 20 Nov 2023 22:32:35 +0100
+Message-ID: <20231120213301.24349-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231120213301.24349-1-philmd@linaro.org>
+References: <20231120213301.24349-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,82 +99,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Following the example documented since commit e3fe3988d7 ("error:
+Document Error API usage rules"), have cpu_exec_realizefn()
+return a boolean indicating whether an error is set or not.
 
-This series is remotely connected with the "dynamic machine"
-project. We need QOM objects created either from command line,
-QMP or loaded by modules to NOT fail exiting the whole QEMU
-process, but cleanly propagate any error before failing cleanly.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/exec/memory.h | 4 +++-
+ system/memory.c       | 4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-In preparation for that big goal, we start reworking a bit the
-Memory API to be able to propagate all errors.
-
-This targets the 9.0 release, but posting earlier to discuss with
-Markus meanwhile.
-
-Regards,
-
-Phil.
-
-Philippe Mathieu-Daudé (25):
-  memory: Have memory_region_init_ram_flags_nomigrate() return a boolean
-  memory: Have memory_region_init_ram_nomigrate() handler return a
-    boolean
-  memory: Have memory_region_init_rom_nomigrate() handler return a
-    boolean
-  memory: Simplify memory_region_init_rom_nomigrate() calls
-  memory: Simplify memory_region_init_ram_from_fd() calls
-  memory: Have memory_region_init_ram() handler return a boolean
-  memory: Have memory_region_init_rom() handler return a boolean
-  memory: Have memory_region_init_rom_device_nomigrate() return a
-    boolean
-  memory: Simplify memory_region_init_rom_device_nomigrate() calls
-  memory: Have memory_region_init_rom_device() handler return a boolean
-  memory: Have memory_region_init_resizeable_ram() return a boolean
-  memory: Have memory_region_init_ram_from_file() handler return a
-    boolean
-  memory: Have memory_region_init_ram_from_fd() handler return a boolean
-  backends: Use g_autofree in HostMemoryBackendClass::alloc() handlers
-  backends: Simplify host_memory_backend_memory_complete()
-  backends: Have HostMemoryBackendClass::alloc() handler return a
-    boolean
-  backends: Reduce variable scope in host_memory_backend_memory_complete
-  util/oslib: Have qemu_prealloc_mem() handler return a boolean
-  misc: Simplify qemu_prealloc_mem() calls
-  hw: Simplify memory_region_init_ram() calls
-  hw/arm: Simplify memory_region_init_rom() calls
-  hw/sparc: Simplify memory_region_init_ram_nomigrate() calls
-  hw/misc: Simplify memory_region_init_ram_from_fd() calls
-  hw/nvram: Simplify memory_region_init_rom_device() calls
-  hw/pci-host/raven: Propagate error in raven_realize()
-
- include/exec/memory.h    |  40 ++++++++---
- include/qemu/osdep.h     |   4 +-
- include/sysemu/hostmem.h |  10 ++-
- backends/hostmem-epc.c   |  14 ++--
- backends/hostmem-file.c  |  22 +++---
- backends/hostmem-memfd.c |  13 ++--
- backends/hostmem-ram.c   |  12 ++--
- backends/hostmem.c       | 144 ++++++++++++++++++---------------------
- hw/arm/aspeed_ast2400.c  |   6 +-
- hw/arm/aspeed_ast2600.c  |   6 +-
- hw/arm/fsl-imx25.c       |  19 ++----
- hw/arm/fsl-imx31.c       |  19 ++----
- hw/arm/fsl-imx6.c        |  19 ++----
- hw/arm/integratorcp.c    |   7 +-
- hw/arm/nrf51_soc.c       |   7 +-
- hw/misc/ivshmem.c        |   8 +--
- hw/nvram/nrf51_nvm.c     |   7 +-
- hw/pci-host/raven.c      |   6 +-
- hw/ppc/rs6000_mc.c       |   7 +-
- hw/sparc/sun4m.c         |  20 ++----
- hw/sparc64/sun4u.c       |   7 +-
- hw/virtio/virtio-mem.c   |   6 +-
- system/memory.c          |  68 ++++++++++--------
- util/oslib-posix.c       |   7 +-
- util/oslib-win32.c       |   4 +-
- 25 files changed, 234 insertions(+), 248 deletions(-)
-
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 831f7c996d..f038a7e5cf 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -1310,8 +1310,10 @@ void memory_region_init_ram_nomigrate(MemoryRegion *mr,
+  *
+  * Note that this function does not do anything to cause the data in the
+  * RAM memory region to be migrated; that is the responsibility of the caller.
++ *
++ * Return: true on success, else false setting @errp with error.
+  */
+-void memory_region_init_ram_flags_nomigrate(MemoryRegion *mr,
++bool memory_region_init_ram_flags_nomigrate(MemoryRegion *mr,
+                                             Object *owner,
+                                             const char *name,
+                                             uint64_t size,
+diff --git a/system/memory.c b/system/memory.c
+index 4d9cb0a7ff..313dbb2544 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -1583,7 +1583,7 @@ void memory_region_init_ram_nomigrate(MemoryRegion *mr,
+     memory_region_init_ram_flags_nomigrate(mr, owner, name, size, 0, errp);
+ }
+ 
+-void memory_region_init_ram_flags_nomigrate(MemoryRegion *mr,
++bool memory_region_init_ram_flags_nomigrate(MemoryRegion *mr,
+                                             Object *owner,
+                                             const char *name,
+                                             uint64_t size,
+@@ -1600,7 +1600,9 @@ void memory_region_init_ram_flags_nomigrate(MemoryRegion *mr,
+         mr->size = int128_zero();
+         object_unparent(OBJECT(mr));
+         error_propagate(errp, err);
++        return false;
+     }
++    return true;
+ }
+ 
+ void memory_region_init_resizeable_ram(MemoryRegion *mr,
 -- 
 2.41.0
 
