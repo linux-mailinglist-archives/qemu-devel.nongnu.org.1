@@ -2,86 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 279517F12E0
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 13:12:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C3E7F12FB
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 13:14:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r538l-0001sT-Ag; Mon, 20 Nov 2023 07:12:35 -0500
+	id 1r53AA-0002fw-6J; Mon, 20 Nov 2023 07:14:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1r538h-0001qo-LA; Mon, 20 Nov 2023 07:12:31 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r53A5-0002fN-Ry
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 07:13:59 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1r538Y-000743-AZ; Mon, 20 Nov 2023 07:12:30 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id AF7A41F890;
- Mon, 20 Nov 2023 12:12:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1700482338; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=37DHfkulwbAvUCm+qDi+D9F7+/nTwkV8l7P/9jdv5Pc=;
- b=VCQf+80uOMUB/XGF+HJWRTRv1jnrBKn2gFSHmiaMyK/OwjMI4jAAq3HD+RvjG07xqAFIQx
- fwCzGq7e/7nSLBh9N18/yHjEC9bnoxNsFYXQtThM95NxtgSrqep/frjqERf/hmWZztNucf
- hajm57UTXa27bay/xsFA0ao+kNphRlI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1700482338;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=37DHfkulwbAvUCm+qDi+D9F7+/nTwkV8l7P/9jdv5Pc=;
- b=MOxnwKsnqdYxdQv2i1yuvCkrHtxee/FZ5QbJwuCo5UF2WU6PyJxtJn9O70TwNQe5Q4jsfp
- /HISNW9ZYa3MXLAw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 492DD13499;
- Mon, 20 Nov 2023 12:12:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id thXEBSJNW2V5UAAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 20 Nov 2023 12:12:18 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Thomas Huth <thuth@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: Leonardo Bras <leobras@redhat.com>, qemu-s390x@nongnu.org, Claudio
- Imbrenda <imbrenda@linux.ibm.com>, Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH] tests/qtest/migration-test: Fix analyze-migration.py
- for s390x
-In-Reply-To: <20231120113951.162090-1-thuth@redhat.com>
-References: <20231120113951.162090-1-thuth@redhat.com>
-Date: Mon, 20 Nov 2023 09:12:15 -0300
-Message-ID: <87r0kk62u8.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r53A4-0007Lo-42
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 07:13:57 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5401bab7525so6171706a12.2
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 04:13:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700482434; x=1701087234; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=VMcSmPM52XARy4Pdj+aniY6ddRnTaznLc+N2nXNi/Lo=;
+ b=V6nrknBLXN2wTRdvTtejQX5Lkr6bWIMZM2mfNi/ahqrMApzSlKEeRt3WEgF8/RIPYn
+ iU1YXKpKO8mOhWEFbFogJwW7SESedqZkxF6LJ2l8ZtqYWdNNY13N9D6DwPxxWt0W/RSa
+ 0oQBgskqC52Y2gPBe9uNoFXHYfv9fwxO9zSipFo3+AAQCl4ikSSyZsSuk8HY6Q/ACE4T
+ cUKXrQSKHLoW7BWnD0WQ4r1XFFIi1Hi2c0zObFfdKzBnlYWIDDhCRy4HOEAgDb9valwg
+ O2X5dDFIyDnBh7Rjcz6Zjnxw8DoQiWGWqNjBpjIHHZ9DnWUo9rNuheALavxCxJAHYrEM
+ ZV2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700482434; x=1701087234;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VMcSmPM52XARy4Pdj+aniY6ddRnTaznLc+N2nXNi/Lo=;
+ b=CBozNOgXMqGJAKEuSnxDAs+0dA26Vwl+aJ9B0m5xHVTO+a9YSMNtWfPjoLLXt6VM1S
+ eVEFhlSy3ebr8cmb/r90wbTNOjHnQbfabGUYWIMixw4IlSP9EYHODFNDVUGbxsWIKys+
+ aDFwxplYNBiHCfWq8/Mj9q+4eLhbizF2MdfaHR0mH7vEyCR9l6qN9sbnpoYKV4CWwniW
+ S/UxLZchnQcdtCKdrQ8sHSBUFu5p/E4PkvDFzdB2/0CTHhjzxHCTnL7HAoqp5OnF0WeZ
+ d5bYA9Mxc/82sJjJ0sgUPlSAjZkmUVZyllATcB3CJ4aHZlEv2sPADz30P2e6GaA2Ozzi
+ Y+6A==
+X-Gm-Message-State: AOJu0Ywo0G+7n8J6kkm31pZHCopr2sIWDDxpgDPVruuEdOIfE781ysLk
+ GP3pVYar8dyRED3MFbh6b5gZpS2IU4sGFRvp5JI=
+X-Google-Smtp-Source: AGHT+IG3xIcnYX7WH2huwBvJphBmAiiZ1PcXrQ7yn2yGgSXvuqoNGmDX3fbjns9z59enIgeyTTPquA==
+X-Received: by 2002:a17:906:1ca:b0:9de:cfa1:f077 with SMTP id
+ 10-20020a17090601ca00b009decfa1f077mr4533189ejj.14.1700482434373; 
+ Mon, 20 Nov 2023 04:13:54 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.181.190])
+ by smtp.gmail.com with ESMTPSA id
+ mf3-20020a170906cb8300b009f28db2b702sm3800891ejb.209.2023.11.20.04.13.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 20 Nov 2023 04:13:53 -0800 (PST)
+Message-ID: <2944be42-01aa-4313-be90-6139e6826d1d@linaro.org>
+Date: Mon, 20 Nov 2023 13:13:51 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Score: -4.09
-X-Spamd-Result: default: False [-4.09 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.79)[99.10%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; RCPT_COUNT_SEVEN(0.00)[8];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-8.2 1/1] tcg/loongarch64: Fix tcg_out_mov() Aborted
+Content-Language: en-US
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, git@xen0n.name, c@jia.je, maobibo@loongson.cn
+References: <20231120065916.374045-1-gaosong@loongson.cn>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231120065916.374045-1-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01, WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,13 +91,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+On 20/11/23 07:59, Song Gao wrote:
+> On LoongArch host,  we got an Aborted from tcg_out_mov().
+> 
+> qemu-x86_64 configure with '--enable-debug'.
+> 
+>> (gdb) b /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312
+>> Breakpoint 1 at 0x2576f0: file /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc, line 312.
+>> (gdb) run hello
+> [...]
+>> Thread 1 "qemu-x86_64" hit Breakpoint 1, tcg_out_mov (s=0xaaaae91760 <tcg_init_ctx>, type=TCG_TYPE_V128, ret=TCG_REG_V2,
+>>      arg=TCG_REG_V0) at /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312
+>> 312           g_assert_not_reached();
+>> (gdb) bt
+>> #0  tcg_out_mov (s=0xaaaae91760 <tcg_init_ctx>, type=TCG_TYPE_V128, ret=TCG_REG_V2, arg=TCG_REG_V0)
+>>      at /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312
+>> #1  0x000000aaaad0fee0 in tcg_reg_alloc_mov (s=0xaaaae91760 <tcg_init_ctx>, op=0xaaaaf67c20) at ../tcg/tcg.c:4632
+>> #2  0x000000aaaad142f4 in tcg_gen_code (s=0xaaaae91760 <tcg_init_ctx>, tb=0xffe8030340 <code_gen_buffer+197328>,
+>>      pc_start=4346094) at ../tcg/tcg.c:6135
+> [...]
+>> (gdb) c
+>> Continuing.
+>> **
+>> ERROR:/home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312:tcg_out_mov: code should not be reached
+>> Bail out! ERROR:/home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312:tcg_out_mov: code should not be reached
+>>
+>> Thread 1 "qemu-x86_64" received signal SIGABRT, Aborted.
+>> 0x000000fff7b1c390 in raise () from /lib64/libc.so.6
+>> (gdb) q
 
-> The migration stream on s390x contains data for the storage_attributes
-> which the analyze-migration.py cannot handle yet. Add the basic code
-> for handling this, so we can re-enable the check in the migration-test.
->
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+Available since commit af88a28414 ("tcg/loongarch64: Import LSX
+instructions"), missed when LSX host instruction got enabled in
+commit 16288ded94 ("tcg/loongarch64: Lower basic tcg vec ops to LSX").
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+
+Fixes: 16288ded94 ("tcg/loongarch64: Lower basic tcg vec ops to LSX")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> ---
+>   tcg/loongarch64/tcg-target.c.inc | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+> index a588fb3085..5f68040230 100644
+> --- a/tcg/loongarch64/tcg-target.c.inc
+> +++ b/tcg/loongarch64/tcg-target.c.inc
+> @@ -308,6 +308,9 @@ static bool tcg_out_mov(TCGContext *s, TCGType type, TCGReg ret, TCGReg arg)
+>            */
+>           tcg_out_opc_or(s, ret, arg, TCG_REG_ZERO);
+>           break;
+> +    case TCG_TYPE_V128:
+> +        tcg_out_opc_vaddi_du(s, ret, arg, 0);
+> +        break;
+>       default:
+>           g_assert_not_reached();
+>       }
+
 
