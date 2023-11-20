@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 393777F1F45
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 22:36:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A0C87F1F49
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 22:38:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Bvu-0005xa-6j; Mon, 20 Nov 2023 16:35:54 -0500
+	id 1r5BwL-0006oD-AB; Mon, 20 Nov 2023 16:36:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5Bvr-0005dh-I5
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:35:51 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5Bvy-0006eM-7a
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:35:58 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5Bvo-0004An-29
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:35:51 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-32df66c691dso3101499f8f.3
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 13:35:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5Bvv-0004DL-00
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:35:57 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40a48775c58so21420005e9.3
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 13:35:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700516146; x=1701120946; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700516153; x=1701120953; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3MTfYspIRofl2d+GaSi2n8kVPRZkUBrCgY4w5h7qsWI=;
- b=rHCisfklOOZap7cAJbGgmlFoeqKULQ+vmkXMpcqkYm1FMUQgU/uqY8C9XKoF4vJcon
- EOQClWEzXKJ2tY6eaWz7z/R0M14kcrBKyL/UP5MCMcG80eRYNepDWAI3pLooUsXP4Ay/
- CY4lariSQW5YBcH8ebqgWUKiVFq+tYlHoQxeeakHbfLX4xpB6upFB8/GEGOrO7cfUA9b
- /6+weJHKreC4kXBwZJHu1lVuo2R4Rcn5PPa1RS3Pp7YGoxdvhdJ1bJ2j5i9vSOYFNJ/H
- ssgKeIliyOmCpHjweuy/hFVETRZOL932UePeKnUuR3AJlvM7eThIZoEO6hAlE+YChpdH
- 2frg==
+ bh=bJsPtTyJ8AvLk2JmJxbXP+WyZeZtfo9yWUZ/XM9f5N8=;
+ b=oP3wfeLpB3ZBWZDclWN2uV7Jb7+65wnS6ZRtM70NnmA6jvOmmh+hNu9lQjlkACUq3t
+ HZ5xuvrismjZpv60fL1WnsVa5DKBVPy+ReueWf/13WLk/zEBAfo9iqfScxEXFZue89t5
+ 81xlUPxyZByyVIR2qKcTdgR+5pFGoVQ17mcTS7Ma0Fv/xclqa/tYVv6BcTt2cUdDHvYU
+ WQFnrH6J/lrGHpNQzdNwXwSaZsIXmOnExjS+CTeoYx0OyTUKOTm+rYIQmelsVI4l9864
+ 9pyWaD53qSSfJvKqUO2vKcwZlbJIbgeYMNLiFzvzsHmF+MzC2yWLsIqj6E9wZohSb15u
+ WmqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700516146; x=1701120946;
+ d=1e100.net; s=20230601; t=1700516153; x=1701120953;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3MTfYspIRofl2d+GaSi2n8kVPRZkUBrCgY4w5h7qsWI=;
- b=FBfKuTjbAZrZi/QpVWv8cP+2YL4VeFoGJBehPqePcu/ndUPBxeaNpC02PMrVhQA8qO
- 9bM6/Q8wWjoE9R7R54RwnZSzswK/M80TQanwii1yindUUZZo2EKkDZs3q+kYJBE0klPL
- SgDOR77mGrmJkE9M/CBuE7gLxjUA2KiivVuKKol6Jg/Q3IMN+Ky5GZMN4An0HZS53H6M
- SyFTjAoWaeuYqjFcDIOn4UI+aoFDWX3WPGg86Bcx3U4o05+EwvYM19J8nbLFtJD2YxLQ
- MSv5qGBQzEaqJp51EOS08NTI4jrDwzmyC/ll+Nl5DzID7/XWza58fiMS4lTfQka+YiVP
- IXnA==
-X-Gm-Message-State: AOJu0YzIYNVPrL6cCslXHxvz7CRvFIuiPeVPL7DAce5roSdlSEV8rXS2
- zOldmt8U7t4/cR4X8kznp4WnnJZ4bvYmpKV+rk8=
-X-Google-Smtp-Source: AGHT+IHJw4br/gAEOYJKCgGb2gTZzW99Smd0qhk85joM8RLaXzPatxg5y5ZLale/3WnFXBjccrYtZg==
-X-Received: by 2002:a5d:4012:0:b0:32d:8855:138d with SMTP id
- n18-20020a5d4012000000b0032d8855138dmr5256601wrp.66.1700516146517; 
- Mon, 20 Nov 2023 13:35:46 -0800 (PST)
+ bh=bJsPtTyJ8AvLk2JmJxbXP+WyZeZtfo9yWUZ/XM9f5N8=;
+ b=mvqtNzHF5SrIQmsDaL8si8QNSeV9x5UcVdFdblFd9rM9usr6ChucRwjFgWd+gcWxjz
+ oSWl1s/g7S6dcfkQDJKy6MkPuN81XhuZFAgnwdGRaRMTFJCSvlsGPEah+UDdUlP2S+sI
+ pOTb69ORgJmQq68Vxb2nWgivDBu2nxvW+4e9kl+nziuvkn8L2YKPRxV4DVkCMd/6D0pL
+ /Vxo/cAy4vhPZNNz6lSuZLmN2MEwjTUDqDj2duHXlk0tkAH/KWuNU1aQivakQwdewj2u
+ 6dKw+IjbABb4CZTGoz/nyzWVBB4miqCRZbyOvv07W25tsKAHSbozfFG3qrfWfZvgIsTJ
+ 5zeQ==
+X-Gm-Message-State: AOJu0YyXiUByhwl6FqUsUTL36H5WjO+ZvSFJTLcyohCQtDC6oG7KYHFl
+ +hJJfm4L7LYrTdlcnZZ0bmxNpnCr464284xgUtg=
+X-Google-Smtp-Source: AGHT+IGaU7Di37CDPM7YHvwmjuIz3SZqWetIjdoyZIOCCdwwPPXAThpDcu0+ZMAY6J0jgcTGBkPzlA==
+X-Received: by 2002:a05:600c:3143:b0:406:44e6:c00d with SMTP id
+ h3-20020a05600c314300b0040644e6c00dmr7281481wmo.2.1700516153074; 
+ Mon, 20 Nov 2023 13:35:53 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.190])
  by smtp.gmail.com with ESMTPSA id
- v9-20020a5d5909000000b0032f9688ea48sm12319327wrd.10.2023.11.20.13.35.41
+ f6-20020a7bc8c6000000b004030e8ff964sm18673462wml.34.2023.11.20.13.35.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 20 Nov 2023 13:35:46 -0800 (PST)
+ Mon, 20 Nov 2023 13:35:52 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -65,18 +65,18 @@ Cc: David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Xu <peterx@redhat.com>
-Subject: [PATCH-for-9.0 14/25] backends: Use g_autofree in
- HostMemoryBackendClass::alloc() handlers
-Date: Mon, 20 Nov 2023 22:32:48 +0100
-Message-ID: <20231120213301.24349-15-philmd@linaro.org>
+Subject: [PATCH-for-9.0 15/25] backends: Simplify
+ host_memory_backend_memory_complete()
+Date: Mon, 20 Nov 2023 22:32:49 +0100
+Message-ID: <20231120213301.24349-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231120213301.24349-1-philmd@linaro.org>
 References: <20231120213301.24349-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,105 +99,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation of having HostMemoryBackendClass::alloc() handlers
-return a boolean, have them use g_autofree.
+Return early if bc->alloc is NULL. De-indent the if() ladder.
+
+Note, this avoids a pointless call to error_propagate() with
+errp=NULL at the 'out:' label.
+
+Change trivial when reviewed with 'git-diff --ignore-all-space'.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- backends/hostmem-epc.c   | 3 +--
- backends/hostmem-file.c  | 3 +--
- backends/hostmem-memfd.c | 3 +--
- backends/hostmem-ram.c   | 3 +--
- 4 files changed, 4 insertions(+), 8 deletions(-)
+ backends/hostmem.c | 133 +++++++++++++++++++++++----------------------
+ 1 file changed, 67 insertions(+), 66 deletions(-)
 
-diff --git a/backends/hostmem-epc.c b/backends/hostmem-epc.c
-index 4e162d6789..3ceb079f9e 100644
---- a/backends/hostmem-epc.c
-+++ b/backends/hostmem-epc.c
-@@ -20,8 +20,8 @@
- static void
- sgx_epc_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
- {
-+    g_autofree char *name = NULL;
-     uint32_t ram_flags;
--    char *name;
-     int fd;
+diff --git a/backends/hostmem.c b/backends/hostmem.c
+index 747e7838c0..1723c19165 100644
+--- a/backends/hostmem.c
++++ b/backends/hostmem.c
+@@ -328,83 +328,84 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
+     void *ptr;
+     uint64_t sz;
  
-     if (!backend->size) {
-@@ -41,7 +41,6 @@ sgx_epc_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
-     memory_region_init_ram_from_fd(&backend->mr, OBJECT(backend),
-                                    name, backend->size, ram_flags,
-                                    fd, 0, errp);
--    g_free(name);
- }
+-    if (bc->alloc) {
+-        bc->alloc(backend, &local_err);
+-        if (local_err) {
+-            goto out;
+-        }
++    if (!bc->alloc) {
++        return;
++    }
++    bc->alloc(backend, &local_err);
++    if (local_err) {
++        goto out;
++    }
  
- static void sgx_epc_backend_instance_init(Object *obj)
-diff --git a/backends/hostmem-file.c b/backends/hostmem-file.c
-index 361d4a8103..fe8c481f8f 100644
---- a/backends/hostmem-file.c
-+++ b/backends/hostmem-file.c
-@@ -44,8 +44,8 @@ file_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
-                object_get_typename(OBJECT(backend)));
- #else
-     HostMemoryBackendFile *fb = MEMORY_BACKEND_FILE(backend);
-+    g_autofree gchar *name = NULL;
-     uint32_t ram_flags;
--    gchar *name;
+-        ptr = memory_region_get_ram_ptr(&backend->mr);
+-        sz = memory_region_size(&backend->mr);
++    ptr = memory_region_get_ram_ptr(&backend->mr);
++    sz = memory_region_size(&backend->mr);
  
-     if (!backend->size) {
-         error_setg(errp, "can't create backend with size 0");
-@@ -89,7 +89,6 @@ file_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
-     memory_region_init_ram_from_file(&backend->mr, OBJECT(backend), name,
-                                      backend->size, fb->align, ram_flags,
-                                      fb->mem_path, fb->offset, errp);
--    g_free(name);
+-        if (backend->merge) {
+-            qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE);
+-        }
+-        if (!backend->dump) {
+-            qemu_madvise(ptr, sz, QEMU_MADV_DONTDUMP);
+-        }
++    if (backend->merge) {
++        qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE);
++    }
++    if (!backend->dump) {
++        qemu_madvise(ptr, sz, QEMU_MADV_DONTDUMP);
++    }
+ #ifdef CONFIG_NUMA
+-        unsigned long lastbit = find_last_bit(backend->host_nodes, MAX_NODES);
+-        /* lastbit == MAX_NODES means maxnode = 0 */
+-        unsigned long maxnode = (lastbit + 1) % (MAX_NODES + 1);
+-        /* ensure policy won't be ignored in case memory is preallocated
+-         * before mbind(). note: MPOL_MF_STRICT is ignored on hugepages so
+-         * this doesn't catch hugepage case. */
+-        unsigned flags = MPOL_MF_STRICT | MPOL_MF_MOVE;
+-        int mode = backend->policy;
++    unsigned long lastbit = find_last_bit(backend->host_nodes, MAX_NODES);
++    /* lastbit == MAX_NODES means maxnode = 0 */
++    unsigned long maxnode = (lastbit + 1) % (MAX_NODES + 1);
++    /* ensure policy won't be ignored in case memory is preallocated
++     * before mbind(). note: MPOL_MF_STRICT is ignored on hugepages so
++     * this doesn't catch hugepage case. */
++    unsigned flags = MPOL_MF_STRICT | MPOL_MF_MOVE;
++    int mode = backend->policy;
+ 
+-        /* check for invalid host-nodes and policies and give more verbose
+-         * error messages than mbind(). */
+-        if (maxnode && backend->policy == MPOL_DEFAULT) {
+-            error_setg(errp, "host-nodes must be empty for policy default,"
+-                       " or you should explicitly specify a policy other"
+-                       " than default");
+-            return;
+-        } else if (maxnode == 0 && backend->policy != MPOL_DEFAULT) {
+-            error_setg(errp, "host-nodes must be set for policy %s",
+-                       HostMemPolicy_str(backend->policy));
+-            return;
+-        }
++    /* check for invalid host-nodes and policies and give more verbose
++     * error messages than mbind(). */
++    if (maxnode && backend->policy == MPOL_DEFAULT) {
++        error_setg(errp, "host-nodes must be empty for policy default,"
++                   " or you should explicitly specify a policy other"
++                   " than default");
++        return;
++    } else if (maxnode == 0 && backend->policy != MPOL_DEFAULT) {
++        error_setg(errp, "host-nodes must be set for policy %s",
++                   HostMemPolicy_str(backend->policy));
++        return;
++    }
+ 
+-        /* We can have up to MAX_NODES nodes, but we need to pass maxnode+1
+-         * as argument to mbind() due to an old Linux bug (feature?) which
+-         * cuts off the last specified node. This means backend->host_nodes
+-         * must have MAX_NODES+1 bits available.
+-         */
+-        assert(sizeof(backend->host_nodes) >=
+-               BITS_TO_LONGS(MAX_NODES + 1) * sizeof(unsigned long));
+-        assert(maxnode <= MAX_NODES);
++    /* We can have up to MAX_NODES nodes, but we need to pass maxnode+1
++     * as argument to mbind() due to an old Linux bug (feature?) which
++     * cuts off the last specified node. This means backend->host_nodes
++     * must have MAX_NODES+1 bits available.
++     */
++    assert(sizeof(backend->host_nodes) >=
++           BITS_TO_LONGS(MAX_NODES + 1) * sizeof(unsigned long));
++    assert(maxnode <= MAX_NODES);
+ 
+ #ifdef HAVE_NUMA_HAS_PREFERRED_MANY
+-        if (mode == MPOL_PREFERRED && numa_has_preferred_many() > 0) {
+-            /*
+-             * Replace with MPOL_PREFERRED_MANY otherwise the mbind() below
+-             * silently picks the first node.
+-             */
+-            mode = MPOL_PREFERRED_MANY;
+-        }
++    if (mode == MPOL_PREFERRED && numa_has_preferred_many() > 0) {
++        /*
++         * Replace with MPOL_PREFERRED_MANY otherwise the mbind() below
++         * silently picks the first node.
++         */
++        mode = MPOL_PREFERRED_MANY;
++    }
  #endif
- }
  
-diff --git a/backends/hostmem-memfd.c b/backends/hostmem-memfd.c
-index 3fc85c3db8..db28ab5a56 100644
---- a/backends/hostmem-memfd.c
-+++ b/backends/hostmem-memfd.c
-@@ -35,8 +35,8 @@ static void
- memfd_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
- {
-     HostMemoryBackendMemfd *m = MEMORY_BACKEND_MEMFD(backend);
-+    g_autofree char *name = NULL;
-     uint32_t ram_flags;
--    char *name;
-     int fd;
- 
-     if (!backend->size) {
-@@ -57,7 +57,6 @@ memfd_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
-     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
-     memory_region_init_ram_from_fd(&backend->mr, OBJECT(backend), name,
-                                    backend->size, ram_flags, fd, 0, errp);
--    g_free(name);
- }
- 
- static bool
-diff --git a/backends/hostmem-ram.c b/backends/hostmem-ram.c
-index b8e55cdbd0..0a670fc22a 100644
---- a/backends/hostmem-ram.c
-+++ b/backends/hostmem-ram.c
-@@ -19,8 +19,8 @@
- static void
- ram_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
- {
-+    g_autofree char *name = NULL;
-     uint32_t ram_flags;
--    char *name;
- 
-     if (!backend->size) {
-         error_setg(errp, "can't create backend with size 0");
-@@ -32,7 +32,6 @@ ram_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
-     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
-     memory_region_init_ram_flags_nomigrate(&backend->mr, OBJECT(backend), name,
-                                            backend->size, ram_flags, errp);
--    g_free(name);
- }
- 
- static void
+-        if (maxnode &&
+-            mbind(ptr, sz, mode, backend->host_nodes, maxnode + 1, flags)) {
+-            if (backend->policy != MPOL_DEFAULT || errno != ENOSYS) {
+-                error_setg_errno(errp, errno,
+-                                 "cannot bind memory to host NUMA nodes");
+-                return;
+-            }
++    if (maxnode &&
++        mbind(ptr, sz, mode, backend->host_nodes, maxnode + 1, flags)) {
++        if (backend->policy != MPOL_DEFAULT || errno != ENOSYS) {
++            error_setg_errno(errp, errno,
++                             "cannot bind memory to host NUMA nodes");
++            return;
+         }
++    }
+ #endif
+-        /* Preallocate memory after the NUMA policy has been instantiated.
+-         * This is necessary to guarantee memory is allocated with
+-         * specified NUMA policy in place.
+-         */
+-        if (backend->prealloc) {
+-            qemu_prealloc_mem(memory_region_get_fd(&backend->mr), ptr, sz,
+-                              backend->prealloc_threads,
+-                              backend->prealloc_context, &local_err);
+-            if (local_err) {
+-                goto out;
+-            }
++    /* Preallocate memory after the NUMA policy has been instantiated.
++     * This is necessary to guarantee memory is allocated with
++     * specified NUMA policy in place.
++     */
++    if (backend->prealloc) {
++        qemu_prealloc_mem(memory_region_get_fd(&backend->mr), ptr, sz,
++                          backend->prealloc_threads,
++                          backend->prealloc_context, &local_err);
++        if (local_err) {
++            goto out;
+         }
+     }
+ out:
 -- 
 2.41.0
 
