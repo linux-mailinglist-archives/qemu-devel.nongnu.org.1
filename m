@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D8C7F0B74
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 05:38:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4AF37F0B89
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 06:21:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4w2f-0000EJ-83; Sun, 19 Nov 2023 23:37:49 -0500
+	id 1r4whQ-0006vy-HU; Mon, 20 Nov 2023 00:19:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
- id 1r4w2d-0000E8-4S
- for qemu-devel@nongnu.org; Sun, 19 Nov 2023 23:37:47 -0500
-Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1r4whF-0006vp-R4
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 00:19:46 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
- id 1r4w2b-0003Ak-Ak
- for qemu-devel@nongnu.org; Sun, 19 Nov 2023 23:37:46 -0500
-Received: by mail-oa1-x2e.google.com with SMTP id
- 586e51a60fabf-1f5bd86ceb3so1458023fac.2
- for <qemu-devel@nongnu.org>; Sun, 19 Nov 2023 20:37:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1r4whE-0001Rx-6M
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 00:19:45 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-32d9d8284abso2603862f8f.3
+ for <qemu-devel@nongnu.org>; Sun, 19 Nov 2023 21:19:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700455063; x=1701059863; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6J3RP6xz4scGjmPj01RG5aacRVJuHKa6R4XaJ4bEqpM=;
- b=db7aJCQA0Hu3fhq+r62QV5Os3ghpEPDlEgjrHBJ5QmKS0oFc1hzu2pLhaXRrcx6m19
- ZPbNkcNDf1BK0rVNIqcdYwnIwhI/fAdnaZHHZDfeZnzTIDodk0+7AH+aRMg0d5mnK4MM
- S65wyh9VHck1u31ySSYogy/iFPEQk1DLGGlcQF8q+Q+VR54+oYedv2ArJueSXsK62zd7
- Lxg3dlfjLDN+5ozYIz4rs/A3GgWup/QjLWgTYqWojlIYxLOf6iVM9QwRsXIGP6DXsh0D
- JFt3EvOCB2KytFrtwMKiXMK3hjXV7dG4XrUOyUHcieUe9fJm40UzNAjZOSpIaeWXGQtK
- 7Rwg==
+ d=linaro.org; s=google; t=1700457581; x=1701062381; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=Hq7MazmFIdUvQb7Ddv/iRa6ufG70Qi3uHKKiWgtvi6k=;
+ b=BOES1lTbfN4yD7h8Qlz4shaa457NBxI2kAlFf8y1BFm1lizpS/9u2i1Hiq4DiN02bk
+ F5kfUMT7C4kqg7uMYc6v2LnZqXGDjDSYcTG5SdCK48J9Fqq1GXZVyirZUYi12Pv6/Wlz
+ +vWsy4YBkRSZ0Oad0vPmKzmFO0g8v60oucwEsASmQh4cy7PT8BXKlS/lBn7pEeHgTrj6
+ 1Lxi1TKFyS07Nmxhk/d+8/3xmx5fHpowiUH8VrcN6DxF0bN0pOezUKyCX/53tkUzSYAH
+ xA5aYR7EivJ94DDIwRKsFz/k9QJV5IgPCBmih1kYYhHSh+hOUO/nqxQQR8HUC42xlTuY
+ R8xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700455063; x=1701059863;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6J3RP6xz4scGjmPj01RG5aacRVJuHKa6R4XaJ4bEqpM=;
- b=hvHWCzsxsnhoW7i4Y34+JML6QmnENgLWmUJ3k04GOkr53057/Do/TZCd1aGgV4NwRD
- +zsrKUBB+ue0zS9ia9fkl70p19RiMxZ9G99F7I7S/tLZrI4IZeulRZvmAMY5CFGz7zX6
- A3bzlQtn8rdorL8viXNyY6Z3/Ze7ofJpwnf4VZ9xDvqwz2Ykgq+dAlRAbJYI27XrfyLc
- cmFG4GWatLDFluE4ZBM8dVGzyVvszoWD2M0383m6Q3d78eIcryMeyFDaYP0NKDfQOuuE
- zLZaIOY0+yAuALsQlnblEJBbzDRGFzWzYSdFOggZaDVKAcGg0zuJPKMBsjKUwDW+Kg9I
- y2pw==
-X-Gm-Message-State: AOJu0YyGvTusa47BpxPECq4ljfhQy+aNR25mtQ8hB+fDF2bac4BCUuqC
- yUx+IL7+iPzrFrW2so3tuURu/u0wkuej6AYLNIm7ZPB7K+ygEA==
-X-Google-Smtp-Source: AGHT+IG2EbVWS3B+SN1V9dGtnhj4pEf1abCdm+Gs+rZRMBBeYOyTCjJ7oiCT95tWo9XnnILYecAogw==
-X-Received: by 2002:a05:6871:79a2:b0:1e9:9742:7dfd with SMTP id
- pb34-20020a05687179a200b001e997427dfdmr8381279oac.31.1700455063504; 
- Sun, 19 Nov 2023 20:37:43 -0800 (PST)
-Received: from leoy-yangtze.lan (211-75-219-202.hinet-ip.hinet.net.
- [211.75.219.202]) by smtp.gmail.com with ESMTPSA id
- s41-20020a056a0017a900b006926d199fdcsm5035991pfg.190.2023.11.19.20.37.40
+ d=1e100.net; s=20230601; t=1700457581; x=1701062381;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Hq7MazmFIdUvQb7Ddv/iRa6ufG70Qi3uHKKiWgtvi6k=;
+ b=Rgeytb77KVv6YCuG3OKist+tUaI/R52SvjTl9SghHyrR7hQ2HJDpP2Xq4ja3BcmQAy
+ jeS4J8qC21UWUbtm2yZozb/rvFj/zjOE3fO8yd/37OGM1bg8JOHI4FlS1kAIWWTL3JcF
+ oJm87vMjTlNOocw6VlgkZoEhefgCMFHFKZthDCaDa6F8sDqPq9akHRpORyPexRxZrLCw
+ WhFT63yo6E5ZE8Pcc44cB1uahYKHO5Z11qXA8Ub4+jg/QS//kOKaS6GS/AnV7ltPSaEz
+ yowiG6y7lXO9i7+nOb94TNa29QGA2Z5n5+9WKyC3v4f/Q54o1Xj9S48Jqhd+T/Q+7Qpj
+ VkLg==
+X-Gm-Message-State: AOJu0YxExptrBGGiPe/5JYCmpuIrb7GyvFIPRSUkuw4Mv1I2peWmCGWt
+ GhR17PyUhtyqYvnB5DRxw3W6KA==
+X-Google-Smtp-Source: AGHT+IHb8MPEO80YKUcmTjuES73UTZAit2qSkL+0bJ79rZJ+QFfKfDlWVM4LFd7k5XI1IZ/5vlllNw==
+X-Received: by 2002:adf:ce0c:0:b0:32d:e6ec:2862 with SMTP id
+ p12-20020adfce0c000000b0032de6ec2862mr3133247wrn.7.1700457581631; 
+ Sun, 19 Nov 2023 21:19:41 -0800 (PST)
+Received: from meli.delivery (adsl-27.37.6.163.tellas.gr. [37.6.163.27])
+ by smtp.gmail.com with ESMTPSA id
+ d5-20020adfef85000000b0032fb46812c2sm9861094wro.12.2023.11.19.21.19.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 19 Nov 2023 20:37:42 -0800 (PST)
-From: Leo Yan <leo.yan@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Sun, 19 Nov 2023 21:19:40 -0800 (PST)
+Date: Mon, 20 Nov 2023 07:17:50 +0200
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Leo Yan <leo.yan@linaro.org>, qemu-devel@nongnu.org
+Cc: Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
  Leo Yan <leo.yan@linaro.org>
-Subject: [PATCH v3 4/4] hw/virtio: derive vhost-user-input from vhost-user-base
-Date: Mon, 20 Nov 2023 12:37:21 +0800
-Message-Id: <20231120043721.50555-5-leo.yan@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231120043721.50555-1-leo.yan@linaro.org>
+Subject: Re: [PATCH v3 3/4] hw/virtio: Move vhost-user-input into virtio folder
+User-Agent: meli 0.8.2
 References: <20231120043721.50555-1-leo.yan@linaro.org>
+ <20231120043721.50555-4-leo.yan@linaro.org>
+In-Reply-To: <20231120043721.50555-4-leo.yan@linaro.org>
+Message-ID: <4epgq.rzp5z0yl05ln@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2e;
- envelope-from=leo.yan@linaro.org; helo=mail-oa1-x2e.google.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,207 +97,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch derives vhost-user-input from vhost-user-base class, so make
-the input stub as a simpler boilerplate wrapper.
+On Mon, 20 Nov 2023 06:37, Leo Yan <leo.yan@linaro.org> wrote:
+>vhost-user-input is in the input folder.  On the other hand, the folder
+>'hw/virtio' maintains other virtio stubs (e.g. I2C, RNG, GPIO, etc).
+>
+>This patch moves vhost-user-input into the virtio folder for better code
+>organization.  No functionality change.
+>
+>Signed-off-by: Leo Yan <leo.yan@linaro.org>
 
-With the refactoring, vhost-user-input adds the property 'chardev', this
-leads to conflict with the vhost-user-input-pci adds the same property.
-To resolve the error, remove the duplicate property from
-vhost-user-input-pci.
-
-Signed-off-by: Leo Yan <leo.yan@linaro.org>
----
- hw/virtio/vhost-user-input-pci.c |   3 -
- hw/virtio/vhost-user-input.c     | 114 +++++--------------------------
- include/hw/virtio/virtio-input.h |   6 +-
- 3 files changed, 21 insertions(+), 102 deletions(-)
-
-diff --git a/hw/virtio/vhost-user-input-pci.c b/hw/virtio/vhost-user-input-pci.c
-index b858898a36..3f4761ce88 100644
---- a/hw/virtio/vhost-user-input-pci.c
-+++ b/hw/virtio/vhost-user-input-pci.c
-@@ -30,9 +30,6 @@ static void vhost_user_input_pci_instance_init(Object *obj)
- 
-     virtio_instance_init_common(obj, &dev->vhi, sizeof(dev->vhi),
-                                 TYPE_VHOST_USER_INPUT);
--
--    object_property_add_alias(obj, "chardev",
--                              OBJECT(&dev->vhi), "chardev");
- }
- 
- static const VirtioPCIDeviceTypeInfo vhost_user_input_pci_info = {
-diff --git a/hw/virtio/vhost-user-input.c b/hw/virtio/vhost-user-input.c
-index 4ee3542106..bedec0468c 100644
---- a/hw/virtio/vhost-user-input.c
-+++ b/hw/virtio/vhost-user-input.c
-@@ -5,83 +5,25 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "qemu/error-report.h"
--#include "qapi/error.h"
--
- #include "hw/virtio/virtio-input.h"
- 
--static int vhost_input_config_change(struct vhost_dev *dev)
--{
--    error_report("vhost-user-input: unhandled backend config change");
--    return -1;
--}
--
--static const VhostDevConfigOps config_ops = {
--    .vhost_dev_config_notifier = vhost_input_config_change,
-+static Property vinput_properties[] = {
-+    DEFINE_PROP_CHR("chardev", VHostUserBase, chardev),
-+    DEFINE_PROP_END_OF_LIST(),
- };
- 
--static void vhost_input_realize(DeviceState *dev, Error **errp)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(dev);
--    VirtIOInput *vinput = VIRTIO_INPUT(dev);
--    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
--
--    vhost_dev_set_config_notifier(&vhi->vhost->dev, &config_ops);
--    vinput->cfg_size = sizeof_field(virtio_input_config, u);
--    if (vhost_user_backend_dev_init(vhi->vhost, vdev, 2, errp) == -1) {
--        return;
--    }
--}
--
--static void vhost_input_change_active(VirtIOInput *vinput)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(vinput);
--
--    if (vinput->active) {
--        vhost_user_backend_start(vhi->vhost);
--    } else {
--        vhost_user_backend_stop(vhi->vhost);
--    }
--}
--
--static void vhost_input_get_config(VirtIODevice *vdev, uint8_t *config_data)
--{
--    VirtIOInput *vinput = VIRTIO_INPUT(vdev);
--    VHostUserInput *vhi = VHOST_USER_INPUT(vdev);
--    Error *local_err = NULL;
--    int ret;
--
--    memset(config_data, 0, vinput->cfg_size);
--
--    ret = vhost_dev_get_config(&vhi->vhost->dev, config_data, vinput->cfg_size,
--                               &local_err);
--    if (ret) {
--        error_report_err(local_err);
--        return;
--    }
--}
--
--static void vhost_input_set_config(VirtIODevice *vdev,
--                                   const uint8_t *config_data)
-+static void vinput_realize(DeviceState *dev, Error **errp)
- {
--    VHostUserInput *vhi = VHOST_USER_INPUT(vdev);
--    int ret;
-+    VHostUserBase *vub = VHOST_USER_BASE(dev);
-+    VHostUserBaseClass *vubc = VHOST_USER_BASE_GET_CLASS(dev);
- 
--    ret = vhost_dev_set_config(&vhi->vhost->dev, config_data,
--                               0, sizeof(virtio_input_config),
--                               VHOST_SET_CONFIG_TYPE_FRONTEND);
--    if (ret) {
--        error_report("vhost-user-input: set device config space failed");
--        return;
--    }
-+    /* Fixed for input device */
-+    vub->virtio_id = VIRTIO_ID_INPUT;
-+    vub->num_vqs = 2;
-+    vub->vq_size = 4;
-+    vub->config_size = sizeof(virtio_input_config);
- 
--    virtio_notify_config(vdev);
--}
--
--static struct vhost_dev *vhost_input_get_vhost(VirtIODevice *vdev)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(vdev);
--    return &vhi->vhost->dev;
-+    vubc->parent_realize(dev, errp);
- }
- 
- static const VMStateDescription vmstate_vhost_input = {
-@@ -91,40 +33,20 @@ static const VMStateDescription vmstate_vhost_input = {
- 
- static void vhost_input_class_init(ObjectClass *klass, void *data)
- {
--    VirtIOInputClass *vic = VIRTIO_INPUT_CLASS(klass);
--    VirtioDeviceClass *vdc = VIRTIO_DEVICE_CLASS(klass);
-+    VHostUserBaseClass *vubc = VHOST_USER_BASE_CLASS(klass);
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
-     dc->vmsd = &vmstate_vhost_input;
--    vdc->get_config = vhost_input_get_config;
--    vdc->set_config = vhost_input_set_config;
--    vdc->get_vhost = vhost_input_get_vhost;
--    vic->realize = vhost_input_realize;
--    vic->change_active = vhost_input_change_active;
--}
--
--static void vhost_input_init(Object *obj)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(obj);
--
--    vhi->vhost = VHOST_USER_BACKEND(object_new(TYPE_VHOST_USER_BACKEND));
--    object_property_add_alias(obj, "chardev",
--                              OBJECT(vhi->vhost), "chardev");
--}
--
--static void vhost_input_finalize(Object *obj)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(obj);
--
--    object_unref(OBJECT(vhi->vhost));
-+    device_class_set_props(dc, vinput_properties);
-+    device_class_set_parent_realize(dc, vinput_realize,
-+                                    &vubc->parent_realize);
-+    set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
- }
- 
- static const TypeInfo vhost_input_info = {
-     .name          = TYPE_VHOST_USER_INPUT,
--    .parent        = TYPE_VIRTIO_INPUT,
-+    .parent        = TYPE_VHOST_USER_BASE,
-     .instance_size = sizeof(VHostUserInput),
--    .instance_init = vhost_input_init,
--    .instance_finalize = vhost_input_finalize,
-     .class_init    = vhost_input_class_init,
- };
- 
-diff --git a/include/hw/virtio/virtio-input.h b/include/hw/virtio/virtio-input.h
-index a6c9703644..e69c0aeca3 100644
---- a/include/hw/virtio/virtio-input.h
-+++ b/include/hw/virtio/virtio-input.h
-@@ -1,6 +1,8 @@
- #ifndef QEMU_VIRTIO_INPUT_H
- #define QEMU_VIRTIO_INPUT_H
- 
-+#include "hw/virtio/vhost-user.h"
-+#include "hw/virtio/vhost-user-base.h"
- #include "ui/input.h"
- #include "sysemu/vhost-user-backend.h"
- 
-@@ -97,9 +99,7 @@ struct VirtIOInputHost {
- };
- 
- struct VHostUserInput {
--    VirtIOInput                       parent_obj;
--
--    VhostUserBackend                  *vhost;
-+    VHostUserBase parent_obj;
- };
- 
- void virtio_input_send(VirtIOInput *vinput, virtio_input_event *event);
--- 
-2.39.2
-
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
