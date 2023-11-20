@@ -2,86 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B11347F0F12
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 10:29:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 389C97F0F1B
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 10:31:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r50aW-00036O-I0; Mon, 20 Nov 2023 04:29:04 -0500
+	id 1r50c6-0003va-SU; Mon, 20 Nov 2023 04:30:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r50aU-000364-7F
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 04:29:02 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r50c4-0003v5-U2
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 04:30:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r50aS-0004s6-KX
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 04:29:01 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r50c3-0005FR-Ej
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 04:30:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700472539;
+ s=mimecast20190719; t=1700472638;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vWevTP/cS811Dy6gVvwoRlReBAit1jDPwGcQEpWTQIk=;
- b=icHpYBgyMaSWHijg7t2EAylaFY2DyzroIwxD1+SGE9UzAU8ULkmKVNI155foZUMw4iL4we
- MYRHtA/7lTPPs/x4MhDs2q5JGQUTDQkvgMCFOIUClG5gMISgQGSHvdXWj/N6BnVVtsncI3
- 3gE3QJv4tvcMCUIThynDlWpqLjymxFE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=XvzFW29kk3rWAqj1jC4b7/K7OTvxSImb2oD5NlF+XWU=;
+ b=HlObWMY6NpY47PLg1ev9ZbUf3HHXV6EtTA/s7Z15EdywscR/Zw7deCpDGLouzyazXVWdgm
+ KyXvNuQbx2ljT6vRecgsGHJxB4J8ZMM3ocfyMnPxNtvfqwpUVWJJPqmne00II+T4Qjcq/A
+ bChq0ipTk0GlEkXXZe8WLKA3kc3kPMI=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-376-kQHbwkqQPga5FQCqaNfqXQ-1; Mon, 20 Nov 2023 04:28:57 -0500
-X-MC-Unique: kQHbwkqQPga5FQCqaNfqXQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-40b23aef363so3042275e9.1
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 01:28:57 -0800 (PST)
+ us-mta-540-ITTeChAIP1SSEnjQB8fhfQ-1; Mon, 20 Nov 2023 04:30:37 -0500
+X-MC-Unique: ITTeChAIP1SSEnjQB8fhfQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-32ddd6f359eso2234742f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 01:30:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700472536; x=1701077336;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vWevTP/cS811Dy6gVvwoRlReBAit1jDPwGcQEpWTQIk=;
- b=UhmaqOB1atc//qB+r7Jo/3BWtZQSWo6qDnM2qsxw+qwvnhOUp44SPMFu7yzbJeTsLy
- G5t4ZQ8BY+v1ZfMw8IVUIkkJLtdB1CEHObK7vIF7mm9DyJlWZgajqapG1odcfzXDb42w
- 0p+RiF3pxeRucxhue9jI/h4ONf7Ibzty9tQgM3w2zSiQIzwUM5QJHuRtCH0nJlTVvWTJ
- RsNYufGINd479oiVZaR6si6HJBtmqgQ78LgI7+V6xlqnp5FLrfBOO7oIm6v0h65n//y4
- OyVz9lwTqQUTRAK6gzAKnyWEv+tfa7t+LeV3X2/YNUg8gmKHR4xPUDT7SFmy4dQSngg8
- WDEg==
-X-Gm-Message-State: AOJu0YxfNRdfthp948KbfZtMmATTsZrXkIzqgssACPnuCkgUK19+Sh4c
- mEZc6jCvS3ra/ZQzkwBpztiPkGWrwqIfBk7M/cdjjoLh98mwsKF8awADdh5Y5WsQDt6+eZhdZ6t
- 9JXr9zakniEC8zDA=
-X-Received: by 2002:a05:600c:1c0a:b0:408:3c8a:65ec with SMTP id
- j10-20020a05600c1c0a00b004083c8a65ecmr5187411wms.8.1700472536536; 
- Mon, 20 Nov 2023 01:28:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFGsp8DTbImT3jK95kR8Z/THRmqvrDbRbbw5wiZ2HMbJDSkFdakgbGUyPK0ZppBPhW2g2mc9w==
-X-Received: by 2002:a05:600c:1c0a:b0:408:3c8a:65ec with SMTP id
- j10-20020a05600c1c0a00b004083c8a65ecmr5187397wms.8.1700472536194; 
- Mon, 20 Nov 2023 01:28:56 -0800 (PST)
-Received: from redhat.com ([2a02:14f:175:626e:8b7b:4d17:fb61:4be1])
+ d=1e100.net; s=20230601; t=1700472636; x=1701077436;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :references:cc:to:content-language:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XvzFW29kk3rWAqj1jC4b7/K7OTvxSImb2oD5NlF+XWU=;
+ b=ubhjA3Qtv6sbky606Oot7aXiUanZOE3HHh86t2yh7eBoCAaHnvq2ZMfUBL76XSAbxh
+ CBRjyc0XO7qnkOl+Iz2y4GLtHF2M0Eg5fo+SX8cO9wqlcrTB5T01afnpU1O49ClobI0Y
+ Xu+FO+w5FLajfjvwJouFkH2R4aFRmvRJK1N8pBvOM4VVClQtK+T+mpTxTRovR8B1cxSD
+ NyPcZMql3d7A5p+bGhgvSoUHfgd63M9YszS/nSVb69QYTs6zzDma+ExMoti/CVQz0rMc
+ rztIF8r+jvL+BMu2Fcxu6Zv8GFFE6OuxLRQil7pT//aFJZnyeTIWlM6q1Nt0LxAX5kF1
+ 9mEg==
+X-Gm-Message-State: AOJu0YzX9z5IH8RY7WOWkPdSaVBYTMUX+wskQJbYPD5PDsxOfDlDG+Hm
+ IRV6w12JoBFdhGuD6IKRfUa6V2/1FwtBXLMIu9k4Cuj9KYYDj6ZRKgjfTstpzFsoJl708IjRlfv
+ YUfAwN2PSF1WIkaY=
+X-Received: by 2002:a5d:5985:0:b0:332:c5c5:7847 with SMTP id
+ n5-20020a5d5985000000b00332c5c57847mr2643881wri.5.1700472635848; 
+ Mon, 20 Nov 2023 01:30:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHRqYP+pPaH8UHnG90WWytlsAIEMLMSrXl0Ex4SkLsApxKkEBpQ3Ej9zru1Sxy0D2tfAAJrkw==
+X-Received: by 2002:a5d:5985:0:b0:332:c5c5:7847 with SMTP id
+ n5-20020a5d5985000000b00332c5c57847mr2643850wri.5.1700472635436; 
+ Mon, 20 Nov 2023 01:30:35 -0800 (PST)
+Received: from ?IPV6:2003:cb:c746:7700:9885:6589:b1e3:f74c?
+ (p200300cbc746770098856589b1e3f74c.dip0.t-ipconnect.de.
+ [2003:cb:c746:7700:9885:6589:b1e3:f74c])
  by smtp.gmail.com with ESMTPSA id
- k5-20020adfe8c5000000b00331733a98ddsm7522041wrn.111.2023.11.20.01.28.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 20 Nov 2023 01:28:55 -0800 (PST)
-Date: Mon, 20 Nov 2023 04:28:51 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Dan Hoffman <dhoff749@gmail.com>
-Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- qemu-devel@nongnu.org, qemu-trivial@nongnu.org
-Subject: Re: [PATCH v3] hw/i386: fix short-circuit logic with non-optimizing
- builds
-Message-ID: <20231120042116-mutt-send-email-mst@kernel.org>
-References: <20231119203116.3027230-1-dhoff749@gmail.com>
- <3c44d5a5-818b-46b6-a07f-af655a060032@linaro.org>
- <CAFXChKJrXAop188pTFcU0YNPocn_KyiAXiqWoES2F0_==VyO+Q@mail.gmail.com>
+ f12-20020adff44c000000b003313e4dddecsm10493621wrp.108.2023.11.20.01.30.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 20 Nov 2023 01:30:35 -0800 (PST)
+Message-ID: <0ca6a665-ce88-4c81-927d-6e94a249949d@redhat.com>
+Date: Mon, 20 Nov 2023 10:30:33 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFXChKJrXAop188pTFcU0YNPocn_KyiAXiqWoES2F0_==VyO+Q@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 04/70] HostMem: Add mechanism to opt in kvm guest memfd
+ via MachineState
+Content-Language: en-US
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Michael Roth <michael.roth@amd.com>, Sean Christopherson
+ <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
+ Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
+ <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>
+References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
+ <20231115071519.2864957-5-xiaoyao.li@intel.com>
+ <af2a5b80-f259-45b1-9d92-812e3c4bc06c@redhat.com>
+ <6674dc2c-f1ed-496e-bc17-256869bdeae9@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <6674dc2c-f1ed-496e-bc17-256869bdeae9@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -90,7 +147,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,86 +163,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Nov 19, 2023 at 07:34:58PM -0600, Dan Hoffman wrote:
-> As far as I can tell, yes. Any optimization level above O0 does not have this
-> issue (on this version of Clang, at least)
+On 16.11.23 03:53, Xiaoyao Li wrote:
+> On 11/16/2023 2:14 AM, David Hildenbrand wrote:
+>> On 15.11.23 08:14, Xiaoyao Li wrote:
+>>> Add a new member "require_guest_memfd" to memory backends. When it's set
+>>> to true, it enables RAM_GUEST_MEMFD in ram_flags, thus private kvm
+>>> guest_memfd will be allocated during RAMBlock allocation.
+>>>
+>>> Memory backend's @require_guest_memfd is wired with @require_guest_memfd
+>>> field of MachineState. MachineState::require_guest_memfd is supposed to
+>>> be set by any VMs that requires KVM guest memfd as private memory, e.g.,
+>>> TDX VM.
+>>>
+>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>
+>> I'm confused, why do we need this if it's going to be the same for all
+>> memory backends right now?
+>>
+> 
+> I want to provide a elegant (in my sense) way to configure "the need of
+> guest memfd" instead of checking x86machinestate->vm_type in physmem.c
+> 
 
-Aha, this is with -O0. That makes sense.
-We have:
-  ;;
-  --enable-debug)
-      # Enable debugging options that aren't excessively noisy
-      meson_option_parse --enable-debug-tcg ""
-      meson_option_parse --enable-debug-graph-lock ""
-      meson_option_parse --enable-debug-mutex ""
-      meson_option_add -Doptimization=0
-      default_cflags='-O0 -g'
+It's suboptimal right now, but I guess you want to avoid looking up the 
+machine e.g., in ram_backend_memory_alloc().
 
+I'd suggest s/require_guest_memfd/guest_memfd/gc in "struct 
+HostMemoryBackend".
 
-> On Sun, Nov 19, 2023 at 4:54 PM Philippe Mathieu-Daudé <philmd@linaro.org>
-> wrote:
-> 
->     Hi,
-> 
->     On 19/11/23 21:31, Daniel Hoffman wrote:
->     > `kvm_enabled()` is compiled down to `0` and short-circuit logic is
->     > used to remove references to undefined symbols at the compile stage.
->     > Some build configurations with some compilers don't attempt to
->     > simplify this logic down in some cases (the pattern appears to be
->     > that the literal false must be the first term) and this was causing
->     > some builds to emit references to undefined symbols.
->     >
->     > An example of such a configuration is clang 16.0.6 with the following
->     > configure: ./configure --enable-debug --without-default-features
->     > --target-list=x86_64-softmmu --enable-tcg-interpreter
-> 
->     Is the '--enable-debug' option triggering this?
-> 
->     I'm surprised the order of conditions matters for code elision...
-> 
->     > Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
->     > ---
->     >   hw/i386/x86.c | 15 ++++++++++++---
->     >   1 file changed, 12 insertions(+), 3 deletions(-)
->     >
->     > diff --git a/hw/i386/x86.c b/hw/i386/x86.c
->     > index b3d054889bb..2b6291ad8d5 100644
->     > --- a/hw/i386/x86.c
->     > +++ b/hw/i386/x86.c
->     > @@ -131,8 +131,12 @@ void x86_cpus_init(X86MachineState *x86ms, int
->     default_cpu_version)
->     >       /*
->     >        * Can we support APIC ID 255 or higher?  With KVM, that requires
->     >        * both in-kernel lapic and X2APIC userspace API.
->     > +     *
->     > +     * kvm_enabled() must go first to ensure that kvm_* references are
->     > +     * not emitted for the linker to consume (kvm_enabled() is
->     > +     * a literal `0` in configurations where kvm_* aren't defined)
->     >        */
->     > -    if (x86ms->apic_id_limit > 255 && kvm_enabled() &&
->     > +    if (kvm_enabled() && x86ms->apic_id_limit > 255 &&
->     >           (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())) {
->     >           error_report("current -smp configuration requires kernel "
->     >                        "irqchip and X2APIC API support.");
->     > @@ -418,8 +422,13 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
->     >       }
->     >       cpu->thread_id = topo_ids.smt_id;
->     >   
->     > -    if (hyperv_feat_enabled(cpu, HYPERV_FEAT_VPINDEX) &&
->     > -        kvm_enabled() && !kvm_hv_vpindex_settable()) {
->     > +    /*
->     > +    * kvm_enabled() must go first to ensure that kvm_* references are
->     > +    * not emitted for the linker to consume (kvm_enabled() is
->     > +    * a literal `0` in configurations where kvm_* aren't defined)
->     > +    */
->     > +    if (kvm_enabled() && hyperv_feat_enabled(cpu, HYPERV_FEAT_VPINDEX) &
->     &
->     > +        !kvm_hv_vpindex_settable()) {
->     >           error_setg(errp, "kernel doesn't allow setting HyperV
->     VP_INDEX");
->     >           return;
->     >       }
-> 
-> 
+Apart from that LGTM.
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
