@@ -2,74 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87C917F1230
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 12:37:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BCC7F1249
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 12:40:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r52Yr-0006xn-Qp; Mon, 20 Nov 2023 06:35:29 -0500
+	id 1r52dN-00085S-Mo; Mon, 20 Nov 2023 06:40:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r52Ym-0006xb-Vt
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 06:35:25 -0500
-Received: from mail-qt1-x834.google.com ([2607:f8b0:4864:20::834])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r52Yl-0002KW-F8
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 06:35:24 -0500
-Received: by mail-qt1-x834.google.com with SMTP id
- d75a77b69052e-41cb76f3cf0so25743161cf.2
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 03:35:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700480122; x=1701084922; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5AvudzWa6Ei0wMCuedJ9Zzk7wTdYgjhxu6Ld0CiWU3A=;
- b=ZZxJXAcaXDEp3ADOGKH4tZMkC9zifpedrjMhnKvpjfqYWYk82OGjR9HPO/RI9W0jyc
- 22JWzbQu8Ut6huFpP58MbC3mkdSNsqQcNcpg0uhB5P0xdl+YQrEs9OPgujEbx5SByysH
- dXX8gwtxYPkHj2SPGCvXk6P2tgraPWxIS41Dn11kU2pf55eaeIcCC+bMmLzinHs7zEsZ
- d6ERTByPb/XnPE7SG0eAOQ9/EHtGfLVtAllK/sQBtgFpkyEeRyTIsmHHjrxVLEIiEx9i
- A/aquzOU7JqUJO53iiOpLTXcLInYVV/iLzhqhMG/cQAyS/tIqzJD1EXmU4Ak0Mkx/coa
- d5+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700480122; x=1701084922;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5AvudzWa6Ei0wMCuedJ9Zzk7wTdYgjhxu6Ld0CiWU3A=;
- b=EGHFrw7y44YzAJTeqk+tC8oY+FWMLmS7ufkj5dR9372D66xWO71ihRJonyyfAag+4M
- vAE5aHG+9+iVTrVuDAWSrgT0YQdl10R5D4EUUjuTeIZ00I6Fifox6A+pnIm6k7ErHIAX
- CFfGf91LsC9szEMczyfjiDluKs/OVjPXcCc2TUZv9nF4h+Wz8nIf/0FlTtW853K4664Y
- i/0xjGiz7tMD3ivS1YkO978Nmu+I0kT2WnI+vksUDDxJA1efLl6tfeZlJrZjk1NDR3+2
- SWi/VDvxDuYWtjwgDB8fPP3n/nYkIkZA7uDD0eRQAFkwAccyEX+tEiqYnKI9UFR3tGcJ
- VzYQ==
-X-Gm-Message-State: AOJu0YxM9hECYXjlKPIBsEF+nYvLJY+SRpVJZ0OVAWFhTeOue9LV20Hl
- pMEQ4F3JNxZusTa9Skq2eLEma+uiB9WV7KLUXps=
-X-Google-Smtp-Source: AGHT+IFkO2wbhsHVA8yxBfaZoqgrJ6e0Oi8LM1XhhlFsq6O5EkofxvU7/+6p+Va5tBXC+Uhfm0zKa06Bmd+6my/X1K8=
-X-Received: by 2002:ac8:7d41:0:b0:41e:28d1:c8ff with SMTP id
- h1-20020ac87d41000000b0041e28d1c8ffmr11393624qtb.51.1700480122229; Mon, 20
- Nov 2023 03:35:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r52dK-000852-LQ
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 06:40:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r52dI-0003x8-Tm
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 06:40:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700480403;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=P0sm41N+U+8J2KoKUULEpMS3CZCoEyeuW8NncxNe9xA=;
+ b=H2s/rfVLOsm3PwCaCg4EIev2NMKxj6RjdpFpyWitvLhk7+vIVSxHHq0OSNzvTfy8NvyvHG
+ KnaPo1QkazcrhVHwd3Opm9nQ2WsyE5E+TIvoAJBy5rPb/GBGwQiguTIN1+xr/6Kd/+FXQ/
+ WMoYJzLecXVh/MHyUTxM7ON2wAIKA4o=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-398-x1x1Tg0OOhSHh0n5IZXWiA-1; Mon, 20 Nov 2023 06:40:01 -0500
+X-MC-Unique: x1x1Tg0OOhSHh0n5IZXWiA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B7108811E88;
+ Mon, 20 Nov 2023 11:40:00 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.158])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3133840C6EB9;
+ Mon, 20 Nov 2023 11:39:58 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: Leonardo Bras <leobras@redhat.com>, qemu-s390x@nongnu.org,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, Thomas Huth <thuth@redhat.com>
+Subject: [PATCH] tests/qtest/migration-test: Fix analyze-migration.py for s390x
+Date: Mon, 20 Nov 2023 12:39:51 +0100
+Message-ID: <20231120113951.162090-1-thuth@redhat.com>
 MIME-Version: 1.0
-References: <20231120112804.9736-1-akihiko.odaki@daynix.com>
-In-Reply-To: <20231120112804.9736-1-akihiko.odaki@daynix.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 20 Nov 2023 15:35:10 +0400
-Message-ID: <CAJ+F1C+p87y5b23x87W-rVm8a9Y9UqDiPd_HsfhkGtYffZ3ksQ@mail.gmail.com>
-Subject: Re: [PATCH v2] audio: Free consumed default audio devices
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::834;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x834.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,57 +76,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+The migration stream on s390x contains data for the storage_attributes
+which the analyze-migration.py cannot handle yet. Add the basic code
+for handling this, so we can re-enable the check in the migration-test.
 
-On Mon, Nov 20, 2023 at 3:29=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix=
-.com> wrote:
->
-> Failed default audio devices were removed from the list but not freed,
-> and that made LeakSanitizer sad. Free default audio devices as they are
-> consumed.
->
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/qtest/migration-test.c |  4 +---
+ scripts/analyze-migration.py | 35 +++++++++++++++++++++++++++++++++--
+ 2 files changed, 34 insertions(+), 5 deletions(-)
 
-Acked-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 5752412b64..20b8dd8b12 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -3360,9 +3360,7 @@ int main(int argc, char **argv)
+ 
+     qtest_add_func("/migration/bad_dest", test_baddest);
+ #ifndef _WIN32
+-    if (!g_str_equal(arch, "s390x")) {
+-        qtest_add_func("/migration/analyze-script", test_analyze_script);
+-    }
++    qtest_add_func("/migration/analyze-script", test_analyze_script);
+ #endif
+     qtest_add_func("/migration/precopy/unix/plain", test_precopy_unix_plain);
+     qtest_add_func("/migration/precopy/unix/xbzrle", test_precopy_unix_xbzrle);
+diff --git a/scripts/analyze-migration.py b/scripts/analyze-migration.py
+index de506cb8bf..a39dfb8766 100755
+--- a/scripts/analyze-migration.py
++++ b/scripts/analyze-migration.py
+@@ -263,6 +263,34 @@ def getDict(self):
+         return ""
+ 
+ 
++class S390StorageAttributes(object):
++    STATTR_FLAG_EOS   = 0x01
++    STATTR_FLAG_MORE  = 0x02
++    STATTR_FLAG_ERROR = 0x04
++    STATTR_FLAG_DONE  = 0x08
++
++    def __init__(self, file, version_id, device, section_key):
++        if version_id != 0:
++            raise Exception("Unknown storage_attributes version %d" % version_id)
++
++        self.file = file
++        self.section_key = section_key
++
++    def read(self):
++        while True:
++            addr_flags = self.file.read64()
++            flags = addr_flags & 0xfff
++            if (flags & (self.STATTR_FLAG_DONE | self.STATTR_FLAG_EOS)):
++                return
++            if (flags & self.STATTR_FLAG_ERROR):
++                raise Exception("Error in migration stream")
++            count = self.file.read64()
++            self.file.readvar(count)
++
++    def getDict(self):
++        return ""
++
++
+ class ConfigurationSection(object):
+     def __init__(self, file, desc):
+         self.file = file
+@@ -544,8 +572,11 @@ class MigrationDump(object):
+     QEMU_VM_SECTION_FOOTER= 0x7e
+ 
+     def __init__(self, filename):
+-        self.section_classes = { ( 'ram', 0 ) : [ RamSection, None ],
+-                                 ( 'spapr/htab', 0) : ( HTABSection, None ) }
++        self.section_classes = {
++            ( 'ram', 0 ) : [ RamSection, None ],
++            ( 's390-storage_attributes', 0 ) : [ S390StorageAttributes, None],
++            ( 'spapr/htab', 0) : ( HTABSection, None )
++        }
+         self.filename = filename
+         self.vmsd_desc = None
+ 
+-- 
+2.42.0
 
-> ---
-> V1 -> V2: Set s->dev NULL after free (Marc-Andr=C3=A9 Lureau)
->
->  audio/audio.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/audio/audio.c b/audio/audio.c
-> index f91e05b72c..8d1e4ad922 100644
-> --- a/audio/audio.c
-> +++ b/audio/audio.c
-> @@ -1758,12 +1758,15 @@ static AudioState *audio_init(Audiodev *dev, Erro=
-r **errp)
->                  goto out;
->              }
->              s->dev =3D dev =3D e->dev;
-> +            QSIMPLEQ_REMOVE_HEAD(&default_audiodevs, next);
-> +            g_free(e);
->              drvname =3D AudiodevDriver_str(dev->driver);
->              driver =3D audio_driver_lookup(drvname);
->              if (!audio_driver_init(s, driver, dev, NULL)) {
-
-Maybe it would be clearer/safer to set s->dev in audio_driver_init() on suc=
-cess.
-
->                  break;
->              }
-> -            QSIMPLEQ_REMOVE_HEAD(&default_audiodevs, next);
-> +            qapi_free_Audiodev(dev);
-> +            s->dev =3D NULL;
->          }
->      }
->
-> --
-> 2.42.1
->
->
-
-
---=20
-Marc-Andr=C3=A9 Lureau
 
