@@ -2,72 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8437F0F49
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 10:44:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3509D7F0F8E
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 10:57:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r50oJ-0006Zq-5u; Mon, 20 Nov 2023 04:43:19 -0500
+	id 1r5118-0000t9-1T; Mon, 20 Nov 2023 04:56:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1r50oH-0006Yx-5x
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 04:43:17 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r5115-0000sU-G1
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 04:56:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1r50oD-0001YK-Ts
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 04:43:16 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r5113-0006h5-4b
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 04:56:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700473392;
+ s=mimecast20190719; t=1700474188;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=4sfUYh3YqBTVXRAVqPpqdIE9g7n71Bc4A19Mi6Pn4d0=;
- b=V+wFz/2UNLDPfVSO+xU+3dtNe+O5FKOjcyvtSBHCV1h0BA+j9AZ8B4gOSiF5jNkGWasDik
- tTYz3Tw+FNB9Piz28xnkdJY8RlEF/DJIOvbcfPaUURa+FyGo9yXxg3h0xqTGgL2R0AVq+B
- WnosbfYBGHOqBfmgxhwPO3KX1PHU4mc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=dEPvs5zUA30vlzgnFMPah1MWvle9mR/Bi5uDuqaESxo=;
+ b=KpwWEMks8T0JKH386X3dlGw/pZQPx0J+OcQLWy5K0dVL/lk16akeLppzeN3bgxwkkpcUXA
+ rWUcEvODrOBRvn9DzMYiUBxEpt+mqi5Harpx55mDgcAdgMYXzfChnSH1kkI+Z8ZFJlPNRk
+ 854qt/Ghu3SKjUPdCR4kImdy9REdafA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-266-_ybS7R7OPtyqgCRuTiOW-w-1; Mon, 20 Nov 2023 04:43:08 -0500
-X-MC-Unique: _ybS7R7OPtyqgCRuTiOW-w-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 21E63101B045;
- Mon, 20 Nov 2023 09:43:07 +0000 (UTC)
-Received: from gondolin.str.redhat.com (dhcp-192-239.str.redhat.com
- [10.33.192.239])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C46A02026D66;
- Mon, 20 Nov 2023 09:43:03 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- qemu-s390x@nongnu.org, Cornelia Huck <cohuck@redhat.com>
-Subject: [PATCH for-9.0] hw: Add compat machines for 9.0
-Date: Mon, 20 Nov 2023 10:42:59 +0100
-Message-ID: <20231120094259.1191804-1-cohuck@redhat.com>
+ us-mta-16-Nj6H0qPgNWySMeyF8oS6Rg-1; Mon, 20 Nov 2023 04:56:26 -0500
+X-MC-Unique: Nj6H0qPgNWySMeyF8oS6Rg-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3316945c6e5so1475355f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 01:56:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700474185; x=1701078985;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :references:cc:to:content-language:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dEPvs5zUA30vlzgnFMPah1MWvle9mR/Bi5uDuqaESxo=;
+ b=ARfHxvEgjrvXYGKDE/hbmx4mDPJo0IR5t+H3iIZR6mJyzDIZbSnxzi9vs7F8bNiDGm
+ gzbNpDxDwsFXmWQmGWr9vdyW1rnyjTGmrEMgBJRlFpTnY+Xw9hkyN62/lyR0NRB/hscq
+ jElT74gWvnb+QH16w1GZhnATZmAHML2EjZUxNkboFOpSgFHelfWaWBvlbrrg+aD6WCp3
+ HpjNnXTErc7g8G35gRccMnji2HnI6NdpCMsLcVGP6RiOtSNKz2M4KtrE2adEO4dScCsP
+ vjs3jeMtWwxRN+2CWvyxNbr5yFQFcO/Z7oHREUH/nBj9qazK7Xi0L7QJkbRI8d3baOdB
+ qpXw==
+X-Gm-Message-State: AOJu0YzNuwrOjllYKlPJFdRxT4bUoxHeW0oot3liAVnkPJ8VCsyuh2g2
+ Mm4107Rbd97JWxZprSe9rcttThpvymPgmWxJiuueVqXcoghRAILNBrxP7tuGHBhF5unAg6q/lBS
+ 0WVk5b+13M+LfUY8=
+X-Received: by 2002:a5d:64a1:0:b0:32f:811c:dfc4 with SMTP id
+ m1-20020a5d64a1000000b0032f811cdfc4mr6991876wrp.4.1700474185293; 
+ Mon, 20 Nov 2023 01:56:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFpnJZ/Hx2nrJgxrX20TK/LrLymrojJp92K/gCb8o6TrKS1GuS4ORwWEOVxLz4DjvMroXoMcA==
+X-Received: by 2002:a5d:64a1:0:b0:32f:811c:dfc4 with SMTP id
+ m1-20020a5d64a1000000b0032f811cdfc4mr6991833wrp.4.1700474184861; 
+ Mon, 20 Nov 2023 01:56:24 -0800 (PST)
+Received: from ?IPV6:2003:cb:c746:7700:9885:6589:b1e3:f74c?
+ (p200300cbc746770098856589b1e3f74c.dip0.t-ipconnect.de.
+ [2003:cb:c746:7700:9885:6589:b1e3:f74c])
+ by smtp.gmail.com with ESMTPSA id
+ v9-20020a5d5909000000b0032f9688ea48sm10643493wrd.10.2023.11.20.01.56.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 20 Nov 2023 01:56:24 -0800 (PST)
+Message-ID: <419ffc61-fcd7-4940-a550-9ce6c6a14e1b@redhat.com>
+Date: Mon, 20 Nov 2023 10:56:23 +0100
 MIME-Version: 1.0
-Content-type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/70] physmem: Relax the alignment check of
+ host_startaddr in ram_block_discard_range()
+Content-Language: en-US
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Michael Roth <michael.roth@amd.com>, Sean Christopherson
+ <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
+ Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
+ <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>
+References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
+ <20231115071519.2864957-8-xiaoyao.li@intel.com>
+ <a61206eb-03c4-41e3-a876-bb67577e5204@redhat.com>
+ <00b533ee-fbb1-4e78-bc8b-b6d87761bb92@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <00b533ee-fbb1-4e78-bc8b-b6d87761bb92@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -76,7 +147,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,260 +163,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add 9.0 machine types for arm/i440fx/m68k/q35/s390x/spapr.
+On 16.11.23 03:56, Xiaoyao Li wrote:
+> On 11/16/2023 2:20 AM, David Hildenbrand wrote:
+>> On 15.11.23 08:14, Xiaoyao Li wrote:
+>>> Commit d3a5038c461 ("exec: ram_block_discard_range") introduced
+>>> ram_block_discard_range() which grabs some code from
+>>> ram_discard_range(). However, during code movement, it changed alignment
+>>> check of host_startaddr from qemu_host_page_size to rb->page_size.
+>>>
+>>> When ramblock is back'ed by hugepage, it requires the startaddr to be
+>>> huge page size aligned, which is a overkill. e.g., TDX's private-shared
+>>> page conversion is done at 4KB granularity. Shared page is discarded
+>>> when it gets converts to private and when shared page back'ed by
+>>> hugepage it is going to fail on this check.
+>>>
+>>> So change to alignment check back to qemu_host_page_size.
+>>>
+>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>> ---
+>>> Changes in v3:
+>>>    - Newly added in v3;
+>>> ---
+>>>    system/physmem.c | 2 +-
+>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/system/physmem.c b/system/physmem.c
+>>> index c56b17e44df6..8a4e42c7cf60 100644
+>>> --- a/system/physmem.c
+>>> +++ b/system/physmem.c
+>>> @@ -3532,7 +3532,7 @@ int ram_block_discard_range(RAMBlock *rb,
+>>> uint64_t start, size_t length)
+>>>        uint8_t *host_startaddr = rb->host + start;
+>>> -    if (!QEMU_PTR_IS_ALIGNED(host_startaddr, rb->page_size)) {
+>>> +    if (!QEMU_PTR_IS_ALIGNED(host_startaddr, qemu_host_page_size)) {
+>>
+>> For your use cases, rb->page_size should always match qemu_host_page_size.
+>>
+>> IIRC, we only set rb->page_size to different values for hugetlb. And
+>> guest_memfd does not support hugetlb.
+>>
+>> Even if QEMU is using THP, rb->page_size should 4k.
+>>
+>> Please elaborate how you can actually trigger that. From what I recall,
+>> guest_memfd is not compatible with hugetlb.
+> 
+> It's the shared memory that can be back'ed by hugetlb.
 
-Signed-off-by: Cornelia Huck <cohuck@redhat.com>
----
- hw/arm/virt.c              |  9 ++++++++-
- hw/core/machine.c          |  3 +++
- hw/i386/pc.c               |  3 +++
- hw/i386/pc_piix.c          | 17 ++++++++++++++---
- hw/i386/pc_q35.c           | 13 ++++++++++++-
- hw/m68k/virt.c             |  9 ++++++++-
- hw/ppc/spapr.c             | 15 +++++++++++++--
- hw/s390x/s390-virtio-ccw.c | 14 +++++++++++++-
- include/hw/boards.h        |  3 +++
- include/hw/i386/pc.h       |  3 +++
- 10 files changed, 80 insertions(+), 9 deletions(-)
+Serious question: does that configuration make any sense to support at 
+this point? I claim: no.
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index be2856c018aa..efd503d45e48 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -3180,10 +3180,17 @@ static void machvirt_machine_init(void)
- }
- type_init(machvirt_machine_init);
- 
-+static void virt_machine_9_0_options(MachineClass *mc)
-+{
-+}
-+DEFINE_VIRT_MACHINE_AS_LATEST(9, 0)
-+
- static void virt_machine_8_2_options(MachineClass *mc)
- {
-+    virt_machine_9_0_options(mc);
-+    compat_props_add(mc->compat_props, hw_compat_8_2, hw_compat_8_2_len);
- }
--DEFINE_VIRT_MACHINE_AS_LATEST(8, 2)
-+DEFINE_VIRT_MACHINE(8, 2)
- 
- static void virt_machine_8_1_options(MachineClass *mc)
- {
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 0c1739814124..2699bcba5357 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -32,6 +32,9 @@
- #include "hw/virtio/virtio-net.h"
- #include "audio/audio.h"
- 
-+GlobalProperty hw_compat_8_2[] = {};
-+const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
-+
- GlobalProperty hw_compat_8_1[] = {
-     { TYPE_PCI_BRIDGE, "x-pci-express-writeable-slt-bug", "true" },
-     { "ramfb", "x-migrate", "off" },
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 29b9964733ed..496498df3a8f 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -78,6 +78,9 @@
-     { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
-     { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
- 
-+GlobalProperty pc_compat_8_2[] = {};
-+const size_t pc_compat_8_2_len = G_N_ELEMENTS(pc_compat_8_2);
-+
- GlobalProperty pc_compat_8_1[] = {};
- const size_t pc_compat_8_1_len = G_N_ELEMENTS(pc_compat_8_1);
- 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index eace8543358a..042c13cdbc33 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -545,13 +545,26 @@ static void pc_i440fx_machine_options(MachineClass *m)
-                                      "Use a different south bridge than PIIX3");
- }
- 
--static void pc_i440fx_8_2_machine_options(MachineClass *m)
-+static void pc_i440fx_9_0_machine_options(MachineClass *m)
- {
-     pc_i440fx_machine_options(m);
-     m->alias = "pc";
-     m->is_default = true;
- }
- 
-+DEFINE_I440FX_MACHINE(v9_0, "pc-i440fx-9.0", NULL,
-+                      pc_i440fx_9_0_machine_options);
-+
-+static void pc_i440fx_8_2_machine_options(MachineClass *m)
-+{
-+    pc_i440fx_9_0_machine_options(m);
-+    m->alias = NULL;
-+    m->is_default = false;
-+
-+    compat_props_add(m->compat_props, hw_compat_8_2, hw_compat_8_2_len);
-+    compat_props_add(m->compat_props, pc_compat_8_2, pc_compat_8_2_len);
-+}
-+
- DEFINE_I440FX_MACHINE(v8_2, "pc-i440fx-8.2", NULL,
-                       pc_i440fx_8_2_machine_options);
- 
-@@ -560,8 +573,6 @@ static void pc_i440fx_8_1_machine_options(MachineClass *m)
-     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
- 
-     pc_i440fx_8_2_machine_options(m);
--    m->alias = NULL;
--    m->is_default = false;
-     pcmc->broken_32bit_mem_addr_check = true;
- 
-     compat_props_add(m->compat_props, hw_compat_8_1, hw_compat_8_1_len);
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 4f3e5412f6b8..f43d5142b8e5 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -383,12 +383,23 @@ static void pc_q35_machine_options(MachineClass *m)
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
- }
- 
--static void pc_q35_8_2_machine_options(MachineClass *m)
-+static void pc_q35_9_0_machine_options(MachineClass *m)
- {
-     pc_q35_machine_options(m);
-     m->alias = "q35";
- }
- 
-+DEFINE_Q35_MACHINE(v9_0, "pc-q35-9.0", NULL,
-+                   pc_q35_9_0_machine_options);
-+
-+static void pc_q35_8_2_machine_options(MachineClass *m)
-+{
-+    pc_q35_9_0_machine_options(m);
-+    m->alias = NULL;
-+    compat_props_add(m->compat_props, hw_compat_8_2, hw_compat_8_2_len);
-+    compat_props_add(m->compat_props, pc_compat_8_2, pc_compat_8_2_len);
-+}
-+
- DEFINE_Q35_MACHINE(v8_2, "pc-q35-8.2", NULL,
-                    pc_q35_8_2_machine_options);
- 
-diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
-index 2e49e262ee0e..e2792ef46d93 100644
---- a/hw/m68k/virt.c
-+++ b/hw/m68k/virt.c
-@@ -346,10 +346,17 @@ type_init(virt_machine_register_types)
-     } \
-     type_init(machvirt_machine_##major##_##minor##_init);
- 
-+static void virt_machine_9_0_options(MachineClass *mc)
-+{
-+}
-+DEFINE_VIRT_MACHINE(9, 0, true)
-+
- static void virt_machine_8_2_options(MachineClass *mc)
- {
-+    virt_machine_9_0_options(mc);
-+    compat_props_add(mc->compat_props, hw_compat_8_2, hw_compat_8_2_len);
- }
--DEFINE_VIRT_MACHINE(8, 2, true)
-+DEFINE_VIRT_MACHINE(8, 2, false)
- 
- static void virt_machine_8_1_options(MachineClass *mc)
- {
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index df09aa9d6a00..9b6c1c129f25 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -4785,15 +4785,26 @@ static void spapr_machine_latest_class_options(MachineClass *mc)
-     }                                                                \
-     type_init(spapr_machine_register_##suffix)
- 
-+/*
-+ * pseries-9.0
-+ */
-+static void spapr_machine_9_0_class_options(MachineClass *mc)
-+{
-+    /* Defaults for the latest behaviour inherited from the base class */
-+}
-+
-+DEFINE_SPAPR_MACHINE(9_0, "9.0", true);
-+
- /*
-  * pseries-8.2
-  */
- static void spapr_machine_8_2_class_options(MachineClass *mc)
- {
--    /* Defaults for the latest behaviour inherited from the base class */
-+    spapr_machine_9_0_class_options(mc);
-+    compat_props_add(mc->compat_props, hw_compat_8_2, hw_compat_8_2_len);
- }
- 
--DEFINE_SPAPR_MACHINE(8_2, "8.2", true);
-+DEFINE_SPAPR_MACHINE(8_2, "8.2", false);
- 
- /*
-  * pseries-8.1
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 7262725d2e8a..1169e20b94fe 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -855,14 +855,26 @@ bool css_migration_enabled(void)
-     }                                                                         \
-     type_init(ccw_machine_register_##suffix)
- 
-+static void ccw_machine_9_0_instance_options(MachineState *machine)
-+{
-+}
-+
-+static void ccw_machine_9_0_class_options(MachineClass *mc)
-+{
-+}
-+DEFINE_CCW_MACHINE(9_0, "9.0", true);
-+
- static void ccw_machine_8_2_instance_options(MachineState *machine)
- {
-+    ccw_machine_9_0_instance_options(machine);
- }
- 
- static void ccw_machine_8_2_class_options(MachineClass *mc)
- {
-+    ccw_machine_9_0_class_options(mc);
-+    compat_props_add(mc->compat_props, hw_compat_8_2, hw_compat_8_2_len);
- }
--DEFINE_CCW_MACHINE(8_2, "8.2", true);
-+DEFINE_CCW_MACHINE(8_2, "8.2", false);
- 
- static void ccw_machine_8_1_instance_options(MachineState *machine)
- {
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index a7359992980a..bda3c91efa5b 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -419,6 +419,9 @@ struct MachineState {
-     } \
-     type_init(machine_initfn##_register_types)
- 
-+extern GlobalProperty hw_compat_8_2[];
-+extern const size_t hw_compat_8_2_len;
-+
- extern GlobalProperty hw_compat_8_1[];
- extern const size_t hw_compat_8_1_len;
- 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index a10ceeabbfac..916af29f7c0d 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -210,6 +210,9 @@ void pc_madt_cpu_entry(int uid, const CPUArchIdList *apic_ids,
- /* sgx.c */
- void pc_machine_init_sgx_epc(PCMachineState *pcms);
- 
-+extern GlobalProperty pc_compat_8_2[];
-+extern const size_t pc_compat_8_2_len;
-+
- extern GlobalProperty pc_compat_8_1[];
- extern const size_t pc_compat_8_1_len;
- 
+> 
+> Later patch 9 introduces ram_block_convert_page(), which will discard
+> shared memory when it gets converted to private. TD guest can request
+> convert a 4K to private while the page is previously back'ed by hugetlb
+> as 2M shared page.
+
+So you can call ram_block_discard_guest_memfd_range() on subpage basis, 
+but not ram_block_discard_range().
+
+ram_block_convert_range() would have to thought that that (questionable) 
+combination of hugetlb for shmem and ordinary pages for guest_memfd 
+cannot discard shared memory.
+
+And it probably shouldn't either way. There are other problems when not 
+using hugetlb along with preallocation.
+
+The check in ram_block_discard_range() is correct, whoever ends up 
+calling it has to stop calling it.
+
 -- 
-2.41.0
+Cheers,
+
+David / dhildenb
 
 
