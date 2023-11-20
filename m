@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDEEE7F130A
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 13:19:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3699E7F133B
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 13:28:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r53F8-0005Ik-Rs; Mon, 20 Nov 2023 07:19:10 -0500
+	id 1r53Mf-000802-3G; Mon, 20 Nov 2023 07:26:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1r53F1-0005Hg-7e; Mon, 20 Nov 2023 07:19:04 -0500
+ id 1r53Mb-0007zC-AM; Mon, 20 Nov 2023 07:26:53 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1r53Ez-00019j-2q; Mon, 20 Nov 2023 07:19:02 -0500
+ id 1r53MZ-0007DZ-Ce; Mon, 20 Nov 2023 07:26:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
  Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
  :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=wSIyu1c87+kdw6tqh3o2N+fuPl9pBDaG3HCyjVUszvM=; b=vms439mZQW5qmZgS2ESri4HSOA
- K2t57jO69lBHhbUV9EjbS3HjPPq4JScwSJ0HmkbuTHizgCHZ7YR5uhsYkZZRbHvv4qfSi9Fp2Utjw
- JX/sLLrhOhfTT8KigwzVEtdeKHahX0hgzqg/JcKSu2WLcPTUlqaH/0nj29/yz/BcyffhA6tr7xvZy
- 1lUmSHlrsywwW8lIk8C0kmFdxKoO6LFUpXpvETn66S5Xnw9lBOkS2p6uMSv00Q9Oh8s1K3tU98tPq
- Lls6U8FBKiDYJ9efiHG+M1pvZEeyOGC6uVcbBTG8vaOYUQE09hGgIrbQVqWtSfPOEotQJAcWfAbqq
- 3T7CGvDeJFRKNbxduE+rhT6Ft4AB3Vaai7zGm2nkwEogCD823uo1hANT13L9GmKtz+pZCUSG+Kukw
- /jSbLjHpmp3oTAax4puXemX0gwRVK8mZx+5kWsCwZ2dPraPtUiwS4/0aBfEkeCCXC7JDT2iI2+wo9
- NM1hksj5F/KkwHBUYQO9mT3i6WgFKDvnyQ0sXOa2daaGIwXgbNVYx4SyqNRi8XtOYhJvdJnZ1aBpr
- rjy+h+q3l8pDyR/GhWFdSBKCnPWNbUUXBZJ/Gtw/xT0mKV4s47/ZydIhN6FbYEiD0j5haEuhdn7op
- +t9s5IeAGwD33WS4d+KJUaiFFTf9tmjl+S73q2khw=;
+ bh=PznxGQjgeV4ZuQKQMlsATHq8VUEpcIyxRAMePoe7aXs=; b=RUWb3IZcKFCJZxJYWEeY9dsX7z
+ qborhb0R/pvQmVaPVcqMAMZpIkdaUL2f1o1HupQHC5F9LiI/SNDNLQptmr+UzF3Y5StBYr7sFhENA
+ rFyqjFtXZQTsoBlnWQEJWqSXxQkqCQr08fFTfhYQdzZcEnarxKL6cuQVuvRR72LGl6S1Qn7lPz9+n
+ 9VhJbuSWYFg58Q6iq2FdxUFlua4dRUfK1Xlt3QA3iS1rZU7yiBBIXN2/TfS1MupZj3qA1sCQLgjRj
+ bFUCnYNYaXm2E0exrdyKzfdajv7iiFAGJGoJeyOsVtqQtViowvVZO6NMgAxoDuLKt+3I/CdHebShi
+ qI3T8a2A/DEYugHeXE6mY2lBxAIZLPNnW+A9TfGXZfNZ952L6vq18glZH0ELIC3sYZXc63VbcZTJ3
+ 0WYDknnk2L3J3O01nkHjDHAAwRKJUwk3QV7Qi78d6xYJY54cCPh8FoaPuBsxn1MbzN4JQiabh6469
+ M4joZwPK+y1ZcyjvDvGwDpiqV5L3bIRD25GlgRHALZ1ZK6suKki59T9d7ibPqOc+Iv6nmkupdiZ2o
+ LrAVm8zzzJ8ZshpGC6lbmPxuPHkMxHFX79KaeqejR1PF26XRD+u4rtW7kVZvmT70fOOMlE2RSsps9
+ Inie57HncsTUFkJsuc0OPiYOjKR4neDeEkbwFy2Yk=;
 Received: from host86-130-37-248.range86-130.btcentralplus.com
  ([86.130.37.248] helo=[10.8.0.6])
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1r53EZ-000ByU-5O; Mon, 20 Nov 2023 12:18:39 +0000
-Message-ID: <295aec31-e9c1-49d8-9bea-edad8f7b81e4@ilande.co.uk>
-Date: Mon, 20 Nov 2023 12:18:45 +0000
+ id 1r53MD-000C0T-BC; Mon, 20 Nov 2023 12:26:33 +0000
+Message-ID: <6e7576bd-ac39-424e-ac7e-898c58a6a2fa@ilande.co.uk>
+Date: Mon, 20 Nov 2023 12:26:42 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Content-Language: en-US
 To: BALATON Zoltan <balaton@eik.bme.hu>
 Cc: kwolf@redhat.com, jsnow@redhat.com, qemu-block@nongnu.org,
  qemu-devel@nongnu.org, philmd@linaro.org, shentey@gmail.com,
  Rene Engel <ReneEngel80@emailn.de>
 References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
  <c4bb80e8-e985-b6b2-aac1-f6e8d446b8ea@eik.bme.hu>
-Content-Language: en-US
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
@@ -141,57 +141,15 @@ On 19/11/2023 21:43, BALATON Zoltan wrote:
 > legacy values and with v2 that sets them to 0 but not with v3 which should also read 
 > 0 but maybe something is off here.
 
-I've been AFK for a few days, so just starting to catch up on various bits and pieces.
+Is this document here accurate as to how it works on real hardware? 
+https://intuitionbase.com/hints.php.
 
-The only difference I can think of regarding the BAR zeroing is that the BMDMA BAR is 
-zeroed here. Does the following diff fix things?
+I can't understand why the base OS is attempting any access to BAR 4 if BMDMA isn't 
+enabled by default on real hardware due to hardware bugs. Are we sure that the 
+idetool hacks given in the link above to enable BMDMA haven't already been run on the 
+AmigaOS install when testing an earlier version of the patches?
 
-diff --git a/hw/ide/via.c b/hw/ide/via.c
-index 47223b1268..2d3124ebd7 100644
---- a/hw/ide/via.c
-+++ b/hw/ide/via.c
-@@ -164,10 +164,10 @@ static uint32_t via_ide_cfg_read(PCIDevice *pd, uint32_t addr, 
-int len)
-      uint8_t mode = pd->config[PCI_CLASS_PROG];
-
-      if ((mode & 0xf) == 0xa && ranges_overlap(addr, len,
--                                              PCI_BASE_ADDRESS_0, 24)) {
-+                                              PCI_BASE_ADDRESS_0, 16)) {
-          /* BARs always read back zero in legacy mode */
-          for (int i = addr; i < addr + len; i++) {
--            if (i >= PCI_BASE_ADDRESS_0 && i < PCI_BASE_ADDRESS_0 + 24) {
-+            if (i >= PCI_BASE_ADDRESS_0 && i < PCI_BASE_ADDRESS_0 + 16) {
-                  val &= ~(0xffULL << ((i - addr) << 3));
-              }
-          }
-
->> - Add comments in pci_ide_update_mode() suggested by Kevin
->> - Drop the existing R-B and T-B tags: whilst this passes my local tests, the behaviour
->>  around zero BARs feels different enough here
->>
->> v2:
->> - Rebase onto master
->> - Mask the bottom 4 bits of PCI_CLASS_PROG in pci_ide_update_mode() in patch 1
->> - Add patch 2 to remove the default BAR addresses to avoid confusion
->> - Don't set PCI_INTERRUPT_PIN directly in via_ide_reset() as it is already set
->>  by pci_ide_update_mode() in patch 3, and reword the commit message accordingly
->> - Add Tested-By tags from Zoltan and Bernhard
->>
->>
->> Mark Cave-Ayland (4):
->>  ide/ioport: move ide_portio_list[] and ide_portio_list2[] definitions
->>    to IDE core
->>  ide/pci: introduce pci_ide_update_mode() function
->>  ide/via: don't attempt to set default BAR addresses
->>  hw/ide/via: implement legacy/native mode switching
->>
->> hw/ide/core.c             | 12 ++++++
->> hw/ide/ioport.c           | 12 ------
->> hw/ide/pci.c              | 84 +++++++++++++++++++++++++++++++++++++++
->> hw/ide/via.c              | 44 ++++++++++++++++----
->> include/hw/ide/internal.h |  3 ++
->> include/hw/ide/pci.h      |  1 +
->> 6 files changed, 137 insertions(+), 19 deletions(-)
+Finally is there a bootable AmigaOS demo ISO somewhere that can be used for testing?
 
 
 ATB,
