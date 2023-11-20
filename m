@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23257F1D27
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 20:11:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A296D7F1D2A
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 20:11:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r59fV-0007KH-CW; Mon, 20 Nov 2023 14:10:49 -0500
+	id 1r59fa-0007We-AO; Mon, 20 Nov 2023 14:10:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1r59fG-0007Gd-4I
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 14:10:34 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1r59fR-0007Oc-Qp
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 14:10:47 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1r59fC-0008WI-D0
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 14:10:33 -0500
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ id 1r59fP-00005t-Ii
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 14:10:45 -0500
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AKInAdw010140; Mon, 20 Nov 2023 19:10:29 GMT
+ 3AKInuv4003551; Mon, 20 Nov 2023 19:10:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=message-id : date :
  subject : to : cc : references : from : in-reply-to : content-type :
  content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=HaWalCoaAK4P6kOTFQGn+f3Js3yj5UNNQGEGbXgNMb8=;
- b=Rd4XvfJWnvhoFF2OupXLFKElWHjswUBupmbqI2U+a4kaGhA5+uV5usGmcnCaN72S2sVx
- wNWcZZwsXHpUDyylA/MNGnLoEFmgUuQhldnE8FCyEvUtNYEg+RdGl27jZ/UFqWya0sL/
- ObvF7wAvoT7lxx7bw0v66pwkLANChrSYw55+XjB9HUgQIdSWB5rPOXgVukrZamTZu2Ra
- 4YUr/TQ2I2AI63FTe93ykQ6Ut5K+RQ+Yky/YcLvw+6OYn4Ne2LYN7/vR+3XEPcjV7Qni
- JtnnxihXfRxyTgsBLJ/fFWFVJJf/7lFCJ74nVUJXg+GqTUvoA4tWD2VvwiCpJ+tMpxNK sA== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3uem24uet3-1
+ bh=+NUGIoID7QepFIkrAdJndPxNrs3+aUcwRuzuq4FGj+A=;
+ b=4AOdPrWpqt8aBgkm6MGEsweIjCe38jOaKr26dprAXdOQwnB2uS7t2X80cWJJKnqXH3jJ
+ 7VYMqnHIjJXT4KQJKN8/rO8JHMFXwOEQR+7y9MJTmeQpSWxhWH1/TBTWDffM6qnh2iGG
+ 7KroaP1ofp5DZzg7J7kJSFAVnL/X67PBOv7YWHnScKm1EEyCBJHIndrNPUjMBkI2mPMZ
+ ed8tNb6LNwzjjexPXg/ZvkbgJh0bhIgxVRwBY4PXf0n+OojrM37lMuqaAbly3JneEwyX
+ NxpQjhOxou0sAepFN/RmGSjy2VXe1T9ejBtctl8lFlUXSjSchJb79mKh3IOttP3AXk9h KA== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3uekv2ues9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 Nov 2023 19:10:28 +0000
+ Mon, 20 Nov 2023 19:10:41 +0000
 Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3AKHpjpU002385; Mon, 20 Nov 2023 19:10:28 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam11lp2168.outbound.protection.outlook.com [104.47.57.168])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3uekq5u6e1-1
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 3AKIRZ5l023524; Mon, 20 Nov 2023 19:10:40 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com
+ (mail-co1nam11lp2169.outbound.protection.outlook.com [104.47.56.169])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3uekq5twnw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 Nov 2023 19:10:28 +0000
+ Mon, 20 Nov 2023 19:10:39 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mVagIadJDE2Wz8Q3WeT9hu6vqg//CLxI3sVrVh0r2WW7HlbVznQ4mFRdT6eTY7odom57brLz7ByU5utCfImuasSrk2KMt71pEsXmzKBzi2qsb45CnySXci9VPlvs2zFZ/X91L22CnVYhiKcO+gJ7Oi0/hXfMUygmpQeV0EZXxKvKe1bPHcaEnsRsZgWtCgm/SZhXSRhCv/+EW+xObTXEF3OS4W/e19BEnzZdAgF8V2xBJgcIEMnXfuQEnYS4FWraxLcuV6+N1QA4eknKTP61j7b4PWvPwkVfkNqb0+VCR5q5mzHVGV6/IogPYapFYz3dLfEnRA8nrp6YVS0D3IjzUg==
+ b=LNBA5k6kUl7ZiMXvd8HwXknp1jKC8ZOqqvotTU+WG+f14bNDCZD/bhh3ujqqQ3c1jYlAAtgWgCdkMDfKWRHJnoJwOs9Dmwm7ana5gIYgdreL6FpscpmLo4zJ/0f+Eg1J+JLAQoxAdWeP216e7yjKZxqS9np39RBTfIshvrFOfa4KipGMGHB+BTAR0FAX1YZFACcr8Xhu7xlXKknRWCQQSg51QlhFZZXI7Xty3c9MRZCFoAtakiTtgPcBzKyJ+ycFGQ50URnDIWBXqaqs4bdN6ey1z6mUGsIQ4nCGJLBmTYWm9A/YMZG3YQjXowBOnmdtg9i2AgSTsQzzw0P/K9/eHA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HaWalCoaAK4P6kOTFQGn+f3Js3yj5UNNQGEGbXgNMb8=;
- b=X+6xQyqqrIsa6sEnPx4VkZvnPmxZaaE0hrN7FRyPB8MTZ4aSFXYWAyjwt4eirDpYGiT9P9IdEn99TWr9Fz/6PUAXpMTrj86w1nC0ol1J0z1e9x2FYO/irCi1kTM1ddB3PdW79LpVmBugz+NYsSKfvgF5kd0PACJMpoLyfpfMQT1JDwGEqjRxLxQNulvxBrzZWQ7KCh7A6XnGQgGO82EUfdGXjPBVeuiEQ8dpSD1A3pk9sEebS0gACm57iV6m6sLWpzpCsZKp+bw8jEfil2IMvc14sDAkZI+HILxdbHQBq5e+b1zECdvd2WHlJ4BR6wORK4r1Xofmxc+UZvFSm7PztA==
+ bh=+NUGIoID7QepFIkrAdJndPxNrs3+aUcwRuzuq4FGj+A=;
+ b=jzB4j0AFI9c4a/OhfVFVXZkqUXEZuK+ilAQtgLjWeT0ibrLDZdUBsW+39Giz2Pn597a3rwHZMqcLyxIgdzCGlWbJQ6N/tSc6Lk4mMpP8Fy8tWMvm9cEnn8QJnmjpfbKQ+JmhC16Llswf83EF5biOjbW93ZE81M6A3ajCXMFZiQq/8xWDL4MWKNYhZqYPyGKXYs5KSlPzQiD8OaU/YtDIDmlgUFxzTbcChA7iS7vIhUwZWoJvxDbVtO4ap4P3VdenarCIVG9ahQpaRaIvunRwj4yhSw/9uzhcMHM31tG7dtYhHoWFlWW5Qy9vHItzhmzkDhRTW3UTEaPuDhPzr1ATkg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HaWalCoaAK4P6kOTFQGn+f3Js3yj5UNNQGEGbXgNMb8=;
- b=u1r6HnymacRmOoypzp+PZAL30eLYgDnATU0dvIDrl7gxouCTKGSBR3uBkcFjeyfhWea+tUYtofZ0OY1ElDPFJE+tPyGeFynHnB9vWcMxBWR3I7wXMeEqE4z4eCXYAUX7znP9/AuesiWRxg01j3iSpsZCClcZnsuPwIodZTE57+4=
+ bh=+NUGIoID7QepFIkrAdJndPxNrs3+aUcwRuzuq4FGj+A=;
+ b=TAbM1EaMZz4whW/Ps/cqIInWUFGf7sU7IarGZijUB0HTBnvf6bk2XM4U0jDeEyO8XoEmk6pFqzDWEBOAn6Qro2ep91RL5nmzPEiE3W6fAA0A0idMdYu7Mz+AVV4keLc1/dGiQwQ4EqOsv4NpDfYmySnkjcJiL+WPW4HCT3tT848=
 Received: from SA2PR10MB4684.namprd10.prod.outlook.com (2603:10b6:806:119::14)
- by SJ0PR10MB4606.namprd10.prod.outlook.com (2603:10b6:a03:2da::12)
+ by SA2PR10MB4777.namprd10.prod.outlook.com (2603:10b6:806:116::5)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.19; Mon, 20 Nov
- 2023 19:10:26 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.27; Mon, 20 Nov
+ 2023 19:10:37 +0000
 Received: from SA2PR10MB4684.namprd10.prod.outlook.com
  ([fe80::d609:b162:ba7c:4e96]) by SA2PR10MB4684.namprd10.prod.outlook.com
  ([fe80::d609:b162:ba7c:4e96%4]) with mapi id 15.20.7002.027; Mon, 20 Nov 2023
- 19:10:25 +0000
-Message-ID: <f9907360-54d1-4196-922b-2f8bfc123fd0@oracle.com>
-Date: Mon, 20 Nov 2023 14:10:25 -0500
+ 19:10:37 +0000
+Message-ID: <642d3b7a-20a5-40e6-a971-370553ad10a3@oracle.com>
+Date: Mon, 20 Nov 2023 14:10:36 -0500
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 02/12] cpus: stop vm in suspended state
+Subject: Re: [PATCH V5 06/12] migration: preserve suspended for snapshot
+Content-Language: en-US
 To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Leonardo Bras <leobras@redhat.com>
 References: <1699900440-207345-1-git-send-email-steven.sistare@oracle.com>
- <1699900440-207345-3-git-send-email-steven.sistare@oracle.com>
- <87il5w5x53.fsf@suse.de>
-Content-Language: en-US
+ <1699900440-207345-7-git-send-email-steven.sistare@oracle.com>
+ <87a5r85m3e.fsf@suse.de>
 From: Steven Sistare <steven.sistare@oracle.com>
 Organization: Oracle Corporation
-In-Reply-To: <87il5w5x53.fsf@suse.de>
+In-Reply-To: <87a5r85m3e.fsf@suse.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: BLAPR03CA0155.namprd03.prod.outlook.com
@@ -93,78 +93,78 @@ X-ClientProxiedBy: BLAPR03CA0155.namprd03.prod.outlook.com
  (2603:10b6:806:119::14)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PR10MB4684:EE_|SJ0PR10MB4606:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7d7e6f46-594b-4549-1719-08dbe9fc5a35
+X-MS-TrafficTypeDiagnostic: SA2PR10MB4684:EE_|SA2PR10MB4777:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4542a4b-c5d3-4a79-aaae-08dbe9fc6101
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: qOlb9C5AsGMNiPZ1aGsMsFMZBN0jtUakAiy/ig0uBt8LsgAKYOd5ICK4zzo4U1vZx0eaDok0a9xe6e/AOvRAmIHk5vqO6gQ82FLfC9kthj4T2tBZlDCf4FOmHtV8kIXvjG09wNa69LwHTqim83SXssi1OyDplGyI/WN1JnuxSBxylU1htxNi1RD+cI3kqb6mmI75U5KBkMd67IVWAfb5KazYzj/xSpiy329wDbPOILnz/nmFig2oWniSB88a7UFlsoFXHPjj63dlIWVH0bk7eC0JUAJAITsozzSyFSW6bvedAfwmDU5ZCryJB2OTBWaEgOqeinbtd0JjqqmI+Jejt+KLvc5YGwFIMVif2u0Nx7jHblT48DFIMJB8tQaVbn6DxVRejp+pz0Ik3vePLiNPSKi9uMZ3+3nuhfO4SVq65HrJqPtJgpHr4sZP0vX6QWFewXj4ybP0Zt2lEKs1ymEG1iJOxs94S5rQmRGKSf1Gu1BZAMFvqvsSw+6bl61R89eaKw27QlGwv9GyFQ69bk2EmsNm1aWjI5dBg+V6rnLYC0HAtTPnYFc/eyIX3UTk9OVI2f6Kj2pdy1aTvDlZNGLGE0pIjEvo9SChjAXd8MS5cTZE1l7w7U2o/JifN82xKG6igSb0Oo1R7AE+0sDSuoSaiw==
+X-Microsoft-Antispam-Message-Info: sBttStVY1aFp3SOhXoeVixBdIT5405o1cmVFd1v0ioeeaTNn48F94fAjqtyo8dnUK+dUepGrhCqNiSXuy/SCZYcXiUiz73tclgXINHU7tJvTgwDgSC6iGWyrlNdDRWUOpcIIA+yYzOgO7bBabvPRhofsVil776OtLj4UIIDdZalln3WRgYKD9HYKCDCalGU5d017qi/wy3lNMZySN6NsYXt/U3rnDmhLbzhJmEXu2JFKuSDlyQpSBivAwt82ZPBHTwF3HKcZBJIFZ5+NHHSDUsPjmWxcaaoBZXlfg6F5hI+rB+a59hMdeaeERHBEMU/mHlNpq2xO6vgFu8AmTw0DUaR41zrxvG60IF2xvTYXMfDCyc8w3j1b7o3X3dCsXXmxz8Mg5mKAaaVsmcoCd2djeTQs5dDdCYDFeEVgEEsiriOB6JOiDPJHgl3rkJgLIOONqZjKe2n8dmsISp6F5rUZ2dPdEiQnSocymorHdlrajzPNUGSf4AUS35Cx/pL8lKoR0QhU7/8G60C7tfh8v9BeFefM+uDywlmzyd81WR+a5Rtm65J6li1l/6bkmY+B9agevOFCeagjVfhPoWvRJOC/20E9IxIRCNK4DLXwxAVimMLrdmofIYSY/oqaybHqCieNg0Iidzd5A9Y8UoFvev9Mxg==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:SA2PR10MB4684.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(39860400002)(376002)(396003)(366004)(346002)(230922051799003)(186009)(451199024)(64100799003)(1800799012)(66476007)(15650500001)(2906002)(26005)(83380400001)(5660300002)(41300700001)(2616005)(31686004)(478600001)(44832011)(53546011)(6486002)(36916002)(6512007)(6506007)(31696002)(36756003)(8676002)(4326008)(38100700002)(8936002)(66556008)(86362001)(66946007)(316002)(54906003)(43740500002)(45980500001);
+ SFS:(13230031)(396003)(366004)(346002)(376002)(39860400002)(136003)(230922051799003)(186009)(64100799003)(451199024)(1800799012)(83380400001)(31686004)(38100700002)(5660300002)(54906003)(66946007)(66556008)(66476007)(15650500001)(86362001)(31696002)(8936002)(4326008)(8676002)(316002)(44832011)(41300700001)(6506007)(36916002)(53546011)(6486002)(478600001)(6512007)(2906002)(36756003)(2616005)(26005)(45980500001)(43740500002);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Z0xkVEtTRlM2WjN1S0xINm1kYTErbXFRb20zSnhxMXFzSEFMTFJOa2JEYTVX?=
- =?utf-8?B?UVR2MkFCdjBhMDRtU2d4dGNzUnFiZEo5Nzk2ZHMwaUMxL3pTZVowbkdnMGtD?=
- =?utf-8?B?SFVycVl1SkJibHhWb05TcTQ4dHFYOHphQzNmWkFDRmsrQXQxZXByYkg2bVhC?=
- =?utf-8?B?N3NiSHJGN1RhRWRQcVQxeFVFaXMrWnVaYThJM1RvUGt4dGtiT2xKZ3F6c2I5?=
- =?utf-8?B?VU5XRFZRM2VyYkR4V2ViajdudzZmT3Z3UXBSaW1NZ24rMUFaQ1RzMGtReUdN?=
- =?utf-8?B?Q2twU3FaeVJLbmpzcmJXWHFBNlBzcUJNN0tiZzBmdEY4MndCUy9IUEswbjNF?=
- =?utf-8?B?R2RNUzZhYzNzc1FOWG5VUnRFc1UwaUdDYnFvYTBVdithb1ZFMFBBcE03bDhL?=
- =?utf-8?B?NUErcGhGYnlac3RUWUJTWERYVVY3b1QyRy81ZTN2ajllaEgwbGJoNzM1Ty9N?=
- =?utf-8?B?RXk0Z01PdG1PcUNDakgyR2FYV29LZDcxL1kwWlpKbHRocmsxb1NTTFlVY2p3?=
- =?utf-8?B?L3Q1TnU4WWZTWHBVVTdsSmFTYjhGYjlzeG9GZklxY2pXeVp6clFCYjhiUGlG?=
- =?utf-8?B?Yzl1YkFEQ1VPU042ZE1EMU84ZkVUaURLYm1XMGpBS0xUWnJNSVl5MVpQZFhK?=
- =?utf-8?B?Tmtpb1dPVHZhZVZtSnFUS1AwRTIwUzY1ajR4U2d5ZUYyQ2F2aEI3RE5NWjM0?=
- =?utf-8?B?TTFBWEp2Rk14WkZVNHl1bWZkQUlRcW5OY200cUc5dUZCQVVtMU1wc3FYUm5R?=
- =?utf-8?B?V3I1TlZNNEdOSjVpV3BsTWlicnFhd29oQXIrZmUwR2FDMkx4QXpCRWpXTWVV?=
- =?utf-8?B?TFN5Vi9ubUdudFZEaEZqWWhhMkNrVWU0WEIxTVArVVpiRTdISGxsdzlQN1Fm?=
- =?utf-8?B?cGF0Z2trbjVBZS9PQWpjYnlRS1NYaXplZFd4OEdOYklpbTh1ejBObndzNVNp?=
- =?utf-8?B?cjRaK2xmcERXd1RjYXR5QVA3M1hqTnByL2g3VXI0TkxQRWJNNG9taXlZZDho?=
- =?utf-8?B?SjIyRXdkYTduRU4xQ0NpRnlsc3dxU3JLOHVKYmd5d3hPWjdhU1RBOERBNlNK?=
- =?utf-8?B?aUVmSm40Wmo0VmgzQzhSN2xRWFZPTGdpQTAzMjF2dTl0U0JkU3FYRWJkb2pp?=
- =?utf-8?B?Nyt6Y0ZzSlBVaFFvWTJSa0dHTkM3YzU3R0QyNE5HQ1hJUVVPNTk0TW14bDhT?=
- =?utf-8?B?WHQ4U0NtUWhmTWJxQktZVXhQcWE0d0FpNWRGWWNZUmF3MmxEaE0wSVJmRnoz?=
- =?utf-8?B?SnlNWWRLTlN3RHpjck5rOTVZb01VVHFRczJTeDAvaC9MMlk1L0pTRU9CTDdL?=
- =?utf-8?B?OW13dzhNTDNQejMxVUtWMU5ObHk5cXV0RFdjRi9ETVFISUhOQXVlTlpQSUxt?=
- =?utf-8?B?Uk5ianB4L01vNGcwSFFxT1d5UXZFTGVBVkhrTFFFc2FFQkkydklOYWRTTW55?=
- =?utf-8?B?NHBVZEYveEpOTkhLMUU5NDdtd2pYRjJvd1NZeXFhQm95eXkvN0NtRmN2NWRz?=
- =?utf-8?B?S3MxV1NlSmdyTVBidVI3cVFVVVRkYzhkV0RMa2VIaUFpZE5ia3hLUG9PaUZ0?=
- =?utf-8?B?dVlPQlBaRlVHMGxQclBHNkMvNFM5ZG9paldpZ0dnTG9qajNERWZ6aUZCYlpv?=
- =?utf-8?B?Skltb2tIdys4M000OU5aS0RTTU8yNEtMcjFOVEpXUTBnNERvTTRkd09RRngv?=
- =?utf-8?B?VmFOenA5WVVoNTFWSEZva25Ldy8yVFhtcllKSjcxWlRFdzdkUjBQVDJOc2Ju?=
- =?utf-8?B?My83eUhVQUFPb0VVcjZxZGxkVVhlVnFNU25uTEhwQzhEU2ttRmNPd1pJQ1JM?=
- =?utf-8?B?dy96T0RiWmhLKy9WVm5mdTdFVDhaR0ZyOGRLam94UVBwaEI1QmtwbVIzblJl?=
- =?utf-8?B?WFUxV2lrdFdIOWxqd1NzKy8xQ0VvTU5veFl2TWZRalpSdGM1SWZRT3FTbm1O?=
- =?utf-8?B?cFhLajFoOUNneFBvZUo2bm1LZUorUjRadXpnZ29LWC9nWFdhc3IvSmltTi8r?=
- =?utf-8?B?L0tLaXpicWsvR0xOczJjU0JQRlJ6cWdIQUhoYmxxN0ZLaWs3a2NvUmdPSEI4?=
- =?utf-8?B?S0ZFT1l6empOWkFPMndFbi9YUHQwOS9tdXFtN3p1YnkvWGZoNWtVQUE4MEVs?=
- =?utf-8?B?bWdLdU5NOGRFcS80b1lIM212YktVQ3lqRjZuZnR0VVpuSTc5RVI5dUZWelF5?=
- =?utf-8?B?dFE9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QWJuMUtMbUtQa0dJeHovN3J4STVFVTJRTzJuOGVBYmVTcHhyQ2E4N0JGbWs5?=
+ =?utf-8?B?cEczYWpqWURyUkQyMTJPcGs1QlBycERkZWIzS2F6bFhZRHlwNjBScFJJcVdN?=
+ =?utf-8?B?RGdXN1QyalZPc1cwMEkzcFVRd3pia3UvREVpWFd2cFVyb1A3ZzhNc2FsNm5X?=
+ =?utf-8?B?VnNEWUVkd0c0TjRsU2ZrK3czczVvSUJaNlI2ZVRpQlFrNEZyUStIbXY3UUta?=
+ =?utf-8?B?Zk1RdnFTYTl1R1YzNDRPbTZlUVdmRzRzeHJQVEVTSDhQTEw2MkZQK3MxS3Ju?=
+ =?utf-8?B?YU5TNi85QUJmTzAyNU5uTHRwRmRlNjBlYjJIdUlqSDBveFY1VDhQNXh4VU9O?=
+ =?utf-8?B?RG13MUFLcmlWVkxtT2todFJMcy9TUEpZbkJ4SFJWMnl1ODRVYXVvdjc4enRp?=
+ =?utf-8?B?OXkzaFpVSUFIOSt3bHluNDlLQm51SjVXSFV5TUtSNXRhOU9LOG5aQ01SVXBM?=
+ =?utf-8?B?SVdaUHhqRjQ0UjZacWh1UjAzNUNNSEc5VUk3SzNsTFQwRXhvL0M2UGVhRCtX?=
+ =?utf-8?B?cXNGbXBHakJCKzF1TllFZWJ0UjRNNWNrOURYNmYva2NHbDEyd2ZjUHh5T2pq?=
+ =?utf-8?B?dnp1YkRBc3VuZ09jOWdHVEdXeGdMRVUrOUNuUHJLMGVwMHM1VUZ0OXR5bHJE?=
+ =?utf-8?B?L3VqZTh2bHlaZ3ZvMzM3Ni8waXRKdVhTbDM0dk1pYUpZUEZ2S3JYSmQ4Qjlq?=
+ =?utf-8?B?VUtzMHdWbG9UT0cxeGY5ek9YaEVBeC9WcElITFNEQVhGcVVseUx5NytyYmRW?=
+ =?utf-8?B?M0svSGdvS3lnbFB4V3lTMzhEYUVGSmt1Vjc2SFp5NTJsVWJiSTlzVDgvVlgx?=
+ =?utf-8?B?WXdnRC8vOXBLT2NXSUxzckJ1aDFqMDR6c0x3ZWNycUFab0llMVRTSUVMSFhS?=
+ =?utf-8?B?UFBDMnlXZVVGUE1zeDhLbHhhUm1oenpRN3FHQUFzeHhxMFdGU2IxbHlHR1c3?=
+ =?utf-8?B?RXlQL3ZrcEM2T2hFeGpsL2kxVDFxbmlOTUtIMFJnRFJFQ0FvaFJDVmpvNEV6?=
+ =?utf-8?B?MG8rY1VkV3B4TVlHQ2R1VzBoUmZuZDRpUENCYzJsYm41aWdaUTl3MmlLUStm?=
+ =?utf-8?B?QWVTODdETXYyQmtrY2VFQTZkY2Y2MDlNRi8xNE5sc2VrTVkzS3lUUFZncmp4?=
+ =?utf-8?B?VVpEcmNpSHptWnVoc2YrUVpGb2xKWkNiQjhwc2ROOVN6L3pQWjQxQkVaNmZi?=
+ =?utf-8?B?TmZlVlM4Qy9hanl1cUtOc2F1ck5ValhaRlBjUGdLaWY3OFozQW9tTHlud09w?=
+ =?utf-8?B?ZEdTcTd2RFVwRWd2QjQ1cXJrS1V5b0R4b2MzSlIrV25JUkxxTStRdEh3VnFj?=
+ =?utf-8?B?K1FYay9pSXg4a0RSNmVrVUxZVzFnejFRbHNhVGhRTXNRTlJCbEtwR3VTNjhL?=
+ =?utf-8?B?bGlsd0dYSXJvMG9tTjM5MUxiZDBIWVA2RGJ4dDZOVDNSai9sVE8rb2lkbkxn?=
+ =?utf-8?B?YUpsN0ZPQTdtUHB0UDAwd2FEMnIzTjBNYjczOVpIN1VQL3daRW43M0ZjRW9I?=
+ =?utf-8?B?OFlQV3V1bUkwUkxVZDg5eVRLbTdjZWhRRUFJeEhGMUJyVVFERUs2OEFOdmQw?=
+ =?utf-8?B?ZnBrS1hUSThrTytwZCtqQUtiV28wL1FoaVphLyttUDlNNE5ySHJNUm5kdlJR?=
+ =?utf-8?B?TUxNaWdmc0Y1TlcwaFovWHRkVVlCUjk5d3Z4S1RjelpBdE41d05JWDV1Zk5Y?=
+ =?utf-8?B?c2tVTnAxNk1JanNnRHZKTXQwU01QWXM0RXIyMjN5dm5UUmZZV0VmU0h6c3Rm?=
+ =?utf-8?B?MUQ1b3dJWVdLcENiN09iU2Q3cEp0T01zUnN6YWVMTkM0Z0dnMGt6bnRtK3px?=
+ =?utf-8?B?M09idG4yaFduMFJtb3hKcU1Gc3c0S3FYT2RzSVkwTEltandjZVBJUENYR0sw?=
+ =?utf-8?B?VUpSOTU5OXFJcWh6Q2pmUHVUKzdiY3F3MkhheTZzUmtBQ3JBYzcrb2svc2Zz?=
+ =?utf-8?B?SHhaTFlxUXQ1dHJ2MjJlblY0WG14M0JsalgyZnNhS09MQ3ZFS213SUFYTmxM?=
+ =?utf-8?B?R2RlNXhOU1R6VWhNSFdicjM0Z3d4VW05YnlSMngzWk9sUDl3RXRYV2l6Q21k?=
+ =?utf-8?B?U0xOaWxaQWVzSUs5d2ErK2FBYWNrc3BHQWFsYmxxOGU1TFdHd0ZUWWJDNUtX?=
+ =?utf-8?B?QjQ4K3hHNkpURDNlaVhSbTFmM1RJcTFnTDFnWWpNQXBFa3BVbGRMWVdCZnJL?=
+ =?utf-8?B?dVE9PQ==?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: DiY9rhqvpKqbYJffD2V+Am4XEazFg4kQCpguyiNWN4URedXkUCSy5PDfwlvusjMt8oekomAfNj/xHpe+uYQfaaVBlWh6mbVLuPU03lCpPq2ZqrQavrAJaFmDA+GAI926iIubd033x5y3Q4rZ/UGHh0fMPYuDKTfAOTl8UI76F/cBP90J/fCchW/UIj2oxZzYhbcJt18QmFb9lH/qlr6qCt0p1l41TEkhy0Fyih+XBE91JOL4IVI9ix3xu6cqzjfaBtu21bEwRu7sZfBufglVbbgY07G6XaE99fuf+KphtRJ6MAN/SBABt1rk87Ui766YkxXxu/822i9DrLYlI8/p+ncdA2e5Z27hcqXmLnBsy1PkG3vcCDGHtgLPkiV/y9dYWKFzzBsYIGRQL74LVmYLm6C2K09WrmTc+w64Co81AGfLn6oqqFfZtXTyG6xs32Tjgq2tvxGR3ip9GziXF4ZosUA7PRnQCcChFqw5XxfWC15Nlzfmovs34/8aeXrfDaXYPNgT2ed2OI6LJMgzHuFoLh1pQQhoWTh8owSPo85COjdrhnR9iSqp21J45PNet6oKjdSEHMh2OmW0ni4Jk4+ww3m3xYoG5ltFFjFHqggZkM1jFaVMHKmO45GQdLOezSkpE7linQUoEsCZNCTe7xmJs5cZZkvI3F85O7umC+qQ+7MpJvzW/Pf0UvRBr6rfGU3BjE8J+36lYVdgrt9ET7f0KgA5ghW46zy1iegkVgoKKK7VI0NJTrCC5nb4ltN3BIGIT18P46AC9uJWJG/QNlPI+Bj0MegAeI1wKhPUkV3zpG0=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: oT33XIrO+WIW9760NGOqrSOF8mV0EcWH1mPxOYlXKLZUf4VHqXB27lzF6DB3FAs8EMqxkWF5ksJPlpqg5goE6HEW5hsiQBF+9FEATrVfjr00RENPpYzqln1+HvH9oo9Ev7BaO6VvFJ6nAtNderUvcRSXuqLRNJRqjjna9hcYuihRH4RB1fyqT6iDX85chis/I5EUHqOcr5SW9O9OvF+AH2DEfqMiIyKbewS7LFTB1N4tVSQyXNBrPpdxISvZQbl22r+dtupp/RaExjCazNphS0H+6SovKh4R0vfMWl1nvFd/+9nuIrpkxR1PBldJ953iB0fIcT4VSYPUJV9474godSmQdLy84uT1km7jcWgueuzs/Rp+kA+sip4eEhTpvZFzXs6omCngjFOTgtFufQbss9st5KeqZbPynZxE2Hw6WD6ofJdaKePZ1TOVaInNYoS5JgSLdaRqJHhZAh8+QVIZRsuJ53pMsKrnTUqAkA5YdwxuRm81xCN+YIKgdG6UhF18uk0Kj5zL23uUlZ9GSX0ZgbShTgr6qP3mynCKaQYd5vexCqzD93DIhUSbntISUjR/sASZzMZOfhl03kNxxrVOLAUp5MCgxcfDEZNnYSw6T2ZdlU0TAjJMmvnlhAyhNl4vNCeC7kCCuxv7lRxeg9cVD4p7dpR8370tpNEaU43zYTDhPQWEeTvl/0p/2vF24Ij8pA94GWRtlB2cWgKDLhNe1lOAnv50Ba2HKGjUwK4JMaW0PT8omHdPPvDZFUot2244ZSZ6eOJRhzgSsiA//sAqpIeoAl4MT67AVdH7aL1W9NE=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7d7e6f46-594b-4549-1719-08dbe9fc5a35
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4542a4b-c5d3-4a79-aaae-08dbe9fc6101
 X-MS-Exchange-CrossTenant-AuthSource: SA2PR10MB4684.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2023 19:10:25.8397 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2023 19:10:37.2890 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5VkicDTfO9jvQ0bcXOy2dmoUwWrHGUvJD+U/uBl+iTxsGpENYM/eLJ/qf5a3jsjKrll2j0K4xsMByqBCjh6LEgnL/wG3/vi4L3DYDgbIAsI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB4606
+X-MS-Exchange-CrossTenant-UserPrincipalName: L1HHC5VpJluHKIlNYe2GAZXfNs4eIxSWmVchMFAgN4HYMWlKHbM9Ext2/YBRTv2u6ejumypIwAWu3GP0kOQJOsVFGbmrbWCS+CGwHxqlE18=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4777
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-20_19,2023-11-20_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- adultscore=0 malwarescore=0
- spamscore=0 bulkscore=0 phishscore=0 mlxlogscore=999 suspectscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ bulkscore=0 mlxscore=0
+ mlxlogscore=999 phishscore=0 malwarescore=0 suspectscore=0 spamscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
  definitions=main-2311200138
-X-Proofpoint-GUID: q4hGPx3P-cqG4EZbBXNRpdCRYEMi1oKC
-X-Proofpoint-ORIG-GUID: q4hGPx3P-cqG4EZbBXNRpdCRYEMi1oKC
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-GUID: -HZlRyMtIopVbQwTgkqlevVhpF-xiLb7
+X-Proofpoint-ORIG-GUID: -HZlRyMtIopVbQwTgkqlevVhpF-xiLb7
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -188,96 +188,247 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/20/2023 9:15 AM, Fabiano Rosas wrote:
+On 11/20/2023 1:13 PM, Fabiano Rosas wrote:
 > Steve Sistare <steven.sistare@oracle.com> writes:
 > 
->> A vm in the suspended state is not completely stopped.  
+>> Restoring a snapshot can break a suspended guest.  Snapshots suffer from
+>> the same suspended-state issues that affect live migration, plus they must
+>> handle an additional problematic scenario, which is that a running vm must
+>> remain running if it loads a suspended snapshot.
+>>
+>> To save, call vm_stop_force_state to completely stop a vm in the suspended
+>> state, and restore the suspended state using runstate_restore.  This
+>> produces a correct vmstate file and leaves the vm in the state it had prior
+>> to the save.
+>>
+>> To load, if the snapshot is not suspended, then vm_stop_force_state +
+>> runstate_restore correctly handles all states, and leaves the vm in the
+>> state it had prior to the load.  However, if the snapshot is suspended,
+>> restoration is trickier.  First restore the state to suspended so the
+>> current state matches the saved state.  Then, if the pre-load state is
+>> running, wakeup to resume running.
+>>
+>> Prior to these changes, the vm_stop to RUN_STATE_SAVE_VM and
+>> RUN_STATE_RESTORE_VM did not change runstate if the current state was
+>> paused, suspended, or prelaunch, but now vm_stop_force_state forces these
+>> transitions, so allow them.
+>>
+>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+>> ---
+>>  include/migration/snapshot.h   |  7 +++++++
+>>  migration/migration-hmp-cmds.c | 12 ++++++++----
+>>  migration/savevm.c             | 33 +++++++++++++++++++++------------
+>>  system/runstate.c              | 10 ++++++++++
+>>  system/vl.c                    |  2 ++
+>>  5 files changed, 48 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/include/migration/snapshot.h b/include/migration/snapshot.h
+>> index e72083b..9e4dcaa 100644
+>> --- a/include/migration/snapshot.h
+>> +++ b/include/migration/snapshot.h
+>> @@ -16,6 +16,7 @@
+>>  #define QEMU_MIGRATION_SNAPSHOT_H
+>>  
+>>  #include "qapi/qapi-builtin-types.h"
+>> +#include "qapi/qapi-types-run-state.h"
+>>  
+>>  /**
+>>   * save_snapshot: Save an internal snapshot.
+>> @@ -61,4 +62,10 @@ bool delete_snapshot(const char *name,
+>>                      bool has_devices, strList *devices,
+>>                      Error **errp);
+>>  
+>> +/**
+>> + * load_snapshot_resume: Restore runstate after loading snapshot.
+>> + * @state: state to restore
+>> + */
+>> +void load_snapshot_resume(RunState state);
+>> +
+>>  #endif
+>> diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+>> index 86ae832..c31cdc7 100644
+>> --- a/migration/migration-hmp-cmds.c
+>> +++ b/migration/migration-hmp-cmds.c
+>> @@ -399,15 +399,19 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+>>  
+>>  void hmp_loadvm(Monitor *mon, const QDict *qdict)
+>>  {
+>> -    int saved_vm_running  = runstate_is_running();
+>> +    RunState saved_state = runstate_get();
+>> +
+>>      const char *name = qdict_get_str(qdict, "name");
+>>      Error *err = NULL;
+>>  
+>> -    vm_stop(RUN_STATE_RESTORE_VM);
+>> +    vm_stop_force_state(RUN_STATE_RESTORE_VM);
+>>  
+>> -    if (load_snapshot(name, NULL, false, NULL, &err) && saved_vm_running) {
+>> -        vm_start();
+>> +    if (load_snapshot(name, NULL, false, NULL, &err)) {
+>> +        load_snapshot_resume(saved_state);
+>> +    } else {
+>> +        vm_resume(saved_state);
 > 
-> Is this a statement of a fact about VMs in the suspended state in
-> general or is this describing what this patch is trying to fix?
+> Here we're starting the VM if load_snapshot() fails. Is that
+> intentional?
 
-The former.
+My bad, good catch, I will delete the else clause.
 
->> The VCPUs have been paused, but the cpu clock still runs, and runstate
->> notifiers for the transition to stopped have not been called.
+>>      }
+>> +
+>>      hmp_handle_error(mon, err);
+>>  }
+>>  
+>> diff --git a/migration/savevm.c b/migration/savevm.c
+>> index 78ac2bd..b4b49bb 100644
+>> --- a/migration/savevm.c
+>> +++ b/migration/savevm.c
+>> @@ -3040,7 +3040,7 @@ bool save_snapshot(const char *name, bool overwrite, const char *vmstate,
+>>      QEMUSnapshotInfo sn1, *sn = &sn1;
+>>      int ret = -1, ret2;
+>>      QEMUFile *f;
+>> -    int saved_vm_running;
+>> +    RunState saved_state = runstate_get();
+>>      uint64_t vm_state_size;
+>>      g_autoptr(GDateTime) now = g_date_time_new_now_local();
+>>      AioContext *aio_context;
+>> @@ -3088,10 +3088,8 @@ bool save_snapshot(const char *name, bool overwrite, const char *vmstate,
+>>      }
+>>      aio_context = bdrv_get_aio_context(bs);
+>>  
+>> -    saved_vm_running = runstate_is_running();
+>> -
+>>      global_state_store();
+>> -    vm_stop(RUN_STATE_SAVE_VM);
+>> +    vm_stop_force_state(RUN_STATE_SAVE_VM);
+>>  
+>>      bdrv_drain_all_begin();
+>>  
+>> @@ -3157,9 +3155,7 @@ bool save_snapshot(const char *name, bool overwrite, const char *vmstate,
+>>  
+>>      bdrv_drain_all_end();
+>>  
+>> -    if (saved_vm_running) {
+>> -        vm_start();
+>> -    }
+>> +    vm_resume(saved_state);
+>>      return ret == 0;
+>>  }
+>>  
+>> @@ -3333,6 +3329,20 @@ err_drain:
+>>      return false;
+>>  }
+>>  
+>> +void load_snapshot_resume(RunState state)
+>> +{
+>> +    if (global_state_received() &&
+>> +        global_state_get_runstate() == RUN_STATE_SUSPENDED) {
+>> +
+>> +        vm_resume(RUN_STATE_SUSPENDED);
+>> +        if (state == RUN_STATE_RUNNING) {
+>> +            qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
+>> +        }
+>> +    } else {
+>> +        vm_resume(state);
+>> +    }
+>> +}
+>> +
+>>  bool delete_snapshot(const char *name, bool has_devices,
+>>                       strList *devices, Error **errp)
+>>  {
+>> @@ -3397,16 +3407,15 @@ static void snapshot_load_job_bh(void *opaque)
+>>  {
+>>      Job *job = opaque;
+>>      SnapshotJob *s = container_of(job, SnapshotJob, common);
+>> -    int orig_vm_running;
+>> +    RunState orig_state = runstate_get();
+>>  
+>>      job_progress_set_remaining(&s->common, 1);
+>>  
+>> -    orig_vm_running = runstate_is_running();
+>> -    vm_stop(RUN_STATE_RESTORE_VM);
+>> +    vm_stop_force_state(RUN_STATE_RESTORE_VM);
+>>  
+>>      s->ret = load_snapshot(s->tag, s->vmstate, true, s->devices, s->errp);
+>> -    if (s->ret && orig_vm_running) {
+>> -        vm_start();
+>> +    if (s->ret) {
+>> +        load_snapshot_resume(orig_state);
 > 
-> ...it reads like the latter, but then why aren't we fixing this at the
-> moment we put the VM in the suspend state?
+> Same here, we used to not start the VM if load_snapshot() failed.
 
-cpu_get_ticks() must continue to tick while the guest is suspended, so that
-QEMU_CLOCK_VIRTUAL continues to tick, so that timeouts based on that clock
-will fire.  One example is timed wake from suspend,  acpi_pm_tmr_timer.
+Here the behavior is the same as the old code.  ret=1 means success.
+That inverted return code has misled us both :)
 
->> Modify vm_stop_force_state to completely stop the vm if the current
->> state is suspended, to be called for live migration and snapshots.
+>>      }
+>>  
+>>      job_progress_update(&s->common, 1);
+>> diff --git a/system/runstate.c b/system/runstate.c
+>> index ea9d6c2..f1d4bc7 100644
+>> --- a/system/runstate.c
+>> +++ b/system/runstate.c
+>> @@ -77,6 +77,8 @@ typedef struct {
+>>  
+>>  static const RunStateTransition runstate_transitions_def[] = {
+>>      { RUN_STATE_PRELAUNCH, RUN_STATE_INMIGRATE },
+>> +    { RUN_STATE_PRELAUNCH, RUN_STATE_PAUSED },
+>> +    { RUN_STATE_PRELAUNCH, RUN_STATE_SUSPENDED },
+>>  
+>>      { RUN_STATE_DEBUG, RUN_STATE_RUNNING },
+>>      { RUN_STATE_DEBUG, RUN_STATE_FINISH_MIGRATE },
+>> @@ -108,6 +110,8 @@ static const RunStateTransition runstate_transitions_def[] = {
+>>      { RUN_STATE_PAUSED, RUN_STATE_POSTMIGRATE },
+>>      { RUN_STATE_PAUSED, RUN_STATE_PRELAUNCH },
+>>      { RUN_STATE_PAUSED, RUN_STATE_COLO},
+>> +    { RUN_STATE_PAUSED, RUN_STATE_SAVE_VM},
+>> +    { RUN_STATE_PAUSED, RUN_STATE_RESTORE_VM},
+>>  
+>>      { RUN_STATE_POSTMIGRATE, RUN_STATE_RUNNING },
+>>      { RUN_STATE_POSTMIGRATE, RUN_STATE_FINISH_MIGRATE },
+>> @@ -131,6 +135,8 @@ static const RunStateTransition runstate_transitions_def[] = {
+>>  
+>>      { RUN_STATE_RESTORE_VM, RUN_STATE_RUNNING },
+>>      { RUN_STATE_RESTORE_VM, RUN_STATE_PRELAUNCH },
+>> +    { RUN_STATE_RESTORE_VM, RUN_STATE_PAUSED },
+>> +    { RUN_STATE_RESTORE_VM, RUN_STATE_SUSPENDED },
+>>  
+>>      { RUN_STATE_COLO, RUN_STATE_RUNNING },
+>>      { RUN_STATE_COLO, RUN_STATE_PRELAUNCH },
+>> @@ -149,6 +155,8 @@ static const RunStateTransition runstate_transitions_def[] = {
+>>      { RUN_STATE_RUNNING, RUN_STATE_COLO},
+>>  
+>>      { RUN_STATE_SAVE_VM, RUN_STATE_RUNNING },
+>> +    { RUN_STATE_SAVE_VM, RUN_STATE_PAUSED },
+>> +    { RUN_STATE_SAVE_VM, RUN_STATE_SUSPENDED },
+>>  
+>>      { RUN_STATE_SHUTDOWN, RUN_STATE_PAUSED },
+>>      { RUN_STATE_SHUTDOWN, RUN_STATE_FINISH_MIGRATE },
+>> @@ -161,6 +169,8 @@ static const RunStateTransition runstate_transitions_def[] = {
+>>      { RUN_STATE_SUSPENDED, RUN_STATE_FINISH_MIGRATE },
+>>      { RUN_STATE_SUSPENDED, RUN_STATE_PRELAUNCH },
+>>      { RUN_STATE_SUSPENDED, RUN_STATE_COLO},
+>> +    { RUN_STATE_SUSPENDED, RUN_STATE_SAVE_VM },
+>> +    { RUN_STATE_SUSPENDED, RUN_STATE_RESTORE_VM },
+>>  
+>>      { RUN_STATE_WATCHDOG, RUN_STATE_RUNNING },
+>>      { RUN_STATE_WATCHDOG, RUN_STATE_FINISH_MIGRATE },
+>> diff --git a/system/vl.c b/system/vl.c
+>> index bd7fad7..082a45a 100644
+>> --- a/system/vl.c
+>> +++ b/system/vl.c
+>> @@ -2702,7 +2702,9 @@ void qmp_x_exit_preconfig(Error **errp)
+>>      qemu_machine_creation_done();
+>>  
+>>      if (loadvm) {
+>> +        RunState state = autostart ? RUN_STATE_RUNNING : runstate_get();
+>>          load_snapshot(loadvm, NULL, false, NULL, &error_fatal);
+>> +        load_snapshot_resume(state);
 > 
-> Hm, this changes the meaning of the "force" from:
-> 
-> "force a state even if already stopped"
-> 
-> into:
-> 
-> "force a complete stop if already suspended, otherwise just set the
-> state"
+> Here it's using error_fatal, so it won't start the VM.
 
-vm_stop_force_state has the same behavior as before for all states
-except suspended.  If suspended, it also:
-  - stops cpu ticks
-  - calls runstate stopped handlers
-  - sets a new runstate
-
-> I don't know what to make of this, shouldn't all vm_stops cause a
-> complete stop?
-
-We cannot stop cpu_get_ticks.  We could maybe call the runstate stop handlers,
-but that requires a careful examination of every handler, and there is no obvious 
-correctness or cleanliness reason to stop them immediately on vm_stop(), since cpu 
-ticks still needs special handling later.
-
-> We need to at least resolve the overloading of the 'force' term.
-
-How about a more complete function header comment:
-
-/*
- * If the machine is running or suspended, completely stop it.
- * Force the new runstate to @state.
- * The current state is forgotten forever.
- */
+Yes, same as the old code.
 
 - Steve
 
->> Suggested-by: Peter Xu <peterx@redhat.com>
->> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->> ---
->>  system/cpus.c | 8 ++++++--
->>  1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/system/cpus.c b/system/cpus.c
->> index f72c4be..c772708 100644
->> --- a/system/cpus.c
->> +++ b/system/cpus.c
->> @@ -255,6 +255,8 @@ void cpu_interrupt(CPUState *cpu, int mask)
->>  static int do_vm_stop(RunState state, bool send_stop, bool force)
->>  {
->>      int ret = 0;
->> +    bool running = runstate_is_running();
->> +    bool suspended = runstate_check(RUN_STATE_SUSPENDED);
->>  
->>      if (qemu_in_vcpu_thread()) {
->>          qemu_system_vmstop_request_prepare();
->> @@ -267,10 +269,12 @@ static int do_vm_stop(RunState state, bool send_stop, bool force)
->>          return 0;
->>      }
->>  
->> -    if (runstate_is_running()) {
->> +    if (running || (suspended && force)) {
->>          runstate_set(state);
->>          cpu_disable_ticks();
->> -        pause_all_vcpus();
->> +        if (running) {
->> +            pause_all_vcpus();
->> +        }
->>          vm_state_notify(0, state);
->>          if (send_stop) {
->>              qapi_event_send_stop();
+
 
