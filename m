@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFF07F1F40
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 22:35:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE997F1F3F
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 22:35:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5BvX-0003Gu-DH; Mon, 20 Nov 2023 16:35:31 -0500
+	id 1r5BvU-0002sF-Jt; Mon, 20 Nov 2023 16:35:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5Bub-0001vm-Ke
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:34:36 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5Buc-0001vy-Kt
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:34:35 -0500
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5BuZ-0003Xx-13
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:34:33 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-332cb136335so701285f8f.0
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 13:34:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5Bua-0003ao-Uz
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 16:34:34 -0500
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2c87903d314so26309481fa.1
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 13:34:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700516060; x=1701120860; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700516066; x=1701120866; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7Db5rVC7IYaMSjFIzhw37gGhb/kt8tXVyhffbU+sslQ=;
- b=eqWZvHHqCa+ofTZ70YtFMAOY0fivaadnc9qLJjDhm3HkjFL5+MlNTSvtwFqp96aNaK
- Qq8rryfyVDyjXvBO0D+eVYZJzefV5lcUcaN9DC1YFh96BdXWTkIUF4tk6hFg8cDlja8o
- ZogAmQfa9BD3FbQqwCsUqQUmOYhTsqO+3ofWpUYlMIJoc6CZsr+sqnW1LcFP8+VVHMNQ
- xXGDPPgAseDn3wZ/nOWSmJrELLEwSxBcaFbWlh8/a+gVBN4e00cxRULX7cdqnBurmnWv
- VtmxQSU05l5LJorhE7IMgw0IZ/CW9xf57yhIF3E8CLDmxK/9JuiyItcMEmMl/Wy6Wfmo
- 140g==
+ bh=DIex8QjcVHMzUQGfRlZtiLonUpnm8G6I3FWEQ6zYP+4=;
+ b=CFXuIQnsSbbPfKf+1+Ki7L0fZ7WmHCfWo2WgW/tfU+ikZbqAJ6m8Oy0Wwjeyl97Gxq
+ SrFoivpcSewRLeH1NXDfI4a6a4H7j2z8buwcrVrBssYP9P+Iim+tb3i4ctSrEeX7H7MJ
+ 8+TfQudvl+vLXkQGPGHfyvAK3HFeIkevnz0UrVrPjbyqAvRkchaNo89VCKWbZmNUg86H
+ dwxMRw5m2vcK6gmgAQI8hBff8ZU9C+ZTCFUfz51T0SM1DjuIxnKwoInxS9wa6nQrbmAp
+ 9bnmQKBPsmQIAVzvO7twOCUpgW0tprSQBO+esxVpjI8t5zRlXjgYpi7AFhq/hEtn2L9J
+ tZoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700516060; x=1701120860;
+ d=1e100.net; s=20230601; t=1700516066; x=1701120866;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7Db5rVC7IYaMSjFIzhw37gGhb/kt8tXVyhffbU+sslQ=;
- b=ciu9q+6DmBnu6VCpDfLHy9HEc3x8qXm+mMYG9lOX46h0bRioJrdRgZftkm8GEeFTe0
- b+DU+sKMUBZpgRpEh0kthAIfKV76aXiEU+NpX0zKZkwwiJd4nL+khui73Kfjz0axBlO2
- ky0a2rWlv+QuHmKCoUG6jwKrj4FaYDKkqJtj42KTlDY20YvoBfsbXQIGFqcpvvvWKUFt
- aPu+kidoK8mFZZdoLOFpkrkwwn3rO4YgAxKH5SPjTeInu8kqCev9FSYzzK5vHJ8AMUEQ
- uNZSXDSpbRHZ66RxLnb3ICWVokuT5FASBoBDGy6xuE6YLx8p7nJHlP5y+ufco9yglvO7
- kTUw==
-X-Gm-Message-State: AOJu0YwEKF1sc/xMabZnMerP/ntikbCOwUgU42IALFnjLvNNXVeEGwnJ
- 6M475+BXC8L/YSXFhcNj8LqRruLcoUF7pzrqRao=
-X-Google-Smtp-Source: AGHT+IE1dcMRs4ITuaIZlmOY5WENAknRhBAUic/LtnF0eF7kmZeG4TCNmWJoEfpiR+DzZrkd4guCFQ==
-X-Received: by 2002:a05:6000:1acd:b0:332:c2ae:ca4f with SMTP id
- i13-20020a0560001acd00b00332c2aeca4fmr4041008wry.46.1700516059836; 
- Mon, 20 Nov 2023 13:34:19 -0800 (PST)
+ bh=DIex8QjcVHMzUQGfRlZtiLonUpnm8G6I3FWEQ6zYP+4=;
+ b=WIJUrNHMUR0pjn8v+ivLKBthhWoJn5DGnWLyKxkuS7V75DnRja1sJJgxHubjP6kfVL
+ d36acLJ+xbRtM/mmAh5n26sVIjvIOMb8pDcrGZYJAjPw9iu4hrQOT6jcy1FMmC1GhyWM
+ zCg2uydFOlTc7ovnBRZPPfaVtp7A6V6X3wogXnMS/HCHmcuj7mlyiQZ15vYNVco3i3RM
+ K+vop5z+L4nNzZWijwdhwCmn/cAGVjG7eYPF03L/uhhlwsaEKocyhhS/yD8iP3MGQker
+ kT14sQqaDh9PoQjG+cPSPcwFlG/xVYXJSIzdEtCJ6IGR91W+6rvUCSj+JUU9Q7LK7arJ
+ 2wxA==
+X-Gm-Message-State: AOJu0YyayL6CioflM6QLRqHwMkXkj8lW6CpPEODngYY4f4qtb7xNtbDX
+ SNl+a3FVdq74Gg3iFSAAQrcJCcD5pStf/f6XVfM=
+X-Google-Smtp-Source: AGHT+IEKwyStgC/1RuCdQLc7MNsMAQyl+TNdJH8aV+M6L+dpnANNsaETUJqoKnZMqncm+jtfCfXqiQ==
+X-Received: by 2002:a05:651c:210:b0:2c0:20e3:990f with SMTP id
+ y16-20020a05651c021000b002c020e3990fmr5660346ljn.10.1700516065839; 
+ Mon, 20 Nov 2023 13:34:25 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.190])
  by smtp.gmail.com with ESMTPSA id
- d1-20020a5d5381000000b0032f7f4d008dsm12298763wrv.20.2023.11.20.13.34.17
+ t8-20020a05600c198800b0040531f5c51asm14963797wmq.5.2023.11.20.13.34.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 20 Nov 2023 13:34:19 -0800 (PST)
+ Mon, 20 Nov 2023 13:34:25 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -65,18 +65,18 @@ Cc: David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Xu <peterx@redhat.com>
-Subject: [PATCH-for-9.0 08/25] memory: Have
- memory_region_init_rom_device_nomigrate() return a boolean
-Date: Mon, 20 Nov 2023 22:32:42 +0100
-Message-ID: <20231120213301.24349-9-philmd@linaro.org>
+Subject: [PATCH-for-9.0 09/25] memory: Simplify
+ memory_region_init_rom_device_nomigrate() calls
+Date: Mon, 20 Nov 2023 22:32:43 +0100
+Message-ID: <20231120213301.24349-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231120213301.24349-1-philmd@linaro.org>
 References: <20231120213301.24349-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,55 +99,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Following the example documented since commit e3fe3988d7 ("error:
-Document Error API usage rules"), have cpu_exec_realizefn()
-return a boolean indicating whether an error is set or not.
+Mechanical change using the following coccinelle script:
+
+@@
+expression mr, owner, arg3, arg4, arg5, arg6, errp;
+@@
+-   memory_region_init_rom_device_nomigrate(mr, owner, arg3, arg4, arg5, arg6, &errp);
+    if (
+-       errp
++       !memory_region_init_rom_device_nomigrate(mr, owner, arg3, arg4, arg5, arg6, &errp)
+    ) {
+        ...
+        return;
+    }
+
+and removing the local Error variable.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/memory.h | 4 +++-
- system/memory.c       | 4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ system/memory.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 9d9798a527..e2cf3e58de 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -1523,8 +1523,10 @@ bool memory_region_init_rom_nomigrate(MemoryRegion *mr,
-  *        must be unique within any device
-  * @size: size of the region.
-  * @errp: pointer to Error*, to store an error if it happens.
-+ *
-+ * Return: true on success, else false setting @errp with error.
-  */
--void memory_region_init_rom_device_nomigrate(MemoryRegion *mr,
-+bool memory_region_init_rom_device_nomigrate(MemoryRegion *mr,
-                                              Object *owner,
-                                              const MemoryRegionOps *ops,
-                                              void *opaque,
 diff --git a/system/memory.c b/system/memory.c
-index 2c764947fa..1cccc4b755 100644
+index 1cccc4b755..6d1d315d0e 100644
 --- a/system/memory.c
 +++ b/system/memory.c
-@@ -1743,7 +1743,7 @@ bool memory_region_init_rom_nomigrate(MemoryRegion *mr,
-     return rv;
- }
+@@ -3654,12 +3654,9 @@ void memory_region_init_rom_device(MemoryRegion *mr,
+                                    Error **errp)
+ {
+     DeviceState *owner_dev;
+-    Error *err = NULL;
  
--void memory_region_init_rom_device_nomigrate(MemoryRegion *mr,
-+bool memory_region_init_rom_device_nomigrate(MemoryRegion *mr,
-                                              Object *owner,
-                                              const MemoryRegionOps *ops,
-                                              void *opaque,
-@@ -1764,7 +1764,9 @@ void memory_region_init_rom_device_nomigrate(MemoryRegion *mr,
-         mr->size = int128_zero();
-         object_unparent(OBJECT(mr));
-         error_propagate(errp, err);
-+        return false;
+-    memory_region_init_rom_device_nomigrate(mr, owner, ops, opaque,
+-                                            name, size, &err);
+-    if (err) {
+-        error_propagate(errp, err);
++    if (!memory_region_init_rom_device_nomigrate(mr, owner, ops, opaque,
++                                                 name, size, errp)) {
+         return;
      }
-+    return true;
- }
- 
- void memory_region_init_iommu(void *_iommu_mr,
+     /* This will assert if owner is neither NULL nor a DeviceState.
 -- 
 2.41.0
 
