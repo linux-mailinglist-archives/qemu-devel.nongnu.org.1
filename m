@@ -2,52 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F7B7F142E
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 14:19:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AED677F144E
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 14:22:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r54Av-0006VP-Ra; Mon, 20 Nov 2023 08:18:53 -0500
+	id 1r54EM-0007dw-NP; Mon, 20 Nov 2023 08:22:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r54At-0006V7-Op; Mon, 20 Nov 2023 08:18:51 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r54Ar-0007b9-2C; Mon, 20 Nov 2023 08:18:51 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id C01F675A4C1;
- Mon, 20 Nov 2023 14:19:20 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id B5AF175A4BA; Mon, 20 Nov 2023 14:19:20 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id B446975A4C2;
- Mon, 20 Nov 2023 14:19:20 +0100 (CET)
-Date: Mon, 20 Nov 2023 14:19:20 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-cc: kwolf@redhat.com, jsnow@redhat.com, qemu-block@nongnu.org, 
- qemu-devel@nongnu.org, philmd@linaro.org, shentey@gmail.com, 
- Rene Engel <ReneEngel80@emailn.de>
-Subject: Re: [PATCH v3 0/4] ide: implement simple legacy/native mode switching
- for PCI IDE controllers
-In-Reply-To: <6e7576bd-ac39-424e-ac7e-898c58a6a2fa@ilande.co.uk>
-Message-ID: <3c442b7f-4f9e-5adf-e576-8f2930834bd3@eik.bme.hu>
-References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
- <c4bb80e8-e985-b6b2-aac1-f6e8d446b8ea@eik.bme.hu>
- <6e7576bd-ac39-424e-ac7e-898c58a6a2fa@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r54EF-0007di-KR
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 08:22:20 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r54EB-0008U6-Sq
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 08:22:17 -0500
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 05EFB1F891;
+ Mon, 20 Nov 2023 13:22:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1700486534; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=kI8bvTJSKqe8Sb0SNOR9vhAbmkU/76DGMIx74ogbUf0=;
+ b=ZLUH3od+R+AVCaUxl06hcUeYYAEuNuVbOIJLYvDUNGEicwFeh1TstObDl+seV3x2vz2IEu
+ mI+CC38z0030HEPf6ChmUaqzozj+bNXqBIP6mFMpiEpf2mxMlTLOKnjTQ3b8Fq7jXqAcFt
+ Kz1SPNn78QhZq+uqpL+KLiLzV9Zc3do=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1700486534;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=kI8bvTJSKqe8Sb0SNOR9vhAbmkU/76DGMIx74ogbUf0=;
+ b=/oatLIV5ZEjeH3tAOCqLEwtnTYqs06EILH4HNVLLGE06vxDesCBnAjCjLax5wnLpD1VkYq
+ lT8SKDVV9CbFj6BQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 92051134AD;
+ Mon, 20 Nov 2023 13:22:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id zcuEF4VdW2XjeAAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 20 Nov 2023 13:22:13 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>, Steve Sistare <steven.sistare@oracle.com>
+Subject: Re: [PATCH V5 01/12] cpus: refactor vm_stop
+In-Reply-To: <1699900440-207345-2-git-send-email-steven.sistare@oracle.com>
+References: <1699900440-207345-1-git-send-email-steven.sistare@oracle.com>
+ <1699900440-207345-2-git-send-email-steven.sistare@oracle.com>
+Date: Mon, 20 Nov 2023 10:22:11 -0300
+Message-ID: <87leas5zlo.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1734309600-1700486360=:81200"
-X-Virus-Scanned: ClamAV using ClamSMTP
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: -1.63
+X-Spamd-Result: default: False [-1.63 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-0.33)[75.95%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.19)[-0.968]; RCPT_COUNT_SEVEN(0.00)[9];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,93 +98,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Steve Sistare <steven.sistare@oracle.com> writes:
 
---3866299591-1734309600-1700486360=:81200
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Mon, 20 Nov 2023, Mark Cave-Ayland wrote:
-> On 19/11/2023 21:43, BALATON Zoltan wrote:
->> On Thu, 16 Nov 2023, Mark Cave-Ayland wrote:
->>> This series adds a simple implementation of legacy/native mode switching 
->>> for PCI
->>> IDE controllers and updates the via-ide device to use it.
->>> 
->>> The approach I take here is to add a new pci_ide_update_mode() function 
->>> which handles
->>> management of the PCI BARs and legacy IDE ioports for each mode to avoid 
->>> exposing
->>> details of the internal logic to individual PCI IDE controllers.
->>> 
->>> As noted in [1] this is extracted from a local WIP branch I have which 
->>> contains
->>> further work in this area. However for the moment I've kept it simple (and
->>> restricted it to the via-ide device) which is good enough for Zoltan's PPC
->>> images whilst paving the way for future improvements after 8.2.
->>> 
->>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>> 
->>> [1] https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05403.html
->>> 
->>> v3:
->>> - Rebase onto master
->>> - Move ide_portio_list[] and ide_portio_list2[] to IDE core to prevent 
->>> duplication in
->>>  hw/ide/pci.c
->>> - Don't zero BARs when switching from native mode to legacy mode, instead 
->>> always force
->>>  them to read zero as suggested in the PCI IDE specification (note: this 
->>> also appears
->>>  to fix the fuloong2e machine booting from IDE)
->> 
->> Not sure you're getting this, see also:
->> https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg04167.html
->> but this seems to break latest version of the AmigaOS driver for some 
->> reason. I assume this is the BAR zeroing that causes this as it works with 
->> v2 series and nothing else changed in v3 that could cause this. Testing was 
->> done by Rene Engel, cc'd so maybe he can add more info. It seems to work 
->> with my patch that sets BARs to legacy values and with v2 that sets them to 
->> 0 but not with v3 which should also read 0 but maybe something is off here.
+> Refactor the vm_stop functions into one common subroutine do_vm_stop called
+> with options.  No functional change.
 >
-> Is this document here accurate as to how it works on real hardware? 
-> https://intuitionbase.com/hints.php.
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> ---
+>  system/cpus.c | 44 +++++++++++++++++---------------------------
+>  1 file changed, 17 insertions(+), 27 deletions(-)
+>
+> diff --git a/system/cpus.c b/system/cpus.c
+> index 0848e0d..f72c4be 100644
+> --- a/system/cpus.c
+> +++ b/system/cpus.c
+> @@ -252,10 +252,21 @@ void cpu_interrupt(CPUState *cpu, int mask)
+>      }
+>  }
+>  
+> -static int do_vm_stop(RunState state, bool send_stop)
+> +static int do_vm_stop(RunState state, bool send_stop, bool force)
+>  {
+>      int ret = 0;
+>  
+> +    if (qemu_in_vcpu_thread()) {
+> +        qemu_system_vmstop_request_prepare();
+> +        qemu_system_vmstop_request(state);
+> +        /*
+> +         * FIXME: should not return to device code in case
+> +         * vm_stop() has been requested.
+> +         */
+> +        cpu_stop_current();
+> +        return 0;
+> +    }
 
-That should be about right. On QEMU the U-boot env vars won't work because 
-NVRAM is not emulated yet so they can't be saved but you can call idetool 
-from startup-sequence boot script instead for same effect (UDMA is enabled 
-a bit later with that but after that it's the same).
+At vm_stop_force_state(), this block used to be under
+runstate_is_running(), but now it runs unconditionally.
 
-> I can't understand why the base OS is attempting any access to BAR 4 if BMDMA 
-> isn't enabled by default on real hardware due to hardware bugs.
+At vm_shutdown(), this block was not executed at all, but now it is.
 
-Real hardware had problems with DMA (the VIA chip was also infamous for it 
-on PC hardware and later also the ArticiaS was found to have its own 
-problems) so the default is to use IDE in PIO mode and UDMA has to be 
-enabled manually. But if it works (and it should on QEMU) it's much 
-faster so we want to enable it.
+We might need some words to explain why this patch doesn't affect
+functionality.
 
-> Are we sure 
-> that the idetool hacks given in the link above to enable BMDMA haven't 
-> already been run on the AmigaOS install when testing an earlier version of 
-> the patches?
-
-It was tested with my original series and works with that as my patch sets 
-the default vaules for BARs and the driver reads it correctly. Then we 
-tested your series too and I've noted for v2 already that it misses the 
-degault value for BAR4. Other BARs don't matter as it will apparently use 
-ISA IDE ports when it gets 0 or it knows that in legacy mode these shoud 
-be the port values but seems to read BAR4 for UDMA and only works if the 
-right default value is there, otherwise it lists DMA BAR 0 on start.
-
-> Finally is there a bootable AmigaOS demo ISO somewhere that can be used for 
-> testing?
-
-Unfortunately AmigaOS4 is only available commercially, no free demo is 
-avaialable.
-
-Regards,
-BALATON Zoltan
---3866299591-1734309600-1700486360=:81200--
+> +
+>      if (runstate_is_running()) {
+>          runstate_set(state);
+>          cpu_disable_ticks();
+> @@ -264,6 +275,8 @@ static int do_vm_stop(RunState state, bool send_stop)
+>          if (send_stop) {
+>              qapi_event_send_stop();
+>          }
+> +    } else if (force) {
+> +        runstate_set(state);
+>      }
+>  
+>      bdrv_drain_all();
+> @@ -278,7 +291,7 @@ static int do_vm_stop(RunState state, bool send_stop)
+>   */
+>  int vm_shutdown(void)
+>  {
+> -    return do_vm_stop(RUN_STATE_SHUTDOWN, false);
+> +    return do_vm_stop(RUN_STATE_SHUTDOWN, false, false);
+>  }
+>  
+>  bool cpu_can_run(CPUState *cpu)
+> @@ -656,18 +669,7 @@ void cpu_stop_current(void)
+>  
+>  int vm_stop(RunState state)
+>  {
+> -    if (qemu_in_vcpu_thread()) {
+> -        qemu_system_vmstop_request_prepare();
+> -        qemu_system_vmstop_request(state);
+> -        /*
+> -         * FIXME: should not return to device code in case
+> -         * vm_stop() has been requested.
+> -         */
+> -        cpu_stop_current();
+> -        return 0;
+> -    }
+> -
+> -    return do_vm_stop(state, true);
+> +    return do_vm_stop(state, true, false);
+>  }
+>  
+>  /**
+> @@ -723,19 +725,7 @@ void vm_start(void)
+>     current state is forgotten forever */
+>  int vm_stop_force_state(RunState state)
+>  {
+> -    if (runstate_is_running()) {
+> -        return vm_stop(state);
+> -    } else {
+> -        int ret;
+> -        runstate_set(state);
+> -
+> -        bdrv_drain_all();
+> -        /* Make sure to return an error if the flush in a previous vm_stop()
+> -         * failed. */
+> -        ret = bdrv_flush_all();
+> -        trace_vm_stop_flush_all(ret);
+> -        return ret;
+> -    }
+> +    return do_vm_stop(state, true, true);
+>  }
+>  
+>  void qmp_memsave(int64_t addr, int64_t size, const char *filename,
 
