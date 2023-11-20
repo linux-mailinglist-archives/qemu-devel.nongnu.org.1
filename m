@@ -2,86 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A0F7F1499
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 14:47:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 706497F1507
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 15:01:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r54cp-0002op-VU; Mon, 20 Nov 2023 08:47:43 -0500
+	id 1r54oX-0006A6-Lz; Mon, 20 Nov 2023 08:59:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r54cj-0002j2-Rw
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 08:47:39 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r54cg-0002WM-MH
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 08:47:37 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1ccbb7f79cdso31639035ad.3
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 05:47:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1700488053; x=1701092853;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=G1YPkG7cgUJJOPXY+RV8P3M6wJ2yAnoImOMdmRAaSXw=;
- b=NuNBKH7E9Br3BOSlBcWM+s9f/S88pR/S59KkW+cQfSbxMWL8GFaGzhTG0fZ5RinPCu
- d7W7xjcaQKgLpixaYdBwSUlKMkRn89nD6XddXZFs26F/Eg4rlKKmiZt064jwVgcd/peo
- aQVQOAYsHUbyIb1Z6+uD0zDV2TYarVK1jMFNeD8GLbAVHTPyTHMDUQnXGXrlNlw0Q2+E
- qclt5OD9EPVtmN2n3ZeY46otma7DTuCp5dXq6wijdTCk5frE2rrzrSFve/fV91WPLwVm
- u1auDjDSVDu85GKCZyeFdOM6FuoAwmGBCFn1/P5+sZrPXT09PSRQf+KuCegT/mhnEKvd
- wchg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700488053; x=1701092853;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=G1YPkG7cgUJJOPXY+RV8P3M6wJ2yAnoImOMdmRAaSXw=;
- b=OaicknPjMQI3H4c4gUtb/WdbriqYgYrIV50FuouKvK9alfNad5KGdLBDX1J/FLsPjv
- 4JVG8IeMDZn9YBAJgJuIGAfuEkwNCazK29p7m+oVxuIWXMI5+B79o/DR7xunA49czdIm
- NprBBI0gfdonDWt0nwyTkxSgQ4hVUccTMe3jXrwiK56ur5qDnvU5KySF5w+0L4+Zk2zH
- i8j27vYZK7cwN4oj7yPHgTmYA4BIGKhD/bAFPFz9wmeYCp3bCop2dNKbwdzxp2eCwARs
- ecO0Bfv8pQKpBZ1zkYbXTmqGHDXLadUS87kS+9ho4QKe8uJypcD0JPfk5z99+e2yLXvb
- to9A==
-X-Gm-Message-State: AOJu0YxXRzl2OC70FTrT8hglWmWo70PJeTC81+YaTtFoAp/KWzQ2nFWn
- lKgfL9TXCq55Op2XszJnk4L0SQ==
-X-Google-Smtp-Source: AGHT+IEncEJRtxxavUdXMdgLIOPlCvwEhxPbYDegme5Yxlj1ytVO/v1rMhV85lVqoHJNX5zcCOnLXQ==
-X-Received: by 2002:a17:902:d4c9:b0:1c6:21b4:30bb with SMTP id
- o9-20020a170902d4c900b001c621b430bbmr7047592plg.15.1700488053264; 
- Mon, 20 Nov 2023 05:47:33 -0800 (PST)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- a18-20020a170902ecd200b001cc2c7a30f2sm6099378plh.155.2023.11.20.05.47.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Nov 2023 05:47:32 -0800 (PST)
-Message-ID: <2859b544-ab81-411a-b074-c6fcf0102730@daynix.com>
-Date: Mon, 20 Nov 2023 22:47:30 +0900
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r54oV-00069q-PY; Mon, 20 Nov 2023 08:59:47 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r54oT-0006o8-Ao; Mon, 20 Nov 2023 08:59:47 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id E7857756094;
+ Mon, 20 Nov 2023 15:00:16 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id DAF7F75607B; Mon, 20 Nov 2023 15:00:16 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id D8EEF756066;
+ Mon, 20 Nov 2023 15:00:16 +0100 (CET)
+Date: Mon, 20 Nov 2023 15:00:16 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Kevin Wolf <kwolf@redhat.com>
+cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, jsnow@redhat.com, 
+ qemu-block@nongnu.org, qemu-devel@nongnu.org, philmd@linaro.org, 
+ shentey@gmail.com, Rene Engel <ReneEngel80@emailn.de>
+Subject: Re: [PATCH v3 0/4] ide: implement simple legacy/native mode switching
+ for PCI IDE controllers
+In-Reply-To: <b9ea9c20-f9a5-9b79-6e70-624665fb5148@eik.bme.hu>
+Message-ID: <096c619b-d00c-60f6-79d7-971a07225757@eik.bme.hu>
+References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
+ <c4bb80e8-e985-b6b2-aac1-f6e8d446b8ea@eik.bme.hu>
+ <295aec31-e9c1-49d8-9bea-edad8f7b81e4@ilande.co.uk>
+ <63ff9c1a-5d05-985a-bf2f-69420b72db90@eik.bme.hu>
+ <ZVtiV8XXHxS+cw8o@redhat.com>
+ <b9ea9c20-f9a5-9b79-6e70-624665fb5148@eik.bme.hu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC-PATCH-for-8.2?] disas/cris: Pass buffer size to format_dec()
- to avoid overflow warning
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Eric Blake <eblake@redhat.com>
-References: <20231120132222.82138-1-philmd@linaro.org>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20231120132222.82138-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::632;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x632.google.com
+Content-Type: multipart/mixed;
+ boundary="3866299591-1988432963-1700488816=:81200"
+X-Virus-Scanned: ClamAV using ClamSMTP
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,80 +66,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/11/20 22:22, Philippe Mathieu-Daud√© wrote:
-> Propagate the buffer size to format_dec() and use snprintf().
-> 
-> This should silence this UBSan -Wformat-overflow warning:
-> 
->    In file included from /usr/include/stdio.h:906,
->                     from include/qemu/osdep.h:114,
->                     from ../disas/cris.c:21:
->    In function 'sprintf',
->        inlined from 'format_dec' at ../disas/cris.c:1737:3,
->        inlined from 'print_with_operands' at ../disas/cris.c:2477:12,
->        inlined from 'print_insn_cris_generic.constprop' at ../disas/cris.c:2690:8:
->    /usr/include/bits/stdio2.h:30:10: warning: null destination pointer [-Wformat-overflow=]
->     30 |   return __builtin___sprintf_chk (__s, __USE_FORTIFY_LEVEL - 1,
->        |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->     31 |                                   __glibc_objsize (__s), __fmt,
->        |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->     32 |                                   __va_arg_pack ());
->        |                                   ~~~~~~~~~~~~~~~~~
-> 
-> Reported-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Signed-off-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
-> ---
-> TODO: add compiler version
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-My compiler is GCC 12.1.0, and I confirmed this change suppresses the 
-warnings.
+--3866299591-1988432963-1700488816=:81200
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-> 
-> Surgical alternative to this patch from Akihiko:
-> https://lore.kernel.org/all/20231120112329.4149-1-akihiko.odaki@daynix.com/
-> ---
->   disas/cris.c | 47 ++++++++++++++++++++++++++++++++---------------
->   1 file changed, 32 insertions(+), 15 deletions(-)
-> 
-> diff --git a/disas/cris.c b/disas/cris.c
-> index 0b0a3fb916..74a487c733 100644
-> --- a/disas/cris.c
-> +++ b/disas/cris.c
-> @@ -1731,10 +1731,10 @@ format_hex (unsigned long number,
->      unsigned (== 0).  */
->   
->   static char *
-> -format_dec (long number, char *outbuffer, int signedp)
-> +format_dec(long number, char *outbuffer, size_t outsize, int signedp)
->   {
->     last_immediate = number;
-> -  sprintf (outbuffer, signedp ? "%ld" : "%lu", number);
-> +  snprintf(outbuffer, outsize, signedp ? "%ld" : "%lu", number);
->   
->     return outbuffer + strlen (outbuffer);
->   }
-> @@ -1898,6 +1898,7 @@ print_with_operands (const struct cris_opcode *opcodep,
->        intermediate parts of the insn.  */
->     char temp[sizeof (".d [$r13=$r12-2147483648],$r10") * 2];
->     char *tp = temp;
-> +  ptrdiff_t tp_avail;
->     static const char mode_char[] = "bwd?";
->     const char *s;
->     const char *cs;
-> @@ -2102,12 +2103,13 @@ print_with_operands (const struct cris_opcode *opcodep,
->   		number = 42;
->   	      }
->   
-> -	    if ((*cs == 'z' && (insn & 0x20))
-> -		|| (opcodep->match == BDAP_QUICK_OPCODE
-> -		    && (nbytes <= 2 || buffer[1 + nbytes] == 0)))
-> -	      tp = format_dec (number, tp, signedp);
-> -	    else
-> -	      {
-> +        if ((*cs == 'z' && (insn & 0x20))
-> +            || (opcodep->match == BDAP_QUICK_OPCODE
-> +            && (nbytes <= 2 || buffer[1 + nbytes] == 0))) {
-> +            tp_avail = temp - tp;
+On Mon, 20 Nov 2023, BALATON Zoltan wrote:
+> On Mon, 20 Nov 2023, Kevin Wolf wrote:
+>> Am 20.11.2023 um 14:09 hat BALATON Zoltan geschrieben:
+>>> On Mon, 20 Nov 2023, Mark Cave-Ayland wrote:
+>>>> On 19/11/2023 21:43, BALATON Zoltan wrote:
+>>>>> On Thu, 16 Nov 2023, Mark Cave-Ayland wrote:
+>>>>>> This series adds a simple implementation of legacy/native mode
+>>>>>> switching for PCI
+>>>>>> IDE controllers and updates the via-ide device to use it.
+>>>>>> 
+>>>>>> The approach I take here is to add a new pci_ide_update_mode()
+>>>>>> function which handles
+>>>>>> management of the PCI BARs and legacy IDE ioports for each mode
+>>>>>> to avoid exposing
+>>>>>> details of the internal logic to individual PCI IDE controllers.
+>>>>>> 
+>>>>>> As noted in [1] this is extracted from a local WIP branch I have
+>>>>>> which contains
+>>>>>> further work in this area. However for the moment I've kept it simple 
+>>>>>> (and
+>>>>>> restricted it to the via-ide device) which is good enough for Zoltan's 
+>>>>>> PPC
+>>>>>> images whilst paving the way for future improvements after 8.2.
+>>>>>> 
+>>>>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>>>>> 
+>>>>>> [1] https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05403.html
+>>>>>> 
+>>>>>> v3:
+>>>>>> - Rebase onto master
+>>>>>> - Move ide_portio_list[] and ide_portio_list2[] to IDE core to
+>>>>>> prevent duplication in
+>>>>>> †hw/ide/pci.c
+>>>>>> - Don't zero BARs when switching from native mode to legacy
+>>>>>> mode, instead always force
+>>>>>> †them to read zero as suggested in the PCI IDE specification
+>>>>>> (note: this also appears
+>>>>>> †to fix the fuloong2e machine booting from IDE)
+>>>>> 
+>>>>> Not sure you're getting this, see also:
+>>>>> https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg04167.html
+>>>>> but this seems to break latest version of the AmigaOS driver for
+>>>>> some reason. I assume this is the BAR zeroing that causes this as it
+>>>>> works with v2 series and nothing else changed in v3 that could cause
+>>>>> this. Testing was done by Rene Engel, cc'd so maybe he can add more
+>>>>> info. It seems to work with my patch that sets BARs to legacy values
+>>>>> and with v2 that sets them to 0 but not with v3 which should also
+>>>>> read 0 but maybe something is off here.
+>>>> 
+>>>> I've been AFK for a few days, so just starting to catch up on various
+>>>> bits and pieces.
+>>> 
+>>> OK just wasn't sure if you saw my emails at all as it happened before that
+>>> some spam filters disliked my mail server and put messages in the spam
+>>> folder.
+>>> 
+>>>> The only difference I can think of regarding the BAR zeroing is that the
+>>>> BMDMA BAR is zeroed here. Does the following diff fix things?
+>>> 
+>>> This helps, with this the latest driver does not crash but still reads 
+>>> BAR4
+>>> as 0 instead of 0xcc00 so UDMA won't work but at least it boots.
+>> 
+>> And disabling only the first four BARs is actually what the spec says,
+>> too. So I'll make this change to the queued patches.
+>> 
+>> If I understand correctly, UDMA didn't work before this series either,
+>> so it's a separate goal and doing it in its own patch is best anyway.
+>
+> UDMA works with my original series, did not work with earlier versions of 
+> this alternative from Mark but could be fixed up on top unless Mark can send 
+> a v4 now.
+>
+>> As we don't seem to have a good place to set a default, maybe just
+>> overriding it in via_ide_cfg_read(), too, and making it return 0xcc01 in
+>> compatibility mode is enough?
+>
+> I could give that a try and see if that helps but all this via_ide_cfg_read() 
+> seems like an unnecessary complication to me. Why can't we just set the BARs 
+> (o for BAR1-3 and default for BAR4) then we don't need to override config 
+> read?
 
-I think this should be: temp + sizeof(temp) - tp
+Seems to work with this:
+
+diff --git a/hw/ide/via.c b/hw/ide/via.c
+index 47223b1268..214ebe48a1 100644
+--- a/hw/ide/via.c
++++ b/hw/ide/via.c
+@@ -164,14 +164,17 @@ static uint32_t via_ide_cfg_read(PCIDevice *pd, uint32_t addr, int len)
+      uint8_t mode = pd->config[PCI_CLASS_PROG];
+
+      if ((mode & 0xf) == 0xa && ranges_overlap(addr, len,
+-                                              PCI_BASE_ADDRESS_0, 24)) {
++                                              PCI_BASE_ADDRESS_0, 16)) {
+          /* BARs always read back zero in legacy mode */
+          for (int i = addr; i < addr + len; i++) {
+-            if (i >= PCI_BASE_ADDRESS_0 && i < PCI_BASE_ADDRESS_0 + 24) {
++            if (i >= PCI_BASE_ADDRESS_0 && i < PCI_BASE_ADDRESS_0 + 16) {
+                  val &= ~(0xffULL << ((i - addr) << 3));
+              }
+          }
+      }
++    if (addr == PCI_BASE_ADDRESS_4) {
++        val = 0xcc01;
++    }
+
+      return val;
+  }
+
+But I still think all the above mess could be avoided and just set the BAR 
+value to 0 for BAR0-3 and to 0xcc01 for BAR4 instead should be enough and 
+would not mess up the device model unnecessarily.
+
+Regards,
+BALATON Zoltan
+--3866299591-1988432963-1700488816=:81200--
 
