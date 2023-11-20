@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758347F0B71
+	by mail.lfdr.de (Postfix) with ESMTPS id A650D7F0B72
 	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 05:38:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r4w2Z-0000Da-Ro; Sun, 19 Nov 2023 23:37:43 -0500
+	id 1r4w2b-0000Dp-Ff; Sun, 19 Nov 2023 23:37:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
- id 1r4w2X-0000Cx-GV
- for qemu-devel@nongnu.org; Sun, 19 Nov 2023 23:37:41 -0500
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+ id 1r4w2Z-0000Db-Fk
+ for qemu-devel@nongnu.org; Sun, 19 Nov 2023 23:37:43 -0500
+Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <leo.yan@linaro.org>)
- id 1r4w2V-00039r-LB
- for qemu-devel@nongnu.org; Sun, 19 Nov 2023 23:37:41 -0500
-Received: by mail-pf1-x442.google.com with SMTP id
- d2e1a72fcca58-6c34e87b571so3140015b3a.3
- for <qemu-devel@nongnu.org>; Sun, 19 Nov 2023 20:37:38 -0800 (PST)
+ id 1r4w2X-0003AG-TI
+ for qemu-devel@nongnu.org; Sun, 19 Nov 2023 23:37:43 -0500
+Received: by mail-oi1-x236.google.com with SMTP id
+ 5614622812f47-3b2f507c03cso2347951b6e.2
+ for <qemu-devel@nongnu.org>; Sun, 19 Nov 2023 20:37:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700455058; x=1701059858; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700455060; x=1701059860; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nfEdFC/D9UpE1gEhOw+eN4wVWhKF64mX7MUD3h35eU0=;
- b=lrRVlJtiPQGOuP2pV9hlpQodpEUclZ9s79BmQJSDZ0K2tSeJN+8o9hEzRdyjs7OQac
- aeUByCwojTRWqNgHqYmQfBHLEOBJQsESw88e6biWbKPkKARuFx+grYEWbEfqUJ/vUtJj
- enOtrpw1OXvhIj4Bf7EBDCaH2EBTMrWiJEbcyyO98OdasUwzyrO/A9knBCAMIri54+ok
- L938oHZhHhM6p6gJWNxndaq5tTjMQMbLkBg20emIvW6qLW4peBjoN58jNBNaZPACwWp4
- KlRQvbOD2zsC81ayEQIE5YCgBi0ItJLXjjXydYPHibZ9AwTstXTOrQGOZWK8y6GsmrYP
- V9zg==
+ bh=3NIG2F7HCiQQLDnxtUKaAqaCC4f9JUC5QSsNOyMPV/o=;
+ b=ACtBTCyqT7viacRCkjeSuvVcYksAeCyMX5V9eU1Xp872tDiLyK7oeR78bIRI107ywO
+ Tg4uOke5RRVHXtjxK1XogGVb7JthMgtobjJUQzDDAAcngJYt6ADbPCapeMjvtABi70xn
+ nzarz8qZAGRU1vQFwSSjrEstPnAZJl3oJL0ZJ3SRlzgYschJ1Yz20AUrD7sePUQkPEcU
+ DnpDqvdE5efCAaWsC2PLWG+e+ndrZi0ODBI6QXdrUrzL4QM8VG7TdZx7ij6KxSUST5Xf
+ 3eSrarwC/tpmm9ArxD+rujoXNg2+6voPRRhlxWsqyJDOOJ//irI2a9yljusZhVd7zcv4
+ inlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700455058; x=1701059858;
+ d=1e100.net; s=20230601; t=1700455060; x=1701059860;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nfEdFC/D9UpE1gEhOw+eN4wVWhKF64mX7MUD3h35eU0=;
- b=kA4orRgVneQzBef4EmBLpBtCrKPiqoudCQy/Vn0m7Ncf9Xgkvwms/2UOfLbWgvZfvH
- uD1KRAUS1rWj8CSaPlMRFMVuAGI17P/dj8rfZnCt6OQ9lkS6OpDA0X9he+42WnifpTBJ
- ZbsIDc8g1+pqeAvTVvkyRFq9rDJsq82nvu51mJnJ+snf8hWwMTCXLf2xyuzYgwRe4E6Y
- i9TfQE5yoyFcIzat6Gim9GR1gO5ojxcma7XnOZNTaamGKXdasqNCNUAskcYrHnmWpncM
- oWCGqMxNkUA017H1sXTPoRyCJNJ6nXIfn3jDUMOABuReKP5IpWsQ5WURgVXb7hzNz+C7
- n+0A==
-X-Gm-Message-State: AOJu0YxUA3RkLHTdfQBJZixS9NW+lUC5eHiZnqxvSni93WzwnGUILLA5
- aPUx9aa2Md+94ro2W6+CbV0JWGiq8gi5QOqjGUo77SMpwC7fAguX
-X-Google-Smtp-Source: AGHT+IH8Is1vYxMdDVfGAy7Ue6ZJkvetZjv3aKNgzLVy1MCUl8LV+OlSzevhZNvtuLszYhMIhgtAQg==
-X-Received: by 2002:a05:6a00:a88:b0:6c3:1b7d:dac9 with SMTP id
- b8-20020a056a000a8800b006c31b7ddac9mr4822781pfl.34.1700455057737; 
- Sun, 19 Nov 2023 20:37:37 -0800 (PST)
+ bh=3NIG2F7HCiQQLDnxtUKaAqaCC4f9JUC5QSsNOyMPV/o=;
+ b=jjkFYSQk7thurDtMWx6H8PzHtEbjCinICISlJJ9RCq/rRVu+sjQU/Oy74TFm8qqyjN
+ sygVMCxZE5tOCErcTMooW7eWYYJtWUvvFz37pMzThgKqjggZeg98e7eTeatJqfxntdhi
+ pipUSfJhmp3Rr2AKsgA7w/1qG26g5OWq199f52C30Y1Wm+HePcxfWf5hxunZCURduT9q
+ SiYfwvyR51X8U6lpeV2epP7Us/QrjrkxX1ggWeVTQd4OvYdMRJJDBxp78FTX08mDzv4S
+ 9+fdgA7vtSzxQX/6ln7LRBkGmJmrZ2sopMBsGuSFMHxEdN/Ps27xTPh4tiphHMVbXeGF
+ kLDQ==
+X-Gm-Message-State: AOJu0YxEUErKPgJcNYpEnmShDwwUDFii76xd6uLs6F+0fizk1vD4IwGT
+ JExm/fOPnnKxHgJB17OMlGoYNRJIp4cYW8XptgZVX3EBGFC+Wg==
+X-Google-Smtp-Source: AGHT+IEjE+jJnrZMpcCx/XZxI8hoGx2MbdHss1eY1k6lL+494oehl3UoXpjZMPR9XoZGtNnHSWpB0w==
+X-Received: by 2002:a54:4e81:0:b0:3b2:e577:7344 with SMTP id
+ c1-20020a544e81000000b003b2e5777344mr6714633oiy.38.1700455060551; 
+ Sun, 19 Nov 2023 20:37:40 -0800 (PST)
 Received: from leoy-yangtze.lan (211-75-219-202.hinet-ip.hinet.net.
  [211.75.219.202]) by smtp.gmail.com with ESMTPSA id
- s41-20020a056a0017a900b006926d199fdcsm5035991pfg.190.2023.11.19.20.37.35
+ s41-20020a056a0017a900b006926d199fdcsm5035991pfg.190.2023.11.19.20.37.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 19 Nov 2023 20:37:37 -0800 (PST)
+ Sun, 19 Nov 2023 20:37:40 -0800 (PST)
 From: Leo Yan <leo.yan@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -63,16 +63,16 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Leo Yan <leo.yan@linaro.org>
-Subject: [PATCH v3 2/4] docs/system: Add vhost-user-input documentation
-Date: Mon, 20 Nov 2023 12:37:19 +0800
-Message-Id: <20231120043721.50555-3-leo.yan@linaro.org>
+Subject: [PATCH v3 3/4] hw/virtio: Move vhost-user-input into virtio folder
+Date: Mon, 20 Nov 2023 12:37:20 +0800
+Message-Id: <20231120043721.50555-4-leo.yan@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231120043721.50555-1-leo.yan@linaro.org>
 References: <20231120043721.50555-1-leo.yan@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::442;
- envelope-from=leo.yan@linaro.org; helo=mail-pf1-x442.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
+ envelope-from=leo.yan@linaro.org; helo=mail-oi1-x236.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,114 +95,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds basic documentation for vhost-user-input.
+vhost-user-input is in the input folder.  On the other hand, the folder
+'hw/virtio' maintains other virtio stubs (e.g. I2C, RNG, GPIO, etc).
+
+This patch moves vhost-user-input into the virtio folder for better code
+organization.  No functionality change.
 
 Signed-off-by: Leo Yan <leo.yan@linaro.org>
 ---
- MAINTAINERS                              |  1 +
- docs/system/device-emulation.rst         |  1 +
- docs/system/devices/vhost-user-input.rst | 45 ++++++++++++++++++++++++
- docs/system/devices/vhost-user.rst       |  4 ++-
- 4 files changed, 50 insertions(+), 1 deletion(-)
- create mode 100644 docs/system/devices/vhost-user-input.rst
+ MAINTAINERS                             | 2 +-
+ hw/input/meson.build                    | 1 -
+ hw/virtio/meson.build                   | 4 +++-
+ hw/{input => virtio}/vhost-user-input.c | 0
+ 4 files changed, 4 insertions(+), 3 deletions(-)
+ rename hw/{input => virtio}/vhost-user-input.c (100%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 0624d67932..8a26fe9493 100644
+index 8a26fe9493..fdc3edc6cb 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -2262,6 +2262,7 @@ L: virtio-fs@lists.linux.dev
- virtio-input
+@@ -2263,8 +2263,8 @@ virtio-input
  M: Gerd Hoffmann <kraxel@redhat.com>
  S: Odd Fixes
-+F: docs/system/devices/vhost-user-input.rst
- F: hw/input/vhost-user-input.c
+ F: docs/system/devices/vhost-user-input.rst
+-F: hw/input/vhost-user-input.c
  F: hw/input/virtio-input*.c
++F: hw/virtio/vhost-user-input.c
  F: include/hw/virtio/virtio-input.h
-diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulation.rst
-index d1f3277cb0..f19777411c 100644
---- a/docs/system/device-emulation.rst
-+++ b/docs/system/device-emulation.rst
-@@ -94,6 +94,7 @@ Emulated Devices
-    devices/virtio-gpu.rst
-    devices/virtio-pmem.rst
-    devices/virtio-snd.rst
-+   devices/vhost-user-input.rst
-    devices/vhost-user-rng.rst
-    devices/canokey.rst
-    devices/usb-u2f.rst
-diff --git a/docs/system/devices/vhost-user-input.rst b/docs/system/devices/vhost-user-input.rst
-new file mode 100644
-index 0000000000..118eb78101
---- /dev/null
-+++ b/docs/system/devices/vhost-user-input.rst
-@@ -0,0 +1,45 @@
-+.. _vhost_user_input:
-+
-+QEMU vhost-user-input - Input emulation
-+=======================================
-+
-+This document describes the setup and usage of the Virtio input device.
-+The Virtio input device is a paravirtualized device for input events.
-+
-+Description
-+-----------
-+
-+The vhost-user-input device implementation was designed to work with a daemon
-+polling on input devices and passes input events to the guest.
-+
-+QEMU provides a backend implementation in contrib/vhost-user-input.
-+
-+Linux kernel support
-+--------------------
-+
-+Virtio input requires a guest Linux kernel built with the
-+``CONFIG_VIRTIO_INPUT`` option.
-+
-+Examples
-+--------
-+
-+The backend daemon should be started first:
-+
-+::
-+
-+  host# vhost-user-input --socket-path=input.sock	\
-+      --evdev-path=/dev/input/event17
-+
-+The QEMU invocation needs to create a chardev socket to communicate with the
-+backend daemon and access the VirtIO queues with the guest over the
-+:ref:`shared memory <shared_memory_object>`.
-+
-+::
-+
-+  host# qemu-system								\
-+      -chardev socket,path=/tmp/input.sock,id=mouse0				\
-+      -device vhost-user-input-pci,chardev=mouse0				\
-+      -m 4096 									\
-+      -object memory-backend-file,id=mem,size=4G,mem-path=/dev/shm,share=on	\
-+      -numa node,memdev=mem							\
-+      ...
-diff --git a/docs/system/devices/vhost-user.rst b/docs/system/devices/vhost-user.rst
-index c6afc4836f..9b2da106ce 100644
---- a/docs/system/devices/vhost-user.rst
-+++ b/docs/system/devices/vhost-user.rst
-@@ -42,7 +42,7 @@ platform details for what sort of virtio bus to use.
-     - See https://github.com/rust-vmm/vhost-device
-   * - vhost-user-input
-     - Generic input driver
--    - See contrib/vhost-user-input
-+    - :ref:`vhost_user_input`
-   * - vhost-user-rng
-     - Entropy driver
-     - :ref:`vhost_user_rng`
-@@ -91,6 +91,8 @@ following the :ref:`vhost_user_proto`. There are a number of daemons
- that can be built when enabled by the project although any daemon that
- meets the specification for a given device can be used.
+ F: contrib/vhost-user-input/*
  
-+.. _shared_memory_object:
-+
- Shared memory object
- ====================
+diff --git a/hw/input/meson.build b/hw/input/meson.build
+index 640556bbbc..3cc8ab85f0 100644
+--- a/hw/input/meson.build
++++ b/hw/input/meson.build
+@@ -11,7 +11,6 @@ system_ss.add(when: 'CONFIG_TSC2005', if_true: files('tsc2005.c'))
+ system_ss.add(when: 'CONFIG_VIRTIO_INPUT', if_true: files('virtio-input.c'))
+ system_ss.add(when: 'CONFIG_VIRTIO_INPUT', if_true: files('virtio-input-hid.c'))
+ system_ss.add(when: 'CONFIG_VIRTIO_INPUT_HOST', if_true: files('virtio-input-host.c'))
+-system_ss.add(when: 'CONFIG_VHOST_USER_INPUT', if_true: files('vhost-user-input.c'))
  
+ system_ss.add(when: 'CONFIG_PXA2XX', if_true: files('pxa2xx_keypad.c'))
+ system_ss.add(when: 'CONFIG_TSC210X', if_true: files('tsc210x.c'))
+diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
+index 118d4d4da7..c924afcafc 100644
+--- a/hw/virtio/meson.build
++++ b/hw/virtio/meson.build
+@@ -25,6 +25,7 @@ if have_vhost
+     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_I2C', if_true: files('vhost-user-i2c.c'))
+     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_RNG', if_true: files('vhost-user-rng.c'))
+     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_SND', if_true: files('vhost-user-snd.c'))
++    system_virtio_ss.add(when: 'CONFIG_VHOST_USER_INPUT', if_true: files('vhost-user-input.c'))
+ 
+     # PCI Stubs
+     system_virtio_ss.add(when: 'CONFIG_VIRTIO_PCI', if_true: files('vhost-user-device-pci.c'))
+@@ -36,6 +37,8 @@ if have_vhost
+                          if_true: files('vhost-user-rng-pci.c'))
+     system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_SND'],
+                          if_true: files('vhost-user-snd-pci.c'))
++    system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_INPUT'],
++                         if_true: files('vhost-user-input-pci.c'))
+   endif
+   if have_vhost_vdpa
+     system_virtio_ss.add(files('vhost-vdpa.c'))
+@@ -59,7 +62,6 @@ virtio_pci_ss = ss.source_set()
+ virtio_pci_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock-pci.c'))
+ virtio_pci_ss.add(when: 'CONFIG_VHOST_USER_VSOCK', if_true: files('vhost-user-vsock-pci.c'))
+ virtio_pci_ss.add(when: 'CONFIG_VHOST_USER_BLK', if_true: files('vhost-user-blk-pci.c'))
+-virtio_pci_ss.add(when: 'CONFIG_VHOST_USER_INPUT', if_true: files('vhost-user-input-pci.c'))
+ virtio_pci_ss.add(when: 'CONFIG_VHOST_USER_SCSI', if_true: files('vhost-user-scsi-pci.c'))
+ virtio_pci_ss.add(when: 'CONFIG_VHOST_SCSI', if_true: files('vhost-scsi-pci.c'))
+ virtio_pci_ss.add(when: 'CONFIG_VHOST_USER_FS', if_true: files('vhost-user-fs-pci.c'))
+diff --git a/hw/input/vhost-user-input.c b/hw/virtio/vhost-user-input.c
+similarity index 100%
+rename from hw/input/vhost-user-input.c
+rename to hw/virtio/vhost-user-input.c
 -- 
 2.39.2
 
