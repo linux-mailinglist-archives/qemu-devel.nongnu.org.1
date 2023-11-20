@@ -2,78 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E017F1B0A
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 18:41:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0499A7F1BAA
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 18:54:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r58GA-0000A8-9c; Mon, 20 Nov 2023 12:40:34 -0500
+	id 1r58S0-0003n2-Id; Mon, 20 Nov 2023 12:52:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r58G7-000072-CP
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 12:40:31 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r58Ry-0003mm-NI
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 12:52:46 -0500
+Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r58G4-0005Lk-Tq
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 12:40:31 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5437d60fb7aso6831105a12.3
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 09:40:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r58Rx-0007tG-1E
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 12:52:46 -0500
+Received: by mail-ot1-x329.google.com with SMTP id
+ 46e09a7af769-6ce353df504so2769686a34.3
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 09:52:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700502027; x=1701106827; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=zniXinmm5mT1NKcggD6m6tjOWoFpPePq+zVwIUa5EfM=;
- b=EC/ebZ9i2WgEm8SzRrgkrNZk0f+m2yM94ZCowpOT+i4J0kB+XaKQccY0qPTMGldp9o
- V3QxvQOfl4m5HbAsdjLtbtlywvNu5fLsehRtGxjq1dCnVhd/uQDIR4CmKIl0Bqcxrd6V
- T/iSRsb35nzYtushJM9qBtMBJ8u6pNp+eV+v7MeV5LWDOs/AQgXYDCl0lps9Y9rlUsRD
- PHLLflO519RRmSNqiCg9Ppm+IUhUidYwq/9sHM1KQJEwj/MmbVq1hvH30cca+XxRDczb
- X/BAgAky8OratFtk4BUeXRds70h8ZSqYp5XMNlFYUIJZquBpU2WaxCYcCe5XX4c5djZN
- 3kNA==
+ d=linaro.org; s=google; t=1700502763; x=1701107563; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FP2bYN/PvArErqi9U4cNxsILr9lvwBy7eRAmkWDD8YY=;
+ b=mubHpbxpQSwTYGWvP5IKLcPUiiJAGLzSaUzwv2/l5QbIK8EuEXSJv5K1Cj1qe+iQmS
+ L9RIA95KduKb6NDuPZ7moodzglbiKNUssxyvPXn8arXPlLWukeEm6B4VgkkGVFyK3nAQ
+ lhRDDeptfEipuIrH5TmrhZ1C4DoVirYx7qNVsrZKhrvA0fELOQ83yBkN/3v6Qns7qbSb
+ uDuzlaVdm7rUwUB4ERo3MwkiUCncAA7m0OwHCoB1Adj4vYA15blOqwLIl0C6n3aXe02m
+ Qafdz30Wi7sdkyUcONtFwDQp8+lPSVqJuc1AZJv8x+ljTbWXrzhVktDnWBGkOdRARK7l
+ a3LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700502027; x=1701106827;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zniXinmm5mT1NKcggD6m6tjOWoFpPePq+zVwIUa5EfM=;
- b=mUt8hqliwb5+ow+qbSTnHX32FLp0HJeVeEw5FmSfWomvNQO2Q57Uarb2xZp0ROEmsV
- +fUvstYOfY+uWYJCq2F3DTAvnNqi0TDtk3aG9VIkbdiZwgAEUrDu9VrVa2GtxXMF1ywo
- lJVOyLdd+c94WnbKGSm+EASyMy0/F6bmj1Sb7q7/YYsFiuauBDDl7plJfOM00HFECQkz
- /Xvm2f61bmxhWnQpsd29eTo+FDR3iLyZEY1nPn8OIZN/4sZq/5+Qtndga6bIC1RnGcb9
- UaL4VQ+3kPvO0OKhXpIG2wybAHnvMOsPGcQKXt2ydOIVOf9CUAQiVlIz09p5oR9zKx2F
- B9Fg==
-X-Gm-Message-State: AOJu0YzTpMhR+7tybyijSA0OuQDoXVez1lR/sgQjhM4qyWL+oN9jo1/N
- B6E98ApEOxbtaw50rMNOJM5dkvk4vO8kQDp5aOgr89hVsUkvbJ65
-X-Google-Smtp-Source: AGHT+IFGbhw9r7Suug1BnyDg/5tK3X9WtK5syXRMQy/HlIyDXNeoeakeWROGvfkLN03F0p7rJ3WUeUUWxiIRPtL4pVQ=
-X-Received: by 2002:aa7:d616:0:b0:543:5d2e:a9c3 with SMTP id
- c22-20020aa7d616000000b005435d2ea9c3mr87058edr.20.1700502026943; Mon, 20 Nov
- 2023 09:40:26 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700502763; x=1701107563;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FP2bYN/PvArErqi9U4cNxsILr9lvwBy7eRAmkWDD8YY=;
+ b=TiGaO67rivSAfctKMMmsU0UWdf+jyyeWnasRaHDAGUlW7ICq3o3XhsoLIswgYLtdn6
+ Vd16lYhyHVc3OMLXbCZFNXluEJLdTKQmvJrZ6U5d34uA42x+m6hZKPqr+X4LgfQpjLDg
+ 8EUCRs2bApTGruwRj/doiBLOcDd06stWjRW2Vh795jtEvBKSaTfn0RaoYZnM/UWk9x7u
+ CQwEaTAbyF+qXwbGX1PKqTCQ8EvLHIA6OEBcBJ6XRdOWGM9/Gch2h4xz8xqcfSP3vi6u
+ TWwhgBzwzPawSYXh2MlOWTE7DdGiOGdpT8YGAXE2GuN+SzAljDfX+35goqrSOnchE9Co
+ DaeA==
+X-Gm-Message-State: AOJu0YxghpRz6oCU/cvbnieC6xlyiZlmWGoX1hCTrdaCszNbhoaBO1AQ
+ iiZX5qH2RGiknXuEr7I/PDLI5g==
+X-Google-Smtp-Source: AGHT+IGoXqtQ1X8vYev/JmKldsgkPxxTfh652YOafgCjVqZsnbfJEHNmjcKQnBQ+Q3UXSkspRCtkLQ==
+X-Received: by 2002:a05:6830:25d0:b0:6d3:2920:a5bf with SMTP id
+ d16-20020a05683025d000b006d32920a5bfmr10343135otu.17.1700502763605; 
+ Mon, 20 Nov 2023 09:52:43 -0800 (PST)
+Received: from [192.168.174.227] ([187.217.227.247])
+ by smtp.gmail.com with ESMTPSA id
+ l17-20020a05683016d100b006b87f593877sm1222127otr.37.2023.11.20.09.52.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 20 Nov 2023 09:52:43 -0800 (PST)
+Message-ID: <bd03b433-da83-4ea2-bba8-57a1eaaa5d79@linaro.org>
+Date: Mon, 20 Nov 2023 11:52:40 -0600
 MIME-Version: 1.0
-References: <CAFEAcA_koyJSR_7kF6TByA_rm2nJQr-8UnXrtu3JqwgpqUEctw@mail.gmail.com>
- <20231109135439.1297135-1-leonid_komarianskyi@epam.com>
- <baafd137-58de-42e9-9f06-c7f7789d4b77@epam.com>
-In-Reply-To: <baafd137-58de-42e9-9f06-c7f7789d4b77@epam.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 20 Nov 2023 17:40:15 +0000
-Message-ID: <CAFEAcA_auQOuPyZMbGd2G6ePn60nnPLtm5N+jRGz1bTvsg5Scg@mail.gmail.com>
-Subject: Re: [PATCH v2] target/arm: Add overflow check for gt_recalc_timer
-To: Leonid Komarianskyi <Leonid_Komarianskyi@epam.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, 
- Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
- Dmytro Firsov <Dmytro_Firsov@epam.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-8.2] target/arm: Handle overflow in calculation of
+ next timer tick
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Leonid Komarianskyi <leonid_komarianskyi@epam.com>
+References: <20231120173506.3729884-1-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231120173506.3729884-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x329.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,38 +96,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 9 Nov 2023 at 15:14, Leonid Komarianskyi
-<Leonid_Komarianskyi@epam.com> wrote:
->
-> Peter Maydell, thank you for your comments.
-> I apologize for so late response - returned to this issue and now I will
-> answer faster. I fixed the commit according to your recommendations,
-> please take a look at the new version.
->
->  > There is also a comment or two from me in the bug report pointing
->  > out that the handling of wraparound is also wrong in the other
->  > half of this if(); we should look at that too.
->
-> I read this topic and as I understand changing the other half of "if" is
-> not related to the reported issue. Since it affects running virtualized
-> setups on arm64 QEMU, e.g. Zephyr
-> (https://github.com/zephyrproject-rtos/zephyr/blob/main//boards/arm64/xenvm/doc/index.rst)
-> maybe is it worth merging at least this change?
+On 11/20/23 09:35, Peter Maydell wrote:
+> In commit edac4d8a168 back in 2015 when we added support for
+> the virtual timer offset CNTVOFF_EL2, we didn't correctly update
+> the timer-recalculation code that figures out when the timer
+> interrupt is next going to change state. We got it wrong in
+> two ways:
+>   * for the 0->1 transition, we didn't notice that gt->cval + offset
+>     can overflow a uint64_t
+>   * for the 1->0 transition, we didn't notice that the transition
+>     might now happen before the count rolls over, if offset > count
+> 
+> In the former case, we end up trying to set the next interrupt
+> for a time in the past, which results in QEMU hanging as the
+> timer fires continuously.
+> 
+> In the latter case, we would fail to update the interrupt
+> status when we are supposed to.
+> 
+> Fix the calculations in both cases.
+> 
+> The test case is Alex Bennée's from the bug report, and tests
+> the 0->1 transition overflow case.
+> 
+> Fixes: edac4d8a168 ("target-arm: Add CNTVOFF_EL2")
+> Cc: qemu-stable@nongnu.org
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/60
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+> Thanks to Leonid for his recent patch which prodded me
+> into looking at this again. I preferred to fix both halves
+> of the if(), rather than just one, and I have thrown in
+> Alex's test case since it was conveniently to hand.
+> ---
+>   target/arm/helper.c                       | 25 ++++++++++--
+>   tests/tcg/aarch64/system/vtimer.c         | 48 +++++++++++++++++++++++
+>   tests/tcg/aarch64/Makefile.softmmu-target |  7 +++-
+>   3 files changed, 75 insertions(+), 5 deletions(-)
+>   create mode 100644 tests/tcg/aarch64/system/vtimer.c
+> 
+> diff --git a/target/arm/helper.c b/target/arm/helper.c
+> index ff1970981ee..0430ae55edf 100644
+> --- a/target/arm/helper.c
+> +++ b/target/arm/helper.c
+> @@ -2646,11 +2646,28 @@ static void gt_recalc_timer(ARMCPU *cpu, int timeridx)
+>           gt->ctl = deposit32(gt->ctl, 2, 1, istatus);
+>   
+>           if (istatus) {
+> -            /* Next transition is when count rolls back over to zero */
+> -            nexttick = UINT64_MAX;
+> +            /*
+> +             * Next transition is when (count - offset) rolls back over to 0.
+> +             * If offset > count then this is when count == offset;
+> +             * if offset <= count then this is when count == offset + UINT64_MAX
 
-I feel they're really pretty much the same thing -- when we
-added support for the timer offset registers we didn't correctly
-update the arithmetic that calculates when the next interrupt
-line transition happens.
+Is it really UINT64_MAX or 2**64, i.e. UINT64_MAX + 1?
 
-I've just posted my version of a patch that I think should
-fix both halves of the if():
+Beyond this comment nit, the action "set nexttick as far in the future as possible" is 
+correct.
 
-https://patchew.org/QEMU/20231120173506.3729884-1-peter.maydell@linaro.org/
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Thanks for prodding me into looking at this issue again -- I had
-somehow got the mistaken impression that it only happened in
-some weird icount sleep=off situations.
 
-thanks
--- PMM
+r~
 
