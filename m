@@ -2,80 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C3E7F12FB
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 13:14:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA6E7F1302
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 13:17:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r53AA-0002fw-6J; Mon, 20 Nov 2023 07:14:02 -0500
+	id 1r53CN-0003az-Ff; Mon, 20 Nov 2023 07:16:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r53A5-0002fN-Ry
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 07:13:59 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r53CL-0003Zy-Aq
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 07:16:17 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r53A4-0007Lo-42
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 07:13:57 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5401bab7525so6171706a12.2
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 04:13:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r53CG-0000e1-1b
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 07:16:17 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-548b54ed16eso1342265a12.0
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 04:16:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700482434; x=1701087234; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700482569; x=1701087369; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=VMcSmPM52XARy4Pdj+aniY6ddRnTaznLc+N2nXNi/Lo=;
- b=V6nrknBLXN2wTRdvTtejQX5Lkr6bWIMZM2mfNi/ahqrMApzSlKEeRt3WEgF8/RIPYn
- iU1YXKpKO8mOhWEFbFogJwW7SESedqZkxF6LJ2l8ZtqYWdNNY13N9D6DwPxxWt0W/RSa
- 0oQBgskqC52Y2gPBe9uNoFXHYfv9fwxO9zSipFo3+AAQCl4ikSSyZsSuk8HY6Q/ACE4T
- cUKXrQSKHLoW7BWnD0WQ4r1XFFIi1Hi2c0zObFfdKzBnlYWIDDhCRy4HOEAgDb9valwg
- O2X5dDFIyDnBh7Rjcz6Zjnxw8DoQiWGWqNjBpjIHHZ9DnWUo9rNuheALavxCxJAHYrEM
- ZV2w==
+ bh=mFwTUgdGmz6e1RnmeB28qxX070DArTGK86lTEvx/A3M=;
+ b=P8xyxCURrmXbo8Pssl/G1OGebfFR3ZZUDigVfkVT/4R6HgaOHnE9fi/DpFgcgG0NUl
+ Hz4X6AU5b3Ax53Uv6L73joMhpTW/dj9a7Qxu/SndMPXiTp/BjTSDfzW8JrlNRjQOBMog
+ ku48C3rTDSmiIXR9JO0ZOUS8zAaN20r+AyZBMpGSiu732WLY/nSuC01AGeB2HxX+f2kz
+ JgVUIK0A6P44Gkl3YZRjisXsDmYkennwdKauu3kEwZ+Gm2XFla5mb5FDwTowLSDEZJEh
+ n3Cru0/Fo3bD+Bldki8m8IZz+64B9TCdAWZvV+X83dftk8qVsO3abCv0zUgFeh7uKCoK
+ dlZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700482434; x=1701087234;
+ d=1e100.net; s=20230601; t=1700482569; x=1701087369;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VMcSmPM52XARy4Pdj+aniY6ddRnTaznLc+N2nXNi/Lo=;
- b=CBozNOgXMqGJAKEuSnxDAs+0dA26Vwl+aJ9B0m5xHVTO+a9YSMNtWfPjoLLXt6VM1S
- eVEFhlSy3ebr8cmb/r90wbTNOjHnQbfabGUYWIMixw4IlSP9EYHODFNDVUGbxsWIKys+
- aDFwxplYNBiHCfWq8/Mj9q+4eLhbizF2MdfaHR0mH7vEyCR9l6qN9sbnpoYKV4CWwniW
- S/UxLZchnQcdtCKdrQ8sHSBUFu5p/E4PkvDFzdB2/0CTHhjzxHCTnL7HAoqp5OnF0WeZ
- d5bYA9Mxc/82sJjJ0sgUPlSAjZkmUVZyllATcB3CJ4aHZlEv2sPADz30P2e6GaA2Ozzi
- Y+6A==
-X-Gm-Message-State: AOJu0Ywo0G+7n8J6kkm31pZHCopr2sIWDDxpgDPVruuEdOIfE781ysLk
- GP3pVYar8dyRED3MFbh6b5gZpS2IU4sGFRvp5JI=
-X-Google-Smtp-Source: AGHT+IG3xIcnYX7WH2huwBvJphBmAiiZ1PcXrQ7yn2yGgSXvuqoNGmDX3fbjns9z59enIgeyTTPquA==
-X-Received: by 2002:a17:906:1ca:b0:9de:cfa1:f077 with SMTP id
- 10-20020a17090601ca00b009decfa1f077mr4533189ejj.14.1700482434373; 
- Mon, 20 Nov 2023 04:13:54 -0800 (PST)
+ bh=mFwTUgdGmz6e1RnmeB28qxX070DArTGK86lTEvx/A3M=;
+ b=CLLC7QiM8nnJM3n7V5uWAsQZuBxgGmk8bfvU5BqWgwvL//CiDd6vTsaZrXr12hFhgO
+ NpBfndQeYB42/hB+tUjMaL+9cG1YjIuIgdvI0cXGoDBLA1S+6POjk0RYI/tvCJZOwT5L
+ dqChZ5VYsSBg09WGk0AdHOkQQB4pt/F5WKUZoilpcGWAUZblSCg1iRsmKaeI/pIwN5Rm
+ 9OvvrPuWXN4FfrqgKkpagiSIgk2Vhb8/fj+O/xp8hw/GNow9eS9YXMZ7ktMsP0Rsad7a
+ D0pexhlYT+Q3pr9mTcK3WL3CEgRx2H89yZ99+oIgZdqBwVaNjZil11krRrR0jPq5S411
+ axxQ==
+X-Gm-Message-State: AOJu0YyyTbyBG6rl6fBpVVoia0e1Vts42ojFHEzFIkkzdAzgzhUvZZ1n
+ sLyvV3uKK+HcOCKO3RheyTGx9A==
+X-Google-Smtp-Source: AGHT+IFO/Th0OkauubHlx+ksS3YieIsh5pl7kF/TT/D3qMHgpuc9aHoPik5K5GpISrhjOZKaLmpt6w==
+X-Received: by 2002:a17:906:2249:b0:9dd:4811:7111 with SMTP id
+ 9-20020a170906224900b009dd48117111mr5298369ejr.4.1700482569345; 
+ Mon, 20 Nov 2023 04:16:09 -0800 (PST)
 Received: from [192.168.69.100] ([176.176.181.190])
  by smtp.gmail.com with ESMTPSA id
- mf3-20020a170906cb8300b009f28db2b702sm3800891ejb.209.2023.11.20.04.13.52
+ n12-20020a17090673cc00b009dd606ce80fsm3862535ejl.31.2023.11.20.04.16.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Nov 2023 04:13:53 -0800 (PST)
-Message-ID: <2944be42-01aa-4313-be90-6139e6826d1d@linaro.org>
-Date: Mon, 20 Nov 2023 13:13:51 +0100
+ Mon, 20 Nov 2023 04:16:08 -0800 (PST)
+Message-ID: <3bd74930-f445-47b2-bb76-8451aa7b995a@linaro.org>
+Date: Mon, 20 Nov 2023 13:16:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-8.2 1/1] tcg/loongarch64: Fix tcg_out_mov() Aborted
+Subject: Re: [PATCH 1/1] hw/intc/riscv_aclint:Change the way to get CPUState
+ from hard-base to pu_index
 Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, git@xen0n.name, c@jia.je, maobibo@loongson.cn
-References: <20231120065916.374045-1-gaosong@loongson.cn>
+To: LeoHou <LeoHou@canaan-creative.com>, Dongxue Zhang <elta.era@gmail.com>
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ Anup Patel <apatel@ventanamicro.com>, Bin Meng <bin.meng@windriver.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ =?UTF-8?B?5L6v6Iux5LmQ?= <houyingle@canaan-creative.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Mayuresh Chitale <mchitale@ventanamicro.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Palmer Dabbelt <palmer@rivosinc.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, QEMU Developers <qemu-devel@nongnu.org>,
+ qemu-riscv <qemu-riscv@nongnu.org>, =?UTF-8?B?5byg5Lic6Zuq?=
+ <zhangdongxue@canaan-creative.com>,
+ "leohou1402@gmail.com" <leohou1402@gmail.com>
+References: <cover.1699496263.git.houyingle@canaan-creative.com>
+ <6d1d8cc8c2b37b145e4a826095619097fa4a34d5.1699496263.git.houyingle@canaan-creative.com>
+ <CAEomy4TmM0ShGkuV2mprB8Xm0Kn62ZWZA7Gnfvt07pioY9fCCA@mail.gmail.com>
+ <bf0c7c6d-a940-4968-ab18-4af6125b8d0b@linaro.org>
+ <BJSPR01MB062758831AA8BF73856F5DFC95B3A@BJSPR01MB0627.CHNPR01.prod.partner.outlook.cn>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231120065916.374045-1-gaosong@loongson.cn>
+In-Reply-To: <BJSPR01MB062758831AA8BF73856F5DFC95B3A@BJSPR01MB0627.CHNPR01.prod.partner.outlook.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,61 +105,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/11/23 07:59, Song Gao wrote:
-> On LoongArch host,  we got an Aborted from tcg_out_mov().
-> 
-> qemu-x86_64 configure with '--enable-debug'.
-> 
->> (gdb) b /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312
->> Breakpoint 1 at 0x2576f0: file /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc, line 312.
->> (gdb) run hello
-> [...]
->> Thread 1 "qemu-x86_64" hit Breakpoint 1, tcg_out_mov (s=0xaaaae91760 <tcg_init_ctx>, type=TCG_TYPE_V128, ret=TCG_REG_V2,
->>      arg=TCG_REG_V0) at /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312
->> 312           g_assert_not_reached();
->> (gdb) bt
->> #0  tcg_out_mov (s=0xaaaae91760 <tcg_init_ctx>, type=TCG_TYPE_V128, ret=TCG_REG_V2, arg=TCG_REG_V0)
->>      at /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312
->> #1  0x000000aaaad0fee0 in tcg_reg_alloc_mov (s=0xaaaae91760 <tcg_init_ctx>, op=0xaaaaf67c20) at ../tcg/tcg.c:4632
->> #2  0x000000aaaad142f4 in tcg_gen_code (s=0xaaaae91760 <tcg_init_ctx>, tb=0xffe8030340 <code_gen_buffer+197328>,
->>      pc_start=4346094) at ../tcg/tcg.c:6135
-> [...]
->> (gdb) c
->> Continuing.
->> **
->> ERROR:/home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312:tcg_out_mov: code should not be reached
->> Bail out! ERROR:/home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312:tcg_out_mov: code should not be reached
+On 13/11/23 05:25, LeoHou wrote:
+> On 9/11/23 23:26, Philippe Mathieu-Daudé  wrote:
+>   
+>> Hi Leo,
 >>
->> Thread 1 "qemu-x86_64" received signal SIGABRT, Aborted.
->> 0x000000fff7b1c390 in raise () from /lib64/libc.so.6
->> (gdb) q
-
-Available since commit af88a28414 ("tcg/loongarch64: Import LSX
-instructions"), missed when LSX host instruction got enabled in
-commit 16288ded94 ("tcg/loongarch64: Lower basic tcg vec ops to LSX").
-
-
-Fixes: 16288ded94 ("tcg/loongarch64: Lower basic tcg vec ops to LSX")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   tcg/loongarch64/tcg-target.c.inc | 3 +++
->   1 file changed, 3 insertions(+)
+>> First, I can't find your patch in my mailbox, so I'm replying to
+>> Dongxue's review.
+>>
+>> On 9/11/23 03:41, Dongxue Zhang wrote:
+>>> Reviewed-by: Dongxue Zhang <zhangdongxue@canaan-creative.com>
+>>>
+>>>
+>>>> On Thu, Nov 9, 2023 at 10:22 AM Leo Hou <LeoHou@canaan-creative.com> wrote:
+>>>>
+>>>> From: Leo Hou <houyingle@canaan-creative.com>
+>>>>
+>>>> cpu_by_arch_id() uses hartid-base as the index to obtain the corresponding CPUState structure variable.
+>>>> qemu_get_cpu() uses cpu_index as the index to obtain the corresponding CPUState structure variable.
+>>>>
+>>>> In heterogeneous CPU or multi-socket scenarios, multiple aclint needs to be instantiated,
+>>>> and the hartid-base of each cpu bound by aclint can start from 0. If cpu_by_arch_id() is still used
+>>>> in this case, all aclint will bind to the earliest initialized hart with hartid-base 0 and cause conflicts.
+>>>>
+>>>> So with cpu_index as the index, use qemu_get_cpu() to get the CPUState struct variable,
+>>>> and connect the aclint interrupt line to the hart of the CPU indexed with cpu_index
+>>>> (the corresponding hartid-base can start at 0). It's more reasonable.
+>>>>
+>>>> Signed-off-by: Leo Hou <houyingle@canaan-creative.com>
+>>>> ---
+>>>>     hw/intc/riscv_aclint.c | 16 ++++++++--------
+>>>>     1 file changed, 8 insertions(+), 8 deletions(-)
+>>>>
+>>>> diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
+>>>> index ab1a0b4b3a..be8f539fcb 100644
+>>>> --- a/hw/intc/riscv_aclint.c
+>>>> +++ b/hw/intc/riscv_aclint.c
+>>>> @@ -130,7 +130,7 @@ static uint64_t riscv_aclint_mtimer_read(void *opaque, hwaddr addr,
+>>>>             addr < (mtimer->timecmp_base + (mtimer->num_harts << 3))) {
+>>>>             size_t hartid = mtimer->hartid_base +
+>>>>                             ((addr - mtimer->timecmp_base) >> 3);
+>>>> -        CPUState *cpu = cpu_by_arch_id(hartid);
+>>>> +        CPUState *cpu = qemu_get_cpu(hartid);
+>>
+>> There is some code smell here. qemu_get_cpu() shouldn't be called by
+>> device models, but only by accelerators.
 > 
-> diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-> index a588fb3085..5f68040230 100644
-> --- a/tcg/loongarch64/tcg-target.c.inc
-> +++ b/tcg/loongarch64/tcg-target.c.inc
-> @@ -308,6 +308,9 @@ static bool tcg_out_mov(TCGContext *s, TCGType type, TCGReg ret, TCGReg arg)
->            */
->           tcg_out_opc_or(s, ret, arg, TCG_REG_ZERO);
->           break;
-> +    case TCG_TYPE_V128:
-> +        tcg_out_opc_vaddi_du(s, ret, arg, 0);
-> +        break;
->       default:
->           g_assert_not_reached();
->       }
+> Yes, qemu_get_cpu() is designed to be called by accelerators.
+> But there is currently no new API to support multi-socket and
+> heterogeneous processor architectures，and sifive_plic has been
+> designed with qemu_get_cpu().
+> Please refer to:
+> [1] https://lore.kernel.org/qemu-devel/1519683480-33201-16-git-send-email-mjc@sifive.com/
+> [2] https://lore.kernel.org/qemu-devel/20200825184836.1282371-3-alistair.francis@wdc.com/
+> 
+> 
+>> Maybe the timer should get a link of the hart array it belongs to,
+>> and offset to this array base hartid?
+> 
+> The same problem exists not only with timer, but also with aclint.
+> There needs to be a general approach to this problem.
+
+Right. However since there is no heterogeneous support in QEMU
+at present, we don't need this patch in the next release.
+
+So I'd rather wait and work on a correct fix. Up to the maintainer.
+
+Regards,
+
+Phil.
+
+>> I'm going to
+>> NACK
+>> this patch until further review / clarifications.
+> 
+> Regards,
+> 
+> Leo Hou.
 
 
