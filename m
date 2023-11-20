@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6A07F1850
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 17:16:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E017F18AD
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 17:34:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r56w6-0002B5-QF; Mon, 20 Nov 2023 11:15:46 -0500
+	id 1r57CV-0007SI-Rn; Mon, 20 Nov 2023 11:32:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r56w5-0002Av-84
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 11:15:45 -0500
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ id 1r57CU-0007S4-5B
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 11:32:42 -0500
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r56w3-0000La-Dg
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 11:15:44 -0500
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-507f1c29f25so6060521e87.1
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 08:15:42 -0800 (PST)
+ id 1r57CS-0006HM-Lm
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 11:32:41 -0500
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2c50fbc218bso57839271fa.3
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 08:32:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700496941; x=1701101741; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700497958; x=1701102758; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=eqynna/GcmUW+ANcPuA84Quc72LuJQXSRFj5ty2LyOA=;
- b=n1TXU6toWSSHTkZQq3LBQgFQAWFW9bNHTVoTsxNN4WG9b69kwELYOb8Cn3N79A26pP
- J7w4IiycIEI3h7jHqAmy0s6wLEjn/4tlpHRMsMDZfqA6lsZeaNYU0TbYNRqo/6M4WBAp
- XvJ8tl7VdYmxbzcOI9QgpNzpybVKra53Oyyd8qkdjdQuyP8MV1MRki6aNBeX4JQByyrc
- GJE1X9A0P8uK5w4VGwKHa19pPcFDSYpgaiKLWPAPv8vf0bS3FvppptDbTfrXW/RN+LvP
- 2gLDCvDCOo5AyXmfoYonLC0+L6JigfQPB86nMPdp2+OeW6TKcwxY+2DrOHbKskWAjofy
- WDAQ==
+ bh=07SMG8jzc6o3QvutEmPIAP+JtYeK2mfQ8RGHEun0QSw=;
+ b=HLS3RWRvwvvHEKn/9admPSxu1ogpuYZBcRnhC1nzWh5IQqpzYoprH1mOB61CRchnkd
+ TilCoQ/4z9fXz3b6ourrtmJZLqs7k7BP1J/wQQJypHDRC6Pyd/CQWbKIqXA7CSIQsMZ0
+ BYU9P+0ivmEwFDm5jKefJo2MVOWYlucq2JiOrN7ODuqzAK2L896FZ8NYVtREFdmQLA/W
+ sQBfr/s9u6vVUdh3ltatUhwappQFq3Oh9kYV65uktsV261N1nHPBYnXBMQ4WUnysRf8o
+ 2MtrelkNKeIfZEu4XMQcBiwftaHjwG/A+xKw1F4qBGrZBqaFzqCGYWS36jHTpsyZw+1H
+ MiMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700496941; x=1701101741;
+ d=1e100.net; s=20230601; t=1700497958; x=1701102758;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eqynna/GcmUW+ANcPuA84Quc72LuJQXSRFj5ty2LyOA=;
- b=xJlBmBc/cyS27mMwNrY0TftheaLOK2h8Wflt3sHRz5BLNDlEEYj86iTqMGIO0qQxaY
- J35yiHDOLpK2BvSFmyDULV06rEshk84DTdiPvpZYOKp6725+BHS/ZrWdgmb0qLQ8taDn
- kLgziWSmmvBRsh1MA3Z8NA5LghaXspQd//EYXASJw01omdWyLboczu8P8I0+rFxAZuUL
- mXpsa5XxlPm3Emdj+pXHeIeXw7VtIy8v5PUKdkhby4I1Fp39vJXiOKfU4QNRNhGtEqcf
- hquq5Z6fiWm4oKqm/1npQWx7f9na/HZgmlpDolFY7UMQHL/aEPuJdIBeEu4aYjxG4IxM
- xxDA==
-X-Gm-Message-State: AOJu0YxY1ilZHiVyoGeB66Oc4QOuJcRh8Wq2Qu9MoxsNQDg6CoPsqzxi
- hQPVeNz79h/R5IxROlFzOaCUUznpYuqfEfVQrFmxcw==
-X-Google-Smtp-Source: AGHT+IGTInfOc1qdwkZz5uF6JZBOKtHVJZ+FkYRixWC64cqDH/X9WWelfGrytHjqI/hbTlQ/t35+Vg==
-X-Received: by 2002:ac2:5230:0:b0:509:1227:ca71 with SMTP id
- i16-20020ac25230000000b005091227ca71mr5567913lfl.17.1700496941322; 
- Mon, 20 Nov 2023 08:15:41 -0800 (PST)
+ bh=07SMG8jzc6o3QvutEmPIAP+JtYeK2mfQ8RGHEun0QSw=;
+ b=Zej3Od1GyaAjAeRmulPKuNefIyi/pbgK1w/g6AB2FnBe2NqR9irVEGDDImImZVV3bj
+ EiXMJ3ye4yCu7eTw9wupFWXjpyBkziTU3UmzzzfoHAVRC2sOvm+EYZRZzts6i2zuEp+5
+ UzXshIKch1egHaYyUUe7OPOS25bCF7YiTamsiYH30wZH80TG5twfo1hRFAJMucXycKhH
+ A9GJ58V9WWyAZe00vY0kvI/89WBAGZA5SaH0YU2A1f43/Thu4Co+szS1NQZEeRxFad9W
+ OUGEMKoiFo8W1kfYL0ci8ItweXw40DwxIVzi5Hn45EKz9iLgaMPJY8yM90fMxWRaTEWS
+ OtNw==
+X-Gm-Message-State: AOJu0Yw0mY6muyE+UfiitmfqhYyildX4RbHB9QRRVK2yoZhKRsyH659/
+ B8nTikS9/4RKXH6htpwik99iww==
+X-Google-Smtp-Source: AGHT+IG0C+zCJ0fALCT8CsjrIabtoJ/dONANEAhyf/YtWCTm1/ztbbAfRRN1T+/8ZWzFhEjolgHDIQ==
+X-Received: by 2002:a2e:5007:0:b0:2c8:7962:cdc2 with SMTP id
+ e7-20020a2e5007000000b002c87962cdc2mr4222143ljb.3.1700497958542; 
+ Mon, 20 Nov 2023 08:32:38 -0800 (PST)
 Received: from [192.168.174.227] ([91.223.100.4])
  by smtp.gmail.com with ESMTPSA id
- f11-20020a19380b000000b0050a6f5a186bsm1225823lfa.293.2023.11.20.08.15.39
+ x19-20020a05651c105300b002c834afc316sm1040786ljm.30.2023.11.20.08.32.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Nov 2023 08:15:41 -0800 (PST)
-Message-ID: <9909bfea-56ed-4130-92c5-e95ab57188a8@linaro.org>
-Date: Mon, 20 Nov 2023 08:15:37 -0800
+ Mon, 20 Nov 2023 08:32:38 -0800 (PST)
+Message-ID: <87ac4dc5-af42-4afa-9d90-0fb46b9bbf28@linaro.org>
+Date: Mon, 20 Nov 2023 08:32:32 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/14] docs/emulation: expand warning about semihosting
+Subject: Re: [PATCH v2 11/14] tests/tcg: enable arm softmmu tests
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
 References: <20231120150833.2552739-1-alex.bennee@linaro.org>
- <20231120150833.2552739-8-alex.bennee@linaro.org>
+ <20231120150833.2552739-12-alex.bennee@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231120150833.2552739-8-alex.bennee@linaro.org>
+In-Reply-To: <20231120150833.2552739-12-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x134.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x232.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -95,33 +95,36 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/20/23 07:08, Alex Bennée wrote:
-> A surprising feature of calls like SYS_READC is this can cause QEMU to
-> indefinitely block as there is no handling for EOF.
-> 
-> Clarifies: https://gitlab.com/qemu-project/qemu/-/issues/1963
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   docs/about/emulation.rst | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
-> index 0ad0b86f0d..a2eefe3f3f 100644
-> --- a/docs/about/emulation.rst
-> +++ b/docs/about/emulation.rst
-> @@ -129,8 +129,9 @@ causing most hypervisors to trap and fault on them.
->   .. warning::
->      Semihosting inherently bypasses any isolation there may be between
->      the guest and the host. As a result a program using semihosting can
-> -   happily trash your host system. You should only ever run trusted
-> -   code with semihosting enabled.
-> +   happily trash your host system. Some semihosting calls (e.g.
-> +   ``SYS_READC``) can block execution indefinitely. You should only
-> +   ever run trusted code with semihosting enabled.
->   
->   Redirection
->   ~~~~~~~~~~~
+> +/*
+> + * Helper macro for the linker calling subroutines from the C code.
+> + */
 
+That's not all it's for.  Better "annotating functions with elf type and size".
 
+> +vector_table:
+> +	b   reset		/* reset vector */
+> +	b   undef_instr        /* undefined instruction vector */
+> +	b   software_intr    	/* software interrupt vector */
+> +	b   prefetch_abort		/* prefetch abort vector */
+> +	b   data_abort	        /* data abort vector */
+> +	nop			            /* reserved */
+> +	b   IRQ_handler        	/* IRQ vector */
+> +	b   FIQ_handler        	/* FIQ vector */
+
+Missing endf, for the purpose of qemu load_symbols().
+
+> +mmu_setup:
+> +reset:
+> +undef_instr:
+> +software_intr:
+> +prefetch_abort:
+> +data_abort:
+> +IRQ_handler:
+> +FIQ_handler:
+
+Also missing.
+
+With those fixed,
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
