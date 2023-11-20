@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F3D7F16E2
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 16:12:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8727F7F1724
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 16:18:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r55wo-0005al-03; Mon, 20 Nov 2023 10:12:26 -0500
+	id 1r561p-0004my-0X; Mon, 20 Nov 2023 10:17:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r55wl-0005W8-Ex
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 10:12:23 -0500
+ id 1r561f-0004lu-Vs
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 10:17:28 -0500
 Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r55wj-0003e6-FY
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 10:12:23 -0500
+ id 1r561d-0005Wl-LG
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 10:17:27 -0500
 Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-53e751aeb3cso6481015a12.2
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 07:12:20 -0800 (PST)
+ 4fb4d7f45d1cf-548d4fc9579so1265129a12.1
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 07:17:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700493140; x=1701097940; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700493444; x=1701098244; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=owfh7IYvvjcgubE2cvHa+4n0iTItdhT5WQdBEq+V7qo=;
- b=EtyR0BPwPH1fiVOLx4drm9ZWESsCWqDU6+u4+nXooJ+4KSJ3SZfXRwLMEpSa/sVzuI
- xnf5gn70Royo+jwiI38d5OF1lnEm3jioOOCqh2t3eN8qyAXEVmzV3uOqoubnCHJeOYin
- bHbmNvJ+ZIA2mphvYl+qzZv9yXV64NIB9ArQHTnqUNtvWx6fjGdRuE94HXuQ+V1Zv3E/
- fsITqsekPX3SoBeBZ84DoDdwWYfr7jdahIMeJYJKN4iid5VC3YICr3QW9nznaYC0wqGO
- +N0Tu4zdGPBpCXHO8gsnmtHZlKhDpkGmc0IH0OQt0PKIswYgVNKkxpeWF8vqTItJDn91
- aChg==
+ bh=zBSgkNa5PHju+9XVtgs1B+6Ai/7/HQAfLj26pWMK7DA=;
+ b=n+M+E/JtiruK8sizfaHESNnkYhvRcHTm7W42Zbf2QKKo24zGiThow9j2f6uimJuCJ9
+ 8quarzHQ3UfQBjTZL7HMR+mbQyw2wNopzjXQr7+GEUvRDlef9m5TK8F1vP8pl8YUgOlJ
+ Cl03F9TBuFboeOZeRkmvG/ULjGjf/vd4V1NBfy/Qg8NMKZMihMdnSyXllVnsPGOoCfDH
+ rUSRnQ/6oBiWbb8kj9bBSgt3zmIyQmhFx8sy9OnJ74wL+JheQ9q7pbooOC2ZNbCp48wl
+ 9FajnuLF+9/Evh7Xx5sbmxrgGOEOVymIs7LLPBbCJtwk4wpW6ek/1uzx9eJFMryH9gDV
+ 2tFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700493140; x=1701097940;
+ d=1e100.net; s=20230601; t=1700493444; x=1701098244;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=owfh7IYvvjcgubE2cvHa+4n0iTItdhT5WQdBEq+V7qo=;
- b=fAnhkuLsJzny1lzkccgrmmQP4QFmcZrf45RHDxtEjkdbPHD+FwaxdvACHjxO0H69Ey
- UZLrveQPrFGg11qo08/Wzv+0wqm++cdqqr2pDONnOx4w8r1dkM0yWVVtHZRD7pua0ude
- jx8bl5syFIeLbh/+SFPHU6FwM4v3Chw160miQ0xSVfkeafrkJJUHJJdBvQatZecakPUs
- dksG1kW3ilh8fz8xpwq/fSlnwsPf2LeSlLzo4eoV2u0He8L6tuo3F5fkDMPm0Hu8copy
- 7vkWcLCiAQFjpUYXSZXJMldReuen6JWgMGhdxyE/B7j0m9o9usVBojfxIOUX3USQ2AZS
- /Nug==
-X-Gm-Message-State: AOJu0YwIvLZg97OEpRX7MbAAm5XXF4UqkQ0vocysMuvBkLS59dnZPePW
- J6yG3KcSMAcOBSdmjPWZo0O3WwXsNiASFYOb2zQxvw==
-X-Google-Smtp-Source: AGHT+IGWELGU8c6qS9GBYY349OXPgBTfFqhklxGsMEyLtahT0+IONl2odKMfKGimGoJb9pL338R+6gjtX9cNNOSLm/U=
-X-Received: by 2002:aa7:c257:0:b0:53e:e6eb:c838 with SMTP id
- y23-20020aa7c257000000b0053ee6ebc838mr5497382edo.8.1700493139985; Mon, 20 Nov
- 2023 07:12:19 -0800 (PST)
+ bh=zBSgkNa5PHju+9XVtgs1B+6Ai/7/HQAfLj26pWMK7DA=;
+ b=tfSm1MR+TK5CNQ70pc9ROXffRWhR5U4ZvaK54aCgBwDHkenC38j7L1bIApRq51s3bv
+ 3iOVtoutv+rDY7c2s9yMVXo1u7O/FfH46ZK6nY/Q23VBWx6H8fMXikCFyLNxaHsl4r78
+ OnrCiWiK95A+N5YGlNLh3xrDeAFRtx2sCjg7oKEknPAyr2K3soSs3iEVuHQ4pZxR2GJ9
+ e+iPYL6wDRev1Qzwh+QozDDy3/DQidG8VjNQudFrdH7hyd/7eYR2NOozuq1Z9JQg8Bdc
+ nj7kegWqjZSQ90i94J/avm6O66CA81UwdAV+neVNbi0GgfKN78zuWDIu6nJGEEIJL8GG
+ bLnA==
+X-Gm-Message-State: AOJu0YwunE8wSYYgYAMXPThjvNNVjS5SrzXkelBp56sXVCJbf17+wRJf
+ jmiPYeVacoih1W3/sA2wlTgAaOR3JoecwPW1oT04sRohVp3B2wGh
+X-Google-Smtp-Source: AGHT+IFODXXBrN4LVHu4XRJAv41dLXkNv5WhPapW8NHxMFUvfBet9Z7fCHq5XUl9DXOkaosj9g2hyRbuuLvz7IZsVbA=
+X-Received: by 2002:a05:6402:35ca:b0:548:ab2a:7508 with SMTP id
+ z10-20020a05640235ca00b00548ab2a7508mr2607145edc.10.1700493444035; Mon, 20
+ Nov 2023 07:17:24 -0800 (PST)
 MIME-Version: 1.0
-References: <20231116172818.792364-1-ben.dooks@codethink.co.uk>
-In-Reply-To: <20231116172818.792364-1-ben.dooks@codethink.co.uk>
+References: <20231117193135.1180657-1-richard.henderson@linaro.org>
+In-Reply-To: <20231117193135.1180657-1-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 20 Nov 2023 15:12:09 +0000
-Message-ID: <CAFEAcA8_sYimPQ2hCT_LrDCcJLVOOh5et9M9yE6mASzr260E9A@mail.gmail.com>
-Subject: Re: [PATCH v2] hw/intc/arm_gicv3: ICC_PMR_EL1 high bits should be RAZ
-To: Ben Dooks <ben.dooks@codethink.co.uk>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Date: Mon, 20 Nov 2023 15:17:13 +0000
+Message-ID: <CAFEAcA-Vqeu5DxqhLZwhCB1sHF-ED37F28V0WOcnoqoC02d7TA@mail.gmail.com>
+Subject: Re: [PATCH for-8.2] target/arm: Fix SME FMOPA (16-bit), BFMOPA
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-stable@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Received-SPF: pass client-ip=2a00:1450:4864:20::530;
  envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
@@ -68,7 +68,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,31 +84,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 16 Nov 2023 at 17:28, Ben Dooks <ben.dooks@codethink.co.uk> wrote:
+On Fri, 17 Nov 2023 at 19:32, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> The ICC_PMR_ELx and ICV_PMR_ELx bit masks returned from
-> ic{c,v}_fullprio_mask should technically also remove any
-> bit above 7 as these are marked reserved (read 0) and should
-> therefore should not be written as anything other than 0.
+> Perform the loop increment unconditionally, not nested
+> within the predication.
 >
-> This was noted during a run of a proprietary test system and
-> discused on the mailing list [1] and initially thought not to
-> be an issue due to RES0 being technically allowed to be
-> written to and read back as long as the implementation does
-> not use the RES0 bits. It is very possible that the values
-> are used in comparison without masking, as pointed out by
-> Peter in [2], if (cs->hppi.prio >= cs->icc_pmr_el1) may well
-> do the wrong thing.
->
-> Masking these values in ic{c,v}_fullprio_mask() should fix
-> this and prevent any future problems with playing with the
-> values.
->
-> [1]: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00607.html
-> [2]: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00737.html
->
-> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+> Cc: qemu-stable@nongnu.org
+> Fixes: 3916841ac75 ("target/arm: Implement FMOPA, FMOPS (widening)")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1985
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 
