@@ -2,71 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F33E37F1020
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 11:18:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A80A27F102D
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 11:21:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r51LZ-0007Lv-IK; Mon, 20 Nov 2023 05:17:41 -0500
+	id 1r51Oq-0008Be-N3; Mon, 20 Nov 2023 05:21:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r51LN-0007LE-1T
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 05:17:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r51L8-0004J2-Ka
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 05:17:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700475430;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=q8qRhDqna7F2j2FCsrOtNOg2vntTQD9P7Di01HnprCY=;
- b=ATUT01EjBsM8Z8cJOdwK+tRU+C4UIDDrVt8JQ+Kt+PnTO3PbOSwBh+AP5+YyLIWF9ngdl+
- zOszdwzbmPcjJaJQD1DPc3m49Kmv8OjzQ+vrxRkxD4f3VzZEiJkrT4mbWTdphzv5LgJFJf
- 2Ud7Ei/mhAdrHScuqinEDYJtzCE6Mkw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-210-7Pc7f9uxNeCslyldl4Cxmg-1; Mon, 20 Nov 2023 05:17:03 -0500
-X-MC-Unique: 7Pc7f9uxNeCslyldl4Cxmg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 49ECC84AEE2;
- Mon, 20 Nov 2023 10:17:03 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.132])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id DEBE81C060B0;
- Mon, 20 Nov 2023 10:17:01 +0000 (UTC)
-Date: Mon, 20 Nov 2023 11:17:00 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, jsnow@redhat.com,
- qemu-block@nongnu.org, qemu-devel@nongnu.org, philmd@linaro.org,
- shentey@gmail.com
-Subject: Re: [PATCH v3 0/4] ide: implement simple legacy/native mode
- switching for PCI IDE controllers
-Message-ID: <ZVsyHHMZKhmNZU/7@redhat.com>
-References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
- <ZVYdkaQ5DcTHxhnJ@redhat.com>
- <c29fa245-fbb6-ff76-7836-7447c845cf9f@eik.bme.hu>
- <48c8863d-6534-eae2-4cba-089cc4fb6a6d@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r51Oo-0008B0-Hh
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 05:21:02 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r51Oj-000764-7J
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 05:21:02 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-32fa7d15f4eso3249000f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 02:20:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700475655; x=1701080455; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pvmVT7FcqKkXzuHW0d+7hRew5FugdBaiXm8hpZXbZpg=;
+ b=PnCBaiNgF4nLMN+UGKucs2rU+5wuq7YPEbeAqrBG62Rva6+kliyxtNHpxNQA+LXOic
+ 66pxldv4TLEJSbp8GSCW9Q00AOwW4jgH1F9Y5W/+taAVXnAoZ3Lat+yx7RbckZtRpWLs
+ NOO3dFpSCniVCTA9opE0470D7Z47Oi02dP7oo+CPcgotbVAqB/6ubG8pBMlN/1Nlm0as
+ ERtFXvVgZ+QY0HomQ6F8hovRSh2CW0yYTCwOp/cBOzciranzo1VwflYBYU3Uz7IWwgcW
+ a/EM+2NMacKTFegNuszl5npjTWXqI+ws1dBNyO1YJhfSekemGKSlZBz0oGNNM7FRYtW7
+ +hTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700475655; x=1701080455;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pvmVT7FcqKkXzuHW0d+7hRew5FugdBaiXm8hpZXbZpg=;
+ b=ViW5bMXb1LmCRMUIGj8zR2jNcFiGXsPvaOQhadkhXVaHkQ7Coa+ray9kVupWxjM+Hu
+ svs592+BTHB8mHnzMRSokrVu4rhCMON3j7NFtTu9aPawB2NNREH7HgIgwF45gKHY+kpQ
+ 8w3HRi36sCF5zUO12V9pzrQm6iPJsCcbELi6w37ctiJQmwfWrEnSuLnI94CX7TKVYHVQ
+ 1atCmHxSGxl/5HqRU2hD43RLuF3suT6mJlvLSY/X8QILB1dZGZX6sXQWoGLyPz6cLgez
+ 7lafNxNgENfCtk2iu+64uFLnhSZPoNfbKDCIZPf6dQBZ6HmPtjg6ZNUsIcHEXt7d8a2A
+ tseQ==
+X-Gm-Message-State: AOJu0Yxb9VmVwEckLlkbY1o+4SJ338ZNCxDiD+ivglZwv3AdwBsPjHWu
+ TAAIZtAw+cax0hYUmXjkUn+1Zw==
+X-Google-Smtp-Source: AGHT+IHoLSdCkWu19KejIzAj9ebB1UjB1jFsSAh7Q6A3QmGzoWnqS5M8EdlRzFxSOGwTd+JW1FL8DA==
+X-Received: by 2002:a05:6000:1563:b0:32c:837e:ef0 with SMTP id
+ 3-20020a056000156300b0032c837e0ef0mr5778467wrz.50.1700475655561; 
+ Mon, 20 Nov 2023 02:20:55 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.181.190])
+ by smtp.gmail.com with ESMTPSA id
+ r12-20020adfda4c000000b003232380ffd7sm10679745wrl.102.2023.11.20.02.20.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 20 Nov 2023 02:20:55 -0800 (PST)
+Message-ID: <9282a606-794a-432c-8b56-fedf6af67768@linaro.org>
+Date: Mon, 20 Nov 2023 11:20:52 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <48c8863d-6534-eae2-4cba-089cc4fb6a6d@eik.bme.hu>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] hw/i386: fix short-circuit logic with non-optimizing
+ builds
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>, Dan Hoffman <dhoff749@gmail.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org, Eric Blake <eblake@redhat.com>
+References: <20231119203116.3027230-1-dhoff749@gmail.com>
+ <3c44d5a5-818b-46b6-a07f-af655a060032@linaro.org>
+ <CAFXChKJrXAop188pTFcU0YNPocn_KyiAXiqWoES2F0_==VyO+Q@mail.gmail.com>
+ <20231120042116-mutt-send-email-mst@kernel.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231120042116-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,69 +99,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 17.11.2023 um 15:23 hat BALATON Zoltan geschrieben:
-> On Thu, 16 Nov 2023, BALATON Zoltan wrote:
-> > On Thu, 16 Nov 2023, Kevin Wolf wrote:
-> > > Am 16.11.2023 um 11:33 hat Mark Cave-Ayland geschrieben:
-> > > > This series adds a simple implementation of legacy/native mode
-> > > > switching for PCI
-> > > > IDE controllers and updates the via-ide device to use it.
-> > > > 
-> > > > The approach I take here is to add a new pci_ide_update_mode()
-> > > > function which handles
-> > > > management of the PCI BARs and legacy IDE ioports for each mode
-> > > > to avoid exposing
-> > > > details of the internal logic to individual PCI IDE controllers.
-> > > > 
-> > > > As noted in [1] this is extracted from a local WIP branch I have
-> > > > which contains
-> > > > further work in this area. However for the moment I've kept it simple (and
-> > > > restricted it to the via-ide device) which is good enough for Zoltan's PPC
-> > > > images whilst paving the way for future improvements after 8.2.
-> > > > 
-> > > > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> > > > 
-> > > > [1] https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05403.html
-> > > > 
-> > > > v3:
-> > > > - Rebase onto master
-> > > > - Move ide_portio_list[] and ide_portio_list2[] to IDE core to
-> > > > prevent duplication in
-> > > >   hw/ide/pci.c
-> > > > - Don't zero BARs when switching from native mode to legacy
-> > > > mode, instead always force
-> > > >   them to read zero as suggested in the PCI IDE specification
-> > > > (note: this also appears
-> > > >   to fix the fuloong2e machine booting from IDE)
-> > > > - Add comments in pci_ide_update_mode() suggested by Kevin
-> > > > - Drop the existing R-B and T-B tags: whilst this passes my
-> > > > local tests, the behaviour
-> > > >   around zero BARs feels different enough here
-> > > 
-> > > Thanks, applied to the block branch.
-> > 
-> > I feel a bit left out of this conversation... Did Google or some other
-> > spam filter decide again to filter my messages so you did not see them
-> > at all? Could you confitm that you've got my previous two replies in
-> > this thread so I know I'm not sending comments to /dev/null please?
+(Cc'ing Eric)
+
+On 20/11/23 10:28, Michael S. Tsirkin wrote:
+> On Sun, Nov 19, 2023 at 07:34:58PM -0600, Dan Hoffman wrote:
+>> As far as I can tell, yes. Any optimization level above O0 does not have this
+>> issue (on this version of Clang, at least)
 > 
-> Looks like there's some issue with these mails. They appear in the list
-> archive but maybe not in people's mailboxes? Did any of you got this message
-> and previous ones I've sent?
-> https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg03180.html
-> https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg03983.html
+> Aha, this is with -O0. That makes sense.
 
-I received it, but at least the second one only after sending the mail
-you replied to here.
+But then, why the other cases aren't problematic?
 
-For your specific concern, it seems to me that resetting BAR 4 on a
-switch between compatibility mode and native mode is another via quirk
-and should therefore be implemented in via.c rather than pci.c?
+$ git grep -E ' (&&|\|\|) !?kvm_enabled'
+hw/arm/boot.c:1228:    assert(!(info->secure_board_setup && kvm_enabled()));
+hw/i386/microvm.c:270:        (mms->rtc == ON_OFF_AUTO_AUTO && 
+!kvm_enabled())) {
+hw/i386/x86.c:135:    if (x86ms->apic_id_limit > 255 && kvm_enabled() &&
+hw/mips/cps.c:62:    return is_mt && !kvm_enabled();
+system/physmem.c:760:    assert(asidx == 0 || !kvm_enabled());
+target/arm/cpu64.c:288:    if (value && kvm_enabled() && 
+!kvm_arm_sve_supported()) {
+target/i386/cpu.c:7264:    if (requested_lbr_fmt && kvm_enabled()) {
+target/ppc/kvm.c:345:    if (!cpu->hash64_opts || !kvm_enabled()) {
+target/s390x/cpu_models.c:574:    if (xcc->kvm_required && !kvm_enabled()) {
+target/s390x/cpu_models_sysemu.c:124:    if 
+(S390_CPU_CLASS(oc)->kvm_required && !kvm_enabled()) {
 
-If I get a new version of the patches in the next few hours, I can
-update the queued patches before sending a pull request, but otherwise
-this can still be done in a separate patch.
-
-Kevin
+> We have:
+>    ;;
+>    --enable-debug)
+>        # Enable debugging options that aren't excessively noisy
+>        meson_option_parse --enable-debug-tcg ""
+>        meson_option_parse --enable-debug-graph-lock ""
+>        meson_option_parse --enable-debug-mutex ""
+>        meson_option_add -Doptimization=0
+>        default_cflags='-O0 -g'
+> 
+> 
+>> On Sun, Nov 19, 2023 at 4:54 PM Philippe Mathieu-Daudé <philmd@linaro.org>
+>> wrote:
+>>
+>>      Hi,
+>>
+>>      On 19/11/23 21:31, Daniel Hoffman wrote:
+>>      > `kvm_enabled()` is compiled down to `0` and short-circuit logic is
+>>      > used to remove references to undefined symbols at the compile stage.
+>>      > Some build configurations with some compilers don't attempt to
+>>      > simplify this logic down in some cases (the pattern appears to be
+>>      > that the literal false must be the first term) and this was causing
+>>      > some builds to emit references to undefined symbols.
+>>      >
+>>      > An example of such a configuration is clang 16.0.6 with the following
+>>      > configure: ./configure --enable-debug --without-default-features
+>>      > --target-list=x86_64-softmmu --enable-tcg-interpreter
+>>
+>>      Is the '--enable-debug' option triggering this?
+>>
+>>      I'm surprised the order of conditions matters for code elision...
+>>
+>>      > Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
+>>      > ---
+>>      >   hw/i386/x86.c | 15 ++++++++++++---
+>>      >   1 file changed, 12 insertions(+), 3 deletions(-)
+>>      >
+>>      > diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+>>      > index b3d054889bb..2b6291ad8d5 100644
+>>      > --- a/hw/i386/x86.c
+>>      > +++ b/hw/i386/x86.c
+>>      > @@ -131,8 +131,12 @@ void x86_cpus_init(X86MachineState *x86ms, int
+>>      default_cpu_version)
+>>      >       /*
+>>      >        * Can we support APIC ID 255 or higher?  With KVM, that requires
+>>      >        * both in-kernel lapic and X2APIC userspace API.
+>>      > +     *
+>>      > +     * kvm_enabled() must go first to ensure that kvm_* references are
+>>      > +     * not emitted for the linker to consume (kvm_enabled() is
+>>      > +     * a literal `0` in configurations where kvm_* aren't defined)
+>>      >        */
+>>      > -    if (x86ms->apic_id_limit > 255 && kvm_enabled() &&
+>>      > +    if (kvm_enabled() && x86ms->apic_id_limit > 255 &&
+>>      >           (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())) {
+>>      >           error_report("current -smp configuration requires kernel "
+>>      >                        "irqchip and X2APIC API support.");
+>>      > @@ -418,8 +422,13 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+>>      >       }
+>>      >       cpu->thread_id = topo_ids.smt_id;
+>>      >
+>>      > -    if (hyperv_feat_enabled(cpu, HYPERV_FEAT_VPINDEX) &&
+>>      > -        kvm_enabled() && !kvm_hv_vpindex_settable()) {
+>>      > +    /*
+>>      > +    * kvm_enabled() must go first to ensure that kvm_* references are
+>>      > +    * not emitted for the linker to consume (kvm_enabled() is
+>>      > +    * a literal `0` in configurations where kvm_* aren't defined)
+>>      > +    */
+>>      > +    if (kvm_enabled() && hyperv_feat_enabled(cpu, HYPERV_FEAT_VPINDEX) &
+>>      &
+>>      > +        !kvm_hv_vpindex_settable()) {
+>>      >           error_setg(errp, "kernel doesn't allow setting HyperV
+>>      VP_INDEX");
+>>      >           return;
+>>      >       }
+>>
+>>
+> 
 
 
