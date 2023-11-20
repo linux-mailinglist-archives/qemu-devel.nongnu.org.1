@@ -2,93 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF3D7F1D3F
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 20:19:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44AD07F1D7A
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 Nov 2023 20:44:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r59nR-0004b6-I3; Mon, 20 Nov 2023 14:19:01 -0500
+	id 1r5AAo-0002iK-5s; Mon, 20 Nov 2023 14:43:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r59nO-0004aZ-It
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 14:18:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r59nM-0001vS-Jw
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 14:18:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700507935;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xUaTNbMWV/2zpwUJAGxk2dei5iWxNVWv7jOFPfd2C7s=;
- b=Bma5jzu5rZ0qPVF7AolV18q3+Dk/Oms7rR0XYkjFMapxUuK0xGKEOzC65XkCxIbtiZJk+T
- M/t/fw9STSmr6LdUeQZJMz+ykwvvLvfvcWHzoKJOcje67L4wHPwPjInU61qdZ2uHbAniRC
- Paf+mkFxZY3EOKByLDKH5t8S1iXIDp0=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-442-h9wJJJIzOQ6spEaFMmlTEA-1; Mon, 20 Nov 2023 14:18:53 -0500
-X-MC-Unique: h9wJJJIzOQ6spEaFMmlTEA-1
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-5bdd8eee498so5517217a12.0
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 11:18:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1r5AAm-0002hc-GQ
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 14:43:08 -0500
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1r5AAk-0002qA-N9
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 14:43:08 -0500
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-507be298d2aso6174367e87.1
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 11:43:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700509384; x=1701114184; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=bHJWYgO21Fl5OFrQpFr8Mpr/ZcYte6sL6+pCQxc4KRw=;
+ b=gc7FV84jcDy0JVOoCYOaLqN4wmZlXboltwkAhpyhSF6if9aPa6Up8e7XPLG7yCy4C0
+ Ir1UqPRy+IZTeMTh47oycRcxj7GonAyrI3kaeP8yK8KgLHjwDS9iNYOrVO9BcFasPIQE
+ syeIA3t5AV3bQXll4AtxnOjsFkm+KKFToHIuM0YEazBof9QkTCnfsqo/zdYMPs83BvpK
+ dm3OSZwDrffRHJbgLMepeOwPlbMWriOg7sEyzCT78ejuMtvpx6Bsw1HKjXWHHYkqP/7t
+ np/JXvlVxbogDjne43gRjfw2aJ9QUdnQd1EgkrkJkoo3UNjMq8dUetQ3lJuuQoox7a45
+ BJLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700507932; x=1701112732;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xUaTNbMWV/2zpwUJAGxk2dei5iWxNVWv7jOFPfd2C7s=;
- b=Gu93c3qqkonoEMvHFkUo/O4OPWCI3NPW2hcAI8Q678EFCHkGmROQIFFWBNTpIqLTZK
- fAqoh2ihObscpF5eBL04LGFuV3TVl7ezExAm6gYC5AvGglT26K28z8kAZahfv+2z4F/R
- a4XSasJFmEk7Jk/2Ija/yV2za14LjdnXHBN7+nhbismo4qjuToonmj0QtLPRwZ6OIKcc
- R1H4CFQ1X+ziEA6d+ckhCXAvoqC5XKTTh2c7KJ1hc0VToTslTlRycxC6QyroSbesLtk0
- K6ijhM0WXZ/cIw7vXFiGCJIpcvLBBifWJAxx4ymgiJIgfflP17txb6dyQIPWfsUdZHtM
- Zxug==
-X-Gm-Message-State: AOJu0YzUtGTg/0KCNkMu6b2/XJe5fUFqi51G4l2UfUnwIZM8yVF7tO6e
- xoSEGHQWe1rhrweP/ICU2cboZWXxuMcjD37bo/tcr3pGm2FeqOOhYiPM6hZhiv7L3n2ozPsYbXQ
- f1BsohtMTce+5zJaRoI2JkUPccZBw48E=
-X-Received: by 2002:a05:6a20:7351:b0:180:f9c4:a796 with SMTP id
- v17-20020a056a20735100b00180f9c4a796mr6958242pzc.54.1700507932201; 
- Mon, 20 Nov 2023 11:18:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHhm6Dq3NqnuSzxzlg1DmrTd1LNKmMtyCkc87o+ALMEJVespBUcZHnmV3HR9aJRKOsTjdpO73fxh2US/4SglTc=
-X-Received: by 2002:a05:6a20:7351:b0:180:f9c4:a796 with SMTP id
- v17-20020a056a20735100b00180f9c4a796mr6958221pzc.54.1700507931894; Mon, 20
- Nov 2023 11:18:51 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700509384; x=1701114184;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bHJWYgO21Fl5OFrQpFr8Mpr/ZcYte6sL6+pCQxc4KRw=;
+ b=De/dlen6nbYFeFZ8s/wFeyuz7CQK08VbUKB9XwPBl6ejIpOuHHpEuc7RDRqbKnkMcf
+ Cqg7gXuawsgnl7F8z9tIg/luD1TaDK8qnSBE4L42BE08q5uVpk3O3Ix7kdhEUAGpRYpK
+ 8G+71Asw/zjRrpr6u1jIm1mA4cpkPqFsW9fZsGUHXCTbTMTlCv8HthkLIxuAvAxtFxlY
+ 4ddoEbwTCJ5Y7k097EsPneAFlaEGfYL3s8AfVzUuH0xZk2VlbZzGa1cJGctZ6Ax+EiyW
+ SmbSaIvJlMgWyfv76i3ncjXmYU73J/EluEiGw9bud2jgTzdqfnEuaVudaDCsYc8wVOpf
+ abUA==
+X-Gm-Message-State: AOJu0YyAimsTsV9F0lqpBlL4HmdIRc24OREVaKIqph+doQ+a4qXjoMpV
+ swn5AFwZ3JJL0a3INLMUJWkm6w==
+X-Google-Smtp-Source: AGHT+IHc5PPaXyBmdHdZdApgogoKgqsBefx5Ta7PyPpN6kMlvl9BUDIbjjRLMic1DrMzyhckOuppbQ==
+X-Received: by 2002:ac2:5486:0:b0:505:6c99:bd7c with SMTP id
+ t6-20020ac25486000000b005056c99bd7cmr5839767lfk.57.1700509383932; 
+ Mon, 20 Nov 2023 11:43:03 -0800 (PST)
+Received: from [192.168.200.206] (83.11.8.194.ipv4.supernova.orange.pl.
+ [83.11.8.194]) by smtp.gmail.com with ESMTPSA id
+ j19-20020aa7ca53000000b005488ae52752sm2275111edt.18.2023.11.20.11.43.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 20 Nov 2023 11:43:02 -0800 (PST)
+Message-ID: <8a386258-1a5b-4c69-972e-49f9d1e59f51@linaro.org>
+Date: Mon, 20 Nov 2023 20:42:59 +0100
 MIME-Version: 1.0
-References: <20231114163115.298041-1-thuth@redhat.com>
- <12b4420e-1440-4516-8276-e0e907003c16@linaro.org>
- <9f6247e4-7e81-44f8-a63b-8ee11f722710@redhat.com>
- <CWYYRW53VEPJ.3UL1X7GB1P4H2@wheely>
- <6877d6d6-bfbf-4475-8c61-dd537265b278@redhat.com>
- <ZVTETYrfL8f48qe3@redhat.com> <ZVT-bY9YOr69QTPX@redhat.com>
-In-Reply-To: <ZVT-bY9YOr69QTPX@redhat.com>
-From: John Snow <jsnow@redhat.com>
-Date: Mon, 20 Nov 2023 14:18:40 -0500
-Message-ID: <CAFn=p-aDO_fZOsiBMdHhn6GP3ZadCrUAN4=C6o4d95UVMo3vOA@mail.gmail.com>
-Subject: Re: [PATCH] tests/avocado/reverse_debugging: Disable the ppc64 tests
- by default
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>, 
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/8] Unified CPU type check
+Content-Language: pl-PL, en-GB, en-HK
+To: Gavin Shan <gshan@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, imammedo@redhat.com, b.galvani@gmail.com,
+ strahinja.p.jankovic@gmail.com, kfting@nuvoton.com, wuhaotsh@google.com,
+ nieklinnenbank@gmail.com, rad@semihalf.com, quic_llindhol@quicinc.com,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, vijai@behindbytes.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
+References: <20231120002724.986326-1-gshan@redhat.com>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Organization: Linaro
+In-Reply-To: <20231120002724.986326-1-gshan@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,145 +102,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 15, 2023 at 12:23=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@=
-redhat.com> wrote:
->
-> On Wed, Nov 15, 2023 at 01:14:53PM +0000, Daniel P. Berrang=C3=A9 wrote:
-> > On Wed, Nov 15, 2023 at 07:23:01AM +0100, Thomas Huth wrote:
-> > > On 15/11/2023 02.15, Nicholas Piggin wrote:
-> > > > On Wed Nov 15, 2023 at 4:29 AM AEST, Thomas Huth wrote:
-> > > > > On 14/11/2023 17.37, Philippe Mathieu-Daud=C3=A9 wrote:
-> > > > > > On 14/11/23 17:31, Thomas Huth wrote:
-> > > > > > > The tests seem currently to be broken. Disable them by defaul=
-t
-> > > > > > > until someone fixes them.
-> > > > > > >
-> > > > > > > Signed-off-by: Thomas Huth <thuth@redhat.com>
-> > > > > > > ---
-> > > > > > >    tests/avocado/reverse_debugging.py | 7 ++++---
-> > > > > > >    1 file changed, 4 insertions(+), 3 deletions(-)
-> > > > > >
-> > > > > > Similarly, I suspect https://gitlab.com/qemu-project/qemu/-/iss=
-ues/1961
-> > > > > > which has a fix ready:
-> > > > > > https://lore.kernel.org/qemu-devel/20231110170831.185001-1-rich=
-ard.henderson@linaro.org/
-> > > > > >
-> > > > > > Maybe wait the fix gets in first?
-> > > > >
-> > > > > No, I applied Richard's patch, but the problem persists. Does thi=
-s test
-> > > > > still work for you?
-> > > >
-> > > > I bisected it to 1d4796cd008373 ("python/machine: use socketpair() =
-for
-> > > > console connections"),
-> > >
-> > > Maybe John (who wrote that commit) can help?
-> >
-> > I find it hard to believe this commit is a direct root cause of the
-> > problem since all it does is change the QEMU startup sequence so that
-> > instead of QEMU listening for a monitor connection, it is given a
-> > pre-opened monitor connection.
-> >
-> > At the very most that should affect the startup timing a little.
-> >
-> > I notice all the reverse debugging tests have a skip on gitlab
-> > with a comment:
-> >
-> >     # unidentified gitlab timeout problem
-> >
-> > this makes be suspicious that John's patch has merely made this
-> > (henceforth undiagnosed) timeout more likely to ocurr.
->
-> After an absolutely horrendous hours long debugging session I think
-> I figured out the problem. The QEMU process is blocking in
->
->     qemu_chr_write_buffer
->
-> spinning in the loop on EAGAIN.
->
-> The Python  Machine() class has passed one of a pre-created socketpair
-> FDs for the serial port chardev. The guest is trying to write to this
-> and blocking.  Nothing in the Machine() class is reading from the
-> other end of the serial port console.
->
->
-> Before John's change, the serial port uses a chardev in server mode
-> and crucially  'wait=3Doff', and the Machine() class never opened the
-> console socket unless the test case wanted to read from it.
->
-> IOW, QEMU had a background job setting there waiting for a connection
-> that would never come.
->
-> As a result when QEMU started executing the guest, all the serial port
-> writes get sent into to the void.
->
->
-> So John's patch has had a semantic change in behaviour, because the
-> console socket is permanently open, and thus socket buffers are liable
-> to fill up.
->
-> As a demo I increased the socket buffers to 1MB and everything then
-> succeeded.
->
-> @@ -357,6 +360,10 @@ def _pre_launch(self) -> None:
->
->          if self._console_set:
->              self._cons_sock_pair =3D socket.socketpair()
-> +            self._cons_sock_pair[0].setsockopt(socket.SOL_SOCKET, socket=
-.SO_SNDBUF, 1024*1024);
-> +            self._cons_sock_pair[0].setsockopt(socket.SOL_SOCKET, socket=
-.SO_RCVBUF, 1024*1024);
-> +            self._cons_sock_pair[1].setsockopt(socket.SOL_SOCKET, socket=
-.SO_SNDBUF, 1024*1024);
-> +            self._cons_sock_pair[1].setsockopt(socket.SOL_SOCKET, socket=
-.SO_RCVBUF, 1024*1024);
->              os.set_inheritable(self._cons_sock_pair[0].fileno(), True)
->
->          # NOTE: Make sure any opened resources are *definitely* freed in
->
->
-> The Machine class doesn't know if anything will ever use the console,
-> so as is the change is unsafe.
->
-> The original goal of John's change was to guarantee we capture early
-> boot messages as some test need that.
->
-> I think we need to be able to have a flag to say whether the caller needs
-> an "early console" facility, and only use the pre-opened FD passing for
-> that case. Tests we need early console will have to ask for that guarante=
-e
-> explicitly.
+W dniu 20.11.2023 o 01:27, Gavin Shan pisze:
+> Testing
+> =======
+> 
+> With the following command lines, the output messages are varied before
+> and after the series is applied.
+> 
+>    ./build/qemu-system-aarch64            \
+>    -accel tcg -machine virt,gic-version=3 \
+>    -cpu cortex-a8 -smp maxcpus=2,cpus=1
+> 
+> Before the series is applied:
+> 
+>    qemu-system-aarch64: mach-virt: CPU type cortex-a8-arm-cpu not supported
+> 
+> After the series is applied:
+> 
+>    qemu-system-aarch64: Invalid CPU type: cortex-a8-arm-cpu
+>    The valid models are: cortex-a7, cortex-a15, cortex-a35, cortex-a55,
+>                          cortex-a72, cortex-a76, a64fx, neoverse-n1,
+>                          neoverse-v1, cortex-a53, cortex-a57, max
 
-Tch. I see. Thank you for diagnosing this.
 
-From the machine.py perspective, you have to *opt in* to having a
-console, so I hadn't considered that a caller would enable the console
-and then ... not read from it. Surely that's a bug in the caller?
+$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu cortex-a53
+qemu-system-aarch64: Invalid CPU type: cortex-a53
+The valid types are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1, 
+neoverse-n2, max
 
-If you don't intend to read from the console, you shouldn't call set_consol=
-e().
+$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu sa1100
+Unexpected error in object_property_find_err() at ../qom/object.c:1329:
+qemu-system-aarch64: Property 'sa1100-arm-cpu.secure-memory' not found
+Aborted (core dumped)
 
-(The async rewrite I have been toying with on and off has a built-in
-drainer that writes to a log file that would probably remedy this, but
-the client tests should still be fixed, I think. Otherwise, do you
-have any suggestions for how I might make this failure state more
-obvious/friendly? I wonder if on close of the machine.py object I
-could detect that the pipe is full and emit a warning about that.)
 
---js
+Similar with 'host' or 'pxa250' while QEMU/master does:
 
->
-> With regards,
-> Daniel
-> --
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
-ge :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
-om :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
-ge :|
->
-
+$ qemu-system-aarch64 -M sbsa-ref -cpu sa1100
+qemu-system-aarch64: sbsa-ref: CPU type sa1100-arm-cpu not supported
 
