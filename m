@@ -2,75 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DA207F25E5
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 07:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0DE47F25E7
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 07:46:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5KVp-0006bI-VH; Tue, 21 Nov 2023 01:45:33 -0500
+	id 1r5KWf-0007DZ-VA; Tue, 21 Nov 2023 01:46:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r5KVj-0006az-RT
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 01:45:27 -0500
-Received: from mail-ua1-x934.google.com ([2607:f8b0:4864:20::934])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r5KVe-0004iL-FE
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 01:45:25 -0500
-Received: by mail-ua1-x934.google.com with SMTP id
- a1e0cc1a2514c-7bac330d396so1703139241.1
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 22:45:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700549119; x=1701153919; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=M6u4chK15i/CtcJUlNb7t46hctwp7HufqyLKK/eSXIg=;
- b=bc6brjFDt9syuyGwSpcc/EyT8NJnoeydf3bKecpIdk0Fw2IOqsJMUGTVQURVkoLU9q
- R+LTIZ8u3K+cQXQkYTNWz96f51Z9QE9EmQ8RvK1tdhlv3IPX5rzFPUuMXmbAm4kzwoSI
- Kyys5TUE41aQEY6Nhe6X2ayTpFcGCn7drfe4Gu5XYDMjjAxoZ6bUrKMHr20cx4rBhq9t
- C8drBz9Vv79gXRCBlIBdDlCz+fJXYSjLMn4ZQfVbtNh25YoPE7JL7VERSnUZdGs4qNSh
- Mb3OADIatf3AcNhaOKNC56cV+3frtEJ93CBkCMgUd0pJ7zNRk5IRGwojJhYbftG9+8CU
- if1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700549119; x=1701153919;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=M6u4chK15i/CtcJUlNb7t46hctwp7HufqyLKK/eSXIg=;
- b=gn9KHa3BtRKSlAh99jq1ii1C1d/cvlz4CudpL29ZTVnKSM4nx27bAl1l3hsqGg7Rsa
- L5ULjONFgdVZXKxy/w9X9qsDSs7TWQiiYxWZddEIwtul370NpeK2+SlTJpFszh1aMo0P
- 8M4n9TY4fKZfEACg6BVB/KTtVNUEDkbbXe/DfaYYIpw4R7ukrUvYulKG1Ab29EOIliY2
- o5MrSceMm2ZFpWAodmxVQVoHPoulQT7Aq5EN5ZPD3cArxLRnNJ9v9auD6/SMQHG6zaDQ
- jxW16iCNARYhqJcuW7z1Qn4AZe5nwWa2MRZQoQzyfp3bWomw9Ra07pfgmVTd76meF20r
- 7SGQ==
-X-Gm-Message-State: AOJu0YweL/j3gecAWMobyBrySwLeS+XZcvoQ43ixY+ElP8kftVpdM60Q
- V1EX7Ta2BR7PJwRjoZ7rJXufXaM+7gSBgW+fnmS2DOqR50u8ZQ==
-X-Google-Smtp-Source: AGHT+IE2DPp81GmWUTss82oy2RZQ0y/Nvk4voHG1jVuHXuIPjZpWd7LyIqTW80p2fMX+IhyqfXNij50wrGEuSZJiE9k=
-X-Received: by 2002:a05:6102:4709:b0:45f:a41:b405 with SMTP id
- ei9-20020a056102470900b0045f0a41b405mr9668073vsb.21.1700549119560; Mon, 20
- Nov 2023 22:45:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <SRS0=nm9w=HC=kaod.org=clg@ozlabs.org>)
+ id 1r5KWY-0007Bw-LC; Tue, 21 Nov 2023 01:46:18 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=nm9w=HC=kaod.org=clg@ozlabs.org>)
+ id 1r5KWV-000502-Tv; Tue, 21 Nov 2023 01:46:18 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SZFJb0b4Rz4xFR;
+ Tue, 21 Nov 2023 17:46:07 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SZFJY3NWqz4xQZ;
+ Tue, 21 Nov 2023 17:46:04 +1100 (AEDT)
+Message-ID: <67081798-658f-4a9f-b0be-ba8e4f3779db@kaod.org>
+Date: Tue, 21 Nov 2023 07:46:01 +0100
 MIME-Version: 1.0
-References: <20231117141735.1511211-1-marcandre.lureau@redhat.com>
-In-Reply-To: <20231117141735.1511211-1-marcandre.lureau@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 21 Nov 2023 10:45:07 +0400
-Message-ID: <CAJ+F1CKFWtor6nJfP35Ya3+AXc8zAAD3UZPPU5gW=J+2iWDhDQ@mail.gmail.com>
-Subject: Re: [PATCH] vl: add missing display_remote++
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::934;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-ua1-x934.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 03/11] ppc/pnv: New powernv10-rainier machine type
+Content-Language: en-US
+To: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
+References: <20231120235112.1951342-1-milesg@linux.vnet.ibm.com>
+ <20231120235112.1951342-4-milesg@linux.vnet.ibm.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20231120235112.1951342-4-milesg@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=nm9w=HC=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,57 +65,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
-
-On Fri, Nov 17, 2023 at 6:18=E2=80=AFPM <marcandre.lureau@redhat.com> wrote=
-:
->
-> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->
-> We should also consider -display vnc=3D as setting up a remote display,
-> and not attempt to add another default one.
->
-> The display_remote++ in qemu_setup_display() isn't necessary at this
-> point, but is there for completeness and further usages of the variable.
->
-> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-
-It turns out this fixes a regression:
-https://gitlab.com/qemu-project/qemu/-/issues/1988
-
-Fixes: 484629fc81 ("vl: simplify display_remote logic ")
-
+On 11/21/23 00:51, Glenn Miles wrote:
+> Create a new powernv machine type, powernv10-rainier, that
+> will contain rainier-specific devices.
+> 
+> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 > ---
->  system/vl.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/system/vl.c b/system/vl.c
-> index 5af7ced2a1..f95ae77b5a 100644
-> --- a/system/vl.c
-> +++ b/system/vl.c
-> @@ -1110,6 +1110,7 @@ static void parse_display(const char *p)
->           */
->          if (*opts =3D=3D '=3D') {
->              vnc_parse(opts + 1);
-> +            display_remote++;
->          } else {
->              error_report("VNC requires a display argument vnc=3D<display=
->");
->              exit(1);
-> @@ -1359,6 +1360,7 @@ static void qemu_setup_display(void)
->              dpy.type =3D DISPLAY_TYPE_NONE;
->  #if defined(CONFIG_VNC)
->              vnc_parse("localhost:0,to=3D99,id=3Ddefault");
-> +            display_remote++;
->  #endif
->          }
->      }
-> --
-> 2.41.0
->
->
+>   hw/ppc/pnv.c | 29 +++++++++++++++++++++++++++--
+>   1 file changed, 27 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+> index 9c29727337..3481a1220e 100644
+> --- a/hw/ppc/pnv.c
+> +++ b/hw/ppc/pnv.c
+> @@ -2249,7 +2249,7 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
+>       machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
+>   }
+>   
+> -static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+> +static void pnv_machine_p10_common_class_init(ObjectClass *oc, void *data)
+>   {
+>       MachineClass *mc = MACHINE_CLASS(oc);
+>       PnvMachineClass *pmc = PNV_MACHINE_CLASS(oc);
+> @@ -2261,7 +2261,6 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+>           { TYPE_PNV_PHB_ROOT_PORT, "version", "5" },
+>       };
+>   
+> -    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
+
+I would keep this description because the "powernv10" machine still can
+be used, without I2C devices. Unless we don't want to ?
+
+>       mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
+>       compat_props_add(mc->compat_props, phb_compat, G_N_ELEMENTS(phb_compat));
+>   
+> @@ -2274,6 +2273,23 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+>       machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
+>   }
+>   
+> +static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+> +{
+> +    MachineClass *mc = MACHINE_CLASS(oc);
+> +
+> +    pnv_machine_p10_common_class_init(oc, data);
+> +    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
+> +
+
+Superfluous white line.
+
+> +}
+> +
+> +static void pnv_machine_p10_rainier_class_init(ObjectClass *oc, void *data)
+> +{
+> +    MachineClass *mc = MACHINE_CLASS(oc);
+> +
+> +    pnv_machine_p10_common_class_init(oc, data);
+> +    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10 rainier";
+> +}
+> +
+>   static bool pnv_machine_get_hb(Object *obj, Error **errp)
+>   {
+>       PnvMachineState *pnv = PNV_MACHINE(obj);
+> @@ -2379,6 +2395,15 @@ static void pnv_machine_class_init(ObjectClass *oc, void *data)
+>       }
+>   
+>   static const TypeInfo types[] = {
+> +    {
+> +        .name          = MACHINE_TYPE_NAME("powernv10-rainier"),
+> +        .parent        = TYPE_PNV_MACHINE,
+
+Could the parent be :
+
+             .parent          = MACHINE_TYPE_NAME("powernv10"),
+
+This should avoid the definition of the .interfaces below.
+
+Thanks,
+
+C.
 
 
---=20
-Marc-Andr=C3=A9 Lureau
+
+> +        .class_init    = pnv_machine_p10_rainier_class_init,
+> +        .interfaces = (InterfaceInfo[]) {
+> +            { TYPE_XIVE_FABRIC },
+> +            { },
+> +        },
+> +    },
+>       {
+>           .name          = MACHINE_TYPE_NAME("powernv10"),
+>           .parent        = TYPE_PNV_MACHINE,
+
 
