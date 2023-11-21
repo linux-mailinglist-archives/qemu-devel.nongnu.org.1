@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DAB67F305F
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 15:11:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C41E7F3083
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 15:19:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5RRj-0000Lp-At; Tue, 21 Nov 2023 09:09:47 -0500
+	id 1r5RZR-0007CD-EJ; Tue, 21 Nov 2023 09:17:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5RRe-0000L3-EA
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 09:09:42 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5RZL-0007A5-Lu
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 09:17:39 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5RRX-0008MX-Nm
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 09:09:41 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5RZI-00028d-Oj
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 09:17:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700575772;
+ s=mimecast20190719; t=1700576255;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=GOZle+FUv0FEwc8aKIyNeoPJOwlqxKHfBDjyfV9IZY8=;
- b=het7vptMZW9Aq/4oLA4Zm9iFJB4TYnaqTZjdj9/j8PeHgnSGnGRFQRSF9Ow4gkKxl/9vvk
- Y20Rp5jNUmaDWuHqleeSs/gaxEZRaeuA8IuXZBtxfvtT/W46Kf1FmDrfdDtAKMcjC8Apyz
- OnA1unYkQgzFMu8dTWRfEL9LZqn0J/o=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-209-tJN_LEmOPiOUUsut1fmKnw-1; Tue,
- 21 Nov 2023 09:09:16 -0500
-X-MC-Unique: tJN_LEmOPiOUUsut1fmKnw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ bh=IJilcJTyEo58qdRZ2Nplwkvm1tn/tBg5XRfi+viS4t8=;
+ b=IVOLf3z3jvmEhv0fEgFIxto6eb9H9rpGluU4x1zrtUApwnfGHYOorTPD7jhBzic6N8G4xO
+ 51vSXlZvulaZ7BtvOBJpPat8/0UcGezezziQa+DKQpEW/JaJrSaFb1sPHFHmOe3UykRh90
+ /F+KlWyb5zgIjjBKIaBA+4rqy9SjBdk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-621-HQISv1t5OmWuCPJ1isrwKg-1; Tue, 21 Nov 2023 09:17:31 -0500
+X-MC-Unique: HQISv1t5OmWuCPJ1isrwKg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 06B392818767;
- Tue, 21 Nov 2023 14:09:16 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 74781101A52D;
+ Tue, 21 Nov 2023 14:17:31 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D2B7D20268D4;
- Tue, 21 Nov 2023 14:09:15 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 525681121306;
+ Tue, 21 Nov 2023 14:17:31 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C045921E6A1F; Tue, 21 Nov 2023 15:09:14 +0100 (CET)
+ id 6141721E6A1F; Tue, 21 Nov 2023 15:17:30 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: John Snow <jsnow@redhat.com>
 Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,
- Michael Roth <michael.roth@amd.com>,  Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH 06/19] qapi/schema: adjust type narrowing for mypy's
- benefit
+ Michael Roth <michael.roth@amd.com>
+Subject: Re: [PATCH 07/19] qapi/introspect: assert schema.lookup_type did
+ not fail
 References: <20231116014350.653792-1-jsnow@redhat.com>
- <20231116014350.653792-7-jsnow@redhat.com>
-Date: Tue, 21 Nov 2023 15:09:14 +0100
-In-Reply-To: <20231116014350.653792-7-jsnow@redhat.com> (John Snow's message
- of "Wed, 15 Nov 2023 20:43:37 -0500")
-Message-ID: <87ttpf2o6t.fsf@pond.sub.org>
+ <20231116014350.653792-8-jsnow@redhat.com>
+Date: Tue, 21 Nov 2023 15:17:30 +0100
+In-Reply-To: <20231116014350.653792-8-jsnow@redhat.com> (John Snow's message
+ of "Wed, 15 Nov 2023 20:43:38 -0500")
+Message-ID: <87pm032nt1.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -85,67 +85,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 John Snow <jsnow@redhat.com> writes:
 
-> We already take care to perform some type narrowing for arg_type and
-> ret_type, but not in a way where mypy can utilize the result. A simple
-> change to use a temporary variable helps the medicine go down.
+> lookup_type() is capable of returning None, but introspect.py isn't
+> prepared for that. (And rightly so, if these built-in types are absent,
+> something has gone hugely wrong.)
+>
+> RFC: This is slightly cumbersome as-is, but a patch at the end of this series
+> tries to address it with some slightly slicker lookup functions that
+> don't need as much hand-holding.
 >
 > Signed-off-by: John Snow <jsnow@redhat.com>
 > ---
->  scripts/qapi/schema.py | 17 +++++++++--------
->  1 file changed, 9 insertions(+), 8 deletions(-)
+>  scripts/qapi/introspect.py | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 >
-> diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-> index 4600a566005..a1094283828 100644
-> --- a/scripts/qapi/schema.py
-> +++ b/scripts/qapi/schema.py
-> @@ -825,13 +825,14 @@ def __init__(self, name, info, doc, ifcond, features,
->      def check(self, schema):
->          super().check(schema)
->          if self._arg_type_name:
-> -            self.arg_type = schema.resolve_type(
-> +            arg_type = schema.resolve_type(
->                  self._arg_type_name, self.info, "command's 'data'")
-> -            if not isinstance(self.arg_type, QAPISchemaObjectType):
-> +            if not isinstance(arg_type, QAPISchemaObjectType):
->                  raise QAPISemError(
->                      self.info,
->                      "command's 'data' cannot take %s"
-> -                    % self.arg_type.describe())
-> +                    % arg_type.describe())
-> +            self.arg_type = arg_type
->              if self.arg_type.variants and not self.boxed:
->                  raise QAPISemError(
->                      self.info,
-> @@ -848,8 +849,7 @@ def check(self, schema):
->              if self.name not in self.info.pragma.command_returns_exceptions:
->                  typ = self.ret_type
->                  if isinstance(typ, QAPISchemaArrayType):
-> -                    typ = self.ret_type.element_type
-> -                    assert typ
-> +                    typ = typ.element_type
->                  if not isinstance(typ, QAPISchemaObjectType):
->                      raise QAPISemError(
->                          self.info,
-> @@ -885,13 +885,14 @@ def __init__(self, name, info, doc, ifcond, features, arg_type, boxed):
->      def check(self, schema):
->          super().check(schema)
->          if self._arg_type_name:
-> -            self.arg_type = schema.resolve_type(
-> +            typ = schema.resolve_type(
->                  self._arg_type_name, self.info, "event's 'data'")
-> -            if not isinstance(self.arg_type, QAPISchemaObjectType):
-> +            if not isinstance(typ, QAPISchemaObjectType):
->                  raise QAPISemError(
->                      self.info,
->                      "event's 'data' cannot take %s"
-> -                    % self.arg_type.describe())
-> +                    % typ.describe())
-> +            self.arg_type = typ
->              if self.arg_type.variants and not self.boxed:
->                  raise QAPISemError(
->                      self.info,
+> diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
+> index 67c7d89aae0..42981bce163 100644
+> --- a/scripts/qapi/introspect.py
+> +++ b/scripts/qapi/introspect.py
+> @@ -227,10 +227,14 @@ def _use_type(self, typ: QAPISchemaType) -> str:
+>  
+>          # Map the various integer types to plain int
+>          if typ.json_type() == 'int':
+> -            typ = self._schema.lookup_type('int')
+> +            tmp = self._schema.lookup_type('int')
+> +            assert tmp is not None
 
-Harmless enough.  I can't quite see the mypy problem, though.  Care to
-elaborate a bit?
+More laconic: assert tmp
+
+> +            typ = tmp
+>          elif (isinstance(typ, QAPISchemaArrayType) and
+>                typ.element_type.json_type() == 'int'):
+> -            typ = self._schema.lookup_type('intList')
+> +            tmp = self._schema.lookup_type('intList')
+> +            assert tmp is not None
+> +            typ = tmp
+>          # Add type to work queue if new
+>          if typ not in self._used_types:
+>              self._used_types.append(typ)
+
+Not fond of naming things @tmp, but I don't have a better name to offer.
+
+We could avoid the lookup by having _def_predefineds() set suitable
+attributes, like it serts .the_empty_object_type.  Matter of taste.  Not
+now unless you want to.
 
 
