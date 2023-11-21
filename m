@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 300597F2A50
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 11:25:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20AD37F2A55
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 11:26:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Nw5-0004L8-6R; Tue, 21 Nov 2023 05:24:53 -0500
+	id 1r5Nw2-0004Ik-L8; Tue, 21 Nov 2023 05:24:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r5Nw0-0004Hr-UM
+ id 1r5Nw0-0004G5-J7
  for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:24:48 -0500
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r5Nvx-0007EO-Pq
+ id 1r5Nvx-0007EP-L2
  for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:24:48 -0500
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-50aab3bf71fso3209346e87.3
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 02:24:44 -0800 (PST)
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-507a29c7eefso7630748e87.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 02:24:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700562283; x=1701167083; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=G3p12AQx2CLYbRt4rQ1Fouz9SB3dqjhKR/td/Q1qBxk=;
- b=u9G8U2iIUev2xmw6YSM33/XFWopjS/WfpDgoMrhZ1Ltb4l5GBVyTbA9hK86KbPjGLo
- sMYDr9Sh3pYhlnzXY9YMi+kDQQM7KWtKhSdDPisHdkMHolNm9GyEh6voXT3DTtfqLsJ3
- myYRETw/zC/1SLeIPhJhQ3EjBVCfq8iKvEKYoJi5UyPLS2f6eDfP5tnvEKqsy+5qKwAn
- dNdotNtuVIjg59GkqpXrRPPuL++L1xIp2JekvvSf1ygCk37xzss5mCuV90IJWeE7WivS
- c+qRTXDm8yoy9hCn3CrgAlKdUVA23ZBQi5VV70at0c2AY2QuktU7PvfJAnUUp14fNO16
- 9ctg==
+ d=linaro.org; s=google; t=1700562284; x=1701167084; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=48i16lN/X0IufQ0d/3ATpQbGOSnta9cBh6bFvGherhw=;
+ b=bsq+uaoAQ/OtEMEEvn+G2zO+g+3ZPjiMvYEakYfju3TYHWcupjVwJPyDuVWPI1PRMd
+ k7QWCDQdtB2gpoMxxV9LLj3TecDBg5tNorCfr0AnZX9ABLaGoPRxEUQtYPRocWEXmLCu
+ Jmn2WtyLzUlrQmL0SoHPVv27mQ900aTGN3ujWVQgJxtK7vbJWHhsBNAGZdUWwRBP80NJ
+ gyC/jSagZHsSJ62EqFRFiYiGM2IxCjzkd2ixnJWmDNcEiUPlVqKStfAKEvhjUaJGSK9k
+ Ztw2h0ge/EVmVbO/VID6Z7I1pHhKUVxkAPxD3E4Zzc7DRloJN5BGz4jwTvoLcrmXSMGl
+ MEOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700562283; x=1701167083;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=G3p12AQx2CLYbRt4rQ1Fouz9SB3dqjhKR/td/Q1qBxk=;
- b=dBZVUrm5E0skYh3mMvaftH6x8JIDF9RzNfNsfbNhKIWTS3msKrN9c9fLZV0hsKmEw0
- 31FNpvdsDQwsjRMo+5XCXX64EYdMXolmmiEh5K5YNjCNp0S8aUPffF9Qo6fLf1sBvCEY
- PIl0ko1/yQFpy4IUYXwO8je297ilMArjZOI0oQkgJdzHExu0PO95tv9zoRRLou2IhU0P
- HRAIIE6PbDMhYtYSCjuIs1Lr5TTPQn1fRelVB8jxJo9U4vVKbPz+zmlkVrwtS/V4ytWk
- bV/xBR3RFfYyxtOh3kym0nY8NlMLQ29B6Q7MCdqkmU50SxOMTrDhAMmOKuAIP4rd0NeZ
- TaAg==
-X-Gm-Message-State: AOJu0YxJ16MerHNld7wH4AV1e/WgVDYE/L2rTS+x1KxWmbsjj7nKyb1i
- VM2Df5JzvH+vZ696Ot1tB8v0DfWxYPt/29nU6i8=
-X-Google-Smtp-Source: AGHT+IE+jbxobJ556RQqYFfcmKEBZciF7DD4UeGC0o7/782DqvrQBwmWRW5179ZJQ/3zlpyoFE9r5g==
-X-Received: by 2002:a2e:bb86:0:b0:2c8:7176:1735 with SMTP id
- y6-20020a2ebb86000000b002c871761735mr5836528lje.17.1700562283468; 
+ d=1e100.net; s=20230601; t=1700562284; x=1701167084;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=48i16lN/X0IufQ0d/3ATpQbGOSnta9cBh6bFvGherhw=;
+ b=BGIfFj6F2jFsopBToTCgaEFiKmPfe7jYTF1lDoxOakF8XQvGCPhNCrxlthAdHaAqol
+ g6wANyUxN90lfpNvREbwneTHhYwyJxU9+hLXlccq3VJhihXP5HvrOB25SgrgPKYty0ic
+ p7dohVj0BUrhfG33FZ70IJdEdV+0f9bTfUuUIx9+Af+a+EoAXU8DOG8c1ETyyg5y8893
+ Rt081Nj0kR8NhJYYXSJz2TCnuC1tEnJQPd4XccwUBf3UjZ2g1ds3S1iI7KdDGlPHUHgE
+ jQ4h8hpgp7UibjBThEb/Hhsr88NORluIckQvefo6Uv+TP79QlnVPRfIHh/gWlpBnoNXU
+ BUvQ==
+X-Gm-Message-State: AOJu0YzVR3BhnbknwWDNjKDuQljftH569cnD8KrfYUy/7kzZ+IjfWZsn
+ V6eND4x9D7IVBcLzXKxqJfYqG2GpoGYK1Ql717A=
+X-Google-Smtp-Source: AGHT+IEokHooP/rHzOaIt2poO4Ams1GHQdUMwviHlyc5yxy4yZ6Xs25emQOzbhB2Cj7TtoM1/8KNtg==
+X-Received: by 2002:ac2:5df3:0:b0:502:fdca:2eaa with SMTP id
+ z19-20020ac25df3000000b00502fdca2eaamr6882544lfq.52.1700562283905; 
  Tue, 21 Nov 2023 02:24:43 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -57,15 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 21 Nov 2023 02:24:43 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/8] target-arm queue
-Date: Tue, 21 Nov 2023 10:24:33 +0000
-Message-Id: <20231121102441.3872902-1-peter.maydell@linaro.org>
+Subject: [PULL 1/8] target/arm: enable FEAT_RNG on Neoverse-N2
+Date: Tue, 21 Nov 2023 10:24:34 +0000
+Message-Id: <20231121102441.3872902-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231121102441.3872902-1-peter.maydell@linaro.org>
+References: <20231121102441.3872902-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,68 +90,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi; here are some arm patches for rc1; all small bug fixes and cleanups.
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-thanks
--- PMM
+I noticed that Neoverse-V1 has FEAT_RNG enabled so let enable it also on
+Neoverse-N2.
 
-The following changes since commit af9264da80073435fd78944bc5a46e695897d7e5:
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20231114103443.1652308-1-marcin.juszkiewicz@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/tcg/cpu64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  Merge tag '20231119-xtensa-1' of https://github.com/OSLL/qemu-xtensa into staging (2023-11-20 05:25:19 -0500)
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index 08db1dbcc74..fcda99e1583 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -1018,7 +1018,7 @@ static void aarch64_neoverse_n2_initfn(Object *obj)
+     cpu->isar.id_aa64dfr1  = 0;
+     cpu->id_aa64afr0       = 0;
+     cpu->id_aa64afr1       = 0;
+-    cpu->isar.id_aa64isar0 = 0x0221111110212120ull; /* with Crypto */
++    cpu->isar.id_aa64isar0 = 0x1221111110212120ull; /* with Crypto and FEAT_RNG */
+     cpu->isar.id_aa64isar1 = 0x0011111101211052ull;
+     cpu->isar.id_aa64mmfr0 = 0x0000022200101125ull;
+     cpu->isar.id_aa64mmfr1 = 0x0000000010212122ull;
+-- 
+2.34.1
 
-are available in the Git repository at:
-
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20231121
-
-for you to fetch changes up to 0cbb56c236a4a28f5149eed227d74bb737321cfc:
-
-  hw/arm/fsl-imx: Do not ignore Error argument (2023-11-20 15:34:19 +0000)
-
-----------------------------------------------------------------
-target-arm queue:
- * enable FEAT_RNG on Neoverse-N2
- * hw/intc/arm_gicv3: ICC_PMR_EL1 high bits should be RAZ
- * Fix SME FMOPA (16-bit), BFMOPA
- * hw/core/machine: Constify MachineClass::valid_cpu_types[]
- * stm32f* machines: Report error when user asks for wrong CPU type
- * hw/arm/fsl-imx: Do not ignore Error argument
-
-----------------------------------------------------------------
-Ben Dooks (1):
-      hw/intc/arm_gicv3: ICC_PMR_EL1 high bits should be RAZ
-
-Gavin Shan (1):
-      hw/core/machine: Constify MachineClass::valid_cpu_types[]
-
-Marcin Juszkiewicz (1):
-      target/arm: enable FEAT_RNG on Neoverse-N2
-
-Philippe Mathieu-Daudé (4):
-      hw/arm/stm32f405: Report error when incorrect CPU is used
-      hw/arm/stm32f205: Report error when incorrect CPU is used
-      hw/arm/stm32f100: Report error when incorrect CPU is used
-      hw/arm/fsl-imx: Do not ignore Error argument
-
-Richard Henderson (1):
-      target/arm: Fix SME FMOPA (16-bit), BFMOPA
-
- include/hw/arm/stm32f100_soc.h |  4 ----
- include/hw/arm/stm32f205_soc.h |  4 ----
- include/hw/arm/stm32f405_soc.h |  4 ----
- include/hw/boards.h            |  2 +-
- hw/arm/fsl-imx25.c             |  3 ++-
- hw/arm/fsl-imx6.c              |  3 ++-
- hw/arm/netduino2.c             |  7 ++++++-
- hw/arm/netduinoplus2.c         |  7 ++++++-
- hw/arm/olimex-stm32-h405.c     |  8 ++++++--
- hw/arm/stm32f100_soc.c         |  9 ++-------
- hw/arm/stm32f205_soc.c         |  9 ++-------
- hw/arm/stm32f405_soc.c         |  8 +-------
- hw/arm/stm32vldiscovery.c      |  7 ++++++-
- hw/hppa/machine.c              | 22 ++++++++++------------
- hw/intc/arm_gicv3_cpuif.c      |  4 ++--
- hw/m68k/q800.c                 | 11 +++++------
- target/arm/tcg/cpu64.c         |  2 +-
- target/arm/tcg/sme_helper.c    | 10 ++++------
- 18 files changed, 56 insertions(+), 68 deletions(-)
 
