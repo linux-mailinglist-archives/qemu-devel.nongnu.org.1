@@ -2,85 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238DB7F35E4
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 19:29:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A877F35E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 19:29:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5VUD-0006d4-2D; Tue, 21 Nov 2023 13:28:37 -0500
+	id 1r5VUf-0006jQ-UX; Tue, 21 Nov 2023 13:29:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
- id 1r5VUB-0006cj-7G; Tue, 21 Nov 2023 13:28:35 -0500
-Received: from mail-qt1-x82a.google.com ([2607:f8b0:4864:20::82a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
- id 1r5VU9-0003OP-IG; Tue, 21 Nov 2023 13:28:34 -0500
-Received: by mail-qt1-x82a.google.com with SMTP id
- d75a77b69052e-4219f89ee21so35004661cf.3; 
- Tue, 21 Nov 2023 10:28:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700591312; x=1701196112; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PtIetbocPPQpNl4lGR3J1iZEPa+0KAqVFOMPUkiLUEk=;
- b=MXxZDoYakjJkuGlQNOH7ZIB+2YFaUEBtcDPaNvGSWpNnWmH5dj7K1gzivwO7cuLaCA
- Nd7iRLmEu+FSvVYDTvuX0LCPAM2zCwjCBU0vCXnDARUElSLcLSMIxz7//G1uG0PZAYfz
- RCzYVj051ESqpR9lNEtDdHAmaMaEuqCbw+Vk1Sb7b41x0XT2q7KoAYQh+VgFkDewTy7O
- Z/IpiCwdqXjbRhkB5ESPj6Mm8eXygIh88JDOfgx320zcGsrfgYUiQclBOqfq4TdEBUxg
- OdHxscPkVuvqRWzTo9xBaRGCbwZJH0vrf5H5mtEQRKm+YX75WxN8FRfCm/0i7nc0I2ay
- 0UYg==
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1r5VUX-0006fP-Of
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 13:28:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1r5VUV-0003Pr-MS
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 13:28:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700591333;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jJaVI7eFQSumVnEyWm3N6x8y85gR6jqngXrsofoKTB4=;
+ b=hioSv4wtb4mSUvH3zPkACQ8+pM8RcOQqkYxNV30BmLXy2rLh0jWbtyYePA2H511l7q3Li2
+ gk9rDqG6qqmWPe6jZB6DxneRwEd10pUCroj9QurdSzRVwK7+tEe59fe7tgsbRldw82QaQa
+ plOvFnRNWksX2S++CjxOE3MJfweTTSA=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-443-A4rw1RiuMoKzdOkstEPWXw-1; Tue, 21 Nov 2023 13:28:51 -0500
+X-MC-Unique: A4rw1RiuMoKzdOkstEPWXw-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-778b25af933so735880285a.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 10:28:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700591312; x=1701196112;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PtIetbocPPQpNl4lGR3J1iZEPa+0KAqVFOMPUkiLUEk=;
- b=Zw+0dnN1LRQHlMlHXpsLl5henUaBpGtS9PNAigw/EJoxBJdH7/bnTfuPg0Hpx48Zw9
- Mrvvk96JKQTQk5KiOik+yQhAFyZkybnx6JUzrx/jzdaKD3v1wZPLcin1pTz4xBlw8Yrh
- b4FMmD4uPBOrdrLvbBEH1d+Hu2fUdGEvA95c/VmajleAyuJBOOYGMo5kPxCd9Pvm+gSl
- 7eCXA+d7n2AliPPXvE8k3GgLHAXx0WhbyUIe20e4fzPRkMeX1rB3uJYQIc7UQ1iukWZ2
- OXDR2JTW/2slntvz4PZwJxOgRCRtp+GnnokmJMzdL7GXVs9W/IYpwLFb4LC4No6lQaDc
- 1Gsw==
-X-Gm-Message-State: AOJu0YwQwtP6J2Lz+hcdg/qbIHTR43kaI/8vf1STqkLE1s7oB+eGt5kG
- t5j2Yic7ybG3iv6BZgBgy9vmgNFhCJyadHomoUo=
-X-Google-Smtp-Source: AGHT+IFgz0o1fOhiZT+aDri0YDzsqXnGOjSJAH1sJkBYIdi8Eidy1W++uKOEM3mjqIz67wUl9/aoRH5gcQnk9sQCrZ4=
-X-Received: by 2002:ac8:7201:0:b0:423:7326:515f with SMTP id
- a1-20020ac87201000000b004237326515fmr1888218qtp.11.1700591312023; Tue, 21 Nov
- 2023 10:28:32 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700591331; x=1701196131;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jJaVI7eFQSumVnEyWm3N6x8y85gR6jqngXrsofoKTB4=;
+ b=o1Sg2DGkz6VQ0tJ7rbbFGYX9NFjYpzerg9yKrtslMo2/b7P+yWOx2AvNHth5AE0+7l
+ R6oS58fB1RZu6e6rO3lnSyYlU+Tsmnjnc0JvkLBgkCRTCKwKRMdXkEYOZI/6shrB2/aX
+ E0psPdeMvhls3bR9+98tQKGqUTpmAED7Avb+UL9jiQAAFmvoIB+M+C5uh2dNIz7HwMc1
+ bpId22E1sLewpFVJKoYcx644detN/+/VYv2BmE57V6n1MCS6zsllvaNBhHPTcro6vJbW
+ scW5OhSc8w1cu3GFjxTSLBxicKcWCP9IT9v3Z4351v0rp3WKnL2jkkOkgj2r4Qfy9kDx
+ U47w==
+X-Gm-Message-State: AOJu0YwYocdqZYNd3hYG8DebGJWqv1wwQ/V0PRfB14lV0JLwk6M80rgM
+ 9XCUIc3jDghiLf6YjAPSxyYw07yTdrQGLR1tUkuJzEaywvA4jltDagSro2oYkAKDScZI7qB51Vf
+ 5ooHJpvTKKOy7BOE=
+X-Received: by 2002:a05:620a:8e03:b0:778:8da0:a6a2 with SMTP id
+ re3-20020a05620a8e0300b007788da0a6a2mr10219334qkn.28.1700591331034; 
+ Tue, 21 Nov 2023 10:28:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGn3Xyk5pLsdn1HBN3Gf0Iulqwss53v+TJluPWqhRUxNS9k1eyQjOoaHom5+J8VBhAv2u8rRg==
+X-Received: by 2002:a05:620a:8e03:b0:778:8da0:a6a2 with SMTP id
+ re3-20020a05620a8e0300b007788da0a6a2mr10219322qkn.28.1700591330738; 
+ Tue, 21 Nov 2023 10:28:50 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ q11-20020a05620a0d8b00b0076cbcf8ad3bsm3774009qkl.55.2023.11.21.10.28.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Nov 2023 10:28:50 -0800 (PST)
+Message-ID: <4775da43-e188-4d37-b869-a4084cfeaa23@redhat.com>
+Date: Tue, 21 Nov 2023 19:28:47 +0100
 MIME-Version: 1.0
-References: <20231119203116.3027230-1-dhoff749@gmail.com>
- <3c44d5a5-818b-46b6-a07f-af655a060032@linaro.org>
- <CAFXChKJrXAop188pTFcU0YNPocn_KyiAXiqWoES2F0_==VyO+Q@mail.gmail.com>
- <20231120042116-mutt-send-email-mst@kernel.org>
- <9282a606-794a-432c-8b56-fedf6af67768@linaro.org>
- <viiqn6gyn25xitens3ft4mp4lditlcrswstugct42t2kvpw6pi@3ftcrbxmuo3e>
-In-Reply-To: <viiqn6gyn25xitens3ft4mp4lditlcrswstugct42t2kvpw6pi@3ftcrbxmuo3e>
-From: Dan Hoffman <dhoff749@gmail.com>
-Date: Tue, 21 Nov 2023 12:28:22 -0600
-Message-ID: <CAFXChKKkRRNk72a57xSeJdYtXBss5W7KoEnQqUOVK9_xhc8NfQ@mail.gmail.com>
-Subject: Re: [PATCH v3] hw/i386: fix short-circuit logic with non-optimizing
- builds
-To: Eric Blake <eblake@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org, 
- qemu-trivial@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82a;
- envelope-from=dhoff749@gmail.com; helo=mail-qt1-x82a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-8.2? 2/6] hw/virtio: Free
+ VirtIOIOMMUPCI::vdev.reserved_regions[] on finalize()
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Alistair Francis <alistair@alistair23.me>, Kevin Wolf <kwolf@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-stable@nongnu.org
+References: <20231121174051.63038-1-philmd@linaro.org>
+ <20231121174051.63038-3-philmd@linaro.org>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20231121174051.63038-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,97 +107,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I'm writing a patch to clang's constant folding to address this case
-(doesn't seem too difficult). I'll either follow up with a link to
-some submissions I've made or a bug report on the project describing
-the issue.
+Hi Phil,
 
+On 11/21/23 18:40, Philippe Mathieu-Daudé wrote:
+> Commit 0be6bfac62 ("qdev: Implement variable length array properties")
+> added the DEFINE_PROP_ARRAY() macro with the following comment:
+>
+>   * It is the responsibility of the device deinit code to free the
+>   * @_arrayfield memory.
+>
+> Commit 8077b8e549 added:
+>
+>   DEFINE_PROP_ARRAY("reserved-regions", VirtIOIOMMUPCI,
+>                     vdev.nb_reserved_regions, vdev.reserved_regions,
+>                     qdev_prop_reserved_region, ReservedRegion),
+>
+> but forgot to free the 'vdev.reserved_regions' array. Do it in the
+> instance_finalize() handler.
+>
+> Cc: qemu-stable@nongnu.org
+> Fixes: 8077b8e549 ("virtio-iommu-pci: Add array of Interval properties") # v5.1.0+
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
+Eric
+> ---
+>  hw/virtio/virtio-iommu-pci.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/hw/virtio/virtio-iommu-pci.c b/hw/virtio/virtio-iommu-pci.c
+> index 9459fbf6ed..cbdfe4c591 100644
+> --- a/hw/virtio/virtio-iommu-pci.c
+> +++ b/hw/virtio/virtio-iommu-pci.c
+> @@ -95,10 +95,18 @@ static void virtio_iommu_pci_instance_init(Object *obj)
+>                                  TYPE_VIRTIO_IOMMU);
+>  }
+>  
+> +static void virtio_iommu_pci_instance_finalize(Object *obj)
+> +{
+> +    VirtIOIOMMUPCI *dev = VIRTIO_IOMMU_PCI(obj);
+> +
+> +    g_free(dev->vdev.prop_resv_regions);
+> +}
+> +
+>  static const VirtioPCIDeviceTypeInfo virtio_iommu_pci_info = {
+>      .generic_name  = TYPE_VIRTIO_IOMMU_PCI,
+>      .instance_size = sizeof(VirtIOIOMMUPCI),
+>      .instance_init = virtio_iommu_pci_instance_init,
+> +    .instance_finalize = virtio_iommu_pci_instance_finalize,
+>      .class_init    = virtio_iommu_pci_class_init,
+>  };
+>  
 
-On Tue, Nov 21, 2023 at 10:15=E2=80=AFAM Eric Blake <eblake@redhat.com> wro=
-te:
->
-> On Mon, Nov 20, 2023 at 11:20:52AM +0100, Philippe Mathieu-Daud=C3=A9 wro=
-te:
-> > (Cc'ing Eric)
-> >
-> > On 20/11/23 10:28, Michael S. Tsirkin wrote:
-> > > On Sun, Nov 19, 2023 at 07:34:58PM -0600, Dan Hoffman wrote:
-> > > > As far as I can tell, yes. Any optimization level above O0 does not=
- have this
-> > > > issue (on this version of Clang, at least)
-> > >
-> > > Aha, this is with -O0. That makes sense.
-> >
-> > But then, why the other cases aren't problematic?
-> >
-> > $ git grep -E ' (&&|\|\|) !?kvm_enabled'
-> > hw/arm/boot.c:1228:    assert(!(info->secure_board_setup && kvm_enabled=
-()));
->
-> This one's obvious; no kvm_*() calls in the assert.
->
-> > hw/i386/microvm.c:270:        (mms->rtc =3D=3D ON_OFF_AUTO_AUTO &&
-> > !kvm_enabled())) {
->
-> Ones like this require reading context to see whether the if() block
-> guarded any kvm_*() calls for the linker to elide - but still a fairly
-> easy audit.
->
-> > > >
-> > > >      I'm surprised the order of conditions matters for code elision=
-...
-> > > >
-> > > >      > Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
-> > > >      > ---
-> > > >      >   hw/i386/x86.c | 15 ++++++++++++---
-> > > >      >   1 file changed, 12 insertions(+), 3 deletions(-)
-> > > >      >
-> > > >      > diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-> > > >      > index b3d054889bb..2b6291ad8d5 100644
-> > > >      > --- a/hw/i386/x86.c
-> > > >      > +++ b/hw/i386/x86.c
-> > > >      > @@ -131,8 +131,12 @@ void x86_cpus_init(X86MachineState *x86=
-ms, int
-> > > >      default_cpu_version)
-> > > >      >       /*
-> > > >      >        * Can we support APIC ID 255 or higher?  With KVM, th=
-at requires
-> > > >      >        * both in-kernel lapic and X2APIC userspace API.
-> > > >      > +     *
-> > > >      > +     * kvm_enabled() must go first to ensure that kvm_* ref=
-erences are
-> > > >      > +     * not emitted for the linker to consume (kvm_enabled()=
- is
-> > > >      > +     * a literal `0` in configurations where kvm_* aren't d=
-efined)
-> > > >      >        */
-> > > >      > -    if (x86ms->apic_id_limit > 255 && kvm_enabled() &&
-> > > >      > +    if (kvm_enabled() && x86ms->apic_id_limit > 255 &&
-> > > >      >           (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())=
-) {
->
-> Indeed, if clang -O0 treats 'if (cond1 && 0 && cond2)' differently
-> than 'if (0 && cond1 && cond2)' for purposes of eliding the code for
-> cond2, that seems like a blatant missed optimization that we should be
-> reporting to the clang folks.
->
-> While this patch may solve the immediate issue, it does not scale - if
-> we ever have two separate guards that can both be independently
-> hard-coded to 0 based on configure-time decisions, but which are both
-> used as guards in the same expression, it will become impossible to
-> avoid a '(cond1 && 0 && cond2)' scenario across all 4 possible
-> configurations of those two guards.
->
-> I have no objection to the patch, but it would be nice if the commit
-> message could point to a clang bug report, if one has been filed.
->
-> --
-> Eric Blake, Principal Software Engineer
-> Red Hat, Inc.
-> Virtualization:  qemu.org | libguestfs.org
->
 
