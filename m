@@ -2,68 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CB67F2876
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 10:13:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50B9F7F287E
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 10:16:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Mo6-0007H7-Oz; Tue, 21 Nov 2023 04:12:35 -0500
+	id 1r5Mqr-00088O-5Q; Tue, 21 Nov 2023 04:15:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r5Mo3-0007Gb-2p
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:12:31 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1r5Mqi-00088B-Jh
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:15:16 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r5Mo1-0007wx-8I
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:12:30 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1r5Mqg-0000cG-MJ
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:15:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700557947;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=EeNItQAUrBZhN3lN2mVhOqA6UlvFDvzUXDf2nsLrmmo=;
- b=dVMcdu1hSJLseC+sUUFiyPCakOfydrRQLujGKpTPFw4bY4yPwd+azdOrQpyT4ptlJYqlFm
- Rc7YU6UWWztIJ9BemX0fXJht63kxF6ym0qwmgR16FWnxtV258cN1ctUxYds/1NuHZxq7kG
- vTmAof+3ZZpmdGjNnD0G6bSTt8TClgs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-546-uT-BfwHCPjKB3URYE6gT5w-1; Tue, 21 Nov 2023 04:12:24 -0500
-X-MC-Unique: uT-BfwHCPjKB3URYE6gT5w-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ s=mimecast20190719; t=1700558113;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=LOczEKH16QEC3ZM4kumFDuZTkaYnYMXuS7z1i7txbSs=;
+ b=FykIfZuf7wcNMGWhfO3tgs9D16uxR7ne1w5W/P6v75FtsIlbpd4QAalv4L+mEN0TRLV7ZM
+ DIXHPh6BAWM9GjrOXB8p+YDVcNzENO5+UM/GRwWJeCQg2g5e3cgSRSGs+JzTfN/5tA0TCk
+ xjGTM+j7Nj/h5Ue1LryaNB/pqr3+vu4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-674-ZUO4UDSGPc-Pep_f5SRuXA-1; Tue,
+ 21 Nov 2023 04:15:10 -0500
+X-MC-Unique: ZUO4UDSGPc-Pep_f5SRuXA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4A06883B824;
- Tue, 21 Nov 2023 09:12:24 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.112])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 20802492BE7;
- Tue, 21 Nov 2023 09:12:22 +0000 (UTC)
-Date: Tue, 21 Nov 2023 10:12:21 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, jsnow@redhat.com,
- qemu-block@nongnu.org, qemu-devel@nongnu.org, philmd@linaro.org,
- shentey@gmail.com, Rene Engel <ReneEngel80@emailn.de>
-Subject: Re: [PATCH v3 0/4] ide: implement simple legacy/native mode
- switching for PCI IDE controllers
-Message-ID: <ZVx0dbWCMUbF4NVG@redhat.com>
-References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
- <c4bb80e8-e985-b6b2-aac1-f6e8d446b8ea@eik.bme.hu>
- <295aec31-e9c1-49d8-9bea-edad8f7b81e4@ilande.co.uk>
- <63ff9c1a-5d05-985a-bf2f-69420b72db90@eik.bme.hu>
- <ZVtiV8XXHxS+cw8o@redhat.com>
- <fad96d99-bbdc-4330-bf40-974eb745e2d3@ilande.co.uk>
- <741ae757-f1da-586b-af97-123b0ebfbdb9@eik.bme.hu>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 876CF38130C0;
+ Tue, 21 Nov 2023 09:15:09 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.105])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7EB922166B27;
+ Tue, 21 Nov 2023 09:15:01 +0000 (UTC)
+Date: Tue, 21 Nov 2023 09:14:58 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Cleber Rosa <crosa@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH 3/3] tests/avocado: Enable reverse_debugging.py tests in
+ gitlab CI
+Message-ID: <ZVx1EkxpK1ZH-nDn@redhat.com>
+References: <20231116115354.228678-1-npiggin@gmail.com>
+ <20231116115354.228678-3-npiggin@gmail.com>
+ <24a194bc-81c6-44ae-9113-94ed28cc4f71@redhat.com>
+ <CX0WX30H69LM.3MYDJODZ4LQWF@wheely>
+ <31850f05-7849-402d-b3ae-623e76b52953@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <741ae757-f1da-586b-af97-123b0ebfbdb9@eik.bme.hu>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+In-Reply-To: <31850f05-7849-402d-b3ae-623e76b52953@redhat.com>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -71,8 +76,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,108 +90,114 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 20.11.2023 um 16:02 hat BALATON Zoltan geschrieben:
-> On Mon, 20 Nov 2023, Mark Cave-Ayland wrote:
-> > On 20/11/2023 13:42, Kevin Wolf wrote:
-> > > Am 20.11.2023 um 14:09 hat BALATON Zoltan geschrieben:
-> > > > On Mon, 20 Nov 2023, Mark Cave-Ayland wrote:
-> > > > > On 19/11/2023 21:43, BALATON Zoltan wrote:
-> > > > > > On Thu, 16 Nov 2023, Mark Cave-Ayland wrote:
-> > > > > > > This series adds a simple implementation of legacy/native mode
-> > > > > > > switching for PCI
-> > > > > > > IDE controllers and updates the via-ide device to use it.
-> > > > > > > 
-> > > > > > > The approach I take here is to add a new pci_ide_update_mode()
-> > > > > > > function which handles
-> > > > > > > management of the PCI BARs and legacy IDE ioports for each mode
-> > > > > > > to avoid exposing
-> > > > > > > details of the internal logic to individual PCI IDE controllers.
-> > > > > > > 
-> > > > > > > As noted in [1] this is extracted from a local WIP branch I have
-> > > > > > > which contains
-> > > > > > > further work in this area. However for the moment
-> > > > > > > I've kept it simple (and
-> > > > > > > restricted it to the via-ide device) which is good
-> > > > > > > enough for Zoltan's PPC
-> > > > > > > images whilst paving the way for future improvements after 8.2.
-> > > > > > > 
-> > > > > > > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> > > > > > > 
-> > > > > > > [1] https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05403.html
-> > > > > > > 
-> > > > > > > v3:
-> > > > > > > - Rebase onto master
-> > > > > > > - Move ide_portio_list[] and ide_portio_list2[] to IDE core to
-> > > > > > > prevent duplication in
-> > > > > > >   hw/ide/pci.c
-> > > > > > > - Don't zero BARs when switching from native mode to legacy
-> > > > > > > mode, instead always force
-> > > > > > >   them to read zero as suggested in the PCI IDE specification
-> > > > > > > (note: this also appears
-> > > > > > >   to fix the fuloong2e machine booting from IDE)
-> > > > > > 
-> > > > > > Not sure you're getting this, see also:
-> > > > > > https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg04167.html
-> > > > > > but this seems to break latest version of the AmigaOS driver for
-> > > > > > some reason. I assume this is the BAR zeroing that causes this as it
-> > > > > > works with v2 series and nothing else changed in v3 that could cause
-> > > > > > this. Testing was done by Rene Engel, cc'd so maybe he can add more
-> > > > > > info. It seems to work with my patch that sets BARs to legacy values
-> > > > > > and with v2 that sets them to 0 but not with v3 which should also
-> > > > > > read 0 but maybe something is off here.
-> > > > > 
-> > > > > I've been AFK for a few days, so just starting to catch up on various
-> > > > > bits and pieces.
+On Tue, Nov 21, 2023 at 09:56:24AM +0100, Thomas Huth wrote:
+> On 17/11/2023 08.35, Nicholas Piggin wrote:
+> > On Fri Nov 17, 2023 at 4:11 AM AEST, Thomas Huth wrote:
+> > > On 16/11/2023 12.53, Nicholas Piggin wrote:
+> > > > Let's try enable reverse_debugging.py in gitlab CI.
 > > > > 
-> > > > OK just wasn't sure if you saw my emails at all as it happened before that
-> > > > some spam filters disliked my mail server and put messages in the spam
-> > > > folder.
+> > > > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > > > ---
+> > > > Maybe we could try this again at some point? The bug might have been
+> > > > noticed sooner.
 > > > > 
-> > > > > The only difference I can think of regarding the BAR zeroing is that the
-> > > > > BMDMA BAR is zeroed here. Does the following diff fix things?
+> > > > They only take a couple of seconds to run so should not take too much
+> > > > overhead. But my gitlab CI pipeline doesn't run the avocado tests for
+> > > > some reason, so I can't see if it's still causing problems.
 > > > > 
-> > > > This helps, with this the latest driver does not crash but still
-> > > > reads BAR4
-> > > > as 0 instead of 0xcc00 so UDMA won't work but at least it boots.
+> > > > Thanks,
+> > > > Nick
+> > > > ---
+> > > > 
+> > > >    tests/avocado/reverse_debugging.py | 7 -------
+> > > >    1 file changed, 7 deletions(-)
 > > > 
-> > > And disabling only the first four BARs is actually what the spec says,
-> > > too. So I'll make this change to the queued patches.
-> > 
-> > That was definitely something that I thought about: what should happen
-> > to BARs outside of the ones mentioned in the PCI IDE controller
-> > specification? It seems reasonable to me just to consider BARS 0-3 for
-> > zeroing here.
-> > 
-> > > If I understand correctly, UDMA didn't work before this series either,
-> > > so it's a separate goal and doing it in its own patch is best anyway.
+> > > FYI, I gave it a try, and it survived my CI run:
 > > > 
-> > > As we don't seem to have a good place to set a default, maybe just
-> > > overriding it in via_ide_cfg_read(), too, and making it return 0xcc01 in
-> > > compatibility mode is enough?
+> > >    https://gitlab.com/thuth/qemu/-/jobs/5552213972#L403
+> > > 
+> > > So I went ahead and put it (together with the first patch) in my current
+> > > pull request, let's see how it goes...
 > > 
-> > It's difficult to know whether switching to legacy mode on the via-ide
-> > device resets BAR4 to its default value, or whether it is simply left
-> > unaltered. For 8.2 I don't mind too much as long as the logic is
-> > separate from the BAR zeroing logic (which will eventually be lifted up
-> > into hw/ide/pci.c).
+> > Great, thank you.
 > 
-> My original patch checked for BAR being unset and only reset to defailt in
-> that case so it won't clobber a value set by something (like pegasos2
-> firmware) but will set default for amigaone which does not program the BAR
-> just uses the default legacy mode (which is the default on real chip but we
-> have to make that happen on QEMU after reset). So setting it to default if
-> it's unset when switching to legacy seems like a safe bet and testing with
-> my patch did not find problem with that.
+> ... and here it's failing again (current master branch):
+> 
+> https://gitlab.com/thuth/qemu/-/jobs/5582657378#L404
+> 
+> According to the debug.log in the artifacts, it's failing here:
+> 
+> 08:28:32 DEBUG| [    0.230392217,5] OPAL v7.0 starting...
+> 
+> 08:28:32 DEBUG| [    0.230674939,7] initial console log level: memory 7, driver 5
+> 
+> 08:28:32 DEBUG| [    0.231048494,6] CPU: P9 generation processor (max 4 threads/core)
+> 
+> 08:28:32 DEBUG| [
+> 08:28:32 DEBUG| [    0.231412547,7] CPU: Boot CPU PIR is 0x0000 PVR is 0x004e1202
+> 
+> 08:28:32 DEBUG| [
+> 08:28:32 ERROR|
+> 08:28:32 ERROR| Reproduced traceback from: /builds/thuth/qemu/build/pyvenv/lib64/python3.8/site-packages/avocado/core/test.py:770
+> 08:28:32 ERROR| Traceback (most recent call last):
+> 08:28:32 ERROR|   File "/builds/thuth/qemu/build/tests/avocado/reverse_debugging.py", line 262, in test_ppc64_powernv
+> 08:28:32 ERROR|     self.reverse_debugging()
+> 08:28:32 ERROR|   File "/builds/thuth/qemu/build/tests/avocado/reverse_debugging.py", line 178, in reverse_debugging
+> 08:28:32 ERROR|     g.cmd(b'c')
+> 08:28:32 ERROR|   File "/builds/thuth/qemu/build/pyvenv/lib64/python3.8/site-packages/avocado/utils/gdb.py", line 783, in cmd
+> 08:28:32 ERROR|     response_payload = self.decode(result)
+> 08:28:32 ERROR|   File "/builds/thuth/qemu/build/pyvenv/lib64/python3.8/site-packages/avocado/utils/gdb.py", line 738, in decode
+> 08:28:32 ERROR|     raise InvalidPacketError
+> 08:28:32 ERROR| avocado.utils.gdb.InvalidPacketError
+> 08:28:32 ERROR|
+> 08:28:32 DEBUG| Local variables:
+> 08:28:32 DEBUG|  -> self <class 'reverse_debugging.ReverseDebugging_ppc64'>: 79-tests/avocado/reverse_debugging.py:ReverseDebugging_ppc64.test_ppc64_powernv
+> 08:28:32 DEBUG| Shutting down VM appliance; timeout=30
+> 08:28:32 DEBUG| Attempting graceful termination
+> 08:28:32 DEBUG| Closing console socket
+> 08:28:32 DEBUG| Politely asking QEMU to terminate
+> 
+> So unless someone has a clue how to fix that, I guess it's
+> likely best to revert this enablement patch again...
 
-How about setting the default if it's unset on the first read after
-reset instead of only on switching modes? I'd like to avoid that the
-guest could observe surprising state changes, even if the OSes we're
-currently looking at don't do that. It just seems more robust than
-introducing random magic at arbitrary points.
+A little further in the log we see
 
-Kevin
+08:28:32 DEBUG| Politely asking QEMU to terminate
+08:28:32 DEBUG| --> {
+  "execute": "quit"
+}
+08:28:32 DEBUG| <-- {
+  "timestamp": {
+    "seconds": 1700555312,
+    "microseconds": 86122
+  },
+  "event": "RESUME"
+}
+08:28:32 ERROR| Task.Reader: BrokenPipeError: [Errno 32] Broken pipe
+
+
+
+With seeing a bad packet from GDB and seeing Broken pipe from QMP,
+my impression is that the QEMU process is no longer present, most
+likely it has SEGV'd I reckon.
+
+IOW, I think we might well have a genuine bug here, not merely an
+unreliable test suite.
+
+None the less, unless someone can guess what the problem is, we'll
+need to disable the test to get reliable CI.
+
+A bug should be opened though with the CI logs.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
