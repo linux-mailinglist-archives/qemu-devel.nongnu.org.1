@@ -2,80 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87E37F2A4E
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 11:25:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E357F2A79
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 11:34:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Nw8-0004Mo-2N; Tue, 21 Nov 2023 05:24:56 -0500
+	id 1r5O4H-00034u-FX; Tue, 21 Nov 2023 05:33:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r5Nw4-0004KQ-69
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:24:52 -0500
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r5Nw1-0007FI-1Z
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:24:51 -0500
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2c5056059e0so72475951fa.3
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 02:24:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700562287; x=1701167087; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=uKQw+Bk5quR0x5DmJj6cUhmxTm7kP9pkGDcsohAx+Rw=;
- b=qlDE5VNqkspa2ktpqDG357XZ1KO9wJXPcJ0wIyeBiaoQNz/X/kqsYdHhIxNhbTOqrm
- 6PJvX/PO+vmKEKZMxMTCpCxsVaSvEKb6J31xfDpCaQxVzhrxUQ/pWK/+ABgwUCWwRyy7
- 3VBydexpiTS2IXqWVLWtgcCfCG3KZhfPQMrP5JPzVMXWZA/xiDRxkG01VVcMRTSh1ec8
- snvKiKDpr8RO7EnObYKbxUPrRpweUgHzWZLls8AOkJa0vny+DpEMTafCX57p+C1ayYXy
- 5kqq6inmmE4c03CsDSqEFe6KRQmQj45Q5VCDWBTAaaYnz6cHxVM8DK0tIp0jwMvnHaFL
- 2iOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700562287; x=1701167087;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=uKQw+Bk5quR0x5DmJj6cUhmxTm7kP9pkGDcsohAx+Rw=;
- b=m/CwxQDIn1X/EBl3Xw7zROBl3lKmUq6A7VzNU81zZUBTzWd19ggkF66Ipa7+R0zDV5
- wT8gsfGvRcv0gOoKI05C72306eBQhH+HyQ5ihVYYeJXQJywpFAssVIe2Kw6Vj3JasK2E
- J8+i8YKoi7AhTtgiQWUMLPCiRJDb8DFB9jhsNe9Z81DaUqrqWtlHQJaErJjHU7gH9e+f
- HfbSAqDTAVefvzAQMJcVGY5bfo2A5UGwM8JYf1+m9wcH0mkTexVKedITWISvVASy5ABC
- NkripJlNHiOzZMrqFkUuvUKGCDBwQZ/DSYtA5jH3donHAtXNXOpDESsPnK+lZaLOrx+H
- l44A==
-X-Gm-Message-State: AOJu0Yy4TrHs7fWjXjdL7Msqjuh1i82bgCw3N2CkGZFCBOM+KVoqEaja
- 6eIuatzVrQvv3f8a37mFZkc6WbX6P2iLVCZlGug=
-X-Google-Smtp-Source: AGHT+IFjBETApgksxp/2EPadPF/r/SIeNU1JmXH3zfQtc3MKrbloBbeKn4BdSs9USXAJdZHjAsaSrw==
-X-Received: by 2002:a2e:9217:0:b0:2c7:f9d:587c with SMTP id
- k23-20020a2e9217000000b002c70f9d587cmr6370929ljg.24.1700562287146; 
- Tue, 21 Nov 2023 02:24:47 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- n25-20020a05600c181900b00405442edc69sm20450835wmp.14.2023.11.21.02.24.46
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Nov 2023 02:24:46 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 8/8] hw/arm/fsl-imx: Do not ignore Error argument
-Date: Tue, 21 Nov 2023 10:24:41 +0000
-Message-Id: <20231121102441.3872902-9-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231121102441.3872902-1-peter.maydell@linaro.org>
-References: <20231121102441.3872902-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
+ id 1r5O44-00034N-Ue
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:33:08 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
+ id 1r5O41-0000wX-CO
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:33:08 -0500
+Received: from lhrpeml100003.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SZLFP0ZXsz6K5xM;
+ Tue, 21 Nov 2023 18:28:41 +0800 (CST)
+Received: from lhrpeml500006.china.huawei.com (7.191.161.198) by
+ lhrpeml100003.china.huawei.com (7.191.160.210) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 21 Nov 2023 10:32:50 +0000
+Received: from lhrpeml500006.china.huawei.com ([7.191.161.198]) by
+ lhrpeml500006.china.huawei.com ([7.191.161.198]) with mapi id 15.01.2507.035; 
+ Tue, 21 Nov 2023 10:32:50 +0000
+To: Davidlohr Bueso <dave@stgolabs.net>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, tanxiaofei <tanxiaofei@huawei.com>, "Zengtao
+ (B)" <prime.zeng@hisilicon.com>, Linuxarm <linuxarm@huawei.com>,
+ "fan.ni@samsung.com" <fan.ni@samsung.com>, "a.manzanares@samsung.com"
+ <a.manzanares@samsung.com>
+Subject: RE: [RFC PATCH 1/3] hw/cxl/cxl-mailbox-utils: Add support for feature
+ commands (8.2.9.6)
+Thread-Topic: [RFC PATCH 1/3] hw/cxl/cxl-mailbox-utils: Add support for
+ feature commands (8.2.9.6)
+Thread-Index: AQHaFviya+dtfOI5Ykuwxyme/BxmpLCDphCAgAD1RYA=
+Date: Tue, 21 Nov 2023 10:32:50 +0000
+Message-ID: <6d1e66271e6142f88afc17cd6673a00b@huawei.com>
+References: <20231114124711.1128-1-shiju.jose@huawei.com>
+ <20231114124711.1128-2-shiju.jose@huawei.com>
+ <37bcqgzeu2x573n5sbec3snqekbfkgkd7zmczxr4rb2mn7jpgw@nxxhbjpkup2k>
+In-Reply-To: <37bcqgzeu2x573n5sbec3snqekbfkgkd7zmczxr4rb2mn7jpgw@nxxhbjpkup2k>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.126.175.183]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56; envelope-from=shiju.jose@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,56 +75,260 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shiju Jose <shiju.jose@huawei.com>
+From:  Shiju Jose via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+Hi Davidlohr,
 
-Both i.MX25 and i.MX6 SoC models ignore the Error argument when
-setting the PHY number. Pick &error_abort which is the error
-used by the i.MX7 SoC (see commit 1f7197deb0 "ability to change
-the FEC PHY on i.MX7 processor").
+Thanks for reviewing and for the comments.
 
-Fixes: 74c1330582 ("ability to change the FEC PHY on i.MX25 processor")
-Fixes: a9c167a3c4 ("ability to change the FEC PHY on i.MX6 processor")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20231120115116.76858-1-philmd@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- hw/arm/fsl-imx25.c | 3 ++-
- hw/arm/fsl-imx6.c  | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+>-----Original Message-----
+>From: Davidlohr Bueso <dave@stgolabs.net>
+>Sent: 20 November 2023 19:45
+>To: Shiju Jose <shiju.jose@huawei.com>
+>Cc: qemu-devel@nongnu.org; linux-cxl@vger.kernel.org; Jonathan Cameron
+><jonathan.cameron@huawei.com>; tanxiaofei <tanxiaofei@huawei.com>;
+>Zengtao (B) <prime.zeng@hisilicon.com>; Linuxarm <linuxarm@huawei.com>;
+>fan.ni@samsung.com; a.manzanares@samsung.com
+>Subject: Re: [RFC PATCH 1/3] hw/cxl/cxl-mailbox-utils: Add support for fea=
+ture
+>commands (8.2.9.6)
+>
+>On Tue, 14 Nov 2023, shiju.jose@huawei.com wrote:
+>
+>>From: Shiju Jose <shiju.jose@huawei.com>
+>>
+>>CXL spec 3.0 section 8.2.9.6 describes optional device specific features.
+>>CXL devices supports features with changeable attributes.
+>>Get Supported Features retrieves the list of supported device specific
+>>features. The settings of a feature can be retrieved using Get Feature
+>>and optionally modified using Set Feature.
+>>
+>>Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+>
+>Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+>
+>... with some comments below.
+>
+>>---
+>> hw/cxl/cxl-mailbox-utils.c | 140 +++++++++++++++++++++++++++++++++++++
+>> 1 file changed, 140 insertions(+)
+>>
+>>diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+>>index 6184f44339..93960afd44 100644
+>>--- a/hw/cxl/cxl-mailbox-utils.c
+>>+++ b/hw/cxl/cxl-mailbox-utils.c
+>>@@ -66,6 +66,10 @@ enum {
+>>     LOGS        =3D 0x04,
+>>         #define GET_SUPPORTED 0x0
+>>         #define GET_LOG       0x1
+>>+    FEATURES    =3D 0x05,
+>>+        #define GET_SUPPORTED 0x0
+>>+        #define GET_FEATURE   0x1
+>>+        #define SET_FEATURE   0x2
+>>     IDENTIFY    =3D 0x40,
+>>         #define MEMORY_DEVICE 0x0
+>>     CCLS        =3D 0x41,
+>>@@ -785,6 +789,135 @@ static CXLRetCode cmd_logs_get_log(const struct
+>cxl_cmd *cmd,
+>>     return CXL_MBOX_SUCCESS;
+>> }
+>>
+>>+/* CXL r3.0 section 8.2.9.6: Features */ typedef struct
+>>+CXLSupportedFeatureHeader {
+>>+    uint16_t entries;
+>>+    uint16_t nsuppfeats_dev;
+>>+    uint32_t reserved;
+>>+} QEMU_PACKED CXLSupportedFeatureHeader;
+>>+
+>>+typedef struct CXLSupportedFeatureEntry {
+>>+    QemuUUID uuid;
+>>+    uint16_t feat_index;
+>>+    uint16_t get_feat_size;
+>>+    uint16_t set_feat_size;
+>>+    uint32_t attrb_flags;
+>>+    uint8_t get_feat_version;
+>>+    uint8_t set_feat_version;
+>>+    uint16_t set_feat_effects;
+>>+    uint8_t rsvd[18];
+>>+} QEMU_PACKED CXLSupportedFeatureEntry;
+>>+
+>>+enum CXL_SUPPORTED_FEATURES_LIST {
+>>+    CXL_FEATURE_MAX
+>>+};
+>>+
+>>+typedef struct CXLSetFeatureInHeader {
+>>+        QemuUUID uuid;
+>>+        uint32_t flags;
+>>+        uint16_t offset;
+>>+        uint8_t version;
+>>+        uint8_t rsvd[9];
+>>+} QEMU_PACKED QEMU_ALIGNED(16) CXLSetFeatureInHeader;
+>>+
+>>+#define CXL_SET_FEATURE_FLAG_DATA_TRANSFER_MASK   0x7
+>>+#define CXL_SET_FEATURE_FLAG_FULL_DATA_TRANSFER    0
+>>+#define CXL_SET_FEATURE_FLAG_INITIATE_DATA_TRANSFER    1
+>>+#define CXL_SET_FEATURE_FLAG_CONTINUE_DATA_TRANSFER    2
+>>+#define CXL_SET_FEATURE_FLAG_FINISH_DATA_TRANSFER    3
+>>+#define CXL_SET_FEATURE_FLAG_ABORT_DATA_TRANSFER    4
+>
+>Maybe enum here?
+Sure. I will change.
 
-diff --git a/hw/arm/fsl-imx25.c b/hw/arm/fsl-imx25.c
-index 24c43745903..9aabbf7f587 100644
---- a/hw/arm/fsl-imx25.c
-+++ b/hw/arm/fsl-imx25.c
-@@ -169,7 +169,8 @@ static void fsl_imx25_realize(DeviceState *dev, Error **errp)
-                                             epit_table[i].irq));
-     }
- 
--    object_property_set_uint(OBJECT(&s->fec), "phy-num", s->phy_num, &err);
-+    object_property_set_uint(OBJECT(&s->fec), "phy-num", s->phy_num,
-+                             &error_abort);
-     qdev_set_nic_properties(DEVICE(&s->fec), &nd_table[0]);
- 
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->fec), errp)) {
-diff --git a/hw/arm/fsl-imx6.c b/hw/arm/fsl-imx6.c
-index 4fa7f0b95ed..7dc42cbfe64 100644
---- a/hw/arm/fsl-imx6.c
-+++ b/hw/arm/fsl-imx6.c
-@@ -379,7 +379,8 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
-                                             spi_table[i].irq));
-     }
- 
--    object_property_set_uint(OBJECT(&s->eth), "phy-num", s->phy_num, &err);
-+    object_property_set_uint(OBJECT(&s->eth), "phy-num", s->phy_num,
-+                             &error_abort);
-     qdev_set_nic_properties(DEVICE(&s->eth), &nd_table[0]);
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->eth), errp)) {
-         return;
--- 
-2.34.1
+>
+>>+
+>>+/* CXL r3.0 section 8.2.9.6.1: Get Supported Features (Opcode 0500h)
+>>+*/ static CXLRetCode cmd_features_get_supported(const struct cxl_cmd
+>*cmd,
+>>+                                             uint8_t *payload_in,
+>>+                                             size_t len_in,
+>>+                                             uint8_t *payload_out,
+>>+                                             size_t *len_out,
+>>+                                             CXLCCI *cci) {
+>>+    struct {
+>>+        uint32_t count;
+>>+        uint16_t start_index;
+>>+        uint16_t reserved;
+>>+    } QEMU_PACKED QEMU_ALIGNED(16) * get_feats_in =3D (void
+>>+*)payload_in;
+>>+
+>>+    struct {
+>>+        CXLSupportedFeatureHeader hdr;
+>>+        CXLSupportedFeatureEntry feat_entries[];
+>>+    } QEMU_PACKED QEMU_ALIGNED(16) * supported_feats =3D (void
+>>+ *)payload_out;
+>
+>s/supported_feats/get_feats_out.
+Will change.
 
+>
+>>+    uint16_t index;
+>>+    uint16_t entry, req_entries;
+>>+    uint16_t feat_entries =3D 0;
+>>+
+>>+    if (get_feats_in->count < sizeof(CXLSupportedFeatureHeader) ||
+>>+        get_feats_in->start_index > CXL_FEATURE_MAX) {
+>
+>Ah I see you update this to '>=3D' in the next patch.
+>
+>>+        return CXL_MBOX_INVALID_INPUT;
+>>+    } else {
+>
+>This branch is not needed.
+Ok.
+
+>
+>>+        req_entries =3D (get_feats_in->count -
+>>+                        sizeof(CXLSupportedFeatureHeader)) /
+>>+                        sizeof(CXLSupportedFeatureEntry);
+>>+    }
+>>+    if (req_entries > CXL_FEATURE_MAX) {
+>>+        req_entries =3D CXL_FEATURE_MAX;
+>>+    }
+>
+>min()?
+Sure.
+
+>
+>>+    supported_feats->hdr.nsuppfeats_dev =3D CXL_FEATURE_MAX;
+>
+>Logically this should go below, when setting the feature entries.
+>
+>>+    index =3D get_feats_in->start_index;
+>>+
+>>+    entry =3D 0;
+>>+    while (entry < req_entries) {
+>>+        switch (index) {
+>>+        default:
+>>+            break;
+>>+        }
+>>+        index++;
+>>+        entry++;
+>>+    }
+>>+
+>>+    supported_feats->hdr.entries =3D feat_entries;
+>>+    *len_out =3D sizeof(CXLSupportedFeatureHeader) +
+>>+                      feat_entries * sizeof(CXLSupportedFeatureEntry);
+>>+
+>>+    return CXL_MBOX_SUCCESS;
+>>+}
+>>+
+>>+/* CXL r3.0 section 8.2.9.6.2: Get Feature (Opcode 0501h) */ static
+>>+CXLRetCode cmd_features_get_feature(const struct cxl_cmd *cmd,
+>>+                                           uint8_t *payload_in,
+>>+                                           size_t len_in,
+>>+                                           uint8_t *payload_out,
+>>+                                           size_t *len_out,
+>>+                                           CXLCCI *cci) {
+>>+    struct {
+>>+        QemuUUID uuid;
+>>+        uint16_t offset;
+>>+        uint16_t count;
+>>+        uint8_t selection;
+>>+    } QEMU_PACKED QEMU_ALIGNED(16) * get_feature;
+>>+    uint16_t bytes_to_copy =3D 0;
+>>+
+>>+    get_feature =3D (void *)payload_in;
+>>+
+>>+    if (get_feature->offset + get_feature->count > cci->payload_max) {
+>>+        return CXL_MBOX_INVALID_INPUT;
+>>+    }
+>
+>For now maybe return unsupported if a non-zero selection is passed?
+Sure.
+
+>
+>>+
+>>+    *len_out =3D bytes_to_copy;
+>>+
+>>+    return CXL_MBOX_SUCCESS;
+>>+}
+>>+
+>>+/* CXL r3.0 section 8.2.9.6.3: Set Feature (Opcode 0502h) */ static
+>>+CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
+>>+                                           uint8_t *payload_in,
+>>+                                           size_t len_in,
+>>+                                           uint8_t *payload_out,
+>>+                                           size_t *len_out,
+>>+                                           CXLCCI *cci) {
+>>+    return CXL_MBOX_SUCCESS;
+>>+}
+>>+
+>> /* 8.2.9.5.1.1 */
+>> static CXLRetCode cmd_identify_memory_device(const struct cxl_cmd *cmd,
+>>                                              uint8_t *payload_in, @@
+>>-1954,6 +2087,13 @@ static const struct cxl_cmd cxl_cmd_set[256][256] =3D=
+ {
+>>     [LOGS][GET_SUPPORTED] =3D { "LOGS_GET_SUPPORTED",
+>cmd_logs_get_supported,
+>>                               0, 0 },
+>>     [LOGS][GET_LOG] =3D { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
+>>+    [FEATURES][GET_SUPPORTED] =3D { "FEATURES_GET_SUPPORTED",
+>>+                                  cmd_features_get_supported, 0x8, 0 },
+>>+    [FEATURES][GET_FEATURE] =3D { "FEATURES_GET_FEATURE",
+>>+                                cmd_features_get_feature, 0x15, 0 },
+>>+    [FEATURES][SET_FEATURE] =3D { "FEATURES_SET_FEATURE",
+>>+                                cmd_features_set_feature,
+>>+                                ~0, CXL_MBOX_IMMEDIATE_CONFIG_CHANGE
+>>+ },
+>
+>I don't think we are actually doing anything with these, but in addition t=
+o the
+>config, set_feature would need IMMEDIATE_DATA_CHANGE,
+>IMMEDIATE_POLICY_CHANGE, IMMEDIATE_LOG_CHANGE and
+>SECURITY_STATE_CHANGE.
+Sure. I will change.
+
+>
+>>     [IDENTIFY][MEMORY_DEVICE] =3D { "IDENTIFY_MEMORY_DEVICE",
+>>         cmd_identify_memory_device, 0, 0 },
+>>     [CCLS][GET_PARTITION_INFO] =3D { "CCLS_GET_PARTITION_INFO",
+>>--
+>>2.34.1
+>>
+
+Thanks,
+Shiju
 
