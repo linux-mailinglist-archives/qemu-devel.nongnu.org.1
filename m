@@ -2,83 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E6427F349D
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 18:12:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFD87F34E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 18:24:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5UHl-0000y9-H3; Tue, 21 Nov 2023 12:11:41 -0500
+	id 1r5USq-0007jL-Ji; Tue, 21 Nov 2023 12:23:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r5UHj-0000xf-B2
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 12:11:39 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r5UHa-0003N1-CN
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 12:11:39 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-332cb136335so1301819f8f.0
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 09:11:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700586688; x=1701191488; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vkOhM8dapNX+/sH8SYvgJ0qeJJ0Vp7T02f+Oy7bahps=;
- b=G1mWglEPWZtv/KDAGgGovp2ryUlet2D/8t324oQKskihFqAPU6MXwuUuNYegz+NqVY
- 1oKG1y5s1UQB+LhwuvVwhgP+dYazUC9VQ4atNQa0HbBzAe8k453iRjUkwpHAW/zanAw7
- fLVXgswR6uVCMPk/JbPLiuDW7qHAi+fhGpZ4f20biVnmydqLgcGRwTlPsRNtEj7GjU0B
- Oo0wIsrCsegiH6cg06j8aKhHf7MBv0/bqOPABx5Igm6vGhXH7bdNgOyETBRR6fnYl4ZB
- HioLj8AV3uIM2iGLnNkZodeQoU440cESFXiJ0LdPnaSF+X0mPtfD4S7lf9VeDzPxCY9a
- dLcA==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r5USn-0007bU-5l
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 12:23:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1r5USl-0005v8-Ia
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 12:23:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700587382;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bokMPfUk8jl9OgaaGiKFlHq408lW43c1+ri6A/vsN8I=;
+ b=GIT0F1BhOlIZj6qk8wiPkDP1yt286XpSTD6Pjsx8UQjg1pYM/u+wKXZR5r5c9/6kCqu6qN
+ 4N6YVnnBSEf76uFJV07n4CHCEkjwy+XiAPsqbW7YXwzq4X4zz9OOHsI4u+BVQywaBYLK35
+ 2MdcAe7W7D7zaFpXyqirCGOf2lj7xPo=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-68-7lEpXrDnO3m_s0AGROcgZw-1; Tue, 21 Nov 2023 12:23:00 -0500
+X-MC-Unique: 7lEpXrDnO3m_s0AGROcgZw-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-77d5f56155bso48396085a.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 09:23:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700586688; x=1701191488;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=vkOhM8dapNX+/sH8SYvgJ0qeJJ0Vp7T02f+Oy7bahps=;
- b=rvPSjQEvdGSyuzjX0IOBpKKu1PLuqzICGq/mGTOZIcRFHoV5AiuHXVq2T7woKWMpya
- 7jc7AMprhIo2QfAd6IsZhczs3JPzkuqcXDoebzBAC2q28x0VPx3K40Hflx01iOmgkpbn
- D4CuxoVbQnX1A42sBLkPmAeAMB4Vxvd5ZaYBsUNyxIb6Wi5RoR5aB4hzS7mY5vZsC11T
- IgWweQ6ozznsWZbl9KftkkiNAMBCKU5hhK2Rm3azP5cOlyTR8iqsNSCPXspxY0OJPxBU
- 7A7+ceFmViBPQcA3G2EDhGlsquB2RagH3Xb14hVdAt1zwIpD+kv3OcoPEi3+0uGk0GHQ
- mrkg==
-X-Gm-Message-State: AOJu0YyxqcIKVUJn7Opt1+dqi5dlZoXAs9h8CmaJPNnApbKV6QjDtUzK
- VX4Z7spm1xyjgMd9/ipOE07yk8UGZvHTP/ibkXrhmQ==
-X-Google-Smtp-Source: AGHT+IGnbzkxrnQ4vJpUZxexTGucP09lmWUtd9p8FeIwoOs1/P1HHCivEIi7CIRYY3huChSVTEGnjA==
-X-Received: by 2002:a5d:59aa:0:b0:332:c9d8:c5f8 with SMTP id
- p10-20020a5d59aa000000b00332c9d8c5f8mr5292154wrr.9.1700586688478; 
- Tue, 21 Nov 2023 09:11:28 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- dd11-20020a0560001e8b00b0032db8f7f378sm14920839wrb.71.2023.11.21.09.11.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Nov 2023 09:11:28 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id BF2935F74B;
- Tue, 21 Nov 2023 17:11:27 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>
-Subject: Re: QEMU Summit Minutes 2023
-In-Reply-To: <CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com>
- (Peter Maydell's message of "Thu, 13 Jul 2023 14:21:15 +0100")
-References: <CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com>
-User-Agent: mu4e 1.11.25; emacs 29.1
-Date: Tue, 21 Nov 2023 17:11:27 +0000
-Message-ID: <87edgjf2v4.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1700587380; x=1701192180;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bokMPfUk8jl9OgaaGiKFlHq408lW43c1+ri6A/vsN8I=;
+ b=LmBToPp3hU9GV/0NGNHQ4bocq3NYs8oHVCRr9fLa6NeB9ESvViSqPc+4wNQxiLZxjn
+ SkSbb5dXWZdY0Nf2piRQlp1jvabBmG0uuMU+2o3sUs9dSTyiU9w82ol0MNN3HOh3llAw
+ WkmCOz4RecEahrB9p+IQDrJV7M1VA6ERUUgaTFCeDErRf0mTHWoOvVFZ5J8pc3pWMPyi
+ sx3/0VIU0S+WPJ9YCt28MGqkLmvsRGHfMXuj0ux39VESKpu7iGF1XNW8PB69HstnKEHc
+ 2mkYJumF2eKO8qZtTuDYh+Hx9YXe4NqRCIFvEX2gc3hitG+l0C+UpX/eOsjtYeXXwGAy
+ zI/A==
+X-Gm-Message-State: AOJu0Yz73B4UNecrSsYgKVj0e3slAiE12SrceXGoaj6aOCrljzsbT6Ii
+ mYUovxuJyng7CWGcz7NZ+7pDlFbVjR7doRj59sx7iaEZuU2ufvcTqkYo6MI8urMrSFvicSod3Sx
+ F5lnFt1RpJUQExAc=
+X-Received: by 2002:a37:de0d:0:b0:775:446b:85fa with SMTP id
+ h13-20020a37de0d000000b00775446b85famr10342869qkj.3.1700587380300; 
+ Tue, 21 Nov 2023 09:23:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE3MlLKHQX8SpXj8QQakrKKnSaqfLLG0mqRMrYlrfrKE7el0M9KkwcYWYS9Ym66hp+Tpvf1zQ==
+X-Received: by 2002:a37:de0d:0:b0:775:446b:85fa with SMTP id
+ h13-20020a37de0d000000b00775446b85famr10342858qkj.3.1700587380046; 
+ Tue, 21 Nov 2023 09:23:00 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ x10-20020ae9f80a000000b00767d8e12ce3sm3772523qkh.49.2023.11.21.09.22.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Nov 2023 09:22:59 -0800 (PST)
+Message-ID: <182862f2-d339-4cba-aacf-bab06868272c@redhat.com>
+Date: Tue, 21 Nov 2023 18:22:57 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 00/27] vfio: Adopt iommufd
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com
+References: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,51 +103,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+Hello Zhenzhong
 
-> QEMU Summit Minutes 2023
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> As usual, we held a QEMU Summit meeting at KVM Forum.  This is an
-> invite-only meeting for the most active maintainers and submaintainers
-> in the project, and we discuss various project-wide issues, usually
-> process stuff. We then post the minutes of the meeting to the list as
-> a jumping off point for wider discussion and for those who weren't
-> able to attend.
->
-<snip>
->
-> Topic 2: Are we happy with the email workflow?
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> This was a topic to see if there was any consensus among maintainers
-> about the long-term acceptability of sticking with email for patch
-> submission and review -- in five years' time, if we're still doing it
-> the same way, how would we feel about it?
->
-> One area where we did get consensus was that now that we're doing CI
-> on gitlab we can change pull requests from maintainers from via-email
-> to gitlab merge requests. This would hopefully mean that instead of
-> the release-manager having to tell gitlab to do a merge and then
-> reporting back the results of any CI failures, the maintainer
-> could directly see the CI results and deal with fixing up failures
-> and resubmitting without involving the release manager. (This
-> may have the disbenefit that there isn't a single person any
-> more who looks at all the CI results and gets a sense of whether
-> particular test cases have pre-existing intermittent failures.)
+On 11/21/23 09:43, Zhenzhong Duan wrote:
+> Hi,
+> 
+> Thanks all for giving guides and comments on previous series, this is
+> the remaining part of the iommufd support.
+> 
+> Besides suggested changes in v6, I'd like to highlight two changes
+> for final review:
+> 1. Instantiate can_be_deleted callback to fix race where iommufd object
+>     can be deleted before vfio device
+> 2. After careful re-thinking, I'd like to follow Nicolin's suggestion in v5,
+>     remove is_ioas check which indeed looks heavy just for tracepoint.
+>     In fact we can get corresponding info by looking over trace context.
+> 
+> PATCH 1: Introduce iommufd object
+> PATCH 2-9: add IOMMUFD container and cdev support
+> PATCH 10-17: fd passing for cdev and linking to IOMMUFD
+> PATCH 18: make VFIOContainerBase parameter const
+> PATCH 19-21: Compile out for IOMMUFD for arm, s390x and x86
+> PATCH 22-26: vfio device init code cleanup
+> PATCH 27: add iommufd doc
+> 
+> 
+> We have done wide test with different combinations, e.g:
+> - PCI device were tested
+> - FD passing and hot reset with some trick.
+> - device hotplug test with legacy and iommufd backends
+> - with or without vIOMMU for legacy and iommufd backends
+> - divices linked to different iommufds
+> - VFIO migration with a E800 net card(no dirty sync support) passthrough
+> - platform, ccw and ap were only compile-tested due to environment limit
+> - test mdev pass through with mtty and mix with real device and different BE
+> - test iommufd object hotplug/unplug and mix with vfio device plug/unplug
+> 
+> Given some iommufd kernel limitations, the iommufd backend is
+> not yet fully on par with the legacy backend w.r.t. features like:
+> - p2p mappings (you will see related error traces)
+> - dirty page sync
+> - and etc.
+> 
+> 
+> qemu code: https://github.com/yiliu1765/qemu/commits/zhenzhong/iommufd_cdev_v7
+> Based on vfio-next, commit id: c487fb8a50
 
-If we are keen to start processing merge requests for the 9.0 release we
-really should consider how it is going to work before we open up the
-taps post 8.2-final going out.
+The series is pushed on top of vfio-next in the vfio-8.2 tree :
 
-Does anyone want to have a go at writing an updated process for
-docs/devel/submitting-a-pull-request.rst (or I guess merge-request) so
-we can discuss it and be ready early in the cycle? Ideally someone who
-already has experience with the workflow with other gitlab hosted
-projects.
+   https://github.com/legoater/qemu/commits/vfio-8.2
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+with a little extra to deal with a PPC build failure.
+
+Thanks,
+
+C.
+
+
 
