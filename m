@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB6537F2DCF
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 13:56:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F1C7F2DD0
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 13:56:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5QHY-0006e4-8G; Tue, 21 Nov 2023 07:55:12 -0500
+	id 1r5QHg-0006kF-4K; Tue, 21 Nov 2023 07:55:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r5QHV-0006dm-3T
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 07:55:09 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1r5QHd-0006ja-L9
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 07:55:17 -0500
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r5QHL-0004Bu-Jf
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 07:55:07 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1cc3542e328so40521945ad.1
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 04:54:59 -0800 (PST)
+ id 1r5QHb-0004PS-9y
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 07:55:17 -0500
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-28398d6c9f3so3671038a91.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 04:55:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1700571298; x=1701176098; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1700571314; x=1701176114; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=meUBYdOP22fl+Zx1rl9mhG9Zehql+ZMDsSHp/CND19Q=;
- b=blQkAu2zCZcVEde7+yxrrO6+zh5ST5f6ONfN42RL42WNMjBEeIi2yyUGpk503vm6wF
- gnsBYVUvQumQqDRZDAkl5mRpoJ+Xq2x/Y6xda3TSha/Wl/OCEOuMiITCoGbHT2/chD7o
- 69p8hlQRRlAOo3soHv5LBZCtENH0MiKVVR60J3KyW278c+t6nZjaWimZ7nUje+fyH3gQ
- K5WxMpl9csQ0gvaAUn/G6RTBj/gz13FX+Ms1M5Kj9YafMdcx+aw+8z4DLZoWblpDtJYc
- bnUxRzx6VwGWEVl7/7N9LLBv9LhG0HpvB2tCwE9LAUVZl2jfT2vF7qSJJd6nXZQ0ZH+6
- veLA==
+ bh=a+VFY9n6L1rNfogGRXqT4uK3iW80vJ4m0prIcuKT1uw=;
+ b=AknBubc0PFMM6o8Be+JGHPsoNq8LMp82nN/Z/08BJbP8Cxi0E9AF7MB61DtMlotySI
+ g4pwL69/IcJye1PMKYYbdxbp33+vyXDGW8p3c3L5zA0SADZc/YRtCSg0N55PgZ6l/6OP
+ PkDjtpiZWadDs2qvk+QHdqBSvOv+je5IC1TLanzm8SE0xKybhyHOJJ5ecjaapU8DpTMX
+ qIprb2yKDsj8kqzn1fOErtsVp6v6gROnVN+Dwr0JAfmMBk2CeR0OLdqeiX9o+/QMF+Hj
+ RJtT+5HFAlBAXg99MelFBiZ79A8jL1PNuT2Cb2Eu/wk+1wo6hJ6Al/BQGiQO7CRkfXcP
+ ms5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700571298; x=1701176098;
+ d=1e100.net; s=20230601; t=1700571314; x=1701176114;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=meUBYdOP22fl+Zx1rl9mhG9Zehql+ZMDsSHp/CND19Q=;
- b=r0Eg9zaDKSlM/Fvnn+Pxb2S7MFF34zwcDlEen2luAuYg7j2MuUakx/9aJohcUSkPxC
- YplA8NWlr5UX8ZwlEYRTHkhqsBGRG/vf8CWEsA/1bSaRHsPtXRpDWME87rLOfyqutI+k
- T0EMLrUSO0acMrWU4+ksKAiTS0eIW1/+LHmXzNGt6RFVbnmbF6SCzLGI/M8ab+/J5jCr
- 4CgkBN6WN2KnfoDj2z9Xq8M0Mi+t99pemmOKkR+W/5tXV0bS2sWY1tRL2+q6aG9OzgSN
- h7z3Hr0XUFOlHton0Ne/n+/KXkh7GrGD6mxk8Mw8be0EEaDjxWUWRJN4t6F6c0lJLpah
- q2Ag==
-X-Gm-Message-State: AOJu0YzDOpVBN5r/rMW960hw7cnLWO8l3B9pknDbq7lNE83ExSyG0W82
- /dWRcg+senoKDH3wS7GeyhMEOQ==
-X-Google-Smtp-Source: AGHT+IHTDRgiE3b3A3y1/0qsrRtpJw/TGMURgElGl7YDAkdgzX8IBp7Yu9jN1rk8dits6ldpl/GpWA==
-X-Received: by 2002:a17:90b:164c:b0:285:24bb:4524 with SMTP id
- il12-20020a17090b164c00b0028524bb4524mr5120334pjb.24.1700571297967; 
- Tue, 21 Nov 2023 04:54:57 -0800 (PST)
+ bh=a+VFY9n6L1rNfogGRXqT4uK3iW80vJ4m0prIcuKT1uw=;
+ b=bUjyO6/4YuQKTwr1a/ZC1P6D4tqwZVMKC1bnzgUqxGw0QEpAZ9WqowLLJ+waA6XWu0
+ p1Tx5LDwP1IaX5NSHRvkn2/jVWvIcGuVia9RxuqHFGSc+WnWykp/AdlJ4V8c6KQJceKx
+ 966OcbeasUXfXBptZocP7L3/m+VfnShFacfyTnZGhlXUORim8YxqOGJirRzCd05HvYbe
+ 3bBjETsT4WKiDrhOZqLGGKOXZFf10bjodxB8jU+K4Zq63Mv2dpJoRvT7kLJlowKPA8RZ
+ SAOB+uGCBT0V3XgUgxSagsuOrPFyHZ6ttJTnip7B/QU9lNMNVT728TJyG1SsUyjstYue
+ Dfng==
+X-Gm-Message-State: AOJu0YzqJYR9EKVl0sDjbHJyR+rfa/B8EMF0qIGIAaZHzcYU8jS+NhF6
+ d96kr8VrUwgEIc93hrGP+/VteA==
+X-Google-Smtp-Source: AGHT+IF1NIoZfqWb3lYNuIVSRnq/LdfZWuSHDHgFgvL7CMVA5YH3wJv91iXO/SpeSfViXgV+t5ixwQ==
+X-Received: by 2002:a17:90b:3a86:b0:27c:fc2a:a178 with SMTP id
+ om6-20020a17090b3a8600b0027cfc2aa178mr12118205pjb.9.1700571313872; 
+ Tue, 21 Nov 2023 04:55:13 -0800 (PST)
 Received: from [192.168.68.109] ([152.250.131.119])
  by smtp.gmail.com with ESMTPSA id
- x10-20020a17090aa38a00b0028328057c67sm7027577pjp.45.2023.11.21.04.54.55
+ x10-20020a17090aa38a00b0028328057c67sm7027577pjp.45.2023.11.21.04.55.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Nov 2023 04:54:57 -0800 (PST)
-Message-ID: <8ec16fea-c8af-47d9-afe4-20a6f3f74a8e@ventanamicro.com>
-Date: Tue, 21 Nov 2023 09:54:53 -0300
+ Tue, 21 Nov 2023 04:55:13 -0800 (PST)
+Message-ID: <96f2695c-2950-45db-ae21-44b0d5558ee2@ventanamicro.com>
+Date: Tue, 21 Nov 2023 09:55:11 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] target/riscv/cpu_helper.c: Invalid exception on
- MMU translation stage
+Subject: Re: [PATCH v2 2/2] target/riscv/cpu_helper.c: Fix mxr bit behavior
 Content-Language: en-US
 To: Ivan Klokov <ivan.klokov@syntacore.com>, qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
  bin.meng@windriver.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com
 References: <20231121071757.7178-1-ivan.klokov@syntacore.com>
- <20231121071757.7178-2-ivan.klokov@syntacore.com>
+ <20231121071757.7178-3-ivan.klokov@syntacore.com>
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231121071757.7178-2-ivan.klokov@syntacore.com>
+In-Reply-To: <20231121071757.7178-3-ivan.klokov@syntacore.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,79 +98,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 11/21/23 04:17, Ivan Klokov wrote:
-> According to RISCV privileged spec sect. 5.3.2 Virtual Address Translation Process
-> access-fault exceptions may raise only after PMA/PMP check. Current implementation
-> generates an access-fault for mbare mode even if there were no PMA/PMP errors.
-> This patch removes the erroneous MMU mode check and generates an access-fault
-> exception based on the pmp_violation flag only.
+> According to RISCV Specification sect 9.5 on two stage translation when
+> V=1 the vsstatus(mstatus in QEMU's terms) field MXR, which makes
+> execute-only pages readable, only overrides VS-stage page protection.
+> Setting MXR at HS-level(mstatus_hs), however, overrides both VS-stage
+> and G-stage execute-only permissions.
 > 
-> Fixes: 1448689c7b ("target/riscv: Allow specifying MMU stage")
+> The hypervisor extension changes the behavior of MXR\MPV\MPRV bits.
+> Due to RISCV Specification sect. 9.4.1 when MPRV=1, explicit memory
+> accesses are translated and protected, and endianness is applied, as
+> though the current virtualization mode were set to MPV and the current
+> nominal privilege mode were set to MPP. vsstatus.MXR makes readable
+> those pages marked executable at the VS translation stage.
+> 
+> Fixes: 36a18664ba ("target/riscv: Implement second stage MMU")
 > 
 > Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
 > ---
 
+
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
->   target/riscv/cpu_helper.c | 30 +++++++-----------------------
->   1 file changed, 7 insertions(+), 23 deletions(-)
+>   target/riscv/cpu_helper.c | 24 ++++++++++++++++++++----
+>   1 file changed, 20 insertions(+), 4 deletions(-)
 > 
 > diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> index b7af69de53..9ff0952e46 100644
+> index 9ff0952e46..e7e23b34f4 100644
 > --- a/target/riscv/cpu_helper.c
 > +++ b/target/riscv/cpu_helper.c
-> @@ -1143,47 +1143,31 @@ static void raise_mmu_exception(CPURISCVState *env, target_ulong address,
->                                   bool two_stage_indirect)
->   {
->       CPUState *cs = env_cpu(env);
-> -    int page_fault_exceptions, vm;
-> -    uint64_t stap_mode;
-> -
-> -    if (riscv_cpu_mxl(env) == MXL_RV32) {
-> -        stap_mode = SATP32_MODE;
-> -    } else {
-> -        stap_mode = SATP64_MODE;
-> -    }
-> -
-> -    if (first_stage) {
-> -        vm = get_field(env->satp, stap_mode);
-> -    } else {
-> -        vm = get_field(env->hgatp, stap_mode);
-> -    }
-> -
-> -    page_fault_exceptions = vm != VM_1_10_MBARE && !pmp_violation;
+> @@ -1032,13 +1032,29 @@ restart:
+>           prot |= PAGE_WRITE;
+>       }
+>       if (pte & PTE_X) {
+> -        bool mxr;
+> +        bool mxr = false;
 >   
->       switch (access_type) {
->       case MMU_INST_FETCH:
->           if (env->virt_enabled && !first_stage) {
->               cs->exception_index = RISCV_EXCP_INST_GUEST_PAGE_FAULT;
->           } else {
-> -            cs->exception_index = page_fault_exceptions ?
-> -                RISCV_EXCP_INST_PAGE_FAULT : RISCV_EXCP_INST_ACCESS_FAULT;
-> +            cs->exception_index = pmp_violation ?
-> +                RISCV_EXCP_INST_ACCESS_FAULT : RISCV_EXCP_INST_PAGE_FAULT;
+> -        if (first_stage == true) {
+> +        /*
+> +         * Use mstatus for first stage or for the second stage without
+> +         * virt_enabled (MPRV+MPV)
+> +         */
+> +        if (first_stage || !env->virt_enabled) {
+>               mxr = get_field(env->mstatus, MSTATUS_MXR);
+> -        } else {
+> -            mxr = get_field(env->vsstatus, MSTATUS_MXR);
 >           }
->           break;
->       case MMU_DATA_LOAD:
->           if (two_stage && !first_stage) {
->               cs->exception_index = RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT;
->           } else {
-> -            cs->exception_index = page_fault_exceptions ?
-> -                RISCV_EXCP_LOAD_PAGE_FAULT : RISCV_EXCP_LOAD_ACCESS_FAULT;
-> +            cs->exception_index = pmp_violation ?
-> +                RISCV_EXCP_LOAD_ACCESS_FAULT : RISCV_EXCP_LOAD_PAGE_FAULT;
+> +
+> +        /* MPRV+MPV case, check VSSTATUS */
+> +        if (first_stage && two_stage && !env->virt_enabled) {
+> +            mxr |= get_field(env->vsstatus, MSTATUS_MXR);
+> +        }
+> +
+> +        /*
+> +         * Setting MXR at HS-level overrides both VS-stage and G-stage
+> +         * execute-only permissions
+> +         */
+> +        if (env->virt_enabled) {
+> +            mxr |= get_field(env->mstatus_hs, MSTATUS_MXR);
+> +        }
+> +
+>           if (mxr) {
+>               prot |= PAGE_READ;
 >           }
->           break;
->       case MMU_DATA_STORE:
->           if (two_stage && !first_stage) {
->               cs->exception_index = RISCV_EXCP_STORE_GUEST_AMO_ACCESS_FAULT;
->           } else {
-> -            cs->exception_index = page_fault_exceptions ?
-> -                RISCV_EXCP_STORE_PAGE_FAULT :
-> -                RISCV_EXCP_STORE_AMO_ACCESS_FAULT;
-> +            cs->exception_index = pmp_violation ?
-> +                RISCV_EXCP_STORE_AMO_ACCESS_FAULT :
-> +                RISCV_EXCP_STORE_PAGE_FAULT;
->           }
->           break;
->       default:
 
