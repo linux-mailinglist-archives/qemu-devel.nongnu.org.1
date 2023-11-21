@@ -2,87 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67AE27F2229
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 01:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 933587F222A
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 01:35:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Ehi-0003eC-JH; Mon, 20 Nov 2023 19:33:26 -0500
+	id 1r5EjB-0004I7-9J; Mon, 20 Nov 2023 19:34:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1r5Ehg-0003dX-68
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 19:33:24 -0500
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1r5Ehd-0003ET-UH
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 19:33:23 -0500
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-2851b271e51so1332476a91.1
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 16:33:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1700526796; x=1701131596; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=YAWdck5bBOyxtOdRgfermpV3oPQUbX3pTqTi1uL2uwk=;
- b=Y/3UKS1jmBaZNChjROal+O/C2WDC1bsNDn3n0j+tjKxQZHR0fy3PUIhTi8hLSTKQih
- oEqdIkucJNq3SDowg0kUuZWt6MpezyCdrbnX8h9AcvL7TVMsO14MNGM/zhUsUx+jXECq
- oX+oqsoOpNS8m2CMVQHIHkFEes0f4gaWhO/lnLBEinT/mehvWuMJg9i2UAxU2R1tG98q
- w8ztCs9HMstm5QlTdYnzBsPtSlx9jDeiaoOHYe3h61YZwL/ATXVLLDxk+Nd2SivPW60V
- Z54xQymiv+rlX190jugYFl1reEgAlcrVs9io/BH4hL8/nSotGtxaby4D4fpoF3R68d9+
- zxhQ==
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r5Ej6-0004Fl-TF
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 19:34:52 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r5Ej5-0003PZ-5l
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 19:34:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700526889;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zwQV9ruwyGeb4CQaS8eyhz532/e3aSmzenzWeviWFHU=;
+ b=MFMMDIstwtmjYFQmc6VTSNag8fNh3eiGuEGZZA8Frb0iiGH+B8hFHhbhE+B2Uw/7c6ZkQr
+ D6EIuUyCsK2fcMfWVkuhxuiQcoNugn3p4lV2aYzjDeD47PvJEcO3jzW2JJH3BLWVR+B0EG
+ rgWETgKxj9ColyvdBt4q+bdEPsBcjpw=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-497-HJqgkCLIP8uOf69TesobbA-1; Mon, 20 Nov 2023 19:34:46 -0500
+X-MC-Unique: HJqgkCLIP8uOf69TesobbA-1
+Received: by mail-pl1-f197.google.com with SMTP id
+ d9443c01a7336-1cc23f2226fso58691395ad.0
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 16:34:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700526796; x=1701131596;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1700526885; x=1701131685;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YAWdck5bBOyxtOdRgfermpV3oPQUbX3pTqTi1uL2uwk=;
- b=JOYUf3etrLaOFjZ9Fbm3swFIFiyzmadGnBGdQaS5u1YCuCMzyU988JR7vN6fBsjgkW
- IjWRMBxlqCf6fLOGWDwK7F+cFqAAwKv/DGIgoEy/4O7L4/z6X4bWo5UHu9n/HKjyhU3d
- T18LtAgYEiqY8nxoNdVOMiRZjb4vhO7uwy8YWTIuJMOiFc3rsGIE5USXul16lhOpP7gV
- lZPBEfycrIOwkHYSXWO2bHxpbCkLie6gnm9VIUYq2X5VZHM3ano2hn3qfjtTop/vp0GA
- agsxYqRtyIkxMfmUhvCK9l3E6ImEziyRMP2LUnJluH7/0kMz8hc5OtNFSz0n3s8WE6wZ
- Fyfg==
-X-Gm-Message-State: AOJu0Yx0cC3cxF74CFWu4QKnuOxh8uwjO3PKHN24d5q21sYea/zWsukm
- fM2YrFAGi8UiwClYQklV1kPq3g==
-X-Google-Smtp-Source: AGHT+IGrcdIl9KcC0Ha7UHJztKoBy3ub80ERmHKtvshRjS48uT8Ik+f1W3bMPW/OdxyepVrjeNJIUg==
-X-Received: by 2002:a17:90a:fa03:b0:283:a384:5732 with SMTP id
- cm3-20020a17090afa0300b00283a3845732mr1659928pjb.9.1700526795962; 
- Mon, 20 Nov 2023 16:33:15 -0800 (PST)
-Received: from [100.80.223.36] ([203.208.167.146])
+ bh=zwQV9ruwyGeb4CQaS8eyhz532/e3aSmzenzWeviWFHU=;
+ b=PEiZntGlhRfHp0yYNo9yjf/wvMN77DJmiYu4gwt/4E4ProGYmsD7Y7wSSBa2XP9DN2
+ RwqTKk1vfZ6YViEH72FOj4cOVh/HEKX+HKUxiqmmeFVKH5bJQYPgEREEWIlrJd6I6Co8
+ rpZ0T/lyIrGppDoIjQmxhkLYNNGzBTrkuclVRtdEvt00yfoyDUfdgYmc8UCJLJ8/PAhS
+ Z/NrQiA+zPNPMejQyKMHtKOym/XGJW4enfUF23g2nZkyaSiHkZrcmipNQ+tuRBOpyqgc
+ KDCNpM3yF8J0ltps2B1wk794WhmrmjAAeTdV1LI2S2JekObVGra7rh56sxoH6fmDIywJ
+ BooA==
+X-Gm-Message-State: AOJu0YydGdvOJNG27ZE3da5OuUn9D2a92cM0o1i65bkllXk9Wr+AvEtV
+ 4TcMJVeC0IeqLpVOP3uwipXRLTRMHXVQesg0G+RpsZxGbsfsYb608B/Gu/LEW0HA7ai9nmrlzKk
+ PKuOwa1yLhXBFPBA=
+X-Received: by 2002:a17:902:e748:b0:1ca:8541:e1ea with SMTP id
+ p8-20020a170902e74800b001ca8541e1eamr10829614plf.0.1700526885115; 
+ Mon, 20 Nov 2023 16:34:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFxYyEpr7i+kut7a98LmWqK7w00neo1ezzJFYv+fmFSVtLkTrmq/mNh8/wzvr7WOyLJUN06AA==
+X-Received: by 2002:a17:902:e748:b0:1ca:8541:e1ea with SMTP id
+ p8-20020a170902e74800b001ca8541e1eamr10829587plf.0.1700526884726; 
+ Mon, 20 Nov 2023 16:34:44 -0800 (PST)
+Received: from ?IPV6:2001:8003:e5b0:9f00:b890:3e54:96bb:2a15?
+ ([2001:8003:e5b0:9f00:b890:3e54:96bb:2a15])
  by smtp.gmail.com with ESMTPSA id
- c5-20020a170902c1c500b001c32fd9e412sm6695967plc.58.2023.11.20.16.33.12
+ u4-20020a17090282c400b001cc615e6850sm6647120plz.90.2023.11.20.16.34.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Nov 2023 16:33:15 -0800 (PST)
-Message-ID: <c2d120f1-c629-4862-99a1-0577946e09fa@bytedance.com>
-Date: Tue, 21 Nov 2023 08:28:12 +0800
+ Mon, 20 Nov 2023 16:34:44 -0800 (PST)
+Message-ID: <5ce6f318-3fbb-41fe-9761-fb460c607de1@redhat.com>
+Date: Tue, 21 Nov 2023 10:34:34 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-8.2 v2] backends/cryptodev: Do not ignore
- throttle/backends Errors
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-stable@nongnu.org
-References: <20231120150418.93443-1-philmd@linaro.org>
+Subject: Re: [PATCH v6 0/8] Unified CPU type check
 Content-Language: en-US
-From: zhenwei pi <pizhenwei@bytedance.com>
-In-Reply-To: <20231120150418.93443-1-philmd@linaro.org>
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, imammedo@redhat.com, b.galvani@gmail.com,
+ strahinja.p.jankovic@gmail.com, kfting@nuvoton.com, wuhaotsh@google.com,
+ nieklinnenbank@gmail.com, rad@semihalf.com, quic_llindhol@quicinc.com,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, vijai@behindbytes.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
+References: <20231120002724.986326-1-gshan@redhat.com>
+ <8a386258-1a5b-4c69-972e-49f9d1e59f51@linaro.org>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <8a386258-1a5b-4c69-972e-49f9d1e59f51@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=pizhenwei@bytedance.com; helo=mail-pj1-x102f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,58 +108,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Looks good to me. Thanks!
-
-Reviewed-by: zhenwei pi <pizhenwei@bytedance.com>
-
-On 11/20/23 23:04, Philippe Mathieu-Daudé wrote:
-> Both cryptodev_backend_set_throttle() and CryptoDevBackendClass::init()
-> can set their Error** argument. Do not ignore them, return early on
-> failure. Use the ERRP_GUARD() macro as suggested in commit ae7c80a7bd
-> ("error: New macro ERRP_GUARD()").
+On 11/21/23 05:42, Marcin Juszkiewicz wrote:
+> W dniu 20.11.2023 o 01:27, Gavin Shan pisze:
+>> Testing
+>> =======
+>>
+>> With the following command lines, the output messages are varied before
+>> and after the series is applied.
+>>
+>>    ./build/qemu-system-aarch64            \
+>>    -accel tcg -machine virt,gic-version=3 \
+>>    -cpu cortex-a8 -smp maxcpus=2,cpus=1
+>>
+>> Before the series is applied:
+>>
+>>    qemu-system-aarch64: mach-virt: CPU type cortex-a8-arm-cpu not supported
+>>
+>> After the series is applied:
+>>
+>>    qemu-system-aarch64: Invalid CPU type: cortex-a8-arm-cpu
+>>    The valid models are: cortex-a7, cortex-a15, cortex-a35, cortex-a55,
+>>                          cortex-a72, cortex-a76, a64fx, neoverse-n1,
+>>                          neoverse-v1, cortex-a53, cortex-a57, max
 > 
-> Cc: qemu-stable@nongnu.org
-> Fixes: e7a775fd9f ("cryptodev: Account statistics")
-> Fixes: 2580b452ff ("cryptodev: support QoS")
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   backends/cryptodev.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
 > 
-> diff --git a/backends/cryptodev.c b/backends/cryptodev.c
-> index e5006bd215..fff89fd62a 100644
-> --- a/backends/cryptodev.c
-> +++ b/backends/cryptodev.c
-> @@ -398,6 +398,7 @@ static void cryptodev_backend_set_ops(Object *obj, Visitor *v,
->   static void
->   cryptodev_backend_complete(UserCreatable *uc, Error **errp)
->   {
-> +    ERRP_GUARD();
->       CryptoDevBackend *backend = CRYPTODEV_BACKEND(uc);
->       CryptoDevBackendClass *bc = CRYPTODEV_BACKEND_GET_CLASS(uc);
->       uint32_t services;
-> @@ -406,11 +407,20 @@ cryptodev_backend_complete(UserCreatable *uc, Error **errp)
->       QTAILQ_INIT(&backend->opinfos);
->       value = backend->tc.buckets[THROTTLE_OPS_TOTAL].avg;
->       cryptodev_backend_set_throttle(backend, THROTTLE_OPS_TOTAL, value, errp);
-> +    if (*errp) {
-> +        return;
-> +    }
->       value = backend->tc.buckets[THROTTLE_BPS_TOTAL].avg;
->       cryptodev_backend_set_throttle(backend, THROTTLE_BPS_TOTAL, value, errp);
-> +    if (*errp) {
-> +        return;
-> +    }
->   
->       if (bc->init) {
->           bc->init(backend, errp);
-> +        if (*errp) {
-> +            return;
-> +        }
->       }
->   
->       services = backend->conf.crypto_services;
+> $ ./build/qemu-system-aarch64 -M sbsa-ref -cpu cortex-a53
+> qemu-system-aarch64: Invalid CPU type: cortex-a53
+> The valid types are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1, neoverse-n2, max
+> 
+> $ ./build/qemu-system-aarch64 -M sbsa-ref -cpu sa1100
+> Unexpected error in object_property_find_err() at ../qom/object.c:1329:
+> qemu-system-aarch64: Property 'sa1100-arm-cpu.secure-memory' not found
+> Aborted (core dumped)
+> 
+> 
+> Similar with 'host' or 'pxa250' while QEMU/master does:
+> 
+> $ qemu-system-aarch64 -M sbsa-ref -cpu sa1100
+> qemu-system-aarch64: sbsa-ref: CPU type sa1100-arm-cpu not supported
+> 
 
--- 
-zhenwei pi
+Good catch! I didn't realize that the syntax of error_propagate() has been changed
+due to ERRP_GUARD() since ae7c80a7bd7 ("error: New macro ERRP_GUARD()"). Prior to
+the commit, QEMU process is terminated immediately by error_propagate(). After the
+commit, the termination is delayed until machine_run_board_init() returns. For the
+later case, mc->init() is called and causing coredump on 'sbsa-ref' board.
+
+A 'return' is needed after error_propagate() in machine_run_board_init() so that
+mc->init() won't be called.
+
+void machine_run_board_init(MachineState *machine, const char *mem_path, Error **errp)
+{
+     ERRP_GUARD();
+     MachineClass *machine_class = MACHINE_GET_CLASS(machine);
+     Error *local_err = NULL;
+     :
+     /* Check if the CPU type is supported */
+     is_cpu_type_supported(machine, &local_err);
+     if (local_err) {
+         error_propagate(errp, local_err);
+         return;                               <<<<< A 'return' is needed here >>>>>
+     }
+     :
+     accel_init_interfaces(ACCEL_GET_CLASS(machine->accelerator));
+     machine_class->init(machine);
+     phase_advance(PHASE_MACHINE_INITIALIZED);
+}
+
+With the 'return' added, everything looks good. I would let v6 floating for another 2-3
+days before posting v7 to fix the issue.
+
+[gshan@gshan q]$ ./build/qemu-system-aarch64 -M virt -cpu cortex-a8
+qemu-system-aarch64: Invalid CPU type: cortex-a8
+The valid types are: cortex-a7, cortex-a15, cortex-a35, cortex-a55, cortex-a72, cortex-a76, cortex-a710, a64fx, neoverse-n1, neoverse-v1, neoverse-n2, cortex-a53, cortex-a57, max
+
+[gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu sa1100
+qemu-system-aarch64: Invalid CPU type: sa1100
+The valid types are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1, neoverse-n2, max
+
+[gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu cortex-m0
+qemu-system-aarch64: Invalid CPU type: cortex-m0
+The valid types are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1, neoverse-n2, max
+
+[gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu pxa250
+qemu-system-aarch64: Invalid CPU type: pxa250
+The valid types are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1, neoverse-n2, max
+
+[gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu host
+qemu-system-aarch64: unable to find CPU model 'host'
+
+Thanks,
+Gavin
+
+
+
 
