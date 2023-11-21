@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DDF7F2A4D
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 11:25:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E87E37F2A4E
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 11:25:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Nw7-0004MI-GN; Tue, 21 Nov 2023 05:24:55 -0500
+	id 1r5Nw8-0004Mo-2N; Tue, 21 Nov 2023 05:24:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r5Nw2-0004Jk-UR
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:24:50 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1r5Nw4-0004KQ-69
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:24:52 -0500
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r5Nw0-0007FJ-FP
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:24:50 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4083dbc43cfso20301475e9.3
+ id 1r5Nw1-0007FI-1Z
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:24:51 -0500
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2c5056059e0so72475951fa.3
  for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 02:24:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1700562287; x=1701167087; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=fwjCpEg7CxgIC61BgitQvtOo2gBc/4p1x2tjHLKtQjw=;
- b=CmYlSFp++lMA0x15vbqc9mWYeKDmgQs+BgJwf+XhTA3g5D3rrCgcAk8SHTbpOxFR7S
- eYwABQLGyha6vSVLz61kVhYI3faIudkvYLSrISJ95wSB+7AUThgaYQNQs9GAmxB4hg0a
- qnVxqwZQUg86OMEK2Ggsz81fokRM1k1D85s1oq+YwcefDce9hGjkq2tuJN1KKbSKGjTZ
- y7lS9xBBDgPhvsrmeRfOd3CNH7epiPAcDimxH3rNiESSUyQDkVtnMUw3NZoPQjDqWMMj
- S6OIpXZUCv3gi1TNmauZNafM6JCEc3Yz99p5W/avsVfkFBAxhY3TM7VyN+84shzOpCpu
- MtXw==
+ :reply-to; bh=uKQw+Bk5quR0x5DmJj6cUhmxTm7kP9pkGDcsohAx+Rw=;
+ b=qlDE5VNqkspa2ktpqDG357XZ1KO9wJXPcJ0wIyeBiaoQNz/X/kqsYdHhIxNhbTOqrm
+ 6PJvX/PO+vmKEKZMxMTCpCxsVaSvEKb6J31xfDpCaQxVzhrxUQ/pWK/+ABgwUCWwRyy7
+ 3VBydexpiTS2IXqWVLWtgcCfCG3KZhfPQMrP5JPzVMXWZA/xiDRxkG01VVcMRTSh1ec8
+ snvKiKDpr8RO7EnObYKbxUPrRpweUgHzWZLls8AOkJa0vny+DpEMTafCX57p+C1ayYXy
+ 5kqq6inmmE4c03CsDSqEFe6KRQmQj45Q5VCDWBTAaaYnz6cHxVM8DK0tIp0jwMvnHaFL
+ 2iOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1700562287; x=1701167087;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fwjCpEg7CxgIC61BgitQvtOo2gBc/4p1x2tjHLKtQjw=;
- b=N4HGpXi0CJSUfEGVAscqjQHeSaabglt1M33V5nNIGk75mWfCUyMTvSX/9tipfOrdSt
- ar2Or2mZS0U1uVZCwgFr9C67gAk52xv6PT74GwwdiAmrhebZLW71hL3TJb4gDKfLk4MX
- WDVdQbwItSD8ZkAWyhGdsI3yEib4LijeJfLC/tevQFvxKC4y7joN9LwV4ptqmBq9ygR5
- jYs0QTlnANkzpOd48NFfY4hW8f3QKX0MloPywyIW+K3gqIDwPccEafSOHFv3JajGc91L
- q70qP8PlPudbQ9WA0MdaMFYlHUk4+7vDH/FWumjRrduYicMZosZPQKbfTOisDbrZOsPG
- l3sQ==
-X-Gm-Message-State: AOJu0YwWctFWvYUqapw0hhwrunaMML7NsvKX6K7SnXmvEaWByQBLijWR
- psd/4vf++1hd+FlS9SVQLECciAqHILj51FH+fjg=
-X-Google-Smtp-Source: AGHT+IG8iFFMOe6HPUsEOmnw52AXUg8wZ65gsfaIuH5vtX1PwziiJPlqDvFOj6eHvHe86soLjl042A==
-X-Received: by 2002:a05:600c:154a:b0:401:bdd7:49ae with SMTP id
- f10-20020a05600c154a00b00401bdd749aemr8289510wmg.18.1700562286702; 
- Tue, 21 Nov 2023 02:24:46 -0800 (PST)
+ bh=uKQw+Bk5quR0x5DmJj6cUhmxTm7kP9pkGDcsohAx+Rw=;
+ b=m/CwxQDIn1X/EBl3Xw7zROBl3lKmUq6A7VzNU81zZUBTzWd19ggkF66Ipa7+R0zDV5
+ wT8gsfGvRcv0gOoKI05C72306eBQhH+HyQ5ihVYYeJXQJywpFAssVIe2Kw6Vj3JasK2E
+ J8+i8YKoi7AhTtgiQWUMLPCiRJDb8DFB9jhsNe9Z81DaUqrqWtlHQJaErJjHU7gH9e+f
+ HfbSAqDTAVefvzAQMJcVGY5bfo2A5UGwM8JYf1+m9wcH0mkTexVKedITWISvVASy5ABC
+ NkripJlNHiOzZMrqFkUuvUKGCDBwQZ/DSYtA5jH3donHAtXNXOpDESsPnK+lZaLOrx+H
+ l44A==
+X-Gm-Message-State: AOJu0Yy4TrHs7fWjXjdL7Msqjuh1i82bgCw3N2CkGZFCBOM+KVoqEaja
+ 6eIuatzVrQvv3f8a37mFZkc6WbX6P2iLVCZlGug=
+X-Google-Smtp-Source: AGHT+IFjBETApgksxp/2EPadPF/r/SIeNU1JmXH3zfQtc3MKrbloBbeKn4BdSs9USXAJdZHjAsaSrw==
+X-Received: by 2002:a2e:9217:0:b0:2c7:f9d:587c with SMTP id
+ k23-20020a2e9217000000b002c70f9d587cmr6370929ljg.24.1700562287146; 
+ Tue, 21 Nov 2023 02:24:47 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  n25-20020a05600c181900b00405442edc69sm20450835wmp.14.2023.11.21.02.24.46
@@ -58,17 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 21 Nov 2023 02:24:46 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 7/8] hw/arm/stm32f100: Report error when incorrect CPU is used
-Date: Tue, 21 Nov 2023 10:24:40 +0000
-Message-Id: <20231121102441.3872902-8-peter.maydell@linaro.org>
+Subject: [PULL 8/8] hw/arm/fsl-imx: Do not ignore Error argument
+Date: Tue, 21 Nov 2023 10:24:41 +0000
+Message-Id: <20231121102441.3872902-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231121102441.3872902-1-peter.maydell@linaro.org>
 References: <20231121102441.3872902-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,113 +93,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The 'stm32vldiscovery' machine ignores the CPU type requested by
-the command line. This might confuse users, since the following
-will create a machine with a Cortex-M3 CPU:
+Both i.MX25 and i.MX6 SoC models ignore the Error argument when
+setting the PHY number. Pick &error_abort which is the error
+used by the i.MX7 SoC (see commit 1f7197deb0 "ability to change
+the FEC PHY on i.MX7 processor").
 
-  $ qemu-system-aarch64 -M stm32vldiscovery -cpu neoverse-n1
-
-Set the MachineClass::valid_cpu_types field (introduced in commit
-c9cf636d48 "machine: Add a valid_cpu_types property").
-Remove the now unused MachineClass::default_cpu_type field.
-
-We now get:
-
-  $ qemu-system-aarch64 -M stm32vldiscovery -cpu neoverse-n1
-  qemu-system-aarch64: Invalid CPU type: neoverse-n1-arm-cpu
-  The valid types are: cortex-m3-arm-cpu
-
-Since the SoC family can only use Cortex-M3 CPUs, hard-code the
-CPU type name at the SoC level, removing the QOM property
-entirely.
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Fixes: 74c1330582 ("ability to change the FEC PHY on i.MX25 processor")
+Fixes: a9c167a3c4 ("ability to change the FEC PHY on i.MX6 processor")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Message-id: 20231117071704.35040-5-philmd@linaro.org
+Message-id: 20231120115116.76858-1-philmd@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/stm32f100_soc.h | 4 ----
- hw/arm/stm32f100_soc.c         | 9 ++-------
- hw/arm/stm32vldiscovery.c      | 7 ++++++-
- 3 files changed, 8 insertions(+), 12 deletions(-)
+ hw/arm/fsl-imx25.c | 3 ++-
+ hw/arm/fsl-imx6.c  | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/arm/stm32f100_soc.h b/include/hw/arm/stm32f100_soc.h
-index 40cd415b284..a74d7b369c1 100644
---- a/include/hw/arm/stm32f100_soc.h
-+++ b/include/hw/arm/stm32f100_soc.h
-@@ -43,12 +43,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(STM32F100State, STM32F100_SOC)
- #define SRAM_SIZE (8 * 1024)
+diff --git a/hw/arm/fsl-imx25.c b/hw/arm/fsl-imx25.c
+index 24c43745903..9aabbf7f587 100644
+--- a/hw/arm/fsl-imx25.c
++++ b/hw/arm/fsl-imx25.c
+@@ -169,7 +169,8 @@ static void fsl_imx25_realize(DeviceState *dev, Error **errp)
+                                             epit_table[i].irq));
+     }
  
- struct STM32F100State {
--    /*< private >*/
-     SysBusDevice parent_obj;
+-    object_property_set_uint(OBJECT(&s->fec), "phy-num", s->phy_num, &err);
++    object_property_set_uint(OBJECT(&s->fec), "phy-num", s->phy_num,
++                             &error_abort);
+     qdev_set_nic_properties(DEVICE(&s->fec), &nd_table[0]);
  
--    /*< public >*/
--    char *cpu_type;
--
-     ARMv7MState armv7m;
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->fec), errp)) {
+diff --git a/hw/arm/fsl-imx6.c b/hw/arm/fsl-imx6.c
+index 4fa7f0b95ed..7dc42cbfe64 100644
+--- a/hw/arm/fsl-imx6.c
++++ b/hw/arm/fsl-imx6.c
+@@ -379,7 +379,8 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+                                             spi_table[i].irq));
+     }
  
-     STM32F2XXUsartState usart[STM_NUM_USARTS];
-diff --git a/hw/arm/stm32f100_soc.c b/hw/arm/stm32f100_soc.c
-index f7b344ba9fb..b90d440d7aa 100644
---- a/hw/arm/stm32f100_soc.c
-+++ b/hw/arm/stm32f100_soc.c
-@@ -115,7 +115,7 @@ static void stm32f100_soc_realize(DeviceState *dev_soc, Error **errp)
-     /* Init ARMv7m */
-     armv7m = DEVICE(&s->armv7m);
-     qdev_prop_set_uint32(armv7m, "num-irq", 61);
--    qdev_prop_set_string(armv7m, "cpu-type", s->cpu_type);
-+    qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m3"));
-     qdev_prop_set_bit(armv7m, "enable-bitband", true);
-     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
-     qdev_connect_clock_in(armv7m, "refclk", s->refclk);
-@@ -180,17 +180,12 @@ static void stm32f100_soc_realize(DeviceState *dev_soc, Error **errp)
-     create_unimplemented_device("CRC",       0x40023000, 0x400);
- }
- 
--static Property stm32f100_soc_properties[] = {
--    DEFINE_PROP_STRING("cpu-type", STM32F100State, cpu_type),
--    DEFINE_PROP_END_OF_LIST(),
--};
--
- static void stm32f100_soc_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
-     dc->realize = stm32f100_soc_realize;
--    device_class_set_props(dc, stm32f100_soc_properties);
-+    /* No vmstate or reset required: device has no internal state */
- }
- 
- static const TypeInfo stm32f100_soc_info = {
-diff --git a/hw/arm/stm32vldiscovery.c b/hw/arm/stm32vldiscovery.c
-index 67675e952fc..190db6118b9 100644
---- a/hw/arm/stm32vldiscovery.c
-+++ b/hw/arm/stm32vldiscovery.c
-@@ -47,7 +47,6 @@ static void stm32vldiscovery_init(MachineState *machine)
-     clock_set_hz(sysclk, SYSCLK_FRQ);
- 
-     dev = qdev_new(TYPE_STM32F100_SOC);
--    qdev_prop_set_string(dev, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m3"));
-     qdev_connect_clock_in(dev, "sysclk", sysclk);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
- 
-@@ -58,8 +57,14 @@ static void stm32vldiscovery_init(MachineState *machine)
- 
- static void stm32vldiscovery_machine_init(MachineClass *mc)
- {
-+    static const char * const valid_cpu_types[] = {
-+        ARM_CPU_TYPE_NAME("cortex-m3"),
-+        NULL
-+    };
-+
-     mc->desc = "ST STM32VLDISCOVERY (Cortex-M3)";
-     mc->init = stm32vldiscovery_init;
-+    mc->valid_cpu_types = valid_cpu_types;
- }
- 
- DEFINE_MACHINE("stm32vldiscovery", stm32vldiscovery_machine_init)
+-    object_property_set_uint(OBJECT(&s->eth), "phy-num", s->phy_num, &err);
++    object_property_set_uint(OBJECT(&s->eth), "phy-num", s->phy_num,
++                             &error_abort);
+     qdev_set_nic_properties(DEVICE(&s->eth), &nd_table[0]);
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->eth), errp)) {
+         return;
 -- 
 2.34.1
 
