@@ -2,40 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F5E7F2778
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 09:30:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C47907F2795
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 09:35:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5M7x-0007x8-Ns; Tue, 21 Nov 2023 03:29:01 -0500
+	id 1r5MD6-00020i-Ia; Tue, 21 Nov 2023 03:34:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aik@ozlabs.ru>)
- id 1r5M7u-0007wk-HU; Tue, 21 Nov 2023 03:28:58 -0500
-Received: from ozlabs.ru ([107.174.27.60])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <aik@ozlabs.ru>)
- id 1r5M7s-0004zI-Fg; Tue, 21 Nov 2023 03:28:58 -0500
-Received: from ole.2.ozlabs.ru (localhost.localdomain [127.0.0.1])
- by ozlabs.ru (Postfix) with ESMTP id 31FDA8327C;
- Tue, 21 Nov 2023 03:28:52 -0500 (EST)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Subject: [PULL SUBSYSTEM qemu-pseries] pseries: Update SLOF firmware image
-Date: Tue, 21 Nov 2023 19:28:47 +1100
-Message-ID: <20231121082850.60833-1-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.42.0
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r5MCx-0001yV-Vt
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:34:12 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r5MCw-0006Jp-96
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:34:11 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1cf57430104so17026145ad.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 00:34:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1700555649; x=1701160449; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=dvAUVQ9yJiefO4NyUjdmD/xgcMuPXGqUgJbw5KNbWRw=;
+ b=c4ZevGcjXUSrJ7/WEDg0xcku1xXSVLzsHFsp1kDxPmxx1JgV9XhuEvmWGMRNVWek6P
+ zfQwZEn2eaHQcoc8TyUlc4JSLUdqdWWqeXvaI0Oktan0icJshSVJsmkhN6Rz2OegFWzz
+ nBfGkrBNGKFedtU4jhwtA7LGWTLWb67RprizxgHEgmc7IQsdalF89ctHl54qy/1YCKE+
+ H5wbwrwJYOnlBD5gjXr65W+lD0Qw9gj9Lne5SKXE7wQRshyQ5T6eA5qPn1e8CvTsV+h/
+ QCJroSOeXisKiiCY62AT59m81qegiCS04otek/JHOr+b4wAeW+KN5U3ftDMBv29MmoIJ
+ maHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700555649; x=1701160449;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=dvAUVQ9yJiefO4NyUjdmD/xgcMuPXGqUgJbw5KNbWRw=;
+ b=dKBlc29aiKkQkVLO/6Rw4xWpoVRAtdtxZwZtL0ar9as0KqntsJd7yYIkQI3wCoUCBE
+ daI5K1/FDWfWZD48HrqQ7RZRm2wHWa6Mqsdo9DVqFsSzBrd6KBTtuIM/1quZIahj2Ux7
+ AXQXoFtMGs+/y+YbWOUt7BzRUohEEzG2RZrsWruPbLhfQo0zVVsl2Brfsazo+bkjtt0O
+ ytpPVRDB7deK455iZzX9+aKBFQM6KO151woVWI09f1KRy6rNzGYju94bNB9XGOxRSIeN
+ jaq9KhqwEzgaV2rYRLH+ygw9h0fdOry21bx5BPtQvb1icGgw5jbQ3CiIlmVftL3br5TU
+ JwJQ==
+X-Gm-Message-State: AOJu0Yzep1HBsmsz2WUqAe0BtSJAjA/3vmbZ+RUDB/0YkGeKtu63q4sA
+ BFA4PS5u8ScdV8eJSzC+2BgW8Q==
+X-Google-Smtp-Source: AGHT+IHefqdVsGLUKEeu+gVQtn0JHqxwMA/+A/SKOi1+eW7fh19qJFV6z/FuH5KUwy9lTCxytpoZqA==
+X-Received: by 2002:a17:902:e5c8:b0:1b8:b382:f6c3 with SMTP id
+ u8-20020a170902e5c800b001b8b382f6c3mr9774924plf.13.1700555648828; 
+ Tue, 21 Nov 2023 00:34:08 -0800 (PST)
+Received: from [192.168.68.109] ([152.250.131.119])
+ by smtp.gmail.com with ESMTPSA id
+ p11-20020a170902e74b00b001cf53784833sm5308840plf.60.2023.11.21.00.34.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Nov 2023 00:34:08 -0800 (PST)
+Message-ID: <d1d6f2dc-55b2-4dce-a48a-4afbbf6df526@ventanamicro.com>
+Date: Tue, 21 Nov 2023 05:34:03 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=107.174.27.60; envelope-from=aik@ozlabs.ru;
- helo=ozlabs.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 08/18] target/riscv: add rva22u64 profile definition
+Content-Language: en-US
+To: Jerry Shih <jerry.shih@sifive.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com, ajones@ventanamicro.com
+References: <20231103134629.561732-1-dbarboza@ventanamicro.com>
+ <20231103134629.561732-9-dbarboza@ventanamicro.com>
+ <1BFE4A5C-4DE0-43B9-A865-5CF61B0BAE35@sifive.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <1BFE4A5C-4DE0-43B9-A865-5CF61B0BAE35@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -51,81 +97,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit af9264da80073435fd78944bc5a46e695897d7e5:
-
-  Merge tag '20231119-xtensa-1' of https://github.com/OSLL/qemu-xtensa into staging (2023-11-20 05:25:19 -0500)
-
-are available in the Git repository at:
-
-  git@github.com:aik/qemu.git tags/qemu-slof-20231121
-
-for you to fetch changes up to b6838bf9c01c32bfecd5c446c98e788bbfd467d9:
-
-  pseries: Update SLOF firmware image (2023-11-21 19:11:31 +1100)
-
-----------------------------------------------------------------
-Alexey Kardashevskiy (1):
-      pseries: Update SLOF firmware image
-
- pc-bios/README   |   2 +-
- pc-bios/slof.bin | Bin 995176 -> 995000 bytes
- roms/SLOF        |   2 +-
- 3 files changed, 2 insertions(+), 2 deletions(-)
 
 
-*** Note: this is not for master, this is for pseries
+On 11/21/23 05:13, Jerry Shih wrote:
+> On Nov 3, 2023, at 21:46, Daniel Henrique Barboza <dbarboza@ventanamicro.com> wrote:
+>>
+>> +/*
+>> + * RVA22U64 defines some 'named features' or 'synthetic extensions'
+>> + * that are cache related: Za64rs, Zic64b, Ziccif, Ziccrse, Ziccamoa
+>> + * and Zicclsm. We do not implement caching in QEMU so we'll consider
+>> + * all these named features as always enabled.
+>> + *
+> 
+> Hi Daniel,
+> 
+> If the cache related extensions are `ignored/assumed enabled`, why don't
+> we export them in `riscv,isa`?
 
-Just an update, nothing major. Thanks everyone for keeping
-an eye on this!
+These aren't extensions, but 'named features'. They don't have a riscv,isa. There's
+no DT bindings for them.
 
-Compiled with  gcc-12.1.0-nolibc
+> If we try to check the RVA22 profile in linux kernel running with qemu, the
+> isa string is not match RVA22 profile.
 
-Tested with:
- /home/aik/b/q-slof/qemu-system-ppc64 \
--nodefaults \
--chardev stdio,id=STDIO0,signal=off,mux=on \
--device spapr-vty,id=svty0,reg=0x71000110,chardev=STDIO0 \
--mon id=MON0,chardev=STDIO0,mode=readline \
--nographic \
--vga none \
--m 4G \
--kernel /home/aik/t/vml4150le \
--initrd /home/aik/t/le.cpio \
--machine pseries,cap-cfpc=broken,cap-sbbc=broken,cap-ibs=broken,cap-ccf-assist=off \
--bios pc-bios/slof.bin \
--trace events=/home/aik/qemu_trace_events \
--d guest_errors \
--chardev socket,id=SOCKET0,server=on,wait=off,path=qemu.mon.60616 \
--mon chardev=SOCKET0,mode=control \
--name 60616,debug-threads=on
+The kernel would check profile compatibility by matching the riscv,isa of the actual
+extensions, as expected, but then it would need to check these 'named features'
+in other fashion. For example, in patch 06, zic64b would be asserted by checking
+if all block sizes are 64 bytes.
+
+I agree that this is over-complicated and checking everything in riscv,isa would make
+things easier. For now these named extensions don't have DT bindings, thus we can't
+add them to the DT. The kernel doesn't seem to care about their existence in the DT
+either.
+
+TBH a better place for this discussion is the kernel mailing list. Thanks,
 
 
-The complete change log is:
 
-Alexey Kardashevskiy (3):
-      Remove ?PICK
-      version: update to 20230918
-      version: update to 20231121
+Daniel
 
-Bernhard M. Wiedemann (1):
-      Allow to override build date with SOURCE_DATE_EPOCH
 
-Jordan Niethe (1):
-      virtio-serial: Do not close stdout on quiesce
 
-Kautuk Consul (1):
-      virtio-serial: Make read and write methods report failure
-
-Thomas Huth (10):
-      lib/libnet/ipv6: Silence compiler warning from Clang
-      Fix typos in the board-qemu folder
-      Fix typos in the lib/libnet folder
-      Fix typos in the remaining lib folders
-      Fix typos in the slof folder
-      Fix typos in the board-js2x folder
-      Fix typos in the llfw folder
-      Fix typos in the board-js2x folder
-      Fix typos in the clients folder
-      Fix remaining typos in various folders
-
+> 
+> Thanks,
+> Jerry
 
