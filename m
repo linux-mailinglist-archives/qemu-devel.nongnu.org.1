@@ -2,46 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9352B7F35D6
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 19:20:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8877A7F35E0
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 19:27:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5VML-0003ls-Rq; Tue, 21 Nov 2023 13:20:29 -0500
+	id 1r5VSR-0005Xt-2e; Tue, 21 Nov 2023 13:26:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=nm9w=HC=kaod.org=clg@ozlabs.org>)
- id 1r5VMF-0003lU-Fl; Tue, 21 Nov 2023 13:20:24 -0500
+ id 1r5VSO-0005XL-B5; Tue, 21 Nov 2023 13:26:44 -0500
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=nm9w=HC=kaod.org=clg@ozlabs.org>)
- id 1r5VM6-0001Xz-6A; Tue, 21 Nov 2023 13:20:23 -0500
+ id 1r5VSM-00034g-Fo; Tue, 21 Nov 2023 13:26:44 -0500
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SZXjR5XqTz4wx7;
- Wed, 22 Nov 2023 05:20:11 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SZXrt2qLvz4wy1;
+ Wed, 22 Nov 2023 05:26:38 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SZXjQ11STz4wx5;
- Wed, 22 Nov 2023 05:20:09 +1100 (AEDT)
-Message-ID: <8c22bc90-40bd-4439-bdf9-188c351c467f@kaod.org>
-Date: Tue, 21 Nov 2023 19:20:09 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SZXrr4yRYz4wx5;
+ Wed, 22 Nov 2023 05:26:36 +1100 (AEDT)
+Message-ID: <915bf0d2-4600-4666-95a5-752fbb9f034f@kaod.org>
+Date: Tue, 21 Nov 2023 19:26:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 08/11] ppc/pnv: Use resettable interface to reset child
- I2C buses
+Subject: Re: [PATCH v4 03/11] ppc/pnv: New powernv10-rainier machine type
 Content-Language: en-US
-To: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
+To: Miles Glenn <milesg@linux.vnet.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
+Cc: =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
 References: <20231120235112.1951342-1-milesg@linux.vnet.ibm.com>
- <20231120235112.1951342-9-milesg@linux.vnet.ibm.com>
+ <20231120235112.1951342-4-milesg@linux.vnet.ibm.com>
+ <CX43Q4CXT43G.16NTWUAWGGXCB@wheely>
+ <31af40b3-a6c8-467c-8ef0-63e370465a9a@kaod.org>
+ <2e0854faea5c520512f903420f91f153e3287532.camel@linux.vnet.ibm.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231120235112.1951342-9-milesg@linux.vnet.ibm.com>
+In-Reply-To: <2e0854faea5c520512f903420f91f153e3287532.camel@linux.vnet.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
@@ -68,72 +70,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/21/23 00:51, Glenn Miles wrote:
-> The QEMU I2C buses and devices use the resettable
-> interface for resetting while the PNV I2C controller
-> and parent buses and devices have not yet transitioned
-> to this new interface and use the old reset strategy.
-> This was preventing the I2C buses and devices wired
-> to the PNV I2C controller from being reset.
+On 11/21/23 17:36, Miles Glenn wrote:
+> On Tue, 2023-11-21 at 08:29 +0100, Cédric Le Goater wrote:
+>> On 11/21/23 02:33, Nicholas Piggin wrote:
+>>> On Tue Nov 21, 2023 at 9:51 AM AEST, Glenn Miles wrote:
+>>>> Create a new powernv machine type, powernv10-rainier, that
+>>>> will contain rainier-specific devices.
+>>>
+>>> Is the plan to have a base powernv10 common to all and then
+>>> powernv10-rainier looks like a Rainier? Or would powernv10
+>>> just be a rainier?
+>>>
+>>> It's fine to structure code this way, I'm just wondering about
+>>> the machine types available to user. Is a base powernv10 machine
+>>> useful to run?
+>>
+>> There are multiple P10 boards defined in Linux :
+>>
+>>     aspeed-bmc-ibm-bonnell.dts
+>>     aspeed-bmc-ibm-everest.dts
+>>     aspeed-bmc-ibm-rainier-1s4u.dts
+>>     aspeed-bmc-ibm-rainier-4u.dts
+>>     aspeed-bmc-ibm-rainier.dts
+>>
+>> and we could model the machines above with a fixed number of sockets.
+>> The "powernv10" would be the generic system that can be customized
+>> at will on the command line, even I2C devices. There is also the
+>> P10 Denali which is FSP based. This QEMU machine would certainly be
+>> very different. I thought of doing the same for P9 with a -zaius
+>> and include NPU2 models for it. I lacked time and the interest was
+>> small at the time of OpenPOWER.
+>>
+>> Anyhow, adding a new machine makes sense and it prepares ground for
+>> possible new ones. I am OK with or without. As primary users, you are
+>> the ones that can tell if there will be a second machine.
+>>    
+>> Thanks,
+>>
+>> C.
+>>
 > 
-> The short term fix for this is to have the PNV I2C
-> Controller's reset function explicitly call the resettable
-> interface function, bus_cold_reset(), on all child
-> I2C buses.
-> 
-> The long term fix should be to transition all PNV parent
-> devices and buses to use the resettable interface so that
-> all child buses and devices are automatically reset.
-> 
-> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> ---
+> I am not sure what the powernv10 machine would be used for.  The
+> only reason I kept it was because I didn't want to break anyone out
+> there that might be using it.
+(previous email sent to fast)
 
+You would need to go through the deprecation process [1] if you want
+to remove the machine. I suggest keeping it for now since it is two
+lines of type definition.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+> My preference would have been to just make powernv10-rainier an
+> alias of the powernv10 machine, but only one alias name per machine
+> is supported and there is already a plan to make "powernv" an
+> alias for the powernv10 machine.
+
+yes. It might be time now for PowerNV and pSeries to update the
+default processor. Let's address that in the QEMU 9.0 cycle.
 
 Thanks,
 
 C.
 
-
-> 
-> No changes from previous version
-> 
->   hw/ppc/pnv_i2c.c | 15 ++++++++++++++-
->   1 file changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/ppc/pnv_i2c.c b/hw/ppc/pnv_i2c.c
-> index f80589157b..9ced596b98 100644
-> --- a/hw/ppc/pnv_i2c.c
-> +++ b/hw/ppc/pnv_i2c.c
-> @@ -628,6 +628,19 @@ static int pnv_i2c_dt_xscom(PnvXScomInterface *dev, void *fdt,
->       return 0;
->   }
->   
-> +static void pnv_i2c_sys_reset(void *dev)
-> +{
-> +    int port;
-> +    PnvI2C *i2c = PNV_I2C(dev);
-> +
-> +    pnv_i2c_reset(dev);
-> +
-> +    /* reset all buses connected to this i2c controller */
-> +    for (port = 0; port < i2c->num_busses; port++) {
-> +        bus_cold_reset(BUS(i2c->busses[port]));
-> +    }
-> +}
-> +
->   static void pnv_i2c_realize(DeviceState *dev, Error **errp)
->   {
->       PnvI2C *i2c = PNV_I2C(dev);
-> @@ -648,7 +661,7 @@ static void pnv_i2c_realize(DeviceState *dev, Error **errp)
->   
->       fifo8_create(&i2c->fifo, PNV_I2C_FIFO_SIZE);
->   
-> -    qemu_register_reset(pnv_i2c_reset, dev);
-> +    qemu_register_reset(pnv_i2c_sys_reset, dev);
->   
->       qdev_init_gpio_out(DEVICE(dev), &i2c->psi_irq, 1);
->   }
+[1] https://qemu.readthedocs.io/en/v8.1.0/about/deprecated.html
 
 
