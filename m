@@ -2,155 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 518DD7F262C
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 08:10:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 198C47F262B
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 08:10:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5KtW-0003Oa-N1; Tue, 21 Nov 2023 02:10:02 -0500
+	id 1r5Kte-0003Pq-Me; Tue, 21 Nov 2023 02:10:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chen.zhang@intel.com>)
- id 1r5KtU-0003MT-5j
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 02:10:00 -0500
-Received: from mgamail.intel.com ([192.55.52.151])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1r5Ktc-0003PZ-QT
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 02:10:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chen.zhang@intel.com>)
- id 1r5KtR-0002GO-8W
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 02:09:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700550597; x=1732086597;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=14pOEZ6vGL/6Jsl9YCauaDqj1Pzifds5pU96zWKnMAk=;
- b=eKKbhsZL0e13xqnIkQqeCbkMy8SaJkbHM5xjhqTnI59iWUAFlSufUJ2l
- uNx+yvHQz/10Kw+z/ZGkZ2Jt8IkXntjI2vHGy0GXQKPsPcOQGLfuaytL8
- e7wc8rIhfoZDXQzjR6VY07sjVj0hbur0Yt66a+aYt2Bd8ITV+dPFCUFFR
- QFHzJJ76PvzIjqEY9OIiz328F9bhGAcn9n8nYJOZk+XaBhDqvR+rdOBRW
- O+NNggSd1HMAqnvjmAsV9OYMKZLlpSNfl48cToB6QwWeQ/oLs1RDxGHs1
- UN6keHrR4N4DizINgFhlIv/bQMtLWAs/6Cbf/e+gqOzm2MSOBJzTTX0lG Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="371952793"
-X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="371952793"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2023 23:09:38 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="940008085"
-X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="940008085"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by orsmga005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 20 Nov 2023 23:09:37 -0800
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Mon, 20 Nov 2023 23:09:37 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Mon, 20 Nov 2023 23:09:37 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.100)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Mon, 20 Nov 2023 23:09:36 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=c4zIZ587vRsAenhkWkgtb3KpCEfznA0MH14lObch6PfmOuf3aO1q7ZukdHsp4WWweM4P38fIy4WtDHgRZdGhWChVGAH7lquIpAnTP6sGz1vjoFJriMd2MOQRkdPnnFGY1qLeKTQmfpz/bpZKsk0SEzwgydUyhCs4QzKYetsa6tkl/h5dhVSn2QJg+V0MDwyjGXybGNZD05ShcG7PJ2ZNEjOY1eFyDwmpbVEVOYhXdC0bd317c2fX9EswdTia7HWKWNHwfkSnzxUtKbOXhMqxK0U9OcrBJ/ClxumTeBFuGdluwzfRqFdFIF/F+eMlePd5n1xSXRQrX36LJdL5SSw8Bw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pnr41UJ4Lp88RWfjLil6t7eaNpl0jmoo4egg6b2fL40=;
- b=B6gfy1h7uv3EXbaajAgujgCoZLbbRQPonH1gWiEfdUUiUcPdBahunyddqy6CAuwyDW9HxY7pwF4P+ovuXEsAXEByLye94ZSQlkNyETVkHDKXrWMi4jjWMcNdMa+c/cfLdyc4FMP2KevrjMlfvB+Y5yFmBqTFYbB2TqtmEaDnCz50HpvigdHwhZqTqnUVKLZXTLtAzR9luZwECpFD/mRAEDSLSQDV9NwTjCpTwvY1ys1uyDOP84Faf0hae0ZcBJzozbBkQwGQfIraeaIeEbV1SvmYamhfnpV1KnnnEqs7vdUobT8Q9RfZ9AKsM26xnMsibUin+zwKScqsDZoyY1GWHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SA1PR11MB8428.namprd11.prod.outlook.com (2603:10b6:806:38b::20)
- by PH0PR11MB5626.namprd11.prod.outlook.com (2603:10b6:510:ee::15)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.27; Tue, 21 Nov
- 2023 07:09:35 +0000
-Received: from SA1PR11MB8428.namprd11.prod.outlook.com
- ([fe80::68bb:9c39:9371:3077]) by SA1PR11MB8428.namprd11.prod.outlook.com
- ([fe80::68bb:9c39:9371:3077%4]) with mapi id 15.20.7002.028; Tue, 21 Nov 2023
- 07:09:35 +0000
-From: "Zhang, Chen" <chen.zhang@intel.com>
-To: zhujun2 <zhujun2@cmss.chinamobile.com>
-CC: "lvivier@redhat.com" <lvivier@redhat.com>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "thuth@redhat.com" <thuth@redhat.com>
-Subject: RE: [PATCH] tests/qtest: check the return value
-Thread-Topic: [PATCH] tests/qtest: check the return value
-Thread-Index: AQHaHEJOeV7OcaDBm0it0yEg0oQICrCEWGDg
-Date: Tue, 21 Nov 2023 07:09:35 +0000
-Message-ID: <SA1PR11MB8428A0D15E607BE3F6F863149BBBA@SA1PR11MB8428.namprd11.prod.outlook.com>
-References: <CYYPR11MB8432C52A61F5A47F4025BDEB9BB0A@CYYPR11MB8432.namprd11.prod.outlook.com>
- <20231121061630.3350-1-zhujun2@cmss.chinamobile.com>
-In-Reply-To: <20231121061630.3350-1-zhujun2@cmss.chinamobile.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR11MB8428:EE_|PH0PR11MB5626:EE_
-x-ms-office365-filtering-correlation-id: 52c7138e-60b2-4e0f-e626-08dbea60d14c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: AQ9RrebS79mJNLo5cUZWlsgpgUneQW2j7jIbM+S4ReBuIdVr8pB17TEFmUpema5KGGXTkDZzAv99NCCQszrtDYiur68joLFAqQJBob6a8zFWs/IE3qis9d7d10rImjAevli2eCIiieqJP6Um1obgU83S2qOXfiDv6S5W589cnZKtGv80LHgG0MXzUzpOK6trbCYVHsj8bOFvAN9ZFNHG/FfiGUknLfNsABK9ShZxXA1LueOjXdrqnaBiaOdJh/yVOMnzZTKAJgKKOIAsVT01GorIRwH7c+w7F/BtpU04CXPZnLXrAdHGorOjwX3kBkjhAcQ+TJzGD/8q/TyD5lwtoG6WICM/KqlvFif1K0yF3i4Y/uxUbYl/pYR+tSbbQnOlIVHeIt9pd3FsKgoHgjQKZbU+mvU8ZiiiREhrurnwLUNd59HLo/pR6WtDnwXmNGhlKugAdyhNjRaFtgl4Q9c19H9Qh/wEsfvBTdFZ2emb75p/hwIv8jqI+Vi1Lixh0vy/g4DQr8hm1TAtP13phcfFACg7W4Xy02o0tFllUDvLO4g/HIaxzXEIQl0gzulzM8ZUWuXXSEivzIAInBxHxUzhCYXSV9iBG7LDoCekmWRDFbqWDy/qGdQNemEZU4HONY2o
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA1PR11MB8428.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(39860400002)(376002)(366004)(396003)(136003)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(76116006)(66556008)(66446008)(66476007)(66946007)(64756008)(6916009)(54906003)(316002)(71200400001)(6506007)(7696005)(53546011)(9686003)(38070700009)(26005)(478600001)(38100700002)(82960400001)(122000001)(83380400001)(33656002)(86362001)(55016003)(5660300002)(2906002)(41300700001)(52536014)(8676002)(4326008)(8936002);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?cY11Acd6e1nUeBzij77kMSSZhSpbRzjNsdyeztrSKCUR28KMBaorQvyR0Q/1?=
- =?us-ascii?Q?2gbIJKAjhZWZfXMMhSKnp51jkSP3/tyKmIQIoJSYBU0rAhf3kXVmY0QWqICw?=
- =?us-ascii?Q?BT2ukqgVWsHHQ80Az7pBCetIsms2EQqevtlpBt5xZT4Mrnnq4XADLFrnAR+l?=
- =?us-ascii?Q?1D5Tt57pTQDL5j/rRD0raPGgVWwIZV0HoAECg1ew2kfnW6xWzBV2ltMh5jFp?=
- =?us-ascii?Q?BMgJKXYpT40/vfc9It3NQhb5YHo91fx4PdRludcEwOn91lQ1cLfa6F2hWrBO?=
- =?us-ascii?Q?KFjQNvVEM26u5gMCNxaS0kgW7NFvDIpuhwzi9eK1DdNx1+ATPzhYnJCHoNze?=
- =?us-ascii?Q?LLjUYjcE9s+XIFTRYw8zn6oujclQEoEDFb37cKkD42g/IA47pNs/7Gw1vcV4?=
- =?us-ascii?Q?7ya2qUGHLXBIJrwLZEsWgamIIii4Sso6SN5HEewd90r/kPS87b+fl/jBAJHr?=
- =?us-ascii?Q?pazi10OqBH9xmiZB4b7qrChDcoIYosW1i2Y0lULqRJg/wizv3s9MNQg15dn+?=
- =?us-ascii?Q?8Z+anaLYaj97vCEdmW9uRCC5ytJBk42ReGmpfQvlzDnXeQv2/AUqkHUqkCqm?=
- =?us-ascii?Q?LjFRKHu5nqUDCdozROiISePUoJ9IGaFRkWYFIhWxWSL28ydZvkuHNlUMjeYJ?=
- =?us-ascii?Q?OCFOBscjjZiXYnBQMrPwiE9cHvHA4niGT1rzHOPGwAYcnOY16d0zzq6pqD7f?=
- =?us-ascii?Q?xpujKewgSyTRah5OGSiRuAX858qrgukYQFO7Ke6WIXSkpzf8vRI2KIibhQys?=
- =?us-ascii?Q?qixUs7ryIvna07TKY6c8tdN6aZtJdNdb83VDIWZuWDZQHXP02DFmVDuw5RtU?=
- =?us-ascii?Q?qw4AloMQws7NgqkHvzEfze6p6eZdDssUAACxHD+frdF62RecoiMQubSCDbVr?=
- =?us-ascii?Q?z9TncwL4eu/lCCqJgjD39Q+qcIUp6JrMZgC0VKgIT6Uz9uFFmRdTO6yDC7SN?=
- =?us-ascii?Q?vNajddmHWmDEpVbn6tbvx1puEeBq2vUlpjLmkuY+0KemwNVdmPQy45lr5TBI?=
- =?us-ascii?Q?GoK+hZQF06FQNAUFXgOOTtJ4JJUSWMlEtM4D3HQozBZ5PvKvhbo8xuljedK9?=
- =?us-ascii?Q?T8XXaB+baoGSyjUai2SfNWZAK6XtHoGQg8J8VG6YUduqZAAomRg/kK4ttS9g?=
- =?us-ascii?Q?JIe4YoyL9hmb7Ta5E3CPyqh0jxD+A0jUAzjO0WhAiHkDpDwUQiy5qk6iwkze?=
- =?us-ascii?Q?VpYJsYeS8jNu/D1D7hIDR9dTnQjfqT8knM+GMuHgk1yE/cYdlc1qjeCyHnTB?=
- =?us-ascii?Q?yY8DrtC/W36Fpw1CZc8mNb1LmDt0hmK2w3G17Pe/jMbR3r2SgS10GrxuNGNf?=
- =?us-ascii?Q?VXn7oNh6HU4xxU3kTF9ifejj5OXGuHa6DJPuK98aXQzOCHcwXuCTckhbAPiP?=
- =?us-ascii?Q?RMbC+Xr1m2QPOQtTHTTvAgYAirrYjWWWBSpZczJ8ToUIEs4WwAjDPSVFqVZ6?=
- =?us-ascii?Q?YAEM4xJawB2fx7TcNRLeK79N4Asa/KzZRncfaJlg7W+SdfIyfzTfmKPJgaon?=
- =?us-ascii?Q?bofODk+qFstBs3t/F3btd4cA/qqrcU4tTT3z1Q/qXo1fLjA4A/NOsA0hkKS4?=
- =?us-ascii?Q?PPjEmAbLPp3+1hWn4kqxy/mlpodmlNcfnRS8BVzP?=
-Content-Type: text/plain; charset="us-ascii"
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1r5Ktb-0002Jv-3y
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 02:10:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700550605;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vJE/4AoZQG7Zj38uBpReHp6i6GKolC56NcA7IE824yk=;
+ b=d920unh4iAZwPeyhpigQUF7bfLeoozqsVUxmoQlAY+6uKis83OgW9ckpsZ7k/wsEMFw6a6
+ ts07XgQqRgwCnniaKDnQnZ2QShga9u+E9CdcxHh06wgmIuuPxBl8bVcDJshdYHQ/WAOams
+ 4OCGgd7Bo1Qnzhq2PRu4WvVK5SAhieA=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-209-BBLvcIRFNPKbWR8r5a7BJw-1; Tue, 21 Nov 2023 02:10:02 -0500
+X-MC-Unique: BBLvcIRFNPKbWR8r5a7BJw-1
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-1cc9eb5b944so72842055ad.0
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 23:10:02 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700550602; x=1701155402;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vJE/4AoZQG7Zj38uBpReHp6i6GKolC56NcA7IE824yk=;
+ b=Sq9X1vFOode0eSFZKp90ss+2BCTbX9MS+vigAIAQh0tZiw47yK2BjkGqW1TsqYXfZN
+ cDicN1ZyrVVQqWsgY9AkmbTV/tV/ZXthQ4KSGtlCFFPdthYyjKx6Y1wSVPneBM5R2bg3
+ UPvONdfBcBWsZllx3KJD68kOVpLegbaMD2TRz12+aJloRPke6lGZce2C4Up/IEKeGVGD
+ rKxvYUF+Mcu8WybwrbZ6MSJFRjkEoRHEg8h7cVCIiq/rm7z3QIrYM2FpUXY4wW8I+Z4C
+ tEUwX6ypAF8Cqwpnnqmt9xtsOhOmPPJ9SK4hMgvOXqgT7YSW+qu6QbaomUP6bLQgJMHG
+ o8Wg==
+X-Gm-Message-State: AOJu0Yxvci8QfYYAodOQj06gzwQrV8aaB+shHarm1ZMd8zUDkY+645Ku
+ UGXXhSuRso9wSa3itakhJin5WMKTSXwMzFJP8z/v5RiY7OvUHN6y4Ub6Qv/y7bJtls4ZLyKRwdf
+ YdmfG7gv8FDBM9Dg=
+X-Received: by 2002:a17:902:e882:b0:1cf:54c7:adc5 with SMTP id
+ w2-20020a170902e88200b001cf54c7adc5mr3164776plg.4.1700550601803; 
+ Mon, 20 Nov 2023 23:10:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEHu5IpE7IgWfBEm63Xe77L4Ewnqv6Ze7TeBiGiEVWbNTf1t9rbfMP2ql+FcwkFFHbwGXCWIA==
+X-Received: by 2002:a17:902:e882:b0:1cf:54c7:adc5 with SMTP id
+ w2-20020a170902e88200b001cf54c7adc5mr3164757plg.4.1700550601421; 
+ Mon, 20 Nov 2023 23:10:01 -0800 (PST)
+Received: from smtpclient.apple ([116.72.131.174])
+ by smtp.gmail.com with ESMTPSA id
+ g22-20020a1709029f9600b001c9db5e2929sm7217787plq.93.2023.11.20.23.09.58
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 20 Nov 2023 23:10:01 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.200.91.1.1\))
+Subject: Re: [PATCH v2] tests/acpi/bios-tables-test: do not write new blobs
+ unless there are changes
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <1D3FCCB3-FEDE-4E08-BD42-7070697913E3@redhat.com>
+Date: Tue, 21 Nov 2023 12:39:46 +0530
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ qemu-devel@nongnu.org
 Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB8428.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52c7138e-60b2-4e0f-e626-08dbea60d14c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2023 07:09:35.2018 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: QdelgyZGdVnJTH2DBlaBKPs8ILr2uyOggEhOo31sI0fTkj5BwFam8jddIRWogNtUXkMsShRd+Qs7WgUk38iFlw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5626
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.151; envelope-from=chen.zhang@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
+Message-Id: <F54768EF-9AEE-4CB4-B6C2-AC88A718922F@redhat.com>
+References: <20231107044952.5461-1-anisinha@redhat.com>
+ <1D3FCCB3-FEDE-4E08-BD42-7070697913E3@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+X-Mailer: Apple Mail (2.3774.200.91.1.1)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -169,88 +107,121 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-> -----Original Message-----
-> From: zhujun2 <zhujun2@cmss.chinamobile.com>
-> Sent: Tuesday, November 21, 2023 2:17 PM
-> To: Zhang, Chen <chen.zhang@intel.com>
-> Cc: lvivier@redhat.com; pbonzini@redhat.com; qemu-devel@nongnu.org;
-> thuth@redhat.com; zhujun2@cmss.chinamobile.com
-> Subject: [PATCH] tests/qtest: check the return value
+> On 16-Nov-2023, at 11:30=E2=80=AFAM, Ani Sinha <anisinha@redhat.com> =
+wrote:
 >=20
-> These variables "ret" are never referenced in the code, that add check lo=
-gic
-> for the "ret"
 >=20
+>=20
+>> On 07-Nov-2023, at 10:19=E2=80=AFAM, Ani Sinha <anisinha@redhat.com> =
+wrote:
+>>=20
+>> When dumping table blobs using rebuild-expected-aml.sh, table blobs =
+from all
+>> test variants are dumped regardless of whether there are any actual =
+changes to
+>> the tables or not. This creates lot of new files for various test =
+variants that
+>> are not part of the git repository. This is because we do not check =
+in all table
+>> blobs for all test variants into the repository. Only those blobs for =
+those
+>> variants that are different from the generic test-variant agnostic =
+blob are
+>> checked in.
+>>=20
+>> This change makes the test smarter by checking if at all there are =
+any changes
+>> in the tables from the checked-in gold master blobs and take actions
+>> accordingly.
+>>=20
+>> When there are no changes:
+>> - No new table blobs would be written.
+>> - Existing table blobs will be refreshed (git diff will show no =
+changes).
+>> When there are changes:
+>> - New table blob files will be dumped.
+>> - Existing table blobs will be refreshed (git diff will show that the =
+files
+>>  changed, asl diff will show the actual changes).
+>> When new tables are introduced:
+>> - Zero byte empty file blobs for new tables as instructed in the =
+header of
+>>  bios-tables-test.c will be regenerated to actual table blobs.
+>>=20
+>> This would make analyzing changes to tables less confusing and there =
+would
+>> be no need to clean useless untracked files when there are no table =
+changes.
+>>=20
+>> CC: peter.maydell@linaro.org
+>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>> ---
+>> tests/qtest/bios-tables-test.c | 14 +++++++++++++-
+>> 1 file changed, 13 insertions(+), 1 deletion(-)
+>>=20
+>> changelog:
+>> v2: commit description updated to make things a little clearer.
+>>   No actual changes.
+>=20
+> Ping ...
 
-Just tiny comments, please check the len before str, and add the V2 tag in =
-mail title next time.
-After fix my comments and Thomas comments:
-Reviewed-by: Zhang Chen <chen.zhang@intel.com>
+Ping again ...
 
-Thanks
-Chen
+>=20
+>>=20
+>> diff --git a/tests/qtest/bios-tables-test.c =
+b/tests/qtest/bios-tables-test.c
+>> index 9f4bc15aab..743b509e93 100644
+>> --- a/tests/qtest/bios-tables-test.c
+>> +++ b/tests/qtest/bios-tables-test.c
+>> @@ -109,6 +109,7 @@ static const char *iasl;
+>> #endif
+>>=20
+>> static int verbosity_level;
+>> +static GArray *load_expected_aml(test_data *data);
+>>=20
+>> static bool compare_signature(const AcpiSdtTable *sdt, const char =
+*signature)
+>> {
+>> @@ -241,21 +242,32 @@ static void test_acpi_fadt_table(test_data =
+*data)
+>>=20
+>> static void dump_aml_files(test_data *data, bool rebuild)
+>> {
+>> -    AcpiSdtTable *sdt;
+>> +    AcpiSdtTable *sdt, *exp_sdt;
+>>    GError *error =3D NULL;
+>>    gchar *aml_file =3D NULL;
+>> +    test_data exp_data =3D {};
+>>    gint fd;
+>>    ssize_t ret;
+>>    int i;
+>>=20
+>> +    exp_data.tables =3D load_expected_aml(data);
+>>    for (i =3D 0; i < data->tables->len; ++i) {
+>>        const char *ext =3D data->variant ? data->variant : "";
+>>        sdt =3D &g_array_index(data->tables, AcpiSdtTable, i);
+>> +        exp_sdt =3D &g_array_index(exp_data.tables, AcpiSdtTable, =
+i);
+>>        g_assert(sdt->aml);
+>> +        g_assert(exp_sdt->aml);
+>>=20
+>>        if (rebuild) {
+>>            aml_file =3D g_strdup_printf("%s/%s/%.4s%s", data_dir, =
+data->machine,
+>>                                       sdt->aml, ext);
+>> +            if (!g_file_test(aml_file, G_FILE_TEST_EXISTS) &&
+>> +                sdt->aml_len =3D=3D exp_sdt->aml_len &&
+>> +                !memcmp(sdt->aml, exp_sdt->aml, sdt->aml_len)) {
+>> +                /* identical tables, no need to write new files */
+>> +                g_free(aml_file);
+>> +                continue;
+>> +            }
+>>            fd =3D g_open(aml_file, O_WRONLY|O_TRUNC|O_CREAT,
+>>                        S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
+>>            if (fd < 0) {
+>> --=20
+>> 2.42.0
 
-> Signed-off-by: zhujun2 <zhujun2@cmss.chinamobile.com>
-> ---
->  tests/qtest/test-filter-mirror.c     | 1 +
->  tests/qtest/test-filter-redirector.c | 2 ++
->  tests/qtest/virtio-net-test.c        | 1 +
->  3 files changed, 4 insertions(+)
->=20
-> diff --git a/tests/qtest/test-filter-mirror.c b/tests/qtest/test-filter-m=
-irror.c
-> index adeada3eb8..f3865f7519 100644
-> --- a/tests/qtest/test-filter-mirror.c
-> +++ b/tests/qtest/test-filter-mirror.c
-> @@ -61,6 +61,7 @@ static void test_mirror(void)
->      g_assert_cmpint(len, =3D=3D, sizeof(send_buf));
->      recv_buf =3D g_malloc(len);
->      ret =3D recv(recv_sock[0], recv_buf, len, 0);
-> +    g_assert_cmpint(ret, =3D=3D, len);
->      g_assert_cmpstr(recv_buf, =3D=3D, send_buf);
->=20
->      g_free(recv_buf);
-> diff --git a/tests/qtest/test-filter-redirector.c b/tests/qtest/test-filt=
-er-
-> redirector.c
-> index e72e3b7873..a77d5fd8ec 100644
-> --- a/tests/qtest/test-filter-redirector.c
-> +++ b/tests/qtest/test-filter-redirector.c
-> @@ -118,6 +118,7 @@ static void test_redirector_tx(void)
->      g_assert_cmpint(len, =3D=3D, sizeof(send_buf));
->      recv_buf =3D g_malloc(len);
->      ret =3D recv(recv_sock, recv_buf, len, 0);
-> +    g_assert_cmpint(ret, =3D=3D, len);
->      g_assert_cmpstr(recv_buf, =3D=3D, send_buf);
->=20
->      g_free(recv_buf);
-> @@ -185,6 +186,7 @@ static void test_redirector_rx(void)
->      g_assert_cmpint(len, =3D=3D, sizeof(send_buf));
->      recv_buf =3D g_malloc(len);
->      ret =3D recv(backend_sock[0], recv_buf, len, 0);
-> +    g_assert_cmpint(ret, =3D=3D, len);
->      g_assert_cmpstr(recv_buf, =3D=3D, send_buf);
->=20
->      close(send_sock);
-> diff --git a/tests/qtest/virtio-net-test.c b/tests/qtest/virtio-net-test.=
-c index
-> fab5dd8b05..b470d8c6e2 100644
-> --- a/tests/qtest/virtio-net-test.c
-> +++ b/tests/qtest/virtio-net-test.c
-> @@ -92,6 +92,7 @@ static void tx_test(QVirtioDevice *dev,
->=20
->      ret =3D recv(socket, buffer, len, 0);
->      g_assert_cmpstr(buffer, =3D=3D, "TEST");
-> +    g_assert_cmpint(ret, =3D=3D, len);
-
-Move it before g_assert_cmpstr().
-
->  }
->=20
->  static void rx_stop_cont_test(QVirtioDevice *dev,
-> --
-> 2.17.1
->=20
->=20
 
 
