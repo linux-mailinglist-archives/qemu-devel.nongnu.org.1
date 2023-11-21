@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9AC7F27F3
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 09:49:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 780BE7F27F7
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 09:50:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5MP3-00064q-Ef; Tue, 21 Nov 2023 03:46:41 -0500
+	id 1r5MP8-00065X-7z; Tue, 21 Nov 2023 03:46:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r5MP2-00064f-08
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:46:40 -0500
+ id 1r5MP5-00065F-Kc
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:46:43 -0500
 Received: from mgamail.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r5MP0-0001Qo-Cu
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:46:39 -0500
+ id 1r5MP3-0001Qo-TI
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:46:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700556398; x=1732092398;
+ t=1700556401; x=1732092401;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=GB2wT+bF18h6O66WxNQkH6AVmyasMVqzPc1b9COIOfU=;
- b=jj33+jjr1l3TFZRpOEs6iKzPK2zVBcMzJs4146n5zeMn4Ukev4aU649M
- ond5vp+bXCpwjyjA5eSP2SliPVR/2hdWcwgxDeCGty3ZEK+n98NUGdOAY
- u/kE8E0FVSppCDcLypm0VjCpTmULoq7bn7Kuu4wW3ciA2E6N7xZV75Kod
- QtWP8nau8ItJj1NwfazycEz1ehrV+seOIwjcGbaAM3ChxMkrKuhuRVpI2
- 1A5OsDodmyF/qcuYVfwOHoPWS3rZ4B/YitqvweDKYT1UruwlJl2797yJ2
- NbQFekasi9sXzBky6Wg85wJSh3R4M2wYUJUPRo8snaa8FOSaNvm0vJuz5 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="395722026"
-X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="395722026"
+ bh=uw7DnlmdMZPLbQL7qWgqiELopkS8trDa/dLDZoi3etc=;
+ b=OrbcSvY3b9LK4Gl0H0hiSqnbLJyqsmupwfs3GlDR/KJ3XP622gaGiW8q
+ 6aoBWdM7K8g5yho6gCUfngED/jXgntjTaomDL0kQKmf3LJXpeM3kUaftP
+ 29cDEz+y/NRKqO7LkMvgFl4jXe8DLmoYPYpmY8ItqBHv+NHZpAfSOJPYf
+ zT4NLM2CSZ7R3w62Btq/3b5ZgGHLuofg5HgnHAxpxAKIpQYzBOO9Oo+Mx
+ wh34RCyU4ASrmj88mXcRTnir0X5OmjuVk3VYCkgFhvEzgMVGteLF37dJ/
+ o9KvWeNKx5viH8rh2qgAkg/ZvEuF4qYZciA28QnFy7jHXPW7BOsSBUhWC Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="395722046"
+X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="395722046"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2023 00:46:37 -0800
+ 21 Nov 2023 00:46:41 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="884124874"
-X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="884124874"
+X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="884124886"
+X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="884124886"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2023 00:46:33 -0800
+ 21 Nov 2023 00:46:37 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
  peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com
-Subject: [PATCH v7 05/27] vfio/iommufd: Relax assert check for iommufd backend
-Date: Tue, 21 Nov 2023 16:44:04 +0800
-Message-Id: <20231121084426.1286987-6-zhenzhong.duan@intel.com>
+Subject: [PATCH v7 06/27] vfio/iommufd: Add support for iova_ranges and pgsizes
+Date: Tue, 21 Nov 2023 16:44:05 +0800
+Message-Id: <20231121084426.1286987-7-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
 References: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
@@ -80,55 +80,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently iommufd doesn't support dirty page sync yet,
-but it will not block us doing live migration if VFIO
-migration is force enabled.
+Some vIOMMU such as virtio-iommu use IOVA ranges from host side to
+setup reserved ranges for passthrough device, so that guest will not
+use an IOVA range beyond host support.
 
-So in this case we allow set_dirty_page_tracking to be NULL.
-Note we don't need same change for query_dirty_bitmap because
-when dirty page sync isn't supported, query_dirty_bitmap will
-never be called.
+Use an uAPI of IOMMUFD to get IOVA ranges of host side and pass to
+vIOMMU just like the legacy backend, if this fails, fallback to
+64bit IOVA range.
 
-Suggested-by: Cédric Le Goater <clg@redhat.com>
+Also use out_iova_alignment returned from uAPI as pgsizes instead of
+qemu_real_host_page_size() as a fallback.
+
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Tested-by: Eric Auger <eric.auger@redhat.com>
 ---
- hw/vfio/container-base.c | 4 ++++
- hw/vfio/container.c      | 4 ----
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ hw/vfio/iommufd.c | 56 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 1 deletion(-)
 
-diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-index 71f7274973..eee2dcfe76 100644
---- a/hw/vfio/container-base.c
-+++ b/hw/vfio/container-base.c
-@@ -55,6 +55,10 @@ void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
- int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
-                                            bool start)
- {
-+    if (!bcontainer->dirty_pages_supported) {
-+        return 0;
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 6d31aeac7b..01b448e840 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -261,6 +261,53 @@ static int iommufd_cdev_ram_block_discard_disable(bool state)
+     return ram_block_uncoordinated_discard_disable(state);
+ }
+ 
++static int iommufd_cdev_get_info_iova_range(VFIOIOMMUFDContainer *container,
++                                            uint32_t ioas_id, Error **errp)
++{
++    VFIOContainerBase *bcontainer = &container->bcontainer;
++    struct iommu_ioas_iova_ranges *info;
++    struct iommu_iova_range *iova_ranges;
++    int ret, sz, fd = container->be->fd;
++
++    info = g_malloc0(sizeof(*info));
++    info->size = sizeof(*info);
++    info->ioas_id = ioas_id;
++
++    ret = ioctl(fd, IOMMU_IOAS_IOVA_RANGES, info);
++    if (ret && errno != EMSGSIZE) {
++        goto error;
 +    }
 +
-     g_assert(bcontainer->ops->set_dirty_page_tracking);
-     return bcontainer->ops->set_dirty_page_tracking(bcontainer, start);
- }
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 6bacf38222..ed2d721b2b 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -216,10 +216,6 @@ static int vfio_legacy_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
-         .argsz = sizeof(dirty),
-     };
++    sz = info->num_iovas * sizeof(struct iommu_iova_range);
++    info = g_realloc(info, sizeof(*info) + sz);
++    info->allowed_iovas = (uintptr_t)(info + 1);
++
++    ret = ioctl(fd, IOMMU_IOAS_IOVA_RANGES, info);
++    if (ret) {
++        goto error;
++    }
++
++    iova_ranges = (struct iommu_iova_range *)(uintptr_t)info->allowed_iovas;
++
++    for (int i = 0; i < info->num_iovas; i++) {
++        Range *range = g_new(Range, 1);
++
++        range_set_bounds(range, iova_ranges[i].start, iova_ranges[i].last);
++        bcontainer->iova_ranges =
++            range_list_insert(bcontainer->iova_ranges, range);
++    }
++    bcontainer->pgsizes = info->out_iova_alignment;
++
++    g_free(info);
++    return 0;
++
++error:
++    ret = -errno;
++    g_free(info);
++    error_setg_errno(errp, errno, "Cannot get IOVA ranges");
++    return ret;
++}
++
+ static int iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+                                AddressSpace *as, Error **errp)
+ {
+@@ -335,7 +382,14 @@ static int iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+         goto err_discard_disable;
+     }
  
--    if (!bcontainer->dirty_pages_supported) {
--        return 0;
--    }
--
-     if (start) {
-         dirty.flags = VFIO_IOMMU_DIRTY_PAGES_FLAG_START;
-     } else {
+-    bcontainer->pgsizes = qemu_real_host_page_size();
++    ret = iommufd_cdev_get_info_iova_range(container, ioas_id, &err);
++    if (ret) {
++        error_append_hint(&err,
++                   "Fallback to default 64bit IOVA range and 4K page size\n");
++        warn_report_err(err);
++        err = NULL;
++        bcontainer->pgsizes = qemu_real_host_page_size();
++    }
+ 
+     bcontainer->listener = vfio_memory_listener;
+     memory_listener_register(&bcontainer->listener, bcontainer->space->as);
 -- 
 2.34.1
 
