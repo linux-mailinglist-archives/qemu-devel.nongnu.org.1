@@ -2,55 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8B47F362B
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 19:38:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C8C7F3634
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 19:39:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5VcV-0002Ra-A4; Tue, 21 Nov 2023 13:37:11 -0500
+	id 1r5VeS-00044Q-E0; Tue, 21 Nov 2023 13:39:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=nm9w=HC=kaod.org=clg@ozlabs.org>)
- id 1r5VcS-0002RE-EA; Tue, 21 Nov 2023 13:37:09 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=nm9w=HC=kaod.org=clg@ozlabs.org>)
- id 1r5VcQ-0004rp-AY; Tue, 21 Nov 2023 13:37:08 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SZY4s0VThz4x3D;
- Wed, 22 Nov 2023 05:37:01 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SZY4q34ghz4wy1;
- Wed, 22 Nov 2023 05:36:59 +1100 (AEDT)
-Message-ID: <85ef1a8b-63c5-4492-9884-f34772a65c28@kaod.org>
-Date: Tue, 21 Nov 2023 19:36:56 +0100
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5VeE-00042c-Vo
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 13:39:01 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5VeC-0005EO-AM
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 13:38:58 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-544455a4b56so8210118a12.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 10:38:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700591932; x=1701196732; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=UrZSVg/nTM9xK0ktYvJg5LD2s73DYTlBxJ3sJbKjRlc=;
+ b=tUcXSRiMQX3MX6xKVW3xYSQt6epqec3PcAFH75XIX/gfhrPx8uw4a4KctlOvowQDRQ
+ McJ7jST5t5PZ3/9TBPDq0d5VaTmjILU/ovLJfloCJDIOs+i2kaIWGejIAABwMRUBbWPJ
+ eK2jEOLtlf3pMDVjCMuuzzgpsn6ut7y8oO+aUNgmguDYBn4CHF+RlpO+CJ4z4MkX/FH7
+ T0zICHazF4uDtANPX1IYxa/pVTzIOqCe4b/Uf+aHcCZYX0RicxFWPVJycO7wJ1/2S6wc
+ gsSAyh9QNnMcUW58ivZJ+KOyfYS6odQLGLuDVVu9MFTTB7MqYIBzlcBuNhv4CX3LeX3F
+ /XCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700591932; x=1701196732;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UrZSVg/nTM9xK0ktYvJg5LD2s73DYTlBxJ3sJbKjRlc=;
+ b=fKZZnrBtlae+QEAm0/0Xn3JPLoV5KfXX/ijzo8mOeoWWSFuZgQlw7F4vZmW4n+pHU3
+ ONtJwF5DzeX/zgpaLK/0zCVDLHYmwy6kuXDGyxwpnd68nPyWe+Nnw/VGcMb7ZDIMZk0+
+ /bbhPrWZmL4MAiZaQn/tSJo+JLVxhSsZJK2m8iex4OjTbYMqkGoWMjrvLeEgm+LC/tUv
+ XbgqVJC3asHjOh7rL4geq6hFby6G7mi4pVV67/ZC62D3yTg++m/huOPCdGCRlKYkzCD4
+ YiivaSNVRB5hnYR/w+Hyuf0CZp9yI96QUwATTFjRGhJtcTcJ1k5Wryza8BMeFJYwcsCJ
+ rqcQ==
+X-Gm-Message-State: AOJu0YwMbwrBRWat9N5ph9YxjFHsDBnl/Om5spMa1P3jQKQlOcfB0GCH
+ r9ho4V4+6U3vmj3XpSGdLzasyA==
+X-Google-Smtp-Source: AGHT+IGL1Eun1k/KnVoVsD47q1M8R91a4krwebnL1da9euJ3/pfEzDOq8YMqQJ7JtjdXbo7ASiWrXg==
+X-Received: by 2002:aa7:d1d9:0:b0:548:4dc2:7832 with SMTP id
+ g25-20020aa7d1d9000000b005484dc27832mr151714edp.23.1700591932219; 
+ Tue, 21 Nov 2023 10:38:52 -0800 (PST)
+Received: from [192.168.69.100] (lgp44-h02-176-184-8-219.dsl.sta.abo.bbox.fr.
+ [176.184.8.219]) by smtp.gmail.com with ESMTPSA id
+ h23-20020aa7c957000000b0053dff5568acsm5211379edt.58.2023.11.21.10.38.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Nov 2023 10:38:51 -0800 (PST)
+Message-ID: <9c7b820b-3c36-4d39-953b-1e2ba0db63a6@linaro.org>
+Date: Tue, 21 Nov 2023 19:38:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/11] ppc/pnv: Wire up pca9552 GPIO pins for PCIe
- hotplug power control
+Subject: Re: [PATCH v7 08/27] vfio/pci: Introduce a vfio pci hot reset
+ interface
 Content-Language: en-US
-To: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
-References: <20231120235112.1951342-1-milesg@linux.vnet.ibm.com>
- <20231120235112.1951342-6-milesg@linux.vnet.ibm.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231120235112.1951342-6-milesg@linux.vnet.ibm.com>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
+ peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
+ yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com
+References: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
+ <20231121084426.1286987-9-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231121084426.1286987-9-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=nm9w=HC=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -67,86 +96,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/21/23 00:51, Glenn Miles wrote:
-> For power10-rainier, a pca9552 device is used for PCIe slot hotplug
-> power control by the Power Hypervisor code.  The code expects that
-> some time after it enables power to a PCIe slot by asserting one of
-> the pca9552 GPIO pins 0-4, it should see a "power good" signal asserted
-> on one of pca9552 GPIO pins 5-9.
+Hi Zhenzhong,
 
-And this is what OPAL is not doing :
-
-   https://github.com/open-power/skiboot/blob/master/platforms/astbmc/rainier.c#L65
-
-Correct ?
-
-> To simulate this behavior, we simply connect the GPIO outputs for
-> pins 0-4 to the GPIO inputs for pins 5-9.
+On 21/11/23 09:44, Zhenzhong Duan wrote:
+> Legacy vfio pci and iommufd cdev have different process to hot reset
+> vfio device, expand current code to abstract out pci_hot_reset callback
+> for legacy vfio, this same interface will also be used by iommufd
+> cdev vfio device.
 > 
-> Each PCIe slot is assigned 3 GPIO pins on the pca9552 device, for
-> control of up to 5 PCIe slots.  The per-slot signal names are:
+> Rename vfio_pci_hot_reset to vfio_legacy_pci_hot_reset and move it
+> into container.c.
 > 
->     SLOTx_EN.......PHYP uses this as an output to enable
->                    slot power.  We connect this to the
->                    SLOTx_PG pin to simulate a PGOOD signal.
->     SLOTx_PG.......PHYP uses this as in input to detect
->                    PGOOD for the slot.  For our purposes
->                    we just connect this to the SLOTx_EN
->                    output.
->     SLOTx_Control..PHYP uses this as an output to prevent
->                    a race condition in the real hotplug
->                    circuitry, but we can ignore this output
->                    for simulation.
+> vfio_pci_[pre/post]_reset and vfio_pci_host_match are exported so
+> they could be called in legacy and iommufd pci_hot_reset callback.
 > 
-> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+> Suggested-by: Cédric Le Goater <clg@redhat.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Reviewed-by: Eric Auger <eric.auger@redhat.com>
+> Tested-by: Eric Auger <eric.auger@redhat.com>
 > ---
-> 
-> Changes from previous version:
->    - Code moved from pnv_chip_power10_realize to pnv_rainier_i2c_init
-> 
->   hw/ppc/pnv.c | 20 ++++++++++++++++++--
->   1 file changed, 18 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index 9cefcd0fd6..80d25fc1bd 100644
-> --- a/hw/ppc/pnv.c
-> +++ b/hw/ppc/pnv.c
-> @@ -1898,8 +1898,24 @@ static void pnv_rainier_i2c_init(PnvMachineState *pnv)
->            * Add a PCA9552 I2C device for PCIe hotplug control
->            * to engine 2, bus 1, address 0x63
->            */
-> -        i2c_slave_create_simple(chip10->i2c[2].busses[1],
-> -                                "pca9552", 0x63);
-> +        I2CSlave *hotplug = i2c_slave_create_simple(chip10->i2c[2].busses[1],
-> +                                                "pca9552", 0x63);
-
-hotplug ? why not dev simply ?
+>   hw/vfio/pci.h                         |   3 +
+>   include/hw/vfio/vfio-container-base.h |   3 +
+>   hw/vfio/container.c                   | 170 ++++++++++++++++++++++++++
+>   hw/vfio/pci.c                         | 168 +------------------------
+>   4 files changed, 182 insertions(+), 162 deletions(-)
 
 
-Thanks,
+> @@ -2485,166 +2485,10 @@ int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
+>   
+>   static int vfio_pci_hot_reset(VFIOPCIDevice *vdev, bool single)
+>   {
 
-C.
+> +    return ops->pci_hot_reset(vbasedev, single);
 
+At this point vfio_iommufd_ops.pci_hot_reset is NULL.
+Worth checking for non-NULL before calling.
 
-
-> +
-> +        /*
-> +         * Connect PCA9552 GPIO pins 0-4 (SLOTx_EN) outputs to GPIO pins 5-9
-> +         * (SLOTx_PG) inputs in order to fake the pgood state of PCIe slots
-> +         * after hypervisor code sets a SLOTx_EN pin high.
-> +         */
-> +        qdev_connect_gpio_out(DEVICE(hotplug), 0,
-> +                              qdev_get_gpio_in(DEVICE(hotplug), 5));
-> +        qdev_connect_gpio_out(DEVICE(hotplug), 1,
-> +                              qdev_get_gpio_in(DEVICE(hotplug), 6));
-> +        qdev_connect_gpio_out(DEVICE(hotplug), 2,
-> +                              qdev_get_gpio_in(DEVICE(hotplug), 7));
-> +        qdev_connect_gpio_out(DEVICE(hotplug), 3,
-> +                              qdev_get_gpio_in(DEVICE(hotplug), 8));
-> +        qdev_connect_gpio_out(DEVICE(hotplug), 4,
-> +                              qdev_get_gpio_in(DEVICE(hotplug), 9));
->       }
 >   }
 >   
+>   /*
 
 
