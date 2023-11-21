@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4F17F27FC
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 09:50:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7B57F27FF
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 09:50:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5MQj-0001a1-MV; Tue, 21 Nov 2023 03:48:25 -0500
+	id 1r5MQj-0001d8-VM; Tue, 21 Nov 2023 03:48:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r5MQd-0000zb-Cr
+ id 1r5MQd-0000zk-DM
  for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:48:19 -0500
 Received: from mgamail.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r5MQZ-0002Dl-SC
+ id 1r5MQZ-0002Dg-SI
  for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:48:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1700556495; x=1732092495;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=sAeaLlOpv+KZAzUVgMMu6EKWOeoJE+9x1mOXczPlT4c=;
- b=ba/aWyKdWjOunImT6o5QlR/xuEsInx1QOXSADVdEb3ueyo4avISIUOoY
- d4m29bYTY+mLql23jH6PmbNQTXUnHeo8y/BkhQY98A5WOkS/xHXVTRkm/
- /QhYeyEJQgjonWDQKIDRzOyesTQ6SrUG5OgSlsY8mhuic3UxArsRN8iS/
- qETwPkkAe1qzZbV8xk5AWhxIiHwUs2oTiVOOUbD3CYAUnQ5Tq9SYUyJih
- nPvNABC/ZU409sWRVzfQfjTLtdVwnRvl351miZOc67MOagFQoediHz72C
- 6/JUYEH38NLqkgWA7HKSnLuKtCApb5gMaiS09LY9SczznGQuG8Elzl/c8 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="395722304"
-X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="395722304"
+ bh=vBzP3WlnfEWRiydsgFq9tEsSz3B2gVoYx0Pa8U2lpLY=;
+ b=U4k8NwIsN+QVaJyRkwZYbNkN0u1xkhoz3yI7HPmsRK2Unvt2FHmIIrrK
+ yLDvecsvDnxSSV9sGHRoFKA0OkqMlJjjEUP3Q0W9TuyhYYZYMI08lEL7n
+ j8a5KxtTJGD5UtQcTa16GWhCFqgU9rdZdwQ1ORk0mCFvj4ZGzap/GNw2v
+ pJ/Gzgcy+VGmnNGHtssHgwtDRn21RucVU0lLh0xPfNAUpfQT+1/H6ype3
+ E6+TqTZ/PinL9ZvF6uy3MZa/mobMrPfyXAUbtQduSDUph17Rohrg48GRE
+ gbxM0lyU810KMO3MxsH3N3FWGHLAuQHdUBq4ryJrrJ9bpfRxWkk872MNM Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="395722314"
+X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="395722314"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2023 00:47:49 -0800
+ 21 Nov 2023 00:47:58 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="884125170"
-X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="884125170"
+X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="884125200"
+X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="884125200"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2023 00:47:46 -0800
+ 21 Nov 2023 00:47:49 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
  peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com
-Subject: [PATCH v7 22/27] vfio/pci: Move VFIODevice initializations in
- vfio_instance_init
-Date: Tue, 21 Nov 2023 16:44:21 +0800
-Message-Id: <20231121084426.1286987-23-zhenzhong.duan@intel.com>
+Subject: [PATCH v7 23/27] vfio/platform: Move VFIODevice initializations in
+ vfio_platform_instance_init
+Date: Tue, 21 Nov 2023 16:44:22 +0800
+Message-Id: <20231121084426.1286987-24-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
 References: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
@@ -81,8 +81,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some of the VFIODevice initializations is in vfio_realize,
-move all of them in vfio_instance_init.
+Some of the VFIODevice initializations is in vfio_platform_realize,
+move all of them in vfio_platform_instance_init.
 
 No functional change intended.
 
@@ -90,44 +90,38 @@ Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/vfio/pci.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ hw/vfio/platform.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 445d58c8e5..87405584d7 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -2969,9 +2969,6 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-     if (vfio_device_get_name(vbasedev, errp) < 0) {
-         return;
-     }
--    vbasedev->ops = &vfio_pci_ops;
--    vbasedev->type = VFIO_DEVICE_TYPE_PCI;
--    vbasedev->dev = DEVICE(vdev);
+diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
+index a97d9c6234..506eb8193f 100644
+--- a/hw/vfio/platform.c
++++ b/hw/vfio/platform.c
+@@ -581,10 +581,6 @@ static void vfio_platform_realize(DeviceState *dev, Error **errp)
+     VFIODevice *vbasedev = &vdev->vbasedev;
+     int i, ret;
  
-     /*
-      * Mediated devices *might* operate compatibly with discarding of RAM, but
-@@ -3320,6 +3317,7 @@ static void vfio_instance_init(Object *obj)
+-    vbasedev->type = VFIO_DEVICE_TYPE_PLATFORM;
+-    vbasedev->dev = dev;
+-    vbasedev->ops = &vfio_platform_ops;
+-
+     qemu_mutex_init(&vdev->intp_mutex);
+ 
+     trace_vfio_platform_realize(vbasedev->sysfsdev ?
+@@ -659,8 +655,12 @@ static Property vfio_platform_dev_properties[] = {
+ static void vfio_platform_instance_init(Object *obj)
  {
-     PCIDevice *pci_dev = PCI_DEVICE(obj);
-     VFIOPCIDevice *vdev = VFIO_PCI(obj);
+     VFIOPlatformDevice *vdev = VFIO_PLATFORM_DEVICE(obj);
 +    VFIODevice *vbasedev = &vdev->vbasedev;
  
-     device_add_bootindex_property(obj, &vdev->bootindex,
-                                   "bootindex", NULL,
-@@ -3328,7 +3326,11 @@ static void vfio_instance_init(Object *obj)
-     vdev->host.bus = ~0U;
-     vdev->host.slot = ~0U;
-     vdev->host.function = ~0U;
 -    vdev->vbasedev.fd = -1;
-+
-+    vbasedev->type = VFIO_DEVICE_TYPE_PCI;
-+    vbasedev->ops = &vfio_pci_ops;
++    vbasedev->type = VFIO_DEVICE_TYPE_PLATFORM;
++    vbasedev->ops = &vfio_platform_ops;
 +    vbasedev->dev = DEVICE(vdev);
 +    vbasedev->fd = -1;
+ }
  
-     vdev->nv_gpudirect_clique = 0xFF;
- 
+ #ifdef CONFIG_IOMMUFD
 -- 
 2.34.1
 
