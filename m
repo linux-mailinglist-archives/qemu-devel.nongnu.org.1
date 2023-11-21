@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C11BC7F2ADA
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 11:42:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 120527F2AD4
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 11:41:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5OBN-0007d5-A9; Tue, 21 Nov 2023 05:40:41 -0500
+	id 1r5OBS-0007dj-9k; Tue, 21 Nov 2023 05:40:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1r5OBL-0007cs-Lb
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:40:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1r5OBQ-0007dS-U3
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:40:44 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1r5OBK-0003Fk-0H
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:40:39 -0500
+ id 1r5OBM-0003Fu-6D
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:40:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700563237;
+ s=mimecast20190719; t=1700563239;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/lZDWtU9dA1Ia3oluK8elzKYgftQTPR7WpSwNCX+HpI=;
- b=E4+vjx27bumxNpYOCZV26nv5ZQ3hJZszWDR5P5G4mtHxBW90+FgFb0fJ6w2OB3NfVrNh/p
- XHLygwtg1cnJkJUPXU1wTvGZNFSPWdKullJlPrRay/jxSnn+VZpsPCg/OjXPhsjhZxmvr3
- t2EKUtJZ6FtIWzZF+mYW44uDGBs9/As=
+ bh=9JT5zFuC7oqj6UW3VAGVzElRtLR9xFuKN2cEei4sh+I=;
+ b=hHjES5qzVZUAv4e7F544kZ+E7dEETiLzaomWF95QSLIq8PxudQj+B1RzBjwMIE0R1+k1QW
+ A0MhvEa1SguCMRMMWFmDPpjyiSCUgVUJO9fOtldJ61YRYcYiYcpEbLj6sAji8iDCW72w6z
+ m4olHhZTUq6QKqd7t0pv19lxx4t8/rU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-202-7PHe_H1jMEaoU4KIdGl7tA-1; Tue, 21 Nov 2023 05:40:32 -0500
-X-MC-Unique: 7PHe_H1jMEaoU4KIdGl7tA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-437-ZV52MlFiMS6wHSVXeQgMEQ-1; Tue, 21 Nov 2023 05:40:35 -0500
+X-MC-Unique: ZV52MlFiMS6wHSVXeQgMEQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A666785C1A0;
- Tue, 21 Nov 2023 10:40:31 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 88F1A85C1A0;
+ Tue, 21 Nov 2023 10:40:35 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.10])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E7F651121306;
- Tue, 21 Nov 2023 10:40:30 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CD2A920268D0;
+ Tue, 21 Nov 2023 10:40:34 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  peter.maydell@linaro.org, dwmw@amazon.co.uk
-Subject: [PULL 2/5] ui: use "vc" chardev for dbus, gtk & spice-app
-Date: Tue, 21 Nov 2023 14:40:17 +0400
-Message-ID: <20231121104020.2209345-3-marcandre.lureau@redhat.com>
+Subject: [PULL 3/5] ui/console: fix default VC when there are no display
+Date: Tue, 21 Nov 2023 14:40:18 +0400
+Message-ID: <20231121104020.2209345-4-marcandre.lureau@redhat.com>
 In-Reply-To: <20231121104020.2209345-1-marcandre.lureau@redhat.com>
 References: <20231121104020.2209345-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,58 +85,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Those display have their own implementation of "vc" chardev, which
-doesn't use pixman. They also don't implement the width/height/cols/rows
-options, so qemu_display_get_vc() should return a compatible argument.
+When display is "none", we may still have remote displays (I think it
+would be simpler if VNC/Spice were regular display btw). Return the
+default VC then, and set them up to fix a regression when using remote
+display and it used the TTY instead.
 
-This patch was meant to be with the pixman series, when the "vc" field
-was introduced. It fixes a regression where VC are created on the
-tty (or null) instead of the display own "vc" implementation.
-
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1989
+Fixes: commit 1bec1cc0d ("ui/console: allow to override the default VC")
+Reported-by: German Maglione <gmaglione@redhat.com>
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Acked-by: Thomas Huth <thuth@redhat.com>
 ---
- ui/dbus.c      | 1 +
- ui/gtk.c       | 1 +
- ui/spice-app.c | 1 +
- 3 files changed, 3 insertions(+)
+ ui/console.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/ui/dbus.c b/ui/dbus.c
-index 866467ad2e..e08b5de064 100644
---- a/ui/dbus.c
-+++ b/ui/dbus.c
-@@ -518,6 +518,7 @@ static QemuDisplay qemu_display_dbus = {
-     .type       = DISPLAY_TYPE_DBUS,
-     .early_init = early_dbus_init,
-     .init       = dbus_init,
-+    .vc         = "vc",
- };
+diff --git a/ui/console.c b/ui/console.c
+index 8e688d3569..7db921e3b7 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -1679,19 +1679,17 @@ void qemu_display_init(DisplayState *ds, DisplayOptions *opts)
  
- static void register_dbus(void)
-diff --git a/ui/gtk.c b/ui/gtk.c
-index be047a41ad..810d7fc796 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -2534,6 +2534,7 @@ static QemuDisplay qemu_display_gtk = {
-     .type       = DISPLAY_TYPE_GTK,
-     .early_init = early_gtk_display_init,
-     .init       = gtk_display_init,
-+    .vc         = "vc",
- };
+ const char *qemu_display_get_vc(DisplayOptions *opts)
+ {
+-    assert(opts->type < DISPLAY_TYPE__MAX);
+-    if (opts->type == DISPLAY_TYPE_NONE) {
+-        return NULL;
+-    }
+-    assert(dpys[opts->type] != NULL);
+-    if (dpys[opts->type]->vc) {
+-        return dpys[opts->type]->vc;
+-    } else {
+ #ifdef CONFIG_PIXMAN
+-        return "vc:80Cx24C";
++    const char *vc = "vc:80Cx24C";
++#else
++    const char *vc = NULL;
+ #endif
++
++    assert(opts->type < DISPLAY_TYPE__MAX);
++    if (dpys[opts->type] && dpys[opts->type]->vc) {
++        vc = dpys[opts->type]->vc;
+     }
+-    return NULL;
++    return vc;
+ }
  
- static void register_gtk(void)
-diff --git a/ui/spice-app.c b/ui/spice-app.c
-index 405fb7f9f5..a10b4a58fe 100644
---- a/ui/spice-app.c
-+++ b/ui/spice-app.c
-@@ -220,6 +220,7 @@ static QemuDisplay qemu_display_spice_app = {
-     .type       = DISPLAY_TYPE_SPICE_APP,
-     .early_init = spice_app_display_early_init,
-     .init       = spice_app_display_init,
-+    .vc         = "vc",
- };
- 
- static void register_spice_app(void)
+ void qemu_display_help(void)
 -- 
 2.42.0
 
