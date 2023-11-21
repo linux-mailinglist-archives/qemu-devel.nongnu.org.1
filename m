@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13C717F248B
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 04:14:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 731E97F248E
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 04:16:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5HDO-0004MD-TA; Mon, 20 Nov 2023 22:14:18 -0500
+	id 1r5HFS-00056P-RQ; Mon, 20 Nov 2023 22:16:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5HDK-0004Lq-Ih
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 22:14:14 -0500
-Received: from mail-ua1-x92a.google.com ([2607:f8b0:4864:20::92a])
+ id 1r5HFJ-00055y-Gl
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 22:16:17 -0500
+Received: from mail-ua1-x931.google.com ([2607:f8b0:4864:20::931])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5HDI-0007Xx-VS
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 22:14:14 -0500
-Received: by mail-ua1-x92a.google.com with SMTP id
- a1e0cc1a2514c-7baba7de286so1728954241.2
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 19:14:12 -0800 (PST)
+ id 1r5HFH-00080v-Vh
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 22:16:17 -0500
+Received: by mail-ua1-x931.google.com with SMTP id
+ a1e0cc1a2514c-7ba75345e71so1690496241.0
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 19:16:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700536452; x=1701141252; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1700536574; x=1701141374; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2NZliIG7sKwUytTXZXr//RZ5woc/sHIjuCWBw/6FVPo=;
- b=WA4LEZtRLFAUCL5b2+YW8HVNVxYwZeVBURezTavb9t6YEykB/wW0V0zZPqBiAsnGnZ
- uXYxjaTbR/V3R3NrLHtvXOjQmtxowbbtPjrGl4qGBKWzkoHG98KTgANDJ5D217DSHqaW
- X38LQPmhwuE3QqW1osMbrJlQuonFe78bJ+8JoU0t9glKGO4TR+mTVQKzM2tHsdMYCwnA
- smzC1azWdQiuokAF26kkaOybeJn+U9qlqUxHLRu9s9tB/sXYi0whyqnduCqFZCqIeTeQ
- 0Dj5q6znTB36T9heY13vmNXcIjmd9JCUFjB+O0F1bNvidXSx02diblzCj3F/vKX8STYq
- e1Gg==
+ bh=WPIo7ouPs2950xyEq+fIaaSm9lXkxbUBGUbAimA0ZP4=;
+ b=Hh7PoxEyr1H0LKAifcJXtciWztmlmEEpFXrlGEbDLClqo33cM3kzVsry9oGTl4UNPa
+ seci3lmx5Xfz4b7jYsqMgqds4kMIc47yObuU3wmJYnHV1PSCtogPlYbOFcv5C9POE+2k
+ BBvXLkxaXLgU7qPslHRiWuO9IxXeGqOmTmJeJ+OZyVYHy/18L4N9bkdigwd5MtIWj1ih
+ EQF/PbckVaR74g9zYgvDNBphVFui0mriYCkvVdjUEgfCRZVpkvuDfd7wCkrgsHcKdJXd
+ eaYGprQz9WRelTzw3jnNmC4KpGh6tkkjyTUNPoJlq72u2bjyuhzFnyCTHNI9fNmSG4cw
+ hBIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700536452; x=1701141252;
+ d=1e100.net; s=20230601; t=1700536574; x=1701141374;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2NZliIG7sKwUytTXZXr//RZ5woc/sHIjuCWBw/6FVPo=;
- b=RrDfrfJ3AsvoVISFKo86Z/KdU6l9FkvaYKSrS+GrCRB1g3PK8Z1zxGpwEZ4gSTq7sQ
- 3TjnFtGCgd/QDlko8ZJvL8+vGnAMbBhoevcPMu3UjgJ4oVMKrtUQcfJxO8el56Xa8O+i
- CtFNifte91LB+SzZ4rMKvP5R3kMAmYWSD+IQ1BiFaeBsOK5SBmOtqSrtJuznbzcMFAAL
- lC65Lh4sr0xA/Od7nlYXRIApzFKsMaLfVpbuH06p1x2lmyKur5ukz84Ss0lngc3/N4cy
- GqQ5ucpxJ8/DJwMudvS9F3M+/awvQhVKD2hbGa8lGTUvptsIdgpJUmNe0Ho3ZmrNptML
- ZRZA==
-X-Gm-Message-State: AOJu0YyoKNbKS/8sQCqKgHxxiN5lmHdvv4LRCwQIbGBbMJrUBx8+HALH
- 7HX8tzWqayqjnmpMM6dJMO9K3P9jI5jp9cGxXic=
-X-Google-Smtp-Source: AGHT+IEUqbOKfnHZG+6Ff0deoGwMTxIOSbLdGbrXIN4PX3ee4pi7HL0Cxvjhp7I2eAgwXV9UD8AoEA61uQywxFIy2sc=
-X-Received: by 2002:a67:f418:0:b0:45d:b3a9:84c5 with SMTP id
- p24-20020a67f418000000b0045db3a984c5mr6746431vsn.34.1700536451918; Mon, 20
- Nov 2023 19:14:11 -0800 (PST)
+ bh=WPIo7ouPs2950xyEq+fIaaSm9lXkxbUBGUbAimA0ZP4=;
+ b=W872rwZryBABzPkUcrGoxWs9gFw5boK43gRGDstB/2ttCoWauTSO4/+w5H3lbyOotu
+ +D2ZQeqGlRDYEnS5+dCrf6hfmpOZuvATfqXsoCM1inrluWoJfCrlGc8+yrsW2ctAK37V
+ 5XJM5X6EOIOt/R8FzLOhYhdqRCoqnc8GrGANPN4v74Brg7woAAzTNw06LFhN+fiK58vB
+ rchADCTwMVZQzCZQRbhA7Fm6QpWP1MFsOcSUjpqahuZN5Aax2tSoVRp64NLFCOugnNIq
+ M2Ok/aBxGF/B/TMglYhKzbYKel140DYakOqTiZOs3BAmXwAdnpgoGC2PqTyiv55ZX7BS
+ lwTA==
+X-Gm-Message-State: AOJu0YxVrsne0WkWDHU9lAYlTuw85zGhB1mO20e468moLksG1YTIDj1X
+ NIWKWwlWHS80XGlf5q9mEWY6lYip3rJAWx8VavA=
+X-Google-Smtp-Source: AGHT+IE7oRcff3lx8Lke/OFEWVMuerHSXJaIUoeBcf+p8u3rTyqHSatrNqj1417eiGf78eizgjUQjHk7S0Ulg75mZrc=
+X-Received: by 2002:a05:6102:151f:b0:460:5a82:fc5b with SMTP id
+ f31-20020a056102151f00b004605a82fc5bmr5149331vsv.5.1700536574051; Mon, 20 Nov
+ 2023 19:16:14 -0800 (PST)
 MIME-Version: 1.0
 References: <20231117114457.177308-1-thuth@redhat.com>
- <20231117114457.177308-5-thuth@redhat.com>
-In-Reply-To: <20231117114457.177308-5-thuth@redhat.com>
+ <20231117114457.177308-6-thuth@redhat.com>
+In-Reply-To: <20231117114457.177308-6-thuth@redhat.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 21 Nov 2023 13:13:45 +1000
-Message-ID: <CAKmqyKP9hxUtd5ycOP=A5EMJYktdfd7+omngh0Q1P4F786rNpA@mail.gmail.com>
-Subject: Re: [PATCH v3 4/5] tests/unit/test-io-task: Rename "qemu:dummy" to
- avoid colon in the name
+Date: Tue, 21 Nov 2023 13:15:47 +1000
+Message-ID: <CAKmqyKPTM5bmQpFCMjn+KZhVV5JdUC29fEmGY08UkLesWoYm9Q@mail.gmail.com>
+Subject: Re: [PATCH v3 5/5] qom/object: Limit type names to alphanumerical and
+ some few special characters
 To: Thomas Huth <thuth@redhat.com>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
@@ -74,8 +74,8 @@ Cc: qemu-devel@nongnu.org,
  Eduardo Habkost <eduardo@habkost.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92a;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::931;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x931.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,16 +99,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 17, 2023 at 11:08=E2=80=AFPM Thomas Huth <thuth@redhat.com> wro=
-te:
+On Fri, Nov 17, 2023 at 9:46=E2=80=AFPM Thomas Huth <thuth@redhat.com> wrot=
+e:
 >
-> Type names should not contain special characters like ":" (so that
-> they are easier to use with QAPI and other parts). We are going to
-> forbid such names in an upcoming patch. Thus let's replace the ":"
-> here with a "-".
+> QOM names currently don't have any enforced naming rules. This
+> can be problematic, e.g. when they are used on the command line
+> for the "-device" option (where the comma is used to separate
+> properties). To avoid that such problematic type names come in
+> again, let's restrict the set of acceptable characters during the
+> type registration.
 >
-> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Ideally, we'd apply here the same rules as for QAPI, i.e. all type
+> names should begin with a letter, and contain only ASCII letters,
+> digits, hyphen, and underscore. However, we already have so many
+> pre-existing types like:
+>
+>     486-x86_64-cpu
+>     cfi.pflash01
+>     power5+_v2.1-spapr-cpu-core
+>     virt-2.6-machine
+>     pc-i440fx-3.0-machine
+>
+> ... so that we have to allow "." and "+" for now, too. While the
+> dot is used in a lot of places, the "+" can fortunately be limited
+> to two classes of legacy names ("power" and "Sun-UltraSparc" CPUs).
+>
+> We also cannot enforce the rule that names must start with a letter
+> yet, since there are lot of types that start with a digit. Still,
+> at least limiting the first characters to the alphanumerical range
+> should be way better than nothing.
+>
 > Signed-off-by: Thomas Huth <thuth@redhat.com>
 
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
@@ -116,22 +136,68 @@ Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Alistair
 
 > ---
->  tests/unit/test-io-task.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  qom/object.c | 41 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 41 insertions(+)
 >
-> diff --git a/tests/unit/test-io-task.c b/tests/unit/test-io-task.c
-> index 953a50ae66..115dba8970 100644
-> --- a/tests/unit/test-io-task.c
-> +++ b/tests/unit/test-io-task.c
-> @@ -25,7 +25,7 @@
->  #include "qapi/error.h"
->  #include "qemu/module.h"
+> diff --git a/qom/object.c b/qom/object.c
+> index 95c0dc8285..654e1afaf2 100644
+> --- a/qom/object.c
+> +++ b/qom/object.c
+> @@ -138,9 +138,50 @@ static TypeImpl *type_new(const TypeInfo *info)
+>      return ti;
+>  }
 >
-> -#define TYPE_DUMMY "qemu:dummy"
-> +#define TYPE_DUMMY "qemu-dummy"
+> +static bool type_name_is_valid(const char *name)
+> +{
+> +    const int slen =3D strlen(name);
+> +    int plen;
+> +
+> +    g_assert(slen > 1);
+> +
+> +    /*
+> +     * Ideally, the name should start with a letter - however, we've got
+> +     * too many names starting with a digit already, so allow digits her=
+e,
+> +     * too (except '0' which is not used yet)
+> +     */
+> +    if (!g_ascii_isalnum(name[0]) || name[0] =3D=3D '0') {
+> +        return false;
+> +    }
+> +
+> +    plen =3D strspn(name, "abcdefghijklmnopqrstuvwxyz"
+> +                        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+> +                        "0123456789-_.");
+> +
+> +    /* Allow some legacy names with '+' in it for compatibility reasons =
+*/
+> +    if (name[plen] =3D=3D '+') {
+> +        if (plen =3D=3D 6 && g_str_has_prefix(name, "power")) {
+> +            /* Allow "power5+" and "power7+" CPU names*/
+> +            return true;
+> +        }
+> +        if (plen >=3D 17 && g_str_has_prefix(name, "Sun-UltraSparc-I")) =
+{
+> +            /* Allow "Sun-UltraSparc-IV+" and "Sun-UltraSparc-IIIi+" */
+> +            return true;
+> +        }
+> +    }
+> +
+> +    return plen =3D=3D slen;
+> +}
+> +
+>  static TypeImpl *type_register_internal(const TypeInfo *info)
+>  {
+>      TypeImpl *ti;
+> +
+> +    if (!type_name_is_valid(info->name)) {
+> +        fprintf(stderr, "Registering '%s' with illegal type name\n", inf=
+o->name);
+> +        abort();
+> +    }
+> +
+>      ti =3D type_new(info);
 >
->  typedef struct DummyObject DummyObject;
->  typedef struct DummyObjectClass DummyObjectClass;
+>      type_table_add(ti);
 > --
 > 2.42.0
 >
