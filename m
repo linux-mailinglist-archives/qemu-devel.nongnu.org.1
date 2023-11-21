@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4655C7F367F
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 19:51:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C942B7F3687
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 19:53:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Vpc-0001PX-RU; Tue, 21 Nov 2023 13:50:44 -0500
+	id 1r5VrP-0002XU-9X; Tue, 21 Nov 2023 13:52:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r5Vpb-0001P9-1B
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 13:50:43 -0500
-Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
+ id 1r5VrJ-0002Uy-LR
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 13:52:30 -0500
+Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r5VpZ-0007Xu-Kb
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 13:50:42 -0500
-Received: by mail-ot1-x332.google.com with SMTP id
- 46e09a7af769-6ce2c71c61fso3139846a34.1
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 10:50:41 -0800 (PST)
+ id 1r5VrF-0007m6-HY
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 13:52:28 -0500
+Received: by mail-oa1-x2e.google.com with SMTP id
+ 586e51a60fabf-1f94b07b6b3so1141783fac.2
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 10:52:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700592640; x=1701197440; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1700592743; x=1701197543; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=lNnPXcYVLt7Wr01bAS2uF3p1vIC/3B/3HyaD/sLeMK8=;
- b=O7aum+VJ13oxb6+gEPzA42By4mflD3UaFgRZkLFa4WRo5smJqMZxkVhDULvHB12RQm
- oyVuRORhfhSY//RV9Qz3Mri6z8BUzBJhyazB2VuZLKkIRZcvUWogFcGDBoOP/3zhJmfe
- qOOKegAOvdevMNXdQ3bAXL9dw/SVNGJsfkvKBLhUDAHUa49ub/RnYdCWyda/7ejQiSOC
- P3onN4/DVCN/mIAApxrqanwp17o+v8CFoxQOdYF+mJNd/DnWVIl/Dfp0zBCCVfkVyZac
- c5TrpndQYZQ3Vd7Eq4CY6GJLWI+CL95mNKmvWIvvy6FHenQnW1BChrEM6+npYV2gNP6R
- csMw==
+ bh=H+G+BY9ETnlElcUd6mgXcxGpvhtWSeNwcm0URAYlHaU=;
+ b=xW2toLJDVMSjo0AlQmCa11dwGGAf8UA2Q7vkczg/Liy/pqnFnyJyLtzQ0SxcOZ5nKW
+ 8J1f6IBcIBLzJ3Azi8BRGjEJtHRwMAmdheXmQpK6WV3biLxMUyrxUCnJg87xsOE/lyLV
+ 5Z2aIYvUBsUrNASfS87SfmYk/cMlPZtlD+51hiDEXVLJQH96RwOpZwKgUjQOIIwdnJoJ
+ 47FUNdXp/fv7uD1yy1sRQXc4wBdyZiKa360TMaOHFBW58stxx9A97TQCdDFtiyrmLCV0
+ axk40hZ8vIqsX0Jt0S/pw5dFJxphWDitcY+icelH+eYOMWa1sPeHMFZ7iPQjH9om5hzd
+ 9A0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700592640; x=1701197440;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1700592743; x=1701197543;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lNnPXcYVLt7Wr01bAS2uF3p1vIC/3B/3HyaD/sLeMK8=;
- b=jsAduqsAyBOiS76D+hkIZ9UVR5xiVnelYuKLUjfBOU4v4qHrPrPZNJYGPVWFrcWoT1
- zeRyQYMDrq88okvnMYKDteiah41Yz8Bn0Of6Di+xJF/RAW7f4ccpKu1ghBj/6oJIC6Ej
- COJ0k+xNyjI49QofVPCVK9H48hlHBcCH4AVY2W1KUD3H1EiRMZD4JnSKNo+6LQP9YGKr
- duRSePK7C7zCak1F0kHr9PaA8va3pGWYnrxpqe/ii2XzKx17BL4lNDkqi8OQQoGUaLkK
- qMNBOFpAuXuIMNIT1k2qZuz5A3asIzwmbXVTpAsJ9mqzq5NJ6m++8gOkDrtpKcCDeGQS
- OXsQ==
-X-Gm-Message-State: AOJu0YwihWnvxMGdXWH7UZfCdsB/4vzZfmuyHU8omS7Cz7JMnWPQwjGr
- 0q8rWLodSul0CW113K2Ix9Pk7A==
-X-Google-Smtp-Source: AGHT+IF6VutuJPaNXeFdWJucyN13K5MBEeykXbq9XIAi8xoGvu2seic2d3DFliNufIaO+16bzifMrw==
-X-Received: by 2002:a05:6871:459c:b0:1f9:352c:c213 with SMTP id
- nl28-20020a056871459c00b001f9352cc213mr152143oab.37.1700592640206; 
- Tue, 21 Nov 2023 10:50:40 -0800 (PST)
+ bh=H+G+BY9ETnlElcUd6mgXcxGpvhtWSeNwcm0URAYlHaU=;
+ b=WAHqrj4Qu1FBENdimLzm9cQz+kf6wxFyarsqJzW4FRvX/6yhYcjfisZgN+aRLa9888
+ dPGmxnTlKWW7Odg58HUCCczjnlOHAb1g7msuOyn2YJRXansV3gKMaSEPTFyyY6K3gG6s
+ 6lKEEWBu6q6f9jmOOSXMzMzMoollP62r7bxb+mS/85x4/j3/AtDgNHHoozNWn3NwnPqp
+ cNl58+jdI0rm5RJ9kNDmrQbjPtcw7wNvj4xsnlM+vxvx/2LukMQWauQw5SuEOBQgJUw+
+ HGXc3MBAjvHQRqtwReer60V/jqtJQfKwx/U+QZSWz0nofnU8LCibU3w0uQKXxauhQssn
+ TBhQ==
+X-Gm-Message-State: AOJu0Yw97jOXmYOjCfW0kRMFF5A+hGp0qUGzZcTB8NU4U3shSTzC9/1V
+ ayHV415CXyZYEM3AzTBMhGfTsA==
+X-Google-Smtp-Source: AGHT+IFDZH+n4uKkpzj3ajSDZI3oggc1CRWT4+Xjymm9zwNbg0b7NpcGzg4RTZho5A2wAvHv7FWTkg==
+X-Received: by 2002:a05:6870:3910:b0:1f5:c751:e7b1 with SMTP id
+ b16-20020a056870391000b001f5c751e7b1mr178980oap.45.1700592742799; 
+ Tue, 21 Nov 2023 10:52:22 -0800 (PST)
 Received: from [172.20.7.39] ([187.217.227.247])
  by smtp.gmail.com with ESMTPSA id
- d14-20020a9d51ce000000b006b9443ce478sm1609593oth.27.2023.11.21.10.50.38
+ h5-20020a056870a3c500b001f94a466974sm689197oak.41.2023.11.21.10.52.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Nov 2023 10:50:39 -0800 (PST)
-Message-ID: <958391d5-b1b5-43bf-b3d1-a6071e77b5cd@linaro.org>
-Date: Tue, 21 Nov 2023 12:50:36 -0600
+ Tue, 21 Nov 2023 10:52:22 -0800 (PST)
+Message-ID: <60d64320-8fd2-4cf3-acb6-ed758c1ff465@linaro.org>
+Date: Tue, 21 Nov 2023 12:52:19 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH-for-9.0 04/25] memory: Simplify
  memory_region_init_rom_nomigrate() calls
 Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -75,12 +76,12 @@ Cc: David Hildenbrand <david@redhat.com>,
  Peter Xu <peterx@redhat.com>
 References: <20231120213301.24349-1-philmd@linaro.org>
  <20231120213301.24349-5-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231120213301.24349-5-philmd@linaro.org>
+ <958391d5-b1b5-43bf-b3d1-a6071e77b5cd@linaro.org>
+In-Reply-To: <958391d5-b1b5-43bf-b3d1-a6071e77b5cd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x332.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2e.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -103,33 +104,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/20/23 15:32, Philippe Mathieu-Daudé wrote:
-> Mechanical change using the following coccinelle script:
+On 11/21/23 12:50, Richard Henderson wrote:
+> On 11/20/23 15:32, Philippe Mathieu-Daudé wrote:
+>> Mechanical change using the following coccinelle script:
+>>
+>> @@
+>> expression mr, owner, arg3, arg4, errp;
+>> @@
+>> -   memory_region_init_rom_nomigrate(mr, owner, arg3, arg4, &errp);
+>>      if (
+>> -       errp
+>> +       !memory_region_init_rom_nomigrate(mr, owner, arg3, arg4, &errp)
 > 
-> @@
-> expression mr, owner, arg3, arg4, errp;
-> @@
-> -   memory_region_init_rom_nomigrate(mr, owner, arg3, arg4, &errp);
->      if (
-> -       errp
-> +       !memory_region_init_rom_nomigrate(mr, owner, arg3, arg4, &errp)
+> This coccinelle script doesn't quite match...
+> 
+>> @@ -3628,11 +3628,8 @@ void memory_region_init_rom(MemoryRegion *mr,
+>>                               Error **errp)
+>>   {
+>>       DeviceState *owner_dev;
+>> -    Error *err = NULL;
+>> -    memory_region_init_rom_nomigrate(mr, owner, name, size, &err);
+> 
+> ... this?
 
-This coccinelle script doesn't quite match...
-
-> @@ -3628,11 +3628,8 @@ void memory_region_init_rom(MemoryRegion *mr,
->                               Error **errp)
->   {
->       DeviceState *owner_dev;
-> -    Error *err = NULL;
->   
-> -    memory_region_init_rom_nomigrate(mr, owner, name, size, &err);
-
-... this?
-
-That said, the actual code change is good.
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+I'm sorry, it does.  "expression errp" can match "err".
+It's the manual local variable removal that threw me off.
 
 
 r~
+
 
