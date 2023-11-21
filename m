@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20AD37F2A55
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 11:26:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C47907F2A52
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 11:26:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Nw2-0004Ik-L8; Tue, 21 Nov 2023 05:24:50 -0500
+	id 1r5Nw2-0004It-SZ; Tue, 21 Nov 2023 05:24:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r5Nw0-0004G5-J7
+ id 1r5Nw0-0004Hs-UZ
  for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:24:48 -0500
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r5Nvx-0007EP-L2
+ id 1r5Nvy-0007EY-Ab
  for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:24:48 -0500
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-507a29c7eefso7630748e87.1
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-507b9408c61so7320261e87.0
  for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 02:24:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1700562284; x=1701167084; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=48i16lN/X0IufQ0d/3ATpQbGOSnta9cBh6bFvGherhw=;
- b=bsq+uaoAQ/OtEMEEvn+G2zO+g+3ZPjiMvYEakYfju3TYHWcupjVwJPyDuVWPI1PRMd
- k7QWCDQdtB2gpoMxxV9LLj3TecDBg5tNorCfr0AnZX9ABLaGoPRxEUQtYPRocWEXmLCu
- Jmn2WtyLzUlrQmL0SoHPVv27mQ900aTGN3ujWVQgJxtK7vbJWHhsBNAGZdUWwRBP80NJ
- gyC/jSagZHsSJ62EqFRFiYiGM2IxCjzkd2ixnJWmDNcEiUPlVqKStfAKEvhjUaJGSK9k
- Ztw2h0ge/EVmVbO/VID6Z7I1pHhKUVxkAPxD3E4Zzc7DRloJN5BGz4jwTvoLcrmXSMGl
- MEOw==
+ :reply-to; bh=aWov8zdztLe0Jlc/lkRlL/DlbtZzkn3RPI3Q2gppqQQ=;
+ b=vZysZ6HrwMn5/R4nwXCKDzQVbVLIsu3F3zzyP0Y1QUVWfMo5XP1sNMA+/US9/rMAVW
+ pCOKRwpleOyT/0DSh0fKt3hyyhLIWFgd8oGqKjr923fBxT8r+rNNaXs+khduK1nAE2S0
+ Q+DTi8Ws8+w+GUlyoJqJL95kJKeTTiQTFM4MiwEKmhRRCj1KdnLPfhYVh/Lp1/mbchaG
+ anjvLxCxfF7Hzv1ng1LaNxNuaLPwTmOfwkKuBL2Ey5LJkxMgGnNXwTMrIUD3tOHgSX0C
+ GNLSz9ec8n82PjZSFftWaMS53HkKgMVtcdZ+cq7Y9FsiXDnwIQMTr1MYQaknrxzj/bsz
+ b5+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1700562284; x=1701167084;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=48i16lN/X0IufQ0d/3ATpQbGOSnta9cBh6bFvGherhw=;
- b=BGIfFj6F2jFsopBToTCgaEFiKmPfe7jYTF1lDoxOakF8XQvGCPhNCrxlthAdHaAqol
- g6wANyUxN90lfpNvREbwneTHhYwyJxU9+hLXlccq3VJhihXP5HvrOB25SgrgPKYty0ic
- p7dohVj0BUrhfG33FZ70IJdEdV+0f9bTfUuUIx9+Af+a+EoAXU8DOG8c1ETyyg5y8893
- Rt081Nj0kR8NhJYYXSJz2TCnuC1tEnJQPd4XccwUBf3UjZ2g1ds3S1iI7KdDGlPHUHgE
- jQ4h8hpgp7UibjBThEb/Hhsr88NORluIckQvefo6Uv+TP79QlnVPRfIHh/gWlpBnoNXU
- BUvQ==
-X-Gm-Message-State: AOJu0YzVR3BhnbknwWDNjKDuQljftH569cnD8KrfYUy/7kzZ+IjfWZsn
- V6eND4x9D7IVBcLzXKxqJfYqG2GpoGYK1Ql717A=
-X-Google-Smtp-Source: AGHT+IEokHooP/rHzOaIt2poO4Ams1GHQdUMwviHlyc5yxy4yZ6Xs25emQOzbhB2Cj7TtoM1/8KNtg==
-X-Received: by 2002:ac2:5df3:0:b0:502:fdca:2eaa with SMTP id
- z19-20020ac25df3000000b00502fdca2eaamr6882544lfq.52.1700562283905; 
- Tue, 21 Nov 2023 02:24:43 -0800 (PST)
+ bh=aWov8zdztLe0Jlc/lkRlL/DlbtZzkn3RPI3Q2gppqQQ=;
+ b=FdAdVWFRLrzKyKLLcIMkbIs7gGtOy5jeKAlyUi+WU5WaFKCRQeH6/jg3kKGDNdT2Qi
+ cSUAJCfw9IW+Q9p2cLAiUlz8GlWKXn6vHEecoqgpP3CHyAW0w9wM5ImjqXupIJys29FZ
+ kOVxWHqlyPtOmxMGvgggJrBbk+dEjuG5vBUqrAQnR8lUhdcr6f55mZAavqVFE/55vupG
+ YwSfFaDbM2bVQMkkamXjx7omo4XYiwD63wHokz4ClG7ipRiGOlu6qh+JMiDKbHV2NEcL
+ 7u2fb80gZVzVKCnDJtyxwvKtp2mpQ2IOHv3IJ9g0y6SfB35C3IZaG3leICP1IDp9x8Rl
+ YXzw==
+X-Gm-Message-State: AOJu0YxWCkbN1tdhhm+Jzze2JqWuqfR1ycvsBlSWNbcISebllLccHOQI
+ D5waAYS6mte3WRr8XCaUSpm1ez2WRgEwpgj6+RE=
+X-Google-Smtp-Source: AGHT+IGdojh2d9ZIEFJfH8k4PXA0q7rCTshMtSqqw0leBD+w89+iA9AyflLwf6cIA7UMu361mEqZNA==
+X-Received: by 2002:a19:6747:0:b0:508:12f5:f808 with SMTP id
+ e7-20020a196747000000b0050812f5f808mr7156884lfj.57.1700562284445; 
+ Tue, 21 Nov 2023 02:24:44 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- n25-20020a05600c181900b00405442edc69sm20450835wmp.14.2023.11.21.02.24.43
+ n25-20020a05600c181900b00405442edc69sm20450835wmp.14.2023.11.21.02.24.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Nov 2023 02:24:43 -0800 (PST)
+ Tue, 21 Nov 2023 02:24:44 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 1/8] target/arm: enable FEAT_RNG on Neoverse-N2
-Date: Tue, 21 Nov 2023 10:24:34 +0000
-Message-Id: <20231121102441.3872902-2-peter.maydell@linaro.org>
+Subject: [PULL 2/8] hw/intc/arm_gicv3: ICC_PMR_EL1 high bits should be RAZ
+Date: Tue, 21 Nov 2023 10:24:35 +0000
+Message-Id: <20231121102441.3872902-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231121102441.3872902-1-peter.maydell@linaro.org>
 References: <20231121102441.3872902-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x134.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,33 +90,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+From: Ben Dooks <ben.dooks@codethink.co.uk>
 
-I noticed that Neoverse-V1 has FEAT_RNG enabled so let enable it also on
-Neoverse-N2.
+The ICC_PMR_ELx and ICV_PMR_ELx bit masks returned from
+ic{c,v}_fullprio_mask should technically also remove any
+bit above 7 as these are marked reserved (read 0) and should
+therefore should not be written as anything other than 0.
 
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20231114103443.1652308-1-marcin.juszkiewicz@linaro.org
+This was noted during a run of a proprietary test system and
+discused on the mailing list [1] and initially thought not to
+be an issue due to RES0 being technically allowed to be
+written to and read back as long as the implementation does
+not use the RES0 bits. It is very possible that the values
+are used in comparison without masking, as pointed out by
+Peter in [2], if (cs->hppi.prio >= cs->icc_pmr_el1) may well
+do the wrong thing.
+
+Masking these values in ic{c,v}_fullprio_mask() should fix
+this and prevent any future problems with playing with the
+values.
+
+[1]: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00607.html
+[2]: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00737.html
+
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+Message-id: 20231116172818.792364-1-ben.dooks@codethink.co.uk
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/cpu64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/intc/arm_gicv3_cpuif.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 08db1dbcc74..fcda99e1583 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1018,7 +1018,7 @@ static void aarch64_neoverse_n2_initfn(Object *obj)
-     cpu->isar.id_aa64dfr1  = 0;
-     cpu->id_aa64afr0       = 0;
-     cpu->id_aa64afr1       = 0;
--    cpu->isar.id_aa64isar0 = 0x0221111110212120ull; /* with Crypto */
-+    cpu->isar.id_aa64isar0 = 0x1221111110212120ull; /* with Crypto and FEAT_RNG */
-     cpu->isar.id_aa64isar1 = 0x0011111101211052ull;
-     cpu->isar.id_aa64mmfr0 = 0x0000022200101125ull;
-     cpu->isar.id_aa64mmfr1 = 0x0000000010212122ull;
+diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
+index d07b13eb270..ab1a00508e6 100644
+--- a/hw/intc/arm_gicv3_cpuif.c
++++ b/hw/intc/arm_gicv3_cpuif.c
+@@ -146,7 +146,7 @@ static uint32_t icv_fullprio_mask(GICv3CPUState *cs)
+      * with the group priority, whose mask depends on the value of VBPR
+      * for the interrupt group.)
+      */
+-    return ~0U << (8 - cs->vpribits);
++    return (~0U << (8 - cs->vpribits)) & 0xff;
+ }
+ 
+ static int ich_highest_active_virt_prio(GICv3CPUState *cs)
+@@ -803,7 +803,7 @@ static uint32_t icc_fullprio_mask(GICv3CPUState *cs)
+      * with the group priority, whose mask depends on the value of BPR
+      * for the interrupt group.)
+      */
+-    return ~0U << (8 - cs->pribits);
++    return (~0U << (8 - cs->pribits)) & 0xff;
+ }
+ 
+ static inline int icc_min_bpr(GICv3CPUState *cs)
 -- 
 2.34.1
 
