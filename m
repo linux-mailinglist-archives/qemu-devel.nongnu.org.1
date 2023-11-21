@@ -2,84 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1342B7F3522
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 18:42:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 644197F3571
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 19:00:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Ukg-0008Uc-IA; Tue, 21 Nov 2023 12:41:34 -0500
+	id 1r5V1Q-0000p9-4r; Tue, 21 Nov 2023 12:58:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5Uke-0008Ty-MW
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 12:41:32 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5Ukc-0001Kn-4l
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 12:41:32 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4083f613272so31617495e9.1
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 09:41:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700588488; x=1701193288; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wLvcXpQco99sa0+Z1Qj96SBcGgbn4oS7DYVe2UC+AGE=;
- b=lN9xlfjc+TqtWvYl4GApf6dvwQJ5fKLq8/U8Qh/fqepQD3cKIecXgYv9T0MzOR4rRd
- /qbKPF+D7/kbDdM4vULD8vXkkwa+GSxf9/R3ummYrKO9mOfSHT4HbCzhHvcGC3Nz8J2N
- BiHvmkztAXbBOvADszrT4ZfmGq++SKms7FadSiVG52URDskt7n/zyAWBqysadS/WfaAf
- d/jRn10MfZ9e7K2Q1rRxnZZShShgZGHYOJtGFlmS4T+1fkjzGHbH20zB1XZb6CRusjn9
- fneXW1VpDrKeT3pABhDWEQ99s2Qg56wf6sEj6cY14QWMNKaMUP4m+pcmHhXscGQw+UBh
- agLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700588488; x=1701193288;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wLvcXpQco99sa0+Z1Qj96SBcGgbn4oS7DYVe2UC+AGE=;
- b=JC02pJhZfda6+qgKr6KQb1CAik4ocpqT4lOM9QE/LapRxpU8oH+ecZ33dM2NKIMNra
- L7gQKcDZi+BFOYXon4kZ0KihNqXYKHMvPcaX3ZWM3Zd20UNJFMtShRd3D9M5hC91HSSA
- 6z/DSjGUcbW1TNlVNRFIrvcVmE+2J+IoR1zWXSUfQp4eHqTrvoUV63suFDAgzJV77u8B
- tvy1etJx7kOpfSM0hgz7IIJ7+xI0n6bV9C4qRVfMWx6Ra+3Vf3eQNgG1e5YjMwYIkE2Y
- 3ZU9RniCi5BL9g5ca5pGXxRcfF+Sc/br4UEH8pEzYENtIFfiqDqyAXpW7mtkmOHJ3BEn
- 5UZg==
-X-Gm-Message-State: AOJu0YzkAj5vjZSrtHSH8cDKfKY9dEGPeHNOTZaWHAurREwa+2btFQnb
- ydGUDZEvAw6S/JzcDCSNuN+LxV/E8M1JaUmZWzQ=
-X-Google-Smtp-Source: AGHT+IGHVGKFxburPV8+OPcDcSlkReHX1Kc9dILYPy0rJ2ALh04RoVy2ObtFGWRbu2+42cJ+mJwMRg==
-X-Received: by 2002:a05:600c:35c9:b0:40b:2a20:3d3 with SMTP id
- r9-20020a05600c35c900b0040b2a2003d3mr32186wmq.30.1700588488447; 
- Tue, 21 Nov 2023 09:41:28 -0800 (PST)
-Received: from m1x-phil.lan (lgp44-h02-176-184-8-219.dsl.sta.abo.bbox.fr.
- [176.184.8.219]) by smtp.gmail.com with ESMTPSA id
- h18-20020a05600c351200b004063ea92492sm18045128wmq.22.2023.11.21.09.41.27
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 21 Nov 2023 09:41:27 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Alistair Francis <alistair@alistair23.me>, Kevin Wolf <kwolf@redhat.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Eric Auger <eric.auger@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-8.2 6/6] hw/input/stellaris_gamepad: Free
- StellarisGamepad::keycodes[] array
-Date: Tue, 21 Nov 2023 18:40:51 +0100
-Message-ID: <20231121174051.63038-7-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231121174051.63038-1-philmd@linaro.org>
-References: <20231121174051.63038-1-philmd@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1r5V1N-0000o6-Ng; Tue, 21 Nov 2023 12:58:49 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1r5V1L-0004ne-4N; Tue, 21 Nov 2023 12:58:48 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3ALHkAtQ024235; Tue, 21 Nov 2023 17:58:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=0wuSHaQPK9I/5wEWljfpu0Wb2mWPtj5ySO9t6ICaDfY=;
+ b=toDI4rsNwPkgFYlbnm35X1hRILugkkKZUhpvro9NarXkilOMbIZclCaYvIwVIIHotbwF
+ kLny8CXjonDCQ7T7vLUCq6BhorqqCwz6XO32ZeAAatRcDgUEvHZsOUjVbsIuCrb1y0TY
+ 6rgvrJWxpHDnmne5Tfn1Z5mxxfnIKdlI5lKsR0YMBQ3g0wCVHXOHKa+2EM3/GUt25uGn
+ GfYPMukasmgFBFkqUVx2rZoBwSiVpWvvlJYcq07js544XNpmBrDyfxRY6u2g57iOZ+3N
+ AU5oFzYxb2P/Z4p3us7zoPkMNT00zvIOuZFPelAtMcmqPJAoJ29vwYQl6ylN0vUK77AB rg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uh0ct9y4q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Nov 2023 17:58:43 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ALHlT70029422;
+ Tue, 21 Nov 2023 17:58:43 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uh0ct9y4e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Nov 2023 17:58:43 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3ALGIm3X007404; Tue, 21 Nov 2023 17:58:42 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uf8knte6v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Nov 2023 17:58:42 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3ALHwgOO21889566
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 21 Nov 2023 17:58:42 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EB5F35805D;
+ Tue, 21 Nov 2023 17:58:41 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C79C658058;
+ Tue, 21 Nov 2023 17:58:41 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 21 Nov 2023 17:58:41 +0000 (GMT)
+Message-ID: <fa293e804e3faaffbab8d54e817f50c40211bda4.camel@linux.vnet.ibm.com>
+Subject: Re: [PATCH v4 03/11] ppc/pnv: New powernv10-rainier machine type
+From: Miles Glenn <milesg@linux.vnet.ibm.com>
+To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, qemu-devel@nongnu.org, 
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, =?ISO-8859-1?Q?Fr=E9d=E9ric?=
+ Barrat <fbarrat@linux.ibm.com>
+Date: Tue, 21 Nov 2023 11:58:41 -0600
+In-Reply-To: <67081798-658f-4a9f-b0be-ba8e4f3779db@kaod.org>
+References: <20231120235112.1951342-1-milesg@linux.vnet.ibm.com>
+ <20231120235112.1951342-4-milesg@linux.vnet.ibm.com>
+ <67081798-658f-4a9f-b0be-ba8e4f3779db@kaod.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: -XWa_bg11psQlTiL9ncaaUWTnvDxLRf4
+X-Proofpoint-GUID: c-nf3z1TT0zf-fMKJE8N7C5Mmwg4zmzR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-21_10,2023-11-21_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ lowpriorityscore=0 malwarescore=0 mlxlogscore=968 bulkscore=0
+ priorityscore=1501 spamscore=0 clxscore=1015 phishscore=0 mlxscore=0
+ suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311060000 definitions=main-2311210141
+Received-SPF: none client-ip=148.163.158.5;
+ envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,53 +115,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 0be6bfac62 ("qdev: Implement variable length array properties")
-added the DEFINE_PROP_ARRAY() macro with the following comment:
+On Tue, 2023-11-21 at 07:46 +0100, Cédric Le Goater wrote:
+> On 11/21/23 00:51, Glenn Miles wrote:
+> > Create a new powernv machine type, powernv10-rainier, that
+> > will contain rainier-specific devices.
+> > 
+> > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+> > ---
+> >   hw/ppc/pnv.c | 29 +++++++++++++++++++++++++++--
+> >   1 file changed, 27 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+> > index 9c29727337..3481a1220e 100644
+> > --- a/hw/ppc/pnv.c
+> > +++ b/hw/ppc/pnv.c
+> > @@ -2249,7 +2249,7 @@ static void
+> > pnv_machine_power9_class_init(ObjectClass *oc, void *data)
+> >       machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
+> >   }
+> >   
+> > -static void pnv_machine_power10_class_init(ObjectClass *oc, void
+> > *data)
+> > +static void pnv_machine_p10_common_class_init(ObjectClass *oc,
+> > void *data)
+> >   {
+> >       MachineClass *mc = MACHINE_CLASS(oc);
+> >       PnvMachineClass *pmc = PNV_MACHINE_CLASS(oc);
+> > @@ -2261,7 +2261,6 @@ static void
+> > pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+> >           { TYPE_PNV_PHB_ROOT_PORT, "version", "5" },
+> >       };
+> >   
+> > -    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
+> 
+> I would keep this description because the "powernv10" machine still
+> can
+> be used, without I2C devices. Unless we don't want to ?
+> 
 
-  * It is the responsibility of the device deinit code to free the
-  * @_arrayfield memory.
+I'm not sure about the usefulness of the powernv10 machine, but the
+description still exists in the pnv_machine_power10_class_init function
+(and is unchanged).  The pnv_machine_p10_common_class_init function was
+created to hold initialization of things that are common between all
+P10 machines, and is called by all power10 based machines (powernv10
+and powernv10-rainier so far).
 
-Commit a75f336b97 added:
+> >       mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
+> >       compat_props_add(mc->compat_props, phb_compat,
+> > G_N_ELEMENTS(phb_compat));
+> >   
+> > @@ -2274,6 +2273,23 @@ static void
+> > pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+> >       machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
+> >   }
+> >   
+> > +static void pnv_machine_power10_class_init(ObjectClass *oc, void
+> > *data)
+> > +{
+> > +    MachineClass *mc = MACHINE_CLASS(oc);
+> > +
+> > +    pnv_machine_p10_common_class_init(oc, data);
+> > +    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
+> > +
+> 
+> Superfluous white line.
+> 
+Removed in v5.
 
-  DEFINE_PROP_ARRAY("keycodes", StellarisGamepad, num_buttons,
-                    keycodes, qdev_prop_uint32, uint32_t),
+> > +}
+> > +
+> > +static void pnv_machine_p10_rainier_class_init(ObjectClass *oc,
+> > void *data)
+> > +{
+> > +    MachineClass *mc = MACHINE_CLASS(oc);
+> > +
+> > +    pnv_machine_p10_common_class_init(oc, data);
+> > +    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10 rainier";
+> > +}
+> > +
+> >   static bool pnv_machine_get_hb(Object *obj, Error **errp)
+> >   {
+> >       PnvMachineState *pnv = PNV_MACHINE(obj);
+> > @@ -2379,6 +2395,15 @@ static void
+> > pnv_machine_class_init(ObjectClass *oc, void *data)
+> >       }
+> >   
+> >   static const TypeInfo types[] = {
+> > +    {
+> > +        .name          = MACHINE_TYPE_NAME("powernv10-rainier"),
+> > +        .parent        = TYPE_PNV_MACHINE,
+> 
+> Could the parent be :
+> 
+>              .parent          = MACHINE_TYPE_NAME("powernv10"),
+> 
+> This should avoid the definition of the .interfaces below.
+> 
+> Thanks,
+> 
+> C.
+> 
 
-but forgot to free the 'keycodes' array. Do it in the instance_finalize
-handler.
+Changed as suggested in v5.
 
-Fixes: a75f336b97 ("hw/input/stellaris_input: Convert to qdev")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/input/stellaris_gamepad.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Thanks,
 
-diff --git a/hw/input/stellaris_gamepad.c b/hw/input/stellaris_gamepad.c
-index 06a0c0ce83..9dfa620e29 100644
---- a/hw/input/stellaris_gamepad.c
-+++ b/hw/input/stellaris_gamepad.c
-@@ -63,6 +63,13 @@ static void stellaris_gamepad_realize(DeviceState *dev, Error **errp)
-     qemu_input_handler_register(dev, &stellaris_gamepad_handler);
- }
- 
-+static void stellaris_gamepad_finalize(Object *obj)
-+{
-+    StellarisGamepad *s = STELLARIS_GAMEPAD(obj);
-+
-+    g_free(s->keycodes);
-+}
-+
- static void stellaris_gamepad_reset_enter(Object *obj, ResetType type)
- {
-     StellarisGamepad *s = STELLARIS_GAMEPAD(obj);
-@@ -92,6 +99,7 @@ static const TypeInfo stellaris_gamepad_info[] = {
-         .name = TYPE_STELLARIS_GAMEPAD,
-         .parent = TYPE_SYS_BUS_DEVICE,
-         .instance_size = sizeof(StellarisGamepad),
-+        .instance_finalize = stellaris_gamepad_finalize,
-         .class_init = stellaris_gamepad_class_init,
-     },
- };
--- 
-2.41.0
+Glenn
+
+> 
+> 
+> > +        .class_init    = pnv_machine_p10_rainier_class_init,
+> > +        .interfaces = (InterfaceInfo[]) {
+> > +            { TYPE_XIVE_FABRIC },
+> > +            { },
+> > +        },
+> > +    },
+> >       {
+> >           .name          = MACHINE_TYPE_NAME("powernv10"),
+> >           .parent        = TYPE_PNV_MACHINE,
 
 
