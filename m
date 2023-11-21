@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF827F248A
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 04:13:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C717F248B
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 04:14:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5HCf-0003j6-3m; Mon, 20 Nov 2023 22:13:33 -0500
+	id 1r5HDO-0004MD-TA; Mon, 20 Nov 2023 22:14:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5HCd-0003ix-Ct
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 22:13:31 -0500
-Received: from mail-ua1-x92f.google.com ([2607:f8b0:4864:20::92f])
+ id 1r5HDK-0004Lq-Ih
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 22:14:14 -0500
+Received: from mail-ua1-x92a.google.com ([2607:f8b0:4864:20::92a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5HCb-0006wL-Td
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 22:13:31 -0500
-Received: by mail-ua1-x92f.google.com with SMTP id
- a1e0cc1a2514c-7c423088147so107607241.0
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 19:13:29 -0800 (PST)
+ id 1r5HDI-0007Xx-VS
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 22:14:14 -0500
+Received: by mail-ua1-x92a.google.com with SMTP id
+ a1e0cc1a2514c-7baba7de286so1728954241.2
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 19:14:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700536409; x=1701141209; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1700536452; x=1701141252; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2G9ARXzVHPPAbo0Jevwt8dKQ7fk1sbSVbA9qUDc8ok4=;
- b=AUkjABIBuVTClOk12XgyR+QNi5BTE2dUaz9eS+EcVN3tVlEln5xHZDYt30erBr9f6v
- MBuq08lBVNIry+vfdFMPbgzgOOmkT1w3Qz5x7Lk1wTgPqmlNZ0mqk7CMCKchACE7Chpj
- OFRpEvT+T/2DVyw9Xhi9QTHTOFD17lijv1Pf/QqhO0aMZ9cTmYwNizPXJSZXFKz7d2ps
- K87jGPnISnLplvE5kYrI/nI6iX49D9jmc/vGoG4EyojtrK9k9S/WM5SWrD73EB2mufI9
- zmIeO4uUTMJ3lSzx0Myzgbh0vbDfqeCf+H7wmXGXeNCaZtUdFE8P1hXEjUU+MOEyPIhT
- 3SfA==
+ bh=2NZliIG7sKwUytTXZXr//RZ5woc/sHIjuCWBw/6FVPo=;
+ b=WA4LEZtRLFAUCL5b2+YW8HVNVxYwZeVBURezTavb9t6YEykB/wW0V0zZPqBiAsnGnZ
+ uXYxjaTbR/V3R3NrLHtvXOjQmtxowbbtPjrGl4qGBKWzkoHG98KTgANDJ5D217DSHqaW
+ X38LQPmhwuE3QqW1osMbrJlQuonFe78bJ+8JoU0t9glKGO4TR+mTVQKzM2tHsdMYCwnA
+ smzC1azWdQiuokAF26kkaOybeJn+U9qlqUxHLRu9s9tB/sXYi0whyqnduCqFZCqIeTeQ
+ 0Dj5q6znTB36T9heY13vmNXcIjmd9JCUFjB+O0F1bNvidXSx02diblzCj3F/vKX8STYq
+ e1Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700536409; x=1701141209;
+ d=1e100.net; s=20230601; t=1700536452; x=1701141252;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2G9ARXzVHPPAbo0Jevwt8dKQ7fk1sbSVbA9qUDc8ok4=;
- b=uP8N7Upwn6Fm8xniYZMuSuBcueLfiL4Pazrj6YsxpR7XjwWDGsrLcO6hE5npcKvZHP
- bgw5z3S/SSRBaCEpzVygKnHXdNbI/BXaBGhTk4erE65DjOfKyEgrJr65IwCOTrYvDCG+
- 0PA8VdL8/DyVvv40yefklnXBcef8Wio+8h6HlxNGAdRmlB2T/wUyrnEfciYJCBUY6saO
- 0hwjSlA9tYxXE3n1i2xUY6bs2keVNr67Ic/Xj8zRLEB4RnTQl/ZXE8Zypzn2AkSxmZtX
- rwgqlxMjyPn2nLD5a9PbZQvk/1LR3USXeYGruvLDQNGxAATKdF//3j4UsBERE5kPaoUS
- VyrQ==
-X-Gm-Message-State: AOJu0YxOpU53TkOAAyBnmvZ45Je8E/DjVnQGzqrhkb2cJRnLqVH6dpuD
- o+LRToeraDU7qiQq18LQypGjbLbIwBxM4Bdzs3g=
-X-Google-Smtp-Source: AGHT+IG4UNEe/hXGMKAIsLbBt32PmZiXszjSEt4mXqgnByKbCMAWm2LhuokM+EgilNlt9Rg/o3VtK9ygy+gH1bUeihw=
-X-Received: by 2002:a05:6102:97:b0:45d:95ad:f56c with SMTP id
- t23-20020a056102009700b0045d95adf56cmr7146112vsp.21.1700536408794; Mon, 20
- Nov 2023 19:13:28 -0800 (PST)
+ bh=2NZliIG7sKwUytTXZXr//RZ5woc/sHIjuCWBw/6FVPo=;
+ b=RrDfrfJ3AsvoVISFKo86Z/KdU6l9FkvaYKSrS+GrCRB1g3PK8Z1zxGpwEZ4gSTq7sQ
+ 3TjnFtGCgd/QDlko8ZJvL8+vGnAMbBhoevcPMu3UjgJ4oVMKrtUQcfJxO8el56Xa8O+i
+ CtFNifte91LB+SzZ4rMKvP5R3kMAmYWSD+IQ1BiFaeBsOK5SBmOtqSrtJuznbzcMFAAL
+ lC65Lh4sr0xA/Od7nlYXRIApzFKsMaLfVpbuH06p1x2lmyKur5ukz84Ss0lngc3/N4cy
+ GqQ5ucpxJ8/DJwMudvS9F3M+/awvQhVKD2hbGa8lGTUvptsIdgpJUmNe0Ho3ZmrNptML
+ ZRZA==
+X-Gm-Message-State: AOJu0YyoKNbKS/8sQCqKgHxxiN5lmHdvv4LRCwQIbGBbMJrUBx8+HALH
+ 7HX8tzWqayqjnmpMM6dJMO9K3P9jI5jp9cGxXic=
+X-Google-Smtp-Source: AGHT+IEUqbOKfnHZG+6Ff0deoGwMTxIOSbLdGbrXIN4PX3ee4pi7HL0Cxvjhp7I2eAgwXV9UD8AoEA61uQywxFIy2sc=
+X-Received: by 2002:a67:f418:0:b0:45d:b3a9:84c5 with SMTP id
+ p24-20020a67f418000000b0045db3a984c5mr6746431vsn.34.1700536451918; Mon, 20
+ Nov 2023 19:14:11 -0800 (PST)
 MIME-Version: 1.0
 References: <20231117114457.177308-1-thuth@redhat.com>
- <20231117114457.177308-4-thuth@redhat.com>
-In-Reply-To: <20231117114457.177308-4-thuth@redhat.com>
+ <20231117114457.177308-5-thuth@redhat.com>
+In-Reply-To: <20231117114457.177308-5-thuth@redhat.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 21 Nov 2023 13:13:02 +1000
-Message-ID: <CAKmqyKOhSn0wm5=qWjikFY9qKFepTKO-SBQ6zJrzift3pOYJrA@mail.gmail.com>
-Subject: Re: [PATCH v3 3/5] memory: Remove "qemu:" prefix from the
- "qemu:ram-discard-manager" type name
+Date: Tue, 21 Nov 2023 13:13:45 +1000
+Message-ID: <CAKmqyKP9hxUtd5ycOP=A5EMJYktdfd7+omngh0Q1P4F786rNpA@mail.gmail.com>
+Subject: Re: [PATCH v3 4/5] tests/unit/test-io-task: Rename "qemu:dummy" to
+ avoid colon in the name
 To: Thomas Huth <thuth@redhat.com>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
@@ -74,8 +74,8 @@ Cc: qemu-devel@nongnu.org,
  Eduardo Habkost <eduardo@habkost.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92f;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92a;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,16 +99,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 17, 2023 at 9:46=E2=80=AFPM Thomas Huth <thuth@redhat.com> wrot=
-e:
+On Fri, Nov 17, 2023 at 11:08=E2=80=AFPM Thomas Huth <thuth@redhat.com> wro=
+te:
 >
-> Type names should not contain special characters like ":". Let's
-> remove the whole prefix here since it does not really seem to be
-> helpful to have such a prefix here. The type name is only used
-> internally for an interface type, so the renaming should not affect
-> the user interface or migration.
+> Type names should not contain special characters like ":" (so that
+> they are easier to use with QAPI and other parts). We are going to
+> forbid such names in an upcoming patch. Thus let's replace the ":"
+> here with a "-".
 >
-> Reviewed-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 > Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > Signed-off-by: Thomas Huth <thuth@redhat.com>
 
@@ -117,23 +116,22 @@ Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Alistair
 
 > ---
->  include/exec/memory.h | 2 +-
+>  tests/unit/test-io-task.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/include/exec/memory.h b/include/exec/memory.h
-> index 831f7c996d..f172e82ac9 100644
-> --- a/include/exec/memory.h
-> +++ b/include/exec/memory.h
-> @@ -43,7 +43,7 @@ typedef struct IOMMUMemoryRegionClass IOMMUMemoryRegion=
-Class;
->  DECLARE_OBJ_CHECKERS(IOMMUMemoryRegion, IOMMUMemoryRegionClass,
->                       IOMMU_MEMORY_REGION, TYPE_IOMMU_MEMORY_REGION)
+> diff --git a/tests/unit/test-io-task.c b/tests/unit/test-io-task.c
+> index 953a50ae66..115dba8970 100644
+> --- a/tests/unit/test-io-task.c
+> +++ b/tests/unit/test-io-task.c
+> @@ -25,7 +25,7 @@
+>  #include "qapi/error.h"
+>  #include "qemu/module.h"
 >
-> -#define TYPE_RAM_DISCARD_MANAGER "qemu:ram-discard-manager"
-> +#define TYPE_RAM_DISCARD_MANAGER "ram-discard-manager"
->  typedef struct RamDiscardManagerClass RamDiscardManagerClass;
->  typedef struct RamDiscardManager RamDiscardManager;
->  DECLARE_OBJ_CHECKERS(RamDiscardManager, RamDiscardManagerClass,
+> -#define TYPE_DUMMY "qemu:dummy"
+> +#define TYPE_DUMMY "qemu-dummy"
+>
+>  typedef struct DummyObject DummyObject;
+>  typedef struct DummyObjectClass DummyObjectClass;
 > --
 > 2.42.0
 >
