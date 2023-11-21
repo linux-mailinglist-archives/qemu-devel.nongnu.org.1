@@ -2,78 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 719477F24E9
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 05:46:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC867F24EF
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 05:52:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5IdC-0006Zv-AF; Mon, 20 Nov 2023 23:45:02 -0500
+	id 1r5IjY-0008Ic-C3; Mon, 20 Nov 2023 23:51:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5Id6-0006XO-Kp; Mon, 20 Nov 2023 23:44:56 -0500
-Received: from mail-vs1-xe32.google.com ([2607:f8b0:4864:20::e32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5Id4-0006jD-UF; Mon, 20 Nov 2023 23:44:56 -0500
-Received: by mail-vs1-xe32.google.com with SMTP id
- ada2fe7eead31-462ac0f82e3so323045137.0; 
- Mon, 20 Nov 2023 20:44:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700541893; x=1701146693; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qDXJkcUjY9jheYpanOMTtzm4HcEyyA0Tvq22+8P3kYU=;
- b=WOoHG1x0Ezs/uJUxH91Ac8H83bzjnBYI2Nt0KkT7RjbgDhHlpXu6CuphBwxPCj7SwD
- PCkqIDrK6yCNLecPRZYEbuNimddddQ343b707DjXg+SMAkkE4Or+qW35edOs/Vm+rID0
- rZA4uB805wteGjiD6qNRSF3DcKJq6yX7P34xBQ5K0K5FnxZTD/Ss1KU7c4k4MXCJpoWM
- OgpnYvGF2T1IXPi9S/waO/p9l9seG7ltJXpRTADbppKa/T45qI5KO5PtXCcgRY1zzIz1
- HOJ+Fs0jPaBW8cuneNH87vxO7nNJhjajYupyiKNeFJAgAXmtfo1VIJqRb8rmK60oKfGT
- N2BA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700541893; x=1701146693;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qDXJkcUjY9jheYpanOMTtzm4HcEyyA0Tvq22+8P3kYU=;
- b=VJ5M1oVMgWLOJAabqUBYWajXlURKkqJM6tgADq3GX3KLIt1ohuLGxbRF0XgjbqlwKH
- hOwWAs0Vbg9HqpMb1g0+jnTNRfW8PQXUd2VQbm6/3oaVC325uoq1t0KS2jWxtCdYg37L
- 9URPkJbOJT0EB+14dIeGD3RSQiwFlwotA+LPLBFoClXFobqALg87vS3cegbTKCFdf00R
- 1C1SlAExdTElEo3TQgx9+7vvGr5TICZHGyB829bG0JiuZbK2ZV28cz+4mgFBPZJYMgWe
- WUCluaFfFQoMI8BsfhRq5kpld2Wq1GVONbL07DyOP2FwL1ggx3oxBZlZzp5pfp3HPxAX
- ePFQ==
-X-Gm-Message-State: AOJu0Yz1qOHuw8vfiYNS0M6KmUN+cYYXtx8wcbj/ANStnjdkjN0atmIk
- Vv0A7iJocHbXfO2x/rcLQwmWkWzmwV+Vj4Sk7FV+OatTxJYahg==
-X-Google-Smtp-Source: AGHT+IFDCuBwgrcJt1Ihjizu1b3wCaU+4FFBTZItvDgciMuIU8S88sStlvhs4ZPFdk6bXwqhAlMpYsR6OSqCVQtsLMw=
-X-Received: by 2002:a05:6102:1085:b0:462:9efa:77a0 with SMTP id
- s5-20020a056102108500b004629efa77a0mr5125226vsr.11.1700541893433; Mon, 20 Nov
- 2023 20:44:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r5IjV-0008Hz-QR; Mon, 20 Nov 2023 23:51:33 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r5IjT-0008TG-Fe; Mon, 20 Nov 2023 23:51:33 -0500
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AL4elCQ006164; Tue, 21 Nov 2023 04:51:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=bF39/PUVNe5zdSwAXgEc57WN3ApBMy6p3/FFGItpJJk=;
+ b=c4RKuo7lvwtTMLiMs0f7wa3GrCb28Ryd17S7fhhw7TAJ6HkrHxH3LCbq1U3Y75XRpYzL
+ T8w4h2MBOxpZCAE0BXzuRTEdMCJzIKzeAfT+1GGCrq/C4pII7FoAdS6pbe1px2hyQtfj
+ aUm2dVcE9XglxGVnOmimlXvVe7c1iNLC+IulCWPYG8OzUyHrEoaajhQdok4aBIAXhPG0
+ bIDF9xWCLpEIsILAkxl1vziq0PONDDRVUF/zv66Y6DkvyJEKOK0QIiwCeyefKxlwdmoe
+ O5QTgoe8wZ/h49H7CLgQha3/qDUZvuvA9fEjfb4v+VNdXeaQK4/s9IOEJqPIQk74RDpV 4w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ugnqur7ev-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Nov 2023 04:51:05 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AL4gCFJ009907;
+ Tue, 21 Nov 2023 04:51:05 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ugnqur7eh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Nov 2023 04:51:04 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AL324Kd006831; Tue, 21 Nov 2023 04:51:04 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uf8knp5ju-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Nov 2023 04:51:04 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
+ [10.39.53.228])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AL4p24314680650
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 21 Nov 2023 04:51:03 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B8ABB5805B;
+ Tue, 21 Nov 2023 04:51:02 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 092F358063;
+ Tue, 21 Nov 2023 04:50:55 +0000 (GMT)
+Received: from [9.109.242.129] (unknown [9.109.242.129])
+ by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 21 Nov 2023 04:50:54 +0000 (GMT)
+Message-ID: <99ee8967-98b8-5c82-66f8-b4172d638d53@linux.ibm.com>
+Date: Tue, 21 Nov 2023 10:20:53 +0530
 MIME-Version: 1.0
-References: <20231120120609.37960-1-ivan.klokov@syntacore.com>
- <20231120120609.37960-2-ivan.klokov@syntacore.com>
-In-Reply-To: <20231120120609.37960-2-ivan.klokov@syntacore.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 21 Nov 2023 14:44:26 +1000
-Message-ID: <CAKmqyKOK5m8DewTx=JphWLUtrr9LK29R1BUN72qoUGc26FuEpg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] target/riscv/cpu_helper.c: Invalid exception on MMU
- translation stage
-To: Ivan Klokov <ivan.klokov@syntacore.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com, 
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e32;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe32.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH for-9.0] hw: Add compat machines for 9.0
+Content-Language: en-US
+To: Cornelia Huck <cohuck@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ David Hildenbrand <david@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-s390x@nongnu.org
+References: <20231120094259.1191804-1-cohuck@redhat.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20231120094259.1191804-1-cohuck@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: H2dk2rjgH7cF94LTSKTS92oC20voruLb
+X-Proofpoint-GUID: uIP0KZIDyc2E7mVuCOotH6lGUvm32CmA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-21_02,2023-11-20_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ lowpriorityscore=0 malwarescore=0 bulkscore=0 suspectscore=0
+ priorityscore=1501 mlxscore=0 phishscore=0 spamscore=0 adultscore=0
+ clxscore=1011 mlxlogscore=509 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311060000 definitions=main-2311210036
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -59
+X-Spam_score: -6.0
+X-Spam_bar: ------
+X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.009,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,96 +130,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 20, 2023 at 11:19=E2=80=AFPM Ivan Klokov <ivan.klokov@syntacore=
-.com> wrote:
->
-> According to RISCV priveleged spec sect. 5.3.2 Virtual Address Translatio=
-n Process
-> access-fault exceptions may raise only after PMA/PMP check. Current imple=
-mentation
-> generates an acces-fault for mbare mode even if there were no PMA/PMP err=
-ors.
-> This patch removes the erroneous MMU mode check and generates an access-f=
-ault
-> exception based on the pmp_violation flag only.
->
-> Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-Alistair
-
+On 11/20/23 15:12, Cornelia Huck wrote:
+> Add 9.0 machine types for arm/i440fx/m68k/q35/s390x/spapr.
+> 
+> Signed-off-by: Cornelia Huck<cohuck@redhat.com>
 > ---
->  target/riscv/cpu_helper.c | 30 +++++++-----------------------
->  1 file changed, 7 insertions(+), 23 deletions(-)
->
-> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> index b7af69de53..9ff0952e46 100644
-> --- a/target/riscv/cpu_helper.c
-> +++ b/target/riscv/cpu_helper.c
-> @@ -1143,47 +1143,31 @@ static void raise_mmu_exception(CPURISCVState *en=
-v, target_ulong address,
->                                  bool two_stage_indirect)
->  {
->      CPUState *cs =3D env_cpu(env);
-> -    int page_fault_exceptions, vm;
-> -    uint64_t stap_mode;
-> -
-> -    if (riscv_cpu_mxl(env) =3D=3D MXL_RV32) {
-> -        stap_mode =3D SATP32_MODE;
-> -    } else {
-> -        stap_mode =3D SATP64_MODE;
-> -    }
-> -
-> -    if (first_stage) {
-> -        vm =3D get_field(env->satp, stap_mode);
-> -    } else {
-> -        vm =3D get_field(env->hgatp, stap_mode);
-> -    }
-> -
-> -    page_fault_exceptions =3D vm !=3D VM_1_10_MBARE && !pmp_violation;
->
->      switch (access_type) {
->      case MMU_INST_FETCH:
->          if (env->virt_enabled && !first_stage) {
->              cs->exception_index =3D RISCV_EXCP_INST_GUEST_PAGE_FAULT;
->          } else {
-> -            cs->exception_index =3D page_fault_exceptions ?
-> -                RISCV_EXCP_INST_PAGE_FAULT : RISCV_EXCP_INST_ACCESS_FAUL=
-T;
-> +            cs->exception_index =3D pmp_violation ?
-> +                RISCV_EXCP_INST_ACCESS_FAULT : RISCV_EXCP_INST_PAGE_FAUL=
-T;
->          }
->          break;
->      case MMU_DATA_LOAD:
->          if (two_stage && !first_stage) {
->              cs->exception_index =3D RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT;
->          } else {
-> -            cs->exception_index =3D page_fault_exceptions ?
-> -                RISCV_EXCP_LOAD_PAGE_FAULT : RISCV_EXCP_LOAD_ACCESS_FAUL=
-T;
-> +            cs->exception_index =3D pmp_violation ?
-> +                RISCV_EXCP_LOAD_ACCESS_FAULT : RISCV_EXCP_LOAD_PAGE_FAUL=
-T;
->          }
->          break;
->      case MMU_DATA_STORE:
->          if (two_stage && !first_stage) {
->              cs->exception_index =3D RISCV_EXCP_STORE_GUEST_AMO_ACCESS_FA=
-ULT;
->          } else {
-> -            cs->exception_index =3D page_fault_exceptions ?
-> -                RISCV_EXCP_STORE_PAGE_FAULT :
-> -                RISCV_EXCP_STORE_AMO_ACCESS_FAULT;
-> +            cs->exception_index =3D pmp_violation ?
-> +                RISCV_EXCP_STORE_AMO_ACCESS_FAULT :
-> +                RISCV_EXCP_STORE_PAGE_FAULT;
->          }
->          break;
->      default:
-> --
-> 2.34.1
->
->
+>   hw/arm/virt.c              |  9 ++++++++-
+>   hw/core/machine.c          |  3 +++
+>   hw/i386/pc.c               |  3 +++
+>   hw/i386/pc_piix.c          | 17 ++++++++++++++---
+>   hw/i386/pc_q35.c           | 13 ++++++++++++-
+>   hw/m68k/virt.c             |  9 ++++++++-
+>   hw/ppc/spapr.c             | 15 +++++++++++++--
+>   hw/s390x/s390-virtio-ccw.c | 14 +++++++++++++-
+>   include/hw/boards.h        |  3 +++
+>   include/hw/i386/pc.h       |  3 +++
+>   10 files changed, 80 insertions(+), 9 deletions(-)
+
+For spapr:
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
