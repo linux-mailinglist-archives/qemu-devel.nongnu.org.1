@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD0EF7F24A3
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 04:31:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DECF47F24A5
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 04:32:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5HSW-0001Au-6M; Mon, 20 Nov 2023 22:29:56 -0500
+	id 1r5HUa-0002xu-Tn; Mon, 20 Nov 2023 22:32:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5HSU-0001Ac-FP; Mon, 20 Nov 2023 22:29:54 -0500
-Received: from mail-ua1-x92c.google.com ([2607:f8b0:4864:20::92c])
+ id 1r5HUY-0002xS-E4; Mon, 20 Nov 2023 22:32:02 -0500
+Received: from mail-vs1-xe29.google.com ([2607:f8b0:4864:20::e29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5HST-0002Hp-1k; Mon, 20 Nov 2023 22:29:54 -0500
-Received: by mail-ua1-x92c.google.com with SMTP id
- a1e0cc1a2514c-7ba8e3107c9so1371148241.1; 
- Mon, 20 Nov 2023 19:29:52 -0800 (PST)
+ id 1r5HUW-0002t0-1r; Mon, 20 Nov 2023 22:32:02 -0500
+Received: by mail-vs1-xe29.google.com with SMTP id
+ ada2fe7eead31-45dae475aedso1492091137.2; 
+ Mon, 20 Nov 2023 19:31:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700537391; x=1701142191; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1700537519; x=1701142319; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zykVAOMXGJBHBT79yO+o54z1GyNT2rEbl1aSnQgP3J4=;
- b=kkr6vdGJFss3AyNePMNkjFU6LkcA7HUF5XU4dXGRTD5yVUqvmT6Y5OE3CbMP0KiXVa
- 1zFiEk8E7IKXOAOikZgw3HG1P0K8OGLFPHhwwCB/FGYU21IlHu3qelGVi03RxV8iiJ/r
- rV8PCTa9rpHXVMr6zWrUqTu4xnBAY2w+sVN8yeSuNjmTgzq4oJw1/K0AvUe+82W+SHpm
- L/weCupMS03YWp4NtmRHxxP2RA7VztpPSg7kvq/yRLjeXqjQIXb3DbvGZqHT3CBUJOs8
- ogwI7k8vUaF0FIH/sdI7jcwBS4I7t9QAXOvi6JJnQdlJrIFbVAm/Tl60w43bPOy1drxj
- AOEA==
+ bh=geppwkQoHnTI4izkMzTNUUwrl45IzsirD0sT57zXdB8=;
+ b=fCPEeaGuwoNLRRUHmGFkuL8BeQYyxZyxeyj6c3cCCqibQNnwCX6czCAZvqZY5J+2nz
+ 1hUKBFFHGSkrA8YWgPFkmxz5gm9N1qFGPKeBU1t3i+8w+knR5wWwg+yE2ilNYvYIlPqn
+ HHb0T059XEHNLFZoxpYOgpgedqWMnqysWiAA1/tYwHFveSJZW/5R4L+rhKbQCAGENEck
+ +W/KE+ltJfdvr+7m755OvvGny381H/YDaoNwrU81VU+VhqaJRuMhZlLILV/qMPTo5TKJ
+ fOIGZpA+JIIx8UXoLVmlr5JTCQ3O9wHV/jFi64s4D9U5cvuPUuio04PgDNggz4xFNONk
+ M+Xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700537391; x=1701142191;
+ d=1e100.net; s=20230601; t=1700537519; x=1701142319;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zykVAOMXGJBHBT79yO+o54z1GyNT2rEbl1aSnQgP3J4=;
- b=q7Bdj6BGKGDi2y7y5Kv35kZNFV21ihMbGJ23rQsP8348uHhh1+oybivwEa59F4ryXx
- mPffaS43uUJPggn4cpVxbHbZJ8hsQSZlVWPBgz4TXSCRabEigzAs8v52brIP7L9ayRYh
- Shg47FCu0XEQqhPnq6ml8LY8YeJ8O+rI+DZU48uU8MakJey1yNF1NNn530EU0ZNa4mmH
- /f4I79rcQMiNYc894fSNWmTjWjvfoEvq6OXTEDHRudqDOy7s1yM+lUh6TXGULRgLXqnE
- RDkOGefQhhU3LiIJr/qolKtwaKrFs+G8jQKm+nVh1fZMohtMZwcvVP3iMDlh9YqHRfsX
- pCYg==
-X-Gm-Message-State: AOJu0YwRgIt9wTUIVxI06hkuonys3n0PQX9iJh6kvf6oy/SD1knlCHPY
- oQbwvALKMYlLsksQN7iixreHidBL9sHEkcI6QBus9RivHdvscg==
-X-Google-Smtp-Source: AGHT+IGZo0g5rDhuYy8lxOVm3LSvnPUGVq68KCTWgsbknO/nE4IjQZ8BvJ86jRxJ2PdqoguuK2m5MHpeEeehdlatpUo=
-X-Received: by 2002:a67:c089:0:b0:462:71bd:b244 with SMTP id
- x9-20020a67c089000000b0046271bdb244mr9105686vsi.18.1700537391380; Mon, 20 Nov
- 2023 19:29:51 -0800 (PST)
+ bh=geppwkQoHnTI4izkMzTNUUwrl45IzsirD0sT57zXdB8=;
+ b=a4OYMcR17IcOydhPyy0BdgO6UdllXvxwGB74XTDgpgtPaWJ4qiTv9aYujDGKdLSG7U
+ H9z7X4znP5kjmh85Mf2208t+RgouDhfjKZN70ynsi/cKqDBJJ4+aztZIKSTc6wGDofDS
+ MT2Q7d5pIEYHhZEI1mJqlhezT6e8pICTo6On+l0VHfJqfQXcXJBB8fkszRbYikVyQQJe
+ kuVlQO/tUCT9pEfLqtZk8BUYK3+cOhSrYMVV8fTj2xKXGkv79a7DtumgC+bmk4jRnN8L
+ DZ6IBThQcah7nwtX/9R2sHEoe6r5nq0rWj1ZdycIlIGSF6Whh9sZKq2mVPQa81LyUObm
+ RjhQ==
+X-Gm-Message-State: AOJu0YyKlkMVzZ4ybu/NYiY8TUNhiAC2mf242sWqgcp81jeMI4fCuSjj
+ lu6CLc5Embkai5vU2tXOkmPk+p+RxtJZKwk8zW0=
+X-Google-Smtp-Source: AGHT+IGiSlvEI223F7zHBRvbqJmI6/QPncdDPcZUX5HeGC83aR/CdpTbqlwhaY3PHntYXaFz0yRewV0SwmErkUskGKc=
+X-Received: by 2002:a67:c095:0:b0:45d:9c41:ba93 with SMTP id
+ x21-20020a67c095000000b0045d9c41ba93mr4596667vsi.28.1700537518759; Mon, 20
+ Nov 2023 19:31:58 -0800 (PST)
 MIME-Version: 1.0
-References: <20231114165834.2949011-1-mjt@tls.msk.ru>
- <20231114165834.2949011-18-mjt@tls.msk.ru>
-In-Reply-To: <20231114165834.2949011-18-mjt@tls.msk.ru>
+References: <20231110173716.24423-1-palmer@rivosinc.com>
+In-Reply-To: <20231110173716.24423-1-palmer@rivosinc.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 21 Nov 2023 13:29:24 +1000
-Message-ID: <CAKmqyKN6Sj2G=CeMHR-JFfeR90RvgjujFf_tu=EJOG=P2=cpMg@mail.gmail.com>
-Subject: Re: [PATCH trivial 17/21] target/riscv/cpu.h: spelling fix: separatly
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org, 
- Rajnesh Kanwal <rkanwal@rivosinc.com>,
- Alistair Francis <alistair.francis@wdc.com>
+Date: Tue, 21 Nov 2023 13:31:32 +1000
+Message-ID: <CAKmqyKNrVh=bJDGYACGbt6vc-vtpOCDtuF=YQLiOmLFDOPjGHw@mail.gmail.com>
+Subject: Re: [PATCH] linux-user/riscv: Add Zicboz block size to hwprobe
+To: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Alistair Francis <Alistair.Francis@wdc.com>, armbru@redhat.com, 
+ Richard Henderson <richard.henderson@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92c;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e29;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe29.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -88,45 +87,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 15, 2023 at 3:04=E2=80=AFAM Michael Tokarev <mjt@tls.msk.ru> wr=
-ote:
+On Sat, Nov 11, 2023 at 3:52=E2=80=AFAM Palmer Dabbelt <palmer@rivosinc.com=
+> wrote:
 >
-> Fixes: 40336d5b1d4c "target/riscv: Add HS-mode virtual interrupt and IRQ =
-filtering support."
-> Cc: Rajnesh Kanwal <rkanwal@rivosinc.com>
-> Cc: Alistair Francis <alistair.francis@wdc.com>
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> Support for probing the Zicboz block size landed in Linux 6.6, which was
+> released a few weeks ago.  This provides the user-configured block size
+> when Zicboz is enabled.
+>
+> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
 > ---
->  target/riscv/cpu.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  linux-user/syscall.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index bf58b0f0b5..d74b361be6 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -214,13 +214,13 @@ struct CPUArchState {
+> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> index 65ac3ac796..7caacf43d6 100644
+> --- a/linux-user/syscall.c
+> +++ b/linux-user/syscall.c
+> @@ -8808,6 +8808,8 @@ static int do_getdents64(abi_long dirfd, abi_long a=
+rg2, abi_long count)
+>  #define     RISCV_HWPROBE_MISALIGNED_UNSUPPORTED (4 << 0)
+>  #define     RISCV_HWPROBE_MISALIGNED_MASK        (7 << 0)
 >
->      /*
->       * When mideleg[i]=3D0 and mvien[i]=3D1, sie[i] is no more
-> -     * alias of mie[i] and needs to be maintained separatly.
-> +     * alias of mie[i] and needs to be maintained separately.
->       */
->      uint64_t sie;
->
->      /*
->       * When hideleg[i]=3D0 and hvien[i]=3D1, vsie[i] is no more
-> -     * alias of sie[i] (mie[i]) and needs to be maintained separatly.
-> +     * alias of sie[i] (mie[i]) and needs to be maintained separately.
->       */
->      uint64_t vsie;
->
+> +#define RISCV_HWPROBE_KEY_ZICBOZ_BLOCK_SIZE 6
+> +
+>  struct riscv_hwprobe {
+>      abi_llong  key;
+>      abi_ullong value;
+> @@ -8860,6 +8862,10 @@ static void risc_hwprobe_fill_pairs(CPURISCVState =
+*env,
+>          case RISCV_HWPROBE_KEY_CPUPERF_0:
+>              __put_user(RISCV_HWPROBE_MISALIGNED_FAST, &pair->value);
+>              break;
+> +        case RISCV_HWPROBE_KEY_ZICBOZ_BLOCK_SIZE:
+> +            value =3D cfg->ext_zicboz ? cfg->cboz_blocksize : 0;
+> +            __put_user(value, &pair->value);
+> +            break;
+>          default:
+>              __put_user(-1, &pair->key);
+>              break;
 > --
-> 2.39.2
+> 2.42.1
 >
 >
 
