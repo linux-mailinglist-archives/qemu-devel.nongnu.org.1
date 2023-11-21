@@ -2,56 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA737F265B
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 08:31:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D06CE7F2679
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 08:39:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5LCg-0004Xu-QE; Tue, 21 Nov 2023 02:29:50 -0500
+	id 1r5LKF-0008TT-7D; Tue, 21 Nov 2023 02:37:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=nm9w=HC=kaod.org=clg@ozlabs.org>)
- id 1r5LCf-0004Xh-1h; Tue, 21 Nov 2023 02:29:49 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=nm9w=HC=kaod.org=clg@ozlabs.org>)
- id 1r5LCc-0007Vu-Fs; Tue, 21 Nov 2023 02:29:48 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SZGGr3pjxz4xVW;
- Tue, 21 Nov 2023 18:29:40 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SZGGp4cMyz4xVV;
- Tue, 21 Nov 2023 18:29:38 +1100 (AEDT)
-Message-ID: <31af40b3-a6c8-467c-8ef0-63e370465a9a@kaod.org>
-Date: Tue, 21 Nov 2023 08:29:36 +0100
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1r5LKC-0008Sp-Ue
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 02:37:37 -0500
+Received: from mail-qt1-x829.google.com ([2607:f8b0:4864:20::829])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1r5LKB-0001RR-KJ
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 02:37:36 -0500
+Received: by mail-qt1-x829.google.com with SMTP id
+ d75a77b69052e-41cba6e8e65so30784551cf.2
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 23:37:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1700552254; x=1701157054; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=duLXC29QWCQJQW+a3lKc4mxV9gI5XuVsDlN9TzUM0rk=;
+ b=AXpuvojTkg894gU8QnYutVRI8+d0hS/ZbeyHxzkrkjDelOI/GkNH026YIgWBM37Y4u
+ R7s7HUbEbu7zsq6WSnkF+5iVQ2oa28Yjjvubc6jRKM1y2zHcTiHdDtWzU5WkxoyGxb9x
+ v9yc+cFzUTqsZ0hDh4juNVdef0Dcadm3DGpFCt3x20sf1+s7oMDaE03arSv0Yy7F17n5
+ keKQPkq32F9LMDQf5cVNbYB/GfhjrMQj10rrVJ6uSnsbClH1Xo1BkjYcO2wkg59WWNaX
+ Ggpu6AuI6lt7rkPhXSxYeH5SfJV//GRP+GS9BwwfrLqP0qR+OkzzdaIwHLkvwYFBln89
+ 8hXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700552254; x=1701157054;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=duLXC29QWCQJQW+a3lKc4mxV9gI5XuVsDlN9TzUM0rk=;
+ b=cSVFEffhopZ4p5Fb6uWDo90jPMAal/CcYtAg6CyfkBsQ8jCaWMCgxfXKn4nx25nWGt
+ Up2twMI97bEILBaxuXT8HkQMfHq+BA69QqHiNM4Q8jWbvYt3Hq0RKvEfnlL7rSHH9Y1X
+ uUYAM5EjTf9WgZB2fiNh+ty4Gtqby6l+6ULC61ojcYmAds10mrDz8D6Aa2QgW7PDMV/u
+ YhTwqWT67x8D4A5jbgsWZ+SK/EOzZcerllZhpV3h3r60i4cw22SYEl3m8JEiIHjMR7LD
+ aT8zspuRC+peYV5APGslqNkWl2tbGhAcCuEYFD5ffCnouxS6f1QuzYmsWU8n8yegIPMe
+ fYPA==
+X-Gm-Message-State: AOJu0Yw7sgg2sZHkUG+71S+181KntDpBvVqMGjMtV/aATJ2hGVDdePdv
+ 4In16oSYPQhWTJzupHRkEKRO85p8FfAEDKjSeDtf9SBKj0W5BA==
+X-Google-Smtp-Source: AGHT+IHNN5Cn04tpDbiKGF3SkCxmZdvMs6SzKYbpftghmoj6LDXBMFB653BzGJ9pGIJo3Xo/mndCrIIAhzqSgl0UI2g=
+X-Received: by 2002:ac8:5dc9:0:b0:419:5162:5e0f with SMTP id
+ e9-20020ac85dc9000000b0041951625e0fmr12438439qtx.13.1700552253787; Mon, 20
+ Nov 2023 23:37:33 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/11] ppc/pnv: New powernv10-rainier machine type
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
- Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
-References: <20231120235112.1951342-1-milesg@linux.vnet.ibm.com>
- <20231120235112.1951342-4-milesg@linux.vnet.ibm.com>
- <CX43Q4CXT43G.16NTWUAWGGXCB@wheely>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <CX43Q4CXT43G.16NTWUAWGGXCB@wheely>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=nm9w=HC=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+References: <20231117143506.1521718-1-marcandre.lureau@redhat.com>
+In-Reply-To: <20231117143506.1521718-1-marcandre.lureau@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 21 Nov 2023 11:37:22 +0400
+Message-ID: <CAJ+F1CL_a72vuH0ShLwVXKW-2sTzSX0LnWtSDT6BxKNx_ZUhzg@mail.gmail.com>
+Subject: Re: [PATCH for-8.2 0/3] UI: fix default VC regressions
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>, peter.maydell@linaro.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, dwmw@amazon.co.uk, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ "gmaglione@gmail.com" <gmaglione@gmail.com>, Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::829;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x829.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,112 +89,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/21/23 02:33, Nicholas Piggin wrote:
-> On Tue Nov 21, 2023 at 9:51 AM AEST, Glenn Miles wrote:
->> Create a new powernv machine type, powernv10-rainier, that
->> will contain rainier-specific devices.
-> 
-> Is the plan to have a base powernv10 common to all and then
-> powernv10-rainier looks like a Rainier? Or would powernv10
-> just be a rainier?
-> 
-> It's fine to structure code this way, I'm just wondering about
-> the machine types available to user. Is a base powernv10 machine
-> useful to run?
+Hi
 
-There are multiple P10 boards defined in Linux :
+On Fri, Nov 17, 2023 at 6:36=E2=80=AFPM <marcandre.lureau@redhat.com> wrote=
+:
+>
+> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> Hi,
+>
+> There are a few annoying regressions with the default VCs introduced with=
+ the
+> pixman series. The "vl: revert behaviour for -display none" change solves=
+ most
+> of the issues. Another one is hit when using remote displays, and VCs are=
+ not
+> created as they used to, see: "ui/console: fix default VC when there are =
+no
+> display". Finally, "ui: use "vc" chardev for dbus, gtk & spice-app" was m=
+eant to
+> be included in the pixman series and also brings back default VCs creatio=
+n.
+>
+> Marc-Andr=C3=A9 Lureau (3):
+>   vl: revert behaviour for -display none
+>   ui: use "vc" chardev for dbus, gtk & spice-app
+>   ui/console: fix default VC when there are no display
 
-   aspeed-bmc-ibm-bonnell.dts
-   aspeed-bmc-ibm-everest.dts
-   aspeed-bmc-ibm-rainier-1s4u.dts
-   aspeed-bmc-ibm-rainier-4u.dts
-   aspeed-bmc-ibm-rainier.dts
+I wish to send a PR (rc1 today), together with "[PATCH] vl: add
+missing display_remote++".
 
-and we could model the machines above with a fixed number of sockets.
-The "powernv10" would be the generic system that can be customized
-at will on the command line, even I2C devices. There is also the
-P10 Denali which is FSP based. This QEMU machine would certainly be
-very different. I thought of doing the same for P9 with a -zaius
-and include NPU2 models for it. I lacked time and the interest was
-small at the time of OpenPOWER.
-
-Anyhow, adding a new machine makes sense and it prepares ground for
-possible new ones. I am OK with or without. As primary users, you are
-the ones that can tell if there will be a second machine.
-  
-Thanks,
-
-C.
+Some R-B/A-B appreciated! thanks
 
 
-> 
->>
->> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
->> ---
->>   hw/ppc/pnv.c | 29 +++++++++++++++++++++++++++--
->>   1 file changed, 27 insertions(+), 2 deletions(-)
->>
->> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
->> index 9c29727337..3481a1220e 100644
->> --- a/hw/ppc/pnv.c
->> +++ b/hw/ppc/pnv.c
->> @@ -2249,7 +2249,7 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
->>       machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
->>   }
->>   
->> -static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
->> +static void pnv_machine_p10_common_class_init(ObjectClass *oc, void *data)
->>   {
->>       MachineClass *mc = MACHINE_CLASS(oc);
->>       PnvMachineClass *pmc = PNV_MACHINE_CLASS(oc);
->> @@ -2261,7 +2261,6 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
->>           { TYPE_PNV_PHB_ROOT_PORT, "version", "5" },
->>       };
->>   
->> -    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
->>       mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
->>       compat_props_add(mc->compat_props, phb_compat, G_N_ELEMENTS(phb_compat));
->>   
->> @@ -2274,6 +2273,23 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
->>       machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
->>   }
->>   
->> +static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
->> +{
->> +    MachineClass *mc = MACHINE_CLASS(oc);
->> +
->> +    pnv_machine_p10_common_class_init(oc, data);
->> +    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
->> +
->> +}
->> +
->> +static void pnv_machine_p10_rainier_class_init(ObjectClass *oc, void *data)
->> +{
->> +    MachineClass *mc = MACHINE_CLASS(oc);
->> +
->> +    pnv_machine_p10_common_class_init(oc, data);
->> +    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10 rainier";
->> +}
->> +
->>   static bool pnv_machine_get_hb(Object *obj, Error **errp)
->>   {
->>       PnvMachineState *pnv = PNV_MACHINE(obj);
->> @@ -2379,6 +2395,15 @@ static void pnv_machine_class_init(ObjectClass *oc, void *data)
->>       }
->>   
->>   static const TypeInfo types[] = {
->> +    {
->> +        .name          = MACHINE_TYPE_NAME("powernv10-rainier"),
->> +        .parent        = TYPE_PNV_MACHINE,
->> +        .class_init    = pnv_machine_p10_rainier_class_init,
->> +        .interfaces = (InterfaceInfo[]) {
->> +            { TYPE_XIVE_FABRIC },
->> +            { },
->> +        },
->> +    },
->>       {
->>           .name          = MACHINE_TYPE_NAME("powernv10"),
->>           .parent        = TYPE_PNV_MACHINE,
-> 
-
+--=20
+Marc-Andr=C3=A9 Lureau
 
