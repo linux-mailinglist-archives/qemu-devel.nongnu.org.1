@@ -2,105 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C5C67F285A
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 10:07:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00CB67F2876
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 10:13:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Mi5-0005iC-E7; Tue, 21 Nov 2023 04:06:21 -0500
+	id 1r5Mo6-0007H7-Oz; Tue, 21 Nov 2023 04:12:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
- id 1r5Mi1-0005hP-6X
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:06:17 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r5Mo3-0007Gb-2p
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:12:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
- id 1r5Mhx-0005on-HJ
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:06:16 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r5Mo1-0007wx-8I
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:12:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700557565;
+ s=mimecast20190719; t=1700557947;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Y4Du3Ez0Zda862ORNrhEGOC6WRkRrWqRP1m9LddZkdg=;
- b=KCC0UnWb9j5R6Yj06UvkSz8KstpostJo1/vU9vfqZPRnjBat/8Ze0O6j+EyewBXhPi1YUF
- jdhfDvpEX7ldFvf4Mu3RjG8L9/Ox+cJhmt6vQrAtNgMHuEWIbqUStuI91zoYaXB2A+k6XY
- nxjPXRTjwhcBniDh96he08E3QeYiDQs=
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
- [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EeNItQAUrBZhN3lN2mVhOqA6UlvFDvzUXDf2nsLrmmo=;
+ b=dVMcdu1hSJLseC+sUUFiyPCakOfydrRQLujGKpTPFw4bY4yPwd+azdOrQpyT4ptlJYqlFm
+ Rc7YU6UWWztIJ9BemX0fXJht63kxF6ym0qwmgR16FWnxtV258cN1ctUxYds/1NuHZxq7kG
+ vTmAof+3ZZpmdGjNnD0G6bSTt8TClgs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-58-XlK0OSAOM1OZaVRL8eZFXg-1; Tue, 21 Nov 2023 04:06:04 -0500
-X-MC-Unique: XlK0OSAOM1OZaVRL8eZFXg-1
-Received: by mail-ot1-f71.google.com with SMTP id
- 46e09a7af769-6d664911ccfso1263267a34.0
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 01:06:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700557563; x=1701162363;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Y4Du3Ez0Zda862ORNrhEGOC6WRkRrWqRP1m9LddZkdg=;
- b=sQNfNQCzVOP6yABS1gNhJmtXoomwejaWinJKCAVTVccC1Cm323aa0WHe34KN2gn1cs
- aeA2dXUwgV1S8LIGcxlTolKX8iK0lV8/uuPhi0TyyESvJNmVw7CDdjuAG8QGRElHL42U
- Qubd3ycdbyGx0aCM3La9FNNlzBtu5I1QfYNvejEndRx5NWS4UhPM4wXJ6UL8lESBNyi7
- Ng26D3FUgO0AeAsN0LMm159bivbVAJGueX3ce5W6YWw2lIcQGv8C9dgjEnZ6Y6aTejKT
- y5WbFjSMuCY0+g+qdn42SXX9vdxt7C8vSj8CXUa1xfq4dg4O5kRZCEhmSMhrFpFpF7h9
- hidg==
-X-Gm-Message-State: AOJu0YxqyAlNjer2ZnlrTKJibEob6B2gBVaU2y6YeUp7Pj0yx2QI6K1j
- HbSnG3MGPrBNuxjbVp4+z4fAozegHReg8oAbML9jZuWTpO1AdSsA/gAmLUo0HYcD7QQTvn0rw5v
- k510SJTEvBzNBRL0=
-X-Received: by 2002:a05:6830:6811:b0:6d6:b24e:72a8 with SMTP id
- cu17-20020a056830681100b006d6b24e72a8mr10227297otb.3.1700557563408; 
- Tue, 21 Nov 2023 01:06:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFTb4Z0+/AwNUEmtEtawQMGDfVYM3FNwi3wwkQXY6Pd1m4oKWJHGfWI/8CNH6W3fKjlWFGoIA==
-X-Received: by 2002:a05:6830:6811:b0:6d6:b24e:72a8 with SMTP id
- cu17-20020a056830681100b006d6b24e72a8mr10227255otb.3.1700557563183; 
- Tue, 21 Nov 2023 01:06:03 -0800 (PST)
-Received: from [10.66.61.39] ([43.228.180.230])
- by smtp.gmail.com with ESMTPSA id
- u16-20020a656710000000b005b83bc255fbsm6338717pgf.71.2023.11.21.01.05.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Nov 2023 01:06:02 -0800 (PST)
-Message-ID: <139cc093-8469-0a8f-69dd-e1d8471030a3@redhat.com>
-Date: Tue, 21 Nov 2023 17:05:55 +0800
+ us-mta-546-uT-BfwHCPjKB3URYE6gT5w-1; Tue, 21 Nov 2023 04:12:24 -0500
+X-MC-Unique: uT-BfwHCPjKB3URYE6gT5w-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4A06883B824;
+ Tue, 21 Nov 2023 09:12:24 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.112])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 20802492BE7;
+ Tue, 21 Nov 2023 09:12:22 +0000 (UTC)
+Date: Tue, 21 Nov 2023 10:12:21 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, jsnow@redhat.com,
+ qemu-block@nongnu.org, qemu-devel@nongnu.org, philmd@linaro.org,
+ shentey@gmail.com, Rene Engel <ReneEngel80@emailn.de>
+Subject: Re: [PATCH v3 0/4] ide: implement simple legacy/native mode
+ switching for PCI IDE controllers
+Message-ID: <ZVx0dbWCMUbF4NVG@redhat.com>
+References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
+ <c4bb80e8-e985-b6b2-aac1-f6e8d446b8ea@eik.bme.hu>
+ <295aec31-e9c1-49d8-9bea-edad8f7b81e4@ilande.co.uk>
+ <63ff9c1a-5d05-985a-bf2f-69420b72db90@eik.bme.hu>
+ <ZVtiV8XXHxS+cw8o@redhat.com>
+ <fad96d99-bbdc-4330-bf40-974eb745e2d3@ilande.co.uk>
+ <741ae757-f1da-586b-af97-123b0ebfbdb9@eik.bme.hu>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH V7 8/8] docs/specs/acpi_hw_reduced_hotplug: Add the CPU
- Hotplug Event Bit
-Content-Language: en-US
-To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org
-Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
- lpieralisi@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, imammedo@redhat.com, andrew.jones@linux.dev,
- david@redhat.com, philmd@linaro.org, eric.auger@redhat.com,
- oliver.upton@linux.dev, pbonzini@redhat.com, mst@redhat.com,
- will@kernel.org, gshan@redhat.com, rafael@kernel.org,
- alex.bennee@linaro.org, linux@armlinux.org.uk,
- darren@os.amperecomputing.com, ilkka@os.amperecomputing.com,
- vishnu@os.amperecomputing.com, karl.heubaum@oracle.com,
- miguel.luis@oracle.com, salil.mehta@opnsrc.net, zhukeqian1@huawei.com,
- wangxiongfeng2@huawei.com, wangyanan55@huawei.com, jiakernel2@gmail.com,
- maobibo@loongson.cn, lixianglai@loongson.cn, linuxarm@huawei.com
-References: <20231113201236.30668-1-salil.mehta@huawei.com>
- <20231113201236.30668-9-salil.mehta@huawei.com>
-From: Shaoqin Huang <shahuang@redhat.com>
-In-Reply-To: <20231113201236.30668-9-salil.mehta@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=shahuang@redhat.com;
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <741ae757-f1da-586b-af97-123b0ebfbdb9@eik.bme.hu>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-4.009, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,36 +88,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 11/14/23 04:12, Salil Mehta via wrote:
-> GED interface is used by many hotplug events like memory hotplug, NVDIMM hotplug
-> and non-hotplug events like system power down event. Each of these can be
-> selected using a bit in the 32 bit GED IO interface. A bit has been reserved for
-> the CPU hotplug event.
+Am 20.11.2023 um 16:02 hat BALATON Zoltan geschrieben:
+> On Mon, 20 Nov 2023, Mark Cave-Ayland wrote:
+> > On 20/11/2023 13:42, Kevin Wolf wrote:
+> > > Am 20.11.2023 um 14:09 hat BALATON Zoltan geschrieben:
+> > > > On Mon, 20 Nov 2023, Mark Cave-Ayland wrote:
+> > > > > On 19/11/2023 21:43, BALATON Zoltan wrote:
+> > > > > > On Thu, 16 Nov 2023, Mark Cave-Ayland wrote:
+> > > > > > > This series adds a simple implementation of legacy/native mode
+> > > > > > > switching for PCI
+> > > > > > > IDE controllers and updates the via-ide device to use it.
+> > > > > > > 
+> > > > > > > The approach I take here is to add a new pci_ide_update_mode()
+> > > > > > > function which handles
+> > > > > > > management of the PCI BARs and legacy IDE ioports for each mode
+> > > > > > > to avoid exposing
+> > > > > > > details of the internal logic to individual PCI IDE controllers.
+> > > > > > > 
+> > > > > > > As noted in [1] this is extracted from a local WIP branch I have
+> > > > > > > which contains
+> > > > > > > further work in this area. However for the moment
+> > > > > > > I've kept it simple (and
+> > > > > > > restricted it to the via-ide device) which is good
+> > > > > > > enough for Zoltan's PPC
+> > > > > > > images whilst paving the way for future improvements after 8.2.
+> > > > > > > 
+> > > > > > > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> > > > > > > 
+> > > > > > > [1] https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05403.html
+> > > > > > > 
+> > > > > > > v3:
+> > > > > > > - Rebase onto master
+> > > > > > > - Move ide_portio_list[] and ide_portio_list2[] to IDE core to
+> > > > > > > prevent duplication in
+> > > > > > >   hw/ide/pci.c
+> > > > > > > - Don't zero BARs when switching from native mode to legacy
+> > > > > > > mode, instead always force
+> > > > > > >   them to read zero as suggested in the PCI IDE specification
+> > > > > > > (note: this also appears
+> > > > > > >   to fix the fuloong2e machine booting from IDE)
+> > > > > > 
+> > > > > > Not sure you're getting this, see also:
+> > > > > > https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg04167.html
+> > > > > > but this seems to break latest version of the AmigaOS driver for
+> > > > > > some reason. I assume this is the BAR zeroing that causes this as it
+> > > > > > works with v2 series and nothing else changed in v3 that could cause
+> > > > > > this. Testing was done by Rene Engel, cc'd so maybe he can add more
+> > > > > > info. It seems to work with my patch that sets BARs to legacy values
+> > > > > > and with v2 that sets them to 0 but not with v3 which should also
+> > > > > > read 0 but maybe something is off here.
+> > > > > 
+> > > > > I've been AFK for a few days, so just starting to catch up on various
+> > > > > bits and pieces.
+> > > > 
+> > > > OK just wasn't sure if you saw my emails at all as it happened before that
+> > > > some spam filters disliked my mail server and put messages in the spam
+> > > > folder.
+> > > > 
+> > > > > The only difference I can think of regarding the BAR zeroing is that the
+> > > > > BMDMA BAR is zeroed here. Does the following diff fix things?
+> > > > 
+> > > > This helps, with this the latest driver does not crash but still
+> > > > reads BAR4
+> > > > as 0 instead of 0xcc00 so UDMA won't work but at least it boots.
+> > > 
+> > > And disabling only the first four BARs is actually what the spec says,
+> > > too. So I'll make this change to the queued patches.
+> > 
+> > That was definitely something that I thought about: what should happen
+> > to BARs outside of the ones mentioned in the PCI IDE controller
+> > specification? It seems reasonable to me just to consider BARS 0-3 for
+> > zeroing here.
+> > 
+> > > If I understand correctly, UDMA didn't work before this series either,
+> > > so it's a separate goal and doing it in its own patch is best anyway.
+> > > 
+> > > As we don't seem to have a good place to set a default, maybe just
+> > > overriding it in via_ide_cfg_read(), too, and making it return 0xcc01 in
+> > > compatibility mode is enough?
+> > 
+> > It's difficult to know whether switching to legacy mode on the via-ide
+> > device resets BAR4 to its default value, or whether it is simply left
+> > unaltered. For 8.2 I don't mind too much as long as the logic is
+> > separate from the BAR zeroing logic (which will eventually be lifted up
+> > into hw/ide/pci.c).
 > 
-> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
-> ---
->   docs/specs/acpi_hw_reduced_hotplug.rst | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/docs/specs/acpi_hw_reduced_hotplug.rst b/docs/specs/acpi_hw_reduced_hotplug.rst
-> index 0bd3f9399f..3acd6fcd8b 100644
-> --- a/docs/specs/acpi_hw_reduced_hotplug.rst
-> +++ b/docs/specs/acpi_hw_reduced_hotplug.rst
-> @@ -64,7 +64,8 @@ GED IO interface (4 byte access)
->          0: Memory hotplug event
->          1: System power down event
->          2: NVDIMM hotplug event
-> -    3-31: Reserved
-> +       3: CPU hotplug event
-> +    4-31: Reserved
->   
->   **write_access:**
->   
+> My original patch checked for BAR being unset and only reset to defailt in
+> that case so it won't clobber a value set by something (like pegasos2
+> firmware) but will set default for amigaone which does not program the BAR
+> just uses the default legacy mode (which is the default on real chip but we
+> have to make that happen on QEMU after reset). So setting it to default if
+> it's unset when switching to legacy seems like a safe bet and testing with
+> my patch did not find problem with that.
 
--- 
-Shaoqin
+How about setting the default if it's unset on the first read after
+reset instead of only on switching modes? I'd like to avoid that the
+guest could observe surprising state changes, even if the OSes we're
+currently looking at don't do that. It just seems more robust than
+introducing random magic at arbitrary points.
+
+Kevin
 
 
