@@ -2,65 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78437F3904
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D8D7F3907
 	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 23:12:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5YxF-0005SY-DI; Tue, 21 Nov 2023 17:10:49 -0500
+	id 1r5YxJ-0005ZA-B4; Tue, 21 Nov 2023 17:10:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=5689374ac6=volodymyr_babchuk@epam.com>)
- id 1r5Yx7-0005Qk-AB
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 17:10:45 -0500
+ id 1r5YxF-0005TJ-1r; Tue, 21 Nov 2023 17:10:49 -0500
 Received: from mx0a-0039f301.pphosted.com ([148.163.133.242])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=5689374ac6=volodymyr_babchuk@epam.com>)
- id 1r5Yx5-0001XZ-HI
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 17:10:41 -0500
+ id 1r5YxA-0001bM-Ji; Tue, 21 Nov 2023 17:10:48 -0500
 Received: from pps.filterd (m0174679.ppops.net [127.0.0.1])
  by mx0a-0039f301.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ALJcd19031085; Tue, 21 Nov 2023 22:10:31 GMT
+ 3ALJcd1B031085; Tue, 21 Nov 2023 22:10:33 GMT
 Received: from eur03-am7-obe.outbound.protection.outlook.com
  (mail-am7eur03lp2233.outbound.protection.outlook.com [104.47.51.233])
- by mx0a-0039f301.pphosted.com (PPS) with ESMTPS id 3uh0hhgrv3-1
+ by mx0a-0039f301.pphosted.com (PPS) with ESMTPS id 3uh0hhgrv3-3
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Nov 2023 22:10:31 +0000
+ Tue, 21 Nov 2023 22:10:33 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NUOq1e9rFmqX20JqI3pK1zHqn6YN2bSdWeGGNk2rQ2cvNkYu0vvxgJ3JX9a+87qYBHtY1FJmcov3pMa6jFtmCa7hMCVDHt2mN/FY3W3RJcYpWFH7Ln6AhxLa8ErjeERCcDHlZGOCvO6G3fQyKvtpQIzoeGoWlh4WvUu1dhcNezc8exz9N6KojzqrWSHVFNjMFnkUicEY91Vahu+SZONCf/l3KvJLsEUGkJqr7Xra3wWYJBCxlKR5Pcr2bmub4a2XFzAMzvJhmpHTedM4r1XGQVscbO38vuGqJgoTV80/UqtCDXdBxq10Vj05Uyu9y46jHoxmGQi9nE9LmSZBJmuNuw==
+ b=kqD8g3kmSLyK4d2zD3OC0nRgxxwpsegsYvelEwZQ8SUbOIeneYQMjNEms5kFvMgPzKHUB6zEo/gIBAZT6y92jXQknT9XgKNKX4ij9+mP4CuwK80BjIIs4hil03QW2ypPHeIhAEfm2ASe217yDnV0uriDxVNHlumzyQDKkMZQ8uxh+VHvdU5qXRxNJYXVhiCehJJ2T5Gd/B1D6+Pg3RAtzih3uiB9B/9DN9+Gri1b+5gfvEi/LFwLgvHr7lKTzLSrzr0qFEr0vu//qIilwN6LJ7GWJGbAmGP3Zb2pKdk7i/Rma+VF1zoLDQgn73dmoZqIekHOu15yieEY18YVP5SaAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Vrab7xD6Eb8Yy+PVTHXjPTBXOVSjkFLDtFkuUQqPiD0=;
- b=S0DE88RduRQ7FmX1TUZV53s1xNaAHtzBn5ju4/n7bj/KaO5QZkCU5UT+Vk5nDR8JiCHcDMwbCk3Q2eEECbe3hfI7JTDa1ejxFsn4YpENBaR1dh5w9IocPgLhGddx5Yq/muPSJfpn9jRjCnX9/j5d0s0Z2kpQec57yECDYWya9a/kHOwZ81mdYBnm47Uc9jM4rqdmY4KyGpODAojo/RYEylzpdW7n5dgP4g7Vm6zzEO1nKtDZ2BcEVxfke6M9Yr70/SixeQB1v/+1JppVBbSZD4g1/HqzfuCsMM95fuZWy3ZdEYYBxr6M4uTdqHBBoKr8sqeYKaoh1GqQh2nypCbsOw==
+ bh=zFvL92IcoplPsyb+IhBJ7P1+li1JaQbeI0VTPaCVCCg=;
+ b=T8t1w/V3+5+ZsY/Bg+3y3y0egwy+wQxNLXxRlk9BfFMAIY/IAqHDxad4uksVLOi4G5dnT1bDy7DCHgoohxnNpOnDyMkcAqhRaynd2V6v2oNyexbw6QSG9cqfUpxGOnfKZs8qktnnXrVtTOxuaxQbS+ZEKju2yHqP4YSM0jJhu4V9x5M69YGtpahbTmAklpYj8U0f/fsGsy4ZM0Cxkc5L4jEwvHNaNJAG0WyFw+RD4ikrp/uIiwUGcHC3gLI1j8f7tiXLqAp8LwF3+EZyVSYx8+Hs2zBG8D3wqHf0al1flG/8drDJECDLBzdbdEA20FnUNKUtuTVgeoDemVetJ8Mi7g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=epam.com; dmarc=pass action=none header.from=epam.com;
  dkim=pass header.d=epam.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=epam.com; s=selector2; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Vrab7xD6Eb8Yy+PVTHXjPTBXOVSjkFLDtFkuUQqPiD0=;
- b=mlMEafKSFoiHm669Aaxfb4YJ/PzB4blriXVecTexUNFsKxhxKsvhCgW8YFnx45H0lrNQBefDyfQVVE9NMFZpBXfx2HB+2aMNJBhbQxasvzcu/Y7f4uoTNs19EWVqjqmBoxjjvgroeAVc5M2bayxsrAn++q2/Q0bhe9dBj3HH1RORjYngE1cR2ci2VDf2vORAn2Iqw4Ia+ObrG215wZwAA5i+m6uyTtuvCDDmut62phQYnLT3vn+zn1hu8iCSBhogeB/sBtp2gkjom5nGBrSVW85QXADOlBGz6BMGaQC6WpROdaxe2K7Ik4fW8V20Z6F2Vl1ntTPTRgZuYqyNYjEMhw==
+ bh=zFvL92IcoplPsyb+IhBJ7P1+li1JaQbeI0VTPaCVCCg=;
+ b=dvIeoRvoq1fJOUt/D1jJuWqaDym/E7I8E2mrWqU1LhAtMPso3ueno5C8n1/akkVp2JBYHS93q3nAN6pv0Eg2V7Ns/224TteFmDSeIfQLB6NaCbftAR0J9AXMWdABlRqhcdQHQ5Y/+yWbyUjxkgyplN3ysAlN25rqtF/76I1wRgt6TZT50wb+3WLeo6QaxyY0h1iNyOFu6Zzxs5s2HauUgXCICyBdUizdEm5OMq4aOTXKiwI2AZvPLHgRSh0eve5W1YjgsngACn1xHcIbUjwaATLKnZtoV1LnD7BO+2EagwDmO15obJN2xf0SiOkKsryplOFOv6JpSK/rhmaBSA3orw==
 Received: from VI1PR03MB3710.eurprd03.prod.outlook.com (2603:10a6:803:31::18)
  by DU0PR03MB8836.eurprd03.prod.outlook.com (2603:10a6:10:40c::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.28; Tue, 21 Nov
- 2023 22:10:27 +0000
+ 2023 22:10:28 +0000
 Received: from VI1PR03MB3710.eurprd03.prod.outlook.com
  ([fe80::8e03:368:1fd7:1822]) by VI1PR03MB3710.eurprd03.prod.outlook.com
  ([fe80::8e03:368:1fd7:1822%6]) with mapi id 15.20.7002.028; Tue, 21 Nov 2023
- 22:10:26 +0000
+ 22:10:28 +0000
 From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
 To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
 CC: David Woodhouse <dwmw@amazon.co.uk>, Stefano Stabellini
  <sstabellini@kernel.org>, Julien Grall <julien@xen.org>, Volodymyr Babchuk
- <Volodymyr_Babchuk@epam.com>
-Subject: [PATCH v2 0/6] xen-arm: add support for virtio-pci
-Thread-Topic: [PATCH v2 0/6] xen-arm: add support for virtio-pci
-Thread-Index: AQHaHMeHsz+LK34jDkSrorKu2BdzqQ==
-Date: Tue, 21 Nov 2023 22:10:26 +0000
-Message-ID: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
+ <Volodymyr_Babchuk@epam.com>, Paul Durrant <xadimgnik@gmail.com>, Oleksandr
+ Tyshchenko <Oleksandr_Tyshchenko@epam.com>, Anthony Perard
+ <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>, Kevin Wolf
+ <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>, "open
+ list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>, "open list:Block layer
+ core" <qemu-block@nongnu.org>
+Subject: [PATCH v2 2/6] xen: backends: touch some XenStore nodes only if
+ device...
+Thread-Topic: [PATCH v2 2/6] xen: backends: touch some XenStore nodes only if
+ device...
+Thread-Index: AQHaHMeI7KczK4z02kGE/beB6udNwg==
+Date: Tue, 21 Nov 2023 22:10:27 +0000
+Message-ID: <20231121221023.419901-3-volodymyr_babchuk@epam.com>
+References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
+In-Reply-To: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -68,44 +77,44 @@ X-MS-TNEF-Correlator:
 x-mailer: git-send-email 2.42.0
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: VI1PR03MB3710:EE_|DU0PR03MB8836:EE_
-x-ms-office365-filtering-correlation-id: ad540bce-8d8b-43b6-036a-08dbeadeaa62
+x-ms-office365-filtering-correlation-id: 5b371bf4-3d14-4840-959a-08dbeadeab57
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: S9K6JSOQl6scQC7YX/Fvb0M1MCUTEONhaunE4ftTImENBpd2QgfmQ8Vf4+I1xjL38FTa56vrD4qsqvEf7+GA9qMLht0Pv2rPobKyEHycxn2LsuO08YrS2zS1tzYFvC0y3dt6koyql31oLPdb4gF+RPKCpJggRXUVIrayVnljAGDt9JmZJTFWoaDgzQDESxbn4EehY1lyg7bavczwPoQFEl3phbKrf+xNYOU+car1P08HN6pRN1PNLDFB5GiLwqSWRbOGcA+QM64dGPCdi0GNb1gy5PtX4XGpSGGVM6dJwz8jIkczPSpHAa4iW/aW7S6zCFhp2Fgo5Y5/VtD4bdNdKLIugCh8sRQBgiau82Py+8jFtfBgr0ngvITKEl12rlPHooBJ4blBMwF8kx+ErfSvUB9vvxbZaqhtwM5TgMfbJAVanIwd5NJ9dI3N/Wg24gH9rUuyIeWdm6J52mZXvNF79YMtaGdzfiapOrt/LMKuCiLLpnKjsNAQNQLf7i2d9dBVPH/Dp18CXfw978qSWseptk790Io9x+xGSxhoyYf3M1WSbQzOheb3Pv3J5mDRzrIPXgueZ2k1HgyGLB48DMTNW7A2TIW3o4WCn7HjH9nq+HfJ4j7VsWauaUY/IyS1S1+c
+x-microsoft-antispam-message-info: MAFD4wOPot0LeQgz+Y+W/txTYvQtn0TdqM2DhHslmzoGnA+wo43LdBitlj2fqiAT50+thIFk4mCdF01pxyFyjX7ugskRFwyTR9k6c+n+E93hAEX4eRB8Gs8tIS+YAruSTz7AAMeb6l7ciILZvdq/6TMI3hMuPt4ppsO7CCqyO3ApyWNlYXsjDNbySk9B+RaiX/xiuzLhmOnT0WMNs2wTXMuF4rgCiajb/d4340YC7LOI4Pfut77nP0QICQW7SlfsBUq8J6tSbHJVWriniayKNmadc0l8nZjfwUd+jO+OW0PmLE2GZhb3toebep8hlC9kD5RojliPJmPjlzozi2VAoiUYxuJdxjBamPC7Sc64n3mPy430seXD8LmTSLRWbxzgj8/stA4dxgeFPaQNIjph1xVihUjDHrME5xlnqB/Vh/O2RYohE8hPmiEparCMgi2R6vSocYFglA8n35uvG7sXSISWNauKKhkXC8QWJO2Efa3m4cvlJjT//9NId5CtHM7c4tj+/Xly19HUw5NLCjpuwOz3yfZp/cb+E9zpld9e3boMesJYZdQbasHPRPRjwA4+py3fHLmXTkLI/NraM1oMC2kXjcTbL8w1jAo7pfRURs1tP7TV2F4jQ6EYPL1Y+uIN
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:VI1PR03MB3710.eurprd03.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366004)(396003)(136003)(39860400002)(376002)(346002)(230922051799003)(451199024)(186009)(1800799012)(64100799003)(41300700001)(86362001)(36756003)(5660300002)(2906002)(38070700009)(122000001)(6512007)(2616005)(6506007)(55236004)(6486002)(83380400001)(71200400001)(1076003)(107886003)(478600001)(26005)(38100700002)(91956017)(66556008)(66446008)(316002)(66946007)(6916009)(64756008)(54906003)(4326008)(8676002)(66476007)(76116006)(8936002);
+ SFS:(13230031)(366004)(396003)(136003)(39860400002)(376002)(346002)(230922051799003)(451199024)(186009)(1800799012)(64100799003)(41300700001)(86362001)(36756003)(7416002)(5660300002)(2906002)(38070700009)(122000001)(6512007)(2616005)(6506007)(55236004)(6486002)(83380400001)(71200400001)(1076003)(478600001)(26005)(38100700002)(91956017)(66556008)(66446008)(316002)(66946007)(6916009)(64756008)(54906003)(4326008)(8676002)(66476007)(76116006)(8936002);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?HnpvZTEcRg3MMMhQVoTzHFkciKPw8VmnwAZvLJNNRSxS5hVod1mu0MARnd?=
- =?iso-8859-1?Q?No6efHtj5RpDmDMCECVjGrksC8E9UmpQhBWk8Q/wlSMzZMpJb0ZTRN1G21?=
- =?iso-8859-1?Q?VkVI72LnCgnIurEoZqOSZfGfD3J/D3CMZGhi7mI9em7KEyzZadwxw56AN8?=
- =?iso-8859-1?Q?eZk09H+ZIMZScbp3PWmRP8kii4xlhS/EEnTXtkyIyYF4qZnx+j0M7PB1fQ?=
- =?iso-8859-1?Q?VuN9YQgJPh2kBiLWP18nMKuhRldlY5vT/oaXT95Q9BKk9mj5iIY3GzN2d8?=
- =?iso-8859-1?Q?U76eJB9MJoT8SJfYD571xUyWboGQKDJjxNMGSP4lAPrUj4O/YjTQ+PUBDb?=
- =?iso-8859-1?Q?OyMwsdZdja65D1T4FVSWoeDATerNeembruKLVxBcNHsR/N2u+0/WxFSoGw?=
- =?iso-8859-1?Q?RryB42IK7NfrjyOs/gCI6C8QsS5Ro/SoZzDdbYJYC+hdymKV/Ys/IegUnC?=
- =?iso-8859-1?Q?9+UdhK44sYPBKEEv9o5B3z2DYo6SH+I9p/eE57hOeaRFsXYIyLG0wnTzI0?=
- =?iso-8859-1?Q?FUK3ABf53xC9lIx2NT4Yim5Kb8LmadkLmdTYDKrdtltiIcHqba1hBg+BYI?=
- =?iso-8859-1?Q?NAKjTA780R0fdf6dnfOfgfVOkuDYTJNi8oCGlFzslyTho8bP2tJcoDFIKi?=
- =?iso-8859-1?Q?JF3PCp4/jha3wZ0FY2IRBrHygzAiLfWVmeJIKiIe2RguBPsADmIbSu4NOE?=
- =?iso-8859-1?Q?G4SwE1PMuJasB2FN3uyppKNuDtcCSqn6okL16qN/AvMnBeTW6BIJ/TFeq8?=
- =?iso-8859-1?Q?Gpypr9D0koqdcKIlhOmlNv4epBJOCWpTHQBXmiChZUPqMbtH91Lf5U/1ZI?=
- =?iso-8859-1?Q?e1YM3uNbSPCIgsWEuAcbISov4NYCWx+xs2imRDxpg2TH2v87luWFbzRQJU?=
- =?iso-8859-1?Q?zQhZOqx5SFih4rBkuftgG8+K6IKFLI7gJBXilqNwrlBqZ2fCfG9nOWo0y+?=
- =?iso-8859-1?Q?zVV9Wdm3vf8r+h7oSzPsk9mEjX+n+tFDGYyJv1c6LqzH6H8KFny61mCGaM?=
- =?iso-8859-1?Q?Pjkojcf+17rcENOpMIJ0FDJu9AKZhrm7WL/5jgjgE80vUWWQS9fTDLkR6m?=
- =?iso-8859-1?Q?fPxlG5j/EdoJhjF8wRF/1zVVK46TIXkgY9YjIsb1YHdCO2kBpOWyDqq5V0?=
- =?iso-8859-1?Q?QkEEwkT2ThL8dnaBujHbN7StntADZHqZyC7TVPdGfgBgrw+Ytx2RCEC3Lg?=
- =?iso-8859-1?Q?PrMHisVgAhdZQxnH+vzmK2KK7/ik0qdGqosFP/viuJeVxA0FNT2K+g2/jV?=
- =?iso-8859-1?Q?tQORUzvycJrcdgNExRNkdyprcv7a+nWhc6uHoiWaauJhyokHBo+zMTr2+1?=
- =?iso-8859-1?Q?X9mKEHuK/vk9Na6XtJdlVjjHHSVGsz6LODwXVOW2qsS6tNdlIl6OyTUySo?=
- =?iso-8859-1?Q?0COWAfZCjEqFvlL0cp8xpVzO2/Mi6739OXo3FgnEnF12nUw2ZW5ZLFOj8L?=
- =?iso-8859-1?Q?vUde+42VHbXJZ6gu/Q3f8wOS3JFUggXwffxgDPUTfM8fnZePEmVEbr1iZR?=
- =?iso-8859-1?Q?Jv2lvrQm/AaGdmWlfSI6N3KuBj/yy4tq6QItpYkHVWGKR+vbwh8j3x0/eD?=
- =?iso-8859-1?Q?JXnm0TyVG5rLH5pjoAbr2YxddpWJ4m2LxrQbZDgx7ZrdtTip5Ie3SRHr1m?=
- =?iso-8859-1?Q?Nm5TKa+VFjyr3PouYjZmS2fL4LCC2aFNXK+4HGkc2CokwSjiIhC/4UiQ?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?KWXIHuKvpmWQ2ZwtAt+v98nc4nReKWzxwVyg3uxPxddiID0KIy0etDTToV?=
+ =?iso-8859-1?Q?p41Dv9wTHhFLX7bfJg+VQ56rvq+JgXmyXS7gn4cFtA6CXIwi/VeOAL/zSK?=
+ =?iso-8859-1?Q?q8g+KOSY5Q9Bai0JgXX5l9K8+8vzPSk86l/klX6aSumnRl+QUjkQwkaTqJ?=
+ =?iso-8859-1?Q?MSFV22QQdBvn4CRq+QCD2mQFd6O028TuOk0KpLq3mLhKmbL4HBUkA9JcrD?=
+ =?iso-8859-1?Q?0ZcMJlQdZ708cibLPHEhWIq6jQk9nyDD90W4Rb/cmiC6sH9/dJq2190cLY?=
+ =?iso-8859-1?Q?kGzjT401MaeZuHM/5aqmFlJMfemAvlSeTW828OlGwDvR7bfjq2wrtRR+5D?=
+ =?iso-8859-1?Q?4xR/Cta33E6jLCVjJoLY+XYlgzw9+rIZjCMzVXXUxl97rE8eJnX8Jm6kVP?=
+ =?iso-8859-1?Q?HmXLPhKPN7CEzgyWj6+N3PdWYiMwERfmnixJXAo9b35210BdMz4luFDYCQ?=
+ =?iso-8859-1?Q?j0aC8wiyHEcoGkuY6vEaI6zu7mdvnkmntd86Dn8Kp4n3nQL+/aK58rEA6Z?=
+ =?iso-8859-1?Q?YNGDKfDeO2/9zokQ+gkWdkYmZ3kiVsje/n1+Zx0rFyXK3HW7MYos91otKf?=
+ =?iso-8859-1?Q?E/EuvKdLdzGsIsXdS9PLwn28n5Ki2Vy+K5NGofFMON0tk6uHYiVeGAhuG5?=
+ =?iso-8859-1?Q?992gi4qcr+kpWQhAUmTJ08Tyz6SX1pa5rAYAWcdLVwV9KulnOag1p4rGn/?=
+ =?iso-8859-1?Q?jInGabQWMlWyTcWHyUjPRINSdyYfVSVDYTcIEdAUYQNdkLaTPu3a5uSEDn?=
+ =?iso-8859-1?Q?YZuS1aiu628FyCMH6ET5kJLUDY8K5dAH9kGGFFMadDUEe4WHniYlc7ouUW?=
+ =?iso-8859-1?Q?0N24J3+yGfwv646UK6t1uDy4A1H+CpZZeOEWK68DPzDU3njZxKD7OFEG/f?=
+ =?iso-8859-1?Q?kiPPKggVkG2IFVih63b71duNXsZ1DF52uR7gC1XOu891uCZVAIWnPgXL4r?=
+ =?iso-8859-1?Q?NpWg936m9ekoBl3Z/riYPWwR0flBeoA7OPBt+Hd8ZJUghbK8Y1rcUIuPse?=
+ =?iso-8859-1?Q?NCW1GIvsm4bi69uFlr40LMDoxa7UdwJaygFSCZHKOsq7Vv06k6zA2utO++?=
+ =?iso-8859-1?Q?pKtgusjuweo3E1WOnehSSK+E7xozjPJxTlzWsso3ExcIp1eMuLD/FppJPv?=
+ =?iso-8859-1?Q?K1GyfDMf8wpTmto59oSJg09hhai3GRGLKYKDdRnKXqJEfODHcGXUxJ25jj?=
+ =?iso-8859-1?Q?wmDHE0lchAg/fIrUMjqpS+jF7vrF+o2ArELMWCZb5drk3eChJDs8orTIOe?=
+ =?iso-8859-1?Q?g/iXW7bKiF9cfL3IAYvKg7kV/55UEBp/5huGDaWKYcBVCzNCGAgo+r/0vM?=
+ =?iso-8859-1?Q?5AMpCZuq+5Qh1IHL8lJsRJUcgMiAmqPkzjzUu0LTxG76Xw6n5T05V5Blyw?=
+ =?iso-8859-1?Q?ks2ph7VY11Bw0hBHwlkynW6eAV0oZPEguUVwAfgxw3XQKL5q3zRCkEhoSm?=
+ =?iso-8859-1?Q?PPv/3up5O1XvUXLkmtlqsGTO9EXURkTM4TtEw7rgh1cF3vgO02AmJDngD4?=
+ =?iso-8859-1?Q?5HA3lN+B98zSgSqUEQ3Q7E86d4dToZWICLQSaVZGQ3BzqULbLSR08x5lJm?=
+ =?iso-8859-1?Q?9rd44Gm/c5sLyfrkCQyvEZKguOXulKkP0Y+/emGgaE9WmqrzNRrC5+30jU?=
+ =?iso-8859-1?Q?EuoM/MA2E6gXij5aJPWEEWgIupn/IxGGLxSamFQZfoAQ+7HnQnihdBNA?=
  =?iso-8859-1?Q?=3D=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -113,22 +122,22 @@ MIME-Version: 1.0
 X-OriginatorOrg: epam.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3710.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad540bce-8d8b-43b6-036a-08dbeadeaa62
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2023 22:10:26.5172 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5b371bf4-3d14-4840-959a-08dbeadeab57
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2023 22:10:27.4220 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: b41b72d0-4e9f-4c26-8a69-f949f367c91d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: r4+Uj0uCZNWQzYzKFsGY4s4VYEcyhL8bEGAAXXTi2y2GVjtihrsy+c/UxSCVrPBNtddwS4F4Hl5BrjByHfVU9bVOt5bA6xloaaYb9q1cDPM=
+X-MS-Exchange-CrossTenant-userprincipalname: +ISod+EsVypTm/werNxj3/BT+ZxuKzwUDvtZGaeivXT3Ee7NHpGOY7GhmMLV/uzc9qsErugmMSdlakrxTDwCsaljqpV+lv8NI2sCpT8zCp4=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR03MB8836
-X-Proofpoint-GUID: tRWQtc-kl_b6RAjRjmMnCUKidwvfjyom
-X-Proofpoint-ORIG-GUID: tRWQtc-kl_b6RAjRjmMnCUKidwvfjyom
+X-Proofpoint-GUID: tFZ2s2ZHAOtMNhJXcFHDga0jlcMu7mQa
+X-Proofpoint-ORIG-GUID: tFZ2s2ZHAOtMNhJXcFHDga0jlcMu7mQa
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-21_12,2023-11-21_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  clxscore=1011 suspectscore=0
  phishscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
- mlxlogscore=852 bulkscore=0 impostorscore=0 spamscore=0 mlxscore=0
+ mlxlogscore=999 bulkscore=0 impostorscore=0 spamscore=0 mlxscore=0
  malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311060000 definitions=main-2311210173
 Received-SPF: pass client-ip=148.163.133.242;
@@ -156,49 +165,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+was created by QEMU
 
-This patch series adds the basic support for virtio-pci for xen-arm
-guests. The main changes are in "xen_arm: Add virtual PCIe host bridge
-support", while most of other patches are required to make QEMU work
-as device model in a non-privileged domains like driver domain.
+Xen PV devices in QEMU can be created in two ways: either by QEMU
+itself, if they were passed via command line, or by Xen toolstack. In
+the latter case, QEMU scans XenStore entries and configures devices
+accordingly.
 
-Changes v1->v2:
+In the second case we don't want QEMU to write/delete front-end
+entries for two reasons: it might have no access to those entries if
+it is running in un-privileged domain and it is just incorrect to
+overwrite entries already provided by Xen toolstack, because toolstack
+manages those nodes. For example, it might read backend- or frontend-
+state to be sure that they are both disconnected and it is safe to
+destroy a domain.
 
- - Removed "xen-bus: Set offline if backend's state is XenbusStateClosed"
+This patch checks presence of xendev->backend to check if Xen PV
+device is acting as a backend (i.e. it was configured by Xen
+toolstack) to decide if it should touch frontend entries in XenStore.
+Also, when we need to remove XenStore entries during device teardown
+only if they weren't created by Xen toolstack. If they were created by
+toolstack, then it is toolstack's job to do proper clean-up.
 
- - Included David's patch as it is the pre-req for "xen: backends:
-   touch some XenStore nodes only if device..."
+Suggested-by: Paul Durrant <xadimgnik@gmail.com>
+Suggested-by: David Woodhouse <dwmw@amazon.co.uk>
+Co-Authored-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
+---
+ hw/block/xen-block.c  | 16 +++++++++-------
+ hw/char/xen_console.c |  2 +-
+ hw/net/xen_nic.c      | 18 ++++++++++--------
+ hw/xen/xen-bus.c      | 14 +++++++++-----
+ 4 files changed, 29 insertions(+), 21 deletions(-)
 
- ---
-
-David Woodhouse (1):
-  hw/xen: Set XenBackendInstance in the XenDevice before realizing it
-
-Oleksandr Tyshchenko (3):
-  xen_pvdev: Do not assume Dom0 when creating a directory
-  xen_arm: Set mc->max_cpus to GUEST_MAX_VCPUS in xen_arm_init()
-  xen_arm: Add virtual PCIe host bridge support
-
-Volodymyr Babchuk (2):
-  xen: backends: touch some XenStore nodes only if device...
-  xen: xenstore: add possibility to preserve owner
-
- hw/arm/xen_arm.c                 | 188 ++++++++++++++++++++++++++++++-
- hw/block/xen-block.c             |  19 ++--
- hw/char/xen_console.c            |   4 +-
- hw/i386/kvm/xen_xenstore.c       |  18 +++
- hw/net/xen_nic.c                 |  20 ++--
- hw/xen/xen-bus.c                 |  18 ++-
- hw/xen/xen-hvm-common.c          |   9 +-
- hw/xen/xen-operations.c          |  12 ++
- hw/xen/xen_pvdev.c               |   3 +-
- include/hw/xen/xen-backend.h     |   2 -
- include/hw/xen/xen-bus.h         |   2 +
- include/hw/xen/xen_backend_ops.h |   7 ++
- include/hw/xen/xen_native.h      |   8 +-
- 13 files changed, 278 insertions(+), 32 deletions(-)
-
+diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
+index c2ac9db4a2..dac519a6d3 100644
+--- a/hw/block/xen-block.c
++++ b/hw/block/xen-block.c
+@@ -390,13 +390,15 @@ static void xen_block_realize(XenDevice *xendev, Erro=
+r **errp)
+=20
+     xen_device_backend_printf(xendev, "info", "%u", blockdev->info);
+=20
+-    xen_device_frontend_printf(xendev, "virtual-device", "%lu",
+-                               vdev->number);
+-    xen_device_frontend_printf(xendev, "device-type", "%s",
+-                               blockdev->device_type);
+-
+-    xen_device_backend_printf(xendev, "sector-size", "%u",
+-                              conf->logical_block_size);
++    if (!xendev->backend) {
++        xen_device_frontend_printf(xendev, "virtual-device", "%lu",
++                                   vdev->number);
++        xen_device_frontend_printf(xendev, "device-type", "%s",
++                                   blockdev->device_type);
++
++        xen_device_backend_printf(xendev, "sector-size", "%u",
++                                  conf->logical_block_size);
++    }
+=20
+     xen_block_set_size(blockdev);
+=20
+diff --git a/hw/char/xen_console.c b/hw/char/xen_console.c
+index bef8a3a621..b52ddddabf 100644
+--- a/hw/char/xen_console.c
++++ b/hw/char/xen_console.c
+@@ -450,7 +450,7 @@ static void xen_console_realize(XenDevice *xendev, Erro=
+r **errp)
+=20
+     trace_xen_console_realize(con->dev, object_get_typename(OBJECT(cs)));
+=20
+-    if (CHARDEV_IS_PTY(cs)) {
++    if (CHARDEV_IS_PTY(cs) && !xendev->backend) {
+         /* Strip the leading 'pty:' */
+         xen_device_frontend_printf(xendev, "tty", "%s", cs->filename + 4);
+     }
+diff --git a/hw/net/xen_nic.c b/hw/net/xen_nic.c
+index afa10c96e8..27442bef38 100644
+--- a/hw/net/xen_nic.c
++++ b/hw/net/xen_nic.c
+@@ -315,14 +315,16 @@ static void xen_netdev_realize(XenDevice *xendev, Err=
+or **errp)
+=20
+     qemu_macaddr_default_if_unset(&netdev->conf.macaddr);
+=20
+-    xen_device_frontend_printf(xendev, "mac", "%02x:%02x:%02x:%02x:%02x:%0=
+2x",
+-                               netdev->conf.macaddr.a[0],
+-                               netdev->conf.macaddr.a[1],
+-                               netdev->conf.macaddr.a[2],
+-                               netdev->conf.macaddr.a[3],
+-                               netdev->conf.macaddr.a[4],
+-                               netdev->conf.macaddr.a[5]);
+-
++    if (!xendev->backend) {
++        xen_device_frontend_printf(xendev, "mac",
++                                   "%02x:%02x:%02x:%02x:%02x:%02x",
++                                   netdev->conf.macaddr.a[0],
++                                   netdev->conf.macaddr.a[1],
++                                   netdev->conf.macaddr.a[2],
++                                   netdev->conf.macaddr.a[3],
++                                   netdev->conf.macaddr.a[4],
++                                   netdev->conf.macaddr.a[5]);
++    }
+     netdev->nic =3D qemu_new_nic(&net_xen_info, &netdev->conf,
+                                object_get_typename(OBJECT(xendev)),
+                                DEVICE(xendev)->id, netdev);
+diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
+index dd0171ab98..d0f17aeb27 100644
+--- a/hw/xen/xen-bus.c
++++ b/hw/xen/xen-bus.c
+@@ -599,8 +599,10 @@ static void xen_device_backend_destroy(XenDevice *xend=
+ev)
+=20
+     g_assert(xenbus->xsh);
+=20
+-    xs_node_destroy(xenbus->xsh, XBT_NULL, xendev->backend_path,
+-                    &local_err);
++    if (!xendev->backend) {
++        xs_node_destroy(xenbus->xsh, XBT_NULL, xendev->backend_path,
++                        &local_err);
++    }
+     g_free(xendev->backend_path);
+     xendev->backend_path =3D NULL;
+=20
+@@ -764,8 +766,10 @@ static void xen_device_frontend_destroy(XenDevice *xen=
+dev)
+=20
+     g_assert(xenbus->xsh);
+=20
+-    xs_node_destroy(xenbus->xsh, XBT_NULL, xendev->frontend_path,
+-                    &local_err);
++    if (!xendev->backend) {
++        xs_node_destroy(xenbus->xsh, XBT_NULL, xendev->frontend_path,
++                        &local_err);
++    }
+     g_free(xendev->frontend_path);
+     xendev->frontend_path =3D NULL;
+=20
+@@ -1063,7 +1067,7 @@ static void xen_device_realize(DeviceState *dev, Erro=
+r **errp)
+     xen_device_backend_set_online(xendev, true);
+     xen_device_backend_set_state(xendev, XenbusStateInitWait);
+=20
+-    if (!xen_device_frontend_exists(xendev)) {
++    if (!xen_device_frontend_exists(xendev) && !xendev->backend) {
+         xen_device_frontend_printf(xendev, "backend", "%s",
+                                    xendev->backend_path);
+         xen_device_frontend_printf(xendev, "backend-id", "%u",
 --=20
 2.42.0
 
