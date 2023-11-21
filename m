@@ -2,51 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AEA7F263C
+	by mail.lfdr.de (Postfix) with ESMTPS id 137937F263B
 	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 08:19:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5L1X-0007In-Uo; Tue, 21 Nov 2023 02:18:19 -0500
+	id 1r5L1U-0007GH-QH; Tue, 21 Nov 2023 02:18:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
- id 1r5L1V-0007Hb-0X; Tue, 21 Nov 2023 02:18:17 -0500
+ id 1r5L1R-0007EP-GF; Tue, 21 Nov 2023 02:18:13 -0500
 Received: from mta-04.yadro.com ([89.207.88.248])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
- id 1r5L1N-0003ip-Rz; Tue, 21 Nov 2023 02:18:16 -0500
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com A6C58C0002
+ id 1r5L1O-0003j9-KC; Tue, 21 Nov 2023 02:18:13 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com C5F7FC0002
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-04; t=1700551085;
- bh=WURz5IEE6WV+FL9frjqYm6GeHJgvsSTBg+sERX8EFAk=;
+ s=mta-04; t=1700551087;
+ bh=xJISpx4rx9AoHbDVBMOwJVn71cS/lx+g2kjhdfZOPT4=;
  h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=eGAZBoN/WreI0orMS1BzrQjILNFae2c9tVpolxKDiFRdEjbvIB0l9EfNCr2UuK6cI
- 8JZABGW7oMGZXi0wP+hIoNtQKoliHXRs/3KTYKLpDln/KWJkD45D6ghcdn8R6m22CN
- jLSJFArKQFNS7QlDZ1z9fxdgChCv0ZvR45RJCGCehrmeWJzIeQsVqjE5PNnWQzxYHJ
- y4gX7WF1fJQZVUIinKoegaTJjuhL8Gsa79GLObZAPmkbrzTNPS1yhkCbKee1xBdHo1
- CZoNAG30dLfJAo3xGC3SZXKN36DqFm1RqLc/HlXXc52REuYLpX+gALGbMq3QmlR9EW
- VWe5OC/vYE7/w==
+ b=Dejf1RVyz+z1rzVbwBFRTdoxDjNHswDPLykO1z6vEBLncjM53YhJgrC/G1T9fJrs/
+ j333g2u/szaPsaGSx/zt2sfdTkP6jGP8mwLU1jwQEK0Pk8J75L1gdluEedz5B0QXNG
+ t8XubIg1u9w34Kk4XNKkbIZ8LO2nSGrVjT/ET650ktqA2IwxKIeZNRYgOqNVJtgBU/
+ T+tjTEQ5G22YlbbgxBW73L5e7XuoPvrY+4diKv0Ev2X/EMnEWQMBsDNw0JTmySlhIs
+ 6bpj6/7+GOf9yZtTJBXsUcjkxB1Zch8reaeJw9TuJZEN55DeEJC9LpAJgeJizE4p29
+ sv2utYVERiYIg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-03; t=1700551085;
- bh=WURz5IEE6WV+FL9frjqYm6GeHJgvsSTBg+sERX8EFAk=;
+ s=mta-03; t=1700551087;
+ bh=xJISpx4rx9AoHbDVBMOwJVn71cS/lx+g2kjhdfZOPT4=;
  h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=dOkZ/MIPzuEf9Q0GBYOwah52eTlwO9/YtJwTJwUqYXkrNmh9rf+wdD+KvvVwPWIYN
- bSwe3UgUYvciiHdcRoxuQJ42zGZuXuHxSj014KKA+TTulTkTdV2mEDgIzjdKIjRe//
- PYgr4Q8WZ6UkspEn0YhzHPcBOEPI54rUN2cwRbv+mgo1t77m+k68ZAn4rU0y5odoFN
- 3FjBnV2MwfE8vqC+/RwzZWbkGat3PGrJmf8Xnisc40lswalRFUsvcdza/cbtbryR9r
- BlgYv5ciwvVm9zUEqR2gutKz6xQFTGDnhUpVxSthKiMXyjgCc7QwEBA2B2vJ51G5Xt
- FypGhGORh9frw==
+ b=sfZ3PJQ2x+PtyxXwcExTIQqSLuI0jF2hKASHv0Kk6Qc5nFFH+fdIiOTMvpcKXYMEf
+ jf2SanA4A0Ml4R/bPfDAHuj3KTJcCTOQOPxQUu6meFwD8sb5ORUsVq+D+8pExC585g
+ JfaTwPpwqQUXuLhyfgtsbFDZz2LwjHh+d4mTrL20echrufKEdvypuNnijbwi2YInAt
+ 4ZAS+BlOh7I3SKrMC8Ieco+94M3Rnw4Cg+MHef0gFBgJZS+OLSLBY2LYzypm7OG/d+
+ i5GBZMW6YSTyGX3noCjAmx7H/bl7kuvb7Smf6u2NvVABwrk7pB2+f9TFFjPNoG3EmD
+ aDuSch3+y+szw==
 From: Ivan Klokov <ivan.klokov@syntacore.com>
 To: <qemu-devel@nongnu.org>
 CC: <qemu-riscv@nongnu.org>, <palmer@dabbelt.com>, <alistair.francis@wdc.com>, 
  <bin.meng@windriver.com>, <liwei1518@gmail.com>,
  <dbarboza@ventanamicro.com>, 
  <zhiwei_liu@linux.alibaba.com>, Ivan Klokov <ivan.klokov@syntacore.com>
-Subject: [PATCH v2 0/2] Fix mmu translation with H extension
-Date: Tue, 21 Nov 2023 10:17:55 +0300
-Message-ID: <20231121071757.7178-1-ivan.klokov@syntacore.com>
+Subject: [PATCH v2 1/2] target/riscv/cpu_helper.c: Invalid exception on MMU
+ translation stage
+Date: Tue, 21 Nov 2023 10:17:56 +0300
+Message-ID: <20231121071757.7178-2-ivan.klokov@syntacore.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231121071757.7178-1-ivan.klokov@syntacore.com>
+References: <20231121071757.7178-1-ivan.klokov@syntacore.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -76,21 +79,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A series of patches that correct the conversion of virtual addresses 
-to physical ones. Correct exception for mbare mode and fix MXR bit 
-behavior with MPV\MPRV bits.
+According to RISCV privileged spec sect. 5.3.2 Virtual Address Translation Process
+access-fault exceptions may raise only after PMA/PMP check. Current implementation
+generates an access-fault for mbare mode even if there were no PMA/PMP errors.
+This patch removes the erroneous MMU mode check and generates an access-fault
+exception based on the pmp_violation flag only.
+
+Fixes: 1448689c7b ("target/riscv: Allow specifying MMU stage")
+
+Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
 ---
-v2:
-   - Fix typo, specify the fixed commits
----
+ target/riscv/cpu_helper.c | 30 +++++++-----------------------
+ 1 file changed, 7 insertions(+), 23 deletions(-)
 
-Ivan Klokov (2):
-  target/riscv/cpu_helper.c: Invalid exception on MMU translation stage
-  target/riscv/cpu_helper.c: Fix mxr bit behavior
-
- target/riscv/cpu_helper.c | 54 +++++++++++++++++++--------------------
- 1 file changed, 27 insertions(+), 27 deletions(-)
-
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index b7af69de53..9ff0952e46 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -1143,47 +1143,31 @@ static void raise_mmu_exception(CPURISCVState *env, target_ulong address,
+                                 bool two_stage_indirect)
+ {
+     CPUState *cs = env_cpu(env);
+-    int page_fault_exceptions, vm;
+-    uint64_t stap_mode;
+-
+-    if (riscv_cpu_mxl(env) == MXL_RV32) {
+-        stap_mode = SATP32_MODE;
+-    } else {
+-        stap_mode = SATP64_MODE;
+-    }
+-
+-    if (first_stage) {
+-        vm = get_field(env->satp, stap_mode);
+-    } else {
+-        vm = get_field(env->hgatp, stap_mode);
+-    }
+-
+-    page_fault_exceptions = vm != VM_1_10_MBARE && !pmp_violation;
+ 
+     switch (access_type) {
+     case MMU_INST_FETCH:
+         if (env->virt_enabled && !first_stage) {
+             cs->exception_index = RISCV_EXCP_INST_GUEST_PAGE_FAULT;
+         } else {
+-            cs->exception_index = page_fault_exceptions ?
+-                RISCV_EXCP_INST_PAGE_FAULT : RISCV_EXCP_INST_ACCESS_FAULT;
++            cs->exception_index = pmp_violation ?
++                RISCV_EXCP_INST_ACCESS_FAULT : RISCV_EXCP_INST_PAGE_FAULT;
+         }
+         break;
+     case MMU_DATA_LOAD:
+         if (two_stage && !first_stage) {
+             cs->exception_index = RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT;
+         } else {
+-            cs->exception_index = page_fault_exceptions ?
+-                RISCV_EXCP_LOAD_PAGE_FAULT : RISCV_EXCP_LOAD_ACCESS_FAULT;
++            cs->exception_index = pmp_violation ?
++                RISCV_EXCP_LOAD_ACCESS_FAULT : RISCV_EXCP_LOAD_PAGE_FAULT;
+         }
+         break;
+     case MMU_DATA_STORE:
+         if (two_stage && !first_stage) {
+             cs->exception_index = RISCV_EXCP_STORE_GUEST_AMO_ACCESS_FAULT;
+         } else {
+-            cs->exception_index = page_fault_exceptions ?
+-                RISCV_EXCP_STORE_PAGE_FAULT :
+-                RISCV_EXCP_STORE_AMO_ACCESS_FAULT;
++            cs->exception_index = pmp_violation ?
++                RISCV_EXCP_STORE_AMO_ACCESS_FAULT :
++                RISCV_EXCP_STORE_PAGE_FAULT;
+         }
+         break;
+     default:
 -- 
 2.34.1
 
