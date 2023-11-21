@@ -2,57 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8107F35D1
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 19:19:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F5D7F35D4
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 19:19:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5VKZ-00018W-IK; Tue, 21 Nov 2023 13:18:39 -0500
+	id 1r5VKs-0001Sl-Hr; Tue, 21 Nov 2023 13:18:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=nm9w=HC=kaod.org=clg@ozlabs.org>)
- id 1r5VKX-00018E-PT; Tue, 21 Nov 2023 13:18:37 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1r5VKq-0001SL-GH; Tue, 21 Nov 2023 13:18:56 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=nm9w=HC=kaod.org=clg@ozlabs.org>)
- id 1r5VKS-00013M-Ez; Tue, 21 Nov 2023 13:18:37 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SZXgR66ptz4wy1;
- Wed, 22 Nov 2023 05:18:27 +1100 (AEDT)
+ id 1r5VKo-0001Ao-GV; Tue, 21 Nov 2023 13:18:56 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SZXgt4c97z4wx5;
+ Wed, 22 Nov 2023 05:18:50 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SZXgQ1cZZz4wx5;
- Wed, 22 Nov 2023 05:18:25 +1100 (AEDT)
-Message-ID: <396d1103-1434-45f2-bebe-eacdb72978a7@kaod.org>
-Date: Tue, 21 Nov 2023 19:18:25 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SZXgs016lz4wdF;
+ Wed, 22 Nov 2023 05:18:48 +1100 (AEDT)
+Message-ID: <9ce31c7d-712e-4d07-8718-216617098795@kaod.org>
+Date: Tue, 21 Nov 2023 19:18:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/11] ppc/pnv: Add a pca9554 I2C device to
- powernv10-rainier
+Subject: Re: [PATCH v4 06/11] ppc/pnv: PNV I2C engines assigned incorrect
+ XSCOM addresses
 Content-Language: en-US
 To: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
  qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
 References: <20231120235112.1951342-1-milesg@linux.vnet.ibm.com>
- <20231120235112.1951342-11-milesg@linux.vnet.ibm.com>
+ <20231120235112.1951342-7-milesg@linux.vnet.ibm.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231120235112.1951342-11-milesg@linux.vnet.ibm.com>
+In-Reply-To: <20231120235112.1951342-7-milesg@linux.vnet.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=nm9w=HC=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, FORGED_SPF_HELO=1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,87 +66,67 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/21/23 00:51, Glenn Miles wrote:
-> For powernv10-rainier, the Power Hypervisor code expects to see a
-> pca9554 device connected to the 3rd PNV I2C engine on port 1 at I2C
-> address 0x25 (or left-justified address of 0x4A).  This is used by
-> the hypervisor code to detect if a "Cable Card" is present.
+> The PNV I2C engines for power9 and power10 were being assigned a base
+> XSCOM address that was off by one I2C engine's address range such
+> that engine 0 had engine 1's address and so on.  The xscom address
+> assignment was being based on the device tree engine numbering, which
+> starts at 1.  Rather than changing the device tree numbering to start
+> with 0, the addressing was changed to be based on the existing device
+> tree numbers minus one.
 > 
+> Reviewed-by: Cédric Le Goater <clg@kaod.org>
+> Fixes: 1ceda19c28a1 ("ppc/pnv: Connect PNV I2C controller to powernv10)
 > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+> ---
+> 
+> No changes from previous version
 
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
+This patch was merged upstream now.
 
 C.
 
 
-> ---
 > 
-> Changes from previous version:
->    - Code moved from pnv_chip_power10_realize to pnv_rainier_i2c_init
+>   hw/ppc/pnv.c     | 6 ++++--
+>   hw/ppc/pnv_i2c.c | 2 +-
+>   2 files changed, 5 insertions(+), 3 deletions(-)
 > 
->   hw/misc/Kconfig     | 4 ++++
->   hw/misc/meson.build | 1 +
->   hw/ppc/Kconfig      | 1 +
->   hw/ppc/pnv.c        | 6 ++++++
->   4 files changed, 12 insertions(+)
-> 
-> diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-> index cc8a8c1418..c347a132c2 100644
-> --- a/hw/misc/Kconfig
-> +++ b/hw/misc/Kconfig
-> @@ -34,6 +34,10 @@ config PCA9552
->       bool
->       depends on I2C
->   
-> +config PCA9554
-> +    bool
-> +    depends on I2C
-> +
->   config I2C_ECHO
->       bool
->       default y if TEST_DEVICES
-> diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-> index 36c20d5637..c39410e4a7 100644
-> --- a/hw/misc/meson.build
-> +++ b/hw/misc/meson.build
-> @@ -4,6 +4,7 @@ system_ss.add(when: 'CONFIG_FW_CFG_DMA', if_true: files('vmcoreinfo.c'))
->   system_ss.add(when: 'CONFIG_ISA_DEBUG', if_true: files('debugexit.c'))
->   system_ss.add(when: 'CONFIG_ISA_TESTDEV', if_true: files('pc-testdev.c'))
->   system_ss.add(when: 'CONFIG_PCA9552', if_true: files('pca9552.c'))
-> +system_ss.add(when: 'CONFIG_PCA9554', if_true: files('pca9554.c'))
->   system_ss.add(when: 'CONFIG_PCI_TESTDEV', if_true: files('pci-testdev.c'))
->   system_ss.add(when: 'CONFIG_UNIMP', if_true: files('unimp.c'))
->   system_ss.add(when: 'CONFIG_EMPTY_SLOT', if_true: files('empty_slot.c'))
-> diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
-> index f77ca773cf..2302778265 100644
-> --- a/hw/ppc/Kconfig
-> +++ b/hw/ppc/Kconfig
-> @@ -33,6 +33,7 @@ config POWERNV
->       select FDT_PPC
->       select PCI_POWERNV
->       select PCA9552
-> +    select PCA9554
->   
->   config PPC405
->       bool
 > diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index c29a136465..54ebef789e 100644
+> index 80d25fc1bd..c29a136465 100644
 > --- a/hw/ppc/pnv.c
 > +++ b/hw/ppc/pnv.c
-> @@ -1918,6 +1918,12 @@ static void pnv_rainier_i2c_init(PnvMachineState *pnv)
->                                 qdev_get_gpio_in(DEVICE(hotplug), 8));
->           qdev_connect_gpio_out(DEVICE(hotplug), 4,
->                                 qdev_get_gpio_in(DEVICE(hotplug), 9));
-> +
-> +        /*
-> +         * Add a PCA9554 I2C device for cable card presence detection
-> +         * to engine 2, bus 1, address 0x25
-> +         */
-> +        i2c_slave_create_simple(chip10->i2c[2].busses[1], "pca9554", 0x25);
->       }
->   }
->   
+> @@ -1631,7 +1631,8 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
+>               return;
+>           }
+>           pnv_xscom_add_subregion(chip, PNV9_XSCOM_I2CM_BASE +
+> -                               chip9->i2c[i].engine * PNV9_XSCOM_I2CM_SIZE,
+> +                                (chip9->i2c[i].engine - 1) *
+> +                                        PNV9_XSCOM_I2CM_SIZE,
+>                                   &chip9->i2c[i].xscom_regs);
+>           qdev_connect_gpio_out(DEVICE(&chip9->i2c[i]), 0,
+>                                 qdev_get_gpio_in(DEVICE(&chip9->psi),
+> @@ -1879,7 +1880,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
+>               return;
+>           }
+>           pnv_xscom_add_subregion(chip, PNV10_XSCOM_I2CM_BASE +
+> -                                chip10->i2c[i].engine * PNV10_XSCOM_I2CM_SIZE,
+> +                                (chip10->i2c[i].engine - 1) *
+> +                                        PNV10_XSCOM_I2CM_SIZE,
+>                                   &chip10->i2c[i].xscom_regs);
+>           qdev_connect_gpio_out(DEVICE(&chip10->i2c[i]), 0,
+>                                 qdev_get_gpio_in(DEVICE(&chip10->psi),
+> diff --git a/hw/ppc/pnv_i2c.c b/hw/ppc/pnv_i2c.c
+> index f75e59e709..b2c738da50 100644
+> --- a/hw/ppc/pnv_i2c.c
+> +++ b/hw/ppc/pnv_i2c.c
+> @@ -593,7 +593,7 @@ static int pnv_i2c_dt_xscom(PnvXScomInterface *dev, void *fdt,
+>       int i2c_offset;
+>       const char i2c_compat[] = "ibm,power8-i2cm\0ibm,power9-i2cm";
+>       uint32_t i2c_pcba = PNV9_XSCOM_I2CM_BASE +
+> -        i2c->engine * PNV9_XSCOM_I2CM_SIZE;
+> +        (i2c->engine - 1) * PNV9_XSCOM_I2CM_SIZE;
+>       uint32_t reg[2] = {
+>           cpu_to_be32(i2c_pcba),
+>           cpu_to_be32(PNV9_XSCOM_I2CM_SIZE)
 
 
