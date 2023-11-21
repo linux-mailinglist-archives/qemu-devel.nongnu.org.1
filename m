@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C677E7F31E0
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 16:04:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C8D47F31F5
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 16:08:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5SIa-0002Ay-Q6; Tue, 21 Nov 2023 10:04:24 -0500
+	id 1r5SLt-0004fm-Ax; Tue, 21 Nov 2023 10:07:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r5SIZ-00028b-Ib
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 10:04:23 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r5SLq-0004dG-TD
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 10:07:46 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r5SIX-0005YL-Ml
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 10:04:23 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r5SLm-0006WB-Sb
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 10:07:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700579061;
+ s=mimecast20190719; t=1700579262;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PbYUpQnSAHn8bTxYEUq4d8Seyw6g/VBkK0Nbfpj6/8w=;
- b=aHTay7mjtCRQ2kGYaSXLzsBYDZ8SpPibVYgep5cIwEvfZavtKXzlGm/OrAtTh7MKPZ03JX
- +QTikb5ajeljtSGQa9IpRZ4kT/iRlwXGZc7R2ku9wzuBvKtEEuupcLssddDTkcRCeJZXHh
- 7Itv9H4Bn9KbbzJb7QVLZoONsAoowYY=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=1GSjdejaIkSnIT4cCLg/NjGrQGmQeD/4fkrAtjM02OY=;
+ b=T/8Q8qa6uOs1GevNpB/WZ5u+gzHJPUjUws6Cw7AIcERcdPAVn+jaJc0a+SQVoXqopxYZsJ
+ LXUynvbMAEIT1SimZN1/Y9zLWmLhCYkmZZxFhOVHAYYl8FbnWSpGqAbtT7CpkVeGnoZ8df
+ Iu1gmaiT7n4vCWiJX+YLTWj2yZDfvYA=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-272-R0D14BaWP9ubiJJ_EfykXg-1; Tue, 21 Nov 2023 10:04:18 -0500
-X-MC-Unique: R0D14BaWP9ubiJJ_EfykXg-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6755f01ca7dso15083006d6.1
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 07:04:18 -0800 (PST)
+ us-mta-32-KAkc3kYyO2GwArZKwdf1Gg-1; Tue, 21 Nov 2023 10:07:41 -0500
+X-MC-Unique: KAkc3kYyO2GwArZKwdf1Gg-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-77a02ceef95so107919685a.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 07:07:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700579058; x=1701183858;
+ d=1e100.net; s=20230601; t=1700579260; x=1701184060;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PbYUpQnSAHn8bTxYEUq4d8Seyw6g/VBkK0Nbfpj6/8w=;
- b=YQf+CMPpe9GBrSRoQsl26L+pbBAFsRAxJPtOYSx0Oj+2R9uPmjJ/deFfCwYTF8e4C0
- egpsKqHlp3zfC+4aArhJU4RlXS1k/c8onRfSc6Eh/+rcVN9HH5CzM6R5eIJckyjYGeGK
- cA7wrX3MdgPy1ZUz2eBtS592o4yritplHQIj1hYaen8TO3YlziQHGld43Uiggx7P5pG2
- i2D4yasoEq+hDYg/H/0gKkDHnjsVt8v38QmqfWGCpQWeMJmD5x+C8h0BRxByn1ES+Tb9
- PPh38Rcfoy06t5NSIopCwvj2f86OmpPHIc70PekAz5ei4vUg9DfN2Z6bPuvbxJuebHLF
- c2CA==
-X-Gm-Message-State: AOJu0YxVzkAk7VxbxEzmDz39uE+8oh3PCu5AOVAN4OxovkCNHkx2TD7c
- mh9ctATPLOJKghURknJXZV9JYVyOZObZHswwrt8R+gs/EmCTXOR3yFP5KRD/YmqhAoqHPhTKLjH
- BQ0HTgPpizQ7sHsE=
-X-Received: by 2002:a0c:eb44:0:b0:66d:264c:450f with SMTP id
- c4-20020a0ceb44000000b0066d264c450fmr10550152qvq.0.1700579057975; 
- Tue, 21 Nov 2023 07:04:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG9e+HlqhkRhz4sXGz2jLhhaZR3Dmb9YOg+C/eEP36C2X7HLECy4TcVzxK2clRr7xKRxObv5Q==
-X-Received: by 2002:a0c:eb44:0:b0:66d:264c:450f with SMTP id
- c4-20020a0ceb44000000b0066d264c450fmr10550128qvq.0.1700579057685; 
- Tue, 21 Nov 2023 07:04:17 -0800 (PST)
+ bh=1GSjdejaIkSnIT4cCLg/NjGrQGmQeD/4fkrAtjM02OY=;
+ b=hyjZ7iafQdhEUqAnOspuJ6FTqobaGCt94G/RA8aW2yrdDuj8e5rOXYkNy79E8wqTfI
+ GyKnbPTqjZDkvtdzsgnHtHmK2MS5Xp5aOm82IobY/W7AxpFLn9pJ2a/oxr/hhsf402k/
+ lnJnYyl3I0CnsgiZo4KoJNeHG+1uWQlPrHF/FWsMYrAh/wNdFwXDqgGNtrDgVUqSLeJ/
+ QCNnD8XuFzdQS1mH1PTymTG/UPdH2ERA2tNFxmf2hN0y++HzSlYmPyB45z0y6qcsr+nQ
+ kqg8BYYSnGbw0x26i+Om3mb76POYvqqgfDBUlKI3vj/QIP0IJTBOOOXHOZPY8L3YpOKB
+ XE5w==
+X-Gm-Message-State: AOJu0YzflmuaKZAjtTSQ/Ds53SPnYbx8hvcKCqEKc3TLq/+g29aYx7SW
+ DXFOrimXrYc5Oj2eo7mKiaz/cS2UwpaKXEqNVCVm1ITqI8MhwaZ4ydMxm9ItNxhFheZAwtGnbh7
+ AO8D4IRf1pLPnT7U=
+X-Received: by 2002:a05:620a:4542:b0:76f:167a:cc4d with SMTP id
+ u2-20020a05620a454200b0076f167acc4dmr12735165qkp.2.1700579260575; 
+ Tue, 21 Nov 2023 07:07:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFjweFjjeQ8ovbGJ4dvLGwAqwkyN5Ew7Psv6hQhHeSlFa6QzyzS+CAG2RHDmXQX/OMjMkyuXA==
+X-Received: by 2002:a05:620a:4542:b0:76f:167a:cc4d with SMTP id
+ u2-20020a05620a454200b0076f167acc4dmr12735141qkp.2.1700579260250; 
+ Tue, 21 Nov 2023 07:07:40 -0800 (PST)
 Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- ez18-20020ad45912000000b00678013cc898sm3084981qvb.36.2023.11.21.07.04.16
+ qf9-20020a05620a660900b007676f3859fasm3696730qkn.30.2023.11.21.07.07.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Nov 2023 07:04:17 -0800 (PST)
-Date: Tue, 21 Nov 2023 10:04:15 -0500
+ Tue, 21 Nov 2023 07:07:32 -0800 (PST)
+Date: Tue, 21 Nov 2023 10:07:28 -0500
 From: Peter Xu <peterx@redhat.com>
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
@@ -70,17 +70,18 @@ Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, qemu-ppc@nongnu.org,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
-Subject: Re: [PATCH-for-9.0 13/25] memory: Have
- memory_region_init_ram_from_fd() handler return a boolean
-Message-ID: <ZVzG7zuSXuw9Rm-q@x1n>
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Stefan Weil <sw@weilnetz.de>
+Subject: Re: [PATCH-for-9.0 18/25] util/oslib: Have qemu_prealloc_mem()
+ handler return a boolean
+Message-ID: <ZVzHsJFXaolo5_b0@x1n>
 References: <20231120213301.24349-1-philmd@linaro.org>
- <20231120213301.24349-14-philmd@linaro.org>
+ <20231120213301.24349-19-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231120213301.24349-14-philmd@linaro.org>
+In-Reply-To: <20231120213301.24349-19-philmd@linaro.org>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -106,7 +107,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 20, 2023 at 10:32:47PM +0100, Philippe Mathieu-Daudé wrote:
+On Mon, Nov 20, 2023 at 10:32:52PM +0100, Philippe Mathieu-Daudé wrote:
 > Following the example documented since commit e3fe3988d7 ("error:
 > Document Error API usage rules"), have cpu_exec_realizefn()
 > return a boolean indicating whether an error is set or not.
