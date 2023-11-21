@@ -2,103 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9FC17F33E4
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 17:36:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F110A7F33EA
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 17:37:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Tji-0007zt-Uu; Tue, 21 Nov 2023 11:36:30 -0500
+	id 1r5Tjy-0008Dp-RR; Tue, 21 Nov 2023 11:36:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1r5Tjc-0007py-W9; Tue, 21 Nov 2023 11:36:25 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r5Tjr-0008BB-IS
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 11:36:40 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1r5Tja-0003ru-U5; Tue, 21 Nov 2023 11:36:24 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ALGC1Pb031848; Tue, 21 Nov 2023 16:36:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=8mCtJGNvRs08/retz/MwyO+/Hqby7Vx6mcMwAlX9waQ=;
- b=FrHGidEh6u77zKEHu2r9FonbTdTt883f9OFA5c+pfgr3oE/2YMJ8/NW04BRmRMRaBGk9
- 3r2Uk4/4TzbI7QXKL8UJP9WfE74En2CPeJ3d2rZUK1XEO6uTGVSSRoV9VTtxxGaJKtFM
- RVPeuLPIHDOX67qYcnQMy/y1T0qXAbG4pLdZFUY28WAg5mLZPNSh8oH74qYmUXsixJDD
- wTElfXJkGPTtmot39oHDpgtLdio/H8EReTW+Bk1s1wgBoAr+VqlXfhFywnX1RSW+hmbz
- 9nfPVkHn28lkIPXvce2preXn45MlfjpaPkQwdjvKXTuvtYo9tkGn1xkzgnXqsju+EwX9 rA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ugygt1gca-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Nov 2023 16:36:13 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ALGT190012438;
- Tue, 21 Nov 2023 16:36:13 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ugygt1gbt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Nov 2023 16:36:13 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ALGIq4G007432; Tue, 21 Nov 2023 16:36:13 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uf8knsw15-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Nov 2023 16:36:12 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
- [10.39.53.230])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3ALGaCdq49152436
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Nov 2023 16:36:12 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EB50E58062;
- Tue, 21 Nov 2023 16:36:11 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9085D5805C;
- Tue, 21 Nov 2023 16:36:11 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 21 Nov 2023 16:36:11 +0000 (GMT)
-Message-ID: <2e0854faea5c520512f903420f91f153e3287532.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4 03/11] ppc/pnv: New powernv10-rainier machine type
-From: Miles Glenn <milesg@linux.vnet.ibm.com>
-To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, Nicholas Piggin
- <npiggin@gmail.com>, qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-Cc: =?ISO-8859-1?Q?Fr=E9d=E9ric?= Barrat <fbarrat@linux.ibm.com>
-Date: Tue, 21 Nov 2023 10:36:11 -0600
-In-Reply-To: <31af40b3-a6c8-467c-8ef0-63e370465a9a@kaod.org>
-References: <20231120235112.1951342-1-milesg@linux.vnet.ibm.com>
- <20231120235112.1951342-4-milesg@linux.vnet.ibm.com>
- <CX43Q4CXT43G.16NTWUAWGGXCB@wheely>
- <31af40b3-a6c8-467c-8ef0-63e370465a9a@kaod.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Ph_aA67qJkSlG5JqGTKlzXsaSs74acjM
-X-Proofpoint-GUID: 1Ou6wBU0aJo9ipmmJUzeVKpmZSayKtbu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-21_09,2023-11-21_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0
- phishscore=0 bulkscore=0 mlxlogscore=999 impostorscore=0 spamscore=0
- priorityscore=1501 lowpriorityscore=0 mlxscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311210129
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1r5Tjp-0003u8-Kb
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 11:36:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700584595;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=fYCApJRNTQOlK30w4zH+GsNXoQOcM9jqw/eS1fatw5I=;
+ b=RPP7ouMsgac84ZMP0j4QYo3EeKBVhVzssPddvaxV0/G37BNyj5FwyhYWGK9exrwt6h3kgy
+ TvR8VoT0dbtfLmnVjRCzcM5woQOAmm4sY18W9tZM79C+5zoFeMU0mi4CZo54RDyD4BtDBI
+ JQHF+vdVpGyG2FLhLF8t2pxz6YpaZo4=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-653-HHFyzIhUNdm49suedFDkBw-1; Tue, 21 Nov 2023 11:36:31 -0500
+X-MC-Unique: HHFyzIhUNdm49suedFDkBw-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-28525981a55so2810923a91.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 08:36:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700584590; x=1701189390;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=fYCApJRNTQOlK30w4zH+GsNXoQOcM9jqw/eS1fatw5I=;
+ b=nBvoRwT2bj8nphyIzbmwTi5IS1/JOD47W26aOaUrgcUFRR6vo9rxvYYCwwEhTkrLFe
+ 7yNLgJxmmELiHNSGoylN9DBbYO8I6mPsGJUhZbNGDqmuNJ3dCYE+mkXHbNSbPDX567iT
+ iEGgKysSgb4ZE+6tNFUozoAG2YH0T9uGfJMviF7NLk8jsNp5Af6vbcFfo2PAozdR/dk0
+ 6S4hG4j96fnHuOTaam7ELa6EXbgUJvZp5zobGPkCM5GjzlMxcvIuyVAzMqaBB9Ie52Ld
+ wuQWFznpK51vT/HlVbcd6/yibzf4Svcgi+C86V4Z5/wfH0zXwB0mFC0jVE8uIJ9fYlnq
+ jmMw==
+X-Gm-Message-State: AOJu0YyKGsSjYlQqtJD3tdlTRUinRNrkjSAQsUeWTxS4AMxw/EYFLl2L
+ ptabAY4mjfyBgAQZ5vrTsGqmME62bEIkZVEcXZkywF+axCxbyLZaCBQjKw+1WM6i09HwBtBhAnq
+ KXwS3sh4SA0YhgwRXDsdnFoD1btVCuio=
+X-Received: by 2002:a17:90b:1b10:b0:274:7db1:f50f with SMTP id
+ nu16-20020a17090b1b1000b002747db1f50fmr4839903pjb.15.1700584590615; 
+ Tue, 21 Nov 2023 08:36:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGdC4ZEGdXmqo+3W3xxxdXm909F0sV18vMFGNe8D3drBplSo6kPcKC1uUSqE9VCThKVhdkl4mN+mkn414S0vHQ=
+X-Received: by 2002:a17:90b:1b10:b0:274:7db1:f50f with SMTP id
+ nu16-20020a17090b1b1000b002747db1f50fmr4839872pjb.15.1700584590192; Tue, 21
+ Nov 2023 08:36:30 -0800 (PST)
+MIME-Version: 1.0
+References: <20231116014350.653792-1-jsnow@redhat.com>
+ <20231116014350.653792-7-jsnow@redhat.com>
+ <87ttpf2o6t.fsf@pond.sub.org>
+In-Reply-To: <87ttpf2o6t.fsf@pond.sub.org>
+From: John Snow <jsnow@redhat.com>
+Date: Tue, 21 Nov 2023 11:36:19 -0500
+Message-ID: <CAFn=p-bd6E0kYJXyzjU=BR8BzEAXvdiQbsMT+_E1O7COaXNfJA@mail.gmail.com>
+Subject: Re: [PATCH 06/19] qapi/schema: adjust type narrowing for mypy's
+ benefit
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Michael Roth <michael.roth@amd.com>
+Content-Type: multipart/alternative; boundary="00000000000068cbca060aac343a"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,134 +95,240 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-11-21 at 08:29 +0100, Cédric Le Goater wrote:
-> On 11/21/23 02:33, Nicholas Piggin wrote:
-> > On Tue Nov 21, 2023 at 9:51 AM AEST, Glenn Miles wrote:
-> > > Create a new powernv machine type, powernv10-rainier, that
-> > > will contain rainier-specific devices.
-> > 
-> > Is the plan to have a base powernv10 common to all and then
-> > powernv10-rainier looks like a Rainier? Or would powernv10
-> > just be a rainier?
-> > 
-> > It's fine to structure code this way, I'm just wondering about
-> > the machine types available to user. Is a base powernv10 machine
-> > useful to run?
-> 
-> There are multiple P10 boards defined in Linux :
-> 
->    aspeed-bmc-ibm-bonnell.dts
->    aspeed-bmc-ibm-everest.dts
->    aspeed-bmc-ibm-rainier-1s4u.dts
->    aspeed-bmc-ibm-rainier-4u.dts
->    aspeed-bmc-ibm-rainier.dts
-> 
-> and we could model the machines above with a fixed number of sockets.
-> The "powernv10" would be the generic system that can be customized
-> at will on the command line, even I2C devices. There is also the
-> P10 Denali which is FSP based. This QEMU machine would certainly be
-> very different. I thought of doing the same for P9 with a -zaius
-> and include NPU2 models for it. I lacked time and the interest was
-> small at the time of OpenPOWER.
-> 
-> Anyhow, adding a new machine makes sense and it prepares ground for
-> possible new ones. I am OK with or without. As primary users, you are
-> the ones that can tell if there will be a second machine.
->   
-> Thanks,
-> 
-> C.
-> 
+--00000000000068cbca060aac343a
+Content-Type: text/plain; charset="UTF-8"
 
-I am not sure what the powernv10 machine would be used for.  The
-only reason I kept it was because I didn't want to break anyone out
-there that might be using it.
+On Tue, Nov 21, 2023, 9:09 AM Markus Armbruster <armbru@redhat.com> wrote:
 
-My preference would have been to just make powernv10-rainier an
-alias of the powernv10 machine, but only one alias name per machine
-is supported and there is already a plan to make "powernv" an
-alias for the powernv10 machine.
+> John Snow <jsnow@redhat.com> writes:
+>
+> > We already take care to perform some type narrowing for arg_type and
+> > ret_type, but not in a way where mypy can utilize the result. A simple
+> > change to use a temporary variable helps the medicine go down.
+> >
+> > Signed-off-by: John Snow <jsnow@redhat.com>
+> > ---
+> >  scripts/qapi/schema.py | 17 +++++++++--------
+> >  1 file changed, 9 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+> > index 4600a566005..a1094283828 100644
+> > --- a/scripts/qapi/schema.py
+> > +++ b/scripts/qapi/schema.py
+> > @@ -825,13 +825,14 @@ def __init__(self, name, info, doc, ifcond,
+> features,
+> >      def check(self, schema):
+> >          super().check(schema)
+> >          if self._arg_type_name:
+> > -            self.arg_type = schema.resolve_type(
+> > +            arg_type = schema.resolve_type(
+> >                  self._arg_type_name, self.info, "command's 'data'")
+> > -            if not isinstance(self.arg_type, QAPISchemaObjectType):
+> > +            if not isinstance(arg_type, QAPISchemaObjectType):
+> >                  raise QAPISemError(
+> >                      self.info,
+> >                      "command's 'data' cannot take %s"
+> > -                    % self.arg_type.describe())
+> > +                    % arg_type.describe())
+> > +            self.arg_type = arg_type
+> >              if self.arg_type.variants and not self.boxed:
+> >                  raise QAPISemError(
+> >                      self.info,
+> > @@ -848,8 +849,7 @@ def check(self, schema):
+> >              if self.name not in
+> self.info.pragma.command_returns_exceptions:
+> >                  typ = self.ret_type
+> >                  if isinstance(typ, QAPISchemaArrayType):
+> > -                    typ = self.ret_type.element_type
+> > -                    assert typ
+> > +                    typ = typ.element_type
+>
 
-Thanks,
+In this case, we've narrowed typ but not self.ret_type and mypy is not sure
+they're synonymous here (lack of power in mypy's model, maybe?). Work in
+terms of the temporary type we've already narrowed so mypy knows we have an
+element_type field.
 
-Glenn
+>                  if not isinstance(typ, QAPISchemaObjectType):
+> >                      raise QAPISemError(
+> >                          self.info,
+> > @@ -885,13 +885,14 @@ def __init__(self, name, info, doc, ifcond,
+> features, arg_type, boxed):
+> >      def check(self, schema):
+> >          super().check(schema)
+> >          if self._arg_type_name:
+> > -            self.arg_type = schema.resolve_type(
+> > +            typ = schema.resolve_type(
+> >                  self._arg_type_name, self.info, "event's 'data'")
+> > -            if not isinstance(self.arg_type, QAPISchemaObjectType):
+> > +            if not isinstance(typ, QAPISchemaObjectType):
+> >                  raise QAPISemError(
+> >                      self.info,
+> >                      "event's 'data' cannot take %s"
+> > -                    % self.arg_type.describe())
+> > +                    % typ.describe())
+> > +            self.arg_type = typ
+> >              if self.arg_type.variants and not self.boxed:
+> >                  raise QAPISemError(
+> >                      self.info,
+>
+> Harmless enough.  I can't quite see the mypy problem, though.  Care to
+> elaborate a bit?
+>
 
-> 
-> > > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> > > ---
-> > >   hw/ppc/pnv.c | 29 +++++++++++++++++++++++++++--
-> > >   1 file changed, 27 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> > > index 9c29727337..3481a1220e 100644
-> > > --- a/hw/ppc/pnv.c
-> > > +++ b/hw/ppc/pnv.c
-> > > @@ -2249,7 +2249,7 @@ static void
-> > > pnv_machine_power9_class_init(ObjectClass *oc, void *data)
-> > >       machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
-> > >   }
-> > >   
-> > > -static void pnv_machine_power10_class_init(ObjectClass *oc, void
-> > > *data)
-> > > +static void pnv_machine_p10_common_class_init(ObjectClass *oc,
-> > > void *data)
-> > >   {
-> > >       MachineClass *mc = MACHINE_CLASS(oc);
-> > >       PnvMachineClass *pmc = PNV_MACHINE_CLASS(oc);
-> > > @@ -2261,7 +2261,6 @@ static void
-> > > pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-> > >           { TYPE_PNV_PHB_ROOT_PORT, "version", "5" },
-> > >       };
-> > >   
-> > > -    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
-> > >       mc->default_cpu_type =
-> > > POWERPC_CPU_TYPE_NAME("power10_v2.0");
-> > >       compat_props_add(mc->compat_props, phb_compat,
-> > > G_N_ELEMENTS(phb_compat));
-> > >   
-> > > @@ -2274,6 +2273,23 @@ static void
-> > > pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-> > >       machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
-> > >   }
-> > >   
-> > > +static void pnv_machine_power10_class_init(ObjectClass *oc, void
-> > > *data)
-> > > +{
-> > > +    MachineClass *mc = MACHINE_CLASS(oc);
-> > > +
-> > > +    pnv_machine_p10_common_class_init(oc, data);
-> > > +    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
-> > > +
-> > > +}
-> > > +
-> > > +static void pnv_machine_p10_rainier_class_init(ObjectClass *oc,
-> > > void *data)
-> > > +{
-> > > +    MachineClass *mc = MACHINE_CLASS(oc);
-> > > +
-> > > +    pnv_machine_p10_common_class_init(oc, data);
-> > > +    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10 rainier";
-> > > +}
-> > > +
-> > >   static bool pnv_machine_get_hb(Object *obj, Error **errp)
-> > >   {
-> > >       PnvMachineState *pnv = PNV_MACHINE(obj);
-> > > @@ -2379,6 +2395,15 @@ static void
-> > > pnv_machine_class_init(ObjectClass *oc, void *data)
-> > >       }
-> > >   
-> > >   static const TypeInfo types[] = {
-> > > +    {
-> > > +        .name          = MACHINE_TYPE_NAME("powernv10-rainier"),
-> > > +        .parent        = TYPE_PNV_MACHINE,
-> > > +        .class_init    = pnv_machine_p10_rainier_class_init,
-> > > +        .interfaces = (InterfaceInfo[]) {
-> > > +            { TYPE_XIVE_FABRIC },
-> > > +            { },
-> > > +        },
-> > > +    },
-> > >       {
-> > >           .name          = MACHINE_TYPE_NAME("powernv10"),
-> > >           .parent        = TYPE_PNV_MACHINE,
+self.arg_type has a narrower type- or, it WILL at the end of this series -
+so we need to narrow a temporary variable first before assigning it to the
+object state.
+
+We already perform the necessary check/narrowing, so this is really just
+pointing out that it's a bad idea to assign the state before the type
+check. Now we type check before assigning state.
+
+--js
+
+--00000000000068cbca060aac343a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Tue, Nov 21, 2023, 9:09 AM Markus Armbruster &lt;<a=
+ href=3D"mailto:armbru@redhat.com">armbru@redhat.com</a>&gt; wrote:<br></di=
+v><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:=
+1px #ccc solid;padding-left:1ex">John Snow &lt;<a href=3D"mailto:jsnow@redh=
+at.com" target=3D"_blank" rel=3D"noreferrer">jsnow@redhat.com</a>&gt; write=
+s:<br>
+<br>
+&gt; We already take care to perform some type narrowing for arg_type and<b=
+r>
+&gt; ret_type, but not in a way where mypy can utilize the result. A simple=
+<br>
+&gt; change to use a temporary variable helps the medicine go down.<br>
+&gt;<br>
+&gt; Signed-off-by: John Snow &lt;<a href=3D"mailto:jsnow@redhat.com" targe=
+t=3D"_blank" rel=3D"noreferrer">jsnow@redhat.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 scripts/qapi/schema.py | 17 +++++++++--------<br>
+&gt;=C2=A0 1 file changed, 9 insertions(+), 8 deletions(-)<br>
+&gt;<br>
+&gt; diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py<br>
+&gt; index 4600a566005..a1094283828 100644<br>
+&gt; --- a/scripts/qapi/schema.py<br>
+&gt; +++ b/scripts/qapi/schema.py<br>
+&gt; @@ -825,13 +825,14 @@ def __init__(self, name, info, doc, ifcond, feat=
+ures,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 def check(self, schema):<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 super().check(schema)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if self._arg_type_name:<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self.arg_type =3D schema.re=
+solve_type(<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 arg_type =3D schema.resolve=
+_type(<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self._ar=
+g_type_name, <a href=3D"http://self.info" rel=3D"noreferrer noreferrer" tar=
+get=3D"_blank">self.info</a>, &quot;command&#39;s &#39;data&#39;&quot;)<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if not isinstance(self.arg_=
+type, QAPISchemaObjectType):<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if not isinstance(arg_type,=
+ QAPISchemaObjectType):<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 raise QA=
+PISemError(<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 <a href=3D"http://self.info" rel=3D"noreferrer noreferrer" target=3D=
+"_blank">self.info</a>,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 &quot;command&#39;s &#39;data&#39; cannot take %s&quot;<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ % self.arg_type.describe())<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ % arg_type.describe())<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self.arg_type =3D arg_type<=
+br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if self.arg_type.varia=
+nts and not self.boxed:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 raise QA=
+PISemError(<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 <a href=3D"http://self.info" rel=3D"noreferrer noreferrer" target=3D=
+"_blank">self.info</a>,<br>
+&gt; @@ -848,8 +849,7 @@ def check(self, schema):<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if <a href=3D"http://s=
+elf.name" rel=3D"noreferrer noreferrer" target=3D"_blank">self.name</a> not=
+ in self.info.pragma.command_returns_exceptions:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 typ =3D =
+self.ret_type<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if isins=
+tance(typ, QAPISchemaArrayType):<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ typ =3D self.ret_type.element_type<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ assert typ<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ typ =3D typ.element_type<br></blockquote></div></div><div dir=3D"auto"><br=
+></div><div dir=3D"auto">In this case, we&#39;ve narrowed typ but not self.=
+ret_type and mypy is not sure they&#39;re synonymous here (lack of power in=
+ mypy&#39;s model, maybe?). Work in terms of the temporary type we&#39;ve a=
+lready narrowed so mypy knows we have an element_type field.</div><div dir=
+=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquot=
+e class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc sol=
+id;padding-left:1ex">
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if not i=
+sinstance(typ, QAPISchemaObjectType):<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 raise QAPISemError(<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 <a href=3D"http://self.info" rel=3D"noreferrer norefer=
+rer" target=3D"_blank">self.info</a>,<br>
+&gt; @@ -885,13 +885,14 @@ def __init__(self, name, info, doc, ifcond, feat=
+ures, arg_type, boxed):<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 def check(self, schema):<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 super().check(schema)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if self._arg_type_name:<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self.arg_type =3D schema.re=
+solve_type(<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 typ =3D schema.resolve_type=
+(<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self._ar=
+g_type_name, <a href=3D"http://self.info" rel=3D"noreferrer noreferrer" tar=
+get=3D"_blank">self.info</a>, &quot;event&#39;s &#39;data&#39;&quot;)<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if not isinstance(self.arg_=
+type, QAPISchemaObjectType):<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if not isinstance(typ, QAPI=
+SchemaObjectType):<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 raise QA=
+PISemError(<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 <a href=3D"http://self.info" rel=3D"noreferrer noreferrer" target=3D=
+"_blank">self.info</a>,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 &quot;event&#39;s &#39;data&#39; cannot take %s&quot;<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ % self.arg_type.describe())<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ % typ.describe())<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self.arg_type =3D typ<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if self.arg_type.varia=
+nts and not self.boxed:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 raise QA=
+PISemError(<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 <a href=3D"http://self.info" rel=3D"noreferrer noreferrer" target=3D=
+"_blank">self.info</a>,<br>
+<br>
+Harmless enough.=C2=A0 I can&#39;t quite see the mypy problem, though.=C2=
+=A0 Care to<br>
+elaborate a bit?<br></blockquote></div></div><div dir=3D"auto"><br></div><d=
+iv dir=3D"auto">self.arg_type has a narrower type- or, it WILL at the end o=
+f this series - so we need to narrow a temporary variable first before assi=
+gning it to the object state.</div><div dir=3D"auto"><br></div><div dir=3D"=
+auto">We already perform the necessary check/narrowing, so this is really j=
+ust pointing out that it&#39;s a bad idea to assign the state before the ty=
+pe check. Now we type check before assigning state.</div><div dir=3D"auto">=
+<br></div><div dir=3D"auto">--js</div><div dir=3D"auto"><br></div><div dir=
+=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquot=
+e class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc sol=
+id;padding-left:1ex">
+</blockquote></div></div></div>
+
+--00000000000068cbca060aac343a--
 
 
