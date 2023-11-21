@@ -2,74 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BA767F3239
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 16:21:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D88B97F3272
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 16:37:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5SXl-00063k-6H; Tue, 21 Nov 2023 10:20:05 -0500
+	id 1r5Sne-00032e-RZ; Tue, 21 Nov 2023 10:36:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5SXi-000636-TB
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 10:20:03 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r5Sna-000320-8c
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 10:36:26 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5SXg-0001A4-Am
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 10:20:02 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40b26d6f7dbso9574145e9.2
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 07:19:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r5SnT-0005kn-C8
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 10:36:26 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-32ddfb38c02so3820269f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 07:36:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700579998; x=1701184798; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=plXSaAJeCcI2SIfP89xH8yGBgIsf5mBO0zaRCC1psVs=;
- b=RLuBZfhbQuJAQq3azLJdKC+Mo1IWDhu8mlC+pZoq1Pbzhii+kWxujrhaF8+K11Nn06
- 9u5x5akaR+N+NJU25NFhPB16Gu3dobJiZjXgnfO7nFFPfditR8faiHCYnvnqPZyuAzYU
- Uo8w1vkDFjlm9OwVGdlDCvk4P6Bkp6pQbCD+XIMALRoSr71Zcab9ZyGWEP4WOg/9s47a
- ViuBi2ipBkyOz9sM5ozO1RBoFe2kZ67tizdfmmwYlzSZrpF4vnm98gvLYbrQN8KTDOen
- 02sZIRPrBRLbua85Ftsgi6DOeif9tcH9wSiNu3vr61naZQunCI/fvEhc7tvWq2fKgftr
- wbFA==
+ d=linaro.org; s=google; t=1700580973; x=1701185773; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TBHP1v0S8pqW4/gzw0Jb6ShSCxBqDu0zyQkyEddjjEo=;
+ b=ItLHylYFA/xbG4R9U0kPlRdwYsPvipoAtcm7mSxngmy2q9/6gYVtyjkU2/FGW0HWaw
+ 8CIdoqiXiJjW6HYU4JtUxEpOZWTd8Z+6Ao7BS6n1aa0tr8dJNX2jzYJWakAR/fXIb7N/
+ bdWI21sM7h00xTzBgBQ7VphDgowV3joJGxjUyEjDkZ0yTesig3AypTW7+Sla3tK7h2lH
+ mtsSSTRqS2W0KXn9THELiEAltgE906l4ZFdIbGKw+e4KD+SoMnK+IcGHPCcUtEidse3c
+ cBw+ekPy5NiZBMGgGgiEWuJzTICwjmg6lpf7FFt2ONd6cFINtUUvQqzy8RMPFsfZOX3W
+ OPAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700579998; x=1701184798;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=plXSaAJeCcI2SIfP89xH8yGBgIsf5mBO0zaRCC1psVs=;
- b=ZPZYSJzS/WOlQxGfW6fabjAM8T9nLGgJlNYOxtpvvI34lXsop+VYTHj/i/0HN/XtC3
- 0ZhADv+Ap9zfYlHrEl8cyRqIMxvp3m+D7MAOMjGFlsuojstovT3oGyvd00wn7oMtaWmP
- 7KWB4xZrQJQvopqpvP2zs2tjBqeohKKOWvlqzbPT4b6WPS2jDKaAiNiW1eKpI/5O3hx0
- JEnIsgThMbOsHbVeok9NH9usd3LB5cEA9zYRK1XMymNwoNgRQj4i5223lFEP7gsHgYa7
- I33yoPFk3VxkGG2IG7DJ1NmtOdFZAYib0jlTXjkWFdXqIxm0vW3yNDt2jyZei8m9pyzS
- azzg==
-X-Gm-Message-State: AOJu0Yxhrq0vqjrqv8b2QY3BlJB1OAz7RQctjyBOhVpfNJuCDNuemNGh
- GJ/ZAvhbxc1i48FQbx6XYhJeTQ==
-X-Google-Smtp-Source: AGHT+IE/5EnWy1OuXQ+YWwd5Ua8LmOC4F32lKjnDYtBTihgscrKsiqgcMbVBSG3wc+YNqHAds6IDdg==
-X-Received: by 2002:a05:600c:548c:b0:409:325:e499 with SMTP id
- iv12-20020a05600c548c00b004090325e499mr9116633wmb.32.1700579998285; 
- Tue, 21 Nov 2023 07:19:58 -0800 (PST)
-Received: from [192.168.69.100] (lgp44-h02-176-184-8-219.dsl.sta.abo.bbox.fr.
- [176.184.8.219]) by smtp.gmail.com with ESMTPSA id
- n21-20020a7bc5d5000000b003fbe4cecc3bsm21246474wmk.16.2023.11.21.07.19.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Nov 2023 07:19:57 -0800 (PST)
-Message-ID: <db7080bf-1530-4515-b23b-78863efcda06@linaro.org>
-Date: Tue, 21 Nov 2023 16:19:56 +0100
+ d=1e100.net; s=20230601; t=1700580973; x=1701185773;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TBHP1v0S8pqW4/gzw0Jb6ShSCxBqDu0zyQkyEddjjEo=;
+ b=OCHI6DTb4vnlCDuCm/Yl6c+MxeiTz7LlDf+YQ3a3IAcPCksU1kxMB1qDxQGjZZldU2
+ uNKKkCCaH3khNqed0p7GG4uC2aZxNH3Bb2FmeaWSUmQ9b7S9nEgSz7dO1scQKN3D66vc
+ OB6fo1WRhJkdbGprbILPJP5eN8IbQBV/jNS1oh2RzhZpphzBgdtTOeVC6ypA4506It39
+ XTQEztZ6iXK/9hp+En2YfBteYGJs/oRaXh1hReLGnH0+lQzh/Z5ThnXmk/HL7940reWC
+ /JNumVpcEjiwn4TaVBp8Ubf2rJdPlzEZzjtZ1NdxfDn7rwYIvzp9r6PLMhbNLUUqPgnu
+ TrCA==
+X-Gm-Message-State: AOJu0Ywoc2GHNKiXFq0qOOAIDyBl/d156rqc7cpVmYhG/tbHs9deX9mj
+ xBBKhunnL8Fz+gGO9BB6IXCO9A==
+X-Google-Smtp-Source: AGHT+IHo8AwcRBMGWtPE5zufUjM6+F8iLlRb4V0WG3EtTo6p2GLGcjy8uITWHJb4NLU+PiMU0Bn4Hg==
+X-Received: by 2002:a05:6000:1569:b0:332:cfbc:cb40 with SMTP id
+ 9-20020a056000156900b00332cfbccb40mr1248471wrz.3.1700580973468; 
+ Tue, 21 Nov 2023 07:36:13 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ dh18-20020a0560000a9200b00332cb1bcd01sm4950841wrb.86.2023.11.21.07.36.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 21 Nov 2023 07:36:12 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 10A575F74B;
+ Tue, 21 Nov 2023 15:36:12 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
+ Luis Machado <luis.machado@arm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PATCH v3] tests/tcg: finesse the registers check for "hidden" regs
+Date: Tue, 21 Nov 2023 15:36:06 +0000
+Message-Id: <20231121153606.542101-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH qemu 0/1] Implement the STM32L4x5 EXTI device
-Content-Language: en-US
-To: ~aminier <arnaud.minier@telecom-paris.fr>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, alistair@alistair23.me, peter.maydell@linaro.org,
- ines.varhol@telecom-paris.fr
-References: <170057856467.12935.6421900912319796560-0@git.sr.ht>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <170057856467.12935.6421900912319796560-0@git.sr.ht>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,24 +99,230 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Arnaud,
+The reason the ppc64 and s390x test where failing was because gdb
+hides them although they are still accessible via regnum. We can
+re-arrange the test a little bit and include these two arches in our
+test.
 
-On 21/11/23 15:56, ~aminier wrote:
-> This patch allows to emulate the STM32L4x5 EXTI device.
-> It implements register access and software interruptions.
+We also need to be a bit more careful handling remote-registers as the
+format isn't easily parsed with pure white space separation. Once we
+fold types like "long long" and "long double" into a single word we
+can now assert all registers are either listed or elided.
 
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: qemu-s390x@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: qemu-ppc@nongnu.org
+Cc: Luis Machado <luis.machado@arm.com>
 
-> Based-on: <170049810484.22920.612074576971878323-0@git.sr.ht>
-> ([RFC v3 2/2] hw/arm: Add minimal support for the B-L475E-IOT01A board)
-> 
-> (We got the message id from
-> https://patchew.org/QEMU/170047309499.17129.4986209009679789101-0@git.sr.ht/
-> but don't really the standard procedure to get it. Sorry if this is
-> incorrect.)
+---
+v2
+  - skip if check for total_regs != total_r_regs and always dump what
+    is elided/missed
+v3
+  - ensure field 8 is consistently the right value
+  - restore report assertion that total_regs == total_r_regs + total_r_elided_regs
+---
+ tests/tcg/multiarch/gdbstub/registers.py | 95 +++++++++++++++++-------
+ tests/tcg/ppc64/Makefile.target          |  7 --
+ tests/tcg/s390x/Makefile.target          |  4 -
+ 3 files changed, 69 insertions(+), 37 deletions(-)
 
-This is the correct tag and msg-id :)
-
-> Arnaud Minier (1):
->    Implement STM32L4x5 EXTI
+diff --git a/tests/tcg/multiarch/gdbstub/registers.py b/tests/tcg/multiarch/gdbstub/registers.py
+index ff6076b09e..688c061107 100644
+--- a/tests/tcg/multiarch/gdbstub/registers.py
++++ b/tests/tcg/multiarch/gdbstub/registers.py
+@@ -44,7 +44,6 @@ def fetch_xml_regmap():
+ 
+     total_regs = 0
+     reg_map = {}
+-    frame = gdb.selected_frame()
+ 
+     tree = ET.fromstring(xml)
+     for f in tree.findall("feature"):
+@@ -61,12 +60,8 @@ def fetch_xml_regmap():
+         for r in regs:
+             name = r.attrib["name"]
+             regnum = int(r.attrib["regnum"])
+-            try:
+-                value = frame.read_register(name)
+-            except ValueError:
+-                report(False, f"failed to read reg: {name}")
+ 
+-            entry = { "name": name, "initial": value, "regnum": regnum }
++            entry = { "name": name, "regnum": regnum }
+ 
+             if name in reg_map:
+                 report(False, f"duplicate register {entry} vs {reg_map[name]}")
+@@ -80,6 +75,15 @@ def fetch_xml_regmap():
+ 
+     return reg_map
+ 
++def get_register_by_regnum(reg_map, regnum):
++    """
++    Helper to find a register from the map via its XML regnum
++    """
++    for regname, entry in reg_map.items():
++        if entry['regnum'] == regnum:
++            return entry
++    return None
++
+ def crosscheck_remote_xml(reg_map):
+     """
+     Cross-check the list of remote-registers with the XML info.
+@@ -90,8 +94,11 @@ def crosscheck_remote_xml(reg_map):
+ 
+     total_regs = len(reg_map.keys())
+     total_r_regs = 0
++    total_r_elided_regs = 0
+ 
+     for r in r_regs:
++        r = r.replace("long long", "long_long")
++        r = r.replace("long double", "long_double")
+         fields = r.split()
+         # Some of the registers reported here are "pseudo" registers that
+         # gdb invents based on actual registers so we need to filter them
+@@ -100,6 +107,15 @@ def crosscheck_remote_xml(reg_map):
+             r_name = fields[0]
+             r_regnum = int(fields[6])
+ 
++            # Some registers are "hidden" so don't have a name
++            # although they still should have a register number
++            if r_name == "''":
++                total_r_elided_regs += 1
++                x_reg = get_register_by_regnum(reg_map, r_regnum)
++                if x_reg is not None:
++                    x_reg["hidden"] = True
++                continue
++
+             # check in the XML
+             try:
+                 x_reg = reg_map[r_name]
+@@ -114,17 +130,42 @@ def crosscheck_remote_xml(reg_map):
+             else:
+                 total_r_regs += 1
+ 
+-    # Just print a mismatch in totals as gdb will filter out 64 bit
+-    # registers on a 32 bit machine. Also print what is missing to
+-    # help with debug.
+-    if total_regs != total_r_regs:
+-        print(f"xml-tdesc has ({total_regs}) registers")
+-        print(f"remote-registers has ({total_r_regs}) registers")
++    report(total_regs == total_r_regs + total_r_elided_regs,
++           "All XML Registers accounted for")
++
++    print(f"xml-tdesc has {total_regs} registers")
++    print(f"remote-registers has {total_r_regs} registers")
++    print(f"of which {total_r_elided_regs} are hidden")
++
++    for x_key in reg_map.keys():
++        x_reg = reg_map[x_key]
++        if "hidden" in x_reg:
++            print(f"{x_reg} elided by gdb")
++        elif "seen" not in x_reg:
++            print(f"{x_reg} wasn't seen in remote-registers")
++
++def initial_register_read(reg_map):
++    """
++    Do an initial read of all registers that we know gdb cares about
++    (so ignore the elided ones).
++    """
++    frame = gdb.selected_frame()
++
++    for e in reg_map.values():
++        name = e["name"]
++        regnum = e["regnum"]
++
++        try:
++            if "hidden" in e:
++                value = frame.read_register(regnum)
++                e["initial"] = value
++            elif "seen" in e:
++                value = frame.read_register(name)
++                e["initial"] = value
++
++        except ValueError:
++                report(False, f"failed to read reg: {name}")
+ 
+-        for x_key in reg_map.keys():
+-            x_reg = reg_map[x_key]
+-            if "seen" not in x_reg:
+-                print(f"{x_reg} wasn't seen in remote-registers")
+ 
+ def complete_and_diff(reg_map):
+     """
+@@ -144,18 +185,19 @@ def complete_and_diff(reg_map):
+     changed = 0
+ 
+     for e in reg_map.values():
+-        name = e["name"]
+-        old_val = e["initial"]
++        if "initial" in e and "hidden" not in e:
++            name = e["name"]
++            old_val = e["initial"]
+ 
+-        try:
+-            new_val = frame.read_register(name)
+-        except:
+-            report(False, f"failed to read {name} at end of run")
+-            continue
++            try:
++                new_val = frame.read_register(name)
++            except ValueError:
++                report(False, f"failed to read {name} at end of run")
++                continue
+ 
+-        if new_val != old_val:
+-            print(f"{name} changes from {old_val} to {new_val}")
+-            changed += 1
++            if new_val != old_val:
++                print(f"{name} changes from {old_val} to {new_val}")
++                changed += 1
+ 
+     # as long as something changed we can be confident its working
+     report(changed > 0, f"{changed} registers were changed")
+@@ -168,6 +210,7 @@ def run_test():
+ 
+     if reg_map is not None:
+         crosscheck_remote_xml(reg_map)
++        initial_register_read(reg_map)
+         complete_and_diff(reg_map)
+ 
+ 
+diff --git a/tests/tcg/ppc64/Makefile.target b/tests/tcg/ppc64/Makefile.target
+index 1d08076756..5721c159f2 100644
+--- a/tests/tcg/ppc64/Makefile.target
++++ b/tests/tcg/ppc64/Makefile.target
+@@ -38,11 +38,4 @@ PPC64_TESTS += signal_save_restore_xer
+ PPC64_TESTS += xxspltw
+ PPC64_TESTS += test-aes
+ 
+-ifneq ($(GDB),)
+-# Skip for now until vsx registers sorted out
+-run-gdbstub-registers:
+-	$(call skip-test, $<, "BROKEN reading VSX registers")
+-endif
+-
+-
+ TESTS += $(PPC64_TESTS)
+diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
+index 46544fecd4..0e670f3f8b 100644
+--- a/tests/tcg/s390x/Makefile.target
++++ b/tests/tcg/s390x/Makefile.target
+@@ -103,10 +103,6 @@ run-gdbstub-svc: hello-s390x-asm
+ 		--bin $< --test $(S390X_SRC)/gdbstub/test-svc.py, \
+ 	single-stepping svc)
+ 
+-# Skip for now until vx registers sorted out
+-run-gdbstub-registers:
+-	$(call skip-test, $<, "BROKEN reading VX registers")
+-
+ EXTRA_RUNS += run-gdbstub-signals-s390x run-gdbstub-svc
+ endif
+ 
+-- 
+2.39.2
 
 
