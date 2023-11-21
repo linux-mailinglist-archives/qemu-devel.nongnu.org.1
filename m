@@ -2,178 +2,152 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B92A37F3839
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 22:22:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A9C7F3903
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 23:12:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5YBb-0001JK-8L; Tue, 21 Nov 2023 16:21:35 -0500
+	id 1r5YxG-0005V5-JY; Tue, 21 Nov 2023 17:10:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1r5YBZ-0001J6-1u
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 16:21:33 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1)
+ (envelope-from <prvs=5689374ac6=volodymyr_babchuk@epam.com>)
+ id 1r5YxD-0005S8-GM; Tue, 21 Nov 2023 17:10:47 -0500
+Received: from mx0a-0039f301.pphosted.com ([148.163.133.242])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1r5YBX-0000c3-44
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 16:21:32 -0500
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ALKx0t0026141; Tue, 21 Nov 2023 21:21:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=+FEa0wL/FEvicmLpVZ2Nk9w4bNcBRJjYZ7vpo34azpE=;
- b=ZH8glT4xsuWn4tDlTgKDYer4h4/0rac1aUiZo6xttiAH8pwFk9RC5HQcNNXEzJe+IX5j
- O5gDjQ473DjMb8pIrhtPsoRrcBLa2WxBG6qYCuzx/RdFuNvP1j/Dp/axltJuzEfgoLqn
- kq3V0+vZ7f7VXaz8MH4NLpmMpzHwqY40RvdHyT2VAcNsoSHk7tsXd/0oUv6PfFI2qNEf
- rb/b2hme0VchhY1HNBBHjVx1aTLC0oEuo2DSTuLosP968SuBvOSrO8g3804BnQgeEc1Y
- lwM06OEajB1IxlG0BMs/caQSoAQs6p/q5RucqtRJ0li6gg2WsPcXYNcGGqfDm1PJCPd6 mg== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3uem24x4y5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Nov 2023 21:21:27 +0000
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3ALK5GeE022554; Tue, 21 Nov 2023 21:21:26 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam12lp2041.outbound.protection.outlook.com [104.47.66.41])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3uekq7es0m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Nov 2023 21:21:26 +0000
+ (Exim 4.90_1)
+ (envelope-from <prvs=5689374ac6=volodymyr_babchuk@epam.com>)
+ id 1r5YxA-0001aX-GT; Tue, 21 Nov 2023 17:10:47 -0500
+Received: from pps.filterd (m0174679.ppops.net [127.0.0.1])
+ by mx0a-0039f301.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3ALJcd1A031085; Tue, 21 Nov 2023 22:10:32 GMT
+Received: from eur03-am7-obe.outbound.protection.outlook.com
+ (mail-am7eur03lp2233.outbound.protection.outlook.com [104.47.51.233])
+ by mx0a-0039f301.pphosted.com (PPS) with ESMTPS id 3uh0hhgrv3-2
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Nov 2023 22:10:32 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lbvdzGpX9WTTn2wb7Xv5a0dnoQQQcDGwVjH74CKEbjbb0V+1ueEvow3Cmbtv8F0vB/ONBrMMOr3AmbIKJRuMNg4h2YaYF9tw1D9LYPaLmb5fBvHcwpQIhsmZwWwESD4ydKxtCU/8/G0ONmUKDsH0HWscPBt31E12VN3F+CDhO2cxCZvqrZ3yKdg14WfgQ+54AwX5K5S18IkiDKV5TKYTjGyAGhwAIkE6dfnxHu6vJjk2wJB49ArMPr0+W+mftmQPjgwMsvFWTEkFoj69TiaJgYFsUBgH14u0Q4h8lSo4nrN+9pIXDN2mW59HiMyHI9PnVuc0bL2LGJmLH8WjfjTMsw==
+ b=HByi4MtSScepWAnhzE8y+/4h0THflXulvTUFJqhAD+QSqN5zxAPOkl84Q/BkmjmQAKXN63K5LsYmfYlFqdCwSycK/QtRzTM8ZJV7/bUlXtiU87HNNJJ3dQUJy67rXh3KcxljQvmyVG0eWevis4xKDBysIC+W9Qamf1WvXkRnQnqiO5yAeaUht3AkASL64mNQWAfZgw5L9kVV6MvVVcRp6PdDM/Yp6La/Knmq5zbwJ7bu3iZhzgrGnzhMXV2QtHNoibRnh+c8uMCZnoyrNCqU0W3/GNakCREwPZ7rne6IR3DoNS/7ZfSyvH4Y2Dn0dhnEfwdb2JB3TG4W5FMraZ5PUw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+FEa0wL/FEvicmLpVZ2Nk9w4bNcBRJjYZ7vpo34azpE=;
- b=U+8pGP7nhxsYWJFts1LeeJ0FeZjUtA45nNkbXC/MhvB4RBZO03wyDZ1ihV3MGK7XztxWXmFm8n6hSw+5AEXCe4Nni6mPB8q9wgg3ZRu40AIANhifn21xfXo8z0PlQqwHsDZ7+pob0XLuzARDLhHyU5Xo2vdyoVX4Dh8URQhHF/08jgXWJ2CICjGtr/G9Mcp/oda1Geeno7EgBbCfmitkdxWyQ2l4Dw/GQzqoFlKzfx2O4xaEGOwia+8wMEmHoNbDizIRfoactMycVqbF+uBBC45N5SVeZ/zyetGQqjio5isV2ZGJH2b8atnSZZwC7mwIMtQQZaxr6rn5Ht7LzKNu7A==
+ bh=YErD+LGkHLSIfKpC2tq04iqgbrsR/yANlnnAZGoF1mU=;
+ b=eN1PHoRE375H63c7Wsn8OtvDFl0XpEpT9ERhCx5Diohmcg2C6CmOwdRrjWBzfaP2GwOxx/ZDSgeMOaeeiFYxyrpMy+r7WsF4e/JdQ7WSS3tkuWsnLb2gQi0LrUorSYqFQOfgF+fNy6kOWfo9RcK2rGJ9uVSHfG6jzs6/96q+BLv1dMRj2TN9R8CWBFDcbAuBeZz4/3rU+I3MKI2aFNjedeaM4d6q58XtQhJ6o/TF8D2eEzDRcJ/M/hgmWnT248+AMmFlFmG4lYELSvGCwTL6CXefPVegIW/QnBThGz+dz/bdnOShPYswpzUgf8QHGM16lFLpCVWIMPIS6fnsR/1OGQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=epam.com; dmarc=pass action=none header.from=epam.com;
+ dkim=pass header.d=epam.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=epam.com; s=selector2; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+FEa0wL/FEvicmLpVZ2Nk9w4bNcBRJjYZ7vpo34azpE=;
- b=Cu3NmMZ6nwkx4mGIqoMNaKFMO+0ahrf4EHXKrtLeoIzUjujlVrhVMlnWL6R7P49/ctMVxbKZqbI34Kew8MYSmtRAsK6+qageEIgQFgdNOo8OjrpoP2Z3Zb800aNcpc2FJKM4L9sNj8NNUceB6ePLigSc6rvNwoBdYER9JD0tPyg=
-Received: from SA2PR10MB4684.namprd10.prod.outlook.com (2603:10b6:806:119::14)
- by CH0PR10MB5340.namprd10.prod.outlook.com (2603:10b6:610:c1::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.18; Tue, 21 Nov
- 2023 21:21:24 +0000
-Received: from SA2PR10MB4684.namprd10.prod.outlook.com
- ([fe80::d609:b162:ba7c:4e96]) by SA2PR10MB4684.namprd10.prod.outlook.com
- ([fe80::d609:b162:ba7c:4e96%4]) with mapi id 15.20.7002.027; Tue, 21 Nov 2023
- 21:21:24 +0000
-Message-ID: <54f3f649-5b77-4b6c-92c9-495656031984@oracle.com>
-Date: Tue, 21 Nov 2023 16:21:18 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 02/12] cpus: stop vm in suspended state
+ bh=YErD+LGkHLSIfKpC2tq04iqgbrsR/yANlnnAZGoF1mU=;
+ b=VkyrI6wPK2QBU/CpfXJUHHX6hFOg8xP8DREfZHfPhW7d9y/u47oWr2er43qSCWqemmnPNfWDWn5X60ykBt7KuCXhD46Rvou6fSHdzXp88i1IlU7IRYUcgUGGH10nOmobycqR+KnMZ2Ox7SYbEfOzsKVnTPdyOf9Hcjqe/G6n9NNcZfkAs9tbiW7fQO0wEJbpmqmcKZJDha0RCW1AQZdZc4Tt+hUfXCPjjuaiZhJCX5vFwovZWKifLfve6AKjl4jGMq34n4bhuLK2EfFULwoYSCVpSNUoMJuaeFtzQ6pK5PwdgzveVDEoFco4FouOs5Qdzu9lFYfqQCyJYLUTFBMrTA==
+Received: from VI1PR03MB3710.eurprd03.prod.outlook.com (2603:10a6:803:31::18)
+ by DU0PR03MB8836.eurprd03.prod.outlook.com (2603:10a6:10:40c::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.28; Tue, 21 Nov
+ 2023 22:10:27 +0000
+Received: from VI1PR03MB3710.eurprd03.prod.outlook.com
+ ([fe80::8e03:368:1fd7:1822]) by VI1PR03MB3710.eurprd03.prod.outlook.com
+ ([fe80::8e03:368:1fd7:1822%6]) with mapi id 15.20.7002.028; Tue, 21 Nov 2023
+ 22:10:27 +0000
+From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: David Woodhouse <dwmw@amazon.co.uk>, Stefano Stabellini
+ <sstabellini@kernel.org>, Julien Grall <julien@xen.org>, Anthony Perard
+ <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>, Kevin Wolf
+ <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>, "open
+ list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>, "open list:Block layer
+ core" <qemu-block@nongnu.org>
+Subject: [PATCH v2 1/6] hw/xen: Set XenBackendInstance in the XenDevice before
+ realizing it
+Thread-Topic: [PATCH v2 1/6] hw/xen: Set XenBackendInstance in the XenDevice
+ before realizing it
+Thread-Index: AQHaHMeI32LlpkxN1EiN6kyRHznaJg==
+Date: Tue, 21 Nov 2023 22:10:26 +0000
+Message-ID: <20231121221023.419901-2-volodymyr_babchuk@epam.com>
+References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
+In-Reply-To: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
+Accept-Language: en-US
 Content-Language: en-US
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>
-References: <1699900440-207345-1-git-send-email-steven.sistare@oracle.com>
- <1699900440-207345-3-git-send-email-steven.sistare@oracle.com>
- <ZVu6ohk8_8xzyL-x@x1n> <e32d4434-c877-4f98-ac76-da8fa292395c@oracle.com>
- <ZVvTUuNYzGgFcg4m@x1n>
-From: Steven Sistare <steven.sistare@oracle.com>
-Organization: Oracle Corporation
-In-Reply-To: <ZVvTUuNYzGgFcg4m@x1n>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR02CA0019.namprd02.prod.outlook.com
- (2603:10b6:a02:ee::32) To SA2PR10MB4684.namprd10.prod.outlook.com
- (2603:10b6:806:119::14)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PR10MB4684:EE_|CH0PR10MB5340:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8cc41843-ef08-489b-2f4e-08dbead7d068
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: tOd8HkWKzAJ6MbSkUIo0f4JBJvsRunLK55e+llDW3FjSc55KCmvSXfAnDO0dYMMjBVG6j4ao9UZuyMevO3famFgBIP0CTHOtHSCzQuXeSML0JmBLkFAYUnAdai18+Xf9aiUtLXtF4VZdkms0iPF9Np+IUb09ibqEtJo9pUPrnQ11VFJqKPzf9r0FnvoIOlsOig4e8Nfk7hvI5u5b13HkQuSAXfW0NJr68B2SnuahC3iHvNb/u1WAm8mlLwEqNrykeiuX03T8yZ71TIMI+4B41vMmoLeG/5cJJGhFXvKTHvWn1C37TcBc1mCF8f6BN1C0YODWPzUlUHCmDfwY3qr8ggC6XDFEArhdCCIPhWHJB5yCR3qXmwQVFwpGwqL+FpfF99dg8SFm6AlCjlja57NNicS7k3odEU72dVemT53Joeocs9XxN7IFPSqsj4KFq8uTUEqg4zuvDBySDaK96bJqxTHvEJX4zIy5ookQZ1pZ+qyxbrOJaRxB7d9q2YUfhTwoCesbTrVu3IPSszYG9iKx+zOav/6nhLnoPKqgNgwHUWB47Z3d/sXOFD+g7Dl7TnpRHrPRNEs1XPtAt3mC6fvwtgsBemy52rPgxP+3xcViV1fmQ2WSF/ixskRc+7OviWG41qAFlMCckR8lWckBHKIRVw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA2PR10MB4684.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(39860400002)(376002)(366004)(396003)(136003)(230922051799003)(451199024)(64100799003)(1800799012)(186009)(66556008)(66476007)(66946007)(54906003)(6916009)(316002)(53546011)(6506007)(36756003)(6512007)(6666004)(2616005)(26005)(478600001)(6486002)(83380400001)(36916002)(31696002)(38100700002)(86362001)(5660300002)(44832011)(15650500001)(31686004)(2906002)(41300700001)(8676002)(8936002)(4326008)(43740500002)(45980500001);
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-mailer: git-send-email 2.42.0
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: VI1PR03MB3710:EE_|DU0PR03MB8836:EE_
+x-ms-office365-filtering-correlation-id: 31116187-0174-41d9-844a-08dbeadeab25
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 1sL4Mkp3NnUFobtaE2EhfIOQQtT8YyOfGOTpmqFqIajGEeZSSlHpc2ItNIjyhri+WsNtmIRySM5SB1JfMdrLV6b5oWUq287YtEywmON8FurewElTrcv2RTjYTyW8cKl8erW4auG/YasfByrDpJqR3YdX82+6ZqCA0NnaHqYcgr/+HtoYGN0tvaVxvNPsIrQBi56CDbsLPtdcn4KS507nfDFZx5oDSQ3W0gda/s/Iwsx3YQFv9AS2lZDTci6hMdNeQBtpO2XwnwTMVT7vXOeh5OapnH1c0UIntcbcTjXMOm8D6W84SPCOqVqK1T8TwxskXQQu2HDgdcR47xeLijy0gzgmAR8P/+RORTj2h9pdoIpHMuDIn1LwmaL/dd/Rjjen81/4Rt5qv7CRgAJw8ri4P1JPtnqIg9NuBR5Fkug+YzZb+ZZyEDGFyrDh7qv8VNYAj6Zsovkw+nHOtI8Y586H/mTX47AT1WMSBQSK2GhoAci+2WtRpmLOBQeKkwr3WLeNOhR/BYgeA8CZJ8IFGL1gFHI8id5KVEpAP/ROZArRIA+DNLZeo48Tc/87bFARmUffMAbSTKA87VXZGzsMdj/t5T2Iyte1LxymabnyA95Tx5FHdDPjer2sbL+y1hfQAb1Z
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI1PR03MB3710.eurprd03.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(396003)(136003)(39860400002)(376002)(346002)(230922051799003)(451199024)(186009)(1800799012)(64100799003)(41300700001)(86362001)(36756003)(7416002)(5660300002)(2906002)(38070700009)(122000001)(6512007)(2616005)(6506007)(55236004)(6486002)(83380400001)(71200400001)(1076003)(478600001)(26005)(38100700002)(91956017)(66556008)(66446008)(316002)(66946007)(6916009)(64756008)(54906003)(4326008)(8676002)(66476007)(76116006)(8936002);
  DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VWpqbjhFaFFxNURwdGo3SjZyM1JsRGNlT2Rpbnh6WHFIVnZyMzlCL29uaGoy?=
- =?utf-8?B?UUlkUmVLWGQ0aUM5bE55bGJHYUVZODdoSkxhKzgrak5TNTdZZStCQ3BRdVRa?=
- =?utf-8?B?Qkk3ZlJoYWxoUnhwWUdCU0RZc0gxR0E2MWc2SCtsdTNEa3hyYkdxZkw5ODRr?=
- =?utf-8?B?L3Z4MXNJbGhJZnoxUXlNWTMrMXNITkNjNWQzc0NVTU52QS93aVBYS2NwMWxV?=
- =?utf-8?B?RWlEZmZZNXFjUjlURDIzSHJLazFZUHB4TTNON1JmcFZzNVM3NUU1YU14RzJo?=
- =?utf-8?B?NzNWZTR6NzRvSlo5VXd0WUpiV21BbW45STdvUXI4eEFWOHBUV0VzWExpR2c2?=
- =?utf-8?B?bEhreUxyQkMzSzI2RG1qc2h4Q3pwTGUrK3RrMmFTTWtOZ1FwaFEvSWxKZkFk?=
- =?utf-8?B?UjFxNVJxVXVEUGN4ZXNnRTRUS1N6MFJvdnIzTW0ySEFyK0EyRVdkYUNRUzFY?=
- =?utf-8?B?a1BDc0Z3cFBIUHlkM2Y5ZXZzTkYrZXFvU0FGZzYvcXVxbkx1OUgxeEdPNTFx?=
- =?utf-8?B?cWJaMHlUekFxclAxVm5RNzZZY0I4NktyN2EwaVhuRXNwWWRId0haaWdNb1Bl?=
- =?utf-8?B?aFEra0Vnanh6ZS9GbXM0bWFyMHZuYVpSMkpsZ0tjN2FJKy93UStoRkJ6V1Zo?=
- =?utf-8?B?WFNQOEZFVXdsQTFiUFFNRFR2eG9wN2NFdlE0d2t6NWJKbFhUMmtpN01HM3Qy?=
- =?utf-8?B?SEJTcDJucC9vZFdBMS9IREZOZnB2aVlnaU5xNDJLbndaV3FZT3g5ZWw2RlRQ?=
- =?utf-8?B?WmI3SzA1aXRyYXA1eHcyQjZqWEppQVMvNnJsQWdTZnFlVWxiZitUMEJ4d28v?=
- =?utf-8?B?a3BmTWQ4djRmVXBsNVNMSWgwbDlLRWZaTHQ0VGloZW4rWFdqVVR0YkRJTm4z?=
- =?utf-8?B?NE1FL2JhdUUyYzl5SlZKd3Ridlc2elR5eFJsZGczc1N0alpPemI4ZU5peStq?=
- =?utf-8?B?MExYQzNWWHEzTnFzYjlCL3MrTTVuMlV5VUJVWVoyeVBWZTFwL3Y4SXZWWTUr?=
- =?utf-8?B?SnhpNUFBNml5VzdQVXdoUGczeHQrZlo4SE51d09XZlNmdzRMQnNRN1J6a0py?=
- =?utf-8?B?VFE5VmJQRUt0VThkTll6S1NyVVJDYWM3ZGhRc09qUTFET3FnV0ZQenBlUXpn?=
- =?utf-8?B?MTRMUmlpWVFjaGRITWtsRlRWb3E2b0ZCVmZ4QUxVb1JqQ2xJU0hrbHZkQ2kz?=
- =?utf-8?B?NFhQWGhkdEJPc2I1Y0ZJT3NwM01rNlp2cDBiL2N4VWk2YTBHbndLL2JxL2JK?=
- =?utf-8?B?ZTVzbTVCUjJ1U0VTeHVKdElLajZmdll2YStTckhwZXhCQ2RBWWg5eWc3U2sz?=
- =?utf-8?B?eHZRbEJZcTM4ZHZkQWw4S2pYNmR5QzEwUFJqVFRRN2cyblloTHJwRlpML0xw?=
- =?utf-8?B?Zjh6SmFmREpFaU5TN3JQQUFkSUpnTkxNcDRHWENod0UyOWxFd1VUdDczU0NS?=
- =?utf-8?B?UmZHR2tFNUNKTSs4NVhBTGNHY1I1T01SUjY2K25RMmZwaEFEYXJuOU1DTys2?=
- =?utf-8?B?MERmZWNkblp0ZFV3eFV4SXE0OGdsS1BYRktKQmZvdEc3UmN1SWxFVXNiaXAw?=
- =?utf-8?B?VzdyaDl1U3kxS0J0OTJhK1lWdHFWZUpPZTZuTW9oRy96RWQ4S1RjRlR0TVFP?=
- =?utf-8?B?cVdmVDRnZFVYY2YrS0NORUlrRm9HSWFmZnNEYld5d3VWOW5acmIyZTJubVZi?=
- =?utf-8?B?VWIwZ01YWmd4cTZzc1c5S01LczRzNEcrdzh0Sk80aG1JTkQ4TGxBT2ZnUFZa?=
- =?utf-8?B?TW84QTNQWGZmajBDajRyUnJkVEpiaUk5Q0x4TlhhanpCL0VWOTZRdExqSXNG?=
- =?utf-8?B?RmJLT2UwRGJFMjMzOSt1VHFHdHJnV0htb1Q5THlzOGRZSnRyWmtiM2F4YVd0?=
- =?utf-8?B?YmtmdFhMNjlLYkJFSmZ4L3RzVlphOE1sTzJOM2tsaUUza0p5NlZWN2crczFQ?=
- =?utf-8?B?NHdSQUFNU1BZS1NXVXZSOVovQkE3aWRXdzRtV0RhOXByNHNwNVVkNDhxUTZ4?=
- =?utf-8?B?NHBqTFVldHVlTjNBa0QzMlpyUFhpQUJJWXRaaElqSzhQR2NiMXZnQUxCZzVL?=
- =?utf-8?B?WWE3TlZNNWxUNUFqelNGWE05UmpkOWY1SnBjWTVmVGUzVkZlUEJsczlGKzRl?=
- =?utf-8?B?VTJWdW02SGlWMkIwUHVneUFSVXUreEptQ29ob3lnbzFOeTNIWEZUUThWU080?=
- =?utf-8?B?RVE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 6I+6Xl6n+N01lEm2eMubP86P9nzZRwHrmCK8bmcy1+hnipgVP0KkEv7SxxBl0i6tVsPWV42610rOh8BB9PJjTvTbtmfk/DFHYj14cKHIvo98AMYso6t70jk/h+iwtc+1TqTlmp6pQOKPNsYmqfAw5swRhFpw4nWt7iJT5tXncT6ns0ckYI4aUhwXTJjFK11Vebj9qaHzYdCqdQiZQhXp7/fhkWEXPHnUgXEyTN8jLYOjqY1/PhLCL86Fwoog/qGUgD+uHvAZfjTQMVTixEvXhcxSPskcXkc7R43Q8saQXTyWmCF/E2Y5+YheR7ZbmKH+wAkJpRf6swZwozNlSmbMrr4FaERSup/6oW5Ze2fliGQ+se2G0eeuUpqRC4wQZ4R1w3nKS0ovTTwMQLfX5T0hhBef/fyJmKrGNNUHJdgpnzV/Tcks6VGa8OBDINTRpPh2yvat14xyqC81ov5ikFnVes/mNczG7nYaXHXKeXmZx6CZ3mQ9gjeqi8Bj0bQdnndq3P3dVxJ1CG3f12a+cDRtHR9zQ50tv/WQPrIqH81p+7iPugrU8HLJJRyFcOYPelTQcLrcrXR3yCcxQiY3fZ3S0zHpI3VMWlkNU8AWKiqmDg9RV1PNNIlXGyZaN6MNNTS5ISAMV8s8EvTDpYKoeoUPUHZHAk5NtE4D1Y/a+oRXygsyaBjqH/erZ+QB1kNUeAEKBEWDJrU0MG4S4+D5aAvfub9Ox2Lyzjn+H4cMPjk2+03HZp2bmAJi+1hor7kbY1zBi91ZBlEmkplTkt7ZauFIdbzSmWnJvQ97YW0rMr6QiO4=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8cc41843-ef08-489b-2f4e-08dbead7d068
-X-MS-Exchange-CrossTenant-AuthSource: SA2PR10MB4684.namprd10.prod.outlook.com
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?JuLA2Hn7jFhlkk9wc7smzueOc0Lt4aKTk8KWY68kzpZxd80M60sEXISQWg?=
+ =?iso-8859-1?Q?JfGVl7lqYO4mLVszCcZtOcEcbQD9B8NH0x7c+4it0sBWem9IKKmt7CqRMu?=
+ =?iso-8859-1?Q?/RW8DZH9qhvnj3jC9zYEPk9mB6ni7P27EPVrnB0xvNTVZCLndh/J3WO0zV?=
+ =?iso-8859-1?Q?S4Wt00oi5P7j7Wkj5huO/nmLi5JYEC7o5e8HWAyxv7bGtR6p/dHb2lK1+B?=
+ =?iso-8859-1?Q?n0J2HlcmyOG0PiJ/xAVUupLObZUWM+KHJZz5DuMzUdskRNkWC1xRBo0N1v?=
+ =?iso-8859-1?Q?BQ1EQCsrpq7uzgVMqd83mzfY1/1Hs1u91K6Mfal4gUhESrORThQUBDHdZS?=
+ =?iso-8859-1?Q?g6HJbrJ2m3/m3Pq0vp6ptxJF2QZo3XB0+R/3/wVAyT2aDIBnDtGO8vnprB?=
+ =?iso-8859-1?Q?3QWPCfipxEduxw9WVVd5sVrIbvirD33umYbVNe9YYD3NZuZwFyyr8/vTb5?=
+ =?iso-8859-1?Q?5hsbuk9wSjehpFs5JyZ5DT7JdMTmnftPSUFFX8Qb+FdIsjqMNnsH4w9sEX?=
+ =?iso-8859-1?Q?2FjQTywkvunjolMaPM3WYVXv8ZxB+rqnmMacO8zeKww18POYboDTYUa6xN?=
+ =?iso-8859-1?Q?S6mULSRmIvJiggg6dWo2Nxd2pFNZMcsBn5JBpT/91wPhhJo4ErQZmmmCM2?=
+ =?iso-8859-1?Q?J8pb2NLyoDfZk/Xk9NJhieYtkBIqppIFQ/ooVpykgVFKu+JfrDYwKuD6oI?=
+ =?iso-8859-1?Q?5c7qFi2tzDWOBOQtQSUFcFxc4c+lKuz9Oear04gH5Ohp0Abt8rriibMlYz?=
+ =?iso-8859-1?Q?n7xpOLHtqsWr9PAtsPxNy3g5W402AUnDQOrTh+99yjlCi8cQ/8gHhvxyLC?=
+ =?iso-8859-1?Q?mjkv4cgrmb2419uVl/D4P7ctP1cjLx0w6L4r4xk6ofmjFbWOj4Vi987jiU?=
+ =?iso-8859-1?Q?YMIs2M4BgCWh/EEgnmyPiUy4kSVnKh5xEy2L/DipE3fx5+/+uL5hNhiQfP?=
+ =?iso-8859-1?Q?Ts3kqiykhnuczez8vnhSZMbFsAwtl/Eo0Z0Mfq3v3YFUDV8n2jDzEoFHuE?=
+ =?iso-8859-1?Q?RFva/PrsgWUAz9l8Y60ojzOPACBm5bzPvwTAjzHqRKq8w5k38qfHiNL5Pa?=
+ =?iso-8859-1?Q?RNPU1AbRgjUCMtTndJbOCO4lR2997Ai6n7XyCkBDqNuSTnVf1RRPPBnFzv?=
+ =?iso-8859-1?Q?5CkOt1WI4bnxYGqy8XSHI7uXiLFh+i+eR/iaPbgZHYJVFOGO+EqJgpsF9A?=
+ =?iso-8859-1?Q?xR4h9MmBYMo2KZomTZCwGQPtpgjvtPib+D0MRHU34ILllsab96SLGV0erV?=
+ =?iso-8859-1?Q?zJBi0mfjrtJABQC9S4xFo3w23lYiNvJO8tnIZ3m5jRmHlbwRT1TG39AuR0?=
+ =?iso-8859-1?Q?INqlQiakoROLbYmPqXBDj/15i5sYIXaN3V8hsu/f0JLyqSDMqjw6cQTMuk?=
+ =?iso-8859-1?Q?ZAiZaulkjm2V6SD9vUMJYOYW30TFPGL2s/dW7BIlV9Sk/iU9YSqMGjv2sO?=
+ =?iso-8859-1?Q?Kf6wZ05KCDSLGT5UE9ZTjk/arLaMiYYJtQXB0ZpRSR8WQcXTbrxMS1aSvQ?=
+ =?iso-8859-1?Q?rLddiRDcoegewS4z79GUMx/UNHdo3ONpyTb3jbYWmwMpX9qXmcfOvYuooQ?=
+ =?iso-8859-1?Q?ZsQb8YbWtbLUjPzaOwoaa0Fntc4DcCALn/HN4l9/acLUggsLOmkvE7gVIQ?=
+ =?iso-8859-1?Q?+oxGdMaoXBAEq/Npm3ZV8UKx1TBtRsIsoXPni5XWyJPNoHbRR8VzvNYw?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: epam.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2023 21:21:23.9731 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4VS2NesoL5nsgsAilv3E/vvGgyk5Ve3bZKhr2YFOQnrYwxR75T8mkwyqiP9vQtFhutSM2z/U7qcAK+ed+UZ9/TVgkpVX4VVWfIcsAjaZPGs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB5340
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3710.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 31116187-0174-41d9-844a-08dbeadeab25
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2023 22:10:26.9832 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b41b72d0-4e9f-4c26-8a69-f949f367c91d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 41t4TtKmBF8iKvvhz9tiMEGlIQqpEffeS3v/4MLxJ/nqkDzkREgINQ1N3tHPBnvbomqNMOcA5N/Sa3h2rIxdCAjMRjK8X3j7kHedx/2AImQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR03MB8836
+X-Proofpoint-GUID: PaMsyu57w84Zy9TsAHeKAC4aHDDWw3M6
+X-Proofpoint-ORIG-GUID: PaMsyu57w84Zy9TsAHeKAC4aHDDWw3M6
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-21_11,2023-11-21_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- phishscore=0 bulkscore=0
- mlxlogscore=999 suspectscore=0 adultscore=0 malwarescore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
- definitions=main-2311210166
-X-Proofpoint-GUID: kGR3EFkloD4KYpxa4eBHD5UhYnGpgIbd
-X-Proofpoint-ORIG-GUID: kGR3EFkloD4KYpxa4eBHD5UhYnGpgIbd
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+ definitions=2023-11-21_12,2023-11-21_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 suspectscore=0
+ phishscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
+ mlxlogscore=482 bulkscore=0 impostorscore=0 spamscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311210173
+Received-SPF: pass client-ip=148.163.133.242;
+ envelope-from=prvs=5689374ac6=volodymyr_babchuk@epam.com;
+ helo=mx0a-0039f301.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -189,63 +163,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/20/2023 4:44 PM, Peter Xu wrote:
-> On Mon, Nov 20, 2023 at 03:55:54PM -0500, Steven Sistare wrote:
->> If we drop force, then all calls to vm_stop will completely stop the
->> suspended state, eg an hmp "stop" command. This causes two problems.
->> First, that is a change in user-visible behavior for something that
->> currently works,
-> 
-> IMHO it depends on what should be the correct behavior.  IOW, when VM is in
-> SUSPENDED state and then the user sends "stop" QMP command, what should we
-> expect?
-> 
-> My understanding is we should expect to fully stop the VM, including the
-> ticks, for example.  Keeping the ticks running even after QMP "stop"
-> doesn't sound right, isn't it?
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-I agree, but others may not, and this decision would require approval from 
-maintainers in other areas, including upper layers such as libvirt that are
-aware of the suspended state.  It is a user-visible change, and may require 
-a new libvirt release.
+This allows a XenDevice implementation to know whether it was created
+by QEMU, or merely discovered in XenStore after the toolstack created
+it. This will allow us to create frontend/backend nodes only when we
+should, rather than unconditionally attempting to overwrite them from
+a driver domain which doesn't have privileges to do so.
 
->> vs the migration code where we are fixing brokenness.
-> 
-> This is not a migration-only bug if above holds, IMO.
-> 
->> Second, it does not quite work, because the state becomes
->> RUN_STATE_PAUSED, so the suspended state is forgotten, and the hmp "cont"
->> will try to set the running state.  I could fix that by introducing a new
->> state RUN_STATE_SUSPENDED_STOPPED, but again it is a user-visible change
->> in existing behavior.  (I even implemented that while developing, then I
->> realized it was not needed to fix the migration bugs.)
-> 
-> Good point.
-> 
-> Now with above comments, what's your thoughts on whether we should change
-> the user behavior?  My answer is still a yes.
-> 
-> Maybe SUSPENDED should not be a RunState at all? SUSPENDED is guest visible
-> behavior, while something like QMP "stop" is not guest visible.  Maybe we
-> should remember it separately?
->
-> It means qemu_system_suspend() could remember that in a separate field (as
-> part of guest state), then when wakeup we should conditionally go back
-> with/without vcpus running depending on the new "suspended" state.
+As an added benefit, it also means we no longer have to call the
+xen_backend_set_device() function from the device models immediately
+after calling qdev_realize_and_unref(). Even though we could make
+the argument that it's safe to do so, and the pointer to the unreffed
+device *will* actually still be valid, it still made my skin itch to
+look at it.
 
-Regardless of how we remember it, the status command must still expose the 
-suspended state to the user.  The user must be able to see that a guest is 
-suspended, and decide when to issue a wakeup command.
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+---
+ hw/block/xen-block.c         | 3 +--
+ hw/char/xen_console.c        | 2 +-
+ hw/net/xen_nic.c             | 2 +-
+ hw/xen/xen-bus.c             | 4 ++++
+ include/hw/xen/xen-backend.h | 2 --
+ include/hw/xen/xen-bus.h     | 2 ++
+ 6 files changed, 9 insertions(+), 6 deletions(-)
 
-If we change the stop command to completely stop a suspended vm, then we must
-allow the user to query whether a vm is suspended-running or suspended-stopped,
-because the command they must issue to resume is different: wakeup for the
-former, and cont for the latter.
-
-This change is visible to libvirt.  Adding it will delay this entire patch
-series, and is not necessary for fixing the migration bug.  There is no
-downside to drawing the line here for this series, and possibly changing stop
-semantics in the future.
-
-- Steve
+diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
+index 6d64ede94f..c2ac9db4a2 100644
+--- a/hw/block/xen-block.c
++++ b/hw/block/xen-block.c
+@@ -1081,13 +1081,12 @@ static void xen_block_device_create(XenBackendInsta=
+nce *backend,
+=20
+     blockdev->iothread =3D iothread;
+     blockdev->drive =3D drive;
++    xendev->backend =3D backend;
+=20
+     if (!qdev_realize_and_unref(DEVICE(xendev), BUS(xenbus), errp)) {
+         error_prepend(errp, "realization of device %s failed: ", type);
+         goto fail;
+     }
+-
+-    xen_backend_set_device(backend, xendev);
+     return;
+=20
+ fail:
+diff --git a/hw/char/xen_console.c b/hw/char/xen_console.c
+index 5cbee2f184..bef8a3a621 100644
+--- a/hw/char/xen_console.c
++++ b/hw/char/xen_console.c
+@@ -600,8 +600,8 @@ static void xen_console_device_create(XenBackendInstanc=
+e *backend,
+         goto fail;
+     }
+=20
++    xendev->backend =3D backend;
+     if (qdev_realize_and_unref(DEVICE(xendev), BUS(xenbus), errp)) {
+-        xen_backend_set_device(backend, xendev);
+         goto done;
+     }
+=20
+diff --git a/hw/net/xen_nic.c b/hw/net/xen_nic.c
+index af4ba3f1e6..afa10c96e8 100644
+--- a/hw/net/xen_nic.c
++++ b/hw/net/xen_nic.c
+@@ -627,8 +627,8 @@ static void xen_net_device_create(XenBackendInstance *b=
+ackend,
+     net->dev =3D number;
+     memcpy(&net->conf.macaddr, &mac, sizeof(mac));
+=20
++    xendev->backend =3D backend;
+     if (qdev_realize_and_unref(DEVICE(xendev), BUS(xenbus), errp)) {
+-        xen_backend_set_device(backend, xendev);
+         return;
+     }
+=20
+diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
+index 4973e7d9c9..dd0171ab98 100644
+--- a/hw/xen/xen-bus.c
++++ b/hw/xen/xen-bus.c
+@@ -1079,6 +1079,10 @@ static void xen_device_realize(DeviceState *dev, Err=
+or **errp)
+         }
+     }
+=20
++    if (xendev->backend) {
++        xen_backend_set_device(xendev->backend, xendev);
++    }
++
+     xendev->exit.notify =3D xen_device_exit;
+     qemu_add_exit_notifier(&xendev->exit);
+     return;
+diff --git a/include/hw/xen/xen-backend.h b/include/hw/xen/xen-backend.h
+index 0f01631ae7..ea080ba7c9 100644
+--- a/include/hw/xen/xen-backend.h
++++ b/include/hw/xen/xen-backend.h
+@@ -10,8 +10,6 @@
+=20
+ #include "hw/xen/xen-bus.h"
+=20
+-typedef struct XenBackendInstance XenBackendInstance;
+-
+ typedef void (*XenBackendDeviceCreate)(XenBackendInstance *backend,
+                                        QDict *opts, Error **errp);
+ typedef void (*XenBackendDeviceDestroy)(XenBackendInstance *backend,
+diff --git a/include/hw/xen/xen-bus.h b/include/hw/xen/xen-bus.h
+index 334ddd1ff6..7647c4c38e 100644
+--- a/include/hw/xen/xen-bus.h
++++ b/include/hw/xen/xen-bus.h
+@@ -14,9 +14,11 @@
+ #include "qom/object.h"
+=20
+ typedef struct XenEventChannel XenEventChannel;
++typedef struct XenBackendInstance XenBackendInstance;
+=20
+ struct XenDevice {
+     DeviceState qdev;
++    XenBackendInstance *backend;
+     domid_t frontend_id;
+     char *name;
+     struct qemu_xs_handle *xsh;
+--=20
+2.42.0
 
