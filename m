@@ -2,81 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8077F26BE
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 08:56:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4257F26BF
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 08:56:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5LaR-0004Wu-RG; Tue, 21 Nov 2023 02:54:23 -0500
+	id 1r5LcA-0005Ae-Vj; Tue, 21 Nov 2023 02:56:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5LaP-0004Wg-Tp
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 02:54:21 -0500
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5LaO-00059e-AZ
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 02:54:21 -0500
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-9c41e95efcbso711036766b.3
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 23:54:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700553258; x=1701158058; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ZX9lkn0n3fOMqDe7YvZf7g7MLGIFe6LfSL7HbLbLjz0=;
- b=TYhpigXU/BPp/C3Ze18qlcZy/MPrMwKS+UXiD5sSigUP5wh77v80zVYOPlgq1nbHCK
- Unirld8sQT35yXKYonnxxIqs5e4SK+Mlre0rf3C7IQEQ0GjtLDwbS8pPDXadx8jlv0wc
- 19IIx2I+oLxRdqDirD8bktFQ2ls1r23QUzGr2IjaJcLGEGsMJQTVSHKKushpZPkOcqKn
- kEus/rBviW00z+oFPeiqNpjy8p1m+UTIHjSCPa6gGAnBw2bbnXtdjxi7GjMS3WdfX2nB
- PtWFyTTwED4SZ6qEfF1vGnpKz16cGpLUYqeNZ+GKfchN5t6iCc8zqGNWbYw5ce5z8Zmf
- dSmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700553258; x=1701158058;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZX9lkn0n3fOMqDe7YvZf7g7MLGIFe6LfSL7HbLbLjz0=;
- b=FMVmgXxLfikRDuarojZKpG3V/OvFLOOdiIGAILAt5AgR2vjxBKjVPc6DIJG5T8yhbV
- 5TqLbyyOB8mcC5JAC1QXutdBUTsfSMZxS8EWYgvOepAuz6d1FM6L/SFJHdj1IHN1k1Vs
- n0MXihJWRfiCZ40BaXab+DH08P5uydc/zknc7oV6QcsJmFwC+k7v7c8MxWgHKWZBdHp3
- 1WwafXtZ9O4RgbYMFR1kR6+9ST2WstAqVgJeNxXYQ7Ex4U+ngkurKPNd9T/dSF5L9g9J
- FTlEpeFktLmgRokEVT0jjo/ZnHBH/iirybqO+SHtCcRdQ9Vaj1EUSFAkCodyFYKHJM02
- NLiA==
-X-Gm-Message-State: AOJu0Yxk2wpJEAY7JbU9oFyjdJqz6faXsAisYHpGUUyiSJVTlZ838MDW
- J5GweIJF9Hy643dyYwOeXVhPgQ==
-X-Google-Smtp-Source: AGHT+IG9mN1JIdXBtnZlLvyvwjzLc/TdIlk/Nxe4wJ0BPY2M5frZoW/UDoi/2ZGAWwO1+/v6oEyMYA==
-X-Received: by 2002:a17:907:720a:b0:a00:afeb:5d15 with SMTP id
- dr10-20020a170907720a00b00a00afeb5d15mr2344904ejc.33.1700553258083; 
- Mon, 20 Nov 2023 23:54:18 -0800 (PST)
-Received: from [192.168.69.100] (lgp44-h02-176-184-8-219.dsl.sta.abo.bbox.fr.
- [176.184.8.219]) by smtp.gmail.com with ESMTPSA id
- ov13-20020a170906fc0d00b009ff1997ce86sm1819903ejb.149.2023.11.20.23.54.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Nov 2023 23:54:17 -0800 (PST)
-Message-ID: <5c82ad73-aeee-4f46-9559-3b6ea12aadab@linaro.org>
-Date: Tue, 21 Nov 2023 08:54:03 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5Lby-000532-DE
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 02:55:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5Lbw-0005Xk-KY
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 02:55:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700553355;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=0kyFoBKqDExKcjDhTGC+rhAwI1vFJGKiebjHY64SKyE=;
+ b=bRljKD7rxP00ELutkoPHzMcYoqnsf7H4i9jlVkiwENlK+91fZSrrc/d2WUFofD6n9vaT7i
+ wM6a+6Fmfy496bEgqzv0UB7dp/uGbq1CRU1Zkbjpz5t16TWOx/5ydZ+kczOgNjfdY1muJh
+ FnHOFBffiQ6XF7PuyqDTyG1K3uI62a0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-637-JQwfGbqdMOyZBjmT6ZdBqA-1; Tue, 21 Nov 2023 02:55:51 -0500
+X-MC-Unique: JQwfGbqdMOyZBjmT6ZdBqA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 14DAE80346A;
+ Tue, 21 Nov 2023 07:55:51 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E47FE1C060AE;
+ Tue, 21 Nov 2023 07:55:50 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id CBC5E21E6A1F; Tue, 21 Nov 2023 08:55:49 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,  qemu-arm@nongnu.org
+Subject: Re: [PATCH-for-8.2?] hw/arm/fsl-imx: Do not ignore Error argument
+References: <20231120115116.76858-1-philmd@linaro.org>
+ <CAFEAcA-YRPL_UOu5JPwfY4yRU=USk678JayDjqL=DKQjv+SWWw@mail.gmail.com>
+ <87y1ermx1b.fsf@pond.sub.org>
+Date: Tue, 21 Nov 2023 08:55:49 +0100
+In-Reply-To: <87y1ermx1b.fsf@pond.sub.org> (Markus Armbruster's message of
+ "Tue, 21 Nov 2023 07:37:52 +0100")
+Message-ID: <87zfz7leuy.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] disas/cris: Pass buffer size to format_dec() to avoid
- overflow warning
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-References: <20231120214520.59431-1-pbonzini@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231120214520.59431-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,69 +86,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/11/23 22:45, Paolo Bonzini wrote:
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
-> Propagate the buffer size to format_dec() and use snprintf().
-> 
-> This should silence this UBSan -Wformat-overflow warning:
+Markus Armbruster <armbru@redhat.com> writes:
 
-"produced when using GCC 12.1.0:"
+> Peter Maydell <peter.maydell@linaro.org> writes:
+>
+>> On Mon, 20 Nov 2023 at 11:51, Philippe Mathieu-Daud=C3=A9 <philmd@linaro=
+.org> wrote:
+>>>
+>>> Both i.MX25 and i.MX6 SoC models ignore the Error argument when
+>>> setting the PHY number. Pick &error_abort which is the error
+>>> used by the i.MX7 SoC (see commit 1f7197deb0 "ability to change
+>>> the FEC PHY on i.MX7 processor").
+>>>
+>>> Fixes: 74c1330582 ("ability to change the FEC PHY on i.MX25 processor")
+>>> Fixes: a9c167a3c4 ("ability to change the FEC PHY on i.MX6 processor")
+>>> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>>> ---
+>>
+>>
+>>
+>> Applied to target-arm.next, thanks.
+>
+> With or without my commit message clarification?
 
-> 
->    In file included from /usr/include/stdio.h:906,
->                     from include/qemu/osdep.h:114,
->                     from ../disas/cris.c:21:
->    In function 'sprintf',
->        inlined from 'format_dec' at ../disas/cris.c:1737:3,
->        inlined from 'print_with_operands' at ../disas/cris.c:2477:12,
->        inlined from 'print_insn_cris_generic.constprop' at ../disas/cris.c:2690:8:
->    /usr/include/bits/stdio2.h:30:10: warning: null destination pointer [-Wformat-overflow=]
->     30 |   return __builtin___sprintf_chk (__s, __USE_FORTIFY_LEVEL - 1,
->        |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->     31 |                                   __glibc_objsize (__s), __fmt,
->        |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->     32 |                                   __va_arg_pack ());
->        |                                   ~~~~~~~~~~~~~~~~~
-> 
-> Reported-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Message-ID: <20231120132222.82138-1-philmd@linaro.org>
-> [Rewritten to fix logic and avoid repeated expression. - Paolo]
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   disas/cris.c | 26 ++++++++++++++++----------
->   1 file changed, 16 insertions(+), 10 deletions(-)
-> 
-> diff --git a/disas/cris.c b/disas/cris.c
-> index 0b0a3fb9165..409a224c5d1 100644
-> --- a/disas/cris.c
-> +++ b/disas/cris.c
-> @@ -1731,10 +1731,10 @@ format_hex (unsigned long number,
->      unsigned (== 0).  */
->   
->   static char *
-> -format_dec (long number, char *outbuffer, int signedp)
-> +format_dec (long number, char *outbuffer, size_t outsize, int signedp)
->   {
->     last_immediate = number;
-> -  sprintf (outbuffer, signedp ? "%ld" : "%lu", number);
-> +  snprintf (outbuffer, outsize, signedp ? "%ld" : "%lu", number);
->   
->     return outbuffer + strlen (outbuffer);
->   }
-> @@ -1876,6 +1876,12 @@ print_flags (struct cris_disasm_data *disdata, unsigned int insn, char *cp)
->     return cp;
->   }
->   
-> +#define FORMAT_DEC(number, tp, signedp)                      \
-> +    format_dec (number, tp, ({                                \
-> +            assert(tp >= temp && tp <= temp + sizeof(temp)); \
-> +            temp + sizeof(temp) - tp;                        \
-> +        }), signedp)
-
-Thank you Paolo for this respin!
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Uh-oh, I had mail trouble.  Resending stuck messages.
 
 
