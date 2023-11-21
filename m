@@ -2,97 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 933587F222A
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 01:35:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B51117F223C
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 01:39:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5EjB-0004I7-9J; Mon, 20 Nov 2023 19:34:58 -0500
+	id 1r5Emc-0005Ia-UN; Mon, 20 Nov 2023 19:38:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r5Ej6-0004Fl-TF
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 19:34:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1r5Ema-0005I8-H4
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 19:38:28 -0500
+Received: from dragonfly.birch.relay.mailchannels.net ([23.83.209.51])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r5Ej5-0003PZ-5l
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 19:34:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700526889;
+ (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1r5EmY-0004qB-R5
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 19:38:28 -0500
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+ by relay.mailchannels.net (Postfix) with ESMTP id BA2667A2A1F;
+ Tue, 21 Nov 2023 00:38:24 +0000 (UTC)
+Received: from pdx1-sub0-mail-a230.dreamhost.com (unknown [127.0.0.6])
+ (Authenticated sender: dreamhost)
+ by relay.mailchannels.net (Postfix) with ESMTPA id B58A67A2896;
+ Tue, 21 Nov 2023 00:38:23 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1700527103; a=rsa-sha256;
+ cv=none;
+ b=t8K9rEmooo1y6w7t3pHROUlaDZh6oJViOuY0AITIHRxNYqwnB6ylDAsm++0tP0xXdDUgoe
+ SCKdiItKeq61Waz7a7/a0n0VvtMldo1KEBkeARIno6FCx2uDL1NBJVhY342yLydTOIk0qW
+ xdXP6k6h7jFE1dxHaIfTIwLfbiNEx6lhOvp+bmhtoQcdjPuKulCMBJL0Kr/PP13tptbeLG
+ hLXLO91AEWYx/h0e9V/lleKe6kdjxfWJTBoohqJa1hbfyQ7ubdFmn0sWpmTJVDsdPi4911
+ qojoHsmLxouqvTxLkSjk2jS46h9KjC8r1dOhmP9H3f+7M31PIEsuFOx+pyi9Aw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net; s=arc-2022; t=1700527103;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zwQV9ruwyGeb4CQaS8eyhz532/e3aSmzenzWeviWFHU=;
- b=MFMMDIstwtmjYFQmc6VTSNag8fNh3eiGuEGZZA8Frb0iiGH+B8hFHhbhE+B2Uw/7c6ZkQr
- D6EIuUyCsK2fcMfWVkuhxuiQcoNugn3p4lV2aYzjDeD47PvJEcO3jzW2JJH3BLWVR+B0EG
- rgWETgKxj9ColyvdBt4q+bdEPsBcjpw=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-497-HJqgkCLIP8uOf69TesobbA-1; Mon, 20 Nov 2023 19:34:46 -0500
-X-MC-Unique: HJqgkCLIP8uOf69TesobbA-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-1cc23f2226fso58691395ad.0
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 16:34:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700526885; x=1701131685;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zwQV9ruwyGeb4CQaS8eyhz532/e3aSmzenzWeviWFHU=;
- b=PEiZntGlhRfHp0yYNo9yjf/wvMN77DJmiYu4gwt/4E4ProGYmsD7Y7wSSBa2XP9DN2
- RwqTKk1vfZ6YViEH72FOj4cOVh/HEKX+HKUxiqmmeFVKH5bJQYPgEREEWIlrJd6I6Co8
- rpZ0T/lyIrGppDoIjQmxhkLYNNGzBTrkuclVRtdEvt00yfoyDUfdgYmc8UCJLJ8/PAhS
- Z/NrQiA+zPNPMejQyKMHtKOym/XGJW4enfUF23g2nZkyaSiHkZrcmipNQ+tuRBOpyqgc
- KDCNpM3yF8J0ltps2B1wk794WhmrmjAAeTdV1LI2S2JekObVGra7rh56sxoH6fmDIywJ
- BooA==
-X-Gm-Message-State: AOJu0YydGdvOJNG27ZE3da5OuUn9D2a92cM0o1i65bkllXk9Wr+AvEtV
- 4TcMJVeC0IeqLpVOP3uwipXRLTRMHXVQesg0G+RpsZxGbsfsYb608B/Gu/LEW0HA7ai9nmrlzKk
- PKuOwa1yLhXBFPBA=
-X-Received: by 2002:a17:902:e748:b0:1ca:8541:e1ea with SMTP id
- p8-20020a170902e74800b001ca8541e1eamr10829614plf.0.1700526885115; 
- Mon, 20 Nov 2023 16:34:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFxYyEpr7i+kut7a98LmWqK7w00neo1ezzJFYv+fmFSVtLkTrmq/mNh8/wzvr7WOyLJUN06AA==
-X-Received: by 2002:a17:902:e748:b0:1ca:8541:e1ea with SMTP id
- p8-20020a170902e74800b001ca8541e1eamr10829587plf.0.1700526884726; 
- Mon, 20 Nov 2023 16:34:44 -0800 (PST)
-Received: from ?IPV6:2001:8003:e5b0:9f00:b890:3e54:96bb:2a15?
- ([2001:8003:e5b0:9f00:b890:3e54:96bb:2a15])
- by smtp.gmail.com with ESMTPSA id
- u4-20020a17090282c400b001cc615e6850sm6647120plz.90.2023.11.20.16.34.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Nov 2023 16:34:44 -0800 (PST)
-Message-ID: <5ce6f318-3fbb-41fe-9761-fb460c607de1@redhat.com>
-Date: Tue, 21 Nov 2023 10:34:34 +1000
+ in-reply-to:in-reply-to:references:references:dkim-signature;
+ bh=1NLIYBZHY7cPwhLhsgurCHjnocUrPQCjVm5pP+PxtZ8=;
+ b=cBhabovjFR15c3tjc7IPnAHqkWVagp2m5V9ma+uJe/DaQ0BY5BLnH/JyVorEUKVhjBuSf9
+ XW74zMmeVg0RZm0tCEAg9jlSRS7VDA4gH8fpm+KHdf5lW5uhFoL5QWVrmZoU3Pnl+z5qsF
+ wHDOrkDHWIGzi2KQLpHfQr5bFAp82kc+RjrdqsAxYwL3sxvW4+hxTvJIGG65fecf4/d4iO
+ opCvhirgHIt+2obg4JAVIQYE2sMpdPRwOWZDfBn1AO5Hcu8DvRSzAdQIeARLofG++/ndcr
+ +0apxDmh+Esg8hYq1GZR/viYYNtM5DR1R9dt22tRNA3JU92GaZfiLseQINUjgw==
+ARC-Authentication-Results: i=1; rspamd-7f8878586f-s5zmn;
+ auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Tangy-Whispering: 18203b295241015b_1700527104584_2010662759
+X-MC-Loop-Signature: 1700527104584:60291264
+X-MC-Ingress-Time: 1700527104584
+Received: from pdx1-sub0-mail-a230.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.117.123.8 (trex/6.9.2); Tue, 21 Nov 2023 00:38:24 +0000
+Received: from offworld (unknown [108.175.208.159])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ (Authenticated sender: dave@stgolabs.net)
+ by pdx1-sub0-mail-a230.dreamhost.com (Postfix) with ESMTPSA id 4SZ58H0gmdz4d; 
+ Mon, 20 Nov 2023 16:38:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+ s=dreamhost; t=1700527103;
+ bh=1NLIYBZHY7cPwhLhsgurCHjnocUrPQCjVm5pP+PxtZ8=;
+ h=Date:From:To:Cc:Subject:Content-Type;
+ b=qb1QduTsvsxZbt8uRNg+tZBLTTMy6U/Qtm+9F/ONnk1ol4FSLwFisD86hwDmYyul9
+ u6wlIaYfU08Zayn5KQUMB9AI2UVjd06Lhng0HOITpSh6NhJ3rPDJAbJkidbXIqelAy
+ jPHvJ+2fNHYt1duV2pPk55c5y06A8OiXuUvuWmVEGE80kTho1WizOreZJFiZ1aqUmg
+ j0C5cUH7mRYtMYFgm6GyYPixGYmMWqfoGdkLeHRNbIMeEfDfhVpqX5IDVSiLyvKPbq
+ NJNk24UVBjMIeVY6BnpkAFqgajtpUp62qup6PWu2OWXapJs9qalUAEADrvgFtzFN+h
+ iXBa+lDdGlS6w==
+Date: Mon, 20 Nov 2023 16:38:20 -0800
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: shiju.jose@huawei.com
+Cc: qemu-devel@nongnu.org, linux-cxl@vger.kernel.org, 
+ jonathan.cameron@huawei.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com, 
+ linuxarm@huawei.com
+Subject: Re: [RFC PATCH 2/3] hw/cxl/cxl-mailbox-utils: Add device patrol
+ scrub control feature
+Message-ID: <vjd2xgizy4f4sjsbjfksjhnrzshd2o24ya5k2xrtvcf36tpi6s@elfrgj2q6eh3>
+References: <20231114124711.1128-1-shiju.jose@huawei.com>
+ <20231114124711.1128-3-shiju.jose@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/8] Unified CPU type check
-Content-Language: en-US
-To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, imammedo@redhat.com, b.galvani@gmail.com,
- strahinja.p.jankovic@gmail.com, kfting@nuvoton.com, wuhaotsh@google.com,
- nieklinnenbank@gmail.com, rad@semihalf.com, quic_llindhol@quicinc.com,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, vijai@behindbytes.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
-References: <20231120002724.986326-1-gshan@redhat.com>
- <8a386258-1a5b-4c69-972e-49f9d1e59f51@linaro.org>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <8a386258-1a5b-4c69-972e-49f9d1e59f51@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20231114124711.1128-3-shiju.jose@huawei.com>
+User-Agent: NeoMutt/20231006
+Received-SPF: pass client-ip=23.83.209.51; envelope-from=dave@stgolabs.net;
+ helo=dragonfly.birch.relay.mailchannels.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,98 +111,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/21/23 05:42, Marcin Juszkiewicz wrote:
-> W dniu 20.11.2023 o 01:27, Gavin Shan pisze:
->> Testing
->> =======
->>
->> With the following command lines, the output messages are varied before
->> and after the series is applied.
->>
->>    ./build/qemu-system-aarch64            \
->>    -accel tcg -machine virt,gic-version=3 \
->>    -cpu cortex-a8 -smp maxcpus=2,cpus=1
->>
->> Before the series is applied:
->>
->>    qemu-system-aarch64: mach-virt: CPU type cortex-a8-arm-cpu not supported
->>
->> After the series is applied:
->>
->>    qemu-system-aarch64: Invalid CPU type: cortex-a8-arm-cpu
->>    The valid models are: cortex-a7, cortex-a15, cortex-a35, cortex-a55,
->>                          cortex-a72, cortex-a76, a64fx, neoverse-n1,
->>                          neoverse-v1, cortex-a53, cortex-a57, max
-> 
-> 
-> $ ./build/qemu-system-aarch64 -M sbsa-ref -cpu cortex-a53
-> qemu-system-aarch64: Invalid CPU type: cortex-a53
-> The valid types are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1, neoverse-n2, max
-> 
-> $ ./build/qemu-system-aarch64 -M sbsa-ref -cpu sa1100
-> Unexpected error in object_property_find_err() at ../qom/object.c:1329:
-> qemu-system-aarch64: Property 'sa1100-arm-cpu.secure-memory' not found
-> Aborted (core dumped)
-> 
-> 
-> Similar with 'host' or 'pxa250' while QEMU/master does:
-> 
-> $ qemu-system-aarch64 -M sbsa-ref -cpu sa1100
-> qemu-system-aarch64: sbsa-ref: CPU type sa1100-arm-cpu not supported
-> 
+On Tue, 14 Nov 2023, shiju.jose@huawei.com wrote:
 
-Good catch! I didn't realize that the syntax of error_propagate() has been changed
-due to ERRP_GUARD() since ae7c80a7bd7 ("error: New macro ERRP_GUARD()"). Prior to
-the commit, QEMU process is terminated immediately by error_propagate(). After the
-commit, the termination is delayed until machine_run_board_init() returns. For the
-later case, mc->init() is called and causing coredump on 'sbsa-ref' board.
+>+        case  CXL_FEATURE_PATROL_SCRUB:
+>+            /* Fill supported feature entry for device patrol scrub control */
+>+            supported_feats->feat_entries[entry] =
+>+                           (struct CXLSupportedFeatureEntry) {
+>+                .uuid = patrol_scrub_uuid,
+>+                .feat_index = index,
+>+                .get_feat_size = sizeof(cxl_memdev_ps_feat_read_attrbs),
+>+                .set_feat_size = sizeof(CXLMemPatrolScrubWriteAttrbs),
+>+                /* Bit[0] : 1, feature attributes changable */
 
-A 'return' is needed after error_propagate() in machine_run_board_init() so that
-mc->init() won't be called.
+s/changable/changeable
 
-void machine_run_board_init(MachineState *machine, const char *mem_path, Error **errp)
-{
-     ERRP_GUARD();
-     MachineClass *machine_class = MACHINE_GET_CLASS(machine);
-     Error *local_err = NULL;
-     :
-     /* Check if the CPU type is supported */
-     is_cpu_type_supported(machine, &local_err);
-     if (local_err) {
-         error_propagate(errp, local_err);
-         return;                               <<<<< A 'return' is needed here >>>>>
-     }
-     :
-     accel_init_interfaces(ACCEL_GET_CLASS(machine->accelerator));
-     machine_class->init(machine);
-     phase_advance(PHASE_MACHINE_INITIALIZED);
-}
-
-With the 'return' added, everything looks good. I would let v6 floating for another 2-3
-days before posting v7 to fix the issue.
-
-[gshan@gshan q]$ ./build/qemu-system-aarch64 -M virt -cpu cortex-a8
-qemu-system-aarch64: Invalid CPU type: cortex-a8
-The valid types are: cortex-a7, cortex-a15, cortex-a35, cortex-a55, cortex-a72, cortex-a76, cortex-a710, a64fx, neoverse-n1, neoverse-v1, neoverse-n2, cortex-a53, cortex-a57, max
-
-[gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu sa1100
-qemu-system-aarch64: Invalid CPU type: sa1100
-The valid types are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1, neoverse-n2, max
-
-[gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu cortex-m0
-qemu-system-aarch64: Invalid CPU type: cortex-m0
-The valid types are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1, neoverse-n2, max
-
-[gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu pxa250
-qemu-system-aarch64: Invalid CPU type: pxa250
-The valid types are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1, neoverse-n2, max
-
-[gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu host
-qemu-system-aarch64: unable to find CPU model 'host'
-
-Thanks,
-Gavin
-
-
-
+>+                .attrb_flags = 0x1,
+>+                .get_feat_version = CXL_MEMDEV_PS_GET_FEATURE_VERSION,
+>+                .set_feat_version = CXL_MEMDEV_PS_SET_FEATURE_VERSION,
+>+                .set_feat_effects = 0,
+>+            };
+>+            feat_entries++;
+>+            /* Set default value for device patrol scrub read attributes */
+>+            cxl_memdev_ps_feat_read_attrbs.scrub_cycle_cap =
+>+                                CXL_MEMDEV_PS_SCRUB_CYCLE_CHANGE_CAP_DEFAULT |
+>+                                CXL_MEMDEV_PS_SCRUB_REALTIME_REPORT_CAP_DEFAULT;
+>+            cxl_memdev_ps_feat_read_attrbs.scrub_cycle =
+>+                                CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_DEFAULT |
+>+                                (CXL_MEMDEV_PS_MIN_SCRUB_CYCLE_DEFAULT << 8);
+>+            cxl_memdev_ps_feat_read_attrbs.scrub_flags =
+>+                                CXL_MEMDEV_PS_ENABLE_DEFAULT;
+>+            break;
+>         default:
+>             break;
+>         }
 
