@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1439B7F27EB
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 09:48:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 264047F27E0
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 09:47:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5MPl-0006UJ-63; Tue, 21 Nov 2023 03:47:25 -0500
+	id 1r5MPp-0006n3-Qw; Tue, 21 Nov 2023 03:47:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r5MPi-0006Ts-Qw
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:47:22 -0500
+ id 1r5MPn-0006dM-Aw
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:47:27 -0500
 Received: from mgamail.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r5MPh-0001cm-93
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:47:22 -0500
+ id 1r5MPl-0001gM-CP
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:47:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700556441; x=1732092441;
+ t=1700556445; x=1732092445;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=JfdZ3bx5X+vXP8ujM+7gwBwdhnrjh2mzHpDVpuno9Lw=;
- b=lCkjP7tRpEjpaIKiUWOc5wHgdlzmUGfAE53NwE7M1ALIlzwJV8lMtePf
- F4AJcfVmRrpwKyEc6KGHIGaXrWvpkTus2i5YQuU4Yq77zxHdRRVRP/eFR
- A7hrZefKFBtUXiwC/T0in3+H1mbB59RhircDZaLv2beneaEt6ER4ujqPo
- xWIiZIMA0DlqvaxBkDr4P0y1uaheEnNFvzGjXgNczFBxXSiQT7/o2PDVF
- U59di3Mu11WGEEa5czyxPXBvuqT/id+ttmLCCzLtEATz99t6A/Bq+9Ijn
- rkvhXgBlw2EISUXSdYUnk3V7s/1ux76wupaKTJprSyqzZ0etyrZIjaRDv w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="395722176"
-X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="395722176"
+ bh=UPAOUojblgTst9HnU7B0CVXxHRF8+Gvxw59jZTn4acM=;
+ b=OkCk3Y2ntQ9K0KYhLL8UD0j7VXf6tn6w/8t1nKNE8AXQm1dTBJx2bjmX
+ geweHB2rscPZwmWbPRTvnd/htKzukr04bHXdgiid1914OSof4sSv0OpkM
+ qL0EtJZPPU9/nWcZET96D3o2FxDmYAl1mR/sRpNNWcrmVWiueOTEZApII
+ kjGNRCQUlmSenxOKgY7DSH4AkdCoAp2GmxiCwZ+5dEGqcuvcpiKxYOL/O
+ pW39e2JiVTzMOJPeY1uLcCgkYX3Pq6ozgmZIDKg/yHbXVQwxii68UZvH6
+ TPqi81u2HiJMNAjB5t+bZQFK4gBThSiaEVrpS644/lpgMKpL0f/5Q5WcL g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="395722188"
+X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="395722188"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2023 00:47:19 -0800
+ 21 Nov 2023 00:47:22 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="884124988"
-X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="884124988"
+X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="884125001"
+X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="884125001"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2023 00:47:14 -0800
+ 21 Nov 2023 00:47:18 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
  peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com
-Subject: [PATCH v7 14/27] vfio/ap: Allow the selection of a given iommu backend
-Date: Tue, 21 Nov 2023 16:44:13 +0800
-Message-Id: <20231121084426.1286987-15-zhenzhong.duan@intel.com>
+Subject: [PATCH v7 15/27] vfio/ap: Make vfio cdev pre-openable by passing a
+ file handle
+Date: Tue, 21 Nov 2023 16:44:14 +0800
+Message-Id: <20231121084426.1286987-16-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
 References: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
@@ -80,57 +81,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now we support two types of iommu backends, let's add the capability
-to select one of them. This depends on whether an iommufd object has
-been linked with the vfio-ap device:
+This gives management tools like libvirt a chance to open the vfio
+cdev with privilege and pass FD to qemu. This way qemu never needs
+to have privilege to open a VFIO or iommu cdev node.
 
-if the user wants to use the legacy backend, it shall not
-link the vfio-ap device with any iommufd object:
-
- -device vfio-ap,sysfsdev=/sys/bus/mdev/devices/XXX
-
-This is called the legacy mode/backend.
-
-If the user wants to use the iommufd backend (/dev/iommu) it
-shall pass an iommufd object id in the vfio-ap device options:
-
- -object iommufd,id=iommufd0
- -device vfio-ap,sysfsdev=/sys/bus/mdev/devices/XXX,iommufd=iommufd0
-
-Suggested-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/ap.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/vfio/ap.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
 diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index bbf69ff55a..80629609ae 100644
+index 80629609ae..f180e4a32a 100644
 --- a/hw/vfio/ap.c
 +++ b/hw/vfio/ap.c
-@@ -11,10 +11,12 @@
-  */
+@@ -160,7 +160,10 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
+     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(dev);
+     VFIODevice *vbasedev = &vapdev->vdev;
  
- #include "qemu/osdep.h"
-+#include CONFIG_DEVICES /* CONFIG_IOMMUFD */
- #include <linux/vfio.h>
- #include <sys/ioctl.h>
- #include "qapi/error.h"
- #include "hw/vfio/vfio-common.h"
-+#include "sysemu/iommufd.h"
- #include "hw/s390x/ap-device.h"
- #include "qemu/error-report.h"
- #include "qemu/event_notifier.h"
-@@ -204,6 +206,10 @@ static void vfio_ap_unrealize(DeviceState *dev)
+-    vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
++    if (vfio_device_get_name(vbasedev, errp) < 0) {
++        return;
++    }
++
+     vbasedev->ops = &vfio_ap_ops;
+     vbasedev->type = VFIO_DEVICE_TYPE_AP;
+     vbasedev->dev = dev;
+@@ -230,11 +233,28 @@ static const VMStateDescription vfio_ap_vmstate = {
+     .unmigratable = 1,
+ };
  
- static Property vfio_ap_properties[] = {
-     DEFINE_PROP_STRING("sysfsdev", VFIOAPDevice, vdev.sysfsdev),
++static void vfio_ap_instance_init(Object *obj)
++{
++    VFIOAPDevice *vapdev = VFIO_AP_DEVICE(obj);
++
++    vapdev->vdev.fd = -1;
++}
++
 +#ifdef CONFIG_IOMMUFD
-+    DEFINE_PROP_LINK("iommufd", VFIOAPDevice, vdev.iommufd,
-+                     TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
++static void vfio_ap_set_fd(Object *obj, const char *str, Error **errp)
++{
++    vfio_device_set_fd(&VFIO_AP_DEVICE(obj)->vdev, str, errp);
++}
 +#endif
-     DEFINE_PROP_END_OF_LIST(),
++
+ static void vfio_ap_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+ 
+     device_class_set_props(dc, vfio_ap_properties);
++#ifdef CONFIG_IOMMUFD
++    object_class_property_add_str(klass, "fd", NULL, vfio_ap_set_fd);
++#endif
+     dc->vmsd = &vfio_ap_vmstate;
+     dc->desc = "VFIO-based AP device assignment";
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+@@ -249,6 +269,7 @@ static const TypeInfo vfio_ap_info = {
+     .name = TYPE_VFIO_AP_DEVICE,
+     .parent = TYPE_AP_DEVICE,
+     .instance_size = sizeof(VFIOAPDevice),
++    .instance_init = vfio_ap_instance_init,
+     .class_init = vfio_ap_class_init,
  };
  
 -- 
