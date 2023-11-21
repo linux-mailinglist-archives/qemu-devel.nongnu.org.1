@@ -2,60 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B67547F296B
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 10:56:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1EBF7F2983
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 10:58:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5NTq-0008P0-GO; Tue, 21 Nov 2023 04:55:42 -0500
+	id 1r5NVw-0000oN-DR; Tue, 21 Nov 2023 04:57:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1r5NTS-0008Oj-PT; Tue, 21 Nov 2023 04:55:18 -0500
-Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
- helo=Atcsqr.andestech.com)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1r5NVu-0000nZ-E5
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:57:50 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1r5NTM-0000Pd-Uz; Tue, 21 Nov 2023 04:55:18 -0500
-Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
- by Atcsqr.andestech.com with ESMTP id 3AL9siWg049756;
- Tue, 21 Nov 2023 17:54:44 +0800 (+08)
- (envelope-from ethan84@andestech.com)
-Received: from ethan84-VirtualBox (10.0.12.51) by ATCPCS16.andestech.com
- (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; Tue, 21 Nov 2023
- 17:54:40 +0800
-Date: Tue, 21 Nov 2023 17:54:35 +0800
-To: Alistair Francis <alistair23@gmail.com>
-CC: <qemu-devel@nongnu.org>, <peter.maydell@linaro.org>,
- <edgar.iglesias@gmail.com>, <richard.henderson@linaro.org>,
- <pbonzini@redhat.com>, <palmer@dabbelt.com>,
- <alistair.francis@wdc.com>, <in.meng@windriver.com>,
- <liweiwei@iscas.ac.cn>, <dbarboza@ventanamicro.com>,
- <hiwei_liu@linux.alibaba.com>, <qemu-riscv@nongnu.org>,
- <peterx@redhat.com>, <david@redhat.com>
-Subject: Re: [PATCH v3 4/4] hw/riscv/virt: Add IOPMP support
-Message-ID: <ZVx+W7B46Il3ru/D@ethan84-VirtualBox>
-References: <20231114094705.109146-1-ethan84@andestech.com>
- <20231114094705.109146-5-ethan84@andestech.com>
- <CAKmqyKNTcec+QLPLyWRtF4k5DQzNEK_aVmJY28fUGgXTrvWcyw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1r5NVp-0001Bh-S9
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:57:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700560663;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=HySAHGx2603DvvOosltvAVKvouXd9222nXbNP3O1lkQ=;
+ b=a+XnUbREC2JKFsyu7267MuO4OdfLQACxOs7EqAbczLDmYtkeNqzJp8zclh66X5xY7IM+jm
+ 7PHUE/1M1WffyOJ+F+LmrXqaCJBLG5qNTLXoIl6HSfuyVIX1jPIQVplkCniqrjh1aG9Vcz
+ DheL8CcqKM2J9ClABB0iBvQEQz1gizE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-249-Q02y2Y88NwaQZlOlRJH6Fg-1; Tue,
+ 21 Nov 2023 04:57:40 -0500
+X-MC-Unique: Q02y2Y88NwaQZlOlRJH6Fg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8F18F1C05ECE
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 09:57:40 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.72.112.89])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 96B11492BE0
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 09:57:39 +0000 (UTC)
+From: Jason Wang <jasowang@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/3] Net patches
+Date: Tue, 21 Nov 2023 17:57:34 +0800
+Message-ID: <20231121095737.31438-1-jasowang@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKmqyKNTcec+QLPLyWRtF4k5DQzNEK_aVmJY28fUGgXTrvWcyw@mail.gmail.com>
-User-Agent: Mutt/2.1.4 (2021-12-11)
-X-Originating-IP: [10.0.12.51]
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 3AL9siWg049756
-Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
- helo=Atcsqr.andestech.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,200 +73,72 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Ethan Chen <ethan84@andestech.com>
-From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 21, 2023 at 03:22:18PM +1000, Alistair Francis wrote:
-> On Tue, Nov 14, 2023 at 7:48 PM Ethan Chen via <qemu-devel@nongnu.org> wrote:
-> >
-> > - Add 'iopmp=on' option to enable a iopmp device and a dma device
-> >  connect to the iopmp device
-> > - Add 'iopmp_cascade=on' option to enable iopmp cascading.
-> 
-> Can we document these in docs/system/riscv/virt.rst
-> 
-> Alistair
+The following changes since commit af9264da80073435fd78944bc5a46e695897d7e5:
 
-Sure. I will document these.
+  Merge tag '20231119-xtensa-1' of https://github.com/OSLL/qemu-xtensa into staging (2023-11-20 05:25:19 -0500)
 
-Thanks,
-Ethan Chen
+are available in the git repository at:
 
-> 
-> >
-> > Signed-off-by: Ethan Chen <ethan84@andestech.com>
-> > ---
-> >  hw/riscv/Kconfig        |  2 ++
-> >  hw/riscv/virt.c         | 72 +++++++++++++++++++++++++++++++++++++++--
-> >  include/hw/riscv/virt.h | 10 +++++-
-> >  3 files changed, 81 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
-> > index b6a5eb4452..c30a104aa4 100644
-> > --- a/hw/riscv/Kconfig
-> > +++ b/hw/riscv/Kconfig
-> > @@ -45,6 +45,8 @@ config RISCV_VIRT
-> >      select FW_CFG_DMA
-> >      select PLATFORM_BUS
-> >      select ACPI
-> > +    select ATCDMAC300
-> > +    select RISCV_IOPMP
-> >
-> >  config SHAKTI_C
-> >      bool
-> > diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> > index c7fc97e273..3e23ee3afc 100644
-> > --- a/hw/riscv/virt.c
-> > +++ b/hw/riscv/virt.c
-> > @@ -53,6 +53,8 @@
-> >  #include "hw/display/ramfb.h"
-> >  #include "hw/acpi/aml-build.h"
-> >  #include "qapi/qapi-visit-common.h"
-> > +#include "hw/misc/riscv_iopmp.h"
-> > +#include "hw/dma/atcdmac300.h"
-> >
-> >  /*
-> >   * The virt machine physical address space used by some of the devices
-> > @@ -97,6 +99,9 @@ static const MemMapEntry virt_memmap[] = {
-> >      [VIRT_UART0] =        { 0x10000000,         0x100 },
-> >      [VIRT_VIRTIO] =       { 0x10001000,        0x1000 },
-> >      [VIRT_FW_CFG] =       { 0x10100000,          0x18 },
-> > +    [VIRT_IOPMP] =        { 0x10200000,      0x100000 },
-> > +    [VIRT_IOPMP2] =       { 0x10300000,      0x100000 },
-> > +    [VIRT_DMAC] =         { 0x10400000,      0x100000 },
-> >      [VIRT_FLASH] =        { 0x20000000,     0x4000000 },
-> >      [VIRT_IMSIC_M] =      { 0x24000000, VIRT_IMSIC_MAX_SIZE },
-> >      [VIRT_IMSIC_S] =      { 0x28000000, VIRT_IMSIC_MAX_SIZE },
-> > @@ -1527,13 +1532,33 @@ static void virt_machine_init(MachineState *machine)
-> >
-> >      create_platform_bus(s, mmio_irqchip);
-> >
-> > -    serial_mm_init(system_memory, memmap[VIRT_UART0].base,
-> > -        0, qdev_get_gpio_in(mmio_irqchip, UART0_IRQ), 399193,
-> > +    serial_mm_init(system_memory, memmap[VIRT_UART0].base + 0x20,
-> > +        0x2, qdev_get_gpio_in(mmio_irqchip, UART0_IRQ), 38400,
-> >          serial_hd(0), DEVICE_LITTLE_ENDIAN);
-> >
-> >      sysbus_create_simple("goldfish_rtc", memmap[VIRT_RTC].base,
-> >          qdev_get_gpio_in(mmio_irqchip, RTC_IRQ));
-> >
-> > +    /* DMAC */
-> > +    DeviceState *dmac_dev = atcdmac300_create("atcdmac300",
-> > +        memmap[VIRT_DMAC].base, memmap[VIRT_DMAC].size,
-> > +        qdev_get_gpio_in(DEVICE(mmio_irqchip), DMAC_IRQ));
-> > +
-> > +    if (s->have_iopmp) {
-> > +        /* IOPMP */
-> > +        DeviceState *iopmp_dev = iopmp_create(memmap[VIRT_IOPMP].base,
-> > +            qdev_get_gpio_in(DEVICE(mmio_irqchip), IOPMP_IRQ));
-> > +        /* DMA with IOPMP */
-> > +        atcdmac300_connect_iopmp(dmac_dev, &(IOPMP(iopmp_dev)->iopmp_as),
-> > +            (StreamSink *)&(IOPMP(iopmp_dev)->transaction_info_sink), 0);
-> > +        if (s->have_iopmp_cascade) {
-> > +            DeviceState *iopmp_dev2 = iopmp_create(memmap[VIRT_IOPMP2].base,
-> > +                qdev_get_gpio_in(DEVICE(mmio_irqchip), IOPMP2_IRQ));
-> > +            cascade_iopmp(iopmp_dev, iopmp_dev2);
-> > +        }
-> > +    }
-> > +
-> > +
-> >      for (i = 0; i < ARRAY_SIZE(s->flash); i++) {
-> >          /* Map legacy -drive if=pflash to machine properties */
-> >          pflash_cfi01_legacy_drive(s->flash[i],
-> > @@ -1628,6 +1653,35 @@ static void virt_set_aclint(Object *obj, bool value, Error **errp)
-> >      s->have_aclint = value;
-> >  }
-> >
-> > +static bool virt_get_iopmp(Object *obj, Error **errp)
-> > +{
-> > +    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-> > +
-> > +    return s->have_iopmp;
-> > +}
-> > +
-> > +static void virt_set_iopmp(Object *obj, bool value, Error **errp)
-> > +{
-> > +    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-> > +
-> > +    s->have_iopmp = value;
-> > +}
-> > +
-> > +static bool virt_get_iopmp_cascade(Object *obj, Error **errp)
-> > +{
-> > +    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-> > +
-> > +    return s->have_iopmp_cascade;
-> > +}
-> > +
-> > +static void virt_set_iopmp_cascade(Object *obj, bool value, Error **errp)
-> > +{
-> > +    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-> > +
-> > +    s->have_iopmp_cascade = value;
-> > +}
-> > +
-> > +
-> >  bool virt_is_acpi_enabled(RISCVVirtState *s)
-> >  {
-> >      return s->acpi != ON_OFF_AUTO_OFF;
-> > @@ -1730,6 +1784,20 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
-> >                                NULL, NULL);
-> >      object_class_property_set_description(oc, "acpi",
-> >                                            "Enable ACPI");
-> > +
-> > +    object_class_property_add_bool(oc, "iopmp", virt_get_iopmp,
-> > +                                   virt_set_iopmp);
-> > +    object_class_property_set_description(oc, "iopmp",
-> > +                                          "Set on/off to enable/disable "
-> > +                                          "iopmp device");
-> > +
-> > +    object_class_property_add_bool(oc, "iopmp-cascade",
-> > +                                   virt_get_iopmp_cascade,
-> > +                                   virt_set_iopmp_cascade);
-> > +    object_class_property_set_description(oc, "iopmp-cascade",
-> > +                                          "Set on/off to enable/disable "
-> > +                                          "iopmp2 device which is cascaded by "
-> > +                                          "iopmp1 device");
-> >  }
-> >
-> >  static const TypeInfo virt_machine_typeinfo = {
-> > diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
-> > index e5c474b26e..5fa2944d29 100644
-> > --- a/include/hw/riscv/virt.h
-> > +++ b/include/hw/riscv/virt.h
-> > @@ -54,6 +54,8 @@ struct RISCVVirtState {
-> >
-> >      int fdt_size;
-> >      bool have_aclint;
-> > +    bool have_iopmp;
-> > +    bool have_iopmp_cascade;
-> >      RISCVVirtAIAType aia_type;
-> >      int aia_guests;
-> >      char *oem_id;
-> > @@ -82,12 +84,18 @@ enum {
-> >      VIRT_PCIE_MMIO,
-> >      VIRT_PCIE_PIO,
-> >      VIRT_PLATFORM_BUS,
-> > -    VIRT_PCIE_ECAM
-> > +    VIRT_PCIE_ECAM,
-> > +    VIRT_IOPMP,
-> > +    VIRT_IOPMP2,
-> > +    VIRT_DMAC,
-> >  };
-> >
-> >  enum {
-> >      UART0_IRQ = 10,
-> >      RTC_IRQ = 11,
-> > +    DMAC_IRQ = 12,
-> > +    IOPMP_IRQ = 13,
-> > +    IOPMP2_IRQ = 14,
-> >      VIRTIO_IRQ = 1, /* 1 to 8 */
-> >      VIRTIO_COUNT = 8,
-> >      PCIE_IRQ = 0x20, /* 32 to 35 */
-> > --
-> > 2.34.1
-> >
-> >
+  https://github.com/jasowang/qemu.git tags/net-pull-request
+
+for you to fetch changes up to 84f85eb95f14add02efd5e69f2ff7783d79b24f7:
+
+  net: do not delete nics in net_cleanup() (2023-11-21 15:42:34 +0800)
+
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+Akihiko Odaki (2):
+      net: Provide MemReentrancyGuard * to qemu_new_nic()
+      net: Update MemReentrancyGuard for NIC
+
+David Woodhouse (1):
+      net: do not delete nics in net_cleanup()
+
+ hw/net/allwinner-sun8i-emac.c |  3 ++-
+ hw/net/allwinner_emac.c       |  3 ++-
+ hw/net/cadence_gem.c          |  3 ++-
+ hw/net/dp8393x.c              |  3 ++-
+ hw/net/e1000.c                |  3 ++-
+ hw/net/e1000e.c               |  2 +-
+ hw/net/eepro100.c             |  4 +++-
+ hw/net/etraxfs_eth.c          |  3 ++-
+ hw/net/fsl_etsec/etsec.c      |  3 ++-
+ hw/net/ftgmac100.c            |  3 ++-
+ hw/net/i82596.c               |  2 +-
+ hw/net/igb.c                  |  2 +-
+ hw/net/imx_fec.c              |  2 +-
+ hw/net/lan9118.c              |  3 ++-
+ hw/net/mcf_fec.c              |  3 ++-
+ hw/net/mipsnet.c              |  3 ++-
+ hw/net/msf2-emac.c            |  3 ++-
+ hw/net/mv88w8618_eth.c        |  3 ++-
+ hw/net/ne2000-isa.c           |  3 ++-
+ hw/net/ne2000-pci.c           |  3 ++-
+ hw/net/npcm7xx_emc.c          |  3 ++-
+ hw/net/opencores_eth.c        |  3 ++-
+ hw/net/pcnet.c                |  3 ++-
+ hw/net/rocker/rocker_fp.c     |  4 ++--
+ hw/net/rtl8139.c              |  3 ++-
+ hw/net/smc91c111.c            |  3 ++-
+ hw/net/spapr_llan.c           |  3 ++-
+ hw/net/stellaris_enet.c       |  3 ++-
+ hw/net/sungem.c               |  2 +-
+ hw/net/sunhme.c               |  3 ++-
+ hw/net/tulip.c                |  3 ++-
+ hw/net/virtio-net.c           |  6 ++++--
+ hw/net/vmxnet3.c              |  2 +-
+ hw/net/xen_nic.c              |  3 ++-
+ hw/net/xgmac.c                |  3 ++-
+ hw/net/xilinx_axienet.c       |  3 ++-
+ hw/net/xilinx_ethlite.c       |  3 ++-
+ hw/usb/dev-network.c          |  3 ++-
+ include/net/net.h             |  2 ++
+ net/net.c                     | 43 +++++++++++++++++++++++++++++++++++++------
+ 40 files changed, 112 insertions(+), 46 deletions(-)
+
+
 
