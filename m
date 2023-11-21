@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA16B7F28EB
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 10:28:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F3F7F28EC
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 10:28:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5N2p-0002ZF-9Z; Tue, 21 Nov 2023 04:27:47 -0500
+	id 1r5N37-0002g2-7g; Tue, 21 Nov 2023 04:28:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r5N2n-0002Xr-DT
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:27:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r5N35-0002fb-Jx
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:28:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r5N2l-00039Q-UF
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:27:45 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r5N34-0003Bu-5v
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:28:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700558863;
+ s=mimecast20190719; t=1700558881;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=a5fDQzjGnhOuz+GyQNISv5IKzvD1IT1dGOJI2qLlsrQ=;
- b=iTXYwFc8QIA8WEGn+FN6McMcm61AuNrVgkVe+AN9Sh8WJnk1WdG7PKoQwhHFbDrveXJmmv
- apqOy26CKbEx3rCyFu1kQVh9QPEZMlZ06wjB42bSoAoMWC+82PvDXBedJwGQ29aIfX1EVh
- 9krsrND2TRLEZZfNrT62BoOMv9EA5t0=
+ bh=oldB9YSgrC7Cpknqfx85+vAZdCXbDwk8iI7BK322qCo=;
+ b=ct2mTe2FKIphWNxJuHeXe4n9g95vLhQqStB222RXU4aL4biCQI5n7Z2QN0IQk5K6jrqUcA
+ vgiPv3jAV/+wS5fEpo2udjk7MNYdmtfHrFliwmEULGAL/OM/3po3PjeBTj7HxQMl8DfRrk
+ 1cDLh0xpt3FYDqsaVfzAQucANHDVfMU=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-2886UA6iPL6GCUXd2EImPw-1; Tue, 21 Nov 2023 04:27:40 -0500
-X-MC-Unique: 2886UA6iPL6GCUXd2EImPw-1
+ us-mta-504-qNO-O_YaMViskFty6JC7Iw-1; Tue, 21 Nov 2023 04:27:57 -0500
+X-MC-Unique: qNO-O_YaMViskFty6JC7Iw-1
 Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a018014e8e5so43103366b.2
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 01:27:40 -0800 (PST)
+ a640c23a62f3a-a029b93e484so15072266b.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 01:27:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700558860; x=1701163660;
+ d=1e100.net; s=20230601; t=1700558876; x=1701163676;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=a5fDQzjGnhOuz+GyQNISv5IKzvD1IT1dGOJI2qLlsrQ=;
- b=tFthZ5AxwMbSAuBt7XkxuNxI+P0N4SDp/CVtnwMFeBKEbiqmUuosYDgiurp/NzZ3/d
- Y3BwLcRATpyyyJuqzselxasOYI0Q3JeCcslyNqfDhZPEJ7Zh/yli6+zW0pWd11M9YP4s
- fUp1QiOZ9blvLa4p4IgDfDSuFNx7DhvZ7maius5R6r4V1BlawK0f3MZ78RXdSE8cKpJc
- PHDDcBmZ/mvtHJemHbopyjWaN3DkBhOXRAcuTRFpk/WgTC9Bkp2QWB5MBhYaxYRsaBvv
- jpLCSBEQXGhdzC/QI9WE5Aaj4Q7wSe0CICXgIAdKuze3ZtHBeujhxiaS4ZT4NYg2x4O3
- r0SQ==
-X-Gm-Message-State: AOJu0YxgxRJoaKg5pB9+ByQwRMBsJKXqLt4fHDDGkvL0JGctZMKILYv6
- /SpjHC2K1CW+FqBuFKFUz4y1gcdKYtxaL+XhlogJpo3oOe2O0yiyaJLKQ0Rgmb+vbDr018SbJ2I
- jEiXK0v8WJU9ZfpA=
-X-Received: by 2002:a17:906:5ca:b0:9be:45b3:3116 with SMTP id
- t10-20020a17090605ca00b009be45b33116mr6937373ejt.71.1700558859814; 
- Tue, 21 Nov 2023 01:27:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGOY3Dw1OgBbNJiZvLV8cJrDX4PDDIb38/DqFuRGajebB6w5/dwiidGmprSvayCpXw7Mv/X3g==
-X-Received: by 2002:a17:906:5ca:b0:9be:45b3:3116 with SMTP id
- t10-20020a17090605ca00b009be45b33116mr6937364ejt.71.1700558859492; 
- Tue, 21 Nov 2023 01:27:39 -0800 (PST)
+ bh=oldB9YSgrC7Cpknqfx85+vAZdCXbDwk8iI7BK322qCo=;
+ b=j8C5fh2Rdv6zYmaLujSbuYnCJJSvPXUUXejq8+o+FNtPWvjLWW9D9pJ0J6HznDMLl1
+ cvzmHvYwNTs9kfRS1KrU/7r3uh3ofCLY4kadwUE1taeVKhAMYrI+92pEQ3ou2Boe1+6n
+ 8r2DRc5E6ubVFVzElHrDkvFJuxkk7t1saqUyAnksYNXssoLukDbOR2cQyH6PzRuS+vqr
+ /EsDLGIr0+wwdbVns/rwb9m30Xy9MtNQiV87fylyESUevM6N7Hx/ciZUXGPOaQrz8GYN
+ 9hJtRfv+69w/Si94X6H3kC0Sw7nmo1eCs1Zh96E4nP49PUjjz9E6csI8+hIRo3qY0Xtl
+ vc8w==
+X-Gm-Message-State: AOJu0YwKY5SLi33/QrAI4qmomW3W7CuVHyI0Idk3gHuY9mbUnWxwA5xt
+ 54C8jvnCqqxGjQ1pXqL0NMfHY8Ow7rc1Kxn+EnMe9ki9+GcgnTZUxgoVdXFgWTWhw6gUdpBWvC6
+ nYu+5eOFmZHNTmjNZWr1c1PU=
+X-Received: by 2002:a17:906:e4e:b0:9be:d55a:81c5 with SMTP id
+ q14-20020a1709060e4e00b009bed55a81c5mr6129495eji.60.1700558875875; 
+ Tue, 21 Nov 2023 01:27:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFas8U+oNHigHS+hg41ZUmLSUwRd1UKako7C71j4Tts3xM0dyyzIf0vKlanSH6fwQ+PmYEnCg==
+X-Received: by 2002:a17:906:e4e:b0:9be:d55a:81c5 with SMTP id
+ q14-20020a1709060e4e00b009bed55a81c5mr6129482eji.60.1700558875542; 
+ Tue, 21 Nov 2023 01:27:55 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-176-233.web.vodafone.de.
  [109.43.176.233]) by smtp.gmail.com with ESMTPSA id
- b24-20020a170906039800b00a00b4d9df54sm1224113eja.5.2023.11.21.01.27.38
+ b24-20020a170906039800b00a00b4d9df54sm1224113eja.5.2023.11.21.01.27.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Nov 2023 01:27:39 -0800 (PST)
-Message-ID: <3f9d4b5f-ebc1-4f28-b614-906763431055@redhat.com>
-Date: Tue, 21 Nov 2023 10:27:38 +0100
+ Tue, 21 Nov 2023 01:27:55 -0800 (PST)
+Message-ID: <0eed7a4c-a594-4165-adf9-128ce1316e83@redhat.com>
+Date: Tue, 21 Nov 2023 10:27:54 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-8.2 2/3] ui: use "vc" chardev for dbus, gtk & spice-app
+Subject: Re: [PATCH for-8.2 3/3] ui/console: fix default VC when there are no
+ display
 Content-Language: en-US
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, peter.maydell@linaro.org,
  Paolo Bonzini <pbonzini@redhat.com>, dwmw@amazon.co.uk
 References: <20231117143506.1521718-1-marcandre.lureau@redhat.com>
- <20231117143506.1521718-3-marcandre.lureau@redhat.com>
+ <20231117143506.1521718-4-marcandre.lureau@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -115,17 +116,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231117143506.1521718-3-marcandre.lureau@redhat.com>
+In-Reply-To: <20231117143506.1521718-4-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -146,22 +147,19 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 17/11/2023 15.35, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> Those display have their own implementation of "vc" chardev, which
-> doesn't use pixman. They also don't implement the width/height/cols/rows
-> options, so qemu_display_get_vc() should return a compatible argument.
+> When display is "none", we may still have remote displays (I think it
+> would be simpler if VNC/Spice were regular display btw). Return the
+> default VC then, and set them up to fix a regression when using remote
+> display and it used the TTY instead.
 > 
-> This patch was meant to be with the pixman series, when the "vc" field
-> was introduced. It fixes a regression where VC are created on the
-> tty (or null) instead of the display own "vc" implementation.
-> 
+> Fixes: commit 1bec1cc0d ("ui/console: allow to override the default VC")
+> Reported-by: German Maglione <gmaglione@redhat.com>
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   ui/dbus.c      | 1 +
->   ui/gtk.c       | 1 +
->   ui/spice-app.c | 1 +
->   3 files changed, 3 insertions(+)
+>   ui/console.c | 18 ++++++++----------
+>   1 file changed, 8 insertions(+), 10 deletions(-)
 
-FWIW,
 Acked-by: Thomas Huth <thuth@redhat.com>
+
 
 
