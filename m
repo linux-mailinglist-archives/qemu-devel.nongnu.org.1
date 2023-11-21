@@ -2,74 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D13E17F3454
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 17:56:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C6D7F3480
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 18:07:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5U1i-00013Q-Gj; Tue, 21 Nov 2023 11:55:06 -0500
+	id 1r5UCD-0006ge-Sc; Tue, 21 Nov 2023 12:05:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r5U1f-00012B-K3
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 11:55:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1r5UBq-0006fN-HX
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 12:05:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r5U1d-0007d5-Ty
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 11:55:03 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1r5UBk-0002Ch-5i
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 12:05:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700585700;
+ s=mimecast20190719; t=1700586320;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Y+YD45iwwEU+UMBcrB3Urk+Qw5xX+bmo4vrpw8XqpZY=;
- b=IN/GdywfnZzmxHtx5Gntxxf24tZZ3xit3TEbD1JK+02VRXXygksKyDyeCPmJ5IVuOvE1rf
- dG9/ytzikM78+xHPDfKk9mzXQAVu9UZcmMF5aN7NKzwnxfhZdP3Jan/brcMBoIgAP1M5Hs
- t4GDRyMkbXsyY91UbgnujC0kPTdaIS8=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Xsr/xOCeMLorumJj0Rs0SRtlsYp/pb/DRtVGhwLsZcU=;
+ b=G4mGgEWoldCqXV8EUILi6pOxpIVZAxfmmarajj7gzXIQ7VLy7NjJcaFjit450zC8ipSSUQ
+ mhnbvnanCVE5+X0SEKz7eYcDMDp1h4KINbvRrSOZNxlnSJ5OdcT2UKEAGFLoYYu/obRWQJ
+ OGmavdFb2yGe6DtLnlr79NiC2h9a7AQ=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687-vmmNRCd6Orq8gv6OQoQ32g-1; Tue, 21 Nov 2023 11:54:59 -0500
-X-MC-Unique: vmmNRCd6Orq8gv6OQoQ32g-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-280-yzE1e7G6MZmNC0edHDm-Zw-1; Tue, 21 Nov 2023 12:05:16 -0500
+X-MC-Unique: yzE1e7G6MZmNC0edHDm-Zw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9366685A58C;
- Tue, 21 Nov 2023 16:54:56 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.113])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0116A1C060AE;
- Tue, 21 Nov 2023 16:54:55 +0000 (UTC)
-Date: Tue, 21 Nov 2023 11:54:54 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Subject: Re: [PATCH] Revert "tests/avocado: Enable reverse_debugging.py tests
- in gitlab CI"
-Message-ID: <20231121165454.GA3769184@fedora>
-References: <20231121100842.677363-1-thuth@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3CCF185CBF2;
+ Tue, 21 Nov 2023 17:05:16 +0000 (UTC)
+Received: from virtlab701.virt.lab.eng.bos.redhat.com
+ (virtlab701.virt.lab.eng.bos.redhat.com [10.19.152.228])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1BBA6492BFA;
+ Tue, 21 Nov 2023 17:05:16 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH] scripts: adjust url to Coverity tools
+Date: Tue, 21 Nov 2023 12:05:15 -0500
+Message-Id: <20231121170515.1171293-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="WlRxPfH7aiYcB/R9"
-Content-Disposition: inline
-In-Reply-To: <20231121100842.677363-1-thuth@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,30 +78,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The URL to the Coverity tools download has changed; the old one points
+to an obsolete version that is not supported anymore.  Adjust to point
+to the correct and supported tools.
 
---WlRxPfH7aiYcB/R9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ scripts/coverity-scan/run-coverity-scan | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Applied, thanks.
-
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
-
---WlRxPfH7aiYcB/R9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVc4N4ACgkQnKSrs4Gr
-c8iGzQgAlMmlItQNaL1YMb+/mfn7vIfAAOvmluZQmEm/marpyp6j63adANC91W1V
-L7hji1iZDr0TNeTOZmehjfzzKq+/FlCX9s9EOMZj71D4YyR7mHZOzUkxDNbg+EF3
-ziGj/Ek2vHxF9OWAhLN7iBhboH516JfU0I/gtETEomRQwyeJ2m27cBHQL9p+jHTE
-v2rDN8GmROon5591jlfR39YLqrEhMJXC5fQgnIuA0ml5B2CHhC/N9OkutQkBBkcp
-3NwxO160ASa8ssxFDBbTM4WjpOoeAtT//ysJy7/b950gbFtnCmsBvBR7gfjhAAU8
-j5DCpsF/Tm4O7AYBL8CSBDl8UdRwqA==
-=4aun
------END PGP SIGNATURE-----
-
---WlRxPfH7aiYcB/R9--
+diff --git a/scripts/coverity-scan/run-coverity-scan b/scripts/coverity-scan/run-coverity-scan
+index 129672c86f..d56c9b6677 100755
+--- a/scripts/coverity-scan/run-coverity-scan
++++ b/scripts/coverity-scan/run-coverity-scan
+@@ -116,14 +116,14 @@ update_coverity_tools () {
+     cd "$COVERITY_TOOL_BASE"
+ 
+     echo "Checking for new version of coverity build tools..."
+-    wget https://scan.coverity.com/download/linux64 --post-data "token=$COVERITY_TOKEN&project=$PROJNAME&md5=1" -O coverity_tool.md5.new
++    wget https://scan.coverity.com/download/cxx/linux64 --post-data "token=$COVERITY_TOKEN&project=$PROJNAME&md5=1" -O coverity_tool.md5.new
+ 
+     if ! cmp -s coverity_tool.md5 coverity_tool.md5.new; then
+         # out of date md5 or no md5: download new build tool
+         # blow away the old build tool
+         echo "Downloading coverity build tools..."
+         rm -rf coverity_tool coverity_tool.tgz
+-        wget https://scan.coverity.com/download/linux64 --post-data "token=$COVERITY_TOKEN&project=$PROJNAME" -O coverity_tool.tgz
++        wget https://scan.coverity.com/download/cxx/linux64 --post-data "token=$COVERITY_TOKEN&project=$PROJNAME" -O coverity_tool.tgz
+         if ! (cat coverity_tool.md5.new; echo "  coverity_tool.tgz") | md5sum -c --status; then
+             echo "Downloaded tarball didn't match md5sum!"
+             exit 1
+-- 
+2.39.1
 
 
