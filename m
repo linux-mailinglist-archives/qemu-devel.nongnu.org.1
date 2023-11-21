@@ -2,58 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820FB7F2ACE
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 11:41:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B2987F2AD9
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 11:42:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5OBL-0007cZ-8p; Tue, 21 Nov 2023 05:40:39 -0500
+	id 1r5OBK-0007cW-Fh; Tue, 21 Nov 2023 05:40:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1r5OBI-0007bz-OS
+ id 1r5OBI-0007bo-86
  for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:40:36 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1r5OBG-0003EQ-T9
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:40:36 -0500
+ id 1r5OBF-0003DF-WB
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:40:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700563234;
+ s=mimecast20190719; t=1700563232;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=b3BozpQwDtKib7iiJ7gwprFgGFPi2TCfED2CmF9WCqw=;
- b=EfYkq9L2uSF2pOZPQsmi+5YKolZRhvHWKPEN35+I+rJCRB4UWIoREawmFtjaV35BduyEIg
- HIcC3a8EZy/yNMYAUnShxzQPKFruSpj9Izg1o8NDU1qZFZ6wtw73SD6MnQhLt0J/FXjK+L
- E8HTmVzYrMIF9DKhEOMh7AAp44W8ahs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-501-zn3TE-6JODmAxVjtieNMUQ-1; Tue, 21 Nov 2023 05:40:24 -0500
-X-MC-Unique: zn3TE-6JODmAxVjtieNMUQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FZJKMbLl8A/862T8WLyQkf84kZPRj/oD13dJCBI1o+s=;
+ b=DkARh4FqWp5FIq8ep+rPNurNIEsAuWZQ8C/EbL4yzb2Ww8wmHxV0Fx7CmXYLqiyZEGhzUS
+ JW1qbTxTKwHXGgtFtjWBkRFgUEAQbG7Dvq2TDbFabQNwpHfUuRyw698lehuShIuUUp6K8E
+ G/HpB6zdjW/O7kyyNVxYAf+fYfD1HEU=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-489-We90AhYRPzuojk51jPjNyw-1; Tue,
+ 21 Nov 2023 05:40:28 -0500
+X-MC-Unique: We90AhYRPzuojk51jPjNyw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 384988678A0;
- Tue, 21 Nov 2023 10:40:24 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C0F353C025CC;
+ Tue, 21 Nov 2023 10:40:27 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.10])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 07BED2166B26;
- Tue, 21 Nov 2023 10:40:22 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0E9F020268D0;
+ Tue, 21 Nov 2023 10:40:26 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  peter.maydell@linaro.org, dwmw@amazon.co.uk
-Subject: [PULL 0/5] Ui patches
-Date: Tue, 21 Nov 2023 14:40:15 +0400
-Message-ID: <20231121104020.2209345-1-marcandre.lureau@redhat.com>
+Subject: [PULL 1/5] vl: revert behaviour for -display none
+Date: Tue, 21 Nov 2023 14:40:16 +0400
+Message-ID: <20231121104020.2209345-2-marcandre.lureau@redhat.com>
+In-Reply-To: <20231121104020.2209345-1-marcandre.lureau@redhat.com>
+References: <20231121104020.2209345-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -82,40 +85,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The following changes since commit af9264da80073435fd78944bc5a46e695897d7e5:
+Commit 1bec1cc0d ("ui/console: allow to override the default VC") changed
+the behaviour of the "-display none" option, so that it now creates a
+QEMU monitor on the terminal. "-display none" should not be tangled up
+with whether we create a monitor or a serial terminal; it should purely
+and only disable the graphical window. Changing its behaviour like this
+breaks command lines which, for example, use semihosting for their
+output and don't want a graphical window, as they now get a monitor they
+never asked for.
 
-  Merge tag '20231119-xtensa-1' of https://github.com/OSLL/qemu-xtensa into staging (2023-11-20 05:25:19 -0500)
+It also breaks the command line we document for Xen in
+docs/system/i386/xen.html:
 
-are available in the Git repository at:
+ $ ./qemu-system-x86_64 --accel kvm,xen-version=0x40011,kernel-irqchip=split \
+    -display none -chardev stdio,mux=on,id=char0,signal=off -mon char0 \
+    -device xen-console,chardev=char0  -drive file=${GUEST_IMAGE},if=xen
 
-  https://gitlab.com/marcandre.lureau/qemu.git tags/ui-pull-request
+qemu-system-x86_64: cannot use stdio by multiple character devices
+qemu-system-x86_64: could not connect serial device to character backend
+'stdio'
 
-for you to fetch changes up to e0c58720bfd8c0553f170b64717278b07438d2f5:
+When qemu is compiled without PIXMAN, by default the serials aren't
+muxed with the monitor anymore on stdio. The serials are redirected to
+"null" instead, and the monitor isn't set up.
 
-  ui/pixman-minimal.h: fix empty allocation (2023-11-21 14:38:14 +0400)
+Fixes: commit 1bec1cc0d ("ui/console: allow to override the default VC")
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Tested-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Tested-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+---
+ system/vl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-----------------------------------------------------------------
-UI: fixes for 8.2-rc1
-
-----------------------------------------------------------------
-
-Manos Pitsidianakis (1):
-  ui/pixman-minimal.h: fix empty allocation
-
-Marc-André Lureau (4):
-  vl: revert behaviour for -display none
-  ui: use "vc" chardev for dbus, gtk & spice-app
-  ui/console: fix default VC when there are no display
-  vl: add missing display_remote++
-
- include/ui/pixman-minimal.h | 48 +++++++++++++++++++++++++++++++++++--
- system/vl.c                 |  4 +++-
- ui/console.c                | 18 +++++++-------
- ui/dbus.c                   |  1 +
- ui/gtk.c                    |  1 +
- ui/spice-app.c              |  1 +
- 6 files changed, 60 insertions(+), 13 deletions(-)
-
+diff --git a/system/vl.c b/system/vl.c
+index 5af7ced2a1..14bf0cf0bf 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -1391,7 +1391,7 @@ static void qemu_create_default_devices(void)
+         }
+     }
+ 
+-    if (nographic || (!vc && !is_daemonized() && isatty(STDOUT_FILENO))) {
++    if (nographic) {
+         if (default_parallel) {
+             add_device_config(DEV_PARALLEL, "null");
+         }
 -- 
 2.42.0
 
