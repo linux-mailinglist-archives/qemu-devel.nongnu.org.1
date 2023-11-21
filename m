@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7C8C7F3634
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 19:39:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 822A87F363B
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 19:40:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5VeS-00044Q-E0; Tue, 21 Nov 2023 13:39:14 -0500
+	id 1r5Vef-00047m-3L; Tue, 21 Nov 2023 13:39:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5VeE-00042c-Vo
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 13:39:01 -0500
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r5Vea-00047L-Du
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 13:39:21 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5VeC-0005EO-AM
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 13:38:58 -0500
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-544455a4b56so8210118a12.1
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 10:38:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r5VeY-0005Fq-Bj
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 13:39:20 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1cf669b711fso15109555ad.2
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 10:39:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700591932; x=1701196732; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1700591957; x=1701196757; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=UrZSVg/nTM9xK0ktYvJg5LD2s73DYTlBxJ3sJbKjRlc=;
- b=tUcXSRiMQX3MX6xKVW3xYSQt6epqec3PcAFH75XIX/gfhrPx8uw4a4KctlOvowQDRQ
- McJ7jST5t5PZ3/9TBPDq0d5VaTmjILU/ovLJfloCJDIOs+i2kaIWGejIAABwMRUBbWPJ
- eK2jEOLtlf3pMDVjCMuuzzgpsn6ut7y8oO+aUNgmguDYBn4CHF+RlpO+CJ4z4MkX/FH7
- T0zICHazF4uDtANPX1IYxa/pVTzIOqCe4b/Uf+aHcCZYX0RicxFWPVJycO7wJ1/2S6wc
- gsSAyh9QNnMcUW58ivZJ+KOyfYS6odQLGLuDVVu9MFTTB7MqYIBzlcBuNhv4CX3LeX3F
- /XCg==
+ bh=ixkzMv4Ldn41DeWXjO/cFLuj6yD+a3sJ+OcGKtoffm8=;
+ b=A1uYoJG91+JRjnJ//bWOZoSaIRrBWrsivbpbecZ78D+N4dVxHKpvEj73yeyR9buQvf
+ u94A7vVAY0ttEHQGHF4L3IuhzloT0MkDds5vhwe2dgAXoqi2Y/5+h9s3EccyxVzi0Ykl
+ +DbHkhuWF075cf0kuMTOaUJEknjHs2Xapca8wXkZ62vruCXRVVGI+ZDTnWJAq6mrewnr
+ 2kPL0KOFg3rJ4BNj5mn0gwK2fon+pibc/KarlPsJ0I+7gtMOKwN62ocuLqwo5ZJ088bG
+ phup8uGQpbxsuv9rmO070eMF3mncjCOQmVLz3QjQGRTzu7xuAbSpxbKnS8NY/n5Umzep
+ 7Wyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700591932; x=1701196732;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1700591957; x=1701196757;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UrZSVg/nTM9xK0ktYvJg5LD2s73DYTlBxJ3sJbKjRlc=;
- b=fKZZnrBtlae+QEAm0/0Xn3JPLoV5KfXX/ijzo8mOeoWWSFuZgQlw7F4vZmW4n+pHU3
- ONtJwF5DzeX/zgpaLK/0zCVDLHYmwy6kuXDGyxwpnd68nPyWe+Nnw/VGcMb7ZDIMZk0+
- /bbhPrWZmL4MAiZaQn/tSJo+JLVxhSsZJK2m8iex4OjTbYMqkGoWMjrvLeEgm+LC/tUv
- XbgqVJC3asHjOh7rL4geq6hFby6G7mi4pVV67/ZC62D3yTg++m/huOPCdGCRlKYkzCD4
- YiivaSNVRB5hnYR/w+Hyuf0CZp9yI96QUwATTFjRGhJtcTcJ1k5Wryza8BMeFJYwcsCJ
- rqcQ==
-X-Gm-Message-State: AOJu0YwMbwrBRWat9N5ph9YxjFHsDBnl/Om5spMa1P3jQKQlOcfB0GCH
- r9ho4V4+6U3vmj3XpSGdLzasyA==
-X-Google-Smtp-Source: AGHT+IGL1Eun1k/KnVoVsD47q1M8R91a4krwebnL1da9euJ3/pfEzDOq8YMqQJ7JtjdXbo7ASiWrXg==
-X-Received: by 2002:aa7:d1d9:0:b0:548:4dc2:7832 with SMTP id
- g25-20020aa7d1d9000000b005484dc27832mr151714edp.23.1700591932219; 
- Tue, 21 Nov 2023 10:38:52 -0800 (PST)
-Received: from [192.168.69.100] (lgp44-h02-176-184-8-219.dsl.sta.abo.bbox.fr.
- [176.184.8.219]) by smtp.gmail.com with ESMTPSA id
- h23-20020aa7c957000000b0053dff5568acsm5211379edt.58.2023.11.21.10.38.50
+ bh=ixkzMv4Ldn41DeWXjO/cFLuj6yD+a3sJ+OcGKtoffm8=;
+ b=vp5Frf6zFRxyQ9iou91VBf42Pa2mSBEIlpkneb/wcHQKpR0ZJcD7Fvvwml6T5jiwqA
+ SoNBXES5dBqC2SM4lbuU4dkHT0BdeI+kdukHaFMZpOANN5943DpRlYWeIh3J1iCXyHp3
+ eewXz0++eXHJx93bCimBfnF3jP86oGlzONevOCrpkwXcrOwoiqK8HkkwLeR3nTBlyOoL
+ VWQr7T4VHrBgRmINlVwGvyOnTZ5kmd2JDQkxOdOQaitNDR/GfS6p6QxygmAKTfF+NdMo
+ enWrC3+k8651fPP083cClGXEpMNFNlt2O1YHGb49uQ5f26uOmBb/jkIRQ84p8eKMw2Ms
+ OocA==
+X-Gm-Message-State: AOJu0Yz5V+znBk5YBpUMNrHRHFRSvYnuHTSlM6ZDW9ezX4Ff0i4WO4Xn
+ +h8F2hkBPuu3NROc8p2LrxTHqw==
+X-Google-Smtp-Source: AGHT+IG5FmJHohX2WnhaVasLjQWBMXlti7sNrbrjaeQKHa4BU599z6w/gzHLbgXt39YsC93u0WfIpQ==
+X-Received: by 2002:a17:902:d4c4:b0:1cf:69ac:4c1e with SMTP id
+ o4-20020a170902d4c400b001cf69ac4c1emr4571804plg.17.1700591956682; 
+ Tue, 21 Nov 2023 10:39:16 -0800 (PST)
+Received: from [172.20.7.39] ([187.217.227.247])
+ by smtp.gmail.com with ESMTPSA id
+ l9-20020a170902d34900b001cc3098c9f8sm1042722plk.275.2023.11.21.10.39.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Nov 2023 10:38:51 -0800 (PST)
-Message-ID: <9c7b820b-3c36-4d39-953b-1e2ba0db63a6@linaro.org>
-Date: Tue, 21 Nov 2023 19:38:49 +0100
+ Tue, 21 Nov 2023 10:39:16 -0800 (PST)
+Message-ID: <8b3fe672-d7cb-46d0-87d6-2c89a0d3f272@linaro.org>
+Date: Tue, 21 Nov 2023 12:39:13 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 08/27] vfio/pci: Introduce a vfio pci hot reset
- interface
+Subject: Re: [PATCH] target/arm: Don't implement *32_EL2 registers when EL1 is
+ AArch64 only
 Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
- peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
- yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com
-References: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
- <20231121084426.1286987-9-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231121084426.1286987-9-zhenzhong.duan@intel.com>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20231121144605.3980419-1-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231121144605.3980419-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,44 +94,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhenzhong,
-
-On 21/11/23 09:44, Zhenzhong Duan wrote:
-> Legacy vfio pci and iommufd cdev have different process to hot reset
-> vfio device, expand current code to abstract out pci_hot_reset callback
-> for legacy vfio, this same interface will also be used by iommufd
-> cdev vfio device.
+On 11/21/23 08:46, Peter Maydell wrote:
+> The system registers DBGVCR32_EL2, FPEXC32_EL2, DACR32_EL2 and
+> IFSR32_EL2 are present only to allow an AArch64 EL2 or EL3 to read
+> and write the contents of an AArch32-only system register.  The
+> architecture requires that they are present only when EL1 can be
+> AArch32, but we implement them unconditionally.  This was OK when all
+> our CPUs supported AArch32 EL1, but we have quite a lot of CPU models
+> now which only support AArch64 at EL1:
+>   a64fx
+>   cortex-a76
+>   cortex-a710
+>   neoverse-n1
+>   neoverse-n2
+>   neoverse-v1
 > 
-> Rename vfio_pci_hot_reset to vfio_legacy_pci_hot_reset and move it
-> into container.c.
+> Only define these registers for CPUs which allow AArch32 EL1.
 > 
-> vfio_pci_[pre/post]_reset and vfio_pci_host_match are exported so
-> they could be called in legacy and iommufd pci_hot_reset callback.
-> 
-> Suggested-by: Cédric Le Goater <clg@redhat.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Reviewed-by: Eric Auger <eric.auger@redhat.com>
-> Tested-by: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   hw/vfio/pci.h                         |   3 +
->   include/hw/vfio/vfio-container-base.h |   3 +
->   hw/vfio/container.c                   | 170 ++++++++++++++++++++++++++
->   hw/vfio/pci.c                         | 168 +------------------------
->   4 files changed, 182 insertions(+), 162 deletions(-)
+> I happened to notice this reading through the Arm ARM recently.  This
+> is technically a bug, but you'll only notice it if you deliberately
+> look at what should be an unimplemented register to see if it UNDEFs,
+> so I don't think it's worth either putting in 8.2 or backporting to
+> stable.
+> ---
+>   target/arm/debug_helper.c | 23 +++++++++++++++--------
+>   target/arm/helper.c       | 35 +++++++++++++++++++++--------------
+>   2 files changed, 36 insertions(+), 22 deletions(-)
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
-> @@ -2485,166 +2485,10 @@ int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
->   
->   static int vfio_pci_hot_reset(VFIOPCIDevice *vdev, bool single)
->   {
-
-> +    return ops->pci_hot_reset(vbasedev, single);
-
-At this point vfio_iommufd_ops.pci_hot_reset is NULL.
-Worth checking for non-NULL before calling.
-
->   }
->   
->   /*
-
+r~
 
