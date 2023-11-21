@@ -2,74 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE1127F293F
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 10:48:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8E57F294C
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 10:49:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5NMs-0006hU-F6; Tue, 21 Nov 2023 04:48:30 -0500
+	id 1r5NNq-0007Nh-FS; Tue, 21 Nov 2023 04:49:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r5NMm-0006hC-H5
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:48:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1r5NNo-0007NQ-It
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:49:28 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r5NMk-0006lR-Pp
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:48:24 -0500
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1r5NNm-0006uM-AU
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:49:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700560101;
+ s=mimecast20190719; t=1700560165;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dg78p7I8HoI1MOkFd1x9bWs1iRBacwar9rP7stYY5WU=;
- b=Dl6CaJAVc4dKFK0SLqbjAawIjhKOR4Ldl6qNyXnzQfj+9ON/RWPxyKnbsMGNkfW7DPr6UI
- EZfxomqF+JeK5FBoXoVbG5faq6YwoPTrel9o/eMrN7KxQfT8Mzhf10sh19j2M+xfra2ukI
- mCctCSbLLr//fnIL/kxKCCeMoh/Ge5s=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-417-j6sS6REMP6KT0q0n2XZ4AQ-1; Tue,
- 21 Nov 2023 04:48:15 -0500
-X-MC-Unique: j6sS6REMP6KT0q0n2XZ4AQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A9F471C0758E;
- Tue, 21 Nov 2023 09:48:14 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.112])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7F0B6C1596F;
- Tue, 21 Nov 2023 09:48:13 +0000 (UTC)
-Date: Tue, 21 Nov 2023 10:48:12 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, jsnow@redhat.com,
- qemu-block@nongnu.org, qemu-devel@nongnu.org, philmd@linaro.org,
- shentey@gmail.com, Rene Engel <ReneEngel80@emailn.de>
-Subject: Re: [PATCH v3 0/4] ide: implement simple legacy/native mode
- switching for PCI IDE controllers
-Message-ID: <ZVx83ISREUVBy/TR@redhat.com>
-References: <20231116103355.588580-1-mark.cave-ayland@ilande.co.uk>
- <c4bb80e8-e985-b6b2-aac1-f6e8d446b8ea@eik.bme.hu>
- <295aec31-e9c1-49d8-9bea-edad8f7b81e4@ilande.co.uk>
- <63ff9c1a-5d05-985a-bf2f-69420b72db90@eik.bme.hu>
- <ZVtiV8XXHxS+cw8o@redhat.com>
- <b9ea9c20-f9a5-9b79-6e70-624665fb5148@eik.bme.hu>
- <ZVt0B1pSsWWK7ReX@redhat.com>
- <085a9043-6850-0022-1f7c-ebf365b5570c@eik.bme.hu>
+ bh=/KltjkrelcEQboa71QBmxPYK95DuZpJn3ckJFb868yE=;
+ b=QYeSai/AIPkz1nb7RJUQ/nDG6gTNBjdhh6cFfCXolouyxNf5ntoAUZraLEeuFOilTwSOII
+ JyyIVqVQo/xv/H6Brqj3rnV3rH9kc4MGXxt7fnhP3KzATHYG+xLFJ9OHTIzQHN/ZeD40gR
+ InkpRs5C/WmMq1RRBhVrrWE1Q9ULYfU=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-526-z23LOg1TPUOvV9lJRfK6yw-1; Tue, 21 Nov 2023 04:49:24 -0500
+X-MC-Unique: z23LOg1TPUOvV9lJRfK6yw-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-548ef4e9e89so775664a12.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 01:49:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700560162; x=1701164962;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=/KltjkrelcEQboa71QBmxPYK95DuZpJn3ckJFb868yE=;
+ b=vuF1TWDBnDLTlaThXrCzWhwqhMTR9Xrx8l2hKp7hb6rORIs2VFFGlleT0oxfgdZJWs
+ 7gZ/Luf8Os7wfl1lTTV5CS8hjir5xJjejJRHwbXNLfdSVF7D+okRKhrnNiu1c2PlRNi/
+ cL57L8/hHpU7fBYIiWyPcESkV7qvsKYrH8AwRtI8oXIkKKkV+bnRK1qf8sS0iPytOx2F
+ fgN8oZ6e/hohrrYGD5sG1z36b6VDhz+e8KNbgdbZPTsN9n+yOKAIe9908J80Hw4dlsn3
+ o8d2QXl1Uvw4Ydbh5vIZHYvpt8bStzpCwhr/1WhcANHGP2r5gx8+MY+5xJTe92pGcgPo
+ qd3Q==
+X-Gm-Message-State: AOJu0YxySBzIdjBQ2cJrh6KWZbyl/1OTqKqvvrWFaK64Nw8zYOGQLaW3
+ lBVYmDaPo+wJaaLVQ3bcpnbumG06DKtmKRl6r4milU7dMrZ/gjR98Y5ujglJNG+/X+hqBc/U6CD
+ u1ha9P289GM0q3NfHT0p4PVB2odYqDtwbPiwhkCTqbw==
+X-Received: by 2002:a05:6402:616:b0:548:ac1f:54ff with SMTP id
+ n22-20020a056402061600b00548ac1f54ffmr1316072edv.41.1700560161964; 
+ Tue, 21 Nov 2023 01:49:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFTotIg+PUqdmRodkpPmVq91GW/xTHzLing0VmWgMmBGqnOC9vJKMwBXhbidfmEO+20pJwvrWgl6/gUTMfUN6Y=
+X-Received: by 2002:a05:6402:616:b0:548:ac1f:54ff with SMTP id
+ n22-20020a056402061600b00548ac1f54ffmr1316065edv.41.1700560161637; Tue, 21
+ Nov 2023 01:49:21 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <085a9043-6850-0022-1f7c-ebf365b5570c@eik.bme.hu>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+References: <20231121093840.2121195-1-manos.pitsidianakis@linaro.org>
+In-Reply-To: <20231121093840.2121195-1-manos.pitsidianakis@linaro.org>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Tue, 21 Nov 2023 13:49:10 +0400
+Message-ID: <CAMxuvaz4AWJFNgYfiBwAAfLoaGkkFYKYnf8MEgGLJJ5DxbnE4w@mail.gmail.com>
+Subject: Re: [PATCH for-8.2] ui/pixman-minimal.h: fix empty allocation
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,96 +94,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 20.11.2023 um 16:11 hat BALATON Zoltan geschrieben:
-> On Mon, 20 Nov 2023, Kevin Wolf wrote:
-> > Am 20.11.2023 um 14:47 hat BALATON Zoltan geschrieben:
-> > > On Mon, 20 Nov 2023, Kevin Wolf wrote:
-> > > > Am 20.11.2023 um 14:09 hat BALATON Zoltan geschrieben:
-> > > > > On Mon, 20 Nov 2023, Mark Cave-Ayland wrote:
-> > > > > > The only difference I can think of regarding the BAR zeroing is that the
-> > > > > > BMDMA BAR is zeroed here. Does the following diff fix things?
-> > > > > 
-> > > > > This helps, with this the latest driver does not crash but still reads BAR4
-> > > > > as 0 instead of 0xcc00 so UDMA won't work but at least it boots.
-> > > > 
-> > > > And disabling only the first four BARs is actually what the spec says,
-> > > > too. So I'll make this change to the queued patches.
-> > > > 
-> > > > If I understand correctly, UDMA didn't work before this series either,
-> > > > so it's a separate goal and doing it in its own patch is best anyway.
-> > > 
-> > > UDMA works with my original series, did not work with earlier versions of
-> > > this alternative from Mark but could be fixed up on top unless Mark can send
-> > > a v4 now.
-> > > 
-> > > > As we don't seem to have a good place to set a default, maybe just
-> > > > overriding it in via_ide_cfg_read(), too, and making it return 0xcc01 in
-> > > > compatibility mode is enough?
-> > > 
-> > > I could give that a try and see if that helps but all this
-> > > via_ide_cfg_read() seems like an unnecessary complication to me. Why can't
-> > > we just set the BARs (o for BAR1-3 and default for BAR4) then we don't need
-> > > to override config read?
-> > 
-> > I would be fine with setting 0xcc00 as the default value for BAR 4, but
-> > as you said yourself, we can't do that in reset because it will be
-> > overwritten by the PCI core code. Where else could we meaningfully do
-> > that? As far as I understand, we don't have any hint that the
-> > native/compatibility mode switch resets it on real hardware, so I'm
-> > hesitant to do it there (and if the guest OS doesn't even switch, it
-> > would never get set).
-> 
-> Luckily machines which need legacy mode also seem to set it explicitly
-> on startup so we can set the defaults there.
+Hi Manos
 
-With machines, you mean the QEMU board code? Where does this happen? Or
-just what guests usually do?
+On Tue, Nov 21, 2023 at 1:38=E2=80=AFPM Manos Pitsidianakis
+<manos.pitsidianakis@linaro.org> wrote:
+>
+> In the minimal pixman API stub that is used when the real pixman
+> dependency is missing a NULL dereference happens when
+> virtio-gpu-rutabaga allocates a pixman image with bits =3D NULL and
+> rowstride_bytes =3D zero. A buffer of rowstride_bytes * height is
+> allocated which is NULL. However, in that scenario pixman calculates a
+> new stride value based on given width, height and format size.
+>
+> This commit adds a helper function that performs the same logic as
+> pixman.
+>
 
-> The check to see if something changed the BARs before is enough to
-> avoid breaking it when legacy mode is set after native mode which does
-> not seem to reset BARs according to how pegasos2 Linux behaves that
-> sets legacy mode after firmware set native and proframmed BARs but the
-> keep using BAR addresses. The AmigaOne I think just uses the default
-> values with setting legacy mode doing nothing as that's the default
-> but we can detect this as setting legacy mode with BARs unset so
-> that's a good place to set default values which is what my patch did
-> and I added a lot of comments trying to explain this.
+Thanks a lot for investigating this and providing a solution!
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-I guess it's a question of your philosophy if you focus on just making a
-specific set of OSes work, or if you focus on trying to do what hardware
-actually does. Of course, figuring out what hardware actually does
-proved a bit harder than I would have hoped in this case.
-
-> > As for BAR 0-3, didn't we conclude that the via device still accepts I/O
-> > to the configured addresses even though they read as zeros? Having
-> > inconsistent config space and PCIIORegion seems like a bad idea, the
-> > next call to pci_update_mappings() would break it.
-> 
-> I don't quite get this but then we could also just leave BARs alone
-> and it would still work.
-
-Didn't we have config space dumps from real hardware that showed that
-this isn't what it does? Otherwise, this would be simpler indeed.
-
-Of course, the spec also mandates that the values in the first four BARs
-are ignored in compatibility mode (i.e. we would have to unregister the
-memory regions), but we already figured that the via controller doesn't
-do this. So that's something we would only have to solve if we want pci.c
-code to be actually generic, but not for via.
-
-> It probably does not matter what it reads back when the device is in
-> legacy mode. What would call pci_update_mappings() if device is in
-> legacy and if something switches it to native it will very likely also
-> program BARs. I can't imagine what would want to turn on native mode
-> without trying to use a PCI driver and program BARs.
-
-For example, I see vmstate_info_pci_config -> get_pci_config_device ->
-pci_update_mappings. Would live migration be enough to trigger this?
-
-Maybe the relevant machines don't even support live migration (I haven't
-checked), but it just doesn't feel robust to have inconsistent values in
-data structures that are supposed to be in sync.
-
-Kevin
+> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
+>  include/ui/pixman-minimal.h | 48 +++++++++++++++++++++++++++++++++++--
+>  1 file changed, 46 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/ui/pixman-minimal.h b/include/ui/pixman-minimal.h
+> index efcf570c9e..6dd7de1c7e 100644
+> --- a/include/ui/pixman-minimal.h
+> +++ b/include/ui/pixman-minimal.h
+> @@ -113,6 +113,45 @@ typedef struct pixman_color {
+>      uint16_t    alpha;
+>  } pixman_color_t;
+>
+> +static inline uint32_t *create_bits(pixman_format_code_t format,
+> +                                    int width,
+> +                                    int height,
+> +                                    int *rowstride_bytes)
+> +{
+> +    int stride =3D 0;
+> +    size_t buf_size =3D 0;
+> +    int bpp =3D PIXMAN_FORMAT_BPP(format);
+> +
+> +    /*
+> +     * Calculate the following while checking for overflow truncation:
+> +     * stride =3D ((width * bpp + 0x1f) >> 5) * sizeof(uint32_t);
+> +     */
+> +
+> +    if (unlikely(__builtin_mul_overflow(width, bpp, &stride))) {
+> +        return NULL;
+> +    }
+> +
+> +    if (unlikely(__builtin_add_overflow(stride, 0x1f, &stride))) {
+> +        return NULL;
+> +    }
+> +
+> +    stride >>=3D 5;
+> +
+> +    stride *=3D sizeof(uint32_t);
+> +
+> +    if (unlikely(__builtin_mul_overflow((size_t) height,
+> +                                        (size_t) stride,
+> +                                        &buf_size))) {
+> +        return NULL;
+> +    }
+> +
+> +    if (rowstride_bytes) {
+> +        *rowstride_bytes =3D stride;
+> +    }
+> +
+> +    return g_malloc0(buf_size);
+> +}
+> +
+>  static inline pixman_image_t *pixman_image_create_bits(pixman_format_cod=
+e_t format,
+>                                                         int width,
+>                                                         int height,
+> @@ -123,13 +162,18 @@ static inline pixman_image_t *pixman_image_create_b=
+its(pixman_format_code_t form
+>
+>      i->width =3D width;
+>      i->height =3D height;
+> -    i->stride =3D rowstride_bytes ?: width * DIV_ROUND_UP(PIXMAN_FORMAT_=
+BPP(format), 8);
+>      i->format =3D format;
+>      if (bits) {
+>          i->data =3D bits;
+>      } else {
+> -        i->free_me =3D i->data =3D g_malloc0(rowstride_bytes * height);
+> +        i->free_me =3D i->data =3D
+> +            create_bits(format, width, height, &rowstride_bytes);
+> +        if (width && height) {
+> +            assert(i->data);
+> +        }
+>      }
+> +    i->stride =3D rowstride_bytes ? rowstride_bytes :
+> +                            width * DIV_ROUND_UP(PIXMAN_FORMAT_BPP(forma=
+t), 8);
+>      i->ref_count =3D 1;
+>
+>      return i;
+>
+> base-commit: af9264da80073435fd78944bc5a46e695897d7e5
+> --
+> 2.39.2
+>
 
 
