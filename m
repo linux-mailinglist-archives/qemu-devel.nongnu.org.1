@@ -2,103 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644197F3571
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 19:00:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A07A7F3572
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 19:00:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5V1Q-0000p9-4r; Tue, 21 Nov 2023 12:58:53 -0500
+	id 1r5V28-0001Y5-Dk; Tue, 21 Nov 2023 12:59:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1r5V1N-0000o6-Ng; Tue, 21 Nov 2023 12:58:49 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1r5V22-0001Vu-2i; Tue, 21 Nov 2023 12:59:30 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1r5V1L-0004ne-4N; Tue, 21 Nov 2023 12:58:48 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ALHkAtQ024235; Tue, 21 Nov 2023 17:58:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=0wuSHaQPK9I/5wEWljfpu0Wb2mWPtj5ySO9t6ICaDfY=;
- b=toDI4rsNwPkgFYlbnm35X1hRILugkkKZUhpvro9NarXkilOMbIZclCaYvIwVIIHotbwF
- kLny8CXjonDCQ7T7vLUCq6BhorqqCwz6XO32ZeAAatRcDgUEvHZsOUjVbsIuCrb1y0TY
- 6rgvrJWxpHDnmne5Tfn1Z5mxxfnIKdlI5lKsR0YMBQ3g0wCVHXOHKa+2EM3/GUt25uGn
- GfYPMukasmgFBFkqUVx2rZoBwSiVpWvvlJYcq07js544XNpmBrDyfxRY6u2g57iOZ+3N
- AU5oFzYxb2P/Z4p3us7zoPkMNT00zvIOuZFPelAtMcmqPJAoJ29vwYQl6ylN0vUK77AB rg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uh0ct9y4q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Nov 2023 17:58:43 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ALHlT70029422;
- Tue, 21 Nov 2023 17:58:43 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uh0ct9y4e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Nov 2023 17:58:43 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ALGIm3X007404; Tue, 21 Nov 2023 17:58:42 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uf8knte6v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Nov 2023 17:58:42 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3ALHwgOO21889566
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Nov 2023 17:58:42 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EB5F35805D;
- Tue, 21 Nov 2023 17:58:41 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C79C658058;
- Tue, 21 Nov 2023 17:58:41 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 21 Nov 2023 17:58:41 +0000 (GMT)
-Message-ID: <fa293e804e3faaffbab8d54e817f50c40211bda4.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4 03/11] ppc/pnv: New powernv10-rainier machine type
-From: Miles Glenn <milesg@linux.vnet.ibm.com>
-To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, qemu-devel@nongnu.org, 
- qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, =?ISO-8859-1?Q?Fr=E9d=E9ric?=
- Barrat <fbarrat@linux.ibm.com>
-Date: Tue, 21 Nov 2023 11:58:41 -0600
-In-Reply-To: <67081798-658f-4a9f-b0be-ba8e4f3779db@kaod.org>
-References: <20231120235112.1951342-1-milesg@linux.vnet.ibm.com>
- <20231120235112.1951342-4-milesg@linux.vnet.ibm.com>
- <67081798-658f-4a9f-b0be-ba8e4f3779db@kaod.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: -XWa_bg11psQlTiL9ncaaUWTnvDxLRf4
-X-Proofpoint-GUID: c-nf3z1TT0zf-fMKJE8N7C5Mmwg4zmzR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-21_10,2023-11-21_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- lowpriorityscore=0 malwarescore=0 mlxlogscore=968 bulkscore=0
- priorityscore=1501 spamscore=0 clxscore=1015 phishscore=0 mlxscore=0
- suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311060000 definitions=main-2311210141
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1r5V1y-0004pD-HA; Tue, 21 Nov 2023 12:59:29 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 3FC1735381;
+ Tue, 21 Nov 2023 20:59:20 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 8589D36BA7;
+ Tue, 21 Nov 2023 20:59:12 +0300 (MSK)
+Received: (nullmailer pid 3420670 invoked by uid 1000);
+ Tue, 21 Nov 2023 17:59:12 -0000
+Subject: [ANNOUNCE] QEMU 7.2.7 Stable released
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+From: Michael Tokarev <mjt@tls.msk.ru>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfar-Encoding: 8bit
+Date: Tue, 21 Nov 2023 20:59:12 +0300
+Message-Id: <1700589552.502824.3420669.nullmailer@tls.msk.ru>
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, CTE_8BIT_MISMATCH=0.001,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,123 +56,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-11-21 at 07:46 +0100, Cédric Le Goater wrote:
-> On 11/21/23 00:51, Glenn Miles wrote:
-> > Create a new powernv machine type, powernv10-rainier, that
-> > will contain rainier-specific devices.
-> > 
-> > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> > ---
-> >   hw/ppc/pnv.c | 29 +++++++++++++++++++++++++++--
-> >   1 file changed, 27 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> > index 9c29727337..3481a1220e 100644
-> > --- a/hw/ppc/pnv.c
-> > +++ b/hw/ppc/pnv.c
-> > @@ -2249,7 +2249,7 @@ static void
-> > pnv_machine_power9_class_init(ObjectClass *oc, void *data)
-> >       machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
-> >   }
-> >   
-> > -static void pnv_machine_power10_class_init(ObjectClass *oc, void
-> > *data)
-> > +static void pnv_machine_p10_common_class_init(ObjectClass *oc,
-> > void *data)
-> >   {
-> >       MachineClass *mc = MACHINE_CLASS(oc);
-> >       PnvMachineClass *pmc = PNV_MACHINE_CLASS(oc);
-> > @@ -2261,7 +2261,6 @@ static void
-> > pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-> >           { TYPE_PNV_PHB_ROOT_PORT, "version", "5" },
-> >       };
-> >   
-> > -    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
-> 
-> I would keep this description because the "powernv10" machine still
-> can
-> be used, without I2C devices. Unless we don't want to ?
-> 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-I'm not sure about the usefulness of the powernv10 machine, but the
-description still exists in the pnv_machine_power10_class_init function
-(and is unchanged).  The pnv_machine_p10_common_class_init function was
-created to hold initialization of things that are common between all
-P10 machines, and is called by all power10 based machines (powernv10
-and powernv10-rainier so far).
+Hi everyone,
 
-> >       mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
-> >       compat_props_add(mc->compat_props, phb_compat,
-> > G_N_ELEMENTS(phb_compat));
-> >   
-> > @@ -2274,6 +2273,23 @@ static void
-> > pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-> >       machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
-> >   }
-> >   
-> > +static void pnv_machine_power10_class_init(ObjectClass *oc, void
-> > *data)
-> > +{
-> > +    MachineClass *mc = MACHINE_CLASS(oc);
-> > +
-> > +    pnv_machine_p10_common_class_init(oc, data);
-> > +    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
-> > +
-> 
-> Superfluous white line.
-> 
-Removed in v5.
+The QEMU v7.2.7 stable release is now available.
 
-> > +}
-> > +
-> > +static void pnv_machine_p10_rainier_class_init(ObjectClass *oc,
-> > void *data)
-> > +{
-> > +    MachineClass *mc = MACHINE_CLASS(oc);
-> > +
-> > +    pnv_machine_p10_common_class_init(oc, data);
-> > +    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10 rainier";
-> > +}
-> > +
-> >   static bool pnv_machine_get_hb(Object *obj, Error **errp)
-> >   {
-> >       PnvMachineState *pnv = PNV_MACHINE(obj);
-> > @@ -2379,6 +2395,15 @@ static void
-> > pnv_machine_class_init(ObjectClass *oc, void *data)
-> >       }
-> >   
-> >   static const TypeInfo types[] = {
-> > +    {
-> > +        .name          = MACHINE_TYPE_NAME("powernv10-rainier"),
-> > +        .parent        = TYPE_PNV_MACHINE,
-> 
-> Could the parent be :
-> 
->              .parent          = MACHINE_TYPE_NAME("powernv10"),
-> 
-> This should avoid the definition of the .interfaces below.
-> 
-> Thanks,
-> 
-> C.
-> 
+You can grab the tarball from our download page here:
 
-Changed as suggested in v5.
+  https://www.qemu.org/download/#source
 
-Thanks,
+v7.2.7 is now tagged in the official qemu.git repository, and the
+stable-7.2 branch has been updated accordingly:
 
-Glenn
+  https://gitlab.com/qemu-project/qemu/-/commits/stable-7.2?ref_type=heads
 
-> 
-> 
-> > +        .class_init    = pnv_machine_p10_rainier_class_init,
-> > +        .interfaces = (InterfaceInfo[]) {
-> > +            { TYPE_XIVE_FABRIC },
-> > +            { },
-> > +        },
-> > +    },
-> >       {
-> >           .name          = MACHINE_TYPE_NAME("powernv10"),
-> >           .parent        = TYPE_PNV_MACHINE,
+Thank you everyone who has been involved and helped with the stable series!
 
+/mjt
+
+Changelog (stable-7.2-hash master-hash Author Name: Commmit-Subject):
+
+14f0c7e3be Michael Tokarev:
+ Update version for 7.2.7 release
+a536d6a486 f8cfdd2038 Bastian Koppelmann:
+ target/tricore: Rename tricore_feature
+38312c2c3b 4d96307c5b Marc-André Lureau:
+ tracetool: avoid invalid escape in Python string
+15764a7635 ebc14107f1 Ilya Leoshkevich:
+ tests/tcg/s390x: Test LAALG with negative cc_src
+154760b6db bea402482a Ilya Leoshkevich:
+ target/s390x: Fix LAALG not updating cc_src
+8e8cae1de8 cc610857bb Fiona Ebner:
+ tests/qtest: ahci-test: add test exposing reset issue with pending callback
+471a9310fd 7d7512019f Fiona Ebner:
+ hw/ide: reset: cancel async DMA operation before resetting state
+18460b3781 18f86aecd6 Philippe Mathieu-Daudé:
+ target/mips: Fix TX79 LQ/SQ opcodes
+9bc1741af1 04591b3ddd Philippe Mathieu-Daudé:
+ target/mips: Fix MSA BZ/BNZ opcodes displacement
+2c1c0cdc25 47fd6ab1e3 Dongwon Kim:
+ ui/gtk-egl: apply scale factor when calculating window's dimension
+ad8457e85e 565f85a9c2 Marc-André Lureau:
+ ui/gtk: force realization of drawing area
+091798aaf0 08730ee0cc BALATON Zoltan:
+ ati-vga: Implement fallback for pixman routines
+0d7c40a1e2 cc8fb0c3ae Vladimir Sementsov-Ogievskiy:
+ block/nvme: nvme_process_completion() fix bound for cid
+26bb3ab8ff 4c09abeae8 Peter Maydell:
+ target/arm: Correctly propagate stage 1 BTI guarded bit in a two-stage walk
+e19b7b8165 fcc0b0418f Peter Maydell:
+ target/arm: Fix handling of SW and NSW bits for stage 2 walks
+6861482dea 21a4ab8318 Peter Maydell:
+ target/arm: Don't allow stage 2 page table walks to downgrade to NS
+d9da3f8dbd 0d3de77a07 Fabiano Rosas:
+ target/arm: Don't access TCG code when debugging with KVM
+3e273f4c16 6003159ce1 Daniel P. Berrangé:
+ Revert "linux-user: fix compat with glibc >= 2.36 sys/mount.h"
+cc64f9ac3d 9f0246539a Daniel P. Berrangé:
+ Revert "linux-user: add more compat ioctl definitions"
+e4a44eb819 827171c318 Andrey Drobyshev:
+ qemu-iotests: 024: add rebasing test case for overlay_size > backing_size
+1e67bd7c21 8b097fd6b0 Andrey Drobyshev:
+ qemu-img: rebase: stop when reaching EOF of old backing file
+6367e823ca 580731dcc8 Akihiko Odaki:
+ tests/tcg: Add -fno-stack-protector
+30811710fb 7a06a8fec9 Akihiko Odaki:
+ tests/migration: Add -fno-stack-protector
+d241c15f75 6f83dc6716 Glenn Miles:
+ misc/led: LED state is set opposite of what is expected
+cec02bc037 ae5f70baf5 Lu Gao:
+ hw/sd/sdhci: Block Size Register bits [14:12] is lost
+ef93ba0d7b a1e6a5c462 Helge Deller:
+ lasips2: LASI PS/2 devices are not user-createable
+cb79e6a451 3b894b699c Mikulas Patocka:
+ linux-user/sh4: Fix crashes on signal delivery
+ea3c95a6b0 6fad9b4bb9 Mikulas Patocka:
+ linux-user/mips: fix abort on integer overflow
+f5358bc18b caea03279e Fabiano Rosas:
+ migration: Fix analyze-migration read operation signedness
+06c9bf032f 85fc35afa9 Yuval Shaia:
+ hw/pvrdma: Protect against buggy or malicious guest driver
+0c049eafd5 cffa995490 Alvin Chang:
+ disas/riscv: Fix the typo of inverted order of pmpaddr13 and pmpaddr14
+c19fd37eb3 00e3b29d06 Volker Rümelin:
+ hw/audio/es1370: reset current sample counter
+77d36ba300 86dec715a7 Peter Xu:
+ migration/qmp: Fix crash on setting tls-authz with null
+85c27e5b37 0114c45130 Akihiko Odaki:
+ amd_iommu: Fix APIC address check
+24d5b71884 33bc4fa78b Richard Henderson:
+ linux-user/hppa: Fix struct target_sigcontext layout
+5f2b5606e2 4f7689f081 Thomas Huth:
+ chardev/char-pty: Avoid losing bytes when the other side just (re-)connected
+e12abe5a7d e0288a7784 Laszlo Ersek:
+ hw/display/ramfb: plug slight guest-triggerable leak on mode setting
+755cf29ead abd41884c5 Paolo Bonzini:
+ target/i386: fix memory operand size for CVTPS2PD
+796468c24a a48b26978a Paolo Bonzini:
+ target/i386: generalize operand size "ph" for use in CVTPS2PD
+327d65ea97 8bf171c2d1 Ricky Zhou:
+ target/i386: Fix exception classes for MOVNTPS/MOVNTPD.
+72ef83b12f cab529b0dc Ricky Zhou:
+ target/i386: Fix exception classes for SSE/AVX instructions.
+cebd957e7b afa94dabc5 Ricky Zhou:
+ target/i386: Fix and add some comments next to SSE/AVX instructions.
+91fa137979 9e65829699 Paolo Bonzini:
+ tests/tcg/i386: correct mask for VPERM2F128/VPERM2I128
+c9a2d122bf 3d304620ec Paolo Bonzini:
+ target/i386: fix operand size of unary SSE operations
+8da0da8799 be2b619a17 Mark Cave-Ayland:
+ scsi-disk: ensure that FORMAT UNIT commands are terminated
+fa2f090d62 77668e4b9b Mark Cave-Ayland:
+ esp: restrict non-DMA transfer length to that of available data
+9b7feb87d0 b86dc5cb0b Mark Cave-Ayland:
+ esp: use correct type for esp_dma_enable() in sysbus_esp_gpio_demux()
+ae0b40d9d9 35ed01ba54 Fabiano Rosas:
+ optionrom: Remove build-id section
+97037995c1 477b301000 Paolo Bonzini:
+ ui/vnc: fix handling of VNC_FEATURE_XVP
+0732512dbb 0cb9c5880e Paolo Bonzini:
+ ui/vnc: fix debug output for invalid audio message
+66aa4b1b4b 7cfcc79b0a Thomas Huth:
+ hw/scsi/scsi-disk: Disallow block sizes smaller than 512 [CVE-2023-42467]
+e6fdfb8433 0e5903436d Nicholas Piggin:
+ accel/tcg: mttcg remove false-negative halted assertion
+c8d2fc2177 903dbefc2b Peter Maydell:
+ target/arm: Don't skip MTE checks for LDRT/STRT at EL0
+79f113448a 7b165fa164 Li Zhijian:
+ hw/cxl: Fix CFMW config memory leak
+19bbe3a6e9 5b1270ef14 Mikulas Patocka:
+ linux-user/hppa: lock both words of function descriptor
+96783cfe1e 2529497cb6 Mikulas Patocka:
+ linux-user/hppa: clear the PSW 'N' bit when delivering signals
+270bf7977f febb71d543 Nicholas Piggin:
+ hw/ppc: Always store the decrementer value
+e916d29608 17dd1354c1 Nicholas Piggin:
+ target/ppc: Decrementer fix BookE semantics
+8cfe6d241b c8fbc6b9f2 Nicholas Piggin:
+ target/ppc: Sign-extend large decrementer to 64-bits
+5eadeeec0d 8e0a5ac878 Nicholas Piggin:
+ hw/ppc: Avoid decrementer rounding errors
+b9a0f1194a eab0888418 Nicholas Piggin:
+ hw/ppc: Round up the decrementer interval when converting to ns
+ba8cc5693f 47de6c4c28 Nicholas Piggin:
+ host-utils: Add muldiv64_round_up
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEe3O61ovnosKJMUsicBtPaxppPlkFAmVc7wMACgkQcBtPaxpp
+Plk7uwf9FVBPgL0i7DIaIUe3cACYfR8+nt2JaS1n4BY5uR7uRBGH06eQtL/Ysoaf
+6wY1FQb/muV+5yak4Ta8LRfgIgWNZWDzk2ufcUckpBCpe8fHfnez0BCFpOoDfqTP
+O5fcI8GkDh80vUbqsi5xXwf6oQJgzgqu3ZZeW7iIldaK/nPMBkacDQi1u57n05r3
+PMimYkA1aEI6JXYfzyYLC+ooIcH0c8mUQlr5LzSgG8J1N6jvw2ZedsgfDF8MoOii
+YWNJG+0v6nyetonPbgW8lc1Xp1sjin/Gmm7U9ah9dGMvduIgKvnzTAS64qutyjr8
+MPg30RlFb0cbmFBPlk136am3ktp99A==
+=qYRe
+-----END PGP SIGNATURE-----
 
