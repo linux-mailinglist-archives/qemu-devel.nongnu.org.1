@@ -2,51 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28AEA7F26F2
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 09:08:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A30EC7F2705
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 09:12:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Lnx-0002BP-17; Tue, 21 Nov 2023 03:08:21 -0500
+	id 1r5LrK-0003TP-62; Tue, 21 Nov 2023 03:11:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhujun2@cmss.chinamobile.com>)
- id 1r5Lnr-0002AD-NU
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:08:16 -0500
-Received: from cmccmta4.chinamobile.com ([111.22.67.137]
- helo=cmccmta2.chinamobile.com)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <zhujun2@cmss.chinamobile.com>) id 1r5Lno-0008F2-0v
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:08:15 -0500
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG: 00000000
-Received: from spf.mail.chinamobile.com (unknown[10.188.0.87])
- by rmmx-syy-dmz-app08-12008 (RichMail) with SMTP id 2ee8655c65613ad-6b3ad;
- Tue, 21 Nov 2023 16:08:04 +0800 (CST)
-X-RM-TRANSID: 2ee8655c65613ad-6b3ad
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG: 00000000
-Received: from ubuntu.localdomain (unknown[10.54.5.255])
- by rmsmtp-syy-appsvr04-12004 (RichMail) with SMTP id 2ee4655c6563e40-434d8;
- Tue, 21 Nov 2023 16:08:04 +0800 (CST)
-X-RM-TRANSID: 2ee4655c6563e40-434d8
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
-To: thuth@redhat.com
-Cc: chen.zhang@intel.com, lvivier@redhat.com, pbonzini@redhat.com,
- qemu-devel@nongnu.org, zhujun2@cmss.chinamobile.com
-Subject: [PATCH] tests/qtest: check the return value
-Date: Tue, 21 Nov 2023 00:08:02 -0800
-Message-Id: <20231121080802.4500-1-zhujun2@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <08e7104d-5a6c-4a4a-a737-200f04fffd57@redhat.com>
-References: <08e7104d-5a6c-4a4a-a737-200f04fffd57@redhat.com>
-Received-SPF: pass client-ip=111.22.67.137;
- envelope-from=zhujun2@cmss.chinamobile.com; helo=cmccmta2.chinamobile.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5LrH-0003Sv-5W
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:11:47 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5LrF-0000VE-Ew
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:11:46 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40b26d700a1so4603055e9.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 00:11:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700554303; x=1701159103; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9Y8iJLzZgVQddiNZxqZdU2o2KVrvF73/lYzKKDQsnis=;
+ b=C2Sufqgw3s0rolNBabjnGnWb7Ie/09kiiSC75W1mOr9ytYO3/gRpX7rFxzt2o1YEC4
+ JOV/6NC2KV6xbtXr2hJU0BM64/I49mMBB0XhgKh6MqnboS8HaSqj0+O8XtcG8PJjWbfI
+ TBbN0G5IULfPqewc6QQy0E971a+KeDm3xxdpfthxwc1+vBUCbAw3ODdfjzwagmv9NIik
+ vhZvexhCWu/20I+Mpt6Sg8Ic9VoHPRyyNVYUQDfOTr8bQ052Gta9XB0bQCNlVXVYXRVC
+ DCz17niYlx5aQCKjJ+O+9dFFIScmUevFBlD2kGlxZIyXtR2XQtYtFDpGRz4oG9uD7H+Q
+ UF2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700554303; x=1701159103;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9Y8iJLzZgVQddiNZxqZdU2o2KVrvF73/lYzKKDQsnis=;
+ b=pLhmSA9i4j+H70MYtH0ugoLc6kn5CbZkbB/E5MDbQkdmajKbnYzu1Shaa3itiIeroR
+ r4Ci2zLuDKTYtRprxCGBeMVWF97MieUfX/Kvo5tAyaOVDD033ORpVJTluQ9Kkmhvdaro
+ CUp/twlpWQKhK0QUaYYufK8mgCLgR+tY2pAx6QoGURyGa+ADmdTt+NmxNj/UJ2XBDw2Y
+ Or1ILjqOHgGb+MU2ug0TgL6F6cEfqC7BCyaEV0sUik0nzz11ILgdvMiall02jYM3Jmop
+ lkjbfbFe9AzM1iU7Pr/JDPPluo8XNiKFGSBBR3bfessQSukcIJ2oYz/d0LpWulwH0Gs4
+ O2wA==
+X-Gm-Message-State: AOJu0Yw5AGJwl34Z8kHE4mcyuSEoSl1DJx2d4WQWb8mYDpT2wbzqZX14
+ f2ZQ2S+rPMSwOSL2P3PbTWS6VQ==
+X-Google-Smtp-Source: AGHT+IGW5M9SEzNZVGOlYfn21Ax29uHnr1dDdFI+dGhEwpVIsV4B4LcndOQpxS7Ci81dEwcn3MACDA==
+X-Received: by 2002:a05:600c:3103:b0:40a:20f3:d126 with SMTP id
+ g3-20020a05600c310300b0040a20f3d126mr6688351wmo.6.1700554303060; 
+ Tue, 21 Nov 2023 00:11:43 -0800 (PST)
+Received: from [192.168.69.100] (lgp44-h02-176-184-8-219.dsl.sta.abo.bbox.fr.
+ [176.184.8.219]) by smtp.gmail.com with ESMTPSA id
+ o7-20020a05600c510700b0040b2ae9ef5dsm704776wms.36.2023.11.21.00.11.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Nov 2023 00:11:42 -0800 (PST)
+Message-ID: <bc92d36f-7dcd-461e-a151-4a6e5bd072ad@linaro.org>
+Date: Tue, 21 Nov 2023 09:11:41 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-8.2?] hw/arm/fsl-imx: Do not ignore Error argument
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Jean-Christophe Dubois <jcd@tribudubois.net>,
+ qemu-arm@nongnu.org
+References: <20231120115116.76858-1-philmd@linaro.org>
+ <CAFEAcA-YRPL_UOu5JPwfY4yRU=USk678JayDjqL=DKQjv+SWWw@mail.gmail.com>
+ <87learmww9.fsf@pond.sub.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <87learmww9.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,63 +95,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These variables "ret" are never referenced in the code, thus
-add check logic for the "ret"
+Hi Markus,
 
-Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
----
- tests/qtest/test-filter-mirror.c     | 1 +
- tests/qtest/test-filter-redirector.c | 2 ++
- tests/qtest/virtio-net-test.c        | 1 +
- 3 files changed, 4 insertions(+)
+On 21/11/23 07:40, Markus Armbruster wrote:
+> Peter Maydell <peter.maydell@linaro.org> writes:
+> 
+>> On Mon, 20 Nov 2023 at 11:51, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>>
+>>> Both i.MX25 and i.MX6 SoC models ignore the Error argument when
+>>> setting the PHY number. Pick &error_abort which is the error
+>>> used by the i.MX7 SoC (see commit 1f7197deb0 "ability to change
+>>> the FEC PHY on i.MX7 processor").
+>>>
+>>> Fixes: 74c1330582 ("ability to change the FEC PHY on i.MX25 processor")
+>>> Fixes: a9c167a3c4 ("ability to change the FEC PHY on i.MX6 processor")
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>
+>>
+>>
+>> Applied to target-arm.next, thanks.
+> 
+> With or without my commit message clarification?
 
-diff --git a/tests/qtest/test-filter-mirror.c b/tests/qtest/test-filter-mirror.c
-index adeada3eb8..f3865f7519 100644
---- a/tests/qtest/test-filter-mirror.c
-+++ b/tests/qtest/test-filter-mirror.c
-@@ -61,6 +61,7 @@ static void test_mirror(void)
-     g_assert_cmpint(len, ==, sizeof(send_buf));
-     recv_buf = g_malloc(len);
-     ret = recv(recv_sock[0], recv_buf, len, 0);
-+    g_assert_cmpint(ret, ==, len);
-     g_assert_cmpstr(recv_buf, ==, send_buf);
- 
-     g_free(recv_buf);
-diff --git a/tests/qtest/test-filter-redirector.c b/tests/qtest/test-filter-redirector.c
-index e72e3b7873..a77d5fd8ec 100644
---- a/tests/qtest/test-filter-redirector.c
-+++ b/tests/qtest/test-filter-redirector.c
-@@ -118,6 +118,7 @@ static void test_redirector_tx(void)
-     g_assert_cmpint(len, ==, sizeof(send_buf));
-     recv_buf = g_malloc(len);
-     ret = recv(recv_sock, recv_buf, len, 0);
-+    g_assert_cmpint(ret, ==, len);
-     g_assert_cmpstr(recv_buf, ==, send_buf);
- 
-     g_free(recv_buf);
-@@ -185,6 +186,7 @@ static void test_redirector_rx(void)
-     g_assert_cmpint(len, ==, sizeof(send_buf));
-     recv_buf = g_malloc(len);
-     ret = recv(backend_sock[0], recv_buf, len, 0);
-+    g_assert_cmpint(ret, ==, len);
-     g_assert_cmpstr(recv_buf, ==, send_buf);
- 
-     close(send_sock);
-diff --git a/tests/qtest/virtio-net-test.c b/tests/qtest/virtio-net-test.c
-index fab5dd8b05..2df75c9780 100644
---- a/tests/qtest/virtio-net-test.c
-+++ b/tests/qtest/virtio-net-test.c
-@@ -91,6 +91,7 @@ static void tx_test(QVirtioDevice *dev,
-     len = ntohl(len);
- 
-     ret = recv(socket, buffer, len, 0);
-+    g_assert_cmpint(ret, ==, len);
-     g_assert_cmpstr(buffer, ==, "TEST");
- }
- 
--- 
-2.17.1
+I didn't get your email on this patch, but per the other
+ones on similar fixes:
+https://lore.kernel.org/all/87cyw3mu4r.fsf@pond.sub.org/
+https://lore.kernel.org/all/87il5vlemo.fsf@pond.sub.org/
+I assume you want:
 
+   Both i.MX25 and i.MX6 SoC models ignore the Error argument when
+   setting the PHY number with object_property_set_uint(). If this
+   @errp argument is set, its following use via sysbus_realize()
+   might potentially triggers an assertion in error_setv().
 
+   Pick &error_abort which is the error used by the i.MX7 SoC (see
+   commit 1f7197deb0 "ability to change the FEC PHY on i.MX7 processor").
 
+If that is OK with you, Peter, do you mind updating the description?
+
+Thanks both!
+
+Phil.
 
