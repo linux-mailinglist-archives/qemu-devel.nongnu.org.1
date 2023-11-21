@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D49D87F2AD2
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 11:41:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B70E57F2AD0
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 11:41:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5OBS-0007eE-T0; Tue, 21 Nov 2023 05:40:46 -0500
+	id 1r5OBU-0007eZ-Ru; Tue, 21 Nov 2023 05:40:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1r5OBR-0007da-4c
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:40:45 -0500
+ id 1r5OBS-0007eG-Uf
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:40:46 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1r5OBP-0003GS-JE
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:40:44 -0500
+ id 1r5OBR-0003Gl-E1
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 05:40:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700563243;
+ s=mimecast20190719; t=1700563244;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=axn6nnTAUbHi2JFtucXKIDiamPS3DqXPTcu4AQADkEw=;
- b=fTGW6tXIMQ2LRn17nKoPOsKpBKbo9qVTOHjee+YhvW+oxncmLlqKLhvDOnSMuqiDpm7iBi
- 64+4LHbocgpPTCgTOTjiZQTv/wvQxp7x6KZ6sqcw+fd3Kv1i9FANMsGmt8pyd5Ld6nPruO
- jrwERR5pxuDMqUSPIb8XTtfzNCPGcCA=
+ bh=xcSybLVQML97R4ifQxa3cpKai5dO7+D+ef9nCuYM/6s=;
+ b=V4oTs7JhT7g78LtcGZZRGsjkPt6BcQyKhfUCXcVnwlevZEQoXUgAp8B9ypE9IRi30CPGcb
+ qF3gp8T+jLa0zp389JQRnepmiY0k3Sjh0l8FmmMzPDWjs8N7DskbWJORZ45ZnnT4gJZIcm
+ Da8ZQN2WjKAE1BUuBmAyMlgw/o2omNE=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-244-QLCkeohSP4qso8SJAZy4Tg-1; Tue,
- 21 Nov 2023 05:40:39 -0500
-X-MC-Unique: QLCkeohSP4qso8SJAZy4Tg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-516-SfJ4gcIQOSazrJCdGOOvIw-1; Tue,
+ 21 Nov 2023 05:40:43 -0500
+X-MC-Unique: SfJ4gcIQOSazrJCdGOOvIw-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0322A3C100C4;
- Tue, 21 Nov 2023 10:40:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED10438107A3;
+ Tue, 21 Nov 2023 10:40:42 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.10])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 46AC0492BE7;
- Tue, 21 Nov 2023 10:40:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 238E9492BE0;
+ Tue, 21 Nov 2023 10:40:41 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- peter.maydell@linaro.org, dwmw@amazon.co.uk
-Subject: [PULL 4/5] vl: add missing display_remote++
-Date: Tue, 21 Nov 2023 14:40:19 +0400
-Message-ID: <20231121104020.2209345-5-marcandre.lureau@redhat.com>
+ peter.maydell@linaro.org, dwmw@amazon.co.uk,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PULL 5/5] ui/pixman-minimal.h: fix empty allocation
+Date: Tue, 21 Nov 2023 14:40:20 +0400
+Message-ID: <20231121104020.2209345-6-marcandre.lureau@redhat.com>
 In-Reply-To: <20231121104020.2209345-1-marcandre.lureau@redhat.com>
 References: <20231121104020.2209345-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -83,41 +84,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-We should also consider -display vnc= as setting up a remote display,
-and not attempt to add another default one.
+In the minimal pixman API stub that is used when the real pixman
+dependency is missing a NULL dereference happens when
+virtio-gpu-rutabaga allocates a pixman image with bits = NULL and
+rowstride_bytes = zero. A buffer of rowstride_bytes * height is
+allocated which is NULL. However, in that scenario pixman calculates a
+new stride value based on given width, height and format size.
 
-The display_remote++ in qemu_setup_display() isn't necessary at this
-point, but is there for completeness and further usages of the variable.
+This commit adds a helper function that performs the same logic as
+pixman.
 
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1988
-Fixes: commit 484629fc81 ("vl: simplify display_remote logic ")
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-Id: <20231121093840.2121195-1-manos.pitsidianakis@linaro.org>
 ---
- system/vl.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/ui/pixman-minimal.h | 48 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 46 insertions(+), 2 deletions(-)
 
-diff --git a/system/vl.c b/system/vl.c
-index 14bf0cf0bf..da2654aa77 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -1110,6 +1110,7 @@ static void parse_display(const char *p)
-          */
-         if (*opts == '=') {
-             vnc_parse(opts + 1);
-+            display_remote++;
-         } else {
-             error_report("VNC requires a display argument vnc=<display>");
-             exit(1);
-@@ -1359,6 +1360,7 @@ static void qemu_setup_display(void)
-             dpy.type = DISPLAY_TYPE_NONE;
- #if defined(CONFIG_VNC)
-             vnc_parse("localhost:0,to=99,id=default");
-+            display_remote++;
- #endif
-         }
+diff --git a/include/ui/pixman-minimal.h b/include/ui/pixman-minimal.h
+index efcf570c9e..6dd7de1c7e 100644
+--- a/include/ui/pixman-minimal.h
++++ b/include/ui/pixman-minimal.h
+@@ -113,6 +113,45 @@ typedef struct pixman_color {
+     uint16_t    alpha;
+ } pixman_color_t;
+ 
++static inline uint32_t *create_bits(pixman_format_code_t format,
++                                    int width,
++                                    int height,
++                                    int *rowstride_bytes)
++{
++    int stride = 0;
++    size_t buf_size = 0;
++    int bpp = PIXMAN_FORMAT_BPP(format);
++
++    /*
++     * Calculate the following while checking for overflow truncation:
++     * stride = ((width * bpp + 0x1f) >> 5) * sizeof(uint32_t);
++     */
++
++    if (unlikely(__builtin_mul_overflow(width, bpp, &stride))) {
++        return NULL;
++    }
++
++    if (unlikely(__builtin_add_overflow(stride, 0x1f, &stride))) {
++        return NULL;
++    }
++
++    stride >>= 5;
++
++    stride *= sizeof(uint32_t);
++
++    if (unlikely(__builtin_mul_overflow((size_t) height,
++                                        (size_t) stride,
++                                        &buf_size))) {
++        return NULL;
++    }
++
++    if (rowstride_bytes) {
++        *rowstride_bytes = stride;
++    }
++
++    return g_malloc0(buf_size);
++}
++
+ static inline pixman_image_t *pixman_image_create_bits(pixman_format_code_t format,
+                                                        int width,
+                                                        int height,
+@@ -123,13 +162,18 @@ static inline pixman_image_t *pixman_image_create_bits(pixman_format_code_t form
+ 
+     i->width = width;
+     i->height = height;
+-    i->stride = rowstride_bytes ?: width * DIV_ROUND_UP(PIXMAN_FORMAT_BPP(format), 8);
+     i->format = format;
+     if (bits) {
+         i->data = bits;
+     } else {
+-        i->free_me = i->data = g_malloc0(rowstride_bytes * height);
++        i->free_me = i->data =
++            create_bits(format, width, height, &rowstride_bytes);
++        if (width && height) {
++            assert(i->data);
++        }
      }
++    i->stride = rowstride_bytes ? rowstride_bytes :
++                            width * DIV_ROUND_UP(PIXMAN_FORMAT_BPP(format), 8);
+     i->ref_count = 1;
+ 
+     return i;
 -- 
 2.42.0
 
