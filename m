@@ -2,178 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE1027F27AC
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 09:41:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEB5E7F27DC
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 09:47:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5MIO-0003c3-7W; Tue, 21 Nov 2023 03:39:48 -0500
+	id 1r5MOv-00061q-KB; Tue, 21 Nov 2023 03:46:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r5MIC-0003be-B8
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:39:36 -0500
-Received: from mgamail.intel.com ([192.55.52.93])
+ id 1r5MOl-00061O-Pt
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:46:24 -0500
+Received: from mgamail.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r5MI9-0008BB-3R
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:39:35 -0500
+ id 1r5MOi-0001Nv-Kh
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:46:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700555973; x=1732091973;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=HKpyvkrCF2SXycDzPTaCI9Mr6lV3+vsXH8GFRFubGSg=;
- b=LF6WH9Gnx1Y6p2aR5z1tJUfr9lVzVuy3nDYnhQw2S9pxEGZM6fJThktJ
- TvFmP6yR7sbdxWfRuRgiBbvYJErVWznM1vXIRTk7NGaS+FFwOeIhCEgMo
- iddyPHl1+U7AmXmQFSsb0u8gg9mw6P1t+ecPoFAzFqybJME/l+w+tt5rH
- YIL8lUQli64bbcf+6qIkMdTfXN2qOyoXOGchNesm+x6ZqwHrBbmjHHdw8
- /oWe+6FnOJdh1/S3sqbylVvRzYQxJreNZwdVZh0xeZLWUsiBtwFw6BIKZ
- VV1zPL9E8JBVOy8C5m5UJdGdLfU70XXsJzRxTz6jHHHjLzqbMvCZ4KM+D Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="388940924"
-X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="388940924"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2023 00:39:25 -0800
+ t=1700556380; x=1732092380;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=I1l56jAX44CXhQ223qB9R3C93SwXVH7zI1UlAS1YKOs=;
+ b=IQpgexHNCl7QVIGj+BkfsoBBGg3onCRw6rdN0bxrjFBPO1C5B7qB0m42
+ EAjc3YrRsyqVRkwIFRB12b6dyxwzkROH6yp1vBC1awDE/k3F2eQjs6W3G
+ gLhj/vypeCbmsfJcJ6OpJVhsaG4JieYoXCgXiYx0qXF2UEHqBAc7XGCgZ
+ a2LmWt1seLtp3DhMM7LBIWp8cPMVi1Nzz8uPpb2Jlep8kaNQJ6DoyXQLX
+ OUnQdIoNR+Iu1X7LwReRn2EgVuL7Hd6yQufaDg/qUPSO0lNBGREhRojpd
+ aizvUo42uH+n7VA1yFn5v/0d85rK3yD1g91OaUiERxQm53AcrGEDxfJeC w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="395721947"
+X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="395721947"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Nov 2023 00:46:17 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="795723673"
-X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="795723673"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by orsmga008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 21 Nov 2023 00:39:16 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Tue, 21 Nov 2023 00:39:15 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Tue, 21 Nov 2023 00:39:15 -0800
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Tue, 21 Nov 2023 00:39:15 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=O8otzUUcJHv1FaLP4Ov13U5bONpvKCivLGPeFMkBhm5GMqm+Hj81macfrdUbkhUfDfgydsuRShZUAFWTqRaPfzcVGUH+pH1gAKf59LGxRFazdiXzvP4D2k+2o70V/ou3Mm/FIgtOrGPppbu7yZ6aeeFmfjkVrSSkwLp+F47o/JxYQx7ORRUZ+0uIQzWCraOs3hwFpqf/sc/tnrEX04UVZYLIxKZW+1QLF/u2DIV3XnWBmmvZBad2zLW9OZ67u9AOJESvLlnXJc+F3zV6eoJAjRNPJkDnJscjo1fz+UO6Jxor7eaH0yQiAWhd22JlOZsf/6Mk/RkrX+yn5Nsx6wwBsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HKpyvkrCF2SXycDzPTaCI9Mr6lV3+vsXH8GFRFubGSg=;
- b=F9dmIPsm1A8Ov+wgoIC873QnMB78y7GciNsN3bf9kH5/6CCle2WYtyJlCmjmY1heyi0BsXVT2LfEsg+q2YUa8cK1IZzj7++tFPL+dla098DQY6h8oOHOCMTIpR8KmD7CIqntp5MG7uolQ7Eb/+xR5w2uy/AC6fENUpr9um5VfqLTqQ5g3oCuJvMblHb4LaXWzh64zWmgVX45gG2ZjH0mjsiV8NZ7QFz9GGr2APjeYPoZJQ7FVIR8IueZyiXMnfgelo+JdV2sUR0i3B5gR0KDtuvOP7Ecykk2bZ1AvYcwELnDavGZf+79IJ8NmGrvEiT+OvHGIx+4n6qgcQoWYOabuA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by DS0PR11MB7506.namprd11.prod.outlook.com (2603:10b6:8:151::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.27; Tue, 21 Nov
- 2023 08:39:11 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea%4]) with mapi id 15.20.7002.028; Tue, 21 Nov 2023
- 08:39:11 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "joao.m.martins@oracle.com"
- <joao.m.martins@oracle.com>, "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>, "Tian, Kevin"
- <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>, "Sun, Yi Y"
- <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>, Markus Armbruster
- <armbru@redhat.com>, =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?=
- <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, Gerd Hoffmann
- <kraxel@redhat.com>, "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
- "lersek@redhat.com" <lersek@redhat.com>
-Subject: RE: [PATCH v6 01/21] backends/iommufd: Introduce the iommufd object
-Thread-Topic: [PATCH v6 01/21] backends/iommufd: Introduce the iommufd object
-Thread-Index: AQHaFuTq+kqpFvBx/0+jXWJho7L/CbB+X2AAgAAFFfCAACIGAIAAB2wAgAQAf1CAAFnbgIAAFZjwgAB8wYCAAKx2AIAATjCAgAAJF4A=
-Date: Tue, 21 Nov 2023 08:39:11 +0000
-Message-ID: <SJ0PR11MB6744FDF1D88846348D867E6792BBA@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20231114100955.1961974-1-zhenzhong.duan@intel.com>
- <20231114100955.1961974-2-zhenzhong.duan@intel.com>
- <c964fdf3-d6ef-40cd-b4c0-32f1fb8501ae@redhat.com>
- <SJ0PR11MB6744B1B91C890A9A1B81E89792B7A@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <248389a7-3f89-42ae-98e7-34d6612cf186@redhat.com>
- <c0c265d6-aaea-4071-b280-b93df459165e@redhat.com>
- <SJ0PR11MB67444672699A62007207FB3492B4A@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <ebc65641-4597-4679-8214-0f4555f9bd21@redhat.com>
- <SJ0PR11MB674445FEAD689AF8B5A8A42B92B4A@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <395120c5-06d0-4421-a9b8-20bd79bf3f5c@redhat.com>
- <SJ0PR11MB67441701C3CD12A968092CB192BBA@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <405fbb52-df05-4511-bec6-66caab2b4c93@redhat.com>
-In-Reply-To: <405fbb52-df05-4511-bec6-66caab2b4c93@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|DS0PR11MB7506:EE_
-x-ms-office365-filtering-correlation-id: 1814cbfa-9261-4ea1-7bca-08dbea6d5598
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: FDgJz+Jnb45rwabKpveerYhm7vi5TuYk5JYNbGhjn08moTP+jysbVDCCG3D2A2VbomnjQ0Gg7X4CX9bbqUHUoqDqXc7b1fcEWmT5sCGhiWBp2GBCUjrOtrd4axEScfR/w9mK2rtSCH8eiEVWI5uTWV6H2A9Gbug92hag0kVFpT8r7q25bgmUoPr6Kg9u0qLclchXOT1J/qmuY8VFwCQEBY/BVdTkSkTXUz5QQPaVMaeC0ghKTVLAGS73/w8hTf6Myu89Doje3v6HUaMJwCaznaysXEr3pJTAanuETCtmblci6zo2w7hR/Oeql5PJJv9q4L9zI+nLEoKKuJO9ysMACzd6FwCbB3gej8KQRWs9wtOtjr7nV+f2cOmBJdtkXvA39MKHcH97UU0G1akhbASZOgCgl91L2/7Cd0HhA7gdI4GQc1AxFju8pLmac0i8gwNefkYJD/PzaJWDgkCW70Elc9FdshSDE0aF1YdDvaP6MEQPtEvZ/ov+UYJxTaf8KsSefqwYWE7O7EL7FR6gQx6p086TnQn6O0vryCuybT+Mh5bnCmG5tQi0Hvr+2ETSIl03X00/FDAluqtcyVODJGTYD6P4KuHNHvMgNvDJrWDWXLP3T53vzgJ6vnI8CmGXeBdy
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(39860400002)(346002)(136003)(396003)(366004)(230922051799003)(451199024)(64100799003)(186009)(1800799012)(83380400001)(9686003)(26005)(8676002)(4326008)(8936002)(52536014)(38100700002)(41300700001)(2906002)(4744005)(7416002)(5660300002)(478600001)(6506007)(7696005)(71200400001)(110136005)(76116006)(64756008)(66446008)(66476007)(66556008)(66946007)(54906003)(316002)(33656002)(122000001)(86362001)(82960400001)(38070700009)(55016003);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UGtPL2xWOEMyL2JYakFvY29Ka0p4WmZXNzNHQ2NucFFmM3JwekFmZDl0ZVg4?=
- =?utf-8?B?MXBrSEkvM1g2ekJreEFNWlJ2bVZzc3VMdEtpNVlqRU5qN216TFFZblZyYzRr?=
- =?utf-8?B?RVlmc3lsV0N4OWdneHNnWms1SEVpYk1KUmkvS0hOL0ZiZHNScXlZVm1UWUs4?=
- =?utf-8?B?azhiaXFZUmhnNGpiRFBja3pPTnlPOGltemdhb0JRZUFvOS9yN0EvVWVXNFE1?=
- =?utf-8?B?Qkx6NnlPeHhIcUVKQXMvNDFlUWlsVFJoT1Yyc3Y4dlhoVWZXNFB5Um14bkhy?=
- =?utf-8?B?Mjhad1VDb1JvTnZnSU1ieDBHWk5aK1dGSjR2N3hpekU5amZaajRKdFhRS08x?=
- =?utf-8?B?WXVia1U1azREV0VFVXdVK2JBT05UT2EzVEhKWjJORnFGOU9HdWlZS3lzYk1L?=
- =?utf-8?B?akNqL0pBVnZ3ZWV1VVF0SGpmTmNxVStJVFlFRGRsYjU0Q3JwUjFVMUJvdFVV?=
- =?utf-8?B?MVZyKzl3M3ZwOWduRURFajJKRmY3RzVPUVRlRmI1Q2ZXdUU2bmtPSGVvNWNz?=
- =?utf-8?B?akF3aFc2N3NDMkE2cVpRaDBNTXZ5K2lRUXlWZDJHcGhVei9reTdjSUJ1UmR3?=
- =?utf-8?B?ZWVBWTB4RUQxaE4rNTFhMjRHWmhralNxbWh4ME1nQkxMWXRmTi9WRmF1NUJG?=
- =?utf-8?B?ajYwY3dWLzdVNWZobVRsRjlwUlZtVnU4eWVaQzF5TVc1MDRPLzBPZHk4cXkx?=
- =?utf-8?B?L2NBSTFZeW5mRVlOaDNmSWlCSk9DOFJ2RC9OUDJWUmNWbzYvM3lvYlh5Y3JC?=
- =?utf-8?B?bWVYenRpQ2NkcytZbGhqdWora21LNFFZZkRLWVZTeXBob3RFWkNoZWhMM010?=
- =?utf-8?B?SEZxWkJrZ0tGOFptekJnUG5VTnZyNHc2Z203MmFkY0dBSTBEM01TbDBrUHpy?=
- =?utf-8?B?RExpNjMrYzloUFMwZ2FkbWUzTkZRNjUxUHdEMzNmNEVSSGVxSWdNOGNIclZG?=
- =?utf-8?B?MXZJbG9renBaOXdKMnBzQlVCUVJVYmJ5TlhaZWV0TmluUC9RTGtrbjBZcFBN?=
- =?utf-8?B?L0NGcnhRakYvZlNNZExOSkRzQURzUzdNRXRyNVljaG9tQ2JPTFpmSlJYN250?=
- =?utf-8?B?eURWZ1NncnpXdFFUNzloeVljMm5kOEpLdkhhTTQ4ZnJQMVhPMmZRSVVma29E?=
- =?utf-8?B?M2IvL1RQdU5FcFlNVGk0dDdQbVdoanhaUlNYRldzcnZ0N2lSZDAxQnphbW54?=
- =?utf-8?B?TDl1NkErNktuRTVwa2szUDlPYmdYby9Cb2k5YzNqWXdxTi9Sb3dUOTJRVHNs?=
- =?utf-8?B?cmRLYlFEWUN3YlFwWDJjdFd4NThXdGY2T2txVnVTUVFxb3VsTGpxVzlYZzI5?=
- =?utf-8?B?ZE9lZ3BKYWN1bjRpVDhJbnJaUEZ3TnpSYUk4N0grbEx6WlBBMVdURjdMTWRX?=
- =?utf-8?B?VmlVS2grT29nTk5vMmZ4Y3B0UjZDbS9rNExJOTh3Yzd0QTVqbnJuZUFoUXVu?=
- =?utf-8?B?eVpNK1dNZ1RKaWxFN2J1aTBNdEZqcG96UlhDZjZWWkRvbWZKMjhmMzdvemF3?=
- =?utf-8?B?TDR6eU9RNnBKSzJpdTg0MEdnTk9ZRUxJam9BV1gzc241eVZWR2s3N0EwVTc0?=
- =?utf-8?B?SG5lWnpZSVFnTnhmM3dBajhxQ1R0TTZ3bndRbzduT1U2VHE4SlpNQzNyU3hJ?=
- =?utf-8?B?WUJBM0ZJNkk2bWdjOFB5L0hpbnJNN1JEWmZ4SURvZVdPNGg2T0ZpV21XT0xJ?=
- =?utf-8?B?VnYzQmh5Ty9HWlhIeXhJalp2NEkzVTZVVkdBNTlKYk0wcW9TU09Id1R5WGN3?=
- =?utf-8?B?YjUybE12dTRvTUN1L3ZLYi83aWtCK01GVnBhQkhFdFkvZ1dMVGlNQzY3RVNB?=
- =?utf-8?B?UjNCMHJPbndpUVBKUGJ0SXlGd2xnZ1o3VzBKV0g4OU4yaUgzWUhERFJoQUJp?=
- =?utf-8?B?TTZjQkxVK3NUUWpsMVVtK0dwbWR0RStZNitjNFBTQm4zc3NBcnlpZ2hkeE40?=
- =?utf-8?B?KzU1Q2svV2g1OTJYVE5xcjZtUlRpbUl2bGUrenp4OHVWcFlUTSs5bFBqTW1V?=
- =?utf-8?B?bEVUM3BSalZQSUR4RU0rOWhoeWx6VG91NHJoczB3NTdzcFNvMERhOFExK3pE?=
- =?utf-8?B?MERnZWJEbGdMK3Q1M1E0UGZQbGVYdS9uSzZPckFrMjVpcUhUSHYyai82Y3dT?=
- =?utf-8?Q?IquONNMVzZHyKxNrrIFnYNvQH?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="884124815"
+X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="884124815"
+Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
+ by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Nov 2023 00:46:14 -0800
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
+ peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
+ yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com
+Subject: [PATCH v7 00/27] vfio: Adopt iommufd
+Date: Tue, 21 Nov 2023 16:43:59 +0800
+Message-Id: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1814cbfa-9261-4ea1-7bca-08dbea6d5598
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2023 08:39:11.1362 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: RNR32xSYHiU7so4rZuOK9eo+aLEIuZm6ypHSvTJ7IJyOVgwsn7193h5+PJukRYbZTWN6Xllwsl98XxbX3C1vPmW0vrcbrE+FketDAl3K9G8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7506
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.93;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=134.134.136.65;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -197,17 +78,342 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEPDqWRyaWMgTGUgR29hdGVy
-IDxjbGdAcmVkaGF0LmNvbT4NCj5TZW50OiBUdWVzZGF5LCBOb3ZlbWJlciAyMSwgMjAyMyA0OjA2
-IFBNDQo+U3ViamVjdDogUmU6IFtQQVRDSCB2NiAwMS8yMV0gYmFja2VuZHMvaW9tbXVmZDogSW50
-cm9kdWNlIHRoZSBpb21tdWZkIG9iamVjdA0KPg0KPkhlbGxvIFpoZW56aG9uZywNCj4NCj4+Pj4g
-QmVsb3cgYXJlIG90aGVyIGdhcHMgSSBjYW4gdGhpbmsgb2YgZm9yIG5vdzoNCj4+Pj4NCj4+Pj4g
-R2FwczoNCj4+Pj4gMS4gZGlydHkgcGFnZSBzeW5jLCBXSVAgKEpvYW8pDQo+Pj4+IDIuIHAycCBk
-bWEgbm90IHN1cHBvcnRlZCB5ZXQuDQo+Pj4+IDMuIGZkIHBhc3Npbmcgd2l0aCBtZGV2IG5vdCBz
-dXBwb3J0IHJhbSBkaXNjYXJkKHZmaW8tcGNpKSBhcyBubyB3YXkgdG8ga25vdw0KPml0J3MNCj4+
-PiBhIG1kZXYgZnJvbSBhIGZkLg0KPj4+DQo+Pj4gQ2FsbCB0aGUgc2VjdGlvbiBDYXZlYXRzIG1h
-eWJlPw0KPj4NCj4+IEdvdCBpdC4NCj4NCj5JdCBsb29rcyBsaWtlIHY3IHNob3VsZCBiZSByZWFk
-eSBieSByYzIgKG5leHQgd2VlaykuIEkgd291bGQgdGhlbiBtZXJnZQ0KPmluIHZmaW8tbmV4dCBh
-bmQgd2FpdCBhIHdlZWsgYmVmb3JlIHNlbmRpbmcgYSBRRU1VLTkuMCBQUi4NCg0KR290IGl0LCBJ
-J2xsIHNlbmQgb3V0IHNvb24uDQoNClRoYW5rcw0KWmhlbnpob25nDQo=
+Hi,
+
+Thanks all for giving guides and comments on previous series, this is
+the remaining part of the iommufd support.
+
+Besides suggested changes in v6, I'd like to highlight two changes
+for final review:
+1. Instantiate can_be_deleted callback to fix race where iommufd object
+   can be deleted before vfio device
+2. After careful re-thinking, I'd like to follow Nicolin's suggestion in v5,
+   remove is_ioas check which indeed looks heavy just for tracepoint.
+   In fact we can get corresponding info by looking over trace context.
+
+PATCH 1: Introduce iommufd object
+PATCH 2-9: add IOMMUFD container and cdev support
+PATCH 10-17: fd passing for cdev and linking to IOMMUFD
+PATCH 18: make VFIOContainerBase parameter const
+PATCH 19-21: Compile out for IOMMUFD for arm, s390x and x86
+PATCH 22-26: vfio device init code cleanup
+PATCH 27: add iommufd doc
+
+
+We have done wide test with different combinations, e.g:
+- PCI device were tested
+- FD passing and hot reset with some trick.
+- device hotplug test with legacy and iommufd backends
+- with or without vIOMMU for legacy and iommufd backends
+- divices linked to different iommufds
+- VFIO migration with a E800 net card(no dirty sync support) passthrough
+- platform, ccw and ap were only compile-tested due to environment limit
+- test mdev pass through with mtty and mix with real device and different BE
+- test iommufd object hotplug/unplug and mix with vfio device plug/unplug
+
+Given some iommufd kernel limitations, the iommufd backend is
+not yet fully on par with the legacy backend w.r.t. features like:
+- p2p mappings (you will see related error traces)
+- dirty page sync
+- and etc.
+
+
+qemu code: https://github.com/yiliu1765/qemu/commits/zhenzhong/iommufd_cdev_v7
+Based on vfio-next, commit id: c487fb8a50
+
+--------------------------------------------------------------------------
+
+Below are some background and graph about the design:
+
+With the introduction of iommufd, the Linux kernel provides a generic
+interface for userspace drivers to propagate their DMA mappings to kernel
+for assigned devices. This series does the porting of the VFIO devices
+onto the /dev/iommu uapi and let it coexist with the legacy implementation.
+
+At QEMU level, interactions with the /dev/iommu are abstracted by a new
+iommufd object (compiled in with the CONFIG_IOMMUFD option).
+
+Any QEMU device (e.g. vfio device) wishing to use /dev/iommu must be
+linked with an iommufd object. In this series, the vfio-pci device is
+granted with such capability (other VFIO devices are not yet ready):
+
+It gets a new optional parameter named iommufd which allows to pass
+an iommufd object:
+
+    -object iommufd,id=iommufd0
+    -device vfio-pci,host=0000:02:00.0,iommufd=iommufd0
+
+Note the /dev/iommu and vfio cdev can be externally opened by a
+management layer. In such a case the fd is passed:
+
+    -object iommufd,id=iommufd0,fd=22
+    -device vfio-pci,iommufd=iommufd0,fd=23
+
+If the fd parameter is not passed, the fd is opened by QEMU.
+See https://www.mail-archive.com/qemu-devel@nongnu.org/msg937155.html
+for detailed discuss on this requirement.
+
+If no iommufd option is passed to the vfio-pci device, iommufd is not
+used and the end-user gets the behavior based on the legacy vfio iommu
+interfaces:
+
+    -device vfio-pci,host=0000:02:00.0
+
+While the legacy kernel interface is group-centric, the new iommufd
+interface is device-centric, relying on device fd and iommufd.
+
+To support both interfaces in the QEMU VFIO device we reworked the vfio
+container abstraction so that the generic VFIO code can use either
+backend.
+
+The VFIOContainer object becomes a base object derived into
+a) the legacy VFIO container and
+b) the new iommufd based container.
+
+The base object implements generic code such as code related to
+memory_listener and address space management whereas the derived
+objects implement callbacks specific to either BE, legacy and
+iommufd. Indeed each backend has its own way to setup secure context
+and dma management interface. The below diagram shows how it looks
+like with both BEs.
+
+                    VFIO                           AddressSpace/Memory
+    +-------+  +----------+  +-----+  +-----+
+    |  pci  |  | platform |  |  ap |  | ccw |
+    +---+---+  +----+-----+  +--+--+  +--+--+     +----------------------+
+        |           |           |        |        |   AddressSpace       |
+        |           |           |        |        +------------+---------+
+    +---V-----------V-----------V--------V----+               /
+    |           VFIOAddressSpace              | <------------+
+    |                  |                      |  MemoryListener
+    |          VFIOContainer list             |
+    +-------+----------------------------+----+
+            |                            |
+            |                            |
+    +-------V------+            +--------V----------+
+    |   iommufd    |            |    vfio legacy    |
+    |  container   |            |     container     |
+    +-------+------+            +--------+----------+
+            |                            |
+            | /dev/iommu                 | /dev/vfio/vfio
+            | /dev/vfio/devices/vfioX    | /dev/vfio/$group_id
+Userspace   |                            |
+============+============================+===========================
+Kernel      |  device fd                 |
+            +---------------+            | group/container fd
+            | (BIND_IOMMUFD |            | (SET_CONTAINER/SET_IOMMU)
+            |  ATTACH_IOAS) |            | device fd
+            |               |            |
+            |       +-------V------------V-----------------+
+    iommufd |       |                vfio                  |
+(map/unmap  |       +---------+--------------------+-------+
+ioas_copy)  |                 |                    | map/unmap
+            |                 |                    |
+     +------V------+    +-----V------+      +------V--------+
+     | iommfd core |    |  device    |      |  vfio iommu   |
+     +-------------+    +------------+      +---------------+
+
+[Secure Context setup]
+- iommufd BE: uses device fd and iommufd to setup secure context
+              (bind_iommufd, attach_ioas)
+- vfio legacy BE: uses group fd and container fd to setup secure context
+                  (set_container, set_iommu)
+[Device access]
+- iommufd BE: device fd is opened through /dev/vfio/devices/vfioX
+- vfio legacy BE: device fd is retrieved from group fd ioctl
+[DMA Mapping flow]
+1. VFIOAddressSpace receives MemoryRegion add/del via MemoryListener
+2. VFIO populates DMA map/unmap via the container BEs
+   *) iommufd BE: uses iommufd
+   *) vfio legacy BE: uses container fd
+
+
+Changelog:
+v7:
+- Add iommufd doc (Cedric)
+- Abstract iommufd_cdev_get_realized_vpdev in hot reset code (Eric)
+- Add docs for vfio_device_get_name and return bool (Philippe)
+- Remove is_ioas parameter (Nicolin)
+- Include the general cleanup patchset in this series
+- Instantiate can_be_deleted callback
+- qom.json (Since: 8.2) -> (Since: 9.0)
+- Add new R-b, T-b from Eric
+
+v6:
+- simplify CONFIG_IOMMUFD checking code further (Cédric)
+- check iommufd_cdev_kvm_device_add return value (Cédric)
+- dirrectory -> directory (Cédric)
+- propagate iommufd_cdev_get_info_iova_range err and print as warning (Cédric)
+- introduce a helper vfio_device_set_fd (Cédric)
+- Move #include "sysemu/iommufd.h" in platform.c (Cédric)
+- simplify iommufd backend uAPI, remove alloc_hwpt, get/put_ioas
+- Remove CONFIG_IOMMUFD check in meson.build and treat iommufd.c general
+- Add Matthew and Cédric's RB
+
+v5:
+- Change to use Kconfig for CONFIG_IOMMUFD and drop stub file (Cédric)
+- Add (uintptr_t) to info->allowed_iovas (Cédric)
+- Switch to IOAS attach/detach and hide hwpt (Jason)
+- move chardev_open.[h|c] under the IOMMUFD entry (Cédric)
+- Move vfio_legacy_pci_hot_reset into container.c (Cédric)
+- Add missed pgsizes initialization in vfio_get_info_iova_range
+- split linking iommufd patch into three to be cleaner
+- Fix comments on PCI BAR unmap
+
+v4:
+- add CONFIG_IOMMUFD check for IOMMUFDProperties (Markus)
+- add doc for default case without fd (Markus)
+- Fix build issue reported by Markus and Cédric
+- Simply use SPDX identifier in new file (Cédric)
+- make vfio_container_init/destroy helper a seperate patch (Cédric)
+- make vrdl_list movement a seperate patch (Cédric)
+- add const for some callback parameters (Cédric)
+- add g_assert in VFIOIOMMUOps callback (Cédric)
+- introduce pci_hot_reset callback (Cédric)
+- remove VFIOIOMMUSpaprOps (Cédric)
+- initialize g_autofree to NULL (Cédric)
+- adjust func name prefix and trace event in iommufd.c (Cédric)
+- add RB
+
+v3:
+- Rename base container as VFIOContainerBase and legacy container as container (Cédric)
+- Drop VFIO_IOMMU_BACKEND_OPS class and use struct instead (Cédric)
+- Cleanup container.c by introducing spapr backend and move spapr code out (Cédric)
+- Introduce vfio_iommu_spapr_ops (Cédric)
+- Add doc of iommufd in qom.json and have iommufd member sorted (Markus)
+- patch19 and patch21 are splitted to two parts to facilitate review
+
+v2:
+- patch "vfio: Add base container" in v1 is split into patch1-15 per Cédric
+- add fd passing to platform/ap/ccw vfio device
+- add (uintptr_t) cast in iommufd_backend_map_dma() per Cédric
+- rename char_dev.h to chardev_open.h for same naming scheme per Daniel
+- add full copyright per Daniel and Jason
+
+
+Note changelog below are from full IOMMUFD series:
+
+v1:
+- Alloc hwpt instead of using auto hwpt
+- elaborate iommufd code per Nicolin
+- consolidate two patches and drop as.c
+- typo error fix and function rename
+
+rfcv4:
+- rebase on top of v8.0.3
+- Add one patch from Yi which is about vfio device add in kvm
+- Remove IOAS_COPY optimization and focus on functions in this patchset
+- Fix wrong name issue reported and fix suggested by Matthew
+- Fix compilation issue reported and fix sugggsted by Nicolin
+- Use query_dirty_bitmap callback to replace get_dirty_bitmap for better
+granularity
+- Add dev_iter_next() callback to avoid adding so many callback
+  at container scope, add VFIODevice.hwpt to support that
+- Restore all functions back to common from container whenever possible,
+  mainly migration and reset related functions
+- Add --enable/disable-iommufd config option, enabled by default in linux
+- Remove VFIODevice.hwpt_next as it's redundant with VFIODevice.next
+- Adapt new VFIO_DEVICE_PCI_HOT_RESET uAPI for IOMMUFD backed device
+- vfio_kvm_device_add/del_group call vfio_kvm_device_add/del_fd to remove
+redundant code
+- Add FD passing support for vfio device backed by IOMMUFD
+- Fix hot unplug resource leak issue in vfio_legacy_detach_device()
+- Fix FD leak in vfio_get_devicefd()
+
+rfcv3:
+- rebase on top of v7.2.0
+- Fix the compilation with CONFIG_IOMMUFD unset by using true classes for
+  VFIO backends
+- Fix use after free in error path, reported by Alister
+- Split common.c in several steps to ease the review
+
+rfcv2:
+- remove the first three patches of rfcv1
+- add open cdev helper suggested by Jason
+- remove the QOMification of the VFIOContainer and simply use standard ops
+(David)
+- add "-object iommufd" suggested by Alex
+
+Thanks
+Zhenzhong
+
+
+Cédric Le Goater (3):
+  hw/arm: Activate IOMMUFD for virt machines
+  kconfig: Activate IOMMUFD for s390x machines
+  hw/i386: Activate IOMMUFD for q35 machines
+
+Eric Auger (2):
+  backends/iommufd: Introduce the iommufd object
+  vfio/pci: Allow the selection of a given iommu backend
+
+Yi Liu (2):
+  util/char_dev: Add open_cdev()
+  vfio/iommufd: Implement the iommufd backend
+
+Zhenzhong Duan (20):
+  vfio/common: return early if space isn't empty
+  vfio/iommufd: Relax assert check for iommufd backend
+  vfio/iommufd: Add support for iova_ranges and pgsizes
+  vfio/pci: Extract out a helper vfio_pci_get_pci_hot_reset_info
+  vfio/pci: Introduce a vfio pci hot reset interface
+  vfio/iommufd: Enable pci hot reset through iommufd cdev interface
+  vfio/pci: Make vfio cdev pre-openable by passing a file handle
+  vfio/platform: Allow the selection of a given iommu backend
+  vfio/platform: Make vfio cdev pre-openable by passing a file handle
+  vfio/ap: Allow the selection of a given iommu backend
+  vfio/ap: Make vfio cdev pre-openable by passing a file handle
+  vfio/ccw: Allow the selection of a given iommu backend
+  vfio/ccw: Make vfio cdev pre-openable by passing a file handle
+  vfio: Make VFIOContainerBase poiner parameter const in VFIOIOMMUOps
+    callbacks
+  vfio/pci: Move VFIODevice initializations in vfio_instance_init
+  vfio/platform: Move VFIODevice initializations in
+    vfio_platform_instance_init
+  vfio/ap: Move VFIODevice initializations in vfio_ap_instance_init
+  vfio/ccw: Move VFIODevice initializations in vfio_ccw_instance_init
+  vfio: Introduce a helper function to initialize VFIODevice
+  docs/devel: Add VFIO iommufd backend documentation
+
+ MAINTAINERS                           |  11 +
+ docs/devel/index-internals.rst        |   1 +
+ docs/devel/vfio-iommufd.rst           | 166 +++++++
+ qapi/qom.json                         |  19 +
+ hw/vfio/pci.h                         |   6 +
+ include/hw/vfio/vfio-common.h         |  29 +-
+ include/hw/vfio/vfio-container-base.h |  15 +-
+ include/qemu/chardev_open.h           |  16 +
+ include/sysemu/iommufd.h              |  38 ++
+ backends/iommufd.c                    | 245 ++++++++++
+ hw/vfio/ap.c                          |  47 +-
+ hw/vfio/ccw.c                         |  53 ++-
+ hw/vfio/common.c                      |  24 +-
+ hw/vfio/container-base.c              |   6 +-
+ hw/vfio/container.c                   | 208 ++++++++-
+ hw/vfio/helpers.c                     |  54 +++
+ hw/vfio/iommufd.c                     | 630 ++++++++++++++++++++++++++
+ hw/vfio/pci.c                         | 218 ++-------
+ hw/vfio/platform.c                    |  44 +-
+ util/chardev_open.c                   |  81 ++++
+ backends/Kconfig                      |   4 +
+ backends/meson.build                  |   1 +
+ backends/trace-events                 |  10 +
+ hw/arm/Kconfig                        |   1 +
+ hw/i386/Kconfig                       |   1 +
+ hw/s390x/Kconfig                      |   1 +
+ hw/vfio/meson.build                   |   3 +
+ hw/vfio/trace-events                  |  11 +
+ qemu-options.hx                       |  12 +
+ util/meson.build                      |   1 +
+ 30 files changed, 1706 insertions(+), 250 deletions(-)
+ create mode 100644 docs/devel/vfio-iommufd.rst
+ create mode 100644 include/qemu/chardev_open.h
+ create mode 100644 include/sysemu/iommufd.h
+ create mode 100644 backends/iommufd.c
+ create mode 100644 hw/vfio/iommufd.c
+ create mode 100644 util/chardev_open.c
+
+-- 
+2.34.1
+
 
