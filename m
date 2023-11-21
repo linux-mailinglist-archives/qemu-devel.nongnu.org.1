@@ -2,73 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9817F2B20
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 11:59:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 930C67F2B29
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 12:00:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5OSx-0008BI-Ae; Tue, 21 Nov 2023 05:58:51 -0500
+	id 1r5OTw-0000h8-U9; Tue, 21 Nov 2023 05:59:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r5OSu-0008B2-Ur; Tue, 21 Nov 2023 05:58:48 -0500
-Received: from mail-qt1-x82d.google.com ([2607:f8b0:4864:20::82d])
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1r5OTs-0000bs-JB; Tue, 21 Nov 2023 05:59:49 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1r5OSs-00070a-Lq; Tue, 21 Nov 2023 05:58:48 -0500
-Received: by mail-qt1-x82d.google.com with SMTP id
- d75a77b69052e-41cc75c55f0so54274891cf.1; 
- Tue, 21 Nov 2023 02:58:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1r5OTr-0007Dp-06; Tue, 21 Nov 2023 05:59:48 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4084095722aso26655115e9.1; 
+ Tue, 21 Nov 2023 02:59:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700564325; x=1701169125; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PEaONqdOt2Eyq+HE+uFwNnlWxug0GrbxQFhqUJNirOQ=;
- b=RV9GrDafW/ZWwNrMIeWbL1v5esNQ8h79eh7YG16PafXm6YfOhJyLgfYRukHh1OQrhO
- yhxBaQ7LuP4LsCqS7l+cIMfYKZDENcv52nidg5P6JFczxARhqRk4LGcySO10XIxy37es
- AHgS72wVIygDmShMyea0Kv8G0+PNfsXmkbS4eshqxKgFyHh0TKgiBNlUE86bZO7tWPD4
- mEo42LjO16Df4CT3H2KpZ7KtxKNboiNcbTHwB5M1dmJpJdVEMwtAzSnBu1yyiv8U4+/p
- eQuDiO5lRRl5BnVFVG0mo7Rs+z36lBWqHDHEeFX+dIISRqmYBBR4fPPvCcOE39s8pElj
- HCPA==
+ d=gmail.com; s=20230601; t=1700564382; x=1701169182; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:content-language
+ :references:cc:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0aBbFlNNIGjyQCXLjrh92AJeZxwPUBKAFPiK1JRzuDE=;
+ b=gfPvsAxZsIFmysun/+RKyDHRlcbhalra5lg8S2lYR3OkfTk3WoSQjwKHYOBP+upqcM
+ pc2wSC07KAjjHf/WLpvLT5VDHt2Bug/3AaRXhTsIs2ItlJT+03B8QmMs8eYxFMsRmn36
+ qFAykZktXjV4+2tm+bsdRBiUJzDDSVYt8058p8dYWganNGSHOGhNwCPDL7C0TX2m8Z0W
+ pA1KEQb4kiuHqNAD+UhLleQ/An8+PVPbdycWqPgLhpT60+JCU28GSwSEZ18elld3yrpi
+ P4FFRnB7YHn5q+1wwMUkyBk7h0izRMVv9ndrypJzmaeiU5qI67rCHemy5qyxWqFH5PIq
+ HyzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700564325; x=1701169125;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PEaONqdOt2Eyq+HE+uFwNnlWxug0GrbxQFhqUJNirOQ=;
- b=sTgK4h3VPK4e0dalWcaNSXxHBouo6q40XxP3QrCh/PMaCYx6Cu7YG7s8Mcykpy6h/v
- 5xngVs2jeKnfu92tpneTKjOkujuNhvbE6nVXSKZVCMsFKkA4sNKORZWpcUXBtF/tF2Bn
- BNupLOel04cgHnh8hAHbDvoB9Tqe+vSRmHZds1XmQEroBKxLIvsg68m1XvwUMvoKcMPj
- nFKcPSRnt+cN9xbmCv5NiQrtlku17F8bwOJja9ox3IezziwTRSXvJMGaNTy+VFbGYVCh
- TsBFzWntcknxzoXFhDoK02r9DM/NL5GqvEOotCMpEWJ35jyGwiYWBa72XmjC5AlEfdot
- AkRg==
-X-Gm-Message-State: AOJu0YyMAguWQ61jOkmQXSFR77LwIOD72K69at6T8n531DBeJceEcEm8
- hrlluojdrU+68FOWvdNMlHywpg4q78rFkK6cEoA=
-X-Google-Smtp-Source: AGHT+IHBbREzLOIE6nFdzvpoaPkUDaqOq3VkvAP3+FMAblmioHciJ9MM77weoABuaqSRzDWhDYmGJ0HvV+WwDJlHN7A=
-X-Received: by 2002:ac8:4655:0:b0:423:7637:149c with SMTP id
- f21-20020ac84655000000b004237637149cmr92946qto.4.1700564325006; Tue, 21 Nov
- 2023 02:58:45 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700564382; x=1701169182;
+ h=content-transfer-encoding:in-reply-to:organization:content-language
+ :references:cc:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0aBbFlNNIGjyQCXLjrh92AJeZxwPUBKAFPiK1JRzuDE=;
+ b=M2OodzHjHwsoCjsl4IjrW4ZIhPdf6knFqHuQXu4XcDJS1NrPHqaWL/cMEXnwyHhd4d
+ +iLlrC6h23yAKcs4FYfTN0fRiI7DSx3mjEr12XFISl4bpGveyK3/ewgssfqPVrzgESct
+ 2mAWMZCiLJnFkjQRl/tpj71NgZ6AHNKzM+Wb5hQPG9v5lxfFRyBJrb/EVGzDpNh8/2MX
+ DJLXXp5s9j8yp4uGeymzSGw2ai27gd0dUsCkpsMFnASpGagBcrDit4O23oPaGxh2mj6x
+ tHHjccmQgTRFrwpMdQQiB7x+QMihWHUt13zqH4cYFgsn2IErnM/01MnBEYbvgrg7GIyd
+ eqyg==
+X-Gm-Message-State: AOJu0Yw+k3f1iy/KWtCWgi+XdTgigA9yp3CPTuIHMY8eRKc0WBtcekjh
+ 69a2rR2Xdq4EnJh5soLaAXM=
+X-Google-Smtp-Source: AGHT+IGlIetHxet5t4JoCfSOc3aRa0aU712VgafZ6O28U+VrbIAHSvlMGOBLHgze6oP5stvgX5rjlg==
+X-Received: by 2002:a05:600c:1d23:b0:40a:4c7e:6f3e with SMTP id
+ l35-20020a05600c1d2300b0040a4c7e6f3emr8048958wms.21.1700564381817; 
+ Tue, 21 Nov 2023 02:59:41 -0800 (PST)
+Received: from [10.95.175.211] (54-240-197-238.amazon.com. [54.240.197.238])
+ by smtp.gmail.com with ESMTPSA id
+ v21-20020a05600c429500b0040a4cc876e0sm16479782wmc.40.2023.11.21.02.59.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Nov 2023 02:59:40 -0800 (PST)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <edeb4a60-0011-41ed-9998-25ab1a439b62@xen.org>
+Date: Tue, 21 Nov 2023 10:59:38 +0000
 MIME-Version: 1.0
-References: <20231115172723.1161679-1-dwmw2@infradead.org>
- <20231115172723.1161679-3-dwmw2@infradead.org>
- <CAJ+F1C+3UQoEEvFgg8ENjR0xv-LTiPckx4XkCjVqOe2Jnx1EeA@mail.gmail.com>
-In-Reply-To: <CAJ+F1C+3UQoEEvFgg8ENjR0xv-LTiPckx4XkCjVqOe2Jnx1EeA@mail.gmail.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 21 Nov 2023 14:58:33 +0400
-Message-ID: <CAJ+F1CLA-gxmwuMqzjF-dhVqoTqpx1dsC5zNtoh4geLUzpbbVg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 2/3] vl: disable default serial when xen-console is enabled
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Kevin Wolf <kwolf@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, xen-devel@lists.xenproject.org,
  qemu-block@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82d;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82d.google.com
+References: <20231115172723.1161679-1-dwmw2@infradead.org>
+ <20231115172723.1161679-3-dwmw2@infradead.org>
+Content-Language: en-US
+Organization: Xen Project
+In-Reply-To: <20231115172723.1161679-3-dwmw2@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,81 +96,22 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+On 15/11/2023 17:24, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> If a Xen console is configured on the command line, do not add a default
+> serial port.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   system/vl.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
 
-On Tue, Nov 21, 2023 at 2:57=E2=80=AFPM Marc-Andr=C3=A9 Lureau
-<marcandre.lureau@gmail.com> wrote:
->
-> Hi
->
-> On Wed, Nov 15, 2023 at 9:28=E2=80=AFPM David Woodhouse <dwmw2@infradead.=
-org> wrote:
-> >
-> > From: David Woodhouse <dwmw@amazon.co.uk>
-> >
-> > If a Xen console is configured on the command line, do not add a defaul=
-t
-> > serial port.
-> >
-> > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> > ---
-> >  system/vl.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/system/vl.c b/system/vl.c
-> > index 5af7ced2a1..8109231834 100644
-> > --- a/system/vl.c
-> > +++ b/system/vl.c
-> > @@ -198,6 +198,7 @@ static const struct {
-> >      const char *driver;
-> >      int *flag;
-> >  } default_list[] =3D {
-> > +    { .driver =3D "xen-console",          .flag =3D &default_serial   =
- },
-> >      { .driver =3D "isa-serial",           .flag =3D &default_serial   =
- },
-> >      { .driver =3D "isa-parallel",         .flag =3D &default_parallel =
- },
-> >      { .driver =3D "isa-fdc",              .flag =3D &default_floppy   =
- },
->
-> Consistent with the rest of the lines (no conditional compilation nor
-> driver #define..)
-> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->
-> btw, while quickly testing this (do we have any test for xen-console?):
->
-> $ qemu --accel kvm,xen-version=3D0x40011,kernel-irqchip=3Dsplit -device
-> xen-console,chardev=3Dfoo -chardev stdio,id=3Dfoo
-> (and close gtk window)
->
-> Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
-> 0x0000555555c11695 in qemu_free_net_client (nc=3D0x0) at ../net/net.c:387
-> 387        if (nc->incoming_queue) {
-> (gdb) bt
-> #0  0x0000555555c11695 in qemu_free_net_client (nc=3D0x0) at ../net/net.c=
-:387
-> #1  0x0000555555c11a14 in qemu_del_nic (nic=3D0x555558b6f930) at ../net/n=
-et.c:459
-> #2  0x00005555559e398b in xen_netdev_unrealize (xendev=3D0x555558b6b510)
-> at ../hw/net/xen_nic.c:550
-> #3  0x0000555555b6e22f in xen_device_unrealize (dev=3D0x555558b6b510) at
-> ../hw/xen/xen-bus.c:973
-> #4  0x0000555555b6e351 in xen_device_exit (n=3D0x555558b6b5e0, data=3D0x0=
-)
-> at ../hw/xen/xen-bus.c:1002
-> #5  0x00005555560bc3fc in notifier_list_notify (list=3D0x5555570b5fc0
-> <exit_notifiers>, data=3D0x0) at ../util/notify.c:39
-> #6  0x0000555555ba1d49 in qemu_run_exit_notifiers () at ../system/runstat=
-e.c:800
+Reviewed-by: Paul Durrant <paul@xen.org>
 
-Ok, I found related "[PATCH 1/3] net: do not delete nics in net_cleanup()"
-
-
-
---=20
-Marc-Andr=C3=A9 Lureau
 
