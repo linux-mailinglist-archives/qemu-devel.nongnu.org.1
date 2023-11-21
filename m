@@ -2,68 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F135A7F32EE
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 16:58:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 138D37F32EF
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 16:58:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5T7j-0004Wv-Ko; Tue, 21 Nov 2023 10:57:15 -0500
+	id 1r5T7l-0004Xs-PM; Tue, 21 Nov 2023 10:57:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r5T7e-0004Vk-2e
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 10:57:10 -0500
-Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
+ id 1r5T7i-0004WX-JM
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 10:57:14 -0500
+Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r5T7c-0002e2-Ba
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 10:57:09 -0500
-Received: by mail-oa1-x2c.google.com with SMTP id
- 586e51a60fabf-1f5d7db4dcbso1819703fac.2
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 07:57:07 -0800 (PST)
+ id 1r5T7e-0002ea-VC
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 10:57:12 -0500
+Received: by mail-ot1-x329.google.com with SMTP id
+ 46e09a7af769-6d7e6df999fso258060a34.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 07:57:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700582226; x=1701187026; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=TlgLjf5qP29U9hK8NycSeILzBTq1aaELwhHHfZa/l88=;
- b=vjfhssMXx1VkY5Zw8xWpybSD93RYfEZO3pOkVcVyWtQpvpQNzfSeKRMsbgnsLp+FBW
- jOyO7/aR+3JXP/Nvwd+eu3RPbWFbKtwEPxULh57sXU9onK/M5uy5/vguvn+W/Nw8wy9H
- QJKPzs+bMMxqsg5QTHdWCdm2eOYPNLioDZsYg9ON8W8lp9GojlA+RRtF25Riar4oY/aM
- PYlSnU2zWp2af6xTvAG49rEgYqtASJkTZJlmZ5NvpOzbWZmxg67JIkeovnj9DBU75TJ6
- 7MXTLQ8ymdJNZg+LJwMwbGW5AiiLJiZWr/9B5aaxLSrfwidM1PcyopYB+k7rfKYD5ZAt
- 8t9Q==
+ d=linaro.org; s=google; t=1700582229; x=1701187029; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CTjER+jT+9VVHqyYdg2i5cJ66ptGMsZM63IndAeZ5lQ=;
+ b=X8Raq6adkF8U8A/h2PaFMKHTO2IGSfI3DLjKFv0gwunkMSeLH8DBYvnoTnaEc7HzBN
+ usw58tznUSjKeS2aSJJR0/fJATviCbQaQvZziFXJWpu+guGNCtaOOq1o+VtuAUZ/HRR+
+ ieJXUHe5A1etZH9Lfs+yLFtBiO3OS+/zK27m6txnSAz8UFwAgD1WtvrUDyYpbjhhvU6C
+ aKRm+uSGzTmcwIDgBSHxDfprNHE7arl0CHLHU1D9aet5dWejlR5KyKSU0z0sUuyXrhdY
+ CzRFRzUAsten+HxQsC5OahZoMELy/id9SotgxgmulAMXmdAR7nUL9eXdIe4Gsq4B/SIh
+ z3Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700582226; x=1701187026;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TlgLjf5qP29U9hK8NycSeILzBTq1aaELwhHHfZa/l88=;
- b=TzsgEWkBHr+9DDSF4/NWJoGE0pBmt+PT0YrV+8APQjTf6myrs4Fqn6IOtf0j2HxOHJ
- 8sLeZ3zNwbCAwad0xRVyG+Nbv7JMNwY7HbFl7sehvfwhU2mCR5aDa6vFVmw9BuQoD+Tn
- 4eL25SA/wg3y7KVp9Q+A4QjdPaPC8VpXBXAUNs3YuPCaSNvsLlPkumFVX34hFCNlGq/Z
- uuZzrHsyVU5I/jTTOHcPMsOu9xM4xz7g4PWvSwCcseqlfttuSvw7tsvtoVL8kqajOMME
- hHSZYrs2yg3s3CAitsY4s3eKTeCm7rRDTv34qIdnny5ITFvFXQedQbwYTEA38ni8P5WD
- I4IA==
-X-Gm-Message-State: AOJu0YzBJbijj2Ry3I0KaoaacH9uziidiEeb/AeMhEkzvQCNUu7D3GGL
- PMmOpcF16F2K/TVf5mXeCVo9SisZcL39kyMjAcC3Zg==
-X-Google-Smtp-Source: AGHT+IEXBwzebjlD4bncw0DZ1g8onSJE3Ayj+x6C3adDzxuyjztP3/w2jIEMPelrIZjJaW6pzbrJpw==
-X-Received: by 2002:a05:6870:35cb:b0:1c3:91b9:e1e7 with SMTP id
- c11-20020a05687035cb00b001c391b9e1e7mr13514249oak.21.1700582225979; 
- Tue, 21 Nov 2023 07:57:05 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700582229; x=1701187029;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CTjER+jT+9VVHqyYdg2i5cJ66ptGMsZM63IndAeZ5lQ=;
+ b=a5MttXxQ/7RVHYEykBC1oa6ncWrR9BHmO3XEjRbekk7AzS0Vlcz896WI5EEJtSAZQQ
+ ik0Ui9m+ux8/PaUkwucUTEolxgeoaiRuTVirIxcwFxumvsArdkSOZvzIbpq9qFaPZmol
+ IvRlVdVazhbw85qkPTbzTD+k/RptMc7S1J1YeMQ6gAF54L0n1JC/6myk4GMWJr0JLM2F
+ Uo8faZua84sm3vP5F/4lslott0Qa86Z7G93s463mcFn/vl3KqZTVoh/+MDLCdpl7i1cb
+ 6emggMihtJw4d26HwoKicgZQALhr5+CUt1nvFE1iBpKMUlR5Aef3eRxraFmIO2b8xeYz
+ 2cuw==
+X-Gm-Message-State: AOJu0YytbCx4JLc7AbkzYTXjRs8ox1E8NkbVvI8zrldYlVSAgsBhq9g/
+ q6OxFzSEyvD5LZSxS/k4kw+ozSnCH3lJsqRW6LcnFg==
+X-Google-Smtp-Source: AGHT+IHOMnM/KhH9+1CaQh8XHDmsAls9GaDVNgY0XaW1+qUjBnRK/NpyCM7amq3s3HUWxcCtU1rMmg==
+X-Received: by 2002:a05:6830:6b81:b0:6d3:132a:5350 with SMTP id
+ dd1-20020a0568306b8100b006d3132a5350mr11149313otb.11.1700582229667; 
+ Tue, 21 Nov 2023 07:57:09 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- n22-20020a9d4d16000000b006cd0a04b56esm1543574otf.56.2023.11.21.07.57.03
- for <qemu-devel@nongnu.org>
+ n22-20020a9d4d16000000b006cd0a04b56esm1543574otf.56.2023.11.21.07.57.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Nov 2023 07:57:05 -0800 (PST)
+ Tue, 21 Nov 2023 07:57:09 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/1] linux-user late fix
-Date: Tue, 21 Nov 2023 09:56:56 -0600
-Message-Id: <20231121155657.798505-1-richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 1/1] linux-user: Fix loaddr computation for some elf files
+Date: Tue, 21 Nov 2023 09:56:57 -0600
+Message-Id: <20231121155657.798505-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231121155657.798505-1-richard.henderson@linaro.org>
+References: <20231121155657.798505-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2c;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x329.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -86,25 +91,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit c14ae763d548842c6abd1afaf5dc7ce7322ed901:
+The file offset of the load segment is not relevant to the
+low address, only the beginning of the virtual address page.
 
-  Merge tag 'ui-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2023-11-21 06:25:14 -0500)
-
-are available in the Git repository at:
-
-  https://gitlab.com/rth7680/qemu.git tags/pull-lu-20231121
-
-for you to fetch changes up to 82d70a84c8ee42ef969a9cfddc0f5b30b16165f5:
-
-  linux-user: Fix loaddr computation for some elf files (2023-11-21 09:23:27 -0600)
-
-----------------------------------------------------------------
-linux-user: Fix loaddr computation for some elf files
-
-----------------------------------------------------------------
-Richard Henderson (1):
-      linux-user: Fix loaddr computation for some elf files
-
+Cc: qemu-stable@nongnu.org
+Fixes: a93934fecd4 ("elf: take phdr offset into account when calculating the program load address")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1952
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+---
  linux-user/elfload.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 4cd6891d7b..cf9e74468b 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -3308,7 +3308,7 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
+     for (i = 0; i < ehdr->e_phnum; ++i) {
+         struct elf_phdr *eppnt = phdr + i;
+         if (eppnt->p_type == PT_LOAD) {
+-            abi_ulong a = eppnt->p_vaddr - eppnt->p_offset;
++            abi_ulong a = eppnt->p_vaddr & TARGET_PAGE_MASK;
+             if (a < loaddr) {
+                 loaddr = a;
+             }
+-- 
+2.34.1
+
 
