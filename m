@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD9B57F2489
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 04:13:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF827F248A
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 04:13:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5HBe-00031V-By; Mon, 20 Nov 2023 22:12:30 -0500
+	id 1r5HCf-0003j6-3m; Mon, 20 Nov 2023 22:13:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5HBc-000314-98
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 22:12:28 -0500
-Received: from mail-vs1-xe2b.google.com ([2607:f8b0:4864:20::e2b])
+ id 1r5HCd-0003ix-Ct
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 22:13:31 -0500
+Received: from mail-ua1-x92f.google.com ([2607:f8b0:4864:20::92f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5HBa-0006qp-Ep
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 22:12:28 -0500
-Received: by mail-vs1-xe2b.google.com with SMTP id
- ada2fe7eead31-45d9689b65dso1749017137.0
- for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 19:12:26 -0800 (PST)
+ id 1r5HCb-0006wL-Td
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 22:13:31 -0500
+Received: by mail-ua1-x92f.google.com with SMTP id
+ a1e0cc1a2514c-7c423088147so107607241.0
+ for <qemu-devel@nongnu.org>; Mon, 20 Nov 2023 19:13:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700536345; x=1701141145; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1700536409; x=1701141209; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=z+QDwOhUKdUv7XOnYpS5//i17TyVUEkBppmpUr9LCdc=;
- b=KyGK5oS1pNNw5M1ywKwgOnL4gLpTGJCDSHWTxUuLzRoPYPRBAz7BbfA5QnjqGjysre
- pU9y8BMwkpRvyGVB5O6L9A7vqFmacZozoJofslygmPtelOTxXL4gYCvoF7U43nBPuvPD
- +fyFFoM0P6nDLwIprAE3OxjmZhJUbLX3jThh06wzcdLhrftnPAmOrVCy7ZHy3Q9tAbFP
- yEcD3Fk/TN0Go6rqALEAp4eHofB1bWXFUrwcrVVYEUX3s7a57Dd9Gq2240J588JhXnCk
- jGzT8QWtDmACCemMT1U6wsjYl/pFlZSbQKGk8ZtxfsaiFzjf8e6YxrXzn1Pps+j3w7x5
- 9/UQ==
+ bh=2G9ARXzVHPPAbo0Jevwt8dKQ7fk1sbSVbA9qUDc8ok4=;
+ b=AUkjABIBuVTClOk12XgyR+QNi5BTE2dUaz9eS+EcVN3tVlEln5xHZDYt30erBr9f6v
+ MBuq08lBVNIry+vfdFMPbgzgOOmkT1w3Qz5x7Lk1wTgPqmlNZ0mqk7CMCKchACE7Chpj
+ OFRpEvT+T/2DVyw9Xhi9QTHTOFD17lijv1Pf/QqhO0aMZ9cTmYwNizPXJSZXFKz7d2ps
+ K87jGPnISnLplvE5kYrI/nI6iX49D9jmc/vGoG4EyojtrK9k9S/WM5SWrD73EB2mufI9
+ zmIeO4uUTMJ3lSzx0Myzgbh0vbDfqeCf+H7wmXGXeNCaZtUdFE8P1hXEjUU+MOEyPIhT
+ 3SfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700536345; x=1701141145;
+ d=1e100.net; s=20230601; t=1700536409; x=1701141209;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=z+QDwOhUKdUv7XOnYpS5//i17TyVUEkBppmpUr9LCdc=;
- b=DawtbdzATw1xsN6PukpSPs7GRsFhO+Ge/dauJQyd+rho5Lo5aGck0PbexG3AlN81mJ
- jOpOKKTrmPeNOxvIISsAq9KygyT2gOHsHgjL+FYHOie6aLahsWavx54CAcoP65PsL9mZ
- 49XtdKmg7UEAslW0gqyI7PqvTsdAC71/oIuzF6ZTsSJN/cFz4y1CBuVgOrcM14W+Wtfe
- 6BETDO9beHwUmmHa1pEGZHeB5fLg0Ojr57bAOqlqHxj3o6rHH5LtEcT42miJLZll2OD1
- wUF9QJ2H4w/qycD/zjgXFH5gt0FxNiIafN3rd85wi4kZFr0SCbI9oO2g3RHm3q0S1xoo
- 1UGA==
-X-Gm-Message-State: AOJu0Yz+vh10w3PV+rTyJ50If4nQwemDVa6UQCBrHMaKNjq3vRn8SqHk
- LhIoDk/9jiEjP5UjRLFNBQBtHmB4YuJQ8y0cFOA=
-X-Google-Smtp-Source: AGHT+IGhsJ8JgTK77Shy+IvajpLBG3Q/EKHi/Omal7X/mwRR6n0v7F72CesHzZBmMJvmFXyLKgH6ehbq5Q+lQVzVFFI=
-X-Received: by 2002:a67:c19b:0:b0:45d:91b2:f087 with SMTP id
- h27-20020a67c19b000000b0045d91b2f087mr4547317vsj.6.1700536345050; Mon, 20 Nov
- 2023 19:12:25 -0800 (PST)
+ bh=2G9ARXzVHPPAbo0Jevwt8dKQ7fk1sbSVbA9qUDc8ok4=;
+ b=uP8N7Upwn6Fm8xniYZMuSuBcueLfiL4Pazrj6YsxpR7XjwWDGsrLcO6hE5npcKvZHP
+ bgw5z3S/SSRBaCEpzVygKnHXdNbI/BXaBGhTk4erE65DjOfKyEgrJr65IwCOTrYvDCG+
+ 0PA8VdL8/DyVvv40yefklnXBcef8Wio+8h6HlxNGAdRmlB2T/wUyrnEfciYJCBUY6saO
+ 0hwjSlA9tYxXE3n1i2xUY6bs2keVNr67Ic/Xj8zRLEB4RnTQl/ZXE8Zypzn2AkSxmZtX
+ rwgqlxMjyPn2nLD5a9PbZQvk/1LR3USXeYGruvLDQNGxAATKdF//3j4UsBERE5kPaoUS
+ VyrQ==
+X-Gm-Message-State: AOJu0YxOpU53TkOAAyBnmvZ45Je8E/DjVnQGzqrhkb2cJRnLqVH6dpuD
+ o+LRToeraDU7qiQq18LQypGjbLbIwBxM4Bdzs3g=
+X-Google-Smtp-Source: AGHT+IG4UNEe/hXGMKAIsLbBt32PmZiXszjSEt4mXqgnByKbCMAWm2LhuokM+EgilNlt9Rg/o3VtK9ygy+gH1bUeihw=
+X-Received: by 2002:a05:6102:97:b0:45d:95ad:f56c with SMTP id
+ t23-20020a056102009700b0045d95adf56cmr7146112vsp.21.1700536408794; Mon, 20
+ Nov 2023 19:13:28 -0800 (PST)
 MIME-Version: 1.0
 References: <20231117114457.177308-1-thuth@redhat.com>
- <20231117114457.177308-3-thuth@redhat.com>
-In-Reply-To: <20231117114457.177308-3-thuth@redhat.com>
+ <20231117114457.177308-4-thuth@redhat.com>
+In-Reply-To: <20231117114457.177308-4-thuth@redhat.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 21 Nov 2023 13:11:58 +1000
-Message-ID: <CAKmqyKPCqr-VeADABOrLQi-g24oBUVF492goo21wgcH=Yp4CKw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/5] hw: Replace anti-social QOM type names (again)
+Date: Tue, 21 Nov 2023 13:13:02 +1000
+Message-ID: <CAKmqyKOhSn0wm5=qWjikFY9qKFepTKO-SBQ6zJrzift3pOYJrA@mail.gmail.com>
+Subject: Re: [PATCH v3 3/5] memory: Remove "qemu:" prefix from the
+ "qemu:ram-discard-manager" type name
 To: Thomas Huth <thuth@redhat.com>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
@@ -73,8 +74,8 @@ Cc: qemu-devel@nongnu.org,
  Eduardo Habkost <eduardo@habkost.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2b;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92f;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,51 +99,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 17, 2023 at 9:47=E2=80=AFPM Thomas Huth <thuth@redhat.com> wrot=
+On Fri, Nov 17, 2023 at 9:46=E2=80=AFPM Thomas Huth <thuth@redhat.com> wrot=
 e:
 >
-> From: Markus Armbruster <armbru@redhat.com>
+> Type names should not contain special characters like ":". Let's
+> remove the whole prefix here since it does not really seem to be
+> helpful to have such a prefix here. The type name is only used
+> internally for an interface type, so the renaming should not affect
+> the user interface or migration.
 >
-> QOM type names containing ',' result in awful UI.  We got rid of them
-> in v6.0.0 (commit e178113ff64 hw: Replace anti-social QOM type names).
-> A few have crept back since:
->
->     xlnx,cframe-reg
->     xlnx,efuse
->     xlnx,pmc-efuse-cache
->     xlnx,versal-cfu-apb
->     xlnx,versal-cfu-fdro
->     xlnx,versal-cfu-sfr
->     xlnx,versal-crl
->     xlnx,versal-efuse
->     xlnx,zynqmp-efuse
->
-> These are all device types.  They can't be plugged with -device /
-> device_add, except for "xlnx,efuse" (I'm not sure that one is
-> intentional).
->
-> They *can* be used with -device / device_add to request help.
-> Usability is poor, though: you have to double the comma, like this:
->
->     $ qemu-system-aarch64 -device xlnx,,pmc-efuse-cache,help
->
-> They can also be used with -global, where you must *not* double the
-> comma:
->
->     $ qemu-system-aarch64 -global xlnx,efuse.drive-index=3D2
->
-> Trap for the unwary.
->
-> "xlnx,efuse", "xlnx,versal-efuse", "xlnx,pmc-efuse-cache",
-> "xlnx-zynqmp-efuse" are from v6.2.0, "xlnx,versal-crl" is from v7.1.0,
-> and the remainder are new.
->
-> Rename them all to "xlnx-FOO", like commit e178113ff64 did.
->
-> Reported-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > Signed-off-by: Thomas Huth <thuth@redhat.com>
 
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
@@ -150,125 +117,23 @@ Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Alistair
 
 > ---
->  docs/system/arm/xlnx-versal-virt.rst     | 2 +-
->  include/hw/misc/xlnx-versal-cframe-reg.h | 2 +-
->  include/hw/misc/xlnx-versal-cfu.h        | 6 +++---
->  include/hw/misc/xlnx-versal-crl.h        | 2 +-
->  include/hw/nvram/xlnx-efuse.h            | 2 +-
->  include/hw/nvram/xlnx-versal-efuse.h     | 4 ++--
->  include/hw/nvram/xlnx-zynqmp-efuse.h     | 2 +-
->  7 files changed, 10 insertions(+), 10 deletions(-)
+>  include/exec/memory.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/docs/system/arm/xlnx-versal-virt.rst b/docs/system/arm/xlnx-=
-versal-virt.rst
-> index 9a4b2ff55f..0bafc76469 100644
-> --- a/docs/system/arm/xlnx-versal-virt.rst
-> +++ b/docs/system/arm/xlnx-versal-virt.rst
-> @@ -212,7 +212,7 @@ To use a different index value, N, from default of 1,=
- add:
+> diff --git a/include/exec/memory.h b/include/exec/memory.h
+> index 831f7c996d..f172e82ac9 100644
+> --- a/include/exec/memory.h
+> +++ b/include/exec/memory.h
+> @@ -43,7 +43,7 @@ typedef struct IOMMUMemoryRegionClass IOMMUMemoryRegion=
+Class;
+>  DECLARE_OBJ_CHECKERS(IOMMUMemoryRegion, IOMMUMemoryRegionClass,
+>                       IOMMU_MEMORY_REGION, TYPE_IOMMU_MEMORY_REGION)
 >
->  .. code-block:: bash
->
-> -  -global xlnx,efuse.drive-index=3DN
-> +  -global xlnx-efuse.drive-index=3DN
->
->  .. warning::
->    In actual physical Versal, BBRAM and eFUSE contain sensitive data.
-> diff --git a/include/hw/misc/xlnx-versal-cframe-reg.h b/include/hw/misc/x=
-lnx-versal-cframe-reg.h
-> index a14fbd7fe4..f403b00e31 100644
-> --- a/include/hw/misc/xlnx-versal-cframe-reg.h
-> +++ b/include/hw/misc/xlnx-versal-cframe-reg.h
-> @@ -23,7 +23,7 @@
->  #include "hw/misc/xlnx-versal-cfu.h"
->  #include "qemu/fifo32.h"
->
-> -#define TYPE_XLNX_VERSAL_CFRAME_REG "xlnx,cframe-reg"
-> +#define TYPE_XLNX_VERSAL_CFRAME_REG "xlnx-cframe-reg"
->  OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalCFrameReg, XLNX_VERSAL_CFRAME_REG)
->
->  #define TYPE_XLNX_VERSAL_CFRAME_BCAST_REG "xlnx.cframe-bcast-reg"
-> diff --git a/include/hw/misc/xlnx-versal-cfu.h b/include/hw/misc/xlnx-ver=
-sal-cfu.h
-> index 86fb841053..8c581c0797 100644
-> --- a/include/hw/misc/xlnx-versal-cfu.h
-> +++ b/include/hw/misc/xlnx-versal-cfu.h
-> @@ -22,13 +22,13 @@
->  #include "hw/misc/xlnx-cfi-if.h"
->  #include "qemu/fifo32.h"
->
-> -#define TYPE_XLNX_VERSAL_CFU_APB "xlnx,versal-cfu-apb"
-> +#define TYPE_XLNX_VERSAL_CFU_APB "xlnx-versal-cfu-apb"
->  OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalCFUAPB, XLNX_VERSAL_CFU_APB)
->
-> -#define TYPE_XLNX_VERSAL_CFU_FDRO "xlnx,versal-cfu-fdro"
-> +#define TYPE_XLNX_VERSAL_CFU_FDRO "xlnx-versal-cfu-fdro"
->  OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalCFUFDRO, XLNX_VERSAL_CFU_FDRO)
->
-> -#define TYPE_XLNX_VERSAL_CFU_SFR "xlnx,versal-cfu-sfr"
-> +#define TYPE_XLNX_VERSAL_CFU_SFR "xlnx-versal-cfu-sfr"
->  OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalCFUSFR, XLNX_VERSAL_CFU_SFR)
->
->  REG32(CFU_ISR, 0x0)
-> diff --git a/include/hw/misc/xlnx-versal-crl.h b/include/hw/misc/xlnx-ver=
-sal-crl.h
-> index 2857f4169a..dfb8dff197 100644
-> --- a/include/hw/misc/xlnx-versal-crl.h
-> +++ b/include/hw/misc/xlnx-versal-crl.h
-> @@ -13,7 +13,7 @@
->  #include "hw/register.h"
->  #include "target/arm/cpu.h"
->
-> -#define TYPE_XLNX_VERSAL_CRL "xlnx,versal-crl"
-> +#define TYPE_XLNX_VERSAL_CRL "xlnx-versal-crl"
->  OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalCRL, XLNX_VERSAL_CRL)
->
->  REG32(ERR_CTRL, 0x0)
-> diff --git a/include/hw/nvram/xlnx-efuse.h b/include/hw/nvram/xlnx-efuse.=
-h
-> index 58414e468b..cff7924106 100644
-> --- a/include/hw/nvram/xlnx-efuse.h
-> +++ b/include/hw/nvram/xlnx-efuse.h
-> @@ -30,7 +30,7 @@
->  #include "sysemu/block-backend.h"
->  #include "hw/qdev-core.h"
->
-> -#define TYPE_XLNX_EFUSE "xlnx,efuse"
-> +#define TYPE_XLNX_EFUSE "xlnx-efuse"
->  OBJECT_DECLARE_SIMPLE_TYPE(XlnxEFuse, XLNX_EFUSE);
->
->  struct XlnxEFuse {
-> diff --git a/include/hw/nvram/xlnx-versal-efuse.h b/include/hw/nvram/xlnx=
--versal-efuse.h
-> index a873dc5cb0..86e2261b9a 100644
-> --- a/include/hw/nvram/xlnx-versal-efuse.h
-> +++ b/include/hw/nvram/xlnx-versal-efuse.h
-> @@ -29,8 +29,8 @@
->
->  #define XLNX_VERSAL_EFUSE_CTRL_R_MAX ((0x100 / 4) + 1)
->
-> -#define TYPE_XLNX_VERSAL_EFUSE_CTRL  "xlnx,versal-efuse"
-> -#define TYPE_XLNX_VERSAL_EFUSE_CACHE "xlnx,pmc-efuse-cache"
-> +#define TYPE_XLNX_VERSAL_EFUSE_CTRL  "xlnx-versal-efuse"
-> +#define TYPE_XLNX_VERSAL_EFUSE_CACHE "xlnx-pmc-efuse-cache"
->
->  OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalEFuseCtrl, XLNX_VERSAL_EFUSE_CTRL);
->  OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalEFuseCache, XLNX_VERSAL_EFUSE_CACHE=
-);
-> diff --git a/include/hw/nvram/xlnx-zynqmp-efuse.h b/include/hw/nvram/xlnx=
--zynqmp-efuse.h
-> index 6b051ec4f1..f5beacc2e6 100644
-> --- a/include/hw/nvram/xlnx-zynqmp-efuse.h
-> +++ b/include/hw/nvram/xlnx-zynqmp-efuse.h
-> @@ -29,7 +29,7 @@
->
->  #define XLNX_ZYNQMP_EFUSE_R_MAX ((0x10fc / 4) + 1)
->
-> -#define TYPE_XLNX_ZYNQMP_EFUSE "xlnx,zynqmp-efuse"
-> +#define TYPE_XLNX_ZYNQMP_EFUSE "xlnx-zynqmp-efuse"
->  OBJECT_DECLARE_SIMPLE_TYPE(XlnxZynqMPEFuse, XLNX_ZYNQMP_EFUSE);
->
->  struct XlnxZynqMPEFuse {
+> -#define TYPE_RAM_DISCARD_MANAGER "qemu:ram-discard-manager"
+> +#define TYPE_RAM_DISCARD_MANAGER "ram-discard-manager"
+>  typedef struct RamDiscardManagerClass RamDiscardManagerClass;
+>  typedef struct RamDiscardManager RamDiscardManager;
+>  DECLARE_OBJ_CHECKERS(RamDiscardManager, RamDiscardManagerClass,
 > --
 > 2.42.0
 >
