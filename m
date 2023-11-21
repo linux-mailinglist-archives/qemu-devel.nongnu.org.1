@@ -2,67 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDECD7F263A
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 08:19:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA737F265B
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 08:31:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5L1X-0007Hw-A3; Tue, 21 Nov 2023 02:18:19 -0500
+	id 1r5LCg-0004Xu-QE; Tue, 21 Nov 2023 02:29:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
- id 1r5L1S-0007F8-S4; Tue, 21 Nov 2023 02:18:15 -0500
-Received: from mta-04.yadro.com ([89.207.88.248])
+ (Exim 4.90_1) (envelope-from <SRS0=nm9w=HC=kaod.org=clg@ozlabs.org>)
+ id 1r5LCf-0004Xh-1h; Tue, 21 Nov 2023 02:29:49 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
- id 1r5L1Q-0003jI-BB; Tue, 21 Nov 2023 02:18:14 -0500
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 5071AC0002
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-04; t=1700551089;
- bh=+tm80IOxtZrRk6/aiCijbvq3pGsJG2aqKhn9wVIaYIA=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=MplioIrU+h2ybygkNrUDiC16SM3ADAy8kFIT74EpEu9cQoceXpqPnvjOM8aTcImOx
- cFpNaOGWvWYGXv96nio8bmpBOtOB5lAmHmM3g4UK5+CRtZjhgDGxXsh9cjhm83WM13
- YZkBIqKpxDWfOd2SqqjgpsvgLjyQKwtmoO/YPd6CXpLwHXCAH7irhCNxY+DCnonWsK
- ef8GcZDJVekaCg8SX7QMyRuDkhJ4IZKVCMnnukV6JuzzCtMkijPzYX0FcxZz5TIGER
- S8rl84+IXrXGFXiftYStFDYJLjJ4/eyo3oPBZsmwYWHe9uN92aa+8YGOpQ4Ofc0+V1
- /d5SCEXOjJwnA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-03; t=1700551089;
- bh=+tm80IOxtZrRk6/aiCijbvq3pGsJG2aqKhn9wVIaYIA=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=TYtB53R47hfsRGHGNbdbb0ND+Se2uWrOW31vgfaB+QdxTA/Aaz5GAulOzk6YtuwEr
- bQtFEin48C4gY7nCfgF9zCiYEDaMJofteFPHc6y8XKa5YhRSghjmj4NuuqUVWlTiDs
- La0LA4ggsdACqPdK4tHUZ8eUttgPUy2nJ5xK3GQiGsVNNRvPf3/X7LrmAnv7zlxl12
- U0TaLS03x7PjcPg8gQOnJnIy0oWqoAy4Bwdamp3ea9hiRBt1cK4h22fj0bHOjyVhsE
- CMBOclstyGuBAPQjy+Pta3y3ijdEKWStF7DDz8RUmKUuh07td8aclRcr1O6ncwsbvL
- 6mLLP6e1vD3CA==
-From: Ivan Klokov <ivan.klokov@syntacore.com>
-To: <qemu-devel@nongnu.org>
-CC: <qemu-riscv@nongnu.org>, <palmer@dabbelt.com>, <alistair.francis@wdc.com>, 
- <bin.meng@windriver.com>, <liwei1518@gmail.com>,
- <dbarboza@ventanamicro.com>, 
- <zhiwei_liu@linux.alibaba.com>, Ivan Klokov <ivan.klokov@syntacore.com>
-Subject: [PATCH v2 2/2] target/riscv/cpu_helper.c: Fix mxr bit behavior
-Date: Tue, 21 Nov 2023 10:17:57 +0300
-Message-ID: <20231121071757.7178-3-ivan.klokov@syntacore.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231121071757.7178-1-ivan.klokov@syntacore.com>
-References: <20231121071757.7178-1-ivan.klokov@syntacore.com>
+ (Exim 4.90_1) (envelope-from <SRS0=nm9w=HC=kaod.org=clg@ozlabs.org>)
+ id 1r5LCc-0007Vu-Fs; Tue, 21 Nov 2023 02:29:48 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SZGGr3pjxz4xVW;
+ Tue, 21 Nov 2023 18:29:40 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SZGGp4cMyz4xVV;
+ Tue, 21 Nov 2023 18:29:38 +1100 (AEDT)
+Message-ID: <31af40b3-a6c8-467c-8ef0-63e370465a9a@kaod.org>
+Date: Tue, 21 Nov 2023 08:29:36 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: T-EXCH-08.corp.yadro.com (172.17.11.58) To
- S-Exch-01.corp.yadro.com (10.78.5.241)
-Received-SPF: permerror client-ip=89.207.88.248;
- envelope-from=ivan.klokov@syntacore.com; helo=mta-04.yadro.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 03/11] ppc/pnv: New powernv10-rainier machine type
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
+References: <20231120235112.1951342-1-milesg@linux.vnet.ibm.com>
+ <20231120235112.1951342-4-milesg@linux.vnet.ibm.com>
+ <CX43Q4CXT43G.16NTWUAWGGXCB@wheely>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CX43Q4CXT43G.16NTWUAWGGXCB@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=nm9w=HC=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,65 +68,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to RISCV Specification sect 9.5 on two stage translation when
-V=1 the vsstatus(mstatus in QEMU's terms) field MXR, which makes
-execute-only pages readable, only overrides VS-stage page protection.
-Setting MXR at HS-level(mstatus_hs), however, overrides both VS-stage
-and G-stage execute-only permissions.
+On 11/21/23 02:33, Nicholas Piggin wrote:
+> On Tue Nov 21, 2023 at 9:51 AM AEST, Glenn Miles wrote:
+>> Create a new powernv machine type, powernv10-rainier, that
+>> will contain rainier-specific devices.
+> 
+> Is the plan to have a base powernv10 common to all and then
+> powernv10-rainier looks like a Rainier? Or would powernv10
+> just be a rainier?
+> 
+> It's fine to structure code this way, I'm just wondering about
+> the machine types available to user. Is a base powernv10 machine
+> useful to run?
 
-The hypervisor extension changes the behavior of MXR\MPV\MPRV bits.
-Due to RISCV Specification sect. 9.4.1 when MPRV=1, explicit memory
-accesses are translated and protected, and endianness is applied, as
-though the current virtualization mode were set to MPV and the current
-nominal privilege mode were set to MPP. vsstatus.MXR makes readable
-those pages marked executable at the VS translation stage.
+There are multiple P10 boards defined in Linux :
 
-Fixes: 36a18664ba ("target/riscv: Implement second stage MMU")
+   aspeed-bmc-ibm-bonnell.dts
+   aspeed-bmc-ibm-everest.dts
+   aspeed-bmc-ibm-rainier-1s4u.dts
+   aspeed-bmc-ibm-rainier-4u.dts
+   aspeed-bmc-ibm-rainier.dts
 
-Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
----
- target/riscv/cpu_helper.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+and we could model the machines above with a fixed number of sockets.
+The "powernv10" would be the generic system that can be customized
+at will on the command line, even I2C devices. There is also the
+P10 Denali which is FSP based. This QEMU machine would certainly be
+very different. I thought of doing the same for P9 with a -zaius
+and include NPU2 models for it. I lacked time and the interest was
+small at the time of OpenPOWER.
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 9ff0952e46..e7e23b34f4 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1032,13 +1032,29 @@ restart:
-         prot |= PAGE_WRITE;
-     }
-     if (pte & PTE_X) {
--        bool mxr;
-+        bool mxr = false;
- 
--        if (first_stage == true) {
-+        /*
-+         * Use mstatus for first stage or for the second stage without
-+         * virt_enabled (MPRV+MPV)
-+         */
-+        if (first_stage || !env->virt_enabled) {
-             mxr = get_field(env->mstatus, MSTATUS_MXR);
--        } else {
--            mxr = get_field(env->vsstatus, MSTATUS_MXR);
-         }
-+
-+        /* MPRV+MPV case, check VSSTATUS */
-+        if (first_stage && two_stage && !env->virt_enabled) {
-+            mxr |= get_field(env->vsstatus, MSTATUS_MXR);
-+        }
-+
-+        /*
-+         * Setting MXR at HS-level overrides both VS-stage and G-stage
-+         * execute-only permissions
-+         */
-+        if (env->virt_enabled) {
-+            mxr |= get_field(env->mstatus_hs, MSTATUS_MXR);
-+        }
-+
-         if (mxr) {
-             prot |= PAGE_READ;
-         }
--- 
-2.34.1
+Anyhow, adding a new machine makes sense and it prepares ground for
+possible new ones. I am OK with or without. As primary users, you are
+the ones that can tell if there will be a second machine.
+  
+Thanks,
+
+C.
+
+
+> 
+>>
+>> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+>> ---
+>>   hw/ppc/pnv.c | 29 +++++++++++++++++++++++++++--
+>>   1 file changed, 27 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+>> index 9c29727337..3481a1220e 100644
+>> --- a/hw/ppc/pnv.c
+>> +++ b/hw/ppc/pnv.c
+>> @@ -2249,7 +2249,7 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
+>>       machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
+>>   }
+>>   
+>> -static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+>> +static void pnv_machine_p10_common_class_init(ObjectClass *oc, void *data)
+>>   {
+>>       MachineClass *mc = MACHINE_CLASS(oc);
+>>       PnvMachineClass *pmc = PNV_MACHINE_CLASS(oc);
+>> @@ -2261,7 +2261,6 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+>>           { TYPE_PNV_PHB_ROOT_PORT, "version", "5" },
+>>       };
+>>   
+>> -    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
+>>       mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
+>>       compat_props_add(mc->compat_props, phb_compat, G_N_ELEMENTS(phb_compat));
+>>   
+>> @@ -2274,6 +2273,23 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+>>       machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
+>>   }
+>>   
+>> +static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+>> +{
+>> +    MachineClass *mc = MACHINE_CLASS(oc);
+>> +
+>> +    pnv_machine_p10_common_class_init(oc, data);
+>> +    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
+>> +
+>> +}
+>> +
+>> +static void pnv_machine_p10_rainier_class_init(ObjectClass *oc, void *data)
+>> +{
+>> +    MachineClass *mc = MACHINE_CLASS(oc);
+>> +
+>> +    pnv_machine_p10_common_class_init(oc, data);
+>> +    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10 rainier";
+>> +}
+>> +
+>>   static bool pnv_machine_get_hb(Object *obj, Error **errp)
+>>   {
+>>       PnvMachineState *pnv = PNV_MACHINE(obj);
+>> @@ -2379,6 +2395,15 @@ static void pnv_machine_class_init(ObjectClass *oc, void *data)
+>>       }
+>>   
+>>   static const TypeInfo types[] = {
+>> +    {
+>> +        .name          = MACHINE_TYPE_NAME("powernv10-rainier"),
+>> +        .parent        = TYPE_PNV_MACHINE,
+>> +        .class_init    = pnv_machine_p10_rainier_class_init,
+>> +        .interfaces = (InterfaceInfo[]) {
+>> +            { TYPE_XIVE_FABRIC },
+>> +            { },
+>> +        },
+>> +    },
+>>       {
+>>           .name          = MACHINE_TYPE_NAME("powernv10"),
+>>           .parent        = TYPE_PNV_MACHINE,
+> 
 
 
