@@ -2,82 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702E27F232B
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 02:35:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4249C7F2353
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 02:51:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5FeG-0006lH-B1; Mon, 20 Nov 2023 20:33:56 -0500
+	id 1r5FuH-0001tc-OW; Mon, 20 Nov 2023 20:50:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r5FeD-0006iF-Ga; Mon, 20 Nov 2023 20:33:53 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r5FeB-0004bC-RA; Mon, 20 Nov 2023 20:33:53 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6cb74a527ceso1398123b3a.2; 
- Mon, 20 Nov 2023 17:33:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700530430; x=1701135230; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6wUDGe10c0aU14nTgD3n9Gyt2ZABfd6AJzBeTscJ34I=;
- b=I+svLXU0EEpexBnfzgfTEdhV9ntyPE4Zn0DcPjD4DjdG3GcPbZyb3vy1aUxesmg6+N
- 0oPtC9lgBZ2uv9Q5iAZlOZMIJIPBjmiY8La2H+AnfUqngwHvnhAkIbA4NrUQ/v0S9dnp
- tXsFlIXUej8MECIUwYoA9+hO+YxP6ChAkA3Pf8tsHcMrcK4OdJ9KWRefkvxALdhqmq5a
- oDYsnplvoYdMv6TBPf/HWN40h7pzSFNOvY7cCVxS+7SEXMU1tSWkx1pyJF7xQsw2dKXg
- pUMRJUkruUVF8OdrWZFvF2EL7+ZTMfkqrgSeFaOC1mSqMofJF5YqAfbYMWmAhC130nSx
- /WDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700530430; x=1701135230;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=6wUDGe10c0aU14nTgD3n9Gyt2ZABfd6AJzBeTscJ34I=;
- b=N0kUC05JYoxTu2p6XthEnxAw9CYsuUty0x7ELlwNNMRggP2X4gaJBxkV7dJlHeTB+j
- MdNU2phMdeFwx+OATuo1RN1aYQN55l+M/pm6cMrZCOI61h73XbinVNb1Ecf2ZHP3E+tw
- 91P+vLztHKI6K6cEe+q+E9+1c93ErS0okxcH7nodPC+PuGYsFsLt2rsWClZpuHKw3wof
- D5SOHyLGjOqeN73jFWrGAA/SoYe+1hJk/Q4eTFtJuQBAC+yKJpuIxwGx+54vI4Kp3bKi
- JlZKuEctrw4HVJ6J2CkeDwODi1+mxKu33i++eaELl49207d3ENadUVmQbWxRG3Ejncb0
- jKCg==
-X-Gm-Message-State: AOJu0YzDDjocuZaBL/Z+rTqY4S0S2E3LIjdFt5ZblrsSJPPcNldJKKGV
- z3Uneb/rEsuJbL6DFckJOWU=
-X-Google-Smtp-Source: AGHT+IHQeMqEaohUXVXU5XNnyvgRKMUFDkrx4h/1Sm+x29KIHRmHP6R93dk2lq9Iz+1IFl8hv3YfOA==
-X-Received: by 2002:a05:6a00:1a8a:b0:6be:62e:d5a8 with SMTP id
- e10-20020a056a001a8a00b006be062ed5a8mr8184430pfv.0.1700530429840; 
- Mon, 20 Nov 2023 17:33:49 -0800 (PST)
-Received: from localhost (203-219-179-16.tpgi.com.au. [203.219.179.16])
- by smtp.gmail.com with ESMTPSA id
- f18-20020aa78b12000000b006b58af8aae3sm6692228pfd.77.2023.11.20.17.33.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Nov 2023 17:33:49 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 21 Nov 2023 11:33:44 +1000
-Message-Id: <CX43Q4CXT43G.16NTWUAWGGXCB@wheely>
-Cc: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?= <fbarrat@linux.ibm.com>
-Subject: Re: [PATCH v4 03/11] ppc/pnv: New powernv10-rainier machine type
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Glenn Miles" <milesg@linux.vnet.ibm.com>, <qemu-devel@nongnu.org>,
- <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20231120235112.1951342-1-milesg@linux.vnet.ibm.com>
- <20231120235112.1951342-4-milesg@linux.vnet.ibm.com>
-In-Reply-To: <20231120235112.1951342-4-milesg@linux.vnet.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1r5FuF-0001t1-9p
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 20:50:27 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1r5Fu8-0000zd-2x
+ for qemu-devel@nongnu.org; Mon, 20 Nov 2023 20:50:27 -0500
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8Dxg_DSDFxl6mk7AA--.52194S3;
+ Tue, 21 Nov 2023 09:50:10 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8CxeuTPDFxldANIAA--.29160S3; 
+ Tue, 21 Nov 2023 09:50:10 +0800 (CST)
+Subject: Re: [PATCH 1/1] tcg/loongarch64: Fix tcg_out_mov() Aborted
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: philmd@linaro.org, git@xen0n.name, c@jia.je, maobibo@loongson.cn
+References: <20231120065916.374045-1-gaosong@loongson.cn>
+ <e99f440c-6d95-4e7c-b08e-332897062997@linaro.org>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <52827a12-0d3f-3946-a204-747b10037055@loongson.cn>
+Date: Tue, 21 Nov 2023 09:50:10 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <e99f440c-6d95-4e7c-b08e-332897062997@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8CxeuTPDFxldANIAA--.29160S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxGF45Zw1fXw4fWrW7AF1fGrX_yoW5CF4xpr
+ yrKF4rKrWrtrWkArsFva4DXFyxG3yY93W2q3Wrt3W8ArsrZr1jvr1xWr42gFyj9a1IgrW8
+ ZFnIvr1avF4jyagCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+ 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AK
+ xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
+ AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+ 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
+ kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+ wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+ 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1EksDUU
+ UUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-4.009,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,94 +81,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Nov 21, 2023 at 9:51 AM AEST, Glenn Miles wrote:
-> Create a new powernv machine type, powernv10-rainier, that
-> will contain rainier-specific devices.
-
-Is the plan to have a base powernv10 common to all and then
-powernv10-rainier looks like a Rainier? Or would powernv10
-just be a rainier?
-
-It's fine to structure code this way, I'm just wondering about
-the machine types available to user. Is a base powernv10 machine
-useful to run?
-
-Thanks,
-Nick
-
+在 2023/11/20 下午11:59, Richard Henderson 写道:
+> On 11/19/23 22:59, Song Gao wrote:
+>> On LoongArch host,  we got an Aborted from tcg_out_mov().
+>>
+>> qemu-x86_64 configure with '--enable-debug'.
+>>
+>>> (gdb) b /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312
+>>> Breakpoint 1 at 0x2576f0: file 
+>>> /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc, line 312.
+>>> (gdb) run hello
+>> [...]
+>>> Thread 1 "qemu-x86_64" hit Breakpoint 1, tcg_out_mov (s=0xaaaae91760 
+>>> <tcg_init_ctx>, type=TCG_TYPE_V128, ret=TCG_REG_V2,
+>>>      arg=TCG_REG_V0) at 
+>>> /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312
+>>> 312           g_assert_not_reached();
+>>> (gdb) bt
+>>> #0  tcg_out_mov (s=0xaaaae91760 <tcg_init_ctx>, type=TCG_TYPE_V128, 
+>>> ret=TCG_REG_V2, arg=TCG_REG_V0)
+>>>      at /home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312
+>>> #1  0x000000aaaad0fee0 in tcg_reg_alloc_mov (s=0xaaaae91760 
+>>> <tcg_init_ctx>, op=0xaaaaf67c20) at ../tcg/tcg.c:4632
+>>> #2  0x000000aaaad142f4 in tcg_gen_code (s=0xaaaae91760 
+>>> <tcg_init_ctx>, tb=0xffe8030340 <code_gen_buffer+197328>,
+>>>      pc_start=4346094) at ../tcg/tcg.c:6135
+>> [...]
+>>> (gdb) c
+>>> Continuing.
+>>> **
+>>> ERROR:/home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312:tcg_out_mov: 
+>>> code should not be reached
+>>> Bail out! 
+>>> ERROR:/home1/gaosong/code/qemu/tcg/loongarch64/tcg-target.c.inc:312:tcg_out_mov: 
+>>> code should not be reached
+>>>
+>>> Thread 1 "qemu-x86_64" received signal SIGABRT, Aborted.
+>>> 0x000000fff7b1c390 in raise () from /lib64/libc.so.6
+>>> (gdb) q
+>>
+>> Signed-off-by: Song Gao <gaosong@loongson.cn>
+>> ---
+>>   tcg/loongarch64/tcg-target.c.inc | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/tcg/loongarch64/tcg-target.c.inc 
+>> b/tcg/loongarch64/tcg-target.c.inc
+>> index a588fb3085..5f68040230 100644
+>> --- a/tcg/loongarch64/tcg-target.c.inc
+>> +++ b/tcg/loongarch64/tcg-target.c.inc
+>> @@ -308,6 +308,9 @@ static bool tcg_out_mov(TCGContext *s, TCGType 
+>> type, TCGReg ret, TCGReg arg)
+>>            */
+>>           tcg_out_opc_or(s, ret, arg, TCG_REG_ZERO);
+>>           break;
+>> +    case TCG_TYPE_V128:
+>> +        tcg_out_opc_vaddi_du(s, ret, arg, 0);
+>> +        break;
 >
-> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> ---
->  hw/ppc/pnv.c | 29 +++++++++++++++++++++++++++--
->  1 file changed, 27 insertions(+), 2 deletions(-)
+> Is add with immediate zero really the canonical alias for "vector move"?
 >
-> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index 9c29727337..3481a1220e 100644
-> --- a/hw/ppc/pnv.c
-> +++ b/hw/ppc/pnv.c
-> @@ -2249,7 +2249,7 @@ static void pnv_machine_power9_class_init(ObjectCla=
-ss *oc, void *data)
->      machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
->  }
-> =20
-> -static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-> +static void pnv_machine_p10_common_class_init(ObjectClass *oc, void *dat=
-a)
->  {
->      MachineClass *mc =3D MACHINE_CLASS(oc);
->      PnvMachineClass *pmc =3D PNV_MACHINE_CLASS(oc);
-> @@ -2261,7 +2261,6 @@ static void pnv_machine_power10_class_init(ObjectCl=
-ass *oc, void *data)
->          { TYPE_PNV_PHB_ROOT_PORT, "version", "5" },
->      };
-> =20
-> -    mc->desc =3D "IBM PowerNV (Non-Virtualized) POWER10";
->      mc->default_cpu_type =3D POWERPC_CPU_TYPE_NAME("power10_v2.0");
->      compat_props_add(mc->compat_props, phb_compat, G_N_ELEMENTS(phb_comp=
-at));
-> =20
-> @@ -2274,6 +2273,23 @@ static void pnv_machine_power10_class_init(ObjectC=
-lass *oc, void *data)
->      machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
->  }
-> =20
-> +static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-> +{
-> +    MachineClass *mc =3D MACHINE_CLASS(oc);
-> +
-> +    pnv_machine_p10_common_class_init(oc, data);
-> +    mc->desc =3D "IBM PowerNV (Non-Virtualized) POWER10";
-> +
-> +}
-> +
-> +static void pnv_machine_p10_rainier_class_init(ObjectClass *oc, void *da=
-ta)
-> +{
-> +    MachineClass *mc =3D MACHINE_CLASS(oc);
-> +
-> +    pnv_machine_p10_common_class_init(oc, data);
-> +    mc->desc =3D "IBM PowerNV (Non-Virtualized) POWER10 rainier";
-> +}
-> +
->  static bool pnv_machine_get_hb(Object *obj, Error **errp)
->  {
->      PnvMachineState *pnv =3D PNV_MACHINE(obj);
-> @@ -2379,6 +2395,15 @@ static void pnv_machine_class_init(ObjectClass *oc=
-, void *data)
->      }
-> =20
->  static const TypeInfo types[] =3D {
-> +    {
-> +        .name          =3D MACHINE_TYPE_NAME("powernv10-rainier"),
-> +        .parent        =3D TYPE_PNV_MACHINE,
-> +        .class_init    =3D pnv_machine_p10_rainier_class_init,
-> +        .interfaces =3D (InterfaceInfo[]) {
-> +            { TYPE_XIVE_FABRIC },
-> +            { },
-> +        },
-> +    },
->      {
->          .name          =3D MACHINE_TYPE_NAME("powernv10"),
->          .parent        =3D TYPE_PNV_MACHINE,
+> There is often some form that is recommended by the architecture, so 
+> that it may be recognized for register renaming.  Usually it is some 
+> form of logic instruction, not arithmetic.  I see that LLVM emits 
+> "vori.b dst, src, 0" for this case.
+> adfadf
+you are right,
+I see  the insn  'mov '  opcode is '00150000'.  it is 'or dst, src, zero'.
+
+Thanks.
+Song Gao
+> Regardless, this patch works to fix the assert so,
+>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>
+>
+> r~
 
 
