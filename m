@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 780BE7F27F7
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 09:50:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E55C7F27DE
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 09:47:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5MP8-00065X-7z; Tue, 21 Nov 2023 03:46:46 -0500
+	id 1r5MPC-000669-HR; Tue, 21 Nov 2023 03:46:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r5MP5-00065F-Kc
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:46:43 -0500
+ id 1r5MPA-00065s-4w
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:46:48 -0500
 Received: from mgamail.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r5MP3-0001Qo-TI
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:46:43 -0500
+ id 1r5MP8-0001Qo-BG
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 03:46:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700556401; x=1732092401;
+ t=1700556406; x=1732092406;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=uw7DnlmdMZPLbQL7qWgqiELopkS8trDa/dLDZoi3etc=;
- b=OrbcSvY3b9LK4Gl0H0hiSqnbLJyqsmupwfs3GlDR/KJ3XP622gaGiW8q
- 6aoBWdM7K8g5yho6gCUfngED/jXgntjTaomDL0kQKmf3LJXpeM3kUaftP
- 29cDEz+y/NRKqO7LkMvgFl4jXe8DLmoYPYpmY8ItqBHv+NHZpAfSOJPYf
- zT4NLM2CSZ7R3w62Btq/3b5ZgGHLuofg5HgnHAxpxAKIpQYzBOO9Oo+Mx
- wh34RCyU4ASrmj88mXcRTnir0X5OmjuVk3VYCkgFhvEzgMVGteLF37dJ/
- o9KvWeNKx5viH8rh2qgAkg/ZvEuF4qYZciA28QnFy7jHXPW7BOsSBUhWC Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="395722046"
-X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="395722046"
+ bh=1iSGJzqaij9umCCLXF5dT+WsPF2Bb5NP0jCh7b7Rxsk=;
+ b=eJor/d07cpSk27yghIEjMP0/rX/l42fhdxLkRPNGViU7IoL1OTmYhuiO
+ nKyZiUR9PPxV1VZGn10uR2BzTfsZUw4lZA5W55UGY+1FR3oAw4TinuXl2
+ T8TH3vF+AOxLm5CYfPrGonE1rd/CGGfP7cq/HJ6EO9FVNeLVS/GAXUl2k
+ RCDU2Mja/UvpITcYXPQGr1huySCbD4wLF9POHYaHCOMH23tGLjwGymlKm
+ MTljz8DwGL9b0M4Hu0DHaHvHWj30CIM72zMr+I6GqzHnI/9UyoS0dSTv1
+ 3vAXFFGSyLqsQTa4ooRxoawwluDDT6LLnTRh/qn1+NyYAiHe/htImtIK7 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="395722065"
+X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="395722065"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2023 00:46:41 -0800
+ 21 Nov 2023 00:46:44 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="884124886"
-X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="884124886"
+X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="884124897"
+X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; d="scan'208";a="884124897"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2023 00:46:37 -0800
+ 21 Nov 2023 00:46:41 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
  peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com
-Subject: [PATCH v7 06/27] vfio/iommufd: Add support for iova_ranges and pgsizes
-Date: Tue, 21 Nov 2023 16:44:05 +0800
-Message-Id: <20231121084426.1286987-7-zhenzhong.duan@intel.com>
+Subject: [PATCH v7 07/27] vfio/pci: Extract out a helper
+ vfio_pci_get_pci_hot_reset_info
+Date: Tue, 21 Nov 2023 16:44:06 +0800
+Message-Id: <20231121084426.1286987-8-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
 References: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
@@ -80,99 +81,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some vIOMMU such as virtio-iommu use IOVA ranges from host side to
-setup reserved ranges for passthrough device, so that guest will not
-use an IOVA range beyond host support.
+This helper will be used by both legacy and iommufd backends.
 
-Use an uAPI of IOMMUFD to get IOVA ranges of host side and pass to
-vIOMMU just like the legacy backend, if this fails, fallback to
-64bit IOVA range.
-
-Also use out_iova_alignment returned from uAPI as pgsizes instead of
-qemu_real_host_page_size() as a fallback.
+No functional changes intended.
 
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Tested-by: Eric Auger <eric.auger@redhat.com>
 ---
- hw/vfio/iommufd.c | 56 ++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
+ hw/vfio/pci.h |  3 +++
+ hw/vfio/pci.c | 54 +++++++++++++++++++++++++++++++++++----------------
+ 2 files changed, 40 insertions(+), 17 deletions(-)
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 6d31aeac7b..01b448e840 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -261,6 +261,53 @@ static int iommufd_cdev_ram_block_discard_disable(bool state)
-     return ram_block_uncoordinated_discard_disable(state);
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index fba8737ab2..1006061afb 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -218,6 +218,9 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr);
+ 
+ extern const PropertyInfo qdev_prop_nv_gpudirect_clique;
+ 
++int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
++                                    struct vfio_pci_hot_reset_info **info_p);
++
+ int vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp);
+ 
+ int vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index c62c02f7b6..eb55e8ae88 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2445,22 +2445,13 @@ static bool vfio_pci_host_match(PCIHostDeviceAddress *addr, const char *name)
+     return (strcmp(tmp, name) == 0);
  }
  
-+static int iommufd_cdev_get_info_iova_range(VFIOIOMMUFDContainer *container,
-+                                            uint32_t ioas_id, Error **errp)
-+{
-+    VFIOContainerBase *bcontainer = &container->bcontainer;
-+    struct iommu_ioas_iova_ranges *info;
-+    struct iommu_iova_range *iova_ranges;
-+    int ret, sz, fd = container->be->fd;
-+
-+    info = g_malloc0(sizeof(*info));
-+    info->size = sizeof(*info);
-+    info->ioas_id = ioas_id;
-+
-+    ret = ioctl(fd, IOMMU_IOAS_IOVA_RANGES, info);
-+    if (ret && errno != EMSGSIZE) {
-+        goto error;
-+    }
-+
-+    sz = info->num_iovas * sizeof(struct iommu_iova_range);
-+    info = g_realloc(info, sizeof(*info) + sz);
-+    info->allowed_iovas = (uintptr_t)(info + 1);
-+
-+    ret = ioctl(fd, IOMMU_IOAS_IOVA_RANGES, info);
-+    if (ret) {
-+        goto error;
-+    }
-+
-+    iova_ranges = (struct iommu_iova_range *)(uintptr_t)info->allowed_iovas;
-+
-+    for (int i = 0; i < info->num_iovas; i++) {
-+        Range *range = g_new(Range, 1);
-+
-+        range_set_bounds(range, iova_ranges[i].start, iova_ranges[i].last);
-+        bcontainer->iova_ranges =
-+            range_list_insert(bcontainer->iova_ranges, range);
-+    }
-+    bcontainer->pgsizes = info->out_iova_alignment;
-+
-+    g_free(info);
-+    return 0;
-+
-+error:
-+    ret = -errno;
-+    g_free(info);
-+    error_setg_errno(errp, errno, "Cannot get IOVA ranges");
-+    return ret;
-+}
-+
- static int iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
-                                AddressSpace *as, Error **errp)
+-static int vfio_pci_hot_reset(VFIOPCIDevice *vdev, bool single)
++int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
++                                    struct vfio_pci_hot_reset_info **info_p)
  {
-@@ -335,7 +382,14 @@ static int iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
-         goto err_discard_disable;
+-    VFIOGroup *group;
+     struct vfio_pci_hot_reset_info *info;
+-    struct vfio_pci_dependent_device *devices;
+-    struct vfio_pci_hot_reset *reset;
+-    int32_t *fds;
+-    int ret, i, count;
+-    bool multi = false;
++    int ret, count;
+ 
+-    trace_vfio_pci_hot_reset(vdev->vbasedev.name, single ? "one" : "multi");
+-
+-    if (!single) {
+-        vfio_pci_pre_reset(vdev);
+-    }
+-    vdev->vbasedev.needs_reset = false;
++    assert(info_p && !*info_p);
+ 
+     info = g_malloc0(sizeof(*info));
+     info->argsz = sizeof(*info);
+@@ -2468,24 +2459,53 @@ static int vfio_pci_hot_reset(VFIOPCIDevice *vdev, bool single)
+     ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_GET_PCI_HOT_RESET_INFO, info);
+     if (ret && errno != ENOSPC) {
+         ret = -errno;
++        g_free(info);
+         if (!vdev->has_pm_reset) {
+             error_report("vfio: Cannot reset device %s, "
+                          "no available reset mechanism.", vdev->vbasedev.name);
+         }
+-        goto out_single;
++        return ret;
      }
  
--    bcontainer->pgsizes = qemu_real_host_page_size();
-+    ret = iommufd_cdev_get_info_iova_range(container, ioas_id, &err);
-+    if (ret) {
-+        error_append_hint(&err,
-+                   "Fallback to default 64bit IOVA range and 4K page size\n");
-+        warn_report_err(err);
-+        err = NULL;
-+        bcontainer->pgsizes = qemu_real_host_page_size();
-+    }
+     count = info->count;
+-    info = g_realloc(info, sizeof(*info) + (count * sizeof(*devices)));
+-    info->argsz = sizeof(*info) + (count * sizeof(*devices));
+-    devices = &info->devices[0];
++    info = g_realloc(info, sizeof(*info) + (count * sizeof(info->devices[0])));
++    info->argsz = sizeof(*info) + (count * sizeof(info->devices[0]));
  
-     bcontainer->listener = vfio_memory_listener;
-     memory_listener_register(&bcontainer->listener, bcontainer->space->as);
+     ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_GET_PCI_HOT_RESET_INFO, info);
+     if (ret) {
+         ret = -errno;
++        g_free(info);
+         error_report("vfio: hot reset info failed: %m");
++        return ret;
++    }
++
++    *info_p = info;
++    return 0;
++}
++
++static int vfio_pci_hot_reset(VFIOPCIDevice *vdev, bool single)
++{
++    VFIOGroup *group;
++    struct vfio_pci_hot_reset_info *info = NULL;
++    struct vfio_pci_dependent_device *devices;
++    struct vfio_pci_hot_reset *reset;
++    int32_t *fds;
++    int ret, i, count;
++    bool multi = false;
++
++    trace_vfio_pci_hot_reset(vdev->vbasedev.name, single ? "one" : "multi");
++
++    if (!single) {
++        vfio_pci_pre_reset(vdev);
++    }
++    vdev->vbasedev.needs_reset = false;
++
++    ret = vfio_pci_get_pci_hot_reset_info(vdev, &info);
++
++    if (ret) {
+         goto out_single;
+     }
++    devices = &info->devices[0];
+ 
+     trace_vfio_pci_hot_reset_has_dep_devices(vdev->vbasedev.name);
+ 
 -- 
 2.34.1
 
