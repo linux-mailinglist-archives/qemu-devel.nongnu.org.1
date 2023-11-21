@@ -2,100 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51117F223C
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 01:39:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 702E27F232B
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 02:35:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Emc-0005Ia-UN; Mon, 20 Nov 2023 19:38:30 -0500
+	id 1r5FeG-0006lH-B1; Mon, 20 Nov 2023 20:33:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1r5Ema-0005I8-H4
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 19:38:28 -0500
-Received: from dragonfly.birch.relay.mailchannels.net ([23.83.209.51])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1r5EmY-0004qB-R5
- for qemu-devel@nongnu.org; Mon, 20 Nov 2023 19:38:28 -0500
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id BA2667A2A1F;
- Tue, 21 Nov 2023 00:38:24 +0000 (UTC)
-Received: from pdx1-sub0-mail-a230.dreamhost.com (unknown [127.0.0.6])
- (Authenticated sender: dreamhost)
- by relay.mailchannels.net (Postfix) with ESMTPA id B58A67A2896;
- Tue, 21 Nov 2023 00:38:23 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1700527103; a=rsa-sha256;
- cv=none;
- b=t8K9rEmooo1y6w7t3pHROUlaDZh6oJViOuY0AITIHRxNYqwnB6ylDAsm++0tP0xXdDUgoe
- SCKdiItKeq61Waz7a7/a0n0VvtMldo1KEBkeARIno6FCx2uDL1NBJVhY342yLydTOIk0qW
- xdXP6k6h7jFE1dxHaIfTIwLfbiNEx6lhOvp+bmhtoQcdjPuKulCMBJL0Kr/PP13tptbeLG
- hLXLO91AEWYx/h0e9V/lleKe6kdjxfWJTBoohqJa1hbfyQ7ubdFmn0sWpmTJVDsdPi4911
- qojoHsmLxouqvTxLkSjk2jS46h9KjC8r1dOhmP9H3f+7M31PIEsuFOx+pyi9Aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net; s=arc-2022; t=1700527103;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references:dkim-signature;
- bh=1NLIYBZHY7cPwhLhsgurCHjnocUrPQCjVm5pP+PxtZ8=;
- b=cBhabovjFR15c3tjc7IPnAHqkWVagp2m5V9ma+uJe/DaQ0BY5BLnH/JyVorEUKVhjBuSf9
- XW74zMmeVg0RZm0tCEAg9jlSRS7VDA4gH8fpm+KHdf5lW5uhFoL5QWVrmZoU3Pnl+z5qsF
- wHDOrkDHWIGzi2KQLpHfQr5bFAp82kc+RjrdqsAxYwL3sxvW4+hxTvJIGG65fecf4/d4iO
- opCvhirgHIt+2obg4JAVIQYE2sMpdPRwOWZDfBn1AO5Hcu8DvRSzAdQIeARLofG++/ndcr
- +0apxDmh+Esg8hYq1GZR/viYYNtM5DR1R9dt22tRNA3JU92GaZfiLseQINUjgw==
-ARC-Authentication-Results: i=1; rspamd-7f8878586f-s5zmn;
- auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Tangy-Whispering: 18203b295241015b_1700527104584_2010662759
-X-MC-Loop-Signature: 1700527104584:60291264
-X-MC-Ingress-Time: 1700527104584
-Received: from pdx1-sub0-mail-a230.dreamhost.com (pop.dreamhost.com
- [64.90.62.162]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
- by 100.117.123.8 (trex/6.9.2); Tue, 21 Nov 2023 00:38:24 +0000
-Received: from offworld (unknown [108.175.208.159])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- (Authenticated sender: dave@stgolabs.net)
- by pdx1-sub0-mail-a230.dreamhost.com (Postfix) with ESMTPSA id 4SZ58H0gmdz4d; 
- Mon, 20 Nov 2023 16:38:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
- s=dreamhost; t=1700527103;
- bh=1NLIYBZHY7cPwhLhsgurCHjnocUrPQCjVm5pP+PxtZ8=;
- h=Date:From:To:Cc:Subject:Content-Type;
- b=qb1QduTsvsxZbt8uRNg+tZBLTTMy6U/Qtm+9F/ONnk1ol4FSLwFisD86hwDmYyul9
- u6wlIaYfU08Zayn5KQUMB9AI2UVjd06Lhng0HOITpSh6NhJ3rPDJAbJkidbXIqelAy
- jPHvJ+2fNHYt1duV2pPk55c5y06A8OiXuUvuWmVEGE80kTho1WizOreZJFiZ1aqUmg
- j0C5cUH7mRYtMYFgm6GyYPixGYmMWqfoGdkLeHRNbIMeEfDfhVpqX5IDVSiLyvKPbq
- NJNk24UVBjMIeVY6BnpkAFqgajtpUp62qup6PWu2OWXapJs9qalUAEADrvgFtzFN+h
- iXBa+lDdGlS6w==
-Date: Mon, 20 Nov 2023 16:38:20 -0800
-From: Davidlohr Bueso <dave@stgolabs.net>
-To: shiju.jose@huawei.com
-Cc: qemu-devel@nongnu.org, linux-cxl@vger.kernel.org, 
- jonathan.cameron@huawei.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com, 
- linuxarm@huawei.com
-Subject: Re: [RFC PATCH 2/3] hw/cxl/cxl-mailbox-utils: Add device patrol
- scrub control feature
-Message-ID: <vjd2xgizy4f4sjsbjfksjhnrzshd2o24ya5k2xrtvcf36tpi6s@elfrgj2q6eh3>
-References: <20231114124711.1128-1-shiju.jose@huawei.com>
- <20231114124711.1128-3-shiju.jose@huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20231114124711.1128-3-shiju.jose@huawei.com>
-User-Agent: NeoMutt/20231006
-Received-SPF: pass client-ip=23.83.209.51; envelope-from=dave@stgolabs.net;
- helo=dragonfly.birch.relay.mailchannels.net
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1r5FeD-0006iF-Ga; Mon, 20 Nov 2023 20:33:53 -0500
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1r5FeB-0004bC-RA; Mon, 20 Nov 2023 20:33:53 -0500
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6cb74a527ceso1398123b3a.2; 
+ Mon, 20 Nov 2023 17:33:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1700530430; x=1701135230; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6wUDGe10c0aU14nTgD3n9Gyt2ZABfd6AJzBeTscJ34I=;
+ b=I+svLXU0EEpexBnfzgfTEdhV9ntyPE4Zn0DcPjD4DjdG3GcPbZyb3vy1aUxesmg6+N
+ 0oPtC9lgBZ2uv9Q5iAZlOZMIJIPBjmiY8La2H+AnfUqngwHvnhAkIbA4NrUQ/v0S9dnp
+ tXsFlIXUej8MECIUwYoA9+hO+YxP6ChAkA3Pf8tsHcMrcK4OdJ9KWRefkvxALdhqmq5a
+ oDYsnplvoYdMv6TBPf/HWN40h7pzSFNOvY7cCVxS+7SEXMU1tSWkx1pyJF7xQsw2dKXg
+ pUMRJUkruUVF8OdrWZFvF2EL7+ZTMfkqrgSeFaOC1mSqMofJF5YqAfbYMWmAhC130nSx
+ /WDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700530430; x=1701135230;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=6wUDGe10c0aU14nTgD3n9Gyt2ZABfd6AJzBeTscJ34I=;
+ b=N0kUC05JYoxTu2p6XthEnxAw9CYsuUty0x7ELlwNNMRggP2X4gaJBxkV7dJlHeTB+j
+ MdNU2phMdeFwx+OATuo1RN1aYQN55l+M/pm6cMrZCOI61h73XbinVNb1Ecf2ZHP3E+tw
+ 91P+vLztHKI6K6cEe+q+E9+1c93ErS0okxcH7nodPC+PuGYsFsLt2rsWClZpuHKw3wof
+ D5SOHyLGjOqeN73jFWrGAA/SoYe+1hJk/Q4eTFtJuQBAC+yKJpuIxwGx+54vI4Kp3bKi
+ JlZKuEctrw4HVJ6J2CkeDwODi1+mxKu33i++eaELl49207d3ENadUVmQbWxRG3Ejncb0
+ jKCg==
+X-Gm-Message-State: AOJu0YzDDjocuZaBL/Z+rTqY4S0S2E3LIjdFt5ZblrsSJPPcNldJKKGV
+ z3Uneb/rEsuJbL6DFckJOWU=
+X-Google-Smtp-Source: AGHT+IHQeMqEaohUXVXU5XNnyvgRKMUFDkrx4h/1Sm+x29KIHRmHP6R93dk2lq9Iz+1IFl8hv3YfOA==
+X-Received: by 2002:a05:6a00:1a8a:b0:6be:62e:d5a8 with SMTP id
+ e10-20020a056a001a8a00b006be062ed5a8mr8184430pfv.0.1700530429840; 
+ Mon, 20 Nov 2023 17:33:49 -0800 (PST)
+Received: from localhost (203-219-179-16.tpgi.com.au. [203.219.179.16])
+ by smtp.gmail.com with ESMTPSA id
+ f18-20020aa78b12000000b006b58af8aae3sm6692228pfd.77.2023.11.20.17.33.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 20 Nov 2023 17:33:49 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 21 Nov 2023 11:33:44 +1000
+Message-Id: <CX43Q4CXT43G.16NTWUAWGGXCB@wheely>
+Cc: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?= <fbarrat@linux.ibm.com>
+Subject: Re: [PATCH v4 03/11] ppc/pnv: New powernv10-rainier machine type
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Glenn Miles" <milesg@linux.vnet.ibm.com>, <qemu-devel@nongnu.org>,
+ <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20231120235112.1951342-1-milesg@linux.vnet.ibm.com>
+ <20231120235112.1951342-4-milesg@linux.vnet.ibm.com>
+In-Reply-To: <20231120235112.1951342-4-milesg@linux.vnet.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,37 +93,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 14 Nov 2023, shiju.jose@huawei.com wrote:
+On Tue Nov 21, 2023 at 9:51 AM AEST, Glenn Miles wrote:
+> Create a new powernv machine type, powernv10-rainier, that
+> will contain rainier-specific devices.
 
->+        case  CXL_FEATURE_PATROL_SCRUB:
->+            /* Fill supported feature entry for device patrol scrub control */
->+            supported_feats->feat_entries[entry] =
->+                           (struct CXLSupportedFeatureEntry) {
->+                .uuid = patrol_scrub_uuid,
->+                .feat_index = index,
->+                .get_feat_size = sizeof(cxl_memdev_ps_feat_read_attrbs),
->+                .set_feat_size = sizeof(CXLMemPatrolScrubWriteAttrbs),
->+                /* Bit[0] : 1, feature attributes changable */
+Is the plan to have a base powernv10 common to all and then
+powernv10-rainier looks like a Rainier? Or would powernv10
+just be a rainier?
 
-s/changable/changeable
+It's fine to structure code this way, I'm just wondering about
+the machine types available to user. Is a base powernv10 machine
+useful to run?
 
->+                .attrb_flags = 0x1,
->+                .get_feat_version = CXL_MEMDEV_PS_GET_FEATURE_VERSION,
->+                .set_feat_version = CXL_MEMDEV_PS_SET_FEATURE_VERSION,
->+                .set_feat_effects = 0,
->+            };
->+            feat_entries++;
->+            /* Set default value for device patrol scrub read attributes */
->+            cxl_memdev_ps_feat_read_attrbs.scrub_cycle_cap =
->+                                CXL_MEMDEV_PS_SCRUB_CYCLE_CHANGE_CAP_DEFAULT |
->+                                CXL_MEMDEV_PS_SCRUB_REALTIME_REPORT_CAP_DEFAULT;
->+            cxl_memdev_ps_feat_read_attrbs.scrub_cycle =
->+                                CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_DEFAULT |
->+                                (CXL_MEMDEV_PS_MIN_SCRUB_CYCLE_DEFAULT << 8);
->+            cxl_memdev_ps_feat_read_attrbs.scrub_flags =
->+                                CXL_MEMDEV_PS_ENABLE_DEFAULT;
->+            break;
->         default:
->             break;
->         }
+Thanks,
+Nick
+
+>
+> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+> ---
+>  hw/ppc/pnv.c | 29 +++++++++++++++++++++++++++--
+>  1 file changed, 27 insertions(+), 2 deletions(-)
+>
+> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+> index 9c29727337..3481a1220e 100644
+> --- a/hw/ppc/pnv.c
+> +++ b/hw/ppc/pnv.c
+> @@ -2249,7 +2249,7 @@ static void pnv_machine_power9_class_init(ObjectCla=
+ss *oc, void *data)
+>      machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
+>  }
+> =20
+> -static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+> +static void pnv_machine_p10_common_class_init(ObjectClass *oc, void *dat=
+a)
+>  {
+>      MachineClass *mc =3D MACHINE_CLASS(oc);
+>      PnvMachineClass *pmc =3D PNV_MACHINE_CLASS(oc);
+> @@ -2261,7 +2261,6 @@ static void pnv_machine_power10_class_init(ObjectCl=
+ass *oc, void *data)
+>          { TYPE_PNV_PHB_ROOT_PORT, "version", "5" },
+>      };
+> =20
+> -    mc->desc =3D "IBM PowerNV (Non-Virtualized) POWER10";
+>      mc->default_cpu_type =3D POWERPC_CPU_TYPE_NAME("power10_v2.0");
+>      compat_props_add(mc->compat_props, phb_compat, G_N_ELEMENTS(phb_comp=
+at));
+> =20
+> @@ -2274,6 +2273,23 @@ static void pnv_machine_power10_class_init(ObjectC=
+lass *oc, void *data)
+>      machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
+>  }
+> =20
+> +static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+> +{
+> +    MachineClass *mc =3D MACHINE_CLASS(oc);
+> +
+> +    pnv_machine_p10_common_class_init(oc, data);
+> +    mc->desc =3D "IBM PowerNV (Non-Virtualized) POWER10";
+> +
+> +}
+> +
+> +static void pnv_machine_p10_rainier_class_init(ObjectClass *oc, void *da=
+ta)
+> +{
+> +    MachineClass *mc =3D MACHINE_CLASS(oc);
+> +
+> +    pnv_machine_p10_common_class_init(oc, data);
+> +    mc->desc =3D "IBM PowerNV (Non-Virtualized) POWER10 rainier";
+> +}
+> +
+>  static bool pnv_machine_get_hb(Object *obj, Error **errp)
+>  {
+>      PnvMachineState *pnv =3D PNV_MACHINE(obj);
+> @@ -2379,6 +2395,15 @@ static void pnv_machine_class_init(ObjectClass *oc=
+, void *data)
+>      }
+> =20
+>  static const TypeInfo types[] =3D {
+> +    {
+> +        .name          =3D MACHINE_TYPE_NAME("powernv10-rainier"),
+> +        .parent        =3D TYPE_PNV_MACHINE,
+> +        .class_init    =3D pnv_machine_p10_rainier_class_init,
+> +        .interfaces =3D (InterfaceInfo[]) {
+> +            { TYPE_XIVE_FABRIC },
+> +            { },
+> +        },
+> +    },
+>      {
+>          .name          =3D MACHINE_TYPE_NAME("powernv10"),
+>          .parent        =3D TYPE_PNV_MACHINE,
+
 
