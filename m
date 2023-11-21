@@ -2,96 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4365F7F3974
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 23:49:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A7F7F3A03
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 00:03:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5ZX4-0000aI-BY; Tue, 21 Nov 2023 17:47:50 -0500
+	id 1r5ZkH-0003TT-CK; Tue, 21 Nov 2023 18:01:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r5ZX2-0000Zs-TT
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 17:47:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1r5ZkD-0003St-Rt
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 18:01:26 -0500
+Received: from mail-dm6nam10on2050.outbound.protection.outlook.com
+ ([40.107.93.50] helo=NAM10-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r5ZWx-00006S-Tq
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 17:47:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700606862;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=1jDLGPzKff3q/BjrgCcUBz8UJrqLWKz4mhtRrWeREa8=;
- b=aN6VjVQuEdKQkGqSA7wbiu06gC+evr1t8sZZXvrWk77Urshh8JBWbCn3u1UEfmwj8QGc27
- rGZ0NuatymEKgWOEToo6XAx9zIIMJrNwjEmndekKlWE4vDw8booshWAJmoTMY231sY5CkX
- 5tAm4frhq6O5T5TFpApv4aRoyryKWTk=
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
- [209.85.166.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-255-bKWL3HZ_OVO5wsAlPeHwGw-1; Tue, 21 Nov 2023 17:47:40 -0500
-X-MC-Unique: bKWL3HZ_OVO5wsAlPeHwGw-1
-Received: by mail-io1-f72.google.com with SMTP id
- ca18e2360f4ac-7a9473ccf96so125138139f.0
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 14:47:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700606860; x=1701211660;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1jDLGPzKff3q/BjrgCcUBz8UJrqLWKz4mhtRrWeREa8=;
- b=q6X14Ma7Y12wsz3X04/WxPej6iKVQOtzskfMIuJjAzDHYQUsnHjSNPKvsIlo6LxLWu
- kuH4J5DB0f/WE5CN5KOJFnVlGBsKQHXNDak3hTglXmXXUQI3lQBUVoh95pfobUdF5lv1
- VFkMsQGlLytqO6iQ0LbmnlV1pc0f1nOtyEStR435vLPKXm5P5GfUS7CqNsV3DD4iRSBR
- aLWy9OWsuMo+NnEgueTKvYwPuN/pN5XGeh+kjei38kIaENYR3yckcWoZkSultmAD62IJ
- HkYcQiMiKUrnGvOxWHxS8J1zWLDBpokyLkShGNFzayb8yFal6Y0YtxCb2J8CwXgX2aeO
- 7Sjw==
-X-Gm-Message-State: AOJu0YyDiI55TFR4Vrmpgv9n/NmJM1iJzVc6FlWvT8yRlnHC0r1nPbAh
- nvrDZwdnpU/d9CjapOybjoB3BxhAgovrQ5XrgCtcI3nqSTQ2qspZ95JSt6llM2MaBD42ME8VogX
- 829Q08/IWveqc0+U=
-X-Received: by 2002:a05:6602:3587:b0:79f:a8c2:290d with SMTP id
- bi7-20020a056602358700b0079fa8c2290dmr1035281iob.0.1700606859856; 
- Tue, 21 Nov 2023 14:47:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGAiPdp4l0Ls8z5Q8yiLMvvfkZj/c/EnO/CK9dvOxfVMlF4bCikMlIPqY/Hs6yA2LKyEymJZw==
-X-Received: by 2002:a05:6602:3587:b0:79f:a8c2:290d with SMTP id
- bi7-20020a056602358700b0079fa8c2290dmr1035262iob.0.1700606859517; 
- Tue, 21 Nov 2023 14:47:39 -0800 (PST)
-Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- v12-20020a5ed70c000000b0079fe8ec6736sm2970839iom.55.2023.11.21.14.47.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Nov 2023 14:47:39 -0800 (PST)
-Date: Tue, 21 Nov 2023 17:47:36 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH V5 02/12] cpus: stop vm in suspended state
-Message-ID: <ZV0ziPkcuEyTruIC@x1n>
-References: <1699900440-207345-1-git-send-email-steven.sistare@oracle.com>
- <1699900440-207345-3-git-send-email-steven.sistare@oracle.com>
- <ZVu6ohk8_8xzyL-x@x1n>
- <e32d4434-c877-4f98-ac76-da8fa292395c@oracle.com>
- <ZVvTUuNYzGgFcg4m@x1n>
- <54f3f649-5b77-4b6c-92c9-495656031984@oracle.com>
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1r5ZkB-0002kh-J5
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 18:01:25 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VWhzEF/VX9uiPYQ6Dgwh/njPzVjEbaAsvIkVpLXmDzfPZd0pvy+6jY0TXlKMDkaw8NXLAd/pR1XuTdg5fSNA7KetOn9TAp0PspNeSvSgS0IRxS6oDebFeuA9KFQL9zC6pH3IiNyw5L2KI7HoW1vJxdBV/laXTFxiofagW+XseRZZWak1Nk2RaHSd7kj1nR9Zdp8y0mdESQNs7FVSKcE3MTHbIXmrCN2tqalfv2s1fKrCDaSOxoP+5OivcPF5VLSVjang7B8cuFSjwUPE3f8NrSJytFV78fyYeQ4D/Dwcd+UBljikDWaQm8ViJMNqIzi64c21JEB+L6cS8YimtXP8TA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7UNSYyk05Fw89pKDq/JJ+98yK1HwkV5g80MwHOb6E3E=;
+ b=enGlBE8o+SpZ9aUu7wMMhATXUDH+Qgz2iPHCHNubfKcxYSrc4eGAJlJv7dYsWNySxp7AOO7Y6f78oIIA5+B8vTYmstt9pCs4jX03ftWRMNxDpSOTbky+zfESz/5zaCqNurYbHaUTAVNsUhczm1cSbnIB6vMhBhEu0mTzgWvh8RnDHf7iFWgsnivOq0xXMAxgGAr39EOztBTlthAKsyGJf3Glj5M4B82V/QGueId3FnVZ3q4Z9T3kn+W2qDPAkmZAjR6NXvmF1JWWFzN0sdNC3ULkryMuhrqm8pITmomXApNIP7i5GJbLfKeHbfNiIv4Xx9lYpO5OIwXpsA4x47w0CA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7UNSYyk05Fw89pKDq/JJ+98yK1HwkV5g80MwHOb6E3E=;
+ b=s8894rPTllio5UlpQ39uDp5aG1PHWmE6UeMgHsgoX9Rj6bCwhnJJXNFty8j0pkdnlJE2LjLIZZ4PBIrjn1ls5qxGr61jXVgjkoDK2aP5lkTMGTy4KO+DGf7RNdsU3dJqCpt0wRbXmMaLTy7r9rD5TAtJpwq56LgQsXkWuIP0ODmAUhCu++39TY9txudfDdnrg7tS6AxZpZ5IaSQ5UFxZaPLafkbjNgap/RC4UA8hdRVjNcOqXdzqhgMmQVhOQ66fFJqRA1rQefxsK3FYgPRweUH1zEY63yeoafhgdjBso3fyVWriO9wJUfCmopgWdmk+bLITwZG645p/zmL/x/cdRQ==
+Received: from DS7PR03CA0134.namprd03.prod.outlook.com (2603:10b6:5:3b4::19)
+ by SJ1PR12MB6100.namprd12.prod.outlook.com (2603:10b6:a03:45d::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.18; Tue, 21 Nov
+ 2023 22:56:15 +0000
+Received: from DS1PEPF00017098.namprd05.prod.outlook.com
+ (2603:10b6:5:3b4:cafe::b0) by DS7PR03CA0134.outlook.office365.com
+ (2603:10b6:5:3b4::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.18 via Frontend
+ Transport; Tue, 21 Nov 2023 22:56:15 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ DS1PEPF00017098.mail.protection.outlook.com (10.167.18.102) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7025.12 via Frontend Transport; Tue, 21 Nov 2023 22:56:15 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Tue, 21 Nov
+ 2023 14:56:04 -0800
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.41; Tue, 21 Nov 2023 14:56:04 -0800
+Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
+ Transport; Tue, 21 Nov 2023 14:56:03 -0800
+Date: Tue, 21 Nov 2023 14:56:02 -0800
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>
+CC: <qemu-devel@nongnu.org>, <alex.williamson@redhat.com>, <clg@redhat.com>,
+ <jgg@nvidia.com>, <joao.m.martins@oracle.com>, <eric.auger@redhat.com>,
+ <peterx@redhat.com>, <jasowang@redhat.com>, <kevin.tian@intel.com>,
+ <yi.l.liu@intel.com>, <yi.y.sun@intel.com>, <chao.p.peng@intel.com>
+Subject: Re: [PATCH v7 00/27] vfio: Adopt iommufd
+Message-ID: <ZV01gh9I0QgcU+uk@Asurada-Nvidia>
+References: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <54f3f649-5b77-4b6c-92c9-495656031984@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017098:EE_|SJ1PR12MB6100:EE_
+X-MS-Office365-Filtering-Correlation-Id: b10f01af-0721-4f51-dca7-08dbeae510c7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 9YgFBC71Wrw6OjFEA77BgWOJ2IAPrndKHCc/Yocqn1vDDJzm7b1GWwu2A+D46yaS2UZcJNglPw2iZh/5DaAnu9Qd0MLmEf8nE7PK+YhEZBThPzOk/0+LMrWdN+GliB5I8fxGLPXXmTPSi7kMUPHDPYKimixsPivHe6JxS0RPGVltf9vu8SdJSX0wL+O41nIGRDcYXyukCTTvpX3+rLM+w/12TLVhAin5aIVLl8fthNLX+tk6YCE6k3HKkq6dGm+izpgNLWA9fLseA/4iiwzhmj4SneTV9MqOoCXDtRy54TmWtU+teUXJuSBvazr+IKS3+zW7g3hfyE31elVxrwW3TOG1l3++RO4gHb7tDJCSkSVS3YfSl7rFPm4Xf/6Nw1sd5VHnmzmWP8JwTjxyEbcJXUrredEH8jmB/n/DazE+m6pZs94az4H2IXslXopA5Iss4Aab9+N2ZFWozqtiK4fsXQnX5DD3lI23zgT3eLJCtsM2dOrxPlBaeSHHPhj4cHdJdt5zToHwDc1Z0xuvHL5rVrBopDEWgL1TblPBo2Gu8ZReckgbENb+PjhQ7p58vsvVmDOaiooLjG3Y3Okb6hsi+daeYwD6XXC8GkX3lUuFWXM9/OmOdahoOh1wdLLUuDD2e8WquXgcnZgcH+iq5t3NsRHwd4qiW8rEey5YRT8bjPpiRJRcIJK1wcEHxP4J+uuzDqOsDNFlQqslwD0x6IyXIbc9MOEUF84lmQvq7UlmCp5WY3JyxWTKwYuxPk1UZf2LF6jvNFFDxBwv4hYhVRFCemmLA5PBQZ0HLr7KKpfMzx5PqO/rDs04Fewsa2VHJGjd7Xh3BvgeIb4rfcWyrljGxbxMsDqolK9U3R24f3z4jrA=
+X-Forefront-Antispam-Report: CIP:216.228.118.233; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge2.nvidia.com; CAT:NONE;
+ SFS:(13230031)(4636009)(136003)(396003)(346002)(376002)(39860400002)(230922051799003)(451199024)(186009)(64100799003)(1800799012)(82310400011)(40470700004)(46966006)(36840700001)(40460700003)(426003)(336012)(33716001)(82740400003)(356005)(47076005)(86362001)(7636003)(36860700001)(6916009)(70586007)(54906003)(316002)(8676002)(8936002)(41300700001)(4326008)(55016003)(7416002)(5660300002)(4744005)(2906002)(70206006)(9686003)(26005)(40480700001)(966005)(478600001)(67856001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2023 22:56:15.1594 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b10f01af-0721-4f51-dca7-08dbeae510c7
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.233];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF00017098.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6100
+Received-SPF: softfail client-ip=40.107.93.50;
+ envelope-from=nicolinc@nvidia.com;
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,117 +130,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 21, 2023 at 04:21:18PM -0500, Steven Sistare wrote:
-> On 11/20/2023 4:44 PM, Peter Xu wrote:
-> > On Mon, Nov 20, 2023 at 03:55:54PM -0500, Steven Sistare wrote:
-> >> If we drop force, then all calls to vm_stop will completely stop the
-> >> suspended state, eg an hmp "stop" command. This causes two problems.
-> >> First, that is a change in user-visible behavior for something that
-> >> currently works,
-> > 
-> > IMHO it depends on what should be the correct behavior.  IOW, when VM is in
-> > SUSPENDED state and then the user sends "stop" QMP command, what should we
-> > expect?
-> > 
-> > My understanding is we should expect to fully stop the VM, including the
-> > ticks, for example.  Keeping the ticks running even after QMP "stop"
-> > doesn't sound right, isn't it?
-> 
-> I agree, but others may not, and this decision would require approval from 
-> maintainers in other areas, including upper layers such as libvirt that are
-> aware of the suspended state.  It is a user-visible change, and may require 
-> a new libvirt release.
+On Tue, Nov 21, 2023 at 04:43:59PM +0800, Zhenzhong Duan wrote:
+ 
+> qemu code: https://github.com/yiliu1765/qemu/commits/zhenzhong/iommufd_cdev_v7
+> Based on vfio-next, commit id: c487fb8a50
 
-$ ./scripts/get_maintainer.pl -f system/cpus.c
-Richard Henderson <richard.henderson@linaro.org> (maintainer:Overall TCG CPUs)
-Paolo Bonzini <pbonzini@redhat.com> (reviewer:Overall TCG CPUs)
-qemu-devel@nongnu.org (open list:All patches CC here)
+I've tested with an aarch64-softmmu build using both legacy VFIO
+passthrough and IOMMUFD+cdev, although this might be similar to
+what Eric tested.
 
-I'm also copying Richard, while Dan/Paolo is already in the loop, so we
-should have the "quorum" already.  Let's see whether we can already get
-some comments from the maintainers..
+Also, tried rebasing our nesting changes on top and ran some
+2-stage translation sanity using this branch:
+https://github.com/nicolinc/qemu/tree/wip/iommufd_nesting-11212023-cdev-v7
+(Note that the nesting branch is WIP with no stability guarantee)
 
-> 
-> >> vs the migration code where we are fixing brokenness.
-> > 
-> > This is not a migration-only bug if above holds, IMO.
-> > 
-> >> Second, it does not quite work, because the state becomes
-> >> RUN_STATE_PAUSED, so the suspended state is forgotten, and the hmp "cont"
-> >> will try to set the running state.  I could fix that by introducing a new
-> >> state RUN_STATE_SUSPENDED_STOPPED, but again it is a user-visible change
-> >> in existing behavior.  (I even implemented that while developing, then I
-> >> realized it was not needed to fix the migration bugs.)
-> > 
-> > Good point.
-> > 
-> > Now with above comments, what's your thoughts on whether we should change
-> > the user behavior?  My answer is still a yes.
-> > 
-> > Maybe SUSPENDED should not be a RunState at all? SUSPENDED is guest visible
-> > behavior, while something like QMP "stop" is not guest visible.  Maybe we
-> > should remember it separately?
-> >
-> > It means qemu_system_suspend() could remember that in a separate field (as
-> > part of guest state), then when wakeup we should conditionally go back
-> > with/without vcpus running depending on the new "suspended" state.
->
-> Regardless of how we remember it, the status command must still expose
-> the suspended state to the user.  The user must be able to see that a
-> guest is suspended, and decide when to issue a wakeup command.
+I'll do more tests with vSVA cases in the next days, yet FWIW:
 
-Hmm, right, we may want to keep having the SUSPENDED state in RunState,
-even another separate "vm_suspended" boolean might still be required.
-
-> 
-> If we change the stop command to completely stop a suspended vm, then we must
-> allow the user to query whether a vm is suspended-running or suspended-stopped,
-> because the command they must issue to resume is different: wakeup for the
-> former, and cont for the latter.
-
-If it's stopped, the user must need a "cont" anyway.  And then if after
-"cont" the user still sees it's suspended, then would "system_wakeup" work
-here if necessary, after that "cont"?
-
-Let's consider the current QEMU with below sequence of operations:
-
-  1) vm running
-  2) guest triggers ACPI suspend -> vm suspended
-  3) admin triggers "stop" cmd -> vm suspended (ignored..)
-  4) admin triggers "cont" cmd -> vm suspended (ignored.. too)
-
-AFAICT both 2) and 3) are unwanted behavior, and after noticing 3) I feel
-stronger that this is not a migration issue alone.
-
-It also means after step 1)-3) if we got a wakeup elsewhere, the VM can
-actually be running!  That's definitely unexpected after admin sends "stop"
-already.  Isn't that another real bug?
-
-I'm slightly confused on why you said above that libvirt will need a new
-release. Could you elaborate?  Especially on what scenario we need to
-maintain compatibility that still makes sense.
-
-> 
-> This change is visible to libvirt.  Adding it will delay this entire patch
-> series, and is not necessary for fixing the migration bug.  There is no
-> downside to drawing the line here for this series, and possibly changing stop
-> semantics in the future.
-
-This series will need to wait for rc releases anyway until 8.2 all out:
-
-  https://wiki.qemu.org/Planning/8.2
-
-I think we still have time to even catch the earliest train right after 8.2
-released, if we can reach a consensus soon in whatever form.
-
-Having a partial solution merged for migration is probably doable, but that
-will make the code even more complicated and harder to maintain.  So before
-doing so, I'd at least like to understand better on what use case you were
-describing that will start to fall apart.
-
-Thanks,
-
--- 
-Peter Xu
-
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
 
