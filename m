@@ -2,88 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3767F2BC7
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 12:33:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AF5A7F2BFA
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 12:44:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Oyx-000331-Q0; Tue, 21 Nov 2023 06:31:55 -0500
+	id 1r5P9P-0005cW-1U; Tue, 21 Nov 2023 06:42:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5Oyv-00032i-HM
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 06:31:53 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5Oyt-0007Nf-GZ
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 06:31:53 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3316d3d11e1so2219014f8f.0
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 03:31:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700566309; x=1701171109; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=hY2aGxpeVJsT0VErWWSEtagjKTuIsspwi6gCRiPrujw=;
- b=V7JSNzmthuFaGOaWx05CA69HIaO/7bg3jHxCEjJzWvlagotzOll5KoC+E3bmohKWFd
- eFHkDX4dzzqN6DLTEmo2LwhmkcubAXiG9lCJcrY/s6NV2NzC1nYhA8o+9tUEQpWL7sQG
- K9yhbO7MgWgQmZAirm6k49L4C9IIFefRVaQPzm/u8asUR5u95rgx6zjLPP2kIyw9WtU8
- hDmkKRXgw5w2BOnyhXhaJ5Geuj/qwCtxlReicZfY/XlKZYgWYiQCySToYm7ZMsX3hz6b
- umJE04Di88ET4iQKvMJ7zvijB/V00TkJUk5UYzyrxx+OM0xP8c+D5jLNggqdHy6VTvII
- Ykvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700566309; x=1701171109;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hY2aGxpeVJsT0VErWWSEtagjKTuIsspwi6gCRiPrujw=;
- b=G/b1HBTW02wEWBSXFHlQfT1Xi3HN1LFUGeEKA5EiLAG44xoUuZpzpuQN+EA97RvpEv
- G51j/70iQJh6r4qM5JWKjvBg11WledH+uO4/DOT8ruQAyf55bMm1XJmmwubil8BcFi5d
- lafxRKESEiNyDg+xsuakz/9wlc1EanI4y/DYUkYXZnP/8c2vJg18a+WICOKKRkC1wtb8
- 0Qua2YlIEGtbagvVcYWmF/+LXH4u/uMbX/hJIuKIiPETIUrdHTUOTk/A4m/yxUxqKayi
- AbfSsnOjRe6B0gK6RMBwABNAk6pjiqwHlAQoDL2qWY+UsoVnyRsYizw5UHtNuqzaAGq3
- aefA==
-X-Gm-Message-State: AOJu0YwwqVUgeeAomYlne94JxXH+tjUX9BfKcLntBopcksBYmJOZQvAj
- OLk93FR31BA97gsNnnRhZTVI0hB57Kj/qPC5A5A=
-X-Google-Smtp-Source: AGHT+IG9jxH+9c3zXYHTKF/bLKxo1gq/a4/gHHgJrTg4cwBcidTqXTfkwK4T5aW7GoqcvszRwF40UQ==
-X-Received: by 2002:a5d:6c67:0:b0:32d:d973:b546 with SMTP id
- r7-20020a5d6c67000000b0032dd973b546mr1826159wrz.0.1700566309474; 
- Tue, 21 Nov 2023 03:31:49 -0800 (PST)
-Received: from [192.168.69.100] (lgp44-h02-176-184-8-219.dsl.sta.abo.bbox.fr.
- [176.184.8.219]) by smtp.gmail.com with ESMTPSA id
- f6-20020a7bcd06000000b0040a463cf09dsm20797127wmj.33.2023.11.21.03.31.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Nov 2023 03:31:49 -0800 (PST)
-Message-ID: <954cf4a9-ebdd-428d-a703-4fde1490db71@linaro.org>
-Date: Tue, 21 Nov 2023 12:31:46 +0100
+ (Exim 4.90_1) (envelope-from
+ <BATV+dd65dc28b6171b1f8060+7394+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1r5P9K-0005c8-GD; Tue, 21 Nov 2023 06:42:38 -0500
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+dd65dc28b6171b1f8060+7394+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1r5P9H-0001dQ-3F; Tue, 21 Nov 2023 06:42:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=9ew9MH0xzFIFMJHJYXzynNycQ9kyMj0KLU/EzCwX4Oc=; b=b37CHl22aUKeBT1CKQ2Lg+V6WX
+ fILlAQ0cOts05JEs379xn9uzSJwyFOo31F58cVECAFQOu6biT3pjucMTBNEl4E1BIEo81CUtKvl8A
+ nRGEBfzPsCAMO36Wnv/UndNJRPpILzudgjanzWKXaL9/lFMtjaNUh70JQrbYNAPUPtSso8UMWGwcB
+ C+yeGVTzXGbXiirFZ750TKFGw0Zav4X6HnsJqaH4w0Ue+RipnUq83zQAH5R9VI9AstSLa456ePeJZ
+ nFX3MF6MnPJOuGR92bucfVhSvn7adrsN45X0JpB7Ut9j2iypTAJMVmrdG0iAp5wnLeGThUJSyX1f2
+ PcD0i6Mw==;
+Received: from [2001:8b0:10b:5:9608:1c8b:df8c:28f9]
+ (helo=u3832b3a9db3152.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1r5P9A-005XoR-Cv; Tue, 21 Nov 2023 11:42:28 +0000
+Message-ID: <dde438c74190be1013079a82dc7cfa17f66a9450.camel@infradead.org>
+Subject: Re: [PATCH 2/3] vl: disable default serial when xen-console is enabled
+From: David Woodhouse <dwmw2@infradead.org>
+To: =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>, 
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, Jason Wang
+ <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ xen-devel@lists.xenproject.org, qemu-block@nongnu.org
+Date: Tue, 21 Nov 2023 11:42:27 +0000
+In-Reply-To: <CAJ+F1CLA-gxmwuMqzjF-dhVqoTqpx1dsC5zNtoh4geLUzpbbVg@mail.gmail.com>
+References: <20231115172723.1161679-1-dwmw2@infradead.org>
+ <20231115172723.1161679-3-dwmw2@infradead.org>
+ <CAJ+F1C+3UQoEEvFgg8ENjR0xv-LTiPckx4XkCjVqOe2Jnx1EeA@mail.gmail.com>
+ <CAJ+F1CLA-gxmwuMqzjF-dhVqoTqpx1dsC5zNtoh4geLUzpbbVg@mail.gmail.com>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-A/gs8wUD5X2Txxj5KQPV"
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.0 22/25] hw/sparc: Simplify
- memory_region_init_ram_nomigrate() calls
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, qemu-arm@nongnu.org,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, qemu-ppc@nongnu.org,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Peter Xu <peterx@redhat.com>, Artyom Tarasenko <atar4qemu@gmail.com>
-References: <20231120213301.24349-1-philmd@linaro.org>
- <20231120213301.24349-23-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231120213301.24349-23-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+dd65dc28b6171b1f8060+7394+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,60 +79,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/11/23 22:32, Philippe Mathieu-Daudé wrote:
-> Mechanical change using the following coccinelle script:
-> 
-> @@
-> expression mr, owner, arg3, arg4, errp;
-> @@
-> -   memory_region_init_ram_nomigrate(mr, owner, arg3, arg4, &errp);
->      if (
-> -       errp
-> +       !memory_region_init_ram_nomigrate(mr, owner, arg3, arg4, &errp)
->      ) {
->          ...
->          return;
->      }
-> 
-> and removing the local Error variable.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   hw/sparc/sun4m.c   | 20 ++++++--------------
->   hw/sparc64/sun4u.c |  7 ++-----
->   2 files changed, 8 insertions(+), 19 deletions(-)
+
+--=-A/gs8wUD5X2Txxj5KQPV
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, 2023-11-21 at 14:58 +0400, Marc-Andr=C3=A9 Lureau wrote:
+>=20
+> > Consistent with the rest of the lines (no conditional compilation nor
+> > driver #define..)
+> > Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+
+Thanks.
+
+> > btw, while quickly testing this (do we have any test for xen-console?):
+> >=20
+> > $ qemu --accel kvm,xen-version=3D0x40011,kernel-irqchip=3Dsplit -device
+> > xen-console,chardev=3Dfoo -chardev stdio,id=3Dfoo
+> > (and close gtk window)
+> >=20
+> > Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
+> > 0x0000555555c11695 in qemu_free_net_client (nc=3D0x0) at ../net/net.c:3=
+87
+> > 387=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (nc->incoming_queue) {
+> > (gdb) bt
+> > #0=C2=A0 0x0000555555c11695 in qemu_free_net_client (nc=3D0x0) at ../ne=
+t/net.c:387
+> > #1=C2=A0 0x0000555555c11a14 in qemu_del_nic (nic=3D0x555558b6f930) at .=
+./net/net.c:459
+> > #2=C2=A0 0x00005555559e398b in xen_netdev_unrealize (xendev=3D0x555558b=
+6b510)
+> > at ../hw/net/xen_nic.c:550
+> > #3=C2=A0 0x0000555555b6e22f in xen_device_unrealize (dev=3D0x555558b6b5=
+10) at
+> > ../hw/xen/xen-bus.c:973
+> > #4=C2=A0 0x0000555555b6e351 in xen_device_exit (n=3D0x555558b6b5e0, dat=
+a=3D0x0)
+> > at ../hw/xen/xen-bus.c:1002
+> > #5=C2=A0 0x00005555560bc3fc in notifier_list_notify (list=3D0x5555570b5=
+fc0
+> > <exit_notifiers>, data=3D0x0) at ../util/notify.c:39
+> > #6=C2=A0 0x0000555555ba1d49 in qemu_run_exit_notifiers () at ../system/=
+runstate.c:800
+>=20
+> Ok, I found related "[PATCH 1/3] net: do not delete nics in net_cleanup()=
+"
+
+Yep, and I think I saw that go by in a pull request not many hours ago,
+so it should be fixed by -rc1. Thanks for testing.
+
+--=-A/gs8wUD5X2Txxj5KQPV
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTIxMTE0MjI3WjAvBgkqhkiG9w0BCQQxIgQgmF+H6FQ1
+YEqfF9zwYRrK36MFj3LqtIKknWE2538AjVEwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAXHsn21rVomCHeO8uyKZAZtX9gOl9c4u8M
+5RU3eyga8+sgYHUjQdmi1U46Qti/bgbTQJvtnBpa3/kopt6KlDOASwKVB6zupNCULRLDd4vYBEye
+rWf83ZB9srfRZEzcV/p1v6G5/+ic+wTmwCC4AuZbCyjiOzZLnWuntkHEm6vJiOgUBIz3qNs8tE7L
+/IdvUBc8zp3xHdqRL7wKlRwPeZcmLRI90bvemVJxa6sDltipnlvAW/Wmyp4oky2fMIWC8mZOTyZm
+s9EGYYrKiyetFYdg4PPTNl/E+nodXkI2slJErScGizsCQtpeZgacB4sS+d/Tw1rIKCeD8xymMf1q
+XZAdKAEmxEeY9ZEQZEwRw/kActwMIUPfvoGMOtNJHNZ3OjHqMKr+X2ugqkFosxfvDmE9xI9Bo1IE
+AgskmWE7HlwNZHMtYAhf2BK6NtzCoJKjbxx3b0UjjpXJOZk3X/WjFcTrqq/jkm0IZuIMYMI0sCK6
+TF7Z7UDHZNp3U+tEki0vkeGMYS948e/iYXizxlfTa//PepBWj2LWbfSi/i6zt7ZiDKwZOQF8sSBI
++9JsZ2uxY36Z2d20VufQMxD5SsUkYLoK3k/5exNGExeywgrh50Bz04Z0qd4uw/OJR/Z/nNI1ZZeF
+v05HMHVr07v9dRM2QZdgaQ8nwkiAuGXBhu2PIvXazwAAAAAAAA==
 
 
-> @@ -631,11 +628,9 @@ static void afx_realize(DeviceState *ds, Error **errp)
->   {
->       AFXState *s = TCX_AFX(ds);
->       SysBusDevice *dev = SYS_BUS_DEVICE(ds);
-> -    Error *local_err = NULL;
->   
-> -    memory_region_init_ram_nomigrate(&s->mem, OBJECT(ds), "sun4m.afx", 4,
-> -                                     &local_err);
-> -    if (local_err) {
-> +    if (!memory_region_init_ram_nomigrate(&s->mem, OBJECT(ds), "sun4m.afx",
-> +                                          4, errp)) {
->           error_propagate(errp, local_err);
-
-I forgot to remove this error_propagate() line.
-
->           return;
->       }
-> @@ -715,12 +710,9 @@ static void prom_realize(DeviceState *ds, Error **errp)
->   {
->       PROMState *s = OPENPROM(ds);
->       SysBusDevice *dev = SYS_BUS_DEVICE(ds);
-> -    Error *local_err = NULL;
->   
-> -    memory_region_init_ram_nomigrate(&s->prom, OBJECT(ds), "sun4m.prom",
-> -                                     PROM_SIZE_MAX, &local_err);
-> -    if (local_err) {
-> -        error_propagate(errp, local_err);
-> +    if (!memory_region_init_ram_nomigrate(&s->prom, OBJECT(ds), "sun4m.prom",
-> +                                          PROM_SIZE_MAX, errp)) {
->           return;
->       }
-
+--=-A/gs8wUD5X2Txxj5KQPV--
 
