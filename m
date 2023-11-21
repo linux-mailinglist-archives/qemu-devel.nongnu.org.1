@@ -2,67 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF5A7F2BFA
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 12:44:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84D337F2C0A
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 12:49:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5P9P-0005cW-1U; Tue, 21 Nov 2023 06:42:43 -0500
+	id 1r5PEj-00012G-Be; Tue, 21 Nov 2023 06:48:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+dd65dc28b6171b1f8060+7394+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r5P9K-0005c8-GD; Tue, 21 Nov 2023 06:42:38 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1r5PEh-000109-8f
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 06:48:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+dd65dc28b6171b1f8060+7394+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1r5P9H-0001dQ-3F; Tue, 21 Nov 2023 06:42:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=9ew9MH0xzFIFMJHJYXzynNycQ9kyMj0KLU/EzCwX4Oc=; b=b37CHl22aUKeBT1CKQ2Lg+V6WX
- fILlAQ0cOts05JEs379xn9uzSJwyFOo31F58cVECAFQOu6biT3pjucMTBNEl4E1BIEo81CUtKvl8A
- nRGEBfzPsCAMO36Wnv/UndNJRPpILzudgjanzWKXaL9/lFMtjaNUh70JQrbYNAPUPtSso8UMWGwcB
- C+yeGVTzXGbXiirFZ750TKFGw0Zav4X6HnsJqaH4w0Ue+RipnUq83zQAH5R9VI9AstSLa456ePeJZ
- nFX3MF6MnPJOuGR92bucfVhSvn7adrsN45X0JpB7Ut9j2iypTAJMVmrdG0iAp5wnLeGThUJSyX1f2
- PcD0i6Mw==;
-Received: from [2001:8b0:10b:5:9608:1c8b:df8c:28f9]
- (helo=u3832b3a9db3152.ant.amazon.com)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1r5P9A-005XoR-Cv; Tue, 21 Nov 2023 11:42:28 +0000
-Message-ID: <dde438c74190be1013079a82dc7cfa17f66a9450.camel@infradead.org>
-Subject: Re: [PATCH 2/3] vl: disable default serial when xen-console is enabled
-From: David Woodhouse <dwmw2@infradead.org>
-To: =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, Jason Wang
- <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- xen-devel@lists.xenproject.org, qemu-block@nongnu.org
-Date: Tue, 21 Nov 2023 11:42:27 +0000
-In-Reply-To: <CAJ+F1CLA-gxmwuMqzjF-dhVqoTqpx1dsC5zNtoh4geLUzpbbVg@mail.gmail.com>
-References: <20231115172723.1161679-1-dwmw2@infradead.org>
- <20231115172723.1161679-3-dwmw2@infradead.org>
- <CAJ+F1C+3UQoEEvFgg8ENjR0xv-LTiPckx4XkCjVqOe2Jnx1EeA@mail.gmail.com>
- <CAJ+F1CLA-gxmwuMqzjF-dhVqoTqpx1dsC5zNtoh4geLUzpbbVg@mail.gmail.com>
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-A/gs8wUD5X2Txxj5KQPV"
-User-Agent: Evolution 3.44.4-0ubuntu2 
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1r5PEf-00033p-Dh
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 06:48:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700567288;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ns7IEpHzLzTnO+XNb37aLvzLgqnXzGEAkVq5Q7NYnrk=;
+ b=BmBvKpdzc/Xa3jJywtzGiozbYctZ9Gndk6FYLJN1U71P+ouwIg7rxURK6+XMLlIdCS/L8Y
+ 21j9VKepBrMrsXAqU2NSz69eMzftpbSpEwyCDmRHiu5j8Nol3+STg7E7ObeXR31piqIDiU
+ dzo8tndC15+IjCSOlrsjBFtneIadmm0=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-367-YeZbkZXiNeCtabQvGJUaVw-1; Tue, 21 Nov 2023 06:48:06 -0500
+X-MC-Unique: YeZbkZXiNeCtabQvGJUaVw-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-53e3bfec5bdso4053665a12.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 03:48:06 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700567285; x=1701172085;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Ns7IEpHzLzTnO+XNb37aLvzLgqnXzGEAkVq5Q7NYnrk=;
+ b=uFC9nxVxogd8Sw3iNbeVczKqfBbPvDc9rJUiuZlm8I44MLHHwBSVBv2iMqOsG78CvI
+ DGVE5cceIfKgsMBw5ZVHi9aQMs9LnEbvi0IUxOSKqgqhsPR98rT4e4LTHHgQhLxWzHew
+ srgr7LEkP5tqg8/sck2a3VJGVxm6VFek9mv3L1mg5MfDry1FCrkshM8b5Ryh949wjgbV
+ xwScQ5PR3Erj9rMjY7J067w3d0Vg17lXBFeKhn3IgqsVEzsDQCpv5wb1TbW17rBkO33R
+ Qk+ZQFMXZk5+BR4T/5Kj48cl/uvU3rhV9fJG1E5d06G8ZgjG0PGQGqozy1j53YaOaijF
+ UymA==
+X-Gm-Message-State: AOJu0YzEXw9Wak+2BhL/VUeGkbhpwvSPc314NnMsTojInZfB6/3LikDU
+ p1RVR6vn22UOxSZ8Wk4tYINQjmfuAhoGiNVlCZoylI8Kx9yCSwF8xm8hMw1DhMNh13tWG9bdJj8
+ WpykGtxuRkgF+cxpa51q+nEOto7uEX4I=
+X-Received: by 2002:a50:9b18:0:b0:543:7c4f:7ed0 with SMTP id
+ o24-20020a509b18000000b005437c4f7ed0mr1996738edi.18.1700567285599; 
+ Tue, 21 Nov 2023 03:48:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IESWMN/X8n/ry+41GzRYd7eeLrxWH3NDvWaPIx/AgJPUb/tnEZfDv/18qqdBeNvSJLgYAtYlwS5ckypYDvjEvA=
+X-Received: by 2002:a50:9b18:0:b0:543:7c4f:7ed0 with SMTP id
+ o24-20020a509b18000000b005437c4f7ed0mr1996717edi.18.1700567285333; Tue, 21
+ Nov 2023 03:48:05 -0800 (PST)
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+dd65dc28b6171b1f8060+7394+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+References: <20231116115354.228678-1-npiggin@gmail.com>
+ <20231116115354.228678-2-npiggin@gmail.com>
+ <CAMxuvawXTrQ3Mu-aGbELnQyBRU4W9kuMQo-XM_zm4FbRymHkqA@mail.gmail.com>
+ <CX3OGGIB0IAN.1CDYNM9U7M5Y3@wheely>
+ <CAMxuvayyULsyM0bQvCr-WRP39JwbTcDknBYEhj=eDrRQ2+9dUQ@mail.gmail.com>
+ <13f96104-9d9d-4f57-9c40-06352b6a6b87@redhat.com>
+In-Reply-To: <13f96104-9d9d-4f57-9c40-06352b6a6b87@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Tue, 21 Nov 2023 15:47:53 +0400
+Message-ID: <CAMxuvay+vfg+tCq3ZQt5WkLxH69QXTC1vS_7QmEKCPxCoC840g@mail.gmail.com>
+Subject: Re: [PATCH 2/3] chardev: report blocked write to chardev backend
+To: Thomas Huth <thuth@redhat.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,166 +107,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi
 
---=-A/gs8wUD5X2Txxj5KQPV
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Tue, Nov 21, 2023 at 1:45=E2=80=AFPM Thomas Huth <thuth@redhat.com> wrot=
+e:
+>
+> On 21/11/2023 10.39, Marc-Andr=C3=A9 Lureau wrote:
+> > Hi
+> >
+> > On Mon, Nov 20, 2023 at 5:36=E2=80=AFPM Nicholas Piggin <npiggin@gmail.=
+com> wrote:
+> >>
+> >> On Mon Nov 20, 2023 at 10:06 PM AEST, Marc-Andr=C3=A9 Lureau wrote:
+> >>> Hi
+> >>>
+> >>> On Thu, Nov 16, 2023 at 3:54=E2=80=AFPM Nicholas Piggin <npiggin@gmai=
+l.com> wrote:
+> >>>>
+> >>>> If a chardev socket is not read, it will eventually fill and QEMU
+> >>>> can block attempting to write to it. A difficult bug in avocado
+> >>>> tests where the console socket was not being read from caused this
+> >>>> hang.
+> >>>>
+> >>>> warn if a chardev write is blocked for 100ms.
+> >>>>
+> >>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> >>>> ---
+> >>>> This is not necessary for the fix but it does trigger in the
+> >>>> failing avocado test without the previous patch applied. Maybe
+> >>>> it would be helpful?
+> >>>>
+> >>>> Thanks,
+> >>>> Nick
+> >>>>
+> >>>>   chardev/char.c | 6 ++++++
+> >>>>   1 file changed, 6 insertions(+)
+> >>>>
+> >>>> diff --git a/chardev/char.c b/chardev/char.c
+> >>>> index 996a024c7a..7c375e3cc4 100644
+> >>>> --- a/chardev/char.c
+> >>>> +++ b/chardev/char.c
+> >>>> @@ -114,6 +114,8 @@ static int qemu_chr_write_buffer(Chardev *s,
+> >>>>   {
+> >>>>       ChardevClass *cc =3D CHARDEV_GET_CLASS(s);
+> >>>>       int res =3D 0;
+> >>>> +    int nr_retries =3D 0;
+> >>>> +
+> >>>>       *offset =3D 0;
+> >>>>
+> >>>>       qemu_mutex_lock(&s->chr_write_lock);
+> >>>> @@ -126,6 +128,10 @@ static int qemu_chr_write_buffer(Chardev *s,
+> >>>>               } else {
+> >>>>                   g_usleep(100);
+> >>>>               }
+> >>>> +            if (++nr_retries =3D=3D 1000) { /* 100ms */
+> >>>> +                warn_report("Chardev '%s' write blocked for > 100ms=
+, "
+> >>>> +                            "socket buffer full?", s->label);
+> >>>> +            }
+> >>>
+> >>> That shouldn't happen, the frontend should poll and only write when i=
+t
+> >>> can. What is the qemu command being used here?
+> >>
+> >> You can follow it through the thread here
+> >>
+> >> https://lore.kernel.org/qemu-devel/ZVT-bY9YOr69QTPX@redhat.com/
+> >>
+> >> In short, a console device is attached to a socket pair and nothing
+> >> ever reads from it. It eventually fills, and writing to it fails
+> >> indefinitely here.
+> >>
+> >> It can be reproduced with:
+> >>
+> >> make check-avocado
+> >> AVOCADO_TESTS=3Dtests/avocado/reverse_debugging.py:test_ppc64_pseries
+> >>
+> >>
+> >
+> > How reliably? I tried 10/10.
+>
+> It used to fail for me every time I tried - but the fix has already been
+> merged yesterday (commit cd43f00524070c026), so if you updated today, you=
+'ll
+> see the test passing again.
 
-On Tue, 2023-11-21 at 14:58 +0400, Marc-Andr=C3=A9 Lureau wrote:
->=20
-> > Consistent with the rest of the lines (no conditional compilation nor
-> > driver #define..)
-> > Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+Ok so the "frontend" is spapr-vty and there:
 
-Thanks.
+void vty_putchars(SpaprVioDevice *sdev, uint8_t *buf, int len)
+{
+    SpaprVioVty *dev =3D VIO_SPAPR_VTY_DEVICE(sdev);
 
-> > btw, while quickly testing this (do we have any test for xen-console?):
-> >=20
-> > $ qemu --accel kvm,xen-version=3D0x40011,kernel-irqchip=3Dsplit -device
-> > xen-console,chardev=3Dfoo -chardev stdio,id=3Dfoo
-> > (and close gtk window)
-> >=20
-> > Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
-> > 0x0000555555c11695 in qemu_free_net_client (nc=3D0x0) at ../net/net.c:3=
-87
-> > 387=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (nc->incoming_queue) {
-> > (gdb) bt
-> > #0=C2=A0 0x0000555555c11695 in qemu_free_net_client (nc=3D0x0) at ../ne=
-t/net.c:387
-> > #1=C2=A0 0x0000555555c11a14 in qemu_del_nic (nic=3D0x555558b6f930) at .=
-./net/net.c:459
-> > #2=C2=A0 0x00005555559e398b in xen_netdev_unrealize (xendev=3D0x555558b=
-6b510)
-> > at ../hw/net/xen_nic.c:550
-> > #3=C2=A0 0x0000555555b6e22f in xen_device_unrealize (dev=3D0x555558b6b5=
-10) at
-> > ../hw/xen/xen-bus.c:973
-> > #4=C2=A0 0x0000555555b6e351 in xen_device_exit (n=3D0x555558b6b5e0, dat=
-a=3D0x0)
-> > at ../hw/xen/xen-bus.c:1002
-> > #5=C2=A0 0x00005555560bc3fc in notifier_list_notify (list=3D0x5555570b5=
-fc0
-> > <exit_notifiers>, data=3D0x0) at ../util/notify.c:39
-> > #6=C2=A0 0x0000555555ba1d49 in qemu_run_exit_notifiers () at ../system/=
-runstate.c:800
->=20
-> Ok, I found related "[PATCH 1/3] net: do not delete nics in net_cleanup()=
-"
+    /* XXX this blocks entire thread. Rewrite to use
+     * qemu_chr_fe_write and background I/O callbacks */
+    qemu_chr_fe_write_all(&dev->chardev, buf, len);
+}
 
-Yep, and I think I saw that go by in a pull request not many hours ago,
-so it should be fixed by -rc1. Thanks for testing.
+(grep "XXX this blocks", we have a lot...)
 
---=-A/gs8wUD5X2Txxj5KQPV
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Can H_PUT_TERM_CHAR return the number of bytes written?
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
-ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
-oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
-SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
-xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
-RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
-bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
-NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
-KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
-5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
-C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
-gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
-VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
-by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
-b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
-BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
-QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
-c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
-AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
-qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
-v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
-Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
-tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
-Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
-ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
-GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
-h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
-9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
-P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
-2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
-BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
-7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
-lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
-lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
-AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
-Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
-FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
-BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
-cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
-aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
-LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
-BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
-Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
-lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
-WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
-hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
-IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
-dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
-NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
-xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMTIxMTE0MjI3WjAvBgkqhkiG9w0BCQQxIgQgmF+H6FQ1
-YEqfF9zwYRrK36MFj3LqtIKknWE2538AjVEwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
-A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
-dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
-DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAXHsn21rVomCHeO8uyKZAZtX9gOl9c4u8M
-5RU3eyga8+sgYHUjQdmi1U46Qti/bgbTQJvtnBpa3/kopt6KlDOASwKVB6zupNCULRLDd4vYBEye
-rWf83ZB9srfRZEzcV/p1v6G5/+ic+wTmwCC4AuZbCyjiOzZLnWuntkHEm6vJiOgUBIz3qNs8tE7L
-/IdvUBc8zp3xHdqRL7wKlRwPeZcmLRI90bvemVJxa6sDltipnlvAW/Wmyp4oky2fMIWC8mZOTyZm
-s9EGYYrKiyetFYdg4PPTNl/E+nodXkI2slJErScGizsCQtpeZgacB4sS+d/Tw1rIKCeD8xymMf1q
-XZAdKAEmxEeY9ZEQZEwRw/kActwMIUPfvoGMOtNJHNZ3OjHqMKr+X2ugqkFosxfvDmE9xI9Bo1IE
-AgskmWE7HlwNZHMtYAhf2BK6NtzCoJKjbxx3b0UjjpXJOZk3X/WjFcTrqq/jkm0IZuIMYMI0sCK6
-TF7Z7UDHZNp3U+tEki0vkeGMYS948e/iYXizxlfTa//PepBWj2LWbfSi/i6zt7ZiDKwZOQF8sSBI
-+9JsZ2uxY36Z2d20VufQMxD5SsUkYLoK3k/5exNGExeywgrh50Bz04Z0qd4uw/OJR/Z/nNI1ZZeF
-v05HMHVr07v9dRM2QZdgaQ8nwkiAuGXBhu2PIvXazwAAAAAAAA==
+Is there a way to tell the guest the console is ready to accept more bytes?
 
-
---=-A/gs8wUD5X2Txxj5KQPV--
 
