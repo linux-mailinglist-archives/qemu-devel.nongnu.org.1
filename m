@@ -2,68 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570BC7F3911
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 23:17:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC1167F3920
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 23:28:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Z3W-0003UY-DX; Tue, 21 Nov 2023 17:17:18 -0500
+	id 1r5ZCZ-0008G8-Tl; Tue, 21 Nov 2023 17:26:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r5Z3P-0003Og-EU
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 17:17:13 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1r5ZCS-0008Fa-Uj
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 17:26:35 -0500
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r5Z3K-0002Ui-W8
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 17:17:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700605012;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=0zW4z0eon3LZ1RIXVfJ784jya1dCIKecaN/60deOkt8=;
- b=ZKlp1q9xvz5z4RORziw5BhD64U1lntbLkKC+BSOtPVnJUpg3aWS/nYPf8NZQ0U4Go3XdFO
- Nu4Kkstlebd5pbXr78ajimcLQMejOor9G45YZFCnXRScaahPvN4W9kxnHvpzqwFDlg1POO
- oPFjpXfiTxxUvXK+Yyd2RxAo9NNPs+g=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-YMvs5CkUNj2gw95MscRQWA-1; Tue,
- 21 Nov 2023 17:16:47 -0500
-X-MC-Unique: YMvs5CkUNj2gw95MscRQWA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 16FD6280D476;
- Tue, 21 Nov 2023 22:16:47 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.113])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9FF5710F44;
- Tue, 21 Nov 2023 22:16:46 +0000 (UTC)
-Date: Tue, 21 Nov 2023 17:16:44 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 0/1] linux-user late fix
-Message-ID: <20231121221644.GA4168700@fedora>
-References: <20231121155657.798505-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1r5ZCR-0004LZ-6a
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 17:26:32 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 393CE61B71;
+ Tue, 21 Nov 2023 22:26:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C4BC433C7;
+ Tue, 21 Nov 2023 22:26:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1700605588;
+ bh=wdeDRxs15THQLtJ+H2Ism+fLWXU59/oUCpNmSf2cdBw=;
+ h=From:To:Cc:Subject:Date:From;
+ b=E1sXu3qEa7bsO2674bRLz4KlqeILZrVpxyvEMMfcR0J5XZIzGYyLjF/kibTPsdGEw
+ x3d5ALUu7NchJ8DOFW3HRnKNr1CIdxTjnzL3SFmBqQpz3V9uvVPNRqz64iW2jfTFde
+ +yacvMBJKyVSa3Vy0mnt5ztH4SJjNnSf2756YW98GDPw8riZET0z1mR7SY7dOS5G0q
+ b4VR2EqFEhX5dex6RyVH5hFtOQPReiCEHrT1Wqrd08AatbMi6esdMk2Osz/QiY1YQf
+ RK2LPutzO+I1QMkVxHD6az3Y7WqWq8yKt65nL5fMbraPku9dpeyMOJmx8o+f1Yxf1e
+ VbjiWkaOyPdog==
+From: deller@kernel.org
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>
+Subject: [PULL 0/1] Seabios hppa v13 patches
+Date: Tue, 21 Nov 2023 23:26:24 +0100
+Message-ID: <20231121222625.131341-1-deller@kernel.org>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="el/dXTg4cvrKc2eF"
-Content-Disposition: inline
-In-Reply-To: <20231121155657.798505-1-richard.henderson@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,30 +66,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Helge Deller <deller@gmx.de>
 
---el/dXTg4cvrKc2eF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The following changes since commit ea6a33e776f0a4bda94460ab0945d953fc801dd1:
 
-Applied, thanks.
+  Revert "tests/avocado: Enable reverse_debugging.py tests in gitlab CI" (2023-11-21 10:28:55 -0500)
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
+are available in the Git repository at:
 
---el/dXTg4cvrKc2eF
-Content-Type: application/pgp-signature; name="signature.asc"
+  https://github.com/hdeller/qemu-hppa.git tags/seabios-hppa-v13-pull-request
 
------BEGIN PGP SIGNATURE-----
+for you to fetch changes up to 69c224816eeb6c760bb1e73073da03a19368df0e:
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVdLEwACgkQnKSrs4Gr
-c8hkLAf/d3xYILFCumebU3D8KjLNJ2Pc7eIUtzNnQBqnG+zZLojg/dG7CrqNb7BZ
-clAcB3wAlFpS7Aq/GSrMpP1uqdYL+UF4Ue5wQoIU7+9jiwdcU2IIPqLhfOoukjuM
-Bw3Eaj5u2AEe9DzYC/jPoaH6Ojdo77UpjLdVOlXxsovmubKeTUSFH+XdUx07AfDI
-4PTKNL7PzOExcDNYhtqOUuq+3drI9bMJIiMPweaOcMA0MvQAP9cipyINFYPdhe66
-BCvOmrCh017cSGWSdbPsI6oX9GEvzQJmnoGOe5aZFBmuulFELTu5LbMWfWHfzGg6
-E4C7OfV/at8hbnRmpNJeGZUK+EGbng==
-=S/TE
------END PGP SIGNATURE-----
+  target/hppa: Update SeaBIOS-hppa to version 13 (2023-11-21 21:23:03 +0100)
 
---el/dXTg4cvrKc2eF--
+----------------------------------------------------------------
+SeaBIOS-hppa v13
+
+Please pull an update of SeaBIOS-hppa to v13 to fix
+a system reboot crash in qemu-system-hppa as reported in
+https://gitlab.com/qemu-project/qemu/-/issues/1991
+
+----------------------------------------------------------------
+
+Helge Deller (1):
+  target/hppa: Update SeaBIOS-hppa to version 13
+
+ pc-bios/hppa-firmware.img | Bin 681332 -> 681388 bytes
+ roms/seabios-hppa         |   2 +-
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+-- 
+2.41.0
 
 
