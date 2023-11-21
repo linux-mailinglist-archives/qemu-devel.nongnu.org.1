@@ -2,119 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36A7F7F3A03
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 00:03:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE307F3A45
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 00:29:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5ZkH-0003TT-CK; Tue, 21 Nov 2023 18:01:29 -0500
+	id 1r5aA7-0003lT-FV; Tue, 21 Nov 2023 18:28:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1r5ZkD-0003St-Rt
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 18:01:26 -0500
-Received: from mail-dm6nam10on2050.outbound.protection.outlook.com
- ([40.107.93.50] helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r5aA5-0003k8-Sj
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 18:28:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1r5ZkB-0002kh-J5
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 18:01:25 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VWhzEF/VX9uiPYQ6Dgwh/njPzVjEbaAsvIkVpLXmDzfPZd0pvy+6jY0TXlKMDkaw8NXLAd/pR1XuTdg5fSNA7KetOn9TAp0PspNeSvSgS0IRxS6oDebFeuA9KFQL9zC6pH3IiNyw5L2KI7HoW1vJxdBV/laXTFxiofagW+XseRZZWak1Nk2RaHSd7kj1nR9Zdp8y0mdESQNs7FVSKcE3MTHbIXmrCN2tqalfv2s1fKrCDaSOxoP+5OivcPF5VLSVjang7B8cuFSjwUPE3f8NrSJytFV78fyYeQ4D/Dwcd+UBljikDWaQm8ViJMNqIzi64c21JEB+L6cS8YimtXP8TA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7UNSYyk05Fw89pKDq/JJ+98yK1HwkV5g80MwHOb6E3E=;
- b=enGlBE8o+SpZ9aUu7wMMhATXUDH+Qgz2iPHCHNubfKcxYSrc4eGAJlJv7dYsWNySxp7AOO7Y6f78oIIA5+B8vTYmstt9pCs4jX03ftWRMNxDpSOTbky+zfESz/5zaCqNurYbHaUTAVNsUhczm1cSbnIB6vMhBhEu0mTzgWvh8RnDHf7iFWgsnivOq0xXMAxgGAr39EOztBTlthAKsyGJf3Glj5M4B82V/QGueId3FnVZ3q4Z9T3kn+W2qDPAkmZAjR6NXvmF1JWWFzN0sdNC3ULkryMuhrqm8pITmomXApNIP7i5GJbLfKeHbfNiIv4Xx9lYpO5OIwXpsA4x47w0CA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7UNSYyk05Fw89pKDq/JJ+98yK1HwkV5g80MwHOb6E3E=;
- b=s8894rPTllio5UlpQ39uDp5aG1PHWmE6UeMgHsgoX9Rj6bCwhnJJXNFty8j0pkdnlJE2LjLIZZ4PBIrjn1ls5qxGr61jXVgjkoDK2aP5lkTMGTy4KO+DGf7RNdsU3dJqCpt0wRbXmMaLTy7r9rD5TAtJpwq56LgQsXkWuIP0ODmAUhCu++39TY9txudfDdnrg7tS6AxZpZ5IaSQ5UFxZaPLafkbjNgap/RC4UA8hdRVjNcOqXdzqhgMmQVhOQ66fFJqRA1rQefxsK3FYgPRweUH1zEY63yeoafhgdjBso3fyVWriO9wJUfCmopgWdmk+bLITwZG645p/zmL/x/cdRQ==
-Received: from DS7PR03CA0134.namprd03.prod.outlook.com (2603:10b6:5:3b4::19)
- by SJ1PR12MB6100.namprd12.prod.outlook.com (2603:10b6:a03:45d::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.18; Tue, 21 Nov
- 2023 22:56:15 +0000
-Received: from DS1PEPF00017098.namprd05.prod.outlook.com
- (2603:10b6:5:3b4:cafe::b0) by DS7PR03CA0134.outlook.office365.com
- (2603:10b6:5:3b4::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.18 via Frontend
- Transport; Tue, 21 Nov 2023 22:56:15 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- DS1PEPF00017098.mail.protection.outlook.com (10.167.18.102) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7025.12 via Frontend Transport; Tue, 21 Nov 2023 22:56:15 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Tue, 21 Nov
- 2023 14:56:04 -0800
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.41; Tue, 21 Nov 2023 14:56:04 -0800
-Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
- Transport; Tue, 21 Nov 2023 14:56:03 -0800
-Date: Tue, 21 Nov 2023 14:56:02 -0800
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>
-CC: <qemu-devel@nongnu.org>, <alex.williamson@redhat.com>, <clg@redhat.com>,
- <jgg@nvidia.com>, <joao.m.martins@oracle.com>, <eric.auger@redhat.com>,
- <peterx@redhat.com>, <jasowang@redhat.com>, <kevin.tian@intel.com>,
- <yi.l.liu@intel.com>, <yi.y.sun@intel.com>, <chao.p.peng@intel.com>
-Subject: Re: [PATCH v7 00/27] vfio: Adopt iommufd
-Message-ID: <ZV01gh9I0QgcU+uk@Asurada-Nvidia>
-References: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r5aA4-0007iT-F9
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 18:28:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700609287;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=oY0DQVF7MZjWjEq2OlZLq7FU1SY1X79y6xy2fdoZNSk=;
+ b=ZHaSQ58YbCN6GNrNRXgdDYrC2fGlbskJVAMXhHB3Zu8M6umQxGxbBeVzYxS37pi8ZaONqz
+ rA7vrqtksOtbu+kzxQFFnXarjj4b/oj/lOVLkg4gBFSv7KFIlRFS+Yehdxn+rdtkrXk1LI
+ 35lVhHUaqgMxahYqzK/eYVEFJkHUVbc=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-169-8mzCI0A8NgmJNjksO2Gh_A-1; Tue, 21 Nov 2023 18:28:04 -0500
+X-MC-Unique: 8mzCI0A8NgmJNjksO2Gh_A-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-282dcfbcc0aso7159535a91.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 15:28:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700609283; x=1701214083;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=oY0DQVF7MZjWjEq2OlZLq7FU1SY1X79y6xy2fdoZNSk=;
+ b=gnB0KQLaaWGAB2S0wP0b2yXyiTQpEXIoNyh1GUSRG55r70NCPQXTpHpTp2q70lRSAW
+ 7fFXmQ0/Ot1LaTHJjDS1BpO9j9O6atnme1B3qn8Z0ualiKDbbS1Ec0+ImUJhQ33l7vzZ
+ vvxoyEMFOaVmV6Y2G04/nOz+02TZOkRENpm72x+ev2JIwQbPscxXYaXvatAG+Yx+k30/
+ x4g/C2YW7pKVeQvXH1GI8WnZIij2oRQhiYUsqWYF1QevPsJ2Ntlbhw2/yqWFE6Q75jvP
+ o9qPQKVqJ/zaqUOCs5ODI3TmFgTYmuh7NICe6G90Cjb4c/VtzyOkw8S+L8g1VviCT6GV
+ sSUQ==
+X-Gm-Message-State: AOJu0Yz8IwYf5p+GDgpE8dk5FNL0DUHY8bCN2uDHQbjDq8ym1e3hetJs
+ 5eQs3pbFLNKNNFu3ZR3pxHxBFPvfwtxBuQIHW7hB2gyoIb3tO+O2jEarC+/yVrtbxSrG/vj8/Gt
+ ERTrFceTcUemHkqA=
+X-Received: by 2002:a17:90b:1e0e:b0:280:a5b8:daf1 with SMTP id
+ pg14-20020a17090b1e0e00b00280a5b8daf1mr790799pjb.47.1700609283022; 
+ Tue, 21 Nov 2023 15:28:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGDjsUAipHxp/5Fgi3aKJ1sBwBl1xNEy2Xk2leFZX/c1aISoGpZ17EPhqvUxq8Emjt92Qjmuw==
+X-Received: by 2002:a17:90b:1e0e:b0:280:a5b8:daf1 with SMTP id
+ pg14-20020a17090b1e0e00b00280a5b8daf1mr790778pjb.47.1700609282719; 
+ Tue, 21 Nov 2023 15:28:02 -0800 (PST)
+Received: from ?IPV6:2001:8003:e5b0:9f00:b890:3e54:96bb:2a15?
+ ([2001:8003:e5b0:9f00:b890:3e54:96bb:2a15])
+ by smtp.gmail.com with ESMTPSA id
+ x7-20020a17090a788700b00283a0c3df63sm67210pjk.54.2023.11.21.15.27.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Nov 2023 15:28:02 -0800 (PST)
+Message-ID: <948cc368-241e-41f4-b3c9-683e220dcfc2@redhat.com>
+Date: Wed, 22 Nov 2023 09:27:51 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20231121084426.1286987-1-zhenzhong.duan@intel.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017098:EE_|SJ1PR12MB6100:EE_
-X-MS-Office365-Filtering-Correlation-Id: b10f01af-0721-4f51-dca7-08dbeae510c7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 9YgFBC71Wrw6OjFEA77BgWOJ2IAPrndKHCc/Yocqn1vDDJzm7b1GWwu2A+D46yaS2UZcJNglPw2iZh/5DaAnu9Qd0MLmEf8nE7PK+YhEZBThPzOk/0+LMrWdN+GliB5I8fxGLPXXmTPSi7kMUPHDPYKimixsPivHe6JxS0RPGVltf9vu8SdJSX0wL+O41nIGRDcYXyukCTTvpX3+rLM+w/12TLVhAin5aIVLl8fthNLX+tk6YCE6k3HKkq6dGm+izpgNLWA9fLseA/4iiwzhmj4SneTV9MqOoCXDtRy54TmWtU+teUXJuSBvazr+IKS3+zW7g3hfyE31elVxrwW3TOG1l3++RO4gHb7tDJCSkSVS3YfSl7rFPm4Xf/6Nw1sd5VHnmzmWP8JwTjxyEbcJXUrredEH8jmB/n/DazE+m6pZs94az4H2IXslXopA5Iss4Aab9+N2ZFWozqtiK4fsXQnX5DD3lI23zgT3eLJCtsM2dOrxPlBaeSHHPhj4cHdJdt5zToHwDc1Z0xuvHL5rVrBopDEWgL1TblPBo2Gu8ZReckgbENb+PjhQ7p58vsvVmDOaiooLjG3Y3Okb6hsi+daeYwD6XXC8GkX3lUuFWXM9/OmOdahoOh1wdLLUuDD2e8WquXgcnZgcH+iq5t3NsRHwd4qiW8rEey5YRT8bjPpiRJRcIJK1wcEHxP4J+uuzDqOsDNFlQqslwD0x6IyXIbc9MOEUF84lmQvq7UlmCp5WY3JyxWTKwYuxPk1UZf2LF6jvNFFDxBwv4hYhVRFCemmLA5PBQZ0HLr7KKpfMzx5PqO/rDs04Fewsa2VHJGjd7Xh3BvgeIb4rfcWyrljGxbxMsDqolK9U3R24f3z4jrA=
-X-Forefront-Antispam-Report: CIP:216.228.118.233; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge2.nvidia.com; CAT:NONE;
- SFS:(13230031)(4636009)(136003)(396003)(346002)(376002)(39860400002)(230922051799003)(451199024)(186009)(64100799003)(1800799012)(82310400011)(40470700004)(46966006)(36840700001)(40460700003)(426003)(336012)(33716001)(82740400003)(356005)(47076005)(86362001)(7636003)(36860700001)(6916009)(70586007)(54906003)(316002)(8676002)(8936002)(41300700001)(4326008)(55016003)(7416002)(5660300002)(4744005)(2906002)(70206006)(9686003)(26005)(40480700001)(966005)(478600001)(67856001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2023 22:56:15.1594 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b10f01af-0721-4f51-dca7-08dbeae510c7
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.233];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF00017098.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6100
-Received-SPF: softfail client-ip=40.107.93.50;
- envelope-from=nicolinc@nvidia.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-9.0] hw: Add compat machines for 9.0
+Content-Language: en-US
+To: Cornelia Huck <cohuck@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-s390x@nongnu.org
+References: <20231120094259.1191804-1-cohuck@redhat.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20231120094259.1191804-1-cohuck@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -130,21 +117,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 21, 2023 at 04:43:59PM +0800, Zhenzhong Duan wrote:
- 
-> qemu code: https://github.com/yiliu1765/qemu/commits/zhenzhong/iommufd_cdev_v7
-> Based on vfio-next, commit id: c487fb8a50
+On 11/20/23 19:42, Cornelia Huck wrote:
+> Add 9.0 machine types for arm/i440fx/m68k/q35/s390x/spapr.
+> 
+> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+> ---
+>   hw/arm/virt.c              |  9 ++++++++-
+>   hw/core/machine.c          |  3 +++
+>   hw/i386/pc.c               |  3 +++
+>   hw/i386/pc_piix.c          | 17 ++++++++++++++---
+>   hw/i386/pc_q35.c           | 13 ++++++++++++-
+>   hw/m68k/virt.c             |  9 ++++++++-
+>   hw/ppc/spapr.c             | 15 +++++++++++++--
+>   hw/s390x/s390-virtio-ccw.c | 14 +++++++++++++-
+>   include/hw/boards.h        |  3 +++
+>   include/hw/i386/pc.h       |  3 +++
+>   10 files changed, 80 insertions(+), 9 deletions(-)
+> 
 
-I've tested with an aarch64-softmmu build using both legacy VFIO
-passthrough and IOMMUFD+cdev, although this might be similar to
-what Eric tested.
+For hw/arm/virt.c
 
-Also, tried rebasing our nesting changes on top and ran some
-2-stage translation sanity using this branch:
-https://github.com/nicolinc/qemu/tree/wip/iommufd_nesting-11212023-cdev-v7
-(Note that the nesting branch is WIP with no stability guarantee)
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 
-I'll do more tests with vSVA cases in the next days, yet FWIW:
-
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
 
