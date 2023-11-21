@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6871F7F3091
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 15:22:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 294EC7F30B6
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 15:29:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5Rd5-0008D4-6a; Tue, 21 Nov 2023 09:21:31 -0500
+	id 1r5RjX-0001Z2-30; Tue, 21 Nov 2023 09:28:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5Rd1-0008Cp-S6
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 09:21:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5RjV-0001XR-9a
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 09:28:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5Rcz-000363-IX
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 09:21:26 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5RjQ-0004TV-7D
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 09:28:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700576484;
+ s=mimecast20190719; t=1700576882;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=9natOj4m62QyKPjklHYryPBQtpc+tVXCef9rDkajAhA=;
- b=aCyIcssRH7mCMyQTUFBrAi3nO6VTj9PSohiQ8HnRZCZwc7wQ/U57L+uSON3k5cR8d5YS5b
- 3h++WLaSUwoJmXw0tJb20IODN05SKoxPNfa1tRCR/lBceCTF8vQSsLqeQFRJSOi8BBtvVw
- QUBl7X401A7kW0bRdC9TfVHa6c6U9zo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-8_cWTpoEPmqqqXJ5WN4uxA-1; Tue, 21 Nov 2023 09:21:21 -0500
-X-MC-Unique: 8_cWTpoEPmqqqXJ5WN4uxA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ bh=gdDhS97xJNDB8gdu1U0n9DlplUZyl7YXKFUFIhqaO1o=;
+ b=dERmqHx6Q5MPa3QxBHSEQNoaULkthmYJHtsUUcEhpE68f51INcYCf8Er+46vhuDK73YBbb
+ rMjwkTD6eCyQxPYtQFExVOV7/Dh5ieZyL1M15q0QSC7r2wblcRmzZRn4E5CawCE3w6z9RW
+ siQnkXlG5yrGgPD08Eej097oY8mnRb8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-189-Ap2VmaxUNHyEgwl5D3WjKg-1; Tue,
+ 21 Nov 2023 09:28:00 -0500
+X-MC-Unique: Ap2VmaxUNHyEgwl5D3WjKg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2D9E4812C27;
- Tue, 21 Nov 2023 14:21:20 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 324771C060C8;
+ Tue, 21 Nov 2023 14:28:00 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0BA1D1121306;
- Tue, 21 Nov 2023 14:21:20 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 106AC36E4;
+ Tue, 21 Nov 2023 14:28:00 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id F30A921E6A1F; Tue, 21 Nov 2023 15:21:18 +0100 (CET)
+ id 07BAB21E6A1F; Tue, 21 Nov 2023 15:27:59 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: John Snow <jsnow@redhat.com>
 Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,
  Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH 08/19] qapi/schema: add static typing and assertions to
- lookup_type()
+Subject: Re: [PATCH 10/19] qapi/schema: make
+ QAPISchemaArrayType.element_type non-Optional
 References: <20231116014350.653792-1-jsnow@redhat.com>
- <20231116014350.653792-9-jsnow@redhat.com>
-Date: Tue, 21 Nov 2023 15:21:18 +0100
-In-Reply-To: <20231116014350.653792-9-jsnow@redhat.com> (John Snow's message
- of "Wed, 15 Nov 2023 20:43:39 -0500")
-Message-ID: <87jzqb2nmp.fsf@pond.sub.org>
+ <20231116014350.653792-11-jsnow@redhat.com>
+Date: Tue, 21 Nov 2023 15:27:59 +0100
+In-Reply-To: <20231116014350.653792-11-jsnow@redhat.com> (John Snow's message
+ of "Wed, 15 Nov 2023 20:43:41 -0500")
+Message-ID: <87fs0z2nbk.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,44 +85,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 John Snow <jsnow@redhat.com> writes:
 
-> This function is a bit hard to type as-is; mypy needs some assertions to
-> assist with the type narrowing.
+> This field should always be present and defined. Change this to be a
+> runtime @property that can emit an error if it's called prior to
+> check().
 >
+> This helps simplify typing by avoiding the need to interrogate the value
+> for None at multiple callsites.
+>
+> RFC: Yes, this is a slightly different technique than the one I used for
+> QAPISchemaObjectTypeMember.type;
+
+In PATCH 04.
+
+>                                  I think I prefer this one as being a
+> little less hokey, but it is more SLOC. Dealer's choice for which style
+> wins out -- now you have an example of both.
+
+Thanks for letting us see both.
+
+I believe all the extra lines accomplish is a different exception
+RuntimeError with a custom message vs. plain AttributeError.
+
+I don't think the more elaborate exception is worth the extra code.
+
 > Signed-off-by: John Snow <jsnow@redhat.com>
 > ---
->  scripts/qapi/schema.py | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>  scripts/qapi/schema.py | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
 >
 > diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-> index a1094283828..3308f334872 100644
+> index c9a194103e1..462acb2bb61 100644
 > --- a/scripts/qapi/schema.py
 > +++ b/scripts/qapi/schema.py
-> @@ -968,8 +968,12 @@ def lookup_entity(self, name, typ=None):
->              return None
->          return ent
+> @@ -366,7 +366,16 @@ def __init__(self, name, info, element_type):
+>          super().__init__(name, info, None)
+>          assert isinstance(element_type, str)
+>          self._element_type_name = element_type
+> -        self.element_type = None
+> +        self._element_type: Optional[QAPISchemaType] = None
+> +
+> +    @property
+> +    def element_type(self) -> QAPISchemaType:
+> +        if self._element_type is None:
+> +            raise RuntimeError(
+> +                "QAPISchemaArray has no element_type until "
+> +                "after check() has been run."
+> +            )
+> +        return self._element_type
 >  
-> -    def lookup_type(self, name):
-> -        return self.lookup_entity(name, QAPISchemaType)
-> +    def lookup_type(self, name: str) -> Optional[QAPISchemaType]:
-
-Any particular reason not to delay the type hints until PATCH 16?
-
-> +        typ = self.lookup_entity(name, QAPISchemaType)
-> +        if typ is None:
-> +            return None
-> +        assert isinstance(typ, QAPISchemaType)
-> +        return typ
-
-Would
-
-           typ = self.lookup_entity(name, QAPISchemaType)
-           assert isinstance(typ, Optional[QAPISchemaType])
-           return typ
-
-work?
-
+>      def need_has_if_optional(self):
+>          # When FOO is an array, we still need has_FOO to distinguish
+> @@ -375,7 +384,7 @@ def need_has_if_optional(self):
 >  
->      def resolve_type(self, name, info, what):
->          typ = self.lookup_type(name)
+>      def check(self, schema):
+>          super().check(schema)
+> -        self.element_type = schema.resolve_type(
+> +        self._element_type = schema.resolve_type(
+>              self._element_type_name, self.info,
+>              self.info and self.info.defn_meta)
+>          assert not isinstance(self.element_type, QAPISchemaArrayType)
 
 
