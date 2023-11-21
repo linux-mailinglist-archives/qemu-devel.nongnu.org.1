@@ -2,77 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D3597F2912
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 10:40:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 329087F2913
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 Nov 2023 10:40:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5NDX-0006Ru-6d; Tue, 21 Nov 2023 04:38:51 -0500
+	id 1r5NED-0006fW-97; Tue, 21 Nov 2023 04:39:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r5NDU-0006Rb-Mv
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:38:48 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r5NDS-000524-5o
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:38:47 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3316bb1303bso2413319f8f.0
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 01:38:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700559523; x=1701164323; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=wlXZSco/DJ1MZcyiWgBQiO9YbVtMIGlTF29irfQo8Ik=;
- b=mQxuaraoBKTD0/446Xe4oUVUth9WdZeIq0SjZ7Tqq2Gr6Mo/QrDsy2aTxR+SGhgUEo
- 3H8K+mJiRkAuF/SyS91sgOj/E/r7hQwlE3R6fz6kDgDyBfjTFBq437lzLmKEPvh4KJzi
- kkOKK0vO4GJrB4fWxWgenMZ+tidZK+78cW/ealbDHFYoP33Ei2NPuk2koaTXpbQQCgpK
- fY/WpRmErCCqVYswHWZ/cIv4GnGwMe5gzEy7wHT/bgKrsw5olOrj9K5EMXpxq7hN6r2T
- RLmlBS4bw9Qck1C3nLIDybwzzOoY33vgZSCA3nCiN24FoJK1SMH/ShOGlXtRYJDp6tr4
- Ek4g==
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1r5NEB-0006eh-79
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:39:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1r5NE0-00055g-Nn
+ for qemu-devel@nongnu.org; Tue, 21 Nov 2023 04:39:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700559557;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4zJx5FHFwi1JtcId0flSHLfurnsSd39yPczHUwUqMlc=;
+ b=LZIZN5MQ776BkcqJtmtxfULnDdR8A+J8wLxNZZ2dix3eh0UxlCvt294Vey8lM2GUJ8KQVp
+ 1ukEjjkrO1Mu1HUtMRui5Oqeaud/CifrT6//bcfcvRYlQ1Br1hMv26IYXBtsFtQ0pSWhG/
+ GRg79N36xS6lpsrDqmEdjW7uLAsb5/8=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-121-7-AtGoBxMo-pgZ7keRGdyw-1; Tue, 21 Nov 2023 04:39:16 -0500
+X-MC-Unique: 7-AtGoBxMo-pgZ7keRGdyw-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-548f23c0310so559111a12.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 01:39:15 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700559523; x=1701164323;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=wlXZSco/DJ1MZcyiWgBQiO9YbVtMIGlTF29irfQo8Ik=;
- b=uYwQ+CqdLDXUMDHOzc8ZKwQxBIqV/ZNsHzjVHvliGZ1Oe3haFabaE2yt1e8UkeqVXC
- pY+uMdmZpLjTb33/gnV2Ah1aKCWgTN1dYazKvScNqE5DlYnksXobNTMxGslFITpqVd0c
- IObYIFqQEXmLiiV5PF68Wa4Mu54aCdR0tsdm0YGUA7YDSvdhhgh+TxSV+ujFZB6S7sFo
- FdLR8K+vtebv0ZxdrB+bj1Y8ThyR7O1K/TSnMsGbidiUahlGH+cl9xtudAskJjf5JMGE
- Z5ovGFnDcoWFDOd/9HqGJA7t5DQ978N7WWZEbbTUTr8OgIBHpnx6yu/igvmgdSC4G25U
- PQHg==
-X-Gm-Message-State: AOJu0YzcWWg9PXZt6hMLMb13KRaOaqSTDVZU8MXrSxF2AATJIdOPYcf1
- nPB+lTteGN54XvEkfDMYRFqnl5CRBHxL45qBWReFdg==
-X-Google-Smtp-Source: AGHT+IE7r6TR7brwIuelBd/i0tWENIXQqlJPkwRqaROuY4eBOUEJWjxCgVkrIoVP20uQsC9jRpVdhw==
-X-Received: by 2002:a05:6000:188b:b0:332:c9be:d9bd with SMTP id
- a11-20020a056000188b00b00332c9bed9bdmr4062020wri.45.1700559522796; 
- Tue, 21 Nov 2023 01:38:42 -0800 (PST)
-Received: from localhost.localdomain (adsl-195.37.6.2.tellas.gr. [37.6.2.195])
- by smtp.gmail.com with ESMTPSA id
- r7-20020a056000014700b0032fab28e9c9sm13968996wrx.73.2023.11.21.01.38.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Nov 2023 01:38:42 -0800 (PST)
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH for-8.2] ui/pixman-minimal.h: fix empty allocation
-Date: Tue, 21 Nov 2023 11:38:39 +0200
-Message-Id: <20231121093840.2121195-1-manos.pitsidianakis@linaro.org>
-X-Mailer: git-send-email 2.39.2
+ d=1e100.net; s=20230601; t=1700559555; x=1701164355;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4zJx5FHFwi1JtcId0flSHLfurnsSd39yPczHUwUqMlc=;
+ b=cRGC22mLzXK3fR5s9MyJvC/L5ZQ/wYcfHjb9+uXsYB6ZT9aGHLB4xPa0kthYQBAxVR
+ 7/W9r0LofuovkgRGgSPVhm9Gx0dnSWGl7LmXgdip2zm3XCqiPkLEfiS2cDCzJSRaefjC
+ JVEokjy2x8I34o3oZ2gyQ0pkRM8zCdm4+S/9Fp3PRu+4J5SF1zbIIXFUwP3pLMFuygHx
+ bSek2oZuJoKGIWp8gEAOtOgnOwPdEz4ML8UWrXUV6JJuEn/hwXiXBbyxlBXMHoaGCNgd
+ YKU9Am97m77joIQy5Laun7RWVnSuVQ3mw4tSuZZrtPyFwASPbOtt/yy74+Ob+uAUAfgx
+ 0+/A==
+X-Gm-Message-State: AOJu0YzUkcgy90vy2W/mQ4SQyAvHsLNymnY5i2oykiA47DLGo/R9qIwg
+ 6FQOuUK0nNJAH0XtS/eQ1+tpx4voXNN6tS3ZuOVsExblD5H9dEdF7AbHu6PvoDsk5GdK258o9Q3
+ ydsHOihjmqQI6yHT3O4D4GFRgkZ+/VcE=
+X-Received: by 2002:aa7:c2d1:0:b0:548:615c:33aa with SMTP id
+ m17-20020aa7c2d1000000b00548615c33aamr1423508edp.20.1700559555112; 
+ Tue, 21 Nov 2023 01:39:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHgYF+6ggnxEw/OcoTbiZxsriOxCykYQkszohmDjMblCMqLeZG4BC/oztMcUR396LFFSyS7fZwj+afcGfFdSbw=
+X-Received: by 2002:aa7:c2d1:0:b0:548:615c:33aa with SMTP id
+ m17-20020aa7c2d1000000b00548615c33aamr1423494edp.20.1700559554859; Tue, 21
+ Nov 2023 01:39:14 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42c.google.com
+References: <20231116115354.228678-1-npiggin@gmail.com>
+ <20231116115354.228678-2-npiggin@gmail.com>
+ <CAMxuvawXTrQ3Mu-aGbELnQyBRU4W9kuMQo-XM_zm4FbRymHkqA@mail.gmail.com>
+ <CX3OGGIB0IAN.1CDYNM9U7M5Y3@wheely>
+In-Reply-To: <CX3OGGIB0IAN.1CDYNM9U7M5Y3@wheely>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Tue, 21 Nov 2023 13:39:03 +0400
+Message-ID: <CAMxuvayyULsyM0bQvCr-WRP39JwbTcDknBYEhj=eDrRQ2+9dUQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] chardev: report blocked write to chardev backend
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Cleber Rosa <crosa@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-ppc@nongnu.org, =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,95 +104,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the minimal pixman API stub that is used when the real pixman
-dependency is missing a NULL dereference happens when
-virtio-gpu-rutabaga allocates a pixman image with bits = NULL and
-rowstride_bytes = zero. A buffer of rowstride_bytes * height is
-allocated which is NULL. However, in that scenario pixman calculates a
-new stride value based on given width, height and format size.
+Hi
 
-This commit adds a helper function that performs the same logic as
-pixman.
+On Mon, Nov 20, 2023 at 5:36=E2=80=AFPM Nicholas Piggin <npiggin@gmail.com>=
+ wrote:
+>
+> On Mon Nov 20, 2023 at 10:06 PM AEST, Marc-Andr=C3=A9 Lureau wrote:
+> > Hi
+> >
+> > On Thu, Nov 16, 2023 at 3:54=E2=80=AFPM Nicholas Piggin <npiggin@gmail.=
+com> wrote:
+> > >
+> > > If a chardev socket is not read, it will eventually fill and QEMU
+> > > can block attempting to write to it. A difficult bug in avocado
+> > > tests where the console socket was not being read from caused this
+> > > hang.
+> > >
+> > > warn if a chardev write is blocked for 100ms.
+> > >
+> > > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > > ---
+> > > This is not necessary for the fix but it does trigger in the
+> > > failing avocado test without the previous patch applied. Maybe
+> > > it would be helpful?
+> > >
+> > > Thanks,
+> > > Nick
+> > >
+> > >  chardev/char.c | 6 ++++++
+> > >  1 file changed, 6 insertions(+)
+> > >
+> > > diff --git a/chardev/char.c b/chardev/char.c
+> > > index 996a024c7a..7c375e3cc4 100644
+> > > --- a/chardev/char.c
+> > > +++ b/chardev/char.c
+> > > @@ -114,6 +114,8 @@ static int qemu_chr_write_buffer(Chardev *s,
+> > >  {
+> > >      ChardevClass *cc =3D CHARDEV_GET_CLASS(s);
+> > >      int res =3D 0;
+> > > +    int nr_retries =3D 0;
+> > > +
+> > >      *offset =3D 0;
+> > >
+> > >      qemu_mutex_lock(&s->chr_write_lock);
+> > > @@ -126,6 +128,10 @@ static int qemu_chr_write_buffer(Chardev *s,
+> > >              } else {
+> > >                  g_usleep(100);
+> > >              }
+> > > +            if (++nr_retries =3D=3D 1000) { /* 100ms */
+> > > +                warn_report("Chardev '%s' write blocked for > 100ms,=
+ "
+> > > +                            "socket buffer full?", s->label);
+> > > +            }
+> >
+> > That shouldn't happen, the frontend should poll and only write when it
+> > can. What is the qemu command being used here?
+>
+> You can follow it through the thread here
+>
+> https://lore.kernel.org/qemu-devel/ZVT-bY9YOr69QTPX@redhat.com/
+>
+> In short, a console device is attached to a socket pair and nothing
+> ever reads from it. It eventually fills, and writing to it fails
+> indefinitely here.
+>
+> It can be reproduced with:
+>
+> make check-avocado
+> AVOCADO_TESTS=3Dtests/avocado/reverse_debugging.py:test_ppc64_pseries
+>
+>
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
----
- include/ui/pixman-minimal.h | 48 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 46 insertions(+), 2 deletions(-)
+How reliably? I tried 10/10.
 
-diff --git a/include/ui/pixman-minimal.h b/include/ui/pixman-minimal.h
-index efcf570c9e..6dd7de1c7e 100644
---- a/include/ui/pixman-minimal.h
-+++ b/include/ui/pixman-minimal.h
-@@ -113,6 +113,45 @@ typedef struct pixman_color {
-     uint16_t    alpha;
- } pixman_color_t;
- 
-+static inline uint32_t *create_bits(pixman_format_code_t format,
-+                                    int width,
-+                                    int height,
-+                                    int *rowstride_bytes)
-+{
-+    int stride = 0;
-+    size_t buf_size = 0;
-+    int bpp = PIXMAN_FORMAT_BPP(format);
-+
-+    /*
-+     * Calculate the following while checking for overflow truncation:
-+     * stride = ((width * bpp + 0x1f) >> 5) * sizeof(uint32_t);
-+     */
-+
-+    if (unlikely(__builtin_mul_overflow(width, bpp, &stride))) {
-+        return NULL;
-+    }
-+
-+    if (unlikely(__builtin_add_overflow(stride, 0x1f, &stride))) {
-+        return NULL;
-+    }
-+
-+    stride >>= 5;
-+
-+    stride *= sizeof(uint32_t);
-+
-+    if (unlikely(__builtin_mul_overflow((size_t) height,
-+                                        (size_t) stride,
-+                                        &buf_size))) {
-+        return NULL;
-+    }
-+
-+    if (rowstride_bytes) {
-+        *rowstride_bytes = stride;
-+    }
-+
-+    return g_malloc0(buf_size);
-+}
-+
- static inline pixman_image_t *pixman_image_create_bits(pixman_format_code_t format,
-                                                        int width,
-                                                        int height,
-@@ -123,13 +162,18 @@ static inline pixman_image_t *pixman_image_create_bits(pixman_format_code_t form
- 
-     i->width = width;
-     i->height = height;
--    i->stride = rowstride_bytes ?: width * DIV_ROUND_UP(PIXMAN_FORMAT_BPP(format), 8);
-     i->format = format;
-     if (bits) {
-         i->data = bits;
-     } else {
--        i->free_me = i->data = g_malloc0(rowstride_bytes * height);
-+        i->free_me = i->data =
-+            create_bits(format, width, height, &rowstride_bytes);
-+        if (width && height) {
-+            assert(i->data);
-+        }
-     }
-+    i->stride = rowstride_bytes ? rowstride_bytes :
-+                            width * DIV_ROUND_UP(PIXMAN_FORMAT_BPP(format), 8);
-     i->ref_count = 1;
- 
-     return i;
-
-base-commit: af9264da80073435fd78944bc5a46e695897d7e5
--- 
-2.39.2
+> > I think this change can be worth for debugging though.
+> >
+> > Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> Thanks,
+> Nick
+>
 
 
