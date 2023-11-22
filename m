@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E80327F4F9B
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 19:33:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E867F4FA0
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 19:33:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5s1C-0004WT-E6; Wed, 22 Nov 2023 13:32:10 -0500
+	id 1r5s1e-0004sa-1z; Wed, 22 Nov 2023 13:32:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5s0m-0004Hc-Fw
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:31:45 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5s0p-0004N7-3H
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:31:49 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5s0i-0004es-Cy
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:31:43 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4084b0223ccso286335e9.2
- for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 10:31:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5s0n-0004fP-Am
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:31:46 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4083dbc43cfso267065e9.3
+ for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 10:31:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700677898; x=1701282698; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700677904; x=1701282704; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=juSImIqOFX4cBg5Zc+Do2T+lJUxoOW0iOapk4mN+Z7o=;
- b=HYm4Qm6T8RPZspq0QC/9ILxuDUOlrpei8Dlmyju6RtFlBex4tXpdag8vXyGKMNihvu
- 4TX5YpXceDlDSOBQ4babeDEKGr1zLWzfSdi69Ggdsl1RPvr3+iCSqRjVY8Ignh06HqiC
- miI1k+K5QljjCGSBuPgtjKH+VMAAHNDD9F42wOcuUYpLC+fxlkgV+koQd8DcFhs5wVhx
- xSmlYR0UFnMrUu0OeT3J76LFareVEbZgPW1/UT23Tq4sxrsvVsp7xUwDGnNt2x8FuoPM
- uwkLFl54juhBvsILdYmr/BfKcODTPd4/zR+VdKgMpuCidhZwrLch/pClxACCBk5f/58O
- WLBg==
+ bh=Xw/8eweOyz7I3htVuJ6jfziPhJMt4cQLEajxgFqYUSs=;
+ b=BI5in9dwEOIqmmD9h+zoMmPY+YJWclo6Y2JXgn7PussaIZZ1kVgkCWB4xvVCP6K/AA
+ izPWBzWO0OnySG1CQNaSQj+c+zCwQX1nSgfGSFg3naQvxcWOVG+rK8mhNOx/GMhdTtyI
+ LQ4ziaU7BAr60sM1gs9zZHLOQbPj8awaxdDuMwaL9v9iW96AhEtzL+7FT8f5NgRWAbzI
+ VW0pfRl8J8oVWrGej4MV7I5uWIMp35xb9zTIOg7gGPJ4iZzoDa5gpOJxXenwmheKGyJL
+ n7Vy2XJIedTWSBzrw2YZJ7yCwT9180sCXdL8kDlgiHJ/5QmjIoLR29rp+h5sEUL9+CMg
+ b0+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700677898; x=1701282698;
+ d=1e100.net; s=20230601; t=1700677904; x=1701282704;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=juSImIqOFX4cBg5Zc+Do2T+lJUxoOW0iOapk4mN+Z7o=;
- b=KLWw8n+tGDxXRn/u4M/NlFrE7qLCVTKhRpBiULkSwCmiEInDH287WE+KrTHcjkEeRA
- xXiO+vPwnlno8afTGF+Kab3Fk79ML7KhszDbwY2DprCuHQD+DZOJdqGtZ9tmHsDtBEeG
- DBmfFDD/s4I6wnBsJpgl4vpf915TL6aJk2tUR18ZCRQsJmOz7a0ewgpOuOXhRHc85UxT
- thUpfcvGGaXaAmGFbJ3iawObTRFd7Tojft9+JAD7dFf92LpNMr5vaIpKEZhZc9YbMb+9
- g4lLylQAbbFVMLFym3JPWLu3ciFJx7L4IJfgIapSj4P51Jms2BfyX2mURIpQeKhVeQh3
- mPcg==
-X-Gm-Message-State: AOJu0YyLpM8OpcN/JPLaLjfvnBri7QrukWK/F787fwejkblLsD+HavsS
- FO5agWG9tw8NC6J46PLj2FGVgK2bTLzbSz62C6s=
-X-Google-Smtp-Source: AGHT+IEDhZssPByOJSwxEJVD+BQeS0gJKpv55Tt6F3/9rP1iAZJ3KJSnJODJSNYMYHo+HTAjjtT9mw==
-X-Received: by 2002:a05:600c:4f01:b0:409:773:cf62 with SMTP id
- l1-20020a05600c4f0100b004090773cf62mr2223036wmq.39.1700677898695; 
- Wed, 22 Nov 2023 10:31:38 -0800 (PST)
+ bh=Xw/8eweOyz7I3htVuJ6jfziPhJMt4cQLEajxgFqYUSs=;
+ b=Ac2QU5xo9f3EvPrAxyhxAu55j0LUldHCrmSOkEl6SUkia9CNSy6J8+IC9Xoso8jJlq
+ 2+7ySNdBOj1Hk20my6kWqN9Mbht/TSm7pdn3c4/NUbBR0mllYSraMuhlIuHrBHj6nv85
+ BDwPLqle0zEky47FAUHoQ2uPStZVAFJc3g+juhsT5JugmSkggnstU7lyBVk3rvscBXIr
+ AevP+ckQqBp+7FVcQTXLauI0CZ5+3iMQpfgYBK2NPvUFL7JSksSQsGU7GDoHiLOR1A1G
+ vpcsWaJjEBw2bXrj4EpIJKnfN/CZc+9zvvcVMEEtaw22NI1vt8D85gIraFwlTpyOHXsR
+ GHkA==
+X-Gm-Message-State: AOJu0Yze9PMZGW9+q+yCjLsvNsDemx7IZq73HNsqbR+3bhEr4y3izq1v
+ SNF+RonhoXX4k8Cmo0F+56KRgencHZVxP0gasj4=
+X-Google-Smtp-Source: AGHT+IHEvpExXkkInrxw0CF5q6L6pfzIb5pjEjT/+Avi6nIuMN4o6urEqM0Ex8MQNVh19sVnhpRmvQ==
+X-Received: by 2002:a05:600c:35c6:b0:405:4002:825a with SMTP id
+ r6-20020a05600c35c600b004054002825amr2690978wmq.13.1700677903888; 
+ Wed, 22 Nov 2023 10:31:43 -0800 (PST)
 Received: from m1x-phil.lan (pas38-h02-176-184-5-64.dsl.sta.abo.bbox.fr.
  [176.184.5.64]) by smtp.gmail.com with ESMTPSA id
- b5-20020a05600c4e0500b003feae747ff2sm261799wmq.35.2023.11.22.10.31.37
+ hg15-20020a05600c538f00b0040849ce7116sm242754wmb.43.2023.11.22.10.31.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 22 Nov 2023 10:31:38 -0800 (PST)
+ Wed, 22 Nov 2023 10:31:43 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -65,18 +65,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-arm@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH-for-9.0 09/11] hw/arm/bcm2836: Allocate ARM CPU state with
- object_new()
-Date: Wed, 22 Nov 2023 19:30:45 +0100
-Message-ID: <20231122183048.17150-10-philmd@linaro.org>
+Subject: [RFC PATCH-for-9.0 10/11] hw/arm/raspi: Build bcm2836.o and raspi.o
+ objects once
+Date: Wed, 22 Nov 2023 19:30:46 +0100
+Message-ID: <20231122183048.17150-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231122183048.17150-1-philmd@linaro.org>
 References: <20231122183048.17150-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,101 +99,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ARMCPU type is forward declared as a pointer to all hw/ files.
-Its declaration is restricted to target/arm/ files. By using a
-pointer in BCM283XState instead of embedding the whole CPU state,
-we don't need to include "cpu.h" which is target-specific.
+Use the target_aarch64_available() method to restrict
+Aarch64 specific models. They will only be added at runtime
+if TARGET_AARCH64 is built in.
+
+The Raspberry Pi models can now be built once for all targets.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/arm/bcm2836.h |  4 ++--
- hw/arm/bcm2836.c         | 19 ++++++++++---------
- hw/arm/raspi.c           |  2 +-
- 3 files changed, 13 insertions(+), 12 deletions(-)
+ hw/arm/bcm2836.c   | 5 +----
+ hw/arm/raspi.c     | 6 ++----
+ hw/arm/meson.build | 6 ++++--
+ 3 files changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/include/hw/arm/bcm2836.h b/include/hw/arm/bcm2836.h
-index 6f90cabfa3..784bab0aad 100644
---- a/include/hw/arm/bcm2836.h
-+++ b/include/hw/arm/bcm2836.h
-@@ -14,7 +14,7 @@
- 
- #include "hw/arm/bcm2835_peripherals.h"
- #include "hw/intc/bcm2836_control.h"
--#include "target/arm/cpu.h"
-+#include "target/arm/cpu-qom.h"
- #include "qom/object.h"
- 
- #define TYPE_BCM283X "bcm283x"
-@@ -38,7 +38,7 @@ struct BCM283XState {
-     uint32_t enabled_cpus;
- 
-     struct {
--        ARMCPU core;
-+        ARMCPU *core;
-     } cpu[BCM283X_NCPUS];
-     BCM2836ControlState control;
-     BCM2835PeripheralState peripherals;
 diff --git a/hw/arm/bcm2836.c b/hw/arm/bcm2836.c
-index 8031a74600..4f5acee77e 100644
+index 4f5acee77e..ecf434c8ce 100644
 --- a/hw/arm/bcm2836.c
 +++ b/hw/arm/bcm2836.c
-@@ -39,8 +39,9 @@ static void bcm2836_init(Object *obj)
-     int n;
+@@ -194,7 +194,6 @@ static void bcm2836_class_init(ObjectClass *oc, void *data)
+     dc->realize = bcm2836_realize;
+ };
  
-     for (n = 0; n < bc->core_count; n++) {
--        object_initialize_child(obj, "cpu[*]", &s->cpu[n].core,
--                                bc->cpu_type);
-+        s->cpu[n].core = ARM_CPU(object_new(bc->cpu_type));
-+        object_property_add_child(obj, "cpu[*]", OBJECT(s->cpu[n].core));
-+        qdev_realize_and_unref(DEVICE(s->cpu[n].core), NULL, &error_abort);
-     }
-     if (bc->core_count > 1) {
-         qdev_property_add_static(DEVICE(obj), &bcm2836_enabled_cores_property);
-@@ -139,24 +140,24 @@ static void bcm2836_realize(DeviceState *dev, Error **errp)
-         object_property_set_bool(OBJECT(&s->cpu[n].core), "start-powered-off",
-                                  n >= s->enabled_cpus, &error_abort);
+-#ifdef TARGET_AARCH64
+ static void bcm2837_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+@@ -207,7 +206,6 @@ static void bcm2837_class_init(ObjectClass *oc, void *data)
+     bc->clusterid = 0x0;
+     dc->realize = bcm2836_realize;
+ };
+-#endif
  
--        if (!qdev_realize(DEVICE(&s->cpu[n].core), NULL, errp)) {
-+        if (!qdev_realize(DEVICE(s->cpu[n].core), NULL, errp)) {
-             return;
-         }
- 
-         /* Connect irq/fiq outputs from the interrupt controller. */
-         qdev_connect_gpio_out_named(DEVICE(&s->control), "irq", n,
--                qdev_get_gpio_in(DEVICE(&s->cpu[n].core), ARM_CPU_IRQ));
-+                qdev_get_gpio_in(DEVICE(s->cpu[n].core), ARM_CPU_IRQ));
-         qdev_connect_gpio_out_named(DEVICE(&s->control), "fiq", n,
--                qdev_get_gpio_in(DEVICE(&s->cpu[n].core), ARM_CPU_FIQ));
-+                qdev_get_gpio_in(DEVICE(s->cpu[n].core), ARM_CPU_FIQ));
- 
-         /* Connect timers from the CPU to the interrupt controller */
--        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_PHYS,
-+        qdev_connect_gpio_out(DEVICE(s->cpu[n].core), GTIMER_PHYS,
-                 qdev_get_gpio_in_named(DEVICE(&s->control), "cntpnsirq", n));
--        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_VIRT,
-+        qdev_connect_gpio_out(DEVICE(s->cpu[n].core), GTIMER_VIRT,
-                 qdev_get_gpio_in_named(DEVICE(&s->control), "cntvirq", n));
--        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_HYP,
-+        qdev_connect_gpio_out(DEVICE(s->cpu[n].core), GTIMER_HYP,
-                 qdev_get_gpio_in_named(DEVICE(&s->control), "cnthpirq", n));
--        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_SEC,
-+        qdev_connect_gpio_out(DEVICE(s->cpu[n].core), GTIMER_SEC,
-                 qdev_get_gpio_in_named(DEVICE(&s->control), "cntpsirq", n));
-     }
- }
+ static const TypeInfo bcm283x_types[] = {
+     {
+@@ -218,12 +216,11 @@ static const TypeInfo bcm283x_types[] = {
+         .name           = TYPE_BCM2836,
+         .parent         = TYPE_BCM283X,
+         .class_init     = bcm2836_class_init,
+-#ifdef TARGET_AARCH64
+     }, {
+         .name           = TYPE_BCM2837,
+         .parent         = TYPE_BCM283X,
+         .class_init     = bcm2837_class_init,
+-#endif
++        .can_register   = target_aarch64_available,
+     }, {
+         .name           = TYPE_BCM283X,
+         .parent         = TYPE_DEVICE,
 diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
-index cc4c4ec9bf..01c391b90a 100644
+index 01c391b90a..979937b9ac 100644
 --- a/hw/arm/raspi.c
 +++ b/hw/arm/raspi.c
-@@ -252,7 +252,7 @@ static void setup_boot(MachineState *machine, RaspiProcessorId processor_id,
-         s->binfo.firmware_loaded = true;
-     }
+@@ -349,7 +349,6 @@ static void raspi2b_machine_class_init(ObjectClass *oc, void *data)
+     raspi_machine_class_common_init(mc, rmc->board_rev);
+ };
  
--    arm_load_kernel(&s->soc.cpu[0].core, machine, &s->binfo);
-+    arm_load_kernel(s->soc.cpu[0].core, machine, &s->binfo);
- }
+-#ifdef TARGET_AARCH64
+ static void raspi3ap_machine_class_init(ObjectClass *oc, void *data)
+ {
+     MachineClass *mc = MACHINE_CLASS(oc);
+@@ -367,7 +366,6 @@ static void raspi3b_machine_class_init(ObjectClass *oc, void *data)
+     rmc->board_rev = 0xa02082;
+     raspi_machine_class_common_init(mc, rmc->board_rev);
+ };
+-#endif /* TARGET_AARCH64 */
  
- static void raspi_machine_init(MachineState *machine)
+ static const TypeInfo raspi_machine_types[] = {
+     {
+@@ -382,16 +380,16 @@ static const TypeInfo raspi_machine_types[] = {
+         .name           = MACHINE_TYPE_NAME("raspi2b"),
+         .parent         = TYPE_RASPI_MACHINE,
+         .class_init     = raspi2b_machine_class_init,
+-#ifdef TARGET_AARCH64
+     }, {
+         .name           = MACHINE_TYPE_NAME("raspi3ap"),
+         .parent         = TYPE_RASPI_MACHINE,
+         .class_init     = raspi3ap_machine_class_init,
++        .can_register   = target_aarch64_available,
+     }, {
+         .name           = MACHINE_TYPE_NAME("raspi3b"),
+         .parent         = TYPE_RASPI_MACHINE,
+         .class_init     = raspi3b_machine_class_init,
+-#endif
++        .can_register   = target_aarch64_available,
+     }, {
+         .name           = TYPE_RASPI_MACHINE,
+         .parent         = TYPE_MACHINE,
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index 68245d3ad1..15d60685d0 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -38,7 +38,6 @@ arm_ss.add(when: 'CONFIG_STRONGARM', if_true: files('strongarm.c'))
+ arm_ss.add(when: 'CONFIG_ALLWINNER_A10', if_true: files('allwinner-a10.c', 'cubieboard.c'))
+ arm_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-h3.c', 'orangepi.c'))
+ arm_ss.add(when: 'CONFIG_ALLWINNER_R40', if_true: files('allwinner-r40.c', 'bananapi_m2u.c'))
+-arm_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2836.c', 'raspi.c'))
+ arm_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_soc.c'))
+ arm_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_soc.c'))
+ arm_ss.add(when: 'CONFIG_STM32F405_SOC', if_true: files('stm32f405_soc.c'))
+@@ -68,7 +67,10 @@ arm_ss.add(when: 'CONFIG_XEN', if_true: files('xen_arm.c'))
+ 
+ system_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmu-common.c'))
+ system_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4_boards.c'))
+-system_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_peripherals.c'))
++system_ss.add(when: 'CONFIG_RASPI', if_true: files(
++  'bcm2835_peripherals.c',
++  'bcm2836.c',
++  'raspi.c'))
+ system_ss.add(when: 'CONFIG_TOSA', if_true: files('tosa.c'))
+ 
+ hw_arch += {'arm': arm_ss}
 -- 
 2.41.0
 
