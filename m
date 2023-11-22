@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 426B67F44B6
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 12:11:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C7F77F44B8
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 12:13:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5l7k-0001w4-HQ; Wed, 22 Nov 2023 06:10:28 -0500
+	id 1r5lA9-0002xq-E5; Wed, 22 Nov 2023 06:12:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5l7f-0001vm-0F
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 06:10:23 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5lA4-0002x4-DU
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 06:12:52 -0500
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5l7d-0001gp-DM
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 06:10:22 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-332c0c32d19so2802254f8f.3
- for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 03:10:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5lA1-00023C-FU
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 06:12:51 -0500
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-507a0907896so9349860e87.2
+ for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 03:12:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700651419; x=1701256219; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700651567; x=1701256367; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=vQYdded+nNhrvOuaSIFjiUL+tKO6S6O0UnMYXjwEKd8=;
- b=h+1IMpLbZj3snuacdwnQfju4h6LgivzjVpOOfDeQNZhsXPHtqpFsKt/vZ0x/YI0PxJ
- 0S4BqJ6/nBnlYfBm2hkM6osxN/JziHawJ3AUJmjL12ypfqxpxQlxj6RjAtlObuOqOHqE
- dn8p4NeLA1FtFj3mJHNhRHrsayAq38GlkQnGUBiOUfjPx3H4/OgVZjdjBGjF72kboxWA
- Z90I2LnllMYS3P+f86Y5NmEU+wKJKh6h3A01RElUk7HO+GXVsXmIXKK8aUb1UqsMZ127
- 8OnYWGLSxC2WJCz+KeM5HcW04+i7rd6JH2bL/TZvgxfLYDvYEVNAf4SgeUC5oDB3X1Se
- ko1Q==
+ bh=pHG+p/7dmDL8K+jCe3ynyGYs4kUaHD4fINNC7XGjciQ=;
+ b=Bb6l6SdQSwGj70HxvTX1MMFPAI4Ub0zLFhbP8E4KeY7xqCkNYWq0bE0ewZ6P4P5aiq
+ dejoPl8pIXi55F0kbvDMdcMdMglU45c4AMb0XG6Ksqq7KBbLVvsYklXA9JIV8iHfHkJk
+ 5Wi9xzbamP8cmy5Hfvzkm36OMIHmj/1+YJX9h2pmvrZGULXOCY0uMqcmaY5jewM9rzXE
+ mcOpFsbY8KPEeOxBLV/D6UDMcH7/AIwLC5pupahy/l0s6WNwTyIWHgTma6TZADRWiloy
+ Z0wtXbBdBTVocbJ+MhhHF2F7ylBOmJy4hi0tX5JIX4XrG07cH65dsNFWjt8o7WaQisiY
+ LSvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700651419; x=1701256219;
+ d=1e100.net; s=20230601; t=1700651567; x=1701256367;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vQYdded+nNhrvOuaSIFjiUL+tKO6S6O0UnMYXjwEKd8=;
- b=RbxRs/NfLH5IAFmxbLI9S0ke2UfDOq54rZK7R7ej647vwBiUDROFZMWkMNv4jMaA4u
- mSBDsNbFOnjxiIZgGRI4Et/shGk0gsDfvoEHHqDDvvsARht0bTHqId6cJq/1ICcHYxRK
- x1ZQNZBxrj26TmFeoONBfgMbbgBVp1oFmHXCEBfB0M7nWYxJsIRGadPzkO//h2s2C8oN
- n1gAToSxGtif8nD2vsq2rgZdgkGzFUCsJpfaw4VB1SKABc5CL2U6PRagBGV73GV5vpEl
- HWJ7rEvcZo/S1AUkz4Kd5Bm3FWxtHqT22Qc6LN6BrhQKTcVcb0rXhMtHXg/zGLUo9LP6
- xFtQ==
-X-Gm-Message-State: AOJu0YzUiJ+6WTMRebdmc6ulaFGC6lVRMEjCBFPRVFRJo2tIvvUK7KD0
- fp0T8/KWfw1S9YNLm5KfYvfswA==
-X-Google-Smtp-Source: AGHT+IHFtoIhvI7XyWoi03yjuzCDw9EKhPJEVhtLD9H3cdNWjGdLeQwdvsxaRORcYkj9lpXeOZDsGA==
-X-Received: by 2002:a5d:6803:0:b0:32d:5cc0:2f0c with SMTP id
- w3-20020a5d6803000000b0032d5cc02f0cmr1281724wru.40.1700651419546; 
- Wed, 22 Nov 2023 03:10:19 -0800 (PST)
+ bh=pHG+p/7dmDL8K+jCe3ynyGYs4kUaHD4fINNC7XGjciQ=;
+ b=LJS5exnZ+UQ0oKhLkPWLJ3WxFvhiEE3KN+Ctw2fIpdbJ1nD2oB+n+zF8+sLCnuwIci
+ hO8ma7hG+gVPeet4JEtRlJLAFB/1UWmKb02hq3ymtIA5n1fP3OWUu4OJQSa4W3Wo3blv
+ KSNAPFXBweONdITLq3obDz/kXKpBc1WBUYWnxGLyHzgPKtDJ7JwQNrGUjgZAkXvC/+Af
+ mjI0Iuizn1wlnyA2+9sPeoo6wky4Vicdn9mRqRvTgL6YdewfPy8p/lGDVhbt/glEdPoZ
+ 6plJ2Odi4RSMVeBV79vUMaQRdjQ1TA6uhGmbhJG6xJugCgpPNs66twpJ3XRF/MO8uqVk
+ qiOA==
+X-Gm-Message-State: AOJu0Yy9MwbdvyWtiyj7fpjg9p5xQat7bKCskxfuI2fEbl9IuXX5o8Om
+ DCSpPDmzwK8rf8sBSZqt6KqBVg==
+X-Google-Smtp-Source: AGHT+IF8X2AGF0wGtbDv4JYn05an7iNDzvo2RS+HXt9FUmEMXP5jvS1lrdP60fEj7z3apHo+GGcjsQ==
+X-Received: by 2002:a05:6512:e91:b0:4fd:faa5:64ed with SMTP id
+ bi17-20020a0565120e9100b004fdfaa564edmr2020584lfb.11.1700651567371; 
+ Wed, 22 Nov 2023 03:12:47 -0800 (PST)
 Received: from [192.168.69.100] (pas38-h02-176-184-5-64.dsl.sta.abo.bbox.fr.
  [176.184.5.64]) by smtp.gmail.com with ESMTPSA id
- r15-20020a5d6c6f000000b00332cb17f87csm7232590wrz.5.2023.11.22.03.10.18
+ a15-20020adfed0f000000b003140f47224csm16706766wro.15.2023.11.22.03.12.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 22 Nov 2023 03:10:19 -0800 (PST)
-Message-ID: <3c095762-20b8-41eb-8027-854bdbb2affe@linaro.org>
-Date: Wed, 22 Nov 2023 12:10:17 +0100
+ Wed, 22 Nov 2023 03:12:46 -0800 (PST)
+Message-ID: <59356033-042c-4a15-82e4-7ab610752cb8@linaro.org>
+Date: Wed, 22 Nov 2023 12:12:44 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] xen_arm: Set mc->max_cpus to GUEST_MAX_VCPUS in
- xen_arm_init()
+Subject: Re: [PATCH v2 1/2] ppc/spapr: Introduce SPAPR_NR_IPIS to refer IRQ
+ range for CPU IPIs.
 Content-Language: en-US
-To: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: David Woodhouse <dwmw@amazon.co.uk>,
- Stefano Stabellini <sstabellini@kernel.org>, Julien Grall <julien@xen.org>,
- Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
-References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
- <20231121221023.419901-6-volodymyr_babchuk@epam.com>
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>, npiggin@gmail.com,
+ qemu-ppc@nongnu.org
+Cc: danielhb413@gmail.com, clg@kaod.org, david@gibson.dropbear.id.au,
+ qemu-devel@nongnu.org
+References: <20231122092845.973949-1-harshpb@linux.ibm.com>
+ <20231122092845.973949-2-harshpb@linux.ibm.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231121221023.419901-6-volodymyr_babchuk@epam.com>
+In-Reply-To: <20231122092845.973949-2-harshpb@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,26 +95,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/11/23 23:10, Volodymyr Babchuk wrote:
-> From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+On 22/11/23 10:28, Harsh Prateek Bora wrote:
+> spapr_irq_init currently uses existing macro SPAPR_XIRQ_BASE to refer to
+> the range of CPU IPIs during initialization of nr-irqs property.
+> It is more appropriate to have its own define which can be further
+> reused as appropriate for correct interpretation.
 > 
-> The number of vCPUs used for the IOREQ configuration (machine->smp.cpus)
-> should really match the system value as for each vCPU we setup a dedicated
-> evtchn for the communication with Xen at the runtime. This is needed
-> for the IOREQ to be properly configured and work if the involved domain
-> has more than one vCPU assigned.
-> 
-> Set the number of current supported guest vCPUs here (128) which is
-> defined in public header arch-arm.h. And the toolstack should then
-> pass max_vcpus using "-smp" arg.
-> 
-> Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-> Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
+> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> Suggested-by: Cedric Le Goater <clg@kaod.org>
 > ---
->   hw/arm/xen_arm.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   hw/ppc/spapr_irq.c         | 4 ++--
+>   include/hw/ppc/spapr_irq.h | 1 +
+>   2 files changed, 3 insertions(+), 2 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
 
 
