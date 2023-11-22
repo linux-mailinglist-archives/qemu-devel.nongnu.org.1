@@ -2,92 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF5237F3F2E
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 08:48:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8297F3F2F
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 08:48:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5hxD-0001tD-6l; Wed, 22 Nov 2023 02:47:23 -0500
+	id 1r5hyK-0002fg-DN; Wed, 22 Nov 2023 02:48:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r5hxA-0001sP-Bf
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 02:47:20 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1r5hx8-0004VY-Ks
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 02:47:20 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40b2979a74eso11537145e9.0
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 23:47:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700639237; x=1701244037; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=YehAvXc4EQJyJQya1v7MbTAaXaMsR4wDVzXUCfk80rc=;
- b=fp28/7YNzrmV2c+BI/QdmyBMGCc/WtsBadm1AXsCs3Da2z28cd+KyY90f511+wJFNa
- HmtJBBaaxLvmI65E/ZGdN9aEr5z074EhOOiieAMQAXUV3F5LgBbqXn+SAtmUDeU0Y9kI
- d/1MTdTF07WwdoICk+zA3k9kR7CgALKtD98SdPoSgxEYvhfn1/1SC3BMz7eatcyTGjpv
- zWNNGUVaEC0mpNC3ZdLRRKG3upfB0swZx1ABHCyy1yOxR49isRERzYS4daoku8kkP8hH
- 6xR+ABwIA6PbUbjniPhelrmPzmGwxuW8UYjkaQlZi5U113GgCpYw9goagQ5jOKCC7cOi
- 0YeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700639237; x=1701244037;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=YehAvXc4EQJyJQya1v7MbTAaXaMsR4wDVzXUCfk80rc=;
- b=E/YMCROWtS/xGfyW2xkI/9Rth8mMwIvWOP6/DybtTBBV519v/58chudkB3VSRcu0xg
- WZt7w30fzezJ9k9ae4YK8S9D9T19o9QHJyvTSkt2xXzOCDjsOml8bMrchA1PlkS9KWO9
- EAXKKYIbDOLxr7dRvKSrb49VzB+YdvO4UEpfyLJ83pESxzANTp/HpJ/zlqqB0BdxSl8i
- UtEKGblROfS/riOamPtbCpl/yXmqO1+MRW43xiSVU5hQh3wil13yB9P4KsbDWkpqPhyN
- OFPcrcxDhWnsa1DO8jD98pKZ73FoGXhGgOLNgAfYLvDyOe/KjZCFopqoV/UIwHl25ZuQ
- aQ7g==
-X-Gm-Message-State: AOJu0Yz1lhx4/Sx36OyxEOu4N82MacdiO45DOhcz0LrXKbv4VE4PrD1V
- qtjgQlgY+6pr6bbv37LbxTOPQw==
-X-Google-Smtp-Source: AGHT+IHD4fcn+Lf1d34JS5okWR2qDscpOTAS35J2jyZe3aQAOS0WMXFC0F/xloUi7uhU1+KIPdBr/w==
-X-Received: by 2002:a05:600c:3ca0:b0:406:c6de:2bea with SMTP id
- bg32-20020a05600c3ca000b00406c6de2beamr1175098wmb.17.1700639237203; 
- Tue, 21 Nov 2023 23:47:17 -0800 (PST)
-Received: from meli.delivery (adsl-195.37.6.2.tellas.gr. [37.6.2.195])
- by smtp.gmail.com with ESMTPSA id
- w10-20020a05600c474a00b0040b2c195523sm1268259wmo.31.2023.11.21.23.47.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Nov 2023 23:47:16 -0800 (PST)
-Date: Wed, 22 Nov 2023 09:46:43 +0200
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-arm@nongnu.org,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-arm@nongnu.org,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, qemu-ppc@nongnu.org,
- C=?UTF-8?B?w6k=?= dric Le Goater <clg@kaod.org>,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, Joel Stanley <joel@jms.id.au>
-Subject: Re: [PATCH-for-9.0 24/25] hw/nvram: Simplify
- memory_region_init_rom_device() calls
-User-Agent: meli 0.8.2
-References: <20231120213301.24349-1-philmd@linaro.org>
- <20231120213301.24349-25-philmd@linaro.org>
-In-Reply-To: <20231120213301.24349-25-philmd@linaro.org>
-Message-ID: <4ilmq.kfqrve6jtfy@linaro.org>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r5hyG-0002fQ-8g; Wed, 22 Nov 2023 02:48:28 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r5hyE-0004jK-Fa; Wed, 22 Nov 2023 02:48:28 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AM7gemL014610; Wed, 22 Nov 2023 07:48:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=zWQ33w6iSdWGxXuoC3xLHYmhi070YITW9EWT5eBVTVg=;
+ b=BehT1PHgMfzszVS24N2+E02/oCs++saQRIimGwTB+35VFXkQgu1pJmHvxTImjt7VwEvf
+ KHSBFH0fEmRycvbSQh2Zq8KrirqTAKRn6bai9HJL9zsoxAzoA/UQ88Zk6CtreAXvXvP5
+ WqHFPXlCgs5/e11w6wPATWX/hj6W11Q4svZYt0uBsAOkSEEVERDwDMqu/306KrNPpSs7
+ A2y8VhOypWzhAmvRkV0kw/hqtL0xqnk2R6gHaeOo9JTGrF1OGRp7HnIt41svzcrJEC7r
+ rQMmZdWk4hK8ZLqUp9yEaqk54CDcaFpE8pilRy5Ti/Q+ahFu1qLs0PTN0bMnuX3/X4Jb Zg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uhdg387m4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Nov 2023 07:48:12 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AM7gtsZ015425;
+ Wed, 22 Nov 2023 07:48:12 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uhdg387kc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Nov 2023 07:48:12 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AM7IQec002623; Wed, 22 Nov 2023 07:48:11 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uf93kx8x1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Nov 2023 07:48:10 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AM7m8cg3932842
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 22 Nov 2023 07:48:08 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6654D20040;
+ Wed, 22 Nov 2023 07:48:08 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 40CEE20043;
+ Wed, 22 Nov 2023 07:48:06 +0000 (GMT)
+Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.ibm.com.com (unknown
+ [9.43.17.116]) by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 22 Nov 2023 07:48:05 +0000 (GMT)
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+To: npiggin@gmail.com, qemu-ppc@nongnu.org
+Cc: danielhb413@gmail.com, clg@kaod.org, david@gibson.dropbear.id.au,
+ qemu-devel@nongnu.org, harshpb@linux.ibm.com
+Subject: [PATCH] ppc/spapr: Initialize max_cpus limit to an allowed usable
+ limit.
+Date: Wed, 22 Nov 2023 13:18:02 +0530
+Message-Id: <20231122074802.868083-1-harshpb@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 8gUi1kg1KlAfu5Y682_P4QpWf2kKuWW5
+X-Proofpoint-ORIG-GUID: 4Y4Sr4pZIm6nu8DVHNH9oUJFIVEqjWyP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-22_06,2023-11-21_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ mlxlogscore=999 adultscore=0 bulkscore=0 priorityscore=1501 mlxscore=0
+ suspectscore=0 phishscore=0 spamscore=0 clxscore=1015 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311220055
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,50 +109,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 20 Nov 2023 23:32, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->Mechanical change using the following coccinelle script:
->
->@@
->expression mr, owner, arg3, arg4, arg5, arg6, errp;
->@@
->-   memory_region_init_rom_device(mr, owner, arg3, arg4, arg5, arg6, &errp);
->    if (
->-       errp
->+       !memory_region_init_rom_device(mr, owner, arg3, arg4, arg5, arg6, &errp)
->    ) {
->        ...
->        return;
->    }
->
->and removing the local Error variable.
->
->Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->---
-> hw/nvram/nrf51_nvm.c | 7 ++-----
-> 1 file changed, 2 insertions(+), 5 deletions(-)
->
->diff --git a/hw/nvram/nrf51_nvm.c b/hw/nvram/nrf51_nvm.c
->index 7f1db8c423..7b25becd49 100644
->--- a/hw/nvram/nrf51_nvm.c
->+++ b/hw/nvram/nrf51_nvm.c
->@@ -336,12 +336,9 @@ static void nrf51_nvm_init(Object *obj)
-> static void nrf51_nvm_realize(DeviceState *dev, Error **errp)
-> {
->     NRF51NVMState *s = NRF51_NVM(dev);
->-    Error *err = NULL;
-> 
->-    memory_region_init_rom_device(&s->flash, OBJECT(dev), &flash_ops, s,
->-        "nrf51_soc.flash", s->flash_size, &err);
->-    if (err) {
->-        error_propagate(errp, err);
->+    if (!memory_region_init_rom_device(&s->flash, OBJECT(dev), &flash_ops, s,
->+                                       "nrf51_soc.flash", s->flash_size, errp)) {
->         return;
->     }
-> 
->-- 
+Initialize the machine specific max_cpus limit to a usable limit 4096.
+Keeping between 4096 to 8192 will throw IRQ not free error due to XIVE
+limitation and keeping beyond 8192 will hit assert in tcg_region_init
+or spapr_xive_claim_irq.
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Logs:
 
+Without patch fix:
+
+[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=4097
+qemu-system-ppc64: IRQ 4096 is not free
+[root@host build]#
+
+On LPAR:
+[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=8193
+**
+ERROR:../tcg/region.c:774:tcg_region_init: assertion failed:
+(region_size >= 2 * page_size)
+Bail out! ERROR:../tcg/region.c:774:tcg_region_init: assertion failed:
+(region_size >= 2 * page_size)
+Aborted (core dumped)
+[root@host build]#
+
+On x86:
+[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=8193
+qemu-system-ppc64: ../hw/intc/spapr_xive.c:596: spapr_xive_claim_irq:
+Assertion `lisn < xive->nr_irqs' failed.
+Aborted (core dumped)
+[root@host build]#
+
+With patch fix:
+[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=4097
+qemu-system-ppc64: Invalid SMP CPUs 4097. The max CPUs supported by
+machine 'pseries-8.2' is 4096
+[root@host build]#
+
+Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+---
+ hw/ppc/spapr.c         | 9 +++------
+ include/hw/ppc/spapr.h | 1 +
+ 2 files changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index df09aa9d6a..1995949ea5 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -4647,13 +4647,10 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
+     mc->block_default_type = IF_SCSI;
+ 
+     /*
+-     * Setting max_cpus to INT32_MAX. Both KVM and TCG max_cpus values
+-     * should be limited by the host capability instead of hardcoded.
+-     * max_cpus for KVM guests will be checked in kvm_init(), and TCG
+-     * guests are welcome to have as many CPUs as the host are capable
+-     * of emulate.
++     * While KVM determines max cpus in kvm_init() using kvm_max_vcpus(),
++     * In TCG the limit is restricted by max-irqs setup by XIVE which is 4096.
+      */
+-    mc->max_cpus = INT32_MAX;
++    mc->max_cpus = SPAPR_MAX_CPUS;
+ 
+     mc->no_parallel = 1;
+     mc->default_boot_order = "";
+diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
+index e91791a1a9..210849a494 100644
+--- a/include/hw/ppc/spapr.h
++++ b/include/hw/ppc/spapr.h
+@@ -23,6 +23,7 @@ typedef struct SpaprPendingHpt SpaprPendingHpt;
+ 
+ typedef struct Vof Vof;
+ 
++#define SPAPR_MAX_CPUS          4096
+ #define HPTE64_V_HPTE_DIRTY     0x0000000000000040ULL
+ #define SPAPR_ENTRY_POINT       0x100
+ 
+-- 
+2.39.3
 
 
