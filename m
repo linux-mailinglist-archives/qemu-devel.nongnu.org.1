@@ -2,73 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C10187F4621
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 13:29:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 555F57F4677
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 13:42:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5mLb-0006ZE-FO; Wed, 22 Nov 2023 07:28:51 -0500
+	id 1r5mXE-0000JI-3c; Wed, 22 Nov 2023 07:40:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
- id 1r5mLY-0006Yp-Ky
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 07:28:48 -0500
-Received: from mta-04.yadro.com ([89.207.88.248])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r5mXA-0000Ie-8w
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 07:40:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
- id 1r5mLV-0000jt-Oj
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 07:28:48 -0500
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com C5809C0002
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
- t=1700656121; bh=Ot8PHiojizOLELZKfSYO7D2o0GDtLyZAkuMPR+dULtc=;
- h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
- b=TPMFKQ6WmCPJsBaU5YyIGBJgN8WrXA+b9OuHcdZX3LkFwKXZ9BlxMKWUSqnRnr5wA
- aQHWAH23zGj9TFBXAEALj4VzsmlSeDjHMlM0Pajvd425hkn2i8mal4IdA2cVQYOTch
- 12F7erkwEfm+R9cg681Wd0+SsyfgNnqIe3uX8b86ZR6zwRpBDAy/XRbvRFjDHeQCNb
- S2PJWhcqkh7lJ5ZBFo48XHtpRbA7T9u9hDhwPu7lz5VBWl5Yl4hDTOzC9mb4Prm5jQ
- 0kNspppipwhfJfRUDL6/rBXInRePJaBGlUTHldhiSOZSg5ctjjji13nNR3kZeDPI1L
- G0OzIJWHRqx4w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
- t=1700656121; bh=Ot8PHiojizOLELZKfSYO7D2o0GDtLyZAkuMPR+dULtc=;
- h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
- b=FWCZsmDbSsTiV5ltT14s2j+zMYd40d2bY9IKsoGcafftQXm5P9h6082y3ucSOwdcg
- CC9N2sdDv5lUi+Y9X12xsIzAgxg91Zt+erZbpL1Dw4p17F1f02wLX9KAB/ZIFmH9tB
- B8SlLl46Xkl5fcOuywNgrHAM927iA1y6nblbRn/HOPKfP0kAq7poS3o3yp4nM1NZka
- 5+hRKSoQzKruZhzWAGuY+D58KqbTzigARJk6D0N+tKI66jUQh/1n+uOQYspl8rWVn1
- ZimOIvlKRufhni0f1XJwCCWuLCq5X7UdJWXTiqaYI7nSjmY10qOtxdMPQv8ilC1e9f
- n59hsPiyHaKlg==
-From: Mikhail Tyutin <m.tyutin@yadro.com>
-To: =?utf-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Richard Henderson
- <richard.henderson@linaro.org>, "erdnaxe@crans.org" <erdnaxe@crans.org>,
- "ma.mandourr@gmail.com" <ma.mandourr@gmail.com>
-Subject: RE: Instruction virtual address in TCG Plugins
-Thread-Topic: Instruction virtual address in TCG Plugins
-Thread-Index: AdoWXsbya+HqTrueTiqiLf6nDJCNngAFWYevABh5pFAABM9ShQFrwMggAAHUSSsAJ6hdoA==
-Date: Wed, 22 Nov 2023 12:28:40 +0000
-Message-ID: <882447aa33ba409cb3da47c61ddba9a2@yadro.com>
-References: <d4f2713a4e2d45858c82ff2efb95f8a3@yadro.com>
- <87leb1xtdx.fsf@draig.linaro.org>
- <e44e7be4b0b44ea2882fbfe09f3b58f4@yadro.com>
- <874jhoy54t.fsf@draig.linaro.org>
- <f79fe2c0d7e5457ca7172862e96fd886@yadro.com>
- <878r6rf28r.fsf@draig.linaro.org>
-In-Reply-To: <878r6rf28r.fsf@draig.linaro.org>
-Accept-Language: ru-RU, en-US
-Content-Language: ru-RU
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r5mX8-0003Rt-JB
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 07:40:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700656845;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=gg1ZEULb1vRoVeanS+LDtyVvE1sc4/LWxzfgoUr2qdw=;
+ b=d7TCxXvwouPxnxLXQeaMRDxPeF18S0q80l8HWtCJ2b+UQqJW4+4sc65Nq/UCDfHPHPcyfp
+ bAzQ2K4degRJPoM8/MCcxe3ttlcUpjHlw3/Bi+4RxRQVzCALPfmWhIgbDsxmMlroZxNErl
+ MrEqckLY1dTzQksVLD/M7+ZExiGTsJQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-323-3wExUe4_N8mn2_RWycu0nw-1; Wed, 22 Nov 2023 07:40:42 -0500
+X-MC-Unique: 3wExUe4_N8mn2_RWycu0nw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E6F7D80513E;
+ Wed, 22 Nov 2023 12:40:41 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.193.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AB09E1C060AE;
+ Wed, 22 Nov 2023 12:40:41 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 3378D1800DD8; Wed, 22 Nov 2023 13:40:40 +0100 (CET)
+Date: Wed, 22 Nov 2023 13:40:40 +0100
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: Laszlo Ersek <lersek@redhat.com>, Alexander Graf <graf@amazon.com>, 
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, Eric Blake <eblake@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>, Ard Biesheuvel <ardb@kernel.org>,
+ mimoja@mimoja.de
+Subject: Re: [PATCH 00/16] hw/uefi: add uefi variable service
+Message-ID: <hjthgmi2wgaamejnla4sifvzaftz53txmwvfa3rcfh2gld55h2@qiyemv2j6djr>
+References: <20231115151242.184645-1-kraxel@redhat.com>
+ <9db15906-9474-4a6e-82a9-5275c72cf2b4@amazon.com>
+ <nxzed5dhgjpn3fafjttocvxe6ztxxf5xhghaqncpdxup6y7o7y@47i3eyoehio2>
+ <7bfb52e6-3698-7c44-5927-31d47d031d57@redhat.com>
+ <ZVzV6Au_FYK6Rav6@redhat.com>
 MIME-Version: 1.0
-Received-SPF: pass client-ip=89.207.88.248; envelope-from=m.tyutin@yadro.com;
- helo=mta-04.yadro.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZVzV6Au_FYK6Rav6@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,41 +90,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiA+IDEuIE1lbW9yeSBJTyBvcGVyYXRpb25zIGZvcmNlIFRDRyB0byBjcmVhdGUgc3BlY2lhbCB0
-cmFuc2xhdGlvbiBibG9ja3MgdG8NCj4gPiBwcm9jZXNzIHRoYXQgbWVtb3J5IGxvYWQvc3RvcmUg
-b3BlcmF0aW9uLiBUaGUgcGx1Z2luIGdldHMgbm90aWZpY2F0aW9uIGZvcg0KPiA+IHRoaXMgdHJh
-bnNsYXRpb24gYmxvY2sgYXMgd2VsbCwgYnV0IGluc3RydW1lbnRhdGlvbiBjYWxsYmFja3Mgb3Ro
-ZXIgdGhhbg0KPiA+IG1lbW9yeSBvbmVzIGFyZSBzaWxlbnRseSBpZ25vcmVkLiBUbyBtYWtlIGl0
-IGNvcnJlY3QsIHRoZSBwbHVnaW4gaGFzIHRvIG1hdGNoDQo+ID4gaW5zdHJ1Y3Rpb24gZXhlY3V0
-aW9uIGNhbGxiYWNrIGZyb20gcHJldmlvdXMgVEIgdG8gbWVtb3J5IGNhbGxiYWNrIGZyb20gdGhh
-dA0KPiA+IHNwZWNpYWwgVEIuIFRoZSBmaXggd2FzIHRvIGV4cG9zZSBpbnRlcm5hbCDigJhtZW1P
-bmx54oCZIFRCIGZsYWcgdG8gdGhlIHBsdWdpbiB0bw0KPiA+IGhhbmRsZSBzdWNoIFRCcyBkaWZm
-ZXJlbnRseS4NCj4gDQo+IEFyZSB5b3UgdGFsa2luZyBhYm91dCB0aGUgQ0ZfTUVNSV9PTkxZIGNv
-bXBpbGUgZmxhZz8gV2UgYWRkZWQgdGhpcyB0bw0KPiBhdm9pZCBkb3VibGUgY291bnRpbmcgZXhl
-Y3V0ZWQgaW5zdHJ1Y3Rpb25zLiBIYXMgdGhlcmUgYmVlbiBhIGNsYXNoIHdpdGgNCj4gdGhlIG90
-aGVyIGNoYW5nZXMgdG8gYWx3YXlzIGNwdV9yZWNvbXBpbGVfaW8/IFRoaXMgd2FzIGEgY2hhbmdl
-IGFkZGVkIHRvDQo+IGZpeDogaHR0cHM6Ly9naXRsYWIuY29tL3FlbXUtcHJvamVjdC9xZW11Ly0v
-aXNzdWVzLzE4NjYNCg0KWWVzLCB0aGF0J3MgaXQuIHFlbXVfcGx1Z2luX3RiIHN0cnVjdHVyZSBo
-YXMgJ21lbV9vbmx5JyBmaWVsZCBmb3IgdGhvc2UgYmxvY2suDQpJIG9ubHkgYWRkZWQgQVBJIHRv
-IHJlYWQgdGhpcyBmbGFnIGJ5IGEgcGx1Z2luLg0KDQogDQo+ID4gMi4gQW5vdGhlciBwcm9ibGVt
-IGlzIHJlbGF0ZWQgdG8gaW50ZXJydXB0cyBoYW5kbGluZy4gU2luY2Ugd2UgY2FuIGluc2VydCBw
-cmUtDQo+ID4gY2FsbGJhY2sgb24gaW5zdHJ1Y3Rpb25zIG9ubHksIHRoZSBwbHVnaW4gaXMgbm90
-IGF3YXJlIGlmIGluc3RydWN0aW9uIGlzDQo+ID4gYWN0dWFsbHkgZXhlY3V0ZWQgb3IgaW50ZXJy
-dXB0ZWQgYnkgYW4gaW50ZXJydXB0IG9yIGV4Y2VwdGlvbi4gSW4gZmFjdCwgaXQNCj4gPiBtaXN0
-YWtlbmx5IGludGVycHJldHMgYWxsIGludGVycnVwdGVkIGluc3RydWN0aW9ucyBhcyBleGVjdXRl
-ZC4gQWRkaW5nIEFQSQ0KPiA+IHRvIHJlY2VpdmUgaW50ZXJydXB0IG5vdGlmaWNhdGlvbiBhbmQg
-YXBwcm9wcmlhdGUgaGFuZGxpbmcgb2YgaXQgZml4ZXMNCj4gPiB0aGUgcHJvYmxlbS4NCj4gDQo+
-IFdlIGRvbid0IHByb2Nlc3MgYW55IGludGVycnVwdHMgdW50aWwgdGhlIHN0YXJ0IG9mIGVhY2gg
-YmxvY2sgc28gbm8NCj4gYXN5bmNocm9ub3VzIElSUXMgc2hvdWxkIGludGVycnVwdCBleGVjdXRp
-b24uIEhvd2V2ZXIgaXQgaXMgcG9zc2libGUNCj4gdGhhdCBhbnkgZ2l2ZW4gaW5zdHJ1Y3Rpb24g
-Y291bGQgZ2VuZXJhdGUgYSBzeW5jaHJvbm91cyBleGNlcHRpb24gc28gaWYNCj4geW91IG5lZWQg
-YSBwcmVjaXNlIGNvdW50IG9mIGV4ZWN1dGlvbiB5b3UgbmVlZCB0byBpbnN0cnVtZW50IGV2ZXJ5
-DQo+IHNpbmdsZSBpbnN0cnVjdGlvbi4gV2l0aCBlbm91Z2gga25vd2xlZGdlIHRoZSBwbHVnaW4g
-Y291bGQgYXZvaWQNCj4gaW5zdHJ1bWVudGluZyBzdHVmZiB0aGF0IHdpbGwgbmV2ZXIgZmF1bHQg
-YnV0IHRoYXQgcmVsaWVzIG9uIGJha2luZw0KPiBhZGRpdGlvbmFsIGtub3dsZWRnZSBpbnRvIHRo
-ZSBwbHVnaW4uDQo+IA0KPiBHZW5lcmFsbHkgaXRzIG9ubHkgbWVtb3J5IG9wZXJhdGlvbnMgdGhh
-dCBjYW4gZmF1bHQgKGFsdGhvdWdoIEkgZ3Vlc3MNCj4gRlBVIGFuZCBzb21lIG1vcmUgZXNvdGVy
-aWMgaW50ZWdlciBvcHMgY2FuKS4NCg0KVGhhdCBtYXRjaGVzIG15IG9ic2VydmF0aW9uLiBJIGRv
-IHNlZSBpbnRlcnJ1cHRzIGVpdGhlciBvbiBUQiBib3VuZGFyeQ0KKGUuZy4gdGltZXJzKSBvciBt
-ZW1vcnkgbG9hZCBpbnN0cnVjdGlvbnMuDQo=
+  Hi,
+
+> One option I've illustrated before is that have SVSM (or equiv)
+> expose an encrypted storage service to EDK2. Given the proposed EDK2
+> side protocol/modifications for variable storage, I wonder if it is
+> viable for SVSM (or equiv) to replace QEMU in providing the backend
+> storage impl ?  IOW, host QEMU would expose a pflash to the guest,
+> to which SVSM would apply full disk encryption, and then store the
+> EFI variables in it
+
+Yes.  IIRC (it's been a while I've looked at the spec) the SVSM can
+request that access to specific pages trap, so it could use that to 
+emulate the mmio/sysbus variant of the device.  Not sure if that could
+work for io/isa too.  Another option would be to add a third interface
+variant which uses SVSM service calls.
+
+And one advantage of a rust implementation would be that integrating
+with coconut-svsm (which is written in rust too) might be easier.  On
+the other hand the SVSM is a very different environment, the rust stdlib
+is not available for example, and the way persistence is implemented
+will probably look very different too.  Another difference is crypto
+support, qemu uses nettle / gnutls whereas svsm will probably use
+openssl.  So not sure how big the opportunity to share the code between
+qemu and svsm on the backend side actually is.
+
+take care,
+  Gerd
+
 
