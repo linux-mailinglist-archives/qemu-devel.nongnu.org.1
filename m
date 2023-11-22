@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BB17F3FAD
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 09:07:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E897F3FC4
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 09:10:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5iGj-0000Km-GG; Wed, 22 Nov 2023 03:07:33 -0500
+	id 1r5iJ4-0001Cl-GD; Wed, 22 Nov 2023 03:09:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r5iGi-0000JI-4L
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 03:07:32 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r5iJ1-0001CR-Tu
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 03:09:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r5iGg-0008L4-Kj
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 03:07:31 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r5iIx-00008X-GI
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 03:09:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700640450;
+ s=mimecast20190719; t=1700640588;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=6D14IylEe2vPoalmYpNo9X2HhKI1sx7XPfj2a/MUEdE=;
- b=XEv5tZnnxSvTiGuqUVvgu7Ef/4hiCuB8gmEJ4163ZfybDQp7+wBDeWyNjvi5O8JwuMfsno
- 56m4P/FoAicHZ8T4TYzTrCao/jXoWWad+fnIA3ggRU5tp7IUEvjILbMEthOGS+sOSAXFPX
- +AgmDwJR8ZmC+zrVRqSBLGT8588mQuQ=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Asj3bOeZdWBQYgOvY7R3BQu7Jkgpzx4Y3n0Bw3kgdG0=;
+ b=eYBEnt0kz46B6esrOadypXLogmBccrqOWC8N7GIqFm3kNyGvi4f5IgEocQ1uE9yLg2/wfW
+ JvK5Z2JBtTxYzQXKK3oRa0F4F5k30R/uDzEEq4y5YD1fqObgYcNQaTga1AJ/Cfv1bEO7uI
+ YKyBy9zLzETFfN7g8L2mGg+dijA61fU=
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
+ [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-248-pjziGk96MTiciF-qh9AiVQ-1; Wed, 22 Nov 2023 03:07:28 -0500
-X-MC-Unique: pjziGk96MTiciF-qh9AiVQ-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-778b3526240so808040385a.1
- for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 00:07:28 -0800 (PST)
+ us-mta-438-z37VQ7XoNwatBm14ZOOUfw-1; Wed, 22 Nov 2023 03:09:46 -0500
+X-MC-Unique: z37VQ7XoNwatBm14ZOOUfw-1
+Received: by mail-oa1-f72.google.com with SMTP id
+ 586e51a60fabf-1f938410ae2so3438933fac.3
+ for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 00:09:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700640447; x=1701245247;
+ d=1e100.net; s=20230601; t=1700640586; x=1701245386;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6D14IylEe2vPoalmYpNo9X2HhKI1sx7XPfj2a/MUEdE=;
- b=Hmcrep+YZEC9AkJH3pmNPplrU9TUgxoygzHioRfViiGi9LFp3qX7aJa7S5B7GMJd5x
- 4RHi9DivCHeKnZ3ojpdfqkLqqJAxXXwQ1y/Gnr/vOLpZoNLxErdBsMIV7GQ05yimeeNM
- zpvY/UQGQzuy8tmVh2SXHi+f6IZkAgFHQar2EziA158cLoTnaImGZiRFnugyfVFU+9iF
- 6V7XtFHNPeSjhbGnJM/kl9Rh41lCTiDNPRZ38AGh7Up0WhJqjFzTOekwX0Xn5IisgZns
- 4rj4QK2GjDTB9io9BRV7uFeE5IkDySzIBKvCbRj0EPVxQyqRNcD9fiLEB1RsNjEPh98k
- 0Exw==
-X-Gm-Message-State: AOJu0YwZSdc/njqindtf4WePahL7FJTp3SBLTMlQJcdOC0zjmw+8Y1st
- 4+rdAGCMhadGvZVUvE3pbfutQo9Q8msWIW8DGifCbgMWvxLwJ02A25DSDvlH4t0qBIqLznL8cgZ
- m3aI9dF20mEdpr3M=
-X-Received: by 2002:ae9:e64d:0:b0:774:1992:15c9 with SMTP id
- x13-20020ae9e64d000000b00774199215c9mr1517655qkl.42.1700640447653; 
- Wed, 22 Nov 2023 00:07:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGp+Mt4ZtWKcOAUbRxbOTWugqEvPptvozc9vOE1WX/BYZNsK+PmGTCSay5GvpywX0g9gQlLzQ==
-X-Received: by 2002:ae9:e64d:0:b0:774:1992:15c9 with SMTP id
- x13-20020ae9e64d000000b00774199215c9mr1517647qkl.42.1700640447409; 
- Wed, 22 Nov 2023 00:07:27 -0800 (PST)
+ bh=Asj3bOeZdWBQYgOvY7R3BQu7Jkgpzx4Y3n0Bw3kgdG0=;
+ b=EOGO7dm/EDOKP3rBWZdWDidzUINUhiuThl8BZ7IJ6yrwf4pL2J4DslBC1l/SNNSAI5
+ LYDVko29zmpn+rHwAyqQTkFO653EMWZ6gHcrsWyjt+Gl2sRSmMDzL9WK/ezKyZt3wNJ4
+ zpJtj7++yR5pUfMKDMyhCLiVWtCE952kdbyWWQ//lytRDDSSh4IHbYbHEPuz8OgpaIRq
+ K6985dZe1j09D+kea5/VDnQMWrK230rRrB334pcP7R5clAcH1rmQIkoPdpSAhrNZg6uy
+ 7xavOfpJEoJI3n4jQXwa8fJG4IxUEdUpbFF5cXfxPGgKZojWHUIYdCXrrz+g1Hj6AoXM
+ x4Sg==
+X-Gm-Message-State: AOJu0YyEWB+dle9zTUsCLP8C8xlMnNVKfkui067oOkJp9nyBS0MpnYYk
+ Tk8yGXqCN2ruCF40a+2UMRzWXlKeUgYnWWqTUbR2yhMx9/E5Cqfx06SXI3HtUHCyHun68WrgR21
+ N84skR2mkmGc11h8=
+X-Received: by 2002:a05:6870:ebc6:b0:1dd:651a:72ce with SMTP id
+ cr6-20020a056870ebc600b001dd651a72cemr2233475oab.33.1700640586280; 
+ Wed, 22 Nov 2023 00:09:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH3Fhtbxr0LH79KxKl15NvnCUUI0CGDGyM5veSDAk8tMfloTbTzuxQx1dsQ7xmpX716cAALdA==
+X-Received: by 2002:a05:6870:ebc6:b0:1dd:651a:72ce with SMTP id
+ cr6-20020a056870ebc600b001dd651a72cemr2233461oab.33.1700640586051; 
+ Wed, 22 Nov 2023 00:09:46 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-176-233.web.vodafone.de.
  [109.43.176.233]) by smtp.gmail.com with ESMTPSA id
- pe6-20020a05620a850600b0076ef3e6e6a4sm4272025qkn.42.2023.11.22.00.07.25
+ tp12-20020a0568718b8c00b001d4c5e4c2c5sm2025428oab.25.2023.11.22.00.09.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 22 Nov 2023 00:07:27 -0800 (PST)
-Message-ID: <7622196f-8a77-46ad-a6d4-08980a62167a@redhat.com>
-Date: Wed, 22 Nov 2023 09:07:24 +0100
+ Wed, 22 Nov 2023 00:09:45 -0800 (PST)
+Message-ID: <66e4519f-04d0-4c59-b62b-4852a739c100@redhat.com>
+Date: Wed, 22 Nov 2023 09:09:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] tests/unit/test-qmp-event: Simplify event emission
- check
+Subject: Re: [PATCH 3/3] tests/unit/test-qmp-event: Replace fixture by global
+ variables
 Content-Language: en-US
 To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
 Cc: michael.roth@amd.com
 References: <20231122072456.2518816-1-armbru@redhat.com>
- <20231122072456.2518816-3-armbru@redhat.com>
+ <20231122072456.2518816-4-armbru@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -115,7 +115,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231122072456.2518816-3-armbru@redhat.com>
+In-Reply-To: <20231122072456.2518816-4-armbru@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -144,23 +144,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 22/11/2023 08.24, Markus Armbruster wrote:
-> The generated qapi_event_send_FOO() call an event emitter function.
-> It's test_qapi_event_emit() in this test.  It compares the actual
-> event to the expected event, and sets a flag to record it was called.
-> The test functions set expected data and clear the flag before calling
-> qapi_event_send_FOO(), and check the flag afterwards.
-> 
-> Make test_qapi_event_emit() consume expected data, and the test
-> functions check it was consumed.  Delete the flag.  This is simpler.
-> It also catches extraneous calls of test_qapi_event_emit().  Catching
-> that is not worthwhile, but since the cost is negative...
+> The fixture buys us exactly nothing, as we need a global variable
+> anyway, for test_qapi_event_emit().  Drop it.
 > 
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
 > ---
->   tests/unit/test-qmp-event.c | 30 ++++++++++--------------------
->   1 file changed, 10 insertions(+), 20 deletions(-)
+>   tests/unit/test-qmp-event.c | 91 ++++++++++++-------------------------
+>   1 file changed, 30 insertions(+), 61 deletions(-)
 
-Good idea!
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
