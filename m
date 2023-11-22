@@ -2,136 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465287F45DC
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 13:21:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D27CC7F461C
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 13:27:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5mDk-0001ve-6S; Wed, 22 Nov 2023 07:20:44 -0500
+	id 1r5mIq-0005aU-9g; Wed, 22 Nov 2023 07:26:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1r5mDh-0001vF-Dw
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 07:20:41 -0500
-Received: from mail-vi1eur02on2125.outbound.protection.outlook.com
- ([40.107.241.125] helo=EUR02-VI1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1r5mIn-0005a3-MF
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 07:25:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1r5mDf-0007bI-DC
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 07:20:41 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eu6bMRs7ZbqK55LkT6f4CWxY2SANre2WnzVJvXeZwn6NQmsG4aSuf77U5dkfmMEpsHFjATXy6fEFREFI4aHJTlZVLSqfDLxCLAmT+uVwTzYjeXhVNQ8fuv49iv+mOd4KTk+pvaCyWAgNexLyGVABprvGjjBhfKqcPvoTbpItxXPNceIJE4qmnG3GPLTioIVFs0m8lCdeZRH9Z1dwMdgpYHZQBz0CZsjGAZOSRpr3NB/wNjwEtB9Vr7FLew2A7RresT9H3TxH1d2/URmjiGBjv7d+RAfYHNJy3YYBbDnr3I98aUlMIhknB4+ySxmaKWaUp7RL56v9IDXNHto9e6cuDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BZxXvx8f6tVripAvG0ofkc/Gwfm2z6G3MOTdsPs3Jh4=;
- b=TfegqA2ejSMEARo5XuLaasdBkjxXqaXIVaE9bhgJ+36BRt9TwCfYycDShiqJ8WD8YgSKDDdahWnpNm9NYXvvFXgEejQzm+hMHRdWhw+Hi4+kV5VuyddZ1LdVZbUtimfvi7iu3udpv4ap5m6f1HMrEw9Ma3ghcwRyryX9KPk/3h+/Xc5gL1NmxGFVkMI7TL2mZibivV9Ntq940GP9aJJv7SrobS10xNhBUhhElQfZnafGNvBncb09cLhpuSqK5voXrbvL4tLyJxWCppUtVVL9gwM9h3k+yCFttX8ZWua7Hukkn+06qP8y5s2dwGcCJf+rOGnS1S6r0B2YfXjPvszkXA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BZxXvx8f6tVripAvG0ofkc/Gwfm2z6G3MOTdsPs3Jh4=;
- b=YfjoGf7A/GwP1WjQ+Ktdc12WgaL9oq1DT9SR+mDdFAJgyG2EA2UV+SS0CoST+p1+UUQIQlgAWRUint5pILUickGf3Dc2gXIBiKYRJHUZqSv/5Ot6A8HPQ1PKlft5srleQBuQfewzCCqNnLuAV+nfQ+Mi9v0a3xoWSQM302wnEaD3Uyog9PSuEIC73bwqwUDM82wrcP4/i7AIUpdBPiXK1hhd59zD5qRRc6cre5Jp+Mf4YDtxa0seHrGRk4KJYNZmRpiIPC9zPZq91ofaZl5g0/oGPHe9dA+TmisIYwhb4ecwJVuv4wCjU9uMRLBD6fZAbP4cWfxZKbOEClwJI7wUeA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12) by DB8PR08MB5435.eurprd08.prod.outlook.com
- (2603:10a6:10:113::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.19; Wed, 22 Nov
- 2023 12:15:34 +0000
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::597b:57ae:f418:2352]) by VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::597b:57ae:f418:2352%6]) with mapi id 15.20.7025.017; Wed, 22 Nov 2023
- 12:15:33 +0000
-Message-ID: <3680db49-46dd-42b0-a570-afe562c6ff9c@virtuozzo.com>
-Date: Wed, 22 Nov 2023 14:17:42 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] kvm: emit GUEST_PANICKED event in case of abnormal KVM
- exit
-To: "Denis V. Lunev" <den@virtuozzo.com>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, den@openvz.org
-References: <20231101152311.181817-1-andrey.drobyshev@virtuozzo.com>
- <f588c351-a7cc-48a7-9ac0-201171a9ed4b@virtuozzo.com>
-Content-Language: en-US
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-In-Reply-To: <f588c351-a7cc-48a7-9ac0-201171a9ed4b@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR3P281CA0158.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a2::8) To VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12)
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1r5mIl-0000TP-4W
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 07:25:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700655954;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4GgomoaDQQyYk/98Od/nGze8yOG261wp+aYTIv5QGKM=;
+ b=RLIe3fhhkYqjDV1SXyEXR916YChPRs10rLXUgu7vPuNbMRahmoTPVqMbDyghDDrWDf+To+
+ xiWqN6MAHteIrjWjso43CDa71Y6yEr77D2AONYNqQNqJ7uI/1A1DkNzFY0nc+qqAFWfZG2
+ nB5z1WNC09AYnJ8Ly12jk8A7jK1GOyw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-356-9UeFvhiiOeigRi2mkSlF9Q-1; Wed, 22 Nov 2023 07:25:50 -0500
+X-MC-Unique: 9UeFvhiiOeigRi2mkSlF9Q-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6686B80C344;
+ Wed, 22 Nov 2023 12:25:50 +0000 (UTC)
+Received: from [10.39.193.187] (unknown [10.39.193.187])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 521351121306;
+ Wed, 22 Nov 2023 12:25:48 +0000 (UTC)
+Message-ID: <f3794048-d8b9-7f53-d191-3ffbe75cee82@redhat.com>
+Date: Wed, 22 Nov 2023 13:25:47 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|DB8PR08MB5435:EE_
-X-MS-Office365-Filtering-Correlation-Id: 23fa5f67-30f5-4d7c-fe1d-08dbeb54ba1d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: dATtz026qZOQXU3KAMSNVT7k/Y7gbQew8ZrDD1v3M6QFI82XP+HBgi0fbtziHfNLV6TZW//NwPH2JrLrATKy11ILfUWzHGqBKQYKH93bntx1Vvu4M9CbAX+cWZ/f3TphGU/BBoKVE1f5JXH5gTuq3emQuJ3IutTjHE6cH475Wd/vwP64K/QL3WQ7C4CiPvt4qTrh1B4CM6teYxkKnb7/JWJXwZxJamjH6diDQkRKK24aoNcMMaZDRQsRyHHnonrJf0/O9Q2nvp1W6DlKKR7c8ElhMYvTtVZJmU45WISGm541p0fhu9JkZg0nyoXaQdp8D/xsCNdlidEc17iGIiDJJTicClnygRe9MFmENO1RwtLKwcs5vA1OlwbxQ3dCr3BZbcOoFuRaS613XWigp5m2GpjLxfoggqjA0XjrYFgIfzjgoEYpCYFI4qXokMfwDX3wQFGgpO8b+oWcOpY+iGnvnpXYGST8I4Up/cPTQTEBr39K8NymW3a50cABGLrBzjmJAjtG8KUz/W+kXLLfIuhYAITz2+7HLqmkYgtOPDD59RdIVJSzox0pT+/YexEKdF91uh0FznQevTV1KUjY62rRRumse55SsTbsQ9gSQ7bMxn5gIXs90J0WClvWkFevCx/eHIlaX1BgodP7wanqRyj70A==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI0PR08MB10656.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366004)(39850400004)(136003)(396003)(376002)(346002)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(41300700001)(31686004)(2906002)(5660300002)(4326008)(8676002)(8936002)(44832011)(316002)(66946007)(66556008)(66476007)(26005)(2616005)(478600001)(6486002)(6512007)(6506007)(55236004)(53546011)(6666004)(38100700002)(83380400001)(107886003)(36756003)(31696002)(86362001)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cTdvWEJyVU14KzVBNGhDeTBtNnZhbzZMZFBiQ1l5NGplM1k4bm83a1YzUE5M?=
- =?utf-8?B?R2FhaUd3UmRUb0tKbFBWZHZlQ1B1eTdsMHdZZ3dXNGVlSXczc01oYkhuN2Ux?=
- =?utf-8?B?cGhtWXR6SE9qUDM0eFluTi9mUTFFNVBOYXVIVXN3Y2lkcmhLTWFmdmRHVzE1?=
- =?utf-8?B?cDdMVFkrUThpeXN3WUdWREVwcmZtbkVHRUFvNjVKb2JIaU9SZVBoLzZiVERO?=
- =?utf-8?B?TnF0MUQ4MFJIcEZpa0t0d09MWHY1Z2NtYzkrK29CUWthUmhjWkVGbm9Ic2Iz?=
- =?utf-8?B?K2c5YlNxZUN2WG1DbktneGtlWTBtWTJ6TTNSUjl6ZUdnZFVoTEJTajJoaFlr?=
- =?utf-8?B?alZ5K1lsVnJxY3JxUDNRa3pvNDhqUU9OTHNTd3FrQUJ5c1A3RWlLeVVTMC9l?=
- =?utf-8?B?eUdWcDVKeUFpL05OWnh6Z05ObkF2S0xiY2QyY2hQNXBFQVllbFByVmxpR1R6?=
- =?utf-8?B?UG5PR2ZGVGdkUTNTTVNnRTlNMkZDN0phczFnUkEycldqRE45Y3JHT3JKbG1Y?=
- =?utf-8?B?SUd0RFZLTW5jVmpNTllXVXppdHN4NU5nTVZKZlJiOXlINnEzWndRNnBIbnhv?=
- =?utf-8?B?WXMzZGRKMGl0a1BUZVM0cXZNTTRjb1hEVnhnUUNNd3NycW8raEtKd3Zmajhu?=
- =?utf-8?B?WFUwbHEzaE1NbzNuTmhLNHBRS1htMkhZNGpiU3pGbjRyeVFRQlprY3NnYkNx?=
- =?utf-8?B?RGJLeFN5eE5vZmhtYk1IbUF0RnMzUFgxdGxLaU9UOE96ZmVEcWNhRFg0cUhK?=
- =?utf-8?B?ckZQQm51dWZibmcvNU92dzlUcExtaHkzWmZmUnJtODRTK1RkM3ZzZjJ3VXZW?=
- =?utf-8?B?eEpQNENPeHIyTzVRa2t6dE1jMmJ0Qm9WS0YvQ09zUjNqbDhDOWxVNXVuMjBD?=
- =?utf-8?B?U2w0c2lIc0QycUZ3QWx3ZWtMUVYwWVRRMU9JNklRNll1bGZndVdnWlFQcUFO?=
- =?utf-8?B?ODBkdFFIbjJ0TlhZb1ZsSCtXczd4dlpSU1BDaXBhYzNwc1B4MDFISGhYK0RM?=
- =?utf-8?B?QUx6U3M5bElXVHVMcjZJZjc4YS8vL1gzMFRNd3MzOXBwbUV1eWVTaW9uekty?=
- =?utf-8?B?T3Q1c0NSSnlUNzNLblR5WnBJR0h0VE4ybHdXV0FGQ1NOLzBQa1dJOVFoRWV2?=
- =?utf-8?B?b0tWZnpYWkhUT0FDOEVrZ09nV3h6OWRlZXluc0p4dVZ2L1FIRGFKNmVBK1Za?=
- =?utf-8?B?RDdDWGdyRS9WbDVwUmVSRkgwMkFnNlBWOWtjY3RGOGJLdHQ5c0Fid01qMkhl?=
- =?utf-8?B?Y0dDYmZxdjRBZEFsQ0hKL2dISzlHQU9oWWo0WDRYamwwck84aDJqWWN0V2F0?=
- =?utf-8?B?Ync3MGlOTTNYWTRtU3VoT241Y1pVOWFpRzVVUjhldmh0OVV1MCs2L3JmRGUv?=
- =?utf-8?B?ZEdFWVNTejZYUzYrclhBRXBxb084NlYreXRoZ3RoMUh6em5ja04wM2ZTR3Bh?=
- =?utf-8?B?bEh3ZExJcnRydG56NmwyYVR2OG0rTm5KaWQwdTFabUVFQVFNVVVzWW1SNFJk?=
- =?utf-8?B?V3RXNU1qZWY4MXcwUFBENVhRR3NPTVBnV2pDNVNuYTYwaWxWUVBvTTYxUERB?=
- =?utf-8?B?S3ZWYjNHZVgrVmI0K0FDTjl4aDVHUEpJbGZZMURnbVcvSFdFNm92VDE1anlU?=
- =?utf-8?B?TlptMEFFZ0lnc3c2cDZHLzdiOWU0UFVJekFETFdFUHlpa1k0SWk0em1pRjlK?=
- =?utf-8?B?NW1lVzlLS2xVdkU5WitsY0ZCWW5yUG1zU2tzNWJEaVRzVkhiQmhHaEs2QXJW?=
- =?utf-8?B?TEdxa0JXQ1NkOGd5Vk5xdXUwcTBFVDIwRHkxTXM4TVd3OUpRNUxBQnJZKzZ4?=
- =?utf-8?B?S2dGdzhSZjUzT3p4YWkwemhxQU5RWVV1cWRPSUxaVCtRTTUwWG5BRmlVbFVv?=
- =?utf-8?B?RkNLWjZpYVMzaXY0VlV4bitWeHJMTklBWEw2MEJweUptTmNmTElYQjdpMnZN?=
- =?utf-8?B?ejFjdG9nRWMrejRHVGxaRXJFMGdWdDhGeTVUUDArVzNHZFFyRG0rMDE0azB0?=
- =?utf-8?B?R1crS2dBTENHZHJZa1VIbnRjTmFYSHBRRDBnNkNKdEtGdE8rRTlWcDBQUjdv?=
- =?utf-8?B?MkVGQmVYenpBYm56eDhlenUyZWRZaFRQSlUxQ0hKTzUyY1R6elRuYXJYVmJG?=
- =?utf-8?B?TElwNHgzUXY5Q1hWNUhwZlJudnZSQTVjdFl1dHVYVTF6YmMyQVAvNU42SCs4?=
- =?utf-8?B?MUE9PQ==?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23fa5f67-30f5-4d7c-fe1d-08dbeb54ba1d
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2023 12:15:33.6711 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JM55t+E6crzmwwsUnGjyiMRWQSaraL+nv7ifSJIZRlgMZ8Rpf1exI+NRQnemIAmJAxSdq6/FdmHBQo8DJHMcVQRyHGjsWp2jnaUGeypEC7U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR08MB5435
-Received-SPF: pass client-ip=40.107.241.125;
- envelope-from=andrey.drobyshev@virtuozzo.com;
- helo=EUR02-VI1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Subject: Re: [PATCH 05/16] hw/uefi: add var-service-core.c
+Content-Language: en-US
+To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Eric Blake <eblake@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, graf@amazon.com,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20231115151242.184645-1-kraxel@redhat.com>
+ <20231115151242.184645-6-kraxel@redhat.com>
+From: Laszlo Ersek <lersek@redhat.com>
+In-Reply-To: <20231115151242.184645-6-kraxel@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -147,69 +87,407 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/1/23 18:13, Denis V. Lunev wrote:
-> On 11/1/23 16:23, Andrey Drobyshev wrote:
->> Currently we emit GUEST_PANICKED event in case kvm_vcpu_ioctl() returns
->> KVM_EXIT_SYSTEM_EVENT with the event type KVM_SYSTEM_EVENT_CRASH.  Let's
->> extend this scenario and emit GUEST_PANICKED in case of an abnormal KVM
->> exit.  That's a natural thing to do since in this case guest is no
->> longer operational anyway.
->>
->> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
->> Acked-by: Denis V. Lunev <den@virtuozzo.com>
->> ---
->>   accel/kvm/kvm-all.c | 19 +++++++++++++++----
->>   1 file changed, 15 insertions(+), 4 deletions(-)
->>
->> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
->> index e39a810a4e..d74b3f0b0e 100644
->> --- a/accel/kvm/kvm-all.c
->> +++ b/accel/kvm/kvm-all.c
->> @@ -2816,6 +2816,14 @@ static void kvm_eat_signals(CPUState *cpu)
->>       } while (sigismember(&chkset, SIG_IPI));
->>   }
->>   +static void kvm_emit_guest_crash(CPUState *cpu)
->> +{
->> +    kvm_cpu_synchronize_state(cpu);
->> +    qemu_mutex_lock_iothread();
->> +    qemu_system_guest_panicked(cpu_get_crash_info(cpu));
->> +    qemu_mutex_unlock_iothread();
->> +}
->> +
->>   int kvm_cpu_exec(CPUState *cpu)
->>   {
->>       struct kvm_run *run = cpu->kvm_run;
->> @@ -2969,21 +2977,24 @@ int kvm_cpu_exec(CPUState *cpu)
->>                   ret = EXCP_INTERRUPT;
->>                   break;
->>               case KVM_SYSTEM_EVENT_CRASH:
->> -                kvm_cpu_synchronize_state(cpu);
->> -                qemu_mutex_lock_iothread();
->> -                qemu_system_guest_panicked(cpu_get_crash_info(cpu));
->> -                qemu_mutex_unlock_iothread();
->> +                kvm_emit_guest_crash(cpu);
->>                   ret = 0;
->>                   break;
->>               default:
->>                   DPRINTF("kvm_arch_handle_exit\n");
->>                   ret = kvm_arch_handle_exit(cpu, run);
->> +                if (ret < 0) {
->> +                    kvm_emit_guest_crash(cpu);
->> +                }
->>                   break;
->>               }
->>               break;
->>           default:
->>               DPRINTF("kvm_arch_handle_exit\n");
->>               ret = kvm_arch_handle_exit(cpu, run);
->> +            if (ret < 0) {
->> +                kvm_emit_guest_crash(cpu);
->> +            }
->>               break;
->>           }
->>       } while (ret == 0);
-> This allows to gracefully handle this problem in production
-> and reset the guest using on_crash action in libvirt.
+On 11/15/23 16:12, Gerd Hoffmann wrote:
+> This is the core code for guest <-> host communication.  This accepts
+> request messages from the guest, dispatches them to the service called,
+> and sends back the response message.
+> 
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+> ---
+>  hw/uefi/var-service-core.c | 350 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 350 insertions(+)
+>  create mode 100644 hw/uefi/var-service-core.c
 
-Ping
+If other reviewers don't object, I'd like to request a respin (of the
+series) at this point, and I'll stop reviewing this version here:
+
+- This patch is too large for me. It does migration, UCS2 string
+utilities, tracing and device code all in one. I think it should be
+split in at least three patches (the changes can go in the same "core" C
+source file, but in smaller building blocks).
+
+- in general, we should filter out surrogate code points, for any use.
+any UCS2 string from the guest that contains a surrogate code point
+should be considered invalid, and the request should be rejected based
+just on that.
+
+- after splitting, the resultant parts of this patch should be moved
+near the end of the series. It references a bunch of helper functions
+(which is fine), but for mentally resolving those, in particular for
+understanding the life cycles of the various "uefi_vars_state" fields
+*here*, I first need to see the internals of the helper functions. If I
+jump back and forth between the patches, that's unwieldy for
+interrupting the review one day & resuming it another day. The patches
+should be included in "topological order" (dependency order) in the
+series. The series already follows this idea roughly, AFAICT, but the
+placement of this particular patch seems to stick out.
+
+- life cycle comments on the "uefi_vars_state" fields would be
+appreciated in the header file, too.
+
+- a tidbit: "uefi_vars_policies_clear" should be spelled
+"uefi_var_policies_clear" (i.e., "var" in singular), for consistency
+with the field "var_policies" (it's not called "vars_policies").
+
+Thanks,
+Laszlo
+
+> 
+> diff --git a/hw/uefi/var-service-core.c b/hw/uefi/var-service-core.c
+> new file mode 100644
+> index 000000000000..b37f5c403d2f
+> --- /dev/null
+> +++ b/hw/uefi/var-service-core.c
+> @@ -0,0 +1,350 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * uefi vars device
+> + */
+> +#include "qemu/osdep.h"
+> +#include "sysemu/dma.h"
+> +#include "migration/vmstate.h"
+> +
+> +#include "hw/uefi/var-service.h"
+> +#include "hw/uefi/var-service-api.h"
+> +#include "hw/uefi/var-service-edk2.h"
+> +
+> +#include "trace/trace-hw_uefi.h"
+> +
+> +static int uefi_vars_pre_load(void *opaque)
+> +{
+> +    uefi_vars_state *uv = opaque;
+> +
+> +    uefi_vars_clear_all(uv);
+> +    uefi_vars_policies_clear(uv);
+> +    g_free(uv->buffer);
+> +    return 0;
+> +}
+> +
+> +static int uefi_vars_post_load(void *opaque, int version_id)
+> +{
+> +    uefi_vars_state *uv = opaque;
+> +
+> +    uefi_vars_update_storage(uv);
+> +    uv->buffer = g_malloc(uv->buf_size);
+> +    return 0;
+> +}
+> +
+> +const VMStateDescription vmstate_uefi_vars = {
+> +    .name = "uefi-vars",
+> +    .pre_load = uefi_vars_pre_load,
+> +    .post_load = uefi_vars_post_load,
+> +    .fields = (VMStateField[]) {
+> +        VMSTATE_UINT16(sts, uefi_vars_state),
+> +        VMSTATE_UINT32(buf_size, uefi_vars_state),
+> +        VMSTATE_UINT32(buf_addr_lo, uefi_vars_state),
+> +        VMSTATE_UINT32(buf_addr_hi, uefi_vars_state),
+> +        VMSTATE_BOOL(end_of_dxe, uefi_vars_state),
+> +        VMSTATE_BOOL(ready_to_boot, uefi_vars_state),
+> +        VMSTATE_BOOL(exit_boot_service, uefi_vars_state),
+> +        VMSTATE_BOOL(policy_locked, uefi_vars_state),
+> +        VMSTATE_UINT64(used_storage, uefi_vars_state),
+> +        VMSTATE_QTAILQ_V(variables, uefi_vars_state, 0,
+> +                         vmstate_uefi_variable, uefi_variable, next),
+> +        VMSTATE_QTAILQ_V(var_policies, uefi_vars_state, 0,
+> +                         vmstate_uefi_var_policy, uefi_var_policy, next),
+> +        VMSTATE_END_OF_LIST()
+> +    },
+> +};
+> +
+> +size_t uefi_strlen(const uint16_t *str, size_t len)
+> +{
+> +    size_t pos = 0;
+> +
+> +    for (;;) {
+> +        if (pos == len) {
+> +            return pos;
+> +        }
+> +        if (str[pos] == 0) {
+> +            return pos;
+> +        }
+> +        pos++;
+> +    }
+> +}
+> +
+> +gboolean uefi_str_equal(const uint16_t *a, size_t alen,
+> +                        const uint16_t *b, size_t blen)
+> +{
+> +    size_t pos = 0;
+> +
+> +    alen = alen / 2;
+> +    blen = blen / 2;
+> +    for (;;) {
+> +        if (pos == alen && pos == blen) {
+> +            return true;
+> +        }
+> +        if (pos == alen && b[pos] == 0) {
+> +            return true;
+> +        }
+> +        if (pos == blen && a[pos] == 0) {
+> +            return true;
+> +        }
+> +        if (pos == alen || pos == blen) {
+> +            return false;
+> +        }
+> +        if (a[pos] == 0 && b[pos] == 0) {
+> +            return true;
+> +        }
+> +        if (a[pos] != b[pos]) {
+> +            return false;
+> +        }
+> +        pos++;
+> +    }
+> +}
+> +
+> +char *uefi_ucs2_to_ascii(const uint16_t *ucs2, uint64_t ucs2_size)
+> +{
+> +    char *str = g_malloc0(ucs2_size / 2 + 1);
+> +    int i;
+> +
+> +    for (i = 0; i * 2 < ucs2_size; i++) {
+> +        if (ucs2[i] == 0) {
+> +            break;
+> +        }
+> +        if (ucs2[i] < 128) {
+> +            str[i] = ucs2[i];
+> +        } else {
+> +            str[i] = '?';
+> +        }
+> +    }
+> +    str[i] = 0;
+> +    return str;
+> +}
+> +
+> +void uefi_trace_variable(const char *action, QemuUUID guid,
+> +                         const uint16_t *name, uint64_t name_size)
+> +{
+> +    QemuUUID be = qemu_uuid_bswap(guid);
+> +    char *str_uuid = qemu_uuid_unparse_strdup(&be);
+> +    char *str_name = uefi_ucs2_to_ascii(name, name_size);
+> +
+> +    trace_uefi_variable(action, str_name, name_size, str_uuid);
+> +
+> +    g_free(str_name);
+> +    g_free(str_uuid);
+> +}
+> +
+> +void uefi_trace_status(const char *action, efi_status status)
+> +{
+> +    switch (status) {
+> +    case EFI_SUCCESS:
+> +        trace_uefi_status(action, "success");
+> +        break;
+> +    case EFI_INVALID_PARAMETER:
+> +        trace_uefi_status(action, "invalid parameter");
+> +        break;
+> +    case EFI_UNSUPPORTED:
+> +        trace_uefi_status(action, "unsupported");
+> +        break;
+> +    case EFI_BAD_BUFFER_SIZE:
+> +        trace_uefi_status(action, "bad buffer size");
+> +        break;
+> +    case EFI_BUFFER_TOO_SMALL:
+> +        trace_uefi_status(action, "buffer too small");
+> +        break;
+> +    case EFI_WRITE_PROTECTED:
+> +        trace_uefi_status(action, "write protected");
+> +        break;
+> +    case EFI_OUT_OF_RESOURCES:
+> +        trace_uefi_status(action, "out of resources");
+> +        break;
+> +    case EFI_NOT_FOUND:
+> +        trace_uefi_status(action, "not found");
+> +        break;
+> +    case EFI_ACCESS_DENIED:
+> +        trace_uefi_status(action, "access denied");
+> +        break;
+> +    case EFI_ALREADY_STARTED:
+> +        trace_uefi_status(action, "already started");
+> +        break;
+> +    default:
+> +        trace_uefi_status(action, "unknown error");
+> +        break;
+> +    }
+> +}
+> +
+> +static uint32_t uefi_vars_cmd_mm(uefi_vars_state *uv)
+> +{
+> +    hwaddr    dma;
+> +    mm_header *mhdr;
+> +    uint32_t  size, retval;
+> +
+> +    dma = uv->buf_addr_lo | ((hwaddr)uv->buf_addr_hi << 32);
+> +    mhdr = (mm_header *) uv->buffer;
+> +
+> +    if (!uv->buffer || uv->buf_size < sizeof(*mhdr)) {
+> +        return UEFI_VARS_STS_ERR_BAD_BUFFER_SIZE;
+> +    }
+> +
+> +    /* read header */
+> +    dma_memory_read(&address_space_memory, dma,
+> +                    uv->buffer, sizeof(*mhdr),
+> +                    MEMTXATTRS_UNSPECIFIED);
+> +
+> +    size = sizeof(*mhdr) + mhdr->length;
+> +    if (uv->buf_size < size) {
+> +        return UEFI_VARS_STS_ERR_BAD_BUFFER_SIZE;
+> +    }
+> +
+> +    /* read buffer (excl header) */
+> +    dma_memory_read(&address_space_memory, dma + sizeof(*mhdr),
+> +                    uv->buffer + sizeof(*mhdr), mhdr->length,
+> +                    MEMTXATTRS_UNSPECIFIED);
+> +    memset(uv->buffer + size, 0, uv->buf_size - size);
+> +
+> +    /* dispatch */
+> +    if (qemu_uuid_is_equal(&mhdr->guid, &EfiSmmVariableProtocolGuid)) {
+> +        retval = uefi_vars_mm_vars_proto(uv);
+> +
+> +    } else if (qemu_uuid_is_equal(&mhdr->guid, &VarCheckPolicyLibMmiHandlerGuid)) {
+> +        retval = uefi_vars_mm_check_policy_proto(uv);
+> +
+> +    } else if (qemu_uuid_is_equal(&mhdr->guid, &EfiEndOfDxeEventGroupGuid)) {
+> +        trace_uefi_event("end-of-dxe");
+> +        uv->end_of_dxe = true;
+> +        retval = UEFI_VARS_STS_SUCCESS;
+> +
+> +    } else if (qemu_uuid_is_equal(&mhdr->guid, &EfiEventReadyToBootGuid)) {
+> +        trace_uefi_event("ready-to-boot");
+> +        uv->ready_to_boot = true;
+> +        retval = UEFI_VARS_STS_SUCCESS;
+> +
+> +    } else if (qemu_uuid_is_equal(&mhdr->guid, &EfiEventExitBootServicesGuid)) {
+> +        trace_uefi_event("exit-boot-service");
+> +        uv->exit_boot_service = true;
+> +        retval = UEFI_VARS_STS_SUCCESS;
+> +
+> +    } else {
+> +        retval = UEFI_VARS_STS_ERR_NOT_SUPPORTED;
+> +    }
+> +
+> +    /* write buffer */
+> +    dma_memory_write(&address_space_memory, dma,
+> +                     uv->buffer, sizeof(*mhdr) + mhdr->length,
+> +                     MEMTXATTRS_UNSPECIFIED);
+> +
+> +    return retval;
+> +}
+> +
+> +static void uefi_vars_soft_reset(uefi_vars_state *uv)
+> +{
+> +    g_free(uv->buffer);
+> +    uv->buffer = NULL;
+> +    uv->buf_size = 0;
+> +    uv->buf_addr_lo = 0;
+> +    uv->buf_addr_hi = 0;
+> +}
+> +
+> +void uefi_vars_hard_reset(uefi_vars_state *uv)
+> +{
+> +    trace_uefi_hard_reset();
+> +    uefi_vars_soft_reset(uv);
+> +
+> +    uv->end_of_dxe        = false;
+> +    uv->ready_to_boot     = false;
+> +    uv->exit_boot_service = false;
+> +    uv->policy_locked     = false;
+> +
+> +    uefi_vars_clear_volatile(uv);
+> +    uefi_vars_policies_clear(uv);
+> +    uefi_vars_auth_init(uv);
+> +}
+> +
+> +static uint32_t uefi_vars_cmd(uefi_vars_state *uv, uint32_t cmd)
+> +{
+> +    switch (cmd) {
+> +    case UEFI_VARS_CMD_RESET:
+> +        uefi_vars_soft_reset(uv);
+> +        return UEFI_VARS_STS_SUCCESS;
+> +    case UEFI_VARS_CMD_MM:
+> +        return uefi_vars_cmd_mm(uv);
+> +    default:
+> +        return UEFI_VARS_STS_ERR_NOT_SUPPORTED;
+> +    }
+> +}
+> +
+> +static uint64_t uefi_vars_read(void *opaque, hwaddr addr, unsigned size)
+> +{
+> +    uefi_vars_state *uv = opaque;
+> +    uint64_t retval = -1;
+> +
+> +    trace_uefi_reg_read(addr, size);
+> +
+> +    switch (addr) {
+> +    case UEFI_VARS_REG_MAGIC:
+> +        retval = UEFI_VARS_MAGIC_VALUE;
+> +        break;
+> +    case UEFI_VARS_REG_CMD_STS:
+> +        retval = uv->sts;
+> +        break;
+> +    case UEFI_VARS_REG_BUFFER_SIZE:
+> +        retval = uv->buf_size;
+> +        break;
+> +    case UEFI_VARS_REG_BUFFER_ADDR_LO:
+> +        retval = uv->buf_addr_lo;
+> +        break;
+> +    case UEFI_VARS_REG_BUFFER_ADDR_HI:
+> +        retval = uv->buf_addr_hi;
+> +        break;
+> +    }
+> +    return retval;
+> +}
+> +
+> +static void uefi_vars_write(void *opaque, hwaddr addr, uint64_t val, unsigned size)
+> +{
+> +    uefi_vars_state *uv = opaque;
+> +
+> +    trace_uefi_reg_write(addr, val, size);
+> +
+> +    switch (addr) {
+> +    case UEFI_VARS_REG_CMD_STS:
+> +        uv->sts = uefi_vars_cmd(uv, val);
+> +        break;
+> +    case UEFI_VARS_REG_BUFFER_SIZE:
+> +        if (val > MAX_BUFFER_SIZE) {
+> +            val = MAX_BUFFER_SIZE;
+> +        }
+> +        uv->buf_size = val;
+> +        g_free(uv->buffer);
+> +        uv->buffer = g_malloc(uv->buf_size);
+> +        break;
+> +    case UEFI_VARS_REG_BUFFER_ADDR_LO:
+> +        uv->buf_addr_lo = val;
+> +        break;
+> +    case UEFI_VARS_REG_BUFFER_ADDR_HI:
+> +        uv->buf_addr_hi = val;
+> +        break;
+> +    }
+> +}
+> +
+> +static const MemoryRegionOps uefi_vars_ops = {
+> +    .read = uefi_vars_read,
+> +    .write = uefi_vars_write,
+> +    .endianness = DEVICE_LITTLE_ENDIAN,
+> +    .impl = {
+> +        .min_access_size = 2,
+> +        .max_access_size = 4,
+> +    },
+> +};
+> +
+> +void uefi_vars_init(Object *obj, uefi_vars_state *uv)
+> +{
+> +    QTAILQ_INIT(&uv->variables);
+> +    QTAILQ_INIT(&uv->var_policies);
+> +    uv->jsonfd = -1;
+> +    memory_region_init_io(&uv->mr, obj, &uefi_vars_ops, uv,
+> +                          "uefi-vars", UEFI_VARS_REGS_SIZE);
+> +}
+> +
+> +void uefi_vars_realize(uefi_vars_state *uv, Error **errp)
+> +{
+> +    uefi_vars_json_init(uv, errp);
+> +    uefi_vars_json_load(uv, errp);
+> +}
+
 
