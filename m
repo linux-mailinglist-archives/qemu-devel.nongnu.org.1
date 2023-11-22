@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278627F3D6B
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 06:38:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B3F7F3D77
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 06:39:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5fwS-0002eD-4h; Wed, 22 Nov 2023 00:38:28 -0500
+	id 1r5fwW-0002ex-CZ; Wed, 22 Nov 2023 00:38:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5fwQ-0002dw-55
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 00:38:26 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1r5fwT-0002eW-Po
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 00:38:29 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5fwO-00079t-Hw
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 00:38:25 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1cf6a67e290so19933755ad.1
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 21:38:24 -0800 (PST)
+ id 1r5fwS-0007A5-4W
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 00:38:29 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1cc0e78ec92so41715255ad.3
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 21:38:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700631503; x=1701236303; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1700631506; x=1701236306; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ffQ3ckw80DQQK7pNtkarYFV8Ajwf2z94gxNCXOj01oQ=;
- b=MOjoVysPYNP7q+8sr/CzzSz4UAP27mVxKGplmzV0cwMSCtkXGBVIEDtWZJYm3TT2iu
- i2Kr+Swmtg8OrF5k8tNkcNXr3FewpKjOocYoVvFZ5mWtYjBbSJJuqdqKxGLaFYWiq181
- uobFrFOMiBVX2clwOhqz/FmhWYSQFtnlzd3paZDGOq+GuujYs8ufoS5msChFwkViThtv
- ellMJWJemEX+QfIoLwhCWb06CQFN37X9YFpIl82XAwdLTbBUjpqelEV0EjxI9tBt+2SZ
- dlVY2Ni6PD2HHZEreLb35X4bcTvBhHoxwk2qa0CR4r5nsIGhBtUGrd9LnOrLOEWerZGm
- iRJQ==
+ bh=lLbOAJzLWl9ZAwxrRE8Vm/IEKsPP3IN/EvETdsopNPM=;
+ b=AzlYFhlN6rL7snbYvcyktuUHb+1KakSaICkcu6JKca7lc9oPQoB+PYCVafi4zgdbQ7
+ ZgxG+MZaBT1cWn2J2I3iufIhxB96NPolq3u5atGplvnodYl7LyoEPgT9OH7hPeNpSM/w
+ DYWoFU4mSkaVpt2bPIJrOPbMkPikmvX3mDu7I1zCn+Y9vXn0vIjsjzYd78nPpi5qGp/h
+ n9EdkxB2tWrYixY8ho2AdnpvM/cg4zDqvhp6WdBZMI8L6AtFRwBl+hKwghMbpGmqY//m
+ OjZMHw4lGWgoY2KDi795oGMpDo9eki805wM4gcy0QnBkEnLrZfTzNL/Hboa7IouybUM9
+ mGhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700631503; x=1701236303;
+ d=1e100.net; s=20230601; t=1700631506; x=1701236306;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ffQ3ckw80DQQK7pNtkarYFV8Ajwf2z94gxNCXOj01oQ=;
- b=IgJ0O5kBNimFHjIT7VcpWlbbZv75sQQxusOawOsSAP01w5mdPjgchxO0bd4nOo8cj/
- d1FbNxg5W5zUVlYN2CFgkd1DvvXdieH2xBCTNXr0mG3yN8cgCXCeD5vrOEPSGlu3rcPT
- HPj68TQBdSkYFt6541MZnAxcDoP461zeNot/4t2IKC4UGn3p2SD3vu9h4I0DgkmrLAR7
- Cp8d4DtSZ2adz5UJji7JwBLiFZyEDYLHpkxAJ2sgSM3ZVt3lGeaKmTvWF0lDsk9tNx6A
- qBp3gYxn/uucFy+om8/TS0WqoZ9y7FjMlksKw9vwtLN00fwnhquWgaZLgzP8U41vyKlj
- /k3Q==
-X-Gm-Message-State: AOJu0YwwTLjE6Z6xm5zKoG8XKNWCcuUy+YepGjic1YOKHY6fp5tSDh1i
- gqOvDI79gumOivSA7yu6k4b7OSE+Q5jhlQ==
-X-Google-Smtp-Source: AGHT+IHHdsRRxy1IDfNse5GatBzPhuDVIrFMKJoWninIQCLj8CFwtHw/9Mq8ssT8qNlmZGyr53027A==
-X-Received: by 2002:a17:902:d2ca:b0:1cf:5629:a0c6 with SMTP id
- n10-20020a170902d2ca00b001cf5629a0c6mr1561205plc.13.1700631502818; 
- Tue, 21 Nov 2023 21:38:22 -0800 (PST)
+ bh=lLbOAJzLWl9ZAwxrRE8Vm/IEKsPP3IN/EvETdsopNPM=;
+ b=h0pJ/z1jCGkE3SvCc1xrTh+K8zHCxZumQM0yhfoJbyuJUDDj023iZGYW/3Gp22Kysb
+ 64bzW9JluMJRN2T/AfZ5Mtr/VZnHPiPMPlu3Q9a+tM1TjZHobWrhmKRP12bocmwwTqVg
+ zfxnzk5o7kBHWe4wtWSIFg7c+IxsqS3NOPsSjzf7lGJRyfEBT7xg+P5VGdb6zi+/O0tB
+ v9KU2u1awlKFk1qxtiD7nJRAOgZl7AnhfoUAeZmBouOeN+1QgGj7npoK/r/o2cFf49Iw
+ gYPLppo5YxGG6lJWQaQUkb61DT47S+UVWviJvS4TswrWm41oT0iADORrrE2mcK9Syozt
+ 8Xvg==
+X-Gm-Message-State: AOJu0YxlSbSEdPu39GWechVuMrzbgcbMvV3W4rH2JVl1yFiAhTKq6JGk
+ YwDFc9l7NaJyLarZkvYtm3GwSAERE0u9ig==
+X-Google-Smtp-Source: AGHT+IFnKbjPXvvOYxNGxrSSRvYkv990v8CTCH8ZBogx4CavNedlVP+zJZQMkgnDcyf8XS64y4C2yg==
+X-Received: by 2002:a17:903:32cb:b0:1c9:d0a0:ee88 with SMTP id
+ i11-20020a17090332cb00b001c9d0a0ee88mr1413388plr.62.1700631506374; 
+ Tue, 21 Nov 2023 21:38:26 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- u12-20020a170903124c00b001c0a4146961sm8923952plh.19.2023.11.21.21.38.19
+ u12-20020a170903124c00b001c0a4146961sm8923952plh.19.2023.11.21.21.38.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Nov 2023 21:38:22 -0800 (PST)
+ Tue, 21 Nov 2023 21:38:25 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com,
- =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 3/6] target/riscv: don't verify ISA compatibility for zicntr
- and zihpm
-Date: Wed, 22 Nov 2023 15:37:57 +1000
-Message-ID: <20231122053800.1531799-4-alistair.francis@wdc.com>
+ =?UTF-8?q?Rom=C3=A1n=20C=C3=A1rdenas?= <rcardenas.rod@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PULL 4/6] riscv: Fix SiFive E CLINT clock frequency
+Date: Wed, 22 Nov 2023 15:37:58 +1000
+Message-ID: <20231122053800.1531799-5-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231122053800.1531799-1-alistair.francis@wdc.com>
 References: <20231122053800.1531799-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,47 +99,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Clément Chigot <chigot@adacore.com>
+From: Román Cárdenas <rcardenas.rod@gmail.com>
 
-The extensions zicntr and zihpm were officially added in the privilege
-instruction set specification 1.12. However, QEMU has been implemented
-them long before it and thus they are forced to be on during the cpu
-initialization to ensure compatibility (see riscv_cpu_init).
-riscv_cpu_disable_priv_spec_isa_exts was not updated when the above
-behavior was introduced, resulting in these extensions to be disabled
-after all.
+If you check the manual of SiFive E310 (https://cdn.sparkfun.com/assets/7/f/0/2/7/fe310-g002-manual-v19p05.pdf),
+you can see in Figure 1 that the CLINT is connected to the real time clock, which also feeds the AON peripheral (they share the same clock).
+In page 43, the docs also say that the timer registers of the CLINT count ticks from the rtcclk.
 
-Signed-off-by: Clément Chigot <chigot@adacore.com>
-Fixes: c004099330 ("target/riscv: add zicntr extension flag for TCG")
-Fixes: 0824121660 ("target/riscv: add zihpm extension flag for TCG")
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+I am currently playing with bare metal applications both in QEMU and a physical SiFive E310 board and
+I confirm that the CLINT clock in the physical board runs at 32.768 kHz.
+In QEMU, the same app produces a completely different outcome, as sometimes a new CLINT interrupt is triggered before finishing other tasks.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1978
+
+Signed-off-by: Rom\ufffd\ufffdn C\ufffd\ufffdrdenas <rcardenas.rod@gmail.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20231114123913.536194-1-chigot@adacore.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-ID: <20231117082840.55705-1-rcardenas.rod@gmail.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/tcg/tcg-cpu.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ hw/riscv/sifive_e.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 08adad304d..8a35683a34 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -250,6 +250,15 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
-     for (edata = isa_edata_arr; edata && edata->name; edata++) {
-         if (isa_ext_is_enabled(cpu, edata->ext_enable_offset) &&
-             (env->priv_ver < edata->min_version)) {
-+            /*
-+             * These two extensions are always enabled as they were supported
-+             * by QEMU before they were added as extensions in the ISA.
-+             */
-+            if (!strcmp(edata->name, "zicntr") ||
-+                !strcmp(edata->name, "zihpm")) {
-+                continue;
-+            }
-+
-             isa_ext_update_enabled(cpu, edata->ext_enable_offset, false);
- #ifndef CONFIG_USER_ONLY
-             warn_report("disabling %s extension for hart 0x" TARGET_FMT_lx
+diff --git a/hw/riscv/sifive_e.c b/hw/riscv/sifive_e.c
+index 0d37adc542..87d9602383 100644
+--- a/hw/riscv/sifive_e.c
++++ b/hw/riscv/sifive_e.c
+@@ -225,7 +225,7 @@ static void sifive_e_soc_realize(DeviceState *dev, Error **errp)
+             RISCV_ACLINT_SWI_SIZE,
+         RISCV_ACLINT_DEFAULT_MTIMER_SIZE, 0, ms->smp.cpus,
+         RISCV_ACLINT_DEFAULT_MTIMECMP, RISCV_ACLINT_DEFAULT_MTIME,
+-        RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ, false);
++        SIFIVE_E_LFCLK_DEFAULT_FREQ, false);
+     sifive_e_prci_create(memmap[SIFIVE_E_DEV_PRCI].base);
+ 
+     /* AON */
 -- 
 2.42.0
 
