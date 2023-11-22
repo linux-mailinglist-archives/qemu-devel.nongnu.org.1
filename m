@@ -2,78 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209187F3D72
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 06:38:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5B647F3DC9
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 06:54:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5fwd-0002pN-1z; Wed, 22 Nov 2023 00:38:39 -0500
+	id 1r5gAy-0003SK-4R; Wed, 22 Nov 2023 00:53:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5fwb-0002iu-2X
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 00:38:37 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1r5gAv-0003RX-BK
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 00:53:25 -0500
+Received: from mail-vk1-xa36.google.com ([2607:f8b0:4864:20::a36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5fwZ-0007Ae-Bb
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 00:38:36 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1cc5fa0e4d5so53735245ad.0
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 21:38:35 -0800 (PST)
+ id 1r5gAt-0001iZ-Om
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 00:53:25 -0500
+Received: by mail-vk1-xa36.google.com with SMTP id
+ 71dfb90a1353d-4ac459d7962so314424e0c.1
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 21:53:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700631513; x=1701236313; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1700632401; x=1701237201; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VfdNnE304ZcORy8+jKuKo1TUlW31ZX6mKgVvqcTL9E4=;
- b=WALXjzQ0Zf+zJLoJ0H5ZOlPFYGUZeEkC7YdcHAvWwu0aIyQN0zyeIgY3uPILke8ap7
- XAGBLzAUzjU9ktKve6ZTjx3watp9QoJj5VVO1Yke0yPLV4V/gzA1Syth/lwxLZcSUNli
- oclHIwmd67u0BIHKjbPaRcoiPprucIZmeOnnJW3FnP7WXCkYq8cD/FECIUo4l45DhXb1
- PVZytHiM7rE0UWxUjU2kTupLME1pq07vKQEnnX4i4oRFrRkCte03PGljKSI1BGAJCC7V
- nf+LE+uTJJeHbKbF5LclzW2treGr3fS/cd62IBd3olXc/qNoyFPPRdqZyb9J6hkNr0Si
- aF1Q==
+ bh=kGU2jaQlbXN6H8AvZLt2vy+jNCe1ZHgV38BHpigRc/c=;
+ b=dg1CZgQN2o/ZiXEeHIxcFFPHHYPr1XrjSngTWaNPO6ZppcItMai9jgEUUKhA8UPxwM
+ Y/RQwgDEs14hgRNfx5+0Eg+T9DfJoJgrybu6vU5Gyj4qFXXYdfTghTFzlXx4Dr3YAcwb
+ BPMDNoVS4pIfD7TJ05zFQzjwNibK4J3g9pwiBfWYBAalDhCNYpg1Op6xdzUc0BZYB5Yu
+ CepZxdvpeSFf6D3ypq3MN+qGEPJMMbSU7c6lUU1LiPnR29rtt6uzP7+TDKXcrl8EsqFW
+ 4bT330zsqdAD1GvY7JcP9PVqmz8Co1Jp+f+fcz9H5ihZ09ht48W78gs4LfX/7h/s+TTd
+ vYYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700631513; x=1701236313;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1700632401; x=1701237201;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VfdNnE304ZcORy8+jKuKo1TUlW31ZX6mKgVvqcTL9E4=;
- b=G6hC79umBPQ+4oUF1+olLYDY73uS7U8XFvdkZpQYTLWQ/Q27vld+l2EVATXTLjFIlX
- Ucm43G3eDga6XTZm/eCTYk4TOT0y5hzDD+mjp/FqITo5a7T7fadA3WHnKS4MfFlrwR/V
- tSbv8fp4dUYkG+j91uPhl8yt0WsWAlHrwyGJg/XNSsLlcfNWxKAWMtZjMLlWen2RDwD5
- UFR0P/Hp8vk5t4hOj1HNJ1ELBWbrMJ8gRbiczHq/pF6hJihg8VEY64beWkfzadKdBzIk
- cqPevmLrLcMALy8smDjAUDXpGaEpfbJYG0p7xTRfsucrCVSB7Sp4UT4oJ+ts0f0VXFME
- 3xPw==
-X-Gm-Message-State: AOJu0YyjQqRrstJo5xZjbf+i5uOB+64/QyEMdueOBLBuUlinCfuNNyRG
- uStQ4SkxIoZs9M0xM/fdszZxdNqUshSs3Q==
-X-Google-Smtp-Source: AGHT+IFlNip6xknP3Kv6zaxZtOJvecxWi7X2NxPfFrN0Z7C1N+m2qkvU4DjZ2SUDVaBN8sXDf1iDMw==
-X-Received: by 2002:a17:902:b784:b0:1cf:5670:243e with SMTP id
- e4-20020a170902b78400b001cf5670243emr1502648pls.13.1700631513602; 
- Tue, 21 Nov 2023 21:38:33 -0800 (PST)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
- [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
- by smtp.gmail.com with ESMTPSA id
- u12-20020a170903124c00b001c0a4146961sm8923952plh.19.2023.11.21.21.38.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Nov 2023 21:38:32 -0800 (PST)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Ivan Klokov <ivan.klokov@syntacore.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 6/6] target/riscv/cpu_helper.c: Fix mxr bit behavior
-Date: Wed, 22 Nov 2023 15:38:00 +1000
-Message-ID: <20231122053800.1531799-7-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231122053800.1531799-1-alistair.francis@wdc.com>
-References: <20231122053800.1531799-1-alistair.francis@wdc.com>
+ bh=kGU2jaQlbXN6H8AvZLt2vy+jNCe1ZHgV38BHpigRc/c=;
+ b=I1PJPVcYU65BrOqmw7IjuZyPDwocULCgSwncVcSSUDJN4FhUyK0XMQ6glSVHzSh9em
+ j0YcZxmnjBj+nlQ5JTpt9C672KgvQticFJ48zZ/M7VclVEVSgcymeZlvcqOaVbIW7SU8
+ 7jze/wBOpdCrn72UdpmHnZ0RoHlz+tcKS1s5YnwzGIEWkdzgTtO2O0gACaGdgmcM8B7t
+ tjAY30eSyEbZg3VEEQKUKU+KARZIOAATbiJtfYGOVjfqjE/K4hjEFo7DgzBB6A5V5B80
+ wx//1JTRXFnCDVK29Uv66s2jRAn495i2EWa9lie0+Yk9Ok1BfEWBUScEax9dKU0VNgvW
+ zsHg==
+X-Gm-Message-State: AOJu0YxnliI8HbG4cdPlXOMP2r3CwJZccgu4CcxawnvJZuvx9F6zUlWd
+ Q5p0IK2QFBMMLDQ6EmiGcpN4e2XF+MtVeA2K9jM=
+X-Google-Smtp-Source: AGHT+IGe4K2pz3U578gNGts7C1qMj0q28WGktqlF6ztZrlusigUIy497ON+uNK2l5TLf4+AGR7GVJw2jkJwWxMAycw4=
+X-Received: by 2002:a1f:dd81:0:b0:49a:b9ed:8c19 with SMTP id
+ u123-20020a1fdd81000000b0049ab9ed8c19mr1572493vkg.7.1700632401662; Tue, 21
+ Nov 2023 21:53:21 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62e.google.com
+References: <20231107022946.1055027-1-alistair.francis@wdc.com>
+ <20231107022946.1055027-47-alistair.francis@wdc.com>
+ <CAFEAcA_DrOBcQytM+UkMNEFFgEhOYqbKnnSREhRY+UsEwD+RbQ@mail.gmail.com>
+In-Reply-To: <CAFEAcA_DrOBcQytM+UkMNEFFgEhOYqbKnnSREhRY+UsEwD+RbQ@mail.gmail.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 22 Nov 2023 15:52:53 +1000
+Message-ID: <CAKmqyKM5KveGNhssivh73W8wRYr2j-Acx_P9+Vf1ZqMKZsakoA@mail.gmail.com>
+Subject: Re: [PULL 46/49] target/riscv: Don't assume PMU counters are
+ continuous
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Rob Bradford <rbradford@rivosinc.com>, 
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Atish Patra <atishp@rivosinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a36;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa36.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,71 +93,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ivan Klokov <ivan.klokov@syntacore.com>
+On Fri, Nov 10, 2023 at 1:24=E2=80=AFAM Peter Maydell <peter.maydell@linaro=
+.org> wrote:
+>
+> On Tue, 7 Nov 2023 at 02:36, Alistair Francis <alistair23@gmail.com> wrot=
+e:
+> >
+> > From: Rob Bradford <rbradford@rivosinc.com>
+> >
+> > Check the PMU available bitmask when checking if a counter is valid
+> > rather than comparing the index against the number of PMUs.
+> >
+> > Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+> > Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+> > Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> > Reviewed-by: Atish Patra <atishp@rivosinc.com>
+> > Message-ID: <20231031154000.18134-3-rbradford@rivosinc.com>
+> > Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+> > ---
+> >  target/riscv/csr.c | 5 +++--
+> >  1 file changed, 3 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> > index fc26b52c88..fde7ce1a53 100644
+> > --- a/target/riscv/csr.c
+> > +++ b/target/riscv/csr.c
+> > @@ -188,7 +188,8 @@ static RISCVException zcmt(CPURISCVState *env, int =
+csrno)
+> >  #if !defined(CONFIG_USER_ONLY)
+> >  static RISCVException mctr(CPURISCVState *env, int csrno)
+> >  {
+> > -    int pmu_num =3D riscv_cpu_cfg(env)->pmu_num;
+> > +    RISCVCPU *cpu =3D env_archcpu(env);
+> > +    uint32_t pmu_avail_ctrs =3D cpu->pmu_avail_ctrs;
+> >      int ctr_index;
+> >      int base_csrno =3D CSR_MHPMCOUNTER3;
+> >
+> > @@ -197,7 +198,7 @@ static RISCVException mctr(CPURISCVState *env, int =
+csrno)
+> >          base_csrno +=3D 0x80;
+> >      }
+> >      ctr_index =3D csrno - base_csrno;
+> > -    if (!pmu_num || ctr_index >=3D pmu_num) {
+> > +    if ((BIT(ctr_index) & pmu_avail_ctrs >> 3) =3D=3D 0) {
+> >          /* The PMU is not enabled or counter is out of range */
+> >          return RISCV_EXCP_ILLEGAL_INST;
+> >      }
+>
+> Hi; Coverity is not convinced that ctr_index is necessarily
+> guaranteed to be within the valid range to be an argument
+> to BIT() (eg that it won't be negative). Looking at the
+> code as a human I'm pretty unsure too. Could somebody have
+> a look at this and maybe improve the readability / add an
+> assertion / fix a bug if any ? (CID 1523910)
 
-According to RISCV Specification sect 9.5 on two stage translation when
-V=1 the vsstatus(mstatus in QEMU's terms) field MXR, which makes
-execute-only pages readable, only overrides VS-stage page protection.
-Setting MXR at HS-level(mstatus_hs), however, overrides both VS-stage
-and G-stage execute-only permissions.
+The code looks ok to me. I have a patch to add an assert to keep Coverity h=
+appy.
 
-The hypervisor extension changes the behavior of MXR\MPV\MPRV bits.
-Due to RISCV Specification sect. 9.4.1 when MPRV=1, explicit memory
-accesses are translated and protected, and endianness is applied, as
-though the current virtualization mode were set to MPV and the current
-nominal privilege mode were set to MPP. vsstatus.MXR makes readable
-those pages marked executable at the VS translation stage.
+>
+> More generally there are about half a dozen other riscv
+> issues in Coverity at the moment, so if somebody who knows
+> the riscv code could have a look at them that would be great.
 
-Fixes: 36a18664ba ("target/riscv: Implement second stage MMU")
+I am happy to look at it. I didn't realise we could all see the
+Coverity data. I just requested permission to see the results
 
-Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20231121071757.7178-3-ivan.klokov@syntacore.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- target/riscv/cpu_helper.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+Alistair
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 9ff0952e46..e7e23b34f4 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1032,13 +1032,29 @@ restart:
-         prot |= PAGE_WRITE;
-     }
-     if (pte & PTE_X) {
--        bool mxr;
-+        bool mxr = false;
- 
--        if (first_stage == true) {
-+        /*
-+         * Use mstatus for first stage or for the second stage without
-+         * virt_enabled (MPRV+MPV)
-+         */
-+        if (first_stage || !env->virt_enabled) {
-             mxr = get_field(env->mstatus, MSTATUS_MXR);
--        } else {
--            mxr = get_field(env->vsstatus, MSTATUS_MXR);
-         }
-+
-+        /* MPRV+MPV case, check VSSTATUS */
-+        if (first_stage && two_stage && !env->virt_enabled) {
-+            mxr |= get_field(env->vsstatus, MSTATUS_MXR);
-+        }
-+
-+        /*
-+         * Setting MXR at HS-level overrides both VS-stage and G-stage
-+         * execute-only permissions
-+         */
-+        if (env->virt_enabled) {
-+            mxr |= get_field(env->mstatus_hs, MSTATUS_MXR);
-+        }
-+
-         if (mxr) {
-             prot |= PAGE_READ;
-         }
--- 
-2.42.0
-
+>
+> thanks
+> -- PMM
 
