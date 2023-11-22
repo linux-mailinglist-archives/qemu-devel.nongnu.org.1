@@ -2,67 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA817F3B65
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 02:43:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B0387F3B98
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 03:06:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5cFz-0002T3-Hp; Tue, 21 Nov 2023 20:42:23 -0500
+	id 1r5cbi-0001TA-3D; Tue, 21 Nov 2023 21:04:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
- id 1r5cFy-0002Ss-JQ; Tue, 21 Nov 2023 20:42:22 -0500
-Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1r5cbg-0001Sw-3p; Tue, 21 Nov 2023 21:04:48 -0500
+Received: from mail-vs1-xe29.google.com ([2607:f8b0:4864:20::e29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
- id 1r5cFw-0006m1-M3; Tue, 21 Nov 2023 20:42:22 -0500
-Received: by mail-qt1-x833.google.com with SMTP id
- d75a77b69052e-41eae4ebf61so37106591cf.2; 
- Tue, 21 Nov 2023 17:42:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1r5cbe-0001zo-I5; Tue, 21 Nov 2023 21:04:47 -0500
+Received: by mail-vs1-xe29.google.com with SMTP id
+ ada2fe7eead31-45dadc5bf51so2303913137.2; 
+ Tue, 21 Nov 2023 18:04:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700617339; x=1701222139; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1700618685; x=1701223485; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=taSigf5Qrg8gYOQReEoEkAVRsKgXkwmqlDhWxBu8Qj4=;
- b=eZhH/YHbK3Wub33MrqDKowZ0NfbSs6/XeknDZtlO/05iSupQdOXfxRlTP0Wh9XU70f
- z3dcuKxcc7b3phUAQsqNO4iaUO2tYmvSiqwcmLKH/Xnh1WDkhAxCpPZSLwK63l9N5uob
- fvVQ+1xJQS8xw3GzGupxpaHHrBtg3pahKHPeij4e9CVcq7hOHGZym9zsb/jbNTiBiPNF
- hk9ElvwhOvYYdGDNQU6NvpgSi0Wj70nJoetm/oDusrwCsZk4nWZh5qgoIrnyZ9qUw7qY
- LFYnZyA30o9cBCmdhniEQHKPEV8MnMJkBwzOWlfCd2vG9X/Au+0+KacOFyimkegqGc0T
- 1Mlw==
+ bh=3ECHSRcApMI7DC8w2naT+eoPg2M/bSJ6ZwAZGZJf7OU=;
+ b=MRPLZrolDA08G1fD75ygiF11wuKiEQ0ijzMQ2PUaqcz7gEpEC3qc14BjDuQe4ODXfc
+ CmeDo6Xt5qttYM51BS5kVrdyCbOwbALKqbjda/0Pui6esUVpkE4pCd//gkH1zlVU93qr
+ PIFsQSBzZE5J/iJ62c8Z6GJtHrS/8NUmNIRKROixCNVq8ejs9JqqiOdXLc7Mt+ovGSQR
+ ShbVqphgzEC6vTmgvvjQpuKAMzzWR7U6AOwaJWfG1fZQ/zkMb6ozjlyxIH33/BgJOPnb
+ tC7fCo+yXEhpODD2RRRx3z0B9cQ/kBAip9jD2iNvmDWvGzTCszxCZsMxJVCE5MBk6Q6K
+ Vycw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700617339; x=1701222139;
+ d=1e100.net; s=20230601; t=1700618685; x=1701223485;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=taSigf5Qrg8gYOQReEoEkAVRsKgXkwmqlDhWxBu8Qj4=;
- b=vWhtPPz0EEKhki1K7NTAvQXPW91ZCAI7aEJtL+hewMY0ZqNbjCN56dL2x3vW76mQP/
- EVTrt9Pdwb4OsMj12RhWckpGxHkuZ/GS/iyiQB5AS3WhnF50QhDK4NryPcfF6pbgRUD8
- u7Kc9KHRhr23MF6QmuiWY1Ubw/A5QBiDleRz0n8RDOtT4YgUCerBI9CYoywy3uIhuycj
- T9TzDFIyl7HQzfe0b3miBRenF5wz4RhCNEmeR66BoibCcoo2jV+w9niYOgoK/6hyv+5S
- 9lSC+T+79Lw85EtljEKAPQc/YaBcsaEBF270EPhuW5odjNsgOzPjBRxQXuYiK3mjKtaX
- sqEw==
-X-Gm-Message-State: AOJu0YwW78xo0Q1FBxgBG5Npx/tx7YQFQIgDW7xGsmLlB/mJf0vm3O+u
- l0gXXlvoMbyC5o/1pcLvsF6Jo4IJewpJpka/NcfbHQ/p
-X-Google-Smtp-Source: AGHT+IHRqXpL6Yrlk1Rr5pQ0rDTF6XNue0vgHJGyZ9rnuzuSsSm1tbIre6/kFHPpj9hsL7zYK3mFflxyuaT49tCCVfY=
-X-Received: by 2002:ac8:5c09:0:b0:421:bcc0:d6c6 with SMTP id
- i9-20020ac85c09000000b00421bcc0d6c6mr1283807qti.28.1700617339100; Tue, 21 Nov
- 2023 17:42:19 -0800 (PST)
+ bh=3ECHSRcApMI7DC8w2naT+eoPg2M/bSJ6ZwAZGZJf7OU=;
+ b=bjT5cASXTSlpa4hcKNrs6FZ1VvJ8M+fsCgw1r+wJ9Ww4IMuCm2ds3MFZU3/oR0Z0K1
+ s89oTDw7K8u+qBJ6KcaWQJrhzmOV32ASYkg3Nnsjy39jrKS2ffNubkx11OQilomTiTZp
+ 25tHntUo+N3JZQK5g1yN0sFf1o/KiDiXGNeHZdkSbA0JZ/dhTigKuazaVMOO6e0z0+Bj
+ KvoNY/Lkb4iXHu6KZ8X9RwEm19mzo4N+u9nHpqoGVLva3cvCmvCB+UXoMOczO9rOJvSU
+ 5rLab6O/TpWpaVgiZt2NbTKaBdtH9NxtIhsy05FBnfgoP2njAit9SubGWOkRxNBtv4hI
+ cT0w==
+X-Gm-Message-State: AOJu0YxOQQlLvDvJW4GvovkoArmiBo1pkRdqBvByAdw5mGtb1zljIJi7
+ zgN9lxja1Vfpn+vg3SChM+VnHkC7kY1OmVLc4VE=
+X-Google-Smtp-Source: AGHT+IFzAk/OevAELnNry+n3V+u9tfo/FlTKasqUqPrDpcwk2usD9BRMke2XIzKRo+J/syW55SeQ07PC2NGa5Fza1Pw=
+X-Received: by 2002:a05:6102:b10:b0:462:ba4d:ccd4 with SMTP id
+ b16-20020a0561020b1000b00462ba4dccd4mr1267354vst.30.1700618684930; Tue, 21
+ Nov 2023 18:04:44 -0800 (PST)
 MIME-Version: 1.0
-References: <20231118231129.2840388-1-dhoff749@gmail.com>
-In-Reply-To: <20231118231129.2840388-1-dhoff749@gmail.com>
-From: Dan Hoffman <dhoff749@gmail.com>
-Date: Tue, 21 Nov 2023 19:42:08 -0600
-Message-ID: <CAFXChK+NELKJUcQSjKe-v_gcjnOPD07fe8c8bBVQFjqDQwZMMA@mail.gmail.com>
-Subject: Re: [PATCH] hw/timer/hpet: Convert DPRINTF to trace events
-To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>
+References: <20231121071757.7178-1-ivan.klokov@syntacore.com>
+ <20231121071757.7178-2-ivan.klokov@syntacore.com>
+In-Reply-To: <20231121071757.7178-2-ivan.klokov@syntacore.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 22 Nov 2023 12:04:17 +1000
+Message-ID: <CAKmqyKOn3J7HqUcS2RLxE9dUJkUkKvmTySuA3EUDffPy__A6pA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] target/riscv/cpu_helper.c: Invalid exception on
+ MMU translation stage
+To: Ivan Klokov <ivan.klokov@syntacore.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, palmer@dabbelt.com, 
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com, 
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::833;
- envelope-from=dhoff749@gmail.com; helo=mail-qt1-x833.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e29;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe29.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -86,251 +89,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-bump
+On Tue, Nov 21, 2023 at 6:51=E2=80=AFPM Ivan Klokov <ivan.klokov@syntacore.=
+com> wrote:
+>
+> According to RISCV privileged spec sect. 5.3.2 Virtual Address Translatio=
+n Process
+> access-fault exceptions may raise only after PMA/PMP check. Current imple=
+mentation
+> generates an access-fault for mbare mode even if there were no PMA/PMP er=
+rors.
+> This patch removes the erroneous MMU mode check and generates an access-f=
+ault
+> exception based on the pmp_violation flag only.
+>
+> Fixes: 1448689c7b ("target/riscv: Allow specifying MMU stage")
+>
+> Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
 
-On Sat, Nov 18, 2023 at 5:13=E2=80=AFPM Daniel Hoffman <dhoff749@gmail.com>=
- wrote:
->
-> This conversion is pretty straight-forward. Standardized some formatting
-> so the +0 and +4 offset cases can recycle the same message.
->
-> Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
+Please keep existing tags when sending a new version if there aren't any ch=
+anges
+
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+
+Alistair
+
 > ---
->  hw/timer/hpet.c       | 55 +++++++++++++++++--------------------------
->  hw/timer/trace-events | 16 +++++++++++++
->  2 files changed, 38 insertions(+), 33 deletions(-)
+>  target/riscv/cpu_helper.c | 30 +++++++-----------------------
+>  1 file changed, 7 insertions(+), 23 deletions(-)
 >
-> diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
-> index 6998094233a..f9d248b4cf7 100644
-> --- a/hw/timer/hpet.c
-> +++ b/hw/timer/hpet.c
-> @@ -39,13 +39,7 @@
->  #include "hw/timer/i8254.h"
->  #include "exec/address-spaces.h"
->  #include "qom/object.h"
+> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+> index b7af69de53..9ff0952e46 100644
+> --- a/target/riscv/cpu_helper.c
+> +++ b/target/riscv/cpu_helper.c
+> @@ -1143,47 +1143,31 @@ static void raise_mmu_exception(CPURISCVState *en=
+v, target_ulong address,
+>                                  bool two_stage_indirect)
+>  {
+>      CPUState *cs =3D env_cpu(env);
+> -    int page_fault_exceptions, vm;
+> -    uint64_t stap_mode;
 > -
-> -//#define HPET_DEBUG
-> -#ifdef HPET_DEBUG
-> -#define DPRINTF printf
-> -#else
-> -#define DPRINTF(...)
-> -#endif
-> +#include "trace.h"
+> -    if (riscv_cpu_mxl(env) =3D=3D MXL_RV32) {
+> -        stap_mode =3D SATP32_MODE;
+> -    } else {
+> -        stap_mode =3D SATP64_MODE;
+> -    }
+> -
+> -    if (first_stage) {
+> -        vm =3D get_field(env->satp, stap_mode);
+> -    } else {
+> -        vm =3D get_field(env->hgatp, stap_mode);
+> -    }
+> -
+> -    page_fault_exceptions =3D vm !=3D VM_1_10_MBARE && !pmp_violation;
 >
->  #define HPET_MSI_SUPPORT        0
->
-> @@ -431,7 +425,7 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr ad=
-dr,
->      HPETState *s =3D opaque;
->      uint64_t cur_tick, index;
->
-> -    DPRINTF("qemu: Enter hpet_ram_readl at %" PRIx64 "\n", addr);
-> +    trace_hpet_ram_read(addr);
->      index =3D addr;
->      /*address range of all TN regs*/
->      if (index >=3D 0x100 && index <=3D 0x3ff) {
-> @@ -439,7 +433,7 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr ad=
-dr,
->          HPETTimer *timer =3D &s->timer[timer_id];
->
->          if (timer_id > s->num_timers) {
-> -            DPRINTF("qemu: timer id out of range\n");
-> +            trace_hpet_timer_id_out_of_range(timer_id);
->              return 0;
+>      switch (access_type) {
+>      case MMU_INST_FETCH:
+>          if (env->virt_enabled && !first_stage) {
+>              cs->exception_index =3D RISCV_EXCP_INST_GUEST_PAGE_FAULT;
+>          } else {
+> -            cs->exception_index =3D page_fault_exceptions ?
+> -                RISCV_EXCP_INST_PAGE_FAULT : RISCV_EXCP_INST_ACCESS_FAUL=
+T;
+> +            cs->exception_index =3D pmp_violation ?
+> +                RISCV_EXCP_INST_ACCESS_FAULT : RISCV_EXCP_INST_PAGE_FAUL=
+T;
 >          }
->
-> @@ -457,7 +451,7 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr ad=
-dr,
->          case HPET_TN_ROUTE + 4:
->              return timer->fsb >> 32;
->          default:
-> -            DPRINTF("qemu: invalid hpet_ram_readl\n");
-> +            trace_hpet_ram_read_invalid();
->              break;
+>          break;
+>      case MMU_DATA_LOAD:
+>          if (two_stage && !first_stage) {
+>              cs->exception_index =3D RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT;
+>          } else {
+> -            cs->exception_index =3D page_fault_exceptions ?
+> -                RISCV_EXCP_LOAD_PAGE_FAULT : RISCV_EXCP_LOAD_ACCESS_FAUL=
+T;
+> +            cs->exception_index =3D pmp_violation ?
+> +                RISCV_EXCP_LOAD_ACCESS_FAULT : RISCV_EXCP_LOAD_PAGE_FAUL=
+T;
 >          }
->      } else {
-> @@ -469,7 +463,7 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr ad=
-dr,
->          case HPET_CFG:
->              return s->config;
->          case HPET_CFG + 4:
-> -            DPRINTF("qemu: invalid HPET_CFG + 4 hpet_ram_readl\n");
-> +            trace_hpet_invalid_hpet_cfg(4);
->              return 0;
->          case HPET_COUNTER:
->              if (hpet_enabled(s)) {
-> @@ -477,7 +471,7 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr ad=
-dr,
->              } else {
->                  cur_tick =3D s->hpet_counter;
->              }
-> -            DPRINTF("qemu: reading counter  =3D %" PRIx64 "\n", cur_tick=
-);
-> +            trace_hpet_ram_read_reading_counter(0, cur_tick);
->              return cur_tick;
->          case HPET_COUNTER + 4:
->              if (hpet_enabled(s)) {
-> @@ -485,12 +479,12 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr =
-addr,
->              } else {
->                  cur_tick =3D s->hpet_counter;
->              }
-> -            DPRINTF("qemu: reading counter + 4  =3D %" PRIx64 "\n", cur_=
-tick);
-> +            trace_hpet_ram_read_reading_counter(4, cur_tick);
->              return cur_tick >> 32;
->          case HPET_STATUS:
->              return s->isr;
->          default:
-> -            DPRINTF("qemu: invalid hpet_ram_readl\n");
-> +            trace_hpet_ram_read_invalid();
->              break;
+>          break;
+>      case MMU_DATA_STORE:
+>          if (two_stage && !first_stage) {
+>              cs->exception_index =3D RISCV_EXCP_STORE_GUEST_AMO_ACCESS_FA=
+ULT;
+>          } else {
+> -            cs->exception_index =3D page_fault_exceptions ?
+> -                RISCV_EXCP_STORE_PAGE_FAULT :
+> -                RISCV_EXCP_STORE_AMO_ACCESS_FAULT;
+> +            cs->exception_index =3D pmp_violation ?
+> +                RISCV_EXCP_STORE_AMO_ACCESS_FAULT :
+> +                RISCV_EXCP_STORE_PAGE_FAULT;
 >          }
->      }
-> @@ -504,8 +498,7 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
->      HPETState *s =3D opaque;
->      uint64_t old_val, new_val, val, index;
->
-> -    DPRINTF("qemu: Enter hpet_ram_writel at %" PRIx64 " =3D 0x%" PRIx64 =
-"\n",
-> -            addr, value);
-> +    trace_hpet_ram_write(addr, value);
->      index =3D addr;
->      old_val =3D hpet_ram_read(opaque, addr, 4);
->      new_val =3D value;
-> @@ -515,14 +508,14 @@ static void hpet_ram_write(void *opaque, hwaddr add=
-r,
->          uint8_t timer_id =3D (addr - 0x100) / 0x20;
->          HPETTimer *timer =3D &s->timer[timer_id];
->
-> -        DPRINTF("qemu: hpet_ram_writel timer_id =3D 0x%x\n", timer_id);
-> +        trace_hpet_ram_write_timer_id(timer_id);
->          if (timer_id > s->num_timers) {
-> -            DPRINTF("qemu: timer id out of range\n");
-> +            trace_hpet_timer_id_out_of_range(timer_id);
->              return;
->          }
->          switch ((addr - 0x100) % 0x20) {
->          case HPET_TN_CFG:
-> -            DPRINTF("qemu: hpet_ram_writel HPET_TN_CFG\n");
-> +            trace_hpet_ram_write_tn_cfg();
->              if (activating_bit(old_val, new_val, HPET_TN_FSB_ENABLE)) {
->                  update_irq(timer, 0);
->              }
-> @@ -540,10 +533,10 @@ static void hpet_ram_write(void *opaque, hwaddr add=
-r,
->              }
->              break;
->          case HPET_TN_CFG + 4: // Interrupt capabilities
-> -            DPRINTF("qemu: invalid HPET_TN_CFG+4 write\n");
-> +            trace_hpet_ram_write_invalid_tn_cfg(4);
->              break;
->          case HPET_TN_CMP: // comparator register
-> -            DPRINTF("qemu: hpet_ram_writel HPET_TN_CMP\n");
-> +            trace_hpet_ram_write_tn_cmp(0);
->              if (timer->config & HPET_TN_32BIT) {
->                  new_val =3D (uint32_t)new_val;
->              }
-> @@ -566,7 +559,7 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
->              }
->              break;
->          case HPET_TN_CMP + 4: // comparator register high order
-> -            DPRINTF("qemu: hpet_ram_writel HPET_TN_CMP + 4\n");
-> +            trace_hpet_ram_write_tn_cmp(4);
->              if (!timer_is_periodic(timer)
->                  || (timer->config & HPET_TN_SETVAL)) {
->                  timer->cmp =3D (timer->cmp & 0xffffffffULL) | new_val <<=
- 32;
-> @@ -591,7 +584,7 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
->              timer->fsb =3D (new_val << 32) | (timer->fsb & 0xffffffff);
->              break;
->          default:
-> -            DPRINTF("qemu: invalid hpet_ram_writel\n");
-> +            trace_hpet_ram_write_invalid();
->              break;
->          }
->          return;
-> @@ -631,7 +624,7 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
->              }
->              break;
->          case HPET_CFG + 4:
-> -            DPRINTF("qemu: invalid HPET_CFG+4 write\n");
-> +            trace_hpet_invalid_hpet_cfg(4);
->              break;
->          case HPET_STATUS:
->              val =3D new_val & s->isr;
-> @@ -643,24 +636,20 @@ static void hpet_ram_write(void *opaque, hwaddr add=
-r,
->              break;
->          case HPET_COUNTER:
->              if (hpet_enabled(s)) {
-> -                DPRINTF("qemu: Writing counter while HPET enabled!\n");
-> +                trace_hpet_ram_write_counter_write_while_enabled();
->              }
->              s->hpet_counter =3D
->                  (s->hpet_counter & 0xffffffff00000000ULL) | value;
-> -            DPRINTF("qemu: HPET counter written. ctr =3D 0x%" PRIx64 " -=
-> "
-> -                    "%" PRIx64 "\n", value, s->hpet_counter);
-> +            trace_hpet_ram_write_counter_written(0, value, s->hpet_count=
-er);
->              break;
->          case HPET_COUNTER + 4:
-> -            if (hpet_enabled(s)) {
-> -                DPRINTF("qemu: Writing counter while HPET enabled!\n");
-> -            }
-> +            trace_hpet_ram_write_counter_write_while_enabled();
->              s->hpet_counter =3D
->                  (s->hpet_counter & 0xffffffffULL) | (((uint64_t)value) <=
-< 32);
-> -            DPRINTF("qemu: HPET counter + 4 written. ctr =3D 0x%" PRIx64=
- " -> "
-> -                    "%" PRIx64 "\n", value, s->hpet_counter);
-> +            trace_hpet_ram_write_counter_written(4, value, s->hpet_count=
-er);
->              break;
->          default:
-> -            DPRINTF("qemu: invalid hpet_ram_writel\n");
-> +            trace_hpet_ram_write_invalid();
->              break;
->          }
->      }
-> diff --git a/hw/timer/trace-events b/hw/timer/trace-events
-> index 3eccef83858..474831a8c3b 100644
-> --- a/hw/timer/trace-events
-> +++ b/hw/timer/trace-events
-> @@ -99,3 +99,19 @@ sifive_pwm_write(uint64_t data, uint64_t offset) "Writ=
-e 0x%" PRIx64 " at address
->  sh_timer_start_stop(int enable, int current) "%d (%d)"
->  sh_timer_read(uint64_t offset) "tmu012_read 0x%" PRIx64
->  sh_timer_write(uint64_t offset, uint64_t value) "tmu012_write 0x%" PRIx6=
-4 " 0x%08" PRIx64
-> +
-> +# hpet.c
-> +hpet_timer_id_out_of_range(uint8_t timer_id) "timer id out of range: 0x%=
-" PRIx8
-> +hpet_invalid_hpet_cfg(uint8_t reg_off) "invalid HPET_CFG + 0x%x" PRIx8
-> +hpet_ram_read(uint64_t addr) "enter hpet_ram_readl at 0x%" PRIx64
-> +hpet_ram_read_reading_counter(uint8_t reg_off, uint64_t cur_tick) "readi=
-ng counter + 0x%" PRIx8 " =3D 0x%" PRIx64
-> +hpet_ram_read_invalid(void) "invalid hpet_ram_readl"
-> +hpet_ram_write(uint64_t addr, uint64_t value) "enter hpet_ram_writel at =
-0x%" PRIx64 " =3D 0x%" PRIx64
-> +hpet_ram_write_timer_id(uint64_t timer_id) "hpet_ram_writel timer_id =3D=
- 0x%" PRIx64
-> +hpet_ram_write_tn_cfg(void) "hpet_ram_writel HPET_TN_CFG"
-> +hpet_ram_write_invalid_tn_cfg(uint8_t reg_off) "invalid HPET_TN_CFG + %"=
- PRIx8 " write"
-> +hpet_ram_write_tn_cmp(uint8_t reg_off) "hpet_ram_writel HPET_TN_CMP + %"=
- PRIx8
-> +hpet_ram_write_invalid(void) "invalid hpet_ram_writel"
-> +hpet_ram_write_counter_write_while_enabled(void) "Writing counter while =
-HPET enabled!"
-> +hpet_ram_write_counter_written(uint8_t reg_off, uint64_t value, uint64_t=
- counter) "HPET counter + %" PRIx8 "written. crt =3D 0x%" PRIx64 " -> 0x%" =
-PRIx64
-> +
+>          break;
+>      default:
 > --
-> 2.40.1
+> 2.34.1
+>
 >
 
