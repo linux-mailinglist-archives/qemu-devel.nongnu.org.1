@@ -2,85 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A70E37F44B4
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 12:08:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 426B67F44B6
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 12:11:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5l4z-0000wR-5Y; Wed, 22 Nov 2023 06:07:37 -0500
+	id 1r5l7k-0001w4-HQ; Wed, 22 Nov 2023 06:10:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5l4w-0000vs-Ib
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 06:07:34 -0500
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5l7f-0001vm-0F
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 06:10:23 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5l4u-0001A3-Pl
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 06:07:34 -0500
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-507bd19eac8so8703405e87.0
- for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 03:07:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5l7d-0001gp-DM
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 06:10:22 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-332c0c32d19so2802254f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 03:10:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700651249; x=1701256049; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700651419; x=1701256219; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=hNxDhhCIH8NlpH8XHPURRCmGBLxe0AMGsttC4hlkS4g=;
- b=FjNxMCmNGUZ2lHyJKacbmangUDaCJTvWhcZMrUYEkkXYbdzzj9W2STIviRfdqpwkRz
- Zjk1WSnf66zkbpz+1MmunTmfgg30+RIg1ZS3/SHifIUgAw0OWy9v29sybnuGk/ejyYm0
- oNGPIZBDir0YRlnJ4BeUyfpxXRknOz3jLBJnwA1nRVVvxzc70i3DE7vMvhlkV+7PdDnY
- A/QPXeDahDZAmYHenSmUgA76BshsrZZAAg9nk+PjVehzITbnNU7J+WbDqwde85utiQq9
- fYUptS+Y9biOIdHPwsAi8+XeIDRhsoEtWiebYyt+nMSXNq2drbM81K0Iv3Ynlw4szSXO
- Zc+w==
+ bh=vQYdded+nNhrvOuaSIFjiUL+tKO6S6O0UnMYXjwEKd8=;
+ b=h+1IMpLbZj3snuacdwnQfju4h6LgivzjVpOOfDeQNZhsXPHtqpFsKt/vZ0x/YI0PxJ
+ 0S4BqJ6/nBnlYfBm2hkM6osxN/JziHawJ3AUJmjL12ypfqxpxQlxj6RjAtlObuOqOHqE
+ dn8p4NeLA1FtFj3mJHNhRHrsayAq38GlkQnGUBiOUfjPx3H4/OgVZjdjBGjF72kboxWA
+ Z90I2LnllMYS3P+f86Y5NmEU+wKJKh6h3A01RElUk7HO+GXVsXmIXKK8aUb1UqsMZ127
+ 8OnYWGLSxC2WJCz+KeM5HcW04+i7rd6JH2bL/TZvgxfLYDvYEVNAf4SgeUC5oDB3X1Se
+ ko1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700651249; x=1701256049;
+ d=1e100.net; s=20230601; t=1700651419; x=1701256219;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hNxDhhCIH8NlpH8XHPURRCmGBLxe0AMGsttC4hlkS4g=;
- b=PXuKJfNUOCZk7uAo73MBZvTvDcRLo0kGcynUNZ5y61NlH70QdpWN9dtCPq1RtrSLxk
- 2X/EUvV7NLOLGzKCqjslL7cVrUVNh91yTcTI0R1Bqp8teBvYLGCJcIO6M5siXZM4ngPg
- UwdCXnnqnkepFqg7dgcOzumxF3Xyrsmgq8n2ii1kjObfYCDNHo5WRZcjLSscNsgzM67H
- hn50Ysb29IOA8UBiXfxdSR2/N1VulLYww6vZJcF+ZdBlkk/UCeVfVBAUMchi0F5dNY9A
- 2DQEcpjpgkP6uSoPWHdbPdOqbQF83OT/IKNYf62W4XFCoRLnpx2OuGkOHjbdZkAKjrv5
- SkkQ==
-X-Gm-Message-State: AOJu0YwQSBzBsy5JjaX2M6UumE4MvJ7QiCIiAqHUD6qBxp5yEdPX8/Mz
- Svw8i0MocAK+62WS/r/bgrKaUbAKuMcuYIPjawA=
-X-Google-Smtp-Source: AGHT+IGYNLvrEeIf4l5dhNfo9PLr/A5Ox6GzMWAevPIallmwrkFlAOq4+ezPJDEfyMf13hLwgxpTjQ==
-X-Received: by 2002:a05:6512:1591:b0:50a:bb04:2321 with SMTP id
- bp17-20020a056512159100b0050abb042321mr1582427lfb.1.1700651249433; 
- Wed, 22 Nov 2023 03:07:29 -0800 (PST)
+ bh=vQYdded+nNhrvOuaSIFjiUL+tKO6S6O0UnMYXjwEKd8=;
+ b=RbxRs/NfLH5IAFmxbLI9S0ke2UfDOq54rZK7R7ej647vwBiUDROFZMWkMNv4jMaA4u
+ mSBDsNbFOnjxiIZgGRI4Et/shGk0gsDfvoEHHqDDvvsARht0bTHqId6cJq/1ICcHYxRK
+ x1ZQNZBxrj26TmFeoONBfgMbbgBVp1oFmHXCEBfB0M7nWYxJsIRGadPzkO//h2s2C8oN
+ n1gAToSxGtif8nD2vsq2rgZdgkGzFUCsJpfaw4VB1SKABc5CL2U6PRagBGV73GV5vpEl
+ HWJ7rEvcZo/S1AUkz4Kd5Bm3FWxtHqT22Qc6LN6BrhQKTcVcb0rXhMtHXg/zGLUo9LP6
+ xFtQ==
+X-Gm-Message-State: AOJu0YzUiJ+6WTMRebdmc6ulaFGC6lVRMEjCBFPRVFRJo2tIvvUK7KD0
+ fp0T8/KWfw1S9YNLm5KfYvfswA==
+X-Google-Smtp-Source: AGHT+IHFtoIhvI7XyWoi03yjuzCDw9EKhPJEVhtLD9H3cdNWjGdLeQwdvsxaRORcYkj9lpXeOZDsGA==
+X-Received: by 2002:a5d:6803:0:b0:32d:5cc0:2f0c with SMTP id
+ w3-20020a5d6803000000b0032d5cc02f0cmr1281724wru.40.1700651419546; 
+ Wed, 22 Nov 2023 03:10:19 -0800 (PST)
 Received: from [192.168.69.100] (pas38-h02-176-184-5-64.dsl.sta.abo.bbox.fr.
  [176.184.5.64]) by smtp.gmail.com with ESMTPSA id
- v11-20020adfe28b000000b0032d09f7a713sm16962331wri.18.2023.11.22.03.07.28
+ r15-20020a5d6c6f000000b00332cb17f87csm7232590wrz.5.2023.11.22.03.10.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 22 Nov 2023 03:07:29 -0800 (PST)
-Message-ID: <19f6fcaf-ac2b-4cc3-b226-27ec659d7478@linaro.org>
-Date: Wed, 22 Nov 2023 12:07:27 +0100
+ Wed, 22 Nov 2023 03:10:19 -0800 (PST)
+Message-ID: <3c095762-20b8-41eb-8027-854bdbb2affe@linaro.org>
+Date: Wed, 22 Nov 2023 12:10:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/6] xen: backends: touch some XenStore nodes only if
- device...
+Subject: Re: [PATCH v2 5/6] xen_arm: Set mc->max_cpus to GUEST_MAX_VCPUS in
+ xen_arm_init()
 Content-Language: en-US
 To: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
 Cc: David Woodhouse <dwmw@amazon.co.uk>,
  Stefano Stabellini <sstabellini@kernel.org>, Julien Grall <julien@xen.org>,
- Paul Durrant <xadimgnik@gmail.com>,
  Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>,
- "open list:Block layer core" <qemu-block@nongnu.org>
+ Peter Maydell <peter.maydell@linaro.org>,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
 References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
- <20231121221023.419901-3-volodymyr_babchuk@epam.com>
+ <20231121221023.419901-6-volodymyr_babchuk@epam.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231121221023.419901-3-volodymyr_babchuk@epam.com>
+In-Reply-To: <20231121221023.419901-6-volodymyr_babchuk@epam.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,48 +98,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Volodymyr,
-
 On 21/11/23 23:10, Volodymyr Babchuk wrote:
-> was created by QEMU
-
-Please do not split lines between subject and content. Rewrite the
-full line. Preferably restrict the subject to 72 chars. Otherwise
-your patch isn't displayed correctly in git tools.
-
-Thanks,
-
-Phil.
-
-> Xen PV devices in QEMU can be created in two ways: either by QEMU
-> itself, if they were passed via command line, or by Xen toolstack. In
-> the latter case, QEMU scans XenStore entries and configures devices
-> accordingly.
+> From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
 > 
-> In the second case we don't want QEMU to write/delete front-end
-> entries for two reasons: it might have no access to those entries if
-> it is running in un-privileged domain and it is just incorrect to
-> overwrite entries already provided by Xen toolstack, because toolstack
-> manages those nodes. For example, it might read backend- or frontend-
-> state to be sure that they are both disconnected and it is safe to
-> destroy a domain.
+> The number of vCPUs used for the IOREQ configuration (machine->smp.cpus)
+> should really match the system value as for each vCPU we setup a dedicated
+> evtchn for the communication with Xen at the runtime. This is needed
+> for the IOREQ to be properly configured and work if the involved domain
+> has more than one vCPU assigned.
 > 
-> This patch checks presence of xendev->backend to check if Xen PV
-> device is acting as a backend (i.e. it was configured by Xen
-> toolstack) to decide if it should touch frontend entries in XenStore.
-> Also, when we need to remove XenStore entries during device teardown
-> only if they weren't created by Xen toolstack. If they were created by
-> toolstack, then it is toolstack's job to do proper clean-up.
+> Set the number of current supported guest vCPUs here (128) which is
+> defined in public header arch-arm.h. And the toolstack should then
+> pass max_vcpus using "-smp" arg.
 > 
-> Suggested-by: Paul Durrant <xadimgnik@gmail.com>
-> Suggested-by: David Woodhouse <dwmw@amazon.co.uk>
-> Co-Authored-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+> Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
 > Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
 > ---
->   hw/block/xen-block.c  | 16 +++++++++-------
->   hw/char/xen_console.c |  2 +-
->   hw/net/xen_nic.c      | 18 ++++++++++--------
->   hw/xen/xen-bus.c      | 14 +++++++++-----
->   4 files changed, 29 insertions(+), 21 deletions(-)
+>   hw/arm/xen_arm.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
 
