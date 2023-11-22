@@ -2,44 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FB437F4589
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 13:16:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 152F77F458D
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 13:17:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5m8z-0007hE-MX; Wed, 22 Nov 2023 07:15:49 -0500
+	id 1r5mAb-0000j6-LW; Wed, 22 Nov 2023 07:17:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1r5m8u-0007eN-40; Wed, 22 Nov 2023 07:15:46 -0500
-Received: from relay.virtuozzo.com ([130.117.225.111])
+ (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
+ id 1r5mAT-0000WD-Lv
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 07:17:22 -0500
+Received: from mta-04.yadro.com ([89.207.88.248])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1r5m8s-0006ky-18; Wed, 22 Nov 2023 07:15:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
- Content-Type; bh=gzEdt4IIz7mke04dLp4NFBEK7maOCy0uinMh9XRkmf8=; b=qiLNIx5dMtcQ
- GnZNTJgEDGV0RAr5IeQbUrBa8nKS7/z+I6M9Meo5aOxxP3qArZDRNgIYVdpT/3cH2BZ/I4lprMmNz
- 8AnUlv3V58EK58pKP6bbQnd/UWkUu7LYqdq4sH5DH98e9bN5XkTfQqVwMzIqfJhv1gOxMyGf1u8VX
- MelhNWoswts1+vEYHbPMIw4geQdkSM9ZcW7P3AHfGBM1e72mU+/meIfZpm8b3cLvgeX03TBtp5R7x
- I0wqoVh+gH3B1RQHAOVlJDB2VsGycvHOMRIwMFBLygQWxSdGnCOGLe/7ujH1KQiHgTU23J0lkKH7y
- hBJ50Zo9s/R9+goIhIfqpg==;
-Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
- by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1r5m7Z-004kUj-36;
- Wed, 22 Nov 2023 13:15:26 +0100
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
- andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH] iotests: fix default MT detection
-Date: Wed, 22 Nov 2023 14:15:38 +0200
-Message-Id: <20231122121538.32903-1-andrey.drobyshev@virtuozzo.com>
-X-Mailer: git-send-email 2.39.3
+ (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
+ id 1r5mAQ-0006z1-CH
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 07:17:21 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com E4668C0002
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
+ t=1700655433; bh=9h5JkieJd6des4MTrixxhp6QXlPGMGb0gNhw/rsI3hA=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=HHUpoig2WLhCIjzB3OOC3NlqnR6aI/gR3gukSpJkJBb2FHqgp4t0o7sOlrT/osKh7
+ RJ7c4TR2rimhwLn8eejvbt4XWzmPNPjsiKsWGeTZCtnxrL5ifuaF6kHK6Z2SqouQbZ
+ +IPeYI0iLHTBnLtDNxQ11oP5EAvtAmERVc1vMYkZ+WD0Zt+vurwAALb2+YtnhitVUE
+ B541zgzeATt+JKsFlb+bpwvnhKG5PQstUuURWqOuO7EQbbJWqVngdjHQuXLqP5/mb+
+ MY1RPAnzvtob+QccJCQcT4EeESVGTWotMoF0/k8onCDF0LX1nsXYLnuekW9gKMM6JL
+ kMScw/L9jXm+g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
+ t=1700655433; bh=9h5JkieJd6des4MTrixxhp6QXlPGMGb0gNhw/rsI3hA=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=FCGaB2Dn1qMTBevqpaiQwfuy1rLavgG7gdTpH0LbF0gV+AehITSK1glGEqkjnMY2v
+ 77B7KejqdVjlUc7nb4FIPyoILnkHdx8Jh6Gj/AqLl3agqz/5X0KUUowGxQ5hRsR+U+
+ 33LmFEB55eKq12mIA2ydWVpBzDvJJb0+D+2SnjQp7zH08W2rpvitF2zi7MT17mmvHe
+ 53igHEJKeB++xf44HLQcknBO6/GHSS11TegnaDKWXyOwY0AJ54C2v8kYv6EBINzqq8
+ rOlVM4OrDvn2ceFHoCTRMtHS4CcbZ50FWHAdZY8PFf8NAQB9/D6uzls4zph2V+k9sD
+ ToB17e1F1E1tw==
+From: Mikhail Tyutin <m.tyutin@yadro.com>
+To: <qemu-devel@nongnu.org>
+CC: <richard.henderson@linaro.org>, <pbonzini@redhat.com>,
+ <alex.bennee@linaro.org>, Mikhail Tyutin <m.tyutin@yadro.com>
+Subject: [PATCH] accel/tcg: Expose translation block flags to plugins
+Date: Wed, 22 Nov 2023 15:16:55 +0300
+Message-ID: <20231122121655.20818-1-m.tyutin@yadro.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=130.117.225.111;
- envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
+Content-Type: text/plain
+X-ClientProxiedBy: T-EXCH-06.corp.yadro.com (172.17.10.110) To
+ T-EXCH-10.corp.yadro.com (172.17.11.60)
+Received-SPF: pass client-ip=89.207.88.248; envelope-from=m.tyutin@yadro.com;
+ helo=mta-04.yadro.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -61,32 +73,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MT is being detected based on "-M help" output, and we're searching for
-the line ending with " (default)".  However, in downstream one of the
-MTs marked as deprecated might become the default, in which case this
-logic breaks as the line would now end with " (default) (deprecated)".
-To fix potential issues here, let's relax that requirement and detect
-the mere presence of " (default)" line instead.
+In system mode emulation, some of translation blocks could be
+interrupted on memory I/O operation. That leads to artificial
+construction of another translation block that contains memory
+operation only. If TCG plugin is not aware of that TB kind, it
+attempts to insert execution callbacks either on translation
+block or instruction, which is silently ignored. As the result
+it leads to potentially inconsistent processing of execution and
+memory callbacks by the plugin.
+Exposing appropriate translation block flag allows plugins to
+handle "memory only" blocks in appropriate way.
 
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Signed-off-by: Mikhail Tyutin <m.tyutin@yadro.com>
 ---
- tests/qemu-iotests/testenv.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/qemu/qemu-plugin.h   | 29 ++++++++++++++++++++++++++++-
+ plugins/api.c                | 14 ++++++++++++++
+ plugins/qemu-plugins.symbols |  1 +
+ 3 files changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qemu-iotests/testenv.py b/tests/qemu-iotests/testenv.py
-index e67ebd254b..3ff38f2661 100644
---- a/tests/qemu-iotests/testenv.py
-+++ b/tests/qemu-iotests/testenv.py
-@@ -40,7 +40,7 @@ def get_default_machine(qemu_prog: str) -> str:
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index 4daab6efd2..5f07fa497c 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -54,7 +54,7 @@ typedef uint64_t qemu_plugin_id_t;
  
-     machines = outp.split('\n')
-     try:
--        default_machine = next(m for m in machines if m.endswith(' (default)'))
-+        default_machine = next(m for m in machines if ' (default)' in m)
-     except StopIteration:
-         return ''
-     default_machine = default_machine.split(' ', 1)[0]
+ extern QEMU_PLUGIN_EXPORT int qemu_plugin_version;
+ 
+-#define QEMU_PLUGIN_VERSION 1
++#define QEMU_PLUGIN_VERSION 2
+ 
+ /**
+  * struct qemu_info_t - system information for plugins
+@@ -236,6 +236,21 @@ enum qemu_plugin_cb_flags {
+     QEMU_PLUGIN_CB_RW_REGS,
+ };
+ 
++/**
++ * enum qemu_plugin_tb_flags - type of translation block
++ *
++ * @QEMU_PLUGIN_TB_MEM_ONLY:
++ *  TB is special block to perform memory I/O operation only.
++ *  Block- and instruction- level callbacks have no effect.
++ * @QEMU_PLUGIN_TB_MEM_OPS:
++ *  TB has at least one instruction that access memory.
++ *  Memory callbacks are applicable to this TB.
++ */
++enum qemu_plugin_tb_flags {
++    QEMU_PLUGIN_TB_MEM_ONLY = 0x01,
++    QEMU_PLUGIN_TB_MEM_OPS = 0x02
++};
++
+ enum qemu_plugin_mem_rw {
+     QEMU_PLUGIN_MEM_R = 1,
+     QEMU_PLUGIN_MEM_W,
+@@ -360,6 +375,18 @@ size_t qemu_plugin_tb_n_insns(const struct qemu_plugin_tb *tb);
+ QEMU_PLUGIN_API
+ uint64_t qemu_plugin_tb_vaddr(const struct qemu_plugin_tb *tb);
+ 
++/**
++ * qemu_plugin_tb_flags() - returns combination of TB flags
++ * @tb: opaque handle to TB passed to callback
++ *
++ * Returned set of flags can be used to check if TB has a non-typical
++ * behaviour. For example: whether or not instruction execution
++ * callbacks are applicable for the block.
++ *
++ * Returns: 0 or combination of qemu_plugin_tb_flags
++ */
++int qemu_plugin_tb_flags(const struct qemu_plugin_tb *tb);
++
+ /**
+  * qemu_plugin_tb_get_insn() - retrieve handle for instruction
+  * @tb: opaque handle to TB passed to callback
+diff --git a/plugins/api.c b/plugins/api.c
+index 5521b0ad36..4e73aaf422 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -37,6 +37,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/plugin.h"
+ #include "qemu/log.h"
++#include "qemu/qemu-plugin.h"
+ #include "tcg/tcg.h"
+ #include "exec/exec-all.h"
+ #include "exec/ram_addr.h"
+@@ -193,6 +194,19 @@ uint64_t qemu_plugin_tb_vaddr(const struct qemu_plugin_tb *tb)
+     return tb->vaddr;
+ }
+ 
++int qemu_plugin_tb_flags(const struct qemu_plugin_tb *tb)
++{
++    int ret = 0;
++    if (tb->mem_only) {
++        ret |= QEMU_PLUGIN_TB_MEM_ONLY;
++    }
++    if (tb->mem_helper) {
++        ret |= QEMU_PLUGIN_TB_MEM_OPS;
++    }
++
++    return ret;
++}
++
+ struct qemu_plugin_insn *
+ qemu_plugin_tb_get_insn(const struct qemu_plugin_tb *tb, size_t idx)
+ {
+diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
+index 71f6c90549..f11f633da6 100644
+--- a/plugins/qemu-plugins.symbols
++++ b/plugins/qemu-plugins.symbols
+@@ -40,6 +40,7 @@
+   qemu_plugin_tb_get_insn;
+   qemu_plugin_tb_n_insns;
+   qemu_plugin_tb_vaddr;
++  qemu_plugin_tb_flags;
+   qemu_plugin_uninstall;
+   qemu_plugin_vcpu_for_each;
+ };
 -- 
-2.39.3
+2.34.1
 
 
