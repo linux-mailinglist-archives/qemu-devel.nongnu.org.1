@@ -2,69 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C56C7F4D5C
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 17:52:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB5FF7F4DBB
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 18:04:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5qR6-0003Wg-Ay; Wed, 22 Nov 2023 11:50:48 -0500
+	id 1r5qdM-0001AC-4N; Wed, 22 Nov 2023 12:03:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r5qR4-0003UX-Ds
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 11:50:46 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r5qR2-0001Bf-Tu
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 11:50:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700671843;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=WmkVsqb8/DGdtr08cVd46F2SUw7//xtNi0lffqmxRag=;
- b=f7/0by2q0JmznlRdpeIrF4l+GHdgbSkmg6n5JcN3okZC8yTNEZOiMRyXmq9qcPjvTM4sXg
- jtg9jWz3FE2zKkAD4aetU47SYYxSwiHSEN2TCOA2hg+nSUvDiyNNy5IehsxsYsh7heYNZN
- Ftg62JJZC0NN10bdXH8XyyJVSPVOuyo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-620-6p7Hc2UpPnK_KkO6jErLXg-1; Wed, 22 Nov 2023 11:50:41 -0500
-X-MC-Unique: 6p7Hc2UpPnK_KkO6jErLXg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 33E0E85C1A6;
- Wed, 22 Nov 2023 16:50:41 +0000 (UTC)
-Received: from localhost (unknown [10.39.195.71])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A693740C6EB9;
- Wed, 22 Nov 2023 16:50:40 +0000 (UTC)
-Date: Wed, 22 Nov 2023 11:50:39 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, alistair23@gmail.com,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: Re: [PULL 0/6] riscv-to-apply queue
-Message-ID: <20231122165039.GA72896@fedora>
-References: <20231122053800.1531799-1-alistair.francis@wdc.com>
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1r5qdK-00019E-9w; Wed, 22 Nov 2023 12:03:26 -0500
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1r5qdI-0003jJ-Jl; Wed, 22 Nov 2023 12:03:26 -0500
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2c87903d314so53008041fa.1; 
+ Wed, 22 Nov 2023 09:03:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1700672601; x=1701277401; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:reply-to
+ :references:cc:to:content-language:subject:user-agent:mime-version
+ :date:message-id:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=kEtUeZ8IRcomJX3U5boVELiXEWRp5E8uCIfp4rw0dVo=;
+ b=meSTmB32plqp5ccHFsFxeJeSmQzYI13m9BnGo23ZROanTIjy/yI5UUnRk+Y3LUw6WL
+ E7JP/AjHjFWX7ZulYKGZCBDG6AXvnT7KW3wldyPOWaXK6qjyb9gEXb2rPlDomx1pKN67
+ c9TkNGQv8jNWeFjhp+Z6XYjeugDGWb+aKQ4WFWiHHfKDmGgrGYyrIu7a/SdC+ahmfnI1
+ 31wpsbRjJ2O1LPP33xkEKBmk5ehMhf5fC+HudoxUW/s+v2w9YCsY8PTCCYC9pLrDsQAt
+ Ggm9IgklxwOMWywLVlVjpuSpIYT2tUM60W0KBG1d9v2a3pOYnmKkDcowaGgZf1uQI4BT
+ tUpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700672601; x=1701277401;
+ h=content-transfer-encoding:in-reply-to:organization:reply-to
+ :references:cc:to:content-language:subject:user-agent:mime-version
+ :date:message-id:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kEtUeZ8IRcomJX3U5boVELiXEWRp5E8uCIfp4rw0dVo=;
+ b=IflBH2bng8zOG91IXdDNWT4w0pGHuTeocG2kcNEz7rZLDzG2Xg+HYwE6o6BIRvuoty
+ qJDW9JViW4ndFwmGyIHtXfdvi+Je4hRxzXN1kAwHeAOfnAFZdhWAH38RaMIcRPHtXn3G
+ cXEo4htYzDFNnU8BB9eIYr9wFzcYEzkgc1rM/wLwvoSQHBR0tQGmapkGt7YvimukpIvG
+ 854D2/vxmruDqaoZMnqnzW8jZ9wL8Kk7YfsDXWftVvbWDuGG71TTDMwYzMLXdg9g80Wl
+ vNbT9FEG678AEQ10y8MACGMUFYBOlIhajdeDWzyodoh9KdD1AMiEYzBCpQ23zhX9K6Lt
+ H8ow==
+X-Gm-Message-State: AOJu0YzKH5gKbw/5xlC0kGyMVMeNStGImPGmRZHnEGEnGnuWESkYQgyM
+ iqmvaMSIIdUG6Wndl7pAHVo=
+X-Google-Smtp-Source: AGHT+IGVFrYCPl+0WYrNSHYpgKmNNL26tpHJL5ZgVWSHvOaQgH6SJCnZv7LvHlPBLONBP4Vyt6XHeQ==
+X-Received: by 2002:a2e:3a11:0:b0:2c5:3139:2d04 with SMTP id
+ h17-20020a2e3a11000000b002c531392d04mr2181461lja.47.1700672601055; 
+ Wed, 22 Nov 2023 09:03:21 -0800 (PST)
+Received: from [10.95.134.92] (54-240-197-234.amazon.com. [54.240.197.234])
+ by smtp.gmail.com with ESMTPSA id
+ o7-20020a05600c4fc700b003fefaf299b6sm24729wmq.38.2023.11.22.09.03.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 22 Nov 2023 09:03:20 -0800 (PST)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <02fcd3c2-afe2-43f4-8a15-7caa85a147f5@xen.org>
+Date: Wed, 22 Nov 2023 17:03:19 +0000
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="1jigLDNtb7vv3367"
-Content-Disposition: inline
-In-Reply-To: <20231122053800.1531799-1-alistair.francis@wdc.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/6] xen: backends: touch some XenStore nodes only if
+ device...
+Content-Language: en-US
+To: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: David Woodhouse <dwmw@amazon.co.uk>,
+ Stefano Stabellini <sstabellini@kernel.org>, Julien Grall <julien@xen.org>,
+ Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>,
+ "open list:Block layer core" <qemu-block@nongnu.org>
+References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
+ <20231121221023.419901-3-volodymyr_babchuk@epam.com>
+Organization: Xen Project
+In-Reply-To: <20231121221023.419901-3-volodymyr_babchuk@epam.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=xadimgnik@gmail.com; helo=mail-lj1-x234.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,33 +102,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 21/11/2023 22:10, Volodymyr Babchuk wrote:
+> was created by QEMU
+> 
+> Xen PV devices in QEMU can be created in two ways: either by QEMU
+> itself, if they were passed via command line, or by Xen toolstack. In
+> the latter case, QEMU scans XenStore entries and configures devices
+> accordingly.
+> 
+> In the second case we don't want QEMU to write/delete front-end
+> entries for two reasons: it might have no access to those entries if
+> it is running in un-privileged domain and it is just incorrect to
+> overwrite entries already provided by Xen toolstack, because toolstack
+> manages those nodes. For example, it might read backend- or frontend-
+> state to be sure that they are both disconnected and it is safe to
+> destroy a domain.
+> 
+> This patch checks presence of xendev->backend to check if Xen PV
+> device is acting as a backend (i.e. it was configured by Xen
 
---1jigLDNtb7vv3367
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Technally *all* XenDevice objects are backends.
 
-Applied, thanks.
-
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
-
---1jigLDNtb7vv3367
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVeMV8ACgkQnKSrs4Gr
-c8iE9Qf7BRq30kvK8NQlSkIEVGijsDps0CqOkEV8lc1SoP3f/iBPpqb1sMhrb0c1
-N0W07xVf2Juqz1oV19lDFLmfWj3uhM1i6tVMeCnvNqggEFt1nuO/7t2rznk6mRsR
-qttU1ZjX1ql5Wl7jMQ+JB53/bJPokqqt7t+GnbC817YiBIIzarbKIzvqTTfMd56k
-aTSZnWrIXWhrU9CAGvbfc1vdmdSwaSoVPQ+pK6nnSJDhpmOg7qz73a8NJZf3mtUR
-KsX4HQHbX9NTNMfAtYJbaJFq0rcYYc9C3RQ/cBpHKt7GQhGHil7Z69DzbHGxFlkb
-blYIIERGlY7WHxQ50yTi2btp/AA3Hw==
-=Qpct
------END PGP SIGNATURE-----
-
---1jigLDNtb7vv3367--
+> toolstack) to decide if it should touch frontend entries in XenStore.
+> Also, when we need to remove XenStore entries during device teardown
+> only if they weren't created by Xen toolstack. If they were created by
+> toolstack, then it is toolstack's job to do proper clean-up.
+> 
 
 
