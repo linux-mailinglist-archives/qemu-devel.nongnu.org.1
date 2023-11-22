@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5FF7F4DBB
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 18:04:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 492177F4DD0
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 18:06:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5qdM-0001AC-4N; Wed, 22 Nov 2023 12:03:28 -0500
+	id 1r5qfa-0004qk-FW; Wed, 22 Nov 2023 12:05:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r5qdK-00019E-9w; Wed, 22 Nov 2023 12:03:26 -0500
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ id 1r5qfM-0004XI-IF; Wed, 22 Nov 2023 12:05:34 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r5qdI-0003jJ-Jl; Wed, 22 Nov 2023 12:03:26 -0500
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2c87903d314so53008041fa.1; 
- Wed, 22 Nov 2023 09:03:22 -0800 (PST)
+ id 1r5qfH-0004Du-K8; Wed, 22 Nov 2023 12:05:30 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40b34563987so113385e9.1; 
+ Wed, 22 Nov 2023 09:05:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700672601; x=1701277401; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:reply-to
- :references:cc:to:content-language:subject:user-agent:mime-version
- :date:message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=kEtUeZ8IRcomJX3U5boVELiXEWRp5E8uCIfp4rw0dVo=;
- b=meSTmB32plqp5ccHFsFxeJeSmQzYI13m9BnGo23ZROanTIjy/yI5UUnRk+Y3LUw6WL
- E7JP/AjHjFWX7ZulYKGZCBDG6AXvnT7KW3wldyPOWaXK6qjyb9gEXb2rPlDomx1pKN67
- c9TkNGQv8jNWeFjhp+Z6XYjeugDGWb+aKQ4WFWiHHfKDmGgrGYyrIu7a/SdC+ahmfnI1
- 31wpsbRjJ2O1LPP33xkEKBmk5ehMhf5fC+HudoxUW/s+v2w9YCsY8PTCCYC9pLrDsQAt
- Ggm9IgklxwOMWywLVlVjpuSpIYT2tUM60W0KBG1d9v2a3pOYnmKkDcowaGgZf1uQI4BT
- tUpQ==
+ d=gmail.com; s=20230601; t=1700672725; x=1701277525; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=I0J5fqyt8wQQyv6C5hr9LFPK+QBnNAlvdW52k/8SMic=;
+ b=GObVSdvYnYWP6mueXuDTCZBRXf0NbeS9k3oY2RO2HIpM2XyBVu8KbQgX3wc2JTHS0r
+ nFW0wVUJOBRA2YYM8unlAWfsebIK/Ss5ie0QP1sTso9d+oj7SqUiV2s3C+WSL+H1TJKo
+ GiCxi9dH+S3AeUIv+16kPkGznJEM0alsDqIg+CrvfawC3xMW/KVbNV+klSVA+SZicTsL
+ fwv2tvgcw6K5oj8yP2rAskedJxQ+4MH/0HAY9HafiFWj9+tXOXrW9cXAuRLcCruwrk8P
+ O52Nd0eFJjo/rwezm6whpJq91tEgMT53VZeWOmbwD8pkn+GJFxkC5rTZu6nU7ruMVimd
+ S66A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700672601; x=1701277401;
- h=content-transfer-encoding:in-reply-to:organization:reply-to
- :references:cc:to:content-language:subject:user-agent:mime-version
- :date:message-id:from:x-gm-message-state:from:to:cc:subject:date
+ d=1e100.net; s=20230601; t=1700672725; x=1701277525;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kEtUeZ8IRcomJX3U5boVELiXEWRp5E8uCIfp4rw0dVo=;
- b=IflBH2bng8zOG91IXdDNWT4w0pGHuTeocG2kcNEz7rZLDzG2Xg+HYwE6o6BIRvuoty
- qJDW9JViW4ndFwmGyIHtXfdvi+Je4hRxzXN1kAwHeAOfnAFZdhWAH38RaMIcRPHtXn3G
- cXEo4htYzDFNnU8BB9eIYr9wFzcYEzkgc1rM/wLwvoSQHBR0tQGmapkGt7YvimukpIvG
- 854D2/vxmruDqaoZMnqnzW8jZ9wL8Kk7YfsDXWftVvbWDuGG71TTDMwYzMLXdg9g80Wl
- vNbT9FEG678AEQ10y8MACGMUFYBOlIhajdeDWzyodoh9KdD1AMiEYzBCpQ23zhX9K6Lt
- H8ow==
-X-Gm-Message-State: AOJu0YzKH5gKbw/5xlC0kGyMVMeNStGImPGmRZHnEGEnGnuWESkYQgyM
- iqmvaMSIIdUG6Wndl7pAHVo=
-X-Google-Smtp-Source: AGHT+IGVFrYCPl+0WYrNSHYpgKmNNL26tpHJL5ZgVWSHvOaQgH6SJCnZv7LvHlPBLONBP4Vyt6XHeQ==
-X-Received: by 2002:a2e:3a11:0:b0:2c5:3139:2d04 with SMTP id
- h17-20020a2e3a11000000b002c531392d04mr2181461lja.47.1700672601055; 
- Wed, 22 Nov 2023 09:03:21 -0800 (PST)
+ bh=I0J5fqyt8wQQyv6C5hr9LFPK+QBnNAlvdW52k/8SMic=;
+ b=ncq74OSJiSdOwqIkOCSe04gSCetOO6Q3vJLFTZv889GMA/gDaOHBsIUmtvmYclvd0p
+ xhp93MB2Te4r3BphWve1fgYYTqDGs8lsRKl4iUj/ye0LNDsoUG0LYvFLE/HLOmAk9Itm
+ oVNDvaCx4G4XkEUCvFZLFaYGau8yP0mykSlJ3iaejrvu9lVKPfXpbWPgzLmAUUYzKX1S
+ YpQGyIaxanBSAL1CjIskfk/lAoUPBl4Ss0mHvFA78vEOEt8/Q0lBYgZKte3qdx1r43/x
+ LbHjWiUxZxcSoD4igZ5w8c8m4Q3dYPWAWyh7YG9jFJRa7M4HQn+WHIEGiVeBqylcIFQB
+ uLLg==
+X-Gm-Message-State: AOJu0YzPkr6z/zNYc31tEOWVQKg9dqSdNnecg5dIFH7ZZ2IrMkinq7gA
+ bQxfnX3tYaQn29M30igk0tk=
+X-Google-Smtp-Source: AGHT+IEekpdm4N30KUcOe9rHlR/EVEZelxqqJbkx9shFbPTurKDYLNG5QWTqQ/mqdsgflEk5QYRwpw==
+X-Received: by 2002:a05:600c:1d12:b0:40b:2a62:a2b6 with SMTP id
+ l18-20020a05600c1d1200b0040b2a62a2b6mr85353wms.1.1700672724957; 
+ Wed, 22 Nov 2023 09:05:24 -0800 (PST)
 Received: from [10.95.134.92] (54-240-197-234.amazon.com. [54.240.197.234])
  by smtp.gmail.com with ESMTPSA id
- o7-20020a05600c4fc700b003fefaf299b6sm24729wmq.38.2023.11.22.09.03.19
+ je19-20020a05600c1f9300b004090798d29csm41802wmb.15.2023.11.22.09.05.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 22 Nov 2023 09:03:20 -0800 (PST)
+ Wed, 22 Nov 2023 09:05:24 -0800 (PST)
 From: Paul Durrant <xadimgnik@gmail.com>
 X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <02fcd3c2-afe2-43f4-8a15-7caa85a147f5@xen.org>
-Date: Wed, 22 Nov 2023 17:03:19 +0000
+Message-ID: <e1663064-247d-41e3-9a36-16f81303fb94@xen.org>
+Date: Wed, 22 Nov 2023 17:05:23 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/6] xen: backends: touch some XenStore nodes only if
- device...
+Subject: Re: [PATCH v2 1/6] hw/xen: Set XenBackendInstance in the XenDevice
+ before realizing it
 Content-Language: en-US
 To: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
 Cc: David Woodhouse <dwmw@amazon.co.uk>,
  Stefano Stabellini <sstabellini@kernel.org>, Julien Grall <julien@xen.org>,
- Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Anthony Perard <anthony.perard@citrix.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
  "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>,
  "open list:Block layer core" <qemu-block@nongnu.org>
 References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
- <20231121221023.419901-3-volodymyr_babchuk@epam.com>
+ <20231121221023.419901-2-volodymyr_babchuk@epam.com>
 Organization: Xen Project
-In-Reply-To: <20231121221023.419901-3-volodymyr_babchuk@epam.com>
+In-Reply-To: <20231121221023.419901-2-volodymyr_babchuk@epam.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=xadimgnik@gmail.com; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,30 +106,37 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 21/11/2023 22:10, Volodymyr Babchuk wrote:
-> was created by QEMU
+> From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> Xen PV devices in QEMU can be created in two ways: either by QEMU
-> itself, if they were passed via command line, or by Xen toolstack. In
-> the latter case, QEMU scans XenStore entries and configures devices
-> accordingly.
+> This allows a XenDevice implementation to know whether it was created
+> by QEMU, or merely discovered in XenStore after the toolstack created
+> it. This will allow us to create frontend/backend nodes only when we
+> should, rather than unconditionally attempting to overwrite them from
+> a driver domain which doesn't have privileges to do so.
 > 
-> In the second case we don't want QEMU to write/delete front-end
-> entries for two reasons: it might have no access to those entries if
-> it is running in un-privileged domain and it is just incorrect to
-> overwrite entries already provided by Xen toolstack, because toolstack
-> manages those nodes. For example, it might read backend- or frontend-
-> state to be sure that they are both disconnected and it is safe to
-> destroy a domain.
+> As an added benefit, it also means we no longer have to call the
+> xen_backend_set_device() function from the device models immediately
+> after calling qdev_realize_and_unref(). Even though we could make
+> the argument that it's safe to do so, and the pointer to the unreffed
+> device *will* actually still be valid, it still made my skin itch to
+> look at it.
 > 
-> This patch checks presence of xendev->backend to check if Xen PV
-> device is acting as a backend (i.e. it was configured by Xen
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   hw/block/xen-block.c         | 3 +--
+>   hw/char/xen_console.c        | 2 +-
+>   hw/net/xen_nic.c             | 2 +-
+>   hw/xen/xen-bus.c             | 4 ++++
+>   include/hw/xen/xen-backend.h | 2 --
+>   include/hw/xen/xen-bus.h     | 2 ++
+>   6 files changed, 9 insertions(+), 6 deletions(-)
+> 
 
-Technally *all* XenDevice objects are backends.
+Actually, I think you should probably update 
+xen_backend_try_device_destroy() in this patch too. It currently uses 
+xen_backend_list_find() to check whether the specified XenDevice has an 
+associated XenBackendInstance.
 
-> toolstack) to decide if it should touch frontend entries in XenStore.
-> Also, when we need to remove XenStore entries during device teardown
-> only if they weren't created by Xen toolstack. If they were created by
-> toolstack, then it is toolstack's job to do proper clean-up.
-> 
+   Paul
 
 
