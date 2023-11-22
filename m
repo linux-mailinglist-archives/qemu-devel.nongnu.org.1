@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E38B77F4FA1
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 19:33:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 681847F4F93
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 19:32:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5s0g-0004Ed-Gq; Wed, 22 Nov 2023 13:31:38 -0500
+	id 1r5s12-0004Hh-Db; Wed, 22 Nov 2023 13:32:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5s0N-0004BH-Ah
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:31:21 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5s0S-0004Bx-Ki
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:31:32 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5s0J-0004aB-1J
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:31:18 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3316bd84749so9070f8f.2
- for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 10:31:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5s0O-0004bE-LM
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:31:23 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-332d2b6a84cso22484f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 10:31:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700677872; x=1701282672; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700677878; x=1701282678; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iZrZRIxKP0fr1EzlYqN5VDWsI9Qt1x4ludh/rJlYbBI=;
- b=u7bcKp1l6iBeZ7fcRWf7yjRxw6pA0GNSsv0VuX/X0WtMzBbWWwzpdTI/L6BbbsYrdb
- EQE0GZUYnwQ17LE9RaP77MxkjgdKevzznbpWXNafASRBrQjqYM8rXyqvTBp0AG0EX6u7
- xU1T9aOJuXns0ya8zPrYA0JN1+h9hQU/jKgw8VGuul78rZSTQECTN3zMtb5W8KQheCnM
- SMuLNfHF5b5+1+GvoF7z6JG6O7L3JXtOxkqR/gTkj7i81b1CE6LfPsfxjBjJE/fmxOq/
- dQ1sfCtHhdooS+03vxqBwjuOM7oJtJH2mK6npBjwtfrFcXDdo8nq/6ykNvtZQoEBkgn4
- Gv9g==
+ bh=emiroLvN4ZFzV0iGKy2RcqyAnliELrYGvZjH5AAzbJU=;
+ b=FVlhk34mZEB+d8qCug9cHm0r/g+slR0rjpcJfHCwmMbnRVv9PfwQcj25atXSH/k8FF
+ BfJkJqpPfuGkyx6I1l0mzDI9lS/J5N/DjTegYz9W/3D7s2JbE8sHErliZs/QE/z6v4zM
+ psZM1IwKbWXKK55xK0rPMSXW1a2yU0fvTtmJ+28vYwAwfa+o9kF4m6RYCmZVXI/sQywc
+ XCJCjAW+i3EQZNePDfS5bLrW2DqlN/KVFpv+ZFarWshOa4tphjZop6KRJnpmU+mSbCmi
+ JFv3j3kuCQUHiRD2kA9yMypZuPL8cj7IjuOLdUAvyScluvYBZOJi0BmnfwVxkAvrxNPf
+ i7tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700677872; x=1701282672;
+ d=1e100.net; s=20230601; t=1700677878; x=1701282678;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iZrZRIxKP0fr1EzlYqN5VDWsI9Qt1x4ludh/rJlYbBI=;
- b=mQl6OaphM99rKpvRSs+zcras+efqNkXI+CmNBf3nzmTig0kdRWibJNbLeeoBmoE4aj
- SIILLbHPJyc4PMmfDBj61HwsoH7eG0LEi49SRClKCBoLfNL4fnJr52F9dBNavncf8I/C
- ySWsydYz0wuScgHQKFPpdy5oKBl0pALjzCYVbH+ds8SwDEJucSf6F5p4j1v7Fv1iskkP
- vTUpPC1tpAej7fInJIBYZgNRvTnHU41O3OE0l7izhg1wCoenshGNZZYKdK7IlCoRAHAI
- QpK8Xp5Z6l3nGH0+ipQSFCF85MjTT7pWr+N7qsnN8Me3kv2rIudiqiLVmqEoxAw+J7ml
- VzNA==
-X-Gm-Message-State: AOJu0YztKDurohuQ3echTfQg0D2hLRX68X1BPwOVgjwuYwHOyoFOeHTW
- 0oyPBQ3nlOUOPdFaJpp07vagP7cA6YGKZHvvb1A=
-X-Google-Smtp-Source: AGHT+IFNiUEJEkxLFSoN2nQISIoUWkaNr4GSVPoaUIOGvxDTrhIxSw4N0ObW/C2qtmDB5en+mHW2tQ==
-X-Received: by 2002:a5d:6802:0:b0:332:d0f6:60fc with SMTP id
- w2-20020a5d6802000000b00332d0f660fcmr1992106wru.19.1700677872654; 
- Wed, 22 Nov 2023 10:31:12 -0800 (PST)
+ bh=emiroLvN4ZFzV0iGKy2RcqyAnliELrYGvZjH5AAzbJU=;
+ b=toagxF3J2pNB59O9XlpkOHuF8QvanPp0a21Zqp8qVDFyxOPdZOA6MiFJ5jWTLKLHLD
+ AVyuNaRKP01BZfMpiKK8jkWARDvxQmusDeWv4+fyYjEJELiO3TFwf7C6RvqYFEBWBn1I
+ gQuwXCoTSDd7VEUztV8vC/jfbYPOG5cikjPnXnnAj9zV8r6YHZIsN/GLyDDhcL5ExGr2
+ 7yzHwEzjyId1NxP6oI/8RzqZ2SV/JL0vBewU/Rw6KDlpYEjMDq13eF/kFGIx01iNVJJa
+ Og+4+Zua3ii4KSVihcIVcxbXJd3zZoutp9rt/q+MclwIDD9lwuojYHG+zfoPOOaTlodR
+ cvVg==
+X-Gm-Message-State: AOJu0YzeGx9KiLR2DN6zVhiECs4vqCV6Fv4QGHMgLt7h9tgpAhuSRJRP
+ sjKS+8hMczO5uV5K0IIi1EZUSP7nW2lOSuJDbt4=
+X-Google-Smtp-Source: AGHT+IFNMJbi2etXsf890GglUiuNpOGjNqWpIB4o2PtsfSGyJ5b4d+uqJysxjW5ginkWipADtZqyPw==
+X-Received: by 2002:adf:cc82:0:b0:331:6976:c8c7 with SMTP id
+ p2-20020adfcc82000000b003316976c8c7mr2198011wrj.38.1700677877918; 
+ Wed, 22 Nov 2023 10:31:17 -0800 (PST)
 Received: from m1x-phil.lan (pas38-h02-176-184-5-64.dsl.sta.abo.bbox.fr.
  [176.184.5.64]) by smtp.gmail.com with ESMTPSA id
- d11-20020adfa40b000000b003232380ffd7sm36991wra.102.2023.11.22.10.31.11
+ t3-20020a5d6903000000b0032da49e18fasm66146wru.23.2023.11.22.10.31.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 22 Nov 2023 10:31:12 -0800 (PST)
+ Wed, 22 Nov 2023 10:31:17 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -65,18 +65,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-arm@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH-for-9.0 04/11] target/arm: Move ARM_CPU_IRQ/FIQ definitions to
- 'cpu-qom.h'
-Date: Wed, 22 Nov 2023 19:30:40 +0100
-Message-ID: <20231122183048.17150-5-philmd@linaro.org>
+Subject: [PATCH-for-9.0 05/11] target/arm: Move GTIMER definitions to
+ 'cpu-defs.h'
+Date: Wed, 22 Nov 2023 19:30:41 +0100
+Message-ID: <20231122183048.17150-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231122183048.17150-1-philmd@linaro.org>
 References: <20231122183048.17150-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,52 +99,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ARM_CPU_IRQ/FIQ definitions are meant for the ARM CPU
-QOM model. Move them to "cpu-qom.h" so any QOM code can
-use them.
+To allow GTIMER_* definitions to be used by non-ARM specific
+hardware models, move them to a new target agnostic "cpu-defs.h"
+header.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-Or do these definitions belong to cpu-defs.h?
----
- target/arm/cpu-qom.h | 6 ++++++
- target/arm/cpu.h     | 6 ------
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ target/arm/cpu-defs.h | 19 +++++++++++++++++++
+ target/arm/cpu.h      |  8 +-------
+ hw/arm/bcm2836.c      |  1 +
+ 3 files changed, 21 insertions(+), 7 deletions(-)
+ create mode 100644 target/arm/cpu-defs.h
 
-diff --git a/target/arm/cpu-qom.h b/target/arm/cpu-qom.h
-index be307037ff..38030450f7 100644
---- a/target/arm/cpu-qom.h
-+++ b/target/arm/cpu-qom.h
-@@ -36,6 +36,12 @@ DECLARE_CLASS_CHECKERS(AArch64CPUClass, AARCH64_CPU,
- #define ARM_CPU_TYPE_SUFFIX "-" TYPE_ARM_CPU
- #define ARM_CPU_TYPE_NAME(name) (name ARM_CPU_TYPE_SUFFIX)
- 
-+/* Meanings of the ARMCPU object's four inbound GPIO lines */
-+#define ARM_CPU_IRQ 0
-+#define ARM_CPU_FIQ 1
-+#define ARM_CPU_VIRQ 2
-+#define ARM_CPU_VFIQ 3
+diff --git a/target/arm/cpu-defs.h b/target/arm/cpu-defs.h
+new file mode 100644
+index 0000000000..1ad76aff14
+--- /dev/null
++++ b/target/arm/cpu-defs.h
+@@ -0,0 +1,19 @@
++/*
++ * ARM "target agnostic" CPU definitions
++ *
++ *  Copyright (c) 2003 Fabrice Bellard
++ *
++ * SPDX-License-Identifier: LGPL-2.1-or-later
++ */
 +
- bool target_aarch64_available(void);
- 
- #endif
++#ifndef ARM_CPU_DEFS_H
++#define ARM_CPU_DEFS_H
++
++#define GTIMER_PHYS     0
++#define GTIMER_VIRT     1
++#define GTIMER_HYP      2
++#define GTIMER_SEC      3
++#define GTIMER_HYPVIRT  4
++#define NUM_GTIMERS     5
++
++#endif
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index d369275827..124d829742 100644
+index 124d829742..8107e4d446 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -107,12 +107,6 @@ enum {
- #define offsetofhigh32(S, M) (offsetof(S, M) + sizeof(uint32_t))
- #endif
+@@ -24,6 +24,7 @@
+ #include "qemu/cpu-float.h"
+ #include "hw/registerfields.h"
+ #include "cpu-qom.h"
++#include "target/arm/cpu-defs.h"
+ #include "exec/cpu-defs.h"
+ #include "qapi/qapi-types-common.h"
  
--/* Meanings of the ARMCPU object's four inbound GPIO lines */
--#define ARM_CPU_IRQ 0
--#define ARM_CPU_FIQ 1
--#define ARM_CPU_VIRQ 2
--#define ARM_CPU_VFIQ 3
+@@ -154,13 +155,6 @@ typedef struct ARMGenericTimer {
+     uint64_t ctl; /* Timer Control register */
+ } ARMGenericTimer;
+ 
+-#define GTIMER_PHYS     0
+-#define GTIMER_VIRT     1
+-#define GTIMER_HYP      2
+-#define GTIMER_SEC      3
+-#define GTIMER_HYPVIRT  4
+-#define NUM_GTIMERS     5
 -
- /* ARM-specific extra insn start words:
-  * 1: Conditional execution bits
-  * 2: Partial exception syndrome for data aborts
+ #define VTCR_NSW (1u << 29)
+ #define VTCR_NSA (1u << 30)
+ #define VSTCR_SW VTCR_NSW
+diff --git a/hw/arm/bcm2836.c b/hw/arm/bcm2836.c
+index 166dc896c0..6986b71cb4 100644
+--- a/hw/arm/bcm2836.c
++++ b/hw/arm/bcm2836.c
+@@ -15,6 +15,7 @@
+ #include "hw/arm/bcm2836.h"
+ #include "hw/arm/raspi_platform.h"
+ #include "hw/sysbus.h"
++#include "target/arm/cpu-defs.h"
+ 
+ struct BCM283XClass {
+     /*< private >*/
 -- 
 2.41.0
 
