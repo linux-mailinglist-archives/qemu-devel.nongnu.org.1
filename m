@@ -2,106 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE307F3A45
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 00:29:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA607F3B45
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 02:26:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5aA7-0003lT-FV; Tue, 21 Nov 2023 18:28:11 -0500
+	id 1r5byr-0007Z6-VA; Tue, 21 Nov 2023 20:24:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r5aA5-0003k8-Sj
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 18:28:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r5aA4-0007iT-F9
- for qemu-devel@nongnu.org; Tue, 21 Nov 2023 18:28:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700609287;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=oY0DQVF7MZjWjEq2OlZLq7FU1SY1X79y6xy2fdoZNSk=;
- b=ZHaSQ58YbCN6GNrNRXgdDYrC2fGlbskJVAMXhHB3Zu8M6umQxGxbBeVzYxS37pi8ZaONqz
- rA7vrqtksOtbu+kzxQFFnXarjj4b/oj/lOVLkg4gBFSv7KFIlRFS+Yehdxn+rdtkrXk1LI
- 35lVhHUaqgMxahYqzK/eYVEFJkHUVbc=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-169-8mzCI0A8NgmJNjksO2Gh_A-1; Tue, 21 Nov 2023 18:28:04 -0500
-X-MC-Unique: 8mzCI0A8NgmJNjksO2Gh_A-1
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-282dcfbcc0aso7159535a91.3
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 15:28:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
+ id 1r5byn-0007YE-S0; Tue, 21 Nov 2023 20:24:37 -0500
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
+ id 1r5bym-0003Yi-82; Tue, 21 Nov 2023 20:24:37 -0500
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-58ceab7daddso617679eaf.3; 
+ Tue, 21 Nov 2023 17:24:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1700616274; x=1701221074; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=za9Krb7EtNcsfuIYD7sBdWYVNnPqw0lwzQdNqU1pJJg=;
+ b=et+ZhzoFWo1+Mu2iimXhQcVdMU/ymk219No62a/FSe5KvmBm/4M5O0PSz6/1cDINys
+ SHMD+rc/KFkccON0YEIWpxBPocJGp3DcssuyJ5ua687YnS9MfExHlzGuiau4fBmRqVBj
+ ZrFkz5XrWhBKFjKzlMdRIXBXufh9FmSEmShXiqVUlAYT2vz28gj7PPloYhWzZAsWwoqZ
+ YN1VHXFs2cumj1SIJBU0K3u9293xKmdPb6JGAXhAC0H3jWCYU6NjDU83nkZukmiruB4j
+ n4enbIVXFX21KzdmwaLmXBvpQxzNwkYmYeonztud+QigXMpHrwrSH0CN65RSMfFsS3Zl
+ igFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700609283; x=1701214083;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oY0DQVF7MZjWjEq2OlZLq7FU1SY1X79y6xy2fdoZNSk=;
- b=gnB0KQLaaWGAB2S0wP0b2yXyiTQpEXIoNyh1GUSRG55r70NCPQXTpHpTp2q70lRSAW
- 7fFXmQ0/Ot1LaTHJjDS1BpO9j9O6atnme1B3qn8Z0ualiKDbbS1Ec0+ImUJhQ33l7vzZ
- vvxoyEMFOaVmV6Y2G04/nOz+02TZOkRENpm72x+ev2JIwQbPscxXYaXvatAG+Yx+k30/
- x4g/C2YW7pKVeQvXH1GI8WnZIij2oRQhiYUsqWYF1QevPsJ2Ntlbhw2/yqWFE6Q75jvP
- o9qPQKVqJ/zaqUOCs5ODI3TmFgTYmuh7NICe6G90Cjb4c/VtzyOkw8S+L8g1VviCT6GV
- sSUQ==
-X-Gm-Message-State: AOJu0Yz8IwYf5p+GDgpE8dk5FNL0DUHY8bCN2uDHQbjDq8ym1e3hetJs
- 5eQs3pbFLNKNNFu3ZR3pxHxBFPvfwtxBuQIHW7hB2gyoIb3tO+O2jEarC+/yVrtbxSrG/vj8/Gt
- ERTrFceTcUemHkqA=
-X-Received: by 2002:a17:90b:1e0e:b0:280:a5b8:daf1 with SMTP id
- pg14-20020a17090b1e0e00b00280a5b8daf1mr790799pjb.47.1700609283022; 
- Tue, 21 Nov 2023 15:28:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGDjsUAipHxp/5Fgi3aKJ1sBwBl1xNEy2Xk2leFZX/c1aISoGpZ17EPhqvUxq8Emjt92Qjmuw==
-X-Received: by 2002:a17:90b:1e0e:b0:280:a5b8:daf1 with SMTP id
- pg14-20020a17090b1e0e00b00280a5b8daf1mr790778pjb.47.1700609282719; 
- Tue, 21 Nov 2023 15:28:02 -0800 (PST)
-Received: from ?IPV6:2001:8003:e5b0:9f00:b890:3e54:96bb:2a15?
- ([2001:8003:e5b0:9f00:b890:3e54:96bb:2a15])
- by smtp.gmail.com with ESMTPSA id
- x7-20020a17090a788700b00283a0c3df63sm67210pjk.54.2023.11.21.15.27.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Nov 2023 15:28:02 -0800 (PST)
-Message-ID: <948cc368-241e-41f4-b3c9-683e220dcfc2@redhat.com>
-Date: Wed, 22 Nov 2023 09:27:51 +1000
+ d=1e100.net; s=20230601; t=1700616274; x=1701221074;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=za9Krb7EtNcsfuIYD7sBdWYVNnPqw0lwzQdNqU1pJJg=;
+ b=pPfWNkc67TQTlXTmIuMHlyZCCrVwMoHIX/fRulecQO2XK0UYLc6e0wnUrqkc6x46B8
+ /q0rEp6a4eVZ0yc/d1lxVECECs5E9Rscpdi9GcOoBZq5bkwIVw0uVmE3i2LknVvh+D2N
+ YinoFKaiC+DJxoj8uTxjKjA6/T3NGz/7RAgcBDvw24Uhx6pltxo1UNB3/C/T6jHoYF21
+ hMhDSfz0sG9M246IZIC0FTcLZsD6DkBCRKej3Uwc3PmRvIWd3kVk+yCSWq1uCNco8RxO
+ gPX7Vbz+LTKOvDUz7ADzB2H6T0uaDxniXxsA3whqqp2OlDiWtyb/CGzUOIxJzqwgtzDZ
+ 1sOA==
+X-Gm-Message-State: AOJu0Yy67svNZCLehfXREKKujj6hSQ8KblrxxV3WrdHRJzMOJZ9i7CM5
+ bQo5rISzZ2DIA784pxFqOkZsl5D04Ccc5a7TZpw=
+X-Google-Smtp-Source: AGHT+IEH3PD16N9eIRyLoXUrTHvDCWSh+LZw131rVrPiTDwJVa02NBbr9Kfm9A6UKpQu7kF9SnpJWk8xVGAk1znYnto=
+X-Received: by 2002:a05:6358:418f:b0:168:e78c:e3a7 with SMTP id
+ w15-20020a056358418f00b00168e78ce3a7mr714350rwc.18.1700616274269; Tue, 21 Nov
+ 2023 17:24:34 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.0] hw: Add compat machines for 9.0
-Content-Language: en-US
-To: Cornelia Huck <cohuck@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
+References: <20231119203116.3027230-1-dhoff749@gmail.com>
+ <3c44d5a5-818b-46b6-a07f-af655a060032@linaro.org>
+ <CAFXChKJrXAop188pTFcU0YNPocn_KyiAXiqWoES2F0_==VyO+Q@mail.gmail.com>
+ <20231120042116-mutt-send-email-mst@kernel.org>
+ <9282a606-794a-432c-8b56-fedf6af67768@linaro.org>
+ <viiqn6gyn25xitens3ft4mp4lditlcrswstugct42t2kvpw6pi@3ftcrbxmuo3e>
+ <CAFXChKKkRRNk72a57xSeJdYtXBss5W7KoEnQqUOVK9_xhc8NfQ@mail.gmail.com>
+In-Reply-To: <CAFXChKKkRRNk72a57xSeJdYtXBss5W7KoEnQqUOVK9_xhc8NfQ@mail.gmail.com>
+From: Dan Hoffman <dhoff749@gmail.com>
+Date: Tue, 21 Nov 2023 19:24:23 -0600
+Message-ID: <CAFXChK+OjteJ_rt5G5EWa+wexe8ZzL=8y+Z82mT_r3387h=0RQ@mail.gmail.com>
+Subject: Re: [PATCH v3] hw/i386: fix short-circuit logic with non-optimizing
+ builds
+To: Eric Blake <eblake@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- qemu-s390x@nongnu.org
-References: <20231120094259.1191804-1-cohuck@redhat.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20231120094259.1191804-1-cohuck@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org, 
+ qemu-trivial@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=dhoff749@gmail.com; helo=mail-oo1-xc2a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,26 +97,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/20/23 19:42, Cornelia Huck wrote:
-> Add 9.0 machine types for arm/i440fx/m68k/q35/s390x/spapr.
-> 
-> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
-> ---
->   hw/arm/virt.c              |  9 ++++++++-
->   hw/core/machine.c          |  3 +++
->   hw/i386/pc.c               |  3 +++
->   hw/i386/pc_piix.c          | 17 ++++++++++++++---
->   hw/i386/pc_q35.c           | 13 ++++++++++++-
->   hw/m68k/virt.c             |  9 ++++++++-
->   hw/ppc/spapr.c             | 15 +++++++++++++--
->   hw/s390x/s390-virtio-ccw.c | 14 +++++++++++++-
->   include/hw/boards.h        |  3 +++
->   include/hw/i386/pc.h       |  3 +++
->   10 files changed, 80 insertions(+), 9 deletions(-)
-> 
+From their Discord server in reply to a question about whether such a
+patch would be upstreamed: "I suspect this only works in gcc -O0
+because of its AST-level "fold", which clang intentionally doesn't
+implement. So probably not."
 
-For hw/arm/virt.c
+I hope that's enough information to resolve this patch. If any of you
+need anything else, please let me know.
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-
+On Tue, Nov 21, 2023 at 12:28=E2=80=AFPM Dan Hoffman <dhoff749@gmail.com> w=
+rote:
+>
+> I'm writing a patch to clang's constant folding to address this case
+> (doesn't seem too difficult). I'll either follow up with a link to
+> some submissions I've made or a bug report on the project describing
+> the issue.
+>
+>
+>
+> On Tue, Nov 21, 2023 at 10:15=E2=80=AFAM Eric Blake <eblake@redhat.com> w=
+rote:
+> >
+> > On Mon, Nov 20, 2023 at 11:20:52AM +0100, Philippe Mathieu-Daud=C3=A9 w=
+rote:
+> > > (Cc'ing Eric)
+> > >
+> > > On 20/11/23 10:28, Michael S. Tsirkin wrote:
+> > > > On Sun, Nov 19, 2023 at 07:34:58PM -0600, Dan Hoffman wrote:
+> > > > > As far as I can tell, yes. Any optimization level above O0 does n=
+ot have this
+> > > > > issue (on this version of Clang, at least)
+> > > >
+> > > > Aha, this is with -O0. That makes sense.
+> > >
+> > > But then, why the other cases aren't problematic?
+> > >
+> > > $ git grep -E ' (&&|\|\|) !?kvm_enabled'
+> > > hw/arm/boot.c:1228:    assert(!(info->secure_board_setup && kvm_enabl=
+ed()));
+> >
+> > This one's obvious; no kvm_*() calls in the assert.
+> >
+> > > hw/i386/microvm.c:270:        (mms->rtc =3D=3D ON_OFF_AUTO_AUTO &&
+> > > !kvm_enabled())) {
+> >
+> > Ones like this require reading context to see whether the if() block
+> > guarded any kvm_*() calls for the linker to elide - but still a fairly
+> > easy audit.
+> >
+> > > > >
+> > > > >      I'm surprised the order of conditions matters for code elisi=
+on...
+> > > > >
+> > > > >      > Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
+> > > > >      > ---
+> > > > >      >   hw/i386/x86.c | 15 ++++++++++++---
+> > > > >      >   1 file changed, 12 insertions(+), 3 deletions(-)
+> > > > >      >
+> > > > >      > diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+> > > > >      > index b3d054889bb..2b6291ad8d5 100644
+> > > > >      > --- a/hw/i386/x86.c
+> > > > >      > +++ b/hw/i386/x86.c
+> > > > >      > @@ -131,8 +131,12 @@ void x86_cpus_init(X86MachineState *x=
+86ms, int
+> > > > >      default_cpu_version)
+> > > > >      >       /*
+> > > > >      >        * Can we support APIC ID 255 or higher?  With KVM, =
+that requires
+> > > > >      >        * both in-kernel lapic and X2APIC userspace API.
+> > > > >      > +     *
+> > > > >      > +     * kvm_enabled() must go first to ensure that kvm_* r=
+eferences are
+> > > > >      > +     * not emitted for the linker to consume (kvm_enabled=
+() is
+> > > > >      > +     * a literal `0` in configurations where kvm_* aren't=
+ defined)
+> > > > >      >        */
+> > > > >      > -    if (x86ms->apic_id_limit > 255 && kvm_enabled() &&
+> > > > >      > +    if (kvm_enabled() && x86ms->apic_id_limit > 255 &&
+> > > > >      >           (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic(=
+))) {
+> >
+> > Indeed, if clang -O0 treats 'if (cond1 && 0 && cond2)' differently
+> > than 'if (0 && cond1 && cond2)' for purposes of eliding the code for
+> > cond2, that seems like a blatant missed optimization that we should be
+> > reporting to the clang folks.
+> >
+> > While this patch may solve the immediate issue, it does not scale - if
+> > we ever have two separate guards that can both be independently
+> > hard-coded to 0 based on configure-time decisions, but which are both
+> > used as guards in the same expression, it will become impossible to
+> > avoid a '(cond1 && 0 && cond2)' scenario across all 4 possible
+> > configurations of those two guards.
+> >
+> > I have no objection to the patch, but it would be nice if the commit
+> > message could point to a clang bug report, if one has been filed.
+> >
+> > --
+> > Eric Blake, Principal Software Engineer
+> > Red Hat, Inc.
+> > Virtualization:  qemu.org | libguestfs.org
+> >
 
