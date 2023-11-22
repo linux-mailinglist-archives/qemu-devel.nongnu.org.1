@@ -2,86 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3EED7F442B
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 11:43:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A70E37F44B4
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 12:08:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5khB-0000zm-6Q; Wed, 22 Nov 2023 05:43:01 -0500
+	id 1r5l4z-0000wR-5Y; Wed, 22 Nov 2023 06:07:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r5kh9-0000zV-8p
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 05:42:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r5kh7-0003nt-HA
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 05:42:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700649776;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kZeTmuhOStKxYOF1MQvMSeI+XIsLNxFcE2VSCnV0WlM=;
- b=WyXo7mKtyRRIpz9tm/gl1CMRJmL6INgttiQ0oqg9QyAKMOdlfV3aAktSxb0eqWV5AiBLQ+
- KiGCs2StBMSTzN55UulKaxGf6egbxBwgMjX0BSUVPAdQ8lc/P7lb2+P+CqH7TPPUi9hHHw
- 9tikEA2MfFPuOyxYUSmWm2eSXDKI1J0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-413-aNNno5sHOB2IBWS0SAcSRg-1; Wed, 22 Nov 2023 05:42:52 -0500
-X-MC-Unique: aNNno5sHOB2IBWS0SAcSRg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7B1DC85A58C;
- Wed, 22 Nov 2023 10:42:52 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.104])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1E97D10F44;
- Wed, 22 Nov 2023 10:42:47 +0000 (UTC)
-Date: Wed, 22 Nov 2023 10:42:45 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Cleber Rosa <crosa@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: Re: [PATCH 2/3] chardev: report blocked write to chardev backend
-Message-ID: <ZV3bJXOy4vxyHTWK@redhat.com>
-References: <20231116115354.228678-1-npiggin@gmail.com>
- <20231116115354.228678-2-npiggin@gmail.com>
- <CAMxuvawXTrQ3Mu-aGbELnQyBRU4W9kuMQo-XM_zm4FbRymHkqA@mail.gmail.com>
- <CX3OGGIB0IAN.1CDYNM9U7M5Y3@wheely>
- <CAMxuvayyULsyM0bQvCr-WRP39JwbTcDknBYEhj=eDrRQ2+9dUQ@mail.gmail.com>
- <13f96104-9d9d-4f57-9c40-06352b6a6b87@redhat.com>
- <CAMxuvay+vfg+tCq3ZQt5WkLxH69QXTC1vS_7QmEKCPxCoC840g@mail.gmail.com>
- <99568f4f-2168-4719-8454-90f0e0658c2c@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5l4w-0000vs-Ib
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 06:07:34 -0500
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5l4u-0001A3-Pl
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 06:07:34 -0500
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-507bd19eac8so8703405e87.0
+ for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 03:07:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700651249; x=1701256049; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hNxDhhCIH8NlpH8XHPURRCmGBLxe0AMGsttC4hlkS4g=;
+ b=FjNxMCmNGUZ2lHyJKacbmangUDaCJTvWhcZMrUYEkkXYbdzzj9W2STIviRfdqpwkRz
+ Zjk1WSnf66zkbpz+1MmunTmfgg30+RIg1ZS3/SHifIUgAw0OWy9v29sybnuGk/ejyYm0
+ oNGPIZBDir0YRlnJ4BeUyfpxXRknOz3jLBJnwA1nRVVvxzc70i3DE7vMvhlkV+7PdDnY
+ A/QPXeDahDZAmYHenSmUgA76BshsrZZAAg9nk+PjVehzITbnNU7J+WbDqwde85utiQq9
+ fYUptS+Y9biOIdHPwsAi8+XeIDRhsoEtWiebYyt+nMSXNq2drbM81K0Iv3Ynlw4szSXO
+ Zc+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700651249; x=1701256049;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hNxDhhCIH8NlpH8XHPURRCmGBLxe0AMGsttC4hlkS4g=;
+ b=PXuKJfNUOCZk7uAo73MBZvTvDcRLo0kGcynUNZ5y61NlH70QdpWN9dtCPq1RtrSLxk
+ 2X/EUvV7NLOLGzKCqjslL7cVrUVNh91yTcTI0R1Bqp8teBvYLGCJcIO6M5siXZM4ngPg
+ UwdCXnnqnkepFqg7dgcOzumxF3Xyrsmgq8n2ii1kjObfYCDNHo5WRZcjLSscNsgzM67H
+ hn50Ysb29IOA8UBiXfxdSR2/N1VulLYww6vZJcF+ZdBlkk/UCeVfVBAUMchi0F5dNY9A
+ 2DQEcpjpgkP6uSoPWHdbPdOqbQF83OT/IKNYf62W4XFCoRLnpx2OuGkOHjbdZkAKjrv5
+ SkkQ==
+X-Gm-Message-State: AOJu0YwQSBzBsy5JjaX2M6UumE4MvJ7QiCIiAqHUD6qBxp5yEdPX8/Mz
+ Svw8i0MocAK+62WS/r/bgrKaUbAKuMcuYIPjawA=
+X-Google-Smtp-Source: AGHT+IGYNLvrEeIf4l5dhNfo9PLr/A5Ox6GzMWAevPIallmwrkFlAOq4+ezPJDEfyMf13hLwgxpTjQ==
+X-Received: by 2002:a05:6512:1591:b0:50a:bb04:2321 with SMTP id
+ bp17-20020a056512159100b0050abb042321mr1582427lfb.1.1700651249433; 
+ Wed, 22 Nov 2023 03:07:29 -0800 (PST)
+Received: from [192.168.69.100] (pas38-h02-176-184-5-64.dsl.sta.abo.bbox.fr.
+ [176.184.5.64]) by smtp.gmail.com with ESMTPSA id
+ v11-20020adfe28b000000b0032d09f7a713sm16962331wri.18.2023.11.22.03.07.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 22 Nov 2023 03:07:29 -0800 (PST)
+Message-ID: <19f6fcaf-ac2b-4cc3-b226-27ec659d7478@linaro.org>
+Date: Wed, 22 Nov 2023 12:07:27 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <99568f4f-2168-4719-8454-90f0e0658c2c@redhat.com>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/6] xen: backends: touch some XenStore nodes only if
+ device...
+Content-Language: en-US
+To: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: David Woodhouse <dwmw@amazon.co.uk>,
+ Stefano Stabellini <sstabellini@kernel.org>, Julien Grall <julien@xen.org>,
+ Paul Durrant <xadimgnik@gmail.com>,
+ Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>,
+ "open list:Block layer core" <qemu-block@nongnu.org>
+References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
+ <20231121221023.419901-3-volodymyr_babchuk@epam.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231121221023.419901-3-volodymyr_babchuk@epam.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,125 +100,51 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 22, 2023 at 11:38:28AM +0100, Thomas Huth wrote:
-> On 21/11/2023 12.47, Marc-André Lureau wrote:
-> > Hi
-> > 
-> > On Tue, Nov 21, 2023 at 1:45 PM Thomas Huth <thuth@redhat.com> wrote:
-> > > 
-> > > On 21/11/2023 10.39, Marc-André Lureau wrote:
-> > > > Hi
-> > > > 
-> > > > On Mon, Nov 20, 2023 at 5:36 PM Nicholas Piggin <npiggin@gmail.com> wrote:
-> > > > > 
-> > > > > On Mon Nov 20, 2023 at 10:06 PM AEST, Marc-André Lureau wrote:
-> > > > > > Hi
-> > > > > > 
-> > > > > > On Thu, Nov 16, 2023 at 3:54 PM Nicholas Piggin <npiggin@gmail.com> wrote:
-> > > > > > > 
-> > > > > > > If a chardev socket is not read, it will eventually fill and QEMU
-> > > > > > > can block attempting to write to it. A difficult bug in avocado
-> > > > > > > tests where the console socket was not being read from caused this
-> > > > > > > hang.
-> > > > > > > 
-> > > > > > > warn if a chardev write is blocked for 100ms.
-> > > > > > > 
-> > > > > > > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > > > > > > ---
-> > > > > > > This is not necessary for the fix but it does trigger in the
-> > > > > > > failing avocado test without the previous patch applied. Maybe
-> > > > > > > it would be helpful?
-> > > > > > > 
-> > > > > > > Thanks,
-> > > > > > > Nick
-> > > > > > > 
-> > > > > > >    chardev/char.c | 6 ++++++
-> > > > > > >    1 file changed, 6 insertions(+)
-> > > > > > > 
-> > > > > > > diff --git a/chardev/char.c b/chardev/char.c
-> > > > > > > index 996a024c7a..7c375e3cc4 100644
-> > > > > > > --- a/chardev/char.c
-> > > > > > > +++ b/chardev/char.c
-> > > > > > > @@ -114,6 +114,8 @@ static int qemu_chr_write_buffer(Chardev *s,
-> > > > > > >    {
-> > > > > > >        ChardevClass *cc = CHARDEV_GET_CLASS(s);
-> > > > > > >        int res = 0;
-> > > > > > > +    int nr_retries = 0;
-> > > > > > > +
-> > > > > > >        *offset = 0;
-> > > > > > > 
-> > > > > > >        qemu_mutex_lock(&s->chr_write_lock);
-> > > > > > > @@ -126,6 +128,10 @@ static int qemu_chr_write_buffer(Chardev *s,
-> > > > > > >                } else {
-> > > > > > >                    g_usleep(100);
-> > > > > > >                }
-> > > > > > > +            if (++nr_retries == 1000) { /* 100ms */
-> > > > > > > +                warn_report("Chardev '%s' write blocked for > 100ms, "
-> > > > > > > +                            "socket buffer full?", s->label);
-> > > > > > > +            }
-> > > > > > 
-> > > > > > That shouldn't happen, the frontend should poll and only write when it
-> > > > > > can. What is the qemu command being used here?
-> > > > > 
-> > > > > You can follow it through the thread here
-> > > > > 
-> > > > > https://lore.kernel.org/qemu-devel/ZVT-bY9YOr69QTPX@redhat.com/
-> > > > > 
-> > > > > In short, a console device is attached to a socket pair and nothing
-> > > > > ever reads from it. It eventually fills, and writing to it fails
-> > > > > indefinitely here.
-> > > > > 
-> > > > > It can be reproduced with:
-> > > > > 
-> > > > > make check-avocado
-> > > > > AVOCADO_TESTS=tests/avocado/reverse_debugging.py:test_ppc64_pseries
-> > > > > 
-> > > > > 
-> > > > 
-> > > > How reliably? I tried 10/10.
-> > > 
-> > > It used to fail for me every time I tried - but the fix has already been
-> > > merged yesterday (commit cd43f00524070c026), so if you updated today, you'll
-> > > see the test passing again.
-> > 
-> > Ok so the "frontend" is spapr-vty and there:
-> > 
-> > void vty_putchars(SpaprVioDevice *sdev, uint8_t *buf, int len)
-> > {
-> >      SpaprVioVty *dev = VIO_SPAPR_VTY_DEVICE(sdev);
-> > 
-> >      /* XXX this blocks entire thread. Rewrite to use
-> >       * qemu_chr_fe_write and background I/O callbacks */
-> >      qemu_chr_fe_write_all(&dev->chardev, buf, len);
-> > }
-> > 
-> > (grep "XXX this blocks", we have a lot...)
-> > 
-> > Can H_PUT_TERM_CHAR return the number of bytes written?
-> 
-> You can find the definition of the hypercall in the LoPAPR spec:
-> 
->  https://elinux.org/images/a/a4/LoPAPR_DRAFT_v11_24March2016.pdf
-> 
-> ... and if I get it right, it does not have a way to tell the guest the
-> amount of accepted characters. But it could return H_BUSY if it is not able
-> to enqueue all characters at once. As far as I can see, this will make the
-> guest spin until it can finally send out the characters... not sure whether
-> that's so much better...?
+Hi Volodymyr,
 
-If the rest of the guest can get on with useful work that's better. If we
-block in QEMU, the entire guest hardware emulation is blocked so nothing
-can make progress if it exits from vCPU run context.
+On 21/11/23 23:10, Volodymyr Babchuk wrote:
+> was created by QEMU
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Please do not split lines between subject and content. Rewrite the
+full line. Preferably restrict the subject to 72 chars. Otherwise
+your patch isn't displayed correctly in git tools.
+
+Thanks,
+
+Phil.
+
+> Xen PV devices in QEMU can be created in two ways: either by QEMU
+> itself, if they were passed via command line, or by Xen toolstack. In
+> the latter case, QEMU scans XenStore entries and configures devices
+> accordingly.
+> 
+> In the second case we don't want QEMU to write/delete front-end
+> entries for two reasons: it might have no access to those entries if
+> it is running in un-privileged domain and it is just incorrect to
+> overwrite entries already provided by Xen toolstack, because toolstack
+> manages those nodes. For example, it might read backend- or frontend-
+> state to be sure that they are both disconnected and it is safe to
+> destroy a domain.
+> 
+> This patch checks presence of xendev->backend to check if Xen PV
+> device is acting as a backend (i.e. it was configured by Xen
+> toolstack) to decide if it should touch frontend entries in XenStore.
+> Also, when we need to remove XenStore entries during device teardown
+> only if they weren't created by Xen toolstack. If they were created by
+> toolstack, then it is toolstack's job to do proper clean-up.
+> 
+> Suggested-by: Paul Durrant <xadimgnik@gmail.com>
+> Suggested-by: David Woodhouse <dwmw@amazon.co.uk>
+> Co-Authored-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+> Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
+> ---
+>   hw/block/xen-block.c  | 16 +++++++++-------
+>   hw/char/xen_console.c |  2 +-
+>   hw/net/xen_nic.c      | 18 ++++++++++--------
+>   hw/xen/xen-bus.c      | 14 +++++++++-----
+>   4 files changed, 29 insertions(+), 21 deletions(-)
 
 
