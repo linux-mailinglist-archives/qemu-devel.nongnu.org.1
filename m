@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F1097F4A02
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 16:14:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 184697F4B38
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 16:42:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5ouK-0006PV-H7; Wed, 22 Nov 2023 10:12:53 -0500
+	id 1r5pLC-0007ur-6Q; Wed, 22 Nov 2023 10:40:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r5ouB-0006Mz-Q2
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 10:12:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r5ou7-0006EU-Pd
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 10:12:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700665958;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=kaXj/mWXJ9iD6nKFimcOBcHU6CqgZmufrMLvMDqaLPM=;
- b=hQs0t5oTBn/EwXu5iSShkdjDbYRS+AQT5OruinJMKkq+6hM0VA6EE1H2XKg87D5hNeo+qB
- lGVGxvsZMDHK7N2JWqZsABq6DKSfZZaRjOy1PQFe1aj4s36+/ZuWThQ/snrqMu/SnN7KnT
- 9jwBRA2PWtfazilC4I95ZfqlY9cjylk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-157-GpoKonhKM6KOL43AwHj2SQ-1; Wed,
- 22 Nov 2023 10:12:34 -0500
-X-MC-Unique: GpoKonhKM6KOL43AwHj2SQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 002C7280AA28;
- Wed, 22 Nov 2023 15:12:34 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B1C4D492BFA;
- Wed, 22 Nov 2023 15:12:33 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 6F4031800394; Wed, 22 Nov 2023 16:12:32 +0100 (CET)
-Date: Wed, 22 Nov 2023 16:12:32 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Laszlo Ersek <lersek@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Eric Blake <eblake@redhat.com>, Thomas Huth <thuth@redhat.com>, 
- Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, 
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, graf@amazon.com, 
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH 03/16] hw/uefi: add include/hw/uefi/var-service.h
-Message-ID: <gwrbpgv2ylc5fdfy4f6pjctft3kf3w75ksxvxocyc2whdtruvf@suvmqrdwbghb>
-References: <20231115151242.184645-1-kraxel@redhat.com>
- <20231115151242.184645-4-kraxel@redhat.com>
- <a41a545b-c78e-f261-6f8e-e4d7ffe94767@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5pL0-0007tq-JU
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 10:40:29 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5pKu-00045h-D0
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 10:40:23 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-332c7d4a6a7so2094372f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 07:40:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700667618; x=1701272418; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=0MmxizoVULEHvcDoDg29H4cq14WrT7aMuvWp4hNqXio=;
+ b=P9hxDyt38WK2GSSTOrjflU2Ivw17ZRZDg0Co3moECscGEt1II3hN7qzCZ5UBcxT/Ha
+ 6eNcuWKyWBbJy9hsaa/jEh4oP/3i2sTNnv3UNY+koScqBRM7BocltUSnp6axo8wuAe8X
+ K1LyoD/g95sWQUBwcIrbeCh+PJoEM8LRaNOAipHblYpJbB/8KSjbGXl76jg4ULY1kdQ1
+ eQ1SCGHdKvRijo8yElVgMmuS+/ARaFti+IB20RclCLXSf4vn7bHrZ3sYz2VZpLkAfklG
+ rBzzeM6On2BLrT5yn7+YKfqVwaAnwOIfPQToS7zws8ME7ogJwn4puHT6+nK0vXR+QNQz
+ W02A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700667618; x=1701272418;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0MmxizoVULEHvcDoDg29H4cq14WrT7aMuvWp4hNqXio=;
+ b=Iu4Yb7/TCTMDMuVolqTceyZIZUB4hUiswdzuKJRug1vM/9QDu1I2J5KVFD1eau8AYb
+ +O35VAsfoCd4X79Y8PfZoE5qb1U3aNGD2VqUAUTvrCeA/fPeFMTg0Gw04G4aMofEbaWo
+ Ubs5Zx8yriR/xhv+bNhc5naOHEfsUfLhuwACtrGakl8FFyt04cJWXyothLE1oBQr55Qk
+ hYXqrQHaD3CQIxEjF2pkRcFRC6VGhAj6v9pqNI0sQ94+Jo4a8YJp5yD310kXHbUHsuzf
+ GRNevx6Dsn8luk3E5LLEB4Z0yvBv66LGmmJ78V6uEDnes8pQ3uKkRAIqaCToeIP/zhiy
+ tS5g==
+X-Gm-Message-State: AOJu0Yxn9xZyZENhsNB1YnUE21WUi+jjGWelRtEF+M5lHZZbF8OtjDdJ
+ akZ2WWN2RmL1V8YRYq+YmGYklA==
+X-Google-Smtp-Source: AGHT+IHabVPuiJGFznxPXnYb/epwp/UicxbMj7/KBeoJsqKhRNjiJhGeDIBh8qUz+ow6XlG5jEeLaw==
+X-Received: by 2002:a5d:4e06:0:b0:32f:a5af:99ca with SMTP id
+ p6-20020a5d4e06000000b0032fa5af99camr1690588wrt.69.1700667618219; 
+ Wed, 22 Nov 2023 07:40:18 -0800 (PST)
+Received: from [192.168.69.100] (pas38-h02-176-184-5-64.dsl.sta.abo.bbox.fr.
+ [176.184.5.64]) by smtp.gmail.com with ESMTPSA id
+ g23-20020adfa497000000b0032fb7b4f191sm17761587wrb.91.2023.11.22.07.40.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 22 Nov 2023 07:40:17 -0800 (PST)
+Message-ID: <a5c301b8-1558-4493-aa74-344e9deebdd2@linaro.org>
+Date: Wed, 22 Nov 2023 16:40:16 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a41a545b-c78e-f261-6f8e-e4d7ffe94767@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH qemu] meson: require 1.3.0
+Content-Language: en-US
+To: ~akihirosuda <suda.kyoto@gmail.com>, qemu-devel@nongnu.org
+References: <170066514685.13745.10445790352432092776-0@git.sr.ht>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <170066514685.13745.10445790352432092776-0@git.sr.ht>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,91 +90,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  Hi,
+Hi Akihiro,
 
-> > +struct uefi_var_policy {
-> > +    variable_policy_entry             *entry;
-> > +    uint32_t                          entry_size;
-> > +    uint16_t                          *name;
-> > +    uint32_t                          name_size;
-> > +    uint32_t                          hashmarks;
-> > +    QTAILQ_ENTRY(uefi_var_policy)     next;
-> > +};
+On 22/11/23 15:52, ~akihirosuda wrote:
+> From: Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>
 > 
-> - I wonder if the size fields should be size_t. uint32_t is not wrong
-> either; we'll just have to be careful when doing comparisons etc.
-
-I can't store size_t in vmstate ...
-
-> - care to explain (in a comment) hashmarks? I think it's related to the
-> wildcard policy stuff, but a hint would be appreciated.
-
-Yes.  It's the number of hashmarks, used when sorting entries by
-priority.  Most specific match, i.e. smallest number of wildcard
-characters, goes first.
-
-I'll add a comment.
-
-> > +struct uefi_vars_state {
-> > +    MemoryRegion                      mr;
-> > +    uint16_t                          sts;
-> > +    uint32_t                          buf_size;
-> > +    uint32_t                          buf_addr_lo;
-> > +    uint32_t                          buf_addr_hi;
+> Update meson to the latest version, to fix
+>   `ld: unknown options: --version` error on macOS
 > 
-> spelling out endianness here would be useful IMO
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1996
+> Signed-off-by: Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>
+> ---
+>   python/scripts/vendor.py                    |   4 ++--
+>   python/wheels/meson-0.63.3-py3-none-any.whl | Bin 926526 -> 0 bytes
+>   python/wheels/meson-1.3.0-py3-none-any.whl  | Bin 0 -> 976361 bytes
+>   pythondeps.toml                             |   2 +-
+>   4 files changed, 3 insertions(+), 3 deletions(-)
+>   delete mode 100644 python/wheels/meson-0.63.3-py3-none-any.whl
+>   create mode 100644 python/wheels/meson-1.3.0-py3-none-any.whl
 
-Don't think this is needed, qemu handles this for us.  The memory
-region is declared to be little endian, qemu will convert reads/writes
-to native endian for us, so there are no endian worries for the register
-interface (the transfer buffer in guest ram is a different story).
+Should be fixed by
+https://lore.kernel.org/qemu-devel/20231111152923.966998-5-pbonzini@redhat.com/
+(which uses 1.2.3 instead).
 
-> > +    /* boot phases */
-> > +    bool                              end_of_dxe;
-> > +    bool                              ready_to_boot;
-> > +    bool                              exit_boot_service;
-> 
-> There are some variations of the 8 possible that don't make sense. at
-> the same time, a single enum could be too limiting. depends on what the
-> code will do with these.
-
-end-of-dxe: used by variable policies (they are enforced only after that
-event).
-
-ready-to-boot: not used yet (other than setting it when the event arrives).
-
-exit-boot-service: access control (RT vs. BT etc).
-
-> > +/* vars-service-guid.c */
-> > +extern QemuUUID EfiGlobalVariable;
-> > +extern QemuUUID EfiImageSecurityDatabase;
-> > +extern QemuUUID EfiCustomModeEnable;
-> > +extern QemuUUID EfiSecureBootEnableDisable;
-> > +extern QemuUUID EfiSmmVariableProtocolGuid;
-> > +extern QemuUUID VarCheckPolicyLibMmiHandlerGuid;
-> > +extern QemuUUID EfiEndOfDxeEventGroupGuid;
-> > +extern QemuUUID EfiEventReadyToBootGuid;
-> > +extern QemuUUID EfiEventExitBootServicesGuid;
-> 
-> the spelling of these names appears a bit questionable:
-> 
-> - camelcase is idiomatic in edk2, but (I think?) not in QEMU, for variables
-> 
-> - the "Guid" suffix is inconsistently used / carried over from edk2
-
-Yes.  It's carried over from edk2.
-
-We don't have to keep the names in qemu, in fact I've renamed the
-structs because that would have been too much of a contrast to the
-qemu code style, so the edk2 name is only noted in a comment in the
-vars-service-edk2.h header file.
-
-For the #defines and GUIDs I've kept the edk2 names as-is, so it's
-easier to follow the control flow for people which are familiar with
-edk2.  We have already have simliar stuff else, for example the struct
-names in hw/usb/desc.h follow the usb spec not qemu code style.
-
-take care,
-  Gerd
+> --- a/pythondeps.toml
+> +++ b/pythondeps.toml
+> @@ -18,7 +18,7 @@
+>   
+>   [meson]
+>   # The install key should match the version in python/wheels/
+> -meson = { accepted = ">=0.63.0", installed = "0.63.3", canary = "meson" }
+> +meson = { accepted = ">=1.3.0", installed = "1.3.0", canary = "meson" }
+>   
+>   [docs]
+>   sphinx = { accepted = ">=1.6", installed = "5.3.0", canary = "sphinx-build" }
 
 
