@@ -2,58 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77577F4587
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 13:16:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB437F4589
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 13:16:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5m9K-0007iG-QS; Wed, 22 Nov 2023 07:16:10 -0500
+	id 1r5m8z-0007hE-MX; Wed, 22 Nov 2023 07:15:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berto@igalia.com>)
- id 1r5m8x-0007gW-H5; Wed, 22 Nov 2023 07:15:47 -0500
-Received: from fanzine.igalia.com ([178.60.130.6] helo=fanzine2.igalia.com)
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1r5m8u-0007eN-40; Wed, 22 Nov 2023 07:15:46 -0500
+Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berto@igalia.com>)
- id 1r5m8v-0006kg-ED; Wed, 22 Nov 2023 07:15:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
- Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=l6UqClNkHI9Ss1/AhKfveyyRus2UiUOzHKfP+gre8w0=; b=VgvT6a9BaEERDtEFxwTjDaukBj
- KUvbQppBCArtKQpCDdMEpWlFEqrS8uNsDJ5+RWlj7M3wAAqXXRDqDr63dss4O5D69OL2jrJCjV3Nj
- oHI/y5CgJThPNFCA04GcYjjHVWQ6w1CdKrcmngKeDpf0djV73e8EwOQlrpniyXqVNbOu/B8ZK3h0/
- BLi4Sb7tICWXOV1XqoZFLa/UKbS11E52rxViNqnAZRslVkdRU92ChsOlDGE9fz7M4ESCi7vMEfE/E
- A5Xc/a9huoqkfB3CZCoFQ9IeK7+DZqXx7AfeKGYYR1LlaMp/iYTwLQr53HZgUW/xSb4URWpoga7Z5
- zvVGcvCA==;
-Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
- by fanzine2.igalia.com with esmtps 
- (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1r5m8k-005xer-Fi; Wed, 22 Nov 2023 13:15:34 +0100
-Received: from gate.service.igalia.com ([192.168.21.52])
- by mail.igalia.com with esmtp (Exim)
- id 1r5m8i-00GR4n-A6; Wed, 22 Nov 2023 13:15:34 +0100
-Received: from berto by gate.service.igalia.com with local (Exim 4.96)
- (envelope-from <berto@igalia.com>) id 1r5m8i-00GPs2-0S;
- Wed, 22 Nov 2023 12:15:32 +0000
-Date: Wed, 22 Nov 2023 12:15:32 +0000
-From: Alberto Garcia <berto@igalia.com>
-To: Eric Blake <eblake@redhat.com>
-Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: Converting images to stdout
-Message-ID: <ZV3w5A-8Kid-9-5W@igalia.com>
-References: <ZVZV2ZKcxoSargry@zeus.local>
- <6hipeyoml7qpxcycxbydmldohcwsle56tpeavzddpciycb4vfm@gmr7uf56skye>
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1r5m8s-0006ky-18; Wed, 22 Nov 2023 07:15:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
+ Content-Type; bh=gzEdt4IIz7mke04dLp4NFBEK7maOCy0uinMh9XRkmf8=; b=qiLNIx5dMtcQ
+ GnZNTJgEDGV0RAr5IeQbUrBa8nKS7/z+I6M9Meo5aOxxP3qArZDRNgIYVdpT/3cH2BZ/I4lprMmNz
+ 8AnUlv3V58EK58pKP6bbQnd/UWkUu7LYqdq4sH5DH98e9bN5XkTfQqVwMzIqfJhv1gOxMyGf1u8VX
+ MelhNWoswts1+vEYHbPMIw4geQdkSM9ZcW7P3AHfGBM1e72mU+/meIfZpm8b3cLvgeX03TBtp5R7x
+ I0wqoVh+gH3B1RQHAOVlJDB2VsGycvHOMRIwMFBLygQWxSdGnCOGLe/7ujH1KQiHgTU23J0lkKH7y
+ hBJ50Zo9s/R9+goIhIfqpg==;
+Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
+ by relay.virtuozzo.com with esmtp (Exim 4.96)
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1r5m7Z-004kUj-36;
+ Wed, 22 Nov 2023 13:15:26 +0100
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
+ andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
+Subject: [PATCH] iotests: fix default MT detection
+Date: Wed, 22 Nov 2023 14:15:38 +0200
+Message-Id: <20231122121538.32903-1-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6hipeyoml7qpxcycxbydmldohcwsle56tpeavzddpciycb4vfm@gmr7uf56skye>
-Received-SPF: pass client-ip=178.60.130.6; envelope-from=berto@igalia.com;
- helo=fanzine2.igalia.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=130.117.225.111;
+ envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -75,40 +61,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 20, 2023 at 05:23:27PM -0600, Eric Blake wrote:
-> > I'm interested in this use case, and I think that the method would be
-> > as simple as this:
-> > 
-> > 1. Decide a cluster size for the output qcow2 file.
-> > 2. Read the input file once to determine which clusters need to be
-> >    allocated in the output file and which ones don't.
-> > 3. That infomation is enough to determine the number and contents of
-> >    the refcount table, refcount blocks, and L1/L2 tables.
-> > 4. Write the qcow2 header + metadata + allocated data to stdout.
-> 
-> It may also be possible to write a qcow2 file that uses the external
-> data bit, so that you are only writing the qcow2 header + metadata,
-> and reusing the existing input file as the external data.
+MT is being detected based on "-M help" output, and we're searching for
+the line ending with " (default)".  However, in downstream one of the
+MTs marked as deprecated might become the default, in which case this
+logic breaks as the line would now end with " (default) (deprecated)".
+To fix potential issues here, let's relax that requirement and detect
+the mere presence of " (default)" line instead.
 
-Sure, although I'm not so certain about the use case here... also, the
-input file might not be raw.
+Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+---
+ tests/qemu-iotests/testenv.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> > Because this would be an external tool it would only support
-> > a qcow2 file with the default options. Other features like
-> > compression would be out of scope.
-> 
-> Why is compression not viable?  Are you worried that the qcow2
-> metadata (such as refcounts) becomes too complex?
+diff --git a/tests/qemu-iotests/testenv.py b/tests/qemu-iotests/testenv.py
+index e67ebd254b..3ff38f2661 100644
+--- a/tests/qemu-iotests/testenv.py
++++ b/tests/qemu-iotests/testenv.py
+@@ -40,7 +40,7 @@ def get_default_machine(qemu_prog: str) -> str:
+ 
+     machines = outp.split('\n')
+     try:
+-        default_machine = next(m for m in machines if m.endswith(' (default)'))
++        default_machine = next(m for m in machines if ' (default)' in m)
+     except StopIteration:
+         return ''
+     default_machine = default_machine.split(' ', 1)[0]
+-- 
+2.39.3
 
-Yeah, mostly... also, since the output file would be streamable it's
-trivial to pipe it through gzip or whatever.
-
-> I've also wondered how easy or hard it would be to write a tool that
-> can take an existing qcow2 file and defragment and/or compress it
-> in-place (rather than having to copy it to a second qcow2 file).
-
-That sounds a bit more complex, but I guess it's doable. But not
-something that I need atm :)
-
-Berto
 
