@@ -2,79 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781507F42D7
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 10:52:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38EDA7F42E2
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 10:53:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5jsn-0003Z5-8C; Wed, 22 Nov 2023 04:50:57 -0500
+	id 1r5juj-0004Gc-Bn; Wed, 22 Nov 2023 04:52:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5jsl-0003Yf-C1
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 04:50:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5juh-0004GE-Iz
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 04:52:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5jsj-0002dj-Gq
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 04:50:55 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5juS-0002mK-DE
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 04:52:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700646652;
+ s=mimecast20190719; t=1700646759;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gMWHhJZ5ykPCMvEXGSHNw3/4eLiWqFUrWU2KSXTbbH0=;
- b=hpnKt4anQ0FnT5JeqzUCHAOHCRm8Cs5IR0ct6Lki77M4GkiWlbR3i4e7BwR3HNh11/oCe8
- O6IqOx3Y0rC70uARQK42jw4S8HiWPJMHK12gNYW7fpOT66kstD0KrEY1jhXtC4E3hAFCTq
- qX/ZHNPQpuhKqfuyTLlzV1NXWG4iNDA=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-557-lQOhl8rcOvGhyHW0QnL26A-1; Wed,
- 22 Nov 2023 04:50:49 -0500
-X-MC-Unique: lQOhl8rcOvGhyHW0QnL26A-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ bh=F0ucRbXSa5x6qxzTnrkJbom7ZEHVQotMjDwj+9AbWfI=;
+ b=AdVZXQu3AcKbuO3M8wrWL9FauKkOXiBVMDEUMRJ0+SMOKxHZMqI/QIETv9RLcXCqQ/MB0Y
+ mnTspJEtjaehhZvUy2/p7EVpI82rZfdsvb8MR8EunwXrklSpfF9aR07zQdVt7iakYJF/tn
+ dFJcIn+bVuZFqG4Rz7s8v0F1Wtfk8Xo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-390-z_qLgiQCNLGhAhJRgDrrRA-1; Wed, 22 Nov 2023 04:52:36 -0500
+X-MC-Unique: z_qLgiQCNLGhAhJRgDrrRA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B367429AA2C4;
- Wed, 22 Nov 2023 09:50:48 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DA16784AEE0;
+ Wed, 22 Nov 2023 09:52:35 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 76E5D40C6EB9;
- Wed, 22 Nov 2023 09:50:48 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B97C5492BE0;
+ Wed, 22 Nov 2023 09:52:35 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6FD3421E6A1F; Wed, 22 Nov 2023 10:50:47 +0100 (CET)
+ id B71DF21E6A1F; Wed, 22 Nov 2023 10:52:34 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: John Snow <jsnow@redhat.com>,  qemu-devel <qemu-devel@nongnu.org>,
- Peter Maydell <peter.maydell@linaro.org>,  Michael Roth
- <michael.roth@amd.com>
-Subject: Re: [PATCH 05/19] qapi/schema: make c_type() and json_type()
- abstract methods
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,  Peter Maydell
+ <peter.maydell@linaro.org>,  Michael Roth <michael.roth@amd.com>
+Subject: Re: [PATCH 07/19] qapi/introspect: assert schema.lookup_type did
+ not fail
 References: <20231116014350.653792-1-jsnow@redhat.com>
- <20231116014350.653792-6-jsnow@redhat.com>
- <87jzqb4495.fsf@pond.sub.org> <ZVy0BAmoJ3ZcWg8q@redhat.com>
- <CAFn=p-b76n31iBw3JQ3ofQwWofBjAEF-bGXZpOVLMJms9akvxg@mail.gmail.com>
- <ZVzcMtRCQDkaGuJI@redhat.com>
-Date: Wed, 22 Nov 2023 10:50:47 +0100
-In-Reply-To: <ZVzcMtRCQDkaGuJI@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Tue, 21 Nov 2023 16:34:58 +0000")
-Message-ID: <87il5uw1zc.fsf@pond.sub.org>
+ <20231116014350.653792-8-jsnow@redhat.com>
+ <87pm032nt1.fsf@pond.sub.org>
+ <CAFn=p-ZJB6nfeGaaG=YiGrzGmdQnm=PYjfsLVRDQLxW26Ha65w@mail.gmail.com>
+Date: Wed, 22 Nov 2023 10:52:34 +0100
+In-Reply-To: <CAFn=p-ZJB6nfeGaaG=YiGrzGmdQnm=PYjfsLVRDQLxW26Ha65w@mail.gmail.com>
+ (John Snow's message of "Tue, 21 Nov 2023 11:41:12 -0500")
+Message-ID: <87bkbmw1wd.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,110 +85,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+John Snow <jsnow@redhat.com> writes:
 
-> On Tue, Nov 21, 2023 at 11:28:17AM -0500, John Snow wrote:
->> On Tue, Nov 21, 2023, 8:43 AM Daniel P. Berrang=C3=A9 <berrange@redhat.c=
-om>
->> wrote:
->>=20
->> > On Tue, Nov 21, 2023 at 02:36:54PM +0100, Markus Armbruster wrote:
->> > > John Snow <jsnow@redhat.com> writes:
->> > >
->> > > > These methods should always return a str, it's only the default
->> > abstract
->> > > > implementation that doesn't. They can be marked "abstract" by rais=
-ing
->> > > > NotImplementedError(), which requires subclasses to override the m=
-ethod
->> > > > with the proper return type.
->> > > >
->> > > > Signed-off-by: John Snow <jsnow@redhat.com>
->> > > > ---
->> > > >  scripts/qapi/schema.py | 8 ++++----
->> > > >  1 file changed, 4 insertions(+), 4 deletions(-)
->> > > >
->> > > > diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
->> > > > index c5fdd625452..4600a566005 100644
->> > > > --- a/scripts/qapi/schema.py
->> > > > +++ b/scripts/qapi/schema.py
->> > > > @@ -233,8 +233,8 @@ def visit(self, visitor):
->> > > >  class QAPISchemaType(QAPISchemaEntity):
->> > > >      # Return the C type for common use.
->> > > >      # For the types we commonly box, this is a pointer type.
->> > > > -    def c_type(self):
->> > > > -        pass
->> > > > +    def c_type(self) -> str:
->> > > > +        raise NotImplementedError()
->> > > >
->> > > >      # Return the C type to be used in a parameter list.
->> > > >      def c_param_type(self):
->> > > > @@ -244,8 +244,8 @@ def c_param_type(self):
->> > > >      def c_unboxed_type(self):
->> > > >          return self.c_type()
->> > > >
->> > > > -    def json_type(self):
->> > > > -        pass
->> > > > +    def json_type(self) -> str:
->> > > > +        raise NotImplementedError()
->> > > >
->> > > >      def alternate_qtype(self):
->> > > >          json2qtype =3D {
->> > >
->> > > I wish abstract methods could be done in a more concise way.
->> >
->> > The canonical way would be to use the 'abc' module:
->> >
->> >   from abc import ABCMeta, abstractmethod
->> >
->> >   class A(metaclass=3DABCMeta):
->> >       @abstractmethod
->> >       def foo(self): pass
->> >
->> > Not sure if the @abstractmethod decorator is enough to keep the static
->> > typing checker happy about a 'str' return type, when there is no body
->> > impl
->>=20
->> In practice, I'm under the belief that mypy and pylint both recognize a
->> method raising NotImplementedError as marking an abstract method without
->> needing to explicitly inherit from the ABC.
->>=20
->> I suppose there's also
->> https://docs.python.org/3/library/abc.html#abc.abstractmethod which I am
->> guessing just does this same thing. I'll see what makes mypy happy. I'm
->> assuming Markus would like to see something like this decorator to make =
-it
->> more obvious that it's an abstract method.
+> On Tue, Nov 21, 2023, 9:17 AM Markus Armbruster <armbru@redhat.com> wrote:
 >
-> The 'abc' module described is an official PEP standard
+>> John Snow <jsnow@redhat.com> writes:
+>>
+>> > lookup_type() is capable of returning None, but introspect.py isn't
+>> > prepared for that. (And rightly so, if these built-in types are absent,
+>> > something has gone hugely wrong.)
+>> >
+>> > RFC: This is slightly cumbersome as-is, but a patch at the end of this
+>> series
+>> > tries to address it with some slightly slicker lookup functions that
+>> > don't need as much hand-holding.
+>> >
+>> > Signed-off-by: John Snow <jsnow@redhat.com>
+>> > ---
+>> >  scripts/qapi/introspect.py | 8 ++++++--
+>> >  1 file changed, 6 insertions(+), 2 deletions(-)
+>> >
+>> > diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
+>> > index 67c7d89aae0..42981bce163 100644
+>> > --- a/scripts/qapi/introspect.py
+>> > +++ b/scripts/qapi/introspect.py
+>> > @@ -227,10 +227,14 @@ def _use_type(self, typ: QAPISchemaType) -> str:
+>> >
+>> >          # Map the various integer types to plain int
+>> >          if typ.json_type() =3D=3D 'int':
+>> > -            typ =3D self._schema.lookup_type('int')
+>> > +            tmp =3D self._schema.lookup_type('int')
+>> > +            assert tmp is not None
+>>
+>> More laconic: assert tmp
+>>
 >
->   https://peps.python.org/pep-3119/
+> *looks up "laconic"*
+>
+> hey, "terse" is even fewer letters!
 
-Compare:
+Touch=C3=A9!
 
-    @abstractmethod
-    def c_type(self) -> str:
-        pass
+> (but, you're right. I think I adopted the "is not none" out of a habit for
+> distinguishing false-y values from the None value, but in this case we
 
-    def c_type(self) -> str:
-        raise NotImplementedError()
+It's a good habit.
 
-I prefer the former, because it's more explicit.
+> really wouldn't want to have either, so the shorter form is fine, though
+> for mypy's sake we only care about guarding against None here.)
 
-Bonus: prevents accidental instantiation, and sub-classes don't need to
-know what's abstract in the super-class, they can blindly use super()
-calls.  docs.python.org:
+Right.
 
-    Using this decorator requires that the class=E2=80=99s metaclass is ABC=
-Meta
-    or is derived from it.  A class that has a metaclass derived from
-    ABCMeta cannot be instantiated unless all of its abstract methods
-    and properties are overridden.  The abstract methods can be called
-    using any of the normal =E2=80=98super=E2=80=99 call mechanisms.  abstr=
-actmethod()
-    may be used to declare abstract methods for properties and
-    descriptors.
+>> > +            typ =3D tmp
+>> >          elif (isinstance(typ, QAPISchemaArrayType) and
+>> >                typ.element_type.json_type() =3D=3D 'int'):
+>> > -            typ =3D self._schema.lookup_type('intList')
+>> > +            tmp =3D self._schema.lookup_type('intList')
+>> > +            assert tmp is not None
+>> > +            typ =3D tmp
+>> >          # Add type to work queue if new
+>> >          if typ not in self._used_types:
+>> >              self._used_types.append(typ)
+>>
+>> Not fond of naming things @tmp, but I don't have a better name to offer.
+>>
+>> We could avoid the lookup by having _def_predefineds() set suitable
+>> attributes, like it serts .the_empty_object_type.  Matter of taste.  Not
+>> now unless you want to.
+>>
+>
+>  Check the end of the series for different lookup methods, too. We can
+> discuss your preferred solution then, perhaps?
 
-Hardly matters here, but since it's free...
+Works for me.
 
 
