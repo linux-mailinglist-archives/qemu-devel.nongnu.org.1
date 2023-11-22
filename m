@@ -2,78 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA607F3B45
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 02:26:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA817F3B65
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 02:43:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5byr-0007Z6-VA; Tue, 21 Nov 2023 20:24:41 -0500
+	id 1r5cFz-0002T3-Hp; Tue, 21 Nov 2023 20:42:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
- id 1r5byn-0007YE-S0; Tue, 21 Nov 2023 20:24:37 -0500
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ id 1r5cFy-0002Ss-JQ; Tue, 21 Nov 2023 20:42:22 -0500
+Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
- id 1r5bym-0003Yi-82; Tue, 21 Nov 2023 20:24:37 -0500
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-58ceab7daddso617679eaf.3; 
- Tue, 21 Nov 2023 17:24:35 -0800 (PST)
+ id 1r5cFw-0006m1-M3; Tue, 21 Nov 2023 20:42:22 -0500
+Received: by mail-qt1-x833.google.com with SMTP id
+ d75a77b69052e-41eae4ebf61so37106591cf.2; 
+ Tue, 21 Nov 2023 17:42:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700616274; x=1701221074; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1700617339; x=1701222139; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=za9Krb7EtNcsfuIYD7sBdWYVNnPqw0lwzQdNqU1pJJg=;
- b=et+ZhzoFWo1+Mu2iimXhQcVdMU/ymk219No62a/FSe5KvmBm/4M5O0PSz6/1cDINys
- SHMD+rc/KFkccON0YEIWpxBPocJGp3DcssuyJ5ua687YnS9MfExHlzGuiau4fBmRqVBj
- ZrFkz5XrWhBKFjKzlMdRIXBXufh9FmSEmShXiqVUlAYT2vz28gj7PPloYhWzZAsWwoqZ
- YN1VHXFs2cumj1SIJBU0K3u9293xKmdPb6JGAXhAC0H3jWCYU6NjDU83nkZukmiruB4j
- n4enbIVXFX21KzdmwaLmXBvpQxzNwkYmYeonztud+QigXMpHrwrSH0CN65RSMfFsS3Zl
- igFg==
+ bh=taSigf5Qrg8gYOQReEoEkAVRsKgXkwmqlDhWxBu8Qj4=;
+ b=eZhH/YHbK3Wub33MrqDKowZ0NfbSs6/XeknDZtlO/05iSupQdOXfxRlTP0Wh9XU70f
+ z3dcuKxcc7b3phUAQsqNO4iaUO2tYmvSiqwcmLKH/Xnh1WDkhAxCpPZSLwK63l9N5uob
+ fvVQ+1xJQS8xw3GzGupxpaHHrBtg3pahKHPeij4e9CVcq7hOHGZym9zsb/jbNTiBiPNF
+ hk9ElvwhOvYYdGDNQU6NvpgSi0Wj70nJoetm/oDusrwCsZk4nWZh5qgoIrnyZ9qUw7qY
+ LFYnZyA30o9cBCmdhniEQHKPEV8MnMJkBwzOWlfCd2vG9X/Au+0+KacOFyimkegqGc0T
+ 1Mlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700616274; x=1701221074;
+ d=1e100.net; s=20230601; t=1700617339; x=1701222139;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=za9Krb7EtNcsfuIYD7sBdWYVNnPqw0lwzQdNqU1pJJg=;
- b=pPfWNkc67TQTlXTmIuMHlyZCCrVwMoHIX/fRulecQO2XK0UYLc6e0wnUrqkc6x46B8
- /q0rEp6a4eVZ0yc/d1lxVECECs5E9Rscpdi9GcOoBZq5bkwIVw0uVmE3i2LknVvh+D2N
- YinoFKaiC+DJxoj8uTxjKjA6/T3NGz/7RAgcBDvw24Uhx6pltxo1UNB3/C/T6jHoYF21
- hMhDSfz0sG9M246IZIC0FTcLZsD6DkBCRKej3Uwc3PmRvIWd3kVk+yCSWq1uCNco8RxO
- gPX7Vbz+LTKOvDUz7ADzB2H6T0uaDxniXxsA3whqqp2OlDiWtyb/CGzUOIxJzqwgtzDZ
- 1sOA==
-X-Gm-Message-State: AOJu0Yy67svNZCLehfXREKKujj6hSQ8KblrxxV3WrdHRJzMOJZ9i7CM5
- bQo5rISzZ2DIA784pxFqOkZsl5D04Ccc5a7TZpw=
-X-Google-Smtp-Source: AGHT+IEH3PD16N9eIRyLoXUrTHvDCWSh+LZw131rVrPiTDwJVa02NBbr9Kfm9A6UKpQu7kF9SnpJWk8xVGAk1znYnto=
-X-Received: by 2002:a05:6358:418f:b0:168:e78c:e3a7 with SMTP id
- w15-20020a056358418f00b00168e78ce3a7mr714350rwc.18.1700616274269; Tue, 21 Nov
- 2023 17:24:34 -0800 (PST)
+ bh=taSigf5Qrg8gYOQReEoEkAVRsKgXkwmqlDhWxBu8Qj4=;
+ b=vWhtPPz0EEKhki1K7NTAvQXPW91ZCAI7aEJtL+hewMY0ZqNbjCN56dL2x3vW76mQP/
+ EVTrt9Pdwb4OsMj12RhWckpGxHkuZ/GS/iyiQB5AS3WhnF50QhDK4NryPcfF6pbgRUD8
+ u7Kc9KHRhr23MF6QmuiWY1Ubw/A5QBiDleRz0n8RDOtT4YgUCerBI9CYoywy3uIhuycj
+ T9TzDFIyl7HQzfe0b3miBRenF5wz4RhCNEmeR66BoibCcoo2jV+w9niYOgoK/6hyv+5S
+ 9lSC+T+79Lw85EtljEKAPQc/YaBcsaEBF270EPhuW5odjNsgOzPjBRxQXuYiK3mjKtaX
+ sqEw==
+X-Gm-Message-State: AOJu0YwW78xo0Q1FBxgBG5Npx/tx7YQFQIgDW7xGsmLlB/mJf0vm3O+u
+ l0gXXlvoMbyC5o/1pcLvsF6Jo4IJewpJpka/NcfbHQ/p
+X-Google-Smtp-Source: AGHT+IHRqXpL6Yrlk1Rr5pQ0rDTF6XNue0vgHJGyZ9rnuzuSsSm1tbIre6/kFHPpj9hsL7zYK3mFflxyuaT49tCCVfY=
+X-Received: by 2002:ac8:5c09:0:b0:421:bcc0:d6c6 with SMTP id
+ i9-20020ac85c09000000b00421bcc0d6c6mr1283807qti.28.1700617339100; Tue, 21 Nov
+ 2023 17:42:19 -0800 (PST)
 MIME-Version: 1.0
-References: <20231119203116.3027230-1-dhoff749@gmail.com>
- <3c44d5a5-818b-46b6-a07f-af655a060032@linaro.org>
- <CAFXChKJrXAop188pTFcU0YNPocn_KyiAXiqWoES2F0_==VyO+Q@mail.gmail.com>
- <20231120042116-mutt-send-email-mst@kernel.org>
- <9282a606-794a-432c-8b56-fedf6af67768@linaro.org>
- <viiqn6gyn25xitens3ft4mp4lditlcrswstugct42t2kvpw6pi@3ftcrbxmuo3e>
- <CAFXChKKkRRNk72a57xSeJdYtXBss5W7KoEnQqUOVK9_xhc8NfQ@mail.gmail.com>
-In-Reply-To: <CAFXChKKkRRNk72a57xSeJdYtXBss5W7KoEnQqUOVK9_xhc8NfQ@mail.gmail.com>
+References: <20231118231129.2840388-1-dhoff749@gmail.com>
+In-Reply-To: <20231118231129.2840388-1-dhoff749@gmail.com>
 From: Dan Hoffman <dhoff749@gmail.com>
-Date: Tue, 21 Nov 2023 19:24:23 -0600
-Message-ID: <CAFXChK+OjteJ_rt5G5EWa+wexe8ZzL=8y+Z82mT_r3387h=0RQ@mail.gmail.com>
-Subject: Re: [PATCH v3] hw/i386: fix short-circuit logic with non-optimizing
- builds
-To: Eric Blake <eblake@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org, 
- qemu-trivial@nongnu.org
+Date: Tue, 21 Nov 2023 19:42:08 -0600
+Message-ID: <CAFXChK+NELKJUcQSjKe-v_gcjnOPD07fe8c8bBVQFjqDQwZMMA@mail.gmail.com>
+Subject: Re: [PATCH] hw/timer/hpet: Convert DPRINTF to trace events
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=dhoff749@gmail.com; helo=mail-oo1-xc2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::833;
+ envelope-from=dhoff749@gmail.com; helo=mail-qt1-x833.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,105 +86,251 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From their Discord server in reply to a question about whether such a
-patch would be upstreamed: "I suspect this only works in gcc -O0
-because of its AST-level "fold", which clang intentionally doesn't
-implement. So probably not."
+bump
 
-I hope that's enough information to resolve this patch. If any of you
-need anything else, please let me know.
-
-On Tue, Nov 21, 2023 at 12:28=E2=80=AFPM Dan Hoffman <dhoff749@gmail.com> w=
-rote:
+On Sat, Nov 18, 2023 at 5:13=E2=80=AFPM Daniel Hoffman <dhoff749@gmail.com>=
+ wrote:
 >
-> I'm writing a patch to clang's constant folding to address this case
-> (doesn't seem too difficult). I'll either follow up with a link to
-> some submissions I've made or a bug report on the project describing
-> the issue.
+> This conversion is pretty straight-forward. Standardized some formatting
+> so the +0 and +4 offset cases can recycle the same message.
 >
+> Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
+> ---
+>  hw/timer/hpet.c       | 55 +++++++++++++++++--------------------------
+>  hw/timer/trace-events | 16 +++++++++++++
+>  2 files changed, 38 insertions(+), 33 deletions(-)
 >
+> diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
+> index 6998094233a..f9d248b4cf7 100644
+> --- a/hw/timer/hpet.c
+> +++ b/hw/timer/hpet.c
+> @@ -39,13 +39,7 @@
+>  #include "hw/timer/i8254.h"
+>  #include "exec/address-spaces.h"
+>  #include "qom/object.h"
+> -
+> -//#define HPET_DEBUG
+> -#ifdef HPET_DEBUG
+> -#define DPRINTF printf
+> -#else
+> -#define DPRINTF(...)
+> -#endif
+> +#include "trace.h"
 >
-> On Tue, Nov 21, 2023 at 10:15=E2=80=AFAM Eric Blake <eblake@redhat.com> w=
-rote:
-> >
-> > On Mon, Nov 20, 2023 at 11:20:52AM +0100, Philippe Mathieu-Daud=C3=A9 w=
-rote:
-> > > (Cc'ing Eric)
-> > >
-> > > On 20/11/23 10:28, Michael S. Tsirkin wrote:
-> > > > On Sun, Nov 19, 2023 at 07:34:58PM -0600, Dan Hoffman wrote:
-> > > > > As far as I can tell, yes. Any optimization level above O0 does n=
-ot have this
-> > > > > issue (on this version of Clang, at least)
-> > > >
-> > > > Aha, this is with -O0. That makes sense.
-> > >
-> > > But then, why the other cases aren't problematic?
-> > >
-> > > $ git grep -E ' (&&|\|\|) !?kvm_enabled'
-> > > hw/arm/boot.c:1228:    assert(!(info->secure_board_setup && kvm_enabl=
-ed()));
-> >
-> > This one's obvious; no kvm_*() calls in the assert.
-> >
-> > > hw/i386/microvm.c:270:        (mms->rtc =3D=3D ON_OFF_AUTO_AUTO &&
-> > > !kvm_enabled())) {
-> >
-> > Ones like this require reading context to see whether the if() block
-> > guarded any kvm_*() calls for the linker to elide - but still a fairly
-> > easy audit.
-> >
-> > > > >
-> > > > >      I'm surprised the order of conditions matters for code elisi=
-on...
-> > > > >
-> > > > >      > Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
-> > > > >      > ---
-> > > > >      >   hw/i386/x86.c | 15 ++++++++++++---
-> > > > >      >   1 file changed, 12 insertions(+), 3 deletions(-)
-> > > > >      >
-> > > > >      > diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-> > > > >      > index b3d054889bb..2b6291ad8d5 100644
-> > > > >      > --- a/hw/i386/x86.c
-> > > > >      > +++ b/hw/i386/x86.c
-> > > > >      > @@ -131,8 +131,12 @@ void x86_cpus_init(X86MachineState *x=
-86ms, int
-> > > > >      default_cpu_version)
-> > > > >      >       /*
-> > > > >      >        * Can we support APIC ID 255 or higher?  With KVM, =
-that requires
-> > > > >      >        * both in-kernel lapic and X2APIC userspace API.
-> > > > >      > +     *
-> > > > >      > +     * kvm_enabled() must go first to ensure that kvm_* r=
-eferences are
-> > > > >      > +     * not emitted for the linker to consume (kvm_enabled=
-() is
-> > > > >      > +     * a literal `0` in configurations where kvm_* aren't=
- defined)
-> > > > >      >        */
-> > > > >      > -    if (x86ms->apic_id_limit > 255 && kvm_enabled() &&
-> > > > >      > +    if (kvm_enabled() && x86ms->apic_id_limit > 255 &&
-> > > > >      >           (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic(=
-))) {
-> >
-> > Indeed, if clang -O0 treats 'if (cond1 && 0 && cond2)' differently
-> > than 'if (0 && cond1 && cond2)' for purposes of eliding the code for
-> > cond2, that seems like a blatant missed optimization that we should be
-> > reporting to the clang folks.
-> >
-> > While this patch may solve the immediate issue, it does not scale - if
-> > we ever have two separate guards that can both be independently
-> > hard-coded to 0 based on configure-time decisions, but which are both
-> > used as guards in the same expression, it will become impossible to
-> > avoid a '(cond1 && 0 && cond2)' scenario across all 4 possible
-> > configurations of those two guards.
-> >
-> > I have no objection to the patch, but it would be nice if the commit
-> > message could point to a clang bug report, if one has been filed.
-> >
-> > --
-> > Eric Blake, Principal Software Engineer
-> > Red Hat, Inc.
-> > Virtualization:  qemu.org | libguestfs.org
-> >
+>  #define HPET_MSI_SUPPORT        0
+>
+> @@ -431,7 +425,7 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr ad=
+dr,
+>      HPETState *s =3D opaque;
+>      uint64_t cur_tick, index;
+>
+> -    DPRINTF("qemu: Enter hpet_ram_readl at %" PRIx64 "\n", addr);
+> +    trace_hpet_ram_read(addr);
+>      index =3D addr;
+>      /*address range of all TN regs*/
+>      if (index >=3D 0x100 && index <=3D 0x3ff) {
+> @@ -439,7 +433,7 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr ad=
+dr,
+>          HPETTimer *timer =3D &s->timer[timer_id];
+>
+>          if (timer_id > s->num_timers) {
+> -            DPRINTF("qemu: timer id out of range\n");
+> +            trace_hpet_timer_id_out_of_range(timer_id);
+>              return 0;
+>          }
+>
+> @@ -457,7 +451,7 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr ad=
+dr,
+>          case HPET_TN_ROUTE + 4:
+>              return timer->fsb >> 32;
+>          default:
+> -            DPRINTF("qemu: invalid hpet_ram_readl\n");
+> +            trace_hpet_ram_read_invalid();
+>              break;
+>          }
+>      } else {
+> @@ -469,7 +463,7 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr ad=
+dr,
+>          case HPET_CFG:
+>              return s->config;
+>          case HPET_CFG + 4:
+> -            DPRINTF("qemu: invalid HPET_CFG + 4 hpet_ram_readl\n");
+> +            trace_hpet_invalid_hpet_cfg(4);
+>              return 0;
+>          case HPET_COUNTER:
+>              if (hpet_enabled(s)) {
+> @@ -477,7 +471,7 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr ad=
+dr,
+>              } else {
+>                  cur_tick =3D s->hpet_counter;
+>              }
+> -            DPRINTF("qemu: reading counter  =3D %" PRIx64 "\n", cur_tick=
+);
+> +            trace_hpet_ram_read_reading_counter(0, cur_tick);
+>              return cur_tick;
+>          case HPET_COUNTER + 4:
+>              if (hpet_enabled(s)) {
+> @@ -485,12 +479,12 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr =
+addr,
+>              } else {
+>                  cur_tick =3D s->hpet_counter;
+>              }
+> -            DPRINTF("qemu: reading counter + 4  =3D %" PRIx64 "\n", cur_=
+tick);
+> +            trace_hpet_ram_read_reading_counter(4, cur_tick);
+>              return cur_tick >> 32;
+>          case HPET_STATUS:
+>              return s->isr;
+>          default:
+> -            DPRINTF("qemu: invalid hpet_ram_readl\n");
+> +            trace_hpet_ram_read_invalid();
+>              break;
+>          }
+>      }
+> @@ -504,8 +498,7 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
+>      HPETState *s =3D opaque;
+>      uint64_t old_val, new_val, val, index;
+>
+> -    DPRINTF("qemu: Enter hpet_ram_writel at %" PRIx64 " =3D 0x%" PRIx64 =
+"\n",
+> -            addr, value);
+> +    trace_hpet_ram_write(addr, value);
+>      index =3D addr;
+>      old_val =3D hpet_ram_read(opaque, addr, 4);
+>      new_val =3D value;
+> @@ -515,14 +508,14 @@ static void hpet_ram_write(void *opaque, hwaddr add=
+r,
+>          uint8_t timer_id =3D (addr - 0x100) / 0x20;
+>          HPETTimer *timer =3D &s->timer[timer_id];
+>
+> -        DPRINTF("qemu: hpet_ram_writel timer_id =3D 0x%x\n", timer_id);
+> +        trace_hpet_ram_write_timer_id(timer_id);
+>          if (timer_id > s->num_timers) {
+> -            DPRINTF("qemu: timer id out of range\n");
+> +            trace_hpet_timer_id_out_of_range(timer_id);
+>              return;
+>          }
+>          switch ((addr - 0x100) % 0x20) {
+>          case HPET_TN_CFG:
+> -            DPRINTF("qemu: hpet_ram_writel HPET_TN_CFG\n");
+> +            trace_hpet_ram_write_tn_cfg();
+>              if (activating_bit(old_val, new_val, HPET_TN_FSB_ENABLE)) {
+>                  update_irq(timer, 0);
+>              }
+> @@ -540,10 +533,10 @@ static void hpet_ram_write(void *opaque, hwaddr add=
+r,
+>              }
+>              break;
+>          case HPET_TN_CFG + 4: // Interrupt capabilities
+> -            DPRINTF("qemu: invalid HPET_TN_CFG+4 write\n");
+> +            trace_hpet_ram_write_invalid_tn_cfg(4);
+>              break;
+>          case HPET_TN_CMP: // comparator register
+> -            DPRINTF("qemu: hpet_ram_writel HPET_TN_CMP\n");
+> +            trace_hpet_ram_write_tn_cmp(0);
+>              if (timer->config & HPET_TN_32BIT) {
+>                  new_val =3D (uint32_t)new_val;
+>              }
+> @@ -566,7 +559,7 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
+>              }
+>              break;
+>          case HPET_TN_CMP + 4: // comparator register high order
+> -            DPRINTF("qemu: hpet_ram_writel HPET_TN_CMP + 4\n");
+> +            trace_hpet_ram_write_tn_cmp(4);
+>              if (!timer_is_periodic(timer)
+>                  || (timer->config & HPET_TN_SETVAL)) {
+>                  timer->cmp =3D (timer->cmp & 0xffffffffULL) | new_val <<=
+ 32;
+> @@ -591,7 +584,7 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
+>              timer->fsb =3D (new_val << 32) | (timer->fsb & 0xffffffff);
+>              break;
+>          default:
+> -            DPRINTF("qemu: invalid hpet_ram_writel\n");
+> +            trace_hpet_ram_write_invalid();
+>              break;
+>          }
+>          return;
+> @@ -631,7 +624,7 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
+>              }
+>              break;
+>          case HPET_CFG + 4:
+> -            DPRINTF("qemu: invalid HPET_CFG+4 write\n");
+> +            trace_hpet_invalid_hpet_cfg(4);
+>              break;
+>          case HPET_STATUS:
+>              val =3D new_val & s->isr;
+> @@ -643,24 +636,20 @@ static void hpet_ram_write(void *opaque, hwaddr add=
+r,
+>              break;
+>          case HPET_COUNTER:
+>              if (hpet_enabled(s)) {
+> -                DPRINTF("qemu: Writing counter while HPET enabled!\n");
+> +                trace_hpet_ram_write_counter_write_while_enabled();
+>              }
+>              s->hpet_counter =3D
+>                  (s->hpet_counter & 0xffffffff00000000ULL) | value;
+> -            DPRINTF("qemu: HPET counter written. ctr =3D 0x%" PRIx64 " -=
+> "
+> -                    "%" PRIx64 "\n", value, s->hpet_counter);
+> +            trace_hpet_ram_write_counter_written(0, value, s->hpet_count=
+er);
+>              break;
+>          case HPET_COUNTER + 4:
+> -            if (hpet_enabled(s)) {
+> -                DPRINTF("qemu: Writing counter while HPET enabled!\n");
+> -            }
+> +            trace_hpet_ram_write_counter_write_while_enabled();
+>              s->hpet_counter =3D
+>                  (s->hpet_counter & 0xffffffffULL) | (((uint64_t)value) <=
+< 32);
+> -            DPRINTF("qemu: HPET counter + 4 written. ctr =3D 0x%" PRIx64=
+ " -> "
+> -                    "%" PRIx64 "\n", value, s->hpet_counter);
+> +            trace_hpet_ram_write_counter_written(4, value, s->hpet_count=
+er);
+>              break;
+>          default:
+> -            DPRINTF("qemu: invalid hpet_ram_writel\n");
+> +            trace_hpet_ram_write_invalid();
+>              break;
+>          }
+>      }
+> diff --git a/hw/timer/trace-events b/hw/timer/trace-events
+> index 3eccef83858..474831a8c3b 100644
+> --- a/hw/timer/trace-events
+> +++ b/hw/timer/trace-events
+> @@ -99,3 +99,19 @@ sifive_pwm_write(uint64_t data, uint64_t offset) "Writ=
+e 0x%" PRIx64 " at address
+>  sh_timer_start_stop(int enable, int current) "%d (%d)"
+>  sh_timer_read(uint64_t offset) "tmu012_read 0x%" PRIx64
+>  sh_timer_write(uint64_t offset, uint64_t value) "tmu012_write 0x%" PRIx6=
+4 " 0x%08" PRIx64
+> +
+> +# hpet.c
+> +hpet_timer_id_out_of_range(uint8_t timer_id) "timer id out of range: 0x%=
+" PRIx8
+> +hpet_invalid_hpet_cfg(uint8_t reg_off) "invalid HPET_CFG + 0x%x" PRIx8
+> +hpet_ram_read(uint64_t addr) "enter hpet_ram_readl at 0x%" PRIx64
+> +hpet_ram_read_reading_counter(uint8_t reg_off, uint64_t cur_tick) "readi=
+ng counter + 0x%" PRIx8 " =3D 0x%" PRIx64
+> +hpet_ram_read_invalid(void) "invalid hpet_ram_readl"
+> +hpet_ram_write(uint64_t addr, uint64_t value) "enter hpet_ram_writel at =
+0x%" PRIx64 " =3D 0x%" PRIx64
+> +hpet_ram_write_timer_id(uint64_t timer_id) "hpet_ram_writel timer_id =3D=
+ 0x%" PRIx64
+> +hpet_ram_write_tn_cfg(void) "hpet_ram_writel HPET_TN_CFG"
+> +hpet_ram_write_invalid_tn_cfg(uint8_t reg_off) "invalid HPET_TN_CFG + %"=
+ PRIx8 " write"
+> +hpet_ram_write_tn_cmp(uint8_t reg_off) "hpet_ram_writel HPET_TN_CMP + %"=
+ PRIx8
+> +hpet_ram_write_invalid(void) "invalid hpet_ram_writel"
+> +hpet_ram_write_counter_write_while_enabled(void) "Writing counter while =
+HPET enabled!"
+> +hpet_ram_write_counter_written(uint8_t reg_off, uint64_t value, uint64_t=
+ counter) "HPET counter + %" PRIx8 "written. crt =3D 0x%" PRIx64 " -> 0x%" =
+PRIx64
+> +
+> --
+> 2.40.1
+>
 
