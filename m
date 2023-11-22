@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B3F7F3D77
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BFDD7F3D76
 	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 06:39:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5fwW-0002ex-CZ; Wed, 22 Nov 2023 00:38:32 -0500
+	id 1r5fwZ-0002fW-EQ; Wed, 22 Nov 2023 00:38:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5fwT-0002eW-Po
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 00:38:29 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1r5fwX-0002f8-DM
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 00:38:33 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1r5fwS-0007A5-4W
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 00:38:29 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1cc0e78ec92so41715255ad.3
- for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 21:38:27 -0800 (PST)
+ id 1r5fwV-0007AN-Rq
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 00:38:33 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1cc394f4cdfso47538345ad.0
+ for <qemu-devel@nongnu.org>; Tue, 21 Nov 2023 21:38:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700631506; x=1701236306; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1700631510; x=1701236310; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lLbOAJzLWl9ZAwxrRE8Vm/IEKsPP3IN/EvETdsopNPM=;
- b=AzlYFhlN6rL7snbYvcyktuUHb+1KakSaICkcu6JKca7lc9oPQoB+PYCVafi4zgdbQ7
- ZgxG+MZaBT1cWn2J2I3iufIhxB96NPolq3u5atGplvnodYl7LyoEPgT9OH7hPeNpSM/w
- DYWoFU4mSkaVpt2bPIJrOPbMkPikmvX3mDu7I1zCn+Y9vXn0vIjsjzYd78nPpi5qGp/h
- n9EdkxB2tWrYixY8ho2AdnpvM/cg4zDqvhp6WdBZMI8L6AtFRwBl+hKwghMbpGmqY//m
- OjZMHw4lGWgoY2KDi795oGMpDo9eki805wM4gcy0QnBkEnLrZfTzNL/Hboa7IouybUM9
- mGhA==
+ bh=xiA82anXAb6GFv8v+4BJl2QNe9543bv58UGYFn8y2Jk=;
+ b=Bciz533nJfIgOdaG8cXF9P4f8Ce/y9MoVyt26uHAqAh0LOz/TjLLSwRgGhqqWsauVy
+ zTdRj1XxL4Je44qkw79KPmFiPeKLVHn+jv5lcZfW5dY526gIKWlXgMs/z4hDa7jPBLC5
+ kCDTPF4cXdwjhx9+DyjV18+CiF2dgUmBn65WarVYfrLpQMykPXK0pkq7ZK+mgIoQwwpC
+ 2/ulEAZx/C9UyTjBscwP8Wx5JGouQEwoWRLiCUYzW/tbptmJfVAFN0eM8hHr4J5M1VLI
+ pGfHwa3xELXlnMmDAWpowfAQiaP9Cqq6juQ+W9lOBI8jJbqsR+UjxHvuZyyD4D4iBY8I
+ UDgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700631506; x=1701236306;
+ d=1e100.net; s=20230601; t=1700631510; x=1701236310;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lLbOAJzLWl9ZAwxrRE8Vm/IEKsPP3IN/EvETdsopNPM=;
- b=h0pJ/z1jCGkE3SvCc1xrTh+K8zHCxZumQM0yhfoJbyuJUDDj023iZGYW/3Gp22Kysb
- 64bzW9JluMJRN2T/AfZ5Mtr/VZnHPiPMPlu3Q9a+tM1TjZHobWrhmKRP12bocmwwTqVg
- zfxnzk5o7kBHWe4wtWSIFg7c+IxsqS3NOPsSjzf7lGJRyfEBT7xg+P5VGdb6zi+/O0tB
- v9KU2u1awlKFk1qxtiD7nJRAOgZl7AnhfoUAeZmBouOeN+1QgGj7npoK/r/o2cFf49Iw
- gYPLppo5YxGG6lJWQaQUkb61DT47S+UVWviJvS4TswrWm41oT0iADORrrE2mcK9Syozt
- 8Xvg==
-X-Gm-Message-State: AOJu0YxlSbSEdPu39GWechVuMrzbgcbMvV3W4rH2JVl1yFiAhTKq6JGk
- YwDFc9l7NaJyLarZkvYtm3GwSAERE0u9ig==
-X-Google-Smtp-Source: AGHT+IFnKbjPXvvOYxNGxrSSRvYkv990v8CTCH8ZBogx4CavNedlVP+zJZQMkgnDcyf8XS64y4C2yg==
-X-Received: by 2002:a17:903:32cb:b0:1c9:d0a0:ee88 with SMTP id
- i11-20020a17090332cb00b001c9d0a0ee88mr1413388plr.62.1700631506374; 
- Tue, 21 Nov 2023 21:38:26 -0800 (PST)
+ bh=xiA82anXAb6GFv8v+4BJl2QNe9543bv58UGYFn8y2Jk=;
+ b=OS8FOIMhmfyxOOu2i/XQiu1zvaK2MlKctdp2CpRKUgBf0vn3TS6iHT0hd0Nf1Uv8Fg
+ qHwuevfijFIjmKg9QwXqAv74VlaRwTFa2RpNYlIvh8XN0dZCmKxPsaKoT9+SLlL1bDIF
+ uaXtQ+S7geYJt70B2CCNRyrQzapQhwOLrW0kvVGhKGPfbMOZUYjXPjRTAcf6dJ2JKQaZ
+ 6N/OjnBRUPt2eUrrBqBoTidpEZKb+N9dPAB9UHzVHhG7BlLx/Av88G9eScDqpG4o3Hi4
+ /qAN2E2vjuVRyC9WOkWiwwpr4AqTtACmpzj0EFBaCj7baqB40963T1LZyJpLO+ZjGTn4
+ 0BXw==
+X-Gm-Message-State: AOJu0YxJgehBoMlXMXfw0MoAWZxqRyMSccAySioTx4C7OT3a0qrZ+VMn
+ L7zDi9SaCnLWHrKLE2nOM/JEdQl+gNUdNg==
+X-Google-Smtp-Source: AGHT+IFk9skq27AH5cRDmyFKc+Ks94tA3ZOAN5bYWhBeu+U3nsDQEge4JCsNRiwMB/3aYtv6hwOv5w==
+X-Received: by 2002:a17:902:7002:b0:1cc:29ef:df81 with SMTP id
+ y2-20020a170902700200b001cc29efdf81mr1134765plk.41.1700631510050; 
+ Tue, 21 Nov 2023 21:38:30 -0800 (PST)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- u12-20020a170903124c00b001c0a4146961sm8923952plh.19.2023.11.21.21.38.23
+ u12-20020a170903124c00b001c0a4146961sm8923952plh.19.2023.11.21.21.38.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Nov 2023 21:38:25 -0800 (PST)
+ Tue, 21 Nov 2023 21:38:29 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
- =?UTF-8?q?Rom=C3=A1n=20C=C3=A1rdenas?= <rcardenas.rod@gmail.com>,
+Cc: alistair23@gmail.com, Ivan Klokov <ivan.klokov@syntacore.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 4/6] riscv: Fix SiFive E CLINT clock frequency
-Date: Wed, 22 Nov 2023 15:37:58 +1000
-Message-ID: <20231122053800.1531799-5-alistair.francis@wdc.com>
+Subject: [PULL 5/6] target/riscv/cpu_helper.c: Invalid exception on MMU
+ translation stage
+Date: Wed, 22 Nov 2023 15:37:59 +1000
+Message-ID: <20231122053800.1531799-6-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231122053800.1531799-1-alistair.francis@wdc.com>
 References: <20231122053800.1531799-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,40 +98,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Román Cárdenas <rcardenas.rod@gmail.com>
+From: Ivan Klokov <ivan.klokov@syntacore.com>
 
-If you check the manual of SiFive E310 (https://cdn.sparkfun.com/assets/7/f/0/2/7/fe310-g002-manual-v19p05.pdf),
-you can see in Figure 1 that the CLINT is connected to the real time clock, which also feeds the AON peripheral (they share the same clock).
-In page 43, the docs also say that the timer registers of the CLINT count ticks from the rtcclk.
+According to RISCV privileged spec sect. 5.3.2 Virtual Address Translation Process
+access-fault exceptions may raise only after PMA/PMP check. Current implementation
+generates an access-fault for mbare mode even if there were no PMA/PMP errors.
+This patch removes the erroneous MMU mode check and generates an access-fault
+exception based on the pmp_violation flag only.
 
-I am currently playing with bare metal applications both in QEMU and a physical SiFive E310 board and
-I confirm that the CLINT clock in the physical board runs at 32.768 kHz.
-In QEMU, the same app produces a completely different outcome, as sometimes a new CLINT interrupt is triggered before finishing other tasks.
+Fixes: 1448689c7b ("target/riscv: Allow specifying MMU stage")
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1978
-
-Signed-off-by: Rom\ufffd\ufffdn C\ufffd\ufffdrdenas <rcardenas.rod@gmail.com>
+Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20231117082840.55705-1-rcardenas.rod@gmail.com>
+Message-ID: <20231121071757.7178-2-ivan.klokov@syntacore.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/sifive_e.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/riscv/cpu_helper.c | 30 +++++++-----------------------
+ 1 file changed, 7 insertions(+), 23 deletions(-)
 
-diff --git a/hw/riscv/sifive_e.c b/hw/riscv/sifive_e.c
-index 0d37adc542..87d9602383 100644
---- a/hw/riscv/sifive_e.c
-+++ b/hw/riscv/sifive_e.c
-@@ -225,7 +225,7 @@ static void sifive_e_soc_realize(DeviceState *dev, Error **errp)
-             RISCV_ACLINT_SWI_SIZE,
-         RISCV_ACLINT_DEFAULT_MTIMER_SIZE, 0, ms->smp.cpus,
-         RISCV_ACLINT_DEFAULT_MTIMECMP, RISCV_ACLINT_DEFAULT_MTIME,
--        RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ, false);
-+        SIFIVE_E_LFCLK_DEFAULT_FREQ, false);
-     sifive_e_prci_create(memmap[SIFIVE_E_DEV_PRCI].base);
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index b7af69de53..9ff0952e46 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -1143,47 +1143,31 @@ static void raise_mmu_exception(CPURISCVState *env, target_ulong address,
+                                 bool two_stage_indirect)
+ {
+     CPUState *cs = env_cpu(env);
+-    int page_fault_exceptions, vm;
+-    uint64_t stap_mode;
+-
+-    if (riscv_cpu_mxl(env) == MXL_RV32) {
+-        stap_mode = SATP32_MODE;
+-    } else {
+-        stap_mode = SATP64_MODE;
+-    }
+-
+-    if (first_stage) {
+-        vm = get_field(env->satp, stap_mode);
+-    } else {
+-        vm = get_field(env->hgatp, stap_mode);
+-    }
+-
+-    page_fault_exceptions = vm != VM_1_10_MBARE && !pmp_violation;
  
-     /* AON */
+     switch (access_type) {
+     case MMU_INST_FETCH:
+         if (env->virt_enabled && !first_stage) {
+             cs->exception_index = RISCV_EXCP_INST_GUEST_PAGE_FAULT;
+         } else {
+-            cs->exception_index = page_fault_exceptions ?
+-                RISCV_EXCP_INST_PAGE_FAULT : RISCV_EXCP_INST_ACCESS_FAULT;
++            cs->exception_index = pmp_violation ?
++                RISCV_EXCP_INST_ACCESS_FAULT : RISCV_EXCP_INST_PAGE_FAULT;
+         }
+         break;
+     case MMU_DATA_LOAD:
+         if (two_stage && !first_stage) {
+             cs->exception_index = RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT;
+         } else {
+-            cs->exception_index = page_fault_exceptions ?
+-                RISCV_EXCP_LOAD_PAGE_FAULT : RISCV_EXCP_LOAD_ACCESS_FAULT;
++            cs->exception_index = pmp_violation ?
++                RISCV_EXCP_LOAD_ACCESS_FAULT : RISCV_EXCP_LOAD_PAGE_FAULT;
+         }
+         break;
+     case MMU_DATA_STORE:
+         if (two_stage && !first_stage) {
+             cs->exception_index = RISCV_EXCP_STORE_GUEST_AMO_ACCESS_FAULT;
+         } else {
+-            cs->exception_index = page_fault_exceptions ?
+-                RISCV_EXCP_STORE_PAGE_FAULT :
+-                RISCV_EXCP_STORE_AMO_ACCESS_FAULT;
++            cs->exception_index = pmp_violation ?
++                RISCV_EXCP_STORE_AMO_ACCESS_FAULT :
++                RISCV_EXCP_STORE_PAGE_FAULT;
+         }
+         break;
+     default:
 -- 
 2.42.0
 
