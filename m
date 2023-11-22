@@ -2,80 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AFCD7F4581
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 13:12:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E77577F4587
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 13:16:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5m58-0006IZ-VS; Wed, 22 Nov 2023 07:11:51 -0500
+	id 1r5m9K-0007iG-QS; Wed, 22 Nov 2023 07:16:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r5m56-0006BJ-7p
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 07:11:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berto@igalia.com>)
+ id 1r5m8x-0007gW-H5; Wed, 22 Nov 2023 07:15:47 -0500
+Received: from fanzine.igalia.com ([178.60.130.6] helo=fanzine2.igalia.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1r5m54-0005n6-Jl
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 07:11:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700655105;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=bbLjfYTSjryIl+booM3xjdnEY+dbZXPfA1LjMgzUFuQ=;
- b=FwybCNPwDzWx5V30/O01bFY3Xn+zJuRiFLCu4ERL/FNYM8oKcBJ3BsTiz0+5VVLcwrOurd
- hqJHLD4UsSvOguN0A312iYsQJuWvecSm3N+oB2swTq+kRjhXfxXI4tA8GCHaGIheJDNZO3
- BTqpMeCzo0YztMZnBxH0+kMOwpiFLVA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-113-mk4UYr5AMiufNNdo_eaHrQ-1; Wed, 22 Nov 2023 07:11:41 -0500
-X-MC-Unique: mk4UYr5AMiufNNdo_eaHrQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1B1B580C346;
- Wed, 22 Nov 2023 12:11:41 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id BB599492BFA;
- Wed, 22 Nov 2023 12:11:40 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 0C3FF1800929; Wed, 22 Nov 2023 13:11:39 +0100 (CET)
-Date: Wed, 22 Nov 2023 13:11:39 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Laszlo Ersek <lersek@redhat.com>
-Cc: Alexander Graf <graf@amazon.com>, qemu-devel@nongnu.org, 
- qemu-arm@nongnu.org, Eric Blake <eblake@redhat.com>,
- Thomas Huth <thuth@redhat.com>, 
- Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, 
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Markus Armbruster <armbru@redhat.com>, Ard Biesheuvel <ardb@kernel.org>,
- mimoja@mimoja.de
-Subject: Re: [PATCH 00/16] hw/uefi: add uefi variable service
-Message-ID: <blrhg7z7jbjsa5orsb2glu6yxjo3ymlj466zyg2xnsigbzqfju@a62su45vvyoc>
-References: <20231115151242.184645-1-kraxel@redhat.com>
- <9db15906-9474-4a6e-82a9-5275c72cf2b4@amazon.com>
- <nxzed5dhgjpn3fafjttocvxe6ztxxf5xhghaqncpdxup6y7o7y@47i3eyoehio2>
- <7bfb52e6-3698-7c44-5927-31d47d031d57@redhat.com>
+ (Exim 4.90_1) (envelope-from <berto@igalia.com>)
+ id 1r5m8v-0006kg-ED; Wed, 22 Nov 2023 07:15:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+ Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=l6UqClNkHI9Ss1/AhKfveyyRus2UiUOzHKfP+gre8w0=; b=VgvT6a9BaEERDtEFxwTjDaukBj
+ KUvbQppBCArtKQpCDdMEpWlFEqrS8uNsDJ5+RWlj7M3wAAqXXRDqDr63dss4O5D69OL2jrJCjV3Nj
+ oHI/y5CgJThPNFCA04GcYjjHVWQ6w1CdKrcmngKeDpf0djV73e8EwOQlrpniyXqVNbOu/B8ZK3h0/
+ BLi4Sb7tICWXOV1XqoZFLa/UKbS11E52rxViNqnAZRslVkdRU92ChsOlDGE9fz7M4ESCi7vMEfE/E
+ A5Xc/a9huoqkfB3CZCoFQ9IeK7+DZqXx7AfeKGYYR1LlaMp/iYTwLQr53HZgUW/xSb4URWpoga7Z5
+ zvVGcvCA==;
+Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
+ by fanzine2.igalia.com with esmtps 
+ (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1r5m8k-005xer-Fi; Wed, 22 Nov 2023 13:15:34 +0100
+Received: from gate.service.igalia.com ([192.168.21.52])
+ by mail.igalia.com with esmtp (Exim)
+ id 1r5m8i-00GR4n-A6; Wed, 22 Nov 2023 13:15:34 +0100
+Received: from berto by gate.service.igalia.com with local (Exim 4.96)
+ (envelope-from <berto@igalia.com>) id 1r5m8i-00GPs2-0S;
+ Wed, 22 Nov 2023 12:15:32 +0000
+Date: Wed, 22 Nov 2023 12:15:32 +0000
+From: Alberto Garcia <berto@igalia.com>
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: Converting images to stdout
+Message-ID: <ZV3w5A-8Kid-9-5W@igalia.com>
+References: <ZVZV2ZKcxoSargry@zeus.local>
+ <6hipeyoml7qpxcycxbydmldohcwsle56tpeavzddpciycb4vfm@gmr7uf56skye>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7bfb52e6-3698-7c44-5927-31d47d031d57@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+In-Reply-To: <6hipeyoml7qpxcycxbydmldohcwsle56tpeavzddpciycb4vfm@gmr7uf56skye>
+Received-SPF: pass client-ip=178.60.130.6; envelope-from=berto@igalia.com;
+ helo=fanzine2.igalia.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,42 +75,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  Hi,
-
-> Even during the present patch review, while going through only the
-> headers thus far, I've already said at least twice that we're going to
-> have to be super careful about integer overflows and buffer overflows.
-> Any such problem is no longer a guest<->guest privilege boundary breach
-> but a guest<->host one.
+On Mon, Nov 20, 2023 at 05:23:27PM -0600, Eric Blake wrote:
+> > I'm interested in this use case, and I think that the method would be
+> > as simple as this:
+> > 
+> > 1. Decide a cluster size for the output qcow2 file.
+> > 2. Read the input file once to determine which clusters need to be
+> >    allocated in the output file and which ones don't.
+> > 3. That infomation is enough to determine the number and contents of
+> >    the refcount table, refcount blocks, and L1/L2 tables.
+> > 4. Write the qcow2 header + metadata + allocated data to stdout.
 > 
-> Not sure if the suggested remedy ("write it in Rust") is practical.
+> It may also be possible to write a qcow2 file that uses the external
+> data bit, so that you are only writing the qcow2 header + metadata,
+> and reusing the existing input file as the external data.
 
-It should prevent certain classes of bugs such as buffer overflows.  Not
-sure how much compromises you have to make (i.e. 'unsafe' code sections)
-for a C library interface, so you can link the lib into qemu.  And of
-course it wouldn't automatically stop logic errors.
+Sure, although I'm not so certain about the use case here... also, the
+input file might not be raw.
 
-> > But I'm open to discuss other options.
+> > Because this would be an external tool it would only support
+> > a qcow2 file with the default options. Other features like
+> > compression would be out of scope.
 > 
-> A selfish aspect: given that I've been reviewing this set, should I
-> consider it a proof of concept / prototype, or something we might want
-> to build upon, i.e., should I assume we'd put these foundations into
-> production at some point? I've been reviewing the series with the latter
-> in mind, but if that's not correct, I should probably adjust my pedantry
-> knob.
+> Why is compression not viable?  Are you worried that the qcow2
+> metadata (such as refcounts) becomes too complex?
 
-In case we continue the C route I certainly expect that this patch set
-will turn into something production-ready, and I've tried to code things
-up accordingly.  Copy buffers so the guest can't modify them while qemu
-processes them, carefully check length fields, ...
+Yeah, mostly... also, since the output file would be streamable it's
+trivial to pipe it through gzip or whatever.
 
-> at least with virtiofsd, we had gone with a C impl first, and only then
-> with a Rust impl...
+> I've also wondered how easy or hard it would be to write a tool that
+> can take an existing qcow2 file and defragment and/or compress it
+> in-place (rather than having to copy it to a second qcow2 file).
 
-And virtiofsd was easier because it is a completely separate process,
-not something you want link into qemu ...
+That sounds a bit more complex, but I guess it's doable. But not
+something that I need atm :)
 
-take care,
-  Gerd
-
+Berto
 
