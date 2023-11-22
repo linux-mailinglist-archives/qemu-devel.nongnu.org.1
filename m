@@ -2,88 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 500027F5052
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 20:13:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA3DA7F504D
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 20:13:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5s0b-0004BM-M3; Wed, 22 Nov 2023 13:31:34 -0500
+	id 1r5s5b-0004nc-DJ; Wed, 22 Nov 2023 13:36:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5s0K-0004A3-1u
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:31:16 -0500
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5s5Z-0004nS-If
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:36:41 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5s09-0004Yz-Sw
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:31:14 -0500
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2c503da4fd6so996151fa.1
- for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 10:31:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5s5V-0005Sp-MY
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:36:39 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40790b0a224so417725e9.0
+ for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 10:36:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700677862; x=1701282662; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=E7103XOFxT5bJSMqrbJRnaAZtCqt8Oh3G3I/DOAsQEM=;
- b=XudJ9G9i3I3FSZCHQA6DVEod88neTJm5dbjN+lB3MnansF4zmSW7DdweYcwUnYHypc
- CoOvqM4jd4EjaxKeFhhCW2GRHB2/aWQFTntHwKCEwKOPUOsnMVLoL134zJmjHsAq4oFL
- Dw1P3hTnZuqvUIabYn0Jhzwk6evKhY0l5hx5Oy2RLQoA/UczR9cqoUb3i3ksNrxJYHSY
- ZnBnwXQaTz3oRPSvccFbKDKuqjUe5yNAfTrxSAuV1b6RZvFwMjFXgn5vk9vAr+qFCFuc
- NwV4mnj/JZYYcwU7XUaKRxLqi/zxu3NnGO7RAIly0tWd1xabcfv7HjPMIQhsXWhnSNOZ
- VT7A==
+ d=linaro.org; s=google; t=1700678196; x=1701282996; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=4Ud3zX2bU4EqVfLW+4Sdcoocw+g/25vvatzdQD66NIk=;
+ b=nMbdMEJjz6/DW5dukQNhqFwRl5/yR4FS4pBHnX+oDt8aFDdqUijK00zbEKXaA41Sti
+ 51Zh/zHmG9Iw88gXlJ5v8sZQ76K2tW9pX8H+/8G6x53A8A6uyS8P84bAOtlD81nSnwB5
+ PY+hSDziouzMTGbRcoVSgU4KjKdtMXqSLWdq1dkP5HI4DTB1RanmrOFzOIBPR8yqPfrY
+ ZLMq5e29iWZqeoInGIwvZL6myYNbKQCJBK50NRCYkjSx3daRl0EZb0CS7LYucDE7MZEw
+ uZDYd4psbpPQXMQZ8W4JTHSdt8ZJq3yBMT/GQRk6dyVNZ4S2I4Hc8i7k4R9L0EpZGORM
+ 2wYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700677862; x=1701282662;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=E7103XOFxT5bJSMqrbJRnaAZtCqt8Oh3G3I/DOAsQEM=;
- b=Qvho+TOsW60c+ZNOyGp1O8bnO0xpBCc5n7ZtTPM7kWCBHxth+0pORJ2TEbgs+tk0RW
- DAfVfNDOzZrcyz35AjHibF+SkhxbOjuQnMtOGp39RjJLb0UcfcjktpGCZiven8KhKMzd
- yWVNw0wGzF5PPRZry8zqob5fEuNQwyqEGfO3s127qzI47H/czAiUE7bHrfGZPeXu49kI
- M6RptCdihz3QzxAJaMEcVYaP4jy4ButFOAWiTKsk0iR6j2TRLOdEHUNscY9A4i7q9TMv
- +NoG+VfiZy4AlGY72x7EXf4FmKvYgzXu+/Mr53SWAmVp9Vj9rt2Z6PMZEGBwIMTzcE5h
- /J4g==
-X-Gm-Message-State: AOJu0YzQ32cTLDoYFM2Pc/3bPXK2pOX7H1VYwP4ANGeGjQhoTAkWnYDp
- ZZsOuoSn5oJVddhBuYbgGIaMm3V7+zVBGUM3sJM=
-X-Google-Smtp-Source: AGHT+IHIV10IErfFC07Es1yMjpQsHxoU13Fz1+eiamPARf56zp7ZGthltp+wH8DZLOe8g00EO/RHvQ==
-X-Received: by 2002:a05:651c:21a:b0:2c8:7c22:97e2 with SMTP id
- y26-20020a05651c021a00b002c87c2297e2mr2064877ljn.45.1700677861838; 
- Wed, 22 Nov 2023 10:31:01 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700678196; x=1701282996;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4Ud3zX2bU4EqVfLW+4Sdcoocw+g/25vvatzdQD66NIk=;
+ b=rGlQCClkZr4iMT9cMtbhctXV80+cpxuY4VGwOgdJni5GwRyZ1g/f0Q+PEnpICQPoqo
+ AyDhxdum4YkeQQBkYnZBjBgBIarFZL/j41EMG5JfDP6P7BLSHmuvOuSQ3p+AuJ+Zlymd
+ ODTmLwdDMnUZmojQzJ5YzewRanBRfj9cLmKtb+76SCnOPXCigjO8TgNlm7P9tu4GYyHp
+ /9rC5dZU2w9wKodwJ7k4MIAUMGN+NcK4uvg9jVqQTtE6qIFivNe2EP8FgrAyjDdQZ5MK
+ AM4bM/tAQ5jz7BGXQA9ggI5yNXx72immTxeVjIGyQL7TzDA8wEkENQbAkfFHeBZ4/oWj
+ gaMQ==
+X-Gm-Message-State: AOJu0Yx+dy4ZP+sjn9Pv9RtyknSK5u9Y4xyGNh0dM8eXT33dLdMuKtpa
+ KX6sryelqvYof9SddjytpyCAlTBTDpRpMohgfIE=
+X-Google-Smtp-Source: AGHT+IE4NcwlHDrFeSNvvFvo2mikaiI6G8QZ53B8RzBNx+L3Djqy98aZY3snn6tCnxqaZ/DYXp8wgA==
+X-Received: by 2002:a5d:610a:0:b0:332:cada:84a with SMTP id
+ v10-20020a5d610a000000b00332cada084amr2167029wrt.61.1700678195733; 
+ Wed, 22 Nov 2023 10:36:35 -0800 (PST)
 Received: from m1x-phil.lan (pas38-h02-176-184-5-64.dsl.sta.abo.bbox.fr.
  [176.184.5.64]) by smtp.gmail.com with ESMTPSA id
- f3-20020a05600c43c300b003fc0505be19sm176312wmn.37.2023.11.22.10.31.00
+ d2-20020a056000114200b0032fbe5b1e45sm65216wrx.61.2023.11.22.10.36.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 22 Nov 2023 10:31:01 -0800 (PST)
+ Wed, 22 Nov 2023 10:36:35 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-arm@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH-for-9.0 02/11] target/arm: Add target_aarch64_available()
- helper
-Date: Wed, 22 Nov 2023 19:30:38 +0100
-Message-ID: <20231122183048.17150-3-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PATCH-for-9.0] hw/mips/cps: Simplify access to 'start-powered-off'
+ property
+Date: Wed, 22 Nov 2023 19:36:33 +0100
+Message-ID: <20231122183633.17676-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231122183048.17150-1-philmd@linaro.org>
-References: <20231122183048.17150-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,45 +90,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We want to build HW models once, but don't want to
-register types when all prerequisites are satisfied. Add
-the target_aarch64_available() to know at runtime whether
-TARGET_AARCH64 is built-in.
+Since commit c1b701587e ("target/arm: Move start-powered-off
+property to generic CPUState"), all target CPUs have the
+'start-powered-off' property.
+
+This object_property_set_bool() call can not fail. Use &error_abort
+to simplify.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/cpu-qom.h | 2 ++
- target/arm/cpu.c     | 9 +++++++++
- 2 files changed, 11 insertions(+)
+ hw/mips/cps.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/target/arm/cpu-qom.h b/target/arm/cpu-qom.h
-index 02b914c876..bf6b3604ed 100644
---- a/target/arm/cpu-qom.h
-+++ b/target/arm/cpu-qom.h
-@@ -33,4 +33,6 @@ typedef struct AArch64CPUClass AArch64CPUClass;
- DECLARE_CLASS_CHECKERS(AArch64CPUClass, AARCH64_CPU,
-                        TYPE_AARCH64_CPU)
+diff --git a/hw/mips/cps.c b/hw/mips/cps.c
+index b6612c1762..4f12e23ab5 100644
+--- a/hw/mips/cps.c
++++ b/hw/mips/cps.c
+@@ -78,10 +78,9 @@ static void mips_cps_realize(DeviceState *dev, Error **errp)
+         CPUMIPSState *env = &cpu->env;
  
-+bool target_aarch64_available(void);
+         /* All VPs are halted on reset. Leave powering up to CPC. */
+-        if (!object_property_set_bool(OBJECT(cpu), "start-powered-off", true,
+-                                      errp)) {
+-            return;
+-        }
++        object_property_set_bool(OBJECT(cpu), "start-powered-off", true,
++                                 &error_abort);
 +
- #endif
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 25e9d2ae7b..1990c04089 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2548,3 +2548,12 @@ static void arm_cpu_register_types(void)
- }
+         /* All cores use the same clock tree */
+         qdev_connect_clock_in(DEVICE(cpu), "clk-in", s->clock);
  
- type_init(arm_cpu_register_types)
-+
-+bool target_aarch64_available(void)
-+{
-+#ifdef TARGET_AARCH64
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
 -- 
 2.41.0
 
