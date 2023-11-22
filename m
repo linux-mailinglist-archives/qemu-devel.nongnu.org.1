@@ -2,57 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A03137F4912
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 15:36:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F14E37F475D
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 14:08:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5oK9-0001d6-Ur; Wed, 22 Nov 2023 09:35:29 -0500
+	id 1r5mw9-00053R-Fj; Wed, 22 Nov 2023 08:06:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <duchao@eswincomputing.com>)
- id 1r5iPu-0003cM-2q
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 03:17:02 -0500
-Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <duchao@eswincomputing.com>) id 1r5iPr-0001np-Qk
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 03:17:01 -0500
-Received: from duchao$eswincomputing.com ( [112.46.135.130] ) by
- ajax-webmail-app1 (Coremail) ; Wed, 22 Nov 2023 16:15:41 +0800 (GMT+08:00)
-X-Originating-IP: [112.46.135.130]
-Date: Wed, 22 Nov 2023 16:15:41 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: "Chao Du" <duchao@eswincomputing.com>
-To: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Cc: peter.maydell@linaro.org, pbonzini@redhat.com
-Subject: Re: [PATCH] target/arm: kvm64: remove a redundant
- KVM_CAP_SET_GUEST_DEBUG probe
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT6.0.3 build 20220420(169d3f8c)
- Copyright (c) 2002-2023 www.mailtech.cn
- mispb-72143050-eaf5-4703-89e0-86624513b4ce-eswincomputing.com
-In-Reply-To: <20231025070726.22689-1-duchao@eswincomputing.com>
-References: <20231025070726.22689-1-duchao@eswincomputing.com>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1r5mw5-00052u-5i; Wed, 22 Nov 2023 08:06:33 -0500
+Received: from mail-qt1-x834.google.com ([2607:f8b0:4864:20::834])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1r5mvv-0000jP-O8; Wed, 22 Nov 2023 08:06:32 -0500
+Received: by mail-qt1-x834.google.com with SMTP id
+ d75a77b69052e-41feb963f60so6771621cf.1; 
+ Wed, 22 Nov 2023 05:06:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1700658381; x=1701263181; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=H0e8eyeDKzMr1AJigHJ/kdGeY84rMGbwMKHAqhjqu9A=;
+ b=F5Y7XSBJIwSkGXuQmdG6nHAnm7zzXUmz31gqH6O/cGi8pWGQNeMPWY2SrwzNBv4ySZ
+ TSiK4S04uuSxzoF0G/OXILHEERS6qgpeON9nz3Wfa6nRFWMcKVWVW6iVg8XSdru4LmYj
+ r8k3lVI6snPzcyKLWsNy7++PZfpusW995zfcjRP8WHxIoUxPk6Nhka8d0p6phxK7PkA3
+ fAU1r7c/0EGABWJaVouPYQnIAZB8oPUJFcXkD/6XOp2LRh7V3l1Jmrl7m45hgVuVq5d+
+ z3lwJFgGqAWIzCdti7E9X2i6Rm2mNFXZA1C8yR8ZnWhhee1iuTiZlZis74v2d7uCHW0e
+ zFhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700658381; x=1701263181;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=H0e8eyeDKzMr1AJigHJ/kdGeY84rMGbwMKHAqhjqu9A=;
+ b=xRBN8AlQn4avI2+ZIVQzsqIcZFzDDPW/4AVg7aM1zJf398iy2VCVLhsB0XWEExy4Fl
+ QHpGA0+dWo6dla/esiA3Sswp+zkHQeiRACT3mNHH85ssx2RxYMIp8Cf556jLqM0sJBW8
+ LL5Qo+3P1Zn14JhkbYVNCOptYAG8xC/pz/DO0iYpkpXnACHCii9ZFVF8IlUFYHs2c6mk
+ HsUfpcVX1EhV4WtUx7jF5XkbzV0MTr2zB/QAuRbrjHEFzK6NmAoSiE8oolUUexEtyzwj
+ l1wigNhDOGwfEH0ufFtH39tO4ZnINiNiSYOZZfKd44lPgzLi//giZvOMQ8B/arg3iBmO
+ 2iRA==
+X-Gm-Message-State: AOJu0YxV8BZ4FZz/Cu6EmpMDwFs0lhuZdWfKgZAjrunJ8R7zg1MAzyBU
+ dZxlHddsAcXwLyQQzCMkjIVsG4j+zW6mZxfi+7Y=
+X-Google-Smtp-Source: AGHT+IEU2zi4PyElEP/pDbiTpKUjIdA+NmtQBFJYw5bYgN2bLEH5GEjrTC4UxZhSEGg+c49bn8WnX4kvrDZWtYapFT4=
+X-Received: by 2002:a05:622a:15c2:b0:417:af0a:70a0 with SMTP id
+ d2-20020a05622a15c200b00417af0a70a0mr9378665qty.14.1700658381588; Wed, 22 Nov
+ 2023 05:06:21 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <3c895935.1233.18bf6196456.Coremail.duchao@eswincomputing.com>
-X-Coremail-Locale: en_US
-X-CM-TRANSID: TAJkCgB3Un+uuF1l5_4AAA--.786W
-X-CM-SenderInfo: xgxfxt3r6h245lqf0zpsxwx03jof0z/1tbiAgEDDGVchN4ezwAGs4
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
- CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
- daVFxhVjvjDU=
-Received-SPF: permerror client-ip=129.150.39.64;
- envelope-from=duchao@eswincomputing.com; helo=sgoci-sdnproxy-4.icoremail.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20231122125826.228189-1-f.ebner@proxmox.com>
+In-Reply-To: <20231122125826.228189-1-f.ebner@proxmox.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Wed, 22 Nov 2023 17:06:10 +0400
+Message-ID: <CAJ+F1CLFAuKF7CgbiBYnKv+7sjkXfJ9tURNuMNGu9NLru059nQ@mail.gmail.com>
+Subject: Re: [PATCH for-8.2] ui/vnc-clipboard: fix inflate_buffer
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, kraxel@redhat.com, 
+ mcascell@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::834;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x834.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 22 Nov 2023 09:35:22 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,54 +85,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGksCgpLaW5kbHkgcGluZy4gOikKClRoYW5rcywKQ2hhbwoKCj4gLS0tLS1PcmlnaW5hbCBNZXNz
-YWdlcy0tLS0tRnJvbToiQ2hhbyBEdSIgPGR1Y2hhb0Blc3dpbmNvbXB1dGluZy5jb20+U2VudCBU
-aW1lOjIwMjMtMTAtMjUgMTU6MDc6MjYgKFdlZG5lc2RheSlUbzpxZW11LWRldmVsQG5vbmdudS5v
-cmcsIHFlbXUtYXJtQG5vbmdudS5vcmdDYzpTdWJqZWN0OltQQVRDSF0gdGFyZ2V0L2FybToga3Zt
-NjQ6IHJlbW92ZSBhIHJlZHVuZGFudCBLVk1fQ0FQX1NFVF9HVUVTVF9ERUJVRyBwcm9iZQo+IAo+
-IFRoZSBLVk1fQ0FQX1NFVF9HVUVTVF9ERUJVRyBpcyBwcm9iZWQgZHVyaW5nIGt2bV9pbml0KCku
-Cj4gZ2Ric2VydmVyIHdpbGwgZmFpbCB0byBzdGFydCBpZiB0aGUgQ0FQIGlzIG5vdCBzdXBwb3J0
-ZWQuCj4gU28gbm8gbmVlZCB0byBtYWtlIGFub3RoZXIgcHJvYmUgaGVyZSwgbGlrZSBvdGhlciB0
-YXJnZXRzLgo+IAo+IFNpZ25lZC1vZmYtYnk6IENoYW8gRHUgPGR1Y2hhb0Blc3dpbmNvbXB1dGlu
-Zy5jb20+Cj4gLS0tCj4gIHRhcmdldC9hcm0va3ZtNjQuYyB8IDI4ICsrKysrKystLS0tLS0tLS0t
-LS0tLS0tLS0tLS0KPiAgMSBmaWxlIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgMjEgZGVsZXRp
-b25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL3RhcmdldC9hcm0va3ZtNjQuYyBiL3RhcmdldC9hcm0v
-a3ZtNjQuYwo+IGluZGV4IDRiYjY4NjQ2ZTQuLmIwYmY1OWI1YTEgMTAwNjQ0Cj4gLS0tIGEvdGFy
-Z2V0L2FybS9rdm02NC5jCj4gKysrIGIvdGFyZ2V0L2FybS9rdm02NC5jCj4gQEAgLTMxLDEzICsz
-MSw5IEBACj4gICNpbmNsdWRlICJody9hY3BpL2FjcGkuaCIKPiAgI2luY2x1ZGUgImh3L2FjcGkv
-Z2hlcy5oIgo+ICAKPiAtc3RhdGljIGJvb2wgaGF2ZV9ndWVzdF9kZWJ1ZzsKPiAgCj4gIHZvaWQg
-a3ZtX2FybV9pbml0X2RlYnVnKEtWTVN0YXRlICpzKQo+ICB7Cj4gLSAgICBoYXZlX2d1ZXN0X2Rl
-YnVnID0ga3ZtX2NoZWNrX2V4dGVuc2lvbihzLAo+IC0gICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgS1ZNX0NBUF9TRVRfR1VFU1RfREVCVUcpOwo+IC0KPiAgICAgIG1h
-eF9od193cHMgPSBrdm1fY2hlY2tfZXh0ZW5zaW9uKHMsIEtWTV9DQVBfR1VFU1RfREVCVUdfSFdf
-V1BTKTsKPiAgICAgIGh3X3dhdGNocG9pbnRzID0gZ19hcnJheV9zaXplZF9uZXcodHJ1ZSwgdHJ1
-ZSwKPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2l6ZW9mKEhXV2F0
-Y2hwb2ludCksIG1heF9od193cHMpOwo+IEBAIC0xMTQwLDMzICsxMTM2LDIzIEBAIHN0YXRpYyBj
-b25zdCB1aW50MzJfdCBicmtfaW5zbiA9IDB4ZDQyMDAwMDA7Cj4gIAo+ICBpbnQga3ZtX2FyY2hf
-aW5zZXJ0X3N3X2JyZWFrcG9pbnQoQ1BVU3RhdGUgKmNzLCBzdHJ1Y3Qga3ZtX3N3X2JyZWFrcG9p
-bnQgKmJwKQo+ICB7Cj4gLSAgICBpZiAoaGF2ZV9ndWVzdF9kZWJ1Zykgewo+IC0gICAgICAgIGlm
-IChjcHVfbWVtb3J5X3J3X2RlYnVnKGNzLCBicC0+cGMsICh1aW50OF90ICopJmJwLT5zYXZlZF9p
-bnNuLCA0LCAwKSB8fAo+IC0gICAgICAgICAgICBjcHVfbWVtb3J5X3J3X2RlYnVnKGNzLCBicC0+
-cGMsICh1aW50OF90ICopJmJya19pbnNuLCA0LCAxKSkgewo+IC0gICAgICAgICAgICByZXR1cm4g
-LUVJTlZBTDsKPiAtICAgICAgICB9Cj4gLSAgICAgICAgcmV0dXJuIDA7Cj4gLSAgICB9IGVsc2Ug
-ewo+IC0gICAgICAgIGVycm9yX3JlcG9ydCgiZ3Vlc3QgZGVidWcgbm90IHN1cHBvcnRlZCBvbiB0
-aGlzIGtlcm5lbCIpOwo+ICsgICAgaWYgKGNwdV9tZW1vcnlfcndfZGVidWcoY3MsIGJwLT5wYywg
-KHVpbnQ4X3QgKikmYnAtPnNhdmVkX2luc24sIDQsIDApIHx8Cj4gKyAgICAgICAgY3B1X21lbW9y
-eV9yd19kZWJ1ZyhjcywgYnAtPnBjLCAodWludDhfdCAqKSZicmtfaW5zbiwgNCwgMSkpIHsKPiAg
-ICAgICAgICByZXR1cm4gLUVJTlZBTDsKPiAgICAgIH0KPiArICAgIHJldHVybiAwOwo+ICB9Cj4g
-IAo+ICBpbnQga3ZtX2FyY2hfcmVtb3ZlX3N3X2JyZWFrcG9pbnQoQ1BVU3RhdGUgKmNzLCBzdHJ1
-Y3Qga3ZtX3N3X2JyZWFrcG9pbnQgKmJwKQo+ICB7Cj4gICAgICBzdGF0aWMgdWludDMyX3QgYnJr
-Owo+ICAKPiAtICAgIGlmIChoYXZlX2d1ZXN0X2RlYnVnKSB7Cj4gLSAgICAgICAgaWYgKGNwdV9t
-ZW1vcnlfcndfZGVidWcoY3MsIGJwLT5wYywgKHVpbnQ4X3QgKikmYnJrLCA0LCAwKSB8fAo+IC0g
-ICAgICAgICAgICBicmsgIT0gYnJrX2luc24gfHwKPiAtICAgICAgICAgICAgY3B1X21lbW9yeV9y
-d19kZWJ1ZyhjcywgYnAtPnBjLCAodWludDhfdCAqKSZicC0+c2F2ZWRfaW5zbiwgNCwgMSkpIHsK
-PiAtICAgICAgICAgICAgcmV0dXJuIC1FSU5WQUw7Cj4gLSAgICAgICAgfQo+IC0gICAgICAgIHJl
-dHVybiAwOwo+IC0gICAgfSBlbHNlIHsKPiAtICAgICAgICBlcnJvcl9yZXBvcnQoImd1ZXN0IGRl
-YnVnIG5vdCBzdXBwb3J0ZWQgb24gdGhpcyBrZXJuZWwiKTsKPiArICAgIGlmIChjcHVfbWVtb3J5
-X3J3X2RlYnVnKGNzLCBicC0+cGMsICh1aW50OF90ICopJmJyaywgNCwgMCkgfHwKPiArICAgICAg
-ICBicmsgIT0gYnJrX2luc24gfHwKPiArICAgICAgICBjcHVfbWVtb3J5X3J3X2RlYnVnKGNzLCBi
-cC0+cGMsICh1aW50OF90ICopJmJwLT5zYXZlZF9pbnNuLCA0LCAxKSkgewo+ICAgICAgICAgIHJl
-dHVybiAtRUlOVkFMOwo+ICAgICAgfQo+ICsgICAgcmV0dXJuIDA7Cj4gIH0KPiAgCj4gIC8qIFNl
-ZSB2OCBBUk0gQVJNIEQ3LjIuMjcgRVNSX0VMeCwgRXhjZXB0aW9uIFN5bmRyb21lIFJlZ2lzdGVy
-Cj4gLS0gCj4gMi4xNy4xCg==
+Hi
+
+On Wed, Nov 22, 2023 at 5:00=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.com> w=
+rote:
+>
+> Commit d921fea338 ("ui/vnc-clipboard: fix infinite loop in
+> inflate_buffer (CVE-2023-3255)") removed this hunk, but it is still
+> required, because it can happen that stream.avail_in becomes zero
+> before coming across a return value of Z_STREAM_END in the loop.
+
+Isn't this an error from the client side then?
+
+>
+> This fixes the host->guest direction of the clipboard with noVNC and
+> TigerVNC as clients.
+>
+> Fixes: d921fea338 ("ui/vnc-clipboard: fix infinite loop in inflate_buffer=
+ (CVE-2023-3255)")
+> Reported-by: Friedrich Weber <f.weber@proxmox.com>
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+> ---
+>  ui/vnc-clipboard.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/ui/vnc-clipboard.c b/ui/vnc-clipboard.c
+> index c759be3438..124b6fbd9c 100644
+> --- a/ui/vnc-clipboard.c
+> +++ b/ui/vnc-clipboard.c
+> @@ -69,6 +69,11 @@ static uint8_t *inflate_buffer(uint8_t *in, uint32_t i=
+n_len, uint32_t *size)
+>          }
+>      }
+>
+> +    *size =3D stream.total_out;
+> +    inflateEnd(&stream);
+> +
+> +    return out;
+> +
+>  err_end:
+>      inflateEnd(&stream);
+>  err:
+> --
+> 2.39.2
+>
+>
+>
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
