@@ -2,70 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15937F4F23
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 19:17:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D907F4F95
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 19:32:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5rm7-0000Vd-G8; Wed, 22 Nov 2023 13:16:35 -0500
+	id 1r5s0K-00049N-KX; Wed, 22 Nov 2023 13:31:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1r5rm3-0000VG-F0
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:16:31 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1r5rm1-0001nN-LO
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:16:31 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1B16E35864;
- Wed, 22 Nov 2023 21:16:36 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3A6583708A;
- Wed, 22 Nov 2023 21:16:26 +0300 (MSK)
-Message-ID: <4c233dd3-570b-4dc5-9547-86b482ebcefa@tls.msk.ru>
-Date: Wed, 22 Nov 2023 21:16:26 +0300
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5s07-000494-F2
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:31:07 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r5rzx-0004YC-Lg
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 13:30:57 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3316d09c645so21674f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 10:30:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700677851; x=1701282651; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7Rm3lhCAuFgUPCtL+Xe9ZOLLkN1sAT39F40LXUTGNo4=;
+ b=yRjzGXJgQrPpAwx3tcXdfVt5Dm3pBPxKZTMsPn4vhlYlLQ1MrgUGA/G+ZtJ4j3AlGP
+ YNg6Om+f5yvibc/Mnpcw6tBdhO1ccmLRHoVAXu5ZqHkSijnF3Zkeh7I4KfdEDmZWW55N
+ NPz2+P3S8xwP07yOUsRTqzSba4FQ4Jv1eGour8xRasSMNCSlGn3a5aj06C8CJHi8Aqo+
+ b/xa/M71dQYsqjrFSWNjiPfxZrBH8op6gN541vSCsNt3aNZDWRqPVfRmWdEf1NJjEmGw
+ 6vGyC1Bv3Frk5F1w8EXG5NBTT6kjj/hWgMFWZooQsrAQYrPeNGGX+zdDucL8VJhtPqmE
+ quEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700677851; x=1701282651;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7Rm3lhCAuFgUPCtL+Xe9ZOLLkN1sAT39F40LXUTGNo4=;
+ b=Py9FHaqnmpw11iXxmH2BETRzLgEAVB+ODmwnAWi4uJ5FOonKyh9GEuqqzZC09tdFx+
+ CL2DHTnb7ofgBdIXE18oUgXJEC+tbkaEcrb3tBYscsYDZoOc9btG2RQ6Mv3d/LN3I0aQ
+ sDBOME8GqepQKAxLMJvl+JW0JiJnr1AfVJyZWR5oiXugim7bxe7VZ3FhjucIB9WIMdop
+ fFs4ZrUj20PcFwSCHXDt12Kbnu5aQvcWL+/Hvkb+uPauEdvjsdFClCqR0DfQwg/Mw7SX
+ /JOI8CXGF23P1QS8+2/p6dbjYgYhDAq5LlLMdDreHmOteDU5cochrGawGCu5H8GUj+EL
+ RhhQ==
+X-Gm-Message-State: AOJu0YxuF7si06N138D31eFFmVOVjcxUDMGWgMESwFSmDG7W99z8shL/
+ Rvf6b8h1ll7lpqFX9R70sa9Lb8YTmtd7lwEDkug=
+X-Google-Smtp-Source: AGHT+IH+tL0hU8gQDSVNB5v+pU6ETjVTOoKxW+cgstXcmqk4L76ZnmaXyVW8119Q66gSwqjlItDtQg==
+X-Received: by 2002:a5d:510c:0:b0:32f:a48f:3658 with SMTP id
+ s12-20020a5d510c000000b0032fa48f3658mr1676083wrt.69.1700677850865; 
+ Wed, 22 Nov 2023 10:30:50 -0800 (PST)
+Received: from m1x-phil.lan (pas38-h02-176-184-5-64.dsl.sta.abo.bbox.fr.
+ [176.184.5.64]) by smtp.gmail.com with ESMTPSA id
+ f5-20020a5d64c5000000b00332ce0d7300sm41010wri.92.2023.11.22.10.30.49
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 22 Nov 2023 10:30:50 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-arm@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH-for-9.0 00/11] hw/arm: Step toward building qemu-system-{arm,
+ aarch64} altogether
+Date: Wed, 22 Nov 2023 19:30:36 +0100
+Message-ID: <20231122183048.17150-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/net/rocker: avoid NULL pointer dereference in
- of_dpa_cmd_add_l2_flood
-Content-Language: en-US
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: mcascell@redhat.com, QEMU Developers <qemu-devel@nongnu.org>
-References: <f6282a8b-3106-4bde-af2c-09236ad0f8d7@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <f6282a8b-3106-4bde-af2c-09236ad0f8d7@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,13 +96,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LORE has better view/threading for this one,
+Hi,
 
-https://lore.kernel.org/qemu-devel/20220624143912.1234427-1-mcascell@redhat.com/
+This series is a step toward having a single qemu-system-aarch64
+binary for both ARM and Aarch64 variants.
 
-Which also links to https://gitlab.com/qemu-project/qemu/-/issues/1851
+First we add the TypeInfo::can_register() handler to QOM, to be
+able to decide at runtime if a type can be registered. We'll
+later use the target_aarch64_available() method to restrict some
+QOM types to the aarch64 build.
 
-So basically, n/m.
+Then few cleanups allow us to build the Raspi machines and its
+components as target-agnostic. To do that, instead of embedding
+a CPUState in its SoC container, we use a pointer to it. Since
+the type is forward-declared by "cpu-qom.h", we can use that in
+our hw/ headers. Then the correct CPU is instanciated by calling
+object_new() instead of object_initialize_child().
 
-/mjt
+Finally objects are moved to meson system_ss[] source set to be
+built once.
+
+Does that look reasonable to keep merging TARGET_ARM/AARCH64?
+
+Thanks,
+
+Phil.
+
+Philippe Mathieu-Daudé (11):
+  qom: Introduce the TypeInfo::can_register() handler
+  target/arm: Add target_aarch64_available() helper
+  target/arm: Declare ARM_CPU_TYPE_NAME/SUFFIX in 'cpu-qom.h'
+  target/arm: Move ARM_CPU_IRQ/FIQ definitions to 'cpu-qom.h'
+  target/arm: Move GTIMER definitions to 'cpu-defs.h'
+  hw/arm/bcm2836: Simplify use of 'reset-cbar' property
+  hw/arm/bcm2836: Simplify access to 'start-powered-off' property
+  hw/arm/bcm2836: Use ARM_CPU 'mp-affinity' property
+  hw/arm/bcm2836: Allocate ARM CPU state with object_new()
+  hw/arm/raspi: Build bcm2836.o and raspi.o objects once
+  hw/intc/meson: Simplify how arm_gicv3_kvm.o objects are built
+
+ include/hw/arm/bcm2836.h    |  4 ++--
+ include/qom/object.h        |  4 ++++
+ target/arm/cpu-defs.h       | 19 ++++++++++++++++
+ target/arm/cpu-qom.h        | 11 ++++++++++
+ target/arm/cpu.h            | 16 +-------------
+ hw/arm/bcm2836.c            | 43 ++++++++++++++++---------------------
+ hw/arm/raspi.c              |  8 +++----
+ hw/intc/arm_gicv3_its_kvm.c |  1 +
+ hw/intc/arm_gicv3_kvm.c     |  1 +
+ qom/object.c                |  3 +++
+ target/arm/cpu.c            |  9 ++++++++
+ hw/arm/meson.build          |  6 ++++--
+ hw/intc/meson.build         |  6 ++++--
+ 13 files changed, 80 insertions(+), 51 deletions(-)
+ create mode 100644 target/arm/cpu-defs.h
+
+-- 
+2.41.0
+
 
