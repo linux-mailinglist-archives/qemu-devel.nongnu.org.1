@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 102C77F3EDC
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1B47F3EDD
 	for <lists+qemu-devel@lfdr.de>; Wed, 22 Nov 2023 08:26:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5hbh-0002qc-RD; Wed, 22 Nov 2023 02:25:09 -0500
+	id 1r5hbh-0002q2-8d; Wed, 22 Nov 2023 02:25:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5hbe-0002pi-Hy
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5hbe-0002pj-He
  for qemu-devel@nongnu.org; Wed, 22 Nov 2023 02:25:06 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5hbc-0000pR-NZ
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r5hbc-0000pQ-NZ
  for qemu-devel@nongnu.org; Wed, 22 Nov 2023 02:25:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1700637901;
@@ -22,39 +22,39 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=G6TnX9Kxvfwwi76JemoBX3SqpT8cHEynqAZXqVh+SQc=;
- b=amXkiQxXM5b4isIhwhHq76tnlS6RKcT6QXUYA6oop8Kus2ia0uEcl+oKcgfJrejYy+0UBo
- C2GCYnRGd89iRw239TbFxhPEfmmuOiWhdzW+qMGZkmuDX4C8n5ewEkPu3i0/P/jeUxrhmo
- xFmq4FeIN/NGeiy51NwWeg4SFqjpf7Y=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-237-R57YFIk9NxKxUkJQyWMP_A-1; Wed,
- 22 Nov 2023 02:24:57 -0500
-X-MC-Unique: R57YFIk9NxKxUkJQyWMP_A-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ bh=9PWoM8iQdTlPU10tjiBCtb7JORef176ceu3tahA0U/M=;
+ b=Mb33Qf7F8Mm6dlVh52Ke0yhrYO/fUOtGZzBAlHt6QE/WhsVXUpXRqPODr6VWmpGG4wEgqN
+ 69udTAoTCC9zs0s/Jn1umJ9N7QyBCJv17jK/BwFPYHVULkFxJR9IquLo+lJPycPY2hmyjx
+ tJSGtA2m7z2ZF+zGCPmxBThMrvD2fu0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-237-5awHaapeMOyzizihUU9y6Q-1; Wed, 22 Nov 2023 02:24:58 -0500
+X-MC-Unique: 5awHaapeMOyzizihUU9y6Q-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A26A51C0514C;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BAD1885C6E0;
  Wed, 22 Nov 2023 07:24:57 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7F9471121306;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7F8D8492BFA;
  Wed, 22 Nov 2023 07:24:57 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 655D221E6A21; Wed, 22 Nov 2023 08:24:56 +0100 (CET)
+ id 6761521E6A22; Wed, 22 Nov 2023 08:24:56 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com
-Subject: [PATCH 1/3] tests/unit/test-qmp-event: Drop superfluous mutex
-Date: Wed, 22 Nov 2023 08:24:54 +0100
-Message-ID: <20231122072456.2518816-2-armbru@redhat.com>
+Subject: [PATCH 2/3] tests/unit/test-qmp-event: Simplify event emission check
+Date: Wed, 22 Nov 2023 08:24:55 +0100
+Message-ID: <20231122072456.2518816-3-armbru@redhat.com>
 In-Reply-To: <20231122072456.2518816-1-armbru@redhat.com>
 References: <20231122072456.2518816-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -80,47 +80,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mutex @test_event_lock is held from fixture setup to teardown,
-protecting global variable @test_event_data.  But tests always run one
-after the other, so this is superfluous.  It also confuses Coverity.
-Drop the mutex.
+The generated qapi_event_send_FOO() call an event emitter function.
+It's test_qapi_event_emit() in this test.  It compares the actual
+event to the expected event, and sets a flag to record it was called.
+The test functions set expected data and clear the flag before calling
+qapi_event_send_FOO(), and check the flag afterwards.
 
-Fixes: CID 1527425
+Make test_qapi_event_emit() consume expected data, and the test
+functions check it was consumed.  Delete the flag.  This is simpler.
+It also catches extraneous calls of test_qapi_event_emit().  Catching
+that is not worthwhile, but since the cost is negative...
+
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- tests/unit/test-qmp-event.c | 5 -----
- 1 file changed, 5 deletions(-)
+ tests/unit/test-qmp-event.c | 30 ++++++++++--------------------
+ 1 file changed, 10 insertions(+), 20 deletions(-)
 
 diff --git a/tests/unit/test-qmp-event.c b/tests/unit/test-qmp-event.c
-index 3626d2372f..c2c44687d5 100644
+index c2c44687d5..5c9837e849 100644
 --- a/tests/unit/test-qmp-event.c
 +++ b/tests/unit/test-qmp-event.c
-@@ -30,7 +30,6 @@ typedef struct TestEventData {
+@@ -26,7 +26,6 @@
+ 
+ typedef struct TestEventData {
+     QDict *expect;
+-    bool emitted;
  } TestEventData;
  
  TestEventData *test_event_data;
--static GMutex test_event_lock;
+@@ -36,6 +35,8 @@ void test_qapi_event_emit(test_QAPIEvent event, QDict *d)
+     QDict *t;
+     int64_t s, ms;
  
- void test_qapi_event_emit(test_QAPIEvent event, QDict *d)
- {
-@@ -59,9 +58,6 @@ void test_qapi_event_emit(test_QAPIEvent event, QDict *d)
++    g_assert(test_event_data->expect);
++
+     /* Verify that we have timestamp, then remove it to compare other fields */
+     t = qdict_get_qdict(d, "timestamp");
+     g_assert(t);
+@@ -52,7 +53,8 @@ void test_qapi_event_emit(test_QAPIEvent event, QDict *d)
+     qdict_del(d, "timestamp");
+ 
+     g_assert(qobject_is_equal(QOBJECT(d), QOBJECT(test_event_data->expect)));
+-    test_event_data->emitted = true;
++    qobject_unref(test_event_data->expect);
++    test_event_data->expect = NULL;
+ }
+ 
  static void event_prepare(TestEventData *data,
-                           const void *unused)
+@@ -83,8 +85,7 @@ static void test_event_a(TestEventData *data,
  {
--    /* Global variable test_event_data was used to pass the expectation, so
--       test cases can't be executed at same time. */
--    g_mutex_lock(&test_event_lock);
-     test_event_data = data;
+     data->expect = qdict_from_jsonf_nofail("{ 'event': 'EVENT_A' }");
+     qapi_event_send_event_a();
+-    g_assert(data->emitted);
+-    qobject_unref(data->expect);
++    g_assert(!data->expect);
  }
  
-@@ -69,7 +65,6 @@ static void event_teardown(TestEventData *data,
-                            const void *unused)
+ static void test_event_b(TestEventData *data,
+@@ -92,8 +93,7 @@ static void test_event_b(TestEventData *data,
  {
-     test_event_data = NULL;
--    g_mutex_unlock(&test_event_lock);
+     data->expect = qdict_from_jsonf_nofail("{ 'event': 'EVENT_B' }");
+     qapi_event_send_event_b();
+-    g_assert(data->emitted);
+-    qobject_unref(data->expect);
++    g_assert(!data->expect);
  }
  
- static void event_test_add(const char *testpath,
+ static void test_event_c(TestEventData *data,
+@@ -105,8 +105,7 @@ static void test_event_c(TestEventData *data,
+         "{ 'event': 'EVENT_C', 'data': {"
+         " 'a': 1, 'b': { 'integer': 2, 'string': 'test1' }, 'c': 'test2' } }");
+     qapi_event_send_event_c(true, 1, &b, "test2");
+-    g_assert(data->emitted);
+-    qobject_unref(data->expect);
++    g_assert(!data->expect);
+ }
+ 
+ /* Complex type */
+@@ -131,8 +130,7 @@ static void test_event_d(TestEventData *data,
+         "  'string': 'test2', 'enum2': 'value2' },"
+         " 'b': 'test3', 'enum3': 'value3' } }");
+     qapi_event_send_event_d(&a, "test3", NULL, true, ENUM_ONE_VALUE3);
+-    g_assert(data->emitted);
+-    qobject_unref(data->expect);
++    g_assert(!data->expect);
+ }
+ 
+ static void test_event_deprecated(TestEventData *data, const void *unused)
+@@ -142,15 +140,11 @@ static void test_event_deprecated(TestEventData *data, const void *unused)
+     memset(&compat_policy, 0, sizeof(compat_policy));
+ 
+     qapi_event_send_test_event_features1();
+-    g_assert(data->emitted);
++    g_assert(!data->expect);
+ 
+     compat_policy.has_deprecated_output = true;
+     compat_policy.deprecated_output = COMPAT_POLICY_OUTPUT_HIDE;
+-    data->emitted = false;
+     qapi_event_send_test_event_features1();
+-    g_assert(!data->emitted);
+-
+-    qobject_unref(data->expect);
+ }
+ 
+ static void test_event_deprecated_data(TestEventData *data, const void *unused)
+@@ -160,17 +154,13 @@ static void test_event_deprecated_data(TestEventData *data, const void *unused)
+     data->expect = qdict_from_jsonf_nofail("{ 'event': 'TEST_EVENT_FEATURES0',"
+                                            " 'data': { 'foo': 42 } }");
+     qapi_event_send_test_event_features0(42);
+-    g_assert(data->emitted);
++    g_assert(!data->expect);
+ 
+-    qobject_unref(data->expect);
+ 
+     compat_policy.has_deprecated_output = true;
+     compat_policy.deprecated_output = COMPAT_POLICY_OUTPUT_HIDE;
+     data->expect = qdict_from_jsonf_nofail("{ 'event': 'TEST_EVENT_FEATURES0' }");
+     qapi_event_send_test_event_features0(42);
+-    g_assert(data->emitted);
+-
+-    qobject_unref(data->expect);
+ }
+ 
+ int main(int argc, char **argv)
 -- 
 2.41.0
 
