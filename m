@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F96A7F5786
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 05:48:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D6E7F577F
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 05:45:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r61YM-0006cq-8d; Wed, 22 Nov 2023 23:43:02 -0500
+	id 1r61YM-0006dW-SA; Wed, 22 Nov 2023 23:43:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r61Y7-0006SZ-1M
+ id 1r61Y7-0006TM-Mg
  for qemu-devel@nongnu.org; Wed, 22 Nov 2023 23:42:48 -0500
-Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
+Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r61Y4-0006Hf-0n
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 23:42:46 -0500
-Received: by mail-oa1-x2d.google.com with SMTP id
- 586e51a60fabf-1f93d0cd2ddso333322fac.1
- for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 20:42:42 -0800 (PST)
+ id 1r61Y4-0006Hp-1H
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 23:42:47 -0500
+Received: by mail-oi1-x231.google.com with SMTP id
+ 5614622812f47-3b52360cdf0so282977b6e.2
+ for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 20:42:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700714560; x=1701319360; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700714562; x=1701319362; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wiXhFHZySPL8w40Zgeyi5JXzqLc7WVTgj0ZvaUr0XG8=;
- b=ywCYS15PyU22nIUDIkKtESb8OgLZlMnwl+usEz658KivmqVVtWNMIQL92/8XCFpH/9
- yr87NAlwZRb6GdVmTurrpHdlwOq2LM7f3M6+pIIFT+MH9DKrylYeq50UVMr47238TAzL
- Vum/1xl5l67lRecP3ger0tIs6ChCrwHIrJ12zRvKiT8chYb9eQ0f/Ojv1swKGLal/uIr
- BrkyUSFLVFKWyTeASWhEl1jfcPVog3AssvfNj2FIhU5EqPSxNmFkJY6nDbkRCqNi0dXF
- NL7j9rdx4m11ETCgqb/tWU8m7eow5Qr91OrHW5uvygRWof15nU5sc2zPYgSthJ2wUKfc
- uJNg==
+ bh=QMxrWeuiHOLByxeE5N6Cs/cc7NkJUHDeIn2aLelpULE=;
+ b=QGdVhUsKc5Ko4aCEd/QuwPa5MF68JTZuE3ZVVI/vAz0zeyHTqtlikRzHX1eg+dEe5I
+ AvBrV2MQ5u4kYAgSeHXd2IxEwoBc3hLQCHzwQFC8DshpDE7ajNssMTaPznqOI2VHaAZH
+ UuEOjz++0fit43Xi7bzZm3/HbNtiPpXkburwtPVaBD4P5jliIGuLB9elpOTU+ShcQzFQ
+ WRJlwtg2vqRmrdBW/Nf0D28P5s4de6tgU4cU+ATlgnwaaOHjNwvUKqcOM31WZ9nN3ZTc
+ N5MvX7I8ID0Jfo1v9qUTMQtNRg2JcFmVQr8b88+Y9vvGoMnJVc15RVMAt1+eHR8rJTdD
+ NEBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700714560; x=1701319360;
+ d=1e100.net; s=20230601; t=1700714562; x=1701319362;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wiXhFHZySPL8w40Zgeyi5JXzqLc7WVTgj0ZvaUr0XG8=;
- b=tkpjCNjUWZzoGVkLIT/op5Cl+UsCd1qHJA/CV0TxqwfpuWzGLrg9dOgSa0zBHO1QRV
- 6/EWEJv0QZ/v8v8dzbRdC502j+kuhVxQMF6L3qNEODILZ4m9vNWu5NgSfcsjAw2W7Cqn
- dLTXHEIFJ4lgyWDRkERQo9lacYzJOOi5EB6j24DMl/Sm7ZaSCnnEFvzq3NA8nBhek7g7
- +dGi7L6b6BXXwQr4ZiRrKL/ZINWjR6VFHb7MomxTINBFieoFJDSinKM16OMVMTSS0zw+
- fUFmA8IObNSlGmqikbyiXc1SpwDK1NxBQZvUx7Jn1XoYt5A/0y1n4G1Xa2nH2qgegqtn
- 4dfQ==
-X-Gm-Message-State: AOJu0Ywt/2zuTBBQYTFirgsOPm4+WU78J33H06K2qMnmkwY1bFXOniQu
- kduoW9bVjaW1Bd9+KO2hCJEaHNmWxznIMQCUdz8cXOPm
-X-Google-Smtp-Source: AGHT+IHeQTz7c0mBxWhpr9qws0e2P2px9tBmaNtEUJyoLPYCy7k6cLOTJx2MXS+k6ioWoYFEowlCLw==
-X-Received: by 2002:a05:6871:8791:b0:1f5:cd37:34e with SMTP id
- td17-20020a056871879100b001f5cd37034emr6142861oab.20.1700714560668; 
- Wed, 22 Nov 2023 20:42:40 -0800 (PST)
+ bh=QMxrWeuiHOLByxeE5N6Cs/cc7NkJUHDeIn2aLelpULE=;
+ b=OXe6t3oEIDfQW8n2sL3/uMQ+AuvI7ogFEz+wlm9UHtOE6niJ/kBIsAEIggr2rIk/s5
+ p7DhtlP3F6fNOblGCrgc/D/Okt3ky5frL5Q35hEV8HJkyzRw4P/srEr2/U4r5Dz6Ot4/
+ /fc5m7MLBtiqM2MUAH+w1vPCFX24UwaGSLxcsp5fJgqBPbxtwTEW04mLsAYlUKoI6RhW
+ 0ffINa6XQBRsWTQxWtlwYHIilbAXF/eO7p4OrcCOo8oTxfUD/0BbN2vNo+g1m1tdYdws
+ Fxr+PiuJ2sgZZVILarKDGcOWVR8UssLSS2g14KQ32x98Ufk924NTruEfn6V4PfsvSGrm
+ 1L4A==
+X-Gm-Message-State: AOJu0Yxi6okzhhPIB1Fvc21Zd/26hWTBu87loEHY3LdTxCDMcPPdODwW
+ tIyrWFZ4GfIl/S8x4zG01/NS0MagEl9fEKYtBfExy9aO
+X-Google-Smtp-Source: AGHT+IHJsOa7qNEOJzfrry7beIAknR39vUMO6yPd+pVe1flEUkVOj5KQe1c3dTwCFGZSQLuFo36x9A==
+X-Received: by 2002:a05:6808:1a0d:b0:3b2:dfa0:aea3 with SMTP id
+ bk13-20020a0568081a0d00b003b2dfa0aea3mr5571900oib.3.1700714562036; 
+ Wed, 22 Nov 2023 20:42:42 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
  i7-20020a056808030700b003b8347de3c2sm73888oie.19.2023.11.22.20.42.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Nov 2023 20:42:40 -0800 (PST)
+ Wed, 22 Nov 2023 20:42:41 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 19/21] target/arm/kvm: Unexport kvm_{get,put}_vcpu_events
-Date: Wed, 22 Nov 2023 22:42:17 -0600
-Message-Id: <20231123044219.896776-20-richard.henderson@linaro.org>
+Subject: [PATCH 20/21] target/arm/kvm: Unexport and tidy
+ kvm_arm_sync_mpstate_to_{kvm, qemu}
+Date: Wed, 22 Nov 2023 22:42:18 -0600
+Message-Id: <20231123044219.896776-21-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231123044219.896776-1-richard.henderson@linaro.org>
 References: <20231123044219.896776-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2d;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x231.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -90,81 +91,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Drop fprintfs and actually use the return values in the callers.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
  target/arm/kvm_arm.h | 20 --------------------
- target/arm/kvm.c     | 20 ++++++++++++++++++--
- 2 files changed, 18 insertions(+), 22 deletions(-)
+ target/arm/kvm.c     | 23 ++++++-----------------
+ 2 files changed, 6 insertions(+), 37 deletions(-)
 
 diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index 1ec2476de7..b4339d49d1 100644
+index b4339d49d1..8a44a6b762 100644
 --- a/target/arm/kvm_arm.h
 +++ b/target/arm/kvm_arm.h
-@@ -98,26 +98,6 @@ void kvm_arm_cpu_post_load(ARMCPU *cpu);
+@@ -200,26 +200,6 @@ bool kvm_arm_sve_supported(void);
   */
- void kvm_arm_reset_vcpu(ARMCPU *cpu);
+ int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa);
  
 -/**
-- * kvm_get_vcpu_events:
+- * kvm_arm_sync_mpstate_to_kvm:
 - * @cpu: ARMCPU
 - *
-- * Get VCPU related state from kvm.
+- * If supported set the KVM MP_STATE based on QEMU's model.
 - *
-- * Returns: 0 if success else < 0 error code
+- * Returns 0 on success and -1 on failure.
 - */
--int kvm_get_vcpu_events(ARMCPU *cpu);
+-int kvm_arm_sync_mpstate_to_kvm(ARMCPU *cpu);
 -
 -/**
-- * kvm_put_vcpu_events:
+- * kvm_arm_sync_mpstate_to_qemu:
 - * @cpu: ARMCPU
 - *
-- * Put VCPU related state to kvm.
+- * If supported get the MP_STATE from KVM and store in QEMU's model.
 - *
-- * Returns: 0 if success else < 0 error code
+- * Returns 0 on success and aborts on failure.
 - */
--int kvm_put_vcpu_events(ARMCPU *cpu);
+-int kvm_arm_sync_mpstate_to_qemu(ARMCPU *cpu);
 -
- #ifdef CONFIG_KVM
- /**
-  * kvm_arm_create_scratch_host_vcpu:
+ void kvm_arm_vm_state_change(void *opaque, bool running, RunState state);
+ 
+ int kvm_arm_vgic_probe(void);
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 3250919273..f9aa55b1a0 100644
+index f9aa55b1a0..19454f432a 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -1092,7 +1092,15 @@ static void kvm_arm_put_virtual_time(CPUState *cs)
-     cpu->kvm_vtime_dirty = false;
+@@ -1006,41 +1006,32 @@ void kvm_arm_reset_vcpu(ARMCPU *cpu)
+ /*
+  * Update KVM's MP_STATE based on what QEMU thinks it is
+  */
+-int kvm_arm_sync_mpstate_to_kvm(ARMCPU *cpu)
++static int kvm_arm_sync_mpstate_to_kvm(ARMCPU *cpu)
+ {
+     if (cap_has_mp_state) {
+         struct kvm_mp_state mp_state = {
+             .mp_state = (cpu->power_state == PSCI_OFF) ?
+             KVM_MP_STATE_STOPPED : KVM_MP_STATE_RUNNABLE
+         };
+-        int ret = kvm_vcpu_ioctl(CPU(cpu), KVM_SET_MP_STATE, &mp_state);
+-        if (ret) {
+-            fprintf(stderr, "%s: failed to set MP_STATE %d/%s\n",
+-                    __func__, ret, strerror(-ret));
+-            return -1;
+-        }
++        return kvm_vcpu_ioctl(CPU(cpu), KVM_SET_MP_STATE, &mp_state);
+     }
+-
+     return 0;
  }
  
--int kvm_put_vcpu_events(ARMCPU *cpu)
-+/**
-+ * kvm_put_vcpu_events:
-+ * @cpu: ARMCPU
-+ *
-+ * Put VCPU related state to kvm.
-+ *
-+ * Returns: 0 if success else < 0 error code
-+ */
-+static int kvm_put_vcpu_events(ARMCPU *cpu)
+ /*
+  * Sync the KVM MP_STATE into QEMU
+  */
+-int kvm_arm_sync_mpstate_to_qemu(ARMCPU *cpu)
++static int kvm_arm_sync_mpstate_to_qemu(ARMCPU *cpu)
  {
-     CPUARMState *env = &cpu->env;
-     struct kvm_vcpu_events events;
-@@ -1121,7 +1129,15 @@ int kvm_put_vcpu_events(ARMCPU *cpu)
+     if (cap_has_mp_state) {
+         struct kvm_mp_state mp_state;
+         int ret = kvm_vcpu_ioctl(CPU(cpu), KVM_GET_MP_STATE, &mp_state);
+         if (ret) {
+-            fprintf(stderr, "%s: failed to get MP_STATE %d/%s\n",
+-                    __func__, ret, strerror(-ret));
+-            abort();
++            return ret;
+         }
+         cpu->power_state = (mp_state.mp_state == KVM_MP_STATE_STOPPED) ?
+             PSCI_OFF : PSCI_ON;
+     }
+-
+     return 0;
+ }
+ 
+@@ -2184,9 +2175,7 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+         return ret;
+     }
+ 
+-    kvm_arm_sync_mpstate_to_kvm(cpu);
+-
+-    return ret;
++    return kvm_arm_sync_mpstate_to_kvm(cpu);
+ }
+ 
+ static int kvm_arch_get_fpsimd(CPUState *cs)
+@@ -2367,7 +2356,7 @@ int kvm_arch_get_registers(CPUState *cs)
+      */
+     write_list_to_cpustate(cpu);
+ 
+-    kvm_arm_sync_mpstate_to_qemu(cpu);
++    ret = kvm_arm_sync_mpstate_to_qemu(cpu);
+ 
+     /* TODO: other registers */
      return ret;
- }
- 
--int kvm_get_vcpu_events(ARMCPU *cpu)
-+/**
-+ * kvm_get_vcpu_events:
-+ * @cpu: ARMCPU
-+ *
-+ * Get VCPU related state from kvm.
-+ *
-+ * Returns: 0 if success else < 0 error code
-+ */
-+static int kvm_get_vcpu_events(ARMCPU *cpu)
- {
-     CPUARMState *env = &cpu->env;
-     struct kvm_vcpu_events events;
 -- 
 2.34.1
 
