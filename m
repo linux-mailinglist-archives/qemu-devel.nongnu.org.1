@@ -2,93 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22C587F5B13
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D9E37F5B14
 	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 10:30:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r660s-00005T-Kj; Thu, 23 Nov 2023 04:28:46 -0500
+	id 1r6620-0000RU-V8; Thu, 23 Nov 2023 04:29:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r660p-000050-Fx
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 04:28:43 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1r661y-0000RG-T6; Thu, 23 Nov 2023 04:29:54 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r660n-0000MA-JE
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 04:28:43 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-332d5c852a0so410963f8f.3
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 01:28:41 -0800 (PST)
+ id 1r661x-0000Uz-B3; Thu, 23 Nov 2023 04:29:54 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-332d5c852a0so411568f8f.3; 
+ Thu, 23 Nov 2023 01:29:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700731720; x=1701336520; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1700731791; x=1701336591; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:organization:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=LhzwxHV+Bdiyx5bPUyokPHdYwQaX3xP8WnSIJkZBw6k=;
- b=gRHyj1lXIb13dUXJhILDkN/AbZZSmrh8Kyg6UmLOedTyFVFfdMjCYmO1Ahs2zLCq1S
- T9H2qrRf7W7KM1Fjf7hjGSoH9oK0LUkeLIIbrACx56Z9rSuaGKALTV4IsxTR87TWdurn
- P5NK5LFvJ23LMOPRlDjRV4KyQDwhXfoBOxrhb7OJSowr9OprG5mjLbuoXmCo5tHpIPZZ
- NeUdR1f03H/G6dj0ba1Th5r6bz7+jFW8NnVDqpQnyJqefgcMsXsrEt82hpnonai0nDQC
- HLxzMnlFY3CokpmABEPAoI4fuwrdG7ZvjntzPEFLwer8X8DTdAPG7iLSzj/baTEV2vga
- nc1Q==
+ bh=uUwE7u3onPGssHGYPcJFRGaN2UI16fqtGIi4M3Ht1a4=;
+ b=dCMuBMXx6YFclGb6lTltYnaPsuXDksVwndphsqxNYOGoorCsOE3nn4FL0tzSj9/RcY
+ uvbKvpGAcVT9qN80ypb5hT2DDxEBJ6lUm4ZZu+DhjmJ0hbCWbLuyCcnqC2bdlbtf9rnE
+ 52yyJxDNXPbYGIk4FCjXB12onsvUnovN7e7tpacRS9eZ2dYqQafvGMVVnarEpwUhumE5
+ XsUge00yUKtBe7fKO8/bbYzhCXao2jcxzLKu6HhDwVLKtKWrGbq2cXqe9UjktoDUaaHW
+ 6f2ZKSgXCIHuCc0pmT/OTb+Rv11//JJn9YGgh7OA9Wt8xLUEOoB2XBmao9LQe7n66+qD
+ i6bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700731720; x=1701336520;
+ d=1e100.net; s=20230601; t=1700731791; x=1701336591;
  h=content-transfer-encoding:in-reply-to:organization:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:from:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LhzwxHV+Bdiyx5bPUyokPHdYwQaX3xP8WnSIJkZBw6k=;
- b=b7pG5znzfIa0MFLfd5YAZDAZBGuspKud/I4f4NhisMDZ8xOB83kJepRkzV26uOrXIW
- G3geObJImm/C+8ePz4Ygwmwq5PbKu+0zjMq0wjyKp9kSqHLbUnkX3sohvNjMeAAp+xG7
- JE0OZl54dwKxvUX1D6iNb0qWEx/bPccEG/BzY9/lmlOXzSLcaxZbfWbMPe1Ed5Fl7VW6
- 6Bm8QZoPCkrO5d9sNYHBjI7m0XmA04QmB2H4c1Km020drwkEOf+q61CPKetwywOViDam
- lm1ojUWHxOUrQVy/LtnwLQ51Tme0Y3g71jGq52L41CkgxmdkhtuxYmZUsfPabc+REhCK
- M/Yg==
-X-Gm-Message-State: AOJu0Yx6MSv7j3Nn+g/NnJi7zQGh6mj3/UfZ4pNN5/1UowhhsUr0vQI2
- Jc1veyCRrui2G9BR4yp3m5w=
-X-Google-Smtp-Source: AGHT+IHQg35CBXWM7ovP6a+uuURYIDYPDMvLcCf1tCeYG05bGkoXJV359Re8tnwnd/6OVfkUgZwzIg==
-X-Received: by 2002:a5d:4dc3:0:b0:31f:ef77:67e4 with SMTP id
- f3-20020a5d4dc3000000b0031fef7767e4mr3306792wru.37.1700731719676; 
- Thu, 23 Nov 2023 01:28:39 -0800 (PST)
+ bh=uUwE7u3onPGssHGYPcJFRGaN2UI16fqtGIi4M3Ht1a4=;
+ b=uiHCF3EoZl5zBEIRr7rtobHbm/TdOoSEd7wowRZZd+i/OgMy0UVyIZOlMf+P1y6D4W
+ 1/RDqWLPyZGsUWGE/p/P12Bj9DX9UH4KieTiptMP34mBJi/4bYyx+2sTPzacwdJO6FXI
+ 8xPlnOfr8KmEqxOVlq04wd5BANMXd9J/cMClZf1VtfZWo7CQCKqur5iT6Xcd3TsO4TJg
+ ieLs4JWNLEqHJBdufuWXKY9ERwGdm570MtsOS2r5kVNgR2XalG/aJHJrC+E1USN7cVh8
+ Wi9XIYGMzDCqDxUT+MuVmagJx3ZnP1ixHfTAmtiOeRPxZHBfQCcqjSv5F+B02KnEcwr0
+ 9lnQ==
+X-Gm-Message-State: AOJu0YzItygY2i0G+fjhpBTtZkOQZ+1YiLidrNkGPloan283kPWYdt4c
+ aim/sBfWGK6AZfPaEKIWrTI=
+X-Google-Smtp-Source: AGHT+IFlygPZqpcnr3ZfDt4tmxZcvFNUOiDOTe0AZd7sdtL0/KrfYErVCG8BikAxQK6z7g+6mdxvPQ==
+X-Received: by 2002:a5d:4bc6:0:b0:32f:b1ab:ee87 with SMTP id
+ l6-20020a5d4bc6000000b0032fb1abee87mr3685763wrt.25.1700731791454; 
+ Thu, 23 Nov 2023 01:29:51 -0800 (PST)
 Received: from [192.168.13.100] (54-240-197-239.amazon.com. [54.240.197.239])
  by smtp.gmail.com with ESMTPSA id
- s15-20020adf978f000000b00332d41f0798sm1133102wrb.29.2023.11.23.01.28.38
+ s15-20020adf978f000000b00332d41f0798sm1133102wrb.29.2023.11.23.01.29.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 Nov 2023 01:28:39 -0800 (PST)
+ Thu, 23 Nov 2023 01:29:51 -0800 (PST)
 From: Paul Durrant <xadimgnik@gmail.com>
 X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <dce4efb0-4fdc-404c-8e5d-c90ed732eb8a@xen.org>
-Date: Thu, 23 Nov 2023 09:28:38 +0000
+Message-ID: <630819c4-4343-401d-8c7b-342cfd5f50c0@xen.org>
+Date: Thu, 23 Nov 2023 09:29:50 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/6] xen_pvdev: Do not assume Dom0 when creating a
- directory
+Subject: Re: [PATCH v2 1/6] hw/xen: Set XenBackendInstance in the XenDevice
+ before realizing it
 Content-Language: en-US
-To: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
- David Woodhouse <dwmw2@infradead.org>
-Cc: Stefano Stabellini <sstabellini@kernel.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Julien Grall <julien@xen.org>,
- Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>,
- Anthony Perard <anthony.perard@citrix.com>,
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
+To: David Woodhouse <dwmw2@infradead.org>,
+ Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Stefano Stabellini <sstabellini@kernel.org>, Julien Grall <julien@xen.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ "open list:Block layer core" <qemu-block@nongnu.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>
 References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
- <20231121221023.419901-5-volodymyr_babchuk@epam.com>
- <b04daedc-ba6a-4109-8e23-fbcd023bcfec@xen.org>
- <alpine.DEB.2.22.394.2311221428570.2053963@ubuntu-linux-20-04-desktop>
- <ce719f35e72a9387fc04af098e6d688f9bbdca4e.camel@infradead.org>
- <alpine.DEB.2.22.394.2311221508270.2424505@ubuntu-linux-20-04-desktop>
- <a4e6a62a7cfe756344a1efcb8b2c3cfb1e50817e.camel@infradead.org>
- <alpine.DEB.2.22.394.2311221515010.2424505@ubuntu-linux-20-04-desktop>
- <87r0khz6zj.fsf@epam.com> <87cyw1z61i.fsf@epam.com>
+ <20231121221023.419901-2-volodymyr_babchuk@epam.com>
+ <e1663064-247d-41e3-9a36-16f81303fb94@xen.org> <878r6p1jp2.fsf@epam.com>
+ <67e06eae161072e05f4b0990dbde1da869241670.camel@infradead.org>
 Organization: Xen Project
-In-Reply-To: <87cyw1z61i.fsf@epam.com>
+In-Reply-To: <67e06eae161072e05f4b0990dbde1da869241670.camel@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=xadimgnik@gmail.com; helo=mail-wr1-x429.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=xadimgnik@gmail.com; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,65 +107,49 @@ Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/11/2023 00:07, Volodymyr Babchuk wrote:
-> 
-> Hi,
-> 
-> Volodymyr Babchuk <volodymyr_babchuk@epam.com> writes:
-> 
->> Hi Stefano,
+On 22/11/2023 23:04, David Woodhouse wrote:
+> On Wed, 2023-11-22 at 22:56 +0000, Volodymyr Babchuk wrote:
 >>
->> Stefano Stabellini <sstabellini@kernel.org> writes:
 >>
->>> On Wed, 22 Nov 2023, David Woodhouse wrote:
->>>> On Wed, 2023-11-22 at 15:09 -0800, Stefano Stabellini wrote:
->>>>> On Wed, 22 Nov 2023, David Woodhouse wrote:
->>>>>> On Wed, 2023-11-22 at 14:29 -0800, Stefano Stabellini wrote:
->>>>>>> On Wed, 22 Nov 2023, Paul Durrant wrote:
->>>>>>>> On 21/11/2023 22:10, Volodymyr Babchuk wrote:
->>>>>>>>> From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
->>>>>>>>>
->>>>>>>>> Instead of forcing the owner to domid 0, use XS_PRESERVE_OWNER to
->>>>>>>>> inherit the owner of the directory.
->>>>>>>>
->>>>>>>> Ah... so that's why the previous patch is there.
->>>>>>>>
->>>>>>>> This is not the right way to fix it. The QEMU Xen support is *assuming* that
->>>>>>>> QEMU is either running in, or emulating, dom0. In the emulation case this is
->>>>>>>> probably fine, but the 'real Xen' case it should be using the correct domid
->>>>>>>> for node creation. I guess this could either be supplied on the command line
->>>>>>>> or discerned by reading the local domain 'domid' node.
->>>>>>>
->>>>>>> yes, it should be passed as command line option to QEMU
->>>>>>
->>>>>> I'm not sure I like the idea of a command line option for something
->>>>>> which QEMU could discover for itself.
->>>>>
->>>>> That's fine too. I meant to say "yes, as far as I know the toolstack
->>>>> passes the domid to QEMU as a command line option today".
+>> Paul Durrant <xadimgnik@gmail.com> writes:
+>>
+>>> On 21/11/2023 22:10, Volodymyr Babchuk wrote:
+>>>> From: David Woodhouse <dwmw@amazon.co.uk>
+>>>> This allows a XenDevice implementation to know whether it was
+>>>> created
+>>>> by QEMU, or merely discovered in XenStore after the toolstack created
+>>>> it. This will allow us to create frontend/backend nodes only when we
+>>>> should, rather than unconditionally attempting to overwrite them from
+>>>> a driver domain which doesn't have privileges to do so.
+>>>> As an added benefit, it also means we no longer have to call the
+>>>> xen_backend_set_device() function from the device models immediately
+>>>> after calling qdev_realize_and_unref(). Even though we could make
+>>>> the argument that it's safe to do so, and the pointer to the unreffed
+>>>> device *will* actually still be valid, it still made my skin itch to
+>>>> look at it.
+>>>> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+>>>> ---
+>>>>    hw/block/xen-block.c         | 3 +--
+>>>>    hw/char/xen_console.c        | 2 +-
+>>>>    hw/net/xen_nic.c             | 2 +-
+>>>>    hw/xen/xen-bus.c             | 4 ++++
+>>>>    include/hw/xen/xen-backend.h | 2 --
+>>>>    include/hw/xen/xen-bus.h     | 2 ++
+>>>>    6 files changed, 9 insertions(+), 6 deletions(-)
 >>>>
->>>> The -xen-domid argument on the QEMU command line today is the *guest*
->>>> domain ID, not the domain ID in which QEMU itself is running.
->>>>
->>>> Or were you thinking of something different?
 >>>
->>> Ops, you are right and I understand your comment better now. The backend
->>> domid is not on the command line but it should be discoverable (on
->>> xenstore if I remember right).
+>>> Actually, I think you should probably update
+>>> xen_backend_try_device_destroy() in this patch too. It currently uses
+>>> xen_backend_list_find() to check whether the specified XenDevice has
+>>> an associated XenBackendInstance.
 >>
->> Yes, it is just "~/domid". I'll add a function that reads it.
+>> Sure. Looks like it is the only user of xen_backend_list_find(), so we
+>> can get rid of it as well.
+>>
+>> I'll drop your R-b tag, because of those additional changes in the new
+>> version.
 > 
-> Just a quick question to QEMU folks: is it better to add a global
-> variable where we will store own Domain ID or it will be okay to read
-> domid from Xenstore every time we need it?
-> 
-> If global variable variant is better, what is proffered place to define
-> this variable? system/globals.c ?
-> 
+> I think it's fine to keep. He told me to do it :)
 
-Actually... is it possible for QEMU just to use a relative path for the 
-backend nodes? That way it won't need to know it's own domid, will it?
-
-   Paul
-
+I confirm that :-)
 
