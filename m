@@ -2,66 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B437F5AE4
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 10:14:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22C587F5B13
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 10:30:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r65lC-0005za-5e; Thu, 23 Nov 2023 04:12:34 -0500
+	id 1r660s-00005T-Kj; Thu, 23 Nov 2023 04:28:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
- id 1r65l8-0005zL-NV; Thu, 23 Nov 2023 04:12:31 -0500
-Received: from mta-04.yadro.com ([89.207.88.248])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
- id 1r65l6-0000FN-Mo; Thu, 23 Nov 2023 04:12:30 -0500
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com E5E77C0002
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-04; t=1700730742;
- bh=fqEB+XnNjzwadFp8pdCn5WUq1BZ6k0jmhu3L43yvSic=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=etyAY4R+iwNm3UWn3j24y7hpeE96602E45SAlSwl7CEMlCM+HKTvFu0QlMhEo9eAm
- bJvi5Ht+HeKYNibMreLNfENG22Etv3zQVmYcgSGzEY5STe180OqQrKlSU551lh+BUm
- qo3+mPQnAavuvU/eKoFgKm39zXT9cGWCPl65yDx577rS+ktn7BPtcxIZr9z0HXvNa0
- EFXMnq+LqkIaUVDIY2GFyc5ak7rMis8gijgNe79KeqBOVCMULoCQr8W/kVoGSWKFIF
- 4PqRgOtmyYyZ9CyB2mvkCxgr+h4lJsO47QKv1VW4+p24TwnoBoPFdtsXyvymY+XNvF
- 2Fg8j0tB11cvQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-03; t=1700730742;
- bh=fqEB+XnNjzwadFp8pdCn5WUq1BZ6k0jmhu3L43yvSic=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=evxafABYS3lPm4QePdidDwPAbjP2pE0PieXUuYN67/TmH1oZyMGsu6dQ5OjJlvZ2F
- zoYbGflkjbGPpjrdvCHI8V/H94m8a6dYQVZCFEzCKl1FS9JbsQ6XWf0grEeKtz8Z7a
- p4QPsCfuJ0xSNlMbD9UELN++GGAp4y2vgV2JeSVHrJETE52XNkRzVu3dpmIBWQP3Ig
- Ubrdes36OWdETcokWXZI/6DuK2vbE0CTcf8mABSlid5YquJrjJhdVqJoNnvGDArGnr
- 6HJnmW23yPRBMBGUwy8yKJPZxj7nIWJZe3hXNE7vMaeV4VZBh+lvsRLkN6zNQ2eaXI
- REF2opX/IW7zA==
-From: Ivan Klokov <ivan.klokov@syntacore.com>
-To: <qemu-devel@nongnu.org>
-CC: <qemu-riscv@nongnu.org>, <palmer@dabbelt.com>, <alistair.francis@wdc.com>, 
- <bin.meng@windriver.com>, <liwei1518@gmail.com>,
- <dbarboza@ventanamicro.com>, 
- <zhiwei_liu@linux.alibaba.com>, Ivan Klokov <ivan.klokov@syntacore.com>
-Subject: [PATCH 1/1] target/riscv/pmp: Use hwaddr instead of target_ulong for
- RV32
-Date: Thu, 23 Nov 2023 12:12:14 +0300
-Message-ID: <20231123091214.20312-1-ivan.klokov@syntacore.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1r660p-000050-Fx
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 04:28:43 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1r660n-0000MA-JE
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 04:28:43 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-332d5c852a0so410963f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 01:28:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1700731720; x=1701336520; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=LhzwxHV+Bdiyx5bPUyokPHdYwQaX3xP8WnSIJkZBw6k=;
+ b=gRHyj1lXIb13dUXJhILDkN/AbZZSmrh8Kyg6UmLOedTyFVFfdMjCYmO1Ahs2zLCq1S
+ T9H2qrRf7W7KM1Fjf7hjGSoH9oK0LUkeLIIbrACx56Z9rSuaGKALTV4IsxTR87TWdurn
+ P5NK5LFvJ23LMOPRlDjRV4KyQDwhXfoBOxrhb7OJSowr9OprG5mjLbuoXmCo5tHpIPZZ
+ NeUdR1f03H/G6dj0ba1Th5r6bz7+jFW8NnVDqpQnyJqefgcMsXsrEt82hpnonai0nDQC
+ HLxzMnlFY3CokpmABEPAoI4fuwrdG7ZvjntzPEFLwer8X8DTdAPG7iLSzj/baTEV2vga
+ nc1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700731720; x=1701336520;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LhzwxHV+Bdiyx5bPUyokPHdYwQaX3xP8WnSIJkZBw6k=;
+ b=b7pG5znzfIa0MFLfd5YAZDAZBGuspKud/I4f4NhisMDZ8xOB83kJepRkzV26uOrXIW
+ G3geObJImm/C+8ePz4Ygwmwq5PbKu+0zjMq0wjyKp9kSqHLbUnkX3sohvNjMeAAp+xG7
+ JE0OZl54dwKxvUX1D6iNb0qWEx/bPccEG/BzY9/lmlOXzSLcaxZbfWbMPe1Ed5Fl7VW6
+ 6Bm8QZoPCkrO5d9sNYHBjI7m0XmA04QmB2H4c1Km020drwkEOf+q61CPKetwywOViDam
+ lm1ojUWHxOUrQVy/LtnwLQ51Tme0Y3g71jGq52L41CkgxmdkhtuxYmZUsfPabc+REhCK
+ M/Yg==
+X-Gm-Message-State: AOJu0Yx6MSv7j3Nn+g/NnJi7zQGh6mj3/UfZ4pNN5/1UowhhsUr0vQI2
+ Jc1veyCRrui2G9BR4yp3m5w=
+X-Google-Smtp-Source: AGHT+IHQg35CBXWM7ovP6a+uuURYIDYPDMvLcCf1tCeYG05bGkoXJV359Re8tnwnd/6OVfkUgZwzIg==
+X-Received: by 2002:a5d:4dc3:0:b0:31f:ef77:67e4 with SMTP id
+ f3-20020a5d4dc3000000b0031fef7767e4mr3306792wru.37.1700731719676; 
+ Thu, 23 Nov 2023 01:28:39 -0800 (PST)
+Received: from [192.168.13.100] (54-240-197-239.amazon.com. [54.240.197.239])
+ by smtp.gmail.com with ESMTPSA id
+ s15-20020adf978f000000b00332d41f0798sm1133102wrb.29.2023.11.23.01.28.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 23 Nov 2023 01:28:39 -0800 (PST)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <dce4efb0-4fdc-404c-8e5d-c90ed732eb8a@xen.org>
+Date: Thu, 23 Nov 2023 09:28:38 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: T-EXCH-06.corp.yadro.com (172.17.10.110) To
- S-Exch-01.corp.yadro.com (10.78.5.241)
-Received-SPF: permerror client-ip=89.207.88.248;
- envelope-from=ivan.klokov@syntacore.com; helo=mta-04.yadro.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/6] xen_pvdev: Do not assume Dom0 when creating a
+ directory
+Content-Language: en-US
+To: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
+ David Woodhouse <dwmw2@infradead.org>
+Cc: Stefano Stabellini <sstabellini@kernel.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Julien Grall <julien@xen.org>,
+ Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
+References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
+ <20231121221023.419901-5-volodymyr_babchuk@epam.com>
+ <b04daedc-ba6a-4109-8e23-fbcd023bcfec@xen.org>
+ <alpine.DEB.2.22.394.2311221428570.2053963@ubuntu-linux-20-04-desktop>
+ <ce719f35e72a9387fc04af098e6d688f9bbdca4e.camel@infradead.org>
+ <alpine.DEB.2.22.394.2311221508270.2424505@ubuntu-linux-20-04-desktop>
+ <a4e6a62a7cfe756344a1efcb8b2c3cfb1e50817e.camel@infradead.org>
+ <alpine.DEB.2.22.394.2311221515010.2424505@ubuntu-linux-20-04-desktop>
+ <87r0khz6zj.fsf@epam.com> <87cyw1z61i.fsf@epam.com>
+Organization: Xen Project
+In-Reply-To: <87cyw1z61i.fsf@epam.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=xadimgnik@gmail.com; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,121 +108,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Sv32 page-based virtual-memory scheme described in RISCV privileged
-spec Section 5.3 supports 34-bit physical addresses for RV32, so the
-PMP scheme must support addresses wider than XLEN for RV32. However,
-PMP address register format is still 32 bit wide.
+On 23/11/2023 00:07, Volodymyr Babchuk wrote:
+> 
+> Hi,
+> 
+> Volodymyr Babchuk <volodymyr_babchuk@epam.com> writes:
+> 
+>> Hi Stefano,
+>>
+>> Stefano Stabellini <sstabellini@kernel.org> writes:
+>>
+>>> On Wed, 22 Nov 2023, David Woodhouse wrote:
+>>>> On Wed, 2023-11-22 at 15:09 -0800, Stefano Stabellini wrote:
+>>>>> On Wed, 22 Nov 2023, David Woodhouse wrote:
+>>>>>> On Wed, 2023-11-22 at 14:29 -0800, Stefano Stabellini wrote:
+>>>>>>> On Wed, 22 Nov 2023, Paul Durrant wrote:
+>>>>>>>> On 21/11/2023 22:10, Volodymyr Babchuk wrote:
+>>>>>>>>> From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+>>>>>>>>>
+>>>>>>>>> Instead of forcing the owner to domid 0, use XS_PRESERVE_OWNER to
+>>>>>>>>> inherit the owner of the directory.
+>>>>>>>>
+>>>>>>>> Ah... so that's why the previous patch is there.
+>>>>>>>>
+>>>>>>>> This is not the right way to fix it. The QEMU Xen support is *assuming* that
+>>>>>>>> QEMU is either running in, or emulating, dom0. In the emulation case this is
+>>>>>>>> probably fine, but the 'real Xen' case it should be using the correct domid
+>>>>>>>> for node creation. I guess this could either be supplied on the command line
+>>>>>>>> or discerned by reading the local domain 'domid' node.
+>>>>>>>
+>>>>>>> yes, it should be passed as command line option to QEMU
+>>>>>>
+>>>>>> I'm not sure I like the idea of a command line option for something
+>>>>>> which QEMU could discover for itself.
+>>>>>
+>>>>> That's fine too. I meant to say "yes, as far as I know the toolstack
+>>>>> passes the domid to QEMU as a command line option today".
+>>>>
+>>>> The -xen-domid argument on the QEMU command line today is the *guest*
+>>>> domain ID, not the domain ID in which QEMU itself is running.
+>>>>
+>>>> Or were you thinking of something different?
+>>>
+>>> Ops, you are right and I understand your comment better now. The backend
+>>> domid is not on the command line but it should be discoverable (on
+>>> xenstore if I remember right).
+>>
+>> Yes, it is just "~/domid". I'll add a function that reads it.
+> 
+> Just a quick question to QEMU folks: is it better to add a global
+> variable where we will store own Domain ID or it will be okay to read
+> domid from Xenstore every time we need it?
+> 
+> If global variable variant is better, what is proffered place to define
+> this variable? system/globals.c ?
+> 
 
-Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
----
- target/riscv/pmp.c | 26 ++++++++++++--------------
- target/riscv/pmp.h |  8 ++++----
- 2 files changed, 16 insertions(+), 18 deletions(-)
+Actually... is it possible for QEMU just to use a relative path for the 
+backend nodes? That way it won't need to know it's own domid, will it?
 
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 162e88a90a..dff9512c3f 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -150,8 +150,7 @@ void pmp_unlock_entries(CPURISCVState *env)
-     }
- }
- 
--static void pmp_decode_napot(target_ulong a, target_ulong *sa,
--                             target_ulong *ea)
-+static void pmp_decode_napot(hwaddr a, hwaddr *sa, hwaddr *ea)
- {
-     /*
-      * aaaa...aaa0   8-byte NAPOT range
-@@ -173,8 +172,8 @@ void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index)
-     uint8_t this_cfg = env->pmp_state.pmp[pmp_index].cfg_reg;
-     target_ulong this_addr = env->pmp_state.pmp[pmp_index].addr_reg;
-     target_ulong prev_addr = 0u;
--    target_ulong sa = 0u;
--    target_ulong ea = 0u;
-+    hwaddr sa = 0u;
-+    hwaddr ea = 0u;
- 
-     if (pmp_index >= 1u) {
-         prev_addr = env->pmp_state.pmp[pmp_index - 1].addr_reg;
-@@ -227,8 +226,7 @@ void pmp_update_rule_nums(CPURISCVState *env)
-     }
- }
- 
--static int pmp_is_in_range(CPURISCVState *env, int pmp_index,
--                           target_ulong addr)
-+static int pmp_is_in_range(CPURISCVState *env, int pmp_index, hwaddr addr)
- {
-     int result = 0;
- 
-@@ -305,14 +303,14 @@ static bool pmp_hart_has_privs_default(CPURISCVState *env, pmp_priv_t privs,
-  * Return true if a pmp rule match or default match
-  * Return false if no match
-  */
--bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
-+bool pmp_hart_has_privs(CPURISCVState *env, hwaddr addr,
-                         target_ulong size, pmp_priv_t privs,
-                         pmp_priv_t *allowed_privs, target_ulong mode)
- {
-     int i = 0;
-     int pmp_size = 0;
--    target_ulong s = 0;
--    target_ulong e = 0;
-+    hwaddr s = 0;
-+    hwaddr e = 0;
- 
-     /* Short cut if no rules */
-     if (0 == pmp_get_num_rules(env)) {
-@@ -624,12 +622,12 @@ target_ulong mseccfg_csr_read(CPURISCVState *env)
-  * To avoid this we return a size of 1 (which means no caching) if the PMP
-  * region only covers partial of the TLB page.
-  */
--target_ulong pmp_get_tlb_size(CPURISCVState *env, target_ulong addr)
-+target_ulong pmp_get_tlb_size(CPURISCVState *env, hwaddr addr)
- {
--    target_ulong pmp_sa;
--    target_ulong pmp_ea;
--    target_ulong tlb_sa = addr & ~(TARGET_PAGE_SIZE - 1);
--    target_ulong tlb_ea = tlb_sa + TARGET_PAGE_SIZE - 1;
-+    hwaddr pmp_sa;
-+    hwaddr pmp_ea;
-+    hwaddr tlb_sa = addr & ~(TARGET_PAGE_SIZE - 1);
-+    hwaddr tlb_ea = tlb_sa + TARGET_PAGE_SIZE - 1;
-     int i;
- 
-     /*
-diff --git a/target/riscv/pmp.h b/target/riscv/pmp.h
-index 9af8614cd4..f5c10ce85c 100644
---- a/target/riscv/pmp.h
-+++ b/target/riscv/pmp.h
-@@ -53,8 +53,8 @@ typedef struct {
- } pmp_entry_t;
- 
- typedef struct {
--    target_ulong sa;
--    target_ulong ea;
-+    hwaddr sa;
-+    hwaddr ea;
- } pmp_addr_t;
- 
- typedef struct {
-@@ -73,11 +73,11 @@ target_ulong mseccfg_csr_read(CPURISCVState *env);
- void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
-                        target_ulong val);
- target_ulong pmpaddr_csr_read(CPURISCVState *env, uint32_t addr_index);
--bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
-+bool pmp_hart_has_privs(CPURISCVState *env, hwaddr addr,
-                         target_ulong size, pmp_priv_t privs,
-                         pmp_priv_t *allowed_privs,
-                         target_ulong mode);
--target_ulong pmp_get_tlb_size(CPURISCVState *env, target_ulong addr);
-+target_ulong pmp_get_tlb_size(CPURISCVState *env, hwaddr addr);
- void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index);
- void pmp_update_rule_nums(CPURISCVState *env);
- uint32_t pmp_get_num_rules(CPURISCVState *env);
--- 
-2.34.1
+   Paul
 
 
