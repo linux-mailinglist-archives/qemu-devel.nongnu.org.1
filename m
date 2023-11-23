@@ -2,89 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035667F6311
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 16:33:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D087F6372
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 16:58:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6BhS-0005nk-Ea; Thu, 23 Nov 2023 10:33:06 -0500
+	id 1r6C44-0005wV-G7; Thu, 23 Nov 2023 10:56:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r6BhG-0005Y6-Ff
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:32:54 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1r6C43-0005wE-0S
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:56:27 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r6BhB-0000Q1-CJ
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:32:53 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4083f613272so6729135e9.1
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 07:32:48 -0800 (PST)
+ id 1r6C40-0002Jn-8l
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:56:26 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-40b34563987so6024665e9.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 07:56:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700753566; x=1701358366; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VNB0GZqw9S6CWE/ElqMrEP+EfWyAbKCG3btAwz5VLt8=;
- b=epC8PLstbxkShyalkE7MNp5ZR0ppEx49t5NgmnkNykCP3DOyGYZlcxuyNnzYyWtZNC
- 3hFWU4HK7Ln/LyId3hf+D2Db+6ZZbhd+Ee1qZn8CHJY9QCZTY55mYSubjZkKUgBpVUrN
- Fn7MYMYLZuzRDDjc7XKne0x/NQoxDzPeYcCJCb1PvqhU+gFupqaK06Mc8ateATfCGsim
- upDwPB+LFsJxpfs5L+g17m83d2SunFa+0fN83gbZ+QjU/oOM3OnlXV+nHgCabq9klyN5
- ElBBoZK5xcIZUer8eqYZATm6EQso3U0pxTLBXZGzbmTxI49SY+BI6TONmD/qCgljRQ1C
- FcIQ==
+ d=linaro.org; s=google; t=1700754981; x=1701359781; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jkxllu0oEF6IrKVjQEyfqs3Q5IPxiZYA8SIQAF9gyvE=;
+ b=U/T1G1Ca+xUfUuY9cLr89oKlkpmccUpabVgQdHzjiAfGL9XD9324Q4ueOXBWtRnBMg
+ xU+ykKNLrkW4c/38u1WWF1/Uee1aFbwsWLiLX7bfISiCeGxjUd8uheX0OuPOWjvsB2uz
+ Cv57IqfwOrNYC4zwC37fZVWB1kAvZJyouUQ/yKGlS8whigKL7DrJUfHalkqSeWWcgRGH
+ ynq0pVEq+as6QNNsHGfhVX04IyX/dB4GGo1KfS6bi7BRLlaGzEtf9NloIKKtxji4i6e4
+ ANQ57unzDpHWxGyOVrLYukiQNXUfzuFFMYB0YdXahLS+1MpDqG2qF3wZpsvKEwBDU2r2
+ gKVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700753566; x=1701358366;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=VNB0GZqw9S6CWE/ElqMrEP+EfWyAbKCG3btAwz5VLt8=;
- b=WjrJXQXeJz6ono4Iv1weihi2/y+QgUlH2TjN5ShFw4XNEbgElU0mszV5HVx6sZxqAz
- hSrisS5N8lZmTXArBQIZSxTG8rRZoYN5xG7VhBM22gMbjqrqoht/YgaThTvi28hvE0Yx
- 3271iicMQPklZonCJnNOTqUEyCB610w/2L6hVZcUR1LZ3t90DPWjuZCp1CIA7Hw8DyJl
- W6Vo/kZ3Enq3K3mYIRBuYSvYKyj1HrL+Euo97SkbrewWUKfnLOOso2bufRoT6eJ+ia7B
- t2Y1IGPZcUVabDKo6al7Uh5RjoznHtVPG0xPNWdcNOYvDIRvbShXdZDiJY+NLyTSq+pB
- kgHw==
-X-Gm-Message-State: AOJu0YyvsehHwgsQiFpfwAIHtSVpkCOYXf/QA3iMDBtDC9PPb7i3iz46
- Aohq4yviQk6gPPKMTGIX41gSxw==
-X-Google-Smtp-Source: AGHT+IEJLs3yMWCYZJ2Vv3e3synoMLyQP//ZSPAYS6tzXy68H3+uHz9/Lry1VjtL6X2Kbr5HGY8T6Q==
-X-Received: by 2002:a05:600c:1ca6:b0:40b:3730:edc1 with SMTP id
- k38-20020a05600c1ca600b0040b3730edc1mr1183649wms.5.1700753565713; 
- Thu, 23 Nov 2023 07:32:45 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700754981; x=1701359781;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jkxllu0oEF6IrKVjQEyfqs3Q5IPxiZYA8SIQAF9gyvE=;
+ b=unsOzHiNIe9bf12/ujNY90rkZGadBrT2AodaaU9kbAYRaUyN3oz8rBjhBAAMFy5iN/
+ JMzpyZtIfbJoTOUJ8E1LZnrr052m1x/8ZY2JhMt5SApbt7GIggZbguucgRxhg7MgWMdh
+ AxxMEVWxLcN6E/HyFMgc53XVH/vcKAI7Mm5r8ncJw8GUwiUF8cAT1j8v/peZEcrez2Sb
+ wkrM+8vOru6XW7Mu35J1C9dG7cmq+3S0kwE58K0kBbWMv2nW2BTBMkHTkW3NmuPG+Jsc
+ u0gq/y7peHZJCRCPCvC47nSD19iUvfqVXI+vFZf20Lpi/ESEtuZVhN7WHl3bloVLBUs4
+ ViKA==
+X-Gm-Message-State: AOJu0YzzxJCV/RCzt/L5ucSH6jdBpynDw8z7PM8Yq0KK410a0iIfDHtB
+ ayS1cwtlddrcVqSPdFonSCTRoUqrP0uyFUlBJN8O6g==
+X-Google-Smtp-Source: AGHT+IE6r9H4aIp7vMDbIgmCMCqUeO5LKfX7e5v609jwVFd4Xf282EnYNNbEWTPub9LvIRA+z4PO9Q==
+X-Received: by 2002:a05:600c:4691:b0:406:44fc:65c9 with SMTP id
+ p17-20020a05600c469100b0040644fc65c9mr2784718wmo.8.1700754981474; 
+ Thu, 23 Nov 2023 07:56:21 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- c3-20020a05600c0ac300b004064288597bsm2288736wmr.30.2023.11.23.07.32.45
+ bh5-20020a05600c3d0500b00405d9a950a2sm3156246wmb.28.2023.11.23.07.56.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Nov 2023 07:32:45 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0074A5F756;
- Thu, 23 Nov 2023 15:32:44 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,
- =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9=20?= <berrange@redhat.com>,  Richard
- Henderson
- <richard.henderson@linaro.org>,  Alexander Graf <agraf@csgraf.de>,  Paolo
- Bonzini <pbonzini@redhat.com>,  Markus Armbruster <armbru@redhat.com>,
- Phil =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Stefan Hajnoczi
- <stefanha@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Kevin Wolf
- <kwolf@redhat.com>,  Gerd Hoffmann <kraxel@redhat.com>,  Mark Cave-Ayland
- <mark.cave-ayland@ilande.co.uk>,  Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 2/2] docs: define policy forbidding use of "AI" / LLM
- code generators
-In-Reply-To: <4l0it.9kkxe9s135lg@linaro.org> (Manos Pitsidianakis's message of
- "Thu, 23 Nov 2023 16:56:28 +0200")
-References: <20231123114026.3589272-1-berrange@redhat.com>
- <20231123114026.3589272-3-berrange@redhat.com>
- <20231123092523-mutt-send-email-mst@kernel.org>
- <4l0it.9kkxe9s135lg@linaro.org>
-User-Agent: mu4e 1.11.25; emacs 29.1
-Date: Thu, 23 Nov 2023 15:32:44 +0000
-Message-ID: <87a5r4eb8j.fsf@draig.linaro.org>
+ Thu, 23 Nov 2023 07:56:21 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id BFD795F756;
+ Thu, 23 Nov 2023 15:56:20 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 00/14] random fixes for 8.2 (tests, plugins, docs, semihosting)
+Date: Thu, 23 Nov 2023 15:56:06 +0000
+Message-Id: <20231123155620.3042891-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,98 +91,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
+The following changes since commit b93c4313f2f40897bdafba15620c8fef6c20e721:
 
-> On Thu, 23 Nov 2023 16:35, "Michael S. Tsirkin" <mst@redhat.com> wrote:
->>On Thu, Nov 23, 2023 at 11:40:26AM +0000, Daniel P. Berrang=C3=A9 wrote:
->>> There has been an explosion of interest in so called "AI" (LLM)
->>> code generators in the past year or so. Thus far though, this is
->>> has not been matched by a broadly accepted legal interpretation
->>> of the licensing implications for code generator outputs. While
->>> the vendors may claim there is no problem and a free choice of
->>> license is possible, they have an inherent conflict of interest
->>> in promoting this interpretation. More broadly there is, as yet,
->>> no broad consensus on the licensing implications of code generators
->>> trained on inputs under a wide variety of licenses.
->>> The DCO requires contributors to assert they have the right to
->>> contribute under the designated project license. Given the lack
->>> of consensus on the licensing of "AI" (LLM) code generator output,
->>> it is not considered credible to assert compliance with the DCO
->>> clause (b) or (c) where a patch includes such generated code.
->>> This patch thus defines a policy that the QEMU project will not
->>> accept contributions where use of "AI" (LLM) code generators is
->>> either known, or suspected.
->>> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
->>> ---
->>>  docs/devel/code-provenance.rst | 40 ++++++++++++++++++++++++++++++++++
->>>  1 file changed, 40 insertions(+)
->>> diff --git a/docs/devel/code-provenance.rst
->>> b/docs/devel/code-provenance.rst
->>> index b4591a2dec..a6e42c6b1b 100644
->>> --- a/docs/devel/code-provenance.rst
->>> +++ b/docs/devel/code-provenance.rst
->>> @@ -195,3 +195,43 @@ example::
->>>    Signed-off-by: Some Person <some.person@example.com>
->>>    [Rebased and added support for 'foo']
->>>    Signed-off-by: New Person <new.person@example.com>
->>> +
->>> +Use of "AI" (LLM) code generators
->>> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>> +
->>> +TL;DR:
->>> +
->>> +  **Current QEMU project policy is to DECLINE any contributions
->>> +  which are believed to include or derive from "AI" (LLM)
->>> +  generated code.**
->>> +
->>> +The existence of "AI" (`Large Language Model <https://en.wikipedia.org=
-/wiki/Large_language_model>`__
->>> +/ LLM) code generators raises a number of difficult legal questions, a
->>> +number of which impact on Open Source projects. As noted earlier, the
->>> +QEMU community requires that contributors certify their patch submissi=
-ons
->>> +are made in accordance with the rules of the :ref:`dco` (DCO). When a
->>> +patch contains "AI" generated code this raises difficulties with code
->>> +provenence and thus DCO compliance.
->>> +
-<snip>
->>> +
->>> +The QEMU maintainers thus require that contributors refrain from using
->>> +"AI" code generators on patches intended to be submitted to the projec=
-t,
->>> +and will decline any contribution if use of "AI" is known or suspected.
->>> +
->>> +Examples of tools impacted by this policy includes both GitHub CoPilot,
->>> +and ChatGPT, amongst many others which are less well known.
->>
->>
->>So you called out these two by name, fine, but given "AI" is in scare
->>quotes I don't really know what is or is not allowed and I don't know
->>how will contributors know.  Is the "AI" that one must not use
->>necessarily an LLM?  And how do you define LLM even? Wikipedia says
->>"general-purpose language understanding and generation".
->>
->>
->>All this seems vague to me.
->>
->>
->>However, can't we define a simpler more specific policy?
->>For example, isn't it true that *any* automatically generated code
->>can only be included if the scripts producing said code
->>are also included or otherwise available under GPLv2?
->
-> The following definition makes sense to me:
->
-> - Automated codegen tool must be idempotent.
-> - Automated codegen tool must not use statistical modelling.
->
-> I'd remove all AI or LLM references. These are non-specific,
-> colloquial and in the case of `AI`, non-technical. This policy should
-> apply the same to a Markov chain code generator.
+  Merge tag 'pull-riscv-to-apply-20231122' of https://github.com/alistair23/qemu into staging (2023-11-22 09:39:23 -0500)
 
-I'm fairly sure my Emacs auto-complete would fail by that definition.
+are available in the Git repository at:
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+  https://gitlab.com/stsquad/qemu.git tags/pull-for-8.2-fixes-231123-1
+
+for you to fetch changes up to 6ef164188d005d7636f7ed8a1033cc4083498301:
+
+  tests/tcg: finesse the registers check for "hidden" regs (2023-11-23 14:10:06 +0000)
+
+----------------------------------------------------------------
+various random fixes for 8.2
+
+  - replace fedora-i386 cross compiler with debian
+  - update cirrus MacOS image to Ventura
+  - merge debian-native and debian-amd64 docker images
+  - fix compile of plugins on Windows mingw cross
+  - add some doc notes on semihosting READC
+  - add some doc notes on gdbstub
+  - skip loading debug symbols if we have failed
+  - enable arm-softmmu TCG tests
+  - don't attempt to use native cross builds for linux-user
+  - clean up registers gdb test case (ppc64/s390x)
+
+----------------------------------------------------------------
+Alex Bennée (10):
+      tests/docker: merge debian-native with debian-amd64
+      tests/tcg: fixup Aarch64 semiconsole test
+      docs/emulation: expand warning about semihosting
+      docs/system: clarify limits of using gdbstub in system emulation
+      hw/core: skip loading debug on all failures
+      testing: move arm system tests into their own folder
+      tests/tcg: enable arm softmmu tests
+      tests/tcg: enable semiconsole test for Arm
+      configure: don't try a "native" cross for linux-user
+      tests/tcg: finesse the registers check for "hidden" regs
+
+Daniel P. Berrangé (1):
+      tests/docker: replace fedora-i386 with debian-i686
+
+Greg Manning (1):
+      plugins: fix win plugin tests on cross compile
+
+Philippe Mathieu-Daudé (2):
+      .gitlab-ci.d/cirrus: Upgrade macOS to 13 (Ventura)
+      target/nios2: Deprecate the Nios II architecture
+
+ docs/about/deprecated.rst                          |  15 +
+ docs/about/emulation.rst                           |   5 +-
+ docs/system/gdb.rst                                |  13 +-
+ configure                                          |  27 +-
+ hw/core/loader.c                                   |   2 +-
+ hw/nios2/10m50_devboard.c                          |   1 +
+ hw/nios2/generic_nommu.c                           |   1 +
+ tests/tcg/arm/system/semiconsole.c                 |  42 +++
+ .gitlab-ci.d/buildtest.yml                         |  12 +-
+ .gitlab-ci.d/cirrus.yml                            |   6 +-
+ .../cirrus/{macos-12.vars => macos-13.vars}        |   2 +-
+ .gitlab-ci.d/container-cross.yml                   |  11 +-
+ .gitlab-ci.d/containers.yml                        |   2 +-
+ .gitlab-ci.d/crossbuilds.yml                       |  14 +-
+ contrib/plugins/Makefile                           |   2 +-
+ plugins/meson.build                                |   2 +-
+ tests/docker/Makefile.include                      |   3 -
+ tests/docker/dockerfiles/debian-i686-cross.docker  | 182 ++++++++++++
+ tests/docker/dockerfiles/debian-native.docker      |  54 ----
+ .../{debian-amd64.docker => debian.docker}         |   7 +-
+ tests/docker/dockerfiles/fedora-i386-cross.docker  |  40 ---
+ tests/lcitool/refresh                              |  18 +-
+ tests/plugin/meson.build                           |   3 +-
+ tests/tcg/aarch64/Makefile.softmmu-target          |   5 +-
+ tests/tcg/arm/Makefile.softmmu-target              |  76 ++++-
+ tests/tcg/arm/system/boot.S                        | 319 +++++++++++++++++++++
+ tests/tcg/arm/system/kernel.ld                     |  24 ++
+ tests/tcg/arm/{ => system}/test-armv6m-undef.S     |   0
+ tests/tcg/arm/{ => system}/test-armv6m-undef.ld    |   0
+ tests/tcg/multiarch/gdbstub/registers.py           |  95 ++++--
+ tests/tcg/ppc64/Makefile.target                    |   7 -
+ tests/tcg/s390x/Makefile.target                    |   4 -
+ 32 files changed, 798 insertions(+), 196 deletions(-)
+ create mode 100644 tests/tcg/arm/system/semiconsole.c
+ rename .gitlab-ci.d/cirrus/{macos-12.vars => macos-13.vars} (95%)
+ create mode 100644 tests/docker/dockerfiles/debian-i686-cross.docker
+ delete mode 100644 tests/docker/dockerfiles/debian-native.docker
+ rename tests/docker/dockerfiles/{debian-amd64.docker => debian.docker} (96%)
+ delete mode 100644 tests/docker/dockerfiles/fedora-i386-cross.docker
+ create mode 100644 tests/tcg/arm/system/boot.S
+ create mode 100644 tests/tcg/arm/system/kernel.ld
+ rename tests/tcg/arm/{ => system}/test-armv6m-undef.S (100%)
+ rename tests/tcg/arm/{ => system}/test-armv6m-undef.ld (100%)
+
+-- 
+2.39.2
+
 
