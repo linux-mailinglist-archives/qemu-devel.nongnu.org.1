@@ -2,81 +2,162 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A1AF7F5E14
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 12:43:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A987F5E1A
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 12:44:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r686o-0001PL-4R; Thu, 23 Nov 2023 06:43:02 -0500
+	id 1r687h-0002CS-QN; Thu, 23 Nov 2023 06:43:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r686m-0001Oa-0r
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:43:00 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r686j-0004eQ-MW
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:42:59 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40b358f216dso4350215e9.1
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 03:42:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700739776; x=1701344576; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=TK5gmGcJ/bkpS3b4rH8kMNV0KRS2ibQV+3r0RfiRAtw=;
- b=orve1dsU2vrmMBevE1VVzbtztLubMPTuife3s0kp4AJ8Zm9ZRHSKt0AMmW6AZbRT1e
- hW8AUoyj6LQ6bDsGR2SD8yQdYVLrQYNlE2bOxWq2gvjxsLadvTvOY2EzkQLnsqK0PRPH
- fewSot9Szov+40IXKW+CCUe90+kQ/zv5nASMqUvCCitozLHu/iUYCcfUQ+dTkkAE17Xf
- Z8IcKvfkzO4blzmPPb5GA0qbwqRFR2MBjnGtQJOX+LPTbtoVlocaNdy12RR2WAlaZMhg
- HYOUIvlxx5Dpo7hrTy+e/nov98KH6Nk1JTnNXXAcWe/wzwmzxSNl/JzktsHiuIMP3Dkg
- ulyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700739776; x=1701344576;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TK5gmGcJ/bkpS3b4rH8kMNV0KRS2ibQV+3r0RfiRAtw=;
- b=MVhxCwFOJRU95MjSQqiQdSS5bkHrV5vJk9CTk9qXF2ALqIk5jPr6cY5P4sEdpHdqFb
- 1kEWJaRgsXnUSjUhymrKtLoh1LPda97DAzuXT++kLXgz/a+E6DTn/QyJ92qM3tSJ7R/x
- Ku91/AxjFCmmq9yqn7P4Rj2i56GbaH4ai8KTkTUW+rOi85eleTEm4ZgnUkZ67NUst1nV
- IRmKkCP1n+2XTebdBlx5DMJfZ/KxEo69jzomL1sU983+n3TaKm8TZ5iu9DYemb5lFJPM
- hXi9neVKms/8s68EMv4anfe42ZjWFCOLuXEjvYgUpyDxFDyQERaXAywIbWQHeMprgsmC
- 4F8Q==
-X-Gm-Message-State: AOJu0Yya+so+xztydUxYR6QtFVpCDQdO2VJtJh1QtXrJZuJpfoCq1Z4c
- cytJ1cKa/97dsPajIi1JjbUcog==
-X-Google-Smtp-Source: AGHT+IGyAoNx1DwVRFO407Q40DfkMeVcWNPlQO7yCacBdTeYhQeZ9zAnI2NOE+B27o/1m57P5LV6Pw==
-X-Received: by 2002:a5d:6c6d:0:b0:332:ca1a:a824 with SMTP id
- r13-20020a5d6c6d000000b00332ca1aa824mr5304732wrz.11.1700739775041; 
- Thu, 23 Nov 2023 03:42:55 -0800 (PST)
-Received: from [192.168.69.100] ([176.176.165.237])
- by smtp.gmail.com with ESMTPSA id
- h4-20020adfa4c4000000b0032d8eecf901sm1455905wrb.3.2023.11.23.03.42.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 Nov 2023 03:42:54 -0800 (PST)
-Message-ID: <b82c568f-1f3a-472d-a3e6-12e5d95015d9@linaro.org>
-Date: Thu, 23 Nov 2023 12:42:53 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/21] target/arm/kvm: Use a switch for kvm_arm_cpreg_level
+ (Exim 4.90_1)
+ (envelope-from <prvs=5691553e4c=volodymyr_babchuk@epam.com>)
+ id 1r687e-0002CA-PQ
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:43:54 -0500
+Received: from mx0b-0039f301.pphosted.com ([148.163.137.242])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1)
+ (envelope-from <prvs=5691553e4c=volodymyr_babchuk@epam.com>)
+ id 1r687b-0006AE-OK
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:43:53 -0500
+Received: from pps.filterd (m0174683.ppops.net [127.0.0.1])
+ by mx0b-0039f301.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 3ANBD0Si002475;
+ Thu, 23 Nov 2023 11:43:40 GMT
+Received: from eur04-db3-obe.outbound.protection.outlook.com
+ (mail-db3eur04lp2051.outbound.protection.outlook.com [104.47.12.51])
+ by mx0b-0039f301.pphosted.com (PPS) with ESMTPS id 3uj2aa8xkr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Nov 2023 11:43:39 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WuOX2ANXIWn8adfMFrf5dv18BEgSuY10uV1/49a/je+l62qTYrQGs0XuwCarFwzD5H4+Lrm7gpoRlgr8ynFj4UDlqDU4SOUIRDYFSkq9xfeFT6Jmy0Ip11Prc01yX01VQ1KcTJ1xl19a20mkNbGazmf/5Kk4mwWVDJfEDiK/zK3t/POZDOoyJR71ZMtyS4y1WnFw9JGVuRwNxwZoUT2W0Dc5AWT8YyX/LwTnusmuu0+gtaZKIGQl+rvTvvfsHNeUEXQtOHk7uqdvnsJg9U9d4fyd0Ewz4W1sHnu2DeJvCQ4nJ2F4bsc6uXDjtMeFVtc7lfQq8GmzxRKvpzurOxp+jQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cJ7P4TWEuBEeo86sHh8dnTNhNvG+OnBixLYM858ijig=;
+ b=Y5PxIDF5EkkzWjUznm5oHhKoHvxxrtLKEZpHnSzYOU9ASo5BQExiemzLusfRHn+rYx4rQWQDD0yeRODvOuppE1urdeE2twbHd1iADLzcaRUk0dAhDsjsEQAGXUUJnuGeQm4Z/f8i0OzlF0uLocordzh1F8jm+XnhlAANgwVtT3t1qEKmQI6aKArMijeej62EvoIV/ryw+YF00miJzF9wtD3efQdyVE0xrkAlQZS43tnKZDMrekhodJArszL/nW9ehaqYhwPBk3fmMqAamVmUUbMoP0LBA+TC2Uur0PDnJpVn7omKX7+zUOB0xd7SpbLkl001HXv+sc2BExP60otReg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=epam.com; dmarc=pass action=none header.from=epam.com;
+ dkim=pass header.d=epam.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=epam.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cJ7P4TWEuBEeo86sHh8dnTNhNvG+OnBixLYM858ijig=;
+ b=Y0LQ9G9T7dD3Ql0ke99Y/Wekj94N+9wowN+hBgckrpclFXJgEAnNlaGyj0zfs7r60fnDFmkOt2rW/ePJnzdbu0D7QfKx6aCv8uHsVGx3rIC97NhlxZSNgMvwS/zNkxYzjb8E9lE7GqSK8oLnsMWPd3uB5OTnpv3j1dJ3O3gb98ZQeXQqVqXp1W6zPPw54nAObgsa8y6Fz8hUzQ3cP8RHq21Lp+ZsP9jwbUCrjqMuUJ+vmJIBueDsiNZ31CRoEZ7lCfm1Zze5SITfDdkPxE38I49IkfIHVJhkvRR8dyseHNeqXPxVt7zWnWZHj58h26Lu3v55YX6NmGZ44UK/GxR+nw==
+Received: from VI1PR03MB3710.eurprd03.prod.outlook.com (2603:10a6:803:31::18)
+ by AS2PR03MB9100.eurprd03.prod.outlook.com (2603:10a6:20b:5fb::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.20; Thu, 23 Nov
+ 2023 11:43:36 +0000
+Received: from VI1PR03MB3710.eurprd03.prod.outlook.com
+ ([fe80::8e03:368:1fd7:1822]) by VI1PR03MB3710.eurprd03.prod.outlook.com
+ ([fe80::8e03:368:1fd7:1822%6]) with mapi id 15.20.7025.020; Thu, 23 Nov 2023
+ 11:43:35 +0000
+From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
+To: David Woodhouse <dwmw2@infradead.org>
+CC: "paul@xen.org" <paul@xen.org>, Stefano Stabellini <sstabellini@kernel.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Julien Grall <julien@xen.org>, Oleksandr Tyshchenko
+ <Oleksandr_Tyshchenko@epam.com>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
+Subject: Re: [PATCH v2 4/6] xen_pvdev: Do not assume Dom0 when creating a
+ directory
+Thread-Topic: [PATCH v2 4/6] xen_pvdev: Do not assume Dom0 when creating a
+ directory
+Thread-Index: AQHaHMeIsCU+MAEGAkSnPoa9ThBNz7CGlGOAgABYsYCAAAmAgIAAAakAgAAAyoCAAAJ4gIAABwqAgAAFCoCAAJ2+AIAAFY6AgAAL24A=
+Date: Thu, 23 Nov 2023 11:43:35 +0000
+Message-ID: <87leaoy9sy.fsf@epam.com>
+References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
+ <20231121221023.419901-5-volodymyr_babchuk@epam.com>
+ <b04daedc-ba6a-4109-8e23-fbcd023bcfec@xen.org>
+ <alpine.DEB.2.22.394.2311221428570.2053963@ubuntu-linux-20-04-desktop>
+ <ce719f35e72a9387fc04af098e6d688f9bbdca4e.camel@infradead.org>
+ <alpine.DEB.2.22.394.2311221508270.2424505@ubuntu-linux-20-04-desktop>
+ <a4e6a62a7cfe756344a1efcb8b2c3cfb1e50817e.camel@infradead.org>
+ <alpine.DEB.2.22.394.2311221515010.2424505@ubuntu-linux-20-04-desktop>
+ <87r0khz6zj.fsf@epam.com> <87cyw1z61i.fsf@epam.com>
+ <dce4efb0-4fdc-404c-8e5d-c90ed732eb8a@xen.org>
+ <db7f8751c569c7cbf0049807050054071ddda0d9.camel@infradead.org>
+In-Reply-To: <db7f8751c569c7cbf0049807050054071ddda0d9.camel@infradead.org>
+Accept-Language: en-US
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-References: <20231123044219.896776-1-richard.henderson@linaro.org>
- <20231123044219.896776-12-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231123044219.896776-12-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: mu4e 1.10.7; emacs 29.1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: VI1PR03MB3710:EE_|AS2PR03MB9100:EE_
+x-ms-office365-filtering-correlation-id: 8732e8c3-c60e-489f-1c23-08dbec196d5f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Ef8mRJnhGibk68F8CDNs/YInIq3+c+9AJ9vnG5U7nkQRuKNR69XXMh+uSrHM+vLH36glXjGiGKSLs/Gu0+WRs3V3iH78Cy2k0pmNenJMgw6KVhoAOxVQDLeAEIx4jdXb1NjAJaVyY7wZumkeETYmI+I0jUelMzEtFKIrsHWD5UUJtY7myGOD1ZD3W5n2/5x4C1b7n7ir7QfnHFGKCjzmW8Oxsa790g0w3CW1RduF5Pd814k11PpdostcZUGMCF/W0eWeAjXgMXOngWSfUWgUj/tNCutdGw406ZmGOekCWF9ZovjA2Ya9LFCGj5aofnvI+F/zuDisnXpCKUQJmsk2bYuwHV15MKpmhkJjzgFKiz5i6btbaIatM3tz/daIeAvf0L1p5g0vKrnALKlVPK3u4Cj8GoisKt81SAi6DgInhwXbkh6aabcjE7AsZ4rBOB+WSElt//YJLjEB99+XczuWRaZJRJwtfvftF/NOWHJpPQh2IhKu+x1LwLxYhKO8XQ81jcuwCvaFEzrE+eeGKMxn9AUZSyAnPQ7MFsN+YvhmcimT3LQffP0dDmKN3xTbRhUwJ72bi2kg6iq8nSW3U67CQfwhKujz9viHTYrEg4W/Jx+AQ7UG0dp6Y65RKpcgDSJ+
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI1PR03MB3710.eurprd03.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(136003)(376002)(39860400002)(366004)(396003)(346002)(230922051799003)(186009)(1800799012)(64100799003)(451199024)(38070700009)(66899024)(76116006)(66946007)(66556008)(66476007)(91956017)(66446008)(64756008)(54906003)(38100700002)(36756003)(122000001)(86362001)(55236004)(53546011)(26005)(6506007)(6512007)(2616005)(2906002)(6486002)(4001150100001)(6916009)(316002)(478600001)(5660300002)(71200400001)(8936002)(8676002)(41300700001)(4326008);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?anJP7gjglTK7fRxt0WWBFs6DaG8iK5HnoPPRWj0XOVM62Vrh/f/2NWlQdo?=
+ =?iso-8859-1?Q?wsqZaSz325MyaSmuhkB/74mfrpgvF3HYRhgdyTa/QzjhNJvnxW7zxbghAW?=
+ =?iso-8859-1?Q?cwc87zsmrsLFmhUGfmlQKI8vPvp70ZKVd9JHBZkCeYv0c2tpUV40RT+fSq?=
+ =?iso-8859-1?Q?rs6bdPMzS18BBz5xhTn78wutXzKQkxJUXi9yIBpD1YZnsQtNaYvJ3BPN60?=
+ =?iso-8859-1?Q?uw2ZTiIXRVQ50yO3M0qLgzlJwBgbULuYUqxxVuD7fwQHcYpmzAN01P25Z3?=
+ =?iso-8859-1?Q?yfVLCszKfw62UvEAZxHZZwRYTJ/O8kumJ+0NZFmukRmKCeFnMOw0p1Gq4L?=
+ =?iso-8859-1?Q?GTEV1huq7wMQLYLdIoiozn+fJcalNdDyAxuyhEdKHVE70uS8YO87Ie40xJ?=
+ =?iso-8859-1?Q?IM2nhl+ekdBuFGfaNCvRg7vxsFwoGYmR9SzyHgOZB8LzdCih0f87b7Pgzs?=
+ =?iso-8859-1?Q?robk8xlrgCMHeYaR6J3tN545whNYPtwcoeIpX4gEnbbIHM74LEjfPT2+F7?=
+ =?iso-8859-1?Q?xSyFaefj4oK+gugI5gEnB57RNLQAQgAh1+XQRYOtbDipxdzxwVY6iXtRmL?=
+ =?iso-8859-1?Q?2PWfMRv5uJjXi6gxka7P+45NQDZkY2ncjKK9vg9ZVpEm69lLVsZczByair?=
+ =?iso-8859-1?Q?1quui5n7p7CL4G8G1RpnL5pH1SiWjDupV1SSXKy67SKsFTIk5wlCug4mWe?=
+ =?iso-8859-1?Q?cNmI/9fhSoizAu61HmIkrhR4qCpFaYM2nVwnKxtaxx2BckDRSw+9M7QrDP?=
+ =?iso-8859-1?Q?i5hwjHbJwXrj8cI4tIs/GHUDkyJI7oG0RhNgVGvyCzSMfMLAg0bKJ0HFaZ?=
+ =?iso-8859-1?Q?OrfWxJZmph1Ns8BeUNvoPLOV/idPLrHtbGIbsthWrWeDSevTBnVDzdiuDg?=
+ =?iso-8859-1?Q?KUet5zZfO516QoBcSABJnTLpygZIkty+drREUQZpaLsg4CU5gQjgO1pP11?=
+ =?iso-8859-1?Q?y40fhv4UZFo8zaFXSvBZrt7dgAqVwjsbhI4wLKr7By2ipj5rqiexSP0ENc?=
+ =?iso-8859-1?Q?CMapGyju04xt2qg7k6kFkFgvRmGYkMT7U3xccJ/DxXO4H5CaVZqSu8Lxwd?=
+ =?iso-8859-1?Q?G92KSNnspx7IKqUMDoypvf4PIjsKTC6Vqs4cBGiu6R6VLRV30EJXUMsmTs?=
+ =?iso-8859-1?Q?+CJ3MpxJqRnLXYSm0RL79eFuQtmEbDPRW9VxW8aBY4CPWL1ePCd+bNmrka?=
+ =?iso-8859-1?Q?pPxWq5uytLTqkhkN/vJLPQ/QU4W5mF0FsxcbhaWdVY4DhSoUo9cka1wKuU?=
+ =?iso-8859-1?Q?fq7b3XWNPlLVzehmTuvgr3QCEKsTS8ITCzn7UjIrR89H7FIco+v17XZ8AD?=
+ =?iso-8859-1?Q?Xey6VbebPMW4MxbZfi61uhhP5qPO4SsjEoeVgO9k7Ktkoy6OiiB4a3oReE?=
+ =?iso-8859-1?Q?HPUoVypm+hUxnssuP74K5QUcHz2jplzmyx8tW0bL9n9FGbaqSPX5jtuIKc?=
+ =?iso-8859-1?Q?MkNgrmKMM4Mgr5YooyVyjPo7APfczCLCZSsCTf21FlsKx7OL6pzgveSpM9?=
+ =?iso-8859-1?Q?batuaPF/TkQKleDYmkT8xtFWFcHKfgbyCIVR4e0jHiUqz0eRDnPgpSiVi3?=
+ =?iso-8859-1?Q?BJMuV69PBXNW2NCv4wQYbvThtYofd4vDMOBksSl1EMDInloZfZgPkguqQW?=
+ =?iso-8859-1?Q?wYct+OLEO9hZ9JSl4QVBJR1c/7eG7XV3q4JU8s/Przo2cyNqFbNqCcsw?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: epam.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3710.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8732e8c3-c60e-489f-1c23-08dbec196d5f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Nov 2023 11:43:35.5830 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b41b72d0-4e9f-4c26-8a69-f949f367c91d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 22nMETR8Q8s0pgKUpioINn41mYPDDR2BnAXkZsFWMFOsRCyVI+hYOTr7KEaBM/Wn83gfIed8ux7uCKP3itbI1Sul8iGBJRw84n9DmcI5UVk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR03MB9100
+X-Proofpoint-ORIG-GUID: 6GNd-SMR4AP-fR9T_fil4RWhl-hTsMmf
+X-Proofpoint-GUID: 6GNd-SMR4AP-fR9T_fil4RWhl-hTsMmf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-23_09,2023-11-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 mlxscore=0
+ phishscore=0 lowpriorityscore=0 mlxlogscore=999 impostorscore=0
+ malwarescore=0 spamscore=0 suspectscore=0 clxscore=1015 bulkscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311230083
+Received-SPF: pass client-ip=148.163.137.242;
+ envelope-from=prvs=5691553e4c=volodymyr_babchuk@epam.com;
+ helo=mx0b-0039f301.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,14 +173,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/11/23 05:42, Richard Henderson wrote:
-> Use a switch instead of a linear search through data.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/arm/kvm64.c | 32 +++++++++-----------------------
->   1 file changed, 9 insertions(+), 23 deletions(-)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Hi David,
 
+David Woodhouse <dwmw2@infradead.org> writes:
+
+> [[S/MIME Signed Part:Undecided]]
+> On Thu, 2023-11-23 at 09:28 +0000, Paul Durrant wrote:
+>> On 23/11/2023 00:07, Volodymyr Babchuk wrote:
+>> >=20
+>> > Hi,
+>> >=20
+>> > Volodymyr Babchuk <volodymyr_babchuk@epam.com> writes:
+>> >=20
+>> > > Hi Stefano,
+>> > >=20
+>> > > Stefano Stabellini <sstabellini@kernel.org> writes:
+>> > >=20
+>> > > > On Wed, 22 Nov 2023, David Woodhouse wrote:
+>> > > > > On Wed, 2023-11-22 at 15:09 -0800, Stefano Stabellini wrote:
+>> > > > > > On Wed, 22 Nov 2023, David Woodhouse wrote:
+>> > > > > > > On Wed, 2023-11-22 at 14:29 -0800, Stefano Stabellini wrote:
+>> > > > > > > > On Wed, 22 Nov 2023, Paul Durrant wrote:
+>> > > > > > > > > On 21/11/2023 22:10, Volodymyr Babchuk wrote:
+>> > > > > > > > > > From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.=
+com>
+>> > > > > > > > > >=20
+>> > > > > > > > > > Instead of forcing the owner to domid 0, use XS_PRESER=
+VE_OWNER to
+>> > > > > > > > > > inherit the owner of the directory.
+>> > > > > > > > >=20
+>> > > > > > > > > Ah... so that's why the previous patch is there.
+>> > > > > > > > >=20
+>> > > > > > > > > This is not the right way to fix it. The QEMU Xen suppor=
+t is *assuming* that
+>> > > > > > > > > QEMU is either running in, or emulating, dom0. In the em=
+ulation case this is
+>> > > > > > > > > probably fine, but the 'real Xen' case it should be usin=
+g the correct domid
+>> > > > > > > > > for node creation. I guess this could either be supplied=
+ on the command line
+>> > > > > > > > > or discerned by reading the local domain 'domid' node.
+>> > > > > > > >=20
+>> > > > > > > > yes, it should be passed as command line option to QEMU
+>> > > > > > >=20
+>> > > > > > > I'm not sure I like the idea of a command line option for so=
+mething
+>> > > > > > > which QEMU could discover for itself.
+>> > > > > >=20
+>> > > > > > That's fine too. I meant to say "yes, as far as I know the too=
+lstack
+>> > > > > > passes the domid to QEMU as a command line option today".
+>> > > > >=20
+>> > > > > The -xen-domid argument on the QEMU command line today is the *g=
+uest*
+>> > > > > domain ID, not the domain ID in which QEMU itself is running.
+>> > > > >=20
+>> > > > > Or were you thinking of something different?
+>> > > >=20
+>> > > > Ops, you are right and I understand your comment better now. The b=
+ackend
+>> > > > domid is not on the command line but it should be discoverable (on
+>> > > > xenstore if I remember right).
+>> > >=20
+>> > > Yes, it is just "~/domid". I'll add a function that reads it.
+>> >=20
+>> > Just a quick question to QEMU folks: is it better to add a global
+>> > variable where we will store own Domain ID or it will be okay to read
+>> > domid from Xenstore every time we need it?
+>> >=20
+>> > If global variable variant is better, what is proffered place to defin=
+e
+>> > this variable? system/globals.c ?
+>> >=20
+>>=20
+>> Actually... is it possible for QEMU just to use a relative path for the=
+=20
+>> backend nodes? That way it won't need to know it's own domid, will it?
+>
+> That covers some of the use cases, but it may also need to know its own
+> domid for other purposes. Including writing the *absolute* path of the
+> backend, to a frontend node?
+
+Is this case possible? As I understand, QEMU writes frontend nodes only
+when it emulates Xen, otherwise this done by Xen toolstack. And in case
+of Xen emulation, QEMU always assumes role of Domain-0.
+
+--=20
+WBR, Volodymyr=
 
