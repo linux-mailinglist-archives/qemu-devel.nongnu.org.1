@@ -2,80 +2,163 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1207F5602
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 02:44:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6460E7F55CF
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 02:21:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5ykE-0007nx-KW; Wed, 22 Nov 2023 20:43:06 -0500
+	id 1r5yO7-0007kf-FH; Wed, 22 Nov 2023 20:20:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <patrick@rivosinc.com>)
- id 1r5xPV-00070Z-Gx
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 19:17:37 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <patrick@rivosinc.com>)
- id 1r5xPT-0000GW-Mr
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 19:17:37 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1cf59c07faeso2578455ad.2
- for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 16:17:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1700698654; x=1701303454;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=lhRYRi7vANkjLCTUL1asmQ357tOqr1+NqvoT+6py0Os=;
- b=Iad8BNNiPqgVq1BheRsbF1ZhgMnzHM4jb6X92LgGfxBMVJL1f2qPtn+i4pJ6p0Gevi
- UsW2ihf1O4Fxlj9KxDvWchlKbj6uNZ8UIN7l0zRhne7f8kQsnOScAJ2BVL3JMcaKW4Bw
- SWSJmI7ZyVPoOo4lRGgGeH7Shsd1I/Dt2O11U2BqLkaOoLcqy/W++Fj8KHVBrMkJgE7p
- jfGjzPmK6RwpDSOpxdLWESMDyiYoz9ThZUai3vJu6NHLu1lpLxCFcIJIPHNaCDI2fOm7
- 0KnRZPAm3i4WBBStmrCSAJ+YbfUHEZWuT5pdmcho/b6+3V3uTcEYuyab4oPKWLU+8LmZ
- M5mA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700698654; x=1701303454;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lhRYRi7vANkjLCTUL1asmQ357tOqr1+NqvoT+6py0Os=;
- b=S0o5UTpl5SrB4RiF31Wi0Ys9oVUK4j/JWb8jgNvZs0ab7u+ePFrJ+tk5Ylhd64iiSk
- jyZJSOd3ccrQbayZNaUOUyG+07ubHUgXaV5RXxcPHrKOf+RlpH50CHrfPX5breqZCQHe
- +0yAGrTIeckS4cvP8kTaKe6CT0nugJAWm7KPahWwfSSAiU3XWIbwt+WSr1S9bhFjmi50
- tVeNkRPcjzwAXCLE/tE6u4fcmQFE9NtJHrcZI/4uryVOHwuP1ZCFiras5pmcvjt/lyVx
- qYDYdd3xwxBYa0Y1vD1BrrKFhGonZDyAstfTMvt2FM+Lh1CkFdyynDjXPCNSD27Frvug
- gjQQ==
-X-Gm-Message-State: AOJu0YwegcuXqNVHEUaNgRzHsIrCLMGc3TwutGdAJh2Z40XX335Qdfpm
- kUj4Swgo6w1VEMsdmdJol2kysA==
-X-Google-Smtp-Source: AGHT+IEmQPBAD7TRbg2ZcP7UEiMz/wJ1L6buvdcAmN8td2nhx1Ib6SlUSM3Ztrf8HrrvwatWmcViCw==
-X-Received: by 2002:a17:902:e80a:b0:1cc:361b:7b10 with SMTP id
- u10-20020a170902e80a00b001cc361b7b10mr4647408plg.24.1700698653660; 
- Wed, 22 Nov 2023 16:17:33 -0800 (PST)
-Received: from patrick-ThinkPad-X1-Carbon-Gen-8.hq.rivosinc.com
- ([12.44.203.122]) by smtp.gmail.com with ESMTPSA id
- jh9-20020a170903328900b001c0de73564dsm3289plb.205.2023.11.22.16.17.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Nov 2023 16:17:33 -0800 (PST)
-From: Patrick O'Neill <patrick@rivosinc.com>
-To: qemu-riscv@nongnu.org
-Cc: qemu-devel@nongnu.org,
-	Patrick O'Neill <patrick@rivosinc.com>
-Subject: [PATCH] RISC-V: Increase max vlen to 4096
-Date: Wed, 22 Nov 2023 16:17:09 -0800
-Message-ID: <20231123001709.64934-1-patrick@rivosinc.com>
-X-Mailer: git-send-email 2.42.0
+ (Exim 4.90_1)
+ (envelope-from <prvs=5691553e4c=volodymyr_babchuk@epam.com>)
+ id 1r5yNw-0007jZ-Vw
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 20:20:05 -0500
+Received: from mx0b-0039f301.pphosted.com ([148.163.137.242])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1)
+ (envelope-from <prvs=5691553e4c=volodymyr_babchuk@epam.com>)
+ id 1r5yNs-0005pA-Py
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 20:20:02 -0500
+Received: from pps.filterd (m0174683.ppops.net [127.0.0.1])
+ by mx0b-0039f301.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 3AN0fnsp011906;
+ Thu, 23 Nov 2023 01:19:44 GMT
+Received: from eur01-he1-obe.outbound.protection.outlook.com
+ (mail-he1eur01lp2051.outbound.protection.outlook.com [104.47.0.51])
+ by mx0b-0039f301.pphosted.com (PPS) with ESMTPS id 3uh4u5c03k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Nov 2023 01:19:44 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=P9IY+3Fvh61NM11e2qIF7T5j8332jUFpHEeoaTeybn0olozVhAoR9TUu7QrUI1VUDVFR/FI1a3fdfcxQid5E5KlEwc/Pf1/nrTFPjbz///i31cXqoRn1vWIufX2hMxEXdXsVsoTuemEkJjsY39DSIuy2YY9nT67owExAnM+FhONRRK4f3354e3mu9yK+Gere/aJu8CmuDVhn6uCX2xeS4cWW7vWYVpGfrpDfzi5fjamXkdFMU6LkNbEKeX2YNSyiXIB7AKuXDGV1aqUXOpTyOoqvKzeT+TwQOYNjKrUBtOIDi3Gm+zisLTf1Q12nNbVCeoCxj+B0vHuGl80pKrk5ng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5TmEmqeOWJEXSOfUhZZc+TeOdEiYVqPoGoDsR2syFO8=;
+ b=CuoT0mq//FXRahmeWYFNdcCU38197v+nbV1AXIDwGm/Gnk2O8YYLAmLC/whE1JSjcWcbWzloqO1KURbfGpdmHU9tEpsmUTExnBCVD+OiZz4T/0i0Zpy5+LMDvKNwd9Fi+zkk7whZiz6rbYrW7bv9Pj/fkfDijGECja1MozfJtkXDRBAJXlcN66QZvOEdfg+aiFGvNMDCGghPhaL4wBXrqwPZ4nSxZDIQdRU87CsWlUOxICHGsGf/QIBfhLq9c/PwVPmdfNBRLkBQ1L28+t/2+P3SSWlq2AfBsjHYGHguqchllNnOOCZNRD0KbCIfdsbOcpJ7SW2SrJtJPhhFQ9dKRw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=epam.com; dmarc=pass action=none header.from=epam.com;
+ dkim=pass header.d=epam.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=epam.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5TmEmqeOWJEXSOfUhZZc+TeOdEiYVqPoGoDsR2syFO8=;
+ b=mdfi7w5Ve9xRm6TnJDbqVOiPcfc28eHb7xPAKK96+oeWN5bZ50JjQfTepr0mCdKgnTHEzRihPezZXpEdyaR5muXb7BDVVzjhKdoFivK4WZ0TBynSV01fZfKauK9gowuTWLVU1eePBqIujsVR41W9c+GmESWRH07y1x+akdMPkyS+vzHim3/venzrgsNlm8fGAf13TRcMLStq0lvA0vzQewzWneMtSLBbn6k6wudGvruJ5oa6aX64B3ZphOHE0mmgv+O6N5WeOohmUdA6EdQj7DOTj9vWPzrSNtTqcsdT3QapoqhF23KiA0V2g+gAPwN3q+1w4e4yR0QTDCIxVvXsgw==
+Received: from VI1PR03MB3710.eurprd03.prod.outlook.com (2603:10a6:803:31::18)
+ by PA4PR03MB7248.eurprd03.prod.outlook.com (2603:10a6:102:10e::6)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.18; Thu, 23 Nov
+ 2023 01:19:38 +0000
+Received: from VI1PR03MB3710.eurprd03.prod.outlook.com
+ ([fe80::8e03:368:1fd7:1822]) by VI1PR03MB3710.eurprd03.prod.outlook.com
+ ([fe80::8e03:368:1fd7:1822%6]) with mapi id 15.20.7025.020; Thu, 23 Nov 2023
+ 01:19:38 +0000
+From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
+To: David Woodhouse <dwmw2@infradead.org>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Stefano Stabellini
+ <sstabellini@kernel.org>, Julien Grall <julien@xen.org>, Paul Durrant
+ <paul@xen.org>, "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard
+ Henderson <richard.henderson@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>, Anthony Perard <anthony.perard@citrix.com>, "open
+ list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
+Subject: Re: [PATCH v2 3/6] xen: xenstore: add possibility to preserve owner
+Thread-Topic: [PATCH v2 3/6] xen: xenstore: add possibility to preserve owner
+Thread-Index: AQHaHMeI3Gf8Xs6dHUOphRyadMs2o7CG9fUAgAAktAA=
+Date: Thu, 23 Nov 2023 01:19:38 +0000
+Message-ID: <87v89txo46.fsf@epam.com>
+References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
+ <20231121221023.419901-4-volodymyr_babchuk@epam.com>
+ <777dd8fb393464bcac2130210ef2a538a2e606f9.camel@infradead.org>
+In-Reply-To: <777dd8fb393464bcac2130210ef2a538a2e606f9.camel@infradead.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: mu4e 1.10.7; emacs 29.1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: VI1PR03MB3710:EE_|PA4PR03MB7248:EE_
+x-ms-office365-filtering-correlation-id: 6fea7cfc-0352-4aec-6d8e-08dbebc24303
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: RuqT1a+fbuHO8JDwj6i01Uax01rHFfOvPgaC0FlKxiRz+z3ezRr5RUBnpwOAN3knRp8FoqBOlNH8fV4rzRA31xHGK3aLDT1KTyhXcoPBz+pMT5y07P5yxEUzA3XkWlxUuUPHMuXVPhWEjqCPF5t9qJE08VOsLJ/Hta1jAr7ypJBJpTUayZtx8vHIBSUO/PkxAsyrlVV4IPa/BgDPtEV+Ly2WfXpz3mV5AZBnCsU0AHr06UDWZeoARBygNZcF9eUSklKbUvIZiAQzoTC0okd/SflSDfwUOjW0WNRAZMJn/JaadqcsTNqkTkXQ9YPq7aG3mkVjws7YgqaVyfXk/bMonoE9WQfWEOWxtvz3W+sF8LRZ/qeCvhdv1kgi94GaZY4wEJY8pc8OUKtazsKgZRJqFWisOhK1/FKlk5Lvj1KV2fvhjnrOASidIf0FnJbVj96Cy98RZ7gFVXMOXK0iih8P3iTs0Rx1w9onUUJuWAgXY3x02Now71og4rVppXZ/RJxlPVNWELNJWWzHSk8KJU5LHtYmR/JnQTp78uBK/yzhPae7sW+nqsymhljOkxkpadQf8IKzZZv6fEKEoCvoLSupQ1hvwnnrnwSQ7+etdlvA0gqAlc5DTzgHTPYYdCMjzVpE
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI1PR03MB3710.eurprd03.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376002)(39860400002)(366004)(396003)(346002)(136003)(230922051799003)(1800799012)(186009)(451199024)(64100799003)(26005)(55236004)(6506007)(6512007)(2616005)(91956017)(4326008)(76116006)(66946007)(54906003)(8936002)(64756008)(66446008)(316002)(6916009)(8676002)(66476007)(38100700002)(66556008)(122000001)(478600001)(6486002)(71200400001)(7416002)(2906002)(4001150100001)(5660300002)(86362001)(41300700001)(36756003)(38070700009);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TnR3eTNJWTdkejZGTHk4QUsrYW91QnJ2NnN6MnhuZ2JBR1Iyd3kyNjJTM0Q2?=
+ =?utf-8?B?SG4wMkxJWXo2WTMwaEdLTXhWYXhWb2VhdTYwbHQyRkJmMFN1OXFRMWtZOEhH?=
+ =?utf-8?B?eDVOcjhqZk8xY25QZG01ODMvQ3hUZGxpK3JqdlJuZ2xLRlNIM2tjZWFoTTFk?=
+ =?utf-8?B?V2ViOWVkT3FLbnZySkFPR3dFZTBSR3pETTgzdmZDdzNZK3pNelF1Rnh0dkJS?=
+ =?utf-8?B?L3JDR3pJRUhIQ0c5VFFUcEkxb3FHRzkyT0lSNHkvWGg5eGtGaXlHdjJiZTdQ?=
+ =?utf-8?B?d0dKZVpOenU4cndtUG9qQkJiUE1OdmJaZ0NYaW8wQXU1VzdYL2RVSlR1NzF6?=
+ =?utf-8?B?R0xCd0ZkTmtvRGFlWlpRR0tHR0dlbTVpUnhaYmp3ZXBLTzFmNWF6RXZIZE9M?=
+ =?utf-8?B?Q1VFWllBRm0vRGlIZTJraVZRZ1VaMEdQMWdJUWtCRWFVSEt6SzVoWng3R2tr?=
+ =?utf-8?B?SHpza2g2ZTdsaFRZa0RBemJxWDVBZTBCVk9OTkxQWC9LUG0xTnZhMDhMQWVJ?=
+ =?utf-8?B?ZGR3dmVjR3FwMURxOTlzbWJXVTExMEVQTDZtWmxnMnJ5c1NqUUpwcm9URTdh?=
+ =?utf-8?B?Zzd5MWh6dCtoWDRiYXV5UDFIQjNaMXdYdWozSytUWjdUWWppWFFtd0xRMlZR?=
+ =?utf-8?B?Vlh3bUVOdktuR2NUQ2c1QjE0aWNrdjBENnJCaU1hYTV3c205Szc2U0NVT25z?=
+ =?utf-8?B?TXIvYXNyMEpvWXNsbXdZME8rSG9QZ1NUdml4U3AvSFhPcFFucmZVeE9weTll?=
+ =?utf-8?B?YkZ2YlJ5VWhZcG5LN1JOdFNabUlCSFdMZ2p6VTZtSWtDUmR3K2JRaUZ1SE4y?=
+ =?utf-8?B?TUtTM0J5NGpvRHJvbHFtQ1Z6NC9VeVFaRmV4QVl3emxIbE9CU3l2dXJuUjVJ?=
+ =?utf-8?B?eTRobkNFS2J0eDZxVk8xYWpvQ1NIbmkvellqV2V2eURHMEo2MzkwS0lUWUgw?=
+ =?utf-8?B?NzljMXZQQUQ5YU9QaytEZlNndk5vallIRnVwMlB5SVY5WUxJWnNqWDQyaGNM?=
+ =?utf-8?B?eXlkdG1zUkUyRzA3Njg1OC85MjQ2c2Y5NWVITXJvZjZuVXVPUkxGWFEwZm5M?=
+ =?utf-8?B?Z09FRElNd1FjdTAvLzFvc3R1OHMxWUR3S3pnZHY2WWNRWXhzVWtjd2taRm5j?=
+ =?utf-8?B?K05VSTk1VEJwUHNBUDhlQXRUMzN4UkhqK3c4Vm1PQ3Z1aWY1V29KRExsckpF?=
+ =?utf-8?B?V1RnZHRWcjRIMVoxZ3JESVBLZEwvTU5CMTJ0NVA4WlQvUTVUQkF4blRNaEgy?=
+ =?utf-8?B?NUt4WkpybHBwTmFFeXoyNUxiaUgxcnFnZXRkc3QvTG96aUQ4TXROekZoVk5n?=
+ =?utf-8?B?dmVXOUpwRnUvK3RLRWdIZklZeVpERGJnRjVCV2RlL0FsampNaDhyM1lGWEh5?=
+ =?utf-8?B?YjV2ZmxORnUvWjZZNWZ0bjZzOFdPQXFXaDJZTEdFMmhFTW1JWi9jMTB5Vnds?=
+ =?utf-8?B?WlpoVnNablRhNUREVmhrM01LUG9YSmFQbG9YbVhPT0I2V1dpVzZNNURnZzBz?=
+ =?utf-8?B?ZC9tenBzVEF1WTdIaE1pYXc4SEMwVklJVjlXcS9rYUFpVy9sSWFxSUdkSE16?=
+ =?utf-8?B?K3NHeVhuZklMdEtFUjF3cXJqMHhuYy92SUZHYlRuN3J2aWVEOFBUano2eEl2?=
+ =?utf-8?B?SUVTOFU4NElKdFlTWDRNYjk0WXp6ZFZic3NKMWQzb0NBZzJ0azNCeWQzQ1JB?=
+ =?utf-8?B?Q1dDblRLV1piYkdNbWEvOGhmQ2ljVWR5WHhyQzArR1FTM3dnL09LNTMwNDlQ?=
+ =?utf-8?B?VWM5YU1lNEFvcWprKzdlWVdPZE9NYTVmaGM2NFNmbTdENVV4eXFJRnZxa2Zi?=
+ =?utf-8?B?NjJZR2g3aENhNlNHUlRBcm04ZEp3dFZSK3BsV0F1azkzTVkzMitqSmM2cS9N?=
+ =?utf-8?B?QnZ1SkJURkgrV0RuWkFjb1FGclVOZkRHdlBINzhobFRrNzNRVE9uTXpCZnRm?=
+ =?utf-8?B?eURoeVd6aExFOFFLNXJCWk9rOUhHM1ptNXZVcTlveWRXS3dRQnN3RVR5S29l?=
+ =?utf-8?B?ZGtEWlZVSXhuaU9GUmxldGhJYTBnYW9yZWRDUFFMbkZLckM3VnNDY3Ftd2FB?=
+ =?utf-8?B?T0hQUnpaMnhHUS9FcWlVMERJSFMzcDNQc2paRmhQdmd4MXZxWm9KMFl4Z2Zr?=
+ =?utf-8?B?dU5FTWwyZXBvbXUrSjZWMDJkK2Z2MDcwbGl1UVNsRmtYblpHdDhRRE1sS3pw?=
+ =?utf-8?B?WlE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <918AB3AA138BC54C929529B30E2706B7@eurprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=patrick@rivosinc.com; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-OriginatorOrg: epam.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3710.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6fea7cfc-0352-4aec-6d8e-08dbebc24303
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Nov 2023 01:19:38.3516 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b41b72d0-4e9f-4c26-8a69-f949f367c91d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 5IOVQtSFRMGMh4TgvGztFb/WDB1U3peZuLcuLl+qVtmqUvQj9IwqhkFn16uThHtY6WNkdFgHM/u3G68Eicx06YMT/Q/W7nm6i/k5kpfB3/Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR03MB7248
+X-Proofpoint-GUID: 2V1gzoitA9mTMzcSZlbeW7GVizLNKw6h
+X-Proofpoint-ORIG-GUID: 2V1gzoitA9mTMzcSZlbeW7GVizLNKw6h
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-22_18,2023-11-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015
+ bulkscore=0 mlxscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
+ spamscore=0 suspectscore=0 malwarescore=0 mlxlogscore=599 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
+ definitions=main-2311230008
+Received-SPF: pass client-ip=148.163.137.242;
+ envelope-from=prvs=5691553e4c=volodymyr_babchuk@epam.com;
+ helo=mx0b-0039f301.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 22 Nov 2023 20:43:00 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,38 +173,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU currently limits the max vlenb to 1024. GCC sets the upper bound
-to 4096 [1]. There doesn't seem to be an upper bound set by the spec [2]
-so this patch just changes QEMU to match GCC's upper bound.
-
-[1] https://github.com/gcc-mirror/gcc/blob/5d2a360f0a541646abb11efdbabc33c6a04de7ee/gcc/testsuite/gcc.target/riscv/rvv/base/zvl-unimplemented-2.c#L4
-[2] https://github.com/riscv/riscv-v-spec/issues/204
-
-Signed-off-by: Patrick O'Neill <patrick@rivosinc.com>
----
-Tested by applying to QEMU v8.1.2 and running the GCC testsuite in QEMU
-user mode with rv64gcv_zvl4096b. Failures are somewhat reasonable and on
-first inspection appear to be in the same ballpark as failures for
-rv64gcv_zvl1024b. Since I used tip-of-tree GCC I'm expecting those
-failures to be GCC-caused & from skimming the debug log they appear to
-be.
----
- target/riscv/cpu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 6ea22e0eea..2ff3a72fc0 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -97,7 +97,7 @@ typedef enum {
- #include "debug.h"
- #endif
-
--#define RV_VLEN_MAX 1024
-+#define RV_VLEN_MAX 4096
- #define RV_MAX_MHPMEVENTS 32
- #define RV_MAX_MHPMCOUNTERS 32
-
---
-2.34.1
+DQpIaSBEYXZpZCwNCg0KRGF2aWQgV29vZGhvdXNlIDxkd213MkBpbmZyYWRlYWQub3JnPiB3cml0
+ZXM6DQoNCj4gW1tTL01JTUUgU2lnbmVkIFBhcnQ6VW5kZWNpZGVkXV0NCj4gT24gVHVlLCAyMDIz
+LTExLTIxIGF0IDIyOjEwICswMDAwLCBWb2xvZHlteXIgQmFiY2h1ayB3cm90ZToNCj4+IA0KPj4g
+LS0tIGEvaHcveGVuL3hlbi1vcGVyYXRpb25zLmMNCj4+ICsrKyBiL2h3L3hlbi94ZW4tb3BlcmF0
+aW9ucy5jDQo+PiBAQCAtMzAwLDYgKzMwMCwxOCBAQCBzdGF0aWMgYm9vbCBsaWJ4ZW5zdG9yZV9j
+cmVhdGUoc3RydWN0IHFlbXVfeHNfaGFuZGxlICpoLCB4c190cmFuc2FjdGlvbl90IHQsDQo+PiDC
+oMKgwqDCoMKgwqDCoMKgIHJldHVybiBmYWxzZTsNCj4+IMKgwqDCoMKgIH0NCj4+IMKgDQo+PiAr
+wqDCoMKgIGlmIChvd25lciA9PSBYU19QUkVTRVJWRV9PV05FUikgew0KPj4gK8KgwqDCoMKgwqDC
+oMKgIHN0cnVjdCB4c19wZXJtaXNzaW9ucyAqdG1wOw0KPj4gK8KgwqDCoMKgwqDCoMKgIHVuc2ln
+bmVkIGludCBudW07DQo+PiArDQo+PiArwqDCoMKgwqDCoMKgwqAgdG1wID0geHNfZ2V0X3Blcm1p
+c3Npb25zKGgtPnhzaCwgdCwgcGF0aCwgJm51bSk7DQo+PiArwqDCoMKgwqDCoMKgwqAgaWYgKHRt
+cCA9PSBOVUxMKSB7DQo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gZmFsc2U7DQo+
+PiArwqDCoMKgwqDCoMKgwqAgfQ0KPj4gK8KgwqDCoMKgwqDCoMKgIHBlcm1zX2xpc3RbMF0uaWQg
+PSB0bXBbMF0uaWQ7DQo+PiArwqDCoMKgwqDCoMKgwqAgZnJlZSh0bXApOw0KPj4gK8KgwqDCoCB9
+DQo+PiArDQo+PiDCoMKgwqDCoCByZXR1cm4geHNfc2V0X3Blcm1pc3Npb25zKGgtPnhzaCwgdCwg
+cGF0aCwgcGVybXNfbGlzdCwNCj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBBUlJBWV9TSVpFKHBlcm1zX2xpc3QpKTsNCj4+IMKg
+fQ0KPg0KPiBJZiB0aGUgZXhpc3RpbmcgdHJhbnNhY3Rpb24gaXMgWEJUX05VTEwgSSB0aGluayB5
+b3Ugd2FudCB0byBjcmVhdGUgYQ0KPiBuZXcgdHJhbnNhY3Rpb24gZm9yIGl0LCBkb24ndCB5b3U/
+DQoNCkkgbXVzdCBzYXkgdGhhdCB5b3VyIGNvbW1lbnQgaXMgdmFsaWQgZXZlbiB3aXRob3V0IG15
+DQpjaGFuZ2VzLiB4ZW5zdG9yZV9ta2RpcigpIGNhbGxzIHFlbXVfeGVuX3hzX2NyZWF0ZSwgcHJv
+dmlkaW5nIGp1c3QgcGxhaW4NCiIwIiAobm90IGV2ZW4gWEJUX05VTEwpIGFzIGEgdHJhbnNhY3Rp
+b24sIGJ1dCBhY3R1YWwgeGVuc3RvcmUgaW50ZXJmYWNlDQppbXBsZW1lbnRhdGlvbiwgbGlrZSB4
+c19iZV9jcmVhdGUoKSwgaXNzdWUgbXVsdGlwbGUgY2FsbHMgdG8gbG93ZXINCmxheWVyLCBwYXNz
+aW5nICJ0IiBkb3dud2FyZHMuIEZvciBleGFtcGxlLCB4c19iZV9jcmVhdGUoKSBjYWxscw0KeHNf
+aW1wbF9yZWFkLCB4c19pbXBsX3dyaXRlIGFuZCB4c19pbXBsX3NldF9wZXJtcygpLiBJZiBjYWxs
+ZWQgZnJvbQ0KeGVzbnRvcmVfbWtkaXIoKSwgdGhvc2UgdGhyZWUgb3BlcmF0aW9ucyB3aWxsIGJl
+IG5vbi1hdG9taWMuIEkgZG9uJ3QNCmtub3cgaWYgdGhpcyBjYW4gbGVhZCB0byBhIHByb2JsZW0s
+IGJlY2F1c2UgYXBwYXJlbnRseSBpdCB3YXMgc28gZm9yIGENCmxvbmcgdGltZS4uLg0KDQotLSAN
+CldCUiwgVm9sb2R5bXly
 
