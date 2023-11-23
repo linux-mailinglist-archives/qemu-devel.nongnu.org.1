@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A71CB7F5FFA
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 14:18:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B627F6013
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 14:19:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r69Zd-0002iF-1f; Thu, 23 Nov 2023 08:16:53 -0500
+	id 1r69bu-0004W2-PN; Thu, 23 Nov 2023 08:19:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r69ZZ-0002hr-13
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 08:16:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r69ZW-0002fb-6c
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 08:16:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700745404;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mkabsX/5pHbH/ITIj5JZl5EsGMpXNJi2yi99uy6Cv60=;
- b=YG0dCPGA35+VfT4ZN+sjZKjO9sNwu6fOgl7pzfkgDeIIMm7UCQwMYqnJi215Ka6hLfVPDP
- vIk8AYbBe9qSUQ6fXpI/B7eDEr1RjeA7fVDcq293fdePIihb0lc143fm2X0i0as8efLxut
- d93IZ3sbzTU4pTJGqJI7wSXmbCIbn80=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-199-2lVJX7khPbqXGLvYJPShYg-1; Thu,
- 23 Nov 2023 08:16:39 -0500
-X-MC-Unique: 2lVJX7khPbqXGLvYJPShYg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 367EA3C025B9;
- Thu, 23 Nov 2023 13:16:39 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.19])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 42821C1596F;
- Thu, 23 Nov 2023 13:16:37 +0000 (UTC)
-Date: Thu, 23 Nov 2023 14:16:36 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Alexander Graf <agraf@csgraf.de>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Phil =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 1/2] docs: introduce dedicated page about code provenance
- / sign-off
-Message-ID: <ZV9QtIkJJvZyQbRn@redhat.com>
-References: <20231123114026.3589272-1-berrange@redhat.com>
- <20231123114026.3589272-2-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r69br-0004Vb-Vp
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 08:19:12 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r69bp-0002yu-8i
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 08:19:11 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-40b34563987so5009075e9.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 05:19:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700745548; x=1701350348; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Q/6bSnEglw6m4h+xy81DshF8cBTlnGobxHKJ/G0Fy98=;
+ b=vLX6dbsKl2wnw7bBzyLdxe5qsxAV24qPDMkvDKAYDFGhA7guwj1z8txH0j7LBNUzQL
+ UAXCshQcFrpdwWbz8p8SLOmjMCRVxsvWmdXp5WF0/US7cCNL2LgRNPBTy0bO7zOSPgrY
+ Pwu0c1K6ytW4v7pVJxjZ/nVxTxGHRlqK6F941KIH9AKoV9nvOHWwgVXhDyQUT8ALWini
+ o2YezQRnG+rlMHCA9eXsdXKVuvqtETMZ/GiaxUVd+ecjVvaY8kMD1246Efn3cqMzRS9K
+ KLu8flg0u1Uc5/jCqjCUaIOmRUVVPpAjdluEtrKvrX1WK0KiQXML2yH8jW+OV+zBNsv2
+ 5jYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700745548; x=1701350348;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Q/6bSnEglw6m4h+xy81DshF8cBTlnGobxHKJ/G0Fy98=;
+ b=o8DPioQrXT/Qhn9+O0drA/H8F2V65jiIE6maL5qoRPjZ3/I8emWoGacAYcFRcBv8bS
+ p4Yos3WHF9XzmZMfLso+/g3LB6grnc1bWdCXGzc3mwtJyenTwtk1L8j/hblHG0dogn6X
+ Q1sWTuPPaWmtZw1XNXNOSegcjlajxNfbeuMslSDLrzMrcTbQ7KvDeGXi1/vt2PAM8kEK
+ tL7nmZQ8wJfle9YLxr9rA+Q1V1cD8qxLbXmWWb01WCB4aEbja2gYT9Ro7qlAui9EXywA
+ z9gNexpdE2kuAm8WdemBE7hVkT+WCCr5rJEPk+63pC3F6BDiTIyW1xkx1xnGi/dZV7FU
+ 2VPw==
+X-Gm-Message-State: AOJu0Ywfm0xQdXa/WTTL7GztFJSS/Zq/1Eh4KpjZnT1S3NYvp1NSq+Jh
+ VXHpgfHNxFGzdIYiF9S6cNtK7Q==
+X-Google-Smtp-Source: AGHT+IF3DtgBjkiHK6aHC+6M+iozIJryjIFPU5H8IWtW5obyAgGO9SKeAhIj45jJ3k9qm+OwCg0/Gg==
+X-Received: by 2002:a05:600c:3587:b0:3fe:1fd9:bedf with SMTP id
+ p7-20020a05600c358700b003fe1fd9bedfmr2380526wmq.11.1700745547696; 
+ Thu, 23 Nov 2023 05:19:07 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ m8-20020a05600c4f4800b0040b347d90d0sm2670786wmq.12.2023.11.23.05.19.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 23 Nov 2023 05:19:07 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id D799C5F756;
+ Thu, 23 Nov 2023 13:19:06 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Luis Machado <luis.machado@arm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [RFC PATCH] gdbstub: use a better signal when we halt for IO reasons
+Date: Thu, 23 Nov 2023 13:19:05 +0000
+Message-Id: <20231123131905.2640498-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231123114026.3589272-2-berrange@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_FILL_THIS_FORM_SHORT=0.01,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,175 +93,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 23.11.2023 um 12:40 hat Daniel P. Berrangé geschrieben:
-> Currently we have a short paragraph saying that patches must include
-> a Signed-off-by line, and merely link to the kernel documentation.
-> The linked kernel docs have alot of content beyond the part about
-> sign-off an thus is misleading/distracting to QEMU contributors.
-> 
-> This introduces a dedicated 'code-provenance' page in QEMU talking
-> about why we require sign-off, explaining the other tags we commonly
-> use, and what to do in some edge cases.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->  docs/devel/code-provenance.rst    | 197 ++++++++++++++++++++++++++++++
->  docs/devel/index-process.rst      |   1 +
->  docs/devel/submitting-a-patch.rst |  18 +--
->  3 files changed, 201 insertions(+), 15 deletions(-)
->  create mode 100644 docs/devel/code-provenance.rst
-> 
-> diff --git a/docs/devel/code-provenance.rst b/docs/devel/code-provenance.rst
-> new file mode 100644
-> index 0000000000..b4591a2dec
-> --- /dev/null
-> +++ b/docs/devel/code-provenance.rst
-> @@ -0,0 +1,197 @@
-> +.. _code-provenance:
-> +
-> +Code provenance
-> +===============
-> +
-> +Certifying patch submissions
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +The QEMU community **mandates** all contributors to certify provenance
-> +of patch submissions they make to the project. To put it another way,
-> +contributors must indicate that they are legally permitted to contribute
-> +to the project.
-> +
-> +Certification is achieved with a low overhead by adding a single line
-> +to the bottom of every git commit::
-> +
-> +   Signed-off-by: YOUR NAME <YOUR@EMAIL>
-> +
-> +This existence of this line asserts that the author of the patch is
-> +contributing in accordance with the `Developer's Certificate of
-> +Origin <https://developercertifcate.org>`__:
-> +
-> +.. _dco:
-> +
-> +::
-> +  Developer's Certificate of Origin 1.1
-> +
-> +  By making a contribution to this project, I certify that:
-> +
-> +  (a) The contribution was created in whole or in part by me and I
-> +      have the right to submit it under the open source license
-> +      indicated in the file; or
-> +
-> +  (b) The contribution is based upon previous work that, to the best
-> +      of my knowledge, is covered under an appropriate open source
-> +      license and I have the right under that license to submit that
-> +      work with modifications, whether created in whole or in part
-> +      by me, under the same open source license (unless I am
-> +      permitted to submit under a different license), as indicated
-> +      in the file; or
-> +
-> +  (c) The contribution was provided directly to me by some other
-> +      person who certified (a), (b) or (c) and I have not modified
-> +      it.
-> +
-> +  (d) I understand and agree that this project and the contribution
-> +      are public and that a record of the contribution (including all
-> +      personal information I submit with it, including my sign-off) is
-> +      maintained indefinitely and may be redistributed consistent with
-> +      this project or the open source license(s) involved.
-> +
-> +It is generally expected that the name and email addresses used in one
-> +of the ``Signed-off-by`` lines, matches that of the git commit ``Author``
-> +field. If the person sending the mail is also one of the patch authors,
-> +it is further expected that the mail ``From:`` line name & address match
-> +one of the ``Signed-off-by`` lines. 
+The gdb description GDB_SIGNAL_IO is "I/O possible" and by default gdb
+will try and restart the guest, getting us nowhere. Report
+GDB_SIGNAL_STOP instead which should at least halt the session at the
+failure point.
 
-Isn't the S-o-b expected even if the person sending the mail isn't one
-of the patch authors, i.e. certifying (c) rather than (a) or (b) from
-the DCO? This is essentially the same case as what a subsystem
-maintainer does.
+Signed-off-by: Alex BennÃ©e <alex.bennee@linaro.org>
+Cc: Luis Machado <luis.machado@arm.com>
+---
+ gdbstub/internals.h | 1 +
+ gdbstub/system.c    | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-> +Multiple authorship
-> +~~~~~~~~~~~~~~~~~~~
-> +
-> +It is not uncommon for a patch to have contributions from multiple
-> +authors. In such a scenario, a git commit will usually be expected
-> +to have a ``Signed-off-by`` line for each contributor involved in
-> +creatin of the patch. Some edge cases:
-> +
-> +  * The non-primary author's contributions were so trivial that
-> +    they can be considered not subject to copyright. In this case
-> +    the secondary authors need not include a ``Signed-off-by``.
-> +
-> +    This case most commonly applies where QEMU reviewers give short
-> +    snippets of code as suggested fixes to a patch. The reviewers
-> +    don't need to have their own ``Signed-off-by`` added unless
-> +    their code suggestion was unusually large.
-> +
-> +  * Both contributors work for the same employer and the employer
-> +    requires copyright assignment.
-> +
-> +    It can be said that in this case a ``Signed-off-by`` is indicating
-> +    that the person has permission to contributeo from their employer
-> +    who is the copyright holder. It is none the less still preferrable
-> +    to include a ``Signed-off-by`` for each contributor, as in some
-> +    countries employees are not able to assign copyright to their
-> +    employer, and it also covers any time invested outside working
-> +    hours.
-> +
-> +Other commit tags
-> +~~~~~~~~~~~~~~~~~
-> +
-> +While the ``Signed-off-by`` tag is mandatory, there are a number of
-> +other tags that are commonly used during QEMU development
-> +
-> + * **``Reviewed-by``**: when a QEMU community member reviews a patch
-> +   on the mailing list, if they consider the patch acceptable, they
-> +   should send an email reply containing a ``Reviewed-by`` tag.
-> +
-> +   NB: a subsystem maintainer sending a pull request would replace
-> +   their own ``Reviewed-by`` with another ``Signed-off-by``
-
-As Philippe already mentioned, this isn't necessarily the case. It's a
-common enough practice to add a S-o-b (which technically only certifies
-the DCO) without removing the R-b (which tells that the content was
-actually reviewed in detail - maintainers don't always do that if there
-are already R-bs from trusted community members).
-
-> + * **``Acked-by``**: when a QEMU subsystem maintainer approves a patch
-> +   that touches their subsystem, but intends to allow a different
-> +   maintainer to queue it and send a pull request, they would send
-> +   a mail containing a ``Acked-by`` tag.
-> +   
-
-Trailing whitespace?
-
-> + * **``Tested-by``**: when a QEMU community member has functionally
-> +   tested the behaviour of the patch in some manner, they should
-> +   send an email reply conmtaning a ``Tested-by`` tag.
-> +
-> + * **``Reported-by``**: when a QEMU community member reports a problem
-> +   via the mailing list, or some other informal channel that is not
-> +   the issue tracker, it is good practice to credit them by including
-> +   a ``Reported-by`` tag on any patch fixing the issue. When the
-> +   problem is reported via the GitLab issue tracker, however, it is
-> +   sufficient to just include a link to the issue.
-> +
-> +Subsystem maintainer requirements
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +When a subsystem maintainer accepts a patch from a contributor, in
-> +addition to the normal code review points, they are expected to validate
-> +the presence of suitable ``Signed-off-by`` tags.
-> +
-> +At the time they queue the patch in their subsystem tree, the maintainer
-> +**MUST** also then add their own ``Signed-off-by`` to indicate that they
-> +have done the aforementioned validation.
-> +
-> +The subsystem maintainer submitting a pull request is **NOT** expected to
-> +have a ``Reviewed-by`` tag on the patch, since this is implied by their
-> +own ``Signed-off-by``.
-
-Considering the above, I would remove this last paragraph.
-
-Kevin
+diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+index 465c24b36e..5c0c725e54 100644
+--- a/gdbstub/internals.h
++++ b/gdbstub/internals.h
+@@ -24,6 +24,7 @@ enum {
+     GDB_SIGNAL_TRAP = 5,
+     GDB_SIGNAL_ABRT = 6,
+     GDB_SIGNAL_ALRM = 14,
++    GDB_SIGNAL_STOP = 17,
+     GDB_SIGNAL_IO = 23,
+     GDB_SIGNAL_XCPU = 24,
+     GDB_SIGNAL_UNKNOWN = 143
+diff --git a/gdbstub/system.c b/gdbstub/system.c
+index 783ac140b9..83fd452800 100644
+--- a/gdbstub/system.c
++++ b/gdbstub/system.c
+@@ -183,7 +183,7 @@ static void gdb_vm_state_change(void *opaque, bool running, RunState state)
+         break;
+     case RUN_STATE_IO_ERROR:
+         trace_gdbstub_hit_io_error();
+-        ret = GDB_SIGNAL_IO;
++        ret = GDB_SIGNAL_STOP;
+         break;
+     case RUN_STATE_WATCHDOG:
+         trace_gdbstub_hit_watchdog();
+-- 
+2.39.2
 
 
