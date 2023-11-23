@@ -2,84 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CAA77F636C
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 16:57:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB6307F6378
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 16:59:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6C4H-00063Y-FN; Thu, 23 Nov 2023 10:56:41 -0500
+	id 1r6C4H-00063X-AG; Thu, 23 Nov 2023 10:56:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r6C4F-00062s-6u
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:56:39 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1r6C4E-000625-GV
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:56:38 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r6C4A-0002PQ-SJ
+ id 1r6C48-0002Oo-Tj
  for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:56:38 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40b36e31b57so5263105e9.3
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 07:56:34 -0800 (PST)
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-40b2979a74eso7702325e9.0
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 07:56:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700754993; x=1701359793; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700754991; x=1701359791; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zEYzF3Axx2JxZiA2yLlLoGItJkGh2l18cc/hJ925Ej0=;
- b=OZvuBqWOyRjOI6EpUgbY0lbP+P3TtyvYF2kA5llNiiQuqE1k3hFBlmxKUcNGnPEciX
- DdJ33zweWAFI9uK7Q8T3oTpg6Cu93oUNR0gFe5zyQ82D+lK+0seUckiuFmoGwRFp6iLo
- H8ZWL23BEK1DrvCgFRirxubLW6E7CGa6uoGD3Fp3Knf24Vj4quKczOfXmMX+KXIsiZPG
- FUI4tYNLlhTdtE4p8+94chp7UhgqCITaP9lxtO7m9yStjpZOrB3JxKc0lq+IuoiKfvmX
- VGB3F45u/Y7CHPFtokuPxEIMlJApqWR83yoQU5sI91XtTCFHuW+arhiPtQOTvLC52JLS
- 26dg==
+ bh=sSqXcWmwDT/V/xe8KrlKuVbtZuVfcDSyKh09xHPUjr4=;
+ b=cdZbXrNfSApLF+a+XyZtEV9AhVWwmlckHGegHApH1mosmZyAG0sTY8W8z0KuJMT/iG
+ kTpIyudU0JC80ioc0S5PsQ91B3EcKzRqpxXh2oQKQPLe8DMOB+Y9t8f1YZBoxIYUvj/d
+ OPVI/ZjbRAzV1Uc2G2yIjlLAB6jMhMAP5Sl90UXjtWikvaYfZJzG+Pa7oVDp9umMYGA7
+ bRILa4JMg+9n9gecANqulbXnLEqzUMGONppm7N56CpEZRsOXso5boq4+MN34W/PEeRBD
+ VvPeUO01WFxWEIL+BQSRpjcCENqyfyCHLpOXxJ6K+ZLDFHoCVAFJ3BpwRlKPEq6bFnL3
+ IWsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700754993; x=1701359793;
+ d=1e100.net; s=20230601; t=1700754991; x=1701359791;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zEYzF3Axx2JxZiA2yLlLoGItJkGh2l18cc/hJ925Ej0=;
- b=kTevGZcurjNuPLZl92rCiZiRl2wnMCsTErqQiuMQNmUI9AZPHPejiVzSQW/lWnrfZ4
- jMxpz05+r9VYZmrslaauquCwBZm8Mkz+QcIOLRGfMziUwvEAcOO7MUdJ5j84WAth+xW9
- bV0HXKTXFXaDi1ssTGSlsxbrV2eki8DKXDkFreC/HDOG3NaddPafzCJRX4Xswp1mCPka
- 1Xff52XgqZZlF1spSL9aWYEl8/gFM3xVpYWFRwBtVGOMLW31PyBYkAeUtPF6Nlm5mcs4
- /dbJj2b0Kav0UcMRrpjgXhQovbLTFeqqHbskTREncazPo0HT+QZJfmuMHHM2grjKupTD
- 318g==
-X-Gm-Message-State: AOJu0YzFzGde92fGljM7vT1cRgtmXJrGr82p+mgP0pK2PabvmW9wQs6h
- 7n+OVIui8LKriQMlojLQRUXfqHc8zzWUqkLZZjmQIA==
-X-Google-Smtp-Source: AGHT+IGAQnZvR7C1IdaTaUAA1MhFe9Hx/MFAavmCkMOT0CiEZhwrFQnKRyLIHZs069sGdaGzPwebbg==
-X-Received: by 2002:a05:600c:3110:b0:404:7670:90b8 with SMTP id
- g16-20020a05600c311000b00404767090b8mr24545wmo.27.1700754993526; 
- Thu, 23 Nov 2023 07:56:33 -0800 (PST)
+ bh=sSqXcWmwDT/V/xe8KrlKuVbtZuVfcDSyKh09xHPUjr4=;
+ b=e/8XpRkbwvm231cYVYRGdNJo5yivW4cZ1e1YmWOpY0PXVXPJensfV3eWXygzM6aX2b
+ 3qp440hyfJCOsUUVBqw0AQkK1XYP7D1TYEyKYItsd/Ohi70dracF/7aVwwXCzyz7+P3y
+ THSVgBxFrYf7+ACGwlAKMFglIbQ5Je1OY1W9sNELoxTzMcaIIqKlxSGBd4lNJdJJ4VbI
+ HpSYg5oOUJe96uDStKXhMjH+N5pXoYi6DPyL84+6CiirelhCF/RziNeZ7YIoGCXHZ+nW
+ bdaIPeJj6exd5kdE8ds7kcI/egp43H7XDbe893HuzBKhB3ehVOxBGGUGp4RrnNe5FAgc
+ p6vQ==
+X-Gm-Message-State: AOJu0YynaKqms4hrdprr9Jjx2Wm9HZsdvYnqBhLAAaR4bC53xjrt23lh
+ Y8ivftrqvfpqupEYe+qmaiKvzQ==
+X-Google-Smtp-Source: AGHT+IGjTjUteorPP/oIdoLlCMItsTVodCpxqISqaWRa5gwUGwZAu8Vyxn/SNQnij/P3uS2cX/Om7Q==
+X-Received: by 2002:adf:e881:0:b0:329:6b5b:57b8 with SMTP id
+ d1-20020adfe881000000b003296b5b57b8mr4304127wrm.25.1700754991114; 
+ Thu, 23 Nov 2023 07:56:31 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- u12-20020a05600c138c00b004063c9f68f2sm2409162wmf.26.2023.11.23.07.56.25
+ x1-20020adfec01000000b003313e4dddecsm2004428wrn.108.2023.11.23.07.56.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 23 Nov 2023 07:56:30 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C8C5F645F6;
+ by draig.lan (Postfix) with ESMTP id DE55F64601;
  Thu, 23 Nov 2023 15:56:21 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PULL 13/14] configure: don't try a "native" cross for linux-user
-Date: Thu, 23 Nov 2023 15:56:19 +0000
-Message-Id: <20231123155620.3042891-14-alex.bennee@linaro.org>
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
+ Luis Machado <luis.machado@arm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PULL 14/14] tests/tcg: finesse the registers check for "hidden" regs
+Date: Thu, 23 Nov 2023 15:56:20 +0000
+Message-Id: <20231123155620.3042891-15-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231123155620.3042891-1-alex.bennee@linaro.org>
 References: <20231123155620.3042891-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,65 +102,217 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As 32 bit x86 become rarer we are starting to run into problems with
-search paths. Although we switched to a Debian container we still
-favour the native CC on a Bookworm host. As a result we have a broken
-cross compile setup which then fails to build with:
+The reason the ppc64 and s390x test where failing was because gdb
+hides them although they are still accessible via regnum. We can
+re-arrange the test a little bit and include these two arches in our
+test.
 
-    BUILD   i386-linux-user guest-tests
-  In file included from /usr/include/linux/stat.h:5,
-                   from /usr/include/bits/statx.h:31,
-                   from /usr/include/sys/stat.h:465,
-                   from /home/alex/lsrc/qemu.git/tests/tcg/multiarch/linux/linux-test.c:28:
-  /usr/include/linux/types.h:5:10: fatal error: asm/types.h: No such file or directory
-      5 | #include <asm/types.h>
-        |          ^~~~~~~~~~~~~
-  compilation terminated.
-  make[1]: *** [Makefile:119: linux-test] Error 1
-  make: *** [/home/alex/lsrc/qemu.git/tests/Makefile.include:50: build-tcg-tests-i386-linux-user] Error 2
+We also need to be a bit more careful handling remote-registers as the
+format isn't easily parsed with pure white space separation. Once we
+fold types like "long long" and "long double" into a single word we
+can now assert all registers are either listed or elided.
 
-This is likely to affect more and more linux-user builds so wrap the
-whole check in a test for softmmu targets (aka bare metal) which don't
-worry about such header niceties. This allows us to keep using the
-host compiler for softmmu tests and the roms.
-
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc:  <qemu-s390x@nongnu.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc:  <qemu-ppc@nongnu.org>
+Cc: Luis Machado <luis.machado@arm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231120150833.2552739-14-alex.bennee@linaro.org>
+Message-Id: <20231121153606.542101-1-alex.bennee@linaro.org>
 
-diff --git a/configure b/configure
-index 9ea0bf5698..42fe4d0510 100755
---- a/configure
-+++ b/configure
-@@ -1391,16 +1391,19 @@ probe_target_compiler() {
-   done
+diff --git a/tests/tcg/multiarch/gdbstub/registers.py b/tests/tcg/multiarch/gdbstub/registers.py
+index ff6076b09e..688c061107 100644
+--- a/tests/tcg/multiarch/gdbstub/registers.py
++++ b/tests/tcg/multiarch/gdbstub/registers.py
+@@ -44,7 +44,6 @@ def fetch_xml_regmap():
  
-   try=cross
--  case "$target_arch:$cpu" in
--    aarch64_be:aarch64 | \
--    armeb:arm | \
--    i386:x86_64 | \
--    mips*:mips64 | \
--    ppc*:ppc64 | \
--    sparc:sparc64 | \
--    "$cpu:$cpu")
--      try='native cross' ;;
--  esac
-+  # For softmmu/roms we might be able to use the host compiler
-+  if [ "${1%softmmu}" != "$1" ]; then
-+      case "$target_arch:$cpu" in
-+        aarch64_be:aarch64 | \
-+        armeb:arm | \
-+        i386:x86_64 | \
-+        mips*:mips64 | \
-+        ppc*:ppc64 | \
-+        sparc:sparc64 | \
-+        "$cpu:$cpu")
-+        try='native cross' ;;
-+      esac
-+  fi
-   eval "target_cflags=\${cross_cc_cflags_$target_arch}"
-   for thistry in $try; do
-     case $thistry in
+     total_regs = 0
+     reg_map = {}
+-    frame = gdb.selected_frame()
+ 
+     tree = ET.fromstring(xml)
+     for f in tree.findall("feature"):
+@@ -61,12 +60,8 @@ def fetch_xml_regmap():
+         for r in regs:
+             name = r.attrib["name"]
+             regnum = int(r.attrib["regnum"])
+-            try:
+-                value = frame.read_register(name)
+-            except ValueError:
+-                report(False, f"failed to read reg: {name}")
+ 
+-            entry = { "name": name, "initial": value, "regnum": regnum }
++            entry = { "name": name, "regnum": regnum }
+ 
+             if name in reg_map:
+                 report(False, f"duplicate register {entry} vs {reg_map[name]}")
+@@ -80,6 +75,15 @@ def fetch_xml_regmap():
+ 
+     return reg_map
+ 
++def get_register_by_regnum(reg_map, regnum):
++    """
++    Helper to find a register from the map via its XML regnum
++    """
++    for regname, entry in reg_map.items():
++        if entry['regnum'] == regnum:
++            return entry
++    return None
++
+ def crosscheck_remote_xml(reg_map):
+     """
+     Cross-check the list of remote-registers with the XML info.
+@@ -90,8 +94,11 @@ def crosscheck_remote_xml(reg_map):
+ 
+     total_regs = len(reg_map.keys())
+     total_r_regs = 0
++    total_r_elided_regs = 0
+ 
+     for r in r_regs:
++        r = r.replace("long long", "long_long")
++        r = r.replace("long double", "long_double")
+         fields = r.split()
+         # Some of the registers reported here are "pseudo" registers that
+         # gdb invents based on actual registers so we need to filter them
+@@ -100,6 +107,15 @@ def crosscheck_remote_xml(reg_map):
+             r_name = fields[0]
+             r_regnum = int(fields[6])
+ 
++            # Some registers are "hidden" so don't have a name
++            # although they still should have a register number
++            if r_name == "''":
++                total_r_elided_regs += 1
++                x_reg = get_register_by_regnum(reg_map, r_regnum)
++                if x_reg is not None:
++                    x_reg["hidden"] = True
++                continue
++
+             # check in the XML
+             try:
+                 x_reg = reg_map[r_name]
+@@ -114,17 +130,42 @@ def crosscheck_remote_xml(reg_map):
+             else:
+                 total_r_regs += 1
+ 
+-    # Just print a mismatch in totals as gdb will filter out 64 bit
+-    # registers on a 32 bit machine. Also print what is missing to
+-    # help with debug.
+-    if total_regs != total_r_regs:
+-        print(f"xml-tdesc has ({total_regs}) registers")
+-        print(f"remote-registers has ({total_r_regs}) registers")
++    report(total_regs == total_r_regs + total_r_elided_regs,
++           "All XML Registers accounted for")
++
++    print(f"xml-tdesc has {total_regs} registers")
++    print(f"remote-registers has {total_r_regs} registers")
++    print(f"of which {total_r_elided_regs} are hidden")
++
++    for x_key in reg_map.keys():
++        x_reg = reg_map[x_key]
++        if "hidden" in x_reg:
++            print(f"{x_reg} elided by gdb")
++        elif "seen" not in x_reg:
++            print(f"{x_reg} wasn't seen in remote-registers")
++
++def initial_register_read(reg_map):
++    """
++    Do an initial read of all registers that we know gdb cares about
++    (so ignore the elided ones).
++    """
++    frame = gdb.selected_frame()
++
++    for e in reg_map.values():
++        name = e["name"]
++        regnum = e["regnum"]
++
++        try:
++            if "hidden" in e:
++                value = frame.read_register(regnum)
++                e["initial"] = value
++            elif "seen" in e:
++                value = frame.read_register(name)
++                e["initial"] = value
++
++        except ValueError:
++                report(False, f"failed to read reg: {name}")
+ 
+-        for x_key in reg_map.keys():
+-            x_reg = reg_map[x_key]
+-            if "seen" not in x_reg:
+-                print(f"{x_reg} wasn't seen in remote-registers")
+ 
+ def complete_and_diff(reg_map):
+     """
+@@ -144,18 +185,19 @@ def complete_and_diff(reg_map):
+     changed = 0
+ 
+     for e in reg_map.values():
+-        name = e["name"]
+-        old_val = e["initial"]
++        if "initial" in e and "hidden" not in e:
++            name = e["name"]
++            old_val = e["initial"]
+ 
+-        try:
+-            new_val = frame.read_register(name)
+-        except:
+-            report(False, f"failed to read {name} at end of run")
+-            continue
++            try:
++                new_val = frame.read_register(name)
++            except ValueError:
++                report(False, f"failed to read {name} at end of run")
++                continue
+ 
+-        if new_val != old_val:
+-            print(f"{name} changes from {old_val} to {new_val}")
+-            changed += 1
++            if new_val != old_val:
++                print(f"{name} changes from {old_val} to {new_val}")
++                changed += 1
+ 
+     # as long as something changed we can be confident its working
+     report(changed > 0, f"{changed} registers were changed")
+@@ -168,6 +210,7 @@ def run_test():
+ 
+     if reg_map is not None:
+         crosscheck_remote_xml(reg_map)
++        initial_register_read(reg_map)
+         complete_and_diff(reg_map)
+ 
+ 
+diff --git a/tests/tcg/ppc64/Makefile.target b/tests/tcg/ppc64/Makefile.target
+index ca8b929464..8c3e4e4038 100644
+--- a/tests/tcg/ppc64/Makefile.target
++++ b/tests/tcg/ppc64/Makefile.target
+@@ -43,11 +43,4 @@ PPC64_TESTS += signal_save_restore_xer
+ PPC64_TESTS += xxspltw
+ PPC64_TESTS += test-aes
+ 
+-ifneq ($(GDB),)
+-# Skip for now until vsx registers sorted out
+-run-gdbstub-registers:
+-	$(call skip-test, $<, "BROKEN reading VSX registers")
+-endif
+-
+-
+ TESTS += $(PPC64_TESTS)
+diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
+index 46544fecd4..0e670f3f8b 100644
+--- a/tests/tcg/s390x/Makefile.target
++++ b/tests/tcg/s390x/Makefile.target
+@@ -103,10 +103,6 @@ run-gdbstub-svc: hello-s390x-asm
+ 		--bin $< --test $(S390X_SRC)/gdbstub/test-svc.py, \
+ 	single-stepping svc)
+ 
+-# Skip for now until vx registers sorted out
+-run-gdbstub-registers:
+-	$(call skip-test, $<, "BROKEN reading VX registers")
+-
+ EXTRA_RUNS += run-gdbstub-signals-s390x run-gdbstub-svc
+ endif
+ 
 -- 
 2.39.2
 
