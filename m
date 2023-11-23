@@ -2,161 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6460E7F55CF
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 02:21:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2709A7F55F3
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 02:35:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r5yO7-0007kf-FH; Wed, 22 Nov 2023 20:20:16 -0500
+	id 1r5ybh-0003ZN-Os; Wed, 22 Nov 2023 20:34:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=5691553e4c=volodymyr_babchuk@epam.com>)
- id 1r5yNw-0007jZ-Vw
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 20:20:05 -0500
-Received: from mx0b-0039f301.pphosted.com ([148.163.137.242])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=5691553e4c=volodymyr_babchuk@epam.com>)
- id 1r5yNs-0005pA-Py
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 20:20:02 -0500
-Received: from pps.filterd (m0174683.ppops.net [127.0.0.1])
- by mx0b-0039f301.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 3AN0fnsp011906;
- Thu, 23 Nov 2023 01:19:44 GMT
-Received: from eur01-he1-obe.outbound.protection.outlook.com
- (mail-he1eur01lp2051.outbound.protection.outlook.com [104.47.0.51])
- by mx0b-0039f301.pphosted.com (PPS) with ESMTPS id 3uh4u5c03k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Nov 2023 01:19:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=P9IY+3Fvh61NM11e2qIF7T5j8332jUFpHEeoaTeybn0olozVhAoR9TUu7QrUI1VUDVFR/FI1a3fdfcxQid5E5KlEwc/Pf1/nrTFPjbz///i31cXqoRn1vWIufX2hMxEXdXsVsoTuemEkJjsY39DSIuy2YY9nT67owExAnM+FhONRRK4f3354e3mu9yK+Gere/aJu8CmuDVhn6uCX2xeS4cWW7vWYVpGfrpDfzi5fjamXkdFMU6LkNbEKeX2YNSyiXIB7AKuXDGV1aqUXOpTyOoqvKzeT+TwQOYNjKrUBtOIDi3Gm+zisLTf1Q12nNbVCeoCxj+B0vHuGl80pKrk5ng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5TmEmqeOWJEXSOfUhZZc+TeOdEiYVqPoGoDsR2syFO8=;
- b=CuoT0mq//FXRahmeWYFNdcCU38197v+nbV1AXIDwGm/Gnk2O8YYLAmLC/whE1JSjcWcbWzloqO1KURbfGpdmHU9tEpsmUTExnBCVD+OiZz4T/0i0Zpy5+LMDvKNwd9Fi+zkk7whZiz6rbYrW7bv9Pj/fkfDijGECja1MozfJtkXDRBAJXlcN66QZvOEdfg+aiFGvNMDCGghPhaL4wBXrqwPZ4nSxZDIQdRU87CsWlUOxICHGsGf/QIBfhLq9c/PwVPmdfNBRLkBQ1L28+t/2+P3SSWlq2AfBsjHYGHguqchllNnOOCZNRD0KbCIfdsbOcpJ7SW2SrJtJPhhFQ9dKRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=epam.com; dmarc=pass action=none header.from=epam.com;
- dkim=pass header.d=epam.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=epam.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5TmEmqeOWJEXSOfUhZZc+TeOdEiYVqPoGoDsR2syFO8=;
- b=mdfi7w5Ve9xRm6TnJDbqVOiPcfc28eHb7xPAKK96+oeWN5bZ50JjQfTepr0mCdKgnTHEzRihPezZXpEdyaR5muXb7BDVVzjhKdoFivK4WZ0TBynSV01fZfKauK9gowuTWLVU1eePBqIujsVR41W9c+GmESWRH07y1x+akdMPkyS+vzHim3/venzrgsNlm8fGAf13TRcMLStq0lvA0vzQewzWneMtSLBbn6k6wudGvruJ5oa6aX64B3ZphOHE0mmgv+O6N5WeOohmUdA6EdQj7DOTj9vWPzrSNtTqcsdT3QapoqhF23KiA0V2g+gAPwN3q+1w4e4yR0QTDCIxVvXsgw==
-Received: from VI1PR03MB3710.eurprd03.prod.outlook.com (2603:10a6:803:31::18)
- by PA4PR03MB7248.eurprd03.prod.outlook.com (2603:10a6:102:10e::6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.18; Thu, 23 Nov
- 2023 01:19:38 +0000
-Received: from VI1PR03MB3710.eurprd03.prod.outlook.com
- ([fe80::8e03:368:1fd7:1822]) by VI1PR03MB3710.eurprd03.prod.outlook.com
- ([fe80::8e03:368:1fd7:1822%6]) with mapi id 15.20.7025.020; Thu, 23 Nov 2023
- 01:19:38 +0000
-From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
-To: David Woodhouse <dwmw2@infradead.org>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Stefano Stabellini
- <sstabellini@kernel.org>, Julien Grall <julien@xen.org>, Paul Durrant
- <paul@xen.org>, "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard
- Henderson <richard.henderson@linaro.org>, Eduardo Habkost
- <eduardo@habkost.net>, Anthony Perard <anthony.perard@citrix.com>, "open
- list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
-Subject: Re: [PATCH v2 3/6] xen: xenstore: add possibility to preserve owner
-Thread-Topic: [PATCH v2 3/6] xen: xenstore: add possibility to preserve owner
-Thread-Index: AQHaHMeI3Gf8Xs6dHUOphRyadMs2o7CG9fUAgAAktAA=
-Date: Thu, 23 Nov 2023 01:19:38 +0000
-Message-ID: <87v89txo46.fsf@epam.com>
-References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
- <20231121221023.419901-4-volodymyr_babchuk@epam.com>
- <777dd8fb393464bcac2130210ef2a538a2e606f9.camel@infradead.org>
-In-Reply-To: <777dd8fb393464bcac2130210ef2a538a2e606f9.camel@infradead.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: mu4e 1.10.7; emacs 29.1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI1PR03MB3710:EE_|PA4PR03MB7248:EE_
-x-ms-office365-filtering-correlation-id: 6fea7cfc-0352-4aec-6d8e-08dbebc24303
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: RuqT1a+fbuHO8JDwj6i01Uax01rHFfOvPgaC0FlKxiRz+z3ezRr5RUBnpwOAN3knRp8FoqBOlNH8fV4rzRA31xHGK3aLDT1KTyhXcoPBz+pMT5y07P5yxEUzA3XkWlxUuUPHMuXVPhWEjqCPF5t9qJE08VOsLJ/Hta1jAr7ypJBJpTUayZtx8vHIBSUO/PkxAsyrlVV4IPa/BgDPtEV+Ly2WfXpz3mV5AZBnCsU0AHr06UDWZeoARBygNZcF9eUSklKbUvIZiAQzoTC0okd/SflSDfwUOjW0WNRAZMJn/JaadqcsTNqkTkXQ9YPq7aG3mkVjws7YgqaVyfXk/bMonoE9WQfWEOWxtvz3W+sF8LRZ/qeCvhdv1kgi94GaZY4wEJY8pc8OUKtazsKgZRJqFWisOhK1/FKlk5Lvj1KV2fvhjnrOASidIf0FnJbVj96Cy98RZ7gFVXMOXK0iih8P3iTs0Rx1w9onUUJuWAgXY3x02Now71og4rVppXZ/RJxlPVNWELNJWWzHSk8KJU5LHtYmR/JnQTp78uBK/yzhPae7sW+nqsymhljOkxkpadQf8IKzZZv6fEKEoCvoLSupQ1hvwnnrnwSQ7+etdlvA0gqAlc5DTzgHTPYYdCMjzVpE
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI1PR03MB3710.eurprd03.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(39860400002)(366004)(396003)(346002)(136003)(230922051799003)(1800799012)(186009)(451199024)(64100799003)(26005)(55236004)(6506007)(6512007)(2616005)(91956017)(4326008)(76116006)(66946007)(54906003)(8936002)(64756008)(66446008)(316002)(6916009)(8676002)(66476007)(38100700002)(66556008)(122000001)(478600001)(6486002)(71200400001)(7416002)(2906002)(4001150100001)(5660300002)(86362001)(41300700001)(36756003)(38070700009);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TnR3eTNJWTdkejZGTHk4QUsrYW91QnJ2NnN6MnhuZ2JBR1Iyd3kyNjJTM0Q2?=
- =?utf-8?B?SG4wMkxJWXo2WTMwaEdLTXhWYXhWb2VhdTYwbHQyRkJmMFN1OXFRMWtZOEhH?=
- =?utf-8?B?eDVOcjhqZk8xY25QZG01ODMvQ3hUZGxpK3JqdlJuZ2xLRlNIM2tjZWFoTTFk?=
- =?utf-8?B?V2ViOWVkT3FLbnZySkFPR3dFZTBSR3pETTgzdmZDdzNZK3pNelF1Rnh0dkJS?=
- =?utf-8?B?L3JDR3pJRUhIQ0c5VFFUcEkxb3FHRzkyT0lSNHkvWGg5eGtGaXlHdjJiZTdQ?=
- =?utf-8?B?d0dKZVpOenU4cndtUG9qQkJiUE1OdmJaZ0NYaW8wQXU1VzdYL2RVSlR1NzF6?=
- =?utf-8?B?R0xCd0ZkTmtvRGFlWlpRR0tHR0dlbTVpUnhaYmp3ZXBLTzFmNWF6RXZIZE9M?=
- =?utf-8?B?Q1VFWllBRm0vRGlIZTJraVZRZ1VaMEdQMWdJUWtCRWFVSEt6SzVoWng3R2tr?=
- =?utf-8?B?SHpza2g2ZTdsaFRZa0RBemJxWDVBZTBCVk9OTkxQWC9LUG0xTnZhMDhMQWVJ?=
- =?utf-8?B?ZGR3dmVjR3FwMURxOTlzbWJXVTExMEVQTDZtWmxnMnJ5c1NqUUpwcm9URTdh?=
- =?utf-8?B?Zzd5MWh6dCtoWDRiYXV5UDFIQjNaMXdYdWozSytUWjdUWWppWFFtd0xRMlZR?=
- =?utf-8?B?Vlh3bUVOdktuR2NUQ2c1QjE0aWNrdjBENnJCaU1hYTV3c205Szc2U0NVT25z?=
- =?utf-8?B?TXIvYXNyMEpvWXNsbXdZME8rSG9QZ1NUdml4U3AvSFhPcFFucmZVeE9weTll?=
- =?utf-8?B?YkZ2YlJ5VWhZcG5LN1JOdFNabUlCSFdMZ2p6VTZtSWtDUmR3K2JRaUZ1SE4y?=
- =?utf-8?B?TUtTM0J5NGpvRHJvbHFtQ1Z6NC9VeVFaRmV4QVl3emxIbE9CU3l2dXJuUjVJ?=
- =?utf-8?B?eTRobkNFS2J0eDZxVk8xYWpvQ1NIbmkvellqV2V2eURHMEo2MzkwS0lUWUgw?=
- =?utf-8?B?NzljMXZQQUQ5YU9QaytEZlNndk5vallIRnVwMlB5SVY5WUxJWnNqWDQyaGNM?=
- =?utf-8?B?eXlkdG1zUkUyRzA3Njg1OC85MjQ2c2Y5NWVITXJvZjZuVXVPUkxGWFEwZm5M?=
- =?utf-8?B?Z09FRElNd1FjdTAvLzFvc3R1OHMxWUR3S3pnZHY2WWNRWXhzVWtjd2taRm5j?=
- =?utf-8?B?K05VSTk1VEJwUHNBUDhlQXRUMzN4UkhqK3c4Vm1PQ3Z1aWY1V29KRExsckpF?=
- =?utf-8?B?V1RnZHRWcjRIMVoxZ3JESVBLZEwvTU5CMTJ0NVA4WlQvUTVUQkF4blRNaEgy?=
- =?utf-8?B?NUt4WkpybHBwTmFFeXoyNUxiaUgxcnFnZXRkc3QvTG96aUQ4TXROekZoVk5n?=
- =?utf-8?B?dmVXOUpwRnUvK3RLRWdIZklZeVpERGJnRjVCV2RlL0FsampNaDhyM1lGWEh5?=
- =?utf-8?B?YjV2ZmxORnUvWjZZNWZ0bjZzOFdPQXFXaDJZTEdFMmhFTW1JWi9jMTB5Vnds?=
- =?utf-8?B?WlpoVnNablRhNUREVmhrM01LUG9YSmFQbG9YbVhPT0I2V1dpVzZNNURnZzBz?=
- =?utf-8?B?ZC9tenBzVEF1WTdIaE1pYXc4SEMwVklJVjlXcS9rYUFpVy9sSWFxSUdkSE16?=
- =?utf-8?B?K3NHeVhuZklMdEtFUjF3cXJqMHhuYy92SUZHYlRuN3J2aWVEOFBUano2eEl2?=
- =?utf-8?B?SUVTOFU4NElKdFlTWDRNYjk0WXp6ZFZic3NKMWQzb0NBZzJ0azNCeWQzQ1JB?=
- =?utf-8?B?Q1dDblRLV1piYkdNbWEvOGhmQ2ljVWR5WHhyQzArR1FTM3dnL09LNTMwNDlQ?=
- =?utf-8?B?VWM5YU1lNEFvcWprKzdlWVdPZE9NYTVmaGM2NFNmbTdENVV4eXFJRnZxa2Zi?=
- =?utf-8?B?NjJZR2g3aENhNlNHUlRBcm04ZEp3dFZSK3BsV0F1azkzTVkzMitqSmM2cS9N?=
- =?utf-8?B?QnZ1SkJURkgrV0RuWkFjb1FGclVOZkRHdlBINzhobFRrNzNRVE9uTXpCZnRm?=
- =?utf-8?B?eURoeVd6aExFOFFLNXJCWk9rOUhHM1ptNXZVcTlveWRXS3dRQnN3RVR5S29l?=
- =?utf-8?B?ZGtEWlZVSXhuaU9GUmxldGhJYTBnYW9yZWRDUFFMbkZLckM3VnNDY3Ftd2FB?=
- =?utf-8?B?T0hQUnpaMnhHUS9FcWlVMERJSFMzcDNQc2paRmhQdmd4MXZxWm9KMFl4Z2Zr?=
- =?utf-8?B?dU5FTWwyZXBvbXUrSjZWMDJkK2Z2MDcwbGl1UVNsRmtYblpHdDhRRE1sS3pw?=
- =?utf-8?B?WlE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <918AB3AA138BC54C929529B30E2706B7@eurprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: epam.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3710.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6fea7cfc-0352-4aec-6d8e-08dbebc24303
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Nov 2023 01:19:38.3516 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b41b72d0-4e9f-4c26-8a69-f949f367c91d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5IOVQtSFRMGMh4TgvGztFb/WDB1U3peZuLcuLl+qVtmqUvQj9IwqhkFn16uThHtY6WNkdFgHM/u3G68Eicx06YMT/Q/W7nm6i/k5kpfB3/Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR03MB7248
-X-Proofpoint-GUID: 2V1gzoitA9mTMzcSZlbeW7GVizLNKw6h
-X-Proofpoint-ORIG-GUID: 2V1gzoitA9mTMzcSZlbeW7GVizLNKw6h
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-22_18,2023-11-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015
- bulkscore=0 mlxscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
- spamscore=0 suspectscore=0 malwarescore=0 mlxlogscore=599 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
- definitions=main-2311230008
-Received-SPF: pass client-ip=148.163.137.242;
- envelope-from=prvs=5691553e4c=volodymyr_babchuk@epam.com;
- helo=mx0b-0039f301.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1r5ybe-0003XK-QO; Wed, 22 Nov 2023 20:34:15 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1r5yba-0002p8-Ln; Wed, 22 Nov 2023 20:34:12 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1cf6a67e290so2926305ad.1; 
+ Wed, 22 Nov 2023 17:34:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1700703248; x=1701308048; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8mazXQhpz60HmEQRRDvrIA5mFjPimOVxTseqcALLXmI=;
+ b=EcA+sDqwhufdQIo8tss+ZkusQLbrZQTfSNh6CDNqymBzYaFv1iMKFwSINRtibBDTJd
+ qCIsSqEOu6ZZsxEf7q9I2hOI/cLhTWJ7+I/d4JXvuAcHkGHRYWw7elo5ezZXlUMlLFTy
+ PXQqH6D3l37JjYodL26Zs4JAPO2KdBRk6bdjWPxbgtO/rJ6Euyfku7gJAgpW1xcX7mLQ
+ r+13T26Q6U1UHl1eCz5tWdYR9r+MeUGfrA+92DwXzlNjU4gXq3jl64bLezBcYkiLjKW9
+ 68DUMDGZd05pc7/Gg/yLCdkVt8Ch2TyU/wGHBR0gAg9ngOyHhD/2Pzq0dIBPSRoX8RH0
+ XXJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700703248; x=1701308048;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=8mazXQhpz60HmEQRRDvrIA5mFjPimOVxTseqcALLXmI=;
+ b=fpJsxzKFs1NzXGEVa7HVLjTt40ozUwIf3LQDrpBOl07aQtMdZvT8/Nxf6YcVhkiZD6
+ bK4o+RLRibAX+TFZZdiNfdrQu+HrstGkEiDQtjlG9Aur+KghKSiOKqFx8SZyFFxiT9p9
+ siibDECFeYui6Vj2ccAfnwe/0YFm/MOjQWI4W3qImcP7ndjZmtC4NsFcJUiDb9Qwc/Zf
+ 4yLUY+mE0QyMP3ORYD1j6oP3IR95rTXQLs/xMhEwbHXXAiziUDHzlk9kD53BVE9IuaQf
+ 9YNeBReGf4uPj/MxKRAsy/NOKB4vhBoJYQNExhRhxkqB2UJWN9zozEaiQmDPz1xeK1Cx
+ ZECQ==
+X-Gm-Message-State: AOJu0YwXOGtaNzLBO0cU+5qV0e8getP9dfRKwhUm6GUG5TDkhk6LKGZl
+ tMvjAopjbVB6WXDa/sY4bG4=
+X-Google-Smtp-Source: AGHT+IGc+m0Dx0poBeXVy3avTBJY7tIVlJOLwvck69nnP4mfArdozJzKR1zd4rpe5faJkl/HKHgnHg==
+X-Received: by 2002:a17:902:e88a:b0:1bf:c59:c944 with SMTP id
+ w10-20020a170902e88a00b001bf0c59c944mr4619213plg.22.1700703248340; 
+ Wed, 22 Nov 2023 17:34:08 -0800 (PST)
+Received: from localhost (60-240-124-93.tpgi.com.au. [60.240.124.93])
+ by smtp.gmail.com with ESMTPSA id
+ t11-20020a170902bc4b00b001c72d5e16acsm69441plz.57.2023.11.22.17.34.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 22 Nov 2023 17:34:07 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 23 Nov 2023 11:34:02 +1000
+Message-Id: <CX5SZFIFSWF1.1INPRPCI76NFA@wheely>
+Cc: <qemu-ppc@nongnu.org>, <groug@kaod.org>, <danielhb413@gmail.com>,
+ <clg@kaod.org>, <david@gibson.dropbear.id.au>, <saif.abrar@in.ibm.com>
+Subject: Re: [PATCH] target/ppc: Update gdbstub to read SPR's CFAR, DEC,
+ HDEC, TB-L/U
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Saif Abrar" <saif.abrar@linux.vnet.ibm.com>, <qemu-devel@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20230918092616.15398-1-saif.abrar@linux.vnet.ibm.com>
+In-Reply-To: <20230918092616.15398-1-saif.abrar@linux.vnet.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -173,34 +92,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQpIaSBEYXZpZCwNCg0KRGF2aWQgV29vZGhvdXNlIDxkd213MkBpbmZyYWRlYWQub3JnPiB3cml0
-ZXM6DQoNCj4gW1tTL01JTUUgU2lnbmVkIFBhcnQ6VW5kZWNpZGVkXV0NCj4gT24gVHVlLCAyMDIz
-LTExLTIxIGF0IDIyOjEwICswMDAwLCBWb2xvZHlteXIgQmFiY2h1ayB3cm90ZToNCj4+IA0KPj4g
-LS0tIGEvaHcveGVuL3hlbi1vcGVyYXRpb25zLmMNCj4+ICsrKyBiL2h3L3hlbi94ZW4tb3BlcmF0
-aW9ucy5jDQo+PiBAQCAtMzAwLDYgKzMwMCwxOCBAQCBzdGF0aWMgYm9vbCBsaWJ4ZW5zdG9yZV9j
-cmVhdGUoc3RydWN0IHFlbXVfeHNfaGFuZGxlICpoLCB4c190cmFuc2FjdGlvbl90IHQsDQo+PiDC
-oMKgwqDCoMKgwqDCoMKgIHJldHVybiBmYWxzZTsNCj4+IMKgwqDCoMKgIH0NCj4+IMKgDQo+PiAr
-wqDCoMKgIGlmIChvd25lciA9PSBYU19QUkVTRVJWRV9PV05FUikgew0KPj4gK8KgwqDCoMKgwqDC
-oMKgIHN0cnVjdCB4c19wZXJtaXNzaW9ucyAqdG1wOw0KPj4gK8KgwqDCoMKgwqDCoMKgIHVuc2ln
-bmVkIGludCBudW07DQo+PiArDQo+PiArwqDCoMKgwqDCoMKgwqAgdG1wID0geHNfZ2V0X3Blcm1p
-c3Npb25zKGgtPnhzaCwgdCwgcGF0aCwgJm51bSk7DQo+PiArwqDCoMKgwqDCoMKgwqAgaWYgKHRt
-cCA9PSBOVUxMKSB7DQo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gZmFsc2U7DQo+
-PiArwqDCoMKgwqDCoMKgwqAgfQ0KPj4gK8KgwqDCoMKgwqDCoMKgIHBlcm1zX2xpc3RbMF0uaWQg
-PSB0bXBbMF0uaWQ7DQo+PiArwqDCoMKgwqDCoMKgwqAgZnJlZSh0bXApOw0KPj4gK8KgwqDCoCB9
-DQo+PiArDQo+PiDCoMKgwqDCoCByZXR1cm4geHNfc2V0X3Blcm1pc3Npb25zKGgtPnhzaCwgdCwg
-cGF0aCwgcGVybXNfbGlzdCwNCj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBBUlJBWV9TSVpFKHBlcm1zX2xpc3QpKTsNCj4+IMKg
-fQ0KPg0KPiBJZiB0aGUgZXhpc3RpbmcgdHJhbnNhY3Rpb24gaXMgWEJUX05VTEwgSSB0aGluayB5
-b3Ugd2FudCB0byBjcmVhdGUgYQ0KPiBuZXcgdHJhbnNhY3Rpb24gZm9yIGl0LCBkb24ndCB5b3U/
-DQoNCkkgbXVzdCBzYXkgdGhhdCB5b3VyIGNvbW1lbnQgaXMgdmFsaWQgZXZlbiB3aXRob3V0IG15
-DQpjaGFuZ2VzLiB4ZW5zdG9yZV9ta2RpcigpIGNhbGxzIHFlbXVfeGVuX3hzX2NyZWF0ZSwgcHJv
-dmlkaW5nIGp1c3QgcGxhaW4NCiIwIiAobm90IGV2ZW4gWEJUX05VTEwpIGFzIGEgdHJhbnNhY3Rp
-b24sIGJ1dCBhY3R1YWwgeGVuc3RvcmUgaW50ZXJmYWNlDQppbXBsZW1lbnRhdGlvbiwgbGlrZSB4
-c19iZV9jcmVhdGUoKSwgaXNzdWUgbXVsdGlwbGUgY2FsbHMgdG8gbG93ZXINCmxheWVyLCBwYXNz
-aW5nICJ0IiBkb3dud2FyZHMuIEZvciBleGFtcGxlLCB4c19iZV9jcmVhdGUoKSBjYWxscw0KeHNf
-aW1wbF9yZWFkLCB4c19pbXBsX3dyaXRlIGFuZCB4c19pbXBsX3NldF9wZXJtcygpLiBJZiBjYWxs
-ZWQgZnJvbQ0KeGVzbnRvcmVfbWtkaXIoKSwgdGhvc2UgdGhyZWUgb3BlcmF0aW9ucyB3aWxsIGJl
-IG5vbi1hdG9taWMuIEkgZG9uJ3QNCmtub3cgaWYgdGhpcyBjYW4gbGVhZCB0byBhIHByb2JsZW0s
-IGJlY2F1c2UgYXBwYXJlbnRseSBpdCB3YXMgc28gZm9yIGENCmxvbmcgdGltZS4uLg0KDQotLSAN
-CldCUiwgVm9sb2R5bXly
+On Mon Sep 18, 2023 at 7:26 PM AEST, Saif Abrar wrote:
+> SPR's CFAR, DEC, HDEC, TB-L/U are not implemented as part of CPUPPCState.
+> Hence, gdbstub is not able to access them using (CPUPPCState *)env->spr[]=
+ array.
+> Update gdb_get_spr_reg() method to handle these SPR's specifically.
+>
+> Signed-off-by: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
+
+Thanks for this, I have been annoyed by missing those regs when using
+gdb at times :)
+
+
+> ---
+>  target/ppc/gdbstub.c | 40 ++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 38 insertions(+), 2 deletions(-)
+>
+> diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+> index 2ad11510bf..eb086c0168 100644
+> --- a/target/ppc/gdbstub.c
+> +++ b/target/ppc/gdbstub.c
+> @@ -412,7 +412,32 @@ static int gdb_get_spr_reg(CPUPPCState *env, GByteAr=
+ray *buf, int n)
+>      }
+> =20
+>      len =3D TARGET_LONG_SIZE;
+> -    gdb_get_regl(buf, env->spr[reg]);
+> +
+> +    /* Handle those SPRs that are not part of the env->spr[] array */
+> +    target_ulong val;
+
+Could you move this to the of the block with other declarations?
+
+> +    switch (reg) {
+> +#if defined(TARGET_PPC64)
+> +    case SPR_CFAR:
+> +        val =3D env->cfar;
+> +        break;
+> +#endif
+> +    case SPR_HDEC:
+> +        val =3D cpu_ppc_load_hdecr(env);
+> +        break;
+> +    case SPR_TBL:
+> +        val =3D cpu_ppc_load_tbl(env);
+> +        break;
+> +    case SPR_TBU:
+> +        val =3D cpu_ppc_load_tbu(env);
+> +        break;
+> +    case SPR_DECR:
+> +        val =3D cpu_ppc_load_decr(env);
+> +        break;
+> +    default:
+> +        val =3D env->spr[reg];
+> +    }
+> +    gdb_get_regl(buf, val);
+> +
+>      ppc_maybe_bswap_register(env, gdb_get_reg_ptr(buf, len), len);
+>      return len;
+>  }
+> @@ -429,7 +454,18 @@ static int gdb_set_spr_reg(CPUPPCState *env, uint8_t=
+ *mem_buf, int n)
+> =20
+>      len =3D TARGET_LONG_SIZE;
+>      ppc_maybe_bswap_register(env, mem_buf, len);
+> -    env->spr[reg] =3D ldn_p(mem_buf, len);
+> +
+> +    /* Handle those SPRs that are not part of the env->spr[] array */
+> +    target_ulong val =3D ldn_p(mem_buf, len);
+> +    switch (reg) {
+> +#if defined(TARGET_PPC64)
+> +    case SPR_CFAR:
+> +        env->cfar =3D val;
+> +        break;
+> +#endif
+
+I suppose we could store some time regs here too. (h)decr I have found
+useful to change at times to interrupts when debugging Linux timer code.
+TB could be similar.
+
+We have a bit of weirdness with our timebase registers though, I'm going
+to send out some patches for them. Maybe hold off changing this until
+we agree on those.
+
+I'll take this for next release, sorry didn't get to it earlier.
+
+Thanks,
+Nick
+
+> +    default:
+> +        env->spr[reg] =3D val;
+> +    }
+> =20
+>      return len;
+>  }
+
 
