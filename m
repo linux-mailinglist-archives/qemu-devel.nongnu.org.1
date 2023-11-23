@@ -2,65 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7390F7F5D29
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 12:02:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 424D57F5D36
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 12:05:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r67Ro-0005LV-Bf; Thu, 23 Nov 2023 06:00:40 -0500
+	id 1r67VU-0006uW-AJ; Thu, 23 Nov 2023 06:04:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r67Rm-0005L1-AT
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:00:38 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r67VS-0006u7-Vy
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:04:27 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r67Rj-0002P7-R8
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:00:37 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r67VR-0003m1-6P
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:04:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700737232;
+ s=mimecast20190719; t=1700737463;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fzicTtAGE0p9GRXFmLcc3j0J5ehXaozwtFR3rQngrj8=;
- b=AiGJHSKO9G7Xc2Z+xVFByAB/7i8My9/YizrQHjb3cQAOV+FyR8BKDVjJ2zcpX8CG6ahZ83
- qgFSKcxpOdnBohLD2utKAu5HaJhqjtvKRFCtccDXYXvFDFunBXNttntSOtrElG5Jz8LGqF
- 9s+W1ggMXMAo1+yYf4cSE7koOYR3iXk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-67-dJKHcEaSN5CW3SlMODt-3w-1; Thu,
- 23 Nov 2023 06:00:21 -0500
-X-MC-Unique: dJKHcEaSN5CW3SlMODt-3w-1
+ bh=oXOeolurWxLNmBKz32ZfUnYjXpKtgFR03080oXE487c=;
+ b=TK1iUcnH7RowP0uzNMHQAzgF0s0k1vKmSz+NztWaoODchwCoEN9IvRayJsgwufBUkL4Ktl
+ cwIbrMf8NyVdonWKNEzhZvquM5Hv1D+Dw+ynKulTsAW2LSsqKnmzKLWd4KCYKSyjvoKOTY
+ byUOwVbx3Dql4Jw5484MBb8NAfp/PPM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-259-j4pcdJTBPlKWhBXN8ZnkZQ-1; Thu, 23 Nov 2023 06:04:21 -0500
+X-MC-Unique: j4pcdJTBPlKWhBXN8ZnkZQ-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 96C4E280A9C7;
- Thu, 23 Nov 2023 11:00:21 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 67103811E7D;
+ Thu, 23 Nov 2023 11:04:21 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 74CD01121309;
- Thu, 23 Nov 2023 11:00:21 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3F7121121306;
+ Thu, 23 Nov 2023 11:04:21 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8579721E6A1F; Thu, 23 Nov 2023 12:00:20 +0100 (CET)
+ id 3D16921E6A1F; Thu, 23 Nov 2023 12:04:20 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: John Snow <jsnow@redhat.com>
 Cc: qemu-devel <qemu-devel@nongnu.org>,  Peter Maydell
  <peter.maydell@linaro.org>,  Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH 06/19] qapi/schema: adjust type narrowing for mypy's
- benefit
+Subject: Re: [PATCH 08/19] qapi/schema: add static typing and assertions to
+ lookup_type()
 References: <20231116014350.653792-1-jsnow@redhat.com>
- <20231116014350.653792-7-jsnow@redhat.com>
- <87ttpf2o6t.fsf@pond.sub.org>
- <CAFn=p-bd6E0kYJXyzjU=BR8BzEAXvdiQbsMT+_E1O7COaXNfJA@mail.gmail.com>
- <87cyw2uhee.fsf@pond.sub.org>
- <CAFn=p-ZjcbDtw2kBSFAeM5=T-MijJh_xifjsE0x3ubOjjK4TtQ@mail.gmail.com>
-Date: Thu, 23 Nov 2023 12:00:20 +0100
-In-Reply-To: <CAFn=p-ZjcbDtw2kBSFAeM5=T-MijJh_xifjsE0x3ubOjjK4TtQ@mail.gmail.com>
- (John Snow's message of "Wed, 22 Nov 2023 13:12:27 -0500")
-Message-ID: <87il5s7n0b.fsf@pond.sub.org>
+ <20231116014350.653792-9-jsnow@redhat.com>
+ <87jzqb2nmp.fsf@pond.sub.org>
+ <CAFn=p-bHuJsMG=HOdw8kxGwgAFQpvUWeHHD0xXtOV3+ytQfJQw@mail.gmail.com>
+ <874jheugz5.fsf@pond.sub.org>
+ <CAFn=p-axjksRWSA1G0iXLJFJOXx8Xbry3K6nowmQqVOkgg=r_g@mail.gmail.com>
+Date: Thu, 23 Nov 2023 12:04:20 +0100
+In-Reply-To: <CAFn=p-axjksRWSA1G0iXLJFJOXx8Xbry3K6nowmQqVOkgg=r_g@mail.gmail.com>
+ (John Snow's message of "Wed, 22 Nov 2023 10:55:36 -0500")
+Message-ID: <87edgg7mtn.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -89,49 +91,92 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 John Snow <jsnow@redhat.com> writes:
 
-> On Wed, Nov 22, 2023, 7:00 AM Markus Armbruster <armbru@redhat.com> wrote:
->
+> On Wed, Nov 22, 2023 at 7:09=E2=80=AFAM Markus Armbruster <armbru@redhat.=
+com> wrote:
+>>
 >> John Snow <jsnow@redhat.com> writes:
 >>
->> > On Tue, Nov 21, 2023, 9:09 AM Markus Armbruster <armbru@redhat.com> wrote:
+>> > On Tue, Nov 21, 2023, 9:21 AM Markus Armbruster <armbru@redhat.com> wr=
+ote:
+>> >
+>> >> John Snow <jsnow@redhat.com> writes:
+>> >>
+>> >> > This function is a bit hard to type as-is; mypy needs some assertio=
+ns to
+>> >> > assist with the type narrowing.
+>> >> >
+>> >> > Signed-off-by: John Snow <jsnow@redhat.com>
+>> >> > ---
+>> >> >  scripts/qapi/schema.py | 8 ++++++--
+>> >> >  1 file changed, 6 insertions(+), 2 deletions(-)
+>> >> >
+>> >> > diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+>> >> > index a1094283828..3308f334872 100644
+>> >> > --- a/scripts/qapi/schema.py
+>> >> > +++ b/scripts/qapi/schema.py
+>> >> > @@ -968,8 +968,12 @@ def lookup_entity(self, name, typ=3DNone):
+>> >> >              return None
+>> >> >          return ent
+>> >> >
+>> >> > -    def lookup_type(self, name):
+>> >> > -        return self.lookup_entity(name, QAPISchemaType)
+>> >> > +    def lookup_type(self, name: str) -> Optional[QAPISchemaType]:
 
 [...]
 
->> >> Harmless enough.  I can't quite see the mypy problem, though.  Care to
->> >> elaborate a bit?
+>> >> > +        typ =3D self.lookup_entity(name, QAPISchemaType)
+>> >> > +        if typ is None:
+>> >> > +            return None
+>> >> > +        assert isinstance(typ, QAPISchemaType)
+>> >> > +        return typ
+>> >>
+>> >> Would
+>> >>
+>> >>            typ =3D self.lookup_entity(name, QAPISchemaType)
+>> >>            assert isinstance(typ, Optional[QAPISchemaType])
+>> >>            return typ
+>> >>
+>> >> work?
 >> >>
 >> >
->> > self.arg_type has a narrower type- or, it WILL at the end of this series -
->> > so we need to narrow a temporary variable first before assigning it to the
->> > object state.
->> >
->> > We already perform the necessary check/narrowing, so this is really just
->> > pointing out that it's a bad idea to assign the state before the type
->> > check. Now we type check before assigning state.
+>> > I don't *think* so, Optional isn't a runtime construct.
 >>
->> After PATCH 16, .resolve_type() will return QAPISchemaType, and
->> self.arg_type will be Optional[QAPISchemaObjectType].  Correct?
+>> Let me try...
 >>
+>>     $ python
+>>     Python 3.11.5 (main, Aug 28 2023, 00:00:00) [GCC 12.3.1 20230508 (Re=
+d Hat 12.3.1-1)] on linux
+>>     Type "help", "copyright", "credits" or "license" for more informatio=
+n.
+>>     >>> from typing import Optional
+>>     >>> x=3DNone
+>>     >>> isinstance(x, Optional[str])
+>>     True
+>>     >>>
 >
-> Sounds right. Sometimes it's a little hard to see what the error is before
-> the rest of the types go in, a hazard of needing all patches to bisect
-> without regression.
+> Huh. I ... huh!
 >
-> Do you want a more elaborate commit message?
+> Well, this apparently only works in Python 3.10!+
+>
+> TypeError: Subscripted generics cannot be used with class and instance ch=
+ecks
 
-Your commit messages of PATCH 3+4 show the error.  Helps.
+We should be able to use it "soon" after 3.9 reaches EOL, approximately
+October 2025.
 
-Maybe
+*Sigh*
 
-    qapi/schema: Adjust type narrowing for mypy's benefit
-
-    We already take care to perform some type narrowing for arg_type and
-    ret_type, but not in a way where mypy can utilize the result once we
-    add type hints:
-
-        error message goes here
-
-    A simple change to use a temporary variable helps the medicine go
-    down.
+>>
+>> >                                                         We can combine=
+ it
+>> > into "assert x is None or isinstance(x, foo)" though - I believe that's
+>> > used elsewhere in the qapi generator.
+>>
+>> >> >
+>> >> >      def resolve_type(self, name, info, what):
+>> >> >          typ =3D self.lookup_type(name)
+>> >>
+>> >>
+>>
 
 
