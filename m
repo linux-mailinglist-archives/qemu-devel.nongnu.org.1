@@ -2,77 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC6A7F65EF
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 19:04:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09E407F65F3
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 19:05:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6E3q-0003t2-Ui; Thu, 23 Nov 2023 13:04:22 -0500
+	id 1r6E51-0005Ko-QL; Thu, 23 Nov 2023 13:05:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1r6E3p-0003sU-AC
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:04:21 -0500
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1r6E3n-0005n4-OK
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:04:21 -0500
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2806cbd43b8so970435a91.3
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 10:04:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=vrull.eu; s=google; t=1700762658; x=1701367458; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0Z9aktfy67+8W2U8TxrlPz+JWANett2DZD7FESEVlmI=;
- b=jbHy96nblFWfslGGF6TWqgjETFI61vUpD8IHI7bEwG/rikK5LG6725z0RMxjKMS0q1
- FC8nI7WPxT/Zf/tPf1PnZ9UnhViQcv9AJNneF3e8REao9hYeHuBUm4aPWI2z3BGYNs5E
- ZAb64kTg6KHdwu/7EzAMlzwbOz5y6mJ4AXkpJj43khYeT+TH408Jvyy6vVAYtrmbu3SG
- XKg4/R7Xai6og69mRmuYb4Ts3N3ASZMmeYBbFdfNLl/aWnucYAkvhzwHmAuqsNNhLT6f
- BqaufRbbXU7KTdJXG9YVjd8JZ5Umgl0KwgI3PshLK+12e0qhjJS6nlnZ19LOKj7DIvTh
- nneQ==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6E50-0005KS-Ky
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:05:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6E4u-0006Bt-PI
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:05:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700762727;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZCeVfosFn1C0AJe/X8yGTldekha8CA+1Pw4rp9hmYNk=;
+ b=fKmlZkFzWyAGUW+uMILpT7tg3i+N9DXohT09AjEu1WBmmHIOeSTO6i+1tFNU4+aZqkr5u6
+ olWUgXNnBjJ3uUg1/3ENgwkmUHSG+4vQ1rXGhAsyB/P2kUXw8Sp44mcLgWiMRecDovolwj
+ NOtD9yg1QjAbnLVTLrxQSMHQLVjGL1c=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-253-Azw-nmhjO6uWGB7U-7heIQ-1; Thu, 23 Nov 2023 13:05:26 -0500
+X-MC-Unique: Azw-nmhjO6uWGB7U-7heIQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-40b297925ccso6195375e9.2
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 10:05:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700762658; x=1701367458;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0Z9aktfy67+8W2U8TxrlPz+JWANett2DZD7FESEVlmI=;
- b=gb2isQN/PnSkVNtVbLRdaGA25LFdbaztHHA0reAb4yVwzeyDkghgUnPb9Mdef7cQ5X
- XgKfJ8+X5bMF/lQ2zk3HV54RKBJUNMDec/oGuZTvcbfzpwwZWULXGLZ/on1aAozyaxyO
- 5kOvDbNc9j447eSvLLgL7gkxBUKJ2IBHW/9CXPU86olYXAe5jrQu4COE2CnJ+2l9GkPv
- DIECJdoHOKb9p0fCWW+PoTFj+3wg3MZGZ5l4yYw+pz+XePLtEH+4Z5PiMF/VabaXXbs3
- mW29UdqDzixEfqRmERYBjgQkT36isOX7xT9GpZCc+HdZ8CF1gsVC/VrtN9oYV2CZDgtR
- M1mg==
-X-Gm-Message-State: AOJu0YzmxPS5yZOc940M63KHT3ehi7STvOkxrqCIIF4uxO/EblW2/ZWv
- FSL68lxWx/AWBeIW9xUcWUP06rYKFTfD2odLG7Q+j5UwCoNcx6lwuLc=
-X-Google-Smtp-Source: AGHT+IE3umzIO5xxiSounlftPDdZmUjP+L1Q2CHyb40jy8gx1d6BDyKpiSNXhBtTL5dGi7EUwIu/AnCfelFpVqpiB1g=
-X-Received: by 2002:a17:90b:1d8e:b0:27d:4b6e:b405 with SMTP id
- pf14-20020a17090b1d8e00b0027d4b6eb405mr210420pjb.33.1700762658291; Thu, 23
- Nov 2023 10:04:18 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700762725; x=1701367525;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZCeVfosFn1C0AJe/X8yGTldekha8CA+1Pw4rp9hmYNk=;
+ b=u8CaUzYbxdKeDk5nOwWVD6Idv0ZYLVGXqZNGT/QiF2F6joTqAYGIV0ui3QfTfsLW9O
+ 0A0tf1SezXQ+OBqxgn2q3rpMxexP+ZQGNTXd2pXtKpFZhr08xvOZQyuK0yK4LNl8/Qz6
+ XCGlW3HjeWIV8X1QcqLyC/wCBosG4syThtxlr0Ons9xUaxbAyo1r4tKI3wUSavbWvQqK
+ SJGNLuATA1T3tIubBHUGIvj40gM2giXV1418EXEF0YErXWI/QmwPvoNyK0Uuqd4EIZce
+ PsidfYmmhY/9HGb7uz6TRizJbOKb8WWnCUAuYhPkSUvjTQlSTecLAw4zu93ttVbASCg4
+ I1Sg==
+X-Gm-Message-State: AOJu0YzAzJkL63l60lAfLnOr9qr9P8XxKgZVfSIO2zni5QTWyS5PeB5z
+ wyU0Waq8vr9ul8X0d5jq+wKqR7Eti8v10hH4PRycezJavOCgxcB1vSVZ6y4Ou6mu4lJeUtfBC4f
+ re/+8gVWiOZKEPO4=
+X-Received: by 2002:a05:600c:1d0a:b0:409:79df:7f9c with SMTP id
+ l10-20020a05600c1d0a00b0040979df7f9cmr257498wms.36.1700762725207; 
+ Thu, 23 Nov 2023 10:05:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFGL/LlmPwd/DBEFn9qZOprKvjHw2yStog1psrprrTeKY8jwk4PTVXB605ILs/twrPKnU3P6Q==
+X-Received: by 2002:a05:600c:1d0a:b0:409:79df:7f9c with SMTP id
+ l10-20020a05600c1d0a00b0040979df7f9cmr257467wms.36.1700762724798; 
+ Thu, 23 Nov 2023 10:05:24 -0800 (PST)
+Received: from redhat.com ([2a02:14f:17a:dd6e:61bc:cc48:699f:b2ce])
+ by smtp.gmail.com with ESMTPSA id
+ t17-20020a05600c451100b0040b379e8526sm1969553wmo.25.2023.11.23.10.05.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 23 Nov 2023 10:05:24 -0800 (PST)
+Date: Thu, 23 Nov 2023 13:05:19 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel@nongnu.org,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alexander Graf <agraf@csgraf.de>,
+ Alex Benn =?iso-8859-1?Q?=E9?= e <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 2/2] docs: define policy forbidding use of "AI" / LLM
+ code generators
+Message-ID: <20231123124234-mutt-send-email-mst@kernel.org>
+References: <20231123114026.3589272-1-berrange@redhat.com>
+ <20231123114026.3589272-3-berrange@redhat.com>
+ <20231123092523-mutt-send-email-mst@kernel.org>
+ <4l0it.9kkxe9s135lg@linaro.org>
+ <791c81ad-e98d-4eee-9ca7-f3157977913c@linaro.org>
+ <20231123104336-mutt-send-email-mst@kernel.org>
+ <20231123172938.GU9696@kitsune.suse.cz>
 MIME-Version: 1.0
-References: <20231123180135.2116194-1-christoph.muellner@vrull.eu>
-In-Reply-To: <20231123180135.2116194-1-christoph.muellner@vrull.eu>
-From: =?UTF-8?Q?Christoph_M=C3=BCllner?= <christoph.muellner@vrull.eu>
-Date: Thu, 23 Nov 2023 19:04:05 +0100
-Message-ID: <CAEg0e7jTsSuZMVp9bVtTiTbe+UJUpe9oo+b2mxZQOe8eGxES+Q@mail.gmail.com>
-Subject: Re: [PATCH] linux-user/riscv: Add Zicboz extensions to hwprobe
-To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Philipp Tomsich <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: Laurent Vivier <laurent@vivier.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=christoph.muellner@vrull.eu; helo=mail-pj1-x1030.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231123172938.GU9696@kitsune.suse.cz>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,48 +117,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 23, 2023 at 7:01=E2=80=AFPM Christoph Muellner
-<christoph.muellner@vrull.eu> wrote:
->
-> From: Christoph M=C3=BCllner <christoph.muellner@vrull.eu>
->
-> Upstream Linux recently added RISC-V Zicboz support to the hwprobe API.
-> This patch introduces this for QEMU's user space emulator.
->
-> Signed-off-by: Christoph M=C3=BCllner <christoph.muellner@vrull.eu>
-> ---
->  linux-user/syscall.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-> index 65ac3ac796..22e947d752 100644
-> --- a/linux-user/syscall.c
-> +++ b/linux-user/syscall.c
-> @@ -8799,6 +8799,7 @@ static int do_getdents64(abi_long dirfd, abi_long a=
-rg2, abi_long count)
->  #define     RISCV_HWPROBE_EXT_ZBA      (1 << 3)
->  #define     RISCV_HWPROBE_EXT_ZBB      (1 << 4)
->  #define     RISCV_HWPROBE_EXT_ZBS      (1 << 5)
-> +#define     RISCV_HWPROBE_EXT_ZICBOZ   (1 << 6)
->
->  #define RISCV_HWPROBE_KEY_CPUPERF_0     5
->  #define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
-> @@ -8855,6 +8856,8 @@ static void risc_hwprobe_fill_pairs(CPURISCVState *=
-env,
->                       RISCV_HWPROBE_EXT_ZBB : 0;
->              value |=3D cfg->ext_zbs ?
->                       RISCV_HWPROBE_EXT_ZBS : 0;
-> +            value |=3D cfg->ext_zicboz ?
-> +                     RISCV_HWPROBE_EXT_ZBS : 0;
+On Thu, Nov 23, 2023 at 06:29:38PM +0100, Michal Suchánek wrote:
+> On Thu, Nov 23, 2023 at 12:06:59PM -0500, Michael S. Tsirkin wrote:
+> > On Thu, Nov 23, 2023 at 04:29:52PM +0100, Philippe Mathieu-Daudé wrote:
+> > > This document targets all contributors. Contributions can be typo
+> > > fix, translations, ... and don't have to be technical. Similarly,
+> > > contributors aren't expected to be technical experts. As a neophyte,
+> > > "AI" makes sense. "Idempotent code generator" or "LLM" don't :)
+> > 
+> > I don't think there's any big deal in using AI for typo fixes.
+> 
+> For how many typos it is still OK, and would not a deterministic
+> spellchecker be preferred?
+> 
+> There are some edge cases where using AI is OK, the problem is most of
+> the time it is not clear it is OK to use.
+> 
+> Thanks
+> 
+> Michal
 
-I accidently sent out the wrong patch file.
-A v2 will be sent to set the right bit.
-Sorry for sending this!
+¯\_(ツ)_/¯ I am not a lawyer, and I don't speak for Red Hat.
 
->              __put_user(value, &pair->value);
->              break;
->          case RISCV_HWPROBE_KEY_CPUPERF_0:
-> --
-> 2.41.0
->
+
+My point is however that e.g. even if you are using e.g. a grammar
+corrector you better make sure that it is not claiming that its output
+is a derivative work.
+
+-- 
+MST
+
 
