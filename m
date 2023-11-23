@@ -2,73 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 325F27F67ED
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 20:59:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 120587F6885
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 21:39:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6Fq0-0001EH-O4; Thu, 23 Nov 2023 14:58:12 -0500
+	id 1r6GSV-0005fN-Oo; Thu, 23 Nov 2023 15:37:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r6Fpy-0001E5-2E
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 14:58:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r6Fpw-0002RT-MJ
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 14:58:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700769485;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FatwkguduZZYkL2Jy8YhWHxqF/8vEf/NOunmbxwSSVE=;
- b=RUeBwWLYKrIdDXZHliuikonSvvk6xZJIQThDU/UG2YtExFEw7uLbB7Hbr3JBxbK/T3zgnQ
- C+PxKMgWjuXbVLXtVfjY8yN3NrFnsM6adH8qVIsPwzG6fV7GU+Ym4CNj3oXrm7N3kyd29N
- 5XjBGDjlFuqjK63vase2RPjOgvVlfIU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-325-9FFFpyMjNsKJmwWKE1sUcA-1; Thu,
- 23 Nov 2023 14:58:02 -0500
-X-MC-Unique: 9FFFpyMjNsKJmwWKE1sUcA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 725E53C025BE;
- Thu, 23 Nov 2023 19:57:59 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.72])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CAFC62166B26;
- Thu, 23 Nov 2023 19:57:58 +0000 (UTC)
-Date: Thu, 23 Nov 2023 14:57:57 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Fam Zheng <fam@euphon.net>, kwolf@redhat.com, qemu-block@nongnu.org
-Subject: Re: [PATCH 0/4] scsi: eliminate AioContext lock
-Message-ID: <20231123195757.GA172762@fedora>
-References: <20231123194931.171598-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r6GST-0005f1-8D
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 15:37:57 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r6GSR-00017R-L1
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 15:37:56 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1ce656b9780so8894535ad.2
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 12:37:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1700771874; x=1701376674; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=kZ3opmbdsKZYcUTskiib2tuLJ71Hd/pA8b2WyG9Oz6Y=;
+ b=V+GEUA7Y0d73J5tw2QA+Y87jwfAuJ6MxfK8+/QdH36L4G0wLxsRZK2093wmXKir7uR
+ h9FFCjj1BDk4sAu5hR0fkoNBCkS9ZD3w2hK/oIC/m1Pi8lHRejTHyB5pjkje9MADFM0k
+ JTwN0dx7WFv2hVUI8LXTEJ/MRmjojSSNwOTnTQQIS/5ahemr7V6oURWAbNaArwGnXI27
+ xUZWcfwD1WAisvSU8w//7OL59Zu+yOGZT2KQd2ZkH0x5kSLYvBi6Ep7p5pSjahMSSFW+
+ Ka/iZhNcw4gQGLi9DemuZ4DL3S55NkaTdK/4Oq0kPTDorFHY1ia5Lydd3xiXw0I+GePs
+ XVVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700771874; x=1701376674;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=kZ3opmbdsKZYcUTskiib2tuLJ71Hd/pA8b2WyG9Oz6Y=;
+ b=npWISYc/qfhaK94SJiXADj1ivfDpZ0xROgpYnbXBlJqQd7WoR9gyc38UXM3dZFPvs6
+ x5rPwsHsQxxpUVDmoR0J73XGiYZFKaOZkQbSDrQQZ2KDWsZsY5dLLWrrUD2vhCd2D4Ql
+ PLxBS7GVNtmDjGETUTb3wG0iGbxwWq5vKs1Kd8FDOr27AnbN0fwOPoz8dhDrLoO3KmZ+
+ 5Z0t3aw95FESONLazYi8NllpKZo2arOUoM0ldmg3HljvjMpP53RPFrdBSTMjfLXN8iqm
+ YgOZiZWEpnqHKYglzR+v2PsfnbEsXSjIlcKQA760Zy6r0sYZhU4LLugw61J3ibgA/CgT
+ WfOQ==
+X-Gm-Message-State: AOJu0Yy4qnftbYIfqUG6E0VxR23h9f6E+CptSox9NR5uS00wearVQB+l
+ lWUWivQ84yj5fNSU/ybUAvdTpA==
+X-Google-Smtp-Source: AGHT+IHsarAfOsfP6jvw2oaSUicaVE0r9awbIb0oc2Rxk347CTsVWyZ7i2Qa84G4tZnzRIu8JTHWSw==
+X-Received: by 2002:a17:902:f7c6:b0:1cf:5c9b:5c27 with SMTP id
+ h6-20020a170902f7c600b001cf5c9b5c27mr419944plw.63.1700771873631; 
+ Thu, 23 Nov 2023 12:37:53 -0800 (PST)
+Received: from [192.168.68.109] ([152.250.131.119])
+ by smtp.gmail.com with ESMTPSA id
+ e5-20020a170902b78500b001cf59cccb10sm1668732pls.23.2023.11.23.12.37.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 23 Nov 2023 12:37:53 -0800 (PST)
+Message-ID: <d25f1acc-5796-4674-a9b7-cd2f25aae64f@ventanamicro.com>
+Date: Thu, 23 Nov 2023 17:37:49 -0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="Nl1csQn1DUwa0RrI"
-Content-Disposition: inline
-In-Reply-To: <20231123194931.171598-1-stefanha@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] linux-user/riscv: Add Zicboz extensions to hwprobe
+Content-Language: en-US
+To: Christoph Muellner <christoph.muellner@vrull.eu>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Philipp Tomsich
+ <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: Laurent Vivier <laurent@vivier.eu>
+References: <20231123181300.2140622-1-christoph.muellner@vrull.eu>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231123181300.2140622-1-christoph.muellner@vrull.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,68 +98,40 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---Nl1csQn1DUwa0RrI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 23, 2023 at 02:49:27PM -0500, Stefan Hajnoczi wrote:
-> The SCSI subsystem uses the AioContext lock to protect internal state. Th=
-is is
-> necessary because the main loop and the IOThread can access SCSI state in
-> parallel. This inter-thread access happens during scsi_device_purge_reque=
-sts()
-> and scsi_dma_restart_cb().
->=20
-> This patch series modifies the code so SCSI state is only accessed from t=
-he
-> IOThread that is executing requests. Once this has been achieved the AioC=
-ontext
-> lock is no longer necessary.
->=20
-> Note that a few aio_context_acquire()/aio_context_release() calls still r=
-emain
-> after this series. They surround API calls that invoke AIO_WAIT_WHILE() a=
-nd
-> therefore still rely on the AioContext lock for now.
->=20
-> Stefan Hajnoczi (4):
->   scsi: only access SCSIDevice->requests from one thread
->   virtio-scsi: don't lock AioContext around
->     virtio_queue_aio_attach_host_notifier()
->   scsi: don't lock AioContext in I/O code path
->   dma-helpers: don't lock AioContext in dma_blk_cb()
->=20
->  include/hw/scsi/scsi.h          |   7 +-
->  hw/scsi/scsi-bus.c              | 174 ++++++++++++++++++++++----------
->  hw/scsi/scsi-disk.c             |  23 -----
->  hw/scsi/scsi-generic.c          |  20 +---
->  hw/scsi/virtio-scsi-dataplane.c |   8 +-
->  system/dma-helpers.c            |   7 +-
->  6 files changed, 130 insertions(+), 109 deletions(-)
+On 11/23/23 15:12, Christoph Muellner wrote:
+> From: Christoph Müllner <christoph.muellner@vrull.eu>
+> 
+> Upstream Linux recently added RISC-V Zicboz support to the hwprobe API.
+> This patch introduces this for QEMU's user space emulator.
+> 
+> Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
+> ---
 
-CCing Kevin and qemu-block
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
->=20
-> --=20
-> 2.42.0
->=20
-
---Nl1csQn1DUwa0RrI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVfrsUACgkQnKSrs4Gr
-c8jVHwf+MjcfMQfJhyhnGyCd3zDL0Wx1lCypqOyy/D52CkWtKUzUYpQqOZM++7+W
-J7U0/NeoW1ZoRWG10pqBqgsjmEd85KiwwyHEwWddyse6IjQ2lRP1uwToDXs9EbdB
-Xkfmqxq7hDcCVEQPSncKaC4hVwSjTRjYHM6cabK3ITa7PG/tsmurYep1cE2DW4/L
-I4BlIjYjMlVCy7BAsOsmAJBBY9uJYBHo6RlmnLDMog5aEZ838aj9sLiixbjlwkEd
-kTWeIIkYwlSb+DHsjzOYFR9S/hflHbN/+DTD27eSpmqjdB6OnWHXivJmEd0KdRJ1
-WUDu23/+yZDjHZm96iIO6zW3r6KgEg==
-=yGVD
------END PGP SIGNATURE-----
-
---Nl1csQn1DUwa0RrI--
-
+>   linux-user/syscall.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> index 65ac3ac796..2f9a1c5279 100644
+> --- a/linux-user/syscall.c
+> +++ b/linux-user/syscall.c
+> @@ -8799,6 +8799,7 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
+>   #define     RISCV_HWPROBE_EXT_ZBA      (1 << 3)
+>   #define     RISCV_HWPROBE_EXT_ZBB      (1 << 4)
+>   #define     RISCV_HWPROBE_EXT_ZBS      (1 << 5)
+> +#define     RISCV_HWPROBE_EXT_ZICBOZ   (1 << 6)
+>   
+>   #define RISCV_HWPROBE_KEY_CPUPERF_0     5
+>   #define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
+> @@ -8855,6 +8856,8 @@ static void risc_hwprobe_fill_pairs(CPURISCVState *env,
+>                        RISCV_HWPROBE_EXT_ZBB : 0;
+>               value |= cfg->ext_zbs ?
+>                        RISCV_HWPROBE_EXT_ZBS : 0;
+> +            value |= cfg->ext_zicboz ?
+> +                     RISCV_HWPROBE_EXT_ZICBOZ : 0;
+>               __put_user(value, &pair->value);
+>               break;
+>           case RISCV_HWPROBE_KEY_CPUPERF_0:
 
