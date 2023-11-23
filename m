@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6D47F61B5
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 15:40:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E306F7F61B7
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 15:40:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6AsO-0003VB-8O; Thu, 23 Nov 2023 09:40:20 -0500
+	id 1r6As3-0003I1-Jg; Thu, 23 Nov 2023 09:39:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6ArO-0002Os-VH
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 09:39:20 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6ArW-0002Xj-FI
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 09:39:28 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6ArM-0002XD-FI
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 09:39:18 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-40b27b498c3so6520395e9.0
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 06:39:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6ArU-0002Zs-Rb
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 09:39:26 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-332cc1f176bso626535f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 06:39:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700750355; x=1701355155; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700750363; x=1701355163; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1237N1r1qCpcYS004kuUN2TuaGy1OnSXggczIa7nXrE=;
- b=A6cMCvgEw1QkQiHYWTKMdIVR+vq7ld76SmijW1AfxYgE0sxaPNxHg+zHx3jdHOWyYW
- P/nRmi3ZR3Gr50yWlrx/7PFFEEjDCHxtqH2p5NDDJANwXOPDAWLuyKizuK/UO/gcnYBj
- 4MS42ogdGmA5I0ws/YUdmHTeX0ebJjB7HdBPIQFVip+MATOfGcfXSpTpXqzmv2cUjEKI
- yu1jmlktpxmbBfYwoDyZbPx/XCkkX6rr9tSQXxLbQhNDk9bYg+JGS1oBz/b25OYui8yc
- uVByGRhNsTtPG5edemKqk60R+diIGn80LoOwBemn4ZF5Xx/GydRsbzsqvF2tvb8KWauy
- z2sw==
+ bh=SliH/Dd/Fz40g7/vYVgjwfZm7k8MHl78S5VUvr4CFSQ=;
+ b=iFafsJXZxbcp88GW/FzAYVOkEQPtcwTIZzLN0TTUmNJ17DhomDt2bF+WmiUQi7+cya
+ npUHLlF3rJNtxx9X2a7SRXYKJPM6xisYGjXsfASR2P6hx3yVbFsxWnZvvND9k44m91VE
+ btDJ3YLLE5/cS3BqND+YCjPqv8fCcsgaA4vBO4YFh4JsVZvd1m9eaj9EIn8ANEzvWy3N
+ gP8Oo2sxkOljQVQ7V7BoI8/dqtkmBcmgcIOKd20RBvGn2qbRUwd7Av0uE0Ob7JS9P4W9
+ lwEXWZa5cvcOLPTWNHxe1eKu6DylEmUPetzg6kiAIgcCSsqVUMZEf0P8VGCa0+mPw/S+
+ c4eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700750355; x=1701355155;
+ d=1e100.net; s=20230601; t=1700750363; x=1701355163;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1237N1r1qCpcYS004kuUN2TuaGy1OnSXggczIa7nXrE=;
- b=tUc0pp9ODFqUPb1LpAmdGzdd6Uzhj281H4Q4VBMMXevmqBy/cLSeFTm/hIKS+Cxtuj
- YPQL3lH0DWaIQYAB2zCnbWWb1diE08NRJCtu+zDCBRtnTQcrjQm4iNXX+yY/UbZ/euIx
- H7e7959Bd3KfP6Rtj6iDgmGq1BXMus9hf9v3Rqi4dHpLluGS/znbsPzwnibbVOgqnoKD
- PeOisSBPGH6Cwp+/13toUzxy1srcdzmXOTT54dgc+29VognhAdxvzBlw0nx0vReRuPRx
- nn9CdUFoWoNI9zeTetk1ce8GIYGDF42Xe/t+6MWq4/9fcczLUHfkzx+6s18zcSy//B+N
- jY2g==
-X-Gm-Message-State: AOJu0YzkI5Y0qSXFEme5sb4wvOaR28YegVcXlumQYQ/7ntZDyiq/fOQO
- uDhuSUQqisOHg2QAExTfsxXly8gs1CVtuUvSEwU=
-X-Google-Smtp-Source: AGHT+IF+NoAW509sLiqzUIKxEwYj1wKGFHj0e9U8IV+YOgvBPOP8D/q5PIL/mIRkOhEGTVKbmHSGvQ==
-X-Received: by 2002:a05:600c:4703:b0:40b:38a8:6c65 with SMTP id
- v3-20020a05600c470300b0040b38a86c65mr405199wmo.26.1700750355139; 
- Thu, 23 Nov 2023 06:39:15 -0800 (PST)
+ bh=SliH/Dd/Fz40g7/vYVgjwfZm7k8MHl78S5VUvr4CFSQ=;
+ b=fNMRqwBGGgBp1H6y0exjRRz+szU/CFvSr8DCY2rUfa4+2SksP4dDoYDzXO238YjWn/
+ 3YHfaOozmauUXo5XYCDHeNYeMBgk8mnuwAvC1vmmppuYae15LsZDrkHQHbgnaBiW8JWY
+ 2vOFMFCmaprEdG3z2fa/kNlBvz0d108dPYAm/Q8b6RLkN4R/7IeoAAdFcktytTEher/3
+ Og4QjU0jpF+wuGuAV6/P8BRfpIKJb13vk8WXiUQNI6tQLIuJ5PaPji4L5NlWDCc2EOXr
+ rq+3rRDwIXK1wgQsA4I2dR3SjgWfcluMxkqWqwSRmOsuFH1WBwTbMHsgCiPR6bSWW/kg
+ uP1g==
+X-Gm-Message-State: AOJu0YzMRb2REkfHT7O9uzWvsqDFlAbc2CMShfi5HiPGPbwrjt/A1LQm
+ isQ/So9oBeiQ8Z30HXCSmd3HIA==
+X-Google-Smtp-Source: AGHT+IF6qUhQZan6xU0WnjVucUZAgNU3+H2mqFw5wah21INKPHTkM42fLqvnYgx3dBwwx3ZkPAa/tQ==
+X-Received: by 2002:a5d:47c7:0:b0:332:cb51:34ed with SMTP id
+ o7-20020a5d47c7000000b00332cb5134edmr4585550wrc.54.1700750363110; 
+ Thu, 23 Nov 2023 06:39:23 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.165.237])
  by smtp.gmail.com with ESMTPSA id
- z4-20020a1c4c04000000b0040b32edf626sm2163708wmf.31.2023.11.23.06.39.11
+ t15-20020a5d6a4f000000b0033169676e83sm1806159wrw.13.2023.11.23.06.39.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 23 Nov 2023 06:39:14 -0800 (PST)
+ Thu, 23 Nov 2023 06:39:22 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org
@@ -85,17 +85,18 @@ Cc: Alistair Francis <alistair@alistair23.me>, Joel Stanley <joel@jms.id.au>,
  Beniamino Galvani <b.galvani@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH-for-9.0 v2 7/8] hw/arm/bcm2836: Move code after error checks
-Date: Thu, 23 Nov 2023 15:38:11 +0100
-Message-ID: <20231123143813.42632-8-philmd@linaro.org>
+Subject: [PATCH-for-9.0 v2 8/8] hw/arm/bcm2836: Add local variable to remove
+ various DEVICE() casts
+Date: Thu, 23 Nov 2023 15:38:12 +0100
+Message-ID: <20231123143813.42632-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231123143813.42632-1-philmd@linaro.org>
 References: <20231123143813.42632-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -118,46 +119,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-First run the code that can return errors, then on success
-run what alters the instance state.
+Cast the CPU to DeviceState once.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/bcm2836.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ hw/arm/bcm2836.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
 diff --git a/hw/arm/bcm2836.c b/hw/arm/bcm2836.c
-index 03e6eb2fb2..e56935f3e5 100644
+index e56935f3e5..013cee853d 100644
 --- a/hw/arm/bcm2836.c
 +++ b/hw/arm/bcm2836.c
-@@ -119,13 +119,6 @@ static void bcm2836_realize(DeviceState *dev, Error **errp)
-         return;
+@@ -120,6 +120,8 @@ static void bcm2836_realize(DeviceState *dev, Error **errp)
      }
  
--    sysbus_mmio_map(SYS_BUS_DEVICE(&s->control), 0, bc->ctrl_base);
--
--    sysbus_connect_irq(SYS_BUS_DEVICE(&s->peripherals), 0,
--        qdev_get_gpio_in_named(DEVICE(&s->control), "gpu-irq", 0));
--    sysbus_connect_irq(SYS_BUS_DEVICE(&s->peripherals), 1,
--        qdev_get_gpio_in_named(DEVICE(&s->control), "gpu-fiq", 0));
--
      for (n = 0; n < BCM283X_NCPUS; n++) {
++        DeviceState *cpudev = DEVICE(&s->cpu[n].core);
++
          object_property_set_int(OBJECT(&s->cpu[n].core), "mp-affinity",
                                  (bc->clusterid << 8) | n, &error_abort);
-@@ -158,6 +151,13 @@ static void bcm2836_realize(DeviceState *dev, Error **errp)
-         qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_SEC,
+ 
+@@ -128,27 +130,26 @@ static void bcm2836_realize(DeviceState *dev, Error **errp)
+                                 bc->peri_base, &error_abort);
+ 
+         /* start powered off if not enabled */
+-        qdev_prop_set_bit(DEVICE(&s->cpu[n].core), "start-powered-off",
+-                          n >= s->enabled_cpus);
++        qdev_prop_set_bit(cpudev, "start-powered-off", n >= s->enabled_cpus);
+ 
+-        if (!qdev_realize(DEVICE(&s->cpu[n].core), NULL, errp)) {
++        if (!qdev_realize(cpudev, NULL, errp)) {
+             return;
+         }
+ 
+         /* Connect irq/fiq outputs from the interrupt controller. */
+         qdev_connect_gpio_out_named(DEVICE(&s->control), "irq", n,
+-                qdev_get_gpio_in(DEVICE(&s->cpu[n].core), ARM_CPU_IRQ));
++                                    qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
+         qdev_connect_gpio_out_named(DEVICE(&s->control), "fiq", n,
+-                qdev_get_gpio_in(DEVICE(&s->cpu[n].core), ARM_CPU_FIQ));
++                                    qdev_get_gpio_in(cpudev, ARM_CPU_FIQ));
+ 
+         /* Connect timers from the CPU to the interrupt controller */
+-        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_PHYS,
++        qdev_connect_gpio_out(cpudev, GTIMER_PHYS,
+                 qdev_get_gpio_in_named(DEVICE(&s->control), "cntpnsirq", n));
+-        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_VIRT,
++        qdev_connect_gpio_out(cpudev, GTIMER_VIRT,
+                 qdev_get_gpio_in_named(DEVICE(&s->control), "cntvirq", n));
+-        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_HYP,
++        qdev_connect_gpio_out(cpudev, GTIMER_HYP,
+                 qdev_get_gpio_in_named(DEVICE(&s->control), "cnthpirq", n));
+-        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_SEC,
++        qdev_connect_gpio_out(cpudev, GTIMER_SEC,
                  qdev_get_gpio_in_named(DEVICE(&s->control), "cntpsirq", n));
      }
-+
-+    sysbus_mmio_map(SYS_BUS_DEVICE(&s->control), 0, bc->ctrl_base);
-+
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&s->peripherals), 0,
-+                    qdev_get_gpio_in_named(DEVICE(&s->control), "gpu-irq", 0));
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&s->peripherals), 1,
-+                    qdev_get_gpio_in_named(DEVICE(&s->control), "gpu-fiq", 0));
- }
  
- static void bcm283x_class_init(ObjectClass *oc, void *data)
 -- 
 2.41.0
 
