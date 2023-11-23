@@ -2,77 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 424D57F5D36
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 12:05:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD2757F5DDA
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 12:30:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r67VU-0006uW-AJ; Thu, 23 Nov 2023 06:04:28 -0500
+	id 1r67sy-0005re-Uy; Thu, 23 Nov 2023 06:28:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r67VS-0006u7-Vy
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:04:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r67VR-0003m1-6P
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:04:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700737463;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=oXOeolurWxLNmBKz32ZfUnYjXpKtgFR03080oXE487c=;
- b=TK1iUcnH7RowP0uzNMHQAzgF0s0k1vKmSz+NztWaoODchwCoEN9IvRayJsgwufBUkL4Ktl
- cwIbrMf8NyVdonWKNEzhZvquM5Hv1D+Dw+ynKulTsAW2LSsqKnmzKLWd4KCYKSyjvoKOTY
- byUOwVbx3Dql4Jw5484MBb8NAfp/PPM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-259-j4pcdJTBPlKWhBXN8ZnkZQ-1; Thu, 23 Nov 2023 06:04:21 -0500
-X-MC-Unique: j4pcdJTBPlKWhBXN8ZnkZQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 67103811E7D;
- Thu, 23 Nov 2023 11:04:21 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3F7121121306;
- Thu, 23 Nov 2023 11:04:21 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3D16921E6A1F; Thu, 23 Nov 2023 12:04:20 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>,  Peter Maydell
- <peter.maydell@linaro.org>,  Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH 08/19] qapi/schema: add static typing and assertions to
- lookup_type()
-References: <20231116014350.653792-1-jsnow@redhat.com>
- <20231116014350.653792-9-jsnow@redhat.com>
- <87jzqb2nmp.fsf@pond.sub.org>
- <CAFn=p-bHuJsMG=HOdw8kxGwgAFQpvUWeHHD0xXtOV3+ytQfJQw@mail.gmail.com>
- <874jheugz5.fsf@pond.sub.org>
- <CAFn=p-axjksRWSA1G0iXLJFJOXx8Xbry3K6nowmQqVOkgg=r_g@mail.gmail.com>
-Date: Thu, 23 Nov 2023 12:04:20 +0100
-In-Reply-To: <CAFn=p-axjksRWSA1G0iXLJFJOXx8Xbry3K6nowmQqVOkgg=r_g@mail.gmail.com>
- (John Snow's message of "Wed, 22 Nov 2023 10:55:36 -0500")
-Message-ID: <87edgg7mtn.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r67sw-0005qE-LU
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:28:42 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r67sv-0008KJ-60
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:28:42 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-40839652b97so4607505e9.3
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 03:28:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700738919; x=1701343719; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=UyMuzeKQlkMkiXHA22dh3EGYz2PY3+2bNe87FQxQC9g=;
+ b=ZHtj/o4ANX2hfIDtXWZoZ7wnKv9qMIR/pMsmM+MHSHi6yIvkqInIHWQMeiEcVR6gWD
+ jLXpw6VqEBU+Wqrm15F/HpPPPoOr3bsV8DU81rzrWOZx0EOgEkzd2DPuroW5yRxDhCte
+ 4lgjhjPSUsSNQGSU8FbmXvDMIcdLp8gFKtMxGN2M2WaXJv4uBbhyT4ke+ZPvB1fE5fyL
+ +5xSvJWNTOARKjvfHfn8rBhHIQQlFcVUYMFpQ1piVnuXgFMdyQ7SxIrXs1IzBn2TVejg
+ Iwq8d3E1KA6u5IMyZuh2ZczlS2H5NaXAuNsXVkkYA972xPDuiq0KI/DEDGoVmmGr3hKb
+ s/3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700738919; x=1701343719;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UyMuzeKQlkMkiXHA22dh3EGYz2PY3+2bNe87FQxQC9g=;
+ b=H1MZLKyDx1GzA7wpX9z8hozasveNGnhN+jAM8qMXFb8Y1P64s5qEgNkkzzEiqlKdQl
+ vCAnddsqEyx6C0MvtDRA+hukul9pOl7Tz4XdAVN9RVfwY+HVP0/E7DKLrpnGYKD9m/GS
+ Zqs4p40mfwDWYSiG77tJ7kn3sW5apuN4I5r4hhTejaFQXdmjdNaDEwxs6llYi3BWzRuY
+ 6viRfHhrbmyExsB8Cdaxs2OSh906l0evw0UiyaJIqikjC0IuF9ReK3VwpxWF5zdwE1HW
+ 14djZGxaUE/zPBB+F5bPpphi+/vxbX2UvWEN6Rp0i1pZ3xVecAqZLiESfYPy3VXN+ZBl
+ tYHQ==
+X-Gm-Message-State: AOJu0YxK7r+HBfQ1pSJBs2zlWAULh/EHKIlEG6bjxZGOSEb1+ZtdHaRe
+ mzoPpYV8mTyn8391O6E4TplAAA==
+X-Google-Smtp-Source: AGHT+IFTRaoEwj+8UhhxRdmzcC10659Nr9sN3Iq9rvWGs7wFN5fxruySdgwhwPGeEi/i0fL0PvChAw==
+X-Received: by 2002:a05:600c:3c85:b0:406:872d:7725 with SMTP id
+ bg5-20020a05600c3c8500b00406872d7725mr4238877wmb.1.1700738918874; 
+ Thu, 23 Nov 2023 03:28:38 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.165.237])
+ by smtp.gmail.com with ESMTPSA id
+ t20-20020adfa2d4000000b00332cbece829sm1406297wra.59.2023.11.23.03.28.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 23 Nov 2023 03:28:38 -0800 (PST)
+Message-ID: <77a23a59-1d36-4112-9716-6839a7d0df21@linaro.org>
+Date: Thu, 23 Nov 2023 12:28:36 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/i386: Rename kvmvapic.c -> vapic.c
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Eduardo Habkost
+ <eduardo@habkost.net>, Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>
+References: <20230905145159.7898-1-philmd@linaro.org>
+ <CABgObfbaAhOki7--tdMu-59Sv+k8aCDG0N-vrCGpbwwBj-f45A@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CABgObfbaAhOki7--tdMu-59Sv+k8aCDG0N-vrCGpbwwBj-f45A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,94 +95,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+On 23/11/23 11:14, Paolo Bonzini wrote:
+> 
+> 
+> Il mar 5 set 2023, 16:52 Philippe Mathieu-Daudé <philmd@linaro.org 
+> <mailto:philmd@linaro.org>> ha scritto:
+> 
+>     vAPIC isn't KVM specific, so having its name prefixed 'kvm'
+>     is misleading. Rename it simply 'vapic'. Rename the single
+>     function prefixed 'kvm'.
+> 
+>     Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org
+>     <mailto:philmd@linaro.org>>
+>     ---
+>     Interestingly there is a strong dependency on (Kconfig) APIC,
+>     but I couldn't get a single x86 machine building without the
+>     Kconfig 'APIC' key.
+> 
+> 
+> In theory ISAPC could be built without APIC. But it isn't quite there.
 
-> On Wed, Nov 22, 2023 at 7:09=E2=80=AFAM Markus Armbruster <armbru@redhat.=
-com> wrote:
->>
->> John Snow <jsnow@redhat.com> writes:
->>
->> > On Tue, Nov 21, 2023, 9:21 AM Markus Armbruster <armbru@redhat.com> wr=
-ote:
->> >
->> >> John Snow <jsnow@redhat.com> writes:
->> >>
->> >> > This function is a bit hard to type as-is; mypy needs some assertio=
-ns to
->> >> > assist with the type narrowing.
->> >> >
->> >> > Signed-off-by: John Snow <jsnow@redhat.com>
->> >> > ---
->> >> >  scripts/qapi/schema.py | 8 ++++++--
->> >> >  1 file changed, 6 insertions(+), 2 deletions(-)
->> >> >
->> >> > diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
->> >> > index a1094283828..3308f334872 100644
->> >> > --- a/scripts/qapi/schema.py
->> >> > +++ b/scripts/qapi/schema.py
->> >> > @@ -968,8 +968,12 @@ def lookup_entity(self, name, typ=3DNone):
->> >> >              return None
->> >> >          return ent
->> >> >
->> >> > -    def lookup_type(self, name):
->> >> > -        return self.lookup_entity(name, QAPISchemaType)
->> >> > +    def lookup_type(self, name: str) -> Optional[QAPISchemaType]:
+Ah I see, I'll keep that in mind.
 
-[...]
+> You can go ahead and queue it, thanks!
 
->> >> > +        typ =3D self.lookup_entity(name, QAPISchemaType)
->> >> > +        if typ is None:
->> >> > +            return None
->> >> > +        assert isinstance(typ, QAPISchemaType)
->> >> > +        return typ
->> >>
->> >> Would
->> >>
->> >>            typ =3D self.lookup_entity(name, QAPISchemaType)
->> >>            assert isinstance(typ, Optional[QAPISchemaType])
->> >>            return typ
->> >>
->> >> work?
->> >>
->> >
->> > I don't *think* so, Optional isn't a runtime construct.
->>
->> Let me try...
->>
->>     $ python
->>     Python 3.11.5 (main, Aug 28 2023, 00:00:00) [GCC 12.3.1 20230508 (Re=
-d Hat 12.3.1-1)] on linux
->>     Type "help", "copyright", "credits" or "license" for more informatio=
-n.
->>     >>> from typing import Optional
->>     >>> x=3DNone
->>     >>> isinstance(x, Optional[str])
->>     True
->>     >>>
->
-> Huh. I ... huh!
->
-> Well, this apparently only works in Python 3.10!+
->
-> TypeError: Subscripted generics cannot be used with class and instance ch=
-ecks
-
-We should be able to use it "soon" after 3.9 reaches EOL, approximately
-October 2025.
-
-*Sigh*
-
->>
->> >                                                         We can combine=
- it
->> > into "assert x is None or isinstance(x, foo)" though - I believe that's
->> > used elsewhere in the qapi generator.
->>
->> >> >
->> >> >      def resolve_type(self, name, info, what):
->> >> >          typ =3D self.lookup_type(name)
->> >>
->> >>
->>
-
+Thanks!
 
