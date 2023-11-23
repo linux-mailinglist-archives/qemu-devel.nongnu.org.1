@@ -2,81 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19367F5BD7
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 11:02:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEDA87F5BDD
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 11:06:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r66W0-0001Ja-DG; Thu, 23 Nov 2023 05:00:56 -0500
+	id 1r66aa-0005Pm-O3; Thu, 23 Nov 2023 05:05:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r66Vx-0001Ig-RF
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 05:00:54 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r66aY-0005PI-SC
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 05:05:38 -0500
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r66Vw-0004t1-8A
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 05:00:53 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40b2afd049aso4469075e9.0
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 02:00:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r66aX-0007fq-4u
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 05:05:38 -0500
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2c8880fbb33so9235281fa.0
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 02:05:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700733650; x=1701338450; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700733935; x=1701338735; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=uhF8UjaKtMa3szBB3PYJ7CaLfrF8gURumFjUK6ZS6vo=;
- b=pc+vPKH3WDZMby0Lgw9W9QGOfAzwkI3UD6wcjjU9nbG/xEmVgWYpdwutyAtYPLHObK
- qZ1nBoMurZXlNE7vmBuLQFtyIvygiEzz6j0W6tCbSjjMBcWtFHrS+3aKPobe+8uv48Jp
- KltO9lGN/8GkXMpgrxM2sDvg0XQ+xA6tnr32DuOytFXY7g6692e9oejPz7YxhkjIxxqi
- goVW1Tbhm4sgcmvsuLnmUxxBKb2BCpU94YuQIWUZPusAHEroaEY27bGkZyB5WxaYKGt+
- lx83WaxRMukaKYqsJ7fi7SAMsloOXBoBsMhPsyBJpThfLx8JM3xp1RNX1qkh7H8UBEpA
- Dkxg==
+ bh=+T5Y/auqp6b4DpeDjmSNt124oX3D9sR/8/ZhQczu7Xw=;
+ b=Zft4hBq9XP64HCWKj32Ip7NEtMVi4loztbsPfVi61lWJPpLCZpU4wj/EJXUIN4NFZa
+ BTx/f8RfEZRWianHonccfVPJWGK9cJIOBQ2DsNTbhlYykliJJ/d1ZoZYGtKndH2TkJwZ
+ HnZVbuIpRqdx6uTscYni0Kb+tMYOHbq5e1TQ+Gx6jQCIvixRvwqFHsKFQ6WWuAD2VJsM
+ bFYbFhciHYD1+XXYYKB9GzltaK14TU3VSOBfCuSecrZRzjhJYvKwiuJ8l4sDilNQJVvy
+ DvDwDmBntAuVB45c2dwkapmSMahLvzFhXHyAMVOxncBds2kO8rWfEGxZOdFxE6TavM9Z
+ OukA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700733650; x=1701338450;
+ d=1e100.net; s=20230601; t=1700733935; x=1701338735;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uhF8UjaKtMa3szBB3PYJ7CaLfrF8gURumFjUK6ZS6vo=;
- b=soZ7x6irShNHirzVB+dHLEnfEL7OXfl7lRv7h43OomzIcISmR2kyf+Mas35MiFX+/Z
- C2gIvvAj9prSLBqdZcSGUbuAGTkrQlRC3zP2mJI54pValWbYPb8Bs0NymeJSKPmI0Oh0
- 7VWmq9evVTrtkHaltR2lUfeYAgStY0BieUlx0qlVXCLSl+5exnFGSCVzf150uHPMalWK
- pvVns0AtYtamtMD5ukJe8jnIL4bew8BFRruKRWUmsYsCJ+IVckYXmg40sovcO4P2zVcN
- WoaJ3JVqF4p72xk65MSDVN5WeZDLgF4G0x3H7afE+FNBxIALKazStyIlexUv+uF9yVhZ
- e71w==
-X-Gm-Message-State: AOJu0YzFX0SnsjgVdz3+2K6uBhjsvoP3PEbktwChyoHHp8jaM3NZ6MVf
- MGXrx5KkB29a1MrA6Cop8r6m/r1ksxEfihvxsyk=
-X-Google-Smtp-Source: AGHT+IHx+SD/0zkpuvOSADdw6ceWWuFrh9u4dDRlbXzg8816flrF3uNsgv9Mzcp+b+WTVscveXh0yA==
-X-Received: by 2002:a05:600c:3108:b0:409:703c:b9b1 with SMTP id
- g8-20020a05600c310800b00409703cb9b1mr3507739wmo.40.1700733649821; 
- Thu, 23 Nov 2023 02:00:49 -0800 (PST)
+ bh=+T5Y/auqp6b4DpeDjmSNt124oX3D9sR/8/ZhQczu7Xw=;
+ b=DMLe1ErRHu9Yoo4QcJjsZrGSLiNKWLB3UNDEwf7Wq8QAm6mhvNAVWhI+1BAe28eZ7J
+ fnowWAIHWb5PGbllub6S7vMKjqtO9aUkTTSe3/npAgaPxcN8KZ0Sm5FCyWonDAoGADnQ
+ iJeRxUSbCLjn3tC4VGVZwLOGccEb3fdsMC6aj4dRlgasdrsz3KmmlfZbjjpijthbj6Ft
+ ivGRRJotR7VlD7A491S6cKz8HtGyR3x+XXDNumw9M7oBtRQw2yw7bV9wewip/2aelx0J
+ V8I6iZOlyNDBExxIxnJHcDI9teBTFODvTDq3IAp17vunwLJmGm+cDy99N1N2nkh/DMes
+ ekCw==
+X-Gm-Message-State: AOJu0YzLO9T2wzNWXvgg0zGTiG0hFMDHmKX52H7nMAo5WJnK6pEI5oUV
+ Q3lXhwAK1Y5dE/5fyZaFkW9whw==
+X-Google-Smtp-Source: AGHT+IG1spkbk5ZOw+bFxvPmTtfCcXV2gWnZ57Dx/R2GqKXyABIn5n9IWD607A83+ZAnbpNJRrInbg==
+X-Received: by 2002:a2e:8694:0:b0:2c8:76a1:51a5 with SMTP id
+ l20-20020a2e8694000000b002c876a151a5mr3232798lji.45.1700733934431; 
+ Thu, 23 Nov 2023 02:05:34 -0800 (PST)
 Received: from [192.168.69.100] ([176.176.165.237])
  by smtp.gmail.com with ESMTPSA id
- f18-20020a05600c4e9200b00403b63e87f2sm1430208wmq.32.2023.11.23.02.00.47
+ j14-20020a05600c190e00b0040b3525428bsm1457375wmq.2.2023.11.23.02.05.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 Nov 2023 02:00:49 -0800 (PST)
-Message-ID: <4b89c690-1a21-439d-ab30-0fa5bc7bb038@linaro.org>
-Date: Thu, 23 Nov 2023 11:00:46 +0100
+ Thu, 23 Nov 2023 02:05:33 -0800 (PST)
+Message-ID: <6171dd28-05aa-402a-a0f7-48c02082efd9@linaro.org>
+Date: Thu, 23 Nov 2023 11:05:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH-for-9.0 02/11] target/arm: Add
- target_aarch64_available() helper
+Subject: Re: [PATCH-for-8.2] pcie_sriov: Remove g_new assertion
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-arm@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-References: <20231122183048.17150-1-philmd@linaro.org>
- <20231122183048.17150-3-philmd@linaro.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org
+References: <20231123075630.12057-1-akihiko.odaki@daynix.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231122183048.17150-3-philmd@linaro.org>
+In-Reply-To: <20231123075630.12057-1-akihiko.odaki@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,56 +92,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/11/23 19:30, Philippe Mathieu-Daudé wrote:
-> We want to build HW models once, but don't want to
-> register types when all prerequisites are satisfied. Add
-> the target_aarch64_available() to know at runtime whether
-> TARGET_AARCH64 is built-in.
+On 23/11/23 08:56, Akihiko Odaki wrote:
+> g_new() aborts if the allocation fails so it returns NULL only if the
+> requested allocation size is zero. register_vfs() makes such an
+> allocation if NumVFs is zero so it should not assert that g_new()
+> returns a non-NULL value.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Fixes: 7c0fa8dff8 ("pcie: Add support for Single Root I/O Virtualization (SR/IOV)")
+> Buglink: https://issues.redhat.com/browse/RHEL-17209
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
->   target/arm/cpu-qom.h | 2 ++
->   target/arm/cpu.c     | 9 +++++++++
->   2 files changed, 11 insertions(+)
+>   hw/pci/pcie_sriov.c | 1 -
+>   1 file changed, 1 deletion(-)
 > 
-> diff --git a/target/arm/cpu-qom.h b/target/arm/cpu-qom.h
-> index 02b914c876..bf6b3604ed 100644
-> --- a/target/arm/cpu-qom.h
-> +++ b/target/arm/cpu-qom.h
-> @@ -33,4 +33,6 @@ typedef struct AArch64CPUClass AArch64CPUClass;
->   DECLARE_CLASS_CHECKERS(AArch64CPUClass, AARCH64_CPU,
->                          TYPE_AARCH64_CPU)
+> diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+> index 5ef8950940..a1fe65f5d8 100644
+> --- a/hw/pci/pcie_sriov.c
+> +++ b/hw/pci/pcie_sriov.c
+> @@ -178,7 +178,6 @@ static void register_vfs(PCIDevice *dev)
+>       num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
 >   
-> +bool target_aarch64_available(void);
-> +
->   #endif
-> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-> index 25e9d2ae7b..1990c04089 100644
-> --- a/target/arm/cpu.c
-> +++ b/target/arm/cpu.c
-> @@ -2548,3 +2548,12 @@ static void arm_cpu_register_types(void)
->   }
+>       dev->exp.sriov_pf.vf = g_new(PCIDevice *, num_vfs);
+> -    assert(dev->exp.sriov_pf.vf);
 >   
->   type_init(arm_cpu_register_types)
-> +
-> +bool target_aarch64_available(void)
-> +{
-> +#ifdef TARGET_AARCH64
-> +    return true;
-> +#else
-> +    return false;
-> +#endif
-> +}
+>       trace_sriov_register_vfs(dev->name, PCI_SLOT(dev->devfn),
+>                                PCI_FUNC(dev->devfn), num_vfs);
 
-I forgot to precise here, what was discussed during the previous 2
-years. Eventually qemu-system-arm is absorbed by qemu-system-aarch64,
-but to keep backward compatibility we add a new qemu-system-arm wrapper
-which simply calls 'qemu-system-aarch64 --32bit-only' (or better named
-option) forwarding the same command line. target_aarch64_available()
-then becomes:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-   bool target_aarch64_available(void)
-   {
-     return option_32bit_only == false;
-   }
 
