@@ -2,72 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A4087F6135
+	by mail.lfdr.de (Postfix) with ESMTPS id 467167F6134
 	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 15:14:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6ARf-0000OI-3g; Thu, 23 Nov 2023 09:12:43 -0500
+	id 1r6ARy-0000R1-D4; Thu, 23 Nov 2023 09:13:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r6ARc-0000O8-2S
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 09:12:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <SRS0=WthQ=HE=kaod.org=clg@ozlabs.org>)
+ id 1r6ARw-0000QI-5a; Thu, 23 Nov 2023 09:13:00 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r6ARa-0001H8-91
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 09:12:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700748756;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3/xz6mYIYcAx5LHKYlcJQpn+uer2uLsSzI32X8bGY5c=;
- b=NcVkwAaPKVs8UfAp9dzIqzR9dZC3NW6djFJryODKckhHqHDvgBeqmOVT41Mjj0ibXU6NJW
- Tewc9vfGvnriT1SqwYPbOhNmdeLaVEsVlGcSWgor6GXz/mNExkwP57Bk2SEaGBlgJsD0aP
- PeP3M3Fa/0Q4JHtaHyjRLeUPcWOghWc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-163-_MOt5hUrNI2znSCVT2U9Cw-1; Thu, 23 Nov 2023 09:12:33 -0500
-X-MC-Unique: _MOt5hUrNI2znSCVT2U9Cw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ (Exim 4.90_1) (envelope-from <SRS0=WthQ=HE=kaod.org=clg@ozlabs.org>)
+ id 1r6ARt-0001II-Qx; Thu, 23 Nov 2023 09:12:59 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sbg776R83z4xFR;
+ Fri, 24 Nov 2023 01:12:51 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B64DD80C827;
- Thu, 23 Nov 2023 14:12:32 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 95E94492BFA;
- Thu, 23 Nov 2023 14:12:32 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8D75C21E6A1F; Thu, 23 Nov 2023 15:12:31 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,
- Michael Roth <michael.roth@amd.com>,  Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH 15/19] qapi/parser: demote QAPIExpression to Dict[str, Any]
-References: <20231116014350.653792-1-jsnow@redhat.com>
- <20231116014350.653792-16-jsnow@redhat.com>
-Date: Thu, 23 Nov 2023 15:12:31 +0100
-In-Reply-To: <20231116014350.653792-16-jsnow@redhat.com> (John Snow's message
- of "Wed, 15 Nov 2023 20:43:46 -0500")
-Message-ID: <8734ww4kz4.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sbg7574Pnz4x5n;
+ Fri, 24 Nov 2023 01:12:49 +1100 (AEDT)
+Message-ID: <adb6e571-004c-4c28-94e7-efadd61d88c1@kaod.org>
+Date: Thu, 23 Nov 2023 15:12:46 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] ppc/spapr: Introduce SPAPR_IRQ_NR_IPIS to refer
+ IRQ range for CPU IPIs.
+Content-Language: en-US
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>, npiggin@gmail.com,
+ qemu-ppc@nongnu.org
+Cc: danielhb413@gmail.com, david@gibson.dropbear.id.au, qemu-devel@nongnu.org
+References: <20231123055733.1002890-1-harshpb@linux.ibm.com>
+ <20231123055733.1002890-2-harshpb@linux.ibm.com>
+ <1523c986-7022-4b3f-8e26-b25d8621c623@kaod.org>
+ <3030ea29-3611-bd4f-cfd5-b34e4cf6b800@linux.ibm.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <3030ea29-3611-bd4f-cfd5-b34e4cf6b800@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=WthQ=HE=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,91 +69,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+On 11/23/23 10:31, Harsh Prateek Bora wrote:
+> 
+> 
+> On 11/23/23 14:20, Cédric Le Goater wrote:
+>> On 11/23/23 06:57, Harsh Prateek Bora wrote:
+>>> spapr_irq_init currently uses existing macro SPAPR_XIRQ_BASE to refer to
+>>> the range of CPU IPIs during initialization of nr-irqs property.
+>>> It is more appropriate to have its own define which can be further
+>>> reused as appropriate for correct interpretation.
+>>>
+>>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>>> Suggested-by: Cedric Le Goater <clg@kaod.org>
+>>
+>> One comment below
+>>
+>> Reviewed-by: Cédric Le Goater <clg@kaod.org>
+>>
+> 
+> Thanks, responding below ..
+> 
+>>> ---
+>>>   include/hw/ppc/spapr_irq.h | 14 +++++++++++++-
+>>>   hw/ppc/spapr_irq.c         |  6 ++++--
+>>>   2 files changed, 17 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/include/hw/ppc/spapr_irq.h b/include/hw/ppc/spapr_irq.h
+>>> index c22a72c9e2..4fd2d5853d 100644
+>>> --- a/include/hw/ppc/spapr_irq.h
+>>> +++ b/include/hw/ppc/spapr_irq.h
+>>> @@ -14,9 +14,21 @@
+>>>   #include "qom/object.h"
+>>>   /*
+>>> - * IRQ range offsets per device type
+>>> + * The XIVE IRQ backend uses the same layout as the XICS backend but
+>>> + * covers the full range of the IRQ number space. The IRQ numbers for
+>>> + * the CPU IPIs are allocated at the bottom of this space, below 4K,
+>>> + * to preserve compatibility with XICS which does not use that range.
+>>> + */
+>>> +
+>>> +/*
+>>> + * CPU IPI range (XIVE only)
+>>>    */
+>>>   #define SPAPR_IRQ_IPI        0x0
+>>> +#define SPAPR_IRQ_NR_IPIS    0x1000
+>>> +
+>>> +/*
+>>> + * IRQ range offsets per device type
+>>> + */
+>>>   #define SPAPR_XIRQ_BASE      XICS_IRQ_BASE /* 0x1000 */
+>>>   #define SPAPR_IRQ_EPOW       (SPAPR_XIRQ_BASE + 0x0000)
+>>> diff --git a/hw/ppc/spapr_irq.c b/hw/ppc/spapr_irq.c
+>>> index a0d1e1298e..97b2fc42ab 100644
+>>> --- a/hw/ppc/spapr_irq.c
+>>> +++ b/hw/ppc/spapr_irq.c
+>>> @@ -23,6 +23,8 @@
+>>>   #include "trace.h"
+>>> +QEMU_BUILD_BUG_ON(SPAPR_IRQ_NR_IPIS > SPAPR_XIRQ_BASE);
+>>> +
+>>
+>> I would have put the check in include/hw/ppc/spapr_irq.h but since
+>> SPAPR_XIRQ_BASE is only used in hw/ppc/spapr_irq.c which is always
+>> compiled, this is fine. You might want to change that in case a
+>> respin is asked for.
+>>
+> 
+> I had initially tried keeping it in spapr_irq.h , but that would give a build break for XICS_IRQ_BASE not defined since that gets defined in spapr_xics.h and is included later in some files, however, the QEMU_BUILD_BUG_ON expects it to be defined before it reaches here.
 
-> Dict[str, object] is a stricter type, but with the way that code is
-> currently arranged, it is infeasible to enforce this strictness.
->
-> In particular, although expr.py's entire raison d'=C3=AAtre is normalizat=
-ion
-> and type-checking of QAPI Expressions, that type information is not
-> "remembered" in any meaningful way by mypy because each individual
-> expression is not downcast to a specific expression type that holds all
-> the details of each expression's unique form.
->
-> As a result, all of the code in schema.py that deals with actually
-> creating type-safe specialized structures has no guarantee (myopically)
-> that the data it is being passed is correct.
->
-> There are two ways to solve this:
->
-> (1) Re-assert that the incoming data is in the shape we expect it to be, =
-or
-> (2) Disable type checking for this data.
->
-> (1) is appealing to my sense of strictness, but I gotta concede that it
-> is asinine to re-check the shape of a QAPIExpression in schema.py when
-> expr.py has just completed that work at length. The duplication of code
-> and the nightmare thought of needing to update both locations if and
-> when we change the shape of these structures makes me extremely
-> reluctant to go down this route.
->
-> (2) allows us the chance to miss updating types in the case that types
-> are updated in expr.py, but it *is* an awful lot simpler and,
-> importantly, gets us closer to type checking schema.py *at
-> all*. Something is better than nothing, I'd argue.
->
-> So, do the simpler dumber thing and worry about future strictness
-> improvements later.
+ah. good catch. this went unnoticed and is a bit ugly. We should fix
+in some ways. May with a define SPAPR_XIRQ_BASE to 0x1000 simply ?
 
-Yes.
+Also, we could probably define the ICS offset to SPAPR_XIRQ_BASE
+directly under spapr_irq_init() and get rid of ics_instance_init().
+The HW IRQ Number offset in the PNV ICS instances is assigned
+dynamically by the OS (see pnv_phb3). So it should befine to do
+the same for spapr. In which case we can get rid of XICS_IRQ_BASE.
 
-While Dict[str, object] is stricter than Dict[str, Any], both are miles
-away from the actual, recursive type.
+Thanks,
 
-> Signed-off-by: John Snow <jsnow@redhat.com>
-> ---
->  scripts/qapi/parser.py | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-> index bf31018aef0..b7f08cf36f2 100644
-> --- a/scripts/qapi/parser.py
-> +++ b/scripts/qapi/parser.py
-> @@ -19,6 +19,7 @@
->  import re
->  from typing import (
->      TYPE_CHECKING,
-> +    Any,
->      Dict,
->      List,
->      Mapping,
-> @@ -43,7 +44,7 @@
->  _ExprValue =3D Union[List[object], Dict[str, object], str, bool]
->=20=20
->=20=20
-> -class QAPIExpression(Dict[str, object]):
-> +class QAPIExpression(Dict[str, Any]):
->      # pylint: disable=3Dtoo-few-public-methods
->      def __init__(self,
->                   data: Mapping[str, object],
+C.
 
-There are several occurences of Dict[str, object] elsewhere.  Would your
-argument for dumbing down QAPIExpression apply to (some of) them, too?
 
-Skimming them, I found this in introspect.py:
 
-    # These types are based on structures defined in QEMU's schema, so we
-    # lack precise types for them here. Python 3.6 does not offer
-    # TypedDict constructs, so they are broadly typed here as simple
-    # Python Dicts.
-    SchemaInfo =3D Dict[str, object]
-    SchemaInfoEnumMember =3D Dict[str, object]
-    SchemaInfoObject =3D Dict[str, object]
-    SchemaInfoObjectVariant =3D Dict[str, object]
-    SchemaInfoObjectMember =3D Dict[str, object]
-    SchemaInfoCommand =3D Dict[str, object]
-
-Can we do better now we have 3.8?
+> 
+> regards,
+> Harsh
+> 
+>> Thanks,
+>>
+>> C.
+>>
+>>
+>>>   static const TypeInfo spapr_intc_info = {
+>>>       .name = TYPE_SPAPR_INTC,
+>>>       .parent = TYPE_INTERFACE,
+>>> @@ -329,7 +331,7 @@ void spapr_irq_init(SpaprMachineState *spapr, Error **errp)
+>>>           int i;
+>>>           dev = qdev_new(TYPE_SPAPR_XIVE);
+>>> -        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + SPAPR_XIRQ_BASE);
+>>> +        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + SPAPR_IRQ_NR_IPIS);
+>>>           /*
+>>>            * 8 XIVE END structures per CPU. One for each available
+>>>            * priority
+>>> @@ -356,7 +358,7 @@ void spapr_irq_init(SpaprMachineState *spapr, Error **errp)
+>>>       }
+>>>       spapr->qirqs = qemu_allocate_irqs(spapr_set_irq, spapr,
+>>> -                                      smc->nr_xirqs + SPAPR_XIRQ_BASE);
+>>> +                                      smc->nr_xirqs + SPAPR_IRQ_NR_IPIS);
+>>>       /*
+>>>        * Mostly we don't actually need this until reset, except that not
+>>
 
 
