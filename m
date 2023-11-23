@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2757F5DDA
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 12:30:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F667F5DDC
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 12:31:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r67sy-0005re-Uy; Thu, 23 Nov 2023 06:28:44 -0500
+	id 1r67um-0006pX-Ef; Thu, 23 Nov 2023 06:30:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r67sw-0005qE-LU
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:28:42 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r67uf-0006oY-PP
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:30:30 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r67sv-0008KJ-60
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:28:42 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40839652b97so4607505e9.3
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 03:28:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r67uc-0001ZF-O9
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:30:28 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-33139ecdca7so511120f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 03:30:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700738919; x=1701343719; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700739025; x=1701343825; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=UyMuzeKQlkMkiXHA22dh3EGYz2PY3+2bNe87FQxQC9g=;
- b=ZHtj/o4ANX2hfIDtXWZoZ7wnKv9qMIR/pMsmM+MHSHi6yIvkqInIHWQMeiEcVR6gWD
- jLXpw6VqEBU+Wqrm15F/HpPPPoOr3bsV8DU81rzrWOZx0EOgEkzd2DPuroW5yRxDhCte
- 4lgjhjPSUsSNQGSU8FbmXvDMIcdLp8gFKtMxGN2M2WaXJv4uBbhyT4ke+ZPvB1fE5fyL
- +5xSvJWNTOARKjvfHfn8rBhHIQQlFcVUYMFpQ1piVnuXgFMdyQ7SxIrXs1IzBn2TVejg
- Iwq8d3E1KA6u5IMyZuh2ZczlS2H5NaXAuNsXVkkYA972xPDuiq0KI/DEDGoVmmGr3hKb
- s/3Q==
+ bh=5hfwJTgfPepSBxIYc4rDaXYlcdCHrwyUDRah3nHoABE=;
+ b=sgQRAYE3hkgngt/7Zm9h04arj8I5cgSUBw8omvAT5ccS9LNQzca+2LYRmGWiYfVW43
+ 7IM6AQgKXkZ1yxT7NzZxTPRlSaZ3GDBrCHgXaGPX/nDgd4OnmTvpyR2jWWczS92XOxdn
+ P47Y30btv+rUfaD0DdxUviVY6EBOG2U08oBD6YGv4Q2c+SozKxm9QXfVyZEZy0nyBcED
+ /Ioftxd4KfxgOAUmokXVfRotXYb/sR99P+P02S8Z5jTagtrUrUMgt4p0hFVgFMKOc9di
+ vZMHsSeBwrU57ByHI0QE8phPEa88z9ocj+tqih1iRh0oNqiL+8+Twvda46kN+ZlMeR8t
+ eXaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700738919; x=1701343719;
+ d=1e100.net; s=20230601; t=1700739025; x=1701343825;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UyMuzeKQlkMkiXHA22dh3EGYz2PY3+2bNe87FQxQC9g=;
- b=H1MZLKyDx1GzA7wpX9z8hozasveNGnhN+jAM8qMXFb8Y1P64s5qEgNkkzzEiqlKdQl
- vCAnddsqEyx6C0MvtDRA+hukul9pOl7Tz4XdAVN9RVfwY+HVP0/E7DKLrpnGYKD9m/GS
- Zqs4p40mfwDWYSiG77tJ7kn3sW5apuN4I5r4hhTejaFQXdmjdNaDEwxs6llYi3BWzRuY
- 6viRfHhrbmyExsB8Cdaxs2OSh906l0evw0UiyaJIqikjC0IuF9ReK3VwpxWF5zdwE1HW
- 14djZGxaUE/zPBB+F5bPpphi+/vxbX2UvWEN6Rp0i1pZ3xVecAqZLiESfYPy3VXN+ZBl
- tYHQ==
-X-Gm-Message-State: AOJu0YxK7r+HBfQ1pSJBs2zlWAULh/EHKIlEG6bjxZGOSEb1+ZtdHaRe
- mzoPpYV8mTyn8391O6E4TplAAA==
-X-Google-Smtp-Source: AGHT+IFTRaoEwj+8UhhxRdmzcC10659Nr9sN3Iq9rvWGs7wFN5fxruySdgwhwPGeEi/i0fL0PvChAw==
-X-Received: by 2002:a05:600c:3c85:b0:406:872d:7725 with SMTP id
- bg5-20020a05600c3c8500b00406872d7725mr4238877wmb.1.1700738918874; 
- Thu, 23 Nov 2023 03:28:38 -0800 (PST)
+ bh=5hfwJTgfPepSBxIYc4rDaXYlcdCHrwyUDRah3nHoABE=;
+ b=mhf1CVFr9qfZRBh5BV/FL9kM20UHEoJMHNywAQ7BAUA0uAJ5Bx517G+JQIvhFJbTPC
+ uIYxZ+M3nd1jGQYwYqCcbdFakoWlczQNEaqK3PgFHt9Oc4TtgyDok1VmUPkIEtN/WXc3
+ 5LJLG6OQbO5cv/o33V3BtrpDmJpnuVOKvFrAamrrt2TK0/cmu7wBYo3qti+77kEJ70aL
+ 5A2omjlZA9tQFc8IVllHJT6L4prlkXtluLByQeu01DcIlWkWmVgv5mC7A7cthk99ZymJ
+ XBs4E01k+Y2kvk3A6bq9obkNYaAWGXzTwlL5sWMvsDHHKFa3d4PK2l7GPZDFAigU6k+s
+ 4gPg==
+X-Gm-Message-State: AOJu0Yy7xYBqOeu6tUKHG1ieUX07LfwY0FwVf2j3OXe1zgXmrfeTFXl5
+ rFFWsdvYg+nlpIVCLjRfrcifl1JP/CijJnD+Rt8=
+X-Google-Smtp-Source: AGHT+IGgNctaJo+xgzSi9SBx3EGq4HTcyDCCXDKeP9y5JzFBXN2qdpjk61KLvVWZRTHi7zeo5qq3IA==
+X-Received: by 2002:a5d:46d2:0:b0:332:e1c4:97c1 with SMTP id
+ g18-20020a5d46d2000000b00332e1c497c1mr1065276wrs.39.1700739024925; 
+ Thu, 23 Nov 2023 03:30:24 -0800 (PST)
 Received: from [192.168.69.100] ([176.176.165.237])
  by smtp.gmail.com with ESMTPSA id
- t20-20020adfa2d4000000b00332cbece829sm1406297wra.59.2023.11.23.03.28.37
+ z11-20020a5d4d0b000000b00332cb23ccbdsm1381619wrt.81.2023.11.23.03.30.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 Nov 2023 03:28:38 -0800 (PST)
-Message-ID: <77a23a59-1d36-4112-9716-6839a7d0df21@linaro.org>
-Date: Thu, 23 Nov 2023 12:28:36 +0100
+ Thu, 23 Nov 2023 03:30:24 -0800 (PST)
+Message-ID: <255a6d86-4be0-467a-b877-de5b02dd30b8@linaro.org>
+Date: Thu, 23 Nov 2023 12:30:23 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/i386: Rename kvmvapic.c -> vapic.c
+Subject: Re: [PATCH 01/21] accel/kvm: Make kvm_has_guest_debug static
 Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Eduardo Habkost
- <eduardo@habkost.net>, Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>
-References: <20230905145159.7898-1-philmd@linaro.org>
- <CABgObfbaAhOki7--tdMu-59Sv+k8aCDG0N-vrCGpbwwBj-f45A@mail.gmail.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+References: <20231123044219.896776-1-richard.henderson@linaro.org>
+ <20231123044219.896776-2-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CABgObfbaAhOki7--tdMu-59Sv+k8aCDG0N-vrCGpbwwBj-f45A@mail.gmail.com>
+In-Reply-To: <20231123044219.896776-2-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,29 +92,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/11/23 11:14, Paolo Bonzini wrote:
+On 23/11/23 05:41, Richard Henderson wrote:
+> This variable is not used or declared outside kvm-all.c.
 > 
-> 
-> Il mar 5 set 2023, 16:52 Philippe Mathieu-Daudé <philmd@linaro.org 
-> <mailto:philmd@linaro.org>> ha scritto:
-> 
->     vAPIC isn't KVM specific, so having its name prefixed 'kvm'
->     is misleading. Rename it simply 'vapic'. Rename the single
->     function prefixed 'kvm'.
-> 
->     Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org
->     <mailto:philmd@linaro.org>>
->     ---
->     Interestingly there is a strong dependency on (Kconfig) APIC,
->     but I couldn't get a single x86 machine building without the
->     Kconfig 'APIC' key.
-> 
-> 
-> In theory ISAPC could be built without APIC. But it isn't quite there.
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   accel/kvm/kvm-all.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Ah I see, I'll keep that in mind.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-> You can go ahead and queue it, thanks!
 
-Thanks!
 
