@@ -2,83 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1E77F5C0A
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 11:15:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F41E27F5C0E
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 11:16:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r66jd-00087d-4v; Thu, 23 Nov 2023 05:15:01 -0500
+	id 1r66kL-00006f-S3; Thu, 23 Nov 2023 05:15:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r66jb-00087L-0v
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 05:14:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1r66jx-0008OE-Pt
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 05:15:25 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r66jZ-0000n2-Eo
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 05:14:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700734496;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=KDKsf2BizEd3h2ju6U40Yw3CSUxmwRbp1J1ibpb8wBo=;
- b=KrRSXIQaLxShRNaMK7JeWn+ZslSIU2sqIZs/OpJy62vdgM8FEYmG8aCgk7fYh6qlEeO8Q+
- Kiqh2gDFYJ3AJDgCirG/SVm8VC9xCu1b0fcnYpUCW5pwzGFLxOH6uNz63Q+Wvupe+Vuv4H
- zGRUKm3dP5DmKApfGYWFnN6/4YCeABw=
-Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com
- [209.85.221.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-231-6U0ql1N0NriNeXkBi6Taig-1; Thu, 23 Nov 2023 05:14:54 -0500
-X-MC-Unique: 6U0ql1N0NriNeXkBi6Taig-1
-Received: by mail-vk1-f200.google.com with SMTP id
- 71dfb90a1353d-4ac37915271so236643e0c.0
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 02:14:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700734494; x=1701339294;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KDKsf2BizEd3h2ju6U40Yw3CSUxmwRbp1J1ibpb8wBo=;
- b=mY44yuSkxZA29F+sV8/+6NgmGyS5q6Xyasd2vNH/ait7JSFnwhV1lD1Yakjr9I2Rrc
- Ef/Yp9afagHW9vPtBwDMdEOOF5QcrANJ2p191TJhYAqnwJaByizli7G+cg5wuagC+pY9
- EkPcofJlsjxqxjHrtZth238HI+QxlcEyIJN8D7xJjc9CLL9G1ko7Qu+2P5F5XX2SdHwa
- LU8hznSTBx97GJp0gIW2+uYn2wP7eyG0jIYZVOexLihn7aJKUVckTJ5q67e8kWvwAkEl
- AXqA1K6s4oTO3/r92zFvPoKz60WyQQKZ2ukZEXt3jONtOb4WDEHzc11RpkujIM+pwtr8
- 9eYA==
-X-Gm-Message-State: AOJu0YxgRNtoxL+uD89UFNQ7amk44WPH3ofN/FMMDvntQYIHp2IwoxZg
- 9V9ZtRVZQ+s3xW9Ld951IakFq6KO4pRUlD/rxqtacoEi8UXZPr73hqu8iW36jj7Pfvzd9I9sEZv
- Rp+Eaa/rkyxhH3iEfIA1zoWNUUB6u26w=
-X-Received: by 2002:a1f:eb04:0:b0:495:db2f:f4e7 with SMTP id
- j4-20020a1feb04000000b00495db2ff4e7mr5536650vkh.1.1700734493816; 
- Thu, 23 Nov 2023 02:14:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IErfpiK9rOQ5UK18hlfwqz/pd0UzclrhSOhtXvjzcfmCTPcFrgOtJeFgYGLBtJ/HCLZgVsOUg2XGSzBcEinFEg=
-X-Received: by 2002:a1f:eb04:0:b0:495:db2f:f4e7 with SMTP id
- j4-20020a1feb04000000b00495db2ff4e7mr5536640vkh.1.1700734493593; Thu, 23 Nov
- 2023 02:14:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1r66ju-00010b-Nj
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 05:15:20 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id E481235C0E;
+ Thu, 23 Nov 2023 13:15:26 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9FCA637305;
+ Thu, 23 Nov 2023 13:15:15 +0300 (MSK)
+Message-ID: <e1647b07-939e-40f3-a8fb-66596dcb862c@tls.msk.ru>
+Date: Thu, 23 Nov 2023 13:15:15 +0300
 MIME-Version: 1.0
-References: <20230905145159.7898-1-philmd@linaro.org>
-In-Reply-To: <20230905145159.7898-1-philmd@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 23 Nov 2023 11:14:41 +0100
-Message-ID: <CABgObfbaAhOki7--tdMu-59Sv+k8aCDG0N-vrCGpbwwBj-f45A@mail.gmail.com>
-Subject: Re: [PATCH] hw/i386: Rename kvmvapic.c -> vapic.c
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Eduardo Habkost <eduardo@habkost.net>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>
-Content-Type: multipart/alternative; boundary="00000000000059286e060acf1b9a"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-8.2] ui/pixman-minimal.h: fix empty allocation
+Content-Language: en-US
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>
+References: <20231121093840.2121195-1-manos.pitsidianakis@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20231121093840.2121195-1-manos.pitsidianakis@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,54 +83,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000059286e060acf1b9a
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+21.11.2023 12:38, Manos Pitsidianakis :
+> In the minimal pixman API stub that is used when the real pixman
+> dependency is missing a NULL dereference happens when
+> virtio-gpu-rutabaga allocates a pixman image with bits = NULL and
+> rowstride_bytes = zero. A buffer of rowstride_bytes * height is
+> allocated which is NULL. However, in that scenario pixman calculates a
+> new stride value based on given width, height and format size.
 
-Il mar 5 set 2023, 16:52 Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> ha
-scritto:
+So, does rutabaga depend on pixman (as mentioned on irc), or can the
+minimal in-qemu version (with this fix) be used?
 
-> vAPIC isn't KVM specific, so having its name prefixed 'kvm'
-> is misleading. Rename it simply 'vapic'. Rename the single
-> function prefixed 'kvm'.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
-> Interestingly there is a strong dependency on (Kconfig) APIC,
-> but I couldn't get a single x86 machine building without the
-> Kconfig 'APIC' key.
->
-
-In theory ISAPC could be built without APIC. But it isn't quite there.
-
-You can go ahead and queue it, thanks!
-
-Paolo
-
---00000000000059286e060acf1b9a
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il mar 5 set 2023, 16:52 Philippe Mathieu-Daud=C3=A9 &=
-lt;<a href=3D"mailto:philmd@linaro.org">philmd@linaro.org</a>&gt; ha scritt=
-o:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bo=
-rder-left:1px #ccc solid;padding-left:1ex">vAPIC isn&#39;t KVM specific, so=
- having its name prefixed &#39;kvm&#39;<br>
-is misleading. Rename it simply &#39;vapic&#39;. Rename the single<br>
-function prefixed &#39;kvm&#39;.<br>
-<br>
-Signed-off-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@lin=
-aro.org" target=3D"_blank" rel=3D"noreferrer">philmd@linaro.org</a>&gt;<br>
----<br>
-Interestingly there is a strong dependency on (Kconfig) APIC,<br>
-but I couldn&#39;t get a single x86 machine building without the<br>
-Kconfig &#39;APIC&#39; key.<br></blockquote></div></div><div dir=3D"auto"><=
-br></div><div dir=3D"auto">In theory ISAPC could be built without APIC. But=
- it isn&#39;t quite there.</div><div dir=3D"auto"><br></div><div dir=3D"aut=
-o">You can go ahead and queue it, thanks!</div><div dir=3D"auto"><br></div>=
-<div dir=3D"auto">Paolo</div></div>
-
---00000000000059286e060acf1b9a--
-
+/mjt
 
