@@ -2,56 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3BDF7F5A86
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 09:52:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B437F5AE4
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 10:14:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r65Qq-0006kA-5X; Thu, 23 Nov 2023 03:51:32 -0500
+	id 1r65lC-0005za-5e; Thu, 23 Nov 2023 04:12:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=WthQ=HE=kaod.org=clg@ozlabs.org>)
- id 1r65Qn-0006eU-TG; Thu, 23 Nov 2023 03:51:29 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
+ id 1r65l8-0005zL-NV; Thu, 23 Nov 2023 04:12:31 -0500
+Received: from mta-04.yadro.com ([89.207.88.248])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=WthQ=HE=kaod.org=clg@ozlabs.org>)
- id 1r65Qm-0000Wi-3l; Thu, 23 Nov 2023 03:51:29 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SbX0C0qG6z4x5n;
- Thu, 23 Nov 2023 19:51:23 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SbX090xhHz4wdF;
- Thu, 23 Nov 2023 19:51:20 +1100 (AEDT)
-Message-ID: <e320f1d3-7f8e-4d75-b10a-35d54d4ee26a@kaod.org>
-Date: Thu, 23 Nov 2023 09:51:20 +0100
+ (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
+ id 1r65l6-0000FN-Mo; Thu, 23 Nov 2023 04:12:30 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com E5E77C0002
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-04; t=1700730742;
+ bh=fqEB+XnNjzwadFp8pdCn5WUq1BZ6k0jmhu3L43yvSic=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=etyAY4R+iwNm3UWn3j24y7hpeE96602E45SAlSwl7CEMlCM+HKTvFu0QlMhEo9eAm
+ bJvi5Ht+HeKYNibMreLNfENG22Etv3zQVmYcgSGzEY5STe180OqQrKlSU551lh+BUm
+ qo3+mPQnAavuvU/eKoFgKm39zXT9cGWCPl65yDx577rS+ktn7BPtcxIZr9z0HXvNa0
+ EFXMnq+LqkIaUVDIY2GFyc5ak7rMis8gijgNe79KeqBOVCMULoCQr8W/kVoGSWKFIF
+ 4PqRgOtmyYyZ9CyB2mvkCxgr+h4lJsO47QKv1VW4+p24TwnoBoPFdtsXyvymY+XNvF
+ 2Fg8j0tB11cvQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-03; t=1700730742;
+ bh=fqEB+XnNjzwadFp8pdCn5WUq1BZ6k0jmhu3L43yvSic=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=evxafABYS3lPm4QePdidDwPAbjP2pE0PieXUuYN67/TmH1oZyMGsu6dQ5OjJlvZ2F
+ zoYbGflkjbGPpjrdvCHI8V/H94m8a6dYQVZCFEzCKl1FS9JbsQ6XWf0grEeKtz8Z7a
+ p4QPsCfuJ0xSNlMbD9UELN++GGAp4y2vgV2JeSVHrJETE52XNkRzVu3dpmIBWQP3Ig
+ Ubrdes36OWdETcokWXZI/6DuK2vbE0CTcf8mABSlid5YquJrjJhdVqJoNnvGDArGnr
+ 6HJnmW23yPRBMBGUwy8yKJPZxj7nIWJZe3hXNE7vMaeV4VZBh+lvsRLkN6zNQ2eaXI
+ REF2opX/IW7zA==
+From: Ivan Klokov <ivan.klokov@syntacore.com>
+To: <qemu-devel@nongnu.org>
+CC: <qemu-riscv@nongnu.org>, <palmer@dabbelt.com>, <alistair.francis@wdc.com>, 
+ <bin.meng@windriver.com>, <liwei1518@gmail.com>,
+ <dbarboza@ventanamicro.com>, 
+ <zhiwei_liu@linux.alibaba.com>, Ivan Klokov <ivan.klokov@syntacore.com>
+Subject: [PATCH 1/1] target/riscv/pmp: Use hwaddr instead of target_ulong for
+ RV32
+Date: Thu, 23 Nov 2023 12:12:14 +0300
+Message-ID: <20231123091214.20312-1-ivan.klokov@syntacore.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] ppc/spapr: Initialize max_cpus limit to
- SPAPR_IRQ_NR_IPIS.
-Content-Language: en-US
-To: Harsh Prateek Bora <harshpb@linux.ibm.com>, npiggin@gmail.com,
- qemu-ppc@nongnu.org
-Cc: danielhb413@gmail.com, david@gibson.dropbear.id.au, qemu-devel@nongnu.org
-References: <20231123055733.1002890-1-harshpb@linux.ibm.com>
- <20231123055733.1002890-3-harshpb@linux.ibm.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231123055733.1002890-3-harshpb@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=WthQ=HE=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-ClientProxiedBy: T-EXCH-06.corp.yadro.com (172.17.10.110) To
+ S-Exch-01.corp.yadro.com (10.78.5.241)
+Received-SPF: permerror client-ip=89.207.88.248;
+ envelope-from=ivan.klokov@syntacore.com; helo=mta-04.yadro.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,78 +77,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/23/23 06:57, Harsh Prateek Bora wrote:
-> Initialize the machine specific max_cpus limit as per the maximum range
-> of CPU IPIs available. Keeping between 4096 to 8192 will throw IRQ not
-> free error due to XIVE/XICS limitation and keeping beyond 8192 will hit
-> assert in tcg_region_init or spapr_xive_claim_irq.
-> 
-> Logs:
-> 
-> Without patch fix:
-> 
-> [root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=4097
-> qemu-system-ppc64: IRQ 4096 is not free
-> [root@host build]#
-> 
-> On LPAR:
-> [root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=8193
-> **
-> ERROR:../tcg/region.c:774:tcg_region_init: assertion failed:
-> (region_size >= 2 * page_size)
-> Bail out! ERROR:../tcg/region.c:774:tcg_region_init: assertion failed:
-> (region_size >= 2 * page_size)
-> Aborted (core dumped)
-> [root@host build]#
-> 
-> On x86:
-> [root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=8193
-> qemu-system-ppc64: ../hw/intc/spapr_xive.c:596: spapr_xive_claim_irq:
-> Assertion `lisn < xive->nr_irqs' failed.
-> Aborted (core dumped)
-> [root@host build]#
-> 
-> With patch fix:
-> [root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=4097
-> qemu-system-ppc64: Invalid SMP CPUs 4097. The max CPUs supported by
-> machine 'pseries-8.2' is 4096
-> [root@host build]#
-> 
-> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+The Sv32 page-based virtual-memory scheme described in RISCV privileged
+spec Section 5.3 supports 34-bit physical addresses for RV32, so the
+PMP scheme must support addresses wider than XLEN for RV32. However,
+PMP address register format is still 32 bit wide.
 
+Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
+---
+ target/riscv/pmp.c | 26 ++++++++++++--------------
+ target/riscv/pmp.h |  8 ++++----
+ 2 files changed, 16 insertions(+), 18 deletions(-)
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
-
-
-> ---
->   hw/ppc/spapr.c | 9 +++------
->   1 file changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index df09aa9d6a..222d926f46 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -4647,13 +4647,10 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
->       mc->block_default_type = IF_SCSI;
->   
->       /*
-> -     * Setting max_cpus to INT32_MAX. Both KVM and TCG max_cpus values
-> -     * should be limited by the host capability instead of hardcoded.
-> -     * max_cpus for KVM guests will be checked in kvm_init(), and TCG
-> -     * guests are welcome to have as many CPUs as the host are capable
-> -     * of emulate.
-> +     * While KVM determines max cpus in kvm_init() using kvm_max_vcpus(),
-> +     * In TCG the limit is restricted by the range of CPU IPIs available.
->        */
-> -    mc->max_cpus = INT32_MAX;
-> +    mc->max_cpus = SPAPR_IRQ_NR_IPIS;
->   
->       mc->no_parallel = 1;
->       mc->default_boot_order = "";
+diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+index 162e88a90a..dff9512c3f 100644
+--- a/target/riscv/pmp.c
++++ b/target/riscv/pmp.c
+@@ -150,8 +150,7 @@ void pmp_unlock_entries(CPURISCVState *env)
+     }
+ }
+ 
+-static void pmp_decode_napot(target_ulong a, target_ulong *sa,
+-                             target_ulong *ea)
++static void pmp_decode_napot(hwaddr a, hwaddr *sa, hwaddr *ea)
+ {
+     /*
+      * aaaa...aaa0   8-byte NAPOT range
+@@ -173,8 +172,8 @@ void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index)
+     uint8_t this_cfg = env->pmp_state.pmp[pmp_index].cfg_reg;
+     target_ulong this_addr = env->pmp_state.pmp[pmp_index].addr_reg;
+     target_ulong prev_addr = 0u;
+-    target_ulong sa = 0u;
+-    target_ulong ea = 0u;
++    hwaddr sa = 0u;
++    hwaddr ea = 0u;
+ 
+     if (pmp_index >= 1u) {
+         prev_addr = env->pmp_state.pmp[pmp_index - 1].addr_reg;
+@@ -227,8 +226,7 @@ void pmp_update_rule_nums(CPURISCVState *env)
+     }
+ }
+ 
+-static int pmp_is_in_range(CPURISCVState *env, int pmp_index,
+-                           target_ulong addr)
++static int pmp_is_in_range(CPURISCVState *env, int pmp_index, hwaddr addr)
+ {
+     int result = 0;
+ 
+@@ -305,14 +303,14 @@ static bool pmp_hart_has_privs_default(CPURISCVState *env, pmp_priv_t privs,
+  * Return true if a pmp rule match or default match
+  * Return false if no match
+  */
+-bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
++bool pmp_hart_has_privs(CPURISCVState *env, hwaddr addr,
+                         target_ulong size, pmp_priv_t privs,
+                         pmp_priv_t *allowed_privs, target_ulong mode)
+ {
+     int i = 0;
+     int pmp_size = 0;
+-    target_ulong s = 0;
+-    target_ulong e = 0;
++    hwaddr s = 0;
++    hwaddr e = 0;
+ 
+     /* Short cut if no rules */
+     if (0 == pmp_get_num_rules(env)) {
+@@ -624,12 +622,12 @@ target_ulong mseccfg_csr_read(CPURISCVState *env)
+  * To avoid this we return a size of 1 (which means no caching) if the PMP
+  * region only covers partial of the TLB page.
+  */
+-target_ulong pmp_get_tlb_size(CPURISCVState *env, target_ulong addr)
++target_ulong pmp_get_tlb_size(CPURISCVState *env, hwaddr addr)
+ {
+-    target_ulong pmp_sa;
+-    target_ulong pmp_ea;
+-    target_ulong tlb_sa = addr & ~(TARGET_PAGE_SIZE - 1);
+-    target_ulong tlb_ea = tlb_sa + TARGET_PAGE_SIZE - 1;
++    hwaddr pmp_sa;
++    hwaddr pmp_ea;
++    hwaddr tlb_sa = addr & ~(TARGET_PAGE_SIZE - 1);
++    hwaddr tlb_ea = tlb_sa + TARGET_PAGE_SIZE - 1;
+     int i;
+ 
+     /*
+diff --git a/target/riscv/pmp.h b/target/riscv/pmp.h
+index 9af8614cd4..f5c10ce85c 100644
+--- a/target/riscv/pmp.h
++++ b/target/riscv/pmp.h
+@@ -53,8 +53,8 @@ typedef struct {
+ } pmp_entry_t;
+ 
+ typedef struct {
+-    target_ulong sa;
+-    target_ulong ea;
++    hwaddr sa;
++    hwaddr ea;
+ } pmp_addr_t;
+ 
+ typedef struct {
+@@ -73,11 +73,11 @@ target_ulong mseccfg_csr_read(CPURISCVState *env);
+ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
+                        target_ulong val);
+ target_ulong pmpaddr_csr_read(CPURISCVState *env, uint32_t addr_index);
+-bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
++bool pmp_hart_has_privs(CPURISCVState *env, hwaddr addr,
+                         target_ulong size, pmp_priv_t privs,
+                         pmp_priv_t *allowed_privs,
+                         target_ulong mode);
+-target_ulong pmp_get_tlb_size(CPURISCVState *env, target_ulong addr);
++target_ulong pmp_get_tlb_size(CPURISCVState *env, hwaddr addr);
+ void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index);
+ void pmp_update_rule_nums(CPURISCVState *env);
+ uint32_t pmp_get_num_rules(CPURISCVState *env);
+-- 
+2.34.1
 
 
