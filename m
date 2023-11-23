@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C8C37F636A
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 16:57:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 100227F6377
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 16:59:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6C44-0005wg-Us; Thu, 23 Nov 2023 10:56:28 -0500
+	id 1r6C46-0005xp-3G; Thu, 23 Nov 2023 10:56:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r6C43-0005wO-MQ
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:56:27 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1r6C44-0005wY-5E
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:56:28 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r6C40-0002Js-LV
+ id 1r6C42-0002KS-0S
  for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:56:27 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4094301d505so6539055e9.2
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 07:56:23 -0800 (PST)
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3316c6e299eso664078f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 07:56:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700754982; x=1701359782; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700754984; x=1701359784; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ppnKkUN8JiE6p4mrn2cEj4OVO4zzPndozd7TdPZPSf8=;
- b=Ojp82pfGlK+tpOJva/++GZi3ZgxgFnm+3Hc7NQnHLVHDO7mUpQ2JnhC5c+ncbXiQnB
- hf/NQHiLJdLgQc8d72XjlSb66QEg+MKO5gzbS9igqZgi1vo6RCRwFx5VT/EEOp/zdKbv
- fl6DWaT24fbbNPMgdz3/reNFC8rcerPNhykQeAfSumea+O9DPVGmydzna1U5MrSCIU6p
- PTYo0QlRrJAEZgS18AIKwVileYLWSPBw2g0PU3HA9iMCbjqvubQR755ESvirPIxj1j0U
- GDbKdt3imBRlvdw81ddufb3SWYY9NCmIiGY7n67BYZbXHhfsqqBInwMCCHf06VzcfQ6E
- 4jWw==
+ bh=dMbBVPJ7LZvKSOdEEVIAuSDiAeoOvkqePYwyW/x2dpE=;
+ b=MYwtyZEj32XuO26l4LCMKeeVIGTJlFEiLrpSsquQRs2YgIxyuqaxKQnWhhtGlSdjVd
+ x4xam9bqRQteKCPFNII9iYawNDc1nD281Cyfb23XB0tACJicKwyqTZGIghdqY4TkHtU7
+ rTXnN4gSfrLpWzF52QPjKI5D8iEZPWNcMmCeM8JjzOz6m7rwDClqoQRmj0LNefZA3KN0
+ UJZQO8O32JfJx1RooRpwq5jA+DUT6skEkmuuyuqhUrGktyQplE/7a4saYZI/80LWsOUw
+ MThinApVJc6KRod+jan3m0Wn9NvJqH2aGpqgUB++ptSVSVgxA31qLnXf4jWTsNUIC6gv
+ 8FYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700754982; x=1701359782;
+ d=1e100.net; s=20230601; t=1700754984; x=1701359784;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ppnKkUN8JiE6p4mrn2cEj4OVO4zzPndozd7TdPZPSf8=;
- b=NnFQ3dtpxqoaGSRsXXfoJGlH+FlrjBZ9nk80ZBJWMl6m5zliUWlQ0sh2tB51y2/Xm/
- Bt+p0esUv4T+GcHAeMkvc9sdupqVG+iOw5/0L92LALMApHr532pi9Jmp1N2SNASl/zYp
- PIJwAQFSUJ21NIzYWAhoDY8CAhRt5grAGi7P0wWYJldGLQTLlCa4Soq0NjZfO/jo+G+n
- HScnYiBhLKLEdMr9Ndm957/tzhPK1en+0/V0XBjyYHCSxkaoCwPpYRHzYx/vqMGpaD+9
- fc9wEaKGn5pukqMxkzbBYMLYtg6hp6JlM0RTcTvB69fmww3sXBA8xxYBfZn++o7hWibp
- JBIA==
-X-Gm-Message-State: AOJu0YzgTY/G/HASuSIuV1+dH0q8qTkb2Dh8j0dy5tgpf+FIxiAsXLtA
- xhpJupKtMaGRVKcToGizjjkF7g==
-X-Google-Smtp-Source: AGHT+IEurQP9znzmZJQe6cbCowoYtTrO04xsdvevPnMzqZAhYXw+U0foPmE1SDRkFQR2MvtEkatzXA==
-X-Received: by 2002:a05:600c:a4c:b0:408:37aa:4766 with SMTP id
- c12-20020a05600c0a4c00b0040837aa4766mr19793wmq.5.1700754981685; 
- Thu, 23 Nov 2023 07:56:21 -0800 (PST)
+ bh=dMbBVPJ7LZvKSOdEEVIAuSDiAeoOvkqePYwyW/x2dpE=;
+ b=D5Zl3xyAmmAfpClZ7kwwbUmZPBl3mkcym1BY8mBOXOiyYRdBxn4DbozU+NyRdWKjO5
+ RfanPQfDtSrEif3pB+x9SnqqJQSlj1N1N90Rl7hAsogY5OgLlXFyZxK9Zbso07l2XeK7
+ yw/lGFwzG19CqJi90xrizPJajU9KrUi39bVQTzLP1moVBUDFqHUim6bI9BhmnSyCn9ah
+ ozzxX3PEJlEjgSpIv+jOmtjISlkacarfxIWB848daFEqPAMLJT8c1UGjkkgLvBdQYSz7
+ u1Rff6swBbwcCNv+KDPIYEhjVG5WREZG7nbALrvE22Fit9QeowG09BayfMxh5RDUqtrR
+ /+oQ==
+X-Gm-Message-State: AOJu0YwRwr/Pmwj5RZMwiwToL8ex1XJ0kiLaEMnLr393RfsI0733SxTK
+ yW1S3vTDTqAsBntv65mFkR5ihw==
+X-Google-Smtp-Source: AGHT+IHkzIM6uwUhQ0q0R3KfX4nqVDqturXhco3/Xda2HXRwGfoooizoGwkyBv7K6gQoY+tnm22afA==
+X-Received: by 2002:a5d:5643:0:b0:32d:81b5:82d0 with SMTP id
+ j3-20020a5d5643000000b0032d81b582d0mr3622687wrw.33.1700754984567; 
+ Thu, 23 Nov 2023 07:56:24 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- az15-20020a05600c600f00b0040b2b9bf321sm3124982wmb.9.2023.11.23.07.56.21
+ v10-20020adff68a000000b003316db2d48dsm1967498wrp.34.2023.11.23.07.56.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 23 Nov 2023 07:56:21 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D8261645F6;
+ by draig.lan (Postfix) with ESMTP id EC3A4645F7;
  Thu, 23 Nov 2023 15:56:20 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 01/14] tests/docker: replace fedora-i386 with debian-i686
-Date: Thu, 23 Nov 2023 15:56:07 +0000
-Message-Id: <20231123155620.3042891-2-alex.bennee@linaro.org>
+ Beraldo Leal <bleal@redhat.com>
+Subject: [PULL 02/14] .gitlab-ci.d/cirrus: Upgrade macOS to 13 (Ventura)
+Date: Thu, 23 Nov 2023 15:56:08 +0000
+Message-Id: <20231123155620.3042891-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231123155620.3042891-1-alex.bennee@linaro.org>
 References: <20231123155620.3042891-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,352 +99,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Fedora is gradually killing off i386 packages in its repos, via a
-death-by-1000-cuts process. Thus Debian looks like a better long
-term bet for i686 build testing. It has the added advantage that
-we can generate it via lcitool too.
+macOS 14 "Sonoma" was released on September 2023 [1].
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20231107164109.1449014-1-berrange@redhat.com>
-[AJB: tweak commit msg, set correct prefix]
+According to QEMU's support policy, we stop supporting the
+previous major release two years after the the new major
+release has been published. Replace the macOS 12 (Monterey)
+testing by macOS 13 (Ventura, released on October 2022, [2]).
+
+Refresh the generated files by running:
+
+  $ make lcitool-refresh
+
+[1] https://www.apple.com/newsroom/2023/09/macos-sonoma-is-available-today/
+[2] https://www.apple.com/newsroom/2022/10/macos-ventura-is-now-available/
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <20231108162022.76189-1-philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231120150833.2552739-2-alex.bennee@linaro.org>
+Message-Id: <20231120150833.2552739-3-alex.bennee@linaro.org>
 
-diff --git a/configure b/configure
-index abcb199aa8..9ea0bf5698 100755
---- a/configure
-+++ b/configure
-@@ -1307,8 +1307,8 @@ probe_target_compiler() {
-         container_cross_cc=${container_cross_prefix}gcc
-         ;;
-       i386)
--        container_image=fedora-i386-cross
--        container_cross_prefix=
-+        container_image=debian-i686-cross
-+        container_cross_prefix=i686-linux-gnu-
-         ;;
-       loongarch64)
-         container_image=debian-loongarch-cross
-diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
-index 463ac493ad..8d235cbea0 100644
---- a/.gitlab-ci.d/container-cross.yml
-+++ b/.gitlab-ci.d/container-cross.yml
-@@ -46,6 +46,12 @@ loongarch-debian-cross-container:
-   variables:
-     NAME: debian-loongarch-cross
+diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
+index e7f1f83c2c..07dc6edae1 100644
+--- a/.gitlab-ci.d/cirrus.yml
++++ b/.gitlab-ci.d/cirrus.yml
+@@ -59,13 +59,13 @@ x64-freebsd-13-build:
+     INSTALL_COMMAND: pkg install -y
+     TEST_TARGETS: check
  
-+i686-debian-cross-container:
-+  extends: .container_job_template
-+  stage: containers
-+  variables:
-+    NAME: debian-i686-cross
-+
- mips64el-debian-cross-container:
-   extends: .container_job_template
-   stage: containers
-@@ -95,11 +101,6 @@ cris-fedora-cross-container:
+-aarch64-macos-12-base-build:
++aarch64-macos-13-base-build:
+   extends: .cirrus_build_job
    variables:
-     NAME: fedora-cris-cross
+-    NAME: macos-12
++    NAME: macos-13
+     CIRRUS_VM_INSTANCE_TYPE: macos_instance
+     CIRRUS_VM_IMAGE_SELECTOR: image
+-    CIRRUS_VM_IMAGE_NAME: ghcr.io/cirruslabs/macos-monterey-base:latest
++    CIRRUS_VM_IMAGE_NAME: ghcr.io/cirruslabs/macos-ventura-base:latest
+     CIRRUS_VM_CPUS: 12
+     CIRRUS_VM_RAM: 24G
+     UPDATE_COMMAND: brew update
+diff --git a/.gitlab-ci.d/cirrus/macos-12.vars b/.gitlab-ci.d/cirrus/macos-13.vars
+similarity index 95%
+rename from .gitlab-ci.d/cirrus/macos-12.vars
+rename to .gitlab-ci.d/cirrus/macos-13.vars
+index 5f3fb346d1..534f029956 100644
+--- a/.gitlab-ci.d/cirrus/macos-12.vars
++++ b/.gitlab-ci.d/cirrus/macos-13.vars
+@@ -1,6 +1,6 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool variables macos-12 qemu
++#  $ lcitool variables macos-13 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
  
--i386-fedora-cross-container:
--  extends: .container_job_template
--  variables:
--    NAME: fedora-i386-cross
--
- win32-fedora-cross-container:
-   extends: .container_job_template
-   variables:
-diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
-index ac71a2abd3..c2af6c7f44 100644
---- a/.gitlab-ci.d/crossbuilds.yml
-+++ b/.gitlab-ci.d/crossbuilds.yml
-@@ -37,25 +37,25 @@ cross-arm64-kvm-only:
-     IMAGE: debian-arm64-cross
-     EXTRA_CONFIGURE_OPTS: --disable-tcg --without-default-features
- 
--cross-i386-user:
-+cross-i686-user:
-   extends:
-     - .cross_user_build_job
-     - .cross_test_artifacts
-   needs:
--    job: i386-fedora-cross-container
-+    job: i686-debian-cross-container
-   variables:
--    IMAGE: fedora-i386-cross
-+    IMAGE: debian-i686-cross
-     MAKE_CHECK_ARGS: check
- 
--cross-i386-tci:
-+cross-i686-tci:
-   extends:
-     - .cross_accel_build_job
-     - .cross_test_artifacts
-   timeout: 60m
-   needs:
--    job: i386-fedora-cross-container
-+    job: i686-debian-cross-container
-   variables:
--    IMAGE: fedora-i386-cross
-+    IMAGE: debian-i686-cross
-     ACCEL: tcg-interpreter
-     EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins
-     MAKE_CHECK_ARGS: check check-tcg
-diff --git a/tests/docker/dockerfiles/debian-i686-cross.docker b/tests/docker/dockerfiles/debian-i686-cross.docker
-new file mode 100644
-index 0000000000..3fc4e15acd
---- /dev/null
-+++ b/tests/docker/dockerfiles/debian-i686-cross.docker
-@@ -0,0 +1,182 @@
-+# THIS FILE WAS AUTO-GENERATED
-+#
-+#  $ lcitool dockerfile --layers all --cross-arch i686 debian-11 qemu
-+#
-+# https://gitlab.com/libvirt/libvirt-ci
-+
-+FROM docker.io/library/debian:11-slim
-+
-+RUN export DEBIAN_FRONTEND=noninteractive && \
-+    apt-get update && \
-+    apt-get install -y eatmydata && \
-+    eatmydata apt-get dist-upgrade -y && \
-+    eatmydata apt-get install --no-install-recommends -y \
-+                      bash \
-+                      bc \
-+                      bison \
-+                      bsdextrautils \
-+                      bzip2 \
-+                      ca-certificates \
-+                      ccache \
-+                      dbus \
-+                      debianutils \
-+                      diffutils \
-+                      exuberant-ctags \
-+                      findutils \
-+                      flex \
-+                      gcc \
-+                      gcovr \
-+                      gettext \
-+                      git \
-+                      hostname \
-+                      libglib2.0-dev \
-+                      libpcre2-dev \
-+                      libsndio-dev \
-+                      libspice-protocol-dev \
-+                      llvm \
-+                      locales \
-+                      make \
-+                      meson \
-+                      mtools \
-+                      ncat \
-+                      ninja-build \
-+                      openssh-client \
-+                      pkgconf \
-+                      python3 \
-+                      python3-numpy \
-+                      python3-opencv \
-+                      python3-pillow \
-+                      python3-pip \
-+                      python3-setuptools \
-+                      python3-sphinx \
-+                      python3-sphinx-rtd-theme \
-+                      python3-venv \
-+                      python3-wheel \
-+                      python3-yaml \
-+                      rpm2cpio \
-+                      sed \
-+                      socat \
-+                      sparse \
-+                      tar \
-+                      tesseract-ocr \
-+                      tesseract-ocr-eng \
-+                      xorriso \
-+                      zstd && \
-+    eatmydata apt-get autoremove -y && \
-+    eatmydata apt-get autoclean -y && \
-+    sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
-+    dpkg-reconfigure locales
-+
-+RUN /usr/bin/pip3 install tomli
-+
-+ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
-+ENV LANG "en_US.UTF-8"
-+ENV MAKE "/usr/bin/make"
-+ENV NINJA "/usr/bin/ninja"
-+ENV PYTHON "/usr/bin/python3"
-+
-+RUN export DEBIAN_FRONTEND=noninteractive && \
-+    dpkg --add-architecture i386 && \
-+    eatmydata apt-get update && \
-+    eatmydata apt-get dist-upgrade -y && \
-+    eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-+    eatmydata apt-get install --no-install-recommends -y \
-+                      g++-i686-linux-gnu \
-+                      gcc-i686-linux-gnu \
-+                      libaio-dev:i386 \
-+                      libasan6:i386 \
-+                      libasound2-dev:i386 \
-+                      libattr1-dev:i386 \
-+                      libbpf-dev:i386 \
-+                      libbrlapi-dev:i386 \
-+                      libbz2-dev:i386 \
-+                      libc6-dev:i386 \
-+                      libcacard-dev:i386 \
-+                      libcap-ng-dev:i386 \
-+                      libcapstone-dev:i386 \
-+                      libcmocka-dev:i386 \
-+                      libcurl4-gnutls-dev:i386 \
-+                      libdaxctl-dev:i386 \
-+                      libdrm-dev:i386 \
-+                      libepoxy-dev:i386 \
-+                      libfdt-dev:i386 \
-+                      libffi-dev:i386 \
-+                      libfuse3-dev:i386 \
-+                      libgbm-dev:i386 \
-+                      libgcrypt20-dev:i386 \
-+                      libglib2.0-dev:i386 \
-+                      libglusterfs-dev:i386 \
-+                      libgnutls28-dev:i386 \
-+                      libgtk-3-dev:i386 \
-+                      libibumad-dev:i386 \
-+                      libibverbs-dev:i386 \
-+                      libiscsi-dev:i386 \
-+                      libjemalloc-dev:i386 \
-+                      libjpeg62-turbo-dev:i386 \
-+                      libjson-c-dev:i386 \
-+                      liblttng-ust-dev:i386 \
-+                      liblzo2-dev:i386 \
-+                      libncursesw5-dev:i386 \
-+                      libnfs-dev:i386 \
-+                      libnuma-dev:i386 \
-+                      libpam0g-dev:i386 \
-+                      libpipewire-0.3-dev:i386 \
-+                      libpixman-1-dev:i386 \
-+                      libpng-dev:i386 \
-+                      libpulse-dev:i386 \
-+                      librbd-dev:i386 \
-+                      librdmacm-dev:i386 \
-+                      libsasl2-dev:i386 \
-+                      libsdl2-dev:i386 \
-+                      libsdl2-image-dev:i386 \
-+                      libseccomp-dev:i386 \
-+                      libselinux1-dev:i386 \
-+                      libslirp-dev:i386 \
-+                      libsnappy-dev:i386 \
-+                      libspice-server-dev:i386 \
-+                      libssh-gcrypt-dev:i386 \
-+                      libsystemd-dev:i386 \
-+                      libtasn1-6-dev:i386 \
-+                      libubsan1:i386 \
-+                      libudev-dev:i386 \
-+                      liburing-dev:i386 \
-+                      libusb-1.0-0-dev:i386 \
-+                      libusbredirhost-dev:i386 \
-+                      libvdeplug-dev:i386 \
-+                      libvirglrenderer-dev:i386 \
-+                      libvte-2.91-dev:i386 \
-+                      libzstd-dev:i386 \
-+                      nettle-dev:i386 \
-+                      systemtap-sdt-dev:i386 \
-+                      xfslibs-dev:i386 \
-+                      zlib1g-dev:i386 && \
-+    eatmydata apt-get autoremove -y && \
-+    eatmydata apt-get autoclean -y && \
-+    mkdir -p /usr/local/share/meson/cross && \
-+    printf "[binaries]\n\
-+c = '/usr/bin/i686-linux-gnu-gcc'\n\
-+ar = '/usr/bin/i686-linux-gnu-gcc-ar'\n\
-+strip = '/usr/bin/i686-linux-gnu-strip'\n\
-+pkgconfig = '/usr/bin/i686-linux-gnu-pkg-config'\n\
-+\n\
-+[host_machine]\n\
-+system = 'linux'\n\
-+cpu_family = 'x86'\n\
-+cpu = 'i686'\n\
-+endian = 'little'\n" > /usr/local/share/meson/cross/i686-linux-gnu && \
-+    dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-+    mkdir -p /usr/libexec/ccache-wrappers && \
-+    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-linux-gnu-c++ && \
-+    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-linux-gnu-cc && \
-+    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-linux-gnu-g++ && \
-+    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-linux-gnu-gcc
-+
-+ENV ABI "i686-linux-gnu"
-+ENV MESON_OPTS "--cross-file=i686-linux-gnu"
-+ENV QEMU_CONFIGURE_OPTS --cross-prefix=x86_64-linux-gnu-
-+ENV DEF_TARGET_LIST x86_64-softmmu,x86_64-linux-user,i386-softmmu,i386-linux-user
-+# As a final step configure the user (if env is defined)
-+ARG USER
-+ARG UID
-+RUN if [ "${USER}" ]; then \
-+  id ${USER} 2>/dev/null || useradd -u ${UID} -U ${USER}; fi
-diff --git a/tests/docker/dockerfiles/fedora-i386-cross.docker b/tests/docker/dockerfiles/fedora-i386-cross.docker
-deleted file mode 100644
-index b59a9115c4..0000000000
---- a/tests/docker/dockerfiles/fedora-i386-cross.docker
-+++ /dev/null
-@@ -1,40 +0,0 @@
--FROM registry.fedoraproject.org/fedora:34
--
--ENV PACKAGES \
--    bison \
--    bzip2 \
--    ccache \
--    diffutils \
--    flex \
--    findutils \
--    gcc \
--    git \
--    libfdt-devel.i686 \
--    libffi-devel.i686 \
--    libselinux-devel.i686 \
--    libtasn1-devel.i686 \
--    libzstd-devel.i686 \
--    make \
--    meson \
--    ninja-build \
--    glib2-devel.i686 \
--    glibc-devel.i686 \
--    glibc-static.i686 \
--    gnutls-devel.i686 \
--    nettle-devel.i686 \
--    pcre-devel.i686 \
--    pixman-devel.i686 \
--    python3-tomli \
--    sysprof-capture-devel.i686 \
--    zlib-devel.i686
--
--ENV QEMU_CONFIGURE_OPTS --cpu=i386 --disable-vhost-user
--ENV PKG_CONFIG_LIBDIR /usr/lib/pkgconfig
--
--RUN dnf update -y && dnf install -y $PACKAGES
--RUN rpm -q $PACKAGES | sort > /packages.txt
--# As a final step configure the user (if env is defined)
--ARG USER
--ARG UID
--RUN if [ "${USER}" ]; then \
--  id ${USER} 2>/dev/null || useradd -u ${UID} -U ${USER}; fi
 diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 92e7d30982..10c54a377c 100755
+index 10c54a377c..7c211eba2e 100755
 --- a/tests/lcitool/refresh
 +++ b/tests/lcitool/refresh
-@@ -156,6 +156,13 @@ try:
-                         trailer=cross_build("arm-linux-gnueabihf-",
-                                             "arm-softmmu,arm-linux-user"))
+@@ -203,7 +203,7 @@ try:
+     # Cirrus packages lists for GitLab
+     #
+     generate_cirrus("freebsd-13")
+-    generate_cirrus("macos-12")
++    generate_cirrus("macos-13")
  
-+    generate_dockerfile("debian-i686-cross", "debian-11",
-+                        cross="i686",
-+                        trailer=cross_build("x86_64-linux-gnu-",
-+                                            "x86_64-softmmu,"
-+                                            "x86_64-linux-user,"
-+                                            "i386-softmmu,i386-linux-user"))
-+
-     generate_dockerfile("debian-mips64el-cross", "debian-11",
-                         cross="mips64el",
-                         trailer=cross_build("mips64el-linux-gnuabi64-",
+     #
+     # VM packages lists
 -- 
 2.39.2
 
