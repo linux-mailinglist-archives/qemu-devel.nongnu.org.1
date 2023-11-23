@@ -2,79 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 786587F5782
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 05:46:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E88B7F5799
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 06:05:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r61YY-0006gX-6A; Wed, 22 Nov 2023 23:43:14 -0500
+	id 1r61sh-0006Qp-Cy; Thu, 23 Nov 2023 00:04:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r61Y7-0006TK-Gc
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 23:42:48 -0500
-Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r61Y4-0006I2-9N
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 23:42:47 -0500
-Received: by mail-oi1-x22b.google.com with SMTP id
- 5614622812f47-3b2e4107f47so359406b6e.2
- for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 20:42:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700714563; x=1701319363; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TngP5H8NgKVtRrs3cV2eef3xZ01hrk4ilINuJfIwbMU=;
- b=pKJ/O4nj9LiM72l+6N3miXDNQABKIEsXBipI0o1p4cNOAgYqV9x3ZeBkSKMzHjqk9g
- RdP+V5jqEcRdReLbFphRMK2/grvhpi41gPvK22FtNA2lilylpnVmt7BcddpkzAwR2bl5
- vDZM0JtnQ3uqOdSCzDbTbAXDbzq2Erko3GMCxy2/Hgf2eHbfDxNQCRUI+v30F99vLOby
- e5+vMVJbzeSGxXb2Oi/QlYq2CC8ppEO8xIgUcTFKYEP8PjiAK3WYLo9ZJgHgksZaAk+C
- v4NQchOOsaKGjMHEDNW3e7BYOmllssA1v5crKsMxSO/EVuZmQgsXd4AXuM1vNikQ+15e
- 6bNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700714563; x=1701319363;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TngP5H8NgKVtRrs3cV2eef3xZ01hrk4ilINuJfIwbMU=;
- b=v1ilp1juRCLCboUNIpZxMGBnU/s3U9NvoMVr6NXAXY6n4hCX8I6YJWMHqe7zHyMqgR
- KWwjdEJoZdrcqYP2uACuA/dn6YBH+OGTXpO8Og5kID8v6OKQ7Akxod793zRbmP4ss5kb
- Q7XWr49ElQuGVQHbxvtVARP2XPJp6Ge7aS9TZI0AQhxwfjmRnJ8+1R/wSb5/+Z4jIity
- KTbHFX2KPN/t6kpGRp9wTCADER/sl9VD+iobGk+4N6zkTmQaF2hS3I41lDdCqkTEpDWv
- wL+o5sjZYhywTaeGPZptCUmU2SZE/JPH69CUnP8/mSJ3sjXt9ghoSWX+vAOYiUdlqGqV
- 3efQ==
-X-Gm-Message-State: AOJu0YyCV6JFJEvcTLNr9xKlYIys6axRmi8zxzh38faGibPYYqsjgQe+
- BWzPSdi6AiekkxbSr+zTuFg6W5Wt6wsTlfM8/bhx+9rD
-X-Google-Smtp-Source: AGHT+IFtj7S4KU+XONJgdhB67AuP4TwL93ur3uJiBiQLEyELOZuOT9dUy/9bmPcxLFfDaYCDo1cWMA==
-X-Received: by 2002:a05:6808:5c4:b0:3b0:daf8:954 with SMTP id
- d4-20020a05680805c400b003b0daf80954mr4578312oij.49.1700714562882; 
- Wed, 22 Nov 2023 20:42:42 -0800 (PST)
-Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- i7-20020a056808030700b003b8347de3c2sm73888oie.19.2023.11.22.20.42.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Nov 2023 20:42:42 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH 21/21] target/arm/kvm: Unexport kvm_arm_vm_state_change
-Date: Wed, 22 Nov 2023 22:42:19 -0600
-Message-Id: <20231123044219.896776-22-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231123044219.896776-1-richard.henderson@linaro.org>
-References: <20231123044219.896776-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r61sa-0006Q5-15; Thu, 23 Nov 2023 00:03:56 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r61sW-0000m0-4W; Thu, 23 Nov 2023 00:03:55 -0500
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AN53GNJ005218; Thu, 23 Nov 2023 05:03:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=dA0PNQ6+Wvi+d3y6kLjbnmrtPclvWxi5YiK8J6W2Xto=;
+ b=rLlGWFcAxn0o11LkjDeU5kgF8Rp9uyAsGHxhSmtd2t5N3yB1bnNE56+sZuUTWZNdu6Zg
+ yNzxvRubu2FsiBX/OxsHQB57ku5jtk+27yN3jYvC6b1SLyHvTYDFNPAU2Y47ZxEZCuxP
+ Y+2o2JE4RbUbOHlKlNzNyrds/+3OscUTGQFrkerwokLHpnAokBy1L3T+PCFNoiwk6xCl
+ 5cIvm0bYAfZrtm7DUK9OxSAHgefOkML9mTx5b33Ww6o/9P+YQPuvYw3bRd35DUod1oYs
+ JhbkRb929GSzzMdVxlq3MJyc0NaqlGSW18XAmmfe+S/LZ54oZQxJ7lH0hv5Qq4J42eeG Gg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uj08c0061-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Nov 2023 05:03:37 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AN53bVR006096;
+ Thu, 23 Nov 2023 05:03:37 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uj08c005r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Nov 2023 05:03:37 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AN44Mck002211; Thu, 23 Nov 2023 05:03:36 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uf9tkmnsq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Nov 2023 05:03:36 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AN53a0o46334546
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 Nov 2023 05:03:36 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 03C3A58058;
+ Thu, 23 Nov 2023 05:03:36 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B33F15805B;
+ Thu, 23 Nov 2023 05:03:33 +0000 (GMT)
+Received: from [9.109.242.129] (unknown [9.109.242.129])
+ by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 23 Nov 2023 05:03:33 +0000 (GMT)
+Message-ID: <504a8c39-711c-2fcf-ffc7-396898d5e84b@linux.ibm.com>
+Date: Thu, 23 Nov 2023 10:33:32 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v2 2/2] ppc/spapr: Initialize max_cpus limit to
+ SPAPR_NR_IPIS.
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ npiggin@gmail.com, qemu-ppc@nongnu.org
+Cc: danielhb413@gmail.com, clg@kaod.org, david@gibson.dropbear.id.au,
+ qemu-devel@nongnu.org
+References: <20231122092845.973949-1-harshpb@linux.ibm.com>
+ <20231122092845.973949-3-harshpb@linux.ibm.com>
+ <4eaf8cf4-94b1-425b-a712-c006abb114c3@linaro.org>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <4eaf8cf4-94b1-425b-a712-c006abb114c3@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22b.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: R6yAqp3eldf902Q8FOZr1WbLa5Fvtr9b
+X-Proofpoint-GUID: qDjV9MksTJhSh792idb6TKZo9N13pWAX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-23_02,2023-11-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ priorityscore=1501 bulkscore=0 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
+ adultscore=0 suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311060000 definitions=main-2311230034
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.672,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,39 +118,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/kvm_arm.h | 2 --
- target/arm/kvm.c     | 2 +-
- 2 files changed, 1 insertion(+), 3 deletions(-)
+Hi Philippe,
 
-diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index 8a44a6b762..2037b2d7ea 100644
---- a/target/arm/kvm_arm.h
-+++ b/target/arm/kvm_arm.h
-@@ -200,8 +200,6 @@ bool kvm_arm_sve_supported(void);
-  */
- int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa);
- 
--void kvm_arm_vm_state_change(void *opaque, bool running, RunState state);
--
- int kvm_arm_vgic_probe(void);
- 
- void kvm_arm_pmu_set_irq(CPUState *cs, int irq);
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 19454f432a..6e3fea1879 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -1290,7 +1290,7 @@ MemTxAttrs kvm_arch_post_run(CPUState *cs, struct kvm_run *run)
-     return MEMTXATTRS_UNSPECIFIED;
- }
- 
--void kvm_arm_vm_state_change(void *opaque, bool running, RunState state)
-+static void kvm_arm_vm_state_change(void *opaque, bool running, RunState state)
- {
-     CPUState *cs = opaque;
-     ARMCPU *cpu = ARM_CPU(cs);
--- 
-2.34.1
+On 11/22/23 16:46, Philippe Mathieu-Daudé wrote:
+> Hi Harsh,
+> 
+> On 22/11/23 10:28, Harsh Prateek Bora wrote:
+>> Initialize the machine specific max_cpus limit as per the maximum range
+>> of CPU IPIs available. Keeping between 4096 to 8192 will throw IRQ not
+>> free error due to XIVE/XICS limitation and keeping beyond 8192 will hit
+>> assert in tcg_region_init or spapr_xive_claim_irq.
+>>
+>> Logs:
+>>
+>> Without patch fix:
+>>
+>> [root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=4097
+>> qemu-system-ppc64: IRQ 4096 is not free
+>> [root@host build]#
+>>
+>> On LPAR:
+>> [root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=8193
+>> **
+>> ERROR:../tcg/region.c:774:tcg_region_init: assertion failed:
+>> (region_size >= 2 * page_size)
+>> Bail out! ERROR:../tcg/region.c:774:tcg_region_init: assertion failed:
+>> (region_size >= 2 * page_size)
+>> Aborted (core dumped)
+>> [root@host build]#
+>>
+>> On x86:
+>> [root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=8193
+>> qemu-system-ppc64: ../hw/intc/spapr_xive.c:596: spapr_xive_claim_irq:
+>> Assertion `lisn < xive->nr_irqs' failed.
+>> Aborted (core dumped)
+>> [root@host build]#
+>>
+>> With patch fix:
+>> [root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=4097
+>> qemu-system-ppc64: Invalid SMP CPUs 4097. The max CPUs supported by
+>> machine 'pseries-8.2' is 4096
+>> [root@host build]#
+>>
+>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>> ---
+>>   hw/ppc/spapr.c | 9 +++------
+>>   1 file changed, 3 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+>> index df09aa9d6a..0de11a4458 100644
+>> --- a/hw/ppc/spapr.c
+>> +++ b/hw/ppc/spapr.c
+>> @@ -4647,13 +4647,10 @@ static void 
+>> spapr_machine_class_init(ObjectClass *oc, void *data)
+>>       mc->block_default_type = IF_SCSI;
+>>       /*
+>> -     * Setting max_cpus to INT32_MAX. Both KVM and TCG max_cpus values
+>> -     * should be limited by the host capability instead of hardcoded.
+>> -     * max_cpus for KVM guests will be checked in kvm_init(), and TCG
+>> -     * guests are welcome to have as many CPUs as the host are capable
+>> -     * of emulate.
+>> +     * While KVM determines max cpus in kvm_init() using 
+>> kvm_max_vcpus(),
+>> +     * In TCG the limit is restricted by the range of CPU IPIs 
+>> available.
+>>        */
+>> -    mc->max_cpus = INT32_MAX;
+>> +    mc->max_cpus = SPAPR_NR_IPIS;
+> 
+> Is SPAPR_NR_IPIS also the upper limit for KVM?
 
+In KVM mode, the limit is restricted to what is supported by KVM which 
+is checked using kvm_ioctl via wrappers in kvm_init and appears to be 
+evaluating to 2048. So, having a larger default works for both case.
+
+regards,
+Harsh
+
+> 
+>>       mc->no_parallel = 1;
+>>       mc->default_boot_order = "";
+> 
 
