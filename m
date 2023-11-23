@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A8537F5776
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 05:43:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E39947F577C
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 05:44:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r61Y9-0006N2-Mk; Wed, 22 Nov 2023 23:42:50 -0500
+	id 1r61Xn-0006IM-Il; Wed, 22 Nov 2023 23:42:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r61Xp-0006LF-TQ
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 23:42:30 -0500
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
+ id 1r61Xm-0006Hq-1U
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 23:42:26 -0500
+Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r61Xk-00064l-Ne
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 23:42:29 -0500
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-3b6d80daae8so348328b6e.2
- for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 20:42:24 -0800 (PST)
+ id 1r61Xk-00064a-0y
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 23:42:25 -0500
+Received: by mail-oi1-x234.google.com with SMTP id
+ 5614622812f47-3b842c1511fso330769b6e.1
+ for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 20:42:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700714541; x=1701319341; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=/RJe0+6jbJTwAypT42FH4DkgaN/bD8EpjoaWzgOvMn0=;
- b=Jvi96HjXt/ojTtHeGJcBcqc7x2psBNMrlmAAar1nw8xjZpmuiS80oehG5EfO26BxeS
- Vhc0Lu/BII3Rp1hwDDNxMCIcDj2fcW5kmTw92JHwRtLXIeivDeWXxWX0XRVq7DH5VCjt
- mtVirJ0N1aUr/izEFGa20hV/IztQAbpacVZTvhq9QksMifPFVZygYG9TDWL1GeTcdkXK
- Q9CU/pcZfcfMPppDEnLo/CcUptEEZCmVXqzg/dkwfYOu/8i1lBTI/69bJIhjryNhCyrY
- 0/9EOgPqxktAa+zVhFGoE+SBxxS3JRooUGdCDgw1b5B5oZm30HxME11nH4VZhZFAZkcK
- DQuQ==
+ d=linaro.org; s=google; t=1700714542; x=1701319342; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XjKPY5uNF9R+Jnwg0amtOzmeSA/AKoApnoQmZc/PaUQ=;
+ b=UZqjOg3SMbaqlEULftfSQsa7+fg4XVRksC+UsKrT62tGLHxzS6yznRc6dWKZkXdmPM
+ BK0yfFPi+T7maOejHTmuECwwvR/v7uZbId5isTJNvpdqxNFSmQAuqgh/2UdP24w+BKGd
+ 16pw7GtDsaKkjLlYYu6nWbFdQYUw2Xw0OURae6wsRg2qS7kLedKn5LB875OfcfCeQHGD
+ T9Mdfez9wRPUaihhg+Sz8xoPuLnwwS2L3PfBsfKYdYX6COhMpIemjrwzpf3MNv5X2lEb
+ 9gXFDyQUIypcbcshNmwVJA8SxgvcIEoPLn7dbP441l4Jd+WExG4lzzg5je/bbbRIQqJD
+ Nk2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700714541; x=1701319341;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=/RJe0+6jbJTwAypT42FH4DkgaN/bD8EpjoaWzgOvMn0=;
- b=h4B+bjMQ36K6+y7KzO5U+yePwabfrZOBZoztvxTJQ3DtD1Y6zgac7Eprn1wDyKjBh5
- SjsZMn/FmGQvL+FF7tOn0SXmAxOOmDZkG958NPaSNFQASrT69veYasKYpCnkkLXZJxxi
- yvGeXa0kUa/YljfeFKlq4NvUtYgRkYyk+rdgsjYOdvZ5rEk7A2JlO9czrcrrn2GjWH59
- WPpIHNaH99tIgAUeHdjWXQYaDYyjHfjFOdG8ezg42rlASYFPVrBn8e0v74dx9OGf1W4r
- Ym+gLP6KNOI1HO9fmjMmJa4WTWC9h50MEG8nx/4Wyhn0SWILM3V7aNnoJZuw0gi9YijZ
- FiXA==
-X-Gm-Message-State: AOJu0YwUxQvb9JvgxdS8D5ArWIf74Nh3jqqXGSp4YXRjMXaeZpHR1+jz
- 2QHZaIoJf/zSsrp0VPADVzcDKZWe8JDL6Ttq61xyRY93
-X-Google-Smtp-Source: AGHT+IHDBM9SO0UwztHozVp1PYuNerG/uF0ihba1U9mYbsOq5S4YTp7Sg0b59EgRbsQujr7xiUapYw==
-X-Received: by 2002:aca:100f:0:b0:3b6:d665:4938 with SMTP id
- 15-20020aca100f000000b003b6d6654938mr4993813oiq.43.1700714541522; 
- Wed, 22 Nov 2023 20:42:21 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700714542; x=1701319342;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=XjKPY5uNF9R+Jnwg0amtOzmeSA/AKoApnoQmZc/PaUQ=;
+ b=BQipcmxQsR7H0AZT9zbyI+dfb8LnMbwTxyQGy0zGcVwFTYraRBhyqIoolJRPJ9nklm
+ BP6+W582wmgGGNkOcnCHXFy4aJTgwxHtfdzYjAWYpXpKUOMRPrB2A4tNud9P5LDBJDVX
+ dFhhlVPA4YUEnSNmKOC5BPjPjCYF2Sh5KchqPnRwR0QkSdzL33GA6+o8bu2DGeAB767h
+ b7JT4/98ygtvv5dc9B3anSf8WL9sdsIE5oalMe96Oh//+1fh3s5YEnYL8CKvPGCmeYUl
+ EcSiJp08/wKIqRhpHrUuXDbLryyM7RvJ0+uQ1byR9Vk6Z/ziLxTO1n0Z+QPilI7Yn4MN
+ sDIg==
+X-Gm-Message-State: AOJu0YyltEa0tbOq1E8I5b+urhcOcmI4w6N63164x3NUOu8bzRFFeMkl
+ GL/1TuKyOf+CKbxfXw+0SjYN6b5c7ki3N2dMsz+A9QOu
+X-Google-Smtp-Source: AGHT+IE0sm64WuzXPJHQ3rg9EIWodmeb+ASWtiDwTXwC78Wks3QbHwuH/uqyFEayJwPSG8L8sQxTmA==
+X-Received: by 2002:a05:6808:1911:b0:3a7:2390:3583 with SMTP id
+ bf17-20020a056808191100b003a723903583mr6301855oib.38.1700714542378; 
+ Wed, 22 Nov 2023 20:42:22 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- i7-20020a056808030700b003b8347de3c2sm73888oie.19.2023.11.22.20.42.20
+ i7-20020a056808030700b003b8347de3c2sm73888oie.19.2023.11.22.20.42.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Nov 2023 20:42:21 -0800 (PST)
+ Wed, 22 Nov 2023 20:42:22 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH for-9.0 00/21] target/arm: kvm cleanups
-Date: Wed, 22 Nov 2023 22:41:58 -0600
-Message-Id: <20231123044219.896776-1-richard.henderson@linaro.org>
+Subject: [PATCH 01/21] accel/kvm: Make kvm_has_guest_debug static
+Date: Wed, 22 Nov 2023 22:41:59 -0600
+Message-Id: <20231123044219.896776-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231123044219.896776-1-richard.henderson@linaro.org>
+References: <20231123044219.896776-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x235.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x234.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
 X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
  DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,44 +90,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is primarily concerned with merging kvm64.c with kvm.c
-and then unexporting everything that is not required outside.
+This variable is not used or declared outside kvm-all.c.
 
-r~
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ accel/kvm/kvm-all.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Chao Du (1):
-  target/arm: kvm64: remove a redundant KVM_CAP_SET_GUEST_DEBUG probe
-
-Richard Henderson (20):
-  accel/kvm: Make kvm_has_guest_debug static
-  target/arm/kvm: Merge kvm_arm_init_debug into kvm_arch_init
-  target/arm/kvm: Move kvm_arm_verify_ext_dabt_pending and unexport
-  target/arm/kvm: Move kvm_arm_copy_hw_debug_data and unexport
-  target/arm/kvm: Move kvm_arm_hw_debug_active and unexport
-  target/arm/kvm: Move kvm_arm_handle_debug and unexport
-  target/arm/kvm: Unexport kvm_arm_{get,put}_virtual_time
-  target/arm/kvm: Inline kvm_arm_steal_time_supported
-  target/arm/kvm: Move kvm_arm_get_host_cpu_features and unexport
-  target/arm/kvm: Use a switch for kvm_arm_cpreg_level
-  target/arm/kvm: Move kvm_arm_cpreg_level and unexport
-  target/arm/kvm: Move kvm_arm_reg_syncs_via_cpreg_list and unexport
-  target/arm/kvm: Merge kvm64.c into kvm.c
-  target/arm/kvm: Unexport kvm_arm_vcpu_init
-  target/arm/kvm: Unexport kvm_arm_vcpu_finalize
-  target/arm/kvm: Unexport kvm_arm_init_cpreg_list
-  target/arm/kvm: Init cap_has_inject_serror_esr in kvm_arch_init
-  target/arm/kvm: Unexport kvm_{get,put}_vcpu_events
-  target/arm/kvm: Unexport and tidy kvm_arm_sync_mpstate_to_{kvm,qemu}
-  target/arm/kvm: Unexport kvm_arm_vm_state_change
-
- target/arm/kvm_arm.h   |  203 ------
- accel/kvm/kvm-all.c    |    2 +-
- target/arm/kvm.c       | 1372 +++++++++++++++++++++++++++++++++++++++-
- target/arm/kvm64.c     | 1290 -------------------------------------
- target/arm/meson.build |    2 +-
- 5 files changed, 1345 insertions(+), 1524 deletions(-)
- delete mode 100644 target/arm/kvm64.c
-
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index e39a810a4e..f138e7fefe 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -98,7 +98,7 @@ bool kvm_allowed;
+ bool kvm_readonly_mem_allowed;
+ bool kvm_vm_attributes_allowed;
+ bool kvm_msi_use_devid;
+-bool kvm_has_guest_debug;
++static bool kvm_has_guest_debug;
+ static int kvm_sstep_flags;
+ static bool kvm_immediate_exit;
+ static hwaddr kvm_max_slot_size = ~0;
 -- 
 2.34.1
 
