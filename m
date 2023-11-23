@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4777F67DA
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 20:51:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA67A7F67D8
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 20:50:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6Fho-00026e-Gz; Thu, 23 Nov 2023 14:49:44 -0500
+	id 1r6Fhs-00029W-2F; Thu, 23 Nov 2023 14:49:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r6Fhn-00022d-DO
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 14:49:43 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1r6Fhq-00029O-GU
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 14:49:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r6Fhl-0000dI-Up
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 14:49:43 -0500
+ id 1r6Fho-0000df-J8
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 14:49:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700768981;
+ s=mimecast20190719; t=1700768983;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=05/vyUzyQyx9iVyx5FvuHnsTh61cU0kKMNchw8eSi0U=;
- b=Hokv3ITAS3/uh7Wx1yFmPmw9yT8y/Hr4a19CnCso7njDKjrPspXCt2/jAzO3JeEzrXTznw
- 1McC8WPGFyGQNpXTYJKJLXjzPovS9y0+6GIrzIY6Q4gpkKmWsXVnHiTfQieCccdgBHNJhT
- /JXvvHclmMUe0C6SgKKeHrPIGwGrTnM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-680-7W0mDJC0NbCsVGPebA79SA-1; Thu,
- 23 Nov 2023 14:49:39 -0500
-X-MC-Unique: 7W0mDJC0NbCsVGPebA79SA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ bh=m0NnB5kQoBfUqO8QkP+hcO9BD0tIyCdOXeT1+SmF/D0=;
+ b=Np/tw6tyCYEahz9qMFrdnTNemC/OOCEFg7x8Yb9YNe98bOCdzszuVoRTLsj1Ve/DaaGt0E
+ geaqEnSxzjvhTU0xDx1Jiaq1BlJgbT5SSiWmkcNQZa7W8BeRjGl9Eloc6PVfbnsi7PmoV8
+ xKT0LEKCWL3R3U1v/EqLMziE5Z50sTA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-583-I0FXzvEaPq-YeiJR3pAg8Q-1; Thu, 23 Nov 2023 14:49:42 -0500
+X-MC-Unique: I0FXzvEaPq-YeiJR3pAg8Q-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 845173801F68;
- Thu, 23 Nov 2023 19:49:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AC44880D720;
+ Thu, 23 Nov 2023 19:49:41 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.72])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DF438C15881;
- Thu, 23 Nov 2023 19:49:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2935C2026D4C;
+ Thu, 23 Nov 2023 19:49:40 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -50,23 +50,22 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Fam Zheng <fam@euphon.net>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 2/4] virtio-scsi: don't lock AioContext around
- virtio_queue_aio_attach_host_notifier()
-Date: Thu, 23 Nov 2023 14:49:29 -0500
-Message-ID: <20231123194931.171598-3-stefanha@redhat.com>
+Subject: [PATCH 3/4] scsi: don't lock AioContext in I/O code path
+Date: Thu, 23 Nov 2023 14:49:30 -0500
+Message-ID: <20231123194931.171598-4-stefanha@redhat.com>
 In-Reply-To: <20231123194931.171598-1-stefanha@redhat.com>
 References: <20231123194931.171598-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -84,45 +83,232 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-virtio_queue_aio_attach_host_notifier() does not require the AioContext
-lock. Stop taking the lock and remember add an explicit smp_wmb()
-because we were relying on the implicit barrier in the AioContext lock
-before.
+blk_aio_*() doesn't require the AioContext lock and the SCSI subsystem's
+internal state also does not anymore.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- hw/scsi/virtio-scsi-dataplane.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ hw/scsi/scsi-disk.c    | 23 -----------------------
+ hw/scsi/scsi-generic.c | 20 +++-----------------
+ 2 files changed, 3 insertions(+), 40 deletions(-)
 
-diff --git a/hw/scsi/virtio-scsi-dataplane.c b/hw/scsi/virtio-scsi-dataplane.c
-index 1e684beebe..135e23fe54 100644
---- a/hw/scsi/virtio-scsi-dataplane.c
-+++ b/hw/scsi/virtio-scsi-dataplane.c
-@@ -149,23 +149,17 @@ int virtio_scsi_dataplane_start(VirtIODevice *vdev)
+diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
+index 6691f5edb8..2c1bbb3530 100644
+--- a/hw/scsi/scsi-disk.c
++++ b/hw/scsi/scsi-disk.c
+@@ -273,8 +273,6 @@ static void scsi_aio_complete(void *opaque, int ret)
+     SCSIDiskReq *r = (SCSIDiskReq *)opaque;
+     SCSIDiskState *s = DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
  
-     memory_region_transaction_commit();
+-    aio_context_acquire(blk_get_aio_context(s->qdev.conf.blk));
+-
+     assert(r->req.aiocb != NULL);
+     r->req.aiocb = NULL;
  
--    /*
--     * These fields are visible to the IOThread so we rely on implicit barriers
--     * in aio_context_acquire() on the write side and aio_notify_accept() on
--     * the read side.
--     */
-     s->dataplane_starting = false;
-     s->dataplane_started = true;
-+    smp_wmb(); /* paired with aio_notify_accept() */
+@@ -286,7 +284,6 @@ static void scsi_aio_complete(void *opaque, int ret)
+     scsi_req_complete(&r->req, GOOD);
  
-     if (s->bus.drain_count == 0) {
--        aio_context_acquire(s->ctx);
-         virtio_queue_aio_attach_host_notifier(vs->ctrl_vq, s->ctx);
-         virtio_queue_aio_attach_host_notifier_no_poll(vs->event_vq, s->ctx);
+ done:
+-    aio_context_release(blk_get_aio_context(s->qdev.conf.blk));
+     scsi_req_unref(&r->req);
+ }
  
-         for (i = 0; i < vs->conf.num_queues; i++) {
-             virtio_queue_aio_attach_host_notifier(vs->cmd_vqs[i], s->ctx);
-         }
--        aio_context_release(s->ctx);
+@@ -394,8 +391,6 @@ static void scsi_read_complete(void *opaque, int ret)
+     SCSIDiskReq *r = (SCSIDiskReq *)opaque;
+     SCSIDiskState *s = DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
+ 
+-    aio_context_acquire(blk_get_aio_context(s->qdev.conf.blk));
+-
+     assert(r->req.aiocb != NULL);
+     r->req.aiocb = NULL;
+ 
+@@ -406,7 +401,6 @@ static void scsi_read_complete(void *opaque, int ret)
+         trace_scsi_disk_read_complete(r->req.tag, r->qiov.size);
      }
-     return 0;
+     scsi_read_complete_noio(r, ret);
+-    aio_context_release(blk_get_aio_context(s->qdev.conf.blk));
+ }
  
+ /* Actually issue a read to the block device.  */
+@@ -448,8 +442,6 @@ static void scsi_do_read_cb(void *opaque, int ret)
+     SCSIDiskReq *r = (SCSIDiskReq *)opaque;
+     SCSIDiskState *s = DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
+ 
+-    aio_context_acquire(blk_get_aio_context(s->qdev.conf.blk));
+-
+     assert (r->req.aiocb != NULL);
+     r->req.aiocb = NULL;
+ 
+@@ -459,7 +451,6 @@ static void scsi_do_read_cb(void *opaque, int ret)
+         block_acct_done(blk_get_stats(s->qdev.conf.blk), &r->acct);
+     }
+     scsi_do_read(opaque, ret);
+-    aio_context_release(blk_get_aio_context(s->qdev.conf.blk));
+ }
+ 
+ /* Read more data from scsi device into buffer.  */
+@@ -533,8 +524,6 @@ static void scsi_write_complete(void * opaque, int ret)
+     SCSIDiskReq *r = (SCSIDiskReq *)opaque;
+     SCSIDiskState *s = DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
+ 
+-    aio_context_acquire(blk_get_aio_context(s->qdev.conf.blk));
+-
+     assert (r->req.aiocb != NULL);
+     r->req.aiocb = NULL;
+ 
+@@ -544,7 +533,6 @@ static void scsi_write_complete(void * opaque, int ret)
+         block_acct_done(blk_get_stats(s->qdev.conf.blk), &r->acct);
+     }
+     scsi_write_complete_noio(r, ret);
+-    aio_context_release(blk_get_aio_context(s->qdev.conf.blk));
+ }
+ 
+ static void scsi_write_data(SCSIRequest *req)
+@@ -1742,8 +1730,6 @@ static void scsi_unmap_complete(void *opaque, int ret)
+     SCSIDiskReq *r = data->r;
+     SCSIDiskState *s = DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
+ 
+-    aio_context_acquire(blk_get_aio_context(s->qdev.conf.blk));
+-
+     assert(r->req.aiocb != NULL);
+     r->req.aiocb = NULL;
+ 
+@@ -1754,7 +1740,6 @@ static void scsi_unmap_complete(void *opaque, int ret)
+         block_acct_done(blk_get_stats(s->qdev.conf.blk), &r->acct);
+         scsi_unmap_complete_noio(data, ret);
+     }
+-    aio_context_release(blk_get_aio_context(s->qdev.conf.blk));
+ }
+ 
+ static void scsi_disk_emulate_unmap(SCSIDiskReq *r, uint8_t *inbuf)
+@@ -1822,8 +1807,6 @@ static void scsi_write_same_complete(void *opaque, int ret)
+     SCSIDiskReq *r = data->r;
+     SCSIDiskState *s = DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
+ 
+-    aio_context_acquire(blk_get_aio_context(s->qdev.conf.blk));
+-
+     assert(r->req.aiocb != NULL);
+     r->req.aiocb = NULL;
+ 
+@@ -1847,7 +1830,6 @@ static void scsi_write_same_complete(void *opaque, int ret)
+                                        data->sector << BDRV_SECTOR_BITS,
+                                        &data->qiov, 0,
+                                        scsi_write_same_complete, data);
+-        aio_context_release(blk_get_aio_context(s->qdev.conf.blk));
+         return;
+     }
+ 
+@@ -1857,7 +1839,6 @@ done:
+     scsi_req_unref(&r->req);
+     qemu_vfree(data->iov.iov_base);
+     g_free(data);
+-    aio_context_release(blk_get_aio_context(s->qdev.conf.blk));
+ }
+ 
+ static void scsi_disk_emulate_write_same(SCSIDiskReq *r, uint8_t *inbuf)
+@@ -2810,7 +2791,6 @@ static void scsi_block_sgio_complete(void *opaque, int ret)
+ {
+     SCSIBlockReq *req = (SCSIBlockReq *)opaque;
+     SCSIDiskReq *r = &req->req;
+-    SCSIDevice *s = r->req.dev;
+     sg_io_hdr_t *io_hdr = &req->io_header;
+ 
+     if (ret == 0) {
+@@ -2827,13 +2807,10 @@ static void scsi_block_sgio_complete(void *opaque, int ret)
+         }
+ 
+         if (ret > 0) {
+-            aio_context_acquire(blk_get_aio_context(s->conf.blk));
+             if (scsi_handle_rw_error(r, ret, true)) {
+-                aio_context_release(blk_get_aio_context(s->conf.blk));
+                 scsi_req_unref(&r->req);
+                 return;
+             }
+-            aio_context_release(blk_get_aio_context(s->conf.blk));
+ 
+             /* Ignore error.  */
+             ret = 0;
+diff --git a/hw/scsi/scsi-generic.c b/hw/scsi/scsi-generic.c
+index 2417f0ad84..b7b04e1d63 100644
+--- a/hw/scsi/scsi-generic.c
++++ b/hw/scsi/scsi-generic.c
+@@ -109,15 +109,11 @@ done:
+ static void scsi_command_complete(void *opaque, int ret)
+ {
+     SCSIGenericReq *r = (SCSIGenericReq *)opaque;
+-    SCSIDevice *s = r->req.dev;
+-
+-    aio_context_acquire(blk_get_aio_context(s->conf.blk));
+ 
+     assert(r->req.aiocb != NULL);
+     r->req.aiocb = NULL;
+ 
+     scsi_command_complete_noio(r, ret);
+-    aio_context_release(blk_get_aio_context(s->conf.blk));
+ }
+ 
+ static int execute_command(BlockBackend *blk,
+@@ -274,14 +270,12 @@ static void scsi_read_complete(void * opaque, int ret)
+     SCSIDevice *s = r->req.dev;
+     int len;
+ 
+-    aio_context_acquire(blk_get_aio_context(s->conf.blk));
+-
+     assert(r->req.aiocb != NULL);
+     r->req.aiocb = NULL;
+ 
+     if (ret || r->req.io_canceled) {
+         scsi_command_complete_noio(r, ret);
+-        goto done;
++        return;
+     }
+ 
+     len = r->io_header.dxfer_len - r->io_header.resid;
+@@ -320,7 +314,7 @@ static void scsi_read_complete(void * opaque, int ret)
+         r->io_header.status != GOOD ||
+         len == 0) {
+         scsi_command_complete_noio(r, 0);
+-        goto done;
++        return;
+     }
+ 
+     /* Snoop READ CAPACITY output to set the blocksize.  */
+@@ -356,9 +350,6 @@ static void scsi_read_complete(void * opaque, int ret)
+ req_complete:
+     scsi_req_data(&r->req, len);
+     scsi_req_unref(&r->req);
+-
+-done:
+-    aio_context_release(blk_get_aio_context(s->conf.blk));
+ }
+ 
+ /* Read more data from scsi device into buffer.  */
+@@ -391,14 +382,12 @@ static void scsi_write_complete(void * opaque, int ret)
+ 
+     trace_scsi_generic_write_complete(ret);
+ 
+-    aio_context_acquire(blk_get_aio_context(s->conf.blk));
+-
+     assert(r->req.aiocb != NULL);
+     r->req.aiocb = NULL;
+ 
+     if (ret || r->req.io_canceled) {
+         scsi_command_complete_noio(r, ret);
+-        goto done;
++        return;
+     }
+ 
+     if (r->req.cmd.buf[0] == MODE_SELECT && r->req.cmd.buf[4] == 12 &&
+@@ -408,9 +397,6 @@ static void scsi_write_complete(void * opaque, int ret)
+     }
+ 
+     scsi_command_complete_noio(r, ret);
+-
+-done:
+-    aio_context_release(blk_get_aio_context(s->conf.blk));
+ }
+ 
+ /* Write data to a scsi device.  Returns nonzero on failure.
 -- 
 2.42.0
 
