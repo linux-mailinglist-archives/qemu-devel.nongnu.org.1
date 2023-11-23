@@ -2,80 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070627F62A4
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 16:23:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3153C7F6307
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 16:31:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6BXK-0000ng-6R; Thu, 23 Nov 2023 10:22:38 -0500
+	id 1r6Bea-0004co-M6; Thu, 23 Nov 2023 10:30:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r6BXI-0000lJ-2f
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:22:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r6BXG-0004Zf-E7
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:22:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700752953;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=BE+Me4+3SRSugohNvS5MTpHbvdS8fQfxyXYzX2ckl5s=;
- b=RTP9uld2FrU5votcvnQJOp7sTBkat1qMkuzWHowgdixObqHAU9mg72Etn0aMkJpAuYJ9oE
- /rhCJ7Wa/N9cA76LLsi6nKfgnN/3BeEcn4x8xrtqkreOJog32wVCwppMWF3NAh+5biFssd
- cvUWLQxdRhY2bQ/FuzztS7Cdm9kfbxk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-478-mejxz8HzOdi1Fg2Fp0d0YQ-1; Thu,
- 23 Nov 2023 10:22:20 -0500
-X-MC-Unique: mejxz8HzOdi1Fg2Fp0d0YQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43B9729AA383;
- Thu, 23 Nov 2023 15:22:19 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.227])
- by smtp.corp.redhat.com (Postfix) with ESMTP id AF208492BE7;
- Thu, 23 Nov 2023 15:22:18 +0000 (UTC)
-Date: Thu, 23 Nov 2023 10:22:17 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Alexander Graf <agraf@csgraf.de>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Phil =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6BeX-0004cP-KM
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:30:05 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6BeS-0007nC-Cc
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:30:05 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4083cd3917eso6388785e9.3
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 07:29:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700753395; x=1701358195; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hJlx0/l+/l0lXF5wXTVwJAd/EOKbj6xqiqErT7fTX4A=;
+ b=QwG9EV+waa0RxBgAh5TXGsuNCktGZXwUX17RHwtYU7S4aVofF2BmQhrn9yNZcMVznP
+ TG7b8dopPaW1/+BIbneQ3Sh9knA71fkAeLwDgWNWCvBNCx2GI6KbJbwlE7hx2UN8oGsJ
+ zBopskJc+aLSkeo4NQZ3pVtjpBsk5fr4uSMnDtt/jvYAHJgkPbwOqV7OL/yOncEwwwJK
+ vXEzXYc89vXjw66hWZi7CAcM+5/Fdxm2KQz2E1OPNe45aR1FiVSkPWuYyq/xb1pSY959
+ PvNyoKdV49objuv9tCBAV4X68Lwt7JzpbON7EAqz8sNi4PqVnZTKIR/HjZoMvzM6ZkfG
+ DP5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700753395; x=1701358195;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hJlx0/l+/l0lXF5wXTVwJAd/EOKbj6xqiqErT7fTX4A=;
+ b=tdw2L3eqYXXAoFAUdk759zXeWo4gNlLRKq7Roeeoylhdw6HuObuqJQUIFRPm3oXEdN
+ FABqkDt2QfHjUiAasZVAiUFigwDVIvne+506GFcxoCUFr1+QU1bbG4wVUDVnDOV+O9D4
+ wCCfyEDzXCE4gmpt4sF/r+YgjgqDsq3G0ck0iLLMGe9OVhsbCS0lQrCxG1WOC5IdoAB3
+ hJBDu/b+Hq2jYBVOVBJBKfhuNjBOkTgSL/4DF3m0l97B1I4lgDzq1YJwNKp824gQTYOO
+ mNRn+wroPDGePczh30oEoFZGJE8So/f3Vxza2Xn4cfu+DbTlF5Zz6q4RT1S46Z7G6HuU
+ /b4Q==
+X-Gm-Message-State: AOJu0YyvJDXJuacc/XHjRsjcrolpclskfARFMmqUSXtf5oK/c2HwNqir
+ GN/XOiu1RN6HJxRQmY4X9W3ntGsSMPfZctn0Fw0=
+X-Google-Smtp-Source: AGHT+IF0/ISqhSTRdHLk1Dpzuileb5yVWPTnwo78QCpFmnXrUHLXnc2SoWOyoObJDQIhNcfe8HO1Yw==
+X-Received: by 2002:a5d:588c:0:b0:332:ca7e:29cd with SMTP id
+ n12-20020a5d588c000000b00332ca7e29cdmr4935236wrf.55.1700753395369; 
+ Thu, 23 Nov 2023 07:29:55 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.165.237])
+ by smtp.gmail.com with ESMTPSA id
+ y3-20020adfee03000000b00332d3b89561sm1960728wrn.97.2023.11.23.07.29.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 23 Nov 2023 07:29:54 -0800 (PST)
+Message-ID: <791c81ad-e98d-4eee-9ca7-f3157977913c@linaro.org>
+Date: Thu, 23 Nov 2023 16:29:52 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] docs: define policy forbidding use of "AI" / LLM code
+ generators
+Content-Language: en-US
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Alexander Graf <agraf@csgraf.de>, =?UTF-8?Q?Alex_Benn_=C3=A9_e?=
+ <alex.bennee@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Stefan Hajnoczi
+ <stefanha@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 2/2] docs: define policy forbidding use of "AI" / LLM
- code generators
-Message-ID: <20231123152217.GB52478@fedora>
 References: <20231123114026.3589272-1-berrange@redhat.com>
  <20231123114026.3589272-3-berrange@redhat.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="yHzYr/lnoZ022gIu"
-Content-Disposition: inline
-In-Reply-To: <20231123114026.3589272-3-berrange@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ <20231123092523-mutt-send-email-mst@kernel.org>
+ <4l0it.9kkxe9s135lg@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <4l0it.9kkxe9s135lg@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,62 +104,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 23/11/23 15:56, Manos Pitsidianakis wrote:
+> On Thu, 23 Nov 2023 16:35, "Michael S. Tsirkin" <mst@redhat.com> wrote:
+>> On Thu, Nov 23, 2023 at 11:40:26AM +0000, Daniel P. Berrangé wrote:
+>>> There has been an explosion of interest in so called "AI" (LLM)
+>>> code generators in the past year or so. Thus far though, this is
+>>> has not been matched by a broadly accepted legal interpretation
+>>> of the licensing implications for code generator outputs. While
+>>> the vendors may claim there is no problem and a free choice of
+>>> license is possible, they have an inherent conflict of interest
+>>> in promoting this interpretation. More broadly there is, as yet,
+>>> no broad consensus on the licensing implications of code generators
+>>> trained on inputs under a wide variety of licenses.
+>>>
+>>> The DCO requires contributors to assert they have the right to
+>>> contribute under the designated project license. Given the lack
+>>> of consensus on the licensing of "AI" (LLM) code generator output,
+>>> it is not considered credible to assert compliance with the DCO
+>>> clause (b) or (c) where a patch includes such generated code.
+>>>
+>>> This patch thus defines a policy that the QEMU project will not
+>>> accept contributions where use of "AI" (LLM) code generators is
+>>> either known, or suspected.
+>>>
+>>> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+>>> ---
+>>>  docs/devel/code-provenance.rst | 40 ++++++++++++++++++++++++++++++++++
+>>>  1 file changed, 40 insertions(+)
 
---yHzYr/lnoZ022gIu
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 23, 2023 at 11:40:26AM +0000, Daniel P. Berrang=E9 wrote:
-> There has been an explosion of interest in so called "AI" (LLM)
-> code generators in the past year or so. Thus far though, this is
-> has not been matched by a broadly accepted legal interpretation
-> of the licensing implications for code generator outputs. While
-> the vendors may claim there is no problem and a free choice of
-> license is possible, they have an inherent conflict of interest
-> in promoting this interpretation. More broadly there is, as yet,
-> no broad consensus on the licensing implications of code generators
-> trained on inputs under a wide variety of licenses.
->=20
-> The DCO requires contributors to assert they have the right to
-> contribute under the designated project license. Given the lack
-> of consensus on the licensing of "AI" (LLM) code generator output,
-> it is not considered credible to assert compliance with the DCO
-> clause (b) or (c) where a patch includes such generated code.
->=20
-> This patch thus defines a policy that the QEMU project will not
-> accept contributions where use of "AI" (LLM) code generators is
-> either known, or suspected.
->=20
-> Signed-off-by: Daniel P. Berrang=E9 <berrange@redhat.com>
-> ---
->  docs/devel/code-provenance.rst | 40 ++++++++++++++++++++++++++++++++++
->  1 file changed, 40 insertions(+)
+>>> +Use of "AI" (LLM) code generators
+>>> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>> +
+>>> +TL;DR:
+>>> +
+>>> +  **Current QEMU project policy is to DECLINE any contributions
+>>> +  which are believed to include or derive from "AI" (LLM)
+>>> +  generated code.**
+>>> +
+>>> +The existence of "AI" (`Large Language Model 
+>>> <https://en.wikipedia.org/wiki/Large_language_model>`__
+>>> +/ LLM) code generators raises a number of difficult legal questions, a
+>>> +number of which impact on Open Source projects. As noted earlier, the
+>>> +QEMU community requires that contributors certify their patch 
+>>> submissions
+>>> +are made in accordance with the rules of the :ref:`dco` (DCO). When a
+>>> +patch contains "AI" generated code this raises difficulties with code
+>>> +provenence and thus DCO compliance.
+>>> +
+>>> +To satisfy the DCO, the patch contributor has to fully understand
+>>> +the origins and license of code they are contributing to QEMU. The
+>>> +license terms that should apply to the output of an "AI" code generator
+>>> +are ill-defined, given that both training data and operation of the
+>>> +"AI" are typically opaque to the user. Even where the training data
+>>> +is said to all be open source, it will likely be under a wide variety
+>>> +of license terms.
+>>> +
+>>> +While the vendor's of "AI" code generators may promote the idea that
+>>> +code output can be taken under a free choice of license, this is not
+>>> +yet considered to be a generally accepted, nor tested, legal opinion.
+>>> +
+>>> +With this in mind, the QEMU maintainers does not consider it is
+>>> +currently possible to comply with DCO terms (b) or (c) for most "AI"
+>>> +generated code.
+>>> +
+>>> +The QEMU maintainers thus require that contributors refrain from using
+>>> +"AI" code generators on patches intended to be submitted to the 
+>>> project,
+>>> +and will decline any contribution if use of "AI" is known or suspected.
+>>> +
+>>> +Examples of tools impacted by this policy includes both GitHub CoPilot,
+>>> +and ChatGPT, amongst many others which are less well known.
+>>
+>>
+>> So you called out these two by name, fine, but given "AI" is in scare
+>> quotes I don't really know what is or is not allowed and I don't know
+>> how will contributors know.  Is the "AI" that one must not use
+>> necessarily an LLM?  And how do you define LLM even? Wikipedia says
+>> "general-purpose language understanding and generation".
+>>
+>>
+>> All this seems vague to me.
+>>
+>>
+>> However, can't we define a simpler more specific policy?
+>> For example, isn't it true that *any* automatically generated code
+>> can only be included if the scripts producing said code
+>> are also included or otherwise available under GPLv2?
+> 
+> The following definition makes sense to me:
+> 
+> - Automated codegen tool must be idempotent.
+> - Automated codegen tool must not use statistical modelling.
+> 
+> I'd remove all AI or LLM references. These are non-specific, colloquial 
+> and in the case of `AI`, non-technical. This policy should apply the 
+> same to a Markov chain code generator.
 
-As open source LLMs mature, it may be possible to curate the training
-data so that the output complies with software licenses and can be used
-in QEMU.
-
-For the time being, the position in this patch seems reasonable because
-it prevents license problems down the road.
-
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-
---yHzYr/lnoZ022gIu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVfbikACgkQnKSrs4Gr
-c8igSQgAliJ+EDHYxQgbEYL3xHmSO5n6Cj/W+1337Gm4T5YoXhL1cMxNgNkcRtsV
-q72yJtidS3TkWeFrDYPbN5rruKaE/tzx5h9AOuw52SaSGJ5SlVtOTZAaUYa5uPxE
-c1v3XjvlJfCoC9RYJnWKtJ0bD8FFm1bVfZcIj+lFsNeVqWROLFLTLb675CnJ2yxc
-G7IPWoJWtlILSOuiGWAjPDpS4o+DF96Y5FKMjrbo/NiIcLmyzV7JIaH3ONgoTqIo
-ZGd6JNbpjtCnvqcNwAw1HwvE4GyudOm73ivXeW4oaysdyrwlcWcASWkK3oA/PPys
-ejViQOkyVcOzASO22s8hEMNAFSuKNw==
-=8aJL
------END PGP SIGNATURE-----
-
---yHzYr/lnoZ022gIu--
-
+This document targets all contributors. Contributions can be typo
+fix, translations, ... and don't have to be technical. Similarly,
+contributors aren't expected to be technical experts. As a neophyte,
+"AI" makes sense. "Idempotent code generator" or "LLM" don't :)
 
