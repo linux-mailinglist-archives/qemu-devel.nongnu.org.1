@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E597F665C
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 19:36:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 673457F6657
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 19:36:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6EYh-0000o5-31; Thu, 23 Nov 2023 13:36:15 -0500
+	id 1r6EYj-00015p-9a; Thu, 23 Nov 2023 13:36:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6EYb-0000Sq-5c
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:36:09 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6EYg-0000t8-5p
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:36:14 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6EYZ-0003kT-1w
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:36:08 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40b399f0b6fso471235e9.2
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 10:36:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6EYe-0003sA-Fn
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:36:13 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-332ce50450dso741804f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 10:36:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700764565; x=1701369365; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700764570; x=1701369370; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sJjfIOalwsvZmq2fy7v7JKs3hNC/WaTRJ81yhz4vDXw=;
- b=Prpr/+535ghApSNq6W8KTKA8AW/mEtDE94INo/NEkasATn8LW8OtPuvCVJLSYFfqty
- XKMQmIOoTrZw89y38yO8f4Pz+FB8Yyr5fIYlBJxlAw4inDw7N5S4h0nA0kZzr9iO7t7N
- 2FBLXtAlV6nNga9hojKjdgHL8Thg7XBd7rYkaPyYlRr+Nr+YzeQBHHGskLYPn7b1UKp9
- 89UvOZrQTYhQ65TrBmpn4J72zrSyk9e9MbS6LvVyvEJXd7T0Wr5LHi5XGoaamiJoXNMv
- c/xB99hxaeVHKPJP2VHeyxFtJ37pJhhIIspMlIA+JwO3gvBYsEi6gh40BoaX/zW4Iw+H
- DKjg==
+ bh=OSjIUExNNTZZyxxju0j+hfpNF1ayVJnEfjEBE24u3Js=;
+ b=ipoqtP5ygKqADHCz6TCmOWMiWZ1tApjhbS6zxF2O4AH+eI2jWxSleWpFdJr/TW1tdc
+ NkVz6UNwV1gVuCWpoAPyhwzsA605RCdeI5h8/dttswixltb7JoE8vYk/l+c0C9fEMtqh
+ u9Rh5/DX6+W2Kfvf+AZrdx/rNrVevusHji4UCUu1yj0K874kc3STE1bEsj85xnArjVuf
+ U8Ej8WXvaPQcfn0ETLWD7NVzXi8WpwN/7NcrF9xDB9Bbs3ZA5fOe2mXzDorkB+I/dnUr
+ 5vt+Hniffzy0+qAeAKvht0ZjDLov3HIwXVlvGHDLICmVFa4BdoUCicRMkhZFQqwXiPhO
+ 5LVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700764565; x=1701369365;
+ d=1e100.net; s=20230601; t=1700764570; x=1701369370;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sJjfIOalwsvZmq2fy7v7JKs3hNC/WaTRJ81yhz4vDXw=;
- b=lHqxpg/sQdgSUKdm9KlvD+l10liogfqrqHNGH6/wSkFOpQPukndbTde68xMDbwI33t
- 3KqTKSrg9mIYfdhfSXDsLS27G5RI2wc/gSgyyZUhW5vU4K7YhmOLLjx9nsac7oQaTcP2
- 0GeQd49F+e0j/aKqCcPfJXECyq/CKK+VNUO+A48T+ZtL3Mb2uws7gN1Zyjurfs0768HB
- LNKfZQoTYiyCheRUPSn0vh1/MmW0Aoc2FR4HueyLXjHzqzuTLqv3ByzmSlZHz3iDy7LG
- 8TJNRKNzaEheb3Wo0cSo7/kDOVNHGXf4UJ8GIEXRLTxA63wLV+hqpW+hDBRWIJ9hiDAk
- 9e2w==
-X-Gm-Message-State: AOJu0YxH+qlXwIMMXopzrPPiWf8H00prqChPZDpQXc8M2xvzPp9SXWHx
- fvIzTtOUq7Gct/93qeOIp5dq+MUidAPhfQV4ESg=
-X-Google-Smtp-Source: AGHT+IELE79MyLBbOsT4/Sz7U570tGHdhzEvWk2p61WIGplYDA6HA/ukUNXBzijqXiExJ/9+xOAMnQ==
-X-Received: by 2002:a05:600c:1c12:b0:407:612b:91fb with SMTP id
- j18-20020a05600c1c1200b00407612b91fbmr290352wms.30.1700764565221; 
- Thu, 23 Nov 2023 10:36:05 -0800 (PST)
+ bh=OSjIUExNNTZZyxxju0j+hfpNF1ayVJnEfjEBE24u3Js=;
+ b=lmHsLKi0h7pgKnNjPTjoU4Z0CiLYXhnNB944LIzFtM3JvkjKkAd2zrd6LW//Zb++eI
+ rWLxXyg3t4vJC2zngTd2Av6mrgKleR2lqJ9nuZKZWPQtNDHQxr1j0gJAKRZprahhBeBx
+ yLYR4oMpcL84ZnfYb4dSm2u0mDdO4Eena8YFKTAVe3femYW/u1Hh+M1tdTV97VWn2PwX
+ 2e4RfvfG1nN/DjkxMtSEYAQOC4FA3sQXdhmPj90QSxwep24nCW2FyNPJrrLvI+a9KiBF
+ usL9vsmtuvgfKmaU/YFlGWz/ISnPsq+8TZgabLX5sZ9bmcLQkoWFgOkJKRdm5I+G1Hry
+ vxNQ==
+X-Gm-Message-State: AOJu0Ywce9JoxMaYngOP5y4bOwxd/IVqG4c1LQK76tdFbiknqVgOrem9
+ hS8hQgPvomw86GezdsAnJ72AOUAtiqsQlImzaTU=
+X-Google-Smtp-Source: AGHT+IFgzxS1rMr+4vJyVHw8yTL7+XlGZ+6k9Z3h/Y0p6Y8WoWsGCe6GudKC213LdZDrUfDjX2soLA==
+X-Received: by 2002:a5d:6152:0:b0:332:e75e:f39a with SMTP id
+ y18-20020a5d6152000000b00332e75ef39amr228741wrt.35.1700764570576; 
+ Thu, 23 Nov 2023 10:36:10 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.165.237])
  by smtp.gmail.com with ESMTPSA id
- u11-20020a05600c19cb00b0040a507f546fsm3526409wmq.8.2023.11.23.10.36.04
+ n8-20020a5d67c8000000b00332e84210c2sm259285wrw.88.2023.11.23.10.36.09
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 23 Nov 2023 10:36:04 -0800 (PST)
+ Thu, 23 Nov 2023 10:36:10 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.0 08/16] target/arm/kvm: Have kvm_arm_pmu_init take a
+Subject: [PATCH-for-9.0 09/16] target/arm/kvm: Have kvm_arm_pmu_set_irq take a
  ARMCPU argument
-Date: Thu, 23 Nov 2023 19:35:09 +0100
-Message-ID: <20231123183518.64569-9-philmd@linaro.org>
+Date: Thu, 23 Nov 2023 19:35:10 +0100
+Message-ID: <20231123183518.64569-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231123183518.64569-1-philmd@linaro.org>
 References: <20231123183518.64569-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,55 +105,55 @@ Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
  3 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index 0e12a008ab..fde1c45609 100644
+index fde1c45609..55fcc35ed7 100644
 --- a/target/arm/kvm_arm.h
 +++ b/target/arm/kvm_arm.h
-@@ -200,8 +200,8 @@ int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa);
- 
+@@ -201,7 +201,7 @@ int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa);
  int kvm_arm_vgic_probe(void);
  
-+void kvm_arm_pmu_init(ARMCPU *cpu);
- void kvm_arm_pmu_set_irq(CPUState *cs, int irq);
--void kvm_arm_pmu_init(CPUState *cs);
+ void kvm_arm_pmu_init(ARMCPU *cpu);
+-void kvm_arm_pmu_set_irq(CPUState *cs, int irq);
++void kvm_arm_pmu_set_irq(ARMCPU *cpu, int irq);
  
  /**
   * kvm_arm_pvtime_init:
-@@ -263,7 +263,7 @@ static inline void kvm_arm_pmu_set_irq(CPUState *cs, int irq)
+@@ -258,7 +258,7 @@ static inline int kvm_arm_vgic_probe(void)
      g_assert_not_reached();
  }
  
--static inline void kvm_arm_pmu_init(CPUState *cs)
-+static inline void kvm_arm_pmu_init(ARMCPU *cpu)
+-static inline void kvm_arm_pmu_set_irq(CPUState *cs, int irq)
++static inline void kvm_arm_pmu_set_irq(ARMCPU *cpu, int irq)
  {
      g_assert_not_reached();
  }
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index b6efe9da4d..63f3c0b750 100644
+index 63f3c0b750..040ca2d794 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -2000,7 +2000,7 @@ static void virt_cpu_post_init(VirtMachineState *vms, MemoryRegion *sysmem)
+@@ -1998,7 +1998,7 @@ static void virt_cpu_post_init(VirtMachineState *vms, MemoryRegion *sysmem)
+             if (pmu) {
+                 assert(arm_feature(&ARM_CPU(cpu)->env, ARM_FEATURE_PMU));
                  if (kvm_irqchip_in_kernel()) {
-                     kvm_arm_pmu_set_irq(cpu, VIRTUAL_PMU_IRQ);
+-                    kvm_arm_pmu_set_irq(cpu, VIRTUAL_PMU_IRQ);
++                    kvm_arm_pmu_set_irq(ARM_CPU(cpu), VIRTUAL_PMU_IRQ);
                  }
--                kvm_arm_pmu_init(cpu);
-+                kvm_arm_pmu_init(ARM_CPU(cpu));
+                 kvm_arm_pmu_init(ARM_CPU(cpu));
              }
-             if (steal_time) {
-                 kvm_arm_pvtime_init(ARM_CPU(cpu), pvtime_reg_base
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 82c5924ab5..e7cbe1ff05 100644
+index e7cbe1ff05..f17e706e48 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -1711,17 +1711,17 @@ static bool kvm_arm_set_device_attr(ARMCPU *cpu, struct kvm_device_attr *attr,
-     return true;
+@@ -1727,7 +1727,7 @@ void kvm_arm_pmu_init(ARMCPU *cpu)
+     }
  }
  
--void kvm_arm_pmu_init(CPUState *cs)
-+void kvm_arm_pmu_init(ARMCPU *cpu)
+-void kvm_arm_pmu_set_irq(CPUState *cs, int irq)
++void kvm_arm_pmu_set_irq(ARMCPU *cpu, int irq)
  {
      struct kvm_device_attr attr = {
          .group = KVM_ARM_VCPU_PMU_V3_CTRL,
-         .attr = KVM_ARM_VCPU_PMU_V3_INIT,
+@@ -1735,10 +1735,10 @@ void kvm_arm_pmu_set_irq(CPUState *cs, int irq)
+         .attr = KVM_ARM_VCPU_PMU_V3_IRQ,
      };
  
 -    if (!ARM_CPU(cs)->has_pmu) {
@@ -162,7 +162,7 @@ index 82c5924ab5..e7cbe1ff05 100644
      }
 -    if (!kvm_arm_set_device_attr(ARM_CPU(cs), &attr, "PMU")) {
 +    if (!kvm_arm_set_device_attr(cpu, &attr, "PMU")) {
-         error_report("failed to init PMU");
+         error_report("failed to set irq for PMU");
          abort();
      }
 -- 
