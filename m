@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F10D7F5C50
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 11:31:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C8B57F5C5D
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 11:33:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r66z7-000662-3s; Thu, 23 Nov 2023 05:31:01 -0500
+	id 1r66zA-0006AU-2i; Thu, 23 Nov 2023 05:31:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r66z4-00064M-VL; Thu, 23 Nov 2023 05:30:58 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1r66z7-00068L-Jh; Thu, 23 Nov 2023 05:31:01 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r66yy-0006iy-7K; Thu, 23 Nov 2023 05:30:58 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1cc9b626a96so5411865ad.2; 
- Thu, 23 Nov 2023 02:30:48 -0800 (PST)
+ id 1r66z3-0006jL-HQ; Thu, 23 Nov 2023 05:31:01 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1cf74ad87e0so5837265ad.3; 
+ Thu, 23 Nov 2023 02:30:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700735447; x=1701340247; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1700735452; x=1701340252; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p2nZxspqxXGSaOJSNc7FrNBWBoHuHjERZ9VQDvWondA=;
- b=JtoDKP0uHB7rL4e8k4p9WEIGqdKGdpx/p1/RowB9RcKXJv2lhS1IcecrqBHAXjezwe
- 5t7Q9skjEXoCIss9No8ihELf+5Ftsw9j5UW+O+kYCo0QnZcHVfagVkWVPZ/m1Lz+1X5d
- YeDdPzxJt8IqwaqExayUIzrdstTOW5JG1fw53cZJ8Ql4vwPVftIV1uUg0H//AfWCS8EV
- H3TqoyAgckCFMfpCfd0e1M5pbaS7piul+UyhAI7ISOcv9oC4K7qOULXQKOLDwXOVCddq
- 2VCEUvyNaST6dT+ddqUVRuppeRqIDYsI9CR+Qvzgl9Yr7SwgLC69IOLyDPSYEV8iYDBZ
- UFqw==
+ bh=WHs87zyPo5rp34m15ThA5k+UEpfu+5+tbqdj+0DUG1c=;
+ b=jWk5gnkmCnaEqFdZrvYUf7lplVMb7QJPBwEn4Y/xUfjtnHtUBd5XahDz5GGvt5IMia
+ DaXGDYaGl6D74TsPUvqneeaSceaX1FcLhFDM2ADHoYeSzf93nIQQtZ4IoVsMfgJFECeo
+ qZFbSZqL7dLMDUpuJMYIrohVeMifr2aBKomLdC+3werJJVkY6NngMrj6H7aTov6YkJhC
+ nwnFRCyiTifw3N5xhsQYT6R/ZyRHYNS6d/R7A+E1hsbNixO6bnhpP07STLg2POBTRUpK
+ NY/iOR90KP/4EFqdBCxwXY5sMDBPM4lxyGpGPaVR6RYpssfiB7I/kRZjfXT3xqOIys3V
+ SRqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700735447; x=1701340247;
+ d=1e100.net; s=20230601; t=1700735452; x=1701340252;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p2nZxspqxXGSaOJSNc7FrNBWBoHuHjERZ9VQDvWondA=;
- b=U5oEA7oP+Az0owUOgf41Q5OZG+2yKL7L581NVSn6A4BQu1bEz8ANaLosa06YHPwckM
- /ewztZGYUGULoUzosRJkcW+Hy3IP/0G1HLOtM6bE3Sd/JPr44wP3U79X+cxsk4CbuMo0
- 9k+8KecyLIQGd8ZwHYJMLkdgYVnXnBljfv4Q00WnF/aGJOwBxUn8qCM0ZkXAJcCO2EPr
- gIL7+lon+65c8dRhLv7U5zpdm4JzsgVPjVpzLmzTvYvBGsjrjuYkLewloOhl0zB+IqRC
- 2Xvxh/YUwxj6W7UKBLuStBSHDPWqr6/ecYJ2XrqnXhl97ySiOd37hIyeCnZoM4vlQ1Wx
- igwQ==
-X-Gm-Message-State: AOJu0YxWJAqAAhzeTtEDrR+8AWjdbJ6u+l3B6ANvhmeobaVjeM4C9wDK
- 6PWLRWZAShl/r1eg2oSXwp2rIoqZnTE=
-X-Google-Smtp-Source: AGHT+IHVU/b5CnUm6m7u4gu4fSvf0dJfamC9xxL7vYVqAS1/emWw/YpE9KM6ylFibfVSk6yTmwvNXA==
-X-Received: by 2002:a17:902:d511:b0:1cc:5aef:f2c1 with SMTP id
- b17-20020a170902d51100b001cc5aeff2c1mr4673429plg.33.1700735446889; 
- Thu, 23 Nov 2023 02:30:46 -0800 (PST)
+ bh=WHs87zyPo5rp34m15ThA5k+UEpfu+5+tbqdj+0DUG1c=;
+ b=dZ1fnQqNtrBfQyBomEn/WcyMvTy2nsCRVS/PIQNq2NWP9jNJFrpuFudQe5FDZtfp7X
+ oZWUVZpq5K8NDoG/3sugq9y/+tqTev4jAA7kdNN8TMWMf1Yh0NLk1fKjuU0SNEK7kui3
+ lh0KRv5NUeWA7hWDl2waomnVjzzwuc7YjqKkteW9HywLXTmtbN2KSq4eCqhQP0YJxRPs
+ YC8pTyEt6ASK4VklLYvWhWalUbeimR6eKyvqws/EX87SKwzvcPpg8z0HfY7GUjn6tN7b
+ qafXjqRqBHph/UH0+1Q2ZWv2Tk8pGaIrzED/tBI4tpzLXumH1ZezkIPpF7oQIGnjbqRO
+ lQeA==
+X-Gm-Message-State: AOJu0YxWPThJ7tQdMtwvs/vcPCA6EUGFDLC+XbMOGCP+CLeZ97TIF+od
+ chvskJ0gQyD9UDZN2WAGi3whKX5ezvI=
+X-Google-Smtp-Source: AGHT+IHFUXMV19aYwvsq99HBmciKyyVDjQIFGoE4PhFW+YzldC7+kz00AoSSXfTjmWzoD6iBlr+xcQ==
+X-Received: by 2002:a17:902:ced1:b0:1cc:6597:f421 with SMTP id
+ d17-20020a170902ced100b001cc6597f421mr6208407plg.48.1700735451861; 
+ Thu, 23 Nov 2023 02:30:51 -0800 (PST)
 Received: from wheely.local0.net (60-240-124-93.tpgi.com.au. [60.240.124.93])
  by smtp.gmail.com with ESMTPSA id
- e4-20020a170902d38400b001cc1dff5b86sm1009070pld.244.2023.11.23.02.30.43
+ e4-20020a170902d38400b001cc1dff5b86sm1009070pld.244.2023.11.23.02.30.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Nov 2023 02:30:46 -0800 (PST)
+ Thu, 23 Nov 2023 02:30:51 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -61,16 +61,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  qemu-devel@nongnu.org
-Subject: [PATCH 5/7] pnv/chiptod: Implement the ChipTOD to Core transfer
-Date: Thu, 23 Nov 2023 20:30:16 +1000
-Message-ID: <20231123103018.172383-6-npiggin@gmail.com>
+Subject: [PATCH 6/7] target/ppc: Implement core timebase state machine and TFMR
+Date: Thu, 23 Nov 2023 20:30:17 +1000
+Message-ID: <20231123103018.172383-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231123103018.172383-1-npiggin@gmail.com>
 References: <20231123103018.172383-1-npiggin@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,234 +94,317 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-One of the functions of the ChipTOD is to transfer TOD to the Core
-(aka PC - Pervasive Core) timebase facility.
+This implements the core timebase state machine, which is the core side
+of the time-of-day system in POWER processors. This facility is operated
+by control fields in the TFMR register, which also contains status
+fields.
 
-The ChipTOD can be programmed with a target address to send the TOD
-value to. The hardware implementation seems to perform this by
-sending the TOD value to a SCOM addres.
+The core timebase interacts with the chiptod hardware, primarily to
+receive TOD updates, to synchronise timebase with other cores. This
+model does not actually update TB values with TOD or updates received
+from the chiptod, as timebases are always synchronised. It does step
+through the states required to perform the update.
 
-This implementation grabs the core directly and manipulates the
-timebase facility state in the core. This is a hack, but it works
-enough for now. A better implementation would implement the transfer
-to the PnvCore xscom register and drive the timebase state machine
-from there.
+There are several asynchronous state transitions. These are modelled
+using using mfTFMR to drive state changes, because it is expected that
+firmware poll the register to wait for those states. This is good enough
+to test basic firmware behaviour without adding real timers. The values
+chosen are arbitrary.
 
+Acked-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- include/hw/ppc/pnv_chiptod.h |  3 ++
- include/hw/ppc/pnv_core.h    |  4 ++
- target/ppc/cpu.h             |  7 +++
- hw/ppc/pnv.c                 | 33 +++++++++++++
- hw/ppc/pnv_chiptod.c         | 92 ++++++++++++++++++++++++++++++++++++
- 5 files changed, 139 insertions(+)
+ target/ppc/cpu.h             |  35 ++++++
+ target/ppc/timebase_helper.c | 210 ++++++++++++++++++++++++++++++++++-
+ 2 files changed, 242 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/ppc/pnv_chiptod.h b/include/hw/ppc/pnv_chiptod.h
-index e2765c3bfc..ffcc376e80 100644
---- a/include/hw/ppc/pnv_chiptod.h
-+++ b/include/hw/ppc/pnv_chiptod.h
-@@ -29,6 +29,8 @@ enum tod_state {
-     tod_stopped = 1,
- };
- 
-+typedef struct PnvCore PnvCore;
-+
- struct PnvChipTOD {
-     DeviceState xd;
- 
-@@ -40,6 +42,7 @@ struct PnvChipTOD {
-     enum tod_state tod_state;
-     uint64_t tod_error;
-     uint64_t pss_mss_ctrl_reg;
-+    PnvCore *slave_pc_target;
- };
- 
- struct PnvChipTODClass {
-diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
-index 4db21229a6..5f52ae7dbf 100644
---- a/include/hw/ppc/pnv_core.h
-+++ b/include/hw/ppc/pnv_core.h
-@@ -85,4 +85,8 @@ struct PnvQuad {
-     MemoryRegion xscom_regs;
-     MemoryRegion xscom_qme_regs;
- };
-+
-+PnvCore *pnv_get_core_by_xscom_base(PnvChip *chip, uint32_t xscom_base);
-+PnvCore *pnv_get_core_by_id(PnvChip *chip, uint32_t core_id);
-+
- #endif /* PPC_PNV_CORE_H */
 diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 848e583c2d..8df5626939 100644
+index 8df5626939..ed4f06f059 100644
 --- a/target/ppc/cpu.h
 +++ b/target/ppc/cpu.h
-@@ -1258,6 +1258,13 @@ struct CPUArchState {
-     uint32_t tlb_need_flush; /* Delayed flush needed */
- #define TLB_NEED_LOCAL_FLUSH   0x1
- #define TLB_NEED_GLOBAL_FLUSH  0x2
+@@ -1264,6 +1264,13 @@ struct CPUArchState {
+     /* PowerNV chiptod / timebase facility state. */
+     int tb_ready_for_tod; /* core TB ready to receive TOD from chiptod */
+     int tod_sent_to_tb;   /* chiptod sent TOD to the core TB */
 +
-+#if defined(TARGET_PPC64)
-+    /* Would be nice to put these into PnvCore */
-+    /* PowerNV chiptod / timebase facility state. */
-+    int tb_ready_for_tod; /* core TB ready to receive TOD from chiptod */
-+    int tod_sent_to_tb;   /* chiptod sent TOD to the core TB */
-+#endif
++    /*
++     * Timers for async events are simulated by mfTFAC because TFAC is to be
++     * polled for event.
++     */
++    int tb_state_timer;
++    int tb_sync_pulse_timer;
+ #endif
  #endif
  
-     /* Other registers */
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 546266ae3d..fa0dc26732 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -2032,6 +2032,39 @@ static void pnv_chip_core_realize(PnvChip *chip, Error **errp)
-     }
+@@ -2655,6 +2662,34 @@ enum {
+     HMER_XSCOM_STATUS_MASK      = PPC_BITMASK(21, 23),
+ };
+ 
++/* TFMR */
++enum {
++    TFMR_CONTROL_MASK           = PPC_BITMASK(0, 24),
++    TFMR_MASK_HMI               = PPC_BIT(10),
++    TFMR_TB_ECLIPZ              = PPC_BIT(14),
++    TFMR_LOAD_TOD_MOD           = PPC_BIT(16),
++    TFMR_MOVE_CHIP_TOD_TO_TB    = PPC_BIT(18),
++    TFMR_CLEAR_TB_ERRORS        = PPC_BIT(24),
++    TFMR_STATUS_MASK            = PPC_BITMASK(25, 63),
++    TFMR_TBST_ENCODED           = PPC_BITMASK(28, 31), /* TBST = TB State */
++    TFMR_TBST_LAST              = PPC_BITMASK(32, 35), /* Previous TBST */
++    TFMR_TB_ENABLED             = PPC_BIT(40),
++    TFMR_TB_VALID               = PPC_BIT(41),
++    TFMR_TB_SYNC_OCCURED        = PPC_BIT(42),
++    TFMR_FIRMWARE_CONTROL_ERROR = PPC_BIT(46),
++};
++
++/* TFMR TBST (Time Base State Machine). */
++enum {
++    TBST_RESET                  = 0x0,
++    TBST_SEND_TOD_MOD           = 0x1,
++    TBST_NOT_SET                = 0x2,
++    TBST_SYNC_WAIT              = 0x6,
++    TBST_GET_TOD                = 0x7,
++    TBST_TB_RUNNING             = 0x8,
++    TBST_TB_ERROR               = 0x9,
++};
++
+ /*****************************************************************************/
+ 
+ #define is_isa300(ctx) (!!(ctx->insns_flags2 & PPC2_ISA300))
+diff --git a/target/ppc/timebase_helper.c b/target/ppc/timebase_helper.c
+index 08a6b47ee0..9c77736e77 100644
+--- a/target/ppc/timebase_helper.c
++++ b/target/ppc/timebase_helper.c
+@@ -18,6 +18,7 @@
+  */
+ #include "qemu/osdep.h"
+ #include "cpu.h"
++#include "hw/ppc/ppc.h"
+ #include "exec/helper-proto.h"
+ #include "exec/exec-all.h"
+ #include "qemu/log.h"
+@@ -145,15 +146,218 @@ void helper_store_booke_tsr(CPUPPCState *env, target_ulong val)
  }
  
-+PnvCore *pnv_get_core_by_xscom_base(PnvChip *chip, uint32_t xscom_base)
+ #if defined(TARGET_PPC64)
+-/* POWER processor Timebase Facility */
++/*
++ * POWER processor Timebase Facility
++ */
++
++/*
++ * The TBST is the timebase state machine, which is a per-core machine that
++ * is used to synchronize the core TB with the ChipTOD. States 3,4,5 are
++ * not used in POWER8/9/10.
++ *
++ * The state machine gets driven by writes to TFMR SPR from the core, and
++ * by signals from the ChipTOD. The state machine table for common
++ * transitions is as follows (according to hardware specs, not necessarily
++ * this implementation):
++ *
++ * | Cur            | Event                            | New |
++ * +----------------+----------------------------------+-----+
++ * | 0 RESET        | TFMR |= LOAD_TOD_MOD             | 1   |
++ * | 1 SEND_TOD_MOD | "immediate transition"           | 2   |
++ * | 2 NOT_SET      | mttbu/mttbu40/mttbl              | 2   |
++ * | 2 NOT_SET      | TFMR |= MOVE_CHIP_TOD_TO_TB      | 6   |
++ * | 6 SYNC_WAIT    | "sync pulse from ChipTOD"        | 7   |
++ * | 7 GET_TOD      | ChipTOD xscom MOVE_TOD_TO_TB_REG | 8   |
++ * | 8 TB_RUNNING   | mttbu/mttbu40                    | 8   |
++ * | 8 TB_RUNNING   | TFMR |= LOAD_TOD_MOD             | 1   |
++ * | 8 TB_RUNNING   | mttbl                            | 9   |
++ * | 9 TB_ERROR     | TFMR |= CLEAR_TB_ERRORS          | 0   |
++ *
++ * - LOAD_TOD_MOD will also move states 2,6 to state 1, omitted from table
++ *   because it's not a typical init flow.
++ *
++ * - The ERROR state can be entered from most/all other states on invalid
++ *   states (e.g., if some TFMR control bit is set from a state where it's
++ *   not listed to cause a transition away from), omitted to avoid clutter.
++ *
++ * Note: mttbl causes a timebase error because this inevitably causes
++ * ticks to be lost and TB to become unsynchronized, whereas TB can be
++ * adjusted using mttbu* without losing ticks. mttbl behaviour is not
++ * modelled.
++ *
++ * Note: the TB state machine does not actually cause any real TB adjustment!
++ * TB starts out synchronized across all vCPUs (hardware threads) in
++ * QMEU, so for now the purpose of the TBST and ChipTOD model is simply
++ * to step through firmware initialisation sequences.
++ */
++static unsigned int tfmr_get_tb_state(uint64_t tfmr)
 +{
-+    PnvChipClass *pcc = PNV_CHIP_GET_CLASS(chip);
-+    int i;
-+
-+    for (i = 0; i < chip->nr_cores; i++) {
-+        PnvCore *pc = chip->cores[i];
-+        CPUCore *cc = CPU_CORE(pc);
-+        int core_hwid = cc->core_id;
-+
-+        if (pcc->xscom_core_base(chip, core_hwid) == xscom_base) {
-+            return pc;
-+        }
-+    }
-+    return NULL;
++    return (tfmr & TFMR_TBST_ENCODED) >> (63 - 31);
 +}
 +
-+PnvCore *pnv_get_core_by_id(PnvChip *chip, uint32_t core_id)
++static uint64_t tfmr_new_tb_state(uint64_t tfmr, unsigned int tbst)
 +{
-+    int i;
++    tfmr &= ~TFMR_TBST_LAST;
++    tfmr |= (tfmr & TFMR_TBST_ENCODED) >> 4; /* move state to last state */
++    tfmr &= ~TFMR_TBST_ENCODED;
++    tfmr |= (uint64_t)tbst << (63 - 31); /* move new state to state */
 +
-+    for (i = 0; i < chip->nr_cores; i++) {
-+        PnvCore *pc = chip->cores[i];
-+        CPUCore *cc = CPU_CORE(pc);
-+
-+        if (cc->core_id == core_id) {
-+            return pc;
-+        }
++    if (tbst == TBST_TB_RUNNING) {
++        tfmr |= TFMR_TB_VALID;
++    } else {
++        tfmr &= ~TFMR_TB_VALID;
 +    }
-+    return NULL;
++
++    return tfmr;
 +}
 +
++static void tb_state_machine_step(CPUPPCState *env)
++{
++    uint64_t tfmr = env->spr[SPR_TFMR];
++    unsigned int tbst = tfmr_get_tb_state(tfmr);
 +
- static void pnv_chip_realize(DeviceState *dev, Error **errp)
- {
-     PnvChip *chip = PNV_CHIP(dev);
-diff --git a/hw/ppc/pnv_chiptod.c b/hw/ppc/pnv_chiptod.c
-index a7bfe4298d..a2c1c83800 100644
---- a/hw/ppc/pnv_chiptod.c
-+++ b/hw/ppc/pnv_chiptod.c
-@@ -201,6 +201,62 @@ static void pnv_chiptod_xscom_write(void *opaque, hwaddr addr,
-         chiptod->pss_mss_ctrl_reg = val & PPC_BITMASK(0, 31);
-         break;
- 
-+    case TOD_TX_TTYPE_CTRL_REG:
-+        /*
-+         * This register sets the target of the TOD value transfer initiated
-+         * by TOD_MOVE_TOD_TO_TB. The TOD is able to send the address to
-+         * any target register, though in practice only the PC TOD register
-+         * should be used. ChipTOD has a "SCOM addressing" mode which fully
-+         * specifies the SCOM address, and a core-ID mode which uses the
-+         * core ID to target the PC TOD for a given core.
-+         *
-+         * skiboot uses SCOM for P10 and ID for P9, possibly due to hardware
-+         * weirdness. For this reason, that is all we implement here.
-+         */
-+        if (val & PPC_BIT(35)) { /* SCOM addressing */
-+            uint32_t addr2 = val >> 32;
-+            uint32_t reg = addr2 & 0xfff;
++    if (!(tfmr & TFMR_TB_ECLIPZ) || tbst == TBST_TB_ERROR) {
++        return;
++    }
 +
-+            if (reg != PC_TOD) {
-+                qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: SCOM addressing: "
-+                              "unimplemented slave register 0x%" PRIx32 "\n",
-+                              reg);
-+                return;
-+            }
++    if (env->tb_sync_pulse_timer) {
++        env->tb_sync_pulse_timer--;
++    } else {
++        tfmr |= TFMR_TB_SYNC_OCCURED;
++        env->spr[SPR_TFMR] = tfmr;
++    }
 +
-+            /*
-+             * This may not deal with P10 big-core addressing at the moment.
-+             * The big-core code in skiboot syncs small cores, but it targets
-+             * the even PIR (first small-core) when syncing second small-core.
-+             */
-+            chiptod->slave_pc_target =
-+                    pnv_get_core_by_xscom_base(chiptod->chip, addr2 & ~0xfff);
-+            if (!chiptod->slave_pc_target) {
-+                qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
-+                              " TOD_TX_TTYPE_CTRL_REG val 0x%" PRIx64
-+                              " invalid slave XSCOM address\n", val);
-+            }
++    if (env->tb_state_timer) {
++        env->tb_state_timer--;
++        return;
++    }
 +
-+        } else { /* PIR addressing */
-+            uint32_t core_id;
-+
-+            if (!is_power9) {
-+                qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: PIR addressing"
-+                              " is only implemented for POWER9\n");
-+                return;
-+            }
-+
-+            core_id = GETFIELD(TOD_TX_TTYPE_PIB_SLAVE_ADDR, val) & 0x1f;
-+            chiptod->slave_pc_target = pnv_get_core_by_id(chiptod->chip,
-+                                                           core_id);
-+            if (!chiptod->slave_pc_target) {
-+                qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
-+                              " TOD_TX_TTYPE_CTRL_REG val 0x%" PRIx64
-+                              " invalid slave core ID 0x%" PRIx32 "\n",
-+                              val, core_id);
-+            }
-+        }
-+        break;
-     case TOD_ERROR_REG:
-         chiptod->tod_error &= ~val;
-         break;
-@@ -215,6 +271,42 @@ static void pnv_chiptod_xscom_write(void *opaque, hwaddr addr,
-     case TOD_LOAD_TOD_REG:
-         chiptod->tod_state = tod_running;
-         break;
-+    case TOD_MOVE_TOD_TO_TB_REG:
-+        /*
-+         * XXX: it should be a cleaner model to have this drive a SCOM
-+         * transaction to the target address, and implement the state machine
-+         * in the PnvCore. For now, this hack makes things work.
-+         */
-+        if (!(val & PPC_BIT(0))) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
-+                          " TOD_MOVE_TOD_TO_TB_REG with bad val 0x%016lx\n",
-+                          val);
-+        } else if (chiptod->slave_pc_target == NULL) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
-+                          " TOD_MOVE_TOD_TO_TB_REG with no slave target\n");
++    if (tfmr & TFMR_LOAD_TOD_MOD) {
++        tfmr &= ~TFMR_LOAD_TOD_MOD;
++        if (tbst == TBST_GET_TOD) {
++            tfmr = tfmr_new_tb_state(tfmr, TBST_TB_ERROR);
++            tfmr |= TFMR_FIRMWARE_CONTROL_ERROR;
 +        } else {
-+            PowerPCCPU *cpu = chiptod->slave_pc_target->threads[0];
-+            CPUPPCState *env = &cpu->env;
-+
-+            /*
-+             * Moving TOD to TB will set the TB of all threads in a
-+             * core, so skiboot only does this once per thread0, so
-+             * that is where we keep the timebase state machine.
-+             *
-+             * It is likely possible for TBST to be driven from other
-+             * threads in the core, but for now we only implement it for
-+             * thread 0.
-+             */
-+
-+            if (env->tb_ready_for_tod) {
-+                env->tod_sent_to_tb = 1;
-+            } else {
-+                qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
-+                              " TOD_MOVE_TOD_TO_TB_REG with TB not ready to"
-+                              " receive TOD\n");
-+            }
++            tfmr = tfmr_new_tb_state(tfmr, TBST_SEND_TOD_MOD);
++            /* State seems to transition immediately */
++            tfmr = tfmr_new_tb_state(tfmr, TBST_NOT_SET);
 +        }
-+        break;
-     case TOD_TX_TTYPE_4_REG:
-         if (is_power9) {
-             chiptod_power9_send_remotes(chiptod);
++    } else if (tfmr & TFMR_MOVE_CHIP_TOD_TO_TB) {
++        if (tbst == TBST_SYNC_WAIT) {
++            tfmr = tfmr_new_tb_state(tfmr, TBST_GET_TOD);
++            env->tb_state_timer = 3;
++        } else if (tbst == TBST_GET_TOD) {
++            if (env->tod_sent_to_tb) {
++                tfmr = tfmr_new_tb_state(tfmr, TBST_TB_RUNNING);
++                tfmr &= ~TFMR_MOVE_CHIP_TOD_TO_TB;
++                env->tb_ready_for_tod = 0;
++                env->tod_sent_to_tb = 0;
++            }
++        } else {
++            qemu_log_mask(LOG_GUEST_ERROR, "TFMR error: MOVE_CHIP_TOD_TO_TB "
++                          "state machine in invalid state 0x%x\n", tbst);
++            tfmr = tfmr_new_tb_state(tfmr, TBST_TB_ERROR);
++            tfmr |= TFMR_FIRMWARE_CONTROL_ERROR;
++            env->tb_ready_for_tod = 0;
++        }
++    }
++
++    env->spr[SPR_TFMR] = tfmr;
++}
++
+ target_ulong helper_load_tfmr(CPUPPCState *env)
+ {
+-    return env->spr[SPR_TFMR];
++    tb_state_machine_step(env);
++
++    return env->spr[SPR_TFMR] | TFMR_TB_ECLIPZ;
+ }
+ 
+ void helper_store_tfmr(CPUPPCState *env, target_ulong val)
+ {
+-    env->spr[SPR_TFMR] = val;
++    uint64_t tfmr = env->spr[SPR_TFMR];
++    uint64_t clear_on_write;
++    unsigned int tbst = tfmr_get_tb_state(tfmr);
++
++    if (!(val & TFMR_TB_ECLIPZ)) {
++        qemu_log_mask(LOG_UNIMP, "TFMR non-ECLIPZ mode not implemented\n");
++        tfmr &= ~TFMR_TBST_ENCODED;
++        tfmr &= ~TFMR_TBST_LAST;
++        goto out;
++    }
++
++    /* Update control bits */
++    tfmr = (tfmr & ~TFMR_CONTROL_MASK) | (val & TFMR_CONTROL_MASK);
++
++    /* Several bits are clear-on-write, only one is implemented so far */
++    clear_on_write = val & TFMR_FIRMWARE_CONTROL_ERROR;
++    tfmr &= ~clear_on_write;
++
++    /*
++     * mtspr always clears this. The sync pulse timer makes it come back
++     * after the second mfspr.
++     */
++    tfmr &= ~TFMR_TB_SYNC_OCCURED;
++    env->tb_sync_pulse_timer = 1;
++
++    if (ppc_cpu_tir(env_archcpu(env)) != 0 &&
++        (val & (TFMR_LOAD_TOD_MOD | TFMR_MOVE_CHIP_TOD_TO_TB))) {
++        qemu_log_mask(LOG_UNIMP, "TFMR timebase state machine can only be "
++                                 "driven by thread 0\n");
++        goto out;
++    }
++
++    if (((tfmr | val) & (TFMR_LOAD_TOD_MOD | TFMR_MOVE_CHIP_TOD_TO_TB)) ==
++                        (TFMR_LOAD_TOD_MOD | TFMR_MOVE_CHIP_TOD_TO_TB)) {
++        qemu_log_mask(LOG_GUEST_ERROR, "TFMR error: LOAD_TOD_MOD and "
++                                       "MOVE_CHIP_TOD_TO_TB both set\n");
++        tfmr = tfmr_new_tb_state(tfmr, TBST_TB_ERROR);
++        tfmr |= TFMR_FIRMWARE_CONTROL_ERROR;
++        env->tb_ready_for_tod = 0;
++        goto out;
++    }
++
++    if (tfmr & TFMR_CLEAR_TB_ERRORS) {
++        /*
++         * Workbook says TFMR_CLEAR_TB_ERRORS should be written twice.
++         * This is not simulated/required here.
++         */
++        tfmr = tfmr_new_tb_state(tfmr, TBST_RESET);
++        tfmr &= ~TFMR_CLEAR_TB_ERRORS;
++        tfmr &= ~TFMR_LOAD_TOD_MOD;
++        tfmr &= ~TFMR_MOVE_CHIP_TOD_TO_TB;
++        tfmr &= ~TFMR_FIRMWARE_CONTROL_ERROR; /* XXX: should this be cleared? */
++        env->tb_ready_for_tod = 0;
++        env->tod_sent_to_tb = 0;
++        goto out;
++    }
++
++    if (tbst == TBST_TB_ERROR) {
++        qemu_log_mask(LOG_GUEST_ERROR, "TFMR error: mtspr TFMR in TB_ERROR"
++                                       " state\n");
++        tfmr |= TFMR_FIRMWARE_CONTROL_ERROR;
++        return;
++    }
++
++    if (tfmr & TFMR_LOAD_TOD_MOD) {
++        /* Wait for an arbitrary 3 mfspr until the next state transition. */
++        env->tb_state_timer = 3;
++    } else if (tfmr & TFMR_MOVE_CHIP_TOD_TO_TB) {
++        if (tbst == TBST_NOT_SET) {
++            tfmr = tfmr_new_tb_state(tfmr, TBST_SYNC_WAIT);
++            env->tb_ready_for_tod = 1;
++            env->tb_state_timer = 3; /* arbitrary */
++        } else {
++            qemu_log_mask(LOG_GUEST_ERROR, "TFMR error: MOVE_CHIP_TOD_TO_TB "
++                                           "not in TB not set state 0x%x\n",
++                                           tbst);
++            tfmr = tfmr_new_tb_state(tfmr, TBST_TB_ERROR);
++            tfmr |= TFMR_FIRMWARE_CONTROL_ERROR;
++            env->tb_ready_for_tod = 0;
++        }
++    }
++
++out:
++    env->spr[SPR_TFMR] = tfmr;
+ }
+ #endif
+ 
 -- 
 2.42.0
 
