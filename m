@@ -2,89 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE1C7F5CFA
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 11:54:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7390F7F5D29
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 12:02:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r67Kd-0003BV-86; Thu, 23 Nov 2023 05:53:15 -0500
+	id 1r67Ro-0005LV-Bf; Thu, 23 Nov 2023 06:00:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r67Kb-0003B1-9I
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 05:53:13 -0500
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r67KZ-00085i-Ld
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 05:53:13 -0500
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-507a62d4788so1014543e87.0
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 02:53:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700736789; x=1701341589; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Hn231TPQAIm81aDlW6t4vrvp2l2n6+4iyMZdiNal2FU=;
- b=avXNtM+lPymhdDNJnTmVSCUrosXRny6rnCUmpLfAm+BKLBV23QIL1c1qiCtGBjO8WG
- mmRgN4v5EcyWS75hcJij/OEbLl2Q7HDk6sWwlstBoJu9EPOp3bcB4JEegHFBT5mFgAgW
- SE16qQ/nqgOenNARTKbb0ICJ9ZdOI7e/PtcM7djWSdJ94GTqHwUey7L1rR2Dmec4l8/c
- xIGzY3wHPJLGLw+yCuI8gZ8izM3bM1Zo/HUdPJvfTTc3EdxCn/achvxliGRXNPNN5Mdk
- 6Q7zUjxrYYe/Lo8wmgvjSDHSVTUhcl8rDfNnMUIq3xj6OAvu91XPwT6OdRNF592dsjzh
- /UMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700736789; x=1701341589;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Hn231TPQAIm81aDlW6t4vrvp2l2n6+4iyMZdiNal2FU=;
- b=ZoFNKf+XOQWa2vtYgQ6m8pg5SdFcKS2UhVvn9At/uX4Gf//IdASrZdSJ1wXKWsuShr
- SnwxR6iX4emlOhoL1ztKF3wUaUiAeOwvsPHER+s50Y3OeI0yL1zyZ1T3YnvfPB1YVGH/
- oixO8vCKH5j+MVkAFJX8nQswzlXnpj9lF286l8woHhFhkaqWDEVtywAQQ9h4rv4VYNGl
- TPW/wB6NrNH342vEwckTxHY71hx+DBaaHBZ5+A3tEYnMMThVYaiqWqIz3sU+OQE7OUbV
- auBu930exxs1ZnvFMnKKFnjA169vbXCQYzfIPITVtP54lZ8+fOiVvWeOiwBaVIK+l1Si
- MGOA==
-X-Gm-Message-State: AOJu0YyHExJmyMyYvICf1daETOqCt+WmvDyvb6KxNR4NnBtNNxx/Jxdo
- e/eyBOLz6u18oOrSz61vvmiOxDFlOIVpaa8a3kTtVw==
-X-Google-Smtp-Source: AGHT+IH4UXrmQK+84W/DqqbnAWGXE0sTgGhh1lmeuLukojxVDaaC3J6E9F2UUq7czicL+gL1c+daIW8Z9VJ2ZHf7M+M=
-X-Received: by 2002:ac2:4c2a:0:b0:4fa:f96c:745f with SMTP id
- u10-20020ac24c2a000000b004faf96c745fmr3513464lfq.38.1700736788955; Thu, 23
- Nov 2023 02:53:08 -0800 (PST)
-MIME-Version: 1.0
-References: <20231114163115.298041-1-thuth@redhat.com>
- <12b4420e-1440-4516-8276-e0e907003c16@linaro.org>
- <9f6247e4-7e81-44f8-a63b-8ee11f722710@redhat.com>
- <CWYYRW53VEPJ.3UL1X7GB1P4H2@wheely>
- <6877d6d6-bfbf-4475-8c61-dd537265b278@redhat.com>
- <ZVTETYrfL8f48qe3@redhat.com> <ZVT-bY9YOr69QTPX@redhat.com>
- <CAFn=p-aDO_fZOsiBMdHhn6GP3ZadCrUAN4=C6o4d95UVMo3vOA@mail.gmail.com>
-In-Reply-To: <CAFn=p-aDO_fZOsiBMdHhn6GP3ZadCrUAN4=C6o4d95UVMo3vOA@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 23 Nov 2023 10:52:57 +0000
-Message-ID: <CAFEAcA-kvS0TJN=wEeHYrG0Fqqm9Mj5Bx_0TFHwnTts6jXvFfw@mail.gmail.com>
-Subject: Re: [PATCH] tests/avocado/reverse_debugging: Disable the ppc64 tests
- by default
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r67Rm-0005L1-AT
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:00:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r67Rj-0002P7-R8
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 06:00:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700737232;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=fzicTtAGE0p9GRXFmLcc3j0J5ehXaozwtFR3rQngrj8=;
+ b=AiGJHSKO9G7Xc2Z+xVFByAB/7i8My9/YizrQHjb3cQAOV+FyR8BKDVjJ2zcpX8CG6ahZ83
+ qgFSKcxpOdnBohLD2utKAu5HaJhqjtvKRFCtccDXYXvFDFunBXNttntSOtrElG5Jz8LGqF
+ 9s+W1ggMXMAo1+yYf4cSE7koOYR3iXk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-67-dJKHcEaSN5CW3SlMODt-3w-1; Thu,
+ 23 Nov 2023 06:00:21 -0500
+X-MC-Unique: dJKHcEaSN5CW3SlMODt-3w-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 96C4E280A9C7;
+ Thu, 23 Nov 2023 11:00:21 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 74CD01121309;
+ Thu, 23 Nov 2023 11:00:21 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 8579721E6A1F; Thu, 23 Nov 2023 12:00:20 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
 To: John Snow <jsnow@redhat.com>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>, 
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Cc: qemu-devel <qemu-devel@nongnu.org>,  Peter Maydell
+ <peter.maydell@linaro.org>,  Michael Roth <michael.roth@amd.com>
+Subject: Re: [PATCH 06/19] qapi/schema: adjust type narrowing for mypy's
+ benefit
+References: <20231116014350.653792-1-jsnow@redhat.com>
+ <20231116014350.653792-7-jsnow@redhat.com>
+ <87ttpf2o6t.fsf@pond.sub.org>
+ <CAFn=p-bd6E0kYJXyzjU=BR8BzEAXvdiQbsMT+_E1O7COaXNfJA@mail.gmail.com>
+ <87cyw2uhee.fsf@pond.sub.org>
+ <CAFn=p-ZjcbDtw2kBSFAeM5=T-MijJh_xifjsE0x3ubOjjK4TtQ@mail.gmail.com>
+Date: Thu, 23 Nov 2023 12:00:20 +0100
+In-Reply-To: <CAFn=p-ZjcbDtw2kBSFAeM5=T-MijJh_xifjsE0x3ubOjjK4TtQ@mail.gmail.com>
+ (John Snow's message of "Wed, 22 Nov 2023 13:12:27 -0500")
+Message-ID: <87il5s7n0b.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,41 +87,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 20 Nov 2023 at 19:19, John Snow <jsnow@redhat.com> wrote:
->
-> On Wed, Nov 15, 2023 at 12:23=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrang=
-e@redhat.com> wrote:
-> > The Python  Machine() class has passed one of a pre-created socketpair
-> > FDs for the serial port chardev. The guest is trying to write to this
-> > and blocking.  Nothing in the Machine() class is reading from the
-> > other end of the serial port console.
+John Snow <jsnow@redhat.com> writes:
 
-> > The Machine class doesn't know if anything will ever use the console,
-> > so as is the change is unsafe.
-> >
-> > The original goal of John's change was to guarantee we capture early
-> > boot messages as some test need that.
-> >
-> > I think we need to be able to have a flag to say whether the caller nee=
-ds
-> > an "early console" facility, and only use the pre-opened FD passing for
-> > that case. Tests we need early console will have to ask for that guaran=
-tee
-> > explicitly.
+> On Wed, Nov 22, 2023, 7:00 AM Markus Armbruster <armbru@redhat.com> wrote:
 >
-> Tch. I see. Thank you for diagnosing this.
+>> John Snow <jsnow@redhat.com> writes:
+>>
+>> > On Tue, Nov 21, 2023, 9:09 AM Markus Armbruster <armbru@redhat.com> wrote:
+
+[...]
+
+>> >> Harmless enough.  I can't quite see the mypy problem, though.  Care to
+>> >> elaborate a bit?
+>> >>
+>> >
+>> > self.arg_type has a narrower type- or, it WILL at the end of this series -
+>> > so we need to narrow a temporary variable first before assigning it to the
+>> > object state.
+>> >
+>> > We already perform the necessary check/narrowing, so this is really just
+>> > pointing out that it's a bad idea to assign the state before the type
+>> > check. Now we type check before assigning state.
+>>
+>> After PATCH 16, .resolve_type() will return QAPISchemaType, and
+>> self.arg_type will be Optional[QAPISchemaObjectType].  Correct?
+>>
 >
-> From the machine.py perspective, you have to *opt in* to having a
-> console, so I hadn't considered that a caller would enable the console
-> and then ... not read from it. Surely that's a bug in the caller?
+> Sounds right. Sometimes it's a little hard to see what the error is before
+> the rest of the types go in, a hazard of needing all patches to bisect
+> without regression.
+>
+> Do you want a more elaborate commit message?
 
-From an Avocado test perspective, I would expect that the test case
-should have to explicitly opt *out* of "the console messages appear
-in the avocado test log, even if the test case doesn't care about them
-for the purposes of identifying when to end the test or whatever".
-The console logs are important for after-the-fact human diagnosis
-of why a test might have failed, so we should always collect them.
+Your commit messages of PATCH 3+4 show the error.  Helps.
 
-thanks
--- PMM
+Maybe
+
+    qapi/schema: Adjust type narrowing for mypy's benefit
+
+    We already take care to perform some type narrowing for arg_type and
+    ret_type, but not in a way where mypy can utilize the result once we
+    add type hints:
+
+        error message goes here
+
+    A simple change to use a temporary variable helps the medicine go
+    down.
+
 
