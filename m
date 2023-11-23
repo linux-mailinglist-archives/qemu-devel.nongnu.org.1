@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D19847F64FF
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 18:14:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF927F650D
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 18:17:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6DHA-0005KJ-Aw; Thu, 23 Nov 2023 12:14:04 -0500
+	id 1r6DJz-0006nq-Sz; Thu, 23 Nov 2023 12:16:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r6DH8-0005Il-Gr
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 12:14:02 -0500
+ id 1r6DJv-0006nc-ST
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 12:16:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r6DH0-0000yh-IY
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 12:14:02 -0500
+ id 1r6DJu-0002Rr-2O
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 12:16:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700759632;
+ s=mimecast20190719; t=1700759813;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2Rp3RLlBx36Ux1ClJIihBXNTXYXJvFupliIPd/luRRM=;
- b=ApFrqZfW3lovS9A7XnklesKpGpThJfKj4Kr0GZorGhulNYroROB+PTKLgJwvJERWjOWwpP
- utUQFEtqu7y4w4dLC/bNpwONBCDsMWdqSvd+cLSZOMxdT5zn7Xlb7cwSOyCNM6I/wtnm46
- k0T+lKpuX1yzkDUooVVJmaaPHElzypE=
+ bh=alda3S4tL/chlRAfjN8nQC+JZ/KvG6auchbdArr5nZA=;
+ b=S/1EntJ8VDUkNaFazeH3SPj6QiAfkLzyYL3+S/q4PRvvhEfQeYPtJOu9XXZTZR5MlB4Swt
+ EM2pee2647NEdkpjeEZP1BAM480K4ulOov0m6nKdNbkVYDnxLi9WRvdt4SfLNEJyHJFEzy
+ CA4tSPi4u2P9SHa/wrOka9J68IK3KFw=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-452-E5XGCgnQNAi3QzxqOrtGtw-1; Thu, 23 Nov 2023 12:13:49 -0500
-X-MC-Unique: E5XGCgnQNAi3QzxqOrtGtw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-582-DgtVNFHDPm6aooRDQdKn4A-1; Thu, 23 Nov 2023 12:16:51 -0500
+X-MC-Unique: DgtVNFHDPm6aooRDQdKn4A-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2D0CD88D4E3;
- Thu, 23 Nov 2023 17:13:48 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A042885A58A;
+ Thu, 23 Nov 2023 17:16:50 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.44])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B574436E4;
- Thu, 23 Nov 2023 17:12:59 +0000 (UTC)
-Date: Thu, 23 Nov 2023 17:12:57 +0000
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BF3041121306;
+ Thu, 23 Nov 2023 17:16:47 +0000 (UTC)
+Date: Thu, 23 Nov 2023 17:16:45 +0000
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Alexander Graf <agraf@csgraf.de>,
  Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Phil =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Peter Maydell <peter.maydell@linaro.org>
 Subject: Re: [PATCH 1/2] docs: introduce dedicated page about code provenance
  / sign-off
-Message-ID: <ZV-IGbGb7EIzgIxo@redhat.com>
+Message-ID: <ZV-I_eWYsBeOe4Sp@redhat.com>
 References: <20231123114026.3589272-1-berrange@redhat.com>
  <20231123114026.3589272-2-berrange@redhat.com>
- <ZV9QtIkJJvZyQbRn@redhat.com>
+ <20231123091654-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZV9QtIkJJvZyQbRn@redhat.com>
+In-Reply-To: <20231123091654-mutt-send-email-mst@kernel.org>
 User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -77,7 +77,8 @@ X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_FILL_THIS_FORM_SHORT=0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,8 +96,8 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 23, 2023 at 02:16:36PM +0100, Kevin Wolf wrote:
-> Am 23.11.2023 um 12:40 hat Daniel P. Berrangé geschrieben:
+On Thu, Nov 23, 2023 at 09:25:13AM -0500, Michael S. Tsirkin wrote:
+> On Thu, Nov 23, 2023 at 11:40:25AM +0000, Daniel P. Berrangé wrote:
 > > Currently we have a short paragraph saying that patches must include
 > > a Signed-off-by line, and merely link to the kernel documentation.
 > > The linked kernel docs have alot of content beyond the part about
@@ -107,82 +108,21 @@ On Thu, Nov 23, 2023 at 02:16:36PM +0100, Kevin Wolf wrote:
 > > use, and what to do in some edge cases.
 > > 
 > > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > ---
-> >  docs/devel/code-provenance.rst    | 197 ++++++++++++++++++++++++++++++
-> >  docs/devel/index-process.rst      |   1 +
-> >  docs/devel/submitting-a-patch.rst |  18 +--
-> >  3 files changed, 201 insertions(+), 15 deletions(-)
-> >  create mode 100644 docs/devel/code-provenance.rst
-> > 
-> > diff --git a/docs/devel/code-provenance.rst b/docs/devel/code-provenance.rst
-> > new file mode 100644
-> > index 0000000000..b4591a2dec
-> > --- /dev/null
-> > +++ b/docs/devel/code-provenance.rst
-> > @@ -0,0 +1,197 @@
-> > +.. _code-provenance:
-> > +
-> > +Code provenance
-> > +===============
-> > +
-> > +Certifying patch submissions
-> > +~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > +
-> > +The QEMU community **mandates** all contributors to certify provenance
-> > +of patch submissions they make to the project. To put it another way,
-> > +contributors must indicate that they are legally permitted to contribute
-> > +to the project.
-> > +
-> > +Certification is achieved with a low overhead by adding a single line
-> > +to the bottom of every git commit::
-> > +
-> > +   Signed-off-by: YOUR NAME <YOUR@EMAIL>
-> > +
-> > +This existence of this line asserts that the author of the patch is
-> > +contributing in accordance with the `Developer's Certificate of
-> > +Origin <https://developercertifcate.org>`__:
-> > +
-> > +.. _dco:
-> > +
-> > +::
-> > +  Developer's Certificate of Origin 1.1
-> > +
-> > +  By making a contribution to this project, I certify that:
-> > +
-> > +  (a) The contribution was created in whole or in part by me and I
-> > +      have the right to submit it under the open source license
-> > +      indicated in the file; or
-> > +
-> > +  (b) The contribution is based upon previous work that, to the best
-> > +      of my knowledge, is covered under an appropriate open source
-> > +      license and I have the right under that license to submit that
-> > +      work with modifications, whether created in whole or in part
-> > +      by me, under the same open source license (unless I am
-> > +      permitted to submit under a different license), as indicated
-> > +      in the file; or
-> > +
-> > +  (c) The contribution was provided directly to me by some other
-> > +      person who certified (a), (b) or (c) and I have not modified
-> > +      it.
-> > +
-> > +  (d) I understand and agree that this project and the contribution
-> > +      are public and that a record of the contribution (including all
-> > +      personal information I submit with it, including my sign-off) is
-> > +      maintained indefinitely and may be redistributed consistent with
-> > +      this project or the open source license(s) involved.
-> > +
-> > +It is generally expected that the name and email addresses used in one
-> > +of the ``Signed-off-by`` lines, matches that of the git commit ``Author``
-> > +field. If the person sending the mail is also one of the patch authors,
-> > +it is further expected that the mail ``From:`` line name & address match
-> > +one of the ``Signed-off-by`` lines. 
 > 
-> Isn't the S-o-b expected even if the person sending the mail isn't one
-> of the patch authors, i.e. certifying (c) rather than (a) or (b) from
-> the DCO? This is essentially the same case as what a subsystem
-> maintainer does.
 
-Yes, you are right.
+> > +  * The non-primary author's contributions were so trivial that
+> > +    they can be considered not subject to copyright. In this case
+> > +    the secondary authors need not include a ``Signed-off-by``.
+> > +
+> > +    This case most commonly applies where QEMU reviewers give short
+> > +    snippets of code as suggested fixes to a patch. The reviewers
+> > +    don't need to have their own ``Signed-off-by`` added unless
+> > +    their code suggestion was unusually large.
+> 
+> It is still a good policy to include attribution, e.g.
+> by adding a Suggested-by tag.
+
+Will add this tag.
 
 
 > > +Other commit tags
@@ -197,15 +137,68 @@ Yes, you are right.
 > > +
 > > +   NB: a subsystem maintainer sending a pull request would replace
 > > +   their own ``Reviewed-by`` with another ``Signed-off-by``
+> > +
+> > + * **``Acked-by``**: when a QEMU subsystem maintainer approves a patch
+> > +   that touches their subsystem, but intends to allow a different
+> > +   maintainer to queue it and send a pull request, they would send
+> > +   a mail containing a ``Acked-by`` tag.
+> > +   
+> > + * **``Tested-by``**: when a QEMU community member has functionally
+> > +   tested the behaviour of the patch in some manner, they should
+> > +   send an email reply conmtaning a ``Tested-by`` tag.
+> > +
+> > + * **``Reported-by``**: when a QEMU community member reports a problem
+> > +   via the mailing list, or some other informal channel that is not
+> > +   the issue tracker, it is good practice to credit them by including
+> > +   a ``Reported-by`` tag on any patch fixing the issue. When the
+> > +   problem is reported via the GitLab issue tracker, however, it is
+> > +   sufficient to just include a link to the issue.
 > 
-> As Philippe already mentioned, this isn't necessarily the case. It's a
-> common enough practice to add a S-o-b (which technically only certifies
-> the DCO) without removing the R-b (which tells that the content was
-> actually reviewed in detail - maintainers don't always do that if there
-> are already R-bs from trusted community members).
+> 
+> Suggested-by is also common.
+> 
+> As long as we are here, let's document Fixes: and Cc: ?
 
-Yes, will change.
+The submitting-a-patch doc covers more general commit message information.
+I think this doc just ought to focus on tags that identify humans involved
+in the process.
 
+I've never been sure what the point of the 'Cc' tag is, when you actually
+want to use the Cc email header ? 
+
+
+> > diff --git a/docs/devel/submitting-a-patch.rst b/docs/devel/submitting-a-patch.rst
+> > index c641d948f1..ec541b3d15 100644
+> > --- a/docs/devel/submitting-a-patch.rst
+> > +++ b/docs/devel/submitting-a-patch.rst
+> > @@ -322,21 +322,9 @@ Patch emails must include a ``Signed-off-by:`` line
+> >  
+> >  Your patches **must** include a Signed-off-by: line. This is a hard
+> >  requirement because it's how you say "I'm legally okay to contribute
+> > -this and happy for it to go into QEMU". The process is modelled after
+> > -the `Linux kernel
+> > -<http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/SubmittingPatches?id=f6f94e2ab1b33f0082ac22d71f66385a60d8157f#n297>`__
+> > -policy.
+> > -
+> > -If you wrote the patch, make sure your "From:" and "Signed-off-by:"
+> > -lines use the same spelling. It's okay if you subscribe or contribute to
+> > -the list via more than one address, but using multiple addresses in one
+> > -commit just confuses things. If someone else wrote the patch, git will
+> > -include a "From:" line in the body of the email (different from your
+> > -envelope From:) that will give credit to the correct author; but again,
+> > -that author's Signed-off-by: line is mandatory, with the same spelling.
+> > -
+> > -There are various tooling options for automatically adding these tags
+> > -include using ``git commit -s`` or ``git format-patch -s``. For more
+> > +this and happy for it to go into QEMU". For full guidance, read the
+> > +:ref:`code-provenance` documentation.
+> > +
+> >  information see `SubmittingPatches 1.12
+> >  <http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/SubmittingPatches?id=f6f94e2ab1b33f0082ac22d71f66385a60d8157f#n297>`__.
+> 
+> this "information" now looks orphaned or am I confused?
+
+Yes, forgot to cull it.
 
 With regards,
 Daniel
