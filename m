@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8BA67F57E9
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 06:59:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F4B7F57EE
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 06:59:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r62iK-0003fy-C9; Thu, 23 Nov 2023 00:57:24 -0500
+	id 1r62iK-0003gI-OZ; Thu, 23 Nov 2023 00:57:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1r62iA-0003ej-Oc
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 00:57:15 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1r62iC-0003fA-8v
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 00:57:17 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1r62i6-0005Qs-9B
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 00:57:14 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1cc0d0a0355so3650195ad.3
- for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 21:55:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1r62iA-0005RK-P3
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 00:57:15 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1cf8e569c35so842805ad.0
+ for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 21:55:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1700718907; x=1701323707;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1700718910; x=1701323710;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=964uo+5Y+U8YzWWZaokHxWreZ+eFgGhXnwjQzLz2WuU=;
- b=kJRxibFf6d+gjRjQ8V0CIQe1D3ogG6FxLJc0m/tFefKUDUl2nHOA8qPt5V5bylllup
- mI5aN/125kwmrbxhcUNB+c2ZvIpOQfUYAXmABk3HUXWQIwtOkjewaPYEFvKZFZ1VekkD
- AUn+cYHRRiPcbpjtildt5dzObyUwkApDQzskY9dJ1n2hEqoaFIptQZ+L+IxM0qqFr0M6
- WhtJkPqjeOta2heUz+YMCjgY+XcOPRuFn+6mT5BNYIZGR938ZNiVW1+Ve8F/Cb83GCif
- HWinVLt2ifZdYfxGdSICBVYtkt+OXzBOWahwabGNsXE3y39dOzEjhwCqKj3A4jJ5wtNm
- aVLg==
+ bh=4FsMw/oeJf/DV053RoR/5vAo/XSeXb8kX5EmtXDw9AA=;
+ b=mCVlfxHR8dx2akPG75S+H7fbfR0GCEN03tQ/Wa0cRPhvFmrGNUvkzgjnK6w7NIyTV7
+ 3Qoa2hZuuIemdG5HQgu+FVxa8opqm6QZp2BY0DoXAjelq/xgwhG6PVbZ6yADWnzee5vT
+ HTV1q2bU4cVQ3nTZoMWyc0KtH3id6nTTDJfFaiDz8QFqLEY/MUG/a28O9zVTlTvyS322
+ pHB8NZn0GjmlJ7xBxxW4dE3Ox0IQxFZLHlYH7/Oy7DLt0XLNBIzxmgYLeqQgPSjpxj2Q
+ NtTnrv8j6yTuOwfsTRhVdDFpXFVJBe2lL9C6UwAaIvpN7RmTxVEsJMC2qiKhJWp+jMZv
+ 42XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700718907; x=1701323707;
+ d=1e100.net; s=20230601; t=1700718910; x=1701323710;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=964uo+5Y+U8YzWWZaokHxWreZ+eFgGhXnwjQzLz2WuU=;
- b=VNJDmTOCd3d3K9+8DGaArRcdmRDmrlDbTRcNNhUs0Lmh7OouyvEa4oh7KvyrU1buG3
- FDwar9Ex//GYsHZREYux+tjTlLi2mIg4XbT4DdXf8tRDiF6NhvMAyztagq2h9VZrHq0i
- Ms7p3TLDo0m/hIXTezsYG8iOU83c+ngvazGxgZ3MmDtsN9+JoD8lizWq60T2C13K2H1v
- 3i3GFN/zbjPeI8CKLZi57GU5t/qwiAVXoaa3dNMc7cdLxGx+emwbozxqAODUpCJmCJo2
- 6BGX2j9pev7s2KHi2qhX0CVWQmX6xsTDKbf2iCHn9kP37zgejRDAgGmTzqFwLRRaDpo/
- +GDg==
-X-Gm-Message-State: AOJu0Yx5LI39caoUzNw4UeYwLULZByageWxPp8bLqcidGzt+pPg/kSQI
- 03cBthvVoVudRzsOyhVKAaUL3g==
-X-Google-Smtp-Source: AGHT+IHs93kLRNzvba/VUnnn0N7gKQr5FX516kpOaIX7sOJrgiA4V4iSrrjJ+QFGg8ldUcXYKiK1Dg==
-X-Received: by 2002:a17:902:f7c6:b0:1cf:8c88:51cb with SMTP id
- h6-20020a170902f7c600b001cf8c8851cbmr476181plw.62.1700718907245; 
- Wed, 22 Nov 2023 21:55:07 -0800 (PST)
+ bh=4FsMw/oeJf/DV053RoR/5vAo/XSeXb8kX5EmtXDw9AA=;
+ b=BC1imRl/TZrXH14xa13zHsuevAN2sY+DzbitCInkvfAq6XoWfYa0wYrBgdFZZj4Ucl
+ ADnmfNJGLdoUVs+r0OkO24UGRcPUgxbnDLWUUu5nEU3oa9agVAdH/QF9VCBOEcsndVfB
+ adwHweHNCdaFvjGo6/PasWsjPBRCGMUlqpN+FcKfRpiEV7gNDRdllbPHOq4qdG/IYxZY
+ 7HvBLAnOTJSQIv4oZVGdNbCp5edhyQgLxDfgIbaEaKXuzOvOFLujs2oYdSV9KzTdHzgX
+ k+8ggaynpovIIi/Unabb4l8ySSL3YN8G+I0QReuf5AGcGp0BIiruisbI64f7Y3ZEF/HE
+ RoTg==
+X-Gm-Message-State: AOJu0YyDmitzRHg3QrQR6G/KE6PHzFSFjQqSwmqLVY93V+Wdu/rlYS+o
+ 6Chtc0TjyYget0TmIl0x97KmSg==
+X-Google-Smtp-Source: AGHT+IH1T72oO522Ax8cX3y8cixR59S6B9shjsGzqO1kYwVANzQyoNBSDfZeRQcsNUxuNR46z4opOg==
+X-Received: by 2002:a17:903:32c7:b0:1cf:51c5:d427 with SMTP id
+ i7-20020a17090332c700b001cf51c5d427mr5502082plr.65.1700718909978; 
+ Wed, 22 Nov 2023 21:55:09 -0800 (PST)
 Received: from localhost.localdomain.localdomain ([8.210.91.195])
  by smtp.gmail.com with ESMTPSA id
- jl14-20020a170903134e00b001cf6453b237sm417071plb.236.2023.11.22.21.55.04
+ jl14-20020a170903134e00b001cf6453b237sm417071plb.236.2023.11.22.21.55.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Nov 2023 21:55:06 -0800 (PST)
+ Wed, 22 Nov 2023 21:55:09 -0800 (PST)
 From: Li Feng <fengli@smartx.com>
 To: Raphael Norwitz <raphael.norwitz@nutanix.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
@@ -65,16 +65,16 @@ To: Raphael Norwitz <raphael.norwitz@nutanix.com>,
  qemu-block@nongnu.org (open list:Block layer core),
  qemu-devel@nongnu.org (open list:All patches CC here)
 Cc: Li Feng <fengli@smartx.com>
-Subject: [PATCH 1/2] vhost-user: fix the reconnect error
-Date: Thu, 23 Nov 2023 13:54:11 +0800
-Message-ID: <20231123055431.217792-2-fengli@smartx.com>
+Subject: [PATCH 2/2] vhost-user-scsi: free the inflight area when reset
+Date: Thu, 23 Nov 2023 13:54:12 +0800
+Message-ID: <20231123055431.217792-3-fengli@smartx.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231123055431.217792-1-fengli@smartx.com>
 References: <20231123055431.217792-1-fengli@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62a;
- envelope-from=fengli@smartx.com; helo=mail-pl1-x62a.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::632;
+ envelope-from=fengli@smartx.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: 28
 X-Spam_score: 2.8
 X-Spam_bar: ++
@@ -97,90 +97,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the error occurs in vhost_dev_init, the value of s->connected is set to true
-in advance, and there is no chance to enter this function execution again
-in the future.
+Keep it the same to vhost-user-blk.
+At the same time, fix the vhost_reset_device.
 
 Signed-off-by: Li Feng <fengli@smartx.com>
 ---
- hw/block/vhost-user-blk.c   | 8 +++-----
- hw/scsi/vhost-user-scsi.c   | 3 ++-
- hw/virtio/vhost-user-gpio.c | 3 ++-
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ hw/scsi/vhost-user-scsi.c | 16 ++++++++++++++++
+ hw/virtio/virtio.c        |  2 +-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index 818b833108..2863d80d15 100644
---- a/hw/block/vhost-user-blk.c
-+++ b/hw/block/vhost-user-blk.c
-@@ -326,7 +326,6 @@ static int vhost_user_blk_connect(DeviceState *dev, Error **errp)
-     if (s->connected) {
-         return 0;
-     }
--    s->connected = true;
- 
-     s->dev.num_queues = s->num_queues;
-     s->dev.nvqs = s->num_queues;
-@@ -343,15 +342,14 @@ static int vhost_user_blk_connect(DeviceState *dev, Error **errp)
-         return ret;
-     }
- 
-+    s->connected = true;
-+
-     /* restore vhost state */
-     if (virtio_device_started(vdev, vdev->status)) {
-         ret = vhost_user_blk_start(vdev, errp);
--        if (ret < 0) {
--            return ret;
--        }
-     }
- 
--    return 0;
-+    return ret;
- }
- 
- static void vhost_user_blk_disconnect(DeviceState *dev)
 diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index 4486500cac..2060f9f94b 100644
+index 2060f9f94b..780f10559d 100644
 --- a/hw/scsi/vhost-user-scsi.c
 +++ b/hw/scsi/vhost-user-scsi.c
-@@ -147,7 +147,6 @@ static int vhost_user_scsi_connect(DeviceState *dev, Error **errp)
-     if (s->connected) {
-         return 0;
-     }
--    s->connected = true;
+@@ -360,6 +360,20 @@ static Property vhost_user_scsi_properties[] = {
+     DEFINE_PROP_END_OF_LIST(),
+ };
  
-     vsc->dev.num_queues = vs->conf.num_queues;
-     vsc->dev.nvqs = VIRTIO_SCSI_VQ_NUM_FIXED + vs->conf.num_queues;
-@@ -161,6 +160,8 @@ static int vhost_user_scsi_connect(DeviceState *dev, Error **errp)
-         return ret;
-     }
- 
-+    s->connected = true;
++static void vhost_user_scsi_reset(VirtIODevice *vdev)
++{
++    VHostUserSCSI *s = VHOST_USER_SCSI(vdev);
++    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
 +
-     /* restore vhost state */
-     if (virtio_device_started(vdev, vdev->status)) {
-         ret = vhost_user_scsi_start(s, errp);
-diff --git a/hw/virtio/vhost-user-gpio.c b/hw/virtio/vhost-user-gpio.c
-index aff2d7eff6..a83437a5da 100644
---- a/hw/virtio/vhost-user-gpio.c
-+++ b/hw/virtio/vhost-user-gpio.c
-@@ -229,7 +229,6 @@ static int vu_gpio_connect(DeviceState *dev, Error **errp)
-     if (gpio->connected) {
-         return 0;
-     }
--    gpio->connected = true;
- 
-     vhost_dev_set_config_notifier(vhost_dev, &gpio_ops);
-     gpio->vhost_user.supports_config = true;
-@@ -243,6 +242,8 @@ static int vu_gpio_connect(DeviceState *dev, Error **errp)
-         return ret;
-     }
- 
-+    gpio->connected = true;
++    vhost_dev_free_inflight(vsc->inflight);
++}
 +
-     /* restore vhost state */
-     if (virtio_device_started(vdev, vdev->status)) {
-         vu_gpio_start(vdev);
++static struct vhost_dev *vhost_user_scsi_get_vhost(VirtIODevice *vdev)
++{
++    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(vdev);
++    return &vsc->dev;
++}
++
+ static const VMStateDescription vmstate_vhost_scsi = {
+     .name = "virtio-scsi",
+     .minimum_version_id = 1,
+@@ -385,6 +399,8 @@ static void vhost_user_scsi_class_init(ObjectClass *klass, void *data)
+     vdc->set_config = vhost_scsi_common_set_config;
+     vdc->set_status = vhost_user_scsi_set_status;
+     fwc->get_dev_path = vhost_scsi_common_get_fw_dev_path;
++    vdc->reset = vhost_user_scsi_reset;
++    vdc->get_vhost = vhost_user_scsi_get_vhost;
+ }
+ 
+ static void vhost_user_scsi_instance_init(Object *obj)
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 4259fefeb6..d0a640af63 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -2137,7 +2137,7 @@ void virtio_reset(void *opaque)
+         vdev->device_endian = virtio_default_endian();
+     }
+ 
+-    if (vdev->vhost_started) {
++    if (vdev->vhost_started && k->get_vhost) {
+         vhost_reset_device(k->get_vhost(vdev));
+     }
+ 
 -- 
 2.42.0
 
