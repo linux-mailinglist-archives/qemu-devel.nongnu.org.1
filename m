@@ -2,138 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 012947F6257
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 16:10:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 013B07F626F
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 16:14:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6BKX-0002bo-8Z; Thu, 23 Nov 2023 10:09:25 -0500
+	id 1r6BOR-0005FY-Ap; Thu, 23 Nov 2023 10:13:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r6BKT-0002Zt-0B
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:09:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1r6BOP-0005FJ-Sr
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:13:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1r6BKQ-0006oR-8Z
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:09:20 -0500
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1r6BON-00016s-F4
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 10:13:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700752156;
+ s=mimecast20190719; t=1700752402;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=/7w03HAUfqnH3zSti8p2cbx4r5RRAUUrEAR67Sb6X1w=;
- b=YI+6LvhxrnlJE4idBxhGlQTz/2ldKXuFSPDxU8L1YRYCdnuhZLgs3ev3w/Z7PgDZve5B0q
- /RRnVS8j+HwDMutMx7nHeM9iQigFxIE9WELGpgfeSK0RoOagdBklsaPkZbCqIjNarutw6o
- STa1PItl4Mndta2NiG29de8FfZJFRik=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=cvWfG0U4B89ixqqdJrVqh6x4mmLBHPANNh5vZHUjnYc=;
+ b=Q8nH8605qRaJhmn/orQqd/QUoaXbxVVmrmAZ1PfBLqc8W/g+dtB1vUsQiQq3PXRwRKPEoP
+ HKwbsWQ4JfQtq3w/i0KO1EMVn5JMXxB8tJH3tHWSOquv9mHK8XYsJD0dvZ3v8Qf9YGHFYl
+ 0tW3H+dk72B/SYcte8jt8scmpuHTNqA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-438-rDSEqmGbMi2WSmrlxxQ_gQ-1; Thu, 23 Nov 2023 10:09:15 -0500
-X-MC-Unique: rDSEqmGbMi2WSmrlxxQ_gQ-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-66d155fc53eso11586276d6.1
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 07:09:15 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700752155; x=1701356955;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/7w03HAUfqnH3zSti8p2cbx4r5RRAUUrEAR67Sb6X1w=;
- b=qMM22CBMXtzjLtqGz6Ug5zNUrZd4As6/XurDhZeD2pUMPE2z43ZqUMgvUvO/GZM8y+
- QDvCr2tsRZSfeUZbe6mEpdXIvmXQ9RUk1pVY7mdYWR5ra417/CKSz/oa+zFwFRQ8Yp82
- MzCpLQju2t3hpYQK+jEBpP1i89y9NVOq7VdySEYUuCceNhuX6L+fWInVGMtZsVneBoQp
- 1ALaqPUDviOMAXeJ+HND+br/hM0yI5Bg6KYic2imWbXDP65UHNsl8m7D5A05AOOmvUZS
- nsGy/P4IeLAMFnhzr47vMtQbymIVZu5UOIGRqHlvyyxXRBTTXccqTmc+CDTGLhjZdZM2
- G4xg==
-X-Gm-Message-State: AOJu0YzsFFhczaAEYuHNMSUxXLnGjQqEfAbuO5crUwcP5wgNMwbgfmm/
- OPPWh+LFF8xl1p3EJFducknkCyBU1zsRXXlHmBb/1qqsqUR6pf4zQUyjD9KgAnAZJhebdbJObI4
- djrruXOY2ylISVE0=
-X-Received: by 2002:a0c:cdcb:0:b0:67a:ffd:eb51 with SMTP id
- a11-20020a0ccdcb000000b0067a0ffdeb51mr61749qvn.35.1700752154758; 
- Thu, 23 Nov 2023 07:09:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFrQ5FYxe0PYG+PEE316DVh7ahPdVhHSR93mmKRUhJnYToMnk8fMKsEtyRBTvu+FoYADAcxsg==
-X-Received: by 2002:a0c:cdcb:0:b0:67a:ffd:eb51 with SMTP id
- a11-20020a0ccdcb000000b0067a0ffdeb51mr61727qvn.35.1700752154508; 
- Thu, 23 Nov 2023 07:09:14 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-43-176-233.web.vodafone.de.
- [109.43.176.233]) by smtp.gmail.com with ESMTPSA id
- u16-20020a0cf1d0000000b00679d8235a60sm563736qvl.135.2023.11.23.07.09.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 Nov 2023 07:09:14 -0800 (PST)
-Message-ID: <dc8664c2-c1d4-4e11-8bcd-9465a2d97174@redhat.com>
-Date: Thu, 23 Nov 2023 16:09:09 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH-for-9.0 01/11] qom: Introduce the
- TypeInfo::can_register() handler
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Peter Maydell <peter.maydell@linaro.org>,
+ us-mta-513-xc0bZW9mMam1UfNhjYwUAg-1; Thu, 23 Nov 2023 10:13:18 -0500
+X-MC-Unique: xc0bZW9mMam1UfNhjYwUAg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 55F25811E7B;
+ Thu, 23 Nov 2023 15:13:18 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.227])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 65C93C1596F;
+ Thu, 23 Nov 2023 15:13:17 +0000 (UTC)
+Date: Thu, 23 Nov 2023 10:13:15 -0500
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Alexander Graf <agraf@csgraf.de>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Phil =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-arm@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-References: <20231122183048.17150-1-philmd@linaro.org>
- <20231122183048.17150-2-philmd@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20231122183048.17150-2-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 1/2] docs: introduce dedicated page about code provenance
+ / sign-off
+Message-ID: <20231123151315.GA52478@fedora>
+References: <20231123114026.3589272-1-berrange@redhat.com>
+ <20231123114026.3589272-2-berrange@redhat.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="Gm9P0kmEVdXAQrql"
+Content-Disposition: inline
+In-Reply-To: <20231123114026.3589272-2-berrange@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_FILL_THIS_FORM_SHORT=0.01,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -150,70 +91,309 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/11/2023 19.30, Philippe Mathieu-Daudé wrote:
-> Add a helper to decide at runtime whether a type can
-> be registered to the QOM framework or not.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+--Gm9P0kmEVdXAQrql
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Nov 23, 2023 at 11:40:25AM +0000, Daniel P. Berrang=E9 wrote:
+> Currently we have a short paragraph saying that patches must include
+> a Signed-off-by line, and merely link to the kernel documentation.
+> The linked kernel docs have alot of content beyond the part about
+> sign-off an thus is misleading/distracting to QEMU contributors.
+>=20
+> This introduces a dedicated 'code-provenance' page in QEMU talking
+> about why we require sign-off, explaining the other tags we commonly
+> use, and what to do in some edge cases.
+>=20
+> Signed-off-by: Daniel P. Berrang=E9 <berrange@redhat.com>
 > ---
->   include/qom/object.h | 4 ++++
->   qom/object.c         | 3 +++
->   2 files changed, 7 insertions(+)
-> 
-> diff --git a/include/qom/object.h b/include/qom/object.h
-> index afccd24ca7..0d42fe17de 100644
-> --- a/include/qom/object.h
-> +++ b/include/qom/object.h
-> @@ -372,6 +372,8 @@ struct Object
->    * struct TypeInfo:
->    * @name: The name of the type.
->    * @parent: The name of the parent type.
-> + * @can_register: This optional function is called before a type is registered.
-> + *   If it exists and returns false, the type is not registered.
-
-The second sentence is quite hard to parse, since it is not quite clear what 
-"it" refers to (type or function) and what "registered" means in this 
-context (you don't mention type_register() here).
-
-Maybe rather something like:
-
-If set, type_register() uses this function to decide whether the type can be 
-registered or not.
-
-?
-
->    * @instance_size: The size of the object (derivative of #Object).  If
->    *   @instance_size is 0, then the size of the object will be the size of the
->    *   parent object.
-> @@ -414,6 +416,8 @@ struct TypeInfo
->       const char *name;
->       const char *parent;
->   
-> +    bool (*can_register)(void);
+>  docs/devel/code-provenance.rst    | 197 ++++++++++++++++++++++++++++++
+>  docs/devel/index-process.rst      |   1 +
+>  docs/devel/submitting-a-patch.rst |  18 +--
+>  3 files changed, 201 insertions(+), 15 deletions(-)
+>  create mode 100644 docs/devel/code-provenance.rst
+>=20
+> diff --git a/docs/devel/code-provenance.rst b/docs/devel/code-provenance.=
+rst
+> new file mode 100644
+> index 0000000000..b4591a2dec
+> --- /dev/null
+> +++ b/docs/devel/code-provenance.rst
+> @@ -0,0 +1,197 @@
+> +.. _code-provenance:
 > +
->       size_t instance_size;
->       size_t instance_align;
->       void (*instance_init)(Object *obj);
-> diff --git a/qom/object.c b/qom/object.c
-> index 95c0dc8285..f09b6b5a92 100644
-> --- a/qom/object.c
-> +++ b/qom/object.c
-> @@ -150,6 +150,9 @@ static TypeImpl *type_register_internal(const TypeInfo *info)
->   TypeImpl *type_register(const TypeInfo *info)
->   {
->       assert(info->parent);
-> +    if (info->can_register && !info->can_register()) {
-> +        return NULL;
-> +    }
+> +Code provenance
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +Certifying patch submissions
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +The QEMU community **mandates** all contributors to certify provenance
+> +of patch submissions they make to the project. To put it another way,
+> +contributors must indicate that they are legally permitted to contribute
+> +to the project.
+> +
+> +Certification is achieved with a low overhead by adding a single line
+> +to the bottom of every git commit::
+> +
+> +   Signed-off-by: YOUR NAME <YOUR@EMAIL>
+> +
+> +This existence of this line asserts that the author of the patch is
+> +contributing in accordance with the `Developer's Certificate of
+> +Origin <https://developercertifcate.org>`__:
+> +
+> +.. _dco:
+> +
+> +::
+> +  Developer's Certificate of Origin 1.1
+> +
+> +  By making a contribution to this project, I certify that:
+> +
+> +  (a) The contribution was created in whole or in part by me and I
+> +      have the right to submit it under the open source license
+> +      indicated in the file; or
+> +
+> +  (b) The contribution is based upon previous work that, to the best
+> +      of my knowledge, is covered under an appropriate open source
+> +      license and I have the right under that license to submit that
+> +      work with modifications, whether created in whole or in part
+> +      by me, under the same open source license (unless I am
+> +      permitted to submit under a different license), as indicated
+> +      in the file; or
+> +
+> +  (c) The contribution was provided directly to me by some other
+> +      person who certified (a), (b) or (c) and I have not modified
+> +      it.
+> +
+> +  (d) I understand and agree that this project and the contribution
+> +      are public and that a record of the contribution (including all
+> +      personal information I submit with it, including my sign-off) is
+> +      maintained indefinitely and may be redistributed consistent with
+> +      this project or the open source license(s) involved.
+> +
+> +It is generally expected that the name and email addresses used in one
+> +of the ``Signed-off-by`` lines, matches that of the git commit ``Author``
+> +field. If the person sending the mail is also one of the patch authors,
+> +it is further expected that the mail ``From:`` line name & address match
+> +one of the ``Signed-off-by`` lines.=20
+> +
+> +Multiple authorship
+> +~~~~~~~~~~~~~~~~~~~
+> +
+> +It is not uncommon for a patch to have contributions from multiple
+> +authors. In such a scenario, a git commit will usually be expected
+> +to have a ``Signed-off-by`` line for each contributor involved in
+> +creatin of the patch. Some edge cases:
+> +
+> +  * The non-primary author's contributions were so trivial that
+> +    they can be considered not subject to copyright. In this case
+> +    the secondary authors need not include a ``Signed-off-by``.
+> +
+> +    This case most commonly applies where QEMU reviewers give short
+> +    snippets of code as suggested fixes to a patch. The reviewers
+> +    don't need to have their own ``Signed-off-by`` added unless
+> +    their code suggestion was unusually large.
+> +
+> +  * Both contributors work for the same employer and the employer
+> +    requires copyright assignment.
+> +
+> +    It can be said that in this case a ``Signed-off-by`` is indicating
+> +    that the person has permission to contributeo from their employer
 
-I have to say that I don't like it too much, since you're trying to fix a 
-problem here in common code that clearly belongs to the code in hw/arm/ instead.
+s/contributeo/contribute/
 
-What about dropping it, and changing your last patch to replace the 
-DEFINE_TYPES(raspi_machine_types) in hw/arm/raspi.c with your own 
-implementation of type_register_static_array() that checks the condition there?
+> +    who is the copyright holder. It is none the less still preferrable
+> +    to include a ``Signed-off-by`` for each contributor, as in some
+> +    countries employees are not able to assign copyright to their
+> +    employer, and it also covers any time invested outside working
+> +    hours.
+> +
+> +Other commit tags
+> +~~~~~~~~~~~~~~~~~
+> +
+> +While the ``Signed-off-by`` tag is mandatory, there are a number of
+> +other tags that are commonly used during QEMU development
+> +
+> + * **``Reviewed-by``**: when a QEMU community member reviews a patch
+> +   on the mailing list, if they consider the patch acceptable, they
+> +   should send an email reply containing a ``Reviewed-by`` tag.
+> +
+> +   NB: a subsystem maintainer sending a pull request would replace
+> +   their own ``Reviewed-by`` with another ``Signed-off-by``
+> +
+> + * **``Acked-by``**: when a QEMU subsystem maintainer approves a patch
+> +   that touches their subsystem, but intends to allow a different
+> +   maintainer to queue it and send a pull request, they would send
+> +   a mail containing a ``Acked-by`` tag.
+> +  =20
+> + * **``Tested-by``**: when a QEMU community member has functionally
+> +   tested the behaviour of the patch in some manner, they should
+> +   send an email reply conmtaning a ``Tested-by`` tag.
 
-  Thomas
+s/conmtaning/containing/
 
+> +
+> + * **``Reported-by``**: when a QEMU community member reports a problem
+> +   via the mailing list, or some other informal channel that is not
+> +   the issue tracker, it is good practice to credit them by including
+> +   a ``Reported-by`` tag on any patch fixing the issue. When the
+> +   problem is reported via the GitLab issue tracker, however, it is
+> +   sufficient to just include a link to the issue.
+> +
+> +Subsystem maintainer requirements
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +When a subsystem maintainer accepts a patch from a contributor, in
+> +addition to the normal code review points, they are expected to validate
+> +the presence of suitable ``Signed-off-by`` tags.
+> +
+> +At the time they queue the patch in their subsystem tree, the maintainer
+> +**MUST** also then add their own ``Signed-off-by`` to indicate that they
+> +have done the aforementioned validation.
+> +
+> +The subsystem maintainer submitting a pull request is **NOT** expected to
+> +have a ``Reviewed-by`` tag on the patch, since this is implied by their
+> +own ``Signed-off-by``.
+> + =20
+> +Tools for adding ``Signed-of-by``
+
+s/Signed-of-by/Signed-off-by/
+
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +There are a variety of ways tools can support adding ``Signed-off-by``
+> +tags for patches, avoiding the need for contributors to manually
+> +type in this repetitive text each time.
+> +
+> +git commands
+> +^^^^^^^^^^^^
+> +
+> +When creating, or amending, a commit the ``-s`` flag to ``git commit``
+> +will append a suitable line matching the configuring git author
+> +details.
+> +
+> +If preparing patches using the ``git format-patch`` tool, the ``-s``
+> +flag can be used to append a suitable line in the emails it creates,
+> +without modifying the local commits. Alternatively to modify the
+> +local commits on a branch en-mass::
+> +
+> +  git rebase master -x 'git commit --amend --no-edit -s'
+> +
+> +emacs
+> +^^^^^
+> +
+> +In the file ``$HOME/.emacs.d/abbrev_defs`` add::
+> +
+> +  (define-abbrev-table 'global-abbrev-table
+> +    '(
+> +      ("8rev" "Reviewed-by: YOUR NAME <your@email.addr>" nil 1)
+> +      ("8ack" "Acked-by: YOUR NAME <your@email.addr>" nil 1)
+> +      ("8test" "Tested-by: YOUR NAME <your@email.addr>" nil 1)
+> +      ("8sob" "Signed-off-by: YOUR NAME <your@email.addr>" nil 1)
+> +     ))
+> +
+> +with this change, if you type (for example) ``8rev`` followed
+> +by ``<space>`` or ``<enter>`` it will expand to the whole phrase.=20
+> +
+> +vim
+> +^^^
+> +
+> +In the file ``$HOME/.vimrc`` add::
+> +
+> +  iabbrev 8rev Reviewed-by: YOUR NAME <your@email.addr>
+> +  iabbrev 8ack Acked-by: YOUR NAME <your@email.addr>
+> +  iabbrev 8test Tested-by: YOUR NAME <your@email.addr>
+> +  iabbrev 8sob Signed-off-by: YOUR NAME <your@email.addr>
+> +
+> +with this change, if you type (for example) ``8rev`` followed
+> +by ``<space>`` or ``<enter>`` it will expand to the whole phrase.=20
+> +
+> +Re-starting abandoned work
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +For a variety of reasons there are some patches that get submitted to
+> +QEMU but never merged. An unrelated contributor may decide (months or
+> +years later) to continue working from the abandoned patch and re-submit
+> +it with extra changes.
+> +
+> +If the abandoned patch already had a ``Signed-off-by`` from the original
+> +author this **must** be preserved. The new contributor **must** then add
+> +their own ``Signed-off-by`` after the original one if they made any
+> +further changes to it. It is common to include a comment just prior to
+> +the new ``Signed-off-by`` indicating what extra changes were made. For
+> +example::
+> +
+> +  Signed-off-by: Some Person <some.person@example.com>
+> +  [Rebased and added support for 'foo']
+> +  Signed-off-by: New Person <new.person@example.com>
+> diff --git a/docs/devel/index-process.rst b/docs/devel/index-process.rst
+> index 362f97ee30..b54e58105e 100644
+> --- a/docs/devel/index-process.rst
+> +++ b/docs/devel/index-process.rst
+> @@ -13,6 +13,7 @@ Notes about how to interact with the community and how =
+and where to submit patch
+>     maintainers
+>     style
+>     submitting-a-patch
+> +   code-provenance
+>     trivial-patches
+>     stable-process
+>     submitting-a-pull-request
+> diff --git a/docs/devel/submitting-a-patch.rst b/docs/devel/submitting-a-=
+patch.rst
+> index c641d948f1..ec541b3d15 100644
+> --- a/docs/devel/submitting-a-patch.rst
+> +++ b/docs/devel/submitting-a-patch.rst
+> @@ -322,21 +322,9 @@ Patch emails must include a ``Signed-off-by:`` line
+> =20
+>  Your patches **must** include a Signed-off-by: line. This is a hard
+>  requirement because it's how you say "I'm legally okay to contribute
+> -this and happy for it to go into QEMU". The process is modelled after
+> -the `Linux kernel
+> -<http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Doc=
+umentation/SubmittingPatches?id=3Df6f94e2ab1b33f0082ac22d71f66385a60d8157f#=
+n297>`__
+> -policy.
+> -
+> -If you wrote the patch, make sure your "From:" and "Signed-off-by:"
+> -lines use the same spelling. It's okay if you subscribe or contribute to
+> -the list via more than one address, but using multiple addresses in one
+> -commit just confuses things. If someone else wrote the patch, git will
+> -include a "From:" line in the body of the email (different from your
+> -envelope From:) that will give credit to the correct author; but again,
+> -that author's Signed-off-by: line is mandatory, with the same spelling.
+> -
+> -There are various tooling options for automatically adding these tags
+> -include using ``git commit -s`` or ``git format-patch -s``. For more
+> +this and happy for it to go into QEMU". For full guidance, read the
+> +:ref:`code-provenance` documentation.
+> +
+>  information see `SubmittingPatches 1.12
+>  <http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Doc=
+umentation/SubmittingPatches?id=3Df6f94e2ab1b33f0082ac22d71f66385a60d8157f#=
+n297>`__.
+> =20
+> --=20
+> 2.41.0
+>=20
+
+--Gm9P0kmEVdXAQrql
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVfbAsACgkQnKSrs4Gr
+c8g/FQf/VC79cmK1aRswEF4J/Cm5RU+AE4ZaNa3l95h7HwKUSjh93XTGWVKQhwoH
+WwW1efpaDncdJI3SGbPz9E3+Vb6nPAWmWgNmgzSVgdwAEA/BMYRQEYBy7ox+o3n2
+ZQuLFP4uWWIFP1Txie0roKgIxDE4rQTngb07KJ5ZggKgR+dzIr3XBBNZ+0bz+ubk
+H2umA9/n7nezp1QU1IiZ+U0lhZZSpKsWEmr203tDHW7IM0RercH5WuEO47NYURLy
+a2n3eae8YTC/wDKFWoykRVo9pqMILDWJoIJttQJZDZd6KKx+/PzHVY1gV0ZIvr0A
+qEr6ZYJYPX6IvgT/w/fnUgfgz/FL2g==
+=WsMz
+-----END PGP SIGNATURE-----
+
+--Gm9P0kmEVdXAQrql--
 
 
