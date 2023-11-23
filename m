@@ -2,86 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F4B7F57EE
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 06:59:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 890027F57EB
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 06:59:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r62iK-0003gI-OZ; Thu, 23 Nov 2023 00:57:25 -0500
+	id 1r62j9-0004Bg-BQ; Thu, 23 Nov 2023 00:58:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1r62iC-0003fA-8v
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 00:57:17 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1r62iA-0005RK-P3
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 00:57:15 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1cf8e569c35so842805ad.0
- for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 21:55:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1700718910; x=1701323710;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4FsMw/oeJf/DV053RoR/5vAo/XSeXb8kX5EmtXDw9AA=;
- b=mCVlfxHR8dx2akPG75S+H7fbfR0GCEN03tQ/Wa0cRPhvFmrGNUvkzgjnK6w7NIyTV7
- 3Qoa2hZuuIemdG5HQgu+FVxa8opqm6QZp2BY0DoXAjelq/xgwhG6PVbZ6yADWnzee5vT
- HTV1q2bU4cVQ3nTZoMWyc0KtH3id6nTTDJfFaiDz8QFqLEY/MUG/a28O9zVTlTvyS322
- pHB8NZn0GjmlJ7xBxxW4dE3Ox0IQxFZLHlYH7/Oy7DLt0XLNBIzxmgYLeqQgPSjpxj2Q
- NtTnrv8j6yTuOwfsTRhVdDFpXFVJBe2lL9C6UwAaIvpN7RmTxVEsJMC2qiKhJWp+jMZv
- 42XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700718910; x=1701323710;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4FsMw/oeJf/DV053RoR/5vAo/XSeXb8kX5EmtXDw9AA=;
- b=BC1imRl/TZrXH14xa13zHsuevAN2sY+DzbitCInkvfAq6XoWfYa0wYrBgdFZZj4Ucl
- ADnmfNJGLdoUVs+r0OkO24UGRcPUgxbnDLWUUu5nEU3oa9agVAdH/QF9VCBOEcsndVfB
- adwHweHNCdaFvjGo6/PasWsjPBRCGMUlqpN+FcKfRpiEV7gNDRdllbPHOq4qdG/IYxZY
- 7HvBLAnOTJSQIv4oZVGdNbCp5edhyQgLxDfgIbaEaKXuzOvOFLujs2oYdSV9KzTdHzgX
- k+8ggaynpovIIi/Unabb4l8ySSL3YN8G+I0QReuf5AGcGp0BIiruisbI64f7Y3ZEF/HE
- RoTg==
-X-Gm-Message-State: AOJu0YyDmitzRHg3QrQR6G/KE6PHzFSFjQqSwmqLVY93V+Wdu/rlYS+o
- 6Chtc0TjyYget0TmIl0x97KmSg==
-X-Google-Smtp-Source: AGHT+IH1T72oO522Ax8cX3y8cixR59S6B9shjsGzqO1kYwVANzQyoNBSDfZeRQcsNUxuNR46z4opOg==
-X-Received: by 2002:a17:903:32c7:b0:1cf:51c5:d427 with SMTP id
- i7-20020a17090332c700b001cf51c5d427mr5502082plr.65.1700718909978; 
- Wed, 22 Nov 2023 21:55:09 -0800 (PST)
-Received: from localhost.localdomain.localdomain ([8.210.91.195])
- by smtp.gmail.com with ESMTPSA id
- jl14-20020a170903134e00b001cf6453b237sm417071plb.236.2023.11.22.21.55.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Nov 2023 21:55:09 -0800 (PST)
-From: Li Feng <fengli@smartx.com>
-To: Raphael Norwitz <raphael.norwitz@nutanix.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Fam Zheng <fam@euphon.net>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- qemu-block@nongnu.org (open list:Block layer core),
- qemu-devel@nongnu.org (open list:All patches CC here)
-Cc: Li Feng <fengli@smartx.com>
-Subject: [PATCH 2/2] vhost-user-scsi: free the inflight area when reset
-Date: Thu, 23 Nov 2023 13:54:12 +0800
-Message-ID: <20231123055431.217792-3-fengli@smartx.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231123055431.217792-1-fengli@smartx.com>
-References: <20231123055431.217792-1-fengli@smartx.com>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r62j2-000461-4S; Thu, 23 Nov 2023 00:58:08 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r62ix-00064O-Ag; Thu, 23 Nov 2023 00:58:07 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AN5M5wQ017723; Thu, 23 Nov 2023 05:57:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=we8YqwNXkjI6W8yvRP/8NYrW+N45b9Rpl5sbeUgvBfc=;
+ b=AQCvlaHa7vPWW2riCnB6ZuareRS3fLpf0EP2NL8UDzBOp0md7s40ZNqxnz7kKCZJbZUu
+ ECzYc7AlvD1MDL889IlhOfKl/k4g+nxf06fXVkkr19VkuRIxSyWhMeZTE+vjqCuYwQlS
+ 6B7lmxq7+idkjFwuA7xx6/UuHt04h1B9jz8OSHl2yWn2dawxAm3I+LdGixzK9xVAZCEQ
+ pasui220N5XU2hNd5dsY3oZnYh/Z8LrAUf1UCBQhKb0a5PJrnyt/d3kZDt/62WZUAlma
+ VMYcg+9heOQtOBhBqPb27gh3ZmpsiQWPjdcSD8E8/UsqI0xF1QqGUg9wUHCIISuuYKdH wQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uj0he0hh9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Nov 2023 05:57:42 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AN5fCe6030539;
+ Thu, 23 Nov 2023 05:57:41 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uj0he0hh4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Nov 2023 05:57:41 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AN44NAK002240; Thu, 23 Nov 2023 05:57:40 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uf9tkmwm9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Nov 2023 05:57:40 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AN5vdNE45548102
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 Nov 2023 05:57:39 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 08CFB20040;
+ Thu, 23 Nov 2023 05:57:39 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 60E912004B;
+ Thu, 23 Nov 2023 05:57:37 +0000 (GMT)
+Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.in.ibm.com (unknown
+ [9.109.242.129])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 23 Nov 2023 05:57:37 +0000 (GMT)
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+To: npiggin@gmail.com, qemu-ppc@nongnu.org
+Cc: danielhb413@gmail.com, clg@kaod.org, david@gibson.dropbear.id.au,
+ qemu-devel@nongnu.org, harshpb@linux.ibm.com
+Subject: [PATCH v3 0/2] Introduce SPAPR_IRQ_NR_IPIS and fix max-cpus
+Date: Thu, 23 Nov 2023 11:27:31 +0530
+Message-Id: <20231123055733.1002890-1-harshpb@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::632;
- envelope-from=fengli@smartx.com; helo=mail-pl1-x632.google.com
-X-Spam_score_int: 28
-X-Spam_score: 2.8
-X-Spam_bar: ++
-X-Spam_report: (2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- RCVD_IN_BL_SPAMCOP_NET=1.347, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 14d-w_KF7yawWVyXUPxDPxCmZfKAT-pG
+X-Proofpoint-GUID: y0J-H028DBT2B7n8p2KrEniWRgFaoqJE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-23_03,2023-11-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=670
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 bulkscore=0
+ malwarescore=0 clxscore=1015 spamscore=0 mlxscore=0 impostorscore=0
+ adultscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311060000 definitions=main-2311230040
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,63 +109,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Keep it the same to vhost-user-blk.
-At the same time, fix the vhost_reset_device.
+On spapr, the max number of CPU IPIs are 4096 which is accounted during
+spapr_irq_init but currently existing macro SPAPR_XIRQ_BASE is being
+used to refer to that. Introducing SPAPR_IRQ_NR_IPIS to refer to the range
+of CPU IPIS which is being further used to initialize mc->max_cpus
+during spapr_machine_class_init().
 
-Signed-off-by: Li Feng <fengli@smartx.com>
----
- hw/scsi/vhost-user-scsi.c | 16 ++++++++++++++++
- hw/virtio/virtio.c        |  2 +-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+v3:
+ - addressed further review comments from Cedric
+v2:
+ - addressed review comments from Cedric
 
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index 2060f9f94b..780f10559d 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -360,6 +360,20 @@ static Property vhost_user_scsi_properties[] = {
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-+static void vhost_user_scsi_reset(VirtIODevice *vdev)
-+{
-+    VHostUserSCSI *s = VHOST_USER_SCSI(vdev);
-+    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-+
-+    vhost_dev_free_inflight(vsc->inflight);
-+}
-+
-+static struct vhost_dev *vhost_user_scsi_get_vhost(VirtIODevice *vdev)
-+{
-+    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(vdev);
-+    return &vsc->dev;
-+}
-+
- static const VMStateDescription vmstate_vhost_scsi = {
-     .name = "virtio-scsi",
-     .minimum_version_id = 1,
-@@ -385,6 +399,8 @@ static void vhost_user_scsi_class_init(ObjectClass *klass, void *data)
-     vdc->set_config = vhost_scsi_common_set_config;
-     vdc->set_status = vhost_user_scsi_set_status;
-     fwc->get_dev_path = vhost_scsi_common_get_fw_dev_path;
-+    vdc->reset = vhost_user_scsi_reset;
-+    vdc->get_vhost = vhost_user_scsi_get_vhost;
- }
- 
- static void vhost_user_scsi_instance_init(Object *obj)
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 4259fefeb6..d0a640af63 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -2137,7 +2137,7 @@ void virtio_reset(void *opaque)
-         vdev->device_endian = virtio_default_endian();
-     }
- 
--    if (vdev->vhost_started) {
-+    if (vdev->vhost_started && k->get_vhost) {
-         vhost_reset_device(k->get_vhost(vdev));
-     }
- 
+Harsh Prateek Bora (2):
+  ppc/spapr: Introduce SPAPR_IRQ_NR_IPIS to refer IRQ range for CPU
+    IPIs.
+  ppc/spapr: Initialize max_cpus limit to SPAPR_IRQ_NR_IPIS.
+
+ include/hw/ppc/spapr_irq.h | 14 +++++++++++++-
+ hw/ppc/spapr.c             |  9 +++------
+ hw/ppc/spapr_irq.c         |  6 ++++--
+ 3 files changed, 20 insertions(+), 9 deletions(-)
+
 -- 
-2.42.0
+2.39.3
 
 
