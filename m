@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E767F5789
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 05:48:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 034E07F577D
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 05:44:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r61YK-0006bF-Cl; Wed, 22 Nov 2023 23:43:00 -0500
+	id 1r61YM-0006dV-SG; Wed, 22 Nov 2023 23:43:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r61Y0-0006OM-T3
+ id 1r61Y2-0006OQ-Hg
  for qemu-devel@nongnu.org; Wed, 22 Nov 2023 23:42:44 -0500
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r61Xw-0006BL-MM
- for qemu-devel@nongnu.org; Wed, 22 Nov 2023 23:42:39 -0500
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3b833b54f14so252090b6e.1
- for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 20:42:34 -0800 (PST)
+ id 1r61Xw-0006CD-Ny
+ for qemu-devel@nongnu.org; Wed, 22 Nov 2023 23:42:41 -0500
+Received: by mail-oi1-x22d.google.com with SMTP id
+ 5614622812f47-3b83432ca31so365782b6e.1
+ for <qemu-devel@nongnu.org>; Wed, 22 Nov 2023 20:42:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1700714554; x=1701319354; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=f0csjBzUKQmzo27GffQhvUdSife+3bvwrwa84N7+vIM=;
- b=S6Gx1+McceoIk4xJkUX9rJm41OLdLbr8Ra+QlV8LBa9+1VYWHLZQ2XsJz1my2+FfjA
- lEYabSfnFF0kRs08JDghCpi1bq4gJ2RwNUSC9fVCadQLpV1qrOfWFqNrPKjXLowaYlNB
- EAg99865AXp33esyj6l+jM96vXGvVnjgptAjlqEondHjdQTzFmpCNPrJUZpxxuXgkvex
- 8PYlsd3mzGw5uXUrkLkttC0kKsrsg+u/2HRslWmj+TMBtuJ4eKjWmu/n4sNhoCiKRef/
- Vv/dSdZhpqDQ77YNmM46FbMitQx6ygcXcDcn8dQzc6cbrkN8ohZ0BqRDgONEf3j2DHKX
- 9QFQ==
+ bh=sKoFS6vupvdOb9gSEJ//vdL16AVl5a0a1fSx8jeXTzw=;
+ b=aYZ7ACcy0X2wpyy1XPWRSKVvHEMCQJqc3ACbQ12cG1lcZ4qxMxD0G3Xcu+rq7awOrK
+ LqIWBsWQ9bU4DnyxAaxFRX9sfdGZ2W4a5RiifId1MRE8VDDiofpYGP00rLk3HPUBOYZp
+ 0TEZd+Zb0wpIPwIHPvBOmYNXXwIhCJZ4eonWZ0ukrR7BO6Xg3Vqv7j20vKr0t+tiwi+5
+ kS0s1HLE7I5NNQMV//fwdBGYpCQt91PaY4SJFaX21Vk1ZKH5BJs+a8jytvUHWQHTN0qN
+ QqoyNnzrTqDGIYDJVs/Z8ZnCgDOwEp01hlTY8BXp74xMj++umU47I4uCXk2XDEq0QH0A
+ 7jgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1700714554; x=1701319354;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=f0csjBzUKQmzo27GffQhvUdSife+3bvwrwa84N7+vIM=;
- b=OhQ8CiBCwWeKiDZLtgT+jpud8tGFcrb3Xo5yDv1Sk1hIWYEQ8eM1Uj3+Op8Mk7WGdv
- Wv4Cclt8wA0PEmWEAhhQ/RjlYU7Hsn/Lad3Vi1idz8YrHO7B80GvUlgRfggZjrmntVTf
- xhi5H0kYoRF5i8UOZXCeTXj5KPfk4N4m9U6FwO0J5CLH+46ESoGpd5Ov0BkdJqGD94vC
- rfzHtQdHyaZesxHtzaeR9sP/ROvyKujVa6IFX9LI4XbUPmMWytJtzpG7OHzcAiZLTtg/
- IhHCmOl4o2CtpxQBDAFJVexvfuJe2Awhw0BmPSJp5NADwUMp18hGJvE7I09l5kYQyLTe
- pqmQ==
-X-Gm-Message-State: AOJu0YwFPzgAUqCseimGlnJrzYIYA9Y0ytaeVBKyjuj4GzH0VCJ188AF
- M3Klv8lwLjw4UZKftQWVHJsfBGGYJ/ORgoQd7ytDtEVx
-X-Google-Smtp-Source: AGHT+IGLTW6sUtdYxtg5W/TrdgDCCTKef+jrfrOq0qByrCS/RqelizPPFZHGQTkC2Q+oYxLqwXyzLw==
-X-Received: by 2002:a05:6808:f92:b0:3b8:33d1:806d with SMTP id
- o18-20020a0568080f9200b003b833d1806dmr736999oiw.22.1700714553754; 
- Wed, 22 Nov 2023 20:42:33 -0800 (PST)
+ bh=sKoFS6vupvdOb9gSEJ//vdL16AVl5a0a1fSx8jeXTzw=;
+ b=OEoc958EEjqMmDlVIHO8g/hXxvZVcduPAsjfoaqiEd1vZqlBS5OEsEndNzPEUJMiX/
+ DkkJQT42UDZGSKcaFzS18BwRO2d1xgA2094V5emJUchNlMLkkRRtkyUH1TM4Xq4o9LOP
+ LC86vwW4lBCaH0ngYaD/RSmKXaGeCn3w0UlBe3xMKguUgMiZWCWNZ4ht4rUJv41LHDsI
+ K6NlJKPt2Pzui2v8KkV8Q00Hx2ciwnUbhzHUUZep6ODXH/acKtwUPlw5nsaff3cBfi/x
+ Edmr4EyjYYEhvZxO130vdSQXJhGZYpYN+P7ArzJRfk6m0uQLUgX1eWxIHVpMPfTe1tCp
+ 3nBQ==
+X-Gm-Message-State: AOJu0YxguyhAKqxMr1DzmEvGUrsX2HOwasZqSIB5gsgD4bdbg5GrBjDz
+ 107Q/xO603eRvdXehDn2Y/Kwgm83dGj7+7UV1hLdafp8
+X-Google-Smtp-Source: AGHT+IEc0mqupCkrMA++RDR+7hNa1zSSvtHL3o4odO8T5e+2Vi0b5yiaZAK6PONOz8YTtgAQlZTs5w==
+X-Received: by 2002:a05:6808:f11:b0:3b8:4125:c1e with SMTP id
+ m17-20020a0568080f1100b003b841250c1emr3893557oiw.31.1700714554672; 
+ Wed, 22 Nov 2023 20:42:34 -0800 (PST)
 Received: from stoup.. ([187.217.227.247]) by smtp.gmail.com with ESMTPSA id
- i7-20020a056808030700b003b8347de3c2sm73888oie.19.2023.11.22.20.42.33
+ i7-20020a056808030700b003b8347de3c2sm73888oie.19.2023.11.22.20.42.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Nov 2023 20:42:33 -0800 (PST)
+ Wed, 22 Nov 2023 20:42:34 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 12/21] target/arm/kvm: Move kvm_arm_cpreg_level and unexport
-Date: Wed, 22 Nov 2023 22:42:10 -0600
-Message-Id: <20231123044219.896776-13-richard.henderson@linaro.org>
+Subject: [PATCH 13/21] target/arm/kvm: Move kvm_arm_reg_syncs_via_cpreg_list
+ and unexport
+Date: Wed, 22 Nov 2023 22:42:11 -0600
+Message-Id: <20231123044219.896776-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231123044219.896776-1-richard.henderson@linaro.org>
 References: <20231123044219.896776-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22d.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -92,85 +93,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/kvm_arm.h |  9 ---------
- target/arm/kvm.c     | 22 ++++++++++++++++++++++
+ target/arm/kvm_arm.h | 10 ----------
+ target/arm/kvm.c     | 23 +++++++++++++++++++++++
  target/arm/kvm64.c   | 15 ---------------
- 3 files changed, 22 insertions(+), 24 deletions(-)
+ 3 files changed, 23 insertions(+), 25 deletions(-)
 
 diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index e59d713973..2755ee8366 100644
+index 2755ee8366..1043123cc7 100644
 --- a/target/arm/kvm_arm.h
 +++ b/target/arm/kvm_arm.h
-@@ -87,15 +87,6 @@ int kvm_arm_init_cpreg_list(ARMCPU *cpu);
+@@ -77,16 +77,6 @@ void kvm_arm_register_device(MemoryRegion *mr, uint64_t devid, uint64_t group,
   */
- bool kvm_arm_reg_syncs_via_cpreg_list(uint64_t regidx);
+ int kvm_arm_init_cpreg_list(ARMCPU *cpu);
  
 -/**
-- * kvm_arm_cpreg_level:
+- * kvm_arm_reg_syncs_via_cpreg_list:
 - * @regidx: KVM register index
 - *
-- * Return the level of this coprocessor/system register.  Return value is
-- * either KVM_PUT_RUNTIME_STATE, KVM_PUT_RESET_STATE, or KVM_PUT_FULL_STATE.
+- * Return true if this KVM register should be synchronized via the
+- * cpreg list of arbitrary system registers, false if it is synchronized
+- * by hand using code in kvm_arch_get/put_registers().
 - */
--int kvm_arm_cpreg_level(uint64_t regidx);
+-bool kvm_arm_reg_syncs_via_cpreg_list(uint64_t regidx);
 -
  /**
   * write_list_to_kvmstate:
   * @cpu: ARMCPU
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index ffe0db4293..dadc3fd755 100644
+index dadc3fd755..9bca6baf35 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -817,6 +817,28 @@ out:
-     return ret;
+@@ -740,6 +740,29 @@ static uint64_t *kvm_arm_get_cpreg_ptr(ARMCPU *cpu, uint64_t regidx)
+     return &cpu->cpreg_values[res - cpu->cpreg_indexes];
  }
  
 +/**
-+ * kvm_arm_cpreg_level:
++ * kvm_arm_reg_syncs_via_cpreg_list:
 + * @regidx: KVM register index
 + *
-+ * Return the level of this coprocessor/system register.  Return value is
-+ * either KVM_PUT_RUNTIME_STATE, KVM_PUT_RESET_STATE, or KVM_PUT_FULL_STATE.
++ * Return true if this KVM register should be synchronized via the
++ * cpreg list of arbitrary system registers, false if it is synchronized
++ * by hand using code in kvm_arch_get/put_registers().
 + */
-+static int kvm_arm_cpreg_level(uint64_t regidx)
++static bool kvm_arm_reg_syncs_via_cpreg_list(uint64_t regidx)
 +{
-+    /*
-+     * All system registers are assumed to be level KVM_PUT_RUNTIME_STATE.
-+     * If a register should be written less often, you must add it here
-+     * with a state of either KVM_PUT_RESET_STATE or KVM_PUT_FULL_STATE.
++    /* Return true if the regidx is a register we should synchronize
++     * via the cpreg_tuples array (ie is not a core or sve reg that
++     * we sync by hand in kvm_arch_get/put_registers())
 +     */
-+    switch (regidx) {
-+    case KVM_REG_ARM_TIMER_CNT:
-+    case KVM_REG_ARM_PTIMER_CNT:
-+        return KVM_PUT_FULL_STATE;
++    switch (regidx & KVM_REG_ARM_COPROC_MASK) {
++    case KVM_REG_ARM_CORE:
++    case KVM_REG_ARM64_SVE:
++        return false;
++    default:
++        return true;
 +    }
-+    return KVM_PUT_RUNTIME_STATE;
 +}
 +
- bool write_kvmstate_to_list(ARMCPU *cpu)
- {
-     CPUState *cs = CPU(cpu);
+ /* Initialize the ARMCPU cpreg list according to the kernel's
+  * definition of what CPU registers it knows about (and throw away
+  * the previous TCG-created cpreg list).
 diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-index 61fb9dbde0..a184cca4dc 100644
+index a184cca4dc..52c0a6d3af 100644
 --- a/target/arm/kvm64.c
 +++ b/target/arm/kvm64.c
-@@ -361,21 +361,6 @@ bool kvm_arm_reg_syncs_via_cpreg_list(uint64_t regidx)
-     }
+@@ -346,21 +346,6 @@ int kvm_arch_destroy_vcpu(CPUState *cs)
+     return 0;
  }
  
--int kvm_arm_cpreg_level(uint64_t regidx)
+-bool kvm_arm_reg_syncs_via_cpreg_list(uint64_t regidx)
 -{
--    /*
--     * All system registers are assumed to be level KVM_PUT_RUNTIME_STATE.
--     * If a register should be written less often, you must add it here
--     * with a state of either KVM_PUT_RESET_STATE or KVM_PUT_FULL_STATE.
+-    /* Return true if the regidx is a register we should synchronize
+-     * via the cpreg_tuples array (ie is not a core or sve reg that
+-     * we sync by hand in kvm_arch_get/put_registers())
 -     */
--    switch (regidx) {
--    case KVM_REG_ARM_TIMER_CNT:
--    case KVM_REG_ARM_PTIMER_CNT:
--        return KVM_PUT_FULL_STATE;
+-    switch (regidx & KVM_REG_ARM_COPROC_MASK) {
+-    case KVM_REG_ARM_CORE:
+-    case KVM_REG_ARM64_SVE:
+-        return false;
+-    default:
+-        return true;
 -    }
--    return KVM_PUT_RUNTIME_STATE;
 -}
 -
  /* Callers must hold the iothread mutex lock */
