@@ -2,95 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9E37F5B14
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 10:30:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C6997F5B19
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 10:32:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6620-0000RU-V8; Thu, 23 Nov 2023 04:29:56 -0500
+	id 1r664G-0001eT-AA; Thu, 23 Nov 2023 04:32:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r661y-0000RG-T6; Thu, 23 Nov 2023 04:29:54 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r661x-0000Uz-B3; Thu, 23 Nov 2023 04:29:54 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-332d5c852a0so411568f8f.3; 
- Thu, 23 Nov 2023 01:29:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700731791; x=1701336591; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=uUwE7u3onPGssHGYPcJFRGaN2UI16fqtGIi4M3Ht1a4=;
- b=dCMuBMXx6YFclGb6lTltYnaPsuXDksVwndphsqxNYOGoorCsOE3nn4FL0tzSj9/RcY
- uvbKvpGAcVT9qN80ypb5hT2DDxEBJ6lUm4ZZu+DhjmJ0hbCWbLuyCcnqC2bdlbtf9rnE
- 52yyJxDNXPbYGIk4FCjXB12onsvUnovN7e7tpacRS9eZ2dYqQafvGMVVnarEpwUhumE5
- XsUge00yUKtBe7fKO8/bbYzhCXao2jcxzLKu6HhDwVLKtKWrGbq2cXqe9UjktoDUaaHW
- 6f2ZKSgXCIHuCc0pmT/OTb+Rv11//JJn9YGgh7OA9Wt8xLUEOoB2XBmao9LQe7n66+qD
- i6bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700731791; x=1701336591;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uUwE7u3onPGssHGYPcJFRGaN2UI16fqtGIi4M3Ht1a4=;
- b=uiHCF3EoZl5zBEIRr7rtobHbm/TdOoSEd7wowRZZd+i/OgMy0UVyIZOlMf+P1y6D4W
- 1/RDqWLPyZGsUWGE/p/P12Bj9DX9UH4KieTiptMP34mBJi/4bYyx+2sTPzacwdJO6FXI
- 8xPlnOfr8KmEqxOVlq04wd5BANMXd9J/cMClZf1VtfZWo7CQCKqur5iT6Xcd3TsO4TJg
- ieLs4JWNLEqHJBdufuWXKY9ERwGdm570MtsOS2r5kVNgR2XalG/aJHJrC+E1USN7cVh8
- Wi9XIYGMzDCqDxUT+MuVmagJx3ZnP1ixHfTAmtiOeRPxZHBfQCcqjSv5F+B02KnEcwr0
- 9lnQ==
-X-Gm-Message-State: AOJu0YzItygY2i0G+fjhpBTtZkOQZ+1YiLidrNkGPloan283kPWYdt4c
- aim/sBfWGK6AZfPaEKIWrTI=
-X-Google-Smtp-Source: AGHT+IFlygPZqpcnr3ZfDt4tmxZcvFNUOiDOTe0AZd7sdtL0/KrfYErVCG8BikAxQK6z7g+6mdxvPQ==
-X-Received: by 2002:a5d:4bc6:0:b0:32f:b1ab:ee87 with SMTP id
- l6-20020a5d4bc6000000b0032fb1abee87mr3685763wrt.25.1700731791454; 
- Thu, 23 Nov 2023 01:29:51 -0800 (PST)
-Received: from [192.168.13.100] (54-240-197-239.amazon.com. [54.240.197.239])
- by smtp.gmail.com with ESMTPSA id
- s15-20020adf978f000000b00332d41f0798sm1133102wrb.29.2023.11.23.01.29.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 Nov 2023 01:29:51 -0800 (PST)
-From: Paul Durrant <xadimgnik@gmail.com>
-X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <630819c4-4343-401d-8c7b-342cfd5f50c0@xen.org>
-Date: Thu, 23 Nov 2023 09:29:50 +0000
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r664D-0001dR-Do; Thu, 23 Nov 2023 04:32:13 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r664B-0000zG-Bt; Thu, 23 Nov 2023 04:32:13 -0500
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AN9GJmU001614; Thu, 23 Nov 2023 09:31:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=Ww/qibgS+X6Z8LJwDGpEJ97jlho1uU0FgjAE3GNGscE=;
+ b=lMJ2A5rKL+m5lS4DmR61PjN5vV7FyZnXr38hxMclWlWvYf6jc2ei8EHirmTZvLgQM9UJ
+ N64PEGDQsM4Lfg3JEn4Mz0y1pBFkhaGHi+hzLt1HgSIOq2tGlWNRSnX0g7/pu5XYohK8
+ JaGJdyKAGyY3UGs53MudfWR2h/tjc5CFzZiqyZhFkOaZwNzCvpZ7680MoK53uqiuhpCt
+ xOl3ZAYOp32sLCxNf/W1VQ6/D4+20MSrna6LXHYbPdbD7P/HQ2aQ+L5FTLMsl1zbMA+4
+ QBg0xm+4CrLwj3W+ysfTYS8C/a8dq0Lr+6yAtq2KRZXsqh05UB0/VbW9+6r08QlZrVgr Gg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uj2qpt995-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Nov 2023 09:31:54 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AN9HDaa005673;
+ Thu, 23 Nov 2023 09:31:53 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uj2qpt98e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Nov 2023 09:31:53 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AN8nG4A021112; Thu, 23 Nov 2023 09:31:52 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uf8kp68j3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Nov 2023 09:31:52 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AN9Vpt623069326
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 Nov 2023 09:31:52 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DD61958059;
+ Thu, 23 Nov 2023 09:31:51 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B0EE25805C;
+ Thu, 23 Nov 2023 09:31:49 +0000 (GMT)
+Received: from [9.109.242.129] (unknown [9.109.242.129])
+ by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 23 Nov 2023 09:31:49 +0000 (GMT)
+Message-ID: <3030ea29-3611-bd4f-cfd5-b34e4cf6b800@linux.ibm.com>
+Date: Thu, 23 Nov 2023 15:01:47 +0530
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] hw/xen: Set XenBackendInstance in the XenDevice
- before realizing it
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v3 1/2] ppc/spapr: Introduce SPAPR_IRQ_NR_IPIS to refer
+ IRQ range for CPU IPIs.
 Content-Language: en-US
-To: David Woodhouse <dwmw2@infradead.org>,
- Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Stefano Stabellini <sstabellini@kernel.org>, Julien Grall <julien@xen.org>,
- Anthony Perard <anthony.perard@citrix.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
- "open list:Block layer core" <qemu-block@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>
-References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
- <20231121221023.419901-2-volodymyr_babchuk@epam.com>
- <e1663064-247d-41e3-9a36-16f81303fb94@xen.org> <878r6p1jp2.fsf@epam.com>
- <67e06eae161072e05f4b0990dbde1da869241670.camel@infradead.org>
-Organization: Xen Project
-In-Reply-To: <67e06eae161072e05f4b0990dbde1da869241670.camel@infradead.org>
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, npiggin@gmail.com,
+ qemu-ppc@nongnu.org
+Cc: danielhb413@gmail.com, david@gibson.dropbear.id.au, qemu-devel@nongnu.org
+References: <20231123055733.1002890-1-harshpb@linux.ibm.com>
+ <20231123055733.1002890-2-harshpb@linux.ibm.com>
+ <1523c986-7022-4b3f-8e26-b25d8621c623@kaod.org>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <1523c986-7022-4b3f-8e26-b25d8621c623@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=xadimgnik@gmail.com; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: aLFh4RUyhw7FY7yCgQrGVa9uVVsAO1ju
+X-Proofpoint-ORIG-GUID: Ks3n0HZqLalq6vAD6hWMv-kLjDz-AZKA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-23_07,2023-11-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0
+ impostorscore=0 phishscore=0 mlxscore=0 lowpriorityscore=0
+ priorityscore=1501 clxscore=1015 spamscore=0 mlxlogscore=999 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311230068
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.672,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,53 +114,108 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/11/2023 23:04, David Woodhouse wrote:
-> On Wed, 2023-11-22 at 22:56 +0000, Volodymyr Babchuk wrote:
->>
->>
->> Paul Durrant <xadimgnik@gmail.com> writes:
->>
->>> On 21/11/2023 22:10, Volodymyr Babchuk wrote:
->>>> From: David Woodhouse <dwmw@amazon.co.uk>
->>>> This allows a XenDevice implementation to know whether it was
->>>> created
->>>> by QEMU, or merely discovered in XenStore after the toolstack created
->>>> it. This will allow us to create frontend/backend nodes only when we
->>>> should, rather than unconditionally attempting to overwrite them from
->>>> a driver domain which doesn't have privileges to do so.
->>>> As an added benefit, it also means we no longer have to call the
->>>> xen_backend_set_device() function from the device models immediately
->>>> after calling qdev_realize_and_unref(). Even though we could make
->>>> the argument that it's safe to do so, and the pointer to the unreffed
->>>> device *will* actually still be valid, it still made my skin itch to
->>>> look at it.
->>>> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
->>>> ---
->>>>    hw/block/xen-block.c         | 3 +--
->>>>    hw/char/xen_console.c        | 2 +-
->>>>    hw/net/xen_nic.c             | 2 +-
->>>>    hw/xen/xen-bus.c             | 4 ++++
->>>>    include/hw/xen/xen-backend.h | 2 --
->>>>    include/hw/xen/xen-bus.h     | 2 ++
->>>>    6 files changed, 9 insertions(+), 6 deletions(-)
->>>>
->>>
->>> Actually, I think you should probably update
->>> xen_backend_try_device_destroy() in this patch too. It currently uses
->>> xen_backend_list_find() to check whether the specified XenDevice has
->>> an associated XenBackendInstance.
->>
->> Sure. Looks like it is the only user of xen_backend_list_find(), so we
->> can get rid of it as well.
->>
->> I'll drop your R-b tag, because of those additional changes in the new
->> version.
-> 
-> I think it's fine to keep. He told me to do it :)
 
-I confirm that :-)
+
+On 11/23/23 14:20, Cédric Le Goater wrote:
+> On 11/23/23 06:57, Harsh Prateek Bora wrote:
+>> spapr_irq_init currently uses existing macro SPAPR_XIRQ_BASE to refer to
+>> the range of CPU IPIs during initialization of nr-irqs property.
+>> It is more appropriate to have its own define which can be further
+>> reused as appropriate for correct interpretation.
+>>
+>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>> Suggested-by: Cedric Le Goater <clg@kaod.org>
+> 
+> One comment below
+> 
+> Reviewed-by: Cédric Le Goater <clg@kaod.org>
+> 
+
+Thanks, responding below ..
+
+>> ---
+>>   include/hw/ppc/spapr_irq.h | 14 +++++++++++++-
+>>   hw/ppc/spapr_irq.c         |  6 ++++--
+>>   2 files changed, 17 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/include/hw/ppc/spapr_irq.h b/include/hw/ppc/spapr_irq.h
+>> index c22a72c9e2..4fd2d5853d 100644
+>> --- a/include/hw/ppc/spapr_irq.h
+>> +++ b/include/hw/ppc/spapr_irq.h
+>> @@ -14,9 +14,21 @@
+>>   #include "qom/object.h"
+>>   /*
+>> - * IRQ range offsets per device type
+>> + * The XIVE IRQ backend uses the same layout as the XICS backend but
+>> + * covers the full range of the IRQ number space. The IRQ numbers for
+>> + * the CPU IPIs are allocated at the bottom of this space, below 4K,
+>> + * to preserve compatibility with XICS which does not use that range.
+>> + */
+>> +
+>> +/*
+>> + * CPU IPI range (XIVE only)
+>>    */
+>>   #define SPAPR_IRQ_IPI        0x0
+>> +#define SPAPR_IRQ_NR_IPIS    0x1000
+>> +
+>> +/*
+>> + * IRQ range offsets per device type
+>> + */
+>>   #define SPAPR_XIRQ_BASE      XICS_IRQ_BASE /* 0x1000 */
+>>   #define SPAPR_IRQ_EPOW       (SPAPR_XIRQ_BASE + 0x0000)
+>> diff --git a/hw/ppc/spapr_irq.c b/hw/ppc/spapr_irq.c
+>> index a0d1e1298e..97b2fc42ab 100644
+>> --- a/hw/ppc/spapr_irq.c
+>> +++ b/hw/ppc/spapr_irq.c
+>> @@ -23,6 +23,8 @@
+>>   #include "trace.h"
+>> +QEMU_BUILD_BUG_ON(SPAPR_IRQ_NR_IPIS > SPAPR_XIRQ_BASE);
+>> +
+> 
+> I would have put the check in include/hw/ppc/spapr_irq.h but since
+> SPAPR_XIRQ_BASE is only used in hw/ppc/spapr_irq.c which is always
+> compiled, this is fine. You might want to change that in case a
+> respin is asked for.
+> 
+
+I had initially tried keeping it in spapr_irq.h , but that would give a 
+build break for XICS_IRQ_BASE not defined since that gets defined in 
+spapr_xics.h and is included later in some files, however, the 
+QEMU_BUILD_BUG_ON expects it to be defined before it reaches here.
+
+regards,
+Harsh
+
+> Thanks,
+> 
+> C.
+> 
+> 
+>>   static const TypeInfo spapr_intc_info = {
+>>       .name = TYPE_SPAPR_INTC,
+>>       .parent = TYPE_INTERFACE,
+>> @@ -329,7 +331,7 @@ void spapr_irq_init(SpaprMachineState *spapr, 
+>> Error **errp)
+>>           int i;
+>>           dev = qdev_new(TYPE_SPAPR_XIVE);
+>> -        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + 
+>> SPAPR_XIRQ_BASE);
+>> +        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + 
+>> SPAPR_IRQ_NR_IPIS);
+>>           /*
+>>            * 8 XIVE END structures per CPU. One for each available
+>>            * priority
+>> @@ -356,7 +358,7 @@ void spapr_irq_init(SpaprMachineState *spapr, 
+>> Error **errp)
+>>       }
+>>       spapr->qirqs = qemu_allocate_irqs(spapr_set_irq, spapr,
+>> -                                      smc->nr_xirqs + SPAPR_XIRQ_BASE);
+>> +                                      smc->nr_xirqs + 
+>> SPAPR_IRQ_NR_IPIS);
+>>       /*
+>>        * Mostly we don't actually need this until reset, except that not
+> 
 
