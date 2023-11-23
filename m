@@ -2,69 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A2687F5800
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 07:04:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 395937F58A5
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 07:53:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r62nv-0002ku-OA; Thu, 23 Nov 2023 01:03:11 -0500
+	id 1r63Zg-0001NZ-BU; Thu, 23 Nov 2023 01:52:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r62nr-0002dF-Am; Thu, 23 Nov 2023 01:03:08 -0500
-Received: from mgamail.intel.com ([134.134.136.20])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r62np-00005N-A9; Thu, 23 Nov 2023 01:03:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700719385; x=1732255385;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=XiDgQsyO8IfBEOqRpZwGMATykEtrpSFdKJ11FmST9aU=;
- b=AbFV6hOl4ZHBH0uCDkkiErRmkaH2c6QHFsBem9gefO7DP+9QVm5tkja5
- YiczyyV11SoqIH3S4HwEXpTdnE2gDXrZrz6SdsYJtb01ztAllapFU3BUN
- abLchGOBN/MO6giv1WjysTbAjZgSR06WzEsFyrRmyo6gTCG3wLf57ac5t
- 3p5lOX7RivueuKmueFAhP7jGFu1ndHO4DolLYqa1l/Xww+yskKE9pN2Zi
- 6ORH7A062X2+jcQJZ61osItRnIG40DMEo+PuRkAlRT2BTzJz3MWpozmJZ
- qqq7Vpo0JS6B71WebQ5mWdNVUWPPb2ZYQCJ8KU+K5dW2cff6cHxMYnbhE A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="382604288"
-X-IronPort-AV: E=Sophos;i="6.04,220,1695711600"; d="scan'208";a="382604288"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Nov 2023 22:03:01 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="858024149"
-X-IronPort-AV: E=Sophos;i="6.04,220,1695711600"; d="scan'208";a="858024149"
-Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
- by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Nov 2023 22:02:56 -0800
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs)
-Subject: [PATCH] hw/ppc: Improve build for PPC VFIO
-Date: Thu, 23 Nov 2023 14:01:09 +0800
-Message-Id: <20231123060109.131904-1-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1r63Ze-0001NF-Pd; Thu, 23 Nov 2023 01:52:30 -0500
+Received: from mail-qk1-x72b.google.com ([2607:f8b0:4864:20::72b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1r63Zd-0006eE-CR; Thu, 23 Nov 2023 01:52:30 -0500
+Received: by mail-qk1-x72b.google.com with SMTP id
+ af79cd13be357-7789a4c01ddso29521385a.1; 
+ Wed, 22 Nov 2023 22:52:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1700722348; x=1701327148; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=n11Gw2PV1xfk82dZAgPgMAItmU7yeMZLbZO/aP8npEs=;
+ b=D/VYog/XhaxHwSjswwFa3k/UxW5rjsdaUX8yyU56sjLDwLavbcvk6T/X4S6rtcmQZV
+ rb9xzfCgL0M33GCDLTvzgQUB90PNzKmSXZBRGQAiX9E3pX/i66VCSr38KxIm6TFAjjrg
+ pcLFmeR7BG9F/GziPgnBuFPETj4CazkqcPZQICy4LRW6qx2O1zigvd4GTKJMsq9W5Z1C
+ vjELhYGik6VlFzh/X7h3ncp6VjwL5EFlF2Gyy7h1u3tmqihseyTbcCkp44To7v7xhKRZ
+ OKnLtb/E0skAk0yXMpk9AVWZ6fDpOEGuqjU7MkuF6e8IpSkyt6vNetBuGxAUqwVZdFhy
+ rqlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700722348; x=1701327148;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=n11Gw2PV1xfk82dZAgPgMAItmU7yeMZLbZO/aP8npEs=;
+ b=SV1kaBnWWCyt0Hsowtx9DKdARadxJ8x5RcW76qCNBFa9JHWUGGRrV3TvRbx9IWteCb
+ moza6/fKNnwEeGJtu+EVR3qPRZyTAbv0d7l2tbvV3+dSzsmo9wil+dNwcQTyjl5a9FRH
+ oDlaW5iEmoK42ZMXp4+4FEeJkQLBxdjww8JFtzIzaptwMIS//KO79WV7xwqd0c4MT2Xs
+ dS0jtuNiuhuy+3wlLHZxad9CBHP1Fdu1uCr2o7zqWrKQwmboIDjqvyegOlf0HAUCYUXf
+ piLQKiwMucx0LIroIDFt0hlCQb1QljmTTbX0cxEj7YuMRwEwWTT6fsDLviemen/RNfi8
+ kyiw==
+X-Gm-Message-State: AOJu0YxoVLOjgEQ6BkVZ6AuWpP4LnwK1RjzAna080E7nCR2/JCG/TM1l
+ h/d8Rqw7KZXKteF8fs3uMZQzi1tlb/tl+r8NCoI=
+X-Google-Smtp-Source: AGHT+IG9a+zlavDBPHC+RQRTMNawZ6nf8Lx0ci692bxUCLvEbiekysiuCxXGuoaxx0sSOd2SBVpBpcp8drenURr/Uaw=
+X-Received: by 2002:ae9:c218:0:b0:777:27f9:7e54 with SMTP id
+ j24-20020ae9c218000000b0077727f97e54mr4082230qkg.50.1700722347852; Wed, 22
+ Nov 2023 22:52:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=134.134.136.20;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20231122125826.228189-1-f.ebner@proxmox.com>
+ <CAJ+F1CLFAuKF7CgbiBYnKv+7sjkXfJ9tURNuMNGu9NLru059nQ@mail.gmail.com>
+ <b5419999-625f-45a3-9a61-b6cb8356cdbe@proxmox.com>
+In-Reply-To: <b5419999-625f-45a3-9a61-b6cb8356cdbe@proxmox.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Thu, 23 Nov 2023 10:52:16 +0400
+Message-ID: <CAJ+F1C+CV-PbMAhw9V+OzDHnFiSyFW8+kFBZZ-n_7usoNP_S5w@mail.gmail.com>
+Subject: Re: [PATCH for-8.2] ui/vnc-clipboard: fix inflate_buffer
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, kraxel@redhat.com, 
+ mcascell@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72b;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x72b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,99 +87,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VFIO is not a required subsystem for the pseries machine but it's
-force enabled currently. When --without-default-devices is used
-to drop some default devices including vfio-pci, vfio core code
-is still kept which is unnecessary.
+Hi
 
-Introduce a stub file to hold stub functions of VFIO EEH hooks,
-then vfio core could be compiled out.
+On Wed, Nov 22, 2023 at 5:25=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.com> w=
+rote:
+>
+> Am 22.11.23 um 14:06 schrieb Marc-Andr=C3=A9 Lureau:
+> > Hi
+> >
+> > On Wed, Nov 22, 2023 at 5:00=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.co=
+m> wrote:
+> >>
+> >> Commit d921fea338 ("ui/vnc-clipboard: fix infinite loop in
+> >> inflate_buffer (CVE-2023-3255)") removed this hunk, but it is still
+> >> required, because it can happen that stream.avail_in becomes zero
+> >> before coming across a return value of Z_STREAM_END in the loop.
+> >
+> > Isn't this an error from the client side then?
+> >
+>
+> In my test just now I get Z_BUF_ERROR twice and after the second one,
+> stream.avail_in is zero. Maybe if you'd call inflate() again, you'd get
+> Z_STREAM_END, but no such call is made, because we exit the loop.
 
-Suggested-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
-Based on vfio-next/vfio-8.2
+It should exit the loop after calling inflate() again though.
 
- hw/ppc/spapr_pci_vfio_stub.c | 33 +++++++++++++++++++++++++++++++++
- hw/ppc/Kconfig               |  2 +-
- hw/ppc/meson.build           |  6 +++---
- 3 files changed, 37 insertions(+), 4 deletions(-)
- create mode 100644 hw/ppc/spapr_pci_vfio_stub.c
+Or do you mean that it goes to Z_BUF_ERROR a second time with
+stream.avail_in =3D=3D 0, thus exit the loop quickly after ?
 
-diff --git a/hw/ppc/spapr_pci_vfio_stub.c b/hw/ppc/spapr_pci_vfio_stub.c
-new file mode 100644
-index 0000000000..adb3fb5e35
---- /dev/null
-+++ b/hw/ppc/spapr_pci_vfio_stub.c
-@@ -0,0 +1,33 @@
-+#include "qemu/osdep.h"
-+#include "hw/pci-host/spapr.h"
-+
-+bool spapr_phb_eeh_available(SpaprPhbState *sphb)
-+{
-+    return false;
-+}
-+
-+void spapr_phb_vfio_reset(DeviceState *qdev)
-+{
-+}
-+
-+int spapr_phb_vfio_eeh_set_option(SpaprPhbState *sphb,
-+                                  unsigned int addr, int option)
-+{
-+    return RTAS_OUT_NOT_SUPPORTED;
-+}
-+
-+int spapr_phb_vfio_eeh_get_state(SpaprPhbState *sphb, int *state)
-+{
-+    return RTAS_OUT_NOT_SUPPORTED;
-+}
-+
-+int spapr_phb_vfio_eeh_reset(SpaprPhbState *sphb, int option)
-+{
-+    return RTAS_OUT_NOT_SUPPORTED;
-+}
-+
-+int spapr_phb_vfio_eeh_configure(SpaprPhbState *sphb)
-+{
-+    return RTAS_OUT_NOT_SUPPORTED;
-+}
-+
-diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
-index edc6d2d139..b8dabdbfbe 100644
---- a/hw/ppc/Kconfig
-+++ b/hw/ppc/Kconfig
-@@ -3,11 +3,11 @@ config PSERIES
-     imply PCI_DEVICES
-     imply TEST_DEVICES
-     imply VIRTIO_VGA
-+    imply VFIO if LINUX   # needed by spapr_pci_vfio.c
-     select NVDIMM
-     select DIMM
-     select PCI
-     select SPAPR_VSCSI
--    select VFIO_PCI if LINUX   # needed by spapr_pci_vfio.c
-     select XICS
-     select XIVE
-     select MSI_NONBROKEN
-diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
-index ea44856d43..2df5db2eef 100644
---- a/hw/ppc/meson.build
-+++ b/hw/ppc/meson.build
-@@ -34,9 +34,9 @@ ppc_ss.add(when: ['CONFIG_PSERIES', 'CONFIG_TCG'], if_true: files(
-   'spapr_softmmu.c',
- ))
- ppc_ss.add(when: 'CONFIG_SPAPR_RNG', if_true: files('spapr_rng.c'))
--ppc_ss.add(when: ['CONFIG_PSERIES', 'CONFIG_LINUX'], if_true: files(
--  'spapr_pci_vfio.c',
--))
-+ppc_ss.add(when: [ 'CONFIG_VFIO_PCI', 'CONFIG_PSERIES', 'CONFIG_LINUX'],
-+           if_true: files('spapr_pci_vfio.c'),
-+           if_false: files('spapr_pci_vfio_stub.c'))
- 
- # IBM PowerNV
- ppc_ss.add(when: 'CONFIG_POWERNV', if_true: files(
--- 
-2.34.1
+That could mean that the input buffer is not complete.
 
+"Note that Z_BUF_ERROR is not fatal, and inflate() can be called again
+with more input..."
+
+Something is fishy.. Is it easy to reproduce?
+
+> Would it be better/more correct to ensure that inflate is called again
+> in such a scenario?
+>
+> Best Regards,
+> Fiona
+>
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
