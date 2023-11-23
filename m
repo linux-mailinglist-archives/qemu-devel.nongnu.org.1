@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7437F6654
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B227F6655
 	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 19:36:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6EY8-0007ji-8A; Thu, 23 Nov 2023 13:35:40 -0500
+	id 1r6EYB-0007xJ-W4; Thu, 23 Nov 2023 13:35:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6EXt-0007Zs-9r
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:35:26 -0500
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6EXy-0007bN-E1
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:35:33 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6EXr-0002Vj-9a
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:35:25 -0500
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2c887d1fb8fso14858311fa.0
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 10:35:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6EXw-0002m0-V7
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:35:30 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40859dee28cso9075445e9.0
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 10:35:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700764521; x=1701369321; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=uROfwQyK/fR3xRoZfbjH/zMx60LfqgoyHKl0bdS07As=;
- b=KPZKuh5AqAvsKqBTD/xf9PVzRBU+sHGk6H2NH7Hf0R/rQQbcGOQehnvtMNzerhFpEb
- txXsLTs0MWnqWT3qN8yfz62jglKlK/1N4HkSKah2zOSnVrFXHAJw+nXyzi5bp3o25DM8
- k/7CNCX7PqeoYjg99gJP3Qe7yFCOAGh8QsxxsPYCRYs9x1+U4NfGyXjlcj/6U5TK84jc
- Qa/oUbEzh9Pllh1V9E0NhHsemKTHnVZCzfHAsyoZ/Wil+qyiwB0OP16THy1Y0cOZ1zhN
- RLsInJ1JG4OzybCS5IY0USWWLNGkwc1+4xeSjjaSXqil+cbGLa+KxwBfFWqTfX595bPy
- qdNQ==
+ d=linaro.org; s=google; t=1700764527; x=1701369327; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=EggnDxiS3lb3CDYKGlg1a7WOxUSv7txLuyeSgPzo5Gg=;
+ b=jc5YS1ysaXGid2dJ8paaQL3XXcEjWfoJVN08kZNzuL0ZXA2QUnEAJAaiBzuElubUPG
+ aO5mvzqLWjqQyTx0GtBxmwhwEdmaTfHD70NRNVOw+1e8vF97SiCDo/cjOoZXddWYGSUT
+ i2IFpEfM0du32Prlx0zBmxLrX5C5gYdGDE9za7DSoBqGcoKTEAoztCqliuL96jOSosfX
+ 96pWuEFqE1fiHx5Ji4o7c3iZQ0OrywMHdiI2YO1HWYKh0dXa/dEaG7NdHMVFyGc2IWMM
+ e50tgWPZ0D2HU9mZgasMxBr02Fd7PXFijP+dY9qgsszIxURVZBaBX3rSyV1TDUzOq8uz
+ SjAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700764521; x=1701369321;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=uROfwQyK/fR3xRoZfbjH/zMx60LfqgoyHKl0bdS07As=;
- b=LmP9RSij7tzk8ydAwCXkydmIT7/CV2pt3AUT3pXWSNmBgLqQ+ig77VBQ8QwmV1Qiy6
- vriZW4qRfJC/nvpIxijThxqjpbQVUITykPT8oV0280VKOWhtHXnHon14An7RlDyptTxn
- YYKFwol62TCIsVep9ufvhUQFe37l3Jl1HTqiLKGYCsdFphn3gujTTlO0NHVc0H8of4LP
- hGCtsyXmrQQzCvrJJiRzb9NNufm5wwMFLyd+fKscuAx0z5Fm4awedo1bMXgW8YDp2ysF
- 3FZFh/hO6A12fwiUGIA78C7Vb1H9KhRALIZko0GYk5RUYc7U4EPI9PPxJT30V3bnw5u8
- YPrA==
-X-Gm-Message-State: AOJu0Ywad1WX0zevuluqLl2hxrQK19SQAkjsvCy+PtBWzPnpP/3X/HLw
- FWgAEhBN4mGXsKzebHWdOilK5AxmzX4Z+i2kJ0w=
-X-Google-Smtp-Source: AGHT+IFzB25AWCf2QBTuEtFSvO8CfDj+XT4u9/Sa8d5qUcbTy/ivbEYxfMXhnkTWfil4h0gnaJ1/9w==
-X-Received: by 2002:a2e:7017:0:b0:2c8:56f5:9082 with SMTP id
- l23-20020a2e7017000000b002c856f59082mr123850ljc.50.1700764521179; 
- Thu, 23 Nov 2023 10:35:21 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700764527; x=1701369327;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EggnDxiS3lb3CDYKGlg1a7WOxUSv7txLuyeSgPzo5Gg=;
+ b=Ghmt+n/49tRMOYV+4+GYDFkYAwzmyIONDCx6zK38tZOSiKWo6L/Hfw31TitJv3HE9+
+ Jts9ezBAlaKo/KjeRLFGvo5+0UmPHFOSIk3q/VIqP2CImjM+7WDq9XDAXNjmIBi7oxPV
+ qlDLS/Sxd3kjuSP45yXtBEx8AoHvTWnUnrlaRFj2m8Kh4HAMpm+y2SY3pk3yWNiPrf4x
+ LgMyMAbM1TfA3aMQfPQQQxcCcsDiqvHoix1igHEm6af/eNiSi0nCv37u+j5SRiq3x9Xj
+ 02CX8ikti4UgG3C1//CczfhLp29M0V6VgJabl70cHFXgRigJ0IH8zLC+s5M2n+xQfvf4
+ awFA==
+X-Gm-Message-State: AOJu0YyjHrN7LJMEe8f6xjHNDnrLXxYcb/XzZ1grcIBlNp20Xyml6L0B
+ 7CIoMu9L0pq80B4Pu/261N9kaskIICmTZYWn4aI=
+X-Google-Smtp-Source: AGHT+IFvWOwOd7e1Y5lDPZTFF3Xq4nOUA9yN5q2GNMAzYiEapwPBFpCHPMn1UoTV4j1koXw+yTkL1A==
+X-Received: by 2002:a7b:c8cc:0:b0:40b:346c:f3f5 with SMTP id
+ f12-20020a7bc8cc000000b0040b346cf3f5mr345640wml.30.1700764526586; 
+ Thu, 23 Nov 2023 10:35:26 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.165.237])
  by smtp.gmail.com with ESMTPSA id
- r7-20020a05600c35c700b0040b30be6244sm2807528wmq.24.2023.11.23.10.35.19
+ t17-20020a05600c451100b0040b379e8526sm2034152wmo.25.2023.11.23.10.35.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 23 Nov 2023 10:35:20 -0800 (PST)
+ Thu, 23 Nov 2023 10:35:26 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.0 00/16] target/arm/kvm: Unify kvm_arm_FOO() API
-Date: Thu, 23 Nov 2023 19:35:01 +0100
-Message-ID: <20231123183518.64569-1-philmd@linaro.org>
+Subject: [PATCH-for-9.0 01/16] hw/intc/arm_gicv3: Include missing
+ 'qemu/error-report.h' header
+Date: Thu, 23 Nov 2023 19:35:02 +0100
+Message-ID: <20231123183518.64569-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231123183518.64569-1-philmd@linaro.org>
+References: <20231123183518.64569-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,48 +93,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Half of the API takes CPUState, the other ARMCPU...
+kvm_arm_its_reset_hold() calls warn_report(), itself declared
+in "qemu/error-report.h".
 
-$ git grep -F 'CPUState *' target/arm/kvm_arm.h | wc -l
-      16
-$ git grep -F 'ARMCPU *' target/arm/kvm_arm.h | wc -l
-      14
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/intc/arm_gicv3_its_kvm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Since this is ARM specific, have it always take ARMCPU, and
-call the generic KVM API casting with the CPU() macro.
-
-Based-on: <20231123044219.896776-1-richard.henderson@linaro.org>
-  "target/arm: kvm cleanups"
-  https://lore.kernel.org/qemu-devel/20231123044219.896776-1-richard.henderson@linaro.org/
-
-Philippe Mathieu-Daudé (16):
-  hw/intc/arm_gicv3: Include missing 'qemu/error-report.h' header
-  target/arm/kvm: Remove unused includes
-  target/arm/kvm: Have kvm_arm_add_vcpu_properties take a ARMCPU
-    argument
-  target/arm/kvm: Have kvm_arm_sve_set_vls take a ARMCPU argument
-  target/arm/kvm: Have kvm_arm_sve_get_vls take a ARMCPU argument
-  target/arm/kvm: Have kvm_arm_set_device_attr take a ARMCPU argument
-  target/arm/kvm: Have kvm_arm_pvtime_init take a ARMCPU argument
-  target/arm/kvm: Have kvm_arm_pmu_init take a ARMCPU argument
-  target/arm/kvm: Have kvm_arm_pmu_set_irq take a ARMCPU argument
-  target/arm/kvm: Have kvm_arm_vcpu_init take a ARMCPU argument
-  target/arm/kvm: Have kvm_arm_vcpu_finalize take a ARMCPU argument
-  target/arm/kvm: Have kvm_arm_[get|put]_virtual_time take ARMCPU
-    argument
-  target/arm/kvm: Have kvm_arm_verify_ext_dabt_pending take a ARMCPU arg
-  target/arm/kvm: Have kvm_arm_handle_dabt_nisv take a ARMCPU argument
-  target/arm/kvm: Have kvm_arm_handle_debug take a ARMCPU argument
-  target/arm/kvm: Have kvm_arm_hw_debug_active take a ARMCPU argument
-
- target/arm/kvm_arm.h        |  26 ++++-----
- hw/arm/virt.c               |   9 +--
- hw/intc/arm_gicv3_its_kvm.c |   1 +
- target/arm/cpu.c            |   2 +-
- target/arm/cpu64.c          |   2 +-
- target/arm/kvm.c            | 111 +++++++++++++++++-------------------
- 6 files changed, 73 insertions(+), 78 deletions(-)
-
+diff --git a/hw/intc/arm_gicv3_its_kvm.c b/hw/intc/arm_gicv3_its_kvm.c
+index f7df602cff..3befc960db 100644
+--- a/hw/intc/arm_gicv3_its_kvm.c
++++ b/hw/intc/arm_gicv3_its_kvm.c
+@@ -21,6 +21,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "qemu/module.h"
++#include "qemu/error-report.h"
+ #include "hw/intc/arm_gicv3_its_common.h"
+ #include "hw/qdev-properties.h"
+ #include "sysemu/runstate.h"
 -- 
 2.41.0
 
