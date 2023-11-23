@@ -2,81 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A7C17F5C51
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 11:31:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE4D37F5C9B
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 11:39:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r66zA-0006AY-7H; Thu, 23 Nov 2023 05:31:04 -0500
+	id 1r676c-00052s-JA; Thu, 23 Nov 2023 05:38:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r66z7-00068K-Jr; Thu, 23 Nov 2023 05:31:01 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r66z4-0006lA-7f; Thu, 23 Nov 2023 05:31:01 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6cb66f23eddso644244b3a.0; 
- Thu, 23 Nov 2023 02:30:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700735456; x=1701340256; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/YjF11udA/3aBuPx0YbpetB55ddjbtjBqWNhoZ4uvqU=;
- b=iCqeFuzXwq7tosle+eqPmOIzxfu1cQcsDWhMILZHvDDBjtp5NfzF3cQ45PhW5EY92F
- oTFG2Hg3NooYzqLTq6rLjDHa7I8lY3p5TDjcNpxXZobRnV/uVYXaSWmKbrkbyjlCv70p
- kwJt20CIqFLYbhD/aMkEn2sjyBpZUmTneAdgXFTdZz9fdLo6qfgGjvr44Mi+WNODUCgu
- uc5wIQyzCxdeh6ymshOtBI+MXvbTFAizoT2UyXaya7z1bxytijbJFk8n8UpLTO7RJmYB
- 0NitPT1EKtVkS+b32YSuXpzygKAvKg8m/z4YWCNz+e4+3sGrGl0XkX/FpKAI5UYihFLo
- srYQ==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1r676W-000518-GW
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 05:38:40 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1r676U-0005Z2-Q3
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 05:38:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700735917;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZY5ihg166yGtmA7zInC/LOZuGduYLuzNg6wn+LLCqIU=;
+ b=XHZr0eFIcxdlSMRnJ6zbvPHUN7eyoyrtEd44QmWJ7S4RGtbnJN/2CL5dRybst5j0ZD4ihD
+ MkI6Nrf9B6npUapOHQT0FBkD6Qfx6G08FapObazj9ca87fZlqdigcfIzB2YYsAt4DOqGGX
+ 1wlaeRAbSLkXVa1dFcjTo7yc8lnSWTs=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-22-sYIUQ__wOkeZJt8ZFM9Ehw-1; Thu, 23 Nov 2023 05:38:35 -0500
+X-MC-Unique: sYIUQ__wOkeZJt8ZFM9Ehw-1
+Received: by mail-pl1-f199.google.com with SMTP id
+ d9443c01a7336-1ce5bad4515so9079685ad.1
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 02:38:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700735456; x=1701340256;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1700735914; x=1701340714;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/YjF11udA/3aBuPx0YbpetB55ddjbtjBqWNhoZ4uvqU=;
- b=OJa98NYBno4nDUMTTvaBn86SyCswSigbfsuAyToWg86PcXZCddemf6ClZUphSePzBl
- PU26xlCD1CrlAH2AT7EdAASN0lAHc0AyRQpnMQyz4d3b7l5MHo8x8VWUtRo4MKuIaQEg
- qQ1Sg3r8ou2nCoEpHN1Y64j9XBTQY/Oi1+8FeJz+AA6XO0mul/YIdFxx8sFAOL9MPrPf
- XUVyQtD3dO/Q6smUfUo4Ee07f1GF0SiWwRle35GDtDipDD7pfZv+DodpDt+oUvLEN5Yj
- 6fnFfaMwU39t7bfql6mFg5aF3kxdWfACYK6ZQ2dFSu4ZFVkGrsQXrAiNz03O4oElw4JW
- cdXw==
-X-Gm-Message-State: AOJu0Yy5ZnR8nXjwLYuHNgds4aQZUhzOCoDEFv0oUqxRQ80wcBETdzNI
- hjhUMJBg4/bwoA85XYoTK7zpr2Nx77s=
-X-Google-Smtp-Source: AGHT+IFwWdsn9e+qYCQt3U8TxCcK2IIMJkVrKcl6clg3e/S7Coxt3tvZ9y22uGJwtoqLgukjOFsYfA==
-X-Received: by 2002:a05:6a21:a59e:b0:186:9314:6238 with SMTP id
- gd30-20020a056a21a59e00b0018693146238mr5887771pzc.47.1700735456017; 
- Thu, 23 Nov 2023 02:30:56 -0800 (PST)
-Received: from wheely.local0.net (60-240-124-93.tpgi.com.au. [60.240.124.93])
+ bh=ZY5ihg166yGtmA7zInC/LOZuGduYLuzNg6wn+LLCqIU=;
+ b=EduQIdQYuOC2/uqGfhTJxQ70ugbD5UZYGkj4X+nhASWLh+yKB3C7AxfPWB/INDWgWq
+ AtKlW9SWuGAb9PUsmkGp0oLyaLAj0q9Wgtz+OnlOlVsevtlBNAJkGpBfuVY/pUk6w8i3
+ 01vTVva9+/fUIDdXMVNiDCbGMdn5o5Glq0Uxz6CF/U6VnPDrUgd2nqEotfnsfekEAFr8
+ b6V0g2cZUBE+n+zhVkjF+upXWnYhTS/0O89UNPMYQ6Q2mC5NQXivAnx2KSOfAAQ1N2Od
+ 2mkoGFGoDDyiY62BXkagECIb0mN9zyt/cqet07bSodttUPsO3VYhG9jNfRtKePCbqmV2
+ gg0w==
+X-Gm-Message-State: AOJu0Yzh4WZifWof7LYaFLmJUhaCw8dPbl0wMncRhGKS5WvMQ5zPDXJX
+ yV0824qvdU4YA33icRDvB+6Ib4sfX/7PQTlhONMG6JWW0LOVx+VQnhQDbYKI4D+1qByjXyyx2NR
+ j6Mc3to+hvoJB5hI=
+X-Received: by 2002:a17:902:f68a:b0:1cf:6704:4340 with SMTP id
+ l10-20020a170902f68a00b001cf67044340mr4744329plg.22.1700735914191; 
+ Thu, 23 Nov 2023 02:38:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHyPDDmO3JD2uERe5Ky5BYM2WWFZ8RCBlLijFll4u6IupLQhLuyFaCYq4OKgkcWxF1dWCHWZg==
+X-Received: by 2002:a17:902:f68a:b0:1cf:6704:4340 with SMTP id
+ l10-20020a170902f68a00b001cf67044340mr4744316plg.22.1700735913763; 
+ Thu, 23 Nov 2023 02:38:33 -0800 (PST)
+Received: from smtpclient.apple ([203.163.236.131])
  by smtp.gmail.com with ESMTPSA id
- e4-20020a170902d38400b001cc1dff5b86sm1009070pld.244.2023.11.23.02.30.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Nov 2023 02:30:55 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
- qemu-devel@nongnu.org
-Subject: [PATCH 7/7] target/ppc: Add SMT support to time facilities
-Date: Thu, 23 Nov 2023 20:30:18 +1000
-Message-ID: <20231123103018.172383-8-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231123103018.172383-1-npiggin@gmail.com>
-References: <20231123103018.172383-1-npiggin@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ v11-20020a170902d68b00b001ce6452a741sm943006ply.25.2023.11.23.02.38.31
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 23 Nov 2023 02:38:33 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.200.91.1.1\))
+Subject: Re: [PATCH v2] tests/acpi/bios-tables-test: do not write new blobs
+ unless there are changes
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <F54768EF-9AEE-4CB4-B6C2-AC88A718922F@redhat.com>
+Date: Thu, 23 Nov 2023 16:08:19 +0530
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ QEMU Developers <qemu-devel@nongnu.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <6327B26E-FCF9-468A-9E7D-D9F4AA0D870D@redhat.com>
+References: <20231107044952.5461-1-anisinha@redhat.com>
+ <1D3FCCB3-FEDE-4E08-BD42-7070697913E3@redhat.com>
+ <F54768EF-9AEE-4CB4-B6C2-AC88A718922F@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+X-Mailer: Apple Mail (2.3774.200.91.1.1)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,299 +106,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The TB, VTB, PURR, HDEC SPRs are per-LPAR registers, and the TFMR is a
-per-core register. Add the necessary SMT helpers.
 
-The TFMR can only drive the timebase state machine via thread 0 of the
-core, which is almost certainly not right, but it is enough for skiboot
-and other proprietary firmware.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- target/ppc/timebase_helper.c | 105 ++++++++++++++++++++++++++++++++---
- target/ppc/translate.c       |  42 +++++++++++++-
- 2 files changed, 136 insertions(+), 11 deletions(-)
+> On 21-Nov-2023, at 12:39=E2=80=AFPM, Ani Sinha <anisinha@redhat.com> =
+wrote:
+>=20
+>=20
+>=20
+>> On 16-Nov-2023, at 11:30=E2=80=AFAM, Ani Sinha <anisinha@redhat.com> =
+wrote:
+>>=20
+>>=20
+>>=20
+>>> On 07-Nov-2023, at 10:19=E2=80=AFAM, Ani Sinha <anisinha@redhat.com> =
+wrote:
+>>>=20
+>>> When dumping table blobs using rebuild-expected-aml.sh, table blobs =
+from all
+>>> test variants are dumped regardless of whether there are any actual =
+changes to
+>>> the tables or not. This creates lot of new files for various test =
+variants that
+>>> are not part of the git repository. This is because we do not check =
+in all table
+>>> blobs for all test variants into the repository. Only those blobs =
+for those
+>>> variants that are different from the generic test-variant agnostic =
+blob are
+>>> checked in.
+>>>=20
+>>> This change makes the test smarter by checking if at all there are =
+any changes
+>>> in the tables from the checked-in gold master blobs and take actions
+>>> accordingly.
+>>>=20
+>>> When there are no changes:
+>>> - No new table blobs would be written.
+>>> - Existing table blobs will be refreshed (git diff will show no =
+changes).
+>>> When there are changes:
+>>> - New table blob files will be dumped.
+>>> - Existing table blobs will be refreshed (git diff will show that =
+the files
+>>> changed, asl diff will show the actual changes).
+>>> When new tables are introduced:
+>>> - Zero byte empty file blobs for new tables as instructed in the =
+header of
+>>> bios-tables-test.c will be regenerated to actual table blobs.
+>>>=20
+>>> This would make analyzing changes to tables less confusing and there =
+would
+>>> be no need to clean useless untracked files when there are no table =
+changes.
+>>>=20
+>>> CC: peter.maydell@linaro.org
+>>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>>> ---
+>>> tests/qtest/bios-tables-test.c | 14 +++++++++++++-
+>>> 1 file changed, 13 insertions(+), 1 deletion(-)
+>>>=20
+>>> changelog:
+>>> v2: commit description updated to make things a little clearer.
+>>>  No actual changes.
+>>=20
+>> Ping ...
+>=20
+> Ping again ...
 
-diff --git a/target/ppc/timebase_helper.c b/target/ppc/timebase_helper.c
-index 9c77736e77..c3fc194b1e 100644
---- a/target/ppc/timebase_helper.c
-+++ b/target/ppc/timebase_helper.c
-@@ -60,19 +60,55 @@ target_ulong helper_load_purr(CPUPPCState *env)
- 
- void helper_store_purr(CPUPPCState *env, target_ulong val)
- {
--    cpu_ppc_store_purr(env, val);
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t nr_threads = cs->nr_threads;
-+
-+    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        cpu_ppc_store_purr(env, val);
-+        return;
-+    }
-+
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+        cpu_ppc_store_purr(cenv, val);
-+    }
- }
- #endif
- 
- #if !defined(CONFIG_USER_ONLY)
- void helper_store_tbl(CPUPPCState *env, target_ulong val)
- {
--    cpu_ppc_store_tbl(env, val);
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t nr_threads = cs->nr_threads;
-+
-+    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        cpu_ppc_store_tbl(env, val);
-+        return;
-+    }
-+
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+        cpu_ppc_store_tbl(cenv, val);
-+    }
- }
- 
- void helper_store_tbu(CPUPPCState *env, target_ulong val)
- {
--    cpu_ppc_store_tbu(env, val);
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t nr_threads = cs->nr_threads;
-+
-+    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        cpu_ppc_store_tbu(env, val);
-+        return;
-+    }
-+
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+        cpu_ppc_store_tbu(cenv, val);
-+    }
- }
- 
- void helper_store_atbl(CPUPPCState *env, target_ulong val)
-@@ -102,17 +138,53 @@ target_ulong helper_load_hdecr(CPUPPCState *env)
- 
- void helper_store_hdecr(CPUPPCState *env, target_ulong val)
- {
--    cpu_ppc_store_hdecr(env, val);
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t nr_threads = cs->nr_threads;
-+
-+    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        cpu_ppc_store_hdecr(env, val);
-+        return;
-+    }
-+
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+        cpu_ppc_store_hdecr(cenv, val);
-+    }
- }
- 
- void helper_store_vtb(CPUPPCState *env, target_ulong val)
- {
--    cpu_ppc_store_vtb(env, val);
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t nr_threads = cs->nr_threads;
-+
-+    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        cpu_ppc_store_vtb(env, val);
-+        return;
-+    }
-+
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+        cpu_ppc_store_vtb(cenv, val);
-+    }
- }
- 
- void helper_store_tbu40(CPUPPCState *env, target_ulong val)
- {
--    cpu_ppc_store_tbu40(env, val);
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t nr_threads = cs->nr_threads;
-+
-+    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        cpu_ppc_store_tbu40(env, val);
-+        return;
-+    }
-+
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+        cpu_ppc_store_tbu40(cenv, val);
-+    }
- }
- 
- target_ulong helper_load_40x_pit(CPUPPCState *env)
-@@ -211,6 +283,21 @@ static uint64_t tfmr_new_tb_state(uint64_t tfmr, unsigned int tbst)
-     return tfmr;
- }
- 
-+static void write_tfmr(CPUPPCState *env, target_ulong val)
-+{
-+    CPUState *cs = env_cpu(env);
-+
-+    if (cs->nr_threads == 1) {
-+        env->spr[SPR_TFMR] = val;
-+    } else {
-+        CPUState *ccs;
-+        THREAD_SIBLING_FOREACH(cs, ccs) {
-+            CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+            cenv->spr[SPR_TFMR] = val;
-+        }
-+    }
-+}
-+
- static void tb_state_machine_step(CPUPPCState *env)
- {
-     uint64_t tfmr = env->spr[SPR_TFMR];
-@@ -224,7 +311,7 @@ static void tb_state_machine_step(CPUPPCState *env)
-         env->tb_sync_pulse_timer--;
-     } else {
-         tfmr |= TFMR_TB_SYNC_OCCURED;
--        env->spr[SPR_TFMR] = tfmr;
-+        write_tfmr(env, tfmr);
-     }
- 
-     if (env->tb_state_timer) {
-@@ -262,7 +349,7 @@ static void tb_state_machine_step(CPUPPCState *env)
-         }
-     }
- 
--    env->spr[SPR_TFMR] = tfmr;
-+    write_tfmr(env, tfmr);
- }
- 
- target_ulong helper_load_tfmr(CPUPPCState *env)
-@@ -357,7 +444,7 @@ void helper_store_tfmr(CPUPPCState *env, target_ulong val)
-     }
- 
- out:
--    env->spr[SPR_TFMR] = tfmr;
-+    write_tfmr(env, tfmr);
- }
- #endif
- 
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 329da4d518..bd103b1026 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -247,13 +247,24 @@ static inline bool gen_serialize(DisasContext *ctx)
-     return true;
- }
- 
--#if defined(TARGET_PPC64) && !defined(CONFIG_USER_ONLY)
-+#if !defined(CONFIG_USER_ONLY)
-+#if defined(TARGET_PPC64)
-+static inline bool gen_serialize_core(DisasContext *ctx)
-+{
-+    if (ctx->flags & POWERPC_FLAG_SMT) {
-+        return gen_serialize(ctx);
-+    }
-+    return true;
-+}
-+#endif
-+
- static inline bool gen_serialize_core_lpar(DisasContext *ctx)
- {
-+#if defined(TARGET_PPC64)
-     if (ctx->flags & POWERPC_FLAG_SMT_1LPAR) {
-         return gen_serialize(ctx);
-     }
--
-+#endif
-     return true;
- }
- #endif
-@@ -667,12 +678,20 @@ void spr_read_atbu(DisasContext *ctx, int gprn, int sprn)
- #if !defined(CONFIG_USER_ONLY)
- void spr_write_tbl(DisasContext *ctx, int sprn, int gprn)
- {
-+    if (!gen_serialize_core_lpar(ctx)) {
-+        return;
-+    }
-+
-     translator_io_start(&ctx->base);
-     gen_helper_store_tbl(tcg_env, cpu_gpr[gprn]);
- }
- 
- void spr_write_tbu(DisasContext *ctx, int sprn, int gprn)
- {
-+    if (!gen_serialize_core_lpar(ctx)) {
-+        return;
-+    }
-+
-     translator_io_start(&ctx->base);
-     gen_helper_store_tbu(tcg_env, cpu_gpr[gprn]);
- }
-@@ -696,6 +715,9 @@ void spr_read_purr(DisasContext *ctx, int gprn, int sprn)
- 
- void spr_write_purr(DisasContext *ctx, int sprn, int gprn)
- {
-+    if (!gen_serialize_core_lpar(ctx)) {
-+        return;
-+    }
-     translator_io_start(&ctx->base);
-     gen_helper_store_purr(tcg_env, cpu_gpr[gprn]);
- }
-@@ -709,6 +731,9 @@ void spr_read_hdecr(DisasContext *ctx, int gprn, int sprn)
- 
- void spr_write_hdecr(DisasContext *ctx, int sprn, int gprn)
- {
-+    if (!gen_serialize_core_lpar(ctx)) {
-+        return;
-+    }
-     translator_io_start(&ctx->base);
-     gen_helper_store_hdecr(tcg_env, cpu_gpr[gprn]);
- }
-@@ -721,12 +746,18 @@ void spr_read_vtb(DisasContext *ctx, int gprn, int sprn)
- 
- void spr_write_vtb(DisasContext *ctx, int sprn, int gprn)
- {
-+    if (!gen_serialize_core_lpar(ctx)) {
-+        return;
-+    }
-     translator_io_start(&ctx->base);
-     gen_helper_store_vtb(tcg_env, cpu_gpr[gprn]);
- }
- 
- void spr_write_tbu40(DisasContext *ctx, int sprn, int gprn)
- {
-+    if (!gen_serialize_core_lpar(ctx)) {
-+        return;
-+    }
-     translator_io_start(&ctx->base);
-     gen_helper_store_tbu40(tcg_env, cpu_gpr[gprn]);
- }
-@@ -1220,11 +1251,18 @@ void spr_write_hmer(DisasContext *ctx, int sprn, int gprn)
- 
- void spr_read_tfmr(DisasContext *ctx, int gprn, int sprn)
- {
-+    /* Reading TFMR can cause it to be updated, so serialize threads here too */
-+    if (!gen_serialize_core(ctx)) {
-+        return;
-+    }
-     gen_helper_load_tfmr(cpu_gpr[gprn], tcg_env);
- }
- 
- void spr_write_tfmr(DisasContext *ctx, int sprn, int gprn)
- {
-+    if (!gen_serialize_core(ctx)) {
-+        return;
-+    }
-     gen_helper_store_tfmr(tcg_env, cpu_gpr[gprn]);
- }
- 
--- 
-2.42.0
+Ping =E2=80=A6
+
+>=20
+>>=20
+>>>=20
+>>> diff --git a/tests/qtest/bios-tables-test.c =
+b/tests/qtest/bios-tables-test.c
+>>> index 9f4bc15aab..743b509e93 100644
+>>> --- a/tests/qtest/bios-tables-test.c
+>>> +++ b/tests/qtest/bios-tables-test.c
+>>> @@ -109,6 +109,7 @@ static const char *iasl;
+>>> #endif
+>>>=20
+>>> static int verbosity_level;
+>>> +static GArray *load_expected_aml(test_data *data);
+>>>=20
+>>> static bool compare_signature(const AcpiSdtTable *sdt, const char =
+*signature)
+>>> {
+>>> @@ -241,21 +242,32 @@ static void test_acpi_fadt_table(test_data =
+*data)
+>>>=20
+>>> static void dump_aml_files(test_data *data, bool rebuild)
+>>> {
+>>> -    AcpiSdtTable *sdt;
+>>> +    AcpiSdtTable *sdt, *exp_sdt;
+>>>   GError *error =3D NULL;
+>>>   gchar *aml_file =3D NULL;
+>>> +    test_data exp_data =3D {};
+>>>   gint fd;
+>>>   ssize_t ret;
+>>>   int i;
+>>>=20
+>>> +    exp_data.tables =3D load_expected_aml(data);
+>>>   for (i =3D 0; i < data->tables->len; ++i) {
+>>>       const char *ext =3D data->variant ? data->variant : "";
+>>>       sdt =3D &g_array_index(data->tables, AcpiSdtTable, i);
+>>> +        exp_sdt =3D &g_array_index(exp_data.tables, AcpiSdtTable, =
+i);
+>>>       g_assert(sdt->aml);
+>>> +        g_assert(exp_sdt->aml);
+>>>=20
+>>>       if (rebuild) {
+>>>           aml_file =3D g_strdup_printf("%s/%s/%.4s%s", data_dir, =
+data->machine,
+>>>                                      sdt->aml, ext);
+>>> +            if (!g_file_test(aml_file, G_FILE_TEST_EXISTS) &&
+>>> +                sdt->aml_len =3D=3D exp_sdt->aml_len &&
+>>> +                !memcmp(sdt->aml, exp_sdt->aml, sdt->aml_len)) {
+>>> +                /* identical tables, no need to write new files */
+>>> +                g_free(aml_file);
+>>> +                continue;
+>>> +            }
+>>>           fd =3D g_open(aml_file, O_WRONLY|O_TRUNC|O_CREAT,
+>>>                       S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
+>>>           if (fd < 0) {
+>>> --=20
+>>> 2.42.0
+
 
 
