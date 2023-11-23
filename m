@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2487F6677
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 19:40:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B77497F6679
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 19:40:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6EYT-0008If-E9; Thu, 23 Nov 2023 13:36:02 -0500
+	id 1r6EYW-0008U2-2f; Thu, 23 Nov 2023 13:36:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6EYL-0008GM-Oe
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:35:53 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6EYS-0008O2-CH
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:36:00 -0500
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6EYJ-0003IZ-2d
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:35:53 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3316d3d11e1so698128f8f.0
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 10:35:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6EYO-0003QU-Dl
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 13:35:58 -0500
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2c876e44157so14096091fa.2
+ for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 10:35:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700764549; x=1701369349; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700764554; x=1701369354; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BbxwUSVkjdWQxr0WbjMFM/ALqAenG4WEeRbrPnMTydM=;
- b=drVCCUgivC4QoUNSe2vDbvsBZD65rNXSpvZjVagLCVQ/wbRcvk2WbqNygGa25QyxYH
- OFs+HOp4TxMT9Lft/Hg+Dov784uzzA+oJxaDMBpjnoPC3fhcQcU8UN0iX0velzzegZyd
- 6SLJDi7Djw/X9LKrtOpx8hWC3bHv/hBOFY1TffxQqpKyd7WL2KnvkCRBywKRKIy07kvZ
- l7yG4UpQ/Xpnt2F0D7AhNKXAVg7Sms/W+MQ1Rikrcdj5vJx423EcgXQybwaWCwlx2WFO
- bfVMjuHH5I+aIeuGbPkUkCTWHMz8NS+/MZuBBhA7rUZIWlacg/Z/mDIcVVJz0wL7Hy5N
- lu9A==
+ bh=APkzUJ5V8QYL4MOU/zl88wqY6eeEqD/ibNzL1bZO05g=;
+ b=hoeKflBFH0s3aCxlmYwKPvp7nRxUQiZqOir7ZHUppR4UXWxuJ4CCQXyTWje5Yr4noj
+ St37h+1uNT1nbScTH+GbexSlosqNkS+0KmaolOyAHrDiQA4lvU8ny2cXcsywJjWcIv2C
+ Pv9sRmIcuk6MdVxRubau2e/gpyWJ0+pHGD1ZGvkmz1fPA2AgUdyJ95wx1HaQY80ckNFa
+ chOyKxq0PcwyxU+mVL0HE/rddbJGjpnIOXzBQYg3h7pknWYFJBoUcm0lIhUwq02Omolb
+ HB36kMXFeRNzyNzRXOZ/tyek4tWUcoXnpEqiaAu2NhM9gHvwbl4Gy/s89bn81UP288HJ
+ OTDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700764549; x=1701369349;
+ d=1e100.net; s=20230601; t=1700764554; x=1701369354;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BbxwUSVkjdWQxr0WbjMFM/ALqAenG4WEeRbrPnMTydM=;
- b=md/KTU8K81e3KADpm0uLlNHq/j8A5hx7qKKt6JloAWKoVE0zWv/i7wtsjcnYhQMtNT
- j3bPCuAY075irOzI7zCLCcFVQ1lHccC5lUUV5tLLxwNfYyZAVqJ2kVRzl04XaidahqY7
- UIgmfJj8ZWBenSo5XBA5Jau/qparYOqOmxJAEdzSJrzOYxq3eiwQJw4Bjk/8NRxBLs3X
- wqjpuYNmhEZsjUFxM1KRdA4dZppLOT87oTyV6r3JEcYJPcj98LLgxMsXZMv/FNKAFNLf
- yHtrLUMbxBY7Se4KH6Iz2OOOyYUQUog7eLY/sCQsyBSCOLyv3eB3kLNW/ae9NPsDe5uK
- 2xhg==
-X-Gm-Message-State: AOJu0Yzzx5hrWRB9sODuiNNaOhZ1I4YVzviptyu3g1YurDxkwUmEDFNk
- Dgi3nD6aURHNpLCoeqlCC0swx5YENMYRjnaoTAA=
-X-Google-Smtp-Source: AGHT+IHVpBW+fxUIX3fX8nnHCAT1wph7WRPj0AJYgOhwR4F2XpN2KJZ++ptoCV/AV5CvKejHxGVv1Q==
-X-Received: by 2002:a5d:4ac8:0:b0:332:e2e5:46a5 with SMTP id
- y8-20020a5d4ac8000000b00332e2e546a5mr37511wrs.7.1700764549059; 
- Thu, 23 Nov 2023 10:35:49 -0800 (PST)
+ bh=APkzUJ5V8QYL4MOU/zl88wqY6eeEqD/ibNzL1bZO05g=;
+ b=GV644NDplnwPIm36bbg3H7ocSId/sr3dbhj+ASdzGFPTvCzIvClzP3wNef3omwQ9Rh
+ IUC6JeRqmfKMDBYYr8t7+OMZLn6s7ZxgAWa/dicgWFbJrEpxzXmK4iA+GzjKSUiOc8v4
+ SNK+i6195Av6KSvICklEqtcynpcwA0MOzCzWAwMz7iOTtjbcKTi9U0GjxYfMsq4v8A5Q
+ zLm675R03nm619M2O8Gf0foJUuuNNHiOfz6rFcoUQlBM1zueVs2a/3f0/VuYGXJxAP+s
+ kjUI42h/XdMnlz3kOX8wHWapol8jjGxb00SNH0BgiJzyH3Y5PoFCCTOlBee6OczBMn6j
+ Riog==
+X-Gm-Message-State: AOJu0YxYQZsoaLZKhXoYa9QSt+c/d2652Ut9Zsf+crzhv4GpszK1m4Qw
+ SUX+Kt12TvYq6JDLoyAWM/8F6qVszTI6/i8izmY=
+X-Google-Smtp-Source: AGHT+IEMHSuxheCHpy3+JITp+0heG5juBUPBJg9h7cDu77hpzkqvd1orzB6IYTMkszJ7lWDnZPfVaA==
+X-Received: by 2002:a2e:9e09:0:b0:2bc:e330:660b with SMTP id
+ e9-20020a2e9e09000000b002bce330660bmr180065ljk.9.1700764554485; 
+ Thu, 23 Nov 2023 10:35:54 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.165.237])
  by smtp.gmail.com with ESMTPSA id
- f6-20020adfc986000000b0032d829e10c0sm2293981wrh.28.2023.11.23.10.35.47
+ bg11-20020a05600c3c8b00b0040b2c195523sm3477497wmb.31.2023.11.23.10.35.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 23 Nov 2023 10:35:48 -0800 (PST)
+ Thu, 23 Nov 2023 10:35:54 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.0 05/16] target/arm/kvm: Have kvm_arm_sve_get_vls take a
- ARMCPU argument
-Date: Thu, 23 Nov 2023 19:35:06 +0100
-Message-ID: <20231123183518.64569-6-philmd@linaro.org>
+Subject: [PATCH-for-9.0 06/16] target/arm/kvm: Have kvm_arm_set_device_attr
+ take a ARMCPU argument
+Date: Thu, 23 Nov 2023 19:35:07 +0100
+Message-ID: <20231123183518.64569-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231123183518.64569-1-philmd@linaro.org>
 References: <20231123183518.64569-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,66 +99,62 @@ calling the generic vCPU API from "sysemu/kvm.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/kvm_arm.h | 6 +++---
- target/arm/cpu64.c   | 2 +-
- target/arm/kvm.c     | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ target/arm/kvm.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index 6fb8a5f67e..84f87f5ed7 100644
---- a/target/arm/kvm_arm.h
-+++ b/target/arm/kvm_arm.h
-@@ -129,13 +129,13 @@ void kvm_arm_destroy_scratch_host_vcpu(int *fdarray);
- 
- /**
-  * kvm_arm_sve_get_vls:
-- * @cs: CPUState
-+ * @cpu: ARMCPU
-  *
-  * Get all the SVE vector lengths supported by the KVM host, setting
-  * the bits corresponding to their length in quadwords minus one
-  * (vq - 1) up to ARM_MAX_VQ.  Return the resulting map.
-  */
--uint32_t kvm_arm_sve_get_vls(CPUState *cs);
-+uint32_t kvm_arm_sve_get_vls(ARMCPU *cpu);
- 
- /**
-  * kvm_arm_set_cpu_features_from_host:
-@@ -278,7 +278,7 @@ static inline void kvm_arm_steal_time_finalize(ARMCPU *cpu, Error **errp)
-     g_assert_not_reached();
- }
- 
--static inline uint32_t kvm_arm_sve_get_vls(CPUState *cs)
-+static inline uint32_t kvm_arm_sve_get_vls(ARMCPU *cpu)
- {
-     g_assert_not_reached();
- }
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index 1e9c6c85ae..8e30a7993e 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -66,7 +66,7 @@ void arm_cpu_sve_finalize(ARMCPU *cpu, Error **errp)
-      */
-     if (kvm_enabled()) {
-         if (kvm_arm_sve_supported()) {
--            cpu->sve_vq.supported = kvm_arm_sve_get_vls(CPU(cpu));
-+            cpu->sve_vq.supported = kvm_arm_sve_get_vls(cpu);
-             vq_supported = cpu->sve_vq.supported;
-         } else {
-             assert(!cpu_isar_feature(aa64_sve, cpu));
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 71833a845a..766a077bcf 100644
+index 766a077bcf..73f4e5a0fa 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -1803,7 +1803,7 @@ bool kvm_arm_sve_supported(void)
+@@ -1691,18 +1691,18 @@ void kvm_arch_remove_all_hw_breakpoints(void)
+     }
+ }
  
- QEMU_BUILD_BUG_ON(KVM_ARM64_SVE_VQ_MIN != 1);
- 
--uint32_t kvm_arm_sve_get_vls(CPUState *cs)
-+uint32_t kvm_arm_sve_get_vls(ARMCPU *cpu)
+-static bool kvm_arm_set_device_attr(CPUState *cs, struct kvm_device_attr *attr,
++static bool kvm_arm_set_device_attr(ARMCPU *cpu, struct kvm_device_attr *attr,
+                                     const char *name)
  {
-     /* Only call this function if kvm_arm_sve_supported() returns true. */
-     static uint64_t vls[KVM_ARM64_SVE_VLS_WORDS];
+     int err;
+ 
+-    err = kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, attr);
++    err = kvm_vcpu_ioctl(CPU(cpu), KVM_HAS_DEVICE_ATTR, attr);
+     if (err != 0) {
+         error_report("%s: KVM_HAS_DEVICE_ATTR: %s", name, strerror(-err));
+         return false;
+     }
+ 
+-    err = kvm_vcpu_ioctl(cs, KVM_SET_DEVICE_ATTR, attr);
++    err = kvm_vcpu_ioctl(CPU(cpu), KVM_SET_DEVICE_ATTR, attr);
+     if (err != 0) {
+         error_report("%s: KVM_SET_DEVICE_ATTR: %s", name, strerror(-err));
+         return false;
+@@ -1721,7 +1721,7 @@ void kvm_arm_pmu_init(CPUState *cs)
+     if (!ARM_CPU(cs)->has_pmu) {
+         return;
+     }
+-    if (!kvm_arm_set_device_attr(cs, &attr, "PMU")) {
++    if (!kvm_arm_set_device_attr(ARM_CPU(cs), &attr, "PMU")) {
+         error_report("failed to init PMU");
+         abort();
+     }
+@@ -1738,7 +1738,7 @@ void kvm_arm_pmu_set_irq(CPUState *cs, int irq)
+     if (!ARM_CPU(cs)->has_pmu) {
+         return;
+     }
+-    if (!kvm_arm_set_device_attr(cs, &attr, "PMU")) {
++    if (!kvm_arm_set_device_attr(ARM_CPU(cs), &attr, "PMU")) {
+         error_report("failed to set irq for PMU");
+         abort();
+     }
+@@ -1755,7 +1755,7 @@ void kvm_arm_pvtime_init(CPUState *cs, uint64_t ipa)
+     if (ARM_CPU(cs)->kvm_steal_time == ON_OFF_AUTO_OFF) {
+         return;
+     }
+-    if (!kvm_arm_set_device_attr(cs, &attr, "PVTIME IPA")) {
++    if (!kvm_arm_set_device_attr(ARM_CPU(cs), &attr, "PVTIME IPA")) {
+         error_report("failed to init PVTIME IPA");
+         abort();
+     }
 -- 
 2.41.0
 
