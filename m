@@ -2,83 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09C027F6705
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 20:17:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D0777F67D9
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 20:50:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6FBT-0000dk-AI; Thu, 23 Nov 2023 14:16:19 -0500
+	id 1r6Fhm-0001zq-LN; Thu, 23 Nov 2023 14:49:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r6FBR-0000WR-7z
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 14:16:17 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r6FBB-0003pV-S2
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 14:16:16 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1cc5fa0e4d5so9412625ad.0
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 11:16:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1700766960; x=1701371760; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yNmsJugvxGfWuNRNrzSMaJR8adV3KPuLw+7r7LQkB+M=;
- b=mTcIkqufVidRCXhyg6Y0/Od6IeuEFfiU/9Oc8QYbgC3eQxClhBdiwuF0E2aLp30dzD
- A9nJDzmsehsucvR9TWLBFLyJSrh5XNtiJ9s3iI/YgcqPvfkKJ57gbO849Y2zvxfK4SQD
- xHJ7NLX6CgD835uNcwh82lQXXxXEw1tJNYcOgoGPaeX0qSwgdG0jFSTpFN4vUfZbBYRE
- NSVTekfQ49XYsScX0Zn0279Kj85pvBcQHqmldYcC2F8zy5QDNC+fwjp/jX2lLWWMnLKx
- M3c+mQBUz534sVD4rJA17EyA0xFJfj1hHrNwZ5E9Ly1AMnkDhbNpW0MUL3WVKT8K9Zcb
- Z3/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700766960; x=1701371760;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yNmsJugvxGfWuNRNrzSMaJR8adV3KPuLw+7r7LQkB+M=;
- b=BSH2SRK8D40yH7Gh/HzfDP7KhXzQz93EMHG5QAZh24mj98+76EgdrQHrAtPkKKEyPi
- cpVF+VuRPr7yaOpJ/6wjQPkcTKVqQzFS4VD4RcSSefyc9cDE2dSx/zAh2X4ESJtGyh3z
- poXQBvXSMsJl8qxuyPARV/bAC7dp8DohaCE+rVzea15tNugOQzMLDqupcumyWtyqMS56
- bJzvTJSS1bVOP4bUrroej/4bAOX5kpl/0WS1xm7l4gjgbW1M+dGfruhURPLvbIZTyjhz
- 3R+4vz+jgM0lQ/hzF0n0g24Ysd/8DsfrpDitQ+pZGjkkvTgYfE2gng1dnuDYxNJwNNOO
- 6OZQ==
-X-Gm-Message-State: AOJu0YzeGhPQ+lHeHSWtmilt6dvWI3SztJBfunzHOFSojVpDiTwml6W1
- QKk+QuPGKm3fD+0+MGCOttwv1yrgotU0f/8PwPo=
-X-Google-Smtp-Source: AGHT+IEM2ijHFSXrjft3fS5gZvpQwCiPw/C8ptm2Us9Rf9quIYAn5rxk6xYjSk7E972uLepGn98jOA==
-X-Received: by 2002:a17:902:a411:b0:1cf:669b:613c with SMTP id
- p17-20020a170902a41100b001cf669b613cmr406101plq.55.1700766960301; 
- Thu, 23 Nov 2023 11:16:00 -0800 (PST)
-Received: from grind.. ([2804:7f0:bdcd:fb00:6501:2693:db52:c621])
- by smtp.gmail.com with ESMTPSA id
- h21-20020a170902eed500b001bc21222e34sm1680760plb.285.2023.11.23.11.15.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Nov 2023 11:15:59 -0800 (PST)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1r6Fhl-0001xV-4z
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 14:49:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1r6Fhj-0000cz-Lw
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 14:49:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700768978;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=vBExvsNxM45JG0GTOZcb0ZCEaSTtqFHbc/mayKRz//o=;
+ b=YONBHL/qZrBED1ydYQ37y+VOeAH0RoOrsP1Z2slxDgRqJltvhiCtdm3vlugcPJ6xOXqkMK
+ +9YH9xP9zj83D/eLDLrpysQF7uLA2F+QliCr19rttLGjHqoUcpGiT8VDie9JFclg9nwZ5M
+ M8WhOE85ZQiOWFcHkrcilaYqaxwv8p4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-73-RTL7GcyoMBGxB_GeT5883w-1; Thu, 23 Nov 2023 14:49:34 -0500
+X-MC-Unique: RTL7GcyoMBGxB_GeT5883w-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 823EE828AC2;
+ Thu, 23 Nov 2023 19:49:34 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.72])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A7C9B1121306;
+ Thu, 23 Nov 2023 19:49:33 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH for-9.0 7/7] target/riscv: add rva22s64 cpu
-Date: Thu, 23 Nov 2023 16:15:32 -0300
-Message-ID: <20231123191532.1101644-8-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231123191532.1101644-1-dbarboza@ventanamicro.com>
-References: <20231123191532.1101644-1-dbarboza@ventanamicro.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PATCH 0/4] scsi: eliminate AioContext lock
+Date: Thu, 23 Nov 2023 14:49:27 -0500
+Message-ID: <20231123194931.171598-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,57 +81,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new profile CPU 'rva22s64' to work as an alias of
+The SCSI subsystem uses the AioContext lock to protect internal state. This is
+necessary because the main loop and the IOThread can access SCSI state in
+parallel. This inter-thread access happens during scsi_device_purge_requests()
+and scsi_dma_restart_cb().
 
--cpu rv64i,rva22s64
+This patch series modifies the code so SCSI state is only accessed from the
+IOThread that is executing requests. Once this has been achieved the AioContext
+lock is no longer necessary.
 
-Like the existing rva22u64 CPU already does with the RVA22U64 profile.
+Note that a few aio_context_acquire()/aio_context_release() calls still remain
+after this series. They surround API calls that invoke AIO_WAIT_WHILE() and
+therefore still rely on the AioContext lock for now.
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/cpu-qom.h | 1 +
- target/riscv/cpu.c     | 8 ++++++++
- 2 files changed, 9 insertions(+)
+Stefan Hajnoczi (4):
+  scsi: only access SCSIDevice->requests from one thread
+  virtio-scsi: don't lock AioContext around
+    virtio_queue_aio_attach_host_notifier()
+  scsi: don't lock AioContext in I/O code path
+  dma-helpers: don't lock AioContext in dma_blk_cb()
 
-diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-index 12fe78fc52..9219c2fcc3 100644
---- a/target/riscv/cpu-qom.h
-+++ b/target/riscv/cpu-qom.h
-@@ -36,6 +36,7 @@
- #define TYPE_RISCV_CPU_BASE128          RISCV_CPU_TYPE_NAME("x-rv128")
- #define TYPE_RISCV_CPU_RV64I            RISCV_CPU_TYPE_NAME("rv64i")
- #define TYPE_RISCV_CPU_RVA22U64         RISCV_CPU_TYPE_NAME("rva22u64")
-+#define TYPE_RISCV_CPU_RVA22S64         RISCV_CPU_TYPE_NAME("rva22s64")
- #define TYPE_RISCV_CPU_IBEX             RISCV_CPU_TYPE_NAME("lowrisc-ibex")
- #define TYPE_RISCV_CPU_SHAKTI_C         RISCV_CPU_TYPE_NAME("shakti-c")
- #define TYPE_RISCV_CPU_SIFIVE_E31       RISCV_CPU_TYPE_NAME("sifive-e31")
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index d00548d164..f6d1d4c7a6 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1631,6 +1631,13 @@ static void rva22u64_profile_cpu_init(Object *obj)
- 
-     RVA22U64.enabled = true;
- }
-+
-+static void rva22s64_profile_cpu_init(Object *obj)
-+{
-+    rv64i_bare_cpu_init(obj);
-+
-+    RVA22S64.enabled = true;
-+}
- #endif
- 
- static const gchar *riscv_gdb_arch_name(CPUState *cs)
-@@ -1975,6 +1982,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,  rv128_base_cpu_init),
-     DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64I, rv64i_bare_cpu_init),
-     DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22U64, rva22u64_profile_cpu_init),
-+    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22S64, rva22s64_profile_cpu_init),
- #endif
- };
- 
+ include/hw/scsi/scsi.h          |   7 +-
+ hw/scsi/scsi-bus.c              | 174 ++++++++++++++++++++++----------
+ hw/scsi/scsi-disk.c             |  23 -----
+ hw/scsi/scsi-generic.c          |  20 +---
+ hw/scsi/virtio-scsi-dataplane.c |   8 +-
+ system/dma-helpers.c            |   7 +-
+ 6 files changed, 130 insertions(+), 109 deletions(-)
+
 -- 
-2.41.0
+2.42.0
 
 
