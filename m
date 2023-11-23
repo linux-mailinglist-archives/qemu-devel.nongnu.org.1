@@ -2,83 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE5B7F64EC
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 18:09:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 283347F64ED
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 Nov 2023 18:10:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6DCH-0001c4-Ap; Thu, 23 Nov 2023 12:09:01 -0500
+	id 1r6DCw-0002EN-6D; Thu, 23 Nov 2023 12:09:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r6DCE-0001bY-Vo
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 12:08:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <SRS0=WthQ=HE=kaod.org=clg@ozlabs.org>)
+ id 1r6DCu-0002CG-4D; Thu, 23 Nov 2023 12:09:40 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r6DCD-00078T-6R
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 12:08:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700759336;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+/KtaZ4fuFDKV4Q10R49TwcHVmQOte7RqWb1xfAkw1o=;
- b=KPTnaG8IEJ6gHh0pK1e1wN25PCYmrMcsPeQgNfkIlaz58T7z+crprQf3t64n/Cpk0LGtdW
- Lj3dM9bvSwiATtEbQ+kZ3YeLmmprm/QFi4C7a9J5oKoQnAXftnPMF4JP8Pqzmuue6li4US
- Hv4bacQj6ARBxcmlTkhIi81gPXWGOsY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-171-U-qu3zbyMi2qiSOOxzt1xQ-1; Thu,
- 23 Nov 2023 12:08:50 -0500
-X-MC-Unique: U-qu3zbyMi2qiSOOxzt1xQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ (Exim 4.90_1) (envelope-from <SRS0=WthQ=HE=kaod.org=clg@ozlabs.org>)
+ id 1r6DCs-0007gY-1j; Thu, 23 Nov 2023 12:09:39 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sbl3001qkz4xRj;
+ Fri, 24 Nov 2023 04:09:32 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 59BD81C05AB5;
- Thu, 23 Nov 2023 17:08:50 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.44])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 65FD4C1596F;
- Thu, 23 Nov 2023 17:08:48 +0000 (UTC)
-Date: Thu, 23 Nov 2023 17:08:46 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Alexander Graf <agraf@csgraf.de>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 1/2] docs: introduce dedicated page about code provenance
- / sign-off
-Message-ID: <ZV-HHpLnjOj1LPDi@redhat.com>
-References: <20231123114026.3589272-1-berrange@redhat.com>
- <20231123114026.3589272-2-berrange@redhat.com>
- <d3998e03-8f91-4bc3-896f-4a8f3174e442@linaro.org>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sbl2x1SmKz4xR5;
+ Fri, 24 Nov 2023 04:09:28 +1100 (AEDT)
+Message-ID: <18517c0b-f928-4bbc-b31c-8dfdfefdea31@kaod.org>
+Date: Thu, 23 Nov 2023 18:09:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d3998e03-8f91-4bc3-896f-4a8f3174e442@linaro.org>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/7] ppc: pnv ChipTOD and various timebase fixes
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
+ qemu-devel@nongnu.org
+References: <20231123103018.172383-1-npiggin@gmail.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20231123103018.172383-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=WthQ=HE=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,71 +62,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 23, 2023 at 12:58:18PM +0100, Philippe Mathieu-Daudé wrote:
-> On 23/11/23 12:40, Daniel P. Berrangé wrote:
-> > Currently we have a short paragraph saying that patches must include
-> > a Signed-off-by line, and merely link to the kernel documentation.
-> > The linked kernel docs have alot of content beyond the part about
-> > sign-off an thus is misleading/distracting to QEMU contributors.
-> > 
-> > This introduces a dedicated 'code-provenance' page in QEMU talking
-> > about why we require sign-off, explaining the other tags we commonly
-> > use, and what to do in some edge cases.
-> > 
-> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > ---
-> >   docs/devel/code-provenance.rst    | 197 ++++++++++++++++++++++++++++++
-> >   docs/devel/index-process.rst      |   1 +
-> >   docs/devel/submitting-a-patch.rst |  18 +--
-> >   3 files changed, 201 insertions(+), 15 deletions(-)
-> >   create mode 100644 docs/devel/code-provenance.rst
-
-> > +Other commit tags
-> > +~~~~~~~~~~~~~~~~~
-> > +
-> > +While the ``Signed-off-by`` tag is mandatory, there are a number of
-> > +other tags that are commonly used during QEMU development
-> > +
-> > + * **``Reviewed-by``**: when a QEMU community member reviews a patch
-> > +   on the mailing list, if they consider the patch acceptable, they
-> > +   should send an email reply containing a ``Reviewed-by`` tag.
-> > +
-> > +   NB: a subsystem maintainer sending a pull request would replace
-> > +   their own ``Reviewed-by`` with another ``Signed-off-by``
+On 11/23/23 11:30, Nicholas Piggin wrote:
+> The chiptod/TFMR/state machine is not really tied to the other
+> time register fixes, but they touch some of the same code, and
+> logically same facility.
 > 
-> Hmm not sure about replacing, they have different meaning. You can merge
-> patch you haven't reviewed. But as a maintainer you must S-o-b what you
-> end merging (what is mentioned below in "subsystem maintainer").
-
-I've always taken it as implied that patches I queue are reviewed by me,
-but replies here suggest I'm in a minority on that.  That shows why it is
-worth documenting this for QEMU explicitly :-)
-
-> > + * **``Reported-by``**: when a QEMU community member reports a problem
-> > +   via the mailing list, or some other informal channel that is not
-> > +   the issue tracker, it is good practice to credit them by including
-> > +   a ``Reported-by`` tag on any patch fixing the issue. When the
-> > +   problem is reported via the GitLab issue tracker, however, it is
-> > +   sufficient to just include a link to the issue.
+> Changes since v1 of chiptod patches:
+> - Split hackish ChipTOD<->TFMR/TBST interface into its own patch
+> - Fix multi-socket addressing on P9 / chip ID mode (P10 works)
+> - Change chiptod primary/secondary setting to use class properties
+> - Add more comments to explain TOD overview and timebase state
+>    machine.
+> - SMT support for TFMR, some functionality is limited to thread 0.
+> - FIRMWARE_CONTROL_ERROR bit implemented in TFMR.
+> - Misc cleanups and bug fixes.
 > 
-> Hmm isn't related to the "Resolves:" tag?
+> The hacky part, addressing core from chiptod, is still hacky. Is
+> there strong objection to it?
 
-Gitlab supports a huge varity - resolves/fixes/closes/etc
+Dunno yet :)
 
-I don't think this wants to turn into a full guide on what info to include
-in a commit message, as we already have that in the submitting-a-patch doc,
-explaining the bug link syntax. So I'll still to just the tags that
-explicitly credit humans.
+> This successfully runs skiboot chiptod initialisation code with
+> POWER9 and POWER10 multi-socket, multi-core, SMT. That requires
+> skiboot 7.1 (not in-tree), otherwise chiptod init is skipped on
+> QEMU machines.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Let's update skiboot at the same time then.
+
+Thanks,
+
+C.
+
+> 
+> Thanks,
+> Nick
+> 
+> Nicholas Piggin (7):
+>    target/ppc: Rename TBL to TB on 64-bit
+>    target/ppc: Improve timebase register defines naming
+>    target/ppc: Fix move-to timebase SPR access permissions
+>    pnv/chiptod: Add POWER9/10 chiptod model
+>    pnv/chiptod: Implement the ChipTOD to Core transfer
+>    target/ppc: Implement core timebase state machine and TFMR
+>    target/ppc: Add SMT support to time facilities
+> 
+>   include/hw/ppc/pnv_chip.h    |   3 +
+>   include/hw/ppc/pnv_chiptod.h |  55 ++++
+>   include/hw/ppc/pnv_core.h    |   4 +
+>   include/hw/ppc/pnv_xscom.h   |   9 +
+>   target/ppc/cpu.h             |  50 +++-
+>   hw/ppc/pnv.c                 |  63 +++++
+>   hw/ppc/pnv_chiptod.c         | 509 +++++++++++++++++++++++++++++++++++
+>   target/ppc/helper_regs.c     |  39 ++-
+>   target/ppc/ppc-qmp-cmds.c    |   4 +
+>   target/ppc/timebase_helper.c | 309 ++++++++++++++++++++-
+>   target/ppc/translate.c       |  42 ++-
+>   hw/ppc/meson.build           |   1 +
+>   hw/ppc/trace-events          |   4 +
+>   13 files changed, 1067 insertions(+), 25 deletions(-)
+>   create mode 100644 include/hw/ppc/pnv_chiptod.h
+>   create mode 100644 hw/ppc/pnv_chiptod.c
+> 
 
 
