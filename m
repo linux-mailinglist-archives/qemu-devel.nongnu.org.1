@@ -2,82 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6DB57F6F82
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 10:27:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A12077F6F8C
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 10:28:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6SST-0002nc-AI; Fri, 24 Nov 2023 04:26:45 -0500
+	id 1r6STf-0003Xy-KV; Fri, 24 Nov 2023 04:27:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1r6SSP-0002mt-Vz
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 04:26:42 -0500
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1r6SSO-0008DL-AZ
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 04:26:41 -0500
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2c87acba73bso22222211fa.1
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 01:26:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1700817998; x=1701422798; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=kZ0NtL7wv+0NH/xlPeT118QS8vRQnQvMegpNkUgNzWw=;
- b=hbvgipBM0fXy8iAWOx4hMhyvvWHT0d6iUBpypEpIztWSdzwe4vZW/2r+mHR4dUddyf
- SkFRrPEg7sw2XwfcA1FgmeuAk3w+WzIebFUD6+z0POYlSEicntj5NVwB8rW9+QZxdYRK
- 1UH0pIEKuUPhnfpWze/Y1M1c1exxrUDtZHSvTNkrt9IJsWMp8Xg24rdPsLkZwA/h3PxA
- WoZdXyDH9rA7BpgPeGdAwi9ROMSfGRUda+OhKu+Ne6rlxiLAl0zF2cjICwnGnsEZUUlX
- BuY0q+C0BMRGJjC147/bawpiIFWhRiDABHuYZRQmhNGlA6oKQ9mtcmoMWqsBpf80NmjS
- OElQ==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6STd-0003W3-Ib
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 04:27:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6STc-0008KL-0D
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 04:27:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700818074;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=QHe6APctkLt0R9Ty4iBGvLnpq2axVP2/KRFfGx5vSrA=;
+ b=gz9ts9OHXZG6q3elQUCVW5zODX7WZ4SwLP8jTnlaZ+Par1uZiRcPJiNt18Z7Taen+rgI0F
+ XpYci3MiOi9VMTNisISZliWhupjF67aFZhLqrd1a4xVr6xGaz776jPQmpujoNYwGyPzwlG
+ hbb2RyBoiIHKFsuHy45VuCcHcG9U65I=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-563-Qp6YCaQ2OVO12gVbj_ZxQw-1; Fri, 24 Nov 2023 04:27:53 -0500
+X-MC-Unique: Qp6YCaQ2OVO12gVbj_ZxQw-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-540150414efso1066728a12.3
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 01:27:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700817998; x=1701422798;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kZ0NtL7wv+0NH/xlPeT118QS8vRQnQvMegpNkUgNzWw=;
- b=tEPK9EmSCJ9qQ/Y7xccS5HzIigntqI6WcWPb9Kozh0Gm1phkaMxlgWnPIUryBqsYtJ
- jDwBEaIlFrTP82vd7elfNJVszLgECBtrit3nggJ9k2QGDKVP864hRquD/lpCyoVWTIKU
- v/NZIyb16puMjPm5VzIvDDhNWaQF7phWuoJiekmWHDqVYRx906tqyR6/6omnHEPpZLPh
- qDJioSbAWDdLKKtF78SXN1Qn/4aGjEa56mo75krJzqpuuF31G5VZ6dYIVTOMIhXBxnf+
- tPgxCezsnY3Zqm2jtW9LScWOKJN7VDEjvL6+8ihoWI3TdasHaG5VvH6xM6RLHmgKzsvJ
- xnEw==
-X-Gm-Message-State: AOJu0YwCNEfywdsqHt7KGfZB8Eae5l5+DSLRrJV8FoXyXvBJSOvtmff1
- IXtBvRDY3grTU6dzOQrYvUvDzA==
-X-Google-Smtp-Source: AGHT+IHCJBrhP1ffFhWKkiRBstmlXwbC1Mt1eTwbYPG5d2apjK2bv5pduOWUIu/IKCIZgbd2hxMGbA==
-X-Received: by 2002:a2e:905a:0:b0:2c8:87bd:7bfd with SMTP id
- n26-20020a2e905a000000b002c887bd7bfdmr1429483ljg.0.1700817998235; 
- Fri, 24 Nov 2023 01:26:38 -0800 (PST)
-Received: from localhost (cst-prg-91-180.cust.vodafone.cz. [46.135.91.180])
- by smtp.gmail.com with ESMTPSA id
- az15-20020a05600c600f00b0040b2b9bf321sm5229158wmb.9.2023.11.24.01.26.37
+ d=1e100.net; s=20230601; t=1700818072; x=1701422872;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QHe6APctkLt0R9Ty4iBGvLnpq2axVP2/KRFfGx5vSrA=;
+ b=elAZLtw1zUYyipFaEIsabrEILsVlq9tnf9LstIfl7UMYgi7c/WI4z8u13AnJKbyNUR
+ LinPrJUjxEN1zyv1Yl/MuyPEzJgCKUNs/vJxnkoNhwL7a1P4Zw5hGgDei+OMAqBhRtTV
+ c6SqaUK2zdj+RiBbw23EizqW2sHeI71ivZVJogb4Y+tnhumjStPoH3Zn531ZnUGfV9Em
+ fwLxcOjAX7DPAqLsD0J4tkdvqOfEXoE52a4Gzyz9z4L+Drc32fd/bemeGA5DF4lPLkkK
+ sKpi8gzeGtD/dONmgP+72YHewXdr7b8MVepzIc00PtL2bfXkZKt5xiWxIZ4lcelFEhE+
+ ULeg==
+X-Gm-Message-State: AOJu0YxasQ32gu8zUc0NJaT44woxq766rbaAeRBJVA/9pOcKpa/YMKEF
+ qrY0l/IbL/2NiQyMg1RIyC4RF88icdmFq/NKerxUI2swktnbFW/vUxp7EuezPg9kUKEYRl9jljm
+ UdapTYobgVuPQSNs=
+X-Received: by 2002:aa7:c608:0:b0:54a:f1db:c2b8 with SMTP id
+ h8-20020aa7c608000000b0054af1dbc2b8mr1175710edq.6.1700818072186; 
+ Fri, 24 Nov 2023 01:27:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG3rZAzyIJjAvVVxRMF3MvKev1Vb2kzvha7JKZxRWqhMvTOeML9dRKZDTtexVG3FpgKN0sS+A==
+X-Received: by 2002:aa7:c608:0:b0:54a:f1db:c2b8 with SMTP id
+ h8-20020aa7c608000000b0054af1dbc2b8mr1175693edq.6.1700818071827; 
+ Fri, 24 Nov 2023 01:27:51 -0800 (PST)
+Received: from redhat.com ([2.55.56.198]) by smtp.gmail.com with ESMTPSA id
+ u3-20020a056402110300b0053f10da1105sm1565630edv.87.2023.11.24.01.27.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Nov 2023 01:26:37 -0800 (PST)
-Date: Fri, 24 Nov 2023 10:26:36 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH for-9.0 v11 10/18] target/riscv/tcg: add user flag for
- profile support
-Message-ID: <20231124-3f0e87fb0cb17d5c9d8663f6@orel>
-References: <20231123185122.1100436-1-dbarboza@ventanamicro.com>
- <20231123185122.1100436-11-dbarboza@ventanamicro.com>
+ Fri, 24 Nov 2023 01:27:51 -0800 (PST)
+Date: Fri, 24 Nov 2023 04:27:46 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Alexander Graf <agraf@csgraf.de>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Phil =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 2/2] docs: define policy forbidding use of "AI" / LLM
+ code generators
+Message-ID: <20231124041343-mutt-send-email-mst@kernel.org>
+References: <20231123114026.3589272-1-berrange@redhat.com>
+ <20231123114026.3589272-3-berrange@redhat.com>
+ <20231123092523-mutt-send-email-mst@kernel.org>
+ <ZV-S1f2cK8MLNizz@redhat.com>
+ <20231123172828-mutt-send-email-mst@kernel.org>
+ <ZWBngLoa3ERuMxGJ@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20231123185122.1100436-11-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=ajones@ventanamicro.com; helo=mail-lj1-x234.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZWBngLoa3ERuMxGJ@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,47 +112,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 23, 2023 at 03:51:14PM -0300, Daniel Henrique Barboza wrote:
-> The TCG emulation implements all the extensions described in the
-> RVA22U64 profile, both mandatory and optional. The mandatory extensions
-> will be enabled via the profile flag. We'll leave the optional
-> extensions to be enabled by hand.
+On Fri, Nov 24, 2023 at 09:06:29AM +0000, Daniel P. Berrangé wrote:
+> On Thu, Nov 23, 2023 at 05:39:18PM -0500, Michael S. Tsirkin wrote:
+> > On Thu, Nov 23, 2023 at 05:58:45PM +0000, Daniel P. Berrangé wrote:
+> > > The license of a code generation tool itself is usually considered
+> > > to be not a factor in the license of its output.
+> > 
+> > Really? I would find it very surprising if a code generation tool that
+> > is not a language model and so is not understanding the code it's
+> > generating did not include some code snippets going into the output.
+> > It is also possible to unintentionally run afoul of GPL's definition of source
+> > code which is "the preferred form of the work for making modifications to it". 
+> > So even if you have copyright to input, dumping just output and putting
+> > GPL on it might or might not be ok.
 > 
-> Given that this is the first profile we're implementing in TCG we'll
-> need some ground work first:
+> Consider the C pre-processor. This takes an input .c file, and expands
+> all the macros, to split out a new .c file.
 > 
-> - all profiles declared in riscv_profiles[] will be exposed to users.
-> TCG is the main accelerator we're considering when adding profile
-> support in QEMU, so for now it's safe to assume that all profiles in
-> riscv_profiles[] will be relevant to TCG;
+> The license of the output .c file is determined by the license of the
+> input .c file. The license of the CPP impl (whether OSS or proprietary)
+> doesn't have any influence on the license of the output file, it cannot
+> magically force the output file to be proprietary any more than it can
+> force it to be output file GPL.
 > 
-> - we'll not support user profile settings for vendor CPUs. The flags
-> will still be exposed but users won't be able to change them;
-> 
-> - profile support, albeit available for all non-vendor CPUs, will be
-> based on top of the new 'rv64i' CPU. Setting a profile to 'true' means
-> enable all mandatory extensions of this profile, setting it to 'false'
-> will disable all mandatory profile extensions of the CPU, which will
-> obliterate preset defaults. This is not a problem for a bare CPU like
-> rv64i but it can allow for silly scenarios when using other CPUs. E.g.
-> an user can do "-cpu rv64,rva22u64=false" and have a bunch of default
-> rv64 extensions disabled. The recommended way of using profiles is the
-> rv64i CPU, but users are free to experiment.
-> 
-> For now we'll handle multi-letter extensions only. MISA extensions need
-> additional steps that we'll take care later. At this point we can boot a
-> Linux buildroot using rva22u64 using the following options:
-> 
-> -cpu rv64i,rva22u64=true,sv39=true,g=true,c=true,s=true
-> 
-> Note that being an usermode/application profile we still need to
-> explicitly set 's=true' to enable Supervisor mode to boot Linux.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/tcg/tcg-cpu.c | 80 ++++++++++++++++++++++++++++++++++++++
->  1 file changed, 80 insertions(+)
->
+> With regards,
+> Daniel
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Sorry I don't get how is C preprocessor relevant here? It does not
+generate source code in the GPL sense. We won't accept C preprocessor
+output in a patch.
+
+Not being a lawyer I personally am not really interested in discussing
+how copyright works, certainly not at this highly abstract and
+simplified level.
+
+-- 
+MST
+
 
