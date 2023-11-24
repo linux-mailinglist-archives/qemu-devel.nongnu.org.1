@@ -2,81 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1CCE7F79F8
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 18:01:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E08C7F7A0B
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 18:06:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6ZX5-0001lu-E4; Fri, 24 Nov 2023 11:59:59 -0500
+	id 1r6Zbw-0006vq-5G; Fri, 24 Nov 2023 12:05:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
- id 1r6ZX3-0001k0-It; Fri, 24 Nov 2023 11:59:57 -0500
-Received: from mail-qv1-xf2a.google.com ([2607:f8b0:4864:20::f2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
- id 1r6ZX1-000488-S6; Fri, 24 Nov 2023 11:59:57 -0500
-Received: by mail-qv1-xf2a.google.com with SMTP id
- 6a1803df08f44-67a12079162so4686356d6.1; 
- Fri, 24 Nov 2023 08:59:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700845194; x=1701449994; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=J6e2TglBi+lJq4NZlVYfJRw7pzIANBEwswwOaV+z0X0=;
- b=GDT8uJ4y7h/aSc0kOl4u3q4N1sH7Vxs85v4q+vjcz5z0Q0r1Ol7ZhsaT1pMejOON4t
- Vbxj0Xbol0BSpzffke0Z7tWDv+7xlqpD9bjsb0u7HthWy487CZEXaeFflhfcYC/Hn/Ip
- NoTFnK0K7qdeen7kqhVEZCkfv3J4bS9OPqcCSt71UmYCP8cx0Ly9o15WbipSpIRvdH1p
- vqf+wq/JVg3KWk97OR2hc47CUr7jJbR+bmNfUfsaxUdwQG8NCbXqMYw22iXjRI+Vtw6l
- J13z917cmcxMYHu+0ycRYCE0QBCUCVb12dKZ7Hd02jRkix46YIocL3JJDImaSvyl7Sew
- /VaQ==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1r6Zbu-0006vZ-8b
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 12:04:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1r6Zbr-0005I2-MF
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 12:04:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700845494;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bV08Mg7zL7cwji3fZJdMQUEka/HT29wVQMTZBjTEI4s=;
+ b=EPo9FwP/cgrncJJ8/tX4XWjFvLRtmOUTVwyl4T0DUO4Q4dyOAIrlZlwy29/ox4wI2FWq1M
+ ydmYWoJmMxUTACkNeCeuchVOwqn6C/HreAfCETup0G/+Ajh5YoMs6GRXj2xbQSdroA098+
+ dEN1JgT4GETNdotTEi9dK4Ogrm2RHsE=
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
+ [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-530-CQrhP7A5Nl2j-Q4zBfbu3w-1; Fri, 24 Nov 2023 12:04:53 -0500
+X-MC-Unique: CQrhP7A5Nl2j-Q4zBfbu3w-1
+Received: by mail-ot1-f71.google.com with SMTP id
+ 46e09a7af769-6ce0c99f117so1901788a34.2
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 09:04:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700845194; x=1701449994;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1700845492; x=1701450292;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J6e2TglBi+lJq4NZlVYfJRw7pzIANBEwswwOaV+z0X0=;
- b=kqa1QopLsx5vgVTfpLtb3zKcmT9v9UzbPe2Br+XQcKioDGgm50w13OlG4MZAyAPHgs
- hYO132XArhjBoQbIFlZPK4rfnL2xTgIzBdZBP+DjVgUWHFWxs/CeF1cDCHZowQWIbKaW
- PdYJThxybXauvnC8SiVZsS9tLOJBDg2micmsAerwaHwtfcnDQfG6qo0+cVRurUWOeur+
- UlN+jxzcpfTqZutZQqpaxfTqfN4VXRiuqWiCLICHaxQhkn8pk5YToXy3xWyAPFSl9qvR
- z5LbXGSvSJ0zZ+V0qqcQeFlWliMUATIts/96741i69kKgk4XZq6JUL13YDGC2jty5D3C
- gUlQ==
-X-Gm-Message-State: AOJu0YzlDu8cb/7d5Q4YQHPhU1fUfbM+MRFrL4R14Isnr4m1BpdAamnC
- 3HG0VAC+kELEnPDaaVZbJD3FnfdTzWwbREP+r2E=
-X-Google-Smtp-Source: AGHT+IHuIPiaEbnXQ0d+efEaY39AIdz4cW9nEkh1G0jo4pimO74C4J/a5WsaTsZ13vSFEu3gobmgwZq7B29eIX6TSgs=
-X-Received: by 2002:a05:6214:19ef:b0:67a:21a6:75db with SMTP id
- q15-20020a05621419ef00b0067a21a675dbmr1028543qvc.55.1700845194464; Fri, 24
- Nov 2023 08:59:54 -0800 (PST)
+ bh=bV08Mg7zL7cwji3fZJdMQUEka/HT29wVQMTZBjTEI4s=;
+ b=kYgsm3gF62FgT6Y488q+8gAiY0S/WCDRQwP6oOcEKkW9cc3XuQBiExtd+orP4lqyUn
+ znn+sB93/D0k1+nocy4dnUazYovQWAhyV+RzBrhJwW5Jn7jImjFUnieV52WbmB7FWcSK
+ alQjC0cilMK21IxVMXoQdomqF62t6fWm674MMNjoxfRlfla4I0fqC+eGOK5NMxUP3tRO
+ bfiALEXbswXz0u43E4NyX8K05LeJ9NGXDzaN1FI4exHQEXgwFjiDsnH0DuFbizA/4VzO
+ ZCdaznkcZ6LchkdaNWp2yqx09H6Y6X9aJr872vntJPx5geIBbE+2w9gMGeEdCIss6w2/
+ uABQ==
+X-Gm-Message-State: AOJu0Yw+72yX3KTbd6kk0UvHH077blzj0zOViARseQgei5ZAjzb9+2+b
+ +lb5wLaYHCG0kF2+hjtQCcyASRE/UZPtxqn9pKsp25iYspvSqmZm30QHmcKQDa1SOuZ92dYcDjk
+ jztutXXJpNxXuMAg=
+X-Received: by 2002:a05:6830:411d:b0:6d8:1ec:7845 with SMTP id
+ w29-20020a056830411d00b006d801ec7845mr1890920ott.2.1700845492575; 
+ Fri, 24 Nov 2023 09:04:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF3nyCiAcUyqx14QypnSgCgGpyuWmndUwft5HuRoqlxl2zqZ/54nJoZAwITuvPkPoVNATesuw==
+X-Received: by 2002:a05:6830:411d:b0:6d8:1ec:7845 with SMTP id
+ w29-20020a056830411d00b006d801ec7845mr1890861ott.2.1700845492248; 
+ Fri, 24 Nov 2023 09:04:52 -0800 (PST)
+Received: from imammedo.users.ipa.redhat.com ([185.140.112.229])
+ by smtp.gmail.com with ESMTPSA id
+ qh6-20020a0562144c0600b0067a16d12a20sm630548qvb.86.2023.11.24.09.04.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 24 Nov 2023 09:04:51 -0800 (PST)
+Date: Fri, 24 Nov 2023 18:04:43 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Salil Mehta <salil.mehta@huawei.com>
+Cc: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <maz@kernel.org>,
+ <jean-philippe@linaro.org>, <jonathan.cameron@huawei.com>,
+ <lpieralisi@kernel.org>, <peter.maydell@linaro.org>,
+ <richard.henderson@linaro.org>, <andrew.jones@linux.dev>,
+ <david@redhat.com>, <philmd@linaro.org>, <eric.auger@redhat.com>,
+ <oliver.upton@linux.dev>, <pbonzini@redhat.com>, <mst@redhat.com>,
+ <will@kernel.org>, <gshan@redhat.com>, <rafael@kernel.org>,
+ <alex.bennee@linaro.org>, <linux@armlinux.org.uk>,
+ <darren@os.amperecomputing.com>, <ilkka@os.amperecomputing.com>,
+ <vishnu@os.amperecomputing.com>, <karl.heubaum@oracle.com>,
+ <miguel.luis@oracle.com>, <salil.mehta@opnsrc.net>,
+ <zhukeqian1@huawei.com>, <wangxiongfeng2@huawei.com>,
+ <wangyanan55@huawei.com>, <jiakernel2@gmail.com>, <maobibo@loongson.cn>,
+ <lixianglai@loongson.cn>, <linuxarm@huawei.com>
+Subject: Re: [PATCH V7 5/8] hw/acpi: Update CPUs AML with cpu-(ctrl)dev change
+Message-ID: <20231124180443.604d5f99@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20231113201236.30668-6-salil.mehta@huawei.com>
+References: <20231113201236.30668-1-salil.mehta@huawei.com>
+ <20231113201236.30668-6-salil.mehta@huawei.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20231124015312.544422-1-dhoff749@gmail.com>
- <93f7ee3e-a92f-4b18-bf16-2169c8b2791d@linaro.org>
- <87sf4vgtir.fsf@pond.sub.org> <87edgfgsg0.fsf@pond.sub.org>
-In-Reply-To: <87edgfgsg0.fsf@pond.sub.org>
-From: Dan Hoffman <dhoff749@gmail.com>
-Date: Fri, 24 Nov 2023 10:59:44 -0600
-Message-ID: <CAFXChKJ+OoxXH0Krvvc0-84VwTkat1CciOL=59+gyH+WYWEV_A@mail.gmail.com>
-Subject: Re: [PATCH] hw/core: define stack variable to NULL to fix qtest with
- sanitizers
-To: Markus Armbruster <armbru@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, qemu-trivial@nongnu.org, 
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Kevin Wolf <kwolf@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2a;
- envelope-from=dhoff749@gmail.com; helo=mail-qv1-xf2a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,23 +114,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Yes, that fixes my issue. I was receiving two errors with the sanitizers:
-1. UBsan complaining that the (garbage) value didn't have the required
-alignment of the type
-2. ASan complaining about some memory failure by read/write/accessing it
+On Mon, 13 Nov 2023 20:12:33 +0000
+Salil Mehta <salil.mehta@huawei.com> wrote:
 
-On Fri, Nov 24, 2023 at 8:02=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
-m> wrote:
->
-> Daniel, please have a look at Kevin's patch:
->
->     Subject: [PATCH for-8.2 1/2] qdev: Fix crash in array property getter
->     Date: Tue, 21 Nov 2023 18:34:15 +0100 (2 days, 20 hours, 26 minutes a=
-go)
->     Message-ID: <20231121173416.346610-2-kwolf@redhat.com>
->     https://lore.kernel.org/qemu-devel/20231121173416.346610-2-kwolf@redh=
-at.com/
->
-> Does it fix your sanitizer run?
->
+
+wrt subj: 'cpu-(ctrl)dev change' doesn't make any sense to me, pls rephrase and be more specific.
+
+> CPUs Control device(\\_SB.PCI0) register interface for the x86 arch is IO port
+> based and existing CPUs AML code assumes _CRS objects would evaluate to a system
+> resource which describes IO Port address. But on ARM arch CPUs control
+> device(\\_SB.PRES) register interface is memory-mapped hence _CRS object should
+> evaluate to system resource which describes memory-mapped base address. Update
+> build CPUs AML function to accept both IO/MEMORY region spaces and accordingly
+> update the _CRS object.
+
+
+> On x86, CPU Hotplug uses Generic ACPI GPE Block Bit 2 (GPE.2) event handler to
+> notify OSPM about any CPU hot(un)plug events. Latest CPU Hotplug is based on
+                                                ^^^ latest supported ATM is x86
+and not based on GED vvvv, suggest to drop sentence or actually whole paragraph.
+
+> ACPI Generic Event Device framework and uses ACPI GED device for the same. Not
+> all architectures support GPE based CPU Hotplug event handler. Hence, make AML
+> for GPE.2 event handler conditional.
+
+this is the 2nd different thing the patch does, pls split that into another,
+for more on that see related hunk.
+
+> 
+> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
+> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Tested-by: Xianglai Li <lixianglai@loongson.cn>
+> Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
+> ---
+>  hw/acpi/cpu.c         | 23 ++++++++++++++++-------
+>  hw/i386/acpi-build.c  |  3 ++-
+>  include/hw/acpi/cpu.h |  5 +++--
+>  3 files changed, 21 insertions(+), 10 deletions(-)
+> 
+> diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
+> index de1f9295dc..5b0eaad1c5 100644
+> --- a/hw/acpi/cpu.c
+> +++ b/hw/acpi/cpu.c
+> @@ -339,9 +339,10 @@ const VMStateDescription vmstate_cpu_hotplug = {
+>  #define CPU_FW_EJECT_EVENT "CEJF"
+>  
+>  void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+> -                    build_madt_cpu_fn build_madt_cpu, hwaddr io_base,
+> +                    build_madt_cpu_fn build_madt_cpu, hwaddr base_addr,
+>                      const char *res_root,
+> -                    const char *event_handler_method)
+> +                    const char *event_handler_method,
+> +                    AmlRegionSpace rs)
+>  {
+>      Aml *ifctx;
+>      Aml *field;
+> @@ -366,13 +367,19 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+>          aml_append(cpu_ctrl_dev, aml_mutex(CPU_LOCK, 0));
+>  
+>          crs = aml_resource_template();
+> -        aml_append(crs, aml_io(AML_DECODE16, io_base, io_base, 1,
+> +        if (rs == AML_SYSTEM_IO) {
+> +            aml_append(crs, aml_io(AML_DECODE16, base_addr, base_addr, 1,
+>                                 ACPI_CPU_HOTPLUG_REG_LEN));
+> +        } else {
+> +            aml_append(crs, aml_memory32_fixed(base_addr,
+> +                               ACPI_CPU_HOTPLUG_REG_LEN, AML_READ_WRITE));
+> +        }
+> +
+>          aml_append(cpu_ctrl_dev, aml_name_decl("_CRS", crs));
+>  
+>          /* declare CPU hotplug MMIO region with related access fields */
+>          aml_append(cpu_ctrl_dev,
+> -            aml_operation_region("PRST", AML_SYSTEM_IO, aml_int(io_base),
+> +            aml_operation_region("PRST", rs, aml_int(base_addr),
+>                                   ACPI_CPU_HOTPLUG_REG_LEN));
+>  
+>          field = aml_field("PRST", AML_BYTE_ACC, AML_NOLOCK,
+> @@ -696,9 +703,11 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+>      aml_append(sb_scope, cpus_dev);
+>      aml_append(table, sb_scope);
+>  
+> -    method = aml_method(event_handler_method, 0, AML_NOTSERIALIZED);
+> -    aml_append(method, aml_call0("\\_SB.CPUS." CPU_SCAN_METHOD));
+> -    aml_append(table, method);
+> +    if (event_handler_method) {
+> +        method = aml_method(event_handler_method, 0, AML_NOTSERIALIZED);
+> +        aml_append(method, aml_call0("\\_SB.CPUS." CPU_SCAN_METHOD));
+> +        aml_append(table, method);
+> +    }
+
+indeed, injecting a method won't work with GED (and well it's hackish to begin with).
+Suggest to get rid of it and make event source initiate the call to CPU_SCAN_METHOD.
+Something like (similar to what you do in 4/8): (maybe make it part of 4/8)
+
+diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
+index 011d2c6c2d..ed35f2390f 100644
+--- a/hw/acpi/cpu.c
++++ b/hw/acpi/cpu.c
+@@ -341,7 +341,7 @@ const VMStateDescription vmstate_cpu_hotplug = {
+ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+                     build_madt_cpu_fn build_madt_cpu, hwaddr io_base,
+                     const char *res_root,
+-                    const char *event_handler_method)
++                    )
+ {
+     Aml *ifctx;
+     Aml *field;
+@@ -696,9 +696,5 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+     aml_append(sb_scope, cpus_dev);
+     aml_append(table, sb_scope);
+ 
+-    method = aml_method(event_handler_method, 0, AML_NOTSERIALIZED);
+-    aml_append(method, aml_call0("\\_SB.CPUS." CPU_SCAN_METHOD));
+-    aml_append(table, method);
+-
+     g_free(cphp_res_path);
+ }
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 80db183b78..e740e402bf 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -1856,6 +1856,8 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+                 aml_append(method, aml_release(aml_name("\\_SB.PCI0.BLCK")));
+             }
+             aml_append(scope, method);
+
++            if (!pcmc->legacy_cpu_hotplug) {
+...
++                aml_append(method, aml_call0("\\_SB.CPUS." CPU_SCAN_METHOD));
+...
+             }
+         }
+         aml_append(dsdt, scope);
+     }
+
+
+>  
+>      g_free(cphp_res_path);
+>  }
+> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> index 3f2b27cf75..f9f31f9db5 100644
+> --- a/hw/i386/acpi-build.c
+> +++ b/hw/i386/acpi-build.c
+> @@ -1550,7 +1550,8 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+>              .fw_unplugs_cpu = pm->smi_on_cpu_unplug,
+>          };
+>          build_cpus_aml(dsdt, machine, opts, pc_madt_cpu_entry,
+> -                       pm->cpu_hp_io_base, "\\_SB.PCI0", "\\_GPE._E02");
+> +                       pm->cpu_hp_io_base, "\\_SB.PCI0", "\\_GPE._E02",
+> +                       AML_SYSTEM_IO);
+>      }
+>  
+>      if (pcms->memhp_io_base && nr_mem) {
+> diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
+> index bc901660fb..b521a4e0de 100644
+> --- a/include/hw/acpi/cpu.h
+> +++ b/include/hw/acpi/cpu.h
+> @@ -60,9 +60,10 @@ typedef void (*build_madt_cpu_fn)(int uid, const CPUArchIdList *apic_ids,
+>                                    GArray *entry, bool force_enabled);
+>  
+>  void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
+> -                    build_madt_cpu_fn build_madt_cpu, hwaddr io_base,
+> +                    build_madt_cpu_fn build_madt_cpu, hwaddr base_addr,
+>                      const char *res_root,
+> -                    const char *event_handler_method);
+> +                    const char *event_handler_method,
+> +                    AmlRegionSpace rs);
+>  
+>  void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList ***list);
+>  
+
 
