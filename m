@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2D47F7A3B
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 18:18:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A27057F7A28
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 18:16:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6ZlX-0004sE-FM; Fri, 24 Nov 2023 12:14:55 -0500
+	id 1r6ZlY-0004sN-I6; Fri, 24 Nov 2023 12:14:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1r6ZlU-0004r9-Ju
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 12:14:52 -0500
+ id 1r6ZlW-0004s6-P9
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 12:14:54 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1r6ZlT-0007Tp-4b
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 12:14:52 -0500
+ id 1r6ZlU-0007U2-9e
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 12:14:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700846090;
+ s=mimecast20190719; t=1700846091;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=B2OlrcEO5fNstrQHakNE4A6/cnL9tI4dt/F3haksRBE=;
- b=cKjdQBDmEgt0O2S0emSPhInD2jGnIOQvMw9O/NldaynCRqiTMTent78xXl/aWwC5jHaYZP
- BU9MoYEA2QyzndcSnxv6/Qnj6M0YdM7s3GAwcyv5bRBJb7buuBlRtUuDynGvWg3j47uMS0
- 8a1ZE5tt0DFF9aiau/BTZw59n5ZKKRA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-331-EynOwRdWPDSNquqBxEeNTg-1; Fri, 24 Nov 2023 12:14:47 -0500
-X-MC-Unique: EynOwRdWPDSNquqBxEeNTg-1
+ bh=Voz6IUVRuuyB67lP5Ct6pjJ4GaYZeqRETUTUCmyj3Dg=;
+ b=bwES6XBIyLlAuTPRoj2HnBqbos9gvpy9R5fd5GaKF6PAijW+/pbX7RaKlOZQcQwhqhDOpM
+ D1GuE1/KDU7ISf6qTSGocXPhrJTEdfu5h1Usnc1Tq9FIUhEo+sbW5/uEJYt1HRnwIBeycv
+ YWqETnuXOEpFQDutYSa8ukkQ9lCWzQY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-FOmah7gfO66StC8e3A2Nxw-1; Fri,
+ 24 Nov 2023 12:14:49 -0500
+X-MC-Unique: FOmah7gfO66StC8e3A2Nxw-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 030ED82A6C0;
- Fri, 24 Nov 2023 17:14:47 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CB1573C13924;
+ Fri, 24 Nov 2023 17:14:48 +0000 (UTC)
 Received: from eperezma.remote.csb (unknown [10.39.192.169])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 63B6640C6EB9;
- Fri, 24 Nov 2023 17:14:45 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3EEF440C6EB9;
+ Fri, 24 Nov 2023 17:14:47 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Parav Pandit <parav@mellanox.com>, si-wei.liu@oracle.com,
@@ -50,10 +50,9 @@ Cc: Parav Pandit <parav@mellanox.com>, si-wei.liu@oracle.com,
  Zhu Lingshan <lingshan.zhu@intel.com>, Lei Yang <leiyang@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Dragos Tatulea <dtatulea@nvidia.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH 9.0 07/13] vdpa: move iotlb_batch_begin_sent to
- vhost_vdpa_shared
-Date: Fri, 24 Nov 2023 18:14:24 +0100
-Message-Id: <20231124171430.2964464-8-eperezma@redhat.com>
+Subject: [PATCH 9.0 08/13] vdpa: move backend_cap to vhost_vdpa_shared
+Date: Fri, 24 Nov 2023 18:14:25 +0100
+Message-Id: <20231124171430.2964464-9-eperezma@redhat.com>
 In-Reply-To: <20231124171430.2964464-1-eperezma@redhat.com>
 References: <20231124171430.2964464-1-eperezma@redhat.com>
 MIME-Version: 1.0
@@ -94,73 +93,72 @@ However, the destination QEMU is unaware of which vhost_vdpa device will
 register its memory_listener.  If the source guest has CVQ enabled, it
 will be the CVQ device.  Otherwise, it  will be the first one.
 
-Move the iotlb_batch_begin_sent member to VhostVDPAShared so all
-vhost_vdpa can use it, rather than always in the first / last
-vhost_vdpa.
+Move the backend_cap member to VhostVDPAShared so all vhost_vdpa can use
+it, rather than always in the first / last vhost_vdpa.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 ---
- include/hw/virtio/vhost-vdpa.h | 3 ++-
- hw/virtio/vhost-vdpa.c         | 8 ++++----
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ include/hw/virtio/vhost-vdpa.h | 3 +++
+ hw/virtio/vhost-vdpa.c         | 8 +++++---
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
-index 796a180afa..05219bbcf7 100644
+index 05219bbcf7..11ac14085a 100644
 --- a/include/hw/virtio/vhost-vdpa.h
 +++ b/include/hw/virtio/vhost-vdpa.h
-@@ -38,6 +38,8 @@ typedef struct vhost_vdpa_shared {
+@@ -38,6 +38,9 @@ typedef struct vhost_vdpa_shared {
      /* IOVA mapping used by the Shadow Virtqueue */
      VhostIOVATree *iova_tree;
  
-+    bool iotlb_batch_begin_sent;
++    /* Copy of backend features */
++    uint64_t backend_cap;
 +
+     bool iotlb_batch_begin_sent;
+ 
      /* Vdpa must send shadow addresses as IOTLB key for data queues, not GPA */
-     bool shadow_data;
- } VhostVDPAShared;
-@@ -45,7 +47,6 @@ typedef struct vhost_vdpa_shared {
- typedef struct vhost_vdpa {
-     int index;
-     uint32_t msg_type;
--    bool iotlb_batch_begin_sent;
-     uint32_t address_space_id;
-     MemoryListener listener;
-     uint64_t acked_features;
 diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 095543395b..85b13e09f4 100644
+index 85b13e09f4..458e46befd 100644
 --- a/hw/virtio/vhost-vdpa.c
 +++ b/hw/virtio/vhost-vdpa.c
-@@ -162,11 +162,11 @@ static void vhost_vdpa_listener_begin_batch(struct vhost_vdpa *v)
+@@ -161,7 +161,7 @@ static void vhost_vdpa_listener_begin_batch(struct vhost_vdpa *v)
+ 
  static void vhost_vdpa_iotlb_batch_begin_once(struct vhost_vdpa *v)
  {
-     if (v->dev->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH) &&
--        !v->iotlb_batch_begin_sent) {
-+        !v->shared->iotlb_batch_begin_sent) {
+-    if (v->dev->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH) &&
++    if (v->shared->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH) &&
+         !v->shared->iotlb_batch_begin_sent) {
          vhost_vdpa_listener_begin_batch(v);
      }
- 
--    v->iotlb_batch_begin_sent = true;
-+    v->shared->iotlb_batch_begin_sent = true;
- }
- 
+@@ -172,11 +172,10 @@ static void vhost_vdpa_iotlb_batch_begin_once(struct vhost_vdpa *v)
  static void vhost_vdpa_listener_commit(MemoryListener *listener)
-@@ -180,7 +180,7 @@ static void vhost_vdpa_listener_commit(MemoryListener *listener)
+ {
+     struct vhost_vdpa *v = container_of(listener, struct vhost_vdpa, listener);
+-    struct vhost_dev *dev = v->dev;
+     struct vhost_msg_v2 msg = {};
+     int fd = v->shared->device_fd;
+ 
+-    if (!(dev->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH))) {
++    if (!(v->shared->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH))) {
          return;
      }
  
--    if (!v->iotlb_batch_begin_sent) {
-+    if (!v->shared->iotlb_batch_begin_sent) {
-         return;
+@@ -834,6 +833,8 @@ static int vhost_vdpa_set_features(struct vhost_dev *dev,
+ 
+ static int vhost_vdpa_set_backend_cap(struct vhost_dev *dev)
+ {
++    struct vhost_vdpa *v = dev->opaque;
++
+     uint64_t features;
+     uint64_t f = 0x1ULL << VHOST_BACKEND_F_IOTLB_MSG_V2 |
+         0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH |
+@@ -855,6 +856,7 @@ static int vhost_vdpa_set_backend_cap(struct vhost_dev *dev)
      }
  
-@@ -193,7 +193,7 @@ static void vhost_vdpa_listener_commit(MemoryListener *listener)
-                      fd, errno, strerror(errno));
-     }
+     dev->backend_cap = features;
++    v->shared->backend_cap = features;
  
--    v->iotlb_batch_begin_sent = false;
-+    v->shared->iotlb_batch_begin_sent = false;
+     return 0;
  }
- 
- static void vhost_vdpa_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
 -- 
 2.39.3
 
