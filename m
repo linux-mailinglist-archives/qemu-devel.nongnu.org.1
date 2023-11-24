@@ -2,70 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F847F79B3
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 17:50:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18DEF7F79E1
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 18:00:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6ZN0-0007Ur-Nb; Fri, 24 Nov 2023 11:49:34 -0500
+	id 1r6ZWL-0001Op-1h; Fri, 24 Nov 2023 11:59:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r6ZMw-0007UL-WD
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 11:49:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r6ZMr-0001VB-W3
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 11:49:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700844564;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PFcwlNtkePlAyP/m8K1zHN5LCZ/p2hhP0du0J3Hrumw=;
- b=A5eIKeYJmcWl43XtVjDUiiatX3JNrQZ9OiNjKZbvQoNXsslKhBFGaTCx2PxaN3Xc8vHJt7
- 5ZGALHy2AivGKEDH2xkKZHPf66AciYFP+MlyrGKURsmwfUwzLh4cktg3AhF5dqlJwzHxe5
- VTUMQ+qflLuHuA3xIYzRkKSOH8jR2bw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-367-ZhTxTMLjNYyrCUBKO8PIzw-1; Fri, 24 Nov 2023 11:49:22 -0500
-X-MC-Unique: ZhTxTMLjNYyrCUBKO8PIzw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5A943101A53B;
- Fri, 24 Nov 2023 16:49:22 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.59])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 67DD6492BFA;
- Fri, 24 Nov 2023 16:49:21 +0000 (UTC)
-Date: Fri, 24 Nov 2023 17:49:20 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: =?utf-8?B?0JTQvNC40YLRgNC40Lkg0KTRgNC+0LvQvtCy?= <frolov@swemel.ru>
-Cc: hreitz@redhat.com, qemu-block@nongnu.org, sdl.qemu@linuxtesting.org,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] block/monitor: blk_bs() return value check
-Message-ID: <ZWDUEOutdtCNLOW_@redhat.com>
-References: <20231124113037.2477645-1-frolov@swemel.ru>
- <ZWCf3hoaNHaWNECw@redhat.com>
- <53dc30ea-1156-f91f-736f-62ddc9401d68@swemel.ru>
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1r6ZWI-0001Nu-Lu
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 11:59:10 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1r6ZWG-00040u-4c
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 11:59:10 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-54af4f2838dso1170280a12.2
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 08:59:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1700845146; x=1701449946; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=hOLgOQKzK1BDJMKfOSKg4vfmJjUUMztCvbGLYQB+szY=;
+ b=jjP03OeQQTNb6NZjUgwLVxi6+qouHCxJjsTcURJeaAssN4pN9FjBJxcP5RiGoURc1M
+ O9p2MApJfA/qA7YZU3hlk2qJzH03uyutyyWHSOMLoYJHcYeXOy0ki0diyWzgSXi6RDZJ
+ TK3rFQIgrX0ld1D4A0mmAgv3mjefSgOVNOwyvlGuJ3lrgRHA11rkjOHs+o5W321LYdym
+ kYADssAlmsWp440PVldzPLlx5EUES5sAZDKuP+9wCHDaF6CoMvKO9OqSkm8hMAHlK0GZ
+ GauH6LWgFUI/VOGs3H2gFogL3Z+tjPBA0d4bbEsW9NKQDJlz1FrNFxJDO15HD6lPMLRy
+ ohzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700845146; x=1701449946;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hOLgOQKzK1BDJMKfOSKg4vfmJjUUMztCvbGLYQB+szY=;
+ b=sVx/1a5+qgzJ+i30cwzqFChlksULxyru8mq3f2MxHrG1pD7/FJbuSZuXWq/J7ue7Oi
+ xB+vb+E6NF0GWoMC+6B+cYVmbnWUNb/AZSBKZ7dtLfxBtNlWlA5ZaC263PEplaH/Ps6o
+ HVPIcOrOBrAXHaszS9jd6F1bhXF49bCrFj5sANBRkG+/VvgVrZUINv9O450XT4DF4WWU
+ 4ebG1FMH/pk+wQsyVedfUrgY4OwZtPq3gJQiNNBOxrnQUEg/4gU+ZQUnzOgraa1l78+c
+ 2Nu0s/oh/gRWUJp+R3wT/s53bxvZXo3qVskVCvrRMy7BJX05ZWZiKYIXFMPSkqhXDX0r
+ uGqg==
+X-Gm-Message-State: AOJu0YzBmI+CgOL/7+3YuI8j2m51IJu4TRRoJ2cwkBrKtCvBfumPrmP6
+ RIEXe7doO99Q9eM8rwFjcZPuVtvIatBCfIQbeMw=
+X-Google-Smtp-Source: AGHT+IH74fG/WtvZeMbR5g9Pju4mTMO+xFST48qNIWpgYbmv19tPwohayRa36eZ3Y7BikLxW7XsJBg==
+X-Received: by 2002:a50:d496:0:b0:548:7a6f:b51e with SMTP id
+ s22-20020a50d496000000b005487a6fb51emr2751990edi.14.1700845146443; 
+ Fri, 24 Nov 2023 08:59:06 -0800 (PST)
+Received: from localhost ([81.19.4.232]) by smtp.gmail.com with ESMTPSA id
+ q7-20020aa7da87000000b00548b55f5ffdsm1966756eds.16.2023.11.24.08.59.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 24 Nov 2023 08:59:06 -0800 (PST)
+Date: Fri, 24 Nov 2023 17:59:05 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Christoph Muellner <christoph.muellner@vrull.eu>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Philipp Tomsich <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>
+Subject: Re: [PATCH v2] linux-user/riscv: Add Zicboz extensions to hwprobe
+Message-ID: <20231124-b892dc7ca5a5f9ff4cceda6e@orel>
+References: <20231123181300.2140622-1-christoph.muellner@vrull.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <53dc30ea-1156-f91f-736f-62ddc9401d68@swemel.ru>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+In-Reply-To: <20231123181300.2140622-1-christoph.muellner@vrull.eu>
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,43 +95,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 24.11.2023 um 15:05 hat Дмитрий Фролов geschrieben:
+On Thu, Nov 23, 2023 at 07:12:59PM +0100, Christoph Muellner wrote:
+> From: Christoph M�llner <christoph.muellner@vrull.eu>
 > 
+> Upstream Linux recently added RISC-V Zicboz support to the hwprobe API.
+> This patch introduces this for QEMU's user space emulator.
 > 
-> On 24.11.2023 16:06, Kevin Wolf wrote:
-> > Am 24.11.2023 um 12:30 hat Dmitry Frolov geschrieben:
-> > > blk_bs() may return NULL, which will be dereferenced without a check in
-> > > bdrv_commit().
-> > > 
-> > > Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> > > 
-> > > Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
-> > Do you have a reproducer for a crash?
-> Actually, there was no crash. This problem was found by static analyzer.
-> > As far as I can see, it will not be dereferenced, because
-> > blk_is_available() returns false and we return an error before
-> > calling bdrv_commit():
-> As I see, there are 2 reasons, why blk_bs() may return NULL:
-> blk->root == NULL or blk->root->bs == NULL
+> Signed-off-by: Christoph M�llner <christoph.muellner@vrull.eu>
+> ---
+>  linux-user/syscall.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> index 65ac3ac796..2f9a1c5279 100644
+> --- a/linux-user/syscall.c
+> +++ b/linux-user/syscall.c
+> @@ -8799,6 +8799,7 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
+>  #define     RISCV_HWPROBE_EXT_ZBA      (1 << 3)
+>  #define     RISCV_HWPROBE_EXT_ZBB      (1 << 4)
+>  #define     RISCV_HWPROBE_EXT_ZBS      (1 << 5)
+> +#define     RISCV_HWPROBE_EXT_ZICBOZ   (1 << 6)
+>  
+>  #define RISCV_HWPROBE_KEY_CPUPERF_0     5
+>  #define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
+> @@ -8855,6 +8856,8 @@ static void risc_hwprobe_fill_pairs(CPURISCVState *env,
+>                       RISCV_HWPROBE_EXT_ZBB : 0;
+>              value |= cfg->ext_zbs ?
+>                       RISCV_HWPROBE_EXT_ZBS : 0;
+> +            value |= cfg->ext_zicboz ?
+> +                     RISCV_HWPROBE_EXT_ZICBOZ : 0;
+>              __put_user(value, &pair->value);
+>              break;
+>          case RISCV_HWPROBE_KEY_CPUPERF_0:
+> -- 
+> 2.41.0
+> 
+>
 
-blk->root->bs == NULL shouldn't happen, but the code we're looking at is
-safe even for this case.
+We should also add support for getting the block size with
+RISCV_HWPROBE_KEY_ZICBOZ_BLOCK_SIZE.
 
-> At the same time, blk_is_available() checks for
-> blk_co_is_inserted(blk) and blk_dev_is_tray_open(blk).
-> Does it also guarantee that blk->root and blk->root->bs are not NULL?
-> This is not really obvious.
-
-blk_co_is_inserted() does, it returns false for blk_bs(blk) == NULL.
-
-> Maybe, in this case, it makes sense to check blk->root before of
-> checking blk_is_available()?
-
-Checking blk->root and those few other things is a really common thing
-that most operations do, which is why we have blk_is_available() to
-check all of this. If we did the checks before calling it, we wouldn't
-need blk_is_available() any more.
-
-Kevin
-
+Thanks,
+drew
 
