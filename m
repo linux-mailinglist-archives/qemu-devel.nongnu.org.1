@@ -2,99 +2,164 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC177F699E
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 00:56:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85CFF7F69C4
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 01:26:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6JYS-0007XK-DD; Thu, 23 Nov 2023 18:56:20 -0500
+	id 1r6K0c-0007Hl-1O; Thu, 23 Nov 2023 19:25:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6JYQ-0007Wr-Bd
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 18:56:18 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1)
+ (envelope-from <prvs=569229df20=volodymyr_babchuk@epam.com>)
+ id 1r6K0Y-0007Gt-LG
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 19:25:22 -0500
+Received: from mx0a-0039f301.pphosted.com ([148.163.133.242])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6JYO-00018O-Un
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 18:56:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700783775;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=p4cyLykNHHaaE5uZdJcFaDuWAkFG06U4hHH5fyylkjw=;
- b=FKXoVOf4bRJt6Eq/liIhKPBH8v2JMKONP6brogBAtkvxIOrR5wQd8EkGvZRBJaWLZuArsx
- xb1dJK05uNUAbOAxiipK/q4Fg/2bllEaNDm1RZv74n7TbiLh88cPTf79hUZSODQ5v+S8GA
- R2pmY/XS+MZ9VyT+lSbFZvkNY0d/tvI=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-83-4f0ttsOyNN6OVXBtvapbMA-1; Thu, 23 Nov 2023 18:56:14 -0500
-X-MC-Unique: 4f0ttsOyNN6OVXBtvapbMA-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a01a0032b19so83644966b.2
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 15:56:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700783772; x=1701388572;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=p4cyLykNHHaaE5uZdJcFaDuWAkFG06U4hHH5fyylkjw=;
- b=lNypw8YYscAicW8X3lHHNuBN5Az/iJ/PxyknlwfoQK5Qf7/8lgWUCjjL10HHtcdoJN
- +57kYP4s8VX5LDEObVaNLDuE3SiuwjhBWFa4ikf23S7oXk7p+7PGKgXzAUpmevTzTtxA
- UCPxXhk6eA3ndczFT1Iqj2Z0Z9sDciTaDPjuHk0Ta/wilG5n858/F70uUUhItidXKOyT
- 4SG9WfH4QkZrjdtNR0o2/gyVBf32PkHe1kFx59MAiVPqKAJjpf1riv2X5xi8sd4lIUTB
- Pte6CwapqvGYKeKRp4W/5Gw/65Qehf9xR3680aX4Jprmh+Dg8yMNjx5R0mYPBUeJbEPJ
- G4Ng==
-X-Gm-Message-State: AOJu0YxXWeopL0o/442ucdI61owbQma+vp11oMMIGWvM+Psmq3L3TblV
- CkvTxlOSl2ZCYB1OjCIpMSxfjwF9lQS2mWd+HInXGZBsBkXRYJC89QpwKKxf3Xj139K+FlvC9NW
- bjMKd4Hfr0dh0n2tHM0g+Yes=
-X-Received: by 2002:a17:906:4c41:b0:a04:5301:2e8f with SMTP id
- d1-20020a1709064c4100b00a0453012e8fmr604216ejw.19.1700783771967; 
- Thu, 23 Nov 2023 15:56:11 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFxJFvu9kJU+pHgr1Wc8E3BTQJFglZPeBJqJIsofOZQbgnoOckxjKsCY+gdoN2H4V32Jx7DCA==
-X-Received: by 2002:a17:906:4c41:b0:a04:5301:2e8f with SMTP id
- d1-20020a1709064c4100b00a0453012e8fmr604202ejw.19.1700783771622; 
- Thu, 23 Nov 2023 15:56:11 -0800 (PST)
-Received: from redhat.com ([2.55.10.128]) by smtp.gmail.com with ESMTPSA id
- dv23-20020a170906b81700b009fc6e3ef4e4sm1312364ejb.42.2023.11.23.15.56.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Nov 2023 15:56:11 -0800 (PST)
-Date: Thu, 23 Nov 2023 18:56:06 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Alexander Graf <agraf@csgraf.de>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 1/2] docs: introduce dedicated page about code provenance
- / sign-off
-Message-ID: <20231123185353-mutt-send-email-mst@kernel.org>
-References: <20231123114026.3589272-1-berrange@redhat.com>
- <20231123114026.3589272-2-berrange@redhat.com>
- <d3998e03-8f91-4bc3-896f-4a8f3174e442@linaro.org>
- <ZV-HHpLnjOj1LPDi@redhat.com>
+ (Exim 4.90_1)
+ (envelope-from <prvs=569229df20=volodymyr_babchuk@epam.com>)
+ id 1r6K0S-0002iM-AZ
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 19:25:22 -0500
+Received: from pps.filterd (m0174676.ppops.net [127.0.0.1])
+ by mx0a-0039f301.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AO0ORxk013091; Fri, 24 Nov 2023 00:24:49 GMT
+Received: from eur05-am6-obe.outbound.protection.outlook.com
+ (mail-am6eur05lp2105.outbound.protection.outlook.com [104.47.18.105])
+ by mx0a-0039f301.pphosted.com (PPS) with ESMTPS id 3uhkw34ve0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Nov 2023 00:24:48 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nLglW6xJh8OjH26zqO4oUedRj7yreNlMNzWAtzXfX6AF5xHNUJ4qVbR0YspPLtw7qM0JjXIYYK/cg0Rr7kCRwaR0JLZrqzGXeY+0T3aC/swgykhXBCN/j/9YalLWA2p2/35dJBMtuVFo3cPI/FqUsQCLqAgtn/wMzqMDxj8KunIl8aRXllZPsRPVJb3acBF4TkolQj69+Wrap25jKNqkb+1WWJbbWQtfGSSIE4Ux2U6eVfpeiu5HGyBP+Mnfuk6DXINjSlIBwqt0qv03JLdCW/mbxw09gGerHW1TXLVr+AHjMYTsRVtRizLm6Zrna6vdSQc1gBh6gx3eal6jr276CQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HTGjCRKPV+GhqL+983Xg/W5ncFSyldI8vndC+osq6gQ=;
+ b=E2ehPulxSAW21M2WQRmNSuLr3s28AE0PtlZeX9ZPyTIw3SOlC9Wfh3hu/03RnymrGtwWu5sc41SjvURqh+gGdNr5bZ8O7DeXOdzw8QqNpBSm9OYu3u/jnUrzyAfITs9VFAVnnWhxtPkPHWr2gasDmklMAgJWgiTBs6ck+lpFSXTbmhGsggwfEczpCoa2WZmzRcCMKQBRlno+CC9xPYCqPOnzvlG08A5sJr5OM+hyKsMb57UYCTjQbMLuVk7TQ+aYcf5lVB736Lr0iVBiVIzI+1soTDpdM5i/WEIzZum5VcRDJ+IAsuYjMiUHoiAFEPcK1simCrKF0pgESCsSSjgJeA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=epam.com; dmarc=pass action=none header.from=epam.com;
+ dkim=pass header.d=epam.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=epam.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HTGjCRKPV+GhqL+983Xg/W5ncFSyldI8vndC+osq6gQ=;
+ b=q0qh+giNdAeXr1R1aJ803MiO1x5f4EkLNSRm9punsdaojnXrV18WZQg81y8wtHvAqMbgpMOwejSsx6ZP769WaQqA59ht2uFW0A3LYFG1jM0bA0P/EnLRGd7eauiJZG9xyL6C23FooAGyurS3C+MZoh4bJfqgX82rNq5sqAlhqF+VVT2y2CWLIhmLND/4fuOtR84hpZdxHswrMGsK+tUACMASpKGyack5lc0dzV83HBU9HyA3+BcGfJ3iCnyioK30yKKfhC5St74aWzJ+VkrbUZLHGOrD/+innGTeZ1xiEjIm31WkLHEixTH3qvxPvKeSItubCM66AcgQjfApv28sng==
+Received: from VI1PR03MB3710.eurprd03.prod.outlook.com (2603:10a6:803:31::18)
+ by DBAPR03MB6453.eurprd03.prod.outlook.com (2603:10a6:10:190::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.20; Fri, 24 Nov
+ 2023 00:24:45 +0000
+Received: from VI1PR03MB3710.eurprd03.prod.outlook.com
+ ([fe80::8e03:368:1fd7:1822]) by VI1PR03MB3710.eurprd03.prod.outlook.com
+ ([fe80::8e03:368:1fd7:1822%6]) with mapi id 15.20.7025.020; Fri, 24 Nov 2023
+ 00:24:44 +0000
+From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
+To: David Woodhouse <dwmw2@infradead.org>
+CC: "paul@xen.org" <paul@xen.org>, Stefano Stabellini <sstabellini@kernel.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Julien Grall <julien@xen.org>, Oleksandr Tyshchenko
+ <Oleksandr_Tyshchenko@epam.com>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>
+Subject: Re: [PATCH v2 4/6] xen_pvdev: Do not assume Dom0 when creating a
+ directory
+Thread-Topic: [PATCH v2 4/6] xen_pvdev: Do not assume Dom0 when creating a
+ directory
+Thread-Index: AQHaHMeIsCU+MAEGAkSnPoa9ThBNz7CGlGOAgABYsYCAAAmAgIAAAakAgAAAyoCAAAJ4gIAABwqAgAAFCoCAAJ2+AIAAJb8AgAAD5ICAAASYAIAAA+AAgADHXgA=
+Date: Fri, 24 Nov 2023 00:24:44 +0000
+Message-ID: <87leaovvzo.fsf@epam.com>
+References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
+ <20231121221023.419901-5-volodymyr_babchuk@epam.com>
+ <b04daedc-ba6a-4109-8e23-fbcd023bcfec@xen.org>
+ <alpine.DEB.2.22.394.2311221428570.2053963@ubuntu-linux-20-04-desktop>
+ <ce719f35e72a9387fc04af098e6d688f9bbdca4e.camel@infradead.org>
+ <alpine.DEB.2.22.394.2311221508270.2424505@ubuntu-linux-20-04-desktop>
+ <a4e6a62a7cfe756344a1efcb8b2c3cfb1e50817e.camel@infradead.org>
+ <alpine.DEB.2.22.394.2311221515010.2424505@ubuntu-linux-20-04-desktop>
+ <87r0khz6zj.fsf@epam.com> <87cyw1z61i.fsf@epam.com>
+ <dce4efb0-4fdc-404c-8e5d-c90ed732eb8a@xen.org> <87bkbky9bb.fsf@epam.com>
+ <5941AF2D-71E7-4A5B-A519-25F87F90DC05@infradead.org>
+ <87v89swtmz.fsf@epam.com>
+ <C2DEE963-41CB-4377-93FD-BD9FB500926F@infradead.org>
+In-Reply-To: <C2DEE963-41CB-4377-93FD-BD9FB500926F@infradead.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: mu4e 1.10.7; emacs 29.1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: VI1PR03MB3710:EE_|DBAPR03MB6453:EE_
+x-ms-office365-filtering-correlation-id: cf822bc6-e517-431c-d1e2-08dbec83c1f8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: pOp5IsOMnRsbMTB5K0nr7zG4dl0KUlN5nc4+5jWQEGTSxj+ieqPrQlATWv8l85M0sLeXHnHzBGFvUAMw2cWftGo9ANPWZVKHyMWrpmWroD9LW+QtmLnWdf0U0s8gPHtuLX1KN6Cp+W8PChGlwrfuijrfjHU7uh+y68f4u3hzcaVoZOJI2h66bSdalCbxIxCVELKZG1YXh3IWVhiPMc7cmg5Xb34OD9W/UQdjJSzYFPhkg7rj74g2cm6vSwC85dyWnzloAm286UiCYYxL66f0VUQx6z4Tm7IIrvW2R3L3FHHbSsfnQ2hdn6kYZT4G88JAmkXWGlJB5+fThAjrGPHj7KaX1cgmg7vI2WGHMoNv+xVzq15UcJIKqgtIwqzf/h9iDeOqiXpTPt6gt7dmIbObhPp35G8vZPQgpmY3lR0JODmaqn60IjUaNTWqeAz6jDvCrvkZAqFsFwU1UTxJq49Pin8RM7z8DgEexKJkbjPDsHxATTWkOpn7nStzkE7/XTlYGSFFy8hk1kNPavKAom12eV6QhJ5js9+q6eeCYTJScKf9eAiOSThDeFqxxe92SnXx74PdqeotztHXSsxZlwiMYeCv02IQ8wL5+0R/IE2xnm+oOx7y7tHMU9Y8evaKU1Dr
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI1PR03MB3710.eurprd03.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(346002)(396003)(376002)(136003)(366004)(39860400002)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(5660300002)(2906002)(4326008)(8936002)(8676002)(41300700001)(66446008)(66556008)(64756008)(66476007)(316002)(54906003)(6916009)(66946007)(76116006)(91956017)(71200400001)(478600001)(6506007)(6486002)(53546011)(26005)(2616005)(6512007)(55236004)(38100700002)(83380400001)(38070700009)(122000001)(86362001)(36756003);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?4urS4pTYUmo7j9hl3LTvmHsSdZA9ObLZB8sO11uSq98g+Xo2yjonyvIrHl?=
+ =?iso-8859-1?Q?8nc400zt1WLVl8xkoZX/CVJL6fAYjTdf8Mx1vUP4iVFK+/tjRaMzwYoarW?=
+ =?iso-8859-1?Q?bjYRptlA2JCSeRhkjM5unjSqDhOlsJeEangMTf8gpG8JQMKDkDIVVqnaIN?=
+ =?iso-8859-1?Q?wC97150UWH3dMKpOjgfOXnoMmk90NVOQxN7BAg/jVYbU76knyyf5D/PvAh?=
+ =?iso-8859-1?Q?R6Lso3smUsYQUnnHmbd+I6ZULL3myRd+yS4S1xf4X6zxNFzbztHNHQsFw+?=
+ =?iso-8859-1?Q?q8xEff25XMIXol7rbGem38ZZOfGSWghDEDUB0WCNavwAepCrUZEd2tzJZS?=
+ =?iso-8859-1?Q?mSM95jf4n9Ri0VohcmEKpscjfSP5LGs7nn6qgroq6/w/v04i+EkjZq8/1G?=
+ =?iso-8859-1?Q?Qdig6pFVFdYtL7hrNkMFGjA242MAVsz7IUe393LeKd6Bcc0mqLHjFBrL/E?=
+ =?iso-8859-1?Q?CMbWrNdqIf0qHSiGI9ItuPWZ/8cE83sr6SQa1R8k2Y3+1DixcspR97BoPh?=
+ =?iso-8859-1?Q?COvjk0Ui3/BkeIcmxGwORe70HjXR+vqNADYYUtIhGjspY1QlxbJppK+MXk?=
+ =?iso-8859-1?Q?jSRntUyn+tLNLf/LOFcy20HEXecL3M7miJy57I4LeMG6BFCs4TqhVH9Bt+?=
+ =?iso-8859-1?Q?ZAGUVGGPFRFjsgniUlr7Hhaboh1ZLp5sLosLiNiCSECfuO/kTlwpWY+Que?=
+ =?iso-8859-1?Q?lzfjJhpHdJbmkRL5mJ/zrl8uL7a2viyuQdAMMVhksJsUbCMSwNt9NmPys5?=
+ =?iso-8859-1?Q?4Yl9mh03xY8MAzcLmtwLSdFiFfcls1WlD/2X8vG7IXRn4QU6p3Gb3XlUqq?=
+ =?iso-8859-1?Q?IlGfUnZpO9Cp46+bIudwYCf94e1LHNcvtFYQy3gPFqUoWQVm1rNV+BnObN?=
+ =?iso-8859-1?Q?ugXlrK1flpffoLRnpV8li+WalGeMm2W4ob1L1E8kMbkXfbt1Nroqoud4dk?=
+ =?iso-8859-1?Q?xVOdLkvM6sh65od4oAhAFC9w8X65GIgztWbXcU15bdLoW3uL/nd8CjA6f9?=
+ =?iso-8859-1?Q?jAo8xuKmL3wP8PwCoVXkheHJ+PBXz9BCMtml+DQRkUx/urb+myJUwsMXN/?=
+ =?iso-8859-1?Q?PZJcsL6iN/gtGKmAxkEY8uodHHzGaqsb4IeZW4QrNYyojZdicxaGSDSgmo?=
+ =?iso-8859-1?Q?k5HfhGdpAf8mYqXfdI2usBq/x0HW7M0EskL7Hj8coJViySK0/f4ym4qLgb?=
+ =?iso-8859-1?Q?T2F+SCJYZznPgcmTYG5nqi/O0BX4GcN6kCF8Mh9DefkWDcerT2BwvBKpXD?=
+ =?iso-8859-1?Q?+7k7VaMQPIKwxpMUIg7yTEfBDGEWzuur8wZk1CAH1YIVFMSKABDDd0IeyI?=
+ =?iso-8859-1?Q?jy0yLr4wFtci3oeaElBX2OUn3nzcQYgi+KN41jYDdPEFUJcw/m7KetR2Jh?=
+ =?iso-8859-1?Q?+uvXgMV7Gjl9YLU/5H+Opm3wf3j3qcua4qCCvTWL1M4hPmag18jzFHhjY5?=
+ =?iso-8859-1?Q?FFZthV23upCdL677lwkijk/m45LQrN8euAPqFv8II81IQp9hmhZMqWH4wg?=
+ =?iso-8859-1?Q?i1s2irmSMBDP7tEobNHnO9nLozcUb25RZjFPDlPYPALLp6IlS4gV4xGjlD?=
+ =?iso-8859-1?Q?x5fCnWPrZYImbI7CPbbOZjET4TeTK5OkcAEVIQGVECWdQG8MJyq0wT9lll?=
+ =?iso-8859-1?Q?+FJWGXPjIxKRLfiO8Cwmrm5b4ONamt3Do0SJogS+9RbJU3n41u/l343g?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZV-HHpLnjOj1LPDi@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-OriginatorOrg: epam.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3710.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf822bc6-e517-431c-d1e2-08dbec83c1f8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Nov 2023 00:24:44.1623 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b41b72d0-4e9f-4c26-8a69-f949f367c91d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 4FcRQmsOtVxJZPiz4FjHliwCMk/+0ddemCxmORRnvMSOx2ZREcRWzaGfucUWC4O+dl7wCblmobQEYVRm3H6z2M5eVMKeRai+xyXq/BnK/J8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR03MB6453
+X-Proofpoint-ORIG-GUID: T1p5sik6KRT4ji6dIs1wU6XFiUZiTi8r
+X-Proofpoint-GUID: T1p5sik6KRT4ji6dIs1wU6XFiUZiTi8r
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-23_15,2023-11-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0
+ adultscore=0 mlxlogscore=784 priorityscore=1501 bulkscore=0
+ impostorscore=0 spamscore=0 clxscore=1015 phishscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311240001
+Received-SPF: pass client-ip=148.163.133.242;
+ envelope-from=prvs=569229df20=volodymyr_babchuk@epam.com;
+ helo=mx0a-0039f301.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,53 +175,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 23, 2023 at 05:08:46PM +0000, Daniel P. Berrangé wrote:
-> On Thu, Nov 23, 2023 at 12:58:18PM +0100, Philippe Mathieu-Daudé wrote:
-> > On 23/11/23 12:40, Daniel P. Berrangé wrote:
-> > > Currently we have a short paragraph saying that patches must include
-> > > a Signed-off-by line, and merely link to the kernel documentation.
-> > > The linked kernel docs have alot of content beyond the part about
-> > > sign-off an thus is misleading/distracting to QEMU contributors.
-> > > 
-> > > This introduces a dedicated 'code-provenance' page in QEMU talking
-> > > about why we require sign-off, explaining the other tags we commonly
-> > > use, and what to do in some edge cases.
-> > > 
-> > > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > > ---
-> > >   docs/devel/code-provenance.rst    | 197 ++++++++++++++++++++++++++++++
-> > >   docs/devel/index-process.rst      |   1 +
-> > >   docs/devel/submitting-a-patch.rst |  18 +--
-> > >   3 files changed, 201 insertions(+), 15 deletions(-)
-> > >   create mode 100644 docs/devel/code-provenance.rst
-> 
-> > > +Other commit tags
-> > > +~~~~~~~~~~~~~~~~~
-> > > +
-> > > +While the ``Signed-off-by`` tag is mandatory, there are a number of
-> > > +other tags that are commonly used during QEMU development
-> > > +
-> > > + * **``Reviewed-by``**: when a QEMU community member reviews a patch
-> > > +   on the mailing list, if they consider the patch acceptable, they
-> > > +   should send an email reply containing a ``Reviewed-by`` tag.
-> > > +
-> > > +   NB: a subsystem maintainer sending a pull request would replace
-> > > +   their own ``Reviewed-by`` with another ``Signed-off-by``
-> > 
-> > Hmm not sure about replacing, they have different meaning. You can merge
-> > patch you haven't reviewed. But as a maintainer you must S-o-b what you
-> > end merging (what is mentioned below in "subsystem maintainer").
-> 
-> I've always taken it as implied that patches I queue are reviewed by me,
 
-Well sometimes I queue patches not in my area that I have seen languish
-on list with no replies for too long. I generally do a cursory review
-but not to the level that I feel justifies Reviewed-by.
+Hi David,
 
+David Woodhouse <dwmw2@infradead.org> writes:
 
-> but replies here suggest I'm in a minority on that.  That shows why it is
-> worth documenting this for QEMU explicitly :-)
+> On 23 November 2023 12:17:57 GMT, Volodymyr Babchuk <Volodymyr_Babchuk@ep=
+am.com> wrote:
+>>
+>>Hi David,
+>>
+>>David Woodhouse <dwmw2@infradead.org> writes:
+>>> Which PV backends do you care about? We already have net, block and con=
+sole converted.
+>>
+>>Well, this is all what we need, actually. Even console only will be
+>>sufficient, as we are using QEMU to provide virtio-pci backends, so both
+>>storage and networking should be provided by virtio. Are you proposing
+>>to just drop this patch at all? I believe we can live without it, yes.
+>
+> Yeah, I think you can drop anything that's only needed for the legacy bac=
+kends. I'm tempted to make a separate config option to compile those out.
 
-Absolutely.
+Yep, we need this. Because without the patch ("xen_pvdev: Do not assume
+Dom0 when creating a directory") I can't run QEMU in the driver domain:
 
+root@spider-domd:~# qemu-system-aarch64  -machine xenpv -m 128M
+xen be core: xs_mkdir device-model/0/backends/vkbd: failed
+xen be core: xs_mkdir device-model/0/backends/vkbd: failed
+xen be core: xs_mkdir device-model/0/backends/9pfs: failed
+xen be core: xs_mkdir device-model/0/backends/9pfs: failed
+
+So yeah, we need something like CONFIG_XEN_LEGACY_BACKENDS option if we
+don't want to fix xenstore_mkdir()
+
+--=20
+WBR, Volodymyr=
 
