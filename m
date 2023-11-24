@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 445337F72F0
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 12:42:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 123847F72F2
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 12:42:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6UZ9-0005Yu-It; Fri, 24 Nov 2023 06:41:47 -0500
+	id 1r6UZK-0005aD-Vs; Fri, 24 Nov 2023 06:41:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r6UZ5-0005YE-Qr
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 06:41:43 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r6UYq-00013C-Gq
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 06:41:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700826087;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wSbmGEf4fPvrvpHLPAqfnGkgDVNeeyvr1d/iduuNx3Q=;
- b=iLE/q9WBshwHnJugDebklg4wINkRMZpp1wlUtXobJ3wm2ojqW6yPoBiGZDEteHVGkhafxF
- aea/Xvab3w91KnsJFPF8h1+tYT1aqTc8gQCLQLRTdQAzadGGpoKPMBEX+jlj/FT2x6kqp6
- 7gFzO224OD1zDI+vZb7Lw035HpSbOvE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-Qto2_0hqMKSizQcqa042ZA-1; Fri, 24 Nov 2023 06:41:25 -0500
-X-MC-Unique: Qto2_0hqMKSizQcqa042ZA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6F6508007B3;
- Fri, 24 Nov 2023 11:41:25 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.110])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CFCDD40C6EB9;
- Fri, 24 Nov 2023 11:41:22 +0000 (UTC)
-Date: Fri, 24 Nov 2023 11:41:20 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Alexander Graf <agraf@csgraf.de>, Paolo Bonzini <pbonzini@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Phil =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 2/2] docs: define policy forbidding use of "AI" / LLM
- code generators
-Message-ID: <ZWCL4C0wwH2cygRz@redhat.com>
-References: <20231123114026.3589272-1-berrange@redhat.com>
- <20231123114026.3589272-3-berrange@redhat.com>
- <20231123092523-mutt-send-email-mst@kernel.org>
- <ZV-S1f2cK8MLNizz@redhat.com>
- <20231123172828-mutt-send-email-mst@kernel.org>
- <ZWBngLoa3ERuMxGJ@redhat.com> <87plzzcuzm.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6UZG-0005Zl-Ov
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 06:41:55 -0500
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6UZ3-000144-O3
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 06:41:54 -0500
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-507f1c29f25so2492585e87.1
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 03:41:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700826100; x=1701430900; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=LLdTj1hC4loE8PyfPU7TG4P2nXHktOX8GhzvC206YiA=;
+ b=TwqlhA++tZNMhNfxoOw5z6r9q/7w1SM+cbwDI/4CeAEgvlFaRTEPuroH3eQV8R6o0N
+ wIaFbJJimpRMOb3qscXwRWaXHV66B+HmOdDaMyjJCNWgi3V2/Yyep7ny2fBgl8Qeihuq
+ 1M31IJa/FAxZm3BQA/m3+tEKqtahTWTd/qzBhwNB2AJU4MEcDw1DsFCydNHaD0KN0gsd
+ czQ+4zD2wcKoGzyuZ9AkZFKT9hfrWgUOPGFnjm6j6U16ybCkUtqXl0NXrE289BlyCLpG
+ V0OuFqGiDo7ewg5sYyTPo4ooeIYXzz7Napej1c41x5asTGPzl1zskRsn7u/mandVwzms
+ oA2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700826100; x=1701430900;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=LLdTj1hC4loE8PyfPU7TG4P2nXHktOX8GhzvC206YiA=;
+ b=Kg044MAb7cpOcIk2Rltm5pWSUHBrScV5r/yl7FWIJdGXMrQwx2WxSqQbzVkYEcMpFV
+ DHiuNWN88dl7orIOEXt/8e5ErHe2sWpDtMpGtk227fsFnOy4tL6pOm80j2pICBOXt2FX
+ eWD+oDDREqWHWXCzzUSV9pfAJX8iJe0yebU7sX/eIFEE2A6ACba2OjYz7XWj8rFfOi3G
+ kQMU7NWC+dwR5iZXjAURZVrb54Ro2VVxcQYDZJigeMmOnc9/MSFcMnZGIqhX9g0r/1De
+ OR26ox2u6ImA/+9nNXhbOCOs9wWPjd7SwPstYDV+JHctOQsUd29hYieTUmvsdb2XGidm
+ r4ow==
+X-Gm-Message-State: AOJu0YxP0zbnbkIIihxCzFrjud4+AQCU8iSyc1wgGApPWj1/CF9kt381
+ TewZboR2w/LFwa0LbG5U26ab+g==
+X-Google-Smtp-Source: AGHT+IGgDr8XMiPCanbfKhn3K0vLv7kpQt09mvsnKuFg5EgCkFisO+PqzYT2sBXR/HuOOUMoMCfOWw==
+X-Received: by 2002:a05:6512:3c8f:b0:509:4587:bdd0 with SMTP id
+ h15-20020a0565123c8f00b005094587bdd0mr2414694lfv.7.1700826099880; 
+ Fri, 24 Nov 2023 03:41:39 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.218.17])
+ by smtp.gmail.com with ESMTPSA id
+ m23-20020a056000025700b00332ce0d7300sm4102681wrz.92.2023.11.24.03.41.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 Nov 2023 03:41:39 -0800 (PST)
+Message-ID: <89482575-2fe4-48f7-86f3-1bd77baa4475@linaro.org>
+Date: Fri, 24 Nov 2023 12:41:37 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/21] target/arm/kvm: Merge kvm64.c into kvm.c
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+References: <20231123044219.896776-1-richard.henderson@linaro.org>
+ <20231123044219.896776-15-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231123044219.896776-15-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87plzzcuzm.fsf@draig.linaro.org>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,66 +89,63 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 24, 2023 at 10:21:17AM +0000, Alex Bennée wrote:
-> Daniel P. Berrangé <berrange@redhat.com> writes:
-> 
-> > On Thu, Nov 23, 2023 at 05:39:18PM -0500, Michael S. Tsirkin wrote:
-> >> On Thu, Nov 23, 2023 at 05:58:45PM +0000, Daniel P. Berrangé wrote:
-> >> > The license of a code generation tool itself is usually considered
-> >> > to be not a factor in the license of its output.
-> >> 
-> >> Really? I would find it very surprising if a code generation tool that
-> >> is not a language model and so is not understanding the code it's
-> >> generating did not include some code snippets going into the output.
-> >> It is also possible to unintentionally run afoul of GPL's definition of source
-> >> code which is "the preferred form of the work for making modifications to it". 
-> >> So even if you have copyright to input, dumping just output and putting
-> >> GPL on it might or might not be ok.
-> >
-> > Consider the C pre-processor. This takes an input .c file, and expands
-> > all the macros, to split out a new .c file.
-> >
-> > The license of the output .c file is determined by the license of the
-> > input .c file. The license of the CPP impl (whether OSS or proprietary)
-> > doesn't have any influence on the license of the output file, it cannot
-> > magically force the output file to be proprietary any more than it can
-> > force it to be output file GPL.
-> 
-> LLM's are just a tool like a compiler (albeit with spookier different
-> internals). The prompt and the instructions are arguably the more
-> important part of how to get good results from the LLM transformation.
-> In fact most of the way I've been using them has been by pasting some
-> existing code and asking for review or transformation of it.
-> 
-> However I totally get that using the various online LLMs you have very
-> little transparency about what has gone into their training and therefor
-> there is a danger of proprietary code being hallucinated out of their
-> matricies. Conversely what if I use an LLM like OpenLLaMa:
-> 
->   https://github.com/openlm-research/open_llama
-> 
-> I have fairly exhaustive definitions of what went into the training data
-> which of most interest is probably the StarCoder dataset (paper):
-> 
->   https://drive.google.com/file/d/1cN-b9GnWtHzQRoE7M7gAEyivY0kl4BYs/view
-> 
-> where there are tools to detect if generated code has been lifted
-> directly from the dataset or is indeed a transformation.
+Hi Richard,
 
-I've not looked at the links above, but I think if someone can make an
-compelling argument that *specific* tools have sufficient transparency
-to be compatible with signing the DCO, then I think we could maintain a
-list of exceptions in the policy.
+On 23/11/23 05:42, Richard Henderson wrote:
+> Since kvm32.c was removed, there is no need to keep them separate.
+> This will allow more symbols to be unexported.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/arm/kvm.c       | 789 +++++++++++++++++++++++++++++++++++++++
+>   target/arm/kvm64.c     | 820 -----------------------------------------
+>   target/arm/meson.build |   2 +-
+>   3 files changed, 790 insertions(+), 821 deletions(-)
+>   delete mode 100644 target/arm/kvm64.c
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Reviewed using 'git-diff --color-moved=dimmed-zebra'.
+
+> diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
+> deleted file mode 100644
+> index 52c0a6d3af..0000000000
+> --- a/target/arm/kvm64.c
+> +++ /dev/null
+> @@ -1,820 +0,0 @@
+> -/*
+> - * ARM implementation of KVM hooks, 64 bit specific code
+> - *
+> - * Copyright Mian-M. Hamayun 2013, Virtual Open Systems
+> - * Copyright Alex Bennée 2014, Linaro
+> - *
+> - * This work is licensed under the terms of the GNU GPL, version 2 or later.
+> - * See the COPYING file in the top-level directory.
+> - *
+> - */
+
+IANAL but shouldn't we keep these (c) lines? As:
+
+-- >8 --
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 7903e2ddde..b8fc1c8d87 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -2,6 +2,8 @@
+   * ARM implementation of KVM hooks
+   *
+   * Copyright Christoffer Dall 2009-2010
++ * Copyright Mian-M. Hamayun 2013, Virtual Open Systems
++ * Copyright Alex Bennée 2014, Linaro
+   *
+   * This work is licensed under the terms of the GNU GPL, version 2 or 
+later.
+   * See the COPYING file in the top-level directory.
+---
+
+Otherwise,
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
