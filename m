@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882497F853A
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 21:27:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 387217F852E
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 21:26:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6cj1-0001xK-Sn; Fri, 24 Nov 2023 15:24:31 -0500
+	id 1r6cj4-0001z1-S2; Fri, 24 Nov 2023 15:24:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r6cj0-0001wg-12
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 15:24:30 -0500
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1r6cj2-0001y3-Fb
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 15:24:32 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r6ciy-0005I0-48
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 15:24:29 -0500
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6cbc8199a2aso1863218b3a.1
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 12:24:27 -0800 (PST)
+ id 1r6cj0-0005Iy-Vl
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 15:24:32 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1cf856663a4so16171295ad.3
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 12:24:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1700857466; x=1701462266; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1700857469; x=1701462269; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pbNxLYOyAxv1Zp/nW5Ak7yeVc804Q40HQaCIKzw/tb8=;
- b=lxBYZo6e2sJkzpHmTbUACh9ayOcjAY1lSBmLwuTuGuw41Cp46PZojgzpgnKX+BlUXq
- nchmMbPRVA/Cz+PylcR9AtaiJncT+x30psNjQpJXdayCd1LeYTmBioYoGRAIGbtE77+M
- e1grEQs8KOt4otwHIcHJK6PeQ6y1ybKWVnj60i4vw4gG/O90p1NMsSLEzskQtF7dnlFn
- tmaecZf2CaA83oXevJ34hvy+3IlzNe8D8hnOPvVhd0qjMn0isWPyx12tPVigvIewKXsY
- f58xdAGexaAMVdXexfd5YhJAgRovxqr22x+1yfjuYkOpr19+2PfmykKnhy2N9n2Dkv0c
- 4Q0A==
+ bh=idOjzqB/2N8r45g3xvXzJsWeC0Y1TlRo66OPhQFDTfY=;
+ b=VC9WV/Vz09t3o5JmQQhLjx2F59R7Vdgk2nquyyWHc7bFEbCqz7SQSrdqxIBGsmIOxn
+ w2TjhqsabwNtLJvcbASA+Q7miCSqcLlYVuP8xe/803kYCdlpcyqqRmGf32vP/IIBclMY
+ psBbuq5m76Ce80SbaGr8yAt4wGXbvZjpV/5wYO1So2a/Mh/HMgAk/xYMXwfN8jvBHIy9
+ H2T3WgTcfp28VfbgkCloQiKz7m7arGIJ0WcVbeS3pv5etfeRMtDdqwwpEdlMgmLNe85B
+ BaivmLev2ojIXWW2x45ytI2de/A+S+TP1GQhzeYGTSluZbNfu49SwBdY/UN4s0/9wiz4
+ vgGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700857466; x=1701462266;
+ d=1e100.net; s=20230601; t=1700857469; x=1701462269;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pbNxLYOyAxv1Zp/nW5Ak7yeVc804Q40HQaCIKzw/tb8=;
- b=btkQySuP6GaVttsfTCmJ3oNWT5NsJkS+ojTnwWrO8WhG0/BqQ6GH6f8d9UuzvSPILr
- 91CAdkqbvNnd4g3G7Z6hEbZOKzwXpylOgVBGVJ2edt8udYsQ1RWuHmYKxkCOPfEvYu10
- G3BhpsLbtVsQZEnrRFFF84fpJq+svy5BXG5ZPa+G9PDUL297ISpxsn+hFR13u4bRJbC3
- dmGFaAGW+F2NZHyXtz/tRWmMJdrANC+aDPi3zS5ii29xHkpXaJduHSJh8Gg64eHqk9gD
- aOY7zw9pjLIBmHpLHqCTXqV8iav6izLp4V53Pqspb+NJZWr/eEBLP5wOZBcIsb7sll5j
- 8l/w==
-X-Gm-Message-State: AOJu0Yw4JS68toVRLLqrqJYZUtInZdfdk/K2ksc7SVW1JXvMNbJDb7al
- 2LXeWVWbHEqGqXjDwJ5cn7Kg1PZSduCtaSCWEW8=
-X-Google-Smtp-Source: AGHT+IE7P6LEyIukOqCf+DBg4nT6J2vAcR7RRJm5MFLuRyGD8SdDO+uDSPuqRsJ6tGooWey0LZ0TAg==
-X-Received: by 2002:a05:6a20:5484:b0:18b:e692:4314 with SMTP id
- i4-20020a056a20548400b0018be6924314mr4204544pzk.56.1700857466355; 
- Fri, 24 Nov 2023 12:24:26 -0800 (PST)
+ bh=idOjzqB/2N8r45g3xvXzJsWeC0Y1TlRo66OPhQFDTfY=;
+ b=hGZDdhvuHFYcJje5Le2IgIQ4eqFZaaGSByrv8kCO0BELu+GVC9DmAx6y4RS6hEZ7jm
+ KxNg+lKn7Ew0dnPbNZqPuZhW6V2O7x5sVibkFzh3dtiPKw+tzddbHx0tQErHpD79mAZj
+ hagrOCP9S2lClsmNgzSzV+R1HTbQx+9ZdOp/xr5jMWpeK1PlbozWup75u6Fs25FRODv4
+ PgD6rAgTbOq3LY/h2S6ETDFLe+KUUhgmbYQl5sFPiV0b36b8RU+G96pTHi3lnp1gD2OO
+ 0wisHiVcGL3ramQiAJFs8FKKbw5R83LKk0ucwn0pvE1X6UfM4ZJO8JEZAoXjEFp3PgCx
+ Wcug==
+X-Gm-Message-State: AOJu0YyojjWogNT84AU6NSEZnSytsOou9eoRzZo4wgP80RFmT703xefW
+ pJ2cI5NH9vZLSH5s5iRFz9tjqEYMLAP7td/lVJM=
+X-Google-Smtp-Source: AGHT+IHXQ9oyKH9frxe/t2DnDGYd37bKm+MZeafkFjWtloFUa/S/i1KVVnkXl4jYmwl8GtRsKST+Cg==
+X-Received: by 2002:a17:902:d2d1:b0:1cc:6fa6:ab62 with SMTP id
+ n17-20020a170902d2d100b001cc6fa6ab62mr4162262plc.29.1700857469300; 
+ Fri, 24 Nov 2023 12:24:29 -0800 (PST)
 Received: from grind.. ([152.250.131.119]) by smtp.gmail.com with ESMTPSA id
- t24-20020a1709028c9800b001c59f23a3fesm3548267plo.251.2023.11.24.12.24.23
+ t24-20020a1709028c9800b001c59f23a3fesm3548267plo.251.2023.11.24.12.24.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Nov 2023 12:24:25 -0800 (PST)
+ Fri, 24 Nov 2023 12:24:28 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH for-9.0 v12 08/18] target/riscv: add rva22u64 profile
- definition
-Date: Fri, 24 Nov 2023 17:23:43 -0300
-Message-ID: <20231124202353.1187814-9-dbarboza@ventanamicro.com>
+Subject: [PATCH for-9.0 v12 09/18] target/riscv/kvm: add 'rva22u64' flag as
+ unavailable
+Date: Fri, 24 Nov 2023 17:23:44 -0300
+Message-ID: <20231124202353.1187814-10-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231124202353.1187814-1-dbarboza@ventanamicro.com>
 References: <20231124202353.1187814-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,106 +94,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The rva22U64 profile, described in:
+KVM does not have the means to support enabling the rva22u64 profile.
+The main reasons are:
 
-https://github.com/riscv/riscv-profiles/blob/main/profiles.adoc#rva22-profiles
+- we're missing support for some mandatory rva22u64 extensions in the
+  KVM module;
 
-Contains a set of CPU extensions aimed for 64-bit userspace
-applications. Enabling this set to be enabled via a single user flag
-makes it convenient to enable a predictable set of features for the CPU,
-giving users more predicability when running/testing their workloads.
+- we can't make promises about enabling a profile since it all depends
+  on host support in the end.
 
-QEMU implements all possible extensions of this profile. All the so
-called 'synthetic extensions' described in the profile that are cache
-related are ignored/assumed enabled (Za64rs, Zic64b, Ziccif, Ziccrse,
-Ziccamoa, Zicclsm) since we do not implement a cache model.
+We'll revisit this decision in the future if needed. For now mark the
+'rva22u64' profile as unavailable when running a KVM CPU:
 
-An abstraction called RISCVCPUProfile is created to store the profile.
-'ext_offsets' contains mandatory extensions that QEMU supports. Same
-thing with the 'misa_ext' mask. Optional extensions must be enabled
-manually in the command line if desired.
-
-The design here is to use the common target/riscv/cpu.c file to store
-the profile declaration and export it to the accelerator files. Each
-accelerator is then responsible to expose it (or not) to users and how
-to enable the extensions.
-
-Next patches will implement the profile for TCG and KVM.
+$ qemu-system-riscv64 -machine virt,accel=kvm -cpu rv64,rva22u64=true
+qemu-system-riscv64: can't apply global rv64-riscv-cpu.rva22u64=true:
+    'rva22u64' is not available with KVM
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 ---
- target/riscv/cpu.c | 32 ++++++++++++++++++++++++++++++++
- target/riscv/cpu.h | 12 ++++++++++++
- 2 files changed, 44 insertions(+)
+ target/riscv/kvm/kvm-cpu.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 8841052290..f2be40ae21 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1524,6 +1524,38 @@ Property riscv_cpu_options[] = {
-     DEFINE_PROP_END_OF_LIST(),
- };
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 78fa1fa162..9c6ff774b5 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -398,7 +398,7 @@ static void cpu_set_cfg_unavailable(Object *obj, Visitor *v,
+     }
  
-+/*
-+ * RVA22U64 defines some 'named features' or 'synthetic extensions'
-+ * that are cache related: Za64rs, Zic64b, Ziccif, Ziccrse, Ziccamoa
-+ * and Zicclsm. We do not implement caching in QEMU so we'll consider
-+ * all these named features as always enabled.
-+ *
-+ * There's no riscv,isa update for them (nor for zic64b, despite it
-+ * having a cfg offset) at this moment.
-+ */
-+static RISCVCPUProfile RVA22U64 = {
-+    .name = "rva22u64",
-+    .misa_ext = RVI | RVM | RVA | RVF | RVD | RVC | RVU,
-+    .ext_offsets = {
-+        CPU_CFG_OFFSET(ext_zicsr), CPU_CFG_OFFSET(ext_zihintpause),
-+        CPU_CFG_OFFSET(ext_zba), CPU_CFG_OFFSET(ext_zbb),
-+        CPU_CFG_OFFSET(ext_zbs), CPU_CFG_OFFSET(ext_zfhmin),
-+        CPU_CFG_OFFSET(ext_zkt), CPU_CFG_OFFSET(ext_zicntr),
-+        CPU_CFG_OFFSET(ext_zihpm), CPU_CFG_OFFSET(ext_zicbom),
-+        CPU_CFG_OFFSET(ext_zicbop), CPU_CFG_OFFSET(ext_zicboz),
+     if (value) {
+-        error_setg(errp, "extension %s is not available with KVM",
++        error_setg(errp, "'%s' is not available with KVM",
+                    propname);
+     }
+ }
+@@ -479,6 +479,11 @@ static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
+     riscv_cpu_add_kvm_unavail_prop_array(cpu_obj, riscv_cpu_extensions);
+     riscv_cpu_add_kvm_unavail_prop_array(cpu_obj, riscv_cpu_vendor_exts);
+     riscv_cpu_add_kvm_unavail_prop_array(cpu_obj, riscv_cpu_experimental_exts);
 +
-+        /* mandatory named features for this profile */
-+        CPU_CFG_OFFSET(zic64b),
-+
-+        RISCV_PROFILE_EXT_LIST_END
++   /* We don't have the needed KVM support for profiles */
++    for (i = 0; riscv_profiles[i] != NULL; i++) {
++        riscv_cpu_add_kvm_unavail_prop(cpu_obj, riscv_profiles[i]->name);
 +    }
-+};
-+
-+RISCVCPUProfile *riscv_profiles[] = {
-+    &RVA22U64,
-+    NULL,
-+};
-+
- static Property riscv_cpu_properties[] = {
-     DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
+ }
  
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 5fb4ca2324..5ff629650d 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -76,6 +76,18 @@ const char *riscv_get_misa_ext_description(uint32_t bit);
- 
- #define CPU_CFG_OFFSET(_prop) offsetof(struct RISCVCPUConfig, _prop)
- 
-+typedef struct riscv_cpu_profile {
-+    const char *name;
-+    uint32_t misa_ext;
-+    bool enabled;
-+    bool user_set;
-+    const int32_t ext_offsets[];
-+} RISCVCPUProfile;
-+
-+#define RISCV_PROFILE_EXT_LIST_END -1
-+
-+extern RISCVCPUProfile *riscv_profiles[];
-+
- /* Privileged specification version */
- enum {
-     PRIV_VERSION_1_10_0 = 0,
+ static int kvm_riscv_get_regs_core(CPUState *cs)
 -- 
 2.41.0
 
