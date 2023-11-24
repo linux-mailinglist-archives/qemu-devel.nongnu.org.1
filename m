@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45FA47F70D3
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 11:08:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC5D37F70F7
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 11:11:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6T5g-0007ED-Dw; Fri, 24 Nov 2023 05:07:16 -0500
+	id 1r6T95-0001DD-8u; Fri, 24 Nov 2023 05:10:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6T5d-0007Dc-J7
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 05:07:13 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6T8i-00018k-1x
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 05:10:25 -0500
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6T5c-0002Qv-4Q
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 05:07:13 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40b399a6529so3261175e9.1
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 02:07:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6T8c-0002z9-0w
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 05:10:22 -0500
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2c72e275d96so22646981fa.2
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 02:10:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700820430; x=1701425230; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700820612; x=1701425412; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=YC2tLNreGHK49JPhlPQlJlVbNqZ3GVCIkMwFfzLCrvg=;
- b=X9ll3cF9U+Mh/wD7zxJXNdaFbPU9aQml5qkdx82Ot9jn+rJ33w+Qh3j+KfwmXfm8VW
- 7lOMNXT1I8H7L4HrEAAB7rg4ZY6cN137ruDq+S4im4QxWTlmzLboBpO7sabO16VJ/A3T
- qWO8T62i//a5O57hJDxwRIl7u62es6KcfdPqOXBlq0u+2HB1TLZecHIYh9s2vzDu6Z4+
- uk9rCRq8w5xV9b9rYZKZuho9vixmoOVvofHfIlVFc18lYWCaR/j/MrwwIaoP4k1GLijo
- Af/J5Uvzc4B77LngDpBtqIbOzpWSsJ3XbHDNZYwdm3boZv/2qFLq3ep30HhcMOE75ZDM
- q2Zw==
+ bh=hnxah0bDOygUKTy/KArMgq1c86fYPdHHBP231U9ow1k=;
+ b=Me44kUkVR3xh3C5qu6drCI1LUPWYLC8prPB9/FC5ou2+BzEWIv0sT8e0s47fmsm96J
+ 88zsWcvixETbr1zl2cwzqI6zhfffP3oXmtm4j82Ao682m88yKaViwRsUZVm7Rnady0Hw
+ ATNzVy+tvk8iAWgiwSNx9CpHWjeNiqD0/CiOt96GUqPS4OtZElcs2qIM6PuZtQRgi401
+ 6tlv1JrXqIu2oJYkfWvn4BJ/N2AcdpKfP0OjIzpS7fNsV4Ke8CFYqXjSYnlpXY9YVAXu
+ CkWopcOSj1xTucXPB6L/anbpvave5i7md2lHxNYBworBcMXY3Mfn16nMXqUeGAgrpd59
+ SakQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700820430; x=1701425230;
+ d=1e100.net; s=20230601; t=1700820612; x=1701425412;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YC2tLNreGHK49JPhlPQlJlVbNqZ3GVCIkMwFfzLCrvg=;
- b=qa/ChSy92NkPXh3iYLMPWGKPkMEhwesentzfB7hoWq1P/TlGaVU7D2NrzHtnvw/OhQ
- hdt2EzXTCmZVA1cR+XNk1pFNDK2CNX9RJFnAaiOaEhflPqeJyDfnA2XexCZQA0VAr2s8
- F1tnDoA3W9qSGlW2d/Z2ZyyNW7QHIThWMENO1KIQIbKrz9g+vnJ5OTyQB5xiRhpN8QLo
- Bhc1Yi+hknX7KYh4I8pfqqfdKgPHy5hNPDCOdDVEzSf96HyEljLvp2UFqcxkIPvkqfOi
- POGdMTFxCmt0OxU58NcbmpGMK82hZYcaWzCwgFInAfGJyr/EkgAKCYaglcU0C6gqJfSY
- U7nw==
-X-Gm-Message-State: AOJu0YwbGWGhVT/yl0bWyQKg7KNcExJNlN8iOxic3Dxb1ByW5vUUy4MY
- blWlAFK6AiFQBFdWmws8UPPCog==
-X-Google-Smtp-Source: AGHT+IGb/DWEHigLo46ovG0tO9bdT+TByU9UZWgxsepy5J0BoGAMKzGx8BlO/o+rQOfZmdiv8nzzfA==
-X-Received: by 2002:a05:600c:4fc6:b0:408:411c:4f6d with SMTP id
- o6-20020a05600c4fc600b00408411c4f6dmr1897526wmq.14.1700820428784; 
- Fri, 24 Nov 2023 02:07:08 -0800 (PST)
+ bh=hnxah0bDOygUKTy/KArMgq1c86fYPdHHBP231U9ow1k=;
+ b=ifvNxB0QC7HPj6x3W7x01RWHhEayg42uThYwH5IYTsgl2W7XD8SMfUVAbOL/BA4Q6J
+ /YH6Lfeb54rM3i8NpcZ1piLnHmvdiuA4Hzxb0ZJRWH+pJRNLF9eeDOwY0Y8biaalcXYb
+ PPfFf/T4PmNiRDjYb4NTpfyq2q+1xTaYPeUURGxjO7GHa3aCL3DSr6WNj4sSpJjhmyH9
+ 7GiT7fqOKr60LyVkMx/FDlJ0VLTVGeKSTn0x/AeqTcvq5bo/xL/j4/ap99x+QAQpDF/p
+ 1TTn7+h13wm018qi4fAPWRH9pkFvnoZVl48T64nd9fVbtIJRqiYRAZNvvhFIg1s3dyw4
+ eQpg==
+X-Gm-Message-State: AOJu0Yy1bLmoYv9hs/B3fm2u/oNiY8I8H3wP15Hqplxl/6G2twHAiS/l
+ i7K8yiWryjHKHl9paS1HhnnqrA==
+X-Google-Smtp-Source: AGHT+IF8UkR+K4p1WrX4afYEDUdY6mTdI3166ASs5s4g4VsXfU+8WnW3x3EUTTdbsAtHsF35wQB5Zg==
+X-Received: by 2002:a2e:91c3:0:b0:2b6:a804:4cc with SMTP id
+ u3-20020a2e91c3000000b002b6a80404ccmr1764077ljg.53.1700820611797; 
+ Fri, 24 Nov 2023 02:10:11 -0800 (PST)
 Received: from [192.168.69.100] ([176.187.218.17])
  by smtp.gmail.com with ESMTPSA id
- a15-20020a05600c348f00b0040b33222a39sm5361270wmq.45.2023.11.24.02.07.07
+ s7-20020a5d5107000000b00332c6a52040sm3885531wrt.100.2023.11.24.02.10.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 24 Nov 2023 02:07:08 -0800 (PST)
-Message-ID: <93f7ee3e-a92f-4b18-bf16-2169c8b2791d@linaro.org>
-Date: Fri, 24 Nov 2023 11:07:06 +0100
+ Fri, 24 Nov 2023 02:10:11 -0800 (PST)
+Message-ID: <f77896fc-18b5-4f85-b621-89b84dc26b63@linaro.org>
+Date: Fri, 24 Nov 2023 11:10:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/core: define stack variable to NULL to fix qtest with
- sanitizers
+Subject: Re: [PATCH] hw/ppc/Kconfig: Imply VFIO_PCI
 Content-Language: en-US
-To: Daniel Hoffman <dhoff749@gmail.com>, qemu-devel@nongnu.org,
- Markus Armbruster <armbru@redhat.com>
-Cc: qemu-trivial@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <20231124015312.544422-1-dhoff749@gmail.com>
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+References: <20231124080658.893770-1-clg@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231124015312.544422-1-dhoff749@gmail.com>
+In-Reply-To: <20231124080658.893770-1-clg@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,57 +96,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(Cc'ing QAPI maintainer)
+On 24/11/23 09:06, Cédric Le Goater wrote:
+> When the legacy and iommufd backends were introduced, a set of common
+> vfio-pci routines were exported in pci.c for both backends to use :
+> 
+>    vfio_pci_pre_reset
+>    vfio_pci_get_pci_hot_reset_info
+>    vfio_pci_host_match
+>    vfio_pci_post_reset
+> 
+> This introduced a build failure on PPC when --without-default-devices
+> is use because VFIO is always selected in ppc/Kconfig but VFIO_PCI is
+> not.
+> 
+> Use an 'imply VFIO_PCI' in ppc/Kconfig and bypass compilation of the
+> VFIO EEH hooks routines defined in hw/ppc/spapr_pci_vfio.c with
+> CONFIG_VFIO_PCI.
+> 
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
+>   hw/ppc/spapr_pci_vfio.c | 36 ++++++++++++++++++++++++++++++++++++
+>   hw/ppc/Kconfig          |  2 +-
+>   2 files changed, 37 insertions(+), 1 deletion(-)
 
-On 24/11/23 02:53, Daniel Hoffman wrote:
-> This was the only failure preventing `make check` from passing with sanitizers
-> enabled on my configuration.
-
-IIUC this is due to visit_start_list() which expects a NULL list,
-see qapi/qapi-visit-core.c:
-
-bool visit_start_list(Visitor *v, const char *name, GenericList **list,
-                       size_t size, Error **errp)
-{
-     bool ok;
-
-     assert(!list || size >= sizeof(GenericList));
-
-which is well defined in its declaration:
-
-/*
-  * Start visiting a list.
-  *
-  * @name expresses the relationship of this list to its parent
-  * container; see the general description of @name above.
-  *
-  * @list must be non-NULL for a real walk, in which case @size
-  * determines how much memory an input or clone visitor will allocate
-  * into *@list (at least sizeof(GenericList)).  Some visitors also
-  * allow @list to be NULL for a virtual walk, in which case @size is
-  * ignored.
-  ...
-
-With the patch description improved:
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-> Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
-> ---
->   hw/core/qdev-properties.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-> index 91632f7be9f..4caa78b7bc5 100644
-> --- a/hw/core/qdev-properties.c
-> +++ b/hw/core/qdev-properties.c
-> @@ -690,7 +690,7 @@ static void get_prop_array(Object *obj, Visitor *v, const char *name,
->       uint32_t *alenptr = object_field_prop_ptr(obj, prop);
->       void **arrayptr = (void *)obj + prop->arrayoffset;
->       char *elem = *arrayptr;
-> -    GenericList *list;
-> +    GenericList *list = NULL;
->       const size_t list_elem_size = sizeof(*list) + prop->arrayfieldsize;
->       int i;
->       bool ok;
-
+Thanks for reworking it without adding more stubs :)
 
