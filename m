@@ -2,74 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E66987F76FC
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 15:54:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3916C7F76FF
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 15:55:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6XZL-00023e-SC; Fri, 24 Nov 2023 09:54:11 -0500
+	id 1r6XaB-0002jH-Jy; Fri, 24 Nov 2023 09:55:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1r6XZG-000216-Jk
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 09:54:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6Xa7-0002fi-Nk
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 09:54:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1r6XZD-0004P3-Dw
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 09:54:06 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6Xa6-0004VE-87
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 09:54:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700837641;
+ s=mimecast20190719; t=1700837697;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xQjX9ACibNTVITo4K962MzX2o83sAHHKNhVHngA4iw4=;
- b=d2vFc7Arf1oubblqZl0aIl0I8/60A9bvqdvho+sF/oWL7ajtgaod/LjYuwnrlqi6H7MbCR
- lWo7Ml9JisZ6JEnFs43zPbXp1h+wxO73LoTY9mrnLw3VpHG/K8ZZ5dsMwYdKb4j1Qrb6IK
- I54hztFj5MbRwp+gBBO7uWQc6DTNjpo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=shRx/7FsxFJHcJIh5WYh8+A5VNEocTTLy3f+nN5Cntk=;
+ b=Kv+jFCZJoicQ2Icp6cbEd3LOEZuGSGXqkYrGB7vd1Y9EMtnme7k33/YmVJOiXBH2mr9fPH
+ U/Xsq6wAvF7c4qChmYAFprcNY45PStb8yClVy8yusBv/POoI1bDsprIfU+ARTqwo0JfNPY
+ klIIybLMEyHBK5oYhhEicnPhh0y6KgI=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-66-seFueBG5PFexOVYhfspXcQ-1; Fri, 24 Nov 2023 09:52:47 -0500
-X-MC-Unique: seFueBG5PFexOVYhfspXcQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D863E8110A7;
- Fri, 24 Nov 2023 14:52:46 +0000 (UTC)
-Received: from speedmetal.lan (unknown [10.45.242.11])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A3ACA2026D4C;
- Fri, 24 Nov 2023 14:52:44 +0000 (UTC)
-From: Peter Krempa <pkrempa@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- John Snow <jsnow@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-block@nongnu.org
-Subject: [PATCH 2/2] block: stream: Allow users to request only format driver
- names in backing file format
-Date: Fri, 24 Nov 2023 15:52:38 +0100
-Message-ID: <3a18ad1c3ed99d07f80be03f706779d46bd508c0.1700837066.git.pkrempa@redhat.com>
-In-Reply-To: <cover.1700837066.git.pkrempa@redhat.com>
-References: <cover.1700837066.git.pkrempa@redhat.com>
+ us-mta-6-D7_e0qd4Pt6b4VrKi9epig-1; Fri, 24 Nov 2023 09:54:55 -0500
+X-MC-Unique: D7_e0qd4Pt6b4VrKi9epig-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9fd0a58549bso226967766b.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 06:54:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700837695; x=1701442495;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=shRx/7FsxFJHcJIh5WYh8+A5VNEocTTLy3f+nN5Cntk=;
+ b=PWGxbG7IQ2gj5mayrcX/niF9wza0ertlERptiMj6CsDNPX+YC9H2HOYbUuZ4213mHQ
+ yBdOGKguPcoF8cZP4mREVdZ8iXbBokmDzMoAJb7qyrJKMaFJ+7MAlin71fzWZaG6ckan
+ ln/94PH67hHkCn1uFt6v6mDdGSHEwzpQM45Zdg2va9cc5yrkstC+WlHuIQl5/yaW6R9A
+ YFMZh4IEf0mKtQxfKhra7CKhb22q6yZRHRZJdMIvdOPJQKajnuFG6tl9lAartofPQnDy
+ dbcQMO4xFN1j80PYoVRwN6p26ALBlI18qANotXIpW6ae7a1sxu44IkZU0Zx/AJfjkYZm
+ oVGQ==
+X-Gm-Message-State: AOJu0YyDiel8J6J6776Iu02rhmmjWkmg7doV5BawJ0Uv5dMlT890fYzv
+ 6UOQ9hN59At/L1SvLhZoUr7K2Wm4bsgUX8h7rKHQ/l4dczgYv9eg509kttE1OZglvFA6A1NayOZ
+ dEcJY4tOX4kH8Dzw=
+X-Received: by 2002:a17:907:920f:b0:a02:b9c2:87bb with SMTP id
+ ka15-20020a170907920f00b00a02b9c287bbmr2585603ejb.15.1700837694759; 
+ Fri, 24 Nov 2023 06:54:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IESdgsaZJypIAATbbodCXJZj6VsGrTRJrvjLXFei+9p/Nnsx5r15F0MDtHqPMh5T1cr1SVa8w==
+X-Received: by 2002:a17:907:920f:b0:a02:b9c2:87bb with SMTP id
+ ka15-20020a170907920f00b00a02b9c287bbmr2585590ejb.15.1700837694422; 
+ Fri, 24 Nov 2023 06:54:54 -0800 (PST)
+Received: from redhat.com ([2a02:14f:176:51e5:39df:4b3f:fe7:3d4e])
+ by smtp.gmail.com with ESMTPSA id
+ b24-20020a1709062b5800b009fcd13bbd72sm2143505ejg.214.2023.11.24.06.54.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 24 Nov 2023 06:54:53 -0800 (PST)
+Date: Fri, 24 Nov 2023 09:54:50 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Thierry Escande <thierry.escande@vates.tech>, qemu-devel@nongnu.org,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH 0/4] ICH9 root PCI hotplug
+Message-ID: <20231124094535-mutt-send-email-mst@kernel.org>
+References: <20231115171837.18866-1-thierry.escande@vates.tech>
+ <20231124150135.0b99deeb@imammedo.users.ipa.redhat.com>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pkrempa@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231124150135.0b99deeb@imammedo.users.ipa.redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,168 +98,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a new flag 'backing_file_format_no_protocol' for the
-block-commit QMP command which instructs the internals to use 'raw'
-instead of the protocol driver in case when a image is used without a
-dummy 'raw' wrapper.
+On Fri, Nov 24, 2023 at 03:01:35PM +0100, Igor Mammedov wrote:
+> On Wed, 15 Nov 2023 17:18:53 +0000
+> Thierry Escande <thierry.escande@vates.tech> wrote:
+> 
+> > Hi,
+> > 
+> > This series fixes acpi_hotplug_bridge accessor names, adds new accessors
+> > for acpi-root-pci-hotplug property, and enables root PCI hotplug by
+> > default for Q35 machine.
+> 
+> hotplug on Q35 hostbridge is not implemented intentionally
+> to keep machine close to the real world.
 
-The flag is designed such that it can be always asserted by management
-tools even when there isn't any update to backing files.
+> PCIe spec 3.1a, 1.3.2.3. Root Complex Integrated Endpoint Rules
+> "
+> A Root Complex Integrated Endpoint may not be hot-plugged independent of the Root
+> Complex as a whole.
+> "
+> )
 
-The flag will be used by libvirt so that the backing images still
-reference the proper format even when libvirt will stop using the dummy
-raw driver (raw driver with no other config). Libvirt needs this so that
-the images stay compatible with older libvirt versions which didn't
-expect that a protocol driver name can appear in the backing file format
-field.
+To be more precise close to native hotplug.
+But we used ACPI for several years now and it seems to be fine.
+Maybe it's time we lifted the limitation?
 
-Signed-off-by: Peter Krempa <pkrempa@redhat.com>
----
- block/monitor/block-hmp-cmds.c         |  2 +-
- block/stream.c                         | 10 +++++++++-
- blockdev.c                             |  7 +++++++
- include/block/block_int-global-state.h |  3 +++
- qapi/block-core.json                   | 11 ++++++++++-
- 5 files changed, 30 insertions(+), 3 deletions(-)
 
-diff --git a/block/monitor/block-hmp-cmds.c b/block/monitor/block-hmp-cmds.c
-index c729cbf1eb..28e708a981 100644
---- a/block/monitor/block-hmp-cmds.c
-+++ b/block/monitor/block-hmp-cmds.c
-@@ -509,7 +509,7 @@ void hmp_block_stream(Monitor *mon, const QDict *qdict)
-     const char *base = qdict_get_try_str(qdict, "base");
-     int64_t speed = qdict_get_try_int(qdict, "speed", 0);
-
--    qmp_block_stream(device, device, base, NULL, NULL, NULL,
-+    qmp_block_stream(device, device, base, NULL, NULL, NULL, false, false,
-                      qdict_haskey(qdict, "speed"), speed,
-                      true, BLOCKDEV_ON_ERROR_REPORT, NULL,
-                      false, false, false, false, &error);
-diff --git a/block/stream.c b/block/stream.c
-index 01fe7c0f16..42befd6b1d 100644
---- a/block/stream.c
-+++ b/block/stream.c
-@@ -39,6 +39,7 @@ typedef struct StreamBlockJob {
-     BlockDriverState *target_bs;
-     BlockdevOnError on_error;
-     char *backing_file_str;
-+    bool backing_file_format_no_protocol;
-     bool bs_read_only;
- } StreamBlockJob;
-
-@@ -95,7 +96,12 @@ static int stream_prepare(Job *job)
-         if (unfiltered_base) {
-             base_id = s->backing_file_str ?: unfiltered_base->filename;
-             if (unfiltered_base->drv) {
--                base_fmt = unfiltered_base->drv->format_name;
-+                if (s->backing_file_format_no_protocol &&
-+                    unfiltered_base->drv->protocol_name) {
-+                    base_fmt = "raw";
-+                } else {
-+                    base_fmt = unfiltered_base->drv->format_name;
-+                }
-             }
-         }
-
-@@ -247,6 +253,7 @@ static const BlockJobDriver stream_job_driver = {
-
- void stream_start(const char *job_id, BlockDriverState *bs,
-                   BlockDriverState *base, const char *backing_file_str,
-+                  bool backing_file_format_no_protocol,
-                   BlockDriverState *bottom,
-                   int creation_flags, int64_t speed,
-                   BlockdevOnError on_error,
-@@ -398,6 +405,7 @@ void stream_start(const char *job_id, BlockDriverState *bs,
-     s->base_overlay = base_overlay;
-     s->above_base = above_base;
-     s->backing_file_str = g_strdup(backing_file_str);
-+    s->backing_file_format_no_protocol = backing_file_format_no_protocol;
-     s->cor_filter_bs = cor_filter_bs;
-     s->target_bs = bs;
-     s->bs_read_only = bs_read_only;
-diff --git a/blockdev.c b/blockdev.c
-index 038031bb03..dc477c4f7e 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -2408,6 +2408,8 @@ void qmp_block_stream(const char *job_id, const char *device,
-                       const char *base,
-                       const char *base_node,
-                       const char *backing_file,
-+                      bool has_backing_file_format_no_protocol,
-+                      bool backing_file_format_no_protocol,
-                       const char *bottom,
-                       bool has_speed, int64_t speed,
-                       bool has_on_error, BlockdevOnError on_error,
-@@ -2443,6 +2445,10 @@ void qmp_block_stream(const char *job_id, const char *device,
-         return;
-     }
-
-+    if (!has_backing_file_format_no_protocol) {
-+        backing_file_format_no_protocol = false;
-+    }
-+
-     if (!has_on_error) {
-         on_error = BLOCKDEV_ON_ERROR_REPORT;
-     }
-@@ -2531,6 +2537,7 @@ void qmp_block_stream(const char *job_id, const char *device,
-     }
-
-     stream_start(job_id, bs, base_bs, backing_file,
-+                 backing_file_format_no_protocol,
-                  bottom_bs, job_flags, has_speed ? speed : 0, on_error,
-                  filter_node_name, &local_err);
-     if (local_err) {
-diff --git a/include/block/block_int-global-state.h b/include/block/block_int-global-state.h
-index 4f253ff362..4301061048 100644
---- a/include/block/block_int-global-state.h
-+++ b/include/block/block_int-global-state.h
-@@ -46,6 +46,8 @@
-  * flatten the whole backing file chain onto @bs.
-  * @backing_file_str: The file name that will be written to @bs as the
-  * the new backing file if the job completes. Ignored if @base is %NULL.
-+ * @backing_file_format_no_protocol: Use format name instead of potental
-+ *                                   protocol name as backing image format
-  * @creation_flags: Flags that control the behavior of the Job lifetime.
-  *                  See @BlockJobCreateFlags
-  * @speed: The maximum speed, in bytes per second, or 0 for unlimited.
-@@ -64,6 +66,7 @@
-  */
- void stream_start(const char *job_id, BlockDriverState *bs,
-                   BlockDriverState *base, const char *backing_file_str,
-+                  bool backing_file_format_no_protocol,
-                   BlockDriverState *bottom,
-                   int creation_flags, int64_t speed,
-                   BlockdevOnError on_error,
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 367e896905..796cc582d5 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -2829,6 +2829,13 @@
- #     Care should be taken when specifying the string, to specify a
- #     valid filename or protocol.  (Since 2.1)
- #
-+# @backing-file-format-no-protocol: If true always use a 'format' driver name
-+#     for the 'backing file format' field if updating the image header of 'top'.
-+#     Otherwise the real name of the driver of the backing
-+#     image may be used which may be a protocol driver.
-+#
-+#     (default: false; since: 8.2)
-+#
- # @speed: the maximum speed, in bytes per second
- #
- # @on-error: the action to take on an error (default report). 'stop'
-@@ -2867,7 +2874,9 @@
- ##
- { 'command': 'block-stream',
-   'data': { '*job-id': 'str', 'device': 'str', '*base': 'str',
--            '*base-node': 'str', '*backing-file': 'str', '*bottom': 'str',
-+            '*base-node': 'str', '*backing-file': 'str',
-+            '*backing-file-format-no-protocol': 'bool',
-+            '*bottom': 'str',
-             '*speed': 'int', '*on-error': 'BlockdevOnError',
-             '*filter-node-name': 'str',
-             '*auto-finalize': 'bool', '*auto-dismiss': 'bool' },
--- 
-2.43.0
+> 
+> PS:
+> but patch 1/4 is good cleanup, pls include Reviewed-by's and resend it
+> as a separate patch after 8.2 has been released (so it wouldn't get lost in the traffic).
+> 
+> > 
+> > Thierry Escande (4):
+> >   ich9: Remove unused hotplug field from ICH9LPCPMRegs struct
+> >   ich9: Renamed use_acpi_hotplug_bridge accessors
+> >   ich9: Add accessors for acpi-root-pci-hotplug
+> >   ich9: Enable root PCI hotplug by default
+> > 
+> >  hw/acpi/ich9.c         | 23 +++++++++++++++++++++--
+> >  include/hw/acpi/ich9.h |  1 -
+> >  2 files changed, 21 insertions(+), 3 deletions(-)
+> > 
 
 
