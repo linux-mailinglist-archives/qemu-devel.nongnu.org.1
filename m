@@ -2,82 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE997F7435
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 13:49:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA1C7F7436
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 13:49:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6Var-00048N-Bb; Fri, 24 Nov 2023 07:47:37 -0500
+	id 1r6Vat-0004J8-Ki; Fri, 24 Nov 2023 07:47:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r6Van-00046E-Af; Fri, 24 Nov 2023 07:47:33 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6Var-0004AZ-1f
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 07:47:37 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r6Vai-0005bl-T6; Fri, 24 Nov 2023 07:47:32 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1cf50cc2f85so14835785ad.1; 
- Fri, 24 Nov 2023 04:47:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6Vao-0005cI-Qm
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 07:47:36 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40b2ad4953cso16825895e9.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 04:47:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700830047; x=1701434847; darn=nongnu.org;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HzcPYixxKK9Iy1JE7Sh/jXK2a+O7mPkOBydd/jxBtfs=;
- b=RyNNq9JcDe8KB4jhvP0gybQ1To87OJg1tUCrNguueCheuD6Q3yQKi1KBZHssTGP441
- GNYoGbg0eKaazCouUouGxuaGXxtUk7F3ZyC22RHBFWbyYGOOwO8PBWoYtJ+zQaNapThf
- 1QxCI6S/uBDPgcMxYuJbcVatvEFTk96sEBMIQD3xJCHQI2lR8e/UisYZbQTq37Apggwb
- jk8n6RWpF11FtXeIO9LpwVitNVT7iyweAXJXQeNN6Pv9xMNshTRqZMuZaCUcNbuewM8h
- U0uVvQyfbZcksMTsIQ9L6Vb7DIsDhlvslhzxhG3DRbFb4fnMIvKWlbYOOq4doYLrY28f
- NwsA==
+ d=linaro.org; s=google; t=1700830052; x=1701434852; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=U2xSlMOjhRTHcGlZQri8H/KgmcTvXC+4xuXicKM3J4A=;
+ b=WNgR+KIPFuC7HGpcSarrP00ouVI3OTUSu69keP5PwEwZo+jseM8oDEvmrlOM0dHTKD
+ S/Ng2FY6MQR7zlB+x95yOq8v05V0ZF9nP3FIo9C04OP8Bven+9gfHvMmnuJMYhlQ/p+I
+ huhb5g1UE7ttUBnhxzVvi4CQUl5Vs0GG245r/Anq2EM60m9KcsQWYb6kiY67pZa3DN30
+ 1GCjWHke8eAWPhyXAmZfstszWUDg+WdzQLzq7geftGScriJDdVlOJzUUZdwwruAOedVo
+ pdH3ix7ATGNUJPvIvY26ZU3aZ2mAhjCj5XjUfroC41OhLJzn2BJhnd5//KotL18tX9WD
+ hEtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700830047; x=1701434847;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=HzcPYixxKK9Iy1JE7Sh/jXK2a+O7mPkOBydd/jxBtfs=;
- b=MTYnsBQn4zQ6l+NBlHk73ZOlwyq+MGAeZoi/viPUJ1Cx3ZjvJmb4uFsZM1UpxLhaKu
- XV+Xdh4+tAxIGzs24i8ailOv7hYLWNus0X8olPdsiQglvw9pGR8IMIgXV/fNY1CsqmBG
- u3c3+cde4ffEWcBRj7fcCTLJKKOrV9IvkDrzeJ3GSqVAKLsthyA7iBovIFwdr1Rnqsjc
- unCiSPqyYrLQen7q/eVdkidl4nsRms4QsJ5wm3FW8dKQDlebCxiF4K8fCSUHfjOeGPgS
- lpEDbStwRzDpy2+sTjDVujnD/63FNCiZpbyhHhLjwJwt8SvE6yoYi2p9ynfAr7vsQ0yP
- wsCA==
-X-Gm-Message-State: AOJu0YyC+8zHYbl6ceT+I2bJesikCbTHzNl698HBhU7NAaMa0vysAUs1
- Z4a8MxG9WfNS6PiHtidkOHE=
-X-Google-Smtp-Source: AGHT+IFVCe1Q34g/kVlRI/LbaFAOi0jXIWKxRz98O17gypO1DmgaIt+E7jN4TRffhmrtuBTXKtcScA==
-X-Received: by 2002:a17:903:451:b0:1cf:59b7:b035 with SMTP id
- iw17-20020a170903045100b001cf59b7b035mr2203237plb.21.1700830046780; 
- Fri, 24 Nov 2023 04:47:26 -0800 (PST)
-Received: from localhost (121-44-66-27.tpgi.com.au. [121.44.66.27])
+ d=1e100.net; s=20230601; t=1700830052; x=1701434852;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=U2xSlMOjhRTHcGlZQri8H/KgmcTvXC+4xuXicKM3J4A=;
+ b=GAn4eJ/9t+d6c+c/iFEfKM8snoAZvmxxpYJdTff2LdmgE5AzpN688r/yrRbvRP+TiB
+ YQO/8W12CRZUr5OH6u+x3nD3dhGIvfsdjz87TK3VYgDEZvYATN8/1zNo4vudDR64JtI5
+ 84xSMTCF1aPW92KfX5HWYf8ZMU9sLSFMarDdlerIoRTV1efiXq4QmoO0pVbrqT+tN02E
+ PPjSsFIt58V4yOI3oXoSlpr5OtwsR1FaKr+1PuOXHjq4LKrHwS/5Kal3/gGgMJUKqAs9
+ uaQx7csxP7A4jTNo9g4tEAVZK/Mx6T05/kGGiZbHgDmyxOrUpej3+PA+iUZuBGdilYIB
+ vv5w==
+X-Gm-Message-State: AOJu0YxmC21nUjUkd9U3nYhFh7R1JFpu4Epe7xa2BOKqRtBxqbBwfwTv
+ TlMBnehFpfbhNdAxf4tddLG6wA==
+X-Google-Smtp-Source: AGHT+IHBHw0DQlH8XOCUX9Mv/un6JTCKpVtZHx+hVgc8VfuNytdkotwkBQIhImrphwzQCL1OemPYXA==
+X-Received: by 2002:a05:600c:350f:b0:40b:37f2:95bc with SMTP id
+ h15-20020a05600c350f00b0040b37f295bcmr2500711wmq.6.1700830052182; 
+ Fri, 24 Nov 2023 04:47:32 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.218.17])
  by smtp.gmail.com with ESMTPSA id
- jc11-20020a17090325cb00b001ce664c05b0sm3104752plb.33.2023.11.24.04.47.23
+ v19-20020adfd053000000b0032f9688ea48sm4165581wrh.10.2023.11.24.04.47.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 24 Nov 2023 04:47:26 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 24 Nov 2023 22:47:20 +1000
-Message-Id: <CX71XHZKBIK6.1MNARW3MTDJFT@wheely>
-Subject: Re: [PATCH v5 3/3] hw/ppc: Nest1 chiplet wiring
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "Chalapathi V"
- <chalapathi.v@linux.ibm.com>, <qemu-devel@nongnu.org>
-Cc: <qemu-ppc@nongnu.org>, <fbarrat@linux.ibm.com>, <calebs@us.ibm.com>,
- <chalapathi.v@ibm.com>, <saif.abrar@linux.vnet.ibm.com>
-X-Mailer: aerc 0.15.2
-References: <20231124101534.19454-1-chalapathi.v@linux.ibm.com>
- <20231124101534.19454-4-chalapathi.v@linux.ibm.com>
- <CX708Z3P2ZAA.3VDMJRTBIK14W@wheely>
- <bac39d18-e922-4979-9c52-216cad088483@kaod.org>
-In-Reply-To: <bac39d18-e922-4979-9c52-216cad088483@kaod.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
+ Fri, 24 Nov 2023 04:47:31 -0800 (PST)
+Message-ID: <bc15ee84-9ef5-4558-a978-88c0d5b06978@linaro.org>
+Date: Fri, 24 Nov 2023 13:47:29 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-8.2 v4 10/10] hw/char/pl011: Implement TX FIFO
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Gavin Shan <gshan@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Evgeny Iakovlev <eiakovlev@linux.microsoft.com>, qemu-arm@nongnu.org,
+ Mikko Rapeli <mikko.rapeli@linaro.org>,
+ Samuel Thibault <samuel.thibault@ens-lyon.org>
+References: <20231109192814.95977-1-philmd@linaro.org>
+ <20231109192814.95977-11-philmd@linaro.org>
+ <CAJ+F1CKFFU_VEA4nhgWw9RLDgc_gD0h-FPfvSP4LaFC1j4pP6Q@mail.gmail.com>
+ <ZV3aMYohaUsg5gWx@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <ZV3aMYohaUsg5gWx@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,27 +102,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri Nov 24, 2023 at 10:26 PM AEST, C=C3=A9dric Le Goater wrote:
-> On 11/24/23 12:28, Nicholas Piggin wrote:
-> > On Fri Nov 24, 2023 at 8:15 PM AEST, Chalapathi V wrote:
-> >> This part of the patchset connects the nest1 chiplet model to p10 chip=
-.
-> >=20
-> > Seems fine to me. Should it just be squashed into patch 2?
->
-> It is better to keep the model a part from the wiring because the
-> same model could be plugged in different board/machine. It clarifies
-> the interfaces, which should be limited to irq connects and memory
-> mappings and it makes modeling shortcuts more visible: backpointers,
-> looping on the machine mappings to find a core, etc.
+On 22/11/23 11:38, Daniel P. Berrangé wrote:
+> On Wed, Nov 22, 2023 at 02:31:29PM +0400, Marc-André Lureau wrote:
+>> Hi
+>>
+>> On Thu, Nov 9, 2023 at 11:30 PM Philippe Mathieu-Daudé
+>> <philmd@linaro.org> wrote:
+>>>
+>>> If the UART back-end chardev doesn't drain data as fast as stdout
+>>> does or blocks, buffer in the TX FIFO to try again later.
+>>>
+>>> This avoids having the IO-thread busy waiting on chardev back-ends,
+>>> reported recently when testing the Trusted Reference Stack and
+>>> using the socket backend:
+>>> https://linaro.atlassian.net/browse/TRS-149?focusedCommentId=149574
+>>>
+>>> Implement registering a front-end 'watch' callback on back-end
+>>> events, so we can resume transmitting when the back-end is writable
+>>> again, not blocking the main loop.
+>>
+>> I do not have access to that Jira issue.
+>>
+>> In general, chardev backends should have some buffering already
+>> (socket, files etc).
+>>
+>> If we want more, or extra control over buffering, maybe this should be
+>> implemented at the chardev level, rather than each frontend implement
+>> its own extra buffering logic...
+>>
+>> Regardless, I think frontends should have an option to "drop" data
+>> when the chardev/buffer is full, rather than hanging.
+> 
+> Does anyone really want data to be dropped by QEMU ? Every time I've seen
+> a scenario where data has been dropped or lost, it has been considered
+> a bug to be solved.
 
-Okay that makes sense.
+A kind of counter example is the RX UART model, which is used in
+embedded world and respects the baudrate timing. I guess some scripts
+were working with the QEMU UART chardev, but them the same script
+failed when using HW UART, so realistic HW baudrate was emulated using
+the timer API. See the chardev frontend handlers:
 
-> I didn't comment on the PnvChiptod proposal but it could/should
-> be done the same.
+static int can_receive(void *opaque)
+{
+     RSCIState *sci = RSCI(opaque);
+     if (sci->rx_next > qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL)) {
+         return 0;
+     } else {
+         return FIELD_EX8(sci->scr, SCR, RE);
+     }
+}
 
-I'll look at splitting it too then.
+The TX path also use a timer:
 
-Thanks,
-Nick
+static void send_byte(RSCIState *sci)
+{
+     if (qemu_chr_fe_backend_connected(&sci->chr)) {
+         qemu_chr_fe_write_all(&sci->chr, &sci->tdr, 1);
+     }
+     timer_mod(&sci->timer,
+              qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + sci->trtime);
+
+The more complex 16550A UART model also use timer in FIFO mode.
+
+> Sure, we don't want QEMU to block on chardev writes, but we want that
+> more than throwing away data.
+> 
+> What's the use case for capturing data from the serial port, but throwing
+> it away if the other end of a socket doesn't read quickly enough ?
+> 
+> If someone does want lossy serial ports, they could configure the UDP
+> charedev backend already.
+> 
+> With regards,
+> Daniel
+
 
