@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 426B67F722B
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 11:57:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F87F7F725E
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 12:04:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6Trl-00081g-NQ; Fri, 24 Nov 2023 05:56:57 -0500
+	id 1r6Txg-0002op-8N; Fri, 24 Nov 2023 06:03:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fmartine@redhat.com>)
- id 1r6Tri-0007om-6w
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 05:56:54 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6Txa-0002eU-Cv
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 06:02:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fmartine@redhat.com>)
- id 1r6Trg-0000FB-EE
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 05:56:53 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6TxY-0002Vw-Un
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 06:02:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700823410;
+ s=mimecast20190719; t=1700823775;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4lIC23ZyZLJj/oYUj3wwJ9PbugdSurQXfcrH9U9VfYw=;
- b=KzBRBjPn75EPFXQmrdZAcao9Prerc8uwlwuXbMKBPGCjHqAFwrB1JkZrJAeZg1yph9BnaJ
- 08h9tZxDQmauS9+CeW2UyVdmgWa7XjIN985aA29Idh9PXT6ylSUfRwMAJk+a8i7goanMbW
- 6TGGjd8PE0WfJsK2AY05KYadrLIntOQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=j6mCIalA3NksRAYvqWh6zRUcsTobfDG5BIcR/w0saNw=;
+ b=HdqctmBikWhzIVI03kV0Xy4pvz2UMmG2KH3HXEfHEbxJkOXnnTh0BBzJCDV/Zc9QeD7aAj
+ Lah2m+usSVyM9zjHuDUMIYgSb6CQdvXEqFmJ2KA6Sf2cqbShM8nAzedYONSBt6RPiv6eqt
+ ngOL6EfK/zS6OvbTf0PotUHwgfRqz84=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-pHAcy0QcMJShIpZ26SnluA-1; Fri, 24 Nov 2023 05:56:49 -0500
-X-MC-Unique: pHAcy0QcMJShIpZ26SnluA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-407f9d07b41so11005935e9.0
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 02:56:49 -0800 (PST)
+ us-mta-307-IeS6A4mJMaGpeol5QP9IlA-1; Fri, 24 Nov 2023 06:02:53 -0500
+X-MC-Unique: IeS6A4mJMaGpeol5QP9IlA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a02da20c311so123988066b.3
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 03:02:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700823408; x=1701428208;
- h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4lIC23ZyZLJj/oYUj3wwJ9PbugdSurQXfcrH9U9VfYw=;
- b=pxpHavyPb+PfivhQnPdMV3ryHzW6rxkt7/E7CRbJKGfa+ctR67dU70l+kk/psvaxpr
- eo3hntAeO1wgALrbIyGi5p1QtXDsY/kUBvZ+9j+LinvpaCJozzdRrmNf3oGZ46noDYOP
- aDVVu3UbXtb539VfjoDIPMtIJ4YL/ZC93TOP6Dyixa0gkAJyA+TC4mb59RPglS1wNR/9
- dvKICG3jZewBIXJYbGUVibfIKudzsQhmeuwFbuJ7VyFg8aUwKOmarqSSIiefHgfI4LJ/
- 7QEXPwQ+xxgIv47HlIc+65zHf/R8QDQfHk7zUOnLykbaw5z0ZpmE+zVenonRtZf+MTTl
- afCA==
-X-Gm-Message-State: AOJu0Yw8Y/aVaY37phqG4zCULztrTA0RBWKQR7XIYqY+vaXKUi5oCB4K
- MQOFkbuAbukaTNx5inhnX8BzAgxyWvtce12Jf7ykJ7sz/XxPavvMBo6xbohIHrUNkOSIrl7PGb4
- mWEjMEK5/3m++Dgs=
-X-Received: by 2002:adf:b1d5:0:b0:32d:aa11:221d with SMTP id
- r21-20020adfb1d5000000b0032daa11221dmr1609057wra.27.1700823408225; 
- Fri, 24 Nov 2023 02:56:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF8B1Z5Xh4NJM4v+jFXHb5dS3jyH1zOINaNv+9ttW9vntLWVjkhOG5VMvKimijwhgUpy+ZIgA==
-X-Received: by 2002:adf:b1d5:0:b0:32d:aa11:221d with SMTP id
- r21-20020adfb1d5000000b0032daa11221dmr1609038wra.27.1700823407919; 
- Fri, 24 Nov 2023 02:56:47 -0800 (PST)
-Received: from localhost (205.pool92-176-231.dynamic.orange.es.
- [92.176.231.205]) by smtp.gmail.com with ESMTPSA id
- i2-20020adffc02000000b00327de0173f6sm4052394wrr.115.2023.11.24.02.56.47
+ d=1e100.net; s=20230601; t=1700823772; x=1701428572;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=j6mCIalA3NksRAYvqWh6zRUcsTobfDG5BIcR/w0saNw=;
+ b=EkwfsE4eBrlQNHcq/+QSAhvGSswAvZ2ScyPcyVcY6bDQPFS2svJ4tqLydQ6pb6bZhp
+ eLNCPR2P0nhbVeFMgWCJHbHkVjP5GkzmSUP5JQ3aU491p4LJNbgQQwtqqCizSMJrZWWG
+ SFrcpekPCcvGUg7kQS6tKSO9Ro8sNGOZAm1Q7cpIveXHNlHjZZJPe8XCmJ+1QxIyN8lf
+ 5d9ttUtfmkCaqBKAdCTFvlccdx92HyGYgxs4288Ml6KAq809n6qDRxt2xAJOwNBIqDOE
+ iRrRD/lA+oSSIPBH9bqaPi5HIL71vbK+5iAIguxVJysvDbhCoES9Rnq7gtLUk7MqaBXM
+ aHmA==
+X-Gm-Message-State: AOJu0Yylz68ktLlzLRLwwYbRXR2e6MbNlvwuOLRo9YogKfRhNPcWuYkU
+ EEG/odhiYYQWGS3C5aoFhEJegGebeAwAMDAHeEXUWHZ8TsGeQIKlBtyZRkcmsxPGYloxLe3TTk/
+ QScqmBBBc8VAuBeI=
+X-Received: by 2002:a17:906:1044:b0:a01:9aa8:9fa8 with SMTP id
+ j4-20020a170906104400b00a019aa89fa8mr1945583ejj.0.1700823772099; 
+ Fri, 24 Nov 2023 03:02:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEg39fxqihm4TCQ6bTkPVuFBm/4PaHBBPDObfaRFcd4J/FCd89NK1AxoQJcn7AgawHozl75qQ==
+X-Received: by 2002:a17:906:1044:b0:a01:9aa8:9fa8 with SMTP id
+ j4-20020a170906104400b00a019aa89fa8mr1945551ejj.0.1700823771745; 
+ Fri, 24 Nov 2023 03:02:51 -0800 (PST)
+Received: from redhat.com ([2.55.56.198]) by smtp.gmail.com with ESMTPSA id
+ mf12-20020a170906cb8c00b009a13fdc139fsm1925629ejb.183.2023.11.24.03.02.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Nov 2023 02:56:47 -0800 (PST)
-From: Javier Martinez Canillas <javierm@redhat.com>
-To: Simon Ser <contact@emersion.fr>
-Cc: Albert Esteve <aesteve@redhat.com>, qemu-devel@nongnu.org,
- zackr@vmware.com, linux-doc@vger.kernel.org,
- dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>,
- iforbes@vmware.com, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Chia-I Wu <olvaffe@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>,
- Hans de Goede <hdegoede@redhat.com>, Matt Roper
- <matthew.d.roper@intel.com>, David Airlie <airlied@gmail.com>,
- banackm@vmware.com, Rob Clark <robdclark@gmail.com>, krastevm@vmware.com,
- spice-devel@lists.freedesktop.org, Gurchetan Singh
- <gurchetansingh@chromium.org>, Jonathan Corbet <corbet@lwn.net>, David
- Airlie <airlied@redhat.com>, virtualization@lists.linux-foundation.org,
- linux-kernel@vger.kernel.org, mombasawalam@vmware.com, Daniel Vetter
- <daniel@ffwll.ch>, ppaalanen@gmail.com, VMware Graphics Reviewers
- <linux-graphics-maintainer@vmware.com>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH v6 0/9] Fix cursor planes with virtualized drivers
-In-Reply-To: <xUgaKXv4lqgCEWWlB4KRGx-yLXefTg-uXEdXaTqAhOTxC4G7bCILTK9SH6ymdmMMBLooAl3_Kdvl5JXeUA8Hofg9PcCMBhPWhVhnCoxvgqA=@emersion.fr>
-References: <20231023074613.41327-1-aesteve@redhat.com>
- <-ngmaSLF2S5emYjTBWcLRNzvJRoe_eZ-Nv9HQhE6ZLuK8nIE2ZbfVh2G2O2Z41GoIFIRpts0ukEtFXUx8pNAptmrZBhlXxaQGykx_qCZ_9k=@emersion.fr>
- <CADSE00KW4+hpbAbZAusBngq5FYSa067wYJCGeetqngWRJaD9Kg@mail.gmail.com>
- <87y1eqc5qk.fsf@minerva.mail-host-address-is-not-set>
- <xUgaKXv4lqgCEWWlB4KRGx-yLXefTg-uXEdXaTqAhOTxC4G7bCILTK9SH6ymdmMMBLooAl3_Kdvl5JXeUA8Hofg9PcCMBhPWhVhnCoxvgqA=@emersion.fr>
-Date: Fri, 24 Nov 2023 11:56:46 +0100
-Message-ID: <87leanctch.fsf@minerva.mail-host-address-is-not-set>
+ Fri, 24 Nov 2023 03:02:51 -0800 (PST)
+Date: Fri, 24 Nov 2023 06:02:46 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Alexander Graf <agraf@csgraf.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Phil =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: Re: [PATCH 2/2] docs: define policy forbidding use of "AI" / LLM
+ code generators
+Message-ID: <20231124055732-mutt-send-email-mst@kernel.org>
+References: <20231123114026.3589272-1-berrange@redhat.com>
+ <20231123114026.3589272-3-berrange@redhat.com>
+ <87r0kgeiex.fsf@draig.linaro.org> <ZV-P6M8seKmMKGCB@redhat.com>
+ <20231123183245-mutt-send-email-mst@kernel.org>
+ <ZWB4MMrW1JttcxqI@redhat.com> <87edgfcueq.fsf@draig.linaro.org>
+ <20231124053749-mutt-send-email-mst@kernel.org>
+ <CAFEAcA-0Kusbm_YGo5xu7ztNxdMMe28U5+9Xp=Rp=UG+Ur6EFg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=fmartine@redhat.com;
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFEAcA-0Kusbm_YGo5xu7ztNxdMMe28U5+9Xp=Rp=UG+Ur6EFg@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -113,24 +113,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simon Ser <contact@emersion.fr> writes:
+On Fri, Nov 24, 2023 at 10:43:05AM +0000, Peter Maydell wrote:
+> On Fri, 24 Nov 2023 at 10:42, Michael S. Tsirkin <mst@redhat.com> wrote:
+> >
+> > On Fri, Nov 24, 2023 at 10:33:49AM +0000, Alex Bennée wrote:
+> > > That probably means we can never use even open source LLMs to generate
+> > > code for QEMU because while the source data is all open source it won't
+> > > necessarily be GPL compatible.
+> >
+> > I would probably wait until the dust settles before we start accepting
+> > LLM generated code.
+> 
+> I think that's pretty much my take on what this policy is:
+> "say no for now; we can always come back later when the legal
+> situation seems clearer".
 
-Hello Simon,
-
-> On Wednesday, November 22nd, 2023 at 13:49, Javier Martinez Canillas <javierm@redhat.com> wrote:
->
->> Any objections to merge the series ?
->
-> No objections from me :)
->
-
-Perfect, I'll merge this series then to unblock the mutter MR. Thanks again!
+Absolutely. So I think we should not try and venture into terminology
+such as what is ai or try and promote legal copyright theories.
+ATM there's no good reason for someone who did not write the code
+to put their DCO on the code. If it is not clear who wrote the code
+because it was generated and not written then we don't want it.
 
 -- 
-Best regards,
-
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+MST
 
 
