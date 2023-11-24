@@ -2,152 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840307F781F
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 16:49:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 983597F7883
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 17:04:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6YPY-0007fl-Ur; Fri, 24 Nov 2023 10:48:08 -0500
+	id 1r6Ydl-0003aL-UV; Fri, 24 Nov 2023 11:02:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=569229df20=volodymyr_babchuk@epam.com>)
- id 1r6YPT-0007ef-Su; Fri, 24 Nov 2023 10:48:03 -0500
-Received: from mx0a-0039f301.pphosted.com ([148.163.133.242])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1r6YdR-0003Zg-0W
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 11:02:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=569229df20=volodymyr_babchuk@epam.com>)
- id 1r6YPR-0002WQ-Fr; Fri, 24 Nov 2023 10:48:03 -0500
-Received: from pps.filterd (m0174677.ppops.net [127.0.0.1])
- by mx0a-0039f301.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AODX7d2009043; Fri, 24 Nov 2023 15:47:50 GMT
-Received: from eur01-ve1-obe.outbound.protection.outlook.com
- (mail-ve1eur01lp2050.outbound.protection.outlook.com [104.47.1.50])
- by mx0a-0039f301.pphosted.com (PPS) with ESMTPS id 3ujrwb1f8m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Nov 2023 15:47:50 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RF4UKLAodQDaWXgQd0sa0kxc5qlq/J2a6MLIE4sID5tqCC+cnTCvlSGWrEbGfvMRNjODAjGfOEyISELo2tICpO4/esgrXnsxiybCaaS68zdXsC5JP0m+mQwvNPPOww859dhipkQEVpKUXLSU2IgqmS18jlfI/8Pmww2uC79mzV/Iinu9lXafysbnKX4opYz5YgYFRgBuVJpvODDtXvNuHY4l+Hnr8FOWxf3xz9ai8MZdqk6GSclN4uEmWb5yBIr6ZYG1LojkKsIRrq9WGeNH9x2/j3632/EqFu5r9NGLyU4aqKUt9lWRLrTE3XuuJoRr6+XtbcymXTfHS/MidlPOpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6en3WvjYJusXWSWiY4NO+8cabS/2ZvY1/zSpJBI6n6U=;
- b=R2WV77jDO5wZGvN07XoeM76Heroqx0I418jG22zsY4L5fz9LGZLxqOTM/hNoUL4Is2urmR9n/SXWzwl5wh/ffSke1SC4btCvCNF4FT9nsioK7svklgcrtW2TkYZzVHadf4r/Qoh9QOSeYm4Oa4DjZ8ei8q94doIi8M6aMng0aPlkcn/jGvCJzfJrDri53EmnlCkbvw3WtCf3XdcstR9UsYGDO1cna7NxK4uZJyRJjpzTI2+7YVvhB0X6ktbjlpUJC7m3HiDK3gxBK97mWqGTpfSWPb9X6bhVT9CYQyvk4irg6cE83ONpYOW3JI8hQpsZjvJp4mRYli39lm/twyBCpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=epam.com; dmarc=pass action=none header.from=epam.com;
- dkim=pass header.d=epam.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=epam.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6en3WvjYJusXWSWiY4NO+8cabS/2ZvY1/zSpJBI6n6U=;
- b=PsUKIYMULBL7lcm12735xIg3/5AF9e4T5wpD3JLlibatSokhJuPYuAnGcsLQA1cH0DlV6Ci26cjZbU8BvjqLOjhRo6Mn4SBAajb6HKS0CeO31QKmx7d79eLsu051QfSWoRBQ/kdP9OCSUdUgmhzKgsUy61x3jHcKkRh5DxW8HQJV0mlOn4h2q3vUr1vPmBn/idprElMUVR2yREDxiun9RsMsIZnakVVNbTT1bgpvfIUUB++adfSrDL2TqkXKPEdEHAwYdlwLZsX/LosgB3qqppbuOxaCwB3Cr3IU6wVWKDUSihSycl5CzmghwwS1cIk38vk+nGhGc0+Ap5ytZpKxCA==
-Received: from VI1PR03MB3710.eurprd03.prod.outlook.com (2603:10a6:803:31::18)
- by GV1PR03MB10314.eurprd03.prod.outlook.com (2603:10a6:150:16b::6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.21; Fri, 24 Nov
- 2023 15:47:46 +0000
-Received: from VI1PR03MB3710.eurprd03.prod.outlook.com
- ([fe80::8e03:368:1fd7:1822]) by VI1PR03MB3710.eurprd03.prod.outlook.com
- ([fe80::8e03:368:1fd7:1822%6]) with mapi id 15.20.7025.020; Fri, 24 Nov 2023
- 15:47:45 +0000
-From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
-To: Igor Mammedov <imammedo@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, David Woodhouse
- <dwmw@amazon.co.uk>, Stefano Stabellini <sstabellini@kernel.org>, Julien
- Grall <julien@xen.org>,
- Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>,
- Peter Maydell <peter.maydell@linaro.org>, Anthony Perard
- <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>, "open list:X86 Xen CPUs"
- <xen-devel@lists.xenproject.org>
-Subject: Re: [PATCH v2 6/6] xen_arm: Add virtual PCIe host bridge support
-Thread-Topic: [PATCH v2 6/6] xen_arm: Add virtual PCIe host bridge support
-Thread-Index: AQHaHMeJqHnam8LJkECFe490J2r1JLCJanQAgAA18wA=
-Date: Fri, 24 Nov 2023 15:47:45 +0000
-Message-ID: <878r6nw3tr.fsf@epam.com>
-References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
- <20231121221023.419901-7-volodymyr_babchuk@epam.com>
- <20231124133028.72ba1d6e@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231124133028.72ba1d6e@imammedo.users.ipa.redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: mu4e 1.10.7; emacs 29.1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI1PR03MB3710:EE_|GV1PR03MB10314:EE_
-x-ms-office365-filtering-correlation-id: f4e3deeb-9259-4362-8474-08dbed04b3d1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 1I+d/DZR+WKWL6LgCQOcCUEtx6ElTipYBFy6LL+/UwNBwOAhUWiDh35oH4QdLpQ40PD/c9K+jAKtbwi9ic5BlX+KFXqfN17HsziMyhRVZ0FPiagTNItKLoBbmd4cBqTUXHrdLoUWrPyL8t3j0Vuwxdnp1VvNyhpEkOZOS9Yv5040x3B6/kcxH9R+yqA8yPCKpDjhv6iCYpugrT+xOhTJrmvUczxFHP9v8rAYg/FMUNITsSBzyqZBe135HmuKR7NtmHPp3yT0KB3Wv3n7n2YCOwf2J1tft/zrJOFkOXyQmoKFju3A4k5fQwqlV0WNbO7DZPr1qXrei78GTM30oBWmh4UZRnK2hgdaJo/v8NbBiu61YKhzYtbLrRPJ1xv0qMkEZl6hQEy6xPy6PM2hpqu4kbfblJ1RCUB/KsmI6MvqGgSZnuXOlUmgacS55PQn07WaU25GscxBliTHq4JzLEz6I2jCVyB39Wr3hvyOnydRPNrsgFGm4mYDyqS/t4rCtk1/5FIhF9d/d7Ef4qt21v3uFbeCkVhPCOdWI6ZQrOnnRwPpF1vGUxEZVrBZzEoNOTQpGfc9iYxG3YrSHb+1lFR8Ko6gQCsTXjsGey4vjggMq1IiCDzoCQ1VFM2G4079t/d7cp5TwLZqsa3FFiCBxUIT7UltL9pzI2BtaizLw5Q6lWk=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI1PR03MB3710.eurprd03.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366004)(136003)(39860400002)(346002)(396003)(376002)(230273577357003)(230173577357003)(230922051799003)(186009)(451199024)(64100799003)(1800799012)(2616005)(36756003)(478600001)(122000001)(41300700001)(6486002)(38070700009)(86362001)(5660300002)(55236004)(316002)(71200400001)(6916009)(7416002)(6512007)(8936002)(8676002)(4326008)(6506007)(83380400001)(38100700002)(91956017)(66946007)(2906002)(76116006)(66446008)(64756008)(66476007)(54906003)(66556008)(26005);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?NueKAzqUxJUzyFE73pKhOoLQNvnnitlFLeQtpnMZaVhx+t5HuFVslf4i0C?=
- =?iso-8859-1?Q?iRBkiUH45yKcbe1EAYmGNyq+Kg1XWOSNnwKaqoTl9O1ozIxSjHlfC4Gctw?=
- =?iso-8859-1?Q?3UkQtLEvV6NCe/wi4f/4qRW210StLM1HBzGffy9bNqcJ3VfHeUx3dg1NbF?=
- =?iso-8859-1?Q?arE3F/ZePXxja16g4WLWbiQPI/UgHjOtoRFElK0R67RSdxJV2TVfJS+RZR?=
- =?iso-8859-1?Q?opjDoO+8sTvatUKlerAuSemQEXpi8oZ5bdY6ReWQ0XBuOlAsfbjnj4oQsw?=
- =?iso-8859-1?Q?AAql81Acih/P2XyyCd2vmLpA+1NgYsyywoZtRrbJQwlyYiFu6/uTbTVrmy?=
- =?iso-8859-1?Q?FxvkCr031kSalBKM4PHflBmvDuiqvx12B6ZvRwCSixoA8w5BZhwKw/xvQR?=
- =?iso-8859-1?Q?F/cw9+8eT8t6C69YCjd3RAuasq+0viamhQyGB0wjW0h7fHUdchDT7+jvNc?=
- =?iso-8859-1?Q?gWanPmGYejE4JcNuey0qWpFzwVahTVC1iXksxw2PhK16WaKPe2t+iG/+Hw?=
- =?iso-8859-1?Q?MdeLsXkK/E/kPPwIPy/KBdcXJAsop6aZGWMdvjhoTROu6fiuEmVBvTO3qd?=
- =?iso-8859-1?Q?vz8lScK0EraHgT3+9HTT2ytDH3o+dTFznKcuKYkEBN1P9I1GYa4uQ/PdAF?=
- =?iso-8859-1?Q?dCRQ4DegngMF4U+gZAKbpSmGB904TAdrwpfrX77XmGRZ67So2eN5iJ2ptD?=
- =?iso-8859-1?Q?vnsZqa45q7Rw146Z6UEb7X0n1mSahFkIejQUZDMekWZaK9j2+Ah8gctn2W?=
- =?iso-8859-1?Q?V9MABZZ9tNYwTIRKSJkeqp1/FP9B2ckyoR9HpAQKJFthB72mPE4Fv9sK7Y?=
- =?iso-8859-1?Q?IZQRZdEBeRxM3kR36qA6uuHcTuUDAmXGqzLIN+jvSVUYjLccgzRrsFhwfL?=
- =?iso-8859-1?Q?5yIjZNFiEU+xITzSDDTe+bFsygtShpce4IJ0Z46pnQqhwVzEzU1YCiKnCO?=
- =?iso-8859-1?Q?OuBKeO3dz8RTRVEHt34uYPY/DjtSzHuEQ1jMqFd1Ip1+ymloTJ9nrOyDBZ?=
- =?iso-8859-1?Q?ZTBO1yD5HCfe6Dq3oCP3oZwGa7yLIRm6VDGMjOF5+x8qf6cR55XY3fAyUz?=
- =?iso-8859-1?Q?4SIyoOFdrDgSYvcaX+RsPj1ly87U6ZwXF5IGDjcDJT0+kd6XtmXEadYFlT?=
- =?iso-8859-1?Q?9yLXEijHbR6VDOOa4Z8GiilxNUVIzyLU8o+3zPbhQMr/W/eC820AXAwq9+?=
- =?iso-8859-1?Q?/azrScFLZ1ZAxPMQayzTh4FB8RtVF8ATMSPSqHaPa6L0/jMzrl5Ao9cbRu?=
- =?iso-8859-1?Q?MJCVnEQidsNJwiWqD5PheX2p6iSmdNae4UlgJC0qKnrTiDyLUC/fWaXj5G?=
- =?iso-8859-1?Q?xrbl/rKK9lGn606LKGOm/sTSOzqcgrLDJKrDSRpbnRCIz43ZywTFWHqfk8?=
- =?iso-8859-1?Q?aWeBdmHIVJQRS5TDkKEJQXnpYx12ai45hJUhVpzKCNozl+SFhqiOxG7VrS?=
- =?iso-8859-1?Q?plP3aR/lKUkRi5jrOsgp4ou/yRJJUf2aAEiJiW0/HqROY5x20YobrQ/liu?=
- =?iso-8859-1?Q?mS0XIGbDYtikRQaBXV+wcj74EoJ673a734cwrVi0WPOg0wRg96W0vfjnIC?=
- =?iso-8859-1?Q?R1CvYRYs3NjdexSj8lrawKGoF9ZFV2APuAKxLtgN3dhAzoEaSHp7gZvM91?=
- =?iso-8859-1?Q?LIgkaDDuqLqqenFf6Grflaj4CRzJ9CiwMlVbYp2y0LXCNf+d2Jis/wmQ?=
- =?iso-8859-1?Q?=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1r6YdO-0005N0-Ub
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 11:02:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700841744;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8P0KL1fEY9kxdqndJJeI7mDazu1N0fp4Dqr+BGe7acQ=;
+ b=hw9J8LAG4DBppvmR9TmiEWTO5uPAm7t2ius9lwaOkcqrXQrtrCA9Si9ykbY90373GGNybL
+ jDcA0j0GWsbTad05aXJ49GAWFyGydL2yQcewKq8vqJHKk2r4yueB42jvXrOLYGhM4Ko6CX
+ BV4TLp6iYZuutB8wPxcfBw1Z/nLXfog=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-387-sWsz5LfzPJujyFo9jYI3CQ-1; Fri, 24 Nov 2023 11:02:22 -0500
+X-MC-Unique: sWsz5LfzPJujyFo9jYI3CQ-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-543298e3cc8so1451189a12.3
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 08:02:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700841741; x=1701446541;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8P0KL1fEY9kxdqndJJeI7mDazu1N0fp4Dqr+BGe7acQ=;
+ b=qdzv21JybZ6oYy7u4QF573/IeXZu2DSVQqA+AcsT4y7BPPWm7BULlcNkLpQpbZgy4D
+ ANg077Yzdc/8hmF6/A3DJOUpEIl0mAtQNgNfhd0vNejmlURURrJnBzTZJw+T9ZY6Gepf
+ T9nQmjCQc7TRwz+GAy/ovnBwZT8NXPrI6KsoV4OQh2WJShWzMxLCGcphAvDVcTTKE38f
+ aeBcA7IyTMa2H+gGLQw4NVbm2a4vl7bkHlWDb3wDNjwVGKG+Vw+YKbg4Of+5SJa8Tglq
+ QI4eOMRLt4KZ2E3HaRAcbZSdPdiFS8u2pWIsh8xQ/RHvJqYG9+eDf45IPe91n4VjGVS5
+ eFBQ==
+X-Gm-Message-State: AOJu0Yxp3cw5b9s0t+e+ziTpyNBrL6o2XnqUiE1iORlfX3oTDnF9P4U1
+ 183SNYEPDWFW8urVCl/DSy5ApgJGEJpNMlodFlErdpLrp149ExsFzm8hCVxyKhs0uA2sbO7MItn
+ mYdA1O7InPAT15GY=
+X-Received: by 2002:a05:6402:514a:b0:54b:a7b:8198 with SMTP id
+ n10-20020a056402514a00b0054b0a7b8198mr832009edd.17.1700841741345; 
+ Fri, 24 Nov 2023 08:02:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFIl82ntwMaTszRoy9sw1ySPbzPDX/jdgovO9aUXbyQaYTPxywpvP9EDByOoRSAkwdPtpYgFg==
+X-Received: by 2002:a05:6402:514a:b0:54b:a7b:8198 with SMTP id
+ n10-20020a056402514a00b0054b0a7b8198mr831955edd.17.1700841740604; 
+ Fri, 24 Nov 2023 08:02:20 -0800 (PST)
+Received: from imammedo.users.ipa.redhat.com ([185.140.112.229])
+ by smtp.gmail.com with ESMTPSA id
+ v28-20020aa7cd5c000000b00548d649f638sm1929571edw.96.2023.11.24.08.02.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 24 Nov 2023 08:02:20 -0800 (PST)
+Date: Fri, 24 Nov 2023 17:02:17 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Salil Mehta <salil.mehta@huawei.com>
+Cc: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <maz@kernel.org>,
+ <jean-philippe@linaro.org>, <jonathan.cameron@huawei.com>,
+ <lpieralisi@kernel.org>, <peter.maydell@linaro.org>,
+ <richard.henderson@linaro.org>, <andrew.jones@linux.dev>,
+ <david@redhat.com>, <philmd@linaro.org>, <eric.auger@redhat.com>,
+ <oliver.upton@linux.dev>, <pbonzini@redhat.com>, <mst@redhat.com>,
+ <will@kernel.org>, <gshan@redhat.com>, <rafael@kernel.org>,
+ <alex.bennee@linaro.org>, <linux@armlinux.org.uk>,
+ <darren@os.amperecomputing.com>, <ilkka@os.amperecomputing.com>,
+ <vishnu@os.amperecomputing.com>, <karl.heubaum@oracle.com>,
+ <miguel.luis@oracle.com>, <salil.mehta@opnsrc.net>,
+ <zhukeqian1@huawei.com>, <wangxiongfeng2@huawei.com>,
+ <wangyanan55@huawei.com>, <jiakernel2@gmail.com>, <maobibo@loongson.cn>,
+ <lixianglai@loongson.cn>, <linuxarm@huawei.com>
+Subject: Re: [PATCH V7 1/8] accel/kvm: Extract common KVM vCPU
+ {creation,parking} code
+Message-ID: <20231124170217.40165579@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20231113201236.30668-2-salil.mehta@huawei.com>
+References: <20231113201236.30668-1-salil.mehta@huawei.com>
+ <20231113201236.30668-2-salil.mehta@huawei.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-X-OriginatorOrg: epam.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3710.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4e3deeb-9259-4362-8474-08dbed04b3d1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Nov 2023 15:47:45.5062 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b41b72d0-4e9f-4c26-8a69-f949f367c91d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Y4GDqJ0YCxc03kr+xr1CxRSicCN2JAgmkLRbDqjKeiV873MvHLoxALcDhl7RvUZgKqxA4BnFHvRdoElmDNQ8UoRJGaWeFxua0Ey/u0CiqVA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR03MB10314
-X-Proofpoint-GUID: a6Di1YzmVvK2815ctjganDuyuk_Jr3dB
-X-Proofpoint-ORIG-GUID: a6Di1YzmVvK2815ctjganDuyuk_Jr3dB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-24_02,2023-11-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0
- impostorscore=0 lowpriorityscore=0 phishscore=0 clxscore=1011
- priorityscore=1501 mlxscore=0 mlxlogscore=970 adultscore=0 malwarescore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311240123
-Received-SPF: pass client-ip=148.163.133.242;
- envelope-from=prvs=569229df20=volodymyr_babchuk@epam.com;
- helo=mx0a-0039f301.pphosted.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -163,200 +115,204 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, 13 Nov 2023 20:12:29 +0000
+Salil Mehta <salil.mehta@huawei.com> wrote:
 
-Hi Igor,
+> KVM vCPU creation is done once during the vCPU realization when Qemu vCPU thread
+> is spawned. This is common to all the architectures as of now.
+> 
+> Hot-unplug of vCPU results in destruction of the vCPU object in QOM but the
+> corresponding KVM vCPU object in the Host KVM is not destroyed as KVM doesn't
+> support vCPU removal. Therefore, its representative KVM vCPU object/context in
+> Qemu is parked.
+> 
+> Refactor architecture common logic so that some APIs could be reused by vCPU
+> Hotplug code of some architectures likes ARM, Loongson etc. Update new/old APIs
+> with trace events instead of DPRINTF. No functional change is intended here.
+> 
+> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Tested-by: Xianglai Li <lixianglai@loongson.cn>
+> Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
 
-Thank you for the review,
+even though it will used by arm and loongarch later on with respective cpu hotplug  series,
+it doesn't justify including refactoring without actual user.
+(Put yourself in shoes of someone looking at git history and not finding a single user)
 
-Igor Mammedov <imammedo@redhat.com> writes:
+I'd suggest to include this patch in both (ARM & Loongson) CPU hotplug series,
+this way, whichever is merged 1st will get this patch in without causing conflicts.
 
-> On Tue, 21 Nov 2023 22:10:28 +0000
-> Volodymyr Babchuk <Volodymyr_Babchuk@epam.com> wrote:
->
->> From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
->>=20
->> The bridge is needed for virtio-pci support, as QEMU can emulate the
->> whole bridge with any virtio-pci devices connected to it.
->>=20
->> This patch provides a flexible way to configure PCIe brige resources
->> with xenstore. We made this for several reasons:
->>=20
->> - We don't want to clash with vPCI devices, so we need information
->>   from Xen toolstack on which PCI bus to use.
->> - The guest memory layout that describes these resources is not stable
->>   and may vary between guests, so we cannot rely on static resources
->>   to be always the same for both ends.
->> - Also the device-models which run in different domains and serve
->>   virtio-pci devices for the same guest should use different host
->>   bridge resources for Xen to distinguish. The rule for the guest
->>   device-tree generation is one PCI host bridge per backend domain.
->>=20
->> Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
->> Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
->>=20
->> ---
->>=20
->> Changes from v1:
->>=20
->>  - Renamed virtio_pci_host to pcie_host entries in XenStore, because
->>  there is nothing specific to virtio-pci: any PCI device can be
->>  emulated via this newly created bridge.
->> ---
->>  hw/arm/xen_arm.c            | 186 ++++++++++++++++++++++++++++++++++++
->>  hw/xen/xen-hvm-common.c     |   9 +-
->>  include/hw/xen/xen_native.h |   8 +-
->>  3 files changed, 200 insertions(+), 3 deletions(-)
->>=20
->> diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
->> index b9c3ae14b6..d506d55d0f 100644
->> --- a/hw/arm/xen_arm.c
->> +++ b/hw/arm/xen_arm.c
->> @@ -22,6 +22,7 @@
->>   */
->> =20
->>  #include "qemu/osdep.h"
->> +#include "qemu/cutils.h"
->>  #include "qemu/error-report.h"
->>  #include "qapi/qapi-commands-migration.h"
->>  #include "qapi/visitor.h"
->> @@ -34,6 +35,9 @@
->>  #include "hw/xen/xen-hvm-common.h"
->>  #include "sysemu/tpm.h"
->>  #include "hw/xen/arch_hvm.h"
->> +#include "exec/address-spaces.h"
->> +#include "hw/pci-host/gpex.h"
->> +#include "hw/virtio/virtio-pci.h"
->> =20
->>  #define TYPE_XEN_ARM  MACHINE_TYPE_NAME("xenpvh")
->>  OBJECT_DECLARE_SIMPLE_TYPE(XenArmState, XEN_ARM)
->> @@ -58,6 +62,11 @@ struct XenArmState {
->>      struct {
->>          uint64_t tpm_base_addr;
->>      } cfg;
->> +
->> +    MemMapEntry pcie_mmio;
->> +    MemMapEntry pcie_ecam;
->> +    MemMapEntry pcie_mmio_high;
->> +    int         pcie_irq;
->>  };
->> =20
->>  static MemoryRegion ram_lo, ram_hi;
->> @@ -73,6 +82,7 @@ static MemoryRegion ram_lo, ram_hi;
->>  #define NR_VIRTIO_MMIO_DEVICES   \
->>     (GUEST_VIRTIO_MMIO_SPI_LAST - GUEST_VIRTIO_MMIO_SPI_FIRST)
->> =20
->> +/* TODO It should be xendevicemodel_set_pci_intx_level() for PCI interr=
-upts. */
->>  static void xen_set_irq(void *opaque, int irq, int level)
->>  {
->>      if (xendevicemodel_set_irq_level(xen_dmod, xen_domid, irq, level)) =
-{
->> @@ -129,6 +139,176 @@ static void xen_init_ram(MachineState *machine)
->>      }
->>  }
->> =20
->> +static void xen_create_pcie(XenArmState *xam)
->> +{
->> +    MemoryRegion *mmio_alias, *mmio_alias_high, *mmio_reg;
->> +    MemoryRegion *ecam_alias, *ecam_reg;
->> +    DeviceState *dev;
->> +    int i;
->> +
->> +    dev =3D qdev_new(TYPE_GPEX_HOST);
->> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->> +
->> +    /* Map ECAM space */
->> +    ecam_alias =3D g_new0(MemoryRegion, 1);
->> +    ecam_reg =3D sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0);
->> +    memory_region_init_alias(ecam_alias, OBJECT(dev), "pcie-ecam",
->> +                             ecam_reg, 0, xam->pcie_ecam.size);
->> +    memory_region_add_subregion(get_system_memory(), xam->pcie_ecam.bas=
-e,
->> +                                ecam_alias);
->> +
->> +    /* Map the MMIO space */
->> +    mmio_alias =3D g_new0(MemoryRegion, 1);
->> +    mmio_reg =3D sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 1);
->> +    memory_region_init_alias(mmio_alias, OBJECT(dev), "pcie-mmio",
->> +                             mmio_reg,
->> +                             xam->pcie_mmio.base,
->> +                             xam->pcie_mmio.size);
->> +    memory_region_add_subregion(get_system_memory(), xam->pcie_mmio.bas=
-e,
->> +                                mmio_alias);
->> +
->> +    /* Map the MMIO_HIGH space */
->> +    mmio_alias_high =3D g_new0(MemoryRegion, 1);
->> +    memory_region_init_alias(mmio_alias_high, OBJECT(dev), "pcie-mmio-h=
-igh",
->> +                             mmio_reg,
->> +                             xam->pcie_mmio_high.base,
->> +                             xam->pcie_mmio_high.size);
->> +    memory_region_add_subregion(get_system_memory(), xam->pcie_mmio_hig=
-h.base,
->> +                                mmio_alias_high);
->> +
->> +    /* Legacy PCI interrupts (#INTA - #INTD) */
->> +    for (i =3D 0; i < GPEX_NUM_IRQS; i++) {
->> +        qemu_irq irq =3D qemu_allocate_irq(xen_set_irq, NULL,
->> +                                         xam->pcie_irq + i);
->> +
->> +        sysbus_connect_irq(SYS_BUS_DEVICE(dev), i, irq);
->> +        gpex_set_irq_num(GPEX_HOST(dev), i, xam->pcie_irq + i);
->> +    }
->> +
->
->> +    DPRINTF("Created PCIe host bridge\n");
-> replace DPRINTFs with trace_foo(), see 885f380f7be for example
->
->> +}
->> +
->> +static bool xen_read_pcie_prop(XenArmState *xam, unsigned int xen_domid=
-,
->> +                               const char *prop_name, unsigned long *da=
-ta)
->> +{
->> +    char path[128], *value =3D NULL;
->> +    unsigned int len;
->> +    bool ret =3D true;
->> +
->> +    snprintf(path, sizeof(path), "device-model/%d/pcie_host/%s",
->> +             xen_domid, prop_name);
->
-> try to avoid usage of snprintf() in series
-> see d2fe2264679 as an example
->
+> ---
+>  accel/kvm/kvm-all.c    | 64 ++++++++++++++++++++++++++++++++----------
+>  accel/kvm/trace-events |  4 +++
+>  include/sysemu/kvm.h   | 16 +++++++++++
+>  3 files changed, 69 insertions(+), 15 deletions(-)
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 72e1d1141c..bfa7816aaa 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -137,6 +137,7 @@ static QemuMutex kml_slots_lock;
+>  #define kvm_slots_unlock()  qemu_mutex_unlock(&kml_slots_lock)
+>  
+>  static void kvm_slot_init_dirty_bitmap(KVMSlot *mem);
+> +static int kvm_get_vcpu(KVMState *s, unsigned long vcpu_id);
+>  
+>  static inline void kvm_resample_fd_remove(int gsi)
+>  {
+> @@ -320,14 +321,53 @@ err:
+>      return ret;
+>  }
+>  
+> +void kvm_park_vcpu(CPUState *cpu)
+> +{
+> +    struct KVMParkedVcpu *vcpu;
+> +
+> +    trace_kvm_park_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+> +
+> +    vcpu = g_malloc0(sizeof(*vcpu));
+> +    vcpu->vcpu_id = kvm_arch_vcpu_id(cpu);
+> +    vcpu->kvm_fd = cpu->kvm_fd;
+> +    QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
+> +}
+> +
+> +int kvm_create_vcpu(CPUState *cpu)
+> +{
+> +    unsigned long vcpu_id = kvm_arch_vcpu_id(cpu);
+> +    KVMState *s = kvm_state;
+> +    int kvm_fd;
+> +
+> +    trace_kvm_create_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+> +
+> +    /* check if the KVM vCPU already exist but is parked */
+> +    kvm_fd = kvm_get_vcpu(s, vcpu_id);
+> +    if (kvm_fd < 0) {
+> +        /* vCPU not parked: create a new KVM vCPU */
+> +        kvm_fd = kvm_vm_ioctl(s, KVM_CREATE_VCPU, vcpu_id);
+> +        if (kvm_fd < 0) {
+> +            error_report("KVM_CREATE_VCPU IOCTL failed for vCPU %lu", vcpu_id);
+> +            return kvm_fd;
+> +        }
+> +    }
+> +
+> +    cpu->kvm_fd = kvm_fd;
+> +    cpu->kvm_state = s;
+> +    cpu->vcpu_dirty = true;
+> +    cpu->dirty_pages = 0;
+> +    cpu->throttle_us_per_full = 0;
+> +
+> +    return 0;
+> +}
+> +
+>  static int do_kvm_destroy_vcpu(CPUState *cpu)
+>  {
+>      KVMState *s = kvm_state;
+>      long mmap_size;
+> -    struct KVMParkedVcpu *vcpu = NULL;
+>      int ret = 0;
+>  
+> -    DPRINTF("kvm_destroy_vcpu\n");
+> +    trace_kvm_destroy_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+>  
+>      ret = kvm_arch_destroy_vcpu(cpu);
+>      if (ret < 0) {
+> @@ -353,10 +393,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
+>          }
+>      }
+>  
+> -    vcpu = g_malloc0(sizeof(*vcpu));
+> -    vcpu->vcpu_id = kvm_arch_vcpu_id(cpu);
+> -    vcpu->kvm_fd = cpu->kvm_fd;
+> -    QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
+> +    kvm_park_vcpu(cpu);
+>  err:
+>      return ret;
+>  }
+> @@ -377,6 +414,8 @@ static int kvm_get_vcpu(KVMState *s, unsigned long vcpu_id)
+>          if (cpu->vcpu_id == vcpu_id) {
+>              int kvm_fd;
+>  
+> +            trace_kvm_get_vcpu(vcpu_id);
+> +
+>              QLIST_REMOVE(cpu, node);
+>              kvm_fd = cpu->kvm_fd;
+>              g_free(cpu);
+> @@ -384,7 +423,7 @@ static int kvm_get_vcpu(KVMState *s, unsigned long vcpu_id)
+>          }
+>      }
+>  
+> -    return kvm_vm_ioctl(s, KVM_CREATE_VCPU, (void *)vcpu_id);
+> +    return -ENOENT;
+>  }
+>  
+>  int kvm_init_vcpu(CPUState *cpu, Error **errp)
+> @@ -395,19 +434,14 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+>  
+>      trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+>  
+> -    ret = kvm_get_vcpu(s, kvm_arch_vcpu_id(cpu));
+> +    ret = kvm_create_vcpu(cpu);
+>      if (ret < 0) {
+> -        error_setg_errno(errp, -ret, "kvm_init_vcpu: kvm_get_vcpu failed (%lu)",
+> +        error_setg_errno(errp, -ret,
+> +                         "kvm_init_vcpu: kvm_create_vcpu failed (%lu)",
+>                           kvm_arch_vcpu_id(cpu));
+>          goto err;
+>      }
+>  
+> -    cpu->kvm_fd = ret;
+> -    cpu->kvm_state = s;
+> -    cpu->vcpu_dirty = true;
+> -    cpu->dirty_pages = 0;
+> -    cpu->throttle_us_per_full = 0;
+> -
+>      mmap_size = kvm_ioctl(s, KVM_GET_VCPU_MMAP_SIZE, 0);
+>      if (mmap_size < 0) {
+>          ret = mmap_size;
+> diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
+> index 399aaeb0ec..cdd0c95c09 100644
+> --- a/accel/kvm/trace-events
+> +++ b/accel/kvm/trace-events
+> @@ -9,6 +9,10 @@ kvm_device_ioctl(int fd, int type, void *arg) "dev fd %d, type 0x%x, arg %p"
+>  kvm_failed_reg_get(uint64_t id, const char *msg) "Warning: Unable to retrieve ONEREG %" PRIu64 " from KVM: %s"
+>  kvm_failed_reg_set(uint64_t id, const char *msg) "Warning: Unable to set ONEREG %" PRIu64 " to KVM: %s"
+>  kvm_init_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
+> +kvm_create_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
+> +kvm_get_vcpu(unsigned long arch_cpu_id) "id: %lu"
+> +kvm_destroy_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
+> +kvm_park_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
+>  kvm_irqchip_commit_routes(void) ""
+>  kvm_irqchip_add_msi_route(char *name, int vector, int virq) "dev %s vector %d virq %d"
+>  kvm_irqchip_update_msi_route(int virq) "Updating MSI route virq=%d"
+> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+> index ee9025f8e9..8137e6a44c 100644
+> --- a/include/sysemu/kvm.h
+> +++ b/include/sysemu/kvm.h
+> @@ -465,6 +465,22 @@ void kvm_set_sigmask_len(KVMState *s, unsigned int sigmask_len);
+>  int kvm_physical_memory_addr_from_host(KVMState *s, void *ram_addr,
+>                                         hwaddr *phys_addr);
+>  
+> +/**
+> + * kvm_create_vcpu - Gets a parked KVM vCPU or creates a KVM vCPU
+> + * @cpu: QOM CPUState object for which KVM vCPU has to be fetched/created.
+> + *
+> + * @returns: 0 when success, errno (<0) when failed.
+> + */
+> +int kvm_create_vcpu(CPUState *cpu);
+> +
+> +/**
+> + * kvm_park_vcpu - Park QEMU KVM vCPU context
+> + * @cpu: QOM CPUState object for which QEMU KVM vCPU context has to be parked.
+> + *
+> + * @returns: none
+> + */
+> +void kvm_park_vcpu(CPUState *cpu);
+> +
+>  #endif /* NEED_CPU_H */
+>  
+>  void kvm_cpu_synchronize_state(CPUState *cpu);
 
-This whole function will be dropped in the next version.
-
->> +    value =3D xs_read(xam->state->xenstore, XBT_NULL, path, &len);
-> maybe use g_autofree
-
-I am not sure if this is a good idea, as xs_read() is provided by an
-external library which uses plain old malloc().
-
->>      xen_create_virtio_mmio_devices(xam);
->> +    if (!xen_get_pcie_params(xam)) {
->> +        xen_create_pcie(xam);
->> +    } else {
->> +        DPRINTF("PCIe host bridge is not available,"
->> +                "only virtio-mmio can be used\n");
->
-> so if something went wrong, it will be just ignored.
-> Is it really expected behavior?
->
-
-In the new version I reworked this section. Now we have 3 possible
-outcomes:
-
-1. No PCIe config was provided at all. This is fine, as user don't want
-to use PCIe.
-
-2. Full PCIe config was provided. We continue to creating the PCIe bridge.
-
-3. Partial config was provided. This is an error and we exit.
-
-
---=20
-WBR, Volodymyr=
 
