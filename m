@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 462187F6A51
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 02:56:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5B37F6ACC
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 04:03:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6LPM-0007S0-Ul; Thu, 23 Nov 2023 20:55:04 -0500
+	id 1r6MSD-0006sU-1q; Thu, 23 Nov 2023 22:02:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
- id 1r6LPL-0007Rm-6M; Thu, 23 Nov 2023 20:55:03 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
- id 1r6LPJ-0002CX-Ln; Thu, 23 Nov 2023 20:55:02 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1cf8b6eb13bso8514575ad.1; 
- Thu, 23 Nov 2023 17:55:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700790899; x=1701395699; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=0J3kfUApwkxX9Zc14ulBPLKVHaQgxTKBvXoqbfNts+c=;
- b=I877FQsgoUiFmbAaQqYpizAj6ILVA/9dKWJba7x2AxXT5Xfftkb+Bx2pd4OMCrjfOI
- E4xbgRbkZn9+G4AmnnIv0OoIXvuVTBwakDAK9weH6EWClS2k/TVRoLsIHNbWA7037ycG
- IbM95r2f8teNSknNHhGoiDPwqQxa4dX6rfDGOPUS2ZHg2mkvn3mN+DOxhM7xayoqmJ1S
- Mvj6Kgm7CCKA6CqhVMDW1Vl9IC8n8V4wc0eRnYFV3mRtYj0o6yvQxif5APYRm7QwfAuv
- DpvyDeKee+YKqGxnRq95K7ihFreg0RsRb5B3CKjQEQpqryTN9i92doqRtGAkxZ+Ps7P8
- rD/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700790899; x=1701395699;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0J3kfUApwkxX9Zc14ulBPLKVHaQgxTKBvXoqbfNts+c=;
- b=rnMpYksPJMTplzdbUQbSHTF1JxqrJKrU9/7wLoHPD28KBqG3/Ivrbm2KF5aIrZ3j2W
- pAhwe1yovr0QQWu0VtepxZOjFoc9uznXGxR2CBkGexo5lWt04354YQL/+HvlIwy18xHk
- yVklLXEkIhziBqPEu/5hUExfp6NKtISIAEL2Cy2NCa6ERo9Kx/cp0LUW4+FHL61wBkVq
- gjpcdw8B6bscfhomlcR4uAcBwdlQTlRzBWu/tC8nWOTsCFYmPkdtvRR6ts7VNneL5kYc
- BGVi/SZZVZrpomSHgIhkYv0fDN2/c2xGDlqjTN8PbdYnvmjol5F/0yWQLmzr1xF1qUsT
- BGSg==
-X-Gm-Message-State: AOJu0Yw2Z/aDNCiF3R1UH+YlUrxguXoteHRKQZjDOwiTclA02VzfP5zv
- LuBp0H0Gc22RAnM/KzMcGa50HyM52J/l7A==
-X-Google-Smtp-Source: AGHT+IHtQRWYgHplGgqAsp730h1vqU7vgvVSpyEXgMatqBbSqT+jhqI6wcAAft3dxRGaUlvv/UhWfg==
-X-Received: by 2002:a17:902:ea0c:b0:1cc:5920:1d1c with SMTP id
- s12-20020a170902ea0c00b001cc59201d1cmr1274599plg.48.1700790899498; 
- Thu, 23 Nov 2023 17:54:59 -0800 (PST)
-Received: from dhoffman-NUC13RNGi9.hsd1.or.comcast.net
- ([2601:1c0:577f:e480:7a45:b229:928d:88fa])
- by smtp.gmail.com with ESMTPSA id
- h6-20020a170902680600b001cc51680695sm2041481plk.259.2023.11.23.17.54.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Nov 2023 17:54:59 -0800 (PST)
-From: Daniel Hoffman <dhoff749@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Daniel Hoffman <dhoff749@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH] hw/core: define stack variable to NULL to fix qtest with
- sanitizers
-Date: Thu, 23 Nov 2023 17:53:12 -0800
-Message-Id: <20231124015312.544422-1-dhoff749@gmail.com>
-X-Mailer: git-send-email 2.40.1
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1r6MSA-0006s0-4z
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 22:02:02 -0500
+Received: from mx2.zhaoxin.com ([203.110.167.99])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1r6MS7-0000MZ-7D
+ for qemu-devel@nongnu.org; Thu, 23 Nov 2023 22:02:01 -0500
+X-ASG-Debug-ID: 1700794904-1eb14e538c1e890001-jgbH7p
+Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by
+ mx2.zhaoxin.com with ESMTP id drTLcCUqm6PEvl2P (version=TLSv1.2
+ cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+ Fri, 24 Nov 2023 11:01:44 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX1.zhaoxin.com
+ (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 24 Nov
+ 2023 11:01:44 +0800
+Received: from [10.28.66.55] (10.28.66.55) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 24 Nov
+ 2023 11:01:43 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Message-ID: <0dbf5f15-8165-420e-ae0e-5d7aac7053ff@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.66.55
+Date: Thu, 23 Nov 2023 22:01:42 -0500
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Subject: PING: VMX controls setting patch for backward compatibility
+To: Zhao Liu <zhao1.liu@intel.com>
+X-ASG-Orig-Subj: PING: VMX controls setting patch for backward compatibility
+CC: <pbonzini@redhat.com>, <mtosatti@redhat.com>, <kvm@vger.kernel.org>,
+ <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>, <cobechen@zhaoxin.com>
+References: <20230925071453.14908-1-ewanhai-oc@zhaoxin.com>
+ <ZTnbFJrHeKhoUA6F@intel.com>
+ <eb9a08b2-a7c4-c45c-edd8-0585037194aa@zhaoxin.com>
+ <a75f0b92-4894-bee9-ecbd-78b849702f61@zhaoxin.com>
+Content-Language: en-US
+In-Reply-To: <a75f0b92-4894-bee9-ecbd-78b849702f61@zhaoxin.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=dhoff749@gmail.com; helo=mail-pl1-x633.google.com
+X-Originating-IP: [10.28.66.55]
+X-ClientProxiedBy: ZXSHCAS2.zhaoxin.com (10.28.252.162) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
+X-Barracuda-Start-Time: 1700794904
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 7581
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No,
+ SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
+ QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.117174
+ Rule breakdown below
+ pts rule name              description
+ ---- ---------------------- --------------------------------------------------
+Received-SPF: pass client-ip=203.110.167.99;
+ envelope-from=EwanHai-oc@zhaoxin.com; helo=mx2.zhaoxin.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,28 +94,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This was the only failure preventing `make check` from passing with sanitizers
-enabled on my configuration.
+Hi Zhao Liu and QEMU/KVM Community,
 
-Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
----
- hw/core/qdev-properties.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I hope this email finds you well. I am writing to follow up on the
+conversation we had a month ago regarding my patch submission for
+refining the VMX controls setting for backward compatibility on
+QEMU-KVM.
 
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 91632f7be9f..4caa78b7bc5 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -690,7 +690,7 @@ static void get_prop_array(Object *obj, Visitor *v, const char *name,
-     uint32_t *alenptr = object_field_prop_ptr(obj, prop);
-     void **arrayptr = (void *)obj + prop->arrayoffset;
-     char *elem = *arrayptr;
--    GenericList *list;
-+    GenericList *list = NULL;
-     const size_t list_elem_size = sizeof(*list) + prop->arrayfieldsize;
-     int i;
-     bool ok;
--- 
-2.40.1
+On October 27, I responded to the feedback and suggestions provided
+by Zhao Liu, making necessary corrections and improvements to the
+patch. However, since then, I haven't received any further responses
+or reviews.
 
+I understand that everyone is busy, and I appreciate the time and
+effort that goes into reviewing these submissions. I just wanted to
+check if there are any updates, additional feedback, or steps I should
+take next. I am more than willing to make further changes if needed.
+
+Please let me know if there is anything else required from my side for
+this patch to move forward. Thank you for your time and attention. I
+look forward to hearing from you.
+
+Best regards,
+Ewan Hai
+
+On 10/27/23 02:08, Ewan Hai wrote:
+> Hi Zhao,
+>
+> since I found last email contains non-plain-text content, 
+> andkvm@vger.kernel.org
+> rejected to receive my mail, so just re-send last mail here, to follow 
+> the rule of qemu
+> /kvm community.
+>
+> On 10/25/23 23:20, Zhao Liu wrote:
+>> On Mon, Sep 25, 2023 at 03:14:53AM -0400, EwanHai wrote:
+>>> Date: Mon, 25 Sep 2023 03:14:53 -0400
+>>> From: EwanHai<ewanhai-oc@zhaoxin.com>
+>>> Subject: [PATCH] target/i386/kvm: Refine VMX controls setting for 
+>>> backward
+>>>   compatibility
+>>> X-Mailer: git-send-email 2.34.1
+>>>
+>>> Commit 4a910e1 ("target/i386: do not set unsupported VMX secondary
+>>> execution controls") implemented a workaround for hosts that have
+>>> specific CPUID features but do not support the corresponding VMX
+>>> controls, e.g., hosts support RDSEED but do not support RDSEED-Exiting.
+>>>
+>>> In detail, commit 4a910e1 introduced a flag 
+>>> `has_msr_vmx_procbased_clts2`.
+>>> If KVM has `MSR_IA32_VMX_PROCBASED_CTLS2` in its msr list, QEMU would
+>>> use KVM's settings, avoiding any modifications to this MSR.
+>>>
+>>> However, this commit (4a910e1) didn’t account for cases in older Linux
+>> s/didn’t/didn't/
+>
+> I'll fix it.
+>
+>>> kernels(e.g., linux-4.19.90) where `MSR_IA32_VMX_PROCBASED_CTLS2` is
+>> For this old kernel, it's better to add the brief lifecycle note (e.g.,
+>> lts, EOL) to illustrate the value of considering such compatibility
+>> fixes.
+>
+> I've checked the linux-stable repo, found that
+> MSR_IA32_VMX_PROCBASED_CTLS2 is not included in kvm regular msr list
+> until linux-5.3, and in linux-4.19.x(EOL:Dec,2024), there is also no
+> MSR_IA32_VMX_PROCBASED_CTLS2 in kvm regular msr list.
+>
+> So maybe this is an important compatibility fix for kernel < 5.3.
+>
+>>> in `kvm_feature_msrs`—obtained by 
+>>> ioctl(KVM_GET_MSR_FEATURE_INDEX_LIST),
+>> s/—obtained/-obtained/
+>
+> I'll fix it.
+>
+>>> but not in `kvm_msr_list`—obtained by ioctl(KVM_GET_MSR_INDEX_LIST).
+>> s/—obtained/-obtained/
+>
+> I'll fix it.
+>
+>>> As a result,it did not set the `has_msr_vmx_procbased_clts2` flag based
+>>> on `kvm_msr_list` alone, even though KVM maintains the value of this 
+>>> MSR.
+>>>
+>>> This patch supplements the above logic, ensuring that
+>>> `has_msr_vmx_procbased_clts2` is correctly set by checking both MSR
+>>> lists, thus maintaining compatibility with older kernels.
+>>>
+>>> Signed-off-by: EwanHai<ewanhai-oc@zhaoxin.com>
+>>> ---
+>>>   target/i386/kvm/kvm.c | 6 ++++++
+>>>   1 file changed, 6 insertions(+)
+>>>
+>>> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+>>> index af101fcdf6..6299284de4 100644
+>>> --- a/target/i386/kvm/kvm.c
+>>> +++ b/target/i386/kvm/kvm.c
+>>> @@ -2343,6 +2343,7 @@ void kvm_arch_do_init_vcpu(X86CPU *cpu)
+>>>   static int kvm_get_supported_feature_msrs(KVMState *s)
+>>>   {
+>>>       int ret = 0;
+>>> +    int i;
+>>>         if (kvm_feature_msrs != NULL) {
+>>>           return 0;
+>>> @@ -2377,6 +2378,11 @@ static int 
+>>> kvm_get_supported_feature_msrs(KVMState *s)
+>>>           return ret;
+>>>       }
+>> It's worth adding a comment here to indicate that this is a
+>> compatibility fix.
+>>
+>> -Zhao
+>>
+>>>   +    for (i = 0; i < kvm_feature_msrs->nmsrs; i++) {
+>>> +        if (kvm_feature_msrs->indices[i] == 
+>>> MSR_IA32_VMX_PROCBASED_CTLS2) {
+>>> +            has_msr_vmx_procbased_ctls2 = true;
+>>> +        }
+>>> +    }
+>>>       return 0;
+>>>   }
+>>>   --
+>>> 2.34.1
+>>>
+> Plan to use patch bellow, any more suggestion?
+>
+>>  From a3006fcec3615d98ac1eb252a61952d44aa5029b Mon Sep 17 00:00:00 2001
+>> From: EwanHai<ewanhai-oc@zhaoxin.com>
+>> Date: Mon, 25 Sep 2023 02:11:59 -0400
+>> Subject: [PATCH] target/i386/kvm: Refine VMX controls setting for 
+>> backward
+>>   compatibility
+>>
+>> Commit 4a910e1 ("target/i386: do not set unsupported VMX secondary
+>> execution controls") implemented a workaround for hosts that have
+>> specific CPUID features but do not support the corresponding VMX
+>> controls, e.g., hosts support RDSEED but do not support RDSEED-Exiting.
+>>
+>> In detail, commit 4a910e1 introduced a flag 
+>> `has_msr_vmx_procbased_clts2`.
+>> If KVM has `MSR_IA32_VMX_PROCBASED_CTLS2` in its msr list, QEMU would
+>> use KVM's settings, avoiding any modifications to this MSR.
+>>
+>> However, this commit (4a910e1) didn't account for cases in older Linux
+>> kernels(<5.3) where `MSR_IA32_VMX_PROCBASED_CTLS2` is in
+>> `kvm_feature_msrs`-obtained by ioctl(KVM_GET_MSR_FEATURE_INDEX_LIST),
+>> but not in `kvm_msr_list`-obtained by ioctl(KVM_GET_MSR_INDEX_LIST).
+>> As a result,it did not set the `has_msr_vmx_procbased_clts2` flag based
+>> on `kvm_msr_list` alone, even though KVM maintains the value of this 
+>> MSR.
+>>
+>> This patch supplements the above logic, ensuring that
+>> `has_msr_vmx_procbased_clts2` is correctly set by checking both MSR
+>> lists, thus maintaining compatibility with older kernels.
+>>
+>> Signed-off-by: EwanHai<ewanhai-oc@zhaoxin.com>
+>> ---
+>>   target/i386/kvm/kvm.c | 14 ++++++++++++++
+>>   1 file changed, 14 insertions(+)
+>>
+>> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+>> index af101fcdf6..3cf95f8579 100644
+>> --- a/target/i386/kvm/kvm.c
+>> +++ b/target/i386/kvm/kvm.c
+>> @@ -2343,6 +2343,7 @@ void kvm_arch_do_init_vcpu(X86CPU *cpu)
+>>   static int kvm_get_supported_feature_msrs(KVMState *s)
+>>   {
+>>       int ret = 0;
+>> +    int i;
+>>
+>>       if (kvm_feature_msrs != NULL) {
+>>           return 0;
+>> @@ -2377,6 +2378,19 @@ static int 
+>> kvm_get_supported_feature_msrs(KVMState *s)
+>>           return ret;
+>>       }
+>>
+>> +    /*
+>> +     * Compatibility fix:
+>> +     * Older Linux kernels(<5.3) include the 
+>> MSR_IA32_VMX_PROCBASED_CTLS2
+>> +     * only in feature msr list, but not in regular msr list. This 
+>> lead to
+>> +     * an issue in older kernel versions where QEMU, through the 
+>> regular
+>> +     * MSR list check, assumes the kernel doesn't maintain this msr,
+>> +     * resulting in incorrect settings by QEMU for this msr.
+>> +     */
+>> +    for (i = 0; i < kvm_feature_msrs->nmsrs; i++) {
+>> +        if (kvm_feature_msrs->indices[i] == 
+>> MSR_IA32_VMX_PROCBASED_CTLS2) {
+>> +            has_msr_vmx_procbased_ctls2 = true;
+>> +        }
+>> +    }
+>>       return 0;
+>>   }
+>>
+>> -- 
+>> 2.34.1
+>
+> Best regards.
+>
 
