@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 123847F72F2
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 12:42:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 710A27F72F4
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 12:42:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6UZK-0005aD-Vs; Fri, 24 Nov 2023 06:41:59 -0500
+	id 1r6UZx-0007Pg-Qt; Fri, 24 Nov 2023 06:42:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6UZG-0005Zl-Ov
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 06:41:55 -0500
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r6UZv-0007KR-Kt
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 06:42:35 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6UZ3-000144-O3
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 06:41:54 -0500
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-507f1c29f25so2492585e87.1
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 03:41:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r6UZt-0001Kk-Sp
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 06:42:35 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1cf8b35a6dbso12314075ad.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 03:42:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700826100; x=1701430900; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=ventanamicro.com; s=google; t=1700826152; x=1701430952; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=LLdTj1hC4loE8PyfPU7TG4P2nXHktOX8GhzvC206YiA=;
- b=TwqlhA++tZNMhNfxoOw5z6r9q/7w1SM+cbwDI/4CeAEgvlFaRTEPuroH3eQV8R6o0N
- wIaFbJJimpRMOb3qscXwRWaXHV66B+HmOdDaMyjJCNWgi3V2/Yyep7ny2fBgl8Qeihuq
- 1M31IJa/FAxZm3BQA/m3+tEKqtahTWTd/qzBhwNB2AJU4MEcDw1DsFCydNHaD0KN0gsd
- czQ+4zD2wcKoGzyuZ9AkZFKT9hfrWgUOPGFnjm6j6U16ybCkUtqXl0NXrE289BlyCLpG
- V0OuFqGiDo7ewg5sYyTPo4ooeIYXzz7Napej1c41x5asTGPzl1zskRsn7u/mandVwzms
- oA2g==
+ bh=hrUEKc4IXj5eKNktXjnPYv76yLdhFibwJsTSAyCObmg=;
+ b=lU2bkb74AszPS72PG/dRQ6AOIKUrBOt5XfjTSTW9YDP5lS+/+dVxuL/90kEe/d/Hgo
+ 7205LIbbvYZtyFMBcHcIdjA98m3ME9/DRR1E1CDiBtZcPtu/VhGsCqq0QgdCs3+XC232
+ uiNvZx65739L8Bf/mERhQWJR8Jv5NDk6WtyTp3Cf0j0qEBJ5nQLcuyz8bDUvd9aEd0eX
+ nCvdFxZOdcNDUGUn4rWzmhPYcDgNvwJ7I9uEy56+r2/ZbLBzp1aIcTqzlfDZT2sZ1vdq
+ U5yruFhQCrollDB3GUEIZlcTL4qPuV547AkbaKd2GvjBTL+irXAyqaFIV279/yCxbTlb
+ tC/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700826100; x=1701430900;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1700826152; x=1701430952;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LLdTj1hC4loE8PyfPU7TG4P2nXHktOX8GhzvC206YiA=;
- b=Kg044MAb7cpOcIk2Rltm5pWSUHBrScV5r/yl7FWIJdGXMrQwx2WxSqQbzVkYEcMpFV
- DHiuNWN88dl7orIOEXt/8e5ErHe2sWpDtMpGtk227fsFnOy4tL6pOm80j2pICBOXt2FX
- eWD+oDDREqWHWXCzzUSV9pfAJX8iJe0yebU7sX/eIFEE2A6ACba2OjYz7XWj8rFfOi3G
- kQMU7NWC+dwR5iZXjAURZVrb54Ro2VVxcQYDZJigeMmOnc9/MSFcMnZGIqhX9g0r/1De
- OR26ox2u6ImA/+9nNXhbOCOs9wWPjd7SwPstYDV+JHctOQsUd29hYieTUmvsdb2XGidm
- r4ow==
-X-Gm-Message-State: AOJu0YxP0zbnbkIIihxCzFrjud4+AQCU8iSyc1wgGApPWj1/CF9kt381
- TewZboR2w/LFwa0LbG5U26ab+g==
-X-Google-Smtp-Source: AGHT+IGgDr8XMiPCanbfKhn3K0vLv7kpQt09mvsnKuFg5EgCkFisO+PqzYT2sBXR/HuOOUMoMCfOWw==
-X-Received: by 2002:a05:6512:3c8f:b0:509:4587:bdd0 with SMTP id
- h15-20020a0565123c8f00b005094587bdd0mr2414694lfv.7.1700826099880; 
- Fri, 24 Nov 2023 03:41:39 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.218.17])
+ bh=hrUEKc4IXj5eKNktXjnPYv76yLdhFibwJsTSAyCObmg=;
+ b=Xa5v+x9w/vV8XTJCsVz2Cms5xmekiwSDSQUVNb+V1aKWHQZu/ieSymcjUJak+poLCt
+ bZLIP5jnbeIWR1boMLNDLKhlcBDPclzT8zq55v4JpCUnO8WzaTpcCUn74517ppAhUe0B
+ NJQR828PLZCLA+IdXeX+r98/orOFnIdglfEwJ3dDqG4ZF97xmo+Pw97fhgQ6rS+jdf/7
+ HiuSlnFxDTxX5gShXuUZuEF6CNLCuzndM6aA4pAQC/Ph9B0H6j5i3xT0C8yT0XiHSe6L
+ eIz6vwXNUe/rWByIHFKntXF1aUO8HbvueGhzKqk2E0WqoW2KbJmvuhl56si2kkfaDmsw
+ IPHg==
+X-Gm-Message-State: AOJu0Yx/5c1uoS65IXNkzYSpn1rK9NW0XOR7GTVjNVogShkJWlvspKk1
+ iy8c5z16NmmLFPX6k8qImdNssU3mGqrVH9iWZGk=
+X-Google-Smtp-Source: AGHT+IG8s8MIkzsvNBCHJ1K0MXnGQYWp1bW+6di4dWWhijM7l/ZLb0GMbfpwqSU0qaUc1tAb5b07fg==
+X-Received: by 2002:a17:903:183:b0:1cf:55dd:9a0e with SMTP id
+ z3-20020a170903018300b001cf55dd9a0emr2998085plg.15.1700826151978; 
+ Fri, 24 Nov 2023 03:42:31 -0800 (PST)
+Received: from [192.168.68.109] ([152.250.131.119])
  by smtp.gmail.com with ESMTPSA id
- m23-20020a056000025700b00332ce0d7300sm4102681wrz.92.2023.11.24.03.41.38
+ h18-20020a170902eed200b001cf5d425244sm2982621plb.298.2023.11.24.03.42.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 24 Nov 2023 03:41:39 -0800 (PST)
-Message-ID: <89482575-2fe4-48f7-86f3-1bd77baa4475@linaro.org>
-Date: Fri, 24 Nov 2023 12:41:37 +0100
+ Fri, 24 Nov 2023 03:42:31 -0800 (PST)
+Message-ID: <c58b3b6c-9a26-4199-9776-c67e2a650da4@ventanamicro.com>
+Date: Fri, 24 Nov 2023 08:42:27 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/21] target/arm/kvm: Merge kvm64.c into kvm.c
+Subject: Re: [PATCH for-9.0 2/7] target/riscv: add priv ver restriction to
+ profiles
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20231123191532.1101644-1-dbarboza@ventanamicro.com>
+ <20231123191532.1101644-3-dbarboza@ventanamicro.com>
+ <20231124-9f593580898dcebbdb590bff@orel>
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-References: <20231123044219.896776-1-richard.henderson@linaro.org>
- <20231123044219.896776-15-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231123044219.896776-15-richard.henderson@linaro.org>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231124-9f593580898dcebbdb590bff@orel>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,60 +98,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard,
 
-On 23/11/23 05:42, Richard Henderson wrote:
-> Since kvm32.c was removed, there is no need to keep them separate.
-> This will allow more symbols to be unexported.
+
+On 11/24/23 06:57, Andrew Jones wrote:
+> On Thu, Nov 23, 2023 at 04:15:27PM -0300, Daniel Henrique Barboza wrote:
+>> Some profiles, like RVA22S64, has a priv_spec requirement.
+>>
+>> Make this requirement explicit for all profiles. We'll validate this
+>> requirement finalize() time and, in case the user chooses an
+>> incompatible priv_spec while activating a profile, a warning will be
+>> shown.
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   target/riscv/cpu.c         |  1 +
+>>   target/riscv/cpu.h         |  2 ++
+>>   target/riscv/tcg/tcg-cpu.c | 30 ++++++++++++++++++++++++++++++
+>>   3 files changed, 33 insertions(+)
+>>
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index 59b131c1fc..29a9f77702 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -1537,6 +1537,7 @@ Property riscv_cpu_options[] = {
+>>   static RISCVCPUProfile RVA22U64 = {
+>>       .name = "rva22u64",
+>>       .misa_ext = RVI | RVM | RVA | RVF | RVD | RVC | RVU,
+>> +    .priv_spec = RISCV_PROFILE_ATTR_UNUSED,
+>>       .ext_offsets = {
+>>           CPU_CFG_OFFSET(ext_zicsr), CPU_CFG_OFFSET(ext_zihintpause),
+>>           CPU_CFG_OFFSET(ext_zba), CPU_CFG_OFFSET(ext_zbb),
+>> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+>> index 5ff629650d..1f34eda1e4 100644
+>> --- a/target/riscv/cpu.h
+>> +++ b/target/riscv/cpu.h
+>> @@ -81,10 +81,12 @@ typedef struct riscv_cpu_profile {
+>>       uint32_t misa_ext;
+>>       bool enabled;
+>>       bool user_set;
+>> +    int priv_spec;
+>>       const int32_t ext_offsets[];
+>>   } RISCVCPUProfile;
+>>   
+>>   #define RISCV_PROFILE_EXT_LIST_END -1
+>> +#define RISCV_PROFILE_ATTR_UNUSED -1
+>>   
+>>   extern RISCVCPUProfile *riscv_profiles[];
+>>   
+>> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+>> index ddf37b25f3..a26cc6f093 100644
+>> --- a/target/riscv/tcg/tcg-cpu.c
+>> +++ b/target/riscv/tcg/tcg-cpu.c
+>> @@ -74,6 +74,20 @@ static void riscv_cpu_write_misa_bit(RISCVCPU *cpu, uint32_t bit,
+>>       }
+>>   }
+>>   
+>> +static const char *cpu_priv_ver_to_str(int priv_ver)
+>> +{
+>> +    switch (priv_ver) {
+>> +    case PRIV_VERSION_1_10_0:
+>> +        return "v1.10.0";
+>> +    case PRIV_VERSION_1_11_0:
+>> +        return "v1.11.0";
+>> +    case PRIV_VERSION_1_12_0:
+>> +        return "v1.12.0";
+>> +    }
+>> +
+>> +    g_assert_not_reached();
+>> +}
+>> +
+>>   static void riscv_cpu_synchronize_from_tb(CPUState *cs,
+>>                                             const TranslationBlock *tb)
+>>   {
+>> @@ -764,11 +778,23 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+>>   static void riscv_cpu_validate_profile(RISCVCPU *cpu,
+>>                                          RISCVCPUProfile *profile)
+>>   {
+>> +    CPURISCVState *env = &cpu->env;
+>>       const char *warn_msg = "Profile %s mandates disabled extension %s";
+>>       bool send_warn = profile->user_set && profile->enabled;
+>>       bool profile_impl = true;
+>>       int i;
+>>   
+>> +    if (profile->priv_spec != env->priv_ver) {
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/arm/kvm.c       | 789 +++++++++++++++++++++++++++++++++++++++
->   target/arm/kvm64.c     | 820 -----------------------------------------
->   target/arm/meson.build |   2 +-
->   3 files changed, 790 insertions(+), 821 deletions(-)
->   delete mode 100644 target/arm/kvm64.c
+> Shouldn't this be something like
+> 
+>   if (profile->priv_spec != RISCV_PROFILE_ATTR_UNUSED &&
+>       profile->priv_spec != env->priv_ver)
 
-Reviewed using 'git-diff --color-moved=dimmed-zebra'.
+Yeah it should. Otherwise we might send warnings for cases in which the profile
+doesn't care about priv_ver. I'll fix it in v2.
 
-> diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-> deleted file mode 100644
-> index 52c0a6d3af..0000000000
-> --- a/target/arm/kvm64.c
-> +++ /dev/null
-> @@ -1,820 +0,0 @@
-> -/*
-> - * ARM implementation of KVM hooks, 64 bit specific code
-> - *
-> - * Copyright Mian-M. Hamayun 2013, Virtual Open Systems
-> - * Copyright Alex Bennée 2014, Linaro
-> - *
-> - * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> - * See the COPYING file in the top-level directory.
-> - *
-> - */
 
-IANAL but shouldn't we keep these (c) lines? As:
+Thanks,
 
--- >8 --
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 7903e2ddde..b8fc1c8d87 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -2,6 +2,8 @@
-   * ARM implementation of KVM hooks
-   *
-   * Copyright Christoffer Dall 2009-2010
-+ * Copyright Mian-M. Hamayun 2013, Virtual Open Systems
-+ * Copyright Alex Bennée 2014, Linaro
-   *
-   * This work is licensed under the terms of the GNU GPL, version 2 or 
-later.
-   * See the COPYING file in the top-level directory.
----
 
-Otherwise,
+Daniel
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+> 
+>> +        profile_impl = false;
+>> +
+>> +        if (send_warn) {
+>> +            warn_report("Profile %s requires priv spec %s, "
+>> +                        "but priv ver %s was set", profile->name,
+>> +                        cpu_priv_ver_to_str(profile->priv_spec),
+>> +                        cpu_priv_ver_to_str(env->priv_ver));
+>> +        }
+>> +    }
+>> +
+>>       for (i = 0; misa_bits[i] != 0; i++) {
+>>           uint32_t bit = misa_bits[i];
+>>   
+>> @@ -1057,6 +1083,10 @@ static void cpu_set_profile(Object *obj, Visitor *v, const char *name,
+>>       profile->user_set = true;
+>>       profile->enabled = value;
+>>   
+>> +    if (profile->enabled) {
+>> +        cpu->env.priv_ver = profile->priv_spec;
+>> +    }
+>> +
+>>       for (i = 0; misa_bits[i] != 0; i++) {
+>>           uint32_t bit = misa_bits[i];
+>>   
+>> -- 
+>> 2.41.0
+>>
+> 
+> Thanks,
+> drew
 
