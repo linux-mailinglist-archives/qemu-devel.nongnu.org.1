@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA58B7F755F
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 14:39:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 605D77F7561
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 14:39:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6WNb-0001BM-Qv; Fri, 24 Nov 2023 08:38:01 -0500
+	id 1r6WOn-0002Wl-Jn; Fri, 24 Nov 2023 08:39:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r6WNQ-0001Az-79
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 08:37:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1r6WOk-0002QZ-Ov
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 08:39:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r6WNN-0004gz-JS
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 08:37:47 -0500
+ id 1r6WOj-0004tF-EI
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 08:39:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700833064;
+ s=mimecast20190719; t=1700833148;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cZmoVROR/SfRtLXWrTRIIUhYAV2eKL110w8TRb/3ksU=;
- b=NtsODUDtEIIbAxhdr1hnX+JrtVPG/hDxh5c1SJrC3pBMhFjoummhd5Fn+L7IWXJvFU867S
- E97n2sOjPZ4EZrX5R2Ws9CpVPWql+OouXqcL/PH6FkKvG69pj2Voi6ASmmU89UWmNf8xGZ
- bERuAEgfb2Xy7NdSRee/JiMtqA7fUpk=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/S77ocsRszxqUvKliJPi4rxpmztBfwrEn35Dpzti4gU=;
+ b=DnccRE1EinilsXNt51elUc5dj1xk3y22x1W+3ylZmiFDIfh5/cy8okz7cB5Y+dHmIRUqRt
+ 1kMQBIE4dpXcfdFYw+DPgYJ3Mhvh4AGXARy1p8yJ4qFtJ9/qLFAQJlsxV2ZYwsdFHIHayF
+ V4m4dkBzyZCMUdYcaihmi/6rj99L2Rc=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-kHfx3wc0NgmxvFMQ4hE9JQ-1; Fri, 24 Nov 2023 08:37:43 -0500
-X-MC-Unique: kHfx3wc0NgmxvFMQ4hE9JQ-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a00dd93a5f1so140855466b.2
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 05:37:42 -0800 (PST)
+ us-mta-176-2dlk-ON5Pkij5tQzeYn9fQ-1; Fri, 24 Nov 2023 08:39:07 -0500
+X-MC-Unique: 2dlk-ON5Pkij5tQzeYn9fQ-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a01c7b09335so142120766b.1
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 05:39:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700833062; x=1701437862;
+ d=1e100.net; s=20230601; t=1700833146; x=1701437946;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cZmoVROR/SfRtLXWrTRIIUhYAV2eKL110w8TRb/3ksU=;
- b=VSK8rFp7LgfqaSOB33ggKDwfVkAYZz0l17qyK2QsIrOi8HCECPoY2OQgr7E+/FzqNc
- iyrL+oem+V5c8MQQhnFoev7dn4jhPC2UJjvyVT2/hN7RA9d4KLzkWUr72AuL7TjX7JfV
- yueKNGTMGjla6jcKBzw8pxdoY412G55GoBE2oqw2w+an1Ayp9l1u2OVZ9i4Pm1jtH8Vb
- 8qxg9Qu1u2fajJ4OY2+5+R1ZW98kKskoiEZRvJthIu3sPWZpRamYuSu+GqKfKN1z6+cS
- npjJI+gcems0p3SrRDt8ZJjgXewgy6hR9HJBNQkjjoWgwtpRR9Ks431indo+UnN2k1tw
- DP2Q==
-X-Gm-Message-State: AOJu0YyT9tsonTCfeRnuzsxXCQnoL9eyfRQi3n11JfkLtRMV85VoX3qJ
- zEpnn9pcYv9zWnIKhMG6YLmUx9p0h7EHlLpmmb1So1mwItCSDiS313lRb6Vv/vydY6l34BdAxXV
- ludwrzm7nEj17jmo=
-X-Received: by 2002:a17:906:5349:b0:a04:9655:e15b with SMTP id
- j9-20020a170906534900b00a049655e15bmr2594097ejo.49.1700833061936; 
- Fri, 24 Nov 2023 05:37:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG8YRiUQEEYtJom1zjO+XNOQCew1hfHVei26ov0E26iWhzacdzw6O3ztkuKPWr24gF2rqaLCA==
-X-Received: by 2002:a17:906:5349:b0:a04:9655:e15b with SMTP id
- j9-20020a170906534900b00a049655e15bmr2594087ejo.49.1700833061682; 
- Fri, 24 Nov 2023 05:37:41 -0800 (PST)
+ bh=/S77ocsRszxqUvKliJPi4rxpmztBfwrEn35Dpzti4gU=;
+ b=UJkpCgajzSwmpyJS+knLPDlcsE3bbBKAc1fvqFWxYzojfRVR7aUacgTdQj1JR2faXA
+ O/vzf6RuJtShM6a2GJElORW178HBvOl88fwSgdDC7wyRs5py1CdB+yybHRnTiwfoYZFu
+ EYFe1SGM4AAIThE0YDC6/fRoANsQRabxYLKtkmd2+rV0fOmuhvAIp2bVwgtAEMbVGp42
+ cnXcbn5KIcmix4yAyaZcyBA7cY3+QT0eKrFgCABesfWADZi9g1RjUZgqtYO1FRHvTvoX
+ xghpTCV5mjf10mXIakwd9iMtYyjT73Zw0v+p4H221471p99aHcecwZE5K9I90hXM0Tt2
+ x3bA==
+X-Gm-Message-State: AOJu0YyrE3Y3FuL+wxcRz8A9wwWAcIbPe9WkPj5QRMxQeC8Jh0vx4VVz
+ DEa/cKE2WYGawAOsL1SVzzB9csS0WpsppVI+TS0LOVA2cBevXI0RjicteGgdeyqaFPyE3+FzldD
+ c4hB+WDg44QnqQMU=
+X-Received: by 2002:a17:906:578d:b0:9bd:b8d0:c096 with SMTP id
+ k13-20020a170906578d00b009bdb8d0c096mr2361866ejq.21.1700833146004; 
+ Fri, 24 Nov 2023 05:39:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEmGkxyoRD/WhdUbugk1xsLhnGiD355akA/6vA9NZOEt++E3P+muZZq+hhAlxiF0fDWKM3veA==
+X-Received: by 2002:a17:906:578d:b0:9bd:b8d0:c096 with SMTP id
+ k13-20020a170906578d00b009bdb8d0c096mr2361855ejq.21.1700833145727; 
+ Fri, 24 Nov 2023 05:39:05 -0800 (PST)
 Received: from imammedo.users.ipa.redhat.com ([185.140.112.229])
  by smtp.gmail.com with ESMTPSA id
- o4-20020a170906358400b009a19701e7b5sm2081475ejb.96.2023.11.24.05.37.40
+ k9-20020a170906578900b009fee12d0dcdsm2090981ejq.15.2023.11.24.05.39.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Nov 2023 05:37:41 -0800 (PST)
-Date: Fri, 24 Nov 2023 14:37:40 +0100
+ Fri, 24 Nov 2023 05:39:04 -0800 (PST)
+Date: Fri, 24 Nov 2023 14:39:03 +0100
 From: Igor Mammedov <imammedo@redhat.com>
 To: Thierry Escande <thierry.escande@vates.tech>
 Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>, Marcel
  Apfelbaum <marcel.apfelbaum@gmail.com>
 Subject: Re: [PATCH 4/4] ich9: Enable root PCI hotplug by default
-Message-ID: <20231124143740.2585607c@imammedo.users.ipa.redhat.com>
+Message-ID: <20231124143903.3b7ee3a4@imammedo.users.ipa.redhat.com>
 In-Reply-To: <20231115171837.18866-5-thierry.escande@vates.tech>
 References: <20231115171837.18866-1-thierry.escande@vates.tech>
  <20231115171837.18866-5-thierry.escande@vates.tech>
@@ -77,14 +77,14 @@ X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -126,11 +126,7 @@ Thierry Escande <thierry.escande@vates.tech> wrote:
 >      pm->enable_tco = true;
 >  
 
-That probably is not enough,
-due to:
-        if (pm->pcihp_bridge_en) {                                               
-            build_x86_acpi_pci_hotplug(dsdt, pm->pcihp_io_base);                 
-        }                                                                        
-        build_q35_pci0_int(dsdt);  
+PS: also you'd need to add compat logic to preserve
+disabled state for already existing machine types
 
 
