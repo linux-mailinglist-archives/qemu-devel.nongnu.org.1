@@ -2,33 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 168CC7F6CAA
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 08:13:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50BFD7F6CAF
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 08:17:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6QNI-0005aL-Ux; Fri, 24 Nov 2023 02:13:16 -0500
+	id 1r6QQS-0001p4-LD; Fri, 24 Nov 2023 02:16:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=ZyQH=HF=kaod.org=clg@ozlabs.org>)
- id 1r6QN8-0005ZP-L4; Fri, 24 Nov 2023 02:13:06 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1r6QQM-0001kQ-O5; Fri, 24 Nov 2023 02:16:27 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=ZyQH=HF=kaod.org=clg@ozlabs.org>)
- id 1r6QN5-0008K1-7e; Fri, 24 Nov 2023 02:13:06 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sc5mD2DRzz4x1R;
- Fri, 24 Nov 2023 18:13:00 +1100 (AEDT)
+ id 1r6QQJ-0001SR-3G; Fri, 24 Nov 2023 02:16:26 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sc5r45GVKz4wqN;
+ Fri, 24 Nov 2023 18:16:20 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sc5mB2pkYz4wdC;
- Fri, 24 Nov 2023 18:12:58 +1100 (AEDT)
-Message-ID: <f4a994a9-5f9d-4709-93ab-2be8461411c8@kaod.org>
-Date: Fri, 24 Nov 2023 08:12:57 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sc5r25s0Wz4wd7;
+ Fri, 24 Nov 2023 18:16:18 +1100 (AEDT)
+Message-ID: <990dc2b7-8c39-4b3f-8340-1ef75f005850@kaod.org>
+Date: Fri, 24 Nov 2023 08:16:16 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 4/7] pnv/chiptod: Add POWER9/10 chiptod model
@@ -42,16 +40,15 @@ References: <20231124064001.198572-1-npiggin@gmail.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 In-Reply-To: <20231124064001.198572-5-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=ZyQH=HF=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,15 +85,6 @@ On 11/24/23 07:39, Nicholas Piggin wrote:
 > core timebase will be implemented in later changes.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
-
 > ---
 >   include/hw/ppc/pnv_chip.h    |   3 +
 >   include/hw/ppc/pnv_chiptod.h |  50 ++++
@@ -510,6 +498,17 @@ C.
 > +static void pnv_chiptod_xscom_write(void *opaque, hwaddr addr,
 > +                                    uint64_t val, unsigned size,
 > +                                    bool is_power9)
+
+oops, I was too quick. You can remove 'bool is_power9' and xscom_ops.
+
+
+Thanks,
+
+C.
+
+
+
+
 > +{
 > +    PnvChipTOD *chiptod = PNV_CHIPTOD(opaque);
 > +    PnvChipTODClass *pctc = PNV_CHIPTOD_GET_CLASS(chiptod);
