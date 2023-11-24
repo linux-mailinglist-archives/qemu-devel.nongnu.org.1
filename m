@@ -2,175 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758EC7F6D9C
+	by mail.lfdr.de (Postfix) with ESMTPS id 874057F6D9D
 	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 09:03:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6R8m-0002eb-7B; Fri, 24 Nov 2023 03:02:20 -0500
+	id 1r6R8q-0002g2-2o; Fri, 24 Nov 2023 03:02:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r6R8k-0002eH-4D; Fri, 24 Nov 2023 03:02:18 -0500
-Received: from mgamail.intel.com ([134.134.136.20])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r6R8n-0002fC-9H; Fri, 24 Nov 2023 03:02:21 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1r6R8i-0007ZI-3r; Fri, 24 Nov 2023 03:02:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1700812936; x=1732348936;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=4bmi0GDFZbMEEMazEviYMbe0oG3w9fyXHvF1EuP46GQ=;
- b=exsa9FZPTqmgFuiqHHrZjHxVKb9F0Tng8hOO9tCusTR1ElwzCh9beQY5
- 5BWIJ5fzI9H8Ai261yvDbHgwo3YIZ0uHZ8W91ch/xtpPJ9+ONZ6LS5E/g
- ydG5ob0p5z/0Cul/XuYQZk3r/WhGBSvu+lQbLXgETofl1bpIYzIffwsN/
- BIth+LF8LJRvV9DhlIErdvV+aLYua7Gx2oHRoirk7Q2MexAMUkGfcn/ty
- 0lfnnCq+tW2aYsGRGRKGrTv6uUCjUdAOngHr/Sw5SMQWnj4c4BNRkFqdI
- rWa/vKt5/DvYKy3+8ph/PKflwynCZiXP/njYfYlISaJG+fVI1KG2S+KjL Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="382786406"
-X-IronPort-AV: E=Sophos;i="6.04,223,1695711600"; d="scan'208";a="382786406"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Nov 2023 00:01:41 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="717277219"
-X-IronPort-AV: E=Sophos;i="6.04,223,1695711600"; d="scan'208";a="717277219"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by orsmga003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 24 Nov 2023 00:01:40 -0800
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Fri, 24 Nov 2023 00:01:39 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Fri, 24 Nov 2023 00:01:39 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Fri, 24 Nov 2023 00:01:39 -0800
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.169)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Fri, 24 Nov 2023 00:01:39 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XcH9dQrZbkjYzye417d2cp9nb5ArsACHL7dJuIGx4tX4c4yGbYpqxb7cJkw0lM3T8gKKcPrm1YcrfN7gATsei4zogJ2o5PTqcNpW4BpPHxjJjotzJjc9YGrst0JFZe3cbCKC3jUxbX7NjqmsEgXVn2VP9RMJVdBMsun3MjjFwDY4cinFoZf1k5njTEXmXrPjrsPflR6iHMHzccPAtkRzgfGd4gqEcbo+CtrQv+LxHpNiOORsbcl5rxoq4kdSFH/aRSPj0SUB1Wk6mV/79UD2OpTrcN8EVIpZasmhIo1MWB1E60CYFGqJsopFmYif1z4ALlRBOsCSIE0yeyurpMq36w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4bmi0GDFZbMEEMazEviYMbe0oG3w9fyXHvF1EuP46GQ=;
- b=n22BBB2DdsgeEGe6Bda+Ma1jzb5MoeW2wjw/vQHD/CBn3nkM5HK1rr224V11EbDAup7CeQxXwWNk85iBhJesY8pvB4JNOvx5u2fambBw4Uavm+UeDpnSY2bFM6KqBsciw886iLz5j+9unMK4Dw2Hy5jwMyGeNoI5zrv8CzWBpxctevoAD2CjlQ/rq81GXL3mrKHEyceXX7PPSFXenLF24y55C7ADJ8oZPLwpPQ0hxP8Gp/Sw57gd9wDfCnQFgpERyRuXZjXD48lSKUYO0vQoLBxjP4ElhjfZbaNKxzg6SnxLDGstm3LXST239a4UNXtrjqxDpLXHHrOduWUXmVjj0A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by PH7PR11MB6745.namprd11.prod.outlook.com (2603:10b6:510:1af::15)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.21; Fri, 24 Nov
- 2023 08:01:32 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea%4]) with mapi id 15.20.7025.020; Fri, 24 Nov 2023
- 08:01:31 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
- =?utf-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "Peng, Chao P" <chao.p.peng@intel.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, "Daniel Henrique
- Barboza" <danielhb413@gmail.com>, David Gibson <david@gibson.dropbear.id.au>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, "open list:PowerPC TCG CPUs"
- <qemu-ppc@nongnu.org>
-Subject: RE: [PATCH] hw/ppc: Improve build for PPC VFIO
-Thread-Topic: [PATCH] hw/ppc: Improve build for PPC VFIO
-Thread-Index: AQHaHdK5y2MYznEAe0iiTj2wR1sQdrCHgwWAgAAuUgCAADmzgIABMZAAgAAAW6A=
-Date: Fri, 24 Nov 2023 08:01:29 +0000
-Message-ID: <SJ0PR11MB6744E4F7FD52A7CA607B0B1492B8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20231123060109.131904-1-zhenzhong.duan@intel.com>
- <dd2db398-908a-46a8-b02b-8418956462cb@redhat.com>
- <8a95349c-4005-484f-b623-a1898a224896@linaro.org>
- <95739695-ce1d-458d-802d-91346cf10025@redhat.com>
- <1df63b54-f93f-4f6d-a917-fab25b9f82bc@redhat.com>
-In-Reply-To: <1df63b54-f93f-4f6d-a917-fab25b9f82bc@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|PH7PR11MB6745:EE_
-x-ms-office365-filtering-correlation-id: 2edbfbe2-4a59-461f-5d66-08dbecc390bd
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: yzdiksTIThYnw5mrWs9fD1eRZeVQxXXsfM0CTrmtC/9e1Ha0YhE4usANfUQTCESfaYEmlnxFhOM7zMcq1O5FzWrNh2mfBj6eAbhoSwRrpKwMHQ6WI2M4MKdDLuc3QjprRvFYNF2RmLjW6lJzjwpDW4J64cjeYQG7mcrwxUut2gbwZMduDjhMbyMxfTDbz38G48m3SugHTQfiZJj1GuMyKvYS9F2IOJw/8VxYUYAzEgWOHmhPMKKnRpjR7UuRjEh3qzuehci66TaLF12mB5z82LyoruUsouLSGvllagVptPu8+vK/F9qViFUCU4L+CVznKhriHUMXAb5QmLs9NkggUxS6EJ6DfTZY1LN1WpDVLfpyUBlimhfruZRj3GWvWN2e/+tV7fbrGsGV5PN8Yz9bom/bvQ8P/SoBAovpGoXZbFbRLMm7kAGqqnGs+h4sdLEpY1PmsMrkszsEVrl6fW/DeYP32jpDzH5fKa+sSLhHE9VuNaZCKR32pnDGCBO2jqWKiSUxwBInC9J9vKPSGJN2fMpBRR/dYAh2+jWk3xS086SYtc9ryEOs7fyOTju87P5jjpK+df0QM+eIKc2+B9q+FqqZ1bLuV63EBjHAy7Q3dyxtSaRDLNEDjkPepEoaY+xl
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(346002)(366004)(39850400004)(396003)(136003)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(38100700002)(82960400001)(122000001)(478600001)(33656002)(41300700001)(8936002)(8676002)(4326008)(86362001)(66476007)(64756008)(54906003)(66946007)(316002)(110136005)(76116006)(66446008)(66556008)(26005)(7696005)(66574015)(83380400001)(6506007)(71200400001)(9686003)(38070700009)(52536014)(2906002)(55016003)(4744005)(5660300002);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MkVObElBN1EwcjBSMDFmSWJmd1pUQTBjWkZDSUU1bHZVbUVjZG1SZW00Q3V6?=
- =?utf-8?B?S1RGZnBDQjNQYTJzNTRiVjlDM0tCQXd6WWxFblVUWFFsOHpPU2RGYm5jcWhk?=
- =?utf-8?B?VFR4RWFqWHBkbmxvS085ZUdMQnRtQkYrM3NjVFpyZjFnK01DTTA4VUhieklN?=
- =?utf-8?B?RzZiQ0lUZi9pa3BJbzBwVnMveVpOc3dSRjVIZVNmQ0VOcFNQb1h5L1B6QjdK?=
- =?utf-8?B?YXNPMHBORWwvTE5OWk9SMlhsZTVLOXNHZVd4aUQreDFyR28zdG0rQ25yZ3RX?=
- =?utf-8?B?bWJSL1RiN1FlUzFkV09MRXFzZWJycFZOQXBwNDhMSzdIWFAvMUo1K3oxUHpk?=
- =?utf-8?B?Q2lOWEl6ZjN3MUM5YUhSRFgvK1p4VXhHTUxjb3JjMGlUR1hIMk9aTWhlbWtu?=
- =?utf-8?B?YVh6N2JjM01SMmhSNS93RnRLRjBuSXM0UlpkdWpoUm9YZUUxNWNmQmdqcXJw?=
- =?utf-8?B?U2YrcmM2UWVmc0wwdGZEVGlMMElPWjNNTUdQWEFjVnVGNDUyQVBLOTdnSmRV?=
- =?utf-8?B?bkVxRitmN1JaUFgva3Z3VzZINE9pUnhYWVAzZDVQOHBlNkFCaVFuVDV0bzgz?=
- =?utf-8?B?dW4zOUtHV2gvb1FHOEVNVEhTYlJzeFp5VjV2V0hYYVN4RUI4ajVzb0dUdVFU?=
- =?utf-8?B?eXE3Q1JrUVhDVU14enVvTjUyOFp3NHZJLzZHS21kSG1sd2dsQ0lKY0g2bUZ5?=
- =?utf-8?B?bXNNZXRZZGVDQnEvbFBuOWVleWhOUmwrRDRNTHk0ZVdJVFlXUzhNUzJIQm0y?=
- =?utf-8?B?MDFGdW9jVE8yUHpJYk1Jb3NRNXlRMzhpVnlyUk9uRkpueENURWV2cHNvcXlT?=
- =?utf-8?B?TzI4MmsxVjEvSUY4YVFiUEtPRkVNSVpsamJOV3RkbHZmRlBSK3VSTG5Bdzlp?=
- =?utf-8?B?dDVaQ252dzFMM0Y4cmRoU01HRzlVK0wwTWNQUGpocUlFMCs0NEx0SThVWk9h?=
- =?utf-8?B?aDZ0UnFaVHdXUE1JUHhPWGN2WkJ5Sy8xT2U1V09EbzMyNXJVYThCdzlXVVBy?=
- =?utf-8?B?cDZOck5BMjZLUm9rTitiVEcxekg4TTc4RGFvbWlVS21MMTFOUzhsaUJkTktX?=
- =?utf-8?B?cTgyNkxOR2IrOUo4Q3cxeVpsbjl0NFNjaytweFNoSnV0d2hpcTlxTHBWMEsz?=
- =?utf-8?B?dUtveUpiYXdqRkhTUE9GMzE0azlHcHR2MkpWZ2V2WDUrd21aZnpITXF1cFpG?=
- =?utf-8?B?ZkFrNlV6Q3liUUIzNHE2VFZOVFpvUFhxNGhkWkplWVQwTjZzMTVlTGh0S2dB?=
- =?utf-8?B?Q0ZkdHlUU0h2ZGZXMHdRRkRCanM3Y05wSy9wSW90endsTEVGMmNDT1pMbmdV?=
- =?utf-8?B?OVZKVVJKODJXeVRWelBLNC9Pbm1raXVHMVF4ZnU0MHNncFZURnRRdFBIQmdB?=
- =?utf-8?B?U21PdGQvMjhvWk9tNzNDcDZTWXJvbEZCT2dFdTVybVJsblo5U3FSVEN6bDRK?=
- =?utf-8?B?Q2h3cmI0b3ByWHZWaVNYY093bXFmODFIZS9GbUVxbHRSUkpSdXhYYkZyTzhQ?=
- =?utf-8?B?Q3lYRkxxT2VseTNJcUtreG5WemY4b1ZBbmdyTzZjVlltQ3VObndGSTNDd0pz?=
- =?utf-8?B?WUtWdjMzR3hVWm42QzVTRXRKMFNVQ0JBN1dERHV4QUxXbHRBS3BRdDEwazdB?=
- =?utf-8?B?RWR3Ri9rZWZwYm9jeGNuaTJBN1ZYU1FmUG9YTHlBUUFjOUJEL1NodTBiWEpi?=
- =?utf-8?B?V2VFRzB4S1FzNGlpcjI4a3lOb044a2E5eG1lZnMwWHhWelE5VUExVmV6b1BX?=
- =?utf-8?B?YXZ0WFM1TmkwQ0JGVzJ2MFVrV0FWay93dUxqRXk3bUU3eFA3dVFuWjFUOXFR?=
- =?utf-8?B?dnUxWlhkb2lpQVd6L3Z6aW5SZ1Q0Yjh5SlB5NGphcVgyKzNydktaV1dVUFcw?=
- =?utf-8?B?OXE4S1pueW85aEliRnZxcXZ0dW0wbTQ2dlRPam1XRFZOTWRnQ1ZvYzE0UXBX?=
- =?utf-8?B?R1BqTFh0VXR1VTdqcXJseUd3ZHY3a1l4N3c5a09iZ3FFbVRTRmRGdnIzN1Jo?=
- =?utf-8?B?L2pFSG5UaG5MYlVqa3QvdVQ4STVTZTZvZTcwcVY1cGlLV2xZVmszMUpqS0wv?=
- =?utf-8?B?Qld1ZzlQUmxaOHM3alVidVQ4cUNXeFE2bzY5N0FKQ3lrVTBTUE5acFZhQVhn?=
- =?utf-8?Q?dhIC8NvEVj2QqQLTZk/RF9ml1?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r6R8k-0007cn-Ql; Fri, 24 Nov 2023 03:02:21 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AO7G3jW012029; Fri, 24 Nov 2023 08:02:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=m1o4i4dRQZ3pzurKSScZrqmKk7vzV/UiKg/cGBALVYo=;
+ b=XZxoW3ozj9+NSQpQqpHEybpFIe/ZRGikwtKoPYSJKDlMErRI0DpdVSZvxBiUXvc9gumx
+ CTCzXv9m6kLDT2x40ngkWWebwxrxPPZMXK8hyzGRE75ElNX+8PCQ3ItlP0/ICxFqdlsf
+ 5ZthSCgw9wX/qbBswGbbDCnzdyGg8AzPU0LShrJ7aebQzc8TQsoWW7RikctnzmRFPdCi
+ 1NJzuUT6ReLPyUnJ6MPRS48H4XYxkUA2uVzHKLy0Rg4P1xro50LD/WkkgRJbkPAsGRgI
+ uOIoFd/etUX/n5A1CAUOjh/kqpiTZPS6iX9pbOCAUjSto1ZHaerFMnBkAxcD1ZvBrRpV XA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ujpaqt6d7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Nov 2023 08:02:09 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AO7kVOH028134;
+ Fri, 24 Nov 2023 08:02:09 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ujpaqt6cq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Nov 2023 08:02:09 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AO6J8uO014013; Fri, 24 Nov 2023 08:02:08 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uf8kpcb83-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Nov 2023 08:02:08 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
+ [10.39.53.233])
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AO827Lt26018536
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 24 Nov 2023 08:02:08 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DF7B35803F;
+ Fri, 24 Nov 2023 08:02:07 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1D65F5804E;
+ Fri, 24 Nov 2023 08:02:02 +0000 (GMT)
+Received: from [9.43.41.59] (unknown [9.43.41.59])
+ by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 24 Nov 2023 08:02:00 +0000 (GMT)
+Message-ID: <7bda3fad-e4df-8e2b-bb8b-8f984d89fcff@linux.ibm.com>
+Date: Fri, 24 Nov 2023 13:31:58 +0530
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2edbfbe2-4a59-461f-5d66-08dbecc390bd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Nov 2023 08:01:29.4099 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: gF3Suqti8nC9QtvGLIes/K+9i8b2bVDW3RSKWOM94h8PFNkyG2AUYj2ky+OmqerimuROHUpjqNK2VEZDxzGknlVCjd6ktkn5dUJ1E+UVZX8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6745
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=134.134.136.20;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v3 1/2] ppc/spapr: Introduce SPAPR_IRQ_NR_IPIS to refer
+ IRQ range for CPU IPIs.
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, npiggin@gmail.com,
+ qemu-ppc@nongnu.org
+Cc: danielhb413@gmail.com, david@gibson.dropbear.id.au, qemu-devel@nongnu.org
+References: <20231123055733.1002890-1-harshpb@linux.ibm.com>
+ <20231123055733.1002890-2-harshpb@linux.ibm.com>
+ <1523c986-7022-4b3f-8e26-b25d8621c623@kaod.org>
+ <3030ea29-3611-bd4f-cfd5-b34e4cf6b800@linux.ibm.com>
+ <adb6e571-004c-4c28-94e7-efadd61d88c1@kaod.org>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <adb6e571-004c-4c28-94e7-efadd61d88c1@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: E7tz4rtNrHWlM7xE5Ya3DF21ipnNm63I
+X-Proofpoint-GUID: vvRuQaD9J4H3oqtz7RWKkhTa9MHEaOGR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-23_15,2023-11-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ mlxlogscore=999 spamscore=0 malwarescore=0 suspectscore=0 phishscore=0
+ priorityscore=1501 bulkscore=0 adultscore=0 mlxscore=0 impostorscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311240062
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.672,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -186,12 +119,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEPDqWRyaWMgTGUgR29hdGVy
-IDxjbGdAcmVkaGF0LmNvbT4NCj5TZW50OiBGcmlkYXksIE5vdmVtYmVyIDI0LCAyMDIzIDM6NTkg
-UE0NCj5TdWJqZWN0OiBSZTogW1BBVENIXSBody9wcGM6IEltcHJvdmUgYnVpbGQgZm9yIFBQQyBW
-RklPDQo+DQo+Wmhlbnpob25nLA0KPg0KPj4gSG93IGFib3V0IHdoYXQncyBiZWxvd8KgIGluc3Rl
-YWQgPw0KPj4NCj4+DQo+PiBUaGFua3MsDQo+Pg0KPj4gQy4NCj4NCj5JIHdpbGwgcmVzZW5kIHRo
-ZSBidWlsZCBmaXggd2l0aCB0aGUgcHJvcG9zYWwgYmVsb3cgc2luY2UgaXQgYWRkcmVzc2VzDQo+
-UGhpbCdzIGNvbmNlcm5zLg0KDQpTdXJlLCBhcHByZWNpYXRlZPCfmIoNCg0KVGhhbmtzDQpaaGVu
-emhvbmcNCg==
+
+
+On 11/23/23 19:42, Cédric Le Goater wrote:
+> On 11/23/23 10:31, Harsh Prateek Bora wrote:
+>>
+>>
+>> On 11/23/23 14:20, Cédric Le Goater wrote:
+>>> On 11/23/23 06:57, Harsh Prateek Bora wrote:
+>>>> spapr_irq_init currently uses existing macro SPAPR_XIRQ_BASE to 
+>>>> refer to
+>>>> the range of CPU IPIs during initialization of nr-irqs property.
+>>>> It is more appropriate to have its own define which can be further
+>>>> reused as appropriate for correct interpretation.
+>>>>
+>>>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>>>> Suggested-by: Cedric Le Goater <clg@kaod.org>
+>>>
+>>> One comment below
+>>>
+>>> Reviewed-by: Cédric Le Goater <clg@kaod.org>
+>>>
+>>
+>> Thanks, responding below ..
+>>
+>>>> ---
+>>>>   include/hw/ppc/spapr_irq.h | 14 +++++++++++++-
+>>>>   hw/ppc/spapr_irq.c         |  6 ++++--
+>>>>   2 files changed, 17 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/include/hw/ppc/spapr_irq.h b/include/hw/ppc/spapr_irq.h
+>>>> index c22a72c9e2..4fd2d5853d 100644
+>>>> --- a/include/hw/ppc/spapr_irq.h
+>>>> +++ b/include/hw/ppc/spapr_irq.h
+>>>> @@ -14,9 +14,21 @@
+>>>>   #include "qom/object.h"
+>>>>   /*
+>>>> - * IRQ range offsets per device type
+>>>> + * The XIVE IRQ backend uses the same layout as the XICS backend but
+>>>> + * covers the full range of the IRQ number space. The IRQ numbers for
+>>>> + * the CPU IPIs are allocated at the bottom of this space, below 4K,
+>>>> + * to preserve compatibility with XICS which does not use that range.
+>>>> + */
+>>>> +
+>>>> +/*
+>>>> + * CPU IPI range (XIVE only)
+>>>>    */
+>>>>   #define SPAPR_IRQ_IPI        0x0
+>>>> +#define SPAPR_IRQ_NR_IPIS    0x1000
+>>>> +
+>>>> +/*
+>>>> + * IRQ range offsets per device type
+>>>> + */
+>>>>   #define SPAPR_XIRQ_BASE      XICS_IRQ_BASE /* 0x1000 */
+>>>>   #define SPAPR_IRQ_EPOW       (SPAPR_XIRQ_BASE + 0x0000)
+>>>> diff --git a/hw/ppc/spapr_irq.c b/hw/ppc/spapr_irq.c
+>>>> index a0d1e1298e..97b2fc42ab 100644
+>>>> --- a/hw/ppc/spapr_irq.c
+>>>> +++ b/hw/ppc/spapr_irq.c
+>>>> @@ -23,6 +23,8 @@
+>>>>   #include "trace.h"
+>>>> +QEMU_BUILD_BUG_ON(SPAPR_IRQ_NR_IPIS > SPAPR_XIRQ_BASE);
+>>>> +
+>>>
+>>> I would have put the check in include/hw/ppc/spapr_irq.h but since
+>>> SPAPR_XIRQ_BASE is only used in hw/ppc/spapr_irq.c which is always
+>>> compiled, this is fine. You might want to change that in case a
+>>> respin is asked for.
+>>>
+>>
+>> I had initially tried keeping it in spapr_irq.h , but that would give 
+>> a build break for XICS_IRQ_BASE not defined since that gets defined in 
+>> spapr_xics.h and is included later in some files, however, the 
+>> QEMU_BUILD_BUG_ON expects it to be defined before it reaches here.
+> 
+> ah. good catch. this went unnoticed and is a bit ugly. We should fix
+> in some ways. May with a define SPAPR_XIRQ_BASE to 0x1000 simply ?
+> 
+
+Hmm, I can do that if a re-spin is reqd, or can be done as a separate
+patch later also along with other improvements.
+
+> Also, we could probably define the ICS offset to SPAPR_XIRQ_BASE
+> directly under spapr_irq_init() and get rid of ics_instance_init().
+> The HW IRQ Number offset in the PNV ICS instances is assigned
+> dynamically by the OS (see pnv_phb3). So it should befine to do
+> the same for spapr. In which case we can get rid of XICS_IRQ_BASE.
+> 
+
+Hmm, I am not so familiar with XICS yet, so not sure if we really need
+to do that, but it can be done along with other improvements if needed.
+
+regards,
+Harsh
+
+> Thanks,
+> 
+> C.
+> 
+> 
+> 
+>>
+>> regards,
+>> Harsh
+>>
+>>> Thanks,
+>>>
+>>> C.
+>>>
+>>>
+>>>>   static const TypeInfo spapr_intc_info = {
+>>>>       .name = TYPE_SPAPR_INTC,
+>>>>       .parent = TYPE_INTERFACE,
+>>>> @@ -329,7 +331,7 @@ void spapr_irq_init(SpaprMachineState *spapr, 
+>>>> Error **errp)
+>>>>           int i;
+>>>>           dev = qdev_new(TYPE_SPAPR_XIVE);
+>>>> -        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + 
+>>>> SPAPR_XIRQ_BASE);
+>>>> +        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + 
+>>>> SPAPR_IRQ_NR_IPIS);
+>>>>           /*
+>>>>            * 8 XIVE END structures per CPU. One for each available
+>>>>            * priority
+>>>> @@ -356,7 +358,7 @@ void spapr_irq_init(SpaprMachineState *spapr, 
+>>>> Error **errp)
+>>>>       }
+>>>>       spapr->qirqs = qemu_allocate_irqs(spapr_set_irq, spapr,
+>>>> -                                      smc->nr_xirqs + 
+>>>> SPAPR_XIRQ_BASE);
+>>>> +                                      smc->nr_xirqs + 
+>>>> SPAPR_IRQ_NR_IPIS);
+>>>>       /*
+>>>>        * Mostly we don't actually need this until reset, except that 
+>>>> not
+>>>
+> 
 
