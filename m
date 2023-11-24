@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A32A37F6DA8
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 09:07:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA0D7F6DAD
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 09:09:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6RDc-0007vF-Im; Fri, 24 Nov 2023 03:07:20 -0500
+	id 1r6RFT-0002D1-JM; Fri, 24 Nov 2023 03:09:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=BZsm=HF=redhat.com=clg@ozlabs.org>)
- id 1r6RDZ-0007uZ-Du; Fri, 24 Nov 2023 03:07:17 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <SRS0=ZyQH=HF=kaod.org=clg@ozlabs.org>)
+ id 1r6RFR-0002Ce-V6; Fri, 24 Nov 2023 03:09:13 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=BZsm=HF=redhat.com=clg@ozlabs.org>)
- id 1r6RDX-0008WI-KA; Fri, 24 Nov 2023 03:07:17 -0500
+ (Exim 4.90_1) (envelope-from <SRS0=ZyQH=HF=kaod.org=clg@ozlabs.org>)
+ id 1r6RFP-0000Id-RX; Fri, 24 Nov 2023 03:09:13 -0500
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sc6yf6KZwz4wcj;
- Fri, 24 Nov 2023 19:07:06 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sc71057Wxz4x2N;
+ Fri, 24 Nov 2023 19:09:08 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sc6yb1nzBz4x2N;
- Fri, 24 Nov 2023 19:07:02 +1100 (AEDT)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-ppc@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH] hw/ppc/Kconfig: Imply VFIO_PCI
-Date: Fri, 24 Nov 2023 09:06:58 +0100
-Message-ID: <20231124080658.893770-1-clg@redhat.com>
-X-Mailer: git-send-email 2.42.0
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sc70y5Fzsz4wdB;
+ Fri, 24 Nov 2023 19:09:06 +1100 (AEDT)
+Message-ID: <9880236c-cc89-4a83-a377-e680d2ca7163@kaod.org>
+Date: Fri, 24 Nov 2023 09:09:04 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] ppc/spapr: Introduce SPAPR_IRQ_NR_IPIS to refer
+ IRQ range for CPU IPIs.
+Content-Language: en-US
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>, npiggin@gmail.com,
+ qemu-ppc@nongnu.org
+Cc: danielhb413@gmail.com, david@gibson.dropbear.id.au, qemu-devel@nongnu.org
+References: <20231123055733.1002890-1-harshpb@linux.ibm.com>
+ <20231123055733.1002890-2-harshpb@linux.ibm.com>
+ <1523c986-7022-4b3f-8e26-b25d8621c623@kaod.org>
+ <3030ea29-3611-bd4f-cfd5-b34e4cf6b800@linux.ibm.com>
+ <adb6e571-004c-4c28-94e7-efadd61d88c1@kaod.org>
+ <7bda3fad-e4df-8e2b-bb8b-8f984d89fcff@linux.ibm.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <7bda3fad-e4df-8e2b-bb8b-8f984d89fcff@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=BZsm=HF=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=ZyQH=HF=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,102 +69,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the legacy and iommufd backends were introduced, a set of common
-vfio-pci routines were exported in pci.c for both backends to use :
+On 11/24/23 09:01, Harsh Prateek Bora wrote:
+> 
+> 
+> On 11/23/23 19:42, Cédric Le Goater wrote:
+>> On 11/23/23 10:31, Harsh Prateek Bora wrote:
+>>>
+>>>
+>>> On 11/23/23 14:20, Cédric Le Goater wrote:
+>>>> On 11/23/23 06:57, Harsh Prateek Bora wrote:
+>>>>> spapr_irq_init currently uses existing macro SPAPR_XIRQ_BASE to refer to
+>>>>> the range of CPU IPIs during initialization of nr-irqs property.
+>>>>> It is more appropriate to have its own define which can be further
+>>>>> reused as appropriate for correct interpretation.
+>>>>>
+>>>>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>>>>> Suggested-by: Cedric Le Goater <clg@kaod.org>
+>>>>
+>>>> One comment below
+>>>>
+>>>> Reviewed-by: Cédric Le Goater <clg@kaod.org>
+>>>>
+>>>
+>>> Thanks, responding below ..
+>>>
+>>>>> ---
+>>>>>   include/hw/ppc/spapr_irq.h | 14 +++++++++++++-
+>>>>>   hw/ppc/spapr_irq.c         |  6 ++++--
+>>>>>   2 files changed, 17 insertions(+), 3 deletions(-)
+>>>>>
+>>>>> diff --git a/include/hw/ppc/spapr_irq.h b/include/hw/ppc/spapr_irq.h
+>>>>> index c22a72c9e2..4fd2d5853d 100644
+>>>>> --- a/include/hw/ppc/spapr_irq.h
+>>>>> +++ b/include/hw/ppc/spapr_irq.h
+>>>>> @@ -14,9 +14,21 @@
+>>>>>   #include "qom/object.h"
+>>>>>   /*
+>>>>> - * IRQ range offsets per device type
+>>>>> + * The XIVE IRQ backend uses the same layout as the XICS backend but
+>>>>> + * covers the full range of the IRQ number space. The IRQ numbers for
+>>>>> + * the CPU IPIs are allocated at the bottom of this space, below 4K,
+>>>>> + * to preserve compatibility with XICS which does not use that range.
+>>>>> + */
+>>>>> +
+>>>>> +/*
+>>>>> + * CPU IPI range (XIVE only)
+>>>>>    */
+>>>>>   #define SPAPR_IRQ_IPI        0x0
+>>>>> +#define SPAPR_IRQ_NR_IPIS    0x1000
+>>>>> +
+>>>>> +/*
+>>>>> + * IRQ range offsets per device type
+>>>>> + */
+>>>>>   #define SPAPR_XIRQ_BASE      XICS_IRQ_BASE /* 0x1000 */
+>>>>>   #define SPAPR_IRQ_EPOW       (SPAPR_XIRQ_BASE + 0x0000)
+>>>>> diff --git a/hw/ppc/spapr_irq.c b/hw/ppc/spapr_irq.c
+>>>>> index a0d1e1298e..97b2fc42ab 100644
+>>>>> --- a/hw/ppc/spapr_irq.c
+>>>>> +++ b/hw/ppc/spapr_irq.c
+>>>>> @@ -23,6 +23,8 @@
+>>>>>   #include "trace.h"
+>>>>> +QEMU_BUILD_BUG_ON(SPAPR_IRQ_NR_IPIS > SPAPR_XIRQ_BASE);
+>>>>> +
+>>>>
+>>>> I would have put the check in include/hw/ppc/spapr_irq.h but since
+>>>> SPAPR_XIRQ_BASE is only used in hw/ppc/spapr_irq.c which is always
+>>>> compiled, this is fine. You might want to change that in case a
+>>>> respin is asked for.
+>>>>
+>>>
+>>> I had initially tried keeping it in spapr_irq.h , but that would give a build break for XICS_IRQ_BASE not defined since that gets defined in spapr_xics.h and is included later in some files, however, the QEMU_BUILD_BUG_ON expects it to be defined before it reaches here.
+>>
+>> ah. good catch. this went unnoticed and is a bit ugly. We should fix
+>> in some ways. May with a define SPAPR_XIRQ_BASE to 0x1000 simply ?
+>>
+> 
+> Hmm, I can do that if a re-spin is reqd, or can be done as a separate
+> patch later also along with other improvements.
 
-  vfio_pci_pre_reset
-  vfio_pci_get_pci_hot_reset_info
-  vfio_pci_host_match
-  vfio_pci_post_reset
+yes. This is food for thoughts for further improvements.
 
-This introduced a build failure on PPC when --without-default-devices
-is use because VFIO is always selected in ppc/Kconfig but VFIO_PCI is
-not.
+Thanks,
 
-Use an 'imply VFIO_PCI' in ppc/Kconfig and bypass compilation of the
-VFIO EEH hooks routines defined in hw/ppc/spapr_pci_vfio.c with
-CONFIG_VFIO_PCI.
+C.
 
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- hw/ppc/spapr_pci_vfio.c | 36 ++++++++++++++++++++++++++++++++++++
- hw/ppc/Kconfig          |  2 +-
- 2 files changed, 37 insertions(+), 1 deletion(-)
 
-diff --git a/hw/ppc/spapr_pci_vfio.c b/hw/ppc/spapr_pci_vfio.c
-index d1d07bec4644da4ae6a99d3357d6d17ff66264de..76b2a3487b5d6f21528e9c301341eb27bc8fec1d 100644
---- a/hw/ppc/spapr_pci_vfio.c
-+++ b/hw/ppc/spapr_pci_vfio.c
-@@ -26,10 +26,12 @@
- #include "hw/pci/pci_device.h"
- #include "hw/vfio/vfio-common.h"
- #include "qemu/error-report.h"
-+#include CONFIG_DEVICES /* CONFIG_VFIO_PCI */
- 
- /*
-  * Interfaces for IBM EEH (Enhanced Error Handling)
-  */
-+#ifdef CONFIG_VFIO_PCI
- static bool vfio_eeh_container_ok(VFIOContainer *container)
- {
-     /*
-@@ -314,3 +316,37 @@ int spapr_phb_vfio_eeh_configure(SpaprPhbState *sphb)
- 
-     return RTAS_OUT_SUCCESS;
- }
-+
-+#else
-+
-+bool spapr_phb_eeh_available(SpaprPhbState *sphb)
-+{
-+    return false;
-+}
-+
-+void spapr_phb_vfio_reset(DeviceState *qdev)
-+{
-+}
-+
-+int spapr_phb_vfio_eeh_set_option(SpaprPhbState *sphb,
-+                                  unsigned int addr, int option)
-+{
-+    return RTAS_OUT_NOT_SUPPORTED;
-+}
-+
-+int spapr_phb_vfio_eeh_get_state(SpaprPhbState *sphb, int *state)
-+{
-+    return RTAS_OUT_NOT_SUPPORTED;
-+}
-+
-+int spapr_phb_vfio_eeh_reset(SpaprPhbState *sphb, int option)
-+{
-+    return RTAS_OUT_NOT_SUPPORTED;
-+}
-+
-+int spapr_phb_vfio_eeh_configure(SpaprPhbState *sphb)
-+{
-+    return RTAS_OUT_NOT_SUPPORTED;
-+}
-+
-+#endif /* CONFIG_VFIO_PCI */
-diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
-index 56f0475a8e2e46e433d9df02460aec65e26d77a5..44263a58c4d3202afbe8bb44c67701bded855a57 100644
---- a/hw/ppc/Kconfig
-+++ b/hw/ppc/Kconfig
-@@ -3,11 +3,11 @@ config PSERIES
-     imply PCI_DEVICES
-     imply TEST_DEVICES
-     imply VIRTIO_VGA
-+    imply VFIO_PCI if LINUX   # needed by spapr_pci_vfio.c
-     select NVDIMM
-     select DIMM
-     select PCI
-     select SPAPR_VSCSI
--    select VFIO if LINUX   # needed by spapr_pci_vfio.c
-     select XICS
-     select XIVE
-     select MSI_NONBROKEN
--- 
-2.42.0
+
+> 
+>> Also, we could probably define the ICS offset to SPAPR_XIRQ_BASE
+>> directly under spapr_irq_init() and get rid of ics_instance_init().
+>> The HW IRQ Number offset in the PNV ICS instances is assigned
+>> dynamically by the OS (see pnv_phb3). So it should befine to do
+>> the same for spapr. In which case we can get rid of XICS_IRQ_BASE.
+>>
+> 
+> Hmm, I am not so familiar with XICS yet, so not sure if we really need
+> to do that, but it can be done along with other improvements if needed.
+> 
+> regards,
+> Harsh
+> 
+>> Thanks,
+>>
+>> C.
+>>
+>>
+>>
+>>>
+>>> regards,
+>>> Harsh
+>>>
+>>>> Thanks,
+>>>>
+>>>> C.
+>>>>
+>>>>
+>>>>>   static const TypeInfo spapr_intc_info = {
+>>>>>       .name = TYPE_SPAPR_INTC,
+>>>>>       .parent = TYPE_INTERFACE,
+>>>>> @@ -329,7 +331,7 @@ void spapr_irq_init(SpaprMachineState *spapr, Error **errp)
+>>>>>           int i;
+>>>>>           dev = qdev_new(TYPE_SPAPR_XIVE);
+>>>>> -        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + SPAPR_XIRQ_BASE);
+>>>>> +        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + SPAPR_IRQ_NR_IPIS);
+>>>>>           /*
+>>>>>            * 8 XIVE END structures per CPU. One for each available
+>>>>>            * priority
+>>>>> @@ -356,7 +358,7 @@ void spapr_irq_init(SpaprMachineState *spapr, Error **errp)
+>>>>>       }
+>>>>>       spapr->qirqs = qemu_allocate_irqs(spapr_set_irq, spapr,
+>>>>> -                                      smc->nr_xirqs + SPAPR_XIRQ_BASE);
+>>>>> +                                      smc->nr_xirqs + SPAPR_IRQ_NR_IPIS);
+>>>>>       /*
+>>>>>        * Mostly we don't actually need this until reset, except that not
+>>>>
+>>
 
 
