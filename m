@@ -2,90 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA1C7F7436
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 13:49:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A1B7F7457
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 13:53:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6Vat-0004J8-Ki; Fri, 24 Nov 2023 07:47:39 -0500
+	id 1r6Vfc-00005j-GD; Fri, 24 Nov 2023 07:52:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6Var-0004AZ-1f
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 07:47:37 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6Vao-0005cI-Qm
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 07:47:36 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40b2ad4953cso16825895e9.0
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 04:47:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700830052; x=1701434852; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=U2xSlMOjhRTHcGlZQri8H/KgmcTvXC+4xuXicKM3J4A=;
- b=WNgR+KIPFuC7HGpcSarrP00ouVI3OTUSu69keP5PwEwZo+jseM8oDEvmrlOM0dHTKD
- S/Ng2FY6MQR7zlB+x95yOq8v05V0ZF9nP3FIo9C04OP8Bven+9gfHvMmnuJMYhlQ/p+I
- huhb5g1UE7ttUBnhxzVvi4CQUl5Vs0GG245r/Anq2EM60m9KcsQWYb6kiY67pZa3DN30
- 1GCjWHke8eAWPhyXAmZfstszWUDg+WdzQLzq7geftGScriJDdVlOJzUUZdwwruAOedVo
- pdH3ix7ATGNUJPvIvY26ZU3aZ2mAhjCj5XjUfroC41OhLJzn2BJhnd5//KotL18tX9WD
- hEtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700830052; x=1701434852;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=U2xSlMOjhRTHcGlZQri8H/KgmcTvXC+4xuXicKM3J4A=;
- b=GAn4eJ/9t+d6c+c/iFEfKM8snoAZvmxxpYJdTff2LdmgE5AzpN688r/yrRbvRP+TiB
- YQO/8W12CRZUr5OH6u+x3nD3dhGIvfsdjz87TK3VYgDEZvYATN8/1zNo4vudDR64JtI5
- 84xSMTCF1aPW92KfX5HWYf8ZMU9sLSFMarDdlerIoRTV1efiXq4QmoO0pVbrqT+tN02E
- PPjSsFIt58V4yOI3oXoSlpr5OtwsR1FaKr+1PuOXHjq4LKrHwS/5Kal3/gGgMJUKqAs9
- uaQx7csxP7A4jTNo9g4tEAVZK/Mx6T05/kGGiZbHgDmyxOrUpej3+PA+iUZuBGdilYIB
- vv5w==
-X-Gm-Message-State: AOJu0YxmC21nUjUkd9U3nYhFh7R1JFpu4Epe7xa2BOKqRtBxqbBwfwTv
- TlMBnehFpfbhNdAxf4tddLG6wA==
-X-Google-Smtp-Source: AGHT+IHBHw0DQlH8XOCUX9Mv/un6JTCKpVtZHx+hVgc8VfuNytdkotwkBQIhImrphwzQCL1OemPYXA==
-X-Received: by 2002:a05:600c:350f:b0:40b:37f2:95bc with SMTP id
- h15-20020a05600c350f00b0040b37f295bcmr2500711wmq.6.1700830052182; 
- Fri, 24 Nov 2023 04:47:32 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.218.17])
- by smtp.gmail.com with ESMTPSA id
- v19-20020adfd053000000b0032f9688ea48sm4165581wrh.10.2023.11.24.04.47.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 24 Nov 2023 04:47:31 -0800 (PST)
-Message-ID: <bc15ee84-9ef5-4558-a978-88c0d5b06978@linaro.org>
-Date: Fri, 24 Nov 2023 13:47:29 +0100
+ (Exim 4.90_1) (envelope-from <SRS0=ZyQH=HF=kaod.org=clg@ozlabs.org>)
+ id 1r6Vfa-00005A-5C; Fri, 24 Nov 2023 07:52:30 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=ZyQH=HF=kaod.org=clg@ozlabs.org>)
+ id 1r6VfX-0007Ag-6G; Fri, 24 Nov 2023 07:52:29 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4ScFHm5tpgz4x5m;
+ Fri, 24 Nov 2023 23:52:20 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4ScFHl1bpqz4wc6;
+ Fri, 24 Nov 2023 23:52:18 +1100 (AEDT)
+Message-ID: <77e503b5-6c99-43ee-8242-8ddd336d5fd0@kaod.org>
+Date: Fri, 24 Nov 2023 13:52:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-8.2 v4 10/10] hw/char/pl011: Implement TX FIFO
+Subject: Re: [PATCH v2 5/7] pnv/chiptod: Implement the ChipTOD to Core transfer
 Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Gavin Shan <gshan@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Peter Maydell <peter.maydell@linaro.org>,
- Evgeny Iakovlev <eiakovlev@linux.microsoft.com>, qemu-arm@nongnu.org,
- Mikko Rapeli <mikko.rapeli@linaro.org>,
- Samuel Thibault <samuel.thibault@ens-lyon.org>
-References: <20231109192814.95977-1-philmd@linaro.org>
- <20231109192814.95977-11-philmd@linaro.org>
- <CAJ+F1CKFFU_VEA4nhgWw9RLDgc_gD0h-FPfvSP4LaFC1j4pP6Q@mail.gmail.com>
- <ZV3aMYohaUsg5gWx@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <ZV3aMYohaUsg5gWx@redhat.com>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
+ qemu-devel@nongnu.org
+References: <20231124064001.198572-1-npiggin@gmail.com>
+ <20231124064001.198572-6-npiggin@gmail.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20231124064001.198572-6-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=ZyQH=HF=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,79 +67,305 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/11/23 11:38, Daniel P. Berrangé wrote:
-> On Wed, Nov 22, 2023 at 02:31:29PM +0400, Marc-André Lureau wrote:
->> Hi
->>
->> On Thu, Nov 9, 2023 at 11:30 PM Philippe Mathieu-Daudé
->> <philmd@linaro.org> wrote:
->>>
->>> If the UART back-end chardev doesn't drain data as fast as stdout
->>> does or blocks, buffer in the TX FIFO to try again later.
->>>
->>> This avoids having the IO-thread busy waiting on chardev back-ends,
->>> reported recently when testing the Trusted Reference Stack and
->>> using the socket backend:
->>> https://linaro.atlassian.net/browse/TRS-149?focusedCommentId=149574
->>>
->>> Implement registering a front-end 'watch' callback on back-end
->>> events, so we can resume transmitting when the back-end is writable
->>> again, not blocking the main loop.
->>
->> I do not have access to that Jira issue.
->>
->> In general, chardev backends should have some buffering already
->> (socket, files etc).
->>
->> If we want more, or extra control over buffering, maybe this should be
->> implemented at the chardev level, rather than each frontend implement
->> its own extra buffering logic...
->>
->> Regardless, I think frontends should have an option to "drop" data
->> when the chardev/buffer is full, rather than hanging.
+On 11/24/23 07:39, Nicholas Piggin wrote:
+> One of the functions of the ChipTOD is to transfer TOD to the Core
+> (aka PC - Pervasive Core) timebase facility.
 > 
-> Does anyone really want data to be dropped by QEMU ? Every time I've seen
-> a scenario where data has been dropped or lost, it has been considered
-> a bug to be solved.
-
-A kind of counter example is the RX UART model, which is used in
-embedded world and respects the baudrate timing. I guess some scripts
-were working with the QEMU UART chardev, but them the same script
-failed when using HW UART, so realistic HW baudrate was emulated using
-the timer API. See the chardev frontend handlers:
-
-static int can_receive(void *opaque)
-{
-     RSCIState *sci = RSCI(opaque);
-     if (sci->rx_next > qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL)) {
-         return 0;
-     } else {
-         return FIELD_EX8(sci->scr, SCR, RE);
-     }
-}
-
-The TX path also use a timer:
-
-static void send_byte(RSCIState *sci)
-{
-     if (qemu_chr_fe_backend_connected(&sci->chr)) {
-         qemu_chr_fe_write_all(&sci->chr, &sci->tdr, 1);
-     }
-     timer_mod(&sci->timer,
-              qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + sci->trtime);
-
-The more complex 16550A UART model also use timer in FIFO mode.
-
-> Sure, we don't want QEMU to block on chardev writes, but we want that
-> more than throwing away data.
+> The ChipTOD can be programmed with a target address to send the TOD
+> value to. The hardware implementation seems to perform this by
+> sending the TOD value to a SCOM address.
 > 
-> What's the use case for capturing data from the serial port, but throwing
-> it away if the other end of a socket doesn't read quickly enough ?
+> This implementation grabs the core directly and manipulates the
+> timebase facility state in the core. This is a hack, but it works
+> enough for now. A better implementation would implement the transfer
+> to the PnvCore xscom register and drive the timebase state machine
+> from there.
 > 
-> If someone does want lossy serial ports, they could configure the UDP
-> charedev backend already.
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   include/hw/ppc/pnv.h         |   2 +
+>   include/hw/ppc/pnv_chiptod.h |   4 ++
+>   target/ppc/cpu.h             |   7 ++
+>   hw/ppc/pnv.c                 |  15 ++++
+>   hw/ppc/pnv_chiptod.c         | 132 +++++++++++++++++++++++++++++++++++
+>   5 files changed, 160 insertions(+)
 > 
-> With regards,
-> Daniel
+> diff --git a/include/hw/ppc/pnv.h b/include/hw/ppc/pnv.h
+> index 7e5fef7c43..005048d207 100644
+> --- a/include/hw/ppc/pnv.h
+> +++ b/include/hw/ppc/pnv.h
+> @@ -28,6 +28,7 @@
+>   
+>   #define TYPE_PNV_CHIP "pnv-chip"
+>   
+> +typedef struct PnvCore PnvCore;
+>   typedef struct PnvChip PnvChip;
+>   typedef struct Pnv8Chip Pnv8Chip;
+>   typedef struct Pnv9Chip Pnv9Chip;
+> @@ -56,6 +57,7 @@ DECLARE_INSTANCE_CHECKER(PnvChip, PNV_CHIP_POWER9,
+>   DECLARE_INSTANCE_CHECKER(PnvChip, PNV_CHIP_POWER10,
+>                            TYPE_PNV_CHIP_POWER10)
+>   
+> +PnvCore *pnv_chip_find_core(PnvChip *chip, uint32_t core_id);
+>   PowerPCCPU *pnv_chip_find_cpu(PnvChip *chip, uint32_t pir);
+>   
+>   typedef struct PnvPHB PnvPHB;
+> diff --git a/include/hw/ppc/pnv_chiptod.h b/include/hw/ppc/pnv_chiptod.h
+> index f873901ee7..b021ec81fe 100644
+> --- a/include/hw/ppc/pnv_chiptod.h
+> +++ b/include/hw/ppc/pnv_chiptod.h
+> @@ -25,6 +25,8 @@ enum tod_state {
+>       tod_stopped = 1,
+>   };
+>   
+> +typedef struct PnvCore PnvCore;
+> +
+>   struct PnvChipTOD {
+>       DeviceState xd;
+>   
+> @@ -36,12 +38,14 @@ struct PnvChipTOD {
+>       enum tod_state tod_state;
+>       uint64_t tod_error;
+>       uint64_t pss_mss_ctrl_reg;
+> +    PnvCore *slave_pc_target;
+>   };
+>   
+>   struct PnvChipTODClass {
+>       DeviceClass parent_class;
+>   
+>       void (*broadcast_ttype)(PnvChipTOD *sender, uint32_t trigger);
+> +    PnvCore *(*tx_ttype_target)(PnvChipTOD *chiptod, uint64_t val);
+>   
+>       int xscom_size;
+>       const MemoryRegionOps *xscom_ops;
+> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+> index 848e583c2d..d7cfdeb3b6 100644
+> --- a/target/ppc/cpu.h
+> +++ b/target/ppc/cpu.h
+> @@ -1258,6 +1258,13 @@ struct CPUArchState {
+>       uint32_t tlb_need_flush; /* Delayed flush needed */
+>   #define TLB_NEED_LOCAL_FLUSH   0x1
+>   #define TLB_NEED_GLOBAL_FLUSH  0x2
+> +
+> +#if defined(TARGET_PPC64)
+> +    /* PowerNV chiptod / timebase facility state. */> +    /* Would be nice to put these into PnvCore */
+
+These attributes should be grouped under a struct tb_tod_something {}.
+That can be done now.
+
+Later, the struct could be moved under PnvCPUState, accessible through
+PowerPCCPU::machine_data, which is where they belong I think. It would
+make the implementation of helper_store_tfmr() more complex with a
+PowerPCCPUClass handler but it would be cleaner. Food for thoughts.
+
+Thanks,
+
+C.
+
+
+
+> +    int tb_ready_for_tod; /* core TB ready to receive TOD from chiptod */
+> +    int tod_sent_to_tb;   /* chiptod sent TOD to the core TB */
+> +#endif
+>   #endif
+>   
+>       /* Other registers */
+> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+> index 546266ae3d..f42e70d716 100644
+> --- a/hw/ppc/pnv.c
+> +++ b/hw/ppc/pnv.c
+> @@ -2065,6 +2065,21 @@ static void pnv_chip_class_init(ObjectClass *klass, void *data)
+>       dc->desc = "PowerNV Chip";
+>   }
+>   
+> +PnvCore *pnv_chip_find_core(PnvChip *chip, uint32_t core_id)
+> +{
+> +    int i;
+> +
+> +    for (i = 0; i < chip->nr_cores; i++) {
+> +        PnvCore *pc = chip->cores[i];
+> +        CPUCore *cc = CPU_CORE(pc);
+> +
+> +        if (cc->core_id == core_id) {
+> +            return pc;
+> +        }
+> +    }
+> +    return NULL;
+> +}
+> +
+>   PowerPCCPU *pnv_chip_find_cpu(PnvChip *chip, uint32_t pir)
+>   {
+>       int i, j;
+> diff --git a/hw/ppc/pnv_chiptod.c b/hw/ppc/pnv_chiptod.c
+> index 88d285a332..c494daac7f 100644
+> --- a/hw/ppc/pnv_chiptod.c
+> +++ b/hw/ppc/pnv_chiptod.c
+> @@ -210,6 +210,79 @@ static void chiptod_power10_broadcast_ttype(PnvChipTOD *sender,
+>       }
+>   }
+>   
+> +static PnvCore *pnv_chip_get_core_by_xscom_base(PnvChip *chip,
+> +                                                uint32_t xscom_base)
+> +{
+> +    PnvChipClass *pcc = PNV_CHIP_GET_CLASS(chip);
+> +    int i;
+> +
+> +    for (i = 0; i < chip->nr_cores; i++) {
+> +        PnvCore *pc = chip->cores[i];
+> +        CPUCore *cc = CPU_CORE(pc);
+> +        int core_hwid = cc->core_id;
+> +
+> +        if (pcc->xscom_core_base(chip, core_hwid) == xscom_base) {
+> +            return pc;
+> +        }
+> +    }
+> +    return NULL;
+> +}
+> +
+> +static PnvCore *chiptod_power9_tx_ttype_target(PnvChipTOD *chiptod,
+> +                                               uint64_t val)
+> +{
+> +    /*
+> +     * skiboot uses Core ID for P9, though SCOM should work too.
+> +     */
+> +    if (val & PPC_BIT(35)) { /* SCOM addressing */
+> +        uint32_t addr = val >> 32;
+> +        uint32_t reg = addr & 0xfff;
+> +
+> +        if (reg != PC_TOD) {
+> +            qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: SCOM addressing: "
+> +                          "unimplemented slave register 0x%" PRIx32 "\n", reg);
+> +            return NULL;
+> +        }
+> +
+> +        return pnv_chip_get_core_by_xscom_base(chiptod->chip, addr & ~0xfff);
+> +
+> +    } else { /* Core ID addressing */
+> +        uint32_t core_id = GETFIELD(TOD_TX_TTYPE_PIB_SLAVE_ADDR, val) & 0x1f;
+> +        return pnv_chip_find_core(chiptod->chip, core_id);
+> +    }
+> +}
+> +
+> +static PnvCore *chiptod_power10_tx_ttype_target(PnvChipTOD *chiptod,
+> +                                               uint64_t val)
+> +{
+> +    /*
+> +     * skiboot uses SCOM for P10 because Core ID was unable to be made to
+> +     * work correctly. For this reason only SCOM addressing is implemented.
+> +     */
+> +    if (val & PPC_BIT(35)) { /* SCOM addressing */
+> +        uint32_t addr = val >> 32;
+> +        uint32_t reg = addr & 0xfff;
+> +
+> +        if (reg != PC_TOD) {
+> +            qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: SCOM addressing: "
+> +                          "unimplemented slave register 0x%" PRIx32 "\n", reg);
+> +            return NULL;
+> +        }
+> +
+> +        /*
+> +         * This may not deal with P10 big-core addressing at the moment.
+> +         * The big-core code in skiboot syncs small cores, but it targets
+> +         * the even PIR (first small-core) when syncing second small-core.
+> +         */
+> +        return pnv_chip_get_core_by_xscom_base(chiptod->chip, addr & ~0xfff);
+> +
+> +    } else { /* Core ID addressing */
+> +        qemu_log_mask(LOG_UNIMP, "pnv_chiptod: TX TTYPE Core ID "
+> +                      "addressing is not implemented for POWER10\n");
+> +        return NULL;
+> +    }
+> +}
+> +
+>   static void pnv_chiptod_xscom_write(void *opaque, hwaddr addr,
+>                                       uint64_t val, unsigned size,
+>                                       bool is_power9)
+> @@ -232,6 +305,22 @@ static void pnv_chiptod_xscom_write(void *opaque, hwaddr addr,
+>           chiptod->pss_mss_ctrl_reg = val & PPC_BITMASK(0, 31);
+>           break;
+>   
+> +    case TOD_TX_TTYPE_CTRL_REG:
+> +        /*
+> +         * This register sets the target of the TOD value transfer initiated
+> +         * by TOD_MOVE_TOD_TO_TB. The TOD is able to send the address to
+> +         * any target register, though in practice only the PC TOD register
+> +         * should be used. ChipTOD has a "SCOM addressing" mode which fully
+> +         * specifies the SCOM address, and a core-ID mode which uses the
+> +         * core ID to target the PC TOD for a given core.
+> +         */
+> +        chiptod->slave_pc_target = pctc->tx_ttype_target(chiptod, val);
+> +        if (!chiptod->slave_pc_target) {
+> +            qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
+> +                          " TOD_TX_TTYPE_CTRL_REG val 0x%" PRIx64
+> +                          " invalid slave address\n", val);
+> +        }
+> +        break;
+>       case TOD_ERROR_REG:
+>           chiptod->tod_error &= ~val;
+>           break;
+> @@ -257,6 +346,47 @@ static void pnv_chiptod_xscom_write(void *opaque, hwaddr addr,
+>               }
+>           }
+>           break;
+> +
+> +    case TOD_MOVE_TOD_TO_TB_REG:
+> +        /*
+> +         * XXX: it should be a cleaner model to have this drive a SCOM
+> +         * transaction to the target address, and implement the state machine
+> +         * in the PnvCore. For now, this hack makes things work.
+> +         */
+> +        if (chiptod->tod_state != tod_running) {
+> +            qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
+> +                          " TOD_MOVE_TOD_TO_TB_REG in bad state %d\n",
+> +                          chiptod->tod_state);
+> +        } else if (!(val & PPC_BIT(0))) {
+> +            qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
+> +                          " TOD_MOVE_TOD_TO_TB_REG with bad val 0x%" PRIx64"\n",
+> +                          val);
+> +        } else if (chiptod->slave_pc_target == NULL) {
+> +            qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
+> +                          " TOD_MOVE_TOD_TO_TB_REG with no slave target\n");
+> +        } else {
+> +            PowerPCCPU *cpu = chiptod->slave_pc_target->threads[0];
+> +            CPUPPCState *env = &cpu->env;
+> +
+> +            /*
+> +             * Moving TOD to TB will set the TB of all threads in a
+> +             * core, so skiboot only does this once per thread0, so
+> +             * that is where we keep the timebase state machine.
+> +             *
+> +             * It is likely possible for TBST to be driven from other
+> +             * threads in the core, but for now we only implement it for
+> +             * thread 0.
+> +             */
+> +
+> +            if (env->tb_ready_for_tod) {
+> +                env->tod_sent_to_tb = 1;
+> +            } else {
+> +                qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: xscom write reg"
+> +                              " TOD_MOVE_TOD_TO_TB_REG with TB not ready to"
+> +                              " receive TOD\n");
+> +            }
+> +        }
+> +        break;
+>       case TOD_START_TOD_REG:
+>           if (chiptod->tod_state != tod_stopped) {
+>               qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: LOAD_TOG_REG in "
+> @@ -347,6 +477,7 @@ static void pnv_chiptod_power9_class_init(ObjectClass *klass, void *data)
+>       xdc->dt_xscom = pnv_chiptod_power9_dt_xscom;
+>   
+>       pctc->broadcast_ttype = chiptod_power9_broadcast_ttype;
+> +    pctc->tx_ttype_target = chiptod_power9_tx_ttype_target;
+>   
+>       pctc->xscom_size = PNV_XSCOM_CHIPTOD_SIZE;
+>       pctc->xscom_ops = &pnv_chiptod_power9_xscom_ops;
+> @@ -399,6 +530,7 @@ static void pnv_chiptod_power10_class_init(ObjectClass *klass, void *data)
+>       xdc->dt_xscom = pnv_chiptod_power10_dt_xscom;
+>   
+>       pctc->broadcast_ttype = chiptod_power10_broadcast_ttype;
+> +    pctc->tx_ttype_target = chiptod_power10_tx_ttype_target;
+>   
+>       pctc->xscom_size = PNV_XSCOM_CHIPTOD_SIZE;
+>       pctc->xscom_ops = &pnv_chiptod_power10_xscom_ops;
 
 
