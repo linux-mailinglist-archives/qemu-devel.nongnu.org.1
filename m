@@ -2,94 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCBB17F7363
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 13:05:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8067F7364
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 13:06:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6UvQ-0006jt-B2; Fri, 24 Nov 2023 07:04:48 -0500
+	id 1r6UwV-0007jU-AF; Fri, 24 Nov 2023 07:05:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r6UvL-0006bZ-85
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 07:04:43 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r6UvJ-0007y7-2v
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 07:04:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700827479;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5eBNzZF9B5EoGQS4Gocw933h7EYJ+MZzRFH5dERGUGM=;
- b=dloPxFyLZ0Ho/q9Vv8kgiRTtE+P0utp2Je4anhU4vCFZnoAS1LimKu3Nf054iT5hbQIHre
- m1PgtNpvdCGYOiT+0JI1SB0LcqfSvlMFQr0kmla2rSZKF0jXZyD3PKHvReoydVBd8q0Qya
- dNBUoczok9D+az7G3fzCvmFkjIUBt+U=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-241-5trj7cOTOUm9WWRmy8jbBg-1; Fri, 24 Nov 2023 07:04:38 -0500
-X-MC-Unique: 5trj7cOTOUm9WWRmy8jbBg-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a01783d1ab7so122751166b.0
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 04:04:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6Uvs-0007Kq-0f
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 07:05:17 -0500
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6Uvp-0008GW-Dq
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 07:05:15 -0500
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-5079f6efd64so2376322e87.2
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 04:05:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700827510; x=1701432310; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=02VHxxyVfJLwPmySCDAydN8jj8JkgVACzvTPcrsU5IM=;
+ b=TAokiu9RlLp1PJQE9YZW8aGQOfLS5H70K6/EvfdzctmvwHRsrAksY/Qcobc4fnDwCe
+ G81nMGk0mbhrZMIUO979cT2jO4s7+m1cUSKV7biNmcNdo0NFy8OImMruFFsz1863vdyt
+ Ts3pH9ZIv/rWUiXz6OOWqnWwwuxgONyoBJHc65fhVD8ds8qYG4E4eYC92uZ9+XpJ8MrY
+ DkGhxu2JE7mKIl6DbLwcSQdXrRrZ5tNI9R6ZL/y/QRp5rKk216eXL6S3ECkZfrK0mO3I
+ J+SCt5vHIpJYldnQNvp2ZDnoL+s4ibz243t+mc2W/u1QSjLeqfSK+XrgkgHttCouL1dA
+ mtZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700827476; x=1701432276;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5eBNzZF9B5EoGQS4Gocw933h7EYJ+MZzRFH5dERGUGM=;
- b=kAKU8AFnmWEx+1t/Q5WYGwKT2ikluKTIONjb1VWHsTKavma73SKFklVPTrGJ40RL/d
- V7ijHI/KhdaRVxcFH0VDhr0rOu09OK1nlLRzt+NNzk8UcfDpyd/Qh39Vek5RhL1Q4Ock
- nwYWpYAbKRosyQZACVWr178a0/V0B4VPHqtpTLd415I4jsvQNwNLgjwFPsLbOCaAx0fD
- 0eevOn17/B59FptoH93bEx5Y/+ht56wyA4EuCRJAnYkAJLj2TK4mXYFIbmZPNqoiJMke
- H7ya4Dn2SKWLqqpai2WreDNF22YguK7SD9+MyGAteyfs9fyNU2z5JTYKjcZjTAgZGMSS
- TAyg==
-X-Gm-Message-State: AOJu0YzLeei7F8pJjAf9IiebR6S4yQm4QOudv8sCMg77SFW+nqbuJP8q
- D14YrZekuqWy7783Q1pRQA80BnraOkp5ufV5SFjNNEUQA+mChrLorchCTOOVvl46w9QFLLKsEZZ
- +kSyfjxapa20fKFc=
-X-Received: by 2002:a17:906:da0c:b0:a03:1bf0:2b92 with SMTP id
- fi12-20020a170906da0c00b00a031bf02b92mr1890700ejb.41.1700827476357; 
- Fri, 24 Nov 2023 04:04:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHSBqxYKtBtaufB8rg5gzKiMKzPYdQdcQfhPDWu9V7cH9DMzVqqlejvQi64taY7CxuiKbZSbg==
-X-Received: by 2002:a17:906:da0c:b0:a03:1bf0:2b92 with SMTP id
- fi12-20020a170906da0c00b00a031bf02b92mr1890678ejb.41.1700827476003; 
- Fri, 24 Nov 2023 04:04:36 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com ([185.140.112.229])
+ d=1e100.net; s=20230601; t=1700827510; x=1701432310;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=02VHxxyVfJLwPmySCDAydN8jj8JkgVACzvTPcrsU5IM=;
+ b=uydTA9k4NC/PEJHGR9Hj3jI3+trkTVSGdC1bwsUH7FtVKxXQO6tqy/E+YYruJV0URN
+ 1jRDoovUyQwlpmcqItuYhKNo+Fmr6QaAy64L6pgklNXyDWboLSSZBr14p0dQHU5ul+Eo
+ H2y4i/37h+eEXi6bobbMAoYDW6a1q/tJ1yqeO+9BRnbcBCz7XDhq/rRNnGHr33jsYrb+
+ FHC1iTIxhMYqlPNiD0eHgfpN+T2mS8EWaFwRSR2KEPa0tiqJyMmI6Gt6bcUi/NLjs+t6
+ hBqO9nnxGECT9ATov8UOTlrQ0IdBl1kaPDjx7ARCFB+2zJ5tPe95CR0x+WCm7e6F4lK8
+ 11tA==
+X-Gm-Message-State: AOJu0YyBAnEaXqjtWOmieUYvWuEKxTZEWqXpMmLhN7r2fXEt8k+qglZV
+ uH80XFe/oM/KK0RXYuZy8kE8Rg==
+X-Google-Smtp-Source: AGHT+IHRR4Xk1FFQ2VajEm87zK5G9NNvFEDkNIKaKbe4FyOI8BQV+AGRMZDuPR+0QXyBt4d9+cUOTw==
+X-Received: by 2002:a05:6512:1581:b0:50a:2721:a43d with SMTP id
+ bp1-20020a056512158100b0050a2721a43dmr2229559lfb.49.1700827509730; 
+ Fri, 24 Nov 2023 04:05:09 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.218.17])
  by smtp.gmail.com with ESMTPSA id
- n27-20020a170906089b00b009fe0902961bsm1976493eje.23.2023.11.24.04.04.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Nov 2023 04:04:35 -0800 (PST)
-Date: Fri, 24 Nov 2023 13:04:34 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, David Woodhouse
- <dwmw@amazon.co.uk>, Stefano Stabellini <sstabellini@kernel.org>, Julien
- Grall <julien@xen.org>, Oleksandr Tyshchenko
- <Oleksandr_Tyshchenko@epam.com>, Peter Maydell <peter.maydell@linaro.org>,
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
-Subject: Re: [PATCH v2 5/6] xen_arm: Set mc->max_cpus to GUEST_MAX_VCPUS in
- xen_arm_init()
-Message-ID: <20231124130434.057951b6@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231121221023.419901-6-volodymyr_babchuk@epam.com>
-References: <20231121221023.419901-1-volodymyr_babchuk@epam.com>
- <20231121221023.419901-6-volodymyr_babchuk@epam.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ z11-20020a5d4d0b000000b00332cb23ccbdsm4093327wrt.81.2023.11.24.04.05.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 Nov 2023 04:05:09 -0800 (PST)
+Message-ID: <db8f1d15-121c-4597-8f04-15661c7eaa3b@linaro.org>
+Date: Fri, 24 Nov 2023 13:05:08 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 20/21] target/arm/kvm: Unexport and tidy
+ kvm_arm_sync_mpstate_to_{kvm, qemu}
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+References: <20231123044219.896776-1-richard.henderson@linaro.org>
+ <20231123044219.896776-21-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231123044219.896776-21-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,60 +93,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 21 Nov 2023 22:10:28 +0000
-Volodymyr Babchuk <Volodymyr_Babchuk@epam.com> wrote:
-
-Probably typo in 'subj'
-
-   mc->max_cpus
-
-is limit on maximum supported vCPUs and it shouldn't be set
-by xen_arm_init()
-
-patch itself though does the right thing by setting it
-in xen_arm_machine_class_init()
-
-Also below explanation, while valid is not the reason for
-increasing mc->max_cpus.
-
-Reason could be as simple as 
-   'increase max vCPU limit for FOO machine to XXX'
-
-otherwise machine creation would be aborted early by generic code
-with error '...'
-see machine_parse_smp_config()
-
-
-> From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+On 23/11/23 05:42, Richard Henderson wrote:
+> Drop fprintfs and actually use the return values in the callers.
 > 
-> The number of vCPUs used for the IOREQ configuration (machine->smp.cpus)
-> should really match the system value as for each vCPU we setup a dedicated
-> evtchn for the communication with Xen at the runtime. This is needed
-> for the IOREQ to be properly configured and work if the involved domain
-> has more than one vCPU assigned.
-> 
-> Set the number of current supported guest vCPUs here (128) which is
-> defined in public header arch-arm.h. And the toolstack should then
-> pass max_vcpus using "-smp" arg.
-> 
-> Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-> Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  hw/arm/xen_arm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-> index a5631529d0..b9c3ae14b6 100644
-> --- a/hw/arm/xen_arm.c
-> +++ b/hw/arm/xen_arm.c
-> @@ -231,7 +231,7 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
->      MachineClass *mc = MACHINE_CLASS(oc);
->      mc->desc = "Xen Para-virtualized PC";
->      mc->init = xen_arm_init;
-> -    mc->max_cpus = 1;
-> +    mc->max_cpus = GUEST_MAX_VCPUS;
->      mc->default_machine_opts = "accel=xen";
->      /* Set explicitly here to make sure that real ram_size is passed */
->      mc->default_ram_size = 0;
+>   target/arm/kvm_arm.h | 20 --------------------
+>   target/arm/kvm.c     | 23 ++++++-----------------
+>   2 files changed, 6 insertions(+), 37 deletions(-)
 
+
+>   /*
+>    * Sync the KVM MP_STATE into QEMU
+>    */
+> -int kvm_arm_sync_mpstate_to_qemu(ARMCPU *cpu)
+> +static int kvm_arm_sync_mpstate_to_qemu(ARMCPU *cpu)
+>   {
+>       if (cap_has_mp_state) {
+>           struct kvm_mp_state mp_state;
+>           int ret = kvm_vcpu_ioctl(CPU(cpu), KVM_GET_MP_STATE, &mp_state);
+>           if (ret) {
+> -            fprintf(stderr, "%s: failed to get MP_STATE %d/%s\n",
+> -                    __func__, ret, strerror(-ret));
+> -            abort();
+
+I suppose if this abort() had fired, we'd have reworked that code...
+Maybe mention its removal? Otherwise,
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> +            return ret;
+>           }
+>           cpu->power_state = (mp_state.mp_state == KVM_MP_STATE_STOPPED) ?
+>               PSCI_OFF : PSCI_ON;
+>       }
+> -
+>       return 0;
+>   }
 
