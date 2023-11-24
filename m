@@ -2,58 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA0D7F6DAD
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 09:09:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DF787F6E1B
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 09:28:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6RFT-0002D1-JM; Fri, 24 Nov 2023 03:09:15 -0500
+	id 1r6RWe-0005nX-5L; Fri, 24 Nov 2023 03:27:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=ZyQH=HF=kaod.org=clg@ozlabs.org>)
- id 1r6RFR-0002Ce-V6; Fri, 24 Nov 2023 03:09:13 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=ZyQH=HF=kaod.org=clg@ozlabs.org>)
- id 1r6RFP-0000Id-RX; Fri, 24 Nov 2023 03:09:13 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sc71057Wxz4x2N;
- Fri, 24 Nov 2023 19:09:08 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sc70y5Fzsz4wdB;
- Fri, 24 Nov 2023 19:09:06 +1100 (AEDT)
-Message-ID: <9880236c-cc89-4a83-a377-e680d2ca7163@kaod.org>
-Date: Fri, 24 Nov 2023 09:09:04 +0100
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1r6RWa-0005lK-9q
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 03:26:56 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1r6RWE-0006i6-7v
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 03:26:49 -0500
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8BxIvAwXmBlH4Y8AA--.53751S3;
+ Fri, 24 Nov 2023 16:26:24 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Cxjd4pXmBloHlLAA--.38273S3; 
+ Fri, 24 Nov 2023 16:26:19 +0800 (CST)
+Subject: Re: [risu PATCH 0/5] Add LoongArch LSX/LASX instructions
+From: gaosong <gaosong@loongson.cn>
+To: peter.maydell@linaro.org
+Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, philmd@linaro.org,
+ alex.bennee@linaro.org, maobibo@loongson.cn
+References: <20231025092915.902814-1-gaosong@loongson.cn>
+ <07f56184-5b40-fb9f-ee96-6d963d362b4c@loongson.cn>
+Message-ID: <806a3237-ee1c-9604-7fc5-430671661928@loongson.cn>
+Date: Fri, 24 Nov 2023 16:26:21 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] ppc/spapr: Introduce SPAPR_IRQ_NR_IPIS to refer
- IRQ range for CPU IPIs.
-Content-Language: en-US
-To: Harsh Prateek Bora <harshpb@linux.ibm.com>, npiggin@gmail.com,
- qemu-ppc@nongnu.org
-Cc: danielhb413@gmail.com, david@gibson.dropbear.id.au, qemu-devel@nongnu.org
-References: <20231123055733.1002890-1-harshpb@linux.ibm.com>
- <20231123055733.1002890-2-harshpb@linux.ibm.com>
- <1523c986-7022-4b3f-8e26-b25d8621c623@kaod.org>
- <3030ea29-3611-bd4f-cfd5-b34e4cf6b800@linux.ibm.com>
- <adb6e571-004c-4c28-94e7-efadd61d88c1@kaod.org>
- <7bda3fad-e4df-8e2b-bb8b-8f984d89fcff@linux.ibm.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <7bda3fad-e4df-8e2b-bb8b-8f984d89fcff@linux.ibm.com>
+In-Reply-To: <07f56184-5b40-fb9f-ee96-6d963d362b4c@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=ZyQH=HF=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8Cxjd4pXmBloHlLAA--.38273S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Zw15XF17ur48Cw43tF4kKrX_yoW8JFyUp3
+ 93Za15GrW8Wwn7Ww13t3yUArySgr1xJw17XF1fta4xGr90yryvqF18XrWqgF9rXw4xGr1j
+ qr1UKw17uF15ArbCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL
+ 05UUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.672,
+ SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,140 +82,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/24/23 09:01, Harsh Prateek Bora wrote:
-> 
-> 
-> On 11/23/23 19:42, Cédric Le Goater wrote:
->> On 11/23/23 10:31, Harsh Prateek Bora wrote:
->>>
->>>
->>> On 11/23/23 14:20, Cédric Le Goater wrote:
->>>> On 11/23/23 06:57, Harsh Prateek Bora wrote:
->>>>> spapr_irq_init currently uses existing macro SPAPR_XIRQ_BASE to refer to
->>>>> the range of CPU IPIs during initialization of nr-irqs property.
->>>>> It is more appropriate to have its own define which can be further
->>>>> reused as appropriate for correct interpretation.
->>>>>
->>>>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
->>>>> Suggested-by: Cedric Le Goater <clg@kaod.org>
->>>>
->>>> One comment below
->>>>
->>>> Reviewed-by: Cédric Le Goater <clg@kaod.org>
->>>>
->>>
->>> Thanks, responding below ..
->>>
->>>>> ---
->>>>>   include/hw/ppc/spapr_irq.h | 14 +++++++++++++-
->>>>>   hw/ppc/spapr_irq.c         |  6 ++++--
->>>>>   2 files changed, 17 insertions(+), 3 deletions(-)
->>>>>
->>>>> diff --git a/include/hw/ppc/spapr_irq.h b/include/hw/ppc/spapr_irq.h
->>>>> index c22a72c9e2..4fd2d5853d 100644
->>>>> --- a/include/hw/ppc/spapr_irq.h
->>>>> +++ b/include/hw/ppc/spapr_irq.h
->>>>> @@ -14,9 +14,21 @@
->>>>>   #include "qom/object.h"
->>>>>   /*
->>>>> - * IRQ range offsets per device type
->>>>> + * The XIVE IRQ backend uses the same layout as the XICS backend but
->>>>> + * covers the full range of the IRQ number space. The IRQ numbers for
->>>>> + * the CPU IPIs are allocated at the bottom of this space, below 4K,
->>>>> + * to preserve compatibility with XICS which does not use that range.
->>>>> + */
->>>>> +
->>>>> +/*
->>>>> + * CPU IPI range (XIVE only)
->>>>>    */
->>>>>   #define SPAPR_IRQ_IPI        0x0
->>>>> +#define SPAPR_IRQ_NR_IPIS    0x1000
->>>>> +
->>>>> +/*
->>>>> + * IRQ range offsets per device type
->>>>> + */
->>>>>   #define SPAPR_XIRQ_BASE      XICS_IRQ_BASE /* 0x1000 */
->>>>>   #define SPAPR_IRQ_EPOW       (SPAPR_XIRQ_BASE + 0x0000)
->>>>> diff --git a/hw/ppc/spapr_irq.c b/hw/ppc/spapr_irq.c
->>>>> index a0d1e1298e..97b2fc42ab 100644
->>>>> --- a/hw/ppc/spapr_irq.c
->>>>> +++ b/hw/ppc/spapr_irq.c
->>>>> @@ -23,6 +23,8 @@
->>>>>   #include "trace.h"
->>>>> +QEMU_BUILD_BUG_ON(SPAPR_IRQ_NR_IPIS > SPAPR_XIRQ_BASE);
->>>>> +
->>>>
->>>> I would have put the check in include/hw/ppc/spapr_irq.h but since
->>>> SPAPR_XIRQ_BASE is only used in hw/ppc/spapr_irq.c which is always
->>>> compiled, this is fine. You might want to change that in case a
->>>> respin is asked for.
->>>>
->>>
->>> I had initially tried keeping it in spapr_irq.h , but that would give a build break for XICS_IRQ_BASE not defined since that gets defined in spapr_xics.h and is included later in some files, however, the QEMU_BUILD_BUG_ON expects it to be defined before it reaches here.
->>
->> ah. good catch. this went unnoticed and is a bit ugly. We should fix
->> in some ways. May with a define SPAPR_XIRQ_BASE to 0x1000 simply ?
->>
-> 
-> Hmm, I can do that if a re-spin is reqd, or can be done as a separate
-> patch later also along with other improvements.
+Ping !!
 
-yes. This is food for thoughts for further improvements.
+Since [1]  series had merged into master three weeks ago,
 
-Thanks,
+I ping this series again.
 
-C.
+[1]:
+
+https://lore.kernel.org/all/20231103062332.2413724-1-gaosong@loongson.cn/
 
 
+Thanks.
+Song Gao
 
-> 
->> Also, we could probably define the ICS offset to SPAPR_XIRQ_BASE
->> directly under spapr_irq_init() and get rid of ics_instance_init().
->> The HW IRQ Number offset in the PNV ICS instances is assigned
->> dynamically by the OS (see pnv_phb3). So it should befine to do
->> the same for spapr. In which case we can get rid of XICS_IRQ_BASE.
+在 2023/11/13 下午4:06, gaosong 写道:
+> Ping !
+>
+> 在 2023/10/25 下午5:29, Song Gao 写道:
+>> Hi, Peter!
 >>
-> 
-> Hmm, I am not so familiar with XICS yet, so not sure if we really need
-> to do that, but it can be done along with other improvements if needed.
-> 
-> regards,
-> Harsh
-> 
->> Thanks,
+>> This series adds LSX/LASX instructions.
 >>
->> C.
+>> We tested 10 million instructions without any problems.
+>>
+>> client:
+>> x86 host  QEMU + patches [1].
+>>
+>> server:
+>> 3A5000 host.
 >>
 >>
+>> [1] https://patchwork.kernel.org/project/qemu-devel/list/?series=791633
 >>
->>>
->>> regards,
->>> Harsh
->>>
->>>> Thanks,
->>>>
->>>> C.
->>>>
->>>>
->>>>>   static const TypeInfo spapr_intc_info = {
->>>>>       .name = TYPE_SPAPR_INTC,
->>>>>       .parent = TYPE_INTERFACE,
->>>>> @@ -329,7 +331,7 @@ void spapr_irq_init(SpaprMachineState *spapr, Error **errp)
->>>>>           int i;
->>>>>           dev = qdev_new(TYPE_SPAPR_XIVE);
->>>>> -        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + SPAPR_XIRQ_BASE);
->>>>> +        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + SPAPR_IRQ_NR_IPIS);
->>>>>           /*
->>>>>            * 8 XIVE END structures per CPU. One for each available
->>>>>            * priority
->>>>> @@ -356,7 +358,7 @@ void spapr_irq_init(SpaprMachineState *spapr, Error **errp)
->>>>>       }
->>>>>       spapr->qirqs = qemu_allocate_irqs(spapr_set_irq, spapr,
->>>>> -                                      smc->nr_xirqs + SPAPR_XIRQ_BASE);
->>>>> +                                      smc->nr_xirqs + SPAPR_IRQ_NR_IPIS);
->>>>>       /*
->>>>>        * Mostly we don't actually need this until reset, except that not
->>>>
 >>
+>> Please review!
+>>
+>> Thanks.
+>> Song Gao
+>>
+>> Song Gao (5):
+>>    loongarch: Add LSX instructions
+>>    loongarch: Add LASX instructions
+>>    loongarch: reginfo suport LSX/LASX
+>>    loongarch: init LASX registers
+>>    loongarch: Add block 'clean' and clean_lsx_result()
+>>
+>>   loongarch64.risu           | 2309 +++++++++++++++++++++++++++++++++++-
+>>   risu_reginfo_loongarch64.c |  107 +-
+>>   risu_reginfo_loongarch64.h |    3 +-
+>>   risugen                    |    2 +-
+>>   risugen_loongarch64.pm     |   30 +
+>>   5 files changed, 2418 insertions(+), 33 deletions(-)
+>>
+>
 
 
