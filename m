@@ -2,64 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD8D7F7A8D
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 18:45:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A174A7F7BC5
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 19:08:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6aEU-0000t3-LR; Fri, 24 Nov 2023 12:44:50 -0500
+	id 1r6aaC-0002yr-S3; Fri, 24 Nov 2023 13:07:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r6aER-0000sB-2m
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 12:44:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.145.221.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r6aEP-0006he-Dx
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 12:44:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700847884;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=n6KtD+qjUjkWlbaKcCQyIYdZ7FHRvWfBKaUiaTyFFfw=;
- b=X981iTN3oIBDXFTfRZ3/B8MQ39VHl7JSvsjo1WDFWVJwN0S3qEN1VqTn41dZHtN7wXwrnj
- ztW8Z2Rdt9KKllX0leypnmL7aFKbMIIgOdOaU6qAoFANYunu08Umi1LWb7vCv+q1v6sRWT
- n8wRi3p19LWxIaDf5W4nwskLHXNCT7w=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-2-S7DftUEKNWmZU-iZX5SiLQ-1; Fri, 24 Nov 2023 12:44:40 -0500
-X-MC-Unique: S7DftUEKNWmZU-iZX5SiLQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2C65485A58C;
- Fri, 24 Nov 2023 17:44:40 +0000 (UTC)
-Received: from merkur.redhat.com (unknown [10.39.194.59])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6595F2166B26;
- Fri, 24 Nov 2023 17:44:39 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com,
-	stefanha@redhat.com,
-	qemu-devel@nongnu.org
-Subject: [PATCH for-8.2] export/vhost-user-blk: Fix consecutive drains
-Date: Fri, 24 Nov 2023 18:44:36 +0100
-Message-ID: <20231124174436.46536-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6aZz-0002vC-0O
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 13:07:03 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6aZx-0004tI-7F
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 13:07:02 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-40839652b97so14658035e9.3
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 10:06:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700849219; x=1701454019; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Nwk41YM/As4/nWtSBVjJdN3lwy3gQo3BCw2PzO+/0Hc=;
+ b=JDvPTtjyrT1LuyWY3SjAyp8vgTLNGgvQQ8f69UhwGnUyFmIlL1J+uYcL+m1yYnkY0j
+ 4VV1/2uRftMCcgheNNK3xFNqyf2DUUcACqw5RptzHGzYPlMuUqsWGG+a89CfRYd4x/3H
+ IpnvbLbr0HxiSKR0FpQF1M9INRs19QDQb8EENRDX1e2Ur+Gc6pU3+p5b4mPLJ7IapCXl
+ PwwjS/YQ7cjFyN1hUvSJhj7HeWN7BeeDauutM43zErILTSk1ZTEuRLZ03HIYDjhqOrYk
+ EvGW2DBAy1lbEkqMUiZ4QEO+LEe48gpPrEwFSaeswaPSxzqBwEz6wKCVVylUIM80QUEi
+ xJBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700849219; x=1701454019;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Nwk41YM/As4/nWtSBVjJdN3lwy3gQo3BCw2PzO+/0Hc=;
+ b=PmFkd13aPcydog6nZdm2WaOlkI1UNmpboEzDo3QOJBCB2LrSjScJSBjDQCB2ooWZBp
+ bu5RLUSmQW0nKp4Jg6LsKVzrNtT2TXSs9lJLMl7ytVA9EPMY7IAL5kM7M0yISBihyujE
+ ex4DYy5mLgpMUUnYZLsi0Q0oyL6Iukjgxb2xka0pn6z0M4RKG97BHMpZVuVgWr+09PTS
+ 4v9Zn/wLecaq5LpOKXntSzD+XZGVdXc62rvo47gTzdXjXPyHKhzXWfCCsrPDeA8gHmy3
+ 7r2gWXA35tIU7m+Qyn5Ut3bQ3FOO0Dw5wK820rOsQcRdeUrh09Rk22cEEm0CFxAnXA4o
+ SELA==
+X-Gm-Message-State: AOJu0Yz7OQtH32BddTgmvPmqn7357AXw+X4XNPWKmaHQKGMr+aB4DSo+
+ 26NZ6IxmFZKGgoRAIcAseutohg==
+X-Google-Smtp-Source: AGHT+IFKs5+DX/hDIpTOyevU2kUzMlgHIEAxxto7o3liu4ct3XTBFWAcadNgn8WLggd8tW287TmVkw==
+X-Received: by 2002:a05:600c:444d:b0:40b:3d70:7bea with SMTP id
+ v13-20020a05600c444d00b0040b3d707beamr1393102wmn.22.1700849218661; 
+ Fri, 24 Nov 2023 10:06:58 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.218.17])
+ by smtp.gmail.com with ESMTPSA id
+ j9-20020a05600c1c0900b0040b3515cdf8sm5795297wms.7.2023.11.24.10.06.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 Nov 2023 10:06:58 -0800 (PST)
+Message-ID: <17904233-306a-42a0-b385-d21a46863fb5@linaro.org>
+Date: Fri, 24 Nov 2023 19:06:56 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=216.145.221.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-8.2 1/2] qdev: Fix crash in array property getter
+Content-Language: en-US
+To: Kevin Wolf <kwolf@redhat.com>, qemu-devel@nongnu.org
+Cc: thuth@redhat.com, armbru@redhat.com, peter.maydell@linaro.org,
+ Dan Hoffman <dhoff749@gmail.com>
+References: <20231121173416.346610-1-kwolf@redhat.com>
+ <20231121173416.346610-2-kwolf@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231121173416.346610-2-kwolf@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,160 +93,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The vhost-user-blk export implement AioContext switches in its drain
-implementation. This means that on drain_begin, it detaches the server
-from its AioContext and on drain_end, attaches it again and schedules
-the server->co_trip coroutine in the updated AioContext.
+On 21/11/23 18:34, Kevin Wolf wrote:
+> Passing an uninitialised list to visit_start_list() happens to work for
+> the QObject output visitor because it treats the pointer as an opaque
+> value and never dereferences it, but the string output visitor expects a
+> valid list to check if it has more than one element.
+> 
+> The existing code crashes with the string output visitor if the
+> uninitialised value is non-NULL. Passing an explicit NULL would fix the
+> crash, but still result in wrong output.
+> 
+> Rework get_prop_array() so that it conforms to the expectations that the
+> string output visitor has. This includes building a real list first and
+> using visit_next_list() to iterate it.
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1993
+> Reported-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>   hw/core/qdev-properties.c | 33 ++++++++++++++++++++++++++-------
+>   1 file changed, 26 insertions(+), 7 deletions(-)
 
-However, nothing guarantees that server->co_trip is even safe to be
-scheduled. Not only is it unclear that the coroutine is actually in a
-state where it can be reentered externally without causing problems, but
-with two consecutive drains, it is possible that the scheduled coroutine
-didn't have a chance yet to run and trying to schedule an already
-scheduled coroutine a second time crashes with an assertion failure.
-
-Following the model of NBD, this commit makes the vhost-user-blk export
-shut down server->co_trip during drain so that resuming the export means
-creating and scheduling a new coroutine, which is always safe.
-
-There is one exception: If the drain call didn't poll (for example, this
-happens in the context of bdrv_graph_wrlock()), then the coroutine
-didn't have a chance to shut down. However, in this case the AioContext
-can't have changed; changing the AioContext always involves a polling
-drain. So in this case we can simply assert that the AioContext is
-unchanged and just leave the coroutine running or wake it up if it has
-yielded to wait for the AioContext to be attached again.
-
-Fixes: e1054cd4aad03a493a5d1cded7508f7c348205bf
-Fixes: https://issues.redhat.com/browse/RHEL-1708
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- include/qemu/vhost-user-server.h     |  2 ++
- block/export/vhost-user-blk-server.c |  9 +++++--
- util/vhost-user-server.c             | 36 +++++++++++++++++++++++-----
- 3 files changed, 39 insertions(+), 8 deletions(-)
-
-diff --git a/include/qemu/vhost-user-server.h b/include/qemu/vhost-user-server.h
-index 64ad701015..ca1713b53e 100644
---- a/include/qemu/vhost-user-server.h
-+++ b/include/qemu/vhost-user-server.h
-@@ -45,6 +45,8 @@ typedef struct {
-     /* Protected by ctx lock */
-     bool in_qio_channel_yield;
-     bool wait_idle;
-+    bool quiescing;
-+    bool wake_on_ctx_attach;
-     VuDev vu_dev;
-     QIOChannel *ioc; /* The I/O channel with the client */
-     QIOChannelSocket *sioc; /* The underlying data channel with the client */
-diff --git a/block/export/vhost-user-blk-server.c b/block/export/vhost-user-blk-server.c
-index fe2cee3a78..16f48388d3 100644
---- a/block/export/vhost-user-blk-server.c
-+++ b/block/export/vhost-user-blk-server.c
-@@ -283,6 +283,7 @@ static void vu_blk_drained_begin(void *opaque)
- {
-     VuBlkExport *vexp = opaque;
- 
-+    vexp->vu_server.quiescing = true;
-     vhost_user_server_detach_aio_context(&vexp->vu_server);
- }
- 
-@@ -291,19 +292,23 @@ static void vu_blk_drained_end(void *opaque)
- {
-     VuBlkExport *vexp = opaque;
- 
-+    vexp->vu_server.quiescing = false;
-     vhost_user_server_attach_aio_context(&vexp->vu_server, vexp->export.ctx);
- }
- 
- /*
-- * Ensures that bdrv_drained_begin() waits until in-flight requests complete.
-+ * Ensures that bdrv_drained_begin() waits until in-flight requests complete
-+ * and the server->co_trip coroutine has terminated. It will be restarted in
-+ * vhost_user_server_attach_aio_context().
-  *
-  * Called with vexp->export.ctx acquired.
-  */
- static bool vu_blk_drained_poll(void *opaque)
- {
-     VuBlkExport *vexp = opaque;
-+    VuServer *server = &vexp->vu_server;
- 
--    return vhost_user_server_has_in_flight(&vexp->vu_server);
-+    return server->co_trip || vhost_user_server_has_in_flight(server);
- }
- 
- static const BlockDevOps vu_blk_dev_ops = {
-diff --git a/util/vhost-user-server.c b/util/vhost-user-server.c
-index 5ccc6d24a0..23004d0c62 100644
---- a/util/vhost-user-server.c
-+++ b/util/vhost-user-server.c
-@@ -133,7 +133,9 @@ vu_message_read(VuDev *vu_dev, int conn_fd, VhostUserMsg *vmsg)
-                     server->in_qio_channel_yield = false;
-                 } else {
-                     /* Wait until attached to an AioContext again */
-+                    server->wake_on_ctx_attach = true;
-                     qemu_coroutine_yield();
-+                    assert(!server->wake_on_ctx_attach);
-                 }
-                 continue;
-             } else {
-@@ -201,8 +203,15 @@ static coroutine_fn void vu_client_trip(void *opaque)
-     VuServer *server = opaque;
-     VuDev *vu_dev = &server->vu_dev;
- 
--    while (!vu_dev->broken && vu_dispatch(vu_dev)) {
--        /* Keep running */
-+    while (!vu_dev->broken) {
-+        if (server->quiescing) {
-+            server->co_trip = NULL;
-+            aio_wait_kick();
-+            return;
-+        }
-+        if (!vu_dispatch(vu_dev)) {
-+            break;
-+        }
-     }
- 
-     if (vhost_user_server_has_in_flight(server)) {
-@@ -353,8 +362,7 @@ static void vu_accept(QIONetListener *listener, QIOChannelSocket *sioc,
- 
-     qio_channel_set_follow_coroutine_ctx(server->ioc, true);
- 
--    server->co_trip = qemu_coroutine_create(vu_client_trip, server);
--
-+    /* Attaching the AioContext starts the vu_client_trip coroutine */
-     aio_context_acquire(server->ctx);
-     vhost_user_server_attach_aio_context(server, server->ctx);
-     aio_context_release(server->ctx);
-@@ -413,8 +421,24 @@ void vhost_user_server_attach_aio_context(VuServer *server, AioContext *ctx)
-                            NULL, NULL, vu_fd_watch);
-     }
- 
--    assert(!server->in_qio_channel_yield);
--    aio_co_schedule(ctx, server->co_trip);
-+    if (server->co_trip) {
-+        /*
-+         * The caller didn't fully shut down co_trip (this can happen on
-+         * non-polling drains like in bdrv_graph_wrlock()). This is okay as long
-+         * as it no longer tries to shut it down and we're guaranteed to still
-+         * be in the same AioContext as before.
-+         */
-+        assert(!server->quiescing);
-+        assert(qemu_coroutine_get_aio_context(server->co_trip) == ctx);
-+        if (server->wake_on_ctx_attach) {
-+            server->wake_on_ctx_attach = false;
-+            aio_co_wake(server->co_trip);
-+        }
-+    } else {
-+        server->co_trip = qemu_coroutine_create(vu_client_trip, server);
-+        assert(!server->in_qio_channel_yield);
-+        aio_co_schedule(ctx, server->co_trip);
-+    }
- }
- 
- /* Called with server->ctx acquired */
--- 
-2.42.0
+Per 
+https://lore.kernel.org/qemu-devel/CAFXChKJ+OoxXH0Krvvc0-84VwTkat1CciOL=59+gyH+WYWEV_A@mail.gmail.com/
+Tested-by: Dan Hoffman <dhoff749@gmail.com>
 
 
