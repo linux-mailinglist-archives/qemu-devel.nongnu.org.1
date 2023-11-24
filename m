@@ -2,71 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 498B17F8412
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 20:23:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F89F7F851D
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 21:14:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6bku-0007qQ-NQ; Fri, 24 Nov 2023 14:22:24 -0500
+	id 1r6cY7-00089k-J6; Fri, 24 Nov 2023 15:13:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6bks-0007oe-SE
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 14:22:22 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r6cY5-00089T-7y
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 15:13:13 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6bkr-0007c9-9Q
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 14:22:22 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40a4848c6e1so15309895e9.1
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 11:22:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1r6cY2-0002Fr-UE
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 15:13:12 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1cc9b626a96so17127465ad.2
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 12:13:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700853739; x=1701458539; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=JwuMwX23R9RPHWUcvMcabOd06/+xH+GBxbuV1H3kEV4=;
- b=krvoXzL801aZ+KqrLKB6APdVPk1pEQt4TggxfqzIuT8jTAOP3xAUqBopDAFwye3yfI
- JgQD3GQzlFjiT7DFBtMl+JRoDYFgMrhvyIU0kgfOuWejlVCOZuaKVEEgx6lMChTDsnQx
- 5QBeEA6uXLI71saWdZfWOQr58QgTRHsAcJSIvXAoz5iaUYnt+1XRkWmhTCD0pfbZv4ih
- p36MoCHTtAcIMJBfIrK/VqTpqWeosfUjea4Lju2Yju6SmaPAxgDMCRHxxHEn/HZynZ3s
- 1ZMMuZoVja2rn5XMGSoteuGac8oTdq9VhQ4Fneiz/f+/udZHGKow6P6TQYZX59p1b4si
- XJZA==
+ d=ventanamicro.com; s=google; t=1700856789; x=1701461589; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=u/lY1ENw4SxUwu5ioM+kO3Nf9QUQEiUaruWzHyu75I4=;
+ b=BvHdAZG79KPFuynfyw82msta4NpdMvqdyxpufPUtqx25eUNhowdga9A4q3q8hsqkHI
+ w5dx4sx7EXhdcsEYeqaPddHpCxL8YczzJcGybdMGo5Vtwyqx4QpXvQq+d3tKj5CRrenm
+ 2i8YSQUCfpPH943oZ+mmn/gEJ7dZ/DuQKrvibkR7jzceFnb0j8Km9T0UtEpDEEcsNyK5
+ m37YoZfvAWlJkrB2SGWR2fjMFdqvcCZ9HppD5zhkMiFerE0ZVv7GeuG3oquZfdE6/QEq
+ 1S3KuzKguQQvjPsp8wDYmq5lwKuL6y8aukNyGFKvrz0fAyGpNCUy60SIdiS99dPIgKM/
+ gnuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700853739; x=1701458539;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=JwuMwX23R9RPHWUcvMcabOd06/+xH+GBxbuV1H3kEV4=;
- b=MdcqBVFTE7TcXazvdcYbZxywA5jdlEYj47X4MpJT4fuunUH8oEtHJwY1AuFS1sS+/3
- YjG8ishF2XYQLtLrqLoOweE+D7HiHzIH334zU3RinWoTlEPfhUZjyqjSqMqx/IVsdtWO
- x0LUDlnm8J6jFwlAjf37LRyGgiKSiVheBG2gPH5hjf01OFazQ+9H8oqR6yoUftwyZtVx
- ETDz6tIM17gbYWfCLNUq5SPGbi55iwk8lSEVvITe4FCZ2rh2k3MSNa0XKjPggA1jzApr
- JYGjBh0/g9bjvFCmO9F2q4OpfqF20RLu9jWus+JajnsV4SfoT4vLUA1YpPaGcFDYQ19o
- hKgQ==
-X-Gm-Message-State: AOJu0Yx9Mm3wnSl5T0mwnFLqXRc532DcRX6nJkK6UN1VZ2VWOL+mR5V+
- tw0DETQ+JnIPVVU5tj7O6BxMfYRLeQArew2ZZas=
-X-Google-Smtp-Source: AGHT+IHSgqVwgFFsTon7+0PX2FbXuRTfyC3SevpZM/h9TWPaOTgya/dzIMKseJqVifwbSM9FMVTp8A==
-X-Received: by 2002:a05:600c:19ca:b0:40b:2aa9:21dd with SMTP id
- u10-20020a05600c19ca00b0040b2aa921ddmr3530816wmq.4.1700853739080; 
- Fri, 24 Nov 2023 11:22:19 -0800 (PST)
-Received: from m1x-phil.lan ([176.187.218.17])
+ d=1e100.net; s=20230601; t=1700856789; x=1701461589;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=u/lY1ENw4SxUwu5ioM+kO3Nf9QUQEiUaruWzHyu75I4=;
+ b=xBTJa+vkKQ7vbrELoTsSgmS/XPAGYOVXS/GOOxxUUnzbyBmgRx594VE1pkuuFVd5/K
+ 7r/WcNcQ+BHOG1KXMLFniJuqvnZgXIzDZ7VxQnPdzTcKP97TMwNM+FVg85qBNSycMT8v
+ XIYdWdR5btya531PTH44pPvTsCJhL6hha4gLWvS43iqCp9B3ErsB3Wsse8ZUAp2kfeCR
+ HvwnruXZP8DnGFxIY1lr7RfXTsXWVLwOQgAqsFBJcJh/OYN3MVWXvVXXdeyD3JBbMcI1
+ jpXocWMKjPH00uzKYgHsJfwEKUbxhuWdDBxUJXVNz7HKQscBPVyrmxYpa6uVK92VBjUx
+ BHbw==
+X-Gm-Message-State: AOJu0YzLVYq2fqlmdwZuaOOiPBbPOMqV9ThzVW+D/DtA70HKppd5laSO
+ rxlFL5CyYvwTeb6yn3OyLnea4g==
+X-Google-Smtp-Source: AGHT+IFz9iGOtzbLlJj02dvQyrOJ5Af/4GrdeYmjDp83hwWrW/NMvkNIaS3f+eJHCpt3gI8UiEbAog==
+X-Received: by 2002:a17:903:44d:b0:1cf:7a4b:9dc6 with SMTP id
+ iw13-20020a170903044d00b001cf7a4b9dc6mr3384142plb.61.1700856789310; 
+ Fri, 24 Nov 2023 12:13:09 -0800 (PST)
+Received: from [192.168.68.109] ([152.250.131.119])
  by smtp.gmail.com with ESMTPSA id
- o18-20020a05600c4fd200b0040b38082b99sm4449954wmq.1.2023.11.24.11.22.18
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 24 Nov 2023 11:22:18 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH-for-9.0] hw/display/qxl: Directly use
- VGACommonState::vram_size
-Date: Fri, 24 Nov 2023 20:22:16 +0100
-Message-ID: <20231124192216.96413-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
+ 4-20020a170902e9c400b001cc52b58df6sm3559955plk.215.2023.11.24.12.13.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 Nov 2023 12:13:08 -0800 (PST)
+Message-ID: <0c8496cb-8105-4676-adf5-baa6da2b91a5@ventanamicro.com>
+Date: Fri, 24 Nov 2023 17:13:05 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-9.0 6/7] target/riscv: add RVA22S64 profile
+Content-Language: en-US
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20231123191532.1101644-1-dbarboza@ventanamicro.com>
+ <20231123191532.1101644-7-dbarboza@ventanamicro.com>
+ <20231124-bd1c3479fa6c2bd9fdba7cc9@orel>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231124-bd1c3479fa6c2bd9fdba7cc9@orel>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,88 +97,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PCIQXLDevice::vram_size seems to be some shadow of
-VGACommonState::vram_size. Just use the latter.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-RFC: I don't understand this field otherwise.
----
- hw/display/qxl.h |  1 -
- hw/display/qxl.c | 17 ++++++++---------
- 2 files changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/hw/display/qxl.h b/hw/display/qxl.h
-index fdac14edad..47463bd485 100644
---- a/hw/display/qxl.h
-+++ b/hw/display/qxl.h
-@@ -102,7 +102,6 @@ struct PCIQXLDevice {
-     uint16_t           max_outputs;
- 
-     /* vram pci bar */
--    uint64_t           vram_size;
-     MemoryRegion       vram_bar;
-     uint64_t           vram32_size;
-     MemoryRegion       vram32_bar;
-diff --git a/hw/display/qxl.c b/hw/display/qxl.c
-index 7bb00d68f5..0e1c4efc0c 100644
---- a/hw/display/qxl.c
-+++ b/hw/display/qxl.c
-@@ -2067,20 +2067,19 @@ static void qxl_init_ramsize(PCIQXLDevice *qxl)
- 
-     /* vram (surfaces, 64bit, bar 4+5) */
-     if (qxl->vram_size_mb != -1) {
--        qxl->vram_size = (uint64_t)qxl->vram_size_mb * MiB;
-+        qxl->vga.vram_size = (uint64_t)qxl->vram_size_mb * MiB;
-     }
--    if (qxl->vram_size < qxl->vram32_size) {
--        qxl->vram_size = qxl->vram32_size;
-+    if (qxl->vga.vram_size < qxl->vram32_size) {
-+        qxl->vga.vram_size = qxl->vram32_size;
-     }
- 
-     if (qxl->revision == 1) {
-         qxl->vram32_size = 4096;
--        qxl->vram_size = 4096;
-+        qxl->vga.vram_size = 4096;
-     }
-     qxl->vgamem_size = pow2ceil(qxl->vgamem_size);
-     qxl->vga.vram_size = pow2ceil(qxl->vga.vram_size);
-     qxl->vram32_size = pow2ceil(qxl->vram32_size);
--    qxl->vram_size = pow2ceil(qxl->vram_size);
- }
- 
- static void qxl_realize_common(PCIQXLDevice *qxl, Error **errp)
-@@ -2135,7 +2134,7 @@ static void qxl_realize_common(PCIQXLDevice *qxl, Error **errp)
- 
-     qxl->guest_surfaces.cmds = g_new0(QXLPHYSICAL, qxl->ssd.num_surfaces);
-     memory_region_init_ram(&qxl->vram_bar, OBJECT(qxl), "qxl.vram",
--                           qxl->vram_size, &error_fatal);
-+                           qxl->vga.vram_size, &error_fatal);
-     memory_region_init_alias(&qxl->vram32_bar, OBJECT(qxl), "qxl.vram32",
-                              &qxl->vram_bar, 0, qxl->vram32_size);
- 
-@@ -2159,7 +2158,7 @@ static void qxl_realize_common(PCIQXLDevice *qxl, Error **errp)
-     pci_register_bar(&qxl->pci, QXL_VRAM_RANGE_INDEX,
-                      PCI_BASE_ADDRESS_SPACE_MEMORY, &qxl->vram32_bar);
- 
--    if (qxl->vram32_size < qxl->vram_size) {
-+    if (qxl->vram32_size < qxl->vga.vram_size) {
-         /*
-          * Make the 64bit vram bar show up only in case it is
-          * configured to be larger than the 32bit vram bar.
-@@ -2177,8 +2176,8 @@ static void qxl_realize_common(PCIQXLDevice *qxl, Error **errp)
-     dprint(qxl, 1, "vram/32: %" PRIx64 " MB [region 1]\n",
-            qxl->vram32_size / MiB);
-     dprint(qxl, 1, "vram/64: %" PRIx64 " MB %s\n",
--           qxl->vram_size / MiB,
--           qxl->vram32_size < qxl->vram_size ? "[region 4]" : "[unmapped]");
-+           qxl->vga.vram_size / MiB,
-+           qxl->vram32_size < qxl->vga.vram_size ? "[region 4]" : "[unmapped]");
- 
-     qxl->ssd.qxl.base.sif = &qxl_interface.base;
-     if (qemu_spice_add_display_interface(&qxl->ssd.qxl, qxl->vga.con) != 0) {
--- 
-2.41.0
+On 11/24/23 14:16, Andrew Jones wrote:
+> On Thu, Nov 23, 2023 at 04:15:31PM -0300, Daniel Henrique Barboza wrote:
+>> The RVA22S64 profile consists of the following:
+>>
+>> - all mandatory extensions of RVA22U64;
+>> - priv spec v1.12.0;
+>> - satp mode sv39;
+>> - Ssccptr, a cache related named feature that we're assuming always
+>>    enable since we don't implement a cache;
+>> - Other named features already implemented: Sstvecd, Sstvala,
+>>    Sscounterenw;
+>> - the new Svade named feature that was recently added.
+>>
+>> Most of the work is already done, so this patch is enough to implement
+>> the profile.
+>>
+>> After this patch, the 'rva22s64' user flag alone can be used with the
+>> rva64i CPU to boot Linux:
+>>
+>> -cpu rv64i,rva22s64=true
+>>
+>> This is the /proc/cpuinfo with this profile enabled:
+>>
+>>   # cat /proc/cpuinfo
+>> processor	: 0
+>> hart		: 0
+>> isa		: rv64imafdc_zicbom_zicbop_zicboz_zicntr_zicsr_zifencei_zihintpause_zihpm_zfhmin_zca_zcd_zba_zbb_zbs_zkt_svinval_svpbmt
+>> mmu		: sv39
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   target/riscv/cpu.c | 40 ++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 40 insertions(+)
+>>
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index a77118549b..d00548d164 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -1559,8 +1559,48 @@ static RISCVCPUProfile RVA22U64 = {
+>>       }
+>>   };
+>>   
+>> +/*
+>> + * As with RVA22U64, RVA22S64 also defines 'named features'.
+>> + *
+>> + * Cache related features that we consider enabled since we don't
+>> + * implement cache: Ssccptr
+>> + *
+>> + * Other named features that we already implement: Sstvecd, Sstvala,
+>> + * Sscounterenw
+>> + *
+>> + * Named features that we need to enable: svade
+>> + *
+>> + * The remaining features/extensions comes from RVA22U64.
+>> + */
+>> +static RISCVCPUProfile RVA22S64 = {
+>> +    .name = "rva22s64",
+>> +    .misa_ext = RVI | RVM | RVA | RVF | RVD | RVC | RVU | RVS,
+>> +    .priv_spec = PRIV_VERSION_1_12_0,
+>> +    .satp_mode = VM_1_10_SV39,
+>> +    .ext_offsets = {
+>> +        /* rva22u64 exts and features */
+>> +        CPU_CFG_OFFSET(ext_zicsr), CPU_CFG_OFFSET(ext_zihintpause),
+>> +        CPU_CFG_OFFSET(ext_zba), CPU_CFG_OFFSET(ext_zbb),
+>> +        CPU_CFG_OFFSET(ext_zbs), CPU_CFG_OFFSET(ext_zfhmin),
+>> +        CPU_CFG_OFFSET(ext_zkt), CPU_CFG_OFFSET(ext_zicntr),
+>> +        CPU_CFG_OFFSET(ext_zihpm), CPU_CFG_OFFSET(ext_zicbom),
+>> +        CPU_CFG_OFFSET(ext_zicbop), CPU_CFG_OFFSET(ext_zicboz),
+>> +        CPU_CFG_OFFSET(zic64b),
+>> +
+>> +        /* rva22s64 exts */
+>> +        CPU_CFG_OFFSET(ext_zifencei), CPU_CFG_OFFSET(ext_svpbmt),
+>> +        CPU_CFG_OFFSET(ext_svinval),
+>> +
+>> +        /* rva22s64 named features */
+>> +        CPU_CFG_OFFSET(svade),
+>> +
+>> +        RISCV_PROFILE_EXT_LIST_END
+>> +    }
+>> +};
+>> +
+>>   RISCVCPUProfile *riscv_profiles[] = {
+>>       &RVA22U64,
+>> +    &RVA22S64,
+>>       NULL,
+>>   };
+>>   
+>> -- 
+>> 2.41.0
+>>
+> 
+> Since S-mode profiles will all presumably state they support everything a
+> U-mode profile supports too, then I wonder if we shouldn't be able to
+> point S-mode profiles at U-mode profiles somehow, rather than redundantly
+> add their extensions.
 
+Good point. I just checked and RVA23S64 also works the same way (i.e. the s-mode
+mandatory extensions mandates the u-mode mandatory extensions), so this change
+is worth doing for the sake of at least these 2 profiles.
+
+I'll add a 'parent' field in the profile description and, if set, a profile
+will also enable its parent.
+
+
+Thanks,
+
+
+Daniel
+
+> 
+> Anyway,
+> 
+> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> 
+> Thanks,
+> drew
 
