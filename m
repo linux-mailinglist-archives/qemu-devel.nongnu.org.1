@@ -2,89 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E768B7F77BB
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 16:25:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F191B7F77D9
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 16:31:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6Y2r-0004jd-2P; Fri, 24 Nov 2023 10:24:41 -0500
+	id 1r6Y8s-000516-Mj; Fri, 24 Nov 2023 10:30:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r6Y2p-0004jG-HW
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 10:24:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1r6Y2n-0004CA-V1
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 10:24:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700839477;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ME9ySWmWeETsR1wf95+J1f76rZI7JX9IiNVE3B8e7TQ=;
- b=N75C6V/rooT5P+V8zVNaLaf+pod21ll175LQxX0Zb4Da/W+ID+pRa+ktC2gkV9CqX352ly
- aAnVlOMvP+uiIM5KDS3A0yPn4CW0MrGzDjOGLl590yuPWWJsFTIb6e51QmmMgD7CTbRue5
- Ueb//Dc5PFFrqAQUitTu2726QP8w57w=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-rm07_lR6Nv-pt_GT_ktqTg-1; Fri, 24 Nov 2023 10:24:36 -0500
-X-MC-Unique: rm07_lR6Nv-pt_GT_ktqTg-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-41b83b8dbe1so20727711cf.1
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 07:24:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6Y8b-0004vG-4g
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 10:30:39 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6Y8Y-0005qb-GI
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 10:30:36 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-40b2afd049aso14084255e9.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 07:30:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1700839831; x=1701444631; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=4FeMLTTF9cDZ7eRRNAJVlSJwXuVI906lL/BAvJXNtHI=;
+ b=ixZTzv0cbn3cro47XdZSypoFCaT+KlNGcA1FUHBf45ywQo3QaEWIsPJK6eTL8uINln
+ 7atOoGEQXrDanV5HG76kLd7b8pW+/RlSL+Ig8wO0RlOy84fgYFvflbq2vW85UW/7RA9r
+ ETdfWoAPRYO7MBwzbSLRdWV5jH52zthuFs+kxvzahWmDYYAFSLyOfGvf/Bd1pXIt8UWb
+ RQbl8httiITJtT92iBP+JH9/gnsExjS6VUbf5TU/VcoXpmXd/YqlNAxKbzjwJsCZmt8G
+ StSd6LmBC2FlrIw4UucFgkJUre67CjQq5By0gJnO3Xt8MMhoEXPyBXRqJ6Z+W4H2YrSS
+ mOQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700839475; x=1701444275;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ME9ySWmWeETsR1wf95+J1f76rZI7JX9IiNVE3B8e7TQ=;
- b=PSDuJtyEv0lUbvNfYlvl3nGNi5vSgVMIaKTwVIBPrv4AE/h9Jo+rE+OIc4ivtswQTW
- 4NX0EdoJLj7UX87YT3hAevf1Kot5BUn2zfatGlsfAQWCXkK2s9YY/R0O5gcZsIXzxOgI
- /Huq4RIqUB936KBKnS2tt1gNwGg8lMTTnhIOmtm/YwlsDsD+R0Fg3bnO94iPUSTTlGpC
- Rk5QFslCfjktRk8B7yy2O27C9lQntAKFYoqexFU4rqNDd9UIEWDC8bl6bRe4y4HG+w5j
- lXrtUa6hKbgefndCnRvhveHg6DCGWjKg6w6vmwaMaYoHwnhD9rcOHovwjqY/BtJ2QDpx
- ev7Q==
-X-Gm-Message-State: AOJu0YyXfU8CbyawmD6gFqfGZ/7R+5Aab8v/I0UTy3MjG2h2qvE2WaP2
- al6ecvs/q1kwN6HX8I26JxM60YwvqzX/Z2AczIIe6pcyJiYVkBgmjNNBm3sCTNjU9gesYoCa/Zj
- KP/8HcxbEQAawXec7ugYl0MJGHtoXkmab2tVG92yr+19RNIaZeKMSDipRM435mq8F3dUqsAq7hT
- 4=
-X-Received: by 2002:a0c:fc10:0:b0:672:5946:ffe7 with SMTP id
- z16-20020a0cfc10000000b006725946ffe7mr2875220qvo.30.1700839474944; 
- Fri, 24 Nov 2023 07:24:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHhJR0snMUohtRLVLAmFLrGEpyjXgJvKTCY7Q31mW5yynOSibNR8PK2z3tnDHMOa3VhwDhRwg==
-X-Received: by 2002:a0c:fc10:0:b0:672:5946:ffe7 with SMTP id
- z16-20020a0cfc10000000b006725946ffe7mr2875172qvo.30.1700839474587; 
- Fri, 24 Nov 2023 07:24:34 -0800 (PST)
-Received: from [10.201.49.108] (nat-pool-mxp-t.redhat.com. [149.6.153.186])
+ d=1e100.net; s=20230601; t=1700839831; x=1701444631;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4FeMLTTF9cDZ7eRRNAJVlSJwXuVI906lL/BAvJXNtHI=;
+ b=eV2s21bOsRO3VAfAaURmtF030/nfE810CnI5aIPM4BQ6QkjU171c5gURN8FOAtd3cj
+ A/2JlD0WURtQu3KWpF9EFdxPKPjLZrzSc8xQdQ54H7nAXTQm32tgglf3CT8vghSj1vpS
+ /a6mQDFsFSwrkmbuD1UlqrCbkt4j6tGRVbBLCs+Hjxn0V7B8nouZoZYPX0tCPmXJK9M8
+ lcocjXQKz/H2CBm/cKr1M+QlG+Ed6W54XEjmB8TRMJkAM5213n1lO5Yn+ZAUOWKyLI3R
+ wPMpqULwhudQ7If7Bl8gFxaWB1QAEGCqZgO5ec27OZPNiIsFVNgKJXs2qZ5tLVo6W9Go
+ pl9Q==
+X-Gm-Message-State: AOJu0YwKAh+6g1mUoJcunEAqUsTrSz3Ulc2jdUQ15X2XEk51bUv62Tlr
+ /lK64cbigDv8DodMmgvT3Q1srbKeF8/YFWtihtI=
+X-Google-Smtp-Source: AGHT+IEdvKwGzQ/wXlNwk2E5C1YFSDLYQyUJLVmzBlj2vL37/sWPk9QDk4yhj0PqWgEtxUqUX2w2/A==
+X-Received: by 2002:a05:600c:45cf:b0:3f6:58ad:ed85 with SMTP id
+ s15-20020a05600c45cf00b003f658aded85mr2796106wmo.10.1700839830677; 
+ Fri, 24 Nov 2023 07:30:30 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.218.17])
  by smtp.gmail.com with ESMTPSA id
- q9-20020a0ce209000000b0064f43efc844sm1478815qvl.32.2023.11.24.07.24.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Nov 2023 07:24:34 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 10/10] scripts: adjust url to Coverity tools
-Date: Fri, 24 Nov 2023 16:24:08 +0100
-Message-ID: <20231124152408.140936-11-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124152408.140936-1-pbonzini@redhat.com>
-References: <20231124152408.140936-1-pbonzini@redhat.com>
+ k24-20020a5d5258000000b00332d04514b9sm4513296wrc.95.2023.11.24.07.30.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 Nov 2023 07:30:30 -0800 (PST)
+Message-ID: <2ba80e3f-c13e-406b-a365-37841ff655b4@linaro.org>
+Date: Fri, 24 Nov 2023 16:30:28 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] sh4: Coding style: Remove tabs
+Content-Language: en-US
+To: xun <xun794@gmail.com>, qemu-devel@nongnu.org,
+ Thomas Huth <thuth@redhat.com>
+Cc: qemu-trivial@nongnu.org
+References: <20231124044554.513752-1-xun794@gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231124044554.513752-1-xun794@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,38 +92,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The URL to the Coverity tools download has changed; the old one points
-to an obsolete version that is not supported anymore.  Adjust to point
-to the correct and supported tools.
+Hi,
 
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- scripts/coverity-scan/run-coverity-scan | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On 24/11/23 05:45, xun wrote:
+> From: Yihuan Pan <xun794@gmail.com>
+> 
+> Replaces TABS with spaces to ensure have a consistent coding
+> style with an indentation of 4 spaces in the SH4 subsystem.
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/376
+> Signed-off-by: Yihuan Pan <xun794@gmail.com>
+> ---
+>   linux-user/sh4/termbits.h |  204 +++---
+>   target/sh4/cpu.h          |   80 +-
+>   target/sh4/helper.c       |  236 +++---
+>   target/sh4/op_helper.c    |   70 +-
+>   target/sh4/translate.c    | 1466 ++++++++++++++++++-------------------
+>   5 files changed, 1028 insertions(+), 1028 deletions(-)
 
-diff --git a/scripts/coverity-scan/run-coverity-scan b/scripts/coverity-scan/run-coverity-scan
-index 129672c86fa..d56c9b66776 100755
---- a/scripts/coverity-scan/run-coverity-scan
-+++ b/scripts/coverity-scan/run-coverity-scan
-@@ -116,14 +116,14 @@ update_coverity_tools () {
-     cd "$COVERITY_TOOL_BASE"
- 
-     echo "Checking for new version of coverity build tools..."
--    wget https://scan.coverity.com/download/linux64 --post-data "token=$COVERITY_TOKEN&project=$PROJNAME&md5=1" -O coverity_tool.md5.new
-+    wget https://scan.coverity.com/download/cxx/linux64 --post-data "token=$COVERITY_TOKEN&project=$PROJNAME&md5=1" -O coverity_tool.md5.new
- 
-     if ! cmp -s coverity_tool.md5 coverity_tool.md5.new; then
-         # out of date md5 or no md5: download new build tool
-         # blow away the old build tool
-         echo "Downloading coverity build tools..."
-         rm -rf coverity_tool coverity_tool.tgz
--        wget https://scan.coverity.com/download/linux64 --post-data "token=$COVERITY_TOKEN&project=$PROJNAME" -O coverity_tool.tgz
-+        wget https://scan.coverity.com/download/cxx/linux64 --post-data "token=$COVERITY_TOKEN&project=$PROJNAME" -O coverity_tool.tgz
-         if ! (cat coverity_tool.md5.new; echo "  coverity_tool.tgz") | md5sum -c --status; then
-             echo "Downloaded tarball didn't match md5sum!"
-             exit 1
--- 
-2.43.0
+
+> @@ -241,17 +241,17 @@ static int find_tlb_entry(CPUSH4State * env, target_ulong address,
+>       asid = env->pteh & 0xff;
+>   
+>       for (i = 0; i < nbtlb; i++) {
+> -	if (!entries[i].v)
+> -	    continue;		/* Invalid entry */
+> -	if (!entries[i].sh && use_asid && entries[i].asid != asid)
+> -	    continue;		/* Bad ASID */
+> -	start = (entries[i].vpn << 10) & ~(entries[i].size - 1);
+> -	end = start + entries[i].size - 1;
+> -	if (address >= start && address <= end) {	/* Match */
+> -	    if (match != MMU_DTLB_MISS)
+> -		return MMU_DTLB_MULTIPLE;	/* Multiple match */
+> -	    match = i;
+> -	}
+> +        if (!entries[i].v)
+> +            continue; /* Invalid entry */
+
+Thomas, better fix the 'if { }' in this patch or a following one?
+
+> +        if (!entries[i].sh && use_asid && entries[i].asid != asid)
+> +            continue; /* Bad ASID */
+> +        start = (entries[i].vpn << 10) & ~(entries[i].size - 1);
+> +        end = start + entries[i].size - 1;
+> +        if (address >= start && address <= end) { /* Match */
+> +            if (match != MMU_DTLB_MISS)
+> +                return MMU_DTLB_MULTIPLE; /* Multiple match */
+> +            match = i;
+> +        }
+>       }
+>       return match;
+>   }
+> @@ -265,7 +265,7 @@ static void increment_urc(CPUSH4State * env)
+>       urc = ((env->mmucr) >> 10) & 0x3f;
+>       urc++;
+>       if ((urb > 0 && urc > urb) || urc > (UTLB_SIZE - 1))
+> -	urc = 0;
+> +        urc = 0;
+>       env->mmucr = (env->mmucr & 0xffff03ff) | (urc << 10);
+>   }
 
 
