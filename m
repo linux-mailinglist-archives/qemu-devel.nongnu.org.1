@@ -2,54 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 291F77F75C4
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 14:55:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCBC17F75E2
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 15:03:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6WdF-0002Xo-9a; Fri, 24 Nov 2023 08:54:09 -0500
+	id 1r6Wko-0007C1-U1; Fri, 24 Nov 2023 09:01:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
- id 1r6Wd9-0002Pd-5X
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 08:54:03 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1r6Wka-0007BA-9q
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 09:01:44 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
- id 1r6Wd6-00016h-MM
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 08:54:02 -0500
-Received: from lhrpeml500006.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ScGYf2kHFz689PV;
- Fri, 24 Nov 2023 21:49:26 +0800 (CST)
-Received: from SecurePC30232.china.huawei.com (10.122.247.234) by
- lhrpeml500006.china.huawei.com (7.191.161.198) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 24 Nov 2023 13:53:45 +0000
-To: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>
-CC: <jonathan.cameron@huawei.com>, <tanxiaofei@huawei.com>,
- <prime.zeng@hisilicon.com>, <linuxarm@huawei.com>, <shiju.jose@huawei.com>
-Subject: [PATCH v2 3/3] hw/cxl/cxl-mailbox-utils: Add device DDR5 ECS control
- feature
-Date: Fri, 24 Nov 2023 21:53:37 +0800
-Message-ID: <20231124135338.1191-4-shiju.jose@huawei.com>
-X-Mailer: git-send-email 2.35.1.windows.2
-In-Reply-To: <20231124135338.1191-1-shiju.jose@huawei.com>
-References: <20231124135338.1191-1-shiju.jose@huawei.com>
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1r6WkX-0004q1-Nr
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 09:01:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1700834500;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2j/FO2BafCuPPkClXKNog7lc9GgmdEgPIcAikNoY70A=;
+ b=fn4bLXEVCvlLS5s7lXYZLDD9CAlCfZEZpMcdG5eRcDhQrZEzgGhS1ZLLmEKD9vgDwaYaaO
+ TEx8Ttb+KUVNCIIE8u6Xlsvgw7+bQE3PP8cf4U5eYwgZYprf//vYlNYOC0CeOgE4qYvPwp
+ 7suIHxu4UohfT0JmhRjAiaoLWElVg7c=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-27-6dhDB-dkPaeoLUvNnrR2rg-1; Fri, 24 Nov 2023 09:01:38 -0500
+X-MC-Unique: 6dhDB-dkPaeoLUvNnrR2rg-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-54af4ac76adso450527a12.1
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 06:01:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700834498; x=1701439298;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=2j/FO2BafCuPPkClXKNog7lc9GgmdEgPIcAikNoY70A=;
+ b=ANb3fipocD0GHNnRQH9wcokBXLNi+44L5+sU9GVDVapJa6zIryJAbE+pQW+X7T96JD
+ m8UZM9dglDV2mI8lpf03cKkzM2FjJllY7eQgzC0TwbFa231jpSwaJQH6w6vyeimVveA6
+ 1Yyi5OAXwDhv66/ZAyFZtbK2gsZtpMhkWm4EJdUpybDbsVhomak8UOV93FeglH37drtR
+ Ff1uPhUBjx4Ea/OZHX6M0Fhmn4TKGj4foZU3Bl7bc4RAO2Nnk4PtRXWX+Czd8Eo7yKDM
+ 4lVigCa59w8lamh2BV5/zDglgq7Ab4XwRjPzoXuIQqKOx4kepYvQ8m6MHTrvsr1lwdMf
+ TbcQ==
+X-Gm-Message-State: AOJu0Yz1fbxQcadzkT/YGljx85ePnLVI7Z3hACJmznNsWhgnUppLgeNA
+ 5xE1CsIbVaMGueFWLm5Tp79knnBlu2qCvuojIY59dFGL+xoxVeKzA7DryM+1NQY960zA98sKbKz
+ V5Xad4AFczm1c1lo=
+X-Received: by 2002:a50:cd47:0:b0:544:a26c:804c with SMTP id
+ d7-20020a50cd47000000b00544a26c804cmr2598377edj.16.1700834497351; 
+ Fri, 24 Nov 2023 06:01:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEqbYzDNywa3l6cj02w3h/lNw+9ieWLnB68uwSzhZ/O2uiFwViMOapuAEBwcuVW3zDebH7uoA==
+X-Received: by 2002:a50:cd47:0:b0:544:a26c:804c with SMTP id
+ d7-20020a50cd47000000b00544a26c804cmr2598240edj.16.1700834496075; 
+ Fri, 24 Nov 2023 06:01:36 -0800 (PST)
+Received: from imammedo.users.ipa.redhat.com ([185.140.112.229])
+ by smtp.gmail.com with ESMTPSA id
+ r13-20020a056402018d00b0052ff9bae873sm1784515edv.5.2023.11.24.06.01.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 24 Nov 2023 06:01:35 -0800 (PST)
+Date: Fri, 24 Nov 2023 15:01:35 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Thierry Escande <thierry.escande@vates.tech>
+Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>, Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH 0/4] ICH9 root PCI hotplug
+Message-ID: <20231124150135.0b99deeb@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20231115171837.18866-1-thierry.escande@vates.tech>
+References: <20231115171837.18866-1-thierry.escande@vates.tech>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.247.234]
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- lhrpeml500006.china.huawei.com (7.191.161.198)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56; envelope-from=shiju.jose@huawei.com;
- helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,190 +98,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  <shiju.jose@huawei.com>
-From: shiju.jose--- via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Shiju Jose <shiju.jose@huawei.com>
+On Wed, 15 Nov 2023 17:18:53 +0000
+Thierry Escande <thierry.escande@vates.tech> wrote:
 
-CXL spec 3.1 section 8.2.9.9.11.2 describes the DDR5 Error Check Scrub (ECS)
-control feature.
+> Hi,
+> 
+> This series fixes acpi_hotplug_bridge accessor names, adds new accessors
+> for acpi-root-pci-hotplug property, and enables root PCI hotplug by
+> default for Q35 machine.
 
-The Error Check Scrub (ECS) is a feature defined in JEDEC DDR5 SDRAM
-Specification (JESD79-5) and allows the DRAM to internally read, correct
-single-bit errors, and write back corrected data bits to the DRAM array
-while providing transparency to error counts. The ECS control feature
-allows the request to configure ECS input configurations during system
-boot or at run-time.
+hotplug on Q35 hostbridge is not implemented intentionally
+to keep machine close to the real world.
 
-The ECS control allows the requester to change the log entry type, the ECS
-threshold count provided that the request is within the definition
-specified in DDR5 mode registers, change mode between codeword mode and
-row count mode, and reset the ECS counter.
+PCIe spec 3.1a, 1.3.2.3. Root Complex Integrated Endpoint Rules
+"
+A Root Complex Integrated Endpoint may not be hot-plugged independent of the Root
+Complex as a whole.
+"
+)
 
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
----
- hw/cxl/cxl-mailbox-utils.c | 100 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 99 insertions(+), 1 deletion(-)
+PS:
+but patch 1/4 is good cleanup, pls include Reviewed-by's and resend it
+as a separate patch after 8.2 has been released (so it wouldn't get lost in the traffic).
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 5a6f4e4029..098b92815a 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -810,6 +810,7 @@ typedef struct CXLSupportedFeatureEntry {
- 
- enum CXL_SUPPORTED_FEATURES_LIST {
-     CXL_FEATURE_PATROL_SCRUB = 0,
-+    CXL_FEATURE_DDR5_ECS,
-     CXL_FEATURE_MAX
- };
- 
-@@ -881,6 +882,42 @@ typedef struct CXLMemPatrolScrubSetFeature {
-         CXLMemPatrolScrubWriteAttrbs feat_data;
- } QEMU_PACKED QEMU_ALIGNED(16) CXLMemPatrolScrubSetFeature;
- 
-+/*
-+ * CXL r3.1 section 8.2.9.9.11.2:
-+ * DDR5 Error Check Scrub (ECS) Control Feature
-+ */
-+static const QemuUUID ddr5_ecs_uuid = {
-+    .data = UUID(0xe5b13f22, 0x2328, 0x4a14, 0xb8, 0xba,
-+                 0xb9, 0x69, 0x1e, 0x89, 0x33, 0x86)
-+};
-+
-+#define CXL_DDR5_ECS_GET_FEATURE_VERSION    0x01
-+#define CXL_DDR5_ECS_SET_FEATURE_VERSION    0x01
-+#define CXL_DDR5_ECS_LOG_ENTRY_TYPE_DEFAULT    0x01
-+#define CXL_DDR5_ECS_REALTIME_REPORT_CAP_DEFAULT    1
-+#define CXL_DDR5_ECS_THRESHOLD_COUNT_DEFAULT    3 /* 3: 256, 4: 1024, 5: 4096 */
-+#define CXL_DDR5_ECS_MODE_DEFAULT    0
-+
-+#define CXL_DDR5_ECS_NUM_MEDIA_FRUS   3
-+
-+/* CXL memdev DDR5 ECS control attributes */
-+struct CXLMemECSReadAttrbs {
-+        uint8_t ecs_log_cap;
-+        uint8_t ecs_cap;
-+        uint16_t ecs_config;
-+        uint8_t ecs_flags;
-+} QEMU_PACKED cxl_ddr5_ecs_feat_read_attrbs[CXL_DDR5_ECS_NUM_MEDIA_FRUS];
-+
-+typedef struct CXLDDR5ECSWriteAttrbs {
-+    uint8_t ecs_log_cap;
-+    uint16_t ecs_config;
-+} QEMU_PACKED CXLDDR5ECSWriteAttrbs;
-+
-+typedef struct CXLDDR5ECSSetFeature {
-+        CXLSetFeatureInHeader hdr;
-+        CXLDDR5ECSWriteAttrbs feat_data[];
-+} QEMU_PACKED QEMU_ALIGNED(16) CXLDDR5ECSSetFeature;
-+
- /* CXL r3.0 section 8.2.9.6.1: Get Supported Features (Opcode 0500h) */
- static CXLRetCode cmd_features_get_supported(const struct cxl_cmd *cmd,
-                                              uint8_t *payload_in,
-@@ -899,7 +936,7 @@ static CXLRetCode cmd_features_get_supported(const struct cxl_cmd *cmd,
-         CXLSupportedFeatureHeader hdr;
-         CXLSupportedFeatureEntry feat_entries[];
-     } QEMU_PACKED QEMU_ALIGNED(16) * get_feats_out = (void *)payload_out;
--    uint16_t index;
-+    uint16_t count, index;
-     uint16_t entry, req_entries;
-     uint16_t feat_entries = 0;
- 
-@@ -941,6 +978,35 @@ static CXLRetCode cmd_features_get_supported(const struct cxl_cmd *cmd,
-             cxl_memdev_ps_feat_read_attrbs.scrub_flags =
-                                 CXL_MEMDEV_PS_ENABLE_DEFAULT;
-             break;
-+        case  CXL_FEATURE_DDR5_ECS:
-+            /* Fill supported feature entry for device DDR5 ECS control */
-+            get_feats_out->feat_entries[entry] =
-+                         (struct CXLSupportedFeatureEntry) {
-+                .uuid = ddr5_ecs_uuid,
-+                .feat_index = index,
-+                .get_feat_size = CXL_DDR5_ECS_NUM_MEDIA_FRUS *
-+                                    sizeof(struct CXLMemECSReadAttrbs),
-+                .set_feat_size = CXL_DDR5_ECS_NUM_MEDIA_FRUS *
-+                                    sizeof(CXLDDR5ECSWriteAttrbs),
-+                .attrb_flags = 0x1,
-+                .get_feat_version = CXL_DDR5_ECS_GET_FEATURE_VERSION,
-+                .set_feat_version = CXL_DDR5_ECS_SET_FEATURE_VERSION,
-+                .set_feat_effects = 0,
-+            };
-+            feat_entries++;
-+            /* Set default value for DDR5 ECS read attributes */
-+            for (count = 0; count < CXL_DDR5_ECS_NUM_MEDIA_FRUS; count++) {
-+                cxl_ddr5_ecs_feat_read_attrbs[count].ecs_log_cap =
-+                                    CXL_DDR5_ECS_LOG_ENTRY_TYPE_DEFAULT;
-+                cxl_ddr5_ecs_feat_read_attrbs[count].ecs_cap =
-+                                    CXL_DDR5_ECS_REALTIME_REPORT_CAP_DEFAULT;
-+                cxl_ddr5_ecs_feat_read_attrbs[count].ecs_config =
-+                                    CXL_DDR5_ECS_THRESHOLD_COUNT_DEFAULT |
-+                                    (CXL_DDR5_ECS_MODE_DEFAULT << 3);
-+                /* Reserved */
-+                cxl_ddr5_ecs_feat_read_attrbs[count].ecs_flags = 0;
-+            }
-+            break;
-         default:
-             break;
-         }
-@@ -992,6 +1058,19 @@ static CXLRetCode cmd_features_get_feature(const struct cxl_cmd *cmd,
-         memcpy(payload_out,
-                &cxl_memdev_ps_feat_read_attrbs + get_feature->offset,
-                bytes_to_copy);
-+    } else if (qemu_uuid_is_equal(&get_feature->uuid, &ddr5_ecs_uuid)) {
-+        if (get_feature->offset >=  CXL_DDR5_ECS_NUM_MEDIA_FRUS *
-+                                sizeof(struct CXLMemECSReadAttrbs)) {
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        bytes_to_copy = CXL_DDR5_ECS_NUM_MEDIA_FRUS *
-+                        sizeof(struct CXLMemECSReadAttrbs) -
-+                                     get_feature->offset;
-+        bytes_to_copy = (bytes_to_copy > get_feature->count) ?
-+                                    get_feature->count : bytes_to_copy;
-+        memcpy(payload_out,
-+               &cxl_ddr5_ecs_feat_read_attrbs + get_feature->offset,
-+               bytes_to_copy);
-     } else {
-         return CXL_MBOX_UNSUPPORTED;
-     }
-@@ -1009,8 +1088,11 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
-                                            size_t *len_out,
-                                            CXLCCI *cci)
- {
-+    uint16_t count;
-     CXLMemPatrolScrubWriteAttrbs *ps_write_attrbs;
-+    CXLDDR5ECSWriteAttrbs *ecs_write_attrbs;
-     CXLMemPatrolScrubSetFeature *ps_set_feature;
-+    CXLDDR5ECSSetFeature *ecs_set_feature;
-     CXLSetFeatureInHeader *hdr = (void *)payload_in;
- 
-     if (qemu_uuid_is_equal(&hdr->uuid, &patrol_scrub_uuid)) {
-@@ -1028,6 +1110,22 @@ static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
-         cxl_memdev_ps_feat_read_attrbs.scrub_flags &= ~0x1;
-         cxl_memdev_ps_feat_read_attrbs.scrub_flags |=
-                           ps_write_attrbs->scrub_flags & 0x1;
-+    } else if (qemu_uuid_is_equal(&hdr->uuid,
-+                                  &ddr5_ecs_uuid)) {
-+        if (hdr->version != CXL_DDR5_ECS_SET_FEATURE_VERSION ||
-+            (hdr->flags & CXL_SET_FEATURE_FLAG_DATA_TRANSFER_MASK) !=
-+                               CXL_SET_FEATURE_FLAG_FULL_DATA_TRANSFER) {
-+            return CXL_MBOX_UNSUPPORTED;
-+        }
-+
-+        ecs_set_feature = (void *)payload_in;
-+        ecs_write_attrbs = ecs_set_feature->feat_data;
-+        for (count = 0; count < CXL_DDR5_ECS_NUM_MEDIA_FRUS; count++) {
-+                cxl_ddr5_ecs_feat_read_attrbs[count].ecs_log_cap =
-+                                  ecs_write_attrbs[count].ecs_log_cap;
-+                cxl_ddr5_ecs_feat_read_attrbs[count].ecs_config =
-+                                  ecs_write_attrbs[count].ecs_config & 0x1F;
-+        }
-     } else {
-         return CXL_MBOX_UNSUPPORTED;
-     }
--- 
-2.34.1
+> 
+> Thierry Escande (4):
+>   ich9: Remove unused hotplug field from ICH9LPCPMRegs struct
+>   ich9: Renamed use_acpi_hotplug_bridge accessors
+>   ich9: Add accessors for acpi-root-pci-hotplug
+>   ich9: Enable root PCI hotplug by default
+> 
+>  hw/acpi/ich9.c         | 23 +++++++++++++++++++++--
+>  include/hw/acpi/ich9.h |  1 -
+>  2 files changed, 21 insertions(+), 3 deletions(-)
+> 
 
 
