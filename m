@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545FC7F6BE1
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 07:03:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2708F7F6C33
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 07:16:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6PHF-0001MB-Fs; Fri, 24 Nov 2023 01:02:57 -0500
+	id 1r6PT6-0006Fr-S1; Fri, 24 Nov 2023 01:15:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r6PHB-0001LW-TL; Fri, 24 Nov 2023 01:02:53 -0500
-Received: from mail-il1-x133.google.com ([2607:f8b0:4864:20::133])
+ id 1r6PT3-0006FY-LG; Fri, 24 Nov 2023 01:15:09 -0500
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r6PHA-00021m-CO; Fri, 24 Nov 2023 01:02:53 -0500
-Received: by mail-il1-x133.google.com with SMTP id
- e9e14a558f8ab-3580b94ac2eso5040995ab.0; 
- Thu, 23 Nov 2023 22:02:50 -0800 (PST)
+ id 1r6PSz-0005A6-3e; Fri, 24 Nov 2023 01:15:07 -0500
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-6c320a821c4so1373192b3a.2; 
+ Thu, 23 Nov 2023 22:15:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700805769; x=1701410569; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=gmail.com; s=20230601; t=1700806502; x=1701411302; darn=nongnu.org;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p16//vOgTg9wG6a18KQzvB15PSmyUw7oDkLLNz8n8pc=;
- b=dGX8a8BQlt6I31Dqkhm8+yWvOSblREinxM18HXxR+VevQOOUXNfToagfucNYECjS9a
- VZRvEl6rkZVxfH3JwzSS9ATxNw2HA+0owBvhvhnQIVSCGa/w4QntpEXfxHaHeIycsQ0m
- 2ZsFHhRZi3L4cQ5Tt3tTBQ/muRJM3/BNtWJJBw+hiFxgI61kIvRHYRoyMQzKynH4OxaH
- GQaXImT+ZCZRZIUQ4sXfLMt4NCAnZZ9E4cMM0qnEFoTS21X0w/tTTtDb39+5EjSjh/92
- 6LuEymvovm6jnS+/czD/VnCl4VdQwp0E2kmzO9bSYJcF1csrS9bBo/y5mww4gVSzwlxx
- bPQg==
+ bh=9hFLkbemPDulVhjBa3h+/mIorYUlMLz1/3rUMv7oQho=;
+ b=EYhpdBt+53SQJlxmu8vcZcWKpQObQb4nDuEyD51rgf6YTsAhFXL4euxB+GlWClDwfI
+ Oh7eItlJWAPSXX/rami0wlc11jhEdrPVsueh7hqOcbhmxh4/O9Gk+glJt8LcYLDPd+ho
+ IEcHJv5eSSNYZCOylPjJ3ULYng6G4/ox9Wg8NauSJdc3kWwOMcLDgCLuYJT6l9uEDBHW
+ PYe2W6rW9HMp5MzW53H4pUF9vkSoWRFOKtHTuORUUpbNU77n8fbudJ2p8t+HLBGrZpIY
+ mBVrAg7VX8GB1EKIR9x/mCwvXkciwlWy07j7+gA8cAcvvUwvxqBru3PspDP7Cd1CfH7o
+ YF8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700805769; x=1701410569;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=1e100.net; s=20230601; t=1700806502; x=1701411302;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=p16//vOgTg9wG6a18KQzvB15PSmyUw7oDkLLNz8n8pc=;
- b=u+Op7Ed8UfBuO3AmbQvuH9GFT4bqE3W6eGAL453j/KK1G1dygnIaxuU+baiGaYccnC
- uHUQsVepsWPkfOOcozS9FsuCWaqpmaN9WF2KUCimKxWb8DSrHq3hJVgguq61ZTPFVtfZ
- U2fOdJmtOLmY0Zm9JSUEnk7Hz6Wud/vrvRyV6dJqFwjgt2F/nOTM91AHkmJyvEdEaz4B
- 7G79i5yPWva6c7yOERXP1WwWHKo3pO1DV6T8YUHWtdlhNDZTBaeet3KUBJ5wA+tmPsTq
- 3plkmq0DjtWES1Gu3Apzagio2byZ1sVjE7mfh42LKMmFCgP64MhQ0KUdL65BA8aUhV2L
- pPlw==
-X-Gm-Message-State: AOJu0YzdajMN2RmGqCzvSwOsVP+CritYCbOF3ezD5XMKRSDVe1TUtkLA
- GM0Xlv+5+eEF54s28AjnLcI=
-X-Google-Smtp-Source: AGHT+IHG9X4nzjeNKMkCQ5+mKKLNsXqqhudya1M9r7faUgZM7vENgZ9PQfx0ntRc2mdVXyXq8Pl6Yg==
-X-Received: by 2002:a05:6e02:1564:b0:35a:ee9d:eb4b with SMTP id
- k4-20020a056e02156400b0035aee9deb4bmr2340890ilu.5.1700805769319; 
- Thu, 23 Nov 2023 22:02:49 -0800 (PST)
+ bh=9hFLkbemPDulVhjBa3h+/mIorYUlMLz1/3rUMv7oQho=;
+ b=lOIBwquJo0/2qAZro+1MoNeqeswCSCZuAKwwGVttc9kvMQ1PxFX13bOijPdBbBR5q2
+ ktEwxtGXWfXHswlxal67hvUGmZZgxRZo7csmrrfhYFParJYrGpefNh3+8cex8G5uI+Kw
+ Kv2AbvEX5wP08p+fJprTh1VNZXdmMWrqw6ybK/yNvViRnh3N4gWwk1KstejuCFCjXX6q
+ AHexTxNOAwI+3itfL+5i87suL49BfAeDyHUjZgibfmoz148uhFYqsnzApQzBJEjqXkFg
+ cTw5gBw1CHqplzfGfOdte1tEDW5pzqm2C1r4UttXzvD+ygLzwuJEGNvXzcpIy4cUfj/Z
+ PShw==
+X-Gm-Message-State: AOJu0Ywuk6TYgMu95HNvV6aDfjv21U+BjtXuuHujnzt9mTyJRYjGnXRL
+ 27JAlzSRthybrAnq8qNu5uw=
+X-Google-Smtp-Source: AGHT+IG24LnOyYJzwKulYjmKtnXHit74DCUqqMzpe2SVvESVj7OrbgqYxvADJYn1m2IkS+HEdxO6Mg==
+X-Received: by 2002:a05:6a00:a0c:b0:6bd:f224:c79e with SMTP id
+ p12-20020a056a000a0c00b006bdf224c79emr1573782pfh.11.1700806502286; 
+ Thu, 23 Nov 2023 22:15:02 -0800 (PST)
 Received: from localhost ([1.145.239.154]) by smtp.gmail.com with ESMTPSA id
- fa33-20020a056a002d2100b006c320b9897fsm2120474pfb.126.2023.11.23.22.02.37
+ b12-20020aa7810c000000b00690c52267easm2131534pfi.40.2023.11.23.22.14.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 Nov 2023 22:02:46 -0800 (PST)
+ Thu, 23 Nov 2023 22:15:02 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 24 Nov 2023 16:02:27 +1000
-Message-Id: <CX6TBI32PC8G.2Z0K1IX0G01OL@wheely>
+Date: Fri, 24 Nov 2023 16:14:44 +1000
+Message-Id: <CX6TKW8HRF3K.32M41SQ0H9Y5F@wheely>
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
 Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>,
  =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?= <fbarrat@linux.ibm.com>,
  <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 0/7] ppc: pnv ChipTOD and various timebase fixes
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
+Subject: Re: [PATCH 4/7] pnv/chiptod: Add POWER9/10 chiptod model
 X-Mailer: aerc 0.15.2
 References: <20231123103018.172383-1-npiggin@gmail.com>
- <18517c0b-f928-4bbc-b31c-8dfdfefdea31@kaod.org>
-In-Reply-To: <18517c0b-f928-4bbc-b31c-8dfdfefdea31@kaod.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::133;
- envelope-from=npiggin@gmail.com; helo=mail-il1-x133.google.com
+ <20231123103018.172383-5-npiggin@gmail.com>
+ <bb365d13-e73c-4e84-81b0-b55034f2ce87@kaod.org>
+In-Reply-To: <bb365d13-e73c-4e84-81b0-b55034f2ce87@kaod.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,37 +93,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri Nov 24, 2023 at 3:09 AM AEST, C=C3=A9dric Le Goater wrote:
+On Fri Nov 24, 2023 at 3:49 AM AEST, C=C3=A9dric Le Goater wrote:
 > On 11/23/23 11:30, Nicholas Piggin wrote:
-> > The chiptod/TFMR/state machine is not really tied to the other
-> > time register fixes, but they touch some of the same code, and
-> > logically same facility.
-> >=20
-> > Changes since v1 of chiptod patches:
-> > - Split hackish ChipTOD<->TFMR/TBST interface into its own patch
-> > - Fix multi-socket addressing on P9 / chip ID mode (P10 works)
-> > - Change chiptod primary/secondary setting to use class properties
-> > - Add more comments to explain TOD overview and timebase state
-> >    machine.
-> > - SMT support for TFMR, some functionality is limited to thread 0.
-> > - FIRMWARE_CONTROL_ERROR bit implemented in TFMR.
-> > - Misc cleanups and bug fixes.
-> >=20
-> > The hacky part, addressing core from chiptod, is still hacky. Is
-> > there strong objection to it?
+> > The ChipTOD (for Time-Of-Day) is a pervasive facility that keeps the
+> > clocks on multiple chips consistent which can keep TOD (time-of-day),
+> > synchronise it across multiple chips, and can move that TOD to or from
+> > the core timebase units.
 >
-> Dunno yet :)
-
-Thanks for the nice review!
-
-> > This successfully runs skiboot chiptod initialisation code with
-> > POWER9 and POWER10 multi-socket, multi-core, SMT. That requires
-> > skiboot 7.1 (not in-tree), otherwise chiptod init is skipped on
-> > QEMU machines.
+> May be rephrase a bit the sentence above. I find it difficult to read.
 >
-> Let's update skiboot at the same time then.
+> > This driver implements basic emulation of chiptod registers sufficient
+>
+> it's a model.
 
-Yeah, I'll update skiboot ahead of adding merging this.
++1
+
+> > +static void chiptod_power9_send_remotes(PnvChipTOD *chiptod)
+> > +{
+> > +    PnvMachineState *pnv =3D PNV_MACHINE(qdev_get_machine());
+>
+> Using qdev_get_machine() in a model is always a bit annoying. There is
+> work in progress currently to have a single QEMU binary for all arches
+> and when done, the "machine" would encompass something bigger including
+> the OCC, BMC, etc.
+
+We need a way to get from one chip to another, fundamentally. I
+didn't see a better way, I suppose we could build a PnvHost container
+that includes all PnvChips or something.
+
+> Do we know how XSCOM propagates the new state to the chiptop on other
+> chips ? is it some sort of broadcast on the bus ? Could we model it ?
+> I am only asking, not to be done now.
+
+It's a bit hard to work out. Real ChipTOD is vastly more complicated
+than this model :P
+
+It seems that ChipTOD can master PIB scoms to other chips, but also
+this TTYPE transactions look like they have a command that goes
+on the powerbus via ADU.
+
+
+> > +static void chiptod_power10_invalidate_remotes(PnvChipTOD *chiptod)
+> > +{
+> > +    PnvMachineState *pnv =3D PNV_MACHINE(qdev_get_machine());
+> > +    int i;
+> > +
+> > +    for (i =3D 0; i < pnv->num_chips; i++) {
+> > +        Pnv10Chip *chip10 =3D PNV10_CHIP(pnv->chips[i]);
+> > +        if (&chip10->chiptod !=3D chiptod) {
+> > +            chip10->chiptod.tod_state =3D tod_not_set;
+> > +        }
+> > +    }
+> > +}
+>
+> Could we avoid 4 routines doing the same thing and introduce :
+>
+>    chiptod_power*_set_tod_state(PnvChipTOD *chiptod, enum tod_state new)
+>
+> ?
+>
+> We could even introcude a PnvChipClass::get_chiptod handler. Might be
+> overkill though.
+
+Good idea...
+
+> > +    case TOD_TX_TTYPE_5_REG:
+> > +        if (is_power9) {
+> > +            chiptod_power9_invalidate_remotes(chiptod);
+> > +        } else {
+> > +            chiptod_power10_invalidate_remotes(chiptod);
+> > +        }
+>
+> With PnvChipTODClass::invalidate_remotes and PnvChipTODClass::send_remote=
+s
+> handlers, or ::set_state, this routine would not need a 'is_power9' param=
+eter
+> and the model would not need 2 different xscom_ops. Can it be done ?
+
+... yes! ChipTODClass seems to be a good place for it.
+
+> > +static void pnv_chiptod_realize(DeviceState *dev, Error **errp)
+> > +{
+> > +    PnvChipTOD *chiptod =3D PNV_CHIPTOD(dev);
+> > +    PnvChipTODClass *pctc =3D PNV_CHIPTOD_GET_CLASS(chiptod);
+> > +
+> > +    if (chiptod->primary) {
+> > +        chiptod->pss_mss_ctrl_reg |=3D PPC_BIT(1); /* TOD is master */
+> > +    }
+> > +
+> > +    /* Drawer is master (we do not simulate multi-drawer) */
+> > +    chiptod->pss_mss_ctrl_reg |=3D PPC_BIT(2);
+> > +    chiptod->tod_state =3D tod_running;
+>
+> Shouldn't these initial values be set in a reset handler ?
+
+Yes, and actually reset state is tod_error so fixed that too.
 
 Thanks,
 Nick
