@@ -2,101 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F87F7F725E
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 12:04:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D27C7F7268
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 12:07:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6Txg-0002op-8N; Fri, 24 Nov 2023 06:03:04 -0500
+	id 1r6U0K-0004hz-PD; Fri, 24 Nov 2023 06:05:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6Txa-0002eU-Cv
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 06:02:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <SRS0=ZyQH=HF=kaod.org=clg@ozlabs.org>)
+ id 1r6Tzy-0004Rn-5t; Fri, 24 Nov 2023 06:05:27 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6TxY-0002Vw-Un
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 06:02:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700823775;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=j6mCIalA3NksRAYvqWh6zRUcsTobfDG5BIcR/w0saNw=;
- b=HdqctmBikWhzIVI03kV0Xy4pvz2UMmG2KH3HXEfHEbxJkOXnnTh0BBzJCDV/Zc9QeD7aAj
- Lah2m+usSVyM9zjHuDUMIYgSb6CQdvXEqFmJ2KA6Sf2cqbShM8nAzedYONSBt6RPiv6eqt
- ngOL6EfK/zS6OvbTf0PotUHwgfRqz84=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-307-IeS6A4mJMaGpeol5QP9IlA-1; Fri, 24 Nov 2023 06:02:53 -0500
-X-MC-Unique: IeS6A4mJMaGpeol5QP9IlA-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a02da20c311so123988066b.3
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 03:02:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700823772; x=1701428572;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=j6mCIalA3NksRAYvqWh6zRUcsTobfDG5BIcR/w0saNw=;
- b=EkwfsE4eBrlQNHcq/+QSAhvGSswAvZ2ScyPcyVcY6bDQPFS2svJ4tqLydQ6pb6bZhp
- eLNCPR2P0nhbVeFMgWCJHbHkVjP5GkzmSUP5JQ3aU491p4LJNbgQQwtqqCizSMJrZWWG
- SFrcpekPCcvGUg7kQS6tKSO9Ro8sNGOZAm1Q7cpIveXHNlHjZZJPe8XCmJ+1QxIyN8lf
- 5d9ttUtfmkCaqBKAdCTFvlccdx92HyGYgxs4288Ml6KAq809n6qDRxt2xAJOwNBIqDOE
- iRrRD/lA+oSSIPBH9bqaPi5HIL71vbK+5iAIguxVJysvDbhCoES9Rnq7gtLUk7MqaBXM
- aHmA==
-X-Gm-Message-State: AOJu0Yylz68ktLlzLRLwwYbRXR2e6MbNlvwuOLRo9YogKfRhNPcWuYkU
- EEG/odhiYYQWGS3C5aoFhEJegGebeAwAMDAHeEXUWHZ8TsGeQIKlBtyZRkcmsxPGYloxLe3TTk/
- QScqmBBBc8VAuBeI=
-X-Received: by 2002:a17:906:1044:b0:a01:9aa8:9fa8 with SMTP id
- j4-20020a170906104400b00a019aa89fa8mr1945583ejj.0.1700823772099; 
- Fri, 24 Nov 2023 03:02:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEg39fxqihm4TCQ6bTkPVuFBm/4PaHBBPDObfaRFcd4J/FCd89NK1AxoQJcn7AgawHozl75qQ==
-X-Received: by 2002:a17:906:1044:b0:a01:9aa8:9fa8 with SMTP id
- j4-20020a170906104400b00a019aa89fa8mr1945551ejj.0.1700823771745; 
- Fri, 24 Nov 2023 03:02:51 -0800 (PST)
-Received: from redhat.com ([2.55.56.198]) by smtp.gmail.com with ESMTPSA id
- mf12-20020a170906cb8c00b009a13fdc139fsm1925629ejb.183.2023.11.24.03.02.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Nov 2023 03:02:51 -0800 (PST)
-Date: Fri, 24 Nov 2023 06:02:46 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Alexander Graf <agraf@csgraf.de>, Paolo Bonzini <pbonzini@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Phil =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: Re: [PATCH 2/2] docs: define policy forbidding use of "AI" / LLM
- code generators
-Message-ID: <20231124055732-mutt-send-email-mst@kernel.org>
-References: <20231123114026.3589272-1-berrange@redhat.com>
- <20231123114026.3589272-3-berrange@redhat.com>
- <87r0kgeiex.fsf@draig.linaro.org> <ZV-P6M8seKmMKGCB@redhat.com>
- <20231123183245-mutt-send-email-mst@kernel.org>
- <ZWB4MMrW1JttcxqI@redhat.com> <87edgfcueq.fsf@draig.linaro.org>
- <20231124053749-mutt-send-email-mst@kernel.org>
- <CAFEAcA-0Kusbm_YGo5xu7ztNxdMMe28U5+9Xp=Rp=UG+Ur6EFg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <SRS0=ZyQH=HF=kaod.org=clg@ozlabs.org>)
+ id 1r6Tz2-0003tN-Fd; Fri, 24 Nov 2023 06:05:25 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4ScBv96Zc4z4xRj;
+ Fri, 24 Nov 2023 22:04:21 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4ScBv765Svz4xPQ;
+ Fri, 24 Nov 2023 22:04:19 +1100 (AEDT)
+Message-ID: <3f3919a7-5a46-4810-afa3-c5cd4d6d29fc@kaod.org>
+Date: Fri, 24 Nov 2023 12:04:14 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/9] Add powernv10 I2C devices and tests
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org, Andrew Jeffery <andrew@codeconstruct.com.au>
+Cc: =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
+References: <20231121190945.3140221-1-milesg@linux.vnet.ibm.com>
+ <ff4eb381-4b9f-431f-ba79-68afa8c75859@kaod.org>
+ <CX6Z7AI6T2YY.CMHUGU3CYCJE@wheely>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CX6Z7AI6T2YY.CMHUGU3CYCJE@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFEAcA-0Kusbm_YGo5xu7ztNxdMMe28U5+9Xp=Rp=UG+Ur6EFg@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=ZyQH=HF=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,28 +67,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 24, 2023 at 10:43:05AM +0000, Peter Maydell wrote:
-> On Fri, 24 Nov 2023 at 10:42, Michael S. Tsirkin <mst@redhat.com> wrote:
-> >
-> > On Fri, Nov 24, 2023 at 10:33:49AM +0000, Alex Bennée wrote:
-> > > That probably means we can never use even open source LLMs to generate
-> > > code for QEMU because while the source data is all open source it won't
-> > > necessarily be GPL compatible.
-> >
-> > I would probably wait until the dust settles before we start accepting
-> > LLM generated code.
+On 11/24/23 11:39, Nicholas Piggin wrote:
+> On Fri Nov 24, 2023 at 6:36 PM AEST, CÃ©dric Le Goater wrote:
+>> On 11/21/23 20:09, Glenn Miles wrote:
+>>> This series of patches includes support, tests and fixes for
+>>> adding PCA9552 and PCA9554 I2C devices to the powernv10 chip.
+>>>
+>>> The PCA9552 device is used for PCIe slot hotplug power control
+>>> and monitoring, while the PCA9554 device is used for presence
+>>> detection of IBM CableCard devices.  Both devices are required
+>>> by the Power Hypervisor Firmware on the Power10 Ranier platform.
+>>>
+>>> Changes from previous version:
+>>>     - Removed two already merged patches
+>>>     - Various formatting changes
+>>>     - Capitalized "Rainier" in machine description string
+>>>     - Changed powernv10-rainier parent to MACHINE_TYPE_NAME("powernv10")
+>>
+>>
+>> Nick,
+>>
+>> could this series go through the ppc-next queue ?
 > 
-> I think that's pretty much my take on what this policy is:
-> "say no for now; we can always come back later when the legal
-> situation seems clearer".
+> Sure, for after 8.2. I'll start gathering up patches and push out
+> a test tree before then.
+> 
+> Are patches 1/2 okay with that? Patch 1 looks a bit like a bug
+> fix...
 
-Absolutely. So I think we should not try and venture into terminology
-such as what is ai or try and promote legal copyright theories.
-ATM there's no good reason for someone who did not write the code
-to put their DCO on the code. If it is not clear who wrote the code
-because it was generated and not written then we don't want it.
+yes but since they are only relevant for the subsequent patches,
+it is better to keep the series as a whole I think.
 
--- 
-MST
+Thanks,
 
+C.
 
