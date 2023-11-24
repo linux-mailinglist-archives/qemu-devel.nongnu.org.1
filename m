@@ -2,99 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED1C7F719B
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 11:38:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 174C97F71B6
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 11:40:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6TZD-0006yx-GG; Fri, 24 Nov 2023 05:37:47 -0500
+	id 1r6TbS-00080Y-Oj; Fri, 24 Nov 2023 05:40:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6TZC-0006yo-5r
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 05:37:46 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6TZ7-000404-D7
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 05:37:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700822260;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=rNVeoT7Yh/IaOQAQ0MLGHSDmYn8lPtpAOgzVL2WZYQk=;
- b=PjnjZr8rna9SUyA7bjUplyyQ9wycqKJ7QnPxA9whgzi2Ss6wBVp6C33UI0L5Y2ebBUUTbY
- mumqTZW/w8rEA2NscIeJgUbTU44se7G81wm9N6CKj7ou2T6xyC2iK7vYYtJ2XGGUx5Hoo3
- Q3ja9FWsvlqSr3dlwCjxbl/053wehqU=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-392-ywFPV7vbOnifwZN7cnMt_w-1; Fri, 24 Nov 2023 05:37:32 -0500
-X-MC-Unique: ywFPV7vbOnifwZN7cnMt_w-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-9fffa4c4f28so115446266b.3
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 02:37:32 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700822251; x=1701427051;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1r6TbQ-000806-R3; Fri, 24 Nov 2023 05:40:04 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1r6TbO-0004Bn-W8; Fri, 24 Nov 2023 05:40:04 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1cfa9203c14so1347355ad.3; 
+ Fri, 24 Nov 2023 02:40:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1700822401; x=1701427201; darn=nongnu.org;
+ h=in-reply-to:references:message-id:to:from:subject:cc:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rNVeoT7Yh/IaOQAQ0MLGHSDmYn8lPtpAOgzVL2WZYQk=;
- b=JrErRwyvY01W9jDru1cjMdHRQWvGiAbMYVEADkHP7uREu+U/3SI5yvgd3bKKWPOVOD
- MezZ+GUp2AvZ6WFbPt1zXSIsZ92CelE4ERDA9V9bj1r6EksnIV1JaisE4CZ+B+x7srTn
- aB2+qvHTXIHdEkRhMH68fsnpJIedd2bhr13939lSK6dPt0fobxtrPvPvU7GGsO6EecQ7
- 9UnPmmc3xgc3097YA0O6wHr1t5txze54LG7n0lqZ0uO7z1EP8tBVp6RMnQmCFnnP5KqB
- fZSoX9FbDuC8rHQ6IoEuE3tVbvXkF8ZlV1I6/feTcGIE3ShLy6GXls8iPzq2JP7C5nXC
- Q5pQ==
-X-Gm-Message-State: AOJu0YzSuDrEY8TOi17DJrWeD4U1QhTJaiQqG2pbkhEojwoLWnK4aIaO
- /Z6VCEA847JQHRQbQCerXnhaY9HN1hQUER/6elIOz5CxJEDC9LHQeHNJtlXidqSdBcJmRYpp7ae
- l4OTJ34/TJzaLUmE=
-X-Received: by 2002:a17:906:12:b0:a02:b538:1720 with SMTP id
- 18-20020a170906001200b00a02b5381720mr1643515eja.3.1700822251203; 
- Fri, 24 Nov 2023 02:37:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEMoQ+0xGlQgemmIb1fK8VGa9h97/5OSRtvx8AwZ0NHbIC75ebiFkOuFy5yjtwMV4oVtdOs7g==
-X-Received: by 2002:a17:906:12:b0:a02:b538:1720 with SMTP id
- 18-20020a170906001200b00a02b5381720mr1643490eja.3.1700822250799; 
- Fri, 24 Nov 2023 02:37:30 -0800 (PST)
-Received: from redhat.com ([2.55.56.198]) by smtp.gmail.com with ESMTPSA id
- bv8-20020a170906b1c800b009fc927023bcsm1893751ejb.34.2023.11.24.02.37.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Nov 2023 02:37:30 -0800 (PST)
-Date: Fri, 24 Nov 2023 05:37:25 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Alexander Graf <agraf@csgraf.de>,
- Alex =?iso-8859-1?Q?Benn=E9?= e <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Phil =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 2/2] docs: define policy forbidding use of "AI" / LLM
- code generators
-Message-ID: <20231124053116-mutt-send-email-mst@kernel.org>
-References: <20231123114026.3589272-1-berrange@redhat.com>
- <20231123114026.3589272-3-berrange@redhat.com>
- <20231123092523-mutt-send-email-mst@kernel.org>
- <4l0it.9kkxe9s135lg@linaro.org> <ZWB6M6w9yqAeemyi@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZWB6M6w9yqAeemyi@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ bh=mT4E0yx9p7rccLCA3kxOmHodeuMBWc8P4sYPg1i3/24=;
+ b=S39HU/ZpyMRAtuKzAtEI5zFTdiqKGnSlxYom+yv2t9vB4Ig6RAtmsU285WxViEo+vP
+ dZ/fNpoaCyxDxl8/whwvk7C5n8umkr2VirKJ5rU+6yPEsyZ3od0uNagJasK3WNIxYY31
+ UAcei+XN4SzN1OZVcNLnuGK9gzmqt6UuEKp1ZEQbDafPmanrM61zGhfCJjrT8m8PGeFx
+ 9iJQLrkBW7+nNbqPPQ6O+Se8A0Y4AA3PeBD9cKm9NeMmQxkRLmZiLsaXpjTv6eVshTYp
+ TZKPvvar/9JXAskE1iKuuAR6cuFhH0oqYgKlrrfvQwKQQtVHcJ7BYRuMdVKwwE5CDPV0
+ H93g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700822401; x=1701427201;
+ h=in-reply-to:references:message-id:to:from:subject:cc:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=mT4E0yx9p7rccLCA3kxOmHodeuMBWc8P4sYPg1i3/24=;
+ b=t5GzypN+3Egr7DeMlhu6RdFHrMHu2RQGTKRJ+PAMyH6uvtVNSTZfcFeh+br//pjGWo
+ /rFQ3wx4f2YjTpqfYUvu34A7mXUa1j5I/51c7o9afkD4+qyNpVL7pJTVjtMiC1zNX1Hb
+ 0ycMQNTfmRu0+isE7zYlFcel6+BcisWadKv3oTLEXPMIUyg1syuPRNaQOeNR6Wk7meAw
+ fprkolppkJfWH1a/1ErM1f6Lntl4r7gkUU5QtUzbwr495npRkI6l2zx9mVhX4fjwnTjO
+ ceEOyuvWRDBOmydTIJppuA8VQBwJS6e0Z34xez/tQKJDxxpqviB2A7NmnFrSPOYKjwUz
+ DVLw==
+X-Gm-Message-State: AOJu0YxVXHRaizOKW1n6BkxPO9TRN3b4OnbRqt2wd5dOME8z/tl9h/6B
+ kscyPvyt6cf7Ex1Hv5lyECo=
+X-Google-Smtp-Source: AGHT+IHs7mk7jP2Oo4p9KPq2wkOqpsZNzuODw2fKjqH49qhd2QNTzOOHTSBbTZ8CiPgw/ud9oV+9eQ==
+X-Received: by 2002:a17:902:c950:b0:1cc:345b:c7e1 with SMTP id
+ i16-20020a170902c95000b001cc345bc7e1mr2712097pla.60.1700822401098; 
+ Fri, 24 Nov 2023 02:40:01 -0800 (PST)
+Received: from localhost (121-44-66-27.tpgi.com.au. [121.44.66.27])
+ by smtp.gmail.com with ESMTPSA id
+ b21-20020a170902d31500b001bc930d4517sm2865565plc.42.2023.11.24.02.39.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 Nov 2023 02:40:00 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 24 Nov 2023 20:39:54 +1000
+Cc: =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?= <fbarrat@linux.ibm.com>
+Subject: Re: [PATCH v5 0/9] Add powernv10 I2C devices and tests
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "Glenn Miles"
+ <milesg@linux.vnet.ibm.com>, <qemu-devel@nongnu.org>,
+ <qemu-ppc@nongnu.org>, "Andrew Jeffery" <andrew@codeconstruct.com.au>
+Message-Id: <CX6Z7AI6T2YY.CMHUGU3CYCJE@wheely>
+X-Mailer: aerc 0.15.2
+References: <20231121190945.3140221-1-milesg@linux.vnet.ibm.com>
+ <ff4eb381-4b9f-431f-ba79-68afa8c75859@kaod.org>
+In-Reply-To: <ff4eb381-4b9f-431f-ba79-68afa8c75859@kaod.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,19 +93,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 24, 2023 at 11:25:55AM +0100, Kevin Wolf wrote:
-> > - Automated codegen tool must be idempotent.
-> > - Automated codegen tool must not use statistical modelling.
-> 
-> How are these definitions related to your ability to sign the DCO?
+On Fri Nov 24, 2023 at 6:36 PM AEST, C=C3=A9dric Le Goater wrote:
+> On 11/21/23 20:09, Glenn Miles wrote:
+> > This series of patches includes support, tests and fixes for
+> > adding PCA9552 and PCA9554 I2C devices to the powernv10 chip.
+> >=20
+> > The PCA9552 device is used for PCIe slot hotplug power control
+> > and monitoring, while the PCA9554 device is used for presence
+> > detection of IBM CableCard devices.  Both devices are required
+> > by the Power Hypervisor Firmware on the Power10 Ranier platform.
+> >=20
+> > Changes from previous version:
+> >    - Removed two already merged patches
+> >    - Various formatting changes
+> >    - Capitalized "Rainier" in machine description string
+> >    - Changed powernv10-rainier parent to MACHINE_TYPE_NAME("powernv10")
+>
+>
+> Nick,
+>
+> could this series go through the ppc-next queue ?
 
-Not only that - while the question of whether code generated e.g. by copilot
-would be source code by GPL definition is unclear at least to me,
-code generated by an idempotent automated tool seems highly
-likely not to satisfy the GPL definition.
-Though I am not a lawyer and do not speak for Red Hat.
+Sure, for after 8.2. I'll start gathering up patches and push out
+a test tree before then.
 
--- 
-MST
+Are patches 1/2 okay with that? Patch 1 looks a bit like a bug
+fix...
+
+Thanks,
+Nick
+
+>
+>
+> Thanks,
+>
+> C.
+>
+>
+>
+>
+> >=20
+> > Glenn Miles (9):
+> >    misc/pca9552: Fix inverted input status
+> >    misc/pca9552: Let external devices set pca9552 inputs
+> >    ppc/pnv: New powernv10-rainier machine type
+> >    ppc/pnv: Add pca9552 to powernv10-rainier for PCIe hotplug power
+> >      control
+> >    ppc/pnv: Wire up pca9552 GPIO pins for PCIe hotplug power control
+> >    ppc/pnv: Use resettable interface to reset child I2C buses
+> >    misc: Add a pca9554 GPIO device model
+> >    ppc/pnv: Add a pca9554 I2C device to powernv10-rainier
+> >    ppc/pnv: Test pnv i2c master and connected devices
+> >=20
+> >   MAINTAINERS                     |  10 +-
+> >   hw/misc/Kconfig                 |   4 +
+> >   hw/misc/meson.build             |   1 +
+> >   hw/misc/pca9552.c               |  58 ++-
+> >   hw/misc/pca9554.c               | 328 ++++++++++++++++
+> >   hw/ppc/Kconfig                  |   2 +
+> >   hw/ppc/pnv.c                    |  72 +++-
+> >   hw/ppc/pnv_i2c.c                |  15 +-
+> >   include/hw/misc/pca9552.h       |   3 +-
+> >   include/hw/misc/pca9554.h       |  36 ++
+> >   include/hw/misc/pca9554_regs.h  |  19 +
+> >   include/hw/ppc/pnv.h            |   1 +
+> >   tests/qtest/meson.build         |   1 +
+> >   tests/qtest/pca9552-test.c      |   6 +-
+> >   tests/qtest/pnv-host-i2c-test.c | 650 +++++++++++++++++++++++++++++++=
++
+> >   15 files changed, 1190 insertions(+), 16 deletions(-)
+> >   create mode 100644 hw/misc/pca9554.c
+> >   create mode 100644 include/hw/misc/pca9554.h
+> >   create mode 100644 include/hw/misc/pca9554_regs.h
+> >   create mode 100644 tests/qtest/pnv-host-i2c-test.c
+> >=20
 
 
