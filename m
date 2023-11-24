@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DEF7F79E1
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 18:00:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CCE7F79F8
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 18:01:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6ZWL-0001Op-1h; Fri, 24 Nov 2023 11:59:13 -0500
+	id 1r6ZX5-0001lu-E4; Fri, 24 Nov 2023 11:59:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1r6ZWI-0001Nu-Lu
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 11:59:10 -0500
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
+ id 1r6ZX3-0001k0-It; Fri, 24 Nov 2023 11:59:57 -0500
+Received: from mail-qv1-xf2a.google.com ([2607:f8b0:4864:20::f2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1r6ZWG-00040u-4c
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 11:59:10 -0500
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-54af4f2838dso1170280a12.2
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 08:59:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
+ id 1r6ZX1-000488-S6; Fri, 24 Nov 2023 11:59:57 -0500
+Received: by mail-qv1-xf2a.google.com with SMTP id
+ 6a1803df08f44-67a12079162so4686356d6.1; 
+ Fri, 24 Nov 2023 08:59:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1700845146; x=1701449946; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=hOLgOQKzK1BDJMKfOSKg4vfmJjUUMztCvbGLYQB+szY=;
- b=jjP03OeQQTNb6NZjUgwLVxi6+qouHCxJjsTcURJeaAssN4pN9FjBJxcP5RiGoURc1M
- O9p2MApJfA/qA7YZU3hlk2qJzH03uyutyyWHSOMLoYJHcYeXOy0ki0diyWzgSXi6RDZJ
- TK3rFQIgrX0ld1D4A0mmAgv3mjefSgOVNOwyvlGuJ3lrgRHA11rkjOHs+o5W321LYdym
- kYADssAlmsWp440PVldzPLlx5EUES5sAZDKuP+9wCHDaF6CoMvKO9OqSkm8hMAHlK0GZ
- GauH6LWgFUI/VOGs3H2gFogL3Z+tjPBA0d4bbEsW9NKQDJlz1FrNFxJDO15HD6lPMLRy
- ohzA==
+ d=gmail.com; s=20230601; t=1700845194; x=1701449994; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=J6e2TglBi+lJq4NZlVYfJRw7pzIANBEwswwOaV+z0X0=;
+ b=GDT8uJ4y7h/aSc0kOl4u3q4N1sH7Vxs85v4q+vjcz5z0Q0r1Ol7ZhsaT1pMejOON4t
+ Vbxj0Xbol0BSpzffke0Z7tWDv+7xlqpD9bjsb0u7HthWy487CZEXaeFflhfcYC/Hn/Ip
+ NoTFnK0K7qdeen7kqhVEZCkfv3J4bS9OPqcCSt71UmYCP8cx0Ly9o15WbipSpIRvdH1p
+ vqf+wq/JVg3KWk97OR2hc47CUr7jJbR+bmNfUfsaxUdwQG8NCbXqMYw22iXjRI+Vtw6l
+ J13z917cmcxMYHu+0ycRYCE0QBCUCVb12dKZ7Hd02jRkix46YIocL3JJDImaSvyl7Sew
+ /VaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700845146; x=1701449946;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hOLgOQKzK1BDJMKfOSKg4vfmJjUUMztCvbGLYQB+szY=;
- b=sVx/1a5+qgzJ+i30cwzqFChlksULxyru8mq3f2MxHrG1pD7/FJbuSZuXWq/J7ue7Oi
- xB+vb+E6NF0GWoMC+6B+cYVmbnWUNb/AZSBKZ7dtLfxBtNlWlA5ZaC263PEplaH/Ps6o
- HVPIcOrOBrAXHaszS9jd6F1bhXF49bCrFj5sANBRkG+/VvgVrZUINv9O450XT4DF4WWU
- 4ebG1FMH/pk+wQsyVedfUrgY4OwZtPq3gJQiNNBOxrnQUEg/4gU+ZQUnzOgraa1l78+c
- 2Nu0s/oh/gRWUJp+R3wT/s53bxvZXo3qVskVCvrRMy7BJX05ZWZiKYIXFMPSkqhXDX0r
- uGqg==
-X-Gm-Message-State: AOJu0YzBmI+CgOL/7+3YuI8j2m51IJu4TRRoJ2cwkBrKtCvBfumPrmP6
- RIEXe7doO99Q9eM8rwFjcZPuVtvIatBCfIQbeMw=
-X-Google-Smtp-Source: AGHT+IH74fG/WtvZeMbR5g9Pju4mTMO+xFST48qNIWpgYbmv19tPwohayRa36eZ3Y7BikLxW7XsJBg==
-X-Received: by 2002:a50:d496:0:b0:548:7a6f:b51e with SMTP id
- s22-20020a50d496000000b005487a6fb51emr2751990edi.14.1700845146443; 
- Fri, 24 Nov 2023 08:59:06 -0800 (PST)
-Received: from localhost ([81.19.4.232]) by smtp.gmail.com with ESMTPSA id
- q7-20020aa7da87000000b00548b55f5ffdsm1966756eds.16.2023.11.24.08.59.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Nov 2023 08:59:06 -0800 (PST)
-Date: Fri, 24 Nov 2023 17:59:05 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Christoph Muellner <christoph.muellner@vrull.eu>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Philipp Tomsich <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: Re: [PATCH v2] linux-user/riscv: Add Zicboz extensions to hwprobe
-Message-ID: <20231124-b892dc7ca5a5f9ff4cceda6e@orel>
-References: <20231123181300.2140622-1-christoph.muellner@vrull.eu>
+ d=1e100.net; s=20230601; t=1700845194; x=1701449994;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=J6e2TglBi+lJq4NZlVYfJRw7pzIANBEwswwOaV+z0X0=;
+ b=kqa1QopLsx5vgVTfpLtb3zKcmT9v9UzbPe2Br+XQcKioDGgm50w13OlG4MZAyAPHgs
+ hYO132XArhjBoQbIFlZPK4rfnL2xTgIzBdZBP+DjVgUWHFWxs/CeF1cDCHZowQWIbKaW
+ PdYJThxybXauvnC8SiVZsS9tLOJBDg2micmsAerwaHwtfcnDQfG6qo0+cVRurUWOeur+
+ UlN+jxzcpfTqZutZQqpaxfTqfN4VXRiuqWiCLICHaxQhkn8pk5YToXy3xWyAPFSl9qvR
+ z5LbXGSvSJ0zZ+V0qqcQeFlWliMUATIts/96741i69kKgk4XZq6JUL13YDGC2jty5D3C
+ gUlQ==
+X-Gm-Message-State: AOJu0YzlDu8cb/7d5Q4YQHPhU1fUfbM+MRFrL4R14Isnr4m1BpdAamnC
+ 3HG0VAC+kELEnPDaaVZbJD3FnfdTzWwbREP+r2E=
+X-Google-Smtp-Source: AGHT+IHuIPiaEbnXQ0d+efEaY39AIdz4cW9nEkh1G0jo4pimO74C4J/a5WsaTsZ13vSFEu3gobmgwZq7B29eIX6TSgs=
+X-Received: by 2002:a05:6214:19ef:b0:67a:21a6:75db with SMTP id
+ q15-20020a05621419ef00b0067a21a675dbmr1028543qvc.55.1700845194464; Fri, 24
+ Nov 2023 08:59:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231123181300.2140622-1-christoph.muellner@vrull.eu>
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20231124015312.544422-1-dhoff749@gmail.com>
+ <93f7ee3e-a92f-4b18-bf16-2169c8b2791d@linaro.org>
+ <87sf4vgtir.fsf@pond.sub.org> <87edgfgsg0.fsf@pond.sub.org>
+In-Reply-To: <87edgfgsg0.fsf@pond.sub.org>
+From: Dan Hoffman <dhoff749@gmail.com>
+Date: Fri, 24 Nov 2023 10:59:44 -0600
+Message-ID: <CAFXChKJ+OoxXH0Krvvc0-84VwTkat1CciOL=59+gyH+WYWEV_A@mail.gmail.com>
+Subject: Re: [PATCH] hw/core: define stack variable to NULL to fix qtest with
+ sanitizers
+To: Markus Armbruster <armbru@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, qemu-trivial@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, Kevin Wolf <kwolf@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2a;
+ envelope-from=dhoff749@gmail.com; helo=mail-qv1-xf2a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,46 +92,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 23, 2023 at 07:12:59PM +0100, Christoph Muellner wrote:
-> From: Christoph Müllner <christoph.muellner@vrull.eu>
-> 
-> Upstream Linux recently added RISC-V Zicboz support to the hwprobe API.
-> This patch introduces this for QEMU's user space emulator.
-> 
-> Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
-> ---
->  linux-user/syscall.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-> index 65ac3ac796..2f9a1c5279 100644
-> --- a/linux-user/syscall.c
-> +++ b/linux-user/syscall.c
-> @@ -8799,6 +8799,7 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
->  #define     RISCV_HWPROBE_EXT_ZBA      (1 << 3)
->  #define     RISCV_HWPROBE_EXT_ZBB      (1 << 4)
->  #define     RISCV_HWPROBE_EXT_ZBS      (1 << 5)
-> +#define     RISCV_HWPROBE_EXT_ZICBOZ   (1 << 6)
->  
->  #define RISCV_HWPROBE_KEY_CPUPERF_0     5
->  #define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
-> @@ -8855,6 +8856,8 @@ static void risc_hwprobe_fill_pairs(CPURISCVState *env,
->                       RISCV_HWPROBE_EXT_ZBB : 0;
->              value |= cfg->ext_zbs ?
->                       RISCV_HWPROBE_EXT_ZBS : 0;
-> +            value |= cfg->ext_zicboz ?
-> +                     RISCV_HWPROBE_EXT_ZICBOZ : 0;
->              __put_user(value, &pair->value);
->              break;
->          case RISCV_HWPROBE_KEY_CPUPERF_0:
-> -- 
-> 2.41.0
-> 
+Yes, that fixes my issue. I was receiving two errors with the sanitizers:
+1. UBsan complaining that the (garbage) value didn't have the required
+alignment of the type
+2. ASan complaining about some memory failure by read/write/accessing it
+
+On Fri, Nov 24, 2023 at 8:02=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
+m> wrote:
 >
-
-We should also add support for getting the block size with
-RISCV_HWPROBE_KEY_ZICBOZ_BLOCK_SIZE.
-
-Thanks,
-drew
+> Daniel, please have a look at Kevin's patch:
+>
+>     Subject: [PATCH for-8.2 1/2] qdev: Fix crash in array property getter
+>     Date: Tue, 21 Nov 2023 18:34:15 +0100 (2 days, 20 hours, 26 minutes a=
+go)
+>     Message-ID: <20231121173416.346610-2-kwolf@redhat.com>
+>     https://lore.kernel.org/qemu-devel/20231121173416.346610-2-kwolf@redh=
+at.com/
+>
+> Does it fix your sanitizer run?
+>
 
