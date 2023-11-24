@@ -2,99 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2A197F714F
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 11:21:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0167F715B
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 11:25:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6TJQ-0000Wo-Tv; Fri, 24 Nov 2023 05:21:28 -0500
+	id 1r6TMJ-0001Rd-F0; Fri, 24 Nov 2023 05:24:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r6TJN-0000WV-Qs
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 05:21:25 -0500
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ id 1r6TMH-0001RB-Bb
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 05:24:25 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r6TJM-0006Rd-1K
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 05:21:25 -0500
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2c6b30aca06so21552641fa.3
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 02:21:22 -0800 (PST)
+ id 1r6TME-00072p-A4
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 05:24:25 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-32fd7fc9f19so1064439f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 02:24:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700821281; x=1701426081; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700821459; x=1701426259; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pib8s+XTgxiWyDbXXeKhEYBXdJCgT4qcZQrS2nGNeb8=;
- b=KKljhHlxh+1vEzt3WGHtmbTQnQ/ckm5STnlJO/3ZjLc837q+tCjep8ekQ9XKHtO7+3
- dhzvwqKY8wdEaD2mGVVIpnbuCIOZLZR9xT3P3XOpXhw9QqQQ2Cdcf4ahrhDe1VoSOaAO
- G1pEUIKVatNKd3U6ptNwsq0bQiPnPQQ+4Aq/Je+Hd8XL1Gz2qpRsrrCfuF3GlmqkAWG7
- MSML/jcNwbL3BZtAd0KfJRtfLrS8ZnvgvufZaxmkJQ9HET2QrJj/nLvRpXf9BeBzBYl6
- Jl+N84P2ExhheOg+zkIoBke3Jn2fbR6qEIHzwkoqpia9Zsy8HCozzCyNVswUJ49WesbU
- dGNQ==
+ bh=P/VsI3U8w+a25MVcaTe0VtRw+2yocIrV80N335waQ68=;
+ b=RK+FL669CwSZxhPkDW0LlWegSdfOwGuk9KNTQ+yiKnH1MU5ZRws/L9QmZ+3O3M2lOO
+ c3n7znh1VFzJVmXm9MgAuCAEN5C8iVZDnxOCyJLXR9183xa6VsHiZRPMjwXZYh8hD2Mq
+ rNiOZgVXcHQiTQRWOzumFTGKdE3RKx+fMe31IzhlFJhFk1EJ3vd5DzSOVJxuqMroKLyJ
+ wLhxgusRCv22NW0wWN5Hl1BAvFPfbqs5G0wx2kSQu/8NGZ1eP6NAudNN0Tydzxqyowaq
+ TUvbqzvqgz5EZeEGKosPaEGBqR35i/YsceLx7fM7EsvRdvgTmM09F7NRsJNAYHD8I8DM
+ MOzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700821281; x=1701426081;
+ d=1e100.net; s=20230601; t=1700821459; x=1701426259;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=pib8s+XTgxiWyDbXXeKhEYBXdJCgT4qcZQrS2nGNeb8=;
- b=tXHB2tupaJxh3Rrrf7qfloeGwdhb1ZNgChoveTNSGlFSo5x9P0lt1GyAEV2t1vK2KN
- gTgDxiwHMMTSO82ra637/05tZ85623sLdgOQ0vxr2WRn2asVCP1y6DdAmVzZsaCHvHMX
- wgL9G+/GDDWTCimnVTqFmPJ+V4L8+k19EAXVSSoL4auQ3iEiEQhJljMo92GVBgkpBy4h
- CeS33lUDt2dWqWdAHGFhwk1opAbz7L7XkjFPyE1gkg+vjdZkk7QKffsYvsw2wVbj+BZU
- AXPw1CQdeVSjH01bL7ZgAYQ6M41/X6A7ylnWvWkggS8pRJ3OVrrGYE46Isc4uRnWSfxF
- 00XQ==
-X-Gm-Message-State: AOJu0YwdhJb19hEQmoSueoxOqSgNlDzmdzJBsVyfCA3rRbNkPdaOVukh
- JR7FGxLA9HNwgINfVqiRSL13Ig==
-X-Google-Smtp-Source: AGHT+IEQEXP7Zd16HF8QQ3vedsth1EtoiIfO52xFdw15QjjeICWBnox0ichw5b2kpjvioAky9UhcVg==
-X-Received: by 2002:a2e:9e59:0:b0:2c6:f6eb:b396 with SMTP id
- g25-20020a2e9e59000000b002c6f6ebb396mr1332427ljk.40.1700821278515; 
- Fri, 24 Nov 2023 02:21:18 -0800 (PST)
+ bh=P/VsI3U8w+a25MVcaTe0VtRw+2yocIrV80N335waQ68=;
+ b=P2/oUJI9zLmyt1CJXj1HWNtBfykBQMCJPdanHFgFu9noXyVvB25+NnjSngGMx8WJc4
+ r+G9E+V0y20k4NZ4HNeyVXccjULWXdwLFApl43jal1shDI8F2RsSE+Fmlor3vNkJkyRL
+ Cw81MHyq5uC92w1ngnV+1m4YpEK0u39yPPewFdLZ8p4D7z/iaaxfOCBels7KS5ZRnEIA
+ dQRlRbrL4tTnrC6Z9pVXsr56GBCOIRDu8TSGugo400bJ/akjwmLNTKi8QOD9MgZ9JckO
+ XL/dr7444r9Rte7UxPVeRE9S4oUAHSDlHebwnzWVJr3zSjbCxknl4F922aIvlP5RN4JB
+ ozhQ==
+X-Gm-Message-State: AOJu0YwSmnCTG3YqsOxz3oLkCTuC/yRFkZv6zGSPG0ZR/IGBeOklismi
+ Nvzhtg9DIGr/SCUOtBZG929Glg==
+X-Google-Smtp-Source: AGHT+IFsNVUkFfZhNR9X3AD6U9xujj0hB2Ss/8LL6H60GlH6PvVke6JAepDZevDEkrg8hVMBNw329w==
+X-Received: by 2002:a5d:4b4b:0:b0:332:c6cf:3175 with SMTP id
+ w11-20020a5d4b4b000000b00332c6cf3175mr1831498wrs.29.1700821459478; 
+ Fri, 24 Nov 2023 02:24:19 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- v17-20020a05600c445100b0040b3d33ab55sm485049wmn.47.2023.11.24.02.21.18
+ e15-20020a056000120f00b0032da35baf7bsm3925756wrx.113.2023.11.24.02.24.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Nov 2023 02:21:18 -0800 (PST)
+ Fri, 24 Nov 2023 02:24:19 -0800 (PST)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A2DD25F7AA;
- Fri, 24 Nov 2023 10:21:17 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id A69255F7AA;
+ Fri, 24 Nov 2023 10:24:18 +0000 (GMT)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,  qemu-devel@nongnu.org,  Richard
- Henderson <richard.henderson@linaro.org>,  Alexander Graf
- <agraf@csgraf.de>,  Paolo Bonzini <pbonzini@redhat.com>,  Markus
- Armbruster <armbru@redhat.com>,  Phil =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,  Thomas Huth <thuth@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>,  Gerd Hoffmann <kraxel@redhat.com>,  Mark
- Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Peter Maydell
- <peter.maydell@linaro.org>
-Subject: Re: [PATCH 2/2] docs: define policy forbidding use of "AI" / LLM
- code generators
-In-Reply-To: <ZWBngLoa3ERuMxGJ@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Fri, 24 Nov 2023 09:06:29 +0000")
-References: <20231123114026.3589272-1-berrange@redhat.com>
- <20231123114026.3589272-3-berrange@redhat.com>
- <20231123092523-mutt-send-email-mst@kernel.org>
- <ZV-S1f2cK8MLNizz@redhat.com>
- <20231123172828-mutt-send-email-mst@kernel.org>
- <ZWBngLoa3ERuMxGJ@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,  Gavin
+ Shan <gshan@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Mark
+ Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Evgeny Iakovlev
+ <eiakovlev@linux.microsoft.com>,  qemu-arm@nongnu.org
+Subject: Re: [PATCH-for-8.2 v4 00/10] hw/char/pl011: Implement TX (async)
+ FIFO to avoid blocking the main loop
+In-Reply-To: <CAFEAcA_0BfGVDZWJUPs8hwYRKS8FmzppQgY+s83qxBXHjLJvnw@mail.gmail.com>
+ (Peter Maydell's message of "Mon, 13 Nov 2023 13:11:22 +0000")
+References: <20231109192814.95977-1-philmd@linaro.org>
+ <CAFEAcA8MJeX1Jk_-ONP1nNgHYadL7Oa8P3jGQXwNoofQnJWk8g@mail.gmail.com>
+ <4ffed8f5-6624-4488-a74f-567cbd926b78@linaro.org>
+ <CAFEAcA_0BfGVDZWJUPs8hwYRKS8FmzppQgY+s83qxBXHjLJvnw@mail.gmail.com>
 User-Agent: mu4e 1.11.25; emacs 29.1
-Date: Fri, 24 Nov 2023 10:21:17 +0000
-Message-ID: <87plzzcuzm.fsf@draig.linaro.org>
+Date: Fri, 24 Nov 2023 10:24:18 +0000
+Message-ID: <87jzq7cuul.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,57 +104,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-> On Thu, Nov 23, 2023 at 05:39:18PM -0500, Michael S. Tsirkin wrote:
->> On Thu, Nov 23, 2023 at 05:58:45PM +0000, Daniel P. Berrang=C3=A9 wrote:
->> > The license of a code generation tool itself is usually considered
->> > to be not a factor in the license of its output.
->>=20
->> Really? I would find it very surprising if a code generation tool that
->> is not a language model and so is not understanding the code it's
->> generating did not include some code snippets going into the output.
->> It is also possible to unintentionally run afoul of GPL's definition of =
-source
->> code which is "the preferred form of the work for making modifications t=
-o it".=20
->> So even if you have copyright to input, dumping just output and putting
->> GPL on it might or might not be ok.
+> On Thu, 9 Nov 2023 at 20:59, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.o=
+rg> wrote:
+>>
+>> Hi Peter,
+>>
+>> On 9/11/23 20:29, Peter Maydell wrote:
+>> > On Thu, 9 Nov 2023 at 19:28, Philippe Mathieu-Daud=C3=A9 <philmd@linar=
+o.org> wrote:
+>> >>
+>> >> Missing review: #10
+>> >>
+>> >> Hi,
+>> >>
+>> >> This series add support for (async) FIFO on the transmit path
+>> >> of the PL011 UART.
+>> >
+>> > Hi; what's the rationale for the "for-8.2" targeting here?
+>> > What bug are we fixing?
+>>
+>> The bug is on Trusted Substrate when the ZynqMP machine is used:
+>> https://linaro.atlassian.net/browse/TRS-149?focusedCommentId=3D149574
 >
-> Consider the C pre-processor. This takes an input .c file, and expands
-> all the macros, to split out a new .c file.
->
-> The license of the output .c file is determined by the license of the
-> input .c file. The license of the CPP impl (whether OSS or proprietary)
-> doesn't have any influence on the license of the output file, it cannot
-> magically force the output file to be proprietary any more than it can
-> force it to be output file GPL.
+> And have we confirmed that the async FIFO support fixes that problem?
+> That bug report seems to have mostly just speculation in it that
+> maybe this XXX comment is why...
 
-LLM's are just a tool like a compiler (albeit with spookier different
-internals). The prompt and the instructions are arguably the more
-important part of how to get good results from the LLM transformation.
-In fact most of the way I've been using them has been by pasting some
-existing code and asking for review or transformation of it.
+I've been fighting with numerous issues with the TRS build over the last
+week so I can confirm I have seen a) a lock up with pl011_write blocking
+everything under the BQL because data wasn't read fast enough and b) the
+problem goes away with Philippe's patches. So have a:
 
-However I totally get that using the various online LLMs you have very
-little transparency about what has gone into their training and therefor
-there is a danger of proprietary code being hallucinated out of their
-matricies. Conversely what if I use an LLM like OpenLLaMa:
+Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-  https://github.com/openlm-research/open_llama
-
-I have fairly exhaustive definitions of what went into the training data
-which of most interest is probably the StarCoder dataset (paper):
-
-  https://drive.google.com/file/d/1cN-b9GnWtHzQRoE7M7gAEyivY0kl4BYs/view
-
-where there are tools to detect if generated code has been lifted
-directly from the dataset or is indeed a transformation.
-
+for the series.
 
 >
-> With regards,
-> Daniel
+> -- PMM
 
 --=20
 Alex Benn=C3=A9e
