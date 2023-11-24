@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E065B7F853B
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 21:27:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8CC77F852A
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 21:25:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6cjK-00027Y-B1; Fri, 24 Nov 2023 15:24:50 -0500
+	id 1r6cjO-00029t-2C; Fri, 24 Nov 2023 15:24:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r6cjI-000271-AS
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 15:24:48 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1r6cjL-000281-PE
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 15:24:51 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r6cjG-0005Np-QD
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 15:24:48 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1cf59c07faeso17399795ad.2
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 12:24:46 -0800 (PST)
+ id 1r6cjK-0005OO-0z
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 15:24:51 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1cfabcbda7bso4109985ad.0
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 12:24:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1700857484; x=1701462284; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1700857488; x=1701462288; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cmianI1JgQMdz0IgEKTk7UjMG4HIUynTyTAk4C8O4NY=;
- b=lFJJGTkpzqKUgd/DePJqt8tZgxxfE9EDqFs24DqqX10zMvbl/1qZvsqouEzgPABLzW
- 7LRNrMiZEBUMugTLst6w/WlKq32AooOgIxUH35l56KX0SdpjfwqmfMKlZQLf8MU912p/
- culmk2POxP3Bdn63cabDS3oC0NBkIkPa2p2hPOYDeYuvKPxzzpRlLrOQxi5e241E+aH/
- Xr2OO2TUk4MI9ousOq+0aegvxeVlrkyCrWx37Outu4VKZrFG4cWy5NmGix8qo6cHWR0C
- 3SdX+2BLfdM1cDB/VW89K5915BpLwENkTvFVON1SQcfqE3pTy1UvBfFEk5zg5Rnp+Iat
- 1zxA==
+ bh=dRd1SqD9NLtE/59jn8e2VkUZIXQSMS5yqmMxvVnClOw=;
+ b=WZHjF8y019h3gObBRuIsr44XDPUqXFA13KAaI0Yd3oyHW1/vzdKWKga2PsuSEtuuC8
+ afEfdUdWUUH+ueo3AUw/Knb0OOuwdn1kSiascuZIOo2jdU/oR2nZUAtNRGw+8/+vu6Wy
+ GHg9NwmLeN3AR9QgT/8Ns/S1RuAtADaD+Azl5vLrwYqEAN+AX1MthyFPU+cxZMUp+PY7
+ t8g9Vp8ewo8s0DEDieZXwF7PDy/7mU5nm9M7cSk6C5J3pJePTyEyg5i9EAdPw94YVU9h
+ OFVOjvoINKWZcArsQ+TLWKKIkMN/m/PFQbPlqUj9g34MsK3E0asjHGZvtqsquSd9KVP/
+ OK8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700857484; x=1701462284;
+ d=1e100.net; s=20230601; t=1700857488; x=1701462288;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cmianI1JgQMdz0IgEKTk7UjMG4HIUynTyTAk4C8O4NY=;
- b=kIWfDa0prGtoNPzL/2ThKcMsk1FGisxvJAL8jIlOm8b5ThTI/qCGyZIHWiA4BpSalL
- 5oW4xJXGyximi9jfqhR1//THZTjJcirzZWp7FVoxkME9N3Yuc3b1jvXbOcV/EwiK8fSb
- L4fAb92ynAiIFGR7aLs16VSjt/nWAcr8XLtT3QWCX0KeX+l4SOKS6CRqJD2uhjgD/MRV
- PeOFAKFDHQ+q5nm6OuUTJOtQSGr3dq2G7tEwAf4oLJRAAkTO9wi6prYIVmwaSINRejFs
- jLUDnndKTBELsFHgWXqIt9f/FM/nN71P0IatROQ9Ol+ntUD1LLlT/1hbLJZh1RusKno9
- bzPA==
-X-Gm-Message-State: AOJu0Yww14d3S4WoLrwxSLj9dg1sktzCAzl1xAKXiIb6yarfm0MI7DpR
- 0w0ZvcqdMtboKMs3PFWIvQ1elGBqdgJpVSLwQPc=
-X-Google-Smtp-Source: AGHT+IFBWXLgbRosSamzLPqY9E8OZkdDdxtrDNxrDJekcUq0muGF2pqVSyGwWHCu208cV0Ko+3MVfA==
-X-Received: by 2002:a17:903:2345:b0:1cf:b357:c8f4 with SMTP id
- c5-20020a170903234500b001cfb357c8f4mr100691plh.55.1700857484763; 
- Fri, 24 Nov 2023 12:24:44 -0800 (PST)
+ bh=dRd1SqD9NLtE/59jn8e2VkUZIXQSMS5yqmMxvVnClOw=;
+ b=G/3lrPeIkeNzbRzYsLY86mHrOEntL0PeaBvuJuWjudRTXhVXz2lmikJp5y/P5wysBa
+ ShMq1Y5LraBynO1EiNx98R0h+p9BozMmWn7x1ixUUIsZZKswPV9QJyvvP67x7d9JFSKN
+ kS38szAbkB/yNvw2lOY+bEBP/I37s1yQE0J6rfRO9bDWKc2wdPCvWy+H4QzqDwGa6VFW
+ VkMYGAAbYIz37vsLP5lFSs1NAv/dBAlPf8nQZM8CaRwibU293ztFo8650fkB+ucbv6WR
+ 4MFAyP4Tfy9etmF67XTgwXCWEHBtZVMqm+uVkWMiENy7rSREbQ609ApJNRdQR3dRqg4T
+ owzw==
+X-Gm-Message-State: AOJu0YyN8TbMsLj/OFZX4RCDuOo89WaZ4U4eSkgqEhGo0iLfD9APcINS
+ yko+E0SG6BN+cW6/kZXywxCyYviPbUmOXmsRJE8=
+X-Google-Smtp-Source: AGHT+IH5YcjCXNBqHic/x/HpERVpr/+mnBlK1wgIjh7oIpW3hvRQP7foswpX5kg6VjuQLmgj2VtO1A==
+X-Received: by 2002:a17:902:ead2:b0:1cf:a53f:200f with SMTP id
+ p18-20020a170902ead200b001cfa53f200fmr3283490pld.32.1700857487702; 
+ Fri, 24 Nov 2023 12:24:47 -0800 (PST)
 Received: from grind.. ([152.250.131.119]) by smtp.gmail.com with ESMTPSA id
- t24-20020a1709028c9800b001c59f23a3fesm3548267plo.251.2023.11.24.12.24.42
+ t24-20020a1709028c9800b001c59f23a3fesm3548267plo.251.2023.11.24.12.24.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Nov 2023 12:24:44 -0800 (PST)
+ Fri, 24 Nov 2023 12:24:47 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH for-9.0 v12 14/18] target/riscv/tcg: add hash table insert
- helpers
-Date: Fri, 24 Nov 2023 17:23:49 -0300
-Message-ID: <20231124202353.1187814-15-dbarboza@ventanamicro.com>
+Subject: [PATCH for-9.0 v12 15/18] target/riscv/tcg: honor user choice for G
+ MISA bits
+Date: Fri, 24 Nov 2023 17:23:50 -0300
+Message-ID: <20231124202353.1187814-16-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231124202353.1187814-1-dbarboza@ventanamicro.com>
 References: <20231124202353.1187814-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,82 +94,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Previous patches added several g_hash_table_insert() patterns. Add two
-helpers, one for each user hash, to make the code cleaner.
+RVG behaves like a profile: a single flag enables a set of bits. Right
+now we're considering user choice when handling RVG and zicsr/zifencei
+and ignoring user choice on MISA bits.
+
+We'll add user warnings for profiles when the user disables its
+mandatory extensions in the next patch. We'll do the same thing with RVG
+now to keep consistency between RVG and profile handling.
+
+First and foremost, create a new RVG only helper to avoid clogging
+riscv_cpu_validate_set_extensions(). We do not want to annoy users with
+RVG warnings like we did in the past (see 9b9741c38f), thus we'll only
+warn if RVG was user set and the user disabled a RVG extension in the
+command line.
+
+For every RVG MISA bit (IMAFD), zicsr and zifencei, the logic then
+becomes:
+
+- if enabled, do nothing;
+- if disabled and not user set, enable it;
+- if disabled and user set, throw a warning that it's a RVG mandatory
+  extension.
+
+This same logic will be used for profiles in the next patch.
+
+Note that this is a behavior change, where we would error out if the
+user disabled either zicsr or zifencei. As long as users are explicitly
+disabling things in the command line we'll let them have a go at it, at
+least in this step. We'll error out later in the validation if needed.
+
+Other notable changes from the previous RVG code:
+
+- use riscv_cpu_write_misa_bit() instead of manually updating both
+  env->misa_ext and env->misa_ext_mask;
+
+- set zicsr and zifencei directly. We're already checking if they
+  were user set and priv version will never fail for these
+  extensions, making cpu_cfg_ext_auto_update() redundant.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/tcg/tcg-cpu.c | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ target/riscv/tcg/tcg-cpu.c | 73 +++++++++++++++++++++++++-------------
+ 1 file changed, 48 insertions(+), 25 deletions(-)
 
 diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index f2e0ce0f3d..01d2cc9f94 100644
+index 01d2cc9f94..c9df783c51 100644
 --- a/target/riscv/tcg/tcg-cpu.c
 +++ b/target/riscv/tcg/tcg-cpu.c
-@@ -42,6 +42,18 @@ static bool cpu_cfg_ext_is_user_set(uint32_t ext_offset)
+@@ -42,6 +42,12 @@ static bool cpu_cfg_ext_is_user_set(uint32_t ext_offset)
                                   GUINT_TO_POINTER(ext_offset));
  }
  
-+static void cpu_cfg_ext_add_user_opt(uint32_t ext_offset, bool value)
++static bool cpu_misa_ext_is_user_set(uint32_t misa_bit)
 +{
-+    g_hash_table_insert(multi_ext_user_opts, GUINT_TO_POINTER(ext_offset),
-+                        (gpointer)value);
++    return g_hash_table_contains(misa_ext_user_opts,
++                                 GUINT_TO_POINTER(misa_bit));
 +}
 +
-+static void cpu_misa_ext_add_user_opt(uint32_t bit, bool value)
-+{
-+    g_hash_table_insert(misa_ext_user_opts, GUINT_TO_POINTER(bit),
-+                        (gpointer)value);
-+}
-+
- static void riscv_cpu_write_misa_bit(RISCVCPU *cpu, uint32_t bit,
-                                      bool enabled)
+ static void cpu_cfg_ext_add_user_opt(uint32_t ext_offset, bool value)
  {
-@@ -817,9 +829,7 @@ static void cpu_set_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
-         return;
-     }
- 
--    g_hash_table_insert(misa_ext_user_opts,
--                        GUINT_TO_POINTER(misa_bit),
--                        (gpointer)value);
-+    cpu_misa_ext_add_user_opt(misa_bit, value);
- 
-     prev_val = env->misa_ext & misa_bit;
- 
-@@ -956,9 +966,7 @@ static void cpu_set_profile(Object *obj, Visitor *v, const char *name,
-             continue;
-         }
- 
--        g_hash_table_insert(misa_ext_user_opts,
--                            GUINT_TO_POINTER(bit),
--                            (gpointer)value);
-+        cpu_misa_ext_add_user_opt(bit, profile->enabled);
-         riscv_cpu_write_misa_bit(cpu, bit, profile->enabled);
-     }
- 
-@@ -973,9 +981,7 @@ static void cpu_set_profile(Object *obj, Visitor *v, const char *name,
-             cpu_bump_multi_ext_priv_ver(&cpu->env, ext_offset);
-         }
- 
--        g_hash_table_insert(multi_ext_user_opts,
--                            GUINT_TO_POINTER(ext_offset),
--                            (gpointer)profile->enabled);
-+        cpu_cfg_ext_add_user_opt(ext_offset, profile->enabled);
-         isa_ext_update_enabled(cpu, ext_offset, profile->enabled);
-     }
+     g_hash_table_insert(multi_ext_user_opts, GUINT_TO_POINTER(ext_offset),
+@@ -357,6 +363,46 @@ static void riscv_cpu_update_named_features(RISCVCPU *cpu)
+                       cpu->cfg.cboz_blocksize == 64;
  }
-@@ -1038,9 +1044,7 @@ static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
-                     multi_ext_cfg->name, lower);
+ 
++static void riscv_cpu_validate_g(RISCVCPU *cpu)
++{
++    const char *warn_msg = "RVG mandates disabled extension %s";
++    uint32_t g_misa_bits[] = {RVI, RVM, RVA, RVF, RVD};
++    bool send_warn = cpu_misa_ext_is_user_set(RVG);
++
++    for (int i = 0; i < ARRAY_SIZE(g_misa_bits); i++) {
++        uint32_t bit = g_misa_bits[i];
++
++        if (riscv_has_ext(&cpu->env, bit)) {
++            continue;
++        }
++
++        if (!cpu_misa_ext_is_user_set(bit)) {
++            riscv_cpu_write_misa_bit(cpu, bit, true);
++            continue;
++        }
++
++        if (send_warn) {
++            warn_report(warn_msg, riscv_get_misa_ext_name(bit));
++        }
++    }
++
++    if (!cpu->cfg.ext_zicsr) {
++        if (!cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zicsr))) {
++            cpu->cfg.ext_zicsr = true;
++        } else if (send_warn) {
++            warn_report(warn_msg, "zicsr");
++        }
++    }
++
++    if (!cpu->cfg.ext_zifencei) {
++        if (!cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zifencei))) {
++            cpu->cfg.ext_zifencei = true;
++        } else if (send_warn) {
++            warn_report(warn_msg, "zifencei");
++        }
++    }
++}
++
+ /*
+  * Check consistency between chosen extensions while setting
+  * cpu->cfg accordingly.
+@@ -366,31 +412,8 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+     CPURISCVState *env = &cpu->env;
+     Error *local_err = NULL;
+ 
+-    /* Do some ISA extension error checking */
+-    if (riscv_has_ext(env, RVG) &&
+-        !(riscv_has_ext(env, RVI) && riscv_has_ext(env, RVM) &&
+-          riscv_has_ext(env, RVA) && riscv_has_ext(env, RVF) &&
+-          riscv_has_ext(env, RVD) &&
+-          cpu->cfg.ext_zicsr && cpu->cfg.ext_zifencei)) {
+-
+-        if (cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zicsr)) &&
+-            !cpu->cfg.ext_zicsr) {
+-            error_setg(errp, "RVG requires Zicsr but user set Zicsr to false");
+-            return;
+-        }
+-
+-        if (cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zifencei)) &&
+-            !cpu->cfg.ext_zifencei) {
+-            error_setg(errp, "RVG requires Zifencei but user set "
+-                       "Zifencei to false");
+-            return;
+-        }
+-
+-        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zicsr), true);
+-        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zifencei), true);
+-
+-        env->misa_ext |= RVI | RVM | RVA | RVF | RVD;
+-        env->misa_ext_mask |= RVI | RVM | RVA | RVF | RVD;
++    if (riscv_has_ext(env, RVG)) {
++        riscv_cpu_validate_g(cpu);
      }
  
--    g_hash_table_insert(multi_ext_user_opts,
--                        GUINT_TO_POINTER(multi_ext_cfg->offset),
--                        (gpointer)value);
-+    cpu_cfg_ext_add_user_opt(multi_ext_cfg->offset, value);
- 
-     prev_val = isa_ext_is_enabled(cpu, multi_ext_cfg->offset);
- 
+     if (riscv_has_ext(env, RVI) && riscv_has_ext(env, RVE)) {
 -- 
 2.41.0
 
