@@ -2,85 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5607F69FD
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 01:57:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 462187F6A51
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 02:56:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6KUp-0007CG-02; Thu, 23 Nov 2023 19:56:39 -0500
+	id 1r6LPM-0007S0-Ul; Thu, 23 Nov 2023 20:55:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1r6KUn-0007C5-Tl
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 19:56:38 -0500
-Received: from mail-pl1-f178.google.com ([209.85.214.178])
+ (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
+ id 1r6LPL-0007Rm-6M; Thu, 23 Nov 2023 20:55:03 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1r6KUm-0006uR-0g
- for qemu-devel@nongnu.org; Thu, 23 Nov 2023 19:56:37 -0500
-Received: by mail-pl1-f178.google.com with SMTP id
- d9443c01a7336-1ce28faa92dso10712085ad.2
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 16:56:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dhoff749@gmail.com>)
+ id 1r6LPJ-0002CX-Ln; Thu, 23 Nov 2023 20:55:02 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1cf8b6eb13bso8514575ad.1; 
+ Thu, 23 Nov 2023 17:55:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1700790899; x=1701395699; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0J3kfUApwkxX9Zc14ulBPLKVHaQgxTKBvXoqbfNts+c=;
+ b=I877FQsgoUiFmbAaQqYpizAj6ILVA/9dKWJba7x2AxXT5Xfftkb+Bx2pd4OMCrjfOI
+ E4xbgRbkZn9+G4AmnnIv0OoIXvuVTBwakDAK9weH6EWClS2k/TVRoLsIHNbWA7037ycG
+ IbM95r2f8teNSknNHhGoiDPwqQxa4dX6rfDGOPUS2ZHg2mkvn3mN+DOxhM7xayoqmJ1S
+ Mvj6Kgm7CCKA6CqhVMDW1Vl9IC8n8V4wc0eRnYFV3mRtYj0o6yvQxif5APYRm7QwfAuv
+ DpvyDeKee+YKqGxnRq95K7ihFreg0RsRb5B3CKjQEQpqryTN9i92doqRtGAkxZ+Ps7P8
+ rD/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700787393; x=1701392193;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hQGxeP2xohEykkMhwakjLcH4oiee3XYNnokcNout0Y4=;
- b=tBJQo0b7dWWALuMM8KAAsGHQEOf7Amx3lY8eVds4z0KYyA2jHe9jgkbd8ptV8n4MWe
- UKyXOt/4We4oeW5wCLUNk++REB9MKdCb5oTuTgl3USsBQIqO0ZmuX5I092Ge8/HK1Due
- f7PX3HC2wYvp3kdzOKE6UUbjNHxBf2bIosM3uijETM6F+meI1isYNIKj7Q1CBzmeg5zp
- 9kTy0dwbvrA9f8whGt7RpqI400nz0tDq+5IAf3q7XmAuy//709V80OWUEoxpPNvmbQz+
- Sqfj8dIXfHx8AUlfv5sEutCtRAEdfmo/ma7H04Gvel07gFS9MM5yLmz1zGPcDXxu7aMc
- VJOA==
-X-Gm-Message-State: AOJu0YxAylDEjnCrF3eUR1yZxFw3YvFFxogka+1M9Ivq7hXWVfyCQjQL
- UYzuFBpmJJy5IfOl2btnp3IR7+xUQ10=
-X-Google-Smtp-Source: AGHT+IEJtoLah2vsymQTJTnPAExEa3sKN7nmS4ThHyF/+CkcN8B8rEnUIwh3iBF5aCRvnWYweChaLQ==
-X-Received: by 2002:a17:902:cecf:b0:1cf:a105:6a0b with SMTP id
- d15-20020a170902cecf00b001cfa1056a0bmr1084149plg.62.1700787393158; 
- Thu, 23 Nov 2023 16:56:33 -0800 (PST)
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com.
- [209.85.214.177]) by smtp.gmail.com with ESMTPSA id
- ji12-20020a170903324c00b001cf53cd1508sm1971859plb.67.2023.11.23.16.56.32
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 Nov 2023 16:56:32 -0800 (PST)
-Received: by mail-pl1-f177.google.com with SMTP id
- d9443c01a7336-1ce28faa92dso10711985ad.2
- for <qemu-devel@nongnu.org>; Thu, 23 Nov 2023 16:56:32 -0800 (PST)
-X-Received: by 2002:a17:90b:4b07:b0:281:5550:ce3c with SMTP id
- lx7-20020a17090b4b0700b002815550ce3cmr1102775pjb.38.1700787392033; Thu, 23
- Nov 2023 16:56:32 -0800 (PST)
+ d=1e100.net; s=20230601; t=1700790899; x=1701395699;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0J3kfUApwkxX9Zc14ulBPLKVHaQgxTKBvXoqbfNts+c=;
+ b=rnMpYksPJMTplzdbUQbSHTF1JxqrJKrU9/7wLoHPD28KBqG3/Ivrbm2KF5aIrZ3j2W
+ pAhwe1yovr0QQWu0VtepxZOjFoc9uznXGxR2CBkGexo5lWt04354YQL/+HvlIwy18xHk
+ yVklLXEkIhziBqPEu/5hUExfp6NKtISIAEL2Cy2NCa6ERo9Kx/cp0LUW4+FHL61wBkVq
+ gjpcdw8B6bscfhomlcR4uAcBwdlQTlRzBWu/tC8nWOTsCFYmPkdtvRR6ts7VNneL5kYc
+ BGVi/SZZVZrpomSHgIhkYv0fDN2/c2xGDlqjTN8PbdYnvmjol5F/0yWQLmzr1xF1qUsT
+ BGSg==
+X-Gm-Message-State: AOJu0Yw2Z/aDNCiF3R1UH+YlUrxguXoteHRKQZjDOwiTclA02VzfP5zv
+ LuBp0H0Gc22RAnM/KzMcGa50HyM52J/l7A==
+X-Google-Smtp-Source: AGHT+IHtQRWYgHplGgqAsp730h1vqU7vgvVSpyEXgMatqBbSqT+jhqI6wcAAft3dxRGaUlvv/UhWfg==
+X-Received: by 2002:a17:902:ea0c:b0:1cc:5920:1d1c with SMTP id
+ s12-20020a170902ea0c00b001cc59201d1cmr1274599plg.48.1700790899498; 
+ Thu, 23 Nov 2023 17:54:59 -0800 (PST)
+Received: from dhoffman-NUC13RNGi9.hsd1.or.comcast.net
+ ([2601:1c0:577f:e480:7a45:b229:928d:88fa])
+ by smtp.gmail.com with ESMTPSA id
+ h6-20020a170902680600b001cc51680695sm2041481plk.259.2023.11.23.17.54.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 23 Nov 2023 17:54:59 -0800 (PST)
+From: Daniel Hoffman <dhoff749@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Daniel Hoffman <dhoff749@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH] hw/core: define stack variable to NULL to fix qtest with
+ sanitizers
+Date: Thu, 23 Nov 2023 17:53:12 -0800
+Message-Id: <20231124015312.544422-1-dhoff749@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-References: <20231114020927.62315-1-j@getutm.app>
- <20231114020927.62315-13-j@getutm.app>
- <CAJ+F1CKx_MfZapE_vcb_e-nk=CMC2e8FN0QrONb4mzda_KNKUQ@mail.gmail.com>
- <b1542ca5-18a6-44bd-a639-5765580bdc4d@linux.ibm.com>
- <718d155f-004b-417e-8cba-d79ca4475850@linux.ibm.com>
- <7412f9ab-6826-4e64-a583-a4dc8a921b70@linux.ibm.com>
-In-Reply-To: <7412f9ab-6826-4e64-a583-a4dc8a921b70@linux.ibm.com>
-From: Joelle van Dyne <j@getutm.app>
-Date: Thu, 23 Nov 2023 16:56:21 -0800
-X-Gmail-Original-Message-ID: <CA+E+eSDnC9cnm2CfPxFkp=yYkcjuBDaLbxb6Uwz3A4nzwAM3CQ@mail.gmail.com>
-Message-ID: <CA+E+eSDnC9cnm2CfPxFkp=yYkcjuBDaLbxb6Uwz3A4nzwAM3CQ@mail.gmail.com>
-Subject: Re: [PATCH v5 12/14] tests: acpi: implement TPM CRB tests for ARM virt
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>, 
- Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=209.85.214.178; envelope-from=osy86dev@gmail.com;
- helo=mail-pl1-f178.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=dhoff749@gmail.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,136 +92,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 14, 2023 at 4:12=E2=80=AFPM Stefan Berger <stefanb@linux.ibm.co=
-m> wrote:
->
->
->
-> On 11/14/23 16:05, Stefan Berger wrote:
-> >
-> >
-> > On 11/14/23 13:03, Stefan Berger wrote:
-> >>
-> >>
-> >> On 11/14/23 04:36, Marc-Andr=C3=A9 Lureau wrote:
-> >>> Hi
-> >>>
-> >>> On Tue, Nov 14, 2023 at 6:12=E2=80=AFAM Joelle van Dyne <j@getutm.app=
-> wrote:
-> >>>>
-> >>>> Signed-off-by: Joelle van Dyne <j@getutm.app>
-> >>>> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-> >>>
-> >>> nit: you also added tests for x86, could be a different patch?
-> >>>
-> >>> For arm, the test fails until next patch with:
-> >>>
-> >>> # starting QEMU: exec ./qemu-system-aarch64 -qtest
-> >>> unix:/tmp/qtest-991279.sock -qtest-log /dev/null -chardev
-> >>> socket,path=3D/tmp/qtest-991279.qmp,id=3Dchar0 -mon
-> >>> chardev=3Dchar0,mode=3Dcontrol -display none -audio none -machine vir=
-t
-> >>> -accel tcg -nodefaults -nographic -drive
-> >>> if=3Dpflash,format=3Draw,file=3Dpc-bios/edk2-aarch64-code.fd,readonly=
-=3Don
-> >>> -drive if=3Dpflash,format=3Draw,file=3Dpc-bios/edk2-arm-vars.fd,snaps=
-hot=3Don
-> >>> -cdrom tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2
-> >>> -cpu cortex-a57 -chardev
-> >>> socket,id=3Dchr,path=3D/tmp/qemu-test_acpi_virt_tcg_crb-device.KZ3GE2=
-/sock
-> >>> -tpmdev emulator,id=3Ddev,chardev=3Dchr -device tpm-crb-device,tpmdev=
-=3Ddev
-> >>> -accel qtest
-> >>> Warning! zero length expected file
-> >>> 'tests/data/acpi/virt/TPM2.crb-device.tpm2'
-> >>> Warning! zero length expected file
-> >>> 'tests/data/acpi/virt/DSDT.crb-device.tpm2'
-> >>> acpi-test: Warning!  binary file mismatch. Actual
-> >>> [aml:/tmp/aml-GO4ME2], Expected
-> >>> [aml:tests/data/acpi/virt/TPM2.crb-device.tpm2].
-> >>> See source file tests/qtest/bios-tables-test.c for instructions on ho=
-w
-> >>> to update expected files.
-> >>> acpi-test: Warning!  binary file mismatch. Actual
-> >>> [aml:/tmp/aml-6N4ME2], Expected
-> >>> [aml:tests/data/acpi/virt/DSDT.crb-device.tpm2].
-> >>> See source file tests/qtest/bios-tables-test.c for instructions on ho=
-w
-> >>> to update expected files.
-> >>> to see ASL diff between mismatched files install IASL, rebuild QEMU
-> >>> from scratch and re-run tests with V=3D1 environment variable set**
-> >>> ERROR:../tests/qtest/bios-tables-test.c:538:test_acpi_asl: assertion
-> >>> failed: (all_tables_match)
-> >>> not ok /aarch64/acpi/virt/tpm2-crb -
-> >>> ERROR:../tests/qtest/bios-tables-test.c:538:test_acpi_asl: assertion
-> >>> failed: (all_tables_match)
-> >>> Bail out!
-> >>> qemu-system-aarch64: tpm-emulator: Could not cleanly shutdown the TPM=
-:
-> >>> Resource temporarily unavailable
-> >>> Unexpected error in qio_channel_socket_writev() at
-> >>> ../io/channel-socket.c:622:
-> >>> /home/elmarco/src/qemu/buildall/tests/qtest/bios-tables-test: Unable
-> >>> to write to socket: Bad file descriptor
-> >>>
-> >>
-> >> Travis testing on s390x I see the following failures for this patchset
-> >> (search for 'ERROR'):
-> >>
-> >> https://app.travis-ci.com/github/stefanberger/qemu-tpm/builds/26723036=
-3
-> >>
-> >> Summary of Failures:
-> >>
-> >> 134/320 qemu:qtest+qtest-aarch64 / qtest-aarch64/tpm-crb-device-test
-> >> ERROR           0.70s   killed by signal 6 SIGABRT
-> >>
-> >> 219/320 qemu:qtest+qtest-x86_64 / qtest-x86_64/tpm-crb-test
-> >> ERROR           0.88s   killed by signal 6 SIGABRT
-> >>
-> >>
-> >> Summary of Failures:
-> >>
-> >> 271/537 qemu:qtest+qtest-i386 / qtest-i386/tpm-crb-test
-> >> ERROR           0.59s   killed by signal 6 SIGABRT
-> >>
-> >>
-> >> My guess is it's an endianess issue on big endian machines due to
-> >> reading from the ROM device where we lost the .endianess:
-> >>
-> >> +const MemoryRegionOps tpm_crb_memory_ops =3D {
-> >> +    .read =3D tpm_crb_mmio_read,
-> >> +    .write =3D tpm_crb_mmio_write,
-> >> +    .endianness =3D DEVICE_LITTLE_ENDIAN,
-> >> +    .valid =3D {
-> >> +        .min_access_size =3D 1,
-> >> +        .max_access_size =3D 4,
-> >> +    },
-> >> +};
-> >>
-> >
-> > I think we need a 2nd set of registers to support the endianess
-> > conversion. It's not exactly nice, though. Basically the saved_regs
-> > could be used for this directly, even though I did not do that but
-> > introduced n_regs:
-> > https://github.com/stefanberger/qemu-tpm/commit/90f6b21c0dd93dbb13d9e80=
-a628f5b631fd07d91
-> >
-> > This patch allows the tests on s390x to run farther but the execution o=
-f
-> > the command doesn't seem to work maybe due to command data that were
-> > also written in wrong endianess. I don't know. I would have to get
-> > access to a big endian / s390 machine to be able to fix it.
-> >
-> >
->
-> The latest version now passes on Travis s390x:
-> https://app.travis-ci.com/github/stefanberger/qemu-tpm/builds/267245220
->
+This was the only failure preventing `make check` from passing with sanitizers
+enabled on my configuration.
 
-Are the tests failing on S390X due to the added code or are they
-failing because previously it was untested? I don't think the original
-code took account of endianness and that should be fixed, but feels
-like it should be in a separate patch set?
+Signed-off-by: Daniel Hoffman <dhoff749@gmail.com>
+---
+ hw/core/qdev-properties.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index 91632f7be9f..4caa78b7bc5 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -690,7 +690,7 @@ static void get_prop_array(Object *obj, Visitor *v, const char *name,
+     uint32_t *alenptr = object_field_prop_ptr(obj, prop);
+     void **arrayptr = (void *)obj + prop->arrayoffset;
+     char *elem = *arrayptr;
+-    GenericList *list;
++    GenericList *list = NULL;
+     const size_t list_elem_size = sizeof(*list) + prop->arrayfieldsize;
+     int i;
+     bool ok;
+-- 
+2.40.1
+
 
