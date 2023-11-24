@@ -2,103 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9764D7F7640
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 15:22:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE487F7666
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 15:36:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6X3A-0002Ef-LD; Fri, 24 Nov 2023 09:20:56 -0500
+	id 1r6XHP-0007sJ-0z; Fri, 24 Nov 2023 09:35:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r6X39-0002EG-4I
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 09:20:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <Frederic.Konrad@amd.com>)
+ id 1r6XHM-0007rW-Bn; Fri, 24 Nov 2023 09:35:36 -0500
+Received: from mail-bn8nam11on20600.outbound.protection.outlook.com
+ ([2a01:111:f400:7eae::600]
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r6X37-0001c3-2i
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 09:20:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700835652;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vegpZ4SEXUpYZ9JFohP3hK+vi7e/r3dObUb4fKl4quY=;
- b=VjNdqsaM0H0Y/xc6CB4Q0v37N1I1jQ0NpAnlroLM08vZuMOcK4OplGAQawR9PvpLXaelnp
- r58aUzbtgCgroIK2DjxIP8TCqhEBmT6CCg/UPNgttHx0NKFvi9hAT6un9u/LPf/1EcHzyo
- 1lm6/rGPSHSlGtnNqKxQyYKYAeK0T8Q=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-618-XUI9oU1IN7ilyhG_ourqyQ-1; Fri, 24 Nov 2023 09:20:51 -0500
-X-MC-Unique: XUI9oU1IN7ilyhG_ourqyQ-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-54acdd65e8cso699310a12.1
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 06:20:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700835650; x=1701440450;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vegpZ4SEXUpYZ9JFohP3hK+vi7e/r3dObUb4fKl4quY=;
- b=smlwKq+KfFcZGYRm4ogdQd+0A8IZOP/f7eH2ZP6NbNExSgiVlvEFtYeDaolk9oqtUL
- LoUmBG4tpQOdhIwVh69fmTeQHZtBQdkyFWJu3HWy8e0R6J+pOE69zXFWYWFB0A6ORRct
- t8Ce0gfVICArM3xReRNbZb7iQoI0PlnKXsGtZpJld7KRdDQuXGgyLXFZdHia4oxin70F
- lIuaj/CUOrBlqZwk4aBDouO5iV1vtX41FfokVjAFiOInoCzVRsbAI4adYWAf5AKzymcK
- 4ZjxP3z+JjAOvw1HRPPDwxJTH6FkOuc5nzQ11LXawkmH5AzaJkRPzuNW0DI/Pal/LwV1
- UNTw==
-X-Gm-Message-State: AOJu0Yx6qK/63qB7lQIWSe3pYKdHztC+L4sBsVlUFfhEwiSMv2rS4aqP
- Z5b2Jcgm0Z5Hj1027aBFK9AXYfRrsNS/7kyDzdKF4onkSuUv6k6r//Y+AElFmiaC4n6A8daUoRt
- 7xcSxpo02c+H4ScA=
-X-Received: by 2002:a50:d55e:0:b0:53d:b839:2045 with SMTP id
- f30-20020a50d55e000000b0053db8392045mr2358102edj.25.1700835650011; 
- Fri, 24 Nov 2023 06:20:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHBdg+rntWIl/bOReCSPB2yc8SvVSa73bJJ1RAq/RKoKIP6bxifVD6/pcAX+sA4i3SRdW9+qw==
-X-Received: by 2002:a50:d55e:0:b0:53d:b839:2045 with SMTP id
- f30-20020a50d55e000000b0053db8392045mr2358072edj.25.1700835649658; 
- Fri, 24 Nov 2023 06:20:49 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com ([185.140.112.229])
- by smtp.gmail.com with ESMTPSA id
- u11-20020aa7db8b000000b00543525d9fddsm1798204edt.21.2023.11.24.06.20.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Nov 2023 06:20:49 -0800 (PST)
-Date: Fri, 24 Nov 2023 15:20:47 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Salil Mehta <salil.mehta@huawei.com>
-Cc: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <maz@kernel.org>,
- <jean-philippe@linaro.org>, <jonathan.cameron@huawei.com>,
- <lpieralisi@kernel.org>, <peter.maydell@linaro.org>,
- <richard.henderson@linaro.org>, <andrew.jones@linux.dev>,
- <david@redhat.com>, <philmd@linaro.org>, <eric.auger@redhat.com>,
- <oliver.upton@linux.dev>, <pbonzini@redhat.com>, <mst@redhat.com>,
- <will@kernel.org>, <gshan@redhat.com>, <rafael@kernel.org>,
- <alex.bennee@linaro.org>, <linux@armlinux.org.uk>,
- <darren@os.amperecomputing.com>, <ilkka@os.amperecomputing.com>,
- <vishnu@os.amperecomputing.com>, <karl.heubaum@oracle.com>,
- <miguel.luis@oracle.com>, <salil.mehta@opnsrc.net>,
- <zhukeqian1@huawei.com>, <wangxiongfeng2@huawei.com>,
- <wangyanan55@huawei.com>, <jiakernel2@gmail.com>, <maobibo@loongson.cn>,
- <lixianglai@loongson.cn>, <linuxarm@huawei.com>
-Subject: Re: [PATCH V7 2/8] hw/acpi: Move CPU ctrl-dev MMIO region len macro
- to common header file
-Message-ID: <20231124152047.1160a5af@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231113201236.30668-3-salil.mehta@huawei.com>
-References: <20231113201236.30668-1-salil.mehta@huawei.com>
- <20231113201236.30668-3-salil.mehta@huawei.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <Frederic.Konrad@amd.com>)
+ id 1r6XHH-0006y7-N0; Fri, 24 Nov 2023 09:35:34 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Yxuzkpa67ud0LXXySLHfdw3G3r8JhaXCkwUWWj55n3PYJsnE9O+8MKpk/e/tNeF5Yjz14Movw6EEDzheRGoBzURpacjLvr6ceZ1m4wfpwsKHH/EzokX/jeH8i/XY8jbtmGqhPPPuqB156oAhKLLGIFAw6K8PLrQit4qL9OOMp9wSgMVgJTJHnl581FRBMe/zPNLYXXfiefDhGQHubMIkQ6ISCNcMC+g+hsgC+xLuzVWh8oPplPddCiWkAsvfsPkdINbAjVkWVgT1iCEkWATqcoKtx7CFeSFXqIOvbQGJ1v/70EwMo2Ksj+muQ1sLXxrk5WPM6kGXCq4KL5c6SydTBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=G5nllDb9jj2UCJ0CmFxKFDuIQKzJQPr91TWgm3T5Lqo=;
+ b=aOhPXWlyGM/ORGKmuoMNl5x/VmwYfC1rbSZNTO9R8qQiPNc5J3h2H5YJupOl+ZBBs3oarARl8IMtebqZaX4/UGl9og7wvx04ofj6VRaqjw33/vCQU0R3dCChYxdwVU8h/piYaB909lguPH71ab5Cii9caUNfeL94mbTPVYLCMK9TIVA0vg9S4ZmuBQKPO7XVtFPMVTIPMjS70LkWTR65iPTzq/qLhH+ahtmqnWtUFYBxDEUkoCVewG0MHBnzgVoFEXttJ0kY1D3Lnml1zFMYR3NtRB6TH0Dz6gLbe5fQ+hCmcQJXqPoU4D074jQhnCWH/n0gvHeR2pl9g6icAn8k3A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=G5nllDb9jj2UCJ0CmFxKFDuIQKzJQPr91TWgm3T5Lqo=;
+ b=rnhkkOpbMNCqQd1C2XUE3JgggdeIx7hr+soGQeDnXBhC3arLs27c8SoZRamfwD7gJKf3kF1PQhMAwkhTsPbNjTkBNCScKr6fumIFfDRISnPsHsz8tDhtmtBIfl+zO49DY+1eZ++ZMavf+Rti8Y+dvo5lfck7MzF5rfUAWY+zPGw=
+Received: from CH2PR10CA0018.namprd10.prod.outlook.com (2603:10b6:610:4c::28)
+ by SA1PR12MB9002.namprd12.prod.outlook.com (2603:10b6:806:38b::14)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.20; Fri, 24 Nov
+ 2023 14:35:24 +0000
+Received: from DS2PEPF00003442.namprd04.prod.outlook.com
+ (2603:10b6:610:4c:cafe::9d) by CH2PR10CA0018.outlook.office365.com
+ (2603:10b6:610:4c::28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.19 via Frontend
+ Transport; Fri, 24 Nov 2023 14:35:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS2PEPF00003442.mail.protection.outlook.com (10.167.17.69) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7025.13 via Frontend Transport; Fri, 24 Nov 2023 14:35:23 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Fri, 24 Nov
+ 2023 08:35:23 -0600
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Fri, 24 Nov
+ 2023 08:35:22 -0600
+Received: from xdcsswbld02.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.34 via Frontend
+ Transport; Fri, 24 Nov 2023 08:35:22 -0600
+From: Frederic Konrad <fkonrad@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <qemu-arm@nongnu.org>, <francisco.iglesias@amd.com>,
+ <peter.maydell@linaro.org>, <edgar.iglesias@gmail.com>,
+ <alistair@alistair23.me>, <luc.michel@amd.com>, <fkonrad@amd.com>
+Subject: [PATCH v1 0/3] ZynqMP / Versal: various fixes
+Date: Fri, 24 Nov 2023 14:35:02 +0000
+Message-ID: <20231124143505.1493184-1-fkonrad@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF00003442:EE_|SA1PR12MB9002:EE_
+X-MS-Office365-Filtering-Correlation-Id: b1ef4d51-30bd-4ceb-d965-08dbecfa97ec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Ud3y6U8WieJd6Swhui2fgpOACIp0o82vVK7rL8/xX5TfH2rHfD9EvzQpzokIMQ3GXO4T/Kt+RAXqaWrG7dPJcUuagO11W7TWgFI2VsKWoTdmhZoM2/WHzj3SP/89k/icSeHRfXb5SLtWdT2jG6lzIQ7uw0YX1F+kWqt87ngAjuHebNQbSPLnjk0AVBCGmIuYRlgITwbVGijhC1jqOplFaBUoEUaC4/ZBlitBTelchje7MT25beTMkNe7zb2SJujpcmS673nicVo4yLEq/O1wnk9U2O7s/8/FhebJ75R5bS9Dawio0PxvkXWv/nGViFh/tvCHBcOKoYPDx6d2kiwasBGojNP2kczzpfRdnresWBpFzpjeCmiNZ7lEuKnY4IRLZxS2IUHGh3TWHh0z2gMQqGLE/9LkEmZSmxPItqB4Vu8kVk8AS1VeMdICxMtTUagBnZjou5SY56G+pSjVQgmU7L6rfkI+KFVGo05lsn1WGnE536P6wzw35FmL1Sn7IyJcdHA17r9l5G3ngx4xyUt5JumI+tc/HBELXpp0qskGosrCHYWAFimFUiI+n3V9try3OyhhJqNrAZXrTOMOtammTdvsyubO/lZSIjUQ6HfQKikRcNim7hKzd9uXvNWfR4XzcKyHMcVLv3exO+jZOInJZshd1GuaumuWvhe5SstUHS8Ob3xbIi9iwZMxkAfSTayu9lWiF07CCxA9sNiBvCyu/xSf8mmHPb+6BGx54shOEW0EcW8pOhnQFXrnj+q5El8CRsHzWb1GhFWJk/VvHOFo2g==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(346002)(39860400002)(136003)(396003)(376002)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(82310400011)(46966006)(40470700004)(36840700001)(336012)(426003)(83380400001)(81166007)(356005)(82740400003)(47076005)(40460700003)(36860700001)(70206006)(54906003)(70586007)(316002)(6916009)(8676002)(4326008)(8936002)(41300700001)(5660300002)(4744005)(2906002)(1076003)(36756003)(2616005)(40480700001)(26005)(6666004)(478600001)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2023 14:35:23.7136 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b1ef4d51-30bd-4ceb-d965-08dbecfa97ec
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF00003442.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9002
+Received-SPF: softfail client-ip=2a01:111:f400:7eae::600;
+ envelope-from=Frederic.Konrad@amd.com;
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,65 +123,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 13 Nov 2023 20:12:30 +0000
-Salil Mehta <salil.mehta@huawei.com> wrote:
+Hi,
 
-> CPU ctrl-dev MMIO region length could be used in ACPI GED and various oth=
-er
-> architecture specific places. Move ACPI_CPU_HOTPLUG_REG_LEN macro to more
-> appropriate common header file.
->=20
-> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
-> Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-> Tested-by: Xianglai Li <lixianglai@loongson.cn>
-> Tested-by: Miguel Luis <miguel.luis@oracle.com>
-> ---
->  hw/acpi/cpu.c                 | 2 +-
->  include/hw/acpi/cpu_hotplug.h | 2 ++
+Those are various simple fixes for ZynqMP:
+  * 1: fixes a possible out of bound access in the SPI model.
+  * 2: is a trivial fix for documentation url.
+  * 3: is a log guest error fix for the CSU DMA.
 
-the header holds legacy stuff (mostly) and I'd say is destined for removal.
+Best Regards,
+Fred
 
-include/hw/acpi/cpu.h  would be a better place for it.
+Frederic Konrad (3):
+  hw/ssi/xilinx_spips: fix an out of bound access
+  fix some url for amd / xilinx models
+  hw/dma/xlnx_csu_dma: don't throw guest errors when stopping the SRC
+    DMA
 
+ hw/dma/xlnx_csu_dma.c                      | 14 +++++++++-----
+ hw/ssi/xilinx_spips.c                      |  7 ++++++-
+ include/hw/misc/xlnx-versal-cframe-reg.h   |  2 +-
+ include/hw/misc/xlnx-versal-cfu.h          |  2 +-
+ include/hw/misc/xlnx-versal-pmc-iou-slcr.h |  2 +-
+ include/hw/ssi/xilinx_spips.h              |  3 +++
+ include/hw/ssi/xlnx-versal-ospi.h          |  2 +-
+ 7 files changed, 22 insertions(+), 10 deletions(-)
 
->  2 files changed, 3 insertions(+), 1 deletion(-)
->=20
-> diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-> index 011d2c6c2d..4b24a25003 100644
-> --- a/hw/acpi/cpu.c
-> +++ b/hw/acpi/cpu.c
-> @@ -1,13 +1,13 @@
->  #include "qemu/osdep.h"
->  #include "migration/vmstate.h"
->  #include "hw/acpi/cpu.h"
-> +#include "hw/acpi/cpu_hotplug.h"
->  #include "hw/core/cpu.h"
->  #include "qapi/error.h"
->  #include "qapi/qapi-events-acpi.h"
->  #include "trace.h"
->  #include "sysemu/numa.h"
-> =20
-> -#define ACPI_CPU_HOTPLUG_REG_LEN 12
->  #define ACPI_CPU_SELECTOR_OFFSET_WR 0
->  #define ACPI_CPU_FLAGS_OFFSET_RW 4
->  #define ACPI_CPU_CMD_OFFSET_WR 5
-> diff --git a/include/hw/acpi/cpu_hotplug.h b/include/hw/acpi/cpu_hotplug.h
-> index 3b932abbbb..48b291e45e 100644
-> --- a/include/hw/acpi/cpu_hotplug.h
-> +++ b/include/hw/acpi/cpu_hotplug.h
-> @@ -19,6 +19,8 @@
->  #include "hw/hotplug.h"
->  #include "hw/acpi/cpu.h"
-> =20
-> +#define ACPI_CPU_HOTPLUG_REG_LEN 12
-> +
->  typedef struct AcpiCpuHotplug {
->      Object *device;
->      MemoryRegion io;
+-- 
+2.25.1
 
 
