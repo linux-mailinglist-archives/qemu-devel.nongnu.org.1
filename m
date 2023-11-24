@@ -2,85 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3916C7F76FF
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 15:55:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94EFC7F76DA
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 15:49:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6XaB-0002jH-Jy; Fri, 24 Nov 2023 09:55:03 -0500
+	id 1r6XUD-0007Ia-4q; Fri, 24 Nov 2023 09:48:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6Xa7-0002fi-Nk
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 09:54:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1r6XUA-0007AH-TP
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 09:48:50 -0500
+Received: from mgamail.intel.com ([134.134.136.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r6Xa6-0004VE-87
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 09:54:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700837697;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=shRx/7FsxFJHcJIh5WYh8+A5VNEocTTLy3f+nN5Cntk=;
- b=Kv+jFCZJoicQ2Icp6cbEd3LOEZuGSGXqkYrGB7vd1Y9EMtnme7k33/YmVJOiXBH2mr9fPH
- U/Xsq6wAvF7c4qChmYAFprcNY45PStb8yClVy8yusBv/POoI1bDsprIfU+ARTqwo0JfNPY
- klIIybLMEyHBK5oYhhEicnPhh0y6KgI=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-6-D7_e0qd4Pt6b4VrKi9epig-1; Fri, 24 Nov 2023 09:54:55 -0500
-X-MC-Unique: D7_e0qd4Pt6b4VrKi9epig-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9fd0a58549bso226967766b.0
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 06:54:55 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700837695; x=1701442495;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=shRx/7FsxFJHcJIh5WYh8+A5VNEocTTLy3f+nN5Cntk=;
- b=PWGxbG7IQ2gj5mayrcX/niF9wza0ertlERptiMj6CsDNPX+YC9H2HOYbUuZ4213mHQ
- yBdOGKguPcoF8cZP4mREVdZ8iXbBokmDzMoAJb7qyrJKMaFJ+7MAlin71fzWZaG6ckan
- ln/94PH67hHkCn1uFt6v6mDdGSHEwzpQM45Zdg2va9cc5yrkstC+WlHuIQl5/yaW6R9A
- YFMZh4IEf0mKtQxfKhra7CKhb22q6yZRHRZJdMIvdOPJQKajnuFG6tl9lAartofPQnDy
- dbcQMO4xFN1j80PYoVRwN6p26ALBlI18qANotXIpW6ae7a1sxu44IkZU0Zx/AJfjkYZm
- oVGQ==
-X-Gm-Message-State: AOJu0YyDiel8J6J6776Iu02rhmmjWkmg7doV5BawJ0Uv5dMlT890fYzv
- 6UOQ9hN59At/L1SvLhZoUr7K2Wm4bsgUX8h7rKHQ/l4dczgYv9eg509kttE1OZglvFA6A1NayOZ
- dEcJY4tOX4kH8Dzw=
-X-Received: by 2002:a17:907:920f:b0:a02:b9c2:87bb with SMTP id
- ka15-20020a170907920f00b00a02b9c287bbmr2585603ejb.15.1700837694759; 
- Fri, 24 Nov 2023 06:54:54 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IESdgsaZJypIAATbbodCXJZj6VsGrTRJrvjLXFei+9p/Nnsx5r15F0MDtHqPMh5T1cr1SVa8w==
-X-Received: by 2002:a17:907:920f:b0:a02:b9c2:87bb with SMTP id
- ka15-20020a170907920f00b00a02b9c287bbmr2585590ejb.15.1700837694422; 
- Fri, 24 Nov 2023 06:54:54 -0800 (PST)
-Received: from redhat.com ([2a02:14f:176:51e5:39df:4b3f:fe7:3d4e])
- by smtp.gmail.com with ESMTPSA id
- b24-20020a1709062b5800b009fcd13bbd72sm2143505ejg.214.2023.11.24.06.54.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 Nov 2023 06:54:53 -0800 (PST)
-Date: Fri, 24 Nov 2023 09:54:50 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Thierry Escande <thierry.escande@vates.tech>, qemu-devel@nongnu.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH 0/4] ICH9 root PCI hotplug
-Message-ID: <20231124094535-mutt-send-email-mst@kernel.org>
-References: <20231115171837.18866-1-thierry.escande@vates.tech>
- <20231124150135.0b99deeb@imammedo.users.ipa.redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1r6XU7-00024V-EC
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 09:48:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1700837327; x=1732373327;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=mJlP42EwFBc16ghLQRRkc5r9YjcPw5oEp6hAtSa1ZHU=;
+ b=Fdf2rz6cRw9RtDDWv7FLc7NHY0fpca216jYu6ZHX7wevk7qnRs976jWG
+ K+KeYC1avPmKrv9zwdvUILiWGieqUDexeT+WM60Zm4oBDOxPOcBWAz/2f
+ lAA6J55b3TEJ7hzZZgrUFGo9wRnw0MnybFscPDTKvOAyNODO6HU52wcBD
+ SiGsC+6MT7RP09W/tZINdxfy3cHIRdjgOni3gjWs+VQGTOrLSlk5CgE1X
+ 8eB20RQfCJfTm1o03gV/CGryMYpGQkk1wNiUJQJGVsfd6cR3KbbduqxiM
+ dv69c++OdSocv2Ix0CXOzJ+X089re+7nuGjsMFYRE4AkrIV8uAlTptRl5 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10904"; a="395249871"
+X-IronPort-AV: E=Sophos;i="6.04,224,1695711600"; d="scan'208";a="395249871"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Nov 2023 06:48:31 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10904"; a="767501974"
+X-IronPort-AV: E=Sophos;i="6.04,224,1695711600"; d="scan'208";a="767501974"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orsmga002.jf.intel.com with ESMTP; 24 Nov 2023 06:48:29 -0800
+Date: Fri, 24 Nov 2023 23:00:44 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Cc: pbonzini@redhat.com, mtosatti@redhat.com, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org, ewanhai@zhaoxin.com, cobechen@zhaoxin.com
+Subject: Re: [PATCH] target/i386/kvm: Refine VMX controls setting for
+ backward compatibility
+Message-ID: <ZWC6nOF43KUghl6K@intel.com>
+References: <20230925071453.14908-1-ewanhai-oc@zhaoxin.com>
+ <ZTnbFJrHeKhoUA6F@intel.com>
+ <eb9a08b2-a7c4-c45c-edd8-0585037194aa@zhaoxin.com>
+ <a75f0b92-4894-bee9-ecbd-78b849702f61@zhaoxin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231124150135.0b99deeb@imammedo.users.ipa.redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a75f0b92-4894-bee9-ecbd-78b849702f61@zhaoxin.com>
+Received-SPF: pass client-ip=134.134.136.24; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,46 +83,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 24, 2023 at 03:01:35PM +0100, Igor Mammedov wrote:
-> On Wed, 15 Nov 2023 17:18:53 +0000
-> Thierry Escande <thierry.escande@vates.tech> wrote:
+Hi Ewan,
+
+Look good to me. No other comments.
+
+Regards,
+Zhao
+
+On Fri, Oct 27, 2023 at 02:08:57AM -0400, Ewan Hai wrote:
+> Date: Fri, 27 Oct 2023 02:08:57 -0400
+> From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+> Subject: Re: [PATCH] target/i386/kvm: Refine VMX controls setting for
+>  backward compatibility
 > 
-> > Hi,
-> > 
-> > This series fixes acpi_hotplug_bridge accessor names, adds new accessors
-> > for acpi-root-pci-hotplug property, and enables root PCI hotplug by
-> > default for Q35 machine.
+> Hi Zhao,
 > 
-> hotplug on Q35 hostbridge is not implemented intentionally
-> to keep machine close to the real world.
-
-> PCIe spec 3.1a, 1.3.2.3. Root Complex Integrated Endpoint Rules
-> "
-> A Root Complex Integrated Endpoint may not be hot-plugged independent of the Root
-> Complex as a whole.
-> "
-> )
-
-To be more precise close to native hotplug.
-But we used ACPI for several years now and it seems to be fine.
-Maybe it's time we lifted the limitation?
-
-
+> since I found last email contains non-plain-text content, andkvm@vger.kernel.org
+> rejected to receive my mail, so just re-send last mail here, to follow the rule of qemu
+> /kvm community.
 > 
-> PS:
-> but patch 1/4 is good cleanup, pls include Reviewed-by's and resend it
-> as a separate patch after 8.2 has been released (so it wouldn't get lost in the traffic).
+> On 10/25/23 23:20, Zhao Liu wrote:
+> > On Mon, Sep 25, 2023 at 03:14:53AM -0400, EwanHai wrote:
+> > > Date: Mon, 25 Sep 2023 03:14:53 -0400
+> > > From: EwanHai<ewanhai-oc@zhaoxin.com>
+> > > Subject: [PATCH] target/i386/kvm: Refine VMX controls setting for backward
+> > >   compatibility
+> > > X-Mailer: git-send-email 2.34.1
+> > > 
+> > > Commit 4a910e1 ("target/i386: do not set unsupported VMX secondary
+> > > execution controls") implemented a workaround for hosts that have
+> > > specific CPUID features but do not support the corresponding VMX
+> > > controls, e.g., hosts support RDSEED but do not support RDSEED-Exiting.
+> > > 
+> > > In detail, commit 4a910e1 introduced a flag `has_msr_vmx_procbased_clts2`.
+> > > If KVM has `MSR_IA32_VMX_PROCBASED_CTLS2` in its msr list, QEMU would
+> > > use KVM's settings, avoiding any modifications to this MSR.
+> > > 
+> > > However, this commit (4a910e1) didn’t account for cases in older Linux
+> > s/didn’t/didn't/
 > 
+> I'll fix it.
+> 
+> > > kernels(e.g., linux-4.19.90) where `MSR_IA32_VMX_PROCBASED_CTLS2` is
+> > For this old kernel, it's better to add the brief lifecycle note (e.g.,
+> > lts, EOL) to illustrate the value of considering such compatibility
+> > fixes.
+> 
+> I've checked the linux-stable repo, found that
+> MSR_IA32_VMX_PROCBASED_CTLS2 is not included in kvm regular msr list
+> until linux-5.3, and in linux-4.19.x(EOL:Dec,2024), there is also no
+> MSR_IA32_VMX_PROCBASED_CTLS2 in kvm regular msr list.
+> 
+> So maybe this is an important compatibility fix for kernel < 5.3.
+> 
+> > > in `kvm_feature_msrs`—obtained by ioctl(KVM_GET_MSR_FEATURE_INDEX_LIST),
+> > s/—obtained/-obtained/
+> 
+> I'll fix it.
+> 
+> > > but not in `kvm_msr_list`—obtained by ioctl(KVM_GET_MSR_INDEX_LIST).
+> > s/—obtained/-obtained/
+> 
+> I'll fix it.
+> 
+> > > As a result,it did not set the `has_msr_vmx_procbased_clts2` flag based
+> > > on `kvm_msr_list` alone, even though KVM maintains the value of this MSR.
+> > > 
+> > > This patch supplements the above logic, ensuring that
+> > > `has_msr_vmx_procbased_clts2` is correctly set by checking both MSR
+> > > lists, thus maintaining compatibility with older kernels.
+> > > 
+> > > Signed-off-by: EwanHai<ewanhai-oc@zhaoxin.com>
+> > > ---
+> > >   target/i386/kvm/kvm.c | 6 ++++++
+> > >   1 file changed, 6 insertions(+)
+> > > 
+> > > diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> > > index af101fcdf6..6299284de4 100644
+> > > --- a/target/i386/kvm/kvm.c
+> > > +++ b/target/i386/kvm/kvm.c
+> > > @@ -2343,6 +2343,7 @@ void kvm_arch_do_init_vcpu(X86CPU *cpu)
+> > >   static int kvm_get_supported_feature_msrs(KVMState *s)
+> > >   {
+> > >       int ret = 0;
+> > > +    int i;
+> > >       if (kvm_feature_msrs != NULL) {
+> > >           return 0;
+> > > @@ -2377,6 +2378,11 @@ static int kvm_get_supported_feature_msrs(KVMState *s)
+> > >           return ret;
+> > >       }
+> > It's worth adding a comment here to indicate that this is a
+> > compatibility fix.
 > > 
-> > Thierry Escande (4):
-> >   ich9: Remove unused hotplug field from ICH9LPCPMRegs struct
-> >   ich9: Renamed use_acpi_hotplug_bridge accessors
-> >   ich9: Add accessors for acpi-root-pci-hotplug
-> >   ich9: Enable root PCI hotplug by default
+> > -Zhao
 > > 
-> >  hw/acpi/ich9.c         | 23 +++++++++++++++++++++--
-> >  include/hw/acpi/ich9.h |  1 -
-> >  2 files changed, 21 insertions(+), 3 deletions(-)
+> > > +    for (i = 0; i < kvm_feature_msrs->nmsrs; i++) {
+> > > +        if (kvm_feature_msrs->indices[i] == MSR_IA32_VMX_PROCBASED_CTLS2) {
+> > > +            has_msr_vmx_procbased_ctls2 = true;
+> > > +        }
+> > > +    }
+> > >       return 0;
+> > >   }
+> > > -- 
+> > > 2.34.1
+> > > 
+> Plan to use patch bellow, any more suggestion?
+> 
+> >  From a3006fcec3615d98ac1eb252a61952d44aa5029b Mon Sep 17 00:00:00 2001
+> > From: EwanHai<ewanhai-oc@zhaoxin.com>
+> > Date: Mon, 25 Sep 2023 02:11:59 -0400
+> > Subject: [PATCH] target/i386/kvm: Refine VMX controls setting for backward
+> >   compatibility
 > > 
-
+> > Commit 4a910e1 ("target/i386: do not set unsupported VMX secondary
+> > execution controls") implemented a workaround for hosts that have
+> > specific CPUID features but do not support the corresponding VMX
+> > controls, e.g., hosts support RDSEED but do not support RDSEED-Exiting.
+> > 
+> > In detail, commit 4a910e1 introduced a flag `has_msr_vmx_procbased_clts2`.
+> > If KVM has `MSR_IA32_VMX_PROCBASED_CTLS2` in its msr list, QEMU would
+> > use KVM's settings, avoiding any modifications to this MSR.
+> > 
+> > However, this commit (4a910e1) didn't account for cases in older Linux
+> > kernels(<5.3) where `MSR_IA32_VMX_PROCBASED_CTLS2` is in
+> > `kvm_feature_msrs`-obtained by ioctl(KVM_GET_MSR_FEATURE_INDEX_LIST),
+> > but not in `kvm_msr_list`-obtained by ioctl(KVM_GET_MSR_INDEX_LIST).
+> > As a result,it did not set the `has_msr_vmx_procbased_clts2` flag based
+> > on `kvm_msr_list` alone, even though KVM maintains the value of this MSR.
+> > 
+> > This patch supplements the above logic, ensuring that
+> > `has_msr_vmx_procbased_clts2` is correctly set by checking both MSR
+> > lists, thus maintaining compatibility with older kernels.
+> > 
+> > Signed-off-by: EwanHai<ewanhai-oc@zhaoxin.com>
+> > ---
+> >   target/i386/kvm/kvm.c | 14 ++++++++++++++
+> >   1 file changed, 14 insertions(+)
+> > 
+> > diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> > index af101fcdf6..3cf95f8579 100644
+> > --- a/target/i386/kvm/kvm.c
+> > +++ b/target/i386/kvm/kvm.c
+> > @@ -2343,6 +2343,7 @@ void kvm_arch_do_init_vcpu(X86CPU *cpu)
+> >   static int kvm_get_supported_feature_msrs(KVMState *s)
+> >   {
+> >       int ret = 0;
+> > +    int i;
+> > 
+> >       if (kvm_feature_msrs != NULL) {
+> >           return 0;
+> > @@ -2377,6 +2378,19 @@ static int kvm_get_supported_feature_msrs(KVMState *s)
+> >           return ret;
+> >       }
+> > 
+> > +    /*
+> > +     * Compatibility fix:
+> > +     * Older Linux kernels(<5.3) include the MSR_IA32_VMX_PROCBASED_CTLS2
+> > +     * only in feature msr list, but not in regular msr list. This lead to
+> > +     * an issue in older kernel versions where QEMU, through the regular
+> > +     * MSR list check, assumes the kernel doesn't maintain this msr,
+> > +     * resulting in incorrect settings by QEMU for this msr.
+> > +     */
+> > +    for (i = 0; i < kvm_feature_msrs->nmsrs; i++) {
+> > +        if (kvm_feature_msrs->indices[i] == MSR_IA32_VMX_PROCBASED_CTLS2) {
+> > +            has_msr_vmx_procbased_ctls2 = true;
+> > +        }
+> > +    }
+> >       return 0;
+> >   }
+> > 
+> > -- 
+> > 2.34.1
+> 
+> Best regards.
+> 
 
