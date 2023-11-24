@@ -2,70 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 085B47F7DC2
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 19:27:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF5E7F7EA8
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 19:34:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6ash-0007Po-TL; Fri, 24 Nov 2023 13:26:23 -0500
+	id 1r6aze-00023g-8N; Fri, 24 Nov 2023 13:33:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6asf-0007OJ-RB
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 13:26:21 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6azb-00023R-TN
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 13:33:31 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6asd-0001mS-Gj
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 13:26:21 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-332e40322f0so1193607f8f.3
- for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 10:26:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r6aza-0003Wc-D4
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 13:33:31 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40839652b97so14779585e9.3
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 10:33:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1700850377; x=1701455177; darn=nongnu.org;
+ d=linaro.org; s=google; t=1700850808; x=1701455608; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=hl3E70c6a9Q8499TAB0+ujpGO1/+WwcO05W9cq9qSTg=;
- b=BkEgRYCAVyHF6B/2QHZAe0sk+q+H28YpSpRi+bJ5Stupp1mtjjejL0eNGdjjR9cciL
- UGAJkHQzBqbYypgfOxx7p1hju0NGlZoi4NiXvWUObdSJIXP/jlD7ytu043JBHig8kIQw
- vJO3I7r1VRsohl+ZCgMAmCU0e5Tq+UZmWhS/pqRWw4WRw+7JrV0FplbH8me5DuV6ekRj
- 0TrPv0CJVYLdqSPoE0ZV7RgQZ42EgYNiNSAeL233UO9TbnKqqulK70kcu3NTJg0Xl95F
- GP/eNd1L+0zcmySC8kLPOvnIrq3/Z0RIOUdrmcaBM+P7p71G2Ba95L4Zl1gbI2J05VpV
- 632A==
+ bh=BG9qzMW6vxKLmuHoOIA+8WNn8X06Rkd4nFOlQKcmM9g=;
+ b=FP3Toa3/UvnJuZVRPiWnTVJ6c/YMKiK3WV1EJ00wokyi0Wb085njUmnxx437PTwHhy
+ FDwOYtJW/GowAS66j/iFpX/TvtOqCIfHWXGjPjdcHjJCGpMwW4h6SuVjbyN3uUADCDyU
+ 93h6Sl6N1yZjZWJbEMyuMffh+ht/D58KMNKArd3jF483LWbrHIuFL5LmD+krxwnfutzL
+ uD1mcNCQtIM5BrEMAKy46OQKDwEXE46X5sUT+oNKO+NF0PzOmV9+vxycBjkU6DBkY1bC
+ 6vclGsd1tXQwCSVI+RyzlAeotCSxEkDD0/c3wtWJnymfKYq/Lbc6wqNwaKZWZuhGmkdW
+ Mgrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700850377; x=1701455177;
+ d=1e100.net; s=20230601; t=1700850808; x=1701455608;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=hl3E70c6a9Q8499TAB0+ujpGO1/+WwcO05W9cq9qSTg=;
- b=ucCMDdkSxtjvvMbY07E841GelABnq4qOiVRQK0Rsm2FHGPtTUP8bq9w/i1Cpkwi3hA
- t3xm1CEYlIwF4pq2l25Ef6mhRiVHNMlPDTtEeQ68RRfXEZzyWPgBJrCLdRRTEbTl7lAR
- z5ThA49Eiffe5vXrg22igg79exO3BeSU4eCMdaCyOrMj+mly2Fz+cfjZ4pJAuVZdPGGt
- 8+ehlik3qYOsCJAD//FqTs4ILkoopNUOkjB+5B1e61aimnFP6EHwlC3jkvDMSYwfwk8/
- y4YPJ8kAmaHtiqd7SpP+/MS2WhOTRzMZs47sJbib5I8Adv0dqzSMVs0EJlpnVXhDvNGL
- MZ1w==
-X-Gm-Message-State: AOJu0YzZfQBkvOJ56TrzABdC0U2awSjDqPhyq3nPLt8XFAZdAK3wHDSV
- sgPeK6FeLuYAJuTCOm/ULHy9AKDA1d5VKgCKyB8=
-X-Google-Smtp-Source: AGHT+IFjpX6HO911Qd7SQU0JF28ldD9lrfHxQDO2q69wKFwP/DGpB/0vLqHo/Ynam5pFqpLQJojn9A==
-X-Received: by 2002:a05:6000:1188:b0:332:ef1e:bb86 with SMTP id
- g8-20020a056000118800b00332ef1ebb86mr334041wrx.1.1700850377533; 
- Fri, 24 Nov 2023 10:26:17 -0800 (PST)
+ bh=BG9qzMW6vxKLmuHoOIA+8WNn8X06Rkd4nFOlQKcmM9g=;
+ b=Loty5EO+CgLsaYrbKK86ScctJV3a+J5snOkjmyh5DDK27Oi3uhKaXuuBjqxRcjzLan
+ SsRWqH/EjKdVpp9emlQVZDEVq/AlNq5WzpA7W9Ien1nLljbjnAirmdPzVrbIMZqmA4nj
+ fBYzyu5sY/i8WwqvnJofw264ltJK5V32qgWgb06ZzDk4I0ajspXNJuQWrZ2KejkZ+nvu
+ o3rCP4y3T099c3Ktp0oKorSJxqFo/g4vjgw0N+v3sSv7YGcaYfqu/RCwX47ssyXRh6On
+ 1LQiqa2rx04H54WIt09PUbe8VXR+JeUi8TTOW72DGiU7pXXojnyGcguw+wnDJG6+5cVb
+ R04Q==
+X-Gm-Message-State: AOJu0YzmJfQyl7bJo0zpwQ70dqRftCtwybyjCwoX4txHnCgBjRwhFn+P
+ SX8f2l8RZJsinv4P1PtTELk3PpESpv0HCf4dKt4=
+X-Google-Smtp-Source: AGHT+IGDSzPjgXziGmffWuAst1W1XtAWm1ccNmd5DM9vH4mXqrdXdxBjIc5whUe5BlPzD6kRQi3ofg==
+X-Received: by 2002:adf:e808:0:b0:331:3b59:3edb with SMTP id
+ o8-20020adfe808000000b003313b593edbmr2352654wrm.42.1700850807945; 
+ Fri, 24 Nov 2023 10:33:27 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.218.17])
  by smtp.gmail.com with ESMTPSA id
- q1-20020a5d6581000000b00331a55d3875sm4886499wru.38.2023.11.24.10.26.16
+ e4-20020a5d5304000000b00332eb16d215sm1786310wrv.23.2023.11.24.10.33.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 24 Nov 2023 10:26:17 -0800 (PST)
+ Fri, 24 Nov 2023 10:33:27 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+Cc: Francisco Iglesias <francisco.iglesias@amd.com>,
+ Jason Wang <jasowang@redhat.com>, Vikram Garhwal <vikram.garhwal@amd.com>,
+ Anton Kochkov <anton.kochkov@proton.me>,
+ Pavel Pisa <pisa@cmp.felk.cvut.cz>, Vikram Garhwal <fnu.vikram@xilinx.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] hw/audio/sb16: Do not migrate qdev properties
-Date: Fri, 24 Nov 2023 19:26:15 +0100
-Message-ID: <20231124182615.94943-1-philmd@linaro.org>
+Subject: [PATCH-for-8.2? v3 0/2] hw/net/can/xlnx-zynqmp: Avoid underflow while
+ popping FIFOs
+Date: Fri, 24 Nov 2023 19:33:23 +0100
+Message-ID: <20231124183325.95392-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,46 +92,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit f7b4f61f63 ("qdev/isa: convert soundblaster") these
-fields has been converted to qdev properties, so don't need to be
-migrated:
+Series fully reviewed.
 
-  static Property sb16_properties[] = {
-      DEFINE_AUDIO_PROPERTIES(SB16State, card),
-      DEFINE_PROP_UINT32 ("version", SB16State, ver,  0x0405), /* 4.5 */
-      DEFINE_PROP_UINT32 ("iobase",  SB16State, port, 0x220),
-      DEFINE_PROP_UINT32 ("irq",     SB16State, irq,  5),
-      DEFINE_PROP_UINT32 ("dma",     SB16State, dma,  1),
-      DEFINE_PROP_UINT32 ("dma16",   SB16State, hdma, 5),
-      DEFINE_PROP_END_OF_LIST (),
-  };
+Since v2:
+- Addressed Vikram review comments,
+- Added R-b tags
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/audio/sb16.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Fix a pair of fuzzed bugs.
 
-diff --git a/hw/audio/sb16.c b/hw/audio/sb16.c
-index 18f6d252db..be614d7bc3 100644
---- a/hw/audio/sb16.c
-+++ b/hw/audio/sb16.c
-@@ -1325,11 +1325,11 @@ static const VMStateDescription vmstate_sb16 = {
-     .minimum_version_id = 1,
-     .post_load = sb16_post_load,
-     .fields = (VMStateField[]) {
--        VMSTATE_UINT32 (irq, SB16State),
--        VMSTATE_UINT32 (dma, SB16State),
--        VMSTATE_UINT32 (hdma, SB16State),
--        VMSTATE_UINT32 (port, SB16State),
--        VMSTATE_UINT32 (ver, SB16State),
-+        VMSTATE_UNUSED(  4 /* irq */
-+                       + 4 /* dma */
-+                       + 4 /* hdma */
-+                       + 4 /* port */
-+                       + 4 /* ver */),
-         VMSTATE_INT32 (in_index, SB16State),
-         VMSTATE_INT32 (out_data_len, SB16State),
-         VMSTATE_INT32 (fmt_stereo, SB16State),
+Tested with the CAN tests from 'make check-qtest-aarch64'.
+
+Regards,
+
+Phil.
+
+Philippe Mathieu-Daudé (2):
+  hw/net/can/xlnx-zynqmp: Avoid underflow while popping TX FIFOs
+  hw/net/can/xlnx-zynqmp: Avoid underflow while popping RX FIFO
+
+ hw/net/can/xlnx-zynqmp-can.c | 67 ++++++++++++++++++++++++++++++------
+ 1 file changed, 56 insertions(+), 11 deletions(-)
+
 -- 
 2.41.0
 
