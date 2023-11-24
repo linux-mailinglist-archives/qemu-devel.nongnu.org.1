@@ -2,86 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C573C7F6F1D
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 10:08:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F687F6F7D
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 Nov 2023 10:25:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6S9A-0006Wd-Ha; Fri, 24 Nov 2023 04:06:48 -0500
+	id 1r6SPv-0001xG-AF; Fri, 24 Nov 2023 04:24:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r6S98-0006WF-4P
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 04:06:46 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1r6S92-0001Xw-7g
- for qemu-devel@nongnu.org; Fri, 24 Nov 2023 04:06:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1700816798;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YKnKdUOmSAD0OJg8xA7hSfBCv56UVAtPZGxlChPLtIY=;
- b=NHmG8s9123GICpvBnrmQrOHtn3C+OSVUAZb9BQDYNZ6xsgLy73RRb7+WfVqWc3MXnJBxap
- RwijX7ueKl8YeweRtyNW3sPvIqIuyFAY4iI3yzC6mem4Gm+f1vmyVlL07IxxbOKzu5eNtU
- TndOa2oSmeW0yoPXukaAkZoPT+YFGtw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-99-pmFJzJZZPB60vMEC-Me3Kw-1; Fri, 24 Nov 2023 04:06:35 -0500
-X-MC-Unique: pmFJzJZZPB60vMEC-Me3Kw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 94D5D811E7E;
- Fri, 24 Nov 2023 09:06:34 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.110])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D04602026D4C;
- Fri, 24 Nov 2023 09:06:31 +0000 (UTC)
-Date: Fri, 24 Nov 2023 09:06:29 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Alexander Graf <agraf@csgraf.de>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Phil =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 2/2] docs: define policy forbidding use of "AI" / LLM
- code generators
-Message-ID: <ZWBngLoa3ERuMxGJ@redhat.com>
-References: <20231123114026.3589272-1-berrange@redhat.com>
- <20231123114026.3589272-3-berrange@redhat.com>
- <20231123092523-mutt-send-email-mst@kernel.org>
- <ZV-S1f2cK8MLNizz@redhat.com>
- <20231123172828-mutt-send-email-mst@kernel.org>
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1r6SPt-0001ws-EC
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 04:24:05 -0500
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1r6SPp-0006o3-L5
+ for qemu-devel@nongnu.org; Fri, 24 Nov 2023 04:24:05 -0500
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-50abbb23122so2167423e87.3
+ for <qemu-devel@nongnu.org>; Fri, 24 Nov 2023 01:24:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1700817839; x=1701422639; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=9pxljqwO+woALFQ41UDByycJRL0z5czCfgCEDhXSk4g=;
+ b=DxWKKDS26zXx33Pg+BINAlKbIUaMOeSpbDKkeaoUEbgAOcazm/KbaJzJMWubOxRDc3
+ nCrnM8qS8LZUAEqs9ol/2ydwS9Zb4LFURtr3Rk1BhbHvkdJsuH5Twv4kZb30PIkhmeNi
+ Jv5UEot8BhuMDGYLk6MYskXKBBOeTFaQ9utgK+EUpLAFox9EOuAQpA8pwKKGKh8brwwb
+ PRe9pNsrSmtLh+L9mKP9Wwl3acVFmp70DGSPGo3k6pXoaysFTZANVlJzk6xzoGSdIBsl
+ pxyROzOu5y6c5+aReeEnlOARcSIfBZBsB90gV17mKC3MOXTGYVGpTpN/OUd2CWfB/z6U
+ 73YA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700817839; x=1701422639;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9pxljqwO+woALFQ41UDByycJRL0z5czCfgCEDhXSk4g=;
+ b=ViODKx3km1y7NU4jxmzfYQWHqZVYN++ejjtN8ln+UJE0+AaTTFTYdXvevUj1fAl5EH
+ R3HazccZTI5Is2oIXnQ7cLKHlmgmHwDZyxTEzgTDJA3Yt2Pw7JjxHUIpQfHuqKIW0YVA
+ 56KglUhK23u5zZZmiiC/Sc2MuE2yohuUnWkE2KWyizfwpOjzvCbcXz2Gmz+U/3oxauEp
+ +1iyBVvzg6teVBScy7/2pFRXK4m2p3adFUwUdIVyh4NBcsoNNH8/T+FYhLWJy359gQ4E
+ AfPJ6rQgF5wYOjub+lerxNuNIUcjya54+Tkep14DsdTLfoRsu9VeUZKiHKvzO0ZonIKq
+ 8gTA==
+X-Gm-Message-State: AOJu0YwkAxSDEmSrQ93/ByHeJSfmbu/MelSRDx/pFjvV33e3LevbJJ4Q
+ t4vLU3r85KUSKurbaJJo6Up0zQ==
+X-Google-Smtp-Source: AGHT+IFdkZa+lc4uMsvr7nCqf6SCgYL2QWrnqk2BRAZQXuNrZ0tKYw1Ub54jURyEhqY+w0hWEhIpyg==
+X-Received: by 2002:a19:6449:0:b0:507:c507:c9b6 with SMTP id
+ b9-20020a196449000000b00507c507c9b6mr1322672lfj.41.1700817839265; 
+ Fri, 24 Nov 2023 01:23:59 -0800 (PST)
+Received: from localhost (cst-prg-91-180.cust.vodafone.cz. [46.135.91.180])
+ by smtp.gmail.com with ESMTPSA id
+ f10-20020a5d568a000000b0032d9caeab0fsm3863635wrv.77.2023.11.24.01.23.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 24 Nov 2023 01:23:58 -0800 (PST)
+Date: Fri, 24 Nov 2023 10:23:57 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH for-9.0 v11 03/18] target/riscv/tcg: update priv_ver on
+ user_set extensions
+Message-ID: <20231124-92b499e54aa4a447386fac16@orel>
+References: <20231123185122.1100436-1-dbarboza@ventanamicro.com>
+ <20231123185122.1100436-4-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231123172828-mutt-send-email-mst@kernel.org>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+In-Reply-To: <20231123185122.1100436-4-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=ajones@ventanamicro.com; helo=mail-lf1-x133.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.058,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,37 +91,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 23, 2023 at 05:39:18PM -0500, Michael S. Tsirkin wrote:
-> On Thu, Nov 23, 2023 at 05:58:45PM +0000, Daniel P. Berrangé wrote:
-> > The license of a code generation tool itself is usually considered
-> > to be not a factor in the license of its output.
+On Thu, Nov 23, 2023 at 03:51:07PM -0300, Daniel Henrique Barboza wrote:
+> We'll add a new bare CPU type that won't have any default priv_ver. This
+> means that the CPU will default to priv_ver = 0, i.e. 1.10.0.
 > 
-> Really? I would find it very surprising if a code generation tool that
-> is not a language model and so is not understanding the code it's
-> generating did not include some code snippets going into the output.
-> It is also possible to unintentionally run afoul of GPL's definition of source
-> code which is "the preferred form of the work for making modifications to it". 
-> So even if you have copyright to input, dumping just output and putting
-> GPL on it might or might not be ok.
+> At the same we'll allow these CPUs to enable extensions at will, but
+> then, if the extension has a priv_ver newer than 1.10, we'll end up
+> disabling it. Users will then need to manually set priv_ver to something
+> other than 1.10 to enable the extensions they want, which is not ideal.
+> 
+> Change the setter() of extensions to allow user enabled extensions to
+> bump the priv_ver of the CPU. This will make it convenient for users to
+> enable extensions for CPUs that doesn't set a default priv_ver.
+> 
+> This change does not affect any existing CPU: vendor CPUs does not allow
+> extensions to be enabled, and generic CPUs are already set to priv_ver
+> LATEST.
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> ---
+>  target/riscv/tcg/tcg-cpu.c | 32 ++++++++++++++++++++++++++++++++
+>  1 file changed, 32 insertions(+)
+> 
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index 7670120673..d279314624 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -114,6 +114,26 @@ static int cpu_cfg_ext_get_min_version(uint32_t ext_offset)
+>      g_assert_not_reached();
+>  }
+>  
+> +static void cpu_validate_multi_ext_priv_ver(CPURISCVState *env,
+> +                                            uint32_t ext_offset)
 
-Consider the C pre-processor. This takes an input .c file, and expands
-all the macros, to split out a new .c file.
+We should probably name this cpu_bump_multi_ext_priv_ver(). "validate"
+implies we're checking something and either returning an error when it's
+not what we expect or asserting on unexpected input. We do neither here,
+we just bump priv_ver, when necessary.
 
-The license of the output .c file is determined by the license of the
-input .c file. The license of the CPP impl (whether OSS or proprietary)
-doesn't have any influence on the license of the output file, it cannot
-magically force the output file to be proprietary any more than it can
-force it to be output file GPL.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Thanks,
+drew
 
