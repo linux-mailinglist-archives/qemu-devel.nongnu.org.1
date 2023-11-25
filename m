@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA3327F8AB7
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Nov 2023 13:24:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A807F8B14
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Nov 2023 14:09:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6rhA-0001Yi-3T; Sat, 25 Nov 2023 07:23:36 -0500
+	id 1r6sOl-0006EW-GO; Sat, 25 Nov 2023 08:08:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <petrcvekcz@gmail.com>)
- id 1r6rh8-0001Xr-6r
- for qemu-devel@nongnu.org; Sat, 25 Nov 2023 07:23:34 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1r6sOi-0006EL-HL
+ for qemu-devel@nongnu.org; Sat, 25 Nov 2023 08:08:36 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <petrcvekcz@gmail.com>)
- id 1r6rh6-0005LD-Lg
- for qemu-devel@nongnu.org; Sat, 25 Nov 2023 07:23:33 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3316d09c645so1694853f8f.0
- for <qemu-devel@nongnu.org>; Sat, 25 Nov 2023 04:23:31 -0800 (PST)
+ id 1r6sOg-0005kU-HJ
+ for qemu-devel@nongnu.org; Sat, 25 Nov 2023 08:08:36 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-548d60a4d60so3655356a12.2
+ for <qemu-devel@nongnu.org>; Sat, 25 Nov 2023 05:08:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1700915010; x=1701519810; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:content-language:subject:from
+ d=gmail.com; s=20230601; t=1700917712; x=1701522512; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:from:content-language
  :user-agent:mime-version:date:message-id:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ChyqQYn+oAPMzVi6ESY7j+fJ4LKMR9FYB0TtcRj6s/c=;
- b=nhlAKi+31Rg5L8Q8ycyzciOdEj81+Gjw1FctyKd+4Apw5HnCtzvtM/KoNnEvGmh5Lk
- 1vvP96/2xGNTk/AigFZfoVJsPA7r1P7lnVaFdb4sKL4DjcoxU7sgLTCvwXiFOPXFmhKH
- 1rGM+vMBItEmiKSscR9S14QF9KuFiJU1fMpDCQUzOCy2S2r4ZjqpgxMzQRzpXMHat035
- t7XtzVLfCp9T98DgZ65qAtPrrCHoPaSKZDmiSN557+JvBmzOR8+LGMmpUjG085tdVQ+r
- Zif2ONuEXNOxRmVxcLaVTi3rOVRnhxO1EQzBtx8HqIg781Ye7p4Y8ewnABneSSsfoVmS
- Miwg==
+ bh=F9SiZ35P0cp5ELjkeKoQUh1yPXB0JWpm8dGVlFOLY+k=;
+ b=f3FbpiHbuOoVeiooZZso3uenSEDeNBeNvcjjQTzXf7XIc68ZGtM7I9Wc5y3TlskZLb
+ Cqyj91/lKx5LQmY+7vV+6R/iSoEAWijNesWwktqlakXJWasOPYoc9dJiST+6sQ2qm11U
+ QASlhiqhG7eE3iE1kzUkhzRVUOluEhgOQJ+LZxiyEWor6CzkqGtYHbC+Rx6Nn3Si1VRA
+ FloFQB79+CnAQ75xnhDDhmuONtB/BRKsJxo6OooMACqzyw2/IHQzHWXCRfeXXagwOgMG
+ khGMq0eaxKXjzgAo99vhid594kv2tEWtvPDrtepFboUjFA4YlkoovmQK/pD2cKk27ArJ
+ ToXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1700915010; x=1701519810;
- h=content-transfer-encoding:cc:to:content-language:subject:from
+ d=1e100.net; s=20230601; t=1700917712; x=1701522512;
+ h=content-transfer-encoding:cc:to:subject:from:content-language
  :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=ChyqQYn+oAPMzVi6ESY7j+fJ4LKMR9FYB0TtcRj6s/c=;
- b=Pj2C12N0WdYBgUwv6ui5fqyJgB9vLMoyejati5AtM9/z8omK1HVsB9o7flQhtnwqwB
- MKt9A0xwcSDfH7/G+8n8bczReakgDgWI8gzPxv4Nrhs3defTHK8KaeDG0F9FcwxGCKY1
- McEdGO9gw/Xeg9/bVKQzWb/2ej5Can9B4Bc9dWbS9yPS8U38YimTIoe/V7spPsWDJuzM
- 0Pv4iVhfu0PyA4o5W4aw1A3tMObZHUD86tUk7IqZTPCLQG70AwZMFhLq+IZtZfFcC68m
- A+4BMs1Z1cGVL4j8XlQax49DgpG1QB8hhbMJq0e+IcNPzXUJzaDNFBgw6DF+1SpeELCM
- nDLA==
-X-Gm-Message-State: AOJu0YxsU7wS1cN0eWKaiGKpgt8IWs1q8rXHgb3KPw5C8JLa0i5U3w70
- 9FQpkWavB5xINE5vT+Cqq2POEdxAIEo=
-X-Google-Smtp-Source: AGHT+IGx271HdARwHj2gVUQjLIiEXC2QF30wIqhpRph/HQ5fplou3rexQoOsTCqPgKA0vLhR+xLXXg==
-X-Received: by 2002:a5d:6152:0:b0:332:e75e:f39a with SMTP id
- y18-20020a5d6152000000b00332e75ef39amr4128418wrt.35.1700915010264; 
- Sat, 25 Nov 2023 04:23:30 -0800 (PST)
+ bh=F9SiZ35P0cp5ELjkeKoQUh1yPXB0JWpm8dGVlFOLY+k=;
+ b=hYasXLaL5+SaBHue9XlOXpcB1fvqaHkV10BfZsi7mUjkIJzXGVwEFCidRpTaofzNv8
+ ysYfWIXg5IMwNyQQwbHqN97s7jebgMM8u9yDCQcKI/A7fO85KH3k3JDArq0Y0CMXTsHx
+ ONgm3k93wSW25f6WyRZRgtZxGKdTleCZw5rHCVlrPYQwMhu2DOHjBXRKf8AS5hh/m0cQ
+ kmPD+W3jip0cZJ9TDhb8mwDfCJeov6mBwJntIqeD8YjwN5ZmRZcJhqHqSNnyHTeL6XHz
+ ICFfbwfg10Pch+D7Sac/h7WviPtlKRzz33qwXF5zWIdL7kBs0NGMxefIA2LyT77Ktxb5
+ FXSw==
+X-Gm-Message-State: AOJu0Yy7immUWhQTR1smOYKjvnnLNk3tJbFIl+aqoFfPn+aIWzszC1UY
+ kWMzqibNJ24HQtstXJaBS0dy+nR4n3U=
+X-Google-Smtp-Source: AGHT+IH3KxtcAN/oak59o0V5YIWdvW9z56jo4O1gr1NoI2SSkavMJiQDqfzAneUB8QKStUqYTtUOjg==
+X-Received: by 2002:a50:ed08:0:b0:54b:28e9:6886 with SMTP id
+ j8-20020a50ed08000000b0054b28e96886mr1026673eds.3.1700917711800; 
+ Sat, 25 Nov 2023 05:08:31 -0800 (PST)
 Received: from ?IPV6:2001:1ae9:1e8:b200:ae52:b385:81fe:eeab?
  (2001-1ae9-1e8-b200-ae52-b385-81fe-eeab.ip6.tmcz.cz.
  [2001:1ae9:1e8:b200:ae52:b385:81fe:eeab])
  by smtp.gmail.com with ESMTPSA id
- c13-20020adfe70d000000b003316aeb280esm6492357wrm.104.2023.11.25.04.23.29
+ d21-20020aa7d5d5000000b0054a8eeca8aasm2996380eds.39.2023.11.25.05.08.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 25 Nov 2023 04:23:29 -0800 (PST)
-Message-ID: <6826113a-d428-401e-b5a3-56ad5d8fbaa4@gmail.com>
-Date: Sat, 25 Nov 2023 13:23:22 +0100
+ Sat, 25 Nov 2023 05:08:31 -0800 (PST)
+Message-ID: <79bd7607-7590-4809-9412-7cf7276567d6@gmail.com>
+Date: Sat, 25 Nov 2023 14:08:23 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Petr Cvek <petrcvekcz@gmail.com>
-Subject: [PATCH] qemu/timer: Don't use RDTSC on i486
 Content-Language: en-US, cs
+From: Petr Cvek <petrcvekcz@gmail.com>
+Subject: [BUG] accel/tcg: cpu_exec_longjmp_cleanup: assertion failed: (cpu ==
+ current_cpu)
 To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, marcel.apfelbaum@gmail.com, mst@redhat.com
+Cc: richard.henderson@linaro.org, pbonzini@redhat.com
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=petrcvekcz@gmail.com; helo=mail-wr1-x42e.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=petrcvekcz@gmail.com; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,29 +94,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-GCC defines __i386__ for i386 and i486, which both lack RDTSC instruction.
-The i386 seems to be impossible to distinguish, but i486 can be identified
-by checking for undefined __i486__.
+It seems there is a bug in SIGALRM handling when 486 system emulates x86_=
+64 code.
 
-Signed-off-by: Petr Cvek <petrcvekcz@gmail.com>
----
- include/qemu/timer.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This code:=20
 
-diff --git a/include/qemu/timer.h b/include/qemu/timer.h
-index 9a366e551f..7baa5d1d41 100644
---- a/include/qemu/timer.h
-+++ b/include/qemu/timer.h
-@@ -872,7 +872,7 @@ static inline int64_t cpu_get_host_ticks(void)
-     return retval;
- }
- 
--#elif defined(__i386__)
-+#elif defined(__i386__) && !defined(__i486__)
- 
- static inline int64_t cpu_get_host_ticks(void)
- {
--- 
-2.43.0
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <signal.h>
+#include <unistd.h>
 
+pthread_t thread1, thread2;
+
+// Signal handler for SIGALRM
+void alarm_handler(int sig) {
+    // Do nothing, just wake up the other thread
+}
+
+// Thread 1 function
+void* thread1_func(void* arg) {
+    // Set up the signal handler for SIGALRM
+    signal(SIGALRM, alarm_handler);
+
+    // Wait for 5 seconds
+    sleep(1);
+
+    // Send SIGALRM signal to thread 2
+    pthread_kill(thread2, SIGALRM);
+
+    return NULL;
+}
+
+// Thread 2 function
+void* thread2_func(void* arg) {
+    // Wait for the SIGALRM signal
+    pause();
+
+    printf("Thread 2 woke up!\n");
+
+    return NULL;
+}
+
+int main() {
+    // Create thread 1
+    if (pthread_create(&thread1, NULL, thread1_func, NULL) !=3D 0) {
+        fprintf(stderr, "Failed to create thread 1\n");
+        return 1;
+    }
+
+    // Create thread 2
+    if (pthread_create(&thread2, NULL, thread2_func, NULL) !=3D 0) {
+        fprintf(stderr, "Failed to create thread 2\n");
+        return 1;
+    }
+
+    // Wait for both threads to finish
+    pthread_join(thread1, NULL);
+    pthread_join(thread2, NULL);
+
+    return 0;
+}
+
+
+Fails with this -strace log (there are also unsupported syscalls 334 and =
+435, but it seems it doesn't affect the code much):
+
+=2E..
+736 rt_sigaction(SIGALRM,0x000000001123ec20,0x000000001123ecc0) =3D 0
+736 clock_nanosleep(CLOCK_REALTIME,0,{tv_sec =3D 1,tv_nsec =3D 0},{tv_sec=
+ =3D 1,tv_nsec =3D 0})
+736 rt_sigprocmask(SIG_BLOCK,0x00000000109fad20,0x0000000010800b38,8) =3D=
+ 0
+736 Unknown syscall 435
+736 clone(CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_THREAD|CLONE_=
+SYSVSEM|CLONE_SETTLS|CLONE_PARENT_SETTID| ...
+736 rt_sigprocmask(SIG_SETMASK,0x0000000010800b38,NULL,8)
+736 set_robust_list(0x11a419a0,0) =3D -1 errno=3D38 (Function not impleme=
+nted)
+736 rt_sigprocmask(SIG_SETMASK,0x0000000011a41fb0,NULL,8) =3D 0
+ =3D 0
+736 pause(0,0,2,277186368,0,295966400)
+736 futex(0x000000001123f990,FUTEX_CLOCK_REALTIME|FUTEX_WAIT_BITSET,738,N=
+ULL,NULL,0) =3D 0
+736 rt_sigprocmask(SIG_BLOCK,0x00000000109fad20,0x000000001123ee88,8) =3D=
+ 0
+736 getpid() =3D 736
+736 tgkill(736,739,SIGALRM) =3D 0
+ =3D -1 errno=3D4 (Interrupted system call)
+--- SIGALRM {si_signo=3DSIGALRM, si_code=3DSI_TKILL, si_pid=3D736, si_uid=
+=3D0} ---
+0x48874a !=3D 0x3c69e10
+736 rt_sigprocmask(SIG_SETMASK,0x000000001123ee88,NULL,8) =3D 0
+**
+ERROR:../accel/tcg/cpu-exec.c:546:cpu_exec_longjmp_cleanup: assertion fai=
+led: (cpu =3D=3D current_cpu)
+Bail out! ERROR:../accel/tcg/cpu-exec.c:546:cpu_exec_longjmp_cleanup: ass=
+ertion failed: (cpu =3D=3D current_cpu)
+0x48874a !=3D 0x3c69e10
+**
+ERROR:../accel/tcg/cpu-exec.c:546:cpu_exec_longjmp_cleanup: assertion fai=
+led: (cpu =3D=3D current_cpu)
+Bail out! ERROR:../accel/tcg/cpu-exec.c:546:cpu_exec_longjmp_cleanup: ass=
+ertion failed: (cpu =3D=3D current_cpu)
+#=20
+
+The code fails either with or without -singlestep, the command line:
+
+/usr/bin/qemu-x86_64 -L /opt/x86_64 -strace -singlestep  /opt/x86_64/alar=
+m.bin
+
+Source code of QEMU 8.1.1 was modified with patch "[PATCH] qemu/timer: Do=
+n't use RDTSC on i486" [1],=20
+with added few ioctls (not relevant) and cpu_exec_longjmp_cleanup() now p=
+rints current pointers of=20
+cpu and current_cpu (line "0x48874a !=3D 0x3c69e10").
+
+config.log (built as a part of buildroot, basically the minimal possible =
+configuration for running x86_64 on 486):
+
+# Configured with: '/mnt/hd_8tb_p1/p1/home/crossgen/buildroot_486_2/outpu=
+t/build/qemu-8.1.1/configure' '--prefix=3D/usr' '--cross-prefix=3D/mnt/hd=
+_8tb_p1/p1/home/crossgen/buildroot_486_2/output/host/bin/i486-buildroot-l=
+inux-gnu-' '--audio-drv-list=3D' '--python=3D/mnt/hd_8tb_p1/p1/home/cross=
+gen/buildroot_486_2/output/host/bin/python3' '--ninja=3D/mnt/hd_8tb_p1/p1=
+/home/crossgen/buildroot_486_2/output/host/bin/ninja' '--disable-alsa' '-=
+-disable-bpf' '--disable-brlapi' '--disable-bsd-user' '--disable-cap-ng' =
+'--disable-capstone' '--disable-containers' '--disable-coreaudio' '--disa=
+ble-curl' '--disable-curses' '--disable-dbus-display' '--disable-docs' '-=
+-disable-dsound' '--disable-hvf' '--disable-jack' '--disable-libiscsi' '-=
+-disable-linux-aio' '--disable-linux-io-uring' '--disable-malloc-trim' '-=
+-disable-membarrier' '--disable-mpath' '--disable-netmap' '--disable-open=
+gl' '--disable-oss' '--disable-pa' '--disable-rbd' '--disable-sanitizers'=
+ '--disable-selinux' '--disable-sparse' '--disable-strip' '--disable-vde'=
+ '--disable-vhost-crypto' '--disable-vhost-user-blk-server' '--disable-vi=
+rtfs' '--disable-whpx' '--disable-xen' '--disable-attr' '--disable-kvm' '=
+--disable-vhost-net' '--disable-download' '--disable-hexagon-idef-parser'=
+ '--disable-system' '--enable-linux-user' '--target-list=3Dx86_64-linux-u=
+ser' '--disable-vhost-user' '--disable-slirp' '--disable-sdl' '--disable-=
+fdt' '--enable-trace-backends=3Dnop' '--disable-tools' '--disable-guest-a=
+gent' '--disable-fuse' '--disable-fuse-lseek' '--disable-seccomp' '--disa=
+ble-libssh' '--disable-libusb' '--disable-vnc' '--disable-nettle' '--disa=
+ble-numa' '--disable-pipewire' '--disable-spice' '--disable-usb-redir' '-=
+-disable-install-blobs'
+
+Emulation of the same x86_64 code with qemu 6.2.0 installed on another x8=
+6_64 native machine works fine.
+
+[1] https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg05387.htm=
+l
+
+Best regards,
+Petr
 
